@@ -1,0 +1,109 @@
+
+
+Starting up. 19:15.41
+---------------------
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading goon_keylist
+ADMIN: goon_keylist was empty
+ADMIN: Loading Banlist
+ADMIN: Banlist is empty.
+ADMIN: Banlist missing base dir.
+ACCESS: Login: Keelin/(Keelin) from localhost
+ACCESS: Logout: Keelin/(Keelin)
+
+
+Starting up. 20:15.00
+---------------------
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading goon_keylist
+ADMIN: Loading Banlist
+ACCESS: Login: Keelin/(Keelin) from localhost
+ACCESS: Logout: Keelin/(Keelin)
+
+
+Starting up. 20:17.06
+---------------------
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading goon_keylist
+ADMIN: Loading Banlist
+ACCESS: Login: Keelin/(Keelin) from localhost
+ADMIN: Keelin has started the game.
+ACCESS: Logout: *no client*/(Keelin)
+ACCESS: Login: Keelin/(Jesus Lewis) from localhost
+ACCESS: Logout: Keelin/(Jesus Lewis)
+
+
+Starting up. 13:48.04
+---------------------
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading goon_keylist
+ADMIN: Loading Banlist
+
+
+Starting up. 14:01.21
+---------------------
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading goon_keylist
+ADMIN: Loading Banlist
+ACCESS: Login: Topkasa/(Topkasa) from 127.0.0.1
+ACCESS: Logout: *no client*/(Topkasa)
+ACCESS: Login: Topkasa/(Desmond Dez Taggart) from 127.0.0.1
+ACCESS: Logout: Topkasa/(Desmond Dez Taggart)
+
+
+Starting up. 19:56.51
+---------------------
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading goon_keylist
+ADMIN: Loading Banlist
+ACCESS: Login: Topkasa/(Topkasa) from 127.0.0.1
+ADMIN: Topkasa has started the game.
+ACCESS: Logout: *no client*/(Topkasa)
+ACCESS: Login: Topkasa/(Desmond Dez Taggart) from 127.0.0.1
+ADMIN: SubtlePM: Topkasa/(Desmond Dez Taggart) -> Topkasa/(Desmond Dez Taggart) : test
+ADMIN: Topkasa/(Desmond Dez Taggart) used secret showgm
+ADMIN: Topkasa/(Desmond Dez Taggart) used secret check_antagonist
+ADMIN: Topkasa/(Desmond Dez Taggart) has toggled Topkasa/(Desmond Dez Taggart)'s nodamage to On
+ADMIN: Topkasa/(Desmond Dez Taggart) has toggled Topkasa/(Desmond Dez Taggart)'s nodamage to Off
+SAY: Desmond Dez Taggart/Topkasa : hm
+ADMIN: Topkasa/(Desmond Dez Taggart) has turned stealth mode ON
+ADMIN: Topkasa/(Desmond Dez Taggart) used secret schoolgirl
+SAY: Desmond Dez Taggart/Topkasa : what?
+ADMIN: Topkasa/(Desmond Dez Taggart) used secret cleanexcrement
+ADMIN: Topkasa/(Desmond Dez Taggart) used secret fakeguns
+ADMIN: Topkasa/(Desmond Dez Taggart) used secret fakeguns
+ADMIN: Topkasa/(Desmond Dez Taggart) has used boom boom boom shake the room
+ADMIN: Topkasa/(Desmond Dez Taggart) has toggled Topkasa/(Desmond Dez Taggart)'s nodamage to On
+ACCESS: Logout: *no client*/(Desmond Dez Taggart)
+ACCESS: Login: Topkasa/(Desmond Dez Taggart) from 127.0.0.1
+ADMIN: DEBUG: Topkasa/(Desmond Dez Taggart)  next_move = 1  lastDblClick = 0  world.time = 13633
+GAME: Rebooting because of no live players
+ACCESS: Logout: Topkasa/(Desmond Dez Taggart)
+
+
+Starting up. 20:22.26
+---------------------
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading goon_keylist
+ADMIN: Loading Banlist
