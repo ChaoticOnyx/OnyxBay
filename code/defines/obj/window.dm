@@ -22,7 +22,7 @@
 	dir = NORTH
 
 /obj/window/basic/east
-	dir = NORTH
+	dir = EAST
 
 /obj/window/basic/west
 	dir = WEST
