@@ -177,6 +177,7 @@
 #include "code\defines\turf.dm"
 #include "code\defines\world.dm"
 #include "code\defines\area\bay12.dm"
+#include "code\defines\area\baystation 12 areas.dm"
 #include "code\defines\area\Space Station 13 areas.dm"
 #include "code\defines\mob\mob.dm"
 #include "code\defines\mob\dead\observer.dm"
@@ -615,5 +616,5 @@
 #include "code\WorkInProgress\recycling\disposal.dm"
 #include "code\WorkInProgress\recycling\scrap.dm"
 #include "interface\skin.dmf"
-#include "maps\trunkmap.dmm"
+#include "maps\baystation12.dmm"
 // END_INCLUDE

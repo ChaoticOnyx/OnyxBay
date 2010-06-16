@@ -1,190 +1,758 @@
 "aa" = (/turf/space,/area)
-"ab" = (/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
-"ac" = (/obj/window/reinforced/east,/turf/space,/area)
-"ad" = (/obj/machinery/door/airlock/external,/turf/simulated/floor,/area/arrivals)
-"ae" = (/obj/window/reinforced/west,/turf/space,/area)
-"af" = (/turf/simulated/floor,/area/arrivals)
-"ag" = (/obj/window/reinforced/north,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area/arrivals)
-"ah" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area/arrivals)
-"ai" = (/obj/window/reinforced/north,/obj/window/reinforced/east,/turf/simulated/floor/plating,/area/arrivals)
-"aj" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/arrivals)
-"ak" = (/obj/machinery/computer/card,/turf/simulated/floor,/area/arrivals)
-"al" = (/turf/simulated/floor/plating,/area)
-"am" = (/turf/simulated/wall/r_wall,/area)
-"an" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area)
-"ao" = (/turf/simulated/floor,/area/hallway/primary/fore)
-"ap" = (/obj/machinery/door/airlock/command,/turf/simulated/floor,/area)
-"aq" = (/turf/simulated/floor,/area)
-"ar" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area)
-"as" = (/obj/secure_closet/highsec,/turf/simulated/floor,/area)
-"at" = (/obj/stool/bed,/turf/simulated/floor,/area)
-"au" = (/obj/machinery/door/airlock/security,/turf/simulated/floor,/area)
-"av" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area)
-"aw" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area)
-"ax" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area)
-"ay" = (/obj/machinery/door/airlock/external,/turf/simulated/floor,/area)
-"az" = (/turf/simulated/wall,/area)
-"aA" = (/turf/simulated/floor,/area/crew_quarters/crew_quarters)
-"aB" = (/turf/simulated/wall,/area/crew_quarters/crew_quarters)
-"aC" = (/obj/closet/emcloset,/turf/simulated/floor,/area/crew_quarters/crew_quarters)
-"aD" = (/obj/stool/bed,/turf/simulated/floor,/area/crew_quarters/crew_quarters)
-"aE" = (/obj/closet/wardrobe/grey,/turf/simulated/floor,/area/crew_quarters/crew_quarters)
-"aF" = (/obj/window/basic/northeast,/turf/simulated/floor,/area)
-"aG" = (/turf/simulated/floor,/area/crew_quarters/cafeteria)
-"aH" = (/turf/simulated/floor,/area/crew_quarters/bar)
-"aI" = (/obj/machinery/door/airlock/medical,/turf/simulated/floor,/area/crew_quarters/crew_quarters)
-"aJ" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/crew_quarters/crew_quarters)
-"aK" = (/turf/simulated/floor,/area/chapel/office)
-"aL" = (/turf/simulated/floor/engine,/area)
-"aM" = (/turf/space,/area/bridge)
-"aN" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/bridge)
-"aO" = (/turf/simulated/floor,/area/bridge)
-"aP" = (/turf/simulated/floor,/area/chapel/main)
-"aQ" = (/turf/simulated/wall,/area/chapel/main)
-"aR" = (/obj/window/basic/northeast,/turf/simulated/floor,/area/chapel/main)
-"aS" = (/obj/stool/chair{tag = "icon-chair (EAST)"; icon_state = "chair"; dir = 4},/turf/simulated/floor,/area/chapel/main)
-"aT" = (/turf/simulated/floor,/area/crew_quarters/courtroom)
-"aU" = (/turf/simulated/wall,/area/crew_quarters/courtroom)
-"aV" = (/turf/simulated/wall/r_wall,/area/bridge)
-"aW" = (/obj/machinery/door/airlock/command,/turf/simulated/floor,/area/bridge)
-"aX" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/crew_quarters/courtroom)
-"aY" = (/obj/closet/coffin,/turf/simulated/floor,/area)
-"aZ" = (/obj/closet/coffin,/obj/closet/coffin,/turf/simulated/floor,/area)
-"ba" = (/obj/machinery/computer/pod,/turf/simulated/floor,/area/chapel/main)
-"bb" = (/obj/machinery/door/window/southleft,/turf/simulated/floor,/area/chapel/main)
-"bc" = (/obj/window/reinforced/south,/turf/simulated/floor,/area/chapel/main)
-"bd" = (/obj/machinery/mass_driver{tag = "icon-mass_driver (EAST)"; icon_state = "mass_driver"; dir = 4},/turf/simulated/floor/plating,/area/chapel/main)
-"be" = (/turf/simulated/floor/plating,/area/chapel/main)
-"bf" = (/obj/machinery/door/poddoor,/turf/simulated/floor/plating,/area/chapel/main)
-"bg" = (/obj/closet/emcloset,/turf/simulated/floor,/area)
-"bh" = (/obj/table{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/obj/item/weapon/storage/toolbox/emergency,/turf/simulated/floor,/area)
-"bi" = (/turf/simulated/floor,/area/medical/morgue)
-"bj" = (/obj/machinery/robotic_fabricator,/turf/simulated/floor,/area/medical/morgue)
-"bk" = (/turf/simulated/wall,/area/medical/morgue)
-"bl" = (/turf/simulated/wall/r_wall,/area/crew_quarters/captain)
-"bm" = (/obj/machinery/door/airlock/command,/turf/simulated/floor,/area/crew_quarters/captain)
-"bn" = (/obj/table{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/obj/item/weapon/storage/toolbox/mechanical,/turf/simulated/floor,/area)
-"bo" = (/obj/table{tag = "icon-tabledir (NORTHEAST)"; icon_state = "tabledir"; dir = 5},/obj/item/weapon/scalpel,/turf/simulated/floor,/area/medical/morgue)
-"bp" = (/obj/machinery/door/airlock/medical,/turf/simulated/floor,/area/medical/morgue)
-"bq" = (/obj/machinery/optable,/turf/simulated/floor,/area/medical/morgue)
-"br" = (/turf/simulated/floor,/area/crew_quarters/captain)
-"bs" = (/turf/simulated/floor,/area/security/main)
-"bt" = (/turf/simulated/wall/r_wall,/area/security/main)
-"bu" = (/obj/table{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/obj/item/weapon/crowbar,/turf/simulated/floor,/area)
-"bv" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/obj/item/weapon/circular_saw,/turf/simulated/floor,/area/medical/morgue)
-"bw" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/security/main)
-"bx" = (/turf/simulated/floor/engine,/area/engine/combustion)
-"by" = (/turf/simulated/wall,/area/medical/medbay)
-"bz" = (/obj/machinery/door/airlock/medical,/turf/simulated/floor,/area/medical/medbay)
-"bA" = (/obj/machinery/door/airlock/security,/turf/simulated/floor,/area/security/main)
-"bB" = (/obj/machinery/computer/med_data,/turf/simulated/floor,/area)
-"bC" = (/turf/simulated/floor,/area/medical/medbay)
-"bD" = (/obj/stool/bed,/turf/simulated/floor,/area/medical/medbay)
-"bE" = (/obj/table{tag = "icon-tabledir (WEST)"; icon_state = "tabledir"; dir = 8},/obj/item/weapon/storage/lglo_kit,/turf/simulated/floor,/area/medical/medbay)
-"bF" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/medical/medbay)
-"bG" = (/turf/simulated/floor,/area/engine/engine_control)
-"bH" = (/obj/table{tag = "icon-tabledir (WEST)"; icon_state = "tabledir"; dir = 8; pixel_x = 0},/obj/item/weapon/storage/pill_bottle/antitox{pixel_x = -4; pixel_y = 12},/obj/item/weapon/storage/pill_bottle/antitox{pixel_x = -4; pixel_y = 12},/obj/item/weapon/storage/pill_bottle/inaprovaline,/obj/item/weapon/storage/pill_bottle/kelotane,/turf/simulated/floor,/area/medical/medbay)
-"bI" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/turf/simulated/floor,/area/medical/medbay)
-"bJ" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/turf/simulated/floor,/area/medical/medbay)
-"bK" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/turf/simulated/floor,/area/medical/medbay)
-"bL" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/item/weapon/storage/firstaid/regular,/obj/item/weapon/storage/firstaid/regular,/obj/item/weapon/storage/firstaid/regular,/turf/simulated/floor,/area/medical/medbay)
-"bM" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/firstaid/fire,/obj/item/weapon/storage/firstaid/fire,/turf/simulated/floor,/area/medical/medbay)
-"bN" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/firstaid/toxin,/obj/item/weapon/storage/firstaid/toxin,/turf/simulated/floor,/area/medical/medbay)
-"bO" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/clothing/mask/surgical,/obj/item/clothing/mask/surgical,/obj/item/clothing/mask/surgical,/obj/item/clothing/mask/surgical,/obj/item/clothing/mask/surgical,/obj/item/clothing/mask/surgical,/turf/simulated/floor,/area/medical/medbay)
-"bP" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/lglo_kit,/obj/item/weapon/storage/lglo_kit,/turf/simulated/floor,/area/medical/medbay)
-"bQ" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/firstaid/syringes,/obj/item/weapon/storage/firstaid/syringes,/turf/simulated/floor,/area/medical/medbay)
-"bR" = (/obj/window/basic/southeast,/turf/simulated/floor,/area/medical/medbay)
-"bS" = (/obj/machinery/door/airlock/security,/turf/simulated/floor,/area/security/brig)
-"bT" = (/obj/machinery/door/window/eastright,/turf/simulated/floor,/area/medical/medbay)
-"bU" = (/turf/simulated/floor,/area/security/brig)
-"bV" = (/obj/secure_closet/medical2,/turf/simulated/floor,/area/medical/medbay)
-"bW" = (/obj/secure_closet/medical1,/turf/simulated/floor,/area/medical/medbay)
-"bX" = (/obj/secure_closet/chemical,/turf/simulated/floor,/area/medical/medbay)
-"bY" = (/obj/window/basic/southeast,/turf/simulated/floor,/area)
-"bZ" = (/obj/machinery/sleeper,/turf/simulated/floor,/area/medical/medbay)
-"ca" = (/obj/machinery/sleep_console,/turf/simulated/floor,/area/medical/medbay)
-"cb" = (/obj/machinery/door/window/westleft,/turf/simulated/floor,/area/medical/medbay)
-"cc" = (/turf/simulated/wall/r_wall,/area/medical/medbay)
-"cd" = (/turf/simulated/wall/r_wall,/area/security/brig)
-"ce" = (/obj/window/reinforced/west,/turf/simulated/floor,/area/medical/medbay)
-"cf" = (/obj/window/reinforced/north,/turf/simulated/floor,/area/medical/medbay)
-"cg" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/window/reinforced/west,/turf/simulated/floor,/area/medical/medbay)
-"ch" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/handcuff_kit,/turf/simulated/floor,/area/medical/medbay)
-"ci" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor/plating,/area)
-"cj" = (/obj/machinery/chem_dispenser,/turf/simulated/floor,/area/medical/research)
-"ck" = (/turf/simulated/floor,/area/medical/research)
-"cl" = (/obj/secure_closet/scientist,/turf/simulated/floor,/area/crew_quarters/hor)
-"cm" = (/obj/stool/bed,/turf/simulated/floor,/area/crew_quarters/hor)
-"cn" = (/obj/stool/chair,/turf/simulated/floor,/area/crew_quarters/hor)
-"co" = (/obj/machinery/chem_master,/turf/simulated/floor,/area/medical/research)
-"cp" = (/obj/table{tag = "icon-tabledir (NORTHWEST)"; icon_state = "tabledir"; dir = 9},/obj/item/weapon/reagent_containers/glass/beaker,/obj/item/weapon/reagent_containers/glass/beaker,/turf/simulated/floor,/area/medical/research)
-"cq" = (/obj/table{tag = "icon-tabledir (NORTHEAST)"; icon_state = "tabledir"; dir = 5},/turf/simulated/floor,/area/medical/research)
-"cr" = (/turf/simulated/floor,/area/crew_quarters/hor)
-"cs" = (/obj/secure_closet/chemical,/turf/simulated/floor,/area/medical/research)
-"ct" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/item/weapon/storage/beakerbox,/turf/simulated/floor,/area/medical/research)
-"cu" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/turf/simulated/floor,/area/medical/research)
-"cv" = (/turf/simulated/floor,/area/engine/engine_smes)
-"cw" = (/turf/simulated/floor,/area/engine/engine_gas_storage)
-"cx" = (/obj/window/basic/south,/obj/secure_closet/chemtoxin,/turf/simulated/floor,/area/medical/research)
-"cy" = (/obj/machinery/door/window/southleft,/turf/simulated/floor,/area/medical/research)
-"cz" = (/obj/window/basic/south,/turf/simulated/floor,/area/medical/research)
-"cA" = (/obj/machinery/door/airlock/command,/turf/simulated/floor,/area/crew_quarters/hor)
-"cB" = (/turf/simulated/wall/r_wall,/area/crew_quarters/hor)
-"cC" = (/obj/machinery/door/window/eastleft,/turf/simulated/floor,/area/medical/research)
-"cD" = (/turf/simulated/floor{tag = "icon-grass4"; icon_state = "grass4"},/area/medical/research)
-"cE" = (/mob/living/carbon/monkey,/turf/simulated/floor{tag = "icon-grass4"; icon_state = "grass4"},/area/medical/research)
-"cF" = (/obj/machinery/door/airlock/medical,/turf/simulated/floor,/area)
-"cG" = (/obj/window/basic/east,/turf/simulated/floor,/area/medical/research)
-"cH" = (/obj/window/basic/north,/turf/simulated/floor,/area/medical/research)
-"cI" = (/obj/machinery/door/window/northleft,/turf/simulated/floor,/area/medical/research)
-"cJ" = (/obj/window/basic/north,/obj/window/basic/east,/obj/secure_closet/animal,/turf/simulated/floor,/area/medical/research)
-"cK" = (/obj/machinery/door/airlock/engineering,/turf/simulated/floor,/area)
-"cL" = (/obj/machinery/dna_scannernew,/turf/simulated/floor,/area/medical/research)
-"cM" = (/obj/machinery/scan_consolenew,/turf/simulated/floor,/area/medical/research)
-"cN" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/item/weapon/dnainjector/m2h,/turf/simulated/floor,/area/medical/research)
-"cO" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/turf/simulated/floor,/area/medical/research)
-"cP" = (/obj/machinery/clonepod,/turf/simulated/floor,/area/medical/research)
-"cQ" = (/obj/window/basic/east,/obj/machinery/computer/cloning,/turf/simulated/floor,/area/medical/research)
-"cR" = (/turf/simulated/floor,/area/teleporter)
-"cS" = (/turf/simulated/floor,/area/toxins/storage)
-"cT" = (/turf/space,/area/toxins/test_area)
-"cU" = (/turf/simulated/wall/r_wall,/area/toxins/test_area)
-"cV" = (/turf/simulated/wall/r_wall,/area/toxins/storage)
-"cW" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/toxins/storage)
-"cX" = (/turf/simulated/floor,/area/toxins/lab)
-"cY" = (/turf/simulated/floor/engine,/area/toxins/test_area)
-"cZ" = (/turf/simulated/floor,/area/atmos)
-"da" = (/turf/simulated/floor,/area/ai_monitored/storage/eva)
-"db" = (/turf/simulated/floor/engine,/area/atmos)
-"dc" = (/turf/simulated/wall/r_wall,/area/toxins/lab)
-"dd" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/ai_monitored/storage/eva)
-"de" = (/obj/machinery/door/airlock/external,/turf/simulated/floor,/area/ai_monitored/storage/eva)
-"df" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/ai_monitored/storage/eva)
-"dg" = (/obj/machinery/door/poddoor,/turf/space,/area)
-"dh" = (/turf/simulated/floor/engine,/area/toxins/lab)
-"di" = (/turf/simulated/wall/r_wall,/area/crew_quarters/obdeck)
-"dj" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/crew_quarters/obdeck)
-"dk" = (/turf/simulated/wall/r_wall,/area/networkcenter)
-"dl" = (/turf/simulated/wall,/area/networkcenter)
-"dm" = (/turf/simulated/floor,/area/crew_quarters/obdeck)
-"dn" = (/turf/simulated/floor,/area/networkcenter)
-"do" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/networkcenter)
-"dp" = (/turf/space,/area/crew_quarters/obdeck)
-"dq" = (/turf/simulated/floor/plating,/area/turret_protected/ai_upload_foyer)
-"dr" = (/turf/simulated/floor,/area/turret_protected/ai_upload_foyer)
-"ds" = (/turf/simulated/wall/r_wall,/area/turret_protected/ai_upload_foyer)
-"dt" = (/turf/simulated/wall/r_wall,/area/turret_protected/ai_upload)
-"du" = (/obj/machinery/door/airlock/external,/turf/simulated/floor,/area/turret_protected/ai_upload)
-"dv" = (/turf/simulated/floor,/area/turret_protected/ai_upload)
-"dw" = (/turf/simulated/floor/grid,/area/turret_protected/ai_upload)
-"dx" = (/obj/window/reinforced/south,/turf/space,/area)
-"dy" = (/obj/window/reinforced/north,/turf/space,/area)
-"dz" = (/turf/simulated/wall/r_wall,/area/turret_protected/ai)
-"dA" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/grid,/area/turret_protected/ai)
-"dB" = (/turf/simulated/floor/grid,/area/turret_protected/ai)
-"dC" = (/turf/simulated/floor,/area/turret_protected/ai)
-"dD" = (/obj/grille,/obj/window/reinforced/south,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area)
-"dE" = (/obj/grille,/obj/window/reinforced/south,/obj/window/reinforced/east,/turf/simulated/floor/plating,/area)
+"ab" = (/turf/simulated/shuttle/wall,/area/shuttle/arrival/station)
+"ac" = (/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
+"ad" = (/obj/landmark{name = "JoinLate"},/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
+"ae" = (/obj/machinery/door/unpowered/shuttle,/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
+"af" = (/obj/window/reinforced/east,/turf/space,/area)
+"ag" = (/obj/machinery/door/airlock/external,/turf/simulated/floor,/area/bs12/security/checkpoint)
+"ah" = (/obj/window/reinforced/west,/turf/space,/area)
+"ai" = (/turf/simulated/floor,/area/bs12/security/checkpoint)
+"aj" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/north,/turf/simulated/floor,/area/bs12/security/checkpoint)
+"ak" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area/bs12/security/checkpoint)
+"al" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/north,/turf/simulated/floor,/area/bs12/security/checkpoint)
+"am" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/bs12/security/checkpoint)
+"an" = (/obj/stool/chair{dir = 4},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"ao" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"ap" = (/obj/window/basic/south,/turf/simulated/floor,/area/bs12/security/checkpoint)
+"aq" = (/obj/machinery/door/window,/turf/simulated/floor,/area/bs12/security/checkpoint)
+"ar" = (/mob/living/carbon/monkey{name = "Mr Muggles"},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"as" = (/obj/window/basic/west,/obj/table{icon_state = "tabledir"; dir = 9},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"at" = (/obj/table{icon_state = "tabledir"; dir = 10},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"au" = (/obj/table{icon_state = "tabledir"; dir = 2},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"av" = (/obj/table{icon_state = "tabledir"; dir = 6},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"aw" = (/obj/table{icon_state = "tabledir"; dir = 8},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"ax" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"ay" = (/obj/stool/chair{dir = 4},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"az" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"aA" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"aB" = (/obj/window/basic/west,/obj/table{icon_state = "tabledir"; dir = 8},/turf/simulated/floor,/area/bs12/security/checkpoint)
+"aC" = (/turf/simulated/floor/plating,/area)
+"aD" = (/obj/machinery/light,/turf/simulated/floor,/area/bs12/security/checkpoint)
+"aE" = (/obj/machinery/power/apc{name = "SAPC"; pixel_y = -30},/obj/cable,/turf/simulated/floor,/area/bs12/security/checkpoint)
+"aF" = (/obj/machinery/computer/card,/turf/simulated/floor,/area/bs12/security/checkpoint)
+"aG" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/south,/turf/simulated/floor,/area/bs12/security/checkpoint)
+"aH" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area)
+"aI" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/north,/turf/simulated/floor,/area)
+"aJ" = (/turf/simulated/wall/r_wall,/area)
+"aK" = (/turf/simulated/wall/r_wall,/area/bs12/security/holding)
+"aL" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area/bs12/security/holding)
+"aM" = (/turf/simulated/wall/r_wall,/area/bs12/security/nstation)
+"aN" = (/obj/window/basic/north,/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bs12/hallway/north)
+"aO" = (/obj/machinery/door/window/northleft,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/north)
+"aP" = (/obj/window/basic/north,/turf/simulated/floor,/area/bs12/hallway/north)
+"aQ" = (/turf/simulated/wall/r_wall,/area/bs12/headquarters/hop)
+"aR" = (/obj/machinery/door/airlock/command,/turf/simulated/floor,/area/bs12/headquarters/hop)
+"aS" = (/turf/simulated/floor,/area)
+"aT" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area)
+"aU" = (/turf/simulated/floor,/area/bs12/security/holding)
+"aV" = (/turf/simulated/floor,/area/bs12/security/nstation)
+"aW" = (/obj/machinery/power/apc{dir = 1; name = "NAPC"; pixel_y = 30},/obj/cable{icon_state = "0-2"; d2 = 2},/turf/simulated/floor,/area/bs12/security/nstation)
+"aX" = (/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bs12/hallway/north)
+"aY" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/north)
+"aZ" = (/turf/simulated/floor,/area/bs12/hallway/north)
+"ba" = (/obj/secure_closet/highsec,/turf/simulated/floor,/area/bs12/headquarters/hop)
+"bb" = (/turf/simulated/floor,/area/bs12/headquarters/hop)
+"bc" = (/obj/closet/emcloset,/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/bs12/headquarters/hop)
+"bd" = (/obj/stool/chair,/turf/simulated/floor,/area)
+"be" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/security/nstation)
+"bf" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bs12/hallway/north)
+"bg" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/hallway/north)
+"bh" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/wall/r_wall,/area/bs12/headquarters/hop)
+"bi" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/headquarters/hop)
+"bj" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/headquarters/hop)
+"bk" = (/obj/machinery/power/apc{dir = 4; name = "EAPC"; pixel_x = 30},/obj/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor,/area/bs12/headquarters/hop)
+"bl" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area)
+"bm" = (/obj/table{tag = "icon-tabledir (NORTHWEST)"; icon_state = "tabledir"; dir = 9},/turf/simulated/floor,/area)
+"bn" = (/obj/table{icon_state = "tabledir"; dir = 1},/turf/simulated/floor,/area)
+"bo" = (/obj/table{tag = "icon-tabledir (NORTHEAST)"; icon_state = "tabledir"; dir = 5},/turf/simulated/floor,/area)
+"bp" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/bs12/security/nstation)
+"bq" = (/obj/stool/bed,/turf/simulated/floor,/area/bs12/headquarters/hop)
+"br" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/headquarters/hop)
+"bs" = (/obj/landmark/start{name = "Head of Personnel"},/turf/simulated/floor,/area/bs12/headquarters/hop)
+"bt" = (/obj/table{icon_state = "tabledir"; dir = 8},/turf/simulated/floor,/area)
+"bu" = (/obj/table{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/turf/simulated/floor,/area)
+"bv" = (/obj/cable{icon_state = "0-4"; d2 = 4},/obj/machinery/power/apc{dir = 8; name = "WAPC"; pixel_x = -30},/turf/simulated/floor,/area/bs12/security/holding)
+"bw" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/holding)
+"bx" = (/obj/machinery/door/airlock/security,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/holding)
+"by" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/nstation)
+"bz" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/security/nstation)
+"bA" = (/obj/machinery/door/airlock/security,/turf/simulated/floor,/area/bs12/security/nstation)
+"bB" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/turf/simulated/floor,/area)
+"bC" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/turf/simulated/floor,/area)
+"bD" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/turf/simulated/floor,/area)
+"bE" = (/obj/sign/space,/turf/simulated/wall/r_wall,/area)
+"bF" = (/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/nwcorridor)
+"bG" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area)
+"bH" = (/obj/machinery/door/airlock/command,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/headquarters/hop)
+"bI" = (/obj/stool/chair{dir = 1},/turf/simulated/floor,/area)
+"bJ" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/nwcorridor)
+"bK" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area)
+"bL" = (/obj/machinery/power/apc{name = "SAPC"; pixel_y = -30},/obj/cable,/turf/simulated/floor,/area)
+"bM" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area/bs12/maintenance/corridor/nwcorridor)
+"bN" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall/r_wall,/area/bs12/security/nstation)
+"bO" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/nwcorridor)
+"bP" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area/bs12/maintenance/corridor/necorridor)
+"bQ" = (/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/necorridor)
+"bR" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/necorridor)
+"bS" = (/turf/simulated/wall,/area)
+"bT" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall,/area)
+"bU" = (/turf/simulated/floor,/area/bs12/crewquarters)
+"bV" = (/turf/simulated/wall,/area/bs12/crewquarters)
+"bW" = (/obj/closet/emcloset,/turf/simulated/floor,/area/bs12/crewquarters)
+"bX" = (/obj/stool/bed,/turf/simulated/floor,/area/bs12/crewquarters)
+"bY" = (/obj/closet/wardrobe/grey,/turf/simulated/floor,/area/bs12/crewquarters)
+"bZ" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/crewquarters)
+"ca" = (/obj/window/basic/northeast,/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area)
+"cb" = (/obj/table{icon_state = "tabledir"; dir = 2},/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"cc" = (/obj/machinery/vending/coffee,/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"cd" = (/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"ce" = (/obj/window/basic/northeast,/turf/simulated/floor,/area/crew_quarters/bar)
+"cf" = (/turf/simulated/floor,/area/crew_quarters/bar)
+"cg" = (/obj/machinery/door/airlock/medical,/turf/simulated/floor,/area/bs12/crewquarters)
+"ch" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area)
+"ci" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/crew_quarters/bar)
+"cj" = (/turf/simulated/wall/r_wall,/area/bs12/headquarters/hos)
+"ck" = (/obj/landmark/start{name = "Assistant"},/turf/simulated/floor,/area/bs12/crewquarters)
+"cl" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/bs12/crewquarters)
+"cm" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area)
+"cn" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"co" = (/obj/landmark/start{name = "Chef"},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"cp" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/machinery/door/airlock/glass,/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/crew_quarters/bar)
+"cq" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/crew_quarters/bar)
+"cr" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/crew_quarters/bar)
+"cs" = (/obj/stool/chair{dir = 4},/turf/simulated/floor,/area/crew_quarters/bar)
+"ct" = (/obj/table{tag = "icon-reinf_tabledir (NORTHWEST)"; icon_state = "reinf_tabledir"; dir = 9},/turf/simulated/floor,/area/crew_quarters/bar)
+"cu" = (/obj/table{dir = 5; icon_state = "tabledir"},/obj/table{icon_state = "tabledir"; dir = 1},/turf/simulated/floor,/area/crew_quarters/bar)
+"cv" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/north,/turf/simulated/floor,/area)
+"cw" = (/turf/simulated/floor,/area/bs12/headquarters/hos)
+"cx" = (/obj/closet/emcloset,/turf/simulated/floor,/area/bs12/headquarters/hos)
+"cy" = (/obj/stool/bed,/turf/simulated/floor,/area/bs12/headquarters/hos)
+"cz" = (/obj/secure_closet/hos,/turf/simulated/floor,/area/bs12/headquarters/hos)
+"cA" = (/obj/machinery/power/apc{dir = 8; name = "WAPC"; pixel_x = -30},/obj/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor,/area/bs12/crewquarters)
+"cB" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/crewquarters)
+"cC" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/crewquarters)
+"cD" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"cE" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/crew_quarters/bar)
+"cF" = (/obj/table{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/turf/simulated/floor,/area/crew_quarters/bar)
+"cG" = (/turf/simulated/floor,/area/chapel/office)
+"cH" = (/obj/machinery/power/apc{dir = 1; name = "NAPC"; pixel_y = 30},/obj/cable{icon_state = "0-2"; d2 = 2},/obj/stool/chair,/turf/simulated/floor,/area/chapel/office)
+"cI" = (/turf/simulated/floor/engine,/area)
+"cJ" = (/turf/space,/area/bridge)
+"cK" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/bridge)
+"cL" = (/turf/simulated/floor,/area/bridge)
+"cM" = (/obj/stool/chair{dir = 4},/turf/simulated/floor,/area)
+"cN" = (/obj/table,/turf/simulated/floor,/area)
+"cO" = (/obj/stool/chair{dir = 8},/turf/simulated/floor,/area)
+"cP" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/bs12/headquarters/hos)
+"cQ" = (/obj/landmark/start{name = "Head of Security"},/turf/simulated/floor,/area/bs12/headquarters/hos)
+"cR" = (/obj/table{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"cS" = (/obj/stool/chair{dir = 8},/obj/stool/chair{dir = 8},/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"cT" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/stool/chair{dir = 4},/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"cU" = (/obj/table,/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"cV" = (/obj/stool/chair{dir = 8},/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"cW" = (/obj/landmark/start{name = "Barman"},/turf/simulated/floor,/area/crew_quarters/bar)
+"cX" = (/obj/table{icon_state = "tabledir"; dir = 10},/obj/item/weapon/hand_labeler,/turf/simulated/floor,/area/chapel/office)
+"cY" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/paper,/obj/item/weapon/pen{pixel_x = -8; pixel_y = 11},/turf/simulated/floor,/area/chapel/office)
+"cZ" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/paper_bin{pixel_y = 8},/turf/simulated/floor,/area/chapel/office)
+"da" = (/turf/simulated/floor,/area/chapel/main)
+"db" = (/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/chapel/main)
+"dc" = (/turf/simulated/wall,/area/chapel/main)
+"dd" = (/obj/machinery/computer/card,/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bridge)
+"de" = (/obj/stool/chair{dir = 8},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bridge)
+"df" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bridge)
+"dg" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bridge)
+"dh" = (/obj/machinery/power/apc{dir = 8; name = "WAPC"; pixel_x = -30},/obj/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor,/area)
+"di" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/machinery/light,/turf/simulated/floor,/area)
+"dj" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area)
+"dk" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area)
+"dl" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bs12/headquarters/hos)
+"dm" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/headquarters/hos)
+"dn" = (/obj/machinery/power/apc{dir = 4; name = "EAPC"; pixel_x = 30},/obj/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor,/area/bs12/headquarters/hos)
+"do" = (/obj/machinery/power/apc{name = "SAPC"; pixel_y = -30},/obj/cable,/obj/stool/chair{dir = 4},/turf/simulated/floor{tag = "icon-arrival (NORTHWEST)"; icon_state = "arrival"; dir = 9},/area/crew_quarters/cafeteria)
+"dp" = (/obj/machinery/power/apc{name = "SAPC"; pixel_y = -30},/obj/cable,/turf/simulated/floor,/area/crew_quarters/bar)
+"dq" = (/obj/reagent_dispensers/beerkeg,/turf/simulated/floor,/area/crew_quarters/bar)
+"dr" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/chapel/office)
+"ds" = (/obj/window/basic/northeast,/turf/simulated/floor,/area/chapel/main)
+"dt" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/north,/turf/simulated/floor,/area/bridge)
+"du" = (/obj/grille,/obj/window/reinforced/south,/obj/window/reinforced/east,/turf/simulated/floor/plating,/area/bridge)
+"dv" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bridge)
+"dw" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area)
+"dx" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/headquarters/hos)
+"dy" = (/obj/closet/coffin,/turf/simulated/floor,/area/chapel/office)
+"dz" = (/obj/stool/chair{tag = "icon-chair (EAST)"; icon_state = "chair"; dir = 4},/turf/simulated/floor,/area/chapel/main)
+"dA" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bridge)
+"dB" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bridge)
+"dC" = (/turf/simulated/floor,/area/crew_quarters/courtroom)
+"dD" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"dE" = (/turf/simulated/wall,/area/crew_quarters/courtroom)
+"dF" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area/bs12/hallway/north)
+"dG" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/chapel/office)
+"dH" = (/obj/machinery/computer/communications,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bridge)
+"dI" = (/obj/stool/chair{dir = 8},/turf/simulated/floor,/area/bridge)
+"dJ" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bridge)
+"dK" = (/obj/machinery/power/apc{dir = 4; name = "EAPC"; pixel_x = 30},/obj/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor,/area/bridge)
+"dL" = (/turf/simulated/wall/r_wall,/area/bridge)
+"dM" = (/obj/machinery/door/airlock/command,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bridge)
+"dN" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"dO" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"dP" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"dQ" = (/obj/reagent_dispensers/watertank,/turf/simulated/floor,/area/bs12/hallway/north)
+"dR" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bs12/hallway/north)
+"dS" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bs12/hallway/north)
+"dT" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bs12/hallway/north)
+"dU" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/hallway/north)
+"dV" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/chapel/main)
+"dW" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/chapel/main)
+"dX" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/chapel/main)
+"dY" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/chapel/main)
+"dZ" = (/obj/machinery/door/airlock/command,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bridge)
+"ea" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"eb" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"ec" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"ed" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/hallway/north)
+"ee" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/chapel/main)
+"ef" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/chapel/main)
+"eg" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/chapel/main)
+"eh" = (/obj/machinery/computer/secure_data,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bridge)
+"ei" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bridge)
+"ej" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bridge)
+"ek" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bridge)
+"el" = (/obj/stool/chair,/turf/simulated/floor,/area/crew_quarters/courtroom)
+"em" = (/obj/window/basic/north,/obj/window/basic/west,/turf/simulated/floor,/area/crew_quarters/courtroom)
+"en" = (/obj/window/basic/north,/obj/stool/chair{dir = 8},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"eo" = (/obj/machinery/door/firedoor/border_only,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/north)
+"ep" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area/bs12/maintenance/corridor/centercorridor)
+"eq" = (/turf/simulated/wall,/area/bs12/chapel/coffin)
+"er" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/chapel/coffin)
+"es" = (/obj/landmark{name = "Observer-Start"},/turf/simulated/floor,/area/bridge)
+"et" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"eu" = (/obj/table,/turf/simulated/floor,/area/crew_quarters/courtroom)
+"ev" = (/obj/window/basic/west,/turf/simulated/floor,/area/crew_quarters/courtroom)
+"ew" = (/obj/stool/chair{dir = 8},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"ex" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area/bs12/hallway/west)
+"ey" = (/obj/machinery/door/firedoor/border_only,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/west)
+"ez" = (/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/centercorridor)
+"eA" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area/bs12/hallway/east)
+"eB" = (/obj/machinery/door/firedoor/border_only,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/east)
+"eC" = (/obj/closet/coffin,/turf/simulated/floor,/area/bs12/chapel/coffin)
+"eD" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/chapel/coffin)
+"eE" = (/obj/machinery/computer/general_alert,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bridge)
+"eF" = (/obj/stool/chair{tag = "icon-chair (EAST)"; icon_state = "chair"; dir = 4},/turf/simulated/floor,/area/bridge)
+"eG" = (/obj/table{icon_state = "tabledir"; dir = 9},/turf/simulated/floor,/area/bridge)
+"eH" = (/obj/table{icon_state = "tabledir"; dir = 5},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bridge)
+"eI" = (/obj/stool/chair{dir = 8},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"eJ" = (/turf/simulated/floor,/area/bs12/hallway/west)
+"eK" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/west)
+"eL" = (/turf/simulated/floor,/area/bs12/hallway/east)
+"eM" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/east)
+"eN" = (/obj/closet/coffin,/obj/closet/coffin,/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/chapel/coffin)
+"eO" = (/obj/machinery/power/apc{name = "SAPC"; pixel_y = -30},/obj/cable,/turf/simulated/floor,/area/chapel/main)
+"eP" = (/obj/table{icon_state = "tabledir"; dir = 8},/turf/simulated/floor,/area/bridge)
+"eQ" = (/obj/table{icon_state = "tabledir"; dir = 4},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bridge)
+"eR" = (/obj/machinery/power/apc{dir = 8; name = "WAPC"; pixel_x = -30},/obj/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"eS" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"eT" = (/turf/simulated/wall/r_wall,/area/bs12/engine/engine_walls)
+"eU" = (/obj/closet/coffin,/obj/machinery/power/apc{dir = 8; name = "WAPC"; pixel_x = -30},/obj/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor,/area/bs12/chapel/coffin)
+"eV" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bs12/chapel/coffin)
+"eW" = (/obj/machinery/computer/pod,/turf/simulated/floor,/area/chapel/main)
+"eX" = (/obj/machinery/door/window/southleft,/turf/simulated/floor,/area/chapel/main)
+"eY" = (/obj/window/reinforced/south,/turf/simulated/floor,/area/chapel/main)
+"eZ" = (/obj/window/reinforced/south,/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/chapel/main)
+"fa" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/south,/turf/simulated/floor,/area/bridge)
+"fb" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/north,/turf/simulated/floor,/area/bridge)
+"fc" = (/obj/table{icon_state = "tabledir"; dir = 10},/turf/simulated/floor,/area/bridge)
+"fd" = (/obj/table{icon_state = "tabledir"; dir = 6},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bridge)
+"fe" = (/obj/window/basic/west,/obj/window/basic/south,/turf/simulated/floor,/area/crew_quarters/courtroom)
+"ff" = (/obj/window/basic/south,/obj/stool/chair{dir = 8},/turf/simulated/floor,/area/crew_quarters/courtroom)
+"fg" = (/turf/simulated/wall,/area/bs12/engine/engine_walls)
+"fh" = (/turf/simulated/floor,/area/bs12/chapel/coffin)
+"fi" = (/obj/machinery/mass_driver{tag = "icon-mass_driver (EAST)"; icon_state = "mass_driver"; dir = 4},/turf/simulated/floor/plating,/area/chapel/main)
+"fj" = (/turf/simulated/floor/plating,/area/chapel/main)
+"fk" = (/obj/machinery/door/poddoor,/turf/simulated/floor/plating,/area/chapel/main)
+"fl" = (/obj/machinery/computer/med_data,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bridge)
+"fm" = (/turf/space,/area/bs12/engine/cooling)
+"fn" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/bs12/chapel/coffin)
+"fo" = (/turf/simulated/floor{tag = "icon-green (EAST)"; icon_state = "green"; dir = 4},/area/bs12/hallway/east)
+"fp" = (/obj/closet/emcloset,/turf/simulated/floor,/area)
+"fq" = (/obj/table{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/obj/item/weapon/storage/toolbox/emergency,/turf/simulated/floor,/area)
+"fr" = (/turf/simulated/floor,/area/medical/morgue)
+"fs" = (/obj/machinery/robotic_fabricator,/turf/simulated/floor,/area/medical/morgue)
+"ft" = (/obj/machinery/power/apc{dir = 1; name = "NAPC"; pixel_y = 30},/obj/cable{icon_state = "0-2"; d2 = 2},/turf/simulated/floor,/area/medical/morgue)
+"fu" = (/turf/simulated/wall,/area/medical/morgue)
+"fv" = (/turf/simulated/wall/r_wall,/area/crew_quarters/captain)
+"fw" = (/obj/machinery/door/airlock/command,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/crew_quarters/captain)
+"fx" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area)
+"fy" = (/obj/table{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/obj/item/weapon/storage/toolbox/mechanical,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area)
+"fz" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/wall,/area)
+"fA" = (/obj/table{tag = "icon-tabledir (NORTHEAST)"; icon_state = "tabledir"; dir = 5},/obj/item/weapon/scalpel,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/medical/morgue)
+"fB" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/medical/morgue)
+"fC" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/medical/morgue)
+"fD" = (/obj/landmark/start{name = "Roboticist"},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/medical/morgue)
+"fE" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/medical/morgue)
+"fF" = (/obj/machinery/door/airlock/medical,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/medical/morgue)
+"fG" = (/obj/machinery/optable,/turf/simulated/floor,/area/medical/morgue)
+"fH" = (/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/crew_quarters/captain)
+"fI" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/crew_quarters/captain)
+"fJ" = (/turf/simulated/floor,/area/crew_quarters/captain)
+"fK" = (/obj/table{tag = "icon-reinf_tabledir (NORTHEAST)"; icon_state = "reinf_tabledir"; dir = 5},/turf/simulated/floor,/area/bs12/security/security)
+"fL" = (/obj/secure_closet/security1,/turf/simulated/floor,/area/bs12/security/security)
+"fM" = (/turf/simulated/wall/r_wall,/area/bs12/security/security)
+"fN" = (/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bs12/hallway/west)
+"fO" = (/obj/closet/jcloset,/obj/cable,/obj/machinery/power/apc{name = "SAPC"; pixel_y = -30},/turf/simulated/floor,/area)
+"fP" = (/obj/table{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/obj/item/weapon/crowbar,/turf/simulated/floor,/area)
+"fQ" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/obj/item/weapon/circular_saw,/turf/simulated/floor,/area/medical/morgue)
+"fR" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/medical/morgue)
+"fS" = (/obj/machinery/door/airlock/command,/turf/simulated/floor,/area)
+"fT" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/crew_quarters/captain)
+"fU" = (/obj/landmark/start{name = "Captain"},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/crew_quarters/captain)
+"fV" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/crew_quarters/captain)
+"fW" = (/obj/table{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/bs12/security/security)
+"fX" = (/turf/simulated/floor,/area/bs12/security/security)
+"fY" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/bs12/security/security)
+"fZ" = (/turf/simulated/floor/engine,/area/bs12/engine/combustion)
+"ga" = (/turf/simulated/wall,/area/medical/medbay)
+"gb" = (/obj/machinery/door/airlock/medical,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/medical/medbay)
+"gc" = (/obj/secure_closet/captains,/turf/simulated/floor,/area/crew_quarters/captain)
+"gd" = (/obj/closet/emcloset,/turf/simulated/floor,/area/crew_quarters/captain)
+"ge" = (/obj/stool/bed,/obj/machinery/power/apc{name = "SAPC"; pixel_y = -30},/obj/cable,/turf/simulated/floor,/area/crew_quarters/captain)
+"gf" = (/obj/table{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/turf/simulated/floor,/area/bs12/security/security)
+"gg" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bs12/security/security)
+"gh" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/security)
+"gi" = (/obj/machinery/door/airlock/security,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/security)
+"gj" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bs12/hallway/west)
+"gk" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bs12/hallway/west)
+"gl" = (/obj/machinery/computer/med_data,/turf/simulated/floor,/area)
+"gm" = (/turf/simulated/floor,/area/medical/medbay)
+"gn" = (/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/medical/medbay)
+"go" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/medical/medbay)
+"gp" = (/obj/stool/bed,/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/medical/medbay)
+"gq" = (/obj/table{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/obj/item/weapon/storage/handcuff_kit,/obj/item/weapon/handcuffs,/turf/simulated/floor,/area/bs12/security/security)
+"gr" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/security/security)
+"gs" = (/obj/landmark/start{name = "Security Officer"},/turf/simulated/floor,/area/bs12/security/security)
+"gt" = (/obj/table{tag = "icon-tabledir (WEST)"; icon_state = "tabledir"; dir = 8},/obj/item/weapon/storage/lglo_kit,/turf/simulated/floor,/area/medical/medbay)
+"gu" = (/obj/landmark/start{name = "Medical Doctor"},/turf/simulated/floor,/area/medical/medbay)
+"gv" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/medical/medbay)
+"gw" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/obj/item/weapon/storage/firstaid/regular,/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/bs12/security/security)
+"gx" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/security/security)
+"gy" = (/turf/simulated/floor,/area/bs12/engine/control)
+"gz" = (/turf/space,/area/bs12/engine/engine_walls)
+"gA" = (/obj/table{tag = "icon-tabledir (WEST)"; icon_state = "tabledir"; dir = 8; pixel_x = 0},/obj/item/weapon/storage/pill_bottle/antitox{pixel_x = -4; pixel_y = 12},/obj/item/weapon/storage/pill_bottle/antitox{pixel_x = -4; pixel_y = 12},/obj/item/weapon/storage/pill_bottle/inaprovaline,/obj/item/weapon/storage/pill_bottle/kelotane,/turf/simulated/floor,/area/medical/medbay)
+"gB" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/medical/medbay)
+"gC" = (/obj/machinery/door/airlock/medical,/turf/simulated/floor,/area/medical/medbay)
+"gD" = (/obj/machinery/door/airlock/security,/turf/simulated/floor,/area/bs12/security/security)
+"gE" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/security)
+"gF" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bs12/security/security)
+"gG" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bs12/security/security)
+"gH" = (/obj/stool/chair,/turf/simulated/floor,/area/bs12/security/security)
+"gI" = (/turf/simulated/wall,/area/bs12/maintenance/corridor/centercorridor)
+"gJ" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/turf/simulated/floor,/area/medical/medbay)
+"gK" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/turf/simulated/floor,/area/medical/medbay)
+"gL" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/turf/simulated/floor,/area/medical/medbay)
+"gM" = (/obj/machinery/power/apc{dir = 1; name = "NAPC"; pixel_y = 30},/obj/cable{icon_state = "0-2"; d2 = 2},/turf/simulated/floor,/area/medical/medbay)
+"gN" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/item/weapon/storage/firstaid/regular,/obj/item/weapon/storage/firstaid/regular,/obj/item/weapon/storage/firstaid/regular,/turf/simulated/floor,/area/medical/medbay)
+"gO" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/firstaid/fire,/obj/item/weapon/storage/firstaid/fire,/turf/simulated/floor,/area/medical/medbay)
+"gP" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/firstaid/toxin,/obj/item/weapon/storage/firstaid/toxin,/turf/simulated/floor,/area/medical/medbay)
+"gQ" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/medical/medbay)
+"gR" = (/turf/simulated/wall,/area/bs12/storage/medstorage)
+"gS" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/turf/simulated/floor,/area/bs12/storage/medstorage)
+"gT" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/clothing/mask/surgical,/obj/item/clothing/mask/surgical,/obj/item/clothing/mask/surgical,/obj/item/clothing/mask/surgical,/obj/item/clothing/mask/surgical,/obj/item/clothing/mask/surgical,/turf/simulated/floor,/area/bs12/storage/medstorage)
+"gU" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/lglo_kit,/obj/item/weapon/storage/lglo_kit,/turf/simulated/floor,/area/bs12/storage/medstorage)
+"gV" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/firstaid/syringes,/obj/item/weapon/storage/firstaid/syringes,/turf/simulated/floor,/area/bs12/storage/medstorage)
+"gW" = (/obj/machinery/light,/turf/simulated/floor,/area/bs12/security/security)
+"gX" = (/obj/machinery/power/apc{name = "SAPC"; pixel_y = -30},/obj/cable,/obj/machinery/light,/turf/simulated/floor,/area/bs12/security/security)
+"gY" = (/obj/stool/chair{tag = "icon-chair (EAST)"; icon_state = "chair"; dir = 4},/turf/simulated/floor,/area/bs12/security/security)
+"gZ" = (/obj/table{tag = "icon-tabledir (NORTHWEST)"; icon_state = "tabledir"; dir = 9},/turf/simulated/floor,/area/bs12/security/security)
+"ha" = (/obj/table{tag = "icon-tabledir (NORTHEAST)"; icon_state = "tabledir"; dir = 5},/turf/simulated/floor,/area/bs12/security/security)
+"hb" = (/obj/stool/chair{dir = 8},/turf/simulated/floor,/area/bs12/security/security)
+"hc" = (/obj/window/basic/southeast,/turf/simulated/floor,/area/medical/medbay)
+"hd" = (/obj/machinery/door/airlock/medical,/turf/simulated/floor,/area/bs12/storage/medstorage)
+"he" = (/turf/simulated/floor,/area/bs12/storage/medstorage)
+"hf" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/storage/medstorage)
+"hg" = (/turf/simulated/wall/r_wall,/area/bs12/security/brig)
+"hh" = (/obj/machinery/door/airlock/security,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/security/brig)
+"hi" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/turf/simulated/floor,/area/bs12/security/security)
+"hj" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/turf/simulated/floor,/area/bs12/security/security)
+"hk" = (/obj/stool/chair{dir = 8},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/security/security)
+"hl" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bs12/hallway/east)
+"hm" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor{tag = "icon-green (EAST)"; icon_state = "green"; dir = 4},/area/bs12/hallway/east)
+"hn" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area)
+"ho" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/medical/medbay)
+"hp" = (/obj/machinery/door/window/eastright,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/medical/medbay)
+"hq" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/medical/medbay)
+"hr" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/medical/medbay)
+"hs" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/wall,/area/bs12/storage/medstorage)
+"ht" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/storage/medstorage)
+"hu" = (/obj/cable{d2 = 8; icon_state = "0-8"},/obj/machinery/power/apc{dir = 4; name = "EAPC"; pixel_x = 30},/turf/simulated/floor,/area/bs12/storage/medstorage)
+"hv" = (/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/bs12/security/brig)
+"hw" = (/obj/stool/bed,/turf/simulated/floor,/area/bs12/security/brig)
+"hx" = (/obj/window/reinforced/northeast,/turf/simulated/floor,/area/bs12/security/brig)
+"hy" = (/turf/simulated/floor,/area/bs12/security/brig)
+"hz" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/security/brig)
+"hA" = (/obj/stool/chair{dir = 1},/turf/simulated/floor,/area/bs12/security/security)
+"hB" = (/obj/secure_closet/medical2,/turf/simulated/floor,/area/bs12/storage/medstorage)
+"hC" = (/obj/secure_closet/medical1,/turf/simulated/floor,/area/bs12/storage/medstorage)
+"hD" = (/obj/secure_closet/chemical,/turf/simulated/floor,/area/bs12/storage/medstorage)
+"hE" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/bs12/security/brig)
+"hF" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/security/brig)
+"hG" = (/turf/simulated/wall/r_wall,/area/bs12/storage/secstorage)
+"hH" = (/obj/machinery/door/airlock/security,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/storage/secstorage)
+"hI" = (/obj/window/basic/southeast,/turf/simulated/floor,/area)
+"hJ" = (/obj/machinery/sleeper,/turf/simulated/floor,/area/medical/medbay)
+"hK" = (/obj/machinery/sleep_console,/turf/simulated/floor,/area/medical/medbay)
+"hL" = (/obj/machinery/door/window/westleft,/turf/simulated/floor,/area/medical/medbay)
+"hM" = (/turf/simulated/wall/r_wall,/area/bs12/storage/medstorage)
+"hN" = (/obj/secure_closet/security1,/turf/simulated/floor,/area/bs12/storage/secstorage)
+"hO" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/storage/secstorage)
+"hP" = (/turf/simulated/floor,/area/bs12/storage/secstorage)
+"hQ" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/storage/secstorage)
+"hR" = (/obj/stool/bed,/turf/simulated/floor,/area/medical/medbay)
+"hS" = (/obj/window/reinforced/west,/turf/simulated/floor,/area/medical/medbay)
+"hT" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/medical/medbay)
+"hU" = (/obj/window/reinforced/south,/turf/space,/area/bs12/security/brig)
+"hV" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/obj/window/reinforced/south,/turf/simulated/floor,/area/bs12/security/brig)
+"hW" = (/obj/table{tag = "icon-reinf_tabledir (NORTHWEST)"; icon_state = "reinf_tabledir"; dir = 9},/turf/simulated/floor,/area/bs12/storage/secstorage)
+"hX" = (/obj/table{tag = "icon-reinf_tabledir (NORTHEAST)"; icon_state = "reinf_tabledir"; dir = 5},/turf/simulated/floor,/area/bs12/storage/secstorage)
+"hY" = (/obj/machinery/door/airlock/security,/turf/simulated/floor,/area/bs12/storage/secstorage)
+"hZ" = (/obj/machinery/light,/turf/simulated/floor,/area/medical/medbay)
+"ia" = (/obj/window/reinforced/north,/turf/simulated/floor,/area/medical/medbay)
+"ib" = (/turf/simulated/wall/r_wall,/area/medical/medbay)
+"ic" = (/obj/machinery/door/airlock/external,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/brig)
+"id" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/brig)
+"ie" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/security/brig)
+"if" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/turf/simulated/floor,/area/bs12/storage/secstorage)
+"ig" = (/obj/table{icon_state = "tabledir"; dir = 6},/turf/simulated/floor,/area/bs12/storage/secstorage)
+"ih" = (/turf/simulated/floor,/area/bs12/engine/equipment)
+"ii" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/window/reinforced/west,/turf/simulated/floor,/area/medical/medbay)
+"ij" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/handcuff_kit,/turf/simulated/floor,/area/medical/medbay)
+"ik" = (/obj/window/reinforced/north,/turf/space,/area/bs12/security/brig)
+"il" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/obj/window/reinforced/south,/obj/window/reinforced/north,/turf/simulated/floor,/area/bs12/security/brig)
+"im" = (/obj/machinery/power/apc{name = "SAPC"; pixel_y = -30},/obj/cable,/turf/simulated/floor,/area/bs12/security/brig)
+"in" = (/obj/secure_closet/security2,/turf/simulated/floor,/area/bs12/storage/secstorage)
+"io" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bs12/storage/secstorage)
+"ip" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/storage/secstorage)
+"iq" = (/obj/cable{d2 = 8; icon_state = "0-8"},/obj/machinery/power/apc{dir = 4; name = "EAPC"; pixel_x = 30},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/storage/secstorage)
+"ir" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor/plating,/area)
+"is" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area/bs12/security/brig)
+"it" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall/r_wall,/area/bs12/storage/secstorage)
+"iu" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/bs12/security/brig)
+"iv" = (/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/westcorridor)
+"iw" = (/turf/simulated/wall/r_wall,/area/bs12/security/forensics)
+"ix" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/bs12/security/forensics)
+"iy" = (/turf/simulated/floor,/area/bs12/security/forensics)
+"iz" = (/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/bs12/security/forensics)
+"iA" = (/obj/secure_closet/security2,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/security/forensics)
+"iB" = (/obj/landmark/start{name = "Detective"},/turf/simulated/floor,/area/bs12/security/forensics)
+"iC" = (/obj/machinery/door/airlock/security,/turf/simulated/floor,/area/bs12/security/forensics)
+"iD" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/security/forensics)
+"iE" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/bs12/security/forensics)
+"iF" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bs12/security/forensics)
+"iG" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/security/forensics)
+"iH" = (/obj/cable{d2 = 8; icon_state = "0-8"},/obj/machinery/power/apc{dir = 4; name = "EAPC"; pixel_x = 30},/turf/simulated/floor,/area/bs12/security/forensics)
+"iI" = (/obj/machinery/chem_dispenser,/turf/simulated/floor,/area/medical/research)
+"iJ" = (/turf/simulated/floor,/area/medical/research)
+"iK" = (/obj/secure_closet/scientist,/turf/simulated/floor,/area/crew_quarters/hor)
+"iL" = (/obj/stool/bed,/turf/simulated/floor,/area/crew_quarters/hor)
+"iM" = (/obj/stool/chair,/turf/simulated/floor,/area/crew_quarters/hor)
+"iN" = (/turf/simulated/floor{tag = "icon-solarpanel"; icon_state = "solarpanel"},/area)
+"iO" = (/obj/machinery/chem_master,/turf/simulated/floor,/area/medical/research)
+"iP" = (/obj/table{tag = "icon-tabledir (NORTHWEST)"; icon_state = "tabledir"; dir = 9},/obj/item/weapon/reagent_containers/glass/beaker,/obj/item/weapon/reagent_containers/glass/beaker,/turf/simulated/floor,/area/medical/research)
+"iQ" = (/obj/table{tag = "icon-tabledir (NORTHEAST)"; icon_state = "tabledir"; dir = 5},/obj/item/weapon/chem_grenade,/obj/item/weapon/chem_grenade,/turf/simulated/floor,/area/medical/research)
+"iR" = (/turf/simulated/floor,/area/crew_quarters/hor)
+"iS" = (/obj/landmark/start{name = "Research Director"},/turf/simulated/floor,/area/crew_quarters/hor)
+"iT" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area)
+"iU" = (/obj/machinery/dispenser{pltanks = 0},/turf/simulated/floor,/area/bs12/rescue/firestation)
+"iV" = (/obj/closet/emcloset,/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/bs12/rescue/firestation)
+"iW" = (/obj/closet/emcloset,/turf/simulated/floor,/area/bs12/rescue/firestation)
+"iX" = (/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/bs12/rescue/firestation)
+"iY" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/clothing/gloves/black,/obj/item/clothing/head/bio_hood,/obj/item/clothing/mask/gas,/obj/item/clothing/suit/fire,/obj/item/clothing/under/color/white,/turf/simulated/floor,/area/bs12/rescue/firestation)
+"iZ" = (/obj/secure_closet/chemical,/turf/simulated/floor,/area/medical/research)
+"ja" = (/obj/landmark/start{name = "Chemist"},/turf/simulated/floor,/area/medical/research)
+"jb" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/item/weapon/storage/beakerbox,/turf/simulated/floor,/area/medical/research)
+"jc" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/turf/simulated/floor,/area/medical/research)
+"jd" = (/turf/simulated/floor,/area/bs12/rescue/firestation)
+"je" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bs12/engine/SMES)
+"jf" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/engine/SMES)
+"jg" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/engine/enginehall)
+"jh" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/engine/enginehall)
+"ji" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/engine/enginehall)
+"jj" = (/turf/simulated/floor,/area/bs12/engine/enginehall)
+"jk" = (/turf/simulated/floor,/area/bs12/engine/canstorage)
+"jl" = (/obj/window/basic/south,/obj/secure_closet/chemtoxin,/turf/simulated/floor,/area/medical/research)
+"jm" = (/obj/machinery/door/window/southleft,/turf/simulated/floor,/area/medical/research)
+"jn" = (/obj/window/basic/south,/turf/simulated/floor,/area/medical/research)
+"jo" = (/obj/machinery/door/airlock/command,/turf/simulated/floor,/area/crew_quarters/hor)
+"jp" = (/turf/simulated/wall/r_wall,/area/crew_quarters/hor)
+"jq" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/engine/SMES)
+"jr" = (/obj/machinery/power/smes,/turf/simulated/floor,/area/bs12/engine/SMES)
+"js" = (/turf/simulated/floor,/area/bs12/engine/SMES)
+"jt" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/engine/enginehall)
+"ju" = (/obj/sign/flammable,/turf/simulated/wall/r_wall,/area/bs12/engine/engine_walls)
+"jv" = (/obj/machinery/door/window/eastleft,/turf/simulated/floor,/area/medical/research)
+"jw" = (/turf/simulated/floor{tag = "icon-grass4"; icon_state = "grass4"},/area/medical/research)
+"jx" = (/mob/living/carbon/monkey,/turf/simulated/floor{tag = "icon-grass4"; icon_state = "grass4"},/area/medical/research)
+"jy" = (/obj/machinery/portable_atmospherics/pump,/turf/simulated/floor,/area/bs12/rescue/firestation)
+"jz" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bs12/engine/SMES)
+"jA" = (/obj/machinery/power/terminal{tag = "icon-term (NORTH)"; icon_state = "term"; dir = 1},/obj/cable{icon_state = "0-4"; d2 = 4},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/engine/SMES)
+"jB" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/engine/SMES)
+"jC" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/engine/enginehall)
+"jD" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/engine/enginehall)
+"jE" = (/obj/machinery/door/airlock/medical,/turf/simulated/floor,/area)
+"jF" = (/obj/landmark/start{name = "Scientist"},/turf/simulated/floor,/area/medical/research)
+"jG" = (/obj/window/basic/east,/turf/simulated/floor,/area/medical/research)
+"jH" = (/obj/machinery/power/terminal,/obj/cable{icon_state = "0-4"; d2 = 4},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/engine/SMES)
+"jI" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bs12/engine/SMES)
+"jJ" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/landmark/start{name = "Station Engineer"},/turf/simulated/floor,/area/bs12/engine/enginehall)
+"jK" = (/obj/window/basic/north,/turf/simulated/floor,/area/medical/research)
+"jL" = (/obj/machinery/door/window/northleft,/turf/simulated/floor,/area/medical/research)
+"jM" = (/obj/window/basic/north,/obj/window/basic/east,/obj/secure_closet/animal,/turf/simulated/floor,/area/medical/research)
+"jN" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area/bs12/maintenance/corridor/westcorridor)
+"jO" = (/obj/cable{icon_state = "0-4"; d2 = 4},/obj/machinery/power/apc{dir = 8; name = "WAPC"; pixel_x = -30},/turf/simulated/floor,/area/bs12/rescue/firestation)
+"jP" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/rescue/firestation)
+"jQ" = (/obj/machinery/door/airlock/engineering,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area)
+"jR" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/hallway/west)
+"jS" = (/obj/machinery/power/smes/magical{name = "ZPM: Zero-Point-Module"},/turf/simulated/floor,/area/bs12/engine/SMES)
+"jT" = (/obj/landmark/start{name = "Geneticist"},/turf/simulated/floor,/area/medical/research)
+"jU" = (/obj/machinery/portable_atmospherics/scrubber,/turf/simulated/floor,/area/bs12/rescue/firestation)
+"jV" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/engine/enginehall)
+"jW" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/engine/enginehall)
+"jX" = (/obj/machinery/portable_atmospherics/scrubber,/obj/machinery/light,/turf/simulated/floor,/area/bs12/rescue/firestation)
+"jY" = (/obj/machinery/light,/turf/simulated/floor,/area/bs12/rescue/firestation)
+"jZ" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall/r_wall,/area/bs12/engine/engine_walls)
+"ka" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area/bs12/engine/engine_walls)
+"kb" = (/obj/machinery/door/airlock/engineering,/turf/simulated/floor,/area/bs12/engine/enginehall)
+"kc" = (/obj/machinery/dna_scannernew,/turf/simulated/floor,/area/medical/research)
+"kd" = (/obj/machinery/scan_consolenew,/turf/simulated/floor,/area/medical/research)
+"ke" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/item/weapon/dnainjector/m2h,/turf/simulated/floor,/area/medical/research)
+"kf" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/turf/simulated/floor,/area/medical/research)
+"kg" = (/obj/machinery/clonepod,/turf/simulated/floor,/area/medical/research)
+"kh" = (/obj/window/basic/east,/obj/machinery/computer/cloning,/turf/simulated/floor,/area/medical/research)
+"ki" = (/turf/simulated/floor{dir = 4; icon_state = "yellow"; tag = "icon-yellow (EAST)"},/area/bs12/hallway/west)
+"kj" = (/turf/simulated/floor{dir = 8; icon_state = "yellow"; tag = "icon-yellow (WEST)"},/area/bs12/hallway/east)
+"kk" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area/bs12/maintenance/hall)
+"kl" = (/turf/simulated/floor,/area/bs12/maintenance/hall)
+"km" = (/turf/simulated/floor{dir = 1; icon_state = "yellow"; tag = "icon-yellow(NORTH)"},/area/bs12/maintenance/hall)
+"kn" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor{dir = 1; icon_state = "yellow"; tag = "icon-yellow(NORTH)"},/area/bs12/maintenance/hall)
+"ko" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bs12/hallway/west)
+"kp" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor{dir = 4; icon_state = "yellow"; tag = "icon-yellow (EAST)"},/area/bs12/hallway/west)
+"kq" = (/obj/machinery/door/airlock/maintenance,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/maintenance/hall)
+"kr" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/maintenance/hall)
+"ks" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/bs12/maintenance/hall)
+"kt" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bs12/maintenance/hall)
+"ku" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/maintenance/hall)
+"kv" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bs12/maintenance/hall)
+"kw" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/maintenance/hall)
+"kx" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor{dir = 8; icon_state = "yellow"; tag = "icon-yellow (WEST)"},/area/bs12/hallway/east)
+"ky" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bs12/hallway/east)
+"kz" = (/turf/simulated/floor,/area/teleporter)
+"kA" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area/bs12/storage/elecstorage)
+"kB" = (/turf/simulated/wall,/area/bs12/storage/elecstorage)
+"kC" = (/obj/machinery/door/airlock/engineering,/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"kD" = (/turf/simulated/wall,/area/bs12/storage/toolstorage)
+"kE" = (/obj/machinery/door/airlock/engineering,/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"kF" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/plating,/area/bs12/storage/toolstorage)
+"kG" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area/bs12/storage/toolstorage)
+"kH" = (/turf/simulated/wall,/area/bs12/maintenance/janitor)
+"kI" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall,/area/bs12/maintenance/janitor)
+"kJ" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area/bs12/maintenance/janitor)
+"kK" = (/obj/machinery/power/apc{dir = 8; name = "WAPC"; pixel_x = -30},/obj/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor,/area/teleporter)
+"kL" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/teleporter)
+"kM" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/teleporter)
+"kN" = (/obj/cable{icon_state = "0-4"; d2 = 4},/obj/machinery/power/apc{dir = 8; name = "WAPC"; pixel_x = -30},/turf/simulated/floor,/area)
+"kO" = (/obj/closet/emcloset,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area)
+"kP" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/storage/lightbox,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area)
+"kQ" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/storage/toolbox/mechanical,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area)
+"kR" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/storage/toolbox/emergency,/obj/item/weapon/storage/toolbox/emergency,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area)
+"kS" = (/obj/table{icon_state = "tabledir"; dir = 4},/obj/item/weapon/cable_coil,/obj/item/weapon/cable_coil,/obj/item/weapon/cable_coil,/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"kT" = (/obj/cable{icon_state = "0-2"; d2 = 2},/obj/machinery/power/apc{dir = 1; name = "NAPC"; pixel_y = 30},/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"kU" = (/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"kV" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/weapon/cable_coil,/obj/item/weapon/cable_coil,/obj/item/weapon/cable_coil,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"kW" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"kX" = (/obj/closet/wardrobe/engineering_yellow,/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"kY" = (/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"kZ" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"la" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lb" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lc" = (/obj/cable{d2 = 8; icon_state = "0-8"},/obj/machinery/power/apc{dir = 4; name = "EAPC"; pixel_x = 30},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"ld" = (/obj/cable{icon_state = "0-4"; d2 = 4},/obj/machinery/power/apc{dir = 8; name = "WAPC"; pixel_x = -30},/turf/simulated/floor,/area/bs12/maintenance/janitor)
+"le" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bs12/maintenance/janitor)
+"lf" = (/turf/simulated/floor,/area/bs12/maintenance/janitor)
+"lg" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/maintenance/janitor)
+"lh" = (/turf/simulated/floor,/area/toxins/storage)
+"li" = (/obj/machinery/computer/teleporter,/turf/simulated/floor,/area/teleporter)
+"lj" = (/obj/machinery/teleport/station,/turf/simulated/floor,/area/teleporter)
+"lk" = (/obj/machinery/teleport/hub,/turf/simulated/floor,/area/teleporter)
+"ll" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/teleporter)
+"lm" = (/obj/machinery/door/airlock/command{name = "Teleport Access"; req_access_txt = "17"},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/teleporter)
+"ln" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bs12/hallway/west)
+"lo" = (/obj/machinery/portable_atmospherics/scrubber,/turf/simulated/floor,/area)
+"lp" = (/obj/machinery/portable_atmospherics/pump,/turf/simulated/floor,/area)
+"lq" = (/obj/table{icon_state = "tabledir"; dir = 4},/obj/item/weapon/storage/toolbox/electrical,/obj/item/clothing/gloves/yellow,/obj/item/device/multitool,/obj/item/clothing/glasses/meson,/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"lr" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"ls" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/device/t_scanner,/obj/item/device/t_scanner,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"lt" = (/obj/closet/wardrobe/atmospherics_yellow,/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lu" = (/obj/table{tag = "icon-tabledir (NORTHWEST)"; icon_state = "tabledir"; dir = 9},/obj/item/clothing/gloves/black,/obj/item/clothing/gloves/black,/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lv" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/table{icon_state = "tabledir"; dir = 1},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lw" = (/obj/table{icon_state = "tabledir"; dir = 1},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lx" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/storage/lightbox/tubes,/obj/item/weapon/storage/lightbox/tubes,/obj/item/weapon/storage/lightbox,/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"ly" = (/obj/table{dir = 5; icon_state = "tabledir"},/obj/item/weapon/storage/toolbox/mechanical,/obj/item/weapon/storage/toolbox/mechanical,/obj/item/weapon/storage/toolbox/mechanical,/obj/item/weapon/crowbar,/obj/item/weapon/crowbar,/obj/item/weapon/crowbar,/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lz" = (/obj/item/weapon/sheet/glass,/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lA" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/maintenance/janitor)
+"lB" = (/obj/landmark/start{name = "Janitor"},/turf/simulated/floor,/area/bs12/maintenance/janitor)
+"lC" = (/obj/closet/jcloset,/turf/simulated/floor,/area/bs12/maintenance/janitor)
+"lD" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bs12/hallway/west)
+"lE" = (/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor,/area)
+"lF" = (/obj/table{icon_state = "tabledir"; dir = 4},/obj/item/weapon/storage/toolbox/electrical,/obj/item/clothing/gloves/yellow,/obj/item/device/multitool,/obj/item/clothing/glasses/meson,/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"lG" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"lH" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"lI" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"lJ" = (/obj/closet/wardrobe/grey,/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lK" = (/obj/table{icon_state = "tabledir"; dir = 10},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lL" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lM" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lN" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/firstaid,/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lO" = (/obj/table{icon_state = "tabledir"; dir = 6},/obj/item/weapon/storage/id_kit,/obj/item/weapon/storage/PDAbox,/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lP" = (/obj/item/weapon/sheet/metal{amount = 50},/obj/item/weapon/sheet/metal{amount = 50},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lQ" = (/turf/simulated/wall/r_wall,/area/bs12/headquarters/hom)
+"lR" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall/r_wall,/area/bs12/headquarters/hom)
+"lS" = (/turf/space,/area/toxins/test_area)
+"lT" = (/turf/simulated/wall/r_wall,/area/toxins/test_area)
+"lU" = (/obj/item/weapon/hand_tele,/turf/simulated/floor,/area/teleporter)
+"lV" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/weapon/cell,/obj/item/weapon/cell,/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"lW" = (/obj/machinery/autolathe,/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lX" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/storage/toolstorage)
+"lY" = (/turf/simulated/floor,/area/bs12/headquarters/hom)
+"lZ" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/headquarters/hom)
+"ma" = (/turf/simulated/wall/r_wall,/area/toxins/storage)
+"mb" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/toxins/storage)
+"mc" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/machinery/cell_charger,/obj/item/weapon/cell,/obj/item/weapon/cell,/turf/simulated/floor,/area/bs12/storage/elecstorage)
+"md" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area/bs12/headquarters/hom)
+"me" = (/obj/landmark/start{name = "Chief Engineer"},/turf/simulated/floor,/area/bs12/headquarters/hom)
+"mf" = (/turf/simulated/floor,/area/toxins/lab)
+"mg" = (/turf/simulated/floor/engine,/area/toxins/test_area)
+"mh" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bs12/hallway/west)
+"mi" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/bs12/headquarters/hom)
+"mj" = (/turf/simulated/floor,/area/bs12/maintenance/atmos)
+"mk" = (/obj/cable{icon_state = "0-4"; d2 = 4},/obj/machinery/power/apc{dir = 8; name = "WAPC"; pixel_x = -30},/turf/simulated/floor,/area/bs12/headquarters/hom)
+"ml" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bs12/headquarters/hom)
+"mm" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall/r_wall,/area)
+"mn" = (/obj/item/weapon/sheet/metal,/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mo" = (/obj/item/weapon/sheet/glass,/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mp" = (/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mq" = (/obj/cable{icon_state = "0-2"; d2 = 2},/obj/machinery/power/apc{dir = 1; name = "NAPC"; pixel_y = 30},/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mr" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/tank/jetpack,/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"ms" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/toolbox/mechanical,/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mt" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/toolbox/emergency,/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mu" = (/obj/table{tag = "icon-tabledir"; icon_state = "tabledir"},/obj/item/weapon/storage/toolbox/electrical,/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mv" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/maintenance/atmos)
+"mw" = (/turf/simulated/floor/engine,/area/bs12/maintenance/atmos)
+"mx" = (/turf/simulated/floor,/area/bs12/maintenance/atmos/canister)
+"my" = (/turf/simulated/wall/r_wall,/area/toxins/lab)
+"mz" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mA" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mB" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor/plating,/area)
+"mC" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/wall/r_wall,/area)
+"mD" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor/plating,/area)
+"mE" = (/obj/machinery/door/airlock/external,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mF" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mG" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mH" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mI" = (/obj/landmark/start{name = "Atmospheric Technician"},/turf/simulated/floor,/area/bs12/maintenance/atmos)
+"mJ" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/plating,/area)
+"mK" = (/obj/machinery/door/poddoor,/turf/space,/area)
+"mL" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/tank/jetpack,/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mM" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/clothing/gloves/latex,/obj/item/clothing/head/helmet/space,/obj/item/clothing/mask/breath,/obj/item/clothing/shoes/white,/obj/item/clothing/suit/space,/obj/item/clothing/under/color/white,/turf/simulated/floor,/area/ai_monitored/storage/eva)
+"mN" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/plating,/area)
+"mO" = (/obj/machinery/power/apc{dir = 4; name = "EAPC"; pixel_x = 30},/obj/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area)
+"mP" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area)
+"mQ" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area/bs12/hallway/west)
+"mR" = (/obj/reagent_dispensers/fueltank,/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/centercorridor)
+"mS" = (/obj/reagent_dispensers/watertank,/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/centercorridor)
+"mT" = (/turf/simulated/floor/engine,/area/toxins/lab)
+"mU" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area/bs12/hallway/southwest)
+"mV" = (/obj/machinery/door/firedoor/border_only,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/southwest)
+"mW" = (/turf/simulated/wall/r_wall,/area/bs12/security/sstation)
+"mX" = (/turf/simulated/floor,/area/bs12/hallway/southwest)
+"mY" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/southwest)
+"mZ" = (/turf/simulated/floor,/area/bs12/security/sstation)
+"na" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/bs12/hallway/southwest)
+"nb" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/bs12/hallway/southwest)
+"nc" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area/bs12/hallway/southwest)
+"nd" = (/turf/simulated/floor{icon_state = "yellow"; tag = "icon-yellow"},/area/bs12/hallway/southwest)
+"ne" = (/turf/simulated/floor{dir = 8; icon_state = "yellowcorner"; tag = "icon-yellowcorner (WEST)"},/area/bs12/hallway/southwest)
+"nf" = (/turf/simulated/wall/r_wall,/area/crew_quarters/obdeck)
+"ng" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/crew_quarters/obdeck)
+"nh" = (/turf/simulated/wall/r_wall,/area/networkcenter)
+"ni" = (/turf/simulated/wall,/area/networkcenter)
+"nj" = (/turf/simulated/floor{dir = 8; icon_state = "yellow"; tag = "icon-yellow (WEST)"},/area/bs12/hallway/southwest)
+"nk" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/centercorridor)
+"nl" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area/bs12/security/sstation)
+"nm" = (/obj/machinery/door/airlock/security,/turf/simulated/floor,/area/bs12/security/sstation)
+"nn" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area/bs12/hallway/south)
+"no" = (/turf/simulated/floor,/area/crew_quarters/obdeck)
+"np" = (/turf/simulated/floor,/area/networkcenter)
+"nq" = (/turf/simulated/floor,/area/bs12/hallway/south)
+"nr" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor,/area/networkcenter)
+"ns" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/networkcenter)
+"nt" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/networkcenter)
+"nu" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor{dir = 8; icon_state = "yellow"; tag = "icon-yellow (WEST)"},/area/bs12/hallway/southwest)
+"nv" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor,/area/bs12/hallway/southwest)
+"nw" = (/obj/landmark/start{name = "Clown"},/turf/simulated/floor,/area/crew_quarters/obdeck)
+"nx" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/networkcenter)
+"ny" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor{dir = 8; icon_state = "yellow"; tag = "icon-yellow (WEST)"},/area/bs12/hallway/southwest)
+"nz" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area/bs12/hallway/southwest)
+"nA" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor{dir = 8; icon_state = "yellow"; tag = "icon-yellow (WEST)"},/area/bs12/hallway/south)
+"nB" = (/obj/machinery/door/firedoor/border_only,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/south)
+"nC" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/bs12/hallway/south)
+"nD" = (/obj/landmark/start{name = "Quartermaster"},/turf/simulated/floor,/area/bs12/hallway/south)
+"nE" = (/turf/simulated/floor/plating,/area/turret_protected/ai_upload_foyer)
+"nF" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/plating,/area/turret_protected/ai_upload_foyer)
+"nG" = (/turf/simulated/wall/r_wall,/area/turret_protected/ai_upload_foyer)
+"nH" = (/obj/machinery/door/airlock/external,/turf/simulated/floor,/area)
+"nI" = (/obj/grille,/obj/window/reinforced/south,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area)
+"nJ" = (/obj/machinery/turretid,/turf/simulated/wall/r_wall,/area/turret_protected/ai_upload_foyer)
+"nK" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area)
+"nL" = (/turf/simulated/wall/r_wall,/area/turret_protected/ai_upload)
+"nM" = (/obj/machinery/door/airlock/external,/turf/simulated/floor,/area/turret_protected/ai_upload)
+"nN" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall/r_wall,/area/turret_protected/ai_upload)
+"nO" = (/obj/window/reinforced/east,/obj/window/reinforced/north,/obj/item/weapon/aiModule/freeform,/turf/simulated/floor,/area/turret_protected/ai_upload)
+"nP" = (/obj/cable{icon_state = "0-2"; d2 = 2},/obj/machinery/power/apc{dir = 1; name = "NAPC"; pixel_y = 30},/turf/simulated/floor,/area/turret_protected/ai_upload)
+"nQ" = (/turf/simulated/floor,/area/turret_protected/ai_upload)
+"nR" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/machinery/computer/aiupload,/turf/simulated/floor,/area/turret_protected/ai_upload)
+"nS" = (/obj/window/reinforced/east,/obj/window/reinforced/north,/obj/item/weapon/aiModule/oneHuman,/turf/simulated/floor,/area/turret_protected/ai_upload)
+"nT" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/turret_protected/ai_upload)
+"nU" = (/turf/simulated/floor/grid,/area/turret_protected/ai_upload)
+"nV" = (/obj/window/basic/south,/obj/window/basic/west,/turf/simulated/floor,/area/turret_protected/ai_upload)
+"nW" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/item/weapon/aiModule/reset,/obj/window/basic/south,/turf/simulated/floor,/area/turret_protected/ai_upload)
+"nX" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/obj/sign/space,/turf/simulated/floor,/area)
+"nY" = (/obj/window/reinforced/south,/turf/space,/area)
+"nZ" = (/obj/window/reinforced/east,/obj/window/reinforced/north,/obj/item/weapon/aiModule/protectStation,/turf/simulated/floor,/area/turret_protected/ai_upload)
+"oa" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area/turret_protected/ai_upload)
+"ob" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor/grid,/area/turret_protected/ai_upload)
+"oc" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/machinery/turret,/turf/simulated/floor/grid,/area/turret_protected/ai_upload)
+"od" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area/turret_protected/ai_upload)
+"oe" = (/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/grid,/area/turret_protected/ai_upload)
+"of" = (/obj/window/reinforced/east,/obj/window/reinforced/north,/obj/item/weapon/aiModule/quarantine,/turf/simulated/floor,/area/turret_protected/ai_upload)
+"og" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/grid,/area/turret_protected/ai_upload)
+"oh" = (/obj/window/reinforced/north,/turf/space,/area)
+"oi" = (/obj/window/reinforced/east,/obj/window/reinforced/north,/obj/item/weapon/aiModule/safeguard,/turf/simulated/floor,/area/turret_protected/ai_upload)
+"oj" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area/turret_protected/ai_upload_foyer)
+"ok" = (/obj/window/reinforced/east,/obj/window/reinforced/north,/obj/item/weapon/aiModule/teleporterOffline,/turf/simulated/floor,/area/turret_protected/ai_upload)
+"ol" = (/obj/machinery/turret,/turf/simulated/floor/grid,/area/turret_protected/ai_upload)
+"om" = (/turf/space,/area/turret_protected/ai_upload_foyer)
+"on" = (/turf/simulated/wall/r_wall,/area/turret_protected/ai)
+"oo" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/grid,/area/turret_protected/ai)
+"op" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall/r_wall,/area/turret_protected/ai)
+"oq" = (/turf/simulated/floor/grid,/area/turret_protected/ai)
+"or" = (/turf/simulated/floor,/area/turret_protected/ai)
+"os" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/grid,/area/turret_protected/ai)
+"ot" = (/obj/grille,/obj/window/reinforced/south,/obj/window/reinforced/east,/turf/simulated/floor/plating,/area)
+"ou" = (/obj/machinery/turret,/turf/simulated/floor,/area/turret_protected/ai)
+"ov" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/turret_protected/ai)
+"ow" = (/obj/machinery/turretid,/turf/simulated/wall/r_wall,/area/turret_protected/ai)
+"ox" = (/obj/landmark/start{name = "AI"},/turf/simulated/floor/grid,/area/turret_protected/ai)
+"oy" = (/obj/cable,/obj/machinery/power/apc{name = "SAPC"; pixel_y = -30},/turf/simulated/floor/grid,/area/turret_protected/ai)
+"oz" = (/obj/landmark/start{name = "wizard"},/turf/simulated/floor/plating,/area)
+"oA" = (/obj/landmark{name = "Teleport-Scroll"},/turf/simulated/floor/plating,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -199,141 +767,141 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacadaeaaaaaaacadaeaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacafaeaaaaaaacafaeaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagahahahadahahahahahadahahahaiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajafafafafafafafafafafafafafajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajafafafafafafafafafafafafafajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajafafafafafafafafafafafafafajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajafafafafafafafafafafafakafajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajafafafafafafafafafafafafafajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalaaaaaaaaaaalalalalalalalalalalalalalajafafafafafafafafafafafafafajalalalalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalamamamamamamamamanamamamamamamamamamaoaoaoamamapamamamaqaqaqaqaqaqalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalalaaaaaaaaaaalaraqaqaqaqamaqaqaqaqaqamaqaqaqaqaqamaoaoaoamasaqaqamaqaqaqaqaqaqaqalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalalaaaaaaaaaaalaraqaqaqaqamaqaqaqaqaqamaqaqaqaqaqamaoaoaoamaqaqaqamaqaqaqaqaqaqaqalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalalaaaaaaaaaaalaraqaqaqaqamaqaqaqaqaqamaqaqaqaqaqaraoaoaoamataqaqamaqaqaqaqaqaqaqalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalalamamamaqaqamaqaqaqaqaqauaqaqaqaqaqauaoaoaoamaqaqaqamaqaqaqaqaqaqaqalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalamamamalamavamamaqaqamaqaqamaqaqaqaqaqaraoaoaoamamapamamaqaqaqaqaqaqaqalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalawalawalawalalamaqaqamaqaqamaqaqaqaqaqamaoaoaoaxaqaqaqaqaqaqaqaqaqaqaqalalalalalalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalamalamalamamavamamamamamamamamamamamamamaoaoaoamamamamamamamamamamamamamamamamamamamamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalamamamamamaqaqaqaqaqaqaqaqaqaqaqaqaqaqavaoaoaoavaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqamaqamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalalalalalalalalalalalamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqavaoaoaoavaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqayaqayalalalalalalalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalalalamamamamamamamamamamamamaqaqazazazazazazazazazazazazazazazaoaoaoazazazazazazazazazazazazazazazaqaqamamamamamamamamamamamamalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalamamamamaqaqaqaqaqaqaqaqaqaqavaqaqazaAaBaAaCaDaEaDaEaDaEaDaEaAaBaoaoaoaFaGaGaGaGaGaGaHaHaHaHaHaHaHazaqaqavaqaqaqaqaqaqaqaqaqaqamamamamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalamaqaqaqaqaqaqaqaqaqaqaqaqaqavaqaqazaAaIaAaAaAaAaAaAaAaAaAaAaAaBaoaoaoaxaGaGaGaGaGaGaHaHaHaHaHaHaHazaqaqavaqaqaqaqaqaqaqaqaqaqaqaqaqamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalamaqaqaqaqaqaqaqaqamamamamamamaqaqazaBaBaAaAaAaAaAaAaAaAaAaAaAaJaoaoaoaxaGaGaGaGaGaGaHaHaHaHaHaHaHazaqaqazazazazazazaqaqaqaqaqaqaqaqamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaqaqaqaqaqazazazazaaamamamamamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqamamamamamamamamamamaqaqaqaqamaqaqazaBaBaAaAaAaAaAaAaAaAaAaAaAaJaoaoaoaFaGaGaGaGaGaGaHaHaHaHaHaHaHazaqaqazaKaKaKaKazazazazazazazazazazalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaazaqaqaqaqaqaqaqazamamaLaLaLamamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaMaNaOaOaOaOaOamaqaqaqaqamaqaqaqaqamaqaqazaAaIaAaAaAaAaAaAaAaAaAaAaAaBaoaoaoazaGaGazaGaGaGazaHaHaHaHaHaHazaqaqazaKaKaKaKazaPaPaPaPaPaPaPaPaQalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaqaqaqaqaqaqaqaqaqamaLaLaLaLaLamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaMaOaOaOaOaOaOamaqaqaqaqamaqaqaqaqamaqaqazaAaBaAaCaDaEaDaEaDaEaDaEaAaBaoaoaoazaGaGazaGaGaGazaHaHaHaHaHaHazaqaqazaKaKaKaKazazazaPaPaPaPaPaPaRalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaqaqaqaqaqaqaqaqaqamaLaLaLaLaLamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaOaOaOaOaOaOamamamamamaxamamaxamamamavavazazazazazazazazazazazazazazazaoaoaoazazazazazazazazazazazazazazazavavazazaKaKaKazaPaPaPaSaPaSaPaPaRalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaqaqaqaqaqaqaqaqaqamaLaLaLaLaLamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaNaOaOaOaOaOamamamaTaTaTaTaTaTaTaUaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoazazaKazazazazaPaPaPaPaPaPaRalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaazaqaqaqaqaqaqaqazamamaLaLaLamamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaNaOaOaOaOaOaVaOaWaTaTaTaTaTaTaTaUaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaPaPaPaPaPaPaPaPaSaPaSaPaPaQalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaazazaqaqaqazazazazaaamamamamamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaNaOaOaOaOaOaVaWaVaTaTaTaTaTaTaTaXaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaoaPaPaPaPaPaPaPaPaPaPaPaPaPaQalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaNaOaOaOaOaOaOaOaVaTaTaTaTaTaTaTaUaqaqaqazazazazazazazazazazazazazazazazavazazazazazazazazazazazazazazazazaqaqaqazazaxazazaPaPaPaSaPaSaPaPaRalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaNaOaOaOaOaOaOaOaVaTaTaTaTaTaTaTaUaqaqaqazalalalalalalalalalalalalalalalalalalalalalalalalalalalalalalalazaqaqaqazaYaqaYazaPaPaPaPaPaPaPaPaRalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaNaOaOaOaOaOaOaOaVaTaTaTaTaTaTaTaUaqaqaqavalalalalalalalalalalalalalalalalalalalalalalalalalalalalalalalaqaqaqaqazaYaqaZazaPaPaPaSaPaSaPaPaRalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaNaOaOaOaOaOaOaOaVaTaTaTaTaTaTaTaUaqaqaqavalalamamamamamamamamamamamamamamamamamamamamamamamamamamamalalaqaqaqaqazaYaqaYazazbabbbcbcbcbcbcaQalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaOaOaOaOaOaOaOaOaVaTaTaTaTaTaTaTaUaqaqaqazalalamazazazazazazazazazazazazazazazazazazazazazazazazazamalalazaqaqaqazaYaqaqaqazazbdbebebfbebebfalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaMaNaOaOaOaOaOaOaVaTaTaTaTaTaTaTaUaqaqaqazalalamazazazazazazazazaaaaaaaaaaaaaaaaaaazazazazazazazazamalalazaqaqaqazazazazaxazazazazazazazazamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaMaNaOaOaOaOaOaOaVaTaTaTaTaTaTaTaUaqaqaqazalalamazazazazazaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaazazazazazamalalazaqaqaqazbgbhazbibibjbibibkbibibiamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaNaOamblblbmblblamamamamamamamamaqaqaqazalalamazazazaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaazazazamalalazaqaqaqavaqbnazbobibibibibpbibqbiaralalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamamamblbrbrbrbramambsbsbsbsbsbtaqaqaqazalalamazazazaaaaaaaaamamamamamamamamamamamamaaaaaaazazazamalalazaqaqaqazaqbuazbvbibibibibkbibibiamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamaqaqapbrbrbrbrbramambsbsbsbsbsbwaqaqaqazalalamazazaaaaaaamamambxbxbxbxbxbxbxbxbxamamamaaaaaaazazamalalazaqaqaqazazazazazbybzbyazazazazazamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamaqaqamblbrbrbrbramambsbsbsbsbsbAaqaqaqazalalamazazaaaaaaambxbxbxbxbxbxbxbxbxbxbxbxbxamaaaaaaazazamalalazaqaqaqazbBbCbCbCbybCbCbCbCbybCbDamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamaqaqamamamamamamamambsbsbsbsbsbwaqaqaqazalalamazazaaaaamambxbxbxbxbxbxbxbxbxbxbxbxbxamamaaaaazazamalalazaqaqaqazbEbCbCbCbFbCbCbCbCbybCbCaralalalalalalalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamaqaqamamamamamamamambsbsbsbsbsbtaqaqaqazalalamazaaaaaaambxbxbxbxbxambGbGbGambxbxbxbxbxamaaaaaaazamalalazaqaqaqazbHbCbCbCbybCbCbCbCbybzbyamamananamamamamamamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamaqaqaubsbsbsbsbsbsbsbsbsbsbsbsbtaqaqaqazazalamazaaaaaaambxbxbxbGbGambGbGbGambGbGbxbxbxamaaaaaaazamalalazaqaqaqazbIbJbKbybybCbCbCbCbCbCbLbMbNbJbKbybJbObPbQamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamamambsbsbsbsbsbsbsbsbsbsbsbsbtaqaqaqaqazalamazaaaaaaambxbxbxbGbGbGbGbGbGbGbGbGbxbxbxamaaaaaaazamalalazaqaqaqaxbCbCbCbCbRbCbCbCbCbCbCbCbCbCbCbCbzbCbCbCbCamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqamamamamambSambsbsbsbsbsbsbtaqaqaqaqazalamazaaaaaaambxbxbxbGbGbGbGbGbGbGbGbGbxbxbxamaaaaaaazamalalazaqaqaqaxbCbCbCbCbTbCbCbCbCbCbCbCbCbCbCbCbybCbCbCbCamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqambUbUbUbUbUambsbsbsbsbsbsbtaqaqaqazazalamazaaaaaaambxbxbxbGbGbGbGbGbGbGbGbGbxbxbxamaaaaaaazamalalazaqaqaqazbCbCbCbCbRbCbCbCbCbybybybzbybCbCbybVbWbWbXamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqambUbUbUbUbUamamauamamamamamaqaqaqazalalamazaaaaaaambxbxbxbGbGbGbGbGbGbGbGbGbxbxbxamaaaaaaazamalalazaqaqaqbYbCbCbCbCbybZcabCbCbybCcbbCbybybzbyccccccccamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqamcdcdcdbUbUamaqaqaqaqaqaqamaqaqaqazalalamazaaaaaaambxbxbxbGbGbGbGbGbGbGbGbGbxbxbxamaaaaaaazamalalazaqaqaqbYbCbCbCbCbybCbCbCbCbybDcebCbybybCbCbCbCbCbCaralalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqbUbUbUbUbUamaqaqaqaqaqaqauaqaqaqazalalamazazaaaaamambxbxamamamamaqamamamambxbxamamaaaaazazamalalazaqaqaqbYbCbCbCbCbybZcabCbCbycfcbbCbybybCbDccccccbDaralalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabUbUbUbUbUbUbUbUbUbUbUamaqaqaqaqaqaqamaqaqaqazalalamazazaaaaaaambxbxamamaqaqaqaqaqambxbxbxamaaaaaaazazamalalazaqaqaqazazazazazazazazazazazbDcgchazamamamamalamamamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqbUbUbUbUbUamaqaqaqaqaqaqamaqaqaqazalalamazazaaaaaaamamamamamaqaqaqaqaqambxbxamamaaaaaaazazamalalazaqaqaqcialalalalalalalalalazazazazazamalalalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalambUbUbUamamamamamamauamamamaqaqaqazalalamazazazaaaaaaaqamamamaqaqaqaqaqamaqbxamaaaaaaazazazamalalazaqaqaqazazazazazazazazalalalalalalalalalalalalamamamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalambUbUbUamalalamaqaqaqaqaqamaqaqaqazalalamazazazaaaaaqaqaqaqamaqaqaqaqaqamaqaqamaaaaaaazazazamalalazaqaqaqcialalalalalalazazazazazazamamamalalalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalambUbUbUamalalamaqaqaqaqaqauaqaqaqazalalamazazazazazaaaqamaqamaqaqaqaqaqamaqamamaaazazazazazamalalazaqaqaqazalalalalalalalalalalalalamamalalalalalamamamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalambUbUbUamalalamaqaqaqaqaqaraqaqaqazalalamazazazazazazazamaqaqaqaqaqaqaqaqaqamazazazazazazazamalalazaqaqaqazazazazazazazazazazamalalamamamalalalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalambUbUbUamalalamaqaqaqaqaqamaqaqaqazalalamazazazazazazazamaqaqaqaqaqaqaqaqaqamazazazazazazazamalalazaqaqaqazcjckckckckamclcmcnamalalamamamamamamamamamamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaalamamamamamalalamamamamamamamaqaqaqazalalamamamamamamamamamamamamaqaqaqamamamamamamamamamamamamalalazaqaqaqazcockcpcqckamcrcrcramalalawalawalalalalalalalalalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaalamalalalalalalazaqaqaqaqaqazaqaqaqazalalamazazazazazazazazazazamaqaqaqamamazazazazazazazazazamalalazaqaqaqazcsckctcuckamcrcrcramalalamalamaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaalamalalalalalalazaqaqaqaqaqazaqaqaqazalalamazcvcvcvcvcvcvaqaqaqaqaqaqaqaqamazcwcwcwcwcwcwcwazamalalazaqaqaqazcxcyczczczamcAcBcBamalalamamamaqaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaalamalalazazazazazaqaqaqaqaqazaqaqaqazalalamazcvcvcvcvcvcvaqaqaqaqaqaqaqaqamazcwcwcwcwcwcwcwazamalalazaqaqaqazckckckckckckcCcDcEazalalamaqaqaqaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaalamalalazaqaqaqaqaqaqaqaqaqazaqaqaqazalalamazcvcvcvcvcvcvaqaqaqaqaqaqaqaqaqaqcwcwcwcwcwcwcwazamalalazaqaqaqcFckckckckckckcGcEcDazalalamaqaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaamamalamalalazaqaqaqaqaqaqaqaqaqaraqaqaqazalalamazcvcvcvcvcvcvaqaqaqaqaqaqaqaqaqaqcwcwcwcwcwcwcwazamalalazaqaqaqazcHcIcHcHcHcHcJcDcEazalalamaqaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaaaqaaaaaaaqaaaaaaaqaaaaaaaaaaaaaaaaaaaaaaaaamalalavalalazaqaqaqaqaqaqaqaqaqcKaqaqaqazalalamazcvcvcvcvcvcvaqaqaqaqaqaqaqaqamazcwcwcwcwcwcwcwazamalalazaqaqaqazckckckckckckcGcEcDazalalamaqaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaaaqaaaaaaaqaaaaaaaqaaaaaaaaaaaaaaaaaaaaamamamamamamalalazaqaqaqaqaqaqaqaqaqaraqaqaqazalalamazcvcvcvcvcvcvaqaqaqaqaqaqaqaqamazcwcwcwcwcwcwcwazamalalazaqaqaqazckckckckckckcCcDcEazalalamamamaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaalalalalalalalalalalalalalalalalalalalalalalalalalalavalalalalalazaqaqaqaqaqaqaqaqaqazaqaqaqazalalamazazazazazazazazazamanamcKamazamazazazazazazazazazamalalazaqaqaqazcLcMcNcOcucPcQcEcDazalalamalamaaaaaqaaaaaaaqaaaaaaaqaaaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaaaqaaaaaaaqaaaaaaaqaaaaaaaaaaaaaaaaaaalalalamalalalalalazazazazazazazazazazazaqaqaqazavavamamamamamamamamamamamanamcKamamamamamamamamamamamamamavavazaqaqaqazazazazazazazazazazazalalcialalalalalalalalalalalalalalalaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaaaqaaaaaaaqaaaaaaaqaaaaalalalalalalalalalalamamavamalalalalalalalalalalalalavaqaqaqavaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqavaqaqaqavalalalalalalalalalalalalamamalalaaaqaaaaaaaqaaaaaaaqaaaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaalamamamamamamamamamamalalamalalalalalalalalalalalalavaqaqaqavaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqavaqaqaqavalalalalalalalalalalalalalamalaaaaaqaaaaaaaqaaaaaaaqaaaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaalamcRcRcRcRcRamamaqavalalamamalalalamamamamamamamamamaqaqaqazavavamaqazcKazazaqaqazazazcKanananancKazazaqaqazazazavazamavavazaqaqaqamamamamamamamamamalalalamawamamaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaalamcRcRcRcRcRamamaqamalalamamamalalamaqaqaqaqaqaqaqazaqaqaqazalalamaqaqaqaqaqaqaqazaqaqaqaqaqaqaqaqaqazaqaqazaqaqaqaqamalalazaqaqaqamcScScScScScScSamamamamamalalamaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaalamcRcRcRcRcRcRcRaqamananaaaaanananamaqaqaqaqaqaqaqaraqaqaqazalalamaqaqaqaqaqaqaqazaqaqaqaqaqaqaqaqaqazaqaqazaqaqaqaqamalalazaqaqaqamcScScScScScScScSamalalamawamamaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaalamcRcRcRcRcRamamaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqaraqaqaqazalalamaqaqaqaqazaqaqazaqaqaqaqaqaqaqaqaqazaqaqamamamamamamalalazaqaqaqamcScScScScScScScSamalalalalaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaacTcUcUcUcUcUcUcUcUcUcTaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaalamcRcRcRcRcRamamaqamamamamananananamazazanaxaxanazazaqaqaqazalalamaqaqaqaqazaqaqazaqaqaqaqaqaqaqaqaqazaqaqamaqaqaqaqamalalazaqaqaqamcVcWcVcVcVcVcWcVamamalaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaacUcUcUcUcUcUcUcUcUcUcUaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalamamamamamamamamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqazalalamaqaqaqaqazaqaqazazanananananananazazaqaqavaqaqaqaqamalalazaqaqaqamcXcXcXcXcXcXcXcXcXamalaaaaaaaaaaaqaqaqaaaqaqaqaaaqaqaqaaaaaaaaaaaaaaaaaaaaaacUcUcYcYcYcYcYcYcYcUcUaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalalalalalalalamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqazalalamamamamamamamaqaqaqaqaqaqaqaqaqaqaqaqaqaqamaqaqaqaqamalalazaqaqaqamcXcXcXcXcXcXcXcXcXamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacTcUcYcYcYcYcYcYcYcUcUaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqazalalamcZcZcZcZcZamaqaqaqaqaqaqaqaqaqaqaqaqaqaqamaqaqaqaqamalalazaqaqaqamcXcXcXcXcXcXcXcXcXamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacTcYcYcYcYcYcYcYcYcUcUaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalamamamananananamamamamamamamamamamamamaqaqaqazalalamcZcZcZcZcZamamamamamamamavamamamamamamamamamamamamamalalazaqaqaqamcXcXcXcXcXcXcXcXcXaqalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacTcYcYcYcYcYcUcYcYcUcUaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalalalalalalalalalardadadadadadadadaamaqaqaqazalalamcZcZcZcZcZcZcZcZcZcZcZcZcZcZdbdbdbcZcZcZcZcZcZcZcZamalalazaqaqaqcFcXcXcXcXcXcXcXcXdcamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacTcYcYcYcYcYcYcYcYcUcUaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalazazazdadadadadadaddaqaqaqazalalamcZcZcZcZcZcZcZcZcZcZcZcZcZcZdbdbcZcZcZcZcZcZcZcZcZamalalazaqaqaqamcXcXcXcXcXcXcXcXcXamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacTcUcYcYcYcYcYcYcYcUcUaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalalalalalalalamdaazazdadadadadaddaqaqaqazalalamcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZamalalazaqaqaqamcXcXcXcXcXcXcXcXcXamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacUcUcYcYcYcYcYcYcYcUcUaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalalalamalamaldedadadedadadadadadfaqaqaqazalalamcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZamalalazaqaqaqamcXcXcXcXcXcXcXcXcXamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacUcUcUcUcUcUcUcUcUcUcUaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalalamamamalamamamamazazdadadadadaddaqaqaqazalalamcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZamalalazaqaqaqamcXcXcXcXcXcXcXcXcXamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacTcUcUcUcUcUcUcUcUcUcTaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadgalalalalamamamdadadadadadadaddaqaqaqazalalamcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZamalalazaqaqaqamcXcXcXcXcXcXcXcXcXamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqamamamalalalamamdadadadadadadaamaqaqaqazalalamcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZcZamalalazaqaqaqamcXcXcXcXdccXcXcXcXamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadgalalalalalamamamamamamamamamamaqaqaqazalalamamamamamamamamamamamamamamamamamamamamamamamamamamamalalazaqaqaqamcXcXcXcXcXcXcXcXcXamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqamamamalalalamamaqaqaqaqaqaqaqazaqaqaqazalalalalalalalamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqamalalalalalalalazaqaqaqamcXcXcXcXcXcXcXcXcXamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadgalalalalalamamaqaqaqaqaqaqaqazaqaqaqazalalalalalalalamaqaqaqaqaqaqaqamamamamamamamamamalalalalalalalazaqaqaqamdhcXcXcXcXcXcXcXcXamamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqamamamamamavamamazazazazaxazazazaqaqaqazazazazazazavavamaaaaaaaqaqaqaqamaqaqaqaqaqaqaqamalalamamamamamamaqaqaqamdhcXcXcXcXdhdhcXcXcXaaaaalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaqamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqamalalamaqaqaqaqamaqaqaqamdhcXcXcXcXcXcXcXcXamamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaqamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqamalalamaqaqaqaqamaqaqaqamdhcXcXcXcXcXcXcXcXamalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqamalalamaqaqaqaqamaqaqaqamaLamamamamamamamamamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqamamazavazazamdididjdjdidididkdldldldldldldlaqaqaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqamalalamamamaqauamaqaqaqamalalalalalalalalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqaqamaqaqaqaqamdmdmdmdmdmdmdmdkdndndndndndndlaqaqaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqamaqaqaqaqaqaqaqaqaqaqaqamaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqaqamaqaqaqaqamdmdmdmdmdmdmdmdkdndndndndndndlaqaqaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqamaqaqaqaqaqaqaqaqaqaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqamamamamamamdmdmdmdmdmdmdmdkdndndndndndndlaqaqaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqamaqaqaqaqaqaqaqaqaqaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqaqaqaqaqdmdmdmdmdmdmdmdmdmdkdndndndndndndlaqaqaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqamaqaqaqamamamamamamaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadmdmdmdmdmdmdmdmdmdkdndndndndndndoaqaqaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqamaqaqaqamaqaqaqaqamaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadmdmdmdmdmdmdmdmdkdndndndndndndlaqaqaqamaaaaaaaaaaaaaaamaqaqaqaqaqaqaqamaqaqaqamaqaqaqaqamaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadmdmdmdmdmdmdmdmdkdndndndndndndlaqaqaqamamamamamamamamamamamamamamamamamaqaqaqamaqaqaqaqamaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadpdmdmdmdmdmdmamamamaxamamamamamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqamaqaqaqaqavaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadpdpdpdmdmdmdmamdqdqdqdqdqamalamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqamaqaqaqaqamaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadrdrdqdqdqdqdqamalamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqamaqaqaqaqamaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamdqdqdsdqdqdqalalamamaqaqamanananamanananamanananamanananamaqaqamamamamamaqamaqaqaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamamamamdqdqdqdqdqdqdqamalaaaraqaqaraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaraqaqaraaaaaaamaqamaqaqaqaqaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdtdtdtdtdtdtdudtdtdtdqamamaaaraqaqaraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaraqaqaraaaaaaamamamaqaqaqaqaqaqaaaaaaaaaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdtdvdvdvdvdvdvdvdvdtdqalamaaaraqaqaraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaraqaqaraaaaaaaqaqaqaqaqaqaqamaqaqaaaaaaaqaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdtdvdvdvdwdvdwdvdvdtdqalamaaaraqaqardxdxdxaaaaaaaaaaaaaaaaaadxdxdxaraqaqaraaaaaaaqaqaqaqaqaqaqamamamamamaqaqaqaqamamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdtdvdvdwdwdvdwdwdwdtdqalamaaamaqaqayaqaqayaaaaaaaaaaaaaaaaaaayaqaqayaqaqamaaaaaaamamaqazaqazaqazaqaqaqaqaqaqaqaqaqamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdtdvdvdwdwdvdvdwdwdtdqamamaaaraqaqardydydyaaaaaaaaaaaaaaaaaadydydyaraqaqaraaaaaaalamaqazaqaqaqaqaqaqaqaqaqaqaqaqaqamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdtdvdvdwdwdvdwdwdwdtdqalamaaaraqaqaraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaraqaqaraaaaaaalamaqazaqazazazaqaqaqaqaqaqaqaqaqamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdtdvdvdwdwdvdwdwdwdtdqaaamaaaraqaqaraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaraqaqaraaaaaaalamaqazaqaqaqaqaqaqaqaqaqaqaqaqaqamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamdzdzdzdzdAdzdzdzdzamaaamaaaraqaqardxdxdxaaaaaaaaaaaaaaaaaadxdxdxaraqaqaraaaaaaalamaqaqaqaqaqaqaqaqaqaqaqaqaqaqaqamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamdzdBdBdBdCdBdBdBdzamaaamaaaraqaqayaqaqayaaaaaaaaaaaaaaaaaaayaqaqayaqaqaraaaaaaalamamamamamamamamamaqaqaqamamamamamalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdzdBdBdBdCdBdBdBdzamaaamaaaraqaqardydydyaaaaaaaaaaaaaaaaaadydydyaraqaqaraaaaaaalalalalalalalalalalalalalalalalalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdzdBdBdBdCdBdBdBdzamaaamaadDanandEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadDanandEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdzdCdCdCdCdCdCdCdzamaaamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdzdBdzdBdBdBdzdBdzamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdzdBdBdBdBdBdBdBdzamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamamamamamamamamaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamdzdzdzdBdBdBdzdzdzamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamamamamamamamamaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamdzdzdzdzdzdzdzamamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamalalalalalalalamaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamamamamamamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamalalalalalalalamaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamalalalalalalalamaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamalalalalalalalamaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamalalalalalalalamaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamalalalalalalalamaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamamamamamamamamamaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababacacacacacacacacacacacacacacabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababacacacacacacacacacacacacacacacabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabacacacacacacacacacacacacacacacacabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabacacacacacacacacadacacacacacacacabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabacacacacacacacacacacacacacacacacabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababacacacacacacacacacacacacacacacabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababacacacacacacacacacacacacacacabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababaeabababababaeabababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafagahaaaaaaafagahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaiahaaaaaaafaiahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajakakakagakakakakakagakakakalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamaiaiaiaiaiaiaiaiaiaiaiaiaiamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamaianaianaiaiaoaiapaqapapapamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamaianaranaiaiaoaiasaiatauavamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamaianaianaiaiaoaiawaiaiaiaiamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamaianaxayazazaAaiaBaiaiaiaiamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaaaaaaaaaaaCaCaCaCaCaCaCaCaCaCaCaCaCamaiaDaEaiaDaiaoaiaBaFaiaDaiaGaHaHaHaHaHaHaIaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJaJaJaJaJaKaKaKaLaKaKaKaMaMaMaMaMaMaNaOaPaQaQaRaQaQaJaSaSaSaSaSaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaaaaaaaaaaaCaTaSaSaSaSaKaUaUaUaUaUaKaVaVaVaVaWaMaXaYaZaQbabbbcaQaSbdbdbdbdbdaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaaaaaaaaaaaCaTaSaSaSaSaKaUaUaUaUaUaKaVaVaVaVbeaMaXbfbgbhbibjbkaQblbmbnbnbnboaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaaaaaaaaaaaCaTaSaSaSaSaKaUaUaUaUaUaKaVaVaVaVbebpaXaYaZaQbqbrbsaQaSbtaSaSaSbuaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaJaJaJaSaSaKbvbwbwbwbwbxbybybybybzbAaXaYaZaQbbbrbbaQaSbBbCbCbCbDaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJaJbEbFaJbGaJaKaUaUaKaUaUaKaVaVaVaVbebpaXaYaZaQaQbHaQaQblbIbIbIbIbIaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCbJbFbJbFbJbFbFaKaUaUaKaUaUaKaVaVaVaVbeaMaXaYaZbKaSbLaSaSaSaSaSaSaSaSaSaTaCaCaCaCaCaCaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJbFaJbFaJaJbMaKaKaKaKaKaKaKaMaMaMaMbNaMaXaYaZaJaJaJaJaJaJaJaJaJaJaJaJaJaJaJaJaJaJaJaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJaJaJaJaJbFbFbFbFbFbFbFbFbFbFbFbFbFbObMaZaYaZbPbQbQbQbQbQbQbQbQbQbQbQbQbQbQbQbQbEbQaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaCaCaCaCaCaCaCaCaCaJbFbFbFbFbFbFbFbFbFbFbFbFbFbFbFbObMaZaYaZbPbQbQbQbQbQbQbQbQbQbQbQbQbQbQbQbQbRbQbRaCaCaCaCaCaCaCaCaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaCaJaJaJaJaJaJaJaJaJaJaJaJbFbFbSbSbSbSbSbSbSbSbSbSbSbSbSbTbSaZaYaZbSbSbSbSbSbSbSbSbSbSbSbSbSbSbSbQbQaJaJaJaJaJaJaJaJaJaJaJaJaCaCaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJaJaJaJbFbFbFbFbFbFbFbFbFbFbMbFbFbSbUbVbUbWbXbYbXbYbXbYbXbYbZbVaZaYaZcacbcbcccbcbcdcecfcfcfcfcfcfbSbQbQbPbQbQbQbQbQbQbQbQbQbQaJaJaJaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJbFbFbFbFbFbFbFbFbFbFbFbFbFbMbFbFbSbUcgbUbUbUbUbUbUbUbUbUbUbZbVaZaYaZchcdcdcdcdcdcdcicfcfcfcfcfcfbSbQbQbPbQbQbQbQbQbQbQbQbQbQbQbQbQaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJbFbFbFbFbFbFbFbFcjcjcjcjcjcjbFbFbSbVbVbUbUbUbUckbUbUbUbUbUbZclaZbfbgcmcncncncocncncpcqcrcsctcucfbSbQbQbSbSbSbSbSbSbQbQbQbQbQbQbQbQaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaSaSaSaSaSbSbSbSbSaaaJaJaJaJaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacvaHaJaJaJaJaJaJaJaJaJcjcwcxcyczcjbFbFbSbVbVcAcBcBcBcBcBcBcBcBcBcCclaZaYaZcacdcdcdcDcdcdcecfcEcscFcfcfbSbQbQbScGcGcHcGbSbSbSbSbSbSbSbSbSbSaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaabSaSaSaSaSaSaSaSbSaJaJcIcIcIaJaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacJcKcLcLcLcLcLaJcMcNcOaScjcPcwcQcwcjbFbFbSbUcgbUbUbUbUbUbUbUbUbUbUbZbVaZaYaZbScRcSbScTcUcVbScfcEcscFcfcWbSbQbQbScGcXcYcZbSdadadadbdadadbdadcaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaSaSaSaSaSaSaSaSaSaJcIcIcIcIcIaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacJcKdddedfcLdgaJdhdidjdkcjcwdldmdncjbFbFbSbUbVbUbWbXbYbXbYbXbYbXbYbZbVaZaYaZbScRcVbSdocUcVbScfdpcscFcfdqbSbQbQbScGcGdrcGbSbSbSdadadadadadadsaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaSaSaSaSaSaSaSaSaSaJcIcIcIcIcIaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadtdudvcLdvcLaJaJaJaJaJdwcjcjdxcjcjcjbMbMbSbSbSbSbSbSbSbSbSbSbSbSbSbTbSaZaYaZbSbSbSbSbSbSbSbSbSbSbSbSbSbSbSbPbPbSbScGdrdybSdadadadzdadzdadadsaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaSaSaSaSaSaSaSaSaSaJcIcIcIcIcIaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacKdAdBcLdvcLaJaJaJdCdCdDdCdCdDdCdEaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaYdFaZaYaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZbSbSdGbSbSbSbSdadadadadadadsaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaabSaSaSaSaSaSaSaSbSaJaJcIcIcIaJaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacKdHdIcLdJdKdLdAdMdNdNdOdCdCdDdPdEdQdRbgbgbgbgbgbgbgbgbgbgbgbgbgbgdSdFaZdTbgbgbgbgbgbgbgbgbgbgbgbgbgbgbgbgbgdUbgdVdWdXdWdVdYdadadzdadzdadadcaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaabSbSaSaSaSbSbSbSbSaaaJaJaJaJaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacKdvcLcLdvdgdLdZdLdCdCeadNdNebdNecbgedaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZdFaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaZaYaZeedaefdaeeefdadadadadadaegdcaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacKehdIcLeiejekdBdLdCeldDdCelemendEdFeodFbSbSbSbSbSbSbSbSbSbSbSbSbSbSbSbSepbSbSbSbSbSbSbSbSbSbSbSbSbSbSbSbSdFeodFeqeqereqbSefdadadzdadzdadadsaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacKdvcLcLcLesdvdgdLeteudDdCeuevewdEexeyexbSezezezezezezezezezezezezezezezezezezezezezezezezezezezezezezezbSeAeBeAeqeCeDeCbSefdadadadadadadadsaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacKeEdIcLeFeGeHdIdLdCdCdDdCdCdCeIdEeJeKeJepezezezezezezezezezezezezezezezezezezezezezezezezezezezezezezezepeLeMeLeqeCeDeNbSeOdadadzdadzdadadsaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacKeidfcLeFePeQdIdLeRdNeSdCdCevewdEeJeKeJepezezeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTeTezezepeLeMeLeqeUeVeCeqbSeWeXeYeYeYeYeZdcaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafafbdvcLeFfcfddIdLdCdCdCdCdCfeffdEeJeKeJbSezezeTfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgeTezezbSeLeMeLeqeCfhfhfhbSbSfifjfjfkfjfjfkaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacJcKfldIcLcLdvdgdLetdCdCdCdCdCdPdEeJeKeJbSezezeTfgfgfgfgfgfgfgfgfmfmfmfmfmfmfmfmfmfgfgfgfgfgfgfgfgeTezezbSeLeMeLbSbSbSbSfnbSbSbSbSbSbSbSbSaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacJcKdvcLcLcLdvcLdLdCdCdCdCdCdCdCdEeJeKeJbSezezeTfgfgfgfgfgfmfmfmfmfmfmfmfmfmfmfmfmfmfmfmfgfgfgfgfgeTezezbSeLeMfobSfpfqbSfrfrfsfrftfufrfrfraJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacKdvaJfvfvfwfvfvaJaJaJaJaJaJaJaJeJeKeJbSezezeTfgfgfgfmfmfmfmfmfmfmfmfmfmfmfmfmfmfmfmfmfmfmfgfgfgeTezezbSeLeMfobGfxfyfzfAfBfCfDfEfFfBfGfraTaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJaJaJfvfHfIfJfHaJaJfKfLfLfLfLfMfNeKeJbSezezeTfgfgfgfmfmfmfmaJaJaJaJaJaJaJaJaJaJaJaJfmfmfmfgfgfgeTezezbSeLeMfobSfOfPbSfQfrfRfrfrfufrfrfraJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaSaSfSfJfJfTfUfVaJaJfWfXfXfXfXfYfNeKeJbSezezeTfgfgfmfmfmaJaJaJfZfZfZfZfZfZfZfZfZaJaJaJfmfmfmfgfgeTezezbSeLeMfobSbSbSbSbSgagbgabSbSbSbSbSaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaSaSaJfvgcgdfJgeaJaJgfggghghghgigjgkeJbSezezeTfgfgfmfmfmaJfZfZfZfZfZfZfZfZfZfZfZfZfZaJfmfmfmfgfgeTezezbSeLeMfobSglgmgngmgagogmgngmgagmgpaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaSaSaJaJaJaJaJaJaJaJgqgrfXgsfXfYfNeKeJbSezezeTfgfgfmfmaJaJfZfZfZfZfZfZfZfZfZfZfZfZfZaJaJfmfmfgfgeTezezbSeLeMfobSgtgmgugmgvgogmgmgmgagmgmaTaCaCaCaCaCaCaCaCaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaSaSaJaJaJaJaJaJaJaJgwgrfXfXgxfMfNeKeJbSezezeTfgfmfmfmaJfZfZfZfZfZaJgygygyaJfZfZfZfZfZaJfmfmgzfgeTezezbSeLeMfobSgAgmgmgmgagogmgmgBgagCgaaJaJaHaHaJaJaJaJaJaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaSaSgDfXfXfXfXgggEghgFgGgHgHfXfMfNeKeJbSgIezeTfgfmfmfmaJfZfZfZgygyaJgygygyaJgygyfZfZfZaJfmfmgzfgeTezezbSeLeMfobSgJgKgLgagagogmgmgmgMgmgNgOgPgQgLgRgSgTgUgVaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJaJaJfXgWfXfXgrgXfXgrgYgZhahbfMfNeKeJaSgIezeTfgfmfmfmaJfZfZfZgygygygygygygygygyfZfZfZaJfmfmgzfgeTezezbSeLeMfobKgmgmgmgmhcgogmgmgmgogmgmgmgmgmgmhdhehehehfaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaTaJhghghghghhaJfXgrgYhihjhkfMfNeKeJaSgIezeTfgfmfmfmaJfZfZfZgygygygygygygygygyfZfZfZaJfmfmgzfgeTezezbSeLhlhmhnhohohohohphqhohohohrhohohohohohohshthththuaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaTaJhvhwhxhyhzaJfXgrfXhAhAfXfMfNeKeJbSgIezeTfgfmfmfmaJfZfZfZgygygygygygygygygyfZfZfZaJfmfmgzfgeTezezbSeLeMfobSgmgmgmgmhcgmgmgmgmgagagagCgagmgmgRhBhChChDaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaTaJhyhyhEhyhFhGhGhHhGhGhGhGhGfNeKeJbSezezeTfgfmfmfmaJfZfZfZgygygygygygygygygyfZfZfZaJfmfmgzfgeTezezbSeLeMfohIgmgmgmgmgahJhKgmgmgagmhLgmgagagCgRhMhMhMhMaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaTaJhghghghyhzhGhNhOhPhPhPhQhGfNeKeJbSezezeTfgfmfmfmaJfZfZfZgygygygygygygygygyfZfZfZaJfmfmgzfgeTezezbSeLeMfohIgmgmgmgmgagmgmgmgmgahRhSgBgagahTgmgmgmgmgBaTaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahUhUhUhUhVhyhvhyhyhyhzhGhNhOhWhXhPhPhYfNeKeJbSezezeTfgfgfmfmaJaJfZfZaJaJaJaJaSaJaJaJaJfZfZaJaJfmfmfgfgeTezezbSeLeMfohIgmgmhZgmgahJhKgmgmgaiahLgmgagagmhRibibibhRaTaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaicidididicidididididiehGhNhOifighPhPhGfNeKeJbSezezeTfgfgfmfmfmaJfZfZaJaJihihihihihaJfZfZfZaJfmfmfmfgfgeTezezbSeLeMfobSbSbSbSbSbSbSbSbSbSbShRiiijbSaJaJaJaJaCaJaJaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaikikikikilhyhyhyhyhyimhGinioipipipiqhGfNeKeJbSezezeTfgfgfmfmfmaJaJaJaJaJihihihihihaJfZfZaJaJfmfmfmfgfgeTezezbSeLeMfoiraCaCaCaCaCaCaCaCaCbSbSbSbSbSaJaCaCaCaCaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJishEisaJaJhGhGithGhYhGhGhGfNeKeJbSezezeTfgfgfgfmfmfmihaJaJaJihihihihihaJihfZaJfmfmfmfgfgfgeTezezbSeLeMfobSbSbSbSbSbSbSbSaCaCaCaCaCaCaCaCaCaCaCaCaJaJaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJiuhyhyaJiviviwixiyiyiziyiwfNeKeJbSezezeTfgfgfgfmfmihihihihaJihihihihihaJihihaJfmfmfmfgfgfgeTezezbSeLeMfoiraCaCaCaCaCaCbSbSbSbSbSbSaJaJaJaCaCaCaCaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJhwhyhwaJiviviwiAiyiBiyiyiCfNeKeJbSezezeTfgfgfgfgfgfmiheTihbEihihihihihaJihaJaJfmfgfgfgfgfgeTezezbSeLeMfobSaCaCaCaCaCaCaCaCaCaCaCaCaJaJaCaCaCaCaCaJaJaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJhyhyhyaJiviviwiDiyiyiyiyiEfNeKeJbSezezeTfgfgfgfgfgfgfgeTihihihihihihihihiheTfgfgfgfgfgfgfgeTezezbSeLeMfobSbSbSbSbSbSbSbSbSbSaJaCaCaJaJaJaCaCaCaCaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJhwhyhwaJiviviwiFiGiGiGiHiwfNeKeJbSezezeTfgfgfgfgfgfgfgeTihihihihihihihihiheTfgfgfgfgfgfgfgeTezezbSeLeMfobSiIiJiJiJiJaJiKiLiMaJaCaCaJaJaJaJaJaJaJaJaJaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJaJaJaJaJiviviwiwiwiwiwiwiweJeKeJbSezezeTeTeTeTeTeTeTeTeTeTeTeTihihiheTeTeTeTeTeTeTeTeTeTeTeTezezbSeLeMfobSiOiJiPiQiJaJiRiSiRaJaCaCiTaCiTaCaCaCaCaCaCaCaCaCaCaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJivivivivivivbSiUiViWiXiYbSeJeKeJbSezezeTfgfgfgfgfgfgfgfgfgfgeTihihiheTeTfgfgfgfgfgfgfgfgfgeTezezbSeLeMfobSiZjajbjciJaJiRiRiRaJaCaCbEaCaJaSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJivivivivivivbSjdjdjdjdiYbSeJeKeJbSezezeTfgjejfjfjfjfjfjgjgjhjgjhjgjijjeTfgjkjkjkjkjkjkjkfgeTezezbSeLeMfobSjljmjnjnjnaJjojpjpaJaCaCaJaJaJaSiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJivivbSbSbSbSbSjdjdjdjdiYbSeJeKeJbSezezeTfgjqjrjrjrjsjsjjjjjtjjjtjjjtjjjufgjkjkjkjkjkjkjkfgeTezezbSeLeMfobSiJiJiJiJiJiJjvjwjxbSaCaCaJaSaSaSiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJivivbSjyjyjyjyjdjdjdjdiYbSeJeKeJbSezezeTfgjzjAjAjAjfjBjgjgjCjgjCjgjDjjjkjkjkjkjkjkjkjkjkfgeTezezbSeLeMfojEiJiJiJiJiJjFjGjxjwbSaCaCaJaSaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaJaJaCaJivivbSjyjyjyjyjdjdjdjdjdaTeJeKeJbSezezeTfgjejHjHjHjfjIjjjjjtjjjJjjjtjjjkjkjkjkjkjkjkjkjkfgeTezezbSeLeMfobSjKjLjKjKjKjKjMjwjxbSaCaCaJaSaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaaaiNaaaaaaiNaaaaaaiNaaaaaaaaaaaaaaaaaaaaaaaaaJivivjNivivbSjOjPjPjPjPjPjPjPjPjQjRgkeJbSezezeTfgjqjrjrjSjsjsjjjjjtjjjtjjjtjjjufgjkjkjkjkjkjkjkfgeTezezbSeLeMfobSiJiJiJiJjTiJjGjxjwbSaCaCaJaSaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaaaiNaaaaaaiNaaaaaaiNaaaaaaaaaaaaaaaaaaaaaJaJaJaJaJaJivivbSjUjUjUjUjdjdjdjdjdaTeJeKeJbSezezeTfgjzjfjfjfjfjfjgjgjVjgjVjgjWjjeTfgjkjkjkjkjkjkjkfgeTezezbSeLeMfobSiJiJiJiJiJiJjvjwjxbSaCaCaJaJaJaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCjNivivivivivbSjUjXjUjUjYjdjdjYjdbSeJeKeJbSezezeTfgfgfgfgfgfgfgfgfgjZkajZkbjZfgeTfgfgfgfgfgfgfgfgfgeTezezbSeLeMfobSkckdkekfjckgkhjxjwbSaCaCaJaCaJaaaaiNaaaaaaiNaaaaaaiNaaaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaaaiNaaaaaaiNaaaaaaiNaaaaaaaaaaaaaaaaaaaCaCaCaJivivivivivbSbSbSbSbSbSbSbSbSbSbSeJeKkibSepepeTeTeTeTeTeTeTeTeTeTjZkajZkbjZeTeTeTeTeTeTeTeTeTeTeTeTepepbSkjeMfobSbSbSbSbSbSbSbSbSbSbSaCaCiraCaCaCaCaCaCaCaCaCaCaCaCaCaCaCiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaaaiNaaaaaaiNaaaaaaiNaaaaaCaCaCaCaCaCaCaCaCaCaJaJjNaJivivivivivivivivivivivivjNeJeKkikkklklkmkmkmkmkmkmkmkmkmkmknkmknkmknkmkmkmkmkmkmkmkmkmkmkmkmklklkkkjeMfobGaCaCaCaCaCaCaCaCaCaCaCaCaJaJaCaCaaiNaaaaaaiNaaaaaaiNaaaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaCaJaJaJaJaJaJaJaJaJaJivivaJivivivivivivivivivivivivjNeJkokpkqkrkrkrkrkrkrkskrkrkrkrkrktklkuklkvkrkrkrkrkrkrkrkrkwkrkrkrkrkrkqkxkyfobGaCaCaCaCaCaCaCaCaCaCaCaCaCbEaCaaaaiNaaaaaaiNaaaaaaiNaaaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaCaJkzkzkzkzkzaJaJeJjNivivaJaJivivivaJaJaJaJaJaJaJaJaJeJeKkibSepepaJkAkBkCkBkBklklkDkDkDkEkFkGkGkGkEkDkDklklkHkHkIkJkHaJepepbSkjeLfoaJaJaJaJaJaJaJaJaJaCaCaCaJiTaJaJaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaCaJkKkLkLkMkzaJaJfNaJivivaJaJaJivivaJkNdjdjkOkPkQkRfzjRgkeJbSezezaJkSkTkUkVkWklklkDkXkYkYkZlalblblblckDklklkHldlelflgaJezezbSeLeLfoaJlhlhlhlhlhlhlhaJaJaJaJaJaCaCaJaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaCaJliljlkllkLlmlmlnaJaHaHaaaaaHaHaHaJlolpaSaSaSaSaSaTeJeKeJbSezezaJlqlrkUlskWklklkDltkYlulvlwlxlykYlzkDklklkHlflAlBlCaJezezbSeLeLfoaJlhlhlhlhlhlhlhlhaJaCaCaJiTaJaJaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaaCaJkzkzkzkzkzaJaJlDaJaaaaaaaaaaaaaaaJlolpaSaSaSlElEaTeJeKeJbSezezaJlFlGlHlIkBklklkDlJkYlKlLlMlNlOkYlPkDklkllQlQlRlQlQlQezezbSeLeLfoaJlhlhlhlhlhlhlhlhaJaCaCaCaCaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaalSlTlTlTlTlTlTlTlTlTlSaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaaCaJkzkzkzkzlUaJaJeKaJaJaJaJaHaHaHaHaJbSbSaHbKbKaHbSbSeJeKeJbSezezaJlqkUkUlVkBklklkDlWkYkYlXkYkYkYkYkYkDklkllQlYlZlYlYlQezezbSeLeLfoaJmambmamamamambmaaJaJaCaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaalTlTlTlTlTlTlTlTlTlTlTaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJaJaJaJaJaJaJaJeKeJeJeJeJeJeJeJeJeJeJeJeJeJeJeJeJeJeJeKeJbSezezaJlqkUkUmckBklklkDkDkGkGkFkGkGkGkGkDkDklklmdlYlZmelYlQezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaJaCaaaaaaaaaaiNiNiNaaiNiNiNaaiNiNiNaaaaaaaaaaaaaaaaaaaaaalTlTmgmgmgmgmgmgmglTlTaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaCaCaCaCaCaJmhjRjRjRjRjRjRjRjRjRjRjRjRjRjRjRjRjRjRgkeJbSezezaJaJaJaJaJaJaJklklklklklkuklklklklklklklkllQlYlZlYmilQezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalSlTmgmgmgmgmgmgmglTlTaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJeJeJeJeJeJeJeJeJeJeJeJeJeJeJeJeJeJeJeJeKeJbSezezaJmjmjmjmjmjaJklklklklklkuklklklklklklklkllQmkmllYlYlQezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalSmgmgmgmgmgmgmgmglTlTaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaJaJaJaHaHaHaHaJaJaJaJaJaJaJaJaJaJaJaJeJeKeJbSezezaJmjmjmjmjmjaJaJaJaJaJaJmmbGaJaJaJaJaJaJaJaJaJaJaJaJaJezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaSaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalSmgmgmgmgmglTmgmglTlTaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaCaCaCaCaCaCaCaTmnmompmqmrmsmtmuaJeJeKeJbSezezaJmjmjmjmjmjmjmjmjmjmjmjmvmjmjmwmwmwmjmjmxmxmxmxmxmxaJezezbSeLeLfojEmfmfmfmfmfmfmfmfmyaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalSmgmgmgmgmgmgmgmglTlTaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCbSbSbSmpmzmpmpmpmpmAeJeKeJbSezezaJmjmjmjmjmjmjmjmjmjmjmjmvmjmjmwmwmjmjmjmxmxmxmxmxmxaJezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalSlTmgmgmgmgmgmgmglTlTaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaCaCaCaCaCaJmpbSbSmzmpmpmpmpmAeJeKeJbSezezaJmjmjmjmjmjmjmjmjmjmjmjmvmjmjmjmjmjmjmjmxmxmxmxmxmxaJezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalTlTmgmgmgmgmgmgmglTlTaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaCaCaJmBmCmDmEmFmFmEmGmFmFmFmFmHjRgkeJbSezezaJmjmjmjmjmjmjmjmjmImjmjmvmjmjmjmjmjmjmjmxmxmxmxmxmxaJezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalTlTlTlTlTlTlTlTlTlTlTaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaCaCaJaJaJmJaJaJaJaJbSbSmpmpmpmpmpmAeJeKeJbSezezaJmjmjmjmjmjmjmjmjmjmjmjmvmjmjmjmjmjmjmjmxmxmxmxmxmxaJezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalSlTlTlTlTlTlTlTlTlTlSaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamKaCaCmJaCaJaJaJmomnmpmpmpmpmpmAeJeKeJbSezezaJmjmjmjmjmjmjmjmjmjmjmjmvmjmjmjmjmjmjmjmxmxmxmxmxmxaJezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaSaJaJaJmJaCaCaJaJmLmLmLmMmMmMmMaJeJeKeJbSezezaJmjmjmjmjmjmjmjmjmjmjmjmvmjmjmjmjmjmjmjmxmxmxmxmxmxaJezezbSeLeLfoaJmfmfmfmfmymfmfmfmfaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamKaCaCmNmDmOaJaJaJaJaJaJaJaJaJaJeJeKeJbSezezaJaJaJaJaJaJaJaJaJaJaJaJmmaJaJaJaJaJaJaJaJaJaJaJaJaJaJezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaSaJaJaJaCaCaCaJaJaSaSaSaSaSaSaSbSeJeKeJbSezezezezezezezaJaSaSaSaSaSaSmPaSaSaSaSaSaSaSaSaJezezezezezezezbSeLeLfoaJmfmfmfmfmfmfmfmfmfaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaamKaCaCaCaCaCaJaJaSaSaSaSaSaSaSbSexmQexbSmRmSezezezezezaJaSaSaSaSaSaSmPaJaJaJaJaJaJaJaJaJezezezezezezezbSeLeLfoaJmTmfmfmfmfmfmfmfmfaJaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaSaJaJaJaJaJbGaJaJbSbSbSbSbKbSbSbSmUmVmUbSbSbSbSbSbSepepaJaaaaaaaSaSaSaSaJaSaSaSaSaSaSaSaJezezmWmWmWmWmWmWeLeLfoaJmTmfmfmfmfmTmTmfmfmfaaaaaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaSaSaSaJmXmXmXmXmXmXmXmXmXmXmXmXmUmXmYmXmXmXmXmXmXmXmXmXaJaaaaaaaaaaaaaaaJaSaSaSaSaSaSaSaJezezmWmZmZmZmZmWeLeLfoaJmTmfmfmfmfmfmfmfmfaJaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaSaSaSaJmXmXmXmXmXmXmXmXmXmXmXmXmUmXnanbnbnbnbnbnbnbncmXaJaaaaaaaaaaaaaaaJaSaSaSaSaSaSaSaJezezmWmZmZmZmZmWeLeLfoaJmTmfmfmfmfmfmfmfmfaJaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaSaJmXmXmXmXmXmXmXmXmXmXmXmXmUmXndndndndndndndnemYmXaJaaaaaaaaaaaaaaaJaSaSaSaSaSaSaSaJezezmWmZmZmZmZmWeAeAeAaJcIaJaJaJaJaJaJaJaJaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaSaJaJbSbGbSbSaJnfnfngngnfnfnfnhninininininininjmYmXaJaaaaaaaaaaaaaaaJaSaSaSaSaSaSaSaJnknkmWmWmWnlnmmWnnnnnnaJaCaCaCaCaCaCaCaCaCaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaSaSaJaSaSaSaSaJnonononononononhnpnpnpnpnpnpninjmYmXaJaaaaaaaaaaaaaaaJaSaSaSaSaSaSaSaJnqnqnqnqnqnqnqnqnqnqnqaJaHaIaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaSaSaJaSaSaSaSaJnonononononononhnpnpnpnpnpnpninjmYmXaJaaaaaaaaaaaaaaaJaSaSaSaSaSaSaSaJnqnqnqnqnqnqnqnqnqnqnqnqnqaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaJaJaJaJaJaJnonononononononhnpnpnpnpnpnpninjmYmXaJaaaaaaaaaaaaaaaJaSaSaSaSaSaSaSaJnqnqnqnqnqnqnqnqnqnqnqnqnqaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaSaSaSaJnononononononononononhnpnpnpnpnpnpninjmYmXaJaaaaaaaaaaaaaaaJaSaSaSaSaSaSaSaJnqnqnqaJaJaJaJaJaJnqnqnqnqaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnononononononononononhnpnrnsnsnsnsntnunvmXaJaaaaaaaaaaaaaaaJaSaSaSaSaSaSaSaJnqnqnqaJaSaSaSaSaJnqnqnqnqaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnonononononwnononononhnpnxnpnpnpnpninynzmUaJaaaaaaaaaaaaaaaJaSaSaSaSaSaSaSaJnqnqnqaJaSaSaSaSaJnqnqnqnqaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnononononononononononhnpnxnpnpnpnpninAnBnnaJaJaJaJaJaJaJaJaJaJaJaJaJaJaJaJaJnnnnnnaJaSaSaSaSaJnqnqnqnqaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnononononononononoaJaJaJdwaJaJaJaJaJnqnCnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqaJaSaSaSaSbGnqnqnDnqaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnononononononononoaJnEnEnFnEnEaJaTaJnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqaJaSaSaSaSaJnqnqnqnqaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJaJaJaJaJaJaJaJnGnGnEnEnFnEnEaJaTaJnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqnqaJaSaSaSaSaJbSbSnHbSnIaHaIaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJnEnEnJnFnEnEaCaTaJaJnKnKaJaHaHaHaJaHaHaHaJaHaHaHaJaHaHaHaJnKnKaJaJaJaJaJaSaJaSaSaSaSaSaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJaJaJaJnEnEnEnEnFnEnEaJaTaaaTaSaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaTaSaSaTaaaaaaaJaSaJaSaSaSaSaSaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnLnLnLnLnLnLnMnLnNnLnEaJaJaaaTaSaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaTaSaSaTaaaaaaaJaJaJaSaSaSaSaSaSnIaIaaaaaSaSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnLnOnPnQnQnQnQnQnRnLnEaCaJaaaTaSaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaTaSaSaTaaaaaaaSaSaSaSaSaSaSaJaSaSaTaaaaaSaSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnLnSnTnQnUnQnUnVnWnLnEaCaJaaaTaSaSnXnYnYnYaaaaaaaaaaaaaaaaaanYnYnYnXaSaSaTaaaaaaaSaSaSaSaSaSaSaJaJaJaJaJaSaSaSaSaJaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnLnZoaobocodoboboenLnEaCaJaaaJaSaSnHaSaSnHaaaaaaaaaaaaaaaaaanHaSaSnHaSaSaJaaaaaaaJaJaSbSaSbSaSbSaSaSaSaSaSaSaSaSaSaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnLofnQnUnUnQnQnUognLnEaJaJaaaTaSaSaTohohohaaaaaaaaaaaaaaaaaaohohohaTaSaSaTaaaaaaaCaJaSbSaSaSaSaSaSaSaSaSaSaSaSaSaSaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnLoinQnUnUnQnUnUognLojaHaJaaaTaSaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaTaSaSaTaaaaaaaCaJaSbSaSbSbSbSaSaSaSaSaSaSaSaSaSaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJnLoknQolnUnQnUolognLomaaaJaaaTaSaSaTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaTaSaSaTaaaaaaaCaJaSbSaSaSaSaSaSaSaSaSaSaSaSaSaSaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJononononooononoponaJaaaJaaaTaSaSnXnYnYnYaaaaaaaaaaaaaaaaaanYnYnYnXaSaSaTaaaaaaaCaJaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJonoqoqoqoroqoqosonaJaaaJaaaTaSaSnHaSaSnHaaaaaaaaaaaaaaaaaanHaSaSnHaSaSaTaaaaaaaCaJaJaJaJaJaJaJaJaJaSaSaSaJaJaJaJaJaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJonoqoqoqoroqoqosonaJaaaJaaaTaSaSaTohohohaaaaaaaaaaaaaaaaaaohohohaTaSaSaTaaaaaaaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJonoqoqoqoroqoqosonaJaaaJaanIaHaHotaaaaaaaaaaaaaaaaaaaaaaaaaaaaaanIaHaHotaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJonorouorororouovonaJaaaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJonoqonoqoqoqowosonaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJonoqoqoqoxoqoqoyonaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJaJaJaJaJaJaJaJaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJonononoqoqoqonononaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJaJaJaJaJaJaJaJaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJonononononononaJaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaCaCaCaCaCaCaCaJaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJaJaJaJaJaJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaCaCaCaCaCaCaCaJaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaCaCaCaCaCaCaCaJaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaCaCaCozaCaCaCaJaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaCaCaCaCaCoAaCaJaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaCaCaCaCaCaCaCaJaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaJaJaJaJaJaJaJaJaJaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
