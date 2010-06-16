@@ -21,6 +21,7 @@
 		blocks_air = 0
 		icon_old = null
 		pathweight = 1
+		list/obj/machinery/network/wirelessap/wireless = list( )
 
 /turf/space
 	icon = 'space.dmi'

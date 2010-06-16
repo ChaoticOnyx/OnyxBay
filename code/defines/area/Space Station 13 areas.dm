@@ -521,6 +521,10 @@
 	name = "Quartermasters"
 	icon_state = "quart"
 
+/area/network/
+	name = "Network Centre"
+	icon_state = "networkcenter"
+
 /area/janitor/
 	name = "Janitors Closet"
 	icon_state = "janitor"
@@ -564,6 +568,10 @@
 /area/storage/primary
 	name = "Primary Tool Storage"
 	icon_state = "primarystorage"
+
+/area/storage/network
+	name = "Network Equipment Storage"
+	icon_state = "networkstorage"
 
 /area/storage/autolathe
 	name = "Autolathe Storage"

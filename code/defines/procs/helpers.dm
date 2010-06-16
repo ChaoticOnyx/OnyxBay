@@ -1,3 +1,59 @@
+/proc/replace(haystack, needle, newneedle)
+	var
+		list/find_list = stringsplit(needle, haystack)
+		final_text = listjoin(find_list,newneedle)
+	return final_text
+
+/proc/listjoin(list/list,delimiter)
+	var
+		final_text
+		iter = 1
+	for(var/E in list)
+		if(iter > 1) final_text += "[delimiter]"
+		final_text += E
+		iter++
+	return final_text
+
+/proc/get_dir_3d(var/atom/ref, var/atom/target)
+	return get_dir(ref, target) | (target.z > ref.z ? UP : 0) | (target.z < ref.z ? DOWN : 0)
+
+//Bwahahaha! I am extending a built-in proc for personal gain!
+//(And a bit of nonpersonal gain, I guess)
+/proc/get_step_3d(atom/ref,dir)
+	if(!dir&(UP|DOWN))
+		return get_step(ref,dir)
+	//Well, it *did* use temporary vars dx, dy, and dz, but this probably should be as fast as possible
+	return locate(ref.x+((dir&EAST)?1:0)-((dir&WEST)?1:0),ref.y+((dir&NORTH)?1:0)-((dir&SOUTH)?1:0),ref.z+((dir&UP)?1:0)-((dir&DOWN)?1:0))
+
+/proc/reverse_dir_3d(dir)
+	var/ndir = (dir&NORTH)?SOUTH : 0
+	ndir |= (dir&SOUTH)?NORTH : 0
+	ndir |= (dir&EAST)?WEST : 0
+	ndir |= (dir&WEST)?EAST : 0
+	ndir |= (dir&UP)?DOWN : 0
+	ndir |= (dir&DOWN)?UP : 0
+	return ndir
+
+/proc/stringsplit(character, txt)
+	var
+		cur_text = txt
+		last_found = 1
+		found_char = findtext(cur_text,character)
+		list/list = list()
+	if(found_char)
+		var/fs = copytext(cur_text,last_found,found_char)
+		list += fs
+		last_found = found_char+length(character)
+		found_char = findtext(cur_text,character,last_found)
+	while(found_char)
+		var
+			found_string = copytext(cur_text,last_found,found_char)
+		last_found = found_char+length(character)
+		list += found_string
+		found_char = findtext(cur_text,character,last_found)
+	list += copytext(cur_text,last_found,length(cur_text)+1)
+	return list
+
 /proc/hex2num(hex)
 
 	if (!( istext(hex) ))

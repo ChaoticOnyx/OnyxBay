@@ -133,6 +133,27 @@ var
 	no_auth_motd = null
 	forceblob = 0
 
+	// **********************************
+	//	Networking Support
+	// **********************************
+
+	//Network address generation info
+	list/usedtypes = list()
+	list/usedids = list()
+	list/usednetids = list()
+
+	//True if computernet rebuild will be called manually after an event
+	defer_computernet_rebuild = 0
+
+	//Computernets in the world.
+	list/datum/computernet/computernets = null
+
+	//All the passwords needed for specific network devices
+	list/accesspasswords = list()
+
+	//Routing table used for networking
+	datum/rtable/routingtable = new /datum/rtable()
+
 	//airlockWireColorToIndex takes a number representing the wire color, e.g. the orange wire is always 1, the dark red wire is always 2, etc. It returns the index for whatever that wire does.
 	//airlockIndexToWireColor does the opposite thing - it takes the index for what the wire does, for example AIRLOCK_WIRE_IDSCAN is 1, AIRLOCK_WIRE_POWER1 is 2, etc. It returns the wire color number.
 	//airlockWireColorToFlag takes the wire color number and returns the flag for it (1, 2, 4, 8, 16, etc)

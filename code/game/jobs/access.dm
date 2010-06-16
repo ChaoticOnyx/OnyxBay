@@ -33,6 +33,13 @@
 	access_chemistry = 33
 	access_cargo_bot = 34
 
+	password_firedoor = 100
+	password_smeg = 101
+	password_digitalvalve = 102
+	password_router = 103
+	password_heater = 104
+	password_filterinlets = 105
+	password_filtervents = 106
 
 /obj/var/list/req_access = null
 /obj/var/req_access_txt = "0"
@@ -225,3 +232,31 @@
 				"Chaplain", "Barman", "Chemist", "Janitor", "Clown", "Chef", "Roboticist", "Quartermaster",
 				"Chief Engineer", "Research Director")
 
+
+/proc/get_all_passwords()
+	return list(password_smeg,password_firedoor,password_digitalvalve,password_router,password_heater,password_filterinlets,password_filtervents)
+
+/obj/proc/get_password()
+	if(!src.req_access || !istype(src.req_access, /list) || !src.req_access.len)
+		return "0"
+	return accesspasswords["[req_access[1]]"]
+
+/obj/proc/check_password(var/password)
+	if(!src.req_access) //no requirements
+		return 1
+	if(!istype(src.req_access, /list)) //something's very wrong
+		return 1
+
+	var/list/L = src.req_access
+	if(!L.len) //no requirements
+		return 1
+
+	for(var/req in src.req_access)
+		if(accesspasswords["[req]"] == password) //doesn't have this access
+			return 1
+	return 0
+
+/proc/gen_access()
+	for(var/access in get_all_accesses())
+		accesspasswords["[access]"] = num2hex(rand(1, 65535),4)
+	for(var/access in get_all_passwords())

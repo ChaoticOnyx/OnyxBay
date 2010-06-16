@@ -44,6 +44,10 @@ datum/controller/game_controller
 
 		world << "\red \b Initializations complete."
 
+		makecomputernets()
+
+		world << "\red \b Computer Networks built"
+
 
 	process()
 

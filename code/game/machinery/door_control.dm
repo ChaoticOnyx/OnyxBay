@@ -18,13 +18,9 @@
 	for(var/obj/machinery/door/poddoor/M in machines)
 		if (M.id == src.id)
 			if (M.density)
-				spawn( 0 )
-					M.open()
-					return
+				transmitmessage(createmessagetomachine("[M.get_password()] OPEN", M))
 			else
-				spawn( 0 )
-					M.close()
-					return
+				transmitmessage(createmessagetomachine("[M.get_password()] CLOSE", M))
 
 	spawn(15)
 		if(!(stat & NOPOWER))
