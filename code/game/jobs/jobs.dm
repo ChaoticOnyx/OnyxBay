@@ -16,7 +16,6 @@ var/list/occupations = list(
 	"Barman",
 	"Chef",
 	"Janitor",
-	"Clown",
 	"Chemist",
 	"Quartermaster","Quartermaster","Quartermaster")
 

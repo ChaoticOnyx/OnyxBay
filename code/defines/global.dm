@@ -70,7 +70,7 @@ var
 	chaplainMax = 1
 	janitorMax = 1
 	doctorMax = 4
-	clownMax = 1
+	clownMax = 0
 	chefMax = 1
 	roboticsMax = 3
 	cargoMax = 3

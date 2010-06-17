@@ -18,6 +18,24 @@ for easier modification.
 	- Trorbes 27/12/09
 */
 
+/*Ok, ported from the BS12 codebase
+I don't want to break the other map, so BS12 map specific stuff should only apply to the area/bs12 typepath
+-Googolplexed 17/June/10
+*/
+
+area/bs12/
+	var/dooraccess = ""
+
+area/bs12/New()
+	..()
+	for(var/obj/machinery/door/D in src)
+		if(D.req_access_txt == "")
+			D.req_access_txt = src.dooraccess
+		else if(D.req_access_txt == "NA")
+			D.req_access_txt = ""
+	for(var/obj/machinery/power/APC in src)
+		APC.name = src.name + " APC"
+
 // Primary Hallways
 area/bs12/hallway/east
 	name = "East Hallway"
@@ -49,16 +67,19 @@ area/bs12/medical/medbay
 	name = "Medical Bay"
 	icon_state = "medical"
 	music = ""
+	dooraccess = "5"
 
 area/bs12/medical/morgue
 	name = "Morgue"
 	icon_state = "morgue"
 	music = ""
+	dooraccess = "6"
 
 area/bs12/medical/autopsy
 	name = "Autopsy Room"
 	icon_state = "morgue"
 	music = ""
+	dooraccess = "6"
 
 area/bs12/medical/waiting
 	name = "Medical Bay Waiting Room"
@@ -69,97 +90,114 @@ area/bs12/medical/office
 	name = "Medical Bay Office"
 	icon_state = "medical"
 	music = ""
+	dooraccess = "5"
 
 area/bs12/medical/patientA
 	name = "In-Patient Room A"
 	icon_state = "medical"
 	music = ""
+	dooraccess = "5"
 
 area/bs12/medical/patientB
 	name = "In-Patient Room B"
 	icon_state = "medical"
 	music = ""
+	dooraccess = "5"
 
 area/bs12/medical/patientC // For the crazies
 	name = "Unstable Patient Room"
 	icon_state = "medical"
 	music = ""
+	dooraccess = "5"
 
 area/bs12/storage/medstorage
 	name = "Medical Storage"
 	icon_state = "medstorage"
 	music = ""
+	dooraccess = "5"
 
 // Research labs
 area/bs12/research/medical // Chemical and Genetic Research - usually considered one area
 	name = "Medical Research Labs"
 	icon_state = "research"
 	music = ""
+	dooraccess = "9"
 
 area/bs12/research/toxins
 	name = "Plasma Research Lab"
 	icon_state = "toxlab"
 	music = ""
+	dooraccess = "7"
 
 area/bs12/research/toxins/external
 	name = "External Explosives Test Range"
 	icon_state = "toxlab"
 	requires_power = 0
 	music = ""
+	dooraccess = "7"
 
 area/bs12/research/toxins/test_lab
 	name = "Test Facility"
 	requires_power=0
 	icon_state = "toxlab"
 	music = ""
+	dooraccess = "7"
 
 // Security and related
 area/bs12/security/security
 	name = "Security Headquarters"
 	icon_state = "security"
 	music = ""
+	dooraccess =  "1"
 
 area/bs12/security/brig
 	name = "Brig"
 	icon_state = "brig"
 	music = ""
+	dooraccess = "2"
 
 area/bs12/security/checkpoint
 	name = "Arrival Checkpoint"
 	icon_state = "security"
 	music = ""
+	dooraccess = "1"
 
 area/bs12/security/nstation
 	name = "North Security Station"
 	icon_state = "security"
 	music = ""
+	dooraccess = "1"
 
 area/bs12/security/holding
 	name = "North Security Station Holding Cells"
 	icon_state = "brig"
 	music = ""
+	dooraccess = "2"
 
 area/bs12/security/sstation
 	name = "South Security Station"
 	icon_state = "security"
 	music = ""
+	dooraccess = "1"
 
 area/bs12/storage/secstorage
 	name = "Security Storage"
 	icon_state = "securitystorage"
 	music = ""
+	dooraccess = "3"
 
 area/bs12/security/forensics
 	name = "Forensics Lab"
 	icon_state = "security"
 	music = ""
+	dooraccess = "4"
 
 // administrative areas
 area/bs12/administrative/bridge
 	name = "Bridge"
 	icon_state = "bridge"
 //	music = 'music/bridge.ogg'
-
+	dooraccess = "19"
 area/bs12/administrative/court/courtroom
 	name = "Courtroom"
 	icon_state = "bridge"
@@ -169,6 +207,7 @@ area/bs12/administrative/court/counsel
 	name = "Consultation Room"
 	icon_state = "bridge"
 	music = ""
+
 
 //Elevators
 area/bs12/elevators
@@ -211,32 +250,38 @@ area/bs12/headquarters/captain
 	name = "Captain's Quarters"
 	icon_state = "crew_quarters"
 	music = ""
+	dooraccess = "20"
 
 area/bs12/headquarters/hop // Near Arrival Checkpoint
 	name = "Head of Personnel's Quarters"
 	icon_state = "crew_quarters"
 	music = ""
+	dooraccess = "19"
 
 area/bs12/headquarters/hos // Above Courtroom
 	name = "Head of Security's Quarters"
 	icon_state = "crew_quarters"
 	music = ""
+	dooraccess = "19"
 
 area/bs12/headquarters/hor // In Medical Research
 	name = "Head of Research's Quarters"
 	icon_state = "crew_quarters"
 	music = ""
+	dooraccess = "19"
 
 area/bs12/headquarters/hom // Above Atmospherics
 	name = "Head of Maintenance's Quarters"
 	icon_state = "crew_quarters"
 	music = ""
+	dooraccess = "19"
 
 // Crew Facilities
 area/bs12/facilities/bar
 	name = "Lounge"
 	icon_state = "crew_quarters"
 	music = ""
+	dooraccess = "25"
 
 area/bs12/facilities/observation
 	name = "Observation Deck"
@@ -253,6 +298,7 @@ area/bs12/supply/office
 	name = "Supplies Office"
 	icon_state = "supplies"
 	music = ""
+
 
 area/bs12/supply/warehouse
 	name = "Supply Warehouse"
@@ -274,89 +320,97 @@ area/bs12/chapel/office
 	name = "Chapel Office"
 	icon_state = "chapel"
 	music = ""
-
+	dooraccess = "22"
 area/bs12/chapel/coffin
 	name = "Coffin Storage Area"
 	icon_state = "chapel"
 	music = ""
+	dooraccess = "27"
 
 // Station Maintenance
 area/bs12/maintenance/hall
 	name = "Maintenance Hallway"
 	icon_state = "green"
 	music = ""
+	dooraccess = "12"
 
 area/bs12/maintenance/network
 	name = "Network Centre"
 	icon_state = "network"
 	music = ""
+
 area/bs12/maintenance/atmos
 	name = "Atmospherics"
 	icon_state = "atmoss"
 	music = "music/atmos.wav"
+	dooraccess = "24"
 
 area/bs12/maintenance/atmos/mixing
 	name = "Atmospherics Mixing Chamber"
 	icon_state = "atmoss"
 	music = "music/atmos.wav"
+	dooraccess = "24"
 
 area/bs12/maintenance/atmos/mixingroom
 	name = "Atmospherics Mixing room"
 	icon_state = "atmoss"
 	music = "music/atmos.wav"
+	dooraccess = "24"
 
 area/bs12/maintenance/atmos/canister
 	name = "Atmospherics Canister Storage"
 	icon_state = "atmoss"
 	music = "music/atmos.wav"
+	dooraccess = "24"
 
 area/bs12/maintenance/atmostanks/oxygen
 	name = "Oxygen Tank"
 	icon_state = "atmoss"
-
+	dooraccess = "24"
 area/bs12/maintenance/atmostanks/plasma
 	name = "Plasma Tank"
 	icon_state = "atmoss"
-
+	dooraccess = "24"
 area/bs12/maintenance/atmostanks/carbondioxide
 	name = "CO2 Tank"
 	icon_state = "atmoss"
-
+	dooraccess = "24"
 area/bs12/maintenance/atmostanks/anesthetic
 	name = "N2O Tank"
 	icon_state = "atmoss"
-
+	dooraccess = "24"
 area/bs12/maintenance/atmostanks/nitrogen
 	name = "N2 Tank"
 	icon_state = "atmoss"
-
+	dooraccess = "24"
 area/bs12/maintenance/atmostanks/other
 	name = "Waste Tank"
 	icon_state = "atmoss"
-
+	dooraccess = "24"
 area/bs12/maintenance/atmostanks/burn
 	name = "Burnoff Chamber"
 	icon_state = "atmoss"
-
+	dooraccess = "24"
 area/bs12/maintenance/janitor
 	name = "Custodial Closet"
 	icon_state = "green"
 	music = ""
-
+	dooraccess = "26"
 area/bs12/storage/toolstorage
 	name = "Tool Storage"
 	icon_state = "toolstorage"
 	music = ""
-
 area/bs12/storage/elecstorage
 	name = "Electrical Storage"
 	icon_state = "elecstorage"
 	music = ""
+	dooraccess = "23"
 
 area/bs12/storage/northspare
 	name = "Spare Storage"
 	icon_state = "toolstorage"
 	music = ""
+
 
 area/bs12/storage/emergency
 	name = "Emergency Storage"
@@ -374,6 +428,8 @@ area/bs12/storage/southspare
 	music = ""
 
 // Maintenance corridors
+area/bs12/maintenance
+	dooraccess = "12"
 area/bs12/maintenance/corridor/necorridor
 	name = "Northeast Maintenance Corridor"
 	icon_state = "green"
@@ -439,31 +495,36 @@ area/bs12/engine/enginehall
 	name = "Engine Hallway"
 	icon_state = "engine"
 	music = ""
+	dooraccess = "10"
 
 area/bs12/engine/SMES
 	name = "Engine SMES Room"
 	icon_state = "engine"
 	music = "music/smesroom.wav"
+	dooraccess = "11"
 
 area/bs12/engine/equipment
 	name = "Engine Equipment Room"
 	icon_state = "engine"
 	music = ""
+	dooraccess = "11"
 
 area/bs12/engine/canstorage
 	name = "Engine Canister Storage Room"
 	icon_state = "engine"
 	music = ""
+	dooraccess = "11"
 
 area/bs12/engine/monitoring
 	name = "Engine Monitoring Room"
 	icon_state = "engine"
 	music = ""
-
+	dooraccess = "11"
 area/bs12/engine/control
 	name = "Engine Control Room"
 	icon_state = "engine"
 	music = ""
+	dooraccess = "11"
 
 area/bs12/engine/engine_walls
 	name = "Engine Walls"
@@ -474,11 +535,13 @@ area/bs12/engine/combustion
 	name = "Engine Combustion"
 	icon_state = "engine"
 	music = ""
+	dooraccess = "11"
 
 area/bs12/engine/cooling
 	name = "Engine Cooling"
 	icon_state = "engine"
 	music = ""
+	dooraccess = "11"
 
 // Fire Station
 area/bs12/rescue/firestation
@@ -634,6 +697,7 @@ area/bs12/tele
 	name = "Teleporter Room"
 	icon_state = "teleporter"
 	music = ""
+	dooraccess = "17"
 
 area/bs12/prototype
 	name = "Prototype Engine"
@@ -649,11 +713,13 @@ area/bs12/prototype
 	name = "EVA Storage"
 	icon_state = "evastorage"
 	music = ""
+	dooraccess = "18"
 
 /area/bs12/ai_monitored/storage/secure
 	name = "Secure Storage"
 	icon_state = "storage"
 	music = ""
+	dooraccess = "18"
 
 /area/bs12/ai_monitored/storage/emergency
 	name = "Emergency Storage"
@@ -665,31 +731,36 @@ area/bs12/prototype
 	name = "AI Upload Chamber"
 	icon_state = "ai"
 	music = ""
+	dooraccess = "16"
 
 /area/bs12/turret_protected/ai_upload_foyer
 	name = "AI Upload Foyer"
 	icon_state = "ai"
 	music = ""
-
+	dooraccess = "16"
 /area/bs12/turret_protected/ai
 	name = "AI Chamber"
 	icon_state = "ai"
 	music = ""
+	dooraccess = "16"
 
 /area/bs12/turret_protected/aisat
 	name = "AI Satellite"
 	icon_state = "ai"
 	music = ""
+	dooraccess = "16"
 
 /area/bs12/turret_protected/AIsolar
 	name = "AI Sat Solar"
 	icon_state = "south"
 	music = ""
+	dooraccess = "16"
 
 /area/bs12/turret_protected/AIsatext
 	name = "AI Sat Ext"
 	icon_state = "storage"
 	music = ""
+	dooraccess = "16"
 
 /area/bs12/turret_protected/maze/turret
 	name = "Space"
