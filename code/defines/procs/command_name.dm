@@ -21,6 +21,8 @@ var/command_name = null
 	name += pick("Federation", "Command", "Alliance", "Unity", "Empire", "Confederation", "Protectorate", "Commonwealth", "Imperium", "Republic")
 	name += " "
 
+	// Yay, all these contain hacks
+	name = "Nanotrasen"
 	command_name = name
 	return name
 

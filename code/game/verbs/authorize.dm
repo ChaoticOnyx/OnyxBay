@@ -9,7 +9,7 @@
 		return
 
 	src.authenticating = 1
-
+/*
 	spawn (rand(4, 18))
 		var/result = world.Export("http://byond.lljk.net/status/?key=[src.ckey]")
 		var/success = 0
@@ -41,6 +41,10 @@
 			src << "Try again using the <b>Authorize</b> command, sometimes the server will hiccup and not correctly authorize."
 			src << "\blue[no_auth_motd]"
 		src.authenticating = 0
+*/
+	src.authenticated = "Baystation12"
+	src.authenticating = 0
+	src.verbs -= /client/proc/authorize
 
 /client/proc/beta_tester_auth()
 	set name = "Tester?"
@@ -51,7 +55,7 @@
 	*/
 /client/proc/goonauth()
 	set name = "Goon?"
-
+/*
 	if (src.authenticating)
 		return
 
@@ -105,7 +109,10 @@
 			src << "\blue[no_auth_motd]"
 
 		src.authenticating = 0
-
+*/
+	src.verbs -= /client/proc/goonauth
+	src.goon = "N/A"
+	src.authenticating = 0
 var/goon_keylist[0]
 var/list/beta_tester_keylist
 
