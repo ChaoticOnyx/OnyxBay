@@ -993,7 +993,7 @@
 		//SN src = null
 		del(src)
 		return
-	step_towards(src, src.current)
+	step_towards_3d(src, src.current)
 	spawn( 1 )
 		process()
 		return
@@ -1015,7 +1015,7 @@
 		//SN src = null
 		del(src)
 		return
-	step_towards(src, src.current)
+	step_towards_3d(src, src.current)
 	// make it able to hit lying-down folk
 	var/list/dudes = list()
 	for(var/mob/M in src.loc)

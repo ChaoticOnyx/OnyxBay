@@ -42,12 +42,13 @@ datum/controller/game_controller
 		for(var/obj/machinery/atmospherics/machine in world)
 			machine.build_network()
 
-		world << "\red \b Initializations complete."
 
+		world << "\red \b Building Computer Networks"
+		sleep(-1)
 		makecomputernets()
 
-		world << "\red \b Computer Networks built"
 
+		world << "\red \b Initializations complete."
 
 	process()
 

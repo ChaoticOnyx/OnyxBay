@@ -28,7 +28,7 @@
 		src.base = null
 	..()
 
-/obj/machinery/network/antenna/base/identinfo()
+/obj/machinery/network/antenna/base/NetworkIdentInfo()
 	return "ANTENNA"
 
 /obj/machinery/network/antenna/base/process()

@@ -9,19 +9,19 @@
 	var/obj/machinery/connector = null
 	var/list/connectors = list()
 
-/mob/living/silicon/ai/proc/AIreceivemessage(message as text, var/obj/machinery/sender)
-	src << "\"[stripnetworkmessage(message)]\" received from [sender] \[[sender.computernet.id] [sender.computerID]]"
+/mob/living/silicon/ai/proc/AIReceiveNetworkPacket(message as text, var/obj/machinery/sender)
+	src << "\"[StripNetworkPacketHeader(message)]\" received from [sender] \[[sender.computernet.id] [sender.computerID]]"
 
-/mob/living/silicon/ai/proc/AItransmitmessage(message as text)
+/mob/living/silicon/ai/proc/AITransmitNetworkPacket(message as text)
 	if(connector)
 		src << "Transmitting [message]"
-		connector.transmitmessage(message)
+		connector.TransmitNetworkPacket(message)
 
 /mob/living/silicon/ai/proc/send_raw_packet()
 	set category = "AI Commands"
 	set name = "Send Raw Packet"
 	var/p = input("Enter Packet", "Send Packet", "NET UNIT COMMAND...")
-	AItransmitmessage(p)
+	AITransmitNetworkPacket(p)
 
 /mob/living/silicon/ai/proc/swapinterfaceto(var/obj/machinery/newinterface)
 	if(connector)
@@ -31,11 +31,11 @@
 
 /mob/living/silicon/ai/verb/send(message as text)
 	set hidden = 1
-	AItransmitmessage(message)
+	AITransmitNetworkPacket(message)
 
 /mob/living/silicon/ai/proc/sendcommand(message as text,var/obj/machinery/sendto)
 	if(connector)
-		AItransmitmessage(connector.createmessagetomachine(message, sendto))
+		AITransmitNetworkPacket(connector.PrependNetworkAddress(message, sendto))
 
 /mob/living/silicon/ai/proc/listinterfaces()
 	set category = "AI Commands"

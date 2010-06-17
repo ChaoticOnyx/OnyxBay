@@ -164,7 +164,7 @@
 /obj/fake_attacker/proc/proccess()
 	if(!my_target) spawn(5) .()
 	if(get_dist(src,my_target) > 1)
-		step_towards(src,my_target)
+		step_towards_3d(src,my_target)
 	else
 		if(prob(15))
 			if(weapon_name)
@@ -265,7 +265,7 @@
 			cant_pass = 1
 	return cant_pass
 
-/proc/get_step_towards2(var/atom/ref , var/atom/trg)
+/proc/get_step_towards_3d2(var/atom/ref , var/atom/trg)
 	var/base_dir = get_dir(ref, get_step_towards(ref,trg))
 	var/turf/temp = get_step_towards(ref,trg)
 

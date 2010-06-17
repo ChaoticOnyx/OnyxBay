@@ -24,6 +24,14 @@
 		if(istype(T) && !T.density)
 			if(!LinkBlockedWithAccess(src, T, ID))
 				L.Add(T)
+
+	for(var/obj/multiz/stairs/enter/S in src)
+		var/dir = S.dir
+		if(!S.istop)
+			dir = turn(dir, 180)
+		var/turf/T = get_step(src, dir)
+		L.Add(locate(T.x, T.y, S.targetZ()))
+
 	return L
 
 

@@ -154,15 +154,16 @@
 
 /turf/proc
 	AdjacentTurfs()
+
 		var/L[] = new()
 		for(var/turf/simulated/t in oview(src,1))
-			if(!t.density)
-				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
-					L.Add(t)
+			if(!t.density && !LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+				L.Add(t)
+
 		return L
 	Distance(turf/t)
-		if(get_dist(src,t) == 1)
-			var/cost = (src.x - t.x) * (src.x - t.x) + (src.y - t.y) * (src.y - t.y)
+		if(get_dist(src, t) == 1 || src.z != t.z)
+			var/cost = (src.x - t.x) * (src.x - t.x) + (src.y - t.y) * (src.y - t.y) + (src.z - t.z) * (src.z - t.z) * 3
 			cost *= (pathweight+t.pathweight)/2
 			return cost
 		else
@@ -173,4 +174,5 @@
 			if(!t.density)
 				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 					L.Add(t)
+
 		return L

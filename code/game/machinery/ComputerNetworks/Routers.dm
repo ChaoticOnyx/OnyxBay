@@ -10,7 +10,7 @@
 	var/list/datum/computernet/disconnectednets = list()
 
 /obj/machinery/network/router/attack_ai(mob/living/silicon/ai/user as mob)
-	if(stat & (NOPOWER|BROKEN))
+	if(stat)
 		user << "\red The router is not responding"
 		return
 
@@ -24,10 +24,10 @@ Servicing [connectednets.len + disconnectednets.len] Networks<BR>
 		user << browse(dat, "window=router")
 	return
 
-/obj/machinery/network/router/receivemessage(message as text, obj/machinery/srcmachine)
+/obj/machinery/network/router/ReceiveNetworkPacket(message as text, obj/machinery/srcmachine)
 	if (..())
 		return
-	var/list/commands = getcommandlist(message)
+	var/list/commands = GetPacketContentUppercased(message)
 	if(commands.len < 3)
 		return
 	if (!check_password(commands[1]))
@@ -92,7 +92,7 @@ Servicing [connectednets.len + disconnectednets.len] Networks<BR>
 
 	usr << wificount
 
-/obj/machinery/network/router/identinfo()
+/obj/machinery/network/router/NetworkIdentInfo()
 	var/list/c = list( )
 	for(var/datum/computernet/CN in connectednets)
 		c += CN.id

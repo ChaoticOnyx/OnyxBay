@@ -32,14 +32,14 @@
 		if(nodes[messagelist[2]]) //Single-reciever, can we find it on the network?
 			var/obj/M = nodes[messagelist[2]]
 			recievers += M
-			M:receivemessage(packet, sendingunit)
+			M:ReceiveNetworkPacket(packet, sendingunit)
 
 	else //Multicast
 
 		if (messagelist[3] == "***") //TO EVERYONE
 			for (var/obj/M in nodes)
 				recievers += M
-				M:receivemessage(packet, sendingunit)
+				M:ReceiveNetworkPacket(packet, sendingunit)
 
 		else //To everyone of TypeId ___
 
@@ -47,10 +47,10 @@
 			for (var/obj/M in nodes)
 				if (messagelist[3] == M:typeID)
 					recievers += M
-					M:receivemessage(packet, sendingunit)
+					M:ReceiveNetworkPacket(packet, sendingunit)
 
 	for (var/obj/machinery/M in sniffers - recievers)
-		M:receivemessage(packet, sendingunit) //Sniffers get it too
+		M:ReceiveNetworkPacket(packet, sendingunit) //Sniffers get it too
 
 	return 1
 

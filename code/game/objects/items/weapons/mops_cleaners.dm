@@ -28,7 +28,7 @@ MOP
 
 	spawn(0)
 		for(var/i=0, i<3, i++)
-			step_towards(D,A)
+			step_towards_3d(D,A)
 			D.reagents.reaction(get_turf(D))
 			for(var/atom/T in get_turf(D))
 				D.reagents.reaction(T)

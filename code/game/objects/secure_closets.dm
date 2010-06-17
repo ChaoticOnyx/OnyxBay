@@ -202,7 +202,7 @@
 		return
 	if(istype(O, /obj/secure_closet) || istype(O, /obj/closet))
 		return
-	step_towards(O, src.loc)
+	step_towards_3d(O, src.loc)
 	if (user != O)
 		for(var/mob/B in viewers(user, 3))
 			if ((B.client && !( B.blinded )))

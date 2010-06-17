@@ -115,9 +115,7 @@ proc
 	PathWeightCompare(PathNode/a, PathNode/b)
 		return a.f - b.f
 
-	AStar(start,end,adjacent,dist,maxnodes,maxnodedepth = 30,mintargetdist,minnodedist,id=null, var/turf/exclude=null)
-
-//		world << "A*: [start] [end] [adjacent] [dist] [maxnodes] [maxnodedepth] [mintargetdist], [minnodedist] [id]"
+	AStar(start, end, adjacent, dist, maxnodes, maxnodedepth = 30, mintargetdist, minnodedist, id=null, var/turf/exclude=null)
 		var/PriorityQueue/open = new /PriorityQueue(/proc/PathWeightCompare)
 		var/closed[] = new()
 		var/path[]
@@ -130,8 +128,9 @@ proc
 			closed.Add(cur.source)
 
 			var/closeenough
+
 			if(mintargetdist)
-				closeenough = call(cur.source,dist)(end) <= mintargetdist
+				closeenough = call(cur.source, dist)(end) <= mintargetdist
 
 			if(cur.source == end || closeenough)
 				path = new()
@@ -142,6 +141,7 @@ proc
 				break
 
 			var/L[] = call(cur.source,adjacent)(id)
+
 			if(minnodedist && maxnodedepth)
 				if(call(cur.source,minnodedist)(end) + cur.nt >= maxnodedepth)
 					continue
@@ -152,7 +152,9 @@ proc
 			for(var/datum/d in L)
 				if(d == exclude)
 					continue
+
 				var/ng = cur.g + call(cur.source,dist)(d)
+
 				if(d.bestF)
 					if(ng + call(d,dist)(end) < d.bestF)
 						for(var/i = 1; i <= open.L.len; i++)
@@ -164,6 +166,7 @@ proc
 						continue
 
 				open.Enqueue(new /PathNode(d,cur,ng,call(d,dist)(end),cur.nt+1))
+
 				if(maxnodes && open.L.len > maxnodes)
 					open.L.Cut(open.L.len)
 		}
@@ -172,6 +175,7 @@ proc
 		while(!open.IsEmpty())
 			temp = open.Dequeue()
 			temp.source.bestF = 0
+
 		while(closed.len)
 			temp = closed[closed.len]
 			temp.bestF = 0

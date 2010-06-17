@@ -25,6 +25,9 @@
 	//Well, it *did* use temporary vars dx, dy, and dz, but this probably should be as fast as possible
 	return locate(ref.x+((dir&EAST)?1:0)-((dir&WEST)?1:0),ref.y+((dir&NORTH)?1:0)-((dir&SOUTH)?1:0),ref.z+((dir&UP)?1:0)-((dir&DOWN)?1:0))
 
+/proc/get_dist_3d(var/atom/Ref, var/atom/Trg)
+	return max(abs(Trg.x - Ref.x), abs(Trg.y - Ref.y), abs(Trg.z - Ref.z))
+
 /proc/reverse_dir_3d(dir)
 	var/ndir = (dir&NORTH)?SOUTH : 0
 	ndir |= (dir&SOUTH)?NORTH : 0
@@ -53,6 +56,28 @@
 		found_char = findtext(cur_text,character,last_found)
 	list += copytext(cur_text,last_found,length(cur_text)+1)
 	return list
+
+/proc/step_towards_3d(var/atom/movable/Ref, var/atom/movable/Trg)
+
+	if(Ref.z == Trg.z)
+		return step_towards(Ref, Trg)
+
+	var/dx = (Trg.x - Ref.x) / max(abs(Trg.x - Ref.x), 1)
+	var/dy = (Trg.y - Ref.y) / max(abs(Trg.y - Ref.y), 1)
+	var/dz = (Trg.z - Ref.z) / max(abs(Trg.z - Ref.z), 1)
+
+	var/turf/T = locate(Ref.x + dx, Ref.y + dy, Ref.z + dz)
+
+	if (!T)
+		return 0
+
+	Ref.Move(T)
+
+	if (Ref.loc != T)
+		return 0
+
+	return 1
+
 
 /proc/hex2num(hex)
 

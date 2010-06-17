@@ -235,3 +235,27 @@
 	icon_state = "door1"
 	opacity = 1
 	density = 1
+
+// ***************************************
+// Networking Support
+// ***************************************
+
+/obj/machinery/door/NetworkIdentInfo()
+	return "DOOR [!src.density ? "OPEN" : "CLOSED"]"
+
+/obj/machinery/door/ReceiveNetworkPacket(message, sender)
+	if(..())
+		return 1
+	var/list/PacketParts = GetPacketContentUppercased(message)
+	if(PacketParts.len < 2)
+		return 0
+	if(check_password(PacketParts[1]))
+		if(PacketHasStringAtIndex(PacketParts, 2, "OPEN"))
+			spawn(0)
+				open()
+			return 1
+		else if(PacketHasStringAtIndex(PacketParts, 2, "CLOSE"))
+			spawn(0)
+				close()
+				return 1
+	return 0

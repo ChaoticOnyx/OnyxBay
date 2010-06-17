@@ -11,7 +11,7 @@
 /obj/machinery/network/sniffer/proc/updateuser(var/mob/user)
 	user << output(browser, "obj/machinery/sniffer.browser")
 
-/obj/machinery/network/sniffer/receivemessage(var/message, var/obj/sendingunit)
+/obj/machinery/network/sniffer/ReceiveNetworkPacket(var/message, var/obj/sendingunit)
 	browser = "[message] from [sendingunit:computernet.id] [sendingunit:computerID]<br>[browser]"
 	updateUsrDialog()
 
@@ -20,7 +20,7 @@
 		if("send")
 			var/msg = winget(usr, "obj/machinery/sniffer.messageSend", "text")
 			winset(usr, "obj/machinery/sniffer.messageSend", "text=\"\"")
-			transmitmessage(msg)
+			TransmitNetworkPacket(msg)
 		if("clear")
 			usr << output("", "obj/machinery/sniffer.browser")
 			browser = ""
@@ -38,7 +38,7 @@
 /obj/machinery/computer/network/networksniffer/proc/updateuser(var/mob/user)
 	user << output(browser, "obj/machinery/sniffer.browser")
 
-/obj/machinery/computer/network/networksniffer/receivemessage(var/message, var/obj/sendingunit)
+/obj/machinery/computer/network/networksniffer/ReceiveNetworkPacket(var/message, var/obj/sendingunit)
 	browser = "[message] from [sendingunit:computernet.id] [sendingunit:computerID]<br>[browser]"
 	updateUsrDialog()
 
@@ -47,7 +47,7 @@
 		if("send")
 			var/msg = winget(usr, "obj/machinery/sniffer.messageSend", "text")
 			winset(usr, "obj/machinery/sniffer.messageSend", "text=\"\"")
-			transmitmessage(msg)
+			TransmitNetworkPacket(msg)
 		if("clear")
 			usr << output("", "obj/machinery/sniffer.browser")
 			browser = ""

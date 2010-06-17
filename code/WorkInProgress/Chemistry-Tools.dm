@@ -236,7 +236,7 @@
 
 			for(var/i=0, i<6, i++)
 				if(D.loc == trg) break
-				step_towards(D,trg)
+				step_towards_3d(D,trg)
 
 				for(var/mob/living/carbon/M in D.loc)
 					if(!istype(M,/mob/living/carbon)) continue

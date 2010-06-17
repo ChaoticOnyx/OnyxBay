@@ -749,7 +749,8 @@
 		for(var/mob/M in range(src, 1))
 			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
 				t7 = null
-	if ((t7 && (src.pulling && ((get_dist(src, src.pulling) <= 1 || src.pulling.loc == src.loc) && (src.client && src.client.moving)))))
+
+	if ((t7 && (src.pulling && ((get_dist_3d(src, src.pulling) <= 1 || src.pulling.loc == src.loc) && (src.client && src.client.moving)))))
 		var/turf/T = src.loc
 		. = ..()
 
@@ -799,12 +800,13 @@
 //								location.add_blood(M)
 
 
-						step(src.pulling, get_dir(src.pulling.loc, T))
+						src.pulling.Move(T)
 						M.pulling = t
 				else
 					if (src.pulling)
-						step(src.pulling, get_dir(src.pulling.loc, T))
+						src.pulling.Move(T)
 	else
+
 		src.pulling = null
 		. = ..()
 	if ((src.s_active && !( s_active in src.contents ) ))

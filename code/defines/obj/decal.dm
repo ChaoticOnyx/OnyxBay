@@ -134,3 +134,39 @@
 	layer = 3
 	icon = 'old_or_unused.dmi'
 	icon_state = "cobweb2"
+
+/obj/decal/sign
+	icon = 'decals.dmi'
+	anchored = 1.0
+	opacity = 0
+	density = 0
+
+/obj/decal/sign/bio
+	desc = "A warning sign which reads 'BIO HAZARD'"
+	name = "BIO HAZARD"
+	icon_state = "bio"
+
+/obj/decal/sign/electrical
+	desc = "A warning sign which reads 'ELECTRICAL HAZARD'"
+	name = "ELECTRICAL HAZARD"
+	icon_state = "shock"
+
+/obj/decal/sign/flammable
+	desc = "A warning sign which reads 'FLAMMABLE AREA'"
+	name = "FLAMMABLE AREA"
+	icon_state = "fire"
+
+/obj/decal/sign/nosmoking
+	desc = "A warning sign which reads 'NO SMOKING'"
+	name = "NO SMOKING"
+	icon_state = "nosmoking"
+
+/obj/decal/sign/securearea
+	desc = "A warning sign which reads 'SECURE AREA'"
+	name = "SECURE AREA"
+	icon_state = "securearea"
+
+/obj/decal/sign/space
+	desc = "A warning sign which reads 'SPACE DEPRESSURIZATION'"
+	name = "SPACE DEPRESSURIZATION"
+	icon_state = "space"

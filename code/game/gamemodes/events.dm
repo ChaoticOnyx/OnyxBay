@@ -124,16 +124,16 @@
 	for (var/atom/X in orange(9,src))
 		if ((istype(X,/obj) || istype(X,/mob/living)) && prob(7))
 			if (!X:anchored)
-				step_towards(X,src)
+				step_towards_3d(X,src)
 
 	for (var/atom/B in orange(7,src))
 		if (istype(B,/obj))
 			if (!B:anchored && prob(50))
-				step_towards(B,src)
+				step_towards_3d(B,src)
 				if(prob(10)) B:ex_act(3.0)
 			else
 				B:anchored = 0
-				//step_towards(B,src)
+				//step_towards_3d(B,src)
 				//B:anchored = 1
 				if(prob(10)) B:ex_act(3.0)
 		else if (istype(B,/turf))
@@ -141,17 +141,17 @@
 				src.smoke.start()
 				B:ReplaceWithSpace()
 		else if (istype(B,/mob/living))
-			step_towards(B,src)
+			step_towards_3d(B,src)
 
 
 	for (var/atom/A in orange(4,src))
 		if (istype(A,/obj))
 			if (!A:anchored && prob(90))
-				step_towards(A,src)
+				step_towards_3d(A,src)
 				if(prob(30)) A:ex_act(2.0)
 			else
 				A:anchored = 0
-				//step_towards(A,src)
+				//step_towards_3d(A,src)
 				//A:anchored = 1
 				if(prob(30)) A:ex_act(2.0)
 		else if (istype(A,/turf))
@@ -159,7 +159,7 @@
 				src.smoke.start()
 				A:ReplaceWithSpace()
 		else if (istype(A,/mob/living))
-			step_towards(A,src)
+			step_towards_3d(A,src)
 
 
 	for (var/atom/D in orange(1,src))

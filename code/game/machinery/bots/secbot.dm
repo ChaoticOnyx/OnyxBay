@@ -361,7 +361,7 @@ Auto Patrol: []"},
 
 			if(istype( next, /turf/simulated))
 
-				var/moved = step_towards(src, next)	// attempt to move
+				var/moved = step_towards_3d(src, next)	// attempt to move
 				if(moved)	// successful move
 					blockcount = 0
 					path -= loc

@@ -2,10 +2,9 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 468.1072
-UPDATE_OBJ_TREE: ON
-DIR: code code\datums code\datums\diseases code\defines code\defines\mob\living code\defines\mob\living\silicon code\defines\procs code\game code\game\machinery code\game\machinery\computer code\game\machinery\ComputerNetworks code\game\machinery\doors code\game\machinery\embedded_controller code\WorkInProgress\pda2 maps 
-FILE: maps\trunkmap.dmm
-LAST_COMPILE_TIME: 1276640840
+DIR: code code\ATMOSPHERICS code\ATMOSPHERICS\components code\ATMOSPHERICS\components\unary code\datums code\datums\diseases code\defines code\defines\mob\living code\defines\mob\living\silicon code\defines\obj code\defines\procs code\FEA code\game code\game\gamemodes code\game\gamemodes\nuclear code\game\jobs code\game\machinery code\game\machinery\bots code\game\objects code\modules code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\alien code\modules\mob\living\carbon\alien\humanoid code\modules\mob\living\carbon\alien\larva code\modules\mob\living\carbon\human icons\obj maps maps\backup 
+FILE: code\modules\mob\living\carbon\human\human.dm
+LAST_COMPILE_TIME: 1276751912
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

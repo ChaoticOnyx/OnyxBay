@@ -13,6 +13,7 @@ On the map:
 1453 for engineering access
 1455 for AI access
 */
+
 #define TRANSMISSION_WIRE	0
 #define TRANSMISSION_RADIO	1
 

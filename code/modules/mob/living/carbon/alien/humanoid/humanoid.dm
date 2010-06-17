@@ -364,6 +364,8 @@ to clean it up, or just beat the shit out of it (which takes ages).
 	return
 
 /mob/living/carbon/alien/humanoid/Move(a, b, flag)
+
+
 	if (src.buckled)
 		return 0
 
@@ -375,7 +377,7 @@ to clean it up, or just beat the shit out of it (which takes ages).
 		for(var/mob/M in range(src, 1))
 			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
 				t7 = null
-	if ((t7 && (src.pulling && ((get_dist(src, src.pulling) <= 1 || src.pulling.loc == src.loc) && (src.client && src.client.moving)))))
+	if ((t7 && (src.pulling && ((get_dist_3d(src, src.pulling) <= 1 || src.pulling.loc == src.loc) && (src.client && src.client.moving)))))
 		var/turf/T = src.loc
 		. = ..()
 
@@ -388,7 +390,6 @@ to clean it up, or just beat the shit out of it (which takes ages).
 					diary <<"src.pulling disappeared? at __LINE__ in mob.dm - src.pulling = [src.pulling]"
 					diary <<"REPORT THIS"
 
-		/////
 		if(src.pulling && src.pulling.anchored)
 			src.pulling = null
 			return
@@ -418,11 +419,11 @@ to clean it up, or just beat the shit out of it (which takes ages).
 						var/t = M.pulling
 						M.pulling = null
 
-						step(src.pulling, get_dir(src.pulling.loc, T))
+						src.pulling.Move(T)
 						M.pulling = t
 				else
 					if (src.pulling)
-						step(src.pulling, get_dir(src.pulling.loc, T))
+						src.pulling.Move(T)
 	else
 		src.pulling = null
 		. = ..()

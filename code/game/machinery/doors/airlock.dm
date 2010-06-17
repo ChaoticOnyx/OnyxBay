@@ -922,3 +922,65 @@ About the new airlock wires panel:
 				if (A.closeOtherId == src.closeOtherId && A != src)
 					src.closeOther = A
 					break
+
+
+// ***************************************
+// Networking Support
+// ***************************************
+
+/obj/machinery/door/airlock/NetworkIdentInfo()
+	return "AIRLOCK [!src.density ? "OPEN" : "CLOSED"]"
+
+/obj/machinery/door/airlock/ReceiveNetworkPacket(message,sender)
+	if(..())
+		return 1
+	var/list/PacketParts = GetPacketContentUppercased(message)
+	if(PacketParts.len < 2)
+		return 0
+
+	if(check_password(PacketParts[1]) && PacketParts.len >= 3)
+		switch(PacketParts[2])
+			if("ELEC")
+				switch(PacketParts[3])
+					if("ON")
+						src.secondsElectrified = -1
+						return 1
+					if("30")
+						src.secondsElectrified = 30
+						spawn(10)
+							while (src.secondsElectrified>0)
+								src.secondsElectrified-=1
+								if (src.secondsElectrified<0)
+									src.secondsElectrified = 0
+								sleep(10)
+						return 1
+					if("OFF")
+						src.secondsElectrified = 0
+						return 1
+			if("BOLTS")
+				switch(PacketParts[3])
+					if("UP")
+						if(src.arePowerSystemsOn())
+							src.locked = 0
+							update_icon()
+						return 1
+					if("DOWN")
+						src.locked = 1
+						update_icon()
+						return 1
+			if("ACCESS")
+				switch(PacketParts[3])
+					if("ON")
+						src.aiDisabledIdScanner = 0
+						return 1
+					if("OFF")
+						src.aiDisabledIdScanner = 1
+						return 1
+			if("DISRUPT")
+				switch(PacketParts[3])
+					if("MAIN")
+						src.loseMainPower()
+						return 1
+					if("BACKUP")
+						src.loseBackupPower()
+						return 1

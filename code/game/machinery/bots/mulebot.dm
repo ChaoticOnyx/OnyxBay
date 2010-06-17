@@ -572,8 +572,6 @@
 
 
 					if(istype( next, /turf/simulated))
-						//world << "at ([x],[y]) moving to ([next.x],[next.y])"
-
 
 						if(bloodiness)
 							var/obj/decal/cleanable/blood/tracks/B = new(loc)
@@ -590,11 +588,9 @@
 							bloodiness--
 
 
-
-						var/moved = step_towards(src, next)	// attempt to move
+						var/moved = step_towards_3d(src, next)
 						if(cell) cell.use(1)
-						if(moved)	// successful move
-							//world << "Successful move."
+						if(moved)
 							blockcount = 0
 							path -= loc
 

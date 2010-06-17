@@ -23,6 +23,7 @@
 	density = 1
 
 /obj/machinery/flasher/New()
+	..()
 	sleep(4)
 	src.sd_SetLuminosity(2)
 

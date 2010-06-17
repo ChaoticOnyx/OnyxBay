@@ -48,6 +48,7 @@
 			M.computernet = computernets[M.cnetnum]
 			if(!M.computerID)
 				world.log << "<b>[M] is not calling its ..() in New()!</b>"
+				continue
 			M.computernet.nodes[M.computerID] = M
 			M.computernet.nodes += M //Add both as an association and directly.
 
@@ -118,7 +119,7 @@
 
 	for(var/obj/machinery/network/router/R in world)
 		if(R.connectednets.len > 4)
-			world.log << "Possible network error at [R.x] [R.y] [R.z]"
+			world.log << "Possible network error at [R.x] [R.y] [R.z] (Router potentially overloaded)"
 
 	return netcount
 

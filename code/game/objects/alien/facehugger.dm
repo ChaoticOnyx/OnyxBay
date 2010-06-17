@@ -240,7 +240,7 @@
 						spawn(cycle_pause) src.process()
 						return
 
-				step_towards(src,get_step_towards2(src , target))
+				step_towards_3d(src,get_step_towards_3d2(src , target))
 			else
 				if( !path_target.len )
 
@@ -260,7 +260,7 @@
 					else
 						next = path_target[1]
 						path_target -= next
-						step_towards(src,next)
+						step_towards_3d(src,next)
 						quick_move = 1
 
 			if (get_dist(src, src.target) >= distance) src.frustration++
@@ -289,7 +289,7 @@
 
 			if(isalien(trg_idle))
 				if(can_see(src,trg_idle,viewrange))
-					step_towards(src,get_step_towards2(src , trg_idle))
+					step_towards_3d(src,get_step_towards_3d2(src , trg_idle))
 				else
 					path_idle(trg_idle)
 					if(!path_idle.len)
@@ -328,13 +328,13 @@
 				switch(get_dist(src, trg_idle))
 					if(1)
 						if(istype(trg_idle,/obj/alien/weeds))
-							step_towards(src,get_step_towards2(src , trg_idle))
+							step_towards_3d(src,get_step_towards_3d2(src , trg_idle))
 					if(2 to INFINITY)
-						step_towards(src,get_step_towards2(src , trg_idle))
+						step_towards_3d(src,get_step_towards_3d2(src , trg_idle))
 						if(path_idle.len) path_idle = new/list()
 					/*
 					if(viewrange+1 to INFINITY)
-						step_towards(src,get_step_towards2(src , trg_idle))
+						step_towards_3d(src,get_step_towards_3d2(src , trg_idle))
 						if(path_idle.len) path_idle = new/list()
 						quick_move = 1
 					*/
@@ -349,7 +349,7 @@
 				else
 					next = path_idle[1]
 					path_idle -= next
-					step_towards(src,next)
+					step_towards_3d(src,next)
 					quick_move = 1
 
 		if(quick_move)

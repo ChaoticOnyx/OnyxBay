@@ -181,7 +181,7 @@
 		return
 	if(istype(O, /obj/secure_closet) || istype(O, /obj/closet))
 		return
-	step_towards(O, src.loc)
+	step_towards_3d(O, src.loc)
 	user.show_viewers(text("\red [] stuffs [] into []!", user, O, src))
 	src.add_fingerprint(user)
 	return
