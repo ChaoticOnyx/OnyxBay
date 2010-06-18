@@ -11,7 +11,7 @@
 	uploaded_sound.priority = 255
 	uploaded_sound.wait = 1
 
-	if(src.holder.rank == "Host" || src.holder.rank == "Coder" || src.holder.rank == "Shit Guy")
+	if(src.holder.rank == "Host" || src.holder.rank == "Coder" || src.holder.rank == "Super Administrator")
 		log_admin("[key_name(src)] played sound [S]")
 		message_admins("[key_name_admin(src)] played sound [S]", 1)
 		world << uploaded_sound

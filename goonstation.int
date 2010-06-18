@@ -2,10 +2,9 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 468.1072
-UPDATE_OBJ_TREE: ON
-DIR: code code\ATMOSPHERICS code\ATMOSPHERICS\components code\ATMOSPHERICS\components\unary code\datums code\datums\diseases code\defines code\defines\mob\living code\defines\mob\living\silicon code\defines\obj code\defines\procs code\FEA code\game code\game\gamemodes code\game\gamemodes\nuclear code\game\jobs code\game\machinery code\game\machinery\bots code\game\objects code\modules code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\alien code\modules\mob\living\carbon\alien\humanoid code\modules\mob\living\carbon\alien\larva code\modules\mob\living\carbon\human icons icons\obj icons\turf maps maps\backup 
-FILE: maps\NSS_Luna.dmm
-LAST_COMPILE_TIME: 1276752060
+DIR: code code\ATMOSPHERICS\components code\ATMOSPHERICS\components\unary code\datums code\datums\diseases code\defines code\defines\area code\defines\mob\living code\defines\mob\living\silicon code\defines\obj code\defines\procs code\FEA code\game code\game\area code\game\gamemodes code\game\gamemodes\changeling code\game\gamemodes\nuclear code\game\gamemodes\sandbox code\game\gamemodes\wizard code\game\machinery code\game\machinery\bots code\game\objects\alien code\game\objects\devices code\game\objects\items code\game\objects\items\weapons code\modules code\modules\admin code\modules\admin\verbs code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\human code\modules\mob\living\carbon\monkey code\modules\power code\WorkInProgress code\WorkInProgress\computer2 code\WorkInProgress\optics code\WorkInProgress\pda2 code\WorkInProgress\plants code\WorkInProgress\recycling maps 
+FILE: code\modules\admin\admin_verbs.dm
+LAST_COMPILE_TIME: 1276852362
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

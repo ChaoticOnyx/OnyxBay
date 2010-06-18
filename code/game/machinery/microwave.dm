@@ -62,14 +62,14 @@
 /obj/machinery/microwave/New() // *** After making the recipe in defines\obj\food.dmi, add it in here! ***
 	..()
 	src.available_recipes += new /datum/recipe/donut(src)
-	src.available_recipes += new /datum/recipe/monkeyburger(src)
-	src.available_recipes += new /datum/recipe/humanburger(src)
+//	src.available_recipes += new /datum/recipe/monkeyburger(src)
+//	src.available_recipes += new /datum/recipe/humanburger(src)
 	src.available_recipes += new /datum/recipe/waffles(src)
-	src.available_recipes += new /datum/recipe/brainburger(src)
-	src.available_recipes += new /datum/recipe/faggot(src)
-	src.available_recipes += new /datum/recipe/roburger(src)
-	src.available_recipes += new /datum/recipe/donkpocket(src)
-	src.available_recipes += new /datum/recipe/donkpocket_warm(src)
+//	src.available_recipes += new /datum/recipe/brainburger(src)
+//	src.available_recipes += new /datum/recipe/faggot(src)
+//	src.available_recipes += new /datum/recipe/roburger(src)
+//	src.available_recipes += new /datum/recipe/donkpocket(src)
+//	src.available_recipes += new /datum/recipe/donkpocket_warm(src)
 	src.available_recipes += new /datum/recipe/pie(src)
 
 

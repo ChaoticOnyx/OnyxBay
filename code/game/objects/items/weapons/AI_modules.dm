@@ -176,8 +176,7 @@ AI MODULES
 
 /obj/item/weapon/aiModule/freeform/attack_hand(var/mob/user as mob)
 	..()
-	var/eatShit = "Eat shit and die"
-	var/targName = input(usr, "Please enter anything you want the AI to do. Anything. Serious.", "What?", eatShit)
+	var/targName = input(usr, "Please enter anything you want the AI to do. Anything. Serious.", "What?", newFreeFormLaw)
 	newFreeFormLaw = targName
 	desc = text("A 'freeform' AI module: '[]'", newFreeFormLaw)
 

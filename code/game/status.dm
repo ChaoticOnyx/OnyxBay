@@ -6,10 +6,12 @@
 
 	s += "<b>[station_name()]</b>";
 	s += " ("
-	s += "<a href=\"http://ss13.lljk.net/\">"
-	s += "[game_version]"
+	s += "<a href=\"http://baystation12.co.cc/\">"
+	s += "Wiki here"
 	s += "</a>"
 	s += ")"
+
+
 
 	var/list/features = list()
 
