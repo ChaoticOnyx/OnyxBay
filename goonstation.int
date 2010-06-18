@@ -2,6 +2,7 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 468.1072
+UPDATE_OBJ_TREE: ON
 DIR: code code\ATMOSPHERICS code\ATMOSPHERICS\components code\ATMOSPHERICS\components\unary code\datums code\datums\diseases code\defines code\defines\area code\defines\mob\living code\defines\mob\living\silicon code\defines\obj code\defines\procs code\FEA code\game code\game\gamemodes code\game\gamemodes\nuclear code\game\jobs code\game\machinery code\game\machinery\bots code\game\objects code\modules code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\alien code\modules\mob\living\carbon\alien\humanoid code\modules\mob\living\carbon\alien\larva code\modules\mob\living\carbon\human code\modules\power icons icons\obj icons\turf maps maps\backup 
 FILE: maps\NSV_Luna.dmm
 LAST_COMPILE_TIME: 1276752060
