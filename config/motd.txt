@@ -1,3 +1,119 @@
-<h1>Welcome to Goon Station 13!</h1>
+-----------------------------------------------------------------------------------------------
+Welcome to the server. Have fun!
 
-Sup~
+
+Congrates to the goons for giving us a copy of the /dev code
+We are working on porting our code across
+So thanks
+
+We have a new old map, based on the older baystation 12 map by trorbes.
+
+Check out the SS13 wiki (Composed by the goons over on that other server you probably thought of joining.) at http://ss13.donglabs.com
+
+And here is a very useful guide as well, provided by one of our players:
+http://www.bay12games.com/forum/index.php?topic=36959.0
+
+One more, very useful guide, on everything useful, would be this one, made down by the people down in the Penny Arcade forums. Whatever you call them. Arcaders, or whathaveyou.
+http://forums.penny-arcade.com/showthread.php?t=89006
+
+---------------------------GLOBAL RULES, APRIL 11th 2010-----------------------------------
+Here are the (slightly revised) global rules for playing on the Bay Station 12 server.
+
+-Do not attempt to crash the server (game-breaking bugs, 2,000+ degree bombs, etc.).
+
+-You are free to do whatever you please in an empty server, so long as it does not crash it.
+
+-If there are fewer that 4-5 players on the server, the round may be non-serious, where the roleplaying rules are more relaxed.  If you aren't sure if a round is serious or not, ask.
+
+-Keep In-Character (IC) conversations in the IC chat, and Out-Of-Character (OOC) conversations in the OOC chat during the game.  When the round ends, this is less important.
+
+-Please stay civil in OOC chat.  You can conduct yourself however you wish IC, so long as you have a valid reason to, and are not attacking the player behind the character.
+
+-Do not make bigoted, prejudiced, etc. statements in chat, even IC.  It's still offensive and unnecessary, even in the game. Rape jokes count. Rape isn’t funny.
+
+-Please consider that other people wish to have fun, and do not attack/kill/permanently incapacitate people at random, or disrupt the round unnecessarily.  This is griefing, and will not be tolerated.
+
+-Further, Griefing griefers is still griefing, and will be dealt with in the same manner.
+
+-Admins, do not abuse your powers, or think you are superior to the non-admins.  We are all equal in-game.
+
+-Do not multikey - multiple accounts controlled by the same person enterring the game.  This is automatically detected, and will be questioned.
+
+-Please try to maintain proper English skills.  We understand if it isn't your first language, but laziness just makes you look like an idiot.
+
+-Do not metagame.  Metagaming is using OOC knowledge that you could not possibly know IC in the game.  It is anathema to proper roleplaying.
+
+-All admins reserve the right to ban anyone who is a 'major idiot.' You probably won't know you're an idiot until we tell, you though, so, don't worry about this. Most of you are not, so you can relax. XD   Anyone who disagrees with said judgement, may contact me, 'Johbson' on the BYOND messager, or, on the Bay12 Forums, in which I am 'Dr. Johbson' An example, however, to tell if your an idiot, would be if your annoying/making groups of people angry. Also, please tell us if you’re new, we'll be a lot less harsh. I also understand that this may be used as an excuse in some bannings.
+
+-Roleplay well. You are not insane, you are not a psychopath. Going batshit is allowed, but you’re walking a very, very thin line if you do and going over the top will end with you being muted. So adminhelp it. Adminhelp everything if you are not sure, because that is the number one way to prevent getting yourself banned if you mess up short of changing your name and hiding in a closet for about half a year. If you do anything, at all, that hinders or reduces the enjoyment of the game for other players because of your roleplaying you are GUARANTEED to be banned unless you Adminhelp it or have a good reason. If you do either, you likely won't be banned.
+
+-Adminhelp. Use adminhelp if you are not sure. We cannot state this enough.
+
+-No, seriously.
+
+------------------------IN CHARACTER RULES, APRIL 11th, 2010--------------------------------
+These are the rules for how to properly roleplay your character.
+
+-"Rounds" and "Game modes" are OOC knowledge.  No preparing for the blob because you know it will appear this round.  Bonus points for not knowing IC that fire hurts the blob.
+
+-You do not know about the traitor's syndicate uplink.  You do, however, know what items are contraband, although not necessarily the connection to the syndicate. All the items traitors can spawn are considered contraband, but their possession, depending on their lethality, is a relatively minor offense, unless they’re used.
+
+-You should not know the workings of jobs you do not do; a janitor would probably not know how to use the cryo chamber to resuscitate someone.  An exception could be made if you are assigned a job which your character shouldn't know how to do but not knowing would hinder the game. Discretion is advised.
+
+------------------WHAT YOUR CHARACTER KNOWS (Lore) APRIL 11th, 2010--------------------------
+This is stuff you should already know as a character.
+
+-The year is AD2550.  Mankind has begun to leave its cradle in the Sol System and travel beyond the stars thanks to remarkable advances in faster-than-light travel.
+
+-Cloning of chimpanzees has been perfected, and has produced a viable way to experiment on human-analogs with efficiency.  Human cloning, however, is still a controversial subject.
+
+-The old religions, which place extreme importance on the Earth, have slowly started dying as humans have seen the vastness of the universe, but many smaller religions have cropped up in their place.  Chaplains are still recognized as important to the morale of space colonies and stations.
+
+-Humans have set up many space stations in many different systems; some for habitation, some for research, and some for exploration.
+
+-Planet terraforming is a new science, and most off-Earth planetary colonies are still self-contained research facilities.
+
+-Alien lifeforms have been discovered on many planets - most of these have been microorganisms or simple plant-like structures, but some small animals have been discovered.  The search is still on for intelligent life.
+
+-Scientists have discovered a highly-combustive and unstable chemical substance has been dubbed "plasma" in several gas giants.
+
+-NanoTrasen, your employer and the largest plasma-mining corporation in the inhabited galaxy, authorized the construction of twenty-some plasma mining and research stations orbiting gas giants several decades ago.  Yours was the twelfth.
+
+-Deep-Space Plasma Research Station no. 12 was designed for extended crew stays of up to half a year.  Many other stations have been equipped for much longer habitation cycles.
+
+-Your station has been dubbed "Bay Station 12" by the crew, after the first captain's home town of Bay City, Texas, USA.
+
+-The station is powered by heat-differential engine fuelled with plasma.  Despite plasma's incredible properties, your station's engineers have been requesting a more efficient engine model for years.
+
+-Your station was, in its time, supplied with an early model Artificial Intelligence satellite, capable of uplinking to the station remotely and running much of the station itself.  Needless to say, some bugs have been found. There are rumours that the model has no shielding against Ion Storms and is that the Laws that govern it are subject to change. NanoTransen claims that the model is state-of-the-art and that this could never happen.
+
+-Along with the plasma research lab, your station is equipped to handle more conventional medical research, such as chemistry and genetic modification. With the current decline of most major religions, the only thing holding genetics back is morality, which is not something NanoTransen cares overmuch about.
+
+-You left NanoTrasen Central Command, or CentComm, some time ago.  You probably won't be making it back any time soon.
+
+-NanoTrasen is rumoured to have had very shady dealings in the past.  NanoTrasen vehemently denies these claims.
+
+-NanoTrasen has a very relaxed hiring policy. Rumour has it that short of being totally unable to do anything at all, you’ll get a job with them. Not many people go for a job with NanoTransen, though. It’s no big secret as to why.
+
+-Many of your crewmates have shown erratic behaviour, much of which they displayed on arrival.
+
+-The Syndicate are a group of terrorists intent to destroy the station and ruin NanoTrasen's shit.  Their "uniform" is a red spacesuit.
+
+-Sometimes you noticed a mysterious ship travel by.  It never stops at the station, and there's nobody else here within several parsecs, but you've learned to ignore it.
+
+-There are several reports of espionage perpetrated by NanoTrasen employees on other stations.  These reports are generally taken to be the ones NanoTrasen has failed to contain.
+
+-There are reports of a "Wizard Federation," dangerous neo-luddites with magical powers; these are too ridiculous to be taken seriously, and barring a few conspiracy theorists, no one does.
+
+-Zombie media has become a big fad on Earth, to the point where several people have reportedly "witnessed" walking corpses. However, nobody can say exactly what a zombie looks like or how to deal with it. Most of the ‘walking corpses’ have been dismissed as jaundice sufferers or other people suffering from a normal disease.
+
+-Microorganisms have been found to inhabit the gas giant you orbit.  They grow rapidly in the presence of human biomatter, and are capable of eating a hole in the hull if left unchecked. You have not been trained in dealing with them.
+
+-"Space Fever" is a strain of Influenza commonly found on extended-stay deep-space stations and ships.  It spreads rapidly, and induces fevers and dizziness, but NanoTrasen doctors have insisted that it is not deadly.
+
+-----------------------------------------------------------------------------------------------
+IF YOU ARE LAZY AND DON'T READ THIS MOTD, I WILL HATE YOU FOREVER!
+
+More importantly, reading this MOTD will increase your ability to act and roleplay in a way that'll make the game more fun for you and others, so it's highly recommended. Also, the rules are on it. Also, you'll probably lose 15 pounds if you read it.
+
+HEY GUYS - RPing an insane guy isn't funny. We’ve had problems with this in the past. You’ll probably be banned and there’s no set level of acceptable insane-ness, so you’re playing with fire here. Always Adminhelp it, and don't bother trying if you don't.

@@ -54,7 +54,7 @@
 		src << "\red<B>Key not accepted as beta tester. You may only observe the rounds. Please join #goonstation on irc.synirc.net and ask to be a tester if you'd like to help!</B>"
 	*/
 /client/proc/goonauth()
-	set name = "Goon?"
+	set name = "Remove?"
 /*
 	if (src.authenticating)
 		return

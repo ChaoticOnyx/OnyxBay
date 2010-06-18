@@ -83,7 +83,7 @@ datum/shuttle_controller
 						location = 1
 						var/area/start_location = locate(/area/shuttle/escape/centcom)
 						var/area/end_location = locate(/area/shuttle/escape/station)
-						
+
 						var/list/dstturfs = list()
 						var/throwy = world.maxy
 

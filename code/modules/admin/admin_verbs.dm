@@ -185,7 +185,7 @@
 			src.verbs += /obj/admins/proc/toggle_aliens
 			src.verbs += /client/proc/warn
 
-		if ("Shit Guy")
+		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
 			src.verbs += /obj/admins/proc/togglegoonsay

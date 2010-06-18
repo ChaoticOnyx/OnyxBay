@@ -22,7 +22,7 @@ var/showadminmessages = 1
 		return
 
 	if(href_list["call_shuttle"])
-		if (src.rank in list("Primary Administrator", "Shit Guy", "Coder", "Host"))
+		if (src.rank in list("Primary Administrator", "Super Administrator", "Coder", "Host"))
 			if( ticker.mode.name == "blob" )
 				alert("You can't call the shuttle during blob!")
 				return
@@ -56,7 +56,7 @@ var/showadminmessages = 1
 			return
 
 	if(href_list["edit_shuttle_time"])
-		if (src.rank in list("Shit Guy", "Coder", "Host"))
+		if (src.rank in list("Super Administrator", "Coder", "Host"))
 			emergency_shuttle.settimeleft( input("Enter new shuttle duration (seconds):","Edit Shuttle Timeleft", emergency_shuttle.timeleft() ) as num )
 			log_admin("[key_name(usr)] edited the Emergency Shuttle's timeleft to [emergency_shuttle.timeleft()]")
 			message_admins("\blue [key_name_admin(usr)] edited the Emergency Shuttle's timeleft to [emergency_shuttle.timeleft()]", 1)
@@ -148,7 +148,7 @@ var/showadminmessages = 1
 		return
 
 	if(href_list["jobban3"])
-		if (src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  ))
+		if (src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  ))
 			var/mob/M = locate(href_list["jobban4"])
 			var/job = href_list["jobban3"]
 			if ((M.client && M.client.holder && (M.client.holder.level > src.level)))
@@ -167,7 +167,7 @@ var/showadminmessages = 1
 
 
 	if (href_list["boot2"])
-		if ((src.rank in list( "Moderator", "Secondary Administrator", "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Moderator", "Secondary Administrator", "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["boot2"])
 			if (ismob(M))
 				if ((M.client && M.client.holder && (M.client.holder.level >= src.level)))
@@ -188,7 +188,7 @@ var/showadminmessages = 1
 				href_list["ban"] = 1 // lets it fall through and refresh
 
 	if (href_list["newban"])
-		if ((src.rank in list( "Secondary Administrator", "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Secondary Administrator", "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["newban"])
 			if(!ismob(M)) return
 			if ((M.client && M.client.holder && (M.client.holder.level >= src.level)))
@@ -227,7 +227,7 @@ var/showadminmessages = 1
 					del(M)
 
 	if (href_list["remove"])
-		if ((src.rank in list( "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/t = href_list["remove"]
 			if(t && isgoon(t))
 				log_admin("[key_name(usr)] removed [t] from the goonlist.")
@@ -235,7 +235,7 @@ var/showadminmessages = 1
 				remove_goon(t)
 
 	if (href_list["mute2"])
-		if ((src.rank in list( "Moderator", "Secondary Administrator", "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Moderator", "Secondary Administrator", "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["mute2"])
 			if (ismob(M))
 				if ((M.client && M.client.holder && (M.client.holder.level >= src.level)))
@@ -247,7 +247,7 @@ var/showadminmessages = 1
 				M << "You have been [(M.muted ? "muted" : "voiced")]."
 
 	if (href_list["c_mode"])
-		if ((src.rank in list( "Secondary Administrator", "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Secondary Administrator", "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			if (ticker && ticker.mode)
 				return alert(usr, "The game has already started.", null, null, null, null)
 			var/dat = text({"<B>What mode do you wish to play?</B><HR>
@@ -271,7 +271,7 @@ var/showadminmessages = 1
 			usr << browse(dat, "window=c_mode")
 
 	if (href_list["c_mode2"])
-		if ((src.rank in list( "Secondary Administrator", "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Secondary Administrator", "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			if (ticker && ticker.mode)
 				return alert(usr, "The game has already started.", null, null, null, null)
 			switch(href_list["c_mode2"])
@@ -315,7 +315,7 @@ var/showadminmessages = 1
 			world.save_mode(master_mode)
 
 	if (href_list["monkeyone"])
-		if ((src.rank in list( "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["monkeyone"])
 			if(!ismob(M))
 				return
@@ -329,7 +329,7 @@ var/showadminmessages = 1
 				return
 
 	if (href_list["forcespeech"])
-		if ((src.rank in list( "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["forcespeech"])
 			if (ismob(M))
 				var/speech = input("What will [key_name(M)] say?.", "Force speech", "")
@@ -344,7 +344,7 @@ var/showadminmessages = 1
 			return
 
 	if (href_list["sendtoprison"])
-		if ((src.rank in list( "Moderator", "Administrator", "Secondary Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Moderator", "Administrator", "Secondary Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["sendtoprison"])
 			if (ismob(M))
 				if(istype(M, /mob/living/silicon/ai))
@@ -379,7 +379,7 @@ var/showadminmessages = 1
 			return
 
 	if (href_list["sendtomaze"])
-		if ((src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["sendtomaze"])
 			if (ismob(M))
 				if(istype(M, /mob/living/silicon/ai))
@@ -411,7 +411,7 @@ var/showadminmessages = 1
 			return
 
 	if (href_list["tdome1"])
-		if ((src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["tdome1"])
 			// M.revive()
 			M.loc = pick(tdome1)
@@ -420,7 +420,7 @@ var/showadminmessages = 1
 			M << "\blue You have been sent to the Thunderdome."
 
 	if (href_list["tdome2"])
-		if ((src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["tdome2"])
 			// M.revive()
 			M.loc = pick(tdome2)
@@ -429,7 +429,7 @@ var/showadminmessages = 1
 			M << "\blue You have been sent to the Thunderdome."
 
 	if (href_list["adminauth"])
-		if ((src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["adminauth"])
 			if (ismob(M) && !M.client.authenticated && !M.client.authenticating)
 				M.client.verbs -= /client/proc/authorize
@@ -439,7 +439,7 @@ var/showadminmessages = 1
 				M.client << text("You have been authorized by []", usr.key)
 
 	if (href_list["revive"])
-		if ((src.rank in list( "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["revive"])
 			if (ismob(M))
 				if(istype(M, /mob/dead/observer))
@@ -457,7 +457,7 @@ var/showadminmessages = 1
 			return
 
 	if (href_list["makeai"]) //Yes, im fucking lazy, so what? it works ... hopefully
-		if ((src.rank in list( "Primary Administrator", "Coder", "Host", "Administrator", "Shit Guy"  )))
+		if ((src.rank in list( "Primary Administrator", "Coder", "Host", "Administrator", "Super Administrator"  )))
 			var/mob/M = locate(href_list["makeai"])
 			if(istype(M, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = M
@@ -617,18 +617,18 @@ var/showadminmessages = 1
 		else
 			alert("Cannot make this mob a traitor")
 	if (href_list["create_object"])
-		if (src.rank in list("Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"))
+		if (src.rank in list("Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"))
 			return create_object(usr)
 		else
 			alert("You are not a high enough administrator! Sorry!!!!")
 
 	if (href_list["create_turf"])
-		if (src.rank in list("Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"))
+		if (src.rank in list("Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"))
 			return create_turf(usr)
 		else
 			alert("You are not a high enough administrator! Sorry!!!!")
 	if (href_list["create_mob"])
-		if (src.rank in list("Shit Guy", "Coder", "Host"))
+		if (src.rank in list("Super Administrator", "Coder", "Host"))
 			return create_mob(usr)
 		else
 			alert("You are not a high enough administrator! Sorry!!!!")
@@ -642,7 +642,7 @@ var/showadminmessages = 1
 		voteres()
 
 	if (href_list["prom_demot"])
-		if ((src.rank in list("Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list("Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/client/C = locate(href_list["prom_demot"])
 			if(C.holder && (C.holder.level >= src.level))
 				alert("This cannot be done as [C] is a [C.holder.rank]")
@@ -651,7 +651,7 @@ var/showadminmessages = 1
 			if(src.level == 6)
 			//host
 				dat += {"
-				<A href='?src=\ref[src];chgadlvl=Coder;client4ad=\ref[C]'>Coder</A><BR>				<A href='?src=\ref[src];chgadlvl=Shit Guy;client4ad=\ref[C]'>Shit Guy</A><BR>
+				<A href='?src=\ref[src];chgadlvl=Coder;client4ad=\ref[C]'>Coder</A><BR>				<A href='?src=\ref[src];chgadlvl=Super Administrator;client4ad=\ref[C]'>Super Administrator</A><BR>
 				<A href='?src=\ref[src];chgadlvl=Primary Administrator;client4ad=\ref[C]'>PA</A><BR>
 				<A href='?src=\ref[src];chgadlvl=Administrator;client4ad=\ref[C]'>A</A><BR>
 				<A href='?src=\ref[src];chgadlvl=Secondary Administrator;client4ad=\ref[C]'>SA</A><BR>
@@ -661,7 +661,7 @@ var/showadminmessages = 1
 			else if(src.level == 5)
 			//coder
 				dat += {"
-				<A href='?src=\ref[src];chgadlvl=Shit Guy;client4ad=\ref[C]'>Shit Guy</A><BR>				<A href='?src=\ref[src];chgadlvl=Primary Administrator;client4ad=\ref[C]'>PA</A><BR>
+				<A href='?src=\ref[src];chgadlvl=Super Administrator;client4ad=\ref[C]'>Super Administrator</A><BR>				<A href='?src=\ref[src];chgadlvl=Primary Administrator;client4ad=\ref[C]'>PA</A><BR>
 				<A href='?src=\ref[src];chgadlvl=Administrator;client4ad=\ref[C]'>A</A><BR>
 				<A href='?src=\ref[src];chgadlvl=Secondary Administrator;client4ad=\ref[C]'>SA</A><BR>
 				<A href='?src=\ref[src];chgadlvl=Moderator;client4ad=\ref[C]'>M</A><BR>
@@ -706,8 +706,8 @@ var/showadminmessages = 1
 
 
 	if (href_list["object_list"])
-		if (src.rank in list("Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"))
-			if (config.allow_admin_spawning && ((src.state == 2) || (src.rank in list("Shit Guy", "Coder", "Host"))))
+		if (src.rank in list("Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"))
+			if (config.allow_admin_spawning && ((src.state == 2) || (src.rank in list("Super Administrator", "Coder", "Host"))))
 				var/atom/loc = usr.loc
 
 				var/dirty_paths
@@ -728,7 +728,7 @@ var/showadminmessages = 1
 						removed_paths += dirty_path
 					else if (ispath(path, /obj/bhole) && !(src.rank in list("Coder", "Host")))
 						removed_paths += dirty_path
-					else if (ispath(path, /mob) && !(src.rank in list("Shit Guy", "Coder", "Host")))
+					else if (ispath(path, /mob) && !(src.rank in list("Super Administrator", "Coder", "Host")))
 						removed_paths += dirty_path
 					else
 						paths += path
@@ -778,7 +778,7 @@ var/showadminmessages = 1
 				return
 
 	if (href_list["secretsfun"])
-		if ((src.rank in list( "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/ok = 0
 			switch(href_list["secretsfun"])
 				if("sec_clothes")
@@ -889,7 +889,7 @@ var/showadminmessages = 1
 							H.loc = pick(prisonsecuritywarp)
 						prisonwarped += H
 				if("traitor_all")
-					if ((src.rank in list( "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+					if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 						if(!ticker)
 							alert("The game hasn't started yet!")
 							return
@@ -980,14 +980,14 @@ var/showadminmessages = 1
 							sleep(rand(30,400))
 							Wall.ex_act(rand(2,1)) */
 				if("wave")
-					if ((src.rank in list("Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+					if ((src.rank in list("Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 						meteor_wave()
 						message_admins("[key_name_admin(usr)] has spawned meteors", 1)
 					else
 						alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 						return
 				if("retardify")
-					if (src.rank in list("Shit Guy", "Coder", "Host"))
+					if (src.rank in list("Super Administrator", "Coder", "Host"))
 						for(var/mob/living/carbon/human/H in world)
 							if(H.client)
 								H << "\red <B>You suddenly feel stupid.</B>"
@@ -997,7 +997,7 @@ var/showadminmessages = 1
 						alert("You cannot perform this action. You must be of a higher administrative rank!")
 						return
 				if("fakeguns")
-					if (src.rank in list("Shit Guy", "Coder", "Host"))
+					if (src.rank in list("Super Administrator", "Coder", "Host"))
 						for(var/obj/item/W in world)
 							if(istype(W, /obj/item/clothing) || istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/weapon/disk) || istype(W, /obj/item/weapon/tank))
 								continue
@@ -1009,7 +1009,7 @@ var/showadminmessages = 1
 						alert("You cannot perform this action. You must be of a higher administrative rank!")
 						return
 				if("schoolgirl")
-					if (src.rank in list("Shit Guy", "Coder", "Host"))
+					if (src.rank in list("Super Administrator", "Coder", "Host"))
 						for(var/obj/item/clothing/under/W in world)
 							W.icon_state = "schoolgirl"
 							W.item_state = "w_suit"
@@ -1025,7 +1025,7 @@ var/showadminmessages = 1
 		return
 
 	if (href_list["secretsadmin"])
-		if ((src.rank in list( "Moderator", "Secondary Administrator", "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+		if ((src.rank in list( "Moderator", "Secondary Administrator", "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/ok = 0
 			switch(href_list["secretsadmin"])
 				if("clear_bombs")
@@ -1167,7 +1167,7 @@ var/showadminmessages = 1
 					world << text("<B>A secret has been activated by []!</B>", usr.key)
 		return
 	if (href_list["secretscoder"])
-		if ((src.rank in list( "Shit Guy", "Coder", "Host" )))
+		if ((src.rank in list( "Super Administrator", "Coder", "Host" )))
 			switch(href_list["secretscoder"])
 				if("spawn_objects")
 					var/dat = "<B>Admin Log<HR></B>"
@@ -1240,7 +1240,7 @@ var/showadminmessages = 1
 			lvl = 3
 		if("Primary Administrator")
 			lvl = 4
-		if("Shit Guy")
+		if("Super Administrator")
 			lvl = 5
 		if("Coder")
 			lvl = 6
@@ -1291,7 +1291,7 @@ var/showadminmessages = 1
 			lvl = 3
 		if("Primary Administrator")
 			lvl = 4
-		if("Shit Guy")
+		if("Super Administrator")
 			lvl = 5
 		if("Coder")
 			lvl = 6
@@ -1358,7 +1358,7 @@ var/showadminmessages = 1
 			lvl = 3
 		if("Primary Administrator")
 			lvl = 4
-		if("Shit Guy")
+		if("Super Administrator")
 			lvl = 5
 		if("Coder")
 			lvl = 6
@@ -1710,7 +1710,7 @@ var/showadminmessages = 1
 
 /obj/admins/proc/traitorize(mob/M as mob, var/objective, var/mode)
 	//mode = 1 for normal traitorise, mode = 0 for traitor_all
-	if ((src.rank in list( "Administrator", "Primary Administrator", "Shit Guy", "Coder", "Host"  )))
+	if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 		if(M.stat == 2 || !(M.client))
 			alert("Person is dead or not logged in or hasn't started yet. Be nice")
 			return
