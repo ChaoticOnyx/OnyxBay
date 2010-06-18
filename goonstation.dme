@@ -176,11 +176,6 @@
 #include "code\defines\obj.dm"
 #include "code\defines\turf.dm"
 #include "code\defines\world.dm"
-<<<<<<< HEAD
-=======
-#include "code\defines\area\bay12.dm"
-#include "code\defines\area\baystation 12 areas.dm"
->>>>>>> f65859b40cf84cdab67e8f1da62becf633010c87
 #include "code\defines\area\Space Station 13 areas.dm"
 #include "code\defines\mob\mob.dm"
 #include "code\defines\mob\dead\observer.dm"
@@ -619,5 +614,6 @@
 #include "code\WorkInProgress\recycling\disposal.dm"
 #include "code\WorkInProgress\recycling\scrap.dm"
 #include "interface\skin.dmf"
+#include "maps\NSS_Luna.dmm"
 #include "maps\trunkmap.dmm"
 // END_INCLUDE

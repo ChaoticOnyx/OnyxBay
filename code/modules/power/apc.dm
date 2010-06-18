@@ -117,6 +117,9 @@
 		src.area = A
 	else
 		src.area = get_area_name(areastring)
+
+	src.name = src.area.name + " APC"
+
 	updateicon()
 
 	// create a terminal object at the same position as original turf loc
