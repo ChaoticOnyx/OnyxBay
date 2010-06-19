@@ -9,7 +9,7 @@
 			src << "\blue You are no longer listening to messages on the OOC channel."
 
 /mob/verb/ooc(msg as text)
-	if (!src.client.authenticated || IsGuestKey(src.key))
+	if (!src.client.authenticated)
 		src << "You are not authorized to communicate over these channels."
 		return
 	msg = copytext(sanitize(msg), 1, MAX_MESSAGE_LEN)

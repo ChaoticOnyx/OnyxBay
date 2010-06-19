@@ -213,6 +213,7 @@ mob/new_player
 	proc/LateChoices()
 		var/dat = "<html><body>"
 		dat += "Choose from the following open positions:<br>"
+/*
 		if (IsJobAvailable("Captain",captainMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=1'>Captain</a><br>"
 
@@ -230,10 +231,10 @@ mob/new_player
 
 		if (IsJobAvailable("Station Engineer",engineerMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=4'>Station Engineer</a><br>"
-
+*/
 		if (IsJobAvailable("Barman",barmanMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=5'>Barman</a><br>"
-
+/*
 		if (IsJobAvailable("Scientist",scientistMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=6'>Scientist</a><br>"
 
@@ -254,13 +255,13 @@ mob/new_player
 
 		if (IsJobAvailable("Detective",detectiveMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=12'>Detective</a><br>"
-
+*/
 		if (IsJobAvailable("Chaplain",chaplainMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=13'>Chaplain</a><br>"
 
 		if (IsJobAvailable("Janitor",janitorMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=14'>Janitor</a><br>"
-
+/*
 		if (IsJobAvailable("Clown",clownMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=15'>Clown</a><br>"
 
@@ -275,7 +276,7 @@ mob/new_player
 
 //		if (IsJobAvailable("Hydroponist",hydroponicsMax))
 //			dat += "<a href='byond://?src=\ref[src];SelectedJob=22'>Hydroponist</a><br>"
-
+*/
 		if (!jobban_isbanned(src,"Assistant"))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=18'>Assistant</a><br>"
 

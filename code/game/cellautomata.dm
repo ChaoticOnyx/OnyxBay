@@ -116,14 +116,14 @@
 //Crispy fullban
 /world/Reboot(var/reason)
 	spawn(0)
-		if(prob(40))
-			for(var/mob/M in world)
-				if(M.client)
-					M << sound('NewRound2.ogg')
-		else
-			for(var/mob/M in world)
-				if(M.client)
-					M << sound('NewRound.ogg')
+//		if(prob(40))
+//			for(var/mob/M in world)
+//				if(M.client)
+//					M << sound('NewRound2.ogg')
+//		else
+//			for(var/mob/M in world)
+//				if(M.client)
+//					M << sound('NewRound.ogg')
 
 	for(var/client/C)
 		C << link("byond://[world.address]:[world.port]")

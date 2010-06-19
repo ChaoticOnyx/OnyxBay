@@ -53,10 +53,11 @@ var
 	enter_allowed = 1
 	shuttle_frozen = 0
 	shuttle_left = 0
+	delay_start = 0
 
 	captainMax = 1
 	engineerMax = 5
-	barmanMax = 1
+	barmanMax = 2
 	scientistMax = 3
 	chemistMax = 1
 	geneticistMax = 2
@@ -68,7 +69,7 @@ var
 	atmosMax = 4
 	detectiveMax = 1
 	chaplainMax = 1
-	janitorMax = 1
+	janitorMax = 2
 	doctorMax = 4
 	clownMax = 0
 	chefMax = 1
