@@ -2,7 +2,9 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 468.1072
-DIR: code code\ATMOSPHERICS\components code\ATMOSPHERICS\components\unary code\datums code\datums\diseases code\defines code\defines\area code\defines\mob\living code\defines\mob\living\silicon code\defines\obj code\defines\procs code\FEA code\game code\modules code\modules\admin 
+UPDATE_OBJ_TREE: ON
+DIR: code code\ATMOSPHERICS\components code\ATMOSPHERICS\components\unary code\datums code\datums\diseases code\defines code\defines\area code\defines\mob\living code\defines\mob\living\silicon code\defines\obj code\defines\procs code\FEA code\game maps 
+FILE: maps\NSV_Luna.dmm
 LAST_COMPILE_TIME: 1276852362
 AUTO_FILE_DIR: ON
 */
