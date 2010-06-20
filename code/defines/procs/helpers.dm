@@ -23,7 +23,7 @@
 	if(!dir&(UP|DOWN))
 		return get_step(ref,dir)
 	//Well, it *did* use temporary vars dx, dy, and dz, but this probably should be as fast as possible
-	return locate(ref.x+((dir&EAST)?1:0)-((dir&WEST)?1:0),ref.y+((dir&NORTH)?1:0)-((dir&SOUTH)?1:0),ref.z+((dir&UP)?1:0)-((dir&DOWN)?1:0))
+	return locate(ref.x+((dir&EAST)?1:0)-((dir&WEST)?1:0),ref.y+((dir&NORTH)?1:0)-((dir&SOUTH)?1:0),ref.z+((dir&DOWN)?1:0)-((dir&UP)?1:0))
 
 /proc/get_dist_3d(var/atom/Ref, var/atom/Trg)
 	return max(abs(Trg.x - Ref.x), abs(Trg.y - Ref.y), abs(Trg.z - Ref.z))

@@ -310,10 +310,25 @@
 	name = "Locker Room"
 	icon_state = "locker"
 
+/area/crew_quarters/sleeping/
+	icon_state = "bedroom"
+
+/area/crew_quarters/sleeping/A
+	name = "Dormitory A"
+
+/area/crew_quarters/sleeping/B
+	name = "Dormitory B"
+
+/area/crew_quarters/sleeping/C
+	name = "Dormitory C"
+
 /area/crew_quarters/fitness
 	name = "Fitness Room"
 	icon_state = "fitness"
 
+/area/crew_quarters/lounge
+	name = "Crew Lounge"
+	icon_state = "crewlounge"
 
 /area/crew_quarters/captain
 	name = "Captain's Quarters"
@@ -429,6 +444,9 @@
 	icon_state = "medbay"
 	music = 'signal.ogg'
 
+/area/medical/medbay/office
+	name = "Medbay"
+	icon_state = "medbayoffice"
 
 /area/medical/research
 	name = "Medical Research"
@@ -576,6 +594,10 @@
 /area/storage/autolathe
 	name = "Autolathe Storage"
 	icon_state = "storage"
+
+/area/storage/electrical
+	name = "Electrical Storage"
+	icon_state = "elecstorage"
 
 /area/storage/auxillary
 	name = "Auxillary Storage"

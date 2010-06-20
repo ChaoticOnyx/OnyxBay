@@ -376,7 +376,7 @@
 
 		loc = D.trunk
 		active = 1
-		dir = DOWN
+		dir = 64 //UP and DOWN are now actually used, so find another value to note that the package just started
 		spawn(1)
 			process()		// spawn off the movement process
 
@@ -408,7 +408,7 @@
 
 	// find the turf which should contain the next pipe
 	proc/nextloc()
-		return get_step(loc,dir)
+		return get_step_3d(loc, dir)
 
 	// find a matching pipe on a turf
 	proc/findpipe(var/turf/T)
@@ -416,7 +416,10 @@
 		if(!T)
 			return null
 
-		var/fdir = turn(dir, 180)	// flip the movement direction
+		var/fdir = dir ^ (UP|DOWN)		// |
+		if(!dir & (UP|DOWN))			// |flip the movement direction
+			fdir = turn(dir, 180)		// |
+
 		for(var/obj/disposalpipe/P in T)
 			if(fdir & P.dpdir)		// find pipe direction mask that matches flipped dir
 				return P
@@ -738,7 +741,28 @@
 		return
 
 
+/obj/disposalpipe/crossZ
 
+	New()
+		..()
+		if(icon_state == "pipe-d")
+			dpdir = dir | DOWN
+		else
+			dpdir = dir | UP
+
+		update()
+		return
+
+	nextdir(var/fromdir)
+		if (fromdir & (UP|DOWN))
+			return dpdir & (NORTH|WEST|EAST|SOUTH)
+		return dpdir & (UP|DOWN)
+
+/obj/disposalpipe/crossZ/up
+	icon_state = "pipe-u"
+
+/obj/disposalpipe/crossZ/down
+	icon_state = "pipe-d"
 
 //a three-way junction with dir being the dominant direction
 /obj/disposalpipe/junction
@@ -820,7 +844,7 @@
 
 	transfer(var/obj/disposalholder/H)
 
-		if(H.dir == DOWN)		// we just entered from a disposer
+		if(H.dir == 64)		// we just entered from a disposer
 			return ..()		// so do base transfer proc
 		// otherwise, go to the linked object
 		if(linked)
@@ -837,7 +861,7 @@
 	// nextdir
 
 	nextdir(var/fromdir)
-		if(fromdir == DOWN)
+		if(fromdir == 64)
 			return dir
 		else
 			return 0
