@@ -58,7 +58,7 @@
 	return list
 
 /proc/step_towards_3d(var/atom/movable/Ref, var/atom/movable/Trg)
-
+/*
 	if(Ref.z == Trg.z)
 		return step_towards(Ref, Trg)
 
@@ -77,6 +77,8 @@
 		return 0
 
 	return 1
+*/
+	return step_towards(Ref, Trg)
 
 
 /proc/hex2num(hex)

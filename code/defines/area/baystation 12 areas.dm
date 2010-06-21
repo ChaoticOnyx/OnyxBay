@@ -29,7 +29,7 @@ area/bs12/
 area/bs12/New()
 	..()
 	for(var/obj/machinery/door/D in src)
-		if(D.req_access_txt == "")
+		if(D.req_access_txt == "" || D.req_access_txt == "0")
 			D.req_access_txt = src.dooraccess
 		else if(D.req_access_txt == "NA")
 			D.req_access_txt = ""

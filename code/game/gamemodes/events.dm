@@ -1,11 +1,12 @@
 /proc/start_events()
-	if (!event && prob(eventchance))
-		event()
-		hadevent = 1
-		spawn(1300)
-			event = 0
-	spawn(1200)
-		start_events()
+	//if (!event && prob(eventchance))
+	//	event()
+	//	hadevent = 1
+	//	spawn(1300)
+	//		event = 0
+	//spawn(1200)
+	//	start_events()
+	var/a = null // Stub
 
 /proc/event()
 	switch(rand(1,6))

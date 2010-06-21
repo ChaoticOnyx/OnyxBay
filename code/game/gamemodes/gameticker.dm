@@ -20,13 +20,14 @@ var/global/datum/controller/gameticker/ticker
 /datum/controller/gameticker/proc/pregame()
 	set background = 1
 
-	pregame_timeleft = 60
+	pregame_timeleft = 180
 	world << "<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>"
 	world << "Please, setup your character and select ready. Game will start in [pregame_timeleft] seconds"
 
 	while(current_state == GAME_STATE_PREGAME)
 		sleep(10)
-		pregame_timeleft--
+		if(delay_start == 0)
+			pregame_timeleft--
 
 		if(pregame_timeleft <= 0)
 			current_state = GAME_STATE_SETTING_UP

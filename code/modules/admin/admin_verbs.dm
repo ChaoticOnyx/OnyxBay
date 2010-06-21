@@ -102,6 +102,8 @@
 			src.verbs += /client/proc/toggle_view_range
 			src.verbs += /obj/admins/proc/toggle_aliens
 			src.verbs += /client/proc/warn
+			src.verbs += /client/proc/delay
+			src.verbs += /client/proc/hubvis
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
@@ -184,6 +186,8 @@
 			src.verbs += /client/proc/toggle_view_range
 			src.verbs += /obj/admins/proc/toggle_aliens
 			src.verbs += /client/proc/warn
+			src.verbs += /client/proc/delay
+			src.verbs += /client/proc/hubvis
 
 		if ("Super Administrator")
 			src.deadchat = 1
@@ -252,6 +256,8 @@
 
 			src.verbs += /client/proc/toggle_view_range
 			src.verbs += /client/proc/warn
+			src.verbs += /client/proc/delay
+			src.verbs += /client/proc/hubvis
 
 		if ("Primary Administrator")
 
@@ -294,6 +300,7 @@
 			src.verbs += /client/proc/cmd_admin_check_contents
 			src.verbs += /client/proc/cmd_admin_gib_self
 			src.verbs += /client/proc/cmd_admin_remove_plasma
+			src.verbs += /client/proc/delay
 
 //				src.verbs += /client/proc/modifytemperature
 //				src.verbs += /client/proc/grillify
@@ -319,6 +326,7 @@
 			src.verbs += /client/proc/cmd_admin_create_centcom_report
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
+			src.verbs += /client/proc/hubvis
 
 		if ("Administrator")
 
@@ -352,7 +360,8 @@
 			src.verbs += /obj/admins/proc/toggletraitorscaling
 			src.verbs += /obj/admins/proc/startnow				//start now bitch
 			src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
-			src.verbs += /obj/admins/proc/toggleAI				//Toggle the AI
+			src.verbs += /obj/admins/proc/toggleAI
+			src.verbs += /client/proc/delay				//Toggle the AI
 
 			src.verbs += /obj/admins/proc/delay					//game start delay
 
@@ -363,6 +372,7 @@
 			src.verbs += /client/proc/cmd_admin_create_centcom_report
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
+			src.verbs += /client/proc/hubvis
 
 		if ("Secondary Administrator")
 			src.holder.level = 1
@@ -397,6 +407,7 @@
 			src.verbs += /client/proc/cmd_admin_create_centcom_report
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
+			src.verbs += /client/proc/delay
 
 		if ("Moderator")
 			src.holder.level = 0
@@ -425,6 +436,7 @@
 			src.verbs += /obj/admins/proc/unprison
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
+			src.verbs += /client/proc/delay
 
 		if ("Goat Fart")
 			src.holder.level = -1
@@ -699,3 +711,23 @@
 
 		del(M.client)
 		del(M)
+
+/client/proc/delay()
+	set category = "Admin"
+	set name = "Delay start"
+	if(delay_start == 0)
+		delay_start = 1
+		world << "\blue <b>[usr.client.stealth ? "Administrator" : usr.key] Delays the game</b>"
+	else
+		delay_start = 0
+		world << "\blue <b>[usr.client.stealth ? "Administrator" : usr.key] Undelays the game</b>"
+
+/client/proc/hubvis()
+	set category = "Admin"
+	set name = "Toggle hub visibility"
+	if(world.visibility == 0)
+		world.visibility = 1
+		message_admins("\blue <b>[usr.client.stealth ? "Administrator" : usr.key] Makes the game visible on the byond hub</b>")
+	else
+		world.visibility = 0
+		message_admins("\blue <b>[usr.client.stealth ? "Administrator" : usr.key] Removes the game from the byond hub</b>")
