@@ -58,6 +58,7 @@
 	nitrogen = 0.001
 	temperature = TCMB
 
+/turf/simulated/floor/
 
 /turf/simulated/floor
 	name = "floor"
@@ -78,10 +79,29 @@
 			..()
 			name = "floor"
 
-/turf/simulated/floor/plating
-	name = "plating"
-	icon_state = "plating"
-	intact = 0
+	open
+		name = "open space"
+		intact = 0
+		icon_state = "open" //TODO proper icon
+		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
+
+		New()
+			if(!istype(locate(x, y, z + 1), /turf/simulated/floor))	//If we're building on top of a wall, etc
+				var/turf/simulated/floor/F = new(src)				//Then change to a floor tile (no falling into walls)
+				F.sd_RasterLum()
+				return
+			return ..()
+
+		Enter(var/atom/movable/AM)
+			if (1) //TODO make this check if gravity is active (future use) - Sukasa
+				spawn(1)
+					AM.Move(locate(x, y, z + 1))
+			return ..()
+
+	plating
+		name = "plating"
+		icon_state = "plating"
+		intact = 0
 
 /turf/simulated/floor/plating/airless
 	name = "airless plating"
@@ -167,7 +187,7 @@
 			cost *= (pathweight+t.pathweight)/2
 			return cost
 		else
-			return get_dist(src,t)
+			return max(get_dist(src,t), 1)
 	AdjacentTurfsSpace()
 		var/L[] = new()
 		for(var/turf/t in oview(src,1))

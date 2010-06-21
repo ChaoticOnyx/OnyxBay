@@ -118,8 +118,6 @@
 			F << "Connected to router [R.id]"
 
 	for(var/obj/machinery/network/router/R in world)
-		if(R.connectednets.len > 4)
-			world.log << "Possible network error at [R.x] [R.y] [R.z] (Router potentially overloaded)"
 
 	return netcount
 

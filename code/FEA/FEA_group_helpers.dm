@@ -2,11 +2,16 @@
 	//Basically, join any nearby valid groups
 	//	If more than one, pick one with most members at my borders
 	// If can not find any but there was an ungrouped at border with me, call for group assembly
+	// If can not find any and no ungrouped at border, register as a single tile
 
 	var/turf/simulated/floor/north = get_step(src,NORTH)
 	var/turf/simulated/floor/south = get_step(src,SOUTH)
 	var/turf/simulated/floor/east = get_step(src,EAST)
 	var/turf/simulated/floor/west = get_step(src,WEST)
+
+	//TODO integrate up/down support
+	var/turf/simulated/floor/open/above = get_step_3d(src,UP)
+	var/turf/simulated/floor/below = get_step_3d(src,DOWN)
 
 	//Clear those we do not have access to
 	if(!CanPass(null, north, null, 1) || !istype(north))
@@ -18,11 +23,21 @@
 	if(!CanPass(null, west, null, 1) || !istype(west))
 		west = null
 
+	if(!istype(above))
+		above = null
+
+	if(!istype(src, /turf/simulated/floor/open))
+		below = null
+
 	var/new_group_possible = 0
 
+
+	//TODO incorporate connections
 	var/north_votes = 0
 	var/south_votes = 0
 	var/east_votes = 0
+	var/below_votes = 0
+	var/above_votes = 0
 
 	if(north)
 		if(north.parent)
@@ -39,6 +54,14 @@
 			if(west && (west.parent == north.parent))
 				north_votes++
 				west = null
+
+			if(above && (above.parent == north.parent))
+				north_votes++
+				above = null
+
+			if(below && (below.parent == north.parent))
+				north_votes++
+				below = null
 		else
 			new_group_possible = 1
 
@@ -53,6 +76,14 @@
 			if(west && (west.parent == south.parent))
 				south_votes++
 				west = null
+
+			if(above && (above.parent == south.parent))
+				south_votes++
+				above = null
+
+			if(below && (below.parent == south.parent))
+				south_votes++
+				below = null
 		else
 			new_group_possible = 1
 
@@ -63,10 +94,40 @@
 			if(west && (west.parent == east.parent))
 				east_votes++
 				west = null
+
+			if(above && (above.parent == east.parent))
+				east_votes++
+				above = null
+
+			if(below && (below.parent == east.parent))
+				east_votes++
+				below = null
 		else
 			new_group_possible = 1
 
-//	world << "[north_votes], [south_votes], [east_votes]"
+	if(above)
+		if(above.parent)
+			above_votes = 1
+
+			if(west && (west.parent == above.parent))
+				above_votes++
+				west = null
+
+			if(below && (below.parent == above.parent))
+				above_votes++
+				below = null
+		else
+			new_group_possible = 1
+
+	if(below)
+		if(below.parent)
+			below_votes = 1
+
+			if(west && (west.parent == below.parent))
+				below_votes++
+				west = null
+		else
+			new_group_possible = 1
 
 	if(west)
 		if(west.parent)
@@ -80,7 +141,7 @@
 		else
 			new_group_possible = 1
 
-	if(north_votes && (north_votes >= south_votes) && (north_votes >= east_votes))
+	if(north_votes && (north_votes >= south_votes) && (north_votes >= east_votes) && (north_votes >= above_votes) && (north_votes >= below_votes))
 		north.parent.suspend_group_processing()
 		north.parent.members += src
 		parent = north.parent

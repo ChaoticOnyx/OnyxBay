@@ -10,6 +10,8 @@
 
 /obj/multiz/ladder
 	icon_state = "ladderdown"
+	name = "ladder"
+	desc = "A Ladder.  You climb up and down it."
 
 /obj/multiz/ladder/New()
 	..()

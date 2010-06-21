@@ -109,6 +109,9 @@
 
 	src.update_status()
 
+	world.log << UP
+	world.log << DOWN
+
 	master_controller = new /datum/controller/game_controller()
 	spawn(-1) master_controller.setup()
 	return

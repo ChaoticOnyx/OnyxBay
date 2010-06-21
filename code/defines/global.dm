@@ -107,6 +107,7 @@ var
 	list/blobs = list()
 //	list/traitors = list()	//traitor list
 	list/cardinal = list( NORTH, SOUTH, EAST, WEST )
+	list/cardinal3d = list( NORTH, SOUTH, EAST, WEST, UP, DOWN )
 	list/alldirs = list(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
 
 	datum/station_state/start_state = null
@@ -178,3 +179,7 @@ var
 
 	const/shuttle_time_in_station = 1800 // 3 minutes in the station
 	const/shuttle_time_to_arrive = 6000 // 10 minutes to arrive
+
+	//3D dir flags - already defined wtf?
+	//const/UP = 16
+	//const/DOWN = 32
