@@ -366,6 +366,10 @@
 
 
 
+/area/crew_quarters/courtlobby
+	name = "Courtroom Lobby"
+	icon_state = "courtroom"
+
 /area/crew_quarters/courtroom
 	name = "Courtroom"
 	icon_state = "courtroom"
@@ -547,6 +551,10 @@
 	name = "Janitors Closet"
 	icon_state = "janitor"
 
+
+/area/firefighting
+	name = "Fire Station"
+	icon_state = "fire"
 
 /area/chemistry
 	name = "Chemistry"

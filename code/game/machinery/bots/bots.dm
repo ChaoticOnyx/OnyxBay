@@ -30,7 +30,9 @@
 		if(!S.istop)
 			dir = turn(dir, 180)
 		var/turf/T = get_step(src, dir)
-		L.Add(locate(T.x, T.y, S.targetZ()))
+		T = locate(T.x, T.y, S.targetZ())
+		if (T)
+			L.Add(T)
 
 	return L
 

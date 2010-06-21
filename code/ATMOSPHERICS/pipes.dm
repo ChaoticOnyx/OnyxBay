@@ -238,6 +238,41 @@ obj/machinery/atmospherics/pipe
 
 			return null
 
+	simple/multiz
+		icon = 'multiz_pipe.dmi'
+		var/dir2 = 0
+
+		up
+			dir2 = UP
+			icon_state = "up"
+
+			hide()
+				update_icon()
+
+		down
+			dir2 = DOWN
+			icon_state = "down"
+
+		New()
+			..()
+			initialize_directions = dir | dir2
+
+		update_icon()
+			if(node1&&node2)
+
+				var/node1_direction = get_dir_3d(src, node1)
+				var/node2_direction = get_dir_3d(src, node2)
+
+				if(node1_direction > node2_direction)
+					var/t = node1_direction
+					node1_direction = node2_direction
+					node2_direction = t
+
+				icon_state = "[dir2 == UP ? "up" : "down"][invisibility ? "-f" : "" ]"
+
+				dir = (node1_direction|node2_direction) & (NORTH|EAST|SOUTH|WEST)
+
+
 	simple/insulated
 		icon = 'red_pipe.dmi'
 		icon_state = "intact"

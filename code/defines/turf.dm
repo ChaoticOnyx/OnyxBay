@@ -187,7 +187,7 @@
 			cost *= (pathweight+t.pathweight)/2
 			return cost
 		else
-			return get_dist(src,t)
+			return max(get_dist(src,t), 1)
 	AdjacentTurfsSpace()
 		var/L[] = new()
 		for(var/turf/t in oview(src,1))
