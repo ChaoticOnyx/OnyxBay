@@ -275,6 +275,10 @@
 	name = "Aft Primary Hallway"
 	icon_state = "hallA"
 
+/area/hallway/primary/forestarboard
+	name = "Fore Starboard Primary Hallway"
+	icon_state = "hallS"
+
 
 /area/hallway/primary/port
 	name = "Port Primary Hallway"
