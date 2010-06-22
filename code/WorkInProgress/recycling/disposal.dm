@@ -384,6 +384,7 @@
 
 	// movement process, persists while holder is moving through pipes
 	proc/process()
+		sleep(1)
 		var/obj/disposalpipe/last
 		while(active)
 			if(has_fat_guy && prob(2)) // chance of becoming stuck per segment if contains a fat guy
@@ -417,7 +418,7 @@
 			return null
 
 		var/fdir = dir ^ (UP|DOWN)		// |
-		if(!dir & (UP|DOWN))			// |flip the movement direction
+		if(!(dir & (UP|DOWN)))			// |flip the movement direction
 			fdir = turn(dir, 180)		// |
 
 		for(var/obj/disposalpipe/P in T)

@@ -260,11 +260,17 @@
 	name = "Waste Disposal"
 	icon_state = "disposal"
 
+/area/hallway/primary/admin
+	name = "Administrative Block Hallway"
+	icon_state = "hallA"
 
 /area/hallway/primary/fore
 	name = "Fore Primary Hallway"
 	icon_state = "hallF"
 
+/area/hallway/primary/services
+	name = "Vessel Services Hallway"
+	icon_state = "hallV"
 
 /area/hallway/primary/starboard
 	name = "Starboard Primary Hallway"
@@ -555,10 +561,22 @@
 	name = "Janitors Closet"
 	icon_state = "janitor"
 
-
 /area/firefighting
 	name = "Fire Station"
 	icon_state = "fire"
+
+/area/hangar
+	name = "Hangar"
+	icon_state = "hangar"
+
+
+/area/hangar/escape
+	name = "Escape Hangar"
+	icon_state = "hangar"
+
+/area/hangar/escape/crew //TODO more after I place them
+
+
 
 /area/chemistry
 	name = "Chemistry"
