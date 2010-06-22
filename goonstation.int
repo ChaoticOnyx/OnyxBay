@@ -3,9 +3,9 @@
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 468.1072
 UPDATE_OBJ_TREE: ON
-DIR: code code\ATMOSPHERICS code\ATMOSPHERICS\components code\ATMOSPHERICS\components\binary_devices code\ATMOSPHERICS\components\unary code\datums code\datums\diseases code\defines code\defines\area code\defines\mob\living code\defines\mob\living\silicon code\game code\game\machinery code\game\machinery\ComputerNetworks code\WorkInProgress code\WorkInProgress\recycling icons icons\turf maps 
+DIR: code code\ATMOSPHERICS code\ATMOSPHERICS\components code\ATMOSPHERICS\components\binary_devices code\ATMOSPHERICS\components\unary code\datums code\datums\diseases code\defines code\defines\area code\defines\mob\living code\defines\mob\living\silicon code\defines\obj code\game code\game\gamemodes code\game\gamemodes\wizard code\game\machinery code\game\machinery\bots code\game\machinery\ComputerNetworks code\game\objects code\game\objects\devices code\modules code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\human code\modules\mob\new_player icons icons\turf maps 
 FILE: maps\NSV_Luna.dmm
-LAST_COMPILE_TIME: 1277158167
+LAST_COMPILE_TIME: 1277176476
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
