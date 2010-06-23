@@ -105,17 +105,17 @@
 		if("Detective")
 			return list(access_security, access_forensics_lockers, access_morgue, access_maint_tunnels)
 		if("Medical Doctor")
-			return list(access_medical, access_morgue)
+			return list(access_medical, access_morgue, access_medlab)
 		if("Captain")
 			return get_all_accesses()
 		if("Security Officer")
-			return list(access_security, access_brig)
+			return list(access_security, access_brig, access_forensics_lockers, access_maint_tunnels,access_medical)
 		if("Scientist")
 			return list(access_tox, access_tox_storage)
 		if("Head of Security")
 			return list(access_medical, access_morgue, access_tox, access_tox_storage, access_chemistry, access_medlab,
 			            access_teleporter, access_heads, access_tech_storage, access_security, access_brig, access_atmospherics,
-			            access_maint_tunnels, access_bar, access_janitor, access_kitchen, access_robotics, access_armory)
+			            access_maint_tunnels, access_bar, access_janitor, access_kitchen, access_robotics, access_armory, access_engine)
 		if("Head of Personnel")
 			return list(access_security, access_brig, access_forensics_lockers,
 			            access_tox, access_tox_storage, access_chemistry, access_medical, access_medlab, access_engine,
