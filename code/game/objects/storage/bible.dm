@@ -52,8 +52,8 @@
 			playsound(src.loc, "punch", 25, 1, -1)
 		else
 			if(ishuman(M) && !istype(M:head, /obj/item/clothing/head/helmet))
-				M.brainloss += 10
-				M << "\red You feel dumber."
+				//M.brainloss += 10
+				M << "\red You feel like something should have happened."
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red <B>[] beats [] over the head with []!</B>", user, M, src), 1)
 			playsound(src.loc, "punch", 25, 1, -1)
