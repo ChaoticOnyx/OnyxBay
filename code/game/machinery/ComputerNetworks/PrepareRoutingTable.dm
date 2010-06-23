@@ -4,7 +4,6 @@
 proc/BuildRoutingTable()
 	set background = 1
 	var/datum/rtable/R = new /datum/rtable()
-	world.log << "Preparing routing table ([computernets.len] nets)"
 	for (var/datum/computernet/srccnet in computernets)
 		R.sourcenets[srccnet.id] = list()
 		for(var/datum/computernet/destcnet in computernets)

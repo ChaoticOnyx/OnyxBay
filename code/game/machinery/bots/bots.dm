@@ -72,6 +72,9 @@
 	for(var/obj/window/D in loc)
 		if(!D.density)			continue
 		if(D.dir == SOUTHWEST)	return 1
+		if(D.dir == SOUTHEAST)	return 1 //Added these to fix pathing-through-windows issue
+		if(D.dir == NORTHWEST)	return 1
+		if(D.dir == NORTHEAST)	return 1
 		if(D.dir == dir)		return 1
 
 	for(var/obj/machinery/door/D in loc)

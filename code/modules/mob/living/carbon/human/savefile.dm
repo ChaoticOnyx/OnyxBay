@@ -61,7 +61,6 @@ datum/preferences/proc/savefile_load(mob/user, var/silent = 1)
 
 //		if (!silent)
 //			alert(user, "Your savefile was incompatible with this version and was deleted.")
-
 		return 0
 
 	F["real_name"] >> src.real_name
@@ -86,6 +85,7 @@ datum/preferences/proc/savefile_load(mob/user, var/silent = 1)
 	F["be_syndicate"] >> src.be_syndicate
 	F["underwear"] >> src.underwear
 	F["name_is_always_random"] >> src.be_random_name
+	world.log << "Loaded Savefile for [user.ckey]"
 	return 1
 
 #undef SAVEFILE_VERSION_MAX
