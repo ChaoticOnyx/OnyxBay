@@ -1,0 +1,10 @@
+// BEGIN_INTERNALS
+/*
+MAP_ICON_TYPE: 0
+LAST_COMPILE_VERSION: 468.1072
+DIR: code code\datums\diseases code\game code\game\gamemodes code\game\gamemodes\changeling code\game\gamemodes\monkey code\game\gamemodes\revolution code\game\gamemodes\traitor code\game\jobs code\game\machinery code\game\objects\alien code\game\objects\items code\modules\admin code\modules\admin\verbs code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\alien code\modules\mob\living\carbon\alien\humanoid code\modules\mob\living\carbon\alien\larva code\WorkInProgress maps 
+FILE: code\game\gamemodes\alien.dm
+LAST_COMPILE_TIME: 1277318040
+AUTO_FILE_DIR: ON
+*/
+// END_INTERNALS
