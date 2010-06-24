@@ -130,6 +130,7 @@
 	anchored = 1.0
 	flags = TABLEPASS
 
+
 /obj/bedsheetbin
 	name = "linen bin"
 	desc = "A bin for containing bedsheets."

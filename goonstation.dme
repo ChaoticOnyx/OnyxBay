@@ -91,6 +91,7 @@
 #define FILE_DIR "code/WorkInProgress/pda2"
 #define FILE_DIR "code/WorkInProgress/plants"
 #define FILE_DIR "code/WorkInProgress/recycling"
+#define FILE_DIR "code/WorkInProgress/ZeroPoint"
 #define FILE_DIR "icons"
 #define FILE_DIR "icons/effects"
 #define FILE_DIR "icons/misc"
@@ -614,6 +615,7 @@
 #include "code\WorkInProgress\recycling\disposal-construction.dm"
 #include "code\WorkInProgress\recycling\disposal.dm"
 #include "code\WorkInProgress\recycling\scrap.dm"
+#include "code\WorkInProgress\ZeroPoint\Laser.dm"
 #include "interface\skin.dmf"
-#include "maps\NSV_Luna.dmm"
+#include "maps\baystation12.dmm"
 // END_INCLUDE
