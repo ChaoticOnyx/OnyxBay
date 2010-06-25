@@ -76,6 +76,7 @@
 #define FILE_DIR "code/modules/mob/living/carbon/alien/larva"
 #define FILE_DIR "code/modules/mob/living/carbon/human"
 #define FILE_DIR "code/modules/mob/living/carbon/monkey"
+#define FILE_DIR "code/modules/mob/living/carbon/zombie"
 #define FILE_DIR "code/modules/mob/living/silicon"
 #define FILE_DIR "code/modules/mob/living/silicon/ai"
 #define FILE_DIR "code/modules/mob/living/silicon/robot"
@@ -615,7 +616,8 @@
 #include "code\WorkInProgress\recycling\disposal-construction.dm"
 #include "code\WorkInProgress\recycling\disposal.dm"
 #include "code\WorkInProgress\recycling\scrap.dm"
-#include "code\WorkInProgress\ZeroPoint\Laser.dm"
+#include "code\WorkInProgress\ZeroPoint\Laser2.dm"
+#include "code\WorkInProgress\ZeroPoint\SuperMatter.dm"
 #include "interface\skin.dmf"
 #include "maps\baystation12.dmm"
 // END_INCLUDE
