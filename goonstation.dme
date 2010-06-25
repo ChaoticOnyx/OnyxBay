@@ -620,4 +620,6 @@
 #include "code\WorkInProgress\ZeroPoint\SuperMatter.dm"
 #include "interface\skin.dmf"
 #include "maps\baystation12.dmm"
+#include "maps\NSV_Luna.dmm"
+#include "maps\Type2.dmm"
 // END_INCLUDE
