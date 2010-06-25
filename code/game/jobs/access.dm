@@ -111,7 +111,7 @@
 		if("Security Officer")
 			return list(access_security, access_brig, access_forensics_lockers, access_maint_tunnels,access_medical)
 		if("Scientist")
-			return list(access_tox, access_tox_storage)
+			return list(access_tox, access_tox_storage,access_maint_tunnels,access_medlab)
 		if("Head of Security")
 			return list(access_medical, access_morgue, access_tox, access_tox_storage, access_chemistry, access_medlab,
 			            access_teleporter, access_heads, access_tech_storage, access_security, access_brig, access_atmospherics,
@@ -123,7 +123,7 @@
 			            access_all_personal_lockers, access_tech_storage, access_maint_tunnels, access_bar, access_janitor,
 			            access_crematorium, access_kitchen, access_robotics, access_cargo, access_cargo_bot)
 		if("Atmospheric Technician")
-			return list(access_atmospherics, access_maint_tunnels, access_emergency_storage)
+			return list(access_atmospherics, access_maint_tunnels, access_emergency_storage,access_tech_storage,access_external_airlocks)
 		if("Barman")
 			return list(access_bar)
 		if("Chemist")
