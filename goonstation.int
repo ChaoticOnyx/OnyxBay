@@ -2,10 +2,9 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 470.1075
-UPDATE_OBJ_TREE: ON
-DIR: code code\ATMOSPHERICS code\ATMOSPHERICS\components code\ATMOSPHERICS\components\binary_devices code\ATMOSPHERICS\components\unary code\datums code\datums\diseases code\defines code\defines\area code\defines\mob\living code\defines\mob\living\silicon code\defines\obj code\game code\game\jobs code\game\machinery code\modules code\modules\admin maps 
-FILE: maps\Type2.dmm
-LAST_COMPILE_TIME: 1277398720
+DIR: code code\datums\diseases code\game code\game\gamemodes code\game\gamemodes\changeling code\game\gamemodes\monkey code\game\gamemodes\revolution code\game\gamemodes\traitor code\game\jobs code\game\machinery code\game\objects\alien code\modules code\modules\admin 
+FILE: code\game\gamemodes\alien.dm
+LAST_COMPILE_TIME: 1277442444
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

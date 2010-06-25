@@ -6,7 +6,7 @@
 	//		event = 0
 	//spawn(1200)
 	//	start_events()
-	var/a = null // Stub
+	return // Stub
 
 /proc/event()
 	switch(rand(1,6))
