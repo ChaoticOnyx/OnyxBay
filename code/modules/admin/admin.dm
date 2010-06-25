@@ -206,7 +206,7 @@ var/showadminmessages = 1
 					AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 					M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 					M << "\red This is a temporary ban, it will be removed in [mins] minutes."
-					M << "\red To try to resolve this matter head to http://ss13.donglabs.com/forum/"
+					M << "\red To try to resolve this matter head to the bay 12 forums and PM a game administrator (NOT forum admin)"
 					log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
 					message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
 
@@ -219,7 +219,8 @@ var/showadminmessages = 1
 					AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
 					M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 					M << "\red This is a permanent ban."
-					M << "\red To try to resolve this matter head to http://ss13.donglabs.com/forum/"
+					M << "\red To try to resolve this matter head to the bay 12 forums and PM a game administrator (NOT forum admin)"
+					M << "\red \b Don't expect to be unbanned"
 					log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
 					message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
 
@@ -1594,7 +1595,7 @@ var/showadminmessages = 1
 	set category = "Special Verbs"
 	set desc="Delay the game start"
 	set name="Delay"
-	if (ticker)
+	if (ticker.current_state != GAME_STATE_PREGAME)
 		return alert("Too late... The game has already started!", null, null, null, null, null)
 	going = !( going )
 	if (!( going ))

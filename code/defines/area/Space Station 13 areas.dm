@@ -232,6 +232,10 @@
 	name = "Starboard Maintenance"
 	icon_state = "smaint"
 
+/area/maintenance/hangarequip
+	name = "Hangar Equipment Room"
+	icon_state = "smaint"
+
 
 /area/maintenance/port
 	name = "Port Maintenance"
