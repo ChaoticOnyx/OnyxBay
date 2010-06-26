@@ -104,6 +104,7 @@
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
+			src.verbs += /client/proc/toggleinvite
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
@@ -188,7 +189,7 @@
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
-
+			src.verbs += /client/proc/toggleinvite
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
@@ -258,7 +259,7 @@
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
-
+			src.verbs += /client/proc/toggleinvite
 		if ("Primary Administrator")
 
 			src.deadchat = 1
@@ -731,3 +732,16 @@
 	else
 		world.visibility = 0
 		message_admins("\blue <b>[usr.client.stealth ? "Administrator" : usr.key] Removes the game from the byond hub</b>")
+
+/client/proc/toggleinvite()
+	set category = "Admin"
+	set name = "Toggle invite only status"
+	if(config.invite_only)
+		config.invite_only = 0
+		world << "\blue <b> People without an invitation may now join the game"
+	else
+		config.invite_only = 1
+		world << "\blue <b> This game has been set to invite only"
+	message_admins("\blue <b> By [usr.client.key]</b>")
+
+	return

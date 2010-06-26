@@ -82,7 +82,7 @@
 	open
 		name = "open space"
 		intact = 0
-		icon_state = "open" //TODO proper icon
+		icon_state = "open"
 		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
 
 		New()
@@ -134,6 +134,15 @@
 
 	thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m steel wall
+
+
+/turf/simulated/wall/heatshield
+	thermal_conductivity = 0
+	opacity = 0
+	name = "heatshield"
+	icon = 'thermal.dmi'
+	icon_state = "thermal"
+
 
 /turf/simulated/shuttle
 	name = "shuttle"

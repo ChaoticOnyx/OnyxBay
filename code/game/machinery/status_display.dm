@@ -131,6 +131,7 @@
 					update()		// set to update again in 5 ticks
 					repeat_update = 1
 
+
 	proc/set_message(var/m1, var/m2)
 		if(m1)
 			index1 = (lentext(m1) > 5)

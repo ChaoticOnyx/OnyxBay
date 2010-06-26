@@ -62,11 +62,17 @@ datum
 				M.make_dizzy(3)
 				M:jitteriness = max(M:jitteriness-3,0)
 				if(data >= 25)
-					if (!M:stuttering) M:stuttering = 1
-					M:stuttering += 3
+					if (!M:intoxicated) M:intoxicated = 1
+					M:intoxicated += 3
 				if(data >= 40 && prob(33))
 					if (!M:confused) M:confused = 1
 					M:confused += 2
+				if(data >= 200)
+					M.eye_blurry = max(M.eye_blurry, 10)
+					M:drowsyness  = max(M:drowsyness, 20)
+				if(data >= 245)
+					M:paralysis = max(M:paralysis, 20)
+					M:drowsyness  = max(M:drowsyness, 30)
 				..()
 
 		water
@@ -351,10 +357,12 @@ datum
 			id = "acid"
 			description = "A strong mineral acid with the molecular formula H2SO4."
 			reagent_state = LIQUID
+
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				M:toxloss++
-				M:fireloss++
+				if(prob(15))
+					M:toxloss++
+					M:fireloss++
 				..()
 				return
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
@@ -369,7 +377,7 @@ datum
 							M << "\red Your helmet melts into uselessness but protects you from the acid!"
 							return
 
-					if(prob(75))
+					if(prob(15))
 						var/datum/organ/external/affecting = M:organs["head"]
 						affecting.take_damage(25, 0)
 						M:UpdateDamage()
@@ -390,15 +398,18 @@ datum
 						M << "\red \the [O] melts."
 					del(O)
 
+
 		pacid
 			name = "Polytrinic acid"
 			id = "pacid"
 			description = "Polytrinic acid is a an extremely corrosive chemical substance."
 			reagent_state = LIQUID
+
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				M:toxloss++
-				M:fireloss++
+				if(prob(15))
+					M:toxloss++
+					M:fireloss++
 				..()
 				return
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
@@ -422,7 +433,7 @@ datum
 					else
 						M:bruteloss += 15
 				else
-					if(istype(M, /mob/living/carbon/human))
+					if(istype(M, /mob/living/carbon/human) && prob(25))
 						var/datum/organ/external/affecting = M:organs["head"]
 						affecting.take_damage(75, 0)
 						M:UpdateDamage()
@@ -888,11 +899,17 @@ datum
 				M.make_dizzy(5)
 				M:jitteriness = max(M:jitteriness-5,0)
 				if(data >= 25)
-					if (!M:stuttering) M:stuttering = 1
-					M:stuttering += 4
+					if (!M:intoxicated) M:intoxicated = 1
+					M:intoxicated += 4
 				if(data >= 40 && prob(33))
 					if (!M:confused) M:confused = 1
 					M:confused += 3
+				if(data >= 165)
+					M.eye_blurry = max(M.eye_blurry, 10)
+					M:drowsyness  = max(M:drowsyness, 20)
+				if(data >= 185)
+					M:paralysis = max(M:paralysis, 20)
+					M:drowsyness  = max(M:drowsyness, 30)
 				..()
 
 		ammonia

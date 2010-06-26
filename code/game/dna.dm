@@ -460,16 +460,18 @@
 				O.real_name = randomname
 				i++
 		updateappearance(O,O.dna.uni_identity)
-		O.toxloss += M.toxloss
-		O.bruteloss += M.bruteloss
-		O.oxyloss += M.oxyloss
-		O.fireloss += M.fireloss
-		O.stat = M.stat
+	//	O.toxloss += M.toxloss
+	//	O.bruteloss += M.bruteloss
+	//	O.oxyloss += M.oxyloss
+	//	O.fireloss += M.fireloss
+	//	O.stat = M.stat
 		for (var/obj/item/weapon/implant/I in implants)
 			I.loc = O
 			I.implanted = O
 			continue
 		del(M)
+
+		O.toxloss = 101
 		return
 //////////////////////////////////////////////////////////// Monkey Block
 	if (M) M.update_clothing()

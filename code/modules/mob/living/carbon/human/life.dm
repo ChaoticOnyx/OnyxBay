@@ -114,7 +114,7 @@
 							if(1)
 								emote("twitch")
 							if(2 to 3)
-								say("[prob(50) ? ";" : ""][pick("SHIT", "PISS", "FUCK", "CUNT", "COCKSUCKER", "MOTHERFUCKER", "TITS")]")
+								say("[prob(50) ? ";" : ""][pick("DWARFS","MAGMA","ARMOK")]")
 						var/old_x = src.pixel_x
 						var/old_y = src.pixel_y
 						src.pixel_x += rand(-2,2)
@@ -126,15 +126,15 @@
 			if (src.disabilities & 16)
 				if (prob(10))
 					src.stuttering = max(10, src.stuttering)
-			if (src.brainloss >= 60 && src.stat != 2)
-				if (prob(7))
-					switch(pick(1,2,3))
-						if(1)
-							say(pick("IM A PONY NEEEEEEIIIIIIIIIGH", "without oxigen blob don't evoluate?", "CAPTAINS A COMDOM", "[pick("", "that faggot traitor")] [pick("joerge", "george", "gorge", "gdoruge")] [pick("mellens", "melons", "mwrlins")] is grifing me HAL;P!!!", "can u give me [pick("telikesis","halk","eppilapse")]?", "THe saiyans screwed", "Bi is THE BEST OF BOTH WORLDS>", "I WANNA PET TEH MONKIES", "stop grifing me!!!!", "SOTP IT#"))
-						if(2)
-							emote("fart")
-						if(3)
-							emote("drool")
+		//	if (src.brainloss >= 60 && src.stat != 2)
+		//		if (prob(7))
+			//		switch(pick(1,2,3))
+		//				if(1)
+		//					say(pick("IM A PONY NEEEEEEIIIIIIIIIGH", "without oxigen blob don't evoluate?", "CAPTAINS A COMDOM", "[pick("", "that faggot traitor")] [pick("joerge", "george", "gorge", "gdoruge")] [pick("mellens", "melons", "mwrlins")] is grifing me HAL;P!!!", "can u give me [pick("telikesis","halk","eppilapse")]?", "THe saiyans screwed", "Bi is THE BEST OF BOTH WORLDS>", "I WANNA PET TEH MONKIES", "stop grifing me!!!!", "SOTP IT#"))
+		//				if(2)
+		//					emote("fart")
+		//				if(3)
+		//					emote("drool")
 
 		handle_mutations_and_radiation()
 
@@ -639,6 +639,7 @@
 				src.stat = 2
 
 			if (src.stuttering) src.stuttering--
+			if (src.intoxicated) src.intoxicated--
 
 			if (src.eye_blind)
 				src.eye_blind--

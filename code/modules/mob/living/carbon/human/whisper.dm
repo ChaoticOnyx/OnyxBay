@@ -34,7 +34,9 @@
 	var/message_range = 1
 
 	if (src.stuttering)
-		message = stutter(message)
+		message = NewStutter(message,stunned)
+	if (src.intoxicated)
+		message = Intoxicated(message)
 
 	for (var/obj/O in view(message_range, src))
 		spawn (0)

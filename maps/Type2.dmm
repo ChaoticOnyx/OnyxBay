@@ -1,0 +1,44 @@
+"a" = (/turf/simulated/wall,/area)
+"b" = (/turf/space,/area)
+"c" = (/turf/simulated/floor/plating,/area)
+"d" = (/obj/machinery/atmospherics/unary/heat_reservoir{icon_state = "intact_on"; on = 1},/turf/simulated/floor/plating,/area)
+"e" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide,/turf/simulated/floor/plating,/area)
+"f" = (/obj/landmark/start,/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; level = 2},/turf/simulated/floor/plating,/area)
+"g" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide{tag = "icon-intact (WEST)"; icon_state = "intact"; dir = 8},/turf/simulated/floor/plating,/area)
+"h" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/plating,/area)
+"i" = (/obj/landmark/start{name = "Captain"},/turf/simulated/floor/plating,/area)
+"j" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (EAST)"; icon_state = "intact_off"; dir = 4},/turf/simulated/floor/plating,/area)
+"k" = (/obj/machinery/atmospherics/pipe/manifold{icon_state = "manifold"; level = 2},/turf/simulated/floor/plating,/area)
+"l" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/wall,/area)
+"m" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (WEST)"; icon_state = "intact_off"; dir = 8},/turf/space,/area)
+"n" = (/obj/window/reinforced/southwest,/turf/simulated/floor/plating,/area)
+"o" = (/obj/window/reinforced/southwest,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/plating,/area)
+"p" = (/obj/machinery/atmospherics/unary/thermal_plate,/turf/simulated/floor/plating,/area)
+"q" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (NORTH)"; icon_state = "intact_off"; dir = 1},/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 24},/turf/simulated/floor/plating,/area)
+"r" = (/obj/window/reinforced/southwest,/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; level = 2},/turf/simulated/floor/plating,/area)
+"s" = (/obj/window/reinforced/southwest,/obj/machinery/atmospherics/pipe/simple{dir = 10; icon_state = "intact"; initialize_directions = 10; layer = 3; level = 2},/turf/simulated/floor/plating,/area)
+"t" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (NORTH)"; icon_state = "intact_off"; dir = 1},/turf/simulated/floor/plating,/area)
+"u" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 24},/turf/simulated/floor/plating,/area)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaabbbbbb
+accccccccccccabbbbbb
+accccccccccccabbbbbb
+accccccccccccabbbbbb
+accccccccccaaabbbbbb
+acdccccccccaeabbbbbb
+acfgccccccaahabbbbbb
+achiccccccajklmbbbbb
+anoaccccccaaaabbbbbb
+apqacccccccccaaaaaaa
+arsaccccccccccccccca
+atuaccccccccccccccca
+aaaaccccccccccccccca
+acccccccccccccccccca
+acccccccccccccccccca
+acccccccccccccccccca
+acccccccccccccccccca
+acccccccccccccccccca
+acccccccccccccccccca
+aaaaaaaaaaaaaaaaaaaa
+"}

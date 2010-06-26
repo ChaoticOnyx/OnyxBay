@@ -26,3 +26,7 @@
 /proc/log_whisper(text)
 	if (config.log_whisper)
 		diary << "WHISPER: [text]"
+
+/proc/log_attack(text)
+	diary << "A:[text]"
+	message_admins(text)
