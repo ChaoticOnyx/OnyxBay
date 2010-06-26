@@ -2,9 +2,7 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 470.1075
-UPDATE_OBJ_TREE: ON
 DIR: code code\ATMOSPHERICS code\ATMOSPHERICS\components code\ATMOSPHERICS\components\unary code\datums\diseases code\defines code\defines\obj code\FEA code\game code\game\gamemodes code\game\gamemodes\changeling code\game\gamemodes\monkey maps 
-FILE: maps\Type2.dmm
 LAST_COMPILE_TIME: 1277452520
 AUTO_FILE_DIR: ON
 */
