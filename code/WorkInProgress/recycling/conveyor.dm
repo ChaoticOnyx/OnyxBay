@@ -387,3 +387,16 @@
 		if(S.id == src.id)
 			S.position = position
 			S.update()
+
+//Special unidirectional version - only does on/off
+/obj/machinery/conveyor_switch/unidir/attack_hand(mob/user)
+	position = !position
+
+	operated = 1
+	update()
+
+	// find any switches with same id as this one, and set their positions to match us
+	for(var/obj/machinery/conveyor_switch/S in world)
+		if(S.id == src.id)
+			S.position = position
+			S.update()

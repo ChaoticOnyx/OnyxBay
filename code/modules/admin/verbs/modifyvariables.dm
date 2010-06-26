@@ -230,8 +230,8 @@
 
 
 /client/proc/modify_variables(var/atom/O)
-	var/list/locked = list("vars", "key", "ckey", "client", "firemut", "ishulk", "telekinesis", "xray", "virus", "cuffed", "ka", "last_eaten", "urine", "poo", "icon", "icon_state")
-
+	//var/list/locked = list("vars", "key", "ckey", "client", "firemut", "ishulk", "telekinesis", "xray", "virus", "cuffed", "ka", "last_eaten", "urine", "poo", "icon", "icon_state")
+	var/list/locked = list()
 	if(!src.authenticated || !src.holder)
 		src << "Only administrators may use this command."
 		return

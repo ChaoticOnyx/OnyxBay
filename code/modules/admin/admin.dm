@@ -206,7 +206,6 @@ var/showadminmessages = 1
 					AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 					M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 					M << "\red This is a temporary ban, it will be removed in [mins] minutes."
-					M << "\red To try to resolve this matter by pming one of the admins on http://www.bay12forums.com/"
 					log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
 					message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
 
@@ -554,6 +553,7 @@ var/showadminmessages = 1
 			foo += text("<A href='?src=\ref[src];boot2=\ref[M]'>Boot</A> | ")
 		foo += text("<A href='?src=\ref[src];jumpto=\ref[M]'>Jump to</A> | ")
 		foo += text("<A href='?src=\ref[src];newban=\ref[M]'>Ban</A> \]")
+		foo += text("<A href='?src=\ref[src];invite=\ref[M]'>Toggle invite</A> \]")
 		dat += text("<body>[foo]</body></html>")
 		usr << browse(dat, "window=adminplayeropts;size=480x100")
 
@@ -640,6 +640,15 @@ var/showadminmessages = 1
 
 	if (href_list["voteres"])
 		voteres()
+
+	if (href_list["invite"])
+		var/mob/M = locate(href_list["invite"])
+		toggleinvite(M)
+		if(invite_isallowed(M))
+			src << "[M.key] allowed to join invite only games"
+		else
+			src << "[M.key] removed from joining invite only games"
+
 
 	if (href_list["prom_demot"])
 		if ((src.rank in list("Primary Administrator", "Super Administrator", "Coder", "Host"  )))

@@ -2,9 +2,10 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 470.1075
-DIR: code code\ATMOSPHERICS\components code\ATMOSPHERICS\components\binary_devices code\defines\mob\living code\defines\mob\living\carbon code\defines\obj\spawner code\game\machinery\bots code\game\objects\closets code\game\objects\closets\secure code\game\objects\items code\game\objects\items\weapons code\game\objects\storage code\game\verbs code\modules\admin code\modules\admin\verbs code\modules\mob code\modules\mob\dead code\modules\mob\dead\observer code\modules\mob\living\carbon code\modules\mob\living\carbon\alien code\modules\mob\living\carbon\alien\humanoid code\modules\mob\living\carbon\alien\larva code\modules\mob\living\carbon\human code\modules\mob\living\carbon\monkey code\modules\mob\living\silicon code\modules\mob\living\silicon\robot code\WorkInProgress 
-FILE: code\WorkInProgress\Chemistry-Reagents.dm
-LAST_COMPILE_TIME: 1277564053
+UPDATE_OBJ_TREE: ON
+DIR: code\ATMOSPHERICS\components code\ATMOSPHERICS\components\binary_devices code\defines\mob\living code\defines\mob\living\carbon code\defines\obj\spawner code\game\machinery\bots code\game\objects\closets code\game\objects\closets\secure code\modules\admin maps 
+FILE: maps\baystation12.dmm
+LAST_COMPILE_TIME: 1277566722
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
