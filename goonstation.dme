@@ -483,6 +483,7 @@
 #include "code\modules\admin\create_mob.dm"
 #include "code\modules\admin\create_object.dm"
 #include "code\modules\admin\create_turf.dm"
+#include "code\modules\admin\invite.dm"
 #include "code\modules\admin\verbs\adminhelp.dm"
 #include "code\modules\admin\verbs\adminjump.dm"
 #include "code\modules\admin\verbs\adminsay.dm"
@@ -620,6 +621,5 @@
 #include "code\WorkInProgress\ZeroPoint\LaserComputer.dm"
 #include "code\WorkInProgress\ZeroPoint\SuperMatter.dm"
 #include "interface\skin.dmf"
-#include "maps\baystation12.dmm"
-#include "maps\NSV_Luna.dmm"
+#include "maps\Type2.dmm"
 // END_INCLUDE
