@@ -71,7 +71,9 @@
 		return
 
 	if (src.stuttering)
-		message = stutter(message)
+		message = NewStutter(message,stunned)
+	if (src.intoxicated)
+		message = Intoxicated(message)
 
 	// :downs:
 	if (src.brainloss >= 60)
@@ -85,7 +87,7 @@
 			message = uppertext(message)
 			message = "[message][stutter(pick("!", "!!", "!!!"))]"
 		if(!src.stuttering && prob(15))
-			message = stutter(message)
+			message = NewStutter(message)
 
 	switch (message_mode)
 		if ("headset")
