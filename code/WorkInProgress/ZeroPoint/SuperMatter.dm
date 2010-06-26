@@ -4,7 +4,7 @@
 	icon_state = "darkmatter"
 
 	density = 1
-
+	anchored = 1
 
 	var/gasefficency = 0.25
 
@@ -32,14 +32,13 @@
 
 		//Ok, 100% oxygen atmosphere = best reaction
 		//Maxes out at 100% oxygen pressure
-		var/oxygen = max((removed.oxygen/(MOLES_CELLSTANDARD*gasefficency)),1)
+		var/oxygen = min((removed.oxygen/(MOLES_CELLSTANDARD*gasefficency)),1)
 
 
 		var/device_energy = oxygen*power
 		if(device_energy >= 1000)
-			device_energy += (2000*(removed.temperature/500))
-
-		world << device_energy
+			device_energy += (500*(removed.temperature/100))
+		world << "O:[oxygen] P:[power] D:[device_energy]"
 
 		//Ok, start by calculating how much heat to apply
 		//4 Lasers = 500*4 = 2000 at default power
@@ -52,11 +51,13 @@
 
 		//Ok, calculate how much PLASMA to add to the inferno
 		//Fix this up later
-		removed.toxins += 10
+		removed.toxins += 1
 
-		if(removed.temperature > 3000) // Oh god an overload
-			removed.oxygen += 1000
-			removed.toxins += 1000
+		if(removed.temperature > 3000)
+			if(removed.oxygen < 5) // Oh god an overload
+				removed.oxygen += 5
+		//	if(removed.toxins < 100)
+		//		removed.toxins = 100
 
 
 

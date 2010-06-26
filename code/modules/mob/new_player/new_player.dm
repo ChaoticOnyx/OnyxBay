@@ -92,6 +92,11 @@ mob/new_player
 				src << "You are not authorized to enter the game."
 				return
 
+			if (config.invite_only)
+				if(!invite_isallowed(src))
+					src << "\blue This is an invite only game"
+					return
+
 			if(!ready)
 				if(alert(src,"Are you sure you are ready? This will lock-in your preferences.","Player Setup","Yes","No") == "Yes")
 					ready = 1
@@ -128,6 +133,11 @@ mob/new_player
 			if (!enter_allowed)
 				usr << "\blue There is an administrative lock on entering the game!"
 				return
+
+			if (config.invite_only)
+				if(!invite_isallowed(src))
+					src << "\blue This is an invite only game"
+					return
 
 			switch(href_list["SelectedJob"])
 				if ("1")

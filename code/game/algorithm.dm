@@ -10,6 +10,9 @@
 
 	jobban_loadbanfile()
 	jobban_updatelegacybans()
+
+	invite_loadbanfile()
+
 	goon_loadfile()
 	beta_tester_loadfile()
 	LoadBans()

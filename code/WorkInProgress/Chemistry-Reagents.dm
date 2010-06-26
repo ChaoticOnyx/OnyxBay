@@ -351,10 +351,12 @@ datum
 			id = "acid"
 			description = "A strong mineral acid with the molecular formula H2SO4."
 			reagent_state = LIQUID
+
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				M:toxloss++
-				M:fireloss++
+				if(prob(15))
+					M:toxloss++
+					M:fireloss++
 				..()
 				return
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
@@ -369,7 +371,7 @@ datum
 							M << "\red Your helmet melts into uselessness but protects you from the acid!"
 							return
 
-					if(prob(75))
+					if(prob(15))
 						var/datum/organ/external/affecting = M:organs["head"]
 						affecting.take_damage(25, 0)
 						M:UpdateDamage()
@@ -390,15 +392,18 @@ datum
 						M << "\red \the [O] melts."
 					del(O)
 
+
 		pacid
 			name = "Polytrinic acid"
 			id = "pacid"
 			description = "Polytrinic acid is a an extremely corrosive chemical substance."
 			reagent_state = LIQUID
+
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				M:toxloss++
-				M:fireloss++
+				if(prob(15))
+					M:toxloss++
+					M:fireloss++
 				..()
 				return
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
@@ -422,7 +427,7 @@ datum
 					else
 						M:bruteloss += 15
 				else
-					if(istype(M, /mob/living/carbon/human))
+					if(istype(M, /mob/living/carbon/human) && prob(25))
 						var/datum/organ/external/affecting = M:organs["head"]
 						affecting.take_damage(75, 0)
 						M:UpdateDamage()

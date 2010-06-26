@@ -629,6 +629,7 @@
 	src.icon_state = "pod_0"
 	src.eject_wait = 0 //If it's still set somehow.
 	domutcheck(src.occupant) //Waiting until they're out before possible monkeyizing.
+	src.occupant.toxloss = max(src.occupant.toxloss,101)
 	src.occupant = null
 	return
 

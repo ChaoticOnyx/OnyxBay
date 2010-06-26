@@ -8,6 +8,7 @@
 	var/blood_DNA = null
 	var/blood_type = null
 	var/last_bumped = 0
+	var/list/logs = list()
 
 	///Chemistry.
 	var/datum/reagents/reagents = null
