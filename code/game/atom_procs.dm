@@ -294,6 +294,7 @@
 		if (!( usr.restrained() ))
 			if (W)
 				if (t5)
+					src.alog(W,usr)
 					src.attackby(W, usr)
 				if (W)
 					W.afterattack(src, usr, (t5 ? 1 : 0))
@@ -331,6 +332,7 @@
 				return
 			if (!( usr.restrained() ))
 				if ((W && !( istype(src, /obj/screen) )))
+					src.alog(W,usr)
 					src.attackby(W, usr)
 
 					if (W)
@@ -355,3 +357,5 @@
 							src.hand_al(usr, usr.hand)
 	return
 
+/atom/proc/alog(var/atom/device,var/mob/mb)
+	src.logs += "[src.name] used by a [device.name] by [mb.real_name]([mb.key])"

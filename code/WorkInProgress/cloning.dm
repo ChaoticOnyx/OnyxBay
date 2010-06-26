@@ -311,9 +311,9 @@
 	if ((isnull(subject)) || (!istype(subject, /mob/living/carbon/human)) || (!subject.dna))
 		src.temp = "Error: Unable to locate valid genetic data."
 		return
-	if ((!subject.ckey) || (!subject.client))
-		src.temp = "Error: Mental interface failure."
-		return
+//	if ((!subject.ckey) || (!subject.client))
+//		src.temp = "Error: Mental interface failure."
+//		return
 	if (!isnull(find_record(subject.ckey)))
 		src.temp = "Subject already in database."
 		return
@@ -629,6 +629,7 @@
 	src.icon_state = "pod_0"
 	src.eject_wait = 0 //If it's still set somehow.
 	domutcheck(src.occupant) //Waiting until they're out before possible monkeyizing.
+	src.occupant.toxloss = max(src.occupant.toxloss,101)
 	src.occupant = null
 	return
 

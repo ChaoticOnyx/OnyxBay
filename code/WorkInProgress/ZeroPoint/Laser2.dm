@@ -6,18 +6,30 @@
 	var/power = 500
 	icon = 'engine.dmi'
 	icon_state = "laser"
-
+	anchored = 1
+	var/id
+	var/on = 0
 /obj/machinery/engine/laser/process()
-	if(!first)
-		src.first = new /obj/beam/e_beam(src.loc)
-		src.first.master = src
-		src.first.dir = src.dir
-		src.first.power = src.power
-		step(first,first.dir)
-		if(first)
+	if(on)
+		if(!first)
+			src.first = new /obj/beam/e_beam(src.loc)
+			src.first.master = src
+			src.first.dir = src.dir
+			src.first.power = src.power
+			step(first,first.dir)
+			if(first)
+				src.first.updatebeam()
+		else
 			src.first.updatebeam()
 	else
-		src.first.updatebeam()
+		if(first)
+			del first
+
+/obj/machinery/engine/laser/proc/setpower(var/powera)
+	src.power = powera
+	if(first)
+		first.setpower(src.power)
+
 
 /obj/beam/e_beam
 	name = "Laser beam"
@@ -54,6 +66,11 @@
 /obj/beam/e_beam/Bump()
 	del(src)
 	return
+
+/obj/beam/e_beam/proc/setpower(var/powera)
+	src.power = powera
+	if(src.next)
+		src.next.setpower(powera)
 
 /obj/beam/e_beam/Bumped()
 	src.hit()
