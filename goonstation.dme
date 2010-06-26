@@ -617,5 +617,5 @@
 #include "code\WorkInProgress\recycling\disposal.dm"
 #include "code\WorkInProgress\recycling\scrap.dm"
 #include "interface\skin.dmf"
-#include "maps\Type2.dmm"
+#include "maps\NSV_Luna.dmm"
 // END_INCLUDE
