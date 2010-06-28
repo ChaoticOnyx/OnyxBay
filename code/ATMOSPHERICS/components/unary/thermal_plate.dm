@@ -1,4 +1,4 @@
-#define RADIATION_CAPACITY 10000 //Radiation isn't particularly effective (TODO BALANCE)
+#define RADIATION_CAPACITY 30000 //Radiation isn't particularly effective (TODO BALANCE)
 
 
 /obj/machinery/atmospherics/unary/thermal_plate
@@ -62,14 +62,14 @@
 		if (!internal_removed)
 			return 1
 
-		var/a = air_contents.temperature
-
 		var/combined_heat_capacity = internal_removed.heat_capacity() + RADIATION_CAPACITY
-		var/combined_energy = internal_removed.temperature * internal_removed.heat_capacity()
+		var/combined_energy = internal_removed.temperature * internal_removed.heat_capacity() + (RADIATION_CAPACITY * 6.4)
 
 		var/final_temperature = combined_energy / combined_heat_capacity
 
 		internal_removed.temperature = final_temperature
 		air_contents.merge(internal_removed)
+
+		network.update = 1
 
 		return 1

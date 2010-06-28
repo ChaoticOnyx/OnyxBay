@@ -321,29 +321,6 @@ turf
 							if(active_hotspot)
 								possible_fire_spreads += enemy_tile
 						else
-/*							var/obj/movable/floor/movable_on_enemy = locate(/obj/movable/floor) in enemy_tile
-
-							if(movable_on_enemy)
-								if(movable_on_enemy.parent && movable_on_enemy.parent.group_processing) //apply tile to group sharing
-									if(movable_on_enemy.parent.current_cycle < current_cycle)
-										if(movable_on_enemy.parent.air.check_gas_mixture(air))
-											connection_difference = air.share(movable_on_enemy.parent.air)
-
-										else
-											movable_on_enemy.parent.suspend_group_processing()
-
-											if(movable_on_enemy.archived_cycle < archived_cycle) //archive bordering tile information if not already done
-												movable_on_enemy.archive()
-											connection_difference = air.share(movable_on_enemy.air)
-											//group processing failed so interact with individual tile
-								else
-									if(movable_on_enemy.archived_cycle < archived_cycle) //archive bordering tile information if not already done
-										movable_on_enemy.archive()
-
-									if(movable_on_enemy.current_cycle < current_cycle)
-										connection_difference = share_air_with_tile(movable_on_enemy)
-
-							else*/
 							connection_difference = mimic_air_with_tile(enemy_tile)
 								//bordering a tile with fixed air properties
 
