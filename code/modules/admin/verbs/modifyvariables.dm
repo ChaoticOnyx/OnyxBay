@@ -2,6 +2,8 @@
 	set category = "Debug"
 	set name = "Edit Variables"
 	set desc="(target) Edit a target item's variables"
+	if(!O)
+		return
 	src.modify_variables(O)
 
 /client/proc/cmd_modify_ticker_variables()
