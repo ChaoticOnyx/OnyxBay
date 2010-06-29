@@ -19,8 +19,6 @@
 		if(lastgenlev != 0)
 			overlays += image('power.dmi', "teg-op[lastgenlev]")
 
-#define GENRATE 800		// generator output coefficient from Q
-
 /obj/machinery/power/generator_type2/process()
 
 	if(!input1 || !input2)
@@ -46,7 +44,7 @@
 		var/delta_temperature = hot_air.temperature - cold_air.temperature
 
 		if(delta_temperature > 1 && cold_air_heat_capacity > 0.01 && hot_air_heat_capacity > 0.01)
-			var/efficiency = (1 - cold_air.temperature/hot_air.temperature)*0.65 //65% of Carnot efficiency
+			var/efficiency = (1 - cold_air.temperature/hot_air.temperature) * 0.45 //45% of Carnot efficiency
 
 			var/energy_transfer = delta_temperature*hot_air_heat_capacity*cold_air_heat_capacity/(hot_air_heat_capacity+cold_air_heat_capacity)
 			energy_transfer *= (transferpercent/100)
