@@ -8,6 +8,9 @@
 	var/active = 0
 	var/obj/item/weapon/reagent_containers/glass/powder = null
 	var/hacked = 0
+	var/wiregold = 1
+	var/wireblue = 1
+	var/wiregreen = 1
 /obj/machinery/washer/examine()
 	usr << "[src] has [powder.reagents.get_reagent_amount("cleaner")]unit's left"
 /obj/machinery/washer/New()
@@ -15,6 +18,13 @@
 	powder.name = src.name
 	return ..()
 /obj/machinery/washer/attackby(obj/item/weapon/W)
+	if(active)
+		if(!wiregold)
+			usr << "You turn the washer off"
+			active = 0
+			return
+		usr << "You can't put something in it while its washing"
+		return
 	if(istype(W,/obj/item/weapon/reagent_containers/glass/))
 		if(W.reagents.has_reagent("cleaner",1))
 			if(!powder)
@@ -29,8 +39,12 @@
 				var/amm = W.reagents.get_reagent_amount("cleaner")
 				powder.reagents.add_reagent("cleaner",amm)
 				W.reagents.remove_reagent("cleaner",amm)
+				usr << "You transfer [amm] unit's to [src]"
 				return 0
 	if(istype(W,/obj/item/clothing/))
+		if(active)
+			usr << "You can't put something in it while its washing"
+			return
 		usr.drop_item()
 		W.loc = src
 		for(var/mob/M in viewers())
@@ -47,6 +61,10 @@
 /obj/machinery/washer/attack_hand()
 	if(stat & (BROKEN|NOPOWER))
 		return
+	if(!wiregold)
+		usr << "You turn the washer off"
+		active = 0
+		return
 	if(!powder)
 		usr << "You need add a beaker."
 	if(!(powder.reagents.has_reagent("cleaner",1)))
@@ -59,17 +77,49 @@
 		var/sound/S = sound('WashingMachine1.ogg')
 		for(var/mob/MM in viewers(,src))
 			MM << S
+		if(!wiregold)
+			spawn while(active)
+				sleep(10)
+				for(var/mob/M in src.contents)
+					M.oxyloss += rand(1,10)
+					M.bruteloss += rand(1,10)
+					for(var/mob/MM in viewers())
+						MM << "*THUMP*"
+			icon_state = "land01"
+			for(var/atom/movable/O in src.contents)
+				O.clean_blood()
+				O.fingerprints = null
+				if(ismob(O))
+					var/list/items = O:get_all_possessed_items()
+					for(var/obj/OB in items)
+						OB.clean_blood()
+						OB.fingerprints = null
+				if(istype(O,/obj/item/weapon/gun/energy/taser_gun/) || istype(O,/obj/item/weapon/gun/energy/laser_gun/))
+					explode()
+					del O
+				O.loc = src.loc
+			powder.reagents.remove_reagent("cleaner",1)
+			return
 		sleep(51)
 		icon_state = "land01"
 		for(var/atom/movable/O in src.contents)
 			O.clean_blood()
 			O.fingerprints = null
 			if(ismob(O))
-				O:oxyloss += rand(10,40)
+				O:oxyloss += rand(1,50)
+				O:bruteloss += rand(10,50)
+				var/list/items = O:get_all_possessed_items()
+				for(var/obj/OB in items)
+					OB.clean_blood()
+					OB.fingerprints = null
+					if(istype(OB,/obj/item/weapon/gun/energy/taser_gun/) || istype(OB,/obj/item/weapon/gun/energy/laser_gun/))
+						explode()
+						del OB
 			if(istype(O,/obj/item/weapon/gun/energy/taser_gun/) || istype(O,/obj/item/weapon/gun/energy/laser_gun/))
 				explode()
 				del O
 			O.loc = src.loc
+		active = 0
 		powder.reagents.remove_reagent("cleaner",1)
 
 /obj/machinery/washer/ex_act(severity)
@@ -95,6 +145,44 @@
 		T.hotspot_expose(700,125)
 
 		explosion(T, -1, -1, 2, 3)
-
-	del(src)
+	active = 0
 	return
+/obj/machinery/washer/MouseDrop_T(mob/C as mob, mob/user as mob)
+	if(user.stat)
+		return
+	if (active || !istype(C)|| C.anchored || get_dist(user, src) > 1 || get_dist(src,C) > 1 )
+		return
+	load(C)
+	src.visible_message("[user] tries to put [C] into [src]")
+/obj/machinery/washer/proc/load(var/atom/movable/C)
+	if(!hacked && !istype(C,/obj/item/clothing/))
+		src.visible_message("The [src] beeps when you try put in [C]")
+		return
+
+	if(get_dist(C, src) > 1)
+		return
+	C.loc = src.loc
+	sleep(2)
+	C.loc = src
+	if(ismob(C))
+		var/mob/M = C
+		if(M.client)
+			M.client.perspective = EYE_PERSPECTIVE
+			M.client.eye = src
+/obj/machinery/washer/relaymove(mob/user as mob)
+	if(user.stat || src.active)
+		return
+	src.go_out(user)
+	return
+
+/obj/machinery/washer/proc/go_out(mob/user)
+
+	if (user.client)
+		user.client.eye = user.client.mob
+		user.client.perspective = MOB_PERSPECTIVE
+	src.contents -= user
+	user.loc = src.loc
+	return
+
+
+
