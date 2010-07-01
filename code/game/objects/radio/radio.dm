@@ -145,17 +145,22 @@ Frequency:
 		return
 
 	var/list/receive = list()
+	var/list/heard_intercom = list()
 
 	for (var/obj/item/device/radio/R in radio_connection.devices)
 		if(R.accept_rad(src, message))
 			for (var/i in R.send_hear())
 				if (!(i in receive))
 					receive += i
+	for (var/obj/item/device/radio/R in radio_connection.devices)
+		if(istype(R,/obj/item/device/radio/intercom))
+			heard_intercom += R
 
 	var/list/heard_masked = list() // masked name or no real name
 	var/list/heard_normal = list() // normal message
 	var/list/heard_voice = list() // voice message
 	var/list/heard_garbled = list() // garbled message
+
 
 	for (var/mob/R in receive)
 		if (R.say_understands(M))
@@ -173,16 +178,20 @@ Frequency:
 		var/part_a = "<span class='game radio'><span class='name'>"
 		var/part_b = "</span><b> \icon[src]\[[format_frequency(src.frequency)]\]</b> <span class='message'>"
 		var/part_c = "</span></span>"
-
+		var/test = say_test(message)
+		var/image/test2 = image('talk.dmi',src,"radio[test]")
+		var/list/img = list()
+		for(var/obj/item/device/radio/R in heard_intercom)
+			var/image/ad = image('talk.dmi',R,"radio[test]")
+			img += ad
 		if (length(heard_masked))
 			var/rendered = "[part_a][M.name][part_b][M.say_quote(message)][part_c]"
-
 			for (var/mob/R in heard_masked)
 				if(istype(R, /mob/living/silicon/ai))
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.name] ([eqjobname]) </a>[part_b][M.say_quote(message)][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
-
+					R << img
 		if (length(heard_normal))
 			var/rendered = "[part_a][M.real_name][part_b][M.say_quote(message)][part_c]"
 
@@ -191,6 +200,7 @@ Frequency:
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.real_name] ([eqjobname]) </a>[part_b][M.say_quote(message)][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
+					R << img
 
 		if (length(heard_voice))
 			var/rendered = "[part_a][M.voice_name][part_b][M.voice_message][part_c]"
@@ -200,6 +210,7 @@ Frequency:
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.voice_name] ([eqjobname]) </a>[part_b][M.voice_message][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
+					R << img
 
 		if (length(heard_garbled))
 			var/rendered = "[part_a][M.voice_name][part_b][M.say_quote(stars(message))][part_c]"
@@ -209,7 +220,16 @@ Frequency:
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.voice_name]</a>[part_b][M.say_quote(stars(message))][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
-
+					R << img
+		spawn(30) del(test2)
+		del(img)
+/obj/item/device/radio/proc/say_test(var/text)
+	var/ending = copytext(text, length(text))
+	if (ending == "?")
+		return "1"
+	else if (ending == "!")
+		return "2"
+	return "0"
 /obj/item/device/radio/hear_talk(mob/M as mob, msg)
 	if (src.broadcasting)
 		talk_into(M, msg)

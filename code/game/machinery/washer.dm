@@ -5,14 +5,14 @@
 	icon_state = "land01"
 	density = 1
 	opacity = 0
-	var/active = 0
-	var/obj/item/weapon/reagent_containers/glass/powder = null
-	var/hacked = 0
-	var/wiregold = 1
-	var/wireblue = 1
-	var/wiregreen = 1
+	var/active = 0 // if its on
+	var/obj/item/weapon/reagent_containers/glass/powder = null //holder var for chemicals
+	var/hacked = 0 //emaged
+	var/wiregold = 1 //temp
+	var/wireblue = 1 //temp
+	var/wiregreen = 1 //temp
 /obj/machinery/washer/examine()
-	usr << "[src] has [powder.reagents.get_reagent_amount("cleaner")]unit's left"
+	usr << "[src] has [powder.reagents.get_reagent_amount("cleaner")] unit's left"
 /obj/machinery/washer/New()
 	powder = new/obj/item/weapon/reagent_containers/glass/beaker
 	powder.name = src.name
