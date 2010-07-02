@@ -232,6 +232,28 @@ var/showadminmessages = 1
 				log_admin("[key_name(usr)] removed [t] from the goonlist.")
 				message_admins("\blue [key_name_admin(usr)] removed [t] from the goonlist.")
 				remove_goon(t)
+	if (href_list["removeinvitek"])
+		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
+			var/t = href_list["remove"]
+			if(t)
+				invite_keylist.Remove(text("[t]"))
+				invite_savebanfile()
+				message_admins("\blue [key_name_admin(usr)] removed [t] from the invite list.")
+
+	if (href_list["removeinvite"])
+		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
+			var/u = input(usr, "Who do you wish to remove from the invite list", "Remove invite", "enterckeyhere")
+			invite_keylist.Remove(text("[u]"))
+			invite_savebanfile()
+			message_admins("\blue [key_name_admin(usr)] removed [u] from the invite list.")
+
+	if (href_list["addinvite"])
+		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
+			var/u = input(usr, "Who do you wish to add to the invite list", "Remove invite", "enterckeyhere")
+			invite_keylist.Add(text("[u]"))
+			invite_savebanfile()
+			message_admins("\blue [key_name_admin(usr)] added [u] to the invite list.")
+
 
 	if (href_list["mute2"])
 		if ((src.rank in list( "Moderator", "Secondary Administrator", "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
@@ -645,9 +667,9 @@ var/showadminmessages = 1
 		var/mob/M = locate(href_list["invite"])
 		toggleinvite(M)
 		if(invite_isallowed(M))
-			src << "[M.key] allowed to join invite only games"
+			log_admin("[M.key] allowed to join invite only games")
 		else
-			src << "[M.key] removed from joining invite only games"
+			log_admin("[M.key] removed from joining invite only games")
 
 
 	if (href_list["prom_demot"])
@@ -1212,6 +1234,8 @@ var/showadminmessages = 1
 				dat += "<td>New Player</td>"
 			if(istype(M, /mob/dead/observer))
 				dat += "<td>Ghost</td>"
+			if(istype(M, /mob/dead/offical))
+				dat += "<td>Offical</td>"
 			if(istype(M, /mob/living/carbon/monkey))
 				dat += "<td>Monkey</td>"
 			if(istype(M, /mob/living/carbon/alien))
@@ -1279,6 +1303,17 @@ var/showadminmessages = 1
 	for(var/t in goon_keylist)
 		dat += text("<tr><td><A href='?src=\ref[src];remove=[ckey(t)]'><B>[t]</B></A></td><td>[goon_keylist[ckey(t)]]</td></tr>")
 	dat += "</table>"
+	usr << browse(dat, "window=ban;size=300x400")
+
+
+
+/obj/admins/proc/invites()
+	var/dat = "<HR><B>Beta testers</B><HR><table cellspacing=5><tr><th>Key</th></tr>"
+	for(var/t in invite_keylist)
+		dat += text("<tr><td><A href='?src=\ref[src];removeinvitek=[t]'>[t]</a><//td></tr>")
+	dat += "</table>"
+	dat += "<BR><A href='?src=\ref[src];addinvite=1'>Add person to list</A><BR>"
+	dat += "<BR><A href='?src=\ref[src];removeinvite=1'>Remove person from list</A><BR>"
 	usr << browse(dat, "window=ban;size=300x400")
 
 /obj/admins/proc/beta_testers()

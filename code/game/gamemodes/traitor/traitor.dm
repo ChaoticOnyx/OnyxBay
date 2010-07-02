@@ -2,22 +2,22 @@
 	name = "traitor"
 	config_tag = "traitor"
 
-	var/const/prob_int_murder_target = 50 // intercept names the assassination target half the time
-	var/const/prob_right_murder_target_l = 25 // lower bound on probability of naming right assassination target
-	var/const/prob_right_murder_target_h = 50 // upper bound on probability of naimg the right assassination target
+	var/const/prob_int_murder_target = 1 // intercept names the assassination target half the time
+	var/const/prob_right_murder_target_l = 1 // lower bound on probability of naming right assassination target
+	var/const/prob_right_murder_target_h = 1 // upper bound on probability of naimg the right assassination target
 
-	var/const/prob_int_item = 50 // intercept names the theft target half the time
-	var/const/prob_right_item_l = 25 // lower bound on probability of naming right theft target
-	var/const/prob_right_item_h = 50 // upper bound on probability of naming the right theft target
+	var/const/prob_int_item = 1 // intercept names the theft target half the time
+	var/const/prob_right_item_l = 1 // lower bound on probability of naming right theft target
+	var/const/prob_right_item_h = 1 // upper bound on probability of naming the right theft target
 
-	var/const/prob_int_sab_target = 50 // intercept names the sabotage target half the time
-	var/const/prob_right_sab_target_l = 25 // lower bound on probability of naming right sabotage target
-	var/const/prob_right_sab_target_h = 50 // upper bound on probability of naming right sabotage target
+	var/const/prob_int_sab_target = 1 // intercept names the sabotage target half the time
+	var/const/prob_right_sab_target_l = 1 // lower bound on probability of naming right sabotage target
+	var/const/prob_right_sab_target_h = 1 // upper bound on probability of naming right sabotage target
 
-	var/const/prob_right_killer_l = 25 //lower bound on probability of naming the right operative
-	var/const/prob_right_killer_h = 50 //upper bound on probability of naming the right operative
-	var/const/prob_right_objective_l = 25 //lower bound on probability of determining the objective correctly
-	var/const/prob_right_objective_h = 50 //upper bound on probability of determining the objective correctly
+	var/const/prob_right_killer_l = 1 //lower bound on probability of naming the right operative
+	var/const/prob_right_killer_h = 1 //upper bound on probability of naming the right operative
+	var/const/prob_right_objective_l = 1 //lower bound on probability of determining the objective correctly
+	var/const/prob_right_objective_h = 1 //upper bound on probability of determining the objective correctly
 
 	var/const/laser = 1
 	var/const/hand_tele = 2
@@ -37,7 +37,7 @@
 
 	var/const/waittime_l = 600 //lower bound on time before intercept arrives (in tenths of seconds)
 	var/const/waittime_h = 1800 //upper bound on time before intercept arrives (in tenths of seconds)
-	
+
 	var/const/traitors_possible = 4
 
 /datum/game_mode/traitor/announce()
@@ -46,12 +46,12 @@
 
 /datum/game_mode/traitor/pre_setup()
 	var/list/possible_traitors = get_possible_traitors()
-	
+
 	var/num_players = 0
 	for(var/mob/new_player/P in world)
 		if(P.client && P.ready)
 			num_players++
-	
+
 	var/i = rand(5)
 	var/num_traitors = 1
 
@@ -61,15 +61,15 @@
 
 	if(traitor_scaling)
 		num_traitors = max(1, min(round((num_players + i) / 10), traitors_possible))
-	
+
 //	log_game("Number of traitors: [num_traitors]")
 //	message_admins("Players counted: [num_players]  Number of traitors chosen: [num_traitors]")
-	
+
 	for(var/j = 0, j < num_traitors, j++)
 		var/datum/mind/traitor = pick(possible_traitors)
 		traitors += traitor
 		possible_traitors.Remove(traitor)
-		
+
 	for(var/datum/mind/traitor in traitors)
 		if(!traitor || !istype(traitor))
 			traitors.Remove(traitor)

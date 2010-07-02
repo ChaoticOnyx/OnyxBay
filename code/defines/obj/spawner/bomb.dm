@@ -34,8 +34,8 @@
 		btype = 2
 
 		syndicate
-			btemp1 = 150
-			btemp2 = 20
+			btemp1 = 1500
+			btemp2 = 1000
 
 	proximity
 		btype = 1

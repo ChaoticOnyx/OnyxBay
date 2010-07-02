@@ -1,33 +1,42 @@
 "a" = (/turf/simulated/wall,/area)
 "b" = (/turf/simulated/floor/plating,/area)
-"c" = (/obj/machinery/atmospherics/unary/heat_reservoir{icon_state = "intact_on"; on = 1},/turf/simulated/floor/plating,/area)
-"d" = (/obj/landmark/start,/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; level = 2},/turf/simulated/floor/plating,/area)
-"e" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide{tag = "icon-intact (WEST)"; icon_state = "intact"; dir = 8},/turf/simulated/floor/plating,/area)
-"f" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/plating,/area)
-"g" = (/obj/landmark/start{name = "Captain"},/turf/simulated/floor/plating,/area)
-"h" = (/obj/window/reinforced/southwest,/turf/simulated/floor/plating,/area)
-"i" = (/obj/window/reinforced/southwest,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/plating,/area)
+"c" = (/obj/window/reinforced/south,/turf/simulated/floor/plating,/area)
+"d" = (/obj/window/reinforced/east,/turf/simulated/floor/plating,/area)
+"e" = (/obj/machinery/engine/laser,/turf/simulated/floor/plating,/area)
+"f" = (/obj/machinery/engine/laser{tag = "icon-laser (EAST)"; icon_state = "laser"; dir = 4},/turf/simulated/floor/plating,/area)
+"g" = (/obj/machinery/engine/supermatter,/turf/simulated/floor/plating,/area)
+"h" = (/obj/machinery/engine/laser{tag = "icon-laser (WEST)"; icon_state = "laser"; dir = 8},/turf/simulated/floor/plating,/area)
+"i" = (/obj/machinery/power/smes,/turf/simulated/floor/plating,/area)
 "j" = (/obj/machinery/atmospherics/unary/thermal_plate,/turf/simulated/floor/plating,/area)
-"k" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (NORTH)"; icon_state = "intact_off"; dir = 1},/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 24},/turf/simulated/floor/plating,/area)
-"l" = (/obj/window/reinforced/southwest,/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; level = 2},/turf/simulated/floor/plating,/area)
-"m" = (/obj/window/reinforced/southwest,/obj/machinery/atmospherics/pipe/simple{dir = 10; icon_state = "intact"; initialize_directions = 10; layer = 3; level = 2},/turf/simulated/floor/plating,/area)
-"n" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (NORTH)"; icon_state = "intact_off"; dir = 1},/turf/simulated/floor/plating,/area)
-"o" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 24},/turf/simulated/floor/plating,/area)
+"k" = (/obj/machinery/atmospherics/unary/cold_sink{icon_state = "intact_on"; on = 1},/turf/simulated/floor/plating,/area)
+"l" = (/obj/machinery/power/terminal{tag = "icon-term (NORTH)"; icon_state = "term"; dir = 1},/obj/cable{tag = "icon-0-2"; icon_state = "0-2"; d2 = 8},/turf/simulated/floor/plating,/area)
+"m" = (/obj/window/reinforced/north,/turf/simulated/floor/plating,/area)
+"n" = (/obj/window/reinforced/north,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/plating,/area)
+"o" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/plating,/area)
+"p" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/plating,/area)
+"q" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide,/turf/simulated/floor/plating,/area)
+"r" = (/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/plating,/area)
+"s" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/plating,/area)
+"t" = (/obj/machinery/atmospherics/pipe/manifold{icon_state = "manifold"; level = 2},/turf/simulated/floor/plating,/area)
+"u" = (/obj/machinery/atmospherics/unary/generator_input{tag = "icon-intact (WEST)"; icon_state = "intact"; dir = 8},/turf/simulated/floor/plating,/area)
+"v" = (/obj/machinery/power/generator_type2,/obj/cable,/turf/simulated/floor/plating,/area)
+"w" = (/obj/machinery/atmospherics/unary/generator_input{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/floor/plating,/area)
+"x" = (/obj/machinery/atmospherics/pipe/simple{dir = 9; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/plating,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaa
 abbbbbbbbbbbbbbbbbba
 abbbbbbbbbbbbbbbbbba
+abbbbbbbbbbbbcccccca
+abbbbbbbbbbbdbbebbba
+abbbbbbbbbbbdbbbbbba
+abbbbbbbbbbbdfbgbhba
+abbbbbbbbbibdbbjbbba
+abbbbkbbbblbbmmnmmma
+abbbbobbbbpbbbbobbba
+abbbbobqbbpbbqbobbba
+abbbbrstsuvwstsxbbba
 abbbbbbbbbbbbbbbbbba
-abbbbbbbbbbbbbbbbbba
-abcbbbbbbbbbbbbbbbba
-abdebbbbbbbbbbbbbbba
-abfgbbbbbbbbbbbbbbba
-ahiabbbbbbbbbbbbbbba
-ajkabbbbbbbbbbbbbbba
-almabbbbbbbbbbbbbbba
-anoabbbbbbbbbbbbbbba
-aaaabbbbbbbbbbbbbbba
 abbbbbbbbbbbbbbbbbba
 abbbbbbbbbbbbbbbbbba
 abbbbbbbbbbbbbbbbbba

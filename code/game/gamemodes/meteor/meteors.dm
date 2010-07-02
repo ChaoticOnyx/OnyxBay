@@ -1,9 +1,9 @@
 #define METEOR_TEMPERATURE
 
-/var/const/meteor_wave_delay = 625 //minimum wait between waves in tenths of seconds
+/var/const/meteor_wave_delay = 600 //minimum wait between waves in tenths of seconds
 //set to at least 100 unless you want evarr ruining every round
 
-/var/const/meteors_in_wave = 150
+/var/const/meteors_in_wave = 50
 /var/const/meteors_in_small_wave = 3
 
 /proc/meteor_wave()
@@ -99,7 +99,7 @@
 			playsound(src.loc, 'meteorimpact.ogg', 40, 1)
 		if (--src.hits <= 0)
 			if(prob(15) && !istype(A, /obj/grille))
-				explosion(loc, 0, 1, 2, 3)
+				explosion(loc, 1, 3, 5, 10)
 				playsound(src.loc, "explosion", 50, 1)
 			del(src)
 	return

@@ -176,7 +176,7 @@
 				occupant.stat = 1
 				if(occupant.bodytemperature < T0C)
 					occupant.sleeping = max(5, (1/occupant.bodytemperature)*2000)
-					occupant.paralysis = max(5, (1/occupant.bodytemperature)*3000)
+					occupant.paralysis += 0.5
 					if(air_contents.oxygen > 2)
 						if(occupant.oxyloss) occupant.oxyloss = max(0, occupant.oxyloss - 1)
 					else

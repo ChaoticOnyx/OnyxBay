@@ -1,15 +1,27 @@
 /proc/start_events()
-	//if (!event && prob(eventchance))
-	//	event()
-	//	hadevent = 1
-	//	spawn(1300)
-	//		event = 0
-	//spawn(1200)
-	//	start_events()
+	if (!event && prob(eventchance))
+		meteor()
+		hadevent = 1
+		spawn(1300)
+			event = 0
+		spawn(1200)
+		start_events()
 	return // Stub
 
-/proc/event()
-	switch(rand(1,6))
+/proc/meteor()
+	event = 1
+//	command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")
+	spawn(100)
+		meteor_wave()
+		meteor_wave()
+	spawn(500)
+		meteor_wave()
+		meteor_wave()
+
+/proc/event(var/eventnum = 0)
+	if(!eventnum)
+		eventnum = rand(1,6)
+	switch(eventnum)
 		if(1)
 			event = 1
 			command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")

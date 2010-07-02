@@ -96,7 +96,7 @@ var/global/datum/controller/gameticker/ticker
 	spawn (3000)
 		start_events()
 	spawn ((18000+rand(3000)))
-		event()
+		meteor()
 
 	spawn master_controller.process()
 
@@ -106,6 +106,9 @@ var/global/datum/controller/gameticker/ticker
 
 	proc/create_characters()
 		for(var/mob/new_player/player in world)
+			if(config.invite_only)
+				if(!invite_isallowed(player))
+					player.ready = 0
 			if(player.ready)
 				if(player.mind && player.mind.assigned_role=="AI")
 					player.close_spawn_windows()

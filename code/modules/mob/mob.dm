@@ -1497,7 +1497,7 @@
 	return
 
 /client/Move(n, direct)
-	if(istype(src.mob, /mob/dead/observer))
+	if(istype(src.mob, /mob/dead))
 		return src.mob.Move(n,direct)
 	if (src.moving)
 		return 0
