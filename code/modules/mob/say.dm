@@ -54,6 +54,12 @@
 		return "exclaims, \"[text]\"";
 
 	return "says, \"[text]\"";
-
+/mob/proc/say_test(var/text)
+	var/ending = copytext(text, length(text))
+	if (ending == "?")
+		return "1"
+	else if (ending == "!")
+		return "2"
+	return "0"
 /mob/proc/emote(var/act)
 	return

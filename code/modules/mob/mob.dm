@@ -1620,8 +1620,9 @@
 			else
 				if(src.mob.confused)
 					step(src.mob, pick(cardinal))
-				else
-					. = ..()
+				else if(src.mob.staggering)
+					Stagger(mob,direct)
+				. = ..()
 			src.moving = null
 			return .
 		else

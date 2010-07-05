@@ -14,3 +14,10 @@
 		return "declares, \"[copytext(text, 1, length(text))]\"";
 
 	return "states, \"[text]\"";
+/mob/living/silicon/robot/say_test(var/text)
+	var/ending = copytext(text, length(text))
+	if (ending == "?")
+		return "R1"
+	else if (ending == "!")
+		return "R2"
+	return "R0"

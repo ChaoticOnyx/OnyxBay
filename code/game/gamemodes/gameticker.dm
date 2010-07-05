@@ -131,9 +131,12 @@ var/global/datum/controller/gameticker/ticker
 		if(current_state != GAME_STATE_PLAYING)
 			return 0
 
+
 		mode.process()
 
+
 		emergency_shuttle.process()
+
 
 		if(mode.check_finished())
 			current_state = GAME_STATE_FINISHED
@@ -146,6 +149,7 @@ var/global/datum/controller/gameticker/ticker
 
 				sleep(250)
 				world.Reboot()
+
 
 		return 1
 

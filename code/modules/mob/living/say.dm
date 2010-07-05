@@ -71,7 +71,9 @@
 		return
 
 	if (src.stuttering)
-		message = stutter(message)
+		message = NewStutter(message,stunned)
+	if (src.intoxicated)
+		message = Intoxicated(message)
 
 	// :downs:
 	if (src.brainloss >= 60)
@@ -85,7 +87,7 @@
 			message = uppertext(message)
 			message = "[message][stutter(pick("!", "!!", "!!!"))]"
 		if(!src.stuttering && prob(15))
-			message = stutter(message)
+			message = NewStutter(message)
 
 	switch (message_mode)
 		if ("headset")
@@ -142,7 +144,8 @@
 	var/rendered = null
 	if (length(heard_a))
 		var/message_a = src.say_quote(message)
-
+		var/test = say_test(message)
+		var/image/test2 = image('talk.dmi',src,"h[test]")
 		if (italics)
 			message_a = "<i>[message_a]</i>"
 
@@ -153,6 +156,8 @@
 
 		for (var/mob/M in heard_a)
 			M.show_message(rendered, 2)
+			M << test2
+		spawn(30) del(test2)
 
 	if (length(heard_b))
 		var/message_b
@@ -170,7 +175,6 @@
 
 		for (var/mob/M in heard_b)
 			M.show_message(rendered, 2)
-
 	message = src.say_quote(message)
 	if (italics)
 		message = "<i>[message]</i>"
@@ -179,9 +183,11 @@
 		rendered = "<span class='game say'><span class='name'>[src.name]</span> <span class='message'>[message]</span></span>"
 	else
 		rendered = "<span class='game say'><span class='name'>[src.real_name]</span>[alt_name] <span class='message'>[message]</span></span>"
-
 	for (var/mob/M in world)
 		if (istype(M, /mob/new_player))
 			continue
 		if (M.stat > 1 && !(M in heard_a))
 			M.show_message(rendered, 2)
+
+
+//headfindback

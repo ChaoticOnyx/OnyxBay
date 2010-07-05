@@ -82,7 +82,7 @@
 	open
 		name = "open space"
 		intact = 0
-		icon_state = "open" //TODO proper icon
+		icon_state = "open"
 		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
 
 		New()

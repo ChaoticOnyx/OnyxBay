@@ -1,62 +1,169 @@
 "aa" = (/turf/space,/area)
-"ab" = (/turf/simulated/wall,/area)
-"ac" = (/turf/simulated/floor,/area)
-"ad" = (/obj/machinery/computer/lasercon{id = "north"},/turf/simulated/floor,/area)
-"ae" = (/obj/machinery/computer/lasercon{id = "south"},/turf/simulated/floor,/area)
-"af" = (/obj/machinery/computer/lasercon{id = "east"},/turf/simulated/floor,/area)
-"ag" = (/obj/machinery/computer/lasercon{id = "west"},/turf/simulated/floor,/area)
-"ah" = (/turf/simulated/wall/r_wall,/area)
-"ai" = (/obj/lattice,/turf/space,/area)
-"aj" = (/obj/landmark/start{name = "Station Engineer"},/turf/simulated/floor,/area)
-"ak" = (/obj/machinery/atmospherics/unary/cold_sink/freezer,/turf/simulated/floor,/area)
-"al" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide,/turf/simulated/floor,/area)
-"am" = (/obj/landmark/start,/turf/simulated/floor,/area)
-"an" = (/obj/machinery/atmospherics/pipe/simple{dir = 6; icon_state = "intact"; initialize_directions = 6; layer = 3; level = 2},/turf/simulated/floor,/area)
-"ao" = (/obj/machinery/atmospherics/pipe/manifold{icon_state = "manifold"; level = 2},/turf/simulated/floor,/area)
-"ap" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor,/area)
-"aq" = (/obj/machinery/atmospherics/unary/generator_input{tag = "icon-intact (WEST)"; icon_state = "intact"; dir = 8},/turf/simulated/floor,/area)
-"ar" = (/obj/machinery/power/generator_type2,/turf/simulated/floor,/area)
-"as" = (/obj/machinery/atmospherics/unary/generator_input{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/floor,/area)
-"at" = (/obj/machinery/atmospherics/pipe/manifold{dir = 1; icon_state = "manifold"; level = 2},/turf/simulated/floor,/area)
-"au" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/wall/r_wall,/area)
-"av" = (/obj/lattice,/obj/machinery/atmospherics/pipe/simple{dir = 10; icon_state = "intact"; initialize_directions = 10; layer = 3; level = 2},/turf/space,/area)
-"aw" = (/obj/landmark/start{name = "Captain"},/turf/simulated/floor,/area)
-"ax" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor,/area)
-"ay" = (/obj/machinery/atmospherics/portables_connector{dir = 4},/turf/simulated/floor,/area)
-"az" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor,/area)
-"aA" = (/obj/machinery/atmospherics/pipe/simple{dir = 10; icon_state = "intact"; initialize_directions = 10; layer = 3; level = 2},/turf/simulated/floor,/area)
-"aB" = (/obj/item/weapon/wrench,/turf/simulated/floor,/area)
-"aC" = (/obj/lattice,/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; level = 2},/turf/space,/area)
-"aD" = (/obj/lattice,/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (WEST)"; icon_state = "intact_off"; dir = 8},/turf/space,/area)
-"aE" = (/obj/window/reinforced/south,/turf/simulated/floor,/area)
-"aF" = (/obj/window/reinforced/south,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor,/area)
-"aG" = (/obj/window/reinforced/south,/obj/machinery/portable_atmospherics/canister/oxygen,/turf/simulated/floor,/area)
-"aH" = (/obj/window/reinforced/south,/obj/item/weapon/wrench,/turf/simulated/floor,/area)
-"aI" = (/obj/window/reinforced/south,/obj/machinery/atmospherics/unary/cold_sink/freezer,/turf/simulated/floor,/area)
-"aJ" = (/obj/window/reinforced/east,/turf/simulated/wall,/area)
-"aK" = (/turf/simulated/wall/heatshield,/area)
-"aL" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/wall/heatshield,/area)
-"aM" = (/obj/window/reinforced/west,/obj/window/reinforced/north,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/engine/vacuum,/area)
-"aN" = (/obj/window/reinforced/north,/turf/simulated/floor/engine/vacuum,/area)
-"aO" = (/obj/window/reinforced/north,/obj/machinery/engine/laser{id = "north"},/turf/simulated/floor/engine/vacuum,/area)
-"aP" = (/obj/window/reinforced/north,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/engine/vacuum,/area)
-"aQ" = (/obj/window/reinforced/west,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/engine/vacuum,/area)
-"aR" = (/turf/simulated/floor/engine/vacuum,/area)
-"aS" = (/obj/machinery/atmospherics/pipe/vent{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/floor/engine/vacuum,/area)
-"aT" = (/obj/window/reinforced/west,/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/engine/vacuum,/area)
-"aU" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/engine/vacuum,/area)
-"aV" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (WEST)"; icon_state = "intact_off"; dir = 8},/turf/simulated/floor/engine/vacuum,/area)
-"aW" = (/obj/window/reinforced/west,/obj/machinery/engine/laser{dir = 4; icon_state = "laser"; id = "west"; tag = "icon-laser (EAST)"},/turf/simulated/floor/engine/vacuum,/area)
-"aX" = (/obj/machinery/engine/supermatter,/turf/simulated/floor/engine/vacuum,/area)
-"aY" = (/obj/machinery/engine/laser{dir = 8; icon_state = "laser"; id = "east"; tag = "icon-laser (WEST)"},/turf/simulated/floor/engine/vacuum,/area)
-"aZ" = (/obj/lattice,/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (NORTH)"; icon_state = "intact_off"; dir = 1},/turf/space,/area)
-"ba" = (/obj/window/reinforced/west,/turf/simulated/floor/engine/vacuum,/area)
-"bb" = (/obj/machinery/engine/laser{dir = 1; icon_state = "laser"; id = "south"; tag = "icon-laser (NORTH)"},/turf/simulated/floor/engine/vacuum,/area)
+"ab" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area)
+"ac" = (/obj/grille,/obj/window/reinforced/south,/obj/window/reinforced/east,/obj/machinery/atmospherics/pipe/simple,/turf/simulated/floor/plating,/area)
+"ad" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area)
+"ae" = (/turf/simulated/floor,/area)
+"af" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/obj/machinery/atmospherics/pipe/simple,/turf/simulated/floor/plating,/area)
+"ag" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area)
+"ah" = (/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact-f"; initialize_directions = 5; layer = 3},/turf/simulated/wall/r_wall,/area)
+"ai" = (/obj/machinery/atmospherics/pipe/simple{dir = 10; icon_state = "intact-f"; layer = 3},/turf/simulated/wall/r_wall,/area)
+"aj" = (/turf/simulated/wall/r_wall,/area)
+"ak" = (/obj/machinery/atmospherics/pipe/simple,/turf/simulated/floor,/area)
+"al" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/machinery/atmospherics/pipe/simple,/turf/simulated/floor/plating,/area)
+"am" = (/obj/machinery/atmospherics/pipe/vent,/turf/simulated/floor,/area)
+"an" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/turf/simulated/floor/plating,/area)
+"ao" = (/obj/grille,/turf/simulated/floor,/area)
+"ap" = (/obj/machinery/atmospherics/pipe/vent{dir = 1},/turf/simulated/floor,/area)
+"aq" = (/obj/machinery/atmospherics/pipe/simple{dir = 6; icon_state = "intact"; initialize_directions = 6; layer = 3; level = 2},/turf/simulated/floor,/area)
+"ar" = (/obj/machinery/atmospherics/pipe/manifold{dir = 1; icon_state = "manifold"; initialize_directions = 14; level = 2},/turf/simulated/floor,/area)
+"as" = (/obj/machinery/atmospherics/pipe/simple{dir = 10; icon_state = "intact"; initialize_directions = 10; layer = 3; level = 2},/turf/simulated/floor,/area)
+"at" = (/obj/machinery/light,/turf/simulated/floor,/area)
+"au" = (/obj/grille,/obj/window/reinforced/west,/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact-f"; layer = 3},/turf/simulated/floor/plating,/area)
+"av" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; initialize_directions = 12; layer = 3},/turf/simulated/floor/plating,/area)
+"aw" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/obj/machinery/atmospherics/pipe/manifold{dir = 4; initialize_directions = 11},/turf/simulated/floor/plating,/area)
+"ax" = (/obj/grille,/obj/window/reinforced/south,/obj/window/reinforced/east,/turf/simulated/floor/plating,/area)
+"ay" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor,/area)
+"az" = (/obj/machinery/atmospherics/unary/cold_sink/freezer,/turf/simulated/floor,/area)
+"aA" = (/obj/machinery/atmospherics/pipe/simple,/turf/simulated/wall/r_wall,/area)
+"aB" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area)
+"aC" = (/obj/machinery/light{dir = 1},/turf/simulated/floor,/area)
+"aD" = (/obj/machinery/computer/lasercon{id = "north"},/turf/simulated/floor,/area)
+"aE" = (/obj/machinery/computer/lasercon{id = "south"},/turf/simulated/floor,/area)
+"aF" = (/obj/machinery/computer/lasercon{id = "east"},/turf/simulated/floor,/area)
+"aG" = (/obj/machinery/computer/lasercon{id = "west"},/turf/simulated/floor,/area)
+"aH" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor,/area)
+"aI" = (/obj/grille,/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor,/area)
+"aJ" = (/obj/machinery/atmospherics/pipe/manifold{icon_state = "manifold"; level = 2},/turf/simulated/floor,/area)
+"aK" = (/obj/machinery/atmospherics/pipe/simple{dir = 10; icon_state = "intact"; initialize_directions = 10; layer = 3; level = 2},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area)
+"aL" = (/obj/machinery/door/airlock/glass,/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area)
+"aM" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area)
+"aN" = (/obj/landmark/start{name = "Station Engineer"},/turf/simulated/floor,/area)
+"aO" = (/obj/machinery/atmospherics/pipe/simple,/obj/machinery/light{dir = 1},/turf/simulated/floor,/area)
+"aP" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/floor,/area)
+"aQ" = (/obj/machinery/atmospherics/pipe/simple{dir = 6; icon_state = "intact"; initialize_directions = 6; layer = 3; level = 2},/turf/space,/area)
+"aR" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (WEST)"; icon_state = "intact_off"; dir = 8},/turf/space,/area)
+"aS" = (/obj/machinery/atmospherics/unary/vent_scrubber{dir = 1},/turf/simulated/floor,/area)
+"aT" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor,/area)
+"aU" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area)
+"aV" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor,/area)
+"aW" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/turf/simulated/floor,/area)
+"aX" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; initialize_directions = 7; level = 2},/turf/space,/area)
+"aY" = (/obj/window/reinforced/west,/obj/window/reinforced/north,/turf/simulated/wall/heatshield,/area)
+"aZ" = (/obj/window/reinforced/south,/obj/window/reinforced/north,/turf/simulated/wall/heatshield,/area)
+"ba" = (/obj/window/reinforced/south,/obj/window/reinforced/north,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/wall/heatshield,/area)
+"bb" = (/obj/window/reinforced/east,/obj/window/reinforced/north,/turf/simulated/wall/heatshield,/area)
+"bc" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area)
+"bd" = (/obj/window/reinforced/west,/obj/window/reinforced/east,/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/wall/heatshield,/area)
+"be" = (/obj/machinery/atmospherics/unary/vent_pump{dir = 8; external_pressure_bound = 0; frequency = 0; icon_state = "in"; id = "core_filter_in"; initialize_directions = 8; internal_pressure_bound = 4000; on = 1; pressure_checks = 2; pump_direction = 0},/turf/simulated/floor/engine/vacuum,/area)
+"bf" = (/turf/simulated/floor/engine/vacuum,/area)
+"bg" = (/obj/machinery/engine/laser{id = "north"},/turf/simulated/floor/engine/vacuum,/area)
+"bh" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (NORTH)"; icon_state = "intact_off"; dir = 1},/turf/simulated/floor/engine/vacuum,/area)
+"bi" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (EAST)"; icon_state = "intact_off"; dir = 4},/turf/simulated/floor/engine/vacuum,/area)
+"bj" = (/obj/machinery/atmospherics/unary/generator_input{tag = "icon-intact (WEST)"; icon_state = "intact"; dir = 8},/turf/simulated/floor,/area)
+"bk" = (/obj/machinery/power/generator_type2,/obj/cable,/obj/cable{tag = "icon-0-2"; icon_state = "0-2"; d2 = 8},/turf/simulated/floor,/area)
+"bl" = (/obj/machinery/atmospherics/unary/generator_input{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/floor,/area)
+"bm" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/wall/r_wall,/area)
+"bn" = (/obj/machinery/atmospherics/pipe/manifold{icon_state = "manifold"; level = 2},/turf/space,/area)
+"bo" = (/obj/machinery/atmospherics/pipe/tank/nitrogen{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/floor,/area)
+"bp" = (/obj/machinery/atmospherics/filter,/turf/simulated/floor,/area)
+"bq" = (/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/wall/heatshield,/area)
+"br" = (/obj/machinery/atmospherics/portables_connector{dir = 4},/turf/simulated/floor,/area)
+"bs" = (/obj/machinery/atmospherics/mixer,/turf/simulated/floor,/area)
+"bt" = (/obj/machinery/engine/laser{dir = 4; icon_state = "laser"; id = "west"; tag = "icon-laser (EAST)"},/turf/simulated/floor/engine/vacuum,/area)
+"bu" = (/obj/machinery/engine/supermatter,/turf/simulated/floor/engine/vacuum,/area)
+"bv" = (/obj/machinery/engine/laser{dir = 8; icon_state = "laser"; id = "east"; tag = "icon-laser (WEST)"},/turf/simulated/floor/engine/vacuum,/area)
+"bw" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area)
+"bx" = (/obj/machinery/atmospherics/pipe/tank/oxygen{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/floor,/area)
+"by" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide,/turf/simulated/floor,/area)
+"bz" = (/obj/machinery/atmospherics/binary/pump{dir = 4; icon_state = "intact_on"; on = 1},/turf/simulated/floor,/area)
+"bA" = (/obj/machinery/atmospherics/pipe/vent{dir = 8},/turf/simulated/floor/engine/vacuum,/area)
+"bB" = (/obj/machinery/engine/laser{dir = 1; icon_state = "laser"; id = "south"; tag = "icon-laser (NORTH)"},/turf/simulated/floor/engine/vacuum,/area)
+"bC" = (/obj/machinery/power/generator_type2,/obj/cable,/turf/simulated/floor,/area)
+"bD" = (/obj/machinery/atmospherics/pipe/manifold{dir = 1; icon_state = "manifold"; initialize_directions = 14; level = 2},/turf/space,/area)
+"bE" = (/obj/window/reinforced/south,/obj/window/reinforced/west,/turf/simulated/wall/heatshield,/area)
+"bF" = (/obj/window/reinforced/south,/obj/window/reinforced/east,/turf/simulated/wall/heatshield,/area)
+"bG" = (/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact"; layer = 3; level = 2},/turf/space,/area)
+"bH" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor/plating,/area)
+"bI" = (/obj/lattice,/turf/space,/area)
+"bJ" = (/obj/landmark/start,/turf/simulated/floor,/area)
+"bK" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/floor,/area)
+"bL" = (/obj/machinery/power/generator_type2,/turf/simulated/floor,/area)
+"bM" = (/obj/lattice,/obj/machinery/atmospherics/pipe/simple{dir = 10; icon_state = "intact"; initialize_directions = 10; layer = 3; level = 2},/turf/space,/area)
+"bN" = (/turf/simulated/wall,/area)
+"bO" = (/obj/landmark/start{name = "Captain"},/turf/simulated/floor,/area)
+"bP" = (/obj/machinery/portable_atmospherics/canister/oxygen,/turf/simulated/floor,/area)
+"bQ" = (/obj/item/weapon/wrench,/turf/simulated/floor,/area)
+"bR" = (/obj/window/reinforced/south,/obj/machinery/atmospherics/unary/cold_sink/freezer,/turf/simulated/floor,/area)
+"bS" = (/obj/lattice,/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; initialize_directions = 7; level = 2},/turf/space,/area)
+"bT" = (/obj/lattice,/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (WEST)"; icon_state = "intact_off"; dir = 8},/turf/space,/area)
+"bU" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/obj/machinery/atmospherics/binary/pump{tag = "icon-intact_on (EAST)"; icon_state = "intact_on"; dir = 4; on = 1},/turf/simulated/floor,/area)
+"bV" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/obj/window/reinforced/south,/obj/window/reinforced/north,/obj/machinery/meter,/turf/simulated/wall/heatshield,/area)
+"bW" = (/obj/window/reinforced/south,/obj/window/reinforced/north,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/obj/machinery/meter,/turf/simulated/wall/heatshield,/area)
+"bX" = (/obj/machinery/atmospherics/pipe/vent{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/floor/engine/vacuum,/area)
+"bY" = (/obj/machinery/atmospherics/pipe/vent{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/floor/engine/vacuum,/area)
+"bZ" = (/obj/window/reinforced/west,/obj/window/reinforced/east,/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/obj/machinery/meter,/turf/simulated/wall/heatshield,/area)
+"ca" = (/obj/machinery/atmospherics/binary/pump{dir = 8; icon_state = "intact_on"; initialize_directions = 12; on = 1; tag = "icon-intact_off (WEST)"},/turf/simulated/floor,/area)
+"cb" = (/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (WEST)"; icon_state = "intact_off"; dir = 8},/turf/simulated/floor/engine/vacuum,/area)
+"cc" = (/obj/machinery/atmospherics/mixer{tag = "icon-intact_off (NORTH)"; icon_state = "intact_off"; dir = 1},/turf/simulated/floor,/area)
+"cd" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide{tag = "icon-intact (WEST)"; icon_state = "intact"; dir = 8},/turf/simulated/floor,/area)
+"ce" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor,/area)
+"cf" = (/obj/machinery/atmospherics/pipe/manifold{dir = 4; icon_state = "manifold"; initialize_directions = 11; level = 2},/turf/simulated/floor,/area)
+"cg" = (/obj/machinery/atmospherics/pipe/tank/oxygen{tag = "icon-intact (WEST)"; icon_state = "intact"; dir = 8},/turf/simulated/floor,/area)
+"ch" = (/obj/window/reinforced/south,/turf/simulated/floor,/area)
+"ci" = (/obj/window/reinforced/south,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor,/area)
+"cj" = (/obj/window/reinforced/south,/obj/machinery/portable_atmospherics/canister/oxygen,/turf/simulated/floor,/area)
+"ck" = (/obj/window/reinforced/south,/obj/item/weapon/wrench,/turf/simulated/floor,/area)
+"cl" = (/obj/machinery/atmospherics/filter{tag = "icon-intact_off (NORTH)"; icon_state = "intact_off"; dir = 1},/turf/simulated/floor,/area)
+"cm" = (/obj/machinery/atmospherics/pipe/simple/insulated{tag = "icon-intact (SOUTHWEST)"; icon_state = "intact"; dir = 10},/turf/simulated/floor,/area)
+"cn" = (/obj/lattice,/obj/machinery/atmospherics/unary/thermal_plate{tag = "icon-intact_off (NORTH)"; icon_state = "intact_off"; dir = 1},/turf/space,/area)
+"co" = (/turf/simulated/wall/heatshield,/area)
+"cp" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/wall/heatshield,/area)
+"cq" = (/obj/machinery/atmospherics/pipe/vent,/turf/simulated/floor/engine/vacuum,/area)
+"cr" = (/obj/machinery/atmospherics/unary/thermal_plate,/turf/simulated/floor/engine/vacuum,/area)
+"cs" = (/obj/machinery/atmospherics/filter{tag = "icon-intact_off (EAST)"; icon_state = "intact_off"; dir = 4},/turf/simulated/floor,/area)
+"ct" = (/obj/machinery/atmospherics/pipe/simple{dir = 9; icon_state = "intact"; initialize_directions = 9; layer = 3; level = 2; tag = "icon-intact (NORTHWEST)"},/turf/simulated/floor,/area)
+"cu" = (/obj/machinery/atmospherics/pipe/simple/insulated,/turf/simulated/floor,/area)
+"cv" = (/obj/window/reinforced/west,/obj/window/reinforced/north,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/engine/vacuum,/area)
+"cw" = (/obj/window/reinforced/north,/turf/simulated/floor/engine/vacuum,/area)
+"cx" = (/obj/window/reinforced/north,/obj/machinery/engine/laser{id = "north"},/turf/simulated/floor/engine/vacuum,/area)
+"cy" = (/obj/window/reinforced/north,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/engine/vacuum,/area)
+"cz" = (/obj/window/reinforced/west,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/engine/vacuum,/area)
+"cA" = (/obj/machinery/atmospherics/valve,/turf/simulated/floor,/area)
+"cB" = (/obj/lattice,/obj/machinery/atmospherics/unary/thermal_plate,/turf/space,/area)
+"cC" = (/obj/window/reinforced/west,/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/engine/vacuum,/area)
+"cD" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/engine/vacuum,/area)
+"cE" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/obj/machinery/atmospherics/binary/pump{dir = 8; icon_state = "intact_on"; initialize_directions = 12; on = 1; tag = "icon-intact_off (WEST)"},/turf/simulated/floor,/area)
+"cF" = (/obj/machinery/atmospherics/valve{dir = 4; icon_state = "valve0"; initialize_directions = 12; tag = "icon-valve0 (EAST)"},/turf/simulated/floor,/area)
+"cG" = (/obj/window/reinforced/west,/obj/machinery/engine/laser{dir = 4; icon_state = "laser"; id = "west"; tag = "icon-laser (EAST)"},/turf/simulated/floor/engine/vacuum,/area)
+"cH" = (/obj/window/reinforced/west,/turf/simulated/floor/engine/vacuum,/area)
+"cI" = (/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor,/area)
+"cJ" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/obj/machinery/meter,/turf/simulated/floor,/area)
+"cK" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/obj/machinery/atmospherics/pipe/simple/insulated,/turf/simulated/floor,/area)
+"cL" = (/obj/lattice,/obj/machinery/atmospherics/pipe/simple{dir = 9; icon_state = "intact"; initialize_directions = 9; layer = 3; level = 2; tag = "icon-intact (NORTHWEST)"},/turf/space,/area)
+"cM" = (/obj/machinery/atmospherics/pipe/simple/insulated,/turf/simulated/wall/r_wall,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaabacadaeafaeaeaeaeaeaeaeaeagaeaeaeahaiajajajajajajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaeakadaealaeamaeaeaeaeaeaeanaeaeaeaoapaqarasajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaatakadaeauavawababababababaxaeaeaeaeaeayazazajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaAadaeaBaeapaCaDaEaFaGaCaqaHaHaHaIaraJaraKajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaAaLagaMaeaeaeaeaNaeaNaeayaeaeaeaoayaeazazajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaOadaeaCaeaeaeaeaeaeaeaeayaeaeaeaoaPaeaeaeajaQaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaSaTaUaUaUaUaUaUaUaUaUaUaVaUaUaWaoaoaoaoaoajaXaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaeaeaeaeaeaeaeaeaYaZaZaZbaaZbbaTaUaUaWaeaeajaXaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajbcaeaeaeaqaHaHaHbdbebfbgbhbibdaHarbjbkblarbmbnaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaeboaHarbpaeaeaebqbfbfbfbfbfbqaeaPaeadaeaPajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaeaebraJbsaeaeaebqbtbfbubfbvbqaeaeaeadaebwajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaebxaHaHbsaeaeaebqbfbfbfbfbfbqaebyaeadaebyajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaeaebrbzaJaHaHbzbdbAbfbBbfbibdaHaJbjbCblaJbmbDaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaeaeaeaeaeaeaeaebEaZaZaZaZaZbFaeaeaeaeaeaeajaXaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajbcaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaebwajaXaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeajbGaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajaeataeaeaeaeataeaeaeataeaeaeaeaeaeataeaeaeajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaajajajajbHajajajajajajajajajajajajajajajajajajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -65,43 +172,25 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-ababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-abacadaeafagacacacacacacacacacahaiaiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-abacajacajacacacacacakacacacacahaiaiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-abacacalalacacacacacacacalalacahaiaiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-abamanaoaoapapaqarasatapaoaoatauavaiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-abawaxayapapapapapapazaAaBacaxahaCaDaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-abaEaFaGaHaEaEaEaEaEaIaFaEaEaIahaCaDaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aJaKaLaKaKaKaKaKaKaKaKaLaKaKaKahaCaDaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aJaKaMaNaNaNaNaNaOaNaNaPaNaNaNahaCaDaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aJaKaQaRaRaRaRaRaRaRaRaSaRaRaRahaCaDaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aJaKaTaUaUaUaUaUaVaRaRaRaRaRaRahaCaDaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aJaKaWaRaRaRaRaRaXaRaRaRaRaRaYahaZaiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aJaKbaaRaRaRaRaRaRaRaRaRaRaRaRahaiaiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aJaKbaaRaRaRaRaRaRaRaRaRaRaRaRahaiaiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aJaKbaaRaRaRaRaRbbaRaRaRaRaRaRahaiaiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-ahahahahahahahahahahahahahahahahaiaiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajajajajajajajajajajajajajajajajaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajaeaDaEaFaGaeaeaeaeaeaeaeaeaeajbIbIaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajaeaNaeaNaeaeaeaeaeaeaeaeaeaeajbIbIaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajaeaeaeaeaeaeaeaeaebyaeaeaeaeajbIbIaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajbJaeaebKaraHbjbLblaJararararbmbMbIaaaaaaaaaaaaaaaa
+bNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNaaaaaaaaaaaaaaaaajbOaeaeaeayaebPbQaeaeazazazbRajbSbTaaaaaaaaaaaaaaaa
+bNaeaDaEaFaGaeaeaeaeaeaeaeaeaeajbIbIaaaaaaaaaaaaajaeaeaebrbUasaeaeaeaeaeaeaeaeajbSbTaaaaaaaaaaaaaaaa
+bNaeaeaeaeaeaeaeaeaeazaeaeaeaeajbIbIaaaaaaaaaaaaajaeaeaeaYbVbWaZaZaZbbaeaeaeaeajbSbTaaaaaaaaaaaaaaaa
+bNaeaebybyaeaeaeaeaeaeaebybyaeajbIbIaaaaaaaaaaaaajaeaeaebqbhbXbgbfbYbZcaasaeaeajbSbTaaaaaaaaaaaaaaaa
+bNaeaqaJaJaHaHbjbLblaraHaJaJarbmbMbIaaaaaaaaaaaaajazaraHbZcbbfbfbfbfbqaecccdaeajbSbTaaaaaaaaaaaaaaaa
+bNaeaybraHaHaHaHaHaHceasbQaeayajbSbTaaaaaaaaaaaaajazcfbybqbtbfbubfbvbqaecccgaeajbSbTaaaaaaaaaaaaaaaa
+bNchcicjckchchchchchbRcichchbRajbSbTaaaaaaaaaaaaajazaJaJbZcbbfbfbfbfbqaeclcmaeajcnbIaaaaaaaaaaaaaaaa
+bNcocpcococococococococpcococoajbSbTaaaaaaaaaaaaajaeaeaebqcqcrbBbfbYbZcsctcuaeajbIbIaaaaaaaaaaaaaaaa
+bNcocvcwcwcwcwcwcxcwcwcycwcwcwajbSbTaaaaaaaaaaaaajaeaeaebEbWbWaZaZaZbFayaecuaeajbIbIaaaaaaaaaaaaaaaa
+bNcoczbfbfbfbfbfbfbfbfbXbfbfbfajbSbTaaaaaaaaaaaaajaeaeaeaecAayaeaeaeaeayaecuaeajcBbIaaaaaaaaaaaaaaaa
+bNcocCcDcDcDcDcDcbbfbfbfbfbfbfajbSbTaaaaaaaaaaaaajaeaeaeboaJcEcFaHaHaHctaecuaeajbSbTaaaaaaaaaaaaaaaa
+bNcocGbfbfbfbfbfbubfbfbfbfbfbvajcnbIaaaaaaaaaaaaajaeaeaeaeaeaybyaeaeaebyaecuaeajbSbTaaaaaaaaaaaaaaaa
+bNcocHbfbfbfbfbfbfbfbfbfbfbfbfajbIbIaaaaaaaaaaaaajaeaeaeaeaecIaJbjbLblaJcJcKaHbmcLbIaaaaaaaaaaaaaaaa
+bNcocHbfbfbfbfbfbfbfbfbfbfbfbfajbIbIaaaaaaaaaaaaajajajajajajajajajajajajajcMajajbIaaaaaaaaaaaaaaaaaa
+bNcocHbfbfbfbfbfbBbfbfbfbfbfbfajbIbIaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ajajajajajajajajajajajajajajajajbIbIaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 "}

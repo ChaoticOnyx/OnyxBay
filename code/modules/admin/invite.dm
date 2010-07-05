@@ -8,6 +8,7 @@ var
 	else
 		invite_add(M)
 	return
+
 /proc/invite_add(mob/M)
 	if (!M || !M.key || !M.client) return
 	invite_keylist.Add(text("[M.ckey]"))

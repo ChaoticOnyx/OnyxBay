@@ -62,11 +62,17 @@ datum
 				M.make_dizzy(3)
 				M:jitteriness = max(M:jitteriness-3,0)
 				if(data >= 25)
-					if (!M:stuttering) M:stuttering = 1
-					M:stuttering += 3
+					if (!M:intoxicated) M:intoxicated = 1
+					M:intoxicated += 3
 				if(data >= 40 && prob(33))
 					if (!M:confused) M:confused = 1
 					M:confused += 2
+				if(data >= 200)
+					M.eye_blurry = max(M.eye_blurry, 10)
+					M:drowsyness  = max(M:drowsyness, 20)
+				if(data >= 245)
+					M:paralysis = max(M:paralysis, 20)
+					M:drowsyness  = max(M:drowsyness, 30)
 				..()
 
 		water
@@ -893,11 +899,17 @@ datum
 				M.make_dizzy(5)
 				M:jitteriness = max(M:jitteriness-5,0)
 				if(data >= 25)
-					if (!M:stuttering) M:stuttering = 1
-					M:stuttering += 4
+					if (!M:intoxicated) M:intoxicated = 1
+					M:intoxicated += 4
 				if(data >= 40 && prob(33))
 					if (!M:confused) M:confused = 1
 					M:confused += 3
+				if(data >= 165)
+					M.eye_blurry = max(M.eye_blurry, 10)
+					M:drowsyness  = max(M:drowsyness, 20)
+				if(data >= 185)
+					M:paralysis = max(M:paralysis, 20)
+					M:drowsyness  = max(M:drowsyness, 30)
 				..()
 
 		ammonia

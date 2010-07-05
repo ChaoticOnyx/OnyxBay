@@ -1,3 +1,6 @@
+#define RADIATION_CAPACITY 30000 //Radiation isn't particularly effective (TODO BALANCE)
+
+
 /obj/machinery/atmospherics/unary/thermal_plate
 //Based off Heat Reservoir and Space Heater
 //Transfers heat between a pipe system and environment, based on which has a greater thermal energy concentration
@@ -25,8 +28,7 @@
 		var/transfer_moles = 0.25 * environment.total_moles()
 		var/datum/gas_mixture/external_removed = environment.remove(transfer_moles)
 		if (!external_removed)
-			return 1
-
+			return radiate()
 
 		//Get same info from connected gas
 
@@ -45,7 +47,27 @@
 		external_removed.temperature = final_temperature
 		environment.merge(external_removed)
 
-		air_contents.temperature = final_temperature
+		internal_removed.temperature = final_temperature
+		air_contents.merge(internal_removed)
+
+		network.update = 1
+
+		return 1
+
+	proc/radiate()
+
+		var/internal_transfer_moles = 0.25 * air_contents.total_moles()
+		var/datum/gas_mixture/internal_removed = air_contents.remove(internal_transfer_moles)
+
+		if (!internal_removed)
+			return 1
+
+		var/combined_heat_capacity = internal_removed.heat_capacity() + RADIATION_CAPACITY
+		var/combined_energy = internal_removed.temperature * internal_removed.heat_capacity() + (RADIATION_CAPACITY * 6.4)
+
+		var/final_temperature = combined_energy / combined_heat_capacity
+
+		internal_removed.temperature = final_temperature
 		air_contents.merge(internal_removed)
 
 		network.update = 1

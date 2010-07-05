@@ -21,7 +21,7 @@
 	var/obj/screen/bodytemp = null
 	var/obj/screen/healths = null
 	var/obj/screen/throw_icon = null
-	
+
 	var/list/obj/hallucination/hallucinations = list()
 
 	var/alien_egg_flag = 0
@@ -53,11 +53,13 @@
 	var/ear_deaf = null
 	var/ear_damage = null
 	var/stuttering = null
+	var/intoxicated = null
 	var/real_name = null
 	var/blinded = null
 	var/rejuv = null
 	var/druggy = 0
 	var/confused = 0
+	var/staggering = 0
 	var/antitoxs = null
 	var/plasma = null
 	var/sleeping = 0.0
