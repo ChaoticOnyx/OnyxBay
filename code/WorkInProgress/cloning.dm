@@ -500,6 +500,8 @@
 		for(var/i = 0 to 20)
 			randmutb(src.occupant) //Sometimes the clones come out wrong.
 
+		src.occupant.brainloss = 100
+
 	src.attempting = 0
 	return 1
 
@@ -547,6 +549,7 @@
 		else if((src.occupant.health >= src.heal_level) && (!src.eject_wait))
 			src.connected_message("Cloning Process Complete.")
 			src.locked = 0
+			src.occupant.toxloss = 150
 			src.go_out()
 			return
 
