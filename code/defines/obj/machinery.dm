@@ -358,6 +358,11 @@
 	name = "hub"
 	icon_state = "tele0"
 
+/obj/machinery/teleport/hub/interserver
+	name = "Interserver Hub"
+	icon_state = "tele0"
+	var/teleing = 0
+
 /obj/machinery/teleport/station
 	name = "station"
 	icon_state = "controller"
