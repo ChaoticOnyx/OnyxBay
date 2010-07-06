@@ -191,7 +191,7 @@ Frequency:
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.name] ([eqjobname]) </a>[part_b][M.say_quote(message)][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
-					R << img
+				//	R << img
 		if (length(heard_normal))
 			var/rendered = "[part_a][M.real_name][part_b][M.say_quote(message)][part_c]"
 
@@ -200,7 +200,7 @@ Frequency:
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.real_name] ([eqjobname]) </a>[part_b][M.say_quote(message)][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
-					R << img
+				//	R << img
 
 		if (length(heard_voice))
 			var/rendered = "[part_a][M.voice_name][part_b][M.voice_message][part_c]"
@@ -210,7 +210,7 @@ Frequency:
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.voice_name] ([eqjobname]) </a>[part_b][M.voice_message][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
-					R << img
+				//	R << img
 
 		if (length(heard_garbled))
 			var/rendered = "[part_a][M.voice_name][part_b][M.say_quote(stars(message))][part_c]"
@@ -220,7 +220,7 @@ Frequency:
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.voice_name]</a>[part_b][M.say_quote(stars(message))][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
-					R << img
+				//	R << img
 		spawn(30) del(test2)
 		del(img)
 /obj/item/device/radio/proc/say_test(var/text)
