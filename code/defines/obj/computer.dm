@@ -227,3 +227,8 @@
 	icon_state = "teleport"
 	var/obj/item/locked = null
 	var/id = null
+
+/obj/machinery/computer/teleporter/interserver
+	name = "Interserver Teleporter"
+	icon_state = "teleport"
+	var/addr = null
