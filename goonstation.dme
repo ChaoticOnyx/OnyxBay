@@ -126,6 +126,7 @@
 #include "code\names.dm"
 #include "code\setup.dm"
 #include "code\stylesheet.dm"
+#include "code\TakePicture.dm"
 #include "code\ATMOSPHERICS\atmospherics.dm"
 #include "code\ATMOSPHERICS\datum_pipe_network.dm"
 #include "code\ATMOSPHERICS\datum_pipeline.dm"
