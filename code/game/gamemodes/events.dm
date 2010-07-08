@@ -8,6 +8,78 @@
 	//	start_events()
 	return // Stub
 
+/proc/new_event(var/severity)
+	if(severity == 1)
+		switch(rand(1,2))
+			if(1)
+				event = 1
+				command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")
+				spawn(100)
+					meteor_wave()
+					meteor_wave()
+				spawn(500)
+					meteor_wave()
+					meteor_wave()
+			if(2)
+				event = 1
+				command_alert("An electrical storm has been detected, electrical equipment may be effected.", "Electrical Storm")
+				for(var/obj/machinery/power/apc/a in world)
+					//Crit is a new var, to stop the AI room APC from instantly killing the AI
+					if(prob(5) && a.crit == 0)
+						spawn(rand(100,500))
+							a.overload_lighting()
+							a.set_broken()
+	else if(severity == 2)
+		switch(rand(1,2))
+			if(1)
+				event = 1
+				command_alert("Space-time anomalies detected on the station. There is no additional data.", "Anomaly Alert")
+				var/list/turfs = list(	)
+				var/turf/picked
+				for(var/turf/T in world)
+					if(T.z == 1 && istype(T,/turf/simulated/floor) && !istype(T,/turf/space))
+						turfs += T
+				for(var/turf/T in world)
+					if(prob(20) && T.z == 1 && istype(T,/turf/simulated/floor))
+						spawn(50+rand(0,3000))
+							picked = pick(turfs)
+							var/obj/portal/P = new /obj/portal( T )
+							P.target = picked
+							P.creator = null
+							P.icon = 'objects.dmi'
+							P.failchance = 0
+							P.icon_state = "anom"
+							P.name = "wormhole"
+							spawn(rand(300,600))
+								del(P)
+			if(2)
+				viral_outbreak()
+	else if(severity == 3)
+		switch(rand(1,2))
+			if(1)
+				event = 1
+				command_alert("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert")
+				var/turf/T = pick(blobstart)
+				var/obj/blob/bl = new /obj/blob( T.loc, 30 )
+				spawn(0)
+					bl.Life()
+					bl.Life()
+					bl.Life()
+					bl.Life()
+					bl.Life()
+				blobevent = 1
+				dotheblobbaby()
+				spawn(3000)
+					blobevent = 0
+			if(2)
+				event = 1
+				command_alert("Gravitational anomalies detected on the station. There is no additional data.", "Anomaly Alert")
+				var/turf/T = pick(blobstart)
+				var/obj/bhole/bh = new /obj/bhole( T.loc, 30 )
+				spawn(rand(50, 300))
+					del(bh)
+
+
 /proc/event()
 	switch(rand(1,6))
 		if(1)
@@ -65,6 +137,7 @@
 			spawn(3000)
 				blobevent = 0
 			//start loop here
+
 
 		if(5)
 			event = 1
@@ -223,7 +296,7 @@
 
 /proc/viral_outbreak()
 	command_alert("Confirmed outbreak of level 7 viral biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert")
-	var/virus_type = pick(/datum/disease/dnaspread,/datum/disease/cold)
+	var/virus_type = /datum/disease/cold
 	for(var/mob/living/carbon/human/H in world)
 		if((H.virus) || (H.stat == 2))
 			continue
