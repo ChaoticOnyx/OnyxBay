@@ -121,15 +121,34 @@
 
 			equip_traitor(traitor.current)
 
-		traitor.current << "<B>You are the traitor.</B>"
-
+		traitor.current << "\red <B>You are the traitor.</B>"
+		traitor.current << "\red <B>REPEAT</B>"
+		traitor.current << "\red <B>You are the traitor.</B>"
 		var/obj_count = 1
 		for(var/datum/objective/objective in traitor.objectives)
 			traitor.current << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
 			obj_count++
+		traitor.current << "\red <B>You have 1 and 1/2 hours to complete your objective</B>"
+		traitor.current << "\red <B>If you do not complete your objective and return within the alloted time, we will be forced to reval your identity</B>"
+		spawn(5400)
+			command_alert("Summary downloaded and printed out at all communications consoles.", "The traitor has been determined")
+			var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested staus information:</FONT><HR>"
+			intercepttext += "We have determined the traitors name to be: [traitor.current.real_name]"
+			for (var/obj/machinery/computer/communications/comm in world)
+				if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
+					var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
+					intercept.name = "paper- 'Cent. Com. Status Summary'"
+					intercept.info = intercepttext
+
+					comm.messagetitle.Add("Cent. Com. Status Summary")
+					comm.messagetext.Add(intercepttext)
+			spawn(700)
+				command_alert("Repeating the previous message over intercoms due to urgency. The station has a traitor onboard by the name of [traitor.current.real_name], please arrest them and bring them on the emergency shuttle at once", "The traitor has been determined")
+
 
 	spawn (rand(waittime_l, waittime_h))
 		send_intercept()
+
 
 /datum/game_mode/traitor/proc/get_possible_traitors()
 	var/list/candidates = list()
