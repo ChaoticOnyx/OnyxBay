@@ -105,6 +105,7 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
+			src.verbs += /client/proc/new_eventa
 			src.verbs += /obj/admins/proc/invites
 		if ("Coder")
 			src.deadchat = 1
@@ -754,4 +755,9 @@
 	message_admins("\blue <b> By [usr.client.key]</b>")
 
 
+	return
+/client/proc/new_eventa(sev as text)
+	set category = "Debug"
+	set name = "Spawn event"
+	new_event(sev)
 	return

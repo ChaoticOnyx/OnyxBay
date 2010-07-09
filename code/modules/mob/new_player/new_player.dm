@@ -214,6 +214,7 @@ mob/new_player
 
 			var/starting_loc = pick(latejoin)
 			character.loc = starting_loc
+			ticker.mode.latespawn(character)
 			del(src)
 
 		else

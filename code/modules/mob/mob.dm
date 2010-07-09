@@ -1444,7 +1444,8 @@
 
 		if(istype(src,/mob))
 			var/mob/a = src
-			a.mind.log.updateloc(src.loc.loc,src)
+			if(a.mind)
+				a.mind.log.updateloc(src.loc.loc,src)
 	return
 
 /atom/movable/verb/pull()
@@ -1930,5 +1931,5 @@
 
 
 /mob/proc/log_m(var/text)
-	if(src.mind.log)
+	if(src.mind)
 		src.mind.log.log_m(text,src)
