@@ -130,7 +130,7 @@
 			obj_count++
 		traitor.current << "\red <B>You have 1 and 1/2 hours to complete your objective</B>"
 		traitor.current << "\red <B>If you do not complete your objective and return within the alloted time, we will be forced to reval your identity</B>"
-		spawn(5400)
+		spawn(54000)
 			command_alert("Summary downloaded and printed out at all communications consoles.", "The traitor has been determined")
 			var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested staus information:</FONT><HR>"
 			intercepttext += "We have determined the traitors name to be: [traitor.current.real_name]"
@@ -142,7 +142,7 @@
 
 					comm.messagetitle.Add("Cent. Com. Status Summary")
 					comm.messagetext.Add(intercepttext)
-			spawn(700)
+			spawn(12000)
 				command_alert("Repeating the previous message over intercoms due to urgency. The station has a traitor onboard by the name of [traitor.current.real_name], please arrest them and bring them on the emergency shuttle at once", "The traitor has been determined")
 
 
