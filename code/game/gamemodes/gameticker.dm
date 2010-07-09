@@ -98,13 +98,13 @@ var/global/datum/controller/gameticker/ticker
 //	spawn ((18000+rand(3000)))
 //		event()
 
-	spawn(1500)
+	spawn(15000)
 		new_event(1)
-	spawn(3000)
+	spawn(30000)
 		new_event(2)
-	spawn(4000)
+	spawn(40000)
 		new_event(1)
-	spawn(6000)
+	spawn(60000)
 		new_event(3)
 
 	spawn master_controller.process()
