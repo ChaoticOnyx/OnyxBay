@@ -156,7 +156,7 @@ WELDINGTOOOL
 			src.icon_state = "welder"
 		var/turf/location = user.loc
 		if (istype(location, /turf))
-			location.hotspot_expose(700, 50, 1)
+			location.hotspot_expose(SPARK_TEMP, 50, 1)
 	return
 
 
@@ -232,4 +232,4 @@ WELDINGTOOOL
 			location = M.loc
 
 	if (istype(location, /turf))
-		location.hotspot_expose(700, 5)
+		location.hotspot_expose(SPARK_TEMP, 5)

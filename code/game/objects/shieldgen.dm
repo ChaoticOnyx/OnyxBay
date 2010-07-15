@@ -10,6 +10,8 @@
 	shields_up()
 		if(active) return 0
 
+		if(!deployed_shields) deployed_shields = list()
+
 		for(var/turf/target_tile in range(2, src))
 			if (istype(target_tile,/turf/space) && !(locate(/obj/shield) in target_tile))
 				if (malfunction && prob(33) || !malfunction)

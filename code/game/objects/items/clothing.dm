@@ -69,7 +69,7 @@ DEATH COMMANDO GAS MASK
 			location = M.loc
 
 	if (istype(location, /turf))
-		location.hotspot_expose(700, 1)
+		location.hotspot_expose(SPARK_TEMP, 1)
 
 
 /obj/item/clothing/head/cakehat/attack_self(mob/user as mob)
@@ -135,7 +135,7 @@ DEATH COMMANDO GAS MASK
 			del(src)
 			return
 		if (istype(location, /turf)) //start a fire if possible
-			location.hotspot_expose(700, 5)
+			location.hotspot_expose(SPARK_TEMP, 5)
 		if (ismob(holder))
 			isHeld = 1
 		else

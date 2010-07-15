@@ -157,6 +157,7 @@ turf
 					air_master.tiles_to_update.Add(src)
 
 					find_group()
+					if(!zone) add_to_other_zone()
 
 //				air.parent = src //TODO DEBUG REMOVE
 
@@ -169,6 +170,8 @@ turf
 
 		Del()
 			if(air_master)
+				if(zone)
+					zone.RemoveTurf(src)
 				if(parent)
 					air_master.groups_to_rebuild.Add(parent)
 					parent.members.Remove(src)
@@ -184,6 +187,10 @@ turf
 			..()
 
 		assume_air(datum/gas_mixture/giver)
+			if(zone) //Update zone values.
+				zone.add_oxygen(giver.oxygen)
+				zone.add_nitrogen(giver.nitrogen)
+				zone.add_co2(giver.carbon_dioxide)
 			if(air)
 				if(parent&&parent.group_processing)
 					if(!parent.air.check_then_merge(giver))
@@ -226,6 +233,11 @@ turf
 			if(air)
 				var/datum/gas_mixture/removed = null
 
+				if(zone)
+					air.oxygen = zone.oxygen()
+					air.nitrogen = zone.nitrogen()
+					air.carbon_dioxide = zone.co2()
+
 				if(parent&&parent.group_processing)
 					removed = parent.air.check_then_remove(amount)
 					if(!removed)
@@ -238,13 +250,26 @@ turf
 						if(air.check_tile_graphic())
 							update_visuals(air)
 
+				if(removed && zone)
+					zone.add_oxygen(-removed.oxygen)
+					zone.add_nitrogen(-removed.nitrogen)
+					zone.add_co2(-removed.carbon_dioxide)
+
 				return removed
 
 			else
 				return ..()
 
 		update_air_properties()//OPTIMIZE
+			//var/old_air_directions = air_check_directions
 			air_check_directions = 0
+			floodupdate = 1
+			//overlays += ad_update
+			if(!zone && !blocks_air)
+				if(CanPass(null,src,0,1))
+					add_to_other_zone()
+					if(!zone)
+						spawn new/zone(src)
 
 			for(var/direction in cardinal)
 				if(CanPass(null, get_step(src,direction), 0, 0))
@@ -281,7 +306,33 @@ turf
 								else
 									parent.borders = list(src)
 
+
 							group_border |= direction
+
+						if(zone)
+							if(istype(T,/turf/space) && !(T in zone.space_connections))
+								zone.space_connections += T
+								//world << "Space connection added."
+							else
+								if(T.zone != src.zone)
+									if(!T.zone && CanPass(null,T,0,1))
+										zone.AddTurf(T)
+									else if(!(T.zone in zone.connections))
+										zone.Connect(src,T)
+					else
+						if(zone)
+							var/turf/simulated/T = get_step(src,direction)
+							if(T in zone.members)
+								zone.RemoveTurf(T)
+							if(T.zone in zone.connections)
+								zone.Disconnect(src,T)
+							else if(istype(T,/turf/space))
+								zone.space_connections -= T
+							//if(direction & old_air_directions)
+								//if(!ticker || !old_air_directions || !air_check_directions) return
+								//else
+									//SplitCheck(T)
+								//world << "Space connection removed."
 
 				parent.length_space_border += length_space_border
 
@@ -291,6 +342,8 @@ turf
 					air_master.add_singleton(src)
 			else
 				processing = 0
+				//if(zone)
+					//overlays += ad_process
 
 		process_cell()
 			var/turf/simulated/list/possible_fire_spreads = list()
@@ -321,29 +374,6 @@ turf
 							if(active_hotspot)
 								possible_fire_spreads += enemy_tile
 						else
-/*							var/obj/movable/floor/movable_on_enemy = locate(/obj/movable/floor) in enemy_tile
-
-							if(movable_on_enemy)
-								if(movable_on_enemy.parent && movable_on_enemy.parent.group_processing) //apply tile to group sharing
-									if(movable_on_enemy.parent.current_cycle < current_cycle)
-										if(movable_on_enemy.parent.air.check_gas_mixture(air))
-											connection_difference = air.share(movable_on_enemy.parent.air)
-
-										else
-											movable_on_enemy.parent.suspend_group_processing()
-
-											if(movable_on_enemy.archived_cycle < archived_cycle) //archive bordering tile information if not already done
-												movable_on_enemy.archive()
-											connection_difference = air.share(movable_on_enemy.air)
-											//group processing failed so interact with individual tile
-								else
-									if(movable_on_enemy.archived_cycle < archived_cycle) //archive bordering tile information if not already done
-										movable_on_enemy.archive()
-
-									if(movable_on_enemy.current_cycle < current_cycle)
-										connection_difference = share_air_with_tile(movable_on_enemy)
-
-							else*/
 							connection_difference = mimic_air_with_tile(enemy_tile)
 								//bordering a tile with fixed air properties
 

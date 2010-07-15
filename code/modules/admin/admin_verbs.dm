@@ -95,8 +95,8 @@
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 
 			src.verbs += /client/proc/general_report
-			src.verbs += /client/proc/air_report
-			src.verbs += /client/proc/air_status
+			//src.verbs += /client/proc/air_report
+			//src.verbs += /client/proc/air_status
 			src.verbs += /client/proc/fix_next_move
 
 			src.verbs += /client/proc/toggle_view_range
@@ -179,8 +179,8 @@
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 
 			src.verbs += /client/proc/general_report
-			src.verbs += /client/proc/air_report
-			src.verbs += /client/proc/air_status
+			//src.verbs += /client/proc/air_report
+			//src.verbs += /client/proc/air_status
 			src.verbs += /client/proc/fix_next_move
 			src.verbs += /obj/admins/proc/spawn_atom
 
@@ -251,8 +251,8 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 
 			src.verbs += /client/proc/general_report
-			src.verbs += /client/proc/air_report
-			src.verbs += /client/proc/air_status
+			//src.verbs += /client/proc/air_report
+			//src.verbs += /client/proc/air_status
 			src.verbs += /client/proc/fix_next_move
 
 			src.verbs += /client/proc/toggle_view_range
@@ -534,8 +534,8 @@
 	src.verbs -= /client/proc/stealth
 
 	src.verbs -= /client/proc/general_report
-	src.verbs -= /client/proc/air_report
-	src.verbs -= /client/proc/air_status
+	//src.verbs -= /client/proc/air_report
+	//src.verbs -= /client/proc/air_status
 
 	src.verbs -= /client/proc/toggle_view_range
 	src.verbs -= /obj/admins/proc/toggle_aliens

@@ -69,7 +69,7 @@ ZIPPO
 			if(M.l_hand == src || M.r_hand == src)
 				location = M.loc
 		if (istype(location, /turf))
-			location.hotspot_expose(700, 5)
+			location.hotspot_expose(SPARK_TEMP, 5)
 		sleep(10)
 
 

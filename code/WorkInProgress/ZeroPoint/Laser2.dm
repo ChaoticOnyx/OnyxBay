@@ -1,5 +1,5 @@
 /obj/machinery/engine/laser
-	name = "A powerful zero-point laser"
+	desc = "A powerful zero-point laser"
 	var/visible = 1
 	var/state = 1.0
 	var/obj/beam/e_beam/first

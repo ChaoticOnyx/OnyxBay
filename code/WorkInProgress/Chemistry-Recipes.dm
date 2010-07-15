@@ -244,8 +244,8 @@ datum
 			on_reaction(var/datum/reagents/holder, var/created_volume)
 				var/location = get_turf(holder.my_atom)
 				for(var/turf/simulated/floor/target_tile in range(1,location))
-					if(target_tile.parent && target_tile.parent.group_processing)
-						target_tile.parent.suspend_group_processing()
+					//if(target_tile.parent)// && target_tile.parent.group_processing)
+						//target_tile.parent.suspend_group_processing()
 
 					var/datum/gas_mixture/napalm = new
 					var/datum/gas/volatile_fuel/fuel = new
@@ -255,7 +255,7 @@ datum
 
 					target_tile.assume_air(napalm)
 
-					spawn (0) target_tile.hotspot_expose(700, 400)
+					spawn (0) target_tile.hotspot_expose(SPARK_TEMP, 400)
 
 				return
 

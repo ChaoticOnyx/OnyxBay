@@ -157,8 +157,8 @@
 	var/turf/Ty1 = src.y + 1
 	var/turf/Tym1 = src.y - 1
 	for(var/turf/simulated/floor/target_tile in list(T,Tx1,Txm1,Ty1,Tym1))
-		if(target_tile.parent && target_tile.parent.group_processing)
-			target_tile.parent.suspend_group_processing()
+		//if(target_tile.parent)// && target_tile.parent.group_processing)
+			//target_tile.parent.suspend_group_processing()
 
 		var/datum/gas_mixture/napalm = new
 		var/datum/gas/volatile_fuel/fuel = new
@@ -168,7 +168,7 @@
 
 		target_tile.assume_air(napalm)
 
-		spawn target_tile.hotspot_expose(700, 400)
+		spawn target_tile.hotspot_expose(SPARK_TEMP, 400)
 
 	for(var/obj/blob/B in view(8,src))
 		var/damage = round(30/(get_dist(B,src)+1))
