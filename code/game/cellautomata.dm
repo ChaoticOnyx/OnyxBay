@@ -113,6 +113,10 @@
 	spawn(-1) master_controller.setup()
 	return
 
+/world/Del()
+	world.Export("http://127.0.0.1:31338")
+	..()
+
 //Crispy fullban
 /world/Reboot(var/reason)
 	spawn(0)
@@ -175,3 +179,9 @@
 	set src in oview()
 	set hidden = 1
 	return
+
+/proc/heartbeat()
+	spawn(0)
+		while (1)
+			sleep(100)
+			world.Export("http://127.0.0.1:31337")

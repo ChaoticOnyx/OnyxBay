@@ -1,5 +1,6 @@
 /obj/machinery/engine/laser
-	desc = "A powerful zero-point laser"
+	name = "Zero-point laser"
+	desc = "A super-powerful laser"
 	var/visible = 1
 	var/state = 1.0
 	var/obj/beam/e_beam/first
@@ -16,7 +17,7 @@
 			src.first.master = src
 			src.first.dir = src.dir
 			src.first.power = src.power
-			step(first,first.dir)
+			step(first, dir)
 			if(first)
 				src.first.updatebeam()
 		else
@@ -39,6 +40,7 @@
 	var/obj/beam/e_beam/next = null
 	var/power
 	anchored = 1
+
 /obj/beam/e_beam/New()
 	sd_SetLuminosity(3)
 
@@ -52,7 +54,7 @@
 		step(e,e.dir)
 		if(src.loc.density == 0)
 			for(var/obj/o in src.loc.contents)
-				if(o.density == 1 || o == src.master || (!(istype(o,/obj/beam))) || istype(o,/mob) )
+				if(o.density || o == src.master || ismob(o) )
 					del e
 					return
 			if(e)
@@ -85,7 +87,8 @@
 	return
 
 /obj/beam/e_beam/Del()
-	del(src.next)
+	if(next)
+		del(next)
 	..()
 	return
 

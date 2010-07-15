@@ -33,6 +33,7 @@
 	var/operating = 1
 	var/charging = 0
 	var/chargemode = 1
+	var/health = 30
 	var/chargecount = 0
 	var/locked = 1
 	var/coverlocked = 1
@@ -48,6 +49,7 @@
 	var/equip_consumption = 0
 	var/environ_consumption = 0
 	var/emagged = 0
+	var/crit = 0
 	var/wiresexposed = 0
 	var/apcwires = 15
 	netnum = -1		// set so that APCs aren't found as powernet nodes
@@ -241,6 +243,14 @@
 				updateicon()
 			else
 				user << "You fail to [ locked ? "unlock" : "lock"] the APC interface."
+	else
+		var/aforce = W.force
+		src.health = max(0, src.health - aforce)
+		if (src.health <= 0)
+			shock(user,100)
+			set_broken()
+			health = 100
+		..()
 
 /obj/machinery/power/apc/attack_ai(mob/user)
 	return src.attack_hand(user)

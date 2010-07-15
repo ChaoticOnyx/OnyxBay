@@ -1,6 +1,8 @@
 /world/New()
 	..()
 
+	heartbeat()
+
 	diary = file("data/logs/[time2text(world.realtime, "YYYY/MM-Month/DD-Day")].log")
 	diary << ""
 	diary << ""
@@ -20,7 +22,7 @@
 	spawn(30)
 		//EXPERIMENTAL
 		Optimize()
-		sleep_offline = 1
+		//sleep_offline = 1 - Disabled, Heartbeat support.
 		//EXPERIMENTAL
 
 	spawn(0)

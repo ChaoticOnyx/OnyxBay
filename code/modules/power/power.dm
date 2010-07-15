@@ -102,7 +102,7 @@
 
 /proc/power_list(var/turf/T, var/source, var/d, var/unmarked=0)
 	var/list/result = list()
-	var/fdir = (!d)? 0 : turn(d, 180)	// the opposite direction to d (or 0 if d==0)
+	var/fdir = (!d) ? 0 : reverse_dir_3d(d)	// the opposite direction to d (or 0 if d==0)
 
 	for(var/obj/machinery/power/P in T)
 		if(P.netnum < 0)	// exclude APCs
@@ -134,11 +134,11 @@
 	if(!d1)
 		T = src.loc		// if d1=0, same turf as src
 	else
-		T = get_step(src, d1)
+		T = get_step_3d(src, d1)
 
 	res += power_list(T, src , d1, 1)
 
-	T = get_step(src, d2)
+	T = get_step_3d(src, d2)
 
 	res += power_list(T, src, d2, 1)
 
@@ -155,7 +155,7 @@
 
 	for(var/turf/T in orange(1, src))
 
-		cdir = get_dir(T, src)
+		cdir = get_dir_3d(T, src)
 
 		for(var/obj/cable/C in T)
 
@@ -234,9 +234,9 @@
 
 	var/turf/T1 = C.loc
 	if(C.d1)
-		T1 = get_step(C, C.d1)
+		T1 = get_step_3d(C, C.d1)
 
-	var/turf/T2 = get_step(C, C.d2)
+	var/turf/T2 = get_step_3d(C, C.d2)
 
 	var/list/P1 = power_list(T1, C, C.d1)	// what joins on to cut cable in dir1
 

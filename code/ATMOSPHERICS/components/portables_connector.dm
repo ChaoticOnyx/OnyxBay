@@ -41,10 +41,7 @@
 
 	process()
 		..()
-		if(!on)
-			return
 		if(!connected_device)
-			on = 0
 			return
 		if(network)
 			network.update = 1

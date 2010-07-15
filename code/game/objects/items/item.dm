@@ -145,6 +145,8 @@
 	//	M.lastattacker = null
 	/////////////////////////
 	log_attack("[M.name] attacked by [user.name]([user.key]) with [src]")
+	user.log_m("Attacked [M.name]([M.real_name] with [src]")
+	M.log_m("Attacked by [user.name]([user.real_name])([user.key]) with [src]")
 	if(!istype(M, /mob/living/carbon/human))
 		for(var/mob/O in viewers(M, null))
 			O.show_message(text("\red <B>[] has been attacked with [][] </B>", M, src, (user ? text(" by [].", user) : ".")), 1)
