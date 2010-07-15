@@ -37,6 +37,8 @@
 	ndir |= (dir&DOWN)?UP : 0
 	return ndir
 
+
+
 /proc/stringsplit(character, txt)
 	var
 		cur_text = txt

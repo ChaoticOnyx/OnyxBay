@@ -70,7 +70,7 @@
 			if(href_list["temp"])
 				var/amount = text2num(href_list["temp"])
 				if(amount > 0)
-					src.current_temperature = min(T20C, src.current_temperature+amount)
+					src.current_temperature = min(T0C + 90, src.current_temperature+amount)
 				else
 					src.current_temperature = max((T0C - 200), src.current_temperature+amount)
 		src.updateUsrDialog()

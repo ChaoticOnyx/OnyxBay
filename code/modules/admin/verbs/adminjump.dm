@@ -6,6 +6,8 @@
 		return
 
 	if(config.allow_admin_jump)
+		if(!A)
+			return
 		usr.loc = pick(get_area_turfs(A))
 
 		log_admin("[key_name(usr)] jumped to [A]")
@@ -14,8 +16,9 @@
 		alert("Admin jumping disabled")
 
 /client/proc/jumptoturf(var/turf/T in world)
+	set name = "Jump to turf"
 	if(!src.authenticated || !src.holder)
-		src << "Only administrators may use this command."
+		usr << "Only administrators may use this command."
 		return
 	if(config.allow_admin_jump)
 		log_admin("[key_name(usr)] jumped to [T.x],[T.y],[T.z] in [T.loc]")
@@ -34,6 +37,8 @@
 		return
 
 	if(config.allow_admin_jump)
+		if(!M)
+			return
 		log_admin("[key_name(usr)] jumped to [key_name(M)]")
 		message_admins("[key_name_admin(usr)] jumped to [key_name_admin(M)]", 1)
 		usr.loc = get_turf(M)

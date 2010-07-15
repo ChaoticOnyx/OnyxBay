@@ -358,6 +358,11 @@
 	name = "hub"
 	icon_state = "tele0"
 
+/obj/machinery/teleport/hub/interserver
+	name = "Interserver Hub"
+	icon_state = "tele0"
+	var/teleing = 0
+
 /obj/machinery/teleport/station
 	name = "station"
 	icon_state = "controller"
@@ -406,6 +411,7 @@
 	icon_state = "teg"
 	anchored = 1
 	density = 1
+	var/transferpercent = 100
 
 	var/obj/machinery/atmospherics/unary/generator_input/input1
 	var/obj/machinery/atmospherics/unary/generator_input/input2
@@ -441,7 +447,7 @@
 	var/lastout = 0
 	var/loaddemand = 0
 	var/capacity = 5e6
-	var/charge = 1e6
+	var/charge = 4e6
 	var/charging = 0
 	var/chargemode = 0
 	var/chargecount = 0

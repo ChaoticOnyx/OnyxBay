@@ -1,5 +1,11 @@
+#define NITROGEN_RETARDATION_FACTOR 4	//Higher == N2 slows reaction more
+#define THERMAL_RELEASE_MODIFIER 75		//Higher == less heat released during reaction
+#define PLASMA_RELEASE_MODIFIER 750		//Higher == less plasma released by reaction
+#define OXYGEN_RELEASE_MODIFIER 1500	//Higher == less oxygen released at high temperature/power
+
 /obj/machinery/engine/supermatter
 	name = "Supermatter"
+	desc = "A strangely translucent and iridescent crystal.  \red You get headaches just from looking at it."
 	icon = 'engine.dmi'
 	icon_state = "darkmatter"
 
@@ -10,96 +16,57 @@
 
 
 /obj/machinery/engine/supermatter/process()
-	//power, the total power of all the lasers
-	var/power = 0
 
-	var/turf/T = get_turf(src)
-	for(var/dir in list(NORTH,SOUTH,EAST,WEST))
-		var/turf/Z = get_step(T,dir)
-
-		for(var/item in Z.contents)
-			if(istype(item,/obj/beam/e_beam))
-				power += item:power
+	var/turf/simulated/L = loc
 
 	//Ok, get the air from the turf
-	var/turf/simulated/L = loc
-	if(istype(L))
-		var/datum/gas_mixture/env = L.return_air()
+	var/datum/gas_mixture/env = L.return_air()
 
-		//Remove gas from surrounding area
-		var/transfer_moles = gasefficency * env.total_moles()
-		var/datum/gas_mixture/removed = env.remove(transfer_moles)
+	//Remove gas from surrounding area
+	var/transfer_moles = gasefficency * env.total_moles()
+	var/datum/gas_mixture/removed = env.remove(transfer_moles)
 
-		//Ok, 100% oxygen atmosphere = best reaction
-		//Maxes out at 100% oxygen pressure
-		var/oxygen = min((removed.oxygen/(MOLES_CELLSTANDARD*gasefficency)),1)
+	if (!removed)
+		return 1
 
+	var/power = max(round((removed.temperature - T0C) / 20), 0) //Total laser power plus an overload factor
 
-		var/device_energy = oxygen*power
-		if(device_energy >= 1000)
-			device_energy += (500*(removed.temperature/100))
-		world << "O:[oxygen] P:[power] D:[device_energy]"
-
-		//Ok, start by calculating how much heat to apply
-		//4 Lasers = 500*4 = 2000 at default power
-		//This should heat up the core by 4C per process
-		//But only 25% of the turfs atmos is being affected
-		//So 1C per process
-		//Assuming enough oxygen for full reaction
-		removed.temperature += max((device_energy/4),0)
+	for(var/dir in cardinal)
+		var/turf/T = get_step(L, dir)
+		for(var/obj/beam/e_beam/item in T)
+			power += item.power
 
 
-		//Ok, calculate how much PLASMA to add to the inferno
-		//Fix this up later
-		removed.toxins += 1
+	//Ok, 100% oxygen atmosphere = best reaction
+	//Maxes out at 100% oxygen pressure
+	var/oxygen = max(min((removed.oxygen - (removed.nitrogen * NITROGEN_RETARDATION_FACTOR)) / MOLES_CELLSTANDARD, 1), 0)
 
-		if(removed.temperature > 3000)
-			if(removed.oxygen < 5) // Oh god an overload
-				removed.oxygen += 5
-		//	if(removed.toxins < 100)
-		//		removed.toxins = 100
+	var/device_energy = oxygen * power
 
+	device_energy *= removed.temperature / T0C
 
+	device_energy = round(device_energy)
 
+	//To figure out how much temperature to add each tick, consider that at one atmosphere's worth
+	//of pure oxygen, with all four lasers firing at standard energy and no N2 present, at room temperature
+	//that the device energy is around 2140.  At that stage, we don't want too much heat to be put out
+	//Since the core is effectively "cold"
 
-		env.merge(removed)
+	world << "T: [removed.temperature] O: [removed.oxygen] - [removed.nitrogen] => [oxygen]"
+	world << "P: [power] D: [device_energy]"
 
+	//Also keep in mind we are only adding this temperature to (efficiency)% of the one tile the rock
+	//is on.  An increase of 4*C here results in an increase of 1*C / (#tilesincore) overall.
+	removed.temperature += max((device_energy / THERMAL_RELEASE_MODIFIER), 0)
 
-		/*
+	//Calculate how much gas to release
+	removed.toxins += max(round(device_energy / PLASMA_RELEASE_MODIFIER), 0)
 
-	process()
-		if(on)
-			if(cell && cell.charge > 0)
+	removed.oxygen += max(round((device_energy + removed.temperature - T0C) / OXYGEN_RELEASE_MODIFIER), 0)
 
-				var/turf/simulated/L = loc
-				if(istype(L))
-					var/datum/gas_mixture/env = L.return_air()
-					if(env.temperature < (set_temperature+T0C))
+	world << "T: [removed.temperature] Pl: [removed.toxins] O: [removed.oxygen]"
+	world << "-----------------------------------------------------------------"
 
-						var/transfer_moles = 0.25 * env.total_moles()
+	env.merge(removed)
 
-						var/datum/gas_mixture/removed = env.remove(transfer_moles)
-
-						//world << "got [transfer_moles] moles at [removed.temperature]"
-
-						if(removed)
-
-							var/heat_capacity = removed.heat_capacity()
-							//world << "heating ([heat_capacity])"
-							removed.temperature = (removed.temperature*heat_capacity + heating_power)/heat_capacity
-							cell.use(heating_power/20000)
-
-							//world << "now at [removed.temperature]"
-
-						env.merge(removed)
-
-						//world << "turf now at [env.temperature]"
-
-
-			else
-				on = 0
-				update_icon()
-
-
-		return
-*/
+	return 1
