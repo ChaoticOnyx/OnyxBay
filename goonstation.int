@@ -1,10 +1,22 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
+PACKAGE_RSC_NAME: C:\Users\Aryn Groves\Goonstation\goonstation_rsc.zip
 LAST_COMPILE_VERSION: 471.1076
+PACKAGE_DME_DEMO: 
+PACKAGE_DME_CLEANCHECK: OFF
+PACKAGE_RSC_CLEANCHECK: OFF
+PACKAGE_DMB_HUB: 
+PACKAGE_TYPE: 0
+PACKAGE_DMB_CLEANCHECK: ON
+PACKAGE_DME_START: 
 DIR: code code\Aryn code\ATMOSPHERICS\components\binary_devices code\ATMOSPHERICS\components\unary code\defines\mob\living code\defines\obj code\defines\obj\spawner code\defines\procs code\FEA code\game code\game\gamemodes\blob code\game\gamemodes\malfunction code\WorkInProgress code\WorkInProgress\ZeroPoint maps 
+PACKAGE_DME_NAME: C:\Users\Aryn Groves\Goonstation\goonstation_src.zip
+PACKAGE_DME_INFO: 
 FILE: maps\baystation12.dmm
-LAST_COMPILE_TIME: 1279183032
+PACKAGE_DMB_NAME: C:\Users\Aryn Groves\Goonstation\goonstation.zip
+LAST_COMPILE_TIME: 1279183894
+PACKAGE_DMB_INFO: 
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
