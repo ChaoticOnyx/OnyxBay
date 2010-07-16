@@ -74,7 +74,7 @@ datum
 				return 1
 
 		escape
-			explanation_text = "Escape on the shuttle alive."
+			explanation_text = "Escape on the shuttle alive, without being arrested"
 
 			check_completion()
 				if(emergency_shuttle.location<2)
@@ -85,6 +85,9 @@ datum
 
 				var/turf/location = get_turf(owner.current.loc)
 				if(!location)
+					return 0
+
+				if(owner.current:handcuffed)
 					return 0
 
 				var/area/check_area = location.loc

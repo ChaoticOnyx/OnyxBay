@@ -64,7 +64,7 @@ client/verb/Toggle_Soundscape()
 
 	if (ismob(A))
 
-		if (istype(A, /mob/dead/observer)) return
+		if (istype(A, /mob/dead)) return
 		if (!A:client) return
 		//if (A:ear_deaf) return
 
