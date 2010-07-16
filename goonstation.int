@@ -2,9 +2,9 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 471.1076
-DIR: code code\Aryn code\ATMOSPHERICS\components\binary_devices code\ATMOSPHERICS\components\unary code\defines\mob\living code\defines\obj code\defines\obj\spawner code\defines\procs code\FEA code\game code\game\gamemodes\blob code\game\gamemodes\malfunction code\WorkInProgress code\WorkInProgress\ZeroPoint maps 
-FILE: maps\baystation12.dmm
-LAST_COMPILE_TIME: 1279183032
+DIR: code code\Aryn code\ATMOSPHERICS\components\binary_devices code\ATMOSPHERICS\components\unary code\defines code\defines\mob code\defines\mob\dead code\defines\mob\living code\defines\obj code\defines\obj\spawner code\defines\procs code\FEA code\game code\game\gamemodes code\game\gamemodes\blob code\game\gamemodes\derelict code\modules code\modules\admin maps 
+FILE: code\defines\mob\dead\offical.dm
+LAST_COMPILE_TIME: 1279263868
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

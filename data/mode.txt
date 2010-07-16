@@ -1,6 +1,1 @@
-<<<<<<< HEAD
-extended
-=======
 traitor
-alien
->>>>>>> 2a80157673c22a26212cf686468262d0ceea8b08
