@@ -19,6 +19,8 @@
 		meteor_wave()
 
 /proc/event(var/eventnum = 0)
+	if(eventson == 0)
+		return
 	if(!eventnum)
 		eventnum = rand(1,6)
 	switch(eventnum)

@@ -22,6 +22,15 @@
 	var/powernet = null
 	var/list/records = null
 
+/obj/item/weapon/circuitry
+	density = 0
+	anchored = 0
+	w_class = 2.0
+	name = "Circuitry"
+	icon = 'module.dmi'
+	icon_state = "id_mod"
+	item_state = "electronic"
+
 /obj/item/weapon/circuitboard/security
 	name = "Circuit board (Security)"
 	computertype = "/obj/machinery/computer/security"

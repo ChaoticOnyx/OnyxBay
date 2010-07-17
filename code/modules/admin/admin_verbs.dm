@@ -106,10 +106,12 @@
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
 			src.verbs += /client/proc/new_eventa
+			src.verbs += /client/proc/toggleevents
 			src.verbs += /obj/admins/proc/invites
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
+			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /proc/possess
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
@@ -196,6 +198,7 @@
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/toggleevents
 			src.verbs += /obj/admins/proc/togglegoonsay
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /proc/possess
@@ -289,7 +292,7 @@
 				src.verbs += /client/proc/cmd_admin_rejuvenate
 				src.verbs += /obj/admins/proc/toggleaban			//abandon mob
 				src.verbs += /client/proc/toggle_view_range
-
+			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /proc/togglebuildmode
 			src.verbs += /obj/admins/proc/toggleooc				//toggle ooc
@@ -380,7 +383,7 @@
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/hubvis
 			src.verbs += /obj/admins/proc/invites
-
+			src.verbs += /client/proc/toggleevents
 		if ("Secondary Administrator")
 			src.holder.level = 1
 
@@ -753,6 +756,17 @@
 				M.ready = 0
 				M << "\blue <b> You do not have an invite to participate in this game</b>"
 	message_admins("\blue <b> By [usr.client.key]</b>")
+
+/client/proc/toggleevents()
+	set category = "Admin"
+	set name = "Toggle random events"
+	if(eventson)
+		message_admins("\blue <b> Events toggled off by [usr.client.key]</b>")
+		eventson = 0
+	else
+		message_admins("\blue <b> Events toggled on by [usr.client.key]</b>")
+		eventson = 1
+
 
 
 	return

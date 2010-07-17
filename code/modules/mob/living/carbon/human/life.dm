@@ -263,7 +263,7 @@
 				return
 
 			if(!breath || (breath.total_moles() == 0))
-				oxyloss += 30
+				oxyloss += 7
 
 				oxygen_alert = max(oxygen_alert, 1)
 

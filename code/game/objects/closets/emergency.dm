@@ -3,7 +3,7 @@
 
 
 	new /obj/item/weapon/tank/emergency_oxygen(src)
-	new /obj/item/clothing/mask/breath(src)
+	new /obj/item/clothing/mask/gas(src)
 
 /*	switch (pickweight(list("small" = 20, "mask" = 5, "tank" = 4, "both" = 2, "nothing" = 1, "delete" = 1)))
 		if ("small")

@@ -32,6 +32,7 @@ var
 	event = 0
 	hadevent = 0
 	blobevent = 0
+	eventson = 1
 	///////////////
 
 	diary = null
@@ -54,6 +55,7 @@ var
 	shuttle_frozen = 0
 	shuttle_left = 0
 	delay_start = 0
+
 
 	captainMax = 1
 	engineerMax = 5
