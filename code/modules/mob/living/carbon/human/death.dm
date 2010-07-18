@@ -3,6 +3,11 @@
 		return
 	if(src.healths)
 		src.healths.icon_state = "health5"
+	if(src.halloss > 0 && (!gibbed))
+		src.hallucination = 0
+		src.halloss = 0
+		src.oxyloss -= 10
+		return
 	src.stat = 2
 	src.dizziness = 0
 	src.jitteriness = 0

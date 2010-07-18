@@ -93,7 +93,7 @@
 			src.verbs += /client/proc/cmd_admin_create_centcom_report
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/cmd_admin_remove_plasma
-
+			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/general_report
 			//src.verbs += /client/proc/air_report
 			//src.verbs += /client/proc/air_status
@@ -111,6 +111,7 @@
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
+			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /proc/possess
@@ -198,6 +199,7 @@
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /obj/admins/proc/togglegoonsay
 			src.verbs += /client/proc/debug_variables
@@ -309,6 +311,7 @@
 			src.verbs += /client/proc/cmd_admin_gib_self
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 			src.verbs += /client/proc/delay
+			src.verbs += /client/proc/LSD_effect
 
 //				src.verbs += /client/proc/modifytemperature
 //				src.verbs += /client/proc/grillify
@@ -767,8 +770,10 @@
 		message_admins("\blue <b> Events toggled on by [usr.client.key]</b>")
 		eventson = 1
 
-
-
+/client/proc/LSD_effect(var/mob/p in world)
+	set category = "Debug"
+	set name = "Fake attack"
+	fake_attack(p)
 	return
 /client/proc/new_eventa(sev as text)
 	set category = "Debug"

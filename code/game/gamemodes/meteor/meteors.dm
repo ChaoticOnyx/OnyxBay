@@ -65,8 +65,7 @@
 		M = new /obj/meteor( pickedstart )
 	else
 		M = new /obj/meteor/small( pickedstart )
-
-	M.dest = pickedgoal
+	M.dest = new /obj(pickedgoal)
 	walk_towards(M, M.dest, 1)
 
 /obj/meteor

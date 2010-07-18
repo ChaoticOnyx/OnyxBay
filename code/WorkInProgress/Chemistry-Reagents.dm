@@ -850,6 +850,20 @@ datum
 				holder.remove_reagent(src.id, 0.2)
 				return
 
+
+
+		LSD
+			name = "LSD"
+			id = "LSD"
+			description = "A hallucinogen"
+			reagent_state = LIQUID
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+				M:hallucination += 5
+				..()
+				return
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		nanites
