@@ -43,6 +43,7 @@
 			else
 				anchored = 0
 				mode = 0
+				attached = null
 				user << "You detach	the device from the cable."
 				for(var/mob/M in viewers(user))
 					if(M == user) continue

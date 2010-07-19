@@ -312,7 +312,6 @@
 #include "code\game\machinery\gibber.dm"
 #include "code\game\machinery\hologram.dm"
 #include "code\game\machinery\igniter.dm"
-#include "code\game\machinery\Interserver.dm"
 #include "code\game\machinery\lightswitch.dm"
 #include "code\game\machinery\main.dm"
 #include "code\game\machinery\microwave.dm"

@@ -32,7 +32,7 @@
 	var/id = 1.0
 
 /obj/machinery/door/window
-	name = "interior door"
+	name = "Interior Door"
 	icon = 'windoor.dmi'
 	icon_state = "left"
 	var/base_state = "left"
