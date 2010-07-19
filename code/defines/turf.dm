@@ -23,6 +23,9 @@
 		pathweight = 1
 		list/obj/machinery/network/wirelessap/wireless = list( )
 
+	New()
+		src.sd_RasterLum()
+
 /turf/space
 	icon = 'space.dmi'
 	name = "space"
@@ -33,6 +36,7 @@
 	heat_capacity = 700000
 
 /turf/space/New()
+	..()
 	icon = 'space.dmi'
 	icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
 
@@ -86,16 +90,29 @@
 		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
 
 		New()
-			if(!istype(locate(x, y, z + 1), /turf/simulated/floor))	//If we're building on top of a wall, etc
-				var/turf/simulated/floor/F = new(src)				//Then change to a floor tile (no falling into walls)
-				F.sd_RasterLum()
-				return
-			return ..()
+			..()
+			var/turf/T = locate(x, y, z + 1)
+			switch (T.type)
+				if (/turf/simulated/floor)
+					//Do nothing - valid
+				if (/turf/simulated/floor/open)
+					//Do nothing - valid
+				if (/turf/space)
+					var/turf/space/F = new(src)									//Then change to a Space tile (no falling into space)
+					F.name = F.name
+					return
+				else
+					var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
+					F.name = F.name
+					return
 
 		Enter(var/atom/movable/AM)
 			if (1) //TODO make this check if gravity is active (future use) - Sukasa
 				spawn(1)
 					AM.Move(locate(x, y, z + 1))
+					if (istype(AM, /mob))
+						AM:bruteloss += 5
+						AM:updatehealth()
 			return ..()
 
 	plating

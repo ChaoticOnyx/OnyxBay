@@ -207,15 +207,6 @@
 	flags = FPRINT | CONDUCT
 	pressure_resistance = 5*ONE_ATMOSPHERE
 
-/obj/securearea
-	desc = "A warning sign which reads 'SECURE AREA'"
-	name = "SECURE AREA"
-	icon = 'decals.dmi'
-	icon_state = "securearea"
-	anchored = 1.0
-	opacity = 0
-	density = 0
-
 /obj/hud
 	name = "hud"
 	var/mob/mymob = null
