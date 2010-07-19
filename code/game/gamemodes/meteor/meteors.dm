@@ -33,34 +33,39 @@
 	var/endy
 
 	switch(startside)
+
 		if(NORTH)
 			starty = world.maxy-1
 			startx = rand(1, world.maxx-1)
 			endy = 1
 			endx = rand(1, world.maxx-1)
+
 		if(EAST)
 			starty = rand(1,world.maxy-1)
 			startx = world.maxx-1
 			endy = rand(1, world.maxy-1)
 			endx = 1
+
 		if(SOUTH)
 			starty = 1
 			startx = rand(1, world.maxx-1)
 			endy = world.maxy-1
 			endx = rand(1, world.maxx-1)
+
 		if(WEST)
 			starty = rand(1, world.maxy-1)
 			startx = 1
 			endy = rand(1,world.maxy-1)
 			endx = world.maxx-1
 
-	var/turf/pickedstart = locate(startx, starty, 1)
-	var/turf/pickedgoal = locate(endx, endy, 1)
+	var/turf/pickedstart = locate(startx, starty, rand(1, 4))
+	var/turf/pickedgoal = locate(endx, endy, pickedstart.z)
 
 	if (!istype(pickedstart, /turf/space) || locate(/obj/shield in pickedstart) || pickedstart.loc.name != "Space" ) //FUUUCK, should never happen.
 		goto AGAIN
 
 	var/obj/meteor/M
+
 	if(rand(50))
 		M = new /obj/meteor( pickedstart )
 	else

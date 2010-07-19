@@ -490,6 +490,10 @@
 	name = "Security Checkpoint"
 	icon_state = "security"
 
+/area/security/checkpoint3
+	name = "Docking Checkpoint"
+	icon_state = "security"
+
 
 /area/security/brig
 	name = "Brig"
