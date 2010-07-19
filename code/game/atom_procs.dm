@@ -364,10 +364,10 @@
 
 
 
-/atom/proc/addoverlay(var/icon/overlay)
+/atom/proc/addoverlay(var/overlay)
 	src.overlaylist += overlay
 	src.overlays += overlay
 
-/atom/proc/removeoverlay(var/icon/overlay)
+/atom/proc/removeoverlay(var/overlay)
 	src.overlaylist -= overlay
 	src.overlays -= overlay

@@ -81,7 +81,7 @@
 	density = 1
 	anchored = 1.0
 	var/hits = 1
-	var/dest
+	var/obj/dest
 
 /obj/meteor/small
 	name = "small meteor"
@@ -117,7 +117,7 @@
 	return
 
 /obj/meteor/Del()
-	if(M.dest.name == "METEORTARGET_THIS_IS_A_HACK")
-		del M.dest
+	if(src.dest.name == "METEORTARGET_THIS_IS_A_HACK")
+		del src.dest
 
 	..()
