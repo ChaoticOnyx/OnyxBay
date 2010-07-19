@@ -6,9 +6,6 @@
 // END_INTERNALS
 // BEGIN_FILE_DIR
 #define FILE_DIR .
-#define FILE_DIR "BASE.code"
-#define FILE_DIR "LOCAL.code"
-#define FILE_DIR "REMOTE.code"
 #define FILE_DIR "code"
 #define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
@@ -131,6 +128,7 @@
 #include "code\names.dm"
 #include "code\setup.dm"
 #include "code\stylesheet.dm"
+#include "code\TakePicture.dm"
 #include "code\Aryn\Airflow.dm"
 #include "code\Aryn\Atmos-ZAS3-Zones.dm"
 #include "code\ATMOSPHERICS\atmospherics.dm"
@@ -408,6 +406,7 @@
 #include "code\game\objects\closets\janitor.dm"
 #include "code\game\objects\closets\kitchen.dm"
 #include "code\game\objects\closets\l3closet.dm"
+#include "code\game\objects\closets\load.dm"
 #include "code\game\objects\closets\malfunction.dm"
 #include "code\game\objects\closets\nuclear.dm"
 #include "code\game\objects\closets\syndicate.dm"
@@ -635,5 +634,5 @@
 #include "code\WorkInProgress\ZeroPoint\LaserComputer.dm"
 #include "code\WorkInProgress\ZeroPoint\SuperMatter.dm"
 #include "interface\skin.dmf"
-#include "maps\baystation12.dmm"
+#include "maps\NSV_Luna.dmm"
 // END_INCLUDE
