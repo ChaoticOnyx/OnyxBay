@@ -1377,7 +1377,7 @@ Code:
 		M.show_message("\red Your [src] explodes!", 1)
 
 	if(T)
-		T.hotspot_expose(700,125)
+		T.hotspot_expose(SPARK_TEMP,125)
 
 		explosion(T, -1, -1, 2, 3)
 

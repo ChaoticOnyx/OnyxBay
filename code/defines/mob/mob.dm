@@ -22,7 +22,9 @@
 	var/obj/screen/healths = null
 	var/obj/screen/throw_icon = null
 
-	var/list/obj/hallucination/hallucinations = list()
+	var/list/obj/hallucinations = list()
+	var/halloss = 0
+	var/hallucination = 0
 
 	var/alien_egg_flag = 0
 

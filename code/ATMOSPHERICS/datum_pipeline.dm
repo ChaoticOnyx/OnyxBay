@@ -127,7 +127,7 @@ datum/pipeline
 		var/datum/gas_mixture/air_sample = air.remove_ratio(mingle_volume/air.volume)
 		air_sample.volume = mingle_volume
 
-		if(istype(target) && target.parent && target.parent.group_processing)
+		if(istype(target) && target.parent)// && target.parent.group_processing)
 			//Have to consider preservation of group statuses
 			var/datum/gas_mixture/turf_copy = new
 
@@ -147,7 +147,7 @@ datum/pipeline
 			else
 				//Comparison failure so dissemble group and copy turf
 
-				target.parent.suspend_group_processing()
+				//target.parent.suspend_group_processing()
 				target.air.copy_from(turf_copy)
 
 		else
@@ -186,7 +186,7 @@ datum/pipeline
 				var/delta_temperature = 0
 				var/sharer_heat_capacity = 0
 
-				if(modeled_location.parent && modeled_location.parent.group_processing)
+				if(modeled_location.parent)// && modeled_location.parent.group_processing)
 					delta_temperature = (air.temperature - modeled_location.parent.air.temperature)
 					sharer_heat_capacity = modeled_location.parent.air.heat_capacity()
 				else
@@ -207,9 +207,9 @@ datum/pipeline
 
 				air.temperature += self_temperature_delta
 
-				if(modeled_location.parent && modeled_location.parent.group_processing)
+				if(modeled_location.parent)// && modeled_location.parent.group_processing)
 					if((abs(sharer_temperature_delta) > MINIMUM_TEMPERATURE_DELTA_TO_SUSPEND) && (abs(sharer_temperature_delta) > MINIMUM_TEMPERATURE_RATIO_TO_SUSPEND*modeled_location.parent.air.temperature))
-						modeled_location.parent.suspend_group_processing()
+						//modeled_location.parent.suspend_group_processing()
 
 						modeled_location.air.temperature += sharer_temperature_delta
 

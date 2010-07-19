@@ -93,10 +93,10 @@
 			src.verbs += /client/proc/cmd_admin_create_centcom_report
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/cmd_admin_remove_plasma
-
+			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/general_report
-			src.verbs += /client/proc/air_report
-			src.verbs += /client/proc/air_status
+			//src.verbs += /client/proc/air_report
+			//src.verbs += /client/proc/air_status
 			src.verbs += /client/proc/fix_next_move
 
 			src.verbs += /client/proc/toggle_view_range
@@ -105,9 +105,14 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
+			src.verbs += /client/proc/new_eventa
+			src.verbs += /client/proc/toggleevents
+			src.verbs += /obj/admins/proc/invites
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
+			src.verbs += /client/proc/LSD_effect
+			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /proc/possess
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
@@ -179,8 +184,8 @@
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 
 			src.verbs += /client/proc/general_report
-			src.verbs += /client/proc/air_report
-			src.verbs += /client/proc/air_status
+			//src.verbs += /client/proc/air_report
+			//src.verbs += /client/proc/air_status
 			src.verbs += /client/proc/fix_next_move
 			src.verbs += /obj/admins/proc/spawn_atom
 
@@ -190,9 +195,12 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
+			src.verbs += /obj/admins/proc/invites
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/LSD_effect
+			src.verbs += /client/proc/toggleevents
 			src.verbs += /obj/admins/proc/togglegoonsay
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /proc/possess
@@ -251,8 +259,8 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 
 			src.verbs += /client/proc/general_report
-			src.verbs += /client/proc/air_report
-			src.verbs += /client/proc/air_status
+			//src.verbs += /client/proc/air_report
+			//src.verbs += /client/proc/air_status
 			src.verbs += /client/proc/fix_next_move
 
 			src.verbs += /client/proc/toggle_view_range
@@ -260,6 +268,7 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
+			src.verbs += /obj/admins/proc/invites
 		if ("Primary Administrator")
 
 			src.deadchat = 1
@@ -285,7 +294,7 @@
 				src.verbs += /client/proc/cmd_admin_rejuvenate
 				src.verbs += /obj/admins/proc/toggleaban			//abandon mob
 				src.verbs += /client/proc/toggle_view_range
-
+			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /proc/togglebuildmode
 			src.verbs += /obj/admins/proc/toggleooc				//toggle ooc
@@ -302,6 +311,7 @@
 			src.verbs += /client/proc/cmd_admin_gib_self
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 			src.verbs += /client/proc/delay
+			src.verbs += /client/proc/LSD_effect
 
 //				src.verbs += /client/proc/modifytemperature
 //				src.verbs += /client/proc/grillify
@@ -328,6 +338,7 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/hubvis
+			src.verbs += /obj/admins/proc/invites
 
 		if ("Administrator")
 
@@ -374,7 +385,8 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/hubvis
-
+			src.verbs += /obj/admins/proc/invites
+			src.verbs += /client/proc/toggleevents
 		if ("Secondary Administrator")
 			src.holder.level = 1
 
@@ -534,8 +546,8 @@
 	src.verbs -= /client/proc/stealth
 
 	src.verbs -= /client/proc/general_report
-	src.verbs -= /client/proc/air_report
-	src.verbs -= /client/proc/air_status
+	//src.verbs -= /client/proc/air_report
+	//src.verbs -= /client/proc/air_status
 
 	src.verbs -= /client/proc/toggle_view_range
 	src.verbs -= /obj/admins/proc/toggle_aliens
@@ -742,6 +754,29 @@
 	else
 		config.invite_only = 1
 		world << "\blue <b> This game has been set to invite only"
+		for(var/mob/new_player/M in world)
+			if(!invite_isallowed(M))
+				M.ready = 0
+				M << "\blue <b> You do not have an invite to participate in this game</b>"
 	message_admins("\blue <b> By [usr.client.key]</b>")
 
+/client/proc/toggleevents()
+	set category = "Admin"
+	set name = "Toggle random events"
+	if(eventson)
+		message_admins("\blue <b> Events toggled off by [usr.client.key]</b>")
+		eventson = 0
+	else
+		message_admins("\blue <b> Events toggled on by [usr.client.key]</b>")
+		eventson = 1
+
+/client/proc/LSD_effect(var/mob/p in world)
+	set category = "Debug"
+	set name = "Fake attack"
+	fake_attack(p)
+	return
+/client/proc/new_eventa(sev as text)
+	set category = "Debug"
+	set name = "Spawn event"
+	new_event(sev)
 	return

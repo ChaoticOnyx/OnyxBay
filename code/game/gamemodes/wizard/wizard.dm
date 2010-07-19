@@ -312,7 +312,7 @@
 
 /obj/item/weapon/SWF_uplink/proc/explode()
 	var/turf/location = get_turf(src.loc)
-	location.hotspot_expose(700, 125)
+	location.hotspot_expose(SPARK_TEMP, 125)
 
 	explosion(location, 0, 0, 2, 4)
 

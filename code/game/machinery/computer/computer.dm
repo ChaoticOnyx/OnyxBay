@@ -19,6 +19,10 @@ Pod/Blast Doors computer
 	if ((!in_range(src, usr) || !istype(src.loc, /turf)) && !istype(usr, /mob/living/silicon))
 		return 1
 	src.add_fingerprint(usr)
+
+
+
+	usr.log_m("Used topic [src.name], [dd_list2text(href_list," ")]")
 	return 0
 
 /obj/machinery/attack_ai(mob/user as mob)
@@ -48,6 +52,10 @@ Pod/Blast Doors computer
 			return 1
 
 	src.add_fingerprint(user)
+
+
+	user.log_m("Used [src.name]")
+
 	return 0
 
 /obj/machinery/computer/meteorhit(var/obj/O as obj)

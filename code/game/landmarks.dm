@@ -27,6 +27,9 @@
 	if (name == "wizard")
 		wizardstart += src.loc
 		del(src)
+	if (name == "DerelictStart")
+		derelictstart += src.loc
+		del(src)
 
 	if (name == "JoinLate")
 		latejoin += src.loc

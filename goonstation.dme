@@ -6,7 +6,11 @@
 // END_INTERNALS
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "BASE.code"
+#define FILE_DIR "LOCAL.code"
+#define FILE_DIR "REMOTE.code"
 #define FILE_DIR "code"
+#define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
 #define FILE_DIR "code/ATMOSPHERICS/components"
 #define FILE_DIR "code/ATMOSPHERICS/components/binary_devices"
@@ -32,6 +36,7 @@
 #define FILE_DIR "code/game/gamemodes/changeling"
 #define FILE_DIR "code/game/gamemodes/ctf"
 #define FILE_DIR "code/game/gamemodes/deathmatch"
+#define FILE_DIR "code/game/gamemodes/derelict"
 #define FILE_DIR "code/game/gamemodes/extended"
 #define FILE_DIR "code/game/gamemodes/malfunction"
 #define FILE_DIR "code/game/gamemodes/meteor"
@@ -126,7 +131,8 @@
 #include "code\names.dm"
 #include "code\setup.dm"
 #include "code\stylesheet.dm"
-#include "code\TakePicture.dm"
+#include "code\Aryn\Airflow.dm"
+#include "code\Aryn\Atmos-ZAS3-Zones.dm"
 #include "code\ATMOSPHERICS\atmospherics.dm"
 #include "code\ATMOSPHERICS\datum_pipe_network.dm"
 #include "code\ATMOSPHERICS\datum_pipeline.dm"
@@ -184,6 +190,7 @@
 #include "code\defines\area\Space Station 13 areas.dm"
 #include "code\defines\mob\mob.dm"
 #include "code\defines\mob\dead\observer.dm"
+#include "code\defines\mob\dead\offical.dm"
 #include "code\defines\mob\living\living.dm"
 #include "code\defines\mob\living\carbon\alien.dm"
 #include "code\defines\mob\living\carbon\alien_humanoid.dm"
@@ -259,6 +266,8 @@
 #include "code\game\gamemodes\ctf\ctf.dm"
 #include "code\game\gamemodes\ctf\ctf_items.dm"
 #include "code\game\gamemodes\deathmatch\deathmatch.dm"
+#include "code\game\gamemodes\derelict\derelict.dm"
+#include "code\game\gamemodes\derelict\wreak.dm"
 #include "code\game\gamemodes\extended\extended.dm"
 #include "code\game\gamemodes\malfunction\Malf_Modules.dm"
 #include "code\game\gamemodes\malfunction\malfunction.dm"
@@ -626,5 +635,5 @@
 #include "code\WorkInProgress\ZeroPoint\LaserComputer.dm"
 #include "code\WorkInProgress\ZeroPoint\SuperMatter.dm"
 #include "interface\skin.dmf"
-#include "maps\NSV_Luna.dmm"
+#include "maps\baystation12.dmm"
 // END_INCLUDE

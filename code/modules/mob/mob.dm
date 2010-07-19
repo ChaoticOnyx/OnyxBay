@@ -894,6 +894,7 @@
 				type = alt_type
 				if ((type & 1 && src.sdisabilities & 1))
 					return
+	src.log_m("Heard [msg]")
 	// Added voice muffling for Issue 41.
 	if (src.stat == 1 || src.sleeping > 0)
 		src << "<I>... You can almost hear someone talking ...</I>"
@@ -1440,6 +1441,11 @@
 								step(src, SOUTH)
 	else
 		. = ..()
+
+		if(istype(src,/mob))
+			var/mob/a = src
+			if(a.mind)
+				a.mind.log.updateloc(src.loc.loc,src)
 	return
 
 /atom/movable/verb/pull()
@@ -1497,7 +1503,7 @@
 	return
 
 /client/Move(n, direct)
-	if(istype(src.mob, /mob/dead/observer))
+	if(istype(src.mob, /mob/dead))
 		return src.mob.Move(n,direct)
 	if (src.moving)
 		return 0
@@ -1922,3 +1928,8 @@
 					boom.icon_state = "loss_malf"
 				else
 					boom.icon_state = "loss_general"
+
+
+/mob/proc/log_m(var/text)
+	if(src.mind)
+		src.mind.log.log_m(text,src)

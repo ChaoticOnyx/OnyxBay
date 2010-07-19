@@ -153,7 +153,7 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 			location = M.loc
 
 	if(isturf(location)) //start a fire if possible
-		location.hotspot_expose(700, 2)
+		location.hotspot_expose(SPARK_TEMP, 2)
 
 /obj/item/weapon/flamethrower/attackby(obj/item/weapon/tank/plasma/W as obj, mob/user as mob)
 	if(user.stat || user.restrained() || user.lying)

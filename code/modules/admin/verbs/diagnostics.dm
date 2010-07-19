@@ -20,7 +20,7 @@
 
 		usr << browse(output,"window=generalreport")
 
-	air_report()
+	/*air_report()
 		set category = "Diagnostics"
 
 		if(!master_controller || !air_master)
@@ -76,7 +76,7 @@
 
 		usr << "\blue @[target.x],[target.y] ([GM.group_multiplier]): O:[GM.oxygen] T:[GM.toxins] N:[GM.nitrogen] C:[GM.carbon_dioxide] w [GM.temperature] Kelvin, [GM.return_pressure()] kPa [(burning)?("\red BURNING"):(null)]"
 		for(var/datum/gas/trace_gas in GM.trace_gases)
-			usr << "[trace_gas.type]: [trace_gas.moles]"
+			usr << "[trace_gas.type]: [trace_gas.moles]"*/
 
 	fix_next_move()
 		set category = "Diagnostics"

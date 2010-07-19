@@ -79,6 +79,25 @@ turf
 					return 0
 
 			return 1
+	proc/CanPassOneWay(atom/movable/mover, turf/target, height=1.5,air_group=0) //Does one-way checks instead.
+		if(!target) return 0
+
+		if(istype(mover)) // turf/Enter(...) will perform more advanced checks
+			return !density
+
+		else // Now, doing more detailed checks for air movement and air group formation
+			if(blocks_air)
+				return 0
+			if(air_group)
+				if(target.z > src.z)
+					return istype(src, /turf/simulated/floor/open) && target.x == src.x && target.y == src.y
+				if(target.z < src.z)
+					return istype(target, /turf/simulated/floor/open) && target.x == src.x && target.y == src.y
+			for(var/obj/obstacle in src)
+				if(!obstacle.CanPass(mover, target, height, air_group))
+					return 0
+
+			return 1
 
 
 var/global/datum/controller/air_system/air_master
@@ -152,10 +171,14 @@ datum
 				sleep(1)
 
 				var/start_time = world.timeofday
-
 				for(var/turf/simulated/S in world)
 					if(!S.blocks_air && !S.parent)
 						assemble_group_turf(S)
+					if(S.CanPass(null,S,0,0) && !S.zone)
+						if(!S.HasDoor())
+							new/zone(S)
+						else
+							spawn(1) S.add_to_other_zone()
 				for(var/turf/simulated/S in world) //Update all pathing and border information as well
 					S.update_air_properties()
 /*

@@ -25,7 +25,7 @@ CLIPBOARDS
 	set src in view()
 
 	..()
-	if (!( istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead/observer) || istype(usr, /mob/living/silicon) ))
+	if (!( istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead) || istype(usr, /mob/living/silicon) ))
 		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", src.name, stars(src.info)), text("window=[]", src.name))
 		onclose(usr, "[src.name]")
 	else

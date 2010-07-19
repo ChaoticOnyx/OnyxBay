@@ -160,6 +160,7 @@
 
 	..()
 
+	usr.log_m("Clicked on [src]")
 
 	if(usr.in_throw_mode)
 		return usr:throw_item(src)
@@ -359,3 +360,4 @@
 
 /atom/proc/alog(var/atom/device,var/mob/mb)
 	src.logs += "[src.name] used by a [device.name] by [mb.real_name]([mb.key])"
+	mb.log_m("[src.name] used by a [device.name]")

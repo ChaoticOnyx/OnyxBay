@@ -188,6 +188,5 @@
 			continue
 		if (M.stat > 1 && !(M in heard_a))
 			M.show_message(rendered, 2)
-
-
 //headfindback
+	src.log_m("Said [message]")
