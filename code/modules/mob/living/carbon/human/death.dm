@@ -6,7 +6,8 @@
 	if(src.halloss > 0 && (!gibbed))
 		src.hallucination = 0
 		src.halloss = 0
-		src.oxyloss -= 10
+		// And the suffocation was a hallucination (lazy)
+		src.oxyloss = max(src.oxyloss - 50,0)
 		return
 	src.stat = 2
 	src.dizziness = 0
