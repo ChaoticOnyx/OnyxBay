@@ -23,9 +23,6 @@
 		pathweight = 1
 		list/obj/machinery/network/wirelessap/wireless = list( )
 
-	New()
-		src.sd_RasterLum()
-
 /turf/space
 	icon = 'space.dmi'
 	name = "space"
@@ -99,11 +96,12 @@
 					//Do nothing - valid
 				if (/turf/space)
 					var/turf/space/F = new(src)									//Then change to a Space tile (no falling into space)
-					F.name = F.name
+					//F.sd_RasterLum()
 					return
 				else
+					world << "[x] [y] [z+1]"
 					var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
-					F.name = F.name
+					//F.sd_RasterLum()
 					return
 
 		Enter(var/atom/movable/AM)
