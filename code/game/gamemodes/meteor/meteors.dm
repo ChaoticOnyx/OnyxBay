@@ -71,6 +71,7 @@
 	else
 		M = new /obj/meteor/small( pickedstart )
 	M.dest = new /obj(pickedgoal)
+	M.dest.name = "METEORTARGET_THIS_IS_A_HACK"
 	walk_towards(M, M.dest, 1)
 
 /obj/meteor
@@ -80,7 +81,7 @@
 	density = 1
 	anchored = 1.0
 	var/hits = 1
-	var/dest
+	var/obj/dest
 
 /obj/meteor/small
 	name = "small meteor"
@@ -114,3 +115,9 @@
 	if (severity < 4)
 		del(src)
 	return
+
+/obj/meteor/Del()
+	if(src.dest.name == "METEORTARGET_THIS_IS_A_HACK")
+		del src.dest
+
+	..()

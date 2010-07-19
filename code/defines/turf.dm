@@ -69,6 +69,20 @@
 	heat_capacity = 225000
 	var/broken = 0
 	var/burnt = 0
+	var/turf/simulated/floor/open/open = null
+
+	New()
+		..()
+		var/turf/T = locate(x,y,z-1)
+		if(T)
+			if(T.type == /turf/simulated/floor/open)
+				open = T
+
+	Enter(var/atom/movable/AM)
+		. = ..()
+		spawn()
+			if(open)
+				open.update()
 
 	airless
 		name = "airless floor"
@@ -85,10 +99,13 @@
 		intact = 0
 		icon_state = "open"
 		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
+		var/icon/darkoverlay = null
+		var/turf/simulated/floorbelow
 
 		New()
 			..()
 			var/turf/T = locate(x, y, z + 1)
+			floorbelow = T
 			switch (T.type)
 				if (/turf/simulated/floor)
 					//Do nothing - valid
@@ -104,6 +121,8 @@
 					//F.sd_RasterLum()
 					return
 
+			update()
+
 		Enter(var/atom/movable/AM)
 			if (1) //TODO make this check if gravity is active (future use) - Sukasa
 				spawn(1)
@@ -113,10 +132,44 @@
 						AM:updatehealth()
 			return ..()
 
+		proc
+			update()
+				src.addoverlay(floorbelow)
+			//	for(var/obj/o in floorbelow.contents)
+			//		src.addoverlay(o)
+				var/LowestLayerLeftToDraw
+				var/KeepDrawing = 1
+				var/HighestDrawnLayer = 0
+
+				while (KeepDrawing)
+					LowestLayerLeftToDraw = 1e31
+					KeepDrawing = 0
+					for(var/atom/A in floorbelow)
+						if (A.layer < LowestLayerLeftToDraw && A.layer > HighestDrawnLayer)
+							LowestLayerLeftToDraw = A.layer
+							KeepDrawing = 1
+
+					for(var/atom/A in floorbelow)
+						if (A.layer >= LowestLayerLeftToDraw)
+							addoverlay(icon(A.icon, A.icon_state, A.dir, 1, 0))
+							HighestDrawnLayer = A.layer
+
+			//	var/area/Li = Turf.loc
+			//	if (Li.sd_light_level < 7 && Li.sd_light_level >= 0)
+			//		Tile.Blend(icon('sd_dark_alpha7.dmi', "[Li.sd_light_level]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
+
+				//	for(var/icon/i in o.overlaylist)
+				//		addoverlay(i)
 	plating
 		name = "plating"
 		icon_state = "plating"
 		intact = 0
+
+
+
+/proc/update_open()
+	for(var/turf/simulated/floor/open/a in world)
+		a.update()
 
 /turf/simulated/floor/plating/airless
 	name = "airless plating"
