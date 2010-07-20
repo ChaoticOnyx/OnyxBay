@@ -114,10 +114,12 @@
 				if (/turf/space)
 					var/turf/space/F = new(src)									//Then change to a Space tile (no falling into space)
 					//F.sd_RasterLum()
+					F.name = F.name
 					return
 				else
 					world << "[x] [y] [z+1]"
 					var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
+					F.name = F.name
 					//F.sd_RasterLum()
 					return
 
