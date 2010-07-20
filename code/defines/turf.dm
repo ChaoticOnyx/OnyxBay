@@ -133,6 +133,7 @@
 
 		proc
 			update()
+				src.clearoverlays()
 				src.addoverlay(floorbelow)
 			//	for(var/obj/o in floorbelow.contents)
 			//		src.addoverlay(o)
@@ -140,19 +141,18 @@
 				var/KeepDrawing = 1
 				var/HighestDrawnLayer = 0
 
-				while (KeepDrawing)
-					LowestLayerLeftToDraw = 1e31
-					KeepDrawing = 0
-					for(var/atom/A in floorbelow)
-						if (A.layer < LowestLayerLeftToDraw && A.layer > HighestDrawnLayer)
-							LowestLayerLeftToDraw = A.layer
-							KeepDrawing = 1
+			//	while (KeepDrawing)
+			//		LowestLayerLeftToDraw = 1e31
+				//	KeepDrawing = 0
+			//		for(var/atom/A in floorbelow)
+			//			if (A.layer < LowestLayerLeftToDraw && A.layer > HighestDrawnLayer)
+			//				LowestLayerLeftToDraw = A.layer
+			//				KeepDrawing = 1
 
-					for(var/atom/A in floorbelow)
-						if (A.layer >= LowestLayerLeftToDraw)
-							addoverlay(icon(A.icon, A.icon_state, A.dir, 1, 0))
-							HighestDrawnLayer = A.layer
-
+				for(var/obj/A in floorbelow.contents)
+				//	addoverlay(new /icon(A.icon,icon_state = A.icon_state,dir = A.dir))
+					addoverlay(new /icon(A.icon,dir=A.dir))
+				addoverlay(icon('ss13_dark_alpha7.dmi',"5"))
 			//	var/area/Li = Turf.loc
 			//	if (Li.sd_light_level < 7 && Li.sd_light_level >= 0)
 			//		Tile.Blend(icon('sd_dark_alpha7.dmi', "[Li.sd_light_level]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
