@@ -100,30 +100,40 @@
 		icon_state = "open"
 		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
 		var/icon/darkoverlay = null
-		var/turf/simulated/floorbelow
+		var/turf/floorbelow
 
 		New()
 			..()
+			spawn(1)
+				floorbelow = locate(x, y, z + 1)
+				update()
 			var/turf/T = locate(x, y, z + 1)
-			floorbelow = T
-			switch (T.type)
+			switch (T.type) //Somehow, I don't think I thought this cunning plan all the way through - Sukasa
 				if (/turf/simulated/floor)
+					//Do nothing - valid
+				if (/turf/simulated/floor/plating)
+					//Do nothing - valid
+				if (/turf/simulated/floor/engine)
+					//Do nothing - valid
+				if (/turf/simulated/floor/engine/vacuum)
+					//Do nothing - valid
+				if (/turf/simulated/floor/airless)
+					//Do nothing - valid
+				if (/turf/simulated/floor/grid)
+					//Do nothing - valid
+				if (/turf/simulated/floor/plating/airless)
 					//Do nothing - valid
 				if (/turf/simulated/floor/open)
 					//Do nothing - valid
 				if (/turf/space)
 					var/turf/space/F = new(src)									//Then change to a Space tile (no falling into space)
-					//F.sd_RasterLum()
 					F.name = F.name
 					return
 				else
-					world << "[x] [y] [z+1]"
 					var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
 					F.name = F.name
-					//F.sd_RasterLum()
 					return
 
-			update()
 
 		Enter(var/atom/movable/AM)
 			if (1) //TODO make this check if gravity is active (future use) - Sukasa
@@ -135,33 +145,15 @@
 			return ..()
 
 		proc
-			update()
+			update() //Update the overlays to make the openspace turf show what's down a level
 				src.clearoverlays()
 				src.addoverlay(floorbelow)
-			//	for(var/obj/o in floorbelow.contents)
-			//		src.addoverlay(o)
-				var/LowestLayerLeftToDraw
-				var/KeepDrawing = 1
-				var/HighestDrawnLayer = 0
 
-			//	while (KeepDrawing)
-			//		LowestLayerLeftToDraw = 1e31
-				//	KeepDrawing = 0
-			//		for(var/atom/A in floorbelow)
-			//			if (A.layer < LowestLayerLeftToDraw && A.layer > HighestDrawnLayer)
-			//				LowestLayerLeftToDraw = A.layer
-			//				KeepDrawing = 1
+				for(var/obj/o in floorbelow.contents)
+					src.addoverlay(image(o, dir=o.dir))
 
-				for(var/obj/A in floorbelow.contents)
-				//	addoverlay(new /icon(A.icon,icon_state = A.icon_state,dir = A.dir))
-					addoverlay(new /icon(A.icon,dir=A.dir))
-				addoverlay(icon('ss13_dark_alpha7.dmi',"5"))
-			//	var/area/Li = Turf.loc
-			//	if (Li.sd_light_level < 7 && Li.sd_light_level >= 0)
-			//		Tile.Blend(icon('sd_dark_alpha7.dmi', "[Li.sd_light_level]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
+				addoverlay(image(sd_dark_icon,,num2text(2),sd_light_layer))
 
-				//	for(var/icon/i in o.overlaylist)
-				//		addoverlay(i)
 	plating
 		name = "plating"
 		icon_state = "plating"
