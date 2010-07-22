@@ -925,11 +925,18 @@ About the new airlock wires panel:
 					src.closeOther = A
 					break
 
-/obj/machinery/door/airlock/Bump(atom/AM)
+/obj/machinery/door/airlock/Bumped(atom/AM)
 	if(src.secondsElectrified != 0 && istype(AM,/mob/living))
 		var/mob/a = AM
 		shock(a,100)
 		return
+	if(istype(AM,/mob))
+		var/mob/a = AM
+		if(a.hallucination > 50 && prob(10) && src.operating == 0)
+			a << "\red <B>You feel a powerful shock course through your body!</B>"
+			a.halloss += 50
+			a.stunned += 50
+			return
 	..()
 
 

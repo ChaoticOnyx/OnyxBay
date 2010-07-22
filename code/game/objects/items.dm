@@ -157,6 +157,7 @@
 	R.add_reagent("stoxin", 100)
 	R.add_reagent("impedrezene", 100)
 	R.add_reagent("cryptobiolin", 100)
+	R.add_reagent("LSD",100)
 	..()
 	return
 

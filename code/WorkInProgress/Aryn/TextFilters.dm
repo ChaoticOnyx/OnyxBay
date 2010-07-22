@@ -5,7 +5,7 @@ proc/Intoxicated(phrase)
 		counter=lentext(phrase)
 		newphrase="";newletter=""
 	while(counter>=1)
-		newletter="[copytext(phrase,(leng-counter)+1,(leng-counter)+2)]"
+		newletter=copytext(phrase,(leng-counter)+1,(leng-counter)+2)
 		if(rand(1,3)==3)
 			if(lowertext(newletter)=="o")	newletter="u"
 			if(lowertext(newletter)=="s")	newletter="ch"

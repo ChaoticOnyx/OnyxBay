@@ -33,40 +33,45 @@
 	var/endy
 
 	switch(startside)
+
 		if(NORTH)
 			starty = world.maxy-1
 			startx = rand(1, world.maxx-1)
 			endy = 1
 			endx = rand(1, world.maxx-1)
+
 		if(EAST)
 			starty = rand(1,world.maxy-1)
 			startx = world.maxx-1
 			endy = rand(1, world.maxy-1)
 			endx = 1
+
 		if(SOUTH)
 			starty = 1
 			startx = rand(1, world.maxx-1)
 			endy = world.maxy-1
 			endx = rand(1, world.maxx-1)
+
 		if(WEST)
 			starty = rand(1, world.maxy-1)
 			startx = 1
 			endy = rand(1,world.maxy-1)
 			endx = world.maxx-1
 
-	var/turf/pickedstart = locate(startx, starty, 1)
-	var/turf/pickedgoal = locate(endx, endy, 1)
+	var/turf/pickedstart = locate(startx, starty, rand(1, 4))
+	var/turf/pickedgoal = locate(endx, endy, pickedstart.z)
 
 	if (!istype(pickedstart, /turf/space) || locate(/obj/shield in pickedstart) || pickedstart.loc.name != "Space" ) //FUUUCK, should never happen.
 		goto AGAIN
 
 	var/obj/meteor/M
+
 	if(rand(50))
 		M = new /obj/meteor( pickedstart )
 	else
 		M = new /obj/meteor/small( pickedstart )
-
-	M.dest = pickedgoal
+	M.dest = new /obj(pickedgoal)
+	M.dest.name = "METEORTARGET_THIS_IS_A_HACK"
 	walk_towards(M, M.dest, 1)
 
 /obj/meteor
@@ -76,7 +81,7 @@
 	density = 1
 	anchored = 1.0
 	var/hits = 1
-	var/dest
+	var/obj/dest
 
 /obj/meteor/small
 	name = "small meteor"
@@ -110,3 +115,9 @@
 	if (severity < 4)
 		del(src)
 	return
+
+/obj/meteor/Del()
+	if(src.dest.name == "METEORTARGET_THIS_IS_A_HACK")
+		del src.dest
+
+	..()

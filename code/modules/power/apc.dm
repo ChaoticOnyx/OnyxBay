@@ -39,6 +39,7 @@
 	var/coverlocked = 1
 	var/aidisabled = 0
 	var/tdir = null
+	var/repair_state = 0
 	var/obj/machinery/power/terminal/terminal = null
 	var/lastused_light = 0
 	var/lastused_equip = 0
@@ -150,6 +151,10 @@
 // update the APC icon to show the three base states
 // also add overlays for indicator lights
 /obj/machinery/power/apc/proc/updateicon()
+	if(repair_state > 0)
+		icon_state = "apc_r[repair_state]"
+		src.overlays = null
+		return
 	if(opened)
 		icon_state = "[ cell ? "apc2" : "apc1" ]"		// if opened, show cell if it's inserted
 		src.overlays = null								// also delete all overlays
@@ -180,8 +185,33 @@
 //attack with an item - open/close cover, insert cell, or (un)lock interface
 
 /obj/machinery/power/apc/attackby(obj/item/weapon/W, mob/user)
+	if(stat & BROKEN)
+		if(repair_state == 0 && istype(W,/obj/item/weapon/screwdriver))
+			repair_state = 1
+			updateicon()
+		else if(repair_state == 1 && istype(W,/obj/item/weapon/circuitry))
+			del(W)
+			repair_state = 2
+			updateicon()
+		else if(repair_state == 2 && istype(W,/obj/item/weapon/circuitry))
+			del(W)
+			repair_state = 3
+			updateicon()
+		else if(repair_state == 3 && istype(W,/obj/item/weapon/wirecutters))
+			repair_state = 4
+			updateicon()
+		else if(repair_state == 4 && istype(W,/obj/item/weapon/cable_coil))
+			var/obj/item/weapon/cable_coil/S = W
+			if(!S.use(5))
+				user << "Not enough wiring"
+				return
+			repair_state = 5
+			updateicon()
+		else if(repair_state == 5 && istype(W,/obj/item/weapon/screwdriver))
+			repair_state = 0
+			stat -= BROKEN
+		return
 
-	if(stat & BROKEN) return
 	if (istype(user, /mob/living/silicon))
 		return src.attack_hand(user)
 	if (istype(W, /obj/item/weapon/crowbar))	// crowbar means open or close the cover

@@ -361,3 +361,17 @@
 /atom/proc/alog(var/atom/device,var/mob/mb)
 	src.logs += "[src.name] used by a [device.name] by [mb.real_name]([mb.key])"
 	mb.log_m("[src.name] used by a [device.name]")
+
+
+
+/atom/proc/addoverlay(var/overlay)
+	src.overlaylist += overlay
+	src.overlays += overlay
+
+/atom/proc/removeoverlay(var/overlay)
+	src.overlaylist -= overlay
+	src.overlays -= overlay
+
+/atom/proc/clearoverlays()
+	src.overlaylist = new/list()
+	src.overlays = null

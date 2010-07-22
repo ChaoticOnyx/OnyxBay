@@ -129,6 +129,12 @@ datum
 			required_reagents = list("silicon" = 1, "carbon" = 1)
 			result_amount = 2
 
+		LSD
+			name = "LSD"
+			id = "LSD"
+			result = "LSD"
+			required_reagents = list("silicon" = 1, "hydrogen" = 1, "anti_toxin" = 1)
+			result_amount = 5
 		leporazine
 			name = "Leporazine"
 			id = "leporazine"
