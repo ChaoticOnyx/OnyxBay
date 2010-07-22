@@ -105,6 +105,8 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
+			src.verbs += /client/proc/new_eventa
+			src.verbs += /obj/admins/proc/invites
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
@@ -190,6 +192,7 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
+			src.verbs += /obj/admins/proc/invites
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
@@ -260,6 +263,7 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
+			src.verbs += /obj/admins/proc/invites
 		if ("Primary Administrator")
 
 			src.deadchat = 1
@@ -328,6 +332,7 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/hubvis
+			src.verbs += /obj/admins/proc/invites
 
 		if ("Administrator")
 
@@ -374,6 +379,7 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/hubvis
+			src.verbs += /obj/admins/proc/invites
 
 		if ("Secondary Administrator")
 			src.holder.level = 1
@@ -742,6 +748,16 @@
 	else
 		config.invite_only = 1
 		world << "\blue <b> This game has been set to invite only"
+		for(var/mob/new_player/M in world)
+			if(!invite_isallowed(M))
+				M.ready = 0
+				M << "\blue <b> You do not have an invite to participate in this game</b>"
 	message_admins("\blue <b> By [usr.client.key]</b>")
 
+
+	return
+/client/proc/new_eventa(sev as text)
+	set category = "Debug"
+	set name = "Spawn event"
+	new_event(sev)
 	return

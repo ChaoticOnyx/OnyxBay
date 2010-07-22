@@ -370,6 +370,8 @@ About the new airlock wires panel:
 	if(powernets && powernets.len >= netnum)
 		PN = powernets[netnum]
 
+	if(!PN)
+		return 0
 	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 	s.set_up(5, 1, src)
 	s.start()
@@ -922,6 +924,13 @@ About the new airlock wires panel:
 				if (A.closeOtherId == src.closeOtherId && A != src)
 					src.closeOther = A
 					break
+
+/obj/machinery/door/airlock/Bump(atom/AM)
+	if(src.secondsElectrified != 0 && istype(AM,/mob/living))
+		var/mob/a = AM
+		shock(a,100)
+		return
+	..()
 
 
 // ***************************************

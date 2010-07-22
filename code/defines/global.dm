@@ -97,6 +97,7 @@ var
 	list/wizardstart = list()
 	list/newplayer_start = list()
 	list/latejoin = list()
+	list/derelictstart = list()
 	list/prisonwarp = list()	//prisoners go to these
 	list/mazewarp = list()
 	list/tdome1 = list()

@@ -1,13 +1,13 @@
 /datum/intercept_text
 	var/text
-	var/prob_correct_person_lower = 20
-	var/prob_correct_person_higher = 80
-	var/prob_correct_job_lower = 20
-	var/prob_correct_job_higher = 80
-	var/prob_correct_prints_lower = 20
-	var/prob_correct_print_higher = 80
-	var/prob_correct_objective_lower = 20
-	var/prob_correct_objective_higher = 80
+	var/prob_correct_person_lower = 5
+	var/prob_correct_person_higher = 10
+	var/prob_correct_job_lower = 5
+	var/prob_correct_job_higher = 10
+	var/prob_correct_prints_lower = 5
+	var/prob_correct_print_higher = 10
+	var/prob_correct_objective_lower = 5
+	var/prob_correct_objective_higher = 10
 	var/list/org_names_1 = list()
 	var/list/org_names_2 = list()
 	var/list/anomalies = list()
@@ -15,10 +15,10 @@
 
 /datum/intercept_text/New()
 	..()
-	src.org_names_1.Add("Blighted", "Defiled", "Unholy", "Murderous", "Ugly", "French", "Blue", "Farmer")
-	src.org_names_2.Add("Reapers", "Swarm", "Rogues", "Menace", "Jeff Worshippers", "Drunks", "Strikers", "Creed")
-	src.anomalies.Add("Huge electrical storm", "Photon emitter", "Meson generator", "Blue swirly thing")
-	src.SWF_names.Add("Grand Wizard", "His Most Unholy Master", "The Most Angry", "Bighands", "Tall Hat", "Deadly Sandals")
+	src.org_names_1.Add("Syndicate")
+	src.org_names_2.Add("Federation")
+	src.anomalies.Add("Unknown spacial distrubance")
+	src.SWF_names.Add("Grand Wizard")
 
 /datum/intercept_text/proc/build(var/mode_type, correct_mob)
 	switch(mode_type)

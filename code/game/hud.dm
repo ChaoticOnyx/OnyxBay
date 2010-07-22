@@ -135,3 +135,6 @@ obj/hud/New()
 	if(istype(mymob, /mob/dead/observer))
 		src.ghost_hud()
 		return
+	if(istype(mymob,/mob/dead/offical))
+		src.ghost_hud()
+		return

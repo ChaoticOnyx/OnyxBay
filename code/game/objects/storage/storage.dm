@@ -162,8 +162,8 @@
 
 /obj/item/weapon/storage/box/New()
 
-	new /obj/item/clothing/mask/breath( src )
-	new /obj/item/weapon/tank/emergency_oxygen( src )
+//	new /obj/item/clothing/mask/breath( src )
+//	new /obj/item/weapon/tank/emergency_oxygen( src )
 	..()
 	return
 

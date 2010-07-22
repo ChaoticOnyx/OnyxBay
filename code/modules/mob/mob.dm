@@ -897,7 +897,12 @@
 	src.log_m("Heard [msg]")
 	// Added voice muffling for Issue 41.
 	if (src.stat == 1 || src.sleeping > 0)
-		src << "<I>... You can almost hear someone talking ...</I>"
+		if(type & 8) //Radio
+			src << "<I>... You hear the crackle of a radio transmission ...</I>"
+		else if(type & 4) //Said by someone
+			src << "<I>... You can almost hear someone talking ...</I>"
+		else if(type & 2)
+			src << "<I>... You can almost hear a noise ...</I>"
 	else
 		src << msg
 	return
@@ -1444,7 +1449,8 @@
 
 		if(istype(src,/mob))
 			var/mob/a = src
-			a.mind.log.updateloc(src.loc.loc,src)
+			if(a.mind)
+				a.mind.log.updateloc(src.loc.loc,src)
 	return
 
 /atom/movable/verb/pull()
@@ -1502,7 +1508,7 @@
 	return
 
 /client/Move(n, direct)
-	if(istype(src.mob, /mob/dead/observer))
+	if(istype(src.mob, /mob/dead))
 		return src.mob.Move(n,direct)
 	if (src.moving)
 		return 0
@@ -1930,5 +1936,5 @@
 
 
 /mob/proc/log_m(var/text)
-	if(src.mind.log)
+	if(src.mind)
 		src.mind.log.log_m(text,src)

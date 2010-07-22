@@ -49,6 +49,8 @@
 
 /datum/game_mode/proc/check_win()
 
+/datum/game_mode/proc/latespawn(var/mob)
+
 /datum/game_mode/proc/send_intercept()
 
 /datum/game_mode/proc/equip_traitor(mob/living/carbon/human/traitor_mob)

@@ -167,8 +167,9 @@
 		//for(var/mob/O in viewers(M, null))
 		//	O.show_message(text("\red [] has been stabbed with [] by [].", M, src, user), 1)
 		user << "\red You stab [M] with the pen."
-		M << "\red You feel a tiny prick!"
-		if(M.reagents) reagents.trans_to(M, 150)
+		//M << "\red You feel a tiny prick!"
+		spawn(500)
+			if(M.reagents) reagents.trans_to(M, 150)
 	return
 
 /obj/item/weapon/Bump(mob/M as mob)

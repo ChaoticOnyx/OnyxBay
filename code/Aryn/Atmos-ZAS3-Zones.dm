@@ -7,6 +7,7 @@
 
 var/list/zones = list()
 var/zone_update_delay = 5
+var/stop_zones = 0
 
 turf/var/zone/zone
 
@@ -34,6 +35,8 @@ zone
 		turf_nitro = 0
 		turf_co2 = 0
 
+		turf_other = 0
+
 		volume = CELL_VOLUME
 		pressure = ONE_ATMOSPHERE
 
@@ -41,6 +44,9 @@ zone
 		list/direct_connections = list() //Zones with doors connecting them to us, so that we know not to merge.
 
 		list/merge_with = list()
+		list/edges = list()
+
+		needs_rebuild = 0
 
 	proc
 
@@ -70,9 +76,16 @@ zone
 		pressure()
 			return (oxygen+nitrogen+co2)*R_IDEAL_GAS_EQUATION*temp/volume
 
+		other_gas()
+			for(var/turf/T in members)
+				var/datum/gas_mixture/GM = T.return_air()
+				. += GM.toxins
+				for(var/datum/gas/G in GM.trace_gases)
+					. += G.moles
+
 	//......................//
 
-	New(turf/start,soxy = 0,snitro = 0,sco2 = 0,smembers,sspace = list())
+	New(turf/start,soxy = 0,snitro = 0,sco2 = 0,smembers,sspace = list(),sedges)
 
 		starting_tile = start
 
@@ -87,11 +100,14 @@ zone
 		if(smembers)
 			members = smembers
 			space_connections = sspace
+			edges = sedges
 		else
 			members = FloodFill(start) //Do a floodfill to get new members.
 			if(ticker)
-				space_connections = tmp_spaceconnections
+				space_connections = tmp_spaceconnections.Copy()
 				tmp_spaceconnections.len = 0
+			edges = tmp_edges.Copy()
+			tmp_edges.len = 0
 
 		if(!members.len) //Bug here.
 			world << "Warning: Zone created with no members at [start.x],[start.y],[start.z]."
@@ -121,10 +137,12 @@ zone
 	Update()
 		while(1)
 			sleep(zone_update_delay)
+			if(stop_zones) continue
 
 			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2)
 				rebuild_cache()
 				update_members()
+			//other = other_gas()
 
 			oxygen_archive = oxygen		 //Update the archives, so we can do things like calculate delta.
 			nitrogen_archive = nitrogen
@@ -143,10 +161,22 @@ zone
 						gas.moles = QUANTIZE(gas.moles/VACUUM_SPEED)
 				AirflowSpace(src)
 			merge_with.len = 0
+			//if(pressure > 225)
+			//	for(var/turf/T in edges)
+			//		for(var/obj/window/W in T)
+			//			if(prob(25))
+			//				W.ex_act(pick(2,3))
+			//				W.visible_message("\red A window bursts from the pressure!",1,"\red You hear glass breaking.")
+			for(var/zone/Z in direct_connections)
+				if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2)
+					Merge(Z)
 			for(var/zone/Z in connections)
 
 				var/list/borders = connections[Z] //Get the list of border tiles.
 
+				if(!istype(borders,/list))
+					connections -= Z
+					continue
 				var/percent_flow = max(90,FLOW_PERCENT*borders.len) //This is the percentage of gas that will flow.
 
 				Airflow(src,Z,pressure-Z.pressure)
@@ -166,11 +196,6 @@ zone
 				Z.nitrogen( (Z.nitrogen() - nit_avg) * (1-percent_flow/100) + nit_avg )
 				Z.co2( (Z.co2() - co2_avg) * (1-percent_flow/100) + co2_avg )
 					//End Magic
-
-
-			for(var/zone/Z in direct_connections)
-				if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2)
-					Merge(Z)
 
 	rebuild_cache()
 		if(!members.len) del src
@@ -228,6 +253,9 @@ zone
 
 	AddTurf(turf/T)
 		if(T.zone) return
+		if(stop_zones)
+			needs_rebuild = 1
+			return
 		members += T
 		T.zone = src
 		for(var/turf/space/S in range(1,T))
@@ -237,6 +265,9 @@ zone
 		update_members()
 	RemoveTurf(turf/T)
 		if(T.zone != src) return
+		if(stop_zones)
+			needs_rebuild = 1
+			return
 		members -= T
 		T.zone = null
 		for(var/turf/space/S in range(1,T))
@@ -313,32 +344,43 @@ zone
 
 	Split(turf/X,turf/Y)
 		//world << "Split: Check procedure passed."
-		var/list/old_members = list()
-		var/list/old_space_connections = list()
+		if(stop_zones) return
+		var/list
+			old_members = list()
+			old_space_connections = list()
+			old_edges = list()
 		var
 			zone_X = list()
 			space_X = list()
+			edge_X = list()
 			zone_Y = list()
 			space_Y = list()
+			edge_Y = list()
 		for(var/turf/simulated/T in members)
 			old_members += T
 			T.zone = null
+		old_space_connections = space_connections
+		old_edges = edges
 		zone_X = FloodFill(X)
 		if(Y in zone_X)
 			members = old_members //No need to change.
 			for(var/turf/simulated/T in members)
 				T.zone = src
 		else
-			space_X = tmp_spaceconnections
+			space_X = tmp_spaceconnections.Copy()
 			tmp_spaceconnections.len = 0
+			edge_X = tmp_edges.Copy()
+			tmp_edges.len = 0
 			//world << "Split: Floodfill procedure passed. Creating new zones."
 			zone_Y = old_members - zone_X
 			space_Y = old_space_connections - space_X
-			new/zone(Y,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,zone_Y,space_Y)
-			new/zone(X,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,zone_X,space_X)
+			edge_Y = old_edges - edge_X
+			new/zone(Y,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,zone_Y,space_Y,edge_Y)
+			new/zone(X,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,zone_X,space_X,edge_X)
 			del src
 
 	Merge(zone/Z)
+		if(stop_zones) return
 		//world << "Merging..."
 		oxygen += Z.oxygen
 		nitrogen += Z.nitrogen
@@ -348,31 +390,41 @@ zone
 		volume += Z.volume
 		connections += Z.connections
 		space_connections += Z.space_connections
+		edges += Z.edges
 		merge_with += Z.merge_with
 		for(var/turf/simulated/T in Z.members)
 			T.zone = src
 		//world << "Merged zones."
 		direct_connections -= Z
 		del Z
+
 var/list/tmp_spaceconnections = list()
-proc/FloodFill(turf/start)
+var/list/tmp_edges = list()
+proc/FloodFill(turf/start,remove_extras)
 	if(!istype(start,/turf/simulated)) return
 	tmp_spaceconnections.len = 0 //Clear the space list in case it's still full of data.
+	tmp_edges.len = 0
 	. = list()
 	var/list/borders = list()
 	borders += start
 	while(borders.len)
 		for(var/turf/simulated/T in borders)
 			var/unblocked = T.GetUnblockedCardinals()
+			var/border_added = 0
 			for(var/turf/simulated/U in unblocked)
 				if((U in borders) || (U in .)) continue
 				borders += U
-			for(var/turf/space/S in unblocked)
-				tmp_spaceconnections += T
-				break
+				border_added = 1
+			if(!remove_extras)
+				for(var/turf/space/S in unblocked)
+					tmp_spaceconnections += T
+					break
 			. += T
 			//T.overlays += 'Zone.dmi'
 			borders -= T
+			if(!border_added && !remove_extras)
+				for(var/turf/E in range(1,T))
+					tmp_edges += E
 //proc/DoorFill(turf/start)
 //	. = list()
 //	var/list/borders = list()
@@ -567,3 +619,13 @@ proc/SplitCheck(turf/T)
 	//	T.overlays -= ad_splitcheck
 //		T.overlays -= ad_update
 //		T.overlays -= ad_process
+
+proc/RebuildAll()
+	stop_zones = 0
+	for(var/zone/Z in zones)
+		if(Z.needs_rebuild)
+			var/turf/T = Z.starting_tile
+			del Z
+			spawn(1)
+				new/zone(T)
+		sleep(-1)
