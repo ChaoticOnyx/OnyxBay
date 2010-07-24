@@ -2,6 +2,7 @@
 #define THERMAL_RELEASE_MODIFIER 50		//Higher == less heat released during reaction
 #define PLASMA_RELEASE_MODIFIER 750		//Higher == less plasma released by reaction
 #define OXYGEN_RELEASE_MODIFIER 1500	//Higher == less oxygen released at high temperature/power
+#define REACTION_POWER_MODIFIER 2		//Higher == more overall power
 
 /obj/machinery/engine/supermatter
 	name = "Supermatter"
@@ -45,7 +46,7 @@
 
 	device_energy *= removed.temperature / T0C
 
-	device_energy = round(device_energy)
+	device_energy = round(device_energy * REACTION_POWER_MODIFIER)
 
 	//To figure out how much temperature to add each tick, consider that at one atmosphere's worth
 	//of pure oxygen, with all four lasers firing at standard energy and no N2 present, at room temperature

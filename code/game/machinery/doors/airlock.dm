@@ -878,7 +878,7 @@ About the new airlock wires panel:
 				update_icon()
 
 				if (!istype(src, /obj/machinery/door/airlock/glass))
-					src.sd_SetOpacity(0)
+					src.ul_SetOpacity(0)
 				src.operating = 0
 				return
 		else
@@ -892,7 +892,7 @@ About the new airlock wires panel:
 					update_icon()
 
 					if ((src.visible) && (!istype(src, /obj/machinery/door/airlock/glass)))
-						src.sd_SetOpacity(1)
+						src.ul_SetOpacity(1)
 					src.operating = 0
 
 	else

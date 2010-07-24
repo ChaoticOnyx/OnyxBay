@@ -152,8 +152,6 @@
 				for(var/obj/o in floorbelow.contents)
 					src.addoverlay(image(o, dir=o.dir))
 
-				addoverlay(image(sd_dark_icon,,num2text(2),sd_light_layer))
-
 	plating
 		name = "plating"
 		icon_state = "plating"

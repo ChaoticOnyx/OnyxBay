@@ -82,13 +82,13 @@
 			icon_state = "[base_state]-broken"
 			on = 0
 
-	var/oldlum = luminosity
+	var/oldlum = ul_Luminosity()
 
 	//luminosity = on * brightness
-	sd_SetLuminosity(on * brightness)		// *DAL*
+	ul_SetLuminosity(on * brightness)		// *UL*
 
 	// if the state changed, inc the switching counter
-	if(oldlum != luminosity)
+	if(oldlum != ul_Luminosity())
 		switchcount++
 
 		// now check to see if the bulb is burned out
@@ -99,7 +99,7 @@
 				status = LIGHT_BURNED
 				icon_state = "[base_state]-burned"
 				on = 0
-				sd_SetLuminosity(0)
+				ul_SetLuminosity(0)
 
 
 
@@ -308,7 +308,7 @@
 
 /obj/machinery/light/process()
 	if(on)
-		use_power(luminosity * LIGHTING_POWER_FACTOR, LIGHT)
+		use_power(ul_Luminosity() * LIGHTING_POWER_FACTOR, LIGHT)
 
 // called when area power state changes
 

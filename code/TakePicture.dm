@@ -49,7 +49,7 @@
 				world.log << "Making [ImageX]-[ImageY]-[ImageZ]"
 				sleep(2)
 
-				spawn(40)
+				spawn(30)
 					if (crashwatch.value == KSA_SUCCESS)
 						crashwatch.value = KSA_WATCHDOGSUCCESS
 					else if (crashwatch.value == (KSA_INPROGRESS|KSA_BADOUTPUT))
@@ -71,9 +71,9 @@
 				while (crashwatch.value != KSA_WATCHDOGSUCCESS)
 					if (crashwatch.value == KSA_WATCHDOGTERMINATE)
 						return
-					sleep(10)
+					sleep(5)
 
-				sleep(20)
+				sleep(10)
 
 			sy = 1
 		sx = 1
@@ -118,8 +118,8 @@
 						HighestDrawnLayer = A.layer
 
 			var/area/Li = Turf.loc
-			if (Li.sd_light_level < 7 && Li.sd_light_level >= 0)
-				Tile.Blend(icon('ss13_dark_alpha7.dmi', "[Li.sd_light_level]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
+			if (Li.ul_Luminosity() < 7 && Li.ul_Luminosity() >= 0)
+				Tile.Blend(icon('ULIcons.dmi', "[Li.LightLevelRed]-[Li.LightLevelGreen]-[Li.LightLevelBlue]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
 
 	usr << browse(Tile, "window=picture;file=[ImageX]-[ImageY]-[ImageZ].png;display=0")
 

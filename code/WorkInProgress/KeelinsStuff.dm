@@ -19,7 +19,6 @@
 	name = "Keelin's private beach"
 	icon_state = "null"
 	luminosity = 1
-	sd_lighting = 0
 	requires_power = 0
 	var/sound/mysound = null
 
@@ -544,9 +543,9 @@
 
 					var/area/AR = X.loc
 
-					if(AR.sd_lighting)
+					if(AR.ul_Lighting)
 						X.opacity = !X.opacity
-						X.sd_SetOpacity(!X.opacity)
+						X.ul_SetOpacity(!X.opacity)
 
 					toupdate += X
 
@@ -555,9 +554,9 @@
 
 						var/area/AR2 = ttl.loc
 
-						if(AR2.sd_lighting)
+						if(AR2.ul_Lighting)
 							ttl.opacity = !ttl.opacity
-							ttl.sd_SetOpacity(!ttl.opacity)
+							ttl.ul_SetOpacity(!ttl.opacity)
 
 						fromupdate += ttl
 

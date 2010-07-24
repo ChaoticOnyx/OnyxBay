@@ -42,7 +42,7 @@
 	anchored = 1
 
 /obj/beam/e_beam/New()
-	sd_SetLuminosity(3)
+	ul_SetLuminosity(1, 1, 4)
 
 /obj/beam/e_beam/proc/updatebeam()
 	if(!next)
