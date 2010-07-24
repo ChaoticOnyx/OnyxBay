@@ -758,6 +758,7 @@ area
 		//	sd_outside_areas += src
 
 	Del()
+		world << "AREA DEL [type]"
 		..()
 		related -= src
 

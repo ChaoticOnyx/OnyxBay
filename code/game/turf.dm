@@ -118,7 +118,7 @@
 	W.icon_old = old_icon
 	if(old_icon) W.icon_state = old_icon
 	W.opacity = 1
-	W.sd_SetOpacity(0)
+	W.ul_SetOpacity(0)
 	W.levelupdate()
 	return W
 
@@ -193,13 +193,13 @@
 /turf/proc/ReplaceWithWall()
 	var/turf/simulated/wall/S = new /turf/simulated/wall( locate(src.x, src.y, src.z) )
 	S.opacity = 0
-	S.sd_NewOpacity(1)
+	S.ul_SetOpacity(1)
 	return S
 
 /turf/proc/ReplaceWithRWall()
 	var/turf/simulated/wall/r_wall/S = new /turf/simulated/wall/r_wall( locate(src.x, src.y, src.z) )
 	S.opacity = 0
-	S.sd_NewOpacity(1)
+	S.ul_SetOpacity(1)
 	return S
 
 /turf/simulated/wall/New()

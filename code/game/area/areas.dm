@@ -5,8 +5,8 @@
 	src.icon = 'alert.dmi'
 	spawn(1)
 	//world.log << "New: [src] [tag]"
-		var/sd_created = findtext(tag,"sd_L")
-		sd_New(sd_created)
+		var/sd_created = findtext(tag,":UL")
+		ul_Prep(sd_created)
 		if(sd_created)
 			related += src
 			return
@@ -23,11 +23,11 @@
 			power_light = 1
 			power_equip = 1
 			power_environ = 1
-			luminosity = 1
-			sd_lighting = 0			// *DAL*
+			//luminosity = 1
+			ul_Lighting = 0			// *DAL*
 		else
 			luminosity = 0
-			//sd_SetLuminosity(0)		// *DAL*
+			//ul_SetLuminosity(0)		// *DAL*
 
 
 	/*spawn(5)

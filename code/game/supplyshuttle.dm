@@ -17,18 +17,18 @@ var/supply_shuttle_time = 0
 var/supply_shuttle_timeleft = 0
 var/supply_shuttle_points = 50
 
-/area/supply/station //DO NOT TURN THE SD_LIGHTING STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
+/area/supply/station //DO NOT TURN THE ul_Lighting STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
 	name = "supply shuttle"
 	icon_state = "shuttle3"
 	luminosity = 1
-	sd_lighting = 0
+	ul_Lighting = 0
 	requires_power = 0
 
-/area/supply/dock //DO NOT TURN THE SD_LIGHTING STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
+/area/supply/dock //DO NOT TURN THE ul_Lighting STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
 	name = "supply shuttle"
 	icon_state = "shuttle3"
 	luminosity = 1
-	sd_lighting = 0
+	ul_Lighting = 0
 	requires_power = 0
 
 //SUPPLY PACKS

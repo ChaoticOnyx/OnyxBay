@@ -75,7 +75,7 @@
 			src.now_pushing = 0
 			return
 		if(istype(src.equipped(), /obj/item/weapon/baton)) // add any other item paths you think are necessary
-			if(src.loc:sd_lumcount < 3 || src.blinded)
+			if(src.loc:ul_Luminosity() < 3 || src.blinded)
 				var/obj/item/weapon/W = src.equipped()
 				if (world.time > src.lastDblClick+2)
 					src.lastDblClick = world.time
