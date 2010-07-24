@@ -93,12 +93,17 @@
 
 
 			if(src.hallucination > 0)
-				if(src.hallucinations.len == 0 && src.hallucination >= 20)
-					if(prob(20))
+				if(src.hallucinations.len == 0 && src.hallucination >= 20 && src.health > 0)
+					if(prob(5))
 						fake_attack(src)
 				src.hallucination -= 1
+				if(src.health < 0)
+					for(var/obj/a in hallucinations)
+						del a
 			else
 				src.halloss = 0
+				for(var/obj/a in hallucinations)
+					del a
 
 
 			if (src.disabilities & 2)

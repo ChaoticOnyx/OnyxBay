@@ -937,6 +937,9 @@ About the new airlock wires panel:
 			a.halloss += 50
 			a.stunned += 50
 			return
+
+	if(operating == 1)
+		return
 	..()
 
 

@@ -84,6 +84,13 @@
 			if(open)
 				open.update()
 
+
+	Exit(var/atom/movable/AM)
+		. = ..()
+		spawn()
+			if(open)
+				open.update()
+
 	airless
 		name = "airless floor"
 		oxygen = 0.01
@@ -99,11 +106,16 @@
 		intact = 0
 		icon_state = "open"
 		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
-		var/icon/darkoverlay = null
+		var/global/image/darkoverlay = null
 		var/turf/simulated/floorbelow
 
 		New()
 			..()
+
+			if(!darkoverlay)
+				darkoverlay = image("icon" = 'open.dmi')
+			//	"icon" = 'hands.dmi', "icon_state" = text("[][]", t1, (!( src.lying ) ? null : "2")), "layer" = MOB_LAYER
+
 			var/turf/T = locate(x, y, z + 1)
 			floorbelow = T
 			switch (T.type)
@@ -137,10 +149,6 @@
 				src.addoverlay(floorbelow)
 			//	for(var/obj/o in floorbelow.contents)
 			//		src.addoverlay(o)
-				var/LowestLayerLeftToDraw
-				var/KeepDrawing = 1
-				var/HighestDrawnLayer = 0
-
 			//	while (KeepDrawing)
 			//		LowestLayerLeftToDraw = 1e31
 				//	KeepDrawing = 0
@@ -149,10 +157,11 @@
 			//				LowestLayerLeftToDraw = A.layer
 			//				KeepDrawing = 1
 
-				for(var/obj/A in floorbelow.contents)
+				for(var/atom/A in floorbelow.contents)
 				//	addoverlay(new /icon(A.icon,icon_state = A.icon_state,dir = A.dir))
-					addoverlay(new /icon(A.icon,dir=A.dir))
-				addoverlay(icon('ss13_dark_alpha7.dmi',"5"))
+					if(A.invisibility == 0) // Otherwise you end up with a ton of crap about making stuff only visible to some people, and I'm lazy, and the computer is slow. Not to mention that what I'm doing now has been considered impossible to do in byond for a while
+						addoverlay (image(A,dir=A.dir))
+				addoverlay(image("icon" = 'open.dmi'))
 			//	var/area/Li = Turf.loc
 			//	if (Li.sd_light_level < 7 && Li.sd_light_level >= 0)
 			//		Tile.Blend(icon('sd_dark_alpha7.dmi', "[Li.sd_light_level]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
