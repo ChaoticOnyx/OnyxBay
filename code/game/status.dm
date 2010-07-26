@@ -7,7 +7,10 @@
 	s += "<b>[station_name()]</b>";
 	s += " ("
 	s += "<a href=\"http://baystation12.co.cc/\">"
-	s += "Wiki here"
+	s += "Forum"
+	s += "</a> "
+	s += "<a href=\"http://wiki.baystation12.co.cc/\">"
+	s += "Wiki"
 	s += "</a>"
 	s += ")"
 
@@ -21,8 +24,8 @@
 	if (ticker && master_mode)
 		features += master_mode
 
-	if (config && config.enable_authentication)
-		features += "goon only"
+	if (config && config.invite_only)
+		features += "invite only"
 
 	if (!enter_allowed)
 		features += "closed"

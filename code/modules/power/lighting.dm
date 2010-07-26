@@ -20,15 +20,23 @@
 	anchored = 1
 	layer = 5  					// They were appearing under mobs which is a little weird - Ostaf
 	var/on = 0					// 1 if on, 0 if off
-	var/brightness = 8			// luminosity when on, also used in power calculation
 	var/status = LIGHT_OK		// LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 
 	var/light_type = /obj/item/weapon/light/tube		// the type of light item
+
+	var/brightnessred = 8
+	var/brightnessgreen = 8
+	var/brightnessblue = 8
+
 	var/fitting = "tube"
 	var/switchcount = 0			// count of number of times switched on/off
 								// this is used to calc the probability the light burns out
 
 	var/rigged = 0				// true if rigged to explode
+
+	blue
+		brightnessred = 6
+		brightnessgreen = 6
 
 // the smaller bulb light fixture
 
@@ -36,10 +44,15 @@
 	icon_state = "bulb1"
 	base_state = "bulb"
 	fitting = "bulb"
-	brightness = 5
+	brightnessred = 5
+	brightnessgreen = 5
+	brightnessblue = 4
 	desc = "A small lighting fixture."
 	light_type = /obj/item/weapon/light/bulb
 
+	red
+		brightnessgreen = 0
+		brightnessblue = 0
 
 // the desk lamp
 /obj/machinery/light/lamp
@@ -47,7 +60,9 @@
 	icon_state = "lamp1"
 	base_state = "lamp"
 	fitting = "bulb"
-	brightness = 5
+	brightnessred = 5
+	brightnessgreen = 5
+	brightnessblue = 4
 	desc = "A desk lamp"
 	light_type = /obj/item/weapon/light/bulb
 
@@ -55,6 +70,9 @@
 
 // green-shaded desk lamp
 /obj/machinery/light/lamp/green
+	brightnessred = 0
+	brightnessgreen = 5
+	brightnessblue = 0
 	icon_state = "green1"
 	base_state = "green"
 	desc = "A green-shaded desk lamp"
@@ -85,7 +103,7 @@
 	var/oldlum = ul_Luminosity()
 
 	//luminosity = on * brightness
-	ul_SetLuminosity(on * brightness)		// *UL*
+	ul_SetLuminosity(on * brightnessred, on * brightnessgreen, on * brightnessblue)		// *UL*
 
 	// if the state changed, inc the switching counter
 	if(oldlum != ul_Luminosity())

@@ -98,7 +98,7 @@
 	for(var/WorldX = 1 + ((ImageX - 1) * KSA_TILES_PER_IMAGE), WorldX <= (ImageX * KSA_TILES_PER_IMAGE) && WorldX <= world.maxx, WorldX++)
 		for(var/WorldY = 1 + ((ImageY - 1) * KSA_TILES_PER_IMAGE), WorldY <= (ImageY * KSA_TILES_PER_IMAGE) && WorldY <= world.maxy, WorldY++)
 
-			var/atom/Turf = locate(WorldX, WorldY, ImageZ)
+			var/turf/Turf = locate(WorldX, WorldY, ImageZ)
 
 			var/LowestLayerLeftToDraw
 			var/KeepDrawing = 1
@@ -116,10 +116,8 @@
 					if (A.layer >= LowestLayerLeftToDraw)
 						Tile.Blend(icon(A.icon, A.icon_state, A.dir, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31 + A.pixel_x, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31 + A.pixel_y)
 						HighestDrawnLayer = A.layer
-
-			var/area/Li = Turf.loc
-			if (Li.ul_Luminosity() < 7 && Li.ul_Luminosity() >= 0)
-				Tile.Blend(icon('ULIcons.dmi', "[Li.LightLevelRed]-[Li.LightLevelGreen]-[Li.LightLevelBlue]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
+			if(Turf.loc:ul_Lighting)
+				Tile.Blend(icon('ULIcons.dmi', "[ul_Clamp(min(Turf.LightLevelRed, max(Turf.MaxRed)))]-[ul_Clamp(min(Turf.LightLevelGreen, max(Turf.MaxGreen)))]-[ul_Clamp(min(Turf.LightLevelBlue, max(Turf.MaxBlue)))]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
 
 	usr << browse(Tile, "window=picture;file=[ImageX]-[ImageY]-[ImageZ].png;display=0")
 
