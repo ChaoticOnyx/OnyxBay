@@ -127,6 +127,15 @@
 		overlays = null
 		overlays += greenlight
 
+/obj/crate/internals/New()
+	..()
+	new /obj/item/clothing/mask/gas(src)
+	new /obj/item/weapon/tank/air(src)
+	new /obj/item/clothing/mask/gas(src)
+	new /obj/item/weapon/tank/air(src)
+	new /obj/item/clothing/mask/gas(src)
+	new /obj/item/weapon/tank/air(src)
+
 /obj/crate/rcd/New()
 	..()
 	new /obj/item/weapon/rcd_ammo(src)
