@@ -74,7 +74,6 @@ atom
 			return
 
 		ul_Illuminate()
-
 			if (ul_Extinguished == UL_I_LIT)
 				return
 
@@ -186,7 +185,7 @@ atom
 			var/TurfAdjust = isturf(src) ? 1 : 0
 
 			for(var/atom/Affected in view(ul_TopLuminosity, src))
-				if(Affected.ul_IsLuminous() && (ul_FalloffAmount(Affected) <= Affected.luminosity + TurfAdjust))
+				if(Affected.ul_IsLuminous() && Affected.ul_Extinguished == UL_I_LIT && (ul_FalloffAmount(Affected) <= Affected.luminosity + TurfAdjust))
 					Affected.ul_Extinguish()
 					Blanked += Affected
 
@@ -248,6 +247,14 @@ turf
 		list/MaxBlue = list( )
 
 	proc
+
+		ul_GetRed()
+			return ul_Clamp(min(LightLevelRed, max(MaxRed)))
+		ul_GetGreen()
+			return ul_Clamp(min(LightLevelGreen, max(MaxGreen)))
+		ul_GetBlue()
+			return ul_Clamp(min(LightLevelBlue, max(MaxBlue)))
+
 		ul_UpdateLight()
 
 			var/area/CurrentArea = loc
@@ -255,7 +262,7 @@ turf
 			if(!isarea(CurrentArea) || !CurrentArea.ul_Lighting)
 				return
 
-			var/LightingTag = copytext(CurrentArea.tag, 1, findtext(CurrentArea.tag, ":UL")) + ":UL[ul_Clamp(min(LightLevelRed, max(MaxRed)))]_[ul_Clamp(min(LightLevelGreen, max(MaxGreen)))]_[ul_Clamp(min(LightLevelBlue, max(MaxBlue)))]"
+			var/LightingTag = copytext(CurrentArea.tag, 1, findtext(CurrentArea.tag, ":UL")) + ":UL[ul_GetRed()]_[ul_GetGreen()]_[ul_GetBlue()]"
 
 			if(CurrentArea.tag != LightingTag)
 				var/area/NewArea = locate(LightingTag)
@@ -270,7 +277,7 @@ turf
 
 					NewArea.tag = LightingTag
 
-					NewArea.ul_Light(min(LightLevelRed, max(MaxRed)), min(LightLevelGreen, max(MaxGreen)), min(LightLevelBlue, max(MaxBlue)))
+					NewArea.ul_Light(ul_GetRed(), ul_GetGreen(), ul_GetBlue())
 
 
 				NewArea.contents += src
@@ -316,7 +323,7 @@ area
 
 			luminosity = ul_IsLuminous(LightLevelRed, LightLevelGreen, LightLevelBlue)
 
-			ul_Overlay = image('ULIcons.dmi', , num2text(ul_Clamp(LightLevelRed)) + "-" + num2text(ul_Clamp(LightLevelGreen)) + "-" + num2text(ul_Clamp(LightLevelBlue)), ul_Layer)
+			ul_Overlay = image('ULIcons.dmi', , num2text(LightLevelRed) + "-" + num2text(LightLevelGreen) + "-" + num2text(LightLevelBlue), ul_Layer)
 
 			overlays += ul_Overlay
 

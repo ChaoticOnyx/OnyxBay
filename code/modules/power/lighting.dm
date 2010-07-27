@@ -20,7 +20,10 @@
 	anchored = 1
 	layer = 5  					// They were appearing under mobs which is a little weird - Ostaf
 	var/on = 0					// 1 if on, 0 if off
+	var/burnchance = 0.001
 	var/status = LIGHT_OK		// LIGHT_OK, _EMPTY, _BURNED or _BROKEN
+	var/isalert = 0
+	var/switching = 0
 
 	var/light_type = /obj/item/weapon/light/tube		// the type of light item
 
@@ -70,9 +73,9 @@
 
 // green-shaded desk lamp
 /obj/machinery/light/lamp/green
-	brightnessred = 0
+	brightnessred = 3
 	brightnessgreen = 5
-	brightnessblue = 0
+	brightnessblue = 3
 	icon_state = "green1"
 	base_state = "green"
 	desc = "A green-shaded desk lamp"
@@ -86,6 +89,8 @@
 
 // update the icon_state and luminosity of the light depending on its state
 /obj/machinery/light/proc/update()
+	if (switching)
+		return
 
 	switch(status)		// set icon_states
 		if(LIGHT_OK)
@@ -103,7 +108,7 @@
 	var/oldlum = ul_Luminosity()
 
 	//luminosity = on * brightness
-	ul_SetLuminosity(on * brightnessred, on * brightnessgreen, on * brightnessblue)		// *UL*
+	ul_SetLuminosity(on * brightnessred, on * brightnessgreen * !isalert, on * brightnessblue * !isalert)		// *UL*
 
 	// if the state changed, inc the switching counter
 	if(oldlum != ul_Luminosity())
@@ -113,7 +118,7 @@
 		if(status == LIGHT_OK)
 			if(on && rigged)
 				explode()
-			if( prob( min(60, switchcount*switchcount*0.01) ) )
+			if( prob( min(60, switchcount*switchcount*burnchance) ) )
 				status = LIGHT_BURNED
 				icon_state = "[base_state]-burned"
 				on = 0
@@ -322,11 +327,27 @@
 // timed process
 // use power
 
-#define LIGHTING_POWER_FACTOR 20		//20W per unit luminosity
+#define LIGHTING_POWER_FACTOR 25		//25W per unit luminosity
 
 /obj/machinery/light/process()
 	if(on)
 		use_power(ul_Luminosity() * LIGHTING_POWER_FACTOR, LIGHT)
+		if(switching)
+			return
+		var/area/A = get_area(src)
+		if (isalert != A.redalert)
+			switching = 1
+			spawn(rand(0, 5))
+				on = 0
+				switching = 0
+				update()
+				switching = 1
+				isalert = A.redalert
+				on = 1
+				sleep(10)
+				switching = 0
+				update()
+
 
 // called when area power state changes
 

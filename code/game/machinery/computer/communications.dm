@@ -93,6 +93,12 @@
 		if("setmsg2")
 			stat_msg2 = input("Line 2", "Enter Message Text", stat_msg2) as text|null
 			src.updateDialog()
+		if("toggle-redalert")
+			var/area/CurArea = get_area(src)
+			CurArea.redalert = !CurArea.redalert
+			for(var/area/ToggleAlert in world)
+				if (ToggleAlert.applyalertstatus && ToggleAlert.type != /area)
+					ToggleAlert.redalert = CurArea.redalert
 
 		// AI interface
 		if("ai-main")
@@ -204,6 +210,11 @@
 				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=logout'>Log Out</A> \]"
 				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=call-prison'>Send Prison Shutle</A> \]"
 				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=nolockdown'>Disable Lockdown</A> \]"
+				var/area/CurArea = get_area(src)
+				if (CurArea.redalert)
+					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=toggle-redalert'>Cancel Red Alert</A> \]"
+				else
+					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=toggle-redalert'>Declare Red Alert</A> \]"
 				if(emergency_shuttle.location==0)
 					if (emergency_shuttle.online)
 						dat += "<BR>\[ <A HREF='?src=\ref[src];operation=cancelshuttle'>Cancel Shuttle Call</A> \]"
@@ -264,6 +275,11 @@
 			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=call-prison'>Send Prison Shutle</A> \]"
 			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=ai-messagelist'>Message List</A> \]"
 			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=nolockdown'>Disable Lockdown</A> \]"
+			var/area/CurArea = get_area(src)
+			if (CurArea.redalert)
+				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=toggle-redalert'>Cancel Red Alert</A> \]"
+			else
+				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=toggle-redalert'>Declare Red Alert</A> \]"
 			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=ai-status'>Set Status Display</A> \]"
 		if(STATE_CALLSHUTTLE)
 			dat += "Are you sure you want to call the shuttle? \[ <A HREF='?src=\ref[src];operation=ai-callshuttle2'>OK</A> | <A HREF='?src=\ref[src];operation=ai-main'>Cancel</A> \]"

@@ -25,6 +25,9 @@
 	mouse_opacity = 0
 	var/lightswitch = 1
 
+	var/redalert = 0
+	var/applyalertstatus = 1
+
 	var/eject = null
 
 	var/requires_power = 1
@@ -57,6 +60,7 @@
 /area/admin
 	name = "Admin room"
 	icon_state = "start"
+	applyalertstatus = 0
 
 
 
@@ -67,6 +71,7 @@
 	requires_power = 0
 	luminosity = 1
 	ul_Lighting = 0
+	applyalertstatus = 0
 
 /area/shuttle/arrival
 	name = "Arrival Shuttle"
@@ -108,6 +113,8 @@
 
 // === end remove
 
+/area/prison
+	applyalertstatus = 0
 
 /area/prison/arrival_airlock
 	name = "Prison Station Airlock"
@@ -193,6 +200,7 @@
 	name = "Centcom"
 	icon_state = "purple"
 	requires_power = 0
+	applyalertstatus = 0
 
 /area/atmos
  	name = "Atmospherics"
@@ -438,12 +446,16 @@
 	name = "AI Satellite Teleporter Room"
 	icon_state = "teleporter"
 	music = "signal"
+	applyalertstatus = 0
 
 
 /area/tdome
 	name = "Thunderdome"
 	icon_state = "medbay"
 	requires_power = 0
+
+/area/tdome
+	applyalertstatus = 0
 
 /area/tdome/tdome1
 	name = "Thunderdome (Team 1)"
@@ -669,6 +681,7 @@
 /area/derelict
 	name = "Derelict Station"
 	icon_state = "storage"
+	applyalertstatus = 0
 
 /area/derelict/hallway/primary
 	name = "Derelict Primary Hallway"
@@ -763,23 +776,29 @@
 /area/turret_protected/aisat
 	name = "AI Satellite"
 	icon_state = "ai"
+	applyalertstatus = 0
 
 /area/turret_protected/aisat_interior
 	name = "AI Satellite"
 	icon_state = "ai"
+	applyalertstatus = 0
 
 /area/turret_protected/AIsatextFP
 	name = "AI Sat Ext"
 	icon_state = "storage"
+	applyalertstatus = 0
 
 /area/turret_protected/AIsatextFS
 	name = "AI Sat Ext"
 	icon_state = "storage"
+	applyalertstatus = 0
 
 /area/turret_protected/AIsatextAS
 	name = "AI Sat Ext"
 	icon_state = "storage"
+	applyalertstatus = 0
 
 /area/turret_protected/AIsatextAP
 	name = "AI Sat Ext"
 	icon_state = "storage"
+	applyalertstatus = 0

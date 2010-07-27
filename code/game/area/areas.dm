@@ -155,7 +155,6 @@
 
 /area/proc/power_change()
 
-
 	for(var/area/RA in related)
 		for(var/obj/machinery/M in RA)	// for each machine in the area
 			M.power_change()				// reverify power status (to update icons etc.)

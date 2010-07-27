@@ -9,7 +9,7 @@
 	access_tox_storage = 8
 	access_medlab = 9
 	access_engine = 10
-	access_engine_equip= 11
+	access_engine_equip = 11
 	access_maint_tunnels = 12
 	access_external_airlocks = 13
 	access_emergency_storage = 14
@@ -125,7 +125,7 @@
 		if("Atmospheric Technician")
 			return list(access_atmospherics, access_maint_tunnels, access_emergency_storage,access_tech_storage,access_external_airlocks)
 		if("Barman")
-			return list(access_bar, access_maint_tunnels)
+			return list(access_bar, access_maint_tunnels, access_kitchen)
 		if("Chemist")
 			return list(access_medical, access_chemistry, access_maint_tunnels)
 		if("Janitor")

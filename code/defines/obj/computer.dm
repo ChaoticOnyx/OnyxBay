@@ -30,7 +30,7 @@
 	name = "arcade machine"
 	icon = 'computer.dmi'
 	icon_state = "arcade"
-	var/enemy_name = "Space Villian"
+	var/enemy_name = "Space Villain"
 	var/temp = "Winners Don't Use Spacedrugs" //Temporary message, for attack messages, etc
 	var/player_hp = 30 //Player health/attack points
 	var/player_mp = 10
@@ -50,6 +50,16 @@
 	name = "Alert Computer"
 	icon_state = "atmos"
 	var/alarms = list("Fire"=list(), "Atmosphere"=list())
+
+/obj/machinery/computer/atmosphere/mixer
+	//Controller for a single gas mixer.
+	icon_state = "atmos"
+	name = "Gas Mixer Control Computer"
+	var/frequency = "1437"
+	var/list/rates = list(50, 50)
+	var/obj/machinery/atmospherics/mixer/mixer = null
+	var/targettag = ""
+
 
 /obj/machinery/computer/general_alert
 	name = "General Alert Computer"
