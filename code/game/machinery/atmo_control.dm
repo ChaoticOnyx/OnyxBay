@@ -502,6 +502,8 @@ Rate: [volume_rate] L/sec<BR>"}
 			minor_alarms -= zone
 			minor_alarms += zone
 
+		updateDialog()
+
 	proc
 		set_frequency(new_frequency)
 			radio_controller.remove_object(src, "[receive_frequency]")
@@ -510,11 +512,18 @@ Rate: [volume_rate] L/sec<BR>"}
 
 
 	attack_hand(mob/user)
+		if(..())
+			return
+
 		user << browse(return_text(),"window=computer")
 		user.machine = src
 		onclose(user, "computer")
 
 	process()
+
+		if(stat & (NOPOWER|BROKEN))
+			return //Seriously?  You guys forgot _this_?
+
 		if(priority_alarms.len)
 			icon_state = "alert:2"
 
