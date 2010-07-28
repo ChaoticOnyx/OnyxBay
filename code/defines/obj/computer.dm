@@ -53,7 +53,7 @@
 
 /obj/machinery/computer/atmosphere/mixer
 	//Controller for a single gas mixer.
-	icon_state = "atmos"
+	icon_state = "mixer"
 	name = "Gas Mixer Control Computer"
 	var/frequency = "1437"
 	var/list/rates = list(50, 50)
