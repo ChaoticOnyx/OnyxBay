@@ -328,7 +328,7 @@
 	call_shuttle_proc(src)
 
 	// hack to display shuttle timer
-	if(emergency_shuttle.online)
+	if(main_shuttle.online)
 		var/obj/machinery/computer/communications/C = locate() in world
 		if(C)
 			C.post_status("shuttle")
@@ -336,7 +336,7 @@
 	return
 
 /proc/call_prison_shuttle(var/mob/usr)
-	if ((!( ticker ) || emergency_shuttle.location == 1))
+	if ((!( ticker ) || main_shuttle.location == 1))
 		return
 	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "sandbox")
 		usr << "Under directive 7-10, [station_name()] is quarantined until further notice."
@@ -387,7 +387,7 @@
 		PS.allowedtocall = !(PS.allowedtocall)
 
 /proc/call_shuttle_proc(var/mob/user)
-	if ((!( ticker ) || emergency_shuttle.location))
+	if ((!( ticker ) || main_shuttle.location))
 		return
 
 	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "sandbox")
@@ -397,7 +397,11 @@
 		user << "Centcom will not allow the shuttle to be called."
 		return
 
-	emergency_shuttle.incall()
+
+	for(var/datum/shuttle/s in shuttles)
+		s.incall()
+
+//	emergency_shuttle.incall()
 	world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.</B>"
 
 	return

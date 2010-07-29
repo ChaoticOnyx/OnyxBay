@@ -6,13 +6,22 @@
 #define SHUTTLEARRIVETIME 600		// 10 minutes = 600 seconds
 #define SHUTTLELEAVETIME 180		// 3 minutes = 180 seconds
 
-var/global/datum/shuttle_controller/emergency_shuttle/emergency_shuttle
+var/global/datum/shuttle/main_shuttle
 
-datum/shuttle_controller
+var/global/list/datum/shuttle/shuttles = list()
+
+
+
+datum/shuttle
 	var
+		name = "Shuttle"
 		location = 0 //0 = somewhere far away, 1 = at SS13, 2 = returned from SS13
 		online = 0
 		direction = 1 //-1 = going back to central command, 1 = going back to SS13
+
+		area
+			centcom
+			station
 
 		endtime			// timeofday that shuttle arrives
 		//timeleft = 360 //600
@@ -62,9 +71,7 @@ datum/shuttle_controller
 		endtime = world.timeofday + (SHUTTLEARRIVETIME*10 - ticksleft)
 		return
 
-	proc/process()
-
-	emergency_shuttle
+	proc
 		process()
 			if(!online) return
 			var/timeleft = timeleft()
@@ -81,8 +88,9 @@ datum/shuttle_controller
 
 					else if(timeleft <= 0)
 						location = 1
-						var/area/start_location = locate(/area/shuttle/escape/centcom)
-						var/area/end_location = locate(/area/shuttle/escape/station)
+
+						var/area/start_location = locate(centcom)
+						var/area/end_location = locate(station)
 
 						var/list/dstturfs = list()
 						var/throwy = world.maxy
@@ -120,8 +128,8 @@ datum/shuttle_controller
 
 					else
 						location = 2
-						var/area/start_location = locate(/area/shuttle/escape/station)
-						var/area/end_location = locate(/area/shuttle/escape/centcom)
+						var/area/start_location = locate(station)
+						var/area/end_location = locate(centcom)
 
 						start_location.move_contents_to(end_location)
 						online = 0

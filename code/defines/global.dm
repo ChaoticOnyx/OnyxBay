@@ -83,7 +83,6 @@ var
 	list/admin_log = list (  )
 	list/lastsignalers = list(	)	//keeps last 100 signals here in format: "[src] used \ref[src] @ location [src.loc]: [freq]/[code]"
 	list/admins = list(  )
-	list/shuttles = list(  )
 	list/reg_dna = list(  )
 //	list/traitobj = list(  )
 

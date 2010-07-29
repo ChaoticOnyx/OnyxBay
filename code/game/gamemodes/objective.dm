@@ -62,14 +62,14 @@ datum
 
 				if(!owner.current || owner.current.stat ==2)
 					return 0
+				for(var/datum/shuttle/s in shuttles)
+					var/area/shuttle = locate(s.centcom)
 
-				var/area/shuttle = locate(/area/shuttle/escape/centcom)
-
-				for(var/mob/living/player in world)
-					if (player.mind && (player.mind != owner))
-						if (player.stat != 2) //they're not dead
-							if (get_turf(player) in shuttle)
-								return 0
+					for(var/mob/living/player in world)
+						if (player.mind && (player.mind != owner))
+							if (player.stat != 2) //they're not dead
+								if (get_turf(player) in shuttle)
+									return 0
 
 				return 1
 
@@ -92,10 +92,11 @@ datum
 
 				var/area/check_area = location.loc
 
-				if(istype(check_area, /area/shuttle/escape/centcom))
-					return 1
-				else
-					return 0
+				for(var/datum/shuttle/s in shuttles)
+					if(istype(check_area, s.centcom))
+						return 1
+
+				return 0
 
 		survive
 			explanation_text = "Stay alive until the end"

@@ -21,7 +21,10 @@ datum/controller/game_controller
 
 		setupgenetics()
 
-		emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
+
+	// Handled by datum declerations now in the shuttle controller file
+
+	//	emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
 
 		if(!ticker)
 			ticker = new /datum/controller/gameticker()
