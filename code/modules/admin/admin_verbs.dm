@@ -476,6 +476,7 @@
 
 		if(src.holder.level > 1)
 			src.verbs += /client/proc/stealth
+			src.verbs += /client/proc/admin_invis
 
 		if(( src.holder.state == 2 ) || ( src.holder.level > 3 ))
 			src.verbs += /client/proc/secrets
@@ -699,6 +700,20 @@
 		src.fakekey = null
 	log_admin("[key_name(usr)] has turned stealth mode [src.stealth ? "ON" : "OFF"]")
 	message_admins("[key_name_admin(usr)] has turned stealth mode [src.stealth ? "ON" : "OFF"]", 1)
+
+/client/proc/admin_invis()
+	set category = "Admin"
+	set name = "Invisibility"
+	if(!src.authenticated || !src.holder)
+		src << "Only administrators may use this command."
+		return
+	src.admin_invis =! src.admin_invis
+	if(src.mob)
+		var/mob/m = src.mob//probably don't need this cast, but I'm too lazy to check if /client.mob is of type /mob or not
+		m.update_clothing()
+	log_admin("[key_name(usr)] has turned their invisibility [src.admin_invis ? "ON" : "OFF"]")
+	message_admins("[key_name_admin(usr)] has turned their invisibility [src.admin_invis ? "ON" : "OFF"]", 1)
+
 
 
 /client/proc/warn(var/mob/M in world)

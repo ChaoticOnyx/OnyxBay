@@ -255,6 +255,11 @@
 	for(var/i in src.overlays)
 		src.overlays -= i
 
+	if(client && client.admin_invis)
+		src.invisibility = 100
+	else
+		src.invisibility = 0
+
 	if(src.buckled)
 		if(istype(src.buckled, /obj/stool/bed))
 			src.lying = 1
