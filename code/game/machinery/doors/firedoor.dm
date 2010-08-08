@@ -34,7 +34,7 @@
 				src.density = 0
 				update_icon()
 
-				src.sd_SetOpacity(0)
+				src.ul_SetOpacity(0)
 				src.operating = 0
 				return
 		else //close it up again
@@ -46,7 +46,7 @@
 				sleep(15)
 				update_icon()
 
-				src.sd_SetOpacity(1)
+				src.ul_SetOpacity(1)
 				src.operating = 0
 				return
 	return

@@ -22,6 +22,7 @@
 	var/stealth = 0
 	var/fakekey = null
 	var/warned = 0
+	var/admin_invis = 0
 
 	authenticate = 0
 	// comment out the line below when debugging locally to enable the options & messages menu

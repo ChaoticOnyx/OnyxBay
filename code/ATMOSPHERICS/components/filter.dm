@@ -32,6 +32,7 @@ Filter types:
 2: Nitrogen: Nitrogen and Sleeping Agent
 3: Carbon Dioxide: Carbon Dioxide ONLY
 4: All but plasma and Agent B
+5: Plasma and Oxygen Agent B
 */
 
 	var/frequency = 0
@@ -158,6 +159,16 @@ Filter types:
 						if(istype(trace_gas, /datum/gas/sleeping_agent))
 							removed.trace_gases -= trace_gas
 							filtered_out.trace_gases += trace_gas
+
+				if(5) //Plasma + OAB
+					filtered_out.toxins = removed.toxins
+					removed.toxins = 0
+
+					if(removed.trace_gases.len>0)
+						for(var/datum/gas/trace_gas in removed.trace_gases)
+							if(istype(trace_gas, /datum/gas/oxygen_agent_b))
+								removed.trace_gases -= trace_gas
+								filtered_out.trace_gases += trace_gas
 
 
 			air_out1.merge(filtered_out)

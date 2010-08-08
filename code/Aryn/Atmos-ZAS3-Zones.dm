@@ -121,8 +121,8 @@ zone
 		if(!ticker) //If this zone was created at startup, add gases.
 			oxygen = MOLES_O2STANDARD * members.len
 			nitrogen = MOLES_N2STANDARD * members.len
-			oxygen_archive = MOLES_O2STANDARD * members.len
-			nitrogen_archive = MOLES_N2STANDARD * members.len
+			oxygen_archive = oxygen
+			nitrogen_archive = nitrogen
 		else if(soxy > 0 || snitro > 0 || sco2 > 0)
 			oxygen = soxy * members.len
 			nitrogen = snitro * members.len

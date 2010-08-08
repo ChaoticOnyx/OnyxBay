@@ -15,6 +15,7 @@ obj/machinery/air_sensor
 	// 2 for temperature
 	// 4 for oxygen concentration
 	// 8 for toxins concentration
+	// 16 for n2 concentration
 
 	var/datum/radio_frequency/radio_connection
 
@@ -35,12 +36,14 @@ obj/machinery/air_sensor
 			if(output&2)
 				signal.data["temperature"] = round(air_sample.temperature,0.1)
 
-			if(output&12)
+			if(output&28)
 				var/total_moles = air_sample.total_moles()
 				if(output&4)
 					signal.data["oxygen"] = round(100*air_sample.oxygen/total_moles)
 				if(output&8)
 					signal.data["toxins"] = round(100*air_sample.toxins/total_moles)
+				if(output&16)
+					signal.data["n2"] = round(100*air_sample.nitrogen/total_moles)
 
 			radio_connection.post_signal(src, signal)
 
@@ -475,8 +478,22 @@ Rate: [volume_rate] L/sec<BR>"}
 
 		var/zone = signal.data["zone"]
 		var/severity = signal.data["alert"]
+		var/info
+		switch (signal.data["subtype"])
+			if (1)
+				info = "Air Pressure Warning"
+			if (2)
+				info = "Oxygen Level Warning"
+			if (3)
+				info = "Temperature Warning"
+			if (4)
+				info = "Carbon Dioxide Warning"
+			if (5)
+				info = "Plasma Leak"
 
 		if(!zone || !severity) return
+
+		zone = "[zone] - [info]"
 
 		if(severity=="severe")
 			priority_alarms -= zone
@@ -484,6 +501,8 @@ Rate: [volume_rate] L/sec<BR>"}
 		else
 			minor_alarms -= zone
 			minor_alarms += zone
+
+		updateDialog()
 
 	proc
 		set_frequency(new_frequency)
@@ -493,11 +512,18 @@ Rate: [volume_rate] L/sec<BR>"}
 
 
 	attack_hand(mob/user)
+		if(..())
+			return
+
 		user << browse(return_text(),"window=computer")
 		user.machine = src
 		onclose(user, "computer")
 
 	process()
+
+		if(stat & (NOPOWER|BROKEN))
+			return //Seriously?  You guys forgot _this_?
+
 		if(priority_alarms.len)
 			icon_state = "alert:2"
 

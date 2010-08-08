@@ -35,22 +35,17 @@
 
 		if(data)
 			if(data["pressure"])
-				sensor_part += "[data["pressure"]] kPa"
-				if(data["temperature"])
-					sensor_part += ", [data["temperature"]] K"
-				sensor_part += "<BR>"
-			else if(data["temperature"])
+				sensor_part += "[data["pressure"]] kPa<BR>"
+			if(data["temperature"])
 				sensor_part += "[data["temperature"]] K<BR>"
-
-			if(data["oxygen"]||data["toxins"])
-				sensor_part += "<B>Gas Composition</B>: "
-				if(data["oxygen"])
-					sensor_part += "[data["oxygen"]] %O2"
-					if(data["toxins"])
-						sensor_part += ", [data["toxins"]] %TX"
-					sensor_part += "<BR>"
-				else if(data["toxins"])
-					sensor_part += "[data["toxins"]] %TX<BR>"
+			if(data["oxygen"]||data["toxins"]||data["n2"])
+				sensor_part += "<B>Gas Composition</B>: <BR>"
+				if(data["oxygen"] != null)
+					sensor_part += "&nbsp;&nbsp;[data["oxygen"]] %O2 <BR>"
+				if(data["toxins"] != null)
+					sensor_part += "&nbsp;&nbsp;[data["toxins"]] %TX <BR>"
+				if(data["n2"] != null)
+					sensor_part += "&nbsp;&nbsp;[data["n2"]] %N2 <BR>"
 
 		else
 			sensor_part = "<FONT color='red'>NO DATA</FONT><BR>"

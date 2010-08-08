@@ -15,6 +15,7 @@
 
 	var/turf/location = src.loc
 	var/safe = 2
+	var/alert_info = 0
 
 	if(stat & (NOPOWER|BROKEN))
 		icon_state = "alarmp"
@@ -31,43 +32,46 @@
 
 	if((environment_pressure < ONE_ATMOSPHERE*0.90) || (environment_pressure > ONE_ATMOSPHERE*1.10))
 		//Pressure sensor
+		alert_info = 1
 		if((environment_pressure < ONE_ATMOSPHERE*0.80) || (environment_pressure > ONE_ATMOSPHERE*1.20))
 			safe = 0
 		else safe = 1
 
 	if(safe && ((environment.oxygen < MOLES_O2STANDARD*0.90) || (environment.oxygen > MOLES_O2STANDARD*1.10)))
 		//Oxygen Levels Sensor
+		alert_info = 2
 		if(environment.oxygen < MOLES_O2STANDARD*0.80)
 			safe = 0
 		else safe = 1
 
 	if(safe && ((environment.temperature < (T20C-10)) || (environment.temperature > (T20C+10))))
-		//Oxygen Levels Sensor
+		//Temperature Sensor
+		alert_info = 3
 		if((environment.temperature < (T20C-20)) || (environment.temperature > (T20C+10)))
 			safe = 0
 		else safe = 1
 
 	if(safe && (environment.carbon_dioxide > 0.05))
 		//CO2 Levels Sensor
+		alert_info = 4
 		if(environment.carbon_dioxide > 0.1)
 			safe = 0
 		else safe = 1
 
 	if(safe && (environment.toxins > 1))
 		//Plasma Levels Sensor
-		if(environment.toxins > 2)
-			safe = 0
-		else safe = 1
+		alert_info = 5
+		safe = 0
 
 	src.icon_state = "alarm[!safe]"
 
 	if(safe == 2) src.skipprocess = 1
 	else if(alarm_frequency)
-		post_alert(safe)
+		post_alert(safe, alert_info)
 
 	return
 
-/obj/machinery/alarm/proc/post_alert(alert_level)
+/obj/machinery/alarm/proc/post_alert(alert_level, alert_type)
 
 	var/datum/radio_frequency/frequency = radio_controller.return_frequency(alarm_frequency)
 
@@ -78,6 +82,7 @@
 	alert_signal.transmission_method = 1
 	alert_signal.data["zone"] = alarm_zone
 	alert_signal.data["type"] = "Atmospheric"
+	alert_signal.data["subtype"] = alert_type
 
 	if(alert_level==0)
 		alert_signal.data["alert"] = "severe"
