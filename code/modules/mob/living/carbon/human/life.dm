@@ -222,8 +222,8 @@
 				//First, check for air from internal atmosphere (using an air tank and mask generally)
 				breath = get_breath_from_internal(BREATH_VOLUME)
 
-				//No breath from internal atmosphere so get breath from location
-				if(!breath)
+				//No breath from internal atmosphere so suffocate if wearing them, otherwise try and breathe external atmosphere
+				if(!breath && !internal)
 					if(istype(loc, /obj/))
 						var/obj/location_as_object = loc
 						breath = location_as_object.handle_internal_lifeform(src, BREATH_VOLUME)

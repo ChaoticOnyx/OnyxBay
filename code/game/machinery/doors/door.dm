@@ -1,5 +1,5 @@
 /obj/machinery/door/Bumped(atom/AM)
-	if(p_open || operating) return
+	if(p_open || operating || !density) return
 	if(ismob(AM))
 		var/mob/M = AM
 		if(world.timeofday - AM.last_bumped <= 5) return

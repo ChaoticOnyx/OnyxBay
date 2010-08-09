@@ -122,7 +122,7 @@
 </html>
 "}
 	user << browse_rsc('MixerComputer.png')
-	user << browse(dat, "window=mixer;size=300x425")
+	user << browse(dat, "window=mixer;size=300x435")
 	onclose(user, "mixer")
 
 /obj/machinery/computer/atmosphere/mixer/proc/post_status(var/command, var/data1, var/data2)

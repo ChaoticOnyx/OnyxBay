@@ -2,7 +2,7 @@
 #define THERMAL_RELEASE_MODIFIER 50		//Higher == less heat released during reaction
 #define PLASMA_RELEASE_MODIFIER 750		//Higher == less plasma released by reaction
 #define OXYGEN_RELEASE_MODIFIER 1500	//Higher == less oxygen released at high temperature/power
-#define REACTION_POWER_MODIFIER 2		//Higher == more overall power
+#define REACTION_POWER_MODIFIER 1.1		//Higher == more overall power
 
 /obj/machinery/engine/supermatter
 	name = "Supermatter"
@@ -54,7 +54,7 @@
 	//Since the core is effectively "cold"
 
 	//Also keep in mind we are only adding this temperature to (efficiency)% of the one tile the rock
-	//is on.  An increase of 4*C here results in an increase of 1*C / (#tilesincore) overall.
+	//is on.  An increase of 4*C @ 25% efficiency here results in an increase of 1*C / (#tilesincore) overall.
 	removed.temperature += max((device_energy / THERMAL_RELEASE_MODIFIER), 0)
 
 	//Calculate how much gas to release
