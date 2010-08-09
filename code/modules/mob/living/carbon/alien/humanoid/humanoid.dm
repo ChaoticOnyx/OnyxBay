@@ -564,7 +564,9 @@ to clean it up, or just beat the shit out of it (which takes ages).
 			shielded = 2
 			break
 
-	if (shielded == 2 || src.alien_invis)
+	if(client && client.admin_invis)
+		src.invisibility = 100
+	else if (shielded == 2 || src.alien_invis)
 		src.invisibility = 2
 	else
 		src.invisibility = 0

@@ -1106,7 +1106,9 @@
 			shielded = 2
 			break
 
-	if (shielded == 2)
+	if(client && client.admin_invis)
+		src.invisibility = 100
+	else if (shielded == 2)
 		src.invisibility = 2
 	else
 		src.invisibility = 0
