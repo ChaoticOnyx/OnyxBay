@@ -11,6 +11,8 @@ var/stop_zones = 0
 
 turf/var/zone/zone
 
+turf/simulated/var/disable_connections = 0
+
 zone
 	var
 		list/members
@@ -47,6 +49,8 @@ zone
 		list/edges = list()
 
 		needs_rebuild = 0
+
+		disable_connections = 0
 
 	proc
 
@@ -90,7 +94,7 @@ zone
 		starting_tile = start
 
 		if(!start.CanPass(null,start,0,0)) //Bug here.
-			world << "Warning: Zone created on [start] at [start.x],[start.y],[start.z]."
+			world << "Warning: Zone created on [start] (airtight turf) at [start.x],[start.y],[start.z]."
 			world << "A gray overlay has been applied to show the location."
 			start.overlays += 'icons/Testing/turf_analysis.dmi'
 			del src
@@ -116,8 +120,10 @@ zone
 			del src
 			return 0
 
-		for(var/turf/T in members)
+		for(var/turf/simulated/T in members)
 			T.zone = src
+			if(T.disable_connections)
+				disable_connections = 1
 		if(!ticker) //If this zone was created at startup, add gases.
 			oxygen = MOLES_O2STANDARD * members.len
 			nitrogen = MOLES_N2STANDARD * members.len
@@ -138,6 +144,7 @@ zone
 		while(1)
 			sleep(zone_update_delay)
 			if(stop_zones) continue
+			if(!members.len) del src
 
 			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2)
 				rebuild_cache()
@@ -167,35 +174,36 @@ zone
 			//			if(prob(25))
 			//				W.ex_act(pick(2,3))
 			//				W.visible_message("\red A window bursts from the pressure!",1,"\red You hear glass breaking.")
-			for(var/zone/Z in direct_connections)
-				if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2)
-					Merge(Z)
-			for(var/zone/Z in connections)
+			if(!disable_connections)
+				for(var/zone/Z in direct_connections)
+					if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2)
+						Merge(Z)
+				for(var/zone/Z in connections)
 
-				var/list/borders = connections[Z] //Get the list of border tiles.
+					var/list/borders = connections[Z] //Get the list of border tiles.
 
-				if(!istype(borders,/list))
-					connections -= Z
-					continue
-				var/percent_flow = max(90,FLOW_PERCENT*borders.len) //This is the percentage of gas that will flow.
+					if(!istype(borders,/list))
+						connections -= Z
+						continue
+					var/percent_flow = max(90,FLOW_PERCENT*borders.len) //This is the percentage of gas that will flow.
 
-				Airflow(src,Z,pressure-Z.pressure)
+					Airflow(src,Z,pressure-Z.pressure)
 
 
-				//Magic Happens Here
-				var
-					oxy_avg = (oxygen + Z.oxygen) / (members.len + Z.members.len)
-					nit_avg = (nitrogen + Z.nitrogen) / (members.len + Z.members.len)
-					co2_avg = (co2 + Z.co2) / (members.len + Z.members.len)
+					//Magic Happens Here
+					var
+						oxy_avg = (oxygen + Z.oxygen) / (members.len + Z.members.len)
+						nit_avg = (nitrogen + Z.nitrogen) / (members.len + Z.members.len)
+						co2_avg = (co2 + Z.co2) / (members.len + Z.members.len)
 
-				oxygen( (oxygen() - oxy_avg) * (1-percent_flow/100) + oxy_avg )
-				nitrogen( (nitrogen() - nit_avg) * (1-percent_flow/100) + nit_avg )
-				co2( (co2() - co2_avg) * (1-percent_flow/100) + co2_avg )
+					oxygen( (oxygen() - oxy_avg) * (1-percent_flow/100) + oxy_avg )
+					nitrogen( (nitrogen() - nit_avg) * (1-percent_flow/100) + nit_avg )
+					co2( (co2() - co2_avg) * (1-percent_flow/100) + co2_avg )
 
-				Z.oxygen( (Z.oxygen() - oxy_avg) * (1-percent_flow/100) + oxy_avg )
-				Z.nitrogen( (Z.nitrogen() - nit_avg) * (1-percent_flow/100) + nit_avg )
-				Z.co2( (Z.co2() - co2_avg) * (1-percent_flow/100) + co2_avg )
-					//End Magic
+					Z.oxygen( (Z.oxygen() - oxy_avg) * (1-percent_flow/100) + oxy_avg )
+					Z.nitrogen( (Z.nitrogen() - nit_avg) * (1-percent_flow/100) + nit_avg )
+					Z.co2( (Z.co2() - co2_avg) * (1-percent_flow/100) + co2_avg )
+						//End Magic
 
 	rebuild_cache()
 		if(!members.len) del src
@@ -344,6 +352,7 @@ zone
 
 	Split(turf/X,turf/Y)
 		//world << "Split: Check procedure passed."
+		if(disable_connections) return
 		if(stop_zones) return
 		var/list
 			old_members = list()
@@ -381,6 +390,7 @@ zone
 
 	Merge(zone/Z)
 		if(stop_zones) return
+		if(disable_connections) return
 		//world << "Merging..."
 		oxygen += Z.oxygen
 		nitrogen += Z.nitrogen
@@ -551,8 +561,10 @@ turf/proc/GetUnblockedCardinals()
 //	if(locate(/obj/machinery/door) in east) . += east
 //	if(locate(/obj/machinery/door) in west) . += west
 
-/*turf/verb/ZoneInfo()
+turf/verb/ZoneInfo()
 	set src in view()
+	if(usr.ckey != "iaryni")
+		usr << "This verb is restricted to Aryn for purposes of debugging the atmospherics system."
 	world << "O2: [zone.oxygen()]/tile ([zone.oxygen])"
 	world << "N2: [zone.nitrogen()]/tile ([zone.nitrogen])"
 	world << "CO2: [zone.co2()]/tile ([zone.co2])"
@@ -573,7 +585,7 @@ turf/proc/GetUnblockedCardinals()
 			else
 				world << "Z[zones.Find(Z)] - Failure"
 		else
-			world << "[Z] - N/A"*/
+			world << "[Z] - N/A"
 
 turf/proc
 	HasDoor(window)

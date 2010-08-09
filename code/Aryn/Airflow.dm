@@ -1,9 +1,9 @@
 vs_control/var
 	AF_TINY_MOVEMENT_THRESHOLD = 15 //% difference to move tiny items.
 	AF_SMALL_MOVEMENT_THRESHOLD = 25 //% difference to move small items.
-	AF_NORMAL_MOVEMENT_THRESHOLD = 30 //% difference to move normal items.
-	AF_LARGE_MOVEMENT_THRESHOLD = 40 //% difference to move large and huge items.
-	AF_MOVEMENT_THRESHOLD = 45 //% difference to move dense crap and mobs.
+	AF_NORMAL_MOVEMENT_THRESHOLD = 40 //% difference to move normal items.
+	AF_LARGE_MOVEMENT_THRESHOLD = 50 //% difference to move large and huge items.
+	AF_MOVEMENT_THRESHOLD = 65 //% difference to move dense crap and mobs.
 
 	AF_PERCENT_OF = ONE_ATMOSPHERE
 
