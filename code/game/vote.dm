@@ -158,9 +158,6 @@
 
 /mob/verb/vote()
 	set name = "Vote"
-	if(!usr.client.authenticated)
-		usr << "You're not authenticated, you can't vote."
-		return
 	usr.client.showvote = 1
 
 
@@ -313,7 +310,7 @@
 
 		for(var/mob/CM in world)
 			if(CM.client)
-				if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2) || !CM.client.authenticated)
+				if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2))
 					CM.client.vote = "none"
 				else
 					CM.client.vote = "default"

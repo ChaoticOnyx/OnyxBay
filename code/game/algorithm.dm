@@ -15,8 +15,6 @@
 
 	invite_loadbanfile()
 
-	goon_loadfile()
-	beta_tester_loadfile()
 	LoadBans()
 
 	spawn(30)
