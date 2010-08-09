@@ -65,6 +65,9 @@ var/global/datum/controller/gameticker/ticker
 
 		return 0
 
+	//start supply ticker
+	spawn(SUPPLY_POINTDELAY) supply_ticker()
+
 	//Distribute jobs
 	distribute_jobs()
 

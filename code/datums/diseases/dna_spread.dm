@@ -11,6 +11,8 @@
 
 /datum/disease/dnaspread/stage_act()
 	..()
+	if (!affected_mob.stat != 2)
+		return
 	switch(stage)
 		if(2 || 3) //Pretend to be a cold and give time to spread.
 			if(prob(8))

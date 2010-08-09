@@ -45,6 +45,8 @@
 			if(istype(loc,/mob/living/carbon))
 				var/mob/living/carbon/location = loc
 				if(location.internal == src)
+					location.internal = null
+					location.internals.icon_state = "internal0"
 					usr << "\blue You close the tank release valve."
 				else
 					if(location.wear_mask && (location.wear_mask.flags & MASKINTERNALS))
