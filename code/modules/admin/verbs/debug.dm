@@ -1,7 +1,7 @@
 /client/proc/Debug2()
 	set category = "Debug"
 	set name = "Debug-Game"
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 	if(src.holder.rank == "Coder")
@@ -21,7 +21,7 @@
 /client/proc/callproc()
 	set category = "Debug"
 	set name = "Advanced ProcCall"
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 	var/target = null

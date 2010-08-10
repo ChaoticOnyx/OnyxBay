@@ -1,7 +1,7 @@
 /client/proc/Jump(var/area/A in world)
 	set desc = "Area to jump to"
 	set category = "Special Verbs"
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 
@@ -17,7 +17,7 @@
 
 /client/proc/jumptoturf(var/turf/T in world)
 	set name = "Jump to turf"
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		usr << "Only administrators may use this command."
 		return
 	if(config.allow_admin_jump)
@@ -32,7 +32,7 @@
 	set category = "Special Verbs"
 	set name = "Jump to Mob"
 
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 
@@ -49,7 +49,7 @@
 	set category = "Special Verbs"
 	set name = "Jump to Key"
 
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 
@@ -71,7 +71,7 @@
 	set category = "Special Verbs"
 	set name = "Get Mob"
 	set desc = "Mob to teleport"
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 	if(config.allow_admin_jump)
@@ -84,7 +84,7 @@
 /client/proc/sendmob(var/mob/M in world, var/area/A in world)
 	set category = "Special Verbs"
 	set name = "Send Mob"
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 	if(config.allow_admin_jump)

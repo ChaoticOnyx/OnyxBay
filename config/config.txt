@@ -55,9 +55,6 @@ VOTE_PERIOD 60
 # allow AI job
 ALLOW_AI
 
-# goon authentication
-#AUTHENTICATION
-
 # disable abandon mob
 NORESPAWN
 

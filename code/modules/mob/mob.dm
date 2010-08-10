@@ -1666,10 +1666,6 @@
 	if (join_motd)
 		src << "<div class=\"motd\">[join_motd]</div>"
 
-	src.authorize()
-	src.goonauth()
-	src.beta_tester_auth()
-
 	src.update_world()
 
 //new admin bit - Nannek
@@ -1679,7 +1675,7 @@
 		src.holder.rank = admins[src.ckey]
 		update_admins(admins[src.ckey])
 
-	if (ticker && ticker.mode && ticker.mode.name =="sandbox" && src.authenticated)
+	if (ticker && ticker.mode && ticker.mode.name =="sandbox")
 		mob.CanBuild()
 		if(src.holder  && (src.holder.level >= 3))
 			src.verbs += /mob/proc/Delete
