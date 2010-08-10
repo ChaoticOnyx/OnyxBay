@@ -140,6 +140,7 @@
 				if(src.shock_wire == href_list["wire"])
 					src.shocked = !src.shocked
 					src.shock(usr)
+				src.wires[href_list["wire"]] = !src.wires[href_list["wire"]]
 
 	if (href_list["temp"])
 		src.temp = null
