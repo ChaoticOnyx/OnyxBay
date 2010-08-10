@@ -7,7 +7,7 @@
 //	set desc="it spawns grilles okay fuck if I know"
 //	if(Debug2)
 //		//	All admins should be authenticated, but... what if?
-//		if(!src.authenticated || !src.holder)
+//		if(!src.holder)
 //			src << "Only administrators may use this command."
 //			return
 //
