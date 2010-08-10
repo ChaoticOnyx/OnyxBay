@@ -93,7 +93,7 @@ zone
 
 		starting_tile = start
 
-		if(!start.CanPass(null,start,0,0)) //Bug here.
+		if(!start.CanPass(null,start,0,1)) //Bug here.
 			world << "Warning: Zone created on [start] (airtight turf) at [start.x],[start.y],[start.z]."
 			world << "A gray overlay has been applied to show the location."
 			start.overlays += 'icons/Testing/turf_analysis.dmi'
@@ -125,10 +125,14 @@ zone
 			if(T.disable_connections)
 				disable_connections = 1
 		if(!ticker) //If this zone was created at startup, add gases.
-			oxygen = MOLES_O2STANDARD * members.len
-			nitrogen = MOLES_N2STANDARD * members.len
-			oxygen_archive = oxygen
-			nitrogen_archive = nitrogen
+			if(istype(start,/turf/simulated/floor/airless) || istype(start,/turf/simulated/floor/engine/vacuum) || istype(start,/turf/simulated/floor/plating/airless))
+				oxygen = 0
+				nitrogen = 0
+			else
+				oxygen = MOLES_O2STANDARD * members.len
+				nitrogen = MOLES_N2STANDARD * members.len
+				oxygen_archive = oxygen
+				nitrogen_archive = nitrogen
 		else if(soxy > 0 || snitro > 0 || sco2 > 0)
 			oxygen = soxy * members.len
 			nitrogen = snitro * members.len
@@ -179,6 +183,7 @@ zone
 					if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2)
 						Merge(Z)
 				for(var/zone/Z in connections)
+					if(Z == src) connections -= Z
 
 					var/list/borders = connections[Z] //Get the list of border tiles.
 
@@ -204,6 +209,9 @@ zone
 					Z.nitrogen( (Z.nitrogen() - nit_avg) * (1-percent_flow/100) + nit_avg )
 					Z.co2( (Z.co2() - co2_avg) * (1-percent_flow/100) + co2_avg )
 						//End Magic
+				for(var/crap in connections) //Clean out invalid connections.
+					if(!istype(crap,/zone))
+						connections -= crap
 
 	rebuild_cache()
 		if(!members.len) del src
@@ -297,6 +305,7 @@ zone
 	Connect(turf/S,turf/T,pc)
 		if(!istype(T,/turf/simulated)) return
 		if(!T.zone) return
+		if(S.zone == T.zone) return
 		//if(!pc) world << "Connecting zones."
 		if(!(T.zone in connections) && !(src in T.zone.connections))
 			connections += T.zone
@@ -314,9 +323,9 @@ zone
 			//		if(C.zone == T.zone || C.zone == src) continue
 			//		if(C.zone in T.zone.connections || C.zone in connections) continue
 			//		Connect(S,C,pc+1)
-			//S.overlays += 'debug_connect.dmi'
+		//	S.overlays += /obj/debug_connect_obj
 			//S.overlays -= 'Zone.dmi'
-			//T.overlays += 'debug_connect.dmi'
+		//	T.overlays += /obj/debug_connect_obj
 			//T.overlays -= 'Zone.dmi'
 			if(!(S.HasDoor(1) || T.HasDoor(1)))
 				direct_connections += T.zone
@@ -337,9 +346,9 @@ zone
 			//		if(C.zone == T.zone || C.zone == src) continue
 			//		if(!(C.zone in connections)) continue
 			//		Disconnect(S,C,pc+1)
-			//S.overlays -= 'debug_connect.dmi'
+			S.overlays -= /obj/debug_connect_obj//'debug_connect.dmi'
 			//S.overlays += 'Zone.dmi'
-			//T.overlays -= 'debug_connect.dmi'
+			T.overlays -= /obj/debug_connect_obj//'debug_connect.dmi'
 			//T.overlays += 'Zone.dmi'
 			if(!(S.HasDoor(1) || T.HasDoor(1)))
 				direct_connections -= T.zone
@@ -408,6 +417,10 @@ zone
 		direct_connections -= Z
 		del Z
 
+obj/debug_connect_obj
+	icon = 'debug_connect.dmi'
+	layer = 150
+
 var/list/tmp_spaceconnections = list()
 var/list/tmp_edges = list()
 proc/FloodFill(turf/start,remove_extras)
@@ -419,12 +432,17 @@ proc/FloodFill(turf/start,remove_extras)
 	borders += start
 	while(borders.len)
 		for(var/turf/simulated/T in borders)
+			if(T.HasDoor())
+				. += T
+				borders -= T
+				tmp_edges += T
+				continue
 			var/unblocked = T.GetUnblockedCardinals()
-			var/border_added = 0
+	//		var/border_added = 0
 			for(var/turf/simulated/U in unblocked)
 				if((U in borders) || (U in .)) continue
 				borders += U
-				border_added = 1
+				//border_added = 1
 			if(!remove_extras)
 				for(var/turf/space/S in unblocked)
 					tmp_spaceconnections += T
@@ -432,9 +450,9 @@ proc/FloodFill(turf/start,remove_extras)
 			. += T
 			//T.overlays += 'Zone.dmi'
 			borders -= T
-			if(!border_added && !remove_extras)
-				for(var/turf/E in range(1,T))
-					tmp_edges += E
+			//if(!border_added && !remove_extras)
+			//	for(var/turf/E in range(1,T))
+			//		tmp_edges += E
 //proc/DoorFill(turf/start)
 //	. = list()
 //	var/list/borders = list()
@@ -469,6 +487,13 @@ turf/proc/SetCardinals()
 
 	up = get_step(src,UP)
 	down = get_step(src,DOWN)
+
+proc/GetAirCardinals(turf/T)
+	. = list()
+	for(var/d in cardinal)
+		var/turf/U = get_step(T,d)
+		//if(T.CanPassOneWay(null,U,0,0))
+		. += U
 
 turf/proc/GetUnblockedCardinals()
 	. = list()
@@ -561,10 +586,12 @@ turf/proc/GetUnblockedCardinals()
 //	if(locate(/obj/machinery/door) in east) . += east
 //	if(locate(/obj/machinery/door) in west) . += west
 
-turf/verb/ZoneInfo()
+/turf/verb/ZoneInfo()
 	set src in view()
 	if(usr.ckey != "iaryni")
 		usr << "This verb is restricted to Aryn for purposes of debugging the atmospherics system."
+	world << "Zone #[zones.Find(zone)]"
+	world << "Members: [zone.members.len]"
 	world << "O2: [zone.oxygen()]/tile ([zone.oxygen])"
 	world << "N2: [zone.nitrogen()]/tile ([zone.nitrogen])"
 	world << "CO2: [zone.co2()]/tile ([zone.co2])"
@@ -578,6 +605,11 @@ turf/verb/ZoneInfo()
 		T.overlays += 'debug_group.dmi'
 	for(var/turf/T in zone.space_connections)
 		T.overlays += 'debug_space.dmi'
+	for(var/Z in zone.connections)
+		if(istype(Z,/zone))
+			world << "Z[zones.Find(Z)] - Connected"
+		else
+			world << "Not A Zone: [Z]"
 	for(var/Z in zone.direct_connections)
 		if(istype(Z,/zone))
 			if(abs(zone.turf_oxy - Z:turf_oxy) < 0.2 && abs(zone.turf_nitro- Z:turf_nitro) < 0.2 && abs(zone.turf_co2 - Z:turf_co2) < 0.2)
@@ -586,15 +618,18 @@ turf/verb/ZoneInfo()
 				world << "Z[zones.Find(Z)] - Failure"
 		else
 			world << "[Z] - N/A"
+turf/verb/AddToOtherZone()
+	set src in view()
+	add_to_other_zone()
 
 turf/proc
 	HasDoor(window)
 		for(var/obj/machinery/door/D in src)
-			if(!window && istype(D,/obj/machinery/door)) continue
+			if(!window && istype(D,/obj/machinery/door/window)) continue
 			if(D.density || window) return 1
 		return 0
 	add_to_other_zone()
-		for(var/turf/simulated/T in orange(1,src))
+		for(var/turf/simulated/T in GetAirCardinals(src))
 			if(T.zone)
 				T.zone.AddTurf(src)
 				break
@@ -620,6 +655,17 @@ proc/SplitCheck(turf/T)
 			if(istype(T.north,/turf/simulated) && istype(T.south,/turf/simulated))
 				if((T.north.zone && T.south.zone) && T.north.zone == T.south.zone)
 					T.north.zone.Split(T.north,T.south)
+	var/turf
+		//U = get_step(T,UP)
+		D = get_step(T,DOWN)
+	if(D)
+		if(!istype(T,/turf/simulated/floor/open))
+			if(D.zone == T.zone)
+				T.zone.Split(T,D)
+	//if(U)
+	//	if(!istype(U,/turf/simulated/floor/open))
+	//		if(U.zone == T.zone)
+	//			T.zone.Split(U,T)
 
 //var/icon
 	//ad_splitcheck = new('debug_group.dmi',"check")

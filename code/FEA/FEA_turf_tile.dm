@@ -322,7 +322,7 @@ turf
 					else
 						if(zone)
 							var/turf/simulated/T = get_step(src,direction)
-							if(T in zone.members)
+							if((T in zone.members) && !(T.HasDoor() && !T.blocks_air))
 								zone.RemoveTurf(T)
 							if(T.zone in zone.connections)
 								zone.Disconnect(src,T)
@@ -333,6 +333,17 @@ turf
 								//else
 									//SplitCheck(T)
 								//world << "Space connection removed."
+				if(istype(src,/turf/simulated/floor/open))
+					var/turf/simulated/D = get_step(src,DOWN)
+					if(D)
+						world << "Connection occurred between z-levels."
+						zone.Connect(src,D)
+				else
+					var/turf/simulated/D = get_step(src,DOWN)
+					if(D)
+						if(D.zone in zone.connections)
+							world << "Disconnection occurred between z-levels."
+							zone.Disconnect(src,D)
 
 				parent.length_space_border += length_space_border
 

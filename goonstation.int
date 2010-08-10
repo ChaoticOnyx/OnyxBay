@@ -1,22 +1,22 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-LAST_COMPILE_VERSION: 471.1076
 PACKAGE_RSC_NAME: C:\Users\Aryn Groves\Goonstation\goonstation_rsc.zip
+LAST_COMPILE_VERSION: 471.1076
 PACKAGE_DME_DEMO: 
 PACKAGE_DME_CLEANCHECK: OFF
-PACKAGE_TYPE: 0
-PACKAGE_DMB_HUB: 
 PACKAGE_RSC_CLEANCHECK: OFF
+PACKAGE_DMB_HUB: 
+PACKAGE_TYPE: 0
 PACKAGE_DMB_CLEANCHECK: ON
 PACKAGE_DME_START: 
-DIR: code code\Aryn code\ATMOSPHERICS\components code\ATMOSPHERICS\components\unary code\datums\diseases code\defines\area code\defines\mob code\defines\mob\dead code\defines\mob\living code\defines\mob\living\carbon code\FEA code\game\objects maps 
+DIR: code code\ATMOSPHERICS code\ATMOSPHERICS\components code\ATMOSPHERICS\components\binary_devices code\ATMOSPHERICS\components\unary code\datums\diseases code\defines code\defines\area code\defines\mob code\defines\mob\dead code\defines\mob\living code\defines\mob\living\carbon code\defines\obj code\game code\game\machinery\doors code\game\objects\devices icons maps 
 PACKAGE_DME_NAME: C:\Users\Aryn Groves\Goonstation\goonstation_src.zip
-FILE: maps\NSV_Luna.dmm
+FILE: code\ATMOSPHERICS\components\unary\vent_pump.dm
 PACKAGE_DME_INFO: 
-LAST_COMPILE_TIME: 1281330059
 PACKAGE_DMB_NAME: C:\Users\Aryn Groves\Goonstation\goonstation.zip
-AUTO_FILE_DIR: ON
+LAST_COMPILE_TIME: 1281410071
 PACKAGE_DMB_INFO: 
+AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

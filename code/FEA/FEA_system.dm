@@ -170,15 +170,17 @@ datum
 				world << "\red \b Processing Geometry..."
 				sleep(1)
 
+				//var/list/door_tiles = list()
+
 				var/start_time = world.timeofday
 				for(var/turf/simulated/S in world)
 					if(!S.blocks_air && !S.parent)
 						assemble_group_turf(S)
-					if(S.CanPass(null,S,0,0) && !S.zone)
-						if(!S.HasDoor())
+					if(S.HasDoor())
+						spawn(1) S.add_to_other_zone()
+					else
+						if(S.CanPass(null,S,0,0) && !S.zone)
 							new/zone(S)
-						else
-							spawn(1) S.add_to_other_zone()
 				for(var/turf/simulated/S in world) //Update all pathing and border information as well
 					S.update_air_properties()
 /*
