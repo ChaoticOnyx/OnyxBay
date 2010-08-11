@@ -1,22 +1,23 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-LAST_COMPILE_VERSION: 471.1076
 PACKAGE_RSC_NAME: C:\Users\Aryn Groves\Goonstation\goonstation_rsc.zip
+LAST_COMPILE_VERSION: 471.1076
 PACKAGE_DME_DEMO: 
 PACKAGE_DME_CLEANCHECK: OFF
-PACKAGE_TYPE: 0
-PACKAGE_DMB_HUB: 
 PACKAGE_RSC_CLEANCHECK: OFF
+PACKAGE_DMB_HUB: 
+PACKAGE_TYPE: 0
+UPDATE_OBJ_TREE: ON
 PACKAGE_DMB_CLEANCHECK: ON
 PACKAGE_DME_START: 
-DIR: code code\Aryn code\ATMOSPHERICS\components code\ATMOSPHERICS\components\binary_devices code\ATMOSPHERICS\components\unary code\datums\diseases code\defines\mob\dead code\defines\mob\living code\defines\mob\living\carbon code\FEA code\head maps 
+DIR: code code\Aryn code\ATMOSPHERICS\components code\ATMOSPHERICS\components\binary_devices code\ATMOSPHERICS\components\unary code\datums\diseases code\defines code\defines\mob\dead code\defines\mob\living code\defines\mob\living\carbon code\FEA code\head icons\turf maps 
 PACKAGE_DME_NAME: C:\Users\Aryn Groves\Goonstation\goonstation_src.zip
-FILE: code\head\stayalive.dm
+FILE: code\defines\turf.dm
 PACKAGE_DME_INFO: 
-LAST_COMPILE_TIME: 1281553603
 PACKAGE_DMB_NAME: C:\Users\Aryn Groves\Goonstation\goonstation.zip
-AUTO_FILE_DIR: ON
+LAST_COMPILE_TIME: 1281554739
 PACKAGE_DMB_INFO: 
+AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

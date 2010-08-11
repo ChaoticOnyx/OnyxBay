@@ -244,6 +244,13 @@
 	name = "floor"
 	icon = 'floors.dmi'
 	icon_state = "Floor3"
+	outer_hull_plating
+		name = "outer hull"
+		icon_state = "shiny"
+		oxygen = 0
+		nitrogen = 0.0001
+		carbon_dioxide = 0
+		toxins = 0
 
 /turf/unsimulated/wall
 	name = "wall"
