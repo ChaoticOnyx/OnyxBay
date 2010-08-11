@@ -13,8 +13,8 @@
 
 	invite_loadbanfile()
 
-	goon_loadfile()
-	beta_tester_loadfile()
+//	goon_loadfile()
+//	beta_tester_loadfile()
 
 
 	spawn(30)

@@ -16,7 +16,7 @@ mob/verb/dumpbans()
 		Banlist.cd = "/base/[X]"
 
 		var/reason = dbcon.Quote("[Banlist["reason"]]")
-		dat += "INSERT INTO `bans` VALUES('[X]', '[Banlist["id"]]', [reason], '[Banlist["bannedby"]]', '[Banlist["temp"]]', '[Banlist["minutes"]]');\n"
+		dat += "INSERT INTO `bans` VALUES('[Banlist["key"]', '[Banlist["id"]]', [reason], '[Banlist["bannedby"]]', '[Banlist["temp"]]', '[Banlist["minutes"]]');\n"
 
 	file << dat
 	usr << "DONE"

@@ -258,21 +258,21 @@ var/showadminmessages = 1
 			var/t = href_list["remove"]
 			if(t)
 				invite_keylist.Remove(text("[t]"))
-				invite_savebanfile()
+//				invite_savebanfile()
 				message_admins("\blue [key_name_admin(usr)] removed [t] from the invite list.")
 
 	if (href_list["removeinvite"])
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/u = input(usr, "Who do you wish to remove from the invite list", "Remove invite", "enterckeyhere")
 			invite_keylist.Remove(text("[u]"))
-			invite_savebanfile()
+//			invite_savebanfile()
 			message_admins("\blue [key_name_admin(usr)] removed [u] from the invite list.")
 
 	if (href_list["addinvite"])
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/u = input(usr, "Who do you wish to add to the invite list", "Remove invite", "enterckeyhere")
 			invite_keylist.Add(text("[u]"))
-			invite_savebanfile()
+//			invite_savebanfile()
 			message_admins("\blue [key_name_admin(usr)] added [u] to the invite list.")
 
 
