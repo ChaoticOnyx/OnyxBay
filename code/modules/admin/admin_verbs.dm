@@ -460,6 +460,7 @@
 			src.verbs += /client/proc/voting
 			src.verbs += /client/proc/game_panel
 			src.verbs += /client/proc/unban_panel
+			src.verbs += /client/proc/invite_panel
 			src.verbs += /client/proc/player_panel
 
 		if(src.holder.level > 1)
@@ -525,6 +526,7 @@
 	src.verbs -= /client/proc/game_panel
 	src.verbs -= /client/proc/player_panel
 	src.verbs -= /client/proc/unban_panel
+	src.verbs -= /client/proc/invite_panel
 	src.verbs -= /client/proc/secrets
 	src.verbs -= /client/proc/voting
 	src.verbs -= /client/proc/goons
@@ -614,6 +616,12 @@
 	set category = "Admin"
 	if (src.holder)
 		src.holder.unbanpanel()
+	return
+/client/proc/invite_panel()
+	set name = "Invite Panel"
+	set category = "Admin"
+	if (src.holder)
+		src.holder.invite_panel()
 	return
 
 /client/proc/game_panel()

@@ -216,6 +216,7 @@
 		index = findtext(t, "\t")
 
 	return html_encode(t)
+/proc/strip_mysql(var/t)
 
 /proc/strip_html(var/t,var/limit=MAX_MESSAGE_LEN)
 	t = copytext(t,1,limit)
