@@ -226,6 +226,23 @@
 		if(access_kitchen)
 			return "Kitchen"
 
+/proc/get_job_types()
+	return list("Civilian", "Security", "Med/Sci", "Engineering/Maintenance", "Management")
+
+/proc/get_type_jobs(T)
+	switch(T)
+		if ("Civilian")
+			return list("Assistant", "Barman", "Chaplain", "Chef")
+		if ("Security")
+			return list("Security Officer", "Detective")
+		if ("Med/Sci")
+			return list("Chemist", "Geneticist", "Scientist", "Roboticist", "Medical Doctor")
+		if ("Engineering/Maintenance")
+			return list("Station Engineer", "Atmospheric Technician", "Janitor", "Quartermaster")
+		if ("Management")
+			return list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Research Director")
+
+
 /proc/get_all_jobs()
 	return list("Assistant", "Station Engineer", "Detective", "Medical Doctor", "Captain", "Security Officer",
 				"Geneticist", "Scientist", "Head of Security", "Head of Personnel", "Atmospheric Technician",

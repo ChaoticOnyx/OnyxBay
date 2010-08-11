@@ -22,6 +22,7 @@
 		rules = "<html><head><title>Rules</title><body>There are no rules! Go nuts!</body></html>"
 
 /world/proc/load_admins()
+/*
 	var/text = file2text("config/admins.txt")
 	if (!text)
 		diary << "Failed to load config/admins.txt\n"
@@ -40,6 +41,50 @@
 				var/a_lev = copytext(line, pos + 3, length(line) + 1)
 				admins[m_key] = a_lev
 				diary << ("ADMIN: [m_key] = [a_lev]")
+*/
+	var/DBQuery/my_query = dbcon.NewQuery("SELECT * FROM `admins`")
+	if(my_query.Execute())
+		while(my_query.NextRow())
+			var/list/row  = my_query.GetRowData()
+			var/rank = world.convert_ranks(text2num(row["rank"]))
+			diary << ("ADMIN: [row["ckey"]] = [rank]")
+			admins[row["ckey"]] = rank
+	if (!admins)
+		diary << "Failed to load admins \n"
+
+/*
+	else
+		for(var/p in keys)
+			var/rank = text2num(admin["rank"])
+			if(rank >= 1)
+				var/ranks = world.convert_ranks(rank)
+				admins[admin["ckey"]] = ranks
+				usr <<
+*/
+/*		var/list/lines = dd_text2list(text, "\n")
+		for(var/line in lines)
+			if (!line)
+				continue
+
+			if (copytext(line, 1, 2) == ";")
+				continue
+
+			var/pos = findtext(line, " - ", 1, null)
+			if (pos)
+				var/m_key = copytext(line, 1, pos)
+				var/a_lev = copytext(line, pos + 3, length(line) + 1)
+				admins[m_key] = a_lev
+				diary << ("ADMIN: [m_key] = [a_lev]")*/
+/world/proc/convert_ranks(var/nym as num)
+	switch(nym)
+		if(0) return 0
+		if(1) return "Moderator"
+		if(2) return "Administrator"
+		if(3) return "Primary Administrator"
+		if(4) return "Super Administrator"
+		if(5) return "Coder"
+		if(6) return "Host"
+		else  return 0
 
 /world/proc/load_testers()
 	var/text = file2text("config/testers.txt")
@@ -73,7 +118,7 @@
 	if (config && config.server_name != null && config.server_suffix && world.port > 0)
 		// dumb and hardcoded but I don't care~
 		config.server_name += " #[(world.port % 1000) / 100]"
-
+	startmysql()
 	src.load_mode()
 	src.load_motd()
 	src.load_rules()
@@ -111,6 +156,7 @@
 
 	master_controller = new /datum/controller/game_controller()
 	spawn(-1) master_controller.setup()
+	ClearTempbans()
 	return
 
 /world/Del()
