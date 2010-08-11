@@ -51,6 +51,14 @@ macro "macro"
 		name = "SHIFT+F2+REP"
 		command = ".screenshot"
 		is-disabled = false
+	elem 
+		name = "SHIFT+,+REP"
+		command = ".up"
+		is-disabled = false
+	elem 
+		name = "SHIFT+.+REP"
+		command = ".down"
+		is-disabled = false
 
 
 menu "menu"

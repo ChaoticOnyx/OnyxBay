@@ -142,11 +142,11 @@
 		if("Chief Engineer")
 			return list(access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels,
 			            access_external_airlocks, access_atmospherics, access_emergency_storage, access_eva,
-			            access_heads, access_ai_upload, access_construction)
+			            access_heads, access_ai_upload, access_construction, access_security)
 		if("Research Director")
 			return list(access_medical, access_morgue, access_medlab, access_robotics,
 			            access_tech_storage, access_maint_tunnels, access_heads, access_tox,
-			            access_tox_storage, access_chemistry, access_teleporter)
+			            access_tox_storage, access_chemistry, access_teleporter, access_security)
 		else
 			return list()
 

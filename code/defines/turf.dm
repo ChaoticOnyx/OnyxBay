@@ -147,10 +147,10 @@
 		proc
 			update() //Update the overlays to make the openspace turf show what's down a level
 				src.clearoverlays()
-				src.addoverlay(floorbelow)
+				//src.addoverlay(floorbelow) //temporarily disabled
 
-				for(var/obj/o in floorbelow.contents)
-					src.addoverlay(image(o, dir=o.dir))
+				//for(var/obj/o in floorbelow.contents)
+					//src.addoverlay(image(o, dir=o.dir))
 
 	plating
 		name = "plating"
