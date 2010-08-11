@@ -4,7 +4,7 @@ datum/preferences
 	var/age = 30.0
 	var/b_type = "A+"
 
-	var/be_syndicate
+	var/be_syndicate = 0
 	var/be_random_name = 0
 	var/underwear = 1
 
