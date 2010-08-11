@@ -3,7 +3,7 @@
 	set name = "play sound"
 
 	//if(Debug2)
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 

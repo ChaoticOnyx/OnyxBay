@@ -32,6 +32,7 @@ var
 	event = 0
 	hadevent = 0
 	blobevent = 0
+	eventson = 1
 	///////////////
 
 	diary = null
@@ -47,13 +48,13 @@ var
 	aliens_allowed = 0
 	ooc_allowed = 1
 	traitor_scaling = 1
-	goonsay_allowed = 0
 	dna_ident = 1
 	abandon_allowed = 1
 	enter_allowed = 1
 	shuttle_frozen = 0
 	shuttle_left = 0
 	delay_start = 0
+
 
 	captainMax = 1
 	engineerMax = 5
@@ -97,6 +98,7 @@ var
 	list/wizardstart = list()
 	list/newplayer_start = list()
 	list/latejoin = list()
+	list/derelictstart = list()
 	list/prisonwarp = list()	//prisoners go to these
 	list/mazewarp = list()
 	list/tdome1 = list()

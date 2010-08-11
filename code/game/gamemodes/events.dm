@@ -1,15 +1,29 @@
 /proc/start_events()
-	//if (!event && prob(eventchance))
-	//	event()
-	//	hadevent = 1
-	//	spawn(1300)
-	//		event = 0
-	//spawn(1200)
-	//	start_events()
+	if (!event && prob(eventchance))
+		meteor()
+		hadevent = 1
+		spawn(1300)
+			event = 0
+		spawn(1200)
+		start_events()
 	return // Stub
 
-/proc/event()
-	switch(rand(1,6))
+/proc/meteor()
+	event = 1
+//	command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")
+	spawn(100)
+		meteor_wave()
+		meteor_wave()
+	spawn(500)
+		meteor_wave()
+		meteor_wave()
+
+/proc/event(var/eventnum = 0)
+	if(eventson == 0)
+		return
+	if(!eventnum)
+		eventnum = rand(1,6)
+	switch(eventnum)
 		if(1)
 			event = 1
 			command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")
@@ -66,6 +80,7 @@
 				blobevent = 0
 			//start loop here
 
+
 		if(5)
 			event = 1
 			command_alert("High levels of radiation detected near the station. Please report to the Med-bay if you feel strange.", "Anomaly Alert")
@@ -85,6 +100,114 @@
 		if(6)
 			event = 1
 			viral_outbreak()
+
+
+/proc/new_event(var/severity)
+	if(severity == 1)
+		switch(rand(1,2))
+			if(1)
+				event_meteors()
+			if(2)
+				event_apcoverload()
+	else if(severity == 2)
+		switch(rand(1,2))
+			if(1)
+				event_portal()
+			if(2)
+				viral_outbreak()
+	else if(severity == 3)
+		switch(rand(1,2))
+			if(1)
+				event_apcoverload()
+				spawn(100)
+					event_meteors()
+			if(2)
+				event_bh()
+	return
+
+
+
+/proc/event_blob()
+	event = 1
+	command_alert("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert")
+	var/turf/T = pick(blobstart)
+	var/obj/blob/bl = new /obj/blob( T.loc, 30 )
+	spawn(0)
+		bl.Life()
+		bl.Life()
+		bl.Life()
+		bl.Life()
+		bl.Life()
+	blobevent = 1
+	dotheblobbaby()
+	spawn(3000)
+		blobevent = 0
+
+/proc/event_bh()
+	event = 1
+	command_alert("Gravitational anomalies detected on the station. There is no additional data.", "Anomaly Alert")
+	var/turf/T = pick(blobstart)
+	var/obj/bhole/bh = new /obj/bhole( T.loc, 30 )
+	spawn(rand(50, 300))
+		del(bh)
+
+/proc/event_portal()
+	event = 1
+	command_alert("Space-time anomalies detected on the station. There is no additional data.", "Anomaly Alert")
+	var/list/turfs = list(	)
+	var/turf/picked
+	for(var/turf/T in world)
+		if(T.z == 1 && istype(T,/turf/simulated/floor) && !istype(T,/turf/space))
+			turfs += T
+	for(var/turf/T in world)
+		if(prob(20) && T.z == 1 && istype(T,/turf/simulated/floor))
+			spawn(50+rand(0,3000))
+				picked = pick(turfs)
+				var/obj/portal/P = new /obj/portal( T )
+				P.target = picked
+				P.creator = null
+				P.icon = 'objects.dmi'
+				P.failchance = 0
+				P.icon_state = "anom"
+				P.name = "wormhole"
+				spawn(rand(300,600))
+					del(P)
+
+
+/proc/event_apcoverload()
+	event = 1
+	command_alert("An electrical storm has been detected, electrical equipment may be effected.", "Electrical Storm")
+	for(var/obj/machinery/power/apc/a in world)
+		//Crit is a new var, to stop the AI room APC from instantly killing the AI
+		if(prob(8) && a.crit == 0)
+			spawn(rand(100,500))
+				a.overload_lighting()
+				a.set_broken()
+	for(var/obj/machinery/door/airlock/b in world)
+		if(prob(8))
+			spawn(rand(100,500))
+				b.cut(1)
+				b.cut(2)
+				b.cut(3)
+				b.cut(4)
+				b.cut(5)
+				b.cut(6)
+				b.cut(7)
+				b.cut(8)
+				b.cut(9)
+
+
+/proc/event_meteors()
+	event = 1
+	command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")
+	spawn(100)
+		meteor_wave()
+		meteor_wave()
+	spawn(500)
+		meteor_wave()
+		meteor_wave()
+
+
 
 /proc/dotheblobbaby()
 	if (blobevent)
@@ -223,7 +346,7 @@
 
 /proc/viral_outbreak()
 	command_alert("Confirmed outbreak of level 7 viral biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert")
-	var/virus_type = pick(/datum/disease/dnaspread,/datum/disease/cold)
+	var/virus_type = /datum/disease/cold
 	for(var/mob/living/carbon/human/H in world)
 		if((H.virus) || (H.stat == 2))
 			continue

@@ -140,6 +140,7 @@
 				if(src.shock_wire == href_list["wire"])
 					src.shocked = !src.shocked
 					src.shock(usr)
+				src.wires[href_list["wire"]] = !src.wires[href_list["wire"]]
 
 	if (href_list["temp"])
 		src.temp = null
@@ -169,6 +170,7 @@
 	src.L += new /obj/item/weapon/scalpel(src)
 	src.L += new /obj/item/weapon/circular_saw(src)
 	src.L += new /obj/item/device/t_scanner(src)
+	src.L += new /obj/item/weapon/circuitry(src)
 	src.LL += new /obj/item/weapon/flamethrower(src)
 	src.LL += new /obj/item/device/igniter(src)
 	src.LL += new /obj/item/device/timer(src)

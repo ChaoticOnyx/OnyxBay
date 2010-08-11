@@ -141,10 +141,12 @@ obj/machinery/atmospherics/pipe
 			var/pressure_difference = pressure - environment.return_pressure()
 
 			if(pressure_difference > maximum_pressure)
+				world << "Pressure of [pressure_difference] in pipe at [x] [y] [z] above maximum pressure delta ([maximum_pressure]) causing failure"
 				del(src)
 
 			else if(pressure_difference > fatigue_pressure)
 				if(prob(5))
+					world << "Pressure of [pressure_difference] in pipe at [x] [y] [z] above fatigue pressure delta ([fatigue_pressure]) causing failure"
 					del(src)
 
 			else return 1

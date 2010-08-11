@@ -9,9 +9,6 @@
 			src << "\blue You are no longer listening to messages on the OOC channel."
 
 /mob/verb/ooc(msg as text)
-	if (!src.client.authenticated)
-		src << "You are not authorized to communicate over these channels."
-		return
 	msg = copytext(sanitize(msg), 1, MAX_MESSAGE_LEN)
 	if(!msg)
 		return
@@ -39,7 +36,10 @@
 
 		else if (C.listen_ooc)
 			C << "<span class=\"ooc\"><span class=\"prefix\">OOC:</span> <span class=\"name\">[src.client.stealth ? src.client.fakekey : src.key]:</span> <span class=\"message\">[msg]</span></span>"
+	for(var/mob/C)
+		C.log_m("OOC:[msg]")
 /*
+
 /mob/verb/goonsay(msg as text)
 	if (!src.client.authenticated || !src.client.goon)
 		src << "You are not authorized to communicate over these channels."

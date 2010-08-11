@@ -214,49 +214,27 @@
 												src.active2.fields["notes"] = t1
 										if("criminal")
 											if (istype(src.active2, /datum/data/record))
-												src.temp = text("<B>Criminal Status:</B><BR>\n\t<A href='?src=\ref[];temp=1;criminal2=none'>None</A><BR>\n\t<A href='?src=\ref[];temp=1;criminal2=arrest'>*Arrest*</A><BR>\n\t<A href='?src=\ref[];temp=1;criminal2=incarcerated'>Incarcerated</A><BR>\n\t<A href='?src=\ref[];temp=1;criminal2=parolled'>Parolled</A><BR>\n\t<A href='?src=\ref[];temp=1;criminal2=released'>Released</A><BR>", src, src, src, src, src)
+												src.temp = text("<B>Criminal Status:</B><BR>\n\t;<A href='?src=\ref[];temp=1;criminal2=none'>None</A><BR>\n\t<A href='?src=\ref[];temp=1;criminal2=arrest'>*Arrest*</A><BR>\n\t<A href='?src=\ref[];temp=1;criminal2=incarcerated'>Incarcerated</A><BR>\n\t<A href='?src=\ref[];temp=1;criminal2=parolled'>Parolled</A><BR>\n\t<A href='?src=\ref[];temp=1;criminal2=released'>Released</A><BR>", src, src, src, src, src)
 										if("rank")
 											var/list/L = list( "Head of Personnel", "Captain", "AI" )
 											if ((istype(src.active1, /datum/data/record) && L.Find(src.rank)))
-												src.temp = text("<B>Rank:</B><BR>\n<B>Assistants:</B><BR>\n<A href='?src=\ref[];temp=1;rank=res_assist'>Assistant</A><BR>\n<B>Technicians:</B><BR>\n<A href='?src=\ref[];temp=1;rank=foren_tech'>Detective</A><BR>\n<A href='?src=\ref[];temp=1;rank=atmo_tech'>Atmospheric Technician</A><BR>\n<A href='?src=\ref[];temp=1;rank=engineer'>Station Engineer</A><BR>\n<B>Researchers:</B><BR>\n<A href='?src=\ref[];temp=1;rank=med_res'>Geneticist</A><BR>\n<A href='?src=\ref[];temp=1;rank=tox_res'>Scientist</A><BR>\n<B>Officers:</B><BR>\n<A href='?src=\ref[];temp=1;rank=med_doc'>Medical Doctor</A><BR>\n<A href='?src=\ref[];temp=1;rank=secure_off'>Security Officer</A><BR>\n<B>Higher Officers:</B><BR>\n<A href='?src=\ref[];temp=1;rank=hoperson'>Head of Security</A><BR>\n<A href='?src=\ref[];temp=1;rank=hosecurity'>Head of Personnel</A><BR>\n<A href='?src=\ref[];temp=1;rank=captain'>Captain</A><BR>", src, src, src, src, src, src, src, src, src, src, src)
+												var/dat
+												dat += text("<B>Choose a rank or enter <A href='?src=\ref[];temp=1;rank=custom'>custom</A></B><BR>\n", src)
+												for (var/jobtype in get_job_types())
+													dat += "<B>[jobtype]:</B><BR>\n"
+													for(var/job in get_type_jobs(jobtype))
+														dat += text("<A href='?src=\ref[];temp=1;rank=[job]'>[job]</A><BR>\n", src)
+												src.temp = dat
 											else
 												alert(usr, "You do not have the required rank to do this!")
 										else
 								else
 									if (href_list["rank"])
 										if (src.active1)
-											switch(href_list["rank"])
-												if("res_assist")
-													src.active1.fields["rank"] = "Assistant"
-												if("foren_tech")
-													src.active1.fields["rank"] = "Detective"
-												if("atmo_tech")
-													src.active1.fields["rank"] = "Atmospheric Technician"
-												if("engineer")
-													src.active1.fields["rank"] = "Station Engineer"
-												if("med_res")
-													src.active1.fields["rank"] = "Geneticist"
-												if("tox_res")
-													src.active1.fields["rank"] = "Scientist"
-												if("med_doc")
-													src.active1.fields["rank"] = "Medical Doctor"
-												if("secure_off")
-													src.active1.fields["rank"] = "Security Officer"
-												if("hoperson")
-													src.active1.fields["rank"] = "Head of Security"
-												if("hosecurity")
-													src.active1.fields["rank"] = "Head of Personnel"
-												if("captain")
-													src.active1.fields["rank"] = "Captain"
-												if("barman")
-													src.active1.fields["rank"] = "Barman"
-												if("chemist")
-													src.active1.fields["rank"] = "Chemist"
-												if("janitor")
-													src.active1.fields["rank"] = "Janitor"
-												if("clown")
-													src.active1.fields["rank"] = "Clown"
-
+											if (href_list["rank"] == "custom")
+												src.active1.fields["rank"] = sanitize(input("Enter rank for person","Rank"))
+											else
+												src.active1.fields["rank"] = href_list["rank"]
 									else
 										if (href_list["criminal2"])
 											if (src.active2)

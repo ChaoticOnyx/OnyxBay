@@ -142,11 +142,10 @@
 			heard_b += M
 
 	var/rendered = null
-
-	var/test = say_test(message)
 	if (length(heard_a))
-		var/image/test2 = image('talk.dmi',src,"h[test]")
 		var/message_a = src.say_quote(message)
+		var/test = say_test(message)
+		var/image/test2 = image('talk.dmi',src,"h[test]")
 		if (italics)
 			message_a = "<i>[message_a]</i>"
 
@@ -157,8 +156,7 @@
 
 		for (var/mob/M in heard_a)
 			M.show_message(rendered, 2)
-			if(!(istype(M,/mob/living/silicon/ai/)))
-				M << test2
+			M << test2
 		spawn(30) del(test2)
 
 	if (length(heard_b))
@@ -185,15 +183,10 @@
 		rendered = "<span class='game say'><span class='name'>[src.name]</span> <span class='message'>[message]</span></span>"
 	else
 		rendered = "<span class='game say'><span class='name'>[src.real_name]</span>[alt_name] <span class='message'>[message]</span></span>"
-	var/image/test2 = image('talk.dmi',src,"h[test]")
-
 	for (var/mob/M in world)
 		if (istype(M, /mob/new_player))
 			continue
 		if (M.stat > 1 && !(M in heard_a))
 			M.show_message(rendered, 2)
-			M << test2
-
-
-
 //headfindback
+	src.log_m("Said [message]")

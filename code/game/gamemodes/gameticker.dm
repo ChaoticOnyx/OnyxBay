@@ -65,6 +65,9 @@ var/global/datum/controller/gameticker/ticker
 
 		return 0
 
+	//start supply ticker
+	spawn(SUPPLY_POINTDELAY) supply_ticker()
+
 	//Distribute jobs
 	distribute_jobs()
 
@@ -93,10 +96,19 @@ var/global/datum/controller/gameticker/ticker
 		//Start master_controller.process()
 		world << "<FONT color='blue'><B>Enjoy the game!</B></FONT>"
 
-	spawn (3000)
-		start_events()
-	spawn ((18000+rand(3000)))
-		event()
+//	spawn (3000)
+//		start_events()
+//	spawn ((18000+rand(3000)))
+//		event()
+
+	spawn(15000)
+		new_event(1)
+	spawn(30000)
+		new_event(2)
+	spawn(40000)
+		new_event(1)
+	spawn(60000)
+		new_event(3)
 
 	spawn master_controller.process()
 

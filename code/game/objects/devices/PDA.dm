@@ -418,13 +418,13 @@
 
 /obj/item/device/pda/pickup(mob/user)
 	if (src.fon)
-		src.sd_SetLuminosity(0)
-		user.sd_SetLuminosity(user.luminosity + src.f_lum)
+		src.ul_SetLuminosity(0)
+		user.ul_SetLuminosity(user.luminosity + src.f_lum)
 
 /obj/item/device/pda/dropped(mob/user)
 	if (src.fon)
-		user.sd_SetLuminosity(user.luminosity - src.f_lum)
-		src.sd_SetLuminosity(src.f_lum)
+		user.ul_SetLuminosity(user.luminosity - src.f_lum)
+		src.ul_SetLuminosity(src.f_lum)
 
 /obj/item/device/pda/New()
 	..()
@@ -1004,11 +1004,11 @@ Code:
 
 			if (usr.contents.Find(src))
 				if (src.fon)
-					usr.sd_SetLuminosity(usr.luminosity + src.f_lum)
+					usr.ul_SetLuminosity(usr.luminosity + src.f_lum)
 				else
-					usr.sd_SetLuminosity(usr.luminosity - src.f_lum)
+					usr.ul_SetLuminosity(usr.luminosity - src.f_lum)
 			else
-				src.sd_SetLuminosity(src.fon * src.f_lum)
+				src.ul_SetLuminosity(src.fon * src.f_lum)
 
 			src.updateUsrDialog()
 
@@ -1377,7 +1377,7 @@ Code:
 		M.show_message("\red Your [src] explodes!", 1)
 
 	if(T)
-		T.hotspot_expose(700,125)
+		T.hotspot_expose(SPARK_TEMP,125)
 
 		explosion(T, -1, -1, 2, 3)
 

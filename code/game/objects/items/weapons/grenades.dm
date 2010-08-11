@@ -34,7 +34,7 @@ FLASHBANG
 	playsound(src.loc, 'Welder2.ogg', 25, 1)
 	var/turf/T = get_turf(src)
 	if(T)
-		T.hotspot_expose(700,125)
+		T.hotspot_expose(SPARK_TEMP,125)
 
 	var/grenade = src // detaching the proc - in theory
 	src = null
@@ -267,7 +267,7 @@ FLASHBANG
 	playsound(src.loc, 'bang.ogg', 25, 1)
 	var/turf/T = get_turf(src)
 	if(T)
-		T.hotspot_expose(700,125)
+		T.hotspot_expose(SPARK_TEMP,125)
 
 	for(var/mob/living/carbon/M in viewers(T, null))
 		if (locate(/obj/item/weapon/cloaking_device, M))

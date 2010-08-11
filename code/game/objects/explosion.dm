@@ -3,7 +3,9 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 		if(devastation_range > 1)
 			message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in area [epicenter.loc.name] ")
 
-		defer_powernet_rebuild = 1
+		defer_powernet_rebuild += 1
+
+		sleep(5)
 
 		playsound(epicenter.loc, 'explosionfar.ogg', 100, 1, round(devastation_range*2,1) )
 		playsound(epicenter.loc, "explosion", 100, 1, round(devastation_range,1) )
@@ -42,8 +44,10 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 			for(var/mob/living/carbon/mob in T)
 				flick("flash", mob:flash)
 
-		makepowernets()
-		defer_powernet_rebuild = 0
+
+		defer_powernet_rebuild -= 1
+		if (!defer_powernet_rebuild)
+			makepowernets()
 	return 1
 
 

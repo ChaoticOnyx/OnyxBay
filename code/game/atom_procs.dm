@@ -160,6 +160,7 @@
 
 	..()
 
+	usr.log_m("Clicked on [src]")
 
 	if(usr.in_throw_mode)
 		return usr:throw_item(src)
@@ -215,80 +216,46 @@
 			usr.next_move = world.time + 10
 		else
 			return
+
 		if ((src.loc && (get_dist(src, usr) < 2 || src.loc == usr.loc)))
 			var/direct = get_dir(usr, src)
-			var/obj/item/weapon/dummy/D = new /obj/item/weapon/dummy( usr.loc )
 			var/ok = 0
 			if ( (direct - 1) & direct)
 				var/turf/Step_1
 				var/turf/Step_2
 				switch(direct)
-					if(5.0)
+					if(EAST|NORTH)
 						Step_1 = get_step(usr, NORTH)
 						Step_2 = get_step(usr, EAST)
 
-					if(6.0)
+					if(EAST|SOUTH)
 						Step_1 = get_step(usr, SOUTH)
 						Step_2 = get_step(usr, EAST)
 
-					if(9.0)
+					if(NORTH|WEST)
 						Step_1 = get_step(usr, NORTH)
 						Step_2 = get_step(usr, WEST)
 
-					if(10.0)
+					if(SOUTH|WEST)
 						Step_1 = get_step(usr, SOUTH)
 						Step_2 = get_step(usr, WEST)
 
 					else
+
 				if(Step_1 && Step_2)
-					var/check_1 = 0
-					var/check_2 = 0
-					if(step_to(D, Step_1))
-						check_1 = 1
-						for(var/obj/border_obstacle in Step_1)
-							if(border_obstacle.flags & ON_BORDER)
-								if(!border_obstacle.CheckExit(D, src))
-									check_1 = 0
-						for(var/obj/border_obstacle in get_turf(src))
-							if((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
-								if(!border_obstacle.CanPass(D, D.loc, 1, 0))
-									check_1 = 0
+					var/check_1 = 1
+					var/check_2 = 1
 
-					D.loc = usr.loc
-					if(step_to(D, Step_2))
-						check_2 = 1
+					check_1 = CanReachThrough(get_turf(usr), Step_1) && CanReachThrough(Step_1, get_turf(src))
 
-						for(var/obj/border_obstacle in Step_2)
-							if(border_obstacle.flags & ON_BORDER)
-								if(!border_obstacle.CheckExit(D, src))
-									check_2 = 0
-						for(var/obj/border_obstacle in get_turf(src))
-							if((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
-								if(!border_obstacle.CanPass(D, D.loc, 1, 0))
-									check_2 = 0
-					if(check_1 || check_2)
-						ok = 1
+					check_2 = CanReachThrough(get_turf(usr), Step_2) && CanReachThrough(Step_2, get_turf(src))
+
+					ok = (check_1 || check_2)
 			else
-				if(loc == usr.loc)
-					ok = 1
-				else
-					ok = 1
 
-					//Now, check objects to block exit that are on the border
-					for(var/obj/border_obstacle in usr.loc)
-						if(border_obstacle.flags & ON_BORDER)
-							if(!border_obstacle.CheckExit(D, src))
-								ok = 0
+				ok = CanReachThrough(get_turf(usr), get_turf(src))
 
-					//Next, check objects to block entry that are on the border
-					for(var/obj/border_obstacle in get_turf(src))
-						if((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
-							if(!border_obstacle.CanPass(D, D.loc, 1, 0))
-								ok = 0
-
-			del(D)
 			if (!( ok ))
-
 				return 0
 
 		if (!( usr.restrained() ))
@@ -357,5 +324,40 @@
 							src.hand_al(usr, usr.hand)
 	return
 
+/atom/proc/CanReachThrough(turf/srcturf, turf/targetturf)
+	var/obj/item/weapon/dummy/D = new /obj/item/weapon/dummy( srcturf )
+
+	//Now, check objects to block exit that are on the border
+	for(var/obj/border_obstacle in srcturf)
+		if(border_obstacle.flags & ON_BORDER)
+			if(!border_obstacle.CheckExit(D, targetturf))
+				del D
+				return 0
+
+	//Next, check objects to block entry that are on the border
+	for(var/obj/border_obstacle in targetturf)
+		if((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
+			if(!border_obstacle.CanPass(D, targetturf, 1, 0))
+				del D
+				return 0
+
+	del D
+	return 1
+
 /atom/proc/alog(var/atom/device,var/mob/mb)
 	src.logs += "[src.name] used by a [device.name] by [mb.real_name]([mb.key])"
+	mb.log_m("[src.name] used by a [device.name]")
+
+
+
+/atom/proc/addoverlay(var/overlay)
+	src.overlaylist += overlay
+	src.overlays += overlay
+
+/atom/proc/removeoverlay(var/overlay)
+	src.overlaylist -= overlay
+	src.overlays -= overlay
+
+/atom/proc/clearoverlays()
+	src.overlaylist = new/list()
+	src.overlays = null

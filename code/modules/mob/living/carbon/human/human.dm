@@ -75,7 +75,7 @@
 			src.now_pushing = 0
 			return
 		if(istype(src.equipped(), /obj/item/weapon/baton)) // add any other item paths you think are necessary
-			if(src.loc:sd_lumcount < 3 || src.blinded)
+			if(src.loc:ul_Luminosity() < 3 || src.blinded)
 				var/obj/item/weapon/W = src.equipped()
 				if (world.time > src.lastDblClick+2)
 					src.lastDblClick = world.time
@@ -90,6 +90,7 @@
 						tmob.stunned = max(4, tmob.stunned)
 					playsound(src.loc, 'Egloves.ogg', 50, 1, -1)
 					W:charges--
+					src.now_pushing = 0
 					return
 		if(istype(tmob, /mob/living/carbon/human) && tmob.mutations & 32)
 			if(prob(40) && !(src.mutations & 32))
@@ -1106,7 +1107,9 @@
 			shielded = 2
 			break
 
-	if (shielded == 2)
+	if(client && client.admin_invis)
+		src.invisibility = 100
+	else if (shielded == 2)
 		src.invisibility = 2
 	else
 		src.invisibility = 0

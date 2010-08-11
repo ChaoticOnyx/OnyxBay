@@ -43,7 +43,7 @@ ZIPPO
 			for(var/mob/O in viewers(user, null))
 				O.show_message(text("\red Without even breaking stride, [] flips open and lights the [] in one smooth movement.", user, src), 1)
 
-			user.sd_SetLuminosity(user.luminosity + ZIPPO_LUM)
+			user.ul_SetLuminosity(user.luminosity + ZIPPO_LUM)
 			spawn(0)
 				process()
 		else
@@ -53,7 +53,7 @@ ZIPPO
 			for(var/mob/O in viewers(user, null))
 				O.show_message(text("\red You hear a quiet click, as [] shuts off the [] without even looking what they're doing. Wow.", user, src), 1)
 
-			user.sd_SetLuminosity(user.luminosity - ZIPPO_LUM)
+			user.ul_SetLuminosity(user.luminosity - ZIPPO_LUM)
 	else
 		return ..()
 	return
@@ -69,18 +69,18 @@ ZIPPO
 			if(M.l_hand == src || M.r_hand == src)
 				location = M.loc
 		if (istype(location, /turf))
-			location.hotspot_expose(700, 5)
+			location.hotspot_expose(SPARK_TEMP, 5)
 		sleep(10)
 
 
 /obj/item/weapon/zippo/pickup(mob/user)
 	if(lit)
-		src.sd_SetLuminosity(0)
-		user.sd_SetLuminosity(user.luminosity + ZIPPO_LUM)
+		src.ul_SetLuminosity(0)
+		user.ul_SetLuminosity(user.luminosity + ZIPPO_LUM)
 
 
 
 /obj/item/weapon/zippo/dropped(mob/user)
 	if(lit)
-		user.sd_SetLuminosity(user.luminosity - ZIPPO_LUM)
-		src.sd_SetLuminosity(ZIPPO_LUM)
+		user.ul_SetLuminosity(user.luminosity - ZIPPO_LUM)
+		src.ul_SetLuminosity(ZIPPO_LUM)

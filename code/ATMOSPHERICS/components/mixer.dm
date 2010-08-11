@@ -73,9 +73,10 @@ obj/machinery/atmospherics/mixer
 
 		//Calculate necessary moles to transfer using PV=nRT
 
-		var/pressure_delta = target_pressure - output_starting_pressure
-		var/transfer_moles1 = 0
-		var/transfer_moles2 = 0
+		var/pressure_delta = target_pressure - output_starting_pressure //How much pressure to add
+
+		var/transfer_moles1 = 0 //How much is needed from pipe A
+		var/transfer_moles2 = 0 //How much is needed from pipe B
 
 		if(air_in1.temperature > 0)
 			transfer_moles1 = (node1_concentration*pressure_delta)*air_out.volume/(air_in1.temperature * R_IDEAL_GAS_EQUATION)
@@ -83,11 +84,18 @@ obj/machinery/atmospherics/mixer
 		if(air_in2.temperature > 0)
 			transfer_moles2 = (node2_concentration*pressure_delta)*air_out.volume/(air_in2.temperature * R_IDEAL_GAS_EQUATION)
 
+
+
 		var/air_in1_moles = air_in1.total_moles()
 		var/air_in2_moles = air_in2.total_moles()
 
+
+
 		if((air_in1_moles < transfer_moles1) || (air_in2_moles < transfer_moles2))
-			var/ratio = min(air_in1_moles/transfer_moles1, air_in2_moles/transfer_moles2)
+
+
+
+			var/ratio = min((transfer_moles1 ? air_in1_moles/transfer_moles1 : 1e31), (transfer_moles2 ? air_in2_moles/transfer_moles2 : 1e31))
 
 			transfer_moles1 *= ratio
 			transfer_moles2 *= ratio

@@ -500,6 +500,8 @@
 		for(var/i = 0 to 20)
 			randmutb(src.occupant) //Sometimes the clones come out wrong.
 
+		src.occupant.brainloss = 100
+
 	src.attempting = 0
 	return 1
 
@@ -526,7 +528,7 @@
 			src.occupant.bruteloss = max(src.occupant.bruteloss-1, 0)
 
 			//At this rate one clone takes about 95 seconds to produce.(with heal_level 90)
-			src.occupant.toxloss = max(src.occupant.toxloss-0.5, 0)
+			src.occupant.toxloss = max(src.occupant.toxloss-0.1, 0)
 
 			//Premature clones may have brain damage.
 			src.occupant.brainloss = max(src.occupant.brainloss-1, 0)
@@ -541,12 +543,13 @@
 			//Stop baking in the tubes you jerks.
 			src.occupant.fireloss = max(src.occupant.fireloss-2, 0)
 
-			use_power(7500) //This might need tweaking.
+			use_power(75000) //This might need tweaking.
 			return
 
 		else if((src.occupant.health >= src.heal_level) && (!src.eject_wait))
 			src.connected_message("Cloning Process Complete.")
 			src.locked = 0
+			src.occupant.toxloss = 150
 			src.go_out()
 			return
 

@@ -188,6 +188,11 @@
 	update_nearby_tiles(need_rebuild=1)
 
 	src.ini_dir = src.dir
+	if(ticker && !(dir & dir - 1))
+		var/turf/L = loc
+		var/turf/M = get_step(L,src.dir)
+		if(L.zone == M.zone && L.zone)
+			L.zone.Split(L,M)
 	return
 
 /obj/window/New(Loc,re=0)
@@ -204,6 +209,12 @@
 		health = 40
 
 	update_nearby_tiles(need_rebuild=1)
+
+	if(ticker && !(dir & dir - 1))
+		var/turf/L = loc
+		var/turf/M = get_step(L,src.dir)
+		if(L.zone == M.zone && L.zone)
+			L.zone.Split(L,M)
 
 	return
 
@@ -222,6 +233,12 @@
 
 	src.dir = src.ini_dir
 	update_nearby_tiles(need_rebuild=1)
+
+	if(ticker && !(dir & dir - 1))
+		var/turf/L = loc
+		var/turf/M = get_step(L,src.dir)
+		if(L.zone == M.zone && L.zone)
+			L.zone.Split(L,M)
 
 	return
 

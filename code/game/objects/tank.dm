@@ -45,6 +45,8 @@
 			if(istype(loc,/mob/living/carbon))
 				var/mob/living/carbon/location = loc
 				if(location.internal == src)
+					location.internal = null
+					location.internals.icon_state = "internal0"
 					usr << "\blue You close the tank release valve."
 				else
 					if(location.wear_mask && (location.wear_mask.flags & MASKINTERNALS))
@@ -247,27 +249,27 @@
 /obj/item/weapon/tank/air/New()
 	..()
 
-	src.air_contents.oxygen = (6*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD
-	src.air_contents.nitrogen = (6*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD
+	src.air_contents.oxygen = (1*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD
+	src.air_contents.nitrogen = (1*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD
 	return
 
 /obj/item/weapon/tank/oxygen/New()
 	..()
 
-	src.air_contents.oxygen = (6*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C)
+	src.air_contents.oxygen = (1*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C)
 	return
 
 /obj/item/weapon/tank/emergency_oxygen/New()
 	..()
 
-	src.air_contents.oxygen = (3*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C)
+	src.air_contents.oxygen = (0.20*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C)
 	return
 
 /obj/item/weapon/tank/jetpack/New()
 	..()
 	src.ion_trail = new /datum/effects/system/ion_trail_follow()
 	src.ion_trail.set_up(src)
-	src.air_contents.oxygen = (6*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C)
+	src.air_contents.oxygen = (1*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C)
 	return
 
 /obj/item/weapon/tank/jetpack/verb/toggle()

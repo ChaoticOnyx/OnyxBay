@@ -17,18 +17,18 @@ var/supply_shuttle_time = 0
 var/supply_shuttle_timeleft = 0
 var/supply_shuttle_points = 50
 
-/area/supply/station //DO NOT TURN THE SD_LIGHTING STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
+/area/supply/station //DO NOT TURN THE ul_Lighting STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
 	name = "supply shuttle"
 	icon_state = "shuttle3"
 	luminosity = 1
-	sd_lighting = 0
+	ul_Lighting = 0
 	requires_power = 0
 
-/area/supply/dock //DO NOT TURN THE SD_LIGHTING STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
+/area/supply/dock //DO NOT TURN THE ul_Lighting STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
 	name = "supply shuttle"
 	icon_state = "shuttle3"
 	luminosity = 1
-	sd_lighting = 0
+	ul_Lighting = 0
 	requires_power = 0
 
 //SUPPLY PACKS
@@ -38,9 +38,6 @@ var/supply_shuttle_points = 50
 /datum/supply_packs/specialops
 	name = "Special Ops supplies"
 	contains = list("/obj/item/weapon/storage/emp_kit",
-					"/obj/item/weapon/smokebomb",
-					"/obj/item/weapon/smokebomb",
-					"/obj/item/weapon/smokebomb",
 					"/obj/item/weapon/pen/sleepypen",
 					"/obj/item/weapon/incendiarygrenade")
 	cost = 20
@@ -91,9 +88,9 @@ var/supply_shuttle_points = 50
 	contains = list("/obj/item/weapon/reagent_containers/food/snacks/flour",
 					"/obj/item/weapon/reagent_containers/food/snacks/flour",
 					"/obj/item/weapon/reagent_containers/food/snacks/flour",
-					"/obj/item/weapon/reagent_containers/food/snacks/faggot",
-					"/obj/item/weapon/reagent_containers/food/snacks/faggot",
-					"/obj/item/weapon/reagent_containers/food/snacks/faggot",
+			//		"/obj/item/weapon/reagent_containers/food/snacks/faggot",
+			//		"/obj/item/weapon/reagent_containers/food/snacks/faggot",
+			//		"/obj/item/weapon/reagent_containers/food/snacks/faggot",
 					"/obj/item/kitchen/egg_box",
 					"/obj/item/weapon/banana",
 					"/obj/item/weapon/banana",
@@ -130,15 +127,9 @@ var/supply_shuttle_points = 50
 /datum/supply_packs/janitor
 	name = "Janitorial supplies"
 	contains = list("/obj/item/weapon/reagent_containers/glass/bucket",
-					"/obj/item/weapon/reagent_containers/glass/bucket",
-					"/obj/item/weapon/reagent_containers/glass/bucket",
 					"/obj/item/weapon/mop",
 					"/obj/item/weapon/caution",
-					"/obj/item/weapon/caution",
-					"/obj/item/weapon/caution",
 					"/obj/item/weapon/cleaner",
-					"/obj/item/weapon/chem_grenade/cleaner",
-					"/obj/item/weapon/chem_grenade/cleaner",
 					"/obj/item/weapon/chem_grenade/cleaner",
 					"/obj/mopbucket")
 	cost = 10
@@ -148,16 +139,8 @@ var/supply_shuttle_points = 50
 /datum/supply_packs/plasma
 	name = "Plasma assembly crate"
 	contains = list("/obj/item/weapon/tank/plasma",
-					"/obj/item/weapon/tank/plasma",
-					"/obj/item/weapon/tank/plasma",
-					"/obj/item/device/igniter",
-					"/obj/item/device/igniter",
 					"/obj/item/device/igniter",
 					"/obj/item/device/prox_sensor",
-					"/obj/item/device/prox_sensor",
-					"/obj/item/device/prox_sensor",
-					"/obj/item/device/timer",
-					"/obj/item/device/timer",
 					"/obj/item/device/timer")
 	cost = 10
 	containertype = "/obj/crate/secure/plasma"
@@ -181,14 +164,7 @@ var/supply_shuttle_points = 50
 
 /datum/supply_packs/eweapons
 	name = "Experimental weapons crate"
-	contains = list("/obj/item/weapon/flamethrower",
-					"/obj/item/weapon/tank/plasma",
-					"/obj/item/weapon/tank/plasma",
-					"/obj/item/weapon/tank/plasma",
-					"/obj/item/weapon/incendiarygrenade",
-					"/obj/item/weapon/incendiarygrenade",
-					"/obj/item/weapon/incendiarygrenade",
-					"/obj/item/clothing/gloves/stungloves")
+	contains = list("/obj/item/clothing/gloves/stungloves")
 	cost = 25
 	containertype = "/obj/crate/secure/weapon"
 	containername = "Experimental weapons crate"
@@ -263,11 +239,9 @@ var/supply_shuttle_points = 50
 
 /datum/supply_packs/robot
 	name = "Robotics Crate"
-	contains = list("/obj/machinery/bot/secbot",
-	"/obj/machinery/bot/floorbot",
+	contains = list("/obj/machinery/bot/floorbot",
 	"/obj/machinery/bot/cleanbot",
-	"/obj/machinery/bot/medbot",
-	"/obj/machinery/bot/mulebot")
+	"/obj/machinery/bot/medbot")
 	cost = 35
 	containertype = "/obj/crate"
 	containername = "Robotics Crate"

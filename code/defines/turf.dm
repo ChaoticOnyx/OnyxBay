@@ -33,6 +33,7 @@
 	heat_capacity = 700000
 
 /turf/space/New()
+	..()
 	icon = 'space.dmi'
 	icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
 
@@ -68,6 +69,20 @@
 	heat_capacity = 225000
 	var/broken = 0
 	var/burnt = 0
+	var/turf/simulated/floor/open/open = null
+
+	New()
+		..()
+		var/turf/T = locate(x,y,z-1)
+		if(T)
+			if(T.type == /turf/simulated/floor/open)
+				open = T
+
+	Enter(var/atom/movable/AM)
+		. = ..()
+		spawn()
+			if(open)
+				open.update()
 
 	airless
 		name = "airless floor"
@@ -84,24 +99,69 @@
 		intact = 0
 		icon_state = "open"
 		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
+		var/icon/darkoverlay = null
+		var/turf/floorbelow
 
 		New()
-			if(!istype(locate(x, y, z + 1), /turf/simulated/floor))	//If we're building on top of a wall, etc
-				var/turf/simulated/floor/F = new(src)				//Then change to a floor tile (no falling into walls)
-				F.sd_RasterLum()
-				return
-			return ..()
+			..()
+			spawn(1)
+				floorbelow = locate(x, y, z + 1)
+				update()
+			var/turf/T = locate(x, y, z + 1)
+			switch (T.type) //Somehow, I don't think I thought this cunning plan all the way through - Sukasa
+				if (/turf/simulated/floor)
+					//Do nothing - valid
+				if (/turf/simulated/floor/plating)
+					//Do nothing - valid
+				if (/turf/simulated/floor/engine)
+					//Do nothing - valid
+				if (/turf/simulated/floor/engine/vacuum)
+					//Do nothing - valid
+				if (/turf/simulated/floor/airless)
+					//Do nothing - valid
+				if (/turf/simulated/floor/grid)
+					//Do nothing - valid
+				if (/turf/simulated/floor/plating/airless)
+					//Do nothing - valid
+				if (/turf/simulated/floor/open)
+					//Do nothing - valid
+				if (/turf/space)
+					var/turf/space/F = new(src)									//Then change to a Space tile (no falling into space)
+					F.name = F.name
+					return
+				else
+					var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
+					F.name = F.name
+					return
+
 
 		Enter(var/atom/movable/AM)
 			if (1) //TODO make this check if gravity is active (future use) - Sukasa
 				spawn(1)
 					AM.Move(locate(x, y, z + 1))
+					if (istype(AM, /mob))
+						AM:bruteloss += 5
+						AM:updatehealth()
 			return ..()
+
+		proc
+			update() //Update the overlays to make the openspace turf show what's down a level
+				src.clearoverlays()
+				src.addoverlay(floorbelow)
+
+				for(var/obj/o in floorbelow.contents)
+					src.addoverlay(image(o, dir=o.dir))
 
 	plating
 		name = "plating"
 		icon_state = "plating"
 		intact = 0
+
+
+
+/proc/update_open()
+	for(var/turf/simulated/floor/open/a in world)
+		a.update()
 
 /turf/simulated/floor/plating/airless
 	name = "airless plating"

@@ -528,7 +528,7 @@
 			on = 0
 			return
 		if(on)
-			var/speed = ((wires & wire_motor1) ? 1:0) + ((wires & wire_motor2) ? 2:0)
+			var/speed = 1//((wires & wire_motor1) ? 1:0) + ((wires & wire_motor2) ? 2:0)
 			//world << "speed: [speed]"
 			switch(speed)
 				if(0)

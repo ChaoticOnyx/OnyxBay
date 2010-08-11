@@ -91,6 +91,16 @@
 
 		handle_disabilities()
 
+
+			if(src.hallucination > 0)
+				if(src.hallucinations.len == 0 && src.hallucination >= 20)
+					if(prob(20))
+						fake_attack(src)
+				src.hallucination -= 1
+			else
+				src.halloss = 0
+
+
 			if (src.disabilities & 2)
 				if ((prob(1) && src.paralysis < 1 && src.r_epil < 1))
 					src << "\red You have a seizure!"
@@ -212,8 +222,8 @@
 				//First, check for air from internal atmosphere (using an air tank and mask generally)
 				breath = get_breath_from_internal(BREATH_VOLUME)
 
-				//No breath from internal atmosphere so get breath from location
-				if(!breath)
+				//No breath from internal atmosphere so suffocate if wearing them, otherwise try and breathe external atmosphere
+				if(!breath && !internal)
 					if(istype(loc, /obj/))
 						var/obj/location_as_object = loc
 						breath = location_as_object.handle_internal_lifeform(src, BREATH_VOLUME)
@@ -263,7 +273,7 @@
 				return
 
 			if(!breath || (breath.total_moles() == 0))
-				oxyloss += 7
+				oxyloss += 14
 
 				oxygen_alert = max(oxygen_alert, 1)
 
@@ -584,7 +594,7 @@
 
 		handle_regular_status_updates()
 
-			health = 100 - (oxyloss + toxloss + fireloss + bruteloss)
+			health = 100 - (oxyloss + toxloss + fireloss + bruteloss + halloss)
 
 			if(oxyloss > 50) paralysis = max(paralysis, 3)
 

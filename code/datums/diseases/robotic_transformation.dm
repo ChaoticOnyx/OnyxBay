@@ -9,6 +9,8 @@
 
 /datum/disease/robotic_transformation/stage_act()
 	..()
+	if (!affected_mob.stat != 2)
+		return
 	switch(stage)
 		if(2)
 			if (prob(8))

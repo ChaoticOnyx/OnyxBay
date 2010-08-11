@@ -5,11 +5,13 @@
 	src.icon = 'alert.dmi'
 	spawn(1)
 	//world.log << "New: [src] [tag]"
-		var/sd_created = findtext(tag,"sd_L")
-		sd_New(sd_created)
-		if(sd_created)
+		if(name == "Space")			// override defaults for space
+			ul_Lighting = 0
+		ul_Prep()
+		if(findtext(tag,":UL") != 0)
 			related += src
 			return
+
 		master = src
 		related = list(src)
 
@@ -23,35 +25,19 @@
 			power_light = 1
 			power_equip = 1
 			power_environ = 1
-			luminosity = 1
-			sd_lighting = 0			// *DAL*
+			//luminosity = 1
+			ul_Lighting = 0			// *DAL*
 		else
 			luminosity = 0
-			//sd_SetLuminosity(0)		// *DAL*
+			//ul_SetLuminosity(0)		// *DAL*
 
 
-	/*spawn(5)
-		for(var/turf/T in src)		// count the number of turfs (for lighting calc)
-			if(no_air)
-				T.oxygen = 0		// remove air if so specified for this area
-				T.n2 = 0
-				T.res_vars()
+		spawn(15)
+			src.power_change()		// all machines set to current power level, also updates lighting icon
 
-	*/
-
-
-	spawn(15)
-		src.power_change()		// all machines set to current power level, also updates lighting icon
-
-/*
-/proc/get_area(area/A)
-	while (A)
-		if (istype(A, /area))
-			return A
-
-		A = A.loc
-	return null
-*/
+/area/Del()
+	related -= src
+	..()
 
 /area/proc/poweralert(var/state, var/source)
 	if (state != poweralm)
@@ -142,7 +128,6 @@
 		else
 			icon_state = "blue-red"
 	else
-	//	new lighting behaviour with obj lights
 		icon_state = null
 
 
@@ -169,7 +154,6 @@
 // called when power status changes
 
 /area/proc/power_change()
-
 
 	for(var/area/RA in related)
 		for(var/obj/machinery/M in RA)	// for each machine in the area

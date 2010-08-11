@@ -246,7 +246,7 @@ datum/preferences
 			HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[occ];job=Captain\">Captain</a><br>"
 		HTML += "<br>"
 		HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[occ];job=No Preference\">\[No Preference\]</a><br>"
-		HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[occ];cancel\">\[Cancel\]</a>"
+		HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[occ];cancel=1\">\[Cancel\]</a>"
 		HTML += "</center></tt>"
 
 		user << browse(null, "window=preferences")
@@ -254,7 +254,7 @@ datum/preferences
 		return
 
 	proc/SetJob(mob/user, occ=1, job="Captain")
-		if ((!( occupations.Find(job) ) && !( assistant_occupations.Find(job) ) && job != "Captain"))
+		if ((!( occupations.Find(job) ) && !( assistant_occupations.Find(job) ) && job != "Captain") && job != "No Preference")
 			return
 		if (job=="AI" && (!config.allow_ai))
 			return
@@ -269,6 +269,7 @@ datum/preferences
 				else
 					if (job == "No Preference")
 						src.occupation1 = "No Preference"
+						ShowChoices(user)
 					else
 						if (job == src.occupation2)
 							job = src.occupation1
@@ -284,7 +285,7 @@ datum/preferences
 			if(2.0)
 				if (job == src.occupation2)
 					user << browse(null, "window=mob_occupation")
-					return
+					ShowChoices(user)
 				else
 					if (job == "No Preference")
 						if (src.occupation3 != "No Preference")
@@ -310,7 +311,7 @@ datum/preferences
 			if(3.0)
 				if (job == src.occupation3)
 					user << browse(null, "window=mob_occupation")
-					return
+					ShowChoices(user)
 				else
 					if (job == "No Preference")
 						src.occupation3 = "No Preference"
@@ -342,8 +343,8 @@ datum/preferences
 
 		if (link_tags["occ"])
 			if (link_tags["cancel"])
-				user << browse(null, "window=\ref[user]occupation")
-				return
+				user << browse(null, "window=mob_occupation")
+				ShowChoices(user)
 			else if(link_tags["job"])
 				src.SetJob(user, text2num(link_tags["occ"]), link_tags["job"])
 			else

@@ -344,7 +344,9 @@ to clean it up, or just beat the shit out of it (which takes ages).
 			else
 				src.m_select.screen_loc = null
 
-	if (src.alien_invis)
+	if(client && client.admin_invis)
+		src.invisibility = 100
+	else if (src.alien_invis)
 		src.invisibility = 2
 	else
 		src.invisibility = 0

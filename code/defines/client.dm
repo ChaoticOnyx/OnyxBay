@@ -1,9 +1,5 @@
 /client
 	var/obj/admins/holder = null
-	var/authenticated = 0
-	var/goon = 0
-	var/beta_tester = 0
-	var/authenticating = 0
 	var/listen_ooc = 1
 	var/move_delay = 1
 	var/moving = null
@@ -22,7 +18,7 @@
 	var/stealth = 0
 	var/fakekey = null
 	var/warned = 0
+	var/admin_invis = 0
 
-	authenticate = 0
 	// comment out the line below when debugging locally to enable the options & messages menu
 	control_freak = 1

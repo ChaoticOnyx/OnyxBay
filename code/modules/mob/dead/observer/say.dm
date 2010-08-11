@@ -13,18 +13,3 @@
 		return
 
 	. = src.say_dead(message)
-
-	for (var/mob/M in hearers(null, null))
-		if (!M.stat)
-			if(M.job == "Chaplain")
-				if (prob (49))
-					M.show_message("<span class='game'><i>You hear muffled speech... but nothing is there...</i></span>", 2)
-				else
-					M.show_message("<span class='game'><i>[stutter(message)]</i></span>", 2)
-			else
-				if (prob(50))
-					return
-				else if (prob (95))
-					M.show_message("<span class='game'><i>You hear muffled speech... but nothing is there...</i></span>", 2)
-				else
-					M.show_message("<span class='game'><i>[stutter(message)]</i></span>", 2)

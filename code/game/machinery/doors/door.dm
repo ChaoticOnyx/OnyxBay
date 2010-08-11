@@ -1,5 +1,5 @@
 /obj/machinery/door/Bumped(atom/AM)
-	if(p_open || operating) return
+	if(p_open || operating || !density) return
 	if(ismob(AM))
 		var/mob/M = AM
 		if(world.timeofday - AM.last_bumped <= 5) return
@@ -169,7 +169,7 @@
 	src.density = 0
 	update_icon()
 
-	src.sd_SetOpacity(0)
+	src.ul_SetOpacity(0)
 	update_nearby_tiles()
 
 	if(operating == 1) //emag again
@@ -193,7 +193,7 @@
 	update_icon()
 
 	if (src.visible && (!istype(src, /obj/machinery/door/airlock/glass)))
-		src.sd_SetOpacity(1)
+		src.ul_SetOpacity(1)
 	if(operating == 1)
 		operating = 0
 	update_nearby_tiles()

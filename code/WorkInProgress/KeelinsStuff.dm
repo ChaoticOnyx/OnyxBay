@@ -19,7 +19,6 @@
 	name = "Keelin's private beach"
 	icon_state = "null"
 	luminosity = 1
-	sd_lighting = 0
 	requires_power = 0
 	var/sound/mysound = null
 
@@ -141,7 +140,16 @@
 	opacity = 0
 	var/mob/living/carbon/human/my_target = null
 	var/weapon_name = null
-
+	var/obj/item/weap = null
+	var/image/stand_icon = null
+	var/image/currentimage = null
+	var/icon/base = null
+	var/s_tone
+	var/mob/living/clone = null
+	var/icon/left
+	var/icon/right
+	var/icon/up
+	var/icon/down
 /obj/fake_attacker/attackby()
 	step_away(src,my_target,2)
 	for(var/mob/M in oviewers(world.view,my_target))
@@ -157,19 +165,35 @@
 				O << "\red <B>[my_target] stumbles around.</B>"
 
 /obj/fake_attacker/New()
-	spawn(300) del(src)
+	spawn(300)
+		my_target.hallucinations -= src
+		del(src)
 	step_away(src,my_target,2)
 	proccess()
 
 /obj/fake_attacker/proc/proccess()
 	if(!my_target) spawn(5) .()
 	if(get_dist(src,my_target) > 1)
+		src.dir = get_dir(src,my_target)
 		step_towards_3d(src,my_target)
+	/*	del src.currentimage
+		if(src.dir == NORTH)
+			src.currentimage = new /image(up,src)
+		else if(src.dir == SOUTH)
+			src.currentimage = new /image(down,src)
+		else if(src.dir == EAST)
+			src.currentimage = new /image(right,src)
+		else if(src.dir == WEST)
+			src.currentimage = new /image(left,src)
+		src.currentimage = new /image(clone,src,dir = src.dir)*/
+	//	my_target << currentimage
+
 	else
 		if(prob(15))
 			if(weapon_name)
 				my_target << sound(pick('genhit1.ogg', 'genhit2.ogg', 'genhit3.ogg'))
 				my_target.show_message("\red <B>[my_target] has been attacked with [weapon_name] by [src.name] </B>", 1)
+				my_target.halloss += 8
 				if(prob(20)) my_target.eye_blurry += 3
 				if(prob(33))
 					if(!locate(/obj/overlay) in my_target.loc)
@@ -177,11 +201,13 @@
 			else
 				my_target << sound(pick('punch1.ogg','punch2.ogg','punch3.ogg','punch4.ogg'))
 				my_target.show_message("\red <B>[src.name] has punched [my_target]!</B>", 1)
+				my_target.halloss += 4
 				if(prob(33))
 					if(!locate(/obj/overlay) in my_target.loc)
 						fake_blood(my_target)
 
-	if(prob(15)) step_away(src,my_target,2)
+	if(prob(15))
+		step_away(src,my_target,2)
 	spawn(5) .()
 
 /proc/fake_blood(var/mob/target)
@@ -204,21 +230,43 @@
 
 	if(!possible_clones.len) return
 	clone = pick(possible_clones)
-
+	var/obj/fake_attacker/F = new/obj/fake_attacker(target.loc)
 	if(clone.l_hand)
 		clone_weapon = clone.l_hand.name
+		F.weap = clone.l_hand
 	else if (clone.r_hand)
 		clone_weapon = clone.r_hand.name
-
-	var/obj/fake_attacker/F = new/obj/fake_attacker(target.loc)
+		F.weap = clone.l_hand
 
 	F.name = clone.name
 	F.my_target = target
 	F.weapon_name = clone_weapon
+	target.hallucinations += F
+//	F.base = new /icon(clone.stand_icon)
+//	F.currentimage = new /image(clone)
+
+/*
+
+
+	F.left = new /icon(clone.stand_icon,dir=WEST)
+	for(var/icon/i in clone.overlays)
+		F.left.Blend(i)
+	F.up = new /icon(clone.stand_icon,dir=NORTH)
+	for(var/icon/i in clone.overlays)
+		F.up.Blend(i)
+	F.down = new /icon(clone.stand_icon,dir=SOUTH)
+	for(var/icon/i in clone.overlays)
+		F.down.Blend(i)
+	F.right = new /icon(clone.stand_icon,dir=EAST)
+	for(var/icon/i in clone.overlays)
+		F.right.Blend(i)
+
+	target << F.up
+	*/
+
 
 	var/image/O = image(clone,F)
 	target << O
-
 
 /proc/can_see(var/atom/source, var/atom/target, var/length=5) // I couldnt be arsed to do actual raycasting :I This is horribly inaccurate.
 	var/turf/current = get_turf(source)
@@ -495,9 +543,9 @@
 
 					var/area/AR = X.loc
 
-					if(AR.sd_lighting)
+					if(AR.ul_Lighting)
 						X.opacity = !X.opacity
-						X.sd_SetOpacity(!X.opacity)
+						X.ul_SetOpacity(!X.opacity)
 
 					toupdate += X
 
@@ -506,9 +554,9 @@
 
 						var/area/AR2 = ttl.loc
 
-						if(AR2.sd_lighting)
+						if(AR2.ul_Lighting)
 							ttl.opacity = !ttl.opacity
-							ttl.sd_SetOpacity(!ttl.opacity)
+							ttl.ul_SetOpacity(!ttl.opacity)
 
 						fromupdate += ttl
 

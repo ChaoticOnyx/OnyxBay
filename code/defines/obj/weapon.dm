@@ -332,8 +332,8 @@
 /obj/item/weapon/dummy
 	name = "dummy"
 	invisibility = 101.0
-	anchored = 1.0
-	flags = 2.0
+	anchored = 0
+	flags = TABLEPASS
 
 /obj/item/weapon/extinguisher
 	name = "fire extinguisher"
@@ -655,7 +655,7 @@
 
 /obj/item/weapon/caution
 	desc = "Caution! Wet Floor!"
-	name = "wet floor sign"
+	name = "Wet Floor Sign"
 	icon = 'janitor.dmi'
 	icon_state = "caution"
 	force = 1.0
