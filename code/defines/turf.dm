@@ -56,7 +56,14 @@
 	name = "vacuum floor"
 	icon_state = "engine"
 	oxygen = 0
-	nitrogen = 0.001
+	nitrogen = 0.000
+	temperature = TCMB
+
+/turf/simulated/floor/engine/hull
+	name = "Hull Plating"
+	icon_state = "engine"
+	oxygen = 0
+	nitrogen = 0.000
 	temperature = TCMB
 
 /turf/simulated/floor/
@@ -155,7 +162,7 @@
 		proc
 			update() //Update the overlays to make the openspace turf show what's down a level
 				src.clearoverlays()
-				src.addoverlay(floorbelow)
+				src.addoverlay(floorbelow) //temporarily disabled
 
 				for(var/obj/o in floorbelow.contents)
 					src.addoverlay(image(o, dir=o.dir))

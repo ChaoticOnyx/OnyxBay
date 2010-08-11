@@ -136,17 +136,20 @@ obj/machinery/atmospherics/pipe
 					parent.temperature_interact(loc, volume, thermal_conductivity)
 
 		check_pressure(pressure)
+			var/turf/T = get_turf(src)
+
+			if(istype(T, /turf/simulated/wall))
+				return 1 //Don't break if you're in a wall
+
 			var/datum/gas_mixture/environment = loc.return_air()
 
 			var/pressure_difference = pressure - environment.return_pressure()
 
 			if(pressure_difference > maximum_pressure)
-				world << "Pressure of [pressure_difference] in pipe at [x] [y] [z] above maximum pressure delta ([maximum_pressure]) causing failure"
 				del(src)
 
 			else if(pressure_difference > fatigue_pressure)
 				if(prob(5))
-					world << "Pressure of [pressure_difference] in pipe at [x] [y] [z] above fatigue pressure delta ([fatigue_pressure]) causing failure"
 					del(src)
 
 			else return 1
