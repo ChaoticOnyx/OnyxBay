@@ -129,12 +129,11 @@ zone
 		if(!ticker) //If this zone was created at startup, add gases.
 			if(istype(start,/turf/simulated/floor/airless) || istype(start,/turf/simulated/floor/engine/vacuum) || istype(start,/turf/simulated/floor/plating/airless))
 				oxygen = 0
-				nitrogen = 0
+				nitrogen = 0.0001
+				co2 = 0
 			else
 				oxygen = MOLES_O2STANDARD * members.len
 				nitrogen = MOLES_N2STANDARD * members.len
-				oxygen_archive = oxygen
-				nitrogen_archive = nitrogen
 		else if(soxy > 0 || snitro > 0 || sco2 > 0)
 			oxygen = soxy * members.len
 			nitrogen = snitro * members.len
@@ -446,6 +445,8 @@ proc/FloodFill(turf/start,remove_extras)
 				tmp_edges += T
 				continue
 			var/unblocked = T.GetUnblockedCardinals()
+			unblocked -= get_step(T,UP)
+			unblocked -= get_step(T,DOWN)
 	//		var/border_added = 0
 			for(var/turf/simulated/U in unblocked)
 				if((U in borders) || (U in .)) continue

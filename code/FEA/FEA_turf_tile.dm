@@ -83,7 +83,7 @@ turf
 	simulated
 		proc
 			consider_pressure_difference_space(connection_difference)
-				for(var/direction in cardinal3d)
+				for(var/direction in cardinal)
 					if(direction&group_border)
 						if(istype(get_step(src,direction),/turf/space))
 							if(!pressure_difference)
@@ -165,7 +165,7 @@ turf
 
 			else
 				if(air_master)
-					for(var/direction in cardinal3d)
+					for(var/direction in cardinal)
 						var/turf/simulated/floor/target = get_step_3d(src,direction)
 						if(istype(target))
 							air_master.tiles_to_update.Add(target)
@@ -290,7 +290,7 @@ turf
 					if(!zone)
 						spawn new/zone(src)
 
-			for(var/direction in cardinal3d)
+			for(var/direction in cardinal)
 				var/turf/simulated/Ch = get_step_3d(src,direction)
 				if(!Ch) continue
 				if(CanPass(null, Ch, 0, 0))
@@ -304,7 +304,7 @@ turf
 					length_space_border = 0
 
 				group_border = 0
-				for(var/direction in cardinal3d)
+				for(var/direction in cardinal)
 					if(air_check_directions&direction)
 						var/turf/simulated/T = get_step_3d(src,direction)
 
@@ -386,7 +386,7 @@ turf
 					archive()
 				current_cycle = air_master.current_cycle
 
-				for(var/direction in cardinal3d)
+				for(var/direction in cardinal)
 					if(air_check_directions&direction) //Grab all valid bordering tiles
 						var/turf/simulated/enemy_tile = get_step_3d(src, direction)
 						if(dbg_processing && (direction == 16 || direction == 32))

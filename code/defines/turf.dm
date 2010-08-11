@@ -159,6 +159,12 @@
 
 				for(var/obj/o in floorbelow.contents)
 					src.addoverlay(image(o, dir=o.dir))
+				if(istype(floorbelow,/turf/simulated))
+					air.share(floorbelow:air)
+					air.temperature_share(floorbelow:air,FLOOR_HEAT_TRANSFER_COEFFICIENT)
+				else
+					air.mimic(floorbelow,1)
+					air.temperature_mimic(floorbelow,FLOOR_HEAT_TRANSFER_COEFFICIENT,1)
 
 	plating
 		name = "plating"

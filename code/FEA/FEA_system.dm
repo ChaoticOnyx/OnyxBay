@@ -201,7 +201,7 @@ datum
 				while(possible_members.len>0) //Keep expanding, looking for new members
 					for(var/turf/simulated/test in possible_members)
 						test.length_space_border = 0
-						for(var/direction in cardinal3d)
+						for(var/direction in cardinal)
 							var/turf/T = get_step_3d(test,direction)
 							if(T && !members.Find(T) && test.CanPass(null, T, null,1))
 								if(istype(T,/turf/simulated) && !T:parent)
