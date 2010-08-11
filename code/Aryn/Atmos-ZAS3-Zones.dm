@@ -353,9 +353,9 @@ zone
 			//		if(C.zone == T.zone || C.zone == src) continue
 			//		if(!(C.zone in connections)) continue
 			//		Disconnect(S,C,pc+1)
-			S.overlays -= /obj/debug_connect_obj//'debug_connect.dmi'
+			//S.overlays -= /obj/debug_connect_obj//'debug_connect.dmi'
 			//S.overlays += 'Zone.dmi'
-			T.overlays -= /obj/debug_connect_obj//'debug_connect.dmi'
+		//	T.overlays -= /obj/debug_connect_obj//'debug_connect.dmi'
 			//T.overlays += 'Zone.dmi'
 			if(!(S.HasDoor(1) || T.HasDoor(1)))
 				direct_connections -= T.zone
@@ -424,9 +424,9 @@ zone
 		direct_connections -= Z
 		del Z
 
-obj/debug_connect_obj
-	icon = 'debug_connect.dmi'
-	layer = 150
+//obj/debug_connect_obj
+//	icon = 'debug_connect.dmi'
+//	layer = 150
 
 var/list/tmp_spaceconnections = list()
 var/list/tmp_edges = list()
@@ -595,7 +595,7 @@ turf/proc/GetUnblockedCardinals()
 //	if(locate(/obj/machinery/door) in east) . += east
 //	if(locate(/obj/machinery/door) in west) . += west
 
-/turf/verb/ZoneInfo()
+/*turf/verb/ZoneInfo()
 	set src in view()
 	if(usr.ckey != "iaryni")
 		usr << "This verb is restricted to Aryn for purposes of debugging the atmospherics system."
@@ -608,7 +608,7 @@ turf/proc/GetUnblockedCardinals()
 	world << "Zone Connections: [zone.connections.len]"
 	world << "Direct Connections: [zone.direct_connections.len]"
 	for(var/turf/simulated/T)
-		T.overlays -= 'debug_group.dmi'
+		//T.overlays -= 'debug_group.dmi'
 		T.overlays -= 'debug_space.dmi'
 	for(var/turf/T in zone.members)
 		T.overlays += 'debug_group.dmi'
@@ -626,7 +626,7 @@ turf/proc/GetUnblockedCardinals()
 			else
 				world << "Z[zones.Find(Z)] - Failure"
 		else
-			world << "[Z] - N/A"
+			world << "[Z] - N/A" */
 turf/verb/AddToOtherZone()
 	set src in view()
 	add_to_other_zone()
