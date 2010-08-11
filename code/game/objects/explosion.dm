@@ -10,10 +10,10 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 		playsound(epicenter.loc, 'explosionfar.ogg', 100, 1, round(devastation_range*2,1) )
 		playsound(epicenter.loc, "explosion", 100, 1, round(devastation_range,1) )
 
-		if(heavy_impact_range > 1)
-			var/datum/effects/system/explosion/E = new/datum/effects/system/explosion()
-			E.set_up(epicenter)
-			E.start()
+		//if(heavy_impact_range > 1)
+		//	var/datum/effects/system/explosion/E = new/datum/effects/system/explosion()
+		//	E.set_up(epicenter)
+		//	E.start()
 
 		for(var/turf/T in range(light_impact_range, epicenter))
 			var/distance = get_dist(epicenter, T)

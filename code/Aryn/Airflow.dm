@@ -1,21 +1,21 @@
 vs_control/var
-	AF_TINY_MOVEMENT_THRESHOLD = 15 //% difference to move tiny items.
-	AF_SMALL_MOVEMENT_THRESHOLD = 25 //% difference to move small items.
-	AF_NORMAL_MOVEMENT_THRESHOLD = 30 //% difference to move normal items.
-	AF_LARGE_MOVEMENT_THRESHOLD = 40 //% difference to move large and huge items.
-	AF_MOVEMENT_THRESHOLD = 45 //% difference to move dense crap and mobs.
+	AF_TINY_MOVEMENT_THRESHOLD = 25 //% difference to move tiny items.
+	AF_SMALL_MOVEMENT_THRESHOLD = 35 //% difference to move small items.
+	AF_NORMAL_MOVEMENT_THRESHOLD = 45 //% difference to move normal items.
+	AF_LARGE_MOVEMENT_THRESHOLD = 55 //% difference to move large and huge items.
+	AF_MOVEMENT_THRESHOLD = 65 //% difference to move dense crap and mobs.
 
 	AF_PERCENT_OF = ONE_ATMOSPHERE
 
-	AF_CANISTER_P = ONE_ATMOSPHERE*40
+	AF_CANISTER_P = ONE_ATMOSPHERE*20
 
 	AF_SPEED_MULTIPLIER = 2 //airspeed per movement threshold value crossed.
 	AF_DAMAGE_MULTIPLIER = 5 //Amount of damage applied per airflow_speed.
-	AF_STUN_MULTIPLIER = 3 //Seconds of stun applied per airflow_speed.
+	AF_STUN_MULTIPLIER = 1.5 //Seconds of stun applied per airflow_speed.
 	AF_SPEED_DECAY = 0.5 //Amount that flow speed will decay with time.
 	AF_SPACE_MULTIPLIER = 2 //Increasing this will make space connections more DRAMATIC!
 
-	air_base_thresh = (15/100) * ONE_ATMOSPHERE
+	air_base_thresh = (25/100) * ONE_ATMOSPHERE
 
 var/vs_control/vsc = new
 
@@ -391,7 +391,7 @@ atom/movable
 							if("r_foot")
 								temp.take_damage(b_loss * 0.0225, 0)
 				spawn src:UpdateDamageIcon()
-				if(airflow_speed > 5)
+				if(airflow_speed > 10)
 					src:paralysis += round(airflow_speed * vsc.AF_STUN_MULTIPLIER)
 					src:stunned = max(src:stunned,src:paralysis + 3)
 				else

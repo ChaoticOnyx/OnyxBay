@@ -11,6 +11,9 @@
 		for(var/mob/O in hearers(src, null))
 			O.show_message("\red Error, server round has not started", 2)
 		return 0
+	else
+		for(var/mob/O in hearers(src, null))
+			O.show_message("\blue Locked in.", 2)
 	src.addr = address
 	src.add_fingerprint(usr)
 	return

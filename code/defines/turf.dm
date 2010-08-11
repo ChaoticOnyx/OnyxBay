@@ -106,6 +106,10 @@
 			..()
 			spawn(1)
 				floorbelow = locate(x, y, z + 1)
+				if(ticker)
+					add_to_other_zone()
+				if(zone && floorbelow.zone)
+					zone.Connect(src,floorbelow)
 				update()
 			var/turf/T = locate(x, y, z + 1)
 			switch (T.type) //Somehow, I don't think I thought this cunning plan all the way through - Sukasa
@@ -133,6 +137,10 @@
 					var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
 					F.name = F.name
 					return
+		Del()
+			if(zone)
+				zone.Disconnect(src,floorbelow)
+			. = ..()
 
 
 		Enter(var/atom/movable/AM)
@@ -149,8 +157,19 @@
 				src.clearoverlays()
 				//src.addoverlay(floorbelow) //temporarily disabled
 
+<<<<<<< HEAD
 				//for(var/obj/o in floorbelow.contents)
 					//src.addoverlay(image(o, dir=o.dir))
+=======
+				for(var/obj/o in floorbelow.contents)
+					src.addoverlay(image(o, dir=o.dir))
+				if(istype(floorbelow,/turf/simulated))
+					air.share(floorbelow:air)
+					air.temperature_share(floorbelow:air,FLOOR_HEAT_TRANSFER_COEFFICIENT)
+				else
+					air.mimic(floorbelow,1)
+					air.temperature_mimic(floorbelow,FLOOR_HEAT_TRANSFER_COEFFICIENT,1)
+>>>>>>> 73a1bd9a479d5b414359f04f0be105b4a821518a
 
 	plating
 		name = "plating"
@@ -230,6 +249,13 @@
 	name = "floor"
 	icon = 'floors.dmi'
 	icon_state = "Floor3"
+	outer_hull_plating
+		name = "outer hull"
+		icon_state = "shiny"
+		oxygen = 0
+		nitrogen = 0.0001
+		carbon_dioxide = 0
+		toxins = 0
 
 /turf/unsimulated/wall
 	name = "wall"
