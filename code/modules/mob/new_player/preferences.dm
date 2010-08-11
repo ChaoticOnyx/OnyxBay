@@ -503,7 +503,12 @@ datum/preferences
 
 		if(!IsGuestKey(user.key))
 			if(link_tags["save"])
-				src.savefile_save(user)
+				var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`, `real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `underwear`,`name_is_always_random`) VALUES ('[user.ckey]', '[src.real_name]', '[src.gender]', '[src.age]', '[occupation1]','[occupation2]', '[occupation3]', '[src.r_hair]', '[src.g_hair]', '[src.b_hair]', '[src.r_facial]', '[src.g_facial]', '[src.b_facial]', '[src.s_tone]', '[src.h_style]', '[src.f_style]', '[src.r_eyes]', '[src.g_eyes]', '[src.b_eyes]', '[src.b_type]', '[src.be_syndicate]', '[src.underwear]','[src.be_random_name]');")
+				if(!query.Execute())
+					usr << query.ErrorMsg()
+					usr << "Report this."
+				else
+					usr << "Saved"
 
 			else if(link_tags["load"])
 				if (!src.savefile_load(user, 0))

@@ -67,28 +67,50 @@ var/showadminmessages = 1
 
 	/////////////////////////////////////new ban stuff
 	if(href_list["unbanf"])
-		var/banfolder = href_list["unbanf"]
-		Banlist.cd = "/base/[banfolder]"
-		var/key = Banlist["key"]
+		var/key = href_list["unbanf"]
 		if(alert(usr, "Are you sure you want to unban [key]?", "Confirmation", "Yes", "No") == "Yes")
-			if (RemoveBan(banfolder))
+			if (RemoveBan(key))
 				unbanpanel()
 			else
 				alert(usr,"This ban has already been lifted / does not exist.","Error","Ok")
 				unbanpanel()
-
+	if(href_list["uninvite1"])
+		var/key = href_list["uninvite1"]
+		if(alert(usr, "Are you sure you want to uninvite [key]?", "Confirmation", "Yes", "No") == "Yes")
+			if (invite_removetext(key))
+				invite_panel()
+			else
+				alert(usr,"This ban has already been lifted / does not exist.","Error","Ok")
+				invite_panel()
+	if(href_list["invite1"])
+		var/key
+		key = input(usr,"What key do you wish to add?","What Key?","key")
+		if(key == "key")
+			alert(usr,"You can't add 'key.","Error","Ok")
+			invite_panel()
+		if(alert(usr, "Are you sure you want to invite [key]?", "Confirmation", "Yes", "No") == "Yes")
+			if (invite_addtext(key))
+				invite_panel()
+			else
+				alert(usr,"This ban is already there or something went to hell.","Error","Ok")
+				invite_panel()
 	if(href_list["unbane"])
+		var/DBQuery/key_query = dbcon.NewQuery("SELECT * FROM `bans` WHERE ckey='[href_list["unbane"]]'")
+		var/list/ban = list()
+		if(!key_query.Execute())
+			log_admin("[key_query.ErrorMsg()]")
+		else
+			while(key_query.NextRow())
+				ban = key_query.GetRowData()
 		UpdateTime()
 		var/reason
 		var/mins = 0
-		var/banfolder = href_list["unbane"]
-		Banlist.cd = "/base/[banfolder]"
-		var/reason2 = Banlist["reason"]
-		var/temp = Banlist["temp"]
-		var/minutes = (Banlist["minutes"] - CMinutes)
+		var/reason2 = ban["reason"]
+		var/temp = ban["temp"]
+		var/minutes = (text2num(ban["minutes"]) - CMinutes)
 		if(!minutes || minutes < 0) minutes = 0
-		var/banned_key = Banlist["key"]
-		Banlist.cd = "/base"
+		var/banned_key = ban["ckey"]
+
 
 		switch(alert("Temporary Ban?",,"Yes","No"))
 			if("Yes")
@@ -105,16 +127,14 @@ var/showadminmessages = 1
 				reason = input(usr,"Reason?","reason",reason2) as text
 				if(!reason)
 					return
-
-		log_admin("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins)]")
-		message_admins("\blue [key_name_admin(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins)]", 1)
-		Banlist.cd = "/base/[banfolder]"
-		Banlist["reason"] << reason
-		Banlist["temp"] << temp
-		Banlist["minutes"] << (mins + CMinutes)
-		Banlist["bannedby"] << usr.ckey
-		Banlist.cd = "/base"
+		var/mins2 = (mins + CMinutes)
+		log_admin("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins2)]")
+		message_admins("\blue [key_name_admin(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins2)]", 1)
+		var/DBQuery/query = dbcon.NewQuery("UPDATE `bans` SET `reason`='[reason]', `temp`='[temp]',`minutes`='[mins2]', `bannedby`='[usr.ckey]' WHERE `ckey`='[ban["ckey"]]'")
+		if(!query.Execute())
+			log_admin("[query.ErrorMsg()]")
 		unbanpanel()
+
 
 	/////////////////////////////////////new ban stuff
 
@@ -178,15 +198,16 @@ var/showadminmessages = 1
 				//M.client = null
 				del(M.client)
 
-	if (href_list["removejobban"])
+	/*if (href_list["removejobban"])
 		if ((src.rank in list("Coder", "Host"  )))
 			var/t = href_list["removejobban"]
+			usr << "[T]"
 			if(t)
 				log_admin("[key_name(usr)] removed [t]")
 				message_admins("\blue [key_name_admin(usr)] removed [t]", 1)
 				jobban_remove(t)
 				href_list["ban"] = 1 // lets it fall through and refresh
-
+*/
 	if (href_list["newban"])
 		if ((src.rank in list( "Secondary Administrator", "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["newban"])

@@ -1,3 +1,4 @@
+code/game/machinery/washer.dm
 /obj/machinery/washer
 	name = "Laundromat"
 	desc = "Cleans shit"
@@ -183,6 +184,3 @@
 	src.contents -= user
 	user.loc = src.loc
 	return
-
-
-

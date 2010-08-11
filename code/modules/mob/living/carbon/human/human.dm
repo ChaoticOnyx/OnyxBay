@@ -90,6 +90,7 @@
 						tmob.stunned = max(4, tmob.stunned)
 					playsound(src.loc, 'Egloves.ogg', 50, 1, -1)
 					W:charges--
+					src.now_pushing = 0
 					return
 		if(istype(tmob, /mob/living/carbon/human) && tmob.mutations & 32)
 			if(prob(40) && !(src.mutations & 32))
