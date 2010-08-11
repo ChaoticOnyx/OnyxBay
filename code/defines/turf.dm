@@ -106,6 +106,10 @@
 			..()
 			spawn(1)
 				floorbelow = locate(x, y, z + 1)
+				if(ticker)
+					add_to_other_zone()
+				if(zone && floorbelow.zone)
+					zone.Connect(src,floorbelow)
 				update()
 			var/turf/T = locate(x, y, z + 1)
 			switch (T.type) //Somehow, I don't think I thought this cunning plan all the way through - Sukasa
@@ -133,6 +137,10 @@
 					var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
 					F.name = F.name
 					return
+		Del()
+			if(zone)
+				zone.Disconnect(src,floorbelow)
+			. = ..()
 
 
 		Enter(var/atom/movable/AM)

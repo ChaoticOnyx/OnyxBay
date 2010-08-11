@@ -64,13 +64,12 @@ turf
 			return !density
 
 		else // Now, doing more detailed checks for air movement and air group formation
+			if(target.z > src.z)
+				return istype(src, /turf/simulated/floor/open)
+			if(target.z < src.z)
+				return istype(target, /turf/simulated/floor/open)
 			if(target.blocks_air||blocks_air)
 				return 0
-			if(air_group)
-				if(target.z > src.z)
-					return istype(src, /turf/simulated/floor/open) && target.x == src.x && target.y == src.y
-				if(target.z < src.z)
-					return istype(target, /turf/simulated/floor/open) && target.x == src.x && target.y == src.y
 			for(var/obj/obstacle in src)
 				if(!obstacle.CanPass(mover, target, height, air_group))
 					return 0
@@ -86,13 +85,12 @@ turf
 			return !density
 
 		else // Now, doing more detailed checks for air movement and air group formation
+			if(target.z > src.z)
+				return istype(src, /turf/simulated/floor/open)
+			if(target.z < src.z)
+				return istype(target, /turf/simulated/floor/open)
 			if(blocks_air)
 				return 0
-			if(air_group)
-				if(target.z > src.z)
-					return istype(src, /turf/simulated/floor/open) && target.x == src.x && target.y == src.y
-				if(target.z < src.z)
-					return istype(target, /turf/simulated/floor/open) && target.x == src.x && target.y == src.y
 			for(var/obj/obstacle in src)
 				if(!obstacle.CanPass(mover, target, height, air_group))
 					return 0

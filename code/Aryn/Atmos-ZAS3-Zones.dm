@@ -48,6 +48,8 @@ zone
 		list/merge_with = list()
 		list/edges = list()
 
+		list/update_mixtures = list()
+
 		needs_rebuild = 0
 
 		disable_connections = 0
@@ -154,6 +156,12 @@ zone
 				rebuild_cache()
 				update_members()
 			//other = other_gas()
+
+			for(var/datum/gas_mixture/G in update_mixtures)
+				add_oxygen(G.oxygen - G.zone_oxygen)
+				add_nitrogen(G.nitrogen - G.zone_nitrogen)
+				add_co2(G.carbon_dioxide - G.zone_co2)
+				update_mixtures -= G
 
 			oxygen_archive = oxygen		 //Update the archives, so we can do things like calculate delta.
 			nitrogen_archive = nitrogen
@@ -553,7 +561,7 @@ turf/proc/GetUnblockedCardinals()
 			if((unblocked_dirs & UP) && (up.unblocked_dirs & DOWN))
 				. += up
 		else
-			if(CanPass(null,up,0,1))
+			if(CanPass(null,up,0,1) && !istype(up,/turf/space))
 				. += up
 				up.unblocked_dirs |= DOWN
 				unblocked_dirs |= UP
@@ -563,10 +571,10 @@ turf/proc/GetUnblockedCardinals()
 
 	if(down)
 		if(!down.floodupdate && !floodupdate)
-			if((unblocked_dirs & DOWN) && (north.unblocked_dirs & UP))
+			if((unblocked_dirs & DOWN) && (down.unblocked_dirs & UP))
 				. += down
 		else
-			if(CanPass(null,down,0,1))
+			if(CanPass(null,down,0,1) && !istype(down,/turf/space))
 				. += down
 				down.unblocked_dirs |= UP
 				unblocked_dirs |= DOWN

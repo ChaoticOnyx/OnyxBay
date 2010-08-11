@@ -37,6 +37,11 @@ datum
 			nitrogen = 0
 			toxins = 0
 
+			//If this was added to a zone's mixture update list, these are the zone's vars at the time it was retreived.
+			zone_oxygen = 0
+			zone_nitrogen = 0
+			zone_co2 = 0
+
 			volume = CELL_VOLUME
 
 			temperature = 0 //in Kelvin, use calculate_temperature() to modify
@@ -86,7 +91,7 @@ datum
 					for(var/datum/gas/trace_gas in trace_gases)
 						moles += trace_gas.moles
 
-				return moles
+				return max(moles,0.0001)
 
 			return_pressure()
 				return total_moles()*R_IDEAL_GAS_EQUATION*temperature/volume

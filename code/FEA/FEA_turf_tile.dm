@@ -83,7 +83,7 @@ turf
 	simulated
 		proc
 			consider_pressure_difference_space(connection_difference)
-				for(var/direction in cardinal)
+				for(var/direction in cardinal3d)
 					if(direction&group_border)
 						if(istype(get_step(src,direction),/turf/space))
 							if(!pressure_difference)
@@ -114,6 +114,8 @@ turf
 
 			temperature_archived //USED ONLY FOR SOLIDS
 			being_superconductive = 0
+
+			dbg_processing = 0
 
 
 		proc
@@ -163,8 +165,8 @@ turf
 
 			else
 				if(air_master)
-					for(var/direction in cardinal)
-						var/turf/simulated/floor/target = get_step(src,direction)
+					for(var/direction in cardinal3d)
+						var/turf/simulated/floor/target = get_step_3d(src,direction)
 						if(istype(target))
 							air_master.tiles_to_update.Add(target)
 
@@ -180,8 +182,8 @@ turf
 			if(active_hotspot)
 				del(active_hotspot)
 			if(blocks_air)
-				for(var/direction in list(NORTH, SOUTH, EAST, WEST))
-					var/turf/simulated/tile = get_step(src,direction)
+				for(var/direction in list(NORTH, SOUTH, EAST, WEST, UP, DOWN))
+					var/turf/simulated/tile = get_step_3d(src,direction)
 					if(istype(tile) && !tile.blocks_air)
 						air_master.tiles_to_update.Add(tile)
 			..()
@@ -222,9 +224,26 @@ turf
 
 		return_air()
 			if(air)
-				if(parent&&parent.group_processing)
+				if(parent && parent.group_processing)
+					if(zone)
+						parent.air.oxygen = zone.oxygen()
+						parent.air.nitrogen = zone.nitrogen()
+						parent.air.carbon_dioxide = zone.co2()
+						parent.air.zone_oxygen = parent.air.oxygen
+						parent.air.zone_nitrogen = parent.air.nitrogen
+						parent.air.zone_co2 = parent.air.carbon_dioxide
+						zone.update_mixtures.Add(parent.air)
 					return parent.air
-				else return air
+				else
+					if(zone)
+						air.oxygen = zone.oxygen()
+						air.nitrogen = zone.nitrogen()
+						air.carbon_dioxide = zone.co2()
+						air.zone_oxygen = air.oxygen
+						air.zone_nitrogen = air.nitrogen
+						air.zone_co2 = air.carbon_dioxide
+						zone.update_mixtures.Add(air)
+					return air
 
 			else
 				return ..()
@@ -271,8 +290,10 @@ turf
 					if(!zone)
 						spawn new/zone(src)
 
-			for(var/direction in cardinal)
-				if(CanPass(null, get_step(src,direction), 0, 0))
+			for(var/direction in cardinal3d)
+				var/turf/simulated/Ch = get_step_3d(src,direction)
+				if(!Ch) continue
+				if(CanPass(null, Ch, 0, 0))
 					air_check_directions |= direction
 
 			if(parent)
@@ -283,11 +304,12 @@ turf
 					length_space_border = 0
 
 				group_border = 0
-				for(var/direction in cardinal)
+				for(var/direction in cardinal3d)
 					if(air_check_directions&direction)
-						var/turf/simulated/T = get_step(src,direction)
+						var/turf/simulated/T = get_step_3d(src,direction)
 
 						//See if actually a border
+						if(istype(T,/turf/space) && direction & (16|32)) continue
 						if(!istype(T) || (T.parent!=parent))
 
 							//See what kind of border it is
@@ -321,19 +343,20 @@ turf
 										zone.Connect(src,T)
 					else
 						if(zone)
-							var/turf/simulated/T = get_step(src,direction)
-							if((T in zone.members) && !(T.HasDoor() && !T.blocks_air))
-								zone.RemoveTurf(T)
-							if(T.zone in zone.connections)
-								zone.Disconnect(src,T)
-							else if(istype(T,/turf/space))
-								zone.space_connections -= T
+							var/turf/simulated/T = get_step_3d(src,direction)
+							if(T)
+								if((T in zone.members) && !(T.HasDoor() && !T.blocks_air))
+									zone.RemoveTurf(T)
+								if(T.zone in zone.connections)
+									zone.Disconnect(src,T)
+								else if(istype(T,/turf/space))
+									zone.space_connections -= T
 							//if(direction & old_air_directions)
 								//if(!ticker || !old_air_directions || !air_check_directions) return
 								//else
 									//SplitCheck(T)
 								//world << "Space connection removed."
-				if(istype(src,/turf/simulated/floor/open))
+				/*if(istype(src,/turf/simulated/floor/open))
 					var/turf/simulated/D = get_step(src,DOWN)
 					if(D)
 						world << "Connection occurred between z-levels."
@@ -343,7 +366,7 @@ turf
 					if(D)
 						if(D.zone in zone.connections)
 							world << "Disconnection occurred between z-levels."
-							zone.Disconnect(src,D)
+							zone.Disconnect(src,D)*/
 
 				parent.length_space_border += length_space_border
 
@@ -363,9 +386,11 @@ turf
 					archive()
 				current_cycle = air_master.current_cycle
 
-				for(var/direction in cardinal)
+				for(var/direction in cardinal3d)
 					if(air_check_directions&direction) //Grab all valid bordering tiles
-						var/turf/simulated/enemy_tile = get_step(src, direction)
+						var/turf/simulated/enemy_tile = get_step_3d(src, direction)
+						if(dbg_processing && (direction == 16 || direction == 32))
+							world << "Direction [direction]: [enemy_tile]"
 						var/connection_difference = 0
 
 						if(istype(enemy_tile))
