@@ -897,7 +897,12 @@
 	src.log_m("Heard [msg]")
 	// Added voice muffling for Issue 41.
 	if (src.stat == 1 || src.sleeping > 0)
-		src << "<I>... You can almost hear someone talking ...</I>"
+		if(type & 8) //Radio
+			src << "<I>... You hear the crackle of a radio transmission ...</I>"
+		else if(type & 4) //Said by someone
+			src << "<I>... You can almost hear someone talking ...</I>"
+		else if(type & 2)
+			src << "<I>... You can almost hear a noise ...</I>"
 	else
 		src << msg
 	return

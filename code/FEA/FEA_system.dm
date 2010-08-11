@@ -64,13 +64,12 @@ turf
 			return !density
 
 		else // Now, doing more detailed checks for air movement and air group formation
+			if(target.z > src.z)
+				return istype(src, /turf/simulated/floor/open)
+			if(target.z < src.z)
+				return istype(target, /turf/simulated/floor/open)
 			if(target.blocks_air||blocks_air)
 				return 0
-			if(air_group)
-				if(target.z > src.z)
-					return istype(src, /turf/simulated/floor/open) && target.x == src.x && target.y == src.y
-				if(target.z < src.z)
-					return istype(target, /turf/simulated/floor/open) && target.x == src.x && target.y == src.y
 			for(var/obj/obstacle in src)
 				if(!obstacle.CanPass(mover, target, height, air_group))
 					return 0
@@ -86,13 +85,12 @@ turf
 			return !density
 
 		else // Now, doing more detailed checks for air movement and air group formation
+			if(target.z > src.z)
+				return istype(src, /turf/simulated/floor/open)
+			if(target.z < src.z)
+				return istype(target, /turf/simulated/floor/open)
 			if(blocks_air)
 				return 0
-			if(air_group)
-				if(target.z > src.z)
-					return istype(src, /turf/simulated/floor/open) && target.x == src.x && target.y == src.y
-				if(target.z < src.z)
-					return istype(target, /turf/simulated/floor/open) && target.x == src.x && target.y == src.y
 			for(var/obj/obstacle in src)
 				if(!obstacle.CanPass(mover, target, height, air_group))
 					return 0
@@ -170,15 +168,17 @@ datum
 				world << "\red \b Processing Geometry..."
 				sleep(1)
 
+				//var/list/door_tiles = list()
+
 				var/start_time = world.timeofday
 				for(var/turf/simulated/S in world)
 					if(!S.blocks_air && !S.parent)
 						assemble_group_turf(S)
-					if(S.CanPass(null,S,0,0) && !S.zone)
-						if(!S.HasDoor())
+					if(S.HasDoor())
+						spawn(1) S.add_to_other_zone()
+					else
+						if(S.CanPass(null,S,0,0) && !S.zone)
 							new/zone(S)
-						else
-							spawn(1) S.add_to_other_zone()
 				for(var/turf/simulated/S in world) //Update all pathing and border information as well
 					S.update_air_properties()
 /*
@@ -201,7 +201,7 @@ datum
 				while(possible_members.len>0) //Keep expanding, looking for new members
 					for(var/turf/simulated/test in possible_members)
 						test.length_space_border = 0
-						for(var/direction in cardinal3d)
+						for(var/direction in cardinal)
 							var/turf/T = get_step_3d(test,direction)
 							if(T && !members.Find(T) && test.CanPass(null, T, null,1))
 								if(istype(T,/turf/simulated) && !T:parent)
