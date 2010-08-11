@@ -248,9 +248,10 @@
 		name = "outer hull"
 		icon_state = "shiny"
 		oxygen = 0
-		nitrogen = 0.0001
+		nitrogen = 0
 		carbon_dioxide = 0
 		toxins = 0
+		temperature = TCMB
 
 /turf/unsimulated/wall
 	name = "wall"

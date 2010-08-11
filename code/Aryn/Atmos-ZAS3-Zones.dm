@@ -614,6 +614,7 @@ turf/proc/GetUnblockedCardinals()
 		T.overlays += 'debug_group.dmi'
 	for(var/turf/T in zone.space_connections)
 		T.overlays += 'debug_space.dmi'
+		world << "Space connection located: [T.x],[T.y],[T.z]"
 	for(var/Z in zone.connections)
 		if(istype(Z,/zone))
 			world << "Z[zones.Find(Z)] - Connected"
@@ -627,9 +628,9 @@ turf/proc/GetUnblockedCardinals()
 				world << "Z[zones.Find(Z)] - Failure"
 		else
 			world << "[Z] - N/A"
-turf/verb/AddToOtherZone()
-	set src in view()
-	add_to_other_zone()
+//turf/verb/AddToOtherZone()
+//	set src in view()
+//	add_to_other_zone()
 
 turf/proc
 	HasDoor(window)

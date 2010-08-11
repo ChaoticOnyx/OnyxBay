@@ -309,11 +309,11 @@ turf
 						var/turf/simulated/T = get_step_3d(src,direction)
 
 						//See if actually a border
-						if(istype(T,/turf/space) && direction & (16|32)) continue
+						//if(istype(T,/turf/space) && direction & (16|32)) continue
 						if(!istype(T) || (T.parent!=parent))
 
 							//See what kind of border it is
-							if(istype(T,/turf/space))
+							if((istype(T,/turf/space) || istype(T,/turf/unsimulated/floor/outer_hull_plating)))
 								if(parent.space_borders)
 									parent.space_borders -= src
 									parent.space_borders += src
@@ -332,7 +332,7 @@ turf
 							group_border |= direction
 
 						if(zone)
-							if(istype(T,/turf/space) && !(T in zone.space_connections))
+							if((istype(T,/turf/space) || istype(T,/turf/unsimulated/floor/outer_hull_plating)) && !(T in zone.space_connections))
 								zone.space_connections += T
 								//world << "Space connection added."
 							else
@@ -349,7 +349,7 @@ turf
 									zone.RemoveTurf(T)
 								if(T.zone in zone.connections)
 									zone.Disconnect(src,T)
-								else if(istype(T,/turf/space))
+								else if(istype(T,/turf/space) || istype(T,/turf/unsimulated/floor/outer_hull_plating))
 									zone.space_connections -= T
 							//if(direction & old_air_directions)
 								//if(!ticker || !old_air_directions || !air_check_directions) return
