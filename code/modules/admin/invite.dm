@@ -33,15 +33,26 @@ var
 			var/list/row = xquery.GetRowData()
 			if(row["ckey"] == M.ckey)// it should but you never can be too sure.
 				found = 1
-
 	if (found)
 		return 1
 	else
 		if(M.client.holder)
 			return 1
 		return 0
+/proc/invite_isallowedtext(var/ckey)
+	var/found = 0
+	var/DBQuery/xquery = dbcon.NewQuery("SELECT * FROM `invites` WHERE ckey='[ckey]'")
+	if(xquery.Execute())
+		while(xquery.NextRow())
+			var/list/row = xquery.GetRowData()
+			if(row["ckey"] == ckey)// it should but you never can be too sure.
+				found = 1
+	if (found)
+		return 1
+	else
+		return 0
 
-/proc/invite_loadbanfile()
+/*/proc/invite_loadbanfile()
 	var/DBQuery/xquery = dbcon.NewQuery("SELECT * FROM `invites`")
 	if(xquery.Execute())
 		while(xquery.NextRow())
@@ -51,7 +62,7 @@ var
 	if (!length(invite_keylist))
 		invite_keylist=list()
 		log_admin("No people in invite list")
-
+*/
 /proc/invite_remove(mob/M)
 	if (!M || !M.key || !M.client) return
 	var/DBQuery/xquery = dbcon.NewQuery("DELETE FROM `invites` WHERE ckey='[M.ckey]'")

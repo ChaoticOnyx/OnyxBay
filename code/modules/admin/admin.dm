@@ -258,22 +258,19 @@ var/showadminmessages = 1
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/t = href_list["remove"]
 			if(t)
-				invite_keylist.Remove(text("[t]"))
-//				invite_savebanfile()
+				invite_removetext("[t]")
 				message_admins("\blue [key_name_admin(usr)] removed [t] from the invite list.")
 
 	if (href_list["removeinvite"])
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/u = input(usr, "Who do you wish to remove from the invite list", "Remove invite", "enterckeyhere")
-			invite_keylist.Remove(text("[u]"))
-//			invite_savebanfile()
+			invite_removetext("[u]")
 			message_admins("\blue [key_name_admin(usr)] removed [u] from the invite list.")
 
 	if (href_list["addinvite"])
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/u = input(usr, "Who do you wish to add to the invite list", "Remove invite", "enterckeyhere")
-			invite_keylist.Add(text("[u]"))
-//			invite_savebanfile()
+			invite_addtext("[u]")
 			message_admins("\blue [key_name_admin(usr)] added [u] to the invite list.")
 
 
@@ -1308,15 +1305,6 @@ var/showadminmessages = 1
 //			if(lvl == 6 )
 	usr << browse(dat, "window=admin2;size=210x180")
 	return
-
-/obj/admins/proc/invites()
-	var/dat = "<HR><B>Beta testers</B><HR><table cellspacing=5><tr><th>Key</th></tr>"
-	for(var/t in invite_keylist)
-		dat += text("<tr><td><A href='?src=\ref[src];removeinvitek=[t]'>[t]</a><//td></tr>")
-	dat += "</table>"
-	dat += "<BR><A href='?src=\ref[src];addinvite=1'>Add person to list</A><BR>"
-	dat += "<BR><A href='?src=\ref[src];removeinvite=1'>Remove person from list</A><BR>"
-	usr << browse(dat, "window=ban;size=300x400")
 
 /obj/admins/proc/Secrets()
 
