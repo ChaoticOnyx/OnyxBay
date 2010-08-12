@@ -36,11 +36,11 @@
 // TODO: Investigate more recent type additions and see if I can handle them. - Nadrew
 
 var
-	DB_SERVER = "db4free.net" // This is the location of your MySQL server (localhost is USUALLY fine)
+	DB_SERVER = "sukasa.kicks-ass.org" // This is the location of your MySQL server (localhost is USUALLY fine)
 	DB_PORT = 3306 // This is the port your MySQL server is running on (3306 is the default)
 	DB_DBNAME = "bay12"
-	DB_USER = "head"
-	DB_PASSWORD = "123456"
+	DB_USER = "bay12admin"
+	DB_PASSWORD = "bs12dev"
 DBConnection
 	New(dbi_handler,username,password_handler,cursor_handler)
 		src.dbi = dbi_handler
