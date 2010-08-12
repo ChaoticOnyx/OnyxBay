@@ -76,7 +76,7 @@
 	usr.verbs -= /mob/dead/observer/proc/dead_tele
 	spawn(50)
 		usr.verbs += /mob/dead/observer/proc/dead_tele
-	A = input("Area to jump to", "BOOYEA", A) in list("Engine","Hallways","Toxins","Storage","Maintenance","Crew Quarters","Medical","Security","Chapel","Bridge","Prison","AI Satellite","Thunderdome")
+	A = input("Area to jump to", "BOOYEA", A) in list("Engine","Hallways","Toxins","Storage","Maintenance","Crew Quarters","Medical","Security","Chapel","Bridge","Thunderdome")
 	var/t = A
 	switch (A)
 		if ("Engine")
@@ -84,90 +84,81 @@
 			for(var/area/B in world)
 				if(istype(B, /area/engine) && !istype(B, /area/engine/combustion) && !istype(B, /area/engine/engine_walls))
 					L += B
-			A = pick(L)
+			A = L
 		if ("Hallways")
 			var/list/L = list()
 			for(var/area/B in world)
 				if(istype(B, /area/hallway))
 					L += B
-			A = pick(L)
+			A = L
 		if ("Toxins")
 			var/list/L = list()
 			for(var/area/B in world)
 				if(istype(B, /area/toxins) && !istype(B, /area/toxins/test_area))
 					L += B
-			A = pick(L)
+			A = L
 		if ("Storage")
 			var/list/L = list()
 			for(var/area/B in world)
 				if(istype(B, /area/storage))
 					L += B
-			A = pick(L)
+			A = L
 		if ("Maintenance")
 			var/list/L = list()
 			for(var/area/B in world)
 				if(istype(B, /area/maintenance))
 					L += B
-			A = pick(L)
+			A = L
 		if ("Crew Quarters")
 			var/list/L = list()
 			for(var/area/B in world)
 				if(istype(B, /area/crew_quarters))
 					L += B
-			A = pick(L)
+			A = L
 		if ("Medical")
 			var/list/L = list()
 			for(var/area/B in world)
 				if(istype(B, /area/medical))
 					L += B
-			A = pick(L)
+			A = L
 		if ("Security")
 			var/list/L = list()
 			for(var/area/B in world)
 				if(istype(B, /area/security))
 					L += B
-			A = pick(L)
+			A = L
 		if ("Chapel")
 			var/list/L = list()
 			for(var/area/B in world)
 				if(istype(B, /area/chapel))
 					L += B
-			A = pick(L)
+			A = L
 		if ("Bridge")
 			var/list/L = list()
 			for(var/area/B in world)
 				if(istype(B, /area/bridge))
 					L += B
-			A = pick(L)
-		if ("AI Satellite")
-			var/list/L = list()
-			for(var/area/B in world)
-				if(istype(B, /area/turret_protected/aisat))
-					L += B
-			A = pick(L)
-		if ("Prison")
-			var/list/L = list()
-			for(var/area/B in world)
-				if(istype(B, /area/prison/control))
-					L += B
-			A = pick(L)
+			A = L
 		if ("Thunderdome")
+			usr << "\red Two men enter, one leaves"
+			return
 			var/list/L = list()
 			for(var/area/B in world)
 				if(istype(B, /area/tdome))
 					L += B
-			A = pick(L)
+			A = L
 
 	var/list/L = list()
-	for(var/turf/T in A)
-		if(!T.density)
-			var/clear = 1
-			for(var/obj/O in T)
-				if(O.density)
-					clear = 0
-					break
-			if(clear)
-				L+=T
+	for(var/area/AR in A)
+		for(var/turf/T in AR)
+			if(!T.density)
+				var/clear = 1
+				for(var/obj/O in T)
+					if(O.density)
+						clear = 0
+						break
+				if(clear)
+					L+=T
 	if (!L.len)
 		log_admin("TELEPORT ERROR ([t])")
 	usr.loc = pick(L)

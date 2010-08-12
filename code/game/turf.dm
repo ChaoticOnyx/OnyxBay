@@ -285,6 +285,7 @@
 
 /turf/simulated/wall/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
+	var/turf/simulated/wall/S = src
 	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		usr << "\red You don't have the dexterity to do this!"
 		return
@@ -321,9 +322,9 @@
 
 		sleep(100)
 
-		if ((user.loc == T && user.equipped() == W))
+		if ((user.loc == T && user.equipped() == W) && S)
 			user << "\blue You disassembled the outer wall plating."
-			dismantle_wall()
+			S.dismantle_wall()
 
 	else
 		return attack_hand(user)
