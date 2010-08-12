@@ -59,7 +59,7 @@
 	nitrogen = 0.000
 	temperature = TCMB
 
-/turf/simulated/floor/engine/hull
+/turf/unsimulated/floor/hull
 	name = "Hull Plating"
 	icon_state = "engine"
 	oxygen = 0
@@ -251,14 +251,6 @@
 	name = "floor"
 	icon = 'floors.dmi'
 	icon_state = "Floor3"
-	outer_hull_plating
-		name = "outer hull"
-		icon_state = "shiny"
-		oxygen = 0
-		nitrogen = 0
-		carbon_dioxide = 0
-		toxins = 0
-		temperature = TCMB
 
 /turf/unsimulated/wall
 	name = "wall"
