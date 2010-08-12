@@ -39,8 +39,8 @@ var
 	DB_SERVER = "sukasa.kicks-ass.org" // This is the location of your MySQL server (localhost is USUALLY fine)
 	DB_PORT = 3306 // This is the port your MySQL server is running on (3306 is the default)
 	DB_DBNAME = "bay12"
-	DB_USER = "bay12admin"
-	DB_PASSWORD = "bs12dev"
+	DB_USER = "bay12"
+	DB_PASSWORD = "tU8NptaBZV6BeM59"
 DBConnection
 	New(dbi_handler,username,password_handler,cursor_handler)
 		src.dbi = dbi_handler

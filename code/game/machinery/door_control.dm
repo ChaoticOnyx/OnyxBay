@@ -18,9 +18,11 @@
 	for(var/obj/machinery/door/poddoor/M in machines)
 		if (M.id == src.id)
 			if (M.density)
-				TransmitNetworkPacket(PrependNetworkAddress("[M.get_password()] OPEN", M))
+				M.open()
+				//TransmitNetworkPacket(PrependNetworkAddress("[M.get_password()] OPEN", M))
 			else
-				TransmitNetworkPacket(PrependNetworkAddress("[M.get_password()] CLOSE", M))
+				M.close
+				//TransmitNetworkPacket(PrependNetworkAddress("[M.get_password()] CLOSE", M))
 
 	spawn(15)
 		if(!(stat & NOPOWER))

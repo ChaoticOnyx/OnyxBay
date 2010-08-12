@@ -50,7 +50,7 @@
 		else
 			sensor_part = "<FONT color='red'>NO DATA</FONT><BR>"
 
-		var/output = {"<B>[tag]</B><HR>
+		var/output = {"<B>[initial(tag)]</B><HR>
 <B>Sensor Data: <BR></B>
 [sensor_part]<HR>"}
 

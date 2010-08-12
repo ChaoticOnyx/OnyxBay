@@ -77,7 +77,7 @@
 	spawn(50)
 		usr.verbs += /mob/dead/observer/proc/dead_tele
 	A = input("Area to jump to", "BOOYEA", A) in list("Engine","Hallways","Toxins","Storage","Maintenance","Crew Quarters","Medical","Security","Chapel","Bridge","Prison","AI Satellite","Thunderdome")
-
+	var/t = A
 	switch (A)
 		if ("Engine")
 			var/list/L = list()
@@ -168,7 +168,8 @@
 					break
 			if(clear)
 				L+=T
-
+	if (!L.len)
+		log_admin("TELEPORT ERROR ([t])")
 	usr.loc = pick(L)
 
 
