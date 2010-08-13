@@ -57,7 +57,7 @@ datum
 			explanation_text = "Hijack the emergency shuttle by escaping alone."
 
 			check_completion()
-				if(emergency_shuttle.location<2)
+				if(main_shuttle.location<2)
 					return 0
 
 				if(!owner.current || owner.current.stat ==2)
@@ -77,7 +77,7 @@ datum
 			explanation_text = "Escape on the shuttle alive, without being arrested"
 
 			check_completion()
-				if(emergency_shuttle.location<2)
+				if(main_shuttle.location<2)
 					return 0
 
 				if(!owner.current || owner.current.stat ==2)

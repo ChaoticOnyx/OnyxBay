@@ -1,7 +1,7 @@
 /obj/machinery/computer/shuttle/attackby(var/obj/item/weapon/card/W as obj, var/mob/user as mob)
 	if(stat & (BROKEN|NOPOWER))
 		return
-	if ((!( istype(W, /obj/item/weapon/card) ) || !( ticker ) || emergency_shuttle.location != 1 || !( user )))
+	if ((!( istype(W, /obj/item/weapon/card) ) || !( ticker ) || main_shuttle.location != 1 || !( user )))
 		return
 
 
@@ -29,7 +29,7 @@
 					world << text("\blue <B>Alert: [] authorizations needed until shuttle is launched early</B>", src.auth_need - src.authorized.len)
 				else
 					world << "\blue <B>Alert: Shuttle launch time shortened to 10 seconds!</B>"
-					emergency_shuttle.settimeleft(10)
+					//main_shuttle.settimeleft(10)
 					//src.authorized = null
 					del(src.authorized)
 					src.authorized = list(  )
@@ -48,7 +48,7 @@
 		switch(choice)
 			if("Launch")
 				world << "\blue <B>Alert: Shuttle launch time shortened to 10 seconds!</B>"
-				emergency_shuttle.settimeleft( 10 )
+				main_shuttle.settimeleft( 10 )
 			if("Cancel")
 				return
 

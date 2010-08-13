@@ -37,7 +37,7 @@
 			if(src.authenticated)
 				call_shuttle_proc(usr)
 
-				if(emergency_shuttle.online)
+				if(main_shuttle.online)
 					post_status("shuttle")
 
 			src.state = STATE_DEFAULT
@@ -192,8 +192,8 @@
 
 	user.machine = src
 	var/dat = "<head><title>Communications Console</title></head><body>"
-	if (emergency_shuttle.online && emergency_shuttle.location==0)
-		var/timeleft = emergency_shuttle.timeleft()
+	if (main_shuttle.online && main_shuttle.location==0)
+		var/timeleft = main_shuttle.timeleft()
 		dat += "<B>Emergency shuttle</B>\n<BR>\nETA: [timeleft / 60 % 60]:[add_zero(num2text(timeleft % 60), 2)]<BR>"
 
 	if (istype(user, /mob/living/silicon))
@@ -215,8 +215,8 @@
 					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=toggle-redalert'>Cancel Red Alert</A> \]"
 				else
 					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=toggle-redalert'>Declare Red Alert</A> \]"
-				if(emergency_shuttle.location==0)
-					if (emergency_shuttle.online)
+				if(main_shuttle.location==1)
+					if (main_shuttle.online)
 						dat += "<BR>\[ <A HREF='?src=\ref[src];operation=cancelshuttle'>Cancel Shuttle Call</A> \]"
 					else
 						dat += "<BR>\[ <A HREF='?src=\ref[src];operation=callshuttle'>Call Emergency Shuttle</A> \]"
@@ -270,7 +270,7 @@
 	var/dat = ""
 	switch(src.aistate)
 		if(STATE_DEFAULT)
-			if(emergency_shuttle.location==0 && !emergency_shuttle.online)
+			if(main_shuttle.location== 1 && !main_shuttle.online)
 				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=ai-callshuttle'>Call Emergency Shuttle</A> \]"
 			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=call-prison'>Send Prison Shutle</A> \]"
 			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=ai-messagelist'>Message List</A> \]"
@@ -401,20 +401,22 @@
 	for(var/datum/shuttle/s in shuttles)
 		s.incall()
 
-//	emergency_shuttle.incall()
-	world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.</B>"
+//	main_shuttle.incall()
+	world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(main_shuttle.timeleft()/60)] minutes.</B>"
 
 	return
 
 /proc/cancel_call_proc(var/mob/user)
-	if ((!( ticker ) || emergency_shuttle.location || emergency_shuttle.direction == 0 || emergency_shuttle.timeleft() < 300))
+	if ((!( ticker ) || main_shuttle.location || main_shuttle.direction == 0 || main_shuttle.timeleft() < 300))
 		return
 	if( ticker.mode.name == "blob" )
 		return
 
 	world << "\blue <B>Alert: The shuttle is going back!</B>" //marker4
 
-	emergency_shuttle.recall()
+	for(var/datum/shuttle/s in shuttles)
+		s.incall()
+	//main_shuttle.recall()
 
 	return
 

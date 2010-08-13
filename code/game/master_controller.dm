@@ -24,7 +24,7 @@ datum/controller/game_controller
 
 	// Handled by datum declerations now in the shuttle controller file
 
-	//	emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
+	//	main_shuttle = new /datum/shuttle_controller/main_shuttle()
 
 		if(!ticker)
 			ticker = new /datum/controller/gameticker()
