@@ -145,6 +145,8 @@ var/global/datum/controller/gameticker/ticker
 
 
 	//	main_shuttle.process()
+
+		LaunchControl.process()
 		for(var/datum/shuttle/s in shuttles)
 			s.process()
 

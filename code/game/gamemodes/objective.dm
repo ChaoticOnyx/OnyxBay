@@ -90,10 +90,9 @@ datum
 				if(owner.current:handcuffed)
 					return 0
 
-				var/area/check_area = location.loc
 
 				for(var/datum/shuttle/s in shuttles)
-					if(istype(check_area, s.centcom))
+					if(location in locate(s.centcom))
 						return 1
 
 				return 0

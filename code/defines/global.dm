@@ -56,6 +56,9 @@ var
 	delay_start = 0
 
 
+
+	datum/PodControl/LaunchControl = new /datum/PodControl()
+
 	captainMax = 1
 	engineerMax = 5
 	barmanMax = 2

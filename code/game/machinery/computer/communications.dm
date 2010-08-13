@@ -387,7 +387,7 @@
 		PS.allowedtocall = !(PS.allowedtocall)
 
 /proc/call_shuttle_proc(var/mob/user)
-	if ((!( ticker ) || main_shuttle.location))
+	if ((!( ticker ) || main_shuttle.location == 0))
 		return
 
 	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "sandbox")
@@ -397,12 +397,10 @@
 		user << "Centcom will not allow the shuttle to be called."
 		return
 
-
-	for(var/datum/shuttle/s in shuttles)
-		s.incall()
+	LaunchControl.start()
 
 //	main_shuttle.incall()
-	world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(main_shuttle.timeleft()/60)] minutes.</B>"
+	world << "\blue <B>Alert: Escape pods launching in [round(main_shuttle.timeleft()/60)] minutes.</B>"
 
 	return
 
@@ -412,10 +410,10 @@
 	if( ticker.mode.name == "blob" )
 		return
 
-	world << "\blue <B>Alert: The shuttle is going back!</B>" //marker4
+	world << "\blue <B>Alert: Escape pods launch sequence aborted</B>" //marker4
 
-	for(var/datum/shuttle/s in shuttles)
-		s.incall()
+	LaunchControl.stop()
+
 	//main_shuttle.recall()
 
 	return

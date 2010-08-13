@@ -30,7 +30,7 @@ var/showadminmessages = 1
 				if("1")
 					if ((!( ticker ) || main_shuttle.location))
 						return
-					main_shuttle.incall()
+					LaunchControl.start()
 					world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(main_shuttle.timeleft()/60)] minutes.</B>"
 					log_admin("[key_name(usr)] called the Emergency Shuttle")
 					message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
@@ -40,7 +40,7 @@ var/showadminmessages = 1
 						return
 					switch(main_shuttle.direction)
 						if(-1)
-							main_shuttle.incall()
+							LaunchControl.start()
 							world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(main_shuttle.timeleft()/60)] minutes.</B>"
 							log_admin("[key_name(usr)] called the Emergency Shuttle")
 							message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
