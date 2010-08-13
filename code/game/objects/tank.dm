@@ -45,6 +45,8 @@
 			if(istype(loc,/mob/living/carbon))
 				var/mob/living/carbon/location = loc
 				if(location.internal == src)
+					location.internal = null
+					location.internals.icon_state = "internal0"
 					usr << "\blue You close the tank release valve."
 				else
 					if(location.wear_mask && (location.wear_mask.flags & MASKINTERNALS))
@@ -201,7 +203,7 @@
 	..()
 
 	src.air_contents = new /datum/gas_mixture()
-	src.air_contents.volume = 70 //liters
+	src.air_contents.volume = 420 //liters
 	src.air_contents.temperature = T20C
 
 	processing_items.Add(src)
@@ -246,21 +248,19 @@
 
 /obj/item/weapon/tank/air/New()
 	..()
-
-	src.air_contents.oxygen = (1*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD
-	src.air_contents.nitrogen = (1*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD
+	src.air_contents.oxygen = (1*ONE_ATMOSPHERE)*src.air_contents.volume/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD
+	src.air_contents.nitrogen = (1*ONE_ATMOSPHERE)*src.air_contents.volume/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD
 	return
 
 /obj/item/weapon/tank/oxygen/New()
 	..()
-
-	src.air_contents.oxygen = (1*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C)
+	src.air_contents.oxygen = (1*ONE_ATMOSPHERE)*src.air_contents.volume/(R_IDEAL_GAS_EQUATION*T20C)
 	return
 
 /obj/item/weapon/tank/emergency_oxygen/New()
 	..()
-
-	src.air_contents.oxygen = (0.20*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C)
+	src.air_contents.volume = 70 //liters
+	src.air_contents.oxygen = (0.20*ONE_ATMOSPHERE)*src.air_contents.volume/(R_IDEAL_GAS_EQUATION*T20C)
 	return
 
 /obj/item/weapon/tank/jetpack/New()

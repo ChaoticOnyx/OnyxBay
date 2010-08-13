@@ -3,6 +3,7 @@
 	var/m_amt = 0	// metal
 	var/g_amt = 0	// glass
 	var/w_amt = 0	// waster amounts
+	var/global/tagcnum = 0
 	animate_movement = 2
 
 	proc
@@ -17,6 +18,10 @@
 				return null
 
 		initialize()
+
+	New()
+		src.tag = "obj[++tagcnum]"
+
 
 /obj/blob
 		icon = 'blob.dmi'

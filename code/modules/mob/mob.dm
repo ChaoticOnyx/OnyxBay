@@ -897,7 +897,12 @@
 	src.log_m("Heard [msg]")
 	// Added voice muffling for Issue 41.
 	if (src.stat == 1 || src.sleeping > 0)
-		src << "<I>... You can almost hear someone talking ...</I>"
+		if(type & 8) //Radio
+			src << "<I>... You hear the crackle of a radio transmission ...</I>"
+		else if(type & 4) //Said by someone
+			src << "<I>... You can almost hear someone talking ...</I>"
+		else if(type & 2)
+			src << "<I>... You can almost hear a noise ...</I>"
 	else
 		src << msg
 	return
@@ -1661,10 +1666,6 @@
 	if (join_motd)
 		src << "<div class=\"motd\">[join_motd]</div>"
 
-	src.authorize()
-	src.goonauth()
-	src.beta_tester_auth()
-
 	src.update_world()
 
 //new admin bit - Nannek
@@ -1674,7 +1675,7 @@
 		src.holder.rank = admins[src.ckey]
 		update_admins(admins[src.ckey])
 
-	if (ticker && ticker.mode && ticker.mode.name =="sandbox" && src.authenticated)
+	if (ticker && ticker.mode && ticker.mode.name =="sandbox")
 		mob.CanBuild()
 		if(src.holder  && (src.holder.level >= 3))
 			src.verbs += /mob/proc/Delete

@@ -7,6 +7,8 @@
 
 /datum/disease/cold/stage_act()
 	..()
+	if (!affected_mob.stat != 2)
+		return
 	switch(stage)
 		if(2)
 			if(affected_mob.sleeping && prob(40))

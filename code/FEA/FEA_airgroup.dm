@@ -95,7 +95,7 @@ datum
 					//var/obj/movable/floor/movable_on_me = locate(/obj/movable/floor) in border_tile
 					for(var/direction in cardinal) //Go through all border tiles and get bordering groups and individuals
 						if(border_tile.group_border&direction)
-							var/turf/simulated/enemy_tile = get_step(border_tile, direction) //Add found tile to appropriate category
+							var/turf/simulated/enemy_tile = get_step_3d(border_tile, direction) //Add found tile to appropriate category
 							//var/obj/movable/floor/movable_on_enemy
 							//if(!movable_on_me)
 							//	movable_on_enemy = locate(/obj/movable/floor) in enemy_tile

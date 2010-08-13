@@ -7,9 +7,10 @@
 	var/id
 
 /obj/machinery/computer/lasercon/New()
-	for(var/obj/machinery/engine/laser/las in world)
-		if(las.id == src.id)
-			laser = las
+	spawn(1)
+		for(var/obj/machinery/engine/laser/las in world)
+			if(las.id == src.id)
+				laser = las
 
 
 

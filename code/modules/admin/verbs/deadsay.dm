@@ -3,7 +3,7 @@
 	set name = "dsay"
 	set hidden = 1
 	//	All admins should be authenticated, but... what if?
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 	if(!src.mob)

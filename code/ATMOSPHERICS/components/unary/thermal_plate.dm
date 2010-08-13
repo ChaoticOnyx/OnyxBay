@@ -27,7 +27,11 @@
 
 		var/transfer_moles = 0.25 * environment.total_moles()
 		var/datum/gas_mixture/external_removed = environment.remove(transfer_moles)
+
 		if (!external_removed)
+			return radiate()
+
+		if (external_removed.total_moles() < 10)
 			return radiate()
 
 		//Get same info from connected gas
@@ -42,6 +46,7 @@
 		var/combined_heat_capacity = internal_removed.heat_capacity() + external_removed.heat_capacity()
 		var/combined_energy = internal_removed.temperature * internal_removed.heat_capacity() + external_removed.heat_capacity() * external_removed.temperature
 
+		if(!combined_heat_capacity) combined_heat_capacity = 1
 		var/final_temperature = combined_energy / combined_heat_capacity
 
 		external_removed.temperature = final_temperature

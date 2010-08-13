@@ -44,15 +44,15 @@
 /obj/multiz/stairs/active
 	density = 1
 
-/obj/multiz/stairs/active/Bumped(var/mob/M)
+/obj/multiz/stairs/active/Bumped(var/atom/movable/M)
 	if(istype(src, /obj/multiz/stairs/active/bottom) && !locate(/obj/multiz/stairs/enter) in M.loc)
 		return //If on bottom, only let them go up stairs if they've moved to the entry tile first.
 	//If it's the top, they can fall down just fine.
-	if (M.client)
-		M.client.moving = 1
+	if(ismob(M) && M:client)
+		M:client.moving = 1
 	M.Move(locate(src.x, src.y, targetZ()))
-	if (M.client)
-		M.client.moving = 0
+	if (ismob(M) && M:client)
+		M:client.moving = 0
 
 /obj/multiz/stairs/active/bottom
 	istop = 0

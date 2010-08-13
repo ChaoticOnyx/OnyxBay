@@ -4,15 +4,29 @@ var
 
 /proc/jobban_fullban(mob/M, rank)
 	if (!M || !M.key || !M.client) return
-	jobban_keylist.Add(text("[M.ckey] - [rank]"))
-	jobban_savebanfile()
+	var/DBQuery/xquery = dbcon.NewQuery("INSERT INTO jobban VALUES ('[M.ckey]','[rank]')")
+	if(!xquery.Execute())
+		log_admin("[xquery.ErrorMsg()]")
 
 /proc/jobban_isbanned(mob/M, rank)
-	if (jobban_keylist.Find(text("[M.ckey] - [rank]")))
-		return 1
+	var/DBQuery/cquery = dbcon.NewQuery("SELECT `rank` FROM `jobban` WHERE ckey='[M.ckey]'")
+	var/DBQuery/kquery = dbcon.NewQuery("SELECT `ckey` FROM `jobban` WHERE ckey='[M.ckey]'")
+	var/list/keys = list()
+	if(!kquery.Execute())
+		log_admin("[kquery.ErrorMsg()]")
 	else
-		return 0
-
+		while(kquery.NextRow())
+			keys = kquery.GetRowData()
+	if(!cquery.Execute())
+		log_admin("[cquery.ErrorMsg()]")
+	else
+		while(cquery.NextRow())
+			var/list/column_data = cquery.GetRowData()
+			for(var/P in keys)
+				if(rank == column_data["rank"])
+					return 1
+	return 0
+/*
 /proc/jobban_loadbanfile()
 	var/savefile/S=new("data/job_full.ban")
 	S["keys[0]"] >> jobban_keylist
@@ -25,11 +39,12 @@ var
 /proc/jobban_savebanfile()
 	var/savefile/S=new("data/job_full.ban")
 	S["keys[0]"] << jobban_keylist
-
+*/
 /proc/jobban_unban(mob/M, rank)
-	jobban_keylist.Remove(text("[M.ckey] - [rank]"))
-	jobban_savebanfile()
-
+	var/DBQuery/xquery = dbcon.NewQuery("DELETE FROM jobban WHERE `ckey`='[M.ckey]' AND `rank`='[rank]'")
+	if(!xquery.Execute())
+		log_admin("[xquery.ErrorMsg()]")
+/*
 /proc/jobban_updatelegacybans()
 	if(!jobban_runonce)
 		log_admin("Updating jobbanfile!")
@@ -37,10 +52,12 @@ var
 		for(var/T in jobban_keylist)
 			if(!T)	continue
 		jobban_runonce++	//don't run this update again
-
+*/
+/*
 /proc/jobban_remove(X)
 	if(jobban_keylist.Find(X))
 		jobban_keylist.Remove(X)
 		jobban_savebanfile()
 		return 1
 	return 0
+*/

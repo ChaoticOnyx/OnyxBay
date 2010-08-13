@@ -56,7 +56,14 @@
 	name = "vacuum floor"
 	icon_state = "engine"
 	oxygen = 0
-	nitrogen = 0.001
+	nitrogen = 0.000
+	temperature = TCMB
+
+/turf/simulated/floor/engine/hull
+	name = "Hull Plating"
+	icon_state = "engine"
+	oxygen = 0
+	nitrogen = 0.000
 	temperature = TCMB
 
 /turf/simulated/floor/
@@ -84,13 +91,6 @@
 			if(open)
 				open.update()
 
-
-	Exit(var/atom/movable/AM)
-		. = ..()
-		spawn()
-			if(open)
-				open.update()
-
 	airless
 		name = "airless floor"
 		oxygen = 0.01
@@ -106,20 +106,33 @@
 		intact = 0
 		icon_state = "open"
 		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
-		var/global/image/darkoverlay = null
-		var/turf/simulated/floorbelow
+		var/icon/darkoverlay = null
+		var/turf/floorbelow
 
 		New()
 			..()
-
-			if(!darkoverlay)
-				darkoverlay = image("icon" = 'open.dmi')
-			//	"icon" = 'hands.dmi', "icon_state" = text("[][]", t1, (!( src.lying ) ? null : "2")), "layer" = MOB_LAYER
-
+			spawn(1)
+				floorbelow = locate(x, y, z + 1)
+				if(ticker)
+					add_to_other_zone()
+				if(zone && floorbelow.zone)
+					zone.Connect(src,floorbelow)
+				update()
 			var/turf/T = locate(x, y, z + 1)
-			floorbelow = T
-			switch (T.type)
+			switch (T.type) //Somehow, I don't think I thought this cunning plan all the way through - Sukasa
 				if (/turf/simulated/floor)
+					//Do nothing - valid
+				if (/turf/simulated/floor/plating)
+					//Do nothing - valid
+				if (/turf/simulated/floor/engine)
+					//Do nothing - valid
+				if (/turf/simulated/floor/engine/vacuum)
+					//Do nothing - valid
+				if (/turf/simulated/floor/airless)
+					//Do nothing - valid
+				if (/turf/simulated/floor/grid)
+					//Do nothing - valid
+				if (/turf/simulated/floor/plating/airless)
 					//Do nothing - valid
 				if (/turf/simulated/floor/open)
 					//Do nothing - valid
@@ -131,8 +144,11 @@
 					var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
 					F.name = F.name
 					return
+		Del()
+			if(zone)
+				zone.Disconnect(src,floorbelow)
+			. = ..()
 
-			update()
 
 		Enter(var/atom/movable/AM)
 			if (1) //TODO make this check if gravity is active (future use) - Sukasa
@@ -144,30 +160,19 @@
 			return ..()
 
 		proc
-			update()
+			update() //Update the overlays to make the openspace turf show what's down a level
 				src.clearoverlays()
-				src.addoverlay(floorbelow)
-			//	for(var/obj/o in floorbelow.contents)
-			//		src.addoverlay(o)
-			//	while (KeepDrawing)
-			//		LowestLayerLeftToDraw = 1e31
-				//	KeepDrawing = 0
-			//		for(var/atom/A in floorbelow)
-			//			if (A.layer < LowestLayerLeftToDraw && A.layer > HighestDrawnLayer)
-			//				LowestLayerLeftToDraw = A.layer
-			//				KeepDrawing = 1
+				src.addoverlay(floorbelow) //temporarily disabled
 
-				for(var/atom/A in floorbelow.contents)
-				//	addoverlay(new /icon(A.icon,icon_state = A.icon_state,dir = A.dir))
-					if(A.invisibility == 0) // Otherwise you end up with a ton of crap about making stuff only visible to some people, and I'm lazy, and the computer is slow. Not to mention that what I'm doing now has been considered impossible to do in byond for a while
-						addoverlay (image(A,dir=A.dir))
-				addoverlay(image("icon" = 'open.dmi'))
-			//	var/area/Li = Turf.loc
-			//	if (Li.sd_light_level < 7 && Li.sd_light_level >= 0)
-			//		Tile.Blend(icon('sd_dark_alpha7.dmi', "[Li.sd_light_level]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
+				for(var/obj/o in floorbelow.contents)
+					src.addoverlay(image(o, dir=o.dir))
+				if(istype(floorbelow,/turf/simulated))
+					air.share(floorbelow:air)
+					air.temperature_share(floorbelow:air,FLOOR_HEAT_TRANSFER_COEFFICIENT)
+				else
+					air.mimic(floorbelow,1)
+					air.temperature_mimic(floorbelow,FLOOR_HEAT_TRANSFER_COEFFICIENT,1)
 
-				//	for(var/icon/i in o.overlaylist)
-				//		addoverlay(i)
 	plating
 		name = "plating"
 		icon_state = "plating"
@@ -246,6 +251,13 @@
 	name = "floor"
 	icon = 'floors.dmi'
 	icon_state = "Floor3"
+	outer_hull_plating
+		name = "outer hull"
+		icon_state = "shiny"
+		oxygen = 0
+		nitrogen = 0.0001
+		carbon_dioxide = 0
+		toxins = 0
 
 /turf/unsimulated/wall
 	name = "wall"

@@ -1,8 +1,6 @@
 /world/New()
 	..()
 
-	heartbeat()
-
 	diary = file("data/logs/[time2text(world.realtime, "YYYY/MM-Month/DD-Day")].log")
 	diary << ""
 	diary << ""
@@ -10,19 +8,19 @@
 	diary << "---------------------"
 	diary << ""
 
-	jobban_loadbanfile()
-	jobban_updatelegacybans()
+	//jobban_loadbanfile()
+	//jobban_updatelegacybans()
 
 	invite_loadbanfile()
 
-	goon_loadfile()
-	beta_tester_loadfile()
-	LoadBans()
+//	goon_loadfile()
+//	beta_tester_loadfile()
+
 
 	spawn(30)
 		//EXPERIMENTAL
 		Optimize()
-		//sleep_offline = 1 - Disabled, Heartbeat support.
+		sleep_offline = 1
 		//EXPERIMENTAL
 
 	spawn(0)

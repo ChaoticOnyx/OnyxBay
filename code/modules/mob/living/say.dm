@@ -155,7 +155,7 @@
 			rendered = "<span class='game say'><span class='name'>[src.real_name]</span>[alt_name] <span class='message'>[message_a]</span></span>"
 
 		for (var/mob/M in heard_a)
-			M.show_message(rendered, 2)
+			M.show_message(rendered, 6)
 			M << test2
 		spawn(30) del(test2)
 
@@ -174,7 +174,7 @@
 		rendered = "<span class='game say'><span class='name'>[src.voice_name]</span> <span class='message'>[message_b]</span></span>"
 
 		for (var/mob/M in heard_b)
-			M.show_message(rendered, 2)
+			M.show_message(rendered, 6)
 	message = src.say_quote(message)
 	if (italics)
 		message = "<i>[message]</i>"

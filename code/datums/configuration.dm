@@ -21,7 +21,6 @@
 	var/vote_period = 60				// length of voting period (seconds, default 1 minute)
 	var/vote_no_default = 0				// vote does not default to nochange/norestart (tbi)
 	var/vote_no_dead = 0				// dead people can't vote (tbi)
-	var/enable_authentication = 0		// goon authentication
 
 	var/invite_only = 0
 
@@ -136,9 +135,6 @@
 
 			if ("allow_ai")
 				config.allow_ai = 1
-
-			if ("authentication")
-				config.enable_authentication = 1
 
 			if ("norespawn")
 				config.respawn = 0

@@ -4,7 +4,7 @@ var/showadminmessages = 1
 	if(!showadminmessages) return
 	var/rendered = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[text]</span></span>"
 	for (var/mob/M in world)
-		if (M && M.client && M.client.holder && M.client.authenticated)
+		if (M && M.client && M.client.holder)
 			if (admin_ref)
 				M << dd_replaceText(rendered, "%admin_ref%", "\ref[M]")
 			else
@@ -67,28 +67,50 @@ var/showadminmessages = 1
 
 	/////////////////////////////////////new ban stuff
 	if(href_list["unbanf"])
-		var/banfolder = href_list["unbanf"]
-		Banlist.cd = "/base/[banfolder]"
-		var/key = Banlist["key"]
+		var/key = href_list["unbanf"]
 		if(alert(usr, "Are you sure you want to unban [key]?", "Confirmation", "Yes", "No") == "Yes")
-			if (RemoveBan(banfolder))
+			if (RemoveBan(key))
 				unbanpanel()
 			else
 				alert(usr,"This ban has already been lifted / does not exist.","Error","Ok")
 				unbanpanel()
-
+	if(href_list["uninvite1"])
+		var/key = href_list["uninvite1"]
+		if(alert(usr, "Are you sure you want to uninvite [key]?", "Confirmation", "Yes", "No") == "Yes")
+			if (invite_removetext(key))
+				invite_panel()
+			else
+				alert(usr,"This ban has already been lifted / does not exist.","Error","Ok")
+				invite_panel()
+	if(href_list["invite1"])
+		var/key
+		key = input(usr,"What key do you wish to add?","What Key?","key")
+		if(key == "key")
+			alert(usr,"You can't add 'key.","Error","Ok")
+			invite_panel()
+		if(alert(usr, "Are you sure you want to invite [key]?", "Confirmation", "Yes", "No") == "Yes")
+			if (invite_addtext(key))
+				invite_panel()
+			else
+				alert(usr,"This ban is already there or something went to hell.","Error","Ok")
+				invite_panel()
 	if(href_list["unbane"])
+		var/DBQuery/key_query = dbcon.NewQuery("SELECT * FROM `bans` WHERE ckey='[href_list["unbane"]]'")
+		var/list/ban = list()
+		if(!key_query.Execute())
+			log_admin("[key_query.ErrorMsg()]")
+		else
+			while(key_query.NextRow())
+				ban = key_query.GetRowData()
 		UpdateTime()
 		var/reason
 		var/mins = 0
-		var/banfolder = href_list["unbane"]
-		Banlist.cd = "/base/[banfolder]"
-		var/reason2 = Banlist["reason"]
-		var/temp = Banlist["temp"]
-		var/minutes = (Banlist["minutes"] - CMinutes)
+		var/reason2 = ban["reason"]
+		var/temp = ban["temp"]
+		var/minutes = (text2num(ban["minutes"]) - CMinutes)
 		if(!minutes || minutes < 0) minutes = 0
-		var/banned_key = Banlist["key"]
-		Banlist.cd = "/base"
+		var/banned_key = ban["ckey"]
+
 
 		switch(alert("Temporary Ban?",,"Yes","No"))
 			if("Yes")
@@ -105,16 +127,14 @@ var/showadminmessages = 1
 				reason = input(usr,"Reason?","reason",reason2) as text
 				if(!reason)
 					return
-
-		log_admin("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins)]")
-		message_admins("\blue [key_name_admin(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins)]", 1)
-		Banlist.cd = "/base/[banfolder]"
-		Banlist["reason"] << reason
-		Banlist["temp"] << temp
-		Banlist["minutes"] << (mins + CMinutes)
-		Banlist["bannedby"] << usr.ckey
-		Banlist.cd = "/base"
+		var/mins2 = (mins + CMinutes)
+		log_admin("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins2)]")
+		message_admins("\blue [key_name_admin(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins2)]", 1)
+		var/DBQuery/query = dbcon.NewQuery("UPDATE `bans` SET `reason`='[reason]', `temp`='[temp]',`minutes`='[mins2]', `bannedby`='[usr.ckey]' WHERE `ckey`='[ban["ckey"]]'")
+		if(!query.Execute())
+			log_admin("[query.ErrorMsg()]")
 		unbanpanel()
+
 
 	/////////////////////////////////////new ban stuff
 
@@ -178,15 +198,16 @@ var/showadminmessages = 1
 				//M.client = null
 				del(M.client)
 
-	if (href_list["removejobban"])
+	/*if (href_list["removejobban"])
 		if ((src.rank in list("Coder", "Host"  )))
 			var/t = href_list["removejobban"]
+			usr << "[T]"
 			if(t)
 				log_admin("[key_name(usr)] removed [t]")
 				message_admins("\blue [key_name_admin(usr)] removed [t]", 1)
 				jobban_remove(t)
 				href_list["ban"] = 1 // lets it fall through and refresh
-
+*/
 	if (href_list["newban"])
 		if ((src.rank in list( "Secondary Administrator", "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["newban"])
@@ -225,33 +246,33 @@ var/showadminmessages = 1
 					del(M.client)
 					del(M)
 
-	if (href_list["remove"])
+/*	if (href_list["remove"])
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/t = href_list["remove"]
 			if(t && isgoon(t))
 				log_admin("[key_name(usr)] removed [t] from the goonlist.")
 				message_admins("\blue [key_name_admin(usr)] removed [t] from the goonlist.")
-				remove_goon(t)
+				remove_goon(t)*/
 	if (href_list["removeinvitek"])
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/t = href_list["remove"]
 			if(t)
 				invite_keylist.Remove(text("[t]"))
-				invite_savebanfile()
+//				invite_savebanfile()
 				message_admins("\blue [key_name_admin(usr)] removed [t] from the invite list.")
 
 	if (href_list["removeinvite"])
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/u = input(usr, "Who do you wish to remove from the invite list", "Remove invite", "enterckeyhere")
 			invite_keylist.Remove(text("[u]"))
-			invite_savebanfile()
+//			invite_savebanfile()
 			message_admins("\blue [key_name_admin(usr)] removed [u] from the invite list.")
 
 	if (href_list["addinvite"])
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/u = input(usr, "Who do you wish to add to the invite list", "Remove invite", "enterckeyhere")
 			invite_keylist.Add(text("[u]"))
-			invite_savebanfile()
+//			invite_savebanfile()
 			message_admins("\blue [key_name_admin(usr)] added [u] to the invite list.")
 
 
@@ -452,16 +473,6 @@ var/showadminmessages = 1
 			message_admins("[key_name_admin(usr)] has sent [key_name_admin(M)] to the thunderdome. (Team 2)", 1)
 			M << "\blue You have been sent to the Thunderdome."
 
-	if (href_list["adminauth"])
-		if ((src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
-			var/mob/M = locate(href_list["adminauth"])
-			if (ismob(M) && !M.client.authenticated && !M.client.authenticating)
-				M.client.verbs -= /client/proc/authorize
-				M.client.authenticated = text("admin/[]", usr.client.authenticated)
-				log_admin("[key_name(usr)] authorized [key_name(M)]")
-				message_admins("\blue [key_name_admin(usr)] authorized [key_name_admin(M)]", 1)
-				M.client << text("You have been authorized by []", usr.key)
-
 	if (href_list["revive"])
 		if ((src.rank in list( "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/mob/M = locate(href_list["revive"])
@@ -550,10 +561,6 @@ var/showadminmessages = 1
 		var/dat = "<html><head><title>Options for [M.key]</title></head>"
 		var/foo = "\[ "
 		if (ismob(M) && M.client)
-			if(!M.client.authenticated && !M.client.authenticating)
-				foo += text("<A HREF='?src=\ref[src];adminauth=\ref[M]'>Authorize</A> | ")
-			else
-				foo += text("<B>Authorized</B> | ")
 			foo += text("<A HREF='?src=\ref[src];prom_demot=\ref[M.client]'>Promote/Demote</A> | ")
 			if(!istype(M, /mob/new_player))
 				if(!istype(M, /mob/living/carbon/monkey))
@@ -1243,7 +1250,7 @@ var/showadminmessages = 1
 				dat += "<td>Monkey</td>"
 			if(istype(M, /mob/living/carbon/alien))
 				dat += "<td>Alien</td>"
-			dat += {"<td>[(M.client ? "[(M.client.goon ? "<font color=red>" : "<font>")][M.client]</font>" : "No client")]</td>
+			dat += {"<td>[(M.client ? "[M.client]" : "No client")]</td>
 			<td align=center><A HREF='?src=\ref[src];adminplayeropts=\ref[M]'>X</A></td>
 			<td align=center><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>
 			<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'>[checktraitor(M) ? "<font color=red>" : "<font>"]Traitor?</font></A></td></tr>
@@ -1301,15 +1308,6 @@ var/showadminmessages = 1
 	usr << browse(dat, "window=admin2;size=210x180")
 	return
 
-/obj/admins/proc/goons()
-	var/dat = "<HR><B>GOOOOOOONS</B><HR><table cellspacing=5><tr><th>Key</th><th>SA Username</th></tr>"
-	for(var/t in goon_keylist)
-		dat += text("<tr><td><A href='?src=\ref[src];remove=[ckey(t)]'><B>[t]</B></A></td><td>[goon_keylist[ckey(t)]]</td></tr>")
-	dat += "</table>"
-	usr << browse(dat, "window=ban;size=300x400")
-
-
-
 /obj/admins/proc/invites()
 	var/dat = "<HR><B>Beta testers</B><HR><table cellspacing=5><tr><th>Key</th></tr>"
 	for(var/t in invite_keylist)
@@ -1317,13 +1315,6 @@ var/showadminmessages = 1
 	dat += "</table>"
 	dat += "<BR><A href='?src=\ref[src];addinvite=1'>Add person to list</A><BR>"
 	dat += "<BR><A href='?src=\ref[src];removeinvite=1'>Remove person from list</A><BR>"
-	usr << browse(dat, "window=ban;size=300x400")
-
-/obj/admins/proc/beta_testers()
-	var/dat = "<HR><B>Beta testers</B><HR><table cellspacing=5><tr><th>Key</th></tr>"
-	for(var/t in beta_tester_keylist)
-		dat += text("<tr><td>[t]</td></tr>")
-	dat += "</table>"
 	usr << browse(dat, "window=ban;size=300x400")
 
 /obj/admins/proc/Secrets()
@@ -1465,14 +1456,14 @@ var/showadminmessages = 1
 
 	for(var/mob/CM in world)
 		if(CM.client)
-			if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2) || !CM.client.authenticated)
+			if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2))
 				CM.client.vote = "none"
 			else
 				CM.client.vote = "default"
 
 	for(var/mob/CM in world)
 		if(CM.client)
-			if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2) || !CM.client.authenticated)
+			if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2))
 				CM.client.vote = "none"
 			else
 				CM.client.vote = "default"
@@ -1562,18 +1553,6 @@ var/showadminmessages = 1
 	traitor_scaling = !traitor_scaling
 	log_admin("[key_name(usr)] toggled Traitor Scaling to [traitor_scaling].")
 	message_admins("[key_name_admin(usr)] toggled Traitor Scaling [traitor_scaling ? "on" : "off"].", 1)
-
-/obj/admins/proc/togglegoonsay()
-	set category = "Special Verbs"
-	set desc = "Toggle dis bitch"
-	set name = "Toggle Goonsay"
-	goonsay_allowed = !( goonsay_allowed )
-	if (goonsay_allowed)
-		world << "<B>The GOONSAY channel has been enabled.</B>"
-	else
-		world << "<B>The GOONSAY channel has been disabled.</B>"
-	log_admin("[key_name(usr)] toggled Goonsay to [goonsay_allowed].")
-	message_admins("[key_name_admin(usr)] toggled GOONSAY [goonsay_allowed ? "on" : "off"]", 1)
 
 /obj/admins/proc/startnow()
 	set category = "Special Verbs"

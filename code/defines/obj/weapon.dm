@@ -655,7 +655,7 @@
 
 /obj/item/weapon/caution
 	desc = "Caution! Wet Floor!"
-	name = "wet floor sign"
+	name = "Wet Floor Sign"
 	icon = 'janitor.dmi'
 	icon_state = "caution"
 	force = 1.0

@@ -31,7 +31,6 @@
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
 			src.verbs += /proc/givetestverbs
-			src.verbs += /obj/admins/proc/togglegoonsay
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /client/proc/cmd_modify_object_variables
 			src.verbs += /client/proc/cmd_modify_ticker_variables
@@ -118,7 +117,6 @@
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
 			src.verbs += /proc/givetestverbs
-			src.verbs += /obj/admins/proc/togglegoonsay
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /client/proc/cmd_debug_tog_aliens
 			src.verbs += /client/proc/cmd_modify_object_variables
@@ -201,7 +199,6 @@
 			src.holder.level = 4
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/toggleevents
-			src.verbs += /obj/admins/proc/togglegoonsay
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /proc/possess
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
@@ -279,7 +276,6 @@
 				src.verbs += /obj/admins/proc/toggleooc				//toggle ooc
 				src.verbs += /obj/admins/proc/toggletraitorscaling
 				src.verbs += /client/proc/cmd_admin_drop_everything
-				src.verbs += /obj/admins/proc/togglegoonsay
 				src.verbs += /client/proc/debug_variables
 				src.verbs += /client/proc/cmd_modify_object_variables
 				src.verbs += /client/proc/cmd_modify_ticker_variables
@@ -299,7 +295,6 @@
 			src.verbs += /proc/togglebuildmode
 			src.verbs += /obj/admins/proc/toggleooc				//toggle ooc
 			src.verbs += /obj/admins/proc/toggletraitorscaling
-			src.verbs += /obj/admins/proc/togglegoonsay
 			src.verbs += /client/proc/cmd_admin_say
 			src.verbs += /client/proc/dsay
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
@@ -353,7 +348,6 @@
 				src.verbs += /obj/admins/proc/toggleaban			//abandon mob
 				src.verbs += /client/proc/deadchat					//toggles deadchat
 
-			src.verbs += /obj/admins/proc/togglegoonsay
 			src.verbs += /client/proc/cmd_admin_pm
 			src.verbs += /client/proc/cmd_admin_say
 			src.verbs += /client/proc/dsay
@@ -394,7 +388,6 @@
 				src.verbs += /obj/admins/proc/toggleaban			//abandon mob
 				src.verbs += /client/proc/cmd_admin_check_contents
 
-			src.verbs += /obj/admins/proc/togglegoonsay
 			src.verbs += /client/proc/cmd_admin_pm
 
 			src.verbs += /client/proc/cmd_admin_say
@@ -424,7 +417,6 @@
 
 		if ("Moderator")
 			src.holder.level = 0
-			src.verbs += /obj/admins/proc/togglegoonsay
 			src.verbs += /client/proc/cmd_admin_pm
 			src.verbs += /client/proc/cmd_admin_say
 			src.verbs += /client/proc/dsay
@@ -472,19 +464,18 @@
 			src.verbs += /client/proc/voting
 			src.verbs += /client/proc/game_panel
 			src.verbs += /client/proc/unban_panel
+			src.verbs += /client/proc/invite_panel
 			src.verbs += /client/proc/player_panel
 
 		if(src.holder.level > 1)
 			src.verbs += /client/proc/stealth
+			src.verbs += /client/proc/admin_invis
 
 		if(( src.holder.state == 2 ) || ( src.holder.level > 3 ))
 			src.verbs += /client/proc/secrets
-			src.verbs += /client/proc/goons
-			src.verbs += /client/proc/beta_testers
 
 /client/proc/clear_admin_verbs()
 	src.deadchat = 0
-	src.verbs -= /obj/admins/proc/togglegoonsay
 	src.verbs -= /client/proc/debug_variables
 	src.verbs -= /client/proc/cmd_modify_object_variables
 	src.verbs -= /client/proc/cmd_modify_ticker_variables
@@ -537,10 +528,9 @@
 	src.verbs -= /client/proc/game_panel
 	src.verbs -= /client/proc/player_panel
 	src.verbs -= /client/proc/unban_panel
+	src.verbs -= /client/proc/invite_panel
 	src.verbs -= /client/proc/secrets
 	src.verbs -= /client/proc/voting
-	src.verbs -= /client/proc/goons
-	src.verbs -= /client/proc/beta_testers
 	src.verbs -= /client/proc/admin_play
 	src.verbs -= /client/proc/admin_observe
 	src.verbs -= /client/proc/stealth
@@ -627,6 +617,12 @@
 	if (src.holder)
 		src.holder.unbanpanel()
 	return
+/client/proc/invite_panel()
+	set name = "Invite Panel"
+	set category = "Admin"
+	if (src.holder)
+		src.holder.invite_panel()
+	return
 
 /client/proc/game_panel()
 	set name = "Game Panel"
@@ -642,7 +638,7 @@
 		src.holder.Secrets()
 	return
 
-/client/proc/goons()
+/*/client/proc/goons()
 	set name = "Goons"
 	set category = "Admin"
 	if (src.holder)
@@ -654,7 +650,7 @@
 	set category = "Admin"
 	if (src.holder)
 		src.holder.beta_testers()
-	return
+	return*/
 
 /client/proc/voting()
 	set name = "Voting"
@@ -665,7 +661,7 @@
 /client/proc/funbutton()
 	set category = "Debug"
 	set name = "Boom Boom Boom Shake The Room"
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 
@@ -682,7 +678,7 @@
 /client/proc/stealth()
 	set category = "Admin"
 	set name = "Stealth Mode"
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 	src.stealth = !src.stealth
@@ -700,12 +696,26 @@
 	log_admin("[key_name(usr)] has turned stealth mode [src.stealth ? "ON" : "OFF"]")
 	message_admins("[key_name_admin(usr)] has turned stealth mode [src.stealth ? "ON" : "OFF"]", 1)
 
+/client/proc/admin_invis()
+	set category = "Admin"
+	set name = "Invisibility"
+	if(!src.holder)
+		src << "Only administrators may use this command."
+		return
+	src.admin_invis =! src.admin_invis
+	if(src.mob)
+		var/mob/m = src.mob//probably don't need this cast, but I'm too lazy to check if /client.mob is of type /mob or not
+		m.update_clothing()
+	log_admin("[key_name(usr)] has turned their invisibility [src.admin_invis ? "ON" : "OFF"]")
+	message_admins("[key_name_admin(usr)] has turned their invisibility [src.admin_invis ? "ON" : "OFF"]", 1)
+
+
 
 /client/proc/warn(var/mob/M in world)
 	set category = "Special Verbs"
 	set name = "Warn"
 	set desc = "Warn a player"
-	if(!src.authenticated || !src.holder)
+	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 	if(M.client && M.client.holder && (M.client.holder.level >= src.holder.level))
