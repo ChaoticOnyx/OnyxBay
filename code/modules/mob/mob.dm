@@ -55,7 +55,18 @@
 
 /proc/hsl2rgb(h, s, l)
 	return
-
+mob/verb/turnnorth()
+	set hidden = 1
+	src.dir = NORTH
+mob/verb/turnsouth()
+	set hidden = 1
+	src.dir = SOUTH
+mob/verb/turneast()
+	set hidden = 1
+	src.dir = EAST
+mob/verb/turnwest()
+	set hidden = 1
+	src.dir = WEST
 /proc/ran_zone(zone, probability)
 
 	if (probability == null)
