@@ -10,8 +10,6 @@ var/global/datum/shuttle/main_shuttle
 
 var/global/list/datum/shuttle/shuttles = list()
 
-
-
 datum/shuttle
 	var
 		name = "Shuttle"
@@ -26,6 +24,8 @@ datum/shuttle
 		endtime			// timeofday that shuttle arrives
 		//timeleft = 360 //600
 
+
+	proc/New(var/name,var/centcom,var/station)
 
 	// call the shuttle
 	// if not called before, set the endtime to T+600 seconds
@@ -138,3 +138,8 @@ datum/shuttle
 
 				else
 					return 1
+
+
+
+//proc/CreateShuttles() //Would do this via config, but map changes are rare and need source code anyway
+//	var/datum/shuttle/pod1 = new /datum/shuttle("Escape pod 1")
