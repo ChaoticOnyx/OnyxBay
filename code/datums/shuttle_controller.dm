@@ -19,6 +19,21 @@
 
 #define SHUTTLELEAVETIME 10		// 3 minutes = 180 seconds
 
+
+
+//Areas, centcom(start),station(dest),transit(deepspace)
+//Endtime holds the time that the shuttle will arrive
+//All shuttle code now uses timeleft() to get a countdown
+//When countdown reaches 0, shuttle moves
+
+//At all times while the countdown is not 0, if the shuttle is online, it ensures that it is in the transit space
+//Direction determines where to go next (0 = transit, 1 = Start, 2 = dest), it hasn't been tested when set to 0, but it might work
+//Online is weither the shuttle is actaully countingdown and moving (hard one to guess)
+
+
+
+
+
 var/global/datum/shuttle/main_shuttle
 
 var/global/list/datum/shuttle/shuttles = list()
@@ -26,17 +41,17 @@ var/global/list/datum/shuttle/shuttles = list()
 datum/shuttle
 	var
 		name = "Shuttle"
-		location = 1 //0 = somewhere far away, 1 = at SS13, 2 = returned from SS13 // 0 = Transit, 1 = Start, 2 = dest
+		location = 1 // 0 = Transit, 1 = Start, 2 = dest
 		online = 0
-		direction = 2 //-1 = going back to central command, 1 = going back to SS13 // 1 = Start, 2 = Dest
+		direction = 2 // 1 = Start, 2 = Dest
 
 
 
 
 		area
-			centcom
-			station
-			transit
+			centcom //Start
+			station //Destination
+			transit //Transit area
 
 		endtime			// timeofday that shuttle arrives
 		//timeleft = 360 //600
@@ -48,25 +63,23 @@ datum/shuttle
 		src.station = station
 		src.name = name
 
-	// call the shuttle
-	// if not called before, set the endtime to T+600 seconds
-	// otherwise if outgoing, switch to incoming
 	proc/depart()
-		if(endtime)
-			if(direction == -1)
-				setdirection(1)
-		else
-			settimeleft(PODTRANSITTIME)
-			online = 1
+		settimeleft(PODTRANSITTIME)
+		online = 1
+		if(location == 1)
 			direction = 2
+		else
+			direction = 1
 
 	proc/recall()
 		if(direction == 1)
 			setdirection(2)
 			online = 1
+		//	settimeleft(PODTRANSITTIME)
 		else
 			setdirection(1)
 			online = 1
+		//	settimeleft(PODTRANSITTIME)
 
 	proc/abletolaunch()
 		if(location != 0 && online == 0)
@@ -76,14 +89,10 @@ datum/shuttle
 
 
 	// returns the time (in seconds) before shuttle arrival
-	// note if direction = -1, gives a count-up to SHUTTLEARRIVETIME
 	proc/timeleft()
 		if(online)
 			var/timeleft = round((endtime - world.timeofday)/10 ,1)
-			if(direction == 1)
-				return timeleft
-			else
-				return PODTRANSITTIME-timeleft
+			return timeleft
 		else
 			return PODTRANSITTIME
 
@@ -92,7 +101,8 @@ datum/shuttle
 		endtime = world.timeofday + delay * 10
 
 	// sets the shuttle direction
-	// 1 = towards SS13, -1 = back to centcom
+
+	//1 = Starting location,2 = Destination, 0 = Deep space
 	proc/setdirection(var/dirn)
 		if(direction == dirn)
 			return
@@ -104,16 +114,21 @@ datum/shuttle
 
 	proc
 		process()
-		//	world << timeleft()
-		//	world << "l:[location],d:[direction],o:[online]"
+	//		world << "T:[timeleft()],O:[online],D[direction],L:[location],E:[endtime],W:[world.timeofday]"
 			if(!online) return
 			var/timeleft = timeleft()
 			if(timeleft > 1e5)		// midnight rollover protection
 				timeleft = 0
 			switch(location)
 
+
+
+				//If at location 1 or 2 (Starting points), and the timer is still running, then move to the transit point
+
+
 				if(1)
 					if(timeleft>0)
+					//	world << "MOVE"
 						var/area/start_location = locate(centcom)
 						var/area/end_location = locate(transit)
 						for(var/mob/m in start_location)
@@ -123,13 +138,11 @@ datum/shuttle
 						direction = 2
 
 				if(0)
-					if(timeleft>PODTRANSITTIME)
-				//		online = 0
-				//		direction = 1
-				//		endtime = null
+					if(timeleft > 0)
 						return 0
 
-					else if(timeleft >= PODTRANSITTIME)
+					else if(timeleft <= 0)
+						//Move
 						location = direction
 
 						var/area/start_location = locate(transit)
@@ -167,10 +180,13 @@ datum/shuttle
 
 						start_location.move_contents_to(end_location)
 
+						online = 0
+
 						return 1
 
 				if(2)
 					if(timeleft>0)
+				//		world << "MOVE"
 						var/area/start_location = locate(centcom)
 						for(var/mob/m in start_location)
 							shake_camera(m, 3, 1)
@@ -179,16 +195,6 @@ datum/shuttle
 						location = 0
 						direction = 1
 
-			/*		else
-						location = 2
-						var/area/start_location = locate(station)
-						var/area/end_location = locate(centcom)
-
-						start_location.move_contents_to(end_location)
-						online = 0
-
-						return 1
-*/
 				else
 					return 1
 
