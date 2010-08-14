@@ -70,7 +70,7 @@
 	else
 		fingerprints = src.pick_fingerprints()
 
-	src.text += "<BR><BR>The <B>[name_1] [name_2]</B> implied an undercover operative was acting on their behalf on the station currently.<BR>"
+	src.text += "<BR><BR>The <B>[name_1] [name_2]</B> implied an undercover operative was acting on their behalf on the ship currently.<BR>"
 	src.text += "After some investigation, we "
 	if(traitor_name)
 		src.text += "are [prob_right_dude]% sure that [traitor_name] may have been involved, and should be closely observed."
@@ -97,8 +97,8 @@
 	else
 		traitor_name = src.pick_mob()
 
-	src.text += "<BR><BR>It has been brought to our attention that the [name_1] [name_2] are attempting to stir unrest on one of our stations in your sector. <BR>"
-	src.text += "Based on our intelligence, we are [prob_right_job]% sure that if true, someone doing the job of [traitor_job] on your station may have been brainwashed "
+	src.text += "<BR><BR>It has been brought to our attention that the [name_1] [name_2] are attempting to stir unrest on one of our vessels in your sector. <BR>"
+	src.text += "Based on our intelligence, we are [prob_right_job]% sure that if true, someone doing the job of [traitor_job] on your ship may have been brainwashed "
 	src.text += "at a recent conference, and their department should be closely monitored for signs of mutiny. "
 	if(prob(prob_right_dude))
 		src.text += "<BR> In addition, we are [prob_right_dude]% sure that [traitor_name] may have also some in to contact with this "
@@ -114,8 +114,8 @@
 	src.text += "Known attributes include: Brown sandals, a large blue hat, a voluptous white beard, and an inclination to cast spells."
 
 /datum/intercept_text/proc/build_nuke(correct_mob)
-	src.text += "<BR><BR>Cent. Com recently recieved a report of a plot to destory one of our stations in your area. We believe the Nuclear Authentication Disc "
-	src.text += "that is standard issue aboard your vessel may be a target, and reccommend removal of this object, and it's storage in a safe "
+	src.text += "<BR><BR>Cent. Com recently recieved a report of a plot to destory one of our vessels in your area. We believe the Nuclear Authentication Disc "
+	src.text += "that is standard issue aboard your ship may be a target, and reccommend removal of this object, and it's storage in a safe "
 	src.text += "environment. As this may cause panic among the crew, all efforts should be made to keep this information a secret from all but "
 	src.text += "the most trusted members."
 
