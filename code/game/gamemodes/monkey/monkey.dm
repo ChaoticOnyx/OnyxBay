@@ -29,7 +29,7 @@
 			rabid_monkey.contract_disease(new /datum/disease/jungle_fever)
 
 /datum/game_mode/monkey/check_finished()
-	if(emergency_shuttle.location==2)
+	if(main_shuttle.location==2)
 		return 1
 
 	return 0

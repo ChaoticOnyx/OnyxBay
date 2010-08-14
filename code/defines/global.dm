@@ -56,6 +56,9 @@ var
 	delay_start = 0
 
 
+
+	datum/PodControl/LaunchControl = new /datum/PodControl()
+
 	captainMax = 1
 	engineerMax = 5
 	barmanMax = 2
@@ -82,7 +85,6 @@ var
 	list/admin_log = list (  )
 	list/lastsignalers = list(	)	//keeps last 100 signals here in format: "[src] used \ref[src] @ location [src.loc]: [freq]/[code]"
 	list/admins = list(  )
-	list/shuttles = list(  )
 	list/reg_dna = list(  )
 //	list/traitobj = list(  )
 

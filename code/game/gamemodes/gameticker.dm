@@ -144,7 +144,11 @@ var/global/datum/controller/gameticker/ticker
 		mode.process()
 
 
-		emergency_shuttle.process()
+	//	main_shuttle.process()
+
+		LaunchControl.process()
+		for(var/datum/shuttle/s in shuttles)
+			s.process()
 
 
 		if(mode.check_finished())

@@ -4,7 +4,7 @@
 	if(src.healths)
 		src.healths.icon_state = "health5"
 	if(src.halloss > 0 && (!gibbed))
-		src.hallucination = 0
+		//src.hallucination = 0
 		src.halloss = 0
 		// And the suffocation was a hallucination (lazy)
 		src.oxyloss = max(src.oxyloss - 50,0)

@@ -136,7 +136,7 @@
 	return
 
 /datum/game_mode/nuclear/check_finished()
-	if((src.finished) || (emergency_shuttle.location==2))
+	if((src.finished) || (main_shuttle.location==2))
 		return 1
 	else
 		return 0

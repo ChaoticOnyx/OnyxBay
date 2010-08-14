@@ -146,15 +146,22 @@
 	var/icon/base = null
 	var/s_tone
 	var/mob/living/clone = null
-	var/icon/left
-	var/icon/right
-	var/icon/up
-	var/icon/down
-/obj/fake_attacker/attackby()
+	var/image/left
+	var/image/right
+	var/image/up
+	var/collapse
+	var/image/down
+
+	var/health = 100
+/obj/fake_attacker/attackby(var/obj/item/weapon/P as obj, mob/user as mob)
 	step_away(src,my_target,2)
 	for(var/mob/M in oviewers(world.view,my_target))
 		M << "\red <B>[my_target] flails around wildly.</B>"
 	my_target.show_message("\red <B>[src] has been attacked by [my_target] </B>", 1) //Lazy.
+
+	//src.health -= P.power
+
+
 	return
 
 /obj/fake_attacker/HasEntered(var/mob/M, somenumber)
@@ -171,23 +178,35 @@
 	step_away(src,my_target,2)
 	proccess()
 
+
+/obj/fake_attacker/proc/updateimage()
+//	del src.currentimage
+
+
+	if(src.dir == NORTH)
+		del src.currentimage
+		src.currentimage = new /image(up,src)
+	else if(src.dir == SOUTH)
+		del src.currentimage
+		src.currentimage = new /image(down,src)
+	else if(src.dir == EAST)
+		del src.currentimage
+		src.currentimage = new /image(right,src)
+	else if(src.dir == WEST)
+		del src.currentimage
+		src.currentimage = new /image(left,src)
+	my_target << currentimage
+
+
 /obj/fake_attacker/proc/proccess()
 	if(!my_target) spawn(5) .()
+	if(src.health < 0)
+		collapse()
+		return
 	if(get_dist(src,my_target) > 1)
 		src.dir = get_dir(src,my_target)
 		step_towards_3d(src,my_target)
-	/*	del src.currentimage
-		if(src.dir == NORTH)
-			src.currentimage = new /image(up,src)
-		else if(src.dir == SOUTH)
-			src.currentimage = new /image(down,src)
-		else if(src.dir == EAST)
-			src.currentimage = new /image(right,src)
-		else if(src.dir == WEST)
-			src.currentimage = new /image(left,src)
-		src.currentimage = new /image(clone,src,dir = src.dir)*/
-	//	my_target << currentimage
-
+		updateimage()
 	else
 		if(prob(15))
 			if(weapon_name)
@@ -210,6 +229,10 @@
 		step_away(src,my_target,2)
 	spawn(5) .()
 
+/obj/fake_attacker/proc/collapse()
+	collapse = 1
+	updateimage()
+
 /proc/fake_blood(var/mob/target)
 	var/obj/overlay/O = new/obj/overlay(target.loc)
 	O.name = "blood"
@@ -225,7 +248,7 @@
 	var/clone_weapon = null
 
 	for(var/mob/living/carbon/human/H in world)
-		if(H.stat || H.lying || H.dir == NORTH) continue
+		if(H.stat || H.lying) continue
 		possible_clones += H
 
 	if(!possible_clones.len) return
@@ -242,10 +265,18 @@
 	F.my_target = target
 	F.weapon_name = clone_weapon
 	target.hallucinations += F
+
+
+	F.left = image(clone,dir = WEST)
+	F.right = image(clone,dir = EAST)
+	F.up = image(clone,dir = NORTH)
+	F.down = image(clone,dir = SOUTH)
+
 //	F.base = new /icon(clone.stand_icon)
 //	F.currentimage = new /image(clone)
 
 /*
+
 
 
 	F.left = new /icon(clone.stand_icon,dir=WEST)
@@ -264,9 +295,9 @@
 	target << F.up
 	*/
 
-
-	var/image/O = image(clone,F)
-	target << O
+	F.updateimage()
+//var/image/O = image(clone,F)
+//	target << O
 
 /proc/can_see(var/atom/source, var/atom/target, var/length=5) // I couldnt be arsed to do actual raycasting :I This is horribly inaccurate.
 	var/turf/current = get_turf(source)

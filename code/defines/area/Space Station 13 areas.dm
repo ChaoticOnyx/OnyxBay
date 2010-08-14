@@ -86,6 +86,21 @@
 	name = "Emergency Shuttle"
 	music = "music/escape.ogg"
 
+/area/shuttle/escape/transit
+	icon_state = "shuttle2"
+
+/area/shuttle/escape/transit/pod1
+
+/area/shuttle/escape/transit/pod2
+
+/area/shuttle/escape/station/pod1
+
+/area/shuttle/escape/station/pod2
+
+/area/shuttle/escape/centcom/pod1
+
+/area/shuttle/escape/centcom/pod2
+
 /area/shuttle/escape/station
 	icon_state = "shuttle2"
 
