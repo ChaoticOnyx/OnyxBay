@@ -53,7 +53,7 @@ Important Procedures
 
 */
 
-atom/proc/CanPass(atom/movable/mover, turf/target, height=1.5, air_group = 0)
+atom/proc/CanPass(atom/movable/mover, turf/source, height=1.5, air_group = 0)
 	return (!density || !height || air_group)
 
 turf

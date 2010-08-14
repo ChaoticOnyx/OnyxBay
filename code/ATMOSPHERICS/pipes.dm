@@ -316,6 +316,13 @@ obj/machinery/atmospherics/pipe
 			else
 				icon_state = "exposed"
 
+	simple/reinforced
+		maximum_pressure = 350*ONE_ATMOSPHERE
+		fatigue_pressure = 305*ONE_ATMOSPHERE
+		name = "Reinforced Pipe"
+		icon_state = "intact"
+		level = 2
+
 	simple/heat_exchanging
 		icon = 'heat.dmi'
 		icon_state = "3"
@@ -365,7 +372,7 @@ obj/machinery/atmospherics/pipe
 				air_temporary.volume = volume
 				air_temporary.temperature = T20C
 
-				air_temporary.carbon_dioxide = (25*ONE_ATMOSPHERE)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
+				air_temporary.carbon_dioxide = (35*ONE_ATMOSPHERE)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
 
 				..()
 
@@ -378,7 +385,7 @@ obj/machinery/atmospherics/pipe
 				air_temporary.volume = volume
 				air_temporary.temperature = T20C
 
-				air_temporary.toxins = (25*ONE_ATMOSPHERE)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
+				air_temporary.toxins = (35*ONE_ATMOSPHERE)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
 
 				..()
 
@@ -392,7 +399,7 @@ obj/machinery/atmospherics/pipe
 				air_temporary.temperature = T0C
 
 				var/datum/gas/oxygen_agent_b/trace_gas = new
-				trace_gas.moles = (25*ONE_ATMOSPHERE)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
+				trace_gas.moles = (35*ONE_ATMOSPHERE)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
 
 				air_temporary.trace_gases += trace_gas
 
@@ -407,7 +414,7 @@ obj/machinery/atmospherics/pipe
 				air_temporary.volume = volume
 				air_temporary.temperature = T20C
 
-				air_temporary.oxygen = (25*ONE_ATMOSPHERE)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
+				air_temporary.oxygen = (35*ONE_ATMOSPHERE)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
 
 				..()
 
@@ -420,7 +427,7 @@ obj/machinery/atmospherics/pipe
 				air_temporary.volume = volume
 				air_temporary.temperature = T20C
 
-				air_temporary.nitrogen = (25*ONE_ATMOSPHERE)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
+				air_temporary.nitrogen = (35*ONE_ATMOSPHERE)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
 
 				..()
 
@@ -433,8 +440,8 @@ obj/machinery/atmospherics/pipe
 				air_temporary.volume = volume
 				air_temporary.temperature = T20C
 
-				air_temporary.oxygen = (25*ONE_ATMOSPHERE*O2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
-				air_temporary.nitrogen = (25*ONE_ATMOSPHERE*N2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
+				air_temporary.oxygen = (35*ONE_ATMOSPHERE*O2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
+				air_temporary.nitrogen = (35*ONE_ATMOSPHERE*N2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature)
 
 				..()
 

@@ -590,18 +590,17 @@
 	icon = 'objects.dmi'
 	icon_state = "stool"
 	flags = FPRINT
+	anchored = 1.0
 	pressure_resistance = 3*ONE_ATMOSPHERE
 
 /obj/stool/bed
 	name = "bed"
 	icon_state = "bed"
-	anchored = 1.0
 
 /obj/stool/chair
 	name = "chair"
 	icon_state = "chair"
 	var/status = 0.0
-	anchored = 1.0
 
 /obj/stool/chair/e_chair
 	name = "electrified chair"

@@ -337,7 +337,7 @@
 	//Next, check objects to block entry that are on the border
 	for(var/obj/border_obstacle in targetturf)
 		if((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
-			if(!border_obstacle.CanPass(D, targetturf, 1, 0))
+			if(!border_obstacle.CanPass(D, srcturf, 1, 0))
 				del D
 				return 0
 

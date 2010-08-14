@@ -25,13 +25,13 @@
 	if(env_pressure <= 0.15*ONE_ATMOSPHERE)
 		icon_state = "meter0"
 	else if(env_pressure <= 1.8*ONE_ATMOSPHERE)
-		var/val = round(env_pressure/(ONE_ATMOSPHERE*0.3) + 0.5)
+		var/val = min(round(env_pressure/(ONE_ATMOSPHERE*0.3) + 0.5), 6)
 		icon_state = "meter1_[val]"
 	else if(env_pressure <= 30*ONE_ATMOSPHERE)
-		var/val = round(env_pressure/(ONE_ATMOSPHERE*5)-0.35) + 1
+		var/val = min(round(env_pressure/(ONE_ATMOSPHERE*5)-0.35) + 1, 6)
 		icon_state = "meter2_[val]"
 	else if(env_pressure <= 59*ONE_ATMOSPHERE)
-		var/val = round(env_pressure/(ONE_ATMOSPHERE*5) - 6) + 1
+		var/val = min(round(env_pressure/(ONE_ATMOSPHERE*5) - 6) + 1, 6)
 		icon_state = "meter3_[val]"
 	else
 		icon_state = "meter4"
