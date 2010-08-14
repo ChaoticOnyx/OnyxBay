@@ -21,7 +21,7 @@
 				M.open()
 				//TransmitNetworkPacket(PrependNetworkAddress("[M.get_password()] OPEN", M))
 			else
-				M.close
+				M.close()
 				//TransmitNetworkPacket(PrependNetworkAddress("[M.get_password()] CLOSE", M))
 
 	spawn(15)

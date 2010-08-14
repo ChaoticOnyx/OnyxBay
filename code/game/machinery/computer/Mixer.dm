@@ -6,7 +6,7 @@
 	..()
 	spawn(2)
 		for(var/obj/machinery/atmospherics/mixer/M in world)
-			if (M.tag == targettag)
+			if (initial(M.tag) == targettag)
 				mixer = M
 				rates[1] = M.node1_concentration * 100
 				rates[2] = 100 - rates[1]
