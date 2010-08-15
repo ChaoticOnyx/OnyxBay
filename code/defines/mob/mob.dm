@@ -21,6 +21,11 @@
 	var/obj/screen/bodytemp = null
 	var/obj/screen/healths = null
 	var/obj/screen/throw_icon = null
+	var/obj/screen/panel_icon = null
+	var/obj/screen/cell_icon = null
+	var/obj/screen/exttemp = null
+	var/obj/screen/store = null
+	var/obj/screen/module_icon = null
 
 	var/list/obj/hallucinations = list()
 	var/halloss = 0

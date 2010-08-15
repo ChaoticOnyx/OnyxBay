@@ -19,20 +19,26 @@
 
 /mob/living/silicon/robot/proc/pick_module()
 
-	var/module = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Security", "Medical", "Janitor", "Brobot")
+	var/module = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Security", "Medical", "Janitor")
 	switch(module)
 		if("Standard")
 			src.module = new /obj/item/weapon/robot_module/standard(src)
+			src.module_icon.icon_state = "standard"
 		if("Medical")
 			src.module = new /obj/item/weapon/robot_module/medical(src)
+			src.module_icon.icon_state = "medical"
 		if("Security")
 			src.module = new /obj/item/weapon/robot_module/security(src)
+			src.module_icon.icon_state = "security"
 		if("Engineering")
 			src.module = new /obj/item/weapon/robot_module/engineering(src)
+			src.module_icon.icon_state = "engineer"
 		if("Janitor")
 			src.module = new /obj/item/weapon/robot_module/janitor(src)
+			src.module_icon.icon_state = "janitor"
 		if("Brobot")
 			src.module = new /obj/item/weapon/robot_module/brobot(src)
+			src.module_icon.icon_state = "brobot"
 
 /mob/living/silicon/robot/verb/cmd_robot_alerts()
 	set category = "Robot Commands"
