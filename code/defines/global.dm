@@ -36,6 +36,7 @@ var
 	///////////////
 
 	diary = null
+	current_date = time2text(world.realtime, "YYYYMMDD")
 	station_name = null
 	game_version = "Baystation"
 
