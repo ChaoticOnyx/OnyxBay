@@ -578,6 +578,7 @@ Frequency:
 				return
 			else
 				if(Debug)
+					check_diary()
 					diary <<"src.pulling disappeared? at [__LINE__] in mob.dm - src.pulling = [src.pulling]"
 					diary <<"REPORT THIS"
 

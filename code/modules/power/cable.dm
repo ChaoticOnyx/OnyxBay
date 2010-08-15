@@ -65,7 +65,9 @@
 			var/datum/powernet/PN = powernets[netnum]
 			PN.cut_cable(src)									// updated the powernets
 	else
-		if(Debug) diary << "Defered cable deletion at [x],[y]: #[netnum]"
+		if(Debug)
+			check_diary()
+			diary << "Defered cable deletion at [x],[y]: #[netnum]"
 	..()													// then go ahead and delete the cable
 
 /obj/cable/hide(var/i)

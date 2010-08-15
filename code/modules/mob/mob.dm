@@ -1473,6 +1473,7 @@
 	//usr << "[src.name]: Dn:[density] dir:[dir] cont:[contents] icon:[icon] is:[icon_state] loc:[loc]"
 	return
 
+
 /client/North()
 	..()
 
@@ -1486,19 +1487,23 @@
 	..()
 
 /client/Northeast()
-	if(istype(src.mob, /mob/living/carbon))
+	if (istype(src.mob, /mob/dead/observer) && src.mob.z > 1)
+		src.mob.Move(locate(src.mob.x, src.mob.y, src.mob.z - 1))
+	else if(istype(src.mob, /mob/living/carbon))
 		src.mob:swap_hand()
-	return
 
 /client/Southeast()
 	var/obj/item/weapon/W = src.mob.equipped()
-	if (W)
+	if (istype(src.mob, /mob/dead/observer) && src.mob.z < 4)
+		src.mob.Move(locate(src.mob.x, src.mob.y, src.mob.z + 1))
+	else if (W)
 		W.attack_self(src.mob)
-	return
 
 /client/Northwest()
 	src.mob.drop_item_v()
 	return
+
+/client/Southwest()
 
 /client/Center()
 	if (isobj(src.mob.loc))

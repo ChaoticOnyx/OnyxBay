@@ -19,37 +19,55 @@
 		return
 */
 	if (istype(O, /obj/item/weapon/sheet/metal))
-		if (src.m_amount < 150000.0)
-			spawn(16) {
+		if (m_amount < m_max)
+			var/count = 0
+			var/sheet_amount = O:height * O:width * O:length * 100000.0
+			spawn(16)
 				flick("autolathe_c",src)
-				src.m_amount += O:height * O:width * O:length * 100000.0
-				O:amount--
+				while(m_amount < (150000 - sheet_amount) && O:amount)
+					m_amount += sheet_amount
+					O:amount--
+					count++
+
 				if (O:amount < 1)
 					del(O)
-			}
+
+				user << "You insert [count] metal sheet\s into the autolathe."
+				updateDialog()
 		else
 			user << "The autolathe is full. Please remove metal from the autolathe in order to insert more."
+
 	else if (istype(O, /obj/item/weapon/sheet/glass) || istype(O, /obj/item/weapon/sheet/rglass))
-		if (src.g_amount < 75000.0)
-			spawn(16) {
+		if (g_amount < g_max)
+			var/count = 0
+			var/sheet_amount = O:height * O:width * O:length * 100000.0
+			spawn(16)
 				flick("autolathe_c",src)
-				src.g_amount += O:height * O:width * O:length * 100000.0
-				O:amount--
+				while(g_amount < (g_max - sheet_amount) && O:amount)
+					g_amount += sheet_amount
+					O:amount--
+					count++
+
 				if (O:amount < 1)
 					del(O)
-			}
+
+				user << "You insert [count] glass sheet\s into the autolathe."
+				updateDialog()
 		else
 			user << "The autolathe is full. Please remove glass from the autolathe in order to insert more."
+
 
 	else if (O.g_amt || O.m_amt)
 		spawn(16) {
 			flick("autolathe_c",src)
-			src.g_amount += O.g_amt
-			src.m_amount += O.m_amt
+			g_amount += O.g_amt
+			m_amount += O.m_amt
 			del O
 		}
 	else
 		user << "This object does not contain significant amounts of metal or glass, or cannot be accepted by the autolathe due to size or hazardous materials."
+
+
 
 /obj/machinery/autolathe/attack_paw(user as mob)
 	return src.attack_hand(user)
@@ -78,7 +96,7 @@
 	if (src.temp)
 		dat = text("<TT>[]</TT><BR><BR><A href='?src=\ref[];temp=1'>Clear Screen</A>", src.temp, src)
 	else
-		dat = text("<B>Metal Amount:</B> [src.m_amount] cm<sup>3</sup> (MAX: 150,000)<BR>\n<FONT color = blue><B>Glass Amount:</B></FONT> [src.g_amount] cm<sup>3</sup> (MAX: 75,000)<HR>")
+		dat = text("<B>Metal Amount:</B> [m_amount] cm<sup>3</sup> (MAX: 150,000)<BR>\n<FONT color = blue><B>Glass Amount:</B></FONT> [g_amount] cm<sup>3</sup> (MAX: 75,000)<HR>")
 		var/list/objs = list()
 		objs += src.L
 		if (src.hacked)
@@ -96,19 +114,19 @@
 	src.add_fingerprint(usr)
 	if(href_list["make"])
 		var/obj/template = locate(href_list["make"])
-		if(src.m_amount >= template.m_amt && src.g_amount >= template.g_amt)
+		if(m_amount >= template.m_amt && g_amount >= template.g_amt)
 			spawn(16)
 				flick("autolathe_c",src)
 				spawn(16)
 					flick("autolathe_o",src)
 					spawn(16)
-						src.m_amount -= template.m_amt
-						src.g_amount -= template.g_amt
-						if(src.m_amount < 0)
-							src.m_amount = 0
-						if(src.g_amount < 0)
-							src.g_amount = 0
-						new template.type(usr.loc)
+						m_amount -= template.m_amt
+						g_amount -= template.g_amt
+						if(m_amount < 0)
+							m_amount = 0
+						if(g_amount < 0)
+							g_amount = 0
+						new template.type(src.loc)
 	if(href_list["act"])
 		if(href_list["act"] == "pulse")
 			if (!istype(usr.equipped(), /obj/item/device/multitool))

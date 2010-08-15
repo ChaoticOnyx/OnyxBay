@@ -26,7 +26,7 @@
 	switch(eventnum)
 		if(1)
 			event = 1
-			command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")
+			command_alert("Meteors have been detected on collision course with the ship.", "Meteor Alert")
 			spawn(100)
 				meteor_wave()
 				meteor_wave()
@@ -36,7 +36,7 @@
 
 		if(2)
 			event = 1
-			command_alert("Gravitational anomalies detected on the station. There is no additional data.", "Anomaly Alert")
+			command_alert("Gravitational anomalies detected on the ship. There is no additional data.", "Anomaly Alert")
 			var/turf/T = pick(blobstart)
 			var/obj/bhole/bh = new /obj/bhole( T.loc, 30 )
 			spawn(rand(50, 300))
@@ -44,7 +44,7 @@
 
 		if(3)
 			event = 1
-			command_alert("Space-time anomalies detected on the station. There is no additional data.", "Anomaly Alert")
+			command_alert("Space-time anomalies detected on the ship. There is no additional data.", "Anomaly Alert")
 			var/list/turfs = list(	)
 			var/turf/picked
 			for(var/turf/T in world)
@@ -145,7 +145,7 @@
 
 /proc/event_bh()
 	event = 1
-	command_alert("Gravitational anomalies detected on the station. There is no additional data.", "Anomaly Alert")
+	command_alert("Gravitational anomalies detected on the ship. There is no additional data.", "Anomaly Alert")
 	var/turf/T = pick(blobstart)
 	var/obj/bhole/bh = new /obj/bhole( T.loc, 30 )
 	spawn(rand(50, 300))
@@ -153,7 +153,7 @@
 
 /proc/event_portal()
 	event = 1
-	command_alert("Space-time anomalies detected on the station. There is no additional data.", "Anomaly Alert")
+	command_alert("Space-time anomalies detected on the ship. There is no additional data.", "Anomaly Alert")
 	var/list/turfs = list(	)
 	var/turf/picked
 	for(var/turf/T in world)
@@ -199,7 +199,7 @@
 
 /proc/event_meteors()
 	event = 1
-	command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")
+	command_alert("Meteors have been detected on collision course with the ship.", "Meteor Alert")
 	spawn(100)
 		meteor_wave()
 		meteor_wave()

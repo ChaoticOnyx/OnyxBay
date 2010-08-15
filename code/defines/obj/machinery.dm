@@ -18,6 +18,8 @@
 	density = 1
 	var/m_amount = 0.0
 	var/g_amount = 0.0
+	var/const/m_max = 150000.0  // Maximum capacity for metal
+	var/const/g_max =  75000.0  // and glass respectively.
 	var/operating = 0.0
 	var/opened = 0.0
 	var/temp = null
