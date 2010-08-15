@@ -763,6 +763,10 @@
 			if (istype(usr, /mob/living/silicon/robot))
 				var/mob/living/silicon/robot/M = usr
 				M.installed_modules()
+		if ("radio")
+			if (istype(usr, /mob/living/silicon/robot))
+				var/mob/living/silicon/robot/M = usr
+				M.radio_menu()
 		if("walk")
 			usr.m_intent = "walk"
 			usr.m_int = "14,14"

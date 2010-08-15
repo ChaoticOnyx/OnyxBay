@@ -161,12 +161,4 @@
 	if (src.fire) src.fire.icon_state = "fire[src.fire_alert ? 1 : 0]"
 	if (src.exttemp) src.exttemp.icon_state = "temp[src.temperature_alert]"
 
-	if (src.stat != 2)
-		if (src.machine)
-			if (!( src.machine.check_eye(src) ))
-				src.reset_view(null)
-		else
-			if(!client.adminobs)
-				reset_view(null)
-
 	return 1
