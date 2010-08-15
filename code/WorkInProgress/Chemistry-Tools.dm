@@ -919,6 +919,12 @@
 		reagents = R
 		R.my_atom = src
 
+	cleaner
+
+		New()
+			..()
+			reagents.add_reagent("cleaner", 50)
+
 /obj/item/weapon/reagent_containers/glass/bottle/
 	name = "bottle"
 	desc = "A small bottle."

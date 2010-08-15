@@ -40,7 +40,7 @@ code/game/machinery/washer.dm
 				var/amm = W.reagents.get_reagent_amount("cleaner")
 				powder.reagents.add_reagent("cleaner",amm)
 				W.reagents.remove_reagent("cleaner",amm)
-				usr << "You transfer [amm] unit's to [src]"
+				usr << "You transfer [amm] units of cleaning solution to [src]"
 				return 0
 	if(istype(W,/obj/item/clothing/))
 		if(active)
@@ -59,6 +59,17 @@ code/game/machinery/washer.dm
 			return 0
 	usr << "The [src] beeps when you try put in [W]"
 	return ..()
+
+/obj/machinery/washer/verb/empty()
+	set name = "Empty"
+	set src in oview(1)
+	set category = null
+
+	if(active)
+		usr << "The door is locked"
+	for(var/atom/movable/O in src.contents)
+		O.loc = loc
+
 /obj/machinery/washer/attack_hand()
 	if(stat & (BROKEN|NOPOWER))
 		return
@@ -67,7 +78,7 @@ code/game/machinery/washer.dm
 		active = 0
 		return
 	if(!powder)
-		usr << "You need add a beaker."
+		usr << "You need to add a beaker."
 	if(!(powder.reagents.has_reagent("cleaner",1)))
 		usr << "You need more cleaning solution"
 	wash()
@@ -81,13 +92,14 @@ code/game/machinery/washer.dm
 		if(!wiregold)
 			spawn while(active)
 				sleep(10)
-				for(var/mob/M in src.contents)
+				for(var/mob/M in src)
 					M.oxyloss += rand(1,10)
 					M.bruteloss += rand(1,10)
-					for(var/mob/MM in viewers())
-						MM << "*THUMP*"
+				if(locate(/mob) in src)
+					for(var/mob/M in viewers())
+						M.show_message("\red *THUMP*")
 			icon_state = "land01"
-			for(var/atom/movable/O in src.contents)
+			for(var/atom/movable/O in src)
 				O.clean_blood()
 				O.fingerprints = null
 				if(ismob(O))
@@ -95,7 +107,7 @@ code/game/machinery/washer.dm
 					for(var/obj/OB in items)
 						OB.clean_blood()
 						OB.fingerprints = null
-				if(istype(O,/obj/item/weapon/gun/energy/taser_gun/) || istype(O,/obj/item/weapon/gun/energy/laser_gun/))
+				if(istype(O,/obj/item/weapon/gun/energy))
 					explode()
 					del O
 				O.loc = src.loc
@@ -103,7 +115,7 @@ code/game/machinery/washer.dm
 			return
 		sleep(51)
 		icon_state = "land01"
-		for(var/atom/movable/O in src.contents)
+		for(var/atom/movable/O in src)
 			O.clean_blood()
 			O.fingerprints = null
 			if(ismob(O))
@@ -113,10 +125,10 @@ code/game/machinery/washer.dm
 				for(var/obj/OB in items)
 					OB.clean_blood()
 					OB.fingerprints = null
-					if(istype(OB,/obj/item/weapon/gun/energy/taser_gun/) || istype(OB,/obj/item/weapon/gun/energy/laser_gun/))
+					if(istype(OB,/obj/item/weapon/gun/energy))
 						explode()
 						del OB
-			if(istype(O,/obj/item/weapon/gun/energy/taser_gun/) || istype(O,/obj/item/weapon/gun/energy/laser_gun/))
+			if(istype(O,/obj/item/weapon/gun/energy))
 				explode()
 				del O
 			O.loc = src.loc

@@ -115,6 +115,9 @@ obj/machinery/atmospherics/valve
 		else
 			src.open()
 
+	attack_ai(mob/user as mob)
+		return
+
 	process()
 		..()
 		if(open && (!node1 || !node2))
