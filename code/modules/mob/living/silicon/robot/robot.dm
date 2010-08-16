@@ -15,7 +15,7 @@
 				break
 		src.camera = new /obj/machinery/camera(src)
 		src.camera.c_tag = src.real_name
-		src.camera.network = "SS13"
+		src.camera.network = "Luna"
 		radio = new /obj/item/device/radio(src)
 
 

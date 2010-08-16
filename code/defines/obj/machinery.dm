@@ -38,7 +38,7 @@
 	name = "Security Camera"
 	icon = 'monitors.dmi'
 	icon_state = "camera"
-	var/network = "SS13"
+	var/network = "Luna"
 	layer = 5
 	var/c_tag = null
 	var/c_tag_order = 999

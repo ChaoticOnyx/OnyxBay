@@ -77,7 +77,7 @@
 			src.botcard.access = src.botcard_access
 		src.cam = new /obj/machinery/camera(src)
 		src.cam.c_tag = src.name
-		src.cam.network = "SS13"
+		src.cam.network = "Luna"
 
 /obj/machinery/bot/medbot/examine()
 	set src in view()

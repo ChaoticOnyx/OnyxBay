@@ -78,7 +78,7 @@
 			src.botcard.access = get_access("Detective") + list(access_cargo_bot)
 			src.cam = new /obj/machinery/camera(src)
 			src.cam.c_tag = src.name
-			src.cam.network = "SS13"
+			src.cam.network = "Luna"
 			if(radio_controller)
 				radio_controller.add_object(src, "[control_freq]")
 				radio_controller.add_object(src, "[beacon_freq]")
