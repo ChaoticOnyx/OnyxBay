@@ -32,12 +32,20 @@
 	for(var/obj/machinery/camera/current in world)
 		if(user.network != current.network)
 			continue	//	different network (syndicate)
+/*
 		if(ticker.mode.name == "AI malfunction")
-			if(current.z != user.z && (user.network != "Prison") && (user.network != "SS13"))
+			if((direct != UP && direct != DOWN) && current.z != user.z && (user.network != "Prison") && (user.network != "SS13"))
 				continue
 		else
-			if(current.z != user.z && (user.network != "Prison") && (user.network != "AI Satellite"))
+			if((direct != UP && direct != DOWN) && current.z != user.z && (user.network != "Prison") && (user.network != "AI Satellite"))
 				continue	//	different viewing plane
+*/
+		if (current.z != old.z) // Don't want cameras on a different Z level
+			continue
+
+		if (current == old) // Same camera
+			continue
+
 		if(!current.status)
 			continue	//	ignore disabled cameras
 
@@ -75,4 +83,32 @@
 
 	if(!closest)
 		return
-	user.switchCamera(closest)
+	return user.switchCamera(closest)
+
+
+/client/proc/AIMoveZ(direct, var/mob/living/silicon/ai/user)
+	var/obj/machinery/camera/C = new /obj/machinery/camera((user.current ? user.current.loc : user.loc))
+	var/obj/machinery/camera/old = null
+	if (user.current)
+		old = user.current
+		C.tag = user.current.c_tag
+	if (direct)
+		user.current = C
+		switch(direct)
+			if (UP)
+				do
+					if (user.current.z == 1)
+						break
+					else
+						user.current.z--
+				while(!AIMove(null,null,user))
+			if (DOWN)
+				do
+					if (user.current.z == 4)
+						break
+					else
+						user.current.z++
+				while(!AIMove(null,null,user))
+	if (user.current == C)
+		user.current = old
+	del(C)

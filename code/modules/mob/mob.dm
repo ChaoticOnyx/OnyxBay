@@ -1510,6 +1510,10 @@
 /client/Northeast()
 	if (istype(src.mob, /mob/dead/observer) && src.mob.z > 1)
 		src.mob.Move(locate(src.mob.x, src.mob.y, src.mob.z - 1))
+	else if (istype(src.mob, /mob/living/silicon/ai))
+		var/mob/living/silicon/ai/M = src.mob
+		if ((!M.current && M.loc.z > 1) || M.current.z > 1)
+			src.AIMoveZ(UP, src.mob)
 	else if(istype(src.mob, /mob/living/carbon))
 		src.mob:swap_hand()
 
@@ -1517,6 +1521,10 @@
 	var/obj/item/weapon/W = src.mob.equipped()
 	if (istype(src.mob, /mob/dead/observer) && src.mob.z < 4)
 		src.mob.Move(locate(src.mob.x, src.mob.y, src.mob.z + 1))
+	else if (istype(src.mob, /mob/living/silicon/ai))
+		var/mob/living/silicon/ai/M = src.mob
+		if ((!M.current && M.loc.z < 4) || M.current.z < 4)
+			src.AIMoveZ(DOWN, src.mob)
 	else if (W)
 		W.attack_self(src.mob)
 
