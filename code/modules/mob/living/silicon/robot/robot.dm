@@ -1,3 +1,4 @@
+/mob/living/silicon/robot/var/obj/item/device/radio/radio
 /mob/living/silicon/robot/New()
 
 	spawn (1)
@@ -15,24 +16,31 @@
 		src.camera = new /obj/machinery/camera(src)
 		src.camera.c_tag = src.real_name
 		src.camera.network = "SS13"
+		radio = new /obj/item/device/radio(src)
 
 
 /mob/living/silicon/robot/proc/pick_module()
 
-	var/module = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Security", "Medical", "Janitor", "Brobot")
+	var/module = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Security", "Medical", "Janitor")
 	switch(module)
 		if("Standard")
 			src.module = new /obj/item/weapon/robot_module/standard(src)
+			src.module_icon.icon_state = "standard"
 		if("Medical")
 			src.module = new /obj/item/weapon/robot_module/medical(src)
+			src.module_icon.icon_state = "medical"
 		if("Security")
 			src.module = new /obj/item/weapon/robot_module/security(src)
+			src.module_icon.icon_state = "security"
 		if("Engineering")
 			src.module = new /obj/item/weapon/robot_module/engineering(src)
+			src.module_icon.icon_state = "engineer"
 		if("Janitor")
 			src.module = new /obj/item/weapon/robot_module/janitor(src)
+			src.module_icon.icon_state = "janitor"
 		if("Brobot")
 			src.module = new /obj/item/weapon/robot_module/brobot(src)
+			src.module_icon.icon_state = "brobot"
 
 /mob/living/silicon/robot/verb/cmd_robot_alerts()
 	set category = "Robot Commands"
@@ -522,25 +530,16 @@
 		return 0
 
 /mob/living/silicon/robot/proc/radio_menu()
-	var/obj/item/device/radio/R
-	if(istype(src.module_state_1, /obj/item/device/radio))
-		R = src.module_state_1
-	else if(istype(src.module_state_2, /obj/item/device/radio))
-		R = src.module_state_2
-	else if(istype(src.module_state_3, /obj/item/device/radio))
-		R = src.module_state_3
-	else
-		return
 	var/dat = {"
 <TT>
-Microphone: [R.broadcasting ? "<A href='byond://?src=\ref[R];talk=0'>Engaged</A>" : "<A href='byond://?src=\ref[R];talk=1'>Disengaged</A>"]<BR>
-Speaker: [R.listening ? "<A href='byond://?src=\ref[R];listen=0'>Engaged</A>" : "<A href='byond://?src=\ref[R];listen=1'>Disengaged</A>"]<BR>
+Microphone: [radio.broadcasting ? "<A href='byond://?src=\ref[radio];talk=0'>Engaged</A>" : "<A href='byond://?src=\ref[radio];talk=1'>Disengaged</A>"]<BR>
+Speaker: [radio.listening ? "<A href='byond://?src=\ref[radio];listen=0'>Engaged</A>" : "<A href='byond://?src=\ref[radio];listen=1'>Disengaged</A>"]<BR>
 Frequency:
-<A href='byond://?src=\ref[R];freq=-10'>-</A>
-<A href='byond://?src=\ref[R];freq=-2'>-</A>
-[format_frequency(R.frequency)]
-<A href='byond://?src=\ref[R];freq=2'>+</A>
-<A href='byond://?src=\ref[R];freq=10'>+</A><BR>
+<A href='byond://?src=\ref[radio];freq=-10'>-</A>
+<A href='byond://?src=\ref[radio];freq=-2'>-</A>
+[format_frequency(radio.frequency)]
+<A href='byond://?src=\ref[radio];freq=2'>+</A>
+<A href='byond://?src=\ref[radio];freq=10'>+</A><BR>
 -------
 </TT>"}
 	src << browse(dat, "window=radio")

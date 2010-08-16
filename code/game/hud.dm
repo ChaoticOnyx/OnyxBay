@@ -74,6 +74,7 @@
 */
 
 mob/living/carbon/uses_hud = 1
+mob/living/silicon/robot/uses_hud = 1
 
 obj/hud/New()
 	src.instantiate()
