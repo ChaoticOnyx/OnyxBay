@@ -13,6 +13,7 @@
 
 /obj/machinery/door/firedoor
 	name = "Firelock"
+	explosionstrength = 4
 	icon = 'Doorfire.dmi'
 	icon_state = "door0"
 	var/blocked = null
@@ -26,6 +27,7 @@
 	icon_state = "door0"
 
 /obj/machinery/door/poddoor
+	explosionstrength = 3
 	name = "Podlock"
 	icon = 'rapid_pdoor.dmi'
 	icon_state = "pdoor1"

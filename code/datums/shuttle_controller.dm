@@ -167,12 +167,6 @@ datum/shuttle
 							//var/turf/E = get_step(D, SOUTH)
 							for(var/atom/movable/AM as mob|obj in T)
 								AM.Move(D)
-								// NOTE: Commenting this out to avoid recreating mass driver glitch
-								/*
-								spawn(0)
-									AM.throw_at(E, 1, 1)
-									return
-								*/
 							if(istype(T, /turf/simulated))
 								del(T)
 						for(var/mob/m in start_location)

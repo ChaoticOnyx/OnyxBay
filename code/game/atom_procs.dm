@@ -327,6 +327,9 @@
 /atom/proc/CanReachThrough(turf/srcturf, turf/targetturf)
 	var/obj/item/weapon/dummy/D = new /obj/item/weapon/dummy( srcturf )
 
+	if(targetturf.density)
+		return 0
+
 	//Now, check objects to block exit that are on the border
 	for(var/obj/border_obstacle in srcturf)
 		if(border_obstacle.flags & ON_BORDER)

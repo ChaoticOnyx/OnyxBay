@@ -565,12 +565,8 @@
 					X.dir = old_dir1
 					X.icon_state = old_icon_state1
 
-					for(var/obj/O in T)
-						if(!istype(O,/obj)) continue
-						O.loc = X
-					for(var/mob/M in T)
-						if(!istype(M,/mob)) continue
-						M.loc = X
+					for(var/atom/movable/AM as mob|obj in T)
+						AM.loc = X
 
 					var/area/AR = X.loc
 
@@ -584,6 +580,8 @@
 						var/turf/ttl = new turftoleave(T)
 
 						var/area/AR2 = ttl.loc
+
+						ttl.zone = T.zone //I think this fixes atmos?
 
 						if(AR2.ul_Lighting)
 							ttl.opacity = !ttl.opacity

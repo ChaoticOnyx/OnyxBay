@@ -4,6 +4,7 @@
 	var/g_amt = 0	// glass
 	var/w_amt = 0	// waster amounts
 	var/global/tagcnum = 0
+	var/explosionstrength = 0
 	animate_movement = 2
 
 	proc
@@ -73,6 +74,7 @@
 		name = "shield"
 		desc = "An energy shield."
 		icon = 'effects.dmi'
+		explosionstrength = 9
 		icon_state = "shieldsparkles"
 		density = 1
 		opacity = 0
@@ -82,6 +84,7 @@
 		name = "shield"
 		desc = "An energy shield."
 		icon = 'effects.dmi'
+		explosionstrength = 9
 		icon_state = "test"
 		density = 1
 		opacity = 0
