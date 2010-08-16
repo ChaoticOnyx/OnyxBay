@@ -1325,7 +1325,11 @@ Code:
 				user.show_message("\blue \t Key: Suffocation/Toxin/Burns/Brute", 1)
 				user.show_message("\blue \t Body Temperature: [C.bodytemperature-T0C]&deg;C ([C.bodytemperature*1.8-459.67]&deg;F)", 1)
 				if(C.virus)
-					user.show_message(text("\red <b>Warning Virus Detected.</b>\nName: [C.virus.name].\nType: [C.virus.spread].\nStage: [C.virus.stage]/[C.virus.max_stages].\nPossible Cure: [C.virus.cure]"))
+					user.show_message(text("\red <b>Warning: Pathogen Detected</b>\nName: [C.virus.name].\nType: [C.virus.spread].\nStage: [C.virus.stage]/[C.virus.max_stages].\nPossible Cure: [C.virus.cure]"))
+				for(var/obj/item/I in C)
+					if(I.contaminated)
+						user.show_message("\red <b>Warning: Plasma Contaminated Items Detected</b>\nAnalysis and cleaning or disposal of affected items is necessary.",1)
+						break
 
 			if(2)
 				if (!istype(C:dna, /datum/dna) || !isnull(C:gloves))
@@ -1340,7 +1344,18 @@ Code:
 						user << "\blue Blood type: [C:blood_type]\nDNA: [C:blood_DNA]"
 
 /obj/item/device/pda/afterattack(atom/A as mob|obj|turf|area, mob/user as mob)
-	if (src.scanmode == 2)
+	if (src.scanmode == 1)
+		if(isobj(A))
+			user << "\blue Scanning for contaminants..."
+			sleep(1)
+			if(!(A in range(user,1)))
+				user << "\red Error: Target object not found."
+			else
+				if(A:contaminated)
+					user << "\red [A] shows signs of plasma contamination!"
+				else
+					user << "\blue [A] is free of contamination."
+	else if (src.scanmode == 2)
 		if (!A.fingerprints)
 			user << "\blue Unable to locate any fingerprints on [A]!"
 		else

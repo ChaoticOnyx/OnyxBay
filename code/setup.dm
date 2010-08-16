@@ -100,6 +100,8 @@
 #define MASKCOVERSMOUTH 2048		// on other items, these are just for mask/head
 #define HEADCOVERSMOUTH 2048
 
+#define PLASMAGUARD 4096
+
 #define OPENCONTAINER	4096	// is an open container for chemistry purposes
 
 #define ONESIZEFITSALL	8192	// can be worn by fatties (or children? ugh)

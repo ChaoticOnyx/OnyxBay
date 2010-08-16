@@ -64,10 +64,6 @@ turf
 			return !density
 
 		else // Now, doing more detailed checks for air movement and air group formation
-			if(target.z > src.z)
-				return istype(src, /turf/simulated/floor/open)
-			if(target.z < src.z)
-				return istype(target, /turf/simulated/floor/open)
 			if(target.blocks_air||blocks_air)
 				return 0
 			for(var/obj/obstacle in src)
@@ -76,6 +72,10 @@ turf
 			for(var/obj/obstacle in target)
 				if(!obstacle.CanPass(mover, src, height, air_group))
 					return 0
+			if(target.z > src.z)
+				return istype(src, /turf/simulated/floor/open)
+			if(target.z < src.z)
+				return istype(target, /turf/simulated/floor/open)
 
 			return 1
 	proc/CanPassOneWay(atom/movable/mover, turf/target, height=1.5,air_group=0) //Does one-way checks instead.
@@ -85,10 +85,6 @@ turf
 			return !density
 
 		else // Now, doing more detailed checks for air movement and air group formation
-			if(target.z > src.z)
-				return istype(src, /turf/simulated/floor/open)
-			if(target.z < src.z)
-				return istype(target, /turf/simulated/floor/open)
 			if(blocks_air)
 				return 0
 			for(var/obj/obstacle in src)
@@ -96,6 +92,10 @@ turf
 					return 0
 
 			return 1
+			if(target.z > src.z)
+				return istype(src, /turf/simulated/floor/open)
+			if(target.z < src.z)
+				return istype(target, /turf/simulated/floor/open)
 
 
 var/global/datum/controller/air_system/air_master

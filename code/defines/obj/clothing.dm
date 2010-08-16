@@ -143,7 +143,7 @@
 	name = "bio hood"
 	icon_state = "bio"
 	permeability_coefficient = 0.01
-	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES|HEADCOVERSMOUTH
+	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES|HEADCOVERSMOUTH|PLASMAGUARD
 
 /obj/item/clothing/head/cakehat
 	name = "cakehat"
@@ -420,6 +420,8 @@
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 	heat_transfer_coefficient = 0.30
+
+	flags = FPRINT|TABLEPASS|PLASMAGUARD
 
 /obj/item/clothing/suit/det_suit
 	name = "coat"

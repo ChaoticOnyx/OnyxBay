@@ -8,7 +8,7 @@
 		return attack_hand(user)
 
 	attack_hand(mob/user as mob)
-		switch(alert("Travel back to ss13?",,"Yes","No"))
+		switch(alert("Travel back to Luna?",,"Yes","No"))
 			if("Yes")
 				user.loc.loc.Exited(user)
 				user.loc = pick(latejoin)

@@ -3,7 +3,7 @@
 	voice_name = "synthesized voice"
 	icon = 'mob.dmi'//
 	icon_state = "ai"
-	var/network = "AI Satellite"
+	var/network = "Luna"
 	var/obj/machinery/camera/current = null
 	var/list/connected_robots = list()
 	var/aiRestorePowerRoutine = 0

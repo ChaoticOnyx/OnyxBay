@@ -90,14 +90,7 @@
 	var/class = 0		// 0 = mixed, 1=mostly. 2=pure
 	var/major = "waste"		// the major component type
 
-	var/max = 0
-
-	if(m_amt > max)
-		max = m_amt
-	else if(g_amt > max)
-		max = g_amt
-	else if(w_amt > max)
-		max = w_amt
+	var/max = max(m_amt,g_amt,w_amt)
 
 	if(max == total)
 		class = 2		// pure
@@ -107,10 +100,10 @@
 		class = 0		// mixed
 
 	if(class>0)
-		var/remain = total - max
-		if(m_amt > remain)
+		//var/remain = total - max
+		if(m_amt == max)
 			major = "metal"
-		else if(g_amt > remain)
+		else if(g_amt == max)
 			major = "glass"
 		else
 			major = "waste"

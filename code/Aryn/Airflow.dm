@@ -1,23 +1,44 @@
 vs_control/var
+	//Used in /mob/carbon/human/life
+	OXYGEN_LOSS = 2
+	OXYGEN_LOSS_DESC = "A multiplier for damage due to lack of air, CO2 poisoning, and vacuum. Does not affect oxyloss\
+	from being incapacitated or dying."
+	TEMP_DMG = 2
+	TEMP_DMG_DESC = "A multiplier for damage due to body temperature irregularities."
+	BURN_DMG = 6
+	BURN_DMG_DESC = "A multiplier for damage due to direct fire exposure."
+
 	AF_TINY_MOVEMENT_THRESHOLD = 25 //% difference to move tiny items.
+	AF_TINY_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which items with the tiny weight class will move."
 	AF_SMALL_MOVEMENT_THRESHOLD = 35 //% difference to move small items.
+	AF_SMALL_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which items with the small weight class will move."
 	AF_NORMAL_MOVEMENT_THRESHOLD = 45 //% difference to move normal items.
+	AF_NORMAL_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which items with the normal weight class will move."
 	AF_LARGE_MOVEMENT_THRESHOLD = 55 //% difference to move large and huge items.
+	AF_LARGE_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which items with the large or huge weight class will move."
 	AF_MOVEMENT_THRESHOLD = 65 //% difference to move dense crap and mobs.
+	AF_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which dense objects or mobs will be shifted by airflow."
 
 	AF_PERCENT_OF = ONE_ATMOSPHERE
+	AF_PERCENT_OF_DESC = "Normally set to 1 Atm. in kPa, this indicates what pressure is considered 100% by the system."
 
 	AF_CANISTER_P = ONE_ATMOSPHERE*20
+	AF_CANISTER_P_DESC = "Unused, will be used to calculate airflow from canisters."
 
 	AF_SPEED_MULTIPLIER = 2 //airspeed per movement threshold value crossed.
+	AF_SPEED_MULTIPLIER_DESC = "Airspeed increase per \[AF_TINY_MOVEMENT_THRESHOLD\] percent of airflow."
 	AF_DAMAGE_MULTIPLIER = 5 //Amount of damage applied per airflow_speed.
+	AF_DAMAGE_MULTIPLIER_DESC = "Amount of damage applied per unit of speed (1-15 units) at which mobs are thrown."
 	AF_STUN_MULTIPLIER = 1.5 //Seconds of stun applied per airflow_speed.
+	AF_STUN_MULTIPLIER_DESC = "Amount of stun effect applied per unit of speed (1-15 units) at which mobs are thrown."
 	AF_SPEED_DECAY = 0.5 //Amount that flow speed will decay with time.
+	AF_SPEED_DECAY_DESC = "Amount of airflow speed lost per tick on a moving object."
 	AF_SPACE_MULTIPLIER = 2 //Increasing this will make space connections more DRAMATIC!
+	AF_SPACE_MULTIPLIER_DESC = "Increasing this multiplier will cause more powerful airflow to space, and vice versa."
 
 	air_base_thresh = (25/100) * ONE_ATMOSPHERE
-
-var/vs_control/vsc = new
+	air_base_thres_DESC = "Do not alter in the course of normal gameplay, unless you changed AF_TINY_MOVEMENT_THRESHOLD\
+	 or PERCENT_OF and airflow no longer works, in which case it should be set to (AF_TINY_MOVEMENT_THRESHOLD/100)*PERCENT_OF."
 
 mob/proc
 	Change_Airflow_Constants()
@@ -188,7 +209,8 @@ proc/AirflowSpace(zone/A)
 			//world << "Sonovabitch! [M] won't move!"
 			if(!M.airflow_speed)
 				M.airflow_dest = pick(connected_turfs)
-				spawn M.GotoAirflowDest(abs(n) / (vsc.AF_TINY_MOVEMENT_THRESHOLD/vsc.AF_SPEED_MULTIPLIER))
+				spawn
+					if(M) M.GotoAirflowDest(abs(n) / (vsc.AF_TINY_MOVEMENT_THRESHOLD/vsc.AF_SPEED_MULTIPLIER))
 			//else if(M.airflow_speed > 0)
 			//	M.airflow_speed = abs(n) / (vsc.AF_MOVEMENT_THRESHOLD/vsc.AF_SPEED_MULTIPLIER)
 proc/AirflowRepel(zone/A,turf/T,n)
@@ -277,7 +299,9 @@ atom/movable
 			return
 		if(airflow_dest == loc)
 			step_away(src,loc)
-		if(ismob(src)) src << "\red You are sucked away by airflow!"
+		if(ismob(src))
+			if(src:nodamage) return
+			src << "\red You are sucked away by airflow!"
 		airflow_speed = min(round(n),9)
 		//world << "[src]'s headed to [airflow_dest] at [n] times the SPEED OF LIGHT!"
 		//airflow_dest = get_step(src,Get_Dir(src,airflow_dest))
@@ -318,7 +342,9 @@ atom/movable
 			return
 		if(airflow_dest == loc)
 			step_away(src,loc)
-		if(ismob(src)) src << "\red You are pushed away by airflow!"
+		if(ismob(src))
+			if(src:nodamage) return
+			src << "\red You are pushed away by airflow!"
 		airflow_speed = min(round(n),9)
 		//airflow_dest = get_step(src,Get_Dir(airflow_dest,src))
 		var
@@ -448,3 +474,15 @@ proc/Get_Dir(atom/S,atom/T) //Shamelessly stolen from AJX.AdvancedGetDir
 		else .=SOUTHWEST
 	else
 		return GDir
+
+proc/SaveTweaks()
+	var/savefile/F = new("data/game_settings.sav")
+	F << vsc
+	del F
+	world.log << "TWEAKS: Airflow, Plasma and Damage settings saved."
+proc/LoadTweaks()
+	if(fexists("data/game_settings.sav"))
+		var/savefile/F = new("data/game_settings.sav")
+		F >> vsc
+		del F
+		world.log << "TWEAKS: Airflow, Plasma and Damage settings loaded."

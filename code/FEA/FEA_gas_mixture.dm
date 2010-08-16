@@ -191,7 +191,7 @@ datum
 				if(energy_released > 0)
 					var/new_heat_capacity = heat_capacity()
 					if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
-						temperature = min((temperature*old_heat_capacity + energy_released)/new_heat_capacity,PLASMA_UPPER_TEMPERATURE+rand(15,35))
+						temperature = (temperature*old_heat_capacity + energy_released)/new_heat_capacity
 
 				return fuel_burnt
 

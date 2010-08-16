@@ -17,6 +17,7 @@
 	var/atmos = 1
 	var/poweralm = 1
 	var/party = null
+	var/air_doors_activated = 0
 	level = null
 	name = "Space"
 	icon = 'areas.dmi'
@@ -83,7 +84,7 @@
 	icon_state = "shuttle"
 
 /area/shuttle/escape
-	name = "Emergency Shuttle"
+	name = "Escape Pod A"
 	music = "music/escape.ogg"
 
 /area/shuttle/escape/transit
@@ -105,6 +106,16 @@
 	icon_state = "shuttle2"
 
 /area/shuttle/escape/centcom
+	icon_state = "shuttle"
+
+/area/shuttle/escape2
+	name= "Escape Pod B"
+	music = "music/escape.ogg"
+
+/area/shuttle/escape2/station //Made for the two escape pods in NSV Luna
+	icon_state = "shuttle2"
+
+/area/shuttle/escape2/centcom
 	icon_state = "shuttle"
 
 /area/shuttle/prison/
