@@ -74,6 +74,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	var/closeOtherId = null
 	var/list/signalers[9]
 	var/lockdownbyai = 0
+	var/air_locked = 0 //Set if the airlock was locked in an emergency seal.
 	autoclose = 1
 
 /obj/machinery/door/airlock/command
@@ -145,6 +146,7 @@ About the new airlock wires panel:
 			else
 				if(src.arePowerSystemsOn()) //only can raise bolts if power's on
 					src.locked = 0
+					src.air_locked = 0
 					src.updateUsrDialog()
 				usr << "You hear a click from inside the door."
 			update_icon()
@@ -786,6 +788,7 @@ About the new airlock wires panel:
 					else
 						if (src.arePowerSystemsOn())
 							src.locked = 0
+							src.air_locked = 0
 							update_icon()
 						else
 							usr << text("Cannot raise door bolts due to power failure.<br>\n")

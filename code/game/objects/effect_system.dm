@@ -139,7 +139,7 @@ steam.start() -- spawns the effect
 	playsound(src.loc, "sparks", 100, 1)
 	var/turf/T = src.loc
 	if (istype(T, /turf))
-		T.hotspot_expose(1000,100)
+		T.hotspot_expose(3000,100)
 	spawn (100)
 		del(src)
 	return
@@ -147,7 +147,7 @@ steam.start() -- spawns the effect
 /obj/effects/sparks/Del()
 	var/turf/T = src.loc
 	if (istype(T, /turf))
-		T.hotspot_expose(1000,100)
+		T.hotspot_expose(3000,100)
 	..()
 	return
 
@@ -155,7 +155,7 @@ steam.start() -- spawns the effect
 	..()
 	var/turf/T = src.loc
 	if (istype(T, /turf))
-		T.hotspot_expose(1000,100)
+		T.hotspot_expose(3000,100)
 	return
 
 /datum/effects/system/spark_spread

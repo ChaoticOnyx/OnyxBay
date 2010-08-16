@@ -117,6 +117,57 @@
 					D.open()
 	return
 
+/area/proc/activate_air_doors()
+	if(src.name == "Space") //no atmo alarms in space
+		return
+	if (!( src.air_doors_activated ))
+		src.air_doors_activated = 1
+		src.updateicon()
+		src.mouse_opacity = 0
+		for(var/obj/machinery/door/airlock/D in src)
+			if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
+			if(!D.density)
+				spawn(0)
+				D.close()
+				sleep(10)
+				if(D.density)
+					D.locked = 1
+					D.air_locked = 1
+					D.update_icon()
+			else if(!D.locked) //Don't lock already bolted doors.
+				D.locked = 1
+				D.air_locked = 1
+				D.update_icon()
+			else
+				D.air_locked = 0 //Ensure we're getting the right doors here.
+		var/list/cameras = list()
+		for (var/obj/machinery/camera/C in src)
+			cameras += C
+		for (var/mob/living/silicon/ai/aiPlayer in world)
+			aiPlayer.triggerAlarm("Atmosphere", src, cameras, src)
+		for (var/obj/machinery/computer/atmosphere/alerts/a in world)
+			a.triggerAlarm("Atmosphere", src, cameras, src)
+	return
+
+/area/proc/deactivate_air_doors()
+	if (src.air_doors_activated)
+		src.air_doors_activated = 0
+		src.mouse_opacity = 0
+		src.updateicon()
+		for(var/obj/machinery/door/airlock/D in src)
+			if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER))
+				D.air_locked = 0
+			if(D.air_locked) //Don't mess with doors locked for other reasons.
+				if(D.density)
+					D.locked = 0
+					D.air_locked =0
+					D.update_icon()
+		for (var/mob/living/silicon/ai/aiPlayer in world)
+			aiPlayer.cancelAlarm("Atmosphere", src, src)
+		for (var/obj/machinery/computer/atmosphere/alerts/a in world)
+			a.cancelAlarm("Atmosphere", src, src)
+	return
+
 /area/proc/updateicon()
 	if ((fire || eject || party) && power_environ)
 		if(fire && !eject && !party)
@@ -127,6 +178,8 @@
 			icon_state = "party"
 		else
 			icon_state = "blue-red"
+	else if(air_doors_activated && power_environ)
+		icon_state = "blueold"
 	else
 		icon_state = null
 

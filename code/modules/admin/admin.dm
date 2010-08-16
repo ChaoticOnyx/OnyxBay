@@ -517,6 +517,34 @@ var/showadminmessages = 1
 		else
 			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 			return
+	if(href_list["editairflow"])
+		if ((src.rank in list( "Primary Administrator", "Coder", "Host", "Super Administrator")))
+			vsc.ChangeSettingDialog(usr,vsc.settings)
+		else
+			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
+			return
+	if(href_list["editplasma"])
+		if ((src.rank in list( "Primary Administrator", "Coder", "Host", "Super Administrator")))
+			vsc.ChangeSettingDialog(usr,vsc.plc.settings)
+		else
+			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
+			return
+	if(href_list["savetweaks"])
+		if ((src.rank in list( "Primary Administrator", "Coder", "Host", "Super Administrator")))
+			SaveTweaks()
+			usr << "Settings saved."
+			world << "\blue <b>[key_name(usr)] saved the current settings.</b>"
+		else
+			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
+			return
+	if(href_list["loadtweaks"])
+		if ((src.rank in list( "Primary Administrator", "Coder", "Host", "Super Administrator")))
+			LoadTweaks()
+			usr << "Settings loaded."
+			world << "\blue <b>[key_name(usr)] loaded settings from the savefile.</b>"
+		else
+			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
+			return
 
 /***************** BEFORE**************
 
@@ -1305,7 +1333,13 @@ var/showadminmessages = 1
 	if(lvl >= 5)
 		dat += "<A href='?src=\ref[src];create_mob=1'>Create Mob</A><br>"
 //			if(lvl == 6 )
-	usr << browse(dat, "window=admin2;size=210x180")
+	if(lvl >= 3)
+		dat += "<br><A href='?src=\ref[src];editairflow=1'>Edit Airflow</A>"
+		dat += "<br><A href='?src=\ref[src];editplasma=1'>Edit Plasma</A>"
+		dat += ""
+		dat += "<br><A href='?src=\ref[src];savetweaks=1'>Save Settings</A>"
+		dat += "<br><A href='?src=\ref[src];loadtweaks=1'>Load Settings</A>"
+	usr << browse(dat, "window=admin2;size=210x275")
 	return
 
 /obj/admins/proc/invites()
@@ -1367,11 +1401,12 @@ var/showadminmessages = 1
 <A href='?src=\ref[src];secretsfun=prisonwarp'>Warp all Players to Prison</A><BR>
 <A href='?src=\ref[src];secretsfun=traitor_all'>Everyone is the traitor</A><BR>
 <A href='?src=\ref[src];secretsfun=wave'>Spawn a wave of meteors</A><BR>
-<A href='?src=\ref[src];secretsfun=flicklights'>Ghost Mode</A><BR>
+<A href='?src=\ref[src];secretsfun=flicklights'>Ghost Mode</A><BR>"}
+/*
 <A href='?src=\ref[src];secretsfun=cleanexcrement'>Remove all urine/poo from station</A><BR>
 <A href='?src=\ref[src];secretsfun=retardify'>Make all players retarded</A><BR>
 <A href='?src=\ref[src];secretsfun=fakeguns'>Make all items look like guns</A><BR>
-<A href='?src=\ref[src];secretsfun=schoolgirl'>Japanese Animes Mode</A><BR><BR>"}
+<A href='?src=\ref[src];secretsfun=schoolgirl'>Japanese Animes Mode</A><BR><BR>*/
 //<A href='?src=\ref[src];secretsfun=shockwave'>Station Shockwave</A><BR>
 
 	if(lvl >= 5)

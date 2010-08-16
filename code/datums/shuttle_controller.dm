@@ -84,6 +84,9 @@ datum/shuttle_controller
 						var/area/start_location = locate(/area/shuttle/escape/centcom)
 						var/area/end_location = locate(/area/shuttle/escape/station)
 
+						var/area/start_location_B = locate(/area/shuttle/escape2/centcom)
+						var/area/end_location_B = locate(/area/shuttle/escape2/station)
+
 						var/list/dstturfs = list()
 						var/throwy = world.maxy
 
@@ -109,6 +112,7 @@ datum/shuttle_controller
 								del(T)
 
 						start_location.move_contents_to(end_location)
+						start_location_B.move_contents_to(end_location_B)
 						settimeleft(SHUTTLELEAVETIME)
 						world << "<B>The Emergency Shuttle has docked with the station! You have [timeleft()/60] minutes to board the Emergency Shuttle.</B>"
 
@@ -123,7 +127,11 @@ datum/shuttle_controller
 						var/area/start_location = locate(/area/shuttle/escape/station)
 						var/area/end_location = locate(/area/shuttle/escape/centcom)
 
+						var/area/start_location_B = locate(/area/shuttle/escape2/station)
+						var/area/end_location_B = locate(/area/shuttle/escape2/centcom)
+
 						start_location.move_contents_to(end_location)
+						start_location_B.move_contents_to(end_location_B)
 						online = 0
 
 						return 1

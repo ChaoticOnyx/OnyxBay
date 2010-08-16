@@ -194,6 +194,8 @@
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
 			src.verbs += /obj/admins/proc/invites
+
+			src.verbs += /client/proc/Zone_Info
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
@@ -266,6 +268,7 @@
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
 			src.verbs += /obj/admins/proc/invites
+			src.verbs += /client/proc/Zone_Info
 		if ("Primary Administrator")
 
 			src.deadchat = 1
@@ -541,7 +544,6 @@
 
 	src.verbs -= /client/proc/toggle_view_range
 	src.verbs -= /obj/admins/proc/toggle_aliens
-
 	if(src.holder)
 		src.holder.level = 0
 
