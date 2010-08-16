@@ -520,6 +520,9 @@
 	var/list/turfs_src = get_area_turfs(src.type)
 	var/list/turfs_trg = get_area_turfs(A.type)
 
+
+
+	//Get some basic area info
 	var/src_min_x = 0
 	var/src_min_y = 0
 	for (var/turf/T in turfs_src)
@@ -532,6 +535,8 @@
 		if(T.x < trg_min_x || !trg_min_x) trg_min_x	= T.x
 		if(T.y < trg_min_y || !trg_min_y) trg_min_y	= T.y
 
+
+	//Set up a list of the source turfs and their tile offsets in the area
 	var/list/refined_src = new/list()
 	for(var/turf/T in turfs_src)
 		refined_src += T
@@ -547,6 +552,8 @@
 		var/datum/coords/C = refined_trg[T]
 		C.x_pos = (T.x - trg_min_x)
 		C.y_pos = (T.y - trg_min_y)
+
+
 
 	var/list/fromupdate = new/list()
 	var/list/toupdate = new/list()
@@ -576,12 +583,17 @@
 
 					toupdate += X
 
+					var/zone = T.zone
+
+					zone.RemoveTurf(T)
+
 					if(turftoleave)
+
 						var/turf/ttl = new turftoleave(T)
 
 						var/area/AR2 = ttl.loc
 
-						ttl.zone = T.zone //I think this fixes atmos?
+
 
 						if(AR2.ul_Lighting)
 							ttl.opacity = !ttl.opacity

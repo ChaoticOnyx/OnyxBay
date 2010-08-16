@@ -35,10 +35,15 @@
 	heat_capacity = 700000
 
 /turf/space/New()
-	..()
+	. = ..()
 	icon = 'space.dmi'
 	icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
+	var/turf/T = locate(x, y, z + 1)
+	if (T)
+		if(istype(T, /turf/space) || istype(T, /turf/unsimulated) || istype(T, /turf/simulated/floor/engine/hull))
+			return
 
+		new /turf/simulated/floor/open(src)
 
 /turf/simulated
 	name = "station"
@@ -84,14 +89,22 @@
 	New()
 		..()
 		var/turf/T = locate(x,y,z-1)
-		if(T)
-			if(T.type == /turf/simulated/floor/open)
-				open = T
+		spawn(4)
+			if(T)
+				if(T.type == /turf/simulated/floor/open)
+					open = T
+					open.update()
 
 	Enter(var/atom/movable/AM)
 		. = ..()
 		spawn()
-			if(open)
+			if(open && istype(open))
+				open.update()
+
+	Exit(var/atom/movable/AM)
+		. = ..()
+		spawn()
+			if(open && istype(open))
 				open.update()
 
 	airless
@@ -116,6 +129,9 @@
 		New()
 			..()
 			spawn(1)
+				if(!istype(src, /turf/simulated/floor/open)) //This should not be needed but is.
+					return
+
 				floorbelow = locate(x, y, z + 1)
 				if(ticker)
 					add_to_other_zone()
