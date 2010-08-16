@@ -46,6 +46,7 @@
 
 /obj/window/reinforced
 	reinf = 1
+	explosionstrength = 1
 	icon_state = "rwindow"
 	name = "reinforced window"
 

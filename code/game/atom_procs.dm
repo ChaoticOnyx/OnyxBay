@@ -275,7 +275,7 @@
 						if (istype(usr, /mob/living/carbon/alien/humanoid))
 							src.attack_alien(usr, usr.hand)
 						else
-							if (istype(usr, /mob/living/silicon/ai) || istype(usr, /mob/living/silicon/robot))
+							if (istype(usr, /mob/living/silicon))
 								src.attack_ai(usr, usr.hand)
 		else
 			if (istype(usr, /mob/living/carbon/human))
@@ -287,7 +287,7 @@
 					if (istype(usr, /mob/living/carbon/alien/humanoid))
 						src.hand_al(usr, usr.hand)
 					else
-						if (istype(usr, /mob/living/silicon/ai) || istype(usr, /mob/living/silicon/robot))
+						if (istype(usr, /mob/living/silicon))
 							src.hand_a(usr, usr.hand)
 
 	else
@@ -326,6 +326,9 @@
 
 /atom/proc/CanReachThrough(turf/srcturf, turf/targetturf)
 	var/obj/item/weapon/dummy/D = new /obj/item/weapon/dummy( srcturf )
+
+	if(targetturf.density)
+		return 0
 
 	//Now, check objects to block exit that are on the border
 	for(var/obj/border_obstacle in srcturf)

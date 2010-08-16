@@ -74,7 +74,7 @@
 		playsound(src.loc, 'grillehit.ogg', 80, 1)
 		src.health -= 1
 
-/obj/grille/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/grille/CanPass(atom/movable/mover, turf/source, height=0, air_group=0)
 	if(air_group || (height==0)) return 1
 
 	if ((istype(mover, /obj/effects) || istype(mover, /obj/item/weapon/dummy) || istype(mover, /obj/beam) || istype(mover, /obj/meteor/small)))

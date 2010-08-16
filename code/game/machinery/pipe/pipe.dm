@@ -294,7 +294,7 @@ var/linenums = 0
 	var/b1
 	var/b2
 
-	for(var/d in cardinal)
+	for(var/d in cardinal3d)
 		if(p_dir & d)
 			if(!b1)
 				b1 = d

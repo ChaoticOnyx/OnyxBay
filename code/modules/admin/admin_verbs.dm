@@ -42,6 +42,7 @@
 			src.verbs += /client/proc/play_sound
 			src.verbs += /client/proc/modifytemperature
 			src.verbs += /client/proc/cmd_admin_gib
+			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/cmd_admin_gib_self
 			src.verbs += /proc/toggle_adminmsg
 //				src.verbs += /client/proc/grillify
@@ -111,6 +112,7 @@
 			src.deadchat = 1
 			src.holder.level = 5
 			src.verbs += /client/proc/LSD_effect
+			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /proc/possess
@@ -207,6 +209,7 @@
 			src.verbs += /client/proc/cmd_admin_pm
 			src.verbs += /client/proc/cmd_admin_say
 			src.verbs += /client/proc/dsay
+			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/play_sound
 			src.verbs += /client/proc/cmd_admin_gib
 			src.verbs += /client/proc/cmd_admin_gib_self
@@ -298,6 +301,7 @@
 			src.verbs += /client/proc/cmd_admin_say
 			src.verbs += /client/proc/dsay
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
+			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/play_sound
 //			src.verbs += /client/proc/cmd_admin_list_admins
 			src.verbs += /client/proc/cmd_admin_pm
@@ -355,6 +359,7 @@
 //				src.verbs += /client/proc/play_sound
 			src.verbs += /client/proc/cmd_admin_mute
 			src.verbs += /client/proc/cmd_admin_prison
+			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /obj/admins/proc/vmode   				//start vote
 			src.verbs += /obj/admins/proc/votekill 				//abort vote

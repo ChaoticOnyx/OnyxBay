@@ -4,6 +4,7 @@
 obj/machinery/door/airlock
 	var/id_tag
 	var/frequency
+	explosionstrength = 2
 
 	var/datum/radio_frequency/radio_connection
 
