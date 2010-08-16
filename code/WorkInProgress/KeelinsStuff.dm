@@ -583,9 +583,9 @@
 
 					toupdate += X
 
-					var/zone = T.zone
 
-					zone.RemoveTurf(T)
+
+
 
 					if(turftoleave)
 

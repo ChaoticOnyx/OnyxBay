@@ -70,7 +70,7 @@
 		post_alert(safe, alert_info)
 	if(!safe)
 		air_doors_close()
-
+	updateUsrDialog()
 	return
 
 /obj/machinery/alarm/proc/post_alert(alert_level, alert_type)
@@ -189,6 +189,7 @@
 		air_doors_close()
 	else if("deactivate_alarm" in href_list)
 		air_doors_open()
+	updateUsrDialog()
 
 obj/machinery/alarm/proc
 	air_doors_close()

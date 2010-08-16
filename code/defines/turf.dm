@@ -40,7 +40,7 @@
 	icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
 	var/turf/T = locate(x, y, z + 1)
 	if (T)
-		if(istype(T, /turf/space) || istype(T, /turf/unsimulated) || istype(T, /turf/simulated/floor/engine/hull))
+		if(istype(T, /turf/space) || istype(T, /turf/unsimulated) || istype(T, /turf/unsimulated/floor/hull))
 			return
 
 		new /turf/simulated/floor/open(src)
