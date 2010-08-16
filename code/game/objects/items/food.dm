@@ -12,7 +12,7 @@ YOUR MUMS BOX
 /obj/item/kitchen/donut_box
 	var/amount = 6
 	icon = 'food.dmi'
-	icon_state = "donutbox"
+	icon_state = "donutbox6"
 	name = "donut box"
 /obj/item/kitchen/egg_box
 	var/amount = 12
@@ -26,9 +26,12 @@ YOUR MUMS BOX
 
 /obj/item/kitchen/donut_box/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/weapon/reagent_containers/food/snacks/donut))
-		user.drop_item()
-		W.loc = src
-		usr << "You place a donut back into the box."
+		if(amount < 6)
+			user.drop_item()
+			W.loc = src
+			usr << "You place a donut back into the [src]."
+		else
+			usr << "The [src] is full"
 	src.update()
 	return
 
@@ -60,20 +63,20 @@ YOUR MUMS BOX
 				P.layer = 20
 				usr.l_hand = P
 				usr.update_clothing()
-				usr << "You take a donut out of the box."
+				usr << "You take a donut out of the [src]."
 				break
 			else if (!usr.r_hand)
 				P.loc = usr
 				P.layer = 20
 				usr.r_hand = P
 				usr.update_clothing()
-				usr << "You take a donut out of the box."
+				usr << "You take a donut out of the [src]."
 				break
 	else
 		if (src.amount >= 1)
 			src.amount--
 			new /obj/item/weapon/reagent_containers/food/snacks/donut( src.loc )
-			usr << "You take a donut out of the box."
+			usr << "You take a donut out of the [src]."
 	src.update()
 	return
 
@@ -86,12 +89,12 @@ YOUR MUMS BOX
 		n++
 	if (n <= 0)
 		n = 0
-		usr << "There are no donuts left in the box."
+		usr << "There are no donuts left in the [src]."
 	else
 		if (n == 1)
-			usr << "There is one donut left in the box."
+			usr << "There is one donut left in the [src]."
 		else
-			usr << text("There are [] donuts in the box.", n)
+			usr << text("There are [] donuts in the [src].", n)
 	return
 
 /obj/item/kitchen/egg_box/proc/update()

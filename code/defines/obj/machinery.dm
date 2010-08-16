@@ -18,6 +18,8 @@
 	density = 1
 	var/m_amount = 0.0
 	var/g_amount = 0.0
+	var/const/m_max = 150000.0  // Maximum capacity for metal
+	var/const/g_max =  75000.0  // and glass respectively.
 	var/operating = 0.0
 	var/opened = 0.0
 	var/temp = null
@@ -36,7 +38,7 @@
 	name = "Security Camera"
 	icon = 'monitors.dmi'
 	icon_state = "camera"
-	var/network = "SS13"
+	var/network = "Luna"
 	layer = 5
 	var/c_tag = null
 	var/c_tag_order = 999
@@ -120,7 +122,7 @@
 	anchored = 1.0
 
 /obj/machinery/igniter
-	name = "igniter"
+	name = "Floor-mounted Igniter"
 	icon = 'stationobjs.dmi'
 	icon_state = "igniter1"
 	var/id = null
@@ -128,7 +130,7 @@
 	anchored = 1.0
 
 /obj/machinery/injector
-	name = "injector"
+	name = "Gas Injector"
 	icon = 'stationobjs.dmi'
 	icon_state = "injector"
 	density = 1
@@ -136,7 +138,8 @@
 	flags = ON_BORDER
 
 /obj/machinery/mass_driver
-	name = "mass driver"
+	name = "Mass Driver"
+	desc = "A device for launching objects into space"
 	icon = 'stationobjs.dmi'
 	icon_state = "mass_driver"
 	var/power = 1.0
@@ -146,7 +149,8 @@
 	var/drive_range = 50 //this is mostly irrelevant since current mass drivers throw into space, but you could make a lower-range mass driver for interstation transport or something I guess.
 
 /obj/machinery/meter
-	name = "meter"
+	name = "Pressure Meter"
+	desc = "A meter for measuring the gas pressure in pipes"
 	icon = 'meter.dmi'
 	icon_state = "meterX"
 	var/obj/machinery/atmospherics/pipe/target = null
@@ -173,6 +177,7 @@
 
 /obj/machinery/optable
 	name = "Operating Table"
+	desc = "A medical device for operating on people"
 	icon = 'surgery.dmi'
 	icon_state = "table2-idle"
 	density = 1
@@ -384,7 +389,7 @@
 							// if set to 0, requires a 0-X cable on this turf
 
 /obj/machinery/power/terminal
-	name = "terminal"
+	name = "Terminal"
 	icon_state = "term"
 	desc = "An underfloor wiring terminal for power equipment"
 	level = 1
@@ -393,7 +398,7 @@
 	directwired = 0		// must have a cable on same turf connecting to terminal
 
 /obj/machinery/power/generator
-	name = "generator"
+	name = "Generator"
 	desc = "A high efficiency thermoelectric generator."
 	icon_state = "teg"
 	anchored = 1
@@ -406,7 +411,7 @@
 	var/lastgenlev = -1
 
 /obj/machinery/power/generator_type2
-	name = "generator"
+	name = "Thermo-Electric Generator"
 	desc = "A high efficiency thermoelectric generator."
 	icon_state = "teg"
 	anchored = 1
@@ -439,7 +444,7 @@
 		..()
 
 /obj/machinery/power/smes
-	name = "power storage unit"
+	name = "SMES"
 	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit."
 	icon_state = "smes"
 	density = 1
@@ -458,7 +463,7 @@
 	var/obj/machinery/power/terminal/terminal = null
 
 /obj/machinery/power/solar
-	name = "solar panel"
+	name = "Solar Panel"
 	desc = "A solar electrical generator."
 	icon = 'power.dmi'
 	icon_state = "sp_base"
@@ -475,7 +480,7 @@
 	var/obj/machinery/power/solar_control/control
 
 /obj/machinery/power/solar_control
-	name = "solar panel control"
+	name = "Solar Panel Controller"
 	desc = "A controller for solar panel arrays."
 	icon = 'computer.dmi'
 	icon_state = "solar"
@@ -494,8 +499,8 @@
 
 
 /obj/machinery/cell_charger
-	name = "cell charger"
-	desc = "A charging unit for power cells."
+	name = "Power Cell Charger"
+	desc = "A charging unit for Power Cells."
 	icon = 'power.dmi'
 	icon_state = "ccharger0"
 	var/obj/item/weapon/cell/charging = null
@@ -504,7 +509,7 @@
 
 /obj/machinery/light_switch
 	desc = "A light switch"
-	name = null
+	name = "Light Switch"
 	icon = 'power.dmi'
 	icon_state = "light1"
 	anchored = 1.0
@@ -515,7 +520,7 @@
 
 /obj/machinery/crema_switch
 	desc = "Burn baby burn!"
-	name = "crematorium igniter"
+	name = "Crematorium Igniter"
 	icon = 'power.dmi'
 	icon_state = "crema_switch"
 	anchored = 1.0
@@ -557,7 +562,7 @@
 	var/wires = 15
 
 /obj/machinery/vending/coffee
-	name = "coffee machine"
+	name = "Coffee Machine"
 	desc = "A Robust Coffee vending machine."
 	icon_state = "coffee"
 	icon_vend = "coffee-vend"
@@ -567,8 +572,8 @@
 	product_hidden = "/obj/item/weapon/reagent_containers/food/drinks/cola"
 
 /obj/machinery/vending/snack
-	name = "snack machine"
-	desc = "Just a placeholder until we get food figured out. :munch:"
+	name = "Snack Machine"
+	desc = "All manner of tasty, but unhealthy snacks"
 	icon_state = "snack"
 	product_paths = "/obj/item/weapon/reagent_containers/food/snacks/candy;/obj/item/weapon/reagent_containers/food/snacks/chips"
 	product_amounts = "10;10"
@@ -576,7 +581,7 @@
 	product_hidden = "/obj/item/weapon/reagent_containers/food/snacks/donut"
 /obj/machinery/vending/cart
 	name = "PTech"
-	desc = "Cartridges for PDA's"
+	desc = "Cartridges for PDAs"
 	icon_state = "sec"
 	icon_deny = "sec-deny"
 	product_paths = "/obj/item/weapon/cartridge/medical;/obj/item/weapon/cartridge/engineering;/obj/item/weapon/cartridge/security;/obj/item/weapon/cartridge/janitor;/obj/item/weapon/cartridge/signal/toxins;/obj/item/device/pda/heads;/obj/item/weapon/cartridge/captain"
@@ -584,7 +589,7 @@
 	product_slogans = ""
 	product_hidden = ""
 /obj/machinery/vending/cigarette
-	name = "cigarette machine"
+	name = "Cigarette Vendor"
 	desc = "If you want to get cancer, might as well do it in style"
 	icon_state = "cigs"
 	product_paths = "/obj/item/weapon/cigpacket"

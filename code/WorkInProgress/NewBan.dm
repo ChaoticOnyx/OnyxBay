@@ -25,8 +25,6 @@ var/savefile/Banlist
 				ban = q1.GetRowData()
 	if(ban.len < 1)
 		return 0
-		world << "NOT"
-	world << "YOUR BANNED"
 	if(text2num(ban["temp"]))
 		var/asd = text2num(ban["minute"])
 		if (!GetExp(asd))

@@ -3,6 +3,7 @@
 	icon_state = "gas"
 	var/id = ""
 	var/frequency = 1439
+	var/label = ""
 	var/datum/radio_frequency/radio_connection
 	var/list/signal_info
 
@@ -50,7 +51,7 @@
 		else
 			sensor_part = "<FONT color='red'>NO DATA</FONT><BR>"
 
-		var/output = {"<B>[initial(tag)]</B><HR>
+		var/output = {"<B>[label]</B><HR>
 <B>Sensor Data: <BR></B>
 [sensor_part]<HR>"}
 
@@ -70,3 +71,7 @@
 			radio_controller.remove_object(src, "[frequency]")
 			frequency = new_frequency
 			radio_connection = radio_controller.add_object(src, "[frequency]")
+
+	New()
+		label = tag
+		..()

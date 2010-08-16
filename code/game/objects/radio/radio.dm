@@ -125,6 +125,48 @@ Frequency:
 	else
 		usr << browse(null, "window=radio")
 
+/obj/item/device/radio/proc/autosay(var/message,var/from)
+	var/list/receive = list()
+	var/list/heard_intercom = list()
+
+	for (var/obj/item/device/radio/R in radio_connection.devices)
+		if(R.accept_rad(src, message))
+			for (var/i in R.send_hear())
+				if (!(i in receive))
+					receive += i
+	for (var/obj/item/device/radio/R in radio_connection.devices)
+		if(istype(R,/obj/item/device/radio/intercom))
+			heard_intercom += R
+
+	var/list/heard_masked = list() // masked name or no real name
+	var/list/heard_normal = list() // normal message
+	var/list/heard_voice = list() // voice message
+	var/list/heard_garbled = list() // garbled message
+
+
+	for (var/mob/R in receive)
+		heard_normal += R
+
+	if (length(heard_masked) || length(heard_normal) || length(heard_voice) || length(heard_garbled))
+		var/part_a = "<span class='game radio'><span class='name'>"
+		var/part_b = "</span><b> \icon[src]\[[format_frequency(src.frequency)]\]</b> <span class='message'>"
+		var/part_c = "</span></span>"
+		var/test = say_test(message)
+		var/list/img = list()
+		for(var/obj/item/device/radio/R in heard_intercom)
+			var/image/ad = image('talk.dmi',R,"radio[test]")
+			img += ad
+		if (length(heard_normal))
+			var/rendered = "[part_a][from][part_b][message][part_c]"
+
+			for (var/mob/R in heard_normal)
+				if(istype(R, /mob/living/silicon/ai))
+					R.show_message("[part_a][from] (Automated System) </a>[part_b][message][part_c]", 10)
+				else
+					R.show_message(rendered, 10)
+				//	R << img
+
+
 /obj/item/device/radio/talk_into(mob/M as mob, message)
 
 	var/eqjobname

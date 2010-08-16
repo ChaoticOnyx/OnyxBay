@@ -83,6 +83,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	req_access = list(access_heads)
 
 /obj/machinery/door/airlock/security
+	explosionstrength = 3
 	name = "Airlock"
 	icon = 'Doorsec.dmi'
 	req_access = list(access_security)
@@ -940,6 +941,9 @@ About the new airlock wires panel:
 			a.halloss += 50
 			a.stunned += 50
 			return
+
+	if(operating == 1)
+		return
 	..()
 
 

@@ -37,7 +37,7 @@
 			if(src.authenticated)
 				call_shuttle_proc(usr)
 
-				if(emergency_shuttle.online)
+				if(main_shuttle.online)
 					post_status("shuttle")
 
 			src.state = STATE_DEFAULT
@@ -192,8 +192,8 @@
 
 	user.machine = src
 	var/dat = "<head><title>Communications Console</title></head><body>"
-	if (emergency_shuttle.online && emergency_shuttle.location==0)
-		var/timeleft = emergency_shuttle.timeleft()
+	if (main_shuttle.online && main_shuttle.location==0)
+		var/timeleft = main_shuttle.timeleft()
 		dat += "<B>Emergency shuttle</B>\n<BR>\nETA: [timeleft / 60 % 60]:[add_zero(num2text(timeleft % 60), 2)]<BR>"
 
 	if (istype(user, /mob/living/silicon))
@@ -215,8 +215,8 @@
 					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=toggle-redalert'>Cancel Red Alert</A> \]"
 				else
 					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=toggle-redalert'>Declare Red Alert</A> \]"
-				if(emergency_shuttle.location==0)
-					if (emergency_shuttle.online)
+				if(main_shuttle.location==1)
+					if (main_shuttle.online)
 						dat += "<BR>\[ <A HREF='?src=\ref[src];operation=cancelshuttle'>Cancel Shuttle Call</A> \]"
 					else
 						dat += "<BR>\[ <A HREF='?src=\ref[src];operation=callshuttle'>Call Emergency Shuttle</A> \]"
@@ -270,7 +270,7 @@
 	var/dat = ""
 	switch(src.aistate)
 		if(STATE_DEFAULT)
-			if(emergency_shuttle.location==0 && !emergency_shuttle.online)
+			if(main_shuttle.location== 1 && !main_shuttle.online)
 				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=ai-callshuttle'>Call Emergency Shuttle</A> \]"
 			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=call-prison'>Send Prison Shutle</A> \]"
 			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=ai-messagelist'>Message List</A> \]"
@@ -328,7 +328,7 @@
 	call_shuttle_proc(src)
 
 	// hack to display shuttle timer
-	if(emergency_shuttle.online)
+	if(main_shuttle.online)
 		var/obj/machinery/computer/communications/C = locate() in world
 		if(C)
 			C.post_status("shuttle")
@@ -336,7 +336,7 @@
 	return
 
 /proc/call_prison_shuttle(var/mob/usr)
-	if ((!( ticker ) || emergency_shuttle.location == 1))
+	if ((!( ticker ) || main_shuttle.location == 1))
 		return
 	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "sandbox")
 		usr << "Under directive 7-10, [station_name()] is quarantined until further notice."
@@ -387,7 +387,7 @@
 		PS.allowedtocall = !(PS.allowedtocall)
 
 /proc/call_shuttle_proc(var/mob/user)
-	if ((!( ticker ) || emergency_shuttle.location))
+	if ((!( ticker ) || main_shuttle.location == 0))
 		return
 
 	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "sandbox")
@@ -397,20 +397,24 @@
 		user << "Centcom will not allow the shuttle to be called."
 		return
 
-	emergency_shuttle.incall()
-	world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.</B>"
+	LaunchControl.start()
+
+//	main_shuttle.incall()
+	world << "\blue <B>Alert: Escape pods launching in [round(main_shuttle.timeleft()/60)] minutes.</B>"
 
 	return
 
 /proc/cancel_call_proc(var/mob/user)
-	if ((!( ticker ) || emergency_shuttle.location || emergency_shuttle.direction == 0 || emergency_shuttle.timeleft() < 300))
+	if ((!( ticker ) || main_shuttle.location || main_shuttle.direction == 0 || main_shuttle.timeleft() < 300))
 		return
 	if( ticker.mode.name == "blob" )
 		return
 
-	world << "\blue <B>Alert: The shuttle is going back!</B>" //marker4
+	world << "\blue <B>Alert: Escape pods launch sequence aborted</B>" //marker4
 
-	emergency_shuttle.recall()
+	LaunchControl.stop()
+
+	//main_shuttle.recall()
 
 	return
 

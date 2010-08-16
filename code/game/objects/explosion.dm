@@ -1,7 +1,25 @@
-proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range)
+/client/proc/cmd_explode_turf(obj/O as turf in world)
+#ifdef DEBUG
+	explosion(O, 1, 2, 8, 8, 1)
+	//if (!usr:holder)
+	//	message_admins("\red <b>Explosion spawn by [usr.client.key] blocked</b>")
+	//	return
+
+	message_admins("\red <b>Explosion spawned by [usr.client.key]</b>")
+#else
+	usr << "Function not available in RELEASE configuration
+#endif
+
+proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
+	if(!force)
+		return
 	spawn(0)
 		if(devastation_range > 1)
 			message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in area [epicenter.loc.name] ")
+
+		if(0) //TODO replace with locate() of shield wall - shields just absorb the blast
+			//Damage Shield
+			return
 
 		defer_powernet_rebuild += 1
 
@@ -10,13 +28,94 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 		playsound(epicenter.loc, 'explosionfar.ogg', 100, 1, round(devastation_range*2,1) )
 		playsound(epicenter.loc, "explosion", 100, 1, round(devastation_range,1) )
 
-		//if(heavy_impact_range > 1)
-		//	var/datum/effects/system/explosion/E = new/datum/effects/system/explosion()
-		//	E.set_up(epicenter)
-		//	E.start()
 
-		for(var/turf/T in range(light_impact_range, epicenter))
-			var/distance = get_dist(epicenter, T)
+		//NEW EXPLOSION CODE - NICER (3D TOO!!) BLASTS
+		//epicenter.overlays += image('status_display.dmi', "epicenter")
+
+		var/list/fillqueue = list( )
+		var/list/floordist = list( )
+
+		var/list/detonate  = list( )
+		var/list/detdists  = list( )
+
+		var/list/checked   = list( )
+
+		fillqueue += epicenter
+		checked += epicenter
+		floordist[epicenter] = 0
+
+		var/obj/item/weapon/dummy/D = new /obj/item/weapon/dummy(epicenter)
+
+		while (fillqueue.len > 0)
+
+			var/turf/T = fillqueue[1]
+			fillqueue -= T
+
+			if ((floordist[T] > flash_range))
+				continue
+
+			if (0) //TODO replace 0 with locate() for a shield object
+				//TODO damage shield
+				continue
+
+			detonate += T
+			detdists[T] = floordist[T]
+
+			D.loc = T
+
+			for(var/dir in cardinal | (1 ? DOWN : 0) | (1 ? UP : 0)) //TODO replace with "IsSameStation" checks
+				var/turf/U = get_step_3d(T, dir)
+
+				if(!U)
+					continue
+
+
+				var/addition = U.explosionstrength
+
+				if (dir == DOWN)
+					addition = T.floorstrength
+				else if (dir == UP)
+					addition = U.floorstrength
+
+				var/newdist = floordist[T] + addition
+
+				for(var/obj/O in U)
+					if (!O.CanPass(D, T, 0, 1)) //If an object on the turf is blocking the blast wave...
+						newdist += O.explosionstrength	//Then add its explosion resistance to the distance-from-epicenter var
+
+				if(U in checked) //Now, has this turf been looked at before?
+					if (U in fillqueue)//Yes, so only compare epicenter distances
+						if (newdist < floordist[U])
+							//world << "reassigning dist at [U.x] [U.y] [U.z] - [newdist] < [floordist[U]]"
+							floordist[U] = newdist
+					else
+						if (newdist < detdists[U])
+							//world << "reassigning dist at [U.x] [U.y] [U.z] - [newdist] < [detdists[U]]"
+							detdists[U] = newdist
+				else //No, so store the current epicenter dist and mark this turf for further flood-filling
+					fillqueue += U
+					checked += U
+					floordist[U] = newdist
+
+				//T.overlays += image('status_display.dmi', "black")
+
+
+		del D
+
+		//for(var/turf/T in detonate)
+		//	T.overlays += image('status_display.dmi', "red")
+		//	var/image/I = image('status_display.dmi', "[detdists[T]]")
+		//	I.pixel_x = 1
+		//	I.pixel_y = -1
+		//	T.overlays += I
+
+		//return
+
+
+		//OLD EXPLOSION CODE, RETROFITTED TO SUPPORT ABOVE
+
+		for(var/turf/T in detonate)
+			var/distance = detdists[T]
 			if(distance < 0)
 				distance = 0
 			if(distance < devastation_range)
@@ -43,6 +142,11 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 				T.ex_act(3)
 			for(var/mob/living/carbon/mob in T)
 				flick("flash", mob:flash)
+
+		if(heavy_impact_range > 1)
+			var/datum/effects/system/explosion/E = new/datum/effects/system/explosion()
+			E.set_up(epicenter)
+			E.start()
 
 
 		defer_powernet_rebuild -= 1

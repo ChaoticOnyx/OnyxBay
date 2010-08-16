@@ -245,15 +245,15 @@
 	src.reset_view(null)
 	src.machine = null
 	src:cameraFollow = null
-	if(src.network == "AI Satellite")
-		src.network = "SS13"
-	else if (src.network == "Prison")
-		src.network = "AI Satellite"
-	else //(src.network == "SS13")
-		src.network = "Prison"
+//	if(src.network == "AI Satellite")
+//		src.network = "Luna"
+//	else if (src.network == "Prison")
 //		src.network = "AI Satellite"
-	src << "\blue Switched to [src.network] camera network."
-
+//	else //(src.network == "SS13")
+//		src.network = "Prison"
+//		src.network = "AI Satellite"
+//	src << "\blue Switched to [src.network] camera network."
+	src << "\blue No other networks available."
 
 /mob/living/silicon/ai/proc/choose_modules()
 	set category = "AI Commands"

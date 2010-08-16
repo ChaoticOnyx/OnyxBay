@@ -4,6 +4,7 @@
 		var/list/lines = dd_text2list(text, "\n")
 		if (lines[1])
 			master_mode = lines[1]
+			check_diary()
 			diary << "Saved mode is '[master_mode]'"
 
 /world/proc/save_mode(var/the_mode)
@@ -47,9 +48,11 @@
 		while(my_query.NextRow())
 			var/list/row  = my_query.GetRowData()
 			var/rank = world.convert_ranks(text2num(row["rank"]))
+			check_diary()
 			diary << ("ADMIN: [row["ckey"]] = [rank]")
 			admins[row["ckey"]] = rank
 	if (!admins)
+		check_diary()
 		diary << "Failed to load admins \n"
 
 /*
@@ -89,6 +92,7 @@
 /world/proc/load_testers()
 	var/text = file2text("config/testers.txt")
 	if (!text)
+		check_diary()
 		diary << "Failed to load config/testers.txt\n"
 	else
 		var/list/lines = dd_text2list(text, "\n")
@@ -135,7 +139,7 @@
 	radio_controller = new /datum/controller/radio()
 	//main_hud1 = new /obj/hud()
 	data_core = new /obj/datacore()
-
+	CreateShuttles()
 	..()
 
 	sleep(50)
