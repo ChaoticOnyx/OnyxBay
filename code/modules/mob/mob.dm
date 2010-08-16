@@ -4,7 +4,7 @@
 
 	if(!loc) return 0
 
-	var/datum/gas_mixture/environment = loc.return_air()
+	var/datum/gas_mixture/environment = loc.return_air(1)
 
 	var/t = "\blue Coordinates: [x],[y] \n"
 	t+= "\red Temperature: [environment.temperature] \n"

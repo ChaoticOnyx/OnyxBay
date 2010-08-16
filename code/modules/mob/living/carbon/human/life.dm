@@ -9,12 +9,10 @@
 
 /mob/living/carbon/human/Life()
 	set invisibility = 0
-	set background = 0
+	set background = 1
 
 	if (src.monkeyizing)
 		return
-
-	var/datum/gas_mixture/environment = loc.return_air()
 
 	if (src.stat != 2) //still breathing
 
@@ -39,6 +37,7 @@
 	handle_virus_updates()
 
 	//Handle temperature/pressure differences between body and environment
+	var/datum/gas_mixture/environment = loc.return_air(1)
 	handle_environment(environment)
 
 	//Mutations and radiation
@@ -210,7 +209,7 @@
 			if(src.reagents.has_reagent("lexorin")) return
 			if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
 
-			var/datum/gas_mixture/environment = loc.return_air()
+			var/datum/gas_mixture/environment = loc.return_air(1)
 			var/datum/gas_mixture/breath
 			// HACK NEED CHANGING LATER
 			if(src.health < 0)

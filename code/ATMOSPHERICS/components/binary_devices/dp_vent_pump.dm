@@ -60,7 +60,7 @@
 		if(!on)
 			return 0
 
-		var/datum/gas_mixture/environment = loc.return_air()
+		var/datum/gas_mixture/environment = loc.return_air(1)
 		var/environment_pressure = environment.return_pressure()
 
 		if(pump_direction) //input -> external

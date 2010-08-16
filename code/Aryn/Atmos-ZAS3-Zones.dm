@@ -84,7 +84,7 @@ zone
 
 		other_gas()
 			for(var/turf/T in members)
-				var/datum/gas_mixture/GM = T.return_air()
+				var/datum/gas_mixture/GM = T.return_air(1)
 				. += GM.toxins
 				for(var/datum/gas/G in GM.trace_gases)
 					. += G.moles
@@ -156,20 +156,20 @@ zone
 
 	Update()
 		while(1)
-			sleep(zone_update_delay)
+			sleep(vsc.zone_update_delay)
 			if(stop_zones) continue
 			if(!members.len) del src
-
-			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2)
-				rebuild_cache()
-				update_members()
-			//other = other_gas()
 
 			for(var/datum/gas_mixture/G in update_mixtures)
 				add_oxygen(G.oxygen - G.zone_oxygen)
 				add_nitrogen(G.nitrogen - G.zone_nitrogen)
 				add_co2(G.carbon_dioxide - G.zone_co2)
 				update_mixtures -= G
+
+			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2)
+				rebuild_cache()
+				//update_members()
+			//other = other_gas()
 
 			oxygen_archive = oxygen		 //Update the archives, so we can do things like calculate delta.
 			nitrogen_archive = nitrogen
@@ -182,11 +182,11 @@ zone
 				co2 = QUANTIZE(co2/VACUUM_SPEED)
 				temp = min(TCMB,temp/VACUUM_SPEED)
 				for(var/turf/simulated/M in members)
-					var/datum/gas_mixture/GM = M.return_air()
+					var/datum/gas_mixture/GM = M.return_air(1)
 					GM.toxins = QUANTIZE(GM.toxins/VACUUM_SPEED)
 					for(var/datum/gas/gas in GM.trace_gases)
 						gas.moles = QUANTIZE(gas.moles/VACUUM_SPEED)
-				AirflowSpace(src)
+				spawn AirflowSpace(src)
 			merge_with.len = 0
 			//if(pressure > 225)
 			//	for(var/turf/T in edges)
@@ -208,7 +208,7 @@ zone
 						continue
 					var/percent_flow = max(90,FLOW_PERCENT*borders.len) //This is the percentage of gas that will flow.
 
-					Airflow(src,Z,pressure-Z.pressure)
+					spawn Airflow(src,Z,pressure-Z.pressure)
 
 
 					//Magic Happens Here
@@ -217,13 +217,13 @@ zone
 						nit_avg = (nitrogen + Z.nitrogen) / (members.len + Z.members.len)
 						co2_avg = (co2 + Z.co2) / (members.len + Z.members.len)
 
-					oxygen( (oxygen() - oxy_avg) * (1-percent_flow/100) + oxy_avg )
-					nitrogen( (nitrogen() - nit_avg) * (1-percent_flow/100) + nit_avg )
-					co2( (co2() - co2_avg) * (1-percent_flow/100) + co2_avg )
+					oxygen( (turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
+					nitrogen( (turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
+					co2( (turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )
 
-					Z.oxygen( (Z.oxygen() - oxy_avg) * (1-percent_flow/100) + oxy_avg )
-					Z.nitrogen( (Z.nitrogen() - nit_avg) * (1-percent_flow/100) + nit_avg )
-					Z.co2( (Z.co2() - co2_avg) * (1-percent_flow/100) + co2_avg )
+					Z.oxygen( (Z.turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
+					Z.nitrogen( (Z.turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
+					Z.co2( (Z.turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )
 						//End Magic
 				for(var/crap in connections) //Clean out invalid connections.
 					if(!istype(crap,/zone))
@@ -235,13 +235,13 @@ zone
 		turf_nitro = nitrogen / members.len
 		turf_co2 = co2 / members.len
 
-		var/tempsum = 0
+		//var/tempsum = 0
 
-		for(var/turf/simulated/M in members)
-			if(M.air)
-				tempsum += M.air.temperature
+		//for(var/turf/simulated/M in members)
+		//	if(M.air)
+		//		tempsum += M.air.temperature
 
-		temp = tempsum / members.len
+		//temp = tempsum / members.len
 
 		pressure = pressure()
 
@@ -311,12 +311,12 @@ zone
 			spawn(1) SplitCheck(T)
 
 
-	update_members()
-		for(var/turf/T in members)
-			var/datum/gas_mixture/GM = T.return_air()
-			GM.oxygen = oxygen()
-			GM.nitrogen = nitrogen()
-			GM.carbon_dioxide = co2()
+//	update_members()
+		//for(var/turf/T in members)
+			//var/datum/gas_mixture/GM = T.return_air()
+		//	GM.oxygen = oxygen()
+		//	GM.nitrogen = nitrogen()
+		//	GM.carbon_dioxide = co2()
 
 	Connect(turf/S,turf/T,pc)
 		if(!istype(T,/turf/simulated)) return
@@ -421,7 +421,7 @@ zone
 		oxygen += Z.oxygen
 		nitrogen += Z.nitrogen
 		co2 += Z.co2
-		temp = (temp+Z.temp)/2
+		//temp = (temp+Z.temp)/2
 		members += Z.members
 		volume += Z.volume
 		connections += Z.connections
@@ -432,6 +432,7 @@ zone
 			T.zone = src
 		//world << "Merged zones."
 		direct_connections -= Z
+		connections -= Z
 		del Z
 
 //obj/debug_connect_obj

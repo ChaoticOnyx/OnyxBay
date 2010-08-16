@@ -26,7 +26,7 @@
 	if (!( istype(location, /turf) ))
 		return 0
 
-	var/datum/gas_mixture/environment = location.return_air()
+	var/datum/gas_mixture/environment = location.return_air(1)
 
 	var/environment_pressure = environment.return_pressure()
 
@@ -128,7 +128,7 @@
 	if (!( istype(location, /turf) ))
 		return
 
-	var/datum/gas_mixture/environment = location.return_air()
+	var/datum/gas_mixture/environment = location.return_air(1)
 
 	var/pressure = environment.return_pressure()
 	var/total_moles = environment.total_moles()

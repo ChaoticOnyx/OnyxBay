@@ -8,7 +8,7 @@ turf
 
 	simulated
 		hotspot_expose(exposed_temperature, exposed_volume, soh)
-			var/datum/gas_mixture/air_contents = return_air()
+			var/datum/gas_mixture/air_contents = return_air(1)
 			if(!air_contents)
 				return 0
 			if(active_hotspot)

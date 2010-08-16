@@ -222,27 +222,29 @@ turf
 		mimic_air_with_tile(turf/T)
 			return air.mimic(T)
 
-		return_air()
+		return_air(observe_only)
 			if(air)
 				if(parent && parent.group_processing)
 					if(zone)
 						parent.air.oxygen = zone.oxygen()
 						parent.air.nitrogen = zone.nitrogen()
 						parent.air.carbon_dioxide = zone.co2()
-						parent.air.zone_oxygen = parent.air.oxygen
-						parent.air.zone_nitrogen = parent.air.nitrogen
-						parent.air.zone_co2 = parent.air.carbon_dioxide
-						zone.update_mixtures.Add(parent.air)
+						if(!observe_only)
+							parent.air.zone_oxygen = parent.air.oxygen
+							parent.air.zone_nitrogen = parent.air.nitrogen
+							parent.air.zone_co2 = parent.air.carbon_dioxide
+							zone.update_mixtures.Add(parent.air)
 					return parent.air
 				else
 					if(zone)
 						air.oxygen = zone.oxygen()
 						air.nitrogen = zone.nitrogen()
 						air.carbon_dioxide = zone.co2()
-						air.zone_oxygen = air.oxygen
-						air.zone_nitrogen = air.nitrogen
-						air.zone_co2 = air.carbon_dioxide
-						zone.update_mixtures.Add(air)
+						if(!observe_only)
+							air.zone_oxygen = air.oxygen
+							air.zone_nitrogen = air.nitrogen
+							air.zone_co2 = air.carbon_dioxide
+							zone.update_mixtures.Add(air)
 					return air
 
 			else
@@ -349,7 +351,7 @@ turf
 
 							//See what kind of border it is
 							if(istype(T,/turf/space) || istype(T,/turf/unsimulated/floor/hull))
-								if(ticker) world << "Update: Space tile handled."
+								//if(ticker) world << "Update: Space tile handled."
 								if(parent.space_borders)
 									parent.space_borders -= src
 									parent.space_borders += src
@@ -358,7 +360,7 @@ turf
 								length_space_border++
 
 								if(zone)
-									if(ticker) world << "Space connections handled."
+									//if(ticker) world << "Space connections handled."
 									zone.space_connections -= T
 									zone.space_connections += T
 
@@ -459,16 +461,6 @@ turf
 								enemy_tile.consider_pressure_difference(connection_difference, direction)
 			else
 				air_master.active_singletons -= src //not active if not processing!
-
-			if(air.toxins > 0)
-				if(vsc.plc.CLOTH_CONTAMINATION || vsc.plc.ALL_ITEM_CONTAMINATION)
-					for(var/obj/item/I in src)
-						if(I.can_contaminate())
-							I.contaminated = 1
-				for(var/mob/living/carbon/human/M in src)
-					M.pl_effects()
-					if(vsc.plc.CLOTH_CONTAMINATION || vsc.plc.ALL_ITEM_CONTAMINATION)
-						M.contaminate()
 
 			air.react()
 
