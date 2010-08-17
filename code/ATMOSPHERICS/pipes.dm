@@ -136,6 +136,7 @@ obj/machinery/atmospherics/pipe
 					parent.temperature_interact(loc, volume, thermal_conductivity)
 
 		check_pressure(pressure)
+			/*
 			var/turf/T = get_turf(src)
 
 			if(istype(T, /turf/simulated/wall))
@@ -153,6 +154,8 @@ obj/machinery/atmospherics/pipe
 					del(src)
 
 			else return 1
+			*/
+			return 1
 
 		Del()
 			if(node1)
