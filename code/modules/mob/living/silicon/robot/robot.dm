@@ -517,6 +517,25 @@
 		else
 			src << "Module isn't activated"
 		src.installed_modules()
+	if (href_list["locked"])
+		if (src.opened)
+			src << "You must close your panel first"
+		else
+			src.locked = text2num(href_list["locked"])
+			src << "You [ locked ? "lock" : "unlock"] your interface."
+			updateicon()
+		src.panel_menu()
+
+	if (href_list["opened"])
+		if (src.locked)
+			src << "You must unlock your panel first"
+		else
+			src.opened = text2num(href_list["opened"])
+			src << "You [ opened ? "open" : "close" ] your access panel."
+			updateicon()
+		src.panel_menu()
+
+
 	return
 
 /mob/living/silicon/robot/proc/activated(obj/item/O)
@@ -546,6 +565,17 @@ Frequency:
 	onclose(src, "radio")
 	return
 
+/mob/living/silicon/robot/proc/panel_menu()
+	var/dat = {"
+<TT>
+Panel Lock: [ locked ? "<a href='byond://?src=\ref[src];locked=0'>Unlock</a>" : "<a href='byond://?src=\ref[src];locked=1'>Lock</A>"]<BR>
+Panel: [ opened ? "<a href='byond://?src=\ref[src];opened=0'>Close</a>" : "<a href='byond://?src=\ref[src];opened=1'>Open</A>"]<BR>
+</TT>"}
+	src << browse(dat, "window=panel")
+	onclose(src, "panel")
+	return
+
+
 /mob/living/silicon/robot/proc/activate_baton()
 	src << "TEST TEST THIS ISA TEST"
 
@@ -555,6 +585,9 @@ Frequency:
 	src.pulling = null
 
 /mob/living/silicon/robot/Move(a, b, flag)
+
+	if (!src.cell || !src.cell.charge)
+		return
 
 	if (src.buckled)
 		return

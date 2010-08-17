@@ -762,7 +762,7 @@
 		if ("panel")
 			if (istype(usr, /mob/living/silicon/robot))
 				var/mob/living/silicon/robot/M = usr
-				M.installed_modules()
+				M.panel_menu()
 		if ("radio")
 			if (istype(usr, /mob/living/silicon/robot))
 				var/mob/living/silicon/robot/M = usr
