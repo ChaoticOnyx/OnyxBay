@@ -106,7 +106,7 @@
 				if(next == S.loc)
 					S.path -= next
 					continue
-			if (S.path.len < 2)
+			if (S.path.len < 3)
 				spawn(0)
 					S.path = AStar(S.loc, loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=S.botcard, exclude=list(/obj/landmark/alterations/nopath, avoid=null))
 					S.path = reverselist(S.path)
