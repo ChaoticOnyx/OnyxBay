@@ -76,13 +76,13 @@
 			return
 		if(istype(src.equipped(), /obj/item/weapon/baton)) // add any other item paths you think are necessary
 			if(src.loc:ul_Luminosity() < 3 || src.blinded)
-				var/obj/item/weapon/W = src.equipped()
+				var/obj/item/weapon/baton/W = src.equipped()
 				if (world.time > src.lastDblClick+2)
 					src.lastDblClick = world.time
-					if((prob(40)) || (prob(95) && src.mutations & 16))
+					if(((prob(40)) || (prob(95) && src.mutations & 16)) && W.status)
 						src << "\red You accidentally stun yourself with the [W.name]."
 						src.weakened = max(12, src.weakened)
-					else
+					else if(W.status)
 						for(var/mob/M in viewers(src, null))
 							if(M.client)
 								M << "\red <B>[src] accidentally bumps into [tmob] with the [W.name]."

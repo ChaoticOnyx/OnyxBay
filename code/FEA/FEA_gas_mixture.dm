@@ -184,7 +184,7 @@ datum
 							oxygen -= plasma_burn_rate*oxygen_burn_rate
 							carbon_dioxide += plasma_burn_rate
 
-							energy_released += FIRE_PLASMA_ENERGY_RELEASED * (plasma_burn_rate)
+							energy_released += vsc.FIRE_PLASMA_ENERGY_RELEASED * (plasma_burn_rate)
 
 							fuel_burnt += (plasma_burn_rate)*(1+oxygen_burn_rate)
 
