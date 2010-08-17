@@ -82,14 +82,16 @@
 					if(((prob(40)) || (prob(95) && src.mutations & 16)) && W.status)
 						src << "\red You accidentally stun yourself with the [W.name]."
 						src.weakened = max(12, src.weakened)
+						playsound(src.loc, 'Egloves.ogg', 50, 1, -1)
+						W:charges--
 					else if(W.status)
 						for(var/mob/M in viewers(src, null))
 							if(M.client)
 								M << "\red <B>[src] accidentally bumps into [tmob] with the [W.name]."
 						tmob.weakened = max(4, tmob.weakened)
 						tmob.stunned = max(4, tmob.stunned)
-					playsound(src.loc, 'Egloves.ogg', 50, 1, -1)
-					W:charges--
+						playsound(src.loc, 'Egloves.ogg', 50, 1, -1)
+						W:charges--
 					src.now_pushing = 0
 					return
 		if(istype(tmob, /mob/living/carbon/human) && tmob.mutations & 32)
