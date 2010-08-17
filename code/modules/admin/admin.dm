@@ -28,24 +28,24 @@ var/showadminmessages = 1
 				return
 			switch(href_list["call_shuttle"])
 				if("1")
-					if ((!( ticker ) || emergency_shuttle.location))
+					if ((!( ticker ) || main_shuttle.location))
 						return
-					emergency_shuttle.incall()
-					world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.</B>"
+					LaunchControl.start()
+					world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(main_shuttle.timeleft()/60)] minutes.</B>"
 					log_admin("[key_name(usr)] called the Emergency Shuttle")
 					message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
 
 				if("2")
-					if ((!( ticker ) || emergency_shuttle.location || emergency_shuttle.direction == 0))
+					if ((!( ticker ) || main_shuttle.location || main_shuttle.direction == 0))
 						return
-					switch(emergency_shuttle.direction)
+					switch(main_shuttle.direction)
 						if(-1)
-							emergency_shuttle.incall()
-							world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.</B>"
+							LaunchControl.start()
+							world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(main_shuttle.timeleft()/60)] minutes.</B>"
 							log_admin("[key_name(usr)] called the Emergency Shuttle")
 							message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
 						if(1)
-							emergency_shuttle.recall()
+							main_shuttle.recall()
 							world << "\blue <B>Alert: The shuttle is going back!</B>"
 							log_admin("[key_name(usr)] sent the Emergency Shuttle back")
 							message_admins("\blue [key_name_admin(usr)] sent the Emergency Shuttle back", 1)
@@ -57,9 +57,9 @@ var/showadminmessages = 1
 
 	if(href_list["edit_shuttle_time"])
 		if (src.rank in list("Super Administrator", "Coder", "Host"))
-			emergency_shuttle.settimeleft( input("Enter new shuttle duration (seconds):","Edit Shuttle Timeleft", emergency_shuttle.timeleft() ) as num )
-			log_admin("[key_name(usr)] edited the Emergency Shuttle's timeleft to [emergency_shuttle.timeleft()]")
-			message_admins("\blue [key_name_admin(usr)] edited the Emergency Shuttle's timeleft to [emergency_shuttle.timeleft()]", 1)
+			main_shuttle.settimeleft( input("Enter new shuttle duration (seconds):","Edit Shuttle Timeleft", main_shuttle.timeleft() ) as num )
+			log_admin("[key_name(usr)] edited the Emergency Shuttle's timeleft to [main_shuttle.timeleft()]")
+			message_admins("\blue [key_name_admin(usr)] edited the Emergency Shuttle's timeleft to [main_shuttle.timeleft()]", 1)
 			href_list["secretsadmin"] = "check_antagonist"
 		else
 			alert("You cannot perform this action. You must be of a higher administrative rank!")
@@ -512,6 +512,34 @@ var/showadminmessages = 1
 			else
 				alert("I cannot allow this.")
 				return
+		else
+			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
+			return
+	if(href_list["editairflow"])
+		if ((src.rank in list( "Primary Administrator", "Coder", "Host", "Super Administrator")))
+			vsc.ChangeSettingDialog(usr,vsc.settings)
+		else
+			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
+			return
+	if(href_list["editplasma"])
+		if ((src.rank in list( "Primary Administrator", "Coder", "Host", "Super Administrator")))
+			vsc.ChangeSettingDialog(usr,vsc.plc.settings)
+		else
+			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
+			return
+	if(href_list["savetweaks"])
+		if ((src.rank in list( "Primary Administrator", "Coder", "Host", "Super Administrator")))
+			SaveTweaks()
+			usr << "Settings saved."
+			world << "\blue <b>[key_name(usr)] saved the current settings.</b>"
+		else
+			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
+			return
+	if(href_list["loadtweaks"])
+		if ((src.rank in list( "Primary Administrator", "Coder", "Host", "Super Administrator")))
+			LoadTweaks()
+			usr << "Settings loaded."
+			world << "\blue <b>[key_name(usr)] loaded settings from the savefile.</b>"
 		else
 			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 			return
@@ -1091,11 +1119,11 @@ var/showadminmessages = 1
 						dat += "Current Game Mode: <B>[ticker.mode.name]</B><BR>"
 						dat += "Round Duration: <B>[round(world.time / 36000)]:[add_zero(world.time / 600 % 60, 2)]:[world.time / 100 % 6][world.time / 100 % 10]</B><BR>"
 						dat += "<B>Emergency shuttle</B><BR>"
-						if (!emergency_shuttle.online)
+						if (!main_shuttle.online)
 							dat += "<a href='?src=\ref[src];call_shuttle=1'>Call Shuttle</a><br>"
 						else
-							var/timeleft = emergency_shuttle.timeleft()
-							switch(emergency_shuttle.location)
+							var/timeleft = main_shuttle.timeleft()
+							switch(main_shuttle.location)
 								if(0)
 									dat += "ETA: <a href='?src=\ref[src];edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]</a><BR>"
 									dat += "<a href='?src=\ref[src];call_shuttle=2'>Send Back</a><br>"
@@ -1303,7 +1331,13 @@ var/showadminmessages = 1
 	if(lvl >= 5)
 		dat += "<A href='?src=\ref[src];create_mob=1'>Create Mob</A><br>"
 //			if(lvl == 6 )
-	usr << browse(dat, "window=admin2;size=210x180")
+	if(lvl >= 3)
+		dat += "<br><A href='?src=\ref[src];editairflow=1'>Edit Airflow</A>"
+		dat += "<br><A href='?src=\ref[src];editplasma=1'>Edit Plasma</A>"
+		dat += ""
+		dat += "<br><A href='?src=\ref[src];savetweaks=1'>Save Settings</A>"
+		dat += "<br><A href='?src=\ref[src];loadtweaks=1'>Load Settings</A>"
+	usr << browse(dat, "window=admin2;size=210x275")
 	return
 
 /obj/admins/proc/Secrets()
@@ -1356,11 +1390,12 @@ var/showadminmessages = 1
 <A href='?src=\ref[src];secretsfun=prisonwarp'>Warp all Players to Prison</A><BR>
 <A href='?src=\ref[src];secretsfun=traitor_all'>Everyone is the traitor</A><BR>
 <A href='?src=\ref[src];secretsfun=wave'>Spawn a wave of meteors</A><BR>
-<A href='?src=\ref[src];secretsfun=flicklights'>Ghost Mode</A><BR>
+<A href='?src=\ref[src];secretsfun=flicklights'>Ghost Mode</A><BR>"}
+/*
 <A href='?src=\ref[src];secretsfun=cleanexcrement'>Remove all urine/poo from station</A><BR>
 <A href='?src=\ref[src];secretsfun=retardify'>Make all players retarded</A><BR>
 <A href='?src=\ref[src];secretsfun=fakeguns'>Make all items look like guns</A><BR>
-<A href='?src=\ref[src];secretsfun=schoolgirl'>Japanese Animes Mode</A><BR><BR>"}
+<A href='?src=\ref[src];secretsfun=schoolgirl'>Japanese Animes Mode</A><BR><BR>*/
 //<A href='?src=\ref[src];secretsfun=shockwave'>Station Shockwave</A><BR>
 
 	if(lvl >= 5)

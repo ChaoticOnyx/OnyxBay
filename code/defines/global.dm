@@ -10,6 +10,7 @@ var/global
 		//items that ask to be called every cycle
 
 	defer_powernet_rebuild = 0		// true if net rebuild will be called manually after an event
+	defer_space_remap = 0			// true if space / open space tiles should not perform tile validation in New()
 
 var
 
@@ -36,6 +37,7 @@ var
 	///////////////
 
 	diary = null
+	current_date = time2text(world.realtime, "YYYYMMDD")
 	station_name = null
 	game_version = "Baystation"
 
@@ -55,6 +57,9 @@ var
 	shuttle_left = 0
 	delay_start = 0
 
+
+
+	datum/PodControl/LaunchControl = new /datum/PodControl()
 
 	captainMax = 1
 	engineerMax = 5
@@ -82,7 +87,6 @@ var
 	list/admin_log = list (  )
 	list/lastsignalers = list(	)	//keeps last 100 signals here in format: "[src] used \ref[src] @ location [src.loc]: [freq]/[code]"
 	list/admins = list(  )
-	list/shuttles = list(  )
 	list/reg_dna = list(  )
 //	list/traitobj = list(  )
 

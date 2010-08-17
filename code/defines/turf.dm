@@ -22,6 +22,8 @@
 		icon_old = null
 		pathweight = 1
 		list/obj/machinery/network/wirelessap/wireless = list( )
+		explosionstrength = 1 //NEVER SET THIS BELOW 1
+		floorstrength = 4
 
 /turf/space
 	icon = 'space.dmi'
@@ -36,6 +38,7 @@
 	..()
 	icon = 'space.dmi'
 	icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
+
 
 /turf/simulated
 	name = "station"
@@ -59,7 +62,7 @@
 	nitrogen = 0.000
 	temperature = TCMB
 
-/turf/simulated/floor/engine/hull
+/turf/unsimulated/floor/hull
 	name = "Hull Plating"
 	icon_state = "engine"
 	oxygen = 0
@@ -108,6 +111,7 @@
 		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
 		var/icon/darkoverlay = null
 		var/turf/floorbelow
+		floorstrength = 1
 
 		New()
 			..()
@@ -159,19 +163,31 @@
 						AM:updatehealth()
 			return ..()
 
+
 		proc
 			update() //Update the overlays to make the openspace turf show what's down a level
 				src.clearoverlays()
-				src.addoverlay(floorbelow) //temporarily disabled
+				src.addoverlay(floorbelow)
+
+				for(var/obj/o in src)
+					o.layer = initial(o.layer) + 3
 
 				for(var/obj/o in floorbelow.contents)
 					src.addoverlay(image(o, dir=o.dir))
+
 				if(istype(floorbelow,/turf/simulated))
 					air.share(floorbelow:air)
 					air.temperature_share(floorbelow:air,FLOOR_HEAT_TRANSFER_COEFFICIENT)
 				else
 					air.mimic(floorbelow,1)
 					air.temperature_mimic(floorbelow,FLOOR_HEAT_TRANSFER_COEFFICIENT,1)
+
+				var/image/I = image('ULIcons.dmi', "[min(max(floorbelow.LightLevelRed - 4, 0), 7)]-[min(max(floorbelow.LightLevelGreen - 4, 0), 7)]-[min(max(floorbelow.LightLevelBlue - 4, 0), 7)]")
+				I.layer = MOB_LAYER - 0.05
+				src.addoverlay(I)
+				I = image('ULIcons.dmi', "1-1-1")
+				I.layer = MOB_LAYER - 0.05
+				src.addoverlay(I)
 
 	plating
 		name = "plating"
@@ -198,6 +214,17 @@
 	icon = 'floors.dmi'
 	icon_state = "circuit"
 
+/turf/simulated/wall
+	name = "wall"
+	icon = 'walls.dmi'
+	opacity = 1
+	density = 1
+	blocks_air = 1
+	explosionstrength = 2
+	floorstrength = 6
+	thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
+	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m steel wall
+
 /turf/simulated/wall/r_wall
 	name = "r wall"
 	icon = 'walls.dmi'
@@ -205,21 +232,13 @@
 	opacity = 1
 	density = 1
 	var/d_state = 0
-
-/turf/simulated/wall
-	name = "wall"
-	icon = 'walls.dmi'
-	opacity = 1
-	density = 1
-	blocks_air = 1
-
-	thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
-	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m steel wall
+	explosionstrength = 4
 
 
 /turf/simulated/wall/heatshield
 	thermal_conductivity = 0
 	opacity = 0
+	explosionstrength = 5
 	name = "heatshield"
 	icon = 'thermal.dmi'
 	icon_state = "thermal"
@@ -234,6 +253,7 @@
 /turf/simulated/shuttle/wall
 	name = "wall"
 	icon_state = "wall1"
+	explosionstrength = 4
 	opacity = 1
 	density = 1
 	blocks_air = 1
@@ -251,13 +271,6 @@
 	name = "floor"
 	icon = 'floors.dmi'
 	icon_state = "Floor3"
-	outer_hull_plating
-		name = "outer hull"
-		icon_state = "shiny"
-		oxygen = 0
-		nitrogen = 0.0001
-		carbon_dioxide = 0
-		toxins = 0
 
 /turf/unsimulated/wall
 	name = "wall"

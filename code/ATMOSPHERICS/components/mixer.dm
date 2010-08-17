@@ -9,6 +9,7 @@ obj/machinery/atmospherics/mixer
 	initialize_directions = SOUTH|NORTH|WEST
 
 	var/on = 0
+	var/id
 
 	var/datum/gas_mixture/air_in1
 	var/datum/gas_mixture/air_in2
@@ -42,6 +43,7 @@ obj/machinery/atmospherics/mixer
 		return
 
 	New()
+		id = tag
 		..()
 		switch(dir)
 			if(NORTH)

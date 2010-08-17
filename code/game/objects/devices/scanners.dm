@@ -155,13 +155,13 @@ GAS ANALYZER
 	for(var/mob/O in viewers(M, null))
 		O.show_message(text("\red [] has analyzed []'s vitals!", user, M), 1)
 		//Foreach goto(67)
-	user.show_message(text("\blue Analyzing Results for []:\n\t Overall Status: []", M, (M.stat > 1 ? "dead" : text("[]% healthy", M.health))), 1)
+	user.show_message(text("\blue Analyzing Results for []:\n\t Overall Status: []", M, (M.stat > 1 ? "\red dead" : text("[]% healthy", M.health))), 1)
 	user.show_message(text("\blue \t Damage Specifics: []-[]-[]-[]", M.oxyloss > 50 ? "\red [M.oxyloss]" : M.oxyloss, M.toxloss > 50 ? "\red [M.toxloss]" : M.toxloss, M.fireloss > 50 ? "\red[M.fireloss]" : M.fireloss, M.bruteloss > 50 ? "\red[M.bruteloss]" : M.bruteloss), 1)
 	user.show_message("\blue Key: Suffocation/Toxin/Burns/Brute", 1)
 	user.show_message("\blue Body Temperature: [M.bodytemperature-T0C]&deg;C ([M.bodytemperature*1.8-459.67]&deg;F)", 1)
 	user.show_message(text("\blue [] | [] | [] | []", M.oxyloss > 50 ? "\red Severe oxygen deprivation detected\blue" : "Subject bloodstream oxygen level normal", M.toxloss > 50 ? "\red Dangerous amount of toxins detected\blue" : "Subject bloodstream toxin level minimal", M.fireloss > 50 ? "\red Severe burn damage detected\blue" : "Subject burn injury status O.K", M.bruteloss > 50 ? "\red Severe anatomical damage detected\blue" : "Subject brute-force injury status O.K"), 1)
 	if (M.virus)
-		user.show_message(text("\red <b>Warning: Virus Detected.</b>\nName: [M.virus.name].\nType: [M.virus.spread].\nStage: [M.virus.stage]/[M.virus.max_stages].\nPossible Cure: [M.virus.cure]"))
+		user.show_message(text("\red <b>Warning: Pathogen Detected</b>\nName: [M.virus.name].\nType: [M.virus.spread].\nStage: [M.virus.stage]/[M.virus.max_stages].\nPossible Cure: [M.virus.cure]"))
 	if (M.reagents:get_reagent_amount("inaprovaline"))
 		user.show_message(text("\blue Bloodstream Analysis located [M.reagents:get_reagent_amount("inaprovaline")] units of rejuvenation chemicals."), 1)
 	if (M.brainloss >= 100 || istype(M, /mob/living/carbon/human) && M:brain_op_stage == 4.0)
@@ -170,8 +170,23 @@ GAS ANALYZER
 		user.show_message(text("\red Severe brain damage detected. Subject likely to have mental retardation."), 1)
 	else if (M.brainloss >= 10)
 		user.show_message(text("\red Significant brain damage detected. Subject may have had a concussion."), 1)
+	for(var/obj/item/I in M)
+		if(I.contaminated)
+			user.show_message("\red <b>Warning: Plasma Contaminated Items Detected</b>\nAnalysis and cleaning or disposal of affected items is necessary.",1)
+			break
 	src.add_fingerprint(user)
 	return
+/obj/item/device/healthanalyzer/afterattack(atom/A as mob|obj|turf, mob/user as mob)
+	if(isobj(A))
+		user << "\blue Scanning for contaminants..."
+		sleep(1)
+		if(!(A in range(user,1)))
+			user << "\red Error: Target object not found."
+		else
+			if(A:contaminated)
+				user << "\red [A] shows signs of plasma contamination!"
+			else
+				user << "\blue [A] is free of contamination."
 
 /obj/item/device/analyzer/attack_self(mob/user as mob)
 
@@ -185,7 +200,7 @@ GAS ANALYZER
 	if (!( istype(location, /turf) ))
 		return
 
-	var/datum/gas_mixture/environment = location.return_air()
+	var/datum/gas_mixture/environment = location.return_air(1)
 
 	var/pressure = environment.return_pressure()
 	var/total_moles = environment.total_moles()

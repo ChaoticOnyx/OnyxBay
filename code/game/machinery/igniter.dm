@@ -20,7 +20,7 @@
 	if (src.on && !(stat & NOPOWER) )
 		var/turf/location = src.loc
 		if (isturf(location))
-			location.hotspot_expose(1000,500,1)
+			location.hotspot_expose(6000,500,1)
 	return 1
 
 /obj/machinery/igniter/New()
@@ -36,7 +36,7 @@
 // Wall mounted remote-control igniter.
 
 /obj/machinery/sparker
-	name = "Mounted igniter"
+	name = "Wall-mounted Igniter"
 	desc = "A wall-mounted ignition device."
 	icon = 'stationobjs.dmi'
 	icon_state = "migniter"
@@ -95,7 +95,7 @@
 	use_power(1000)
 	var/turf/location = src.loc
 	if (isturf(location))
-		location.hotspot_expose(1000,500,1)
+		location.hotspot_expose(6000,500,1)
 	return 1
 
 

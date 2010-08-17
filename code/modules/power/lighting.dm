@@ -38,8 +38,9 @@
 	var/rigged = 0				// true if rigged to explode
 
 	blue
-		brightnessred = 6
-		brightnessgreen = 6
+		brightnessblue = 7
+		brightnessred = 5
+		brightnessgreen = 5
 
 // the smaller bulb light fixture
 

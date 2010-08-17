@@ -14,7 +14,7 @@
 	if (src.monkeyizing)
 		return
 
-	var/datum/gas_mixture/environment = loc.return_air()
+	var/datum/gas_mixture/environment = loc.return_air(1)
 
 	if (src.stat != 2) //still breathing
 
@@ -164,7 +164,7 @@
 
 			if(src.reagents.has_reagent("lexorin")) return
 
-			var/datum/gas_mixture/environment = loc.return_air()
+			var/datum/gas_mixture/environment = loc.return_air(1)
 			var/datum/air_group/breath
 
 			if(losebreath>0) //Suffocating so do not take a breath

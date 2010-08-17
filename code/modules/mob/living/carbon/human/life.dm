@@ -14,8 +14,6 @@
 	if (src.monkeyizing)
 		return
 
-	var/datum/gas_mixture/environment = loc.return_air()
-
 	if (src.stat != 2) //still breathing
 
 		//First, resolve location and get a breath
@@ -39,6 +37,7 @@
 	handle_virus_updates()
 
 	//Handle temperature/pressure differences between body and environment
+	var/datum/gas_mixture/environment = loc.return_air(1)
 	handle_environment(environment)
 
 	//Mutations and radiation
@@ -93,12 +92,17 @@
 
 
 			if(src.hallucination > 0)
-				if(src.hallucinations.len == 0 && src.hallucination >= 20)
-					if(prob(20))
+				if(src.hallucinations.len == 0 && src.hallucination >= 20 && src.health > 0)
+					if(prob(5))
 						fake_attack(src)
 				src.hallucination -= 1
+				if(src.health < 0)
+					for(var/obj/a in hallucinations)
+						del a
 			else
 				src.halloss = 0
+				for(var/obj/a in hallucinations)
+					del a
 
 
 			if (src.disabilities & 2)
@@ -205,11 +209,17 @@
 			if(src.reagents.has_reagent("lexorin")) return
 			if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
 
-			var/datum/gas_mixture/environment = loc.return_air()
-			var/datum/air_group/breath
+			var/datum/gas_mixture/environment = loc.return_air(1)
+			var/datum/gas_mixture/breath
 			// HACK NEED CHANGING LATER
 			if(src.health < 0)
 				src.losebreath++
+
+			var/halfmask = 0
+
+			if(wear_mask && internal)
+				if(wear_mask.flags & 4)
+					halfmask = 1
 
 			if(losebreath>0) //Suffocating so do not take a breath
 				src.losebreath--
@@ -218,6 +228,26 @@
 				if(istype(loc, /obj/))
 					var/obj/location_as_object = loc
 					location_as_object.handle_internal_lifeform(src, 0)
+			else if(halfmask)
+				var/datum/gas_mixture/breath2
+
+				breath = get_breath_from_internal(BREATH_VOLUME/2)
+
+				if(istype(loc, /obj/))
+					var/obj/location_as_object = loc
+					breath2 = location_as_object.handle_internal_lifeform(src, BREATH_VOLUME/2)
+				else if(istype(loc, /turf/))
+					var/breath_moles = 0
+					/*if(environment.return_pressure() > ONE_ATMOSPHERE)
+						// Loads of air around (pressure effects will be handled elsewhere), so lets just take a enough to fill our lungs at normal atmos pressure (using n = Pv/RT)
+						breath_moles = (ONE_ATMOSPHERE*BREATH_VOLUME/R_IDEAL_GAS_EQUATION*environment.temperature)
+						else*/
+						// Not enough air around, take a percentage of what's there to model this properly
+					breath_moles = environment.total_moles()*((BREATH_VOLUME/2)/CELL_VOLUME)
+
+					breath2 = loc.remove_air(breath_moles)
+
+				breath.merge(breath2)
 			else
 				//First, check for air from internal atmosphere (using an air tank and mask generally)
 				breath = get_breath_from_internal(BREATH_VOLUME)
@@ -273,7 +303,7 @@
 				return
 
 			if(!breath || (breath.total_moles() == 0))
-				oxyloss += 14
+				oxyloss += 14*vsc.OXYGEN_LOSS
 
 				oxygen_alert = max(oxygen_alert, 1)
 
@@ -303,7 +333,7 @@
 					oxyloss += min(5*ratio, 7) // Don't fuck them up too fast (space only does 7 after all!)
 					oxygen_used = breath.oxygen*ratio/6
 				else
-					oxyloss += 7
+					oxyloss += 7*vsc.OXYGEN_LOSS
 				oxygen_alert = max(oxygen_alert, 1)
 			/*else if (O2_pp > safe_oxygen_max) 		// Too much oxygen (commented this out for now, I'll deal with pressure damage elsewhere I suppose)
 				spawn(0) emote("cough")
@@ -324,9 +354,9 @@
 					co2overloadtime = world.time
 				else if(world.time - co2overloadtime > 120)
 					src.paralysis = max(src.paralysis, 3)
-					oxyloss += 3 // Lets hurt em a little, let them know we mean business
+					oxyloss += 3*vsc.OXYGEN_LOSS // Lets hurt em a little, let them know we mean business
 					if(world.time - co2overloadtime > 300) // They've been in here 30s now, lets start to kill them for their own good!
-						oxyloss += 8
+						oxyloss += 8*vsc.OXYGEN_LOSS
 				if(prob(20)) // Lets give them some chance to know somethings not right though I guess.
 					spawn(0) emote("cough")
 
@@ -335,8 +365,10 @@
 
 			if(Toxins_pp > safe_toxins_max) // Too much toxins
 				var/ratio = breath.toxins/safe_toxins_max
-				toxloss += min(ratio, 10)	//Limit amount of damage toxin exposure can do per second
+				toxloss += min(ratio*vsc.plc.PLASMA_DMG, 10*vsc.plc.PLASMA_DMG)	//Limit amount of damage toxin exposure can do per second
 				toxins_alert = max(toxins_alert, 1)
+				if(vsc.plc.PLASMA_HALLUCINATION)
+					hallucination += 8
 			else
 				toxins_alert = 0
 
@@ -347,9 +379,11 @@
 						src.paralysis = max(src.paralysis, 3) // 3 gives them one second to wake up and run away a bit!
 						if(SA_pp > SA_sleep_min) // Enough to make us sleep as well
 							src.sleeping = max(src.sleeping, 2)
+						if(vsc.plc.N2O_HALLUCINATION) hallucination += 12
 					else if(SA_pp > 0.01)	// There is sleeping gas in their lungs, but only a little, so give them a bit of a warning
 						if(prob(20))
 							spawn(0) emote(pick("giggle", "laugh"))
+						if(vsc.plc.N2O_HALLUCINATION) hallucination += 8
 
 
 			if(breath.temperature > (T0C+66) && !(src.mutations & 2)) // Hot air hurts :(
@@ -385,6 +419,16 @@
 			else // a hot place -> add in heat protection
 				thermal_protection += add_fire_protection(loc_temp)
 				src.bodytemperature += adjust_body_temperature(src.bodytemperature, loc_temp, 1/thermal_protection)
+
+			var/turf/simulated/T = loc
+			if(istype(T))
+				if(T.active_hotspot)
+					var/volume_coefficient = T.active_hotspot.volume / CELL_VOLUME
+					var/resistance_coefficient = 1/max(add_fire_protection(T.active_hotspot.temperature),0.5)
+
+					FireBurn(volume_coefficient*resistance_coefficient)
+
+
 
 
 			// lets give them a fair bit of leeway so they don't just start dying
@@ -533,7 +577,7 @@
 		handle_temperature_damage(body_part, exposed_temperature, exposed_intensity)
 			if(src.nodamage)
 				return
-			var/discomfort = min(abs(exposed_temperature - bodytemperature)*(exposed_intensity)/2000000, 1.0)
+			var/discomfort = min(abs(exposed_temperature - bodytemperature)*(exposed_intensity)/2000000, 1.0) * vsc.TEMP_DMG
 
 			switch(body_part)
 				if(HEAD)
@@ -558,6 +602,9 @@
 		handle_chemicals_in_body()
 
 			if(reagents) reagents.metabolize(src)
+
+			for(var/obj/item/I in src)
+				if(I.contaminated) toxloss += vsc.plc.CONTAMINATION_LOSS
 
 			if(src.nutrition > 400 && !(src.mutations & 32))
 				if(prob(5 + round((src.nutrition - 200) / 2)))
@@ -824,6 +871,7 @@
 				if(src.lying)
 					src.drop_item()
 				src.density = 1
+				if(istype(src.buckled,/obj/stool/chair)) dir = buckled.dir
 			else
 				src.density = !src.lying
 

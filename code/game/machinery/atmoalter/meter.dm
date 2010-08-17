@@ -16,7 +16,7 @@
 
 	use_power(5)
 
-	var/datum/gas_mixture/environment = target.return_air()
+	var/datum/gas_mixture/environment = target.return_air(1)
 	if(!environment)
 		icon_state = "meterX"
 		return 0
@@ -25,13 +25,13 @@
 	if(env_pressure <= 0.15*ONE_ATMOSPHERE)
 		icon_state = "meter0"
 	else if(env_pressure <= 1.8*ONE_ATMOSPHERE)
-		var/val = round(env_pressure/(ONE_ATMOSPHERE*0.3) + 0.5)
+		var/val = min(round(env_pressure/(ONE_ATMOSPHERE*0.3) + 0.5), 6)
 		icon_state = "meter1_[val]"
 	else if(env_pressure <= 30*ONE_ATMOSPHERE)
-		var/val = round(env_pressure/(ONE_ATMOSPHERE*5)-0.35) + 1
+		var/val = min(round(env_pressure/(ONE_ATMOSPHERE*5)-0.35) + 1, 6)
 		icon_state = "meter2_[val]"
 	else if(env_pressure <= 59*ONE_ATMOSPHERE)
-		var/val = round(env_pressure/(ONE_ATMOSPHERE*5) - 6) + 1
+		var/val = min(round(env_pressure/(ONE_ATMOSPHERE*5) - 6) + 1, 6)
 		icon_state = "meter3_[val]"
 	else
 		icon_state = "meter4"
@@ -56,7 +56,7 @@
 
 	var/t = "A gas flow meter. "
 	if (src.target)
-		var/datum/gas_mixture/environment = target.return_air()
+		var/datum/gas_mixture/environment = target.return_air(1)
 		if(environment)
 			t += text("The pressure gauge reads [] kPa", round(environment.return_pressure(), 0.1))
 		else
@@ -76,7 +76,7 @@
 	var/t = null
 	if (get_dist(usr, src) <= 3 || istype(usr, /mob/living/silicon/ai))
 		if (src.target)
-			var/datum/gas_mixture/environment = target.return_air()
+			var/datum/gas_mixture/environment = target.return_air(1)
 			if(environment)
 				t = text("<B>Pressure:</B> [] kPa", round(environment.return_pressure(), 0.1))
 			else

@@ -17,7 +17,7 @@
 /datum/game_mode/proc/process()
 
 /datum/game_mode/proc/check_finished()
-	if(emergency_shuttle.location==2)
+	if(main_shuttle.location==2)
 		return 1
 	return 0
 

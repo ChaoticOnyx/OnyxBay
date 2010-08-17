@@ -44,13 +44,12 @@
 		density = 0
 		del(src)
 
-/obj/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/window/CanPass(atom/movable/mover, turf/source, height=0, air_group=0)
 	if(istype(mover, /obj/beam))
 		return 1
 	if (src.dir == SOUTHWEST || src.dir == SOUTHEAST || src.dir == NORTHWEST || src.dir == NORTHEAST)
 		return 0 //full tile window, you can't move into it!
-	if(get_dir(loc, target) == dir)
-
+	if(get_dir(loc, source) == dir)
 		return !density
 	else
 		return 1

@@ -39,6 +39,7 @@
 
 		if (M.config_tag)
 			if(!(M.config_tag in modes))		// ensure each mode is added only once
+				check_diary()
 				diary << "Adding game mode [M.name] ([M.config_tag]) to configuration."
 				src.modes += M.config_tag
 				src.mode_names[M.config_tag] = M.name
@@ -51,10 +52,12 @@
 	var/text = file2text(filename)
 
 	if (!text)
+		check_diary()
 		diary << "No config.txt file found, setting defaults"
 		src = new /datum/configuration()
 		return
 
+	check_diary()
 	diary << "Reading configuration file [filename]"
 
 	var/list/CL = dd_text2list(text, "\n")
@@ -163,6 +166,7 @@
 				config.hostedby = value
 
 			if ("probability")
+				check_diary()
 				var/prob_pos = findtext(value, " ")
 				var/prob_name = null
 				var/prob_value = null
@@ -177,6 +181,7 @@
 				else
 					diary << "Incorrect probability configuration definition: [prob_name]  [prob_value]."
 			else
+				check_diary()
 				diary << "Unknown setting in configuration: '[name]'"
 
 /datum/configuration/proc/pick_mode(mode_name)

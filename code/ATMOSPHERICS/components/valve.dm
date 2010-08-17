@@ -47,9 +47,9 @@ obj/machinery/atmospherics/valve
 		new_network.normal_members += src
 
 		if(open)
-			if(reference == node1)
+			if(reference == node1 && node2)
 				return node2.network_expand(new_network, src)
-			else if(reference == node2)
+			else if(reference == node2 && node1)
 				return node1.network_expand(new_network, src)
 
 		return null
@@ -114,6 +114,9 @@ obj/machinery/atmospherics/valve
 			src.close()
 		else
 			src.open()
+
+	attack_ai(mob/user as mob)
+		return
 
 	process()
 		..()

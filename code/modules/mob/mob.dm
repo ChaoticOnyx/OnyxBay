@@ -4,7 +4,7 @@
 
 	if(!loc) return 0
 
-	var/datum/gas_mixture/environment = loc.return_air()
+	var/datum/gas_mixture/environment = loc.return_air(1)
 
 	var/t = "\blue Coordinates: [x],[y] \n"
 	t+= "\red Temperature: [environment.temperature] \n"
@@ -665,34 +665,43 @@ mob/verb/turnwest()
 
 
 		if("act_intent")
-			if(pa.Find("left"))
-				switch(usr.a_intent)
-					if("help")
-						usr.a_intent = "disarm"
-						usr.hud_used.action_intent.icon_state = "disarm"
-					if("disarm")
-						usr.a_intent = "hurt"
-						usr.hud_used.action_intent.icon_state = "harm"
-					if("hurt")
-						usr.a_intent = "grab"
-						usr.hud_used.action_intent.icon_state = "grab"
-					if("grab")
-						usr.a_intent = "help"
-						usr.hud_used.action_intent.icon_state = "help"
+			if(!istype(usr, /mob/living/silicon/robot))
+				if(pa.Find("left"))
+					switch(usr.a_intent)
+						if("help")
+							usr.a_intent = "disarm"
+							usr.hud_used.action_intent.icon_state = "disarm"
+						if("disarm")
+							usr.a_intent = "hurt"
+							usr.hud_used.action_intent.icon_state = "harm"
+						if("hurt")
+							usr.a_intent = "grab"
+							usr.hud_used.action_intent.icon_state = "grab"
+						if("grab")
+							usr.a_intent = "help"
+							usr.hud_used.action_intent.icon_state = "help"
+				else
+					switch(usr.a_intent)
+						if("help")
+							usr.a_intent = "grab"
+							usr.hud_used.action_intent.icon_state = "grab"
+						if("disarm")
+							usr.a_intent = "help"
+							usr.hud_used.action_intent.icon_state = "help"
+						if("hurt")
+							usr.a_intent = "disarm"
+							usr.hud_used.action_intent.icon_state = "disarm"
+						if("grab")
+							usr.a_intent = "hurt"
+							usr.hud_used.action_intent.icon_state = "harm"
 			else
 				switch(usr.a_intent)
 					if("help")
-						usr.a_intent = "grab"
-						usr.hud_used.action_intent.icon_state = "grab"
-					if("disarm")
-						usr.a_intent = "help"
-						usr.hud_used.action_intent.icon_state = "help"
-					if("hurt")
-						usr.a_intent = "disarm"
-						usr.hud_used.action_intent.icon_state = "disarm"
-					if("grab")
 						usr.a_intent = "hurt"
 						usr.hud_used.action_intent.icon_state = "harm"
+					if ("hurt")
+						usr.a_intent = "help"
+						usr.hud_used.action_intent.icon_state = "help"
 
 		if("arrowleft")
 			switch(usr.a_intent)
@@ -757,6 +766,18 @@ mob/verb/turnwest()
 						usr.m_int = "15,14"
 			else
 				usr.m_int = null
+		if ("module")
+			if (istype(usr, /mob/living/silicon/robot))
+				var/mob/living/silicon/robot/M = usr
+				M.installed_modules()
+		if ("panel")
+			if (istype(usr, /mob/living/silicon/robot))
+				var/mob/living/silicon/robot/M = usr
+				M.installed_modules()
+		if ("radio")
+			if (istype(usr, /mob/living/silicon/robot))
+				var/mob/living/silicon/robot/M = usr
+				M.radio_menu()
 		if("walk")
 			usr.m_intent = "walk"
 			usr.m_int = "14,14"
@@ -1484,6 +1505,7 @@ mob/verb/turnwest()
 	//usr << "[src.name]: Dn:[density] dir:[dir] cont:[contents] icon:[icon] is:[icon_state] loc:[loc]"
 	return
 
+
 /client/North()
 	..()
 
@@ -1497,19 +1519,31 @@ mob/verb/turnwest()
 	..()
 
 /client/Northeast()
-	if(istype(src.mob, /mob/living/carbon))
+	if (istype(src.mob, /mob/dead/observer) && src.mob.z > 1)
+		src.mob.Move(locate(src.mob.x, src.mob.y, src.mob.z - 1))
+	else if (istype(src.mob, /mob/living/silicon/ai))
+		var/mob/living/silicon/ai/M = src.mob
+		if ((!M.current && M.loc.z > 1) || M.current.z > 1)
+			src.AIMoveZ(UP, src.mob)
+	else if(istype(src.mob, /mob/living/carbon))
 		src.mob:swap_hand()
-	return
 
 /client/Southeast()
 	var/obj/item/weapon/W = src.mob.equipped()
-	if (W)
+	if (istype(src.mob, /mob/dead/observer) && src.mob.z < 4)
+		src.mob.Move(locate(src.mob.x, src.mob.y, src.mob.z + 1))
+	else if (istype(src.mob, /mob/living/silicon/ai))
+		var/mob/living/silicon/ai/M = src.mob
+		if ((!M.current && M.loc.z < 4) || M.current.z < 4)
+			src.AIMoveZ(DOWN, src.mob)
+	else if (W)
 		W.attack_self(src.mob)
-	return
 
 /client/Northwest()
 	src.mob.drop_item_v()
 	return
+
+/client/Southwest()
 
 /client/Center()
 	if (isobj(src.mob.loc))

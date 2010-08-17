@@ -26,7 +26,7 @@
 	if (!( istype(location, /turf) ))
 		return 0
 
-	var/datum/gas_mixture/environment = location.return_air()
+	var/datum/gas_mixture/environment = location.return_air(1)
 
 	var/environment_pressure = environment.return_pressure()
 
@@ -68,6 +68,8 @@
 	if(safe == 2) src.skipprocess = 1
 	else if(alarm_frequency)
 		post_alert(safe, alert_info)
+	if(!safe)
+		air_doors_close()
 
 	return
 
@@ -107,75 +109,98 @@
 		stat |= NOPOWER
 
 /obj/machinery/alarm/Click()
-	if(istype(usr, /mob/living/silicon/ai))
-		return examine()
-	return ..()
+	return attack_hand(usr)
 
-/obj/machinery/alarm/examine()
-	set src in oview(1)
-	/*
-	if(usr.stat)
+/obj/machinery/alarm/attack_hand(mob/user as mob)
+	if(!(user in range(3,src)))
+		user.machine = null
+		return
+	if(user.stat)
 		return
 	if(stat & (NOPOWER|BROKEN))
 		return
-	if(!(istype(usr, /mob/living/carbon/human) || ticker))
-		if (!istype(usr, /mob/living/silicon/ai))
-			usr << "\red You don't have the dexterity to do this!"
-			return
-	if (get_dist(usr, src) <= 3 || istype(usr, /mob/living/silicon/ai))
-		var/turf/T = src.loc
-		if (!( istype(T, /turf) ))
+	if(!(istype(user, /mob/living/carbon/human) || ticker))
+		if (!istype(user, /mob/living/silicon/ai))
+			user << "\red You don't have the admittedly arbitrary humanity to do this!"
 			return
 
-		var/turf_total = T.co2 + T.oxygen + T.poison + T.sl_gas + T.n2
-		turf_total = max(turf_total, 1)
-		usr.show_message("\blue <B>Results:</B>", 1)
-		var/t = ""
-		var/t1 = turf_total / CELLSTANDARD * 100
-		if ((90 < t1 && t1 < 110))
-			usr.show_message(text("\blue Air Pressure: []%", t1), 1)
-		else
-			usr.show_message(text("\blue Air Pressure:\red []%", t1), 1)
-		t1 = T.n2 / turf_total * 100
-		t1 = round(t1, 0.0010)
-		if ((60 < t1 && t1 < 80))
-			t += text("<font color=blue>Nitrogen: []</font> ", t1)
-		else
-			t += text("<font color=red>Nitrogen: []</font> ", t1)
-		t1 = T.oxygen / turf_total * 100
-		t1 = round(t1, 0.0010)
-		if ((20 < t1 && t1 < 24))
-			t += text("<font color=blue>Oxygen: []</font> ", t1)
-		else
-			t += text("<font color=red>Oxygen: []</font> ", t1)
-		t1 = T.poison / turf_total * 100
-		t1 = round(t1, 0.0010)
-		if (t1 < 0.5)
-			t += text("<font color=blue>Plasma: []</font> ", t1)
-		else
-			t += text("<font color=red>Plasma: []</font> ", t1)
-		t1 = T.co2 / turf_total * 100
-		t1 = round(t1, 0.0010)
-		if (t1 < 1)
-			t += text("<font color=blue>CO2: []</font> ", t1)
-		else
-			t += text("<font color=red>CO2: []</font> ", t1)
-		t1 = T.sl_gas / turf_total * 100
-		t1 = round(t1, 0.0010)
-		if (t1 < 5)
-			t += text("<font color=blue>NO2: []</font>", t1)
-		else
-			t += text("<font color=red>NO2: []</font>", t1)
-		t1 = T.temp - T0C
-		if (T.temp > 326.444 || T.temp < 282.591)
-			t += text("<br><font color=red>Temperature: []</font>", t1)
-		else
-			t += text("<br><font color=blue>Temperature: []</font>", t1)
-		usr.show_message(t, 1)
+	var/turf/location = user.loc
+	if (!( istype(location, /turf) ))
 		return
+
+	var/datum/gas_mixture/environment = location.return_air(1)
+
+	var/pressure = environment.return_pressure()
+	var/total_moles = environment.total_moles()
+
+	var/dat = ""
+
+	dat += "\blue <B>[alarm_zone] Atmosphere:</B><br>"
+	if(abs(pressure - ONE_ATMOSPHERE) < 10)
+		dat += "\blue Pressure: [round(pressure,0.1)] kPa<br>"
 	else
-		usr << "\blue <B>You are too far away.</B>"
-	*/
+		dat += "\red Pressure: [round(pressure,0.1)] kPa<br>"
+	if(total_moles)
+		var/o2_concentration = environment.oxygen/total_moles
+		var/n2_concentration = environment.nitrogen/total_moles
+		var/co2_concentration = environment.carbon_dioxide/total_moles
+		var/plasma_concentration = environment.toxins/total_moles
+
+		var/unknown_concentration =  1-(o2_concentration+n2_concentration+co2_concentration+plasma_concentration)
+		if(abs(n2_concentration - N2STANDARD) < 20)
+			dat += "\blue Nitrogen: [round(n2_concentration*100)]%<br>"
+		else
+			dat += "\red Nitrogen: [round(n2_concentration*100)]%<br>"
+
+		if(abs(o2_concentration - O2STANDARD) < 2)
+			dat += "\blue Oxygen: [round(o2_concentration*100)]%<br>"
+		else
+			dat += "\red Oxygen: [round(o2_concentration*100)]%<br>"
+
+		if(co2_concentration > 0.01)
+			dat += "\red CO2: [round(co2_concentration*100)]%<br>"
+		else
+			dat += "\blue CO2: [round(co2_concentration*100)]%<br>"
+
+		if(plasma_concentration > 0.01)
+			dat += "\red Plasma: [round(plasma_concentration*100)]%<br>"
+
+		if(unknown_concentration > 0.01)
+			dat += "\red Unknown: [round(unknown_concentration*100)]%<br>"
+		if(abs(environment.temperature - T20C) < 7)
+			dat += "\blue Temperature: [round(environment.temperature-T0C)]&deg;C"
+		else
+			dat += "\red Temperature: [round(environment.temperature-T0C)]&deg;C"
+	if(user in range(1,src))
+		dat += "<BR><BR>"
+		var/area/A = get_area(loc)
+		if(!A.air_doors_activated)
+			dat += "<A href='?src=\ref[src];activate_alarm'>Activate Emergency Seal</A>"
+		else
+			dat += "<A href='?src=\ref[src];deactivate_alarm'>Deactivate Emergency Seal</A>"
+	dat += text("<BR><BR><A href='?src=\ref[];mach_close=alarm'>Close</A>", user)
+	user << browse(dat, "window=alarm;size=400x500")
+	onclose(user, "alarm")
+
+	return 1
+
+/obj/machinery/alarm/Topic(href,href_list[])
+	if("activate_alarm" in href_list)
+		air_doors_close()
+	else if("deactivate_alarm" in href_list)
+		air_doors_open()
+
+obj/machinery/alarm/proc
+	air_doors_close()
+		var/area/A = get_area(loc)
+		for(var/area/RA in A.related)
+			RA.activate_air_doors()
+	air_doors_open()
+		var/area/A = get_area(loc)
+		for(var/area/RA in A.related)
+			RA.deactivate_air_doors()
+
+
 
 
 /obj/machinery/firealarm/temperature_expose(datum/gas_mixture/air, temperature, volume)

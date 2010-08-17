@@ -222,27 +222,29 @@ turf
 		mimic_air_with_tile(turf/T)
 			return air.mimic(T)
 
-		return_air()
+		return_air(observe_only)
 			if(air)
 				if(parent && parent.group_processing)
 					if(zone)
 						parent.air.oxygen = zone.oxygen()
 						parent.air.nitrogen = zone.nitrogen()
 						parent.air.carbon_dioxide = zone.co2()
-						parent.air.zone_oxygen = parent.air.oxygen
-						parent.air.zone_nitrogen = parent.air.nitrogen
-						parent.air.zone_co2 = parent.air.carbon_dioxide
-						zone.update_mixtures.Add(parent.air)
+						if(!observe_only)
+							parent.air.zone_oxygen = parent.air.oxygen
+							parent.air.zone_nitrogen = parent.air.nitrogen
+							parent.air.zone_co2 = parent.air.carbon_dioxide
+							zone.update_mixtures.Add(parent.air)
 					return parent.air
 				else
 					if(zone)
 						air.oxygen = zone.oxygen()
 						air.nitrogen = zone.nitrogen()
 						air.carbon_dioxide = zone.co2()
-						air.zone_oxygen = air.oxygen
-						air.zone_nitrogen = air.nitrogen
-						air.zone_co2 = air.carbon_dioxide
-						zone.update_mixtures.Add(air)
+						if(!observe_only)
+							air.zone_oxygen = air.oxygen
+							air.zone_nitrogen = air.nitrogen
+							air.zone_co2 = air.carbon_dioxide
+							zone.update_mixtures.Add(air)
 					return air
 
 			else
@@ -283,19 +285,52 @@ turf
 			//var/old_air_directions = air_check_directions
 			air_check_directions = 0
 			floodupdate = 1
-			//overlays += ad_update
-			if(!zone && !blocks_air)
-				if(CanPass(null,src,0,1))
-					add_to_other_zone()
-					if(!zone)
-						spawn new/zone(src)
+			//if(!zone && !blocks_air)
+			//	if(CanPass(null,src,0,1))
+			//		add_to_other_zone()
+			//		if(!zone)
+			//			spawn new/zone(src)
 
 			for(var/direction in cardinal)
-				var/turf/simulated/Ch = get_step_3d(src,direction)
-				if(!Ch) continue
-				if(CanPass(null, Ch, 0, 0))
+				if(CanPass(null, get_step(src,direction), 0, 0))
 					air_check_directions |= direction
 
+		//	if(ticker) overlays += 'debug_update.dmi'
+
+			if(zone)
+				for(var/direction in cardinal)
+					if(air_check_directions&direction)
+					//	if(ticker) overlays += image('turf_analysis.dmi',src,"arrow",dir=direction)
+						var/turf/simulated/T = get_step(src,direction)
+
+						//See if actually a border
+						//if(istype(T,/turf/space) && direction & (16|32)) continue
+						if(!istype(T))
+							//if(ticker) world << "Update: Non-simulated T detected."
+
+							//See what kind of border it is
+							if(istype(T,/turf/space) || istype(T,/turf/unsimulated/floor/hull))
+								//if(ticker) world << "Space connections handled."
+								zone.space_connections -= T
+								zone.space_connections += T
+
+						else
+							if(T.zone != src.zone)
+								if(!T.zone && CanPass(null,T,0,1))
+									zone.AddTurf(T)
+								else if(!(T.zone in zone.connections))
+									zone.Connect(src,T)
+					else
+					//	if(ticker) overlays += image('turf_analysis.dmi',src,"red_arrow",dir=direction)
+						var/turf/simulated/T = get_step(src,direction)
+						if(T)
+							if((T in zone.members) && !(T.HasDoor() && !T.blocks_air))
+								zone.RemoveTurf(T)
+							if(T.zone in zone.connections)
+								zone.Disconnect(src,T)
+							if(istype(T,/turf/space) || istype(T,/turf/unsimulated/floor/hull))
+								//if(!CanPass(null,T,0,0))
+								zone.space_connections -= T
 			if(parent)
 				if(parent.borders)
 					parent.borders -= src
@@ -306,20 +341,28 @@ turf
 				group_border = 0
 				for(var/direction in cardinal)
 					if(air_check_directions&direction)
-						var/turf/simulated/T = get_step_3d(src,direction)
+						//(ticker) overlays += image('turf_analysis.dmi',src,"arrow",dir=direction)
+						var/turf/simulated/T = get_step(src,direction)
 
 						//See if actually a border
-						if(istype(T,/turf/space) && direction & (16|32)) continue
+						//if(istype(T,/turf/space) && direction & (16|32)) continue
 						if(!istype(T) || (T.parent!=parent))
+							//if(ticker) world << "Update: Non-simulated T detected."
 
 							//See what kind of border it is
-							if(istype(T,/turf/space))
+							if(istype(T,/turf/space) || istype(T,/turf/unsimulated/floor/hull))
+								//if(ticker) world << "Update: Space tile handled."
 								if(parent.space_borders)
 									parent.space_borders -= src
 									parent.space_borders += src
 								else
 									parent.space_borders = list(src)
 								length_space_border++
+
+								if(zone)
+									//if(ticker) world << "Space connections handled."
+									zone.space_connections -= T
+									zone.space_connections += T
 
 							else
 								if(parent.borders)
@@ -331,17 +374,14 @@ turf
 
 							group_border |= direction
 
-						if(zone)
-							if(istype(T,/turf/space) && !(T in zone.space_connections))
-								zone.space_connections += T
-								//world << "Space connection added."
-							else
-								if(T.zone != src.zone)
-									if(!T.zone && CanPass(null,T,0,1))
-										zone.AddTurf(T)
-									else if(!(T.zone in zone.connections))
-										zone.Connect(src,T)
+						else if(zone)
+							if(T.zone != src.zone)
+								if(!T.zone && CanPass(null,T,0,1))
+									zone.AddTurf(T)
+								else if(!(T.zone in zone.connections))
+									zone.Connect(src,T)
 					else
+						//if(ticker) overlays += image('turf_analysis.dmi',src,"red_arrow",dir=direction)
 						if(zone)
 							var/turf/simulated/T = get_step_3d(src,direction)
 							if(T)
@@ -349,7 +389,8 @@ turf
 									zone.RemoveTurf(T)
 								if(T.zone in zone.connections)
 									zone.Disconnect(src,T)
-								else if(istype(T,/turf/space))
+								if(istype(T,/turf/space) || istype(T,/turf/unsimulated/floor/hull))
+									//if(!CanPass(null,T,0,0))
 									zone.space_connections -= T
 							//if(direction & old_air_directions)
 								//if(!ticker || !old_air_directions || !air_check_directions) return

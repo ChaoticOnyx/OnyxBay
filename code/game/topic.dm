@@ -1,4 +1,5 @@
 /world/Topic(T, addr, master, key)
+	check_diary()
 	diary << "TOPIC: \"[T]\", from:[addr], master:[master], key:[key]"
 
 	if (T == "ping")

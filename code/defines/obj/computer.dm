@@ -211,7 +211,7 @@
 	icon_state = "security"
 	var/obj/machinery/camera/current = null
 	var/last_pic = 1.0
-	var/network = "SS13"
+	var/network = "Luna"
 	var/maplevel = 1
 
 /obj/machinery/computer/security/wooden_tv

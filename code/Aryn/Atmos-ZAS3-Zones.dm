@@ -84,7 +84,7 @@ zone
 
 		other_gas()
 			for(var/turf/T in members)
-				var/datum/gas_mixture/GM = T.return_air()
+				var/datum/gas_mixture/GM = T.return_air(1)
 				. += GM.toxins
 				for(var/datum/gas/G in GM.trace_gases)
 					. += G.moles
@@ -96,9 +96,9 @@ zone
 		starting_tile = start
 
 		if(!start.CanPass(null,start,0,1)) //Bug here.
-			world << "Warning: Zone created on [start] (airtight turf) at [start.x],[start.y],[start.z]."
-			world << "A gray overlay has been applied to show the location."
-			start.overlays += 'icons/Testing/turf_analysis.dmi'
+			//world << "Warning: Zone created on [start] (airtight turf) at [start.x],[start.y],[start.z]."
+			//world << "A gray overlay has been applied to show the location."
+			//start.overlays += 'icons/Testing/turf_analysis.dmi'
 			del src
 			return 0
 
@@ -106,8 +106,13 @@ zone
 		if(smembers)
 			members = smembers
 			space_connections = sspace
+			//if(space_connections.len)
+				//world << "Space connections passed through sspace var."
+				//world << "Area: [start.loc]"
 			edges = sedges
 		else
+			tmp_spaceconnections.len = 0
+			tmp_edges.len = 0
 			members = FloodFill(start) //Do a floodfill to get new members.
 			if(ticker)
 				space_connections = tmp_spaceconnections.Copy()
@@ -116,9 +121,9 @@ zone
 			tmp_edges.len = 0
 
 		if(!members.len) //Bug here.
-			world << "Warning: Zone created with no members at [start.x],[start.y],[start.z]."
-			world << "A gray overlay has been applied to show the location."
-			start.overlays += 'icons/Testing/turf_analysis.dmi'
+			//world << "Warning: Zone created with no members at [start.x],[start.y],[start.z]."
+			//world << "A gray overlay has been applied to show the location."
+			//start.overlays += 'icons/Testing/turf_analysis.dmi'
 			del src
 			return 0
 
@@ -127,7 +132,11 @@ zone
 			if(T.disable_connections)
 				disable_connections = 1
 		if(!ticker) //If this zone was created at startup, add gases.
-			if(istype(start,/turf/simulated/floor/airless) || istype(start,/turf/simulated/floor/engine/vacuum) || istype(start,/turf/simulated/floor/plating/airless))
+			if(start.oxygen != MOLES_O2STANDARD || start.nitrogen != MOLES_N2STANDARD || start.carbon_dioxide)
+				oxygen = start.oxygen*members.len
+				nitrogen = start.nitrogen*members.len
+				co2 = start.carbon_dioxide*members.len
+			else if(istype(start,/turf/simulated/floor/airless) || istype(start,/turf/simulated/floor/engine/vacuum) || istype(start,/turf/simulated/floor/plating/airless))
 				oxygen = 0
 				nitrogen = 0.0001
 				co2 = 0
@@ -147,20 +156,20 @@ zone
 
 	Update()
 		while(1)
-			sleep(zone_update_delay)
+			sleep(vsc.zone_update_delay)
 			if(stop_zones) continue
 			if(!members.len) del src
-
-			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2)
-				rebuild_cache()
-				update_members()
-			//other = other_gas()
 
 			for(var/datum/gas_mixture/G in update_mixtures)
 				add_oxygen(G.oxygen - G.zone_oxygen)
 				add_nitrogen(G.nitrogen - G.zone_nitrogen)
 				add_co2(G.carbon_dioxide - G.zone_co2)
 				update_mixtures -= G
+
+			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2)
+				rebuild_cache()
+				//update_members()
+			//other = other_gas()
 
 			oxygen_archive = oxygen		 //Update the archives, so we can do things like calculate delta.
 			nitrogen_archive = nitrogen
@@ -173,11 +182,11 @@ zone
 				co2 = QUANTIZE(co2/VACUUM_SPEED)
 				temp = min(TCMB,temp/VACUUM_SPEED)
 				for(var/turf/simulated/M in members)
-					var/datum/gas_mixture/GM = M.return_air()
+					var/datum/gas_mixture/GM = M.return_air(1)
 					GM.toxins = QUANTIZE(GM.toxins/VACUUM_SPEED)
 					for(var/datum/gas/gas in GM.trace_gases)
 						gas.moles = QUANTIZE(gas.moles/VACUUM_SPEED)
-				AirflowSpace(src)
+				spawn AirflowSpace(src)
 			merge_with.len = 0
 			//if(pressure > 225)
 			//	for(var/turf/T in edges)
@@ -199,7 +208,7 @@ zone
 						continue
 					var/percent_flow = max(90,FLOW_PERCENT*borders.len) //This is the percentage of gas that will flow.
 
-					Airflow(src,Z,pressure-Z.pressure)
+					spawn Airflow(src,Z,pressure-Z.pressure)
 
 
 					//Magic Happens Here
@@ -208,13 +217,13 @@ zone
 						nit_avg = (nitrogen + Z.nitrogen) / (members.len + Z.members.len)
 						co2_avg = (co2 + Z.co2) / (members.len + Z.members.len)
 
-					oxygen( (oxygen() - oxy_avg) * (1-percent_flow/100) + oxy_avg )
-					nitrogen( (nitrogen() - nit_avg) * (1-percent_flow/100) + nit_avg )
-					co2( (co2() - co2_avg) * (1-percent_flow/100) + co2_avg )
+					oxygen( (turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
+					nitrogen( (turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
+					co2( (turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )
 
-					Z.oxygen( (Z.oxygen() - oxy_avg) * (1-percent_flow/100) + oxy_avg )
-					Z.nitrogen( (Z.nitrogen() - nit_avg) * (1-percent_flow/100) + nit_avg )
-					Z.co2( (Z.co2() - co2_avg) * (1-percent_flow/100) + co2_avg )
+					Z.oxygen( (Z.turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
+					Z.nitrogen( (Z.turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
+					Z.co2( (Z.turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )
 						//End Magic
 				for(var/crap in connections) //Clean out invalid connections.
 					if(!istype(crap,/zone))
@@ -226,13 +235,13 @@ zone
 		turf_nitro = nitrogen / members.len
 		turf_co2 = co2 / members.len
 
-		var/tempsum = 0
+		//var/tempsum = 0
 
-		for(var/turf/simulated/M in members)
-			if(M.air)
-				tempsum += M.air.temperature
+		//for(var/turf/simulated/M in members)
+		//	if(M.air)
+		//		tempsum += M.air.temperature
 
-		temp = tempsum / members.len
+		//temp = tempsum / members.len
 
 		pressure = pressure()
 
@@ -281,7 +290,7 @@ zone
 			return
 		members += T
 		T.zone = src
-		for(var/turf/space/S in range(1,T))
+		for(var/turf/space/S in T.GetUnblockedCardinals())
 			space_connections += S
 		volume = CELL_VOLUME*members.len
 		rebuild_cache()
@@ -293,7 +302,7 @@ zone
 			return
 		members -= T
 		T.zone = null
-		for(var/turf/space/S in range(1,T))
+		for(var/turf/space/S in T.GetUnblockedCardinals())
 			space_connections -= S
 		volume = CELL_VOLUME*members.len
 		rebuild_cache()
@@ -302,17 +311,18 @@ zone
 			spawn(1) SplitCheck(T)
 
 
-	update_members()
-		for(var/turf/T in members)
-			var/datum/gas_mixture/GM = T.return_air()
-			GM.oxygen = oxygen()
-			GM.nitrogen = nitrogen()
-			GM.carbon_dioxide = co2()
+//	update_members()
+		//for(var/turf/T in members)
+			//var/datum/gas_mixture/GM = T.return_air()
+		//	GM.oxygen = oxygen()
+		//	GM.nitrogen = nitrogen()
+		//	GM.carbon_dioxide = co2()
 
 	Connect(turf/S,turf/T,pc)
 		if(!istype(T,/turf/simulated)) return
 		if(!T.zone) return
 		if(S.zone == T.zone) return
+		if(!S.CanPass(null,T,0,0)) return //Ensure consistency in airflow.
 		//if(!pc) world << "Connecting zones."
 		if(!(T.zone in connections) && !(src in T.zone.connections))
 			connections += T.zone
@@ -411,7 +421,7 @@ zone
 		oxygen += Z.oxygen
 		nitrogen += Z.nitrogen
 		co2 += Z.co2
-		temp = (temp+Z.temp)/2
+		//temp = (temp+Z.temp)/2
 		members += Z.members
 		volume += Z.volume
 		connections += Z.connections
@@ -422,6 +432,7 @@ zone
 			T.zone = src
 		//world << "Merged zones."
 		direct_connections -= Z
+		connections -= Z
 		del Z
 
 //obj/debug_connect_obj
@@ -454,8 +465,11 @@ proc/FloodFill(turf/start,remove_extras)
 				//border_added = 1
 			if(!remove_extras)
 				for(var/turf/space/S in unblocked)
+					//if(T.CanPass(null,S,0,0))
 					tmp_spaceconnections += T
-					break
+						//world << "Space connection made when constructing geometry."
+						//world << "T.loc = [T.loc] S.loc = [S.loc] Direction: [get_dir(T,S)] CanPass: [T.CanPass(null,S,0,0)]"
+				//	break
 			. += T
 			//T.overlays += 'Zone.dmi'
 			borders -= T
@@ -498,11 +512,20 @@ turf/proc/SetCardinals()
 	down = get_step(src,DOWN)
 
 proc/GetAirCardinals(turf/T)
+	var/density_list = list()
+	for(var/obj/O in T)
+		if(istype(O,/obj/machinery/door))
+			density_list += O
+			density_list[O] = O.density
+			O.density = 0
 	. = list()
 	for(var/d in cardinal)
-		var/turf/U = get_step(T,d)
-		//if(T.CanPassOneWay(null,U,0,0))
-		. += U
+		var/turf/simulated/U = get_step(T,d)
+		if(!istype(U)) continue
+		if(U.CanPass(null,T,0,0))
+			. += U
+	for(var/obj/O in density_list)
+		O.density = density_list[O]
 
 turf/proc/GetUnblockedCardinals()
 	. = list()
@@ -595,41 +618,56 @@ turf/proc/GetUnblockedCardinals()
 //	if(locate(/obj/machinery/door) in east) . += east
 //	if(locate(/obj/machinery/door) in west) . += west
 
-/*turf/verb/ZoneInfo()
+var/zone_debug_verbs = 0
+
+turf/proc/ZoneInfo()
 	set src in view()
 	if(usr.ckey != "iaryni")
 		usr << "This verb is restricted to Aryn for purposes of debugging the atmospherics system."
-	world << "Zone #[zones.Find(zone)]"
-	world << "Members: [zone.members.len]"
-	world << "O2: [zone.oxygen()]/tile ([zone.oxygen])"
-	world << "N2: [zone.nitrogen()]/tile ([zone.nitrogen])"
-	world << "CO2: [zone.co2()]/tile ([zone.co2])"
-	world << "Space Connections: [zone.space_connections.len]"
-	world << "Zone Connections: [zone.connections.len]"
-	world << "Direct Connections: [zone.direct_connections.len]"
+	usr << "Zone #[zones.Find(zone)]"
+	usr << "Members: [zone.members.len]"
+	usr << "O2: [zone.oxygen()]/tile ([zone.oxygen])"
+	usr << "N2: [zone.nitrogen()]/tile ([zone.nitrogen])"
+	usr << "CO2: [zone.co2()]/tile ([zone.co2])"
+	usr << "Space Connections: [zone.space_connections.len]"
+	usr << "Zone Connections: [zone.connections.len]"
+	usr << "Direct Connections: [zone.direct_connections.len]"
 	for(var/turf/simulated/T)
-		//T.overlays -= 'debug_group.dmi'
+		T.overlays -= 'debug_group.dmi'
 		T.overlays -= 'debug_space.dmi'
 	for(var/turf/T in zone.members)
 		T.overlays += 'debug_group.dmi'
 	for(var/turf/T in zone.space_connections)
 		T.overlays += 'debug_space.dmi'
+		usr << "Space connection located: [T.x],[T.y],[T.z]"
+		usr << "Turf: [T]"
 	for(var/Z in zone.connections)
 		if(istype(Z,/zone))
-			world << "Z[zones.Find(Z)] - Connected"
+			usr << "Z[zones.Find(Z)] - Connected"
 		else
-			world << "Not A Zone: [Z]"
+			usr << "Not A Zone: [Z]"
 	for(var/Z in zone.direct_connections)
 		if(istype(Z,/zone))
 			if(abs(zone.turf_oxy - Z:turf_oxy) < 0.2 && abs(zone.turf_nitro- Z:turf_nitro) < 0.2 && abs(zone.turf_co2 - Z:turf_co2) < 0.2)
-				world << "Z[zones.Find(Z)] - Success"
+				usr << "Z[zones.Find(Z)] - Success"
 			else
-				world << "Z[zones.Find(Z)] - Failure"
+				usr << "Z[zones.Find(Z)] - Failure"
 		else
-			world << "[Z] - N/A" */
-turf/verb/AddToOtherZone()
-	set src in view()
-	add_to_other_zone()
+			usr << "[Z] - N/A"
+
+	usr << "Connection Info:"
+	for(var/d in cardinal)
+		var/turf/C = get_step(src,d)
+		usr << "Direction [d]: [CanPass(null,C,0,0)] Normal, [CanPass(null,C,0,1)] AirGroup, [CanPass(usr,C,1.5,0)] Mover"
+
+client/proc/Zone_Info(turf/T as null|turf)
+	set category = "Debug"
+	if(T)
+		T.ZoneInfo()
+	else
+		for(T in world)
+			T.overlays -= 'debug_space.dmi'
+			T.overlays -= 'debug_group.dmi'
 
 turf/proc
 	HasDoor(window)
@@ -669,8 +707,9 @@ proc/SplitCheck(turf/T)
 		D = get_step(T,DOWN)
 	if(D)
 		if(!istype(T,/turf/simulated/floor/open))
-			if(D.zone == T.zone)
-				T.zone.Split(T,D)
+			if(T.zone && D.zone)
+				if(D.zone == T.zone)
+					T.zone.Split(T,D)
 	//if(U)
 	//	if(!istype(U,/turf/simulated/floor/open))
 	//		if(U.zone == T.zone)

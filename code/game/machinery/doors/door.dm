@@ -207,6 +207,7 @@
 /////////////////////////////////////////////////// Unpowered doors
 
 /obj/machinery/door/unpowered
+	explosionstrength = 1
 	autoclose = 0
 
 /obj/machinery/door/unpowered/attack_ai(mob/user as mob)

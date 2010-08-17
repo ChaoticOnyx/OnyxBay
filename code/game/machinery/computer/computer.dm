@@ -110,7 +110,7 @@ Pod/Blast Doors computer
 
 /obj/machinery/computer/process()
 	if(stat & (NOPOWER|BROKEN))
-		return
+		return 1
 	use_power(250)
 
 /obj/machinery/computer/proc/set_broken()
