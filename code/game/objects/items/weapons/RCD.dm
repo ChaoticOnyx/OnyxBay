@@ -131,3 +131,17 @@ RCD
 				user << "The RCD now holds [matter]/30 matter-units."
 				desc = "A RCD. It currently holds [matter]/30 matter-units."
 			return
+
+/obj/item/weapon/rcd_ammo/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if (istype(user, /mob/living/silicon/robot))
+		if (istype(W, /obj/item/weapon/rcd))
+			var/obj/item/weapon/rcd/N = W
+			if ((N.matter + 10) > 30)
+				user << "The RCD cant hold any more matter."
+				return
+			N.matter += 10
+			playsound(src.loc, 'click.ogg', 50, 1)
+			user << "The RCD now holds [N.matter]/30 matter-units."
+			desc = "A RCD. It currently holds [N.matter]/30 matter-units."
+			del(src)
+			return
