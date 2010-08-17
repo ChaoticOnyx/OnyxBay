@@ -120,7 +120,7 @@
 /area/proc/activate_air_doors()
 	if(src.name == "Space") //no atmo alarms in space
 		return
-	if (!( src.air_doors_activated ))
+	if (!( src.air_doors_activated ) && !air_door_close_delay)
 		src.air_doors_activated = 1
 		src.updateicon()
 		src.mouse_opacity = 0
@@ -149,7 +149,7 @@
 			a.triggerAlarm("Atmosphere", src, cameras, src)
 	return
 
-/area/proc/deactivate_air_doors()
+/area/proc/deactivate_air_doors(stayopen)
 	if (src.air_doors_activated)
 		src.air_doors_activated = 0
 		src.mouse_opacity = 0
@@ -166,6 +166,12 @@
 			aiPlayer.cancelAlarm("Atmosphere", src, src)
 		for (var/obj/machinery/computer/atmosphere/alerts/a in world)
 			a.cancelAlarm("Atmosphere", src, src)
+		if(stayopen)
+			air_door_close_delay = stayopen
+			while(air_door_close_delay)
+				sleep(10)
+				air_door_close_delay--
+			activate_air_doors()
 	return
 
 /area/proc/updateicon()

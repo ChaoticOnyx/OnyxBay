@@ -316,16 +316,16 @@ turf
 
 						else
 							if(T.zone != src.zone)
-								if(!T.zone && CanPass(null,T,0,1))
-									zone.AddTurf(T)
-								else if(!(T.zone in zone.connections))
+								//if(!T.zone && CanPass(null,T,0,1))
+								//	zone.AddTurf(T)
+								if(!(T.zone in zone.connections))
 									zone.Connect(src,T)
 					else
 					//	if(ticker) overlays += image('turf_analysis.dmi',src,"red_arrow",dir=direction)
 						var/turf/simulated/T = get_step(src,direction)
 						if(T)
-							if((T in zone.members) && !(T.HasDoor() && !T.blocks_air))
-								zone.RemoveTurf(T)
+							//if((T in zone.members) && !(T.HasDoor() && !T.blocks_air))
+							//	zone.RemoveTurf(T)
 							if(T.zone in zone.connections)
 								zone.Disconnect(src,T)
 							if(istype(T,/turf/space) || istype(T,/turf/unsimulated/floor/hull))
@@ -376,17 +376,17 @@ turf
 
 						else if(zone)
 							if(T.zone != src.zone)
-								if(!T.zone && CanPass(null,T,0,1))
-									zone.AddTurf(T)
-								else if(!(T.zone in zone.connections))
+								//if(!T.zone && CanPass(null,T,0,1))
+								//	zone.AddTurf(T)
+								if(!(T.zone in zone.connections))
 									zone.Connect(src,T)
 					else
 						//if(ticker) overlays += image('turf_analysis.dmi',src,"red_arrow",dir=direction)
 						if(zone)
 							var/turf/simulated/T = get_step_3d(src,direction)
 							if(T)
-								if((T in zone.members) && !(T.HasDoor() && !T.blocks_air))
-									zone.RemoveTurf(T)
+								//if((T in zone.members) && !(T.HasDoor() && !T.blocks_air))
+								//	zone.RemoveTurf(T)
 								if(T.zone in zone.connections)
 									zone.Disconnect(src,T)
 								if(istype(T,/turf/space) || istype(T,/turf/unsimulated/floor/hull))
@@ -461,6 +461,13 @@ turf
 								enemy_tile.consider_pressure_difference(connection_difference, direction)
 			else
 				air_master.active_singletons -= src //not active if not processing!
+
+			var/turf/simulated/above = get_step_3d(src,UP)
+			if(istype(above,/turf/simulated/floor/open) && active_hotspot)
+				possible_fire_spreads += above
+			if(istype(src,/turf/simulated/floor/open))
+				if(active_hotspot && istype(src:floorbelow,/turf/simulated))
+					possible_fire_spreads += src:floorbelow
 
 			air.react()
 
