@@ -29,7 +29,7 @@ obj/machinery/air_sensor
 			signal.data["tag"] = id_tag
 			signal.data["timestamp"] = air_master.current_cycle
 
-			var/datum/gas_mixture/air_sample = return_air()
+			var/datum/gas_mixture/air_sample = return_air(1)
 
 			if(output&1)
 				signal.data["pressure"] = num2text(round(air_sample.return_pressure(),0.1),)

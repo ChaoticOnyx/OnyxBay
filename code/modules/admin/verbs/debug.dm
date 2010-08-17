@@ -100,7 +100,7 @@
 	if (!( istype(T, /turf) ))
 		return
 
-	var/datum/gas_mixture/env = T.return_air()
+	var/datum/gas_mixture/env = T.return_air(1)
 
 	var/t = ""
 	t+= "Nitrogen : [env.nitrogen]\n"

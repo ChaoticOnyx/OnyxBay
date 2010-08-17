@@ -124,7 +124,7 @@ obj/machinery/atmospherics/pipe
 					if(loc:blocks_air)
 						environment_temperature = loc:temperature
 					else
-						var/datum/gas_mixture/environment = loc.return_air()
+						var/datum/gas_mixture/environment = loc.return_air(1)
 						environment_temperature = environment.temperature
 
 				else
@@ -141,7 +141,7 @@ obj/machinery/atmospherics/pipe
 			if(istype(T, /turf/simulated/wall))
 				return 1 //Don't break if you're in a wall
 
-			var/datum/gas_mixture/environment = loc.return_air()
+			var/datum/gas_mixture/environment = loc.return_air(1)
 
 			var/pressure_difference = pressure - environment.return_pressure()
 

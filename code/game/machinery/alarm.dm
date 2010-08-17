@@ -26,7 +26,7 @@
 	if (!( istype(location, /turf) ))
 		return 0
 
-	var/datum/gas_mixture/environment = location.return_air()
+	var/datum/gas_mixture/environment = location.return_air(1)
 
 	var/environment_pressure = environment.return_pressure()
 
@@ -119,16 +119,12 @@
 		return
 	if(stat & (NOPOWER|BROKEN))
 		return
-	if(!(istype(user, /mob/living/carbon/human) || ticker))
-		if (!istype(user, /mob/living/silicon/ai))
-			user << "\red You don't have the admittedly arbitrary humanity to do this!"
-			return
 
-	var/turf/location = user.loc
+	var/turf/location = loc
 	if (!( istype(location, /turf) ))
 		return
 
-	var/datum/gas_mixture/environment = location.return_air()
+	var/datum/gas_mixture/environment = location.return_air(1)
 
 	var/pressure = environment.return_pressure()
 	var/total_moles = environment.total_moles()

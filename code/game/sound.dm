@@ -59,29 +59,26 @@ client/verb/Toggle_Soundscape()
 
 
 /area/Entered(A)
-	var/sound = null
-	sound = 'ambigen1.ogg'
+
+	if(!music)
+		music = list('ambigen1.ogg','ambigen2.ogg','ambigen3.ogg','ambigen4.ogg','ambigen5.ogg','ambigen6.ogg','ambigen7.ogg','ambigen8.ogg','ambigen9.ogg','ambigen10.ogg','ambigen11.ogg','ambigen12.ogg','ambigen13.ogg','ambigen14.ogg')
+
+	if(!istype(music, /list))
+		music = list(music)
 
 	if (ismob(A))
 
 		if (istype(A, /mob/dead)) return
 		if (!A:client) return
-		//if (A:ear_deaf) return
+		if (A:ear_deaf) return
 
 		if (A && A:client && !A:client:ambience_playing && !A:client:no_ambi) // Constant background noises
 			A:client:ambience_playing = 1
 			A << sound('shipambience.ogg', repeat = 1, wait = 0, volume = 50, channel = 2)
 
-		switch(src.name)
-			if ("Chapel") sound = pick('ambicha1.ogg','ambicha2.ogg','ambicha3.ogg','ambicha4.ogg')
-			if ("Morgue") sound = pick('ambimo1.ogg','ambimo2.ogg')
-			if ("Engine Control") sound = pick('ambieng1.ogg')
-			if ("Atmospherics") sound = pick('ambiatm1.ogg')
-			else sound = pick('ambigen1.ogg','ambigen2.ogg','ambigen3.ogg','ambigen4.ogg','ambigen5.ogg','ambigen6.ogg','ambigen7.ogg','ambigen8.ogg','ambigen9.ogg','ambigen10.ogg','ambigen11.ogg','ambigen12.ogg','ambigen13.ogg','ambigen14.ogg')
-
 		if (prob(35))
 			if(A && A:client && !A:client:played)
-				A << sound(sound, repeat = 0, wait = 0, volume = 25, channel = 1)
+				A << sound(pick(music), repeat = 0, wait = 0, volume = 25, channel = 1)
 				A:client:played = 1
 				spawn(600)
 					if(A && A:client)

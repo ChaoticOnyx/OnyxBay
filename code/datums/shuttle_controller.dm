@@ -13,7 +13,7 @@
 // and the time before it leaves again
 #define SHUTTLEARRIVETIME 10		// 10 minutes = 600 seconds
 
-#define PODLAUNCHTIME 60
+#define PODLAUNCHTIME 180
 
 #define PODTRANSITTIME 60
 

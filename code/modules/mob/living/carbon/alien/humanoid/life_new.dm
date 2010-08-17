@@ -168,7 +168,7 @@
 			if(src.reagents.has_reagent("lexorin")) return
 			if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
 
-			var/datum/gas_mixture/environment = loc.return_air()
+			var/datum/gas_mixture/environment = loc.return_air(1)
 			var/datum/air_group/breath
 			// HACK NEED CHANGING LATER
 			if(src.health < 0)

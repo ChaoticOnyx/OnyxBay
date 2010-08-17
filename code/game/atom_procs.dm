@@ -246,14 +246,14 @@
 					var/check_1 = 1
 					var/check_2 = 1
 
-					check_1 = CanReachThrough(get_turf(usr), Step_1) && CanReachThrough(Step_1, get_turf(src))
+					check_1 = CanReachThrough(get_turf(usr), Step_1, src) && CanReachThrough(Step_1, get_turf(src), src)
 
-					check_2 = CanReachThrough(get_turf(usr), Step_2) && CanReachThrough(Step_2, get_turf(src))
+					check_2 = CanReachThrough(get_turf(usr), Step_2, src) && CanReachThrough(Step_2, get_turf(src), src)
 
 					ok = (check_1 || check_2)
 			else
 
-				ok = CanReachThrough(get_turf(usr), get_turf(src))
+				ok = CanReachThrough(get_turf(usr), get_turf(src), src)
 
 			if (!( ok ))
 				return 0
@@ -324,10 +324,10 @@
 							src.hand_al(usr, usr.hand)
 	return
 
-/atom/proc/CanReachThrough(turf/srcturf, turf/targetturf)
+/atom/proc/CanReachThrough(turf/srcturf, turf/targetturf, atom/target)
 	var/obj/item/weapon/dummy/D = new /obj/item/weapon/dummy( srcturf )
 
-	if(targetturf.density)
+	if(targetturf.density && targetturf != get_turf(target))
 		return 0
 
 	//Now, check objects to block exit that are on the border

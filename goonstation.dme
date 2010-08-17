@@ -638,6 +638,8 @@
 #include "code\WorkInProgress\recycling\disposal.dm"
 #include "code\WorkInProgress\recycling\scrap.dm"
 #include "code\WorkInProgress\ShieldGenerator\Generator.dm"
+#include "code\WorkInProgress\ShieldGenerator\Shared.dm"
+#include "code\WorkInProgress\ShieldGenerator\ShieldCapacitor.dm"
 #include "code\WorkInProgress\ZeroPoint\Laser2.dm"
 #include "code\WorkInProgress\ZeroPoint\LaserComputer.dm"
 #include "code\WorkInProgress\ZeroPoint\SuperMatter.dm"
