@@ -259,7 +259,7 @@ Auto Patrol: []"},
 
 					else								// not next to perp
 						var/turf/olddist = get_dist(src, src.target)
-						walk_to(src, src.target,1,4)
+						walk_to_3d(src, src.target,1,4)
 						if ((get_dist(src, src.target)) >= (olddist))
 							src.frustration++
 						else
