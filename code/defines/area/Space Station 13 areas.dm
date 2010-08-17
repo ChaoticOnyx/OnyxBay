@@ -18,6 +18,7 @@
 	var/poweralm = 1
 	var/party = null
 	var/air_doors_activated = 0
+	var/air_door_close_delay = 0
 	level = null
 	name = "Space"
 	icon = 'areas.dmi'
@@ -231,52 +232,198 @@
 /area/atmos
  	name = "Atmospherics"
  	icon_state = "atmos"
+ 	music = list('ambiatm1.ogg')
 
 
-/area/maintenance/fpmaint
-	name = "Fore Port Maintenance"
+/area/maintenance/fpmaint1
+	name = "Sub Deck Fore Port Maintenance"
+	icon_state = "fpmaint"
+
+/area/maintenance/fpmaint2
+	name = "Main Deck Fore Port Maintenance"
+	icon_state = "fpmaint"
+
+/area/maintenance/fpmaint3
+	name = "Engineering Deck Fore Port Maintenance"
+	icon_state = "fpmaint"
+
+/area/maintenance/fpmaint4
+	name = "Bridge Deck Fore Port Maintenance"
 	icon_state = "fpmaint"
 
 
-/area/maintenance/fsmaint
-	name = "Fore Starboard Maintenance"
+/area/maintenance/fsmaint1
+	name = "Sub Deck Fore Starboard Maintenance"
+	icon_state = "fsmaint"
+
+/area/maintenance/fsmaint2
+	name = "Main Deck Fore Starboard Maintenance"
+	icon_state = "fsmaint"
+
+/area/maintenance/fsmaint3
+	name = "Engineering Deck Fore Starboard Maintenance"
+	icon_state = "fsmaint"
+
+/area/maintenance/fsmaint4
+	name = "Bridge Deck Fore Starboard Maintenance"
 	icon_state = "fsmaint"
 
 
-/area/maintenance/asmaint
-	name = "Aft Starboard Maintenance"
+/area/maintenance/asmaint1
+	name = "Sub Deck Aft Starboard Maintenance"
+	icon_state = "asmaint"
+
+/area/maintenance/asmaint2
+	name = "Main Deck Aft Starboard Maintenance"
+	icon_state = "asmaint"
+
+/area/maintenance/asmaint3
+	name = "Engineering Deck Aft Starboard Maintenance"
+	icon_state = "asmaint"
+
+/area/maintenance/asmaint4
+	name = "Bridge Deck Aft Starboard Maintenance"
 	icon_state = "asmaint"
 
 
-/area/maintenance/apmaint
-	name = "Aft Port Maintenance"
+/area/maintenance/apmaint1
+	name = "Sub Deck Aft Port Maintenance"
+	icon_state = "apmaint"
+
+/area/maintenance/apmaint2
+	name = "Main Deck Aft Port Maintenance"
+	icon_state = "apmaint"
+
+/area/maintenance/apmaint3
+	name = "Engineering Deck Aft Port Maintenance"
+	icon_state = "apmaint"
+
+/area/maintenance/apmaint4
+	name = "Bridge Deck Aft Port Maintenance"
 	icon_state = "apmaint"
 
 
-/area/maintenance/maintcentral
-	name = "Central Maintenance"
+/area/maintenance/maintcentral1
+	name = "Sub Deck Central Maintenance"
+	icon_state = "maintcentral"
+
+/area/maintenance/maintcentral2
+	name = "Main Deck Central Maintenance"
+	icon_state = "maintcentral"
+
+/area/maintenance/maintcentral3
+	name = "Engineering Deck Central Maintenance"
+	icon_state = "maintcentral"
+
+/area/maintenance/maintcentral4
+	name = "Bridge Deck Central Maintenance"
 	icon_state = "maintcentral"
 
 
-/area/maintenance/fore
-	name = "Fore Maintenance"
+/area/maintenance/fmaintcentral1
+	name = "Sub Deck Fore Central Maintenance"
+	icon_state = "maintcentral"
+
+/area/maintenance/fmaintcentral2
+	name = "Main Deck Fore Central Maintenance"
+	icon_state = "maintcentral"
+
+/area/maintenance/fmaintcentral3
+	name = "Engineering Deck Fore Central Maintenance"
+	icon_state = "maintcentral"
+
+/area/maintenance/fmaintcentral4
+	name = "Bridge Deck Fore Central Maintenance"
+	icon_state = "maintcentral"
+
+
+/area/maintenance/pmaintcentral1
+	name = "Sub Deck Port Central Maintenance"
+	icon_state = "maintcentral"
+
+/area/maintenance/pmaintcentral2
+	name = "Main Deck Port Central Maintenance"
+	icon_state = "maintcentral"
+
+/area/maintenance/pmaintcentral3
+	name = "Engineering Port Central Maintenance"
+	icon_state = "maintcentral"
+
+/area/maintenance/pmaintcentral4
+	name = "Bridge Deck Port Central Maintenance"
+	icon_state = "maintcentral"
+
+
+/area/maintenance/fore1
+	name = "Sub Deck Fore Maintenance"
 	icon_state = "fmaint"
 
-/area/maintenance/starboard
-	name = "Starboard Maintenance"
+/area/maintenance/fore2
+	name = "Main Deck Fore Maintenance"
+	icon_state = "fmaint"
+
+/area/maintenance/fore3
+	name = "Engineering Deck Fore Maintenance"
+	icon_state = "fmaint"
+
+/area/maintenance/fore4
+	name = "Bridge Deck Fore Maintenance"
+	icon_state = "fmaint"
+
+
+/area/maintenance/starboard1
+	name = "Sub Deck Starboard Maintenance"
 	icon_state = "smaint"
+
+/area/maintenance/starboard2
+	name = "Main Deck Starboard Maintenance"
+	icon_state = "smaint"
+
+/area/maintenance/starboard3
+	name = "Engineering Deck Starboard Maintenance"
+	icon_state = "smaint"
+
+/area/maintenance/starboard4
+	name = "Bridge Deck Starboard Maintenance"
+	icon_state = "smaint"
+
 
 /area/maintenance/hangarequip
 	name = "Hangar Equipment Room"
 	icon_state = "smaint"
 
 
-/area/maintenance/port
-	name = "Port Maintenance"
+/area/maintenance/port1
+	name = "Sub Deck Port Maintenance"
 	icon_state = "pmaint"
 
-/area/maintenance/aft
-	name = "Aft Maintenance"
+/area/maintenance/port2
+	name = "Main Deck Port Maintenance"
+	icon_state = "pmaint"
+
+/area/maintenance/port3
+	name = "Engineering Deck Port Maintenance"
+	icon_state = "pmaint"
+
+/area/maintenance/port4
+	name = "Bridge Deck Port Maintenance"
+	icon_state = "pmaint"
+
+
+/area/maintenance/aft1
+	name = "Sub Deck Aft Maintenance"
+	icon_state = "amaint"
+
+/area/maintenance/aft2
+	name = "Main Deck Aft Maintenance"
+	icon_state = "amaint"
+
+/area/maintenance/aft3
+	name = "Engineering Deck Aft Maintenance"
+	icon_state = "amaint"
+
+/area/maintenance/aft4
+	name = "Bridge Deck Aft Maintenance"
 	icon_state = "amaint"
 
 
@@ -347,11 +494,16 @@
 	name = "Arrival Shuttle Hallway"
 	icon_state = "entry"
 
+/area/shieldgen
+	name = "Shield Generation"
+	icon_state = "shield"
+	music = 'hiss.ogg'
+
 
 /area/bridge
 	name = "Bridge"
 	icon_state = "bridge"
-	music = "signal"
+	music = 'signal.ogg'
 
 
 /area/crew_quarters/locker
@@ -399,7 +551,7 @@
 
 
 /area/crew_quarters/heads
-	name = "Head of Staff's Quarters"
+	name = "Head of Personnel's Quarters"
 	icon_state = "head_quarters"
 
 
@@ -456,6 +608,7 @@
 /area/engine/engine_control
 	name = "Engine Control"
 	icon_state = "engine_control"
+	music = list('ambieng1.ogg')
 
 /area/engine/launcher
 	name = "Engine Launcher Room"
@@ -512,6 +665,11 @@
 /area/medical/morgue
 	name = "Morgue"
 	icon_state = "morgue"
+	music = list('ambimo1.ogg','ambimo2.ogg')
+/area/medical/morgue/autopsy
+	name = "Autopsy"
+	icon_state = "morgue"
+	music = list('ambimo1.ogg','ambimo2.ogg')
 
 
 /area/security/main
@@ -615,6 +773,13 @@
 	name = "Hangar"
 	icon_state = "hangar"
 
+/area/hangar/supply
+	name = "Supply Shuttle Hangar"
+	icon_state = "hangar"
+
+/area/hangar/exposed
+	name = "Hangar"
+	icon_state = "hangar"
 
 /area/hangar/escape
 	name = "Escape Hangar"
@@ -647,6 +812,7 @@
 /area/chapel/main
 	name = "Chapel"
 	icon_state = "chapel"
+	music = list('ambicha1.ogg','ambicha2.ogg','ambicha3.ogg','ambicha4.ogg')
 
 
 /area/chapel/office

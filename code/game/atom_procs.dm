@@ -246,14 +246,14 @@
 					var/check_1 = 1
 					var/check_2 = 1
 
-					check_1 = CanReachThrough(get_turf(usr), Step_1) && CanReachThrough(Step_1, get_turf(src))
+					check_1 = CanReachThrough(get_turf(usr), Step_1, src) && CanReachThrough(Step_1, get_turf(src), src)
 
-					check_2 = CanReachThrough(get_turf(usr), Step_2) && CanReachThrough(Step_2, get_turf(src))
+					check_2 = CanReachThrough(get_turf(usr), Step_2, src) && CanReachThrough(Step_2, get_turf(src), src)
 
 					ok = (check_1 || check_2)
 			else
 
-				ok = CanReachThrough(get_turf(usr), get_turf(src))
+				ok = CanReachThrough(get_turf(usr), get_turf(src), src)
 
 			if (!( ok ))
 				return 0
@@ -324,10 +324,10 @@
 							src.hand_al(usr, usr.hand)
 	return
 
-/atom/proc/CanReachThrough(turf/srcturf, turf/targetturf)
+/atom/proc/CanReachThrough(turf/srcturf, turf/targetturf, atom/target)
 	var/obj/item/weapon/dummy/D = new /obj/item/weapon/dummy( srcturf )
 
-	if(targetturf.density)
+	if(targetturf.density && targetturf != get_turf(target))
 		return 0
 
 	//Now, check objects to block exit that are on the border
@@ -358,8 +358,15 @@
 	src.overlays += overlay
 
 /atom/proc/removeoverlay(var/overlay)
-	src.overlaylist -= overlay
-	src.overlays -= overlay
+	if (istype(overlay, /image)) // This is needed due to the way overlays work. The overlay being passed to this proc is in most instances not the same object, so we need to compare their attributes
+		var/image/I = overlay
+		for (var/image/L in src.overlaylist)
+			if (L.icon == I.icon && L.icon_state == I.icon_state && L.dir == I.dir && L.layer == I.layer)
+				src.overlaylist -= L
+				break
+	else
+		src.overlaylist -= overlay
+	src.overlays -= overlay // Seems that the overlays list is special and is able to remove them. Suspect it does similar to the if block above.
 
 /atom/proc/clearoverlays()
 	src.overlaylist = new/list()

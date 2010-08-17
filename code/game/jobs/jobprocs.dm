@@ -471,21 +471,7 @@
 		if (istype(S, /obj/landmark/start) && istype(S.loc, /turf))
 			src.loc = S.loc
 	else
-		var/list/L = list()
-		for(var/area/arrival/start/S in world)
-			L += S
-		var/A = pick(L)
-		var/list/NL = list()
-		for(var/turf/T in A)
-			if(!T.density)
-				var/clear = 1
-				for(var/obj/O in T)
-					if(O.density)
-						clear = 0
-						break
-				if(clear)
-					NL += T
-		src.loc = pick(NL)
+		src.loc = pick(latejoin)
 	return
 
 /mob/living/carbon/human/proc/spawnId(rank)

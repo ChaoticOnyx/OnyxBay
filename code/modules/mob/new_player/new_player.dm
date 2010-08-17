@@ -39,6 +39,9 @@ mob/new_player
 			preferences.ShowChoices(src)
 
 
+		src << sound('main.ogg', 0, 0, 0, 100)
+
+
 	Logout()
 		ready = 0
 		..()

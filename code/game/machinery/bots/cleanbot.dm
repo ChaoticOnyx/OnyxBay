@@ -165,7 +165,7 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 
 	if(src.target && (src.target != null) && src.path.len == 0)
 		spawn(0)
-			src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, 0, 30)
+			src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, 0, 30, list(/obj/landmark/alterations/nopath))
 			src.path = reverselist(src.path)
 			if(src.path.len == 0)
 				src.oldtarget = src.target

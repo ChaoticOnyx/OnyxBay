@@ -428,6 +428,10 @@
 
 					FireBurn(volume_coefficient*resistance_coefficient)
 
+			if(environment.toxins > 0.01)
+				contaminate()
+				pl_effects()
+
 
 
 

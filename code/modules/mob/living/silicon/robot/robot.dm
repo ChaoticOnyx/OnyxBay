@@ -517,7 +517,47 @@
 		else
 			src << "Module isn't activated"
 		src.installed_modules()
+	if (href_list["locked"])
+		if (src.emagged)
+			src << "The interface is broken"
+		else if (src.opened)
+			src << "You must close your panel first"
+		else
+			src.locked = text2num(href_list["locked"])
+			src << "You [ locked ? "lock" : "unlock"] your interface."
+			updateicon()
+		src.panel_menu()
+
+	if (href_list["opened"])
+		if (src.locked)
+			src << "You must unlock your panel first"
+		else
+			src.opened = text2num(href_list["opened"])
+			src << "You [ opened ? "open" : "close" ] your access panel."
+			updateicon()
+		src.panel_menu()
+
+
 	return
+
+/mob/living/silicon/robot/equipped()
+	var/list/objects = list()
+	var/obj/item/W
+	if(module_state_1)
+		objects += module_state_1
+	if(module_state_2)
+		objects += module_state_2
+	if(module_state_3)
+		objects += module_state_3
+
+	if (objects.len > 1)
+		var/input = input("Please, select an item!", "Item", null, null) as obj in objects
+		W = input
+	else if(objects.len)
+		W = objects[1]
+	else
+		W = null
+	return W
 
 /mob/living/silicon/robot/proc/activated(obj/item/O)
 	if(src.module_state_1 == O)
@@ -546,6 +586,17 @@ Frequency:
 	onclose(src, "radio")
 	return
 
+/mob/living/silicon/robot/proc/panel_menu()
+	var/dat = {"
+<TT>
+Panel Lock: [ locked ? "<a href='byond://?src=\ref[src];locked=0'>Unlock</a>" : "<a href='byond://?src=\ref[src];locked=1'>Lock</A>"]<BR>
+Panel: [ opened ? "<a href='byond://?src=\ref[src];opened=0'>Close</a>" : "<a href='byond://?src=\ref[src];opened=1'>Open</A>"]<BR>
+</TT>"}
+	src << browse(dat, "window=panel")
+	onclose(src, "panel")
+	return
+
+
 /mob/living/silicon/robot/proc/activate_baton()
 	src << "TEST TEST THIS ISA TEST"
 
@@ -555,6 +606,9 @@ Frequency:
 	src.pulling = null
 
 /mob/living/silicon/robot/Move(a, b, flag)
+
+	if (!src.cell || !src.cell.charge)
+		return
 
 	if (src.buckled)
 		return

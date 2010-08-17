@@ -450,6 +450,12 @@ About the new airlock wires panel:
 	return
 
 /obj/machinery/door/airlock/attack_ai(mob/user as mob)
+	if (istype(user, /mob/living/silicon/robot) && src.p_open)
+		var/mob/living/silicon/robot/R = user
+		if (R.module && R.module.name == "engineering robot module")
+			src.attack_hand(user)
+			return
+
 	if (!src.canAIControl())
 		if (src.canAIHack())
 			src.hack(user)
@@ -659,7 +665,7 @@ About the new airlock wires panel:
 		if (usr.machine==src)
 			usr.machine = null
 			return
-	if (!istype(usr, /mob/living/silicon))
+	if (!istype(usr, /mob/living/silicon) || (istype(usr, /mob/living/silicon/robot) && src.p_open))
 		if(!src.p_open)
 			return
 		if ((in_range(src, usr) && istype(src.loc, /turf)))

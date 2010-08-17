@@ -35,10 +35,16 @@
 	heat_capacity = 700000
 
 /turf/space/New()
-	..()
+	. = ..()
 	icon = 'space.dmi'
 	icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
 
+/turf/space/proc/Check()
+	var/turf/T = locate(x, y, z + 1)
+	if (T)
+		if(istype(T, /turf/space) || istype(T, /turf/unsimulated) || istype(T, /turf/unsimulated/floor/hull))
+			return
+		new /turf/simulated/floor/open(src)
 
 /turf/simulated
 	name = "station"
@@ -84,14 +90,22 @@
 	New()
 		..()
 		var/turf/T = locate(x,y,z-1)
-		if(T)
-			if(T.type == /turf/simulated/floor/open)
-				open = T
+		spawn(4)
+			if(T)
+				if(T.type == /turf/simulated/floor/open)
+					open = T
+					open.update()
 
 	Enter(var/atom/movable/AM)
 		. = ..()
 		spawn()
-			if(open)
+			if(open && istype(open))
+				open.update()
+
+	Exit(var/atom/movable/AM)
+		. = ..()
+		spawn()
+			if(open && istype(open))
 				open.update()
 
 	airless
@@ -116,11 +130,12 @@
 		New()
 			..()
 			spawn(1)
+				if(!istype(src, /turf/simulated/floor/open)) //This should not be needed but is.
+					return
+
 				floorbelow = locate(x, y, z + 1)
 				if(ticker)
 					add_to_other_zone()
-				if(zone && floorbelow.zone)
-					zone.Connect(src,floorbelow)
 				update()
 			var/turf/T = locate(x, y, z + 1)
 			switch (T.type) //Somehow, I don't think I thought this cunning plan all the way through - Sukasa
@@ -157,15 +172,17 @@
 		Enter(var/atom/movable/AM)
 			if (1) //TODO make this check if gravity is active (future use) - Sukasa
 				spawn(1)
-					AM.Move(locate(x, y, z + 1))
-					if (istype(AM, /mob))
-						AM:bruteloss += 5
-						AM:updatehealth()
+					if(AM)
+						AM.Move(locate(x, y, z + 1))
+						if (istype(AM, /mob))
+							AM:bruteloss += 5
+							AM:updatehealth()
 			return ..()
 
 
 		proc
 			update() //Update the overlays to make the openspace turf show what's down a level
+
 				src.clearoverlays()
 				src.addoverlay(floorbelow)
 
@@ -175,19 +192,48 @@
 				for(var/obj/o in floorbelow.contents)
 					src.addoverlay(image(o, dir=o.dir))
 
-				if(istype(floorbelow,/turf/simulated))
-					air.share(floorbelow:air)
-					air.temperature_share(floorbelow:air,FLOOR_HEAT_TRANSFER_COEFFICIENT)
-				else
-					air.mimic(floorbelow,1)
-					air.temperature_mimic(floorbelow,FLOOR_HEAT_TRANSFER_COEFFICIENT,1)
-
 				var/image/I = image('ULIcons.dmi', "[min(max(floorbelow.LightLevelRed - 4, 0), 7)]-[min(max(floorbelow.LightLevelGreen - 4, 0), 7)]-[min(max(floorbelow.LightLevelBlue - 4, 0), 7)]")
 				I.layer = MOB_LAYER - 0.05
 				src.addoverlay(I)
 				I = image('ULIcons.dmi', "1-1-1")
 				I.layer = MOB_LAYER - 0.05
 				src.addoverlay(I)
+			process_extra()
+				if(istype(floorbelow,/turf/simulated)) //Infeasibly complicated gooncode for the Elder System. =P
+					var/turf/simulated/FB = floorbelow
+					if(parent && parent.group_processing)
+						if(FB.parent && FB.parent.group_processing)
+							if(FB.parent.air.check_gas_mixture(parent.air))
+								parent.air.share(FB.parent.air)
+							else
+								FB.parent.suspend_group_processing()
+								parent.air.share(FB.air)
+
+						else
+							if(parent.air.check_gas_mixture(FB.air))
+								parent.air.share(FB.air)
+							else
+								parent.suspend_group_processing()
+								air.share(FB.air)
+					else
+						if(FB.parent && FB.parent.group_processing)
+							if(FB.parent.air.check_gas_mixture(air))
+								air.share(FB.parent.air)
+							else
+								FB.parent.suspend_group_processing()
+								air.share(FB.air)
+						else
+							air.share(FB.air)
+					//var/datum/gas_mixture/fb_air = FB.return_air(1)
+					//var/datum/gas_mixture/my_air = return_air(1)
+					//my_air.share(fb_air)
+					//my_air.temperature_share(fb_air,FLOOR_HEAT_TRANSFER_COEFFICIENT)
+				else
+					air.mimic(floorbelow,1)
+					air.temperature_mimic(floorbelow,FLOOR_HEAT_TRANSFER_COEFFICIENT,1)
+
+				if(floorbelow.zone && !(floorbelow.zone in zone.connections))
+					zone.Connect(src,floorbelow)
 
 	plating
 		name = "plating"

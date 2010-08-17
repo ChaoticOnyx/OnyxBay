@@ -15,7 +15,7 @@
 	return final_text
 
 /proc/get_dir_3d(var/atom/ref, var/atom/target)
-	return get_dir(ref, target) | (target.z > ref.z ? UP : 0) | (target.z < ref.z ? DOWN : 0)
+	return get_dir(ref, target) | (target.z > ref.z ? DOWN : 0) | (target.z < ref.z ? UP : 0)
 
 //Bwahahaha! I am extending a built-in proc for personal gain!
 //(And a bit of nonpersonal gain, I guess)
@@ -60,9 +60,12 @@
 	return list
 
 /proc/step_towards_3d(var/atom/movable/Ref, var/atom/movable/Trg)
-/*
 	if(Ref.z == Trg.z)
-		return step_towards(Ref, Trg)
+		var/S = Ref.loc
+		step_towards(Ref, Trg)
+		if(Ref.loc != S)
+			return 1
+		return 0
 
 	var/dx = (Trg.x - Ref.x) / max(abs(Trg.x - Ref.x), 1)
 	var/dy = (Trg.y - Ref.y) / max(abs(Trg.y - Ref.y), 1)
@@ -79,8 +82,6 @@
 		return 0
 
 	return 1
-*/
-	return step_towards(Ref, Trg)
 
 
 /proc/hex2num(hex)

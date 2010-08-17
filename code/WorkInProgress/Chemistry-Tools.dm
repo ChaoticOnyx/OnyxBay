@@ -247,10 +247,10 @@
 						O.show_message(text("\red [] was hit by the syringe!", M), 1)
 
 					del(D)
-
-				for(var/atom/A in D.loc)
-					if(A == user) continue
-					if(A.density) del(D)
+				if (D)
+					for(var/atom/A in D.loc)
+						if(A == user) continue
+						if(A.density) del(D)
 
 				sleep(1)
 

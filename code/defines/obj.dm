@@ -405,7 +405,9 @@
 
 /obj/landmark/alterations
 	name = "alterations"
-
+	nopath
+		invisibility = 101
+		name = "Bot No-Path"
 /obj/laser
 	name = "laser"
 	icon = 'projectiles.dmi'

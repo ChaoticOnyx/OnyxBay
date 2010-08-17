@@ -190,9 +190,9 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 	if(src.target && (src.target != null) && src.path.len == 0)
 		spawn(0)
 			if(!istype(src.target, /turf/))
-				src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30)
+				src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30, list(/obj/landmark/alterations/nopath))
 			else
-				src.path = AStar(src.loc, src.target, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30)
+				src.path = AStar(src.loc, src.target, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30, list(/obj/landmark/alterations/nopath))
 			src.path = reverselist(src.path)
 			if(src.path.len == 0)
 				src.oldtarget = src.target
