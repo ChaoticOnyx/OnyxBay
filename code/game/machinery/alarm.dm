@@ -70,6 +70,8 @@
 		post_alert(safe, alert_info)
 	if(!safe)
 		air_doors_close()
+	else
+		air_doors_open()
 	updateUsrDialog()
 	return
 
@@ -184,7 +186,7 @@
 	if("activate_alarm" in href_list)
 		air_doors_close()
 	else if("deactivate_alarm" in href_list)
-		air_doors_open()
+		air_doors_open(5)
 	updateUsrDialog()
 
 obj/machinery/alarm/proc
@@ -192,10 +194,10 @@ obj/machinery/alarm/proc
 		var/area/A = get_area(loc)
 		for(var/area/RA in A.related)
 			RA.activate_air_doors()
-	air_doors_open()
+	air_doors_open(stayopen)
 		var/area/A = get_area(loc)
 		for(var/area/RA in A.related)
-			RA.deactivate_air_doors()
+			RA.deactivate_air_doors(stayopen)
 
 
 

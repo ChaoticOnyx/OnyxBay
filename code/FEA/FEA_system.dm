@@ -352,6 +352,8 @@ datum
 			process_singletons()
 				for(var/item in active_singletons)
 					item:process_cell()
+				for(var/turf/simulated/floor/open/O in world)
+					O.process_extra()
 
 			process_super_conductivity()
 				for(var/turf/simulated/hot_potato in active_super_conductivity)

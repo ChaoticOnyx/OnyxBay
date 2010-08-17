@@ -115,7 +115,7 @@ proc
 	PathWeightCompare(PathNode/a, PathNode/b)
 		return a.f - b.f
 
-	AStar(start, end, adjacent, dist, maxnodes, maxnodedepth = 30, mintargetdist, minnodedist, id=null, var/turf/exclude=null)
+	AStar(start, end, adjacent, dist, maxnodes, maxnodedepth = 30, mintargetdist, minnodedist, id=null, var/list/exclude = null)
 		var/PriorityQueue/open = new /PriorityQueue(/proc/PathWeightCompare)
 		var/closed[] = new()
 		var/path[]
@@ -149,26 +149,30 @@ proc
 				if(cur.nt >= maxnodedepth)
 					continue
 
-			for(var/datum/d in L)
-				if(d == exclude)
-					continue
-
-				var/ng = cur.g + call(cur.source,dist)(d)
-
-				if(d.bestF)
-					if(ng + call(d,dist)(end) < d.bestF)
-						for(var/i = 1; i <= open.L.len; i++)
-							var/PathNode/n = open.L[i]
-							if(n.source == d)
-								open.Remove(i)
-								break
-					else
+			find_path:
+				for(var/datum/d in L)
+					if(d.type in exclude || d in exclude)
 						continue
+					for(var/datum/e in d)
+						if(e.type in exclude || e in exclude)
+							continue find_path
 
-				open.Enqueue(new /PathNode(d,cur,ng,call(d,dist)(end),cur.nt+1))
+					var/ng = cur.g + call(cur.source,dist)(d)
 
-				if(maxnodes && open.L.len > maxnodes)
-					open.L.Cut(open.L.len)
+					if(d.bestF)
+						if(ng + call(d,dist)(end) < d.bestF)
+							for(var/i = 1; i <= open.L.len; i++)
+								var/PathNode/n = open.L[i]
+								if(n.source == d)
+									open.Remove(i)
+									break
+						else
+							continue
+
+					open.Enqueue(new /PathNode(d,cur,ng,call(d,dist)(end),cur.nt+1))
+
+					if(maxnodes && open.L.len > maxnodes)
+						open.L.Cut(open.L.len)
 		}
 
 		var/PathNode/temp

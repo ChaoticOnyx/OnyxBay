@@ -111,8 +111,9 @@ datum
 			var/obj/item/steal_target
 			var/target_name
 			proc/find_target()
-				var/list/items = list("captain's antique laser gun", "hand teleporter", "RCD", "jetpack", "captains jumpsuit")
-
+				var/list/items = list("captain's antique laser gun", "hand teleporter", "RCD", "jetpack",\
+				 "captains jumpsuit", "small plasma tank", "Medical Records circuitboard",\
+				  "Security Records circuitboard", "Communications circuitboard", "zippo lighter")
 				target_name = pick(items)
 				switch(target_name)
 					if("captain's antique laser gun")
@@ -125,6 +126,16 @@ datum
 						steal_target = /obj/item/weapon/tank/jetpack
 					if("captains jumpsuit")
 						steal_target = /obj/item/clothing/under/rank/captain
+					if("small plasma tank")
+						steal_target = /obj/item/weapon/tank/plasma
+					if("Medical Records circuitboard")
+						steal_target = /obj/item/weapon/circuitboard/med_data
+					if("Security Records circuitboard")
+						steal_target = /obj/item/weapon/circuitboard/secure_data
+					if("Communications circuitboard")
+						steal_target = /obj/item/weapon/circuitboard/med_data
+					if("zippo lighter")
+						steal_target = /obj/item/weapon/zippo
 
 
 				explanation_text = "Steal a [target_name]."

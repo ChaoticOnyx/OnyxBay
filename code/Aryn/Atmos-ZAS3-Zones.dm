@@ -1,7 +1,8 @@
 /*ZAS3 - Necessitated by the obfuscating nature of gooncode.*/
 
-#define FLOW_PERCENT 1 //Percent of gas to send between connected turfs.
-#define VACUUM_SPEED 1.5 //Divisor of zone gases exposed directly to space (i.e. space tiles in members)
+vs_control/var
+	FLOW_PERCENT = 1 //Percent of gas to send between connected turfs.
+	VACUUM_SPEED = 1.5 //Divisor of zone gases exposed directly to space (i.e. space tiles in members)
 
 #define QUANTIZE(variable)		(round(variable,0.0001))
 
@@ -177,15 +178,13 @@ zone
 			temp_archive = temp
 
 			if(space_connections.len)				 //Throw gas into space if it has space connections.
-				oxygen = QUANTIZE(oxygen/VACUUM_SPEED)
-				nitrogen = QUANTIZE(nitrogen/VACUUM_SPEED)
-				co2 = QUANTIZE(co2/VACUUM_SPEED)
-				temp = min(TCMB,temp/VACUUM_SPEED)
+				oxygen = QUANTIZE(oxygen/vsc.VACUUM_SPEED)
+				nitrogen = QUANTIZE(nitrogen/vsc.VACUUM_SPEED)
+				co2 = QUANTIZE(co2/vsc.VACUUM_SPEED)
+				//temp = min(TCMB,temp/vsc.VACUUM_SPEED)
 				for(var/turf/simulated/M in members)
 					var/datum/gas_mixture/GM = M.return_air(1)
-					GM.toxins = QUANTIZE(GM.toxins/VACUUM_SPEED)
-					for(var/datum/gas/gas in GM.trace_gases)
-						gas.moles = QUANTIZE(gas.moles/VACUUM_SPEED)
+					GM.remove_ratio(1/vsc.VACUUM_SPEED)
 				spawn AirflowSpace(src)
 			merge_with.len = 0
 			//if(pressure > 225)
@@ -206,9 +205,10 @@ zone
 					if(!istype(borders,/list))
 						connections -= Z
 						continue
-					var/percent_flow = max(90,FLOW_PERCENT*borders.len) //This is the percentage of gas that will flow.
+					var/percent_flow = max(90,vsc.FLOW_PERCENT*borders.len) //This is the percentage of gas that will flow.
 
-					spawn Airflow(src,Z,pressure-Z.pressure)
+					spawn
+						if(Z) Airflow(src,Z,pressure-Z.pressure)
 
 
 					//Magic Happens Here
@@ -302,7 +302,7 @@ zone
 			return
 		members -= T
 		T.zone = null
-		for(var/turf/space/S in T.GetUnblockedCardinals())
+		for(var/turf/space/S in T.GetBasicCardinals())
 			space_connections -= S
 		volume = CELL_VOLUME*members.len
 		rebuild_cache()
@@ -320,10 +320,15 @@ zone
 
 	Connect(turf/S,turf/T,pc)
 		if(!istype(T,/turf/simulated)) return
-		if(!T.zone) return
+		if(!T.zone || !S.zone) return
+		if(T.zone == src)
+			var/turf/U = S
+			S = T
+			T = U
 		if(S.zone == T.zone) return
 		if(!S.CanPass(null,T,0,0)) return //Ensure consistency in airflow.
-		//if(!pc) world << "Connecting zones."
+		//DEBUG INFO
+		//world << "Connecting zones via [T.name][T.x],[T.y],[T.z] and [S.name][S.x],[S.y],[S.z]"
 		if(!(T.zone in connections) && !(src in T.zone.connections))
 			connections += T.zone
 			T.zone.connections += src
@@ -350,7 +355,11 @@ zone
 
 	Disconnect(turf/S,turf/T,pc)
 		if(!istype(T,/turf/simulated)) return
-		if(!T.zone) return
+		if(!T.zone || !S.zone) return
+		if(T.zone == src)
+			var/turf/U = S
+			S = T
+			T = U
 		//if(!pc) world << "Disconnecting zones."
 		if((T in connections[T.zone]) && (S in T.zone.connections[src]))
 			connections[T.zone] -= T
@@ -367,9 +376,8 @@ zone
 			//S.overlays += 'Zone.dmi'
 		//	T.overlays -= /obj/debug_connect_obj//'debug_connect.dmi'
 			//T.overlays += 'Zone.dmi'
-			if(!(S.HasDoor(1) || T.HasDoor(1)))
-				direct_connections -= T.zone
-				T.zone.direct_connections -= src
+			direct_connections -= T.zone
+			T.zone.direct_connections -= src
 		if(!length(connections[T.zone]))
 			connections -= T.zone
 			T.zone.connections -= src
@@ -399,7 +407,7 @@ zone
 		zone_X = FloodFill(X)
 		if(Y in zone_X)
 			members = old_members //No need to change.
-			for(var/turf/simulated/T in members)
+			for(var/turf/simulated/T in old_members)
 				T.zone = src
 		else
 			space_X = tmp_spaceconnections.Copy()
@@ -527,6 +535,12 @@ proc/GetAirCardinals(turf/T)
 	for(var/obj/O in density_list)
 		O.density = density_list[O]
 
+turf/proc/GetBasicCardinals()
+	. = list()
+	for(var/direction in cardinal)
+		var/turf/T = get_step(src,direction)
+		. += T
+
 turf/proc/GetUnblockedCardinals()
 	. = list()
 	if(floodupdate)
@@ -635,6 +649,7 @@ turf/proc/ZoneInfo()
 	for(var/turf/simulated/T)
 		T.overlays -= 'debug_group.dmi'
 		T.overlays -= 'debug_space.dmi'
+		T.overlays -= 'debug_connect.dmi'
 	for(var/turf/T in zone.members)
 		T.overlays += 'debug_group.dmi'
 	for(var/turf/T in zone.space_connections)
@@ -644,6 +659,9 @@ turf/proc/ZoneInfo()
 	for(var/Z in zone.connections)
 		if(istype(Z,/zone))
 			usr << "Z[zones.Find(Z)] - Connected"
+			var/turflist = zone.connections[Z]
+			for(var/turf/T in turflist)
+				T.overlays += 'debug_connect.dmi'
 		else
 			usr << "Not A Zone: [Z]"
 	for(var/Z in zone.direct_connections)

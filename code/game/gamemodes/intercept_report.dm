@@ -17,7 +17,7 @@
 	..()
 	src.org_names_1.Add("Syndicate")
 	src.org_names_2.Add("Federation")
-	src.anomalies.Add("Unknown spacial distrubance")
+	src.anomalies.Add("unknown spacial disturbance")
 	src.SWF_names.Add("Grand Wizard")
 
 /datum/intercept_text/proc/build(var/mode_type, correct_mob)
@@ -121,6 +121,6 @@
 
 /datum/intercept_text/proc/build_malf(correct_mob)
 	var/a_name = pick(src.anomalies)
-	src.text += "<BR><BR>A [a_name] was recently picked up by a nearby stations sensors in your sector. If it came into contact with your ship or "
+	src.text += "<BR><BR>An [a_name] was recently picked up by a nearby stations sensors in your sector. If it came into contact with your ship or "
 	src.text += "electrical equipment, it may have had hazardarous and unpredictable effects. Closely observe any non carbon based life forms "
 	src.text += "for signs of unusual behaviour, but keep this information discreet at all times due to this possibly dangerous scenario."

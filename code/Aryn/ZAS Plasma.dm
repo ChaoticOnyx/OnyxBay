@@ -230,3 +230,11 @@ mob/living/carbon/human/proc
 mob/monkey/proc
 	contaminate()
 	pl_effects()
+
+turf/Entered(obj/item/I)
+	. = ..()
+	if(istype(I))
+		var/datum/gas_mixture/env = return_air(1)
+		if(env.toxins > 0.01)
+			if(I.can_contaminate())
+				I.contaminated = 1

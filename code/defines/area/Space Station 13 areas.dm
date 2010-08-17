@@ -18,6 +18,7 @@
 	var/poweralm = 1
 	var/party = null
 	var/air_doors_activated = 0
+	var/air_door_close_delay = 0
 	level = null
 	name = "Space"
 	icon = 'areas.dmi'
@@ -550,7 +551,7 @@
 
 
 /area/crew_quarters/heads
-	name = "Head of Staff's Quarters"
+	name = "Head of Personnel's Quarters"
 	icon_state = "head_quarters"
 
 

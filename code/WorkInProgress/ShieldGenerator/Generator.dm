@@ -25,6 +25,7 @@
 
 //SETUP
 	New()
+		..()
 		spawn(5)
 			capacitor = locate() in get_step(src, WEST)
 			if(!capacitor)
@@ -78,7 +79,7 @@ Auto Mode Target Shield Charge: <a href="?auto=0">M</a> <a href="?auto=1">-</a> 
 Manual Mode Generation Rate:    <a href="?man=0">M</a> <a href="?man=1">-</a> <a href="?man=2">-</a> 500 <a href="?man=3">+</a> <a href="?man=4">+</a> <a href="?man=5">M</a>
 </pre></body></html>"}
 
-	user << browse(dat, "window=shieldgen;size=500x300")
+	user << browse(dat, "window=shieldgen;size=800x200")
 	onclose(user, "shieldgen")
 
 	return
@@ -116,7 +117,7 @@ Manual Mode Generation Rate:    <a href="?man=0">M</a> <a href="?man=1">-</a> <a
 			conversionrate = min(max(automax, needed), maxconversionrate)
 
 	use_power(round(conversionrate ** 1.5))
-	use_power(-(produce_energy(conversionrate) ** 1.3)) //Partially return shield energy that couldn't be used
+	use_power(-round(produce_energy(conversionrate) ** 1.3)) //Partially return shield energy that couldn't be used
 	lastconversionrate = conversionrate
 	updateicon()
 	updateUsrDialog()

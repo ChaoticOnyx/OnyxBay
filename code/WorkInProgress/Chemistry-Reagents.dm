@@ -133,7 +133,8 @@ datum
 					T:wet = 0
 					if(T:wet_overlay)
 						T:overlays -= T:wet_overlay
-						T:wet_overlay = null
+						T:wet_overlay = image('effects.dmi', "slube")
+						T:overlays += T:wet_overlay
 
 				return
 

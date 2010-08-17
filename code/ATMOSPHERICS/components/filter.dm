@@ -59,10 +59,6 @@ Filter types:
 		if(radio_controller)
 			initialize()
 
-	power_change()
-		..()
-		update_icon()
-
 	update_icon()
 		if(node_out1&&node_out2&&node_in)
 			icon_state = "intact_[on?("on"):("off")]"
@@ -91,8 +87,8 @@ Filter types:
 
 	process()
 		..()
+		update_icon()
 		if(!on)
-			update_icon()
 			return 0
 
 		var/output_starting_pressure = air_out2.return_pressure()
