@@ -69,7 +69,7 @@
 				src.throw_impact(A)
 				src.throwing = 0
 			if(isobj(A))
-				if(A.density)				// **TODO: Better behaviour for windows
+				if(A.density && !istype(A, /obj/table))	// **TODO: Better behaviour for windows
 											// which are dense, but shouldn't always stop movement
 					src.throw_impact(A)
 					src.throwing = 0
