@@ -9,6 +9,8 @@
 /obj/item/proc/talk_into(mob/M as mob, text)
 	return
 
+/obj/item/proc/security_talk_into(mob/M as mob, text)
+
 /obj/item/proc/moved(mob/user as mob, old_loc as turf)
 	return
 

@@ -21,6 +21,9 @@
 	var/idcheck = 1 //If false, all station IDs are authorized for weapons.
 	var/check_records = 1 //Does it check security records?
 	var/arrest_type = 0 //If true, don't handcuff
+	var/obj/item/device/radio/radio
+	var/voice_message = null
+	var/voice_name = "secbot"
 
 	var/mode = 0
 #define SECBOT_IDLE 		0		// idle
@@ -51,6 +54,8 @@
 	var/nearest_beacon			// the nearest beacon's tag
 	var/turf/nearest_beacon_loc	// the nearest beacon's location
 
+/obj/machinery/bot/secbot/proc/say_quote(var/text)
+	return "beeps, \"[text]\"";
 
 /obj/machinery/bot/secbot/beepsky
 	name = "Officer Beepsky"
@@ -82,6 +87,8 @@
 			if(radio_controller)
 				radio_controller.add_object(src, "[control_freq]")
 				radio_controller.add_object(src, "[beacon_freq]")
+			radio = new /obj/item/device/radio(src)
+			radio.set_security_frequency(1399)
 
 	examine()
 		set src in view()
@@ -309,9 +316,11 @@ Auto Patrol: []"},
 
 				if(path.len > 0 && patrol_target)	// have a valid path, so just resume
 					mode = SECBOT_PATROL
+					speak("Resuming patrol.")
 					return
 
 				else if(patrol_target)		// has patrol target already
+					speak("Resuming patrol.")
 					spawn(0)
 						calc_path()		// so just find a route to it
 						if(path.len == 0)
@@ -667,6 +676,7 @@ Auto Patrol: []"},
 	proc/speak(var/message)
 		for(var/mob/O in hearers(src, null))
 			O << "<span class='game say'><span class='name'>[src]</span> beeps, \"[message]\""
+		radio.security_talk_into(src, message)
 		return
 
 	//Generally we want to explode() instead of just deleting the securitron.
