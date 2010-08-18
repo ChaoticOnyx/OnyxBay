@@ -6,6 +6,7 @@
 	var/last_transmission
 	var/frequency = 1459
 	var/traitor_frequency = 0.0
+	var/security_frequency = 0.0
 	var/obj/item/device/radio/patch_link = null
 	var/obj/item/weapon/syndicate_uplink/traitorradio = null
 	var/wires = WIRE_SIGNAL | WIRE_RECEIVE | WIRE_TRANSMIT
@@ -44,6 +45,12 @@
 	icon_state = "headset"
 	item_state = "headset"
 	var/protective_temperature = 0
+
+/obj/item/device/radio/headset/security
+	name = "Security Headset"
+	icon_state = "security_headset"
+	item_state = "security_headset"
+	security_frequency = 1399
 
 /obj/item/device/radio/intercom
 	name = "Station Intercom (Radio)"
