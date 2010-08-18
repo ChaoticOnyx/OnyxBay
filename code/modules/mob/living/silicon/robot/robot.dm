@@ -1,4 +1,6 @@
 /mob/living/silicon/robot/var/obj/item/device/radio/radio
+/mob/living/silicon/robot/
+	var/class = "none"
 /mob/living/silicon/robot/New()
 
 	spawn (1)
@@ -26,21 +28,27 @@
 		if("Standard")
 			src.module = new /obj/item/weapon/robot_module/standard(src)
 			src.module_icon.icon_state = "standard"
+			class = "standard"
 		if("Medical")
 			src.module = new /obj/item/weapon/robot_module/medical(src)
 			src.module_icon.icon_state = "medical"
+			class = "medical"
 		if("Security")
 			src.module = new /obj/item/weapon/robot_module/security(src)
 			src.module_icon.icon_state = "security"
+			class = "security"
 		if("Engineering")
 			src.module = new /obj/item/weapon/robot_module/engineering(src)
 			src.module_icon.icon_state = "engineer"
+			class = "engineer"
 		if("Janitor")
 			src.module = new /obj/item/weapon/robot_module/janitor(src)
 			src.module_icon.icon_state = "janitor"
+			class = "janitor"
 		if("Brobot")
 			src.module = new /obj/item/weapon/robot_module/brobot(src)
 			src.module_icon.icon_state = "brobot"
+			class = "brobot"
 
 /mob/living/silicon/robot/verb/cmd_robot_alerts()
 	set category = "Robot Commands"
@@ -337,6 +345,20 @@
 				updateicon()
 			else
 				user << "You fail to [ locked ? "unlock" : "lock"] [src]'s interface."
+	else if(istype(W,/obj/item/weapon/rcd_ammo))
+		if(class != "engineer")
+			user << "[src] does not posses a RCD"
+		var/obj/item/weapon/rcd/R = locate() in src.module.modules
+		if(R)
+			if(R:matter < 30)
+				R:matter += W:matter
+				if(R:matter > 30)
+					R:matter = 30
+				user << "You recharge [src]'s [R] with the [W]"
+				src << "[user] recharged your [R] with [W]"
+				src << "[R] now holds [R:matter]/30"
+				del W
+				return
 	else
 		return ..()
 

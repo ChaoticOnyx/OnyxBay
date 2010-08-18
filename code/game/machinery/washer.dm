@@ -42,7 +42,7 @@ code/game/machinery/washer.dm
 				W.reagents.remove_reagent("cleaner",amm)
 				usr << "You transfer [amm] units of cleaning solution to [src]"
 				return 0
-	if(istype(W,/obj/item/clothing/))
+	if(istype(W,/obj/item/clothing/) || istype(W,/obj/item/weapon/storage/backpack/))
 		if(active)
 			usr << "You can't put something in it while its washing"
 			return
@@ -102,11 +102,13 @@ code/game/machinery/washer.dm
 			for(var/atom/movable/O in src)
 				O.clean_blood()
 				O.fingerprints = null
+				O:contaminated = 0
 				if(ismob(O))
 					var/list/items = O:get_all_possessed_items()
 					for(var/obj/OB in items)
 						OB.clean_blood()
 						OB.fingerprints = null
+						OB.contaminated = 0
 				if(istype(O,/obj/item/weapon/gun/energy))
 					explode()
 					del O

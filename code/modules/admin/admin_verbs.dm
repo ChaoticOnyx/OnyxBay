@@ -107,7 +107,6 @@
 			src.verbs += /client/proc/toggleinvite
 			src.verbs += /client/proc/new_eventa
 			src.verbs += /client/proc/toggleevents
-			src.verbs += /obj/admins/proc/invites
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
@@ -195,7 +194,6 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
-			src.verbs += /obj/admins/proc/invites
 
 			src.verbs += /client/proc/Zone_Info
 		if ("Super Administrator")
@@ -270,7 +268,6 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
-			src.verbs += /obj/admins/proc/invites
 			src.verbs += /client/proc/Zone_Info
 		if ("Primary Administrator")
 
@@ -340,7 +337,6 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/hubvis
-			src.verbs += /obj/admins/proc/invites
 
 		if ("Administrator")
 
@@ -387,7 +383,6 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/hubvis
-			src.verbs += /obj/admins/proc/invites
 			src.verbs += /client/proc/toggleevents
 		if ("Secondary Administrator")
 			src.holder.level = 1
