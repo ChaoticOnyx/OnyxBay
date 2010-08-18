@@ -38,7 +38,7 @@
 /mob/proc/say_understands(var/mob/other)
 	if (src.stat == 2)
 		return 1
-	else if (istype(other, src.type))
+	else if (istype(other, src.type) || istype(other, /obj/machinery/bot/secbot))
 		return 1
 	return 0
 

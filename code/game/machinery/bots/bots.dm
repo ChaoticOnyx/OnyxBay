@@ -84,5 +84,8 @@
 
 			//if((dir & SOUTH) && (D.dir & (EAST|WEST)))		return !D.check_access(ID)
 			//if((dir & EAST ) && (D.dir & (NORTH|SOUTH)))	return !D.check_access(ID)
-		else return !D.check_access(ID)	// it's a real, air blocking door
+		else if (!istype(D, /obj/machinery/door/airlock) || !D:locked)
+			return !D.check_access(ID)	// it's a real, air blocking door
+		else
+			return 1
 	return 0

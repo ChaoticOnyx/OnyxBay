@@ -138,7 +138,7 @@ mob/new_player
 				if ("3")
 					AttemptLateSpawn("Head of Personnel", hopMax)
 				if ("4")
-					AttemptLateSpawn("Station Engineer", engineerMax)
+					AttemptLateSpawn("Engineer", engineerMax)
 				if ("5")
 					AttemptLateSpawn("Barman", barmanMax)
 				if ("6")
@@ -231,8 +231,8 @@ mob/new_player
 		if (IsJobAvailable("Chief Engineer",chiefMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=21'>Chief Engineer</a><br>"
 
-		if (IsJobAvailable("Station Engineer",engineerMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=4'>Station Engineer</a><br>"
+		if (IsJobAvailable("Engineer",engineerMax))
+			dat += "<a href='byond://?src=\ref[src];SelectedJob=4'>Engineer</a><br>"
 */
 		if (IsJobAvailable("Barman",barmanMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=5'>Barman</a><br>"

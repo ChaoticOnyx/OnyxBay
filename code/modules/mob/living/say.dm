@@ -63,6 +63,9 @@
 		else if (copytext(message, 1, 3) == ":i")
 			message_mode = "intercom"
 			message = copytext(message, 3)
+		else if (copytext(message, 1 ,3) == ":h")
+			message_mode = "security_headset"
+			message = copytext(message, 3)
 	//
 
 	message = trim(message)
@@ -93,6 +96,13 @@
 		if ("headset")
 			if (src:ears)
 				src:ears.talk_into(src, message)
+
+			message_range = 1
+			italics = 1
+
+		if ("security_headset")
+			if (src:ears)
+				src:ears.security_talk_into(src, message)
 
 			message_range = 1
 			italics = 1

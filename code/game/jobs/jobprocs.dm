@@ -260,7 +260,7 @@
 		src.equip_if_possible(W, src.slot_wear_id)
 		return
 	*/
-	src.equip_if_possible(new /obj/item/device/radio/headset(src), slot_ears)
+
 	src.equip_if_possible(new /obj/item/weapon/storage/backpack(src), slot_back)
 
 	switch(rank)
@@ -298,7 +298,7 @@
 			src.equip_if_possible(new /obj/item/weapon/bikehorn(src), slot_in_backpack)
 			src.mutations |= 16
 
-		if ("Station Engineer")
+		if ("Engineer")
 			src.equip_if_possible(new /obj/item/device/pda/engineering(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/engineer(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/orange(src), slot_shoes)
@@ -312,6 +312,7 @@
 			src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)
 
 		if ("Detective")
+			src.equip_if_possible(new /obj/item/device/radio/headset/security(src), slot_ears)
 			src.equip_if_possible(new /obj/item/device/pda/security(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/det(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/brown(src), slot_shoes)
@@ -331,6 +332,7 @@
 			src.equip_if_possible(new /obj/item/weapon/storage/firstaid/regular(src), slot_l_hand)
 
 		if ("Captain")
+			src.equip_if_possible(new /obj/item/device/radio/headset/security(src), slot_ears)
 			src.equip_if_possible(new /obj/item/device/pda/captain(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/captain(src), slot_w_uniform)
 		//	src.equip_if_possible(new /obj/item/clothing/suit/armor/captain(src), slot_wear_suit)
@@ -343,6 +345,7 @@
 
 
 		if ("Security Officer")
+			src.equip_if_possible(new /obj/item/device/radio/headset/security(src), slot_ears)
 			src.equip_if_possible(new /obj/item/device/pda/security(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/color/red(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/suit/armor/vest(src), slot_wear_suit)
@@ -367,6 +370,7 @@
 			src.equip_if_possible(new /obj/item/weapon/tank/air(src), slot_l_hand)
 
 		if ("Head of Security")
+			src.equip_if_possible(new /obj/item/device/radio/headset/security(src), slot_ears)
 			src.equip_if_possible(new /obj/item/device/pda/heads(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/head_of_security(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/suit/armor/vest(src), slot_wear_suit)
@@ -449,6 +453,7 @@
 
 		else
 			src << "RUH ROH! Your job is [rank] and the game just can't handle it! Please report this bug to an administrator."
+	src.equip_if_possible(new /obj/item/device/radio/headset(src), slot_ears)
 
 	spawnId(rank)
 	if(rank == "Captain")

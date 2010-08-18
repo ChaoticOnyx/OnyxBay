@@ -34,6 +34,7 @@
 
 		spawn(15)
 			src.power_change()		// all machines set to current power level, also updates lighting icon
+			alldoors = get_doors(src)
 
 /area/Del()
 	related -= src
@@ -60,7 +61,9 @@
 		src.fire = 1
 		src.updateicon()
 		src.mouse_opacity = 0
-		for(var/obj/machinery/door/firedoor/D in src)
+		//if(!alldoors)
+		//	alldoors = get_doors(src)
+		for(var/obj/machinery/door/firedoor/D in alldoors)
 			if(!D.blocked)
 				if(D.operating)
 					D.nextstate = CLOSED
@@ -81,7 +84,9 @@
 		src.fire = 0
 		src.mouse_opacity = 0
 		src.updateicon()
-		for(var/obj/machinery/door/firedoor/D in src)
+	//	if(!alldoors)
+		//	alldoors = get_doors(src)
+		for(var/obj/machinery/door/firedoor/D in alldoors)
 			if(!D.blocked)
 				if(D.operating)
 					D.nextstate = OPEN
@@ -117,14 +122,20 @@
 					D.open()
 	return
 
-/area/proc/activate_air_doors()
+/area/proc/activate_air_doors(stayclosed)
 	if(src.name == "Space") //no atmo alarms in space
 		return
 	if (!( src.air_doors_activated ) && !air_door_close_delay)
+		if(stayclosed)
+			air_door_close_delay = 1
+			spawn(stayclosed*10)
+				air_door_close_delay = 0
 		src.air_doors_activated = 1
 		src.updateicon()
 		src.mouse_opacity = 0
-		for(var/obj/machinery/door/airlock/D in src)
+	//	if(!alldoors)
+		//	alldoors = get_doors(src)
+		for(var/obj/machinery/door/airlock/D in alldoors)
 			if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
 			if(!D.density)
 				spawn(0)
@@ -138,8 +149,8 @@
 				D.locked = 1
 				D.air_locked = 1
 				D.update_icon()
-			else
-				D.air_locked = 0 //Ensure we're getting the right doors here.
+			//else
+			//	D.air_locked = 0 //Ensure we're getting the right doors here.
 		var/list/cameras = list()
 		for (var/obj/machinery/camera/C in src)
 			cameras += C
@@ -147,16 +158,23 @@
 			aiPlayer.triggerAlarm("Atmosphere", src, cameras, src)
 		for (var/obj/machinery/computer/atmosphere/alerts/a in world)
 			a.triggerAlarm("Atmosphere", src, cameras, src)
+			//deactivate_air_doors()
 	return
 
 /area/proc/deactivate_air_doors(stayopen)
-	if (src.air_doors_activated)
+	if (src.air_doors_activated && !air_door_close_delay)
+		if(stayopen)
+			air_door_close_delay = 1
+			spawn(stayopen*10)
+				air_door_close_delay = 0
 		src.air_doors_activated = 0
 		src.mouse_opacity = 0
 		src.updateicon()
-		for(var/obj/machinery/door/airlock/D in src)
-			if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER))
-				D.air_locked = 0
+	//	if(!alldoors)
+		//	alldoors = get_doors(src)
+		for(var/obj/machinery/door/airlock/D in alldoors)
+			if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
+				//D.air_locked = 0
 			if(D.air_locked) //Don't mess with doors locked for other reasons.
 				if(D.density)
 					D.locked = 0
@@ -166,12 +184,6 @@
 			aiPlayer.cancelAlarm("Atmosphere", src, src)
 		for (var/obj/machinery/computer/atmosphere/alerts/a in world)
 			a.cancelAlarm("Atmosphere", src, src)
-		if(stayopen)
-			air_door_close_delay = stayopen
-			while(air_door_close_delay)
-				sleep(10)
-				air_door_close_delay--
-			activate_air_doors()
 	return
 
 /area/proc/updateicon()
@@ -251,3 +263,44 @@
 			master.used_light += amount
 		if(ENVIRON)
 			master.used_environ += amount
+
+
+proc/get_doors(area/A) //Luckily for the CPU, this generally is only run once per area.
+	set background = 1
+	. = list()
+	for(var/area/AR in A.related)
+		for(var/obj/machinery/door/D in AR)
+			. += D
+
+
+			//If at least one area that is different from this one is found, execute the rest of this code.
+			/*var/area/B
+			for(B in orange(T,1))
+				if(B != A && !(B in A.related))
+					break
+			if(!B) continue
+			var/list/z_doors_list = list()
+			for(var/obj/machinery/door/D in T)
+				z_doors_list += D
+				z_doors_list[D] = D.density
+				D.density = 0
+			for(var/turf/X in T.GetBasicCardinals())
+				if(X.loc == A || (X.loc in A.related)) continue //Don't bother with turfs already in the area.
+				var/list/doors_list = list()
+				for(var/obj/machinery/door/O in X)
+					if(istype(O,/obj/machinery/door/firedoor))
+						var/obj/machinery/door/airlock/maintenance/M = locate() in X
+						if(M)
+							continue
+					doors_list += O
+					doors_list[O] = O.density
+					O.density = 0
+				if(!T.CanPass(null,X,0,0))
+					for(var/obj/machinery/door/O in doors_list)
+						O.density = doors_list[O]
+					continue
+				for(var/obj/machinery/door/O in doors_list)
+					. += O
+					O.density = doors_list[O]*/
+			//for(var/obj/machinery/door/D in T)
+			//	D.density = z_doors_list[D]

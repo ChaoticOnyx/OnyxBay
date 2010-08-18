@@ -1,8 +1,8 @@
 /*ZAS3 - Necessitated by the obfuscating nature of gooncode.*/
 
 vs_control/var
-	FLOW_PERCENT = 1 //Percent of gas to send between connected turfs.
-	VACUUM_SPEED = 1.5 //Divisor of zone gases exposed directly to space (i.e. space tiles in members)
+	FLOW_PERCENT = 0.075 //Percent of gas to send between connected turfs.
+	VACUUM_SPEED = 1.2 //Divisor of zone gases exposed directly to space (i.e. space tiles in members)
 
 #define QUANTIZE(variable)		(round(variable,0.0001))
 
@@ -293,6 +293,9 @@ zone
 		for(var/turf/space/S in T.GetUnblockedCardinals())
 			space_connections += S
 		volume = CELL_VOLUME*members.len
+		if(!ticker)
+			oxygen += MOLES_O2STANDARD
+			nitrogen += MOLES_N2STANDARD
 		rebuild_cache()
 		update_members()
 	RemoveTurf(turf/T)
