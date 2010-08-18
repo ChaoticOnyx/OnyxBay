@@ -293,6 +293,9 @@ zone
 		for(var/turf/space/S in T.GetUnblockedCardinals())
 			space_connections += S
 		volume = CELL_VOLUME*members.len
+		if(!ticker)
+			oxygen += MOLES_O2STANDARD
+			nitrogen += MOLES_N2STANDARD
 		rebuild_cache()
 		update_members()
 	RemoveTurf(turf/T)

@@ -31,7 +31,7 @@
 				trunk.linked = src	// link the pipe trunk to self
 
 			air_contents = new/datum/gas_mixture()
-			//gas.volume = 1.05 * CELLSTANDARD
+			air_contents.volume = 0.125 * CELL_VOLUME
 			update()
 
 

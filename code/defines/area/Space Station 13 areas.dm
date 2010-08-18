@@ -47,6 +47,8 @@
 								// (original area before splitting due to sd_DAL)
 	var/list/related			// the other areas of the same type as this
 
+	var/list/alldoors         // Doors which are not in the area, but should still be closed in case of emergency.
+
 
 /area/engine/
 
