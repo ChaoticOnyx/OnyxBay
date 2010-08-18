@@ -618,7 +618,6 @@
 #include "code\WorkInProgress\explosion_particles.dm"
 #include "code\WorkInProgress\KeelinsStuff.dm"
 #include "code\WorkInProgress\NewBan.dm"
-#include "code\WorkInProgress\Aryn\PlayingCards.dm"
 #include "code\WorkInProgress\Aryn\TextFilters.dm"
 #include "code\WorkInProgress\computer2\airlock_control.dm"
 #include "code\WorkInProgress\computer2\arcade.dm"
