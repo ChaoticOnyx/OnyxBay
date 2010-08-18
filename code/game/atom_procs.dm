@@ -51,6 +51,7 @@
 		return 0
 	if (!( src.flags ) & 256)
 		return
+	add_fibers(M)
 	if (M.gloves)
 		if(src.fingerprintslast != M.key)
 			src.fingerprintshidden += text("(Wearing gloves). Real name: [], Key: []",M.real_name, M.key)
@@ -74,6 +75,8 @@
 			src.fingerprintshidden += text("Real name: [], Key: []",M.real_name, M.key)
 			src.fingerprintslast = M.key
 	return
+/atom/proc/add_fibers(mob/living/carbon/human/M)
+
 
 /atom/proc/add_blood(mob/living/carbon/human/M as mob)
 	if (!( istype(M, /mob/living/carbon/human) ))
