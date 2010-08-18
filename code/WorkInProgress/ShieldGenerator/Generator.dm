@@ -166,7 +166,7 @@ Manual Mode Generation Rate:      <a href="?src=\ref[src];man=1">M</a> <a href="
 		icon_state = "econ-p"
 	else
 		icon_state = "econ"
-		if(operatingmode && !capacitor.stat)
+		if(operatingmode && capacitor && !capacitor.stat)
 			addoverlay(image('shieldgen.dmi', "o[round((conversionrate * 11) / maxconversionrate)]"))
 		else
 			addoverlay(image('shieldgen.dmi', "econ-o"))

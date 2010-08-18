@@ -10,4 +10,4 @@
 	opacity = 0
 	invisibility = 101
 
-//	var/obj/machinery/shielding/emitter/emitter = null
+	var/obj/machinery/shielding/emitter/emitter = null

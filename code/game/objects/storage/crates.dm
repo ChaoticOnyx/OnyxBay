@@ -75,6 +75,7 @@
 	density = 1
 	openicon = "plasmacrateopen"
 	closedicon = "plasmacrate"
+	req_access = list(access_tox)
 
 /obj/crate/secure/gear
 	desc = "A secure gear crate."
