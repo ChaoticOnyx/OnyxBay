@@ -184,20 +184,20 @@
 
 /obj/machinery/alarm/Topic(href,href_list[])
 	if("activate_alarm" in href_list)
-		air_doors_close()
+		air_doors_close(1)
 	else if("deactivate_alarm" in href_list)
-		air_doors_open()
+		air_doors_open(1)
 	updateUsrDialog()
 
 obj/machinery/alarm/proc
-	air_doors_close()
+	air_doors_close(manual)
 		var/area/A = get_area(loc)
 		for(var/area/RA in A.related)
-			RA.activate_air_doors(5)
-	air_doors_open()
+			RA.activate_air_doors(manual*5)
+	air_doors_open(manual)
 		var/area/A = get_area(loc)
 		for(var/area/RA in A.related)
-			RA.deactivate_air_doors(5)
+			RA.deactivate_air_doors(manual*5)
 
 
 
