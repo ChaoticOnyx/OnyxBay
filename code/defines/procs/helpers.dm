@@ -106,7 +106,7 @@
 					S.path -= next
 					continue
 			if (!S.path.len || (S.target && S.path.len && get_dist(S.path[S.path.len],S.target) > 4)) // Recalculate the path if there is no path or if the target has moved too far away from the end of it
-				spawn(0)
+				spawn(lag)
 					if (S.target)
 						S.path = AStar(S.loc, S.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=S.botcard, exclude=list(/obj/landmark/alterations/nopath, avoid=null))
 						S.path = reverselist(S.path)
@@ -120,7 +120,7 @@
 
 					if(blockcount > 10)	// attempt 5 times before recomputing
 						// find new path excluding blocked turf
-						spawn(2)
+						spawn(lag)
 							if (S.target)
 								S.path = AStar(S.loc, S.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=S.botcard, exclude=list(/obj/landmark/alterations/nopath, avoid=next))
 								S.path = reverselist(S.path)

@@ -1,6 +1,7 @@
 /obj/secure_closet/security1/New()
 	..()
 	sleep(2)
+	new/obj/item/device/radio/headset/security(src)
 	new /obj/item/weapon/storage/flashbang_kit(src)
 	new /obj/item/weapon/handcuffs(src)
 	new /obj/item/weapon/gun/energy/taser_gun(src)

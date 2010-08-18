@@ -87,6 +87,11 @@ h1, h2, h3, h4, h5, h6
 	color: #008000;
 }
 
+.securityradio
+{
+	color: #FF0000;
+}
+
 .alert
 {
 	color: #ff0000;

@@ -199,6 +199,7 @@
 				I.layer = MOB_LAYER - 0.05
 				src.addoverlay(I)
 			process_extra()
+				if(!floorbelow) return
 				if(istype(floorbelow,/turf/simulated)) //Infeasibly complicated gooncode for the Elder System. =P
 					var/turf/simulated/FB = floorbelow
 					if(parent && parent.group_processing)
@@ -232,8 +233,9 @@
 					air.mimic(floorbelow,1)
 					air.temperature_mimic(floorbelow,FLOOR_HEAT_TRANSFER_COEFFICIENT,1)
 
-				if(floorbelow.zone && !(floorbelow.zone in zone.connections))
-					zone.Connect(src,floorbelow)
+				if(floorbelow.zone && zone)
+					if(!(floorbelow.zone in zone.connections))
+						zone.Connect(src,floorbelow)
 
 	plating
 		name = "plating"

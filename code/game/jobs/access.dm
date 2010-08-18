@@ -101,7 +101,7 @@
 	switch(job)
 		if("Geneticist")
 			return list(access_medical, access_morgue, access_medlab, access_maint_tunnels, access_laboratories_doors)
-		if("Station Engineer")
+		if("Engineer")
 			return list(access_engine, access_incinerator, access_engine_equip, access_tech_storage,
 						access_maint_tunnels, access_external_airlocks, access_laboratories_doors, access_maintenance_hall,
 						access_shield_generator)
@@ -263,13 +263,13 @@
 		if ("Med/Sci")
 			return list("Chemist", "Geneticist", "Scientist", "Roboticist", "Medical Doctor")
 		if ("Maintenance")
-			return list("Station Engineer", "Atmospheric Technician", "Janitor", "Quartermaster")
+			return list("Engineer", "Atmospheric Technician", "Janitor", "Quartermaster")
 		if ("Management")
 			return list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Research Director")
 
 
 /proc/get_all_jobs()
-	return list("Assistant", "Station Engineer", "Detective", "Medical Doctor", "Captain", "Security Officer",
+	return list("Assistant", "Engineer", "Detective", "Medical Doctor", "Captain", "Security Officer",
 				"Geneticist", "Scientist", "Head of Security", "Head of Personnel", "Atmospheric Technician",
 				"Chaplain", "Barman", "Chemist", "Janitor", "Chef", "Roboticist", "Quartermaster",
 				"Chief Engineer", "Research Director")
