@@ -98,7 +98,6 @@
 		S.path = AStar(S.loc, S.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=S.botcard, exclude=list(/obj/landmark/alterations/nopath, avoid=null))
 		S.path = reverselist(S.path)
 		while (S.target && get_dist(S,S.target) > min)
-			var/atom/loc = S.target.loc
 			sleep(lag)
 			var/turf/next
 			if (S.path.len > 0)
@@ -106,10 +105,11 @@
 				if(next == S.loc)
 					S.path -= next
 					continue
-			if (S.path.len < 3)
+			if (!S.path.len || (S.target && S.path.len && get_dist(S.path[S.path.len],S.target) > 4)) // Recalculate the path if there is no path or if the target has moved too far away from the end of it
 				spawn(0)
-					S.path = AStar(S.loc, loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=S.botcard, exclude=list(/obj/landmark/alterations/nopath, avoid=null))
-					S.path = reverselist(S.path)
+					if (S.target)
+						S.path = AStar(S.loc, S.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=S.botcard, exclude=list(/obj/landmark/alterations/nopath, avoid=null))
+						S.path = reverselist(S.path)
 			if(istype( next, /turf/simulated))
 				var/moved = step_towards_3d(S, next)	// attempt to move
 				if(moved)	// successful move
