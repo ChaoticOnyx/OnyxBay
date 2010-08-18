@@ -151,10 +151,10 @@ proc
 
 			find_path:
 				for(var/datum/d in L)
-					if(d.type in exclude || d in exclude)
+					if(exclude.Find(d.type) || exclude.Find(d))
 						continue
 					for(var/datum/e in d)
-						if(e.type in exclude || e in exclude)
+						if(exclude.Find(e.type) || exclude.Find(e))
 							continue find_path
 
 					var/ng = cur.g + call(cur.source,dist)(d)
