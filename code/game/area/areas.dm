@@ -61,8 +61,8 @@
 		src.fire = 1
 		src.updateicon()
 		src.mouse_opacity = 0
-		if(!alldoors)
-			alldoors = get_doors(src)
+		//if(!alldoors)
+		//	alldoors = get_doors(src)
 		for(var/obj/machinery/door/firedoor/D in alldoors)
 			if(!D.blocked)
 				if(D.operating)
@@ -84,8 +84,8 @@
 		src.fire = 0
 		src.mouse_opacity = 0
 		src.updateicon()
-		if(!alldoors)
-			alldoors = get_doors(src)
+	//	if(!alldoors)
+		//	alldoors = get_doors(src)
 		for(var/obj/machinery/door/firedoor/D in alldoors)
 			if(!D.blocked)
 				if(D.operating)
@@ -133,8 +133,8 @@
 		src.air_doors_activated = 1
 		src.updateicon()
 		src.mouse_opacity = 0
-		if(!alldoors)
-			alldoors = get_doors(src)
+	//	if(!alldoors)
+		//	alldoors = get_doors(src)
 		for(var/obj/machinery/door/airlock/D in alldoors)
 			if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
 			if(!D.density)
@@ -170,8 +170,8 @@
 		src.air_doors_activated = 0
 		src.mouse_opacity = 0
 		src.updateicon()
-		if(!alldoors)
-			alldoors = get_doors(src)
+	//	if(!alldoors)
+		//	alldoors = get_doors(src)
 		for(var/obj/machinery/door/airlock/D in alldoors)
 			if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
 				//D.air_locked = 0
@@ -269,15 +269,12 @@ proc/get_doors(area/A) //Luckily for the CPU, this generally is only run once pe
 	set background = 1
 	. = list()
 	for(var/area/AR in A.related)
-		for(var/turf/T in AR)
-			for(var/obj/machinery/door/D in AR)
-				. += D
-
-			if(T.blocks_air) continue
+		for(var/obj/machinery/door/D in AR)
+			. += D
 
 
 			//If at least one area that is different from this one is found, execute the rest of this code.
-			var/area/B
+			/*var/area/B
 			for(B in orange(T,1))
 				if(B != A && !(B in A.related))
 					break
@@ -304,6 +301,6 @@ proc/get_doors(area/A) //Luckily for the CPU, this generally is only run once pe
 					continue
 				for(var/obj/machinery/door/O in doors_list)
 					. += O
-					O.density = doors_list[O]
-			for(var/obj/machinery/door/D in T)
-				D.density = z_doors_list[D]
+					O.density = doors_list[O]*/
+			//for(var/obj/machinery/door/D in T)
+			//	D.density = z_doors_list[D]

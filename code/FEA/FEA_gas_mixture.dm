@@ -546,6 +546,7 @@ datum
 			return 1
 
 		share(datum/gas_mixture/sharer)
+			if(!sharer) return
 			var/delta_oxygen = QUANTIZE(oxygen_archived - sharer.oxygen_archived)/5
 			var/delta_carbon_dioxide = QUANTIZE(carbon_dioxide_archived - sharer.carbon_dioxide_archived)/5
 			var/delta_nitrogen = QUANTIZE(nitrogen_archived - sharer.nitrogen_archived)/5
@@ -872,6 +873,7 @@ datum
 			//Logic integrated from: temperature_mimic(model, conduction_coefficient) for efficiency
 
 		temperature_share(datum/gas_mixture/sharer, conduction_coefficient)
+			if(!sharer) return
 
 			var/delta_temperature = (temperature_archived - sharer.temperature_archived)
 			if(abs(delta_temperature) > MINIMUM_TEMPERATURE_DELTA_TO_CONSIDER)
