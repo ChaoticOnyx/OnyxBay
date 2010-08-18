@@ -95,7 +95,7 @@ STUN BATON
 	if ((istype(H, /mob/living/carbon/human) && istype(H, /obj/item/clothing/head) && H.flags & 8 && prob(80)))
 		M << "\red The helmet protects you from being hit hard in the head!"
 		return
-	if (status == 0 || (status == 1 && charges ==0))
+	if (status == 0 || (status == 1 && charges == 0))
 		if(user.a_intent == "hurt")
 			if (M.weakened < 5 && (!(M.mutations & 8))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
 				M.weakened = 5

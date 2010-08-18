@@ -72,7 +72,7 @@
 		air_doors_close()
 	else
 		air_doors_open()
-
+	updateUsrDialog()
 	return
 
 /obj/machinery/alarm/proc/post_alert(alert_level, alert_type)
@@ -121,12 +121,8 @@
 		return
 	if(stat & (NOPOWER|BROKEN))
 		return
-	if(!(istype(user, /mob/living/carbon/human) || ticker))
-		if (!istype(user, /mob/living/silicon/ai))
-			user << "\red You don't have the admittedly arbitrary humanity to do this!"
-			return
 
-	var/turf/location = user.loc
+	var/turf/location = loc
 	if (!( istype(location, /turf) ))
 		return
 
@@ -191,6 +187,7 @@
 		air_doors_close()
 	else if("deactivate_alarm" in href_list)
 		air_doors_open()
+	updateUsrDialog()
 
 obj/machinery/alarm/proc
 	air_doors_close()

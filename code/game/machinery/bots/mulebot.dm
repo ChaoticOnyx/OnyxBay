@@ -528,7 +528,7 @@
 			on = 0
 			return
 		if(on)
-			var/speed = 1//((wires & wire_motor1) ? 1:0) + ((wires & wire_motor2) ? 2:0)
+			var/speed = ((wires & wire_motor1) ? 1:0) + ((wires & wire_motor2) ? 2:0)
 			//world << "speed: [speed]"
 			switch(speed)
 				if(0)
@@ -669,7 +669,7 @@
 	// calculates a path to the current destination
 	// given an optional turf to avoid
 	proc/calc_path(var/turf/avoid = null)
-		src.path = AStar(src.loc, src.target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, id=botcard, exclude=avoid)
+		src.path = AStar(src.loc, src.target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, id=botcard, exclude=list(/obj/landmark/alterations/nopath, avoid))
 		src.path = reverselist(src.path)
 
 

@@ -178,6 +178,7 @@
 	var/turf/space/S = new /turf/space( locate(src.x, src.y, src.z) )
 	S.dir = old_dir
 	S.icon_old = old_icon
+	S.Check()
 	return S
 
 /turf/proc/ReplaceWithLattice()

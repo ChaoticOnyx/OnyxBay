@@ -15,7 +15,7 @@
 	return final_text
 
 /proc/get_dir_3d(var/atom/ref, var/atom/target)
-	return get_dir(ref, target) | (target.z > ref.z ? UP : 0) | (target.z < ref.z ? DOWN : 0)
+	return get_dir(ref, target) | (target.z > ref.z ? DOWN : 0) | (target.z < ref.z ? UP : 0)
 
 //Bwahahaha! I am extending a built-in proc for personal gain!
 //(And a bit of nonpersonal gain, I guess)
@@ -60,9 +60,12 @@
 	return list
 
 /proc/step_towards_3d(var/atom/movable/Ref, var/atom/movable/Trg)
-/*
 	if(Ref.z == Trg.z)
-		return step_towards(Ref, Trg)
+		var/S = Ref.loc
+		step_towards(Ref, Trg)
+		if(Ref.loc != S)
+			return 1
+		return 0
 
 	var/dx = (Trg.x - Ref.x) / max(abs(Trg.x - Ref.x), 1)
 	var/dy = (Trg.y - Ref.y) / max(abs(Trg.y - Ref.y), 1)
@@ -79,8 +82,55 @@
 		return 0
 
 	return 1
-*/
-	return step_towards(Ref, Trg)
+
+/proc/walk_to_3d(var/atom/movable/Ref, var/atom/movable/Trg, var/min=0, var/lag=0)
+	if (Ref.is_walking_to_3d)
+		return
+	else
+		Ref.is_walking_to_3d = 1
+		spawn(0) walk_to_3d_loop(Ref, Trg, min, lag)
+	return
+
+/proc/walk_to_3d_loop(var/atom/movable/Ref, var/atom/movable/Trg, var/min=0, var/lag=0)
+	if (istype(Ref, /obj/machinery/bot/secbot))
+		var/obj/machinery/bot/secbot/S = Ref
+		var/blockcount
+		S.path = AStar(S.loc, S.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=S.botcard, exclude=list(/obj/landmark/alterations/nopath, avoid=null))
+		S.path = reverselist(S.path)
+		while (S.target && get_dist(S,S.target) > min)
+			var/atom/loc = S.target.loc
+			sleep(lag)
+			var/turf/next
+			if (S.path.len > 0)
+				next = S.path[1]
+				if(next == S.loc)
+					S.path -= next
+					continue
+			if (S.path.len < 3)
+				spawn(0)
+					S.path = AStar(S.loc, loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=S.botcard, exclude=list(/obj/landmark/alterations/nopath, avoid=null))
+					S.path = reverselist(S.path)
+			if(istype( next, /turf/simulated))
+				var/moved = step_towards_3d(S, next)	// attempt to move
+				if(moved)	// successful move
+					blockcount = 0
+					S.path -= S.loc
+				else		// failed to move
+					blockcount++
+
+					if(blockcount > 10)	// attempt 5 times before recomputing
+						// find new path excluding blocked turf
+						spawn(2)
+							if (S.target)
+								S.path = AStar(S.loc, S.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=S.botcard, exclude=list(/obj/landmark/alterations/nopath, avoid=next))
+								S.path = reverselist(S.path)
+								if(S.path.len == 0)
+									continue
+								else
+									blockcount = 0
+	Ref.is_walking_to_3d = 0
+
+/atom/movable/var/is_walking_to_3d
 
 
 /proc/hex2num(hex)

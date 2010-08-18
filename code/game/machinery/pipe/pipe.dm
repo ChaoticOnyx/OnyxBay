@@ -313,14 +313,14 @@ var/linenums = 0
 		return dirs				// note extra p_dir on end of list is unimportant
 	else
 		if(node1)
-			var/d1 = get_dir(src, node1)		// find the direction of node1
+			var/d1 = get_dir_3d(src, node1)		// find the direction of node1
 			if(d1==dirs[1])						// if it matches
 				return dirs						// then dirs list is correct
 			else
 				return list(dirs[2], dirs[1])	// otherwise return the list swapped
 
 		else		// node2 must be valid
-			var/d2 = get_dir(src, node2)		// direction of node2
+			var/d2 = get_dir_3d(src, node2)		// direction of node2
 			if(d2==dirs[2])						// matches
 				return dirs						// dirs list is correct
 			else
@@ -420,116 +420,7 @@ var/linenums = 0
 					return
 		else
 	return
-/*
-	var/strength = (((plasma + oxygen/2.0) / 1600000.0) * sqrt(temp) ) / 10
-	message_admins("CODER: Pipe explosion strength: [strength], Temperature: [temp], Plasma: [plasma], Oxygen: [oxygen]")
-	//lets say hypothetically it uses up 9/10 of its energy in bursting the pipe
 
-	if (strength < 773.0)
-		var/turf/T = get_turf(src.loc)
-		T.poison += plasma
-		T.firelevel = T.poison
-		T.res_vars()
-
-		//if ((src.gas.temperature > (450+T0C) && src.gas.plasma == 1600000.0))
-
-		if (strength > (450+T0C))
-			var/turf/sw = locate(max(T.x - 4, 1), max(T.y - 4, 1), T.z)
-			var/turf/ne = locate(min(T.x + 4, world.maxx), min(T.y + 4, world.maxy), T.z)
-			defer_powernet_rebuild = 1
-
-			for(var/turf/U in block(sw, ne))
-				var/zone = 4
-				if ((U.y <= (T.y + 1) && U.y >= (T.y - 1) && U.x <= (T.x + 2) && U.x >= (T.x - 2)) )
-					zone = 3
-				if ((U.y <= (T.y + 1) && U.y >= (T.y - 1) && U.x <= (T.x + 1) && U.x >= (T.x - 1) ))
-					zone = 2
-				for(var/atom/A in U)
-					A.ex_act(zone)
-					//Foreach goto(342)
-				U.ex_act(zone)
-				U.buildlinks()
-				//Foreach goto(170)
-			defer_powernet_rebuild = 0
-			makepowernets()
-
-		else
-			//if ((src.gas.temperature > (300+T0C) && src.gas.plasma == 1600000.0))
-			if (strength > (300+T0C))
-				var/turf/sw = locate(max(T.x - 4, 1), max(T.y - 4, 1), T.z)
-				var/turf/ne = locate(min(T.x + 4, world.maxx), min(T.y + 4, world.maxy), T.z)
-				defer_powernet_rebuild = 1
-
-				for(var/turf/U in block(sw, ne))
-					var/zone = 4
-					if ((U.y <= (T.y + 2) && U.y >= (T.y - 2) && U.x <= (T.x + 2) && U.x >= (T.x - 2)) )
-						zone = 3
-					for(var/atom/A in U)
-						A.ex_act(zone)
-						//Foreach goto(598)
-					U.ex_act(zone)
-					U.buildlinks()
-					//Foreach goto(498)
-				defer_powernet_rebuild = 0
-				makepowernets()
-
-		//src.master = null
-		//SN src = null
-		del(src)
-		return
-
-	var/turf/T = src.loc
-	while(!( istype(T, /turf) ))
-		T = T.loc
-
-	for(var/mob/M in range(T))
-		flick("flash", M.flash)
-		//Foreach goto(732)
-	//var/m_range = 2
-
-	var/m_range = round(strength / 387)
-	for(var/obj/machinery/atmoalter/canister/C in range(2, T))
-		if (!( C.destroyed ))
-			if (C.gas.plasma >= 35000)
-				C.destroyed = 1
-				m_range++
-
-		//Foreach goto(776)
-	var/min = m_range
-	var/med = m_range * 2
-	var/max = m_range * 3
-	var/u_max = m_range * 4
-
-	var/turf/sw = locate(max(T.x - u_max, 1), max(T.y - u_max, 1), T.z)
-	var/turf/ne = locate(min(T.x + u_max, world.maxx), min(T.y + u_max, world.maxy), T.z)
-
-	defer_powernet_rebuild = 1
-
-	for(var/turf/U in block(sw, ne))
-
-		var/zone = 4
-		if ((U.y <= (T.y + max) && U.y >= (T.y - max) && U.x <= (T.x + max) && U.x >= (T.x - max) ))
-			zone = 3
-		if ((U.y <= (T.y + med) && U.y >= (T.y - med) && U.x <= (T.x + med) && U.x >= (T.x - med) ))
-			zone = 2
-		if ((U.y <= (T.y + min) && U.y >= (T.y - min) && U.x <= (T.x + min) && U.x >= (T.x - min) ))
-			zone = 1
-		for(var/atom/A in U)
-			A.ex_act(zone)
-			//Foreach goto(1217)
-		U.ex_act(zone)
-		U.buildlinks()
-		//U.mark(zone)
-
-		//Foreach goto(961)
-	//src.master = null
-	defer_powernet_rebuild = 0
-	makepowernets()
-
-	//SN src = null
-	del(src)
-	return
-*/
 /*
 /obj/machinery/pipes/process()
 */
@@ -651,12 +542,13 @@ var/linenums = 0
 		if(istype(T,/turf/space))
 			gas.temperature += ( T.temp - temp) / (3.0 * insulation * numnodes)
 */ //TODO FIX
+
 // finds the machine with compatible p_dir in 1 step in dir from S
 /proc/get_machine(var/level, var/turf/S, mdir)
 
-	var/flip = turn(mdir, 180)
+	var/flip = reverse_dir_3d(mdir)
 
-	var/turf/T = get_step(S, mdir)
+	var/turf/T = get_step_3d(S, mdir)
 
 	for(var/obj/machinery/M in T.contents)
 		if(M.level == level)
@@ -668,7 +560,7 @@ var/linenums = 0
 // finds the machine with compatible h_dir in 1 step in dir from S
 /proc/get_he_machine(var/level, var/turf/S, mdir)
 
-	var/flip = turn(mdir, 180)
+	var/flip = reverse_dir_3d(mdir)
 
 	var/turf/T = get_step(S, mdir)
 

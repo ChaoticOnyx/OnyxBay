@@ -87,6 +87,7 @@ Filter types:
 
 	process()
 		..()
+		update_icon()
 		if(!on)
 			return 0
 

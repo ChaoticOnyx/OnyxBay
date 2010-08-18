@@ -36,6 +36,7 @@
 	access_laboratories_doors = 36
 	access_incinerator = 37
 	access_maintenance_hall = 38
+	access_shield_generator = 39
 
 	password_firedoor = 100
 	password_smeg = 101
@@ -102,7 +103,8 @@
 			return list(access_medical, access_morgue, access_medlab, access_maint_tunnels, access_laboratories_doors)
 		if("Station Engineer")
 			return list(access_engine, access_incinerator, access_engine_equip, access_tech_storage,
-						access_maint_tunnels, access_external_airlocks, access_laboratories_doors, access_maintenance_hall)
+						access_maint_tunnels, access_external_airlocks, access_laboratories_doors, access_maintenance_hall,
+						access_shield_generator)
 		if("Assistant")
 			return list(access_maint_tunnels)
 		if("Chaplain")
@@ -115,21 +117,22 @@
 			return get_all_accesses()
 		if("Security Officer")
 			return list(access_security, access_laboratories_doors, access_incinerator, access_brig, access_forensics_lockers,
-						access_maint_tunnels, access_medical, access_security_passthrough, access_maintenance_hall)
+						access_maint_tunnels, access_medical, access_security_passthrough, access_maintenance_hall,
+						access_shield_generator)
 		if("Scientist")
 			return list(access_tox, access_tox_storage, access_maint_tunnels, access_medlab, access_laboratories_doors)
 		if("Head of Security")
 			return list(access_medical, access_morgue, access_tox, access_tox_storage, access_chemistry, access_medlab,
 			            access_teleporter, access_heads, access_tech_storage, access_security, access_brig, access_atmospherics,
 			            access_maint_tunnels, access_bar, access_janitor, access_kitchen, access_robotics, access_laboratories_doors,
-			             access_armory, access_engine, access_security_passthrough, access_maintenance_hall)
+			             access_armory, access_engine, access_security_passthrough, access_maintenance_hall, access_shield_generator)
 		if("Head of Personnel")
 			return list(access_security, access_brig, access_forensics_lockers,
 			            access_tox, access_tox_storage, access_chemistry, access_medical, access_medlab, access_engine,
 			            access_emergency_storage, access_change_ids, access_ai_upload, access_eva, access_heads,
 			            access_all_personal_lockers, access_tech_storage, access_maint_tunnels, access_bar, access_janitor,
 			            access_crematorium, access_kitchen, access_robotics, access_cargo, access_cargo_bot,
-			            access_security_passthrough, access_laboratories_doors, access_maintenance_hall)
+			            access_security_passthrough, access_laboratories_doors, access_maintenance_hall, access_shield_generator)
 		if("Atmospheric Technician")
 			return list(access_atmospherics, access_maint_tunnels, access_emergency_storage, access_tech_storage,
 						access_external_airlocks, access_maintenance_hall)
@@ -152,7 +155,7 @@
 			return list(access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels,
 			            access_external_airlocks, access_atmospherics, access_emergency_storage, access_eva,
 			            access_heads, access_ai_upload, access_construction, access_security_passthrough, access_laboratories_doors,
-			            access_maintenance_hall)
+			            access_maintenance_hall, access_shield_generator)
 		if("Research Director")
 			return list(access_medical, access_morgue, access_medlab, access_robotics,
 			            access_tech_storage, access_maint_tunnels, access_heads, access_tox,
@@ -168,7 +171,8 @@
 	            access_teleporter, access_eva, access_heads, access_captain, access_all_personal_lockers,
 	            access_tech_storage, access_chapel_office, access_atmospherics, access_kitchen,
 	            access_bar, access_janitor, access_crematorium, access_robotics, access_cargo, access_cargo_bot, access_construction,
-	            access_security_passthrough, access_laboratories_doors, access_incinerator, access_maintenance_hall)
+	            access_security_passthrough, access_laboratories_doors, access_incinerator, access_maintenance_hall,
+	            access_shield_generator)
 
 /proc/get_access_desc(A)
 	switch(A)
@@ -244,6 +248,8 @@
 			return "Laboratories Hallway"
 		if(access_maintenance_hall)
 			return "Maintenance Hall"
+		if(access_shield_generator)
+			return "Shield Generator"
 
 /proc/get_job_types()
 	return list("Civilian", "Security", "Med/Sci", "Maintenance", "Management")
@@ -270,7 +276,8 @@
 
 
 /proc/get_all_passwords()
-	return list(password_smeg,password_firedoor,password_digitalvalve,password_router,password_heater,password_filterinlets,password_filtervents)
+	return list(password_smeg, password_firedoor, password_digitalvalve, password_router, password_heater,
+				password_filterinlets, password_filtervents)
 
 /obj/proc/get_password()
 	if(!src.req_access || !istype(src.req_access, /list) || !src.req_access.len)

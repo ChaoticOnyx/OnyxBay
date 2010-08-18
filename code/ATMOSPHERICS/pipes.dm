@@ -136,6 +136,7 @@ obj/machinery/atmospherics/pipe
 					parent.temperature_interact(loc, volume, thermal_conductivity)
 
 		check_pressure(pressure)
+			/*
 			var/turf/T = get_turf(src)
 
 			if(istype(T, /turf/simulated/wall))
@@ -153,6 +154,8 @@ obj/machinery/atmospherics/pipe
 					del(src)
 
 			else return 1
+			*/
+			return 1
 
 		Del()
 			if(node1)
@@ -188,25 +191,27 @@ obj/machinery/atmospherics/pipe
 				else
 					del(src)
 
-		initialize()
-			var/connect_directions
+		proc/get_connect_directions()
 
 			switch(dir)
 				if(NORTH)
-					connect_directions = NORTH|SOUTH
+					return NORTH|SOUTH
 				if(SOUTH)
-					connect_directions = NORTH|SOUTH
+					return NORTH|SOUTH
 				if(EAST)
-					connect_directions = EAST|WEST
+					return EAST|WEST
 				if(WEST)
-					connect_directions = EAST|WEST
+					return EAST|WEST
 				else
-					connect_directions = dir
+					return dir
 
-			for(var/direction in cardinal)
+		initialize()
+			var/connect_directions = get_connect_directions()
+
+			for(var/direction in cardinal3d)
 				if(direction&connect_directions)
-					for(var/obj/machinery/atmospherics/target in get_step(src,direction))
-						if(target.initialize_directions & get_dir(target,src))
+					for(var/obj/machinery/atmospherics/target in get_step_3d(src,direction))
+						if(target.initialize_directions & get_dir_3d(target,src))
 							node1 = target
 							break
 
@@ -214,10 +219,10 @@ obj/machinery/atmospherics/pipe
 					break
 
 
-			for(var/direction in cardinal)
+			for(var/direction in cardinal3d)
 				if(direction&connect_directions)
-					for(var/obj/machinery/atmospherics/target in get_step(src,direction))
-						if(target.initialize_directions & get_dir(target,src))
+					for(var/obj/machinery/atmospherics/target in get_step_3d(src,direction))
+						if(target.initialize_directions & get_dir_3d(target,src))
 							node2 = target
 							break
 
@@ -246,6 +251,9 @@ obj/machinery/atmospherics/pipe
 	simple/multiz
 		icon = 'multiz_pipe.dmi'
 		var/dir2 = 0
+
+		get_connect_directions()
+			return dir | dir2
 
 		up
 			dir2 = UP
