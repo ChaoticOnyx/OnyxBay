@@ -190,17 +190,17 @@
 	if("activate_alarm" in href_list)
 		air_doors_close()
 	else if("deactivate_alarm" in href_list)
-		air_doors_open(5)
+		air_doors_open()
 
 obj/machinery/alarm/proc
 	air_doors_close()
 		var/area/A = get_area(loc)
 		for(var/area/RA in A.related)
-			RA.activate_air_doors()
-	air_doors_open(stayopen)
+			RA.activate_air_doors(5)
+	air_doors_open()
 		var/area/A = get_area(loc)
 		for(var/area/RA in A.related)
-			RA.deactivate_air_doors(stayopen)
+			RA.deactivate_air_doors(5)
 
 
 

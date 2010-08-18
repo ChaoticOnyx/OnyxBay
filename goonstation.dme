@@ -6,6 +6,12 @@
 // END_INTERNALS
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "BASE.code"
+#define FILE_DIR "BASE.code/datums"
+#define FILE_DIR "LOCAL.code"
+#define FILE_DIR "LOCAL.code/datums"
+#define FILE_DIR "REMOTE.code"
+#define FILE_DIR "REMOTE.code/datums"
 #define FILE_DIR "code"
 #define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
