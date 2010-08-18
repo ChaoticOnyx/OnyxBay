@@ -75,7 +75,7 @@
 		src.icon_state = "secbot[src.on]"
 		spawn(3)
 			src.botcard = new /obj/item/weapon/card/id(src)
-			src.botcard.access = get_access("Detective") + list(access_cargo_bot)
+			src.botcard.access = get_all_accesses()
 			src.cam = new /obj/machinery/camera(src)
 			src.cam.c_tag = src.name
 			src.cam.network = "Luna"

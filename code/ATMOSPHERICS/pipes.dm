@@ -68,11 +68,14 @@ obj/machinery/atmospherics/pipe
 		var/obj/machinery/atmospherics/node1
 		var/obj/machinery/atmospherics/node2
 
+		var/node1dir
+		var/node2dir
+
 		var/minimum_temperature_difference = 300
 		var/thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
 
 		var/maximum_pressure = 70*ONE_ATMOSPHERE
-		var/fatigue_pressure = 55*ONE_ATMOSPHERE
+		var/fatigue_pressure = 60*ONE_ATMOSPHERE
 		alert_pressure = 55*ONE_ATMOSPHERE
 
 
@@ -105,13 +108,13 @@ obj/machinery/atmospherics/pipe
 				..()
 
 			if(!node1)
-				parent.mingle_with_turf(loc, volume)
+				parent.mingle_with_turf(get_step(loc, node1dir), volume)
 				if(!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
 
 			else if(!node2)
-				parent.mingle_with_turf(loc, volume)
+				parent.mingle_with_turf(get_step(loc, node2dir), volume)
 				if(!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
@@ -210,6 +213,7 @@ obj/machinery/atmospherics/pipe
 					for(var/obj/machinery/atmospherics/target in get_step_3d(src,direction))
 						if(target.initialize_directions & get_dir_3d(target,src))
 							node1 = target
+							node1dir = direction
 							break
 
 					connect_directions &= ~direction
@@ -221,6 +225,7 @@ obj/machinery/atmospherics/pipe
 					for(var/obj/machinery/atmospherics/target in get_step_3d(src,direction))
 						if(target.initialize_directions & get_dir_3d(target,src))
 							node2 = target
+							node2dir = direction
 							break
 
 					connect_directions &= ~direction
@@ -270,17 +275,14 @@ obj/machinery/atmospherics/pipe
 		update_icon()
 			if(node1&&node2)
 
-				var/node1_direction = get_dir_3d(src, node1)
-				var/node2_direction = get_dir_3d(src, node2)
-
-				if(node1_direction > node2_direction)
-					var/t = node1_direction
-					node1_direction = node2_direction
-					node2_direction = t
+				if(node1dir > node2dir)
+					var/t = node1dir
+					node1dir = node2dir
+					node2dir = t
 
 				icon_state = "[dir2 == UP ? "up" : "down"][invisibility ? "-f" : "" ]"
 
-				dir = (node1_direction|node2_direction) & (NORTH|EAST|SOUTH|WEST)
+				dir = (node1dir|node2dir) & (NORTH|EAST|SOUTH|WEST)
 
 
 	simple/insulated
@@ -340,10 +342,7 @@ obj/machinery/atmospherics/pipe
 			if(node1&&node2)
 				icon_state = "intact"
 
-				var/node1_direction = get_dir(src, node1)
-				var/node2_direction = get_dir(src, node2)
-
-				icon_state = "[node1_direction|node2_direction]"
+				icon_state = "[node1dir|node2dir]"
 
 	tank
 		icon = 'pipe_tank.dmi'
@@ -600,7 +599,9 @@ obj/machinery/atmospherics/pipe
 		var/obj/machinery/atmospherics/node1
 		var/obj/machinery/atmospherics/node2
 		var/obj/machinery/atmospherics/node3
-
+		var/node1dir
+		var/node2dir
+		var/node3dir
 		level = 1
 
 		New()
@@ -630,13 +631,13 @@ obj/machinery/atmospherics/pipe
 			..()
 
 			if(!node1)
-				parent.mingle_with_turf(loc, 70)
+				parent.mingle_with_turf(get_step(loc, node1dir), 70)
 
 			else if(!node2)
-				parent.mingle_with_turf(loc, 70)
+				parent.mingle_with_turf(get_step(loc, node3dir), 70)
 
 			else if(!node3)
-				parent.mingle_with_turf(loc, 70)
+				parent.mingle_with_turf(get_step(loc, node2dir), 70)
 
 		Del()
 			if(node1)
@@ -701,6 +702,7 @@ obj/machinery/atmospherics/pipe
 					for(var/obj/machinery/atmospherics/target in get_step(src,direction))
 						if(target.initialize_directions & get_dir(target,src))
 							node1 = target
+							node1dir = direction
 							break
 
 					connect_directions &= ~direction
@@ -712,6 +714,7 @@ obj/machinery/atmospherics/pipe
 					for(var/obj/machinery/atmospherics/target in get_step(src,direction))
 						if(target.initialize_directions & get_dir(target,src))
 							node2 = target
+							node2dir = direction
 							break
 
 					connect_directions &= ~direction
@@ -723,6 +726,7 @@ obj/machinery/atmospherics/pipe
 					for(var/obj/machinery/atmospherics/target in get_step(src,direction))
 						if(target.initialize_directions & get_dir(target,src))
 							node3 = target
+							node3dir = direction
 							break
 
 					connect_directions &= ~direction

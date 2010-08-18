@@ -1580,6 +1580,9 @@ Code:
 		return
 
 	if (href_list["buy_item"])
+		if(usr:mind && ticker.mode.traitors[usr:mind])
+			var/datum/traitorinfo/info = ticker.mode.traitors[usr:mind]
+			info.spawnlist += href_list["buy_item"]
 		switch(href_list["buy_item"])
 			if("revolver")
 				if (src.uses >= 7)

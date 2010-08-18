@@ -29,6 +29,8 @@
 
 /obj/machinery/shielding/capacitor/proc/updateicon()
 	clearoverlays()
-	icon_state = "cap[(stat | generator.stat) & (NOPOWER|BROKEN) ? "-p" : ""]"
+	icon_state = "cap[stat & (NOPOWER|BROKEN) ? "-p" : ""]"
 	addoverlay(image('shieldgen.dmi', "c[round(charge * 5 / maxcharge)]"))
+	if(!generator.operatingmode || generator.stat)
+		addoverlay(image('shieldgen.dmi', "cap-o"))
 	return

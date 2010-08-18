@@ -1,4 +1,6 @@
 /obj/machinery/autolathe/attackby(var/obj/item/weapon/O as obj, var/mob/user as mob)
+	if(!O)
+		return
 	if (istype(O, /obj/item/weapon/screwdriver))
 		if (!opened)
 			src.opened = 1

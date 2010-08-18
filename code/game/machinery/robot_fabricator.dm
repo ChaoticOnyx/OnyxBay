@@ -13,6 +13,8 @@
 		if (src.metal_amount < 150000.0)
 			var/count = 0
 			spawn(15)
+				if(!O)
+					return
 				while(metal_amount < 150000 && O:amount)
 					src.metal_amount += O:height * O:width * O:length * 100000.0
 					O:amount--

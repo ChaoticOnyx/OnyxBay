@@ -24,15 +24,13 @@
 
 
 //SETUP
-	New()
-		..()
-		spawn(5)
-			capacitor = locate() in get_step(src, WEST)
-			if(!capacitor)
-				stat |= BROKEN
-				updateicon()
-			else
-				capacitor.generator = src
+/obj/machinery/shielding/energyconverter/initialize()
+	capacitor = locate() in get_step(src, WEST)
+	if(!capacitor)
+		stat |= BROKEN
+		updateicon()
+	else
+		capacitor.generator = src
 
 //PLAYER INTERACTION
 
@@ -69,20 +67,44 @@
 	var/scharge = add_lspace("[round(capacitor.charge * 100 / capacitor.maxcharge)]", 3)
 	var/endraw =  add_lspace("[round(conversionrate ** 1.5)]", 6)
 
+	var/modec = ""
+
+	switch(operatingmode)
+		if(0)
+			modec = {"<b>\[Off\]</b> <a href="?mode=1">Manual</a> <a href="?mode=2">Auto</a> <a href="?mode=3">Remote</a>"}
+		if(1)
+			modec = {"<a href="?mode=0">Off</a> <b>\[Manual\]</b> <a href="?mode=2">Auto</a> <a href="?mode=3">Remote</a>"}
+		if(2)
+			modec = {"<a href="?mode=0">Off</a> <a href="?mode=1">Manual</a> b>\[Auto\]</b> <a href="?mode=3">Remote</a>"}
+		if(3)
+			modec = {"<a href="?mode=0">Off</a> <a href="?mode=1">Manual</a> <a href="?mode=2">Auto</a> b>\[Remote\]</b>"}
+
 	var/dat = {"<html><head><title>Shield Energy Converter</title></head><body><div style="position: absolute; right: 5px; top: 5px; border: 2px inset"><pre>
 Mode:           [modestring]&nbsp;
 Generation Rate:      [genrate]%
 Shield Charge:        [scharge]%
 Energy Draw:       [endraw]W
-</pre></div><h1>Shield Energy Conversion System</h1><pre>Operating Mode:                 <b>\[Auto\]</b> <a href="?mode=1">Manual</a> <a href="?mode=2">Remote</a>
-Auto Mode Target Shield Charge: <a href="?auto=0">M</a> <a href="?auto=1">-</a> <a href="?auto=2">-</a> 100 <a href="?auto=3">+</a> <a href="?auto=4">+</a> <a href="?auto=5">M</a>
-Manual Mode Generation Rate:    <a href="?man=0">M</a> <a href="?man=1">-</a> <a href="?man=2">-</a> 500 <a href="?man=3">+</a> <a href="?man=4">+</a> <a href="?man=5">M</a>
+</pre></div><h1>Shield Energy Conversion System</h1><pre>Operating Mode:                    [modec]
+Auto Mode Target Shield Charge %: <a href="?src=\ref[src];auto=1">M</a> <a href="?src=\ref[src];auto=2">-</a> <a href="?src=\ref[src];auto=3">-</a> 100 <a href="?src=\ref[src];auto=4">+</a> <a href="?src=\ref[src];auto=5">+</a> <a href="?src=\ref[src];auto=6">M</a>
+Manual Mode Generation Rate:      <a href="?src=\ref[src];man=1">M</a> <a href="?src=\ref[src];man=2">-</a> <a href="?src=\ref[src];man=3">-</a> 500 <a href="?src=\ref[src];man=4">+</a> <a href="?src=\ref[src];man=5">+</a> <a href="?src=\ref[src];man=6">M</a>
 </pre></body></html>"}
 
 	user << browse(dat, "window=shieldgen;size=800x200")
 	onclose(user, "shieldgen")
 
 	return
+
+/obj/machinery/shielding/energyconverter/Topic(href, href_list)
+	if(..())
+		return
+
+
+	usr.machine = src
+
+
+
+
+
 
 
 //STANDARD PROCESSING
@@ -140,8 +162,11 @@ Manual Mode Generation Rate:    <a href="?man=0">M</a> <a href="?man=1">-</a> <a
 
 /obj/machinery/shielding/energyconverter/proc/updateicon()
 	clearoverlays()
-	if (stat || !operatingmode)
+	if (stat)
 		icon_state = "econ-p"
 	else
 		icon_state = "econ"
-		addoverlay(image('shieldgen.dmi', "o[round((conversionrate * 11) / maxconversionrate)]"))
+		if(operatingmode && !capacitor.stat)
+			addoverlay(image('shieldgen.dmi', "o[round((conversionrate * 11) / maxconversionrate)]"))
+		else
+			addoverlay(image('shieldgen.dmi', "econ-o"))
