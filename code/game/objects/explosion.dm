@@ -7,7 +7,7 @@
 
 	message_admins("\red <b>Explosion spawned by [usr.client.key]</b>")
 #else
-	usr << "Function not available in RELEASE configuration
+	usr << "Function not available in RELEASE configuration"
 #endif
 
 proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
