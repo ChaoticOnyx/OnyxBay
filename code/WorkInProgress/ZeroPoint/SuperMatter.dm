@@ -57,6 +57,8 @@
 	//is on.  An increase of 4*C @ 25% efficiency here results in an increase of 1*C / (#tilesincore) overall.
 	removed.temperature += max((device_energy / THERMAL_RELEASE_MODIFIER), 0)
 
+	removed.temperature = min(removed.temperature, 1500)
+
 	//Calculate how much gas to release
 	removed.toxins += max(round(device_energy / PLASMA_RELEASE_MODIFIER), 0)
 

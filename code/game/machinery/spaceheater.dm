@@ -175,9 +175,10 @@
 						if(removed)
 
 							var/heat_capacity = removed.heat_capacity()
-							//world << "heating ([heat_capacity])"
-							removed.temperature = (removed.temperature*heat_capacity + heating_power)/heat_capacity
-							cell.use(heating_power/20000)
+							if(heat_capacity)
+								//world << "heating ([heat_capacity])"
+								removed.temperature = (removed.temperature*heat_capacity + heating_power)/heat_capacity
+								cell.use(heating_power/20000)
 
 							//world << "now at [removed.temperature]"
 

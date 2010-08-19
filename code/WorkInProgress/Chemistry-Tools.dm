@@ -233,28 +233,33 @@
 			D.icon_state = "syringeproj"
 			D.name = "syringe"
 			playsound(user.loc, 'syringeproj.ogg', 50, 1)
+			shoot:
+				for(var/i=0, i<6, i++)
+					if(D.loc == trg) break
+					step_towards_3d(D,trg)
 
-			for(var/i=0, i<6, i++)
-				if(D.loc == trg) break
-				step_towards_3d(D,trg)
+					for(var/mob/living/carbon/M in D.loc)
+						if(!istype(M,/mob/living/carbon)) continue
+						if(M == user) continue
+						D.reagents.trans_to(M, 15)
+						M.bruteloss += 5
 
-				for(var/mob/living/carbon/M in D.loc)
-					if(!istype(M,/mob/living/carbon)) continue
-					if(M == user) continue
-					D.reagents.trans_to(M, 15)
-					M.bruteloss += 5
-					for(var/mob/O in viewers(world.view, D))
-						O.show_message(text("\red [] was hit by the syringe!", M), 1)
+						for(var/mob/O in viewers(world.view, D))
+							O.show_message(text("\red [] was hit by the syringe!", M), 1)
 
-					del(D)
-				if (D)
+						del(D)
+						break shoot
+
 					for(var/atom/A in D.loc)
 						if(A == user) continue
-						if(A.density) del(D)
+						if(A.density)
+							del(D)
+							break shoot
 
-				sleep(1)
+					sleep(1)
 
-			spawn(10) del(D)
+			spawn(10)
+				del(D)
 
 			return
 

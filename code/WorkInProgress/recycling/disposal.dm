@@ -447,7 +447,7 @@
 		if (user.stat)
 			return
 
-		for (var/mob/M in hearers(src.loc.loc))
+		for (var/mob/M in hearers(get_turf(src)))
 			M << "<FONT size=[max(0, 5 - get_dist(src, M))]>CLONG, clong!</FONT>"
 
 		playsound(src.loc, 'clang.ogg', 50, 0, 0)

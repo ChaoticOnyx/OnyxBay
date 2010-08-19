@@ -251,10 +251,11 @@ var/supply_shuttle_points = 50
 
 /obj/plasticflaps //HOW DO YOU CALL THOSE THINGS ANYWAY
 	name = "Plastic flaps"
-	desc = "I definitely cant get past those. no way."
+	desc = "Free-hanging flaps of hard plastic."
 	icon = 'stationobjs.dmi' //Change this.
 	icon_state = "plasticflaps"
 	density = 0
+	opacity = 1
 	anchored = 1
 	layer = 4
 

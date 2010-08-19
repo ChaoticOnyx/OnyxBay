@@ -42,9 +42,14 @@
 /turf/space/proc/Check()
 	var/turf/T = locate(x, y, z + 1)
 	if (T)
-		if(istype(T, /turf/space) || istype(T, /turf/unsimulated) || istype(T, /turf/unsimulated/floor/hull))
+		if(istype(T, /turf/space) || istype(T, /turf/unsimulated))
 			return
-		new /turf/simulated/floor/open(src)
+		var/turf/space/S = src
+		var/turf/simulated/floor/open/open = new(src)
+		open.LightLevelRed = S.LightLevelRed
+		open.LightLevelBlue = S.LightLevelBlue
+		open.LightLevelGreen = S.LightLevelGreen
+		open.ul_UpdateLight()
 
 /turf/simulated
 	name = "station"
@@ -340,6 +345,9 @@
 
 		return L
 	Distance(turf/t)
+		if(!src || !t)
+			return 1e31
+		t = get_turf(t)
 		if(get_dist(src, t) == 1 || src.z != t.z)
 			var/cost = (src.x - t.x) * (src.x - t.x) + (src.y - t.y) * (src.y - t.y) + (src.z - t.z) * (src.z - t.z) * 3
 			cost *= (pathweight+t.pathweight)/2

@@ -680,12 +680,12 @@
 
 
 /area/security/checkpoint
-	name = "Security Checkpoint"
+	name = "Arrivals Checkpoint"
 	icon_state = "checkpoint1"
 
 
 /area/security/checkpoint2
-	name = "Security Checkpoint"
+	name = "Laboratories Security Checkpoint"
 	icon_state = "security"
 
 /area/security/checkpoint3
@@ -774,6 +774,10 @@
 /area/hangar
 	name = "Hangar"
 	icon_state = "hangar"
+
+/area/hangar/derelict
+	icon_state = "hangar"
+	name = "DERELICT HANGAR OBJECT TEMPLATE"
 
 /area/hangar/supply
 	name = "Supply Shuttle Hangar"

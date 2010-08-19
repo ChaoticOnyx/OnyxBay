@@ -403,6 +403,20 @@
 	icon_state = "x2"
 	anchored = 1.0
 
+/obj/landmark/derelict
+
+	nodamage
+		icon_state = "blocked"
+
+	noblast
+		icon_state = "blocked"
+
+	o2crate
+	o2canister
+	metal
+	glass
+
+
 /obj/landmark/alterations
 	name = "alterations"
 	nopath
