@@ -12,8 +12,6 @@
 
 	var/list/overlaylist = list()
 
-	var/suit_fibers = null
-
 	///Chemistry.
 	var/datum/reagents/reagents = null
 

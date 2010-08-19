@@ -75,7 +75,6 @@
 			src.fingerprintshidden += text("Real name: [], Key: []",M.real_name, M.key)
 			src.fingerprintslast = M.key
 	return
-/atom/proc/add_fibers(mob/living/carbon/human/M)
 
 
 /atom/proc/add_blood(mob/living/carbon/human/M as mob)

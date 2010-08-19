@@ -42,12 +42,14 @@
 
 /obj/item/device/radio/headset
 	name = "Radio Headset"
+	desc = "Headset for use in communication with the rest of the ship. (Use say ; to talk into headset when worn.)"
 	icon_state = "headset"
 	item_state = "headset"
 	var/protective_temperature = 0
 
 /obj/item/device/radio/headset/security
 	name = "Security Headset"
+	desc = "Headset which uses an additional frequency for secure transmissions. (Use say :h to transmit on secure channel.)"
 	icon_state = "security_headset"
 	item_state = "security_headset"
 	security_frequency = 1399

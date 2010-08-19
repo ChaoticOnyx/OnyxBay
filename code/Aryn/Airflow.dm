@@ -22,6 +22,9 @@ vs_control/var
 	AF_MOVEMENT_THRESHOLD = 65 //% difference to move dense crap and mobs.
 	AF_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which dense objects or mobs will be shifted by airflow."
 
+	AF_HUMAN_STUN_THRESHOLD = 75
+	AF_HUMAN_STUN_THRESHOLD_DESC = "Percent of 1 Atm. at which living things are stunned or knocked over."
+
 	AF_PERCENT_OF = ONE_ATMOSPHERE
 	AF_PERCENT_OF_DESC = "Normally set to 1 Atm. in kPa, this indicates what pressure is considered 100% by the system."
 
@@ -122,6 +125,10 @@ proc/Airflow(zone/A,zone/B,n)
 			if(istype(M,/mob/dead/observer)) continue
 			//if(istype(M,/mob/living/silicon/ai)) continue
 
+			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
+				if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+				M:weakened = max(M:weakened,5)
+
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
 			if(istype(M,/obj/item))
 				switch(M:w_class)
@@ -149,6 +156,10 @@ proc/Airflow(zone/A,zone/B,n)
 			if(istype(M,/mob/living/silicon/ai)) continue
 			if(istype(M,/mob/dead/observer)) continue
 			if(M.anchored && !ismob(M)) continue
+
+			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
+				if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+				M:weakened = max(M:weakened,5)
 
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
 			if(istype(M,/obj/item))
