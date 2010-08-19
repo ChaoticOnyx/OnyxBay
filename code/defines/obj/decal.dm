@@ -170,3 +170,51 @@
 	desc = "A warning sign which reads 'SPACE DEPRESSURIZATION'"
 	name = "SPACE DEPRESSURIZATION"
 	icon_state = "space"
+
+/obj/decal/sign/stairsup
+	desc = "A sign which shows an arrow pointing up stairs"
+	name = "Stairs Up"
+	icon_state = "sup"
+
+/obj/decal/sign/stairsdown
+	desc = "A sign which shows an arrow pointing down stairs"
+	name = "Stairs Down"
+	icon_state = "sdown"
+
+/obj/decal/sign/deck/sub
+	desc = "A sign which reads SUB DECK"
+	name = "SUB DECK"
+	part1
+		icon_state = "sub0"
+	part2
+		icon_state = "sub1"
+
+/obj/decal/sign/deck/main
+	desc = "A sign which reads MAIN DECK"
+	name = "MAIN DECK"
+	part1
+		icon_state = "main0"
+	part2
+		icon_state = "main1"
+
+/obj/decal/sign/deck/enge
+	desc = "A sign which reads ENGINEERING DECK"
+	name = "ENGINEERING DECK"
+	part1
+		icon_state = "enge0"
+	part2
+		icon_state = "enge1"
+	part3
+		icon_state = "enge2"
+	part4
+		icon_state = "enge3"
+
+/obj/decal/sign/deck/bridge
+	desc = "A sign which reads BRIDGE DECK"
+	name = "BRIDGE DECK"
+	part1
+		icon_state = "bridge0"
+	part2
+		icon_state = "bridge1"
+	part3
+		icon_state = "bridge2"

@@ -3566,7 +3566,7 @@
 "bqD" = (/obj/machinery/alarm{pixel_y = 26; tag = "North"},/turf/simulated/floor,/area/security/checkpoint)
 "bqE" = (/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/security/checkpoint)
 "bqF" = (/turf/simulated/floor,/area/security/checkpoint)
-"bqG" = (/obj/machinery/atmospherics/pipe/vent{dir = 8},/obj/stool/chair{dir = 4},/turf/simulated/floor,/area/quartermaster/office)
+"bqG" = (/obj/machinery/atmospherics/pipe/vent{dir = 8},/obj/stool/chair{dir = 4},/obj/machinery/alarm{dir = 4; icon_state = "alarm0"; layer = 3.1; pixel_x = -22; tag = "west"},/turf/simulated/floor,/area/quartermaster/office)
 "bqH" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area/quartermaster/office)
 "bqI" = (/obj/stool/chair{dir = 8},/obj/landmark/start{name = "Quartermaster"},/turf/simulated/floor,/area/quartermaster/office)
 "bqJ" = (/obj/disposalpipe/segment,/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/obj/machinery/firealarm{dir = 4; layer = 3.1; pixel_x = 24; tag = "east"},/turf/simulated/floor,/area/quartermaster/office)

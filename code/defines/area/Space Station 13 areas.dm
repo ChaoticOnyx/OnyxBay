@@ -680,12 +680,12 @@
 
 
 /area/security/checkpoint
-	name = "Security Checkpoint"
+	name = "Arrivals Checkpoint"
 	icon_state = "checkpoint1"
 
 
 /area/security/checkpoint2
-	name = "Security Checkpoint"
+	name = "Laboratories Security Checkpoint"
 	icon_state = "security"
 
 /area/security/checkpoint3
