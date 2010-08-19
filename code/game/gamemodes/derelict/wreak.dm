@@ -14,6 +14,8 @@
 	world << "Damaging floors"
 	sleep(20)
 	for(var/turf/simulated/floor/a in world)
+		if(locate(/obj/landmark/derelict/nodamage) in a)
+			continue
 		if(prob(90))
 			a.ex_act(3)
 		if(prob(1) && prob(5))
@@ -25,6 +27,8 @@
 	world << "Destroying walls"
 	sleep(20)
 	for(var/turf/simulated/wall/a in world)
+		if(locate(/obj/landmark/derelict/nodamage) in a)
+			continue
 		calc += 1
 		if(calc > 50)
 			sleep(1)
@@ -34,6 +38,8 @@
 	world << "Smashing windows"
 	sleep(20)
 	for(var/obj/window/a in world)
+		if(locate(/obj/landmark/derelict/nodamage) in get_turf(a))
+			continue
 		if(prob(35))
 			a.ex_act(3)
 		calc += 1
@@ -42,26 +48,57 @@
 			calc = 0
 	world << "Hacking airlocks"
 	sleep(20)
-
-	for(var/obj/machinery/door/airlock/a in world)
-		if(prob(30))
-			a.open()
-		if(prob(25))
-			var/list/wires = list(1,2,3,4,5,6,7,8,9)
-			for(var/i = 1 to rand(1,9))
-				var/wire = pick(wires)
-				a.cut(wire)
-				wires -= wire
+	for(var/obj/window/a in world)
+		if(locate(/obj/landmark/derelict/nodamage) in get_turf(a))
+			continue
+		if(prob(35))
+			a.ex_act(3)
 		calc += 1
 		if(calc > 50)
 			sleep(1)
 			calc = 0
-	world << "Stealing item s"
+	world << "Breaking alarms"
+	sleep(20)
+
+	for(var/obj/machinery/alarm/a in world)
+		if(locate(/obj/landmark/derelict/nodamage) in get_turf(a))
+			continue
+		if(prob(80))
+			a.stat |= BROKEN
+		calc += 1
+		if(calc > 50)
+			sleep(1)
+			calc = 0
+	world << "Stealing items"
 
 	for(var/turf/a in world)
+		if(a.z > 4)
+			return
 		for(var/obj/item/w in a)
 			for(var/i = 0 to rand(1,5))
 				step(w,pick(cardinal))
 
 			if(prob(60))
 				del w
+
+	for(var/turf/a in locate(/area/hangar/derelict))
+		for(var/obj/b in a)
+			b.Move(locate(a.x, a.y, 4))
+
+	for(var/obj/landmark/derelict/glass/glass in world)
+		if(prob(30))
+			var/obj/item/weapon/sheet/glass/g = new(glass.loc)
+			g.amount = rand(2, 30)
+
+	for(var/obj/landmark/derelict/metal/metal in world)
+		if(prob(30))
+			var/obj/item/weapon/sheet/metal/g = new(metal.loc)
+			g.amount = rand(2, 30)
+
+	for(var/obj/landmark/derelict/o2canister/o2 in world)
+		if(prob(70))
+			new /obj/machinery/portable_atmospherics/canister/air(o2.loc)
+
+	for(var/obj/landmark/derelict/o2crate/o2 in world)
+		if(prob(70))
+			new /obj/crate/internals(o2.loc)

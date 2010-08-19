@@ -371,3 +371,7 @@
 /atom/proc/clearoverlays()
 	src.overlaylist = new/list()
 	src.overlays = null
+
+/atom/proc/addalloverlays(var/list/overlays)
+	src.overlaylist = overlays
+	src.overlays = overlays

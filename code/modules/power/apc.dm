@@ -210,6 +210,8 @@
 		else if(repair_state == 5 && istype(W,/obj/item/weapon/screwdriver))
 			repair_state = 0
 			stat -= BROKEN
+			terminal = locate(/obj/machinery/power/terminal) in loc
+
 		return
 
 	if (istype(user, /mob/living/silicon))

@@ -775,6 +775,10 @@
 	name = "Hangar"
 	icon_state = "hangar"
 
+/area/hangar/derelict
+	icon_state = "hangar"
+	name = "DERELICT HANGAR OBJECT TEMPLATE"
+
 /area/hangar/supply
 	name = "Supply Shuttle Hangar"
 	icon_state = "hangar"

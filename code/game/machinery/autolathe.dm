@@ -172,7 +172,9 @@
 
 /obj/machinery/autolathe/New()
 	..()
-	// screwdriver removed
+	src.L += new /obj/item/weapon/light/bulb(src)
+	src.L += new /obj/item/weapon/light/tube(src)
+	src.L += new /obj/item/weapon/screwdriver(src)
 	src.L += new /obj/item/weapon/wirecutters(src)
 	src.L += new /obj/item/weapon/wrench(src)
 	src.L += new /obj/item/weapon/crowbar(src)

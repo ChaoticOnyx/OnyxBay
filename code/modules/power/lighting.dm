@@ -438,7 +438,7 @@
 	icon_state = "ltube"
 	base_state = "ltube"
 	item_state = "c_tube"
-	g_amt = 200
+	g_amt = 100
 
 /obj/item/weapon/light/bulb
 	name = "light bulb"
@@ -446,7 +446,7 @@
 	icon_state = "lbulb"
 	base_state = "lbulb"
 	item_state = "contvapour"
-	g_amt = 100
+	g_amt = 50
 
 // update the icon state and description of the light
 /obj/item/weapon/light
