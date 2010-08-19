@@ -196,7 +196,7 @@
 							ticker.mode:remove_revolutionary(H.mind)
 				if (b_dam && prob(25 + (b_dam * 2)))
 					src.add_blood(H)
-					if (prob(33))
+					if (prob(65))
 						var/turf/location = H.loc
 						if (istype(location, /turf/simulated))
 							location.add_blood(H)
@@ -236,7 +236,7 @@
 					if(H.stat != 2)	H.stat = 1
 				if (b_dam && prob(25 + (b_dam * 2)))
 					src.add_blood(H)
-					if (prob(33))
+					if (prob(65))
 						var/turf/location = H.loc
 						if (istype(location, /turf/simulated))
 							location.add_blood(H)
@@ -274,7 +274,7 @@
 						if(H.stat != 2)	H.stat = 1
 					if (b_dam && prob(25 + (b_dam * 2)))
 						src.add_blood(H)
-						if (prob(33))
+						if (prob(65))
 							var/turf/location = H.loc
 							if (istype(location, /turf/simulated))
 								location.add_blood(H)
@@ -297,7 +297,7 @@
 			else
 				if (b_dam && prob(25 + (b_dam * 2)))
 					src.add_blood(H)
-					if (prob(33))
+					if (prob(65))
 						var/turf/location = H.loc
 						if (istype(location, /turf/simulated))
 							location.add_blood(H)

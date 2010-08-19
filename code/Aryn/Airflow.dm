@@ -13,16 +13,16 @@ vs_control/var
 
 	AF_TINY_MOVEMENT_THRESHOLD = 25 //% difference to move tiny items.
 	AF_TINY_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which items with the tiny weight class will move."
-	AF_SMALL_MOVEMENT_THRESHOLD = 35 //% difference to move small items.
+	AF_SMALL_MOVEMENT_THRESHOLD = 45 //% difference to move small items.
 	AF_SMALL_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which items with the small weight class will move."
-	AF_NORMAL_MOVEMENT_THRESHOLD = 45 //% difference to move normal items.
+	AF_NORMAL_MOVEMENT_THRESHOLD = 75 //% difference to move normal items.
 	AF_NORMAL_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which items with the normal weight class will move."
-	AF_LARGE_MOVEMENT_THRESHOLD = 55 //% difference to move large and huge items.
+	AF_LARGE_MOVEMENT_THRESHOLD = 95 //% difference to move large and huge items.
 	AF_LARGE_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which items with the large or huge weight class will move."
-	AF_MOVEMENT_THRESHOLD = 65 //% difference to move dense crap and mobs.
+	AF_MOVEMENT_THRESHOLD = 250 //% difference to move dense crap and mobs.
 	AF_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which dense objects or mobs will be shifted by airflow."
 
-	AF_HUMAN_STUN_THRESHOLD = 75
+	AF_HUMAN_STUN_THRESHOLD = 45
 	AF_HUMAN_STUN_THRESHOLD_DESC = "Percent of 1 Atm. at which living things are stunned or knocked over."
 
 	AF_PERCENT_OF = ONE_ATMOSPHERE
@@ -203,6 +203,10 @@ proc/AirflowSpace(zone/A)
 			if(M.anchored && !ismob(M)) continue
 			if(istype(M,/mob/dead/observer)) continue
 			//if(istype(M,/mob/living/silicon/ai)) continue
+
+			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
+				if(M:weakened < 1) M << "\red The sudden rush of air knocks you over!"
+				M:weakened = max(M:weakened,5)
 
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
 			if(istype(M,/obj/item))

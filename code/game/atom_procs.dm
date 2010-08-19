@@ -49,9 +49,9 @@
 /atom/proc/add_fingerprint(mob/living/carbon/human/M as mob)
 	if ((!( istype(M, /mob/living/carbon/human) ) || !( istype(M.dna, /datum/dna) )))
 		return 0
+	add_fibers(M)
 	if (!( src.flags ) & 256)
 		return
-	add_fibers(M)
 	if (M.gloves)
 		if(src.fingerprintslast != M.key)
 			src.fingerprintshidden += text("(Wearing gloves). Real name: [], Key: []",M.real_name, M.key)
@@ -104,6 +104,7 @@
 			this.blood_DNA = M.dna.unique_enzymes
 			this.blood_type = M.b_type
 			this.virus = M.virus
+			this.blood_owner = M
 		else if (istype(src, /mob/living/carbon/human))
 			src.blood_DNA = M.dna.unique_enzymes
 			src.blood_type = M.b_type
