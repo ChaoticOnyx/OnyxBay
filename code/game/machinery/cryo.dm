@@ -145,7 +145,7 @@
 
 	proc
 		add_overlays()
-			src.overlays = list(O1)
+			src.addalloverlays(list(O1))
 
 		build_icon()
 			if(on)
