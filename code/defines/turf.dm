@@ -340,6 +340,8 @@
 
 		return L
 	Distance(turf/t)
+		if(!src || !t)
+			return 1e31
 		if(get_dist(src, t) == 1 || src.z != t.z)
 			var/cost = (src.x - t.x) * (src.x - t.x) + (src.y - t.y) * (src.y - t.y) + (src.z - t.z) * (src.z - t.z) * 3
 			cost *= (pathweight+t.pathweight)/2
