@@ -30,6 +30,8 @@
 	icon = 'module.dmi'
 	icon_state = "id_mod"
 	item_state = "electronic"
+	m_amt = 100
+	g_amt = 25
 
 /obj/item/weapon/circuitboard/security
 	name = "Circuit board (Security)"

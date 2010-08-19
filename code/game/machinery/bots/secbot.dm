@@ -620,7 +620,7 @@ Auto Patrol: []"},
 			if(istype(perp:wear_suit, /obj/item/clothing/suit/wizrobe))
 				threatcount += 2
 
-			if(perp.mutantrace != "none")
+			if(perp.mutantrace)
 				threatcount += 2
 
 	//Agent cards lower threatlevel when normal idchecking is off.
@@ -646,6 +646,7 @@ Auto Patrol: []"},
 				var/obj/machinery/door/D = M
 				if (D.check_access(src.botcard))
 					D.open()
+					spawn(0) CloseDoor(D, loc)
 					src.frustration = 0
 			else if ((istype(M, /mob/living/)) && (!src.anchored))
 				src.loc = M:loc
@@ -653,6 +654,13 @@ Auto Patrol: []"},
 
 			return
 		return
+
+	proc/CloseDoor(var/obj/machinery/door/D, var/atom/L)
+		set background = 1
+		while(src.loc == L)
+			sleep(10)
+			continue
+		D.close()
 
 	Bumped(M as mob|obj)
 		spawn(0)

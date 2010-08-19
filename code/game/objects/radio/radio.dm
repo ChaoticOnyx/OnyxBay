@@ -202,7 +202,7 @@ Frequency:
 			for (var/i in R.send_hear())
 				if (!(i in receive))
 					receive += i
-	for (var/obj/item/device/radio/R in radio_connection.devices)
+	for (var/obj/item/device/radio/R in src.radio_connection.devices)
 		if(istype(R,/obj/item/device/radio/intercom))
 			heard_intercom += R
 
@@ -343,7 +343,7 @@ Frequency:
 		world.log << "[src] ([src.type]) has a frequency of [src.security_frequency], sanitizing."
 		src.security_frequency = sanitize_security_frequency(src.security_frequency)
 */
-	set_security_frequency(security_frequency)
+	src.set_security_frequency(security_frequency)
 
 /obj/item/device/radio/security_talk_into(mob/M as mob, message)
 	var/eqjobname
@@ -365,7 +365,8 @@ Frequency:
 
 	var/list/receive = list()
 
-	for (var/obj/item/device/radio/R in security_radio_connection.devices)
+
+	for (var/obj/item/device/radio/R in src.security_radio_connection.devices)
 		if(R.accept_rad(src, message))
 			for (var/i in R.send_hear())
 				if (!(i in receive))
