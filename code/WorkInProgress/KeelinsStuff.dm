@@ -503,6 +503,24 @@
 				atoms += A
 	return atoms
 
+/proc/get_area_all_objects(var/areatype)
+	//Takes: Area type as text string or as typepath OR an instance of the area.
+	//Returns: A list of all objs in areas of that type of that type in the world.
+	//Notes: Simple!
+
+	if(!areatype) return null
+	if(istext(areatype)) areatype = text2path(areatype)
+	if(isarea(areatype))
+		var/area/areatemp = areatype
+		areatype = areatemp.type
+
+	var/list/objs = new/list()
+	for(var/area/N in world)
+		if(istype(N, areatype))
+			for(var/obj/A in N.contents)
+				objs += A
+	return objs
+
 /datum/coords //Simple datum for storing coordinates.
 	var/x_pos = null
 	var/y_pos = null

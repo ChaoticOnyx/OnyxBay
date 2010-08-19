@@ -408,6 +408,9 @@
 	nodamage
 		icon_state = "blocked"
 
+	noblast
+		icon_state = "blocked"
+
 	o2crate
 	o2canister
 	metal
