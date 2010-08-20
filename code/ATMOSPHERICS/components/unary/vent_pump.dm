@@ -43,7 +43,7 @@
 		if(!on)
 			return 0
 
-		var/datum/gas_mixture/environment = loc.return_air()
+		var/datum/gas_mixture/environment = loc.return_air(1)
 		var/environment_pressure = environment.return_pressure()
 
 		if(pump_direction) //internal -> external
@@ -182,4 +182,114 @@
 		else
 			icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
 			on = 0
+		return
+
+/obj/machinery/atmospherics/unary/vent
+	icon = 'vent_pump.dmi'
+	icon_state = "off"
+
+	name = "Air Vent"
+	desc = "Has a valve and pump attached to it"
+
+	level = 1
+
+	high_volume
+		name = "Large Air Vent"
+
+		New()
+			..()
+
+			air_contents.volume = 1000
+
+	var/on = 1
+	//var/pump_direction = 1 //0 = siphoning, 1 = releasing
+
+	//var/external_pressure_bound = ONE_ATMOSPHERE
+	var/internal_pressure_bound = 4000
+
+	//var/pressure_checks = 1
+	//1: Do not pass external_pressure_bound
+	//2: Do not pass internal_pressure_bound
+	//3: Do not pass either
+
+	update_icon()
+		icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
+		//if(on&&node)
+		//	if(pump_direction)
+		//		icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]out"
+	//		else
+		//		icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]in"
+		//else
+		//	icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
+		//	on = 0
+
+		return
+
+	process()
+		..()
+		if(!on)
+			return 0
+
+		//var/datum/gas_mixture/environment = loc.return_air()
+		//var/environment_pressure = environment.return_pressure()
+
+		var/turf/simulated/T = loc
+		var/transfer_moles = internal_pressure_bound*air_contents.volume/(air_contents.temperature * R_IDEAL_GAS_EQUATION)
+
+		var/datum/gas_mixture/intake = T.remove_air(transfer_moles)
+		var/datum/gas_mixture/output = air_contents.remove(transfer_moles)
+
+		var/datum/gas_mixture/combined = new()
+		combined.merge(intake)
+		combined.merge(output)
+		intake = combined.remove_ratio(0.5)
+		output = combined.remove_ratio(1)
+		T.assume_air(intake)
+		air_contents.merge(output)
+
+		if(network)
+			network.update = 1
+
+		/*if(pump_direction) //internal -> external
+			var/pressure_delta = 10000
+
+			if(pressure_checks&1)
+				pressure_delta = min(pressure_delta, (external_pressure_bound - environment_pressure))
+			if(pressure_checks&2)
+				pressure_delta = min(pressure_delta, (air_contents.return_pressure() - internal_pressure_bound))
+
+			if(pressure_delta > 0)
+				if(air_contents.temperature > 0)
+					var/transfer_moles = pressure_delta*environment.volume/(air_contents.temperature * R_IDEAL_GAS_EQUATION)
+
+					var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
+
+					loc.assume_air(removed)
+
+					if(network)
+						network.update = 1
+
+		else //external -> internal
+			var/pressure_delta = 10000
+
+			if(pressure_checks&1)
+				pressure_delta = min(pressure_delta, (environment_pressure - external_pressure_bound))
+			if(pressure_checks&2)
+				pressure_delta = min(pressure_delta, (internal_pressure_bound - air_contents.return_pressure()))
+
+			if(pressure_delta > 0)
+				if(environment.temperature > 0)
+					var/transfer_moles = pressure_delta*air_contents.volume/(environment.temperature * R_IDEAL_GAS_EQUATION)
+
+					var/datum/gas_mixture/removed = loc.remove_air(transfer_moles)
+
+					air_contents.merge(removed)
+
+					if(network)
+						network.update = 1*/
+
+		return 1
+
+	hide(var/i) //to make the little pipe section invisible, the icon changes.
+		icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
 		return
