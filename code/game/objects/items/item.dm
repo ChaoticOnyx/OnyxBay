@@ -147,7 +147,7 @@
 	//	M.lastattacker = null
 	/////////////////////////
 	log_attack("[M.name] attacked by [user.name]([user.key]) with [src]")
-	user.log_m("Attacked [M.name]([M.real_name] with [src]")
+	user.log_m("Attacked [M.name]([M.real_name]) with [src]")
 	M.log_m("Attacked by [user.name]([user.real_name])([user.key]) with [src]")
 	if(!istype(M, /mob/living/carbon/human))
 		for(var/mob/O in viewers(M, null))
@@ -196,7 +196,7 @@
 							ticker.mode:remove_revolutionary(H.mind)
 				if (b_dam && prob(25 + (b_dam * 2)))
 					src.add_blood(H)
-					if (prob(33))
+					if (prob(65))
 						var/turf/location = H.loc
 						if (istype(location, /turf/simulated))
 							location.add_blood(H)
@@ -210,8 +210,12 @@
 						var/mob/living/carbon/human/user2 = user
 						if (user2.gloves)
 							user2.gloves.add_blood(H)
+							user2.gloves.transfer_blood = 2
+							user2.gloves.bloody_hands_mob = H
 						else
 							user2.add_blood(H)
+							user2.bloody_hands = 2
+							user2.bloody_hands_mob = H
 						if (prob(15))
 							if (user2.wear_suit)
 								user2.wear_suit.add_blood(H)
@@ -236,7 +240,7 @@
 					if(H.stat != 2)	H.stat = 1
 				if (b_dam && prob(25 + (b_dam * 2)))
 					src.add_blood(H)
-					if (prob(33))
+					if (prob(65))
 						var/turf/location = H.loc
 						if (istype(location, /turf/simulated))
 							location.add_blood(H)
@@ -248,8 +252,12 @@
 						var/mob/living/carbon/human/user2 = user
 						if (user2.gloves)
 							user2.gloves.add_blood(H)
+							user2.gloves.transfer_blood = 2
+							user2.gloves.bloody_hands_mob = H
 						else
 							user2.add_blood(H)
+							user2.bloody_hands = 2
+							user2.bloody_hands_mob = H
 						if (prob(15))
 							if (user2.wear_suit)
 								user2.wear_suit.add_blood(H)
@@ -274,7 +282,7 @@
 						if(H.stat != 2)	H.stat = 1
 					if (b_dam && prob(25 + (b_dam * 2)))
 						src.add_blood(H)
-						if (prob(33))
+						if (prob(65))
 							var/turf/location = H.loc
 							if (istype(location, /turf/simulated))
 								location.add_blood(H)
@@ -286,8 +294,12 @@
 							var/mob/living/carbon/human/user2 = user
 							if (user2.gloves)
 								user2.gloves.add_blood(H)
+								user2.gloves.transfer_blood = 2
+								user2.gloves.bloody_hands_mob = H
 							else
 								user2.add_blood(H)
+								user2.bloody_hands = 2
+								user2.bloody_hands_mob = H
 							if (prob(15))
 								if (user2.wear_suit)
 									user2.wear_suit.add_blood(H)
@@ -297,7 +309,7 @@
 			else
 				if (b_dam && prob(25 + (b_dam * 2)))
 					src.add_blood(H)
-					if (prob(33))
+					if (prob(65))
 						var/turf/location = H.loc
 						if (istype(location, /turf/simulated))
 							location.add_blood(H)
@@ -309,8 +321,12 @@
 						var/mob/living/carbon/human/user2 = user
 						if (user2.gloves)
 							user2.gloves.add_blood(H)
+							user2.gloves.transfer_blood = 2
+							user2.gloves.bloody_hands_mob = H
 						else
 							user2.add_blood(H)
+							user2.bloody_hands = 2
+							user2.bloody_hands_mob = H
 						if (prob(15))
 							if (user2.wear_suit)
 								user2.wear_suit.add_blood(H)

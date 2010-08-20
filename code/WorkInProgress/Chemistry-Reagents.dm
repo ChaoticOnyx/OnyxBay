@@ -59,18 +59,19 @@ datum
 			on_mob_life(var/mob/M)
 				if(!data) data = 1
 				data++
-				M.make_dizzy(3)
 				M:jitteriness = max(M:jitteriness-3,0)
 				if(data >= 25)
+					M.make_dizzy(3)
+				if(data >= 40)
 					if (!M:intoxicated) M:intoxicated = 1
 					M:intoxicated += 3
-				if(data >= 40 && prob(33))
+				if(data >= 90 && prob(33))
 					if (!M:confused) M:confused = 1
 					M:confused += 2
-				if(data >= 200)
+				if(data >= 245)
 					M.eye_blurry = max(M.eye_blurry, 10)
 					M:drowsyness  = max(M:drowsyness, 20)
-				if(data >= 245)
+				if(data >= 290)
 					M:paralysis = max(M:paralysis, 20)
 					M:drowsyness  = max(M:drowsyness, 30)
 				..()
@@ -118,6 +119,70 @@ datum
 					T.assume_air(lowertemp)
 					del(hotspot)
 				return
+		blood
+			name = "Blood"
+			id = "blood"
+			description = "Carrier of oxygen and various other things essential for life."
+			reagent_state = LIQUID
+			var
+				blood_type = "A+"
+				blood_DNA = "unknown"
+				mob/taken_from
+				virus
+
+			on_mob_life(mob/M)
+				if(blood_incompatible(blood_type,M:b_type))
+					M:toxloss += 1.5
+					M:oxyloss += 1.5
+					M:toxins_alert = max(1,M:toxins_alert)
+				..()
+				return
+
+			reaction_mob(mob/M,method)
+				if(virus) M.contract_disease(virus)
+				if(method == TOUCH)
+					var/mob/living/carbon/human/H = M
+					if(istype(H))
+						if(H.wear_suit)
+							H.wear_suit.add_blood(taken_from)
+						else if(H.w_uniform)
+							H.w_uniform.add_blood(taken_from)
+					else
+						H.add_blood(taken_from)
+				..()
+				return
+			reaction_turf(turf/T)
+				T.add_blood(taken_from)
+				return
+			reaction_obj(obj/O)
+				O.add_blood(taken_from)
+				return
+
+			proc/copy_from(mob/living/carbon/human/M)
+				if(istype(M,/datum/reagent/blood))
+					var/datum/reagent/blood/other = M
+					blood_type = other.blood_type
+					blood_DNA = other.blood_DNA
+					id = other.id
+					taken_from = other.taken_from
+					virus = other.virus
+					description = other.description
+				if(!istype(M))
+					if(istype(M,/mob/living/carbon/monkey))
+						blood_type = "O+"
+						blood_DNA = M.dna.unique_enzymes
+						id = "blood-[M.dna.unique_enzymes]"
+						taken_from = M
+						virus = M.virus
+						description = "Type: [blood_type]<br>DNA: [blood_DNA]"
+					return 0
+				blood_type = M.b_type
+				blood_DNA = M.dna.unique_enzymes
+				id = "blood-[M.dna.unique_enzymes]"
+				taken_from = M
+				virus = M.virus
+				description = "Type: [blood_type]<br>DNA: [blood_DNA]"
+				return 1
 
 		lube
 			name = "Space Lube"
@@ -129,12 +194,12 @@ datum
 				src = null
 				if(T:wet >= 2) return
 				T:wet = 2
+				T:wet_overlay = image('effects.dmi', "slube")
+				T:overlays += T:wet_overlay
 				spawn(800)
 					T:wet = 0
 					if(T:wet_overlay)
 						T:overlays -= T:wet_overlay
-						T:wet_overlay = image('effects.dmi', "slube")
-						T:overlays += T:wet_overlay
 
 				return
 
@@ -176,6 +241,11 @@ datum
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
 				M:toxloss += 1.5
+				if(!data) data = 1
+				if(data > 20)
+					//Do Toxin Shit
+					M:toxins_alert = max(M:toxins_alert,1)
+					M:toxloss += 1.5
 				..()
 				return
 
@@ -570,7 +640,9 @@ datum
 				M:drowsyness = max(0,M:drowsyness-3)
 				M:sleeping = 0
 				M.bodytemperature = min(310, M.bodytemperature+5) //310 is the normal bodytemp. 310.055
-				M.make_jittery(5)
+				if(!data) data = 1
+				if(data > 15)
+					M.make_jittery(5)
 
 		space_cleaner
 			name = "Space cleaner"
@@ -911,18 +983,19 @@ datum
 			on_mob_life(var/mob/M)
 				if(!data) data = 1
 				data++
-				M.make_dizzy(5)
 				M:jitteriness = max(M:jitteriness-5,0)
 				if(data >= 25)
+					M.make_dizzy(5)
+				if(data >= 40)
 					if (!M:intoxicated) M:intoxicated = 1
 					M:intoxicated += 4
-				if(data >= 40 && prob(33))
+				if(data >= 165)
 					if (!M:confused) M:confused = 1
 					M:confused += 3
-				if(data >= 165)
+				if(data >= 205)
 					M.eye_blurry = max(M.eye_blurry, 10)
 					M:drowsyness  = max(M:drowsyness, 20)
-				if(data >= 185)
+				if(data >= 245)
 					M:paralysis = max(M:paralysis, 20)
 					M:drowsyness  = max(M:drowsyness, 30)
 				..()

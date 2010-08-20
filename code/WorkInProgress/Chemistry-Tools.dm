@@ -201,7 +201,7 @@
 		set src in view(2)
 		..()
 		usr << "\icon [src] Syringe gun:"
-		usr << "\blue [syringes] / [max_syringes] Syringes."
+		usr << "\blue [syringes.len] / [max_syringes] Syringes."
 
 	attackby(obj/item/I as obj, mob/user as mob)
 		if(istype(I, /obj/item/weapon/reagent_containers/syringe))
@@ -214,11 +214,22 @@
 			else
 				usr << "\red The syringe gun cannot hold more syringes."
 
+	attack()
+		return 1
+
 	afterattack(obj/target, mob/user , flag)
-		if(!isturf(target.loc) || target == user) return
+		if(!isturf(target.loc)) return
 
 		if(syringes.len)
-			spawn(0) fire_syringe(target,user)
+			if(target != user)
+				spawn(0) fire_syringe(target,user)
+			else
+				var/obj/item/weapon/reagent_containers/syringe/S = syringes[1]
+				S.reagents.trans_to(user, S.reagents.total_volume)
+				syringes -= S
+				del(S)
+				for(var/mob/O in viewers(world.view, user))
+					O.show_message(text("\red [] shot \himself with a syringe gun!", user), 1)
 		else
 			usr << "\red The syringe gun is empty."
 
@@ -489,6 +500,7 @@
 	icon_state = "0"
 	amount_per_transfer_from_this = 5
 	var/mode = "d"
+	var/has_blood = 0
 
 	New()
 		var/datum/reagents/R = new/datum/reagents(15)
@@ -530,7 +542,23 @@
 
 		switch(mode)
 			if("d")
-				if(ismob(target)) return //Blood?
+				if(ismob(target))
+					if(ismob(target) && target != user)
+						for(var/mob/O in viewers(world.view, user))
+							O.show_message(text("\red <B>[] is trying to draw blood from []!</B>", user, target), 1)
+						if(!do_mob(user, target)) return
+						for(var/mob/O in viewers(world.view, user))
+							O.show_message(text("\red [] draws blood from []!", user, target), 1)
+						reagents.add_reagent("blood",5)
+						for(var/datum/reagent/blood/B in reagents.reagent_list)
+							if(B.id == "blood")
+								B.copy_from(target)
+					if(ismob(target) && target == user)
+						reagents.add_reagent("blood",5)
+						for(var/datum/reagent/blood/B in reagents.reagent_list)
+							if(B.id == "blood")
+								B.copy_from(target)
+					return //Blood?
 
 				if(!target.reagents.total_volume)
 					user << "\red [target] is empty."
@@ -579,10 +607,14 @@
 	proc
 		update_icon()
 			var/rounded_vol = round(reagents.total_volume,5)
+			has_blood = 0
+			for(var/datum/reagent/blood/B in reagents.reagent_list)
+				has_blood = 1
+				break
 			if(ismob(loc))
-				icon_state = "[mode][rounded_vol]"
+				icon_state = "[mode][(has_blood?"b":"")][rounded_vol]"
 			else
-				icon_state = "[rounded_vol]"
+				icon_state = "[(has_blood?"b":"")][rounded_vol]"
 			item_state = "syringe_[rounded_vol]"
 
 ////////////////////////////////////////////////////////////////////////////////

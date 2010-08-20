@@ -27,6 +27,7 @@
 	var/datum/disease/virus = null
 	blood_DNA = null
 	blood_type = null
+	var/mob/blood_owner = null
 
 /obj/decal/cleanable/blood/splatter
 	random_icon_states = list("gibbl1", "gibbl2", "gibbl3", "gibbl4", "gibbl5")

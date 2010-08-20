@@ -578,6 +578,13 @@
 
 	moving:
 		for (var/turf/T in refined_src)
+			if(T.zone)
+				for(var/zone/Z in T.zone.connections) //Disconnect everything! (We'll reconnect it later.)
+					T.zone.space_connections.len = 0
+					T.zone.connections -= Z
+					T.zone.direct_connections -= Z
+					Z.connections -= T.zone
+					Z.direct_connections -= T.zone
 			var/datum/coords/C_src = refined_src[T]
 			for (var/turf/B in refined_trg)
 				var/datum/coords/C_trg = refined_trg[B]
@@ -585,10 +592,14 @@
 
 					var/old_dir1 = T.dir
 					var/old_icon_state1 = T.icon_state
+					var/old_zone = T.zone
+					if(T.zone) T.zone.members -= T
 
 					var/turf/X = new T.type(B)
 					X.dir = old_dir1
 					X.icon_state = old_icon_state1
+					X.zone = old_zone
+					if(X.zone) X.zone.members += X
 
 					for(var/atom/movable/AM as mob|obj in T)
 						AM.loc = X
