@@ -31,6 +31,8 @@ proc/NewStutter(phrase,stunned)
 	if(stunned) i = split_phrase.len
 	for(,i > 0,i--) //Pick a few words to stutter on.
 
+		if (!unstuttered_words.len)
+			break
 		var/word = pick(unstuttered_words)
 		unstuttered_words -= word //Remove from unstuttered words so we don't stutter it again.
 		var/index = split_phrase.Find(word) //Find the word in the split phrase so we can replace it.

@@ -803,7 +803,7 @@
 				user << "\red [src] is empty."
 				return
 
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
+			if(target.reagents && target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
 
