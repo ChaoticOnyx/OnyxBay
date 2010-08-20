@@ -60,12 +60,12 @@
 
 
 	else if (O.g_amt || O.m_amt)
-		spawn(16) {
+		spawn(16)
 			flick("autolathe_c",src)
-			g_amount += O.g_amt
-			m_amount += O.m_amt
-			del O
-		}
+			if (O)
+				g_amount += O.g_amt
+				m_amount += O.m_amt
+				del O
 	else
 		user << "This object does not contain significant amounts of metal or glass, or cannot be accepted by the autolathe due to size or hazardous materials."
 
