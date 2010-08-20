@@ -252,7 +252,22 @@
 
 	var/obj/item/scrap/S = new()
 
-	var/cmp = pick(m_amt;1 , g_amt;2, w_amt;3)
+	var/cmp
+	// To avoid a divide by zero error, need to check all possibilities.
+	if (m_amt && g_amt && w_amt)
+		cmp = pick(m_amt;1, g_amt;2, w_amt;3)
+	else if (m_amt && g_amt)
+		cmp = pick(m_amt;1, g_amt;2)
+	else if (m_amt && w_amt)
+		cmp = pick(m_amt;1, w_amt;3)
+	else if (g_amt && w_amt)
+		cmp = pick(g_amt;2, w_amt;3)
+	else if (m_amt)
+		cmp = 1
+	else if (g_amt)
+		cmp = 2
+	else
+		cmp = 3
 
 	var/amount = 400
 	switch(cmp)
