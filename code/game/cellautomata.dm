@@ -163,13 +163,13 @@
 	ClearTempbans()
 	return
 
+/*
 /world/Del()
 	world.Export("http://127.0.0.1:31338")
 	..()
-
-//Crispy fullban
+*/
 /world/Reboot(var/reason)
-	spawn(0)
+//	spawn(0)
 //		if(prob(40))
 //			for(var/mob/M in world)
 //				if(M.client)
