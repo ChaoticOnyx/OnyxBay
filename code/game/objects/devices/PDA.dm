@@ -596,7 +596,8 @@
 
 					dat += "<h4>Medical Data</h4>"
 					if (istype(src.active2, /datum/data/record) && data_core.medical.Find(src.active2))
-						dat += "Blood Type: [src.active2.fields["b_type"]]<br><br>"
+						dat += "Blood Type: [src.active2.fields["b_type"]]<br>"
+						dat += "Blood Sample: [src.active2.fields["bloodsample"]]<br><br>"
 
 						dat += "Minor Disabilities: [src.active2.fields["mi_dis"]]<br>"
 						dat += "Details: [src.active2.fields["mi_dis_d"]]<br><br>"

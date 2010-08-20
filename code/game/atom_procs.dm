@@ -99,7 +99,7 @@
 			var/i
 			for(i=1, i<=objsonturf.len, i++)
 				if(istype(objsonturf[i],/obj/decal/cleanable/blood))
-					return
+					return 0
 			var/obj/decal/cleanable/blood/this = new /obj/decal/cleanable/blood(source2)
 			this.blood_DNA = M.dna.unique_enzymes
 			this.blood_type = M.b_type
@@ -109,7 +109,7 @@
 			src.blood_DNA = M.dna.unique_enzymes
 			src.blood_type = M.b_type
 		else
-			return
+			return 0
 	else
 		var/list/L = params2list(src.blood_DNA)
 		L -= M.dna.unique_enzymes
@@ -117,7 +117,7 @@
 			L -= L[1]
 		L += M.dna.unique_enzymes
 		src.blood_DNA = list2params(L)
-	return
+	return 1
 
 /atom/proc/clean_blood()
 

@@ -63,7 +63,7 @@ datum
 					if(current_list_element > reagent_list.len) current_list_element = 1
 					var/datum/reagent/current_reagent = reagent_list[current_list_element]
 
-					R.add_reagent(current_reagent.id, (1 * multiplier) )
+					R.add_reagent(current_reagent.id, (1 * multiplier) , current_reagent)
 					src.remove_reagent(current_reagent.id, 1)
 
 					current_list_element++
@@ -165,7 +165,7 @@ datum
 							if(isobj(A)) spawn(0) R.reaction_obj(A, R.volume+volume_modifier)
 				return
 
-			add_reagent(var/reagent, var/amount)
+			add_reagent(var/reagent, var/amount, var/datum/reagent/blood/base)
 				if(!isnum(amount)) return 1
 				update_total()
 				if(total_volume + amount > maximum_volume) amount = (maximum_volume - total_volume) //Doesnt fit in. Make it disappear. Shouldnt happen. Will happen.
@@ -177,6 +177,25 @@ datum
 						update_total()
 						my_atom.on_reagent_change()
 						return 0
+					else if(base)
+						if(R.id == base.id)
+							R.volume += amount
+							update_total()
+							my_atom.on_reagent_change()
+							return 0
+
+				if(findtext(reagent,"blood-"))
+					var/datum/reagent/blood/B = new()
+					reagent_list += B
+					B.holder = src
+					B.volume = amount
+					//world.log << "Base: [base]"
+					if(istype(base,/datum/reagent/blood))
+						//world.log << "Base is blood."
+						B.copy_from(base)
+					update_total()
+					my_atom.on_reagent_change()
+					return 0
 
 				for(var/A in typesof(/datum/reagent) - /datum/reagent)
 					var/datum/reagent/R = new A()
