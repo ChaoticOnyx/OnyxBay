@@ -8,7 +8,7 @@
 		var/safety = null
 		if (istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
-			if (istype(H.glasses, /obj/item/clothing/glasses/sunglasses) || istype(H.head, /obj/item/clothing/head/helmet/welding))
+			if (istype(H.glasses, /obj/item/clothing/glasses/sunglasses) || istype(H.head, /obj/item/clothing/head/helmet/welding) || istype(H.wear_suit,/obj/item/clothing/head/righelm))
 				safety = 1
 		if(isrobot(user))
 			spawn(0)

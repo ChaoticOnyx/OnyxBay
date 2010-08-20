@@ -170,7 +170,24 @@
 				M.weakened = 10
 
 	..()
-
+turf/simulated/wall/bullet_act(flag,dir)
+	if (flag == PROJECTILE_TASER) //taser
+		var/dirs
+		if(dir == NORTH) //fugly code.
+			dirs = SOUTH
+		if(dir == SOUTH)
+			dirs = NORTH
+		if(dir == EAST || dir == NORTHEAST || dir == SOUTHEAST)
+			dirs = WEST
+		if(dir == WEST ||dir == NORTHWEST ||dir == SOUTHWEST )
+			dirs = EAST
+		var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+		var/datum/effects/system/spark_spread/x = new /datum/effects/system/spark_spread
+		var/turf/loc = get_step(src,dirs)
+		s.set_up(4, 1, loc)
+		x.set_up(1, 1, src)
+		x.start()
+		s.start()
 /turf/proc/ReplaceWithSpace()
 	if(!icon_old) icon_old = icon_state
 	var/old_icon = icon_old

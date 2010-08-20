@@ -42,7 +42,6 @@ turf/simulated/wall
 		create_floor()
 			set src in world
 			new /turf/simulated/floor(src)
-
 obj/item/weapon/tank
 	verb
 		adjust_mixture(temperature as num, target_toxin_pressure as num, target_oxygen_pressure as num)

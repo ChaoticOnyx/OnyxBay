@@ -1,6 +1,7 @@
 /mob/living/silicon/robot/var/obj/item/device/radio/radio
 /mob/living/silicon/robot/
-	var/class = "none"
+	var/class = "standard"
+	icon_state = "standardrobot"
 /mob/living/silicon/robot/New()
 
 	spawn (1)
@@ -29,26 +30,32 @@
 			src.module = new /obj/item/weapon/robot_module/standard(src)
 			src.module_icon.icon_state = "standard"
 			class = "standard"
+			icon_state = "[class]robot"
 		if("Medical")
 			src.module = new /obj/item/weapon/robot_module/medical(src)
 			src.module_icon.icon_state = "medical"
 			class = "medical"
+			icon_state = "[class]robot"
 		if("Security")
 			src.module = new /obj/item/weapon/robot_module/security(src)
 			src.module_icon.icon_state = "security"
 			class = "security"
+			icon_state = "[class]robot"
 		if("Engineering")
 			src.module = new /obj/item/weapon/robot_module/engineering(src)
 			src.module_icon.icon_state = "engineer"
 			class = "engineer"
+			icon_state = "[class]robot"
 		if("Janitor")
 			src.module = new /obj/item/weapon/robot_module/janitor(src)
 			src.module_icon.icon_state = "janitor"
 			class = "janitor"
+			icon_state = "[class]robot"
 		if("Brobot")
 			src.module = new /obj/item/weapon/robot_module/brobot(src)
 			src.module_icon.icon_state = "brobot"
-			class = "brobot"
+			class = "standard"
+			icon_state = "[class]robot"
 
 /mob/living/silicon/robot/verb/cmd_robot_alerts()
 	set category = "Robot Commands"
@@ -451,15 +458,15 @@
 			src.overlays += "b1"
 
 	if(wiresexposed)
-		icon_state = "robot+we"
+		icon_state = "[class]robot+we"
 		return
 
 	else if(opened)
-		icon_state = "[ cell ? "robot+o+c" : "robot+o-c" ]"		// if opened, show cell if it's inserted
+		icon_state = "[ cell ? "[class]robot+o+c" : "[class]robot+o-c" ]"		// if opened, show cell if it's inserted
 		return
 
 	else
-		icon_state = "robot"
+		icon_state = "[class]robot"
 
 /mob/living/silicon/robot/verb/cmd_installed_modules()
 	set category = "Robot Commands"

@@ -938,10 +938,13 @@
 /obj/bullet/electrode/Bump(atom/A as mob|obj|turf|area)
 	spawn(0)
 		if(A)
-			A.bullet_act(PROJECTILE_TASER)
 			if(istype(A,/turf))
+				A.bullet_act(PROJECTILE_TASER,src.dir)
 				for(var/obj/O in A)
 					O.bullet_act(PROJECTILE_TASER, src)
+				del(src)
+				return
+			A.bullet_act(PROJECTILE_TASER)
 		del(src)
 	return
 

@@ -144,6 +144,16 @@
 	icon_state = "bio"
 	permeability_coefficient = 0.01
 	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES|HEADCOVERSMOUTH|PLASMAGUARD
+/obj/item/clothing/head/righelm
+	name = "Robust Helm"
+	icon_state = "rig_helm"
+	item_state = "rigp"
+	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES|HEADCOVERSMOUTH|PLASMAGUARD
+	permeability_coefficient = 0.02
+	protective_temperature = 1000
+	heat_transfer_coefficient = 0.02
+	gas_transfer_coefficient = 0.01
+	body_parts_covered = HEAD
 
 /obj/item/clothing/head/cakehat
 	name = "cakehat"
@@ -409,8 +419,19 @@
 	name = "suit"
 	var/fire_resist = T0C+100
 	flags = FPRINT | TABLEPASS
-
-
+	var/airflowprot = 0
+/obj/item/clothing/suit/rig
+	name = "Robust Suit"
+	desc = "Robust"
+	icon_state = "rig"
+	item_state = "rig"
+	flags = FPRINT|TABLEPASS|PLASMAGUARD
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	permeability_coefficient = 0.02
+	protective_temperature = 1000
+	heat_transfer_coefficient = 0.02
+	gas_transfer_coefficient = 0.01
+	airflowprot = 1
 /obj/item/clothing/suit/bio_suit
 	name = "bio suit"
 	desc = "A suit that protects against biological contamination."
@@ -568,6 +589,7 @@
 	permeability_coefficient = 0.02
 	protective_temperature = 1000
 	heat_transfer_coefficient = 0.02
+
 
 /obj/item/clothing/suit/space/syndicate
 	name = "red space suit"
