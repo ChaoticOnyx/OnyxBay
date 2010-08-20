@@ -346,6 +346,8 @@ Frequency:
 	src.set_security_frequency(security_frequency)
 
 /obj/item/device/radio/security_talk_into(mob/M as mob, message)
+	if (!security_radio_connection)
+		return
 	var/eqjobname
 
 	if (istype(M, /mob/living/carbon))
