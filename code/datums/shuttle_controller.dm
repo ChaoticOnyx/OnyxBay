@@ -235,19 +235,22 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 
 		if(timeleft() < last60 && online)
 			if(timeleft > 60)
-				radioalert("[round(timeleft()/60,1)] minutes until escape pod launch","Escape computer")
+				radioalert("[round(timeleft()/60,1)] minutes until escape pod launch.","Escape Computer")
 				if(timeleft() - 60 > 60)
 					last60 = timeleft() - 60
 				else
 					last60 = 60
 			if(timeleft > 30)
-				radioalert("[round(timeleft(),1)] seconds until escape pod launch","Escape computer")
+				radioalert("[round(timeleft(),1)] seconds until escape pod launch.","Escape Computer")
 				if(timeleft() - 10 > 10)
 					last60 = timeleft() - 10
 				else
 					last60 = timeleft() - 1
 			else
-				radioalert("[round(timeleft(),1)] seconds","Escape computer")
+				if(timeleft() > 0)
+					radioalert("[round(timeleft(),1)] seconds.","Escape Computer")
+				else
+					radioalert("Escape pods launched.","Escape Computer")
 				last60 = timeleft() - 1
 
 

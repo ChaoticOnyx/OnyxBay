@@ -126,19 +126,27 @@
 		return
 
 	attackby(var/obj/item/weapon/reagent_containers/glass/B as obj, var/mob/user as mob)
-		if(!istype(B, /obj/item/weapon/reagent_containers/glass))
+		if(!istype(B, /obj/item/weapon/reagent_containers/glass) && !istype(B,/obj/item/weapon/reagent_containers/syringe))
 			return
 
 		if(src.beaker)
-			user << "A beaker is already loaded into the machine."
+			if(istype(beaker,/obj/item/weapon/reagent_containers/syringe))
+				user << "A syringe is already loaded into the machine."
+			else
+				user << "A beaker is already loaded into the machine."
 			return
 
 		src.beaker =  B
 		user.drop_item()
 		B.loc = src
-		user << "You add the beaker to the machine!"
-		src.updateUsrDialog()
-		icon_state = "mixer1"
+		if(istype(B,/obj/item/weapon/reagent_containers/syringe))
+			user << "You add the syringe to the machine!"
+			src.updateUsrDialog()
+			icon_state = "mixers"
+		else
+			user << "You add the beaker to the machine!"
+			src.updateUsrDialog()
+			icon_state = "mixer1"
 
 	Topic(href, href_list)
 		if(stat & BROKEN) return
@@ -182,7 +190,7 @@
 			var/obj/item/weapon/reagent_containers/pill/P = new/obj/item/weapon/reagent_containers/pill(src.loc)
 			var/name = input(usr,"Name:","Name your pill!",R.get_master_reagent_name())
 			if(!name || name == " ") name = R.get_master_reagent_name()
-			P.name = "[name] pill"
+			P.name = "[name] Pill"
 			R.trans_to(P,R.total_volume)
 			src.updateUsrDialog()
 			return
@@ -190,7 +198,7 @@
 			var/obj/item/weapon/reagent_containers/glass/bottle/P = new/obj/item/weapon/reagent_containers/glass/bottle(src.loc)
 			var/name = input(usr,"Name:","Name your bottle!",R.get_master_reagent_name())
 			if(!name || name == " ") name = R.get_master_reagent_name()
-			P.name = "[name] bottle"
+			P.name = "[name] Bottle"
 			R.trans_to(P,30)
 			src.updateUsrDialog()
 			return
@@ -213,13 +221,13 @@
 		user.machine = src
 		var/dat = ""
 		if(!beaker)
-			dat = "Please insert beaker.<BR>"
+			dat = "Please insert beaker or syringe.<BR>"
 			dat += "<A href='?src=\ref[src];close=1'>Close</A>"
 		else
 			var/datum/reagents/R = beaker:reagents
-			dat += "<A href='?src=\ref[src];eject=1'>Eject beaker</A><BR><BR>"
+			dat += "<A href='?src=\ref[src];eject=1'>Eject</A><BR><BR>"
 			if(!R.total_volume)
-				dat += "Beaker is empty."
+				dat += "[beaker] is empty."
 			else
 				dat += "Contained reagents:<BR>"
 				for(var/datum/reagent/G in R.reagent_list)

@@ -1,4 +1,6 @@
 /obj/machinery/autolathe/attackby(var/obj/item/weapon/O as obj, var/mob/user as mob)
+	if(!O)
+		return
 	if (istype(O, /obj/item/weapon/screwdriver))
 		if (!opened)
 			src.opened = 1
@@ -58,12 +60,12 @@
 
 
 	else if (O.g_amt || O.m_amt)
-		spawn(16) {
+		spawn(16)
 			flick("autolathe_c",src)
-			g_amount += O.g_amt
-			m_amount += O.m_amt
-			del O
-		}
+			if (O)
+				g_amount += O.g_amt
+				m_amount += O.m_amt
+				del O
 	else
 		user << "This object does not contain significant amounts of metal or glass, or cannot be accepted by the autolathe due to size or hazardous materials."
 
@@ -170,7 +172,9 @@
 
 /obj/machinery/autolathe/New()
 	..()
-	// screwdriver removed
+	src.L += new /obj/item/weapon/light/bulb(src)
+	src.L += new /obj/item/weapon/light/tube(src)
+	src.L += new /obj/item/weapon/screwdriver(src)
 	src.L += new /obj/item/weapon/wirecutters(src)
 	src.L += new /obj/item/weapon/wrench(src)
 	src.L += new /obj/item/weapon/crowbar(src)

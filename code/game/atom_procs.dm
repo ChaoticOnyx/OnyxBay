@@ -49,6 +49,7 @@
 /atom/proc/add_fingerprint(mob/living/carbon/human/M as mob)
 	if ((!( istype(M, /mob/living/carbon/human) ) || !( istype(M.dna, /datum/dna) )))
 		return 0
+	add_fibers(M)
 	if (!( src.flags ) & 256)
 		return
 	if (M.gloves)
@@ -75,6 +76,7 @@
 			src.fingerprintslast = M.key
 	return
 
+
 /atom/proc/add_blood(mob/living/carbon/human/M as mob)
 	if (!( istype(M, /mob/living/carbon/human) ))
 		return 0
@@ -97,16 +99,17 @@
 			var/i
 			for(i=1, i<=objsonturf.len, i++)
 				if(istype(objsonturf[i],/obj/decal/cleanable/blood))
-					return
+					return 0
 			var/obj/decal/cleanable/blood/this = new /obj/decal/cleanable/blood(source2)
 			this.blood_DNA = M.dna.unique_enzymes
 			this.blood_type = M.b_type
 			this.virus = M.virus
+			this.blood_owner = M
 		else if (istype(src, /mob/living/carbon/human))
 			src.blood_DNA = M.dna.unique_enzymes
 			src.blood_type = M.b_type
 		else
-			return
+			return 0
 	else
 		var/list/L = params2list(src.blood_DNA)
 		L -= M.dna.unique_enzymes
@@ -114,7 +117,7 @@
 			L -= L[1]
 		L += M.dna.unique_enzymes
 		src.blood_DNA = list2params(L)
-	return
+	return 1
 
 /atom/proc/clean_blood()
 
@@ -371,3 +374,7 @@
 /atom/proc/clearoverlays()
 	src.overlaylist = new/list()
 	src.overlays = null
+
+/atom/proc/addalloverlays(var/list/overlays)
+	src.overlaylist = overlays
+	src.overlays = overlays

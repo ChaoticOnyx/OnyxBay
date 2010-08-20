@@ -10,7 +10,6 @@ var/global
 		//items that ask to be called every cycle
 
 	defer_powernet_rebuild = 0		// true if net rebuild will be called manually after an event
-	defer_space_remap = 0			// true if space / open space tiles should not perform tile validation in New()
 
 var
 

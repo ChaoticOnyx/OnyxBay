@@ -5,6 +5,7 @@
 	var/probability = 1
 	// this includes admin-appointed traitors and multitraitors. Easy!
 	var/list/datum/mind/traitors = list()
+	var/list/logtraitors = list( )
 
 /datum/game_mode/proc/announce()
 	world << "<B>[src] did not define announce()</B>"
@@ -45,6 +46,12 @@
 			world << "<B>The traitor was successful!<B>"
 		else
 			world << "<B>The traitor has failed!<B>"
+
+		var/datum/traitorinfo/info = logtraitors[traitor]
+		var/DBQuery/query = dbcon.NewQuery("INSERT INTO `bay12`.`traitorlogs` (`CKey`, `Objective`, `Succeeded`, `Spawned`, `Occupation`, `PlayerCount`) VALUES ('[info.ckey]', '[info.starting_objective]', '[traitorwin]', '[dd_list2text(info.spawnlist, ";")]', '[info.starting_occupation]', '[info.starting_player_count]')")
+		query.Execute()
+
+
 	return 1
 
 /datum/game_mode/proc/check_win()

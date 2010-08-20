@@ -215,11 +215,11 @@
 			if(src.health < 0)
 				src.losebreath++
 
-			var/halfmask = 0
+			//var/halfmask = 0
 
-			if(wear_mask && internal)
-				if(wear_mask.flags & 4)
-					halfmask = 1
+			//if(wear_mask && internal)
+			//	if(wear_mask.flags & 4)
+			//		halfmask = 1
 
 			if(losebreath>0) //Suffocating so do not take a breath
 				src.losebreath--
@@ -228,7 +228,7 @@
 				if(istype(loc, /obj/))
 					var/obj/location_as_object = loc
 					location_as_object.handle_internal_lifeform(src, 0)
-			else if(halfmask)
+			/*else if(halfmask)
 				var/datum/gas_mixture/breath2
 
 				breath = get_breath_from_internal(BREATH_VOLUME/2)
@@ -247,7 +247,7 @@
 
 					breath2 = loc.remove_air(breath_moles)
 
-				breath.merge(breath2)
+				breath.merge(breath2)*/
 			else
 				//First, check for air from internal atmosphere (using an air tank and mask generally)
 				breath = get_breath_from_internal(BREATH_VOLUME)

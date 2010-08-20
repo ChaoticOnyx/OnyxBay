@@ -189,17 +189,21 @@
 		if(repair_state == 0 && istype(W,/obj/item/weapon/screwdriver))
 			repair_state = 1
 			updateicon()
+			user << "\blue You remove the broken APC parts"
 		else if(repair_state == 1 && istype(W,/obj/item/weapon/circuitry))
 			del(W)
 			repair_state = 2
 			updateicon()
+			user << "\blue You add a circuit board.  You need one more"
 		else if(repair_state == 2 && istype(W,/obj/item/weapon/circuitry))
 			del(W)
 			repair_state = 3
 			updateicon()
+			user << "\blue You finish adding the APC circuits."
 		else if(repair_state == 3 && istype(W,/obj/item/weapon/wirecutters))
 			repair_state = 4
 			updateicon()
+			user << "\blue You detach the old wiring."
 		else if(repair_state == 4 && istype(W,/obj/item/weapon/cable_coil))
 			var/obj/item/weapon/cable_coil/S = W
 			if(!S.use(5))
@@ -207,9 +211,13 @@
 				return
 			repair_state = 5
 			updateicon()
+			user << "\blue You wire the APC."
 		else if(repair_state == 5 && istype(W,/obj/item/weapon/screwdriver))
 			repair_state = 0
 			stat -= BROKEN
+			user << "\blue You screw the APC closed."
+			terminal = locate(/obj/machinery/power/terminal) in loc
+
 		return
 
 	if (istype(user, /mob/living/silicon))

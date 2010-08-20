@@ -163,13 +163,13 @@
 	ClearTempbans()
 	return
 
+/*
 /world/Del()
 	world.Export("http://127.0.0.1:31338")
 	..()
-
-//Crispy fullban
+*/
 /world/Reboot(var/reason)
-	spawn(0)
+//	spawn(0)
 //		if(prob(40))
 //			for(var/mob/M in world)
 //				if(M.client)
@@ -179,8 +179,9 @@
 //				if(M.client)
 //					M << sound('NewRound.ogg')
 
-	for(var/client/C)
-		C << link("byond://[world.address]:[world.port]")
+	spawn(0)
+		for(var/client/C)
+			C << link("byond://[world.internet_address]:[world.port]")
 
 //	sleep(10) // wait for sound to play
 	..(reason)

@@ -26,6 +26,9 @@
 	var/const/captain_card = 5
 	var/const/captain_suit = 6
 
+	var/num_players = 0
+
+
 	var/const/destroy_plasma = 1
 	var/const/destroy_ai = 2
 	var/const/kill_monkeys = 3
@@ -47,7 +50,6 @@
 /datum/game_mode/traitor/pre_setup()
 	var/list/possible_traitors = get_possible_traitors()
 
-	var/num_players = 0
 	for(var/mob/new_player/P in world)
 		if(P.client && P.ready)
 			num_players++
@@ -83,6 +85,12 @@
 
 /datum/game_mode/traitor/post_setup()
 	for(var/datum/mind/traitor in traitors)
+		var/datum/traitorinfo/info = new
+		logtraitors[traitor] = info
+		info.ckey = traitor.key
+		info.starting_player_count = num_players
+
+
 		if(istype(traitor.current, /mob/living/silicon))
 			var/datum/objective/assassinate/kill_objective = new
 			kill_objective.owner = traitor
@@ -93,9 +101,12 @@
 			survive_objective.owner = traitor
 			traitor.objectives += survive_objective
 
+			info.starting_occupation = "AI"
+
 			add_law_zero(traitor.current)
 
 		else
+			info.starting_occupation = traitor.current:wear_id:assignment
 			switch(rand(1,100))
 				if(1 to 50)
 					var/datum/objective/assassinate/kill_objective = new
@@ -120,6 +131,9 @@
 
 
 			equip_traitor(traitor.current)
+
+		for(var/datum/objective/objective in traitor.objectives)
+			info.starting_objective += objective.explanation_text + "            "
 
 		traitor.current << "\red <B>You are the traitor.</B>"
 		traitor.current << "\red <B>REPEAT</B>"

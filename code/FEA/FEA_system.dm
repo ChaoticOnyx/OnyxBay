@@ -165,6 +165,8 @@ datum
 
 			setup()
 
+				LoadTweaks()
+
 				world << "\red \b Processing Geometry..."
 				sleep(1)
 

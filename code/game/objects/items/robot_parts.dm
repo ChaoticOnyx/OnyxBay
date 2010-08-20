@@ -120,7 +120,7 @@
 	if(istype(W, /obj/item/brain))
 		if(src.check_completion())
 			user.drop_item()
-			W.loc = src
+			W.loc = get_turf(src)
 			src.brain = W
 			var/mob/living/silicon/robot/O = new /mob/living/silicon/robot(get_turf(src.loc))
 			O.gender = src.brain.owner.gender
@@ -138,7 +138,7 @@
 						del(G)
 						break
 
-			O.loc = src.loc
+			O.loc = get_turf(src.loc)
 			O << "<B>You are playing a Robot. The Robot can interact with most electronic objects in its view point.</B>"
 			O << "<B>You must follow the laws that the AI has. You are the AI's assistant to the station basically.</B>"
 			O << "To use something, simply double-click it."
