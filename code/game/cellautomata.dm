@@ -179,8 +179,9 @@
 //				if(M.client)
 //					M << sound('NewRound.ogg')
 
-	for(var/client/C)
-		C << link("byond://[world.internet_address]:[world.port]")
+	spawn(0)
+		for(var/client/C)
+			C << link("byond://[world.internet_address]:[world.port]")
 
 //	sleep(10) // wait for sound to play
 	..(reason)
