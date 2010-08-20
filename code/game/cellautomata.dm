@@ -180,7 +180,7 @@
 //					M << sound('NewRound.ogg')
 
 	for(var/client/C)
-		C << link("byond://[world.address]:[world.port]")
+		C << link("byond://[world.internet_address]:[world.port]")
 
 //	sleep(10) // wait for sound to play
 	..(reason)
