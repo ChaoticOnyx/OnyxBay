@@ -217,6 +217,7 @@
 			stat -= BROKEN
 			user << "\blue You screw the APC closed."
 			terminal = locate(/obj/machinery/power/terminal) in loc
+			updateicon()
 
 		return
 
