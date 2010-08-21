@@ -319,7 +319,7 @@ atom/movable
 			step_away(src,loc)
 		if(ismob(src))
 			if(src:nodamage) return
-			if (istype(src, /mob/living/carbon/))
+			if (istype(src, /mob/living/carbon/) && !istype(src, /mob/living/carbon/monkey))
 				if(src:wear_suit)
 					if(src:wear_suit.airflowprot) return
 			src << "\red You are sucked away by airflow!"

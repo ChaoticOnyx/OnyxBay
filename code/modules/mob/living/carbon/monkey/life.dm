@@ -14,7 +14,9 @@
 	if (src.monkeyizing)
 		return
 
-	var/datum/gas_mixture/environment = loc.return_air(1)
+	var/datum/gas_mixture/environment = null
+	if (loc)
+		environment = loc.return_air(1)
 
 	if (src.stat != 2) //still breathing
 
