@@ -58,7 +58,7 @@
 		M:client.moving = 0
 
 /obj/multiz/stairs/active/Click()
-	if(!istype(usr,/mob/dead/observer/))
+	if(!istype(usr,/mob/dead/observer))
 		return ..()
 	src:client.moving = 1
 	src.Move(locate(src.x, src.y, targetZ()))

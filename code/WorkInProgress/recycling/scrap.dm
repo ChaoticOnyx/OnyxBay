@@ -149,7 +149,8 @@
 		g_amt += other.g_amt
 		w_amt += other.w_amt
 
-		blood = (total*blood + other_total*other.blood) / (total + other_total)
+		if (total + other_total)
+			blood = (total*blood + other_total*other.blood) / (total + other_total)
 		del(other)
 
 	else
@@ -169,7 +170,8 @@
 
 		var/other_trans = m + g + w
 		other.update()
-		blood = (total*blood + other_trans*other.blood) / (total + other_trans)
+		if (total + other_trans)
+			blood = (total*blood + other_trans*other.blood) / (total + other_trans)
 
 
 	blood = round(blood,1)
