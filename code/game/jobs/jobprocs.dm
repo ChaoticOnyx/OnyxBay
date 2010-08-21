@@ -169,6 +169,32 @@
 	for (var/mob/new_player/player in unassigned)
 		player.mind.assigned_role = pick(assistant_occupations)
 
+	// Assign vacant head of department roles at random from the departments under them.
+	for (var/department in get_job_types())
+		var/list/candidate_list = list()
+		var/list/job_list = get_type_jobs(department)
+		var/head = get_department_head(department)
+
+		// Skip departments that don't have assigned heads.
+		if (!head)
+			continue
+
+		// Build candidate list from already-assigned players.
+		for (var/mob/new_player/player in world)
+			// Clear the list if an existing head is found. We don't want two HoDs.
+			if (player.mind.assigned_role == head)
+				candidate_list = list()
+				break
+			// Don't give the job to anyone banned or in the wrong department either.
+			if (job_list.Find(player.mind.assigned_role) && !jobban_isbanned(player, head))
+				candidate_list += player
+
+		// Assign a candidate at random. Leave it vacant if there's no one suitable.
+		if (candidate_list.len > 0)
+			candidate_list = shuffle(candidate_list)
+			var/mob/new_player/candidate = candidate_list[1]
+			candidate.mind.assigned_role = head
+
 	return 1
 
 /mob/living/carbon/human/proc/Equip_Rank(rank, joined_late)
