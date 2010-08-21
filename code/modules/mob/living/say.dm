@@ -92,46 +92,47 @@
 		if(!src.stuttering && prob(15))
 			message = NewStutter(message)
 
-	switch (message_mode)
-		if ("headset")
-			if (src:ears)
-				src:ears.talk_into(src, message)
+	if (!istype(src, /mob/living/silicon))
+		switch (message_mode)
+			if ("headset")
+				if (src:ears)
+					src:ears.talk_into(src, message)
 
-			message_range = 1
-			italics = 1
+				message_range = 1
+				italics = 1
 
-		if ("security_headset")
-			if (src:ears)
-				src:ears.security_talk_into(src, message)
+			if ("security_headset")
+				if (src:ears)
+					src:ears.security_talk_into(src, message)
 
-			message_range = 1
-			italics = 1
+				message_range = 1
+				italics = 1
 
-		if ("right hand")
-			if (src.r_hand)
-				src.r_hand.talk_into(src, message)
+			if ("right hand")
+				if (src.r_hand)
+					src.r_hand.talk_into(src, message)
 
-			message_range = 1
-			italics = 1
+				message_range = 1
+				italics = 1
 
-		if ("left hand")
-			if (src.l_hand)
-				src.l_hand.talk_into(src, message)
+			if ("left hand")
+				if (src.l_hand)
+					src.l_hand.talk_into(src, message)
 
-			message_range = 1
-			italics = 1
+				message_range = 1
+				italics = 1
 
-		//Might put this back if people are used to the old system.
-		/*if ("whisper")
-			message_range = 1
-			italics = 1*/
+			//Might put this back if people are used to the old system.
+			/*if ("whisper")
+				message_range = 1
+				italics = 1*/
 
-		if ("intercom")
-			for (var/obj/item/device/radio/intercom/I in view(1, null))
-				I.talk_into(src, message)
+			if ("intercom")
+				for (var/obj/item/device/radio/intercom/I in view(1, null))
+					I.talk_into(src, message)
 
-			message_range = 1
-			italics = 1
+				message_range = 1
+				italics = 1
 
 	for (var/obj/O in view(message_range, src))
 		spawn (0)
