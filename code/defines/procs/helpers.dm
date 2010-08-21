@@ -60,6 +60,8 @@
 	return list
 
 /proc/step_towards_3d(var/atom/movable/Ref, var/atom/movable/Trg)
+	if (!Ref || !Trg)
+		return 0
 	if(Ref.z == Trg.z)
 		var/S = Ref.loc
 		step_towards(Ref, Trg)
