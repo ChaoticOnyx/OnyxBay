@@ -267,12 +267,20 @@
 		if ("Management")
 			return list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Research Director")
 
+/proc/get_department_head(T)
+	switch(T)
+		if ("Security")
+			return "Head of Security"
+		if ("Med/Sci")
+			return "Research Director"
+		if ("Maintenance")
+			return "Chief Engineer"
 
 /proc/get_all_jobs()
-	return list("Assistant", "Engineer", "Detective", "Medical Doctor", "Captain", "Security Officer",
-				"Geneticist", "Scientist", "Head of Security", "Head of Personnel", "Atmospheric Technician",
-				"Chaplain", "Barman", "Chemist", "Janitor", "Chef", "Roboticist", "Quartermaster",
-				"Chief Engineer", "Research Director")
+	var/list/jobs = list()
+	for (var/type in get_job_types())
+		jobs += get_type_jobs(type)
+	return jobs
 
 
 /proc/get_all_passwords()
