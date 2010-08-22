@@ -177,6 +177,10 @@ zone
 			co2_archive = co2
 			temp_archive = temp
 
+			for(var/turf/T in space_connections)
+				if(!istype(T,/turf/space) && !istype(T,/turf/unsimulated/floor/hull))
+					space_connections -= T
+
 			if(space_connections.len)				 //Throw gas into space if it has space connections.
 				oxygen = QUANTIZE(oxygen/vsc.VACUUM_SPEED)
 				nitrogen = QUANTIZE(nitrogen/vsc.VACUUM_SPEED)
@@ -267,21 +271,21 @@ zone
 			oxygen = 0
 		else
 			oxygen += n
-		. = -n
+			. = abs(n)
 	add_nitrogen(n)
 		if(n < 0 && nitrogen < abs(n))
 			. = nitrogen
 			nitrogen = 0
 		else
 			nitrogen += n
-		. = -n
+			. = abs(n)
 	add_co2(n)
 		if(n < 0 && co2 < abs(n))
 			. = co2
 			co2 = 0
 		else
 			co2 += n
-		. = -n
+			. = abs(n)
 
 	AddTurf(turf/T)
 		if(T.zone) return

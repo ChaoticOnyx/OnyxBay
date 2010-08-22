@@ -254,6 +254,11 @@
 
 		var/style = round(hairnum / hrange)
 
+		if (style > styles.len)
+			style = styles.len
+		if (style < 1)
+			style = 1
+
 		H.hair_icon_state = styles[style]
 		H.h_style = H.hair_icon_state
 
