@@ -317,11 +317,11 @@ Auto Patrol: []"},
 
 				if(path.len > 0 && patrol_target)	// have a valid path, so just resume
 					mode = SECBOT_PATROL
-					speak("Resuming patrol.")
+//					speak("Resuming patrol.")
 					return
 
 				else if(patrol_target)		// has patrol target already
-					speak("Resuming patrol.")
+//					speak("Resuming patrol.")
 					spawn(0)
 						calc_path()		// so just find a route to it
 						if(path.len == 0)
@@ -332,7 +332,7 @@ Auto Patrol: []"},
 
 				else					// no patrol target, so need a new one
 					find_patrol_target()
-					speak("Engaging patrol mode.")
+//					speak("Engaging patrol mode.")
 
 
 			if(SECBOT_PATROL)		// patrol mode
@@ -587,7 +587,7 @@ Auto Patrol: []"},
 			else if (src.threatlevel >= 4)
 				src.target = C
 				src.oldtarget_name = C.name
-				src.speak("Level [src.threatlevel] infraction alert!")
+				src.speak("Level [src.threatlevel] infraction alert! Pursuing [C.name]!")
 				playsound(src.loc, pick('bcriminal.ogg', 'bjustice.ogg', 'bfreeze.ogg'), 50, 0)
 				src.visible_message("<b>[src]</b> points at [C.name]!")
 				mode = SECBOT_HUNT
