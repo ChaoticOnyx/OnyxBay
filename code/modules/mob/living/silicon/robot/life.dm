@@ -154,7 +154,8 @@
 			else
 				src.cell_icon.icon_state = "charge0"
 	else
-		src.cell_icon.icon_state = "charge-empty"
+		if (src.cell_icon)
+			src.cell_icon.icon_state = "charge-empty"
 
 	if (src.toxin) src.toxin.icon_state = "tox[src.toxin_alert ? 1 : 0]"
 	if (src.oxygen) src.oxygen.icon_state = "oxy[src.oxygen_alert ? 1 : 0]"

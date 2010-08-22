@@ -293,21 +293,22 @@
 
 	if(src.patient && src.path.len == 0 && (get_dist(src,src.patient) > 1))
 		spawn(0)
-			src.path = AStar(src.loc, get_turf(src.patient), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 30,id=botcard, exclude=list(/obj/landmark/alterations/nopath))
-			src.path = reverselist(src.path)
-			if(src.path.len == 0)
-				src.oldpatient = src.patient
-				src.patient = null
-				src.currently_healing = 0
-				src.last_found = world.time
+			if (istype(src.loc, /turf/))
+				src.path = AStar(src.loc, get_turf(src.patient), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 30,id=botcard, exclude=list(/obj/landmark/alterations/nopath))
+				src.path = reverselist(src.path)
+				if(src.path.len == 0)
+					src.oldpatient = src.patient
+					src.patient = null
+					src.currently_healing = 0
+					src.last_found = world.time
 		return
 
 	if(src.path.len > 0 && src.patient)
-		step_to(src, src.path[1])
+		step_towards_3d(src, src.path[1])
 		src.path -= src.path[1]
 		spawn(3)
 			if(src.path.len)
-				step_to(src, src.path[1])
+				step_towards_3d(src, src.path[1])
 				src.path -= src.path[1]
 
 	if(src.path.len > 8 && src.patient)

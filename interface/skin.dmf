@@ -20,16 +20,32 @@ macro "macro"
 		command = ".northwest"
 		is-disabled = false
 	elem 
+		name = "CTRL+WEST"
+		command = "turnwest"
+		is-disabled = false
+	elem 
 		name = "WEST+REP"
 		command = ".west"
+		is-disabled = false
+	elem 
+		name = "CTRL+NORTH"
+		command = "turnnorth"
 		is-disabled = false
 	elem 
 		name = "NORTH+REP"
 		command = ".north"
 		is-disabled = false
 	elem 
+		name = "CTRL+EAST"
+		command = "turneast"
+		is-disabled = false
+	elem 
 		name = "EAST+REP"
 		command = ".east"
+		is-disabled = false
+	elem 
+		name = "CTRL+SOUTH"
+		command = "turnsouth"
 		is-disabled = false
 	elem 
 		name = "SOUTH+REP"

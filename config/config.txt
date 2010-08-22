@@ -60,3 +60,12 @@ NORESPAWN
 
 # set a hosted by name for unix platforms
 HOSTEDBY Topkasa
+#sukasa.kicks-ass.org
+# tU8NptaBZV6BeM59
+# bay12
+#
+DB_SERVER db4free.org
+DB_USER head
+DB_PASSWORD 123456
+DB_DBNAME bay12
+DB_PORT 3306

@@ -55,26 +55,27 @@ datum
 
 				current_list_element = rand(1,reagent_list.len) //Eh, bandaid fix.
 
-				while(total_transfered != amount)
-					if(total_transfered >= amount) break //Better safe than sorry.
-					if(total_volume <= 0 || !reagent_list.len) break
-					if(R.total_volume >= R.maximum_volume) break
+				if (R)
+					while(total_transfered != amount)
+						if(total_transfered >= amount) break //Better safe than sorry.
+						if(total_volume <= 0 || !reagent_list.len) break
+						if(R.total_volume >= R.maximum_volume) break
 
-					if(current_list_element > reagent_list.len) current_list_element = 1
-					var/datum/reagent/current_reagent = reagent_list[current_list_element]
+						if(current_list_element > reagent_list.len) current_list_element = 1
+						var/datum/reagent/current_reagent = reagent_list[current_list_element]
 
-					R.add_reagent(current_reagent.id, (1 * multiplier) , current_reagent)
-					src.remove_reagent(current_reagent.id, 1)
+						R.add_reagent(current_reagent.id, (1 * multiplier) , current_reagent)
+						src.remove_reagent(current_reagent.id, 1)
 
-					current_list_element++
-					total_transfered++
-					src.update_total()
-					R.update_total()
+						current_list_element++
+						total_transfered++
+						src.update_total()
+						R.update_total()
 
-				R.handle_reactions()
-				handle_reactions()
+					R.handle_reactions()
+					handle_reactions()
 
-				return total_transfered
+					return total_transfered
 
 			metabolize(var/mob/M)
 				for(var/A in reagent_list)

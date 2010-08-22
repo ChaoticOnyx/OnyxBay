@@ -4,6 +4,30 @@
 // Use to show shuttle ETA/ETD times
 // Alert status
 // And arbitrary messages set by comms computer
+/obj/machinery/status_display/examine()
+	..()
+	var/msg
+	switch(mode)
+		if(1)
+			var/time = get_shuttle_timer()
+			if(time)
+				msg = "The screen states the time until pods launchs. \nTime remaining:[time]"
+		if(2)
+			if(message1 && message2)
+				msg = "The screen states the two following message. [message1] , [message2]"
+			else if(message1)
+				msg = "The screen states the following message. [message1]"
+			else if(message2)
+				msg = "The screen states the following message. [message1]"
+		if(3)
+			msg = src
+
+		if(4)
+			var/time = get_supply_shuttle_timer()
+			if(time)
+				msg = "The screen states the time until the supply shuttle arrive. \n Time remaining:[time]"
+	usr << msg
+	return
 
 /obj/machinery/status_display
 	icon = 'status_display.dmi'

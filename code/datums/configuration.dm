@@ -21,9 +21,7 @@
 	var/vote_period = 60				// length of voting period (seconds, default 1 minute)
 	var/vote_no_default = 0				// vote does not default to nochange/norestart (tbi)
 	var/vote_no_dead = 0				// dead people can't vote (tbi)
-
 	var/invite_only = 0
-
 	var/list/mode_names = list()
 	var/list/modes = list()				// allowed modes
 	var/list/votable_modes = list()		// votable modes
@@ -88,6 +86,16 @@
 			continue
 
 		switch (name)
+			if("db_server")
+				DB_SERVER = value
+			if("db_port")
+				DB_PORT = text2num(value)
+			if("db_user")
+				DB_USER = value
+			if("db_password")
+				DB_PASSWORD = value
+			if("db_dbname")
+				DB_DBNAME = value
 			if ("log_ooc")
 				config.log_ooc = 1
 

@@ -89,3 +89,10 @@
 		else
 			return 1
 	return 0
+
+/obj/machinery/bot/proc/CloseDoor(var/obj/machinery/door/D, var/atom/L)
+	set background = 1
+	while(src.loc == L)
+		sleep(10)
+		continue
+	D.close()
