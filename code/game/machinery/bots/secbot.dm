@@ -89,6 +89,7 @@
 				radio_controller.add_object(src, "[beacon_freq]")
 			radio = new /obj/item/device/radio(src)
 			radio.set_security_frequency(1399)
+			radio.listening = 0
 
 	examine()
 		set src in view()
