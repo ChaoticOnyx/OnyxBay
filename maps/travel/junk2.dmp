@@ -1,0 +1,23 @@
+"a" = (/obj/item/device/pda/medical,/turf/space,/area)
+"b" = (/turf/space,/area)
+"c" = (/obj/reagent_dispensers/beerkeg,/turf/space,/area)
+"d" = (/obj/closet/coffin,/turf/space,/area)
+"e" = (/obj/secure_closet/bar,/turf/space,/area)
+"f" = (/obj/structure/girder,/turf/space,/area)
+"g" = (/obj/stool/chair,/turf/space,/area)
+"h" = (/obj/item/robot_parts/r_leg,/turf/space,/area)
+"i" = (/obj/item/device/flash,/turf/space,/area)
+"j" = (/obj/item/device/flashlight,/obj/item/device/flash,/turf/space,/area)
+"k" = (/obj/item/robot_parts/chest,/turf/space,/area)
+"l" = (/obj/mopbucket,/turf/space,/area)
+"m" = (/obj/secure_closet/meat,/turf/space,/area)
+"n" = (/obj/stool,/turf/space,/area)
+
+(1,1,1) = {"
+abbcde
+bcfbdb
+bbbcbb
+ghijkb
+blbbmb
+ddebnb
+"}
