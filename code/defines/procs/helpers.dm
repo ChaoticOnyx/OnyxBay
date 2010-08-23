@@ -669,8 +669,8 @@
 		if (M.stat == 2)
 			if(istype(M, /mob/dead/observer/))
 				name += " \[ghost\]"
-			else if(istype(M,/mob/dead/offical))
-				name += "Nanotransen Offical"
+			else if(istype(M,/mob/dead/official))
+				name += "NanoTrasen Offical"
 			else
 				name += " \[dead\]"
 		creatures[name] = M
@@ -690,7 +690,7 @@
 		mob_list.Add(M)
 	for(var/mob/dead/observer/M in world)
 		mob_list.Add(M)
-	for(var/mob/dead/offical/M in world)
+	for(var/mob/dead/official/M in world)
 		mob_list.Add(M)
 	for(var/mob/new_player/M in world)
 		mob_list.Add(M)

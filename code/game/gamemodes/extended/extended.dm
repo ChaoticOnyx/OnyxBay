@@ -1,8 +1,8 @@
 /datum/game_mode/extended
-	name = "extended"
+	name = "Extended Role-Playing"
 	config_tag = "extended"
 
-/datum/game_mode/announce()
-	world << "<B>The current game mode is - Extended Role-Playing!</B>"
+/datum/game_mode/extended/announce()
+	..()
 	world << "<B>Just have fun and role-play!</B>"
 

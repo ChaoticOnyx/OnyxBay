@@ -1,1 +1,0 @@
-/mob/dead/offical

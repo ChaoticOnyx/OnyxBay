@@ -22,7 +22,7 @@ var/command_name = null
 	name += " "
 
 	// Yay, all these contain hacks
-	name = "Nanotrasen"
+	name = "NanoTrasen"
 	command_name = name
 	return name
 
