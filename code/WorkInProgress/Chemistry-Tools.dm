@@ -1247,6 +1247,28 @@
 	amount = 5
 	heal_amt = 2
 
+
+
+/obj/item/weapon/reagent_containers/food/snacks/plump
+	name = "Plump Helmets"
+	desc = "Mushrooms selectively bred to be alchoholic."
+	icon_state = "plump"
+	heal_amt = 1
+	New()
+		var/datum/reagents/R = new/datum/reagents(50)
+		reagents = R
+		R.my_atom = src
+		R.add_reagent("vodka", 10)
+
+/obj/item/weapon/reagent_containers/food/snacks/plump/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/weapon/kitchen/utensil/knife))
+		var/obj/item/clothing/head/helmet/plump/P = new/obj/item/clothing/head/helmet/plump
+		P.loc = src.loc
+		del src
+	return ..()
+
+
+
 //Drinks
 /obj/item/weapon/reagent_containers/food/drinks/coffee
 	name = "Robust Coffee"
@@ -1280,6 +1302,31 @@
 		reagents = R
 		R.my_atom = src
 		R.add_reagent("beer", 30)
+
+/obj/item/weapon/reagent_containers/food/drinks/vodka
+	name = "Space Vodka"
+	desc = "IN SOVIET SPACE, VODKA DRINKS YOU!"
+	icon_state = "vodka"
+	heal_amt = 1
+	New()
+		var/datum/reagents/R = new/datum/reagents(50)
+		reagents = R
+		R.my_atom = src
+		R.add_reagent("vodka", 50)
+
+/obj/item/weapon/reagent_containers/food/drinks/dwine
+	name = "Dwarven Wine"
+	desc = "Warning: highly toxic."
+	icon_state = "dwine"
+	heal_amt = 1
+	New()
+		var/datum/reagents/R = new/datum/reagents(50)
+		reagents = R
+		R.my_atom = src
+		R.add_reagent("dwine", 50)
+
+
+
 
 //Pills
 /obj/item/weapon/reagent_containers/pill/antitox

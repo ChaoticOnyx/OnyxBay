@@ -248,6 +248,11 @@
 	item_state = "hardhat0"
 	var/on = 0
 
+/obj/item/clothing/head/helmet/plump
+	name = "Plump helmet helmet"
+	icon_state = "plump"
+	flags = FPRINT | TABLEPASS | SUITSPACE | HEADSPACE | HEADCOVERSEYES
+	item_state = "plump"
 
 /obj/item/clothing/head/helmet/welding
 	name = "welding helmet"
