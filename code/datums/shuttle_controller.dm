@@ -43,25 +43,25 @@ datum/shuttle
 		name = "Shuttle"
 		location = 1 // 0 = Transit, 1 = Start, 2 = dest
 		online = 0
-		direction = 2 // 1 = Start, 2 = Dest
+		direction = 1 // 1 = Start, 2 = Dest
 
 
 
 
 		area
-			centcom //Start
-			station //Destination
+			centcom //Destination
+			station //Start
 			transit //Transit area
 
 		endtime			// timeofday that shuttle arrives
 		//timeleft = 360 //600
 
 
-	New(var/name,var/centcom,var/transit,var/station)
-		src.centcom = centcom
-		src.transit = transit
-		src.station = station
+	New(var/name,var/station,var/transit,var/centcom)
 		src.name = name
+		src.station = station
+		src.transit = transit
+		src.centcom = centcom
 
 	proc/depart()
 		settimeleft(PODTRANSITTIME)
@@ -129,7 +129,7 @@ datum/shuttle
 				if(1)
 					if(timeleft>0)
 					//	world << "MOVE"
-						var/area/start_location = locate(centcom)
+						var/area/start_location = locate(station)
 						var/area/end_location = locate(transit)
 						for(var/mob/m in start_location)
 							shake_camera(m, 3, 1)
@@ -148,9 +148,9 @@ datum/shuttle
 						var/area/start_location = locate(transit)
 						var/area/end_location
 						if(direction == 1)
-							end_location = locate(centcom)
-						else
 							end_location = locate(station)
+						else
+							end_location = locate(centcom)
 
 						var/list/dstturfs = list()
 						var/throwy = world.maxy
@@ -181,7 +181,7 @@ datum/shuttle
 				if(2)
 					if(timeleft>0)
 				//		world << "MOVE"
-						var/area/start_location = locate(centcom)
+						var/area/start_location = locate(station)
 						for(var/mob/m in start_location)
 							shake_camera(m, 3, 1)
 						var/area/end_location = locate(transit)
