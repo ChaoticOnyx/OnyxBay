@@ -621,7 +621,6 @@
 #include "code\WorkInProgress\Chemistry-Tools.dm"
 #include "code\WorkInProgress\cloning.dm"
 #include "code\WorkInProgress\explosion_particles.dm"
-#include "code\WorkInProgress\HallucinationEffects.dm"
 #include "code\WorkInProgress\KeelinsStuff.dm"
 #include "code\WorkInProgress\NewBan.dm"
 #include "code\WorkInProgress\Aryn\DetectiveWork.dm"
