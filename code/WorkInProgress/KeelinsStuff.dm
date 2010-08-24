@@ -277,7 +277,8 @@
 
 	if(!possible_clones.len) return
 	clone = pick(possible_clones)
-	var/obj/fake_attacker/F = new/obj/fake_attacker(outside_range(target))
+	//var/obj/fake_attacker/F = new/obj/fake_attacker(outside_range(target))
+	var/obj/fake_attacker/F = new/obj/fake_attacker(target.loc)
 	if(clone.l_hand)
 		clone_weapon = clone.l_hand.name
 		F.weap = new clone.l_hand.type()
