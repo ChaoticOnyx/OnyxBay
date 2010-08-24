@@ -141,17 +141,38 @@
 	if (src.hitsound)
 		playsound(src.loc, hitsound, 50, 1, -1)
 	/////////////////////////
-	user.lastattacked = M
-	M.lastattacker = user
+	if(ismob(user))
+		user.lastattacked = M
+	if(ismob(M))
+		M.lastattacker = user
 	//spawn(1800)            // this wont work right
 	//	M.lastattacker = null
 	/////////////////////////
-	log_attack("[M.name] attacked by [user.name]([user.key]) with [src]")
-	user.log_m("Attacked [M.name]([M.real_name]) with [src]")
-	M.log_m("Attacked by [user.name]([user.real_name])([user.key]) with [src]")
+	if(ismob(user) && ismob(M))
+		log_attack("[M.name] attacked by [user.name]([user.key]) with [src]")
+		user.log_m("Attacked [M.name]([M.real_name]) with [src]")
+		M.log_m("Attacked by [user.name]([user.real_name])([user.key]) with [src]")
 	if(!istype(M, /mob/living/carbon/human))
-		for(var/mob/O in viewers(M, null))
-			O.show_message(text("\red <B>[] has been attacked with [][] </B>", M, src, (user ? text(" by [].", user) : ".")), 1)
+		if(istype(M,/obj/fake_attacker))
+			if (istype(user, /mob/living/carbon/human))
+				if (!( def_zone ))
+					var/mob/user2 = user
+					var/t = user2:zone_sel.selecting
+					if ((t in list( "eyes", "mouth" )))
+						t = "head"
+					def_zone = ran_zone(t)
+				var/hit_area = parse_zone(def_zone)
+				user.show_message(text("\red <B>[] has been attacked in the [] with [][] </B>", M, hit_area, src, (user ? text(" by [].", user) : ".")), 1)
+				var/obj/fake_attacker/F = M
+				if(prob(20))
+					var/time = rand(10,120)
+					F.ko = time
+					user.show_message("\red <B>[F] has been knocked unconscious!</B>",1)
+				F.health -= force
+				return
+		else
+			for(var/mob/O in viewers(M, null))
+				O.show_message(text("\red <B>[] has been attacked with [][] </B>", M, src, (user ? text(" by [].", user) : ".")), 1)
 	var/power = src.force
 	if (istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
@@ -221,7 +242,8 @@
 								user2.wear_suit.add_blood(H)
 							else if (user2.w_uniform)
 								user2.w_uniform.add_blood(H)
-				affecting.take_damage(b_dam, f_dam)
+				if(istype(user,/obj/fake_attacker)) M.halloss += b_dam + f_dam
+				else affecting.take_damage(b_dam, f_dam)
 			else if (def_zone == "chest")
 				if (b_dam && ((istype(H.wear_suit, /obj/item/clothing/suit/armor/)) && H.wear_suit.body_parts_covered & UPPER_TORSO) && prob(90 - src.force))
 					H.show_message("\red You have been protected from a hit to the chest.")
@@ -263,7 +285,8 @@
 								user2.wear_suit.add_blood(H)
 							else if (user2.w_uniform)
 								user2.w_uniform.add_blood(H)
-				affecting.take_damage(b_dam, f_dam)
+				if(istype(user,/obj/fake_attacker)) M.halloss += b_dam + f_dam
+				else affecting.take_damage(b_dam, f_dam)
 			else if (def_zone == "groin")
 				if (b_dam && (istype(H.wear_suit, /obj/item/clothing/suit/armor/) && H.wear_suit.body_parts_covered & LOWER_TORSO) && prob(90 - src.force))
 					H.show_message("\red You have been protected from a hit to the groin (phew).")
@@ -305,7 +328,8 @@
 									user2.wear_suit.add_blood(H)
 								else if (user2.w_uniform)
 									user2.w_uniform.add_blood(H)
-					affecting.take_damage(b_dam, f_dam)
+					if(istype(user,/obj/fake_attacker)) M.halloss += b_dam + f_dam
+					else affecting.take_damage(b_dam, f_dam)
 			else
 				if (b_dam && prob(25 + (b_dam * 2)))
 					src.add_blood(H)
@@ -332,7 +356,8 @@
 								user2.wear_suit.add_blood(H)
 							else if (user2.w_uniform)
 								user2.w_uniform.add_blood(H)
-				affecting.take_damage(b_dam, f_dam)
+				if(istype(user,/obj/fake_attacker)) M.halloss += b_dam + f_dam
+				else affecting.take_damage(b_dam, f_dam)
 		H.UpdateDamageIcon()
 	else
 		switch(src.damtype)

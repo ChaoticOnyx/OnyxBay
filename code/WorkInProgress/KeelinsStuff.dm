@@ -105,7 +105,7 @@
 	if(!label || !length(label))
 		user << "\red No text set."
 		return
-	if(length(A.name) + length(label) > 25)
+	if(length(A.name) + length(label) > 45)
 		user << "\red Label too big."
 		return
 
@@ -115,10 +115,10 @@
 
 /obj/item/weapon/hand_labeler/attack_self()
 	var/str = input(usr,"Label text?","Set label","")
-	if(!str || !length(str))
-		usr << "\red Invalid text."
-		return
-	if(length(str) > 10)
+	//if(!str || !length(str))
+	//	usr << "\red Invalid text."
+	//	return
+	if(length(str) > 25)
 		usr << "\red Text too long."
 		return
 	label = str
@@ -152,13 +152,19 @@
 	var/collapse
 	var/image/down
 
-	var/health = 100
-/obj/fake_attacker/attackby(var/obj/item/weapon/P as obj, mob/user as mob)
-	step_away(src,my_target,2)
-	for(var/mob/M in oviewers(world.view,my_target))
-		M << "\red <B>[my_target] flails around wildly.</B>"
-	my_target.show_message("\red <B>[src] has been attacked by [my_target] </B>", 1) //Lazy.
+	var/target_area = "chest"
 
+	var/health = 100
+	var/ko = 0
+/obj/fake_attacker/attackby(var/obj/item/weapon/P as obj, mob/user as mob)
+	P.attack(src,user)
+	if(prob(33))
+		if(!locate(/obj/overlay) in my_target.loc)
+			fake_blood(my_target,loc)
+	step_away(src,my_target,2)
+	//for(var/mob/M in oviewers(world.view,my_target))
+	//	M << "\red <B>[my_target] flails around wildly.</B>"
+	//my_target.show_message("\red <B>[src] has been attacked with [P] by [my_target] </B>", 1) //Lazy.
 	//src.health -= P.power
 
 
@@ -175,12 +181,16 @@
 	spawn(300)
 		my_target.hallucinations -= src
 		del(src)
-	step_away(src,my_target,2)
+	//step_away(src,my_target,2)
 	proccess()
 
 
 /obj/fake_attacker/proc/updateimage()
 //	del src.currentimage
+
+	if(src.collapse)
+		del src.currentimage
+		src.currentimage = new /image(down,src)
 
 
 	if(src.dir == NORTH)
@@ -203,6 +213,11 @@
 	if(src.health < 0)
 		collapse()
 		return
+	if(src.ko > 0)
+		collapse()
+		ko--
+		spawn(5) .()
+		return
 	if(get_dist(src,my_target) > 1)
 		src.dir = get_dir(src,my_target)
 		step_towards_3d(src,my_target)
@@ -210,10 +225,11 @@
 	else
 		if(prob(15))
 			if(weapon_name)
-				my_target << sound(pick('genhit1.ogg', 'genhit2.ogg', 'genhit3.ogg'))
-				my_target.show_message("\red <B>[my_target] has been attacked with [weapon_name] by [src.name] </B>", 1)
-				my_target.halloss += 8
-				if(prob(20)) my_target.eye_blurry += 3
+				//my_target << sound(pick('genhit1.ogg', 'genhit2.ogg', 'genhit3.ogg'))
+				//my_target.show_message("\red <B>[my_target] has been attacked with [weapon_name] by [src.name] </B>", 1)
+				//my_target.halloss += 8
+				//if(prob(20)) my_target.eye_blurry += 3
+				weap.attack(my_target,src,target_area)
 				if(prob(33))
 					if(!locate(/obj/overlay) in my_target.loc)
 						fake_blood(my_target)
@@ -231,10 +247,18 @@
 
 /obj/fake_attacker/proc/collapse()
 	collapse = 1
-	updateimage()
+	//weap.loc = loc
+	//weap = null
+	fake_blood(my_target,loc)
+	//my_target << "\red [src] breaks apart into shards of light..."
+	del src
 
-/proc/fake_blood(var/mob/target)
-	var/obj/overlay/O = new/obj/overlay(target.loc)
+/proc/fake_blood(var/mob/target,other_loc)
+	var/obj/overlay/O
+	if(!other_loc)
+		O = new/obj/overlay(target.loc)
+	else
+		O = new/obj/overlay(other_loc)
 	O.name = "blood"
 	var/image/I = image('blood.dmi',O,"floor[rand(1,7)]",O.dir,1)
 	target << I
@@ -253,18 +277,22 @@
 
 	if(!possible_clones.len) return
 	clone = pick(possible_clones)
-	var/obj/fake_attacker/F = new/obj/fake_attacker(target.loc)
+	var/obj/fake_attacker/F = new/obj/fake_attacker(outside_range(target))
 	if(clone.l_hand)
 		clone_weapon = clone.l_hand.name
-		F.weap = clone.l_hand
+		F.weap = new clone.l_hand.type()
 	else if (clone.r_hand)
 		clone_weapon = clone.r_hand.name
-		F.weap = clone.l_hand
+		F.weap = new clone.r_hand.type()
+	if(F.weap)
+		F.weap.loc = F
 
 	F.name = clone.name
 	F.my_target = target
 	F.weapon_name = clone_weapon
 	target.hallucinations += F
+
+	F.target_area = pick("head","head","chest","diaper")
 
 
 	F.left = image(clone,dir = WEST)
@@ -578,6 +606,8 @@
 	var/list/fromupdate = new/list()
 	var/list/toupdate = new/list()
 
+	//var/list/air_list = list()
+
 	moving:
 		for (var/turf/T in refined_src)
 			if(T.zone)
@@ -587,6 +617,10 @@
 					T.zone.direct_connections -= Z
 					Z.connections -= T.zone
 					Z.direct_connections -= T.zone
+				//if(!(T.zone in air_list))
+				//	air_list += T.zone
+				//	air_list[T.zone] = T.zone.air
+				//	T.zone.air = new()
 			var/datum/coords/C_src = refined_src[T]
 			for (var/turf/B in refined_trg)
 				var/datum/coords/C_trg = refined_trg[B]
@@ -652,7 +686,7 @@
 			else
 				air_master.tiles_to_update += T1
 			if(T1.zone)
-				T1.zone.space_connections.len = 0
+				T1.zone.space_connections -= T1
 
 	if(fromupdate.len)
 		for(var/turf/simulated/T2 in fromupdate)
@@ -663,7 +697,7 @@
 			else
 				air_master.tiles_to_update += T2
 			if(T2.zone)
-				T2.zone.space_connections.len = 0
+				T2.zone.space_connections -= T2
 
 	for(var/obj/O in doors)
 		O:update_nearby_tiles(1)

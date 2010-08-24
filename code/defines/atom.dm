@@ -29,6 +29,9 @@
 	proc/return_air()
 		return null
 
+	proc/assume_toxins()
+		return null
+
 
 // Convenience proc to see if a container is open for chemistry handling
 // returns true if open

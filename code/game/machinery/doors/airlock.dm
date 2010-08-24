@@ -945,7 +945,7 @@ About the new airlock wires panel:
 		if(a.hallucination > 50 && prob(10) && src.operating == 0)
 			a << "\red <B>You feel a powerful shock course through your body!</B>"
 			a.halloss += 50
-			a.stunned += 50
+			a.weakened += 50
 			return
 
 	if(operating == 1)

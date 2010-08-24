@@ -28,7 +28,7 @@
 	if(holding)
 		environment = holding.air_contents
 	else
-		environment = loc.return_air()
+		environment = loc.return_air(1)
 
 
 	if(on)
@@ -63,6 +63,8 @@
 					removed = loc.remove_air(transfer_moles)
 
 				air_contents.merge(removed)
+
+				loc.assume_toxins()
 
 	src.updateDialog()
 	src.update_icon()
