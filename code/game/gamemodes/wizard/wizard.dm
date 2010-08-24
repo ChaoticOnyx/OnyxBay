@@ -5,22 +5,22 @@
 	var/datum/mind/wizard
 	var/finished = 0
 
-	var/const/prob_int_murder_target = 50 // intercept names the assassination target half the time
-	var/const/prob_right_murder_target_l = 25 // lower bound on probability of naming right assassination target
-	var/const/prob_right_murder_target_h = 50 // upper bound on probability of naimg the right assassination target
+	var/const/prob_murder_target_int = 50 // intercept names the assassination target half the time
+	var/const/prob_murder_target_correct_l = 25 // lower bound on probability of naming right assassination target
+	var/const/prob_murder_target_correct_h = 50 // upper bound on probability of naimg the right assassination target
 
-	var/const/prob_int_item = 50 // intercept names the theft target half the time
-	var/const/prob_right_item_l = 25 // lower bound on probability of naming right theft target
-	var/const/prob_right_item_h = 50 // upper bound on probability of naming the right theft target
+	var/const/prob_item_int = 50 // intercept names the theft target half the time
+	var/const/prob_item_correct_l = 25 // lower bound on probability of naming right theft target
+	var/const/prob_item_correct_h = 50 // upper bound on probability of naming the right theft target
 
-	var/const/prob_int_sab_target = 50 // intercept names the sabotage target half the time
-	var/const/prob_right_sab_target_l = 25 // lower bound on probability of naming right sabotage target
-	var/const/prob_right_sab_target_h = 50 // upper bound on probability of naming right sabotage target
+	var/const/prob_sab_target_int = 50 // intercept names the sabotage target half the time
+	var/const/prob_sab_target_correct_l = 25 // lower bound on probability of naming right sabotage target
+	var/const/prob_sab_target_correct_h = 50 // upper bound on probability of naming right sabotage target
 
-	var/const/prob_right_killer_l = 25 //lower bound on probability of naming the right operative
-	var/const/prob_right_killer_h = 50 //upper bound on probability of naming the right operative
-	var/const/prob_right_objective_l = 25 //lower bound on probability of determining the objective correctly
-	var/const/prob_right_objective_h = 50 //upper bound on probability of determining the objective correctly
+	var/const/prob_killer_correct_l = 25 //lower bound on probability of naming the right operative
+	var/const/prob_killer_correct_h = 50 //upper bound on probability of naming the right operative
+	var/const/prob_objective_correct_l = 25 //lower bound on probability of determining the objective correctly
+	var/const/prob_objective_correct_h = 50 //upper bound on probability of determining the objective correctly
 
 	//apparently BYOND doesn't have enums, so this seems to be the best approximation
 	var/const/obj_murder = 1

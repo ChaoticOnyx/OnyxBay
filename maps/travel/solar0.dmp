@@ -1,0 +1,36 @@
+"a" = (/obj/cable{icon_state = "0-4"; d2 = 4},/obj/machinery/power/solar,/turf/simulated/floor/airless{tag = "icon-solarpanel"; icon_state = "solarpanel"},/area)
+"b" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/obj/item/weapon/weldingtool,/turf/simulated/floor/plating,/area)
+"c" = (/obj/cable{d2 = 8; icon_state = "0-8"},/obj/machinery/power/solar,/turf/simulated/floor/airless{tag = "icon-solarpanel"; icon_state = "solarpanel"},/area)
+"d" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor/plating,/area)
+"e" = (/obj/item/weapon/tank/air,/turf/space,/area)
+"f" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor/plating,/area)
+"g" = (/turf/space,/area)
+"h" = (/obj/item/weapon/shard,/turf/space,/area)
+"i" = (/obj/item/weapon/caution{desc = "Caution! Construction Zone!"; name = "caution sign"},/obj/item/weapon/cleaner,/turf/space,/area)
+"j" = (/obj/cable{icon_state = "2-4"; d1 = 2; d2 = 4},/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/plating,/area)
+"k" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/item/weapon/cigbutt,/turf/simulated/floor/plating,/area)
+"l" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor/plating,/area)
+"m" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/item/weapon/cable_coil/cut,/turf/simulated/floor/plating,/area)
+"n" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/item/weapon/cable_coil/cut,/turf/simulated/floor/plating,/area)
+"o" = (/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/item/weapon/cable_coil,/turf/simulated/floor/plating,/area)
+"p" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/obj/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor/plating,/area)
+"q" = (/obj/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/plating,/area)
+"r" = (/obj/machinery/power/solar_control,/obj/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/turf/simulated/floor/plating,/area)
+"s" = (/obj/machinery/power/terminal{dir = 4},/obj/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area)
+"t" = (/obj/machinery/power/smes,/turf/simulated/floor/plating,/area)
+"u" = (/obj/cable{icon_state = "2-8"; d1 = 2; d2 = 8},/obj/item/weapon/paper{info = "Goto golf tournament<BR>Fix faulty toilet<BR>Attach solar platform to station before we jump"; name = "Todo"},/turf/simulated/floor/plating,/area)
+"v" = (/obj/item/weapon/cable_coil,/obj/item/weapon/wirecutters,/turf/simulated/floor/plating,/area)
+"w" = (/obj/machinery/power/tracker,/obj/cable,/turf/simulated/floor/plating,/area)
+
+(1,1,1) = {"
+abcadcadce
+afcafcafcg
+afcafcafcg
+afcafcafch
+afcafcafcg
+afcafcafcg
+afcafcafci
+afcafcafcg
+gjklmnopgg
+gqrstuvwgg
+"}

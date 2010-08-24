@@ -8,7 +8,7 @@
 	var/list/logtraitors = list( )
 
 /datum/game_mode/proc/announce()
-	world << "<B>[src] did not define announce()</B>"
+	world << "<B>The current game mode is - [name]!</B>"
 
 /datum/game_mode/proc/pre_setup()
 	return 1

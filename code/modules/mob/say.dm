@@ -20,7 +20,7 @@
 	else if (istype(src, /mob/dead/observer))
 		name = "Ghost"
 		alt_name = " ([src.real_name])"
-	else if (istype(src, /mob/dead/offical))
+	else if (istype(src, /mob/dead/official))
 		name = "Centcom offical"
 	else if (!istype(src, /mob/living/carbon/human))
 		name = src.name

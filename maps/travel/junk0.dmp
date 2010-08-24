@@ -1,0 +1,25 @@
+"a" = (/turf/simulated/wall,/area)
+"b" = (/obj/structure/girder,/turf/simulated/floor/plating,/area)
+"c" = (/turf/space,/area)
+"d" = (/obj/mopbucket,/turf/simulated/floor,/area)
+"e" = (/turf/simulated/floor,/area)
+"f" = (/obj/decal/cleanable/blood,/turf/simulated/floor,/area)
+"g" = (/obj/decal/cleanable/molten_item,/turf/space,/area)
+"h" = (/turf/simulated/floor/plating,/area)
+"i" = (/obj/machinery/portable_atmospherics/canister/toxins,/turf/simulated/floor,/area)
+"j" = (/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor,/area)
+"k" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area)
+"l" = (/obj/decal/cleanable/blood,/obj/decal/cleanable/oil,/turf/simulated/floor,/area)
+"m" = (/obj/machinery/bot/mulebot,/turf/space,/area)
+"n" = (/obj/decal/cleanable/blood/tracks,/turf/simulated/floor,/area)
+"o" = (/obj/machinery/washer,/turf/simulated/floor,/area)
+"p" = (/obj/decal/cleanable/blood/tracks,/turf/space,/area)
+
+(1,1,1) = {"
+abcbba
+adefgh
+hiijek
+clmnea
+hfenoa
+aahpba
+"}

@@ -76,6 +76,57 @@ datum
 					M:drowsyness  = max(M:drowsyness, 30)
 				..()
 
+		vodka
+			name = "Vodka"
+			id = "vodka"
+			description = "Traditionally made of potatoes, NanoTrasen vodka contains NO organic material!"
+			reagent_state = LIQUID
+			on_mob_life(var/mob/M)
+				if(!data) data = 1
+				data++
+				M:jitteriness = max(M:jitteriness-3,0)
+				if(data >= 20)
+					M.make_dizzy(4)
+				if(data >= 30)
+					if (!M:intoxicated) M:intoxicated = 1
+					M:intoxicated += 4
+				if(data >= 70 && prob(20))
+					if (!M:confused) M:confused = 1
+					M:confused += 3
+				if(data >= 200)
+					M.eye_blurry = max(M.eye_blurry, 15)
+					M:drowsyness  = max(M:drowsyness, 25)
+				if(data >= 250)
+					M:paralysis = max(M:paralysis, 30)
+					M:drowsyness  = max(M:drowsyness, 40)
+				..()
+
+		dwine
+			name = "Dwarven Wine"
+			id = "dwine"
+			description = "Traditionally made of potatoes, NanoTrasen vodka contains NO organic material!"
+			reagent_state = LIQUID
+			on_mob_life(var/mob/M)
+				if(!data) data = 1
+				data++
+				M:jitteriness = max(M:jitteriness-3,0)
+				if(data >= 5)
+					M.make_dizzy(4)
+				if(data >= 20)
+					if (!M:intoxicated) M:intoxicated = 1
+					M:intoxicated += 5
+				if(data >= 50 && prob(5))
+					if (!M:confused) M:confused = 1
+					M:confused += 4
+				if(data >= 150)
+					M.eye_blurry = max(M.eye_blurry, 20)
+					M:drowsyness  = max(M:drowsyness, 30)
+				if(data >= 250)
+					M:paralysis = max(M:paralysis, 40)
+					M:drowsyness  = max(M:drowsyness, 50)
+					M:r_Tourette = 1
+				..()
+
 		water
 			name = "Water"
 			id = "water"

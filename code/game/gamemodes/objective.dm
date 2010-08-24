@@ -133,7 +133,7 @@ datum
 					if("Security Records circuitboard")
 						steal_target = /obj/item/weapon/circuitboard/secure_data
 					if("Communications circuitboard")
-						steal_target = /obj/item/weapon/circuitboard/med_data
+						steal_target = /obj/item/weapon/circuitboard/communications
 					if("zippo lighter")
 						steal_target = /obj/item/weapon/zippo
 

@@ -186,8 +186,8 @@ Frequency:
 		eqjobname = "AI"
 	else if (istype(M,/mob/living/silicon/robot))
 		eqjobname = "Android"
-	else if (istype(M,/mob/dead/offical))
-		eqjobname = "Nanotransen"
+	else if (istype(M,/mob/dead/official))
+		eqjobname = "NanoTrasen"
 	else
 		eqjobname = "Unknown"
 

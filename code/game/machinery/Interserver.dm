@@ -2,7 +2,7 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	var/address = input("Enter address") as text
-	var/response = world.Export(address+"#teleping")
+	var/response = world.Export(address+"?teleping")
 	if(!response)
 		for(var/mob/O in hearers(src, null))
 			O.show_message("\red Error, server unreachable", 2)
@@ -11,9 +11,6 @@
 		for(var/mob/O in hearers(src, null))
 			O.show_message("\red Error, server round has not started", 2)
 		return 0
-	else
-		for(var/mob/O in hearers(src, null))
-			O.show_message("\blue Locked in.", 2)
 	src.addr = address
 	src.add_fingerprint(usr)
 	return
@@ -38,7 +35,7 @@
 		F["s_z"] << M.z
 		F["mob"] << M
 		teleing = 1
-		if(!world.Export(com.addr+"#teleplayer",F))
+		if(!world.Export(com.addr+"?teleplayer",F))
 			teleing = 0
 			usr << "Cannot contact server"
 			return
@@ -50,9 +47,22 @@
 			del M
 			teleing = 0
 			doonce = 0
-	else
-		for(var/mob/O in hearers(src, null))
-			O.show_message("\red Failure: Object has no life sign.")
-		return
+	else	if (istype(M, /obj))
+		var/savefile/F = new()
+		F["s_x"] << M.x
+		F["s_y"] << M.y
+		F["s_z"] << M.z
+		F["obj"] << M
+		teleing = 1
+		if(!world.Export(com.addr+"?teleobj",F))
+			teleing = 0
+			usr << "Cannot contact server"
+			return
+		var doonce = 1
+		spawn while(doonce)
+			sleep(1)
+			del M
+			teleing = 0
+			doonce = 0
 	return
 

@@ -1270,7 +1270,7 @@ var/showadminmessages = 1
 				dat += "<td>New Player</td>"
 			if(istype(M, /mob/dead/observer))
 				dat += "<td>Ghost</td>"
-			if(istype(M, /mob/dead/offical))
+			if(istype(M, /mob/dead/official))
 				dat += "<td>Offical</td>"
 			if(istype(M, /mob/living/carbon/monkey))
 				dat += "<td>Monkey</td>"

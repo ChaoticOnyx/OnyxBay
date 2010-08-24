@@ -1,23 +1,23 @@
 /datum/game_mode/traitor
-	name = "traitor"
+	name = "Traitor"
 	config_tag = "traitor"
 
-	var/const/prob_int_murder_target = 1 // intercept names the assassination target half the time
-	var/const/prob_right_murder_target_l = 1 // lower bound on probability of naming right assassination target
-	var/const/prob_right_murder_target_h = 1 // upper bound on probability of naimg the right assassination target
+	var/const/prob_murder_target_int = 1 // Intercept names the assassination target(s) half the time
+	var/const/prob_murder_target_correct_l = 1 // Lower bound on probability of naming right assassination target(s)
+	var/const/prob_murder_target_correct_h = 1 // Upper bound on probability of naimg the right assassination target(s)
 
-	var/const/prob_int_item = 1 // intercept names the theft target half the time
-	var/const/prob_right_item_l = 1 // lower bound on probability of naming right theft target
-	var/const/prob_right_item_h = 1 // upper bound on probability of naming the right theft target
+	var/const/prob_item_int = 1 // Intercept names the theft target(s) half the time
+	var/const/prob_item_correct_l = 1 // Lower bound on probability of naming right theft target(s)
+	var/const/prob_item_correct_h = 1 // Upper bound on probability of naming the right theft target(s)
 
-	var/const/prob_int_sab_target = 1 // intercept names the sabotage target half the time
-	var/const/prob_right_sab_target_l = 1 // lower bound on probability of naming right sabotage target
-	var/const/prob_right_sab_target_h = 1 // upper bound on probability of naming right sabotage target
+	var/const/prob_sab_target_int = 1 // Intercept names the sabotage target(s) half the time
+	var/const/prob_sab_target_correct_l = 1 // Lower bound on probability of naming right sabotage target(s)
+	var/const/prob_sab_target_correct_h = 1 // Upper bound on probability of naming right sabotage target(s)
 
-	var/const/prob_right_killer_l = 1 //lower bound on probability of naming the right operative
-	var/const/prob_right_killer_h = 1 //upper bound on probability of naming the right operative
-	var/const/prob_right_objective_l = 1 //lower bound on probability of determining the objective correctly
-	var/const/prob_right_objective_h = 1 //upper bound on probability of determining the objective correctly
+	var/const/prob_killer_correct_l = 1 // Lower bound on probability of naming the right operative(s)
+	var/const/prob_killer_correct_h = 1 // Upper bound on probability of naming the right operative(s)
+	var/const/prob_objective_correct_l = 1 // Lower bound on probability of determining the objective(s) correctly
+	var/const/prob_objective_correct_h = 1 // Upper bound on probability of determining the objective(s) correctly
 
 	var/const/laser = 1
 	var/const/hand_tele = 2
@@ -26,25 +26,24 @@
 	var/const/captain_card = 5
 	var/const/captain_suit = 6
 
-	var/num_players = 0
-
-
 	var/const/destroy_plasma = 1
 	var/const/destroy_ai = 2
 	var/const/kill_monkeys = 3
 	var/const/cut_power = 4
 
-	var/const/percentage_plasma_destroy = 70 // what percentage of the plasma tanks you gotta destroy
-	var/const/percentage_station_cut_power = 80 // what percentage of the tiles have to have power cut
-	var/const/percentage_station_evacuate = 80 // what percentage of people gotta leave - you also gotta change the objective in the traitor menu
+	var/const/percentage_plasma_destroy = 70 // The percentage of the plasma tanks you have to destroy
+	var/const/percentage_station_cut_power = 80 // The percentage of the tiles that have to have power cut
+	var/const/percentage_station_evacuate = 80 // The percentage of people that have to leave
 
-	var/const/waittime_l = 600 //lower bound on time before intercept arrives (in tenths of seconds)
-	var/const/waittime_h = 1800 //upper bound on time before intercept arrives (in tenths of seconds)
+	var/const/waittime_l = 600 // Lower bound on time before intercept arrives (in tenths of seconds)
+	var/const/waittime_h = 1800 // Upper bound on time before intercept arrives (in tenths of seconds)
 
 	var/const/traitors_possible = 4
 
+	var/num_players = 0
+
 /datum/game_mode/traitor/announce()
-	world << "<B>The current game mode is - Traitor!</B>"
+	..()
 	world << "<B>There is a syndicate traitor on the station. Do not let the traitor succeed!!</B>"
 
 /datum/game_mode/traitor/pre_setup()
@@ -54,20 +53,19 @@
 		if(P.client && P.ready)
 			num_players++
 
-	var/i = rand(5)
+	var/r = rand(5)
 	var/num_traitors = 1
 
-	// stop setup if no possible traitors
+	// Stop setup if no possible traitors
 	if(!possible_traitors.len)
 		return 0
 
 	if(traitor_scaling)
-		num_traitors = max(1, min(round((num_players + i) / 10), traitors_possible))
+		num_traitors = max(1, min(round((num_players + r) / 10), traitors_possible))
+		log_game("Number of traitors: [num_traitors]")
+		message_admins("Players counted: [num_players]  Number of traitors chosen: [num_traitors]")
 
-//	log_game("Number of traitors: [num_traitors]")
-//	message_admins("Players counted: [num_players]  Number of traitors chosen: [num_traitors]")
-
-	for(var/j = 0, j < num_traitors, j++)
+	for(var/i = 0, i < num_traitors, i++)
 		var/datum/mind/traitor = pick(possible_traitors)
 		traitors += traitor
 		possible_traitors.Remove(traitor)
@@ -86,7 +84,6 @@
 /datum/game_mode/traitor/post_setup()
 	for(var/datum/mind/traitor in traitors)
 		var/datum/traitorinfo/info = new
-		logtraitors[traitor] = info
 		info.ckey = traitor.key
 		info.starting_player_count = num_players
 
@@ -134,6 +131,7 @@
 
 		for(var/datum/objective/objective in traitor.objectives)
 			info.starting_objective += objective.explanation_text + "            "
+		logtraitors[traitor] = info
 
 		traitor.current << "\red <B>You are the traitor.</B>"
 		traitor.current << "\red <B>REPEAT</B>"
@@ -143,10 +141,10 @@
 			traitor.current << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
 			obj_count++
 		traitor.current << "\red <B>You have 1 and 1/2 hours to complete your objective</B>"
-		traitor.current << "\red <B>If you do not complete your objective and return within the alloted time, we will be forced to reval your identity</B>"
+		traitor.current << "\red <B>If you do not complete your objective and return within the allotted time, we will be forced to reveal your identity</B>"
 		spawn(54000)
 			command_alert("Summary downloaded and printed out at all communications consoles.", "The traitor has been determined")
-			var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested staus information:</FONT><HR>"
+			var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested status information:</FONT><HR>"
 			intercepttext += "We have determined the traitors name to be: [traitor.current.real_name]"
 			for (var/obj/machinery/computer/communications/comm in world)
 				if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
@@ -179,15 +177,14 @@
 	return candidates
 
 /datum/game_mode/traitor/send_intercept()
-	var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested staus information:</FONT><HR>"
+	var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested status information:</FONT><HR>"
 	intercepttext += "<B> Cent. Com has recently been contacted by the following syndicate affiliated organisations in your area, please investigate any information you may have:</B>"
 
 	var/list/possible_modes = list()
 	possible_modes.Add("revolution", "wizard", "nuke", "traitor", "malf")
 	possible_modes -= "[ticker.mode]"
 	var/number = pick(2, 3)
-	var/i = 0
-	for(i = 0, i < number, i++)
+	for(var/i = 0, i < number, i++)
 		possible_modes.Remove(pick(possible_modes))
 	possible_modes.Insert(rand(possible_modes.len), "[ticker.mode]")
 
