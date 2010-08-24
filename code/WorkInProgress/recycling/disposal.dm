@@ -275,6 +275,8 @@
 			var/datum/gas_mixture/removed = env.remove(transfer_moles)
 			air_contents.merge(removed)
 
+			L.assume_toxins()
+
 
 		// if full enough, switch to ready mode
 		if(air_contents.return_pressure() >= 2*ONE_ATMOSPHERE)

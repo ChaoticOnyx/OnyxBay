@@ -127,34 +127,36 @@ datum/pipeline
 		var/datum/gas_mixture/air_sample = air.remove_ratio(mingle_volume/air.volume)
 		air_sample.volume = mingle_volume
 
-		if(istype(target) && target.parent)// && target.parent.group_processing)
+		if(istype(target) && target.zone)// && target.parent.group_processing)
 			//Have to consider preservation of group statuses
 			var/datum/gas_mixture/turf_copy = new
 
-			turf_copy.copy_from(target.parent.air)
-			turf_copy.volume = target.parent.air.volume //Copy a good representation of the turf from parent group
+			turf_copy.copy_from(target.zone.air)
+			turf_copy.volume = target.zone.air.volume //Copy a good representation of the turf from parent group
 
 			equalize_gases(list(air_sample, turf_copy))
 			air.merge(air_sample)
 
-			if(target.parent.air.compare(turf_copy))
+			//if(target.parent.air.compare(turf_copy))
 				//The new turf would be an acceptable group member so permit the integration
 
-				turf_copy.subtract(target.parent.air)
+			turf_copy.subtract(target.zone.air)
 
-				target.parent.air.merge(turf_copy)
+			target.zone.air.merge(turf_copy)
 
-			else
+			//else
 				//Comparison failure so dissemble group and copy turf
 
 				//target.parent.suspend_group_processing()
-				target.air.copy_from(turf_copy)
+			//	target.air.copy_from(turf_copy)
 
 		else
 			var/datum/gas_mixture/turf_air = target.return_air()
 
 			equalize_gases(list(air_sample, turf_air))
 			air.merge(air_sample)
+
+			target.assume_toxins()
 			//turf_air already modified by equalize_gases()
 
 		if(istype(target) && !target.processing)

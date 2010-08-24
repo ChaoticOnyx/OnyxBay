@@ -66,4 +66,6 @@
 
 	env.merge(removed)
 
+	L.assume_toxins()
+
 	return 1

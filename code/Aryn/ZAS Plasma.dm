@@ -238,3 +238,169 @@ turf/Entered(obj/item/I)
 		if(env.toxins > 0.01)
 			if(I.can_contaminate())
 				I.contaminated = 1
+
+turf/simulated/var
+	//current_toxins = 0
+	graphic = null
+	graphic_archived = null
+	tox_level_calculated = 0
+	list/tox_unblocked
+	archived_check_directions = 0
+	//list/current_trace_gases = list()
+
+turf/simulated/proc
+	toxins_flow()
+		if(tox_level_calculated) return
+		if(!zone) return
+		if(!tox_unblocked || (air_check_directions != archived_check_directions))
+			tox_unblocked = get_update_turfs(src)
+			//world.log << "Running toxin flows..."
+			/*
+			var/total_toxins = 0//current_toxins
+			var/list/total_trace = list()//current_trace_gases.Copy()
+
+			for(var/turf/simulated/T in tox_unblocked)
+				total_toxins += T.air.toxins
+				for(var/datum/gas/G in T.air.trace_gases)
+					var/datum/gas/N = locate(G.type) in total_trace
+					if(N)
+						N.moles += G.moles
+					else
+						N = new G.type()
+						N.moles = G.moles
+						total_trace += N
+
+			//world.log << "Total toxins: [total_toxins]"
+
+			var
+				average_toxins = total_toxins / length(tox_unblocked)+1
+				list/average_trace = total_trace.Copy()
+
+			for(var/datum/gas/G in average_trace)
+				G.moles /= length(tox_unblocked) + 1
+
+			//world.log << "Average toxins: [average_toxins]"
+
+			for(var/turf/simulated/T in tox_unblocked)
+				T.air.toxins = average_toxins
+				T.air.trace_gases = average_trace.Copy()
+
+			air.toxins = average_toxins
+			air.trace_gases = average_trace.Copy()*/
+
+		zone_share_gases()
+
+		for(var/turf/T in tox_unblocked)
+			if(istype(T,/turf/simulated))
+				var/turf/simulated/S = T
+				if(S.air.toxins || air.toxins || S.air.trace_gases.len || air.trace_gases.len)
+					air.share(S.air)
+				else
+					if(abs(air.temperature - S.air.temperature) > 0.1) air.temperature_share(S.air,OPEN_HEAT_TRANSFER_COEFFICIENT)
+			else
+				air.mimic(T)
+
+		graphic_archived = graphic
+		graphic = null
+
+		if(air.toxins > MOLES_PLASMA_VISIBLE)
+			graphic = "plasma"
+		else
+			var/datum/gas/sleeping_agent = locate(/datum/gas/sleeping_agent) in air.trace_gases
+			if(sleeping_agent && (sleeping_agent.moles > 1))
+				graphic = "sleeping_agent"
+			else
+				graphic = null
+
+		if(graphic != graphic_archived)
+			overlays.len = 0
+			switch(graphic)
+				if("plasma")
+					overlays += plmaster
+				if("sleeping_agent")
+					overlays += slmaster
+
+		//if(air.temperature)
+		//	var
+
+		if(length(tox_unblocked))
+
+			var/list/possible_fire_spreads = tox_unblocked.Copy()
+
+			var/turf/simulated/above = get_step_3d(src,UP)
+			if(istype(above,/turf/simulated/floor/open) && active_hotspot)
+				possible_fire_spreads += above
+			if(istype(src,/turf/simulated/floor/open))
+				if(active_hotspot && istype(src:floorbelow,/turf/simulated))
+					possible_fire_spreads += src:floorbelow
+
+			//var
+			//	oxygen_supply = zone.air.oxygen
+			//	co2_supply = zone.air.carbon_dioxide
+			//	nitrogen_supply = zone.air.nitrogen
+
+			//air.oxygen += oxygen_supply
+		//	air.nitrogen += nitrogen_supply
+		//	air.carbon_dioxide += co2_supply
+
+			air.react()
+
+			//air.oxygen = max(0,air.oxygen - oxygen_supply)
+			//air.nitrogen = max(0,air.nitrogen - nitrogen_supply)
+		//	air.carbon_dioxide = max(0,air.carbon_dioxide - co2_supply)
+
+			if(active_hotspot)
+				active_hotspot.process(possible_fire_spreads)
+
+			if(air.temperature > MINIMUM_TEMPERATURE_START_SUPERCONDUCTION)
+				consider_superconductivity(starting = 1)
+
+			if(air.temperature > FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
+				hotspot_expose(air.temperature, CELL_VOLUME)
+				for(var/atom/movable/item in src)
+					item.temperature_expose(air, air.temperature, CELL_VOLUME)
+				temperature_expose(air, air.temperature, CELL_VOLUME)
+
+
+
+proc
+	add_trace_gases(gases1,gases2)
+		for(var/datum/gas/G in gases2)
+			var/datum/gas/N = locate(G.type) in gases1
+			if(N)
+				N.moles += G.moles
+			else
+				N = new G.type()
+				N.moles = G.moles
+				gases1 += N
+		return gases1
+	subtract_trace_gases(gases1,gases2)
+		for(var/datum/gas/G in gases2)
+			var/datum/gas/N = locate(G.type) in gases1
+			if(N)
+				N.moles = max(0,N.moles - G.moles)
+				if(N.moles <= 0)
+					gases1 -= N
+		return gases1
+
+	multiply_trace_gases(gases,multiplier)
+		for(var/datum/gas/G in gases)
+			G.moles *= multiplier
+		return gases
+
+	divide_trace_gases(gases,multiplier)
+		for(var/datum/gas/G in gases)
+			G.moles /= multiplier
+		return gases
+
+			//else
+			//	N = new G.type()
+			//	N.moles = G.moles
+			//	gases1 -= N
+
+turf/simulated/proc/zone_share_gases()
+	if(zone)
+		zone.air.share_with = air
+		zone.air.sharing_with = 1+2+4
+		air.share_with = zone.air
+		air.sharing_with = 8+16+32

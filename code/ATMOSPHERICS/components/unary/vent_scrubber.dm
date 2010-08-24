@@ -74,6 +74,8 @@
 			if(network)
 				network.update = 1
 
+		loc.assume_toxins()
+
 		return 1
 
 	hide(var/i) //to make the little pipe section invisible, the icon changes.

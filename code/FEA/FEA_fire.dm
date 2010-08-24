@@ -8,6 +8,7 @@ turf
 
 	simulated
 		hotspot_expose(exposed_temperature, exposed_volume, soh)
+			zone_share_gases()
 			var/datum/gas_mixture/air_contents = return_air(1)
 			if(!air_contents)
 				return 0
@@ -73,12 +74,14 @@ obj
 				bypassing = 1
 			else bypassing = 0
 
+			location.zone_share_gases()
+			location.air.sharing_check()
 			if(bypassing)
 				if(!just_spawned)
 					volume = location.air.fuel_burnt*FIRE_GROWTH_RATE
 					temperature = location.air.temperature
 			else
-				var/datum/gas_mixture/affected = location.air.remove_ratio(volume/location.air.volume)
+				var/datum/gas_mixture/affected = location.air.remove_ratio(volume/location.zone.air.volume)
 
 				affected.temperature = temperature
 
@@ -91,6 +94,7 @@ obj
 
 				for(var/atom/item in loc)
 					item.temperature_expose(null, temperature, volume)
+			location.air.sharing_uncheck()
 
 		proc/process(turf/simulated/list/possible_spread)
 			if(just_spawned)
@@ -98,6 +102,8 @@ obj
 				return 0
 
 			var/turf/simulated/floor/location = loc
+			location.zone_share_gases()
+			location.air.sharing_check()
 			if(!istype(location))
 				del(src)
 
@@ -117,7 +123,15 @@ obj
 				location.burn_tile()
 
 				//Possible spread due to radiated heat
-				if(location.air.temperature > FIRE_MINIMUM_TEMPERATURE_TO_SPREAD)
+				if(location.zone)
+					if(location.zone.air.temperature > FIRE_MINIMUM_TEMPERATURE_TO_SPREAD)
+						var/radiated_temperature = location.zone.air.temperature*FIRE_SPREAD_RADIOSITY_SCALE
+
+						for(var/turf/simulated/possible_target in possible_spread)
+							if(!possible_target.active_hotspot)
+								possible_target.hotspot_expose(radiated_temperature, CELL_VOLUME/4)
+
+				else if(location.air.temperature > FIRE_MINIMUM_TEMPERATURE_TO_SPREAD)
 					var/radiated_temperature = location.air.temperature*FIRE_SPREAD_RADIOSITY_SCALE
 
 					for(var/turf/simulated/possible_target in possible_spread)
@@ -129,6 +143,8 @@ obj
 					icon_state = "2"
 				else
 					icon_state = "1"
+
+			location.air.sharing_uncheck()
 
 			return 1
 

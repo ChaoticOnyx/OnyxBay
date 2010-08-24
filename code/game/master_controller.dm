@@ -76,15 +76,21 @@ datum/controller/game_controller
 
 		for(var/obj/machinery/machine in machines)
 			machine.process()
+			sleep(-1)
 
-		sleep(-1)
-		sleep(1)
+		//sleep(-1)
+		//sleep(-1)
+
+		//machine_count = 0
 
 		for(var/obj/item/item in processing_items)
 			item.process()
+			sleep(-1)
 
 		for(var/datum/pipe_network/network in pipe_networks)
 			network.process()
+
+		sleep(-1)
 
 		for(var/datum/powernet/P in powernets)
 			P.reset()
