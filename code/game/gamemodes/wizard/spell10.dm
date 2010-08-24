@@ -2,7 +2,7 @@
 	set category = "Spells"
 	set name = "Mutate"
 	if(usr.stat)
-		usr << "Not when you're incapicated."
+		usr << "Not when you're incapacitated."
 		return
 	if(!istype(usr:wear_suit, /obj/item/clothing/suit/wizrobe))
 		usr << "I don't feel strong enough without my robe."

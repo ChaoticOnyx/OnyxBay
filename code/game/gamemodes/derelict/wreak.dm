@@ -1,5 +1,5 @@
 /proc/wreakstation()
-	world << "Preparing pre-round preperations"
+	world << "Preparing pre-round preparations"
 	var/calc = 0
 	for(var/obj/machinery/power/apc/a in world)
 		a.cell.charge = 0
