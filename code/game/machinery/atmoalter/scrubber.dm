@@ -27,7 +27,7 @@
 	if(holding)
 		environment = holding.air_contents
 	else
-		environment = loc.return_air(1)
+		environment = loc.return_air()
 
 
 	if(on)

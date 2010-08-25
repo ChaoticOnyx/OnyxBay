@@ -57,8 +57,6 @@
 
 		network.update = 1
 
-		loc.assume_toxins()
-
 		return 1
 
 	proc/radiate()

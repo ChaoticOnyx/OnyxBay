@@ -85,8 +85,6 @@ vs_control
 		if(how == "Toggle")
 			newvar = (newvar?"ON":"OFF")
 		world << "\blue <b>[key_name(user)] changed the setting [ch] to [newvar].</b>"
-		if(ch == "VACUUM_SPEED")
-			space_outflow_gas.update_space()
 		//user << "[which] has been changed to [newvar]."
 		if(ch in plc.settings)
 			ChangeSettingDialog(user,plc.settings)

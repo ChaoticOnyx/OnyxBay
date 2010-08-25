@@ -98,7 +98,7 @@
 	if(holding)
 		environment = holding.air_contents
 	else
-		environment = loc.return_air(1)
+		environment = loc.return_air()
 
 	var/env_pressure = environment.return_pressure()
 

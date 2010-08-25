@@ -68,10 +68,10 @@
 	if(safe == 2) src.skipprocess = 1
 	else if(alarm_frequency)
 		post_alert(safe, alert_info)
-	//if(!safe)
-	//	air_doors_close()
-	//else
-	//	air_doors_open()
+	if(!safe)
+		air_doors_close()
+	else
+		air_doors_open()
 	updateUsrDialog()
 	return
 

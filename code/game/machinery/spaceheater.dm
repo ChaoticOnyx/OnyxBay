@@ -184,8 +184,6 @@
 
 						env.merge(removed)
 
-						L.assume_toxins()
-
 						//world << "turf now at [env.temperature]"
 
 

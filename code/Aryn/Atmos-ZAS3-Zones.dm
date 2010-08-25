@@ -1,8 +1,8 @@
 /*ZAS3 - Necessitated by the obfuscating nature of gooncode.*/
 
 vs_control/var
-	FLOW_PERCENT = 15 //Percent of gas to send between connected turfs.
-	VACUUM_SPEED = 1 //Divisor of zone gases exposed directly to space (i.e. space tiles in members)
+	FLOW_PERCENT = 0.075 //Percent of gas to send between connected turfs.
+	VACUUM_SPEED = 1.2 //Divisor of zone gases exposed directly to space (i.e. space tiles in members)
 
 #define QUANTIZE(variable)		(round(variable,0.0001))
 
@@ -14,33 +14,17 @@ turf/var/zone/zone
 
 turf/simulated/var/disable_connections = 0
 
-var/datum/gas_mixture/space_outflow/space_outflow_gas = new()
-
-datum/gas_mixture/space_outflow
-	oxygen = 5
-	nitrogen = 20
-	carbon_dioxide = 5
-	New()
-		. = ..()
-		spawn(10) update_space()
-	proc/update_space()
-		oxygen = 5*vsc.VACUUM_SPEED
-		nitrogen = 20*vsc.VACUUM_SPEED
-		carbon_dioxide = 5*vsc.VACUUM_SPEED
-
 zone
 	var
 		list/members
 
 		turf/starting_tile
 
-		//oxygen = 0
-		//nitrogen = 0
-		//co2 = 0
+		oxygen = 0
+		nitrogen = 0
+		co2 = 0
 
-		datum/gas_mixture/air
-
-		//temp = T20C
+		temp = T20C
 
 		oxygen_archive = 0
 		nitrogen_archive = 0
@@ -48,15 +32,15 @@ zone
 
 		list/space_connections = list()
 
-		//temp_archive = T20C
+		temp_archive = T20C
 
-		//turf_oxy = 0
-		///turf_nitro = 0
-		//turf_co2 = 0
+		turf_oxy = 0
+		turf_nitro = 0
+		turf_co2 = 0
 
-		//turf_other = 0
+		turf_other = 0
 
-		//volume = CELL_VOLUME
+		volume = CELL_VOLUME
 		pressure = ONE_ATMOSPHERE
 
 		list/connections = list()
@@ -65,13 +49,11 @@ zone
 		list/merge_with = list()
 		list/edges = list()
 
-		//list/update_mixtures = list()
+		list/update_mixtures = list()
 
 		needs_rebuild = 0
 
 		disable_connections = 0
-
-		current_cycle = 0 //For compatibility with the master air system.
 
 	proc
 
@@ -89,13 +71,9 @@ zone
 		oxygen(n) //When called with no args, these return moles/turf. When called with n, they set moles/turf to n.
 		nitrogen(n)
 		co2(n)
-
 		add_oxygen(n) //Adds gas to the total.
 		add_nitrogen(n)
 		add_co2(n)
-
-		add_thermal_energy(n) //Adds some thermal energy.
-
 		rebuild_cache() //Recalculates turf_ values.
 		update_members()
 
@@ -103,18 +81,18 @@ zone
 		RemoveTurf(turf/T) //Same, but removes a turf from the zone.
 
 		pressure()
-			return air.return_pressure()//(oxygen+nitrogen+co2)*R_IDEAL_GAS_EQUATION*temp/volume
+			return (oxygen+nitrogen+co2)*R_IDEAL_GAS_EQUATION*temp/volume
 
-		//other_gas()
-		//	for(var/turf/T in members)
-		//		var/datum/gas_mixture/GM = T.return_air(1)
-		//		. += GM.toxins
-		//		for(var/datum/gas/G in GM.trace_gases)
-		//			. += G.moles
+		other_gas()
+			for(var/turf/T in members)
+				var/datum/gas_mixture/GM = T.return_air(1)
+				. += GM.toxins
+				for(var/datum/gas/G in GM.trace_gases)
+					. += G.moles
 
 	//......................//
 
-	New(turf/start,soxy = 0,snitro = 0,sco2 = 0,smembers,sspace = list(),sedges,stemp)
+	New(turf/start,soxy = 0,snitro = 0,sco2 = 0,smembers,sspace = list(),sedges)
 
 		starting_tile = start
 
@@ -154,36 +132,24 @@ zone
 			T.zone = src
 			if(T.disable_connections)
 				disable_connections = 1
-		air = new()
-		//air.volume = CELL_VOLUME//*members.len
 		if(!ticker) //If this zone was created at startup, add gases.
-			if(istype(start,/turf/simulated))
-				var
-					turf/simulated/sample = pick(members)
-					sample_air = sample.air
-				air.copy_from(sample_air)
-				//air.oxygen = start.oxygen//*members.len
-				//air.nitrogen = start.nitrogen//*members.len
-				//air.carbon_dioxide = start.carbon_dioxide//*members.len
-				//air.temperature = start.temperature
-			else// if(istype(start,/turf/simulated/floor/airless) || istype(start,/turf/simulated/floor/engine/vacuum) || istype(start,/turf/simulated/floor/plating/airless))
-				air.oxygen = 0
-				air.nitrogen = 0.0001
-				air.carbon_dioxide = 0
-				air.temperature = TCMB
-			//else
-			//	air.oxygen = MOLES_O2STANDARD// * members.len
-			//	air.nitrogen = MOLES_N2STANDARD// * members.len
-			//	air.temperature = T20C
+			if(start.oxygen != MOLES_O2STANDARD || start.nitrogen != MOLES_N2STANDARD || start.carbon_dioxide)
+				oxygen = start.oxygen*members.len
+				nitrogen = start.nitrogen*members.len
+				co2 = start.carbon_dioxide*members.len
+			else if(istype(start,/turf/simulated/floor/airless) || istype(start,/turf/simulated/floor/engine/vacuum) || istype(start,/turf/simulated/floor/plating/airless))
+				oxygen = 0
+				nitrogen = 0.0001
+				co2 = 0
+			else
+				oxygen = MOLES_O2STANDARD * members.len
+				nitrogen = MOLES_N2STANDARD * members.len
 		else if(soxy > 0 || snitro > 0 || sco2 > 0)
-			air.oxygen = soxy// * members.len
-			air.nitrogen = snitro// * members.len
-			air.carbon_dioxide = sco2// * members.len
-			air.temperature = stemp
+			oxygen = soxy * members.len
+			nitrogen = snitro * members.len
+			co2 = sco2 * members.len
 
-		air.group_multiplier = members.len
-
-		//volume = air.volume
+		volume = members.len * CELL_VOLUME
 
 		spawn Update() //Call the update cycle.
 
@@ -195,81 +161,45 @@ zone
 			if(stop_zones) continue
 			if(!members.len) del src
 
-			//current_cycle = air_master.current_cycle
-			air.archive()
+			for(var/datum/gas_mixture/G in update_mixtures)
+				add_oxygen(G.oxygen - G.zone_oxygen)
+				add_nitrogen(G.nitrogen - G.zone_nitrogen)
+				add_co2(G.carbon_dioxide - G.zone_co2)
+				update_mixtures -= G
 
-			//for(var/datum/gas_mixture/G in update_mixtures)
-			//	add_oxygen(G.oxygen - G.zone_oxygen)
-			//	add_nitrogen(G.nitrogen - G.zone_nitrogen)
-			//	add_co2(G.carbon_dioxide - G.zone_co2)
-			//	update_mixtures -= G
+			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2)
+				rebuild_cache()
 				//update_members()
 			//other = other_gas()
 
-			oxygen_archive = air.oxygen		 //Update the archives, so we can do things like calculate delta.
-			nitrogen_archive = air.nitrogen
-			co2_archive = air.carbon_dioxide
-			//temp_archive = temp
+			oxygen_archive = oxygen		 //Update the archives, so we can do things like calculate delta.
+			nitrogen_archive = nitrogen
+			co2_archive = co2
+			temp_archive = temp
 
 			for(var/turf/T in space_connections)
 				if(!istype(T,/turf/space) && !istype(T,/turf/unsimulated/floor/hull))
 					space_connections -= T
 
 			if(space_connections.len)				 //Throw gas into space if it has space connections.
-				air.subtract(space_outflow_gas)
-				//oxygen = QUANTIZE(oxygen/vsc.VACUUM_SPEED)
-				//nitrogen = QUANTIZE(nitrogen/vsc.VACUUM_SPEED)
-				//co2 = QUANTIZE(co2/vsc.VACUUM_SPEED)
+				oxygen = QUANTIZE(oxygen/vsc.VACUUM_SPEED)
+				nitrogen = QUANTIZE(nitrogen/vsc.VACUUM_SPEED)
+				co2 = QUANTIZE(co2/vsc.VACUUM_SPEED)
 				//temp = min(TCMB,temp/vsc.VACUUM_SPEED)
 				for(var/turf/simulated/M in members)
-					M.air.toxins = QUANTIZE(M.air.toxins/vsc.VACUUM_SPEED)
-					divide_trace_gases(M.air.trace_gases,vsc.VACUUM_SPEED)
-					//var/datum/gas_mixture/GM = M.return_air(1)
-					//GM.remove_ratio(1/vsc.VACUUM_SPEED)
+					var/datum/gas_mixture/GM = M.return_air(1)
+					GM.remove_ratio(1/vsc.VACUUM_SPEED)
 				spawn AirflowSpace(src)
-			//merge_with.len = 0
+			merge_with.len = 0
 			//if(pressure > 225)
 			//	for(var/turf/T in edges)
 			//		for(var/obj/window/W in T)
 			//			if(prob(25))
 			//				W.ex_act(pick(2,3))
 			//				W.visible_message("\red A window bursts from the pressure!",1,"\red You hear glass breaking.")
-
-			//for(var/turf/simulated/T in members)
-			//	T.tox_level_calculated = 0
-			//for(var/turf/simulated/T in members)
-			//	T.toxins_flow()
-
-			//var/total_toxins = 0
-			//for(var/turf/simulated/T in members)
-			//	total_toxins += T.air.toxins / members.len
-
-			//air.toxins = total_toxins
-
-			if(oxygen_archive != air.oxygen || nitrogen_archive != air.nitrogen || co2_archive != air.carbon_dioxide)
-				rebuild_cache()
-
-
-
-			//for(var/turf/simulated/T in members)
-			//	avg_toxins += T.current_toxins
-			//	for(var/datum/gas/G in T.current_trace_gases)
-			//		var/datum/gas/N = locate(G.type) in avg_trace
-			//		if(!N)
-			//			N = new G.type()
-			//			N.moles = G.moles
-			//			avg_trace += N
-			//		else
-			//			N.moles += G.moles
-
-			//avg_toxins /= members.len
-			//for(var/datum/gas/G in avg_trace)
-			//	G.moles /= members.len
-
-
 			if(!disable_connections)
 				for(var/zone/Z in direct_connections)
-					if(abs(oxygen() - Z.oxygen()) < 0.2 && abs(nitrogen()- Z.nitrogen()) < 0.2 && abs(co2() - Z.co2()) < 0.2)
+					if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2)
 						Merge(Z)
 				for(var/zone/Z in connections)
 					if(Z == src) connections -= Z
@@ -282,33 +212,32 @@ zone
 					var/percent_flow = max(90,vsc.FLOW_PERCENT*borders.len) //This is the percentage of gas that will flow.
 
 					spawn
-						if(pressure > Z.pressure) Airflow(src,Z,(pressure-Z.pressure)*(vsc.FLOW_PERCENT/50))
+						if(Z) Airflow(src,Z,pressure-Z.pressure)
 
 
 					//Magic Happens Here
-
 					var
-						oxy_avg = (air.oxygen*members.len + Z.air.oxygen*Z.members.len) / (members.len + Z.members.len)
-						nit_avg = (air.nitrogen*members.len + Z.air.nitrogen*Z.members.len) / (members.len + Z.members.len)
-						co2_avg = (air.carbon_dioxide*members.len + Z.air.carbon_dioxide*Z.members.len) / (members.len + Z.members.len)
+						oxy_avg = (oxygen + Z.oxygen) / (members.len + Z.members.len)
+						nit_avg = (nitrogen + Z.nitrogen) / (members.len + Z.members.len)
+						co2_avg = (co2 + Z.co2) / (members.len + Z.members.len)
 
-						//energy_avg = (air.thermal_energy()*members.len + Z.air.thermal_energy()*Z.members.len) / (members.len + Z.members.len)
-						//heat_cap_avg = (air.heat_capacity() + Z.air.heat_capacity()) / (members.len + Z.members.len)
+					oxygen( (turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
+					nitrogen( (turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
+					co2( (turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )
 
-					air.oxygen = ((air.oxygen - oxy_avg) * (1-percent_flow/100) + oxy_avg)
-					air.nitrogen = ((air.nitrogen - nit_avg) * (1-percent_flow/100) + nit_avg)
-					air.carbon_dioxide = ((air.carbon_dioxide - co2_avg) * (1-percent_flow/100) + co2_avg)
-
-					//End Magic
+					Z.oxygen( (Z.turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
+					Z.nitrogen( (Z.turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
+					Z.co2( (Z.turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )
+						//End Magic
 				for(var/crap in connections) //Clean out invalid connections.
 					if(!istype(crap,/zone))
 						connections -= crap
 
 	rebuild_cache()
 		if(!members.len) del src
-		//turf_oxy = air.oxygen// / members.len
-		//turf_nitro = air.nitrogen// / members.len
-		//turf_co2 = air.carbon_dioxide// / members.len
+		turf_oxy = oxygen / members.len
+		turf_nitro = nitrogen / members.len
+		turf_co2 = co2 / members.len
 
 		//var/tempsum = 0
 
@@ -318,61 +247,45 @@ zone
 
 		//temp = tempsum / members.len
 
-		pressure = air.return_pressure()
+		pressure = pressure()
 
 	oxygen(n)
-		if(!n) return air.oxygen
+		if(!n) return turf_oxy
 		else
-			var/thermal_energy = air.thermal_energy()
-			air.oxygen = n//*members.len
-			air.temperature = thermal_energy / air.heat_capacity()
+			turf_oxy = n
+			oxygen = turf_oxy*members.len
 	nitrogen(n)
-		if(!n) return air.nitrogen
+		if(!n) return turf_nitro
 		else
-			var/thermal_energy = air.thermal_energy()
-			air.nitrogen = n//*members.len
-			air.temperature = thermal_energy / air.heat_capacity()
+			turf_nitro = n
+			nitrogen = turf_nitro*members.len
 	co2(n)
-		if(!n) return air.carbon_dioxide
+		if(!n) return turf_co2
 		else
-			var/thermal_energy = air.thermal_energy()
-			air.carbon_dioxide = n//*members.len
-			air.temperature = thermal_energy / air.heat_capacity()
+			turf_co2 = n
+			co2 = turf_co2*members.len
 
 	add_oxygen(n)
-		//world.log << "WHARRRRRGARBL"
-		var/thermal_energy = air.thermal_energy()
-		if(n < 0 && air.oxygen < abs(n))
-			. = air.oxygen
-			air.oxygen = 0
+		if(n < 0 && oxygen < abs(n))
+			. = oxygen
+			oxygen = 0
 		else
-			air.oxygen += n
+			oxygen += n
 			. = abs(n)
-		air.temperature = thermal_energy / air.heat_capacity()
 	add_nitrogen(n)
-		//world.log << "WHARRRRRGARBL"
-		var/thermal_energy = air.thermal_energy()
-		if(n < 0 && air.nitrogen < abs(n))
-			. = air.nitrogen
-			air.nitrogen = 0
+		if(n < 0 && nitrogen < abs(n))
+			. = nitrogen
+			nitrogen = 0
 		else
-			air.nitrogen += n
+			nitrogen += n
 			. = abs(n)
-		air.temperature = thermal_energy / air.heat_capacity()
 	add_co2(n)
-		//world.log << "WHARRRRRGARBL"
-		var/thermal_energy = air.thermal_energy()
-		if(n < 0 && air.carbon_dioxide < abs(n))
-			. = air.carbon_dioxide
-			air.carbon_dioxide = 0
+		if(n < 0 && co2 < abs(n))
+			. = co2
+			co2 = 0
 		else
-			air.carbon_dioxide += n
+			co2 += n
 			. = abs(n)
-		air.temperature = thermal_energy / air.heat_capacity()
-
-	add_thermal_energy(n)
-		var/heat_capacity = air.heat_capacity()
-		air.temperature = ((air.temperature*heat_capacity)+n)/heat_capacity
 
 	AddTurf(turf/T)
 		if(T.zone) return
@@ -383,13 +296,12 @@ zone
 		T.zone = src
 		for(var/turf/space/S in T.GetUnblockedCardinals())
 			space_connections += S
-		//air.volume = CELL_VOLUME//*members.len
-		air.group_multiplier = members.len
-		//if(!ticker)
-			//air.oxygen += MOLES_O2STANDARD
-			//air.nitrogen += MOLES_N2STANDARD
+		volume = CELL_VOLUME*members.len
+		if(!ticker)
+			oxygen += MOLES_O2STANDARD
+			nitrogen += MOLES_N2STANDARD
 		rebuild_cache()
-		//update_members()
+		update_members()
 	RemoveTurf(turf/T)
 		if(T.zone != src) return
 		if(stop_zones)
@@ -399,10 +311,9 @@ zone
 		T.zone = null
 		for(var/turf/space/S in T.GetBasicCardinals())
 			space_connections -= S
-		//air.volume = CELL_VOLUME//*members.len
-		air.group_multiplier = members.len
+		volume = CELL_VOLUME*members.len
 		rebuild_cache()
-		//update_members()
+		update_members()
 		if(ticker)
 			spawn(1) SplitCheck(T)
 
@@ -448,11 +359,6 @@ zone
 			if(!(S.HasDoor(1) || T.HasDoor(1)))
 				direct_connections += T.zone
 				T.zone.direct_connections += src
-			spawn Update()
-			spawn
-				if(T)
-					if(T.zone)
-						T.zone.Update()
 
 	Disconnect(turf/S,turf/T,pc)
 		if(!istype(T,/turf/simulated)) return
@@ -486,7 +392,7 @@ zone
 			direct_connections -= T.zone
 
 	Split(turf/X,turf/Y)
-		//world << "Split ([zones.Find(src)]): Check procedure passed."
+		//world << "Split: Check procedure passed."
 		if(disable_connections) return
 		if(stop_zones) return
 		var/list
@@ -519,23 +425,20 @@ zone
 			zone_Y = old_members - zone_X
 			space_Y = old_space_connections - space_X
 			edge_Y = old_edges - edge_X
-			new/zone(Y,air.oxygen,air.nitrogen,air.carbon_dioxide,zone_Y,space_Y,edge_Y,air.temperature)
-			new/zone(X,air.oxygen,air.nitrogen,air.carbon_dioxide,zone_X,space_X,edge_X,air.temperature)
+			new/zone(Y,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,zone_Y,space_Y,edge_Y)
+			new/zone(X,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,zone_X,space_X,edge_X)
 			del src
 
 	Merge(zone/Z)
 		if(stop_zones) return
 		if(disable_connections) return
-		//world.log << "Merging [zones.Find(src)] and [zones.Find(Z)]..."
-		//oxygen += Z.oxygen
-		//nitrogen += Z.nitrogen
-		//co2 += Z.co2
+		//world << "Merging..."
+		oxygen += Z.oxygen
+		nitrogen += Z.nitrogen
+		co2 += Z.co2
 		//temp = (temp+Z.temp)/2
 		members += Z.members
-		air.volume += Z.air.volume
-		air.group_multiplier = members.len
-		air.merge(Z.air)
-		//volume += Z.volume
+		volume += Z.volume
 		connections += Z.connections
 		space_connections += Z.space_connections
 		edges += Z.edges
@@ -568,8 +471,8 @@ proc/FloodFill(turf/start,remove_extras)
 				tmp_edges += T
 				continue
 			var/unblocked = T.GetUnblockedCardinals()
-			//unblocked -= get_step(T,UP)
-			//unblocked -= get_step(T,DOWN)
+			unblocked -= get_step(T,UP)
+			unblocked -= get_step(T,DOWN)
 	//		var/border_added = 0
 			for(var/turf/simulated/U in unblocked)
 				if((U in borders) || (U in .)) continue
@@ -620,8 +523,8 @@ turf/proc/SetCardinals()
 	east = get_step(src,EAST)
 	west = get_step(src,WEST)
 
-	//up = get_step(src,UP)
-//down = get_step(src,DOWN)
+	up = get_step(src,UP)
+	down = get_step(src,DOWN)
 
 proc/GetAirCardinals(turf/T)
 	var/density_list = list()
@@ -644,15 +547,6 @@ turf/proc/GetBasicCardinals()
 	for(var/direction in cardinal)
 		var/turf/T = get_step(src,direction)
 		. += T
-
-proc/get_update_turfs(turf/simulated/T)
-	if(!istype(T))
-		world.log << "get_update_turfs([T]) called on non-sim turf."
-		return
-	. = list()
-	for(var/d in cardinal)
-		if(T.air_check_directions & d)
-			. += get_step(T,d)
 
 turf/proc/GetUnblockedCardinals()
 	. = list()
@@ -707,7 +601,7 @@ turf/proc/GetUnblockedCardinals()
 			unblocked_dirs &= ~(WEST)
 			west.unblocked_dirs &= ~(EAST)
 
-	/*if(up)
+	if(up)
 		if(!up.floodupdate && !floodupdate)
 			if((unblocked_dirs & UP) && (up.unblocked_dirs & DOWN))
 				. += up
@@ -731,7 +625,7 @@ turf/proc/GetUnblockedCardinals()
 				unblocked_dirs |= DOWN
 			else
 				unblocked_dirs &= ~(DOWN)
-				down.unblocked_dirs &= ~(UP)*/
+				down.unblocked_dirs &= ~(UP)
 	floodupdate = 0
 
 //turf/proc/GetDoorCardinals()
@@ -753,10 +647,9 @@ turf/proc/ZoneInfo()
 		usr << "This verb is restricted to Aryn for purposes of debugging the atmospherics system."
 	usr << "Zone #[zones.Find(zone)]"
 	usr << "Members: [zone.members.len]"
-	usr << "O2: [zone.oxygen()]/tile ([zone.air.oxygen])"
-	usr << "N2: [zone.nitrogen()]/tile ([zone.air.nitrogen])"
-	usr << "CO2: [zone.co2()]/tile ([zone.air.carbon_dioxide])"
-	usr << "Temp: [zone.air.temperature] {[zone.air.thermal_energy()]/[zone.air.heat_capacity()]}"
+	usr << "O2: [zone.oxygen()]/tile ([zone.oxygen])"
+	usr << "N2: [zone.nitrogen()]/tile ([zone.nitrogen])"
+	usr << "CO2: [zone.co2()]/tile ([zone.co2])"
 	usr << "Space Connections: [zone.space_connections.len]"
 	usr << "Zone Connections: [zone.connections.len]"
 	usr << "Direct Connections: [zone.direct_connections.len]"
@@ -780,7 +673,7 @@ turf/proc/ZoneInfo()
 			usr << "Not A Zone: [Z]"
 	for(var/Z in zone.direct_connections)
 		if(istype(Z,/zone))
-			if(abs(zone.oxygen() - Z:oxygen()) < 0.2 && abs(zone.nitrogen()- Z:nitrogen()) < 0.2 && abs(zone.co2() - Z:co2()) < 0.2)
+			if(abs(zone.turf_oxy - Z:turf_oxy) < 0.2 && abs(zone.turf_nitro- Z:turf_nitro) < 0.2 && abs(zone.turf_co2 - Z:turf_co2) < 0.2)
 				usr << "Z[zones.Find(Z)] - Success"
 			else
 				usr << "Z[zones.Find(Z)] - Failure"

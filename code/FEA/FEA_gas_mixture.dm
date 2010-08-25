@@ -4,24 +4,6 @@ What are the archived variables for?
 	This prevents race conditions that arise based on the order of tile processing.
 */
 
-/*
-
-WTF is a share_with? What did Aryn do to the air system?
-
-	share_with is a variable used when you want two separate gases holding different parts of the air
-	(e.g. a turf and its zone) to act as if they were one object. This is done by setting share_with on
-	each gas_mixture to the other gas mixture, and setting sharing_with on each such that the shared
-	variables don't overlap. If they do overlap (so one gas controls nitrogen, but so does the other)
-	I am not responsible for the crazy crap that happens next.
-
-	In addition, there are two procs, share_check() and share_uncheck(). If you're doing direct manipulation
-	of the variables of a zone's air or turf's air, you should always call share_check() at the beginning of
-	the manipulation, and share_uncheck() at the end. This ensures that each gas is modified appropriately.
-	The built-in procs (merge(),share(),etc.) already do this, so there's no need for it if you're just using
-	those.
-
-*/
-
 #define SPECIFIC_HEAT_TOXIN		200
 #define SPECIFIC_HEAT_AIR		20
 #define SPECIFIC_HEAT_CDO		30
@@ -55,17 +37,10 @@ datum
 			nitrogen = 0
 			toxins = 0
 
-			//Set share_with and sharing_with to have an air mixture replace some data with another mixture's.
-			//The gas mixture in share_with will be altered as if it were this one.
-			shared_gases_added = 0
-			datum/gas_mixture/share_with
-			sharing_with = 0
-			//1=Oxygen
-			//2=CO2
-			//4=Nitrogen
-			//8=Toxins
-			//16=Trace Gases
-			//32=Temperature
+			//If this was added to a zone's mixture update list, these are the zone's vars at the time it was retreived.
+			zone_oxygen = 0
+			zone_nitrogen = 0
+			zone_co2 = 0
 
 			volume = CELL_VOLUME
 
@@ -92,98 +67,41 @@ datum
 
 		proc //PV=nRT - related procedures
 			heat_capacity()
-				//sharing_check()
 				var/heat_capacity = HEAT_CAPACITY_CALCULATION(oxygen,carbon_dioxide,nitrogen,toxins)
 
 				if(trace_gases.len)
 					for(var/datum/gas/trace_gas in trace_gases)
 						heat_capacity += trace_gas.moles*trace_gas.specific_heat
 
-				//sharing_uncheck()
-
 				return heat_capacity
 
 			heat_capacity_archived()
-				//sharing_check()
 				var/heat_capacity_archived = HEAT_CAPACITY_CALCULATION(oxygen_archived,carbon_dioxide_archived,nitrogen_archived,toxins_archived)
 
 				if(trace_gases.len)
 					for(var/datum/gas/trace_gas in trace_gases)
 						heat_capacity_archived += trace_gas.moles_archived*trace_gas.specific_heat
 
-				//sharing_uncheck()
-
 				return heat_capacity_archived
 
 			total_moles()
-				//sharing_check()
 				var/moles = oxygen + carbon_dioxide + nitrogen + toxins
 
 				if(trace_gases.len)
 					for(var/datum/gas/trace_gas in trace_gases)
 						moles += trace_gas.moles
 
-				//sharing_uncheck()
-
 				return max(moles,0.0001)
 
 			return_pressure()
-				//sharing_check()
-				. = total_moles()*R_IDEAL_GAS_EQUATION*temperature/volume
-				//sharing_uncheck()
+				return total_moles()*R_IDEAL_GAS_EQUATION*temperature/volume
 
 			thermal_energy()
-				//sharing_check()
-				. = temperature*heat_capacity()
-				//sharing_uncheck()
+				return temperature*heat_capacity()
 
 		proc //Procedures used for very specific events
-
-			sharing_check()
-				shared_gases_added++
-				if(shared_gases_added > 0) return
-				if(share_with && sharing_with)
-					if(sharing_with & 1)
-						oxygen = share_with.oxygen
-					if(sharing_with & 2)
-						nitrogen = share_with.nitrogen
-					if(sharing_with & 4)
-						carbon_dioxide = share_with.carbon_dioxide
-					if(sharing_with & 8)
-						toxins = share_with.toxins
-					if(sharing_with & 16)
-						trace_gases = share_with.trace_gases
-						//add_trace_gases(trace_gases,share_with.trace_gases)
-					if(sharing_with & 32)
-						temperature = share_with.temperature
-
-			sharing_uncheck()
-				shared_gases_added--
-				if(shared_gases_added < 1)
-					if(share_with && sharing_with)
-						if(sharing_with & 1)
-							share_with.oxygen = oxygen
-							//oxygen = 0
-						if(sharing_with & 2)
-							share_with.nitrogen = nitrogen
-							//nitrogen = 0
-						if(sharing_with & 4)
-							share_with.carbon_dioxide = carbon_dioxide
-							//carbon_dioxide = 0
-						if(sharing_with & 8)
-							share_with.toxins = toxins
-							//toxins = 0
-						//if(sharing_with & 16)
-							//share_with.trace_gases = trace_gases//.Copy()
-							//trace_gases.len = 0
-							//subtract_trace_gases(trace_gases,share_with.trace_gases)
-						if(sharing_with & 32)
-							share_with.temperature = temperature
-							//temperature = T0C
-
 			check_tile_graphic()
 				//returns 1 if graphic changed
-				//sharing_check()
 				graphic = null
 				if(toxins > MOLES_PLASMA_VISIBLE)
 					graphic = "plasma"
@@ -194,12 +112,9 @@ datum
 					else
 						graphic = null
 
-				//sharing_uncheck()
-
 				return graphic != graphic_archived
 
 			react(atom/dump_location)
-				//sharing_check()
 				var/reacting = 0 //set to 1 if a notable reaction occured (used by pipe_network)
 
 				if(trace_gases.len > 0)
@@ -224,8 +139,6 @@ datum
 					if(fire() > 0)
 						reacting = 1
 					//world << "post [temperature], [oxygen], [toxins]"
-
-				//sharing_uncheck()
 
 				return reacting
 
@@ -402,8 +315,6 @@ datum
 			if(!giver)
 				return 0
 
-			sharing_check()
-
 			if(abs(temperature-giver.temperature)>MINIMUM_TEMPERATURE_DELTA_TO_CONSIDER)
 				var/self_heat_capacity = heat_capacity()*group_multiplier
 				var/giver_heat_capacity = giver.heat_capacity()*giver.group_multiplier
@@ -430,18 +341,14 @@ datum
 						trace_gases += corresponding
 					corresponding.moles += trace_gas.moles*giver.group_multiplier/group_multiplier
 
-			sharing_uncheck()
-
 			del(giver)
 			return 1
 
 		remove(amount)
-			sharing_check()
 
 			var/sum = total_moles()
 			amount = min(amount,sum) //Can not take more air than tile has!
 			if(amount <= 0)
-				sharing_uncheck()
 				return null
 
 			var/datum/gas_mixture/removed = new
@@ -467,16 +374,12 @@ datum
 
 			removed.temperature = temperature
 
-			sharing_uncheck()
-
 			return removed
 
 		remove_ratio(ratio)
 
 			if(ratio <= 0)
 				return null
-
-			sharing_check()
 
 			ratio = min(ratio, 1)
 
@@ -501,8 +404,6 @@ datum
 					trace_gas.moles -= corresponding.moles/group_multiplier
 
 			removed.temperature = temperature
-
-			sharing_uncheck()
 
 			return removed
 
@@ -646,7 +547,6 @@ datum
 
 		share(datum/gas_mixture/sharer)
 			if(!sharer) return
-			sharing_check()
 			var/delta_oxygen = QUANTIZE(oxygen_archived - sharer.oxygen_archived)/5
 			var/delta_carbon_dioxide = QUANTIZE(carbon_dioxide_archived - sharer.carbon_dioxide_archived)/5
 			var/delta_nitrogen = QUANTIZE(nitrogen_archived - sharer.nitrogen_archived)/5
@@ -780,16 +680,12 @@ datum
 
 			if((delta_temperature > MINIMUM_TEMPERATURE_TO_MOVE) || abs(moved_moles) > MINIMUM_MOLES_DELTA_TO_MOVE)
 				var/delta_pressure = temperature_archived*(total_moles() + moved_moles) - sharer.temperature_archived*(sharer.total_moles() - moved_moles)
-
-				sharing_uncheck()
 				return delta_pressure*R_IDEAL_GAS_EQUATION/volume
 
 			else
-				sharing_uncheck()
 				return 0
 
 		mimic(turf/model, border_multiplier)
-			sharing_check()
 			var/delta_oxygen = QUANTIZE(oxygen_archived - model.oxygen)/5
 			var/delta_carbon_dioxide = QUANTIZE(carbon_dioxide_archived - model.carbon_dioxide)/5
 			var/delta_nitrogen = QUANTIZE(nitrogen_archived - model.nitrogen)/5
@@ -862,10 +758,8 @@ datum
 
 			if((delta_temperature > MINIMUM_TEMPERATURE_TO_MOVE) || abs(moved_moles) > MINIMUM_MOLES_DELTA_TO_MOVE)
 				var/delta_pressure = temperature_archived*(total_moles() + moved_moles) - model.temperature*(model.oxygen+model.carbon_dioxide+model.nitrogen+model.toxins)
-				sharing_uncheck()
 				return delta_pressure*R_IDEAL_GAS_EQUATION/volume
 			else
-				sharing_uncheck()
 				return 0
 
 		check_both_then_temperature_share(datum/gas_mixture/sharer, conduction_coefficient)
@@ -980,7 +874,6 @@ datum
 
 		temperature_share(datum/gas_mixture/sharer, conduction_coefficient)
 			if(!sharer) return
-			sharing_check()
 
 			var/delta_temperature = (temperature_archived - sharer.temperature_archived)
 			if(abs(delta_temperature) > MINIMUM_TEMPERATURE_DELTA_TO_CONSIDER)
@@ -994,10 +887,7 @@ datum
 					temperature -= heat/(self_heat_capacity*group_multiplier)
 					sharer.temperature += heat/(sharer_heat_capacity*sharer.group_multiplier)
 
-			sharing_uncheck()
-
 		temperature_mimic(turf/model, conduction_coefficient, border_multiplier)
-			sharing_check()
 			var/delta_temperature = (temperature - model.temperature)
 			if(abs(delta_temperature) > MINIMUM_TEMPERATURE_DELTA_TO_CONSIDER)
 				var/self_heat_capacity = heat_capacity()//_archived()
@@ -1010,8 +900,6 @@ datum
 						temperature -= heat*border_multiplier/(self_heat_capacity*group_multiplier)
 					else
 						temperature -= heat/(self_heat_capacity*group_multiplier)
-
-			sharing_uncheck()
 
 		temperature_turf_share(turf/simulated/sharer, conduction_coefficient)
 			var/delta_temperature = (temperature_archived - sharer.temperature)

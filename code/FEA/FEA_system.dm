@@ -131,8 +131,6 @@ datum
 				process()
 					//Call this to process air movements for a cycle
 
-				process_zones()
-
 				process_groups()
 					//Used by process()
 					//Warning: Do not call this
@@ -176,8 +174,8 @@ datum
 
 				var/start_time = world.timeofday
 				for(var/turf/simulated/S in world)
-					//if(!S.blocks_air && !S.parent)
-					//	assemble_group_turf(S)
+					if(!S.blocks_air && !S.parent)
+						assemble_group_turf(S)
 					if(S.HasDoor())
 						spawn(1) S.add_to_other_zone()
 					else
@@ -296,26 +294,17 @@ datum
 				if(groups_to_rebuild.len > 0) process_rebuild_select_groups()
 				if(tiles_to_update.len > 0) process_update_tiles()
 
-				//process_groups()
-				//process_singletons()
+				process_groups()
+				process_singletons()
 
-				process_zones()
 				process_super_conductivity()
-				//process_high_pressure_delta()
+				process_high_pressure_delta()
 
-				//if(current_cycle%10==5) //Check for groups of tiles to resume group processing every 10 cycles
-				//	for(var/datum/air_group/AG in air_groups)
-				//		AG.check_regroup()
+				if(current_cycle%10==5) //Check for groups of tiles to resume group processing every 10 cycles
+					for(var/datum/air_group/AG in air_groups)
+						AG.check_regroup()
 
 				return 1
-
-			process_zones()
-				//for(var/zone/Z in zones)
-				//	Z.Update()
-				for(var/turf/simulated/T)
-					if(T.air)
-						if(T.air.toxins || T.air.trace_gases.len > 0 || abs(T.air.temperature - T20C) > 1)
-							T.toxins_flow()
 
 			process_update_tiles()
 				for(var/turf/simulated/T in tiles_to_update)
@@ -343,7 +332,7 @@ datum
 
 //				var/obj/movable/list/movable_objects = list()
 
-				//for(var/datum/air_group/object/object_AG in groups_to_rebuild) //Deconstruct groups, gathering their old members
+				for(var/datum/air_group/object/object_AG in groups_to_rebuild) //Deconstruct groups, gathering their old members
 /*
 					for(var/obj/movable/floor/OM in object_AG.members)
 						OM.parent = null

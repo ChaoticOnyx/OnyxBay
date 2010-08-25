@@ -126,12 +126,7 @@ proc/Airflow(zone/A,zone/B,n)
 			//if(istype(M,/mob/living/silicon/ai)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
-				if(M:weakened <= 0)
-					M << "\red The sudden rush of air knocks you over!"
-				else
-					if(!M.airflow_dest)
-						M.airflow_dest = pick(connected_turfs)
-					M.GotoAirflowDest(2)
+				if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
 				M:weakened = max(M:weakened,5)
 
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
@@ -163,12 +158,7 @@ proc/Airflow(zone/A,zone/B,n)
 			if(M.anchored && !ismob(M)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
-				if(M:weakened <= 0)
-					M << "\red The sudden rush of air knocks you over!"
-				else
-					if(!M.airflow_dest)
-						M.airflow_dest = pick(connected_turfs)
-					M.RepelAirflowDest(2)
+				if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
 				M:weakened = max(M:weakened,5)
 
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
@@ -199,7 +189,7 @@ proc/AirflowSpace(zone/A)
 	//Comment this out to use airflow again.
 	//world << "Airflow called with [n] as gas difference."
 //	world << "Airflow threshold is [(vsc.AF_TINY_MOVEMENT_THRESHOLD/100) * vsc.AF_PERCENT_OF]"
-	var/n = (A.oxygen() + A.nitrogen() + A.co2())*vsc.AF_SPACE_MULTIPLIER
+	var/n = (A.turf_oxy + A.turf_nitro + A.turf_co2)*vsc.AF_SPACE_MULTIPLIER
 	if(n < vsc.air_base_thresh) return
 
 	var/list/connected_turfs = A.space_connections
@@ -215,12 +205,7 @@ proc/AirflowSpace(zone/A)
 			//if(istype(M,/mob/living/silicon/ai)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
-				if(M:weakened < 1)
-					M << "\red The sudden rush of air knocks you over!"
-				else
-					if(!M.airflow_dest)
-						M.airflow_dest = pick(connected_turfs)
-					M.RepelAirflowDest(2)
+				if(M:weakened < 1) M << "\red The sudden rush of air knocks you over!"
 				M:weakened = max(M:weakened,5)
 
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
@@ -417,14 +402,13 @@ atom/movable
 			if(ismob(src) || (isobj(src) && !istype(src,/obj/item)))
 				for(var/mob/M in hearers(src))
 					M.show_message("\red <B>[src] slams into [A]!</B>",1,"\red You hear a loud slam!",2)
-				if(istype(src,/mob/living/carbon/human) && airflow_speed > 4)
+				if(istype(src,/mob/living/carbon/human))
 					playsound(src.loc, "swing_hit", 25, 1, -1)
-					if(prob(airflow_speed*2))
-						loc:add_blood(src)
-						if (src:wear_suit)
-							src:wear_suit:add_blood(src)
-						if (src:w_uniform)
-							src:w_uniform:add_blood(src)
+					loc:add_blood(src)
+					if (src:wear_suit)
+						src:wear_suit:add_blood(src)
+					if (src:w_uniform)
+						src:w_uniform:add_blood(src)
 			if(istype(src,/mob/living/carbon/human))
 				var/b_loss = airflow_speed * vsc.AF_DAMAGE_MULTIPLIER
 				for(var/organ in src:organs)

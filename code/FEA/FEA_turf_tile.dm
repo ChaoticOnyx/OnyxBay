@@ -158,8 +158,8 @@ turf
 				if(air_master)
 					air_master.tiles_to_update.Add(src)
 
-					//find_group()
-					if(!zone && !stop_zones) add_to_other_zone()
+					find_group()
+					if(!zone) add_to_other_zone()
 
 //				air.parent = src //TODO DEBUG REMOVE
 
@@ -172,7 +172,7 @@ turf
 
 		Del()
 			if(air_master)
-				if(zone && !stop_zones)
+				if(zone)
 					zone.RemoveTurf(src)
 				if(parent)
 					air_master.groups_to_rebuild.Add(parent)
@@ -190,17 +190,10 @@ turf
 
 		assume_air(datum/gas_mixture/giver)
 			if(zone) //Update zone values.
-				//zone.add_oxygen(giver.oxygen)
-				//zone.add_nitrogen(giver.nitrogen)
-				//zone.add_co2(giver.carbon_dioxide)
-				//air.toxins += giver.toxins
-				//giver.toxins = 0
-				//add_trace_gases(air.trace_gases,giver.trace_gases.Copy())
-				//giver.trace_gases.len = 0
-				zone.air.share_with = air
-				zone.air.sharing_with = 8+16+32
-				zone.air.merge(giver)
-			else if(air)
+				zone.add_oxygen(giver.oxygen)
+				zone.add_nitrogen(giver.nitrogen)
+				zone.add_co2(giver.carbon_dioxide)
+			if(air)
 				if(parent&&parent.group_processing)
 					if(!parent.air.check_then_merge(giver))
 						parent.suspend_group_processing()
@@ -216,13 +209,6 @@ turf
 
 			else return ..()
 
-		assume_toxins()
-			if(zone)
-				air.toxins = zone.air.toxins * zone.air.group_multiplier
-				zone.air.toxins = 0
-				air.trace_gases = multiply_trace_gases(zone.air.trace_gases.Copy(),zone.air.group_multiplier)
-				zone.air.trace_gases.len = 0
-
 		archive()
 			if(air) //For open space like floors
 				air.archive()
@@ -237,28 +223,59 @@ turf
 			return air.mimic(T)
 
 		return_air(observe_only)
-			if(zone)
-				zone.air.share_with = air
-				zone.air.sharing_with = 8+16+32
-				//zone.air.toxins = src.air.toxins / zone.air.group_multiplier
-				//zone.air.trace_gases = divide_trace_gases(air.trace_gases.Copy(),zone.air.group_multiplier)
-				//if(!observe_only)
-					//spawn(0)
-				return zone.air
+			if(air)
+				if(parent && parent.group_processing)
+					if(zone)
+						parent.air.oxygen = zone.oxygen()
+						parent.air.nitrogen = zone.nitrogen()
+						parent.air.carbon_dioxide = zone.co2()
+						if(!observe_only)
+							parent.air.zone_oxygen = parent.air.oxygen
+							parent.air.zone_nitrogen = parent.air.nitrogen
+							parent.air.zone_co2 = parent.air.carbon_dioxide
+							zone.update_mixtures.Add(parent.air)
+					return parent.air
+				else
+					if(zone)
+						air.oxygen = zone.oxygen()
+						air.nitrogen = zone.nitrogen()
+						air.carbon_dioxide = zone.co2()
+						if(!observe_only)
+							air.zone_oxygen = air.oxygen
+							air.zone_nitrogen = air.nitrogen
+							air.zone_co2 = air.carbon_dioxide
+							zone.update_mixtures.Add(air)
+					return air
 
 			else
 				return ..()
 
 		remove_air(amount as num)
-			if(zone)
-				zone.air.share_with = air
-				zone.air.sharing_with = 8+16+32
-				//zone.air.toxins = src.air.toxins / zone.air.group_multiplier
-				//zone.air.trace_gases = divide_trace_gases(air.trace_gases.Copy(),zone.air.group_multiplier)
-				var/datum/gas_mixture/removed = zone.air.remove(amount)
-				//if(removed)
-				//	air.toxins -= removed.toxins
-				//	subtract_trace_gases(air.trace_gases,removed.trace_gases)
+			if(air)
+				var/datum/gas_mixture/removed = null
+
+				if(zone)
+					air.oxygen = zone.oxygen()
+					air.nitrogen = zone.nitrogen()
+					air.carbon_dioxide = zone.co2()
+
+				if(parent&&parent.group_processing)
+					removed = parent.air.check_then_remove(amount)
+					if(!removed)
+						parent.suspend_group_processing()
+						removed = air.remove(amount)
+				else
+					removed = air.remove(amount)
+
+					if(!processing)
+						if(air.check_tile_graphic())
+							update_visuals(air)
+
+				if(removed && zone)
+					zone.add_oxygen(-removed.oxygen)
+					zone.add_nitrogen(-removed.nitrogen)
+					zone.add_co2(-removed.carbon_dioxide)
+
 				return removed
 
 			else
@@ -496,64 +513,61 @@ turf
 							if(modeled_neighbor.archived_cycle < air_master.current_cycle)
 								modeled_neighbor.archive()
 
-							modeled_neighbor.zone_share_gases()
-							zone_share_gases()
-
 							if(modeled_neighbor.air)
 								if(air) //Both tiles are open
 
-									//if(modeled_neighbor.zone)//modeled_neighbor.parent && modeled_neighbor.parent.group_processing)
-										//if(zone)//parent && parent.group_processing)
+									if(modeled_neighbor.parent && modeled_neighbor.parent.group_processing)
+										if(parent && parent.group_processing)
 											//both are acting as a group
 											//modified using construct developed in datum/air_group/share_air_with_group(...)
 
-											//var/result = zone.air.check_both_then_temperature_share(modeled_neighbor.parent.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
-											//if(result==0)
+											var/result = parent.air.check_both_then_temperature_share(modeled_neighbor.parent.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
+											if(result==0)
 												//have to deconstruct parent air group
 
-												//parent.suspend_group_processing()
-												//if(!modeled_neighbor.parent.air.check_me_then_temperature_share(air, WINDOW_HEAT_TRANSFER_COEFFICIENT))
+												parent.suspend_group_processing()
+												if(!modeled_neighbor.parent.air.check_me_then_temperature_share(air, WINDOW_HEAT_TRANSFER_COEFFICIENT))
 													//may have to deconstruct neighbors air group
 
-												//	modeled_neighbor.parent.suspend_group_processing()
-										//	zone.air.temperature_share(modeled_neighbor.zone.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
-											//else if(result==-1)
+													modeled_neighbor.parent.suspend_group_processing()
+													air.temperature_share(modeled_neighbor.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
+											else if(result==-1)
 												// have to deconstruct neightbors air group but not mine
 
-											//	modeled_neighbor.parent.suspend_group_processing()
-											//	parent.air.temperature_share(modeled_neighbor.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
-									//	else
-										//air.temperature_share(modeled_neighbor.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
-								//	else
-										//if(zone)//parent && parent.group_processing)
-											//if(!parent.air.check_me_then_temperature_share(air, WINDOW_HEAT_TRANSFER_COEFFICIENT))
+												modeled_neighbor.parent.suspend_group_processing()
+												parent.air.temperature_share(modeled_neighbor.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
+										else
+											air.temperature_share(modeled_neighbor.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
+									else
+										if(parent && parent.group_processing)
+											if(!parent.air.check_me_then_temperature_share(air, WINDOW_HEAT_TRANSFER_COEFFICIENT))
 												//may have to deconstruct neighbors air group
 
-											//	parent.suspend_group_processing()
-										//	zone.air.temperature_share(modeled_neighbor.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
+												parent.suspend_group_processing()
+												air.temperature_share(modeled_neighbor.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
 
-										//else
-									air.temperature_share(modeled_neighbor.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
+										else
+											air.temperature_share(modeled_neighbor.air, WINDOW_HEAT_TRANSFER_COEFFICIENT)
 						//			world << "OPEN, OPEN"
 
 								else //Solid but neighbor is open
-									//if(modeled_neighbor.zone)//modeled_neighbor.parent && modeled_neighbor.parent.group_processing)
-										//if(!modeled_neighbor.zone.air.check_me_then_temperature_turf_share(src, modeled_neighbor.thermal_conductivity))
+									if(modeled_neighbor.parent && modeled_neighbor.parent.group_processing)
+										if(!modeled_neighbor.parent.air.check_me_then_temperature_turf_share(src, modeled_neighbor.thermal_conductivity))
 
-										//	modeled_neighbor.parent.suspend_group_processing()
-									//	modeled_neighbor.zone.air.temperature_turf_share(src, modeled_neighbor.thermal_conductivity)
-									//else
-									modeled_neighbor.air.temperature_turf_share(src, modeled_neighbor.thermal_conductivity)
+											modeled_neighbor.parent.suspend_group_processing()
+											modeled_neighbor.air.temperature_turf_share(src, modeled_neighbor.thermal_conductivity)
+									else
+										modeled_neighbor.air.temperature_turf_share(src, modeled_neighbor.thermal_conductivity)
 						//			world << "SOLID, OPEN"
 
 							else
 								if(air) //Open but neighbor is solid
-								//	if(zone)//parent && parent.group_processing)
-										//if(!zone.air.check_me_then_temperature_turf_share(modeled_neighbor, modeled_neighbor.thermal_conductivity))
-										//	parent.suspend_group_processing()
-									//	zone.air.temperature_turf_share(modeled_neighbor, modeled_neighbor.thermal_conductivity)
-								//	else
-									air.temperature_turf_share(modeled_neighbor, modeled_neighbor.thermal_conductivity)
+									if(parent && parent.group_processing)
+										if(!parent.air.check_me_then_temperature_turf_share(modeled_neighbor, modeled_neighbor.thermal_conductivity))
+											parent.suspend_group_processing()
+											air.temperature_turf_share(modeled_neighbor, modeled_neighbor.thermal_conductivity)
+									else
+										air.temperature_turf_share(modeled_neighbor, modeled_neighbor.thermal_conductivity)
 						//			world << "OPEN, SOLID"
 
 								else //Both tiles are solid
@@ -564,12 +578,12 @@ turf
 
 						else
 							if(air) //Open
-								//if(zone)//parent && parent.group_processing)
-									//if(!parent.air.check_me_then_temperature_mimic(neighbor, neighbor.thermal_conductivity))
-									//	parent.suspend_group_processing()
-								//	zone.air.temperature_mimic(neighbor, neighbor.thermal_conductivity)
-								//else
-								air.temperature_mimic(neighbor, neighbor.thermal_conductivity)
+								if(parent && parent.group_processing)
+									if(!parent.air.check_me_then_temperature_mimic(neighbor, neighbor.thermal_conductivity))
+										parent.suspend_group_processing()
+										air.temperature_mimic(neighbor, neighbor.thermal_conductivity)
+								else
+									air.temperature_mimic(neighbor, neighbor.thermal_conductivity)
 							else
 								mimic_temperature_solid(neighbor, neighbor.thermal_conductivity)
 
@@ -581,12 +595,12 @@ turf
 
 			//Conduct with air on my tile if I have it
 			if(air)
-				//if(zone)//parent && parent.group_processing)
-					//if(!parent.air.check_me_then_temperature_turf_share(src, thermal_conductivity))
-					//	parent.suspend_group_processing()
-				//	zone.air.temperature_turf_share(src, thermal_conductivity)
-				//else
-				air.temperature_turf_share(src, thermal_conductivity)
+				if(parent && parent.group_processing)
+					if(!parent.air.check_me_then_temperature_turf_share(src, thermal_conductivity))
+						parent.suspend_group_processing()
+						air.temperature_turf_share(src, thermal_conductivity)
+				else
+					air.temperature_turf_share(src, thermal_conductivity)
 
 
 			//Make sure still hot enough to continue conducting heat
@@ -625,11 +639,6 @@ turf
 			if(being_superconductive || !thermal_conductivity)
 				return 0
 
-			//if(zone)
-			//	if(zone.air.temperature < (starting?MINIMUM_TEMPERATURE_START_SUPERCONDUCTION:MINIMUM_TEMPERATURE_FOR_SUPERCONDUCTION))
-			//		return 0
-			//	if(zone.air.heat_capacity() < MOLES_CELLSTANDARD*0.1*0.05)
-			//		return 0
 			if(air)
 				if(air.temperature < (starting?MINIMUM_TEMPERATURE_START_SUPERCONDUCTION:MINIMUM_TEMPERATURE_FOR_SUPERCONDUCTION))
 					return 0
