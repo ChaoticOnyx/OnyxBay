@@ -253,13 +253,7 @@
 
 	if(!possible_clones.len) return
 	clone = pick(possible_clones)
-<<<<<<< HEAD
-<<<<<<< HEAD
 	//var/obj/fake_attacker/F = new/obj/fake_attacker(outside_range(target))
-=======
->>>>>>> parent of f7c1c4b... Air system has been eviscerated to reduce lag.
-=======
->>>>>>> parent of f7c1c4b... Air system has been eviscerated to reduce lag.
 	var/obj/fake_attacker/F = new/obj/fake_attacker(target.loc)
 	if(clone.l_hand)
 		clone_weapon = clone.l_hand.name
