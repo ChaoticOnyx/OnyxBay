@@ -31,7 +31,7 @@ var/showadminmessages = 1
 					if ((!( ticker ) || main_shuttle.location))
 						return
 					LaunchControl.start()
-					world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(main_shuttle.timeleft()/60)] minutes.</B>"
+					world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(LaunchControl.timeleft()/60)] minutes.</B>"
 					log_admin("[key_name(usr)] called the Emergency Shuttle")
 					message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
 
@@ -41,14 +41,14 @@ var/showadminmessages = 1
 					switch(main_shuttle.direction)
 						if(-1)
 							LaunchControl.start()
-							world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(main_shuttle.timeleft()/60)] minutes.</B>"
+							world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(LaunchControl.timeleft()/60)] minutes.</B>"
 							log_admin("[key_name(usr)] called the Emergency Shuttle")
 							message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
 						if(1)
-							main_shuttle.recall()
-							world << "\blue <B>Alert: The shuttle is going back!</B>"
-							log_admin("[key_name(usr)] sent the Emergency Shuttle back")
-							message_admins("\blue [key_name_admin(usr)] sent the Emergency Shuttle back", 1)
+							LaunchControl.stop()
+							world << "\blue <B>Alert: The escape pod launch sequence has been cancelled!</B>"
+							log_admin("[key_name(usr)] cancelled the escape pod launch sequence")
+							message_admins("\blue [key_name_admin(usr)] cancelled the escape pod launch sequence", 1)
 
 			href_list["secretsadmin"] = "check_antagonist"
 		else
@@ -57,9 +57,9 @@ var/showadminmessages = 1
 
 	if(href_list["edit_shuttle_time"])
 		if (src.rank in list("Super Administrator", "Coder", "Host"))
-			main_shuttle.settimeleft( input("Enter new shuttle duration (seconds):","Edit Shuttle Timeleft", main_shuttle.timeleft() ) as num )
-			log_admin("[key_name(usr)] edited the Emergency Shuttle's timeleft to [main_shuttle.timeleft()]")
-			message_admins("\blue [key_name_admin(usr)] edited the Emergency Shuttle's timeleft to [main_shuttle.timeleft()]", 1)
+			LaunchControl.settimeleft( input("Enter new escape pod duration (seconds):","Edit Escape Pod Timeleft", LaunchControl.timeleft() ) as num )
+			log_admin("[key_name(usr)] edited the escape pod's timeleft to [LaunchControl.timeleft()]")
+			message_admins("\blue [key_name_admin(usr)] edited the escape pod's timeleft to [LaunchControl.timeleft()]", 1)
 			href_list["secretsadmin"] = "check_antagonist"
 		else
 			alert("You cannot perform this action. You must be of a higher administrative rank!")
@@ -1119,10 +1119,10 @@ var/showadminmessages = 1
 						dat += "Current Game Mode: <B>[ticker.mode.name]</B><BR>"
 						dat += "Round Duration: <B>[round(world.time / 36000)]:[add_zero(world.time / 600 % 60, 2)]:[world.time / 100 % 6][world.time / 100 % 10]</B><BR>"
 						dat += "<B>Emergency shuttle</B><BR>"
-						if (!main_shuttle.online)
+						if (!LaunchControl.online)
 							dat += "<a href='?src=\ref[src];call_shuttle=1'>Call Shuttle</a><br>"
 						else
-							var/timeleft = main_shuttle.timeleft()
+							var/timeleft = LaunchControl.timeleft()
 							switch(main_shuttle.location)
 								if(0)
 									dat += "ETA: <a href='?src=\ref[src];edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]</a><BR>"

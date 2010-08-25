@@ -48,7 +48,7 @@
 		switch(choice)
 			if("Launch")
 				world << "\blue <B>Alert: Shuttle launch time shortened to 10 seconds!</B>"
-				main_shuttle.settimeleft( 10 )
+				LaunchControl.settimeleft( 10 )
 			if("Cancel")
 				return
 
