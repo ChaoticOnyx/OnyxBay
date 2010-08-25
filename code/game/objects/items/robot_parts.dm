@@ -150,6 +150,7 @@
 			O.cell = src.chest.cell
 			O.cell.loc = O
 
+			del(W)
 			del(src)
 		else
 			user << "\blue The brain must go in after everything else!"
