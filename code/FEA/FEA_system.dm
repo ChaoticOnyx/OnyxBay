@@ -164,7 +164,7 @@ datum
 						active_singletons += T
 
 			setup()
-
+				set background = 1
 				LoadTweaks()
 
 				world << "\red \b Processing Geometry..."

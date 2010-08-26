@@ -57,6 +57,7 @@
 // rebuild all power networks from scratch
 
 /proc/makepowernets()
+	set background = 1
 
 	var/netcount = 0
 	powernets = list()

@@ -90,6 +90,7 @@
 
 // update the icon_state and luminosity of the light depending on its state
 /obj/machinery/light/proc/update()
+	set background=1
 	if (switching)
 		return
 
@@ -331,6 +332,7 @@
 #define LIGHTING_POWER_FACTOR 25		//25W per unit luminosity
 
 /obj/machinery/light/process()
+	set background=1
 	if(on)
 		use_power(ul_Luminosity() * LIGHTING_POWER_FACTOR, LIGHT)
 		if(switching)

@@ -122,45 +122,11 @@
 	if (config && config.server_name != null && config.server_suffix && world.port > 0)
 		// dumb and hardcoded but I don't care~
 		config.server_name += " #[(world.port % 1000) / 100]"
-	startmysql()
-	src.load_mode()
-	src.load_motd()
-	src.load_rules()
-	src.load_admins()
 
-	src.update_status()
-
-	makepowernets()
-
-	sun = new /datum/sun()
-
-	vote = new /datum/vote()
-
-	radio_controller = new /datum/controller/radio()
-	//main_hud1 = new /obj/hud()
-	data_core = new /obj/datacore()
-	CreateShuttles()
-	..()
-
-	sleep(50)
-
-	plmaster = new /obj/overlay(  )
-	plmaster.icon = 'tile_effects.dmi'
-	plmaster.icon_state = "plasma"
-	plmaster.layer = FLY_LAYER
-	plmaster.mouse_opacity = 0
-
-	slmaster = new /obj/overlay(  )
-	slmaster.icon = 'tile_effects.dmi'
-	slmaster.icon_state = "sleeping_agent"
-	slmaster.layer = FLY_LAYER
-	slmaster.mouse_opacity = 0
-
-	src.update_status()
+	. = ..()
 
 	master_controller = new /datum/controller/game_controller()
 	spawn(-1) master_controller.setup()
-	ClearTempbans()
 	return
 
 /*
@@ -169,21 +135,11 @@
 	..()
 */
 /world/Reboot(var/reason)
-//	spawn(0)
-//		if(prob(40))
-//			for(var/mob/M in world)
-//				if(M.client)
-//					M << sound('NewRound2.ogg')
-//		else
-//			for(var/mob/M in world)
-//				if(M.client)
-//					M << sound('NewRound.ogg')
-
+	world << "\red <B>Rebooting! (This may take a while, just hang on unless you receive an error message!)</B>"
 	spawn(0)
 		for(var/client/C)
 			C << link("byond://[world.internet_address]:[world.port]")
 
-//	sleep(10) // wait for sound to play
 	..(reason)
 
 /atom/proc/check_eye(user as mob)
