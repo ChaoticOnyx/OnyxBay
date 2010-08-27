@@ -448,10 +448,10 @@
 	src.icon_state = "pod_1"
 	//Get the clone body ready
 	src.occupant.rejuv = 10
-	src.occupant.bruteloss += 90
-	src.occupant.toxloss += 50
+	src.occupant.bruteloss += rand(60, 90)
+	src.occupant.toxloss += 30
 	src.occupant.oxyloss += 40
-	src.occupant.brainloss += 90
+	src.occupant.brainloss += rand(60, 90)
 	src.occupant.paralysis += 4
 
 	//Here let's calculate their health so the pod doesn't immediately eject them!!!
@@ -534,8 +534,8 @@
 			src.occupant.brainloss = max(src.occupant.brainloss-1, 0)
 
 			//So clones don't die of oxyloss in a running pod.
-			if (src.occupant.reagents.get_reagent_amount("inaprovaline") < 30)
-				src.occupant.reagents.add_reagent("inaprovaline", 60)
+			if (src.occupant.reagents.get_reagent_amount("lexorin") < 30)
+				src.occupant.reagents.add_reagent("lexorin", 60)
 
 			//Also heal some oxyloss ourselves because inaprovaline is so bad at preventing it!!
 			src.occupant.oxyloss = max(src.occupant.oxyloss-2, 0)
