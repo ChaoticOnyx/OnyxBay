@@ -668,9 +668,9 @@
 		return
 
 	for(var/turf/simulated/floor/T in world)
-		if(prob(4) && T.z == 1 && istype(T))
+		if(prob(4) && (T.z > 0 && T.z < 5) && istype(T))
 			spawn(50+rand(0,3000))
-				explosion(T, 3, 1)
+				explosion(T, 3, 1, force=1)
 
 	usr << "\blue Blowing up station ..."
 

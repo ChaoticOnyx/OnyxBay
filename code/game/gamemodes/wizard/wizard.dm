@@ -314,7 +314,7 @@
 	var/turf/location = get_turf(src.loc)
 	location.hotspot_expose(SPARK_TEMP, 125)
 
-	explosion(location, 0, 0, 2, 4)
+	explosion(location, 0, 0, 2, 4, 1)
 
 	del(src.master)
 	del(src)

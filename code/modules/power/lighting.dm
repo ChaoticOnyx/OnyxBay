@@ -374,7 +374,7 @@
 	spawn(0)
 		broken()	// break it first to give a warning
 		sleep(2)
-		explosion(T, 0, 1, 2, 2)
+		explosion(T, 0, 1, 2, 2, 1)
 		sleep(1)
 		del(src)
 

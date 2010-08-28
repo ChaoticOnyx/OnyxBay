@@ -62,7 +62,7 @@
 		del(src)
 
 /obj/mine/proc/explode(obj)
-	explosion(loc, 0, 1, 2, 3)
+	explosion(loc, 0, 1, 2, 3, 1)
 	spawn(0)
 		del(src)
 

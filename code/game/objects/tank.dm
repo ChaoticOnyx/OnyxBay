@@ -117,7 +117,7 @@
 
 			//world << "\blue Exploding Pressure: [pressure] kPa, intensity: [range]"
 
-			explosion(epicenter, round(range*0.25), round(range*0.5), round(range), round(range*1.5))
+			explosion(epicenter, round(range*0.25), round(range*0.5), round(range), round(range*1.5), 1)
 			del(src)
 
 		else if(pressure > TANK_RUPTURE_PRESSURE)
@@ -339,17 +339,17 @@
 	if(air_contents.temperature > (T0C + 400))
 		strength = fuel_moles/15
 
-		explosion(ground_zero, strength, strength*2, strength*3, strength*4)
+		explosion(ground_zero, strength, strength*2, strength*3, strength*4, 1)
 
 	else if(air_contents.temperature > (T0C + 250))
 		strength = fuel_moles/20
 
-		explosion(ground_zero, 0, strength, strength*2, strength*3)
+		explosion(ground_zero, 0, strength, strength*2, strength*3, 1)
 
 	else if(air_contents.temperature > (T0C + 100))
 		strength = fuel_moles/25
 
-		explosion(ground_zero, 0, 0, strength, strength*3)
+		explosion(ground_zero, 0, 0, strength, strength*3, 1)
 
 	else
 		ground_zero.assume_air(air_contents)

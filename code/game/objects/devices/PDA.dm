@@ -1394,8 +1394,7 @@ Code:
 
 	if(T)
 		T.hotspot_expose(SPARK_TEMP,125)
-
-		explosion(T, -1, -1, 2, 3)
+		explosion(T, -1, -1, 2, 3, 1)
 
 	del(src)
 	return

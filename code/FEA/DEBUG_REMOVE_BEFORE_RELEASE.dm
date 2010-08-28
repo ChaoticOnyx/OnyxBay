@@ -90,7 +90,7 @@ turf/simulated/floor
 	verb
 		boom(inner_range as num, middle_range as num, outer_range as num)
 			set src in world
-			explosion(src,inner_range,middle_range,outer_range,outer_range)
+			explosion(src,inner_range,middle_range,outer_range,outer_range, force=1)
 
 	verb
 		flag_parent()
@@ -101,12 +101,12 @@ turf/simulated/floor
 	verb
 		small_explosion()
 			set src in world
-			explosion(src, 1, 2, 3, 3)
+			explosion(src, 1, 2, 3, 3, 1)
 
 	verb
 		large_explosion()
 			set src in world
-			explosion(src, 3, 5, 7, 5)
+			explosion(src, 3, 5, 7, 5, 1)
 
 obj/machinery/portable_atmospherics/canister
 	verb/test_release()

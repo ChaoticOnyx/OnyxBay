@@ -25,7 +25,7 @@
 		if(locate(/obj/landmark/derelict/noblast) in a)
 			continue
 		if(prob(1) && prob(5))
-			explosion(a,3,5,7,9)
+			explosion(a,3,5,7,9, 1)
 	world << "Destroying walls (SLOW)"
 	sleep(20)
 	for(var/turf/simulated/wall/a in world)
