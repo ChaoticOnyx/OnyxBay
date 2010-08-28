@@ -90,10 +90,7 @@
 		if(mode==1)	// shuttle timer
 			if(LaunchControl.online)
 				var/displayloc
-				if(main_shuttle.location == 1)
-					displayloc = "ETD "
-				else
-					displayloc = "ETA "
+				displayloc = "ETL "
 
 				var/displaytime = get_shuttle_timer()
 				if(lentext(displaytime) > 5)

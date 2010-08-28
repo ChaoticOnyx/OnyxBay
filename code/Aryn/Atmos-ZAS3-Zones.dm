@@ -98,8 +98,8 @@ zone
 
 		if(!start.CanPass(null,start,0,1)) //Bug here.
 			//world << "Warning: Zone created on [start] (airtight turf) at [start.x],[start.y],[start.z]."
-			//world << "A gray overlay has been applied to show the location."
-			//start.overlays += 'icons/Testing/turf_analysis.dmi'
+			//world << "A gray overlays has been applied to show the location."
+			//start.overlayss += 'icons/Testing/turf_analysis.dmi'
 			del src
 			return 0
 
@@ -123,8 +123,8 @@ zone
 
 		if(!members.len) //Bug here.
 			//world << "Warning: Zone created with no members at [start.x],[start.y],[start.z]."
-			//world << "A gray overlay has been applied to show the location."
-			//start.overlays += 'icons/Testing/turf_analysis.dmi'
+			//world << "A gray overlays has been applied to show the location."
+			//start.overlayss += 'icons/Testing/turf_analysis.dmi'
 			del src
 			return 0
 
@@ -352,10 +352,10 @@ zone
 			//		if(C.zone == T.zone || C.zone == src) continue
 			//		if(C.zone in T.zone.connections || C.zone in connections) continue
 			//		Connect(S,C,pc+1)
-		//	S.overlays += /obj/debug_connect_obj
-			//S.overlays -= 'Zone.dmi'
-		//	T.overlays += /obj/debug_connect_obj
-			//T.overlays -= 'Zone.dmi'
+		//	S.overlayss += /obj/debug_connect_obj
+			//S.overlayss -= 'Zone.dmi'
+		//	T.overlayss += /obj/debug_connect_obj
+			//T.overlayss -= 'Zone.dmi'
 			if(!(S.HasDoor(1) || T.HasDoor(1)))
 				direct_connections += T.zone
 				T.zone.direct_connections += src
@@ -379,10 +379,10 @@ zone
 			//		if(C.zone == T.zone || C.zone == src) continue
 			//		if(!(C.zone in connections)) continue
 			//		Disconnect(S,C,pc+1)
-			//S.overlays -= /obj/debug_connect_obj//'debug_connect.dmi'
-			//S.overlays += 'Zone.dmi'
-		//	T.overlays -= /obj/debug_connect_obj//'debug_connect.dmi'
-			//T.overlays += 'Zone.dmi'
+			//S.overlayss -= /obj/debug_connect_obj//'debug_connect.dmi'
+			//S.overlayss += 'Zone.dmi'
+		//	T.overlayss -= /obj/debug_connect_obj//'debug_connect.dmi'
+			//T.overlayss += 'Zone.dmi'
 			direct_connections -= T.zone
 			T.zone.direct_connections -= src
 		if(!length(connections[T.zone]))
@@ -486,7 +486,7 @@ proc/FloodFill(turf/start,remove_extras)
 						//world << "T.loc = [T.loc] S.loc = [S.loc] Direction: [get_dir(T,S)] CanPass: [T.CanPass(null,S,0,0)]"
 				//	break
 			. += T
-			//T.overlays += 'Zone.dmi'
+			//T.overlayss += 'Zone.dmi'
 			borders -= T
 			//if(!border_added && !remove_extras)
 			//	for(var/turf/E in range(1,T))
@@ -501,10 +501,10 @@ proc/FloodFill(turf/start,remove_extras)
 //			for(var/turf/U in T.GetDoorCardinals())
 //				if((U in borders) || (U in .)) continue
 //				borders += U
-//				U.overlays += 'Confirm.dmi'
+//				U.overlayss += 'Confirm.dmi'
 //			. += T
-//			T.overlays -= 'Confirm.dmi'
-//			T.overlays += 'Zone.dmi'
+//			T.overlayss -= 'Confirm.dmi'
+//			T.overlayss += 'Zone.dmi'
 //			borders -= T
 turf/var
 	floodupdate = 1 //If 1, will reset unblocked_dirs on next call to GetUnblockedCardinals().
@@ -709,7 +709,7 @@ turf/proc
 			new/zone(src)
 
 proc/SplitCheck(turf/T)
-	//T.overlays += ad_splitcheck
+	//T.overlayss += ad_splitcheck
 	var/blocks = 0
 	if(T.HasDoor(1)) return
 	T.SetCardinals()
@@ -747,9 +747,9 @@ proc/SplitCheck(turf/T)
 
 //mob/verb/ClearTags()
 //	for(var/turf/T)
-	//	T.overlays -= ad_splitcheck
-//		T.overlays -= ad_update
-//		T.overlays -= ad_process
+	//	T.overlayss -= ad_splitcheck
+//		T.overlayss -= ad_update
+//		T.overlayss -= ad_process
 
 proc/RebuildAll()
 	stop_zones = 0

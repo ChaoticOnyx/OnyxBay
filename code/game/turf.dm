@@ -233,7 +233,7 @@ turf/simulated/wall/bullet_act(flag,dir)
 	var/turf/simulated/wall/west
 	var/turf/simulated/wall/T
 
-	// Removing the overlay first to fix bug that is causd upon map initialisation, where multiple overlays of the same direction can be applied.
+	// Removing the overlays first to fix bug that is causd upon map initialisation, where multiple overlayss of the same direction can be applied.
 	if (istype(locate((S.x - 1),S.y,S.z), /turf/simulated/wall))
 		S.removeoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))
 		S.addoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))

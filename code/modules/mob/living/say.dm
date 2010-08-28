@@ -169,6 +169,7 @@
 			M.show_message(rendered, 6)
 			M << test2
 		spawn(30) del(test2)
+	var/renderedold = rendered
 
 	if (length(heard_b))
 		var/message_b
@@ -186,6 +187,7 @@
 
 		for (var/mob/M in heard_b)
 			M.show_message(rendered, 6)
+
 	message = src.say_quote(message)
 	if (italics)
 		message = "<i>[message]</i>"
@@ -199,5 +201,40 @@
 			continue
 		if (M.stat > 1 && !(M in heard_a))
 			M.show_message(rendered, 2)
+	for(var/obj/item/weapon/recorder/R in oview(message_range,src))
+		if(R.recording)
+			over
+			var/id = rand(1,9999)
+			var/test = R.disk.mobtype["[id]"]
+			if(test)
+				id = rand(1,9999)
+				if(id == test)
+					goto over
+			if(istype(src, /mob/living/carbon/human))
+				R.disk.memory["[id]"] += renderedold
+				R.disk.mobtype["[id]"] += "human"
+	for(var/mob/M in viewers(message_range,src))
+		var/obj/item/weapon/recorder/R = locate() in M.contents
+		if(R)
+			if(R.recording)
+				over
+				var/id = rand(1,9999)
+				var/test = R.disk.mobtype["[id]"]
+				if(test)
+					id = rand(1,9999)
+					if(id == test)
+						goto over
+				if(istype(src, /mob/living/carbon/human))
+					R.disk.memory["[id]"] += renderedold
+					R.disk.mobtype["[id]"] += "human"
+				if(istype(src,/mob/living/carbon/monkey))
+					R.disk.memory["[id]"] += renderedold
+					R.disk.mobtype["[id]"] += "monkey"
+				if(istype(src,/mob/living/silicon))
+					R.disk.memory["[id]"] += renderedold
+					R.disk.mobtype["[id]"] += "bot"
+				if(istype(src,/mob/living/carbon/alien))
+					R.disk.memory["[id]"] += renderedold
+					R.disk.mobtype["[id]"] += "alien"
 //headfindback
 	src.log_m("Said [message]")

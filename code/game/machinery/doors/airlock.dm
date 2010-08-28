@@ -917,7 +917,31 @@ About the new airlock wires panel:
 	if (src.closeOther != null && istype(src.closeOther, /obj/machinery/door/airlock/) && !src.closeOther.density)
 		src.closeOther.close()
 	return ..()
+/obj/machinery/door/airlock/proc/forcedopen()
+	if(!density)
+		return 1
+	if (src.operating == 1) //doors can still open when emag-disabled
+		return
+	if (!ticker)
+		return 0
+	if(!src.operating) //in case of emag
+		src.operating = 1
 
+	animate("opening")
+	sleep(10)
+	src.density = 0
+	update_icon()
+
+	src.ul_SetOpacity(0)
+	update_nearby_tiles()
+
+	if(operating == 1) //emag again
+		src.operating = 0
+
+	if(autoclose)
+		spawn(150)
+			autoclose()
+	return 1
 /obj/machinery/door/airlock/close()
 	if (src.welded || src.locked || (!src.arePowerSystemsOn()) || (stat & NOPOWER) || src.isWireCut(AIRLOCK_WIRE_OPEN_DOOR))
 		return

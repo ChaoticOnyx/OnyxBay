@@ -10,7 +10,7 @@
 	var/last_bumped = 0
 	var/list/logs = list()
 
-	var/list/overlaylist = list()
+	var/list/overlayslist = list()
 
 	///Chemistry.
 	var/datum/reagents/reagents = null

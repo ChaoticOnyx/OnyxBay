@@ -366,27 +366,27 @@ mob
 				network.marker = rand(1,4)
 
 			for(var/obj/machinery/atmospherics/pipe/P in world)
-				P.overlays = null
+				P.overlayss = null
 
 				var/datum/pipe_network/master = P.return_network()
 				if(master)
-					P.overlays += icon('atmos_testing.dmi',"marker[master.marker]")
+					P.overlayss += icon('atmos_testing.dmi',"marker[master.marker]")
 				else
 					world << "error"
-					P.overlays += icon('atmos_testing.dmi',"marker0")
+					P.overlayss += icon('atmos_testing.dmi',"marker0")
 
 			for(var/obj/machinery/atmospherics/valve/V in world)
-				V.overlays = null
+				V.overlayss = null
 
 				if(V.network_node1)
-					V.overlays += icon('atmos_testing.dmi',"marker[V.network_node1.marker]")
+					V.overlayss += icon('atmos_testing.dmi',"marker[V.network_node1.marker]")
 				else
-					V.overlays += icon('atmos_testing.dmi',"marker0")
+					V.overlayss += icon('atmos_testing.dmi',"marker0")
 
 				if(V.network_node2)
-					V.overlays += icon('atmos_testing.dmi',"marker[V.network_node2.marker]")
+					V.overlayss += icon('atmos_testing.dmi',"marker[V.network_node2.marker]")
 				else
-					V.overlays += icon('atmos_testing.dmi',"marker0")
+					V.overlayss += icon('atmos_testing.dmi',"marker0")
 
 turf/simulated
 	var/fire_verbose = 0
@@ -394,12 +394,12 @@ turf/simulated
 	verb
 		mark_direction()
 			set src in world
-			overlays = null
+			overlayss = null
 			for(var/direction in list(NORTH,SOUTH,EAST,WEST))
 				if(group_border&direction)
-					overlays += icon('turf_analysis.dmi',"red_arrow",direction)
+					overlayss += icon('turf_analysis.dmi',"red_arrow",direction)
 				else if(air_check_directions&direction)
-					overlays += icon('turf_analysis.dmi',"arrow",direction)
+					overlayss += icon('turf_analysis.dmi',"arrow",direction)
 		air_status()
 			set src in world
 			set category = "Minor"

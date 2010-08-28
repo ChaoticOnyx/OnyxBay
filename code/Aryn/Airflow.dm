@@ -126,9 +126,13 @@ proc/Airflow(zone/A,zone/B,n)
 			//if(istype(M,/mob/living/silicon/ai)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
-				if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+				if(istype(src, /mob/living/carbon/human))
+					if(src:wear_suit)
+						if(src:wear_suit.airflowprot) continue
+						else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+						M:weakened = max(M:weakened,5)
+				else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
 				M:weakened = max(M:weakened,5)
-
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
 			if(istype(M,/obj/item))
 				switch(M:w_class)
@@ -140,7 +144,6 @@ proc/Airflow(zone/A,zone/B,n)
 						if(n < vsc.AF_LARGE_MOVEMENT_THRESHOLD) continue
 					if(5)
 						if(n < vsc.AF_LARGE_MOVEMENT_THRESHOLD) continue
-
 			var/fail = 1
 			for(var/turf/U in connected_turfs)
 				if(M in range(U)) fail = 0
@@ -319,7 +322,7 @@ atom/movable
 			step_away(src,loc)
 		if(ismob(src))
 			if(src:nodamage) return
-			if (istype(src, /mob/living/carbon/) && !istype(src, /mob/living/carbon/monkey))
+			if(istype(src, /mob/living/carbon/human))
 				if(src:wear_suit)
 					if(src:wear_suit.airflowprot) return
 			src << "\red You are sucked away by airflow!"
@@ -365,6 +368,9 @@ atom/movable
 			step_away(src,loc)
 		if(ismob(src))
 			if(src:nodamage) return
+			if(istype(src, /mob/living/carbon/human))
+				if(src:wear_suit)
+					if(src:wear_suit.airflowprot) return
 			src << "\red You are pushed away by airflow!"
 		airflow_speed = min(round(n),9)
 		//airflow_dest = get_step(src,Get_Dir(airflow_dest,src))

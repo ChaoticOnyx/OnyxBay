@@ -543,7 +543,7 @@
 	triggerproc = "triggerstun"
 
 /obj/overlay
-	name = "overlay"
+	name = "overlays"
 
 /obj/portal
 	name = "portal"
