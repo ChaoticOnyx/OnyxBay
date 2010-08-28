@@ -112,7 +112,7 @@
 			else
 				ground_zero = locate(45,45,1)
 
-			explosion(ground_zero, 100, 250, 500, 750)
+			explosion(ground_zero, 100, 250, 500, 750, 1)
 
 /datum/game_mode/blob/check_finished()
 	if(stage >= 4)

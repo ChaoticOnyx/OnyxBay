@@ -1,0 +1,17 @@
+"a" = (/turf/simulated/wall/r_wall,/area)
+"b" = (/obj/machinery/bot/secbot,/obj/machinery/camera,/turf/simulated/floor,/area)
+"c" = (/obj/mine/dnascramble,/turf/simulated/floor,/area)
+"d" = (/obj/machinery/door/airlock/security,/turf/simulated/floor/plating,/area)
+"e" = (/obj/machinery/bot/secbot,/turf/simulated/floor,/area)
+"f" = (/obj/crate/secure/plasma,/turf/simulated/floor,/area)
+"g" = (/obj/crate/secure/weapon,/turf/simulated/floor,/area)
+"h" = (/obj/decal/cleanable/blood/tracks,/turf/simulated/wall/r_wall,/area)
+
+(1,1,1) = {"
+aaaaaa
+abcddd
+aecaaa
+afggga
+afggga
+aaahaa
+"}

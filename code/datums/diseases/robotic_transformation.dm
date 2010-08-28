@@ -20,14 +20,14 @@
 			if (prob(9))
 				affected_mob << "\red Beep...boop.."
 			if (prob(9))
-				affected_mob << "\red Bop...beeep..."
+				affected_mob << "\red Boop...beeep..."
 		if(3)
 			if (prob(8))
 				affected_mob << "\red Your joints feel very stiff."
 				affected_mob.bruteloss += 1
 				affected_mob.updatehealth()
 			if (prob(8))
-				affected_mob.say(pick("Beep, boop", "beep, beep!", "Boop...bop"))
+				affected_mob.say(pick("Beep, boop", "beep, beep!", "Boop...boop"))
 			if (prob(10))
 				affected_mob << "Your skin feels loose."
 				affected_mob.bruteloss += 5
@@ -43,7 +43,7 @@
 				affected_mob.bruteloss += 8
 				affected_mob.updatehealth()
 			if (prob(20))
-				affected_mob.say(pick("beep, beep!", "Boop bop boop beep.", "kkkiiiill mmme", "I wwwaaannntt tttoo dddiiieeee..."))
+				affected_mob.say(pick("beep, beep!", "Boop boop boop beep.", "kkkiiiill mmme", "I wwwaaannntt tttoo dddiiieeee..."))
 			if (prob(8))
 				affected_mob << "\red You can feel... something...inside you."
 		if(5)

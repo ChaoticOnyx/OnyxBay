@@ -4,7 +4,7 @@
 
 /datum/game_mode/meteor/announce()
 	world << "<B>The current game mode is - Meteor!</B>"
-	world << "<B>The space station has been stuck in a major meteor shower. You must escape from the station or at least live.</B>"
+	world << "<B>The ship has been stuck in a major meteor shower. You must escape from the ship or at least live.</B>"
 
 /datum/game_mode/meteor/declare_completion()
 	var/list/survivors = list()

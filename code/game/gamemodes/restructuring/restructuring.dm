@@ -1,14 +1,18 @@
+/datum/controller/gameticker/var/mob/target = null
+
+/datum/game_mode/restructuring/var/finished = 0
+
 /datum/game_mode/restructuring
 	name = "Corporate Restructuring"
 	config_tag = "restructuring"
-/*
+
 /datum/game_mode/restructuring/announce()
+	..()
 	world << "\red <B>GLOBAL TRANSMISSION FROM HEAD OFFICE: A CORPORATE RESTRUCTURING IS TO TAKE PLACE</B>"
 	world << "\red <B>Stay tuned for further news; note that we do care for our employees and any layoffs will be dealt with discretion and compassion</B>"
 
 
 /datum/game_mode/restructuring/post_setup()
-	setup_game()
 	var/list/mobs = get_mob_list()
 	while (mobs.len == 0)
 		sleep 30
@@ -23,28 +27,35 @@
 	if (!who)
 		target = pick(get_mob_list())
 		target_desc = get_target_desc(target)
-		world << "\red <B>HEAD OFFICE: [target_desc] is accused of attempting to start a Union and is now considered a threat to the station. Terminate the employee immediately.</b>"
 	else
 		target = who
 		target_desc = get_target_desc(target)
-		world << "\red <B>HEAD OFFICE: [target_desc] is accused of fornicating with staff of the same sex. Terminate the employee immediately.</b>"
+	world << "\red <B>HEAD OFFICE: [target_desc] is accused of attempting to start a Union and is now considered a threat to the station. Terminate the employee immediately.</b>"
 	ticker.target = target
 
-	target.store_memory("Head office has ordered your downsizing. Ruh roh", 0)
+	target.store_memory("Head office has ordered your downsizing. Watch out!", 0)
 
 	for(var/mob/living/silicon/ai/M in world)
 		M << "These are your laws now:"
 		M.set_zeroth_law("[target_desc] is not human.")
 		M.show_laws()
 
+/datum/game_mode/restructuring/check_finished()
+	. = ..()
+	if (finished)
+		return 1
+	return
+
 /datum/game_mode/restructuring/check_win()
 	var/list/left_alive = get_mob_list()
 	if (left_alive.len == 1)
 		var/thewinner = the_winner()
 		world << "\red <B>HEAD OFFICE: Thanks to his superior brown-nosing abilities, [thewinner] has been promoted to senior management! Congratulations!"
+		finished = 1
 		return 1
 	else if (left_alive.len == 0)
 		world << "\red <B>HEAD OFFICE: Cost cutting measures have achieved 100% efficiency. Thank you for understanding our position during this volatile economic downturn."
+		finished = 1
 		return 1
 	else
 		if(ticker.target.stat != 2)
@@ -73,4 +84,3 @@
 	if(!targetrank)
 		return "[target.name]"
 	return "[target.name] the [targetrank]"
-*/

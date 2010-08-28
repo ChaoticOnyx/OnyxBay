@@ -134,7 +134,7 @@
 
 /*
 	var/turf/ground_zero = get_turf(loc)
-	explosion(ground_zero, 50, 250, 500, 750)
+	explosion(ground_zero, 50, 250, 500, 750, 1)
 
 */
 	enter_allowed = 0

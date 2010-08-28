@@ -64,8 +64,8 @@ HOSTEDBY Topkasa
 # tU8NptaBZV6BeM59
 # bay12
 #
-DB_SERVER db4free.org
-DB_USER head
-DB_PASSWORD 123456
-DB_DBNAME bay12
+DB_SERVER pegasus.temporum.net
+DB_USER bay12dev
+DB_PASSWORD uSU2wKtSjHSHHuZq
+DB_DBNAME bay12dev
 DB_PORT 3306

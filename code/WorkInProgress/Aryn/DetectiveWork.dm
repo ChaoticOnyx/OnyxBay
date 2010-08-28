@@ -258,6 +258,15 @@ turf/Entered(mob/living/carbon/human/M)
 	. = ..()
 
 turf/proc/add_bloody_footprints(mob/living/carbon/human/M,leaving,d,info)
+	for(var/obj/decal/cleanable/blood/tracks/T in src)
+		if(T.dir == d)
+			if((leaving && T.icon_state == "steps2") || (!leaving && T.icon_state == "steps1"))
+				T.desc = "These bloody footprints appear to have been made by [info]."
+				if(istype(M,/mob/living/carbon/human))
+					T.blood_DNA = M.dna.unique_enzymes
+					T.blood_type = M.b_type
+					T.virus = M.virus
+				return
 	var/obj/decal/cleanable/blood/tracks/this = new(src)
 	if(leaving)
 		this.icon_state = "steps2"

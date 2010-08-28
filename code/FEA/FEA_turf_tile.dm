@@ -159,7 +159,7 @@ turf
 					air_master.tiles_to_update.Add(src)
 
 					find_group()
-					if(!zone) add_to_other_zone()
+					if(!zone && !stop_zones) add_to_other_zone()
 
 //				air.parent = src //TODO DEBUG REMOVE
 
@@ -172,7 +172,7 @@ turf
 
 		Del()
 			if(air_master)
-				if(zone)
+				if(zone && !stop_zones)
 					zone.RemoveTurf(src)
 				if(parent)
 					air_master.groups_to_rebuild.Add(parent)

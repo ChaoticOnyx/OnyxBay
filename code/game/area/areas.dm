@@ -149,6 +149,15 @@
 				D.locked = 1
 				D.air_locked = 1
 				D.update_icon()
+		if(!fire)
+			for(var/obj/machinery/door/firedoor/D in alldoors)
+				if(!D.blocked)
+					if(D.operating)
+						D.nextstate = CLOSED
+					else if(!D.density)
+						spawn(0)
+						D.close()
+
 			//else
 			//	D.air_locked = 0 //Ensure we're getting the right doors here.
 		var/list/cameras = list()
@@ -180,6 +189,14 @@
 					D.locked = 0
 					D.air_locked =0
 					D.update_icon()
+		if(!fire)
+			for(var/obj/machinery/door/firedoor/D in alldoors)
+				if(!D.blocked)
+					if(D.operating)
+						D.nextstate = OPEN
+					else if(D.density)
+						spawn(0)
+						D.open()
 		for (var/mob/living/silicon/ai/aiPlayer in world)
 			aiPlayer.cancelAlarm("Atmosphere", src, src)
 		for (var/obj/machinery/computer/atmosphere/alerts/a in world)

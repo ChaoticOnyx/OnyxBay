@@ -82,7 +82,7 @@
 /obj/item/weapon/cell/proc/explode()
 	var/turf/T = get_turf(src.loc)
 
-	explosion(T, 0, 1, 2, 2)
+	explosion(T, 0, 1, 2, 2, 1)
 
 	spawn(1)
 		del(src)

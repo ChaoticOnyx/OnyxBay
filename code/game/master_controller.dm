@@ -9,13 +9,49 @@ datum/controller/game_controller
 		process()
 
 	setup()
+		set background = 1
 		if(master_controller && (master_controller != src))
 			del(src)
 			//There can be only one master.
 
+		spawn(0)
+			world.startmysql()
+			world.load_mode()
+			world.load_motd()
+			world.load_rules()
+			world.load_admins()
+			world.update_status()
+
+		makepowernets()
+
+		sun = new /datum/sun()
+
+		vote = new /datum/vote()
+
+		radio_controller = new /datum/controller/radio()
+		//main_hud1 = new /obj/hud()
+		data_core = new /obj/datacore()
+		CreateShuttles()
+
 		if(!air_master)
 			air_master = new /datum/controller/air_system()
 			air_master.setup()
+
+		plmaster = new /obj/overlay(  )
+		plmaster.icon = 'tile_effects.dmi'
+		plmaster.icon_state = "plasma"
+		plmaster.layer = FLY_LAYER
+		plmaster.mouse_opacity = 0
+
+		slmaster = new /obj/overlay(  )
+		slmaster.icon = 'tile_effects.dmi'
+		slmaster.icon_state = "sleeping_agent"
+		slmaster.layer = FLY_LAYER
+		slmaster.mouse_opacity = 0
+
+		world.update_status()
+
+		ClearTempbans()
 
 		setup_objects()
 

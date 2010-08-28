@@ -165,17 +165,18 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 
 	if(src.target && (src.target != null) && src.path.len == 0)
 		spawn(0)
-			src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, 0, 30, list(/obj/landmark/alterations/nopath))
-			src.path = reverselist(src.path)
-			if(src.path.len == 0)
-				src.oldtarget = src.target
-				src.target = null
+			if (istype(src.loc, /turf))
+				src.path = AStar(src.loc, src.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=list(/obj/landmark/alterations/nopath))
+				src.path = reverselist(src.path)
+				if(src.path.len == 0)
+					src.oldtarget = src.target
+					src.target = null
 		return
 	if(src.path.len > 0 && src.target && (src.target != null))
-		step_to(src, src.path[1])
+		step_towards_3d(src, src.path[1])
 		src.path -= src.path[1]
 	else if(src.path.len == 1)
-		step_to(src, target)
+		step_towards_3d(src, target)
 
 	if(src.target && (src.target != null))
 		if(src.loc == src.target.loc)

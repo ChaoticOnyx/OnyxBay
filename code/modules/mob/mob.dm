@@ -1151,7 +1151,8 @@ mob/verb/turnwest()
 /mob/verb/memory()
 	set name = "Notes"
 
-	mind.show_memory(src)
+	if (mind)
+		mind.show_memory(src)
 
 /mob/verb/add_memory(msg as message)
 	set name = "Add Note"

@@ -75,7 +75,7 @@
 		var/mob/living/carbon/human/tmob = M
 		if (!tmob.lying && istype(tmob.shoes, /obj/item/clothing/shoes/clown_shoes))
 			if(istype(tmob.head, /obj/item/clothing/head/helmet))
-				tmob << "\red You stumble and fall to the ground. Thankfully, that helmet protected you."
+				tmob << "\red You stumble and fall to the ground. Thankfully, the helmet protected you."
 				tmob.weakened = max(rand(1,2), tmob.weakened)
 			else
 				tmob << "\red You stumble and hit your head."

@@ -253,6 +253,7 @@
 
 	if(!possible_clones.len) return
 	clone = pick(possible_clones)
+	//var/obj/fake_attacker/F = new/obj/fake_attacker(outside_range(target))
 	var/obj/fake_attacker/F = new/obj/fake_attacker(target.loc)
 	if(clone.l_hand)
 		clone_weapon = clone.l_hand.name
@@ -535,6 +536,8 @@
 
 	if(!A || !src) return 0
 
+	stop_zones = 1
+
 	var/list/turfs_src = get_area_turfs(src.type)
 	var/list/turfs_trg = get_area_turfs(A.type)
 
@@ -579,8 +582,8 @@
 	moving:
 		for (var/turf/T in refined_src)
 			if(T.zone)
+				T.zone.space_connections.len = 0
 				for(var/zone/Z in T.zone.connections) //Disconnect everything! (We'll reconnect it later.)
-					T.zone.space_connections.len = 0
 					T.zone.connections -= Z
 					T.zone.direct_connections -= Z
 					Z.connections -= T.zone
@@ -599,7 +602,9 @@
 					X.dir = old_dir1
 					X.icon_state = old_icon_state1
 					X.zone = old_zone
-					if(X.zone) X.zone.members += X
+					if(X.zone)
+						X.zone.members += X
+						spawn(1) X.zone.space_connections -= X
 
 					for(var/atom/movable/AM as mob|obj in T)
 						AM.loc = X
@@ -647,6 +652,8 @@
 				air_master.groups_to_rebuild += T1.parent
 			else
 				air_master.tiles_to_update += T1
+			if(T1.zone)
+				T1.zone.space_connections.len = 0
 
 	if(fromupdate.len)
 		for(var/turf/simulated/T2 in fromupdate)
@@ -656,7 +663,12 @@
 				air_master.groups_to_rebuild += T2.parent
 			else
 				air_master.tiles_to_update += T2
+			if(T2.zone)
+				T2.zone.space_connections.len = 0
 
 	for(var/obj/O in doors)
 		O:update_nearby_tiles(1)
+
+	spawn(10)
+		stop_zones = 0
 

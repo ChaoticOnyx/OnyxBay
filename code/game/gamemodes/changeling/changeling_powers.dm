@@ -36,7 +36,7 @@
 	set name = "Absorb DNA"
 
 	if(usr.stat)
-		usr << "\red Not when we are incapicated."
+		usr << "\red Not when we are incapacitated."
 		return
 
 	if (!istype(usr.equipped(), /obj/item/weapon/grab))
@@ -95,7 +95,7 @@
 	set category = "Changeling"
 	set name = "Transform"
 	if(usr.stat)
-		usr << "\red Not when we are incapicated."
+		usr << "\red Not when we are incapacitated."
 		return
 
 	if (usr.absorbed_dna.len <= 0)
@@ -120,7 +120,7 @@
 	set name = "Lesser Form"
 
 	if(usr.stat)
-		usr << "\red Not when we are incapicated."
+		usr << "\red Not when we are incapacitated."
 		return
 
 	usr.remove_changeling_powers()
@@ -191,7 +191,7 @@
 	set name = "Transform"
 
 	if(usr.stat)
-		usr << "\red Not when we are incapicated."
+		usr << "\red Not when we are incapacitated."
 		return
 
 	if (usr.absorbed_dna.len <= 0)
@@ -328,7 +328,7 @@
 	set desc="Sting target:"
 
 	if(usr.stat)
-		usr << "\red Not when we are incapicated."
+		usr << "\red Not when we are incapacitated."
 		return
 
 	usr << "\blue We stealthily sting [T]."
@@ -350,7 +350,7 @@
 	set desc="Sting target:"
 
 	if(usr.stat)
-		usr << "\red Not when we are incapicated."
+		usr << "\red Not when we are incapacitated."
 		return
 
 	usr << "\blue We stealthily sting [T]."

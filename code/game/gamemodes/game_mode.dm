@@ -8,7 +8,7 @@
 	var/list/logtraitors = list( )
 
 /datum/game_mode/proc/announce()
-	world << "<B>[src] did not define announce()</B>"
+	world << "<B>The current game mode is - [name]!</B>"
 
 /datum/game_mode/proc/pre_setup()
 	return 1
@@ -35,17 +35,15 @@
 		world << "<B>The syndicate traitor was [traitor_name]</B>"
 		var/count = 1
 		for(var/datum/objective/objective in traitor.objectives)
-			if(objective.check_completion())
-				world << "<B>Objective #[count]</B>: [objective.explanation_text] \green <B>Success</B>"
+			world << "<B>Objective #[count]</B>: [objective.explanation_text] \..."
+			if (objective.check_completion())
+				world << "\green <B>Success</B>"
 			else
-				world << "<B>Objective #[count]</B>: [objective.explanation_text] \red Failed"
+				world << "\red Failed"
 				traitorwin = 0
 			count++
 
-		if(traitorwin)
-			world << "<B>The traitor was successful!<B>"
-		else
-			world << "<B>The traitor has failed!<B>"
+		world << "<B>The traitor [(traitorwin ? "was successful" : "has failed")]!</B>"
 
 		var/datum/traitorinfo/info = logtraitors[traitor]
 		var/DBQuery/query = dbcon.NewQuery("INSERT INTO `bay12`.`traitorlogs` (`CKey`, `Objective`, `Succeeded`, `Spawned`, `Occupation`, `PlayerCount`) VALUES ('[info.ckey]', '[info.starting_objective]', '[traitorwin]', '[dd_list2text(info.spawnlist, ";")]', '[info.starting_occupation]', '[info.starting_player_count]')")

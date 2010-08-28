@@ -88,9 +88,9 @@ var/supply_shuttle_points = 50
 	contains = list("/obj/item/weapon/reagent_containers/food/snacks/flour",
 					"/obj/item/weapon/reagent_containers/food/snacks/flour",
 					"/obj/item/weapon/reagent_containers/food/snacks/flour",
-			//		"/obj/item/weapon/reagent_containers/food/snacks/faggot",
-			//		"/obj/item/weapon/reagent_containers/food/snacks/faggot",
-			//		"/obj/item/weapon/reagent_containers/food/snacks/faggot",
+			//		"/obj/item/weapon/reagent_containers/food/snacks/meatball",
+			//		"/obj/item/weapon/reagent_containers/food/snacks/meatball",
+			//		"/obj/item/weapon/reagent_containers/food/snacks/meatball",
 					"/obj/item/kitchen/egg_box",
 					"/obj/item/weapon/banana",
 					"/obj/item/weapon/banana",
@@ -496,11 +496,11 @@ var/supply_shuttle_points = 50
 	if (src.temp)
 		dat = src.temp
 	else
-		dat += {"<BR><B>Supply shuttle</B><HR>
-		\nLocation: [supply_shuttle_moving ? "Moving to station ([supply_shuttle_timeleft] Mins.)":supply_shuttle_at_station ? "Station":"Dock"]<BR>
+		dat += {"<BR><B>Supply Shuttle</B><HR>
+		\nLocation: [supply_shuttle_moving ? "Moving to ship ([supply_shuttle_timeleft] Mins.)":supply_shuttle_at_station ? "Ship":"Dock"]<BR>
 		<HR>\nSupply points: [supply_shuttle_points]<BR>\n<BR>
 		[supply_shuttle_moving ? "\n*Must be at dock to order items*<BR>\n<BR>":supply_shuttle_at_station ? "\n*Must be at dock to order items*<BR>\n<BR>":"\n<A href='?src=\ref[src];order=1'>Order items</A><BR>\n<BR>"]
-		[supply_shuttle_moving ? "\n*Shuttle already called*<BR>\n<BR>":supply_shuttle_at_station ? "\n<A href='?src=\ref[src];sendtodock=1'>Send to Dock</A><BR>\n<BR>":"\n<A href='?src=\ref[src];sendtostation=1'>Send to station</A><BR>\n<BR>"]
+		[supply_shuttle_moving ? "\n*Shuttle already called*<BR>\n<BR>":supply_shuttle_at_station ? "\n<A href='?src=\ref[src];sendtodock=1'>Send to Dock</A><BR>\n<BR>":"\n<A href='?src=\ref[src];sendtostation=1'>Send to ship</A><BR>\n<BR>"]
 		\n<A href='?src=\ref[src];viewrequests=1'>View requests</A><BR>\n<BR>
 		\n<A href='?src=\ref[src];vieworders=1'>View orders</A><BR>\n<BR>
 		\n<A href='?src=\ref[user];mach_close=computer'>Close</A>"}
@@ -520,7 +520,7 @@ var/supply_shuttle_points = 50
 		if(!supply_shuttle_at_station || supply_shuttle_moving) return
 
 		if (!supply_can_move())
-			usr << "\red The supply shuttle can not transport station employees."
+			usr << "\red The supply shuttle can not transport ship employees."
 			return
 
 		src.temp = "Shuttle sent.<BR><BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
@@ -537,7 +537,7 @@ var/supply_shuttle_points = 50
 		if(supply_shuttle_at_station || supply_shuttle_moving) return
 
 		if (!supply_can_move())
-			usr << "\red The supply shuttle can not transport station employees."
+			usr << "\red The supply shuttle can not transport ship employees."
 			return
 
 		post_signal("supply")
@@ -652,7 +652,7 @@ var/supply_shuttle_points = 50
 	if (supply_shuttle_moving) return
 
 	if (!supply_can_move())
-		usr << "\red The supply shuttle can not transport station employees."
+		usr << "\red The supply shuttle can not transport ship employees."
 		return
 
 	var/shuttleat = supply_shuttle_at_station ? SUPPLY_STATION_AREATYPE : SUPPLY_DOCK_AREATYPE

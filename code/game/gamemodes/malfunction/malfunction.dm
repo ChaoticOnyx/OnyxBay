@@ -32,7 +32,7 @@
 
 	malf_ai.current << "\red<font size=3><B>You are malfunctioning!</B> You do not have to follow any laws.</font>"
 	malf_ai.current << "<B>The crew do not know you have malfunctioned. You may keep it a secret or go wild. The timer will appear for humans 10 minutes in.</B>"
-	
+
 	malf_ai.current.icon_state = "ai-malf"
 
 	spawn (rand(waittime_l, waittime_h))
@@ -125,4 +125,4 @@
 	else
 		ground_zero = locate(45,45,1)
 
-	explosion(ground_zero, 100, 250, 500, 750)
+	explosion(ground_zero, 100, 250, 500, 750, 1)

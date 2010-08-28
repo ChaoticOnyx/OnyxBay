@@ -11,4 +11,10 @@
 	new /obj/item/weapon/reagent_containers/food/drinks/beer( src )
 	new /obj/item/weapon/reagent_containers/food/drinks/beer( src )
 	new /obj/item/weapon/reagent_containers/food/drinks/beer( src )
+	new /obj/item/weapon/reagent_containers/food/drinks/vodka( src )
+	new /obj/item/weapon/reagent_containers/food/drinks/vodka( src )
+	new /obj/item/weapon/reagent_containers/food/drinks/vodka( src )
+	new /obj/item/weapon/reagent_containers/food/drinks/vodka( src )
+	new /obj/item/weapon/reagent_containers/food/drinks/dwine( src )
+	new /obj/item/weapon/reagent_containers/food/drinks/dwine( src )
 	return

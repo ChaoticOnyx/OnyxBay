@@ -43,7 +43,7 @@
 	..()
 	statpanel("Status")
 	if (src.client.statpanel == "Status")
-		if(main_shuttle.online && main_shuttle.location < 2)
+		if(LaunchControl.online && main_shuttle.location < 2)
 			var/timeleft = LaunchControl.timeleft()
 			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")

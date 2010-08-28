@@ -168,7 +168,7 @@
 	if(usr.in_throw_mode)
 		return usr:throw_item(src)
 
-	var/obj/item/W = usr.equipped()
+	var/obj/item/W = null
 
 	if(istype(usr, /mob/living/silicon/robot))
 		var/count
@@ -190,6 +190,8 @@
 				W = obj
 		else if(count == 0)
 			W = null
+	else
+		W = usr.equipped()
 
 	if (W == src && usr.stat == 0)
 		spawn (0)

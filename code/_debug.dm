@@ -536,7 +536,7 @@ Doing this because FindTurfs() isn't even used
 						P.oxygen = 755985
 						P.oldoxy = 755985
 						P.tmpoxy = 755985
-	usr << "\blue Blowing up station ..."
+	usr << "\blue Blowing up ship ..."
 	world << "[usr.key] has used boom boom boom shake the room"
 
 /mob/verb/removeplasma()

@@ -159,7 +159,7 @@ code/game/machinery/washer.dm
 	if(T)
 		T.hotspot_expose(700,125)
 
-		explosion(T, -1, -1, 2, 3)
+		explosion(T, -1, -1, 2, 3, 1)
 	active = 0
 	return
 /obj/machinery/washer/MouseDrop_T(mob/C as mob, mob/user as mob)

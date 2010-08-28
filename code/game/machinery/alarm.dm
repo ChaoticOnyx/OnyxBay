@@ -110,8 +110,8 @@
 	else
 		stat |= NOPOWER
 
-/obj/machinery/alarm/Click()
-	return attack_hand(usr)
+///obj/machinery/alarm/Click()
+//	return attack_hand(usr)
 
 /obj/machinery/alarm/attack_hand(mob/user as mob)
 	if(!(user in range(3,src)))
