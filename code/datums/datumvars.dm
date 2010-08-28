@@ -106,7 +106,7 @@ client
 			var/list/L = value
 			html += "[name] = /list ([L.len])"
 
-			if (L.len > 0 && !(name == "underlays" || name == "overlays" || name == "vars" || L.len > 500))
+			if (L.len > 0 && !(name == "underlays" || name == "overlayss" || name == "vars" || L.len > 500))
 				// not sure if this is completely right...
 				if (0) // (L.vars.len > 0)
 					html += "<ol>"

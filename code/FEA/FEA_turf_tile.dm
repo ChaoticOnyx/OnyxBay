@@ -295,12 +295,12 @@ turf
 				if(CanPass(null, get_step(src,direction), 0, 0))
 					air_check_directions |= direction
 
-		//	if(ticker) overlays += 'debug_update.dmi'
+		//	if(ticker) overlayss += 'debug_update.dmi'
 
 			if(zone)
 				for(var/direction in cardinal)
 					if(air_check_directions&direction)
-					//	if(ticker) overlays += image('turf_analysis.dmi',src,"arrow",dir=direction)
+					//	if(ticker) overlayss += image('turf_analysis.dmi',src,"arrow",dir=direction)
 						var/turf/simulated/T = get_step(src,direction)
 
 						//See if actually a border
@@ -321,7 +321,7 @@ turf
 								if(!(T.zone in zone.connections))
 									zone.Connect(src,T)
 					else
-					//	if(ticker) overlays += image('turf_analysis.dmi',src,"red_arrow",dir=direction)
+					//	if(ticker) overlayss += image('turf_analysis.dmi',src,"red_arrow",dir=direction)
 						var/turf/simulated/T = get_step(src,direction)
 						if(T)
 							//if((T in zone.members) && !(T.HasDoor() && !T.blocks_air))
@@ -341,7 +341,7 @@ turf
 				group_border = 0
 				for(var/direction in cardinal)
 					if(air_check_directions&direction)
-						//(ticker) overlays += image('turf_analysis.dmi',src,"arrow",dir=direction)
+						//(ticker) overlayss += image('turf_analysis.dmi',src,"arrow",dir=direction)
 						var/turf/simulated/T = get_step(src,direction)
 
 						//See if actually a border
@@ -381,7 +381,7 @@ turf
 								if(!(T.zone in zone.connections))
 									zone.Connect(src,T)
 					else
-						//if(ticker) overlays += image('turf_analysis.dmi',src,"red_arrow",dir=direction)
+						//if(ticker) overlayss += image('turf_analysis.dmi',src,"red_arrow",dir=direction)
 						if(zone)
 							var/turf/simulated/T = get_step_3d(src,direction)
 							if(T)
@@ -418,7 +418,7 @@ turf
 			else
 				processing = 0
 				//if(zone)
-					//overlays += ad_process
+					//overlayss += ad_process
 
 		process_cell()
 			var/turf/simulated/list/possible_fire_spreads = list()

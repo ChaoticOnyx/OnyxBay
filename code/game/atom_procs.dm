@@ -356,25 +356,25 @@
 
 
 
-/atom/proc/addoverlay(var/overlay)
-	src.overlaylist += overlay
-	src.overlays += overlay
+/atom/proc/addoverlay(var/overlays)
+	src.overlayslist += overlays
+	src.overlays += overlays
 
-/atom/proc/removeoverlay(var/overlay)
-	if (istype(overlay, /image)) // This is needed due to the way overlays work. The overlay being passed to this proc is in most instances not the same object, so we need to compare their attributes
-		var/image/I = overlay
-		for (var/image/L in src.overlaylist)
+/atom/proc/removeoverlay(var/overlays)
+	if (istype(overlays, /image)) // This is needed due to the way overlayss work. The overlays being passed to this proc is in most instances not the same object, so we need to compare their attributes
+		var/image/I = overlays
+		for (var/image/L in src.overlayslist)
 			if (L.icon == I.icon && L.icon_state == I.icon_state && L.dir == I.dir && L.layer == I.layer)
-				src.overlaylist -= L
+				src.overlayslist -= L
 				break
 	else
-		src.overlaylist -= overlay
-	src.overlays -= overlay // Seems that the overlays list is special and is able to remove them. Suspect it does similar to the if block above.
+		src.overlayslist -= overlays
+	src.overlays -= overlays // Seems that the overlayss list is special and is able to remove them. Suspect it does similar to the if block above.
 
 /atom/proc/clearoverlays()
-	src.overlaylist = new/list()
+	src.overlayslist = new/list()
 	src.overlays = null
 
-/atom/proc/addalloverlays(var/list/overlays)
-	src.overlaylist = overlays
-	src.overlays = overlays
+/atom/proc/addalloverlays(var/list/overlayss)
+	src.overlayslist = overlayss
+	src.overlays = overlayss

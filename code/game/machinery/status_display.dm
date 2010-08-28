@@ -88,12 +88,9 @@
 			return
 
 		if(mode==1)	// shuttle timer
-			if(main_shuttle.online)
+			if(LaunchControl.online)
 				var/displayloc
-				if(main_shuttle.location == 1)
-					displayloc = "ETD "
-				else
-					displayloc = "ETA "
+				displayloc = "ETL "
 
 				var/displaytime = get_shuttle_timer()
 				if(lentext(displaytime) > 5)
@@ -198,7 +195,7 @@
 	// return shuttle timer as text
 
 	proc/get_shuttle_timer()
-		var/timeleft = main_shuttle.timeleft()
+		var/timeleft = LaunchControl.timeleft()
 		if(timeleft)
 			return "[add_zero(num2text((timeleft / 60) % 60),2)]~[add_zero(num2text(timeleft % 60), 2)]"
 			// note ~ translates into a blinking :

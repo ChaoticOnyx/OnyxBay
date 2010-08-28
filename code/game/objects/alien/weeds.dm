@@ -1,7 +1,36 @@
 /obj/alien/weeds/New()
 	if(istype(src.loc, /turf/space))
 		del(src)
-		return
+	var/obj/cable/C = locate() in src.loc
+	if(C)
+		del(C)
+	var/obj/machinery/light/L = locate() in src.loc
+	if(L)
+		L.broken()
+	updateicon()
+/obj/alien/weeds/proc/updateicon()
+	var/turf/T = src.loc
+	var/obj/alien/weeds/north = locate() in T.north
+	var/obj/alien/weeds/west = locate() in T.west
+	var/obj/alien/weeds/east = locate() in T.east
+	var/obj/alien/weeds/south = locate() in T.south
+	src.overlays = null
+	if(north)
+		world << "Found North"
+		overlays += "weeds1n"
+		north.overlays += "weeds1s"
+	if(south)
+		world << "found south"
+		overlays += "weeds1s"
+		south.overlays += "weeds1n"
+	if(west)
+		world << "Found West"
+		overlays += "weeds1w"
+		west.overlays += "weeds1e"
+	if(east)
+		world << "Found East"
+		overlays += "weeds1e"
+		east.overlays += "weeds1w"
 
 /obj/alien/weeds/proc/Life()
 	var/turf/U = src.loc
@@ -34,8 +63,11 @@ Alien plants should do something if theres a lot of poison
 		var/cont = 0
 		for(var/obj/O in T)
 			if(O.density)
-				cont = 1
-				break
+				if(istype(O,/obj/machinery/door))
+					break
+				else
+					cont = 1
+					break
 
 		if(cont)
 			continue
@@ -45,13 +77,31 @@ Alien plants should do something if theres a lot of poison
 
 		if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
 			B.loc = T
+			updateicon()
 			spawn(80)
 				if(B)
 					B.Life()
 			// open cell, so expand
 		else
+			var/obj/machinery/door/airlock/D = locate() in T
+			if(D)
+				world << "ATTEMPTING TO OPEN DOOR"
+				if(D.density)
+					D.forcedopen()
+					D.locked = 1
+				else
+					world << "door already open"
+				sleep(50)
+				world << "ATTEMPTING TO OPEN DOOR"
+				if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
+					B.loc = T
+					updateicon()
+					spawn(80)
+					if(B)
+						B.Life()
+				else
+					del(B)
 			del(B)
-
 /obj/alien/weeds/ex_act(severity)
 	switch(severity)
 		if(1.0)

@@ -128,7 +128,7 @@
 		intact = 0
 		icon_state = "open"
 		pathweight = 100000 //Seriously, don't try and path over this one numbnuts
-		var/icon/darkoverlay = null
+		var/icon/darkoverlays = null
 		var/turf/floorbelow
 		floorstrength = 1
 
@@ -186,7 +186,7 @@
 
 
 		proc
-			update() //Update the overlays to make the openspace turf show what's down a level
+			update() //Update the overlayss to make the openspace turf show what's down a level
 
 				src.clearoverlays()
 				src.addoverlay(floorbelow)

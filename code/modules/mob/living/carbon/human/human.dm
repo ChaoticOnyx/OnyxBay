@@ -157,7 +157,7 @@
 		if(ticker.mode:malf_mode_declared)
 			stat(null, "Time left: [ ticker.mode:AI_win_timeleft]")
 //	if(main_shuttle.online && main_shuttle.location < 2)
-//		var/timeleft = main_shuttle.timeleft()
+//		var/timeleft = LaunchControl.timeleft()
 //		if (timeleft)
 //			stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 

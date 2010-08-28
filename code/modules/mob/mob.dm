@@ -1157,7 +1157,7 @@ mob/verb/turnwest()
 	set name = "Add Note"
 
 	msg = copytext(msg, 1, MAX_MESSAGE_LEN)
-	msg = sanitize(msg)
+	//msg = sanitize(msg)
 
 	mind.store_memory(msg)
 
