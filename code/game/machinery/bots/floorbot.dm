@@ -171,7 +171,7 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 				break
 		if((!src.target || src.target == null ) && src.improvefloors)
 			for (var/turf/simulated/floor/F in view(7,src))
-				if(!(F in floorbottargets) && F != src.oldtarget && F.icon_state == "Floor1" && !(istype(F, /turf/simulated/floor/plating)))
+				if(!(F in floorbottargets) && F != src.oldtarget && F.broken && !(istype(F, /turf/simulated/floor/plating)))
 					src.oldtarget = F
 					src.target = F
 					break
@@ -242,11 +242,16 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 			src.anchored = 0
 			src.target = null
 	else
+		var/turf/simulated/floor/L = src.loc
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\red [src] begins to improve the floor."), 1)
 		src.repairing = 1
 		spawn(50)
-			src.loc.icon_state = "floor"
+			if (L.icon_old)
+				L.icon_state = L.icon_old
+			else
+				L.icon_state = "floor"
+			L.broken = 0
 			src.repairing = 0
 			src.amount -= 1
 			src.updateicon()
