@@ -10,6 +10,8 @@
 	var/const/ALERT_TEMPERATURE_U = T20C+10
 	var/const/UNSAFE_TEMPERATURE_L = T20C-20
 	var/const/UNSAFE_TEMPERATURE_U = T20C+20
+	var/safe_old = 2
+
 /obj/machinery/alarm/New()
 	..()
 
@@ -27,6 +29,7 @@
 		return
 
 	var/turf/location = src.loc
+	var/area/A = get_area(location)
 	var/safe = 2
 	var/alert_info = 0
 
@@ -81,10 +84,13 @@
 	if(safe == 2) src.skipprocess = 1
 	else if(alarm_frequency)
 		post_alert(safe, alert_info)
-	if(!safe)
-		air_doors_close()
-	else
-		air_doors_open()
+	if (safe != safe_old)
+		world << "Here [src.tag]"
+		if(!safe && !A.air_doors_activated)
+			air_doors_close()
+		else if (safe && A.air_doors_activated)
+			air_doors_open()
+	safe_old = safe
 	updateUsrDialog()
 	return
 
