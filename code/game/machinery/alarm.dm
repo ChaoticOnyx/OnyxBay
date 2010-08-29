@@ -79,13 +79,12 @@
 		alert_info = 5
 		safe = 0
 
-	src.icon_state = "alarm[!safe]"
 
 	if(safe == 2) src.skipprocess = 1
 	else if(alarm_frequency)
 		post_alert(safe, alert_info)
 	if (safe != safe_old)
-		world << "Here [src.tag]"
+		src.icon_state = "alarm[!safe]"
 		if(!safe && !A.air_doors_activated)
 			air_doors_close()
 		else if (safe && A.air_doors_activated)
