@@ -83,7 +83,7 @@
 	if(safe == 2) src.skipprocess = 1
 	else if(alarm_frequency)
 		post_alert(safe, alert_info)
-	if (safe != safe_old)
+	if (safe != safe_old || !A.air_doors_activated)
 		src.icon_state = "alarm[!safe]"
 		if(!safe && !A.air_doors_activated)
 			air_doors_close()
