@@ -110,7 +110,7 @@
 		if("Chaplain")
 			return list(access_morgue, access_chapel_office, access_crematorium, access_maint_tunnels)
 		if("Detective")
-			return list(access_security, access_forensics_lockers, access_morgue, access_maint_tunnels, access_security_passthrough)
+			return list(access_security, access_forensics_lockers, access_morgue, access_maint_tunnels, access_security_passthrough, access_medical)
 		if("Medical Doctor")
 			return list(access_medical, access_morgue, access_medlab, access_maint_tunnels, access_laboratories_doors)
 		if("Captain")
