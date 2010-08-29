@@ -455,7 +455,7 @@
 	var/capacity = 5e6
 	var/charge = 4e6
 	var/charging = 0
-	var/chargemode = 0
+	var/chargemode = 1
 	var/chargecount = 0
 	var/chargelevel = 30000
 	var/online = 1

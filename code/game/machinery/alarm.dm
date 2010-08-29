@@ -1,5 +1,20 @@
+/obj/machinery/alarm
+	var/const/ALERT_ATMOSPHERE_L = ONE_ATMOSPHERE*0.9
+	var/const/ALERT_ATMOSPHERE_U = ONE_ATMOSPHERE*1.1
+	var/const/UNSAFE_ATMOSPHERE_L = ONE_ATMOSPHERE*0.8
+	var/const/UNSAFE_ATMOSPHERE_U = ONE_ATMOSPHERE*1.2
+	var/const/ALERT_O2_L = MOLES_O2STANDARD*0.9
+	var/const/ALERT_O2_U = MOLES_O2STANDARD*1.1
+	var/const/UNSAFE_O2_L = MOLES_O2STANDARD*0.8
+	var/const/ALERT_TEMPERATURE_L = T20C-10
+	var/const/ALERT_TEMPERATURE_U = T20C+10
+	var/const/UNSAFE_TEMPERATURE_L = T20C-20
+	var/const/UNSAFE_TEMPERATURE_U = T20C+20
+	var/safe_old = 2
+
 /obj/machinery/alarm/New()
 	..()
+
 
 	if(!alarm_zone)
 		var/area/A = get_area(loc)
@@ -14,6 +29,7 @@
 		return
 
 	var/turf/location = src.loc
+	var/area/A = get_area(location)
 	var/safe = 2
 	var/alert_info = 0
 
@@ -30,24 +46,24 @@
 
 	var/environment_pressure = environment.return_pressure()
 
-	if((environment_pressure < ONE_ATMOSPHERE*0.90) || (environment_pressure > ONE_ATMOSPHERE*1.10))
+	if((environment_pressure < ALERT_ATMOSPHERE_L) || (environment_pressure > ALERT_ATMOSPHERE_U))
 		//Pressure sensor
 		alert_info = 1
-		if((environment_pressure < ONE_ATMOSPHERE*0.80) || (environment_pressure > ONE_ATMOSPHERE*1.20))
+		if((environment_pressure < UNSAFE_ATMOSPHERE_L) || (environment_pressure > UNSAFE_ATMOSPHERE_U))
 			safe = 0
 		else safe = 1
 
-	if(safe && ((environment.oxygen < MOLES_O2STANDARD*0.90) || (environment.oxygen > MOLES_O2STANDARD*1.10)))
+	if(safe && ((environment.oxygen < ALERT_O2_L) || (environment.oxygen > ALERT_O2_U)))
 		//Oxygen Levels Sensor
 		alert_info = 2
-		if(environment.oxygen < MOLES_O2STANDARD*0.80)
+		if(environment.oxygen < UNSAFE_O2_L)
 			safe = 0
 		else safe = 1
 
-	if(safe && ((environment.temperature < (T20C-10)) || (environment.temperature > (T20C+10))))
+	if(safe && ((environment.temperature < ALERT_TEMPERATURE_L) || (environment.temperature > ALERT_TEMPERATURE_U)))
 		//Temperature Sensor
 		alert_info = 3
-		if((environment.temperature < (T20C-20)) || (environment.temperature > (T20C+10)))
+		if((environment.temperature < UNSAFE_TEMPERATURE_L) || (environment.temperature > UNSAFE_TEMPERATURE_U))
 			safe = 0
 		else safe = 1
 
@@ -63,15 +79,17 @@
 		alert_info = 5
 		safe = 0
 
-	src.icon_state = "alarm[!safe]"
 
 	if(safe == 2) src.skipprocess = 1
 	else if(alarm_frequency)
 		post_alert(safe, alert_info)
-	if(!safe)
-		air_doors_close()
-	else
-		air_doors_open()
+	if (safe != safe_old || !A.air_doors_activated)
+		src.icon_state = "alarm[!safe]"
+		if(!safe && !A.air_doors_activated)
+			air_doors_close()
+		else if (safe && A.air_doors_activated)
+			air_doors_open()
+	safe_old = safe
 	updateUsrDialog()
 	return
 
