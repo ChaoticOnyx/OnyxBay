@@ -66,6 +66,6 @@ HOSTEDBY Topkasa
 #
 DB_SERVER pegasus.temporum.net
 DB_USER bay12dev
-DB_PASSWORD uSU2wKtSjHSHHuZq
+DB_PASSWORD U5ymBqte4QM6vEdG
 DB_DBNAME bay12dev
 DB_PORT 3306
