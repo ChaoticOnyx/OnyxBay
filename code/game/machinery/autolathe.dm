@@ -173,6 +173,7 @@
 
 /obj/machinery/autolathe/New()
 	..()
+	src.L += new /obj/item/weapon/cell(src)
 	src.L += new /obj/item/weapon/light/bulb(src)
 	src.L += new /obj/item/weapon/light/tube(src)
 	src.L += new /obj/item/weapon/screwdriver(src)
