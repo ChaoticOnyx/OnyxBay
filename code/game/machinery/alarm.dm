@@ -1,3 +1,15 @@
+#define ALERT_ATMOSPHERE_L ONE_ATMOSPHERE*0.9
+#define ALERT_ATMOSPHERE_U ONE_ATMOSPHERE*1.1
+#define UNSAFE_ATMOSPHERE_L ONE_ATMOSPHERE*0.8
+#define UNSAFE_ATMOSPHERE_U ONE_ATMOSPHERE*1.2
+#define ALERT_O2_L MOLES_O2STANDARD*0.9
+#define ALERT_O2_U MOLES_O2STANDARD*1.1
+#define UNSAFE_O2_L MOLES_O2STANDARD*0.8
+#define ALERT_TEMPERATURE_L T20C-10
+#define ALERT_TEMPERATURE_U T20C+10
+#define UNSAFE_TEMPERATURE_L T20C-20
+#define UNSAFE_TEMPERATURE_U T20C+20
+
 /obj/machinery/alarm/New()
 	..()
 
@@ -30,24 +42,24 @@
 
 	var/environment_pressure = environment.return_pressure()
 
-	if((environment_pressure < ONE_ATMOSPHERE*0.90) || (environment_pressure > ONE_ATMOSPHERE*1.10))
+	if((environment_pressure < ALERT_ATMOSPHERE_L) || (environment_pressure > ALERT_ATMOSPHERE_U))
 		//Pressure sensor
 		alert_info = 1
-		if((environment_pressure < ONE_ATMOSPHERE*0.80) || (environment_pressure > ONE_ATMOSPHERE*1.20))
+		if((environment_pressure < UNSAFE_ATMOSPHERE_L) || (environment_pressure > UNSAFE_ATMOSPHERE_U))
 			safe = 0
 		else safe = 1
 
-	if(safe && ((environment.oxygen < MOLES_O2STANDARD*0.90) || (environment.oxygen > MOLES_O2STANDARD*1.10)))
+	if(safe && ((environment.oxygen < ALERT_O2_L) || (environment.oxygen > ALERT_O2_U)))
 		//Oxygen Levels Sensor
 		alert_info = 2
-		if(environment.oxygen < MOLES_O2STANDARD*0.80)
+		if(environment.oxygen < UNSAFE_O2_L)
 			safe = 0
 		else safe = 1
 
-	if(safe && ((environment.temperature < (T20C-10)) || (environment.temperature > (T20C+10))))
+	if(safe && ((environment.temperature < ALERT_TEMPERATURE_L) || (environment.temperature > ALERT_TEMPERATURE_U)))
 		//Temperature Sensor
 		alert_info = 3
-		if((environment.temperature < (T20C-20)) || (environment.temperature > (T20C+10)))
+		if((environment.temperature < UNSAFE_TEMPERATURE_L) || (environment.temperature > UNSAFE_TEMPERATURE_U))
 			safe = 0
 		else safe = 1
 
