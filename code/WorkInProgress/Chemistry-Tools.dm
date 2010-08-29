@@ -391,6 +391,7 @@
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message(text("\red [] has been splashed with something by []!", target, user), 1)
 			src.reagents.reaction(target, TOUCH)
+			message_admins("[target] has been splashed with a container filled with [src.reagents.get_master_reagent_name()] by [user]")
 			spawn(5) src.reagents.clear_reagents()
 			return
 		else if(istype(target, /obj/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
@@ -460,6 +461,7 @@
 			if(ismob(target))
 				for(var/mob/O in viewers(world.view, user))
 					O.show_message(text("\red <B>[] drips something onto []!</B>", user, target), 1)
+					message_admins("[target] drips something onto  filled with [src.reagents.get_master_reagent_name()] by [user]")
 				src.reagents.reaction(target, TOUCH)
 
 			spawn(5) src.reagents.trans_to(target, 5)

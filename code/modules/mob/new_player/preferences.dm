@@ -27,7 +27,7 @@ datum/preferences
 	var/r_eyes = 0.0
 	var/g_eyes = 0.0
 	var/b_eyes = 0.0
-
+	var/curslot = 0
 	var/icon/preview_icon = null
 
 	New()
@@ -219,14 +219,48 @@ datum/preferences
 		dat += "<hr>"
 
 		if (!IsGuestKey(user.key))
-			dat += "<a href='byond://?src=\ref[user];preferences=1;load=1'>Load Setup</a><br>"
-			dat += "<a href='byond://?src=\ref[user];preferences=1;save=1'>Save Setup</a><br>"
+/*			var/list/slot = list()
+			var/DBQuery/query = dbcon.NewQuery("SELECT `slot` FROM `players` WHERE ckey='[usr.ckey]'")
+			if(!query.Execute())
+				usr << "ERROR"
+			while(query.NextRow())
+				var/list/row = query.GetRowData()
+				slot += row["slot"]
 
+			for(var/T in slot)
+				dat += "<a href='byond://?src=\ref[user];preferences=1;loadslot=[T]'>Load Slot [T]</a><br>"
+				*/
+			if(!curslot)
+				dat += "<a href='byond://?src=\ref[user];preferences=1;saveslot=1'>Save Slot 1</a><br>"
+			else
+				dat += "<a href='byond://?src=\ref[user];preferences=1;saveslot=[curslot]'>Save Slot [curslot]</a><br>"
+			dat += "<a href='byond://?src=\ref[user];preferences=1;loadslot2=1'>Load</a><br>"
+		dat += "<a href='byond://?src=\ref[user];preferences=1;createslot=1'>Create New Slot</a><br>"
 		dat += "<a href='byond://?src=\ref[user];preferences=1;reset_all=1'>Reset Setup</a><br>"
 		dat += "</body></html>"
 
 		user << browse(dat, "window=preferences;size=300x640")
+	proc/loadsave(mob/user)
+		var/dat = "<body>"
+		dat += "<tt><center>"
+		var/list/slot = list()
+		var/list/slotname = list()
+		var/DBQuery/query = dbcon.NewQuery("SELECT `slot`,`slotname` FROM `players` WHERE ckey='[usr.ckey]'")
+		if(!query.Execute())
+			usr << "ERROR"
+		while(query.NextRow())
+			var/list/row = query.GetRowData()
+			slot += row["slot"]
+			var/T = row["slot"]
+			var/K = row["slotname"]
+			slotname += row["slotname"]
+			dat += "<a href='byond://?src=\ref[user];preferences=1;loadslot=[T]'>Load Slot [T]([K]) </a><a href='byond://?src=\ref[user];preferences=1;removeslot=[T]'>(R)</a><br><br>"
 
+		dat += "<a href='byond://?src=\ref[user];preferences=1;loadslot=CLOSE'>Close</a><br>"
+		dat += "</center></tt>"
+		user << browse(dat, "window=saves;size=300x640")
+	proc/closesave(mob/user)
+		user << browse(null, "window=saves;size=300x640")
 	proc/SetChoices(mob/user, occ=1)
 		var/HTML = "<body>"
 		HTML += "<tt><center>"
@@ -502,18 +536,63 @@ datum/preferences
 			src.be_random_name = !src.be_random_name
 
 		if(!IsGuestKey(user.key))
-			if(link_tags["save"])
-				var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`, `real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `underwear`,`name_is_always_random`) VALUES ('[user.ckey]', '[src.real_name]', '[src.gender]', '[src.age]', '[occupation1]','[occupation2]', '[occupation3]', '[src.r_hair]', '[src.g_hair]', '[src.b_hair]', '[src.r_facial]', '[src.g_facial]', '[src.b_facial]', '[src.s_tone]', '[src.h_style]', '[src.f_style]', '[src.r_eyes]', '[src.g_eyes]', '[src.b_eyes]', '[src.b_type]', '[src.be_syndicate]', '[src.underwear]','[src.be_random_name]');")
+			if(link_tags["saveslot"])
+				var/slot = link_tags["saveslot"]
+				var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `underwear`,`name_is_always_random`) VALUES ('[user.ckey]','[slot]' ,'[src.real_name]', '[src.gender]', '[src.age]', '[occupation1]','[occupation2]', '[occupation3]', '[src.r_hair]', '[src.g_hair]', '[src.b_hair]', '[src.r_facial]', '[src.g_facial]', '[src.b_facial]', '[src.s_tone]', '[src.h_style]', '[src.f_style]', '[src.r_eyes]', '[src.g_eyes]', '[src.b_eyes]', '[src.b_type]', '[src.be_syndicate]', '[src.underwear]','[src.be_random_name]');")
 				if(!query.Execute())
 					usr << query.ErrorMsg()
 					usr << "Report this."
 				else
 					usr << "Saved"
 
-			else if(link_tags["load"])
-				if (!src.savefile_load(user, 0))
+			else if(link_tags["loadslot"])
+				var/slot = link_tags["loadslot"]
+				if(slot == "CLOSE")
+					closesave(user)
+					return
+				if(!src.savefile_load(user, 0,slot))
 					alert(user, "You do not have a savefile.")
-
+				else
+					curslot = slot
+					loadsave(user)
+		if(link_tags["removeslot"])
+			var/slot = link_tags["removeslot"]
+			if(!slot)
+				return
+			var/DBQuery/query = dbcon.NewQuery("DELETE FROM `players`WHERE ckey='[usr.ckey]' AND slot='[slot]'")
+			if(!query.Execute())
+				usr << query.ErrorMsg()
+				usr << "Report this."
+			else
+				usr << "Slot [slot] Deleted."
+				loadsave(usr)
+		if(link_tags["loadslot2"])
+			loadsave(user)
+		if(link_tags["createslot"])
+			var/list/slot = list()
+			var/DBQuery/querys = dbcon.NewQuery("SELECT `slot` FROM `players` WHERE ckey='[usr.ckey]'")
+			if(!querys.Execute())
+				usr << "ERROR"
+			while(querys.NextRow())
+				var/list/row = querys.GetRowData()
+				slot += row["slot"]
+			var/count = slot.len
+			count++
+			if(count > 10)
+				usr << "You have reached the character limit."
+				return
+			var/slotname = input(usr,"Choose a name for your slot","Name","Default")
+			var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`slotname`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `underwear`,`name_is_always_random`) VALUES ('[user.ckey]','[count]','[slotname]' ,'New Char', 'Male', '30', 'No Preference','No Preference', 'No Preference', '0', '0', '0', '0', '0', '0', '0', 'Short Hair', 'Shaved', '0', '0', '0', 'A+', '1', '1','0');")
+			if(!query.Execute())
+				usr << query.ErrorMsg()
+				usr << "Report this."
+			else
+				usr << "Saved"
+			if(!src.savefile_load(user, 0,count))
+				alert(user, "You do not have a savefile.")
+			else
+				curslot = count
+				closesave(user)
 		if (link_tags["reset_all"])
 			gender = MALE
 			randomize_name()

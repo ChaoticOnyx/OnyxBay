@@ -39,10 +39,10 @@ datum/preferences/proc/savefile_path(mob/user)
 // returns 1 if loaded (or file was incompatible)
 // returns 0 if savefile did not exist
 */
-datum/preferences/proc/savefile_load(mob/user, var/silent = 1)
+datum/preferences/proc/savefile_load(mob/user, var/silent = 1,var/slot = 1)
 	if (IsGuestKey(user.key))
 		return 0
-	var/DBQuery/xquery = dbcon.NewQuery("SELECT * FROM `players` WHERE ckey='[user.ckey]'")
+	var/DBQuery/xquery = dbcon.NewQuery("SELECT * FROM `players` WHERE ckey='[user.ckey]' AND slot='[slot]'")
 	if(xquery.Execute())
 		while(xquery.NextRow())
 			var/list/column_data = xquery.GetRowData()

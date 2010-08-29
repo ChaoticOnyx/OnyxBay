@@ -127,6 +127,7 @@ proc/Airflow(zone/A,zone/B,n)
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
 				if(istype(src, /mob/living/carbon/human))
+					if(src:buckled) continue
 					if(src:wear_suit)
 						if(src:wear_suit.airflowprot) continue
 						else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
@@ -161,9 +162,14 @@ proc/Airflow(zone/A,zone/B,n)
 			if(M.anchored && !ismob(M)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
-				if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+				if(istype(src, /mob/living/carbon/human))
+					if(src:buckled) continue
+					if(src:wear_suit)
+						if(src:wear_suit.airflowprot) continue
+						else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+						M:weakened = max(M:weakened,5)
+				else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
 				M:weakened = max(M:weakened,5)
-
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
 			if(istype(M,/obj/item))
 				switch(M:w_class)
@@ -208,7 +214,13 @@ proc/AirflowSpace(zone/A)
 			//if(istype(M,/mob/living/silicon/ai)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
-				if(M:weakened < 1) M << "\red The sudden rush of air knocks you over!"
+				if(istype(src, /mob/living/carbon/human))
+					if(src:buckled) continue
+					if(src:wear_suit)
+						if(src:wear_suit.airflowprot) continue
+						else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+						M:weakened = max(M:weakened,5)
+				else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
 				M:weakened = max(M:weakened,5)
 
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
@@ -323,8 +335,10 @@ atom/movable
 		if(ismob(src))
 			if(src:nodamage) return
 			if(istype(src, /mob/living/carbon/human))
-				if(src:wear_suit)
-					if(src:wear_suit.airflowprot) return
+				if(istype(src, /mob/living/carbon/human))
+					if(src:buckled) return
+					if(src:wear_suit)
+						if(src:wear_suit.airflowprot) return
 			src << "\red You are sucked away by airflow!"
 		airflow_speed = min(round(n),9)
 		//world << "[src]'s headed to [airflow_dest] at [n] times the SPEED OF LIGHT!"
@@ -369,8 +383,10 @@ atom/movable
 		if(ismob(src))
 			if(src:nodamage) return
 			if(istype(src, /mob/living/carbon/human))
-				if(src:wear_suit)
-					if(src:wear_suit.airflowprot) return
+				if(istype(src, /mob/living/carbon/human))
+					if(src:buckled) return
+					if(src:wear_suit)
+						if(src:wear_suit.airflowprot) return
 			src << "\red You are pushed away by airflow!"
 		airflow_speed = min(round(n),9)
 		//airflow_dest = get_step(src,Get_Dir(airflow_dest,src))
