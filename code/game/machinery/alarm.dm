@@ -10,8 +10,6 @@
 	var/const/ALERT_TEMPERATURE_U = T20C+10
 	var/const/UNSAFE_TEMPERATURE_L = T20C-20
 	var/const/UNSAFE_TEMPERATURE_U = T20C+20
-
-	var/safe_old
 /obj/machinery/alarm/New()
 	..()
 
@@ -83,12 +81,10 @@
 	if(safe == 2) src.skipprocess = 1
 	else if(alarm_frequency)
 		post_alert(safe, alert_info)
-	if (safe != safe_old)
-		if(!safe)
-			air_doors_close()
-		else
-			air_doors_open()
-	safe_old = safe
+	if(!safe)
+		air_doors_close()
+	else
+		air_doors_open()
 	updateUsrDialog()
 	return
 
