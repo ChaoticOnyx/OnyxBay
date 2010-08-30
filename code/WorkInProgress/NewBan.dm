@@ -89,8 +89,8 @@ var/savefile/Banlist
 	if (temp)
 		UpdateTime()
 		bantimestamp = CMinutes + minutes
-//	var/reason1 = dbcon.Quote(reason)
-	var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `bans` (`ckey`,`computerid`,`reason`,`bannedby`,`temp`,`minute`) VALUES ('[ckey]','[computerid]','[reason]','[bannedby]','[temp]','[bantimestamp]')")
+	var/reason1 = dbcon.Quote(reason)
+	var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `bans` (`ckey`,`computerid`,`reason`,`bannedby`,`temp`,`minute`) VALUES ('[ckey]','[computerid]',[reason1],'[bannedby]','[temp]','[bantimestamp]')")
 	if(!query.Execute())
 		message_admins("MYSQL Error ban failed")
 		message_admins(query.ErrorMsg())
