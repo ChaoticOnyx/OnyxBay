@@ -105,7 +105,9 @@
 	for(var/obj/O in src)
 		if(O.level == 1)
 			O.hide(0)
-
+/turf/proc/ReplaceWithOpen()
+	if(!icon_old) icon_old = icon_state
+	new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
 /turf/proc/ReplaceWithFloor()
 	if(!icon_old) icon_old = icon_state
 	var/turf/simulated/floor/W
@@ -200,13 +202,9 @@ turf/simulated/wall/bullet_act(flag,dir)
 
 /turf/proc/ReplaceWithLattice()
 	if(!icon_old) icon_old = icon_state
-	var/old_icon = icon_old
-	var/old_dir = dir
-	var/turf/space/S = new /turf/space( locate(src.x, src.y, src.z) )
-	S.dir = old_dir
-	S.icon_old = old_icon
+	ReplaceWithOpen()
 	new /obj/lattice( locate(src.x, src.y, src.z) )
-	return S
+
 
 /turf/proc/ReplaceWithWall()
 	var/turf/simulated/wall/S = new /turf/simulated/wall( locate(src.x, src.y, src.z) )
@@ -414,7 +412,7 @@ turf/simulated/wall/bullet_act(flag,dir)
 	switch(severity)
 		if(1.0)
 			//SN src = null
-			src.ReplaceWithSpace()
+			src.ReplaceWithOpen() //Used to replace with space
 			del(src)
 			return
 		if(2.0)
@@ -632,14 +630,14 @@ turf/simulated/wall/bullet_act(flag,dir)
 	//set src in oview(1)
 	switch(severity)
 		if(1.0)
-			src.ReplaceWithSpace()
+			src.ReplaceWithOpen() //used to be space
 		if(2.0)
 			switch(pick(1,2;75,3))
 				if (1)
 					src.ReplaceWithLattice()
 					if(prob(33)) new /obj/item/weapon/sheet/metal(src)
 				if(2)
-					src.ReplaceWithSpace()
+					src.ReplaceWithOpen()
 				if(3)
 					if(prob(80))
 						src.break_tile_to_plating()

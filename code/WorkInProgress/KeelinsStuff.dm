@@ -636,7 +636,7 @@
 						fromupdate += ttl
 
 					else
-						T.ReplaceWithSpace()
+						T.ReplaceWithOpen()
 
 					refined_src -= T
 					refined_trg -= B

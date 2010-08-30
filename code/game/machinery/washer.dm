@@ -120,6 +120,7 @@ code/game/machinery/washer.dm
 		for(var/atom/movable/O in src)
 			O.clean_blood()
 			O.fingerprints = null
+			O:contaminated = 0
 			if(ismob(O))
 				O:oxyloss += rand(1,50)
 				O:bruteloss += rand(10,50)
@@ -127,6 +128,7 @@ code/game/machinery/washer.dm
 				for(var/obj/OB in items)
 					OB.clean_blood()
 					OB.fingerprints = null
+					OB:contaminated = 0
 					if(istype(OB,/obj/item/weapon/gun/energy))
 						explode()
 						del OB

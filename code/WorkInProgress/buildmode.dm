@@ -207,7 +207,7 @@
 					return
 				else if(istype(object,/turf/simulated/floor))
 					var/turf/T = object
-					T.ReplaceWithSpace()
+					T.ReplaceWithOpen()
 					return
 				else if(istype(object,/turf/simulated/wall/r_wall))
 					var/turf/T = object

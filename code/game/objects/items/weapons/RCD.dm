@@ -114,7 +114,7 @@ RCD
 				spark_system.set_up(5, 0, src)
 				src.spark_system.start()
 				matter -= 5
-				A:ReplaceWithSpace()
+				A:ReplaceWithOpen()
 				playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 				user << "The RCD now holds [matter]/30 matter-units."
 				desc = "A RCD. It currently holds [matter]/30 matter-units."
