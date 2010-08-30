@@ -47,14 +47,14 @@
 #define FIRE_MINIMUM_TEMPERATURE_TO_SPREAD	150+T0C
 #define FIRE_MINIMUM_TEMPERATURE_TO_EXIST	100+T0C
 #define FIRE_SPREAD_RADIOSITY_SCALE		0.85
-#define FIRE_CARBON_ENERGY_RELEASED	 3000000 //Amount of heat released per mole of burnt carbon into the tile
-vs_control/var/FIRE_PLASMA_ENERGY_RELEASED = 500000 //Amount of heat released per mole of burnt plasma into the tile
+#define FIRE_CARBON_ENERGY_RELEASED	 500000 //Amount of heat released per mole of burnt carbon into the tile
+vs_control/var/FIRE_PLASMA_ENERGY_RELEASED = 3000000 //Amount of heat released per mole of burnt plasma into the tile
 vs_control/var/FIRE_PLASMA_ENERGY_RELEASED_DESC = "Determines the temp increase from fires."
 #define FIRE_GROWTH_RATE			50000 //For small fires
 
 //Plasma fire properties
 #define PLASMA_MINIMUM_BURN_TEMPERATURE		750+T0C
-#define PLASMA_UPPER_TEMPERATURE			8500+T0C
+#define PLASMA_UPPER_TEMPERATURE			1370+T0C
 #define PLASMA_MINIMUM_OXYGEN_NEEDED		2
 #define PLASMA_MINIMUM_OXYGEN_PLASMA_RATIO	30
 #define PLASMA_OXYGEN_FULLBURN				10
