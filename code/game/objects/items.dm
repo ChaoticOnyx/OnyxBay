@@ -1,6 +1,5 @@
 /obj/item/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature >= 1643 && m_amt)
-		world << "METAL MELTED UP"
 		var/obj/item/weapon/meltedmetal/S = new(src.loc)
 		S.desc = "Looks like this was \an [src] some time ago."
 		S.m_amt = src.m_amt
@@ -8,12 +7,16 @@
 			M << "\red \the [src] melts."
 		del(src)
 	else if(exposed_temperature >= 1650 && g_amt)
-		world << "GLASS MELTED UP"
 		var/obj/item/weapon/meltedmetal/S = new(src.loc)
 		S.desc = "Looks like this was \an [src] some time ago."
 		S.g_amt = src.g_amt
 		for(var/mob/M in viewers(5, S))
 			M << "\red \the [src] melts."
+		del(src)
+/obj/item/weapon/paper/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	if(exposed_temperature >= 373.15)
+		for(var/mob/M in viewers(5, src))
+			M << "\red \the [src] burns up."
 		del(src)
 /obj/item/weapon/bedsheet/ex_act(severity)
 	if (severity <= 2)

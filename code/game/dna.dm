@@ -726,6 +726,9 @@
 				src.connected.locked = !( src.connected.locked )
 		////////////////////////////////////////////////////////
 		if (href_list["genpulse"])
+			if(src.connected.occupant == usr)
+				usr << browse(null, "window=scannernew;size=550x625")
+				return
 			src.delete = 1
 			src.temphtml = text("Working ... Please wait ([] Seconds)", src.radduration)
 			usr << browse(temphtml, "window=scannernew;size=550x650")
@@ -749,31 +752,49 @@
 			temphtml = null
 			delete = 0
 		if (href_list["radset"])
+			if(src.connected.occupant == usr)
+				usr << browse(null, "window=scannernew;size=550x625")
+				return
 			src.temphtml = text("Radiation Duration: <B><font color='green'>[]</B></FONT><BR>", src.radduration)
 			src.temphtml += text("Radiation Intensity: <font color='green'><B>[]</B></FONT><BR><BR>", src.radstrength)
 			src.temphtml += text("<A href='?src=\ref[];radleminus=1'>--</A> Duration <A href='?src=\ref[];radleplus=1'>++</A><BR>", src, src)
 			src.temphtml += text("<A href='?src=\ref[];radinminus=1'>--</A> Intesity <A href='?src=\ref[];radinplus=1'>++</A><BR>", src, src)
 			src.delete = 0
 		if (href_list["radleplus"])
+			if(src.connected.occupant == usr)
+				usr << browse(null, "window=scannernew;size=550x625")
+				return
 			if (src.radduration < 20)
 				src.radduration++
 				src.radduration++
 			dopage(src,"radset")
 		if (href_list["radleminus"])
+			if(src.connected.occupant == usr)
+				usr << browse(null, "window=scannernew;size=550x625")
+				return
 			if (src.radduration > 2)
 				src.radduration--
 				src.radduration--
 			dopage(src,"radset")
 		if (href_list["radinplus"])
+			if(src.connected.occupant == usr)
+				usr << browse(null, "window=scannernew;size=550x625")
+				return
 			if (src.radstrength < 10)
 				src.radstrength++
 			dopage(src,"radset")
 		if (href_list["radinminus"])
+			if(src.connected.occupant == usr)
+				usr << browse(null, "window=scannernew;size=550x625")
+				return
 			if (src.radstrength > 1)
 				src.radstrength--
 			dopage(src,"radset")
 		////////////////////////////////////////////////////////
 		if (href_list["unimenu"])
+			if(src.connected.occupant == usr)
+				usr << browse(null, "window=scannernew;size=550x625")
+				return
 			//src.temphtml = text("Unique Identifier: <font color='blue'>[]</FONT><BR><BR>", src.connected.occupant.dna.uni_identity)
 			if (!src.connected.occupant)
 				temphtml = null
@@ -851,6 +872,9 @@
 			src.delete = 0
 		////////////////////////////////////////////////////////
 		if (href_list["strucmenu"])
+			if(src.connected.occupant == usr)
+				usr << browse(null, "window=scannernew;size=550x625")
+				return
 			if (!src.connected.occupant)
 				temphtml = null
 				delete = 0
@@ -937,6 +961,9 @@
 			src.delete = 0
 		////////////////////////////////////////////////////////
 		if (href_list["buffermenu"])
+			if(src.connected.occupant == usr)
+				usr << browse(null, "window=scannernew;size=550x625")
+				return
 			src.temphtml = "<B>Buffer 1:</B><BR>"
 			if (!(src.buffer1))
 				src.temphtml += "Buffer Empty<BR>"

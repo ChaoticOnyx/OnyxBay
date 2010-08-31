@@ -16,7 +16,11 @@
 	var/siemens_coefficient = 1 // for electrical admittance/conductance (electrocution checks and shit)
 
 // EARS
-
+/obj/item/clothing/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	if(exposed_temperature >= 373.15 && protective_temperature < exposed_temperature)
+		for(var/mob/M in viewers(5, src))
+			M << "\red \the [src] burns up."
+		del(src)
 /obj/item/clothing/ears
 	name = "ears"
 	w_class = 1.0

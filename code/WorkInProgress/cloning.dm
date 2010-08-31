@@ -199,6 +199,9 @@
 		return
 
 	if ((href_list["scan"]) && (!isnull(src.scanner)))
+		if(usr == src.scanner.occupant)
+			usr << browse(null, "window=cloning")
+			return
 		src.scan_mob(src.scanner.occupant)
 
 		//No locking an open scanner.
