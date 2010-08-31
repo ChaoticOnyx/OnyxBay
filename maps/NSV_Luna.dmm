@@ -2654,7 +2654,7 @@
 "aZb" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
 "aZc" = (/obj/table{dir = 10; icon_state = "tabledir"; tag = ""},/obj/item/weapon/storage/firstaid/toxin,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
 "aZd" = (/obj/table{icon_state = "tabledir"; dir = 6},/obj/item/weapon/storage/firstaid/fire,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
-"aZe" = (/obj/table{dir = 10; icon_state = "tabledir"},/obj/item/weapon/storage/pill_bottle/inaprovaline,/obj/item/weapon/storage/pill_bottle/kelotane,/obj/item/weapon/storage/pill_bottle/antitox,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
+"aZe" = (/obj/table{dir = 10; icon_state = "tabledir"},/obj/item/weapon/storage/pill_bottle/inaprovaline,/obj/item/weapon/storage/pill_bottle/kelotane,/obj/item/weapon/storage/pill_bottle/antitox,/obj/item/weapon/storage/daimp_kit,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
 "aZf" = (/obj/machinery/chem_dispenser,/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor{icon_state = "white"},/area/chemistry)
 "aZg" = (/obj/machinery/atmospherics/pipe/simple,/obj/table,/obj/item/weapon/storage/lglo_kit,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
 "aZh" = (/obj/machinery/atmospherics/pipe/simple,/obj/item/weapon/extinguisher,/turf/simulated/floor{icon_state = "white"},/area/chemistry)

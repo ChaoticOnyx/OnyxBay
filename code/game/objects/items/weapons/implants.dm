@@ -194,14 +194,35 @@ No Implant Specifics"}
 		return
 	return
 
+/obj/item/weapon/implant/proc/hear(message, source as mob)
+	return
+
 /obj/item/weapon/implant/proc/trigger(emote, source as mob)
 	return
 
 /obj/item/weapon/implant/proc/implanted(source as mob)
 	return
 
+
+/obj/item/weapon/implantcase/death_alarm/New()
+	src.imp = new /obj/item/weapon/implant/death_alarm( src )
+	..()
+	return
+
+
+/obj/item/weapon/implant/death_alarm/process()
+	var/mob/M = src.loc
+	if(M.stat == 2)
+		var/turf/t = get_turf(M)
+		radioalert("[M.name] has died in [t.loc.name]!","[M.name]'s death alarm")
+		processing_items.Remove(src)
+
+
+/obj/item/weapon/implant/death_alarm/implanted(mob/source as mob)
+	processing_items.Add(src)
+
+
 /obj/item/weapon/implant/freedom/New()
-	src.activation_emote = pick("blink", "blink_r", "eyebrow", "chuckle", "twitch_s", "frown", "nod", "blush", "giggle", "grin", "groan", "shrug", "smile", "pale", "sniff", "whimper", "wink")
 	src.uses = rand(1, 5)
 	..()
 	return
@@ -225,9 +246,71 @@ No Implant Specifics"}
 				if (W)
 					W.layer = initial(W.layer)
 
+
+/obj/item/weapon/implant/compressed/trigger(emote, mob/source as mob)
+	if (src.scanned == null)
+		return 0
+
+	if (emote == src.activation_emote)
+		source << "The air shimmers as \the [src.scanned.name] uncompresses."
+		var/turf/t = get_turf(source)
+		var/obj/o = new/obj(src.scanned)
+		locate(o,t)
+		src.scanned = null
+
+
 /obj/item/weapon/implant/freedom/implanted(mob/source as mob)
+	src.activation_emote = input("Choose activation emote:") in list("blink", "blink_r", "eyebrow", "chuckle", "twitch_s", "frown", "nod", "blush", "giggle", "grin", "groan", "shrug", "smile", "pale", "sniff", "whimper", "wink")
 	source.mind.store_memory("Freedom implant can be activated by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate.", 0, 0)
 	source << "The implanted freedom implant can be activated by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate."
+
+/obj/item/weapon/implant/compressed/implanted(mob/source as mob)
+	src.activation_emote = input("Choose activation emote:") in list("blink", "blink_r", "eyebrow", "chuckle", "twitch_s", "frown", "nod", "blush", "giggle", "grin", "groan", "shrug", "smile", "pale", "sniff", "whimper", "wink")
+	source.mind.store_memory("Compressed matter implant can be activated by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate.", 0, 0)
+	source << "The implanted compressed matter implant can be activated by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate."
+
+/obj/item/weapon/implant/timplant/implanted(mob/source as mob)
+	src.activation_emote = input("Choose activation emote:") in list("blink", "blink_r", "eyebrow", "chuckle", "twitch_s", "frown", "nod", "blush", "giggle", "grin", "groan", "shrug", "smile", "pale", "sniff", "whimper", "wink")
+	source.mind.store_memory("Teleport implant can be activated by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate.", 0, 0)
+	source << "The implanted Teleport implant can be activated by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate."
+
+/obj/item/weapon/implant/explosive/implanted(mob/source as mob)
+	src.phrase = input("Choose activation phrase:") as text
+	usr.mind.store_memory("Explosive implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate.", 0, 0)
+	usr << "The implanted explosive implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate."
+
+
+/obj/item/weapon/implant/explosive/hear(var/msg)
+	if(findtext(msg,src.phrase))
+		explosion(find_loc(src), 0, 1, 2, 3, 1)
+		var/turf/t = find_loc(src)
+		t.hotspot_expose(SPARK_TEMP,125)
+		var/mob/M = src.loc
+		M.gib()
+
+/obj/item/weapon/implant/timplant/trigger(emote, mob/source as mob)
+
+
+	if (emote == src.activation_emote)
+		var/list/L = list()
+		var/list/areaindex = list()
+		if (!locate(/obj/item/device/radio/beacon/traitor) in world)
+			source << "Unable to locate suitable beacon."
+			return 0
+		for(var/obj/item/device/radio/beacon/traitor/R in world)
+			var/turf/T = find_loc(R)
+			if (!T)	continue
+			var/tmpname = T.loc.name
+			if(areaindex[tmpname])
+				tmpname = "[tmpname] ([++areaindex[tmpname]])"
+			else
+				areaindex[tmpname] = 1
+			L[tmpname] = R
+		var/desc = input("Please select a location to lock in.", "Locking Computer") in L
+		source.loc = find_loc(L[desc])
+		source << "You have used your teleport, and the circuits have burnt out."
+		source.contents.Remove(src)
+
 
 /obj/item/weapon/implanter/proc/update()
 
@@ -236,6 +319,33 @@ No Implant Specifics"}
 	else
 		src.icon_state = "implanter0"
 	return
+
+
+/obj/item/weapon/implanter/compress/update()
+	if (src.imp)
+		var/obj/item/weapon/implant/compressed/c = src.imp
+		if(!c.scanned)
+			src.icon_state = "cimplanter0"
+		else
+			src.icon_state = "cimplanter1"
+	else
+		src.icon_state = "cimplanter2"
+	return
+
+/obj/item/weapon/implanter/compress/attack(mob/M as mob, mob/user as mob)
+	var/obj/item/weapon/implant/compressed/c = src.imp
+	if (c.scanned == null)
+		user << "Please scan an object with the implanter first."
+		return
+	..()
+
+/obj/item/weapon/implanter/compress/afterattack(atom/A, mob/user as mob)
+	if(istype(A,/obj))
+		var/obj/item/weapon/implant/compressed/c = src.imp
+		c.scanned = A
+		A.loc.contents.Remove(A)
+		src.update()
+
 
 /obj/item/weapon/implanter/attack(mob/M as mob, mob/user as mob)
 	if (!istype(M, /mob))

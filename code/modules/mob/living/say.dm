@@ -214,6 +214,9 @@
 				R.disk.memory["[id]"] += renderedold
 				R.disk.mobtype["[id]"] += "human"
 	for(var/mob/M in viewers(message_range,src))
+		var/obj/item/weapon/implant/I = locate() in M.contents
+		if(I)
+			I.hear(message,src)
 		var/obj/item/weapon/recorder/R = locate() in M.contents
 		if(R)
 			if(R.recording)
