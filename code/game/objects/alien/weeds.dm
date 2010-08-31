@@ -1,3 +1,7 @@
+/obj/alien/proc/process()
+	return
+/obj/alien/weeds/
+	layer = 2
 /obj/alien/weeds/New()
 	if(istype(src.loc, /turf/space))
 		del(src)
@@ -8,29 +12,52 @@
 	if(L)
 		L.broken()
 	updateicon()
-/obj/alien/weeds/proc/updateicon()
+/obj/alien/weeds/process()
+	var/turf/T = src.loc
+	var/obj/alien/weeds/north = locate() in T.north
+	var/obj/alien/weeds/west = locate() in T.west
+	var/obj/alien/weeds/east = locate() in T.east
+	var/obj/alien/weeds/south = locate() in T.south
+	if(!north||!west||!east||!south)
+		Life()
+	else
+		updateicon(0)
+	spawn(50)
+	src.process()
+/obj/alien/weeds/proc/updateicon(var/spread = 1)
 	var/turf/T = src.loc
 	var/obj/alien/weeds/north = locate() in T.north
 	var/obj/alien/weeds/west = locate() in T.west
 	var/obj/alien/weeds/east = locate() in T.east
 	var/obj/alien/weeds/south = locate() in T.south
 	src.overlays = null
-	if(north)
-		world << "Found North"
-		overlays += "weeds1n"
-		north.overlays += "weeds1s"
-	if(south)
-		world << "found south"
-		overlays += "weeds1s"
-		south.overlays += "weeds1n"
-	if(west)
-		world << "Found West"
-		overlays += "weeds1w"
-		west.overlays += "weeds1e"
-	if(east)
-		world << "Found East"
-		overlays += "weeds1e"
-		east.overlays += "weeds1w"
+	var/dir
+	var/num = 0
+	if(!north)
+		dir += "north"
+		num++
+	else if(spread)
+		north.updateicon(0)
+	if(!south)
+		dir += "south"
+		num++
+	else if(spread)
+		south.updateicon(0)
+	if(!west)
+		dir += "west"
+		num++
+	else if(spread)
+		west.updateicon(0)
+	if(!east)
+		dir += "east"
+		num++
+	else if(spread)
+		east.updateicon(0)
+	if(!dir)
+		icon_state = "creep_center"
+	else
+		icon_state = "creep_[dir]"
+	return
 
 /obj/alien/weeds/proc/Life()
 	var/turf/U = src.loc
@@ -73,7 +100,7 @@ Alien plants should do something if theres a lot of poison
 			continue
 
 		var/obj/alien/weeds/B = new /obj/alien/weeds(U)
-		B.icon_state = pick("weeds", "weeds1", "weeds2")
+		B.icon_state = pick("creep_center")
 
 		if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
 			B.loc = T
@@ -91,14 +118,14 @@ Alien plants should do something if theres a lot of poison
 					D.locked = 1
 				else
 					world << "door already open"
-				sleep(50)
-				world << "ATTEMPTING TO OPEN DOOR"
+				sleep(100)
+				world << "Door opening"
 				if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
+					world << "spawned on door"
 					B.loc = T
+					B.Life()
 					updateicon()
-					spawn(80)
-					if(B)
-						B.Life()
+					return
 				else
 					del(B)
 			del(B)
@@ -117,7 +144,6 @@ Alien plants should do something if theres a lot of poison
 				return
 		else
 	return
-
 /*
 /obj/alien/weeds/burn(fi_amount)
 	if (fi_amount > 18000)

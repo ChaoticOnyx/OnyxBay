@@ -121,7 +121,6 @@ datum/controller/game_controller
 
 		for(var/datum/pipe_network/network in pipe_networks)
 			network.process()
-
 		for(var/datum/powernet/P in powernets)
 			P.reset()
 
