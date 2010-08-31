@@ -438,7 +438,7 @@
 		return
 	if(user.stat)
 		return
-	if (active || !istype(C)|| C.anchored || get_dist(user, src) > 1 || get_dist(src,C) > 1 )
+	if (!istype(C)|| C.anchored || get_dist(user, src) > 1 || get_dist(src,C) > 1 )
 		return
 /obj/machinery/clonepod/proc/growclone(mob/ghost as mob, var/clonename, var/ui, var/se, var/mindref)
 	if (((!ghost) || (!ghost.client)) || src.mess || src.attempting)
