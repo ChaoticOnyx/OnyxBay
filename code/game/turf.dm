@@ -202,7 +202,7 @@ turf/simulated/wall/bullet_act(flag,dir)
 
 /turf/proc/ReplaceWithLattice()
 	if(!icon_old) icon_old = icon_state
-	ReplaceWithOpen()
+	new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
 	new /obj/lattice( locate(src.x, src.y, src.z) )
 
 
