@@ -575,16 +575,40 @@
 	var/implanted = null
 	var/color = "b"
 
+
 /obj/item/weapon/implant/freedom
 	name = "freedom"
 	var/uses = 1.0
 	color = "r"
 	var/activation_emote = "chuckle"
 
+/obj/item/weapon/implant/compressed
+	name = "compressed matter implants"
+	color = "r"
+	var/activation_emote = "chuckle"
+	var/obj/scanned = null
+
+
 /obj/item/weapon/implant/tracking
 	name = "tracking"
 	var/frequency = 1451
 	var/id = 1.0
+
+/obj/item/weapon/implant/death_alarm
+	name = "death alarm"
+
+/obj/item/weapon/implant/timplant
+	name = "teleport"
+	var/activation_emote = "chuckle"
+
+/obj/item/device/radio/beacon/traitor
+	name = "personal teleporter beacon"
+
+
+
+/obj/item/weapon/implant/explosive
+	name = "microexplosive"
+	var/phrase
 
 /obj/item/weapon/implantcase
 	name = "Glass Case"
@@ -594,6 +618,11 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = 1.0
+
+/obj/item/weapon/implantcase/death_alarm
+	name = "Glass Case- 'Death Alarm'"
+	icon = 'items.dmi'
+	icon_state = "implantcase-b"
 
 /obj/item/weapon/implantcase/tracking
 	name = "Glass Case- 'Tracking'"
@@ -609,6 +638,18 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = 2.0
+
+/obj/item/weapon/implanter/compress
+	name = "implanter"
+	icon = 'items.dmi'
+	icon_state = "cimplanter0"
+	imp = /obj/item/weapon/implant/compressed
+	item_state = "syringe_0"
+	throw_speed = 1
+	throw_range = 5
+	w_class = 2.0
+
+
 
 /obj/item/weapon/implantpad
 	name = "implantpad"

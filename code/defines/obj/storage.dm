@@ -126,6 +126,12 @@
 	item_state = "syringe_kit"
 
 
+/obj/item/weapon/storage/daimp_kit
+	name = "Death Alarm Implant Kit"
+	icon_state = "implant"
+	item_state = "syringe_kit"
+
+
 /obj/item/weapon/storage/toolbox
 	name = "toolbox"
 	icon = 'storage.dmi'

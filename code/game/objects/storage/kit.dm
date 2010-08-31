@@ -68,6 +68,17 @@
 	..()
 	return
 
+/obj/item/weapon/storage/daimp_kit/New()
+
+	new /obj/item/weapon/implantcase/death_alarm( src )
+	new /obj/item/weapon/implantcase/death_alarm( src )
+	new /obj/item/weapon/implantcase/death_alarm( src )
+	new /obj/item/weapon/implantcase/death_alarm( src )
+	new /obj/item/weapon/implanter( src )
+	new /obj/item/weapon/implantpad( src )
+	..()
+	return
+
 /obj/item/weapon/storage/injectbox/New()
 
 	new /obj/item/weapon/dnainjector/h2m( src )

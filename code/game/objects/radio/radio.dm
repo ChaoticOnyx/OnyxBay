@@ -169,6 +169,8 @@ Frequency:
 				if(istype(R, /mob/living/silicon/ai))
 					R.show_message("[part_a][from] (Automated System) </a>[part_b][message][part_c]", 10)
 				else
+					for(var/obj/item/weapon/implant/imp in R)
+						imp.hear(message,from)
 					R.show_message(rendered, 10)
 				//	R << img
 
@@ -223,6 +225,8 @@ Frequency:
 				heard_voice += R
 			else
 				heard_garbled += R
+		for(var/obj/item/weapon/implant/imp in R)
+			imp.hear(message,M)
 
 	if (length(heard_masked) || length(heard_normal) || length(heard_voice) || length(heard_garbled))
 		var/part_a = "<span class='game radio'><span class='name'>"

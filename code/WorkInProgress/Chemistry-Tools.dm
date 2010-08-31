@@ -1260,7 +1260,7 @@
 		var/datum/reagents/R = new/datum/reagents(50)
 		reagents = R
 		R.my_atom = src
-		R.add_reagent("vodka", 10)
+		R.add_reagent("dwine", 10)
 
 /obj/item/weapon/reagent_containers/food/snacks/plump/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/kitchen/utensil/knife))
