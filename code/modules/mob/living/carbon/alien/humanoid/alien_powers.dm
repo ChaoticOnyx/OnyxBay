@@ -89,6 +89,7 @@ Also perhaps only queens can do that?
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\green <B>[src] has planted some alien weeds!</B>"), 1)
 		var/obj/alien/weeds/W = new /obj/alien/weeds(src.loc)
+		W.updateicon()
 		W.Life()
 
 	else
