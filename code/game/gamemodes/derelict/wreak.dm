@@ -82,7 +82,7 @@
 			for(var/i = 0 to rand(1,5))
 				step(w,pick(cardinal))
 
-			if(prob(60))
+			if(prob(60) && !istype(w,/obj/item/weapon/card/id/captains_spare))
 				del w
 
 	var/list/b = get_area_all_objects(/area/hangar/derelict)
