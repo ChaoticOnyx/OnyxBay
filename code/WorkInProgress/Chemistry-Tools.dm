@@ -461,7 +461,7 @@
 			if(ismob(target))
 				for(var/mob/O in viewers(world.view, user))
 					O.show_message(text("\red <B>[] drips something onto []!</B>", user, target), 1)
-					message_admins("[target] drips something onto  filled with [src.reagents.get_master_reagent_name()] by [user]")
+					message_admins("[target] drips something onto [target] filled with [src.reagents.get_master_reagent_name()] by [user]")
 				src.reagents.reaction(target, TOUCH)
 
 			spawn(5) src.reagents.trans_to(target, 5)

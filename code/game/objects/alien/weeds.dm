@@ -2,28 +2,35 @@
 	return
 /obj/alien/weeds/
 	layer = 2
+	var/dead
 /obj/alien/weeds/New()
 	if(istype(src.loc, /turf/space))
 		del(src)
-	var/obj/cable/C = locate() in src.loc
+/*	var/obj/cable/C = locate() in src.loc
 	if(C)
 		del(C)
 	var/obj/machinery/light/L = locate() in src.loc
 	if(L)
-		L.broken()
+		L.broken()*/
 	updateicon()
 /obj/alien/weeds/process()
-	var/turf/T = src.loc
-	var/obj/alien/weeds/north = locate() in T.north
-	var/obj/alien/weeds/west = locate() in T.west
-	var/obj/alien/weeds/east = locate() in T.east
-	var/obj/alien/weeds/south = locate() in T.south
-	if(!north||!west||!east||!south)
-		Life()
-	else
-		updateicon(0)
-	spawn(50)
-	src.process()
+	spawn while(!dead)
+		sleep(-1)
+		var/turf/T = src.loc
+		var/obj/alien/weeds/north = locate() in T.north
+		var/obj/alien/weeds/west = locate() in T.west
+		var/obj/alien/weeds/east = locate() in T.east
+		var/obj/alien/weeds/south = locate() in T.south
+		if(north && west && east && south)
+			dead = 1
+			return
+		if(!north||!west||!east||!south)
+			Life()
+		else
+			updateicon(0)
+		sleep(50)
+		if(dead) return
+		src.process()
 /obj/alien/weeds/proc/updateicon(var/spread = 1)
 	var/turf/T = src.loc
 	var/obj/alien/weeds/north = locate() in T.north
@@ -32,25 +39,20 @@
 	var/obj/alien/weeds/south = locate() in T.south
 	src.overlays = null
 	var/dir
-	var/num = 0
 	if(!north)
 		dir += "north"
-		num++
 	else if(spread)
 		north.updateicon(0)
 	if(!south)
 		dir += "south"
-		num++
 	else if(spread)
 		south.updateicon(0)
 	if(!west)
 		dir += "west"
-		num++
 	else if(spread)
 		west.updateicon(0)
 	if(!east)
 		dir += "east"
-		num++
 	else if(spread)
 		east.updateicon(0)
 	if(!dir)
@@ -77,39 +79,32 @@ Alien plants should do something if theres a lot of poison
 	if (istype(U, /turf/space))
 		del(src)
 		return
-
+	var/obj/cable/C = locate() in src.loc
+	if(C)
+		del(C)
+	var/obj/machinery/light/L = locate() in src.loc
+	if(L)
+		L.broken()
 	for(var/dirn in cardinal)
 		var/turf/T = get_step(src, dirn)
 
 		if (istype(T.loc, /area/arrival))
 			continue
-
-//		if (locate(/obj/movable, T)) // don't propogate into movables
-//			continue
-
-		var/cont = 0
-		for(var/obj/O in T)
-			if(O.density)
-				if(istype(O,/obj/machinery/door))
-					break
-				else
-					cont = 1
-					break
-
-		if(cont)
+		if(T.density)
 			continue
-
-		var/obj/alien/weeds/B = new /obj/alien/weeds(U)
-		B.icon_state = pick("creep_center")
-
-		if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
-			B.loc = T
-			updateicon()
-			spawn(80)
-				if(B)
-					B.Life()
-			// open cell, so expand
-		else
+		if(locate(/obj/grille) in T || /obj/window/ in T)
+			var/obj/alien/weeds/B = new /obj/alien/weeds(U)
+			B.icon_state = pick("")
+			if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
+				B.loc = T
+				spawn(80)
+					if(B)
+						B.Life()
+						B.updateicon()
+						continue
+			else
+				del(B)
+		else if(locate(/obj/machinery/door/airlock) in T)
 			var/obj/machinery/door/airlock/D = locate() in T
 			if(D)
 				world << "ATTEMPTING TO OPEN DOOR"
@@ -118,17 +113,38 @@ Alien plants should do something if theres a lot of poison
 					D.locked = 1
 				else
 					world << "door already open"
-				sleep(100)
+				sleep(10)
 				world << "Door opening"
+				var/obj/alien/weeds/B = new /obj/alien/weeds(U)
+				B.icon_state = pick("")
 				if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
 					world << "spawned on door"
 					B.loc = T
 					B.Life()
-					updateicon()
-					return
+					B.updateicon()
+					continue
 				else
 					del(B)
-			del(B)
+		else if(!(locate(/obj/alien/weeds) in T))
+			var/obj/alien/weeds/B = new /obj/alien/weeds(U)
+			B.icon_state = pick("")
+			B.loc = T
+			spawn(80)
+			if(B)
+				B.Life()
+				B.updateicon()
+				continue
+			else
+				del(B)
+		/*
+		if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
+			B.loc = T
+			updateicon()
+			spawn(80)
+				if(B)
+					B.Life()
+			// open cell, so expand
+*/
 /obj/alien/weeds/ex_act(severity)
 	switch(severity)
 		if(1.0)

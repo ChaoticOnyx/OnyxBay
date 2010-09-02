@@ -170,6 +170,8 @@ GAS ANALYZER
 		user.show_message(text("\red Severe brain damage detected. Subject likely to have mental retardation."), 1)
 	else if (M.brainloss >= 10)
 		user.show_message(text("\red Significant brain damage detected. Subject may have had a concussion."), 1)
+	if(!M.client)
+		user.show_message(text("\red Subject is disconnected from the reality"), 1)
 	for(var/obj/item/I in M)
 		if(I.contaminated)
 			user.show_message("\red <b>Warning: Plasma Contaminated Items Detected</b>\nAnalysis and cleaning or disposal of affected items is necessary.",1)
