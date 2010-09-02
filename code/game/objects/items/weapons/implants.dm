@@ -252,11 +252,10 @@ No Implant Specifics"}
 		return 0
 
 	if (emote == src.activation_emote)
-		source << "The air shimmers as \the [src.scanned.name] uncompresses."
+		source << "The air glows as \the [src.scanned.name] uncompresses."
 		var/turf/t = get_turf(source)
-		var/obj/o = new/obj(src.scanned)
-		locate(o,t)
-		src.scanned = null
+		src.scanned.loc = t
+		del src
 
 
 /obj/item/weapon/implant/freedom/implanted(mob/source as mob)
@@ -278,6 +277,21 @@ No Implant Specifics"}
 	src.phrase = input("Choose activation phrase:") as text
 	usr.mind.store_memory("Explosive implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate.", 0, 0)
 	usr << "The implanted explosive implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate."
+
+/obj/item/weapon/implant/vfac/implanted(mob/source as mob)
+	src.phrase = input("Choose activation phrase:") as text
+	var/virus = input("Choose virus:") in list("The Cold", "Space Rhinovirus", "GBS")
+	switch(virus)
+		if("The Cold")
+			src.virus =/datum/disease/cold
+		if("Space Rhinovirus")
+			src.virus = /datum/disease/dnaspread
+		else if("GBS")
+			src.virus =/datum/disease/gbs
+
+	usr.mind.store_memory("Viral factory implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate.", 0, 0)
+	usr << "The implanted viral factory implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate."
+
 
 
 /obj/item/weapon/implant/explosive/hear(var/msg)
@@ -310,6 +324,21 @@ No Implant Specifics"}
 		source.loc = find_loc(L[desc])
 		source << "You have used your teleport, and the circuits have burnt out."
 		source.contents.Remove(src)
+
+
+
+
+/obj/item/weapon/implant/alien/implanted(mob/source as mob)
+	source.contract_disease(new/datum/disease/alien_embryo, 1)
+	del src
+
+/obj/item/weapon/implant/vfac/hear(var/msg)
+
+
+	if(findtext(msg,src.phrase))
+		var/datum/disease/virus = new src.virus
+		var/mob/m = loc
+		m.contract_disease(virus, 1)
 
 
 /obj/item/weapon/implanter/proc/update()

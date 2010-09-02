@@ -608,7 +608,17 @@
 
 /obj/item/weapon/implant/explosive
 	name = "microexplosive"
-	var/phrase
+	var/phrase = "flatlander"
+
+/obj/item/weapon/implant/vfac
+	name = "viral factory"
+	var/phrase = "flatlander"
+	var/datum/disease/virus = /datum/disease/cold
+
+/obj/item/weapon/implant/alien
+	name = "alien embryo"
+	var/activation_emote = "chuckle"
+
 
 /obj/item/weapon/implantcase
 	name = "Glass Case"

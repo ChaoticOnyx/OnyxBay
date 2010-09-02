@@ -624,20 +624,13 @@
 	icon_state = "mw"
 	density = 1
 	anchored = 1
-	var/egg_amount = 0 //Current number of eggs inside
-	var/flour_amount = 0 //Current amount of flour inside
-	var/water_amount = 0 //Current amount of water inside
-	var/monkeymeat_amount = 0
-	var/humanmeat_amount = 0
-	var/donkpocket_amount = 0
-	var/humanmeat_name = ""
-	var/humanmeat_job = ""
 	var/operating = 0 // Is it on?
 	var/dirty = 0 // Does it need cleaning?
 	var/broken = 0 // How broken is it???
 	var/list/available_recipes = list() // List of the recipes you can use
 	var/obj/item/weapon/reagent_containers/food/snacks/being_cooked = null // The item being cooked
-	var/obj/item/extra_item // One non food item that can be added
+	var/humanmeat_name
+	var/humanmeat_job
 
 /obj/machinery/gibber
 	name = "Gibber"
