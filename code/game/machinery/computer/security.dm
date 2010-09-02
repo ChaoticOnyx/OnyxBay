@@ -46,7 +46,7 @@
 		if (src.authenticated)
 			switch(src.screen)
 				if(1.0)
-					dat += text("<A href='?src=\ref[];search=1'>Search Records</A><BR>\n<A href='?src=\ref[];list=1'>List Records</A><BR>\n<A href='?src=\ref[];search_f=1'>Search Fingerprints</A><BR>\n<A href='?src=\ref[];new_r=1'>New Record</A><BR>\n<BR>\n<A href='?src=\ref[];rec_m=1'>Record Maintenance</A><BR>\n<A href='?src=\ref[];logout=1'>{Log Out}</A><BR>\n", src, src, src, src, src, src)
+					dat += text("<A href='?src=\ref[src];search=1'>Search Records</A><BR>\n<A href='?src=\ref[src];list=1'>List Records</A><BR>\n<A href='?src=\ref[src];search_f=1'>Search Fingerprints</A><BR>\n<A href='?src=\ref[src];new_r=1'>New Record</A><BR>\n<BR>\n<A href='?src=\ref[src];rec_m=1'>Record Maintenance</A><BR>\n<A href='?src=\ref[src];logout=1'>{Log Out}</A><BR>\n")
 				if(2.0)
 					dat += "<B>Record List</B>:<HR>"
 					for(var/datum/data/record/R in data_core.general)
@@ -407,4 +407,7 @@
 	src.updateUsrDialog()
 
 	return
+
+
+
 
