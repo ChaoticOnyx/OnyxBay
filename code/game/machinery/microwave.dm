@@ -1,75 +1,64 @@
 /datum/recipe
-	var/egg_amount = 0
-	var/flour_amount = 0
-	var/water_amount = 0
-	var/monkeymeat_amount = 0
-	var/humanmeat_amount = 0
-	var/donkpocket_amount = 0
-	var/obj/extra_item = null // This is if an extra item is needed, eg a butte for an assburger
+	var/list/needs = list()
 	var/creates = "" // The item that is spawned when the recipe is made
 
 /datum/recipe/donut
-	egg_amount = 1
-	flour_amount = 1
-	creates = "/obj/item/weapon/reagent_containers/food/snacks/donut"
+	needs = list("egg" = 1, "flour" = 1)
+	creates = "donut"
+
+/datum/recipe/dwbiscuits
+	needs = list("plump" = 2)
+	creates = "dwbiscuits"
 
 /datum/recipe/monkeyburger
-	egg_amount = 0
-	flour_amount = 1
-	monkeymeat_amount = 1
-	creates = "/obj/item/weapon/reagent_containers/food/snacks/monkeyburger"
+	needs = list("monkeymeat" = 1, "flour" = 1)
+	creates = "monkeyburger"
 
 /datum/recipe/humanburger
-	flour_amount = 1
-	humanmeat_amount = 1
-	creates = "/obj/item/weapon/reagent_containers/food/snacks/humanburger"
+	needs = list("flour" = 1, "humanmeat" = 1)
+	creates = "humanburger"
 
 /datum/recipe/brainburger
-	flour_amount = 1
-	extra_item = /obj/item/brain
-	creates = "/obj/item/weapon/reagent_containers/food/snacks/brainburger"
+	needs = list("flour" = 1, "/obj/item/brain" = 1)
+	creates = "brainburger"
 
 /datum/recipe/roburger/
-	flour_amount = 1
-	extra_item = /obj/item/robot_parts/head
-	creates = "/obj/item/weapon/reagent_containers/food/snacks/roburger"
+	needs = list("flour" = 1, "/obj/item/robot_parts/head" = 1)
+	creates = "roburger"
 
 /datum/recipe/waffles
-	egg_amount = 2
-	flour_amount = 2
-	creates = "/obj/item/weapon/reagent_containers/food/snacks/waffles"
+	needs = list("egg" = 2, "flour" = 2)
+	creates = "waffles"
 
 /datum/recipe/meatball
-	monkeymeat_amount = 1
-	humanmeat_amount = 1
-	creates = "/obj/item/weapon/reagent_containers/food/snacks/meatball"
+	needs = list("monkeymeat" = 1, "humanmeat" = 1)
+	creates = "meatball"
 
 /datum/recipe/pie
-	flour_amount = 2
-	extra_item = /obj/item/weapon/banana
-	creates = "/obj/item/weapon/reagent_containers/food/snacks/pie"
+	needs = list("flour" = 2, "/obj/item/weapon/banana" = 1)
+	creates = "pie"
 
 /datum/recipe/donkpocket
-	flour_amount = 1
-	extra_item = /obj/item/weapon/reagent_containers/food/snacks/meatball
-	creates = "/obj/item/weapon/reagent_containers/food/snacks/donkpocket"
+	needs = list("flour" = 1, "meatball" = 1)
+	creates = "donkpocket"
 
 /datum/recipe/donkpocket_warm
-	donkpocket_amount = 1
-	creates = "/obj/item/weapon/reagent_containers/food/snacks/donkpocket"
+	needs = list("donkpocket" = 1)
+	creates = "donkpocket"
 
 
 /obj/machinery/microwave/New() // *** After making the recipe in defines\obj\food.dmi, add it in here! ***
 	..()
 	src.available_recipes += new /datum/recipe/donut(src)
-//	src.available_recipes += new /datum/recipe/monkeyburger(src)
-//	src.available_recipes += new /datum/recipe/humanburger(src)
+	src.available_recipes += new /datum/recipe/monkeyburger(src)
+	src.available_recipes += new /datum/recipe/humanburger(src)
 	src.available_recipes += new /datum/recipe/waffles(src)
-//	src.available_recipes += new /datum/recipe/brainburger(src)
-//	src.available_recipes += new /datum/recipe/meatball(src)
+	src.available_recipes += new /datum/recipe/brainburger(src)
+	src.available_recipes += new /datum/recipe/meatball(src)
 //	src.available_recipes += new /datum/recipe/roburger(src)
-//	src.available_recipes += new /datum/recipe/donkpocket(src)
-//	src.available_recipes += new /datum/recipe/donkpocket_warm(src)
+	src.available_recipes += new /datum/recipe/donkpocket(src)
+	src.available_recipes += new /datum/recipe/dwbiscuits(src)
+	src.available_recipes += new /datum/recipe/donkpocket_warm(src)
 	src.available_recipes += new /datum/recipe/pie(src)
 
 
@@ -107,50 +96,26 @@ obj/machinery/microwave/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			src.icon_state = "mw"
 		else //Otherwise bad luck!!
 			return
-	else if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/egg)) // If an egg is used, add it
-		if(src.egg_amount < 5)
-			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] adds an egg to the microwave."))
-			src.egg_amount++
-			del(O)
-	else if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/flour)) // If flour is used, add it
-		if(src.flour_amount < 5)
-			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] adds some flour to the microwave."))
-			src.flour_amount++
-			del(O)
-	else if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/monkeymeat))
-		if(src.monkeymeat_amount < 5)
-			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] adds some meat to the microwave."))
-			src.monkeymeat_amount++
-			del(O)
 	else if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/humanmeat))
-		if(src.humanmeat_amount < 5)
-			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] adds some meat to the microwave."))
-			src.humanmeat_name = O:subjectname
-			src.humanmeat_job = O:subjectjob
-			src.humanmeat_amount++
-			del(O)
-	else if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/donkpocket))
-		if(src.donkpocket_amount < 2)
-			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] adds a donk-pocket to the microwave."))
-			src.donkpocket_amount++
-			del(O)
+		var/obj/item/weapon/reagent_containers/food/snacks/humanmeat/m = O
+		src.humanmeat_name = m.subjectname
+		src.humanmeat_job = m.subjectjob
+		for(var/mob/V in viewers(src, null))
+			V.show_message(text("\blue [user] adds \a [O.name] to the microwave."))
+		user.u_equip(O)
+		O.loc = src
+		if((user.client  && user.s_active != src))
+			user.client.screen -= O
+		O.dropped(user)
 	else
-		if(!istype(extra_item, /obj/item)) //Allow one non food item to be added!
-			user.u_equip(O)
-			extra_item = O
-			O.loc = src
-			if((user.client  && user.s_active != src))
-				user.client.screen -= O
-			O.dropped(user)
-			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] adds [O] to the microwave."))
-		else
-			user << "There already seems to be an unusual item inside, so you don't add this one too." //Let them know it failed for a reason though
+		for(var/mob/V in viewers(src, null))
+			V.show_message(text("\blue [user] adds \a [O.name] to the microwave."))
+		user.u_equip(O)
+		O.loc = src
+		if((user.client  && user.s_active != src))
+			user.client.screen -= O
+		O.dropped(user)
+
 
 obj/machinery/microwave/attack_paw(user as mob)
 	return src.attack_hand(user)
@@ -179,15 +144,15 @@ Please clean it before use!</TT><BR>
 <BR>
 "}
 	else
+		var/c
+		for(var/obj/O in src.contents)
+			c+="<B>[O.name]<BR>"
 		dat = {"
-<B>Eggs:</B>[src.egg_amount] eggs<BR>
-<B>Flour:</B>[src.flour_amount] cups of flour<BR>
-<B>Monkey Meat:</B>[src.monkeymeat_amount] slabs of meat<BR>
-<B>Meat Turnovers:</B>[src.donkpocket_amount] turnovers<BR>
-<B>Other Meat:</B>[src.humanmeat_amount] slabs of meat<BR><HR>
+<B>Contents<BR>[c]
 <BR>
 <A href='?src=\ref[src];cook=1'>Turn on!<BR>
 <A href='?src=\ref[src];cook=2'>Dispose contents!<BR>
+<A href='?src=\ref[src];cook=3'>Dispense contents<BR>
 "}
 
 	user << browse("<HEAD><TITLE>Microwave Controls</TITLE></HEAD><TT>[dat]</TT>", "window=microwave")
@@ -215,31 +180,53 @@ Please clean it before use!</TT><BR>
 			var/cooked_item = ""
 
 			if(operation == 1) // If cook was pressed
+				var/list/has = list()
+				var/nonfood
+				for(var/obj/O in src.contents)
+					if(!istype(O, /obj/item/weapon/reagent_containers/food/))
+						nonfood = 1
+					has["[O.type]"]++
+
 				for(var/mob/V in viewers(src, null))
 					V.show_message(text("\blue The microwave turns on."))
-				for(var/datum/recipe/R in src.available_recipes) //Look through the recipe list we made above
-					if(src.egg_amount == R.egg_amount && src.flour_amount == R.flour_amount && src.monkeymeat_amount == R.monkeymeat_amount && src.humanmeat_amount == R.humanmeat_amount && src.donkpocket_amount == R.donkpocket_amount) // Check if it's an accepted recipe
-						if(R.extra_item == null || (src.extra_item && src.extra_item.type == R.extra_item)) // Just in case the recipe doesn't have an extra item in it
-							src.egg_amount = 0 // If so remove all the eggs
-							src.flour_amount = 0 // And the flour
-							src.water_amount = 0 //And the water
-							src.monkeymeat_amount = 0
-							src.humanmeat_amount = 0
-							src.donkpocket_amount = 0
-							src.extra_item = null // And the extra item
-							cooked_item = R.creates // Store the item that will be created
+				 // label for skipping failed recipes
+				check_recipes:
+					for(var/datum/recipe/A in src.available_recipes)
+						//usr <<"[A.creates]"
+						if(has.len != A.needs.len)
+							continue check_recipes
+						var/list/req = list()
+
+						for(var/B in A.needs)
+							if(findtext("/obj/",B))//If full path is specified
+								req["[B]"]=A.needs["[B]"]//Add to list
+							else//otherwise
+								var/text="/obj/item/weapon/reagent_containers/food/snacks/"+B//add onto end of snacks path
+								req["[text]"] =A.needs["[B]"]//add to list
+						//	var/a = B
+						//	usr << "needs [a] [req[req.len]]"
+						for(var/B in has)
+						//	usr << "[has[B]] [B],[req[B]] [B]"
+							if(has[B]!=req[B])
+							//	usr << "fail"
+								continue check_recipes
+						if(!findtext("/obj/",A.creates))//If full path is not specified
+							cooked_item = "/obj/item/weapon/reagent_containers/food/snacks/"+A.creates
+						else
+							cooked_item = A.creates
+						for(var/obj/O in src.contents)
+							del O
+						break check_recipes
+
 
 				if(cooked_item == "") //Oops that wasn't a recipe dummy!!!
-					if(src.egg_amount > 0 || src.flour_amount > 0 || src.water_amount > 0 || src.monkeymeat_amount > 0 || src.humanmeat_amount > 0 || src.donkpocket_amount > 0 && src.extra_item == null) //Make sure there's something inside though to dirty it
+					if(src.contents && !nonfood) //Make sure there's something inside though to dirty it
 						src.operating = 1 // Turn it on
 						src.icon_state = "mw1"
 						src.updateUsrDialog()
-						src.egg_amount = 0 //Clear all the values as this crap is what makes the mess inside!!
-						src.flour_amount = 0
-						src.water_amount = 0
-						src.humanmeat_amount = 0
-						src.monkeymeat_amount = 0
-						src.donkpocket_amount = 0
+						for(var/obj/O in src.contents)
+							if(findtext("/obj/item/weapon/reagent_containers/food/snacks/", O.type))
+								del O
 						sleep(40) // Half way through
 						playsound(src.loc, 'splat.ogg', 50, 1) // Play a splat sound
 						icon_state = "mwbloody1" // Make it look dirty!!
@@ -252,18 +239,14 @@ Please clean it before use!</TT><BR>
 						src.operating = 0 // Turn it off again aferwards
 						// Don't clear the extra item though so important stuff can't be deleted this way and
 						// it prolly wouldn't make a mess anyway
+						for(var/obj/O in src.contents)
+							src.contents.Remove(O)
+							O.loc = get_turf(src)
 
-					else if(src.extra_item != null) // However if there's a weird item inside we want to break it, not dirty it
+					else if(src.contents && nonfood) // However if there's a weird item inside we want to break it, not dirty it
 						src.operating = 1 // Turn it on
 						src.icon_state = "mw1"
 						src.updateUsrDialog()
-						src.egg_amount = 0 //Clear all the values as this crap is gone when it breaks!!
-						src.flour_amount = 0
-						src.water_amount = 0
-						src.humanmeat_amount = 0
-						src.monkeymeat_amount = 0
-						src.donkpocket_amount = 0
-						sleep(60) // Wait a while
 						var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 						s.set_up(2, 1, src)
 						s.start()
@@ -272,8 +255,12 @@ Please clean it before use!</TT><BR>
 							V.show_message(text("\red The microwave breaks!")) //Let them know they're stupid
 						src.broken = 2 // Make it broken so it can't be used util fixed
 						src.operating = 0 // Turn it off again aferwards
-						src.extra_item.loc = get_turf(src) // Eject the extra item so important shit like the disk can't be destroyed in there
-						src.extra_item = null
+						for(var/obj/O in src.contents)
+							if(findtext("/obj/item/weapon/reagent_containers/food/snacks/", O.type))
+								del O
+						for(var/obj/O in src.contents)
+							src.contents.Remove(O)
+							O.loc = get_turf(src)
 
 					else //Otherwise it was empty, so just turn it on then off again with nothing happening
 						src.operating = 1
@@ -285,16 +272,18 @@ Please clean it before use!</TT><BR>
 						src.operating = 0
 
 			if(operation == 2) // If dispose was pressed, empty the microwave
-				src.egg_amount = 0
-				src.flour_amount = 0
-				src.water_amount = 0
-				src.humanmeat_amount = 0
-				src.monkeymeat_amount = 0
-				src.donkpocket_amount = 0
-				if(src.extra_item != null)
-					src.extra_item.loc = get_turf(src) // Eject the extra item so important shit like the disk can't be destroyed in there
-					src.extra_item = null
+				for(var/obj/O in src.contents)
+					if(findtext("/obj/item/weapon/reagent_containers/food/snacks/", O.type))
+						del O
+				for(var/obj/O in src.contents)
+					src.contents.Remove(O)
+					O.loc = get_turf(src)
 				usr << "You dispose of the microwave contents."
+
+			if(operation == 3) // If dispense was pressed, empty the microwave
+				for(var/obj/O in src.contents)
+					O.loc = get_turf(src)
+				usr << "You empty the microwave of contents."
 
 			var/cooking = text2path(cooked_item) // Get the item that needs to be spanwed
 			if(!isnull(cooking))
@@ -309,8 +298,8 @@ Please clean it before use!</TT><BR>
 					if(!isnull(src.being_cooked))
 						playsound(src.loc, 'ding.ogg', 50, 1)
 						if(istype(src.being_cooked, /obj/item/weapon/reagent_containers/food/snacks/humanburger))
-							src.being_cooked.name = humanmeat_name + src.being_cooked.name
-							src.being_cooked:job = humanmeat_job
+							src.being_cooked.name = src.humanmeat_name + src.being_cooked.name
+							src.being_cooked:job = src.humanmeat_job
 						if(istype(src.being_cooked, /obj/item/weapon/reagent_containers/food/snacks/donkpocket))
 							src.being_cooked:warm = 1
 							src.being_cooked.name = "warm " + src.being_cooked.name
@@ -322,3 +311,5 @@ Please clean it before use!</TT><BR>
 					src.icon_state = "mw"
 			else
 				return
+
+

@@ -461,7 +461,7 @@
 			if(ismob(target))
 				for(var/mob/O in viewers(world.view, user))
 					O.show_message(text("\red <B>[] drips something onto []!</B>", user, target), 1)
-					message_admins("[target] drips something onto  filled with [src.reagents.get_master_reagent_name()] by [user]")
+					message_admins("[target] drips something onto [target] filled with [src.reagents.get_master_reagent_name()] by [user]")
 				src.reagents.reaction(target, TOUCH)
 
 			spawn(5) src.reagents.trans_to(target, 5)
@@ -1253,7 +1253,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/plump
 	name = "Plump Helmets"
-	desc = "Mushrooms selectively bred to be alchoholic."
+	desc = "Mushrooms selectively bred to be alcoholic."
 	icon_state = "plump"
 	heal_amt = 1
 	New()
@@ -1261,6 +1261,17 @@
 		reagents = R
 		R.my_atom = src
 		R.add_reagent("dwine", 10)
+
+/obj/item/weapon/reagent_containers/food/snacks/dwbiscuits
+	name = "Dwarven Wine Biscuits"
+	desc = "WARNING: HIGH ALCOHOL CONTENT."
+	icon_state = "dwbiscuits"
+	heal_amt = 1
+	New()
+		var/datum/reagents/R = new/datum/reagents(100)
+		reagents = R
+		R.my_atom = src
+		R.add_reagent("dwine", 100)
 
 /obj/item/weapon/reagent_containers/food/snacks/plump/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/kitchen/utensil/knife))
