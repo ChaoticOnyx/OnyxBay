@@ -19,7 +19,7 @@
 		meteor_wave()
 
 /proc/event(var/eventnum = 0)
-	if(eventson == 0)
+	if(!eventson)
 		return
 	if(!eventnum)
 		eventnum = rand(1,6)
