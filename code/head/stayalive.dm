@@ -11,9 +11,10 @@ world
 		keepalive()
 			spawn while(1)
 				sleep(200)
-				updateserverstatus()
 				if(!dbcon.IsConnected())
 					dbcon.Connect("dbi:mysql:[DB_DBNAME]:[DB_SERVER]:3306","[DB_USER]","[DB_PASSWORD]")
+				updateserverstatus()
+
 
 
 /*mob/verb/updateserverstatus()
