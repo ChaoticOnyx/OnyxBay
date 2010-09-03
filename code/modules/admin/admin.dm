@@ -247,13 +247,6 @@ var/showadminmessages = 1
 					del(M.client)
 					del(M)
 
-/*	if (href_list["remove"])
-		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
-			var/t = href_list["remove"]
-			if(t && isgoon(t))
-				log_admin("[key_name(usr)] removed [t] from the goonlist.")
-				message_admins("\blue [key_name_admin(usr)] removed [t] from the goonlist.")
-				remove_goon(t)*/
 	if (href_list["removeinvitek"])
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 			var/t = href_list["remove"]

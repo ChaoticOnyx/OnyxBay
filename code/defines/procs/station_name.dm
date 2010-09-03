@@ -5,11 +5,11 @@
 	var/name = ""
 
 	if (prob(10))
-		name += pick("Super", "Ultra", "Secret", "Top Secret", "Deep", "Death", "Goony", "Zybourne", "Central", "Main", "Government", "Uoi", "DongLabs", "Automated", "Experimental")
+		name += pick("Super", "Ultra", "Secret", "Top Secret", "Deep", "Death", "Zybourne", "Central", "Main", "Government", "Uoi", "DongLabs", "Automated", "Experimental")
 		name += " "
 
 	// Prefix
-	name += pick("", "Space", "Star", "Moon", "System", "Mining", "Research", "Supply", "Military", "Goon", "Orbital", "Battle", "Science", "Asteroid", "Home", "Production", "Transport", "Delivery", "Extraplanetary", "Orbital", "Correctional", "Robot")
+	name += pick("", "Space", "Star", "Moon", "System", "Mining", "Research", "Supply", "Military", "Orbital", "Battle", "Science", "Asteroid", "Home", "Production", "Transport", "Delivery", "Extraplanetary", "Orbital", "Correctional", "Robot")
 	if (name)
 		name += " "
 
