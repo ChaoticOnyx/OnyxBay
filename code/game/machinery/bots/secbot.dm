@@ -150,47 +150,57 @@ Auto Patrol: []"},
 	src.icon_state = "secbot[src.on]"
 	walk_to(src,0)
 
-/obj/machinery/bot/secbot/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if ((istype(W, /obj/item/weapon/card/emag)) && (!src.emagged))
-		user << "\red You short out [src]'s target assessment circuits."
-		spawn(0)
-			for(var/mob/O in hearers(src, null))
-				O.show_message("\red <B>[src] buzzes oddly!</B>", 1)
-		src.target = null
-		src.oldtarget_name = user.name
-		src.last_found = world.time
-		src.anchored = 0
-		src.emagged = 1
-		src.on = 1
-		src.icon_state = "secbot[src.on]"
-		mode = SECBOT_IDLE
-	else if (istype(W, /obj/item/weapon/card/id))
+
+/obj/machinery/bot/secbot/attackby(obj/item/weapon/W, mob/user)
+	switch(W.damtype)
+		if("fire")
+			src.health -= W.force * 0.75
+		if("brute")
+			src.health -= W.force * 0.5
+		else
+	if (src.health <= 0)
+		src.explode()
+	else if ((W.force) && (!src.target))
+		src.target = user
+		src.mode = SECBOT_HUNT
+	..()
+
+/obj/machinery/bot/secbot/attackby(obj/item/weapon/card/emag/W, mob/user)
+	if (istype(W))
+		if (!src.emagged)
+			user << "\red You short out [src]'s target assessment circuits."
+			spawn(0)
+				for(var/mob/O in hearers(src, null))
+					O.show_message("\red <B>[src] buzzes oddly!</B>", 1)
+			src.target = null
+			src.oldtarget_name = user.name
+			src.last_found = world.time
+			src.anchored = 0
+			src.emagged = 1
+			src.on = 1
+			src.icon_state = "secbot[src.on]"
+			mode = SECBOT_IDLE
+		return
+	..()
+
+/obj/machinery/bot/secbot/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(istype(W))
 		if (src.allowed(user))
 			src.locked = !src.locked
 			user << "Controls are now [src.locked ? "locked." : "unlocked."]"
 		else
 			user << "\red Access denied."
+		return
+	..()
 
-	else if (istype(W, /obj/item/weapon/screwdriver))
+/obj/machinery/bot/secbot/attackby(obj/item/weapon/screwdriver/W, mob/user)
+	if(istype(W))
 		if (src.health < 25)
 			src.health = 25
 			for(var/mob/O in viewers(src, null))
 				O << "\red [user] repairs [src]!"
-	else
-		switch(W.damtype)
-			if("fire")
-				src.health -= W.force * 0.75
-			if("brute")
-				src.health -= W.force * 0.5
-			else
-		if (src.health <= 0)
-			src.explode()
-		else if ((W.force) && (!src.target))
-			src.target = user
-			src.mode = SECBOT_HUNT
-		..()
-
-
+		return
+	..()
 
 /obj/machinery/bot/secbot/process()
 	set background = 1
