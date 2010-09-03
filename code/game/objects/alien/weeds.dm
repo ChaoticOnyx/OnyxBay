@@ -107,18 +107,14 @@ Alien plants should do something if theres a lot of poison
 		else if(locate(/obj/machinery/door/airlock) in T)
 			var/obj/machinery/door/airlock/D = locate() in T
 			if(D)
-				world << "ATTEMPTING TO OPEN DOOR"
 				if(D.density)
 					D.forcedopen()
 					D.locked = 1
 				else
-					world << "door already open"
 				sleep(10)
-				world << "Door opening"
 				var/obj/alien/weeds/B = new /obj/alien/weeds(U)
 				B.icon_state = pick("")
 				if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
-					world << "spawned on door"
 					B.loc = T
 					B.Life()
 					B.updateicon()
