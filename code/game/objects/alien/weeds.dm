@@ -110,7 +110,6 @@ Alien plants should do something if theres a lot of poison
 				if(D.density)
 					D.forcedopen()
 					D.locked = 1
-				else
 				sleep(10)
 				var/obj/alien/weeds/B = new /obj/alien/weeds(U)
 				B.icon_state = pick("")
