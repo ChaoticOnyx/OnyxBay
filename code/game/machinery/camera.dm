@@ -114,7 +114,7 @@
 						closestDist = get_dist(C, target)
 				//usr << text("Dist = [] for camera []", closestDist, C.name)
 				var/zmatched = 0
-				if (closestDist > 7 || closestDist == -1)
+				if (closestDist > 7 || closestDist == -1 || C.z != usr.z)
 					//check other cameras
 					var/obj/machinery/camera/closest = C
 					for(var/obj/machinery/camera/C2 in world)
