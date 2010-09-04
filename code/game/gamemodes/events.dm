@@ -45,7 +45,7 @@
 		if(3)
 			event = 1
 			command_alert("Space-time anomalies detected on the ship. There is no additional data.", "Anomaly Alert")
-			var/list/turfs = list(	)
+			var/list/turfs = list()
 			var/turf/picked
 			for(var/turf/T in world)
 				if((T.z >= 1 && T.z <= 4) && istype(T,/turf/simulated/floor) && !istype(T,/turf/space))
