@@ -60,18 +60,19 @@ datum
 				if(main_shuttle.location<2)
 					return 0
 
-				if(!owner.current || owner.current.stat ==2)
+				if(!owner.current || owner.current.stat == 2)
 					return 0
+				var/turf/location = get_turf(owner.current.loc)
+
 				for(var/datum/shuttle/s in shuttles)
-					var/area/shuttle = locate(s.centcom)
-
-					for(var/mob/living/player in world)
-						if (player.mind && (player.mind != owner))
-							if (player.stat != 2) //they're not dead
-								if (get_turf(player) in shuttle)
+					if(location in locate(s.centcom))
+						for(var/mob/living/player in locate(s.centcom))
+							if (player.mind && (player.mind != owner))
+								if (player.stat != 2) //they're not dead
 									return 0
+						return 1
 
-				return 1
+				return 0
 
 		escape
 			explanation_text = "Escape on the shuttle alive, without being arrested"

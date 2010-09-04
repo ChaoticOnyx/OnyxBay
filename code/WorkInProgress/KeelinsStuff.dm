@@ -636,7 +636,10 @@
 						fromupdate += ttl
 
 					else
-						T.ReplaceWithOpen()
+						if (locate(T.x,T.y,(T.z + 1)) && (!istype(locate(T.x,T.y,(T.z + 1)), /turf/space)))
+							T.ReplaceWithHull()
+						else
+							T.ReplaceWithOpen()
 
 					refined_src -= T
 					refined_trg -= B

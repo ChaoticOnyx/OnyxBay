@@ -108,6 +108,9 @@
 /turf/proc/ReplaceWithOpen()
 	if(!icon_old) icon_old = icon_state
 	new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
+/turf/proc/ReplaceWithHull()
+	if(!icon_old) icon_old = icon_state
+	new /turf/unsimulated/floor/hull( locate(src.x, src.y, src.z) )
 /turf/proc/ReplaceWithFloor()
 	if(!icon_old) icon_old = icon_state
 	var/turf/simulated/floor/W
