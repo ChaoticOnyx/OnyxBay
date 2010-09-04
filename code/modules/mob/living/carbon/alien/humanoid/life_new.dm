@@ -174,7 +174,7 @@
 			if(src.health < 0)
 				src.losebreath++
 
-			if(losebreath>0) //Suffocating so do not take a breath
+			if(losebreath > 10) //Suffocating so do not take a breath
 				src.losebreath--
 				if (prob(75)) //High chance of gasping for air
 					spawn emote("gasp")
@@ -267,6 +267,8 @@
 				fire_alert = 0
 
 			//Temporary fixes to the alerts.
+			if(oxyloss > 10)
+				losebreath++
 
 			return 1
 
