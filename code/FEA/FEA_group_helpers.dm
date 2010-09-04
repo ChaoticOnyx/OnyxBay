@@ -11,7 +11,7 @@
 
 	//TODO integrate up/down support
 	var/turf/simulated/floor/open/above = get_step_3d(src,UP)
-	var/turf/simulated/floor/below = get_step_3d(src,DOWN)
+	var/turf/simulated/floor/open/below = get_step_3d(src,DOWN)
 
 	//Clear those we do not have access to
 	if(!CanPass(null, north, null, 1) || !istype(north))
