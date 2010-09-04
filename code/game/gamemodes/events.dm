@@ -263,7 +263,7 @@
 		else if (istype(B,/turf))
 			if (istype(B,/turf/simulated) && (prob(1) && prob(75)))
 				src.smoke.start()
-				B:ReplaceWithSpace()
+				B:ReplaceWithOpen()
 		else if (istype(B,/mob/living))
 			step_towards_3d(B,src)
 
@@ -281,7 +281,7 @@
 		else if (istype(A,/turf))
 			if (istype(A,/turf/simulated) && prob(1))
 				src.smoke.start()
-				A:ReplaceWithSpace()
+				A:ReplaceWithOpen()
 		else if (istype(A,/mob/living))
 			step_towards_3d(A,src)
 
