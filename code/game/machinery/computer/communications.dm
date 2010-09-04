@@ -390,6 +390,10 @@
 	if ((!( ticker ) || main_shuttle.location == 0))
 		return
 
+	if (LaunchControl.online)
+		user << "\red Launch process already started!"
+		return
+
 	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "sandbox")
 		user << "Under directive 7-10, [station_name()] is quarantined until further notice."
 		return

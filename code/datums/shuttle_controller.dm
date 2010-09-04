@@ -240,7 +240,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 					last60 = timeleft() - 60
 				else
 					last60 = 60
-			if(timeleft > 30)
+			else if(timeleft > 30)
 				radioalert("[round(timeleft(),1)] seconds until escape pod launch.","Escape Computer")
 				if(timeleft() - 10 > 10)
 					last60 = timeleft() - 10
