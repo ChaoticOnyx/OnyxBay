@@ -1211,7 +1211,6 @@
 	amount = 5
 	heal_amt = 2
 	heal(var/mob/M)
-		..()
 
 /obj/item/weapon/reagent_containers/food/snacks/monkeyburger
 	name = "monkeyburger"

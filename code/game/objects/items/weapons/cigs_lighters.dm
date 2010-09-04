@@ -41,7 +41,7 @@ ZIPPO
 			src.icon_state = "zippoon"
 			src.item_state = "zippoon"
 			for(var/mob/O in viewers(user, null))
-				O.show_message(text("\red Without even breaking stride, [] flips open and lights the [] in one smooth movement.", user, src), 1)
+				O.show_message("\red Without even breaking stride, [user] flips open and lights the [src] in one smooth movement.", 1)
 
 			user.ul_SetLuminosity(user.luminosity + ZIPPO_LUM)
 			spawn(0)
@@ -51,7 +51,7 @@ ZIPPO
 			src.icon_state = "zippo"
 			src.item_state = "zippo"
 			for(var/mob/O in viewers(user, null))
-				O.show_message(text("\red You hear a quiet click, as [] shuts off the [] without even looking what they're doing. Wow.", user, src), 1)
+				O.show_message("\red You hear a quiet click, as [user] shuts off the [src] without even looking at what they're doing. Wow.", 1)
 
 			user.ul_SetLuminosity(user.luminosity - ZIPPO_LUM)
 	else
