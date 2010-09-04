@@ -413,7 +413,6 @@ turf/simulated/wall/bullet_act(flag,dir)
 		if(1.0)
 			//SN src = null
 			src.ReplaceWithOpen() //Used to replace with space
-			del(src)
 			return
 		if(2.0)
 			if (prob(50))
