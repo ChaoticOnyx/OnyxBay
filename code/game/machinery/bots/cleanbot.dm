@@ -22,7 +22,6 @@
 	density = 0
 	anchored = 0
 	//weight = 1.0E7
-	var/on = 1
 	var/cleaning = 0
 	var/locked = 1
 	var/screwloose = 0
@@ -34,7 +33,6 @@
 	var/obj/decal/cleanable/oldtarget
 	var/oldloc = null
 	req_access = list(access_janitor)
-	var/path[] = new()
 
 
 /obj/machinery/bot/cleanbot/New()
@@ -119,10 +117,8 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 		src.locked = 1*/
 
 /obj/machinery/bot/cleanbot/process()
-	set background = 1
+	..()
 
-	if(!src.on)
-		return
 	if(src.cleaning)
 		return
 	var/list/cleanbottargets = list()

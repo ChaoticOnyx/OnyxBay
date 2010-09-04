@@ -8,7 +8,6 @@
 	anchored = 0
 //	weight = 1.0E7
 	req_access = list(access_security)
-	var/on = 1
 	var/locked = 1 //Behavior Controls lock
 	var/mob/living/carbon/target
 	var/oldtarget_name
@@ -46,7 +45,6 @@
 	var/new_destination		// pending new destination (waiting for beacon response)
 	var/destination			// destination description tag
 	var/next_destination	// the next destination in the patrol route
-	var/list/path = new				// list of path turfs
 
 	var/blockcount = 0		//number of times retried a blocked path
 	var/awaiting_beacon	= 0	// count of pticks awaiting a beacon response
@@ -530,13 +528,6 @@ Auto Patrol: []"},
 	kv["mode"] = mode
 	post_signal_multiple(control_freq, kv)
 
-
-
-// calculates a path to the current destination
-// given an optional turf to avoid
-/obj/machinery/bot/secbot/proc/calc_path(var/turf/avoid = null)
-	src.path = AStar(src.loc, patrol_target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=list(/obj/landmark/alterations/nopath, avoid))
-	src.path = reverselist(src.path)
 
 
 // look for a criminal in view of the bot

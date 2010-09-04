@@ -230,6 +230,7 @@
 #include "code\defines\procs\gamehelpers.dm"
 #include "code\defines\procs\helpers.dm"
 #include "code\defines\procs\logging.dm"
+#include "code\defines\procs\navigation.dm"
 #include "code\defines\procs\religion_name.dm"
 #include "code\defines\procs\station_name.dm"
 #include "code\defines\procs\syndicate_name.dm"

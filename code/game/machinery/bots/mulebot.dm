@@ -11,7 +11,6 @@
 	density = 1
 	anchored = 1
 	animate_movement=1
-	var/on = 1
 	var/locked = 1
 	var/atom/movable/load = null		// the loaded crate (usually)
 
@@ -26,7 +25,6 @@
 	var/destination = ""		// destination description
 	var/home_destination = "" 	// tag of home beacon
 	req_access = list(access_cargo, access_cargo_bot)
-	var/path[] = new()
 
 	var/mode = 0		//0 = idle/ready
 						//1 = loading/unloading
@@ -524,28 +522,27 @@
 
 
 	process()
+		..()
 		if(!has_power())
 			on = 0
 			return
-		if(on)
-			var/speed = ((wires & wire_motor1) ? 1:0) + ((wires & wire_motor2) ? 2:0)
-			//world << "speed: [speed]"
-			switch(speed)
-				if(0)
-					// do nothing
-				if(1)
+		var/speed = ((wires & wire_motor1) ? 1:0) + ((wires & wire_motor2) ? 2:0)
+		//world << "speed: [speed]"
+		switch(speed)
+			if(0)
+				// do nothing
+			if(1)
+				process_bot()
+				spawn(3)
 					process_bot()
-					spawn(3)
-						process_bot()
-						sleep(3)
-						process_bot()
-				if(2)
+					sleep(3)
 					process_bot()
-					spawn(5)
-						process_bot()
-				if(3)
+			if(2)
+				process_bot()
+				spawn(5)
 					process_bot()
-
+			if(3)
+				process_bot()
 		if(refresh) updateDialog()
 
 	proc/process_bot()
@@ -622,7 +619,7 @@
 								playsound(src.loc, 'buzz-sigh.ogg', 50, 0)
 
 								spawn(2)
-									calc_path(next)
+									calc_path(target, next)
 									if(path.len > 0)
 										src.visible_message("[src] makes a delighted ping!", "You hear a ping.")
 										playsound(src.loc, 'ping.ogg', 50, 0)
@@ -646,7 +643,7 @@
 				mode = 6
 				spawn(0)
 
-					calc_path()
+					calc_path(target)
 
 					if(path.len > 0)
 						blockcount = 0
@@ -664,13 +661,6 @@
 			//if(7)
 				//world << "No dest / no route."
 		return
-
-
-	// calculates a path to the current destination
-	// given an optional turf to avoid
-	proc/calc_path(var/turf/avoid = null)
-		src.path = AStar(src.loc, src.target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, id=botcard, exclude=list(/obj/landmark/alterations/nopath, avoid))
-		src.path = reverselist(src.path)
 
 
 	// sets the current destination
@@ -861,7 +851,7 @@
 				else
 					loaddir = 0
 				icon_state = "mulebot[(wires & wire_mobavoid) == wire_mobavoid]"
-				calc_path()
+				calc_path(target)
 				updateDialog()
 
 	// send a radio signal with a single data key/value pair
