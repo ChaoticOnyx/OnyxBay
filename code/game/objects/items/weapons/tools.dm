@@ -164,6 +164,8 @@ WELDINGTOOOL
 	//check eye protection
 	var/safety = null
 
+	if (istype(user,/mob/living/silicon/robot)) return
+
 	if (istype(user:head, /obj/item/clothing/head/helmet/welding) || istype(user:head, /obj/item/clothing/head/helmet/space))
 		safety = 2
 	else if (istype(user:glasses, /obj/item/clothing/glasses/sunglasses))
