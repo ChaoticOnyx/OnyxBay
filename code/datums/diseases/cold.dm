@@ -61,4 +61,4 @@
 			if(prob(1))
 				affected_mob.emote("gasp")
 			if(prob(25))
-				affected_mob.contract_disease(new /datum/disease/flu)
+				affected_mob.contract_disease(new /datum/disease/flu,1)
