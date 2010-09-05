@@ -11,11 +11,11 @@
 
 // these define the time taken for the shuttle to get to SS13
 // and the time before it leaves again
-#define SHUTTLEARRIVETIME 10		// 10 minutes = 600 seconds
+#define SHUTTLEARRIVETIME 600		// 10 minutes = 600 seconds
 
-#define PODLAUNCHTIME 180
+#define PODLAUNCHTIME 600
 
-#define PODTRANSITTIME 60
+#define PODTRANSITTIME 150
 
 #define SHUTTLELEAVETIME 10		// 3 minutes = 180 seconds
 
