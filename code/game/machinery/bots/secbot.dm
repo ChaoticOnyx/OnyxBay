@@ -310,7 +310,7 @@ Auto Patrol: []"},
 
 			else if(patrol_target)		// has patrol target already
 				spawn(0)
-					calc_path()		// so just find a route to it
+					calc_path(patrol_target)		// so just find a route to it
 					if(path.len == 0)
 						patrol_target = 0
 						return
@@ -366,7 +366,7 @@ Auto Patrol: []"},
 				if(blockcount > 5)	// attempt 5 times before recomputing
 					// find new path excluding blocked turf
 					spawn(2)
-						calc_path(next)
+						calc_path(patrol_target, next)
 						if(path.len == 0)
 							find_patrol_target()
 						else
@@ -469,7 +469,7 @@ Auto Patrol: []"},
 				destination = null
 				awaiting_beacon = 0
 				mode = SECBOT_SUMMON
-				calc_path()
+				calc_path(patrol_target)
 				speak("Responding.")
 				return
 
