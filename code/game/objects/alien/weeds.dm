@@ -79,12 +79,17 @@ Alien plants should do something if theres a lot of poison
 	if (istype(U, /turf/space))
 		del(src)
 		return
-	var/obj/cable/C = locate() in src.loc
-	if(C)
-		del(C)
 	var/obj/machinery/light/L = locate() in src.loc
 	if(L)
 		L.broken()
+	var/obj/machinery/power/apc/A = locate() in src.loc
+	if(A)
+		A.set_broken()
+	if(prob(1))
+		src.loc.ex_act(2)
+
+	for(var/mob/living/carbon/human/h in src.loc)
+		h.hallucination += 10
 	for(var/dirn in cardinal)
 		var/turf/T = get_step(src, dirn)
 
@@ -92,6 +97,8 @@ Alien plants should do something if theres a lot of poison
 			continue
 		if(T.density)
 			continue
+
+
 		if(locate(/obj/grille) in T || /obj/window/ in T)
 			var/obj/alien/weeds/B = new /obj/alien/weeds(U)
 			B.icon_state = pick("")
@@ -120,7 +127,7 @@ Alien plants should do something if theres a lot of poison
 					continue
 				else
 					del(B)
-		else if(!(locate(/obj/alien/weeds) in T))
+		else if(!(locate(/obj/alien/weeds) in T) && prob(10))
 			var/obj/alien/weeds/B = new /obj/alien/weeds(U)
 			B.icon_state = pick("")
 			B.loc = T
