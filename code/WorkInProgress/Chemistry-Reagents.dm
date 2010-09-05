@@ -964,7 +964,7 @@ datum
 
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				if((M.virus) && (prob(8)))
+				if((M.virus) && (prob(8)) && (!M.virus.resistant))
 					if(M.virus.spread == "Airborne")
 						M.virus.spread = "Remissive"
 					M.virus.stage--

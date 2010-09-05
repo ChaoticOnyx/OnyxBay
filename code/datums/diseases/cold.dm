@@ -1,9 +1,10 @@
 /datum/disease/cold
 	name = "The Cold"
-	max_stages = 3
+	max_stages = 4
 	spread = "Airborne"
 	cure = "Rest"
 	affected_species = list("Human")
+	resistant = 1
 
 /datum/disease/cold/stage_act()
 	..()
@@ -47,5 +48,17 @@
 				affected_mob << "\red Your throat feels sore."
 			if(prob(1))
 				affected_mob << "\red Mucous runs down the back of your throat."
-			if(prob(1) && prob(50))
+		if(4)
+			if(affected_mob.sleeping && prob(25))
+				affected_mob << "\blue You feel better."
+				affected_mob.resistances += affected_mob.virus.type
+				affected_mob.virus = null
+				return
+			if(prob(1) && prob(10))
+				affected_mob << "\blue You feel better."
+				affected_mob.resistances += affected_mob.virus.type
+				affected_mob.virus = null
+			if(prob(1))
+				affected_mob.emote("gasp")
+			if(prob(25))
 				affected_mob.contract_disease(new /datum/disease/flu)

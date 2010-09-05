@@ -10,6 +10,7 @@
 	var/curable = 1 //can this disease be cured?
 	var/list/strain_data = list() //This is passed on to infectees
 	var/stage_prob = 5		// probability of advancing to next stage, default 5% per check
+	var/resistant
 
 /datum/disease/proc/stage_act()
 	if(carrier)
