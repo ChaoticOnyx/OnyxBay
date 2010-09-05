@@ -189,6 +189,7 @@
 		proc
 			update() //Update the overlayss to make the openspace turf show what's down a level
 
+				if(!floorbelow) return
 				src.clearoverlays()
 				src.addoverlay(floorbelow)
 
@@ -204,6 +205,7 @@
 				I = image('ULIcons.dmi', "1-1-1")
 				I.layer = MOB_LAYER - 0.05
 				src.addoverlay(I)
+
 			process_extra()
 				if(!floorbelow) return
 				if(istype(floorbelow,/turf/simulated)) //Infeasibly complicated gooncode for the Elder System. =P
