@@ -29,7 +29,7 @@ pl_control/var
 	GENETIC_CORRUPTION_METHOD = "Numeric"
 	GENETIC_CORRUPTION_DESC = "When set to a probability in 1000, any humans in plasma will have this chance to develop a random mutation."
 
-	SKIN_BURNS = 0       //Plasma has an effect similar to mustard gas on the un-suited.
+	SKIN_BURNS = 1       //Plasma has an effect similar to mustard gas on the un-suited.
 	SKIN_BURNS_RANDOM = 10
 	SKIN_BURNS_METHOD = "Toggle"
 	SKIN_BURNS_DESC = "When toggled, humans with exposed skin will suffer burns (similar to mustard gas) in plasma."
@@ -55,13 +55,13 @@ pl_control/var
 	//PLASMA_DMG_QUOTIENT = 10
 	//PLASMA_DMG_QUOTIENT_RANDOM = "1d10+4"
 
-	CONTAMINATION_LOSS = 0.01
+	CONTAMINATION_LOSS = 0.1
 	CONTAMINATION_LOSS_DESC = "A number representing the damage done per life cycle by contaminated items."
-	PLASMA_HALLUCINATION = 0
+	PLASMA_HALLUCINATION = 1
 	PLASMA_HALLUCINATION_METHOD = "Toggle"
 	PLASMA_HALLUCINATION_DESC = "If toggled, uses the remnants of the hallucination code to induce visions in those\
 	who breathe plasma."
-	N2O_HALLUCINATION = 0
+	N2O_HALLUCINATION = 1
 	N2O_HALLUCINATION_METHOD = "Toggle"
 	N2O_HALLUCINATION_DESC = "If toggled, uses the remnants of the hallucination code to induce visions in those\
 	who breathe N2O."
