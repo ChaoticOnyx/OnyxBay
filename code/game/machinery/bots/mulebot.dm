@@ -522,7 +522,8 @@
 
 
 	process()
-		..()
+		if (!src.on)
+			return
 		if(!has_power())
 			on = 0
 			return

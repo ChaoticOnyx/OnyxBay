@@ -224,7 +224,8 @@
 
 
 /obj/machinery/bot/medbot/process()
-	..()
+	if (!src.on)
+		return
 
 	if(src.stunned)
 		src.icon_state = "medibota"

@@ -117,7 +117,8 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 		src.locked = 1*/
 
 /obj/machinery/bot/cleanbot/process()
-	..()
+	if (!src.on)
+		return
 
 	if(src.cleaning)
 		return

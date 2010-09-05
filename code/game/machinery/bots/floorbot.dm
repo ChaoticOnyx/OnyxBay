@@ -129,7 +129,8 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 	src.path = new()
 
 /obj/machinery/bot/floorbot/process()
-	..()
+	if (!src.on)
+		return
 
 	if(src.repairing)
 		return
