@@ -214,10 +214,10 @@ proc/AirflowSpace(zone/A)
 			//if(istype(M,/mob/living/silicon/ai)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
-				if(istype(src, /mob/living/carbon/human))
-					if(src:buckled) continue
-					if(src:wear_suit)
-						if(src:wear_suit.airflowprot) continue
+				if(istype(M, /mob/living/carbon/human))
+					if(M:buckled) continue
+					if(M:wear_suit)
+						if(M:wear_suit.airflowprot) continue
 						else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
 						M:weakened = max(M:weakened,5)
 				else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
