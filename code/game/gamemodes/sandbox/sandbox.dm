@@ -6,7 +6,7 @@
 	..()
 	world << "<B>Build your own station with the sandbox-panel command!</B>"
 
-/datum/game_mode/sandbox/pre_setup()
+/datum/game_mode/sandbox/post_setup()
 	for(var/client/C)
 		C.mob.CanBuild()
 
