@@ -177,7 +177,7 @@ Please clean it before use!</TT><BR>
 			var/operation = text2num(href_list["cook"])
 
 			var/cook_time = 200 // The time to wait before spawning the item
-			var/cooked_item = ""
+			var/cooked_item = null
 
 			if(operation == 1) // If cook was pressed
 				var/list/has = list()
@@ -219,7 +219,7 @@ Please clean it before use!</TT><BR>
 						break check_recipes
 
 
-				if(cooked_item == "") //Oops that wasn't a recipe dummy!!!
+				if(!cooked_item) //Oops that wasn't a recipe dummy!!!
 					if(src.contents && !nonfood) //Make sure there's something inside though to dirty it
 						src.operating = 1 // Turn it on
 						src.icon_state = "mw1"
@@ -306,7 +306,6 @@ Please clean it before use!</TT><BR>
 							src.being_cooked:cooltime()
 						src.being_cooked.loc = get_turf(src) // Create the new item
 						src.being_cooked = null // We're done!
-
 					src.operating = 0 // Turn the microwave back off
 					src.icon_state = "mw"
 			else

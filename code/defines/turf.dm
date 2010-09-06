@@ -143,31 +143,32 @@
 					add_to_other_zone()
 				update()
 			var/turf/T = locate(x, y, z + 1)
-			switch (T.type) //Somehow, I don't think I thought this cunning plan all the way through - Sukasa
-				if (/turf/simulated/floor)
-					//Do nothing - valid
-				if (/turf/simulated/floor/plating)
-					//Do nothing - valid
-				if (/turf/simulated/floor/engine)
-					//Do nothing - valid
-				if (/turf/simulated/floor/engine/vacuum)
-					//Do nothing - valid
-				if (/turf/simulated/floor/airless)
-					//Do nothing - valid
-				if (/turf/simulated/floor/grid)
-					//Do nothing - valid
-				if (/turf/simulated/floor/plating/airless)
-					//Do nothing - valid
-				if (/turf/simulated/floor/open)
-					//Do nothing - valid
-				if (/turf/space)
-					var/turf/space/F = new(src)									//Then change to a Space tile (no falling into space)
-					F.name = F.name
-					return
-				else
-					var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
-					F.name = F.name
-					return
+			if(T)
+				switch (T.type) //Somehow, I don't think I thought this cunning plan all the way through - Sukasa
+					if (/turf/simulated/floor)
+						//Do nothing - valid
+					if (/turf/simulated/floor/plating)
+						//Do nothing - valid
+					if (/turf/simulated/floor/engine)
+						//Do nothing - valid
+					if (/turf/simulated/floor/engine/vacuum)
+						//Do nothing - valid
+					if (/turf/simulated/floor/airless)
+						//Do nothing - valid
+					if (/turf/simulated/floor/grid)
+						//Do nothing - valid
+					if (/turf/simulated/floor/plating/airless)
+						//Do nothing - valid
+					if (/turf/simulated/floor/open)
+						//Do nothing - valid
+					if (/turf/space)
+						var/turf/space/F = new(src)									//Then change to a Space tile (no falling into space)
+						F.name = F.name
+						return
+					else
+						var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
+						F.name = F.name
+						return
 		Del()
 			if(zone)
 				zone.Disconnect(src,floorbelow)
@@ -188,6 +189,7 @@
 		proc
 			update() //Update the overlayss to make the openspace turf show what's down a level
 
+				if(!floorbelow) return
 				src.clearoverlays()
 				src.addoverlay(floorbelow)
 
@@ -203,6 +205,7 @@
 				I = image('ULIcons.dmi', "1-1-1")
 				I.layer = MOB_LAYER - 0.05
 				src.addoverlay(I)
+
 			process_extra()
 				if(!floorbelow) return
 				if(istype(floorbelow,/turf/simulated)) //Infeasibly complicated gooncode for the Elder System. =P

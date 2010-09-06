@@ -36,9 +36,10 @@
 	target.store_memory("Head office has ordered your downsizing. Watch out!", 0)
 
 	for(var/mob/living/silicon/ai/M in world)
-		M << "These are your laws now:"
 		M.set_zeroth_law("[target_desc] is not human.")
-		M.show_laws()
+		if(M.client)
+			M << "These are your laws now:"
+			M.show_laws()
 
 /datum/game_mode/restructuring/check_finished()
 	. = ..()
@@ -66,15 +67,15 @@
 
 /datum/game_mode/restructuring/proc/get_mob_list()
 	var/list/mobs = list()
-	for(var/mob/M in world)
-		if (M.stat<2 && M.client && istype(M, /mob/living/carbon/human))
-			mobs += M
+	for(var/client/C)
+		if (C.mob.stat<2 && istype(C.mob, /mob/living/carbon/human))
+			mobs += C.mob
 	return mobs
 
 /datum/game_mode/restructuring/proc/the_winner()
-	for(var/mob/M in world)
-		if (M.stat<2 && M.client && istype(M, /mob/living/carbon/human))
-			return M.name
+	for(var/client/C)
+		if (C.mob.stat < 2 && istype(C.mob, /mob/living/carbon/human))
+			return C.mob.name
 
 /datum/game_mode/restructuring/proc/get_target_desc(mob/target) //return a useful string describing the target
 	var/targetrank = null

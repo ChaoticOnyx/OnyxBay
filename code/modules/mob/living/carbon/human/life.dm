@@ -221,7 +221,7 @@
 			//	if(wear_mask.flags & 4)
 			//		halfmask = 1
 
-			if(losebreath>0) //Suffocating so do not take a breath
+			if(losebreath > 10) //Suffocating so do not take a breath
 				src.losebreath--
 				if (prob(75)) //High chance of gasping for air
 					spawn emote("gasp")
@@ -393,7 +393,8 @@
 			else
 				fire_alert = 0
 
-
+			if(oxyloss > 10)
+				losebreath++
 			//Temporary fixes to the alerts.
 
 			return 1

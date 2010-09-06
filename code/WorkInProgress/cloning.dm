@@ -374,16 +374,16 @@
 		return
 
 	var/mob/selected = null
-	for(var/mob/M in world)
+	for(var/client/C)
 		//Dead people only thanks!
-		if ((M.stat != 2) || (!M.client))
+		if ((C.mob.stat != 2))
 			continue
 		//They need a brain!
-		if ((istype(M, /mob/living/carbon/human)) && (M:brain_op_stage >= 4.0))
+		if ((istype(C.mob, /mob/living/carbon/human)) && (C.mob:brain_op_stage >= 4.0))
 			continue
 
-		if (M.ckey == find_key)
-			selected = M
+		if ("[C]" == find_key)
+			selected = C.mob
 			break
 	return selected
 
@@ -543,11 +543,8 @@
 			src.occupant.brainloss = max(src.occupant.brainloss-1, 0)
 
 			//So clones don't die of oxyloss in a running pod.
-			if (src.occupant.reagents.get_reagent_amount("lexorin") < 30)
-				src.occupant.reagents.add_reagent("lexorin", 60)
-
-			//Also heal some oxyloss ourselves because inaprovaline is so bad at preventing it!!
-			src.occupant.oxyloss = max(src.occupant.oxyloss-2, 0)
+			if (src.occupant.reagents.get_reagent_amount("inaprovaline") < 30)
+				src.occupant.reagents.add_reagent("inaprovaline", 60)
 
 			//Stop baking in the tubes you jerks.
 			src.occupant.fireloss = max(src.occupant.fireloss-2, 0)

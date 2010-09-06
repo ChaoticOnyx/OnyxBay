@@ -85,24 +85,22 @@
 		var/largest_click_time = 0
 		var/mob/largest_move_mob = null
 		var/mob/largest_click_mob = null
-		for(var/mob/M in world)
-			if(!M.client)
-				continue
-			if(M.next_move >= largest_move_time)
-				largest_move_mob = M
-				if(M.next_move > world.time)
-					largest_move_time = M.next_move - world.time
+		for(var/client/C)
+			if(C.mob.next_move >= largest_move_time)
+				largest_move_mob = C.mob
+				if(C.mob.next_move > world.time)
+					largest_move_time = C.mob.next_move - world.time
 				else
 					largest_move_time = 1
-			if(M.lastDblClick >= largest_click_time)
-				largest_click_mob = M
-				if(M.lastDblClick > world.time)
-					largest_click_time = M.lastDblClick - world.time
+			if(C.mob.lastDblClick >= largest_click_time)
+				largest_click_mob = C.mob
+				if(C.mob.lastDblClick > world.time)
+					largest_click_time = C.mob.lastDblClick - world.time
 				else
 					largest_click_time = 0
-			log_admin("DEBUG: [key_name(M)]  next_move = [M.next_move]  lastDblClick = [M.lastDblClick]  world.time = [world.time]")
-			M.next_move = 1
-			M.lastDblClick = 0
+			log_admin("DEBUG: [key_name(C.mob)]  next_move = [C.mob.next_move]  lastDblClick = [C.mob.lastDblClick]  world.time = [world.time]")
+			C.mob.next_move = 1
+			C.mob.lastDblClick = 0
 		message_admins("[key_name_admin(largest_move_mob)] had the largest move delay with [largest_move_time] frames / [largest_move_time/10] seconds!", 1)
 		message_admins("[key_name_admin(largest_click_mob)] had the largest click delay with [largest_click_time] frames / [largest_click_time/10] seconds!", 1)
 		message_admins("world.time = [world.time]", 1)

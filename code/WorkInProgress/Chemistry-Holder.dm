@@ -85,7 +85,7 @@ datum
 
 			handle_reactions()
 
-				if(ismob(my_atom)) return //No reactions inside mobs :I
+			//	if(ismob(my_atom)) return //No reactions inside mobs :I <-I SAY OTHERWISE
 
 				for(var/A in typesof(/datum/chemical_reaction) - /datum/chemical_reaction)
 					var/datum/chemical_reaction/C = new A()

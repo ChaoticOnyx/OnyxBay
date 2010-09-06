@@ -26,7 +26,7 @@
 	if(!istype(above))
 		above = null
 
-	if(!istype(src, /turf/simulated/floor/open))
+	if(!istype(src, /turf/simulated/floor/open) || istype(below, /turf/space))
 		below = null
 
 	var/new_group_possible = 0

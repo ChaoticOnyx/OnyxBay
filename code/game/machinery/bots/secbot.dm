@@ -8,7 +8,6 @@
 	anchored = 0
 //	weight = 1.0E7
 	req_access = list(access_security)
-	var/on = 1
 	var/locked = 1 //Behavior Controls lock
 	var/mob/living/carbon/target
 	var/oldtarget_name
@@ -46,7 +45,6 @@
 	var/new_destination		// pending new destination (waiting for beacon response)
 	var/destination			// destination description tag
 	var/next_destination	// the next destination in the patrol route
-	var/list/path = new				// list of path turfs
 
 	var/blockcount = 0		//number of times retried a blocked path
 	var/awaiting_beacon	= 0	// count of pticks awaiting a beacon response
@@ -150,47 +148,57 @@ Auto Patrol: []"},
 	src.icon_state = "secbot[src.on]"
 	walk_to(src,0)
 
-/obj/machinery/bot/secbot/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if ((istype(W, /obj/item/weapon/card/emag)) && (!src.emagged))
-		user << "\red You short out [src]'s target assessment circuits."
-		spawn(0)
-			for(var/mob/O in hearers(src, null))
-				O.show_message("\red <B>[src] buzzes oddly!</B>", 1)
-		src.target = null
-		src.oldtarget_name = user.name
-		src.last_found = world.time
-		src.anchored = 0
-		src.emagged = 1
-		src.on = 1
-		src.icon_state = "secbot[src.on]"
-		mode = SECBOT_IDLE
-	else if (istype(W, /obj/item/weapon/card/id))
+
+/obj/machinery/bot/secbot/attackby(obj/item/weapon/W, mob/user)
+	switch(W.damtype)
+		if("fire")
+			src.health -= W.force * 0.75
+		if("brute")
+			src.health -= W.force * 0.5
+		else
+	if (src.health <= 0)
+		src.explode()
+	else if ((W.force) && (!src.target))
+		src.target = user
+		src.mode = SECBOT_HUNT
+	..()
+
+/obj/machinery/bot/secbot/attackby(obj/item/weapon/card/emag/W, mob/user)
+	if (istype(W))
+		if (!src.emagged)
+			user << "\red You short out [src]'s target assessment circuits."
+			spawn(0)
+				for(var/mob/O in hearers(src, null))
+					O.show_message("\red <B>[src] buzzes oddly!</B>", 1)
+			src.target = null
+			src.oldtarget_name = user.name
+			src.last_found = world.time
+			src.anchored = 0
+			src.emagged = 1
+			src.on = 1
+			src.icon_state = "secbot[src.on]"
+			mode = SECBOT_IDLE
+		return
+	return ..()
+
+/obj/machinery/bot/secbot/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(istype(W))
 		if (src.allowed(user))
 			src.locked = !src.locked
 			user << "Controls are now [src.locked ? "locked." : "unlocked."]"
 		else
 			user << "\red Access denied."
+		return
+	return ..()
 
-	else if (istype(W, /obj/item/weapon/screwdriver))
+/obj/machinery/bot/secbot/attackby(obj/item/weapon/screwdriver/W, mob/user)
+	if(istype(W))
 		if (src.health < 25)
 			src.health = 25
 			for(var/mob/O in viewers(src, null))
 				O << "\red [user] repairs [src]!"
-	else
-		switch(W.damtype)
-			if("fire")
-				src.health -= W.force * 0.75
-			if("brute")
-				src.health -= W.force * 0.5
-			else
-		if (src.health <= 0)
-			src.explode()
-		else if ((W.force) && (!src.target))
-			src.target = user
-			src.mode = SECBOT_HUNT
-		..()
-
-
+		return
+	return ..()
 
 /obj/machinery/bot/secbot/process()
 	set background = 1
@@ -302,7 +310,7 @@ Auto Patrol: []"},
 
 			else if(patrol_target)		// has patrol target already
 				spawn(0)
-					calc_path()		// so just find a route to it
+					calc_path(patrol_target)		// so just find a route to it
 					if(path.len == 0)
 						patrol_target = 0
 						return
@@ -358,7 +366,7 @@ Auto Patrol: []"},
 				if(blockcount > 5)	// attempt 5 times before recomputing
 					// find new path excluding blocked turf
 					spawn(2)
-						calc_path(next)
+						calc_path(patrol_target, next)
 						if(path.len == 0)
 							find_patrol_target()
 						else
@@ -461,7 +469,7 @@ Auto Patrol: []"},
 				destination = null
 				awaiting_beacon = 0
 				mode = SECBOT_SUMMON
-				calc_path()
+				calc_path(patrol_target)
 				speak("Responding.")
 				return
 
@@ -520,13 +528,6 @@ Auto Patrol: []"},
 	kv["mode"] = mode
 	post_signal_multiple(control_freq, kv)
 
-
-
-// calculates a path to the current destination
-// given an optional turf to avoid
-/obj/machinery/bot/secbot/proc/calc_path(var/turf/avoid = null)
-	src.path = AStar(src.loc, patrol_target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=list(/obj/landmark/alterations/nopath, avoid))
-	src.path = reverselist(src.path)
 
 
 // look for a criminal in view of the bot

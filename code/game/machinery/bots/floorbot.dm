@@ -34,7 +34,6 @@
 	anchored = 0
 	//weight = 1.0E7
 	var/amount = 10
-	var/on = 1
 	var/repairing = 0
 	var/improvefloors = 0
 	var/eattiles = 0
@@ -44,7 +43,6 @@
 	var/turf/oldtarget
 	var/oldloc = null
 	req_access = list(access_atmospherics)
-	var/path[] = new()
 
 
 /obj/machinery/bot/floorbot/New()
@@ -131,10 +129,9 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 	src.path = new()
 
 /obj/machinery/bot/floorbot/process()
-	set background = 1
-
-	if(!src.on)
+	if (!src.on)
 		return
+
 	if(src.repairing)
 		return
 	var/list/floorbottargets = list()

@@ -108,6 +108,9 @@
 /turf/proc/ReplaceWithOpen()
 	if(!icon_old) icon_old = icon_state
 	new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
+/turf/proc/ReplaceWithHull()
+	if(!icon_old) icon_old = icon_state
+	new /turf/unsimulated/floor/hull( locate(src.x, src.y, src.z) )
 /turf/proc/ReplaceWithFloor()
 	if(!icon_old) icon_old = icon_state
 	var/turf/simulated/floor/W
@@ -413,7 +416,6 @@ turf/simulated/wall/bullet_act(flag,dir)
 		if(1.0)
 			//SN src = null
 			src.ReplaceWithOpen() //Used to replace with space
-			del(src)
 			return
 		if(2.0)
 			if (prob(50))

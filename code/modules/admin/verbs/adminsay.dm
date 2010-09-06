@@ -19,10 +19,10 @@
 	if (!msg)
 		return
 
-	for (var/mob/M in world)
-		if (M.client && M.client.holder)
+	for (var/client/C)
+		if (C.holder)
 			if (src.holder.rank == "Goat Fart")
-				M << "<span class=\"gfartadmin\"><span class=\"prefix\">ADMIN:</span> <span class=\"name\">[key_name(usr, M)]:</span> <span class=\"message\">[msg]</span></span>"
+				C.mob << "<span class=\"gfartadmin\"><span class=\"prefix\">ADMIN:</span> <span class=\"name\">[key_name(usr, C.mob)]:</span> <span class=\"message\">[msg]</span></span>"
 			else
-				M << "<span class=\"admin\"><span class=\"prefix\">ADMIN:</span> <span class=\"name\">[key_name(usr, M)]:</span> <span class=\"message\">[msg]</span></span>"
+				C.mob << "<span class=\"admin\"><span class=\"prefix\">ADMIN:</span> <span class=\"name\">[key_name(usr, C.mob)]:</span> <span class=\"message\">[msg]</span></span>"
 

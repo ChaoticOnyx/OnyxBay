@@ -33,9 +33,9 @@
 
 /datum/vote/proc/getvotes()
 	var/list/L = list()
-	for(var/mob/M in world)
-		if(M.client && M.client.inactivity < 1200)		// clients inactive for 2 minutes don't count
-			L[M.client.vote] += 1
+	for(var/client/C)
+		if(C.inactivity < 1200)		// clients inactive for 2 minutes don't count
+			L[C.vote] += 1
 
 	return L
 
@@ -51,10 +51,9 @@
 	voting = 0
 	nextvotetime = world.timeofday + 10*config.vote_delay
 
-	for(var/mob/M in world)		// clear vote window from all clients
-		if(M.client)
-			M << browse(null, "window=vote")
-			M.client.showvote = 0
+	for(var/client/C)		// clear vote window from all clients
+		C.mob << browse(null, "window=vote")
+		C.showvote = 0
 
 	calcwin()
 
@@ -308,12 +307,11 @@
 
 		log_vote("Voting to [vote.mode ? "change mode" : "restart round"] started by [M.name]/[M.key]")
 
-		for(var/mob/CM in world)
-			if(CM.client)
-				if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2))
-					CM.client.vote = "none"
-				else
-					CM.client.vote = "default"
+		for(var/client/C)
+			if(config.vote_no_default || (config.vote_no_dead && C.mob.stat == 2))
+				C.vote = "none"
+			else
+				C.vote = "default"
 
 		if(M) M.vote()
 		return

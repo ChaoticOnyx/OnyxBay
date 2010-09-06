@@ -33,9 +33,8 @@ world
 */
 proc/updateserverstatus()
 	var/players = 0
-	for(var/mob/C in world)
-		if(C.client)
-			players++
+	for(var/client/C)
+		players++
 	var/mode
 	if(ticker.current_state == GAME_STATE_PREGAME)
 		mode = "Round Setup"

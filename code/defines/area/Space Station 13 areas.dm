@@ -52,6 +52,10 @@
 
 /area/engine/
 
+/area/bengine/
+	name = "Backup Engine"
+	icon_state = "engine"
+
 /area/turret_protected/
 
 /area/arrival
@@ -696,6 +700,14 @@
 /area/security/brig
 	name = "Brig"
 	icon_state = "brig"
+
+/area/security/prison
+	name = "Prison"
+	icon_state = "brig"
+
+/area/security/checkpointp
+	name = "Prison Checkpoint"
+	icon_state = "security"
 
 
 /area/security/detectives_office

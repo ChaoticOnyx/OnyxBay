@@ -13,7 +13,6 @@
 
 	//invite_loadbanfile()
 
-//	goon_loadfile()
 //	beta_tester_loadfile()
 
 

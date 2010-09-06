@@ -45,17 +45,18 @@
 			var/count = 0
 			var/sheet_amount = O:height * O:width * O:length * 100000.0
 			spawn(16)
-				flick("autolathe_c",src)
-				while(g_amount < (g_max - sheet_amount) && O:amount)
-					g_amount += sheet_amount
-					O:amount--
-					count++
+				if (O)
+					flick("autolathe_c",src)
+					while(g_amount < (g_max - sheet_amount) && O:amount)
+						g_amount += sheet_amount
+						O:amount--
+						count++
 
-				if (O:amount < 1)
-					del(O)
+					if (O:amount < 1)
+						del(O)
 
-				user << "You insert [count] glass sheet\s into the autolathe."
-				updateDialog()
+					user << "You insert [count] glass sheet\s into the autolathe."
+					updateDialog()
 		else
 			user << "The autolathe is full. Please remove glass from the autolathe in order to insert more."
 

@@ -977,8 +977,43 @@ mob/verb/turnwest()
 	return
 
 /mob/proc/death(gibbed)
+	if (src.mind)
+		var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch
+		mind.store_memory("Time of death: [tod]", 0)
 	src.timeofdeath = world.time
+
+	// Necessary in the event of the mob getting deleted before the check can complete (i.e. gibbed)
+	if (src.client)
+		spawn check_death(src.client)
+	else
+		spawn check_death()
+
 	return ..(gibbed)
+
+/proc/check_death(var/client/client = null)
+	if (client)
+		if(client && client.mob.stat == 2)
+			client.mob.verbs += /mob/proc/ghostize
+
+	var/cancel
+	for (var/client/C)
+		if (C.mob && !C.mob.stat)
+			cancel = 1
+			break
+
+	if (!cancel && !abandon_allowed)
+		cancel = 0
+		for (var/client/C)
+			if (C.mob && !C.mob.stat)
+				cancel = 1
+				break
+
+		if (!cancel && !abandon_allowed)
+			world << "<B>Everyone is dead! Resetting in 30 seconds!</B>"
+
+			spawn (300)
+				log_game("Rebooting because of no live players")
+				world.Reboot()
 
 /mob/proc/restrained()
 	if (src.handcuffed)
@@ -1366,9 +1401,9 @@ mob/verb/turnwest()
 			log_admin("PM: [key_name(usr)]->[key_name(M)] : [t]")
 
 			//we don't use message_admins here because the sender/receiver might get it too
-			for (var/mob/K in world)
-				if(K && K.client && K.client.holder && K.key != usr.key && K.key != M.key)
-					K << "<b><font color='blue'>PM: [key_name(usr, K)]->[key_name(M, K)]:</b> \blue [t]</font>"
+			for (var/client/C)
+				if(C.holder && C.mob.key != usr.key && C.mob.key != M.key)
+					C.mob << "<b><font color='blue'>PM: [key_name(usr, C.mob)]->[key_name(M, C.mob)]:</b> \blue [t]</font>"
 	..()
 	return
 
@@ -1823,7 +1858,7 @@ mob/verb/turnwest()
 		animation.master = src
 		flick("gibbed", animation)
 
-	if (src.client)
+	if (src.client && src.mind)
 		var/mob/dead/observer/newmob
 
 		newmob = new/mob/dead/observer(src)

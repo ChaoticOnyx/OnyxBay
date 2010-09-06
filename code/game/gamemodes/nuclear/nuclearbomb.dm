@@ -138,10 +138,9 @@
 
 */
 	enter_allowed = 0
-	for(var/mob/M in world)
-		if(M.client)
-			spawn(0)
-				M.client.station_explosion_cinematic()
+	for(var/client/C)
+		spawn(0)
+			C.station_explosion_cinematic()
 
 	if(ticker.mode.name == "nuclear emergency")
 		ticker.mode:nuke_detonated = 1

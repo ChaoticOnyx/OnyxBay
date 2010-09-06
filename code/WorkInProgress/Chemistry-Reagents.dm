@@ -118,10 +118,10 @@ datum
 				if(data >= 50 && prob(5))
 					if (!M:confused) M:confused = 1
 					M:confused += 4
-				if(data >= 150)
+				if(data >= 100)
 					M.eye_blurry = max(M.eye_blurry, 20)
 					M:drowsyness  = max(M:drowsyness, 30)
-				if(data >= 250)
+				if(data >= 125)
 					M:paralysis = max(M:paralysis, 40)
 					M:drowsyness  = max(M:drowsyness, 50)
 					M:r_Tourette = 1

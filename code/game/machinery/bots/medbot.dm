@@ -12,7 +12,6 @@
 	density = 1
 	anchored = 0
 	req_access =list(access_medical)
-	var/on = 1
 	var/health = 20
 	var/stunned = 0 //It can be stunned by tasers. Delicate circuits.
 	var/locked = 1
@@ -22,7 +21,6 @@
 	var/obj/item/weapon/reagent_containers/glass/reagent_glass = null //Can be set to draw from this for reagents.
 	var/skin = null //Set to "tox" or "ointment" for the other two firstaid kits.
 	var/frustration = 0
-	var/path[] = new()
 	var/mob/living/carbon/patient = null
 	var/mob/living/carbon/oldpatient = null
 	var/oldloc = null
@@ -226,10 +224,7 @@
 
 
 /obj/machinery/bot/medbot/process()
-	set background = 1
-
-	if(!src.on)
-		src.stunned = 0
+	if (!src.on)
 		return
 
 	if(src.stunned)

@@ -123,7 +123,8 @@ proc/Airflow(zone/A,zone/B,n)
 
 			if(M.anchored && !ismob(M)) continue
 			if(istype(M,/mob/dead/observer)) continue
-			//if(istype(M,/mob/living/silicon/ai)) continue
+			if(istype(M,/mob/living/silicon/robot)) continue
+			if(M.anchored && !ismob(M)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
 				if(istype(src, /mob/living/carbon/human))
@@ -159,6 +160,7 @@ proc/Airflow(zone/A,zone/B,n)
 			//world << "[M] / \..."
 			if(istype(M,/mob/living/silicon/ai)) continue
 			if(istype(M,/mob/dead/observer)) continue
+			if(istype(M,/mob/living/silicon/robot)) continue
 			if(M.anchored && !ismob(M)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
@@ -211,7 +213,8 @@ proc/AirflowSpace(zone/A)
 
 			if(M.anchored && !ismob(M)) continue
 			if(istype(M,/mob/dead/observer)) continue
-			//if(istype(M,/mob/living/silicon/ai)) continue
+			if(istype(M,/mob/living/silicon/robot)) continue
+			if(M.anchored && !ismob(M)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
 				if(istype(M, /mob/living/carbon/human))
