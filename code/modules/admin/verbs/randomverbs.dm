@@ -97,9 +97,9 @@
 
 		log_admin("PM: [key_name(usr)]->[key_name(M)] : [t]")
 
-		for(var/mob/K in world)	//we don't use message_admins here because the sender/receiver might get it too
-			if(K && K.client && K.client.holder && K.key != usr.key && K.key != M.key)
-				K << "<B><font color='blue'>PM: [key_name(usr, K)]-&gt;[key_name(M, K)]:</B> \blue [t]</font>"
+		for(var/client/C)	//we don't use message_admins here because the sender/receiver might get it too
+			if(C.holder && C.mob.key != usr.key && C.mob.key != M.key)
+				C.mob << "<B><font color='blue'>PM: [key_name(usr, C.mob)]-&gt;[key_name(M, C.mob)]:</B> \blue [t]</font>"
 
 /client/proc/cmd_admin_godmode(mob/M as mob in world)
 	set category = "Special Verbs"

@@ -134,19 +134,19 @@
 		var/numPod = 0
 		var/numOffStation = 0
 		for (var/mob/living/silicon/ai/aiPlayer in world)
-			for(var/mob/M in world)
-				if ((M != aiPlayer && M.client))
-					if (M.stat == 2)
+			for(var/client/C)
+				if (C.mob != aiPlayer)
+					if (C.mob.stat == 2)
 						numDead += 1
 					else
-						var/T = M.loc
+						var/T = C.mob.loc
 						if (istype(T, /turf/space))
 							numSpace += 1
 						else
 							if (istype(T, /obj/machinery/vehicle/pod))
 								numPod += 1
 							else if (istype(T, /turf))
-								if (M.z!=1)
+								if (!(C.mob.z >= 1 && C.mob.z <= 4))
 									numOffStation += 1
 								else
 									numAlive += 1

@@ -1401,9 +1401,9 @@ mob/verb/turnwest()
 			log_admin("PM: [key_name(usr)]->[key_name(M)] : [t]")
 
 			//we don't use message_admins here because the sender/receiver might get it too
-			for (var/mob/K in world)
-				if(K && K.client && K.client.holder && K.key != usr.key && K.key != M.key)
-					K << "<b><font color='blue'>PM: [key_name(usr, K)]->[key_name(M, K)]:</b> \blue [t]</font>"
+			for (var/client/C)
+				if(C.holder && C.mob.key != usr.key && C.mob.key != M.key)
+					C.mob << "<b><font color='blue'>PM: [key_name(usr, C.mob)]->[key_name(M, C.mob)]:</b> \blue [t]</font>"
 	..()
 	return
 

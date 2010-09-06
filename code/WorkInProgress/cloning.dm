@@ -374,16 +374,16 @@
 		return
 
 	var/mob/selected = null
-	for(var/mob/M in world)
+	for(var/client/C)
 		//Dead people only thanks!
-		if ((M.stat != 2) || (!M.client))
+		if ((C.mob.stat != 2))
 			continue
 		//They need a brain!
-		if ((istype(M, /mob/living/carbon/human)) && (M:brain_op_stage >= 4.0))
+		if ((istype(C.mob, /mob/living/carbon/human)) && (C.mob:brain_op_stage >= 4.0))
 			continue
 
-		if (M.ckey == find_key)
-			selected = M
+		if ("[C]" == find_key)
+			selected = C.mob
 			break
 	return selected
 

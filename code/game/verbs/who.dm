@@ -5,13 +5,11 @@
 
 	var/list/peeps = list()
 
-	for (var/mob/M in world)
-		if (!M.client)
-			continue
-		if (M.client.stealth && !usr.client.holder)
-			peeps += "\t[M.client.fakekey]"
+	for (var/client/C)
+		if (C.stealth && !usr.client.holder)
+			peeps += "\t[C.fakekey]"
 		else
-			peeps += "\t[M.client][M.client.stealth ? " <i>(as [M.client.fakekey])</i>" : ""]"
+			peeps += "\t[C][C.stealth ? " <i>(as [C.fakekey])</i>" : ""]"
 
 	peeps = sortList(peeps)
 
@@ -25,9 +23,9 @@
 
 	usr << "<b>Current Admins:</b>"
 
-	for (var/mob/M in world)
-		if(M && M.client && M.client.holder)
+	for (var/client/C)
+		if(C.holder)
 			if(usr.client.holder)
-				usr << "[M.key] is a [M.client.holder.rank][M.client.stealth ? " <i>(as [M.client.fakekey])</i>" : ""]"
-			else if(!M.client.stealth)
-				usr << "\t[M.client]"
+				usr << "[C.mob.key] is a [C.holder.rank][C.stealth ? " <i>(as [C.fakekey])</i>" : ""]"
+			else if(!C.stealth)
+				usr << "\t[C]"

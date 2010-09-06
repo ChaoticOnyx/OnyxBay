@@ -55,8 +55,8 @@
 
 	if(config.allow_admin_jump)
 		var/list/keys = list()
-		for(var/mob/M in world)
-			keys += M.client
+		for(var/client/C)
+			keys += C
 		var/selection = input("Please, select a player!", "Admin Jumping", null, null) as null|anything in keys
 		if(!selection)
 			return

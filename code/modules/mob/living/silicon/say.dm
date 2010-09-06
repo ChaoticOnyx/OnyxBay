@@ -36,7 +36,7 @@
 	var/message_a = src.say_quote(message)
 	var/rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[src.name]</span> <span class='message'>[message_a]</span></span></i>"
 	for (var/mob/living/silicon/S in world)
-		if(!S.stat)
+		if(!S.stat && S.client)
 			S.show_message(rendered, 2)
 
 	var/list/listening = hearers(1, src)
@@ -65,8 +65,8 @@
 
 	rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[src.name]</span> <span class='message'>[message_a]</span></span></i>"
 
-	for (var/mob/M in world)
-		if (istype(M, /mob/new_player))
+	for (var/client/C)
+		if (istype(C.mob, /mob/new_player))
 			continue
-		if (M.stat > 1)
-			M.show_message(rendered, 2)
+		if (C.mob.stat > 1)
+			C.mob.show_message(rendered, 2)

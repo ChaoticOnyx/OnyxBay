@@ -10,9 +10,8 @@
 
 	else if(T == "players")
 		var/n = 0
-		for(var/mob/M in world)
-			if(M.client)
-				n++
+		for(var/client/C)
+			n++
 		return n
 
 	else if (T == "status")
@@ -26,10 +25,9 @@
 		s["host"] = host ? host : null
 		s["players"] = list()
 		var/n = 0
-		for(var/mob/M in world)
-			if(M.client)
-				s["player[n]"] = M.client.key
-				n++
+		for(var/client/C)
+			s["player[n]"] = C.key
+			n++
 		s["players"] = n
 		return list2params(s)
 	else if(T == "teleplayer")

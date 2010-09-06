@@ -10,17 +10,16 @@
 	var/list/survivors = list()
 	var/area/escape_zone = locate(/area/shuttle/escape/centcom)
 
-	for(var/mob/living/player in world)
-		if (player.client)
-			if (player.stat != 2)
-				var/turf/location = get_turf(player.loc)
-				if (location in escape_zone)
-					survivors[player.real_name] = "shuttle"
+	for(var/client/C)
+		if (C.mob.stat != 2)
+			var/turf/location = get_turf(C.mob.loc)
+			if (location in escape_zone)
+				survivors[C.mob.real_name] = "shuttle"
+			else
+				if (istype(C.mob.loc, /obj/machinery/vehicle/pod))
+					survivors[C.mob.real_name] = "pod"
 				else
-					if (istype(player.loc, /obj/machinery/vehicle/pod))
-						survivors[player.real_name] = "pod"
-					else
-						survivors[player.real_name] = "alive"
+					survivors[C.mob.real_name] = "alive"
 
 	if (survivors.len)
 		world << "\blue <B>The following survived the meteor attack!</B>"
