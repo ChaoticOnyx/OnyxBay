@@ -179,7 +179,7 @@ Auto Patrol: []"},
 			src.icon_state = "secbot[src.on]"
 			mode = SECBOT_IDLE
 		return
-	..()
+	return ..()
 
 /obj/machinery/bot/secbot/attackby(obj/item/weapon/card/id/W, mob/user)
 	if(istype(W))
@@ -189,7 +189,7 @@ Auto Patrol: []"},
 		else
 			user << "\red Access denied."
 		return
-	..()
+	return ..()
 
 /obj/machinery/bot/secbot/attackby(obj/item/weapon/screwdriver/W, mob/user)
 	if(istype(W))
@@ -198,7 +198,7 @@ Auto Patrol: []"},
 			for(var/mob/O in viewers(src, null))
 				O << "\red [user] repairs [src]!"
 		return
-	..()
+	return ..()
 
 /obj/machinery/bot/secbot/process()
 	set background = 1

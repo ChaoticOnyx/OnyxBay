@@ -34,14 +34,6 @@
 	//			world << "Bomb has ignited?"
 				A.part4.ignite()
 
-		if (src.client)
-			spawn(10)
-				if(src.client && src.stat == 2)
-					src.verbs += /mob/proc/ghostize
-
-	var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch
-	if(mind)
-		mind.store_memory("Time of death: [tod]", 0)
 	//src.icon_state = "dead"
 
 	ticker.mode.check_win()
@@ -66,26 +58,5 @@
 	//Traitor's dead! Oh no!
 	if (ticker.mode.name == "traitor" && src.mind && src.mind.special_role == "traitor")
 		message_admins("\red Traitor [key_name_admin(src)] has died.")
-
-	var/cancel
-	for (var/mob/M in world)
-		if (M.client && !M.stat)
-			cancel = 1
-			break
-
-	if (!cancel && !abandon_allowed)
-		spawn (50)
-			cancel = 0
-			for (var/mob/M in world)
-				if (M.client && !M.stat)
-					cancel = 1
-					break
-
-			if (!cancel && !abandon_allowed)
-				world << "<B>Everyone is dead! Resetting in 30 seconds!</B>"
-
-				spawn (300)
-					log_game("Rebooting because of no live players")
-					world.Reboot()
 
 	return ..(gibbed)
