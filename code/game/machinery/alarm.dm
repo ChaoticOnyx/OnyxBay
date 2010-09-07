@@ -187,7 +187,7 @@
 			dat += "\blue Temperature: [round(environment.temperature-T0C)]&deg;C"
 		else
 			dat += "\red Temperature: [round(environment.temperature-T0C)]&deg;C"
-	if(user in range(1,src) || istype(user, /mob/living/silicon/))
+	if((user in range(1,src)) || istype(user, /mob/living/silicon/))
 		dat += "<BR><BR>"
 		var/area/A = get_area(loc)
 		if(!A.air_doors_activated)
