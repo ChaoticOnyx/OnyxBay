@@ -1461,6 +1461,7 @@
 							if(prob(50))
 								src.zombifying = 1
 								src.zombietime = rand(50,200)
+								UpdateZombieIcons()
 						else
 							var/mes = pick(list("clawed","scraped"))
 							for(var/mob/O in viewers(src, null))
@@ -2392,6 +2393,25 @@
 			r_hand.dropped(src)
 			r_hand.layer = initial(r_hand.layer)
 			r_hand = null
-	see_infrared = 1
+	src.sight |= SEE_MOBS
+	src.see_in_dark = 4
+	src.see_invisible = 2
 	for(var/mob/O in viewers(src, null))
 		O.show_message(text("\red <B>[src] seizes up and falls limp, \his eyes dead and lifeless...</B>"), 1)
+	UpdateZombieIcons()
+
+
+/proc/UpdateZombieIcons()
+	spawn(0)
+		for(var/mob/living/carbon/human/H in world)
+			del(H.zombieimage)
+			if(H.zombie)
+				H.zombieimage = image('mob.dmi', loc = H, icon_state = "rev")
+			else if(H.zombifying)
+				H.zombieimage = image('mob.dmi', loc = H, icon_state = "rev_head")
+			else
+				H.zombieimage = null
+		for(var/mob/living/carbon/human/H in world)
+			if(H.zombie)
+				for(var/mob/living/carbon/human/N in world)
+					H << N.zombieimage

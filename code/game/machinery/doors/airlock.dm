@@ -76,7 +76,6 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	var/lockdownbyai = 0
 	var/air_locked = 0 //Set if the airlock was locked in an emergency seal.
 	autoclose = 1
-
 /obj/machinery/door/airlock/command
 	name = "Airlock"
 	icon = 'Doorcom.dmi'

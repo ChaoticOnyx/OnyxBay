@@ -65,6 +65,7 @@
 	return 1
 
 /obj/machinery/door
+	var/Zombiedamage
 	New()
 		..()
 
@@ -99,7 +100,8 @@
 
 	if (user:zombie)
 		user << "\blue You claw the airlock"
-		if(prob(5))
+		Zombiedamage += rand(4,8)
+		if(Zombiedamage > 80)
 			user << "\blue You break the circuitry"
 			src.operating = -1
 			flick("door_spark", src)

@@ -52,6 +52,7 @@
 	var/zombie = 0
 	var/zombietime = 0
 	var/zombifying = 0
+	var/image/zombieimage = null
 
 /mob/living/carbon/human/dummy
 	real_name = "Test Dummy"
