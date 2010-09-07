@@ -558,21 +558,9 @@
 		src.handcuffed = null
 	else if (W == src.r_hand)
 		src.r_hand = null
-		if (src.client)
-			src.client.screen -= W
-		if (W)
-			W.loc = src.loc
-			W.dropped(src)
-			W.layer = initial(W.layer)
 
 	else if (W == src.l_hand)
 		src.l_hand = null
-		if (src.client)
-			src.client.screen -= W
-		if (W)
-			W.loc = src.loc
-			W.dropped(src)
-			W.layer = initial(W.layer)
 
 	update_clothing()
 
@@ -2390,8 +2378,20 @@
 	src << "\red You've become a zombie"
 	if(l_hand)
 		u_equip(l_hand)
+		if (src.client)
+			src.client.screen -= l_hand
+		if (l_hand)
+			l_hand.loc = src.loc
+			l_hand.dropped(src)
+			l_hand.layer = initial(r_hand.layer)
 	if(r_hand)
 		u_equip(r_hand)
+		if (src.client)
+			src.client.screen -= r_hand
+		if (r_hand)
+			r_hand.loc = src.loc
+			r_hand.dropped(src)
+			r_hand.layer = initial(r_hand.layer)
 	see_infrared = 1
 	for(var/mob/O in viewers(src, null))
 		O.show_message(text("\red <B>[src] seizes up and falls limp, \his eyes dead and lifeless...</B>"), 1)

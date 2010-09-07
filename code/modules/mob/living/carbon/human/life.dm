@@ -165,10 +165,22 @@
 
 
 			if(src.zombie)
-				if(src.l_hand)
+				if(l_hand)
 					u_equip(l_hand)
-				if(src.r_hand)
+					if (src.client)
+						src.client.screen -= l_hand
+					if (l_hand)
+						l_hand.loc = src.loc
+						l_hand.dropped(src)
+						l_hand.layer = initial(r_hand.layer)
+				if(r_hand)
 					u_equip(r_hand)
+					if (src.client)
+						src.client.screen -= r_hand
+					if (r_hand)
+						r_hand.loc = src.loc
+						r_hand.dropped(src)
+						r_hand.layer = initial(r_hand.layer)
 				src.machine = null
 
 
