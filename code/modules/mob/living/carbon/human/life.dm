@@ -250,7 +250,7 @@
 			var/datum/gas_mixture/environment = loc.return_air(1)
 			var/datum/gas_mixture/breath
 			// HACK NEED CHANGING LATER
-			if(src.health < 0)
+			if(src.health < 0 && !src.zombie)
 				src.losebreath++
 
 			//var/halfmask = 0

@@ -5,9 +5,9 @@
 
 /mob/living/carbon/human/say_understands(var/other)
 	if (istype(other, /mob/living/carbon/human))
-		if(src.zombie)
+		if(src.zombie && other:zombie)
 			return 1
-		else if(!other:zombie)
+		else if((!src.zombie) && (!other:zombie))
 			return 1
 		else
 			return 0

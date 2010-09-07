@@ -1460,7 +1460,7 @@
 								affecting.take_damage(5,0)
 							if(prob(50))
 								src.zombifying = 1
-								src.zombietime = rand(50,1000)
+								src.zombietime = rand(50,200)
 						else
 							var/mes = pick(list("clawed","scraped"))
 							for(var/mob/O in viewers(src, null))
