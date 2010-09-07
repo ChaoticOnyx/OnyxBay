@@ -165,6 +165,9 @@
 
 
 			if(src.zombie)
+				src.stunned = 0
+				src.paralysis = 0
+				src.handcuffed = 0
 				if(l_hand)
 				//	u_equip(l_hand)
 					if (src.client)

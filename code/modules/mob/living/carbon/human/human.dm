@@ -1454,11 +1454,11 @@
 					if (src.organs[text("[]", def_zone)])
 						affecting = src.organs[text("[]", def_zone)]
 						//Attack with zombie
-						if(!src.zombie && !src.zombifying && prob(30))
+						if(!src.zombie && !src.zombifying && prob(60))
 							for(var/mob/O in viewers(src, null))
 								O.show_message(text("\red <B>[] has bit []!</B>", M, src), 1)
 								affecting.take_damage(5,0)
-							if(prob(10))
+							if(prob(30))
 								src.zombifying = 1
 								src.zombietime = rand(50,1000)
 						else
