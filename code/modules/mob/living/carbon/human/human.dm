@@ -2383,6 +2383,7 @@
 			l_hand.loc = src.loc
 			l_hand.dropped(src)
 			l_hand.layer = initial(r_hand.layer)
+			l_hand = null
 	if(r_hand)
 		if (src.client)
 			src.client.screen -= r_hand
@@ -2390,6 +2391,7 @@
 			r_hand.loc = src.loc
 			r_hand.dropped(src)
 			r_hand.layer = initial(r_hand.layer)
+			r_hand = null
 	see_infrared = 1
 	for(var/mob/O in viewers(src, null))
 		O.show_message(text("\red <B>[src] seizes up and falls limp, \his eyes dead and lifeless...</B>"), 1)

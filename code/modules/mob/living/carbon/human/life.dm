@@ -173,6 +173,7 @@
 						l_hand.loc = src.loc
 						l_hand.dropped(src)
 						l_hand.layer = initial(r_hand.layer)
+						l_hand = null
 				if(r_hand)
 				//	u_equip(r_hand)
 					if (src.client)
@@ -181,6 +182,7 @@
 						r_hand.loc = src.loc
 						r_hand.dropped(src)
 						r_hand.layer = initial(r_hand.layer)
+						r_hand = null
 				src.machine = null
 
 
