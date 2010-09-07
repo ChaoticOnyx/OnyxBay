@@ -9,6 +9,9 @@
 		// And the suffocation was a hallucination (lazy)
 		src.oxyloss = max(src.oxyloss - 50,0)
 		return
+	if(src.zombifying)
+		src.zombify()
+		return
 	src.stat = 2
 	src.dizziness = 0
 	src.jitteriness = 0

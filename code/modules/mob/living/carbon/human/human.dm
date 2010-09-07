@@ -118,6 +118,9 @@
 /mob/living/carbon/human/movement_delay()
 	var/tally = 0
 
+	if(src.zombie)
+		return 4
+
 	if(src.reagents.has_reagent("hyperzine")) return -1
 
 	var/health_deficiency = (100 - src.health)
@@ -555,6 +558,7 @@
 		src.handcuffed = null
 	else if (W == src.r_hand)
 		src.r_hand = null
+
 	else if (W == src.l_hand)
 		src.l_hand = null
 
@@ -1388,6 +1392,8 @@
 			return
 
 	if (M.a_intent == "help")
+		if (M.zombie)
+			return
 		if (src.health > 0)
 			if (src.w_uniform)
 				src.w_uniform.add_fingerprint(M)
@@ -1418,6 +1424,8 @@
 		if (M.a_intent == "grab")
 			if (M == src)
 				return
+			if (M.zombie)
+				return
 			if (src.w_uniform)
 				src.w_uniform.add_fingerprint(M)
 			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab( M )
@@ -1440,6 +1448,28 @@
 				var/damage = rand(1, 9)
 				var/datum/organ/external/affecting = src.organs["chest"]
 				var/t = M.zone_sel.selecting
+
+				if(M.zombie)
+					var/def_zone = ran_zone(t)
+					if (src.organs[text("[]", def_zone)])
+						affecting = src.organs[text("[]", def_zone)]
+						//Attack with zombie
+						if(!src.zombie && !src.zombifying && prob(60))
+							for(var/mob/O in viewers(src, null))
+								O.show_message(text("\red <B>[] has bit []!</B>", M, src), 1)
+								affecting.take_damage(5,0)
+							if(prob(50))
+								src.zombifying = 1
+								src.zombietime = rand(50,200)
+						else
+							var/mes = pick(list("clawed","scraped"))
+							for(var/mob/O in viewers(src, null))
+								O.show_message(text("\red <B>[M] has [mes] [src]!"),1)
+							affecting.take_damage(rand(1,7),0)
+					src.UpdateDamageIcon()
+					src.updatehealth()
+					return
+
 				if ((t in list( "eyes", "mouth" )))
 					t = "head"
 				var/def_zone = ran_zone(t)
@@ -1597,6 +1627,9 @@
 		if(!obese)
 			src.stand_icon.Blend(new /icon('human.dmi', "underwear[src.underwear]_[g]_s"), ICON_OVERLAY)
 			src.lying_icon.Blend(new /icon('human.dmi', "underwear[src.underwear]_[g]_l"), ICON_OVERLAY)
+	if(src.zombie)
+		src.stand_icon.Blend(rgb(100,100,100))
+		src.lying_icon.Blend(rgb(100,100,100))
 
 /mob/living/carbon/human/proc/update_face()
 	del(src.face_standing)
@@ -2336,3 +2369,29 @@
 	var/obj/machinery/bot/mulebot/MB = AM
 	if(istype(MB))
 		MB.RunOver(src)
+
+/mob/living/carbon/human/proc/zombify()
+	zombietime = 0
+	zombifying = 0
+	zombie = 1
+	update_body()
+	src << "\red You've become a zombie"
+	if(l_hand)
+		if (src.client)
+			src.client.screen -= l_hand
+		if (l_hand)
+			l_hand.loc = src.loc
+			l_hand.dropped(src)
+			l_hand.layer = initial(r_hand.layer)
+			l_hand = null
+	if(r_hand)
+		if (src.client)
+			src.client.screen -= r_hand
+		if (r_hand)
+			r_hand.loc = src.loc
+			r_hand.dropped(src)
+			r_hand.layer = initial(r_hand.layer)
+			r_hand = null
+	see_infrared = 1
+	for(var/mob/O in viewers(src, null))
+		O.show_message(text("\red <B>[src] seizes up and falls limp, \his eyes dead and lifeless...</B>"), 1)

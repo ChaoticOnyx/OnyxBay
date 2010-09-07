@@ -107,6 +107,7 @@
 			src.verbs += /client/proc/toggleinvite
 			src.verbs += /client/proc/new_eventa
 			src.verbs += /client/proc/toggleevents
+			src.verbs += /client/proc/zombify
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
@@ -181,6 +182,7 @@
 			src.verbs += /client/proc/cmd_admin_create_centcom_report
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/cmd_admin_remove_plasma
+			src.verbs += /client/proc/zombify
 
 			src.verbs += /client/proc/general_report
 			//src.verbs += /client/proc/air_report
@@ -269,6 +271,7 @@
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
 			src.verbs += /client/proc/Zone_Info
+			src.verbs += /client/proc/zombify
 		if ("Primary Administrator")
 
 			src.deadchat = 1
@@ -787,3 +790,8 @@
 	set name = "Spawn event"
 	new_event(sev)
 	return
+
+/client/proc/zombify(var/mob/living/carbon/human/p in world)
+	set category = "Debug"
+	set name = "Zombify"
+	p.zombify()

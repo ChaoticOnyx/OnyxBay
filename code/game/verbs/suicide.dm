@@ -25,6 +25,8 @@
 		src.updatehealth()
 		spawn(200) //in case they get revived by cryo chamber or something stupid like that, let them suicide again in 20 seconds
 			src.suiciding = 0
+		if(src.zombie)
+			src.toxloss = 1000
 
 /mob/living/carbon/monkey/verb/suicide()
 	set hidden = 1
