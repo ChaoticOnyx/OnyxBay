@@ -151,7 +151,6 @@
 /obj/item/clothing/head/righelm
 	name = "Robust Helm"
 	icon_state = "rig_helm"
-	item_state = "rigp"
 	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES|HEADCOVERSMOUTH|PLASMAGUARD
 	permeability_coefficient = 0.02
 	protective_temperature = 1000

@@ -29,11 +29,11 @@
 
 	var/rendered = "<span class='game deadsay'><span class='prefix'>DEAD:</span> <span class='name'>[name]</span>[alt_name] <span class='message'>[message]</span></span>"
 
-	for (var/mob/M in world)
-		if (istype(M, /mob/new_player))
+	for (var/client/C)
+		if (istype(C.mob, /mob/new_player))
 			continue
-		if (M.stat == 2 || (M.client && M.client.holder && M.client.deadchat)) //admins can toggle deadchat on and off. This is a proc in admin.dm and is only give to Administrators and above
-			M.show_message(rendered, 2)
+		if (C.mob.stat == 2 || (C && C.holder && C.deadchat)) //admins can toggle deadchat on and off. This is a proc in admin.dm and is only give to Administrators and above
+			C.mob.show_message(rendered, 2)
 
 /mob/proc/say_understands(var/mob/other)
 	if (src.stat == 2)

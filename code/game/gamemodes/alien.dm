@@ -76,16 +76,15 @@
 	return candidates
 /datum/game_mode/alien/proc/get_mob_list()
 	var/list/mobs = list()
-	for(var/mob/living/player in world)
-		if (player.client)
-			mobs += player
+	for(var/client/C)
+		mobs += C.mob
 	return mobs
 
 /datum/game_mode/alien/proc/pick_human_name_except(excluded_name)
 	var/list/names = list()
-	for(var/mob/living/player in world)
-		if (player.client && (player.real_name != excluded_name))
-			names += player.real_name
+	for(var/client/C)
+		if (C.mob.real_name != excluded_name)
+			names += C.mob.real_name
 	if(!names.len)
 		return null
 	return pick(names)

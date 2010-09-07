@@ -401,7 +401,7 @@ mob/new_player
 //DNA!
 		reg_dna[H.dna.unique_enzymes] = H.real_name
 //Other Stuff
-		if(ticker.mode.name == "sandbox")
+		if(ticker.mode.name == "Sandbox")
 			H.CanBuild()
 
 */

@@ -592,14 +592,14 @@
 
 /client/proc/get_admin_state()
 	set category = "Debug"
-	for(var/mob/M in world)
-		if(M.client && M.client.holder)
-			if(M.client.holder.state == 1)
-				src << "[M.key] is playing - [M.client.holder.state]"
-			else if(M.client.holder.state == 2)
-				src << "[M.key] is observing - [M.client.holder.state]"
+	for(var/client/C)
+		if(C.holder)
+			if(C.holder.state == 1)
+				src << "[C.mob.key] is playing - [C.holder.state]"
+			else if(C.holder.state == 2)
+				src << "[C.mob.key] is observing - [C.holder.state]"
 			else
-				src << "[M.key] is undefined - [M.client.holder.state]"
+				src << "[C.mob.key] is undefined - [C.holder.state]"
 
 //admin client procs ported over from mob.dm
 

@@ -338,7 +338,7 @@
 /proc/call_prison_shuttle(var/mob/usr)
 	if ((!( ticker ) || main_shuttle.location == 1))
 		return
-	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "sandbox")
+	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "Sandbox")
 		usr << "Under directive 7-10, [station_name()] is quarantined until further notice."
 		return
 	if(ticker.mode.name == "revolution")
@@ -394,7 +394,7 @@
 		user << "\red Launch process already started!"
 		return
 
-	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "sandbox")
+	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "Sandbox")
 		user << "Under directive 7-10, [station_name()] is quarantined until further notice."
 		return
 	if(ticker.mode.name == "revolution" || ticker.mode.name == "AI malfunction" || ticker.mode.name == "confliction")

@@ -2,7 +2,7 @@ var/DBConnection/dbcon = new()
 world
 	proc
 		startmysql(var/silent)
-			dbcon.Connect("dbi:mysql:[DB_DBNAME]:[DB_SERVER]:3306","[DB_USER]","[DB_PASSWORD]")
+			dbcon.Connect("dbi:mysql:[DB_DBNAME]:[DB_SERVER]:[DB_PORT]","[DB_USER]","[DB_PASSWORD]")
 			if(!dbcon.IsConnected()) CRASH(dbcon.ErrorMsg())
 			else
 				if(!silent)
@@ -12,7 +12,7 @@ world
 			spawn while(1)
 				sleep(200)
 				if(!dbcon.IsConnected())
-					dbcon.Connect("dbi:mysql:[DB_DBNAME]:[DB_SERVER]:3306","[DB_USER]","[DB_PASSWORD]")
+					dbcon.Connect("dbi:mysql:[DB_DBNAME]:[DB_SERVER]:[DB_PORT]","[DB_USER]","[DB_PASSWORD]")
 				updateserverstatus()
 
 
@@ -33,14 +33,13 @@ world
 */
 proc/updateserverstatus()
 	var/players = 0
-	for(var/mob/C in world)
-		if(C.client)
-			players++
+	for(var/client/C)
+		players++
 	var/mode
 	if(ticker.current_state == GAME_STATE_PREGAME)
 		mode = "Round Setup"
 	else
 		mode = ticker.mode.name
-		var/DBQuery/key_query = dbcon.NewQuery("REPLACE INTO `status` (`name`,`link`,`players`,`mode`) VALUES ('[world.name],[world.internet_address]:[world.port]','[players]','[mode]')")
-		if(!key_query.Execute())
-			diary << "Failed-[key_query.ErrorMsg()]"
+	var/DBQuery/key_query = dbcon.NewQuery("REPLACE INTO `status` (`name`,`link`,`players`,`mode`) VALUES ([dbcon.Quote(world.name)],[dbcon.Quote("[world.internet_address]:[world.port]")],'[players]',[dbcon.Quote(mode)])")
+	if(!key_query.Execute())
+		diary << "Failed-[key_query.ErrorMsg()]"

@@ -132,7 +132,7 @@
 //	return attack_hand(usr)
 
 /obj/machinery/alarm/attack_hand(mob/user as mob)
-	if(!(user in range(3,src)))
+	if(!(user in range(3,src)) && !istype(user, /mob/living/silicon/))
 		user.machine = null
 		return
 	if(user.stat)
@@ -187,7 +187,7 @@
 			dat += "\blue Temperature: [round(environment.temperature-T0C)]&deg;C"
 		else
 			dat += "\red Temperature: [round(environment.temperature-T0C)]&deg;C"
-	if(user in range(1,src))
+	if((user in range(1,src)) || istype(user, /mob/living/silicon/))
 		dat += "<BR><BR>"
 		var/area/A = get_area(loc)
 		if(!A.air_doors_activated)

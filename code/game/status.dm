@@ -40,9 +40,8 @@
 		features += "AI allowed"
 
 	var/n = 0
-	for (var/mob/M in world)
-		if (M.client)
-			n++
+	for (var/client/C)
+		n++
 
 	if (n > 1)
 		features += "~[n] players"

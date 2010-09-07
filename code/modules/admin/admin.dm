@@ -3,12 +3,12 @@ var/showadminmessages = 1
 /proc/message_admins(var/text, var/admin_ref = 0)
 	if(!showadminmessages) return
 	var/rendered = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[text]</span></span>"
-	for (var/mob/M in world)
-		if (M && M.client && M.client.holder)
+	for (var/client/C)
+		if (C.holder)
 			if (admin_ref)
-				M << dd_replaceText(rendered, "%admin_ref%", "\ref[M]")
+				C.mob << dd_replaceText(rendered, "%admin_ref%", "\ref[C.mob]")
 			else
-				M << rendered
+				C.mob << rendered
 
 /proc/toggle_adminmsg()
 	showadminmessages = !showadminmessages
@@ -971,9 +971,9 @@ var/showadminmessages = 1
 				if("flicklights")
 					while(!usr.stat)
 	//knock yourself out to stop the ghosts
-						for(var/mob/M in world)
-							if(M.client && M.stat != 2 && prob(25))
-								var/area/AffectedArea = get_area(M)
+						for(var/client/C)
+							if(C.mob.stat != 2 && prob(25))
+								var/area/AffectedArea = get_area(C.mob)
 								if(AffectedArea.name != "Space" && AffectedArea.name != "Engine Walls" && AffectedArea.name != "Chemical Lab Test Chamber" && AffectedArea.name != "Escape Shuttle" && AffectedArea.name != "Arrival Area" && AffectedArea.name != "Arrival Shuttle" && AffectedArea.name != "start area" && AffectedArea.name != "Engine Combustion Chamber")
 									AffectedArea.power_light = 0
 									AffectedArea.power_change()
@@ -983,20 +983,20 @@ var/showadminmessages = 1
 									var/Message = rand(1,4)
 									switch(Message)
 										if(1)
-											M.show_message(text("\blue You shudder as if cold..."), 1)
+											C.mob.show_message(text("\blue You shudder as if cold..."), 1)
 										if(2)
-											M.show_message(text("\blue You feel something gliding across your back..."), 1)
+											C.mob.show_message(text("\blue You feel something gliding across your back..."), 1)
 										if(3)
-											M.show_message(text("\blue Your eyes twitch, you feel like something you can't see is here..."), 1)
+											C.mob.show_message(text("\blue Your eyes twitch, you feel like something you can't see is here..."), 1)
 										if(4)
-											M.show_message(text("\blue You notice something moving out of the corner of your eye, but nothing is there..."), 1)
-									for(var/obj/W in orange(5,M))
+											C.mob.show_message(text("\blue You notice something moving out of the corner of your eye, but nothing is there..."), 1)
+									for(var/obj/W in orange(5,C.mob))
 										if(prob(25) && !W.anchored)
 											step_rand(W)
 						sleep(rand(100,1000))
-					for(var/mob/M in world)
-						if(M.client && M.stat != 2)
-							M.show_message(text("\blue The chilling wind suddenly stops..."), 1)
+					for(var/client/C)
+						if(C.mob.stat != 2)
+							C.mob.show_message(text("\blue The chilling wind suddenly stops..."), 1)
 	/*				if("shockwave")
 					ok = 1
 					world << "\red <B><big>ALERT: STATION STRESS CRITICAL</big></B>"
@@ -1471,19 +1471,17 @@ var/showadminmessages = 1
 
 	log_admin("Voting to [vote.mode?"change mode":"restart round"] forced by admin [key_name(usr)]")
 
-	for(var/mob/CM in world)
-		if(CM.client)
-			if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2))
-				CM.client.vote = "none"
-			else
-				CM.client.vote = "default"
+	for(var/client/C)
+		if(config.vote_no_default || (config.vote_no_dead && C.mob.stat == 2))
+			C.vote = "none"
+		else
+			C.vote = "default"
 
-	for(var/mob/CM in world)
-		if(CM.client)
-			if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2))
-				CM.client.vote = "none"
-			else
-				CM.client.vote = "default"
+	for(var/client/C)
+		if(config.vote_no_default || (config.vote_no_dead && C.mob.stat == 2))
+			C.vote = "none"
+		else
+			C.vote = "default"
 
 /obj/admins/proc/votekill()
 	set category = "Special Verbs"
@@ -1499,11 +1497,10 @@ var/showadminmessages = 1
 	vote.voting = 0
 	vote.nextvotetime = world.timeofday + 10*config.vote_delay
 
-	for(var/mob/M in world)
+	for(var/client/C)
 		// clear vote window from all clients
-		if(M.client)
-			M << browse(null, "window=vote")
-			M.client.showvote = 0
+		C.mob << browse(null, "window=vote")
+		C.showvote = 0
 
 /obj/admins/proc/voteres()
 	set category = "Special Verbs"

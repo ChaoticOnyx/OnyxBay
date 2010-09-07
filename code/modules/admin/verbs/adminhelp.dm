@@ -10,9 +10,9 @@
 	if (usr.muted)
 		return
 
-	for (var/mob/M in world)
-		if (M.client && M.client.holder)
-			M << "\blue <b><font color=red>HELP: </font>[key_name(src, M)](<A HREF='?src=\ref[M.client.holder];adminplayeropts=\ref[src]'>X</A>):</b> [msg]"
+	for (var/client/C)
+		if (C.holder)
+			C.mob << "\blue <b><font color=red>HELP: </font>[key_name(src, C.mob)](<A HREF='?src=\ref[C.holder];adminplayeropts=\ref[src]'>X</A>):</b> [msg]"
 
 	usr << "Your message has been broadcast to administrators."
 	log_admin("HELP: [key_name(src)]: [msg]")
