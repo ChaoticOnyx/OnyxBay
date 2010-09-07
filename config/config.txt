@@ -63,7 +63,7 @@ HOSTEDBY Topkasa
 #sukasa.kicks-ass.org
 # tU8NptaBZV6BeM59
 # bay12
-#
+#za59KBjasFAez9bE
 DB_SERVER pegasus.temporum.net
 DB_USER bay12dev
 DB_PASSWORD U5ymBqte4QM6vEdG

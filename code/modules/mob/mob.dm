@@ -1756,7 +1756,7 @@ mob/verb/turnwest()
 		src.holder.rank = admins[src.ckey]
 		update_admins(admins[src.ckey])
 
-	if (ticker && ticker.mode && ticker.mode.name =="sandbox")
+	if (ticker && ticker.mode && ticker.mode.name == "Sandbox")
 		mob.CanBuild()
 		if(src.holder  && (src.holder.level >= 3))
 			src.verbs += /mob/proc/Delete
