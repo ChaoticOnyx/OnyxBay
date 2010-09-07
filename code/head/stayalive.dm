@@ -10,10 +10,11 @@ world
 				keepalive()
 		keepalive()
 			spawn while(1)
-				sleep(200)
+				sleep(10)
 				if(!dbcon.IsConnected())
 					dbcon.Connect("dbi:mysql:[DB_DBNAME]:[DB_SERVER]:3306","[DB_USER]","[DB_PASSWORD]")
 				updateserverstatus()
+
 
 
 
@@ -31,7 +32,7 @@ world
 	if(!key_query.Execute())
 		diary << "Failed-[key_query.ErrorMsg()]"
 */
-proc/updateserverstatus()
+world/proc/updateserverstatus()
 	var/players = 0
 	for(var/client/C)
 		players++
@@ -43,3 +44,6 @@ proc/updateserverstatus()
 		var/DBQuery/key_query = dbcon.NewQuery("REPLACE INTO `status` (`name`,`link`,`players`,`mode`) VALUES ('[world.name],[world.internet_address]:[world.port]','[players]','[mode]')")
 		if(!key_query.Execute())
 			diary << "Failed-[key_query.ErrorMsg()]"
+			world << "Failed-[key_query.ErrorMsg()]"
+		else
+			world << "UPDATE DONE"

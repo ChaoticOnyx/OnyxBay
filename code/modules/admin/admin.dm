@@ -1236,6 +1236,16 @@ var/showadminmessages = 1
 					if(!admin_log.len)
 						dat += "No-one has done anything this round!"
 					usr << browse(dat, "window=admin_log")
+	if (href_list["coderslog"])
+		if ((src.rank in list("Coder", "Host")))
+			switch(href_list["coderslog"])
+				if("spawn_objects")
+					var/dat = "<B>Coders Log<HR></B>"
+					for(var/l in diary)
+						dat += "<li>[l]</li>"
+					if(!diary)
+						dat += "No-one has done anything this round!"
+					usr << browse(dat, "window=coders")
 		return
 		//hahaha
 
@@ -1396,6 +1406,7 @@ var/showadminmessages = 1
 <B>Coder Secrets</B><BR>
 <BR>
 <A href='?src=\ref[src];secretscoder=spawn_objects'>Admin Log</A><BR>
+<A href='?src=\ref[src];coderslog=spawn_objects'>Coder Log</A><BR>
 "}
 	usr << browse(dat, "window=secrets")
 	return
