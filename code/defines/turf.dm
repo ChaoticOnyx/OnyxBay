@@ -299,6 +299,10 @@
 	icon = 'thermal.dmi'
 	icon_state = "thermal"
 
+/turf/simulated/wall/heatshield/attackby()
+	return
+/turf/simulated/wall/heatshield/attack_hand()
+	return
 
 /turf/simulated/shuttle
 	name = "shuttle"

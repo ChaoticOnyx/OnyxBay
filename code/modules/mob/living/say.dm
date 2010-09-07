@@ -174,7 +174,10 @@
 	if (length(heard_b))
 		var/message_b
 
-		if (src.voice_message)
+		if(src.say_unknown())
+			message_b = src.say_unknown()
+
+		else if (src.voice_message)
 			message_b = src.voice_message
 		else
 			message_b = stars(message)

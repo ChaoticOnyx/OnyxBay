@@ -49,6 +49,10 @@
 
 	var/mutantrace = null
 
+	var/zombie = 0
+	var/zombietime = 0
+	var/zombifying = 0
+
 /mob/living/carbon/human/dummy
 	real_name = "Test Dummy"
 	nodamage = 1

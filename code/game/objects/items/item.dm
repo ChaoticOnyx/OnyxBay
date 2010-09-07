@@ -103,7 +103,8 @@
 	if (src.loc == user)
 		user.u_equip(src)
 	else
-		src.pickup(user)
+		if(!user:zombie)
+			src.pickup(user)
 
 	if (user.hand)
 		user.l_hand = src

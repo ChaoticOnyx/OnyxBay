@@ -54,6 +54,10 @@
 		return "exclaims, \"[text]\"";
 
 	return "says, \"[text]\"";
+
+/mob/proc/say_unknown(var/text)
+	return null
+
 /mob/proc/say_test(var/text)
 	var/ending = copytext(text, length(text))
 	if (ending == "?")

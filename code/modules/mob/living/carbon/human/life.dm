@@ -89,6 +89,8 @@
 
 
 		handle_disabilities()
+			if(src.zombie == 1)
+				return
 
 
 			if(src.hallucination > 0)
@@ -151,6 +153,24 @@
 		//					emote("drool")
 
 		handle_mutations_and_radiation()
+
+
+			if(src.zombifying)
+				src.zombietime -= 1
+				if(src.zombietime <= 0)
+					src.zombify()
+
+				if(prob(5))
+					src << pick("\red You feel very slow","\red You feel hungry", "\red You start drooling")
+
+
+			if(src.zombie)
+				if(src.l_hand)
+					u_equip(l_hand)
+				if(src.r_hand)
+					u_equip(r_hand)
+				src.machine = null
+
 
 			if(src.fireloss)
 				if(src.mutations & 2 || prob(50))
@@ -301,6 +321,16 @@
 		handle_breath(datum/gas_mixture/breath)
 			if(src.nodamage)
 				return
+			if(src.zombie)
+				src.oxyloss = 0
+				var/breath_pressure = (breath.total_moles()*R_IDEAL_GAS_EQUATION*breath.temperature)/BREATH_VOLUME
+				var/Toxins_pp = (breath.toxins/breath.total_moles())*breath_pressure
+				if(Toxins_pp > 0.5)
+					src.toxloss += 5
+				var/O2_pp = (breath.oxygen/breath.total_moles())*breath_pressure
+				if(O2_pp > 16)
+					src.bruteloss -= 2
+					src.oxyloss = 0
 
 			if(!breath || (breath.total_moles() == 0))
 				oxyloss += 14*vsc.OXYGEN_LOSS
@@ -659,7 +689,8 @@
 				src.weakened = max(src.weakened, 5)
 
 			if(health < -100 || src.brain_op_stage == 4.0)
-				death()
+				if(!src.zombie|| (src.toxloss +src.fireloss) > 100)
+					death()
 			else if(src.health < 0)
 				if(src.health <= 20 && prob(1)) spawn(0) emote("gasp")
 

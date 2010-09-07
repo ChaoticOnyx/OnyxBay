@@ -452,6 +452,14 @@ turf/simulated/wall/bullet_act(flag,dir)
 		else
 			usr << text("\blue You punch the wall.")
 			return
+	if(user:zombie)
+		if(prob(5))
+			usr << text("\blue You clawed through the wall")
+			dismantle_wall(1)
+			return
+		else
+			usr << text("\blue You claw the wall")
+			return
 
 	user << "\blue You push the wall but nothing happens!"
 	playsound(src.loc, 'Genhit.ogg', 25, 1)

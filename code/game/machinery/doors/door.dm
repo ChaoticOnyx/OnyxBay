@@ -96,6 +96,18 @@
 	if (src.operating)
 		return
 	src.add_fingerprint(user)
+
+	if (user:zombie)
+		user << "\blue You claw the airlock"
+		if(prob(5))
+			user << "\blue You break the circuitry"
+			src.operating = -1
+			flick("door_spark", src)
+			sleep(6)
+			open()
+			return 1
+		return
+
 	if (!src.requiresID())
 		//don't care who they are or what they have, act as if they're NOTHING
 		user = null
