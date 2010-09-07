@@ -119,7 +119,7 @@
 	var/tally = 0
 
 	if(src.zombie)
-		return 6
+		return 4
 
 	if(src.reagents.has_reagent("hyperzine")) return -1
 

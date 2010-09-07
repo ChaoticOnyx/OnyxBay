@@ -347,7 +347,8 @@
 					src.toxloss += 5
 				var/O2_pp = (breath.oxygen/breath.total_moles())*breath_pressure
 				if(O2_pp > 16)
-					src.bruteloss -= 5
+					src.bruteloss -= 8
+					src.buteloss = max(100,src.bruteloss)
 					src.oxyloss = 0
 
 			if(!breath || (breath.total_moles() == 0))
