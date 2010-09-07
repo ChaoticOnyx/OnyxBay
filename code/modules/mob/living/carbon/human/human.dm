@@ -2377,7 +2377,6 @@
 	update_body()
 	src << "\red You've become a zombie"
 	if(l_hand)
-		u_equip(l_hand)
 		if (src.client)
 			src.client.screen -= l_hand
 		if (l_hand)
@@ -2385,7 +2384,6 @@
 			l_hand.dropped(src)
 			l_hand.layer = initial(r_hand.layer)
 	if(r_hand)
-		u_equip(r_hand)
 		if (src.client)
 			src.client.screen -= r_hand
 		if (r_hand)
