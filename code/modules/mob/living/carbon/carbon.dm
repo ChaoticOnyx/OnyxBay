@@ -1,5 +1,6 @@
 /mob/living/carbon/var/co2overloadtime = null
 /mob/living/carbon/var/temperature_resistance = T0C+75
+/mob/living/carbon/var/obj/item/weapon/card/id/wear_id = null
 
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()

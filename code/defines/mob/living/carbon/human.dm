@@ -29,7 +29,6 @@
 	var/obj/item/clothing/glasses/glasses = null
 	var/obj/item/clothing/head/head = null
 	var/obj/item/clothing/ears/ears = null
-	var/obj/item/weapon/card/id/wear_id = null
 	var/obj/item/weapon/r_store = null
 	var/obj/item/weapon/l_store = null
 
