@@ -98,7 +98,7 @@
 		return
 	src.add_fingerprint(user)
 
-	if (user:zombie)
+	if (istype(user, /mob/living/carbon/human) && user:zombie)
 		user << "\blue You claw the airlock"
 		Zombiedamage += rand(4,8)
 		if(Zombiedamage > 80)
