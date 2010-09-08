@@ -1966,7 +1966,7 @@ mob/verb/turnwest()
 
 /mob/proc/updatehealth()
 	if (!nodamage)
-		health = health_full - (oxyloss - toxloss - fireloss - bruteloss - halloss)
+		health = health_full - (oxyloss + toxloss + fireloss + bruteloss + halloss)
 	else
 		health = health_full
 		stat = 0

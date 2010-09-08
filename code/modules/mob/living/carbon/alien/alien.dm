@@ -12,7 +12,7 @@
 	if (!nodamage)
 	//oxyloss is only used for suicide
 	//toxloss isn't used for aliens, its actually used as alien powers!!
-		health = health_full - (oxyloss - fireloss - bruteloss)
+		health = health_full - (oxyloss + fireloss + bruteloss)
 	else
 		health = health_full
 		stat = 0

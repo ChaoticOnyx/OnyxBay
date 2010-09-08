@@ -198,11 +198,11 @@
 								show_laws()
 
 /mob/living/silicon/ai/updatehealth()
-	if (nodamage == 0)
+	if (!nodamage)
 		if(fire_res_on_core)
-			health = health_full - oxyloss - toxloss - bruteloss
+			health = health_full - (oxyloss + toxloss + bruteloss)
 		else
-			health = health_full - oxyloss - toxloss - fireloss - bruteloss
+			health = health_full - (oxyloss + toxloss + fireloss + bruteloss)
 	else
 		health = health_full
 		stat = 0
