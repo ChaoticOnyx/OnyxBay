@@ -1,5 +1,15 @@
+/mob/living/carbon/monkey/name = "monkey"
+/mob/living/carbon/monkey/voice_name = "monkey"
+/mob/living/carbon/monkey/voice_message = "chimpers"
+/mob/living/carbon/monkey/icon = 'monkey.dmi'
+/mob/living/carbon/monkey/icon_state = "monkey1"
+/mob/living/carbon/monkey/gender = NEUTER
+/mob/living/carbon/monkey/flags = 258.0
+/mob/living/carbon/monkey/random_events = list("scratch")
+
 /mob/living/carbon/monkey/New()
-	random_events += "scratch"
+	..()
+//	random_events += "scratch"
 	var/datum/reagents/R = new/datum/reagents(1000)
 	reagents = R
 	R.my_atom = src
@@ -23,7 +33,6 @@
 	if(src.name == "monkey") src.name = text("monkey ([rand(1, 1000)])")
 
 	src.real_name = src.name
-	..()
 	return
 
 /mob/living/carbon/monkey/movement_delay()
@@ -31,7 +40,7 @@
 
 	if(src.reagents.has_reagent("hyperzine")) return -1
 
-	var/health_deficiency = (100 - src.health)
+	var/health_deficiency = (health_full - src.health)
 	if(health_deficiency >= 45) tally += (health_deficiency / 25)
 
 	if (src.bodytemperature < 283.222)
@@ -99,7 +108,7 @@
 		src.bruteloss += 30
 		if ((O.icon_state == "flaming" && !( shielded )))
 			src.fireloss += 40
-		src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+		src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 	return
 
 /mob/living/carbon/monkey/bullet_act(flag)
@@ -117,19 +126,19 @@
 	else if(flag == PROJECTILE_LASER)
 		if (src.stat != 2)
 			src.bruteloss += 20
-			src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+			src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 			if (prob(25))
 				src.stunned = 1
 	else if(flag == PROJECTILE_PULSE)
 		if (src.stat != 2)
 			src.bruteloss += 40
-			src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+			src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 			if (prob(25))
 				src.stunned = min(src.stunned, 5)
 	else if(flag == PROJECTILE_BOLT)
 		src.toxloss += 3
 		src.radiation += 100
-		src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+		src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 		src.stuttering += 5
 		src.drowsyness += 5
 	return
@@ -165,7 +174,7 @@
 					O.show_message("\red <B>[M.name] has bit [src.name]!</B>", 1)
 				var/damage = rand(1, 5)
 				src.bruteloss += damage
-				src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+				src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 			else
 				for(var/mob/O in viewers(src, null))
 					O.show_message("\red <B>[M.name] has attempted to bite [src.name]!</B>", 1)
@@ -379,16 +388,16 @@
 		if(1.0)
 			if (src.stat != 2)
 				src.bruteloss += 200
-				src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+				src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 		if(2.0)
 			if (src.stat != 2)
 				src.bruteloss += 60
 				src.fireloss += 60
-				src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+				src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 		if(3.0)
 			if (src.stat != 2)
 				src.bruteloss += 30
-				src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+				src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 			if (prob(50))
 				src.paralysis += 10
 		else
@@ -397,7 +406,7 @@
 /mob/living/carbon/monkey/blob_act()
 	if (src.stat != 2)
 		src.bruteloss += 30
-		src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+		src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 	if (prob(50))
 		src.paralysis += 10
 

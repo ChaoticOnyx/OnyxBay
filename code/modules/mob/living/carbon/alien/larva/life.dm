@@ -72,7 +72,7 @@
 	return 1
 
 /mob/living/carbon/alien/larva/handle_regular_status_updates()
-	health = 25 - (oxyloss + fireloss + bruteloss)
+	health = health_full - (oxyloss + fireloss + bruteloss)
 
 	if(oxyloss > 50) paralysis = max(paralysis, 3)
 
@@ -208,7 +208,7 @@
 /mob/living/carbon/alien/larva/handle_environment()
 	//If there are alien weeds on the ground then heal if needed or give some toxins
 	if(locate(/obj/alien/weeds) in loc)
-		if(health >= 25)
+		if(health >= health_full)
 			toxloss += 5
 		else
 			bruteloss -= 5

@@ -51,23 +51,41 @@ to clean it up, or just beat the shit out of it (which takes ages).
 [11:35] <&Nannek> kk
 */
 
+/mob/living/carbon/alien/humanoid/name = "alien"
+/mob/living/carbon/alien/humanoid/icon_state = "alien_s"
+
+/mob/living/carbon/alien/humanoid/var/obj/item/clothing/suit/wear_suit = null
+/mob/living/carbon/alien/humanoid/var/obj/item/clothing/head/head = null
+/mob/living/carbon/alien/humanoid/var/obj/item/weapon/r_store = null
+/mob/living/carbon/alien/humanoid/var/obj/item/weapon/l_store = null
+
+/mob/living/carbon/alien/humanoid/var/icon/stand_icon = null
+/mob/living/carbon/alien/humanoid/var/icon/lying_icon = null
+
+/mob/living/carbon/alien/humanoid/var/last_b_state = 1.0
+
+/mob/living/carbon/alien/humanoid/var/image/face_standing = null
+/mob/living/carbon/alien/humanoid/var/image/face_lying = null
+
+/mob/living/carbon/alien/humanoid/var/list/body_standing = list(  )
+/mob/living/carbon/alien/humanoid/var/list/body_lying = list(  )
+
 //This is fine right now, if we're adding organ specific damage this needs to be updated
 /mob/living/carbon/alien/humanoid/New()
-	spawn (1)
-		var/datum/reagents/R = new/datum/reagents(100)
-		reagents = R
-		R.my_atom = src
-		if(!istype(src, /mob/living/carbon/alien/humanoid/queen))
-			src.stand_icon = new /icon('alien.dmi', "alien_s")
-			src.lying_icon = new /icon('alien.dmi', "alien_l")
-		src.icon = src.stand_icon
-
-		if(src.name == "alien") src.name = text("alien ([rand(1, 1000)])")
-		src.real_name = src.name
-		src << "\blue Your icons have been generated!"
-
-		update_clothing()
 	..()
+	var/datum/reagents/R = new/datum/reagents(100)
+	reagents = R
+	R.my_atom = src
+	if(!istype(src, /mob/living/carbon/alien/humanoid/queen))
+		src.stand_icon = new /icon('alien.dmi', "alien_s")
+		src.lying_icon = new /icon('alien.dmi', "alien_l")
+	src.icon = src.stand_icon
+
+	if(src.name == "alien") src.name = text("alien ([rand(1, 1000)])")
+	src.real_name = src.name
+	src << "\blue Your icons have been generated!"
+
+	update_clothing()
 
 
 //This is fine, works the same as a human
@@ -770,8 +788,8 @@ to clean it up, or just beat the shit out of it (which takes ages).
 	if (src.nodamage == 0)
 	//oxyloss is only used for suicide
 	//toxloss isn't used for aliens, its actually used as alien powers!!
-		src.health = 100 - src.oxyloss - src.fireloss - src.bruteloss
+		src.health = health_full - src.oxyloss - src.fireloss - src.bruteloss
 	else
-		src.health = 100
+		src.health = health_full
 		src.stat = 0
 

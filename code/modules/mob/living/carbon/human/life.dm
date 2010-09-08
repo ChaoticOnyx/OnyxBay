@@ -112,7 +112,7 @@
 	return 1
 
 /mob/living/carbon/human/handle_regular_status_updates()
-	health = 100 - (oxyloss + toxloss + fireloss + bruteloss + halloss)
+	health = health_full - (oxyloss + toxloss + fireloss + bruteloss + halloss)
 
 	if(oxyloss > 50) paralysis = max(paralysis, 3)
 

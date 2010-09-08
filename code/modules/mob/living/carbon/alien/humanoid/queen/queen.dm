@@ -1,18 +1,22 @@
+/mob/living/carbon/alien/humanoid/queen/name = "alien queen"
+/mob/living/carbon/alien/humanoid/queen/icon_state = "queen_s"
+/mob/living/carbon/alien/humanoid/queen/health_full = 250
+
 /mob/living/carbon/alien/humanoid/queen/New()
-	spawn (1)
-		var/datum/reagents/R = new/datum/reagents(100)
-		reagents = R
-		R.my_atom = src
-		src.stand_icon = new /icon('alien.dmi', "queen_s")
-		src.lying_icon = new /icon('alien.dmi', "queen_l")
-		src.icon = src.stand_icon
+	..()
+	var/datum/reagents/R = new/datum/reagents(100)
+	reagents = R
+	R.my_atom = src
+	src.stand_icon = new /icon('alien.dmi', "queen_s")
+	src.lying_icon = new /icon('alien.dmi', "queen_l")
+	src.icon = src.stand_icon
 
 //there should only be one queen
 //		if(src.name == "alien") src.name = text("alien ([rand(1, 1000)])")
-		src.real_name = src.name
-		src << "\blue Your icons have been generated!"
+	src.real_name = src.name
+	src << "\blue Your icons have been generated!"
 
-		update_clothing()
+	update_clothing()
 
 
 /mob/living/carbon/alien/humanoid/queen
@@ -21,9 +25,9 @@
 		if (src.nodamage == 0)
 		//oxyloss is only used for suicide
 		//toxloss isn't used for aliens, its actually used as alien powers!!
-			src.health = 250 - src.oxyloss - src.fireloss - src.bruteloss
+			src.health = health_full - src.oxyloss - src.fireloss - src.bruteloss
 		else
-			src.health = 250
+			src.health = health_full
 			src.stat = 0
 
 	handle_regular_hud_updates()
@@ -66,7 +70,7 @@
 
 		//If there are alien weeds on the ground then heal if needed or give some toxins
 		if(locate(/obj/alien/weeds) in loc)
-			if(health >= 250)
+			if(health >= health_full)
 				toxloss += 20
 			else
 				bruteloss -= 5
@@ -74,7 +78,7 @@
 
 	handle_regular_status_updates()
 
-		health = 250 - (oxyloss + fireloss + bruteloss)
+		health = health_full - (oxyloss + fireloss + bruteloss)
 
 		if(oxyloss > 50) paralysis = max(paralysis, 3)
 
@@ -156,13 +160,6 @@
 			src.druggy = max(0, src.druggy)
 
 		return 1
-
-
-
-
-
-
-
 
 
 

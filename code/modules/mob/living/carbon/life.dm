@@ -1,9 +1,3 @@
-/mob/living/carbon/var/oxygen_alert = 0
-/mob/living/carbon/var/toxins_alert = 0
-/mob/living/carbon/var/fire_alert = 0
-/mob/living/carbon/var/temperature_alert = 0
-/mob/living/carbon/var/list/random_events = new //If handle_random_events() is run, it will choose from this list. Entries are defined in /mob/living/carbon/type/New() (See Monkey and Human)
-
 /mob/living/carbon/Life()
 	set background = 1
 

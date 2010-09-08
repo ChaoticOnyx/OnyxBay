@@ -111,7 +111,7 @@
 	return 1
 
 /mob/living/carbon/monkey/handle_regular_status_updates()
-	health = 100 - (oxyloss + toxloss + fireloss + bruteloss)
+	health = health_full - (oxyloss + toxloss + fireloss + bruteloss)
 
 	if(oxyloss > 25) paralysis = max(paralysis, 3)
 

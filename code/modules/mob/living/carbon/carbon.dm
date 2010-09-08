@@ -1,6 +1,16 @@
+/mob/living/carbon/gender = MALE
+
 /mob/living/carbon/var/co2overloadtime = null
 /mob/living/carbon/var/temperature_resistance = T0C+75
 /mob/living/carbon/var/obj/item/weapon/card/id/wear_id = null
+/mob/living/carbon/var/list/stomach_contents = list()
+/mob/living/carbon/var/brain_op_stage = 0.0
+
+/mob/living/carbon/var/oxygen_alert = 0
+/mob/living/carbon/var/toxins_alert = 0
+/mob/living/carbon/var/fire_alert = 0
+/mob/living/carbon/var/temperature_alert = 0
+/mob/living/carbon/var/list/random_events //If handle_random_events() is run, it will choose from this list. Entries are defined per type (See Monkey and Human)
 
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()

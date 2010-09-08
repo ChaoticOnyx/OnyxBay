@@ -1,67 +1,126 @@
+/mob/living/carbon/human/name = "human"
+/mob/living/carbon/human/voice_name = "human"
+/mob/living/carbon/human/icon = 'mob.dmi'
+/mob/living/carbon/human/icon_state = "m-none"
+
+/mob/living/carbon/human/random_events = list("blink")
+
+/mob/living/carbon/human/var/r_hair = 0.0
+/mob/living/carbon/human/var/g_hair = 0.0
+/mob/living/carbon/human/var/b_hair = 0.0
+/mob/living/carbon/human/var/h_style = "Short Hair"
+/mob/living/carbon/human/var/r_facial = 0.0
+/mob/living/carbon/human/var/g_facial = 0.0
+/mob/living/carbon/human/var/b_facial = 0.0
+/mob/living/carbon/human/var/f_style = "Shaved"
+/mob/living/carbon/human/var/r_eyes = 0.0
+/mob/living/carbon/human/var/g_eyes = 0.0
+/mob/living/carbon/human/var/b_eyes = 0.0
+/mob/living/carbon/human/var/s_tone = 0.0
+/mob/living/carbon/human/var/age = 30.0
+/mob/living/carbon/human/var/b_type = "A+"
+
+/mob/living/carbon/human/var/obj/item/clothing/suit/wear_suit = null
+/mob/living/carbon/human/var/obj/item/clothing/under/w_uniform = null
+///mob/living/carbon/human/var/obj/item/device/radio/w_radio = null
+/mob/living/carbon/human/var/obj/item/clothing/shoes/shoes = null
+/mob/living/carbon/human/var/obj/item/weapon/belt = null
+/mob/living/carbon/human/var/obj/item/clothing/gloves/gloves = null
+/mob/living/carbon/human/var/obj/item/clothing/glasses/glasses = null
+/mob/living/carbon/human/var/obj/item/clothing/head/head = null
+/mob/living/carbon/human/var/obj/item/clothing/ears/ears = null
+/mob/living/carbon/human/var/obj/item/weapon/r_store = null
+/mob/living/carbon/human/var/obj/item/weapon/l_store = null
+
+/mob/living/carbon/human/var/icon/stand_icon = null
+/mob/living/carbon/human/var/icon/lying_icon = null
+
+/mob/living/carbon/human/var/last_b_state = 1.0
+
+/mob/living/carbon/human/var/image/face_standing = null
+/mob/living/carbon/human/var/image/face_lying = null
+
+/mob/living/carbon/human/var/hair_icon_state = "hair_a"
+/mob/living/carbon/human/var/face_icon_state = "bald"
+
+/mob/living/carbon/human/var/list/body_standing = list()
+/mob/living/carbon/human/var/list/body_lying = list()
+
+/mob/living/carbon/human/var/mutantrace = null
+
+/mob/living/carbon/human/var/zombie = 0
+/mob/living/carbon/human/var/zombietime = 0
+/mob/living/carbon/human/var/zombifying = 0
+/mob/living/carbon/human/var/image/zombieimage = null
+
+/mob/living/carbon/human/dummy
+	real_name = "Test Dummy"
+	nodamage = 1
+
 /mob/living/carbon/human/New()
+	..()
 	var/datum/reagents/R = new/datum/reagents(1000)
-	random_events += "blink"
+//	random_events += "blink"
 	reagents = R
 	R.my_atom = src
 
 	if (!dna)
 		dna = new /datum/dna( null )
-	spawn (1)
-		var/datum/organ/external/chest/chest = new /datum/organ/external/chest( src )
-		chest.owner = src
-		var/datum/organ/external/groin/groin = new /datum/organ/external/groin( src )
-		groin.owner = src
-		var/datum/organ/external/head/head = new /datum/organ/external/head( src )
-		head.owner = src
-		var/datum/organ/external/l_arm/l_arm = new /datum/organ/external/l_arm( src )
-		l_arm.owner = src
-		var/datum/organ/external/r_arm/r_arm = new /datum/organ/external/r_arm( src )
-		r_arm.owner = src
-		var/datum/organ/external/l_hand/l_hand = new /datum/organ/external/l_hand( src )
-		l_hand.owner = src
-		var/datum/organ/external/r_hand/r_hand = new /datum/organ/external/r_hand( src )
-		r_hand.owner = src
-		var/datum/organ/external/l_leg/l_leg = new /datum/organ/external/l_leg( src )
-		l_leg.owner = src
-		var/datum/organ/external/r_leg/r_leg = new /datum/organ/external/r_leg( src )
-		r_leg.owner = src
-		var/datum/organ/external/l_foot/l_foot = new /datum/organ/external/l_foot( src )
-		l_foot.owner = src
-		var/datum/organ/external/r_foot/r_foot = new /datum/organ/external/r_foot( src )
-		r_foot.owner = src
+	var/datum/organ/external/chest/chest = new /datum/organ/external/chest( src )
+	chest.owner = src
+	var/datum/organ/external/groin/groin = new /datum/organ/external/groin( src )
+	groin.owner = src
+	var/datum/organ/external/head/head = new /datum/organ/external/head( src )
+	head.owner = src
+	var/datum/organ/external/l_arm/l_arm = new /datum/organ/external/l_arm( src )
+	l_arm.owner = src
+	var/datum/organ/external/r_arm/r_arm = new /datum/organ/external/r_arm( src )
+	r_arm.owner = src
+	var/datum/organ/external/l_hand/l_hand = new /datum/organ/external/l_hand( src )
+	l_hand.owner = src
+	var/datum/organ/external/r_hand/r_hand = new /datum/organ/external/r_hand( src )
+	r_hand.owner = src
+	var/datum/organ/external/l_leg/l_leg = new /datum/organ/external/l_leg( src )
+	l_leg.owner = src
+	var/datum/organ/external/r_leg/r_leg = new /datum/organ/external/r_leg( src )
+	r_leg.owner = src
+	var/datum/organ/external/l_foot/l_foot = new /datum/organ/external/l_foot( src )
+	l_foot.owner = src
+	var/datum/organ/external/r_foot/r_foot = new /datum/organ/external/r_foot( src )
+	r_foot.owner = src
 
-		src.organs["chest"] = chest
-		src.organs["groin"] = groin
-		src.organs["head"] = head
-		src.organs["l_arm"] = l_arm
-		src.organs["r_arm"] = r_arm
-		src.organs["l_hand"] = l_hand
-		src.organs["r_hand"] = r_hand
-		src.organs["l_leg"] = l_leg
-		src.organs["r_leg"] = r_leg
-		src.organs["l_foot"] = l_foot
-		src.organs["r_foot"] = r_foot
+	src.organs["chest"] = chest
+	src.organs["groin"] = groin
+	src.organs["head"] = head
+	src.organs["l_arm"] = l_arm
+	src.organs["r_arm"] = r_arm
+	src.organs["l_hand"] = l_hand
+	src.organs["r_hand"] = r_hand
+	src.organs["l_leg"] = l_leg
+	src.organs["r_leg"] = r_leg
+	src.organs["l_foot"] = l_foot
+	src.organs["r_foot"] = r_foot
 
-		var/g = "m"
-		if (src.gender == MALE)
-			g = "m"
-		else if (src.gender == FEMALE)
-			g = "f"
-		else
-			src.gender = MALE
-			g = "m"
+	var/g = "m"
+	if (src.gender == MALE)
+		g = "m"
+	else if (src.gender == FEMALE)
+		g = "f"
+	else
+		src.gender = MALE
+		g = "m"
 
-		if(!src.stand_icon)
-			src.stand_icon = new /icon('human.dmi', "body_[g]_s")
-		if(!src.lying_icon)
-			src.lying_icon = new /icon('human.dmi', "body_[g]_l")
-		src.icon = src.stand_icon
+	if(!src.stand_icon)
+		src.stand_icon = new /icon('human.dmi', "body_[g]_s")
+	if(!src.lying_icon)
+		src.lying_icon = new /icon('human.dmi', "body_[g]_l")
+	src.icon = src.stand_icon
 
-		src << "\blue Your icons have been generated!"
-
+	src << "\blue Your icons have been generated!"
 
 
-		update_clothing()
+
+	update_clothing()
 
 /mob/living/carbon/human/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!( yes ) || src.now_pushing))
@@ -124,7 +183,7 @@
 
 	if(src.reagents.has_reagent("hyperzine")) return -1
 
-	var/health_deficiency = (100 - src.health)
+	var/health_deficiency = (health_full - src.health)
 	if(health_deficiency >= 40) tally += (health_deficiency / 25)
 
 	if(src.wear_suit)

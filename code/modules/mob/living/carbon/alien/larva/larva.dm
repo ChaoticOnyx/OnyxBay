@@ -52,18 +52,26 @@ to clean it up, or just beat the shit out of it (which takes ages).
 */
 
 //This is fine right now, if we're adding organ specific damage this needs to be updated
+
+/mob/living/carbon/alien/larva/name = "alien larva"
+/mob/living/carbon/alien/larva/icon_state = "larva"
+/mob/living/carbon/alien/larva/gender = NEUTER
+/mob/living/carbon/alien/larva/flags = 258.0
+/mob/living/carbon/alien/larva/health_full = 25
+
+/mob/living/carbon/alien/larva/var/amount_grown = 0
+
 /mob/living/carbon/alien/larva/New()
-	spawn (1)
-		var/datum/reagents/R = new/datum/reagents(100)
-		reagents = R
-		R.my_atom = src
-
-		if(src.name == "alien larva") src.name = text("alien larva ([rand(1, 1000)])")
-		src.real_name = src.name
-		src << "\blue Your icons have been generated!"
-
-		update_clothing()
 	..()
+	var/datum/reagents/R = new/datum/reagents(100)
+	reagents = R
+	R.my_atom = src
+
+	if(src.name == "alien larva") src.name = text("alien larva ([rand(1, 1000)])")
+	src.real_name = src.name
+	src << "\blue Your icons have been generated!"
+
+	update_clothing()
 
 
 //This is fine, works the same as a human
@@ -537,8 +545,8 @@ to clean it up, or just beat the shit out of it (which takes ages).
 	if (src.nodamage == 0)
 	//oxyloss is only used for suicide
 	//toxloss isn't used for aliens, its actually used as alien powers!!
-		src.health = 25 - src.oxyloss - src.fireloss - src.bruteloss
+		src.health = health_full - src.oxyloss - src.fireloss - src.bruteloss
 	else
-		src.health = 25
+		src.health = health_full
 		src.stat = 0
 

@@ -1,3 +1,176 @@
+/mob/density = 1
+/mob/layer = 4.0
+/mob/animate_movement = 2
+/mob/mouse_drag_pointer = MOUSE_ACTIVE_POINTER
+
+/mob/var/datum/mind/mind
+
+/mob/var/uses_hud = 0
+/mob/var/obj/screen/flash = null
+/mob/var/obj/screen/blind = null
+/mob/var/obj/screen/hands = null
+/mob/var/obj/screen/mach = null
+/mob/var/obj/screen/sleep = null
+/mob/var/obj/screen/rest = null
+/mob/var/obj/screen/pullin = null
+/mob/var/obj/screen/internals = null
+/mob/var/obj/screen/oxygen = null
+/mob/var/obj/screen/i_select = null
+/mob/var/obj/screen/m_select = null
+/mob/var/obj/screen/toxin = null
+/mob/var/obj/screen/fire = null
+/mob/var/obj/screen/bodytemp = null
+/mob/var/obj/screen/healths = null
+/mob/var/obj/screen/throw_icon = null
+/mob/var/obj/screen/panel_icon = null
+/mob/var/obj/screen/cell_icon = null
+/mob/var/obj/screen/exttemp = null
+/mob/var/obj/screen/store = null
+/mob/var/obj/screen/module_icon = null
+
+/mob/var/list/obj/hallucinations = list()
+/mob/var/halloss = 0
+/mob/var/hallucination = 0
+
+/mob/var/alien_egg_flag = 0
+
+/mob/var/last_special = 0
+
+/mob/var/obj/screen/zone_sel/zone_sel = null
+
+/mob/var/emote_allowed = 1
+/mob/var/computer_id = null
+/mob/var/lastattacker = null
+/mob/var/lastattacked = null
+/mob/var/already_placed = 0.0
+/mob/var/obj/machinery/machine = null
+/mob/var/other_mobs = null
+/mob/var/memory = ""
+/mob/var/poll_answer = 0.0
+/mob/var/sdisabilities = 0
+/mob/var/disabilities = 0
+/mob/var/atom/movable/pulling = null
+/mob/var/stat = 0.0
+/mob/var/next_move = null
+/mob/var/prev_move = null
+/mob/var/monkeyizing = null
+/mob/var/other = 0.0
+/mob/var/hand = null
+/mob/var/eye_blind = null
+/mob/var/eye_blurry = null
+/mob/var/ear_deaf = null
+/mob/var/ear_damage = null
+/mob/var/stuttering = null
+/mob/var/intoxicated = null
+/mob/var/real_name = null
+/mob/var/blinded = null
+/mob/var/rejuv = null
+/mob/var/druggy = 0
+/mob/var/confused = 0
+/mob/var/staggering = 0
+/mob/var/antitoxs = null
+/mob/var/plasma = null
+/mob/var/sleeping = 0.0
+/mob/var/resting = 0.0
+/mob/var/lying = 0.0
+/mob/var/canmove = 1.0
+/mob/var/eye_stat = null
+/mob/var/oxyloss = 0.0
+/mob/var/toxloss = 0.0
+/mob/var/fireloss = 0.0
+/mob/var/timeofdeath = 0.0
+/mob/var/bruteloss = 0.0
+/mob/var/cpr_time = 1.0
+/mob/var/health_full = 100
+/mob/var/health = 100
+/mob/var/bodytemperature = 310.055	//98.7 F
+/mob/var/drowsyness = 0.0
+/mob/var/dizziness = 0
+/mob/var/is_dizzy = 0
+/mob/var/is_jittery = 0
+/mob/var/jitteriness = 0
+/mob/var/charges = 0.0
+/mob/var/urine = 0.0
+/mob/var/poo = 0.0
+/mob/var/nutrition = 0.0
+/mob/var/paralysis = 0.0
+/mob/var/stunned = 0.0
+/mob/var/weakened = 0.0
+/mob/var/losebreath = 0.0
+/mob/var/muted = null
+/mob/var/intent = null
+/mob/var/shakecamera = 0
+/mob/var/a_intent = "help"
+/mob/var/m_int = null
+/mob/var/m_intent = "run"
+/mob/var/lastDblClick = 0
+/mob/var/lastKnownIP = null
+/mob/var/obj/stool/buckled = null
+/mob/var/obj/item/weapon/handcuffs/handcuffed = null
+/mob/var/obj/item/l_hand = null
+/mob/var/obj/item/r_hand = null
+/mob/var/obj/item/weapon/back = null
+/mob/var/obj/item/weapon/tank/internal = null
+/mob/var/obj/item/weapon/storage/s_active = null
+/mob/var/obj/item/clothing/mask/wear_mask = null
+/mob/var/r_epil = 0
+/mob/var/r_ch_cou = 0
+/mob/var/r_Tourette = 0
+
+/mob/var/obj/hud/hud_used = null
+
+/mob/var/list/organs = list(  )
+/mob/var/list/grabbed_by = list(  )
+/mob/var/list/requests = list(  )
+
+/mob/var/list/mapobjs = list()
+
+/mob/var/in_throw_mode = 0
+
+/mob/var/coughedtime = null
+
+/mob/var/inertia_dir = 0
+/mob/var/footstep = 1
+
+/mob/var/music_lastplayed = "null"
+
+/mob/var/job = null
+
+/mob/var/nodamage = 0
+/mob/var/logged_in = 0
+
+/mob/var/underwear = 1
+/mob/var/be_syndicate = 0
+/mob/var/be_random_name = 0
+/mob/var/const/blindness = 1
+/mob/var/const/deafness = 2
+/mob/var/const/muteness = 4
+/mob/var/brainloss = 0
+
+/mob/var/datum/dna/dna = null
+/mob/var/radiation = 0.0
+
+/mob/var/mutations = 0
+///mob/telekinesis = 1
+///mob/firemut = 2
+///mob/xray = 4
+///mob/hulk = 8
+///mob/clumsy = 16
+///mob/obese = 32
+///mob/husk = 64
+
+/mob/var/voice_name = "unidentifiable voice"
+/mob/var/voice_message = null
+
+//Monkey/infected mode
+/mob/var/list/resistances = list()
+/mob/var/datum/disease/virus = null
+
+//Changeling mode stuff
+/mob/var/changeling_level = 0
+/mob/var/list/absorbed_dna = list()
+/mob/var/changeling_fakedeath = 0
+
 /mob/proc/Cell()
 	set category = "Admin"
 	set hidden = 1
@@ -888,6 +1061,10 @@ mob/verb/turnwest()
 		return
 	..()
 	return
+
+/mob/New()
+	health = health_full
+	..()
 
 /mob/living/carbon/human/Topic(href, href_list)
 	if (href_list["mach_close"])
@@ -1789,9 +1966,9 @@ mob/verb/turnwest()
 
 /mob/proc/updatehealth()
 	if (src.nodamage == 0)
-		src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+		src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 	else
-		src.health = 100
+		src.health = health_full
 		src.stat = 0
 
 //sort of a legacy burn method for /electrocute, /shock, and the e_chair
