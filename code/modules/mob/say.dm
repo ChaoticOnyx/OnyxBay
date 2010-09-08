@@ -9,23 +9,23 @@
 	usr.say(message)
 
 /mob/proc/say_dead(var/message)
-	var/name = src.real_name
+	var/name = real_name
 	var/alt_name = ""
 
-	if (istype(src, /mob/living/carbon/human) && src.name != src.real_name)
+	if (istype(src, /mob/living/carbon/human) && name != real_name)
 		if (src:wear_id && src:wear_id:registered)
 			alt_name = " (as [src:wear_id:registered])"
 		else
 			alt_name = " (as Unknown)"
 	else if (istype(src, /mob/dead/observer))
 		name = "Ghost"
-		alt_name = " ([src.real_name])"
+		alt_name = " ([real_name])"
 	else if (istype(src, /mob/dead/official))
 		name = "Centcom official"
 	else if (!istype(src, /mob/living/carbon/human))
-		name = src.name
+		name = name
 
-	message = src.say_quote(message)
+	message = say_quote(message)
 
 	var/rendered = "<span class='game deadsay'><span class='prefix'>DEAD:</span> <span class='name'>[name]</span>[alt_name] <span class='message'>[message]</span></span>"
 
@@ -36,17 +36,17 @@
 			C.mob.show_message(rendered, 2)
 
 /mob/proc/say_understands(var/mob/other)
-	if (src.stat == 2)
+	if (stat == 2)
 		return 1
-	else if (istype(other, src.type) || istype(other, /obj/machinery/bot/secbot))
+	else if (istype(other, type) || istype(other, /obj/machinery/bot/secbot))
 		return 1
 	return 0
 
 /mob/proc/say_quote(var/text)
 	var/ending = copytext(text, length(text))
-	if (src.stuttering)
+	if (stuttering)
 		return "stammers, \"[text]\"";
-	if (src.brainloss >= 60)
+	if (brainloss >= 60)
 		return "gibbers, \"[text]\"";
 	if (ending == "?")
 		return "asks, \"[text]\"";

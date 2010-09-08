@@ -1,23 +1,23 @@
 /mob/living/carbon/human/proc/monkeyize()
-	if (src.monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/weapon/W in src)
-		src.u_equip(W)
-		if (src.client)
-			src.client.screen -= W
+		u_equip(W)
+		if (client)
+			client.screen -= W
 		if (W)
-			W.loc = src.loc
+			W.loc = loc
 			W.dropped(src)
 			W.layer = initial(W.layer)
-	src.update_clothing()
-	src.monkeyizing = 1
-	src.canmove = 0
-	src.icon = null
-	src.invisibility = 101
-	for(var/t in src.organs)
-		//src.organs[text("[]", t)] = null
-		del(src.organs[text("[]", t)])
-	var/atom/movable/overlay/animation = new /atom/movable/overlay( src.loc )
+	update_clothing()
+	monkeyizing = 1
+	canmove = 0
+	icon = null
+	invisibility = 101
+	for(var/t in organs)
+		//organs[text("[]", t)] = null
+		del(organs[text("[]", t)])
+	var/atom/movable/overlay/animation = new /atom/movable/overlay( loc )
 	animation.icon_state = "blank"
 	animation.icon = 'mob.dmi'
 	animation.master = src
@@ -25,16 +25,16 @@
 	sleep(48)
 	//animation = null
 	del(animation)
-	var/mob/living/carbon/monkey/O = new /mob/living/carbon/monkey( src.loc )
+	var/mob/living/carbon/monkey/O = new /mob/living/carbon/monkey( loc )
 
 	O.name = "monkey"
-	O.dna = src.dna
-	src.dna = null
+	O.dna = dna
+	dna = null
 	O.dna.uni_identity = "00600200A00E0110148FC01300B009"
 	O.dna.struc_enzymes = "0983E840344C39F4B059D5145FC5785DC6406A4BB8"
-	if (src.client)
-		src.client.mob = O
-	O.loc = src.loc
+	if (client)
+		client.mob = O
+	O.loc = loc
 	O.a_intent = "hurt"
 	O << "<B>You are now a monkey.</B>"
 	/*
@@ -47,40 +47,40 @@
 	return
 
 /mob/living/carbon/AIize()
-	if (src.monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/weapon/W in src)
-		src.u_equip(W)
-		if (src.client)
-			src.client.screen -= W
+		u_equip(W)
+		if (client)
+			client.screen -= W
 		if (W)
-			W.loc = src.loc
+			W.loc = loc
 			W.dropped(src)
 			W.layer = initial(W.layer)
 			del(W)
-	src.update_clothing()
-	src.monkeyizing = 1
-	src.canmove = 0
-	src.icon = null
-	src.invisibility = 101
-	for(var/t in src.organs)
-		del(src.organs[text("[]", t)])
+	update_clothing()
+	monkeyizing = 1
+	canmove = 0
+	icon = null
+	invisibility = 101
+	for(var/t in organs)
+		del(organs[text("[]", t)])
 
 
 	..()
 
 
 /mob/proc/AIize()
-	src.client.screen.len = null
-	var/mob/living/silicon/ai/O = new /mob/living/silicon/ai( src.loc )
+	client.screen.len = null
+	var/mob/living/silicon/ai/O = new /mob/living/silicon/ai( loc )
 
 	O.invisibility = 0
 	O.canmove = 0
-	O.name = src.name
-	O.real_name = src.real_name
+	O.name = name
+	O.real_name = real_name
 	O.anchored = 1
 	O.aiRestorePowerRoutine = 0
-	O.lastKnownIP = src.client.address
+	O.lastKnownIP = client.address
 
 	mind.transfer_to(O)
 
@@ -141,31 +141,31 @@
 
 //human -> robot
 /mob/living/carbon/human/proc/Robotize()
-	if (src.monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/weapon/W in src)
-		src.u_equip(W)
-		if (src.client)
-			src.client.screen -= W
+		u_equip(W)
+		if (client)
+			client.screen -= W
 		if (W)
-			W.loc = src.loc
+			W.loc = loc
 			W.dropped(src)
 			W.layer = initial(W.layer)
 			del(W)
-	src.update_clothing()
-	src.monkeyizing = 1
-	src.canmove = 0
-	src.icon = null
-	src.invisibility = 101
-	for(var/t in src.organs)
-		del(src.organs[text("[t]")])
-	//src.client.screen -= main_hud1.contents
-	src.client.screen -= src.hud_used.contents
-	src.client.screen -= src.hud_used.adding
-	src.client.screen -= src.hud_used.mon_blo
-	src.client.screen -= list( src.oxygen, src.throw_icon, src.i_select, src.m_select, src.toxin, src.internals, src.fire, src.hands, src.healths, src.pullin, src.blind, src.flash, src.rest, src.sleep, src.mach )
-	src.client.screen -= list( src.zone_sel, src.oxygen, src.throw_icon, src.i_select, src.m_select, src.toxin, src.internals, src.fire, src.hands, src.healths, src.pullin, src.blind, src.flash, src.rest, src.sleep, src.mach )
-	var/mob/living/silicon/robot/O = new /mob/living/silicon/robot( src.loc )
+	update_clothing()
+	monkeyizing = 1
+	canmove = 0
+	icon = null
+	invisibility = 101
+	for(var/t in organs)
+		del(organs[text("[t]")])
+	//client.screen -= main_hud1.contents
+	client.screen -= hud_used.contents
+	client.screen -= hud_used.adding
+	client.screen -= hud_used.mon_blo
+	client.screen -= list( oxygen, throw_icon, i_select, m_select, toxin, internals, fire, hands, healths, pullin, blind, flash, rest, sleep, mach )
+	client.screen -= list( zone_sel, oxygen, throw_icon, i_select, m_select, toxin, internals, fire, hands, healths, pullin, blind, flash, rest, sleep, mach )
+	var/mob/living/silicon/robot/O = new /mob/living/silicon/robot( loc )
 
 	// cyborgs produced by Robotize get an automatic power cell
 	O.cell = new(O)
@@ -173,14 +173,14 @@
 	O.cell.charge = 1500
 
 
-	O.gender = src.gender
+	O.gender = gender
 	O.invisibility = 0
 	O.name = "Cyborg"
 	O.real_name = "Cyborg"
-	O.lastKnownIP = src.client.address
-	if (src.client)
-		src.client.mob = O
-	O.loc = src.loc
+	O.lastKnownIP = client.address
+	if (client)
+		client.mob = O
+	O.loc = loc
 	O << "<B>You are playing a Robot. A Robot can interact with most electronic objects in its view point.</B>"
 	O << "<B>You must follow the laws that the AI has. You are the AI's assistant to the station basically.</B>"
 	O << "To use something, simply double-click it."
@@ -195,39 +195,39 @@
 
 //human -> alien
 /mob/living/carbon/human/proc/Alienize()
-	if (src.monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/weapon/W in src)
-		src.u_equip(W)
-		if (src.client)
-			src.client.screen -= W
+		u_equip(W)
+		if (client)
+			client.screen -= W
 		if (W)
-			W.loc = src.loc
+			W.loc = loc
 			W.dropped(src)
 			W.layer = initial(W.layer)
-	src.update_clothing()
-	src.monkeyizing = 1
-	src.canmove = 0
-	src.icon = null
-	src.invisibility = 101
-	for(var/t in src.organs)
-		del(src.organs[t])
-//	var/atom/movable/overlay/animation = new /atom/movable/overlay( src.loc )
+	update_clothing()
+	monkeyizing = 1
+	canmove = 0
+	icon = null
+	invisibility = 101
+	for(var/t in organs)
+		del(organs[t])
+//	var/atom/movable/overlay/animation = new /atom/movable/overlay( loc )
 //	animation.icon_state = "blank"
 //	animation.icon = 'mob.dmi'
 //	animation.master = src
 //	flick("h2alien", animation)
 //	sleep(48)
 //	del(animation)
-	var/mob/living/carbon/alien/humanoid/O = new /mob/living/carbon/alien/humanoid( src.loc )
+	var/mob/living/carbon/alien/humanoid/O = new /mob/living/carbon/alien/humanoid( loc )
 	O.name = "alien"
-	O.dna = src.dna
-	src.dna = null
+	O.dna = dna
+	dna = null
 	O.dna.uni_identity = "00600200A00E0110148FC01300B009"
 	O.dna.struc_enzymes = "0983E840344C39F4B059D5145FC5785DC6406A4BB8"
-	if (src.client)
-		src.client.mob = O
-	O.loc = src.loc
+	if (client)
+		client.mob = O
+	O.loc = loc
 	O.a_intent = "hurt"
 	O << "<B>You are now an alien.</B>"
 	del(src)
