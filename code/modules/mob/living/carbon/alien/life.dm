@@ -49,3 +49,51 @@
 
 /mob/living/carbon/alien/handle_virus_updates()
 	..("Alien")
+
+/mob/living/carbon/alien/handle_breath(datum/gas_mixture/breath)
+	if(src.nodamage)
+		return
+
+	if(!breath || (breath.total_moles() == 0))
+		//Aliens breathe in vaccuum
+		return 0
+
+	var/toxins_used = 0
+	var/breath_pressure = (breath.total_moles()*R_IDEAL_GAS_EQUATION*breath.temperature)/BREATH_VOLUME
+
+	//Partial pressure of the toxins in our breath
+	var/Toxins_pp = (breath.toxins/breath.total_moles())*breath_pressure
+
+	if(Toxins_pp) // Detect toxins in air
+
+		toxloss += breath.toxins*250
+		toxins_alert = max(toxins_alert, 1)
+
+		toxins_used = breath.toxins
+
+	else
+		toxins_alert = 0
+
+	//Breathe in toxins and out oxygen
+	breath.toxins -= toxins_used
+	breath.oxygen += toxins_used
+
+	if(breath.temperature > (T0C+66) && !(src.mutations & 2)) // Hot air hurts :(
+		if(prob(20))
+			src << "\red You feel a searing heat in your lungs!"
+		fire_alert = max(fire_alert, 1)
+	else
+		fire_alert = 0
+
+	//Temporary fixes to the alerts.
+
+	if(oxyloss > 10)
+		losebreath++
+
+	return 1
+
+/mob/living/carbon/alien/handle_temperature_damage(body_part, exposed_temperature, exposed_intensity)
+	return
+
+/mob/living/carbon/alien/handle_random_events()
+	return

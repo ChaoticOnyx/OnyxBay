@@ -1,3 +1,6 @@
+/mob/living/carbon/var/co2overloadtime = null
+/mob/living/carbon/var/temperature_resistance = T0C+75
+
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()
 	if(.)
@@ -29,7 +32,7 @@
 					if(M.client)
 						M.show_message(text("\red <B>[user] attacks [src]'s stomach wall with the [I.name]!"), 2)
 				playsound(user.loc, 'attackblob.ogg', 50, 1)
-				
+
 				if(prob(src.bruteloss - 50))
 					src.gib()
 
@@ -42,3 +45,30 @@
 			if(N.client)
 				N.show_message(text("\red <B>[M] bursts out of [src]!</B>"), 2)
 	. = ..(give_medal)
+
+/mob/living/carbon/proc/TakeDamage(zone, brute, burn)
+	var/datum/organ/external/E = src.organs[text("[]", zone)]
+	if (istype(E, /datum/organ/external))
+		if (E.take_damage(brute, burn))
+			src.UpdateDamageIcon()
+		else
+			src.UpdateDamage()
+	else
+		return 0
+	return
+
+/mob/living/carbon/proc/UpdateDamage()
+
+	var/list/L = list(  )
+	for(var/t in src.organs)
+		if (istype(src.organs[text("[]", t)], /datum/organ/external))
+			L += src.organs[text("[]", t)]
+	src.bruteloss = 0
+	src.fireloss = 0
+	for(var/datum/organ/external/O in L)
+		src.bruteloss += O.brute_dam
+		src.fireloss += O.burn_dam
+	return
+
+/mob/living/carbon/proc/UpdateDamageIcon()
+	return

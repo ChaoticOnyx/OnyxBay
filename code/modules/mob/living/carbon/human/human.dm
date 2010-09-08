@@ -1,5 +1,6 @@
 /mob/living/carbon/human/New()
 	var/datum/reagents/R = new/datum/reagents(1000)
+	random_events += "blink"
 	reagents = R
 	R.my_atom = src
 
@@ -1684,9 +1685,6 @@
 	del(eyes_l)
 	del(eyes_s)
 
-/mob/living/carbon/human/var/co2overloadtime = null
-/mob/living/carbon/human/var/temperature_resistance = T0C+75
-
 /obj/equip_e/human/process()
 	if (src.item)
 		src.item.add_fingerprint(src.source)
@@ -2257,17 +2255,6 @@
 	del(src)
 	return
 
-/mob/living/carbon/human/proc/TakeDamage(zone, brute, burn)
-	var/datum/organ/external/E = src.organs[text("[]", zone)]
-	if (istype(E, /datum/organ/external))
-		if (E.take_damage(brute, burn))
-			src.UpdateDamageIcon()
-		else
-			src.UpdateDamage()
-	else
-		return 0
-	return
-
 /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
 
 	var/datum/organ/external/E = src.organs[text("[]", zone)]
@@ -2280,23 +2267,10 @@
 		return 0
 	return
 
-/mob/living/carbon/human/proc/UpdateDamage()
-
-	var/list/L = list(  )
-	for(var/t in src.organs)
-		if (istype(src.organs[text("[]", t)], /datum/organ/external))
-			L += src.organs[text("[]", t)]
-	src.bruteloss = 0
-	src.fireloss = 0
-	for(var/datum/organ/external/O in L)
-		src.bruteloss += O.brute_dam
-		src.fireloss += O.burn_dam
-	return
-
 // new damage icon system
 // now constructs damage icon for each organ from mask * damage field
 
-/mob/living/carbon/human/proc/UpdateDamageIcon()
+/mob/living/carbon/human/UpdateDamageIcon()
 	var/list/L = list(  )
 	for (var/t in src.organs)
 		if (istype(src.organs[t], /datum/organ/external))

@@ -1,29 +1,28 @@
 /mob/living/carbon/monkey/New()
-	spawn(1)
-		var/datum/reagents/R = new/datum/reagents(1000)
-		reagents = R
-		R.my_atom = src
-		if (!(src.dna))
-			if(src.gender == NEUTER)
-				src.gender = pick(MALE, FEMALE)
-			src.dna = new /datum/dna( null )
-			src.dna.uni_identity = "00600200A00E0110148FC01300B009"
-			src.dna.struc_enzymes = "0983E840344C39F4B059D5145FC5785DC6406A4BB8"
-			src.dna.unique_enzymes = md5(src.name)
-					//////////blah
-			var/gendervar
-			if (src.gender == "male")
-				gendervar = add_zero2(num2hex((rand(1,2049)),1), 3)
-			else
-				gendervar = add_zero2(num2hex((rand(2051,4094)),1), 3)
-			src.dna.uni_identity += gendervar
-			src.dna.uni_identity += "12C"
-			src.dna.uni_identity += "4E2"
+	random_events += "scratch"
+	var/datum/reagents/R = new/datum/reagents(1000)
+	reagents = R
+	R.my_atom = src
+	if (!(src.dna))
+		if(src.gender == NEUTER)
+			src.gender = pick(MALE, FEMALE)
+		src.dna = new /datum/dna( null )
+		src.dna.uni_identity = "00600200A00E0110148FC01300B009"
+		src.dna.struc_enzymes = "0983E840344C39F4B059D5145FC5785DC6406A4BB8"
+		src.dna.unique_enzymes = md5(src.name)
+				//////////blah
+		var/gendervar
+		if (src.gender == "male")
+			gendervar = add_zero2(num2hex((rand(1,2049)),1), 3)
+		else
+			gendervar = add_zero2(num2hex((rand(2051,4094)),1), 3)
+		src.dna.uni_identity += gendervar
+		src.dna.uni_identity += "12C"
+		src.dna.uni_identity += "4E2"
 
-		if(src.name == "monkey") src.name = text("monkey ([rand(1, 1000)])")
+	if(src.name == "monkey") src.name = text("monkey ([rand(1, 1000)])")
 
-		src.real_name = src.name
-		return
+	src.real_name = src.name
 	..()
 	return
 
@@ -373,9 +372,6 @@
 /mob/living/carbon/monkey/verb/removeinternal()
 	src.internal = null
 	return
-
-/mob/living/carbon/monkey/var/co2overloadtime = null
-/mob/living/carbon/monkey/var/temperature_resistance = T0C+75
 
 /mob/living/carbon/monkey/ex_act(severity)
 	flick("flash", src.flash)

@@ -218,64 +218,6 @@
 
 /mob/living/carbon/alien/humanoid
 	proc
-		handle_breath(datum/gas_mixture/breath)
-			if(src.nodamage)
-				return
-
-			if(!breath || (breath.total_moles() == 0))
-				//Aliens breathe in vaccuum
-				return 0
-
-			var/toxins_used = 0
-			var/breath_pressure = (breath.total_moles()*R_IDEAL_GAS_EQUATION*breath.temperature)/BREATH_VOLUME
-
-			//Partial pressure of the toxins in our breath
-			var/Toxins_pp = (breath.toxins/breath.total_moles())*breath_pressure
-
-			if(Toxins_pp) // Detect toxins in air
-
-				toxloss += breath.toxins*250
-				toxins_alert = max(toxins_alert, 1)
-
-				toxins_used = breath.toxins
-
-			else
-				toxins_alert = 0
-
-			//Breathe in toxins and out oxygen
-			breath.toxins -= toxins_used
-			breath.oxygen += toxins_used
-
-			if(breath.temperature > (T0C+66) && !(src.mutations & 2)) // Hot air hurts :(
-				if(prob(20))
-					src << "\red You feel a searing heat in your lungs!"
-				fire_alert = max(fire_alert, 1)
-			else
-				fire_alert = 0
-
-			//Temporary fixes to the alerts.
-			if(oxyloss > 10)
-				losebreath++
-
-			return 1
-
-		adjust_body_temperature(current, loc_temp, boost)
-			var/temperature = current
-			var/difference = abs(current-loc_temp)	//get difference
-			var/increments// = difference/10			//find how many increments apart they are
-			if(difference > 50)
-				increments = difference/5
-			else
-				increments = difference/10
-			var/change = increments*boost	// Get the amount to change by (x per increment)
-			var/temp_change
-			if(current < loc_temp)
-				temperature = min(loc_temp, temperature+change)
-			else if(current > loc_temp)
-				temperature = max(loc_temp, temperature-change)
-			temp_change = (temperature - current)
-			return temp_change
-
 		get_thermal_protection()
 			var/thermal_protection = 1.0
 			//Handle normal clothing
@@ -307,8 +249,6 @@
 			if(wear_suit)
 				if(wear_suit.protective_temperature > temp)
 					fire_prot += (wear_suit.protective_temperature/10)
-
-
 			return fire_prot
 
 /*
@@ -475,9 +415,6 @@
 		//Figure it out and come back here.
 		//Nannek
 		//As a note, the toxloss for radiation should be changed as the alien uses toxloss as a fuel
-
-		handle_random_events()
-			return
 
 /*
 			if (src.radiation > 100)

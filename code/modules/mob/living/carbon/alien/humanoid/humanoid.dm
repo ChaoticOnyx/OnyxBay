@@ -743,17 +743,11 @@ to clean it up, or just beat the shit out of it (which takes ages).
 */
 
 
-
-
-
 /mob/living/carbon/alien/humanoid/restrained()
 	if (src.handcuffed)
 		return 1
 	return 0
 
-
-/mob/living/carbon/alien/humanoid/var/co2overloadtime = null
-/mob/living/carbon/alien/humanoid/var/temperature_resistance = T0C+75
 
 /mob/living/carbon/alien/humanoid/show_inv(mob/user as mob)
 

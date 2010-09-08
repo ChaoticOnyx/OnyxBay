@@ -517,9 +517,6 @@ to clean it up, or just beat the shit out of it (which takes ages).
 
 
 
-/mob/living/carbon/alien/larva/var/co2overloadtime = null
-/mob/living/carbon/alien/larva/var/temperature_resistance = T0C+75
-
 // new damage icon system
 // now constructs damage icon for each organ from mask * damage field
 
