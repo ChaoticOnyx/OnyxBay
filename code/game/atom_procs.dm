@@ -38,12 +38,12 @@
 	if (istype(W, /obj/item/device/detective_scanner))
 		for(var/mob/O in viewers(src, null))
 			if ((O.client && !( O.blinded )))
-				O << text("\red [src] has been scanned by [user] with the [W]")
+				O << "\red [src] has been scanned by [user] with the [W]"
 	else
 		if (!( istype(W, /obj/item/weapon/grab) ) || !(istype(W, /obj/item/weapon/cleaner)))
 			for(var/mob/O in viewers(src, null))
 				if ((O.client && !( O.blinded )))
-					O << text("\red <B>[] has been hit by [] with []</B>", src, user, W)
+					O << "\red <B>[src] has been hit by [user] with [W]</B>"
 	return
 
 /atom/proc/add_fingerprint(mob/living/carbon/human/M as mob)
@@ -54,13 +54,13 @@
 		return
 	if (M.gloves)
 		if(src.fingerprintslast != M.key)
-			src.fingerprintshidden += text("(Wearing gloves). Real name: [], Key: []",M.real_name, M.key)
+			src.fingerprintshidden += "(Wearing gloves). Real name: [M.real_name], Key: [M.key]"
 			src.fingerprintslast = M.key
 		return 0
 	if (!( src.fingerprints ))
 		src.fingerprints = text("[]", md5(M.dna.uni_identity))
 		if(src.fingerprintslast != M.key)
-			src.fingerprintshidden += text("Real name: [], Key: []",M.real_name, M.key)
+			src.fingerprintshidden += "Real name: [M.real_name], Key: [M.key]"
 			src.fingerprintslast = M.key
 		return 1
 	else
@@ -72,7 +72,7 @@
 		src.fingerprints = list2params(L)
 
 		if(src.fingerprintslast != M.key)
-			src.fingerprintshidden += text("Real name: [], Key: []",M.real_name, M.key)
+			src.fingerprintshidden += "Real name: [M.real_name], Key: [M.key]"
 			src.fingerprintslast = M.key
 	return
 

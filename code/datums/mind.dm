@@ -49,7 +49,7 @@ datum/logging
 	var/area/loc = null
 
 	proc/log_m(var/logtext,var/mob/mob)
-		logs += text("[logtext] - [mob.name]([mob.real_name])([mob.key]) - [world.timeofday]")
+		logs += "[logtext] - [mob.name]([mob.real_name])([mob.key]) - [world.timeofday]"
 		writes += 1
 		if(writes > 100)
 			return // Write contents to file here

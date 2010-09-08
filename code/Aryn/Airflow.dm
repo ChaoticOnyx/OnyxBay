@@ -437,7 +437,7 @@ atom/movable
 			if(istype(src,/mob/living/carbon/human))
 				var/b_loss = airflow_speed * vsc.AF_DAMAGE_MULTIPLIER
 				for(var/organ in src:organs)
-					var/datum/organ/external/temp = src:organs[text("[]", organ)]
+					var/datum/organ/external/temp = src:organs["[organ]"]
 					if (istype(temp, /datum/organ/external))
 						switch(temp.name)
 							if("head")
