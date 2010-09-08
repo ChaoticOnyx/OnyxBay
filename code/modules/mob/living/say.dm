@@ -200,10 +200,11 @@
 	else
 		rendered = "<span class='game say'><span class='name'>[src.real_name]</span>[alt_name] <span class='message'>[message]</span></span>"
 	for (var/client/C)
-		if (istype(C.mob, /mob/new_player))
-			continue
-		if (C.mob.stat > 1 && !(C.mob in heard_a))
-			C.mob.show_message(rendered, 2)
+		if (C.mob)
+			if (istype(C.mob, /mob/new_player))
+				continue
+			if (C.mob.stat > 1 && !(C.mob in heard_a))
+				C.mob.show_message(rendered, 2)
 	for(var/obj/item/weapon/recorder/R in oview(message_range,src))
 		if(R.recording)
 			over
