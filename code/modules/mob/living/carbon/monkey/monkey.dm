@@ -6,7 +6,7 @@
 /mob/living/carbon/monkey/gender = NEUTER
 /mob/living/carbon/monkey/flags = 258.0
 /mob/living/carbon/monkey/random_events = list("scratch")
-/mob/living/carbon/human/species = "Monkey"
+/mob/living/carbon/monkey/species = "Monkey"
 
 /mob/living/carbon/monkey/New()
 	..()
