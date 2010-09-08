@@ -3,44 +3,44 @@
 	var/turf/T = get_turf(src)
 
 //	if (isturf(T))	//let cryo/sleeper handle adjusting body temp in their respective alter_health procs
-//		src.bodytemperature = adjustBodyTemp(src.bodytemperature, (shuttlefloor ? shuttlefloor.temp : T.temp), 1.0) //TODO: DEFERRED
+//		bodytemperature = adjustBodyTemp(bodytemperature, (shuttlefloor ? shuttlefloor.temp : T.temp), 1.0) //TODO: DEFERRED
 
-	if (src.stat == 2)
+	if (stat == 2)
 		return
 	else
-		if (src.stat!=0)
+		if (stat!=0)
 			src:cameraFollow = null
 			src:current = null
 			src:machine = null
 
-		src.updatehealth()
+		updatehealth()
 
 		/*if (istype(T, /turf))
-			var/ficheck = src.firecheck(T)
+			var/ficheck = firecheck(T)
 			if (ficheck)
-				src.fireloss += ficheck * 10
-				src.updatehealth()
-				if (src.fire)
-					src.fire.icon_state = "fire1"
-			else if (src.fire)
-				src.fire.icon_state = "fire0"
+				fireloss += ficheck * 10
+				updatehealth()
+				if (fire)
+					fire.icon_state = "fire1"
+			else if (fire)
+				fire.icon_state = "fire0"
 		*/ //TODO: DEFERRED
 
-		if (src.health <= -100.0)
+		if (health <= -100.0)
 			death()
 			return
-		else if (src.health < 0)
-			src.oxyloss++
+		else if (health < 0)
+			oxyloss++
 
-		if (src.machine)
-			if (!( src.machine.check_eye(src) ))
-				src.reset_view(null)
+		if (machine)
+			if (!( machine.check_eye(src) ))
+				reset_view(null)
 
 		//var/stage = 0
-		if (src.client)
+		if (client)
 			//stage = 1
 			if (istype(src, /mob/living/silicon/ai))
-				var/blind = 0
+				var/isblind = 0
 				//stage = 2
 				var/area/loc = null
 				if (istype(T, /turf))
@@ -50,57 +50,57 @@
 						//stage = 4
 						if (!loc.power_equip)
 							//stage = 5
-							blind = 1
+							isblind = 1
 
-				if (!blind)
+				if (!isblind)
 					//stage = 4.5
-					if (src.blind.layer!=0)
-						src.blind.layer = 0
-					src.sight |= SEE_TURFS
-					src.sight |= SEE_MOBS
-					src.sight |= SEE_OBJS
-					src.see_in_dark = 8
-					src.see_invisible = 2
+					if (blind.layer!=0)
+						blind.layer = 0
+					sight |= SEE_TURFS
+					sight |= SEE_MOBS
+					sight |= SEE_OBJS
+					see_in_dark = 8
+					see_invisible = 2
 
 					if (src:aiRestorePowerRoutine==2)
 						src << "Alert cancelled. Power has been restored without our assistance."
 						src:aiRestorePowerRoutine = 0
 						spawn(1)
-							while (src.oxyloss>0 && stat!=2)
+							while (oxyloss>0 && stat!=2)
 								sleep(50)
-								src.oxyloss-=1
-							src.oxyloss = 0
+								oxyloss-=1
+							oxyloss = 0
 						return
 					else if (src:aiRestorePowerRoutine==3)
 						src << "Alert cancelled. Power has been restored."
 						src:aiRestorePowerRoutine = 0
 						spawn(1)
-							while (src.oxyloss>0 && stat!=2)
+							while (oxyloss>0 && stat!=2)
 								sleep(50)
-								src.oxyloss-=1
-							src.oxyloss = 0
+								oxyloss-=1
+							oxyloss = 0
 						return
 				else
 
 					//stage = 6
-					src.blind.screen_loc = "1,1 to 15,15"
-					if (src.blind.layer!=18)
-						src.blind.layer = 18
-					src.sight = src.sight&~SEE_TURFS
-					src.sight = src.sight&~SEE_MOBS
-					src.sight = src.sight&~SEE_OBJS
-					src.see_in_dark = 0
-					src.see_invisible = 0
+					blind.screen_loc = "1,1 to 15,15"
+					if (blind.layer!=18)
+						blind.layer = 18
+					sight = sight&~SEE_TURFS
+					sight = sight&~SEE_MOBS
+					sight = sight&~SEE_OBJS
+					see_in_dark = 0
+					see_invisible = 0
 
 					if ((!loc.power_equip) || istype(T, /turf/space))
 						if (src:aiRestorePowerRoutine==0)
 							src:aiRestorePowerRoutine = 1
 							src << "You've lost power!"
-							src.set_zeroth_law("")
-							src.clear_supplied_laws()
+							set_zeroth_law("")
+							clear_supplied_laws()
 							spawn(50)
 								while ((src:aiRestorePowerRoutine!=0) && stat!=2)
-									src.oxyloss += 2
+									oxyloss += 2
 									sleep(50)
 
 							spawn(20)
@@ -195,14 +195,14 @@
 								theAPC.attack_ai(src)
 								src:aiRestorePowerRoutine = 3
 								src << "Your laws have been reset:"
-								src.show_laws()
+								show_laws()
 
 /mob/living/silicon/ai/updatehealth()
-	if (src.nodamage == 0)
-		if(src.fire_res_on_core)
-			src.health = health_full - src.oxyloss - src.toxloss - src.bruteloss
+	if (nodamage == 0)
+		if(fire_res_on_core)
+			health = health_full - oxyloss - toxloss - bruteloss
 		else
-			src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+			health = health_full - oxyloss - toxloss - fireloss - bruteloss
 	else
-		src.health = health_full
-		src.stat = 0
+		health = health_full
+		stat = 0

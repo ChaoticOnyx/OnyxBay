@@ -4,41 +4,41 @@
 	if (!message)
 		return
 
-	log_say("[src.name]/[src.key] : [message]")
+	log_say("[name]/[key] : [message]")
 
-	if (src.muted)
+	if (muted)
 		return
 
-	if (src.stat == 2)
-		return src.say_dead(message)
+	if (stat == 2)
+		return say_dead(message)
 
 	// wtf?
-	if (src.stat)
+	if (stat)
 		return
 
 	// emotes
-	if (copytext(message, 1, 2) == "*" && !src.stat)
-		return src.emote(copytext(message, 2))
+	if (copytext(message, 1, 2) == "*" && !stat)
+		return emote(copytext(message, 2))
 
 	var/alt_name = ""
-	if (istype(src, /mob/living/carbon/human) && src.name != src.real_name)
+	if (istype(src, /mob/living/carbon/human) && name != real_name)
 		if (src:wear_id && src:wear_id:registered)
 			alt_name = " (as [src:wear_id:registered])"
 		else
 			alt_name = " (as Unknown)"
 
 	// Mute disability
-	if (src.sdisabilities & 2)
+	if (sdisabilities & 2)
 		return
 
-	if (istype(src.wear_mask, /obj/item/clothing/mask/muzzle))
+	if (istype(wear_mask, /obj/item/clothing/mask/muzzle))
 		return
 
 	var/italics = 0
 	var/message_range = null
 	var/message_mode = null
 
-	if (src.brainloss >= 60 && prob(50))
+	if (brainloss >= 60 && prob(50))
 		if (ishuman(src))
 			message_mode = "headset"
 	// Special message handling
@@ -73,13 +73,13 @@
 	if (!message)
 		return
 
-	if (src.stuttering)
+	if (stuttering)
 		message = NewStutter(message,stunned)
-	if (src.intoxicated)
+	if (intoxicated)
 		message = Intoxicated(message)
 
 	// :downs:
-	if (src.brainloss >= 60)
+	if (brainloss >= 60)
 		message = dd_replacetext(message, " am ", " ")
 		message = dd_replacetext(message, " is ", " ")
 		message = dd_replacetext(message, " are ", " ")
@@ -89,7 +89,7 @@
 		if(prob(50))
 			message = uppertext(message)
 			message = "[message][stutter(pick("!", "!!", "!!!"))]"
-		if(!src.stuttering && prob(15))
+		if(!stuttering && prob(15))
 			message = NewStutter(message)
 
 	if (!istype(src, /mob/living/silicon))
@@ -109,15 +109,15 @@
 				italics = 1
 
 			if ("right hand")
-				if (src.r_hand)
-					src.r_hand.talk_into(src, message)
+				if (r_hand)
+					r_hand.talk_into(src, message)
 
 				message_range = 1
 				italics = 1
 
 			if ("left hand")
-				if (src.l_hand)
-					src.l_hand.talk_into(src, message)
+				if (l_hand)
+					l_hand.talk_into(src, message)
 
 				message_range = 1
 				italics = 1
@@ -154,16 +154,16 @@
 
 	var/rendered = null
 	if (length(heard_a))
-		var/message_a = src.say_quote(message)
+		var/message_a = say_quote(message)
 		var/test = say_test(message)
 		var/image/test2 = image('talk.dmi',src,"h[test]")
 		if (italics)
 			message_a = "<i>[message_a]</i>"
 
-		if (!istype(src, /mob/living/carbon/human) || istype(src.wear_mask, /obj/item/clothing/mask/gas/voice))
-			rendered = "<span class='game say'><span class='name'>[src.name]</span> <span class='message'>[message_a]</span></span>"
+		if (!istype(src, /mob/living/carbon/human) || istype(wear_mask, /obj/item/clothing/mask/gas/voice))
+			rendered = "<span class='game say'><span class='name'>[name]</span> <span class='message'>[message_a]</span></span>"
 		else
-			rendered = "<span class='game say'><span class='name'>[src.real_name]</span>[alt_name] <span class='message'>[message_a]</span></span>"
+			rendered = "<span class='game say'><span class='name'>[real_name]</span>[alt_name] <span class='message'>[message_a]</span></span>"
 
 		for (var/mob/M in heard_a)
 			M.show_message(rendered, 6)
@@ -174,31 +174,31 @@
 	if (length(heard_b))
 		var/message_b
 
-		if(src.say_unknown())
-			message_b = src.say_unknown()
+		if(say_unknown())
+			message_b = say_unknown()
 
-		else if (src.voice_message)
-			message_b = src.voice_message
+		else if (voice_message)
+			message_b = voice_message
 		else
 			message_b = stars(message)
-			message_b = src.say_quote(message_b)
+			message_b = say_quote(message_b)
 
 		if (italics)
 			message_b = "<i>[message_b]</i>"
 
-		rendered = "<span class='game say'><span class='name'>[src.voice_name]</span> <span class='message'>[message_b]</span></span>"
+		rendered = "<span class='game say'><span class='name'>[voice_name]</span> <span class='message'>[message_b]</span></span>"
 
 		for (var/mob/M in heard_b)
 			M.show_message(rendered, 6)
 
-	message = src.say_quote(message)
+	message = say_quote(message)
 	if (italics)
 		message = "<i>[message]</i>"
 
-	if (!istype(src, /mob/living/carbon/human) || istype(src.wear_mask, /obj/item/clothing/mask/gas/voice))
-		rendered = "<span class='game say'><span class='name'>[src.name]</span> <span class='message'>[message]</span></span>"
+	if (!istype(src, /mob/living/carbon/human) || istype(wear_mask, /obj/item/clothing/mask/gas/voice))
+		rendered = "<span class='game say'><span class='name'>[name]</span> <span class='message'>[message]</span></span>"
 	else
-		rendered = "<span class='game say'><span class='name'>[src.real_name]</span>[alt_name] <span class='message'>[message]</span></span>"
+		rendered = "<span class='game say'><span class='name'>[real_name]</span>[alt_name] <span class='message'>[message]</span></span>"
 	for (var/client/C)
 		if (C.mob)
 			if (istype(C.mob, /mob/new_player))
@@ -244,4 +244,4 @@
 					R.disk.memory["[id]"] += renderedold
 					R.disk.mobtype["[id]"] += "alien"
 //headfindback
-	src.log_m("Said [message]")
+	log_m("Said [message]")

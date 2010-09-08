@@ -3,36 +3,36 @@
 	else canmove = 1
 
 /mob/living/carbon/alien/check_if_buckled()
-	if (src.buckled)
-		src.lying = (istype(src.buckled, /obj/stool/bed) ? 1 : 0)
-		if(src.lying)
-			src.drop_item()
-		src.density = 1
+	if (buckled)
+		lying = (istype(buckled, /obj/stool/bed) ? 1 : 0)
+		if(lying)
+			drop_item()
+		density = 1
 	else
-		src.density = !src.lying
+		density = !lying
 
 /mob/living/carbon/alien/handle_chemicals_in_body()
 	if(reagents) reagents.metabolize(src)
 
-	if(src.nutrition > 400 && !(src.mutations & 32))
-		if(prob(5 + round((src.nutrition - 200) / 2)))
+	if(nutrition > 400 && !(mutations & 32))
+		if(prob(5 + round((nutrition - 200) / 2)))
 			src << "\red You suddenly feel blubbery!"
-			src.mutations |= 32
+			mutations |= 32
 //					update_body()
-	if (src.nutrition < 100 && src.mutations & 32)
-		if(prob(round((50 - src.nutrition) / 100)))
+	if (nutrition < 100 && mutations & 32)
+		if(prob(round((50 - nutrition) / 100)))
 			src << "\blue You feel fit again!"
-			src.mutations &= ~32
+			mutations &= ~32
 //					update_body()
-	if (src.nutrition > 0)
-		src.nutrition--
+	if (nutrition > 0)
+		nutrition--
 
-	if (src.drowsyness)
-		src.drowsyness--
-		src.eye_blurry = max(2, src.eye_blurry)
+	if (drowsyness)
+		drowsyness--
+		eye_blurry = max(2, eye_blurry)
 		if (prob(5))
-			src.sleeping = 1
-			src.paralysis = 5
+			sleeping = 1
+			paralysis = 5
 
 	confused = max(0, confused - 1)
 	// decrement dizziness counter, clamped to 0
@@ -43,12 +43,12 @@
 		dizziness = max(0, dizziness - 1)
 		jitteriness = max(0, jitteriness - 1)
 
-	src.updatehealth()
+	updatehealth()
 
 	return //TODO: DEFERRED
 
 /mob/living/carbon/alien/handle_breath(datum/gas_mixture/breath)
-	if(src.nodamage)
+	if(nodamage)
 		return
 
 	if(!breath || (breath.total_moles() == 0))
@@ -75,7 +75,7 @@
 	breath.toxins -= toxins_used
 	breath.oxygen += toxins_used
 
-	if(breath.temperature > (T0C+66) && !(src.mutations & 2)) // Hot air hurts :(
+	if(breath.temperature > (T0C+66) && !(mutations & 2)) // Hot air hurts :(
 		if(prob(20))
 			src << "\red You feel a searing heat in your lungs!"
 		fire_alert = max(fire_alert, 1)

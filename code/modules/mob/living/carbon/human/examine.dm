@@ -3,79 +3,79 @@
 
 	usr << "\blue *---------*"
 
-	usr << "\blue This is \icon[src.icon] <B>[src.name]</B>!"
+	usr << "\blue This is \icon[icon] <B>[name]</B>!"
 
 	// crappy hack because you can't do \his[src] etc
 	var/t_his = "its"
 	var/t_him = "it"
-	if (src.gender == MALE)
+	if (gender == MALE)
 		t_his = "his"
 		t_him = "him"
-	else if (src.gender == FEMALE)
+	else if (gender == FEMALE)
 		t_his = "her"
 		t_him = "her"
 
-	if (src.w_uniform)
-		if (src.w_uniform.blood_DNA)
-			usr << "\red [src.name] is wearing a[src.w_uniform.blood_DNA ? " bloody " : " "] \icon[src.w_uniform] [src.w_uniform.name]!"
+	if (w_uniform)
+		if (w_uniform.blood_DNA)
+			usr << "\red [name] is wearing a[w_uniform.blood_DNA ? " bloody " : " "] \icon[w_uniform] [w_uniform.name]!"
 		else
-			usr << "\blue [src.name] is wearing a \icon[src.w_uniform] [src.w_uniform.name]."
+			usr << "\blue [name] is wearing a \icon[w_uniform] [w_uniform.name]."
 
-	if (src.handcuffed)
-		usr << "\blue [src.name] is \icon[src.handcuffed] handcuffed!"
+	if (handcuffed)
+		usr << "\blue [name] is \icon[handcuffed] handcuffed!"
 
-	if (src.wear_suit)
-		if (src.wear_suit.blood_DNA)
-			usr << "\red [src.name] has a[src.wear_suit.blood_DNA ? " bloody " : " "] \icon[src.wear_suit] [src.wear_suit.name] on!"
+	if (wear_suit)
+		if (wear_suit.blood_DNA)
+			usr << "\red [name] has a[wear_suit.blood_DNA ? " bloody " : " "] \icon[wear_suit] [wear_suit.name] on!"
 		else
-			usr << "\blue [src.name] has a \icon[src.wear_suit] [src.wear_suit.name] on."
+			usr << "\blue [name] has a \icon[wear_suit] [wear_suit.name] on."
 
-	if (src.ears)
-		usr << "\blue [src.name] has a \icon[src.ears] [src.ears.name] by [t_his] mouth."
+	if (ears)
+		usr << "\blue [name] has a \icon[ears] [ears.name] by [t_his] mouth."
 
-	if (src.wear_mask)
-		if (src.wear_mask.blood_DNA)
-			usr << "\red [src.name] has a[src.wear_mask.blood_DNA ? " bloody " : " "] \icon[src.wear_mask] [src.wear_mask.name] on [t_his] face!"
+	if (wear_mask)
+		if (wear_mask.blood_DNA)
+			usr << "\red [name] has a[wear_mask.blood_DNA ? " bloody " : " "] \icon[wear_mask] [wear_mask.name] on [t_his] face!"
 		else
-			usr << "\blue [src.name] has a \icon[src.wear_mask] [src.wear_mask.name] on [t_his] face."
+			usr << "\blue [name] has a \icon[wear_mask] [wear_mask.name] on [t_his] face."
 
-	if (src.l_hand)
-		if (src.l_hand.blood_DNA)
-			usr << "\red [src.name] has a[src.l_hand.blood_DNA ? " bloody " : " "] \icon[src.l_hand] [src.l_hand.name] in [t_his] left hand!"
+	if (l_hand)
+		if (l_hand.blood_DNA)
+			usr << "\red [name] has a[l_hand.blood_DNA ? " bloody " : " "] \icon[l_hand] [l_hand.name] in [t_his] left hand!"
 		else
-			usr << "\blue [src.name] has a \icon[src.l_hand] [src.l_hand.name] in [t_his] left hand."
+			usr << "\blue [name] has a \icon[l_hand] [l_hand.name] in [t_his] left hand."
 
-	if (src.r_hand)
-		if (src.r_hand.blood_DNA)
-			usr << "\red [src.name] has a[src.r_hand.blood_DNA ? " bloody " : " "] \icon[src.r_hand] [src.r_hand.name] in [t_his] right hand!"
+	if (r_hand)
+		if (r_hand.blood_DNA)
+			usr << "\red [name] has a[r_hand.blood_DNA ? " bloody " : " "] \icon[r_hand] [r_hand.name] in [t_his] right hand!"
 		else
-			usr << "\blue [src.name] has a \icon[src.r_hand] [src.r_hand.name] in [t_his] right hand."
+			usr << "\blue [name] has a \icon[r_hand] [r_hand.name] in [t_his] right hand."
 
-	if (src.belt)
-		if (src.belt.blood_DNA)
-			usr << "\red [src.name] has a[src.belt.blood_DNA ? " bloody " : " "] \icon[src.belt] [src.belt.name] on [t_his] belt!"
+	if (belt)
+		if (belt.blood_DNA)
+			usr << "\red [name] has a[belt.blood_DNA ? " bloody " : " "] \icon[belt] [belt.name] on [t_his] belt!"
 		else
-			usr << "\blue [src.name] has a \icon[src.belt] [src.belt.name] on [t_his] belt."
+			usr << "\blue [name] has a \icon[belt] [belt.name] on [t_his] belt."
 
-	if (src.gloves)
-		if (src.gloves.blood_DNA)
-			usr << "\red [src.name] has bloody \icon[src.gloves] [src.gloves.name] on [t_his] hands!"
+	if (gloves)
+		if (gloves.blood_DNA)
+			usr << "\red [name] has bloody \icon[gloves] [gloves.name] on [t_his] hands!"
 		else
-			usr << "\blue [src.name] has \icon[src.gloves] [src.gloves.name] on [t_his] hands."
-	else if (src.blood_DNA)
-		usr << "\red [src.name] has[src.blood_DNA ? " bloody " : " "] hands!"
+			usr << "\blue [name] has \icon[gloves] [gloves.name] on [t_his] hands."
+	else if (blood_DNA)
+		usr << "\red [name] has[blood_DNA ? " bloody " : " "] hands!"
 
-	if (src.back)
-		usr << "\blue [src.name] has a \icon[src.back] [src.back.name] on [t_his] back."
+	if (back)
+		usr << "\blue [name] has a \icon[back] [back.name] on [t_his] back."
 
-	if (src.wear_id)
-		if (src.wear_id.registered != src.real_name && in_range(src, usr) && prob(10))
-			usr << "\red [src.name] is wearing \icon[src.wear_id] [src.wear_id.name] yet doesn't seem to be that person!!!"
+	if (wear_id)
+		if (wear_id.registered != real_name && in_range(src, usr) && prob(10))
+			usr << "\red [name] is wearing \icon[wear_id] [wear_id.name] yet doesn't seem to be that person!!!"
 		else
-			usr << "\blue [src.name] is wearing \icon[src.wear_id] [src.wear_id.name]."
+			usr << "\blue [name] is wearing \icon[wear_id] [wear_id.name]."
 
-	if (src.is_jittery)
-		switch(src.jitteriness)
+	if (is_jittery)
+		switch(jitteriness)
 			if(300 to INFINITY)
 				usr << "\red [src] is violently convulsing."
 			if(200 to 300)
@@ -83,24 +83,24 @@
 			if(100 to 200)
 				usr << "\red [src] is twitching ever so slightly."
 
-	if (src.stat == 2 || src.changeling_fakedeath == 1)
+	if (stat == 2 || changeling_fakedeath == 1)
 		usr << "\red [src] is limp and unresponsive, a dull lifeless look in [t_his] eyes."
 	else
-		if (src.bruteloss)
-			if (src.bruteloss < 30)
-				usr << "\red [src.name] looks slightly injured!"
+		if (bruteloss)
+			if (bruteloss < 30)
+				usr << "\red [name] looks slightly injured!"
 			else
-				usr << "\red <B>[src.name] looks severely injured!</B>"
+				usr << "\red <B>[name] looks severely injured!</B>"
 
-		if (src.fireloss)
-			if (src.fireloss < 30)
-				usr << "\red [src.name] looks slightly burned!"
+		if (fireloss)
+			if (fireloss < 30)
+				usr << "\red [name] looks slightly burned!"
 			else
-				usr << "\red <B>[src.name] looks severely burned!</B>"
+				usr << "\red <B>[name] looks severely burned!</B>"
 
-		if (src.stat == 1)
-			usr << "\red [src.name] doesn't seem to be responding to anything around [t_him], [t_his] eyes closed as though asleep."
-		else if (src.brainloss >= 60)
-			usr << "\red [src.name] has a stupid expression on [t_his] face."
+		if (stat == 1)
+			usr << "\red [name] doesn't seem to be responding to anything around [t_him], [t_his] eyes closed as though asleep."
+		else if (brainloss >= 60)
+			usr << "\red [name] has a stupid expression on [t_his] face."
 
 	usr << "\blue *---------*"

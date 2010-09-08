@@ -1,20 +1,20 @@
 /mob/living/carbon/monkey/death(gibbed)
-	if(src.stat == 2)
+	if(stat == 2)
 		return
 
-	if (src.healths)
-		src.healths.icon_state = "health5"
-	src.stat = 2
-	src.canmove = 0
-	if (src.blind)
-		src.blind.layer = 0
-	src.lying = 1
+	if (healths)
+		healths.icon_state = "health5"
+	stat = 2
+	canmove = 0
+	if (blind)
+		blind.layer = 0
+	lying = 1
 
-	var/h = src.hand
-	src.hand = 0
+	var/h = hand
+	hand = 0
 	drop_item()
-	src.hand = 1
+	hand = 1
 	drop_item()
-	src.hand = h
+	hand = h
 
 	return ..(gibbed)

@@ -6,7 +6,7 @@
 		param = copytext(act, t1 + 1, length(act) + 1)
 		act = copytext(act, 1, t1)
 
-	var/muzzled = istype(src.wear_mask, /obj/item/clothing/mask/muzzle)
+	var/muzzled = istype(wear_mask, /obj/item/clothing/mask/muzzle)
 	var/m_type = 1
 
 	for (var/obj/item/weapon/implant/I in src)
@@ -24,7 +24,7 @@
 			m_type = 1
 
 		if ("bow")
-			if (!src.buckled)
+			if (!buckled)
 				var/M = null
 				if (param)
 					for (var/mob/A in view(null, null))
@@ -54,7 +54,7 @@
 
 
 		if ("salute")
-			if (!src.buckled)
+			if (!buckled)
 				var/M = null
 				if (param)
 					for (var/mob/A in view(null, null))
@@ -79,16 +79,16 @@
 				m_type = 2
 
 		if ("clap")
-			if (!src.restrained())
+			if (!restrained())
 				message = "<B>[src]</B> claps."
 				m_type = 2
 		if ("flap")
-			if (!src.restrained())
+			if (!restrained())
 				message = "<B>[src]</B> flaps his wings."
 				m_type = 2
 
 		if ("aflap")
-			if (!src.restrained())
+			if (!restrained())
 				message = "<B>[src]</B> flaps his wings ANGRILY!"
 				m_type = 2
 
@@ -118,7 +118,7 @@
 
 		if ("faint")
 			message = "<B>[src]</B> faints."
-			src.sleeping = 1
+			sleeping = 1
 			m_type = 1
 
 		if ("cough")
@@ -267,11 +267,11 @@
 			if (!M)
 				param = null
 			else
-				message = "<B>[src]</B> says, \"[M], please. He had a family.\" [src.name] takes a drag from a cigarette and blows his name out in smoke."
+				message = "<B>[src]</B> says, \"[M], please. He had a family.\" [name] takes a drag from a cigarette and blows his name out in smoke."
 				m_type = 2
 
 		if ("point")
-			if (!src.restrained())
+			if (!restrained())
 				var/mob/M = null
 				if (param)
 					for (var/atom/A as mob|obj|turf|area in view(null, null))
@@ -290,7 +290,7 @@
 			m_type = 1
 
 		if ("raise")
-			if (!src.restrained())
+			if (!restrained())
 				message = "<B>[src]</B> raises a hand."
 			m_type = 1
 
@@ -303,12 +303,12 @@
 			m_type = 1
 
 		if ("signal")
-			if (!src.restrained())
+			if (!restrained())
 				var/t1 = round(text2num(param))
 				if (isnum(t1))
-					if (t1 <= 5 && (!src.r_hand || !src.l_hand))
+					if (t1 <= 5 && (!r_hand || !l_hand))
 						message = "<B>[src]</B> raises [t1] finger\s."
-					else if (t1 <= 10 && (!src.r_hand && !src.l_hand))
+					else if (t1 <= 10 && (!r_hand && !l_hand))
 						message = "<B>[src]</B> raises [t1] finger\s."
 			m_type = 1
 
@@ -366,14 +366,14 @@
 				m_type = 2
 
 		if ("collapse")
-			if (!src.paralysis)
-				src.paralysis += 2
+			if (!paralysis)
+				paralysis += 2
 			message = "<B>[src]</B> collapses!"
 			m_type = 2
 
 		if("hug")
 			m_type = 1
-			if (!src.restrained())
+			if (!restrained())
 				var/M = null
 				if (param)
 					for (var/mob/A in view(1, null))
@@ -390,7 +390,7 @@
 
 		if ("handshake")
 			m_type = 1
-			if (!src.restrained() && !src.r_hand)
+			if (!restrained() && !r_hand)
 				var/mob/M = null
 				if (param)
 					for (var/mob/A in view(1, null))
@@ -408,7 +408,7 @@
 
 		if("daps")
 			m_type = 1
-			if (!src.restrained())
+			if (!restrained())
 				var/M = null
 				if (param)
 					for (var/mob/A in view(1, null))

@@ -8,32 +8,32 @@ datum/preferences/proc/savefile_path(mob/user)
 	if (IsGuestKey(user.key))
 		return 0
 
-	var/savefile/F = new /savefile(src.savefile_path(user))
+	var/savefile/F = new /savefile(savefile_path(user))
 
 	F["version"] << SAVEFILE_VERSION_MAX
 
-	F["real_name"] << src.real_name
-	F["gender"] << src.gender
-	F["age"] << src.age
-	F["occupation_1"] << src.occupation1
-	F["occupation_2"] << src.occupation2
-	F["occupation_3"] << src.occupation3
-	F["hair_red"] << src.r_hair
-	F["hair_green"] << src.g_hair
-	F["hair_blue"] << src.b_hair
-	F["facial_red"] << src.r_facial
-	F["facial_green"] << src.g_facial
-	F["facial_blue"] << src.b_facial
-	F["skin_tone"] << src.s_tone
-	F["hair_style_name"] << src.h_style
-	F["facial_style_name"] << src.f_style
-	F["eyes_red"] << src.r_eyes
-	F["eyes_green"] << src.g_eyes
-	F["eyes_blue"] << src.b_eyes
-	F["blood_type"] << src.b_type
-	F["be_syndicate"] << src.be_syndicate
-	F["underwear"] << src.underwear
-	F["name_is_always_random"] << src.be_random_name
+	F["real_name"] << real_name
+	F["gender"] << gender
+	F["age"] << age
+	F["occupation_1"] << occupation1
+	F["occupation_2"] << occupation2
+	F["occupation_3"] << occupation3
+	F["hair_red"] << r_hair
+	F["hair_green"] << g_hair
+	F["hair_blue"] << b_hair
+	F["facial_red"] << r_facial
+	F["facial_green"] << g_facial
+	F["facial_blue"] << b_facial
+	F["skin_tone"] << s_tone
+	F["hair_style_name"] << h_style
+	F["facial_style_name"] << f_style
+	F["eyes_red"] << r_eyes
+	F["eyes_green"] << g_eyes
+	F["eyes_blue"] << b_eyes
+	F["blood_type"] << b_type
+	F["be_syndicate"] << be_syndicate
+	F["underwear"] << underwear
+	F["name_is_always_random"] << be_random_name
 // loads the savefile corresponding to the mob's ckey
 // if silent=true, report incompatible savefiles
 // returns 1 if loaded (or file was incompatible)
@@ -46,28 +46,28 @@ datum/preferences/proc/savefile_load(mob/user, var/silent = 1,var/slot = 1)
 	if(xquery.Execute())
 		while(xquery.NextRow())
 			var/list/column_data = xquery.GetRowData()
-			src.real_name = column_data["real_name"]
-			src.gender = column_data["gender"]
-			src.occupation1 = column_data["occupation1"]
-			src.occupation2 = column_data["occupation2"]
-			src.occupation3 = column_data["occupation3"]
-			src.r_hair = text2num(column_data["hair_red"])
-			src.g_hair = text2num(column_data["hair_green"])
-			src.b_hair = text2num(column_data["hair_blue"])
-			src.age = text2num(column_data["ages"])
-			src.r_facial = text2num(column_data["facial_red"])
-			src.g_facial = text2num(column_data["facial_green"])
-			src.b_facial = text2num(column_data["facial_blue"])
-			src.s_tone = text2num(column_data["skin_tone"])
-			src.h_style = column_data["hair_style_name"]
-			src.f_style = column_data["facial_style_name"]
-			src.r_eyes = text2num(column_data["eyes_red"])
-			src.g_eyes = text2num(column_data["eyes_green"])
-			src.b_eyes = text2num(column_data["eyes_blue"])
-			src.b_type = column_data["blood_type"]
-			src.be_syndicate = text2num(column_data["be_syndicate"])
-			src.underwear = text2num(column_data["underwear"])
-			src.be_random_name = text2num(column_data["name_is_always_random"])
+			real_name = column_data["real_name"]
+			gender = column_data["gender"]
+			occupation1 = column_data["occupation1"]
+			occupation2 = column_data["occupation2"]
+			occupation3 = column_data["occupation3"]
+			r_hair = text2num(column_data["hair_red"])
+			g_hair = text2num(column_data["hair_green"])
+			b_hair = text2num(column_data["hair_blue"])
+			age = text2num(column_data["ages"])
+			r_facial = text2num(column_data["facial_red"])
+			g_facial = text2num(column_data["facial_green"])
+			b_facial = text2num(column_data["facial_blue"])
+			s_tone = text2num(column_data["skin_tone"])
+			h_style = column_data["hair_style_name"]
+			f_style = column_data["facial_style_name"]
+			r_eyes = text2num(column_data["eyes_red"])
+			g_eyes = text2num(column_data["eyes_green"])
+			b_eyes = text2num(column_data["eyes_blue"])
+			b_type = column_data["blood_type"]
+			be_syndicate = text2num(column_data["be_syndicate"])
+			underwear = text2num(column_data["underwear"])
+			be_random_name = text2num(column_data["name_is_always_random"])
 			src << "Player Profile has been loaded"
 			src << browse(null, "window=mob_occupation")
 			return 1

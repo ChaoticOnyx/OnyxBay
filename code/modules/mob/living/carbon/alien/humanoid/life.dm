@@ -1,70 +1,70 @@
 /mob/living/carbon/alien/handle_regular_hud_updates()
-	if (src.stat == 2 || src.mutations & 4)
-		src.sight |= SEE_TURFS
-		src.sight |= SEE_MOBS
-		src.sight |= SEE_OBJS
-		src.see_in_dark = 8
-		src.see_invisible = 2
-	else if (src.stat != 2)
-		src.sight |= SEE_MOBS
-		src.sight &= ~SEE_TURFS
-		src.sight &= ~SEE_OBJS
-		src.see_in_dark = 4
-		src.see_invisible = 2
+	if (stat == 2 || mutations & 4)
+		sight |= SEE_TURFS
+		sight |= SEE_MOBS
+		sight |= SEE_OBJS
+		see_in_dark = 8
+		see_invisible = 2
+	else if (stat != 2)
+		sight |= SEE_MOBS
+		sight &= ~SEE_TURFS
+		sight &= ~SEE_OBJS
+		see_in_dark = 4
+		see_invisible = 2
 
-	if (src.sleep) src.sleep.icon_state = text("sleep[]", src.sleeping)
-	if (src.rest) src.rest.icon_state = text("rest[]", src.resting)
+	if (sleep) sleep.icon_state = text("sleep[]", sleeping)
+	if (rest) rest.icon_state = text("rest[]", resting)
 
-	if (src.healths)
-		if (src.stat != 2)
+	if (healths)
+		if (stat != 2)
 			switch(health)
 				if(100 to INFINITY)
-					src.healths.icon_state = "health0"
+					healths.icon_state = "health0"
 				if(75 to 100)
-					src.healths.icon_state = "health1"
+					healths.icon_state = "health1"
 				if(50 to 75)
-					src.healths.icon_state = "health2"
+					healths.icon_state = "health2"
 				if(25 to 50)
-					src.healths.icon_state = "health3"
+					healths.icon_state = "health3"
 				if(0 to 25)
-					src.healths.icon_state = "health4"
+					healths.icon_state = "health4"
 				else
-					src.healths.icon_state = "health5"
+					healths.icon_state = "health5"
 		else
-			src.healths.icon_state = "health6"
+			healths.icon_state = "health6"
 
-	if(src.pullin)	src.pullin.icon_state = "pull[src.pulling ? 1 : 0]"
+	if(pullin)	pullin.icon_state = "pull[pulling ? 1 : 0]"
 
 
-	if (src.toxin)	src.toxin.icon_state = "tox[src.toxins_alert ? 1 : 0]"
-	if (src.oxygen) src.oxygen.icon_state = "oxy[src.oxygen_alert ? 1 : 0]"
-	if (src.fire) src.fire.icon_state = "fire[src.fire_alert ? 1 : 0]"
+	if (toxin)	toxin.icon_state = "tox[toxins_alert ? 1 : 0]"
+	if (oxygen) oxygen.icon_state = "oxy[oxygen_alert ? 1 : 0]"
+	if (fire) fire.icon_state = "fire[fire_alert ? 1 : 0]"
 	//NOTE: the alerts dont reset when youre out of danger. dont blame me,
 	//blame the person who coded them. Temporary fix added.
 
-	src.client.screen -= src.hud_used.blurry
-	src.client.screen -= src.hud_used.druggy
-	src.client.screen -= src.hud_used.vimpaired
+	client.screen -= hud_used.blurry
+	client.screen -= hud_used.druggy
+	client.screen -= hud_used.vimpaired
 
-	if ((src.blind && src.stat != 2))
-		if ((src.blinded))
-			src.blind.layer = 18
+	if ((blind && stat != 2))
+		if ((blinded))
+			blind.layer = 18
 		else
-			src.blind.layer = 0
+			blind.layer = 0
 
-			if (src.disabilities & 1)
-				src.client.screen += src.hud_used.vimpaired
+			if (disabilities & 1)
+				client.screen += hud_used.vimpaired
 
-			if (src.eye_blurry)
-				src.client.screen += src.hud_used.blurry
+			if (eye_blurry)
+				client.screen += hud_used.blurry
 
-			if (src.druggy)
-				src.client.screen += src.hud_used.druggy
+			if (druggy)
+				client.screen += hud_used.druggy
 
-	if (src.stat != 2)
-		if (src.machine)
-			if (!( src.machine.check_eye(src) ))
-				src.reset_view(null)
+	if (stat != 2)
+		if (machine)
+			if (!( machine.check_eye(src) ))
+				reset_view(null)
 		else
 			if(!client.adminobs)
 				reset_view(null)
@@ -237,50 +237,50 @@
 		//As a note, the toxloss for radiation should be changed as the alien uses toxloss as a fuel
 
 /*
-			if (src.radiation > 100)
-				src.radiation = 100
-			if ((prob(1) && (src.radiation >= 75)))
+			if (radiation > 100)
+				radiation = 100
+			if ((prob(1) && (radiation >= 75)))
 				randmutb(src)
 				src << "\red High levels of Radiation cause you to spontaneously mutate."
 				domutcheck(src,null)
-			if ((prob(7) && (src.radiation >= 75)))
-				if (src.paralysis < 3)
-					src.paralysis = 3
+			if ((prob(7) && (radiation >= 75)))
+				if (paralysis < 3)
+					paralysis = 3
 				src << "\red You feel weak!"
 				emote("collapse")
-				src.updatehealth()
-				src.radiation -= 5
-			else if ((prob(7) && ((src.radiation > 50)&&(src.radiation < 75))))
-				src.updatehealth()
-				src.radiation -= 5
+				updatehealth()
+				radiation -= 5
+			else if ((prob(7) && ((radiation > 50)&&(radiation < 75))))
+				updatehealth()
+				radiation -= 5
 				emote("gasp")
 			else
-				if (prob(7) && (src.radiation > 1))
-					if (src.radiation >= 10)
-						src.radiation -= 10
-						src.toxloss += 5
-						src.updatehealth()
+				if (prob(7) && (radiation > 1))
+					if (radiation >= 10)
+						radiation -= 10
+						toxloss += 5
+						updatehealth()
 					else
-						src.radiation = 0
-			if (src.disabilities & 2)
-				if ((prob(1) && src.paralysis < 10 && src.r_epil < 1))
+						radiation = 0
+			if (disabilities & 2)
+				if ((prob(1) && paralysis < 10 && r_epil < 1))
 					src << "\red You have a seizure!"
-					src.paralysis = max(10, src.paralysis)
-			if (src.disabilities & 4)
-				if ((prob(5) && src.paralysis <= 1 && src.r_ch_cou < 1))
-					src.drop_item()
+					paralysis = max(10, paralysis)
+			if (disabilities & 4)
+				if ((prob(5) && paralysis <= 1 && r_ch_cou < 1))
+					drop_item()
 					spawn( 0 )
 						emote("cough")
 						return
-			if (src.disabilities & 8)
-				if ((prob(10) && src.paralysis <= 1 && src.r_Tourette < 1))
-					src.stunned = max(10, src.stunned)
+			if (disabilities & 8)
+				if ((prob(10) && paralysis <= 1 && r_Tourette < 1))
+					stunned = max(10, stunned)
 					spawn( 0 )
 						emote("twitch")
 						return
-			if (src.disabilities & 16)
+			if (disabilities & 16)
 				if (prob(10))
-					src.stuttering = max(10, src.stuttering)
+					stuttering = max(10, stuttering)
 			if (prob(1) && prob(2))
 				spawn(0)
 					emote("sneeze")
@@ -289,74 +289,74 @@
 
 		//This is fine for the alien
 		handle_virus_updates()
-			if(src.bodytemperature > 406)
-				src.resistances += src.virus
-				src.virus = null
+			if(bodytemperature > 406)
+				resistances += virus
+				virus = null
 
-			if(!src.virus)
+			if(!virus)
 				if(prob(40))
 					for(var/mob/living/carbon/M in range(4, src))
 						if(M.virus && M.virus.spread == "Airborne")
 							if(M.virus.affected_species.Find("Alien"))
-								if(M.virus.type in src.resistances)
+								if(M.virus.type in resistances)
 									continue
-								src.contract_disease(new M.virus.type)
+								contract_disease(new M.virus.type)
 					for(var/obj/decal/cleanable/blood/B in range(4, src))
 						if(B.virus && B.virus.spread == "Airborne")
 							if(B.virus.affected_species.Find("Alien"))
-								if(B.virus.type in src.resistances)
+								if(B.virus.type in resistances)
 									continue
-								src.contract_disease(new B.virus.type)
+								contract_disease(new B.virus.type)
 			else
-				src.virus.stage_act()
+				virus.stage_act()
 /*
 snippets
 
-	if (src.mach)
-		if (src.machine)
-			src.mach.icon_state = "mach1"
+	if (mach)
+		if (machine)
+			mach.icon_state = "mach1"
 		else
-			src.mach.icon_state = null
+			mach.icon_state = null
 
-	if (!src.m_flag)
-		src.moved_recently = 0
-	src.m_flag = null
+	if (!m_flag)
+		moved_recently = 0
+	m_flag = null
 
 
 
-		if ((istype(src.loc, /turf/space) && !( locate(/obj/movable, src.loc) )))
+		if ((istype(loc, /turf/space) && !( locate(/obj/movable, loc) )))
 			var/layers = 20
 			// ******* Check
-			if (((istype(src.head, /obj/item/clothing/head) && src.head.flags & 4) || (istype(src.wear_mask, /obj/item/clothing/mask) && (!( src.wear_mask.flags & 4 ) && src.wear_mask.flags & 8))))
+			if (((istype(head, /obj/item/clothing/head) && head.flags & 4) || (istype(wear_mask, /obj/item/clothing/mask) && (!( wear_mask.flags & 4 ) && wear_mask.flags & 8))))
 				layers -= 5
-			if (istype(src.w_uniform, /obj/item/clothing/under))
+			if (istype(w_uniform, /obj/item/clothing/under))
 				layers -= 5
-			if ((istype(src.wear_suit, /obj/item/clothing/suit) && src.wear_suit.flags & 8))
+			if ((istype(wear_suit, /obj/item/clothing/suit) && wear_suit.flags & 8))
 				layers -= 10
 			if (layers > oxcheck)
 				oxcheck = layers
 
 
-				if(src.bodytemperature < 282.591 && (!src.firemut))
-					if(src.bodytemperature < 250)
-						src.fireloss += 4
-						src.updatehealth()
-						if(src.paralysis <= 2)	src.paralysis += 2
-					else if(prob(1) && !src.paralysis)
-						if(src.paralysis <= 5)	src.paralysis += 5
+				if(bodytemperature < 282.591 && (!firemut))
+					if(bodytemperature < 250)
+						fireloss += 4
+						updatehealth()
+						if(paralysis <= 2)	paralysis += 2
+					else if(prob(1) && !paralysis)
+						if(paralysis <= 5)	paralysis += 5
 						emote("collapse")
 						src << "\red You collapse from the cold!"
-				if(src.bodytemperature > 327.444  && (!src.firemut))
-					if(src.bodytemperature > 345.444)
-						if(!src.eye_blurry)	src << "\red The heat blurs your vision!"
-						src.eye_blurry = max(4, src.eye_blurry)
-						if(prob(3))	src.fireloss += rand(1,2)
-					else if(prob(3) && !src.paralysis)
-						src.paralysis += 2
+				if(bodytemperature > 327.444  && (!firemut))
+					if(bodytemperature > 345.444)
+						if(!eye_blurry)	src << "\red The heat blurs your vision!"
+						eye_blurry = max(4, eye_blurry)
+						if(prob(3))	fireloss += rand(1,2)
+					else if(prob(3) && !paralysis)
+						paralysis += 2
 						emote("collapse")
 						src << "\red You collapse from heat exaustion!"
-				plcheck = src.t_plasma
-				oxcheck = src.t_oxygen
+				plcheck = t_plasma
+				oxcheck = t_oxygen
 				G.turf_add(T, G.total_moles())
 */
 */

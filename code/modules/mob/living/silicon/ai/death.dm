@@ -1,15 +1,15 @@
 /mob/living/silicon/ai/death(gibbed)
-	src.stat = 2
-	src.canmove = 0
-	if(src.blind)
-		src.blind.layer = 0
-	src.sight |= SEE_TURFS
-	src.sight |= SEE_MOBS
-	src.sight |= SEE_OBJS
-	src.see_in_dark = 8
-	src.see_invisible = 2
-	src.lying = 1
-	src.icon_state = "ai-crash"
+	stat = 2
+	canmove = 0
+	if(blind)
+		blind.layer = 0
+	sight |= SEE_TURFS
+	sight |= SEE_MOBS
+	sight |= SEE_OBJS
+	see_in_dark = 8
+	see_invisible = 2
+	lying = 1
+	icon_state = "ai-crash"
 
 	for(var/obj/machinery/ai_status_display/O in world) //change status
 		spawn( 0 )
