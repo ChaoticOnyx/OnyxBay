@@ -327,9 +327,6 @@
 
 	..()
 
-/mob/living/carbon/human/handle_virus_updates()
-	..("Human")
-
 /mob/living/carbon/human/breathe()
 	if(src.reagents.has_reagent("lexorin")) return
 	if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return

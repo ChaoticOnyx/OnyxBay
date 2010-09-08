@@ -47,9 +47,6 @@
 
 	return //TODO: DEFERRED
 
-/mob/living/carbon/alien/handle_virus_updates()
-	..("Alien")
-
 /mob/living/carbon/alien/handle_breath(datum/gas_mixture/breath)
 	if(src.nodamage)
 		return

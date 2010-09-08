@@ -3,6 +3,7 @@
 /mob/living/carbon/alien/voice_message = "hisses"
 /mob/living/carbon/alien/icon = 'alien.dmi'
 /mob/living/carbon/alien/toxloss = 250
+/mob/living/carbon/alien/species = "Alien"
 
 /mob/living/carbon/alien/var/toxgain = 5 // How much toxins is gained from weeds per tick
 /mob/living/carbon/alien/var/alien_invis = 0.0

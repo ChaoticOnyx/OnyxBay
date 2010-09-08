@@ -4,6 +4,7 @@
 /mob/living/carbon/human/icon_state = "m-none"
 
 /mob/living/carbon/human/random_events = list("blink")
+/mob/living/carbon/human/species = "Human"
 
 /mob/living/carbon/human/var/r_hair = 0.0
 /mob/living/carbon/human/var/g_hair = 0.0
@@ -2439,3 +2440,31 @@
 			if(H.zombie)
 				for(var/mob/living/carbon/human/N in world)
 					H << N.zombieimage
+
+
+/mob/living/carbon/human/relaymove(var/mob/user, direction)
+	if(user in stomach_contents)
+		if(prob(40))
+			for(var/mob/M in hearers(4, src))
+				if(M.client)
+					M.show_message(text("\red You hear something rumbling inside [src]'s stomach..."), 2)
+			var/obj/item/I = user.equipped()
+			if(I && I.force)
+				var/d = rand(round(I.force / 4), I.force)
+				if(istype(src, /mob/living/carbon/human))
+					var/mob/living/carbon/human/H = src
+					var/organ = H.organs["chest"]
+					if (istype(organ, /datum/organ/external))
+						var/datum/organ/external/temp = organ
+						temp.take_damage(d, 0)
+					H.UpdateDamageIcon()
+					H.updatehealth()
+				else
+					bruteloss += d
+				for(var/mob/M in viewers(user, null))
+					if(M.client)
+						M.show_message(text("\red <B>[user] attacks [src]'s stomach wall with the [I.name]!"), 2)
+				playsound(user.loc, 'attackblob.ogg', 50, 1)
+
+				if(prob(bruteloss - 50))
+					gib()

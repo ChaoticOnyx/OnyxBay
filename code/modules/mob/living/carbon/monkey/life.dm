@@ -130,6 +130,3 @@
 	src.updatehealth()
 
 	return //TODO: DEFERRED
-
-/mob/living/carbon/monkey/handle_virus_updates()
-	..("Monkey")

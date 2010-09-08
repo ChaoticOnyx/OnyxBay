@@ -1,14 +1,14 @@
 /mob/living/carbon/Life()
 	set background = 1
 
-	if (src.monkeyizing)
+	if (monkeyizing)
 		return
 
-	if (src.stat != 2) //still breathing
+	if (stat != 2) //still breathing
 
 		if(air_master.current_cycle%4==2)
 			//Only try to take a breath every 4 seconds, unless suffocating
-			spawn(0) breathe()
+			breathe()
 		else //Still give containing object the chance to interact
 			if(istype(loc, /obj/))
 				var/obj/location_as_object = loc
@@ -18,7 +18,7 @@
 	//blinded get reset each cycle and then get activated later in the
 	//code. Very ugly. I dont care. Moving this stuff here so its easy
 	//to find it.
-	src.blinded = null
+	blinded = null
 
 	//Disease Check
 	handle_virus_updates()
@@ -61,19 +61,19 @@
 		G.process()
 
 /mob/living/carbon/proc/breathe()
-	if(src.reagents.has_reagent("lexorin")) return
+	if(reagents.has_reagent("lexorin")) return
 	if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
 
 	var/datum/gas_mixture/environment = loc.return_air(1)
 	var/datum/air_group/breath
 	// HACK NEED CHANGING LATER
-	if(src.health < 0)
-		src.losebreath++
+	if(health < 0)
+		losebreath++
 
 	if(losebreath > 10) //Suffocating so do not take a breath
-		src.losebreath--
+		losebreath--
 		if (prob(75)) //High chance of gasping for air
-			spawn emote("gasp")
+			emote("gasp")
 		if(istype(loc, /obj/))
 			var/obj/location_as_object = loc
 			location_as_object.handle_internal_lifeform(src, 0)
@@ -98,44 +98,44 @@
 
 /mob/living/carbon/proc/get_breath_from_internal(volume_needed)
 	if(internal)
-		if (!contents.Find(src.internal))
+		if (!contents.Find(internal))
 			internal = null
 		if (!wear_mask || !(wear_mask.flags & MASKINTERNALS))
 			internal = null
 		if(internal)
-			if (src.internals)
-				src.internals.icon_state = "internal1"
+			if (internals)
+				internals.icon_state = "internal1"
 			return internal.remove_air_volume(volume_needed)
 		else
-			if (src.internals)
-				src.internals.icon_state = "internal0"
+			if (internals)
+				internals.icon_state = "internal0"
 	return null
 
-/mob/living/carbon/proc/handle_virus_updates(species)
-	if(src.bodytemperature > 406)
-		src.resistances += src.virus
-		src.virus = null
+/mob/living/carbon/proc/handle_virus_updates()
+	if(bodytemperature > 406)
+		resistances += virus
+		virus = null
 
-	if(!src.virus)
+	if(!virus)
 		if(prob(40))
 			for(var/mob/living/carbon/M in oviewers(4, src))
 				if(M.virus && M.virus.spread == "Airborne")
 					if(M.virus.affected_species.Find(species))
-						if(src.resistances.Find(M.virus.type))
+						if(resistances.Find(M.virus.type))
 							continue
 						var/datum/disease/D = new M.virus.type //Making sure strain_data is preserved
 						D.strain_data = M.virus.strain_data
-						src.contract_disease(D)
+						contract_disease(D)
 			for(var/obj/decal/cleanable/blood/B in view(4, src))
 				if(B.virus && B.virus.spread == "Airborne")
 					if(B.virus.affected_species.Find(species))
-						if(src.resistances.Find(B.virus.type))
+						if(resistances.Find(B.virus.type))
 							continue
 						var/datum/disease/D = new B.virus.type
 						D.strain_data = B.virus.strain_data
-						src.contract_disease(D)
+						contract_disease(D)
 	else
-		src.virus.stage_act()
+		virus.stage_act()
 
 /mob/living/carbon/proc/handle_environment(datum/gas_mixture/environment)
 	if(!environment)
@@ -151,13 +151,13 @@
 		loc_temp = environment.temperature
 
 	var/thermal_protection = get_thermal_protection()
-	if(stat != 2 && abs(src.bodytemperature - 310.15) < 50)
-		src.bodytemperature += adjust_body_temperature(src.bodytemperature, 310.15, thermal_protection)
+	if(stat != 2 && abs(bodytemperature - 310.15) < 50)
+		bodytemperature += adjust_body_temperature(bodytemperature, 310.15, thermal_protection)
 	if(loc_temp < 310.15) // a cold place -> add in cold protection
-		src.bodytemperature += adjust_body_temperature(src.bodytemperature, loc_temp, 1/thermal_protection)
+		bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1/thermal_protection)
 	else // a hot place -> add in heat protection
 		thermal_protection += add_fire_protection(loc_temp)
-		src.bodytemperature += adjust_body_temperature(src.bodytemperature, loc_temp, 1/thermal_protection)
+		bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1/thermal_protection)
 
 	var/turf/simulated/T = loc
 	if(istype(T))
@@ -173,7 +173,7 @@
 
 	// lets give them a fair bit of leeway so they don't just start dying
 	//as that may be realistic but it's no fun
-	if((src.bodytemperature > (T0C + 50)) || (src.bodytemperature < (T0C + 10)) && (!istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))) // Last bit is just disgusting, i know
+	if((bodytemperature > (T0C + 50)) || (bodytemperature < (T0C + 10)) && (!istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))) // Last bit is just disgusting, i know
 		if(environment.temperature > (T0C + 50) || (environment.temperature < (T0C + 10)))
 			var/transfer_coefficient
 
@@ -235,63 +235,63 @@
 
 			handle_temperature_damage(FEET, environment.temperature, environment_heat_capacity*transfer_coefficient)
 
-	if(stat==2) //Why only change body temp when they're dead? That makes no sense!!!!!!
+	if(stat==2)
 		bodytemperature += 0.1*(environment.temperature - bodytemperature)*environment_heat_capacity/(environment_heat_capacity + 270000)
 
 	//Account for massive pressure differences
 	return //TODO: DEFERRED
 
 /mob/living/carbon/proc/handle_mutations_and_radiation()
-	if(src.fireloss)
-		if(src.mutations & 2 || prob(50))
-			switch(src.fireloss)
+	if(fireloss)
+		if(mutations & 2 || prob(50))
+			switch(fireloss)
 				if(1 to 50)
-					src.fireloss--
+					fireloss--
 				if(51 to 100)
-					src.fireloss -= 5
+					fireloss -= 5
 
-	if (src.mutations & 8 && src.health <= 25)
-		src.mutations &= ~8
+	if (mutations & 8 && health <= 25)
+		mutations &= ~8
 		src << "\red You suddenly feel very weak."
-		src.weakened = 3
+		weakened = 3
 		emote("collapse")
 
-	if (src.radiation)
-		if (src.radiation > 100)
-			src.radiation = 100
-			src.weakened = 10
+	if (radiation)
+		if (radiation > 100)
+			radiation = 100
+			weakened = 10
 			src << "\red You feel weak."
 			emote("collapse")
 
-		if (src.radiation < 0)
-			src.radiation = 0
+		if (radiation < 0)
+			radiation = 0
 
-		switch(src.radiation)
+		switch(radiation)
 			if(1 to 49)
-				src.radiation--
+				radiation--
 				if(prob(25))
-					src.toxloss++
-					src.updatehealth()
+					toxloss++
+					updatehealth()
 
 			if(50 to 74)
-				src.radiation -= 2
-				src.toxloss++
+				radiation -= 2
+				toxloss++
 				if(prob(5))
-					src.radiation -= 5
-					src.weakened = 3
+					radiation -= 5
+					weakened = 3
 					src << "\red You feel weak."
 					emote("collapse")
-				src.updatehealth()
+				updatehealth()
 
 			if(75 to 100)
-				src.radiation -= 3
-				src.toxloss += 3
+				radiation -= 3
+				toxloss += 3
 				if(prob(1))
 					src << "\red You mutate!"
 					randmutb(src)
 					domutcheck(src,null)
 					emote("gasp")
-				src.updatehealth()
+				updatehealth()
 
 /mob/living/carbon/proc/handle_chemicals_in_body()
 	return
@@ -301,7 +301,7 @@
 		if(M.loc != src)
 			stomach_contents.Remove(M)
 			continue
-		if(istype(M, /mob/living/carbon) && src.stat != 2)
+		if(istype(M, /mob/living/carbon) && stat != 2)
 			if(M.stat == 2)
 				M.death(1)
 				stomach_contents.Remove(M)
@@ -315,110 +315,112 @@
 			if(air_master.current_cycle%3==1)
 				if(!M.nodamage)
 					M.bruteloss += 5
-				src.nutrition += 10
+				nutrition += 10
 
 /mob/living/carbon/proc/handle_disabilities()
-	if (src.disabilities & 2)
-		if ((prob(1) && src.paralysis < 10 && src.r_epil < 1))
+	if (disabilities & 2)
+		if ((prob(1) && paralysis < 10 && r_epil < 1))
 			src << "\red You have a seizure!"
-			src.paralysis = max(10, src.paralysis)
-	if (src.disabilities & 4)
-		if ((prob(5) && src.paralysis <= 1 && src.r_ch_cou < 1))
-			src.drop_item()
-			spawn( 0 )
-				emote("cough")
-				return
-	if (src.disabilities & 8)
-		if ((prob(10) && src.paralysis <= 1 && src.r_Tourette < 1))
-			src.stunned = max(10, src.stunned)
-			spawn( 0 )
-				emote("twitch")
-				return
-	if (src.disabilities & 16)
+			paralysis = max(10, paralysis)
+	if (disabilities & 4)
+		if ((prob(5) && paralysis <= 1 && r_ch_cou < 1))
+			drop_item()
+			emote("cough")
+	if (disabilities & 8)
+		if ((prob(10) && paralysis <= 1 && r_Tourette < 1))
+			stunned = max(10, stunned)
+			emote("twitch")
+	if (disabilities & 16)
 		if (prob(10))
-			src.stuttering = max(10, src.stuttering)
+			stuttering = max(10, stuttering)
 
 /mob/living/carbon/proc/handle_regular_status_updates()
 	updatehealth()
 
 	if(oxyloss > oxylossparalysis) paralysis = max(paralysis, 3)
 
-	if(src.sleeping)
-		src.paralysis = max(src.paralysis, 5)
-		if (prob(1) && health) spawn(0) emote("snore")
-		src.sleeping--
+	if(sleeping)
+		paralysis = max(paralysis, 5)
+		if (prob(1) && health)
+			emote("snore")
+		sleeping--
 
-	if(src.resting)
-		src.weakened = max(src.weakened, 5)
+	if(resting)
+		weakened = max(weakened, 5)
 
-	if(health < -100 || src.brain_op_stage == 4.0)
+	if(health < -100 || brain_op_stage == 4.0)
 		death()
-	else if(src.health < 0)
-		if(src.health <= 20 && prob(1)) spawn(0) emote("gasp")
+	else if(health < 0)
+		if(health <= 20 && prob(1))
+			emote("gasp")
 
-		//if(!src.rejuv) src.oxyloss++
-		if(!src.reagents.has_reagent("inaprovaline")) src.oxyloss++
+		//if(!rejuv) oxyloss++
+		if(!reagents.has_reagent("inaprovaline"))
+			oxyloss++
 
-		if(src.stat != 2)	src.stat = 1
-		src.paralysis = max(src.paralysis, 5)
+		if(stat != 2)
+			stat = 1
+		paralysis = max(paralysis, 5)
 
-	if (src.stat != 2) //Alive.
+	if (stat != 2) //Alive.
 
-		if (src.paralysis || src.stunned || src.weakened) //Stunned etc.
-			if (src.stunned > 0)
-				src.stunned--
-				src.stat = 0
-			if (src.weakened > 0)
-				src.weakened--
-				src.lying = 1
-				src.stat = 0
-			if (src.paralysis > 0)
-				src.paralysis--
-				src.blinded = 1
-				src.lying = 1
-				src.stat = 1
-			var/h = src.hand
-			src.hand = 0
+		if (paralysis || stunned || weakened) //Stunned etc.
+			if (stunned > 0)
+				stunned--
+				stat = 0
+			if (weakened > 0)
+				weakened--
+				lying = 1
+				stat = 0
+			if (paralysis > 0)
+				paralysis--
+				blinded = 1
+				lying = 1
+				stat = 1
+			var/h = hand
+			hand = 0
 			drop_item()
-			src.hand = 1
+			hand = 1
 			drop_item()
-			src.hand = h
-
+			hand = h
 		else	//Not stunned.
-			src.lying = 0
-			src.stat = 0
+			lying = 0
+			stat = 0
 
 	else //Dead.
-		src.lying = 1
-		src.blinded = 1
-		src.stat = 2
+		lying = 1
+		blinded = 1
+		stat = 2
 
-	if (src.stuttering) src.stuttering--
-	if (src.intoxicated) src.intoxicated--
+	if (stuttering)
+		stuttering--
+	if (intoxicated)
+		intoxicated--
 
-	if (src.eye_blind)
-		src.eye_blind--
-		src.blinded = 1
+	if (eye_blind)
+		eye_blind--
+		blinded = 1
 
-	if (src.ear_deaf > 0) src.ear_deaf--
-	if (src.ear_damage < 25)
-		src.ear_damage -= 0.05
-		src.ear_damage = max(src.ear_damage, 0)
+	if (ear_deaf > 0)
+		ear_deaf--
+	if (ear_damage < 25)
+		ear_damage -= 0.05
+		ear_damage = max(ear_damage, 0)
 
-	src.density = !( src.lying )
+	density = !(lying)
 
-	if (src.sdisabilities & 1)
-		src.blinded = 1
-	if (src.sdisabilities & 4)
-		src.ear_deaf = 1
+	if (sdisabilities & 1)
+		blinded = 1
+	if (sdisabilities & 4)
+		ear_deaf = 1
 
-	if (src.eye_blurry > 0)
-		src.eye_blurry--
-		src.eye_blurry = max(0, src.eye_blurry)
+	if (eye_blurry > 0)
+		eye_blurry--
+		eye_blurry = max(0, eye_blurry)
 
-	if (src.druggy > 0)
-		src.druggy--
-		src.druggy = max(0, src.druggy)
+	if (druggy > 0)
+		druggy--
+		druggy = max(0, druggy)
 
 	return 1
 
@@ -426,18 +428,21 @@
 	return
 
 /mob/living/carbon/proc/check_if_buckled()
-	if (src.buckled)
-		src.lying = istype(src.buckled, /obj/stool/bed) || istype(src.buckled, /obj/machinery/conveyor)
-		if(src.lying)
-			src.drop_item()
-		src.density = 1
-		if(istype(src.buckled,/obj/stool/chair)) dir = buckled.dir
+	if (buckled)
+		lying = istype(buckled, /obj/stool/bed) || istype(buckled, /obj/machinery/conveyor)
+		if(lying)
+			drop_item()
+		density = 1
+		if(istype(buckled,/obj/stool/chair))
+			dir = buckled.dir
 	else
-		src.density = !src.lying
+		density = !lying
 
 /mob/living/carbon/proc/update_canmove()
-	if(paralysis || stunned || weakened || buckled || changeling_fakedeath) canmove = 0
-	else canmove = 1
+	if(paralysis || stunned || weakened || buckled || changeling_fakedeath)
+		canmove = 0
+	else
+		canmove = 1
 
 
 /mob/living/carbon/proc/clamp_values()
@@ -451,14 +456,12 @@
 	fireloss = max(fireloss, 0)
 
 /mob/living/carbon/proc/handle_breath(datum/gas_mixture/breath)
-	if(src.nodamage)
+	if(nodamage)
 		return
 
 	if(!breath || (breath.total_moles() == 0))
 		oxyloss += 14*vsc.OXYGEN_LOSS
-
 		oxygen_alert = max(oxygen_alert, 1)
-
 		return 0
 
 	var/safe_oxygen_min = 16 // Minimum safe partial pressure of O2, in kPa
@@ -479,10 +482,10 @@
 
 	if(O2_pp < safe_oxygen_min) 			// Too little oxygen
 		if(prob(20))
-			spawn(0) emote("gasp")
+			emote("gasp")
 		if(O2_pp > 0)
 			var/ratio = safe_oxygen_min/O2_pp
-			oxyloss += min(5*ratio, 7) // Don't fuck them up too fast (space only does 7 after all!)
+			oxyloss += min(5*ratio, 7)
 			oxygen_used = breath.oxygen*ratio/6
 		else
 			oxyloss += 7*vsc.OXYGEN_LOSS
@@ -505,12 +508,12 @@
 		if(!co2overloadtime) // If it's the first breath with too much CO2 in it, lets start a counter, then have them pass out after 12s or so.
 			co2overloadtime = world.time
 		else if(world.time - co2overloadtime > 120)
-			src.paralysis = max(src.paralysis, 3)
+			paralysis = max(paralysis, 3)
 			oxyloss += 3*vsc.OXYGEN_LOSS // Lets hurt em a little, let them know we mean business
 			if(world.time - co2overloadtime > 300) // They've been in here 30s now, lets start to kill them for their own good!
 				oxyloss += 8*vsc.OXYGEN_LOSS
 		if(prob(20)) // Lets give them some chance to know somethings not right though I guess.
-			spawn(0) emote("cough")
+			emote("cough")
 
 	else
 		co2overloadtime = 0
@@ -528,17 +531,19 @@
 		for(var/datum/gas/sleeping_agent/SA in breath.trace_gases)
 			var/SA_pp = (SA.moles/breath.total_moles())*breath_pressure
 			if(SA_pp > SA_para_min) // Enough to make us paralysed for a bit
-				src.paralysis = max(src.paralysis, 3) // 3 gives them one second to wake up and run away a bit!
+				paralysis = max(paralysis, 3) // 3 gives them one second to wake up and run away a bit!
 				if(SA_pp > SA_sleep_min) // Enough to make us sleep as well
-					src.sleeping = max(src.sleeping, 2)
-				if(vsc.plc.N2O_HALLUCINATION) hallucination += 12
+					sleeping = max(sleeping, 2)
+				if(vsc.plc.N2O_HALLUCINATION)
+					hallucination += 12
 			else if(SA_pp > 0.01)	// There is sleeping gas in their lungs, but only a little, so give them a bit of a warning
 				if(prob(20))
-					spawn(0) emote(pick("giggle", "laugh"))
-				if(vsc.plc.N2O_HALLUCINATION) hallucination += 8
+					emote(pick("giggle", "laugh"))
+				if(vsc.plc.N2O_HALLUCINATION)
+					hallucination += 8
 
 
-	if(breath.temperature > (T0C+66) && !(src.mutations & 2)) // Hot air hurts :(
+	if(breath.temperature > (T0C+66) && !(mutations & 2)) // Hot air hurts :(
 		if(prob(20))
 			src << "\red You feel a searing heat in your lungs!"
 		fire_alert = max(fire_alert, 1)
@@ -552,7 +557,7 @@
 	return 1
 
 /mob/living/carbon/proc/handle_temperature_damage(body_part, exposed_temperature, exposed_intensity)
-	if(src.nodamage)
+	if(nodamage)
 		return
 	var/discomfort = min(abs(exposed_temperature - bodytemperature)*(exposed_intensity)/2000000, 1.0) * vsc.TEMP_DMG
 
@@ -619,7 +624,7 @@
 		thermal_protection += 3
 	if(head && (head.flags & HEADSPACE))
 		thermal_protection += 1
-	if(src.mutations & 2)
+	if(mutations & 2)
 		thermal_protection += 5
 
 	return thermal_protection
