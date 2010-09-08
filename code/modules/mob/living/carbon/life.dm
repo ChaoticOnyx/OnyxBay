@@ -137,11 +137,161 @@
 	else
 		src.virus.stage_act()
 
-/mob/living/carbon/proc/handle_environment()
-	return
+/mob/living/carbon/proc/handle_environment(datum/gas_mixture/environment)
+	if(!environment)
+		return
+	var/environment_heat_capacity = environment.heat_capacity()
+	var/loc_temp = T0C
+	if(istype(loc, /turf/space))
+		environment_heat_capacity = loc:heat_capacity
+		loc_temp = 2.7
+	else if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))
+		loc_temp = loc:air_contents.temperature
+	else
+		loc_temp = environment.temperature
+
+	var/thermal_protection = get_thermal_protection()
+	if(stat != 2 && abs(src.bodytemperature - 310.15) < 50)
+		src.bodytemperature += adjust_body_temperature(src.bodytemperature, 310.15, thermal_protection)
+	if(loc_temp < 310.15) // a cold place -> add in cold protection
+		src.bodytemperature += adjust_body_temperature(src.bodytemperature, loc_temp, 1/thermal_protection)
+	else // a hot place -> add in heat protection
+		thermal_protection += add_fire_protection(loc_temp)
+		src.bodytemperature += adjust_body_temperature(src.bodytemperature, loc_temp, 1/thermal_protection)
+
+	var/turf/simulated/T = loc
+	if(istype(T))
+		if(T.active_hotspot)
+			var/volume_coefficient = T.active_hotspot.volume / CELL_VOLUME
+			var/resistance_coefficient = 1/max(add_fire_protection(T.active_hotspot.temperature),0.5)
+
+			FireBurn(volume_coefficient*resistance_coefficient)
+
+	if(environment.toxins > 0.01)
+		contaminate()
+		pl_effects()
+
+	// lets give them a fair bit of leeway so they don't just start dying
+	//as that may be realistic but it's no fun
+	if((src.bodytemperature > (T0C + 50)) || (src.bodytemperature < (T0C + 10)) && (!istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))) // Last bit is just disgusting, i know
+		if(environment.temperature > (T0C + 50) || (environment.temperature < (T0C + 10)))
+			var/transfer_coefficient
+
+			transfer_coefficient = 1
+			if(head && (head.body_parts_covered & HEAD) && (environment.temperature < head.protective_temperature))
+				transfer_coefficient *= head.heat_transfer_coefficient
+			if(wear_mask && (wear_mask.body_parts_covered & HEAD) && (environment.temperature < wear_mask.protective_temperature))
+				transfer_coefficient *= wear_mask.heat_transfer_coefficient
+			if(wear_suit && (wear_suit.body_parts_covered & HEAD) && (environment.temperature < wear_suit.protective_temperature))
+				transfer_coefficient *= wear_suit.heat_transfer_coefficient
+
+			handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)
+
+			transfer_coefficient = 1
+			if(wear_suit && (wear_suit.body_parts_covered & UPPER_TORSO) && (environment.temperature < wear_suit.protective_temperature))
+				transfer_coefficient *= wear_suit.heat_transfer_coefficient
+			if(w_uniform && (w_uniform.body_parts_covered & UPPER_TORSO) && (environment.temperature < w_uniform.protective_temperature))
+				transfer_coefficient *= w_uniform.heat_transfer_coefficient
+
+			handle_temperature_damage(UPPER_TORSO, environment.temperature, environment_heat_capacity*transfer_coefficient)
+
+			transfer_coefficient = 1
+			if(wear_suit && (wear_suit.body_parts_covered & LOWER_TORSO) && (environment.temperature < wear_suit.protective_temperature))
+				transfer_coefficient *= wear_suit.heat_transfer_coefficient
+			if(w_uniform && (w_uniform.body_parts_covered & LOWER_TORSO) && (environment.temperature < w_uniform.protective_temperature))
+				transfer_coefficient *= w_uniform.heat_transfer_coefficient
+
+			handle_temperature_damage(LOWER_TORSO, environment.temperature, environment_heat_capacity*transfer_coefficient)
+
+			transfer_coefficient = 1
+			if(wear_suit && (wear_suit.body_parts_covered & LEGS) && (environment.temperature < wear_suit.protective_temperature))
+				transfer_coefficient *= wear_suit.heat_transfer_coefficient
+			if(w_uniform && (w_uniform.body_parts_covered & LEGS) && (environment.temperature < w_uniform.protective_temperature))
+				transfer_coefficient *= w_uniform.heat_transfer_coefficient
+
+			handle_temperature_damage(LEGS, environment.temperature, environment_heat_capacity*transfer_coefficient)
+
+			transfer_coefficient = 1
+			if(wear_suit && (wear_suit.body_parts_covered & ARMS) && (environment.temperature < wear_suit.protective_temperature))
+				transfer_coefficient *= wear_suit.heat_transfer_coefficient
+			if(w_uniform && (w_uniform.body_parts_covered & ARMS) && (environment.temperature < w_uniform.protective_temperature))
+				transfer_coefficient *= w_uniform.heat_transfer_coefficient
+
+			handle_temperature_damage(ARMS, environment.temperature, environment_heat_capacity*transfer_coefficient)
+
+			transfer_coefficient = 1
+			if(wear_suit && (wear_suit.body_parts_covered & HANDS) && (environment.temperature < wear_suit.protective_temperature))
+				transfer_coefficient *= wear_suit.heat_transfer_coefficient
+			if(gloves && (gloves.body_parts_covered & HANDS) && (environment.temperature < gloves.protective_temperature))
+				transfer_coefficient *= gloves.heat_transfer_coefficient
+
+			handle_temperature_damage(HANDS, environment.temperature, environment_heat_capacity*transfer_coefficient)
+
+			transfer_coefficient = 1
+			if(wear_suit && (wear_suit.body_parts_covered & FEET) && (environment.temperature < wear_suit.protective_temperature))
+				transfer_coefficient *= wear_suit.heat_transfer_coefficient
+			if(shoes && (shoes.body_parts_covered & FEET) && (environment.temperature < shoes.protective_temperature))
+				transfer_coefficient *= shoes.heat_transfer_coefficient
+
+			handle_temperature_damage(FEET, environment.temperature, environment_heat_capacity*transfer_coefficient)
+
+	if(stat==2) //Why only change body temp when they're dead? That makes no sense!!!!!!
+		bodytemperature += 0.1*(environment.temperature - bodytemperature)*environment_heat_capacity/(environment_heat_capacity + 270000)
+
+	//Account for massive pressure differences
+	return //TODO: DEFERRED
 
 /mob/living/carbon/proc/handle_mutations_and_radiation()
-	return
+	if(src.fireloss)
+		if(src.mutations & 2 || prob(50))
+			switch(src.fireloss)
+				if(1 to 50)
+					src.fireloss--
+				if(51 to 100)
+					src.fireloss -= 5
+
+	if (src.mutations & 8 && src.health <= 25)
+		src.mutations &= ~8
+		src << "\red You suddenly feel very weak."
+		src.weakened = 3
+		emote("collapse")
+
+	if (src.radiation)
+		if (src.radiation > 100)
+			src.radiation = 100
+			src.weakened = 10
+			src << "\red You feel weak."
+			emote("collapse")
+
+		if (src.radiation < 0)
+			src.radiation = 0
+
+		switch(src.radiation)
+			if(1 to 49)
+				src.radiation--
+				if(prob(25))
+					src.toxloss++
+					src.updatehealth()
+
+			if(50 to 74)
+				src.radiation -= 2
+				src.toxloss++
+				if(prob(5))
+					src.radiation -= 5
+					src.weakened = 3
+					src << "\red You feel weak."
+					emote("collapse")
+				src.updatehealth()
+
+			if(75 to 100)
+				src.radiation -= 3
+				src.toxloss += 3
+				if(prob(1))
+					src << "\red You mutate!"
+					randmutb(src)
+					domutcheck(src,null)
+					emote("gasp")
+				src.updatehealth()
 
 /mob/living/carbon/proc/handle_chemicals_in_body()
 	return
@@ -189,7 +339,88 @@
 			src.stuttering = max(10, src.stuttering)
 
 /mob/living/carbon/proc/handle_regular_status_updates()
-	return
+	updatehealth()
+
+	if(oxyloss > oxylossparalysis) paralysis = max(paralysis, 3)
+
+	if(src.sleeping)
+		src.paralysis = max(src.paralysis, 5)
+		if (prob(1) && health) spawn(0) emote("snore")
+		src.sleeping--
+
+	if(src.resting)
+		src.weakened = max(src.weakened, 5)
+
+	if(health < -100 || src.brain_op_stage == 4.0)
+		death()
+	else if(src.health < 0)
+		if(src.health <= 20 && prob(1)) spawn(0) emote("gasp")
+
+		//if(!src.rejuv) src.oxyloss++
+		if(!src.reagents.has_reagent("inaprovaline")) src.oxyloss++
+
+		if(src.stat != 2)	src.stat = 1
+		src.paralysis = max(src.paralysis, 5)
+
+	if (src.stat != 2) //Alive.
+
+		if (src.paralysis || src.stunned || src.weakened) //Stunned etc.
+			if (src.stunned > 0)
+				src.stunned--
+				src.stat = 0
+			if (src.weakened > 0)
+				src.weakened--
+				src.lying = 1
+				src.stat = 0
+			if (src.paralysis > 0)
+				src.paralysis--
+				src.blinded = 1
+				src.lying = 1
+				src.stat = 1
+			var/h = src.hand
+			src.hand = 0
+			drop_item()
+			src.hand = 1
+			drop_item()
+			src.hand = h
+
+		else	//Not stunned.
+			src.lying = 0
+			src.stat = 0
+
+	else //Dead.
+		src.lying = 1
+		src.blinded = 1
+		src.stat = 2
+
+	if (src.stuttering) src.stuttering--
+	if (src.intoxicated) src.intoxicated--
+
+	if (src.eye_blind)
+		src.eye_blind--
+		src.blinded = 1
+
+	if (src.ear_deaf > 0) src.ear_deaf--
+	if (src.ear_damage < 25)
+		src.ear_damage -= 0.05
+		src.ear_damage = max(src.ear_damage, 0)
+
+	src.density = !( src.lying )
+
+	if (src.sdisabilities & 1)
+		src.blinded = 1
+	if (src.sdisabilities & 4)
+		src.ear_deaf = 1
+
+	if (src.eye_blurry > 0)
+		src.eye_blurry--
+		src.eye_blurry = max(0, src.eye_blurry)
+
+	if (src.druggy > 0)
+		src.druggy--
+		src.druggy = max(0, src.druggy)
+
+	return 1
 
 /mob/living/carbon/proc/handle_regular_hud_updates()
 	return
@@ -366,3 +597,58 @@
 		temperature = max(loc_temp, temperature-change)
 	temp_change = (temperature - current)
 	return temp_change
+
+/mob/living/carbon/proc/get_thermal_protection()
+	var/thermal_protection = 1.0
+	//Handle normal clothing
+	if(head && (head.body_parts_covered & HEAD))
+		thermal_protection += 0.5
+	if(wear_suit && (wear_suit.body_parts_covered & UPPER_TORSO))
+		thermal_protection += 0.5
+	if(w_uniform && (w_uniform.body_parts_covered & UPPER_TORSO))
+		thermal_protection += 0.5
+	if(wear_suit && (wear_suit.body_parts_covered & LEGS))
+		thermal_protection += 0.2
+	if(wear_suit && (wear_suit.body_parts_covered & ARMS))
+		thermal_protection += 0.2
+	if(wear_suit && (wear_suit.body_parts_covered & HANDS))
+		thermal_protection += 0.2
+	if(shoes && (shoes.body_parts_covered & FEET))
+		thermal_protection += 0.2
+	if(wear_suit && (wear_suit.flags & SUITSPACE))
+		thermal_protection += 3
+	if(head && (head.flags & HEADSPACE))
+		thermal_protection += 1
+	if(src.mutations & 2)
+		thermal_protection += 5
+
+	return thermal_protection
+
+/mob/living/carbon/proc/add_fire_protection(var/temp)
+	var/fire_prot = 0
+	if(head)
+		if(head.protective_temperature > temp)
+			fire_prot += (head.protective_temperature/10)
+	if(wear_mask)
+		if(wear_mask.protective_temperature > temp)
+			fire_prot += (wear_mask.protective_temperature/10)
+	if(glasses)
+		if(glasses.protective_temperature > temp)
+			fire_prot += (glasses.protective_temperature/10)
+	if(ears)
+		if(ears.protective_temperature > temp)
+			fire_prot += (ears.protective_temperature/10)
+	if(wear_suit)
+		if(wear_suit.protective_temperature > temp)
+			fire_prot += (wear_suit.protective_temperature/10)
+	if(w_uniform)
+		if(w_uniform.protective_temperature > temp)
+			fire_prot += (w_uniform.protective_temperature/10)
+	if(gloves)
+		if(gloves.protective_temperature > temp)
+			fire_prot += (gloves.protective_temperature/10)
+	if(shoes)
+		if(shoes.protective_temperature > temp)
+			fire_prot += (shoes.protective_temperature/10)
+
+	return fire_prot

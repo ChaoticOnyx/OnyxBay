@@ -20,15 +20,6 @@
 /mob/living/carbon/human/var/age = 30.0
 /mob/living/carbon/human/var/b_type = "A+"
 
-/mob/living/carbon/human/var/obj/item/clothing/suit/wear_suit = null
-/mob/living/carbon/human/var/obj/item/clothing/under/w_uniform = null
-///mob/living/carbon/human/var/obj/item/device/radio/w_radio = null
-/mob/living/carbon/human/var/obj/item/clothing/shoes/shoes = null
-/mob/living/carbon/human/var/obj/item/weapon/belt = null
-/mob/living/carbon/human/var/obj/item/clothing/gloves/gloves = null
-/mob/living/carbon/human/var/obj/item/clothing/glasses/glasses = null
-/mob/living/carbon/human/var/obj/item/clothing/head/head = null
-/mob/living/carbon/human/var/obj/item/clothing/ears/ears = null
 /mob/living/carbon/human/var/obj/item/weapon/r_store = null
 /mob/living/carbon/human/var/obj/item/weapon/l_store = null
 

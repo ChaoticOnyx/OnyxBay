@@ -78,36 +78,118 @@ obj/item/proc
 		else if(istype(src,/obj/item/clothing)) return 1
 		else if(istype(src,/obj/item/weapon/storage/backpack)) return 1
 
+/mob/living/carbon/human/contaminate()
+	if(!pl_suit_protected())
+		suit_contamination()
+	else if(vsc.plc.PLASMAGUARD_ONLY)
+		if(!wear_suit.flags & PLASMAGUARD) wear_suit.contaminated = 1
+
+
+
+	if(!pl_head_protected())
+		if(wear_mask) wear_mask.contaminated = 1
+		if(prob(1)) suit_contamination() //Plasma can sometimes get through such an open suit.
+	else if(vsc.plc.PLASMAGUARD_ONLY)
+		if(!head.flags & PLASMAGUARD) head.contaminated = 1
+
+	if(istype(back,/obj/item/weapon/storage/backpack) || vsc.plc.ALL_ITEM_CONTAMINATION)
+		back.contaminated = 1
+
+	if(l_hand)
+		if(l_hand.can_contaminate()) l_hand.contaminated = 1
+	if(r_hand)
+		if(r_hand.can_contaminate()) r_hand.contaminated = 1
+	if(belt)
+		if(belt.can_contaminate()) belt.contaminated = 1
+	if(wear_id && !pl_suit_protected())
+		if(wear_id.can_contaminate()) wear_id.contaminated = 1
+	if(ears && !pl_head_protected())
+		if(ears.can_contaminate()) ears.contaminated = 1
+
+/mob/living/carbon/human/pl_effects()
+	if(vsc.plc.SKIN_BURNS)
+		if(!pl_head_protected() || !pl_suit_protected())
+			burn_skin(0.75)
+			if (coughedtime != 1)
+				coughedtime = 1
+				emote("gasp")
+				spawn (20)
+					coughedtime = 0
+			updatehealth()
+	if(vsc.plc.EYE_BURNS && !pl_head_protected())
+		if(!wear_mask)
+			if(prob(20)) usr << "\red Your eyes burn!"
+			eye_stat += 2.5
+			eye_blurry += 1.5
+			if (eye_stat >= 20 && !(disabilities & 1))
+				src << "\red Your eyes start to burn badly!"
+				disabilities |= 1
+			if (prob(max(0,eye_stat - 20) + 1))
+				src << "\red You are blinded!"
+				eye_blind += 20
+				eye_stat = max(eye_stat-25,0)
+		else
+			if(!(wear_mask.flags & MASKCOVERSEYES))
+				if(prob(20)) usr << "\red Your eyes burn!"
+				eye_stat += 2.5
+				eye_blurry = min(eye_blurry+1.5,50)
+				if (eye_stat >= 20 && !(disabilities & 1))
+					src << "\red Your eyes start to burn badly!"
+					disabilities |= 1
+				if (prob(max(0,eye_stat - 20) + 1) &&!eye_blind)
+					src << "\red You are blinded!"
+					eye_blind += 20
+					eye_stat = 0
+	if(vsc.plc.GENETIC_CORRUPTION)
+		if(rand(1,1000) < vsc.plc.GENETIC_CORRUPTION)
+			randmutb(src)
+			src << "\red High levels of toxins cause you to spontaneously mutate."
+			domutcheck(src,null)
+
+/mob/living/carbon/human/FireBurn(mx as num)
+	//NO! NOT INTO THE PIT! IT BURRRRRNS!
+	mx *= vsc.BURN_DMG
+
+	var
+		head_exposure = 1
+		chest_exposure = 1
+		groin_exposure = 1
+		legs_exposure = 1
+		feet_exposure = 1
+		arms_exposure = 1
+		hands_exposure = 1
+	for(var/obj/item/clothing/C in src)
+		if(l_hand == C || r_hand == C) continue
+		if(C.body_parts_covered & HEAD)
+			head_exposure *= C.heat_transfer_coefficient
+		if(C.body_parts_covered & UPPER_TORSO)
+			chest_exposure *= C.heat_transfer_coefficient
+		if(C.body_parts_covered & LOWER_TORSO)
+			groin_exposure *= C.heat_transfer_coefficient
+		if(C.body_parts_covered & LEGS)
+			legs_exposure *= C.heat_transfer_coefficient
+		if(C.body_parts_covered & FEET)
+			feet_exposure *= C.heat_transfer_coefficient
+		if(C.body_parts_covered & ARMS)
+			arms_exposure *= C.heat_transfer_coefficient
+		if(C.body_parts_covered & HANDS)
+			arms_exposure *= C.heat_transfer_coefficient
+
+	mx *= 10
+
+	TakeDamage("head", 0, 2.5*mx*head_exposure)
+	TakeDamage("chest", 0, 2.5*mx*chest_exposure)
+	TakeDamage("groin", 0, 2.0*mx*groin_exposure)
+	TakeDamage("l_leg", 0, 0.6*mx*legs_exposure)
+	TakeDamage("r_leg", 0, 0.6*mx*legs_exposure)
+	TakeDamage("l_arm", 0, 0.4*mx*arms_exposure)
+	TakeDamage("r_arm", 0, 0.4*mx*arms_exposure)
+	TakeDamage("l_foot", 0, 0.25*mx*feet_exposure)
+	TakeDamage("r_foot", 0, 0.25*mx*feet_exposure)
+	TakeDamage("l_hand", 0, 0.25*mx*hands_exposure)
+	TakeDamage("r_hand", 0, 0.25*mx*hands_exposure)
+
 mob/living/carbon/human/proc
-	contaminate()
-
-		if(!pl_suit_protected())
-			suit_contamination()
-		else if(vsc.plc.PLASMAGUARD_ONLY)
-			if(!wear_suit.flags & PLASMAGUARD) wear_suit.contaminated = 1
-
-
-
-		if(!pl_head_protected())
-			if(wear_mask) wear_mask.contaminated = 1
-			if(prob(1)) suit_contamination() //Plasma can sometimes get through such an open suit.
-		else if(vsc.plc.PLASMAGUARD_ONLY)
-			if(!head.flags & PLASMAGUARD) head.contaminated = 1
-
-		if(istype(back,/obj/item/weapon/storage/backpack) || vsc.plc.ALL_ITEM_CONTAMINATION)
-			back.contaminated = 1
-
-		if(l_hand)
-			if(l_hand.can_contaminate()) l_hand.contaminated = 1
-		if(r_hand)
-			if(r_hand.can_contaminate()) r_hand.contaminated = 1
-		if(belt)
-			if(belt.can_contaminate()) belt.contaminated = 1
-		if(wear_id && !pl_suit_protected())
-			if(wear_id.can_contaminate()) wear_id.contaminated = 1
-		if(ears && !pl_head_protected())
-			if(ears.can_contaminate()) ears.contaminated = 1
-
 	suit_interior()
 		. = list()
 		if(!pl_suit_protected())
@@ -141,95 +223,6 @@ mob/living/carbon/human/proc
 			if(gloves) gloves.contaminated = 1
 			if(wear_mask) wear_mask.contaminated = 1
 
-	pl_effects()
-		if(vsc.plc.SKIN_BURNS)
-			if(!pl_head_protected() || !pl_suit_protected())
-				burn_skin(0.75)
-				if (coughedtime != 1)
-					coughedtime = 1
-					emote("gasp")
-					spawn (20)
-						coughedtime = 0
-				updatehealth()
-		if(vsc.plc.EYE_BURNS && !pl_head_protected())
-			if(!wear_mask)
-				if(prob(20)) usr << "\red Your eyes burn!"
-				eye_stat += 2.5
-				eye_blurry += 1.5
-				if (eye_stat >= 20 && !(disabilities & 1))
-					src << "\red Your eyes start to burn badly!"
-					disabilities |= 1
-				if (prob(max(0,eye_stat - 20) + 1))
-					src << "\red You are blinded!"
-					eye_blind += 20
-					eye_stat = max(eye_stat-25,0)
-			else
-				if(!(wear_mask.flags & MASKCOVERSEYES))
-					if(prob(20)) usr << "\red Your eyes burn!"
-					eye_stat += 2.5
-					eye_blurry = min(eye_blurry+1.5,50)
-					if (eye_stat >= 20 && !(disabilities & 1))
-						src << "\red Your eyes start to burn badly!"
-						disabilities |= 1
-					if (prob(max(0,eye_stat - 20) + 1) &&!eye_blind)
-						src << "\red You are blinded!"
-						eye_blind += 20
-						eye_stat = 0
-		if(vsc.plc.GENETIC_CORRUPTION)
-			if(rand(1,1000) < vsc.plc.GENETIC_CORRUPTION)
-				randmutb(src)
-				src << "\red High levels of toxins cause you to spontaneously mutate."
-				domutcheck(src,null)
-
-
-	FireBurn(mx as num)
-
-		//NO! NOT INTO THE PIT! IT BURRRRRNS!
-
-		mx *= vsc.BURN_DMG
-
-		var
-			head_exposure = 1
-			chest_exposure = 1
-			groin_exposure = 1
-			legs_exposure = 1
-			feet_exposure = 1
-			arms_exposure = 1
-			hands_exposure = 1
-		for(var/obj/item/clothing/C in src)
-			if(l_hand == C || r_hand == C) continue
-			if(C.body_parts_covered & HEAD)
-				head_exposure *= C.heat_transfer_coefficient
-			if(C.body_parts_covered & UPPER_TORSO)
-				chest_exposure *= C.heat_transfer_coefficient
-			if(C.body_parts_covered & LOWER_TORSO)
-				groin_exposure *= C.heat_transfer_coefficient
-			if(C.body_parts_covered & LEGS)
-				legs_exposure *= C.heat_transfer_coefficient
-			if(C.body_parts_covered & FEET)
-				feet_exposure *= C.heat_transfer_coefficient
-			if(C.body_parts_covered & ARMS)
-				arms_exposure *= C.heat_transfer_coefficient
-			if(C.body_parts_covered & HANDS)
-				arms_exposure *= C.heat_transfer_coefficient
-
-		mx *= 10
-
-		TakeDamage("head", 0, 2.5*mx*head_exposure)
-		TakeDamage("chest", 0, 2.5*mx*chest_exposure)
-		TakeDamage("groin", 0, 2.0*mx*groin_exposure)
-		TakeDamage("l_leg", 0, 0.6*mx*legs_exposure)
-		TakeDamage("r_leg", 0, 0.6*mx*legs_exposure)
-		TakeDamage("l_arm", 0, 0.4*mx*arms_exposure)
-		TakeDamage("r_arm", 0, 0.4*mx*arms_exposure)
-		TakeDamage("l_foot", 0, 0.25*mx*feet_exposure)
-		TakeDamage("r_foot", 0, 0.25*mx*feet_exposure)
-		TakeDamage("l_hand", 0, 0.25*mx*hands_exposure)
-		TakeDamage("r_hand", 0, 0.25*mx*hands_exposure)
-
-mob/monkey/proc
-	contaminate()
-	pl_effects()
 
 turf/Entered(obj/item/I)
 	. = ..()

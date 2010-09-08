@@ -1965,11 +1965,11 @@ mob/verb/turnwest()
 		M.see(message)
 
 /mob/proc/updatehealth()
-	if (src.nodamage == 0)
-		src.health = health_full - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
+	if (!src.nodamage)
+		health = health_full - (oxyloss - toxloss - fireloss - bruteloss - halloss)
 	else
-		src.health = health_full
-		src.stat = 0
+		health = health_full
+		stat = 0
 
 //sort of a legacy burn method for /electrocute, /shock, and the e_chair
 /mob/proc/burn_skin(burn_amount)

@@ -523,8 +523,6 @@ to clean it up, or just beat the shit out of it (which takes ages).
 /mob/living/carbon/alien/larva/restrained()
 	return 0
 
-
-
 // new damage icon system
 // now constructs damage icon for each organ from mask * damage field
 
@@ -540,13 +538,4 @@ to clean it up, or just beat the shit out of it (which takes ages).
 	user << browse(dat, text("window=mob[src.name];size=340x480"))
 	onclose(user, "mob[src.name]")
 	return
-
-/mob/living/carbon/alien/larva/updatehealth()
-	if (src.nodamage == 0)
-	//oxyloss is only used for suicide
-	//toxloss isn't used for aliens, its actually used as alien powers!!
-		src.health = health_full - src.oxyloss - src.fireloss - src.bruteloss
-	else
-		src.health = health_full
-		src.stat = 0
 

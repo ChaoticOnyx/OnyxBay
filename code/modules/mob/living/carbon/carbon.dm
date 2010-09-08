@@ -11,6 +11,7 @@
 /mob/living/carbon/var/fire_alert = 0
 /mob/living/carbon/var/temperature_alert = 0
 /mob/living/carbon/var/list/random_events //If handle_random_events() is run, it will choose from this list. Entries are defined per type (See Monkey and Human)
+/mob/living/carbon/var/oxylossparalysis = 50
 
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()
@@ -83,3 +84,7 @@
 
 /mob/living/carbon/proc/UpdateDamageIcon()
 	return
+
+/mob/living/carbon/proc/FireBurn() // Should probably make this affect all carbon mobs except for aliens (This applies to contaminate and pl_effects as well)
+/mob/living/carbon/proc/contaminate()
+/mob/living/carbon/proc/pl_effects()

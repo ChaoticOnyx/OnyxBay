@@ -54,8 +54,6 @@ to clean it up, or just beat the shit out of it (which takes ages).
 /mob/living/carbon/alien/humanoid/name = "alien"
 /mob/living/carbon/alien/humanoid/icon_state = "alien_s"
 
-/mob/living/carbon/alien/humanoid/var/obj/item/clothing/suit/wear_suit = null
-/mob/living/carbon/alien/humanoid/var/obj/item/clothing/head/head = null
 /mob/living/carbon/alien/humanoid/var/obj/item/weapon/r_store = null
 /mob/living/carbon/alien/humanoid/var/obj/item/weapon/l_store = null
 
@@ -784,12 +782,5 @@ to clean it up, or just beat the shit out of it (which takes ages).
 	onclose(user, "mob[src.name]")
 	return
 
-/mob/living/carbon/alien/humanoid/updatehealth()
-	if (src.nodamage == 0)
-	//oxyloss is only used for suicide
-	//toxloss isn't used for aliens, its actually used as alien powers!!
-		src.health = health_full - src.oxyloss - src.fireloss - src.bruteloss
-	else
-		src.health = health_full
-		src.stat = 0
+
 
