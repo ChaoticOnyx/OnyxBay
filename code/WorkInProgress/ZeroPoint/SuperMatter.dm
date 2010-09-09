@@ -31,10 +31,11 @@
 
 	if(removed.temperature > 6000)
 		det += 1
-		spawn(0)
-			while(det == 1)
-				sleep(200)
-				radioalert("CORE OVERLOAD","Core control computer")
+		if(det == 1)
+			spawn(0)
+				while(det >= 1)
+					sleep(200)
+					radioalert("CORE OVERLOAD","Core control computer")
 
 		if(det > 70)
 			explosion(src,8,18,22)
