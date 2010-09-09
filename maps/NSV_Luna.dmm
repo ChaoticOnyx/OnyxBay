@@ -3768,7 +3768,7 @@
 "bux" = (/obj/machinery/atmospherics/pipe/simple,/turf/simulated/floor/plating,/area/maintenance/port1)
 "buy" = (/obj/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact-f"; initialize_directions = 5; layer = 3},/turf/simulated/floor/plating,/area/maintenance/port1)
 "buz" = (/obj/disposalpipe/segment{dir = 4},/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; initialize_directions = 12; layer = 3},/turf/simulated/floor/plating,/area/maintenance/port1)
-"buA" = (/obj/disposalpipe/segment{dir = 4},/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/maintenance,/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; initialize_directions = 12; layer = 3},/turf/simulated/floor/plating,/area/maintenance/port1)
+"buA" = (/obj/disposalpipe/segment{dir = 4},/obj/machinery/door/firedoor/border_only,/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; initialize_directions = 12; layer = 3},/obj/machinery/door/airlock/maintenance,/turf/simulated/floor/plating,/area/maintenance/port1)
 "buB" = (/obj/disposalpipe/segment{dir = 4},/obj/machinery/atmospherics/pipe/manifold,/turf/simulated/floor,/area/security/checkpoint)
 "buC" = (/obj/disposalpipe/segment{dir = 4},/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; initialize_directions = 12; layer = 3},/turf/simulated/floor,/area/security/checkpoint)
 "buD" = (/obj/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; initialize_directions = 12; layer = 3},/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/security/checkpoint)
