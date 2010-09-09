@@ -82,8 +82,10 @@
 
 	env.merge(removed)
 
-	for(var/mob/l in range(2))
-		if(prob(10))
+	for(var/mob/living/l in range(3))
+		l.gib()
+	for(var/mob/dead/l in range(10))
+		if(prob(5))
 			l.gib()
 	for(var/mob/living/l in range(6))
 		if(prob(5))
