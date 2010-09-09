@@ -127,7 +127,7 @@ datum/pipeline
 		var/datum/gas_mixture/air_sample = air.remove_ratio(mingle_volume/air.volume)
 		air_sample.volume = mingle_volume
 
-		if(istype(target) && target.parent)// && target.parent.group_processing)
+		if(istype(target) && target.parent && target.parent.group_processing)
 			//Have to consider preservation of group statuses
 			var/datum/gas_mixture/turf_copy = new
 
@@ -139,15 +139,13 @@ datum/pipeline
 
 			if(target.parent.air.compare(turf_copy))
 				//The new turf would be an acceptable group member so permit the integration
-
 				turf_copy.subtract(target.parent.air)
-
 				target.parent.air.merge(turf_copy)
 
 			else
 				//Comparison failure so dissemble group and copy turf
 
-				//target.parent.suspend_group_processing()
+				target.parent.suspend_group_processing()
 				target.air.copy_from(turf_copy)
 
 		else
