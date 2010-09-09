@@ -76,7 +76,3 @@
 
 /mob/living/carbon/proc/UpdateDamageIcon()
 	return
-
-/mob/living/carbon/proc/FireBurn() // Should probably make this affect all carbon mobs except for aliens (This applies to contaminate and pl_effects as well)
-/mob/living/carbon/proc/contaminate()
-/mob/living/carbon/proc/pl_effects()

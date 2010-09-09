@@ -78,7 +78,7 @@ obj/item/proc
 		else if(istype(src,/obj/item/clothing)) return 1
 		else if(istype(src,/obj/item/weapon/storage/backpack)) return 1
 
-/mob/living/carbon/human/contaminate()
+/mob/living/carbon/proc/contaminate()
 	if(!pl_suit_protected())
 		suit_contamination()
 	else if(vsc.plc.PLASMAGUARD_ONLY)
@@ -106,7 +106,7 @@ obj/item/proc
 	if(ears && !pl_head_protected())
 		if(ears.can_contaminate()) ears.contaminated = 1
 
-/mob/living/carbon/human/pl_effects()
+/mob/living/carbon/proc/pl_effects()
 	if(vsc.plc.SKIN_BURNS)
 		if(!pl_head_protected() || !pl_suit_protected())
 			burn_skin(0.75)
@@ -146,7 +146,7 @@ obj/item/proc
 			src << "\red High levels of toxins cause you to spontaneously mutate."
 			domutcheck(src,null)
 
-/mob/living/carbon/human/FireBurn(mx as num)
+/mob/living/carbon/proc/FireBurn(mx as num)
 	//NO! NOT INTO THE PIT! IT BURRRRRNS!
 	mx *= vsc.BURN_DMG
 
@@ -189,39 +189,39 @@ obj/item/proc
 	TakeDamage("l_hand", 0, 0.25*mx*hands_exposure)
 	TakeDamage("r_hand", 0, 0.25*mx*hands_exposure)
 
-mob/living/carbon/human/proc
-	suit_interior()
-		. = list()
-		if(!pl_suit_protected())
-			for(var/obj/item/I in src)
-				. += I
-			return .
-		. += wear_mask
-		. += w_uniform
-		. += shoes
-		. += gloves
-		if(!pl_head_protected())
-			. += head
+/mob/living/carbon/proc/suit_interior()
+	. = list()
+	if(!pl_suit_protected())
+		for(var/obj/item/I in src)
+			. += I
+		return .
+	. += wear_mask
+	. += w_uniform
+	. += shoes
+	. += gloves
+	if(!pl_head_protected())
+		. += head
 
-	pl_head_protected()
-		if(head)
-			if(head.flags & PLASMAGUARD || head.flags & HEADSPACE) return 1
-		return 0
-	pl_suit_protected()
-		if(wear_suit)
-			if(wear_suit.flags & PLASMAGUARD || wear_suit.flags & SUITSPACE) return 1
-		return 0
+/mob/living/carbon/proc/pl_head_protected()
+	if(head)
+		if(head.flags & PLASMAGUARD || head.flags & HEADSPACE) return 1
+	return 0
 
-	suit_contamination()
-		if(vsc.plc.ALL_ITEM_CONTAMINATION)
-			for(var/obj/item/I in src)
-				I.contaminated = 1
-		else
-			if(wear_suit) wear_suit.contaminated = 1
-			if(w_uniform) w_uniform.contaminated = 1
-			if(shoes) shoes.contaminated = 1
-			if(gloves) gloves.contaminated = 1
-			if(wear_mask) wear_mask.contaminated = 1
+/mob/living/carbon/proc/pl_suit_protected()
+	if(wear_suit)
+		if(wear_suit.flags & PLASMAGUARD || wear_suit.flags & SUITSPACE) return 1
+	return 0
+
+/mob/living/carbon/proc/suit_contamination()
+	if(vsc.plc.ALL_ITEM_CONTAMINATION)
+		for(var/obj/item/I in src)
+			I.contaminated = 1
+	else
+		if(wear_suit) wear_suit.contaminated = 1
+		if(w_uniform) w_uniform.contaminated = 1
+		if(shoes) shoes.contaminated = 1
+		if(gloves) gloves.contaminated = 1
+		if(wear_mask) wear_mask.contaminated = 1
 
 
 turf/Entered(obj/item/I)

@@ -16,3 +16,7 @@
 	else
 		health = health_full
 		stat = 0
+
+/mob/living/carbon/alien/FireBurn() // Should probably make this affect all carbon mobs except for aliens (This applies to contaminate and pl_effects as well)
+/mob/living/carbon/alien/contaminate()
+/mob/living/carbon/alien/pl_effects()
