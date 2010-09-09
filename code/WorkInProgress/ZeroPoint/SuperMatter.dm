@@ -81,8 +81,9 @@
 
 	env.merge(removed)
 
-	for(var/mob/living/l in range(2))
-		l.gib()
+	for(var/mob/l in range(2))
+		if(prob(10))
+			l.gib()
 	for(var/mob/living/l in range(3))
 		l.hallucination += 4
 	return 1
