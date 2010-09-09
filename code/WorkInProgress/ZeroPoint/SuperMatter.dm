@@ -40,6 +40,7 @@
 			explosion(src,8,18,22)
 			det = 0
 	else
+
 		det = 0
 
 	if (!removed)
@@ -84,6 +85,7 @@
 	for(var/mob/l in range(2))
 		if(prob(10))
 			l.gib()
-	for(var/mob/living/l in range(3))
-		l.hallucination += 4
+	for(var/mob/living/l in range(6))
+		if(prob(5))
+			l.hallucination += 100
 	return 1
