@@ -28,6 +28,20 @@
 	var/transfer_moles = gasefficency * env.total_moles()
 	var/datum/gas_mixture/removed = env.remove(transfer_moles)
 
+
+	if(removed.temperature > 6000)
+		det += 1
+		spawn(0)
+			while(det == 1)
+				sleep(200)
+				radioalert("CORE OVERLOAD","Core control computer")
+
+		if(det > 70)
+			explosion(src,7,15,30,50)
+			det = 0
+	else
+		det = 0
+
 	if (!removed)
 		return 1
 
@@ -71,17 +85,4 @@
 		l.gib()
 	for(var/mob/living/l in range(3))
 		l.hallucination += 4
-
-	if(removed.temperature > 6000)
-		det += 1
-		spawn(0)
-			while(det == 1)
-				sleep(200)
-				radioalert("CORE OVERLOAD","Core control computer")
-
-		if(det > 70)
-			explosion(src,7,15,30,50)
-			det = 0
-	else
-		det = 0
 	return 1
