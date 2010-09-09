@@ -66,4 +66,13 @@
 
 	env.merge(removed)
 
+	for(var/mob/living/l in range(2))
+		l.gib()
+	for(var/mob/living/l in range(3))
+		l.hallucination += 4
+
+	if(removed.temperature > 600)
+		if(prob(1))
+			explosion(src,7,15,30,50)
+
 	return 1

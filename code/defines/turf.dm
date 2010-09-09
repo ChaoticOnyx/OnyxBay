@@ -23,7 +23,7 @@
 		pathweight = 1
 		list/obj/machinery/network/wirelessap/wireless = list( )
 		explosionstrength = 1 //NEVER SET THIS BELOW 1
-		floorstrength = 4
+		floorstrength = 6
 
 /turf/space
 	icon = 'space.dmi'
