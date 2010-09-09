@@ -28,7 +28,7 @@
 /mob/var/obj/screen/store = null
 /mob/var/obj/screen/module_icon = null
 
-/mob/var/list/obj/hallucinations = list()
+/mob/var/list/atom/hallucinations = list()
 /mob/var/halloss = 0
 /mob/var/hallucination = 0
 
