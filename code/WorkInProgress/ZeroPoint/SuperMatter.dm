@@ -14,6 +14,7 @@
 	anchored = 1
 
 	var/gasefficency = 0.25
+	var/det = 0
 
 
 /obj/machinery/engine/supermatter/process()
@@ -71,8 +72,16 @@
 	for(var/mob/living/l in range(3))
 		l.hallucination += 4
 
-	if(removed.temperature > 600)
-		if(prob(1))
-			explosion(src,7,15,30,50)
+	if(removed.temperature > 6000)
+		det += 1
+		spawn(0)
+			while(det == 1)
+				sleep(200)
+				radioalert("CORE OVERLOAD","Core control computer")
 
+		if(det > 70)
+			explosion(src,7,15,30,50)
+			det = 0
+	else
+		det = 0
 	return 1
