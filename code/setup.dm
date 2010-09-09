@@ -15,7 +15,7 @@
 
 
 
-#define MINIMUM_AIR_RATIO_TO_SUSPEND 0.01
+#define MINIMUM_AIR_RATIO_TO_SUSPEND 0.025
 	//Minimum ratio of air that must move to/from a tile to suspend group processing
 
 #define MINIMUM_TEMPERATURE_RATIO_TO_SUSPEND 0.048
