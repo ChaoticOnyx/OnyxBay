@@ -31,15 +31,17 @@
 
 	if(removed.temperature > 6000)
 		det += 1
-		spawn(0)
-			while(det == 1)
-				sleep(200)
-				radioalert("CORE OVERLOAD","Core control computer")
+		if(det == 1)
+			spawn(0)
+				while(det >= 1)
+					sleep(200)
+					radioalert("CORE OVERLOAD","Core control computer")
 
 		if(det > 70)
 			explosion(src,8,18,22)
 			det = 0
 	else
+
 		det = 0
 
 	if (!removed)
@@ -81,8 +83,12 @@
 
 	env.merge(removed)
 
-	for(var/mob/living/l in range(2))
-		l.gib()
 	for(var/mob/living/l in range(3))
-		l.hallucination += 4
+		l.gib()
+	for(var/mob/dead/l in range(10))
+		if(prob(5))
+			l.gib()
+	for(var/mob/living/l in range(6))
+		if(prob(5))
+			l.hallucination += 100
 	return 1
