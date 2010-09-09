@@ -80,7 +80,8 @@ datum
 			metabolize(var/mob/M)
 				for(var/A in reagent_list)
 					var/datum/reagent/R = A
-					R.on_mob_life(M)
+					if (R)
+						R.on_mob_life(M)
 				update_total()
 
 			handle_reactions()
