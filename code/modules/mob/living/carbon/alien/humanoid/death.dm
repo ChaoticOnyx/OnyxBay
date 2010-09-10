@@ -1,12 +1,5 @@
 /mob/living/carbon/alien/humanoid/death(gibbed)
-	if(stat == 2)
-		return
-	if(healths)
-		healths.icon_state = "health6"
-	stat = 2
-
 	if (!gibbed)
-
 		canmove = 0
 		if(client)
 			blind.layer = 0
