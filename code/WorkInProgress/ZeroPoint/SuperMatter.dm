@@ -87,8 +87,9 @@
 		l.gib()
 	for(var/mob/dead/l in range(10))
 		if(prob(5))
-			l.gib()
-	for(var/mob/living/l in range(6))
+			var/virus = l.virus
+			gibs(l.loc, virus)
+	for(var/mob/living/l in range(8))
 		if(prob(5))
 			l.hallucination += 100
 	return 1
