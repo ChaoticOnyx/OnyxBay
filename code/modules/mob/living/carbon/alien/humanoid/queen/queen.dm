@@ -5,20 +5,9 @@
 
 /mob/living/carbon/alien/humanoid/queen/New()
 	..()
-	var/datum/reagents/R = new/datum/reagents(100)
-	reagents = R
-	R.my_atom = src
 	stand_icon = new /icon('alien.dmi', "queen_s")
 	lying_icon = new /icon('alien.dmi', "queen_l")
 	icon = stand_icon
-
-//there should only be one queen
-//		if(name == "alien") name = text("alien ([rand(1, 1000)])")
-	real_name = name
-	src << "\blue Your icons have been generated!"
-
-	update_clothing()
-
 
 //Queen verbs
 /mob/living/carbon/alien/humanoid/queen/verb/lay_egg()
