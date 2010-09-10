@@ -29,7 +29,7 @@
 	var/datum/gas_mixture/removed = env.remove(transfer_moles)
 
 
-	if(removed.temperature > 6000)
+	if(removed.temperature > 1000)
 		det += 1
 		if(det == 1)
 			spawn(0)
