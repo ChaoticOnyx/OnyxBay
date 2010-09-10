@@ -97,7 +97,7 @@
 		var/turf/T = locate(x,y,z-1)
 		spawn(4)
 			if(T)
-				if(T.type == /turf/simulated/floor/open)
+				if(istype(T, /turf/simulated/floor/open))
 					open = T
 					open.update()
 

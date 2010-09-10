@@ -204,10 +204,6 @@
 
 /mob/living/carbon/human/Stat()
 	..()
-	statpanel("Status")
-
-	stat(null, "Intent: [a_intent]")
-	stat(null, "Move Mode: [m_intent]")
 	if(ticker.mode.name == "AI malfunction")
 		if(ticker.mode:malf_mode_declared)
 			stat(null, "Time left: [ ticker.mode:AI_win_timeleft]")
@@ -792,84 +788,6 @@
 			temp.take_damage((istype(O, /obj/meteor/small) ? 10 : 25), 30)
 			UpdateDamageIcon()
 		updatehealth()
-	return
-
-/mob/living/carbon/human/Move(a, b, flag)
-
-	if (buckled)
-		return
-
-	if (restrained())
-		pulling = null
-
-	var/t7 = 1
-	if (restrained())
-		for(var/mob/M in range(src, 1))
-			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
-				t7 = null
-
-	if ((t7 && (pulling && ((get_dist_3d(src, pulling) <= 1 || pulling.loc == loc) && (client && client.moving)))))
-		var/turf/T = loc
-		. = ..()
-
-		if (pulling && pulling.loc)
-			if(!( isturf(pulling.loc) ))
-				pulling = null
-				return
-			else
-				if(Debug)
-					check_diary()
-					diary <<"pulling disappeared? at [__LINE__] in mob.dm - pulling = [pulling]"
-					diary <<"REPORT THIS"
-
-		/////
-		if(pulling && pulling.anchored)
-			pulling = null
-			return
-
-		if (!restrained())
-			var/diag = get_dir(src, pulling)
-			if ((diag - 1) & diag)
-			else
-				diag = null
-			if ((get_dist(src, pulling) > 1 || diag))
-				if (ismob(pulling))
-					var/mob/M = pulling
-					var/ok = 1
-					if (locate(/obj/item/weapon/grab, M.grabbed_by))
-						if (prob(75))
-							var/obj/item/weapon/grab/G = pick(M.grabbed_by)
-							if (istype(G, /obj/item/weapon/grab))
-								for(var/mob/O in viewers(M, null))
-									O.show_message(text("\red [] has been pulled from []'s grip by []", G.affecting, G.assailant, src), 1)
-								//G = null
-								del(G)
-						else
-							ok = 0
-						if (locate(/obj/item/weapon/grab, M.grabbed_by.len))
-							ok = 0
-					if (ok)
-						var/t = M.pulling
-						M.pulling = null
-
-//this is the gay blood on floor shit
-//						if (M.lying && (prob(M.bruteloss / 6)))
-//							var/turf/location = M.loc
-//							if (istype(location, /turf/simulated))
-//								location.add_blood(M)
-
-
-						pulling.Move(T)
-						M.pulling = t
-				else
-					if (pulling)
-						pulling.Move(T)
-	else
-
-		pulling = null
-		. = ..()
-	if ((s_active && !( s_active in contents ) ))
-		s_active.close(src)
 	return
 
 /mob/living/carbon/human/update_clothing()

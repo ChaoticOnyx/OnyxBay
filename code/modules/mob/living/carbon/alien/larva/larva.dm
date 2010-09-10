@@ -63,122 +63,19 @@ to clean it up, or just beat the shit out of it (which takes ages).
 
 /mob/living/carbon/alien/larva/New()
 	..()
-	var/datum/reagents/R = new/datum/reagents(100)
-	reagents = R
-	R.my_atom = src
 
 	if(name == "alien larva") name = text("alien larva ([rand(1, 1000)])")
 	real_name = name
-	src << "\blue Your icons have been generated!"
 
-	update_clothing()
-
-
-//This is fine, works the same as a human
-/mob/living/carbon/alien/larva/Bump(atom/movable/AM as mob|obj, yes)
-
-	spawn( 0 )
-		if ((!( yes ) || now_pushing))
-			return
-		now_pushing = 1
-		if(ismob(AM))
-			var/mob/tmob = AM
-			if(istype(tmob, /mob/living/carbon/human) && tmob.mutations & 32)
-				if(prob(70))
-					for(var/mob/M in viewers(src, null))
-						if(M.client)
-							M << "\red <B>[src] fails to push [tmob]'s fat ass out of the way.</B>"
-					now_pushing = 0
-					return
-		now_pushing = 0
-		..()
-		if (!( istype(AM, /atom/movable) ))
-			return
-		if (!( now_pushing ))
-			now_pushing = 1
-			if (!( AM.anchored ))
-				var/t = get_dir(src, AM)
-				step(AM, t)
-			now_pushing = null
-		return
-	return
 
 //This needs to be fixed
 /mob/living/carbon/alien/larva/Stat()
 	..()
 
-	statpanel("Status")
-	if (client && client.holder)
-		stat(null, "([x], [y], [z])")
-
-	stat(null, "Intent: [a_intent]")
-	stat(null, "Move Mode: [m_intent]")
-
 	if (client.statpanel == "Status")
 		stat(null, "Progress: [amount_grown]/200")
 		stat(null, "Plasma Stored: [toxloss]")
 
-
-//This is okay I guess unless we add alien shields or something. Should be cleaned up a bit.
-/mob/living/carbon/alien/larva/bullet_act(flag, A as obj)
-
-	if (locate(/obj/item/weapon/grab, src))
-		var/mob/safe = null
-		if (istype(l_hand, /obj/item/weapon/grab))
-			var/obj/item/weapon/grab/G = l_hand
-			if ((G.state == 3 && get_dir(src, A) == dir))
-				safe = G.affecting
-		if (istype(r_hand, /obj/item/weapon/grab))
-			var/obj/item/weapon.grab/G = r_hand
-			if ((G.state == 3 && get_dir(src, A) == dir))
-				safe = G.affecting
-		if (safe)
-			return safe.bullet_act(flag, A)
-	if (flag == PROJECTILE_BULLET)
-		var/d = 51
-
-		if (stat != 2)
-			bruteloss += d
-
-			updatehealth()
-			if (prob(50))
-				if(weakened <= 5)	weakened = 5
-		return
-	else if (flag == PROJECTILE_TASER)
-		if (prob(75) && stunned <= 10)
-			stunned = 10
-		else
-			weakened = 10
-		if (stuttering < 10)
-			stuttering = 10
-	else if(flag == PROJECTILE_LASER)
-		var/d = 20
-
-		if (!eye_blurry) eye_blurry = 4 //This stuff makes no sense but lasers need a buff.
-		if (prob(25)) stunned++
-
-		if (stat != 2)
-			bruteloss += d
-
-			updatehealth()
-			if (prob(25))
-				stunned = 1
-	else if(flag == PROJECTILE_PULSE)
-		var/d = 40
-
-		if (stat != 2)
-			bruteloss += d
-
-			updatehealth()
-			if (prob(50))
-				stunned = min(stunned, 5)
-	else if(flag == PROJECTILE_BOLT)
-		toxloss += 3
-		radiation += 100
-		updatehealth()
-		stuttering += 5
-		drowsyness += 5
-	return
 
 /mob/living/carbon/alien/larva/ex_act(severity)
 	flick("flash", flash)
@@ -252,79 +149,6 @@ to clean it up, or just beat the shit out of it (which takes ages).
 /mob/living/carbon/alien/larva/db_click(text, t1)
 	return
 
-/mob/living/carbon/alien/larva/meteorhit(O as obj)
-	for(var/mob/M in viewers(src, null))
-		if ((M.client && !( M.blinded )))
-			M.show_message(text("\red [] has been hit by []", src, O), 1)
-	if (health > 0)
-		bruteloss += (istype(O, /obj/meteor/small) ? 10 : 25)
-		fireloss += 30
-
-		updatehealth()
-	return
-
-/mob/living/carbon/alien/larva/Move(a, b, flag)
-
-	var/t7 = 1
-	if (restrained())
-		for(var/mob/M in range(src, 1))
-			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
-				t7 = null
-	if ((t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && (client && client.moving)))))
-		var/turf/T = loc
-		. = ..()
-
-		if (pulling && pulling.loc)
-			if(!( isturf(pulling.loc) ))
-				pulling = null
-				return
-			else
-				if(Debug)
-					check_diary()
-					diary <<"pulling disappeared? at __LINE__ in mob.dm - pulling = [pulling]"
-					diary <<"REPORT THIS"
-
-		/////
-		if(pulling && pulling.anchored)
-			pulling = null
-			return
-
-		if (!restrained())
-			var/diag = get_dir(src, pulling)
-			if ((diag - 1) & diag)
-			else
-				diag = null
-			if ((get_dist(src, pulling) > 1 || diag))
-				if (ismob(pulling))
-					var/mob/M = pulling
-					var/ok = 1
-					if (locate(/obj/item/weapon/grab, M.grabbed_by))
-						if (prob(75))
-							var/obj/item/weapon/grab/G = pick(M.grabbed_by)
-							if (istype(G, /obj/item/weapon/grab))
-								for(var/mob/O in viewers(M, null))
-									O.show_message(text("\red [] has been pulled from []'s grip by []", G.affecting, G.assailant, src), 1)
-								//G = null
-								del(G)
-						else
-							ok = 0
-						if (locate(/obj/item/weapon/grab, M.grabbed_by.len))
-							ok = 0
-					if (ok)
-						var/t = M.pulling
-						M.pulling = null
-						step(pulling, get_dir(pulling.loc, T))
-						M.pulling = t
-				else
-					if (pulling)
-						step(pulling, get_dir(pulling.loc, T))
-	else
-		pulling = null
-		. = ..()
-	if ((s_active && !( s_active in contents ) ))
-		s_active.close(src)
-	return
-
 /mob/living/carbon/alien/larva/update_clothing()
 	..()
 
@@ -378,16 +202,12 @@ to clean it up, or just beat the shit out of it (which takes ages).
 		if (istype(M.wear_mask, /obj/item/clothing/mask/muzzle))
 			return
 		if (health > 0)
-
 			for(var/mob/O in viewers(src, null))
 				if ((O.client && !( O.blinded )))
 					O.show_message(text("\red <B>[M.name] has bit []!</B>", src), 1)
-			var/damage = rand(1, 3)
-
-			bruteloss += damage
+			bruteloss  += rand(1, 3)
 
 			updatehealth()
-
 	return
 
 /mob/living/carbon/alien/larva/attack_paw(mob/M as mob)

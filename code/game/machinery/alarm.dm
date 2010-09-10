@@ -11,6 +11,7 @@
 	var/const/UNSAFE_TEMPERATURE_L = T20C-20
 	var/const/UNSAFE_TEMPERATURE_U = T20C+20
 	var/safe_old = 2
+	var/obj/machinery/atmospherics/pipe/vent/vent_connected
 
 /obj/machinery/alarm/New()
 	..()
@@ -22,6 +23,11 @@
 			alarm_zone = A.name
 		else
 			alarm_zone = "Unregistered"
+
+	spawn(2)
+		for(var/obj/machinery/atmospherics/pipe/vent/V in get_area(loc))
+			if(cmptextEx(vent_connected,V.vent_id))
+				vent_connected = V
 
 /obj/machinery/alarm/process()
 	if (src.skipprocess)
@@ -191,20 +197,34 @@
 		dat += "<BR><BR>"
 		var/area/A = get_area(loc)
 		if(!A.air_doors_activated)
-			dat += "<A href='?src=\ref[src];activate_alarm'>Activate Emergency Seal</A>"
+			dat += "<A href='?src=\ref[src];activate_alarm=1'>Activate Emergency Seal</A>"
 		else
-			dat += "<A href='?src=\ref[src];deactivate_alarm'>Deactivate Emergency Seal</A>"
+			dat += "<A href='?src=\ref[src];deactivate_alarm=1'>Deactivate Emergency Seal</A>"
+		dat += "<BR><BR>"
+		if(vent_connected)
+			if(!vent_connected.panic_fill)
+				dat += "<A href='?src=\ref[src];activate_panic_fill=1'>Activate Panic Fill</A>"
+			else
+				dat += "<A href='?src=\ref[src];deactivate_panic_fill=1'>Deactivate Panic Fill</A>"
+		else
+			dat += "\red No vents connected!"
 	dat += text("<BR><BR><A href='?src=\ref[];mach_close=alarm'>Close</A>", user)
 	user << browse(dat, "window=alarm;size=400x500")
+	user.machine = src
 	onclose(user, "alarm")
 
 	return 1
 
 /obj/machinery/alarm/Topic(href,href_list[])
-	if("activate_alarm" in href_list)
+	if(href_list["activate_alarm"])
 		air_doors_close(1)
-	else if("deactivate_alarm" in href_list)
+	if(href_list["deactivate_alarm"])
 		air_doors_open(1)
+	if(href_list["activate_panic_fill"])
+		vent_connected.panic_fill = 1
+	if(href_list["deactivate_panic_fill"])
+		vent_connected.panic_fill = 0
+
 	updateUsrDialog()
 
 obj/machinery/alarm/proc

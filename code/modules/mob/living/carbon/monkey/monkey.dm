@@ -50,7 +50,7 @@
 
 /mob/living/carbon/monkey/Bump(atom/movable/AM as mob|obj, yes)
 
-	spawn( 0 )
+	spawn(0)
 		if ((!( yes ) || now_pushing))
 			return
 		now_pushing = 1
@@ -109,39 +109,7 @@
 		bruteloss += 30
 		if ((O.icon_state == "flaming" && !( shielded )))
 			fireloss += 40
-		health = health_full - oxyloss - toxloss - fireloss - bruteloss
-	return
-
-/mob/living/carbon/monkey/bullet_act(flag)
-
-	if (flag == PROJECTILE_BULLET)
-		if (stat != 2)
-			bruteloss += 60
-			updatehealth()
-			weakened = 10
-	else if (flag == PROJECTILE_TASER)
-		if (prob(75))
-			stunned = 15
-		else
-			weakened = 15
-	else if(flag == PROJECTILE_LASER)
-		if (stat != 2)
-			bruteloss += 20
-			health = health_full - oxyloss - toxloss - fireloss - bruteloss
-			if (prob(25))
-				stunned = 1
-	else if(flag == PROJECTILE_PULSE)
-		if (stat != 2)
-			bruteloss += 40
-			health = health_full - oxyloss - toxloss - fireloss - bruteloss
-			if (prob(25))
-				stunned = min(stunned, 5)
-	else if(flag == PROJECTILE_BOLT)
-		toxloss += 3
-		radiation += 100
-		health = health_full - oxyloss - toxloss - fireloss - bruteloss
-		stuttering += 5
-		drowsyness += 5
+		updatehealth()
 	return
 
 /mob/living/carbon/monkey/hand_p(mob/M as mob)
@@ -175,7 +143,7 @@
 					O.show_message("\red <B>[M.name] has bit [name]!</B>", 1)
 				var/damage = rand(1, 5)
 				bruteloss += damage
-				health = health_full - oxyloss - toxloss - fireloss - bruteloss
+				updatehealth()
 			else
 				for(var/mob/O in viewers(src, null))
 					O.show_message("\red <B>[M.name] has attempted to bite [name]!</B>", 1)
@@ -251,13 +219,6 @@
 								O.show_message(text("\red <B>[] has disarmed [name]!</B>", M), 1)
 	return
 
-
-/mob/living/carbon/monkey/Stat()
-	..()
-	statpanel("Status")
-	stat(null, text("Intent: []", a_intent))
-	stat(null, text("Move Mode: []", m_intent))
-	return
 
 /mob/living/carbon/monkey/update_clothing()
 	..()
@@ -338,47 +299,6 @@
 				return
 	return
 
-/mob/living/carbon/monkey/Move()
-	if ((!( buckled ) || buckled.loc != loc))
-		buckled = null
-	if (buckled)
-		return
-	if (restrained())
-		pulling = null
-	var/t7 = 1
-	if (restrained())
-		for(var/mob/M in range(src, 1))
-			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
-				return 0
-	if ((t7 && pulling && get_dist(src, pulling) <= 1))
-		if (pulling.anchored)
-			pulling = null
-		var/T = loc
-		. = ..()
-		if (!( isturf(pulling.loc) ))
-			pulling = null
-			return
-		if (!( restrained() ))
-			var/diag = get_dir(src, pulling)
-			if ((diag - 1) & diag)
-			else
-				diag = null
-			if ((ismob(pulling) && (get_dist(src, pulling) > 1 || diag)))
-				if (istype(pulling, type))
-					var/mob/M = pulling
-					var/mob/t = M.pulling
-					M.pulling = null
-					step(pulling, get_dir(pulling.loc, T))
-					M.pulling = t
-			else
-				step(pulling, get_dir(pulling.loc, T))
-	else
-		pulling = null
-		. = ..()
-	if ((s_active && !( contents.Find(s_active) )))
-		s_active.close(src)
-	return
-
 /mob/living/carbon/monkey/verb/removeinternal()
 	internal = null
 	return
@@ -389,16 +309,16 @@
 		if(1.0)
 			if (stat != 2)
 				bruteloss += 200
-				health = health_full - oxyloss - toxloss - fireloss - bruteloss
+				updatehealth()
 		if(2.0)
 			if (stat != 2)
 				bruteloss += 60
 				fireloss += 60
-				health = health_full - oxyloss - toxloss - fireloss - bruteloss
+				updatehealth()
 		if(3.0)
 			if (stat != 2)
 				bruteloss += 30
-				health = health_full - oxyloss - toxloss - fireloss - bruteloss
+				updatehealth()
 			if (prob(50))
 				paralysis += 10
 		else
@@ -407,7 +327,7 @@
 /mob/living/carbon/monkey/blob_act()
 	if (stat != 2)
 		bruteloss += 30
-		health = health_full - oxyloss - toxloss - fireloss - bruteloss
+		updatehealth()
 	if (prob(50))
 		paralysis += 10
 
