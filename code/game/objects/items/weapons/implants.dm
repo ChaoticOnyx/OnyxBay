@@ -280,14 +280,14 @@ No Implant Specifics"}
 
 /obj/item/weapon/implant/vfac/implanted(mob/source as mob)
 	src.phrase = input("Choose activation phrase:") as text
-	var/virus = input("Choose virus:") in list("The Cold", "Space Rhinovirus", "GBS")
+	var/virus = input("Choose virus:") in list("The Cold", "Space Rhinovirus")
 	switch(virus)
 		if("The Cold")
 			src.virus =/datum/disease/cold
 		if("Space Rhinovirus")
 			src.virus = /datum/disease/dnaspread
-		else if("GBS")
-			src.virus =/datum/disease/gbs
+	//	else if("GBS")
+	//		src.virus =/datum/disease/gbs
 
 	usr.mind.store_memory("Viral factory implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate.", 0, 0)
 	usr << "The implanted viral factory implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate."
@@ -296,11 +296,10 @@ No Implant Specifics"}
 
 /obj/item/weapon/implant/explosive/hear(var/msg)
 	if(findtext(msg,src.phrase))
-		explosion(find_loc(src), 0, 1, 2, 3, 1)
+		explosion(find_loc(src), 1, 3, 4, 6, 1)
 		var/turf/t = find_loc(src)
 		t.hotspot_expose(SPARK_TEMP,125)
 		var/mob/M = src.loc
-		M.gib()
 
 /obj/item/weapon/implant/timplant/trigger(emote, mob/source as mob)
 
@@ -376,17 +375,17 @@ No Implant Specifics"}
 		src.update()
 
 
-/obj/item/weapon/implanter/attack(mob/M as mob, mob/user as mob)
-	if (!istype(M, /mob))
-		return
-
-	if (user && src.imp)
-		for (var/mob/O in viewers(M, null))
-			O.show_message("\red [M] has been implanted by [user].", 1)
-
-		src.imp.loc = M
-		src.imp.implanted = 1
-		src.imp.implanted(M)
-		src.imp = null
-		user.show_message("\red You implanted the implant into [M].")
-		src.icon_state = "implanter0"
+/obj/item/weapon/implanter/attack(mob/target as mob, mob/user as mob)
+	spawn(0)
+		if(ismob(target))
+			if(ismob(target) && target != user)
+				for(var/mob/O in viewers(world.view, user))
+					O.show_message(text("\red <B>[] is trying to implant [] with [src.name]!</B>", user, target), 1)
+				if(!do_mob(user, target,60)) return
+				for(var/mob/O in viewers(world.view, user))
+					O.show_message(text("\red [] implants [] with [src.name]!", user, target), 1)
+				src.imp.loc = target
+				src.imp.implanted = 1
+				src.imp.implanted(target)
+				src.imp = null
+				src.icon_state = "implanter0"

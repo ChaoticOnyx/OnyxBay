@@ -342,7 +342,7 @@
 			if("fire")
 				if (!(M.mutations & 2))
 					M.fireloss += power
-					M << "heres ur burn notice"
+			//		M << "heres ur burn notice"
 		M.updatehealth()
 	src.add_fingerprint(user)
 	return

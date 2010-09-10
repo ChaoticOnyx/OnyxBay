@@ -1394,7 +1394,7 @@ Code:
 
 	if(T)
 		T.hotspot_expose(SPARK_TEMP,125)
-		explosion(T, -1, -1, 2, 3, 1)
+		explosion(T, -1, -1, 5, 3, 1)
 
 	del(src)
 	return
@@ -1552,10 +1552,10 @@ Code:
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=emag'>Electromagnet Card</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_freedom'>Freedom Implant (with injector)</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_compress'>Compressed Matter Implant (with injector)</A> (5)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_tele'>Teleport Implant (with injector) + Beacon</A> (10)<BR>"
+//	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_tele'>Teleport Implant (with injector) + Beacon</A> (10)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_vfac'>Viral Factory Implant</A> (5)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_explosive'>Explosive Implant (with injector)</A> (4)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_alien'>Alien Embryo (with injector)</A> (10)<BR>"
+	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_explosive'>Explosive Implant (with injector)</A> (6)<BR>"
+//	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_alien'>Alien Embryo (with injector)</A> (10)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=sleepypen'>Sleepy Pen</A> (4)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=cloak'>Cloaking Device</A> (4)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=sword'>Energy Sword</A> (4)<BR>"
@@ -1644,10 +1644,11 @@ Code:
 					O.imp = new /obj/item/weapon/implant/timplant(O)
 					new /obj/item/device/radio/beacon/traitor(get_turf(src.hostpda))
 			if("imp_explosive")
-				if (src.uses >= 4)
-					src.uses -= 4
+				if (src.uses >= 6)
+					src.uses -= 6
 					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
 					O.imp = new /obj/item/weapon/implant/explosive(O)
+					O.name = "(BIO-HAZARD) BIO-detpack"
 			if("imp_vfac")
 				if (src.uses >= 5)
 					src.uses -= 5
