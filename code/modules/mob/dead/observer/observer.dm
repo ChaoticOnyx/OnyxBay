@@ -1,12 +1,12 @@
-/mob/dead/observer/New(mob/corpse)
+/mob/dead/observer/New(mob/the_corpse)
 	invisibility = 10
 	sight |= SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
 	see_invisible = 15
 	see_in_dark = 100
 	verbs += /mob/dead/observer/proc/dead_tele
 
-	if(corpse)
-		corpse = corpse
+	if(the_corpse)
+		corpse = the_corpse
 		loc = get_turf(corpse.loc)
 		real_name = corpse.real_name
 		name = corpse.real_name
