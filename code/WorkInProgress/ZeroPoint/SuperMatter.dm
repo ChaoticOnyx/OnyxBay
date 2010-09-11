@@ -38,7 +38,7 @@
 					radioalert("CORE OVERLOAD","Core control computer")
 
 		if(det > 70)
-			explosion(src,8,18,22)
+			explosion(src.loc,8,18,22)
 			det = 0
 	else
 
