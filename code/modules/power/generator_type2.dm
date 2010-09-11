@@ -2,8 +2,8 @@
 	..()
 
 	spawn(5)
-		input1 = locate(/obj/machinery/atmospherics/unary/generator_input) in get_step(src,WEST)
-		input2 = locate(/obj/machinery/atmospherics/unary/generator_input) in get_step(src,EAST)
+		input1 = locate(/obj/machinery/atmospherics/unary/generator_input) in get_step(src,EAST)
+		input2 = locate(/obj/machinery/atmospherics/unary/generator_input) in get_step(src,WEST)
 		if(!input1 || !input2)
 			stat |= BROKEN
 
