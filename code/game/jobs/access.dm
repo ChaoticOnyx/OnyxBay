@@ -122,10 +122,10 @@
 		if("Scientist")
 			return list(access_tox, access_tox_storage, access_maint_tunnels, access_medlab, access_laboratories_doors)
 		if("Head of Security")
-			return list(access_medical, access_morgue, access_tox, access_tox_storage, access_chemistry, access_medlab,
+			return list(access_incinerator, access_medical, access_morgue, access_tox, access_tox_storage, access_chemistry, access_medlab,
 			            access_teleporter, access_heads, access_tech_storage, access_security, access_brig, access_atmospherics,
 			            access_maint_tunnels, access_bar, access_janitor, access_kitchen, access_robotics, access_laboratories_doors,
-			             access_armory, access_engine, access_security_passthrough, access_maintenance_hall, access_shield_generator)
+			             access_armory, access_engine, access_security_passthrough, access_maintenance_hall, access_shield_generator, access_forensics_lockers)
 		if("Head of Personnel")
 			return list(access_security, access_brig, access_forensics_lockers,
 			            access_tox, access_tox_storage, access_chemistry, access_medical, access_medlab, access_engine,

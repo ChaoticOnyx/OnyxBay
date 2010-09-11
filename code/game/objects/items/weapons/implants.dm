@@ -377,14 +377,19 @@ No Implant Specifics"}
 /obj/item/weapon/implanter/attack(mob/target as mob, mob/user as mob)
 	spawn(0)
 		if(ismob(target))
-			if(ismob(target) && target != user)
-				for(var/mob/O in viewers(world.view, user))
+			for(var/mob/O in viewers(world.view, user))
+				if (target != user)
 					O.show_message(text("\red <B>[] is trying to implant [] with [src.name]!</B>", user, target), 1)
-				if(!do_mob(user, target,60)) return
-				for(var/mob/O in viewers(world.view, user))
+				else
+					O.show_message("\red <B>[user] is trying to inject themselves with [src.name]!</B>", 1)
+			if(!do_mob(user, target,60)) return
+			for(var/mob/O in viewers(world.view, user))
+				if (target != user)
 					O.show_message(text("\red [] implants [] with [src.name]!", user, target), 1)
-				src.imp.loc = target
-				src.imp.implanted = 1
-				src.imp.implanted(target)
-				src.imp = null
-				src.icon_state = "implanter0"
+				else
+					O.show_message("\red [user] implants themself with [src.name]!", 1)
+			src.imp.loc = target
+			src.imp.implanted = 1
+			src.imp.implanted(target)
+			src.imp = null
+			src.icon_state = "implanter0"
