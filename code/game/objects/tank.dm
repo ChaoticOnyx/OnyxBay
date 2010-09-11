@@ -267,7 +267,7 @@
 	..()
 	src.ion_trail = new /datum/effects/system/ion_trail_follow()
 	src.ion_trail.set_up(src)
-	src.air_contents.oxygen = (1*ONE_ATMOSPHERE)*70/(R_IDEAL_GAS_EQUATION*T20C)
+	src.air_contents.oxygen = (6*ONE_ATMOSPHERE)*src.air_contents.volume/(R_IDEAL_GAS_EQUATION*T20C)
 	return
 
 /obj/item/weapon/tank/jetpack/verb/toggle()
@@ -305,6 +305,32 @@
 	//G = null
 	del(G)
 	return
+
+/obj/item/weapon/tank/jetpack/proc/move_z(cardinal, mob/user as mob)
+	if(allow_thrust(0.01, user))
+		switch(cardinal)
+			if (UP)
+				if (user.z > 1)
+					var/turf/T = locate(user.x, user.y, user.z - 1)
+					if(T && istype(T, /turf/space))
+						user.Move(T)
+					else if (!T)
+						user << "\red The ships gravity well keeps you in orbit!"
+					else
+						user << "\red You bump into the ships plating."
+				else
+					user << "\red The ships gravity well keeps you in orbit!"
+			if (DOWN)
+				if (user.z < 4)
+					var/turf/T = locate(user.x, user.y, user.z + 1)
+					if(T && istype(T, /turf/space))
+						user.Move(T)
+					else if (!T)
+						user << "\red The ships gravity well keeps you in orbit!"
+					else
+						user << "\red You bump into the ships plating."
+				else
+					user << "\red The ships gravity well keeps you in orbit!"
 
 /obj/item/weapon/tank/anesthetic/New()
 	..()

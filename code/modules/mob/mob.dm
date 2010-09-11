@@ -1739,7 +1739,10 @@ mob/verb/turnwest()
 		if ((!M.current && M.loc.z > 1) || M.current.z > 1)
 			AIMoveZ(UP, mob)
 	else if(istype(mob, /mob/living/carbon))
-		mob:swap_hand()
+		if (mob:back && istype(mob:back, /obj/item/weapon/tank/jetpack))
+			mob:back:move_z(UP, mob)
+		else
+			mob:swap_hand()
 
 /client/Southeast()
 	var/obj/item/weapon/W = mob.equipped()
@@ -1749,6 +1752,8 @@ mob/verb/turnwest()
 		var/mob/living/silicon/ai/M = mob
 		if ((!M.current && M.loc.z < 4) || M.current.z < 4)
 			AIMoveZ(DOWN, mob)
+	else if(istype(mob, /mob/living/carbon) && mob:back && istype(mob:back, /obj/item/weapon/tank/jetpack))
+		mob:back:move_z(DOWN, mob)
 	else if (W)
 		W.attack_self(mob)
 
