@@ -346,7 +346,7 @@
 
 /proc/viral_outbreak()
 	command_alert("Confirmed outbreak of level 7 viral biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert")
-	var/virus_type = /datum/disease/cold
+	var/virus_type = pick(/datum/disease/cold,/datum/disease/flu)
 	for(var/mob/living/carbon/human/H in world)
 		if((H.virus) || (H.stat == 2))
 			continue
