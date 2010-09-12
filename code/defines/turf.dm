@@ -102,15 +102,13 @@
 
 	Enter(var/atom/movable/AM)
 		. = ..()
-		spawn()
-			if(open && istype(open))
-				open.update()
+		if(open && istype(open))
+			open.update()
 
 	Exit(var/atom/movable/AM)
 		. = ..()
-		spawn()
-			if(open && istype(open))
-				open.update()
+		if(open && istype(open))
+			open.update()
 
 	airless
 		name = "airless floor"
