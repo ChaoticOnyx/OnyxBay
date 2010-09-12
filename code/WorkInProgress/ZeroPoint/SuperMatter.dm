@@ -38,7 +38,8 @@
 					radioalert("CORE OVERLOAD","Core control computer")
 
 		if(det > 70)
-			explosion(src.loc,8,18,22)
+			//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
+			explosion(src.loc,8,15,20,30,1)
 			det = 0
 	else
 
@@ -86,7 +87,7 @@
 	for(var/mob/living/l in range(3))
 		l.gib()
 	for(var/mob/dead/l in range(10))
-		if(prob(5))
+		if(prob(20))
 			var/virus = l.virus
 			gibs(l.loc, virus)
 	for(var/mob/living/l in range(8))
