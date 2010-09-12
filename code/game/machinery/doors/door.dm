@@ -223,6 +223,7 @@
 /obj/machinery/door/unpowered
 	explosionstrength = 1
 	autoclose = 0
+	var/locked = 0
 
 /obj/machinery/door/unpowered/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
@@ -238,7 +239,7 @@
 		return
 	src.add_fingerprint(user)
 	if (src.allowed(user))
-		if (src.density)
+		if (src.density && !locked)
 			open()
 		else
 			close()
