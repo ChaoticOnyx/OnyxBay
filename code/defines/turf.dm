@@ -95,11 +95,10 @@
 	New()
 		..()
 		var/turf/T = locate(x,y,z-1)
-		spawn(4)
-			if(T)
-				if(istype(T, /turf/simulated/floor/open))
-					open = T
-					open.update()
+		if(T)
+			if(istype(T, /turf/simulated/floor/open))
+				open = T
+				open.update()
 
 	Enter(var/atom/movable/AM)
 		. = ..()

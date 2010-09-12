@@ -82,7 +82,7 @@
 
 			signal.data["tag"] = id
 			signal.data["device"] = "AO"
-			signal.data["power"] = on
+			signal.data["power"] = on?("on"):("off")
 			signal.data["volume_rate"] = volume_rate
 
 			radio_connection.post_signal(src, signal)

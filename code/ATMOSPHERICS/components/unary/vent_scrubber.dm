@@ -10,7 +10,7 @@
 	var/on = 0
 	var/scrubbing = 1 //0 = siphoning, 1 = scrubbing
 	var/scrub_CO2 = 1
-	var/scrub_Toxins = 0
+	var/scrub_Toxins = 1
 
 	var/volume_rate = 120
 

@@ -374,6 +374,10 @@
 			D.expel(src)	// no trunk connected, so expel immediately
 			return
 
+		for(var/mob/M in src)
+			if(M.client)
+				M.client.eye = src
+
 		loc = D.trunk
 		active = 1
 		dir = 64 //UP and DOWN are now actually used, so find another value to note that the package just started
