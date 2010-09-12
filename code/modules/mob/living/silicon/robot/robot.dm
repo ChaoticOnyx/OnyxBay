@@ -24,8 +24,8 @@
 
 /mob/living/silicon/robot/proc/pick_module()
 
-	var/module = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Security", "Medical", "Janitor")
-	switch(module)
+	var/pick_module = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Security", "Medical", "Janitor")
+	switch(pick_module)
 		if("Standard")
 			module = new /obj/item/weapon/robot_module/standard(src)
 			module_icon.icon_state = "standard"
