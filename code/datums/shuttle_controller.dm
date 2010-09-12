@@ -233,6 +233,11 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 		if(timeleft > 1e5)		// midnight rollover protection
 			timeleft = 0
 
+		if(timeleft < 60)
+			for(var/datum/shuttle/s in shuttles)
+				for(var/obj/machinery/door/unpowered/shuttle/d in s.station)
+					d.locked = 0
+
 		if(timeleft() < last60 && online)
 			if(timeleft > 60)
 				radioalert("[round(timeleft()/60,1)] minutes until escape pod launch.","Escape Computer")
