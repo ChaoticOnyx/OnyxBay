@@ -212,9 +212,10 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 		online = 1
 		last60 = timeleft()
 
-		for(var/area/ToggleAlert in world)
-			if (ToggleAlert.applyalertstatus && ToggleAlert.type != /area)
-				ToggleAlert.redalert = 1
+		spawn(0)
+			for(var/area/ToggleAlert in world)
+				if (ToggleAlert.applyalertstatus && ToggleAlert.type != /area)
+					ToggleAlert.redalert = 1
 
 	proc/stop()
 		online = 0
