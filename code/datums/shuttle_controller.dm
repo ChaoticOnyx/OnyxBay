@@ -206,6 +206,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 	var/online = 0
 
 	var/last60 = 0
+	var/unlocked = 0
 
 	proc/start()
 		settimeleft(PODLAUNCHTIME)
@@ -234,12 +235,14 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 		if(timeleft > 1e5)		// midnight rollover protection
 			timeleft = 0
 
-		if(timeleft < 60)
+		if(online && !unlocked && timeleft < 60)
 			for(var/datum/shuttle/s in shuttles)
-				for(var/obj/machinery/door/unpowered/shuttle/d in s.station)
+				var/area/shuttle_area = locate(s.station)
+				for(var/obj/machinery/door/unpowered/shuttle/d in shuttle_area)
 					d.locked = 0
+			unlocked = 1
 
-		if(timeleft() < last60 && online)
+		if(online && timeleft() < last60)
 			if(timeleft > 60)
 				radioalert("[round(timeleft()/60,1)] minutes until escape pod launch.","Escape Computer")
 				if(timeleft() - 60 > 60)
@@ -260,7 +263,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 				last60 = timeleft() - 1
 
 
-		if(timeleft <= 0 && online == 1)
+		if(online && timeleft <= 0)
 			for(var/datum/shuttle/s in shuttles)
 				s.depart()
 			online = 0
