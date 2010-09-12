@@ -133,6 +133,55 @@
 	icon_state = "cart-e"
 	access_engine = 1
 
+	var/frequency = 1500
+	var/list/signal_info
+	var/id = "core"
+
+	New()
+		..()
+		spawn(5)
+			if(radio_controller)
+				radio_controller.add_object(src, "[frequency]")
+
+	receive_signal(datum/signal/signal)
+		if(!signal || signal.encryption)
+			return
+		var/obj/item/device/pda/P = src.loc
+
+		if(signal.data["tag"] == id)
+			signal_info = signal.data
+		else
+			..(signal)
+
+		if(istype(P)) P.updateSelfDialog()
+
+	proc/return_text()
+		var/list/data = signal_info
+		var/sensor_part = ""
+
+		if(data)
+			if(data["pressure"])
+				sensor_part += "[data["pressure"]] kPa<BR>"
+			if(data["temperature"])
+				sensor_part += "[data["temperature"]] K<BR>"
+			if(data["oxygen"]||data["toxins"]||data["n2"])
+				sensor_part += "<B>Gas Composition</B>: <BR>"
+				if(data["oxygen"] != null)
+					sensor_part += "&nbsp;&nbsp;[data["oxygen"]] %O2 <BR>"
+				if(data["toxins"] != null)
+					sensor_part += "&nbsp;&nbsp;[data["toxins"]] %TX <BR>"
+				if(data["n2"] != null)
+					sensor_part += "&nbsp;&nbsp;[data["n2"]] %N2 <BR>"
+
+		else
+			sensor_part = "<FONT color='red'>NO DATA</FONT><BR>"
+
+		var/output = {"<B>Sensor Data: <BR></B>
+[sensor_part]<HR>"}
+
+		return output
+
+
 /obj/item/weapon/cartridge/medical
 	name = "Med-U Cartridge"
 	icon_state = "cart-m"
@@ -528,8 +577,10 @@
 				dat += "<br>"
 
 			if (2)
-
-				//TO-DO: Engine monitor for whatever engine is used I guess
+				if(!isnull(src.cartridge) && istype(src.cartridge, /obj/item/weapon/cartridge/engineering))
+					var/obj/item/weapon/cartridge/engineering/C = src.cartridge
+					dat += C.return_text()
+				dat += "<br>"
 
 			if (3)
 
