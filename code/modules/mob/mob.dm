@@ -1320,12 +1320,12 @@ mob/verb/turnwest()
 			L.master = src
 		if (istype(l_hand, /obj/item/weapon/grab))
 			var/obj/item/weapon/grab/G = l_hand
-			if (!( L.container.Find(G.affecting) ))
+			if (G.affecting && !( L.container.Find(G.affecting) ))
 				L.container += G.affecting
 				G.affecting.ret_grab(L, 1)
 		if (istype(r_hand, /obj/item/weapon/grab))
 			var/obj/item/weapon/grab/G = r_hand
-			if (!( L.container.Find(G.affecting) ))
+			if (G.affecting && !( L.container.Find(G.affecting) ))
 				L.container += G.affecting
 				G.affecting.ret_grab(L, 1)
 		if (!( flag ))
