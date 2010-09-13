@@ -25,8 +25,8 @@ mob/new_player
 
 		new_player_panel()
 		var/starting_loc = pick(newplayer_start)
-		src.loc = starting_loc
-		src.sight |= SEE_TURFS
+		loc = starting_loc
+		sight |= SEE_TURFS
 		var/list/watch_locations = list()
 		for(var/obj/landmark/landmark in world)
 			if(landmark.tag == "landmark*new_player")
@@ -53,7 +53,7 @@ mob/new_player
 
 			var/output = "<HR><B>New Player Options</B><BR>"
 			output += "<HR><br><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A><BR><BR>"
-			//if(istester(src.key))
+			//if(istester(key))
 			if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
 				if(!ready)
 					output += "<a href='byond://?src=\ref[src];ready=1'>Declare Ready</A><BR>"
@@ -285,7 +285,7 @@ mob/new_player
 		src << browse(dat, "window=latechoices;size=300x640;can_close=0")
 
 	proc/create_character()
-		var/mob/living/carbon/human/new_character = new(src.loc)
+		var/mob/living/carbon/human/new_character = new(loc)
 
 		close_spawn_windows()
 
@@ -412,10 +412,10 @@ mob/new_player
 		if (!message)
 			return
 
-		log_say("[src.key] : [message]")
+		log_say("[key] : [message]")
 
-		if (src.muted)
+		if (muted)
 			return
 
-		. = src.say_dead(message)
+		. = say_dead(message)
 */

@@ -499,6 +499,13 @@
 			break
 		if (!S)
 			S = locate("start*[rank]") // use old stype
+		if (!S) // No start point for rank.
+			world << "Map bug: no (unoccupied) start locations available for [rank]. Attempting to use shuttle..."
+			var/start = pick(latejoin)
+			if(!start)//If it can't even find space  here, something must be *very* wrong. Probably a lazy mapper or early WIP map.
+				world << "Map bug: There aren't any start locations for the shuttle, either!."
+			else
+				src.loc = start
 		if (istype(S, /obj/landmark/start) && istype(S.loc, /turf))
 			src.loc = S.loc
 	else

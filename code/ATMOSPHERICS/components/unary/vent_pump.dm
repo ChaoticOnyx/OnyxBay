@@ -97,6 +97,8 @@
 				var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
 
 				if(removed) loc.assume_air(removed)
+				if (network)
+					network.update = 1
 		else
 			var/pressure_delta = internal_pressure_bound - air_contents.return_pressure()
 			//Can not have a pressure delta that would cause environment pressure > tank pressure
@@ -111,6 +113,8 @@
 				removed = loc.remove_air(transfer_moles)
 
 				if(removed) air_contents.merge(removed)
+				if (network)
+					network.update = 1
 
 	//Radio remote control
 

@@ -1,62 +1,62 @@
 /mob/living/silicon/robot/Life()
 
-	if (src.stat)
-		src.camera.status = 0.0
-		if(src.stat == 2)
+	if (stat)
+		camera.status = 0.0
+		if(stat == 2)
 			return
 	else
 
-		src.updatehealth()
+		updatehealth()
 
-		if (src.health <= -100.0)
+		if (health <= -100.0)
 			death()
 			return
-		else if (src.health < 0)
-			src.oxyloss++
-	src.updateicon()
+		else if (health < 0)
+			oxyloss++
+	updateicon()
 
 	//stage = 0
-	if (src.client)
+	if (client)
 
-		var/blind = 0
+		var/isblind = 0
 
-		if (src.cell)
+		if (cell)
 
-			if(src.cell.charge <= 0)
-				blind = 1
+			if(cell.charge <= 0)
+				isblind = 1
 				stat = 1
-			else if (src.cell.charge <= 100)
-				src.module_state_1 = null
-				src.module_state_2 = null
-				src.module_state_3 = null
-				src.cell.use(1)
+			else if (cell.charge <= 100)
+				module_state_1 = null
+				module_state_2 = null
+				module_state_3 = null
+				cell.use(1)
 			else
-				if(src.module_state_1)
+				if(module_state_1)
 					cell.use(5)
-				if(src.module_state_2)
+				if(module_state_2)
 					cell.use(5)
-				if(src.module_state_3)
+				if(module_state_3)
 					cell.use(5)
 				cell.use(1)
-				blind = 0
+				isblind = 0
 				stat = 0
 		else
-			blind = 1
+			isblind = 1
 			stat = 1
 
-		if (!blind)
+		if (!isblind)
 
-			if (src.blind.layer!=0)
-				src.blind.layer = 0
-			src.see_in_dark = 8
-			src.see_invisible = 2
+			if (blind.layer!=0)
+				blind.layer = 0
+			see_in_dark = 8
+			see_invisible = 2
 
 		else
-			src.blind.screen_loc = "1,1 to 15,15"
-			if (src.blind.layer!=18)
-				src.blind.layer = 18
-			src.see_in_dark = 0
-			src.see_invisible = 0
+			blind.screen_loc = "1,1 to 15,15"
+			if (blind.layer!=18)
+				blind.layer = 18
+			see_in_dark = 0
+			see_invisible = 0
 
 	handle_environment()
 
@@ -119,47 +119,47 @@
 				temperature_alert = -2
 
 /mob/living/silicon/robot/proc/handle_regular_hud_updates()
-	if (src.healths)
-		if (src.stat != 2)
+	if (healths)
+		if (stat != 2)
 			switch(health)
 				if(30 to INFINITY)
-					src.healths.icon_state = "health0"
+					healths.icon_state = "health0"
 				if(24 to 30)
-					src.healths.icon_state = "health1"
+					healths.icon_state = "health1"
 				if(18 to 24)
-					src.healths.icon_state = "health2"
+					healths.icon_state = "health2"
 				if(12 to 18)
-					src.healths.icon_state = "health3"
+					healths.icon_state = "health3"
 				if(5 to 12)
-					src.healths.icon_state = "health4"
+					healths.icon_state = "health4"
 				if (0 to 5)
-					src.healths.icon_state = "health5"
+					healths.icon_state = "health5"
 				else
-					src.healths.icon_state = "health6"
+					healths.icon_state = "health6"
 		else
-			src.healths.icon_state = "health7"
+			healths.icon_state = "health7"
 
-	if(src.pullin)	src.pullin.icon_state = "pull[src.pulling ? 1 : 0]"
+	if(pullin)	pullin.icon_state = "pull[pulling ? 1 : 0]"
 
-	if (src.cell)
-		if (src.cell_icon)
-			if ((src.cell.charge / src.cell.maxcharge) > 0.75)
-				src.cell_icon.icon_state = "charge4"
-			else if ((src.cell.charge / src.cell.maxcharge) > 0.50)
-				src.cell_icon.icon_state = "charge3"
-			else if ((src.cell.charge / src.cell.maxcharge) > 0.25)
-				src.cell_icon.icon_state = "charge2"
-			else if ((src.cell.charge / src.cell.maxcharge) > 0)
-				src.cell_icon.icon_state = "charge1"
+	if (cell)
+		if (cell_icon)
+			if ((cell.charge / cell.maxcharge) > 0.75)
+				cell_icon.icon_state = "charge4"
+			else if ((cell.charge / cell.maxcharge) > 0.50)
+				cell_icon.icon_state = "charge3"
+			else if ((cell.charge / cell.maxcharge) > 0.25)
+				cell_icon.icon_state = "charge2"
+			else if ((cell.charge / cell.maxcharge) > 0)
+				cell_icon.icon_state = "charge1"
 			else
-				src.cell_icon.icon_state = "charge0"
+				cell_icon.icon_state = "charge0"
 	else
-		if (src.cell_icon)
-			src.cell_icon.icon_state = "charge-empty"
+		if (cell_icon)
+			cell_icon.icon_state = "charge-empty"
 
-	if (src.toxin) src.toxin.icon_state = "tox[src.toxin_alert ? 1 : 0]"
-	if (src.oxygen) src.oxygen.icon_state = "oxy[src.oxygen_alert ? 1 : 0]"
-	if (src.fire) src.fire.icon_state = "fire[src.fire_alert ? 1 : 0]"
-	if (src.exttemp) src.exttemp.icon_state = "temp[src.temperature_alert]"
+	if (toxin) toxin.icon_state = "tox[toxin_alert ? 1 : 0]"
+	if (oxygen) oxygen.icon_state = "oxy[oxygen_alert ? 1 : 0]"
+	if (fire) fire.icon_state = "fire[fire_alert ? 1 : 0]"
+	if (exttemp) exttemp.icon_state = "temp[temperature_alert]"
 
 	return 1

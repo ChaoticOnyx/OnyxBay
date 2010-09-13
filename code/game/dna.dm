@@ -376,7 +376,7 @@
 		for(var/obj/T in M)
 			del(T)
 		for(var/R in M.organs)
-			del(M.organs[text("[]", R)])
+			del(M.organs["[R]"])
 
 		O.loc = M.loc
 
@@ -388,7 +388,7 @@
 			O.loc = C
 			C.occupant = O
 			connected = null
-		O.name = text("monkey ([])",copytext(md5(M.real_name), 2, 6))
+		O.name = "monkey ([copytext(md5(M.real_name), 2, 6)])"
 		O.toxloss += (M.toxloss + 20)
 		O.bruteloss += (M.bruteloss + 40)
 		O.oxyloss += M.oxyloss
@@ -671,7 +671,7 @@
 		src.delete = src.delete
 
 	else if (!src.delete && src.temphtml) //Window in buffer - its a menu, dont add clear message
-		dat = text("[]<BR><BR><A href='?src=\ref[];clear=1'>Main Menu</A>", src.temphtml, src)
+		dat = "[src.temphtml]<BR><BR><A href='?src=\ref[src];clear=1'>Main Menu</A>"
 	else
 		if (src.connected) //Is something connected?
 			var/mob/occupant = src.connected.occupant

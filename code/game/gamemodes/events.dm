@@ -157,10 +157,10 @@
 	var/list/turfs = list(	)
 	var/turf/picked
 	for(var/turf/T in world)
-		if(T.z == 1 && istype(T,/turf/simulated/floor) && !istype(T,/turf/space))
+		if((T.z >= 1 && T.z <= 4) && istype(T,/turf/simulated/floor) && !istype(T,/turf/space))
 			turfs += T
 	for(var/turf/T in world)
-		if(prob(20) && T.z == 1 && istype(T,/turf/simulated/floor))
+		if(prob(20) && (T.z >= 1 && T.z <= 4) && istype(T,/turf/simulated/floor))
 			spawn(50+rand(0,3000))
 				picked = pick(turfs)
 				var/obj/portal/P = new /obj/portal( T )
@@ -346,7 +346,7 @@
 
 /proc/viral_outbreak()
 	command_alert("Confirmed outbreak of level 7 viral biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert")
-	var/virus_type = /datum/disease/cold
+	var/virus_type = pick(/datum/disease/cold,/datum/disease/flu)
 	for(var/mob/living/carbon/human/H in world)
 		if((H.virus) || (H.stat == 2))
 			continue

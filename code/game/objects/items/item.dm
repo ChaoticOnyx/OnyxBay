@@ -103,7 +103,7 @@
 	if (src.loc == user)
 		user.u_equip(src)
 	else
-		if(!user:zombie)
+		if(ishuman(user) && !user:zombie)
 			src.pickup(user)
 
 	if (user.hand)
@@ -342,7 +342,7 @@
 			if("fire")
 				if (!(M.mutations & 2))
 					M.fireloss += power
-					M << "heres ur burn notice"
+			//		M << "heres ur burn notice"
 		M.updatehealth()
 	src.add_fingerprint(user)
 	return

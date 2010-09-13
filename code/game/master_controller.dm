@@ -93,7 +93,6 @@ datum/controller/game_controller
 
 		if(!processing)
 			return 0
-		//world << "Processing"
 
 		var/start_time = world.timeofday
 

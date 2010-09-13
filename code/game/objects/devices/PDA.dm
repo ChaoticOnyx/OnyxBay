@@ -133,6 +133,55 @@
 	icon_state = "cart-e"
 	access_engine = 1
 
+	var/frequency = 1500
+	var/list/signal_info
+	var/id = "core"
+
+	New()
+		..()
+		spawn(5)
+			if(radio_controller)
+				radio_controller.add_object(src, "[frequency]")
+
+	receive_signal(datum/signal/signal)
+		if(!signal || signal.encryption)
+			return
+		var/obj/item/device/pda/P = src.loc
+
+		if(signal.data["tag"] == id)
+			signal_info = signal.data
+		else
+			..(signal)
+
+		if(istype(P)) P.updateSelfDialog()
+
+	proc/return_text()
+		var/list/data = signal_info
+		var/sensor_part = ""
+
+		if(data)
+			if(data["pressure"])
+				sensor_part += "[data["pressure"]] kPa<BR>"
+			if(data["temperature"])
+				sensor_part += "[data["temperature"]] K<BR>"
+			if(data["oxygen"]||data["toxins"]||data["n2"])
+				sensor_part += "<B>Gas Composition</B>: <BR>"
+				if(data["oxygen"] != null)
+					sensor_part += "&nbsp;&nbsp;[data["oxygen"]] %O2 <BR>"
+				if(data["toxins"] != null)
+					sensor_part += "&nbsp;&nbsp;[data["toxins"]] %TX <BR>"
+				if(data["n2"] != null)
+					sensor_part += "&nbsp;&nbsp;[data["n2"]] %N2 <BR>"
+
+		else
+			sensor_part = "<FONT color='red'>NO DATA</FONT><BR>"
+
+		var/output = {"<B>Sensor Data: <BR></B>
+[sensor_part]<HR>"}
+
+		return output
+
+
 /obj/item/weapon/cartridge/medical
 	name = "Med-U Cartridge"
 	icon_state = "cart-m"
@@ -528,8 +577,10 @@
 				dat += "<br>"
 
 			if (2)
-
-				//TO-DO: Engine monitor for whatever engine is used I guess
+				if(!isnull(src.cartridge) && istype(src.cartridge, /obj/item/weapon/cartridge/engineering))
+					var/obj/item/weapon/cartridge/engineering/C = src.cartridge
+					dat += C.return_text()
+				dat += "<br>"
 
 			if (3)
 
@@ -1394,7 +1445,7 @@ Code:
 
 	if(T)
 		T.hotspot_expose(SPARK_TEMP,125)
-		explosion(T, -1, -1, 2, 3, 1)
+		explosion(T, -1, -1, 5, 3, 1)
 
 	del(src)
 	return
@@ -1552,10 +1603,10 @@ Code:
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=emag'>Electromagnet Card</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_freedom'>Freedom Implant (with injector)</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_compress'>Compressed Matter Implant (with injector)</A> (5)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_tele'>Teleport Implant (with injector) + Beacon</A> (10)<BR>"
+//	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_tele'>Teleport Implant (with injector) + Beacon</A> (10)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_vfac'>Viral Factory Implant</A> (5)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_explosive'>Explosive Implant (with injector)</A> (4)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_alien'>Alien Embryo (with injector)</A> (10)<BR>"
+	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_explosive'>Explosive Implant (with injector)</A> (6)<BR>"
+//	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_alien'>Alien Embryo (with injector)</A> (10)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=sleepypen'>Sleepy Pen</A> (4)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=cloak'>Cloaking Device</A> (4)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=sword'>Energy Sword</A> (4)<BR>"
@@ -1644,10 +1695,11 @@ Code:
 					O.imp = new /obj/item/weapon/implant/timplant(O)
 					new /obj/item/device/radio/beacon/traitor(get_turf(src.hostpda))
 			if("imp_explosive")
-				if (src.uses >= 4)
-					src.uses -= 4
+				if (src.uses >= 6)
+					src.uses -= 6
 					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
 					O.imp = new /obj/item/weapon/implant/explosive(O)
+					O.name = "(BIO-HAZARD) BIO-detpack"
 			if("imp_vfac")
 				if (src.uses >= 5)
 					src.uses -= 5

@@ -14,7 +14,7 @@ datum/computer/file/embedded_program/airlock_controller
 	var/sanitize_external
 
 	state = AIRLOCK_STATE_CLOSED
-	var/target_state = AIRLOCK_STATE_CLOSED
+	var/target_state = AIRLOCK_STATE_INOPEN
 	var/sensor_pressure = null
 
 	receive_signal(datum/signal/signal, receive_method, receive_param)
@@ -84,6 +84,7 @@ datum/computer/file/embedded_program/airlock_controller
 							signal.data["tag"] = interior_door_tag
 							signal.data["command"] = "secure_open"
 							post_signal(signal)
+							state = AIRLOCK_STATE_INOPEN
 					else
 						var/datum/signal/signal = new
 						signal.data["tag"] = airpump_tag
@@ -98,6 +99,10 @@ datum/computer/file/embedded_program/airlock_controller
 			if(AIRLOCK_STATE_CLOSED)
 				if(target_state > state)
 					if(memory["interior_status"] == "closed")
+						var/datum/signal/signal = new
+						signal.data["tag"] = interior_door_tag
+						signal.data["command"] = "secure_close"
+						post_signal(signal)
 						state = AIRLOCK_STATE_DEPRESSURIZE
 					else
 						var/datum/signal/signal = new
@@ -106,6 +111,10 @@ datum/computer/file/embedded_program/airlock_controller
 						post_signal(signal)
 				else if(target_state < state)
 					if(memory["exterior_status"] == "closed")
+						var/datum/signal/signal = new
+						signal.data["tag"] = exterior_door_tag
+						signal.data["command"] = "secure_close"
+						post_signal(signal)
 						state = AIRLOCK_STATE_PRESSURIZE
 					else
 						var/datum/signal/signal = new
@@ -134,6 +143,7 @@ datum/computer/file/embedded_program/airlock_controller
 							signal.data["tag"] = exterior_door_tag
 							signal.data["command"] = "secure_open"
 							post_signal(signal)
+							state = AIRLOCK_STATE_OUTOPEN
 					else if(target_state < state)
 						state = AIRLOCK_STATE_CLOSED
 				else if((target_state < state) && !sanitize_external)

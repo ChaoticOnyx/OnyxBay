@@ -382,7 +382,7 @@
 		if ((istype(C.mob, /mob/living/carbon/human)) && (C.mob:brain_op_stage >= 4.0))
 			continue
 
-		if ("[C]" == find_key)
+		if ("[C.ckey]" == find_key)
 			selected = C.mob
 			break
 	return selected

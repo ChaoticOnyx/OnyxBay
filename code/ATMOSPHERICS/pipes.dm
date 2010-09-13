@@ -533,6 +533,9 @@ obj/machinery/atmospherics/pipe
 		initialize_directions = SOUTH
 
 		var/obj/machinery/atmospherics/node1
+		var/panic_fill
+		var/panic_filling
+		var/vent_id = "Unset"
 		New()
 			initialize_directions = dir
 			..()
@@ -540,7 +543,19 @@ obj/machinery/atmospherics/pipe
 		process()
 			..()
 			if(parent)
-				parent.mingle_with_turf(loc, 250)
+				if(panic_fill && istype(loc, /turf/simulated/))
+					if (!panic_filling)
+						var/turf/simulated/T = loc
+						if(T.air && T.air.return_pressure() < ONE_ATMOSPHERE*0.95)
+							panic_filling = 1
+							spawn(-1)
+								while(parent && panic_fill && T.air.return_pressure() < ONE_ATMOSPHERE*0.95)
+									parent.mingle_with_turf(loc, 1000)
+									sleep(1)
+								panic_filling = 0
+								panic_fill = 0
+				else
+					parent.mingle_with_turf(loc, 250)
 
 		Del()
 			if(node1)

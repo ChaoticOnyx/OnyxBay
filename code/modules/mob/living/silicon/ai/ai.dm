@@ -4,9 +4,9 @@
 
 	var/dat = "<HEAD><TITLE>Current Station Alerts</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
 	dat += "<A HREF='?src=\ref[src];mach_close=aialerts'>Close</A><BR><BR>"
-	for (var/cat in src.alarms)
+	for (var/cat in alarms)
 		dat += text("<B>[]</B><BR>\n", cat)
-		var/list/L = src.alarms[cat]
+		var/list/L = alarms[cat]
 		if (L.len)
 			for (var/alarm in L)
 				var/list/alm = L[alarm]
@@ -31,7 +31,7 @@
 			dat += "-- All Systems Nominal<BR>\n"
 		dat += "<BR>\n"
 
-	src.viewalerts = 1
+	viewalerts = 1
 	src << browse(dat, "window=aialerts&can_close=0")
 
 /mob/living/silicon/ai/proc/ai_cancel_call()
@@ -43,15 +43,15 @@
 	return
 
 /mob/living/silicon/ai/check_eye(var/mob/user as mob)
-	if (!src.current)
+	if (!current)
 		return null
-	user.reset_view(src.current)
+	user.reset_view(current)
 	return 1
 
 /mob/living/silicon/ai/blob_act()
-	if (src.stat != 2)
-		src.bruteloss += 30
-		src.updatehealth()
+	if (stat != 2)
+		bruteloss += 30
+		updatehealth()
 		return 1
 	return 0
 
@@ -59,34 +59,34 @@
 	return 0
 
 /mob/living/silicon/ai/ex_act(severity)
-	flick("flash", src.flash)
+	flick("flash", flash)
 
-	var/b_loss = src.bruteloss
-	var/f_loss = src.fireloss
+	var/b_loss = bruteloss
+	var/f_loss = fireloss
 	switch(severity)
 		if(1.0)
-			if (src.stat != 2)
+			if (stat != 2)
 				b_loss += 100
 				f_loss += 100
 		if(2.0)
-			if (src.stat != 2)
+			if (stat != 2)
 				b_loss += 60
 				f_loss += 60
 		if(3.0)
-			if (src.stat != 2)
+			if (stat != 2)
 				b_loss += 30
-	src.bruteloss = b_loss
-	src.fireloss = f_loss
-	src.updatehealth()
+	bruteloss = b_loss
+	fireloss = f_loss
+	updatehealth()
 
 
 /mob/living/silicon/ai/Topic(href, href_list)
 	..()
 	if (href_list["mach_close"])
 		if (href_list["mach_close"] == "aialerts")
-			src.viewalerts = 0
+			viewalerts = 0
 		var/t1 = text("window=[]", href_list["mach_close"])
-		src.machine = null
+		machine = null
 		src << browse(null, t1)
 	if (href_list["switchcamera"])
 		switchCamera(locate(href_list["switchcamera"]))
@@ -98,42 +98,42 @@
 	for(var/mob/M in viewers(src, null))
 		M.show_message(text("\red [] has been hit by []", src, O), 1)
 		//Foreach goto(19)
-	if (src.health > 0)
-		src.bruteloss += 30
+	if (health > 0)
+		bruteloss += 30
 		if ((O.icon_state == "flaming"))
-			src.fireloss += 40
-		src.updatehealth()
+			fireloss += 40
+		updatehealth()
 	return
 
 /mob/living/silicon/ai/bullet_act(flag)
 	if (flag == PROJECTILE_BULLET)
-		if (src.stat != 2)
-			src.bruteloss += 60
-			src.updatehealth()
-			src.weakened = 10
+		if (stat != 2)
+			bruteloss += 60
+			updatehealth()
+			weakened = 10
 	else if (flag == PROJECTILE_TASER)
 		if (prob(75))
-			src.stunned = 15
+			stunned = 15
 		else
-			src.weakened = 15
+			weakened = 15
 	else if(flag == PROJECTILE_LASER)
-		if (src.stat != 2)
-			src.bruteloss += 20
-			src.updatehealth()
+		if (stat != 2)
+			bruteloss += 20
+			updatehealth()
 			if (prob(25))
-				src.stunned = 1
+				stunned = 1
 	else if(flag == PROJECTILE_PULSE)
-		if (src.stat != 2)
-			src.bruteloss += 40
-			src.updatehealth()
+		if (stat != 2)
+			bruteloss += 40
+			updatehealth()
 			if (prob(50))
-				src.stunned = min(5, src.stunned)
+				stunned = min(5, stunned)
 	return
 
 /mob/living/silicon/ai/proc/show_laws_verb()
 	set category = "AI Commands"
 	set name = "Show Laws"
-	src.show_laws()
+	show_laws()
 
 /mob/living/silicon/ai/show_laws(var/everyone = 0)
 	var/who
@@ -144,44 +144,44 @@
 		who = src
 		who << "<b>Obey these laws:</b>"
 
-	src.laws_sanity_check()
-	src.laws_object.show_laws(who)
+	laws_sanity_check()
+	laws_object.show_laws(who)
 
 /mob/living/silicon/ai/proc/laws_sanity_check()
-	if (!src.laws_object)
-		src.laws_object = new /datum/ai_laws/asimov
+	if (!laws_object)
+		laws_object = new /datum/ai_laws/asimov
 
 /mob/living/silicon/ai/proc/set_zeroth_law(var/law)
-	src.laws_sanity_check()
-	src.laws_object.set_zeroth_law(law)
+	laws_sanity_check()
+	laws_object.set_zeroth_law(law)
 
 /mob/living/silicon/ai/proc/add_supplied_law(var/number, var/law)
-	src.laws_sanity_check()
-	src.laws_object.add_supplied_law(number, law)
+	laws_sanity_check()
+	laws_object.add_supplied_law(number, law)
 
 /mob/living/silicon/ai/proc/clear_supplied_laws()
-	src.laws_sanity_check()
-	src.laws_object.clear_supplied_laws()
+	laws_sanity_check()
+	laws_object.clear_supplied_laws()
 
 /mob/living/silicon/ai/proc/switchCamera(var/obj/machinery/camera/C)
 	usr:cameraFollow = null
 	if (!C)
-		src.machine = null
-		src.reset_view(null)
+		machine = null
+		reset_view(null)
 		return 0
-	if (stat == 2 || !C.status || C.network != src.network) return 0
+	if (stat == 2 || !C.status || C.network != network) return 0
 
 	// ok, we're alive, camera is good and in our network...
 
-	src.machine = src
+	machine = src
 	src:current = C
-	src.reset_view(C)
+	reset_view(C)
 	return 1
 
 /mob/living/silicon/ai/triggerAlarm(var/class, area/A, var/O, var/alarmsource)
 	if (stat == 2)
 		return 1
-	var/list/L = src.alarms[class]
+	var/list/L = alarms[class]
 	for (var/I in L)
 		if (I == A.name)
 			var/list/alarm = L[I]
@@ -212,11 +212,11 @@
 			src << text("--- [] alarm detected in []! (No Camera)", class, A.name)
 	else
 		src << text("--- [] alarm detected in []! (No Camera)", class, A.name)
-	if (src.viewalerts) src.ai_alerts()
+	if (viewalerts) ai_alerts()
 	return 1
 
 /mob/living/silicon/ai/cancelAlarm(var/class, area/A as area, obj/origin)
-	var/list/L = src.alarms[class]
+	var/list/L = alarms[class]
 	var/cleared = 0
 	for (var/I in L)
 		if (I == A.name)
@@ -229,37 +229,37 @@
 				L -= I
 	if (cleared)
 		src << text("--- [] alarm in [] has been cleared.", class, A.name)
-		if (src.viewalerts) src.ai_alerts()
+		if (viewalerts) ai_alerts()
 	return !cleared
 
 /mob/living/silicon/ai/cancel_camera()
 	set category = "AI Commands"
 	set name = "Cancel Camera View"
-	src.reset_view(null)
-	src.machine = null
+	reset_view(null)
+	machine = null
 	src:cameraFollow = null
 
 /mob/living/silicon/ai/verb/change_network()
 	set category = "AI Commands"
 	set name = "Change Camera Network"
-	src.reset_view(null)
-	src.machine = null
+	reset_view(null)
+	machine = null
 	src:cameraFollow = null
-//	if(src.network == "AI Satellite")
-//		src.network = "Luna"
-//	else if (src.network == "Prison")
-//		src.network = "AI Satellite"
-//	else //(src.network == "SS13")
-//		src.network = "Prison"
-//		src.network = "AI Satellite"
-//	src << "\blue Switched to [src.network] camera network."
+//	if(network == "AI Satellite")
+//		network = "Luna"
+//	else if (network == "Prison")
+//		network = "AI Satellite"
+//	else //(network == "SS13")
+//		network = "Prison"
+//		network = "AI Satellite"
+//	src << "\blue Switched to [network] camera network."
 	src << "\blue No other networks available."
 
 /mob/living/silicon/ai/proc/choose_modules()
 	set category = "AI Commands"
 	set name = "Choose Module"
 
-	src.malf_picker.use(src)
+	malf_picker.use(src)
 
 
 

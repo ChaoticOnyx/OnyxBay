@@ -14,6 +14,7 @@
 	anchored = 1
 
 	var/gasefficency = 0.25
+	var/det = 0
 
 
 /obj/machinery/engine/supermatter/process()
@@ -26,6 +27,23 @@
 	//Remove gas from surrounding area
 	var/transfer_moles = gasefficency * env.total_moles()
 	var/datum/gas_mixture/removed = env.remove(transfer_moles)
+
+
+	if(removed.temperature > 1000)
+		det += 1
+		if(det == 1)
+			spawn(0)
+				while(det >= 1)
+					sleep(200)
+					radioalert("CORE OVERLOAD","Core control computer")
+
+		if(det > 70)
+			//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
+			explosion(src.loc,8,15,20,30,1)
+			det = 0
+	else
+
+		det = 0
 
 	if (!removed)
 		return 1
@@ -66,4 +84,13 @@
 
 	env.merge(removed)
 
+	for(var/mob/living/l in range(3))
+		l.gib()
+	for(var/mob/dead/l in range(10))
+		if(prob(20))
+			var/virus = l.virus
+			gibs(l.loc, virus)
+	for(var/mob/living/l in range(8))
+		if(prob(5))
+			l.hallucination += 100
 	return 1

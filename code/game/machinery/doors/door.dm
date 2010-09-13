@@ -65,6 +65,7 @@
 	return 1
 
 /obj/machinery/door
+	var/Zombiedamage
 	New()
 		..()
 
@@ -91,24 +92,22 @@
 
 /obj/machinery/door/proc/requiresID()
 	return 1
-/obj/machinery/door/
-	var/health = 15
+
 /obj/machinery/door/attackby(obj/item/I as obj, mob/user as mob)
 	if (src.operating)
 		return
 	src.add_fingerprint(user)
 
-	if (user:zombie)
+	if (istype(user, /mob/living/carbon/human) && user:zombie)
 		user << "\blue You claw the airlock"
-		src.health -= rand(1,3)
-		if(health <= 0)
-	//	if(prob(5))
+		Zombiedamage += rand(4,8)
+		if(Zombiedamage > 80)
 			user << "\blue You break the circuitry"
 			src.operating = -1
 			flick("door_spark", src)
 			sleep(6)
 			open()
-			return
+			return 1
 		return
 
 	if (!src.requiresID())
@@ -224,6 +223,7 @@
 /obj/machinery/door/unpowered
 	explosionstrength = 1
 	autoclose = 0
+	var/locked = 0
 
 /obj/machinery/door/unpowered/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
@@ -239,7 +239,7 @@
 		return
 	src.add_fingerprint(user)
 	if (src.allowed(user))
-		if (src.density)
+		if (src.density && !locked)
 			open()
 		else
 			close()

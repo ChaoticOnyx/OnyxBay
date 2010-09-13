@@ -7,9 +7,9 @@
 	if (!message)
 		return
 
-	log_say("Ghost/[src.key] : [message]")
+	log_say("Ghost/[key] : [message]")
 
-	if (src.muted)
+	if (muted)
 		return
 
-	. = src.say_dead(message)
+	. = say_dead(message)

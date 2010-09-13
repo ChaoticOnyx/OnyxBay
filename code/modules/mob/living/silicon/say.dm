@@ -2,22 +2,22 @@
 	if (!message)
 		return
 
-	if (src.muted)
+	if (muted)
 		return
 
-	if (src.stat == 2)
+	if (stat == 2)
 		message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
-		return src.say_dead(message)
+		return say_dead(message)
 
 	// wtf?
-	if (src.stat)
+	if (stat)
 		return
 
 	if (length(message) >= 2)
 		if (copytext(message, 1, 3) == ":s")
 			message = copytext(message, 3)
 			message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
-			src.robot_talk(message)
+			robot_talk(message)
 		else
 			return ..(message)
 	else
@@ -33,8 +33,8 @@
 	if (!message)
 		return
 
-	var/message_a = src.say_quote(message)
-	var/rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[src.name]</span> <span class='message'>[message_a]</span></span></i>"
+	var/message_a = say_quote(message)
+	var/rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[name]</span> <span class='message'>[message_a]</span></span></i>"
 	for (var/mob/living/silicon/S in world)
 		if(!S.stat && S.client)
 			S.show_message(rendered, 2)
@@ -53,17 +53,17 @@
 		var/message_b
 
 		message_b = "beep beep beep"
-		message_b = src.say_quote(message_b)
+		message_b = say_quote(message_b)
 		message_b = "<i>[message_b]</i>"
 
-		rendered = "<i><span class='game say'><span class='name'>[src.voice_name]</span> <span class='message'>[message_b]</span></span></i>"
+		rendered = "<i><span class='game say'><span class='name'>[voice_name]</span> <span class='message'>[message_b]</span></span></i>"
 
 		for (var/mob/M in heard)
 			M.show_message(rendered, 2)
 
-	message = src.say_quote(message)
+	message = say_quote(message)
 
-	rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[src.name]</span> <span class='message'>[message_a]</span></span></i>"
+	rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[name]</span> <span class='message'>[message_a]</span></span></i>"
 
 	for (var/client/C)
 		if (istype(C.mob, /mob/new_player))

@@ -1,6 +1,7 @@
 /client/proc/cmd_explode_turf(obj/O as turf in world)
 #ifdef DEBUG
-	explosion(O, 1, 2, 8, 8, 1)
+	var/A = text2num(input("Explosion"))
+	explosion(O, A, A*1.5, A*2, A*3, A*3)
 	//if (!usr:holder)
 	//	message_admins("\red <b>Explosion spawn by [usr.client.key] blocked</b>")
 	//	return
@@ -39,6 +40,8 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 		var/list/detdists  = list( )
 
 		var/list/checked   = list( )
+		var/list/list/orderdetonate = list( )
+		var/maxdet
 
 		fillqueue += epicenter
 		checked += epicenter
@@ -60,10 +63,17 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 			detonate += T
 			detdists[T] = floordist[T]
+			if(orderdetonate["[floordist[T]]"])
+				orderdetonate["[floordist[T]]"] += T
+			else
+				orderdetonate["[floordist[T]]"] = list ( )
+				orderdetonate["[floordist[T]]"] += T
+			if(floordist[T] > maxdet)
+				maxdet = floordist[T]
 
 			D.loc = T
 
-			for(var/dir in cardinal | (1 ? DOWN : 0) | (1 ? UP : 0)) //TODO replace with "IsSameStation" checks
+			for(var/dir in cardinal3d) //TODO replace with "IsSameStation" checks
 				var/turf/U = get_step_3d(T, dir)
 
 				if(!U)
@@ -113,45 +123,52 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 
 		//OLD EXPLOSION CODE, RETROFITTED TO SUPPORT ABOVE
+		var/sleep
+		spawn(0)
+			if(heavy_impact_range > 1)
+				var/datum/effects/system/explosion/E = new/datum/effects/system/explosion()
+				E.set_up(epicenter)
+				E.start()
 
-		for(var/turf/T in detonate)
-			var/distance = detdists[T]
-			if(distance < 0)
-				distance = 0
-			if(distance < devastation_range)
-				for(var/atom/object in T.contents)
-					object.ex_act(1)
-				if(prob(5))
-					T.ex_act(2)
-				else
-					T.ex_act(1)
-			else if(distance < heavy_impact_range)
-				for(var/atom/object in T.contents)
-					object.ex_act(2)
-				T.ex_act(2)
-			else if (distance == heavy_impact_range)
-				for(var/atom/object in T.contents)
-					object.ex_act(2)
-				if(prob(15) && devastation_range > 2 && heavy_impact_range > 2)
-					secondaryexplosion(T, 1)
-				else
-					T.ex_act(2)
-			else if(distance <= light_impact_range)
-				for(var/atom/object in T.contents)
-					object.ex_act(3)
-				T.ex_act(3)
-			for(var/mob/living/carbon/mob in T)
-				flick("flash", mob:flash)
+			for(var/Z = 0 to maxdet)
+				if(orderdetonate["[Z]"])
+					for(var/turf/T in orderdetonate["[Z]"])
+						sleep += 1
+						if(sleep > 20)
+							sleep(15)
+							sleep = 0
+						var/distance = detdists[T]
+						if(distance < 0)
+							distance = 0
+						if(distance < devastation_range)
+							for(var/atom/object in T.contents)
+								object.ex_act(1)
+							if(prob(5))
+								T.ex_act(2)
+							else
+								T.ex_act(1)
+						else if(distance < heavy_impact_range)
+							for(var/atom/object in T.contents)
+								object.ex_act(2)
+							T.ex_act(2)
+						else if (distance == heavy_impact_range)
+							for(var/atom/object in T.contents)
+								object.ex_act(2)
+							if(prob(15) && devastation_range > 2 && heavy_impact_range > 2)
+								secondaryexplosion(T, 1)
+							else
+								T.ex_act(2)
+						else if(distance <= light_impact_range)
+							for(var/atom/object in T.contents)
+								object.ex_act(3)
+							T.ex_act(3)
+						for(var/mob/living/carbon/mob in T)
+							flick("flash", mob:flash)
 
-		if(heavy_impact_range > 1)
-			var/datum/effects/system/explosion/E = new/datum/effects/system/explosion()
-			E.set_up(epicenter)
-			E.start()
 
-
-		defer_powernet_rebuild -= 1
-		if (!defer_powernet_rebuild)
-			makepowernets()
+			defer_powernet_rebuild -= 1
+			if (!defer_powernet_rebuild)
+				makepowernets()
 	return 1
 
 

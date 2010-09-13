@@ -7,67 +7,67 @@
 	spawn (1)
 		src << "\blue Your icons have been generated!"
 		updateicon()
-		if(src.real_name == "Cyborg")
-			src.real_name += " [pick(rand(1, 999))]"
-			src.name = src.real_name
+		if(real_name == "Cyborg")
+			real_name += " [pick(rand(1, 999))]"
+			name = real_name
 	spawn (4)
-		if(!src.connected_ai)
+		if(!connected_ai)
 			for(var/mob/living/silicon/ai/A in world)
-				src.connected_ai = A
+				connected_ai = A
 				A.connected_robots += src
 				break
-		src.camera = new /obj/machinery/camera(src)
-		src.camera.c_tag = src.real_name
-		src.camera.network = "Luna"
+		camera = new /obj/machinery/camera(src)
+		camera.c_tag = real_name
+		camera.network = "Luna"
 		radio = new /obj/item/device/radio(src)
 
 
 /mob/living/silicon/robot/proc/pick_module()
 
-	var/module = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Security", "Medical", "Janitor")
-	switch(module)
+	var/pick_module = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Security", "Medical", "Janitor")
+	switch(pick_module)
 		if("Standard")
-			src.module = new /obj/item/weapon/robot_module/standard(src)
-			src.module_icon.icon_state = "standard"
+			module = new /obj/item/weapon/robot_module/standard(src)
+			module_icon.icon_state = "standard"
 			class = "standard"
 			icon_state = "[class]robot"
 		if("Medical")
-			src.module = new /obj/item/weapon/robot_module/medical(src)
-			src.module_icon.icon_state = "medical"
+			module = new /obj/item/weapon/robot_module/medical(src)
+			module_icon.icon_state = "medical"
 			class = "medical"
 			icon_state = "[class]robot"
 		if("Security")
-			src.module = new /obj/item/weapon/robot_module/security(src)
-			src.module_icon.icon_state = "security"
+			module = new /obj/item/weapon/robot_module/security(src)
+			module_icon.icon_state = "security"
 			class = "security"
 			icon_state = "[class]robot"
 		if("Engineering")
-			src.module = new /obj/item/weapon/robot_module/engineering(src)
-			src.module_icon.icon_state = "engineer"
+			module = new /obj/item/weapon/robot_module/engineering(src)
+			module_icon.icon_state = "engineer"
 			class = "engineer"
 			icon_state = "[class]robot"
 		if("Janitor")
-			src.module = new /obj/item/weapon/robot_module/janitor(src)
-			src.module_icon.icon_state = "janitor"
+			module = new /obj/item/weapon/robot_module/janitor(src)
+			module_icon.icon_state = "janitor"
 			class = "janitor"
 			icon_state = "[class]robot"
 		if("Brobot")
-			src.module = new /obj/item/weapon/robot_module/brobot(src)
-			src.module_icon.icon_state = "brobot"
+			module = new /obj/item/weapon/robot_module/brobot(src)
+			module_icon.icon_state = "brobot"
 			class = "standard"
 			icon_state = "[class]robot"
 
 /mob/living/silicon/robot/verb/cmd_robot_alerts()
 	set category = "Robot Commands"
 	set name = "Show Alerts"
-	src.robot_alerts()
+	robot_alerts()
 
 /mob/living/silicon/robot/proc/robot_alerts()
 	var/dat = "<HEAD><TITLE>Current Station Alerts</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
 	dat += "<A HREF='?src=\ref[src];mach_close=robotalerts'>Close</A><BR><BR>"
-	for (var/cat in src.alarms)
+	for (var/cat in alarms)
 		dat += text("<B>[cat]</B><BR>\n")
-		var/list/L = src.alarms[cat]
+		var/list/L = alarms[cat]
 		if (L.len)
 			for (var/alarm in L)
 				var/list/alm = L[alarm]
@@ -82,20 +82,20 @@
 			dat += "-- All Systems Nominal<BR>\n"
 		dat += "<BR>\n"
 
-	src.viewalerts = 1
+	viewalerts = 1
 	src << browse(dat, "window=robotalerts&can_close=0")
 
 /mob/living/silicon/robot/blob_act()
-	if (src.stat != 2)
-		src.bruteloss += 30
-		src.updatehealth()
+	if (stat != 2)
+		bruteloss += 30
+		updatehealth()
 		return 1
 	return 0
 
 /mob/living/silicon/robot/Stat()
 	..()
 	statpanel("Status")
-	if (src.client.statpanel == "Status")
+	if (client.statpanel == "Status")
 		if(LaunchControl.online && main_shuttle.location < 2)
 			var/timeleft = LaunchControl.timeleft()
 			if (timeleft)
@@ -104,8 +104,8 @@
 		//if(ticker.mode.name == "AI malfunction" && ticker.processing)
 		//	stat(null, text("Time until all [station_name()]'s systems are taken over: [(ticker.AIwin - ticker.AItime) / 600 % 60]:[(ticker.AIwin - ticker.AItime) / 100 % 6][(ticker.AIwin - ticker.AItime) / 10 % 10]"))
 
-		if(src.cell)
-			stat(null, text("Charge Left: [src.cell.charge]/[src.cell.maxcharge]"))
+		if(cell)
+			stat(null, text("Charge Left: [cell.charge]/[cell.maxcharge]"))
 		else
 			stat(null, text("No Cell Inserted!"))
 
@@ -113,72 +113,72 @@
 	return 0
 
 /mob/living/silicon/robot/ex_act(severity)
-	flick("flash", src.flash)
+	flick("flash", flash)
 
-	if (src.stat == 2 && src.client)
-		src.gib(1)
+	if (stat == 2 && client)
+		gib(1)
 		return
 
-	else if (src.stat == 2 && !src.client)
+	else if (stat == 2 && !client)
 		del(src)
 		return
 
-	var/b_loss = src.bruteloss
-	var/f_loss = src.fireloss
+	var/b_loss = bruteloss
+	var/f_loss = fireloss
 	switch(severity)
 		if(1.0)
-			if (src.stat != 2)
+			if (stat != 2)
 				b_loss += 100
 				f_loss += 100
-				src.gib(1)
+				gib(1)
 				return
 		if(2.0)
-			if (src.stat != 2)
+			if (stat != 2)
 				b_loss += 60
 				f_loss += 60
 		if(3.0)
-			if (src.stat != 2)
+			if (stat != 2)
 				b_loss += 30
-	src.bruteloss = b_loss
-	src.fireloss = f_loss
-	src.updatehealth()
+	bruteloss = b_loss
+	fireloss = f_loss
+	updatehealth()
 
 /mob/living/silicon/robot/meteorhit(obj/O as obj)
 	for(var/mob/M in viewers(src, null))
 		M.show_message(text("\red [src] has been hit by [O]"), 1)
 		//Foreach goto(19)
-	if (src.health > 0)
-		src.bruteloss += 30
+	if (health > 0)
+		bruteloss += 30
 		if ((O.icon_state == "flaming"))
-			src.fireloss += 40
-		src.updatehealth()
+			fireloss += 40
+		updatehealth()
 	return
 
 /mob/living/silicon/robot/bullet_act(flag)
 	if (flag == PROJECTILE_BULLET)
-		if (src.stat != 2)
-			src.bruteloss += 60
-			src.updatehealth()
+		if (stat != 2)
+			bruteloss += 60
+			updatehealth()
 	else if (flag == PROJECTILE_TASER)
 		return
 	else if(flag == PROJECTILE_LASER)
-		if (src.stat != 2)
-			src.bruteloss += 20
-			src.updatehealth()
+		if (stat != 2)
+			bruteloss += 20
+			updatehealth()
 	else if(flag == PROJECTILE_PULSE)
-		if (src.stat != 2)
-			src.bruteloss += 40
-			src.updatehealth()
+		if (stat != 2)
+			bruteloss += 40
+			updatehealth()
 	if (flag == PROJECTILE_BULLET)
-		if (src.stat != 2)
-			src.bruteloss += 10
-			src.updatehealth()
+		if (stat != 2)
+			bruteloss += 10
+			updatehealth()
 	return
 
 /mob/living/silicon/robot/verb/cmd_show_laws()
 	set category = "Robot Commands"
 	set name = "Show Laws"
-	src.show_laws()
+	show_laws()
 
 /mob/living/silicon/robot/show_laws(var/everyone = 0)
 	var/who
@@ -197,9 +197,9 @@
 
 /mob/living/silicon/robot/Bump(atom/movable/AM as mob|obj, yes)
 	spawn( 0 )
-		if ((!( yes ) || src.now_pushing))
+		if ((!( yes ) || now_pushing))
 			return
-		src.now_pushing = 1
+		now_pushing = 1
 		if(ismob(AM))
 			var/mob/tmob = AM
 			if(istype(tmob, /mob/living/carbon/human) && tmob.mutations & 32)
@@ -207,18 +207,18 @@
 					for(var/mob/M in viewers(src, null))
 						if(M.client)
 							M << M << "\red <B>[src] fails to push [tmob]'s fat ass out of the way.</B>"
-					src.now_pushing = 0
+					now_pushing = 0
 					return
-		src.now_pushing = 0
+		now_pushing = 0
 		..()
 		if (!istype(AM, /atom/movable))
 			return
-		if (!src.now_pushing)
-			src.now_pushing = 1
+		if (!now_pushing)
+			now_pushing = 1
 			if (!AM.anchored)
 				var/t = get_dir(src, AM)
 				step(AM, t)
-			src.now_pushing = null
+			now_pushing = null
 		return
 	return
 /*
@@ -233,7 +233,7 @@
 /mob/living/silicon/robot/triggerAlarm(var/class, area/A, var/O, var/alarmsource)
 	if (stat == 2)
 		return 1
-	var/list/L = src.alarms[class]
+	var/list/L = alarms[class]
 	for (var/I in L)
 		if (I == A.name)
 			var/list/alarm = L[I]
@@ -251,11 +251,11 @@
 		C = O
 	L[A.name] = list(A, (C) ? C : O, list(alarmsource))
 	src << text("--- [class] alarm detected in [A.name]!")
-	if (src.viewalerts) src.robot_alerts()
+	if (viewalerts) robot_alerts()
 	return 1
 
 /mob/living/silicon/robot/cancelAlarm(var/class, area/A as area, obj/origin)
-	var/list/L = src.alarms[class]
+	var/list/L = alarms[class]
 	var/cleared = 0
 	for (var/I in L)
 		if (I == A.name)
@@ -268,7 +268,7 @@
 				L -= I
 	if (cleared)
 		src << text("--- [class] alarm in [A.name] has been cleared.")
-		if (src.viewalerts) src.robot_alerts()
+		if (viewalerts) robot_alerts()
 	return !cleared
 
 /mob/living/silicon/robot/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -278,18 +278,18 @@
 		else
 			user << "Need more welding fuel!"
 			return
-		src.bruteloss -= 30
-		if(src.bruteloss < 0) src.bruteloss = 0
-		src.updatehealth()
-		src.add_fingerprint(user)
+		bruteloss -= 30
+		if(bruteloss < 0) bruteloss = 0
+		updatehealth()
+		add_fingerprint(user)
 		for(var/mob/O in viewers(user, null))
 			O.show_message(text("\red [user] has fixed some of the dents on [src]!"), 1)
 
 	else if(istype(W, /obj/item/weapon/cable_coil) && wiresexposed)
 		var/obj/item/weapon/cable_coil/coil = W
-		src.fireloss -= 30
-		if(src.fireloss < 0) src.fireloss = 0
-		src.updatehealth()
+		fireloss -= 30
+		if(fireloss < 0) fireloss = 0
+		updatehealth()
 		coil.use(1)
 		for(var/mob/O in viewers(user, null))
 			O.show_message(text("\red [user] has fixed some of the burnt wires on [src]!"), 1)
@@ -331,7 +331,7 @@
 		else if(wiresexposed)
 			user << "You must close the panel"
 		else
-			if(src.allowed(usr))
+			if(allowed(usr))
 				locked = !locked
 				user << "You [ locked ? "lock" : "unlock"] [src]'s interface."
 				updateicon()
@@ -355,7 +355,7 @@
 	else if(istype(W,/obj/item/weapon/rcd_ammo))
 		if(class != "engineer")
 			user << "[src] does not posses a RCD"
-		var/obj/item/weapon/rcd/R = locate() in src.module.modules
+		var/obj/item/weapon/rcd/R = locate() in module.modules
 		if(R)
 			if(R:matter < 30)
 				R:matter += W:matter
@@ -373,7 +373,7 @@
 
 	add_fingerprint(user)
 
-	if(src.opened && !src.wiresexposed && (!istype(user, /mob/living/silicon)))
+	if(opened && !wiresexposed && (!istype(user, /mob/living/silicon)))
 		if(cell)
 			cell.loc = usr
 			cell.layer = 20
@@ -385,77 +385,77 @@
 			cell.add_fingerprint(user)
 			cell.updateicon()
 
-			src.cell = null
+			cell = null
 			user << "You remove the power cell."
-			src.updateicon()
+			updateicon()
 
 
 /mob/living/silicon/robot/proc/allowed(mob/M)
 	//check if it doesn't require any access at all
-	if(src.check_access(null))
+	if(check_access(null))
 		return 1
 	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		//if they are holding or wearing a card that has access, that works
-		if(src.check_access(H.equipped()) || src.check_access(H.wear_id))
+		if(check_access(H.equipped()) || check_access(H.wear_id))
 			return 1
 	else if(istype(M, /mob/living/carbon/monkey))
 		var/mob/living/carbon/monkey/george = M
 		//they can only hold things :(
-		if(george.equipped() && istype(george.equipped(), /obj/item/weapon/card/id) && src.check_access(george.equipped()))
+		if(george.equipped() && istype(george.equipped(), /obj/item/weapon/card/id) && check_access(george.equipped()))
 			return 1
 	return 0
 
 /mob/living/silicon/robot/proc/check_access(obj/item/weapon/card/id/I)
-	if(!istype(src.req_access, /list)) //something's very wrong
+	if(!istype(req_access, /list)) //something's very wrong
 		return 1
 
-	var/list/L = src.req_access
+	var/list/L = req_access
 	if(!L.len) //no requirements
 		return 1
 	if(!I || !istype(I, /obj/item/weapon/card/id) || !I.access) //not ID or no access
 		return 0
-	for(var/req in src.req_access)
+	for(var/req in req_access)
 		if(!(req in I.access)) //doesn't have this access
 			return 0
 	return 1
 
 /mob/living/silicon/robot/proc/updateicon()
 
-	src.overlays = null
+	overlays = null
 
 	if(emagged)
-		src.overlays += "emag"
+		overlays += "emag"
 
-	if(src.stat == 0)
-		src.overlays += "eyes"
+	if(stat == 0)
+		overlays += "eyes"
 
 	if(opened)
 		if(bruteloss > 150)
-			src.overlays += "d3+o"
+			overlays += "d3+o"
 		else if(bruteloss > 100)
-			src.overlays += "d2+o"
+			overlays += "d2+o"
 		else if(bruteloss > 50)
-			src.overlays += "d1+o"
+			overlays += "d1+o"
 		if(fireloss > 150)
-			src.overlays += "b3+o"
+			overlays += "b3+o"
 		else if(fireloss > 100)
-			src.overlays += "b2+o"
+			overlays += "b2+o"
 		else if(fireloss > 50)
-			src.overlays += "b1+o"
+			overlays += "b1+o"
 	else
 		if(bruteloss > 150)
-			src.overlays += "d3"
+			overlays += "d3"
 		else if(bruteloss > 100)
-			src.overlays += "d2"
+			overlays += "d2"
 		else if(bruteloss > 50)
-			src.overlays += "d1"
+			overlays += "d1"
 		if(fireloss > 150)
-			src.overlays += "b3"
+			overlays += "b3"
 		else if(fireloss > 100)
-			src.overlays += "b2"
+			overlays += "b2"
 		else if(fireloss > 50)
-			src.overlays += "b1"
+			overlays += "b1"
 
 	if(wiresexposed)
 		icon_state = "[class]robot+we"
@@ -471,11 +471,11 @@
 /mob/living/silicon/robot/verb/cmd_installed_modules()
 	set category = "Robot Commands"
 	set name = "Installed Modules"
-	src.installed_modules()
+	installed_modules()
 
 /mob/living/silicon/robot/proc/installed_modules()
-	if(!src.module)
-		src.pick_module()
+	if(!module)
+		pick_module()
 		return
 	var/dat = "<HEAD><TITLE>Modules</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
 	dat += {"<A HREF='?src=\ref[src];mach_close=robotmod'>Close</A>
@@ -489,8 +489,8 @@
 	<BR>
 	<B>Installed Modules</B><BR><BR>"}
 
-	for (var/obj in src.module.modules)
-		if(src.activated(obj))
+	for (var/obj in module.modules)
+		if(activated(obj))
 			dat += text("[obj]: \[<B>Activated</B> | <A HREF=?src=\ref[src];deact=\ref[obj]>Deactivate</A>\]<BR>")
 		else
 			dat += text("[obj]: \[<A HREF=?src=\ref[src];act=\ref[obj]>Activate</A> | <B>Deactivated</B>\]<BR>")
@@ -501,9 +501,9 @@
 	..()
 	if (href_list["mach_close"])
 		if (href_list["mach_close"] == "robotalerts")
-			src.viewalerts = 0
+			viewalerts = 0
 		var/t1 = text("window=[href_list["mach_close"]]")
-		src.machine = null
+		machine = null
 		src << browse(null, t1)
 		return
 
@@ -516,55 +516,55 @@
 		if(activated(O))
 			src << "Already activated"
 			return
-		if(!src.module_state_1)
-			src.module_state_1 = O
-			src.contents += O
-		else if(!src.module_state_2)
-			src.module_state_2 = O
-			src.contents += O
-		else if(!src.module_state_3)
-			src.module_state_3 = O
-			src.contents += O
+		if(!module_state_1)
+			module_state_1 = O
+			contents += O
+		else if(!module_state_2)
+			module_state_2 = O
+			contents += O
+		else if(!module_state_3)
+			module_state_3 = O
+			contents += O
 		else
 			src << "You need to disable a module first!"
-		src.installed_modules()
+		installed_modules()
 
 	if (href_list["deact"])
 		var/obj/item/O = locate(href_list["deact"])
 		if(activated(O))
-			if(src.module_state_1 == O)
-				src.module_state_1 = null
-				src.contents -= O
-			else if(src.module_state_2 == O)
-				src.module_state_2 = null
-				src.contents -= O
-			else if(src.module_state_3 == O)
-				src.module_state_3 = null
-				src.contents -= O
+			if(module_state_1 == O)
+				module_state_1 = null
+				contents -= O
+			else if(module_state_2 == O)
+				module_state_2 = null
+				contents -= O
+			else if(module_state_3 == O)
+				module_state_3 = null
+				contents -= O
 			else
 				src << "Module isn't activated."
 		else
 			src << "Module isn't activated"
-		src.installed_modules()
+		installed_modules()
 	if (href_list["locked"])
-		if (src.emagged)
+		if (emagged)
 			src << "The interface is broken"
-		else if (src.opened)
+		else if (opened)
 			src << "You must close your panel first"
 		else
-			src.locked = text2num(href_list["locked"])
+			locked = text2num(href_list["locked"])
 			src << "You [ locked ? "lock" : "unlock"] your interface."
 			updateicon()
-		src.panel_menu()
+		panel_menu()
 
 	if (href_list["opened"])
-		if (src.locked)
+		if (locked)
 			src << "You must unlock your panel first"
 		else
-			src.opened = text2num(href_list["opened"])
+			opened = text2num(href_list["opened"])
 			src << "You [ opened ? "open" : "close" ] your access panel."
 			updateicon()
-		src.panel_menu()
+		panel_menu()
 
 
 	return
@@ -589,11 +589,11 @@
 	return W
 
 /mob/living/silicon/robot/proc/activated(obj/item/O)
-	if(src.module_state_1 == O)
+	if(module_state_1 == O)
 		return 1
-	else if(src.module_state_2 == O)
+	else if(module_state_2 == O)
 		return 1
-	else if(src.module_state_3 == O)
+	else if(module_state_3 == O)
 		return 1
 	else
 		return 0
@@ -632,51 +632,51 @@ Panel: [ opened ? "<a href='byond://?src=\ref[src];opened=0'>Close</a>" : "<a hr
 /mob/living/silicon/robot/verb/cmd_drop()
 	set category = "Robot Commands"
 	set name = "drop"
-	src.pulling = null
+	pulling = null
 
 /mob/living/silicon/robot/Move(a, b, flag)
 
-	if (!src.cell || !src.cell.charge)
+	if (!cell || !cell.charge)
 		return
 
-	if (src.buckled)
+	if (buckled)
 		return
 
-	if (src.restrained())
-		src.pulling = null
+	if (restrained())
+		pulling = null
 
 	var/t7 = 1
-	if (src.restrained())
+	if (restrained())
 		for(var/mob/M in range(src, 1))
 			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
 				t7 = null
-	if ((t7 && (src.pulling && ((get_dist(src, src.pulling) <= 1 || src.pulling.loc == src.loc) && (src.client && src.client.moving)))))
-		var/turf/T = src.loc
+	if ((t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && (client && client.moving)))))
+		var/turf/T = loc
 		. = ..()
 
-		if (src.pulling && src.pulling.loc)
-			if(!( isturf(src.pulling.loc) ))
-				src.pulling = null
+		if (pulling && pulling.loc)
+			if(!( isturf(pulling.loc) ))
+				pulling = null
 				return
 			else
 				if(Debug)
 					check_diary()
-					diary <<"src.pulling disappeared? at [__LINE__] in mob.dm - src.pulling = [src.pulling]"
+					diary <<"pulling disappeared? at [__LINE__] in mob.dm - pulling = [pulling]"
 					diary <<"REPORT THIS"
 
 		/////
-		if(src.pulling && src.pulling.anchored)
-			src.pulling = null
+		if(pulling && pulling.anchored)
+			pulling = null
 			return
 
-		if (!src.restrained())
-			var/diag = get_dir(src, src.pulling)
+		if (!restrained())
+			var/diag = get_dir(src, pulling)
 			if ((diag - 1) & diag)
 			else
 				diag = null
-			if ((get_dist(src, src.pulling) > 1 || diag))
-				if (ismob(src.pulling))
-					var/mob/M = src.pulling
+			if ((get_dist(src, pulling) > 1 || diag))
+				if (ismob(pulling))
+					var/mob/M = pulling
 					var/ok = 1
 					if (locate(/obj/item/weapon/grab, M.grabbed_by))
 						if (prob(75))
@@ -692,17 +692,17 @@ Panel: [ opened ? "<a href='byond://?src=\ref[src];opened=0'>Close</a>" : "<a hr
 					if (ok)
 						var/t = M.pulling
 						M.pulling = null
-						step(src.pulling, get_dir(src.pulling.loc, T))
+						step(pulling, get_dir(pulling.loc, T))
 						M.pulling = t
 				else
-					if (src.pulling)
-						step(src.pulling, get_dir(src.pulling.loc, T))
+					if (pulling)
+						step(pulling, get_dir(pulling.loc, T))
 	else
-		src.pulling = null
+		pulling = null
 		. = ..()
-	if ((src.s_active && !( s_active in src.contents ) ))
-		src.s_active.close(src)
+	if ((s_active && !( s_active in contents ) ))
+		s_active.close(src)
 	return
 
 /mob/living/silicon/robot/proc/self_destruct()
-	src.gib(1)
+	gib(1)

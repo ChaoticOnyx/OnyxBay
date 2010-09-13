@@ -23,7 +23,7 @@
 		pathweight = 1
 		list/obj/machinery/network/wirelessap/wireless = list( )
 		explosionstrength = 1 //NEVER SET THIS BELOW 1
-		floorstrength = 4
+		floorstrength = 6
 
 /turf/space
 	icon = 'space.dmi'
@@ -95,23 +95,20 @@
 	New()
 		..()
 		var/turf/T = locate(x,y,z-1)
-		spawn(4)
-			if(T)
-				if(T.type == /turf/simulated/floor/open)
-					open = T
-					open.update()
+		if(T)
+			if(istype(T, /turf/simulated/floor/open))
+				open = T
+				open.update()
 
 	Enter(var/atom/movable/AM)
 		. = ..()
-		spawn()
-			if(open && istype(open))
-				open.update()
+		if(open && istype(open))
+			open.update()
 
 	Exit(var/atom/movable/AM)
 		. = ..()
-		spawn()
-			if(open && istype(open))
-				open.update()
+		if(open && istype(open))
+			open.update()
 
 	airless
 		name = "airless floor"
@@ -280,7 +277,7 @@
 	floorstrength = 6
 	thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m steel wall
-
+	var/Zombiedamage
 /turf/simulated/wall/r_wall
 	name = "r wall"
 	icon = 'walls.dmi'

@@ -15,7 +15,7 @@
 
 
 
-#define MINIMUM_AIR_RATIO_TO_SUSPEND 0.33
+#define MINIMUM_AIR_RATIO_TO_SUSPEND 0.048
 	//Minimum ratio of air that must move to/from a tile to suspend group processing
 
 #define MINIMUM_TEMPERATURE_RATIO_TO_SUSPEND 0.048
@@ -78,7 +78,7 @@ vs_control/var/FIRE_PLASMA_ENERGY_RELEASED_DESC = "Determines the temp increase 
 /var/const/FIRE_MINIMUM_TEMPERATURE_TO_SPREAD = 150+T0C
 /var/const/FIRE_MINIMUM_TEMPERATURE_TO_EXIST = 100+T0C
 
-/var/const/PLASMA_MINIMUM_BURN_TEMPERATURE = 750+T0C
+/var/const/PLASMA_MINIMUM_BURN_TEMPERATURE = 250+T0C
 /var/const/PLASMA_UPPER_TEMPERATURE	= 1370+T0C
 
 #define NORMPIPERATE 30					//pipe-insulation rate divisor

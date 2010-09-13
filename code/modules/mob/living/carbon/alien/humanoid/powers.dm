@@ -16,17 +16,17 @@ Also perhaps only queens can do that?
 	set desc = "Makes you invisible for 30 seconds"
 	set category = "Alien"
 
-	if(src.stat)
+	if(stat)
 		src << "You must be concious to do this"
 		return
-	if(src.toxloss >= 50)
-		src.toxloss -= 50
-		src.alien_invis = 1.0
+	if(toxloss >= 50)
+		toxloss -= 50
+		alien_invis = 1.0
 		src << "\green You are now invisible"
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\green <B>[src] fades into the surroundings!</B>"), 1)
 		spawn(300)
-			src.alien_invis = 0.0
+			alien_invis = 0.0
 			src << "\green You are no longer invisible"
 	else
 		src << "\green Not enough plasma stored"
@@ -37,11 +37,11 @@ Also perhaps only queens can do that?
 	set desc = "Spits acid at someone"
 	set category = "Alien"
 
-	if(src.stat)
+	if(stat)
 		src << "You must be concious to do this"
 		return
-	if(src.toxloss >= 25)
-		src.toxloss -= 25
+	if(toxloss >= 25)
+		toxloss -= 25
 
 		spawn(0)
 			var/obj/overlay/A = new /obj/overlay( usr.loc )
@@ -81,14 +81,14 @@ Also perhaps only queens can do that?
 	set desc = "Plants some alien weeds"
 	set category = "Alien"
 
-	if(src.stat)
+	if(stat)
 		src << "You must be concious to do this"
 		return
-	if(src.toxloss >= 100)
-		src.toxloss -= 100
+	if(toxloss >= 100)
+		toxloss -= 100
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\green <B>[src] has planted some alien weeds!</B>"), 1)
-		var/obj/alien/weeds/W = new /obj/alien/weeds(src.loc)
+		var/obj/alien/weeds/W = new /obj/alien/weeds(loc)
 		W.updateicon()
 		W.Life()
 
@@ -101,12 +101,12 @@ Also perhaps only queens can do that?
 	set desc = "Makes all nearby facehuggers follow you."
 	set category = "Alien"
 
-	if(src.stat)
+	if(stat)
 		src << "You must be concious to do this"
 		return
 
-	if(src.toxloss >= 5)
-		src.toxloss -= 5
+	if(toxloss >= 5)
+		toxloss -= 5
 		for(var/obj/alien/facehugger/F in range(8,src))
 			F.call_to(src)
 		emote("roar")
@@ -119,7 +119,7 @@ Also perhaps only queens can do that?
 	set desc = "Whisper to someone"
 	set category = "Alien"
 
-	if(src.stat)
+	if(stat)
 		src << "You must be concious to do this"
 		return
 
@@ -127,8 +127,8 @@ Also perhaps only queens can do that?
 	if (!msg)
 		return
 
-	if(src.toxloss >= 10)
-		src.toxloss -= 10
+	if(toxloss >= 10)
+		toxloss -= 10
 		log_say("AlienWhisper: [key_name(src)]->[M.key] : [msg]")
 
 		M << "\green You hear a strange alien voice in your head... \italic [msg]"
@@ -145,11 +145,11 @@ Also perhaps only queens can do that?
 	if(!isalien(M))
 		return
 
-	if(src.stat)
+	if(stat)
 		src << "You must be concious to do this."
 		return
 
-	if(!src.toxloss)
+	if(!toxloss)
 		src << "You don't have any plasma."
 		return
 
@@ -159,9 +159,9 @@ Also perhaps only queens can do that?
 		return
 
 	if (get_dist(src,M) <= 1)
-		if(src.toxloss >= amount)
+		if(toxloss >= amount)
 			M.toxloss += amount
-			src.toxloss -= amount
+			toxloss -= amount
 		else
 			src << "You don't have enough plasma."
 			return

@@ -96,9 +96,10 @@
 		if("toggle-redalert")
 			var/area/CurArea = get_area(src)
 			CurArea.redalert = !CurArea.redalert
-			for(var/area/ToggleAlert in world)
-				if (ToggleAlert.applyalertstatus && ToggleAlert.type != /area)
-					ToggleAlert.redalert = CurArea.redalert
+			spawn(0)
+				for(var/area/ToggleAlert in world)
+					if (ToggleAlert.applyalertstatus && ToggleAlert.type != /area)
+						ToggleAlert.redalert = CurArea.redalert
 
 		// AI interface
 		if("ai-main")

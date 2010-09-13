@@ -1,42 +1,45 @@
+/proc/timestamp()
+	return "([time2text(world.timeofday, "hh:mm:ss")])"
+
 /proc/log_admin(text)
 	check_diary()
 	admin_log.Add(text)
 	if (config.log_admin)
-		diary << "([time2text(world.timeofday, "hh:mm:ss")])ADMIN: [text]"
+		diary << "[timestamp()]ADMIN: [text]"
 
 /proc/log_game(text)
 	check_diary()
 	if (config.log_game)
-		diary << "([time2text(world.timeofday, "hh:mm:ss")])GAME: [text]"
+		diary << "[timestamp()]GAME: [text]"
 
 /proc/log_vote(text)
 	check_diary()
 	if (config.log_vote)
-		diary << "([time2text(world.timeofday, "hh:mm:ss")])VOTE: [text]"
+		diary << "[timestamp()]VOTE: [text]"
 
 /proc/log_access(text)
 	check_diary()
 	if (config.log_access)
-		diary << "([time2text(world.timeofday, "hh:mm:ss")])ACCESS: [text]"
+		diary << "[timestamp()]ACCESS: [text]"
 
 /proc/log_say(text)
 	check_diary()
 	if (config.log_say)
-		diary << "([time2text(world.timeofday, "hh:mm:ss")])SAY: [text]"
+		diary << "[timestamp()]SAY: [text]"
 
 /proc/log_ooc(text)
 	check_diary()
 	if (config.log_ooc)
-		diary << "([time2text(world.timeofday, "hh:mm:ss")])OOC: [text]"
+		diary << "[timestamp()]OOC: [text]"
 
 /proc/log_whisper(text)
 	check_diary()
 	if (config.log_whisper)
-		diary << "([time2text(world.timeofday, "hh:mm:ss")])WHISPER: [text]"
+		diary << "[timestamp()]WHISPER: [text]"
 
 /proc/log_attack(text)
 	check_diary()
-	diary << "([time2text(world.timeofday, "hh:mm:ss")])A:[text]"
+	diary << "[timestamp()]ATTACK:[text]"
 	message_admins(text)
 
 /proc/check_diary()

@@ -1,6 +1,7 @@
 /datum/game_mode/meteor
 	name = "meteor"
 	config_tag = "meteor"
+	var/meteortime = 0
 
 /datum/game_mode/meteor/announce()
 	world << "<B>The current game mode is - Meteor!</B>"
@@ -36,3 +37,11 @@
 		world << "\blue <B>No one survived the meteor attack!</B>"
 
 	return 1
+
+/datum/game_mode/meteor/process()
+	if(meteortime <= 0)
+		meteor_wave()
+		meteortime = 5
+	else
+		meteortime -= 1
+

@@ -192,7 +192,7 @@
 		num -= val * 16 ** power
 		switch(val)
 			if(9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0, 0.0)
-				hex += text("[]", val)
+				hex += "[val]"
 			if(10.0)
 				hex += "A"
 			if(11.0)
@@ -208,7 +208,7 @@
 			else
 		power--
 	while(length(hex) < placeholder)
-		hex = text("0[]", hex)
+		hex = "0[hex]"
 	return hex
 
 /proc/invertHTML(HTMLstring)
@@ -230,12 +230,12 @@
 	textg = num2hex(255 - g)
 	textb = num2hex(255 - b)
 	if (length(textr) < 2)
-		textr = text("0[]", textr)
+		textr = "0[textr]"
 	if (length(textg) < 2)
-		textr = text("0[]", textg)
+		textr = "0[textg]"
 	if (length(textb) < 2)
-		textr = text("0[]", textb)
-	return text("#[][][]", textr, textg, textb)
+		textr = "0[textb]"
+	return "#[textr][textg][textb]"
 	return
 
 /proc/shuffle(var/list/shufflelist)

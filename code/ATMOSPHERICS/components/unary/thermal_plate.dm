@@ -75,6 +75,7 @@
 		internal_removed.temperature = final_temperature
 		air_contents.merge(internal_removed)
 
-		network.update = 1
+		if (network)
+			network.update = 1
 
 		return 1

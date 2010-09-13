@@ -1,40 +1,40 @@
-/mob/dead/observer/New(mob/corpse)
-	src.invisibility = 10
-	src.sight |= SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
-	src.see_invisible = 15
-	src.see_in_dark = 100
-	src.verbs += /mob/dead/observer/proc/dead_tele
+/mob/dead/observer/New(mob/the_corpse)
+	invisibility = 10
+	sight |= SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
+	see_invisible = 15
+	see_in_dark = 100
+	verbs += /mob/dead/observer/proc/dead_tele
 
-	if(corpse)
-		src.corpse = corpse
-		src.loc = get_turf(corpse.loc)
-		src.real_name = corpse.real_name
-		src.name = corpse.real_name
-		src.verbs += /mob/dead/observer/proc/reenter_corpse
+	if(the_corpse)
+		corpse = the_corpse
+		loc = get_turf(corpse.loc)
+		real_name = corpse.real_name
+		name = corpse.real_name
+		verbs += /mob/dead/observer/proc/reenter_corpse
 
 /mob/proc/ghostize()
 	set name = "Ghost"
 	set desc = "You cannot be revived as a ghost"
-	if(src.client)
-		src.client.mob = new/mob/dead/observer(src)
+	if(client)
+		client.mob = new/mob/dead/observer(src)
 	return
 
 /mob/dead/observer/Move(NewLoc, direct)
 	if(NewLoc)
-		src.loc = NewLoc
+		loc = NewLoc
 		return
-	if((direct & NORTH) && src.y < world.maxy)
-		src.y++
-	if((direct & SOUTH) && src.y > 1)
-		src.y--
-	if((direct & EAST) && src.x < world.maxx)
-		src.x++
-	if((direct & WEST) && src.x > 1)
-		src.x--
+	if((direct & NORTH) && y < world.maxy)
+		y++
+	if((direct & SOUTH) && y > 1)
+		y--
+	if((direct & EAST) && x < world.maxx)
+		x++
+	if((direct & WEST) && x > 1)
+		x--
 
 /mob/dead/observer/examine()
 	if(usr)
-		usr << src.desc
+		usr << desc
 
 /mob/dead/observer/can_use_hands()	return 0
 /mob/dead/observer/is_active()		return 0
@@ -42,7 +42,7 @@
 /mob/dead/observer/Stat()
 	..()
 	statpanel("Status")
-	if (src.client.statpanel == "Status")
+	if (client.statpanel == "Status")
 		if(LaunchControl.online && main_shuttle.location < 2)
 			var/timeleft = LaunchControl.timeleft()
 			if (timeleft)
@@ -57,12 +57,12 @@
 //	if(corpse.stat == 2)
 //		alert("Your body is dead!")
 //		return
-	if(src.client && src.client.holder && src.client.holder.state == 2)
-		var/rank = src.client.holder.rank
-		src.client.clear_admin_verbs()
-		src.client.holder.state = 1
-		src.client.update_admins(rank)
-	src.client.mob = corpse
+	if(client && client.holder && client.holder.state == 2)
+		var/rank = client.holder.rank
+		client.clear_admin_verbs()
+		client.holder.state = 1
+		client.update_admins(rank)
+	client.mob = corpse
 	del(src)
 
 /mob/dead/observer/proc/dead_tele()
