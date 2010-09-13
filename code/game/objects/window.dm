@@ -16,7 +16,10 @@
 
 		return
 	return
-
+/obj/window/Bumped(AM as mob|obj)
+	if(ismob(AM) && iszombie(AM))
+		src.attack_hand(AM)
+	return ..()
 /obj/window/ex_act(severity)
 	switch(severity)
 		if(1.0)
@@ -111,6 +114,20 @@
 		if(reinf) new /obj/item/weapon/rods( src.loc)
 		src.density = 0
 		del(src)
+	if(istype(usr,/mob/living/carbon/human))
+		if(usr:zombie && usr:bot)
+			for(var/mob/O in oviewers())
+				if ((O.client && !( O.blinded )))
+					O << text("\red [] bangs on the window.", usr)
+			if(prob(24))
+				for(var/mob/O in oviewers())
+					if ((O.client && !( O.blinded )))
+						O << text("\red [] smashes through the window.", usr)
+				src.health = 0
+				new /obj/item/weapon/shard( src.loc )
+				if(reinf) new /obj/item/weapon/rods( src.loc)
+				src.density = 0
+				del(src)
 	return
 
 /obj/window/attack_paw()

@@ -18,7 +18,6 @@
 
 	if (!gibbed)
 		emote("deathgasp") //let the world KNOW WE ARE DEAD
-
 		src.canmove = 0
 		if(src.client)
 			src.blind.layer = 0

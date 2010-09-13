@@ -91,7 +91,8 @@
 
 /obj/machinery/door/proc/requiresID()
 	return 1
-
+/obj/machinery/door/
+	var/health = 15
 /obj/machinery/door/attackby(obj/item/I as obj, mob/user as mob)
 	if (src.operating)
 		return
@@ -99,13 +100,15 @@
 
 	if (user:zombie)
 		user << "\blue You claw the airlock"
-		if(prob(5))
+		src.health -= rand(1,3)
+		if(health <= 0)
+	//	if(prob(5))
 			user << "\blue You break the circuitry"
 			src.operating = -1
 			flick("door_spark", src)
 			sleep(6)
 			open()
-			return 1
+			return
 		return
 
 	if (!src.requiresID())

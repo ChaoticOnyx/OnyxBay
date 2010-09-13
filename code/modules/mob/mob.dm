@@ -52,7 +52,11 @@
 	if(A && istype(A, /mob/living/silicon))
 		return 1
 	return 0
-
+proc/iszombie(A)
+	if(A && istype(A, /mob/living/carbon/human))
+		if(A:zombie)
+			return 1
+	return 0
 /proc/hsl2rgb(h, s, l)
 	return
 mob/verb/turnnorth()

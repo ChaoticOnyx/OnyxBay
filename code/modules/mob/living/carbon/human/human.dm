@@ -1447,7 +1447,11 @@
 					src.w_uniform.add_fingerprint(M)
 				var/damage = rand(1, 9)
 				var/datum/organ/external/affecting = src.organs["chest"]
-				var/t = M.zone_sel.selecting
+				var/t
+				if(istype(M,/mob/living/carbon/human/zombiebot))
+					t = "chest"
+				else
+					t = M.zone_sel.selecting
 
 				if(M.zombie)
 					var/def_zone = ran_zone(t)
