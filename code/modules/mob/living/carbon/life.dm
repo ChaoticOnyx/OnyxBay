@@ -460,7 +460,10 @@
 		return
 
 	if(!breath || (breath.total_moles() == 0))
-		oxyloss += 14*vsc.OXYGEN_LOSS
+		if(health > 0)
+			oxyloss += 14*vsc.OXYGEN_LOSS
+		else
+			oxyloss += 5
 		oxygen_alert = max(oxygen_alert, 1)
 		return 0
 
