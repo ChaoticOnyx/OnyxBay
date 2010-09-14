@@ -1699,7 +1699,6 @@ Code:
 					src.uses -= 6
 					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
 					O.imp = new /obj/item/weapon/implant/explosive(O)
-					O.name = "(BIO-HAZARD) BIO-detpack"
 			if("imp_vfac")
 				if (src.uses >= 5)
 					src.uses -= 5
