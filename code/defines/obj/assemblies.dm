@@ -63,6 +63,7 @@
 	icon_state = "timer-igniter0"
 	var/obj/item/device/timer/part1 = null
 	var/obj/item/device/igniter/part2 = null
+	var/init = 0
 	status = null
 	flags = FPRINT | TABLEPASS| CONDUCT
 

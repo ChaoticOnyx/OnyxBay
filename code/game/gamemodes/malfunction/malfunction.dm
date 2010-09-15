@@ -1,6 +1,7 @@
 /datum/game_mode/malfunction
 	name = "AI malfunction"
 	config_tag = "malfunction"
+	enabled = 0
 	var/list/datum/mind/malf_ai = list()
 	var/const/waittime_l = 600
 	var/const/waittime_h = 1800

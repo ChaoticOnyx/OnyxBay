@@ -1,6 +1,7 @@
 /datum/game_mode/nuclear
 	name = "nuclear emergency"
 	config_tag = "nuclear"
+	enabled = 0
 
 	var/list/datum/mind/syndicates = list()
 	var/finished = 0

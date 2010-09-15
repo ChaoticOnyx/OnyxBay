@@ -212,11 +212,12 @@
 
 	else if (href_list["view_rec"])
 		src.active_record = locate(href_list["view_rec"])
-		if ((isnull(src.active_record.fields["ckey"])) || (src.active_record.fields["ckey"] == ""))
-			del(src.active_record)
-			src.temp = "ERROR: Record Corrupt"
-		else
-			src.menu = 3
+		if(src.active_record)
+			if ((isnull(src.active_record.fields["ckey"])) || (src.active_record.fields["ckey"] == ""))
+				del(src.active_record)
+				src.temp = "ERROR: Record Corrupt"
+			else
+				src.menu = 3
 
 	else if (href_list["del_rec"])
 		if ((!src.active_record) || (src.menu < 3))

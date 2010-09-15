@@ -189,6 +189,7 @@ turf
 			..()
 
 		assume_air(datum/gas_mixture/giver)
+			if(!giver) return
 			if(zone) //Update zone values.
 				zone.add_oxygen(giver.oxygen)
 				zone.add_nitrogen(giver.nitrogen)

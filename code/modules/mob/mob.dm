@@ -1373,7 +1373,8 @@ mob/verb/turnwest()
 	msg = copytext(msg, 1, MAX_MESSAGE_LEN)
 	//msg = sanitize(msg)
 
-	mind.store_memory(msg)
+	if(mind)
+		mind.store_memory(msg)
 
 /mob/proc/store_memory(msg as message, popup, sane = 1)
 	msg = copytext(msg, 1, MAX_MESSAGE_LEN)
@@ -1929,8 +1930,6 @@ mob/verb/turnwest()
 
 	if (join_motd)
 		src << "<div class=\"motd\">[join_motd]</div>"
-
-	update_world()
 
 //new admin bit - Nannek
 

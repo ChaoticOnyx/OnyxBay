@@ -1,6 +1,7 @@
 /datum/game_mode/wizard
 	name = "wizard"
 	config_tag = "wizard"
+	enabled = 0
 
 	var/datum/mind/wizard
 	var/finished = 0

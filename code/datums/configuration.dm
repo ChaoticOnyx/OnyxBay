@@ -37,7 +37,7 @@
 		// their information, but it is the only way (at least that I know of).
 		var/datum/game_mode/M = new T()
 
-		if (M.config_tag)
+		if (M.config_tag && M.enabled)
 			if(!(M.config_tag in modes))		// ensure each mode is added only once
 				check_diary()
 				diary << "Adding game mode [M.name] ([M.config_tag]) to configuration."

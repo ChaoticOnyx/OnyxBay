@@ -1,6 +1,7 @@
 /datum/game_mode/blob
 	name = "blob"
 	config_tag = "blob"
+	enabled = 0
 
 	var/stage = 0
 	var/next_stage = 0

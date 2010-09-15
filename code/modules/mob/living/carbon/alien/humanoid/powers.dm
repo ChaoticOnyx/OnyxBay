@@ -1,23 +1,10 @@
-/*NOTE:
-
-Put in power that will lay a facehugger egg but cost a lot of plasma, 250 or something?
-
-Also perhaps only queens can do that?
-
-*/
-
-
-
-
-
-
 /mob/living/carbon/alien/humanoid/verb/invis()
 	set name = "Invisibility (50)"
 	set desc = "Makes you invisible for 30 seconds"
 	set category = "Alien"
 
 	if(stat)
-		src << "You must be concious to do this"
+		src << "You must be conscious to do this"
 		return
 	if(toxloss >= 50)
 		toxloss -= 50
@@ -38,7 +25,7 @@ Also perhaps only queens can do that?
 	set category = "Alien"
 
 	if(stat)
-		src << "You must be concious to do this"
+		src << "You must be conscious to do this"
 		return
 	if(toxloss >= 25)
 		toxloss -= 25
@@ -82,7 +69,7 @@ Also perhaps only queens can do that?
 	set category = "Alien"
 
 	if(stat)
-		src << "You must be concious to do this"
+		src << "You must be conscious to do this"
 		return
 	if(toxloss >= 100)
 		toxloss -= 100
@@ -102,7 +89,7 @@ Also perhaps only queens can do that?
 	set category = "Alien"
 
 	if(stat)
-		src << "You must be concious to do this"
+		src << "You must be conscious to do this"
 		return
 
 	if(toxloss >= 5)
@@ -120,7 +107,7 @@ Also perhaps only queens can do that?
 	set category = "Alien"
 
 	if(stat)
-		src << "You must be concious to do this"
+		src << "You must be conscious to do this"
 		return
 
 	var/msg = input("Message:", "Alien Whisper") as text
@@ -146,7 +133,7 @@ Also perhaps only queens can do that?
 		return
 
 	if(stat)
-		src << "You must be concious to do this."
+		src << "You must be conscious to do this."
 		return
 
 	if(!toxloss)
