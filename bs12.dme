@@ -541,6 +541,7 @@
 #include "code\modules\mob\living\carbon\alien\humanoid\life.dm"
 #include "code\modules\mob\living\carbon\alien\humanoid\powers.dm"
 #include "code\modules\mob\living\carbon\alien\humanoid\queen\queen.dm"
+#include "code\modules\mob\living\carbon\alien\larva\death.dm"
 #include "code\modules\mob\living\carbon\alien\larva\hud.dm"
 #include "code\modules\mob\living\carbon\alien\larva\larva.dm"
 #include "code\modules\mob\living\carbon\alien\larva\life.dm"
