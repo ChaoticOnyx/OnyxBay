@@ -212,6 +212,8 @@
 
 // attack with hand removes a single piece from a pile
 /obj/item/scrap/attack_hand(mob/user)
+	if(!m_amt && !g_amt && !w_amt)
+		del(src)
 	add_fingerprint(user)
 	if(src.is_single_piece())
 		return ..(user)

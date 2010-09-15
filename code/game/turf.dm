@@ -452,7 +452,7 @@ turf/simulated/wall/bullet_act(flag,dir)
 		else
 			usr << text("\blue You punch the wall.")
 			return
-	if(user:zombie)
+	if(ishuman(user) && user:zombie)
 		Zombiedamage += rand(5,7)
 		usr << text("\blue You claw the wall.")
 		if(Zombiedamage > 80)

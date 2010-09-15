@@ -126,5 +126,5 @@
 	for (var/client/C)
 		if (istype(C.mob, /mob/new_player))
 			continue
-		if (C.mob.stat > 1 && !(C.mob in heard_a))
+		if (C.mob && C.mob.stat > 1 && !(C.mob in heard_a))
 			C.mob.show_message(rendered, 2)

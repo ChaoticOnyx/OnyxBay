@@ -88,6 +88,11 @@
 
 //*****RM
 
+/obj/item/assembly/time_ignite/New()
+	if(init)
+		part1 = new(src)
+		part2 = new(src)
+
 /obj/item/assembly/time_ignite/Del()
 	del(part1)
 	del(part2)
@@ -188,32 +193,7 @@
 		R.loc = user
 		src.add_fingerprint(user)
 	return
-/*	else if ((istype(W, /obj/item/device/timer) && !( src.status )))
 
-		var/obj/item/assembly/time_ignite/R = new /obj/item/assembly/time_ignite( user )
-		W.loc = R
-		R.part1 = W
-		W.layer = initial(W.layer)
-		if (user.client)
-			user.client.screen -= W
-		if (user.r_hand == W)
-			user.u_equip(W)
-			user.r_hand = R
-		else
-			user.u_equip(W)
-			user.l_hand = R
-		W.master = R
-		src.master = R
-		src.layer = initial(src.layer)
-		user.u_equip(src)
-		if (user.client)
-			user.client.screen -= src
-		src.loc = R
-		R.part2 = src
-		R.layer = 20
-		R.loc = user
-		src.add_fingerprint(user)
-*/
 /obj/item/assembly/a_i_a/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if ((istype(W, /obj/item/weapon/wrench) && !( src.status )))
 		var/turf/T = src.loc

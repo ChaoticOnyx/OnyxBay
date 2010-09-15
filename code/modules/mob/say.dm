@@ -32,7 +32,7 @@
 	for (var/client/C)
 		if (istype(C.mob, /mob/new_player))
 			continue
-		if (C.mob.stat == 2 || (C && C.holder && C.deadchat)) //admins can toggle deadchat on and off. This is a proc in admin.dm and is only give to Administrators and above
+		if ((C.mob && C.mob.stat == 2) || (C.holder && C.deadchat)) //admins can toggle deadchat on and off. This is a proc in admin.dm and is only give to Administrators and above
 			C.mob.show_message(rendered, 2)
 
 /mob/proc/say_understands(var/mob/other)

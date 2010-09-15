@@ -135,7 +135,7 @@ datum
 
 			reaction_turf(var/turf/T, var/volume)
 				src = null
-				if(volume >= 3)
+				if(istype(T, /turf/simulated) && volume >= 3)
 					if(T:wet >= 1) return
 					T:wet = 1
 					if(T:wet_overlay)
@@ -182,7 +182,7 @@ datum
 				virus
 
 			on_mob_life(mob/M)
-				if(blood_incompatible(blood_type,M:b_type))
+				if (ishuman(M) && blood_incompatible(blood_type,M:b_type))
 					M:toxloss += 1.5
 					M:oxyloss += 1.5
 					M:toxins_alert = max(1,M:toxins_alert)
@@ -501,12 +501,15 @@ datum
 
 					if(prob(15))
 						var/datum/organ/external/affecting = M:organs["head"]
-						affecting.take_damage(25, 0)
-						M:UpdateDamage()
-						M:UpdateDamageIcon()
-						M:emote("scream")
-						M << "\red Your face has become disfigured!"
-						M.real_name = "Unknown"
+						if (affecting)
+							affecting.take_damage(25, 0)
+							M:UpdateDamage()
+							M:UpdateDamageIcon()
+							M:emote("scream")
+							M << "\red Your face has become disfigured!"
+							M.real_name = "Unknown"
+						else
+							M:bruteloss += 15
 					else
 						M:bruteloss += 15
 				else
@@ -701,6 +704,7 @@ datum
 			description = "A compound used to clean things. Now with 50% more sodium hypochlorite!"
 			reagent_state = LIQUID
 			reaction_obj(var/obj/O, var/volume)
+				if(!O) return
 				if(istype(O,/obj/decal/cleanable))
 					del(O)
 				else
@@ -757,11 +761,12 @@ datum
 			reaction_obj(var/obj/O, var/volume)
 				src = null
 				var/turf/the_turf = get_turf(O)
-				var/datum/gas_mixture/napalm = new
-				var/datum/gas/volatile_fuel/fuel = new
-				fuel.moles = 5
-				napalm.trace_gases += fuel
-				the_turf.assume_air(napalm)
+				if(the_turf)
+					var/datum/gas_mixture/napalm = new
+					var/datum/gas/volatile_fuel/fuel = new
+					fuel.moles = 5
+					napalm.trace_gases += fuel
+					the_turf.assume_air(napalm)
 			reaction_turf(var/turf/T, var/volume)
 				src = null
 				var/datum/gas_mixture/napalm = new

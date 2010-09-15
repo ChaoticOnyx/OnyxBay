@@ -60,9 +60,9 @@
 /obj/multiz/stairs/active/Click()
 	if(!istype(usr,/mob/dead/observer))
 		return ..()
-	src:client.moving = 1
-	src.Move(locate(src.x, src.y, targetZ()))
-	src:client.moving = 0
+	usr.client.moving = 1
+	usr.Move(locate(src.x, src.y, targetZ()))
+	usr.client.moving = 0
 /obj/multiz/stairs/active/bottom
 	istop = 0
 	opacity = 1

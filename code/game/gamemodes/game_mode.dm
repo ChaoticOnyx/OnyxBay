@@ -1,11 +1,12 @@
 /datum/game_mode
-	var/name = "invalid"
+	var/name = "Invalid"
 	var/config_tag = null
 	var/votable = 1
 	var/probability = 1
 	// this includes admin-appointed traitors and multitraitors. Easy!
 	var/list/datum/mind/traitors = list()
 	var/list/logtraitors = list( )
+	var/enabled = 1
 
 /datum/game_mode/proc/announce()
 	world << "<B>The current game mode is - [name]!</B>"
