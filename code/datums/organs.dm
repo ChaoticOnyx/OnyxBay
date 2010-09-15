@@ -26,6 +26,8 @@
 		if(brute_dam + burn_dam > perma_dmg)
 			if(broken == 0)
 				owner << damage_msg
+				for(var/mob/M in viewers(owner))
+					M.show_message("\red Crack")
 			broken = 1
 			/* Uncomment for broken bones to matter
 			perma_injury = brute_dam + burn_dam
