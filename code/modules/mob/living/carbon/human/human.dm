@@ -45,6 +45,8 @@
 /mob/living/carbon/human/var/zombifying = 0
 /mob/living/carbon/human/var/image/zombieimage = null
 
+/mob/living/carbon/human/var/datum/organ/external/DEBUG_lfoot
+
 /mob/living/carbon/human/dummy
 	real_name = "Test Dummy"
 	nodamage = 1
@@ -92,6 +94,8 @@
 	organs["r_leg"] = r_leg
 	organs["l_foot"] = l_foot
 	organs["r_foot"] = r_foot
+
+	DEBUG_lfoot = l_foot
 
 	var/g = "m"
 	if (gender == MALE)
@@ -2253,6 +2257,7 @@
 	fireloss = 0
 
 	for (var/datum/organ/external/O in L)
+		O.update_icon()
 		bruteloss += O.brute_dam
 		fireloss += O.burn_dam
 

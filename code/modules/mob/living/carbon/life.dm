@@ -335,6 +335,9 @@
 			stuttering = max(10, stuttering)
 
 /mob/living/carbon/proc/handle_regular_status_updates()
+	for(var/datum/organ/external/E in organs)
+		E.process()
+	UpdateDamage()
 	updatehealth()
 
 	if(oxyloss > oxylossparalysis) paralysis = max(paralysis, 3)

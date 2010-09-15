@@ -33,19 +33,31 @@
 
 	return result
 
-/datum/organ/external/proc/heal_damage(brute, burn)
+/datum/organ/external/proc/heal_damage(brute, burn,var/internal = 0)
 	brute_dam = max(0, brute_dam - brute)
 	burn_dam = max(0, brute_dam - burn)
+	if(internal)
+		broken = 0
+		perma_injury = 0
 	return update_icon()
 
 /datum/organ/external/proc/get_damage()	//returns total damage
 	return brute_dam + burn_dam	//could use health?
 
+/datum/organ/external/proc/get_damage_brute()
+	return brute_dam + perma_injury
+
+/datum/organ/external/proc/get_damage_fire()
+	return burn_dam
+
+//G:goto
+
 // new damage icon system
 // returns just the brute/burn damage code
 
 /datum/organ/external/proc/damage_state_text()
-
+	if(open)
+		return "33"
 	var/tburn = 0
 	var/tbrute = 0
 
@@ -66,7 +78,6 @@
 		tbrute = 2
 	else
 		tbrute = 3
-
 	return "[tbrute][tburn]"
 
 // new damage icon system

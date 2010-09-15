@@ -80,6 +80,7 @@
 /mob/var/fireloss = 0.0
 /mob/var/timeofdeath = 0.0
 /mob/var/bruteloss = 0.0
+/mob/var/organbruteloss = 0.0
 /mob/var/cpr_time = 1.0
 /mob/var/health_full = 100
 /mob/var/health = 100
@@ -1451,7 +1452,7 @@ mob/verb/turnwest()
 
 	if ((health < 0 && health > -95.0))
 		oxyloss += health + 200
-		health = 100 - oxyloss - toxloss - fireloss - bruteloss
+		health = 100 - oxyloss - toxloss - fireloss - bruteloss - organbruteloss
 		src << "\blue You have given up life and succumbed to death."
 
 /mob/verb/observe()
@@ -1971,7 +1972,7 @@ mob/verb/turnwest()
 
 /mob/proc/updatehealth()
 	if (!nodamage)
-		health = health_full - (oxyloss + toxloss + fireloss + bruteloss + halloss)
+		health = health_full - (oxyloss + toxloss + fireloss + bruteloss + halloss + organbruteloss)
 	else
 		health = health_full
 		stat = 0

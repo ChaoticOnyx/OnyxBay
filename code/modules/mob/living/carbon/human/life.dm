@@ -112,6 +112,9 @@
 	return 1
 
 /mob/living/carbon/human/handle_regular_status_updates()
+	for(var/datum/organ/external/E in GetOrgans())
+		E.process()
+	UpdateDamage()
 	updatehealth()
 
 	if(oxyloss > 50) paralysis = max(paralysis, 3)

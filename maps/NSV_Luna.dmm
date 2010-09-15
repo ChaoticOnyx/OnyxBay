@@ -2436,7 +2436,7 @@
 "aUR" = (/obj/machinery/computer/operating,/turf/simulated/floor{icon_state = "white"},/area/medical/robotics)
 "aUS" = (/obj/machinery/optable,/turf/simulated/floor{icon_state = "white"},/area/medical/robotics)
 "aUT" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; initialize_directions = 7},/turf/simulated/floor{icon_state = "white"},/area/medical/robotics)
-"aUU" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; layer = 3},/obj/table{dir = 10; icon_state = "tabledir"},/obj/item/device/flash,/obj/item/device/flash,/obj/item/device/flash,/obj/item/device/flash,/turf/simulated/floor{icon_state = "white"},/area/medical/robotics)
+"aUU" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; layer = 3},/obj/table{dir = 10; icon_state = "tabledir"},/obj/item/device/flash,/obj/item/device/flash,/obj/item/device/flash,/obj/item/device/flash,/obj/item/weapon/s_scalpel,/turf/simulated/floor{icon_state = "white"},/area/medical/robotics)
 "aUV" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; layer = 3},/turf/simulated/wall,/area/medical/robotics)
 "aUW" = (/obj/machinery/atmospherics/pipe/vent{dir = 8},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aUX" = (/obj/table{icon_state = "tabledir"; dir = 8},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
