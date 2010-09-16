@@ -271,6 +271,7 @@
 		return 0
 
 /proc/domutcheck(mob/M as mob, connected, inj)
+	if (!M) return
 	//telekinesis = 1
 	//firemut = 2
 	//xray = 4

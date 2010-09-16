@@ -112,6 +112,25 @@
 	return 1
 
 /mob/living/carbon/human/handle_regular_status_updates()
+	for(var/datum/organ/external/E in GetOrgans())
+		E.process()
+		if(E.broken)
+			if(E.name == "l hand" || E.name == "l arm")
+				if(hands.dir == SOUTH && equipped())
+					drop_item()
+					emote("scream")
+			else if(E.name == "r hand" || E.name == "r arm")
+				if(hands.dir == NORTH && equipped())
+					drop_item()
+					emote("scream")
+		if(E.open && (!resting) && (!sleeping))
+			emote("scream")
+			E.take_damage(20,0)
+			emote("collapse")
+			paralysis = 10
+
+
+	UpdateDamage()
 	updatehealth()
 
 	if(oxyloss > 50) paralysis = max(paralysis, 3)

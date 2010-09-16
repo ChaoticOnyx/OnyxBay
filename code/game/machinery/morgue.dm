@@ -259,25 +259,25 @@
 		var/mob/dead/observer/newmob
 		for (var/M in contents)
 			if (istype(M,/mob/living) && M:client)
-				spawn(1)
-					var/i
-					M:stunned = 100 //You really dont want to place this inside the loop.
+				var/i
+				M:stunned = 100 //You really dont want to place this inside the loop.
 
-					newmob = new/mob/dead/observer(M)
-					M:client:mob = newmob
+				newmob = new/mob/dead/observer(M)
+				M:client:mob = newmob
 
-					for(i=0, i<10, i++)
-						sleep(10)
-						M:fireloss += 30
-					new /obj/decal/ash(M:loc)
+				for(i=0, i<10, i++)
+					sleep(10)
+					M:fireloss += 30
+				new /obj/decal/ash(M:loc)
 
-					//newmob.loc = src.loc
+				//newmob.loc = src.loc
 
-					newmob:client:eye = newmob // Hrm
-					for (var/obj/item/weapon/W in M)
-						if (prob(10))
-							W.loc = M:loc
-					del(M)
+				if(M:mind)
+					M:mind.transfer_to(newmob)
+				for (var/obj/item/weapon/W in M)
+					if (prob(10))
+						W.loc = M:loc
+				del(M)
 			else if (istype(M,/mob/living) && !(M:client)) //
 				spawn(0)
 					var/i

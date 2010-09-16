@@ -45,6 +45,8 @@
 /mob/living/carbon/human/var/zombifying = 0
 /mob/living/carbon/human/var/image/zombieimage = null
 
+/mob/living/carbon/human/var/datum/organ/external/DEBUG_lfoot
+
 /mob/living/carbon/human/dummy
 	real_name = "Test Dummy"
 	nodamage = 1
@@ -92,6 +94,8 @@
 	organs["r_leg"] = r_leg
 	organs["l_foot"] = l_foot
 	organs["r_foot"] = r_foot
+
+	DEBUG_lfoot = l_foot
 
 	var/g = "m"
 	if (gender == MALE)
@@ -177,6 +181,12 @@
 
 	var/health_deficiency = (health_full - health)
 	if(health_deficiency >= 40) tally += (health_deficiency / 25)
+
+
+	for(var/organ in list("l_leg","l_foot","r_leg","r_foot"))
+		var/datum/organ/external/o = organs["[organ]"]
+		if(o.broken)
+			tally += 6
 
 	if(wear_suit)
 		switch(wear_suit.type)
@@ -2253,6 +2263,7 @@
 	fireloss = 0
 
 	for (var/datum/organ/external/O in L)
+		O.update_icon()
 		bruteloss += O.brute_dam
 		fireloss += O.burn_dam
 

@@ -177,3 +177,262 @@ CIRCULAR SAW
 		return ..()
 
 	return
+
+// Surgical scapel
+/obj/item/weapon/s_scalpel/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+	if(!istype(M, /mob))
+		return
+//	world << "Start"
+	if((usr.mutations & 16) && prob(50))
+		M << "\red You stab yourself in the eye."
+		M.sdisabilities |= 1
+		M.weakened += 4
+		M.bruteloss += 10
+
+	src.add_fingerprint(user)
+
+	if(!(locate(/obj/machinery/optable, M.loc) && M.resting))
+		return ..()
+//	world << "On table"
+	var/zone = user.zone_sel.selecting
+//	world << zone
+	if (istype(M.organs[text("[]", zone)], /datum/organ/external))
+	//	world << "Is organ"
+		var/datum/organ/external/temp = M.organs[text("[]", zone)]
+		var/msg
+		if(temp.open)
+			msg = "\red [user] starts to close up [M]'s wound in their [temp.display_name] with [src]"
+		else
+			msg = "\red [user] starts to open up [M]'s [temp.display_name] with [src]"
+		for(var/mob/O in viewers(M,null))
+			O.show_message(msg,1)
+
+
+		if(do_mob(user,M,100))
+			if(temp.open)
+				msg = "\red [user] closes [M]'s wound in their [temp.display_name] with [src]"
+				temp.open = 0
+				temp.clean = 0
+				temp.split = 1
+			else
+				msg = "\red [user] opens up [M]'s [temp.display_name] with [src]"
+				temp.open = 1
+				temp.clean = 0
+		//	world << msg
+		//	world << temp.open
+			for(var/mob/O in viewers(M,null))
+				O.show_message(msg,1)
+			M.UpdateDamageIcon()
+		else
+			var/a = pick(1,2,3)
+			if(a == 1)
+				msg = "\red [user]'s move slices open [M]'s wound, causing massive bleeding"
+				temp.brute_dam += 70
+				temp.clean = 0
+			else if(a == 2)
+				msg = "\red [user]'s move slices open [M]'s wound, and causes him to accidentally stab himself"
+				temp.brute_dam += 70
+				var/datum/organ/external/userorgan = user.organs[text("chest")]
+				userorgan.brute_dam += 70
+				temp.clean = 0
+			else if(a == 3)
+				msg = "\red [user] quickly stops the surgery"
+
+			for(var/mob/O in viewers(M,null))
+				O.show_message(msg,1)
+
+//		user << "This tool is not yet complete"
+
+	return
+
+/obj/item/weapon/disinfectant
+	name = "Surgical disinfectant"
+	icon = 'janitor.dmi'
+	icon_state = "cleaner"
+
+/obj/item/weapon/disinfectant/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+	if(!istype(M, /mob))
+		return
+//	world << "Start"
+	if((usr.mutations & 16) && prob(50))
+		M << "\red You stab yourself in the eye."
+		M.sdisabilities |= 1
+		M.weakened += 4
+		M.bruteloss += 10
+
+	src.add_fingerprint(user)
+
+	if(!(locate(/obj/machinery/optable, M.loc) && M.resting))
+		return ..()
+
+	var/zone = user.zone_sel.selecting
+//	world << zone
+	if (istype(M.organs[text("[]", zone)], /datum/organ/external))
+	//	world << "Is organ"
+		var/datum/organ/external/temp = M.organs[text("[]", zone)]
+		var/msg
+		msg = "\red [user] starts to clean [M]'s wound in their [temp.display_name] with [src]"
+		for(var/mob/O in viewers(M,null))
+			O.show_message(msg,1)
+
+		if(do_mob(user,M,50))
+			msg = "\red [user] finishes cleaning [M]'s [temp.display_name]"
+			temp.clean = 1
+		else
+			msg = "\red [user] stops cleaning [M]'s [temp.display_name]"
+		for(var/mob/O in viewers(M,null))
+			O.show_message(msg,1)
+
+
+/obj/item/weapon/surgicalglue
+	name = "Surgical glue"
+	icon = 'janitor.dmi'
+	icon_state = "cleaner"
+
+/obj/item/weapon/surgicalglue/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+	if(!istype(M, /mob))
+		return
+//	world << "Start"
+
+	src.add_fingerprint(user)
+
+	if(!(locate(/obj/machinery/optable, M.loc) && M.resting))
+		return ..()
+
+	var/zone = user.zone_sel.selecting
+//	world << zone
+	if (istype(M.organs[text("[]", zone)], /datum/organ/external))
+	//	world << "Is organ"
+		var/datum/organ/external/temp = M.organs[text("[]", zone)]
+		var/msg
+		msg = "\red [user] starts to glue [M]'s wound in their [temp.display_name] with [src]"
+		for(var/mob/O in viewers(M,null))
+			O.show_message(msg,1)
+
+		if(do_mob(user,M,50))
+			msg = "\red [user] finishes gluing [M]'s wound in their [temp.display_name]"
+			temp.split = 0
+		else
+			msg = "\red [user] stops gluing [M]'s wound in their [temp.display_name]"
+		for(var/mob/O in viewers(M,null))
+			O.show_message(msg,1)
+
+
+/obj/item/weapon/surgical_tool
+	name = "surgical tool"
+	var/list/stage = list() //Stage to act on
+	var/time = 50 //Time it takes to use
+	var/wound //Wound type to act on
+
+	proc/get_message(var/mnumber,var/M,var/user,var/datum/organ/external/organ)//=Start,2=finish,3=walk away,4=screw up, 5 = closed wound
+	proc/screw_up(mob/living/carbon/M as mob,mob/living/carbon/user as mob,var/datum/organ/external/organ)
+		organ.brute_dam += 30
+
+/obj/item/weapon/surgical_tool/proc/IsFinalStage(var/stage)
+	var/a
+	switch(wound)
+		if("broken") //Basic broken bone
+			a=3
+	return stage == a
+
+/obj/item/weapon/surgical_tool/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+	if(!istype(M, /mob))
+		return
+//	world << "Start"
+	if((usr.mutations & 16) && prob(50))
+		M << "\red You stab yourself in the eye."
+		M.sdisabilities |= 1
+		M.weakened += 4
+		M.bruteloss += 10
+
+	src.add_fingerprint(user)
+
+	if(!(locate(/obj/machinery/optable, M.loc) && M.resting))
+		return ..()
+
+	var/zone = user.zone_sel.selecting
+//	world << zone
+	if (istype(M.organs[text("[]", zone)], /datum/organ/external))
+		var/datum/organ/external/temp = M.organs[text("[]", zone)]
+		var/msg
+
+		msg = get_message(1,M,user,temp)
+		for(var/mob/O in viewers(M,null))
+			O.show_message("\red [msg]",1)
+		if(do_mob(user,M,time))
+			if(temp.open)
+				if(temp.wound == wound)
+					if(temp.stage in stage)
+						temp.stage += 1
+
+						if(IsFinalStage(temp.stage))
+							temp.broken = 0
+							temp.stage = 0
+						msg = get_message(2,M,user,temp)
+					else
+						msg = get_message(4,M,user,temp)
+						screw_up(M,user,temp)
+			else
+				msg = get_message(5,M,user,temp)
+		else
+			msg = get_message(3,M,user,temp)
+
+		for(var/mob/O in viewers(M,null))
+			O.show_message("\red [msg]",1)
+
+
+//Broken bone
+//Basic
+//Open -> Clean -> Bone-gel -> pop-into-place -> Bone-gel -> close -> glue -> clean
+
+//Split
+//Open -> Clean -> Tweasers -> bone-glue -> close -> glue -> clean
+
+//
+
+/obj/item/weapon/surgical_tool/bonegel
+	name = "Bone-gel"
+	icon = 'janitor.dmi'
+	icon_state = "cleaner"
+
+/obj/item/weapon/surgical_tool/bonegel/New()
+	stage += 0
+	stage += 2
+	wound = "broken"
+/obj/item/weapon/surgical_tool/bonegel/get_message(var/n,var/m,var/usr,var/datum/organ/external/organ)
+	var/z
+	switch(n)
+		if(1)
+			z="[usr] starts applying bone-gel to [m]'s [organ.display_name]"
+		if(2)
+			z="[usr] finishes applying bone-gel to [m]'s [organ.display_name]"
+		if(3)
+			z="[usr] stops applying bone-gel to [m]'s [organ.display_name]"
+		if(4)
+			z="[usr] applies bone-gel incorrectly to [m]'s [organ.display_name]"
+		if(5)
+			z="[usr] lubricates [m]'s [organ.display_name]"
+	return z
+
+/obj/item/weapon/surgical_tool/bonecracker
+	name = "Bone-cracker"
+	icon = 'items.dmi'
+	icon_state = "wrench"
+
+/obj/item/weapon/surgical_tool/bonecracker/New()
+	stage += 1
+	wound = "broken"
+/obj/item/weapon/surgical_tool/bonecracker/get_message(var/n,var/m,var/usr,var/datum/organ/external/organ)
+	var/z
+	switch(n)
+		if(1)
+			z="[usr] starts popping [m]'s [organ.display_name] bone into place"
+		if(2)
+			z="[usr] finishes popping [m]'s [organ.display_name] bone into place"
+		if(3)
+			z="[usr] stops popping [m]'s [organ.display_name] bone into place"
+		if(4)
+			z="[usr] pops [m]'s [organ.display_name] bone into the wrong place"
+		if(5)
+			z="[usr] preforms chiropractice on [m]'s [organ.display_name]"
+	return z

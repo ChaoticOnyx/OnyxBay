@@ -1,6 +1,6 @@
 /datum/organ
 	var/name = "organ"
-	var/owner = null
+	var/mob/living/owner = null
 
 /datum/organ/external
 	name = "external"
@@ -14,60 +14,107 @@
 	var/wound_size = 0
 	var/max_size = 0
 
+	var/perma_dmg = 0
+
+	var/perma_injury = 0
+	var/broken = 0
+
+	var/min_broken_damage = 30
+
+	var/damage_msg = "\red You feel intense pain"
+	process()
+		if(broken == 0)
+			perma_dmg = 0
+		if(brute_dam + burn_dam > perma_dmg)
+			if(broken == 0)
+				owner << damage_msg
+				for(var/mob/M in viewers(owner))
+					if(M != owner)
+						M.show_message("\red You hear a lound cracking sound coming from [owner.name]")
+			broken = 1
+			wound = "broken" //Randomise in future
+			// Uncomment for broken bones to matter
+			perma_injury = brute_dam + burn_dam
+		//	brute_dam = 0
+		//	burn_dam = 0
+
+		return
+
+	var/open = 0
+	var/display_name
+	var/clean = 1
+	var/stage = 0
+	var/wound = 0
+	var/split = 0
+
 /datum/organ/external/chest
 	name = "chest"
 	icon_name = "chest"
 	max_damage = 150
+	perma_dmg = 75
+	display_name = "chest"
 
 /datum/organ/external/groin
 	name = "groin"
 	icon_name = "groin"
 	max_damage = 115
-
+	perma_dmg = 20
+	display_name = "groin"
 /datum/organ/external/head
 	name = "head"
 	icon_name = "head"
 	max_damage = 125
-
+	perma_dmg = 60
+	display_name = "head"
 /datum/organ/external/l_arm
 	name = "l arm"
 	icon_name = "l_arm"
 	max_damage = 75
-
+	perma_dmg = 30
+	display_name = "left arm"
 /datum/organ/external/l_foot
 	name = "l foot"
 	icon_name = "l_foot"
 	max_damage = 40
-
+	perma_dmg = 15
+	display_name = "left foot"
 /datum/organ/external/l_hand
 	name = "l hand"
 	icon_name = "l_hand"
 	max_damage = 40
-
+	perma_dmg = 20
+	display_name = "left hand"
 /datum/organ/external/l_leg
 	name = "l leg"
 	icon_name = "l_leg"
 	max_damage = 75
-
+	perma_dmg = 30
+	display_name = "left leg"
 /datum/organ/external/r_arm
 	name = "r arm"
 	icon_name = "r_arm"
 	max_damage = 75
-
+	perma_dmg = 30
+	display_name = "right arm"
 /datum/organ/external/r_foot
 	name = "r foot"
 	icon_name = "r_foot"
 	max_damage = 40
-
+	perma_dmg = 20
+	display_name = "right foot"
 /datum/organ/external/r_hand
 	name = "r hand"
 	icon_name = "r_hand"
 	max_damage = 40
+	perma_dmg = 20
+	display_name = "right hand"
 
 /datum/organ/external/r_leg
 	name = "r leg"
 	icon_name = "r_leg"
 	max_damage = 75
+	perma_dmg = 30
+	display_name = "right leg"
 
 /datum/organ/internal
 	name = "internal"

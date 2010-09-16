@@ -388,11 +388,6 @@
 		del(M)
 */
 
-/client/proc/update_world()
-	// If I see anyone granting powers to specific keys like the code that was here,
-	// I will both remove their SVN access and permanently ban them from my servers.
-	return
-
 /client/proc/cmd_admin_check_contents(mob/M as mob in world)
 	set category = "Special Verbs"
 	set name = "Check Contents"

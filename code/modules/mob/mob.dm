@@ -80,6 +80,7 @@
 /mob/var/fireloss = 0.0
 /mob/var/timeofdeath = 0.0
 /mob/var/bruteloss = 0.0
+/mob/var/organbruteloss = 0.0
 /mob/var/cpr_time = 1.0
 /mob/var/health_full = 100
 /mob/var/health = 100
@@ -1376,7 +1377,8 @@ mob/verb/turnwest()
 	msg = copytext(msg, 1, MAX_MESSAGE_LEN)
 	//msg = sanitize(msg)
 
-	mind.store_memory(msg)
+	if(mind)
+		mind.store_memory(msg)
 
 /mob/proc/store_memory(msg as message, popup, sane = 1)
 	msg = copytext(msg, 1, MAX_MESSAGE_LEN)
@@ -1455,7 +1457,7 @@ mob/verb/turnwest()
 
 	if ((health < 0 && health > -95.0))
 		oxyloss += health + 200
-		health = 100 - oxyloss - toxloss - fireloss - bruteloss
+		health = 100 - oxyloss - toxloss - fireloss - bruteloss - organbruteloss
 		src << "\blue You have given up life and succumbed to death."
 
 /mob/verb/observe()
@@ -1933,8 +1935,6 @@ mob/verb/turnwest()
 	if (join_motd)
 		src << "<div class=\"motd\">[join_motd]</div>"
 
-	update_world()
-
 //new admin bit - Nannek
 
 	if (admins.Find(ckey))
@@ -1975,7 +1975,7 @@ mob/verb/turnwest()
 
 /mob/proc/updatehealth()
 	if (!nodamage)
-		health = health_full - (oxyloss + toxloss + fireloss + bruteloss + halloss)
+		health = health_full - (oxyloss + toxloss + fireloss + bruteloss + halloss + organbruteloss)
 	else
 		health = health_full
 		stat = 0

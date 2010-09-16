@@ -187,14 +187,15 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 	if(src.target && (src.target != null) && src.path.len == 0)
 		spawn(0)
 			if (istype(src.loc, /turf/))
-				if(!istype(src.target, /turf/))
-					src.path = AStar(src.loc, src.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=list(/obj/landmark/alterations/nopath))
-				else
-					src.path = AStar(src.loc, src.target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=list(/obj/landmark/alterations/nopath))
-				src.path = reverselist(src.path)
-				if(src.path.len == 0)
-					src.oldtarget = src.target
-					src.target = null
+				if (src.target)
+					if(!istype(src.target, /turf/))
+						src.path = AStar(src.loc, src.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=list(/obj/landmark/alterations/nopath))
+					else
+						src.path = AStar(src.loc, src.target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=list(/obj/landmark/alterations/nopath))
+					src.path = reverselist(src.path)
+					if(src.path.len == 0)
+						src.oldtarget = src.target
+						src.target = null
 		return
 	if(src.path.len > 0 && src.target && (src.target != null))
 		step_towards_3d(src, src.path[1])

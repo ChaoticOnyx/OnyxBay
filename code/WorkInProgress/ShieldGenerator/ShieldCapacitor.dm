@@ -31,6 +31,6 @@
 	clearoverlays()
 	icon_state = "cap[stat & (NOPOWER|BROKEN) ? "-p" : ""]"
 	addoverlay(image('shieldgen.dmi', "c[round(charge * 5 / maxcharge)]"))
-	if(generator && !generator.operatingmode || generator.stat)
+	if(generator && (!generator.operatingmode || generator.stat))
 		addoverlay(image('shieldgen.dmi', "cap-o"))
 	return
