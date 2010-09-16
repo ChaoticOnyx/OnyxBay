@@ -35,6 +35,6 @@
 
 		//todo: have current temperature affected. require power to bring down current temperature again
 
-		if(abs(old_temperature-air_contents.temperature) > 1)
+		if(network && abs(old_temperature-air_contents.temperature) > 1)
 			network.update = 1
 		return 1
