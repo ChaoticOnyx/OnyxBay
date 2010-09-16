@@ -446,7 +446,7 @@ atom/movable
 								temp.take_damage(b_loss * 0.4, 0)
 							if("diaper")
 								temp.take_damage(b_loss * 0.1, 0)
-							if("l_arm")
+						/*	if("l_arm")
 								temp.take_damage(b_loss * 0.05, 0)
 							if("r_arm")
 								temp.take_damage(b_loss * 0.05, 0)
@@ -461,7 +461,7 @@ atom/movable
 							if("l_foot")
 								temp.take_damage(b_loss * 0.0225, 0)
 							if("r_foot")
-								temp.take_damage(b_loss * 0.0225, 0)
+								temp.take_damage(b_loss * 0.0225, 0)*/
 				spawn src:UpdateDamageIcon()
 				if(airflow_speed > 10)
 					src:paralysis += round(airflow_speed * vsc.AF_STUN_MULTIPLIER)
