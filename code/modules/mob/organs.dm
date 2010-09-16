@@ -29,6 +29,9 @@
 		else
 			return 0
 
+		if(broken)
+			owner.emote("scream")
+
 	var/result = update_icon()
 
 	return result
@@ -42,10 +45,10 @@
 	return update_icon()
 
 /datum/organ/external/proc/get_damage()	//returns total damage
-	return brute_dam + burn_dam	//could use health?
+	return max(brute_dam + burn_dam - perma_injury,perma_injury)	//could use health?
 
 /datum/organ/external/proc/get_damage_brute()
-	return brute_dam + perma_injury
+	return max(brute_dam+perma_injury,perma_injury)
 
 /datum/organ/external/proc/get_damage_fire()
 	return burn_dam

@@ -23,21 +23,29 @@
 
 	var/damage_msg = "\red You feel intense pain"
 	process()
+		if(broken == 0)
+			perma_dmg = 0
 		if(brute_dam + burn_dam > perma_dmg)
 			if(broken == 0)
 				owner << damage_msg
 				for(var/mob/M in viewers(owner))
-					M.show_message("\red Crack")
+					if(M != owner)
+						M.show_message("\red You hear a lound cracking sound coming from [owner.name]")
 			broken = 1
-			/* Uncomment for broken bones to matter
+			wound = "broken" //Randomise in future
+			// Uncomment for broken bones to matter
 			perma_injury = brute_dam + burn_dam
-			brute_dam = 0
-			burn_dam = 0
-			*/
+		//	brute_dam = 0
+		//	burn_dam = 0
+
 		return
 
 	var/open = 0
 	var/display_name
+	var/clean = 1
+	var/stage = 0
+	var/wound = 0
+	var/split = 0
 
 /datum/organ/external/chest
 	name = "chest"
