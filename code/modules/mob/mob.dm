@@ -1866,6 +1866,20 @@ mob/verb/turnwest()
 					if (((M.pulling == mob && (!( M.restrained() ) && M.stat == 0)) || locate(/obj/item/weapon/grab, mob.grabbed_by.len)))
 						src << "\blue You're restrained! You can't move!"
 						return 0
+/*			var/lleg = mob.organs["l_leg"]
+			var/rleg = mob.organs["r_leg"]
+			if(lleg.broken && rleg.broken)
+				src << "\blue You feel a sharp pain as you try to walk!"
+				mob.paralysis += 10
+				return 0
+			if(lleg.broken || rleg.broken)
+				if(mob.r_hand)
+					if(istype(mob.r_hand,/obj/item/weapon/cane) || istype(mob.l_hand,/obj/item/weapon/cane))
+						src << "\blue You able to support yourself on the [mob.r_hand]"
+				else if(prob(50))
+					src << "\blue You feel a sharp pain as you try to walk!"
+					mob.paralysis += 10
+					return 0*/
 			moving = 1
 			if (locate(/obj/item/weapon/grab, mob))
 				move_delay = max(move_delay, world.time + 7)

@@ -29,7 +29,11 @@
 	src.layer = 5
 	add_fingerprint(user)
 	return
-
+obj/item/weapon/cane
+	name = "Cane"
+	icon = 'items.dmi'
+	icon_state = "cane"
+	m_amt = 5
 
 /obj/item/weapon/meltedmetal
 	name = "Ruined metal"
