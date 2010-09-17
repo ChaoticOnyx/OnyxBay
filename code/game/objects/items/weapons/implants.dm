@@ -375,6 +375,7 @@ No Implant Specifics"}
 
 
 /obj/item/weapon/implanter/attack(mob/target as mob, mob/user as mob)
+	if (!src.imp) return
 	if(ismob(target))
 		for(var/mob/O in viewers(world.view, user))
 			if (target != user)
