@@ -190,6 +190,49 @@ var/supply_shuttle_points = 50
 	access = access_security
 */
 
+/datum/supply_packs/gascanisterair
+    name = "Gas Canister \[Air\] Crate"
+    contains = list("/obj/machinery/portable_atmospherics/canister/air")
+    cost = 10
+    containertype = "/obj/crate"
+    containername = "Gas Canister \[Air\] Crate"
+
+/datum/supply_packs/gascanisternitrogen
+    name = "Gas Canister \[N2\] Crate"
+    contains = list("/obj/machinery/portable_atmospherics/canister/nitrogen")
+    cost = 10
+    containertype = "/obj/crate"
+    containername = "Gas Canister \[N2\] Crate"
+
+/datum/supply_packs/gascanisteroxygen
+    name = "Gas Canister \[Oxygen\] Crate"
+    contains = list("/obj/machinery/portable_atmospherics/canister/oxygen")
+    cost = 10
+    containertype = "/obj/crate"
+    containername = "Gas Canister \[Oxygen\] Crate"
+
+/datum/supply_packs/gascanisterco2
+    name = "Gas Canister \[CO2\] Crate"
+    contains = list("/obj/machinery/portable_atmospherics/canister/carbon_dioxide")
+    cost = 10
+    containertype = "/obj/crate"
+    containername = "Gas Canister \[CO2\] Crate"
+
+/datum/supply_packs/gascanisterplasma
+    name = "Gas Canister \[Plasma\] Crate"
+    contains = list("/obj/machinery/portable_atmospherics/canister/toxins")
+    cost = 10
+    containertype = "/obj/crate"
+    containername = "Gas Canister \[Plasma\] Crate"
+
+/datum/supply_packs/gascanisterlaughgas
+    name = "Gas Canister \[N2O\] Crate"
+    contains = list("/obj/machinery/portable_atmospherics/canister/sleeping_agent")
+    cost = 10
+    containertype = "/obj/crate"
+    containername = "Gas Canister \[N2O\] Crate"
+
+
 /datum/supply_packs/evacuation
 	name = "Emergency equipment"
 	contains = list("/obj/machinery/bot/floorbot",
