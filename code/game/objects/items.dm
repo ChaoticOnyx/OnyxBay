@@ -23,7 +23,12 @@
 		del(src)
 		return
 	return
-
+/obj/item/weapon/pipesegment/
+	name = "Pipe segment"
+	desc = "used for emergency pipe repairs"
+	icon = 'pipes.dmi'
+	icon_state = "exposed"
+	m_amt = 50
 /obj/item/weapon/bedsheet/attack_self(mob/user as mob)
 	user.drop_item()
 	src.layer = 5

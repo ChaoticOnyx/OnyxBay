@@ -30,7 +30,7 @@
 				owner << damage_msg
 				for(var/mob/M in viewers(owner))
 					if(M != owner)
-						M.show_message("\red You hear a lound cracking sound coming from [owner.name]")
+						M.show_message("\red You hear a loud cracking sound coming from [owner.name]")
 			broken = 1
 			wound = "broken" //Randomise in future
 			// Uncomment for broken bones to matter

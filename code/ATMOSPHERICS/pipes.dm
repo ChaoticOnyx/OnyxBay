@@ -5,7 +5,8 @@ obj/machinery/atmospherics/pipe
 
 	var/volume = 0
 	var/nodealert = 0
-
+	var/obj/machinery/atmospherics/node1old
+	var/obj/machinery/atmospherics/node2old
 	var/alert_pressure = 80*ONE_ATMOSPHERE
 		//minimum pressure before check_pressure(...) should be called
 
@@ -242,17 +243,37 @@ obj/machinery/atmospherics/pipe
 			if(reference == node1)
 				if(istype(node1, /obj/machinery/atmospherics/pipe))
 					del(parent)
+				node1old = node1
 				node1 = null
 
 			if(reference == node2)
 				if(istype(node2, /obj/machinery/atmospherics/pipe))
 					del(parent)
+				node2old = node2
 				node2 = null
 
 			update_icon()
 
 			return null
-
+		proc/connect(obj/machinery/atmospherics/reference,var/num)
+			if(1)
+				node1 = reference
+			else if(2)
+				node2 = reference
+			build_network()
+			update_icon()
+		attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+			if(istype(W,/obj/item/weapon/pipesegment) && get_dist(user,src) <= 1)
+				if(!node1 || !node2)
+					if(node1old)
+						connect(node1old,1)
+					if(node2old)
+						connect(node2old,2)
+					user << "\blue You repair [src]"
+					del(W)
+		verb/test()
+			set src in view(5)
+			disconnect(node1)
 	simple/multiz
 		icon = 'multiz_pipe.dmi'
 		var/dir2 = 0
@@ -517,7 +538,6 @@ obj/machinery/atmospherics/pipe
 					user << "\blue Temperature: [round(parent.air.temperature-T0C)]&deg;C"
 				else
 					user << "\blue Tank is empty!"
-
 	vent
 		icon = 'pipe_vent.dmi'
 		icon_state = "intact"
