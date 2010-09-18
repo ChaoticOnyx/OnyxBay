@@ -351,7 +351,145 @@
 
 	del D
 	return 1
+/atom/proc/CanReachTrough2(turf/srcturf, turf/targetturf, atom/target)
+// HORRIBLE
+/*
+	var/direct = get_dir(target, src)
+	var/canpass1 = 0
+	var/canpass2 = 0
+	world << "[direct]"
+	switch(direct)
+		if(1)
+			world << "NORTH || SOUTH || WEST || EAST"
+			if(CanReachThrough(srcturf,targetturf,target))
+				return 1
+			else
+				return 0
+		if(2)
+			world << "NORTH || SOUTH || WEST || EAST"
+			if(CanReachThrough(srcturf,targetturf,target))
+				return 1
+			else
+				return 0
+		if(4)
+			world << "NORTH || SOUTH || WEST || EAST"
+			if(CanReachThrough(srcturf,targetturf,target))
+				return 1
+			else
+				return 0
+		if(8)
+			world << "NORTH || SOUTH || WEST || EAST"
+			if(CanReachThrough(srcturf,targetturf,target))
+				return 1
+			else
+				return 0
+		if(NORTHWEST)
+			world << "NORTHWEST"
+			var/turf/north = get_step(src,1)
+			var/turf/west = get_step(north,8)
+			canpass1 = north.TestEnter(target)
+			canpass2 = west.TestEnter(target)
+			if(canpass1 && canpass2)
+				return 1
+			else
+				return 0
+		if(NORTHEAST)
+			world << "NORTHEAST"
+			var/turf/north = get_step(src,1)
+			var/turf/west = get_step(north,4)
+			canpass1 = north.TestEnter(target)
+			canpass2 = west.TestEnter(target)
+			if(canpass1 && canpass2)
+				return 1
+			else
+				return 0
+		if(SOUTHEAST)
+			world << "SOUTHEAST"
+			var/turf/north = get_step(src,2)
+			var/turf/west = get_step(north,4)
+			canpass1 = north.TestEnter(target)
+			canpass2 = west.TestEnter(target)
+			if(canpass1 && canpass2)
+				return 1
+			else
+				return 0
+		if(SOUTHWEST)
+			world << "SOUTHWEST"
+			var/turf/north = get_step(src,2)
+			var/turf/west = get_step(north,8)
+			canpass1 = north.TestEnter(target)
+			canpass2 = west.TestEnter(target)
+			if(canpass1 && canpass2)
+				return 1
+			else
+				return 0
+			//HEADBACK
 
+	var/direct = get_dir(usr, src)
+	var/ok = 0
+	if ( (direct - 1) & direct)
+		var/turf/Step_1
+		var/turf/Step_2
+		switch(direct)
+			if(EAST|NORTH)
+				Step_1 = get_step(target, NORTH)
+				Step_2 = get_step(target, EAST)
+			if(EAST|SOUTH)
+				Step_1 = get_step(target, SOUTH)
+				Step_2 = get_step(target, EAST)
+			if(NORTH|WEST)
+				Step_1 = get_step(target, NORTH)
+				Step_2 = get_step(target, WEST)
+			if(SOUTH|WEST)
+				Step_1 = get_step(target, SOUTH)
+				Step_2 = get_step(target, WEST)
+			else
+		if(Step_1 && Step_2)
+			var/check_1 = 1
+			var/check_2 = 1
+			check_1 = CanReachThrough(get_turf(target), Step_1, src) && CanReachThrough(Step_1, get_turf(src), src)
+			check_2 = CanReachThrough(get_turf(target), Step_2, src) && CanReachThrough(Step_2, get_turf(src), src)
+			if(check_1 && check_2)
+				return 1
+	else
+		if(CanReachThrough(get_turf(target), get_turf(src), src))
+			return 1
+
+
+/turf/proc/TestEnter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
+	if (!mover || !isturf(mover.loc))
+		return 1
+
+
+	//First, check objects to block exit that are not on the border
+	for(var/obj/obstacle in mover.loc)
+		if((obstacle.flags & ~ON_BORDER) && (mover != obstacle) && (forget != obstacle))
+			if(!obstacle.CheckExit(mover, src))
+				return 0
+
+	//Now, check objects to block exit that are on the border
+	for(var/obj/border_obstacle in mover.loc)
+		if((border_obstacle.flags & ON_BORDER) && (mover != border_obstacle) && (forget != border_obstacle))
+			if(!border_obstacle.CheckExit(mover, src))
+				return 0
+
+	//Next, check objects to block entry that are on the border
+	for(var/obj/border_obstacle in src)
+		if(border_obstacle.flags & ON_BORDER)
+			if(!border_obstacle.CanPass(mover, mover.loc, 1, 0) && (forget != border_obstacle))
+				return 0
+
+	//Then, check the turf itself
+	if (!src.CanPass(mover, src))
+		return 0
+
+	//Finally, check objects/mobs to block entry that are not on the border
+	for(var/atom/movable/obstacle in src)
+		if(obstacle.flags & ~ON_BORDER)
+			if(!obstacle.CanPass(mover, mover.loc, 1, 0) && (forget != obstacle))
+				return 0
+	return 1 //Nothing found to block so return success!
+*/
 /atom/proc/alog(var/atom/device,var/mob/mb)
 	src.logs += "[src.name] used by a [device.name] by [mb.real_name]([mb.key])"
 	mb.log_m("[src.name] used by a [device.name]")

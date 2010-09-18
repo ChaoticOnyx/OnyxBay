@@ -172,7 +172,56 @@
 						M.pulling = t
 				else
 					if (pulling)
-						pulling.Move(T)
+						if(CanReachThrough(src.loc,pulling.loc,pulling))
+/*							var/dirs = get_dir(src.pulling,src)
+							if(dirs == NORTHWEST)
+								world << "NORTHWEST"
+								var/obj/item/weapon/dummy = new(src.pulling.loc)
+								if(step(dummy,NORTH))
+									if(step(dummy,WEST))
+										pulling.Move(T)
+							else if(dirs == NORTHEAST)
+								world << "NORTHEAST"
+								var/obj/item/weapon/dummy = new(src.pulling.loc)
+								if(step(dummy,NORTH))
+									if(step(dummy,EAST))
+										pulling.Move(T)
+										del(dummy)
+									else
+										pulling = null
+								else
+									pulling = null
+								del(dummy)
+							else if(dirs == SOUTHWEST)
+								world << "SOUTHWEST"
+								var/obj/item/weapon/dummy = new(src.pulling.loc)
+								if(step(dummy,SOUTH))
+									if(step(dummy,WEST))
+										pulling.Move(T)
+										del(dummy)
+									else
+										pulling = null
+								else
+									pulling = null
+								del(dummy)
+							else if(dirs == SOUTHEAST)
+								world << "SOUTHEAST"
+								var/obj/item/weapon/dummy = new(src.pulling.loc)
+								if(step(dummy,SOUTH))
+									if(step(dummy,EAST))
+										pulling.Move(T)
+										del(dummy)
+									else
+										pulling = null
+								else
+									pulling = null
+								del(dummy)
+							else
+								world << "SOMETHING ELSE"
+								//step(src.pulling, get_dir(src.pulling.loc, T))
+								pulling.Move(T)
+								*/
+							step(src.pulling, get_dir(src.pulling.loc, T))
 	else
 		pulling = null
 		. = ..()
