@@ -189,7 +189,7 @@ proc/Airflow(zone/A,zone/B,n)
 				if(M in range(U)) fail = 0
 			if(fail) continue
 			//world << "Sonovabitch! [M] won't move either!"
-			if(!M.airflow_speed)
+			if(M && !M.airflow_speed)
 				M.airflow_dest = pick(connected_turfs)
 				spawn M.RepelAirflowDest(abs(n) / (vsc.AF_TINY_MOVEMENT_THRESHOLD/vsc.AF_SPEED_MULTIPLIER))
 		//	else if(M.airflow_speed > 0)

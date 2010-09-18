@@ -47,8 +47,9 @@
 		world << "<B>The traitor [(traitorwin ? "was successful" : "has failed")]!</B>"
 
 		var/datum/traitorinfo/info = logtraitors[traitor]
-		var/DBQuery/query = dbcon.NewQuery("INSERT INTO `bay12`.`traitorlogs` (`CKey`, `Objective`, `Succeeded`, `Spawned`, `Occupation`, `PlayerCount`) VALUES ('[info.ckey]', '[info.starting_objective]', '[traitorwin]', '[dd_list2text(info.spawnlist, ";")]', '[info.starting_occupation]', '[info.starting_player_count]')")
-		query.Execute()
+		if (info)
+			var/DBQuery/query = dbcon.NewQuery("INSERT INTO `bay12`.`traitorlogs` (`CKey`, `Objective`, `Succeeded`, `Spawned`, `Occupation`, `PlayerCount`) VALUES ('[info.ckey]', '[info.starting_objective]', '[traitorwin]', '[dd_list2text(info.spawnlist, ";")]', '[info.starting_occupation]', '[info.starting_player_count]')")
+			query.Execute()
 
 
 	return 1

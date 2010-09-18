@@ -1048,14 +1048,15 @@
 			src.buffer3iue = 1
 			dopage(src,"buffermenu")
 		if (href_list["b2addui"])
-			src.buffer2iue = 0
-			src.buffer2 = src.connected.occupant.dna.uni_identity
-			if (!istype(src.connected.occupant,/mob/living/carbon/human))
-				src.buffer2owner = src.connected.occupant.name
-			else
-				src.buffer2owner = src.connected.occupant.real_name
-			src.buffer2label = "Unique Identifier"
-			src.buffer2type = "ui"
+			if(src.connected.occupant)
+				src.buffer2iue = 0
+				src.buffer2 = src.connected.occupant.dna.uni_identity
+				if (!istype(src.connected.occupant,/mob/living/carbon/human))
+					src.buffer2owner = src.connected.occupant.name
+				else
+					src.buffer2owner = src.connected.occupant.real_name
+				src.buffer2label = "Unique Identifier"
+				src.buffer2type = "ui"
 			dopage(src,"buffermenu")
 		if (href_list["b3addui"])
 			src.buffer3iue = 0
@@ -1078,14 +1079,15 @@
 			src.buffer1type = "se"
 			dopage(src,"buffermenu")
 		if (href_list["b2addse"])
-			src.buffer2iue = 0
-			src.buffer2 = src.connected.occupant.dna.struc_enzymes
-			if (!istype(src.connected.occupant,/mob/living/carbon/human))
-				src.buffer2owner = src.connected.occupant.name
-			else
-				src.buffer2owner = src.connected.occupant.real_name
-			src.buffer2label = "Structural Enzymes"
-			src.buffer2type = "se"
+			if(src.connected.occupant)
+				src.buffer2iue = 0
+				src.buffer2 = src.connected.occupant.dna.struc_enzymes
+				if (!istype(src.connected.occupant,/mob/living/carbon/human))
+					src.buffer2owner = src.connected.occupant.name
+				else
+					src.buffer2owner = src.connected.occupant.real_name
+				src.buffer2label = "Structural Enzymes"
+				src.buffer2type = "se"
 			dopage(src,"buffermenu")
 		if (href_list["b3addse"])
 			src.buffer3iue = 0
