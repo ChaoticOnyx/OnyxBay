@@ -320,7 +320,7 @@
 		return
 
 	if(href_list["vote"] && vote.voting)
-		if(M)
+		if(M && M.client)
 			M.client.vote = href_list["vote"]
 
 			//world << "Setting client [M.key]'s vote to: [href_list["vote"]]."
