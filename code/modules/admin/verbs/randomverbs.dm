@@ -236,6 +236,8 @@
 				affecting = H.organs[A]
 				if(!istype(affecting, /datum/organ/external))    continue
 				affecting.heal_damage(1000, 1000)    //fixes getting hit after ingestion, killing you when game updates organ health
+				affecting.broken = 0
+				affecting.perma_injury = 0
 			H.UpdateDamageIcon()
 		M.fireloss = 0
 		M.toxloss = 0
