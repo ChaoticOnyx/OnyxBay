@@ -2570,7 +2570,7 @@
 "aXv" = (/obj/machinery/light{dir = 1},/turf/simulated/floor{tag = "icon-floorgrime"; icon_state = "floorgrime"},/area/teleporter)
 "aXw" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/weapon/hand_tele,/turf/simulated/floor{tag = "icon-floorgrime"; icon_state = "floorgrime"},/area/teleporter)
 "aXx" = (/obj/multiz/stairs/active{tag = "icon-ramptop (NORTH)"; icon_state = "ramptop"; dir = 1},/turf/simulated/floor,/area/hallway/primary/central)
-"aXy" = (/obj/table{icon_state = "tabledir"; dir = 2},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
+"aXy" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/surgical_tool/newblood,/obj/item/weapon/surgical_tool/blooddrainer,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aXz" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aXA" = (/obj/stool,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aXB" = (/obj/machinery/camera{c_tag = "Medbay (Aft)"; dir = 8},/obj/machinery/vending/snack,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
@@ -2644,35 +2644,35 @@
 "aYR" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/hallway/primary/central)
 "aYS" = (/turf/simulated/floor,/area/hallway/primary/central)
 "aYT" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/hallway/primary/central)
-"aYU" = (/obj/machinery/disposal,/obj/disposalpipe/trunk,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
-"aYV" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/window/reinforced/west,/obj/item/weapon/storage/lglo_kit,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
-"aYW" = (/obj/machinery/computer/med_data,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
-"aYX" = (/obj/table{dir = 9; icon_state = "tabledir"; tag = ""},/obj/item/weapon/medical/bruise_pack,/obj/item/weapon/medical/ointment,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
-"aYY" = (/obj/table{icon_state = "tabledir"; dir = 5},/obj/item/weapon/storage/firstaid/regular,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
-"aYZ" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/weapon/storage/firstaid/syringes,/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/obj/item/device/radio/intercom{dir = 0; pixel_x = 27},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
-"aZa" = (/obj/machinery/chem_master,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
-"aZb" = (/obj/machinery/atmospherics/pipe/simple,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
-"aZc" = (/obj/table{icon_state = "tabledir"; dir = 9},/obj/item/weapon/paper_bin,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
-"aZd" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/paper/Toxin,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
-"aZe" = (/obj/table{icon_state = "tabledir"; dir = 1},/turf/simulated/floor{icon_state = "white"},/area/chemistry)
-"aZf" = (/obj/table{dir = 5; icon_state = "tabledir"},/obj/item/weapon/screwdriver,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
-"aZg" = (/obj/machinery/firealarm{dir = 4; layer = 3.1; pixel_x = 24; tag = "east"},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor{icon_state = "white"},/area/chemistry)
-"aZh" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall,/area/chemistry)
-"aZi" = (/obj/disposalpipe/segment,/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor{tag = "icon-green (WEST)"; icon_state = "green"; dir = 8},/area/hallway/primary/starboard)
-"aZj" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area/security/checkpoint3)
-"aZk" = (/obj/machinery/atmospherics/pipe/simple,/obj/table{icon_state = "tabledir"; dir = 4},/obj/item/device/radio/intercom,/turf/simulated/floor,/area/security/checkpoint3)
-"aZl" = (/obj/machinery/camera{c_tag = "Docking Checkpoint"},/turf/simulated/floor,/area/security/checkpoint3)
-"aZm" = (/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/security/checkpoint3)
-"aZn" = (/obj/machinery/atmospherics/pipe/vent{dir = 1},/turf/simulated/floor,/area/security/checkpoint3)
-"aZo" = (/obj/cable,/obj/machinery/power/apc{dir = 1; name = "North APC"; pixel_x = 0},/turf/simulated/floor,/area/security/checkpoint3)
-"aZp" = (/turf/simulated/wall,/area/security/checkpoint3)
-"aZq" = (/turf/simulated/floor{tag = "icon-purple (WEST)"; icon_state = "purple"; dir = 8},/area/hallway/primary/port)
-"aZr" = (/obj/machinery/disposal,/obj/disposalpipe/trunk,/turf/simulated/floor,/area/teleporter)
-"aZs" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/teleporter)
-"aZt" = (/obj/stool,/turf/simulated/floor,/area/teleporter)
-"aZu" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/weapon/paper_bin,/turf/simulated/floor,/area/teleporter)
-"aZv" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
-"aZw" = (/obj/machinery/optable{id = 8},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
+"aYU" = (/obj/machinery/optable{id = 8},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
+"aYV" = (/obj/machinery/disposal,/obj/disposalpipe/trunk,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
+"aYW" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/window/reinforced/west,/obj/item/weapon/storage/lglo_kit,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
+"aYX" = (/obj/machinery/computer/med_data,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
+"aYY" = (/obj/table{dir = 9; icon_state = "tabledir"; tag = ""},/obj/item/weapon/medical/bruise_pack,/obj/item/weapon/medical/ointment,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
+"aYZ" = (/obj/table{icon_state = "tabledir"; dir = 5},/obj/item/weapon/storage/firstaid/regular,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
+"aZa" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/weapon/storage/firstaid/syringes,/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/obj/item/device/radio/intercom{dir = 0; pixel_x = 27},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
+"aZb" = (/obj/machinery/chem_master,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
+"aZc" = (/obj/machinery/atmospherics/pipe/simple,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
+"aZd" = (/obj/table{icon_state = "tabledir"; dir = 9},/obj/item/weapon/paper_bin,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
+"aZe" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/paper/Toxin,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
+"aZf" = (/obj/table{icon_state = "tabledir"; dir = 1},/turf/simulated/floor{icon_state = "white"},/area/chemistry)
+"aZg" = (/obj/table{dir = 5; icon_state = "tabledir"},/obj/item/weapon/screwdriver,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
+"aZh" = (/obj/machinery/firealarm{dir = 4; layer = 3.1; pixel_x = 24; tag = "east"},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor{icon_state = "white"},/area/chemistry)
+"aZi" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/wall,/area/chemistry)
+"aZj" = (/obj/disposalpipe/segment,/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor{tag = "icon-green (WEST)"; icon_state = "green"; dir = 8},/area/hallway/primary/starboard)
+"aZk" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area/security/checkpoint3)
+"aZl" = (/obj/machinery/atmospherics/pipe/simple,/obj/table{icon_state = "tabledir"; dir = 4},/obj/item/device/radio/intercom,/turf/simulated/floor,/area/security/checkpoint3)
+"aZm" = (/obj/machinery/camera{c_tag = "Docking Checkpoint"},/turf/simulated/floor,/area/security/checkpoint3)
+"aZn" = (/obj/machinery/light{dir = 1},/turf/simulated/floor,/area/security/checkpoint3)
+"aZo" = (/obj/machinery/atmospherics/pipe/vent{dir = 1},/turf/simulated/floor,/area/security/checkpoint3)
+"aZp" = (/obj/cable,/obj/machinery/power/apc{dir = 1; name = "North APC"; pixel_x = 0},/turf/simulated/floor,/area/security/checkpoint3)
+"aZq" = (/turf/simulated/wall,/area/security/checkpoint3)
+"aZr" = (/turf/simulated/floor{tag = "icon-purple (WEST)"; icon_state = "purple"; dir = 8},/area/hallway/primary/port)
+"aZs" = (/obj/machinery/disposal,/obj/disposalpipe/trunk,/turf/simulated/floor,/area/teleporter)
+"aZt" = (/obj/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor,/area/teleporter)
+"aZu" = (/obj/stool,/turf/simulated/floor,/area/teleporter)
+"aZv" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/weapon/paper_bin,/turf/simulated/floor,/area/teleporter)
+"aZw" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aZx" = (/obj/disposalpipe/segment,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aZy" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
 "aZz" = (/obj/table{dir = 10; icon_state = "tabledir"; tag = ""},/obj/item/weapon/storage/firstaid/toxin,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
@@ -4794,11 +4794,11 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWMaaaaaaaW
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWMaaaaaaaXqaelaOSaOFaXraWlaXsaXtaXuaWSaWSaXvaWSaXwaWlaXxaXxaXxaPyaXyaPyaXzaQPaQPaXAaXAaXBaXCaWWaWWaWWaWWaXDaXEaWFaXFaXGaXHaXIaXJaXKaXLaXMaXNaXOaXPaVRaVSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWMaelaaaaXqaXQaOSaOFaXRaXSaWSaXTaWSaWSaXUaXVaXWaXXaWlaXYaXYaXYaPyaQPaXZaPXaQPaQPaXAaXAaYaaYbaWWaWWaWWaWWaXDaYcaWFaXmaYdaYeaXhaXmaYfaYgaYhaYiaYjaYkaVRaVSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWMaelaelaXqaYlaYmaOFaYnaWlaYoaYpaYqaYqaYqaYqaYqaYraWlaYsaYsaYsaPyaQPaQPaWxaYtaSMaXAaXAaQPaYuaYvaWWaWWaYwaXDaYxaWFaYyaYzaYAaYBaYCaYgaYhaYDaYgaYjaYkaVRaVSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaYEaYFaYEaYEaYGaYHaYIaYJaYKaYLaYMaYNaYOaYOaYPaYOaYOaYQaWlaYRaYSaYTaPyaQPaQPaQPaQPaPXaQPaQPaYUaYVaYWaWWaYXaYYaXDaYZaWFaZaaYDaZbaZbaZcaZdaZeaZfaZgaZhaZiaVRaXpaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaZjaZkaZlaZmaZnaZoaZpaZqaXRaWlaZraZsaYOaYOaYOaYOaZtaZuaWlaYSaYSaYSaPyaZvaZwaQPaQPaPXaZvaQPaZxaZyaWWaWWaZzaZAaXDaZBaWFaZCaYgaZDaZEaZFaZGaZHaZIaYgaZJaYkaVRaVSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaZjaZKaZLaZLaZLaZMaZpaZqaXRaWlaZNaZsaZOaZPaYOaZPaYOaZQaWlaYRaYSaYTaPyaZRaZSaZTaZUaPXaQPaQPaZxaZVaZWaZWaWWaWWaXDaWWaZXaYgaYgaZYaZbaYgaYhaYgaYhaYgaZZbaaaVRaVSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaYEaYFaYEaYEaYGaYHaYIaYJaYKaYLaYMaYNaYOaYOaYPaYOaYOaYQaWlaYRaYSaYTaPyaQPaYUaQPaQPaPXaQPaQPaYVaYWaYXaWWaYYaYZaXDaZaaWFaZbaYDaZcaZcaZdaZeaZfaZgaZhaZiaZjaVRaXpaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaZkaZlaZmaZnaZoaZpaZqaZraXRaWlaZsaZtaYOaYOaYOaYOaZuaZvaWlaYSaYSaYSaPyaZwaQPaQPaQPaPXaZwaQPaZxaZyaWWaWWaZzaZAaXDaZBaWFaZCaYgaZDaZEaZFaZGaZHaZIaYgaZJaYkaVRaVSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaZkaZKaZLaZLaZLaZMaZqaZraXRaWlaZNaZtaZOaZPaYOaZPaYOaZQaWlaYRaYSaYTaPyaZRaZSaZTaZUaPXaQPaQPaZxaZVaZWaZWaWWaWWaXDaWWaZXaYgaYgaZYaZcaYgaYhaYgaYhaYgaZZbaaaVRaVSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaBKbabbacbadbadaYEbaebafbagbahbaibajbakaWmaWlaWlbalaWlaWlaWlaWlaYSaYSaYSaPyaPyaPyaPyaPybambanbanbaobapbaqbarbasbatbaubavbawbaxbaybazbaAbaBbaCbaDbaEbaFbaGaYkaVRaVSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaHbaIbaJbaIbaIbaKbaIbaLbaMbaNbaObaPbaQbaRbaSbaSbaSbaSbaSbaSbaTaYSaYSaYSbaUbaVbaVbaVbaWbaXbaYbaYbaYaWFaWFbaZbaZbaZbbabbbbbbbbcbbcbbdbbebbfbbgbbfbbfbbfbbhaZiaVRaXpaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaHbaIbaJbaIbaIbaKbaIbaLbaMbaNbaObaPbaQbaRbaSbaSbaSbaSbaSbaSbaTaYSaYSaYSbaUbaVbaVbaVbaWbaXbaYbaYbaYaWFaWFbaZbaZbaZbbabbbbbbbbcbbcbbdbbebbfbbgbbfbbfbbfbbhaZjaVRaXpaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbiaYSaYSaYSaYSbbjaYSbbkbblaYSaYSaYSbblbbmaYSaYSaYSaYSaYSaYSaYSaYSaYSaYSaYSaYSaYSaYSbbnbbobaVbaVbaVbaVbbpbbqbbrbbsbbtbbubbtbbsbbtbbvbbwbbxbbybbxbbxbbxbbzbbAaVRaVSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbBbbCbbDbbDbbEbbFbbDbbGbbHaYSaYSbbIbbJbbKbbLbbMbbMbbMbbNbbMbbMbbObbPaYSaYSaYSaYSbbPaYSbbQaYSbbPbbRaYSaYSbbqbbSbbTbbTbbUbbTbbTbbTbbVbbWbbXbbYbbYbbYbbYbbYbbZbcaaVSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaBKbcbbcbbcbbccbcbbabbcdbcebcfaYSbcgbchbcibcjbcjbcjbcjbcjbcjbcbbckbccbckbclbcmbckbckbckbcnbcobckbckaYRaYSbcpbcqbcqbcqbcrbcqbcqbcqbcsbctbcubcvbcwbcwbcwbcxbcwbcybczaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
