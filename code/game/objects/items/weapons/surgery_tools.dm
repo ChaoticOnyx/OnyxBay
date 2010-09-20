@@ -333,6 +333,8 @@ CIRCULAR SAW
 	switch(wound)
 		if("broken") //Basic broken bone
 			a=3
+		if("blood")
+			a=3
 	return stage == a
 
 /obj/item/weapon/surgical_tool/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
@@ -385,6 +387,9 @@ CIRCULAR SAW
 //Basic
 //Open -> Clean -> Bone-gel -> pop-into-place -> Bone-gel -> close -> glue -> clean
 
+//Blood
+//Open -> Clean -> Blood-drainer -> nano-bloodifier - >close -> glue -> clean
+
 //Split
 //Open -> Clean -> Tweasers -> bone-glue -> close -> glue -> clean
 
@@ -436,3 +441,52 @@ CIRCULAR SAW
 		if(5)
 			z="[usr] preforms chiropractice on [m]'s [organ.display_name]"
 	return z
+
+/obj/item/weapon/surgical_tool/blooddrainer
+	name = "Blood-disintergrator"
+	icon = 'items.dmi'
+	icon_state = "wrench"
+
+/obj/item/weapon/surgical_tool/blooddrainer/New()
+	stage += 1
+	wound = "blood"
+
+/obj/item/weapon/surgical_tool/bonecracker/get_message(var/n,var/m,var/usr,var/datum/organ/external/organ)
+	var/z
+	switch(n)
+		if(1)
+			z="[usr] starts boiling [m]'s [organ.display_name]'s damaged blood"
+		if(2)
+			z="[usr] finishes boiling [m]'s [organ.display_name]'s damaged blood"
+		if(3)
+			z="[usr] stops boiling [m]'s [organ.display_name] damaged blood"
+		if(4)
+			z="[usr] boils all of [m]'s [organ.display_name]'s blood"
+		if(5)
+			z="[usr] burns [m]'s [organ.display_name]"
+	return z
+
+/obj/item/weapon/surgical_tool/newblood
+	name = "Nano-blood injector"
+	icon = 'items.dmi'
+	icon_state = "dnainjector"
+
+/obj/item/weapon/surgical_tool/newblood/New()
+	stage += 2
+	wound = "blood"
+
+/obj/item/weapon/surgical_tool/newblood/get_message(var/n,var/m,var/usr,var/datum/organ/external/organ)
+	var/z
+	switch(n)
+		if(1)
+			z="[usr] starts injecting [m]'s [organ.display_name]'s with nano-blood"
+		if(2)
+			z="[usr] finishes injecting [m]'s [organ.display_name] with nano-blood"
+		if(3)
+			z="[usr] stops injecting [m]'s [organ.display_name] with nano-blood"
+		if(4)
+			z="[usr] finished injecting nano-blood into [m]'s [organ.display_name], where it starts reacting with the normal blood"
+		if(5)
+			z="[usr] sqirts nano-blood onto [m]'s [organ.display_name]"
+	return z
+

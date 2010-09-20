@@ -32,7 +32,11 @@
 					if(M != owner)
 						M.show_message("\red You hear a lound cracking sound coming from [owner.name]")
 			broken = 1
-			wound = "broken" //Randomise in future
+			if(brute_dam >= burn_dam )
+				wound = "broken"
+			else
+				wound = "blood"
+			 //Randomise in future
 			// Uncomment for broken bones to matter
 			perma_injury = brute_dam + burn_dam
 		//	brute_dam = 0
@@ -46,6 +50,7 @@
 	var/stage = 0
 	var/wound = 0
 	var/split = 0
+	var/obj/item/weapon/implant/implant = null
 
 /datum/organ/external/chest
 	name = "chest"
