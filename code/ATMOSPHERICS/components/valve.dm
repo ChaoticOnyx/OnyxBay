@@ -12,7 +12,6 @@ obj/machinery/atmospherics/valve
 
 	var/obj/machinery/atmospherics/node1
 	var/obj/machinery/atmospherics/node2
-
 	var/datum/pipe_network/network_node1
 	var/datum/pipe_network/network_node2
 
@@ -205,7 +204,6 @@ obj/machinery/atmospherics/valve
 			node2 = null
 
 		return null
-
 	digital		// can be controlled by AI
 		name = "digital valve"
 		desc = "A digitally controlled valve."

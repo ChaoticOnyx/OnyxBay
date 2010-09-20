@@ -49,11 +49,8 @@
 #define FILE_DIR "code/game/machinery/bots"
 #define FILE_DIR "code/game/machinery/computer"
 #define FILE_DIR "code/game/machinery/ComputerNetworks"
-#define FILE_DIR "code/game/machinery/Computers"
 #define FILE_DIR "code/game/machinery/doors"
 #define FILE_DIR "code/game/machinery/embedded_controller"
-#define FILE_DIR "code/game/machinery/Fire"
-#define FILE_DIR "code/game/machinery/Lighting"
 #define FILE_DIR "code/game/machinery/pipe"
 #define FILE_DIR "code/game/objects"
 #define FILE_DIR "code/game/objects/alien"
@@ -134,6 +131,7 @@
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
+#include "code\mapLoader.dm"
 #include "code\names.dm"
 #include "code\setup.dm"
 #include "code\stylesheet.dm"
@@ -490,6 +488,7 @@
 #include "code\game\objects\storage\kit.dm"
 #include "code\game\objects\storage\storage.dm"
 #include "code\game\objects\storage\toolbox.dm"
+#include "code\game\objects\storage\utilitybelt.dm"
 #include "code\game\verbs\ai_lockdown.dm"
 #include "code\game\verbs\AI_status.dm"
 #include "code\game\verbs\begin.dm"

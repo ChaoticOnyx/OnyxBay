@@ -69,7 +69,7 @@ obj/structure
 		var/turf/T = get_turf(user)
 		user << "\blue Now adding plating..."
 		sleep(40)
-		if (get_turf(user) == T)
+		if (W && get_turf(user) == T)
 			user << "\blue You added the plating!"
 			var/turf/Tsrc = get_turf(src)
 			Tsrc.ReplaceWithWall()

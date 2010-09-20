@@ -39,7 +39,7 @@
 /mob/living/carbon/human/var/list/body_lying = list()
 
 /mob/living/carbon/human/var/mutantrace = null
-
+/mob/living/carbon/human/var/bot = 0
 /mob/living/carbon/human/var/zombie = 0
 /mob/living/carbon/human/var/zombietime = 0
 /mob/living/carbon/human/var/zombifying = 0

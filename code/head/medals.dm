@@ -40,10 +40,6 @@ mob/verb/show_medal()
 	var/DBQuery/xquery = dbcon.NewQuery("SELECT `ckey` FROM `medals` WHERE ckey='[src.ckey]'")
 	var/DBQuery/gquery = dbcon.NewQuery("SELECT * FROM `medals` WHERE ckey='[src.ckey]'")
 	var/list/keys = list()
-	var/cooldown
-	var/cooldownt
-	if(cooldown)
-		src << "Spam protection [cooldownt] left"
 	if(xquery.Execute())
 		while(xquery.NextRow())
 			keys = xquery.GetRowData()

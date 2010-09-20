@@ -397,6 +397,9 @@
 	for(var/atom/A in T)
 		if(A.density)//&&A.anchored
 			cant_pass = 1
+	for(var/obj/table/X in T)
+		if(X.density)
+			cant_pass = 1
 	return cant_pass
 
 /proc/get_step_towards_3d2(var/atom/ref , var/atom/trg)
@@ -426,7 +429,24 @@
 		else return get_step_towards(ref,free_tile)
 
 	else return get_step(ref, base_dir)
+/proc/can_reach(var/atom/ref , var/atom/trg)
+	var/turf/temp = trg
+	if(temp.Enter(ref,null,1))
+		return 1
+	else
+		return 0
 
+/proc/get_step_towards_3d22(var/atom/ref , var/atom/trg)
+	var/base_dir = get_dir(ref, get_step_towards(ref,trg))
+	var/turf/temp = get_step_towards(ref,trg)
+	if(temp.Enter(ref))
+		return temp
+	else
+		for(var/dirn in cardinal)
+			var/turf/T = get_step(temp, dirn)
+			if(T.Enter(ref))
+				return T
+	return get_step(ref, base_dir)
 /proc/do_mob(var/mob/user , var/mob/target, var/time = 30) //This is quite an ugly solution but i refuse to use the old request system.
 	if(!user || !target) return 0
 	var/user_loc = user.loc

@@ -40,15 +40,16 @@
 		//teleport person to cell
 		M.paralysis += 5
 		sleep(5)	//so they black out before warping
-		M.loc = pick(prisonwarp)
-		if(istype(M, /mob/living/carbon/human))
-			var/mob/living/carbon/human/prisoner = M
-			prisoner.equip_if_possible(new /obj/item/clothing/under/color/orange(prisoner), prisoner.slot_w_uniform)
-			prisoner.equip_if_possible(new /obj/item/clothing/shoes/orange(prisoner), prisoner.slot_shoes)
-		spawn(50)
-			M << "\red You have been sent to the prison station!"
-		log_admin("[key_name(usr)] sent [key_name(M)] to the prison station.")
-		message_admins("\blue [key_name_admin(usr)] sent [key_name_admin(M)] to the prison station.", 1)
+		if(prisonwarp.len)
+			M.loc = pick(prisonwarp)
+			if(istype(M, /mob/living/carbon/human))
+				var/mob/living/carbon/human/prisoner = M
+				prisoner.equip_if_possible(new /obj/item/clothing/under/color/orange(prisoner), prisoner.slot_w_uniform)
+				prisoner.equip_if_possible(new /obj/item/clothing/shoes/orange(prisoner), prisoner.slot_shoes)
+			spawn(50)
+				M << "\red You have been sent to the prison station!"
+			log_admin("[key_name(usr)] sent [key_name(M)] to the prison station.")
+			message_admins("\blue [key_name_admin(usr)] sent [key_name_admin(M)] to the prison station.", 1)
 
 /client/proc/cmd_admin_subtle_message(mob/M as mob in world)
 	set category = "Special Verbs"
@@ -235,6 +236,8 @@
 				affecting = H.organs[A]
 				if(!istype(affecting, /datum/organ/external))    continue
 				affecting.heal_damage(1000, 1000)    //fixes getting hit after ingestion, killing you when game updates organ health
+				affecting.broken = 0
+				affecting.perma_injury = 0
 			H.UpdateDamageIcon()
 		M.fireloss = 0
 		M.toxloss = 0

@@ -60,12 +60,20 @@ macro "macro"
 		command = ".options"
 		is-disabled = false
 	elem 
+		name = "F2"
+		command = "ooc"
+		is-disabled = false
+	elem 
 		name = "F2+REP"
 		command = ".screenshot auto"
 		is-disabled = false
 	elem 
 		name = "SHIFT+F2+REP"
 		command = ".screenshot"
+		is-disabled = false
+	elem 
+		name = "F5"
+		command = "asay"
 		is-disabled = false
 
 

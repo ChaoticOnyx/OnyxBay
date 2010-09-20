@@ -23,13 +23,22 @@
 		del(src)
 		return
 	return
-
+/obj/item/weapon/pipesegment/
+	name = "Pipe segment"
+	desc = "used for emergency pipe repairs"
+	icon = 'pipes.dmi'
+	icon_state = "exposed"
+	m_amt = 50
 /obj/item/weapon/bedsheet/attack_self(mob/user as mob)
 	user.drop_item()
 	src.layer = 5
 	add_fingerprint(user)
 	return
-
+obj/item/weapon/cane
+	name = "Cane"
+	icon = 'items.dmi'
+	icon_state = "cane"
+	m_amt = 5
 
 /obj/item/weapon/meltedmetal
 	name = "Ruined metal"

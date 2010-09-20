@@ -108,6 +108,11 @@
 			src.verbs += /client/proc/new_eventa
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/zombify
+
+
+			src.verbs += /client/proc/clearmap
+			src.verbs += /client/proc/loadmap
+			src.verbs += /client/proc/loadmaphere
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
@@ -198,6 +203,11 @@
 			src.verbs += /client/proc/toggleinvite
 
 			src.verbs += /client/proc/Zone_Info
+
+
+			src.verbs += /client/proc/clearmap
+			src.verbs += /client/proc/loadmap
+			src.verbs += /client/proc/loadmaphere
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
@@ -272,6 +282,10 @@
 			src.verbs += /client/proc/toggleinvite
 			src.verbs += /client/proc/Zone_Info
 			src.verbs += /client/proc/zombify
+
+			src.verbs += /client/proc/clearmap
+			src.verbs += /client/proc/loadmap
+			src.verbs += /client/proc/loadmaphere
 		if ("Primary Administrator")
 
 			src.deadchat = 1
@@ -734,6 +748,38 @@
 
 		del(M.client)
 		del(M)
+
+
+/client/proc/clearmap()
+	set category = "Special Verbs"
+	set name = "Clear Map"
+	if(!src.holder)
+		src << "Only administrators may use this command."
+		return
+	world.maxx = 0
+	world.maxy = 0
+	world.maxz = 0
+	for(var/atom/a in world)
+		if(!istype(a,/mob/new_player))
+			del a
+
+/client/proc/loadmaphere(turf/t as turf in world)
+	set category = "Special Verbs"
+	set name = "Load Map"
+	if(!src.holder)
+		src << "Only administrators may use this command."
+		return
+	var/map = input("Input map path:") as text
+	QML_loadMap(map,t.x,t.y,t.z)
+
+
+/client/proc/loadmap(map as text)
+	set category = "Special Verbs"
+	set name = "Load Map"
+	if(!src.holder)
+		src << "Only administrators may use this command."
+		return
+	QML_loadMap(map)
 
 /client/proc/delay()
 	set category = "Admin"
