@@ -384,19 +384,19 @@ No Implant Specifics"}
 				O.show_message("\red <B>[user] is trying to inject themselves with [src.name]!</B>", 1)
 		if(!do_mob(user, target,60)) return
 		var/picked = 0
-		world << "start"
+	//	world << "start"
 		if(istype(target,/mob/living/carbon))
 			var/mob/living/carbon/T = target
-			world << T
+		//	world << T
 			var/list/datum/organ/external/E = T.GetOrgans()
 			while(picked == 0 && E.len > 0)
 				var/datum/organ/external/O = pick(E)
-				world << O
-				world << E.len
+			//	world << O
+			//	world << E.len
 
 				E -= O
 				if(!E.implant)
-					world << "NO IMPLANT"
+				//	world << "NO IMPLANT"
 					O.implant = src.imp
 					picked = 1
 		if(picked == 0)
