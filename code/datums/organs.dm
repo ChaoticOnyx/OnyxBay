@@ -13,21 +13,22 @@
 	var/max_damage = 0
 	var/wound_size = 0
 	var/max_size = 0
-
+	var/critical = 0
 	var/perma_dmg = 0
-
+	var/bleeding = 0
 	var/perma_injury = 0
 	var/broken = 0
 
 	var/min_broken_damage = 30
 
-	var/damage_msg = "\red You feel intense pain"
+	var/damage_msg = "\red You feel a intense pain"
 	process()
 		if(broken == 0)
 			perma_dmg = 0
-		if(brute_dam + burn_dam > perma_dmg)
+		if(brute_dam > perma_dmg)
 			if(broken == 0)
-				owner << damage_msg
+				var/dmgmsg = "[damage_msg] in your [display_name]"
+				owner << dmgmsg
 				for(var/mob/M in viewers(owner))
 					if(M != owner)
 						M.show_message("\red You hear a loud cracking sound coming from [owner.name]")
@@ -37,7 +38,7 @@
 			perma_injury = brute_dam + burn_dam
 		//	brute_dam = 0
 		//	burn_dam = 0
-
+			return
 		return
 
 	var/open = 0
@@ -53,7 +54,9 @@
 	max_damage = 150
 	perma_dmg = 75
 	display_name = "chest"
-
+	var/datum/organ/internal/heart
+	var/datum/organ/internal/lung
+	var/datum/organ/internal/intestines
 /datum/organ/external/groin
 	name = "groin"
 	icon_name = "groin"
@@ -66,6 +69,9 @@
 	max_damage = 125
 	perma_dmg = 70
 	display_name = "head"
+	var/datum/organ/external/eye_r
+	var/datum/organ/external/eye_l
+	var/datum/organ/internal/brain
 /datum/organ/external/l_arm
 	name = "l arm"
 	icon_name = "l_arm"

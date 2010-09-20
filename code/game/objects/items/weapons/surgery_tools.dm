@@ -46,7 +46,6 @@ CIRCULAR SAW
 					if(prob(25))
 						user << "\red You mess up!"
 						M.bruteloss += 15
-
 				if(istype(M, /mob/living/carbon/human))
 					var/datum/organ/external/affecting = M.organs["head"]
 					affecting.take_damage(7)
@@ -244,7 +243,13 @@ CIRCULAR SAW
 //		user << "This tool is not yet complete"
 
 	return
+/*
+A kinda of quick time event.
+Eg you move slices open [M]'s wound, causing massive bleeding
+and then you have (1-3sec to respond to this eg by applying cotton.
 
+
+*/
 /obj/item/weapon/disinfectant
 	name = "Surgical disinfectant"
 	icon = 'janitor.dmi'
@@ -327,7 +332,6 @@ CIRCULAR SAW
 	proc/get_message(var/mnumber,var/M,var/user,var/datum/organ/external/organ)//=Start,2=finish,3=walk away,4=screw up, 5 = closed wound
 	proc/screw_up(mob/living/carbon/M as mob,mob/living/carbon/user as mob,var/datum/organ/external/organ)
 		organ.brute_dam += 30
-
 /obj/item/weapon/surgical_tool/proc/IsFinalStage(var/stage)
 	var/a
 	switch(wound)
