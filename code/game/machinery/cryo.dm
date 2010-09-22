@@ -135,8 +135,6 @@
 				M.client.eye = src
 			M.loc = src
 			src.occupant = M
-			for(var/obj/O in src)
-				O.loc = src.loc
 			src.add_fingerprint(user)
 			build_icon()
 			del(G)
