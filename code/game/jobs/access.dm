@@ -127,7 +127,7 @@
 			            access_maint_tunnels, access_bar, access_janitor, access_kitchen, access_robotics, access_laboratories_doors,
 			             access_armory, access_engine, access_security_passthrough, access_maintenance_hall, access_shield_generator, access_forensics_lockers)
 		if("Head of Personnel")
-			return list(access_security, access_brig, access_forensics_lockers,
+			return list(access_security, access_brig, access_forensics_lockers, access_incinerator,
 			            access_tox, access_tox_storage, access_chemistry, access_medical, access_medlab, access_engine,
 			            access_emergency_storage, access_change_ids, access_ai_upload, access_eva, access_heads,
 			            access_all_personal_lockers, access_tech_storage, access_maint_tunnels, access_bar, access_janitor,
