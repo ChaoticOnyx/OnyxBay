@@ -435,7 +435,6 @@ CLIPBOARDS
 
 
 // CLIPBOARD
-
 /obj/item/weapon/clipboard/attack_self(mob/user as mob)
 	var/dat = "<B>Clipboard</B><BR>"
 	if (src.pen)
@@ -517,31 +516,6 @@ CLIPBOARDS
 
 /obj/item/weapon/clipboard/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
-
-/obj/item/weapon/clipboard/attack_hand(mob/user as mob)
-
-	if ((locate(/obj/item/weapon/paper, src) && (!( user.equipped() ) && (user.l_hand == src || user.r_hand == src))))
-		var/obj/item/weapon/paper/P
-		for(P in src)
-			break
-		if (P)
-			if (user.hand)
-				user.l_hand = P
-			else
-				user.r_hand = P
-			P.loc = user
-			P.layer = 20
-			P.add_fingerprint(user)
-			user.update_clothing()
-		src.add_fingerprint(user)
-	else
-		if (user.contents.Find(src))
-			spawn( 0 )
-				src.attack_self(user)
-				return
-		else
-			return ..()
-	return
 
 /obj/item/weapon/clipboard/attackby(obj/item/weapon/P as obj, mob/user as mob)
 
