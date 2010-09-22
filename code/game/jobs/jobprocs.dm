@@ -402,11 +402,6 @@
 			src.equip_if_possible(new /obj/item/clothing/suit/armor/vest(src), slot_wear_suit)
 			src.equip_if_possible(new /obj/item/clothing/shoes/brown(src), slot_shoes)
 			src.equip_if_possible(new /obj/item/clothing/head/helmet/HoS(src), slot_head)
-//			src.equip_if_possible(new /obj/item/clothing/glasses/sunglasses(src), slot_glasses)
-//			src.equip_if_possible(new /obj/item/weapon/gun/taser_gun(src), slot_belt)
-//			src.equip_if_possible(new /obj/item/weapon/gun/energy/laser_gun(src), slot_in_backpack)
-			src.equip_if_possible(new /obj/item/weapon/storage/id_kit(src), slot_in_backpack)
-//			src.equip_if_possible(new /obj/item/device/flash(src), slot_l_store)
 
 
 		if ("Head of Personnel")
