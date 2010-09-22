@@ -2298,7 +2298,7 @@
 "aSj" = (/turf/simulated/wall,/area/medical/robotics)
 "aSk" = (/obj/machinery/atmospherics/pipe/simple,/turf/simulated/wall,/area/medical/robotics)
 "aSl" = (/obj/machinery/bodyscanner,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
-"aSm" = (/obj/machinery/body_scanconsole,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
+"aSm" = (/obj/machinery/body_scanconsole{anchored = 1},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aSn" = (/obj/table{dir = 9; icon_state = "tabledir"; tag = ""},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aSo" = (/obj/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple,/turf/simulated/wall,/area/medical/medbay)
 "aSp" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/atmospherics/pipe/simple,/obj/machinery/door/airlock/maintenance{name = "Medical Maintenance"; req_access_txt = "14;5"},/turf/simulated/floor/plating,/area/maintenance/fsmaint2)
