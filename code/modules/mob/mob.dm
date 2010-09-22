@@ -2088,6 +2088,8 @@ mob/verb/turnwest()
 	L += contents
 	for(var/obj/item/weapon/storage/S in contents)
 		L += S.return_inv()
+	for(var/obj/item/weapon/secstorage/S in contents)
+		L += S.return_inv()
 	for(var/obj/item/weapon/gift/G in contents)
 		L += G.gift
 		if (istype(G.gift, /obj/item/weapon/storage))
