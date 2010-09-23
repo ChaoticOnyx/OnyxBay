@@ -25,6 +25,7 @@
 		explosionstrength = 1 //NEVER SET THIS BELOW 1
 		floorstrength = 6
 
+
 /turf/space
 	icon = 'space.dmi'
 	name = "space"
@@ -366,3 +367,52 @@
 					L.Add(t)
 
 		return L
+	process()
+		return
+
+/turf/simulated/asteroid
+	oxygen = 0.01
+	nitrogen = 0.01
+	name = "rocky floor"
+	icon = 'mining.dmi'
+	icon_state = "floor"
+
+/turf/simulated/asteroid/wall
+	var/health = 100
+	name = "rocky wall"
+	icon = 'mining.dmi'
+	icon_state = "wall"
+	oxygen = 0.01
+	nitrogen = 0.01
+	opacity = 1
+	density = 1
+
+/turf/simulated/asteroid/wall/New()
+	processing_turfs.Add(src)
+	..()
+
+/turf/simulated/asteroid/wall/attackby(obj/item/weapon/W, mob/user)
+	if(istype(W,/obj/item/weapon/circular_saw))
+		src.health-=20
+		user<<"You use \the [W.name] to saw away part of the unwanted ore."
+
+/turf/simulated/asteroid/wall/process()
+	var/power
+	//Get the collective laser power
+	for(var/dir in cardinal)
+		var/turf/T = get_step(src, dir)
+		for(var/obj/beam/e_beam/item in T)
+			power += item.power
+	src.health-=power/100
+	if(src.health<1)
+		new/obj/item/weapon/sheet/metal(locate(src.x,src.y,src.z))
+		new/turf/simulated/asteroid/floor(locate(src.x,src.y,src.z))
+
+/turf/simulated/asteroid/floor
+	oxygen = 0.01
+	nitrogen = 0.01
+	name = "rocky floor"
+	icon = 'mining.dmi'
+	icon_state = "floor"
+
+
