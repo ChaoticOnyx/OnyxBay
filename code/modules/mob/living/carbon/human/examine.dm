@@ -33,6 +33,12 @@
 	if (ears)
 		usr << "\blue [name] has a \icon[ears] [ears.name] by [t_his] mouth."
 
+	if (head)
+		if (head.blood_DNA)
+			usr << "\red [name] has a[head.blood_DNA ? " bloody " : " "] \icon[head] [head.name] on [t_his] head!"
+		else
+			usr << "\blue [name] has a \icon[head] [head.name] on [t_his] head."
+
 	if (wear_mask)
 		if (wear_mask.blood_DNA)
 			usr << "\red [name] has a[wear_mask.blood_DNA ? " bloody " : " "] \icon[wear_mask] [wear_mask.name] on [t_his] face!"
@@ -56,6 +62,9 @@
 			usr << "\red [name] has a[belt.blood_DNA ? " bloody " : " "] \icon[belt] [belt.name] on [t_his] belt!"
 		else
 			usr << "\blue [name] has a \icon[belt] [belt.name] on [t_his] belt."
+
+	if (glasses)
+		usr << "\blue [name] has \icon[glasses] [glasses.name] over [t_his] eyes."
 
 	if (gloves)
 		if (gloves.blood_DNA)

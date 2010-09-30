@@ -237,6 +237,7 @@
 					var/open = ""
 					var/infected = ""
 					var/split = ""
+					var/imp = ""
 					if(e.broken)
 						AN = ":IJRY:[e.wound]:DAM:[e.perma_injury]"
 					if(e.open)
@@ -245,7 +246,9 @@
 						infected = ":UNCLN"
 					if(e.split)
 						split = ":SPLT"
-					dat += text("<font color='red'>[e.display_name]:BRN:[e.burn_dam]:BRT:[e.brute_dam][AN][open][infected]<BR></font>")
+					if(e.implant)
+						imp = ":IMP"
+					dat += text("<font color='red'>[e.display_name]:BRN:[e.burn_dam]:BRT:[e.brute_dam][AN][open][infected][imp]<BR></font>")
 
 		else
 			dat = "<font color='red'> Error: No DNA Modifier connected. </FONT>"

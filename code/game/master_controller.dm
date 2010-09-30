@@ -118,10 +118,15 @@ datum/controller/game_controller
 		for(var/obj/item/item in processing_items)
 			item.process()
 
+
+
 		for(var/datum/pipe_network/network in pipe_networks)
 			network.process()
 		for(var/datum/powernet/P in powernets)
 			P.reset()
+
+		for(var/turf/t in processing_turfs)
+			t.process()
 
 		sleep(-1)
 

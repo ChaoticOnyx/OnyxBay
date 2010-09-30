@@ -84,8 +84,11 @@
 	if(locate(/mob/living/carbon/human, src.loc))
 		var/mob/M = locate(/mob/living/carbon/human, src.loc)
 		if(M.resting)
-			src.victim = M
-			icon_state = "table2-active"
+			if(M.stat != 2)
+				src.victim = M
+				icon_state = "table2-active"
+			else
+				icon_state = "table2-active-dead"
 			return 1
 	src.victim = null
 	icon_state = "table2-idle"

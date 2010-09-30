@@ -48,7 +48,7 @@
 	return max(brute_dam + burn_dam - perma_injury,perma_injury)	//could use health?
 
 /datum/organ/external/proc/get_damage_brute()
-	return max(brute_dam+perma_injury,perma_injury)
+	return max(brute_dam,perma_injury)
 
 /datum/organ/external/proc/get_damage_fire()
 	return burn_dam

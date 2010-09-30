@@ -1012,3 +1012,18 @@
 	name = "AI Sat Ext"
 	icon_state = "storage"
 	applyalertstatus = 0
+
+
+/area/asteroid
+	name = "Asteroid"
+	icon_state = "asteroid"
+	applyalertstatus = 0
+
+/area/asteroid/base
+	name = "Mining base"
+	icon_state = "asbase"
+	applyalertstatus = 0
+
+
+
+
