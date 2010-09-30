@@ -1025,5 +1025,10 @@
 	applyalertstatus = 0
 
 
+/area/asteroid/base/Refinery
+	name = "Refinery"
+	icon_state = "asbase"
+	applyalertstatus = 0
+
 
 

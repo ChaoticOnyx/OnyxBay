@@ -405,7 +405,7 @@
 			power += item.power
 	src.health-=power/100
 	if(src.health<1)
-		new/obj/item/weapon/sheet/metal(locate(src.x,src.y,src.z))
+		new/obj/item/weapon/ore(locate(src.x,src.y,src.z))
 		new/turf/simulated/asteroid/floor(locate(src.x,src.y,src.z))
 
 /turf/simulated/asteroid/floor

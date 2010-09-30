@@ -716,6 +716,17 @@ obj/item/brain
 
 /obj/item/mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
+
+/obj/item/weapon/ore
+	name = "Rock"
+	icon = 'rubble.dmi'
+	icon_state = "ore"
+	var/amt = 1
+	var/cook = 0
+	var/cook_temp = 500
+	var/cook_time = 30
+
+
 // TODO: robust mixology system! (and merge with beakers, maybe)
 /obj/item/weapon/reagent_containers/food/drinks/glass
 	name = "drinking glass"
