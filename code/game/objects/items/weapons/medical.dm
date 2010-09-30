@@ -4,7 +4,38 @@ MEDICAL
 
 
 */
-
+/obj/item/weapon/medical/bandaid
+	name = "Band-aid"
+	desc = "A roll of bandaid"
+	icon_state = "brutepack"
+/obj/item/weapon/medical/bandaid/attack(mob/M as mob, mob/user as mob)
+	if(!ishuman(user))
+		user << "You can only do that on humanz"
+		return ..()
+	var/mob/living/carbon/human/MS = M
+	if(MS.bloodloss > 0)
+		var/t = user.zone_sel.selecting
+		var/datum/organ/external/temp = MS.organs["[t]"]
+		if(!temp)
+			return
+		for(var/datum/organ/external/wound/W in temp.wounds)
+			if(W.bleeding)
+				W.stopbleeding()
+				break
+		src.amount--
+		if (user)
+			if (M != user)
+				for (var/mob/O in viewers(MS, null))
+					O.show_message("\red [MS] has been bandaged with [src] by [user]", 1)
+			else
+				var/t_himself = "itself"
+				if (user.gender == MALE)
+					t_himself = "himself"
+				else if (user.gender == FEMALE)
+					t_himself = "herself"
+				for (var/mob/O in viewers(MS, null))
+					O.show_message("\red [MS] applied [src] on [t_himself]", 1)
+		return
 /obj/item/weapon/medical/examine()
 	set src in view(1)
 

@@ -76,7 +76,6 @@ datum
 					handle_reactions()
 
 					return total_transfered
-
 			metabolize(var/mob/M)
 				for(var/A in reagent_list)
 					var/datum/reagent/R = A
@@ -141,6 +140,9 @@ datum
 			update_total()
 				total_volume = 0
 				for(var/datum/reagent/R in reagent_list)
+					if(R.id == "blood")
+						if(R:blood_type)
+							R.description = "Type: [R:blood_type]<br>DNA: DATA EXPUNGED"
 					if(R.volume < 1)
 						del_reagent(R.id)
 					else

@@ -27,11 +27,13 @@ STUN BATON
 		src.force = 30
 		src.icon_state = "sword1"
 		src.w_class = 4
+		src.slash = 1
 	else
 		user << "\blue The sword can now be concealed."
 		src.force = 3
 		src.icon_state = "sword0"
 		src.w_class = 2
+		src.slash = 0
 	src.add_fingerprint(user)
 	return
 

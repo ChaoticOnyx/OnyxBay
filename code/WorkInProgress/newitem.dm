@@ -108,7 +108,7 @@
 
 	if (user.hand)
 		if(ishuman(user))
-			var/datum/organ/external/temp = organs["l_hand"]
+			var/datum/organ/external/temp = user:organs["l_hand"]
 			if(!temp.destoryed)
 				user.l_hand = src
 			else
@@ -118,9 +118,9 @@
 			user.l_hand = src
 	else
 		if(ishuman(user))
-			var/datum/organ/external/temp = organs["l_hand"]
+			var/datum/organ/external/temp = user:organs["r_hand"]
 			if(!temp.destoryed)
-				user.l_hand = src
+				user.r_hand = src
 			else
 				user << "\blue You pick \the [src] up with your ha- wait a minute."
 				return
@@ -150,7 +150,8 @@
 	src.layer = 20
 	user.update_clothing()
 	return
-
+/obj/item/var/superblunt = 0
+/obj/item/var/slash = 0
 /obj/item/proc/attack(mob/M as mob, mob/user as mob, def_zone)
 	if (!M) // not sure if this is the right thing...
 		return
@@ -182,6 +183,10 @@
 		var/datum/organ/external/affecting
 		if (H.organs[text("[]", def_zone)])
 			affecting = H.organs[text("[]", def_zone)]
+		if(affecting.destoryed)
+			for(var/mob/O in viewers(M, null))
+				O.show_message(text("\red <B>[user] has missed [M] with [src] </B>"),1)
+			return
 		var/hit_area = parse_zone(def_zone)
 		for(var/mob/O in viewers(M, null))
 			O.show_message(text("\red <B>[] has been attacked in the [] with [][] </B>", M, hit_area, src, (user ? text(" by [].", user) : ".")), 1)
@@ -193,7 +198,7 @@
 			if (def_zone == "head")
 				if (b_dam && (istype(H.head, /obj/item/clothing/head/helmet/) && H.head.body_parts_covered & HEAD) && prob(80 - src.force))
 					if (prob(20))
-						affecting.take_damage(power, 0)
+						affecting.take_damage(power, 0,slash,superblunt)
 					else
 						H.show_message("\red You have been protected from a hit to the head.")
 					return
@@ -238,7 +243,7 @@
 								user2.wear_suit.add_blood(H)
 							else if (user2.w_uniform)
 								user2.w_uniform.add_blood(H)
-				affecting.take_damage(b_dam, f_dam)
+				affecting.take_damage(b_dam, f_dam,slash,superblunt)
 			else if (def_zone == "chest")
 				if (b_dam && ((istype(H.wear_suit, /obj/item/clothing/suit/armor/)) && H.wear_suit.body_parts_covered & UPPER_TORSO) && prob(90 - src.force))
 					H.show_message("\red You have been protected from a hit to the chest.")
@@ -280,7 +285,7 @@
 								user2.wear_suit.add_blood(H)
 							else if (user2.w_uniform)
 								user2.w_uniform.add_blood(H)
-				affecting.take_damage(b_dam, f_dam)
+				affecting.take_damage(b_dam, f_dam,slash,superblunt)
 			else if (def_zone == "groin")
 				if (b_dam && (istype(H.wear_suit, /obj/item/clothing/suit/armor/) && H.wear_suit.body_parts_covered & LOWER_TORSO) && prob(90 - src.force))
 					H.show_message("\red You have been protected from a hit to the groin (phew).")
@@ -322,7 +327,7 @@
 									user2.wear_suit.add_blood(H)
 								else if (user2.w_uniform)
 									user2.w_uniform.add_blood(H)
-					affecting.take_damage(b_dam, f_dam)
+					affecting.take_damage(b_dam, f_dam,slash,superblunt)
 			else
 				if (b_dam && prob(25 + (b_dam * 2)))
 					src.add_blood(H)
@@ -349,8 +354,10 @@
 								user2.wear_suit.add_blood(H)
 							else if (user2.w_uniform)
 								user2.w_uniform.add_blood(H)
-				affecting.take_damage(b_dam, f_dam)
-		H.UpdateDamageIcon()
+				affecting.take_damage(b_dam, f_dam,slash,superblunt)
+
+		if(H)
+			H.UpdateDamageIcon()
 	else
 		switch(src.damtype)
 			if("brute")

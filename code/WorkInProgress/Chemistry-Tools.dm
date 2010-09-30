@@ -546,6 +546,19 @@
 			if("d")
 				if(ismob(target))
 					if(ismob(target) && target != user)
+						if(ishuman(target))
+							var/mob/living/carbon/human/H = target
+							for(var/mob/O in viewers(world.view, user))
+								O.show_message(text("\red <B>[] is trying to draw blood from []!</B>", user, target), 1)
+							if(!do_mob(user, target)) return
+							for(var/mob/O in viewers(world.view, user))
+								O.show_message(text("\red [] draws blood from []!", user, target), 1)
+							H.vessel.remove_reagent("blood",5)
+							reagents.add_reagent("blood",5)
+							for(var/datum/reagent/blood/B in reagents.reagent_list)
+								if(B.id == "blood")
+									B.copy_from(target)
+							return
 						for(var/mob/O in viewers(world.view, user))
 							O.show_message(text("\red <B>[] is trying to draw blood from []!</B>", user, target), 1)
 						if(!do_mob(user, target)) return
@@ -556,6 +569,9 @@
 							if(B.id == "blood")
 								B.copy_from(target)
 					if(ismob(target) && target == user)
+						if(ishuman(target))
+							var/mob/living/carbon/human/H = target
+							H.vessel.remove_reagent("blood",5)
 						reagents.add_reagent("blood",5)
 						for(var/datum/reagent/blood/B in reagents.reagent_list)
 							if(B.id == "blood")
@@ -592,6 +608,24 @@
 					return
 
 				if(ismob(target) && target != user)
+					if(ishuman(target))
+						var/mob/living/carbon/human/H = target
+						for(var/mob/O in viewers(world.view, user))
+							O.show_message(text("\red <B>[] is trying to inject []!</B>", user, target), 1)
+						if(!do_mob(user, target)) return
+						for(var/mob/O in viewers(world.view, user))
+							O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
+							return
+						var/datum/reagent/blood/B
+						for(var/datum/reagent/blood/d in reagents)
+							if(d.id == "blood")
+								B = d
+								break
+						reagents.remove_reagent("blood",5)
+						H.vessel.add_reagent("blood",5,null,B)
+						spawn(5)
+							user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
+						return
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red <B>[] is trying to inject []!</B>", user, target), 1)
 					if(!do_mob(user, target)) return
@@ -599,6 +633,18 @@
 						O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
 					src.reagents.reaction(target, INGEST)
 				if(ismob(target) && target == user)
+					if(ishuman(target))
+						var/mob/living/carbon/human/H = target
+						var/datum/reagent/blood/B
+						for(var/datum/reagent/blood/d in reagents)
+							if(d.id == "blood")
+								B = d
+								break
+						reagents.remove_reagent("blood",5)
+						H.vessel.add_reagent("blood",5,null,B)
+						spawn(5)
+							user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
+						return
 					src.reagents.reaction(target, INGEST)
 
 				spawn(5)
@@ -978,7 +1024,99 @@
 		reagents = R
 		R.my_atom = src
 		icon_state = "bottle[rand(1,20)]"
+/obj/item/weapon/reagent_containers/glass/bloodpack/
+	name = "Blood Pack"
+	desc = "A plastic bag of blood."
+	icon = 'chemical.dmi'
+	icon_state = "bottle16"
+	item_state = "atoxinbottle"
+	amount_per_transfer_from_this = 10
+	flags = FPRINT | TABLEPASS | OPENCONTAINER
 
+	New()
+		var/datum/reagents/R = new/datum/reagents(50)
+		reagents = R
+		R.my_atom = src
+		icon_state = "bottle[rand(1,20)]"
+/obj/item/weapon/reagent_containers/glass/bloodpack/A
+	name = "Blood Pack"
+	desc = "A plastic bag of blood with a sticker that says A."
+	icon = 'chemical.dmi'
+	icon_state = "bottle16"
+	item_state = "atoxinbottle"
+	amount_per_transfer_from_this = 10
+
+	New()
+		var/datum/reagents/R = new/datum/reagents(50)
+		reagents = R
+		R.my_atom = src
+		icon_state = "bottle[rand(1,20)]"
+		var/datum/reagent/blood/B = new()
+		reagents.reagent_list += B
+		B.holder = src
+		B.volume = 50
+		B.blood_type = "A"
+		B.description = "Type: [B.blood_type]<br>DNA: DATA EXPUNGED"
+		reagents.update_total()
+/obj/item/weapon/reagent_containers/glass/bloodpack/B
+	name = "Blood Pack"
+	desc = "A plastic bag of blood with a sticker that says B."
+	icon = 'chemical.dmi'
+	icon_state = "bottle16"
+	item_state = "atoxinbottle"
+	amount_per_transfer_from_this = 10
+
+	New()
+		var/datum/reagents/R = new/datum/reagents(50)
+		reagents = R
+		R.my_atom = src
+		icon_state = "bottle[rand(1,20)]"
+		var/datum/reagent/blood/B = new()
+		reagents.reagent_list += B
+		B.holder = src
+		B.volume = 50
+		B.blood_type = "B"
+		B.description = "Type: [B.blood_type]<br>DNA: DATA EXPUNGED"
+		R.update_total()
+/obj/item/weapon/reagent_containers/glass/bloodpack/O
+	name = "Blood Pack"
+	desc = "A plastic bag of blood with a sticker that says O."
+	icon = 'chemical.dmi'
+	icon_state = "bottle16"
+	item_state = "atoxinbottle"
+	amount_per_transfer_from_this = 10
+	New()
+		var/datum/reagents/R = new/datum/reagents(50)
+		reagents = R
+		R.my_atom = src
+		icon_state = "bottle[rand(1,20)]"
+		var/datum/reagent/blood/B = new()
+		reagents.reagent_list += B
+		B.holder = src
+		B.volume = 50
+		B.blood_type = "O"
+		B.description = "Type: [B.blood_type]<br>DNA: DATA EXPUNGED"
+		R.update_total()
+/obj/item/weapon/reagent_containers/glass/bloodpack/AB
+	name = "Blood Pack"
+	desc = "A plastic bag of blood with a sticker that says AB."
+	icon = 'chemical.dmi'
+	icon_state = "bottle16"
+	item_state = "atoxinbottle"
+	amount_per_transfer_from_this = 10
+
+	New()
+		var/datum/reagents/R = new/datum/reagents(50)
+		reagents = R
+		R.my_atom = src
+		icon_state = "bottle[rand(1,20)]"
+		var/datum/reagent/blood/B = new()
+		reagents.reagent_list += B
+		B.holder = src
+		B.volume = 50
+		B.blood_type = "AB"
+		B.description = "Type: [B.blood_type]<br>DNA: DATA EXPUNGED"
+		R.update_total()
 /obj/item/weapon/reagent_containers/glass/bottle/inaprovaline
 	name = "inaprovaline bottle"
 	desc = "A small bottle. Contains inaprovaline - used to stabilize patients."

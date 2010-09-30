@@ -110,6 +110,7 @@
 	throwforce = 25.0
 	throw_speed = 1
 	throw_range = 5
+	slash = 1
 	w_class = 3.0
 	flags = FPRINT | CONDUCT | NOSHIELD | TABLEPASS
 
@@ -927,6 +928,7 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	flags = FPRINT | TABLEPASS| CONDUCT
 	force = 5.0
 	w_class = 1.0
+	slash = 1
 	throwforce = 5.0
 	throw_speed = 3
 	throw_range = 5
@@ -940,6 +942,7 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	desc = "Could probably be used as ... a throwing weapon?"
 	w_class = 3.0
 	force = 5.0
+	slash = 1
 	throwforce = 15.0
 	item_state = "shard-glass"
 
@@ -1174,6 +1177,7 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	icon_state = "cutters"
 	flags = FPRINT | TABLEPASS| CONDUCT
 	force = 6.0
+	slash = 1
 	throw_speed = 2
 	throw_range = 9
 	w_class = 2.0
@@ -1335,6 +1339,7 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	flags = FPRINT | TABLEPASS | CONDUCT
 	force = 10.0
 	w_class = 1.0
+	slash = 1
 	throwforce = 5.0
 	throw_speed = 3
 	throw_range = 5
@@ -1348,6 +1353,7 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	flags = FPRINT | TABLEPASS | CONDUCT
 	force = 10.0
 	w_class = 1.0
+	slash = 1
 	throwforce = 5.0
 	throw_speed = 3
 	throw_range = 5
@@ -1362,6 +1368,7 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	flags = FPRINT | TABLEPASS | CONDUCT
 	force = 15.0
 	w_class = 1.0
+	slash = 1
 	throwforce = 9.0
 	throw_speed = 3
 	throw_range = 5

@@ -176,6 +176,18 @@ GAS ANALYZER
 		if(I.contaminated)
 			user.show_message("\red <b>Warning: Plasma Contaminated Items Detected</b>\nAnalysis and cleaning or disposal of affected items is necessary.",1)
 			break
+	if(ishuman(M))
+		if(M:vessel)
+			var/amt = M:vessel.get_reagent_amount("blood")
+			var/lol = round(amt)
+			var/calc =  lol / 560
+			calc *= 100
+			if(amt <= 448)
+				user.show_message("\red <b>Warning: Blood Level LOW: [calc]% [amt]ml")
+			else if(amt <= 336)
+				user.show_message("\red <b>Warning: Blood Level CRITICAL: [calc]% [amt]ml")
+			else
+				user.show_message("\blue Blood Level Normal: [calc]% [amt]ml")
 	src.add_fingerprint(user)
 	return
 /obj/item/device/healthanalyzer/afterattack(atom/A as mob|obj|turf, mob/user as mob)
