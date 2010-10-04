@@ -723,7 +723,7 @@ obj/item/brain
 	icon_state = "ore"
 	var/amt = 1
 	var/cook = 0
-	var/cook_temp = 500
+	var/cook_temp = 1000
 	var/cook_time = 30
 
 
