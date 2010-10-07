@@ -724,6 +724,11 @@
 	icon_state = "yellow"
 
 
+/area/solar/asteroid
+	name = "Mining Base Solar Array"
+	icon_state = "yellow"
+
+
 /area/solar/aft
 	name = "Aft Solar Array"
 	icon_state = "aft"
@@ -1024,6 +1029,11 @@
 	icon_state = "asbase"
 	applyalertstatus = 0
 
+
+/area/asteroid/base/Refinery
+	name = "Refinery"
+	icon_state = "asbase"
+	applyalertstatus = 0
 
 
 

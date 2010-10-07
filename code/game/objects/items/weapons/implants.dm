@@ -286,6 +286,7 @@ No Implant Specifics"}
 			src.virus =/datum/disease/cold
 		if("Space Rhinovirus")
 			src.virus = /datum/disease/dnaspread
+
 	//	else if("GBS")
 	//		src.virus =/datum/disease/gbs
 

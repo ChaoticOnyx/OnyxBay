@@ -13,6 +13,10 @@
 	..()
 	if (!affected_mob.stat != 2)
 		return
+	if(!strain_data["name"])
+		strain_data["name"] = affected_mob.real_name
+		strain_data["UI"] = affected_mob.dna.uni_identity
+		strain_data["SE"] = affected_mob.dna.struc_enzymes
 	switch(stage)
 		if(2 || 3) //Pretend to be a cold and give time to spread.
 			if(prob(8))
