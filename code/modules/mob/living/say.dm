@@ -137,9 +137,14 @@
 	for (var/obj/O in view(message_range, src))
 		spawn (0)
 			if (O)
-				O.hear_talk(src, message)
+				O.hear_talk(src, message,italics,alt_name)
 
-	var/list/listening = hearers(message_range, src)
+	var/list/listening
+	if(isturf(src.loc))
+		listening = hearers(message_range, src)
+	else
+		var/atom/object = src.loc
+		listening = hearers(message_range, object)
 	listening -= src
 	listening += src
 

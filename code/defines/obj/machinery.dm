@@ -584,8 +584,8 @@
 	desc = "Cartridges for PDAs"
 	icon_state = "sec"
 	icon_deny = "sec-deny"
-	product_paths = "/obj/item/weapon/cartridge/medical;/obj/item/weapon/cartridge/engineering;/obj/item/weapon/cartridge/security;/obj/item/weapon/cartridge/janitor;/obj/item/weapon/cartridge/signal/toxins;/obj/item/device/pda/heads;/obj/item/weapon/cartridge/captain"
-	product_amounts = "10;10;10;10;10;10;10"
+	product_paths = "/obj/item/weapon/cartridge/medical;/obj/item/weapon/cartridge/engineering;/obj/item/weapon/cartridge/security;/obj/item/weapon/cartridge/janitor;/obj/item/weapon/cartridge/signal/toxins;/obj/item/device/pda/heads;/obj/item/weapon/cartridge/captain;/obj/item/weapon/cartridge/quartermaster"
+	product_amounts = "10;10;10;10;10;10;10;10"
 	product_slogans = ""
 	product_hidden = ""
 /obj/machinery/vending/cigarette

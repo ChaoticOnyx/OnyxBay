@@ -193,6 +193,27 @@
 		spawn(150)
 			autoclose()
 	return 1
+/obj/machinery/door/proc/forceopen()
+	if(!density)
+		return 1
+	if (!ticker)
+		return 0
+
+	animate("opening")
+	sleep(10)
+	src.density = 0
+	update_icon()
+
+	src.ul_SetOpacity(0)
+	update_nearby_tiles()
+
+	if(operating == 1) //emag again
+		src.operating = 0
+
+	if(autoclose)
+		spawn(150)
+			autoclose()
+	return 1
 
 /obj/machinery/door/proc/close()
 	if(density)

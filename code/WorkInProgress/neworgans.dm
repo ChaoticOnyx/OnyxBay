@@ -21,6 +21,7 @@
 	var/broken = 0
 	var/destoryed = 0
 	var/destspawn
+	var/obj/item/weapon/implant/implant = null
 	var/min_broken_damage = 30
 	var/datum/organ/external/parent
 	var/damage_msg = "\red You feel a intense pain"

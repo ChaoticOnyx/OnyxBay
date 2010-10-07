@@ -180,6 +180,8 @@
 	return ..()
 
 /obj/crate/secure/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(user,/mob/living/silicon))
+		return attack_hand(user)
 	if(istype(W, /obj/item/weapon/card) && src.allowed(user) && !locked && !opened && !broken)
 		user << "\red You lock the [src]."
 		src.locked = 1
@@ -203,6 +205,8 @@
 	return attack_hand(user)
 
 /obj/crate/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(user,/mob/living/silicon))
+		return attack_hand(user)
 	if(opened)
 		user.drop_item()
 		W.loc = src.loc

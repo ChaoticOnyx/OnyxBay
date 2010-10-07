@@ -26,12 +26,24 @@ STUN BATON
 		user << "\blue The sword is now active."
 		src.force = 30
 		src.icon_state = "sword1"
+		if(src.blood_DNA)
+			var/icon/I = new /icon(initial(src.icon), src.icon_state)
+			I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+			I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+			I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
+			src.icon = I
 		src.w_class = 4
 		src.slash = 1
 	else
 		user << "\blue The sword can now be concealed."
 		src.force = 3
 		src.icon_state = "sword0"
+		if(src.blood_DNA)
+			var/icon/I = new /icon(initial(src.icon), src.icon_state)
+			I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+			I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+			I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
+			src.icon = I
 		src.w_class = 2
 		src.slash = 0
 	src.add_fingerprint(user)
@@ -68,7 +80,12 @@ STUN BATON
 		icon_state = "stunbaton_active"
 	else
 		icon_state = "stunbaton"
-
+	if(src.blood_DNA)
+		var/icon/I = new /icon(initial(src.icon), src.icon_state)
+		I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+		I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+		I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
+		src.icon = I
 /obj/item/weapon/baton/attack_self(mob/user as mob)
 	src.status = !( src.status )
 	if ((usr.mutations & 16) && prob(50))

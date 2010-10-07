@@ -469,7 +469,12 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	var/ratio = src.charges / maximum_charges
 	ratio = round(ratio, 0.25) * 100
 	src.icon_state = text("taser[]", ratio)
-
+	if(src.blood_DNA)
+		var/icon/I = new /icon(initial(src.icon), src.icon_state)
+		I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+		I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+		I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
+		src.icon = I
 /obj/item/weapon/gun/energy/taser_gun/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
 	if(flag)
 		return
@@ -668,7 +673,12 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	var/ratio = src.charges / maximum_charges
 	ratio = round(ratio, 0.25) * 100
 	src.icon_state = text("taser[]", ratio)
-
+	if(src.blood_DNA)
+		var/icon/I = new /icon(initial(src.icon), src.icon_state)
+		I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+		I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+		I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
+		src.icon = I
 /obj/item/weapon/gun/energy/teleport_gun/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
 	if(flag)
 		return
@@ -777,7 +787,12 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		var/ratio = src.charges / maximum_charges
 		ratio = round(ratio, 0.25) * 100
 		src.icon_state = text("energy[]", ratio)
-
+		if(src.blood_DNA)
+			var/icon/I = new /icon(initial(src.icon), src.icon_state)
+			I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+			I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+			I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
+			src.icon = I
 	afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
 		if ((usr.mutations & 16) && prob(50))
 			usr << "\red The energy gun blows up in your face."

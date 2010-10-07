@@ -347,6 +347,12 @@
 					if("b_type")
 						if (istype(src.active2, /datum/data/record))
 							src.temp = text("<B>Blood Type:</B><BR>\n\t<A href='?src=\ref[];temp=1;b_type=an'>A-</A> <A href='?src=\ref[];temp=1;b_type=ap'>A+</A><BR>\n\t<A href='?src=\ref[];temp=1;b_type=bn'>B-</A> <A href='?src=\ref[];temp=1;b_type=bp'>B+</A><BR>\n\t<A href='?src=\ref[];temp=1;b_type=abn'>AB-</A> <A href='?src=\ref[];temp=1;b_type=abp'>AB+</A><BR>\n\t<A href='?src=\ref[];temp=1;b_type=on'>O-</A> <A href='?src=\ref[];temp=1;b_type=op'>O+</A><BR>", src, src, src, src, src, src, src, src)
+					if("bloodsample")
+						if (istype(src.active2, /datum/data/record))
+							var/t1 = input("Please input DNA:", "Med. records", src.active2.fields["bloodsample"], null)  as text
+							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active2 != a2))
+								return
+							src.active2.fields["bloodsample"] = t1
 					else
 
 			if (href_list["p_stat"])

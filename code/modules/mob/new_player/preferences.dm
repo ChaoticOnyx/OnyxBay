@@ -14,7 +14,7 @@ datum/preferences
 
 	var/h_style = "Short Hair"
 	var/f_style = "Shaved"
-
+	var/slotname
 	var/r_hair = 0.0
 	var/g_hair = 0.0
 	var/b_hair = 0.0
@@ -244,7 +244,7 @@ datum/preferences
 		var/dat = "<body>"
 		dat += "<tt><center>"
 		var/list/slot = list()
-		var/list/slotname = list()
+		var/list/slots = list()
 		var/DBQuery/query = dbcon.NewQuery("SELECT `slot`,`slotname` FROM `players` WHERE ckey='[usr.ckey]'")
 		if(!query.Execute())
 			usr << "ERROR"
@@ -253,7 +253,7 @@ datum/preferences
 			slot += row["slot"]
 			var/T = row["slot"]
 			var/K = row["slotname"]
-			slotname += row["slotname"]
+			slots += row["slotname"]
 			dat += "<a href='byond://?src=\ref[user];preferences=1;loadslot=[T]'>Load Slot [T]([K]) </a><a href='byond://?src=\ref[user];preferences=1;removeslot=[T]'>(R)</a><br><br>"
 
 		dat += "<a href='byond://?src=\ref[user];preferences=1;loadslot=CLOSE'>Close</a><br>"
@@ -538,7 +538,7 @@ datum/preferences
 		if(!IsGuestKey(user.key))
 			if(link_tags["saveslot"])
 				var/slot = link_tags["saveslot"]
-				var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `underwear`,`name_is_always_random`) VALUES ('[user.ckey]','[slot]' ,'[real_name]', '[lowertext(gender)]', '[age]', '[occupation1]','[occupation2]', '[occupation3]', '[r_hair]', '[g_hair]', '[b_hair]', '[r_facial]', '[g_facial]', '[b_facial]', '[s_tone]', '[h_style]', '[f_style]', '[r_eyes]', '[g_eyes]', '[b_eyes]', '[b_type]', '[be_syndicate]', '[underwear]','[be_random_name]');")
+				var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`slotname`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `underwear`,`name_is_always_random`) VALUES ('[user.ckey]','[slot]','[slotname]' ,'[real_name]', '[lowertext(gender)]', '[age]', '[occupation1]','[occupation2]', '[occupation3]', '[r_hair]', '[g_hair]', '[b_hair]', '[r_facial]', '[g_facial]', '[b_facial]', '[s_tone]', '[h_style]', '[f_style]', '[r_eyes]', '[g_eyes]', '[b_eyes]', '[b_type]', '[be_syndicate]', '[underwear]','[be_random_name]');")
 				if(!query.Execute())
 					usr << query.ErrorMsg()
 					usr << "Report this."

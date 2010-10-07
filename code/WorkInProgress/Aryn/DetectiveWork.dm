@@ -100,6 +100,8 @@ obj/machinery/computer/forensic_scanning
 					dat += "<br><a href='?src=\ref[src];operation=erase'>{Erase Data}</a>"
 		user << browse(dat,"window=scanner")
 		onclose(user,"scanner")
+	ex_act()
+		return
 	Topic(href,href_list)
 		switch(href_list["operation"])
 			if("login")
@@ -238,7 +240,7 @@ turf/Entered(mob/living/carbon/human/M)
 			M.track_blood--
 			src.add_bloody_footprints(M.track_blood_mob,0,M.dir,get_tracks(M))
 		else if(istype(M,/mob/living/carbon/human))
-			if(M.shoes)
+			if(M.shoes && !istype(src,/turf/space))
 				if(M.shoes.track_blood > 0)
 					M.shoes.track_blood--
 					src.add_bloody_footprints(M.shoes.track_blood_mob,0,M.dir,M.shoes.name)

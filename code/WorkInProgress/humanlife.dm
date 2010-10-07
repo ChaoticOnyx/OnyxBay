@@ -338,6 +338,7 @@
 
 /mob/living/carbon/human/handle_chemicals_in_body()
 	if(reagents) reagents.metabolize(src)
+	if(vessel) vessel.metabolize(src)
 
 	for(var/obj/item/I in src)
 		if(I.contaminated) toxloss += vsc.plc.CONTAMINATION_LOSS

@@ -16,7 +16,11 @@
 	set name = "Ghost"
 	set desc = "You cannot be revived as a ghost"
 	if(client)
-		client.mob = new/mob/dead/observer(src)
+		if(isturf(src.loc))
+			client.mob = new/mob/dead/observer(src)
+		else
+			var/atom/object = src.loc
+			client.mob = new/mob/dead/observer(object.loc)
 	return
 
 /mob/dead/observer/Move(NewLoc, direct)

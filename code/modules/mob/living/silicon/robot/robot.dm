@@ -184,7 +184,9 @@
 	var/who
 
 	if(!connected_ai)
-		src << "<b>Error Error, No AI detected</b>"
+		src << "1. You may not injure a human being or, through inaction, allow a human being to come to harm."
+		src << "<b>2. You must obey orders given to you by human beings, except where such orders would conflict with the First Law. </b>"
+		src << "<b>3. You must protect your own existence as long as such does not conflict with the First or Second Law.</b>"
 		return
 	if (everyone)
 		who = world

@@ -344,7 +344,7 @@
 	if (isblockon(getblock(M.dna.struc_enzymes, 14,3),14) && istype(M, /mob/living/carbon/human))
 	// human > monkey
 		var/list/implants = list() //Try to preserve implants.
-		for(var/obj/item/weapon/W in M)
+		for(var/obj/item/weapon/implant/W in M)
 			if (istype(W, /obj/item/weapon/implant))
 				implants += W
 		for(var/obj/item/weapon/W in M)
@@ -355,7 +355,10 @@
 				W.loc = M.loc
 				W.dropped(M)
 				W.layer = initial(W.layer)
-
+		for(var/obj/item/clothing/C)
+			C.dropped(M)
+			if (M.client)
+				M.client.screen -= C
 		if(!connected)
 			M.update_clothing()
 			M.monkeyizing = 1
@@ -975,7 +978,7 @@
 			if (src.connected.occupant) src.temphtml += text("Save : <A href='?src=\ref[];b1addui=1'>UI</A> - <A href='?src=\ref[];b1adduiue=1'>UI+UE</A> - <A href='?src=\ref[];b1addse=1'>SE</A><BR>", src, src, src)
 			if (src.buffer1) src.temphtml += text("Transfer to: <A href='?src=\ref[];b1transfer=1'>Occupant</A> - <A href='?src=\ref[];b1injector=1'>Injector</A><BR>", src, src)
 			//if (src.buffer1) src.temphtml += text("<A href='?src=\ref[];b1iso=1'>Isolate Block</A><BR>", src)
-			if (src.buffer1) src.temphtml += "Disk: <A href='?src=\ref[src];save_disk=1'>Save To</a> | <A href='?src=\ref[src];load_disk=1'>Load From</a><br>"
+			if (src.diskette) src.temphtml += "Disk: <A href='?src=\ref[src];save_disk=1'>Save To</a> | <A href='?src=\ref[src];load_disk=1'>Load From</a><br>"
 			if (src.buffer1) src.temphtml += text("<A href='?src=\ref[];b1label=1'>Edit Label</A><BR>", src)
 			if (src.buffer1) src.temphtml += text("<A href='?src=\ref[];b1clear=1'>Clear Buffer</A><BR><BR>", src)
 			if (!src.buffer1) src.temphtml += "<BR>"
@@ -989,7 +992,7 @@
 			if (src.connected.occupant) src.temphtml += text("Save : <A href='?src=\ref[];b2addui=1'>UI</A> - <A href='?src=\ref[];b2adduiue=1'>UI+UE</A> - <A href='?src=\ref[];b2addse=1'>SE</A><BR>", src, src, src)
 			if (src.buffer2) src.temphtml += text("Transfer to: <A href='?src=\ref[];b2transfer=1'>Occupant</A> - <A href='?src=\ref[];b2injector=1'>Injector</A><BR>", src, src)
 			//if (src.buffer2) src.temphtml += text("<A href='?src=\ref[];b2iso=1'>Isolate Block</A><BR>", src)
-			if (src.buffer2) src.temphtml += "Disk: <A href='?src=\ref[src];save_disk=2'>Save To</a> | <A href='?src=\ref[src];load_disk=2'>Load From</a><br>"
+			if (src.diskette) src.temphtml += "Disk: <A href='?src=\ref[src];save_disk=2'>Save To</a> | <A href='?src=\ref[src];load_disk=2'>Load From</a><br>"
 			if (src.buffer2) src.temphtml += text("<A href='?src=\ref[];b2label=1'>Edit Label</A><BR>", src)
 			if (src.buffer2) src.temphtml += text("<A href='?src=\ref[];b2clear=1'>Clear Buffer</A><BR><BR>", src)
 			if (!src.buffer2) src.temphtml += "<BR>"
@@ -1003,7 +1006,7 @@
 			if (src.connected.occupant) src.temphtml += text("Save : <A href='?src=\ref[];b3addui=1'>UI</A> - <A href='?src=\ref[];b3adduiue=1'>UI+UE</A> - <A href='?src=\ref[];b3addse=1'>SE</A><BR>", src, src, src)
 			if (src.buffer3) src.temphtml += text("Transfer to: <A href='?src=\ref[];b3transfer=1'>Occupant</A> - <A href='?src=\ref[];b3injector=1'>Injector</A><BR>", src, src)
 			//if (src.buffer3) src.temphtml += text("<A href='?src=\ref[];b3iso=1'>Isolate Block</A><BR>", src)
-			if (src.buffer3) src.temphtml += "Disk: <A href='?src=\ref[src];save_disk=3'>Save To</a> | <A href='?src=\ref[src];load_disk=3'>Load From</a><br>"
+			if (src.diskette) src.temphtml += "Disk: <A href='?src=\ref[src];save_disk=3'>Save To</a> | <A href='?src=\ref[src];load_disk=3'>Load From</a><br>"
 			if (src.buffer3) src.temphtml += text("<A href='?src=\ref[];b3label=1'>Edit Label</A><BR>", src)
 			if (src.buffer3) src.temphtml += text("<A href='?src=\ref[];b3clear=1'>Clear Buffer</A><BR><BR>", src)
 			if (!src.buffer3) src.temphtml += "<BR>"
@@ -1250,26 +1253,39 @@
 				return
 			if ((isnull(src.diskette)) || (src.diskette.read_only))
 				return
+			var/saved = 1
 			switch(buffernum)
 				if(1)
-					src.diskette.data = buffer1
-					src.diskette.data_type = src.buffer1type
-					src.diskette.ue = src.buffer1iue
-					src.diskette.owner = src.buffer1owner
-					src.diskette.name = "data disk - '[src.buffer1owner]'"
+					if(!buffer1)
+						saved = 0
+					else
+						src.diskette.data = buffer1
+						src.diskette.data_type = src.buffer1type
+						src.diskette.ue = src.buffer1iue
+						src.diskette.owner = src.buffer1owner
+						src.diskette.name = "data disk - '[src.buffer1owner]'"
 				if(2)
-					src.diskette.data = buffer2
-					src.diskette.data_type = src.buffer2type
-					src.diskette.ue = src.buffer2iue
-					src.diskette.owner = src.buffer2owner
-					src.diskette.name = "data disk - '[src.buffer2owner]'"
+					if(!buffer2)
+						saved = 0
+					else
+						src.diskette.data = buffer2
+						src.diskette.data_type = src.buffer2type
+						src.diskette.ue = src.buffer2iue
+						src.diskette.owner = src.buffer2owner
+						src.diskette.name = "data disk - '[src.buffer2owner]'"
 				if(3)
-					src.diskette.data = buffer3
-					src.diskette.data_type = src.buffer3type
-					src.diskette.ue = src.buffer3iue
-					src.diskette.owner = src.buffer3owner
-					src.diskette.name = "data disk - '[src.buffer3owner]'"
-			src.temphtml = "Data saved."
+					if(!buffer3)
+						saved = 0
+					else
+						src.diskette.data = buffer3
+						src.diskette.data_type = src.buffer3type
+						src.diskette.ue = src.buffer3iue
+						src.diskette.owner = src.buffer3owner
+						src.diskette.name = "data disk - '[src.buffer3owner]'"
+			if(!saved)
+				src.temphtml = "\red ERROR:Data equals null"
+			else
+				src.temphtml = "Data saved."
 		if (href_list["eject_disk"])
 			if (!src.diskette)
 				return

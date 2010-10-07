@@ -271,9 +271,6 @@ obj/machinery/atmospherics/pipe
 						connect(node2old,2)
 					user << "\blue You repair [src]"
 					del(W)
-		verb/test()
-			set src in view(5)
-			disconnect(node1)
 	simple/multiz
 		icon = 'multiz_pipe.dmi'
 		var/dir2 = 0

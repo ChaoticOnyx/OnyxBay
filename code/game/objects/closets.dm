@@ -63,7 +63,8 @@
 	for (var/mob/M in src.loc)
 		if (M.buckled)
 			continue
-
+		if(istype(M,/mob/dead))
+			continue
 		if (M.client)
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src

@@ -8,6 +8,7 @@
 	icon = 'Cryogenic2.dmi'
 	icon_state = "sleeper_0"
 	density = 1
+	anchored = 1
 
 /obj/machinery/bodyscanner/allow_drop()
 	return 0
@@ -165,6 +166,7 @@
 	icon = 'computer.dmi'
 	icon_state = "scanner"
 	density = 1
+	anchored = 1
 
 
 /obj/machinery/body_scanconsole/New()
