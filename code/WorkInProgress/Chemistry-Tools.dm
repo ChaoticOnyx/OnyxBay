@@ -1039,7 +1039,7 @@
 		R.my_atom = src
 		icon_state = "bottle[rand(1,20)]"
 /obj/item/weapon/reagent_containers/glass/bloodpack/A
-	name = "Blood Pack"
+	name = "Blood Pack A"
 	desc = "A plastic bag of blood with a sticker that says A."
 	icon = 'chemical.dmi'
 	icon_state = "bottle16"
@@ -1059,7 +1059,7 @@
 		B.description = "Type: [B.blood_type]<br>DNA: DATA EXPUNGED"
 		reagents.update_total()
 /obj/item/weapon/reagent_containers/glass/bloodpack/B
-	name = "Blood Pack"
+	name = "Blood Pack B"
 	desc = "A plastic bag of blood with a sticker that says B."
 	icon = 'chemical.dmi'
 	icon_state = "bottle16"
@@ -1079,7 +1079,7 @@
 		B.description = "Type: [B.blood_type]<br>DNA: DATA EXPUNGED"
 		R.update_total()
 /obj/item/weapon/reagent_containers/glass/bloodpack/O
-	name = "Blood Pack"
+	name = "Blood Pack O"
 	desc = "A plastic bag of blood with a sticker that says O."
 	icon = 'chemical.dmi'
 	icon_state = "bottle16"
@@ -1098,7 +1098,7 @@
 		B.description = "Type: [B.blood_type]<br>DNA: DATA EXPUNGED"
 		R.update_total()
 /obj/item/weapon/reagent_containers/glass/bloodpack/AB
-	name = "Blood Pack"
+	name = "Blood Pack AB"
 	desc = "A plastic bag of blood with a sticker that says AB."
 	icon = 'chemical.dmi'
 	icon_state = "bottle16"

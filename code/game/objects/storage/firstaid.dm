@@ -25,7 +25,7 @@
 	..()
 	new /obj/item/weapon/medical/bruise_pack(src)
 	new /obj/item/weapon/medical/bruise_pack(src)
-	new /obj/item/weapon/medical/bruise_pack(src)
+	new /obj/item/weapon/medical/bandaid(src)
 	new /obj/item/weapon/medical/ointment(src)
 	new /obj/item/weapon/medical/ointment(src)
 	new /obj/item/device/healthanalyzer(src)
