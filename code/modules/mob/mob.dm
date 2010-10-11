@@ -1383,8 +1383,8 @@ mob/verb/turnwest()
 /mob/proc/store_memory(msg as message, popup, sane = 1)
 	msg = copytext(msg, 1, MAX_MESSAGE_LEN)
 
-	if (sane)
-		msg = sanitize(msg)
+	//if (sane)
+		//msg = sanitize(msg)
 
 	if (length(memory) == 0)
 		memory += msg

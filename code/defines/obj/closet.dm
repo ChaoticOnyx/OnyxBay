@@ -227,7 +227,15 @@
 	icon_broken = "medicalbroken"
 	icon_off = "medical1"
 	req_access = list(access_medical)
-
+/obj/secure_closet/medical3
+	name = "Blood Freezer"
+	icon_state = "medical1"
+	icon_closed = "medical"
+	icon_locked = "medical1"
+	icon_opened = "medicalopen"
+	icon_broken = "medicalbroken"
+	icon_off = "medical1"
+	req_access = list(access_medical)
 /obj/secure_closet/chemical
 	name = "Chemical Closet"
 	icon_state = "medical1"
