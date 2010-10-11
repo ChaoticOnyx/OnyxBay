@@ -134,7 +134,12 @@
 	vessel.my_atom = src
 	vessel.add_reagent("blood",560)
 	update_clothing()
-
+	spawn(10) fixblood()
+/mob/living/carbon/human/proc/fixblood()
+	for(var/datum/reagent/blood/B in vessel.reagent_list)
+		if(B.id == "blood")
+			B.blood_type = src.b_type
+			B.blood_DNA = src.dna.unique_enzymes
 /mob/living/carbon/human/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!( yes ) || now_pushing))
 		return
