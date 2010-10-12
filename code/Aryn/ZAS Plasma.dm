@@ -107,6 +107,8 @@ obj/item/proc
 		if(ears.can_contaminate()) ears.contaminated = 1
 
 /mob/living/carbon/proc/pl_effects()
+	if(stat >= 2)
+		return
 	if(vsc.plc.SKIN_BURNS)
 		if(!pl_head_protected() || !pl_suit_protected())
 			burn_skin(0.75)

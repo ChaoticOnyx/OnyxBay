@@ -1484,8 +1484,7 @@
 					w_uniform.add_fingerprint(M)
 				var/damage = rand(1, 9)
 				var/datum/organ/external/affecting = organs["chest"]
-				var/t = M.zone_sel.selecting
-
+				var/t
 				if(M.zombie)
 					var/def_zone = ran_zone(t)
 					if(organs["[def_zone]"])
@@ -1512,7 +1511,7 @@
 					UpdateDamageIcon()
 					updatehealth()
 					return
-
+				t = M.zone_sel.selecting
 				if ((t in list( "eyes", "mouth" )))
 					t = "head"
 				var/def_zone = ran_zone(t)
@@ -1677,6 +1676,13 @@
 		lying_icon.Blend(rgb(100,100,100))
 
 /mob/living/carbon/human/proc/update_face()
+	if(organs)
+		var/datum/organ/external/org = organs["head"]
+		if(org)
+			if(org.destoryed)
+				del(face_standing)
+				del(face_lying)
+				return
 	del(face_standing)
 	del(face_lying)
 

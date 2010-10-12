@@ -209,6 +209,8 @@
 					var/obj/item/weapon/organ/head/H = new(owner.loc)
 					var/lol = pick(cardinal)
 					step(H,lol)
+					owner:update_face()
+					owner:update_body()
 					return
 				if(name == "r arm")
 					var/obj/item/weapon/organ/r_arm/H = new(owner.loc)

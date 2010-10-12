@@ -22,6 +22,10 @@
 					var/obj/item/weapon/organ/head/H = new(owner.loc)
 					var/lol = pick(cardinal)
 					step(H,lol)
+					destoryed = 1
+					owner:update_face()
+					owner:update_body()
+					owner.death()
 					return
 				if(name == "r arm")
 					var/obj/item/weapon/organ/r_arm/H = new(owner.loc)
@@ -83,7 +87,7 @@
 			createwound(rand(1,5))
 			owner << "You feel something wet on your [display_name]"
 			goto damage
-	if(brute >= max_damage)
+/*	if(brute >= max_damage)
 		destoryed = 1
 		if(name == "chest")
 			for(var/mob/M in viewers(owner))
@@ -98,7 +102,7 @@
 			for(var/mob/M in viewers(owner))
 				M.show_message("\red [owner.name]'s [display_name] explodes into gore.")
 		owner:update_body()
-		return
+		return*/
 	damage
 	if ((brute_dam + burn_dam + brute + burn) < max_damage)
 		brute_dam += brute

@@ -273,7 +273,7 @@
 				if(D.density)
 					trg_idle = D
 					path_idle(trg_idle)
-					world << "FOUND DOOR"
+				//	world << "FOUND DOOR"
 					step_towards_3d(src,trg_idle)
 					spawn(cycle_pause) src.idle()
 					return
