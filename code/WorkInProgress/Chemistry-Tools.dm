@@ -617,12 +617,16 @@
 							O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
 							return
 						var/datum/reagent/blood/B
-						for(var/datum/reagent/blood/d in reagents)
+						for(var/datum/reagent/blood/d in reagents.reagent_list)
 							if(d.id == "blood")
 								B = d
 								break
 						reagents.remove_reagent("blood",5)
-						H.vessel.add_reagent("blood",5,null,B)
+						H.vessel.add_reagent("blood",5)
+						for(var/datum/reagent/blood/C in H.vessel.reagent_list)
+							if(C.id == "blood")
+								C.blood_type = B.blood_type
+								C.blood_DNA = B.blood_DNA
 						spawn(5)
 							user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
 						return
@@ -636,12 +640,16 @@
 					if(ishuman(target))
 						var/mob/living/carbon/human/H = target
 						var/datum/reagent/blood/B
-						for(var/datum/reagent/blood/d in reagents)
+						for(var/datum/reagent/blood/d in reagents.reagent_list)
 							if(d.id == "blood")
 								B = d
 								break
 						reagents.remove_reagent("blood",5)
-						H.vessel.add_reagent("blood",5,null,B)
+						H.vessel.add_reagent("blood",5)
+						for(var/datum/reagent/blood/C in H.vessel.reagent_list)
+							if(C.id == "blood")
+								C.blood_type = B.blood_type
+								C.blood_DNA = B.blood_DNA
 						spawn(5)
 							user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
 						return

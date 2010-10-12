@@ -217,13 +217,14 @@
 				else
 					if(prob(25))
 						bloodloss++
-	if(bloodloss && stat < 2)
-		drip(bloodloss)
+	if(stat < 2)
 		var/amt = vessel.get_reagent_amount("blood")
 		var/lol = round(amt)
+		if(bloodloss)
+			drip(bloodloss)
 		if(!lol)
 			bloodloss = 0
-		if(lol > 448)
+		else if(lol > 448)
 			if(pale)
 				pale = 0
 				updatepale()

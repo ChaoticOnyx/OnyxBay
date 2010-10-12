@@ -186,7 +186,7 @@ datum
 					M:toxloss += 1.5
 					M:oxyloss += 1.5
 					M:toxins_alert = max(1,M:toxins_alert)
-				..()
+					..()
 				return
 
 			reaction_mob(mob/M,method)
