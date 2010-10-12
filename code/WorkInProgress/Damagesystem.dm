@@ -2306,13 +2306,13 @@
 	else
 		return 0
 	return
-/mob/living/carbon/human/verb/eat(var/text as text)
+/*/mob/living/carbon/human/verb/eat(var/text as text)
 	set src in view(5)
 	for(var/datum/organ/external/l in organs2)
 		if(l.name == text)
 			l.destoryed = 1
 			break
-	update_body()
+	update_body()*/
 // new damage icon system
 // now constructs damage icon for each organ from mask * damage field
 
