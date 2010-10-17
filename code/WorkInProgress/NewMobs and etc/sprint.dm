@@ -6,6 +6,6 @@
 		sprinting = 1
 		sprintcool = 1
 		spawn(150) sprinting = 0
-		spawn(300) sprintcool = 0
+		spawn(600) sprintcool = 0
 	else
 		usr << "You don't feel up too it."

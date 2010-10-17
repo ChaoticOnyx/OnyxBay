@@ -52,7 +52,7 @@ macro "macro"
 		command = ".south"
 		is-disabled = false
 	elem 
-		name = "SHIFT+S"
+		name = "ALT+S"
 		command = "sprint"
 		is-disabled = false
 	elem 
