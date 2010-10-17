@@ -617,7 +617,6 @@
 							B = d
 							break
 						if(B)//FIND BACK
-							world << "BLOOD"
 							var/datum/reagents/R = new/datum/reagents(5)
 							H.vessel.add_reagent("blood",5,B)
 							src.reagents.remove_reagent("blood",5)
@@ -630,7 +629,6 @@
 								user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
 							return
 						else
-							world << "NOT BLOOD"
 							if(!do_mob(user, target)) return
 							for(var/mob/O in viewers(world.view, user))
 								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
@@ -651,12 +649,10 @@
 							B = d
 							break
 						if(B)//FIND BACK
-							world << "BLOOD"
 							var/mob/living/carbon/human/H = target
 							var/datum/reagents/R = new/datum/reagents(5)
 							H.vessel.add_reagent("blood",5,B)
 							src.reagents.remove_reagent("blood",5)
-							world << "R.TEMP [R.total_volume]"
 							if(!do_mob(user, target)) return
 							for(var/mob/O in viewers(world.view, user))
 								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
