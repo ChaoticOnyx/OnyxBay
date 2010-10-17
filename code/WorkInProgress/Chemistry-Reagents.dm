@@ -229,7 +229,7 @@ datum
 					return 0
 				blood_type = M.b_type
 				blood_DNA = M.dna.unique_enzymes
-				id = "blood-[M.dna.unique_enzymes]"
+				id = "blood"
 				taken_from = M
 				virus = M.virus
 				description = "Type: [blood_type]<br>DNA: [blood_DNA]"

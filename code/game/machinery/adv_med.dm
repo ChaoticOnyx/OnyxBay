@@ -234,23 +234,39 @@
 				dat += text("<font color='green'>Radiation Level: []%</FONT><BR><BR>", occupant.radiation)
 				if(occupant:zombie == 1)
 					dat += text("<font color='red'>Unknown infectious agent detected.</FONT><BR><BR>",)
+				dat += "<table border='1'>"
+				dat += "<tr>"
+				dat += "<th>Organ</th>"
+				dat += "<th>Burn Damage</th>"
+				dat += "<th>Brute Damage</th>"
+				dat += "<th>Other Wounds</th>"
+				dat += "</tr>"
 				for(var/datum/organ/external/e in occupant.GetOrgans())
+					dat += "<tr>"
 					var/AN = ""
 					var/open = ""
 					var/infected = ""
 					var/split = ""
 					var/imp = ""
+					var/bled = ""
+					if(e.wounds.len >= 1)
+						bled = "Bleeding:"
 					if(e.broken)
-						AN = ":IJRY:[e.wound]:DAM:[e.perma_injury]"
+						AN = "[e.wound]:"
 					if(e.open)
-						open = ":OPN"
+						open = "OPEN:"
 					if(!e.clean)
-						infected = ":UNCLN"
+						infected = "UNCLEAN:"
 					if(e.split)
 						split = ":SPLT"
 					if(e.implant)
-						imp = ":IMP"
-					dat += text("<font color='red'>[e.display_name]:BRN:[e.burn_dam]:BRT:[e.brute_dam][AN][open][infected][imp]<BR></font>")
+						imp = "IMPLANT:"
+					if(!AN && !open && !infected & !imp)
+						AN = "None"
+					dat += "<td>[e.display_name]</td><td>[e.burn_dam]</td><td>[e.brute_dam]</td><td>[bled][AN][open][infected][imp]</font></td>"
+					//dat += text("<td><font color='red'>[e.display_name]</td><td>BRN:[e.burn_dam]</td><td>BRT:[e.brute_dam]</td><td>[AN][open][infected][imp]</font></td>")
+				dat += "</tr>"
+				dat += "</table>"
 
 		else
 			dat = "<font color='red'> Error: No DNA Modifier connected. </FONT>"

@@ -612,24 +612,32 @@
 						var/mob/living/carbon/human/H = target
 						for(var/mob/O in viewers(world.view, user))
 							O.show_message(text("\red <B>[] is trying to inject []!</B>", user, target), 1)
-						if(!do_mob(user, target)) return
-						for(var/mob/O in viewers(world.view, user))
-							O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
-							return
 						var/datum/reagent/blood/B
-						for(var/datum/reagent/blood/d in reagents.reagent_list)
-							if(d.id == "blood")
-								B = d
-								break
-						reagents.remove_reagent("blood",5)
-						H.vessel.add_reagent("blood",5)
-						for(var/datum/reagent/blood/C in H.vessel.reagent_list)
-							if(C.id == "blood")
-								C.blood_type = B.blood_type
-								C.blood_DNA = B.blood_DNA
-						spawn(5)
-							user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
-						return
+						for(var/datum/reagent/blood/d in src.reagents.reagent_list)
+							B = d
+							break
+						if(B)//FIND BACK
+							world << "BLOOD"
+							var/datum/reagents/R = new/datum/reagents(5)
+							H.vessel.add_reagent("blood",5,B)
+							src.reagents.remove_reagent("blood",5)
+							if(!do_mob(user, target)) return
+							for(var/mob/O in viewers(world.view, user))
+								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
+							R.trans_to(H.vessel,5)
+							del(R)
+							spawn(5)
+								user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
+							return
+						else
+							world << "NOT BLOOD"
+							if(!do_mob(user, target)) return
+							for(var/mob/O in viewers(world.view, user))
+								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
+							src.reagents.trans_to(target, 5)
+							spawn(5)
+								user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
+							return
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red <B>[] is trying to inject []!</B>", user, target), 1)
 					if(!do_mob(user, target)) return
@@ -638,23 +646,24 @@
 					src.reagents.reaction(target, INGEST)
 				if(ismob(target) && target == user)
 					if(ishuman(target))
-						var/mob/living/carbon/human/H = target
 						var/datum/reagent/blood/B
-						for(var/datum/reagent/blood/d in reagents.reagent_list)
-							if(d.id == "blood")
-								B = d
-								break
-						reagents.remove_reagent("blood",5)
-						H.vessel.add_reagent("blood",5)
-						for(var/datum/reagent/blood/C in H.vessel.reagent_list)
-							if(C.id == "blood")
-								C.blood_type = B.blood_type
-								C.blood_DNA = B.blood_DNA
-						spawn(5)
-							user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
-						return
-					src.reagents.reaction(target, INGEST)
-
+						for(var/datum/reagent/blood/d in src.reagents.reagent_list)
+							B = d
+							break
+						if(B)//FIND BACK
+							world << "BLOOD"
+							var/mob/living/carbon/human/H = target
+							var/datum/reagents/R = new/datum/reagents(5)
+							H.vessel.add_reagent("blood",5,B)
+							src.reagents.remove_reagent("blood",5)
+							world << "R.TEMP [R.total_volume]"
+							if(!do_mob(user, target)) return
+							for(var/mob/O in viewers(world.view, user))
+								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
+							del(R)
+							spawn(5)
+								user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
+							return
 				spawn(5)
 					src.reagents.trans_to(target, 5)
 					user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."

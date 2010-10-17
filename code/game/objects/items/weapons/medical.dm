@@ -7,7 +7,7 @@ MEDICAL
 /obj/item/weapon/medical/bandaid
 	name = "Band-aid"
 	desc = "A roll of bandaid"
-	icon_state = "brutepack"
+	icon_state = "bandaid"
 /obj/item/weapon/medical/bandaid/attack(mob/M as mob, mob/user as mob)
 	if(!ishuman(user))
 		user << "You can only do that on humanz"
@@ -34,7 +34,7 @@ MEDICAL
 				else if (user.gender == FEMALE)
 					t_himself = "herself"
 				for (var/mob/O in viewers(MS, null))
-					O.show_message("\red [MS] applied [src] on [t_himself]", 1)
+					O.show_message("\red [MS] bandaged [t_himself] with [src]", 1)
 		return
 /obj/item/weapon/medical/examine()
 	set src in view(1)

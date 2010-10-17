@@ -1,0 +1,86 @@
+obj/machinery/aiconstruct
+	name = "AI CONSTRUCT"
+	var/buildstate = 0
+	icon = 'mob.dmi'
+	icon_state = "ai-new"
+	var/mob/bb
+obj/machinery/aiconstruct/attack_hand(mob/user)
+	if(user.stat >= 2)
+		return
+	switch(buildstate)
+		if(0)
+			user << "Looks like it's missing some circurity."
+		if(1)
+			user << "You wiggle the circurity."
+		if(2)
+			user << "It seems like its missing some cables."
+		if(3)
+			user << "It's seems to be missing a power source."
+		if(4)
+			user << "It's missing a glass pane"
+		if(5)
+			user << "It's missing a brain..."
+		if(6)
+			if(istype(src.loc.loc,/area/turret_protected/ai))
+				user << "You boot up the AI"
+				src.boot()
+			else
+				user << "It needs to be in a specialy built AI room.."
+				return
+
+obj/machinery/aiconstruct/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(user.stat >= 2)
+		return
+	switch(buildstate)
+		if(0)
+			if(istype(W,/obj/item/weapon/circuitry))
+				user << "You place the [W] inside the [src]."
+				del(W)
+				buildstate++
+		if(1)
+			if(istype(W,/obj/item/weapon/screwdriver))
+				user << "You screw the circuitry in place with [W]."
+				del(W)
+				buildstate++
+		if(2)
+			if(istype(W,/obj/item/weapon/cable_coil))
+				if(W:amount < 3)
+					user << "Not enough cable."
+					return
+				W:amount -= 3
+				user << "You wire up the inside of the [src]."
+				if(W:amount <= 0)
+					del(W)
+				buildstate++
+		if(3)
+			if(istype(W,/obj/item/weapon/cell))
+				user << "You place the [W] inside the [src]."
+				del(W)
+				buildstate++
+		if(4)
+			if(istype(W,/obj/item/weapon/sheet/glass))
+				if(W:amount < 1)
+					user << "Not enough glass."
+					return
+				user << "You place the [W] inside the [src]."
+				W:amount -= 1
+				if(W:amount <= 0)
+					del(W)
+				buildstate++
+		if(5)
+			if(istype(W,/obj/item/brain))
+				user << "You place the [W] inside the [src]."
+				user.u_equip(W)
+				W.loc = src
+				bb = W:owner
+				buildstate++
+obj/machinery/aiconstruct/proc/boot()
+	if(bb)
+		if(!bb.client)
+			return
+		var/mob/living/silicon/ai/A = new(src.loc)
+		A.key = bb.client.key
+		del(src)
+mob/living/verb/head()
+	set hidden = 1
+	usr.unlock_medal("Find Head", 0, "You found head!", 3)
