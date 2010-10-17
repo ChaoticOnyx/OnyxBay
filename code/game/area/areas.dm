@@ -219,8 +219,6 @@
 		icon_state = "blueold"
 	else
 		icon_state = null
-
-
 /*
 #define EQUIP 1
 #define LIGHT 2

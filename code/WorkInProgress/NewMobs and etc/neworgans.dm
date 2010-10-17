@@ -105,50 +105,50 @@
 	name = "l arm"
 	icon_name = "arm_left"
 	max_damage = 75
-	min_broken_damage = 60
+	min_broken_damage = 30
 	display_name = "left arm"
 /datum/organ/external/l_foot
 	name = "l foot"
 	icon_name = "foot_left"
 	max_damage = 40
-	min_broken_damage = 25
+	min_broken_damage = 15
 	display_name = "left foot"
 /datum/organ/external/l_hand
 	name = "l hand"
 	icon_name = "hand_left"
 	max_damage = 40
-	min_broken_damage = 25
+	min_broken_damage = 15
 	display_name = "left hand"
 /datum/organ/external/l_leg
 	name = "l leg"
 	icon_name = "leg_left"
 	max_damage = 75
-	min_broken_damage = 60
+	min_broken_damage = 30
 	display_name = "left leg"
 /datum/organ/external/r_arm
 	name = "r arm"
 	icon_name = "arm_right"
 	max_damage = 75
-	min_broken_damage = 60
+	min_broken_damage = 30
 	display_name = "right arm"
 /datum/organ/external/r_foot
 	name = "r foot"
 	icon_name = "foot_right"
 	max_damage = 40
-	min_broken_damage = 25
+	min_broken_damage = 15
 	display_name = "right foot"
 /datum/organ/external/r_hand
 	name = "r hand"
 	icon_name = "hand_right"
 	max_damage = 40
-	min_broken_damage = 25
+	min_broken_damage = 15
 	display_name = "right hand"
 
 /datum/organ/external/r_leg
 	name = "r leg"
 	icon_name = "leg_right"
 	max_damage = 75
-	min_broken_damage = 60
+	min_broken_damage = 30
 	display_name = "right leg"
 
 /datum/organ/internal

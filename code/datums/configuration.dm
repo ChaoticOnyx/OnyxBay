@@ -22,6 +22,7 @@
 	var/vote_no_default = 0				// vote does not default to nochange/norestart (tbi)
 	var/vote_no_dead = 0				// dead people can't vote (tbi)
 	var/invite_only = 0
+	var/visibility = 0
 	var/list/mode_names = list()
 	var/list/modes = list()				// allowed modes
 	var/list/votable_modes = list()		// votable modes
