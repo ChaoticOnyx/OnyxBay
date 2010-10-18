@@ -149,7 +149,48 @@ datum
 						return 1
 					else
 						return 0
+		stealreagent
+			var/datum/reagent/steal_reagent
+			var/target_name
+			var/reagent_name
+			proc/find_target()
+				var/list/items = list("Sulphuric acid", "Polytrinic acid", "Space Lube", "Unstable mutagen",\
+				 "Leporazine", "Cryptobiolin", "Lexorin ",\
+				  "kelotane", "Dexalin", "Tricordrazine")
+				target_name = pick(items)
+				switch(target_name)
+					if("Sulphuric acid")
+						steal_reagent = /datum/reagent/acid
+					if("Polytrinic acid")
+						steal_reagent = /datum/reagent/pacid
+					if("Space Lube")
+						steal_reagent = /datum/reagent/lube
+					if("Unstable mutagen")
+						steal_reagent = /datum/reagent/mutagen
+					if("Leporazine")
+						steal_reagent = /datum/reagent/leporazine
+					if("Cryptobiolin")
+						steal_reagent =/datum/reagent/cryptobiolin
+					if("Lexorin")
+						steal_reagent = /datum/reagent/lexorin
+					if("kelotane")
+						steal_reagent = /datum/reagent/kelotane
+					if("Dexalin")
+						steal_reagent = /datum/reagent/dexalin
+					if("Tricordrazine")
+						steal_reagent = /datum/reagent/tricordrazine
 
+
+				explanation_text = "Steal a container filled with [target_name]."
+
+				return steal_reagent
+
+			check_completion()
+				if(steal_reagent)
+					if(owner.current.check_contents_for_reagent(steal_reagent))
+						return 1
+					else
+						return 0
 		nuclear
 			explanation_text = "Destroy the station with a nuclear device."
 

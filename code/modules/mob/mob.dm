@@ -2099,7 +2099,23 @@ mob/verb/turnwest()
 		if(B.type == A)
 			return 1
 	return 0
+/mob/proc/check_contents_for_reagent(A)
+	var/list/L = list()
+	L += contents
+	for(var/obj/item/weapon/storage/S in contents)
+		L += S.return_inv()
+	for(var/obj/item/weapon/secstorage/S in contents)
+		L += S.return_inv()
+	for(var/obj/item/weapon/gift/G in contents)
+		L += G.gift
+		if (istype(G.gift, /obj/item/weapon/storage))
+			L += G.gift:return_inv()
 
+	for(var/obj/item/weapon/reagent_containers/B in L)
+		for(var/datum/reagent/R in B.reagents.reagent_list)
+			if(R.type == A)
+				return 1
+	return 0
 
 // adds a dizziness amount to a mob
 // use this rather than directly changing var/dizziness

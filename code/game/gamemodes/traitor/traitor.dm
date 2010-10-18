@@ -104,17 +104,34 @@
 
 		else
 			info.starting_occupation = traitor.current:wear_id:assignment
-			switch(rand(1,100))
+			switch(rand(1,200))
 				if(1 to 50)
 					var/datum/objective/assassinate/kill_objective = new
 					kill_objective.owner = traitor
 					kill_objective.find_target()
 					traitor.objectives += kill_objective
-				else
+				if(50 to 100)
 					var/datum/objective/steal/steal_objective = new
 					steal_objective.owner = traitor
 					steal_objective.find_target()
 					traitor.objectives += steal_objective
+				else
+					var/datum/objective/stealreagent/steal_objective = new
+					steal_objective.owner = traitor
+					steal_objective.find_target()
+					traitor.objectives += steal_objective
+			if(prob(25))
+				switch(rand(1,100))
+					if(1 to 50)
+						var/datum/objective/steal/steal_objective = new
+						steal_objective.owner = traitor
+						steal_objective.find_target()
+						traitor.objectives += steal_objective
+					else
+						var/datum/objective/stealreagent/steal_objective = new
+						steal_objective.owner = traitor
+						steal_objective.find_target()
+						traitor.objectives += steal_objective
 			switch(rand(1,100))
 				if(1 to 90)
 					var/datum/objective/escape/escape_objective = new
