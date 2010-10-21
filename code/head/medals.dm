@@ -13,8 +13,8 @@
 					if(title == column_data["medal"])
 						return
 			var/medaldesc2 = dbcon.Quote(desc)
-			dbcon.Quote(title)
-			var/DBQuery/xquery = dbcon.NewQuery("REPLACE INTO `medals` (`ckey`, `medal`, `medaldesc`, `medaldiff`) VALUES ('[src.ckey]', [title], [medaldesc2], '[diff]');")
+			var/tit2 = dbcon.Quote(title)
+			var/DBQuery/xquery = dbcon.NewQuery("REPLACE INTO `medals` (`ckey`, `medal`, `medaldesc`, `medaldiff`) VALUES ('[src.ckey]', [tit2], [medaldesc2], '[diff]');")
 			if(!xquery.Execute())
 				message_admins(xquery.ErrorMsg())
 				log_admin(xquery.ErrorMsg())

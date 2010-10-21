@@ -14,7 +14,7 @@ mob/new_player
 
 	Login()
 		..()
-
+		unlock_medal("First Timer", 0, "Welcome!", "easy")
 		if(!preferences)
 			preferences = new
 

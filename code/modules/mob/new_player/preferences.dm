@@ -22,7 +22,7 @@ datum/preferences
 	var/r_facial = 0.0
 	var/g_facial = 0.0
 	var/b_facial = 0.0
-
+	var/bio = "bio goes here"
 	var/s_tone = 0.0
 	var/r_eyes = 0.0
 	var/g_eyes = 0.0
@@ -216,6 +216,7 @@ datum/preferences
 		else
 			dat += "<b> You are banned from being syndicate.</b>"
 			be_syndicate = 0
+		dat += "<a href =\"byond://?src=\ref[user];preferences=1;editbio=1\">Edit Biography</a><br>"
 		dat += "<hr>"
 
 		if (!IsGuestKey(user.key))
@@ -534,11 +535,13 @@ datum/preferences
 
 		if (link_tags["b_random_name"])
 			be_random_name = !be_random_name
-
+		if(link_tags["editbio"])
+			bio = input(usr,"Write your biography.","Biography",bio) as message
 		if(!IsGuestKey(user.key))
 			if(link_tags["saveslot"])
 				var/slot = link_tags["saveslot"]
-				var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`slotname`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `underwear`,`name_is_always_random`) VALUES ('[user.ckey]','[slot]','[slotname]' ,'[real_name]', '[lowertext(gender)]', '[age]', '[occupation1]','[occupation2]', '[occupation3]', '[r_hair]', '[g_hair]', '[b_hair]', '[r_facial]', '[g_facial]', '[b_facial]', '[s_tone]', '[h_style]', '[f_style]', '[r_eyes]', '[g_eyes]', '[b_eyes]', '[b_type]', '[be_syndicate]', '[underwear]','[be_random_name]');")
+				var/bio2 = dbcon.Quote(bio)
+				var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`slotname`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `underwear`,`name_is_always_random`,`bios`) VALUES ('[user.ckey]','[slot]','[slotname]' ,'[real_name]', '[lowertext(gender)]', '[age]', '[occupation1]','[occupation2]', '[occupation3]', '[r_hair]', '[g_hair]', '[b_hair]', '[r_facial]', '[g_facial]', '[b_facial]', '[s_tone]', '[h_style]', '[f_style]', '[r_eyes]', '[g_eyes]', '[b_eyes]', '[b_type]', '[be_syndicate]', '[underwear]','[be_random_name]',[bio2]);")
 				if(!query.Execute())
 					usr << query.ErrorMsg()
 					usr << "Report this."
@@ -583,7 +586,7 @@ datum/preferences
 				return
 			var/slotname = input(usr,"Choose a name for your slot","Name","Default")
 			slotname = dbcon.Quote(slotname)
-			var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`slotname`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `underwear`,`name_is_always_random`) VALUES ('[user.ckey]','[count]',[slotname] ,'New Char', 'MALE', '30', 'No Preference','No Preference', 'No Preference', '0', '0', '0', '0', '0', '0', '0', 'Short Hair', 'Shaved', '0', '0', '0', 'A+', '1', '1','0');")
+			var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`slotname`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `underwear`,`name_is_always_random`,`bios`) VALUES ('[user.ckey]','[count]',[slotname] ,'New Char', 'MALE', '30', 'No Preference','No Preference', 'No Preference', '0', '0', '0', '0', '0', '0', '0', 'Short Hair', 'Shaved', '0', '0', '0', 'A+', '1', '1','0','nothing here yet....');")
 			if(!query.Execute())
 				usr << query.ErrorMsg()
 				usr << "Report this."

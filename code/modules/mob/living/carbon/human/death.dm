@@ -15,7 +15,8 @@
 	stat = 2
 	dizziness = 0
 	jitteriness = 0
-
+	add_stat(2,1)
+	unlock_medal("Downsizing", 0, "You are no longer a profitable assert.", "easy")
 	if (!gibbed)
 		emote("deathgasp") //let the world KNOW WE ARE DEAD
 

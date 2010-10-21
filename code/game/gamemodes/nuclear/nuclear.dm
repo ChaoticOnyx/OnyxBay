@@ -169,7 +169,7 @@
 					continue
 				if ((M.current.client) && !(locate(M) in syndicates))
 					world << text("<B>[M.current.key] was [M.current.real_name]</B> [M.current.stat == 2 ? "(DEAD)" : ""]")
-
+	check_round()
 	return 1
 
 /datum/game_mode/nuclear/proc/get_possible_syndicates()

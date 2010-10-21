@@ -283,7 +283,7 @@
 			world << "<B>The wizard was successful!<B>"
 		else
 			world << "<B>The wizard has failed!<B>"
-
+	check_round()
 	return 1
 
 

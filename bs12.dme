@@ -497,6 +497,7 @@
 #include "code\game\verbs\who.dm"
 #include "code\head\medals.dm"
 #include "code\head\mysql.dm"
+#include "code\head\stats.dm"
 #include "code\head\stayalive.dm"
 #include "code\head\stuff.dm"
 #include "code\modules\admin\admin.dm"
