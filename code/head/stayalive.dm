@@ -35,11 +35,17 @@ proc/updateserverstatus()
 	var/players = 0
 	for(var/client/C)
 		players++
+		var/playing = 1
+		if(istype(C.mob,/mob/dead) || istype(C.mob,/mob/new_player))
+			playing = 0
+		var/DBQuery/r_query = dbcon.NewQuery("REPLACE INTO `currentplayers` (`name`,`playing`) VALUES ([dbcon.Quote(C.key)],[dbcon.Quote(playing)])")
+		if(!r_query.Execute())
+			diary << "Failed-[r_query.ErrorMsg()]"
 	var/mode
 	if(ticker.current_state == GAME_STATE_PREGAME)
 		mode = "Round Setup"
 	else
 		mode = ticker.mode.name
-	var/DBQuery/key_query = dbcon.NewQuery("REPLACE INTO `status` (`name`,`link`,`players`,`mode`) VALUES ([dbcon.Quote(world.name)],[dbcon.Quote("[world.internet_address]:[world.port]")],'[players]',[dbcon.Quote(mode)])")
+	var/DBQuery/key_query = dbcon.NewQuery("REPLACE INTO `status` (`name`,`link`,`players`,`mode`) VALUES ([dbcon.Quote(world.name)],[dbcon.Quote("[world.internet_address]:[world.port]")],'[players]',[dbcon.Quote(mode)]) WHERE name='[world.name]%'")
 	if(!key_query.Execute())
 		diary << "Failed-[key_query.ErrorMsg()]"

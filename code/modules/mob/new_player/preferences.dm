@@ -18,7 +18,7 @@ datum/preferences
 	var/r_hair = 0.0
 	var/g_hair = 0.0
 	var/b_hair = 0.0
-
+	var/show = 1
 	var/r_facial = 0.0
 	var/g_facial = 0.0
 	var/b_facial = 0.0
@@ -217,6 +217,7 @@ datum/preferences
 			dat += "<b> You are banned from being syndicate.</b>"
 			be_syndicate = 0
 		dat += "<a href =\"byond://?src=\ref[user];preferences=1;editbio=1\">Edit Biography</a><br>"
+		//dat += "<b>Show Profile?:</b> <a href =\"byond://?src=\ref[user];preferences=1;b_syndicate=1\"><b>[(be_syndicate ? "Yes" : "No")]</b></a><br>
 		dat += "<hr>"
 
 		if (!IsGuestKey(user.key))
