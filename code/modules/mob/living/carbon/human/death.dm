@@ -21,6 +21,7 @@
 		unlock_medal("Downsizing", 0, "You are no longer a profitable assert.", "easy")
 	else
 		add_stat(3,1)
+		unlock_medal("I can't take it anymore!", 0, "Kill yourself..", "easy")
 	if (!gibbed)
 		emote("deathgasp") //let the world KNOW WE ARE DEAD
 
