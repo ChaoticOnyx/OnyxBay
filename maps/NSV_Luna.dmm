@@ -3543,7 +3543,7 @@
 "bqg" = (/obj/closet/wardrobe/mixed,/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
 "bqh" = (/obj/landmark{name = "JoinLate"},/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
 "bqi" = (/obj/landmark{name = "JoinLate"},/obj/machinery/light{dir = 1},/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
-"bqj" = (/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
+"bqj" = (/obj/closet/emcloset,/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
 "bqk" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/obj/landmark/derelict/nodamage,/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
 "bql" = (/obj/machinery/atmospherics/pipe/vent{dir = 4; icon_state = "intact"; tag = "icon-intact (EAST)"; vent_id = "HangarVentC"},/turf/simulated/floor,/area/hangar)
 "bqm" = (/obj/machinery/atmospherics/pipe/manifold{dir = 4; initialize_directions = 11},/obj/landmark/derelict/nodamage,/turf/simulated/wall,/area/quartermaster/storage)
