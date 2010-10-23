@@ -6,8 +6,10 @@ var/savefile/Banlist
 
 	var/id = clientvar.computer_id
 	var/key = clientvar.ckey
+	var/address = clientvar.address
 	var/DBQuery/q1 = dbcon.NewQuery("SELECT * FROM `bans` WHERE computerid='[id]'")
 	var/DBQuery/q2 = dbcon.NewQuery("SELECT * FROM `bans` WHERE ckey='[key]'")
+	var/DBQuery/q3 = dbcon.NewQuery("SELECT * FROM `bans` WHERE ips='[address]'")
 	var/list/ban = list()
 	if(!q2.Execute())
 		log_admin("[q2.ErrorMsg()]")
@@ -18,6 +20,16 @@ var/savefile/Banlist
 				ban = q2.GetRowData()
 	if(!q1.Execute())
 		log_admin("[q1.ErrorMsg()]")
+		return 0
+	if(!q3.Execute())
+		log_admin("[q3.ErrorMsg()]")
+		return 0
+	else
+		while(q3.NextRow()) // i made a hell of mess here pendling rewriteing because its overly complex for a thing like this.
+			if(!isnull(q3.GetRowData()))
+				ban = q3.GetRowData()
+	if(!q1.Execute())
+		log_admin("[q3.ErrorMsg()]")
 		return 0
 	else
 		while(q1.NextRow())
@@ -84,13 +96,13 @@ var/savefile/Banlist
 	for(var/p in expired)
 		RemoveBan(p)
 	return 1
-/proc/AddBan(ckey, computerid, reason, bannedby, temp, minutes)
+/proc/AddBan(ckey, computerid,ip, reason, bannedby, temp, minutes)
 	var/bantimestamp = 0
 	if (temp)
 		UpdateTime()
 		bantimestamp = CMinutes + minutes
 	var/reason1 = dbcon.Quote(reason)
-	var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `bans` (`ckey`,`computerid`,`reason`,`bannedby`,`temp`,`minute`) VALUES ('[ckey]','[computerid]',[reason1],'[bannedby]','[temp]','[bantimestamp]')")
+	var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `bans` (`ckey`,`computerid`,`ips`,`reason`,`bannedby`,`temp`,`minute`) VALUES ('[ckey]','[computerid]','[ip]',[reason1],'[bannedby]','[temp]','[bantimestamp]')")
 	if(!query.Execute())
 		message_admins("MYSQL Error ban failed")
 		message_admins(query.ErrorMsg())

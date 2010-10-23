@@ -225,7 +225,7 @@ var/showadminmessages = 1
 					var/reason = input(usr,"Reason?","reason","Griefer") as text
 					if(!reason)
 						return
-					AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
+					AddBan(M.ckey, M.computer_id,M.client.address, reason, usr.ckey, 1, mins)
 					M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 					M << "\red This is a temporary ban, it will be removed in [mins] minutes."
 					log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
@@ -237,7 +237,7 @@ var/showadminmessages = 1
 					var/reason = input(usr,"Reason?","reason","Griefer") as text
 					if(!reason)
 						return
-					AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
+					AddBan(M.ckey, M.computer_id,M.client.address, reason, usr.ckey, 0, 0)
 					M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 					M << "\red This is a permanent ban."
 					M << "\red To try to resolve this matter by pming one of the admins on http://www.bay12forums.com/"

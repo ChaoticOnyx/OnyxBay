@@ -1938,8 +1938,9 @@ mob/verb/turnwest()
 		message_admins("\blue Failed Login: [src] - Banned")
 		alert(src,"You have been banned.\nReason : [isbanned]","Ban","Ok")
 		del(src)
-
-
+	if(IsGuestKey(src.key))
+		alert(src,"Baystation12 don't allow guest accounts to play. Please go to http:\\www.byond.com and register for a key.","Guest","Ok")
+		del(src)
 	if (((world.address == address || !(address)) && !(host)))
 		host = key
 		world.update_status()

@@ -46,6 +46,6 @@ proc/updateserverstatus()
 		mode = "Round Setup"
 	else
 		mode = ticker.mode.name
-	var/DBQuery/key_query = dbcon.NewQuery("REPLACE INTO `status` (`name`,`link`,`players`,`mode`) VALUES ([dbcon.Quote(world.name)],[dbcon.Quote("[world.internet_address]:[world.port]")],'[players]',[dbcon.Quote(mode)]) WHERE name='[world.name]%'")
+	var/DBQuery/key_query = dbcon.NewQuery("REPLACE INTO `status` (`name`,`link`,`players`,`mode`) VALUES ([dbcon.Quote(world.name)],[dbcon.Quote("[world.internet_address]:[world.port]")],'[players]',[dbcon.Quote(mode)])")
 	if(!key_query.Execute())
 		diary << "Failed-[key_query.ErrorMsg()]"
