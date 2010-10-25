@@ -102,7 +102,16 @@
 		send_intercept()
 
 	return
-
+obj/landmark/synd_spawn
+	name = "Syndicate-Spawn"
+obj/landmark/nuke_spawn
+	name = "Nuclear-Bomb"
+obj/landmark/closet_spawn
+	name = "Nuclear-Closet"
+/obj/landmark/gearcloset
+	name = "Syndicate-Gear-Closet"
+obj/landmark/synbomb
+	name = "Syndicate-Bomb"
 /datum/game_mode/nuclear/proc/equip_syndicate(mob/living/carbon/human/synd_mob)
 	var/radio_freq = random_radio_frequency()
 
