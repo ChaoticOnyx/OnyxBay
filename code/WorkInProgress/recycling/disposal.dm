@@ -534,14 +534,13 @@
 					if(prob(20))
 						M.paralysis += 2
 					if(istype(M,/mob/living/carbon/human))
-						var/datum/organ/external/temp = pick(M.organs)
-						temp = M.organs[temp]
+						var/datum/organ/external/temp = pick(M:organs2)
 						if (istype(temp, /datum/organ/external))
 							temp.take_damage(4, 0)
 							if(temp.name == "head")
 								M.paralysis += 4
 								M << "\red Your head smashes into a rogue piece of metal!"
-							else if(temp.name == "diaper")
+							else if(temp.name == "groin")
 								M.weakened += 4
 								M << "\red You're gonna remember that one in the morning!"
 							M:UpdateDamageIcon()
