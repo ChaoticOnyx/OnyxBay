@@ -18,7 +18,7 @@
 	var/bleeding = 0
 	var/perma_injury = 0
 	var/broken = 0
-	var/destoryed
+	var/destroyed
 	var/min_broken_damage = 30
 
 	var/damage_msg = "\red You feel a intense pain"

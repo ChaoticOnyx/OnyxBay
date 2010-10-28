@@ -312,7 +312,7 @@
 			var/organ = organs[ran_zone("chest")]
 			if (istype(organ, /datum/organ/external))
 				var/datum/organ/external/temp = organ
-				if(temp.destoryed)
+				if(temp.destroyed)
 					return
 				temp.take_damage(d, 0)
 			UpdateDamageIcon()
@@ -367,7 +367,7 @@
 			var/organ = organs[ran_zone("chest")]
 			if (istype(organ, /datum/organ/external))
 				var/datum/organ/external/temp = organ
-				if(temp.destoryed)
+				if(temp.destroyed)
 					return
 				temp.take_damage(d, 0)
 			UpdateDamageIcon()
@@ -401,7 +401,7 @@
 			var/organ = organs[ran_zone("chest")]
 			if (istype(organ, /datum/organ/external))
 				var/datum/organ/external/temp = organ
-				if(temp.destoryed)
+				if(temp.destroyed)
 					return
 				temp.take_damage(d, 0)
 			UpdateDamageIcon()
@@ -508,13 +508,13 @@
 	show_message("\red The blob attacks you!")
 	var/list/zones = list()
 	for(var/datum/organ/external/part in organs2)
-		if(!part.destoryed)
+		if(!part.destroyed)
 			zones += part.name
 	var/zone = pick(zones)
 	if(!zone)
 		return
 	var/datum/organ/external/temp = organs["[zone]"]
-	if(temp.destoryed)
+	if(temp.destroyed)
 		return
 	switch(zone)
 		if ("head")
@@ -826,7 +826,7 @@
 		var/dam_zone = pick("chest", "chest", "chest", "head", "groin")
 		if (istype(organs[dam_zone], /datum/organ/external))
 			var/datum/organ/external/temp = organs[dam_zone]
-			if(temp.destoryed)
+			if(temp.destroyed)
 				return
 			temp.take_damage((istype(O, /obj/meteor/small) ? 10 : 25), 30)
 			UpdateDamageIcon()
@@ -934,7 +934,7 @@
 				if(!lying)
 					var/datum/organ/external/rhand = organs["r_hand"]
 					var/datum/organ/external/lhand = organs["l_hand"]
-					var/iconx = text("[][][][]",t1, (!(lying) ? "_s" : "_l"),(rhand.destoryed ? "_rhand" : null),(lhand.destoryed ? "_lhand" : null))
+					var/iconx = text("[][][][]",t1, (!(lying) ? "_s" : "_l"),(rhand.destroyed ? "_rhand" : null),(lhand.destroyed ? "_lhand" : null))
 					overlays += image('uniform.dmi',"[iconx]",MOB_LAYER)
 				else
 					var/iconx = "[t1]_l"
@@ -962,14 +962,14 @@
 		if (!t1)
 			t1 = gloves.icon_state
 		if(!lying)
-			if(!rhand.destoryed)
+			if(!rhand.destroyed)
 				overlays += image('hands.dmi',"[t1]_rhand",MOB_LAYER)
-			if(!lhand.destoryed)
+			if(!lhand.destroyed)
 				overlays += image('hands.dmi',"[t1]_lhand",MOB_LAYER)
 		else
-			if(!rhand.destoryed)
+			if(!rhand.destroyed)
 				overlays += image('hands.dmi',"[t1]2_rhand",MOB_LAYER)
-			if(!lhand.destoryed)
+			if(!lhand.destroyed)
 				overlays += image('hands.dmi',"[t1]2_lhand",MOB_LAYER)
 		if (gloves.blood_DNA)
 			var/icon/stain_icon = icon('blood.dmi', "bloodyhands[!lying ? "" : "2"]")
@@ -1199,7 +1199,7 @@
 						O.show_message(text("\red <B>[M.name] has bit []!</B>", src), 1)
 				var/damage = rand(1, 3)
 				for(var/datum/organ/external/p in organs2)
-					if(!p.destoryed)
+					if(!p.destroyed)
 						zones += p.name
 				if(!zones)
 					return
@@ -1258,7 +1258,7 @@
 					O.show_message(text("\red <B>[M.name] has bit []!</B>", src), 1)
 				var/damage = rand(1, 3)
 				for(var/datum/organ/external/p in organs2)
-					if(!p.destoryed)
+					if(!p.destroyed)
 						zones += p.name
 				if(!zones)
 					return
@@ -1489,7 +1489,7 @@
 					var/def_zone = ran_zone(t)
 					if(organs["[def_zone]"])
 						affecting = organs["[def_zone]"]
-					if (!affecting.destoryed)
+					if (!affecting.destroyed)
 						//Attack with zombie
 						if(!zombie && !zombifying && prob(60))
 							for(var/mob/O in viewers(src, null))
@@ -1517,7 +1517,7 @@
 				var/def_zone = ran_zone(t)
 				if (organs["[def_zone]"])
 					affecting = organs["[def_zone]"]
-				if ((istype(affecting, /datum/organ/external) && prob(90) && !affecting.destoryed))
+				if ((istype(affecting, /datum/organ/external) && prob(90) && !affecting.destroyed))
 					if (M.mutations & 8)
 						damage += 5
 						spawn(0)
@@ -1655,7 +1655,7 @@
 			if(!obese)
 				stand_icon.Blend(new /icon('human.dmi', "underwear[underwear]_[g]_s"), ICON_OVERLAY)
 				lying_icon.Blend(new /icon('human.dmi', "underwear[underwear]_[g]_l"), ICON_OVERLAY)
-		if(!part.destoryed)
+		if(!part.destroyed)
 			stand_icon.Blend(new /icon('human.dmi', "[part.icon_name]_s"), ICON_OVERLAY)
 			lying_icon.Blend(new /icon('human.dmi', "[part.icon_name]_l"), ICON_OVERLAY)
 
@@ -1679,7 +1679,7 @@
 	if(organs)
 		var/datum/organ/external/org = organs["head"]
 		if(org)
-			if(org.destoryed)
+			if(org.destroyed)
 				del(face_standing)
 				del(face_lying)
 				return
@@ -2308,7 +2308,7 @@
 
 	var/datum/organ/external/E = organs[text("[]", zone)]
 	if (istype(E, /datum/organ/external))
-		if(E.destoryed)
+		if(E.destroyed)
 			return
 		if (E.heal_damage(brute, burn))
 			UpdateDamageIcon()
@@ -2321,7 +2321,7 @@
 	set src in view(5)
 	for(var/datum/organ/external/l in organs2)
 		if(l.name == text)
-			l.destoryed = 1
+			l.destroyed = 1
 			break
 	update_body()*/
 // new damage icon system
@@ -2342,7 +2342,7 @@
 	fireloss = 0
 
 	for (var/datum/organ/external/O in L)
-		if(!O.destoryed)
+		if(!O.destroyed)
 			O.update_icon()
 			bruteloss += O.brute_dam
 			fireloss += O.burn_dam
