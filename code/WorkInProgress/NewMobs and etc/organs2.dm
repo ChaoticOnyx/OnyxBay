@@ -135,7 +135,7 @@
 
 /datum/organ/external/proc/heal_damage(brute, burn,var/internal = 0)
 	brute_dam = max(0, brute_dam - brute)
-	burn_dam = max(0, brute_dam - burn)
+	burn_dam = max(0, burn_dam - burn)
 	if(internal)
 		broken = 0
 		perma_injury = 0
