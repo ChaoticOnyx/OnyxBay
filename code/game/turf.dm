@@ -223,7 +223,7 @@ turf/simulated/wall/bullet_act(flag,dir)
 
 /turf/simulated/wall/New()
 	..()
-	checkDynamicOverlays(src)
+	if (!istype(src, /turf/simulated/wall/heatshield)) checkDynamicOverlays(src)
 
 
 /turf/proc/checkDynamicOverlays(var/turf/simulated/wall/S)
@@ -385,7 +385,7 @@ turf/simulated/wall/bullet_act(flag,dir)
 
 	S.ReplaceWithFloor()
 	for (var/turf/simulated/wall/T in range(1,src))
-		if (z == T.z)
+		if (!istype(T, /turf/simulated/wall/heatshield) && z == T.z)
 			checkDynamicOverlays(T)
 			if (y == (T.y - 1) && x == T.x)
 				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTH))
