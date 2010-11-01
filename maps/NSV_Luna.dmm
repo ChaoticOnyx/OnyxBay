@@ -329,7 +329,7 @@
 "agq" = (/obj/landmark/derelict/glass,/turf/simulated/floor,/area/hallway/primary/admin)
 "agr" = (/turf/simulated/shuttle/wall{dir = 8; icon_state = "wall_space"},/area/syndicate_station)
 "ags" = (/turf/simulated/shuttle/wall{tag = "icon-wall (EAST)"; icon_state = "wall"; dir = 4},/area/syndicate_station)
-"agt" = (/obj/machinery/door/poddoor,/turf/simulated/shuttle/wall{tag = "icon-wall (EAST)"; icon_state = "wall"; dir = 4},/area/syndicate_station)
+"agt" = (/obj/machinery/door/poddoor{id = "syndie"},/turf/simulated/shuttle/wall{tag = "icon-wall (EAST)"; icon_state = "wall"; dir = 4},/area/syndicate_station)
 "agu" = (/turf/simulated/shuttle/wall{dir = 1; icon_state = "wall_space"},/area/syndicate_station)
 "agv" = (/turf/simulated/floor{icon_state = "dark"},/area/syndicate_station)
 "agw" = (/obj/machinery/door_control{id = "syndie"; name = "Hull door"; pixel_x = -4; pixel_y = 24},/turf/simulated/floor{icon_state = "dark"},/area/syndicate_station)
