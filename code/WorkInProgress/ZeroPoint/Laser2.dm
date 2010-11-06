@@ -39,6 +39,7 @@
 	var/obj/machinery/engine/laser/master = null
 	var/obj/beam/e_beam/next = null
 	var/power
+	var/freq = 50000
 	anchored = 1
 
 /obj/beam/e_beam/New()
