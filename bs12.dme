@@ -93,6 +93,7 @@
 #define FILE_DIR "code/WorkInProgress/Alfie275"
 #define FILE_DIR "code/WorkInProgress/Aryn"
 #define FILE_DIR "code/WorkInProgress/computer2"
+#define FILE_DIR "code/WorkInProgress/newcomputer"
 #define FILE_DIR "code/WorkInProgress/NewMobs and etc"
 #define FILE_DIR "code/WorkInProgress/optics"
 #define FILE_DIR "code/WorkInProgress/pda2"

@@ -156,7 +156,7 @@
 			if (src == user.back)
 				src.orient_objs(4, 10, 4, 3)
 			else
-				src.orient_objs(7, 8, 10, 7)
+				src.orient_objs(4, 10, 4, 3)
 	return
 
 /obj/item/weapon/storage/box/New()

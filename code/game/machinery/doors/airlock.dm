@@ -54,7 +54,24 @@ Airlock wires color -> index are { 7, 8, 9, 2, 5, 3, 4, 6, 1 }.
 Airlock index -> flag are { 1, 2, 4, 8, 16, 32, 64, 128, 256 }.
 Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 */
-
+/obj/machinery/door/airlock/Bumped(atom/AM)
+	if(p_open || operating || !density) return
+	if(ismob(AM))
+		var/mob/M = AM
+		if(world.timeofday - AM.last_bumped <= 5) return
+		if(M.client && !M:handcuffed) attack_hand(M)
+	else if(istype(AM, /obj/machinery/bot))
+		var/obj/machinery/bot/bot = AM
+		if(src.check_access(bot.botcard))
+			if(density)
+				if(!locked && !air_locked)
+					open()
+				else
+					bot.shutdowns()
+	else if(istype(AM, /obj/alien/facehugger))
+		if(src.check_access(null))
+			if(density)
+				open()
 /obj/machinery/door/airlock
 	name = "Airlock"
 	icon = 'doorint.dmi'

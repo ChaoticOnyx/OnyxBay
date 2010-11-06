@@ -156,7 +156,7 @@ mob/new_player
 				if ("12")
 					AttemptLateSpawn("Detective", detectiveMax)
 				if ("13")
-					AttemptLateSpawn("Chaplain", chaplainMax)
+					AttemptLateSpawn("Counselor", chaplainMax)
 				if ("14")
 					AttemptLateSpawn("Janitor", janitorMax)
 				if ("15")
@@ -258,7 +258,7 @@ mob/new_player
 		if (IsJobAvailable("Detective",detectiveMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=12'>Detective</a><br>"
 */
-		if (IsJobAvailable("Chaplain",chaplainMax))
+		if (IsJobAvailable("Counselor",chaplainMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=13'>Chaplain</a><br>"
 
 		if (IsJobAvailable("Janitor",janitorMax))

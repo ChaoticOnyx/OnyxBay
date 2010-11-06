@@ -663,7 +663,8 @@
 				//world << "No dest / no route."
 		return
 
-
+	shutdowns()
+		src.on = 0
 	// sets the current destination
 	// signals all beacons matching the delivery code
 	// beacons will return a signal giving their locations

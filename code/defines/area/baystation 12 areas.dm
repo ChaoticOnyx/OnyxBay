@@ -317,7 +317,7 @@ area/bs12/chapel/chapel
 	music = ""
 
 area/bs12/chapel/office
-	name = "Chapel Office"
+	name = "Counselor Office"
 	icon_state = "chapel"
 	music = ""
 	dooraccess = "22"

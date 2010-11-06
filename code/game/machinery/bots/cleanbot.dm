@@ -89,7 +89,13 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 			src.oddbutton = !src.oddbutton
 			usr << "You press the weird button."
 			src.updateUsrDialog()
-
+/obj/machinery/bot/cleanbot/shutdowns()
+	src.on = !src.on
+	src.target = null
+	src.oldtarget = null
+	src.oldloc = null
+	src.icon_state = "cleanbot[src.on]"
+	src.path = new()
 /obj/machinery/bot/cleanbot/attack_ai()
 	src.on = !src.on
 	src.target = null
