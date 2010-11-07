@@ -52,9 +52,6 @@
 			else
 				aiPlayer.triggerAlarm("Power", src, cameras, source)
 	return
-/area/verb/power()
-	set src in view(5)
-	poweralert("pweralm",src)
 
 /area/proc/firealert()
 	if(src.name == "Space") //no fire alarms in space

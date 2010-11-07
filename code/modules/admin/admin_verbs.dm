@@ -819,12 +819,12 @@
 /client/proc/toggleevents()
 	set category = "Admin"
 	set name = "Toggle random events"
-	if(eventson)
+	if(do_event)
 		message_admins("\blue <b> Events toggled off by [usr.client.key]</b>")
-		eventson = 0
+		do_event = 0
 	else
 		message_admins("\blue <b> Events toggled on by [usr.client.key]</b>")
-		eventson = 1
+		do_event = 1
 
 /client/proc/LSD_effect(var/mob/p in world)
 	set category = "Debug"

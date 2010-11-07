@@ -30,6 +30,7 @@ var
 	skipupdate = 0
 	///////////////
 	eventchance = 1 //% per 2 mins
+	do_event = 1
 	event = 0
 	hadevent = 0
 	blobevent = 0

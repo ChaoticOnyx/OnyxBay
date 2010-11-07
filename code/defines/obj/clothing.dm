@@ -702,8 +702,8 @@
 	color = "captain"
 
 /obj/item/clothing/under/rank/chaplain
-	desc = "It has a Chaplain rank stripe on it."
-	name = "Chaplain Jumpsuit"
+	desc = "It has a Counselor rank stripe on it."
+	name = "Counselor Jumpsuit"
 	icon_state = "chaplain"
 	item_state = "bl_suit"
 	color = "chapblack"

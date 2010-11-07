@@ -1,4 +1,6 @@
 /proc/start_events()
+	if(!do_event)
+		return
 	if (!event && prob(eventchance))
 		meteor()
 		hadevent = 1

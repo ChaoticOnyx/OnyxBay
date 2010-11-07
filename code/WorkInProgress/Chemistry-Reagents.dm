@@ -854,10 +854,17 @@ datum
 			reagent_state = LIQUID
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				if(M:oxyloss && prob(40)) M:oxyloss--
-				if(M:bruteloss && prob(40)) M:bruteloss--
-				if(M:fireloss && prob(40)) M:fireloss--
-				if(M:toxloss && prob(40)) M:toxloss--
+				if(istype(M,/mob/living/carbon/human))
+					for(var/datum/organ/external/org in M:organs2)
+						if(org.brute_dam && prob(40)) org.brute_dam--
+						if(org.burn_dam && prob(40)) org.burn_dam--
+					if(M:oxyloss && prob(40)) M:oxyloss--
+					if(M:toxloss && prob(40)) M:toxloss--
+				else
+					if(M:oxyloss && prob(40)) M:oxyloss--
+					if(M:bruteloss && prob(40)) M:bruteloss--
+					if(M:fireloss && prob(40)) M:fireloss--
+					if(M:toxloss && prob(40)) M:toxloss--
 				..()
 				return
 
@@ -931,7 +938,11 @@ datum
 			reagent_state = LIQUID
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				if(M:bruteloss && prob(40)) M:bruteloss--
+				if(istype(M,/mob/living/carbon/human))
+					for(var/datum/organ/external/org in M:organs2)
+						if(org.brute_dam && prob(40)) org.brute_dam--
+				else
+					if(M:bruteloss && prob(40)) M:bruteloss--
 				..()
 				return
 

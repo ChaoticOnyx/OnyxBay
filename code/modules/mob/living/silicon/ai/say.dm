@@ -1,6 +1,9 @@
 /mob/living/silicon/ai/say_understands(var/other)
 	if (istype(other, /mob/living/carbon/human))
-		return 1
+		if(other:zombie)
+			return 0
+		else
+			return 1
 	if (istype(other, /mob/living/silicon/robot))
 		return 1
 	return ..()

@@ -69,11 +69,11 @@
 				src.throw_impact(A)
 				src.throwing = 0
 			if(isobj(A))
-				if(A.density && !istype(A, /obj/table))	// **TODO: Better behaviour for windows
+				if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows
 											// which are dense, but shouldn't always stop movement
 					src.throw_impact(A)
 					src.throwing = 0
-
+/atom/var/throwpass = 0
 /atom/proc/throw_impact(atom/hit_atom)
 	if(ismob(hit_atom))
 		hit_atom.visible_message("\red [hit_atom] has been hit by [src].")
