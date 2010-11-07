@@ -23,6 +23,26 @@
 	New()
 		src.tag = "obj[++tagcnum]"
 
+/obj/item/policetaperoll
+	name = "police tape roll"
+	desc = "A roll of police tape used to block off crime scenes from the public."
+	icon = 'policetape.dmi'
+	icon_state = "rollstart"
+	var/tapestartx = 0
+	var/tapestarty = 0
+	var/tapestartz = 0
+	var/tapeendx = 0
+	var/tapeendy = 0
+	var/tapeendz = 0
+
+/obj/item/policetape
+	name = "police tape"
+	desc = "A length of police tape.  Do not cross."
+	icon = 'policetape.dmi'
+	anchored = 1
+	density = 1
+	throwpass = 1
+	req_access = list(access_security)
 
 /obj/blob
 		icon = 'blob.dmi'

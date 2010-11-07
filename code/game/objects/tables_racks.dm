@@ -15,7 +15,7 @@
 				src.density = 0
 		else
 	return
-
+/obj/table/throwpass = 1
 /obj/table/blob_act()
 
 	if(prob(50))
