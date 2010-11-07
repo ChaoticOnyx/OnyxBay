@@ -839,7 +839,7 @@
 
 
 /area/chapel/office
-	name = "Chapel Office"
+	name = "Counselor's Office"
 	icon_state = "chapeloffice"
 
 

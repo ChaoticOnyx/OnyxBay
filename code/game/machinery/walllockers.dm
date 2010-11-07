@@ -3,6 +3,7 @@
 	icon = 'lockwall.dmi'
 	icon_state = "emerg"
 	var/list/spawnitems = list()
+	anchored = 1
 	var/ammount = 3 // spawns each items X times.
 /obj/machinery/walllocker/attack_hand()
 	if(!ammount)
