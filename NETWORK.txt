@@ -1,0 +1,18 @@
+==============
+Computernet 09B (1)
+Connected to router 4
+Connected to router 5
+==============
+Computernet EA5 (2)
+Connected to router 4
+==============
+Computernet 566 (3)
+Connected to router 5
+==============
+Computernet 861 (4)
+Connected to router 4
+==============
+Computernet 423 (5)
+Connected to router 5
+==============
+Computernet B91 (6)

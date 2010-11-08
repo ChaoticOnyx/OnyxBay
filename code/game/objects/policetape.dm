@@ -26,7 +26,7 @@
 					var/obj/item/policetape/P = new/obj/item/policetape(tapestartx,Y,tapestartz)
 					P.loc = locate(tapestartx,Y,tapestartz)
 					P.icon_state = "vertical"
-					usr << "You finish placing the police tape."
+			usr << "\blue You finish placing the police tape."
 
 		if(tapestartx == tapeendx && tapestarty < tapeendy && tapestartz == tapeendz)
 			for(var/Y=tapestarty,Y<=tapeendy,Y++)
@@ -44,7 +44,7 @@
 					var/obj/item/policetape/P = new/obj/item/policetape(tapestartx,Y,tapestartz)
 					P.loc = locate(tapestartx,Y,tapestartz)
 					P.icon_state = "vertical"
-					usr << "You finish placing the police tape."
+			usr << "\blue You finish placing the police tape."
 
 		if(tapestarty == tapeendy && tapestartx > tapeendx && tapestartz == tapeendz)
 			for(var/X=tapestartx,X>=tapeendx,X--)
@@ -62,7 +62,7 @@
 					var/obj/item/policetape/P = new/obj/item/policetape(X,tapestarty,tapestartz)
 					P.loc = locate(X,tapestarty,tapestartz)
 					P.icon_state = "horizontal"
-					usr << "You finish placing the police tape."
+			usr << "\blue You finish placing the police tape."
 
 		if(tapestarty == tapeendy && tapestartx < tapeendx && tapestartz == tapeendz)
 			for(var/X=tapestartx,X<=tapeendx,X++)
@@ -80,7 +80,7 @@
 					var/obj/item/policetape/P = new/obj/item/policetape(X,tapestarty,tapestartz)
 					P.loc = locate(X,tapestarty,tapestartz)
 					P.icon_state = "horizontal"
-					usr << "You finish placing the police tape."
+			usr << "\blue You finish placing the police tape."
 
 		if(tapestarty != tapeendy && tapestartx != tapeendx)
 			usr << "\blue Police tape can only be laid horizontally or vertically."
