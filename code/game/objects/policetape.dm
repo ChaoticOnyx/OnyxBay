@@ -26,7 +26,7 @@
 					var/obj/item/policetape/P = new/obj/item/policetape(tapestartx,Y,tapestartz)
 					P.loc = locate(tapestartx,Y,tapestartz)
 					P.icon_state = "vertical"
-			usr << "\blue You finish placing the police tape."
+			usr << "\blue You finish placing the police tape."	//Git Test
 
 		if(tapestartx == tapeendx && tapestarty < tapeendy && tapestartz == tapeendz)
 			for(var/Y=tapestarty,Y<=tapeendy,Y++)
