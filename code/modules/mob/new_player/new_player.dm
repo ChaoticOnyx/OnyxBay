@@ -22,7 +22,8 @@ mob/new_player
 			mind = new
 			mind.key = key
 			mind.current = src
-
+		if (join_motd)
+			src.client.showmotd()
 		new_player_panel()
 		var/starting_loc = pick(newplayer_start)
 		loc = starting_loc
@@ -89,7 +90,8 @@ mob/new_player
 		if(href_list["show_preferences"])
 			preferences.ShowChoices(src)
 			return 1
-
+		if(href_list["closemotd"])
+			src << browse(null,"window=motd;")
 		if(href_list["ready"])
 			if (config.invite_only)
 				if(!invite_isallowed(src))
@@ -156,7 +158,7 @@ mob/new_player
 				if ("12")
 					AttemptLateSpawn("Detective", detectiveMax)
 				if ("13")
-					AttemptLateSpawn("Counselor", chaplainMax)
+					AttemptLateSpawn("Counselor", CounselorMax)
 				if ("14")
 					AttemptLateSpawn("Janitor", janitorMax)
 				if ("15")
@@ -258,8 +260,8 @@ mob/new_player
 		if (IsJobAvailable("Detective",detectiveMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=12'>Detective</a><br>"
 */
-		if (IsJobAvailable("Counselor",chaplainMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=13'>Chaplain</a><br>"
+		if (IsJobAvailable("Counselor",CounselorMax))
+			dat += "<a href='byond://?src=\ref[src];SelectedJob=13'>Counselor</a><br>"
 
 		if (IsJobAvailable("Janitor",janitorMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=14'>Janitor</a><br>"

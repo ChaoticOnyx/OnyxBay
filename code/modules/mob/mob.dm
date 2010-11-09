@@ -1946,9 +1946,8 @@ mob/verb/turnwest()
 		world.update_status()
 
 	..()
+	//	src << "<div class=\"motd\">[join_motd]</div>"
 
-	if (join_motd)
-		src << "<div class=\"motd\">[join_motd]</div>"
 
 //new admin bit - Nannek
 

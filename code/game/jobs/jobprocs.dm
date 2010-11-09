@@ -291,7 +291,6 @@
 
 	switch(rank)
 		if ("Counselor")
-			src.equip_if_possible(new /obj/item/weapon/storage/bible(src), slot_l_hand)
 			src.equip_if_possible(new /obj/item/device/pda/chaplain(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/chaplain(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)

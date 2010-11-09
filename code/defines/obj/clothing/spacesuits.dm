@@ -47,3 +47,15 @@ obj/item/clothing/suit/space/spaceterror
 	name = "black space suit"
 	icon_state = "spaceterror"
 	item_state = "spaceterror"
+
+/obj/item/clothing/head/helmet/space/spaceengi
+	name = "Enginner space helmet"
+	desc = "Series:Biohazard Green"
+	icon_state = "spaceengih"
+	item_state = "spaceengih"
+
+
+obj/item/clothing/suit/space/spaceengi
+	name = "Enginner space suit"
+	icon_state = "spaceengi"
+	item_state = "spaceengi"

@@ -103,7 +103,7 @@
 	icon_state = "black"
 	icon_closed = "black"
 
-/obj/closet/wardrobe/chaplain_black
+/obj/closet/wardrobe/Counselor_black
 	name = "Counselor Wardrobe"
 	icon_state = "black"
 	icon_closed = "black"
