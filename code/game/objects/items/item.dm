@@ -109,7 +109,7 @@
 	if (user.hand)
 		if(ishuman(user))
 			var/datum/organ/external/temp = organs["l_hand"]
-			if(!temp.destoryed)
+			if(!temp.destroyed)
 				user.l_hand = src
 			else
 				user << "\blue You pick \the [src] up with your ha- wait a minute."
@@ -119,7 +119,7 @@
 	else
 		if(ishuman(user))
 			var/datum/organ/external/temp = organs["l_hand"]
-			if(!temp.destoryed)
+			if(!temp.destroyed)
 				user.l_hand = src
 			else
 				user << "\blue You pick \the [src] up with your ha- wait a minute."

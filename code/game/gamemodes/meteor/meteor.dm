@@ -35,7 +35,7 @@
 					world << "\t <FONT size = 1>[survivor] stayed alive. Whereabouts unknown.</FONT>"
 	else
 		world << "\blue <B>No one survived the meteor attack!</B>"
-
+	check_round()
 	return 1
 
 /datum/game_mode/meteor/process()

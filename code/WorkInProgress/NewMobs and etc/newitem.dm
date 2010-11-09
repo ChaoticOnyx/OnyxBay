@@ -109,7 +109,7 @@
 	if (user.hand)
 		if(ishuman(user))
 			var/datum/organ/external/temp = user:organs["l_hand"]
-			if(!temp.destoryed)
+			if(!temp.destroyed)
 				user.l_hand = src
 			else
 				user << "\blue You pick \the [src] up with your ha- wait a minute."
@@ -119,7 +119,7 @@
 	else
 		if(ishuman(user))
 			var/datum/organ/external/temp = user:organs["r_hand"]
-			if(!temp.destoryed)
+			if(!temp.destroyed)
 				user.r_hand = src
 			else
 				user << "\blue You pick \the [src] up with your ha- wait a minute."
@@ -183,125 +183,84 @@
 		var/datum/organ/external/affecting
 		if (H.organs[text("[]", def_zone)])
 			affecting = H.organs[text("[]", def_zone)]
-		if(affecting.destoryed)
+		if(affecting)
+			if(affecting.destroyed)
+				for(var/mob/O in viewers(M, null))
+					O.show_message(text("\red <B>[user] has missed [M] with [src] </B>"),1)
+				return
+			var/hit_area = parse_zone(def_zone)
 			for(var/mob/O in viewers(M, null))
-				O.show_message(text("\red <B>[user] has missed [M] with [src] </B>"),1)
-			return
-		var/hit_area = parse_zone(def_zone)
-		for(var/mob/O in viewers(M, null))
-			O.show_message(text("\red <B>[] has been attacked in the [] with [][] </B>", M, hit_area, src, (user ? text(" by [].", user) : ".")), 1)
-		if (istype(affecting, /datum/organ/external))
-			var/b_dam = (src.damtype == "brute" ? src.force : 0)
-			var/f_dam = (src.damtype == "fire" ? src.force : 0)
-			if (M.mutations & 2)
-				f_dam = 0
-			if (def_zone == "head")
-				if (b_dam && (istype(H.head, /obj/item/clothing/head/helmet/) && H.head.body_parts_covered & HEAD) && prob(80 - src.force))
-					if (prob(20))
-						affecting.take_damage(power, 0,slash,superblunt)
-					else
-						H.show_message("\red You have been protected from a hit to the head.")
-					return
-				if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam)))
-					var/time = rand(10, 120)
-					if (prob(90))
-						if (H.paralysis < time)
-							H.paralysis = time
-					else
-						if (H.weakened < time)
-							H.weakened = time
-					if(H.stat != 2)	H.stat = 1
-					if(H.stat != 2)
-						for(var/mob/O in viewers(M, null))
-							O.show_message(text("\red <B>[] has been knocked unconscious!</B>", H), 1, "\red You hear someone fall.", 2)
+				O.show_message(text("\red <B>[] has been attacked in the [] with [][] </B>", M, hit_area, src, (user ? text(" by [].", user) : ".")), 1)
+			if (istype(affecting, /datum/organ/external))
+				var/b_dam = (src.damtype == "brute" ? src.force : 0)
+				var/f_dam = (src.damtype == "fire" ? src.force : 0)
+				if (M.mutations & 2)
+					f_dam = 0
+				if (def_zone == "head")
+					if (b_dam && (istype(H.head, /obj/item/clothing/head/helmet/) && H.head.body_parts_covered & HEAD) && prob(80 - src.force))
+						if (prob(20))
+							affecting.take_damage(power, 0,slash,superblunt)
+						else
+							H.show_message("\red You have been protected from a hit to the head.")
+						return
+					if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam)))
+						var/time = rand(10, 120)
+						if (prob(90))
+							if (H.paralysis < time)
+								H.paralysis = time
+						else
+							if (H.weakened < time)
+								H.weakened = time
+						if(H.stat != 2)	H.stat = 1
+						if(H.stat != 2)
+							for(var/mob/O in viewers(M, null))
+								O.show_message(text("\red <B>[] has been knocked unconscious!</B>", H), 1, "\red You hear someone fall.", 2)
+							if (prob(50))
+								if (ticker.mode.name == "revolution")
+									ticker.mode:remove_revolutionary(H.mind)
+					if (b_dam && prob(25 + (b_dam * 2)))
+						src.add_blood(H)
+						if (prob(65))
+							var/turf/location = H.loc
+							if (istype(location, /turf/simulated))
+								location.add_blood(H)
+						if (H.wear_mask)
+							H.wear_mask.add_blood(H)
+						if (H.head)
+							H.head.add_blood(H)
+						if (H.glasses && prob(33))
+							H.glasses.add_blood(H)
+						if (istype(user, /mob/living/carbon/human))
+							var/mob/living/carbon/human/user2 = user
+							if (user2.gloves)
+								user2.gloves.add_blood(H)
+								user2.gloves.transfer_blood = 2
+								user2.gloves.bloody_hands_mob = H
+							else
+								user2.add_blood(H)
+								user2.bloody_hands = 2
+								user2.bloody_hands_mob = H
+							if (prob(15))
+								if (user2.wear_suit)
+									user2.wear_suit.add_blood(H)
+								else if (user2.w_uniform)
+									user2.w_uniform.add_blood(H)
+					affecting.take_damage(b_dam, f_dam,slash,superblunt)
+				else if (def_zone == "chest")
+					if (b_dam && ((istype(H.wear_suit, /obj/item/clothing/suit/armor/)) && H.wear_suit.body_parts_covered & UPPER_TORSO) && prob(90 - src.force))
+						H.show_message("\red You have been protected from a hit to the chest.")
+						return
+					if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam)))
 						if (prob(50))
-							if (ticker.mode.name == "revolution")
-								ticker.mode:remove_revolutionary(H.mind)
-				if (b_dam && prob(25 + (b_dam * 2)))
-					src.add_blood(H)
-					if (prob(65))
-						var/turf/location = H.loc
-						if (istype(location, /turf/simulated))
-							location.add_blood(H)
-					if (H.wear_mask)
-						H.wear_mask.add_blood(H)
-					if (H.head)
-						H.head.add_blood(H)
-					if (H.glasses && prob(33))
-						H.glasses.add_blood(H)
-					if (istype(user, /mob/living/carbon/human))
-						var/mob/living/carbon/human/user2 = user
-						if (user2.gloves)
-							user2.gloves.add_blood(H)
-							user2.gloves.transfer_blood = 2
-							user2.gloves.bloody_hands_mob = H
+							if (H.weakened < 5)
+								H.weakened = 5
+							for(var/mob/O in viewers(H, null))
+								O.show_message(text("\red <B>[] has been knocked down!</B>", H), 1, "\red You hear someone fall.", 2)
 						else
-							user2.add_blood(H)
-							user2.bloody_hands = 2
-							user2.bloody_hands_mob = H
-						if (prob(15))
-							if (user2.wear_suit)
-								user2.wear_suit.add_blood(H)
-							else if (user2.w_uniform)
-								user2.w_uniform.add_blood(H)
-				affecting.take_damage(b_dam, f_dam,slash,superblunt)
-			else if (def_zone == "chest")
-				if (b_dam && ((istype(H.wear_suit, /obj/item/clothing/suit/armor/)) && H.wear_suit.body_parts_covered & UPPER_TORSO) && prob(90 - src.force))
-					H.show_message("\red You have been protected from a hit to the chest.")
-					return
-				if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam)))
-					if (prob(50))
-						if (H.weakened < 5)
-							H.weakened = 5
-						for(var/mob/O in viewers(H, null))
-							O.show_message(text("\red <B>[] has been knocked down!</B>", H), 1, "\red You hear someone fall.", 2)
-					else
-						if (H.stunned < 2)
-							H.stunned = 2
-						for(var/mob/O in viewers(H, null))
-							O.show_message(text("\red <B>[] has been stunned!</B>", H), 1)
-					if(H.stat != 2)	H.stat = 1
-				if (b_dam && prob(25 + (b_dam * 2)))
-					src.add_blood(H)
-					if (prob(65))
-						var/turf/location = H.loc
-						if (istype(location, /turf/simulated))
-							location.add_blood(H)
-					if (H.wear_suit)
-						H.wear_suit.add_blood(H)
-					if (H.w_uniform)
-						H.w_uniform.add_blood(H)
-					if (istype(user, /mob/living/carbon/human))
-						var/mob/living/carbon/human/user2 = user
-						if (user2.gloves)
-							user2.gloves.add_blood(H)
-							user2.gloves.transfer_blood = 2
-							user2.gloves.bloody_hands_mob = H
-						else
-							user2.add_blood(H)
-							user2.bloody_hands = 2
-							user2.bloody_hands_mob = H
-						if (prob(15))
-							if (user2.wear_suit)
-								user2.wear_suit.add_blood(H)
-							else if (user2.w_uniform)
-								user2.w_uniform.add_blood(H)
-				affecting.take_damage(b_dam, f_dam,slash,superblunt)
-			else if (def_zone == "groin")
-				if (b_dam && (istype(H.wear_suit, /obj/item/clothing/suit/armor/) && H.wear_suit.body_parts_covered & LOWER_TORSO) && prob(90 - src.force))
-					H.show_message("\red You have been protected from a hit to the groin (phew).")
-					return
-				if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam)))
-					if (prob(50))
-						if (H.weakened < 5)
-							H.weakened = 5
-						for(var/mob/O in viewers(H, null))
-							O.show_message(text("\red <B>[] has been knocked down!</B>", H), 1, "\red You hear someone fall.", 2)
-					else
-						if (H.stunned < 2)
-							H.stunned = 2
-						for(var/mob/O in viewers(H, null))
-							O.show_message(text("\red <B>[] has been stunned!</B>", H), 1)
+							if (H.stunned < 2)
+								H.stunned = 2
+							for(var/mob/O in viewers(H, null))
+								O.show_message(text("\red <B>[] has been stunned!</B>", H), 1)
 						if(H.stat != 2)	H.stat = 1
 					if (b_dam && prob(25 + (b_dam * 2)))
 						src.add_blood(H)
@@ -329,36 +288,78 @@
 								else if (user2.w_uniform)
 									user2.w_uniform.add_blood(H)
 					affecting.take_damage(b_dam, f_dam,slash,superblunt)
-			else
-				if (b_dam && prob(25 + (b_dam * 2)))
-					src.add_blood(H)
-					if (prob(65))
-						var/turf/location = H.loc
-						if (istype(location, /turf/simulated))
-							location.add_blood(H)
-					if (H.wear_suit)
-						H.wear_suit.add_blood(H)
-					if (H.w_uniform)
-						H.w_uniform.add_blood(H)
-					if (istype(user, /mob/living/carbon/human))
-						var/mob/living/carbon/human/user2 = user
-						if (user2.gloves)
-							user2.gloves.add_blood(H)
-							user2.gloves.transfer_blood = 2
-							user2.gloves.bloody_hands_mob = H
+				else if (def_zone == "groin")
+					if (b_dam && (istype(H.wear_suit, /obj/item/clothing/suit/armor/) && H.wear_suit.body_parts_covered & LOWER_TORSO) && prob(90 - src.force))
+						H.show_message("\red You have been protected from a hit to the groin (phew).")
+						return
+					if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam)))
+						if (prob(50))
+							if (H.weakened < 5)
+								H.weakened = 5
+							for(var/mob/O in viewers(H, null))
+								O.show_message(text("\red <B>[] has been knocked down!</B>", H), 1, "\red You hear someone fall.", 2)
 						else
-							user2.add_blood(H)
-							user2.bloody_hands = 2
-							user2.bloody_hands_mob = H
-						if (prob(15))
-							if (user2.wear_suit)
-								user2.wear_suit.add_blood(H)
-							else if (user2.w_uniform)
-								user2.w_uniform.add_blood(H)
-				affecting.take_damage(b_dam, f_dam,slash,superblunt)
+							if (H.stunned < 2)
+								H.stunned = 2
+							for(var/mob/O in viewers(H, null))
+								O.show_message(text("\red <B>[] has been stunned!</B>", H), 1)
+							if(H.stat != 2)	H.stat = 1
+						if (b_dam && prob(25 + (b_dam * 2)))
+							src.add_blood(H)
+							if (prob(65))
+								var/turf/location = H.loc
+								if (istype(location, /turf/simulated))
+									location.add_blood(H)
+							if (H.wear_suit)
+								H.wear_suit.add_blood(H)
+							if (H.w_uniform)
+								H.w_uniform.add_blood(H)
+							if (istype(user, /mob/living/carbon/human))
+								var/mob/living/carbon/human/user2 = user
+								if (user2.gloves)
+									user2.gloves.add_blood(H)
+									user2.gloves.transfer_blood = 2
+									user2.gloves.bloody_hands_mob = H
+								else
+									user2.add_blood(H)
+									user2.bloody_hands = 2
+									user2.bloody_hands_mob = H
+								if (prob(15))
+									if (user2.wear_suit)
+										user2.wear_suit.add_blood(H)
+									else if (user2.w_uniform)
+										user2.w_uniform.add_blood(H)
+						affecting.take_damage(b_dam, f_dam,slash,superblunt)
+				else
+					if (b_dam && prob(25 + (b_dam * 2)))
+						src.add_blood(H)
+						if (prob(65))
+							var/turf/location = H.loc
+							if (istype(location, /turf/simulated))
+								location.add_blood(H)
+						if (H.wear_suit)
+							H.wear_suit.add_blood(H)
+						if (H.w_uniform)
+							H.w_uniform.add_blood(H)
+						if (istype(user, /mob/living/carbon/human))
+							var/mob/living/carbon/human/user2 = user
+							if (user2.gloves)
+								user2.gloves.add_blood(H)
+								user2.gloves.transfer_blood = 2
+								user2.gloves.bloody_hands_mob = H
+							else
+								user2.add_blood(H)
+								user2.bloody_hands = 2
+								user2.bloody_hands_mob = H
+							if (prob(15))
+								if (user2.wear_suit)
+									user2.wear_suit.add_blood(H)
+								else if (user2.w_uniform)
+									user2.w_uniform.add_blood(H)
+					affecting.take_damage(b_dam, f_dam,slash,superblunt)
 
-		if(H)
-			H.UpdateDamageIcon()
+			if(H)
+				H.UpdateDamageIcon()
 	else
 		switch(src.damtype)
 			if("brute")

@@ -695,7 +695,15 @@ Auto Patrol: []"},
 	return "beeps, \"[text]\"";
 
 
-
+/obj/machinery/bot/secbot/shutdowns()
+	src.on = !src.on
+	src.target = null
+	src.oldtarget_name = null
+	src.anchored = 0
+	src.mode = SECBOT_IDLE
+	walk_to(src,0)
+	src.icon_state = "secbot[src.on]"
+	src.updateUsrDialog()
 //Secbot Construction
 
 /obj/item/weapon/secbot_assembly

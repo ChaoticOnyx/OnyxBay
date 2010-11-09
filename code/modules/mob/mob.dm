@@ -1163,7 +1163,7 @@ mob/verb/turnwest()
 		var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch
 		mind.store_memory("Time of death: [tod]", 0)
 	timeofdeath = world.time
-
+	add_stat(2,1)
 	// Necessary in the event of the mob getting deleted before the check can complete (i.e. gibbed)
 	if (client)
 		spawn check_death(client)
@@ -1938,16 +1938,16 @@ mob/verb/turnwest()
 		message_admins("\blue Failed Login: [src] - Banned")
 		alert(src,"You have been banned.\nReason : [isbanned]","Ban","Ok")
 		del(src)
-
-
+	if(IsGuestKey(src.key))
+		alert(src,"Baystation12 don't allow guest accounts to play. Please go to http:\\www.byond.com and register for a key.","Guest","Ok")
+		del(src)
 	if (((world.address == address || !(address)) && !(host)))
 		host = key
 		world.update_status()
 
 	..()
+	//	src << "<div class=\"motd\">[join_motd]</div>"
 
-	if (join_motd)
-		src << "<div class=\"motd\">[join_motd]</div>"
 
 //new admin bit - Nannek
 

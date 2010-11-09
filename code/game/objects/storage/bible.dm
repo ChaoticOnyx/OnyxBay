@@ -23,7 +23,7 @@
 /obj/item/weapon/storage/bible/attack(mob/M as mob, mob/user as mob)
 
 	var/chaplain = 0
-	if(user.mind && (user.mind.assigned_role == "Chaplain"))
+	if(user.mind && (user.mind.assigned_role == "Counselor"))
 		chaplain = 1
 
 	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")

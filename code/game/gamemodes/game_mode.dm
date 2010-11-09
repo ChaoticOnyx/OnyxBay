@@ -39,6 +39,10 @@
 			world << "<B>Objective #[count]</B>: [objective.explanation_text] \..."
 			if (objective.check_completion())
 				world << "\green <B>Success</B>"
+				for(var/client/C in world)
+					if(C.key == traitor.key)
+						C.mob.add_stat(4,1)
+						C.mob.unlock_medal("Oh I'm a terrorist?", 0, "Kinda", "medium")
 			else
 				world << "\red Failed"
 				traitorwin = 0
@@ -51,7 +55,7 @@
 			var/DBQuery/query = dbcon.NewQuery("INSERT INTO `bay12`.`traitorlogs` (`CKey`, `Objective`, `Succeeded`, `Spawned`, `Occupation`, `PlayerCount`) VALUES ('[info.ckey]', '[info.starting_objective]', '[traitorwin]', '[dd_list2text(info.spawnlist, ";")]', '[info.starting_occupation]', '[info.starting_player_count]')")
 			query.Execute()
 
-
+	check_round()
 	return 1
 
 /datum/game_mode/proc/check_win()
@@ -59,6 +63,12 @@
 /datum/game_mode/proc/latespawn(var/mob)
 
 /datum/game_mode/proc/send_intercept()
+/datum/game_mode/proc/check_round()
+	for(var/client/C)
+		if(C.mob)
+			C.mob.add_stat(1,1)
+			if(C.mob.stat != 2)
+				C.mob.unlock_medal("Survivor", 0, "What do you think?", "easy")
 
 /datum/game_mode/proc/equip_traitor(mob/living/carbon/human/traitor_mob)
 	if (!istype(traitor_mob))

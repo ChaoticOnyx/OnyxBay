@@ -182,9 +182,9 @@
 					if(occupant.bodytemperature < 225)
 						if(ishuman(occupant))
 							for(var/datum/organ/external/O in occupant:organs2)
-								if(!O.destoryed)//FIND BACK
-									if(occupant.bruteloss) O.brute_dam = max(0, O.brute_dam - 1)
-									if(occupant.fireloss) O.burn_dam = max(0, O.burn_dam - 1)
+								if(!O.destroyed)//FIND BACK
+									if(occupant.bruteloss) O.heal_damage(1,0,0)
+									if(occupant.fireloss) O.heal_damage(0,1,0)
 							if(occupant.toxloss) occupant.toxloss = max(0, occupant.toxloss - 1)
 						else
 							if(occupant.bruteloss) occupant.bruteloss = max(0, occupant.bruteloss - 1)

@@ -702,9 +702,9 @@
 	color = "captain"
 
 /obj/item/clothing/under/rank/chaplain
-	desc = "It has a Chaplain rank stripe on it."
-	name = "Chaplain Jumpsuit"
-	icon_state = "chaplain"
+	desc = "It has a Counselor rank stripe on it."
+	name = "Counselor Jumpsuit"
+	icon_state = "chaplin"
 	item_state = "bl_suit"
 	color = "chapblack"
 
@@ -734,7 +734,7 @@
 	desc = "It has a Head of Personnel rank stripe on it."
 	name = "Head of Personnel Jumpsuit"
 	icon_state = "hop"
-	item_state = "g_suit"
+	item_state = "b_suit"
 	color = "hopgreen"
 
 /obj/item/clothing/under/rank/head_of_security

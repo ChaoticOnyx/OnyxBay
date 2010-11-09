@@ -69,7 +69,7 @@
 	name = "Admin room"
 	icon_state = "start"
 	applyalertstatus = 0
-
+	requires_power = 0
 
 
 //These are shuttle areas, they must contain two areas in a subgroup if you want to move a shuttle from one
@@ -839,7 +839,7 @@
 
 
 /area/chapel/office
-	name = "Chapel Office"
+	name = "Counselor's Office"
 	icon_state = "chapeloffice"
 
 

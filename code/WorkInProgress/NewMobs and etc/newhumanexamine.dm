@@ -103,7 +103,7 @@
 		else if (brainloss >= 60)
 			usr << "\red [name] has a stupid expression on [t_his] face."
 	for(var/datum/organ/external/temp in organs2)
-		if(temp.destoryed)
+		if(temp.destroyed)
 			usr << "\red [name] is missing [t_his] [temp.display_name]."
 		if(temp.wounds)
 			for(var/datum/organ/external/wound/w in temp.wounds)

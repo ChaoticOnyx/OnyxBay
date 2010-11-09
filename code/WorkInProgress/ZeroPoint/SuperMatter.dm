@@ -94,3 +94,4 @@
 		if(prob(5))
 			l.hallucination += 100
 	return 1
+

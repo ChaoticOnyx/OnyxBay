@@ -119,7 +119,13 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 		if("make")
 			src.maketiles = !src.maketiles
 			src.updateUsrDialog()
-
+/obj/machinery/bot/floorbot/shutdowns()
+	src.on = !src.on
+	src.target = null
+	src.oldtarget = null
+	src.oldloc = null
+	src.updateicon()
+	src.path = new()
 /obj/machinery/bot/floorbot/attack_ai()
 	src.on = !src.on
 	src.target = null

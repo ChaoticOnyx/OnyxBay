@@ -235,7 +235,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 		if(timeleft > 1e5)		// midnight rollover protection
 			timeleft = 0
 
-		if(online && !unlocked && timeleft < 60)
+		if(online && !unlocked && timeleft < 120)
 			for(var/datum/shuttle/s in shuttles)
 				var/area/shuttle_area = locate(s.station)
 				for(var/obj/machinery/door/unpowered/shuttle/d in shuttle_area)

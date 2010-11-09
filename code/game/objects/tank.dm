@@ -305,7 +305,25 @@
 	//G = null
 	del(G)
 	return
-
+/obj/item/weapon/tank/jetpack/MouseDrop(obj/over_object as obj)
+	if ((istype(usr, /mob/living/carbon/human) || (ticker && ticker.mode.name == "monkey")))
+		var/mob/M = usr
+		if (!( istype(over_object, /obj/screen) ))
+			return ..()
+		if ((!( M.restrained() ) && !( M.stat ) && M.back == src))
+			if (over_object.name == "r_hand")
+				if (!( M.r_hand ))
+					M.u_equip(src)
+					M.r_hand = src
+			else
+				if (over_object.name == "l_hand")
+					if (!( M.l_hand ))
+						M.u_equip(src)
+						M.l_hand = src
+			M.update_clothing()
+			src.add_fingerprint(usr)
+			return
+	return
 /obj/item/weapon/tank/jetpack/proc/move_z(cardinal, mob/user as mob)
 	if(allow_thrust(0.01, user))
 		switch(cardinal)

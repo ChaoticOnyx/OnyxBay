@@ -23,9 +23,9 @@ LOG_WHISPER
 # 
 # default probablity is 1, increase to make that mode more likely to be picked
 # set to 0 to disable that mode
-PROBABILITY EXTENDED 0
+PROBABILITY EXTENDED 5
 PROBABILITY TRAITOR 8
-PROBABILITY METEOR 0
+PROBABILITY METEOR 2
 PROBABILITY MALFUNCTION 2
 PROBABILITY BLOB 0
 PROBABILITY NUCLEAR 5
@@ -63,9 +63,9 @@ HOSTEDBY Topkasa
 #sukasa.kicks-ass.org
 # tU8NptaBZV6BeM59
 # bay12
-#za59KBjasFAez9bE
+# za59KBjasFAez9bE
 DB_SERVER pegasus.temporum.net
-DB_USER bay12dev
-DB_PASSWORD U5ymBqte4QM6vEdG
-DB_DBNAME bay12dev
+DB_USER bay12
+DB_PASSWORD za59KBjasFAez9bE
+DB_DBNAME bay12
 DB_PORT 3306

@@ -65,5 +65,5 @@
 		for(var/mob/living/carbon/human/human_player in world)
 			if (human_player.client)
 				world << "<B>[human_player.key] was [human_player.real_name].</B>"
-
+	check_round()
 	return 1

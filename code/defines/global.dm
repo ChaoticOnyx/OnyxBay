@@ -30,6 +30,7 @@ var
 	skipupdate = 0
 	///////////////
 	eventchance = 1 //% per 2 mins
+	do_event = 1
 	event = 0
 	hadevent = 0
 	blobevent = 0
@@ -74,7 +75,7 @@ var
 	chiefMax = 1
 	atmosMax = 4
 	detectiveMax = 1
-	chaplainMax = 1
+	CounselorMax = 1
 	janitorMax = 2
 	doctorMax = 4
 	clownMax = 0

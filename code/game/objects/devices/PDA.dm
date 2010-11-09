@@ -84,7 +84,6 @@
 	toff = 1
 
 /obj/item/device/pda/chaplain
-	icon_state = "pda-holy"
 
 /obj/item/weapon/cartridge
 	name = "generic cartridge"

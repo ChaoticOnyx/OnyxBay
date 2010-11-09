@@ -69,6 +69,7 @@ datum/preferences/proc/savefile_load(mob/user, var/silent = 1,var/slot = 1)
 			underwear = text2num(column_data["underwear"])
 			be_random_name = text2num(column_data["name_is_always_random"])
 			slotname = column_data["slotname"]
+			bio = column_data["bios"]
 			src << "Player Profile has been loaded"
 			src << browse(null, "window=mob_occupation")
 			return 1

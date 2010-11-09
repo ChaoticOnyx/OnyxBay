@@ -162,7 +162,8 @@
 
 	src.updateUsrDialog()
 	return
-
+/obj/machinery/bot/medbot/shutdowns()
+	src.toggle_power()
 /obj/machinery/bot/medbot/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if ((istype(W, /obj/item/weapon/card/emag)) && (!src.emagged))
 

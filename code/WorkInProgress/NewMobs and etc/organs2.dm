@@ -7,7 +7,7 @@
 /datum/organ/external/proc/take_damage(brute, burn,slash,supbrute)
 	if ((brute <= 0 && burn <= 0))
 		return 0
-	if(destoryed)
+	if(destroyed)
 		return 0
 	if(slash)
 		var/chance = rand(1,5)
@@ -22,7 +22,7 @@
 					var/obj/item/weapon/organ/head/H = new(owner.loc)
 					var/lol = pick(cardinal)
 					step(H,lol)
-					destoryed = 1
+					destroyed = 1
 					owner:update_face()
 					owner:update_body()
 					owner.death()
@@ -31,7 +31,7 @@
 					var/obj/item/weapon/organ/r_arm/H = new(owner.loc)
 					if(owner:organs["l_hand"])
 						var/datum/organ/external/S = owner:organs["r_hand"]
-						if(!S.destoryed)
+						if(!S.destroyed)
 							var/obj/item/weapon/organ/r_hand/X = new(owner.loc)
 							for(var/mob/M in viewers(owner))
 								M.show_message("\red [owner.name]'s [X.name] flies off.")
@@ -39,13 +39,13 @@
 							step(X,lol2)
 					var/lol = pick(cardinal)
 					step(H,lol)
-					destoryed = 1
+					destroyed = 1
 					return
 				if(name == "l arm")
 					var/obj/item/weapon/organ/l_arm/H = new(owner.loc)
 					if(owner:organs["l_hand"])
 						var/datum/organ/external/S = owner:organs["l_hand"]
-						if(!S.destoryed)
+						if(!S.destroyed)
 							var/obj/item/weapon/organ/l_hand/X = new(owner.loc)
 							for(var/mob/M in viewers(owner))
 								M.show_message("\red [owner.name]'s [X.name] flies off in arc.")
@@ -53,13 +53,13 @@
 							step(X,lol2)
 					var/lol = pick(cardinal)
 					step(H,lol)
-					destoryed = 1
+					destroyed = 1
 					return
 				if(name == "r leg")
 					var/obj/item/weapon/organ/r_leg/H = new(owner.loc)
 					if(owner:organs["r_foot"])
 						var/datum/organ/external/S = owner:organs["r_foot"]
-						if(!S.destoryed)
+						if(!S.destroyed)
 							var/obj/item/weapon/organ/l_foot/X = new(owner.loc)
 							for(var/mob/M in viewers(owner))
 								M.show_message("\red [owner.name]'s [X.name] flies off flies off in arc.")
@@ -67,13 +67,13 @@
 							step(X,lol2)
 					var/lol = pick(cardinal)
 					step(H,lol)
-					destoryed = 1
+					destroyed = 1
 					return
 				if(name == "l leg")
 					var/obj/item/weapon/organ/l_leg/H = new(owner.loc)
 					if(owner:organs["l_foot"])
 						var/datum/organ/external/S = owner:organs["l_foot"]
-						if(!S.destoryed)
+						if(!S.destroyed)
 							var/obj/item/weapon/organ/l_foot/X = new(owner.loc)
 							for(var/mob/M in viewers(owner))
 								M.show_message("\red [owner.name]'s [X.name] flies off.")
@@ -81,14 +81,14 @@
 							step(X,lol2)
 					var/lol = pick(cardinal)
 					step(H,lol)
-					destoryed = 1
+					destroyed = 1
 					return
 		else if(prob(nux))
 			createwound(rand(1,5))
 			owner << "You feel something wet on your [display_name]"
 			goto damage
 /*	if(brute >= max_damage)
-		destoryed = 1
+		destroyed = 1
 		if(name == "chest")
 			for(var/mob/M in viewers(owner))
 				M.show_message("\red [owner.name]'s explodes into gore.")
@@ -135,7 +135,7 @@
 
 /datum/organ/external/proc/heal_damage(brute, burn,var/internal = 0)
 	brute_dam = max(0, brute_dam - brute)
-	burn_dam = max(0, brute_dam - burn)
+	burn_dam = max(0, burn_dam - burn)
 	if(internal)
 		broken = 0
 		perma_injury = 0

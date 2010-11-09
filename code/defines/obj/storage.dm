@@ -117,7 +117,7 @@
 
 /obj/item/weapon/storage/stma_kit
 	name = "Sterile Masks"
-	icon_state = "lglo_kit"
+	icon_state = "mask"
 	item_state = "syringe_kit"
 
 /obj/item/weapon/storage/trackimp_kit
