@@ -349,6 +349,15 @@
 				L.Add(t)
 
 		return L
+	Railturfs()
+
+		var/L[] = new()
+		for(var/turf/simulated/t in oview(src,1))
+			if(!t.density && !LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+				if(locate(/obj/rail) in t)
+					L.Add(t)
+
+		return L
 	Distance(turf/t)
 		if(!src || !t)
 			return 1e31
