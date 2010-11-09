@@ -33,6 +33,7 @@
 	var/operating = 1
 	var/charging = 0
 	var/chargemode = 1
+	var/shielding = 1 // 1= Auto, 2= Forced, 0 = off
 	var/health = 30
 	var/chargecount = 0
 	var/locked = 1
@@ -377,6 +378,7 @@
 		t += "Equipment:    [add_lspace(lastused_equip, 6)] W : <B>[L[equipment+1]]</B><BR>"
 		t += "Lighting:     [add_lspace(lastused_light, 6)] W : <B>[L[lighting+1]]</B><BR>"
 		t += "Environmental:[add_lspace(lastused_environ, 6)] W : <B>[L[environ+1]]</B><BR>"
+		t += "Shield generator: <B>[L[shielding+1]]</B><BR>"
 
 		t += "<BR>Total load: [lastused_light + lastused_equip + lastused_environ] W</PRE>"
 		t += "<HR>Cover lock: <B>[coverlocked ? "Engaged" : "Disengaged"]</B>"
@@ -433,6 +435,19 @@
 				t += "<A href='?src=\ref[src];env=1'>Off</A> <B>On</B> <A href='?src=\ref[src];env=3'>Auto</A>"
 			if(3)
 				t += "<A href='?src=\ref[src];env=1'>Off</A> <A href='?src=\ref[src];env=2'>On</A> <B>Auto (On)</B>"
+
+
+		t += "Shielding : "
+		switch(shielding)
+			if(0)
+				t += "<B>Off</B> <A href='?src=\ref[src];sld=2'>On</A> <A href='?src=\ref[src];sld=1'>Auto</A>"
+			if(1)
+				t += "<A href='?src=\ref[src];sld=1'>Off</A> <A href='?src=\ref[src];sld=2'>On</A> <B>Auto (Off)</B>"
+			if(2)
+				t += "<A href='?src=\ref[src];sld=1'>Off</A> <B>On</B> <A href='?src=\ref[src];sld=3'>Auto</A>"
+			if(3)
+				t += "<A href='?src=\ref[src];sld=1'>Off</A> <A href='?src=\ref[src];sld=2'>On</A> <B>Auto (On)</B>"
+
 
 
 
