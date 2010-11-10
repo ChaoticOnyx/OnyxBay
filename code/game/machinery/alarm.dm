@@ -225,8 +225,110 @@
 	if(href_list["deactivate_panic_fill"])
 		vent_connected.panic_fill = 0
 
-	updateUsrDialog()
+	spawn(10)					//Added by Strumpetplaya - Alarm Changes - Moved Door Delay to here
+		updateUsrDialog()
 
+
+
+
+
+obj/machinery/alarm/proc
+	air_doors_close(manual)
+		var/area/A = get_area(loc)
+		for(var/obj/machinery/door/airlock/E in A.auxdoors)
+			var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in E.loc
+			if(isnull(LightTest))
+				var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(E.loc)
+				var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+				world << imagelight
+			if((!E.arePowerSystemsOn()) || (E.stat & NOPOWER)) continue
+			if(!E.density)
+				spawn(0)
+				E.close()
+				sleep(10)
+				if(E.density)
+					E.locked = 1
+					E.air_locked = 1
+					E.update_icon()
+			else if(!E.locked) //Don't lock already bolted doors.
+				E.locked = 1
+				E.air_locked = 1
+				E.update_icon()
+			if(!A.fire)
+				for(var/obj/machinery/door/firedoor/D in E.loc)
+					if(!D.blocked)
+						if(D.operating)
+							D.nextstate = CLOSED
+						else if(!D.density)
+							spawn(0)
+							D.close()
+		/*	if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
+			if(!D.density)
+				spawn(0)
+				D.close()
+				sleep(10)
+				if(D.density)
+					D.locked = 1
+					D.air_locked = 1
+					D.update_icon()
+			else if(!D.locked) //Don't lock already bolted doors.
+				D.locked = 1
+				D.air_locked = 1
+				D.update_icon()
+		if(!fire)
+			for(var/obj/machinery/door/firedoor/D in alldoors)
+				if(!D.blocked)
+					if(D.operating)
+						D.nextstate = CLOSED
+					else if(!D.density)
+						spawn(0)
+						D.close()
+		*/
+		for(var/area/RA in A.related)
+			for(var/turf/T in RA)
+				if(T.density != 1)
+					var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in T
+					if(isnull(LightTest))
+						var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(T)
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+						world << imagelight
+			RA.activate_air_doors(manual*5)
+
+	air_doors_open(manual)
+		var/area/A = get_area(loc)
+		for(var/obj/machinery/door/airlock/E in A.auxdoors)
+			var/area/B = get_area(E.loc)
+			if(B.air_doors_activated != 1)
+				var/turf/C = E.loc
+				for (var/obj/alertlighting/atmoslight/G in C)
+					del(G)
+				if((!E.arePowerSystemsOn()) || (E.stat & NOPOWER)) continue
+					//E.air_locked = 0
+				if(E.air_locked) //Don't mess with doors locked for other reasons.
+					if(E.density)
+						E.locked = 0
+						E.air_locked =0
+						E.update_icon()
+			if(!A.fire)
+				for(var/obj/machinery/door/firedoor/D in E.loc)
+					if(!D.blocked)
+						if(D.operating)
+							D.nextstate = OPEN
+						else if(D.density)
+							spawn(0)
+							D.open()
+		for(var/area/RA in A.related)
+			for(var/turf/T in RA)
+				if(T.density != 1)
+					for (var/obj/alertlighting/atmoslight/F in T)
+						del(F)
+			RA.deactivate_air_doors(manual*5)
+
+
+
+
+
+/* Commented By Strumpetplaya - This is how the procs above looked before my alarm changes.
 obj/machinery/alarm/proc
 	air_doors_close(manual)
 		var/area/A = get_area(loc)
@@ -236,7 +338,7 @@ obj/machinery/alarm/proc
 		var/area/A = get_area(loc)
 		for(var/area/RA in A.related)
 			RA.deactivate_air_doors(manual*5)
-
+*/
 
 
 
@@ -352,7 +454,8 @@ obj/machinery/alarm/proc
 						var/tp = text2num(href_list["tp"])
 						src.time += tp
 						src.time = min(max(round(src.time), 0), 120)
-		src.updateUsrDialog()
+		spawn(10)					//Added by Strumpetplaya - Alarm Changes - Try to curb alarm spamming
+			updateUsrDialog()
 
 		src.add_fingerprint(usr)
 	else
@@ -360,6 +463,7 @@ obj/machinery/alarm/proc
 		return
 	return
 
+//reset() Edited by Strumpetplaya
 /obj/machinery/firealarm/proc/reset()
 	if (!( src.working ))
 		return
@@ -367,10 +471,30 @@ obj/machinery/alarm/proc
 	A = A.loc
 	if (!( istype(A, /area) ))
 		return
+	for(var/obj/machinery/door/firedoor/E in A.auxdoors)
+		var/area/B = get_area(E.loc)
+		if(B.fire != 1)
+			var/turf/C = E.loc
+			for (var/obj/alertlighting/firelight/G in C)
+				del(G)
+			if(!E.blocked)
+				if(E.operating)
+					E.nextstate = OPEN
+				else if(E.density)
+					spawn(0)
+					E.open()
 	for(var/area/RA in A.related)
+		for(var/turf/T in RA)
+			if(T.density != 1)
+				for (var/obj/alertlighting/firelight/F in T)
+					del(F)
+
 		RA.firereset()
 	return
 
+
+
+//alarm() Edited by Strumpetplaya
 /obj/machinery/firealarm/proc/alarm()
 	if (!( src.working ))
 		return
@@ -378,10 +502,33 @@ obj/machinery/alarm/proc
 	A = A.loc
 	if (!( istype(A, /area) ))
 		return
+	for(var/obj/machinery/door/firedoor/E in A.auxdoors)
+		var/obj/LightTest = locate(/obj/alertlighting/firelight) in E.loc
+		if(isnull(LightTest))
+			var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(E.loc)
+			var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+			world << imagelight
+		if(!E.blocked)
+			if(E.operating)
+				E.nextstate = CLOSED
+			else if(!E.density)
+				spawn(0)
+				E.close()
 	for(var/area/RA in A.related)
+		for(var/turf/T in RA)
+			if(T.density != 1)
+				var/obj/LightTest = locate(/obj/alertlighting/firelight) in T
+				if(isnull(LightTest))
+					var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(T)
+					var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+					world << imagelight
 		RA.firealert()
 	//playsound(src.loc, 'signal.ogg', 75, 0)
 	return
+
+
+
+
 
 /obj/machinery/partyalarm/attack_paw(mob/user as mob)
 	return src.attack_hand(user)

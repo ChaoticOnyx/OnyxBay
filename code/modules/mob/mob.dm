@@ -1949,6 +1949,17 @@ mob/verb/turnwest()
 	//	src << "<div class=\"motd\">[join_motd]</div>"
 
 
+	//////////////Added by Strumpetplaya - Alert Changes - Draw current lights for new players joining
+	//If this is causing lag, may need to change the light spawning code to create a list to use instead
+	//of using the world list.
+	for(var/obj/alertlighting/firelight/F in world)
+		var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+		src << imagelight
+	for(var/obj/alertlighting/atmoslight/G in world)
+		var/image/imagelight = image('alert.dmi',G,icon_state = "blueold")
+		src << imagelight
+	//////////////End Strumpetplaya Add
+
 //new admin bit - Nannek
 
 	if (admins.Find(ckey))
