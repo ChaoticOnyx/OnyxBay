@@ -3,6 +3,7 @@
 
 /obj/machinery/shielding/emitter
 	icon = 'shieldgen.dmi'
+	var/online = 0
 
 	var/list/obj/machinery/shielding/shield/shields = list( )
 
@@ -37,7 +38,3 @@
 				var/obj/machinery/shielding/shield/Z = new /obj/machinery/shielding/shield(S)
 				Z.emitter = src
 				shields += Z
-
-/proc/deshielding()
-	for(var/obj/machinery/shielding/emitter/E in world)
-		E.updateAreas()
