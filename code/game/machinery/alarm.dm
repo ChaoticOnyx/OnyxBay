@@ -92,7 +92,8 @@
 	if (safe != safe_old || !A.air_doors_activated)
 		src.icon_state = "alarm[!safe]"
 		if(!safe && !A.air_doors_activated)
-			air_doors_close()
+			spawn(50)
+				air_doors_close()
 		else if (safe && A.air_doors_activated)
 			air_doors_open()
 	safe_old = safe
@@ -250,6 +251,14 @@ obj/machinery/alarm/proc
 					E.locked = 1
 					E.air_locked = 1
 					E.update_icon()
+				if(E.operating)
+					spawn(10)
+						E.close()
+						spawn(10)
+							if(E.density)
+								E.locked = 1
+								E.air_locked = 1
+								E.update_icon()
 			else if(!E.locked) //Don't lock already bolted doors.
 				E.locked = 1
 				E.air_locked = 1
