@@ -42,31 +42,45 @@
 	avnums.Remove(tempnum)
 	BLINDBLOCK = tempnum
 
-proc/setupdooralarms()		//LORAK ADD 9/27/10 Automated Secondary Alarms on Fire Doors
-	for(var/obj/machinery/door/firedoor/D in world)
+//setupdooralarms() goes through every door in the world before the game starts, checks all the squares
+//adjacent to them, and if the adjacent square does not contain a dense turf and is not in the same
+//area as the door, then the door is added to that adjacent area's auxdoor list to be used later on for
+//atmos and fire alarms.
+proc/setupdooralarms()		//Strumpetplaya added 11/09/10 Automated Secondary Alarms on Doors
+	//world << "Setting up doors"
+	for(var/obj/machinery/door/D in world)
 		var/turf/T = D.loc
 		var/area/A = T.loc
+		//world << "Door located in [A.name] being setup"
 		var/AName = A.name
-		var/area/ANorth = locate(D.x,D.y+1,D.z)
-		var/area/AEast = locate(D.x+1,D.y,D.z)
-		var/area/ASouth = locate(D.x,D.y-1,D.z)
-		var/area/AWest = locate(D.x-1,D.y,D.z)
+		var/turf/ANorth = locate(D.x,D.y+1,D.z)
+		var/turf/AEast = locate(D.x+1,D.y,D.z)
+		var/turf/ASouth = locate(D.x,D.y-1,D.z)
+		var/turf/AWest = locate(D.x-1,D.y,D.z)
+
 		if(ANorth.density != 1)
-			ANorth = ANorth.loc
-			if(ANorth.name != AName)
-				D.secondary_alarm = ANorth.name
+			var/area/ANorthA = ANorth.loc
+			if(ANorthA.name != AName)
+				ANorthA.auxdoors += D
+				//world << "Door located in [A.name] added to auxillary door list for [ANorthA.name]"
+
 		if(AEast.density != 1)
-			AEast = AEast.loc
-			if(AEast.name != AName)
-				D.secondary_alarm = AEast.name
+			var/area/AEastA = AEast.loc
+			if(AEastA.name != AName)
+				AEastA.auxdoors += D
+				//world << "Door located in [A.name] added to auxillary door list for [AEastA.name]"
+
 		if(ASouth.density != 1)
-			ASouth = ASouth.loc
-			if(ASouth.name != AName)
-				D.secondary_alarm = ASouth.name
+			var/area/ASouthA = ASouth.loc
+			if(ASouthA.name != AName)
+				ASouthA.auxdoors += D
+				//world << "Door located in [A.name] added to auxillary door list for [ASouthA.name]"
+
 		if(AWest.density != 1)
-			AWest = AWest.loc
-			if(AWest.name != AName)
-				D.secondary_alarm = AWest.name
+			var/area/AWestA = AWest.loc
+			if(AWestA.name != AName)
+				AWestA.auxdoors += D
+				//world << "Door located in [A.name] added to auxillary door list for [AWestA.name]"
 
 
 

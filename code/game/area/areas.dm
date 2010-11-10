@@ -58,7 +58,7 @@
 		return
 	if (!( src.fire ))
 		src.fire = 1
-		src.updateicon()
+		//src.updateicon()				//Commented by Strumpetplaya - Alarm Change, no longer necessary.
 		src.mouse_opacity = 0
 		//if(!alldoors)
 		//	alldoors = get_doors(src)
@@ -78,25 +78,91 @@
 			a.triggerAlarm("Fire", src, cameras, src)
 	return
 
+
+//firereset() Edited by Strumpetplaya
 /area/proc/firereset()
 	if (src.fire)
 		src.fire = 0
 		src.mouse_opacity = 0
 		src.updateicon()
-	//	if(!alldoors)
-		//	alldoors = get_doors(src)
-		for(var/obj/machinery/door/firedoor/D in alldoors)
-			if(!D.blocked)
-				if(D.operating)
-					D.nextstate = OPEN
-				else if(D.density)
-					spawn(0)
-					D.open()
-		for (var/mob/living/silicon/ai/aiPlayer in world)
-			aiPlayer.cancelAlarm("Fire", src, src)
-		for (var/obj/machinery/computer/atmosphere/alerts/a in world)
-			a.cancelAlarm("Fire", src, src)
-	return
+		for(var/obj/machinery/door/firedoor/D in src)
+			var/AName = src.name
+			var/turf/ANorth = locate(D.x,D.y+1,D.z)
+			var/area/ANorthA = ANorth.loc
+			var/turf/AEast = locate(D.x+1,D.y,D.z)
+			var/area/AEastA = AEast.loc
+			var/turf/ASouth = locate(D.x,D.y-1,D.z)
+			var/area/ASouthA = ASouth.loc
+			var/turf/AWest = locate(D.x-1,D.y,D.z)
+			var/area/AWestA = AWest.loc
+
+			if(ANorth.density != 1 && ANorthA.name != AName)
+				if(ANorthA.fire != 1)
+					if(!D.blocked)
+						if(D.operating)
+							D.nextstate = OPEN
+						else if(D.density)
+							spawn(0)
+							D.open()
+				if(ANorthA.fire == 1)
+					var/obj/LightTest = locate(/obj/alertlighting/firelight) in D.loc
+					if(isnull(LightTest))
+						var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(D.loc)
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+						world << imagelight
+
+			else if(AEast.density != 1 && AEastA.name != AName)
+				if(AEastA.fire != 1)
+					if(!D.blocked)
+						if(D.operating)
+							D.nextstate = OPEN
+						else if(D.density)
+							spawn(0)
+							D.open()
+				if(AEastA.fire == 1)
+					var/obj/LightTest = locate(/obj/alertlighting/firelight) in D.loc
+					if(isnull(LightTest))
+						var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(D.loc)
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+						world << imagelight
+
+			else if(ASouth.density != 1 && ASouthA.name != AName)
+				if(ASouthA.fire != 1)
+					if(!D.blocked)
+						if(D.operating)
+							D.nextstate = OPEN
+						else if(D.density)
+							spawn(0)
+							D.open()
+				if(ASouthA.fire == 1)
+					var/obj/LightTest = locate(/obj/alertlighting/firelight) in D.loc
+					if(isnull(LightTest))
+						var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(D.loc)
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+						world << imagelight
+
+			else if(AWest.density != 1 && AWestA.name != AName)
+				if(AWestA.fire != 1)
+					if(!D.blocked)
+						if(D.operating)
+							D.nextstate = OPEN
+						else if(D.density)
+							spawn(0)
+							D.open()
+				if(AWestA.fire == 1)
+					var/obj/LightTest = locate(/obj/alertlighting/firelight) in D.loc
+					if(isnull(LightTest))
+						var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(D.loc)
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+						world << imagelight
+			else
+				if(src.fire != 1)
+					if(!D.blocked)
+						if(D.operating)
+							D.nextstate = OPEN
+						else if(D.density)
+							spawn(0)
+							D.open()
 
 /area/proc/partyalert()
 	if(src.name == "Space") //no parties in space!!!
@@ -124,13 +190,13 @@
 /area/proc/activate_air_doors(stayclosed)
 	if(src.name == "Space") //no atmo alarms in space
 		return
-	if (!( src.air_doors_activated ) && !air_door_close_delay)
+	if (!src.air_doors_activated)			//Edited by Strumpetplaya - Removed "( ) && !air_door_close_delay" from If Statement.
 		if(stayclosed)
 			air_door_close_delay = 1
 			spawn(stayclosed*10)
 				air_door_close_delay = 0
 		src.air_doors_activated = 1
-		src.updateicon()
+		//src.updateicon()					//Commented by Strumpetplaya - Alarm Change, not necessary.
 		src.mouse_opacity = 0
 	//	if(!alldoors)
 		//	alldoors = get_doors(src)
@@ -144,6 +210,14 @@
 					D.locked = 1
 					D.air_locked = 1
 					D.update_icon()
+			if(D.operating)
+				spawn(10)
+					D.close()
+					//spawn(10)
+					if(D.density)
+						D.locked = 1
+						D.air_locked = 1
+						D.update_icon()
 			else if(!D.locked) //Don't lock already bolted doors.
 				D.locked = 1
 				D.air_locked = 1
@@ -169,6 +243,136 @@
 			//deactivate_air_doors()
 	return
 
+
+
+
+/area/proc/deactivate_air_doors(stayopen)
+	if (src.air_doors_activated)			//Edited by Strumpetplaya - Removed " && !air_door_close_delay" from If statement.
+		if(stayopen)
+			air_door_close_delay = 1
+			spawn(stayopen*10)
+				air_door_close_delay = 0
+		src.air_doors_activated = 0
+		src.mouse_opacity = 0
+		src.updateicon()
+	//	if(!alldoors)
+		//	alldoors = get_doors(src)
+		for(var/obj/machinery/door/airlock/D in src)
+			var/AName = src.name
+			var/turf/ANorth = locate(D.x,D.y+1,D.z)
+			var/area/ANorthA = ANorth.loc
+			var/turf/AEast = locate(D.x+1,D.y,D.z)
+			var/area/AEastA = AEast.loc
+			var/turf/ASouth = locate(D.x,D.y-1,D.z)
+			var/area/ASouthA = ASouth.loc
+			var/turf/AWest = locate(D.x-1,D.y,D.z)
+			var/area/AWestA = AWest.loc
+
+			//world << "If [ANorth.name] density ([ANorth.density]) != and [ANorthA.name] != [AName] then open the damn door."
+			if(ANorth.density != 1 && ANorthA.name != AName)
+				if(ANorthA.air_doors_activated != 1)
+					if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
+						//D.air_locked = 0
+					if(D.air_locked) //Don't mess with doors locked for other reasons.
+						if(D.density)
+							D.locked = 0
+							D.air_locked =0
+							D.update_icon()
+							//world << "opened North"
+				if(ANorthA.air_doors_activated == 1)
+					var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in D.loc
+					if(isnull(LightTest))
+						var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(D.loc)
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+						world << imagelight
+
+			else if(AEast.density != 1 && AEastA.name != AName)
+				if(AEastA.air_doors_activated != 1)
+					if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
+						//D.air_locked = 0
+					if(D.air_locked) //Don't mess with doors locked for other reasons.
+						if(D.density)
+							D.locked = 0
+							D.air_locked =0
+							D.update_icon()
+							//world << "opened East"
+				if(AEastA.air_doors_activated == 1)
+					var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in D.loc
+					if(isnull(LightTest))
+						var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(D.loc)
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+						world << imagelight
+						//world << "Image should be placed"
+
+			else if(ASouth.density != 1 && ASouthA.name != AName)
+				if(ASouthA.air_doors_activated != 1)
+					if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
+						//D.air_locked = 0
+					if(D.air_locked) //Don't mess with doors locked for other reasons.
+						if(D.density)
+							D.locked = 0
+							D.air_locked =0
+							D.update_icon()
+							//world << "opened South"
+				if(ASouthA.air_doors_activated == 1)
+					var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in D.loc
+					if(isnull(LightTest))
+						var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(D.loc)
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+						world << imagelight
+
+			else if(AWest.density != 1 && AWestA.name != AName)
+				if(AWestA.air_doors_activated != 1)
+					if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
+						//D.air_locked = 0
+					if(D.air_locked) //Don't mess with doors locked for other reasons.
+						if(D.density)
+							D.locked = 0
+							D.air_locked =0
+							D.update_icon()
+							//world << "opened West"
+				if(AWestA.air_doors_activated == 1)
+					var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in D.loc
+					if(isnull(LightTest))
+						var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(D.loc)
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+						world << imagelight
+			else
+				if(src.air_doors_activated != 1)
+					if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
+						//D.air_locked = 0
+					if(D.air_locked) //Don't mess with doors locked for other reasons.
+						if(D.density)
+							D.locked = 0
+							D.air_locked =0
+							D.update_icon()
+/*	COMMENTED OUT BY STRUMPETPLAYA - ALARM GCHANGE
+		for(var/obj/machinery/door/airlock/D in alldoors)
+			if((!D.arePowerSystemsOn()) || (D.stat & NOPOWER)) continue
+				//D.air_locked = 0
+			if(D.air_locked) //Don't mess with doors locked for other reasons.
+				if(D.density)
+					D.locked = 0
+					D.air_locked =0
+					D.update_icon()
+*/
+		if(!fire)
+			for(var/obj/machinery/door/firedoor/D in alldoors)
+				if(!D.blocked)
+					if(D.operating)
+						D.nextstate = OPEN
+					else if(D.density)
+						spawn(0)
+						D.open()
+		for (var/mob/living/silicon/ai/aiPlayer in world)
+			aiPlayer.cancelAlarm("Atmosphere", src, src)
+		for (var/obj/machinery/computer/atmosphere/alerts/a in world)
+			a.cancelAlarm("Atmosphere", src, src)
+	return
+
+
+
+/*This is how the above proc was before Strumpetplaya's alarm changes
 /area/proc/deactivate_air_doors(stayopen)
 	if (src.air_doors_activated && !air_door_close_delay)
 		if(stayopen)
@@ -201,11 +405,16 @@
 		for (var/obj/machinery/computer/atmosphere/alerts/a in world)
 			a.cancelAlarm("Atmosphere", src, src)
 	return
+*/
+
+
+
+
 
 /area/proc/updateicon()
 	if ((fire || eject || party) && power_environ)
 		if(fire && !eject && !party)
-			icon_state = "blue"
+			//icon_state = "blue"				//Commented by Strumpetplaya - Need to find out where this is still getting called from.  Disabling for now.
 		else if(!fire && eject && !party)
 			icon_state = "red"
 		else if(party && !fire && !eject)
@@ -213,7 +422,7 @@
 		else
 			icon_state = "blue-red"
 	else if(air_doors_activated && power_environ)
-		icon_state = "blueold"
+		//icon_state = "blueold"				//Commented by Strumpetplaya - Need to find out where this is still getting called from.  Disabling for now.
 	else
 		icon_state = null
 /*

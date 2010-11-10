@@ -57,6 +57,8 @@ datum/controller/game_controller
 
 		setupgenetics()
 
+		setupdooralarms()		//Added by Strumpetplaya - Alarm Change
+
 
 	// Handled by datum declerations now in the shuttle controller file
 

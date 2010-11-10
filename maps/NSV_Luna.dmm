@@ -309,7 +309,7 @@
 "afW" = (/obj/machinery/atmospherics/pipe/tank/air{dir = 1; initialize_directions = 0; level = 1},/turf/simulated/floor/plating,/area/maintenance/aft4)
 "afX" = (/obj/stool/bed,/obj/item/weapon/bedsheet,/turf/simulated/floor,/area/crew_quarters/hor)
 "afY" = (/obj/table,/obj/machinery/microwave,/turf/simulated/floor,/area/crew_quarters/hor)
-"afZ" = (/obj/machinery/light,/obj/machinery/firealarm{dir = 1; pixel_y = -24; tag = "south"},/turf/simulated/floor,/area/crew_quarters/hor)
+"afZ" = (/obj/machinery/light,/obj/machinery/firealarm{dir = 1; pixel_y = -24; tag = "south"},/obj/secure_closet/research_director{name = "Research Director"},/turf/simulated/floor,/area/crew_quarters/hor)
 "aga" = (/obj/machinery/computer/med_data,/turf/simulated/floor,/area/crew_quarters/hor)
 "agb" = (/obj/machinery/atmospherics/pipe/simple,/turf/simulated/wall,/area/maintenance/aft4)
 "agc" = (/obj/machinery/light,/obj/machinery/firealarm{dir = 1; pixel_y = -24; tag = "south"},/turf/simulated/floor,/area/crew_quarters/heads)
