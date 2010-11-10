@@ -16,14 +16,16 @@ obj/item/device/radio
 
 	proc
 		set_frequency(new_frequency)
-			radio_controller.remove_object(src, "[frequency]")
-			frequency = new_frequency
-			radio_connection = radio_controller.add_object(src, "[frequency]")
+			if(radio_controller)
+				radio_controller.remove_object(src, "[frequency]")
+				frequency = new_frequency
+				radio_connection = radio_controller.add_object(src, "[frequency]")
 
 		set_security_frequency(new_frequency)
-			radio_controller.remove_object(src, "[security_frequency]")
-			security_frequency = new_frequency
-			security_radio_connection = radio_controller.add_object(src, "[security_frequency]")
+			if(radio_controller)
+				radio_controller.remove_object(src, "[security_frequency]")
+				security_frequency = new_frequency
+				security_radio_connection = radio_controller.add_object(src, "[security_frequency]")
 
 /obj/item/device/radio/attack_self(mob/user as mob)
 	user.machine = src
