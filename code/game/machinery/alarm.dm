@@ -251,14 +251,14 @@ obj/machinery/alarm/proc
 					E.locked = 1
 					E.air_locked = 1
 					E.update_icon()
-				if(E.operating)
-					spawn(10)
-						E.close()
-						spawn(10)
-							if(E.density)
-								E.locked = 1
-								E.air_locked = 1
-								E.update_icon()
+			if(E.operating)
+				spawn(10)
+					E.close()
+					//spawn(10)
+					if(E.density)
+						E.locked = 1
+						E.air_locked = 1
+						E.update_icon()
 			else if(!E.locked) //Don't lock already bolted doors.
 				E.locked = 1
 				E.air_locked = 1

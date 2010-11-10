@@ -210,14 +210,14 @@
 					D.locked = 1
 					D.air_locked = 1
 					D.update_icon()
-				if(D.operating)
-					spawn(10)
-						D.close()
-						spawn(10)
-							if(D.density)
-								D.locked = 1
-								D.air_locked = 1
-								D.update_icon()
+			if(D.operating)
+				spawn(10)
+					D.close()
+					//spawn(10)
+					if(D.density)
+						D.locked = 1
+						D.air_locked = 1
+						D.update_icon()
 			else if(!D.locked) //Don't lock already bolted doors.
 				D.locked = 1
 				D.air_locked = 1
