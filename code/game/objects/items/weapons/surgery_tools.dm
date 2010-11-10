@@ -460,7 +460,7 @@ and then you have (1-3sec to respond to this eg by applying cotton.
 	stage += 1
 	wound = "blood"
 
-/obj/item/weapon/surgical_tool/bonecracker/get_message(var/n,var/m,var/usr,var/datum/organ/external/organ)
+/obj/item/weapon/surgical_tool/boneddrainer/get_message(var/n,var/m,var/usr,var/datum/organ/external/organ)
 	var/z
 	switch(n)
 		if(1)
