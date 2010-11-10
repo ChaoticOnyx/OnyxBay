@@ -54,14 +54,14 @@ var/motdmysql = null
 	if(!motdmysql)
 		var/DBQuery/r_query = dbcon.NewQuery("SELECT * FROM `config`")
 		if(!r_query.Execute())
-			world << "Failed-[r_query.ErrorMsg()]"
+			diary << "Failed-[r_query.ErrorMsg()]"
 		else
 			var/lawl
 			while(r_query.NextRow())
 				var/list/column_data = r_query.GetRowData()
 				lawl = column_data["motd"]
 			if(!lawl)
-				world << "ERROR GETTING MOTD"
+				src << "ERROR GETTING MOTD"
 				return
 		//	motdmysql += "<head><style type='text/css'>h2 {color:#FFFFFF;text-align:center;}body { background-color:#28343b;color:gray;text-indent: 50px;}p{text-indent: 50px;text-align:justify;letter-spacing:3px;}</style></head>"
 		//	motdmysql += "<body>"
