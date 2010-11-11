@@ -9,11 +9,12 @@
 	anchored = 1
 	density = 1
 
-	var/conversionrate = 500 //Units of shield energy produced per tick
-	var/setconversionrate = 500
-	var/maxconversionrate = 2000
-	var/lastconversionrate = 500
+	var/conversionrate = 50 //Units of shield energy produced per tick
+	var/setconversionrate = 50
+	var/maxconversionrate = 100
+	var/lastconversionrate = 50
 	var/maxautoconversionpositivedelta = 50
+	var/chargeing
 	var/operatingmode = 1
 	//0 = Off
 	//1 = On Manual
@@ -65,7 +66,7 @@
 
 	var/genrate = add_lspace("[round(lastconversionrate * 100 / maxconversionrate)]", 3)
 	var/scharge = add_lspace("[round(capacitor.charge * 100 / capacitor.maxcharge)]", 3)
-	var/endraw =  add_lspace("[round(conversionrate ** 1.5)]", 6)
+	var/endraw =  add_lspace("[round(conversionrate ** 2.15)]", 6)
 
 	var/modec = ""
 
@@ -93,7 +94,6 @@ Manual Mode Generation Rate:      <a href="?src=\ref[src];man=1">M</a> <a href="
 	onclose(user, "shieldgen")
 
 	return
-
 /obj/machinery/shielding/energyconverter/Topic(href, href_list)
 	if(..())
 		return
@@ -138,7 +138,7 @@ Manual Mode Generation Rate:      <a href="?src=\ref[src];man=1">M</a> <a href="
 
 			conversionrate = min(max(automax, needed), maxconversionrate)
 
-	use_power(round(conversionrate ** 1.5))
+	use_power(round(conversionrate ** 2.15))
 	use_power(-round(produce_energy(conversionrate) ** 1.3)) //Partially return shield energy that couldn't be used
 	lastconversionrate = conversionrate
 	updateicon()

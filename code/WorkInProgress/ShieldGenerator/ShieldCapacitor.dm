@@ -8,11 +8,10 @@
 	icon_state = "cap"
 	anchored = 1
 	density = 1
-
+	var/list/emit = list()
 	var/maxcharge = 5000
 	var/charge = 1000
 	var/obj/machinery/shielding/energyconverter/generator = null
-
 /obj/machinery/shielding/capacitor/process()
 	if(stat & BROKEN)
 		charge = 0
@@ -26,7 +25,6 @@
 		use_power(round(charge ** 1.1))
 	updateicon()
 	return
-
 /obj/machinery/shielding/capacitor/proc/updateicon()
 	clearoverlays()
 	icon_state = "cap[stat & (NOPOWER|BROKEN) ? "-p" : ""]"

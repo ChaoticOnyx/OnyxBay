@@ -206,3 +206,16 @@ obj/machinery/access_button
 
 		if(radio_controller)
 			set_frequency(frequency)
+obj/machinery/shieldsbutton
+	name = "Toggle Shields"
+	icon = 'airlock_machines.dmi'
+	icon_state = "access_button_standby"
+	var/toggle
+
+	attack_hand(mob/user)
+		if(!toggle)
+			snet.startshields()
+			toggle = 1
+		else
+			snet.stopshields()
+		flick("access_button_cycle", src)

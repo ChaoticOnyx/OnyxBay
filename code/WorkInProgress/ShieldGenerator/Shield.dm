@@ -7,6 +7,7 @@
 	icon = 'effects.dmi'
 	explosionstrength = 0
 	icon_state = "shieldsparkles"
+	anchored = 1
 	var/atmosonly = 0
 	var/spawntm = 0
 
