@@ -242,6 +242,8 @@
 
 /mob/living/carbon/proc/UpdateDamage()
 
+	if (!(istype(src, /mob/living/carbon/human)))	//Added by Strumpetplaya - Invincible Monkey Fix
+		return										//Possibly helps with other invincible mobs like Aliens?
 	var/list/L = list(  )
 	for(var/t in organs)
 		if (istype(organs[text("[]", t)], /datum/organ/external))
