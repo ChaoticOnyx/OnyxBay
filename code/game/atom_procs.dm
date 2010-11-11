@@ -11,7 +11,7 @@
 /atom/proc/attack_ai(mob/user as mob)
 	return
 
-//for aliens, it works the same as monkeys except for alien-> mob interactions which will be defined in the
+//for aliens, it works the same as monkeys except for alien -> mob interactions which will be defined in the
 //appropiate mob files
 /atom/proc/attack_alien(mob/user as mob)
 	src.attack_paw(user)
@@ -263,7 +263,7 @@
 			if (!( ok ))
 				return 0
 
-		if (!( usr.restrained() ))
+		if ( !(usr.restrained()) )
 			if (W)
 				if (t5)
 					src.alog(W,usr)

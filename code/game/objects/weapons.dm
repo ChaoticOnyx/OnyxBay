@@ -394,7 +394,7 @@
 		src.part1.send_signal("ACTIVATE")
 	return
 
-/obj/item/assembly/rad_infra/verb/rotate()
+/obj/item/assembly/rad_infra/verb/						()
 	set src in usr
 
 	src.dir = turn(src.dir, 90)

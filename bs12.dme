@@ -499,7 +499,6 @@
 #include "code\game\verbs\ooc.dm"
 #include "code\game\verbs\suicide.dm"
 #include "code\game\verbs\who.dm"
-#include "code\head\changelog.dm"
 #include "code\head\medals.dm"
 #include "code\head\mysql.dm"
 #include "code\head\stats.dm"
