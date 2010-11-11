@@ -65,6 +65,7 @@ Please wait until completion...</TT><BR>
 <A href='?src=\ref[src];make=5'>Chest (50,000 cc metal).<BR>
 <A href='?src=\ref[src];make=6'>Head (50,000 cc metal).<BR>
 <A href='?src=\ref[src];make=7'>Robot Frame (75,000 cc metal).<BR>
+<A href='?src=\ref[src];make=8'>AI Construct (100,000 cc metal).<BR>
 "}
 
 	user << browse("<HEAD><TITLE>Robotic Fabricator Control Panel</TITLE></HEAD><TT>[dat]</TT>", "window=robot_fabricator")
@@ -121,6 +122,11 @@ Please wait until completion...</TT><BR>
 					build_type = "/obj/item/robot_parts/robot_suit"
 					build_time = 600
 					build_cost = 75000
+
+				if (8)
+					build_type = "/obj/machinery/aiconstruct"
+					build_time = 1000
+					build_cost = 100000
 
 			var/building = text2path(build_type)
 			if (!isnull(building))
