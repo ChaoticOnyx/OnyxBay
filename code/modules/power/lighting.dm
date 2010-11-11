@@ -89,23 +89,25 @@
 		update()
 
 // update the icon_state and luminosity of the light depending on its state
-/obj/machinery/light/proc/update()
+/obj/machinery/light/proc/update(var/skip_check = 0)
 	set background=1
 	if (switching)
 		return
-
-	switch(status)		// set icon_states
-		if(LIGHT_OK)
-			icon_state = "[base_state][on]"
-		if(LIGHT_EMPTY)
-			icon_state = "[base_state]-empty"
-			on = 0
-		if(LIGHT_BURNED)
-			icon_state = "[base_state]-burned"
-			on = 0
-		if(LIGHT_BROKEN)
-			icon_state = "[base_state]-broken"
-			on = 0
+	if(!skip_check)
+		switch(status)		// set icon_states
+			if(LIGHT_OK)
+				icon_state = "[base_state][on]"
+			if(LIGHT_EMPTY)
+				icon_state = "[base_state]-empty"
+				on = 0
+			if(LIGHT_BURNED)
+				icon_state = "[base_state]-burned"
+				on = 0
+			if(LIGHT_BROKEN)
+				icon_state = "[base_state]-broken"
+				on = 0
+	else
+		icon_state = "[base_state][on]"
 
 	var/oldlum = ul_Luminosity()
 
@@ -149,9 +151,44 @@
 				usr << "[desc] The [fitting] has been smashed."
 
 
+// flicker lights on and off - ghosts
+/obj/machinery/light/proc/flickerL(mob/M, obj/machinery/light/L)
+
+	if(L.status == LIGHT_EMPTY || L.status == LIGHT_BROKEN)
+		M << "There is no [L.fitting] in this light."
+		return
+	if(on)
+		M << "Your touch robs the [L.fitting] of its energy!"
+	else
+		M << "Your touch breathes energy into the [L.fitting]!"
+
+	L.on = !L.on
+	L.update(1)
+	sleep(10)
+	L.on = !L.on
+	L.update(1)
+	sleep(10)
+	L.on = !L.on
+	L.update(1)
+	sleep(30)
+	L.on = !L.on
+	L.update()
+
+	return
+
+
+/obj/machinery/light/verb/flicker()
+
+	set src in oview(1)
+
+	if(!istype(usr, /mob/dead/observer))
+		usr << "You can not find a way to flicker the lights from here."
+		return
+
+	flickerL(usr, src)
+
 
 // attack with item - insert light (if right type), otherwise try to break the light
-
 /obj/machinery/light/attackby(obj/item/W, mob/user)
 
 	if (istype(user, /mob/living/silicon))
@@ -220,12 +257,6 @@
 	return A.master.lightswitch && A.master.power_light
 
 
-// ai attack - do nothing
-
-/obj/machinery/light/attack_ai(mob/user)
-	return
-
-
 // attack with hand - remove tube/bulb
 // if hands aren't protected and the light is on, burn the player
 
@@ -246,7 +277,6 @@
 
 			if(H.gloves)
 				var/obj/item/clothing/gloves/G = H.gloves
-
 				prot = (G.heat_transfer_coefficient < 0.5)	// *** TODO: better handling of glove heat protection
 		else
 			prot = 1
