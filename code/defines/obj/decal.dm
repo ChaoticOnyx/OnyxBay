@@ -158,6 +158,26 @@
 	name = "BIO HAZARD"
 	icon_state = "bio"
 
+/obj/decal/sign/deck1
+	desc = "A silver sign which reads 'DECK I'"
+	name = "DECK I"
+	icon_state = "deck1"
+
+/obj/decal/sign/deck2
+	desc = "A silver sign which reads 'DECK II'"
+	name = "DECK II"
+	icon_state = "deck2"
+
+/obj/decal/sign/deck3
+	desc = "A silver sign which reads 'DECK III'"
+	name = "DECK III"
+	icon_state = "deck3"
+
+/obj/decal/sign/deck4
+	desc = "A silver sign which reads 'DECK IV'"
+	name = "DECK IV"
+	icon_state = "deck4"
+
 /obj/decal/sign/electrical
 	desc = "A warning sign which reads 'ELECTRICAL HAZARD'"
 	name = "ELECTRICAL HAZARD"

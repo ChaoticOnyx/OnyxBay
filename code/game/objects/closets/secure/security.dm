@@ -43,7 +43,7 @@
 	new /obj/item/weapon/gun/energy/general( src )
 	new /obj/item/device/flash( src )
 	new /obj/item/weapon/storage/id_kit( src )
-	new /obj/item/clothing/under/color/green( src )
+	new /obj/item/clothing/under/rank/head_of_personnel( src )
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/glasses/sunglasses( src )
 	new /obj/item/clothing/suit/armor/vest( src )
@@ -66,4 +66,17 @@
 	new /obj/item/weapon/storage/flashbang_kit(src)
 	new /obj/item/weapon/handcuffs(src)
 	new /obj/item/weapon/baton(src)
+	return
+
+
+
+//Added by Strumpetplaya - Research Director's Closet for office.
+/obj/secure_closet/research_director/New()
+	..()
+	sleep(2)
+	new/obj/item/device/radio/headset(src)
+	new /obj/item/clothing/under/rank/research_director( src )
+	new /obj/item/clothing/shoes/brown( src )
+	new /obj/item/clothing/glasses/regular( src )
+	new /obj/item/clothing/suit/labcoat( src )
 	return

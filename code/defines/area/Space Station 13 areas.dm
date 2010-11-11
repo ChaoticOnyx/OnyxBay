@@ -48,7 +48,7 @@
 	var/list/related			// the other areas of the same type as this
 
 	var/list/alldoors         // Doors which are not in the area, but should still be closed in case of emergency.
-
+	var/auxdoors = list()		//Added by Strumpetplaya - Alarm Change - Contains a list of doors adjacent to this area
 
 /area/engine/
 
