@@ -358,7 +358,7 @@ About the new airlock wires panel:
 		return 0
 
 
-	if (src.airlockelectrocute(user, prb, net))
+	if (src.airlockelectrocute(user, net))
 		return 1
 	else
 		return 0

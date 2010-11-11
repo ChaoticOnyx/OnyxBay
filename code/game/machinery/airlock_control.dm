@@ -210,12 +210,15 @@ obj/machinery/shieldsbutton
 	name = "Toggle Shields"
 	icon = 'airlock_machines.dmi'
 	icon_state = "access_button_standby"
-	var/toggle
+	var/toggle = 0
 
 	attack_hand(mob/user)
 		if(!toggle)
 			snet.startshields()
+			icon_state = "access_button_standby"
 			toggle = 1
 		else
 			snet.stopshields()
+			toggle = 0
+			icon_state = "access_button_standby"
 		flick("access_button_cycle", src)

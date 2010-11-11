@@ -497,9 +497,11 @@
 
 /obj/machinery/power/apc/proc/shock(mob/user, prb)
 	if(!prob(prb))
+		//world << "NO PRB"
 		return 0
 	var/net = get_connection()		// find the powernet of the connected cable
 	if(!net)		// cable is unpowered
+		//world << "NO NET"
 		return 0
 	return src.apcelectrocute(user, prb, net)
 
@@ -507,11 +509,11 @@
 
 	if(stat == 2)
 		return 0
-
 	if(!prob(prb))
+		//world << "NO PRB"
 		return 0
-
 	if(!netnum)		// unconnected cable is unpowered
+		//world << "NO NET"
 		return 0
 
 	var/prot = 1
@@ -525,6 +527,7 @@
 		return 0
 
 	if(prot == 0)		// elec insulted gloves protect completely
+		//world << "PROTECTION"
 		return 0
 
 	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
@@ -551,8 +554,8 @@
 		shock_damage = min(rand(20,65),rand(20,65))*prot
 		cell_type = cell_type - 50
 	else
+		//world << "NO SHOCK"
 		return 0
-
 	user.burn_skin(shock_damage)
 	user << "\red <B>You feel a powerful shock course through your body!</B>"
 	sleep(1)
