@@ -24,6 +24,7 @@
 	var/status = LIGHT_OK		// LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 	var/isalert = 0
 	var/switching = 0
+	var/flickering = 0			// 0 or 1. Prevents ghosts from flickering lights while that light is already being flickered
 
 	var/light_type = /obj/item/weapon/light/tube		// the type of light item
 
@@ -89,6 +90,8 @@
 		update()
 
 // update the icon_state and luminosity of the light depending on its state
+// skip_check is currently used for ghosts flickering lights. It skips the status check, so that burned lights can also work.
+	// It also skips the burning probability check. In flickering, that means the light has a chance of burning only when it reverts to its default state
 /obj/machinery/light/proc/update(var/skip_check = 0)
 	set background=1
 	if (switching)
@@ -122,7 +125,7 @@
 		if(status == LIGHT_OK)
 			if(on && rigged)
 				explode()
-			if( prob( min(60, switchcount*switchcount*burnchance) ) )
+			if( prob(min(60, switchcount*switchcount*burnchance)) && !skip_check )
 				status = LIGHT_BURNED
 				icon_state = "[base_state]-burned"
 				on = 0
@@ -154,6 +157,11 @@
 // flicker lights on and off - ghosts
 /obj/machinery/light/proc/flickerL(mob/M, obj/machinery/light/L)
 
+	if(L.flickering)
+		return
+
+	L.flickering = 1
+
 	if(L.status == LIGHT_EMPTY || L.status == LIGHT_BROKEN)
 		M << "There is no [L.fitting] in this light."
 		return
@@ -173,6 +181,8 @@
 	sleep(30)
 	L.on = !L.on
 	L.update()
+
+	L.flickering = 0
 
 	return
 
