@@ -278,7 +278,14 @@
 	else
 		src.ion_trail.stop()
 	return
-
+/obj/item/weapon/tank/jetpack/syndie/toggle()
+	src.on = !( src.on )
+	src.icon_state = text("jetpack[]_s", src.on)
+	if(src.on)
+		src.ion_trail.start()
+	else
+		src.ion_trail.stop()
+	return
 /obj/item/weapon/tank/jetpack/proc/allow_thrust(num, mob/user as mob)
 	if (!( src.on ))
 		return 0
