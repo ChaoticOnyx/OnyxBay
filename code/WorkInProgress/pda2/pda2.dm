@@ -88,8 +88,8 @@
 
 	if (src.default_cartridge)
 		src.cartridge = new src.setup_default_cartridge(src)
-//	if(src.owner)
-//		processing_items.Add(src)
+	if(src.owner)
+		processing_items.Add(src)
 
 /obj/item/device/pda2/attack_self(mob/user as mob)
 	user.machine = src
@@ -117,8 +117,8 @@
 				dat += "No System Software Loaded</font></center>"
 					//To-do: System recovery shit (maybe have a dedicated computer for this kind of thing)
 
-
-	user << browse(dat,"window=pda2")
+	user << output(dat,"pda_1")
+	winshow(user, "pda1",1)
 	onclose(user,"pda2")
 	return
 
@@ -163,6 +163,8 @@
 		src.owner = C:registered
 		src.name = "PDA-[src.owner]"
 		user << "\blue Card scanned."
+		if(src.owner)
+			processing_items.Add(src)
 		src.updateSelfDialog()
 
 /obj/item/device/pda2/receive_signal(datum/signal/signal)

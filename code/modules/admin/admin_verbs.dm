@@ -27,10 +27,10 @@
 			src.deadchat = 1
 			src.holder.level = 6
 			src.verbs += /client/proc/cmd_admin_delete
+			src.verbs += /client/proc/addchange
 			src.verbs += /proc/possess
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
-			src.verbs += /proc/givetestverbs
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /client/proc/cmd_modify_object_variables
 			src.verbs += /client/proc/cmd_modify_ticker_variables
@@ -116,6 +116,7 @@
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
+			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/toggleevents
@@ -123,7 +124,6 @@
 			src.verbs += /proc/possess
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
-			src.verbs += /proc/givetestverbs
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /client/proc/cmd_debug_tog_aliens
 			src.verbs += /client/proc/cmd_modify_object_variables

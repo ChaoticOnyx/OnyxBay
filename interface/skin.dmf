@@ -201,6 +201,101 @@ menu "menu"
 		saved-params = "is-checked"
 
 
+window "derpadmin"
+	elem "derpadmin"
+		type = MAIN
+		pos = 281,0
+		size = 640x480
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = false
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "pos;size;is-minimized;is-maximized"
+		title = ""
+		titlebar = true
+		statusbar = true
+		can-close = true
+		can-minimize = true
+		can-resize = true
+		is-pane = false
+		is-minimized = false
+		is-maximized = false
+		can-scroll = none
+		icon = ""
+		image = ""
+		image-mode = stretch
+		keep-aspect = false
+		transparent-color = none
+		alpha = 255
+		macro = ""
+		menu = ""
+		on-close = ""
+	elem "info1"
+		type = INFO
+		pos = 440,0
+		size = 200x200
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = #ffffff
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = true
+		right-click = false
+		saved-params = ""
+		highlight-color = #00ff00
+		tab-text-color = #000000
+		tab-background-color = none
+		tab-font-family = ""
+		tab-font-size = 0
+		tab-font-style = ""
+		allow-html = true
+		multi-line = true
+		on-show = ""
+		on-hide = ""
+		on-tab = ""
+	elem "adminoutput"
+		type = OUTPUT
+		pos = 0,0
+		size = 640x480
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = #ffffff
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "max-lines"
+		link-color = #0000ff
+		visited-color = #ff00ff
+		style = ""
+		enable-http-images = false
+		max-lines = 1000
+		image = ""
+
 window "mainwindow"
 	elem "mainwindow"
 		type = MAIN
@@ -373,7 +468,7 @@ window "mainwindow"
 window "mapwindow"
 	elem "mapwindow"
 		type = MAIN
-		pos = none
+		pos = 281,0
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -412,7 +507,7 @@ window "mapwindow"
 	elem "map"
 		type = MAP
 		pos = 0,0
-		size = 0x0
+		size = 640x480
 		anchor1 = 0,0
 		anchor2 = 100,100
 		font-family = ""
@@ -498,10 +593,75 @@ window "outputwindow"
 		max-lines = 1000
 		image = ""
 
+window "pda1"
+	elem "pda1"
+		type = MAIN
+		pos = 281,0
+		size = 408x364
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = false
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "pos;size;is-minimized;is-maximized"
+		title = ""
+		titlebar = true
+		statusbar = true
+		can-close = true
+		can-minimize = true
+		can-resize = true
+		is-pane = false
+		is-minimized = false
+		is-maximized = false
+		can-scroll = none
+		icon = ""
+		image = ""
+		image-mode = stretch
+		keep-aspect = false
+		transparent-color = none
+		alpha = 255
+		macro = ""
+		menu = ""
+		on-close = ""
+	elem "pda_1"
+		type = BROWSER
+		pos = 0,0
+		size = 408x383
+		anchor1 = 0,0
+		anchor2 = 100,100
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = ""
+		show-history = false
+		show-url = false
+		auto-format = true
+		use-title = false
+		on-show = ""
+		on-hide = ""
+
 window "rpane"
 	elem "rpane"
 		type = MAIN
-		pos = none
+		pos = 281,0
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -540,7 +700,7 @@ window "rpane"
 	elem "rpanewindow"
 		type = CHILD
 		pos = 0,0
-		size = 0x0
+		size = 640x499
 		anchor1 = 0,0
 		anchor2 = 100,100
 		font-family = ""
@@ -571,7 +731,7 @@ window "rpane"
 		font-family = ""
 		font-size = 0
 		font-style = ""
-		text-color = none
+		text-color = #000000
 		background-color = none
 		is-visible = false
 		is-disabled = false
@@ -598,7 +758,7 @@ window "rpane"
 		font-family = ""
 		font-size = 0
 		font-style = ""
-		text-color = none
+		text-color = #000000
 		background-color = none
 		is-visible = false
 		is-disabled = false
@@ -625,7 +785,7 @@ window "rpane"
 		font-family = ""
 		font-size = 0
 		font-style = ""
-		text-color = none
+		text-color = #000000
 		background-color = none
 		is-visible = false
 		is-disabled = false
@@ -647,7 +807,7 @@ window "rpane"
 window "browserwindow"
 	elem "browserwindow"
 		type = MAIN
-		pos = none
+		pos = 281,0
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -686,7 +846,7 @@ window "browserwindow"
 	elem "browser"
 		type = BROWSER
 		pos = 0,0
-		size = 0x0
+		size = 640x499
 		anchor1 = 0,0
 		anchor2 = 100,100
 		font-family = ""

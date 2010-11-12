@@ -27,6 +27,7 @@
 	if (config.log_say)
 		diary << "[timestamp()]SAY: [text]"
 
+
 /proc/log_ooc(text)
 	check_diary()
 	if (config.log_ooc)

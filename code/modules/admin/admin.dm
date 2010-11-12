@@ -7,8 +7,10 @@ var/showadminmessages = 1
 		if (C.holder)
 			if (admin_ref)
 				C.mob << dd_replaceText(rendered, "%admin_ref%", "\ref[C.mob]")
+				C.mob << output(rendered, "adminoutput")
 			else
 				C.mob << rendered
+				C.mob << output(rendered, "adminoutput")
 
 /proc/toggle_adminmsg()
 	showadminmessages = !showadminmessages

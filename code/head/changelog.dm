@@ -1,6 +1,6 @@
 var/changelogmysql = null
 
-client/verb/showchanges()
+client/proc/showchanges()
 	if(!changelogmysql)
 		var/DBQuery/r_query = dbcon.NewQuery("SELECT * FROM `changelog` ORDER BY `id` DESC")
 		changelogmysql += "<head><style type='text/css'>div.ex{width:400px;padding:10px;border-bottom:thin dashed #ff0000;margin:auto;}<body>body{font-size: 9pt;font-family: Verdana, sans-serif;}h1, h2, h3, h4, h5, h6{color: #00f;font-family: Georgia, Arial, sans-serif;}img { border: 0px; }p.lic {font-size: 6pt;}</style></head>"
@@ -26,7 +26,7 @@ client/verb/showchanges()
 <br />
 
 <p><b>Googolplexed</b> gets a special mention because he provides us with the forum and wiki server.</p>
-<p></p><b>Sukasa</b> also gets a special mention for providing the game server.</p>
+<p></p><b>Tagert</b> also gets a special mention for providing the game server.</p>
 
 <br />
 
@@ -44,7 +44,7 @@ client/verb/showchanges()
 			while(r_query.NextRow())
 				var/list/column_data = r_query.GetRowData()
 				changelogmysql += "<h3>Update [column_data["id"]] - [column_data["date"]]</h3>"
-				changelogmysql += "<div class='ex'>[column_data["changes"]]<br><b>By [column_data["bywho"]]</div>"
+				changelogmysql += "<div class='ex'>[column_data["changes"]]<br><b>By [column_data["bywho"]]</b></div>"
 				counter++
 				if(counter >= limit)
 					break
@@ -54,3 +54,12 @@ client/verb/showchanges()
 		src << browse(changelogmysql,"window=changes;size=400x650;")
 	else
 		src << browse(changelogmysql,"window=changes;size=400x650;")
+client/proc/addchange(var/changes as message)
+	set name = "Add a changelog entry."
+	set category  = "Special Verbs"
+	var/DBQuery/r_query = dbcon.NewQuery("INSERT INTO `changelog` (`changes`, `bywho`) VALUES ('[changes]', '[usr.key]')")
+	if(!r_query.Execute())
+		world << "Failed-[r_query.ErrorMsg()]"
+	else
+		usr << "Changelog updated successfully."
+		changelogmysql = null

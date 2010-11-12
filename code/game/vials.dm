@@ -263,8 +263,8 @@
 ///atom/relaymove - change to obj to restore
 
 /obj/relaymove(var/mob/user, direction) //testing something
-	//if(anchored) return
-	//step(src, direction)
+	if(anchored) return
+	step(src, direction)
 
 /proc/possess(obj/O as obj in world)
 	usr.loc = O
@@ -273,12 +273,9 @@
 	usr.client.eye = O
 
 /proc/release(obj/O as obj in world)
-	usr.loc = get_turf(usr)
-	usr.client.eye = usr
-
-/proc/givetestverbs(mob/M as mob in world)
-	M.verbs += /proc/possess
-	M.verbs += /proc/release
+	if(!isturf(usr.loc))
+		usr.loc = get_turf(usr)
+		usr.client.eye = usr
 
 
 /////////////////////////////////////////////////////blue

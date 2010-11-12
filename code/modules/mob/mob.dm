@@ -1445,12 +1445,13 @@ mob/verb/turnwest()
 
 /mob/verb/changes()
 	set name = "Changelog"
-	if (client)
+	src.client.showchanges()
+/*	if (client)
 		src << browse_rsc('postcardsmall.jpg')
 		src << browse_rsc('somerights20.png')
 		src << browse_rsc('88x31.png')
 		src << browse('changelog.html', "window=changes;size=400x650")
-		client.changes = 1
+		client.changes = 1*/
 
 /mob/verb/succumb()
 	set hidden = 1
