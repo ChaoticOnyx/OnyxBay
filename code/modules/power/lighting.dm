@@ -177,15 +177,12 @@
 	return
 
 
-/obj/machinery/light/verb/flicker()
-
-	set src in oview(1)
-
+/mob/proc/flicker(obj/machinery/light/L)
+	set name = "Flicker"
 	if(!istype(usr, /mob/dead/observer))
 		usr << "You can not find a way to flicker the lights from here."
 		return
-
-	flickerL(usr, src)
+	L.flickerL(usr, L)
 
 
 // attack with item - insert light (if right type), otherwise try to break the light

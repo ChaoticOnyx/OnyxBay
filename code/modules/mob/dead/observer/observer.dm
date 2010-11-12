@@ -21,6 +21,7 @@
 		else
 			var/atom/object = src.loc
 			client.mob = new/mob/dead/observer(object.loc)
+			client.mob.verbs += /mob/proc/flicker
 	return
 
 /mob/dead/observer/Move(NewLoc, direct)

@@ -211,6 +211,7 @@
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/debug_variables
