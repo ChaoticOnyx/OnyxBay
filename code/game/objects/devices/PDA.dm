@@ -152,7 +152,9 @@
 		else
 			..(signal)
 
-		if(istype(P)) P.updateSelfDialog()
+		if(istype(P))
+			if(P.mode == 2)
+				P.updateSelfDialog()
 
 	proc/return_text()
 		var/list/data = signal_info
@@ -228,7 +230,9 @@
 				var/list/b = signal.data
 				botstatus = b.Copy()
 
-		if(istype(P)) P.updateSelfDialog()
+		if(istype(P))
+			if(P.mode == 14)
+				P.updateSelfDialog()
 
 
 
@@ -317,7 +321,9 @@
 		else
 			..(signal)
 
-		if(istype(P)) P.updateSelfDialog()
+		if(istype(P))
+			if(P.mode == 2)
+				P.updateSelfDialog()
 
 	proc/return_text()
 		var/list/data = signal_info
@@ -375,7 +381,9 @@
 		else
 			..(signal)
 
-		if(istype(P)) P.updateSelfDialog()
+		if(istype(P))
+			if(P.mode == 2)
+				P.updateSelfDialog()
 
 	proc/return_text()
 		var/list/data = signal_info
