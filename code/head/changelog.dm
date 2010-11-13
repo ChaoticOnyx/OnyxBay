@@ -14,8 +14,8 @@ client/proc/showchanges()
 
 <h4>Bay Station 12 Development Team</h4>
 <p>
-	<strong>Coders:</strong> Head, Aryn, Googolplexed, alfie275, Sukasa, Tagert, Biscuitry, qwertyuiopas<br>
-	<strong>Spriters:</strong> Cajoes, Saint, Sukasa</strong>
+	<strong>Coders:</strong> Head, Aryn, Googolplexed, alfie275, Sukasa, Tagert, Biscuitry, qwertyuiopas, Abi79, Strumpetplaya<br>
+	<strong>Spriters:</strong> Cajoes, Saint, Sukasa, Arcalane</strong>
 </p>
 
 <h5>GoonStation 13 Development Team</h5>

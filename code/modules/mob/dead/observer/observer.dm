@@ -4,6 +4,7 @@
 	see_invisible = 15
 	see_in_dark = 100
 	verbs += /mob/dead/observer/proc/dead_tele
+	verbs += /mob/proc/flicker
 
 	if(the_corpse)
 		corpse = the_corpse
@@ -21,7 +22,6 @@
 		else
 			var/atom/object = src.loc
 			client.mob = new/mob/dead/observer(object.loc)
-			client.mob.verbs += /mob/proc/flicker
 	return
 
 /mob/dead/observer/Move(NewLoc, direct)

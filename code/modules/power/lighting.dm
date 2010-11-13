@@ -91,7 +91,7 @@
 
 // update the icon_state and luminosity of the light depending on its state
 // skip_check is currently used for ghosts flickering lights. It skips the status check, so that burned lights can also work.
-	// It also skips the burning probability check. In flickering, that means the light has a chance of burning only when it reverts to its default state
+// It also skips the burning probability check. In flickering, that means the light has a chance of burning only when it reverts to its default state
 /obj/machinery/light/proc/update(var/skip_check = 0)
 	set background=1
 	if (switching)
@@ -171,16 +171,16 @@
 		M << "Your touch breathes energy into the [L.fitting]!"
 
 	L.on = !L.on
-	L.update(1)
+	L.update(1) // Flicker once
 	sleep(10)
 	L.on = !L.on
-	L.update(1)
+	L.update(1) // Flicker back to initial state
 	sleep(10)
 	L.on = !L.on
-	L.update(1)
+	L.update(1) // Flicker again
 	sleep(30)
 	L.on = !L.on
-	L.update()
+	L.update()	// And return to default state
 
 	L.flickering = 0
 
