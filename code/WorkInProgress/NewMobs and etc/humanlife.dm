@@ -117,11 +117,11 @@
 	var/nums
 	var/amm = 0.1 * amt
 	vessel.remove_reagent("blood",amm)
-	for(var/obj/decal/cleanable/drip/D in T)
+	for(var/obj/decal/cleanable/blood/drip/D in T)
 		nums++
 		if(nums >= 3)
 			return
-	var/obj/decal/cleanable/drip/this = new(T)
+	var/obj/decal/cleanable/blood/drip/this = new(T)
 	var/hax = pick("1","2","3","4","5")
 	this.icon_state = hax
 	this.blood_DNA = src.dna.unique_enzymes

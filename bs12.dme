@@ -347,6 +347,7 @@
 #include "code\game\machinery\bots\secbot.dm"
 #include "code\game\machinery\computer\arcade.dm"
 #include "code\game\machinery\computer\atmos.dm"
+#include "code\game\machinery\computer\atmosfilter.dm"
 #include "code\game\machinery\computer\buildandrepair.dm"
 #include "code\game\machinery\computer\communications.dm"
 #include "code\game\machinery\computer\computer.dm"

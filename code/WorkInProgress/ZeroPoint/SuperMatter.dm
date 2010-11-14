@@ -9,13 +9,25 @@
 	desc = "A strangely translucent and iridescent crystal.  \red You get headaches just from looking at it."
 	icon = 'engine.dmi'
 	icon_state = "darkmatter"
-
 	density = 1
 	anchored = 1
 
 	var/gasefficency = 0.25
 	var/det = 0
-
+/obj/machinery/engine/klaxon
+	name = "Emergency Klaxon"
+	icon = 'engine.dmi'
+	icon_state = "darkmatter"
+	density = 1
+	anchored = 1
+	var/obj/machinery/engine/supermatter/sup
+/obj/machinery/engine/klaxon/process()
+	if(!sup)
+		for(var/obj/machinery/engine/supermatter/T in world)
+			sup = T
+			break
+	if(sup.det >= 1)
+		return
 
 /obj/machinery/engine/supermatter/process()
 
@@ -31,12 +43,8 @@
 
 	if(removed.temperature > 1000)
 		det += 1
-		if(det == 1)
-			spawn(0)
-				while(det >= 1)
-					sleep(200)
-					radioalert("CORE OVERLOAD","Core control computer")
-
+		if(det >= 1)
+			radioalert("CORE OVERLOAD","Core control computer")
 		if(det > 70)
 			//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
 			explosion(src.loc,8,15,20,30,1)

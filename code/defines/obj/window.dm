@@ -73,3 +73,8 @@
 
 /obj/window/reinforced/southeast
 	dir = SOUTHEAST
+/*/obj/window/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	var/pressure = air.return_pressure() //DERP22
+	if(pressure >= 200)
+		del src
+*/

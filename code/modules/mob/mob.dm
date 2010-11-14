@@ -1445,6 +1445,7 @@ mob/verb/turnwest()
 
 /mob/verb/changes()
 	set name = "Changelog"
+	src.client.changes = 1
 	src.client.showchanges()
 /*	if (client)
 		src << browse_rsc('postcardsmall.jpg')
