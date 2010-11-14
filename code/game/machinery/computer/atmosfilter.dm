@@ -49,20 +49,28 @@
 		if(!isarea(A))
 			world << "NOT AN AREA"
 			return
-		var/list/filters = list()
-		for(var/obj/machinery/atmospherics/unary/vent_filter/F in A)
-			filters += A
-		usr << "[filters.len]"
+		var/t = "<TT><B>Filter Monitoring</B><HR>"
+		var/count
+		for(var/obj/machinery/atmospherics/unary/vent_filter/vent in A)
+			count++
+			t += "<BR><big>Filter [count] -  [A.name]</big>"
+			t += "<BR><A href='?src=\ref[src];nofil=\ref[vent]'>Toggle Nitrogen</A><br>Status:[vent.no_fil ? "Scrubbing" : "Releasing"]"
+			t += "<BR><A href='?src=\ref[src];o2fil=\ref[vent]'>Toggle Oxygen</A><br>Status:[vent.o2_fil ? "Scrubbing" : "Releasing"]"
+			t += "<BR><A href='?src=\ref[src];co2_fil=\ref[vent]'>Toggle Carbon Dioxide</A><br>Status:[vent.co2_fil ? "Scrubbing" : "Releasing"]"
+			t += "<BR><A href='?src=\ref[src];toxins_fil=\ref[vent]'>Toggle Plasma</A><br>Status:[vent.toxins_fil ? "Scrubbing" : "Releasing"]"
+			t += "<BR><A href='?src=\ref[src];trace=\ref[vent]'>Toggle Trace gases</A><br>Status:[vent.trace_fil ? "Scrubbing" : "Releasing"]"
+		t += "<br><A href='?src=\ref[src];inspect=\ref[A]'>Update</A><br>"
+		usr << browse(t, "window=powcomp;size=420x700")
 	if(href_list["zlevel"])
 		var/t = "<TT><B>Filter Monitoring</B><HR>"
 		t += "<PRE><FONT SIZE=-1>"
-		var/Z = href_list["zlevel"]
+		var/Z = text2num(href_list["zlevel"])
+		//world << "LEVEL = [Z]"
 		for(var/area/A in world)
-			var/turf/T = locate() in A
+			var/turf/T = locate() in A.contents
 			if(!T)
-				return
+				continue
 			if(T.z == Z)
-
 				var/list/filters = list()
 				if(A.applyalertstatus)
 					for(var/obj/machinery/atmospherics/unary/vent_filter/F in A)
@@ -73,7 +81,21 @@
 						t += "<A href='?src=\ref[src];inspect=\ref[A]'>[A.name]</A>Filter Count:[filters.len]<br>"
 		t += "</FONT></PRE>"
 		usr << browse(t, "window=powcomp;size=420x700")
-
+	if(href_list["nofil"])
+		var/obj/machinery/atmospherics/unary/vent_filter/vent = locate(href_list["nofil"])
+		vent.no_fil = !vent.no_fil
+	if(href_list["o2fil"])
+		var/obj/machinery/atmospherics/unary/vent_filter/vent = locate(href_list["o2fil"])
+		vent.o2_fil = !vent.o2_fil
+	if(href_list["co2_fil"])
+		var/obj/machinery/atmospherics/unary/vent_filter/vent = locate(href_list["co2_fil"])
+		vent.co2_fil = !vent.co2_fil
+	if(href_list["toxins_fil"])
+		var/obj/machinery/atmospherics/unary/vent_filter/vent = locate(href_list["toxins_fil"])
+		vent.toxins_fil = !vent.toxins_fil
+	if(href_list["trace"])
+		var/obj/machinery/atmospherics/unary/vent_filter/vent = locate(href_list["trace"])
+		vent.trace_fil = !vent.trace_fil
 /obj/machinery/computer/atmosphere/monitor/process()
 	if(!(stat & (NOPOWER|BROKEN)) )
 		use_power(250)

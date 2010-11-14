@@ -40,7 +40,7 @@ mob/new_player
 			preferences.ShowChoices(src)
 
 
-		src << sound('main.ogg', 0, 0, 0, 100)
+		src << sound('main.ogg', 0, 0, 0, 35)
 
 
 	Logout()
