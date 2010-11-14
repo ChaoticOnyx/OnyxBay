@@ -1,5 +1,13 @@
-/obj/machinery/computer/med_data/attackby(I as obj, user as mob)
-	if(istype(I, /obj/item/weapon/screwdriver))
+/obj/machinery/computer/med_data/attackby(obj/I, mob/user)
+	if (istype(I, /obj/item/weapon/disk/data))
+		if (!src.diskette)
+			user.drop_item(I)
+			I.loc = src
+			src.diskette = I
+			user << "You insert [I]."
+			src.updateUsrDialog()
+			return
+	else if(istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			if (src.stat & BROKEN)
