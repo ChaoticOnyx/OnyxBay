@@ -276,7 +276,7 @@
 	var/injectorready = 1
 	var/temphtml = null
 	var/obj/machinery/dna_scanner/connected = null
-	var/obj/item/weapon/disk/data/diskette = null
+	var/obj/item/weapon/disk/data/genetics/diskette = null
 	anchored = 1.0
 
 /obj/machinery/sec_lock

@@ -646,7 +646,7 @@
 	return
 
 /obj/machinery/scan_consolenew/attackby(obj/item/W as obj, mob/user as mob)
-	if ((istype(W, /obj/item/weapon/disk/data)) && (!src.diskette))
+	if ((istype(W, /obj/item/weapon/disk/data/genetics)) && (!src.diskette))
 		user.drop_item()
 		W.loc = src
 		src.diskette = W

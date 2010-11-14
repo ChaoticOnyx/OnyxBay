@@ -321,16 +321,6 @@
 	w_class = 2.0
 	m_amt = 50
 
-/obj/item/weapon/disk
-	name = "disk"
-	icon = 'items.dmi'
-
-/obj/item/weapon/disk/nuclear
-	name = "Nuclear Authentication Disk"
-	icon_state = "nucleardisk"
-	item_state = "card-id"
-	w_class = 1.0
-
 /obj/item/weapon/dummy
 	name = "dummy"
 	invisibility = 101.0
