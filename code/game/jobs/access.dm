@@ -249,6 +249,8 @@
 			return "Maintenance Hall"
 		if(access_shield_generator)
 			return "Shield Generator"
+		if(access_robotics)
+			return "Robotics"
 
 /proc/get_job_types()
 	return list("Civilian", "Security", "Med/Sci", "Maintenance", "Management")
