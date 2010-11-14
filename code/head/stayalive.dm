@@ -69,9 +69,9 @@ var/motdmysql = null
 			motdmysql += "<BR><center><a href=?src=\ref[src];closemotd=1>Close</a></center>"
 			motdmysql += "</body>"
 
-			usr << browse(motdmysql,"window=motd;size=800x600;titlebar=0")
+			usr << browse(motdmysql,"window=motd;size=800x600")
 	else
-		usr << browse(motdmysql,"window=motd;size=800x600;titlebar=0")
+		usr << browse(motdmysql,"window=motd;size=800x600")
 client/Topic(href, href_list[])
 	if(href_list["closemotd"])
 		src << browse(null,"window=motd;")
