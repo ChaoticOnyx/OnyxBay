@@ -482,8 +482,12 @@ datum
 
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				if(prob(15))
-					M:toxloss++
+				M:toxloss++
+				if(istype(M, /mob/living/carbon/human))
+					var/datum/organ/external/affecting = M:organs["chest"]
+					if (affecting)
+						affecting.take_damage(0, 1)
+				else
 					M:fireloss++
 				..()
 				return
@@ -499,7 +503,7 @@ datum
 							M << "\red Your helmet melts into uselessness but protects you from the acid!"
 							return
 
-					if(prob(15))
+					if(prob(20))
 						var/datum/organ/external/affecting = M:organs["head"]
 						if (affecting)
 							affecting.take_damage(25, 0)

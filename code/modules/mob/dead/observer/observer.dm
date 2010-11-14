@@ -2,17 +2,17 @@
 	invisibility = 10
 	sight |= SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
 	see_invisible = 15
+	ear_deaf = 0
+	ear_damage = 0
 	see_in_dark = 100
 	verbs += /mob/dead/observer/proc/dead_tele
 	verbs += /mob/proc/flicker
-
 	if(the_corpse)
 		corpse = the_corpse
 		loc = get_turf(corpse.loc)
 		real_name = corpse.real_name
 		name = corpse.real_name
 		verbs += /mob/dead/observer/proc/reenter_corpse
-
 /mob/proc/ghostize()
 	set name = "Ghost"
 	set desc = "You cannot be revived as a ghost"
@@ -22,6 +22,7 @@
 		else
 			var/atom/object = src.loc
 			client.mob = new/mob/dead/observer(object.loc)
+			client.eye = client.mob
 	return
 
 /mob/dead/observer/Move(NewLoc, direct)

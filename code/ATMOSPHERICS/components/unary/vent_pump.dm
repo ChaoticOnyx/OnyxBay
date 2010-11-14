@@ -407,3 +407,89 @@
 	hide(var/i) //to make the little pipe section invisible, the icon changes.
 		icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
 		return
+/obj/machinery/atmospherics/unary/vent_filter
+	icon = 'pipe_vent.dmi'
+	icon_state = "intact"
+
+	name = "Vent"
+	desc = "A large air vent"
+	level = 1
+	initialize_directions = 2
+	New()
+		..()
+
+		air_contents.volume = 500
+
+	high_volume
+		name = "Large Air Vent"
+
+		New()
+			..()
+			update_icon()
+			air_contents.volume = 1500
+	//
+	var/on = 1
+	var/pump_direction = 0 //0 = equalizing, 1 = releasing, -1 = siphoning
+	var/toxins_fil = 1
+	var/o2_fil = 0
+	var/co2_fil = 1
+	var/trace_fil = 1
+	var/no_fil = 0
+	var/external_pressure_bound = ONE_ATMOSPHERE
+	var/internal_pressure_bound = 4000
+
+	var/pressure_checks = 0
+	//1: Do not pass external_pressure_bound
+	//2: Do not pass internal_pressure_bound
+	//3: Do not pass either
+
+	var/debug_info = 0
+
+	update_icon()
+	//	icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
+	//	if(on&&node)
+	//		icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]out"
+
+		return
+
+	process()
+		..()
+		update_icon()
+		if(!on)
+			return 0
+		var/datum/gas_mixture/environment = loc.return_air(1)
+	//	var/environment_pressure = environment.return_pressure()
+		if(pressure_checks & 1)
+			if(environment.return_pressure() >= external_pressure_bound) return
+
+		var/turf/simulated/T = loc
+		var
+			used_pressure = air_contents.return_pressure()//min(air_contents.return_pressure(),external_pressure_bound)
+			used_temperature = environment.temperature
+		var/transfer_moles = used_pressure*air_contents.volume/(max(used_temperature,TCMB) * R_IDEAL_GAS_EQUATION)
+
+		var/datum/gas_mixture/env = air_contents.remove(transfer_moles)
+		var/datum/gas_mixture/filtered_out = new
+		if(!env)
+			return
+		if(toxins_fil && env.toxins)
+			filtered_out.toxins = env.toxins
+			env.toxins = 0
+		if(co2_fil && env.carbon_dioxide)
+			filtered_out.carbon_dioxide = env.carbon_dioxide
+			env.carbon_dioxide = 0
+		if(trace_fil)
+			if(env.trace_gases.len>0)
+				for(var/datum/gas/trace_gas in env.trace_gases)
+					if(istype(trace_gas, /datum/gas/oxygen_agent_b))
+						env.trace_gases -= trace_gas
+						filtered_out.trace_gases += trace_gas
+		air_contents.merge(filtered_out)
+		if(env) T.assume_air(env)
+		if(network)
+			network.update = 1
+		return 1
+
+	hide(var/i) //to make the little pipe section invisible, the icon changes.
+		icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
+		return

@@ -28,7 +28,7 @@
 	blood_DNA = null
 	blood_type = null
 	var/mob/blood_owner = null
-/obj/decal/cleanable/drip
+/obj/decal/cleanable/blood/drip
 	name = "drips of blood"
 	desc = "It's red."
 	density = 0
@@ -36,10 +36,8 @@
 	layer = 2
 	icon = 'drip.dmi'
 	icon_state = "1"
-	var/datum/disease/virus = null
 	blood_DNA = null
 	blood_type = null
-	var/mob/blood_owner = null
 /obj/decal/cleanable/blood/splatter
 	random_icon_states = list("gibbl1", "gibbl2", "gibbl3", "gibbl4", "gibbl5")
 
@@ -146,7 +144,15 @@
 	layer = 3
 	icon = 'old_or_unused.dmi'
 	icon_state = "cobweb2"
-
+/obj/decal/cleanable/water
+	name = "a pool of water"
+	desc = "Someone could get hurt that."
+	density = 0
+	anchored = 1
+	layer = 3
+	icon = 'water.dmi'
+	icon_state = "floor1"
+	random_icon_states = list("floor1", "floor2")
 /obj/decal/sign
 	icon = 'decals.dmi'
 	anchored = 1.0
