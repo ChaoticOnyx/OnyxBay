@@ -30,30 +30,16 @@
 	var/menu = 1 //Which menu screen to display
 	var/list/records = list()
 	var/datum/data/record/active_record = null
-	var/obj/item/weapon/disk/data/diskette = null //Mostly so the geneticist can steal everything.
+	var/obj/item/weapon/disk/data/genetics/diskette = null //Mostly so the geneticist can steal everything.
 
-//The return of data disks?? Just for transferring between genetics machine/cloning machine.
-//TO-DO: Make the genetics machine accept them.
-/obj/item/weapon/disk/data
-	name = "data disk"
-	icon = 'cloning.dmi'
-	icon_state = "datadisk0" //Gosh I hope syndies don't mistake them for the nuke disk.
-	item_state = "card-id"
-	w_class = 1.0
-	var/data = ""
-	var/ue = 0
-	var/data_type = "ui" //ui|se
-	var/owner = "Farmer Jeff"
-	var/read_only = 0 //Well,it's still a floppy disk
-
-/obj/item/weapon/disk/data/demo
-	name = "data disk - 'Farmer Jeff'"
+/obj/item/weapon/disk/data/genetics/demo
+	name = "cloning data disk - 'Farmer Jeff'"
 	data = "0C80C80C80C80C80C8000000000000161FBDDEF"
 	ue = 1
 	read_only = 1
 
-/obj/item/weapon/disk/data/monkey
-	name = "data disk - 'Mr. Muggles'"
+/obj/item/weapon/disk/data/genetics/monkey
+	name = "cloning data disk - 'Mr. Muggles'"
 	data_type = "se"
 	data = "0983E840344C39F4B059D5145FC5785DC6406A4FFF"
 	read_only = 1
@@ -77,7 +63,7 @@
 		return
 	return
 /obj/machinery/computer/cloning/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/disk/data)) //INSERT SOME DISKETTES
+	if (istype(W, /obj/item/weapon/disk/data/genetics)) //INSERT SOME DISKETTES
 		if (!src.diskette)
 			user.drop_item()
 			W.loc = src
@@ -203,7 +189,7 @@
 			return
 		src.scan_mob(src.scanner.occupant)
 
-		//No locking an open scanner.
+	//No locking an open scanner.
 	else if ((href_list["lock"]) && (!isnull(src.scanner)))
 		if ((!src.scanner.locked) && (src.scanner.occupant))
 			src.scanner.locked = 1
@@ -388,21 +374,6 @@
 			break
 	return selected
 
-//Disk stuff.
-/obj/item/weapon/disk/data/New()
-	..()
-	var/diskcolor = pick(0,1,2)
-	src.icon_state = "datadisk[diskcolor]"
-
-/obj/item/weapon/disk/data/attack_self(mob/user as mob)
-	src.read_only = !src.read_only
-	user << "You flip the write-protect tab to [src.read_only ? "protected" : "unprotected"]."
-
-/obj/item/weapon/disk/data/examine()
-	set src in oview(5)
-	..()
-	usr << text("The write-protect tab is set to [src.read_only ? "protected" : "unprotected"].")
-	return
 
 //Health Tracker Implant
 
@@ -687,20 +658,20 @@
 /*
  *	Diskette Box
  */
-/obj/item/weapon/storage/diskbox
-	name = "Diskette Box"
+/obj/item/weapon/storage/diskboxgenetics
+	name = "Genetics Diskette Box"
 	icon_state = "disk_kit"
 	item_state = "syringe_kit"
 
-/obj/item/weapon/storage/diskbox/New()
+/obj/item/weapon/storage/diskboxgenetics/New()
 	..()
-	new /obj/item/weapon/disk/data(src)
-	new /obj/item/weapon/disk/data(src)
-	new /obj/item/weapon/disk/data(src)
-	new /obj/item/weapon/disk/data(src)
-	new /obj/item/weapon/disk/data(src)
-	new /obj/item/weapon/disk/data(src)
-	new /obj/item/weapon/disk/data(src)
+	new /obj/item/weapon/disk/data/genetics(src)
+	new /obj/item/weapon/disk/data/genetics(src)
+	new /obj/item/weapon/disk/data/genetics(src)
+	new /obj/item/weapon/disk/data/genetics(src)
+	new /obj/item/weapon/disk/data/genetics(src)
+	new /obj/item/weapon/disk/data/genetics(src)
+	new /obj/item/weapon/disk/data/genetics(src)
 
 /*
  *	Manual -- A big ol' manual.

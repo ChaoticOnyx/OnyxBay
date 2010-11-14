@@ -93,9 +93,9 @@
 	if(!I || !istype(I, /obj/item/weapon/card/id) || !I.access) //not ID or no access
 		return 0
 	for(var/req in src.req_access)
-		if(!(req in I.access)) //doesn't have this access
-			return 0
-	return 1
+		if((req in I.access))	//doesn't have this access - Edited by Strumpetplaya - Changing this
+			return 1			//so instead of needing to have access to all the requirements, you
+	return 0					//only need access to one of them.
 
 /proc/get_access(job)
 	switch(job)
@@ -249,6 +249,8 @@
 			return "Maintenance Hall"
 		if(access_shield_generator)
 			return "Shield Generator"
+		if(access_robotics)
+			return "Robotics"
 
 /proc/get_job_types()
 	return list("Civilian", "Security", "Med/Sci", "Maintenance", "Management")
