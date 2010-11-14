@@ -268,7 +268,8 @@
 // if hands aren't protected and the light is on, burn the player
 
 /obj/machinery/light/attack_hand(mob/user)
-
+	if (istype(user, /mob/living/silicon/ai))	//Added by Strumpetplaya - AI shouldn't be able to
+		return									//grab lights.  This fixes that.
 	add_fingerprint(user)
 
 	if(status == LIGHT_EMPTY)
