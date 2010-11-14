@@ -161,6 +161,7 @@
 	var/a_id = null
 	var/temp = null
 	var/printing = null
+	var/obj/item/weapon/disk/data/diskette = null
 
 /obj/machinery/computer/pod
 	name = "Pod Launch Control"
@@ -201,6 +202,7 @@
 	var/temp = null
 	var/printing = null
 	var/can_change_id = 0
+	var/obj/item/weapon/disk/data/diskette = null
 
 /obj/machinery/computer/secure_data/detective_computer
 	icon = 'computer.dmi'

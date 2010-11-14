@@ -448,7 +448,7 @@ and then you have (1-3sec to respond to this eg by applying cotton.
 		if(4)
 			z="[usr] pops [m]'s [organ.display_name] bone into the wrong place"
 		if(5)
-			z="[usr] preforms chiropractice on [m]'s [organ.display_name]"
+			z="[usr] performs chiropractice on [m]'s [organ.display_name]"
 	return z
 
 /obj/item/weapon/surgical_tool/blooddrainer

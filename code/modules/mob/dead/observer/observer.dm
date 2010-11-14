@@ -7,6 +7,10 @@
 	see_in_dark = 100
 	verbs += /mob/dead/observer/proc/dead_tele
 	verbs += /mob/proc/flicker
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/goonbay12
 	if(the_corpse)
 		corpse = the_corpse
 		loc = get_turf(corpse.loc)
@@ -23,7 +27,10 @@
 		else
 			var/atom/object = src.loc
 			client.mob = new/mob/dead/observer(object.loc)
+<<<<<<< HEAD
 			client.eye = client.mob
+=======
+>>>>>>> origin/goonbay12
 	return
 
 /mob/dead/observer/Move(NewLoc, direct)
