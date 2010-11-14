@@ -227,6 +227,7 @@
 		..()
 
 		air_contents.volume = 500
+		layer = TURF_LAYER
 
 	high_volume
 		name = "Large Air Vent"
