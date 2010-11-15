@@ -26,6 +26,7 @@
 		if ("Host")
 			src.deadchat = 1
 			src.holder.level = 6
+			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /client/proc/addchange
 			src.verbs += /proc/possess
@@ -116,6 +117,7 @@
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
+			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/cmd_explode_turf
@@ -211,6 +213,7 @@
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/toggleevents
@@ -293,7 +296,7 @@
 			src.holder.level = 3
 
 			if(src.holder.state == 2) //observing
-
+				src.verbs += /client/proc/switchtowindow
 				src.verbs += /obj/admins/proc/toggleooc				//toggle ooc
 				src.verbs += /obj/admins/proc/toggletraitorscaling
 				src.verbs += /client/proc/cmd_admin_drop_everything
@@ -368,7 +371,7 @@
 				src.verbs += /client/proc/jumptokey
 				src.verbs += /obj/admins/proc/toggleaban			//abandon mob
 				src.verbs += /client/proc/deadchat					//toggles deadchat
-
+			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/cmd_admin_pm
 			src.verbs += /client/proc/cmd_admin_say
 			src.verbs += /client/proc/dsay
@@ -410,7 +413,7 @@
 				src.verbs += /client/proc/cmd_admin_check_contents
 
 			src.verbs += /client/proc/cmd_admin_pm
-
+			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/cmd_admin_say
 			src.verbs += /client/proc/dsay
 			src.verbs += /client/proc/cmd_admin_prison
@@ -459,6 +462,7 @@
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 //				src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
 //				src.verbs += /obj/admins/proc/adjump				//toggle admin jumping
+			src.verbs += /client/proc/switchtowindow
 			src.verbs += /obj/admins/proc/unprison
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn

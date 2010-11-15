@@ -17,6 +17,8 @@
 	isWireCut - returns 1 if that wire (e.g. AIRLOCK_WIRE_DOOR_BOLTS) is cut, or 0 if not
 	canAIControl - 1 if the AI can control the airlock, 0 if not (then check canAIHack to see if it can hack in)
 	canAIHack - 1 if the AI can hack into the airlock to recover control, 0 if not. Also returns 0 if the AI does not *need* to hack it.
+	canSynControl - 1 if the hack is doable, 0 if not doable
+	canSynHack - 1 if the hacktool can do it's job, 0 if it's not doable/needed
 	arePowerSystemsOn - 1 if the main or backup power are functioning, 0 if not. Does not check whether the power grid is charged or an APC has equipment on or anything like that. (Check (stat & NOPOWER) for that)
 	requiresIDs - 1 if the airlock is requiring IDs, 0 if not
 	isAllPowerCut - 1 if the main and backup power both have cut wires.
@@ -78,6 +80,8 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	icon_state = "door_closed"
 
 	var/aiControlDisabled = 0 //If 1, AI control is disabled until the AI hacks back in and disables the lock. If 2, the AI has bypassed the lock. If -1, the control is enabled but the AI had bypassed it earlier, so if it is disabled again the AI would have no trouble getting back in.
+	var/synDoorHacked = 0 // Has it been hacked? bool 1 = yes / 0 = no
+	var/synHacking = 0 // Is hack in process y/n?
 	var/secondsMainPowerLost = 0 //The number of seconds until power is restored.
 	var/secondsBackupPowerLost = 0 //The number of seconds until power is restored.
 	var/spawnPowerRestoreRunning = 0
@@ -287,6 +291,12 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/proc/canAIHack()
 	return ((src.aiControlDisabled==1) && (!src.isAllPowerCut()));
 
+/obj/machinery/door/airlock/proc/canSynControl()
+	return ((src.synDoorHacked) && (!src.isAllPowerCut()));
+
+/obj/machinery/door/airlock/proc/canSynHack()
+	return (in_range(src, usr) && (src.synDoorHacked==0) && (!src.isAllPowerCut()));
+
 /obj/machinery/door/airlock/proc/arePowerSystemsOn()
 	return (src.secondsMainPowerLost==0 || src.secondsBackupPowerLost==0)
 
@@ -471,11 +481,9 @@ About the new airlock wires panel:
 		if (R.module && R.module.name == "engineering robot module")
 			src.attack_hand(user)
 			return
-
-	if (!src.canAIControl())
-		if (src.canAIHack())
-			src.hack(user)
-			return
+	if (src.canAIControl()==0 && src.canAIHack())
+		src.hack(user)
+		return
 
 	//Separate interface for the AI.
 	user.machine = src
@@ -890,6 +898,8 @@ About the new airlock wires panel:
 		return src.attack_hand(user)
 	else if (istype(C, /obj/item/device/multitool))
 		return src.attack_hand(user)
+	else if (istype(C, /obj/item/device/hacktool))
+		return src.attack_hack(user)
 	else if (istype(C, /obj/item/device/radio/signaler))
 		return src.attack_hand(user)
 	else if (istype(C, /obj/item/weapon/crowbar))
@@ -924,6 +934,151 @@ About the new airlock wires panel:
 	else
 		..()
 	return
+
+/obj/machinery/door/airlock/proc/attack_hack(mob/user as mob)
+	if (!src.canSynControl())
+		if (src.canSynHack())
+			src.synhack(user)
+			return
+
+	//Separate interface for the hacker.
+	var/t1 = text("<B>Airlock Control</B><br>\n")
+	if (src.secondsMainPowerLost > 0)
+		if ((!src.isWireCut(AIRLOCK_WIRE_MAIN_POWER1)) && (!src.isWireCut(AIRLOCK_WIRE_MAIN_POWER2)))
+			t1 += text("Main power is offline for [] seconds.<br>\n", src.secondsMainPowerLost)
+		else
+			t1 += text("Main power is offline indefinitely.<br>\n")
+	else
+		t1 += text("Main power is online.")
+
+	if (src.secondsBackupPowerLost > 0)
+		if ((!src.isWireCut(AIRLOCK_WIRE_BACKUP_POWER1)) && (!src.isWireCut(AIRLOCK_WIRE_BACKUP_POWER2)))
+			t1 += text("Backup power is offline for [] seconds.<br>\n", src.secondsBackupPowerLost)
+		else
+			t1 += text("Backup power is offline indefinitely.<br>\n")
+	else if (src.secondsMainPowerLost > 0)
+		t1 += text("Backup power is online.")
+	else
+		t1 += text("Backup power is offline, but will turn on if main power fails.")
+	t1 += "<br>\n"
+
+	if (src.isWireCut(AIRLOCK_WIRE_IDSCAN))
+		t1 += text("IdScan wire is cut.<br>\n")
+	else if (src.aiDisabledIdScanner)
+		t1 += text("IdScan disabled. <A href='?src=\ref[];aiEnable=1'>Enable?</a><br>\n", src)
+	else
+		t1 += text("IdScan enabled. <A href='?src=\ref[];aiDisable=1'>Disable?</a><br>\n", src)
+
+	if (src.isWireCut(AIRLOCK_WIRE_MAIN_POWER1))
+		t1 += text("Main Power Input wire is cut.<br>\n")
+	if (src.isWireCut(AIRLOCK_WIRE_MAIN_POWER2))
+		t1 += text("Main Power Output wire is cut.<br>\n")
+	if (src.secondsMainPowerLost == 0)
+		t1 += text("<A href='?src=\ref[];aiDisable=2'>Temporarily disrupt main power?</a>.<br>\n", src)
+	if (src.secondsBackupPowerLost == 0)
+		t1 += text("<A href='?src=\ref[];aiDisable=3'>Temporarily disrupt backup power?</a>.<br>\n", src)
+
+	if (src.isWireCut(AIRLOCK_WIRE_BACKUP_POWER1))
+		t1 += text("Backup Power Input wire is cut.<br>\n")
+	if (src.isWireCut(AIRLOCK_WIRE_BACKUP_POWER2))
+		t1 += text("Backup Power Output wire is cut.<br>\n")
+
+	if (src.isWireCut(AIRLOCK_WIRE_DOOR_BOLTS))
+		t1 += text("Door bolt drop wire is cut.<br>\n")
+	else if (!src.locked)
+		t1 += text("Door bolts are up. <A href='?src=\ref[];aiDisable=4'>Drop them?</a><br>\n", src)
+	else
+		t1 += text("Door bolts are down.")
+		if (src.arePowerSystemsOn())
+			t1 += text(" <A href='?src=\ref[];aiEnable=4'>Raise?</a><br>\n", src)
+		else
+			t1 += text(" Cannot raise door bolts due to power failure.<br>\n")
+	if (src.isWireCut(AIRLOCK_WIRE_ELECTRIFY))
+		t1 += text("Electrification wire is cut.<br>\n")
+	if (src.secondsElectrified==-1)
+		t1 += text("Door is electrified indefinitely. <A href='?src=\ref[];aiDisable=5'>Un-electrify it?</a><br>\n", src)
+	else if (src.secondsElectrified>0)
+		t1 += text("Door is electrified temporarily ([] seconds). <A href='?src=\ref[];aiDisable=5'>Un-electrify it?</a><br>\n", src.secondsElectrified, src)
+	else
+		t1 += text("Door is not electrified. <A href='?src=\ref[];aiEnable=5'>Electrify it for 30 seconds?</a> Or, <A href='?src=\ref[];aiEnable=6'>Electrify it indefinitely until someone cancels the electrification?</a><br>\n", src, src)
+
+	if (src.welded)
+		t1 += text("Door appears to have been welded shut.<br>\n")
+	else if (!src.locked)
+		if (src.density)
+			t1 += text("<A href='?src=\ref[];aiEnable=7'>Open door</a><br>\n", src)
+		else
+			t1 += text("<A href='?src=\ref[];aiDisable=7'>Close door</a><br>\n", src)
+
+	t1 += text("<p><a href='?src=\ref[];close=1'>Close</a></p>\n", src)
+	user << browse(t1, "window=airlock")
+	onclose(user, "airlock")
+
+/obj/machinery/door/airlock/proc/synhack(mob/user as mob)
+	if (src.synHacking==0)
+		src.synHacking=1
+		spawn(20)
+			user << "Jacking in. Stay close to the airlock or you'll rip the cables out and we'll have to start over."
+			sleep(25)
+			if (src.canSynControl())
+				user << "Hack cancelled, control already possible."
+				src.synHacking=0
+				return
+			else if (!src.canSynHack())
+				user << "\red Connection lost. Stand still and stay near the airlock!"
+				src.synHacking=0
+				return
+			user << "Connection established."
+			sleep(10)
+			user << "Attempting to hack into airlock. This may take some time."
+			sleep(100)
+			// Alerting the AIs
+			var/list/cameras = list() // only do this and the next two rows once; do not repeat them if you want to send the AI another round of messages
+			for (var/obj/machinery/camera/C in src.loc.loc.contents) // getting all cameras in the area
+				cameras += C
+
+			if(prob(15))       //15% chance of sending the AI all the details
+				var/alertoption = 3
+			else if (prob(18)) //18% chance of sending the AI just the area
+				var/alertoption = 2
+			else		   //100% chance of sending the AI a message that an airlock is being hacked, no other details
+				var/alertoption = 1
+
+			for (var/mob/living/silicon/ai/aiPlayer in world)
+				if (aiPlayer.stat != 2)
+					switch(var/alertoption)
+						if(3) aiPlayer.triggerUnmarkedAlarm("AirlockHacking", src.loc, cameras)
+						if(2) aiPlayer.triggerUnmarkedAlarm("AirlockHacking", src.loc)
+						if(1) aiPlayer.triggerUnmarkedAlarm("AirlockHacking")
+			// ...And done
+
+			if (!src.canSynHack())
+				user << "\red Hack aborted: landline connection lost. Stay closer to the airlock."
+				src.synHacking=0
+				return
+			else if (src.canSynControl())
+				user << "Local override already in place, hack aborted."
+				src.synHacking=0
+				return
+			user << "Upload access confirmed. Loading control program into airlock software."
+			sleep(85)
+			if (!src.canSynHack())
+				user << "\red Hack aborted: cable connection lost. Do not move away from the airlock."
+				src.synHacking=0
+				return
+			else if (src.canSynControl())
+				user << "Upload access aborted, local override already in place."
+				src.synHacking=0
+				return
+			user << "Transfer complete. Forcing airlock to execute program."
+			sleep(25)
+			//disable blocked control
+			src.synDoorHacked = 1
+			user << "Bingo! We're in. Airlock control panel coming right up."
+			sleep(5)
+			//bring up airlock dialog
+			src.synHacking = 0
+			src.attack_hack(user)
 
 /obj/machinery/door/airlock/open()
 	if (src.welded || src.locked || (!src.arePowerSystemsOn()) || (stat & NOPOWER) || src.isWireCut(AIRLOCK_WIRE_OPEN_DOOR))

@@ -58,8 +58,8 @@
 		t += "</FONT></PRE>"
 
 	t += "<BR><HR><A href='?src=\ref[src];close=1'>Close</A></TT>"
-	user << output(t,"pda_1")
-	winshow(user, "pda1",1)
+	//user << output(t,"pda_1")
+	//winshow(user, "pda1",1)
 	//user << browse(t, "window=powcomp;size=420x700")
 	onclose(user, "powcomp")
 
