@@ -194,7 +194,7 @@
 	var/obj/machinery/camera/C = null
 	var/list/CL = null
 	var/alarmtext = ""
-	if(class = "AirlockHacking") // In case more unmarked alerts would be added eventually;
+	if(class == "AirlockHacking") // In case more unmarked alerts would be added eventually;
 		alarmtext = "--- Unauthorized remote access detected"
 	if (O && istype(O, /list))
 		CL = O
@@ -203,7 +203,7 @@
 	else if (O && istype(O, /obj/machinery/camera))
 		C = O
 	if (A)
-		alarmtext + " in " + A.name
+		alarmtext += " in " + A.name
 		if (O)
 			if (C && C.status)
 				alarmtext += text("! (<A HREF=?src=\ref[];switchcamera=\ref[]>[]</A>)", src, C, C.c_tag)
@@ -211,15 +211,15 @@
 				var/foo = 0
 				var/dat2 = ""
 				for (var/obj/machinery/camera/I in CL)
-					dat2 + text("[]<A HREF=?src=\ref[];switchcamera=\ref[]>[]</A>", (!foo) ? "" : " | ", src, I, I.c_tag)
+					dat2 += text("[]<A HREF=?src=\ref[];switchcamera=\ref[]>[]</A>", (!foo) ? "" : " | ", src, I, I.c_tag)
 					foo = 1
-				alarmtext + text("! ([])", dat2)
+				alarmtext += text("! ([])", dat2)
 			else
-				alarmtext + "! (No Camera)"
+				alarmtext += "! (No Camera)"
 		else
-			alarmtext + "! (No Camera)"
+			alarmtext += "! (No Camera)"
 	else
-		alarmtext + "!"
+		alarmtext += "!"
 	src << alarmtext
 	return 1
 

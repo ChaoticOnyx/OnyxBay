@@ -1033,20 +1033,19 @@ About the new airlock wires panel:
 			user << "Attempting to hack into airlock. This may take some time."
 			sleep(100)
 			// Alerting the AIs
-			var/list/cameras = list() // only do this and the next two rows once; do not repeat them if you want to send the AI another round of messages
+			var/list/cameras = list()
 			for (var/obj/machinery/camera/C in src.loc.loc.contents) // getting all cameras in the area
 				cameras += C
 
-			if(prob(15))       //15% chance of sending the AI all the details
-				var/alertoption = 3
+			var/alertoption = 1 // 100% chance of warning the AI
+			if(prob(15))       //15% chance of sending the AI all the details (camera, area, warning)
+				alertoption = 3
 			else if (prob(18)) //18% chance of sending the AI just the area
-				var/alertoption = 2
-			else		   //100% chance of sending the AI a message that an airlock is being hacked, no other details
-				var/alertoption = 1
+				alertoption = 2
 
 			for (var/mob/living/silicon/ai/aiPlayer in world)
 				if (aiPlayer.stat != 2)
-					switch(var/alertoption)
+					switch(alertoption)
 						if(3) aiPlayer.triggerUnmarkedAlarm("AirlockHacking", src.loc, cameras)
 						if(2) aiPlayer.triggerUnmarkedAlarm("AirlockHacking", src.loc)
 						if(1) aiPlayer.triggerUnmarkedAlarm("AirlockHacking")

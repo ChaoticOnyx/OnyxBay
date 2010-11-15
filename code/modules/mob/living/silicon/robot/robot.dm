@@ -239,11 +239,11 @@
 	if(stat == 2) // stat = 2 = dead Cyborg
 		return 1
 	var/alarmtext = ""
-	if(class = "AirlockHacking") // In case more unmarked alerts would be added eventually;
+	if(class == "AirlockHacking") // In case more unmarked alerts would be added eventually;
 		alarmtext = "--- Unauthorized remote access detected"
 	if (A)
-		alarmtext + " in " + A.name
-	alarmtext + "!"
+		alarmtext += " in " + A.name
+	alarmtext += "!"
 	src << alarmtext
 	return 1
 
