@@ -28,6 +28,7 @@
 	desc = "A roll of police tape used to block off crime scenes from the public."
 	icon = 'policetape.dmi'
 	icon_state = "rollstart"
+	flags = FPRINT
 	var/tapestartx = 0
 	var/tapestarty = 0
 	var/tapestartz = 0
@@ -368,7 +369,6 @@
 	item_state = "electronic"
 	m_amt = 150
 
-
 /obj/item/device/multitool
 	name = "multitool"
 	icon_state = "multitool"
@@ -382,6 +382,18 @@
 	m_amt = 50
 	g_amt = 20
 
+/obj/item/device/hacktool
+	name = "hacktool"
+	icon_state = "hacktool"
+	flags = FPRINT | TABLEPASS | CONDUCT
+	force = 5.0
+	w_class = 2.0
+	throwforce = 5.0
+	throw_range = 15
+	throw_speed = 3
+	desc = "An item of dubious origins, with wires and antennas protruding out of it."
+	m_amt = 60
+	g_amt = 20
 
 /obj/item/device/prox_sensor
 	name = "Proximity Sensor"
