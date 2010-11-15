@@ -418,7 +418,7 @@
 	initialize_directions = 2
 	New()
 		..()
-
+		layer = 2
 		air_contents.volume = 500
 
 	high_volume
@@ -472,7 +472,6 @@
 			used_pressure = air_contents.return_pressure()//min(air_contents.return_pressure(),external_pressure_bound)
 			used_temperature = environment.temperature
 		var/transfer_moles = used_pressure*air_contents.volume/(max(used_temperature,TCMB) * R_IDEAL_GAS_EQUATION)
-
 		var/datum/gas_mixture/env = air_contents.remove(transfer_moles)
 		var/datum/gas_mixture/filtered_out = new
 
@@ -488,9 +487,9 @@
 					panic_filling = 1
 					spawn(-1)
 						while(panic_fill && T.air.return_pressure() < ONE_ATMOSPHERE*0.95)
-							T.zone.add_oxygen(5)
-							T.zone.add_nitrogen(20)
-							T.air.temperature = 293
+							if(istype(node,/obj/machinery/atmospherics/pipe))
+								var/obj/machinery/atmospherics/pipe/P = node
+								P.parent.mingle_with_turf(loc, 1000)
 							sleep(1)
 						panic_filling = 0
 						panic_fill = 0
