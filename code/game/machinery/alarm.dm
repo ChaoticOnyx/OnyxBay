@@ -25,9 +25,13 @@
 			alarm_zone = "Unregistered"
 
 	spawn(2)
-		for(var/obj/machinery/atmospherics/pipe/vent/V in get_area(loc))
-			if(cmptextEx(vent_connected,V.vent_id))
-				vent_connected = V
+		for(var/obj/machinery/atmospherics/unary/vent_filter/V in get_area(loc))	//Strumpetplaya - Quick fix to get alarm interfaces working again
+			vent_connected = V
+
+		//for(var/obj/machinery/atmospherics/pipe/vent/V in get_area(loc))	//Before Head Changes
+		//	if(cmptextEx(vent_connected,V.vent_id))
+		//		vent_connected = V
+
 
 /obj/machinery/alarm/process()
 	if (src.skipprocess)
@@ -328,9 +332,8 @@ obj/machinery/alarm/proc
 							D.open()
 		for(var/area/RA in A.related)
 			for(var/turf/T in RA)
-				if(T.density != 1)
-					for (var/obj/alertlighting/atmoslight/F in T)
-						del(F)
+				for (var/obj/alertlighting/atmoslight/F in T)
+					del(F)
 			RA.deactivate_air_doors(manual*5)
 
 
