@@ -1163,7 +1163,8 @@ mob/verb/turnwest()
 		var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch
 		mind.store_memory("Time of death: [tod]", 0)
 	timeofdeath = world.time
-	add_stat(2,1)
+	if(!istype(src,/mob/living/carbon/))
+		add_stat(2,1)
 	// Necessary in the event of the mob getting deleted before the check can complete (i.e. gibbed)
 	if (client)
 		spawn check_death(client)
