@@ -37,6 +37,7 @@ SYNDICATE UPLINK
 			dat += "<A href='byond://?src=\ref[src];item_jump=1'>Chameleon Jumpsuit</A> (3)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_card=1'>Syndicate Card</A> (3)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_emag=1'>Electromagnet Card</A> (3)<BR>"
+			dat += "<A href='byond://?src=\ref[src];item_hacktool=1'>Hacktool</A> (4)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_imp_freedom=1'>Freedom Implant (with injector)</A> (3)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_sleepypen=1'>Sleepy Pen</A> (4)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_cloak=1'>Cloaking Device</A> (4)<BR>"
@@ -66,6 +67,10 @@ SYNDICATE UPLINK
 			if (src.uses >= 3)
 				src.uses -= 3
 				new /obj/item/weapon/card/emag( H.loc )
+		else if (href_list["item_hacktool"])
+			if (src.uses >= 4)
+				src.uses -= 4
+				new /obj/item/device/hacktool( H.loc )
 		else if (href_list["item_empbox"])
 			if (src.uses >= 4)
 				src.uses -= 4

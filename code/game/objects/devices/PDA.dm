@@ -1701,6 +1701,7 @@ Code:
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=jump'>Chameleon Jumpsuit</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=card'>Syndicate Card</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=emag'>Electromagnet Card</A> (3)<BR>"
+	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=hacktool'>Hacktool</A> (4)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_freedom'>Freedom Implant (with injector)</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_compress'>Compressed Matter Implant (with injector)</A> (5)<BR>"
 //	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_tele'>Teleport Implant (with injector) + Beacon</A> (10)<BR>"
@@ -1773,6 +1774,10 @@ Code:
 				if (src.uses >= 3)
 					src.uses -= 3
 					new /obj/item/weapon/card/emag(get_turf(src.hostpda))
+			if("hacktool")
+				if (src.uses >= 4)
+					src.uses -= 4
+					new /obj/item/device/hacktool(get_turf(src.hostpda))
 			if("imp_freedom")
 				if (src.uses >= 3)
 					src.uses -= 3
