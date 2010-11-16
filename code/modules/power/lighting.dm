@@ -185,10 +185,10 @@
 	L.flickering = 0
 
 	return
-
-
-/mob/proc/flicker(obj/machinery/light/L)
+/obj/machinery/light/verb/flicker(obj/machinery/light/L in view())
 	set name = "Flicker"
+	set src in view()
+	set invisibility = 15
 	if(!istype(usr, /mob/dead/observer))
 		usr << "You can not find a way to flicker the lights from here."
 		return
