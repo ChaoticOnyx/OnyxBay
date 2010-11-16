@@ -6,7 +6,6 @@
 	ear_damage = 0
 	see_in_dark = 100
 	verbs += /mob/dead/observer/proc/dead_tele
-	verbs += /mob/proc/flicker
 	if(the_corpse)
 		corpse = the_corpse
 		loc = get_turf(corpse.loc)
