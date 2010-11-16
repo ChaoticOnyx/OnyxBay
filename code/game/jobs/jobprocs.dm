@@ -502,8 +502,10 @@
 				src.loc = start
 		if (istype(S, /obj/landmark/start) && istype(S.loc, /turf))
 			src.loc = S.loc
+			add_stat(1,1)
 	else
 		src.loc = pick(latejoin)
+		src.add_stat(1,1)
 	return
 
 /mob/living/carbon/human/proc/spawnId(rank)

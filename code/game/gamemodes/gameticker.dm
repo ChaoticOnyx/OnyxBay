@@ -103,11 +103,12 @@ var/global/datum/controller/gameticker/ticker
 	spawn(0)
 		var/eventa = 1
 		while(1)
-			eventa += 1
-			if(eventa > 3)
-				eventa = 1
-			sleep(10000)
-			new_event(eventa)
+			if(do_event)
+				eventa += 1
+				if(eventa > 3)
+					eventa = 1
+				sleep(10000)
+				new_event(eventa)
 
 	spawn master_controller.process()
 

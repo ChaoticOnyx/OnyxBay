@@ -66,7 +66,6 @@
 /datum/game_mode/proc/check_round()
 	for(var/client/C)
 		if(C.mob)
-			C.mob.add_stat(1,1)
 			if(C.mob.stat != 2)
 				C.mob.unlock_medal("Survivor", 0, "What do you think?", "easy")
 

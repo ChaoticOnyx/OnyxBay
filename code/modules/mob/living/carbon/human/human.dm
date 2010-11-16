@@ -1730,11 +1730,11 @@
 					del(src)
 					return
 			if("internal")
-				if ((!( (istype(target.wear_mask, /obj/item/clothing/mask) && istype(target.back, /obj/item/weapon/tank) && !( target.internal )) ) && !( target.internal )))
+				if (!istype(target.wear_mask, /obj/item/clothing/mask) && !istype(target.back, /obj/item/weapon/tank) && !target.internal)
 					//SN src = null
 					del(src)
 					return
-
+				else if((!( (istype(target.wear_mask, /obj/item/clothing/mask) && !istype(target.belt, /obj/item/weapon/tank) && !( target.internal )) ) && !( target.internal )))
 	var/list/L = list( "syringe", "pill", "drink", "dnainjector", "fuel")
 	if ((item && !( L.Find(place) )))
 		for(var/mob/O in viewers(target, null))
@@ -2230,7 +2230,14 @@
 						for(var/mob/M in viewers(target, 1))
 							M.show_message(text("[] is now running on internals.", target), 1)
 						target.internal.add_fingerprint(source)
+					else if(istype(target.belt, /obj/item/weapon/tank)))
+						target.internal = target.belt
+						for(var/mob/M in viewers(target, 1))
+							M.show_message(text("[] is now running on internals.", target), 1)
+						target.internal.add_fingerprint(source)
+
 		else
+
 	if(source)
 		source.update_clothing()
 	if(target)
