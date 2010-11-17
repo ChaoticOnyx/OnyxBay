@@ -87,8 +87,6 @@
 #define FILE_DIR "code/modules/power/antimatter"
 #define FILE_DIR "code/obj"
 #define FILE_DIR "code/unused"
-#define FILE_DIR "code/unused/modules"
-#define FILE_DIR "code/unused/modules/admin"
 #define FILE_DIR "code/WorkInProgress"
 #define FILE_DIR "code/WorkInProgress/Alfie275"
 #define FILE_DIR "code/WorkInProgress/Aryn"

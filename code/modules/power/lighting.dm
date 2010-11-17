@@ -165,7 +165,7 @@
 	if(L.status == LIGHT_EMPTY || L.status == LIGHT_BROKEN)
 		M << "There is no [L.fitting] in this light."
 		return
-	if(on)
+	if(L.on)
 		M << "Your touch robs the [L.fitting] of its energy!"
 	else
 		M << "Your touch breathes energy into the [L.fitting]!"
@@ -185,6 +185,7 @@
 	L.flickering = 0
 
 	return
+
 /obj/machinery/light/verb/flicker(obj/machinery/light/L in view())
 	set name = "Flicker"
 	set src in view()

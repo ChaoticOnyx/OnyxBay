@@ -387,6 +387,7 @@
 	name = "hacktool"
 	icon_state = "hacktool"
 	flags = FPRINT | TABLEPASS | CONDUCT
+	var/in_use = 0
 	force = 5.0
 	w_class = 2.0
 	throwforce = 5.0

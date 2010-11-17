@@ -647,9 +647,12 @@ About the new airlock wires panel:
 //aiEnable - 1 idscan, 4 raise door bolts, 5 electrify door for 30 seconds, 6 electrify door indefinitely, 7 open door
 
 
-/obj/machinery/door/airlock/proc/attack_hack(mob/user as mob)
+/obj/machinery/door/airlock/proc/attack_hack(mob/user as mob, obj/item/device/hacktool/C)
+	if(C.in_use)
+		user << "The hacktool is already in use on another airlock."
+		return
 	if (!src.canSynControl() && src.canSynHack())
-		src.synhack(user)
+		src.synhack(user, C)
 		return
 
 	//Separate interface for the hacker.
@@ -1068,7 +1071,7 @@ About the new airlock wires panel:
 	else if (istype(C, /obj/item/device/multitool))
 		return src.attack_hand(user)
 	else if (istype(C, /obj/item/device/hacktool))
-		return src.attack_hack(user)
+		return src.attack_hack(user, C)
 	else if (istype(C, /obj/item/device/radio/signaler))
 		return src.attack_hand(user)
 	else if (istype(C, /obj/item/weapon/crowbar))
@@ -1105,9 +1108,10 @@ About the new airlock wires panel:
 	return
 
 
-/obj/machinery/door/airlock/proc/synhack(mob/user as mob)
+/obj/machinery/door/airlock/proc/synhack(mob/user as mob, obj/item/device/hacktool/I)
 	if (src.synHacking==0)
 		src.synHacking=1
+		I.in_use = 1
 		spawn(20)
 			user << "Jacking in. Stay close to the airlock or you'll rip the cables out and we'll have to start over."
 			sleep(25)
@@ -1173,6 +1177,7 @@ About the new airlock wires panel:
 			user << "Bingo! We're in. Airlock control panel coming right up."
 			sleep(5)
 			//bring up airlock dialog
+			I.in_use = 0
 			src.synHacking = 0
 			src.attack_hack(user)
 
