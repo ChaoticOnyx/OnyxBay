@@ -382,10 +382,12 @@
 	m_amt = 50
 	g_amt = 20
 
+// So far, its functionality is found only in code/game/machinery/doors/airlock.dm
 /obj/item/device/hacktool
 	name = "hacktool"
 	icon_state = "hacktool"
 	flags = FPRINT | TABLEPASS | CONDUCT
+	var/in_use = 0
 	force = 5.0
 	w_class = 2.0
 	throwforce = 5.0
