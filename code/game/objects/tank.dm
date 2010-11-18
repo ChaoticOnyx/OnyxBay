@@ -337,7 +337,7 @@
 			if (UP)
 				if (user.z > 1)
 					var/turf/T = locate(user.x, user.y, user.z - 1)
-					if(T && istype(T, /turf/space))
+					if(T && istype(T, /turf/space) && istype(user.loc, /turf/space))
 						user.Move(T)
 					else if (!T)
 						user << "\red The ships gravity well keeps you in orbit!"
@@ -348,7 +348,7 @@
 			if (DOWN)
 				if (user.z < 4)
 					var/turf/T = locate(user.x, user.y, user.z + 1)
-					if(T && istype(T, /turf/space))
+					if(T && istype(T, /turf/space) && istype(user.loc, /turf/space))
 						user.Move(T)
 					else if (!T)
 						user << "\red The ships gravity well keeps you in orbit!"
