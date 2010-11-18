@@ -443,7 +443,7 @@
 	var/panic_filling = 0	//This too.
 
 
-	var/pressure_checks = 0
+	var/pressure_checks = 1
 	//1: Do not pass external_pressure_bound
 	//2: Do not pass internal_pressure_bound
 	//3: Do not pass either
