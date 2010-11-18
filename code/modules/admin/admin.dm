@@ -30,7 +30,8 @@ var/showadminmessages = 1
 				return
 			switch(href_list["call_shuttle"])
 				if("1")
-					if ((!( ticker ) || main_shuttle.location))
+					if ((!( ticker ) || main_shuttle.location == 0))
+						world << "This seems to be killing it."
 						return
 					LaunchControl.start()
 					world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(LaunchControl.timeleft()/60)] minutes.</B>"
