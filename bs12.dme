@@ -127,10 +127,10 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
+#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
-#include "Acceses.dm"
 #include "code\mapLoader.dm"
 #include "code\names.dm"
 #include "code\setup.dm"
@@ -500,7 +500,6 @@
 #include "code\game\verbs\suicide.dm"
 #include "code\game\verbs\who.dm"
 #include "code\head\changelog.dm"
-#include "code\head\derp.dm"
 #include "code\head\hydrophonics.dm"
 #include "code\head\medals.dm"
 #include "code\head\mysql.dm"

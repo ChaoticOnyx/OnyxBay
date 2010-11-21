@@ -19,7 +19,7 @@ datum/plants/tomato
 	growthtime = 100
 	waterneeded = 1 //per tick
 	co2needed = 1 // per tick
-	uvneeded = 5
+	uvneeded = 1
 	growthstages = 5
 	needheat = 1
 /obj/machinery/hydro/soilbed
@@ -32,6 +32,7 @@ datum/plants/tomato
 	var/fullygrown = 0
 	var/dead = 0
 	var/stage
+	var/debug = 1
 /obj/machinery/hydro/soilbed/verb/derp()
 	set src in view()
 	hasplant = new /datum/plants/tomato ()
@@ -44,21 +45,21 @@ datum/plants/tomato
 	if(hasplant)
 		if(hasplant.health <= 0)
 			plantdie()
-			world << "DIEING"
+			if(debug) world << "DIEING"
 		var/turf/L = src.loc
 		var/datum/gas_mixture/env = L.return_air()
 		if(env.temperature < 283.15)
 			hasplant.health -= 5
-		var/uvhave  = 10
+		var/uvhave
 		for(var/obj/machinery/light/U in view())
-			uvhave += U.luminosity
-		world << uvhave
+			uvhave += U.on
+		world << "Light:[uvhave]"
 		if(uvhave < hasplant.uvneeded)
 			hasplant.health -= 5
-			world << "EATING LIGHT"
+			if(debug) world << "EATING LIGHT"
 		if(uvhave >= 1)
 			env.oxygen += hasplant.co2needed * 2
-			world << "BE MAKEING O2"
+			if(debug) world << "BE MAKEING O2"
 		if(env.toxins)
 			hasplant.health -= 5
 		if(reagents.has_reagent("water"))
@@ -81,11 +82,8 @@ datum/plants/tomato
 					for(var/obj/machinery/hydro/soilbed/B in A)
 						if(B.hasplant)
 							plants++
-					var/tesst = env.carbon_dioxide / plants
-					world << "TEST:[tesst]"
+					hasplant.growthtime = env.carbon_dioxide / plants
 	updateicon()
-mob/verb/testmapper()
-	cr_browsermap()
 /obj/machinery/hydro/soilbed/proc/updateicon()
 	overlays = null
 	if(hasplant)
