@@ -456,6 +456,8 @@ About the new airlock wires panel:
 
 
 /obj/machinery/door/airlock/proc/airlockelectrocute(mob/user, netnum)
+	if (!user)
+		return 0
 	//You're probably getting shocked deal w/ it
 
 	if(!netnum)		// unconnected cable is unpowered
