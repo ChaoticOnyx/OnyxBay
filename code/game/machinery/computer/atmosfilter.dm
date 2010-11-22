@@ -29,10 +29,10 @@
 
 	user.machine = src
 	var/t = "<TT><B>Filter Monitoring</B><HR>"
-	t += "<BR><HR><A href='?src=\ref[src];zlevel=1'>Deck 1</A></TT>"
-	t += "<BR><HR><A href='?src=\ref[src];zlevel=2'>Deck 2</A></TT>"
-	t += "<BR><HR><A href='?src=\ref[src];zlevel=3'>Deck 3</A></TT>"
-	t += "<BR><HR><A href='?src=\ref[src];zlevel=4'>Deck 4</A></TT>"
+	t += "<BR><HR><A href='?src=\ref[src];zlevel=4'>Deck 1</A></TT>"
+	t += "<BR><HR><A href='?src=\ref[src];zlevel=3'>Deck 2</A></TT>"
+	t += "<BR><HR><A href='?src=\ref[src];zlevel=2'>Deck 3</A></TT>"
+	t += "<BR><HR><A href='?src=\ref[src];zlevel=1'>Deck 4</A></TT>"
 	t += "<BR><HR><A href='?src=\ref[src];close=1'>Close</A></TT>"
 	user << browse(t, "window=powcomp;size=420x700")
 	onclose(user, "powcomp")
