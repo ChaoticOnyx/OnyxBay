@@ -138,6 +138,8 @@
 						del(G)
 						break
 
+			src.brain.owner.mind.transfer_to(O)		//Added to fix robot gibbing disconnecting the player. - Strumpetplaya
+
 			O.loc = get_turf(src.loc)
 			O << "<B>You are playing a Robot. The Robot can interact with most electronic objects in its view point.</B>"
 			O << "<B>You must follow the laws that the AI has. You are the AI's assistant to the station basically.</B>"

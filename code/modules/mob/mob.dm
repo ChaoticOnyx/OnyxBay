@@ -2078,11 +2078,16 @@ mob/verb/turnwest()
 		newmob = new/mob/dead/observer(src)
 		src:client:mob = newmob
 		mind.transfer_to(newmob)
-
-		gibs(loc, virus)
+		if(istype(src,/mob/living/silicon/robot))	//Robots don't gib like humans! - Strumpetplaya
+			robogibs(loc,virus)
+		else
+			gibs(loc, virus)
 
 	else if (!client)
-		gibs(loc, virus)
+		if(istype(src,/mob/living/silicon/robot))
+			robogibs(loc,virus)
+		else
+			gibs(loc, virus)
 
 	sleep(15)
 	del(src)
