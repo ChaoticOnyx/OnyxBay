@@ -77,6 +77,7 @@
 	icon_state = "plate"
 	name = "Emitter Plate"
 	desc = "An AoE shield emitter"
+	level = 1
 
 //AoE Setup for the emitter plate - Shield the exterior hull
 /obj/machinery/shielding/emitter/plate/UpdateAoE()
@@ -88,3 +89,17 @@
 		UpdateTurf(S)
 
 
+/obj/machinery/shielding/emitter/plate/New()
+
+	var/turf/T = src.loc			// hide if turf is not intact
+
+	if(level==1) hide(T.intact)
+
+
+/obj/machinery/shielding/emitter/plate/hide(var/i)
+	if(level == 1 && istype(loc, /turf/simulated))
+		invisibility = i ? 101 : 0
+	updateicon()
+
+/obj/machinery/shielding/emitter/plate/proc/updateicon()
+	return
