@@ -532,6 +532,10 @@
 	name = "Fitness Room"
 	icon_state = "fitness"
 
+/area/crew_quarters/laundromat
+	name = "Laundromat"
+	icon_state = "fitness"
+
 /area/crew_quarters/lounge
 	name = "Crew Lounge"
 	icon_state = "crewlounge"

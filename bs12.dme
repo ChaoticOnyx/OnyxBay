@@ -6,6 +6,7 @@
 // END_INTERNALS
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "backup"
 #define FILE_DIR "code"
 #define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
@@ -49,8 +50,11 @@
 #define FILE_DIR "code/game/machinery/bots"
 #define FILE_DIR "code/game/machinery/computer"
 #define FILE_DIR "code/game/machinery/ComputerNetworks"
+#define FILE_DIR "code/game/machinery/Computers"
 #define FILE_DIR "code/game/machinery/doors"
 #define FILE_DIR "code/game/machinery/embedded_controller"
+#define FILE_DIR "code/game/machinery/Fire"
+#define FILE_DIR "code/game/machinery/Lighting"
 #define FILE_DIR "code/game/machinery/pipe"
 #define FILE_DIR "code/game/objects"
 #define FILE_DIR "code/game/objects/alien"
@@ -127,6 +131,7 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
+#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -134,6 +139,7 @@
 #include "code\names.dm"
 #include "code\setup.dm"
 #include "code\stylesheet.dm"
+#include "code\TakePicture.dm"
 #include "code\Aryn\Airflow.dm"
 #include "code\Aryn\Atmos-ZAS3-Zones.dm"
 #include "code\Aryn\Variable Settings.dm"
@@ -652,11 +658,13 @@
 #include "code\WorkInProgress\recycling\disposal-construction.dm"
 #include "code\WorkInProgress\recycling\disposal.dm"
 #include "code\WorkInProgress\recycling\scrap.dm"
-#include "code\WorkInProgress\ShieldGenerator\EmitterPlate.dm"
+#include "code\WorkInProgress\ShieldGenerator\Conduit.dm"
+#include "code\WorkInProgress\ShieldGenerator\Emitters.dm"
 #include "code\WorkInProgress\ShieldGenerator\Generator.dm"
 #include "code\WorkInProgress\ShieldGenerator\Shared.dm"
 #include "code\WorkInProgress\ShieldGenerator\Shield.dm"
 #include "code\WorkInProgress\ShieldGenerator\ShieldCapacitor.dm"
+#include "code\WorkInProgress\ShieldGenerator\ShieldNetwork.dm"
 #include "code\WorkInProgress\ZeroPoint\Laser2.dm"
 #include "code\WorkInProgress\ZeroPoint\LaserComputer.dm"
 #include "code\WorkInProgress\ZeroPoint\SuperMatter.dm"

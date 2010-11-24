@@ -21,9 +21,9 @@ datum/controller/game_controller
 			world.load_rules()
 			world.load_admins()
 			world.update_status()
-		snet = new /datum/shieldnetwork()
+		ShieldNetwork = new /datum/shieldnetwork()
 		world << "\red Setting up shields.."
-		if(snet.makenetwork())
+		if(ShieldNetwork.makenetwork())
 			world << "\red Shields set up complete."
 
 		makepowernets()

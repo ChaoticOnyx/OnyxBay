@@ -979,7 +979,7 @@
 	if(direction)
 		dirs = list( direction, turn(direction, -45), turn(direction, 45))
 	else
-		dirs = alldirs.Copy()
+		dirs = cardinal8.Copy()
 
 	src.streak(dirs)
 
@@ -988,6 +988,6 @@
 	if(direction)
 		dirs = list( direction, turn(direction, -45), turn(direction, 45))
 	else
-		dirs = alldirs.Copy()
+		dirs = cardinal8.Copy()
 
 	src.streak(dirs)

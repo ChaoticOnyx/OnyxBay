@@ -1,6 +1,8 @@
 //Shield Generator - Energy Converter
 //Converts electrical energy to shield energy
 
+//Not done, not commented.
+
 /obj/machinery/shielding/energyconverter
 	name = "Energy Converter"
 	desc = "An energy conversion unit for the shield generator system"
@@ -9,8 +11,8 @@
 	anchored = 1
 	density = 1
 
-	var/conversionrate = 50 //Units of shield energy produced per tick
-	var/setconversionrate = 50
+	var/conversionrate = 0 //Units of shield energy produced per tick
+	var/setconversionrate = 60
 	var/maxconversionrate = 100
 	var/lastconversionrate = 50
 	var/maxautoconversionpositivedelta = 50
@@ -20,7 +22,7 @@
 	//1 = On Manual
 	//2 = On Auto - attempt to maintain shield charge above a specific level
 	//3 = Remote Control
-	var/targetlevel = 60 //% of maximum charge
+	var/targetlevel = 75 //% of maximum charge
 	var/obj/machinery/shielding/capacitor/capacitor = null
 
 
@@ -138,9 +140,10 @@ Manual Mode Generation Rate:      <a href="?src=\ref[src];man=1">M</a> <a href="
 
 			conversionrate = min(max(automax, needed), maxconversionrate)
 
-	use_power(round(conversionrate ** 2.15))
-	use_power(-round(produce_energy(conversionrate) ** 1.3)) //Partially return shield energy that couldn't be used
+	use_power(round(conversionrate ** 2.05))
+	use_power(-round(produce_energy(conversionrate) ** 1.25)) //Partially return shield energy that couldn't be used
 	lastconversionrate = conversionrate
+	ShieldNetwork.Balance() //TODO move this so it's not called unncessarily
 	updateicon()
 	updateUsrDialog()
 

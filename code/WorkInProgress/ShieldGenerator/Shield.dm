@@ -5,41 +5,45 @@
 	name = "shield"
 	desc = "An energy shield."
 	icon = 'effects.dmi'
-	explosionstrength = 0
 	icon_state = "shieldsparkles"
 	anchored = 1
-	var/atmosonly = 0
-	var/spawntm = 0
-
-	density = 0
-//	opacity = 0
 	invisibility = 101
+	density = 0
+	opacity = 0
 
+	var/blockatmosonly = 0
 	var/obj/machinery/shielding/emitter/emitter = null
 
-/obj/machinery/shielding/shield/process()
-	if(!emitter)
-		if(spawntm == 0)
-			spawntm = 1
-			spawn(rand(50,150))
-				density = 0
-				explosionstrength = 0
-				invisibility = 101
-				spawntm = 0
 
-	if(emitter.online)
-		if(spawntm == 0)
-			spawntm = 1
-			spawn(rand(50,150))
-				density = 1
-				explosionstrength = 9
-				invisibility = 0
-				spawntm = 0
+//Basic processing for shield tiles
+/obj/machinery/shielding/shield/process()
+	if (emitter && emitter.online)
+		density = !blockatmosonly
+		icon_state = "shieldsparkles[blockatmosonly]"
+		explosionstrength = INFINITY
+		invisibility = 0
 	else
-		if(spawntm == 0)
-			spawntm = 1
-			spawn(rand(50,150))
-				density = 0
-				explosionstrength = 0
-				invisibility = 101
-				spawntm = 0
+		density = 0
+		invisibility = 101
+		explosionstrength = 0
+
+
+//Shield Density controller
+/obj/machinery/shielding/shield/CanPass(atom/movable/mover, turf/source, height=1.5, air_group = 0)
+	if (density)
+		//Block all atmos flow & explosions, but optionally allow movement through
+		return !air_group && blockatmosonly
+	else
+		return 1 //Shield is off; do nothing
+
+//Explosion Handling - Includes support for preblast handling
+/obj/machinery/shielding/shield/ex_act(strength)
+	if (strength <= 0)
+		strength = -strength
+		if (emitter && emitter.online)
+			emitter.Draw(strength * 200)
+		#ifdef DEBUG
+		world << "Shield Handled blast wave"
+		#endif
+	else if (density)
+		world << "Active shield ex_act called with positive value?  What?  This makes no sense and should not have happened.  Tell a dev."
