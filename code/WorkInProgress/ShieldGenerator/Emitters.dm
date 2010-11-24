@@ -90,6 +90,7 @@
 
 
 /obj/machinery/shielding/emitter/plate/New()
+	..()
 
 	var/turf/T = src.loc			// hide if turf is not intact
 
