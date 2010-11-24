@@ -25,16 +25,12 @@ var
 	ul_Layer = 10
 	ul_SuppressLightLevelChanges = 0
 
+	list/ul_FastRoot = list(0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5,
+							5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+							7, 7)
+
 
 proc
-	ul_BulkMove(var/atom/SourceAnchor, var/atom/DestAnchor, var/Height, var/Width, var/ReplaceTurfWith = world.turf)
-		ul_SuppressLightLevelChanges++
-
-		//TODO
-
-		ul_SuppressLightLevelChanges--
-		return
-
 	ul_Clamp(var/Value)
 		return min(max(Value, 0), ul_Steps)
 
@@ -147,7 +143,12 @@ atom
 
 		ul_FalloffAmount(var/atom/ref)
 			if (ul_FalloffStyle == UL_I_FALLOFF_ROUND)
-				return round(ul_LightingResolution * (((ref.x - src.x) ** 2 + (ref.y - src.y) ** 2) ** 0.5), 1)
+				var/x = (ref.x - src.x)
+				var/y = (ref.y - src.y)
+				if ((x*x + y*y) > ul_FastRoot.len)
+					for(var/i = ul_FastRoot.len, i <= x*x+y*y, i++)
+						ul_FastRoot += round(sqrt(x*x+y*y))
+				return round(ul_LightingResolution * ul_FastRoot[x*x + y*y + 1], 1)
 
 			else if (ul_FalloffStyle == UL_I_FALLOFF_SQUARE)
 				return get_dist(src, ref)

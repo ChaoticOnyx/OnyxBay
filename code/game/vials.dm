@@ -186,7 +186,7 @@
 			for(i=0, i<10, i++)
 				spawn(0)
 					var/obj/effects/water/water1 = new /obj/effects/water( mobloc )
-					var/direction = pick(alldirs)
+					var/direction = pick(cardinal8)
 					water1.name = "water"
 					water1.density = 0
 					water1.icon = 'water.dmi'
@@ -205,7 +205,7 @@
 		for(b=0, b<10, b++)
 			spawn(0)
 				var/turf = mobloc
-				var/direction = pick(alldirs)
+				var/direction = pick(cardinal8)
 				var/c
 				for(c=0, c<pick(1,2,3), c++)
 					turf = get_step(turf,direction)

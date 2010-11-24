@@ -12,6 +12,9 @@
 	var/maxcharge = 5000
 	var/charge = 1000
 	var/obj/machinery/shielding/energyconverter/generator = null
+
+
+//Process Loop
 /obj/machinery/shielding/capacitor/process()
 	if(stat & BROKEN)
 		charge = 0
@@ -19,12 +22,15 @@
 		return
 	if(stat & NOPOWER)
 		if(charge)
-			charge -= 400
+			charge -= 40
 			charge = max(charge, 0)
 	else
 		use_power(round(charge ** 1.1))
 	updateicon()
 	return
+
+
+///Update the icon
 /obj/machinery/shielding/capacitor/proc/updateicon()
 	clearoverlays()
 	icon_state = "cap[stat & (NOPOWER|BROKEN) ? "-p" : ""]"

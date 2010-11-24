@@ -246,7 +246,7 @@
 					var/AN = ""
 					var/open = ""
 					var/infected = ""
-					var/split = ""
+					//var/split = ""
 					var/imp = ""
 					var/bled = ""
 					if(e.wounds.len >= 1)
@@ -258,7 +258,7 @@
 					if(!e.clean)
 						infected = "UNCLEAN:"
 					if(e.split)
-						split = ":SPLT"
+						e.split = ":SPLT"
 					if(e.implant)
 						imp = "IMPLANT:"
 					if(!AN && !open && !infected & !imp)

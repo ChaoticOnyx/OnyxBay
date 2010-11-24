@@ -230,6 +230,7 @@
 	icon = 'structures.dmi'
 	icon_state = "grille"
 	density = 1
+	layer = 2.9
 	var/health = 10.0
 	var/destroyed = 0.0
 	anchored = 1.0
@@ -438,6 +439,7 @@
 	anchored = 1.0
 
 /obj/landmark/derelict
+	name = "Derelict Info Node"
 
 	nodamage
 		icon_state = "blocked"
@@ -469,7 +471,7 @@
 	icon_state = "lattice"
 	density = 0
 	anchored = 1.0
-	layer = 2.5
+	layer = 2
 	//	flags = 64.0
 
 /obj/list_container

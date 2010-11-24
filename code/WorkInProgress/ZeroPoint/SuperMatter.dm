@@ -21,6 +21,7 @@
 	density = 1
 	anchored = 1
 	var/obj/machinery/engine/supermatter/sup
+
 /obj/machinery/engine/klaxon/process()
 	if(!sup)
 		for(var/obj/machinery/engine/supermatter/T in world)
@@ -40,17 +41,13 @@
 	var/transfer_moles = gasefficency * env.total_moles()
 	var/datum/gas_mixture/removed = env.remove(transfer_moles)
 
-
-	if(removed.temperature > 1000)
-		det += 1
-		if(det >= 1)
-			radioalert("CORE OVERLOAD","Core control computer")
-		if(det > 70)
-			//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
-			explosion(src.loc,8,15,20,30,1)
-			det = 0
-	else
-
+	det += (removed.temperature - 1000) / 50
+	det = max(det, 0)
+	if(det > 0)
+		radioalert("CORE OVERLOAD","Core control computer")
+	if(det > 70)
+		//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
+		explosion(src.loc,8,15,20,30,1)
 		det = 0
 
 	if (!removed)
@@ -92,14 +89,15 @@
 
 	env.merge(removed)
 
+
+	for(var/mob/living/l in range(8))
+		if(prob(5))
+			l.hallucination += 100
 	for(var/mob/living/l in range(3))
 		l.gib()
 	for(var/mob/dead/l in range(10))
 		if(prob(20))
 			var/virus = l.virus
 			gibs(l.loc, virus)
-	for(var/mob/living/l in range(8))
-		if(prob(5))
-			l.hallucination += 100
 	return 1
 
