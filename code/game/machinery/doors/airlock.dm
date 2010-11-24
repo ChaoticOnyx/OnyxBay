@@ -444,7 +444,8 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/proc/shock(mob/user, prb)
 	if(!prob(prb))
 		return 0 //you lucked out, no shock for you
-
+	if(!user)
+		return 0
 	var/net = get_connection()		// find the powernet of the connected cable
 
 	if(!net)		// cable is unpowered
@@ -457,7 +458,8 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/proc/airlockelectrocute(mob/user, netnum)
 	//You're probably getting shocked deal w/ it
-
+	if(!user)
+		return 0
 	if(!netnum)		// unconnected cable is unpowered
 		return 0
 
