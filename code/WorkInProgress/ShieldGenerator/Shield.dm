@@ -41,7 +41,7 @@
 	if (strength <= 0)
 		strength = -strength
 		if (emitter && emitter.online)
-			emitter.Draw(strength * 50)
+			emitter.Draw(strength * 200)
 		#ifdef DEBUG
 		world << "Shield Handled blast wave"
 		#endif
