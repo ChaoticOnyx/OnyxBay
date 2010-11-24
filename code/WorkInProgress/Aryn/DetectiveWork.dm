@@ -52,7 +52,7 @@ atom/proc/add_fibers(mob/living/carbon/human/M)
 
 obj/machinery/computer/forensic_scanning
 	name = "High-Res Forensic Scanning Computer"
-	icon_state = "computer_generic"
+	icon_state = "forensic"
 	var/obj/item/scanning
 	var/temp = ""
 	var/canclear = 1

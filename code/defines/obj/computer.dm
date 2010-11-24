@@ -150,7 +150,7 @@
 
 /obj/machinery/computer/med_data
 	name = "Medical Records"
-	icon_state = "dna"
+	icon_state = "medical"
 	req_access = list(access_medical)
 	var/obj/item/weapon/card/id/scan = null
 	var/authenticated = null
