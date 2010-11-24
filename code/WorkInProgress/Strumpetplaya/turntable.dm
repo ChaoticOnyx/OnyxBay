@@ -11,7 +11,7 @@
 /obj/item/turntable
 	name = "turntable"
 	desc = "A turntable used for parties and shit."
-	icon = 'items.dmi'
+	icon = 'lasers2.dmi'
 	icon_state = "turntable"
 	var/playing = 0
 	anchored = 1
