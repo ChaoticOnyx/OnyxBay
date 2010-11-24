@@ -67,3 +67,17 @@
 		use_power(500)
 
 	src.updateDialog()
+
+
+/obj/machinery/power/monitor/power_change()
+
+	if(stat & BROKEN)
+		icon_state = "broken"
+	else
+		if( powered() )
+			icon_state = initial(icon_state)
+			stat &= ~NOPOWER
+		else
+			spawn(rand(0, 15))
+				src.icon_state = "operating0"
+				stat |= NOPOWER

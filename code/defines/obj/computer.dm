@@ -15,7 +15,7 @@
 	density = 1
 	anchored = 1.0
 	icon = 'computer.dmi'
-	icon_state = "comm"
+	icon_state = "operating"
 
 	var/mob/living/carbon/human/victim = null
 
@@ -150,7 +150,7 @@
 
 /obj/machinery/computer/med_data
 	name = "Medical Records"
-	icon_state = "dna"
+	icon_state = "medical"
 	req_access = list(access_medical)
 	var/obj/item/weapon/card/id/scan = null
 	var/authenticated = null
@@ -190,7 +190,7 @@
 
 /obj/machinery/computer/secure_data
 	name = "Security Records"
-	icon_state = "computer_generic"
+	icon_state = "security"
 	req_access = list(access_security)
 	var/obj/item/weapon/card/id/scan = null
 	var/authenticated = null
@@ -210,7 +210,7 @@
 
 /obj/machinery/computer/security
 	name = "Security Cameras"
-	icon_state = "security"
+	icon_state = "seccam"
 	var/obj/machinery/camera/current = null
 	var/last_pic = 1.0
 	var/network = "Luna"

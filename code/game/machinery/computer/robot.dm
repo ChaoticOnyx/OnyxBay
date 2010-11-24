@@ -1,7 +1,7 @@
 /obj/machinery/computer/robotics
 	name = "Robotics Control"
 	icon = 'computer.dmi'
-	icon_state = "id"
+	icon_state = "robotics"
 	req_access = list(access_captain)
 
 	var/id = 0.0

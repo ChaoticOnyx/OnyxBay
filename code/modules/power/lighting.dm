@@ -155,45 +155,45 @@
 
 
 // flicker lights on and off - ghosts
-/obj/machinery/light/proc/flickerL(mob/M, obj/machinery/light/L)
+/obj/machinery/light/Click()
+	..()
+	//if(flickering)
+	//	return
+	if(istype(usr, /mob/dead/observer) && get_dist(usr,src) <= 1 && !flickering)
+		flickering = 1
 
-	if(L.flickering)
-		return
+		if(status == LIGHT_EMPTY || status == LIGHT_BROKEN)
+			usr << "There is no [fitting] in this light."
+			return
+		if(on)
+			usr << "Your touch robs the [fitting] of its energy!"
+		else
+			usr << "Your touch breathes energy into the [fitting]!"
 
-	L.flickering = 1
+		on = !on
+		update(1) // Flicker once
+		sleep(10)
+		on = !on
+		update(1) // Flicker back to initial state
+		sleep(10)
+		on = !on
+		update(1) // Flicker again
+		sleep(30)
+		on = !on
+		update()	// And return to default state
 
-	if(L.status == LIGHT_EMPTY || L.status == LIGHT_BROKEN)
-		M << "There is no [L.fitting] in this light."
-		return
-	if(L.on)
-		M << "Your touch robs the [L.fitting] of its energy!"
-	else
-		M << "Your touch breathes energy into the [L.fitting]!"
-
-	L.on = !L.on
-	L.update(1) // Flicker once
-	sleep(10)
-	L.on = !L.on
-	L.update(1) // Flicker back to initial state
-	sleep(10)
-	L.on = !L.on
-	L.update(1) // Flicker again
-	sleep(30)
-	L.on = !L.on
-	L.update()	// And return to default state
-
-	L.flickering = 0
+		flickering = 0
 
 	return
 
-/obj/machinery/light/verb/flicker(obj/machinery/light/L in view())
-	set name = "Flicker"
-	set src in view()
-	set invisibility = 15
-	if(!istype(usr, /mob/dead/observer))
-		usr << "You can not find a way to flicker the lights from here."
-		return
-	L.flickerL(usr, L)
+///obj/machinery/light/verb/flicker(obj/machinery/light/L in view())
+//	set name = "Flicker"
+//	set src in view()
+//	set invisibility = 15
+//	if(!istype(usr, /mob/dead/observer))
+//		usr << "You can not find a way to flicker the lights from here."
+//		return
+//	L.flickerL(usr, L)
 
 
 // attack with item - insert light (if right type), otherwise try to break the light

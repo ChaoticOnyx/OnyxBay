@@ -306,7 +306,7 @@
 	name = "Shuttle"
 	icon = 'shuttle.dmi'
 	thermal_conductivity = 0.05
-	heat_capacity = 0
+	heat_capacity = 10000000
 
 /turf/simulated/shuttle/wall
 	name = "Shuttle Wall"
