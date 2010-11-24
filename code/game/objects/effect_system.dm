@@ -107,7 +107,7 @@ steam.start() -- spawns the effect
 			if(src.cardinals)
 				direction = pick(cardinal)
 			else
-				direction = pick(alldirs)
+				direction = pick(cardinal8)
 			for(i=0, i<pick(1,2,3), i++)
 				sleep(5)
 				step(steam,direction)
@@ -192,7 +192,7 @@ steam.start() -- spawns the effect
 			if(src.cardinals)
 				direction = pick(cardinal)
 			else
-				direction = pick(alldirs)
+				direction = pick(cardinal8)
 			for(i=0, i<pick(1,2,3), i++)
 				sleep(5)
 				step(sparks,direction)
@@ -274,7 +274,7 @@ steam.start() -- spawns the effect
 				if(src.cardinals)
 					direction = pick(cardinal)
 				else
-					direction = pick(alldirs)
+					direction = pick(cardinal8)
 			for(i=0, i<pick(0,1,1,1,2,2,2,3), i++)
 				sleep(10)
 				step(smoke,direction)
@@ -378,7 +378,7 @@ steam.start() -- spawns the effect
 				if(src.cardinals)
 					direction = pick(cardinal)
 				else
-					direction = pick(alldirs)
+					direction = pick(cardinal8)
 			for(i=0, i<pick(0,1,1,1,2,2,2,3), i++)
 				sleep(10)
 				step(smoke,direction)
@@ -472,7 +472,7 @@ steam.start() -- spawns the effect
 				if(src.cardinals)
 					direction = pick(cardinal)
 				else
-					direction = pick(alldirs)
+					direction = pick(cardinal8)
 			for(i=0, i<pick(0,1,1,1,2,2,2,3), i++)
 				sleep(10)
 				step(smoke,direction)

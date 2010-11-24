@@ -85,9 +85,10 @@
 			if(prob(60) && !istype(w,/obj/item/weapon/card/id/captains_spare))
 				del w
 
+	var/area/hangar = locate(/area/hangar)
 	var/list/b = get_area_all_objects(/area/hangar/derelict)
 	for(var/obj/a in b)
-		a.Move(locate(a.x, a.y, 4))
+		a.Move(locate(a.x, a.y, hangar.z))
 
 
 	for(var/obj/landmark/derelict/glass/glass in world)

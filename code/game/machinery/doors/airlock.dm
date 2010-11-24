@@ -457,6 +457,8 @@ About the new airlock wires panel:
 
 
 /obj/machinery/door/airlock/proc/airlockelectrocute(mob/user, netnum)
+	if (!user)
+		return 0
 	//You're probably getting shocked deal w/ it
 	if(!user)
 		return 0
@@ -1120,10 +1122,12 @@ About the new airlock wires panel:
 			if (src.canSynControl())
 				user << "Hack cancelled, control already possible."
 				src.synHacking=0
+				I.in_use = 0
 				return
 			else if (!src.canSynHack())
 				user << "\red Connection lost. Stand still and stay near the airlock!"
 				src.synHacking=0
+				I.in_use = 0
 				return
 			user << "Connection established."
 			sleep(10)
@@ -1157,20 +1161,24 @@ About the new airlock wires panel:
 			if (!src.canSynHack())
 				user << "\red Hack aborted: landline connection lost. Stay closer to the airlock."
 				src.synHacking=0
+				I.in_use = 0
 				return
 			else if (src.canSynControl())
 				user << "Local override already in place, hack aborted."
 				src.synHacking=0
+				I.in_use = 0
 				return
 			user << "Upload access confirmed. Loading control program into airlock software."
 			sleep(85)
 			if (!src.canSynHack())
 				user << "\red Hack aborted: cable connection lost. Do not move away from the airlock."
 				src.synHacking=0
+				I.in_use = 0
 				return
 			else if (src.canSynControl())
 				user << "Upload access aborted, local override already in place."
 				src.synHacking=0
+				I.in_use = 0
 				return
 			user << "Transfer complete. Forcing airlock to execute program."
 			sleep(25)
@@ -1179,8 +1187,8 @@ About the new airlock wires panel:
 			user << "Bingo! We're in. Airlock control panel coming right up."
 			sleep(5)
 			//bring up airlock dialog
-			I.in_use = 0
 			src.synHacking = 0
+			I.in_use = 0
 			src.attack_hack(user)
 
 

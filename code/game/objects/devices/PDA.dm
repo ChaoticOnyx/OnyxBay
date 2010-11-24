@@ -104,6 +104,7 @@
 	var/remote_door_id = ""
 	var/access_status_display = 0
 	var/access_quartermaster = 0
+	var/access_games = 0
 
 	// common cartridge procs
 
@@ -268,6 +269,7 @@
 	desc = "The ultimate in clean-room design."
 	icon_state = "cart-j"
 	access_janitor = 1
+	access_games = 1
 
 /obj/item/weapon/cartridge/clown
 	name = "Honkworks 5.0"
@@ -618,6 +620,9 @@
 
 				if(cartridge && cartridge.access_status_display)
 					dat += "<li><a href='byond://?src=\ref[src];sd=1'>Set Status Display</a></li>"
+
+				if(cartridge && cartridge.access_games)
+					dat += "<li><a href='byond://?src=\ref[src];ep3=1'>Play Half-life 2: Episode 3 (Requires Steam)</a></li>"
 
 
 				dat += "</ul>"
@@ -1376,6 +1381,15 @@ Code:
 			if (last_honk && world.time < last_honk + 20)
 				return
 			playsound(src.loc, 'bikehorn.ogg', 50, 1)
+			src.last_honk = world.time
+		else if (href_list["ep3"])
+			if (last_honk && world.time < last_honk + 20)
+				return
+			var/obj/P = src
+			for (var/mob/O in hearers(3, P.loc))
+				O.show_message(text("\icon[P] *Steam is currently offline due to massive demand for the Episode 3 teaser*"))
+				O.show_message(text("\icon[P] *We are only 800 years late. Valve Time has never approached convergence with the Real Time this much.*"))
+				O.show_message(text("\icon[P] *In the mean time, do you feel like a game of Left 4 Dead 43? (this account does not yet own this game)*"))
 			src.last_honk = world.time
 
 		//Toxins PDA signaler stuff

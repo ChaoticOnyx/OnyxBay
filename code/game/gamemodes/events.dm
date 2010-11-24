@@ -242,9 +242,9 @@
 
 	if (prob(10))
 		src.anchored = 0
-		step(src,pick(alldirs))
+		step(src,pick(cardinal8))
 		if (prob(30))
-			step(src,pick(alldirs))
+			step(src,pick(cardinal8))
 		src.anchored = 1
 
 	for (var/atom/X in orange(9,src))

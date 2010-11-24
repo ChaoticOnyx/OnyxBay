@@ -114,8 +114,8 @@ var
 	list/blobs = list()
 //	list/traitors = list()	//traitor list
 	list/cardinal = list( NORTH, SOUTH, EAST, WEST )
+	list/cardinal8 = list( NORTH, NORTHEAST, NORTHWEST, SOUTH, SOUTHEAST, SOUTHWEST, EAST, WEST )
 	list/cardinal3d = list( NORTH, SOUTH, EAST, WEST, UP, DOWN )
-	list/alldirs = list(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
 
 	datum/station_state/start_state = null
 	datum/configuration/config = null

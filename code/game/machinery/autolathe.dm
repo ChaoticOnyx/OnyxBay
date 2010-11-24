@@ -65,8 +65,8 @@
 		spawn(16)
 			flick("autolathe_c",src)
 			if (O)
-				g_amount += O.g_amt
-				m_amount += O.m_amt
+				g_amount += O.g_amt / 2
+				m_amount += O.m_amt / 2
 				del O
 	else
 		user << "This object does not contain significant amounts of metal or glass, or cannot be accepted by the autolathe due to size or hazardous materials."
@@ -119,17 +119,17 @@
 	if(href_list["make"])
 		var/obj/template = locate(href_list["make"])
 		if(m_amount >= template.m_amt && g_amount >= template.g_amt)
+			m_amount -= template.m_amt
+			g_amount -= template.g_amt
+			if(m_amount < 0)
+				m_amount = 0
+			if(g_amount < 0)
+				g_amount = 0
 			spawn(16)
 				flick("autolathe_c",src)
 				spawn(16)
 					flick("autolathe_o",src)
 					spawn(16)
-						m_amount -= template.m_amt
-						g_amount -= template.g_amt
-						if(m_amount < 0)
-							m_amount = 0
-						if(g_amount < 0)
-							g_amount = 0
 						new template.type(src.loc)
 	if(href_list["act"])
 		if(href_list["act"] == "pulse")

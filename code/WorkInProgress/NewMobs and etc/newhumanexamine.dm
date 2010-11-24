@@ -85,7 +85,7 @@
 
 	if (stat == 2 || changeling_fakedeath == 1)
 		var/datum/organ/external/T = organs["head"]
-		usr << "\red [src] is limp and unresponsive[T.destroyed ? "." : ", a dull lifeless look in t_his eyes"]"
+		usr << "\red [src] is limp and unresponsive[T.destroyed ? "." : ", a dull lifeless look in [t_his] eyes"]"
 	else
 		if (bruteloss)
 			if (bruteloss < 30)

@@ -214,11 +214,11 @@ obj/machinery/shieldsbutton
 
 	attack_hand(mob/user)
 		if(!toggle)
-			snet.startshields()
+			ShieldNetwork.startshields()
 			icon_state = "access_button_standby"
 			toggle = 1
 		else
-			snet.stopshields()
+			ShieldNetwork.stopshields()
 			toggle = 0
 			icon_state = "access_button_standby"
 		flick("access_button_cycle", src)

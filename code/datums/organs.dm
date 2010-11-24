@@ -21,7 +21,7 @@
 	var/destroyed
 	var/min_broken_damage = 30
 
-	var/damage_msg = "\red You feel a intense pain"
+	var/damage_msg = "\red You feel an intense pain"
 	process()
 		if(broken == 0)
 			perma_dmg = 0
@@ -38,8 +38,8 @@
 		perma_injury = brute_dam + burn_dam
 		//	brute_dam = 0
 		//	burn_dam = 0
-			return
 		return
+		//return
 
 	var/open = 0
 	var/display_name
