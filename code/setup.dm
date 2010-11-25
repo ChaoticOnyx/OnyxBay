@@ -147,3 +147,8 @@ var/const
 	GAS_PL = 1 << 2
 	GAS_CO2 = 1 << 3
 	GAS_N2O = 1 << 4
+
+//Symbolic defines for getZLevel (copied from old code)
+//These are not actual Z levels, but arguments to a function that returns a Z level.
+#define Z_STATION	1
+#define Z_SPACE		2
