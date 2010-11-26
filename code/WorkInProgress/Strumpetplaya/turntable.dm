@@ -38,7 +38,7 @@
 	..()
 	if( href_list["on1"] )
 		if(src.playing == 0)
-			world << "Should be working..."
+			//world << "Should be working..."
 			var/sound/S = sound('TestLoop1.ogg')
 			S.repeat = 1
 			S.channel = 10
@@ -57,7 +57,7 @@
 			while(playing == 1)
 				for(var/mob/M in world)
 					if(M.loc.loc == src.loc.loc && M.music == 0)
-						world << "Found the song..."
+						//world << "Found the song..."
 						M << S
 						M.music = 1
 					else if(M.loc.loc != src.loc.loc && M.music == 1)
@@ -69,7 +69,7 @@
 			return
 	if( href_list["on2"] )
 		if(src.playing == 0)
-			world << "Should be working..."
+			//world << "Should be working..."
 			var/sound/S = sound('TestLoop2.ogg')
 			S.repeat = 1
 			S.channel = 10
@@ -88,7 +88,7 @@
 			while(playing == 1)
 				for(var/mob/M in world)
 					if(M.loc.loc == src.loc.loc && M.music == 0)
-						world << "Found the song..."
+						//world << "Found the song..."
 						M << S
 						M.music = 1
 					else if(M.loc.loc != src.loc.loc && M.music == 1)
@@ -100,7 +100,7 @@
 			return
 	if( href_list["on3"] )
 		if(src.playing == 0)
-			world << "Should be working..."
+			//world << "Should be working..."
 			var/sound/S = sound('TestLoop3.ogg')
 			S.repeat = 1
 			S.channel = 10
@@ -119,7 +119,7 @@
 			while(playing == 1)
 				for(var/mob/M in world)
 					if(M.loc.loc == src.loc.loc && M.music == 0)
-						world << "Found the song..."
+						//world << "Found the song..."
 						M << S
 						M.music = 1
 					else if(M.loc.loc != src.loc.loc && M.music == 1)

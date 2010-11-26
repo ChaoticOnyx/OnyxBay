@@ -4,8 +4,10 @@
 	icon_state = "0-1"
 	layer = 2.4
 	level = 1
-	var/d1
-	var/d2
+	var/d1 = 0
+	var/d2 = 0
+
+
 /obj/shieldconduit/New()
 	..()
 
@@ -20,14 +22,31 @@
 
 	var/turf/T = src.loc			// hide if turf is not intact
 
-	if(level==1) hide(T.intact)
+	if(level==1)
+		Hide(T.intact)
+
+/obj/shieldconduit/proc/GetConnections()
+	var/list/L = list()
+
+	var/turf/T
+
+	T = get_step_3d(src, d1)
+
+	L += power_list(T, src , d1, 1)
+
+	T = get_step_3d(src, d2)
+
+	L += power_list(T, src, d2, 1)
+
+	return L
 
 
-/obj/shieldconduit/hide(var/i)
+/obj/shieldconduit/proc/Hide(var/i)
 
 	if(level == 1 && istype(loc, /turf/simulated))
 		invisibility = i ? 101 : 0
-	updateicon()
+	UpdateIcon()
 
-/obj/shieldconduit/proc/updateicon()
+/obj/shieldconduit/proc/UpdateIcon()
+	icon_state = "[d1]-[d2][invisibility?"-f":""]"
 	return

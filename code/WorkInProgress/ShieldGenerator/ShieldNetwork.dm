@@ -8,8 +8,21 @@ var/datum/shieldnetwork/ShieldNetwork
 //Not bothering to comment it at this point.
 
 /datum/shieldnetwork
+	var/global/NetworkCount = 0
+
 	var/ShieldNetNum
-	var/list/Nodes = list()
+	var/list/Nodes = list( )
+	var/list/Cables = list( )
+
+
+/datum/shieldnetwork/New(var/obj/shieldconduit/C)
+	..()
+
+	if (!istype(C))
+		return
+	ShieldNetNum = ++NetworkCount
+
+
 
 
 

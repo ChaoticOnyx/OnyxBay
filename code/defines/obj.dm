@@ -5,6 +5,10 @@
 	var/w_amt = 0	// waster amounts
 	var/global/tagcnum = 0
 	var/explosionstrength = 0
+
+	var/list/NetworkNumber = list( )
+	var/list/Networks = list( )
+
 	animate_movement = 2
 
 	proc

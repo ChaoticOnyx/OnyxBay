@@ -14,6 +14,7 @@
 
 	var/gasefficency = 0.25
 	var/det = 0
+
 /obj/machinery/engine/klaxon
 	name = "Emergency Klaxon"
 	icon = 'engine.dmi'
@@ -41,7 +42,7 @@
 	var/transfer_moles = gasefficency * env.total_moles()
 	var/datum/gas_mixture/removed = env.remove(transfer_moles)
 
-	det += (removed.temperature - 1000) / 50
+	det += (removed.temperature - 1000) / 2000		//Strumpetplaya - changed 50 to 2000
 	det = max(det, 0)
 	if(det > 0)
 		radioalert("CORE OVERLOAD","Core control computer")
@@ -90,13 +91,14 @@
 	env.merge(removed)
 
 
-	for(var/mob/living/l in range(8))
+	for(var/mob/living/l in range(src,8))
 		if(prob(5))
-			l.hallucination += 100
-	for(var/mob/living/l in range(3))
+			if (!istype(l.glasses, /obj/item/clothing/glasses/meson))	//Strumpetplaya - Made it so meson goggles block the hallucination effect.
+				l.hallucination += 100
+	for(var/mob/living/l in range(src,3))
 		l.gib()
-	for(var/mob/dead/l in range(10))
-		if(prob(20))
+	for(var/mob/dead/l in range(src,10))
+		if(prob(5))
 			var/virus = l.virus
 			gibs(l.loc, virus)
 	return 1

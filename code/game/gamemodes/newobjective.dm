@@ -1,15 +1,50 @@
+/proc/GetObjectives(var/job)
+	var/list/datum/objective/objectives = list()
+	for(var/o in typesof(/datum/objective))
+		objectives += new o(null,job)
+	return objectives
+
+
+/proc/SelectObjectives(var/job)
+	var/list/datum/objective/chosenobjectives = list()
+	var/list/datum/objective/objectives = GetObjectives(job)
+	var/points
+	while(length(objectives) > 0)
+		var/datum/objective/objective = pick(objectives)
+		if(objective.points < (100 - points))
+			chosenobjectives += objective
+			points += objective.points
+			objectives -= objective
+		else
+			objectives -= objective
+	var/hasendgame
+	for(var/datum/objective/o in chosenobjectives)
+		if(o.type == "/datum/objective/hijack")
+			hasendgame = 1
+	if(hasendgame == 0)
+		chosenobjectives += new /datum/objective/escape(job)
+	return chosenobjectives
+
 datum
 	objective
 		var/datum/mind/owner
 		var/explanation_text
+		var/job
+		var/points = INFINITY //If this isn't set to something else, the objective is bugged and should be ignored
 
-		New(var/text)
+
+		New(var/text,var/joba)
 			if(text)
 				src.explanation_text = text
+			job=joba
+			points = get_points(job)
 
 		proc
 			check_completion()
 				return 1
+			get_points(var/job)
+				return INFINITY
+
 
 		assassinate
 			var/datum/mind/target
@@ -52,6 +87,21 @@ datum
 						return 0
 				else
 					return 1
+			get_points()
+				if(target)
+					switch(GetRank(target.assigned_role))
+						if(0)
+							return 30
+						if(1)
+							return 40
+						if(2)
+							return 50
+						if(3)
+							return 55
+						if(4)
+							return 60
+				else
+					return INFINITY
 
 		hijack
 			explanation_text = "Hijack the emergency shuttle by escaping alone."
@@ -73,6 +123,18 @@ datum
 						return 1
 
 				return 0
+			get_points(var/job)
+				switch(GetRank(job))
+					if(0)
+						return 75
+					if(1)
+						return 65
+					if(2)
+						return 65
+					if(3)
+						return 50
+					if(4)
+						return 35
 
 		escape
 			explanation_text = "Escape on the shuttle alive, without being arrested"
@@ -97,6 +159,8 @@ datum
 						return 1
 
 				return 0
+			get_points()
+				return INFINITY
 
 		survive
 			explanation_text = "Stay alive until the end"
@@ -106,50 +170,79 @@ datum
 					return 0
 
 				return 1
+			get_points()
+				return INFINITY
 
 
 		steal
 			var/obj/item/steal_target
-			var/target_name
-			var/points
-			proc/find_target()
-				var/list/items = list("captain's antique laser gun", "hand teleporter", "RCD", "jetpack",\
-				 "captains jumpsuit", "small plasma tank", "Medical Records circuitboard",\
-				  "Security Records circuitboard", "Communications circuitboard", "zippo lighter")
-				target_name = pick(items)
-				switch(target_name)
-					if("captain's antique laser gun")
-						steal_target = /obj/item/weapon/gun/energy/laser_gun/captain
-					if("hand teleporter")
-						steal_target = /obj/item/weapon/hand_tele
-					if("RCD")
-						steal_target = /obj/item/weapon/rcd
-					if("jetpack")
-						steal_target = /obj/item/weapon/tank/jetpack
-					if("captains jumpsuit")
-						steal_target = /obj/item/clothing/under/rank/captain
-					if("small plasma tank")
-						steal_target = /obj/item/weapon/tank/plasma
-					if("Medical Records circuitboard")
-						steal_target = /obj/item/weapon/circuitboard/med_data
-					if("Security Records circuitboard")
-						steal_target = /obj/item/weapon/circuitboard/secure_data
-					if("Communications circuitboard")
-						steal_target = /obj/item/weapon/circuitboard/communications
-					if("zippo lighter")
-						steal_target = /obj/item/weapon/zippo
 
+		steal/captainslaser
+			steal_target = "/obj/item/weapon/gun/energy/laser_gun/captain"
+			explanation_text = "Steal the captain's antique laser gun"
 
-				explanation_text = "Steal a [target_name]."
+			get_points(var/job)
+				switch(GetRank(job))
+					if(0)
+						return 60
+					if(1)
+						return 50
+					if(2)
+						return 40
+					if(3)
+						return 30
+					if(4)
+						return INFINITY
 
-				return steal_target
+		steal/plasmatank
+			steal_target = "/obj/item/weapon/tank/plasma"
+			explanation_text = "Steal a small plasma tank"
 
-			check_completion()
-				if(steal_target)
-					if(owner.current.check_contents_for(steal_target))
-						return 1
-					else
-						return 0
+			get_points(var/job)
+				if(job == "Scientist")
+					return INFINITY
+				switch(IsResearcher(job))
+					if(0)
+						return 40
+					if(1)
+						return 25
+					if(2)
+						return INFINITY
+
+		steal/captainssuit
+			steal_target = "/obj/item/clothing/under/rank/captain"
+			explanation_text = "Steal a captain's rank jumpsuit"
+			get_points(var/job)
+				switch(GetRank(job))
+					if(0)
+						return 75
+					if(1)
+						return 60
+					if(2)
+						return 50
+					if(3)
+						return 30
+					if(4)
+						return INFINITY
+
+		steal/handtele
+			steal_target = "/obj/item/weapon/hand_tele"
+			explanation_text = "steal a hand teleporter"
+			get_points(var/job)
+				switch(GetRank(job))
+					if(0)
+						return 75
+					if(1)
+						return 60
+					if(2)
+						return 50
+					if(3)
+						return 30
+					if(4)
+						return INFINITY
+
+/*
+
 		stealreagent
 			var/datum/reagent/steal_reagent
 			var/target_name
@@ -192,7 +285,7 @@ datum
 						return 1
 					else
 						return 0
+		*/
 		nuclear
 			explanation_text = "Destroy the station with a nuclear device."
-
 
