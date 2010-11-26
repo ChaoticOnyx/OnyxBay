@@ -91,12 +91,12 @@
 	env.merge(removed)
 
 
-	for(var/mob/living/l in range(8))
+	for(var/mob/living/l in range(src,8))
 		if(prob(5))
 			l.hallucination += 100
-	for(var/mob/living/l in range(3))
+	for(var/mob/living/l in range(src,3))
 		l.gib()
-	for(var/mob/dead/l in range(10))
+	for(var/mob/dead/l in range(src,10))
 		if(prob(20))
 			var/virus = l.virus
 			gibs(l.loc, virus)
