@@ -38,7 +38,6 @@
 		UseMaintenanceCharge()
 	icon_state = online ? "plate" : "plate-p" //TODO better graphics handling
 
-
 //The base energy cost for maintaining each shield tile
 /obj/machinery/shielding/emitter/proc/UseMaintenanceCharge()
 	Draw(PoweredShields.len * 0.05)
@@ -47,7 +46,6 @@
 //Called when a shield tile requires additional power
 //e.g. after an explosion (I might put stats-tracking in here...)
 /obj/machinery/shielding/emitter/proc/Draw(amount)
-	ShieldNetwork.UsePower(amount)
 
 
 //Set up a shield tile on this turf if applicable
@@ -61,12 +59,18 @@
 		var/turf/T = get_step(S,dir)
 		if(T)
 			if(T.type != /turf/space && T.type != /turf/unsimulated/floor/hull)
-				var/obj/machinery/shielding/shield/Shield = new /obj/machinery/shielding/shield(S)
-				Shield.emitter = src
-				Shield.process()
-				PoweredShields += Shield
+				AddShield(S)
 				return
-
+/obj/machinery/shielding/emitter/proc/AddShield(var/turf/S)
+	for (var/obj/machinery/shielding/shield/shield in S)
+		if(!shield.emitter)
+			shield.emitter = src
+		return
+	var/obj/machinery/shielding/shield/Shield = new /obj/machinery/shielding/shield(S)
+	Shield.emitter = src
+	Shield.process()
+	PoweredShields += Shield
+	return
 
 //
 // Plate-Type Emitter
@@ -77,14 +81,33 @@
 	icon_state = "plate"
 	name = "Emitter Plate"
 	desc = "An AoE shield emitter"
+	level = 1
+	var/range_dist = 10
 
 //AoE Setup for the emitter plate - Shield the exterior hull
 /obj/machinery/shielding/emitter/plate/UpdateAoE()
 	for(var/shield in PoweredShields)
 		del(shield)
-	for(var/turf/space/S in range(src,10))
+	for(var/turf/space/S in range(src,range_dist))
 		UpdateTurf(S)
-	for(var/turf/unsimulated/floor/hull/S in range(src,10))
+	for(var/turf/unsimulated/floor/hull/S in range(src,range_dist))
 		UpdateTurf(S)
+	for(var/turf/simulated/floor/open/S in range(src,range_dist))
+		AddShield(S)
 
 
+/obj/machinery/shielding/emitter/plate/New()
+	..()
+
+	var/turf/T = src.loc			// hide if turf is not intact
+
+	if(level==1) hide(T.intact)
+
+
+/obj/machinery/shielding/emitter/plate/hide(var/i)
+	if(level == 1 && istype(loc, /turf/simulated))
+		invisibility = i ? 101 : 0
+	updateicon()
+
+/obj/machinery/shielding/emitter/plate/proc/updateicon()
+	return

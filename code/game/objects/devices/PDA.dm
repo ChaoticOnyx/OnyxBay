@@ -622,7 +622,7 @@
 					dat += "<li><a href='byond://?src=\ref[src];sd=1'>Set Status Display</a></li>"
 
 				if(cartridge && cartridge.access_games)
-					dat += "<li><a href='byond://?src=\ref[src];ep3=1'>Play Half-life 2: Episode 3 (Requires steam)</a></li>"
+					dat += "<li><a href='byond://?src=\ref[src];ep3=1'>Play Half-life 2: Episode 3 (Requires Steam)</a></li>"
 
 
 				dat += "</ul>"
@@ -1387,9 +1387,9 @@ Code:
 				return
 			var/obj/P = src
 			for (var/mob/O in hearers(3, P.loc))
-				O.show_message(text("\icon[P] *Steam is currently offline due to massive demand for the episode 3 teaser*"))
-				O.show_message(text("\icon[P] *We are only 800 years late*"))
-				O.show_message(text("\icon[P] *In the mean time, do you feel like a game of left 4 dead 43 ?*"))
+				O.show_message(text("\icon[P] *Steam is currently offline due to massive demand for the Episode 3 teaser*"))
+				O.show_message(text("\icon[P] *We are only 800 years late. Valve Time has never approached convergence with the Real Time this much.*"))
+				O.show_message(text("\icon[P] *In the mean time, do you feel like a game of Left 4 Dead 43? (this account does not yet own this game)*"))
 			src.last_honk = world.time
 
 		//Toxins PDA signaler stuff
