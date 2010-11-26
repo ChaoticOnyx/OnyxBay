@@ -6,6 +6,7 @@
 // END_INTERNALS
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "backup"
 #define FILE_DIR "code"
 #define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
@@ -49,8 +50,11 @@
 #define FILE_DIR "code/game/machinery/bots"
 #define FILE_DIR "code/game/machinery/computer"
 #define FILE_DIR "code/game/machinery/ComputerNetworks"
+#define FILE_DIR "code/game/machinery/Computers"
 #define FILE_DIR "code/game/machinery/doors"
 #define FILE_DIR "code/game/machinery/embedded_controller"
+#define FILE_DIR "code/game/machinery/Fire"
+#define FILE_DIR "code/game/machinery/Lighting"
 #define FILE_DIR "code/game/machinery/pipe"
 #define FILE_DIR "code/game/objects"
 #define FILE_DIR "code/game/objects/alien"
@@ -259,7 +263,7 @@
 #include "code\game\gamemodes\game_mode.dm"
 #include "code\game\gamemodes\gameticker.dm"
 #include "code\game\gamemodes\intercept_report.dm"
-#include "code\game\gamemodes\objective.dm"
+#include "code\game\gamemodes\newobjective.dm"
 #include "code\game\gamemodes\setupgame.dm"
 #include "code\game\gamemodes\blob\blob.dm"
 #include "code\game\gamemodes\blob\theblob.dm"
@@ -296,7 +300,6 @@
 #include "code\game\gamemodes\wizard\spell7.dm"
 #include "code\game\gamemodes\wizard\spell8.dm"
 #include "code\game\gamemodes\wizard\spell9.dm"
-#include "code\game\gamemodes\wizard\wizard.dm"
 #include "code\game\jobs\access.dm"
 #include "code\game\jobs\jobprocs.dm"
 #include "code\game\jobs\jobs.dm"

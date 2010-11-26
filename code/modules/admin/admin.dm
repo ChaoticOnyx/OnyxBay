@@ -631,7 +631,7 @@ var/showadminmessages = 1
 				else if(M.mind in current_mode:revolutionaries)
 					alert("Is a Revolutionary!")
 				return
-			if("wizard")
+		/*	if("wizard")
 				if(current_mode:wizard && M.mind == current_mode:wizard)
 					var/datum/mind/antagonist = M.mind
 					var/t = ""
@@ -640,7 +640,7 @@ var/showadminmessages = 1
 					if(antagonist.objectives.len == 0)
 						t = "None defined."
 					alert("Is a WIZARD. Objective(s):\n[t]", "[M.key]")
-					return
+					return*/
 			if("malfunction")
 				if(M.mind in current_mode:malf_ai)
 					alert("Is malfunctioning!")
@@ -1756,9 +1756,9 @@ var/showadminmessages = 1
 		if("nuclear")
 			if(M.mind in ticker.mode:syndicates)
 				return 1
-		if("wizard")
-			if(M.mind == ticker.mode:wizard)
-				return 1
+		//if("wizard")
+		//	if(M.mind == ticker.mode:wizard)
+		//		return 1
 	if(M.mind in ticker.mode.traitors)
 		return 1
 
