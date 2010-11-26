@@ -282,6 +282,9 @@
 			update()
 		return
 
+		for(var/mob/M in src.contents)
+			flush = 1
+
 	// perform a flush
 	proc/flush()
 

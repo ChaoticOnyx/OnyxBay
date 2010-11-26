@@ -1,3 +1,11 @@
+//Strumpetplaya - Replaced this file with an old version until the stuff you guys changed (which is
+//located below this, commented out) is in a working state that is not embarassing to put on the
+//server.
+
+//Sukasa - Restored old version.  I would kindly ask that you not do something as drastic as comment out an entire code file,
+//         it really doesn't help, especially since it forced me to come back and undo your work just to get the fix for
+//         this to merge into the active code and not the commented-out stuff
+
 #define NITROGEN_RETARDATION_FACTOR 4	//Higher == N2 slows reaction more
 #define THERMAL_RELEASE_MODIFIER 50		//Higher == less heat released during reaction
 #define PLASMA_RELEASE_MODIFIER 750		//Higher == less plasma released by reaction
@@ -90,15 +98,18 @@
 
 	env.merge(removed)
 
+	for(var/mob/living/l in range(6)) // you have to be seeing the core to get hallucinations
+		if(l.glasses && istype(l.glasses, /obj/item/clothing/glasses/meson) && prob(1))
+			l.hallucination = 50
+		else if (prob(5))
+			l.hallucination = 100
 
-	for(var/mob/living/l in range(6))
-		if(prob(5))
-			l.hallucination += 100
-	for(var/mob/living/l in range(3))
+	for(var/mob/living/l in range(src,3))
 		l.gib()
-	for(var/mob/dead/l in range(10))
-		if(prob(20))
+
+	for(var/mob/dead/l in range(src,10))
+		if(prob(5))
 			var/virus = l.virus
 			gibs(l.loc, virus)
-	return 1
 
+	return 1

@@ -81,6 +81,11 @@
 		return 0
 	return 1
 
+/datum/game_mode/traitor/proc/pickobjectives()
+
+
+
+
 /datum/game_mode/traitor/post_setup()
 	for(var/datum/mind/traitor in traitors)
 		var/datum/traitorinfo/info = new
@@ -104,7 +109,12 @@
 
 		else
 			info.starting_occupation = traitor.current:wear_id:assignment
-			switch(rand(1,200))
+
+			for(var/datum/objective/o in SelectObjectives(info.starting_occupation))
+				o.owner = traitor
+				traitor.objectives += o
+
+		/*	switch(rand(1,200))
 				if(1 to 50)
 					var/datum/objective/assassinate/kill_objective = new
 					kill_objective.owner = traitor
@@ -144,7 +154,7 @@
 					traitor.objectives += hijack_objective
 
 
-			equip_traitor(traitor.current)
+			equip_traitor(traitor.current)*/
 
 		for(var/datum/objective/objective in traitor.objectives)
 			info.starting_objective += objective.explanation_text + "            "
