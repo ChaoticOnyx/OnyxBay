@@ -14,6 +14,7 @@
 
 	var/gasefficency = 0.25
 	var/det = 0
+
 /obj/machinery/engine/klaxon
 	name = "Emergency Klaxon"
 	icon = 'engine.dmi'
