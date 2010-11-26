@@ -35,14 +35,20 @@
 		FinishSplit(var/datum/UnifiedNetwork/NewNetwork)
 			return
 
-		CableCut(var/obj/cabling/Cable)
+		CableCut(var/obj/cabling/Cable, var/mob/User)
 			return
 
 		Initialize()
+			return
+
+		Finalize()
 			return
 
 		BeginMerge(var/datum/UnifiedNetwork/TargetNetwork)
 			return
 
 		FinishMerge()
+			return
+
+		DeviceUsed(var/obj/item/device/Device, var/obj/cabling/Cable)
 			return

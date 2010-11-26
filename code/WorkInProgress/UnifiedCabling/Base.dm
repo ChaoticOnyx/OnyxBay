@@ -18,7 +18,8 @@
 	var/Direction2 = 0
 	var/list/ConnectableTypes = list( /obj/machinery )
 	var/NetworkControllerType = /datum/UnifiedNetworkController
-
+	var/obj/item/SeparateWithType = /obj/item/weapon/wirecutters
+	var/DropCablePieceType = null
 
 /obj/cabling/New()
 	..()
@@ -65,7 +66,7 @@
 	else
 		if(Debug)
 			check_diary()
-			diary << "Deferred Unified Cable deletion at \[[x], [y], [z]]: #[NetworkNumber]"
+			diary << "Deferring U.C. deletion at \[[x], [y], [z]]: #[NetworkNumber]"
 	..()
 
 
@@ -110,3 +111,52 @@
 		if(istype(ConnectTo, Type))
 			return 1
 	return 0
+
+/obj/cabling/attackby(var/obj/item/weapon/W, var/mob/User)
+	var/datum/UnifiedNetwork/Network = Networks[type]
+	add_fingerprint(User)
+
+	var/turf/T = src.loc
+
+	if(T.intact && level == 1)
+		return
+
+	if(istype(W, SeparateWithType))
+
+		if (DropCablePieceType)
+			DropCablePieces()
+
+		for(var/mob/O in viewers(src, null))
+			O.show_message("\red [User] cuts the [name].", 1)
+
+		Network.Controller.CableCut(src, User)
+
+		del src
+
+	else if(istype(W, /obj/item/weapon/cable_coil))
+
+		//TODO - Start laying cable
+
+	else if(istype(W, /obj/item/device))
+
+		Network.Controller.DeviceUsed(W, src)
+
+/obj/cabling/proc/DropCablePieces()
+	if (DropCablePieceType)
+		new DropCablePieceType(loc, Direction1 ? 2 : 1)
+
+
+/obj/cabling/ex_act(severity)
+	switch(severity)
+		if(1.0)
+			del(src)
+		if(2.0)
+			if (prob(50))
+				DropCablePieces()
+				del(src)
+
+		if(3.0)
+			if (prob(25))
+				DropCablePieces()
+				del(src)
+	return
