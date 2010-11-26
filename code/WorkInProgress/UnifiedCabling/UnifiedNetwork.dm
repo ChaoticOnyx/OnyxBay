@@ -42,8 +42,8 @@
 					Node.NetworkNumber[Cable.type] = 0
 			del Controller
 			del src
-			//UNetwork does not prune the network list in order to maintain the correct NetNum=>Network mappings,
-			//instead leaving a NULL entry in the list
+			//Unified Network does not prune the network lists in order to maintain the correct NetNum=>NetObj mappings,
+			//instead leaving NULL entries in them
 		return
 
 	for(var/obj/C in Cables)

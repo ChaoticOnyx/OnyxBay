@@ -42,7 +42,7 @@
 	var/transfer_moles = gasefficency * env.total_moles()
 	var/datum/gas_mixture/removed = env.remove(transfer_moles)
 
-	det += (removed.temperature - 1000) / 50
+	det += (removed.temperature - 1000) / 150
 	det = max(det, 0)
 	if(det > 0)
 		radioalert("CORE OVERLOAD","Core control computer")
@@ -91,7 +91,7 @@
 	env.merge(removed)
 
 
-	for(var/mob/living/l in range(8))
+	for(var/mob/living/l in range(6))
 		if(prob(5))
 			l.hallucination += 100
 	for(var/mob/living/l in range(3))
