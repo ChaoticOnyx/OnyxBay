@@ -11,6 +11,7 @@ var/global
 		//items that ask to be called every cycle
 
 	defer_powernet_rebuild = 0		// true if net rebuild will be called manually after an event
+	defer_cables_rebuild = 0		// true if all unified networks will be rebuilt on post-event
 
 var
 
@@ -124,6 +125,7 @@ var
 
 
 	list/powernets = null
+	list/list/AllNetworks = list( )
 
 	Debug = 0	// global debug switch
 	Debug2 = 0

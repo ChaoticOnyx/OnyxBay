@@ -61,6 +61,7 @@
 			if(T.type != /turf/space && T.type != /turf/unsimulated/floor/hull)
 				AddShield(S)
 				return
+
 /obj/machinery/shielding/emitter/proc/AddShield(var/turf/S)
 	for (var/obj/machinery/shielding/shield/shield in S)
 		if(!shield.emitter)
