@@ -52,7 +52,7 @@
 
 	det += (removed.temperature - 1000) / 150
 	det = max(det, 0)
-	if(det > 0)
+	if(det > 0 && remove.temperature >= 1000)
 		radioalert("CORE OVERLOAD","Core control computer")
 	if(det > 70)
 		//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
