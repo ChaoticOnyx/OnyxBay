@@ -110,11 +110,11 @@
 		else
 			info.starting_occupation = traitor.current:wear_id:assignment
 
-		/*	for(var/datum/objective/o in SelectObjectives(info.starting_occupation))
+			for(var/datum/objective/o in SelectObjectives(info.starting_occupation))
 				o.owner = traitor
-				traitor.objectives += o*/
+				traitor.objectives += o
 
-			switch(rand(1,200))
+		/*	switch(rand(1,200))
 				if(1 to 50)
 					var/datum/objective/assassinate/kill_objective = new
 					kill_objective.owner = traitor
@@ -154,7 +154,7 @@
 					traitor.objectives += hijack_objective
 
 
-			equip_traitor(traitor.current)
+			equip_traitor(traitor.current)*/
 
 		for(var/datum/objective/objective in traitor.objectives)
 			info.starting_objective += objective.explanation_text + "            "
