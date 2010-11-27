@@ -44,7 +44,7 @@
 				owner.unlock_medal("Broke Yarrr Bones!", 0, "Break a bone.", "easy")
 				for(var/mob/M in viewers(owner))
 					if(M != owner)
-						M.show_message("\red You hear a loud cracking sound coming from [owner.name]")
+						M.show_message("\red You hear a loud cracking sound coming from [owner.name].")
 				broken = 1
 				wound = "broken" //Randomise in future
 				perma_injury = brute_dam
@@ -57,6 +57,7 @@
 	var/stage = 0
 	var/wound = 0
 	var/split = 0
+
 /datum/organ/external/proc/createwound(var/size = 1)
 	if(ishuman(src.owner))
 		var/datum/organ/external/wound/W = new(src)
@@ -65,12 +66,14 @@
 		W.wound_size = size
 		W.owner = src.owner
 		src.wounds += W
+
 /datum/organ/external/wound
 	name = "wound"
 	wound_size = 1
 	icon_name = "wound"
 	display_name = "wound"
 	parent = null
+
 /datum/organ/external/wound/proc/stopbleeding()
 	if(!src.bleeding)
 		return
@@ -78,6 +81,7 @@
 	src.owner:bloodloss -= t
 	src.bleeding = 0
 	del(src)
+
 /datum/organ/external/chest
 	name = "chest"
 	icon_name = "chest"
@@ -87,12 +91,14 @@
 	var/datum/organ/internal/heart
 	var/datum/organ/internal/lung
 	var/datum/organ/internal/intestines
+
 /datum/organ/external/groin
 	name = "groin"
 	icon_name = "groin"
 	max_damage = 115
 	min_broken_damage = 70
 	display_name = "groin"
+
 /datum/organ/external/head
 	name = "head"
 	icon_name = "head"
@@ -102,42 +108,49 @@
 	var/datum/organ/external/eye_r
 	var/datum/organ/external/eye_l
 	var/datum/organ/internal/brain
+
 /datum/organ/external/l_arm
 	name = "l arm"
 	icon_name = "arm_left"
 	max_damage = 75
 	min_broken_damage = 30
 	display_name = "left arm"
+
 /datum/organ/external/l_foot
 	name = "l foot"
 	icon_name = "foot_left"
 	max_damage = 40
 	min_broken_damage = 15
 	display_name = "left foot"
+
 /datum/organ/external/l_hand
 	name = "l hand"
 	icon_name = "hand_left"
 	max_damage = 40
 	min_broken_damage = 15
 	display_name = "left hand"
+
 /datum/organ/external/l_leg
 	name = "l leg"
 	icon_name = "leg_left"
 	max_damage = 75
 	min_broken_damage = 30
 	display_name = "left leg"
+
 /datum/organ/external/r_arm
 	name = "r arm"
 	icon_name = "arm_right"
 	max_damage = 75
 	min_broken_damage = 30
 	display_name = "right arm"
+
 /datum/organ/external/r_foot
 	name = "r foot"
 	icon_name = "foot_right"
 	max_damage = 40
 	min_broken_damage = 15
 	display_name = "right foot"
+
 /datum/organ/external/r_hand
 	name = "r hand"
 	icon_name = "hand_right"
@@ -200,6 +213,7 @@
 	name = "throat"
 	var/lungs = null
 	var/stomach = null
+
 /datum/organ/external/proc/droplimb()
 	if(destroyed)
 		if(destroyed)
