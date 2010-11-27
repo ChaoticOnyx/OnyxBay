@@ -16,6 +16,11 @@
 	avnums.Add(11)
 	avnums.Add(13)
 	avnums.Add(6)
+	avnums.Add(9)
+	avnums.Add(1)
+	avnums.Add(3)
+	avnums.Add(5)
+	avnums.Add(7)
 
 	tempnum = pick(avnums)
 	avnums.Remove(tempnum)
@@ -41,6 +46,27 @@
 	tempnum = pick(avnums)
 	avnums.Remove(tempnum)
 	BLINDBLOCK = tempnum
+
+
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	HEADACHEBLOCK = tempnum
+
+
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	COUGHBLOCK = tempnum
+
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	TWITCHBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	NERVOUSBLO
 
 //setupdooralarms() goes through every door in the world before the game starts, checks all the squares
 //adjacent to them, and if the adjacent square does not contain a dense turf and is not in the same

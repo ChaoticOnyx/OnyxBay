@@ -286,17 +286,14 @@
 	M.see_in_dark = 2
 	M.see_invisible = 0
 
-	if (isblockon(getblock(M.dna.struc_enzymes, 1,3),1))
-		M.disabilities |= 1
-		M << "\red Your eyes feel strange."
-	if (isblockon(getblock(M.dna.struc_enzymes, HULKBLOCK,3),2))
+	if (isblockon(getblock(M.dna.struc_enzymes, HULKBLOCK,3),HULKBLOCK))
 		if(inj || prob(15))
 			M << "\blue Your muscles hurt."
 			M.mutations |= 8
-	if (isblockon(getblock(M.dna.struc_enzymes, 3,3),3))
+	if (isblockon(getblock(M.dna.struc_enzymes, HEADACHEBLOCK,3),HEADACHEBLOCK))
 		M.disabilities |= 2
 		M << "\red You get a headache."
-	if (isblockon(getblock(M.dna.struc_enzymes, FAKEBLOCK,3),4))
+	if (isblockon(getblock(M.dna.struc_enzymes, FAKEBLOCK,3),FAKEBLOCK))
 		M << "\red You feel strange."
 		if (prob(95))
 			if(prob(50))
@@ -305,40 +302,40 @@
 				randmuti(M)
 		else
 			randmutg(M)
-	if (isblockon(getblock(M.dna.struc_enzymes, 5,3),5))
+	if (isblockon(getblock(M.dna.struc_enzymes, COUGHBLOCK,3),COUGHBLOCK))
 		M.disabilities |= 4
 		M << "\red You start coughing."
-	if (isblockon(getblock(M.dna.struc_enzymes, CLUMSYBLOCK,3),6))
+	if (isblockon(getblock(M.dna.struc_enzymes, CLUMSYBLOCK,3),CLUMSYBLOCK))
 		M << "\red You feel lightheaded."
 		M.mutations |= 16
-	if (isblockon(getblock(M.dna.struc_enzymes, 7,3),7))
+	if (isblockon(getblock(M.dna.struc_enzymes, TWITCHBLOCK,3),TWITCHBLOCK))
 		M.disabilities |= 8
 		M << "\red You twitch."
-	if (isblockon(getblock(M.dna.struc_enzymes, XRAYBLOCK,3),8))
+	if (isblockon(getblock(M.dna.struc_enzymes, XRAYBLOCK,3),XRAYBLOCK))
 		if(inj || prob(30))
 			M << "\blue The walls suddenly disappear."
 			M.sight |= (SEE_MOBS|SEE_OBJS|SEE_TURFS)
 			M.see_in_dark = 8
 			M.see_invisible = 2
 			M.mutations |= 4
-	if (isblockon(getblock(M.dna.struc_enzymes, 9,3),9))
+	if (isblockon(getblock(M.dna.struc_enzymes, NERVOUSBLOCK,3),NERVOUSBLOCK))
 		M.disabilities |= 16
 		M << "\red You feel nervous."
-	if (isblockon(getblock(M.dna.struc_enzymes, FIREBLOCK,3),10))
+	if (isblockon(getblock(M.dna.struc_enzymes, FIREBLOCK,3),FIREBLOCK))
 		if(inj || prob(30))
 			M << "\blue Your body feels warm."
 			M.mutations |= 2
-	if (isblockon(getblock(M.dna.struc_enzymes, BLINDBLOCK,3),11))
+	if (isblockon(getblock(M.dna.struc_enzymes, BLINDBLOCK,3),BLINDBLOCK))
 		M.sdisabilities |= 1
-		M << "\red You can't seem to see anything."
-	if (isblockon(getblock(M.dna.struc_enzymes, TELEBLOCK,3),12))
+		M << "\red You cant seem to see anything."
+	if (isblockon(getblock(M.dna.struc_enzymes, TELEBLOCK,3),TELEBLOCK))
 		if(inj || prob(15))
 			M << "\blue You feel smarter."
 			M.mutations |= 1
-	if (isblockon(getblock(M.dna.struc_enzymes, DEAFBLOCK,3),13))
+	if (isblockon(getblock(M.dna.struc_enzymes, DEAFBLOCK,3),DEAFBLOCK))
 		M.sdisabilities |= 4
 		M.ear_deaf = 1
-		M << "\red It's kinda quiet..."
+		M << "\red Its kinda quiet..."
 
 //////////////////////////////////////////////////////////// Monkey Block
 	if (isblockon(getblock(M.dna.struc_enzymes, 14,3),14) && istype(M, /mob/living/carbon/human))

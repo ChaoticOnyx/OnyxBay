@@ -27,6 +27,11 @@ var
 	FAKEBLOCK = 0
 	BLOCKADD = 0
 	DIFFMUT = 0
+	HEADACHEBLOCK = 0
+	COUGHBLOCK = 0
+	TWITCHBLOCK = 0
+	NERVOUSBLOCK = 0
+
 
 	skipupdate = 0
 	///////////////
