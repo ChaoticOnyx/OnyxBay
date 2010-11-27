@@ -38,17 +38,26 @@
 		CableCut(var/obj/cabling/Cable, var/mob/User)
 			return
 
+		CableBuilt(var/obj/cabling/Cable, var/mob/User)
+			return
+
 		Initialize()
 			return
 
 		Finalize()
 			return
 
-		BeginMerge(var/datum/UnifiedNetwork/TargetNetwork)
+		BeginMerge(var/datum/UnifiedNetwork/TargetNetwork, var/Slave)
 			return
 
 		FinishMerge()
 			return
 
-		DeviceUsed(var/obj/item/device/Device, var/obj/cabling/Cable)
+		DeviceUsed(var/obj/item/device/Device, var/obj/cabling/Cable, var/mob/User)
+			return
+
+		CableTouched(var/obj/cabling/Cable, var/mob/User)
+			return
+
+		Process()
 			return

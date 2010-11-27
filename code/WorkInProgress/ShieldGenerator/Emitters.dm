@@ -12,6 +12,7 @@
 	anchored = 1
 	level = 1
 	var/online = 0
+	var/control = 0
 	var/list/obj/machinery/shielding/shield/PoweredShields = list( )
 
 
@@ -33,7 +34,7 @@
 
 //Basic process function
 /obj/machinery/shielding/emitter/process()
-	online = ShieldNetwork.HasPower()
+	online = ShieldNetwork.HasPower() && control
 	if(online)
 		UseMaintenanceCharge()
 	icon_state = online ? "plate" : "plate-p" //TODO better graphics handling
