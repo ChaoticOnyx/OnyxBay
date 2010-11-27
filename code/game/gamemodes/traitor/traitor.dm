@@ -151,10 +151,10 @@
 				else
 					var/datum/objective/hijack/hijack_objective = new
 					hijack_objective.owner = traitor
-					traitor.objectives += hijack_objective
+					traitor.objectives += hijack_objective*/
 
 
-			equip_traitor(traitor.current)*/
+			equip_traitor(traitor.current)
 
 		for(var/datum/objective/objective in traitor.objectives)
 			info.starting_objective += objective.explanation_text + "            "

@@ -66,7 +66,7 @@
 
 	tempnum = pick(avnums)
 	avnums.Remove(tempnum)
-	NERVOUSBLO
+	NERVOUSBLOCK = tempnum
 
 //setupdooralarms() goes through every door in the world before the game starts, checks all the squares
 //adjacent to them, and if the adjacent square does not contain a dense turf and is not in the same
