@@ -6,6 +6,7 @@
 // END_INTERNALS
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "backup"
 #define FILE_DIR "code"
 #define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
@@ -49,8 +50,11 @@
 #define FILE_DIR "code/game/machinery/bots"
 #define FILE_DIR "code/game/machinery/computer"
 #define FILE_DIR "code/game/machinery/ComputerNetworks"
+#define FILE_DIR "code/game/machinery/Computers"
 #define FILE_DIR "code/game/machinery/doors"
 #define FILE_DIR "code/game/machinery/embedded_controller"
+#define FILE_DIR "code/game/machinery/Fire"
+#define FILE_DIR "code/game/machinery/Lighting"
 #define FILE_DIR "code/game/machinery/pipe"
 #define FILE_DIR "code/game/objects"
 #define FILE_DIR "code/game/objects/alien"
@@ -603,7 +607,6 @@
 #include "code\modules\power\port_gen.dm"
 #include "code\modules\power\portable.dm"
 #include "code\modules\power\power.dm"
-#include "code\modules\power\PowernetController.dm"
 #include "code\modules\power\smes.dm"
 #include "code\modules\power\solar.dm"
 #include "code\modules\power\terminal.dm"
@@ -665,8 +668,7 @@
 #include "code\WorkInProgress\ShieldGenerator\Shield.dm"
 #include "code\WorkInProgress\ShieldGenerator\ShieldCapacitor.dm"
 #include "code\WorkInProgress\ShieldGenerator\ShieldNetwork.dm"
-#include "code\WorkInProgress\UnifiedCabling\Cabling.dm"
-#include "code\WorkInProgress\UnifiedCabling\CablingCoil.dm"
+#include "code\WorkInProgress\UnifiedCabling\Base.dm"
 #include "code\WorkInProgress\UnifiedCabling\NetworkController.dm"
 #include "code\WorkInProgress\UnifiedCabling\UnifiedNetwork.dm"
 #include "code\WorkInProgress\ZeroPoint\Laser2.dm"
