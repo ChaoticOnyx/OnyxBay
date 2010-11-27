@@ -98,7 +98,7 @@
 
 	env.merge(removed)
 
-	for(var/mob/living/l in range(6)) // you have to be seeing the core to get hallucinations
+	for(var/mob/living/l in range(src, 6)) // you have to be seeing the core to get hallucinations
 		if(l.glasses && istype(l.glasses, /obj/item/clothing/glasses/meson) && prob(1))
 			l.hallucination = 50
 		else if (prob(5))

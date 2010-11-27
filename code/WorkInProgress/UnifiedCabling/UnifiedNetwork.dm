@@ -144,8 +144,8 @@
 		for (var/obj/cabling/C in Connections)
 			if (C.Networks[C.type] != src)
 				var/datum/UnifiedNetwork/OtherNetwork = C.Networks[C.type]
-				Controller.BeginMerge(OtherNetwork)
-				OtherNetwork.Controller.BeginMerge(src)
+				Controller.BeginMerge(OtherNetwork, 0)
+				OtherNetwork.Controller.BeginMerge(src, 1)
 
 				for (var/obj/cabling/CC in OtherNetwork.Cables)
 					OtherNetwork.Controller.RemoveCable(CC)

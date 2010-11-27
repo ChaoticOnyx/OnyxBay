@@ -76,8 +76,8 @@ var/datum/shieldnetwork/ShieldNetwork
 	if(!ShieldNetwork.HasPower())
 		return
 	for(var/obj/machinery/shielding/emitter/E in Nodes)
-		E.online = 1
+		E.control = 1
 
 /datum/shieldnetwork/proc/stopshields()
 	for(var/obj/machinery/shielding/emitter/E in Nodes)
-		E.online = 0
+		E.control = 0
