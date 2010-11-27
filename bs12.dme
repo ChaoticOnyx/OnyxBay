@@ -668,7 +668,6 @@
 #include "code\WorkInProgress\ShieldGenerator\Shield.dm"
 #include "code\WorkInProgress\ShieldGenerator\ShieldCapacitor.dm"
 #include "code\WorkInProgress\ShieldGenerator\ShieldNetwork.dm"
-#include "code\WorkInProgress\UnifiedCabling\Base.dm"
 #include "code\WorkInProgress\UnifiedCabling\NetworkController.dm"
 #include "code\WorkInProgress\UnifiedCabling\UnifiedNetwork.dm"
 #include "code\WorkInProgress\ZeroPoint\Laser2.dm"
