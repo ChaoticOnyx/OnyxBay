@@ -1,13 +1,26 @@
-/proc/GetObjectives(var/job)
+/proc/GetObjectives(var/job,var/datum/mind/traitor)
 	var/list/datum/objective/objectives = list()
 	for(var/o in typesof(/datum/objective))
-		objectives += new o(null,job)
+		if(o != "/datum/objective/assassinate")
+			objectives += new o(null,job)
+
+	objectives += GenerateAssassinate(job,traitor)
 	return objectives
 
+/proc/GenerateAssassinate(var/job,var/datum/mind/traitor)
+	var/list/datum/objective/assassinate/missions = list()
 
-/proc/SelectObjectives(var/job)
+	for(var/datum/mind/target in ticker.minds)
+		if((target != traitor) && istype(target.current, /mob/living/carbon/human))
+			if(target && target.current)
+				missions +=	new /datum/objective/assassinate(null,job,target)
+	return missions
+
+
+
+/proc/SelectObjectives(var/job,var/datum/mind/traitor)
 	var/list/datum/objective/chosenobjectives = list()
-	var/list/datum/objective/objectives = GetObjectives(job)
+	var/list/datum/objective/objectives = GetObjectives(job,traitor)
 	var/points
 	while(length(objectives) > 0)
 		var/datum/objective/objective = pick(objectives)
@@ -49,35 +62,10 @@ datum
 		assassinate
 			var/datum/mind/target
 
-			proc/find_target()
-				var/list/possible_targets = list()
-
-				for(var/datum/mind/possible_target in ticker.minds)
-					if((possible_target != owner) && istype(possible_target.current, /mob/living/carbon/human))
-						possible_targets += possible_target
-
-				if(possible_targets.len > 0)
-					target = pick(possible_targets)
-
-				if(target && target.current)
-					explanation_text = "Assassinate [target.current.real_name], the [target.assigned_role]."
-				else
-					explanation_text = "Free Objective"
-
-				return target
-
-			proc/find_target_by_role(var/role)
-				for(var/datum/mind/possible_target in ticker.minds)
-					if((possible_target != owner) && istype(possible_target.current, /mob/living/carbon/human) && (possible_target.assigned_role == role))
-						target = possible_target
-						break
-
-				if(target && target.current)
-					explanation_text = "Assassinate [target.current.real_name], the [target.assigned_role]."
-				else
-					explanation_text = "Free Objective"
-
-				return target
+			New(var/text,var/joba,var/datum/mind/targeta)
+				target = targeta
+				job = joba
+				points = get_points(job)
 
 			check_completion()
 				if(target && target.current)
@@ -102,6 +90,37 @@ datum
 							return 60
 				else
 					return INFINITY
+
+			proc/find_target_by_role(var/role)
+				for(var/datum/mind/possible_target in ticker.minds)
+					if((possible_target != owner) && istype(possible_target.current, /mob/living/carbon/human) && (possible_target.assigned_role == role))
+						target = possible_target
+						break
+
+				if(target && target.current)
+					explanation_text = "Assassinate [target.current.real_name], the [target.assigned_role]."
+				else
+					explanation_text = "Free Objective"
+
+				return target
+
+
+			proc/find_target()
+				var/list/possible_targets = list()
+
+				for(var/datum/mind/possible_target in ticker.minds)
+					if((possible_target != owner) && istype(possible_target.current, /mob/living/carbon/human))
+						possible_targets += possible_target
+
+				if(possible_targets.len > 0)
+					target = pick(possible_targets)
+
+				if(target && target.current)
+					explanation_text = "Assassinate [target.current.real_name], the [target.assigned_role]."
+				else
+					explanation_text = "Free Objective"
+
+				return target
 
 		hijack
 			explanation_text = "Hijack the emergency shuttle by escaping alone."

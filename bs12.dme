@@ -6,6 +6,7 @@
 // END_INTERNALS
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "backup"
 #define FILE_DIR "code"
 #define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
@@ -49,8 +50,11 @@
 #define FILE_DIR "code/game/machinery/bots"
 #define FILE_DIR "code/game/machinery/computer"
 #define FILE_DIR "code/game/machinery/ComputerNetworks"
+#define FILE_DIR "code/game/machinery/Computers"
 #define FILE_DIR "code/game/machinery/doors"
 #define FILE_DIR "code/game/machinery/embedded_controller"
+#define FILE_DIR "code/game/machinery/Fire"
+#define FILE_DIR "code/game/machinery/Lighting"
 #define FILE_DIR "code/game/machinery/pipe"
 #define FILE_DIR "code/game/objects"
 #define FILE_DIR "code/game/objects/alien"
@@ -437,6 +441,7 @@
 #include "code\game\objects\devices\device.dm"
 #include "code\game\objects\devices\flash.dm"
 #include "code\game\objects\devices\flashlight.dm"
+#include "code\game\objects\devices\geneanalyser.dm"
 #include "code\game\objects\devices\igniter.dm"
 #include "code\game\objects\devices\infra_sensor.dm"
 #include "code\game\objects\devices\multitool.dm"
