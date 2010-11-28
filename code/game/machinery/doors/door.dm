@@ -277,7 +277,7 @@
 // ***************************************
 // Networking Support
 // ***************************************
-
+/*
 /obj/machinery/door/NetworkIdentInfo()
 	return "DOOR [!src.density ? "OPEN" : "CLOSED"]"
 
@@ -297,3 +297,5 @@
 				close()
 				return 1
 	return 0
+
+*/

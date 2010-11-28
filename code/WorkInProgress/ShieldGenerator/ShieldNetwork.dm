@@ -15,17 +15,6 @@ var/datum/shieldnetwork/ShieldNetwork
 	var/list/Cables = list( )
 
 
-/datum/shieldnetwork/New(var/obj/shieldconduit/C)
-	..()
-
-	if (!istype(C))
-		return
-	ShieldNetNum = ++NetworkCount
-
-
-
-
-
 //This entire proc should at some point be stripped, once proper shield networks are in
 /datum/shieldnetwork/proc/makenetwork()
 	src.ShieldNetNum = 12

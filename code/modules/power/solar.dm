@@ -4,8 +4,11 @@
 		updateicon()
 		update_solar_exposure()
 
-		if(powernet)
-			for(var/obj/machinery/power/solar_control/SC in powernet.nodes)
+
+		var/datum/UnifiedNetwork/Network = Networks[/obj/cabling/power]
+
+		if(Network)
+			for(var/obj/machinery/power/solar_control/SC in Network.Nodes)
 				if(SC.id == id)
 					control = SC
 
@@ -60,13 +63,15 @@
 	if(stat & BROKEN)
 		return
 
+	var/datum/UnifiedNetwork/Network = Networks[/obj/cabling/power]
+
 	//return //TODO: FIX
 
 	if(!obscured)
 		var/sgen = SOLARGENRATE * sunfrac
-		add_avail(sgen)
-		if(powernet && control)
-			if(control in powernet.nodes) //this line right here...
+		AddPower(sgen)
+		if(Network && control)
+			if(control in Network.Nodes) //this line right here...
 				control.gen += sgen
 
 	if(adir != ndir)
@@ -115,8 +120,9 @@
 /obj/machinery/power/solar_control/New()
 	..()
 	spawn(15)
-		if(!powernet) return
-		for(var/obj/machinery/power/solar/S in powernet.nodes)
+		var/datum/UnifiedNetwork/Network = Networks[/obj/cabling/power]
+		if(!Network) return
+		for(var/obj/machinery/power/solar/S in Network.Nodes)
 			if(S.id != id) continue
 			cdir = S.adir
 			updateicon()
@@ -250,8 +256,9 @@
 	return
 
 /obj/machinery/power/solar_control/proc/set_panels(var/cdir)
-	if(!powernet) return
-	for(var/obj/machinery/power/solar/S in powernet.nodes)
+	var/datum/UnifiedNetwork/Network = Networks[/obj/cabling/power]
+	if(!Network) return
+	for(var/obj/machinery/power/solar/S in Network.Nodes)
 		if(S.id != id) continue
 		S.control = src
 		S.ndir = cdir

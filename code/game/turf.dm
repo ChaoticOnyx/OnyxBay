@@ -790,10 +790,10 @@ turf/simulated/floor/proc/update_icon()
 			del(T)
 			return
 
-	if(istype(C, /obj/item/weapon/cable_coil))
+	if(istype(C, /obj/item/weapon/CableCoil))
 		if(!intact)
-			var/obj/item/weapon/cable_coil/coil = C
-			coil.turf_place(src, user)
+			var/obj/item/weapon/CableCoil/coil = C
+			coil.LayOnTurf(src, user)
 		else
 			user << "\red You must remove the plating first."
 

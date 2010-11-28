@@ -18,7 +18,7 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 		if(devastation_range > 1)
 			message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in area [epicenter.loc.name] ")
 
-		defer_powernet_rebuild += 1
+		defer_cables_rebuild ++
 
 		sleep(5)
 
@@ -173,9 +173,9 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 							flick("flash", mob:flash)
 
 
-			defer_powernet_rebuild -= 1
-			if (!defer_powernet_rebuild)
-				makepowernets()
+			defer_cables_rebuild --
+			if (!defer_cables_rebuild)
+				HandleUNExplosionDamage()
 	return 1
 
 

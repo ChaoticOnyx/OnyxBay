@@ -43,14 +43,15 @@ obj/machinery/aiconstruct/attackby(obj/item/weapon/W as obj, mob/user as mob)
 				user << "You screw the circuitry in place with [W]."
 				buildstate++
 		if(2)
-			if(istype(W,/obj/item/weapon/cable_coil))
-				if(W:amount < 3)
+			if(istype(W,/obj/item/weapon/CableCoil))
+				var/obj/item/weapon/CableCoil/Coil = W
+				if (Coil.CableType != /obj/cabling/power)
+					user << "That's the wrong cable type, you need electrical cable!"
+					return
+				if(!Coil.UseCable(3))
 					user << "Not enough cable."
 					return
-				W:amount -= 3
 				user << "You wire up the inside of the [src]."
-				if(W:amount <= 0)
-					del(W)
 				buildstate++
 				icon_state = "ai_new2"
 		if(3)

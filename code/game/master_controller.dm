@@ -21,12 +21,12 @@ datum/controller/game_controller
 			world.load_rules()
 			world.load_admins()
 			world.update_status()
-		ShieldNetwork = new /datum/shieldnetwork()
-		world << "\red Setting up shields.."
-		if(ShieldNetwork.makenetwork())
-			world << "\red Shields set up complete."
 
-		makepowernets()
+		ShieldNetwork = new /datum/shieldnetwork()
+
+		world << "\red Setting up shields.."
+
+		ShieldNetwork.makenetwork()
 
 		sun = new /datum/sun()
 
@@ -88,9 +88,9 @@ datum/controller/game_controller
 			machine.build_network()
 
 
-		world << "\red \b Building Computer Networks"
-		sleep(-1)
-		makecomputernets()
+		world << "\red Building Unified Networks"
+
+		MakeUnifiedNetworks()
 
 
 		world << "\red \b Initializations complete."
@@ -128,8 +128,11 @@ datum/controller/game_controller
 
 		for(var/datum/pipe_network/network in pipe_networks)
 			network.process()
-		for(var/datum/powernet/P in powernets)
-			P.reset()
+
+		for(var/OuterKey in AllNetworks)
+			var/list/NetworkSet = AllNetworks[OuterKey]
+			for(var/datum/UnifiedNetwork/Network in NetworkSet)
+				Network.Controller.Process()
 
 		for(var/turf/t in processing_turfs)
 			t.process()

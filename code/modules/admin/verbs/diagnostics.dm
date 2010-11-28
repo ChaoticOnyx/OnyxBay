@@ -14,7 +14,6 @@
 <B># of Machines:</B> [machines.len]<BR>
 <B># of Pipe Networks:</B> [pipe_networks.len]<BR>
 <B># of Processing Items:</B> [processing_items.len]<BR>
-<B># of Power Nets:</B> [powernets.len]<BR>
 <B># of Mobs:</B> [mobs]<BR>
 "}
 

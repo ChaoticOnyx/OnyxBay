@@ -59,7 +59,7 @@
 	var/last_onln = online
 
 	if(terminal)
-		var/excess = terminal.surplus()
+		var/excess = terminal.Surplus()
 
 		if(charging)
 			if(excess >= 0)		// if there's power available, try to charge
@@ -68,7 +68,7 @@
 
 				charge += load * SMESRATE	// increase the charge
 
-				add_load(load)		// add the load to the terminal side network
+				AddLoad(load)		// add the load to the terminal side network
 
 			else					// if not enough capcity
 				charging = 0		// stop charging
@@ -92,7 +92,7 @@
 
 		charge -= lastout*SMESRATE		// reduce the storage (may be recovered in /restore() if excessive)
 
-		add_avail(lastout)				// add output to powernet (smes side)
+		AddPower(lastout)				// add output to powernet (smes side)
 
 		if(charge < 0.0001)
 			online = 0					// stop output if charge falls to zero
@@ -117,9 +117,11 @@
 		loaddemand = 0
 		return
 
-	var/excess = powernet.netexcess		// this was how much wasn't used on the network last ptick, minus any removed by other SMESes
+	var/datum/UnifiedNetworkController/PowernetController/Controller = GetPowernet()
 
-	excess = min(lastout, excess)				// clamp it to how much was actually output by this SMES last ptick
+	var/excess = Controller.UnrecoveredSurplusPower()	// this was how much wasn't used on the network last ptick, minus any removed by other SMESes
+
+	excess = min(lastout, excess)						// clamp it to how much was actually output by this SMES last ptick
 
 	excess = min((capacity-charge)/SMESRATE, excess)	// for safety, also limit recharge by space capacity of SMES (shouldn't happen)
 
@@ -128,7 +130,7 @@
 	var/clev = chargedisplay()
 
 	charge += excess * SMESRATE
-	powernet.netexcess -= excess		// remove the excess from the powernet, so later SMESes don't try to use it
+	Controller.RecoverSurplusPower(excess)		// remove the excess from the powernet, so later SMESes don't try to use it
 
 	loaddemand = lastout-excess
 
@@ -136,9 +138,9 @@
 		updateicon()
 
 
-/obj/machinery/power/smes/add_load(var/amount)
-	if(terminal && terminal.powernet)
-		terminal.powernet.newload += amount
+/obj/machinery/power/smes/AddLoad(var/amount)
+	if(terminal)
+		terminal.AddLoad(amount)
 
 /obj/machinery/power/smes/attack_ai(mob/user)
 

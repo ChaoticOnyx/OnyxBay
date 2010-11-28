@@ -36,10 +36,10 @@
 	// timed process
 	// make sure we can draw power from the powernet
 	process()
-		var/avail = surplus()
+		var/avail = Surplus()
 
 		if(avail > 500)
-			add_load(500)
+			AddLoad(500)
 			stat &= ~NOPOWER
 		else
 			stat |= NOPOWER
