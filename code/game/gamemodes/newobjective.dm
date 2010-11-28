@@ -1,7 +1,7 @@
 /proc/GetObjectives(var/job,var/datum/mind/traitor)
 	var/list/datum/objective/objectives = list()
 	for(var/o in typesof(/datum/objective))
-		if(o != "/datum/objective/assassinate")
+		if(o != /datum/objective/assassinate)
 			objectives += new o(null,job)
 
 	objectives += GenerateAssassinate(job,traitor)
@@ -27,12 +27,11 @@
 		if(objective.points < (100 - points))
 			chosenobjectives += objective
 			points += objective.points
-			objectives -= objective
-		else
-			objectives -= objective
-	var/hasendgame
+
+		objectives -= objective
+	var/hasendgame = 0
 	for(var/datum/objective/o in chosenobjectives)
-		if(o.type == "/datum/objective/hijack")
+		if(o.type == /datum/objective/hijack)
 			hasendgame = 1
 	if(hasendgame == 0)
 		chosenobjectives += new /datum/objective/escape(job)

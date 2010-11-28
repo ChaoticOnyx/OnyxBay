@@ -1892,12 +1892,16 @@
 	return
 
 /obj/equip_e/human/done()
+	var/mut = 0
+	if(source.mutations & 1)
+		mut = 1
 	if(!source || !target)						return
-	if(source.loc != s_loc)						return
-	if(target.loc != t_loc)						return
-	if(LinkBlocked(s_loc,t_loc))				return
+	if(source.loc != s_loc && mut == 0)						return
+	if(target.loc != t_loc && mut == 0)						return
+	if(LinkBlocked(s_loc,t_loc) && mut == 0)	return
 	if(item && source.equipped() != item)	return
-	if ((source.restrained() || source.stat))	return
+	if ((source.restrained() && mut == 0)) return
+	if(source.stat)	return
 	switch(place)
 		if("mask")
 			if (target.wear_mask)

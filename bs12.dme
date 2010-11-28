@@ -656,6 +656,7 @@
 #include "code\WorkInProgress\ShieldGenerator\Shield.dm"
 #include "code\WorkInProgress\ShieldGenerator\ShieldCapacitor.dm"
 #include "code\WorkInProgress\ShieldGenerator\ShieldNetwork.dm"
+#include "code\WorkInProgress\Strumpetplaya\turntable.dm"
 #include "code\WorkInProgress\UnifiedCabling\BuildUnifiedNetworks.dm"
 #include "code\WorkInProgress\UnifiedCabling\Cabling.dm"
 #include "code\WorkInProgress\UnifiedCabling\CablingCoil.dm"

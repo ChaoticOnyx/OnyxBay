@@ -159,6 +159,7 @@ datum
 					T.assume_air(lowertemp)
 					del(hotspot)
 				return
+
 			reaction_obj(var/obj/O, var/volume)
 				src = null
 				var/turf/T = get_turf(O)
@@ -170,6 +171,7 @@ datum
 					T.assume_air(lowertemp)
 					del(hotspot)
 				return
+
 		blood
 			name = "Blood"
 			id = "blood"
@@ -693,7 +695,6 @@ datum
 			description = "Coffee is a brewed drink prepared from roasted seeds, commonly called coffee beans, of the coffee plant."
 			reagent_state = LIQUID
 			on_mob_life(var/mob/M)
-				..()
 				M.dizziness = max(0,M.dizziness-5)
 				M:drowsyness = max(0,M:drowsyness-3)
 				M:sleeping = 0
@@ -701,6 +702,7 @@ datum
 				if(!data) data = 1
 				if(data > 15)
 					M.make_jittery(5)
+				..()
 
 		space_cleaner
 			name = "Space cleaner"
@@ -749,6 +751,7 @@ datum
 			on_mob_life(var/mob/M)
 				M:drowsyness = max(0,M:drowsyness-5)
 				M.bodytemperature = max(310, M.bodytemperature-5) //310 is the normal bodytemp. 310.055
+				..()
 
 		plasma
 			name = "Plasma"
@@ -973,7 +976,7 @@ datum
 					if(M:bruteloss) M:bruteloss = max(0, M:bruteloss-3)
 					if(M:fireloss) M:fireloss = max(0, M:fireloss-3)
 					if(M:toxloss) M:toxloss = max(0, M:toxloss-3)
-
+				..()
 				return
 
 		spaceacillin

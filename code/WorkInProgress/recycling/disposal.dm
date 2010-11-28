@@ -243,6 +243,12 @@
 		if(stat & BROKEN)			// nothing can happen if broken
 			return
 
+		if(length(src.contents) > 0)
+			flush = 1
+
+
+
+
 		src.updateDialog()
 
 		if(flush && air_contents.return_pressure() >= 2*ONE_ATMOSPHERE)	// flush can happen even without power
@@ -282,8 +288,7 @@
 			update()
 		return
 
-		for(var/mob/M in src.contents)
-			flush = 1
+
 
 	// perform a flush
 	proc/flush()
