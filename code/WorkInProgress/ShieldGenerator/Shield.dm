@@ -1,7 +1,7 @@
 //Shield Generator - Shield Object
 //The interactable shielding object
 
-/obj/machinery/shielding/shield
+/obj/shielding/shield
 	name = "shield"
 	desc = "An energy shield."
 	icon = 'effects.dmi'
@@ -11,25 +11,13 @@
 	density = 0
 	opacity = 0
 
+
 	var/blockatmosonly = 0
 	var/obj/machinery/shielding/emitter/emitter = null
-
-
-//Basic processing for shield tiles
-/obj/machinery/shielding/shield/process()
-	if (emitter && emitter.online)
-		density = !blockatmosonly
-		icon_state = "shieldsparkles[blockatmosonly]"
-		explosionstrength = INFINITY
-		invisibility = 0
-	else
-		density = 0
-		invisibility = 101
-		explosionstrength = 0
-
+	var/emitterdist = 0
 
 //Shield Density controller
-/obj/machinery/shielding/shield/CanPass(atom/movable/mover, turf/source, height=1.5, air_group = 0)
+/obj/shielding/shield/CanPass(atom/movable/mover, turf/source, height=1.5, air_group = 0)
 	if (density)
 		//Block all atmos flow & explosions, but optionally allow movement through
 		return !air_group && blockatmosonly
@@ -37,7 +25,7 @@
 		return 1 //Shield is off; do nothing
 
 //Explosion Handling - Includes support for preblast handling
-/obj/machinery/shielding/shield/ex_act(strength)
+/obj/shielding/shield/ex_act(strength)
 	if (strength <= 0)
 		strength = -strength
 		if (emitter && emitter.online)

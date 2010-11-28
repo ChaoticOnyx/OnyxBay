@@ -19,8 +19,6 @@ var/datum/shieldnetwork/ShieldNetwork
 /datum/shieldnetwork/proc/makenetwork()
 	src.ShieldNetNum = 12
 	for(var/obj/machinery/shielding/S in world)
-		if(istype(S,/obj/machinery/shielding/shield))
-			continue
 		src.Nodes += S
 		S.shieldNetwork = src
 
