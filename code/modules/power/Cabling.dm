@@ -10,7 +10,7 @@
 	icon_state = "redcoil3"
 	CoilColour = "red"
 	BaseName  = "Electrical"
-	ShortDesc = "A piece of electrical Cable"
-	LongDesc  = "A long piece of electrical Cable"
-	CoilDesc  = "A Spool of electrical Cable"
+	ShortDesc = "A piece of electrical cable"
+	LongDesc  = "A long piece of electrical cable"
+	CoilDesc  = "A Spool of electrical cable"
 	CableType = /obj/cabling/power

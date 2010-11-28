@@ -1,6 +1,9 @@
 //Incomplete.  Messy.  No  real icons.  Completely useless.  But really cool!!
 
 
+//Sukasa - Hey, just for the record, stuff shouldn't go into just /obj/item - and some of the things in here
+// like the laser emitter should be machinery, while other stuff should just be in /obj/effects/ or elsewhere
+
 /sound/turntable/test
 	file = 'TestLoop1.ogg'
 	falloff = 2
