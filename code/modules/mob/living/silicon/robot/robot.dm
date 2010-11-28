@@ -289,6 +289,8 @@
 	return !cleared
 
 /mob/living/silicon/robot/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if (istype(W, /obj/item/weapon/reagent_containers/syringe))
+		return
 	if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
 		if (W:get_fuel() > 2)
 			W:use_fuel(1)

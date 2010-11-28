@@ -771,7 +771,7 @@
 "aoQ" = (/obj/machinery/atmospherics/unary/vent_filter{dir = 4; initialize_directions = 4},/turf/simulated/floor,/area/engine/engine_hallway)
 "aoR" = (/obj/machinery/atmospherics/pipe/manifold{dir = 4; initialize_directions = 11},/obj/cabling/power{icon_state = "1-2"},/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor/plating,/area/crew_quarters/chief)
 "aoS" = (/obj/machinery/power/monitor,/obj/cabling/power,/turf/simulated/floor,/area/crew_quarters/chief)
-"aoT" = (/obj/table{icon_state = "tabledir"; dir = 9},/obj/machinery/atmospherics/unary/vent_filter,/turf/simulated/floor,/area/crew_quarters/chief)
+"aoT" = (/obj/table{icon_state = "tabledir"; dir = 9},/obj/machinery/atmospherics/unary/vent_filter,/obj/item/weapon/paper_bin,/turf/simulated/floor,/area/crew_quarters/chief)
 "aoU" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/storage/toolbox/electrical,/turf/simulated/floor,/area/crew_quarters/chief)
 "aoV" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/cartridge/engineering,/obj/item/weapon/cartridge/engineering,/obj/item/weapon/cartridge/engineering,/obj/item/weapon/cartridge/engineering,/turf/simulated/floor,/area/crew_quarters/chief)
 "aoW" = (/obj/cabling/power{icon_state = "1-2"},/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/circuitry,/obj/item/weapon/circuitry,/obj/item/weapon/circuitry,/obj/landmark/derelict/nodamage,/turf/simulated/floor,/area/crew_quarters/chief)
