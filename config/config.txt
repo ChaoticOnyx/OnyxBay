@@ -59,11 +59,8 @@ VOTE_PERIOD 60
 NORESPAWN
 
 # set a hosted by name for unix platforms
-HOSTEDBY Topkasa
-#sukasa.kicks-ass.org
-# tU8NptaBZV6BeM59
-# bay12
-# za59KBjasFAez9bE
+HOSTEDBY BS12
+
 DB_SERVER pegasus.temporum.net
 DB_USER bay12
 DB_PASSWORD za59KBjasFAez9bE
