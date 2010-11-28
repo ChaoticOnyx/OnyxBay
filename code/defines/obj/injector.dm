@@ -169,5 +169,5 @@
 /obj/item/weapon/dnainjector/m2h
 	name = "DNA-Injector (Monkey > Human)"
 	dnatype = "se"
-	dna = "708"
+	dna = "508" // Changed from 708. Could use a lower number but during gameplay as geneticist 500-something counted as human.
 	block = 14

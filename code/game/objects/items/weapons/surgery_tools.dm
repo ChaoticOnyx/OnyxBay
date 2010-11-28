@@ -6,8 +6,8 @@ CIRCULAR SAW
 */
 
 /obj/item/weapon/scalpel/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M, /mob))
-		return
+	if(!istype(M, /mob) || istype(M, /mob/living/carbon/monkey)) //Adding basic organs to monkeys for implants.
+		return													 //TO DO: Remove the monkey check once you're sure monkey organs are safe to cut. - Abi79
 
 	if((usr.mutations & 16) && prob(50))
 		M << "\red You stab yourself in the eye."
@@ -97,8 +97,8 @@ CIRCULAR SAW
 // CIRCULAR SAW
 
 /obj/item/weapon/circular_saw/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M, /mob))
-		return
+	if(!istype(M, /mob) || istype(M, /mob/living/carbon/monkey)) //Adding basic organs to monkeys for implants.
+		return													 //TO DO: Remove the monkey check once you're sure monkey organs are safe to cut. - Abi79
 
 	if((usr.mutations & 16) && prob(50))
 		M << "\red You cut out your eyes."
