@@ -34,13 +34,13 @@
 		if(o.type == /datum/objective/hijack)
 			hasendgame = 1
 	if(hasendgame == 0)
-		chosenobjectives += new /datum/objective/escape(job)
+		chosenobjectives += new /datum/objective/escape(null,job)
 	return chosenobjectives
 
 datum
 	objective
 		var/datum/mind/owner
-		var/explanation_text
+		var/explanation_text = "text not set"
 		var/job
 		var/points = INFINITY //If this isn't set to something else, the objective is bugged and should be ignored
 
@@ -65,6 +65,7 @@ datum
 				target = targeta
 				job = joba
 				points = get_points(job)
+				explanation_text = "Assassinate [target.current.real_name], the [target.assigned_role]."
 
 			check_completion()
 				if(target && target.current)
