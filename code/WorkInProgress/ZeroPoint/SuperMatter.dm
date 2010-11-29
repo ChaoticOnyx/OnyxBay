@@ -105,9 +105,4 @@
 	for(var/mob/living/l in range(src,3))
 		l.gib()
 
-	for(var/mob/dead/l in range(src,10))
-		if(prob(5))
-			var/virus = l.virus
-			gibs(l.loc, virus)
-
 	return 1
