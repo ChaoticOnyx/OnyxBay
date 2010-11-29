@@ -26,26 +26,6 @@
 	var/setup_radio_tag
 	var/setup_frequency = 1411
 
-/obj/item/weapon/disk/data
-	var/datum/computer/folder/root = null
-	var/file_amount = 32.0
-	var/file_used = 0.0
-	var/portable = 1
-	var/title = "Data Disk"
-	New()
-		src.root = new /datum/computer/folder
-		src.root.holder = src
-		src.root.name = "root"
-
-/obj/item/weapon/disk/data/fixed_disk
-	name = "Storage Drive"
-	icon_state = "harddisk"
-	title = "Storage Drive"
-	file_amount = 80.0
-	portable = 0
-
-	attack_self(mob/user as mob)
-		return
 
 /obj/item/weapon/disk/data/computer2test
 	name = "Programme Diskette"

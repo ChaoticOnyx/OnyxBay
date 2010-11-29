@@ -1260,7 +1260,7 @@
 						src.diskette.data_type = src.buffer1type
 						src.diskette.ue = src.buffer1iue
 						src.diskette.owner = src.buffer1owner
-						src.diskette.name = "data disk - '[src.buffer1owner]'"
+						src.diskette.name = "Genetics Disk - '[src.buffer1label]'"
 				if(2)
 					if(!buffer2)
 						saved = 0
@@ -1269,7 +1269,7 @@
 						src.diskette.data_type = src.buffer2type
 						src.diskette.ue = src.buffer2iue
 						src.diskette.owner = src.buffer2owner
-						src.diskette.name = "data disk - '[src.buffer2owner]'"
+						src.diskette.name = "Genetics Disk - '[src.buffer2label]'"
 				if(3)
 					if(!buffer3)
 						saved = 0
@@ -1278,7 +1278,7 @@
 						src.diskette.data_type = src.buffer3type
 						src.diskette.ue = src.buffer3iue
 						src.diskette.owner = src.buffer3owner
-						src.diskette.name = "data disk - '[src.buffer3owner]'"
+						src.diskette.name = "Genetics Disk - '[src.buffer3label]'"
 			if(!saved)
 				src.temphtml = "\red ERROR:Data equals null"
 			else
