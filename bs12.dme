@@ -130,7 +130,6 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
-#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -446,7 +445,7 @@
 #include "code\game\objects\items\weapons\cards_ids.dm"
 #include "code\game\objects\items\weapons\cigs_lighters.dm"
 #include "code\game\objects\items\weapons\clown_items.dm"
-#include "code\game\objects\items\weapons\datadisk.dm"
+#include "code\game\objects\items\weapons\disk.dm"
 #include "code\game\objects\items\weapons\flamethrower.dm"
 #include "code\game\objects\items\weapons\game_kit.dm"
 #include "code\game\objects\items\weapons\glass.dm"

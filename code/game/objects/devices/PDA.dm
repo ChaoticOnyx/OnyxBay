@@ -96,7 +96,7 @@
 	var/access_security = 0
 	var/access_engine = 0
 	var/access_medical = 0
-	var/access_manifest = 0
+	//var/access_manifest = 0
 	var/access_clown = 0
 	var/access_janitor = 0
 	var/access_reagent_scanner = 0
@@ -299,7 +299,7 @@
 /obj/item/weapon/cartridge/head
 	name = "Easy-Record DELUXE"
 	icon_state = "cart-h"
-	access_manifest = 1
+	//access_manifest = 1
 	access_engine = 1
 	access_security = 1
 	access_status_display = 1
@@ -357,7 +357,7 @@
 	name = "Value-PAK Cartridge"
 	desc = "Now with 200% more value!"
 	icon_state = "cart-c"
-	access_manifest = 1
+	//access_manifest = 1
 	access_engine = 1
 	access_security = 1
 	access_medical = 1
@@ -611,12 +611,10 @@
 				dat += "<ul>"
 				dat += "<li><a href='byond://?src=\ref[src];note=1'>Notekeeper</a></li>"
 				dat += "<li><a href='byond://?src=\ref[src];mess=1'>Messenger</a></li>"
+				dat += "<li><a href='byond://?src=\ref[src];cm=1'>View Crew Manifest</a></li>"
+
 				if (!isnull(src.cartridge) && src.cartridge.access_clown)
 					dat += "<li><a href='byond://?src=\ref[src];honk=1'>Honk Synthesizer</a></li>"
-
-				if (!isnull(src.cartridge) && src.cartridge.access_manifest)
-					dat += "<li><a href='byond://?src=\ref[src];cm=1'>View Crew Manifest</a></li>"
-
 
 				if(cartridge && cartridge.access_status_display)
 					dat += "<li><a href='byond://?src=\ref[src];sd=1'>Set Status Display</a></li>"
@@ -1314,7 +1312,6 @@ Code:
 					difficulty += P.cartridge.access_engine
 					difficulty += P.cartridge.access_clown
 					difficulty += P.cartridge.access_janitor
-					difficulty += P.cartridge.access_manifest * 2
 				else
 					difficulty += 2
 
