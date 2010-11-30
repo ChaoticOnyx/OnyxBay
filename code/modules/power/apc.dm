@@ -2,7 +2,8 @@
 #define APC_WIRE_MAIN_POWER1 2
 #define APC_WIRE_MAIN_POWER2 3
 #define APC_WIRE_AI_CONTROL 4
-
+var/fillertext = {" Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur magna cupidatat do ullamco velit Excepteur consectetur sint do id esse est Duis quis ea cillum ut minim irure consequat. ullamco sint pariatur. dolor aliqua. laboris adipisicing ad nostrud qui Duis anim incididunt in eu commodo cupidatat minim ullamco sunt exercitation adipisicing proident, exercitation dolor sit "}
 // the Area Power Controller (APC), formerly Power Distribution Unit (PDU)
 // one per area, needs wire conection to power network
 
