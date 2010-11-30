@@ -292,24 +292,6 @@
 	throw_range = 10
 	w_class = 2.0
 
-#define MAXCOIL 30
-/obj/item/weapon/cable_coil
-	name = "cable coil"
-	var/amount = MAXCOIL
-	icon = 'power.dmi'
-	icon_state = "coil"
-	desc = "A coil of power cable."
-	throwforce = 10
-	w_class = 2.0
-	throw_speed = 2
-	throw_range = 5
-	flags = TABLEPASS|USEDELAY|FPRINT|CONDUCT
-	item_state = "coil"
-
-/obj/item/weapon/cable_coil/cut
-	icon = 'power.dmi'
-	icon_state = "coil2"
-
 /obj/item/weapon/crowbar
 	name = "crowbar"
 	icon = 'items.dmi'

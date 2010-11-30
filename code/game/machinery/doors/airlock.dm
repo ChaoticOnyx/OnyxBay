@@ -446,81 +446,7 @@ About the new airlock wires panel:
 		return 0 //you lucked out, no shock for you
 	if(!user)
 		return 0
-	var/net = get_connection()		// find the powernet of the connected cable
-
-	if(!net)		// cable is unpowered
-		return 0
-	if (src.airlockelectrocute(user, net))
-		return 1
-	else
-		return 0
-
-
-/obj/machinery/door/airlock/proc/airlockelectrocute(mob/user, netnum)
-	if (!user)
-		return 0
-	//You're probably getting shocked deal w/ it
-	if(!user)
-		return 0
-	if(!netnum)		// unconnected cable is unpowered
-		return 0
-
-	var/prot = 1
-
-	if(istype(user, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = user
-
-		if(H.gloves)
-			var/obj/item/clothing/gloves/G = H.gloves
-
-			prot = G.siemens_coefficient
-	else if (istype(user, /mob/living/silicon))
-		return 0
-
-	if(prot == 0)		// elec insulted gloves protect completely
-		return 0
-
-	//ok you're getting shocked now
-	var/datum/powernet/PN			// find the powernet
-	if(powernets && powernets.len >= netnum)
-		PN = powernets[netnum]
-
-	if(!PN)
-		return 0
-	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
-	s.set_up(5, 1, src)
-	s.start()
-
-	var/shock_damage = 0
-	if(PN.avail > 750000)	//someone juiced up the grid enough, people going to die!
-		shock_damage = min(rand(70,145),rand(70,145))*prot
-	else if(PN.avail > 100000)
-		shock_damage = min(rand(35,110),rand(35,110))*prot
-	else if(PN.avail > 75000)
-		shock_damage = min(rand(30,100),rand(30,100))*prot
-	else if(PN.avail > 50000)
-		shock_damage = min(rand(25,90),rand(25,90))*prot
-	else if(PN.avail > 25000)
-		shock_damage = min(rand(20,80),rand(20,80))*prot
-	else if(PN.avail > 10000)
-		shock_damage = min(rand(20,65),rand(20,65))*prot
-	else
-		shock_damage = min(rand(20,45),rand(20,45))*prot
-
-//		message_admins("\blue <B>ADMIN: </B>DEBUG: shock_damage = [shock_damage] PN.avail = [PN.avail] user = [user] netnum = [netnum]")
-
-	user.burn_skin(shock_damage)
-	user.fireloss += shock_damage
-	user.updatehealth()
-	user << "\red <B>You feel a powerful shock course through your body!</B>"
-	sleep(1)
-
-	if(user.stunned < shock_damage)	user.stunned = shock_damage
-	if(user.weakened < 20*prot)	user.weakened = 20*prot
-	for(var/mob/M in viewers(src))
-		if(M == user)	continue
-		M.show_message("\red [user.name] was shocked by the [src.name]!", 3, "\red You hear a heavy electrical crack", 2)
-	return 1
+	return Electrocute(user)
 
 
 /obj/machinery/door/airlock/update_icon()
@@ -653,7 +579,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/proc/attack_hack(mob/user as mob, obj/item/device/hacktool/C)
 	if(C.in_use)
-		user << "The hacktool is already in use on another airlock."
+		user << "We are already hacking another airlock."
 		return
 	if (!src.canSynControl() && src.canSynHack())
 		src.synhack(user, C)
@@ -1189,14 +1115,14 @@ About the new airlock wires panel:
 			//bring up airlock dialog
 			src.synHacking = 0
 			I.in_use = 0
-			src.attack_hack(user)
+			src.attack_hack(user, I)
 
 
 
 // ***************************************
 // Networking Support
 // ***************************************
-
+/*
 /obj/machinery/door/airlock/NetworkIdentInfo()
 	return "AIRLOCK [!src.density ? "OPEN" : "CLOSED"]"
 
@@ -1253,3 +1179,4 @@ About the new airlock wires panel:
 					if("BACKUP")
 						src.loseBackupPower()
 						return 1
+*/

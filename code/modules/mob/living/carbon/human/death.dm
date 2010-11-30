@@ -7,7 +7,7 @@
 		//hallucination = 0
 		halloss = 0
 		// And the suffocation was a hallucination (lazy)
-		oxyloss = max(oxyloss - 50,0)
+		oxyloss = 0
 		return
 	if(zombifying)
 		zombify()

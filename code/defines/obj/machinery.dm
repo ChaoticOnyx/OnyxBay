@@ -383,7 +383,6 @@
 	name = null
 	icon = 'power.dmi'
 	anchored = 1.0
-	var/datum/powernet/powernet = null
 	var/netnum = 0
 	var/directwired = 1		// by default, power machines are connected by a cable in a neighbouring turf
 							// if set to 0, requires a 0-X cable on this turf

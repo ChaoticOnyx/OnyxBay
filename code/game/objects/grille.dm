@@ -1,15 +1,5 @@
 //returns the netnum of a stub cable at this grille loc, or 0 if none
 
-/obj/grille/proc/get_connection()
-	var/turf/T = src.loc
-	if(!istype(T, /turf/simulated/floor))
-		return
-
-	for(var/obj/cable/C in T)
-		if(C.d1 == 0)
-			return C.netnum
-
-	return 0
 
 
 /obj/grille/ex_act(severity)
@@ -141,9 +131,14 @@
 	if(!prob(prb))
 		return 0
 
-	var/net = get_connection()		// find the powernet of the connected cable
-
-	if(!net)		// cable is unpowered
+	var/turf/MyLocation = loc
+	if(!istype(MyLocation, /turf/simulated/floor))
 		return 0
 
-	return src.electrocute(user, prb, net)
+	for (var/obj/cabling/power/Cable in MyLocation)
+		var/datum/UnifiedNetwork/Network = Networks[/obj/cabling/power]
+		if(!Network)
+			return 0
+		var/datum/UnifiedNetworkController/PowernetController/Controller = Network.Controller
+		Controller.CableTouched(Cable, user)
+		return 1

@@ -61,7 +61,7 @@
 		return 0
 
 	if(traitor_scaling)
-		num_traitors = max(1, min(round((num_players + r) / 10), traitors_possible))
+		num_traitors = max(1, min(round((num_players + r) / 10, 1), traitors_possible))
 		log_game("Number of traitors: [num_traitors]")
 		message_admins("Players counted: [num_players]  Number of traitors chosen: [num_traitors]")
 
@@ -110,7 +110,7 @@
 		else
 			info.starting_occupation = traitor.current:wear_id:assignment
 
-			for(var/datum/objective/o in SelectObjectives(info.starting_occupation))
+			for(var/datum/objective/o in SelectObjectives(info.starting_occupation, traitor))
 				o.owner = traitor
 				traitor.objectives += o
 
@@ -151,10 +151,10 @@
 				else
 					var/datum/objective/hijack/hijack_objective = new
 					hijack_objective.owner = traitor
-					traitor.objectives += hijack_objective
+					traitor.objectives += hijack_objective*/
 
 
-			equip_traitor(traitor.current)*/
+			equip_traitor(traitor.current)
 
 		for(var/datum/objective/objective in traitor.objectives)
 			info.starting_objective += objective.explanation_text + "            "
@@ -163,6 +163,8 @@
 		traitor.current << "\red <B>You are the traitor.</B>"
 		traitor.current << "\red <B>REPEAT</B>"
 		traitor.current << "\red <B>You are the traitor.</B>"
+		spawn(6000)			//Strumpetplaya - Just another friendly reminder so people don't forget they're the traitor.
+			traitor.current << "\red <B>In case you missed it the first time - YOU ARE THE TRAITOR!</B>"
 		var/obj_count = 1
 		for(var/datum/objective/objective in traitor.objectives)
 			traitor.current << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"

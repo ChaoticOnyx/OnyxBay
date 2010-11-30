@@ -14,7 +14,7 @@
 
 /obj/item/weapon/computercable_coil
 	name = "Network Cable Coil"
-	var/amount = MAXCOIL
+	var/amount = 30
 	icon = 'netcable.dmi'
 	icon_state = "coil"
 	desc = "A coil of Network cable."
@@ -154,7 +154,7 @@ obj/computercable/New()
 
 // the cable coil object, used for laying cable
 
-/obj/item/weapon/computercable_coil/New(loc, length = MAXCOIL)
+/obj/item/weapon/computercable_coil/New(loc, length = 30)
 	src.amount = length
 	pixel_x = rand(-2,2)
 	pixel_y = rand(-2,2)
@@ -199,11 +199,11 @@ obj/computercable/New()
 
 	else if( istype(W, /obj/item/weapon/computercable_coil) )
 		var/obj/item/weapon/computercable_coil/C = W
-		if(C.amount == MAXCOIL)
+		if(C.amount == 30)
 			user << "The coil is too long, you cannot add any more cable to it."
 			return
 
-		if( (C.amount + src.amount <= MAXCOIL) )
+		if( (C.amount + src.amount <= 30) )
 			C.amount += src.amount
 			user << "You join the cable coils together."
 			C.updateicon()
@@ -211,10 +211,10 @@ obj/computercable/New()
 			return
 
 		else
-			user << "You transfer [MAXCOIL - src.amount ] length\s of cable from one coil to the other."
-			src.amount -= (MAXCOIL-C.amount)
+			user << "You transfer [30 - src.amount ] length\s of cable from one coil to the other."
+			src.amount -= (30-C.amount)
 			src.updateicon()
-			C.amount = MAXCOIL
+			C.amount = 30
 			C.updateicon()
 			return
 
@@ -269,7 +269,7 @@ obj/computercable/New()
 
 // called when computercable_coil is click on an installed obj/cable
 
-/obj/item/weapon/computercable_coil/proc/cable_join(obj/cable/C, mob/user)
+/obj/item/weapon/computercable_coil/proc/cable_join(obj/cabling/C, mob/user)
 
 
 	var/turf/U = user.loc

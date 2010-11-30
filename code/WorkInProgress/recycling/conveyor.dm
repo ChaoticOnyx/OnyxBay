@@ -19,7 +19,7 @@
 	// following two only used if a diverter is present
 	var/divert = 0 		// if non-zero, direction to divert items
 	var/divdir = 0		// if diverting, will be conveyer dir needed to divert (otherwise dense)
-
+	var/CableType = null
 
 
 	// create a conveyor
@@ -78,7 +78,9 @@
 						if(C)
 							M.buckled = C
 						else
-							new/obj/item/weapon/cable_coil/cut(M.loc)
+							var/obj/item/weapon/CableCoil/Coil = new CableType(M.loc)
+							Coil.Amount = 1
+							Coil.UpdateIcon()
 					else
 						step(M,movedir)
 				else
@@ -92,7 +94,7 @@
 		G.affecting.Move(src.loc)
 		del(G)
 		return
-	else if(istype(I, /obj/item/weapon/cable_coil))	// if cable, see if a mob is present
+	else if(istype(I, /obj/item/weapon/CableCoil))	// if cable, see if a mob is present
 		var/mob/M = locate() in src.loc
 		if(M)
 			if (M == user)
@@ -106,7 +108,8 @@
 					return
 			M.buckled = src
 			src.add_fingerprint(user)
-			I:use(1)
+			CableType = I.type
+			I:UseCable(1)
 			M.lying = 1
 			return
 

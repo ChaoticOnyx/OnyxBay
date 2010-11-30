@@ -19,7 +19,6 @@
 	var/id = null
 	var/frequency = null
 	var/computertype = null
-	var/powernet = null
 	var/list/records = null
 
 /obj/item/weapon/circuitry
@@ -156,23 +155,24 @@
 				user << "\blue You unfasten the circuit board."
 				src.state = 1
 				src.icon_state = "1"
-			if(istype(P, /obj/item/weapon/cable_coil))
-				if(P:amount >= 5)
+			if(istype(P, /obj/item/weapon/CableCoil))
+				var/obj/item/weapon/CableCoil/Coil = P
+				if (Coil.CableType != /obj/cabling/power)
+					user << "That's the wrong cable type, you need electrical cable!"
+					return
+				if(Coil.UseCable(5))
 					playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-					if(do_after(user, 20))
-						P:amount -= 5
-						if(!P:amount) del(P)
-						user << "\blue You add cables to the frame."
-						src.state = 3
-						src.icon_state = "3"
+					user << "\blue You add cables to the frame."
+					src.state = 3
+					src.icon_state = "3"
 		if(3)
 			if(istype(P, /obj/item/weapon/wirecutters))
 				playsound(src.loc, 'wirecutter.ogg', 50, 1)
 				user << "\blue You remove the cables."
 				src.state = 2
 				src.icon_state = "2"
-				var/obj/item/weapon/cable_coil/A = new /obj/item/weapon/cable_coil( src.loc )
-				A.amount = 5
+				var/obj/item/weapon/CableCoil/power/A = new /obj/item/weapon/CableCoil/power( src.loc )
+				A.Amount = 5
 
 			if(istype(P, /obj/item/weapon/sheet/glass))
 				if(P:amount >= 2)
@@ -195,7 +195,6 @@
 				playsound(src.loc, 'Screwdriver.ogg', 50, 1)
 				user << "\blue You connect the monitor."
 				var/B = new src.circuit.computertype ( src.loc )
-				if(circuit.powernet) B:powernet = circuit.powernet
 				if(circuit.id) B:id = circuit.id
 				if(circuit.records) B:records = circuit.records
 				if(circuit.frequency) B:frequency = circuit.frequency

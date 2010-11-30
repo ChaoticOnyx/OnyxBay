@@ -11,84 +11,80 @@
 /proc/CreateUnifiedNetwork(var/CableType)
 	var/datum/UnifiedNetwork/NewNetwork = new()
 	var/list/NetworkList = AllNetworks[CableType]
+
+	if (!NetworkList)
+		NetworkList = list( )
+		AllNetworks[CableType] = NetworkList
+
 	NetworkList += NewNetwork
 	NewNetwork.NetworkNumber = NetworkList.len
 
 	return NewNetwork
 
-/datum/UnifiedNetwork
-	var/datum/UnifiedNetworkController/Controller = null
 
-	var/NetworkNumber
-	var/list/Nodes = list( )
-	var/list/Cables = list( )
+/datum/UnifiedNetwork
+	var/datum/UnifiedNetworkController/Controller 	= null
+	var/UnhandledExplosionDamage 					= 0
+	var/NetworkNumber 								= 0
+	var/list/Nodes 									= list( )
+	var/list/Cables 								= list( )
 
 
 /datum/UnifiedNetwork/proc/CutCable(var/obj/cabling/Cable)
 
-	var/list/P = Cable.CableConnections(get_step_3d(Cable, Cable.Direction1)) | Cable.CableConnections(get_step_3d(Cable, Cable.Direction2))
-
-	Controller.CableCut(Cable)
+	var/list/ConnectedCables = Cable.CableConnections(get_step_3d(Cable, Cable.Direction1)) | Cable.CableConnections(get_step_3d(Cable, Cable.Direction2))
 
 	Controller.RemoveCable(Cable)
 
-	if(!P.len)
+	if(!ConnectedCables.len)
 		Cables -= Cable
 		if (!Cables.len)
 			for(var/obj/Node in Nodes)
 				if(!Node.NetworkNumber)
 					Controller.DetachNode(Node)
-					Node.Networks[Cable.type] = null
-					Node.NetworkNumber[Cable.type] = 0
+					Node.Networks[Cable.EquivalentCableType] = null
+					Node.NetworkNumber[Cable.EquivalentCableType] = 0
+
+			Controller.Finalize()
 			del Controller
 			del src
-			//UNetwork does not prune the network list in order to maintain the correct NetNum=>Network mappings,
-			//instead leaving a NULL entry in the list
+
 		return
 
 	for(var/obj/C in Cables)
-		C.NetworkNumber[Cable.type] = 0
+		C.NetworkNumber[Cable.EquivalentCableType] = 0
 	for(var/obj/N in Nodes)
-		N.NetworkNumber[Cable.type] = 0
+		N.NetworkNumber[Cable.EquivalentCableType] = 0
 
 	Cable.loc = null
 	Cables -= Cable
 
-	PropagateNetwork(P[1], NetworkNumber)
+	PropagateNetwork(ConnectedCables[1], NetworkNumber)
 
-	P -= P[1]
+	ConnectedCables -= ConnectedCables[1]
 
-	for(var/obj/cabling/O in P)
-		if(O.NetworkNumber[Cable.type] == 0)
+	for(var/obj/cabling/O in ConnectedCables)
+		if(O.NetworkNumber[Cable.EquivalentCableType] == 0)
 
-			var/datum/UnifiedNetwork/NewNetwork = CreateUnifiedNetwork(Cable.type)
+			var/datum/UnifiedNetwork/NewNetwork = CreateUnifiedNetwork(Cable.EquivalentCableType)
 
 			PropagateNetwork(O, NewNetwork.NetworkNumber)
 
 			Controller.StartSplit(NewNetwork)
 
 			for(var/obj/cabling/C in Cables)
-				if(!C.NetworkNumber)
-					Controller.RemoveCable(C)
-					C.NetworkNumber[Cable.type] = NewNetwork.NetworkNumber
-					C.Networks[Cable.type] = NewNetwork
-					Cables -= C
-					NewNetwork.Cables += C
-					NewNetwork.Controller.AddCable(C)
+				if(!C.NetworkNumber[Cable.EquivalentCableType])
+					NewNetwork.AddCable(C)
 
 			for(var/obj/Node in Nodes)
-				if(!Node.NetworkNumber)
-					Controller.DetachNode(Node)
-					Node.NetworkNumber[Cable.type] = NewNetwork.NetworkNumber
-					Node.Networks[Cable.type] = NewNetwork
-					Nodes -= Node
-					NewNetwork.Nodes += Node
-					NewNetwork.Controller.AttachNode(Node)
+				if(!Node.NetworkNumber[Cable.EquivalentCableType])
+					NewNetwork.AddNode(Node)
 
 			Controller.FinishSplit(NewNetwork)
 
 			NewNetwork.Controller.Initialize()
 	return
+
 
 /datum/UnifiedNetwork/proc/BuildFrom(var/obj/cabling/Start, var/ControllerType = /datum/UnifiedNetworkController)
 	var/list/Components = PropagateNetwork(Start, NetworkNumber)
@@ -97,8 +93,10 @@
 
 	for (var/obj/Component in Components)
 		if (istype(Component, /obj/cabling))
+			Cables += Component
 			Controller.AddCable(Component)
 		else
+			Nodes += Component
 			Controller.AttachNode(Component)
 
 	Controller.Initialize()
@@ -107,42 +105,94 @@
 
 
 /datum/UnifiedNetwork/proc/PropagateNetwork(var/obj/cabling/Start, var/NewNetworkNumber)
-	var/list/Connections = list()
 
-	Start.NetworkNumber[Start.type] = NewNetworkNumber
-
+	var/list/Connections   = list( )
 	var/list/Possibilities = list(Start)
 
 	while (Possibilities.len)
-		for (var/obj/C in Possibilities.Copy())
-			if (!istype(C, /obj/cabling))
-				continue
-			var/obj/cabling/CC = C
-			Possibilities |= CC.AllConnections(get_step_3d(CC, CC.Direction1)) | CC.AllConnections(get_step_3d(CC, CC.Direction2))
+		for (var/obj/cabling/Cable in Possibilities.Copy())
+			Possibilities |= Cable.AllConnections(get_step_3d(Cable, Cable.Direction1))
+			Possibilities |= Cable.AllConnections(get_step_3d(Cable, Cable.Direction2))
 
-		for (var/obj/C in Possibilities.Copy())
-			if (C.NetworkNumber[C.type] != NewNetworkNumber)
-				C.NetworkNumber[C.type] = NewNetworkNumber
-				C.Networks[C.type] = src
-				Connections += C
-			Possibilities -= C
+		for (var/obj/Component in Possibilities.Copy())
+			if (Component.NetworkNumber[Start.EquivalentCableType] != NewNetworkNumber)
+				Component.NetworkNumber[Start.EquivalentCableType] = NewNetworkNumber
+				Component.Networks[Start.EquivalentCableType] = src
+				Connections += Component
+				if (!istype(Component, /obj/cabling))
+					Possibilities -= Component
+			else
+				Possibilities -= Component
 
+	world.log << "Created Unified Network with [Connections.len] Components from [Start.x], [Start.y], [Start.z]"
 	return Connections
 
+/datum/UnifiedNetwork/proc/AddNode(var/obj/NewNode, var/obj/cabling/Cable)
+	world << "Adding [NewNode.name] to \[[Cable.EquivalentCableType]\] Network [NetworkNumber]"
+	var/datum/UnifiedNetwork/CurrentNetwork = NewNode.Networks[Cable.EquivalentCableType]
+
+	if (CurrentNetwork == src)
+		return
+
+	if (CurrentNetwork)
+		CurrentNetwork.Controller.DetachNode(NewNode)
+
+	NewNode.NetworkNumber[Cable.EquivalentCableType] = NetworkNumber
+	NewNode.Networks[Cable.EquivalentCableType] = src
+
+	if (CurrentNetwork)
+		CurrentNetwork.Nodes -= NewNode
+
+	Nodes += NewNode
+	Controller.AttachNode(NewNode)
+	return
+
+/datum/UnifiedNetwork/proc/AddCable(var/obj/cabling/Cable)
+
+	var/datum/UnifiedNetwork/CurrentNetwork = Cable.Networks[Cable.EquivalentCableType]
+	if (CurrentNetwork == src)
+		return
+
+	if (CurrentNetwork)
+		CurrentNetwork.Controller.RemoveCable(Cable)
+	Cable.NetworkNumber[Cable.EquivalentCableType] = NetworkNumber
+	Cable.Networks[Cable.EquivalentCableType] = src
+	if (CurrentNetwork)
+		CurrentNetwork.Cables -= Cable
+	Cables += Cable
+	Controller.AddCable(Cable)
+	return
+
 /datum/UnifiedNetwork/proc/CableBuilt(var/obj/cabling/Cable, var/list/Connections)
-	if (Connections.len > 1)
-		Connections -= Connections[1]
-		for (var/obj/cabling/C in Connections)
-			if (C.Networks[C.type] != src)
-				Controller.BeginMerge(C.Networks[C.type])
+	var/list/MergeCables = list()
 
-				//TODO
+	for(var/obj/cabling/C in Connections)
+		MergeCables += C
 
+	for (var/obj/cabling/C in MergeCables)
+		if (C.Networks[C.EquivalentCableType] != src)
+			var/datum/UnifiedNetwork/OtherNetwork = C.Networks[C.EquivalentCableType]
+			Controller.BeginMerge(OtherNetwork, 0)
+			OtherNetwork.Controller.BeginMerge(src, 1)
 
-				Controller.FinishMerge()
+			for (var/obj/cabling/CC in OtherNetwork.Cables)
+				AddCable(CC)
+
+			for (var/obj/M in OtherNetwork.Nodes)
+				AddNode(M)
+
+			Controller.FinishMerge()
+			OtherNetwork.Controller.FinishMerge()
+			OtherNetwork.Controller.Finalize()
+
+			del OtherNetwork.Controller
+			del OtherNetwork
+
+	for(var/obj/Object in Connections - MergeCables)
+		AddNode(Object)
 
 	Controller.AddCable(Cable)
-	Cable.NetworkNumber[Cable.type] = NetworkNumber
-	Cable.Networks[Cable.type] = src
+	Cable.NetworkNumber[Cable.EquivalentCableType] = NetworkNumber
+	Cable.Networks[Cable.EquivalentCableType] = src
 
 	return

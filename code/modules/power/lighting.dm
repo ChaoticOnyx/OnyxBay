@@ -240,7 +240,7 @@
 				M.show_message("[user.name] smashed the light!", 3, "You hear a tinkle of breaking glass", 2)
 			if(on && (W.flags & CONDUCT))
 				if(!user.mutations & 2)
-					src.electrocute(user, 50, null, 20000)
+					src.Electrocute(user, 50, null, 20000)
 			broken()
 
 
@@ -255,7 +255,7 @@
 			s.set_up(3, 1, src)
 			s.start()
 			if(!user.mutations & 2)
-				src.electrocute(user, 75, null, 20000)
+				src.Electrocute(user, 75, null, 20000)
 
 
 // returns whether this light has power
@@ -269,8 +269,8 @@
 // if hands aren't protected and the light is on, burn the player
 
 /obj/machinery/light/attack_hand(mob/user)
-	if (istype(user, /mob/living/silicon/ai))	//Added by Strumpetplaya - AI shouldn't be able to
-		return									//grab lights.  This fixes that.
+	if (istype(user, /mob/living/silicon))
+		return
 	add_fingerprint(user)
 
 	if(status == LIGHT_EMPTY)

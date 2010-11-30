@@ -189,7 +189,7 @@
 			//E = Pt
 			//Lets say its 86% efficient
 			var/output = 0.86*energy/20
-			add_avail(output)
+			AddPower(output)
 	//yeah the machine realises that something isn't right and accounts for it if H or antiH
 			H_fuel -= H
 			antiH_fuel -= antiH

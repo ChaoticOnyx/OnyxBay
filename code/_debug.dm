@@ -402,7 +402,7 @@ Doing this because FindTurfs() isn't even used
 	if(Debug)
 		debugobj = new()
 
-		debugobj.debuglist = list( powernets, plines, vote, config, admins, ticker, SS13_airtunnel, sun )
+		debugobj.debuglist = list( plines, vote, config, admins, ticker, SS13_airtunnel, sun )
 
 
 		world << "<A href='?src=\ref[debugobj];Vars=1'>Debug</A>"

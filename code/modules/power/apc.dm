@@ -55,7 +55,6 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 	var/crit = 0
 	var/wiresexposed = 0
 	var/apcwires = 15
-	netnum = -1		// set so that APCs aren't found as powernet nodes
 //	luminosity = 1
 
 /proc/RandomAPCWires()
@@ -206,9 +205,12 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 			repair_state = 4
 			updateicon()
 			user << "\blue You detach the old wiring."
-		else if(repair_state == 4 && istype(W,/obj/item/weapon/cable_coil))
-			var/obj/item/weapon/cable_coil/S = W
-			if(!S.use(5))
+		else if(repair_state == 4 && istype(W,/obj/item/weapon/CableCoil))
+			var/obj/item/weapon/CableCoil/S = W
+			if(S.CableType != /obj/cabling/power)
+				user << "This is the wrong cable type!"
+				return
+			if(!S.UseCable(5))
 				user << "Not enough wiring"
 				return
 			repair_state = 5
@@ -504,9 +506,9 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 	if(!net)		// cable is unpowered
 		//world << "NO NET"
 		return 0
-	return src.apcelectrocute(user, prb, net)
+	return src.apcElectrocute(user, prb, net)
 
-/obj/machinery/power/apc/proc/apcelectrocute(mob/user, prb, netnum)
+/obj/machinery/power/apc/proc/apcElectrocute(mob/user, prb, netnum)
 
 	if(stat == 2)
 		return 0
@@ -726,19 +728,19 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 
 	return
 
-/obj/machinery/power/apc/surplus()
+/obj/machinery/power/apc/Surplus()
 	if(terminal)
-		return terminal.surplus()
+		return terminal.Surplus()
 	else
 		return 0
 
-/obj/machinery/power/apc/add_load(var/amount)
-	if(terminal && terminal.powernet)
-		terminal.powernet.newload += amount
-
-/obj/machinery/power/apc/avail()
+/obj/machinery/power/apc/AddLoad(var/amount)
 	if(terminal)
-		return terminal.avail()
+		terminal.AddLoad(amount)
+
+/obj/machinery/power/apc/PowerAvailable()
+	if(terminal)
+		return terminal.PowerAvailable()
 	else
 		return 0
 
@@ -773,9 +775,9 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 	var/last_en = environ
 	var/last_ch = charging
 
-	var/excess = surplus()
+	var/excess = Surplus()
 
-	if(!src.avail())
+	if(!src.PowerAvailable())
 		main_status = 0
 	else if(excess < 0)
 		main_status = 1
@@ -783,8 +785,10 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 		main_status = 2
 
 	var/perapc = 0
-	if(terminal && terminal.powernet)
-		perapc = terminal.powernet.perapc
+	if(terminal)
+		var/datum/UnifiedNetworkController/PowernetController/TerminalController = terminal.GetPowernet()
+
+		perapc = TerminalController.PowerPerAPC
 
 	if(cell && !shorted)
 
@@ -797,7 +801,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 														// by the same amount just used
 
 			cell.give(cellused)
-			add_load(cellused/CELLRATE)		// add the load used to recharge the cell
+			AddLoad(cellused/CELLRATE)		// add the load used to recharge the cell
 
 
 		else		// no excess, and not enough per-apc
@@ -805,7 +809,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 			if( (cell.charge/CELLRATE+perapc) >= lastused_total)		// can we draw enough from cell+grid to cover last usage?
 
 				cell.charge = min(cell.maxcharge, cell.charge + CELLRATE * perapc)	//recharge with what we can
-				add_load(perapc)		// so draw what we can from the grid
+				AddLoad(perapc)		// so draw what we can from the grid
 				charging = 0
 
 			else	// not enough power available to run the last tick!
@@ -846,7 +850,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 			if(excess > 0)		// check to make sure we have enough to charge
 				// Max charge is perapc share, capped to cell capacity, or % per second constant (Whichever is smallest)
 				var/ch = min(perapc, (cell.maxcharge - cell.charge), (cell.maxcharge*CHARGELEVEL))
-				add_load(ch) // Removes the power we're taking from the grid
+				AddLoad(ch) // Removes the power we're taking from the grid
 				cell.give(ch) // actually recharge the cell
 
 			else

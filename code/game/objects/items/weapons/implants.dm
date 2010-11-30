@@ -302,8 +302,6 @@ No Implant Specifics"}
 		t.hotspot_expose(SPARK_TEMP,125)
 
 /obj/item/weapon/implant/timplant/trigger(emote, mob/source as mob)
-
-
 	if (emote == src.activation_emote)
 		var/list/L = list()
 		var/list/areaindex = list()
@@ -332,8 +330,6 @@ No Implant Specifics"}
 	del src
 
 /obj/item/weapon/implant/vfac/hear(var/msg)
-
-
 	if(findtext(msg,src.phrase))
 		var/datum/disease/virus = new src.virus
 		var/mob/m = loc
@@ -341,7 +337,6 @@ No Implant Specifics"}
 
 
 /obj/item/weapon/implanter/proc/update()
-
 	if (src.imp)
 		src.icon_state = "implanter1"
 	else

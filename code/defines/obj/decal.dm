@@ -209,6 +209,11 @@
 	name = "SPACE DEPRESSURIZATION"
 	icon_state = "space"
 
+/obj/decal/sign/memetic
+	desc = "A warning sign of memetic danger, which reads 'MEMETIC DANGER, USE MESONS'."
+	name = "MEMETIC DANGER, USE MESONS."
+	icon_state = "memetic"
+
 /obj/decal/sign/stairsup
 	desc = "A sign which shows an arrow pointing up stairs"
 	name = "Stairs Up"

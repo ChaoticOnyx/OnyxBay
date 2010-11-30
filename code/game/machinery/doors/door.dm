@@ -1,5 +1,5 @@
 /obj/machinery/door/Bumped(atom/AM)
-	if(p_open || operating || !density) return
+	if(p_open || operating || !density || !autoopen) return
 	if(ismob(AM))
 		var/mob/M = AM
 		if(world.timeofday - AM.last_bumped <= 5) return
@@ -272,11 +272,12 @@
 	icon_state = "door1"
 	opacity = 1
 	density = 1
+	autoopen = 0
 
 // ***************************************
 // Networking Support
 // ***************************************
-
+/*
 /obj/machinery/door/NetworkIdentInfo()
 	return "DOOR [!src.density ? "OPEN" : "CLOSED"]"
 
@@ -296,3 +297,5 @@
 				close()
 				return 1
 	return 0
+
+*/

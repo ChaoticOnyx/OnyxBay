@@ -10,7 +10,7 @@
 	var/operating = 0
 	anchored = 1
 	var/autoclose = 0
-
+	var/autoopen = 1
 /obj/machinery/door/firedoor
 	name = "Firelock"
 	explosionstrength = 4

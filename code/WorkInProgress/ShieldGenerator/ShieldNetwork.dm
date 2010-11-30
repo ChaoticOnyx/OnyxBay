@@ -15,23 +15,10 @@ var/datum/shieldnetwork/ShieldNetwork
 	var/list/Cables = list( )
 
 
-/datum/shieldnetwork/New(var/obj/shieldconduit/C)
-	..()
-
-	if (!istype(C))
-		return
-	ShieldNetNum = ++NetworkCount
-
-
-
-
-
 //This entire proc should at some point be stripped, once proper shield networks are in
 /datum/shieldnetwork/proc/makenetwork()
 	src.ShieldNetNum = 12
 	for(var/obj/machinery/shielding/S in world)
-		if(istype(S,/obj/machinery/shielding/shield))
-			continue
 		src.Nodes += S
 		S.shieldNetwork = src
 
@@ -76,8 +63,8 @@ var/datum/shieldnetwork/ShieldNetwork
 	if(!ShieldNetwork.HasPower())
 		return
 	for(var/obj/machinery/shielding/emitter/E in Nodes)
-		E.online = 1
+		E.control = 1
 
 /datum/shieldnetwork/proc/stopshields()
 	for(var/obj/machinery/shielding/emitter/E in Nodes)
-		E.online = 0
+		E.control = 0

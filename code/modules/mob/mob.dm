@@ -1600,8 +1600,11 @@ mob/verb/turnwest()
 	..()
 	if(M != usr) return
 	if(usr == src) return
-	if(get_dist(usr,src) > 1) return
 	if(istype(M,/mob/living/silicon/ai)) return
+	if(M.mutations & 1)
+		show_inv(usr)
+		return
+	if(get_dist(usr,src) > 1) return
 	if(LinkBlocked(usr.loc,loc)) return
 	show_inv(usr)
 

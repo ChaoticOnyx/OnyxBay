@@ -505,22 +505,6 @@
 	var/obj/crematorium/connected = null
 	anchored = 1.0
 
-
-
-
-
-/obj/cable
-	level = 1
-	anchored =1
-	var/netnum = 0
-	name = "power cable"
-	desc = "A flexible superconducting cable for heavy-duty power transfer."
-	icon = 'power_cond.dmi'
-	icon_state = "0-1"
-	var/d1 = 0
-	var/d2 = 1
-	layer = 2.5
-
 /obj/manifest
 	name = "manifest"
 	icon = 'screen1.dmi'

@@ -289,6 +289,8 @@
 	return !cleared
 
 /mob/living/silicon/robot/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if (istype(W, /obj/item/weapon/reagent_containers/syringe))
+		return
 	if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
 		if (W:get_fuel() > 2)
 			W:use_fuel(1)
@@ -302,12 +304,15 @@
 		for(var/mob/O in viewers(user, null))
 			O.show_message(text("\red [user] has fixed some of the dents on [src]!"), 1)
 
-	else if(istype(W, /obj/item/weapon/cable_coil) && wiresexposed)
-		var/obj/item/weapon/cable_coil/coil = W
+	else if(istype(W, /obj/item/weapon/CableCoil) && wiresexposed)
+		var/obj/item/weapon/CableCoil/coil = W
+		if (coil.CableType != /obj/cabling/power)
+			user << "This is the wrong cable type, you need electrical cable!"
+			return
 		fireloss -= 30
 		if(fireloss < 0) fireloss = 0
 		updatehealth()
-		coil.use(1)
+		coil.UseCable(1)
 		for(var/mob/O in viewers(user, null))
 			O.show_message(text("\red [user] has fixed some of the burnt wires on [src]!"), 1)
 

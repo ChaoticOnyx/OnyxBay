@@ -223,16 +223,6 @@
 	src.disable_wire = pick(w)
 	w -= src.disable_wire
 
-/obj/machinery/autolathe/proc/get_connection()
-	var/turf/T = src.loc
-	if(!istype(T, /turf/simulated/floor))
-		return
-
-	for(var/obj/cable/C in T)
-		if(C.d1 == 0)
-			return C.netnum
-
-	return 0
 
 /obj/machinery/autolathe/proc/shock(M as mob)
-	return src.electrocute(M, 50, get_connection())
+	return src.Electrocute(M)

@@ -18,36 +18,39 @@
 	var/mode = 0		// 0 = off, 1=clamped (off), 2=operating
 
 
-	var/obj/cable/attached		// the attached cable
+	var/obj/cabling/attached		// the attached cable
 
 	attackby(var/obj/item/I, var/mob/user)
 		if(istype(I, /obj/item/weapon/screwdriver))
 			if(mode == 0)
 				var/turf/T = loc
 				if(isturf(T) && !T.intact)
-					attached = locate() in T
+					for(var/obj/cabling/Cable in T)
+						if(Cable.type == /obj/cabling/power)
+							attached = Cable
+							break
 					if(!attached)
-						user << "No exposed cable here to attach to."
+						user << "No exposed electrical cable here to attach to."
 						return
 					else
 						anchored = 1
 						mode = 1
-						user << "You attach the device to the cable."
+						user << "You attach the device to the electrical cable."
 						for(var/mob/M in viewers(user))
 							if(M == user) continue
-							M << "[user] attaches the power sink to the cable."
+							M << "[user] attaches the power sink to the electrical cable."
 						return
 				else
-					user << "Device must be placed over an exposed cable to attach to it."
+					user << "Device must be placed over an exposed electrical cable to attach to it."
 					return
 			else
 				anchored = 0
 				mode = 0
 				attached = null
-				user << "You detach	the device from the cable."
+				user << "You detach	the device from the electrical cable."
 				for(var/mob/M in viewers(user))
 					if(M == user) continue
-					M << "[user] detaches the power sink from the cable."
+					M << "[user] detaches the power sink from the electrical cable."
 				ul_SetLuminosity(0)
 				icon_state = "powersink0"
 				return
@@ -78,22 +81,23 @@
 
 	process()
 		if(attached)
-			var/datum/powernet/PN = attached.get_powernet()
-			if(PN)
+			var/datum/UnifiedNetwork/Network = attached.Networks[attached.type]
+			var/datum/UnifiedNetworkController/PowernetController/Controller = Network.Controller
+			if(Network)
 				if(!luminosity)
 					ul_SetLuminosity(12)
 
 
 				// found a powernet, so drain up to max power from it
 
-				var/drained = min ( drain_rate, PN.avail )
-				PN.newload += drained
+				var/drained = min ( drain_rate, Controller.Power )
+				Controller.DrawPower(drained)
 				power_drained += drained
 
 				// if tried to drain more than available on powernet
 				// now look for APCs and drain their cells
 				if(drained < drain_rate)
-					for(var/obj/machinery/power/terminal/T in PN.nodes)
+					for(var/obj/machinery/power/terminal/T in Network.Nodes)
 						if(istype(T.master, /obj/machinery/power/apc))
 							var/obj/machinery/power/apc/A = T.master
 							if(A.operating && A.cell)
