@@ -12,7 +12,6 @@
 
 	for(var/datum/mind/target in ticker.minds)
 		if((target != traitor) && istype(target.current, /mob/living/carbon/human))
-			world << "Should be fine."
 			if(target && target.current)
 				missions +=	new /datum/objective/assassinate(null,job,target)
 	return missions
@@ -49,7 +48,7 @@
 
 	while(totalweight < 100)
 		selectobj = rand(1,100)	//Randomly determine the type of objective to be given.
-		if(!length(killobjectives) || !length(frameobjectives) || !length(protectobjectives))
+		if(!length(killobjectives) || !length(frameobjectives) || !length(protectobjectives))	//If any of these lists are empty, just give them theft objectives.
 			var/datum/objective/objective = pick(theftobjectives)
 			chosenobjectives += objective
 			totalweight += objective.weight
