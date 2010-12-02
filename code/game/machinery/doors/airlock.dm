@@ -579,7 +579,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/proc/attack_hack(mob/user as mob, obj/item/device/hacktool/C)
 	if(C.in_use)
-		user << "The hacktool is already in use on another airlock."
+		user << "We are already hacking another airlock."
 		return
 	if (!src.canSynControl() && src.canSynHack())
 		src.synhack(user, C)
@@ -1115,7 +1115,7 @@ About the new airlock wires panel:
 			//bring up airlock dialog
 			src.synHacking = 0
 			I.in_use = 0
-			src.attack_hack(user)
+			src.attack_hack(user, I)
 
 
 

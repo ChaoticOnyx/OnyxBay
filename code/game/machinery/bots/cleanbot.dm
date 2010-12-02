@@ -27,6 +27,7 @@
 	var/screwloose = 0
 	var/oddbutton = 0
 	var/blood = 1
+	var/oil = 1
 	var/panelopen = 0
 	var/list/target_types = list()
 	var/obj/decal/cleanable/target
@@ -46,12 +47,13 @@
 	dat += text({"
 <TT><B>Automatic Station Cleaner v1.0</B></TT><BR><BR>
 Status: []<BR>
-Behaviour controls are [src.locked ? "locked" : "unlocked"]""},
+Behaviour controls are [src.locked ? "locked" : "unlocked"]"},
 text("<A href='?src=\ref[src];operation=start'>[src.on ? "On" : "Off"]</A>"))
+
 	if(!src.locked)
-		dat += text({"<BR>
-Cleans Blood: []<BR>"},
-text("<A href='?src=\ref[src];operation=blood'>[src.blood ? "Yes" : "No"]</A>"))
+		dat += text("<BR>Cleans Blood: []<BR>",text("<A href='?src=\ref[src];operation=blood'>[src.blood ? "Yes" : "No"]</A>"))
+		dat += text("<BR>Cleans Oil: []<BR>", text("<A href='?src=\ref[src];operation=oil'>[src.oil ? "Yes" : "No"]</A>"))
+
 	if(src.panelopen && !src.locked)
 		dat += text({"
 Odd looking screw twiddled: []<BR>
@@ -78,7 +80,11 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 			src.path = new()
 			src.updateUsrDialog()
 		if("blood")
-			src.blood =!src.blood
+			src.blood = !src.blood
+			src.get_targets()
+			src.updateUsrDialog()
+		if("oil")
+			src.oil = !src.oil
 			src.get_targets()
 			src.updateUsrDialog()
 		if("screw")
@@ -194,7 +200,13 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 	src.target_types = new/list()
 	if(src.blood)
 		target_types += /obj/decal/cleanable/blood/
+		target_types += /obj/decal/cleanable/blood/drip/
 		target_types += /obj/decal/cleanable/blood/gibs/
+		target_types += /obj/decal/cleanable/blood/splatter/
+		target_types += /obj/decal/cleanable/blood/tracks/
+	if(src.oil)
+		target_types += /obj/decal/cleanable/oil/
+		target_types += /obj/decal/cleanable/oil/streak/
 
 /obj/machinery/bot/cleanbot/proc/clean(var/obj/decal/cleanable/target)
 	src.anchored = 1

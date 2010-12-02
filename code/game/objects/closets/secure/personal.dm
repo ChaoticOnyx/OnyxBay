@@ -33,6 +33,7 @@
 				src.icon_state = src.icon_closed
 			if (!src.registered)
 				src.registered = I.registered
+				src.name = "Personal Closet - [I.registered]"
 				src.desc = "Owned by [I.registered]."
 		else
 			user << "\red Access Denied"

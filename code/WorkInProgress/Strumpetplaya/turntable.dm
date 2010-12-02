@@ -4,6 +4,11 @@
 //Sukasa - Hey, just for the record, stuff shouldn't go into just /obj/item - and some of the things in here
 // like the laser emitter should be machinery, while other stuff should just be in /obj/effects/ or elsewhere
 
+//Yes, I'm aware.  Lasers can be picked up and put in your pocket and stupid shit like that.  When
+//I say this is in a finished state (note the first line up above) then you can feel free to look
+//at it and give me your opinion on it and point out any issues you see.  Until then, you're wasting
+//your time.
+
 /sound/turntable/test
 	file = 'TestLoop1.ogg'
 	falloff = 2
