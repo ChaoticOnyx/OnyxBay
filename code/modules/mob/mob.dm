@@ -2015,6 +2015,8 @@ mob/verb/turnwest()
 //sort of a legacy burn method for /electrocute, /shock, and the e_chair
 /mob/proc/burn_skin(burn_amount)
 	if(istype(src, /mob/living/carbon/human) && (!mutations & 2))
+		if(src.mutations & mShock)
+			return 0
 		var/mob/living/carbon/human/H = src	//make this damage method divide the damage to be done among all the body parts, then burn each body part for that much damage. will have better effect then just randomly picking a body part
 		var/divided_damage = (burn_amount)/(H.organs.len)
 		var/datum/organ/external/affecting = null

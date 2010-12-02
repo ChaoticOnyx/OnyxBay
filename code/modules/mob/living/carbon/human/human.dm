@@ -213,6 +213,9 @@
 	if(tally < 0)
 		tally = 0
 
+	if(mutations & mRun)
+		tally = 0
+
 	return tally
 
 /mob/living/carbon/human/Stat()

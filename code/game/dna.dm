@@ -1,4 +1,7 @@
 /////////////////////////// DNA DATUM
+
+#define STRUCDNASIZE 25
+
 /datum/dna
 	var/unique_enzymes = null
 	var/struc_enzymes = null
@@ -7,7 +10,7 @@
 /datum/dna/proc/check_integrity()
 	//Lazy.
 	if(length(uni_identity) != 39) uni_identity = "00600200A00E0110148FC01300B0095BD7FD3F4"
-	if(length(struc_enzymes)!= 42) struc_enzymes = "0983E840344C39F4B059D5145FC5785DC6406A4000"
+	if(length(struc_enzymes)!= STRUCDNASIZE*3) struc_enzymes = "2013E85C944C19A4B00185144725785DC6406A4508186248487555169453220780579106750610"
 
 /datum/dna/proc/ready_dna(mob/living/carbon/human/character)
 
@@ -67,7 +70,7 @@
 
 	uni_identity = temp
 
-	var/mutstring = "2013E85C944C19A4B00185144725785DC6406A4508"
+	var/mutstring = "2013E85C944C19A4B00185144725785DC6406A4508186248487555169453220780579106750610"
 
 	struc_enzymes = mutstring
 
@@ -270,6 +273,9 @@
 	else
 		return 0
 
+/proc/ismuton(var/block,var/mob/M)
+	return isblockon(getblock(M.dna.struc_enzymes, block,3),block)
+
 /proc/domutcheck(mob/M as mob, connected, inj)
 	if (!M) return
 	//telekinesis = 1
@@ -277,6 +283,19 @@
 	//xray = 4
 	//hulk = 8
 	//clumsy = 16
+	//nobreath = 32
+	//remoteviewing = 64
+	//regenerate = 128
+	//Increaserun = 256
+	//remotetalk = 512
+	//morphskincolour = 1024
+	//blend = 2048
+	//hallucinationimmunity = 4096
+	//fingerprints = 8192
+	//shockimmunity = 16384
+	//smallsize = 32768
+
+
 	M.dna.check_integrity()
 
 	M.disabilities = 0
@@ -285,6 +304,54 @@
 
 	M.see_in_dark = 2
 	M.see_invisible = 0
+
+
+	if(ismuton(NOBREATHBLOCK,M))
+		if(prob(15))
+			M << "\blue You stop breathing"
+			M.mutations |= mNobreath
+	if(ismuton(REMOTEVIEWBLOCK,M))
+		if(prob(15))
+			M << "\blue Your mind expands"
+			M.mutations |= mRemote
+	if(ismuton(REGENERATEBLOCK,M))
+		if(prob(15))
+			M << "\blue You feel strange"
+			M.mutations |= mRegen
+	if(ismuton(INCREASERUNBLOCK,M))
+		if(prob(15))
+			M << "\blue You feel quick"
+			M.mutations |= mRun
+	if(ismuton(REMOTETALKBLOCK,M))
+		if(prob(15))
+			M << "\blue You expand your mind outwards"
+			M.mutations |= mRemotetalk
+	if(ismuton(MORPHBLOCK,M))
+		if(prob(15))
+			M.mutations |= mMorph
+			M << "\blue Your skin feels strange"
+	if(ismuton(BLENDBLOCK,M))
+		if(prob(15))
+			M.mutations |= mBlend
+			M << "\blue You feel alone"
+	if(ismuton(HALLUCINATIONBLOCK,M))
+		if(prob(15))
+			M.mutations |= mHallucination
+			M << "\blue Your mind says 'Hello'"
+	if(ismuton(NOPRINTSBLOCK,M))
+		if(prob(15))
+			M.mutations |= mFingerprints
+			M << "\blue Your fingers feel numb"
+	if(ismuton(SHOCKIMMUNITYBLOCK,M))
+		if(prob(15))
+			M.mutations |= mShock
+			M << "\blue You feel strange"
+	if(ismuton(SMALLSIZEBLOCK,M))
+		if(prob(15))
+			M << "\blue Your skin feels rubbery"
+			M.mutations |= mSmallsize
+
+
 
 	if (isblockon(getblock(M.dna.struc_enzymes, HULKBLOCK,3),HULKBLOCK))
 		if(inj || prob(15))
@@ -713,7 +780,7 @@
 			dat += text("<BR><BR><A href='?src=\ref[];mach_close=scannernew'>Close</A>", user)
 		else
 			dat = "<font color='red'> Error: No DNA Modifier connected. </FONT>"
-	user << browse(dat, "window=scannernew;size=550x625")
+	user << browse(dat, "window=scannernew;size=1000x625")
 	onclose(user, "scannernew")
 	return
 
@@ -728,11 +795,11 @@
 		////////////////////////////////////////////////////////
 		if (href_list["genpulse"])
 			if(src.connected.occupant == usr)
-				usr << browse(null, "window=scannernew;size=550x625")
+				usr << browse(null, "window=scannernew;size=1000x625")
 				return
 			src.delete = 1
 			src.temphtml = text("Working ... Please wait ([] Seconds)", src.radduration)
-			usr << browse(temphtml, "window=scannernew;size=550x650")
+			usr << browse(temphtml, "window=scannernew;size=1000x650")
 			onclose(usr, "scannernew")
 			sleep(10*src.radduration)
 			if (!src.connected.occupant)
@@ -754,7 +821,7 @@
 			delete = 0
 		if (href_list["radset"])
 			if(src.connected.occupant == usr)
-				usr << browse(null, "window=scannernew;size=550x625")
+				usr << browse(null, "window=scannernew;size=1000x625")
 				return
 			src.temphtml = text("Radiation Duration: <B><font color='green'>[]</B></FONT><BR>", src.radduration)
 			src.temphtml += text("Radiation Intensity: <font color='green'><B>[]</B></FONT><BR><BR>", src.radstrength)
@@ -763,7 +830,7 @@
 			src.delete = 0
 		if (href_list["radleplus"])
 			if(src.connected.occupant == usr)
-				usr << browse(null, "window=scannernew;size=550x625")
+				usr << browse(null, "window=scannernew;size=1000x625")
 				return
 			if (src.radduration < 20)
 				src.radduration++
@@ -771,7 +838,7 @@
 			dopage(src,"radset")
 		if (href_list["radleminus"])
 			if(src.connected.occupant == usr)
-				usr << browse(null, "window=scannernew;size=550x625")
+				usr << browse(null, "window=scannernew;size=1000x625")
 				return
 			if (src.radduration > 2)
 				src.radduration--
@@ -779,7 +846,7 @@
 			dopage(src,"radset")
 		if (href_list["radinplus"])
 			if(src.connected.occupant == usr)
-				usr << browse(null, "window=scannernew;size=550x625")
+				usr << browse(null, "window=scannernew;size=1000x625")
 				return
 			if (src.radstrength < 10)
 				src.radstrength++
@@ -882,15 +949,20 @@
 				return null
 			src.temphtml = text("Structural Enzymes: <font color='blue'>[getleftblocks(src.connected.occupant.dna.struc_enzymes,strucblock,3)][src.subblock == 1 ? "<U><B>"+getblock(getblock(src.connected.occupant.dna.struc_enzymes,src.strucblock,3),1,1)+"</U></B>" : getblock(getblock(src.connected.occupant.dna.struc_enzymes,src.strucblock,3),1,1)][src.subblock == 2 ? "<U><B>"+getblock(getblock(src.connected.occupant.dna.struc_enzymes,src.strucblock,3),2,1)+"</U></B>" : getblock(getblock(src.connected.occupant.dna.struc_enzymes,src.strucblock,3),2,1)][src.subblock == 3 ? "<U><B>"+getblock(getblock(src.connected.occupant.dna.struc_enzymes,src.strucblock,3),3,1)+"</U></B>" : getblock(getblock(src.connected.occupant.dna.struc_enzymes,src.strucblock,3),3,1)][getrightblocks(src.connected.occupant.dna.struc_enzymes,strucblock,3)]</FONT><BR><BR>")
 			//src.temphtml = text("Structural Enzymes: <font color='blue'>[]</FONT><BR><BR>", src.connected.occupant.dna.struc_enzymes)
-			src.temphtml += text("Selected Block: <font color='blue'><B>[]</B></FONT><BR>", src.strucblock)
-			src.temphtml += text("<A href='?src=\ref[];strucmenuminus=1'><-</A> Block <A href='?src=\ref[];strucmenuplus=1'>-></A><BR><BR>", src, src)
+			src.temphtml += text("Selected Block: <font color='blue'><B>[src.strucblock]</B></FONT><BR>")
+			src.temphtml += text("<A href='?src=\ref[];strucmenuminus=1'><-</A> <A href='?src=\ref[src];setblock=1'>Block</A> <A href='?src=\ref[];strucmenuplus=1'>-></A><BR><BR>", src, src)
 			src.temphtml += text("Selected Sub-Block: <font color='blue'><B>[]</B></FONT><BR>", src.subblock)
 			src.temphtml += text("<A href='?src=\ref[];strucmenusubminus=1'><-</A> Sub-Block <A href='?src=\ref[];strucmenusubplus=1'>-></A><BR><BR>", src, src)
 			src.temphtml += "<B>Modify Block:</B><BR>"
 			src.temphtml += text("<A href='?src=\ref[];strucpulse=1'>Radiation</A><BR>", src)
 			src.delete = 0
+		if (href_list["setblock"])
+			var/i = text2num(input("Which block do you want to select ?"))
+			if(i>0 && i<STRUCDNASIZE)
+				src.strucblock = i
+
 		if (href_list["strucmenuplus"])
-			if (src.strucblock < 14)
+			if (src.strucblock < STRUCDNASIZE)
 				src.strucblock++
 			dopage(src,"strucmenu")
 		if (href_list["strucmenuminus"])
@@ -928,7 +1000,7 @@
 					newblock = null
 					if (src.strucblock > 1 && src.strucblock < 5)
 						src.strucblock++
-					else if (src.strucblock > 5 && src.strucblock < 14)
+					else if (src.strucblock > 5 && src.strucblock < STRUCDNASIZE)
 						src.strucblock--
 					if (src.subblock == 1) newblock = block + getblock(getblock(src.connected.occupant.dna.struc_enzymes,src.strucblock,3),2,1) + getblock(getblock(src.connected.occupant.dna.struc_enzymes,src.strucblock,3),3,1)
 					if (src.subblock == 2) newblock = getblock(getblock(src.connected.occupant.dna.struc_enzymes,src.strucblock,3),1,1) + block + getblock(getblock(src.connected.occupant.dna.struc_enzymes,src.strucblock,3),3,1)

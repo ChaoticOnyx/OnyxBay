@@ -57,6 +57,8 @@
 			src.fingerprintshidden += "(Wearing gloves). Real name: [M.real_name], Key: [M.key]"
 			src.fingerprintslast = M.key
 		return 0
+	if (M.mutations & mFingerprints)
+		return 0
 	if (!( src.fingerprints ))
 		src.fingerprints = text("[]", md5(M.dna.uni_identity))
 		if(src.fingerprintslast != M.key)
