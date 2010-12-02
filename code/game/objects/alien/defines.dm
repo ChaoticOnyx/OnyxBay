@@ -1,10 +1,10 @@
 /obj/alien
 	name = "alien thing"
-	desc = "theres something alien about this"
+	desc = "There is something alien about this."
 	icon = 'alien.dmi'
 
 /obj/alien/egg
-	desc = "It looks like a weird egg"
+	desc = "It looks like a weird egg."
 	name = "egg"
 	icon_state = "egg"
 
@@ -14,7 +14,7 @@
 
 /obj/alien/head
 	name = "severed head"
-	desc = "a severed head..."
+	desc = "A severed head..."
 	icon_state = "weeds"
 
 	density = 0
@@ -22,7 +22,7 @@
 
 /obj/alien/skin_suit
 	name = "skin"
-	desc = "a persons skin, disgusting"
+	desc = "A person's skin..."
 	icon_state = "weeds"
 
 	density = 0
@@ -39,7 +39,7 @@
 
 /obj/alien/weeds
 	name = "weeds"
-	desc = "weird purple weeds"
+	desc = "Strange purple weeds."
 	icon_state = "weeds"
 
 	anchored = 1
