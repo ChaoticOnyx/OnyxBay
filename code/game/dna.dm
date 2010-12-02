@@ -9,9 +9,9 @@
 
 /datum/dna/proc/check_integrity()
 	//Lazy.
-	if(length(uni_identity) != 39) uni_identity = "00600200A00E0110148FC01300B0095BD7FD3F4"
-	if(length(struc_enzymes)!= STRUCDNASIZE*3) struc_enzymes = "2013E85C944C19A4B00185144725785DC6406A4508186248487555169453220780579106750610"
-
+//	if(length(uni_identity) != 39) uni_identity = "00600200A00E0110148FC01300B0095BD7FD3F4"
+//	if(length(struc_enzymes)!= STRUCDNASIZE*3) struc_enzymes = "2013E85C944C19A4B00185144725785DC6406A4508186248487555169453220780579106750610"
+	return
 /datum/dna/proc/ready_dna(mob/living/carbon/human/character)
 
 	var/temp
@@ -1332,7 +1332,7 @@
 						src.diskette.data_type = src.buffer1type
 						src.diskette.ue = src.buffer1iue
 						src.diskette.owner = src.buffer1owner
-						src.diskette.name = "Genetics Disk - '[src.buffer1label]'"
+						src.diskette.name = "data disk - '[src.buffer1owner]'"
 				if(2)
 					if(!buffer2)
 						saved = 0
@@ -1341,7 +1341,7 @@
 						src.diskette.data_type = src.buffer2type
 						src.diskette.ue = src.buffer2iue
 						src.diskette.owner = src.buffer2owner
-						src.diskette.name = "Genetics Disk - '[src.buffer2label]'"
+						src.diskette.name = "data disk - '[src.buffer2owner]'"
 				if(3)
 					if(!buffer3)
 						saved = 0
@@ -1350,7 +1350,7 @@
 						src.diskette.data_type = src.buffer3type
 						src.diskette.ue = src.buffer3iue
 						src.diskette.owner = src.buffer3owner
-						src.diskette.name = "Genetics Disk - '[src.buffer3label]'"
+						src.diskette.name = "data disk - '[src.buffer3owner]'"
 			if(!saved)
 				src.temphtml = "\red ERROR:Data equals null"
 			else
