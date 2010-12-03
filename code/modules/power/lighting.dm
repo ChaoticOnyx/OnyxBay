@@ -28,9 +28,9 @@
 
 	var/light_type = /obj/item/weapon/light/tube		// the type of light item
 
-	var/brightnessred = 8
-	var/brightnessgreen = 8
-	var/brightnessblue = 8
+	var/brightnessred = 5
+	var/brightnessgreen = 5
+	var/brightnessblue = 5
 
 	var/fitting = "tube"
 	var/switchcount = 0			// count of number of times switched on/off
