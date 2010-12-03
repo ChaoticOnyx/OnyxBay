@@ -323,7 +323,7 @@
 	if(!(src.mutations & mRemotetalk))
 		src.verbs -= /mob/living/carbon/human/proc/remotesay
 
-	var/mob/target = input ("Who do you want to project your mind to ?") as mob in getmobs()
+	var/mob/target = input ("Who do you want to project your mind to ?") as mob in world
 
 	var/say = input ("What do you wish to say")
 
