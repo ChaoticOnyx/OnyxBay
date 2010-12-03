@@ -29,7 +29,7 @@
 		num_aliens = max(1, min(round((num_players + i) / 10), alien_possible))
 
 //	log_game("Number of aliens: [num_aliens]")
-//	message_admins("Players counted: [num_players]  Number of aliens chosen: [num_aliens]")
+	message_admins("Players counted: [num_players]  Number of aliens chosen: [num_aliens]")
 
 	for(var/j = 0, j < num_aliens, j++)
 		var/datum/mind/alien = pick(possible_aliens)
@@ -60,7 +60,8 @@
 				alien.current.client.mob = H
 				del D
 		alien.current << "<B>You are the Alien Queen.</B>"
-		alien.current << "Use your facehuggers to grow your hive"
+		alien.current << "Use your facehuggers to grow your hive."
+
 /datum/game_mode/alien/proc/get_possible_aliens()
 	var/list/candidates = list()
 	for(var/mob/new_player/player in world)
@@ -72,8 +73,8 @@
 		for(var/mob/new_player/player in world)
 			if (player.client && player.ready)
 				candidates += player.mind
-
 	return candidates
+
 /datum/game_mode/alien/proc/get_mob_list()
 	var/list/mobs = list()
 	for(var/client/C)
