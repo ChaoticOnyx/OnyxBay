@@ -558,7 +558,6 @@
 #include "code\modules\mob\living\carbon\monkey\examine.dm"
 #include "code\modules\mob\living\carbon\monkey\hud.dm"
 #include "code\modules\mob\living\carbon\monkey\life.dm"
-#include "code\modules\mob\living\carbon\monkey\login.dm"
 #include "code\modules\mob\living\carbon\monkey\monkey.dm"
 #include "code\modules\mob\living\carbon\monkey\say.dm"
 #include "code\modules\mob\living\silicon\say.dm"

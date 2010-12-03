@@ -280,6 +280,7 @@
 	set name = "Morph"
 	if(!(src.mutations & mMorph))
 		src.verbs -= /mob/living/carbon/human/proc/morph
+		return
 
 	var/new_facial = input("Please select facial hair color.", "Character Generation") as color
 	if(new_facial)
@@ -317,11 +318,17 @@
 			gender = MALE
 		else
 			gender = FEMALE
+	update_body()
+	update_face()
+
+	for(var/mob/M in view())
+		M.show_message("[src.name] just morphed!")
 
 /mob/living/carbon/human/proc/remotesay()
 	set name = "Project mind"
 	if(!(src.mutations & mRemotetalk))
 		src.verbs -= /mob/living/carbon/human/proc/remotesay
+		return
 
 	var/mob/target = input ("Who do you want to project your mind to ?") as mob in world
 
@@ -335,6 +342,7 @@
 
 	if(!(src.mutations & mRemote))
 		src.verbs -= /mob/living/carbon/human/proc/remoteobserve
+		return
 
 	var/list/mob/creatures = list()
 
@@ -363,6 +371,13 @@
 /mob/living/carbon/human/handle_disabilities()
 	if(zombie == 1)
 		return
+
+	if(mutations & mSmallsize)
+		if(!(flags & TABLEPASS))
+			flags |= TABLEPASS
+	else
+		if(flags & TABLEPASS)
+			flags &= ~TABLEPASS
 
 	if(mutations & mMorph)
 		if(!(/mob/living/carbon/human/proc/morph in src.verbs))

@@ -27,7 +27,7 @@ obj/machinery/recharger
 		src.charging.loc = src.loc
 		src.charging = null
 	if(src.charging2)
-		src.charging2.update_icon()
+	//	src.charging2.update_icon()
 		src.charging2.loc = src.loc
 		src.charging2 = null
 
