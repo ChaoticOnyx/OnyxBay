@@ -15,7 +15,7 @@
 			if(target && target.current)
 				missions +=	new /datum/objective/assassinate(null,job,target)
 	return missions
-
+/*
 /proc/GenerateFrame(var/job,var/datum/mind/traitor)
 	var/list/datum/objective/frame/missions = list()
 
@@ -24,7 +24,7 @@
 			if(target && target.current)
 				missions +=	new /datum/objective/frame(null,job,target)
 	return missions
-
+*/
 /proc/GenerateProtection(var/job,var/datum/mind/traitor)
 	var/list/datum/objective/frame/missions = list()
 
@@ -40,15 +40,16 @@
 	var/list/datum/objective/chosenobjectives = list()
 	var/list/datum/objective/theftobjectives = GetObjectives(job,traitor)		//Separated all the objective types so they can be picked independantly of each other.
 	var/list/datum/objective/killobjectives = GenerateAssassinate(job,traitor)
-	var/list/datum/objective/frameobjectives = GenerateFrame(job,traitor)
+	//var/list/datum/objective/frameobjectives = GenerateFrame(job,traitor)
 	var/list/datum/objective/protectobjectives = GenerateProtection(job,traitor)
 	//var/points
 	var/totalweight
 	var/selectobj
+	var/conflict
 
 	while(totalweight < 100)
 		selectobj = rand(1,100)	//Randomly determine the type of objective to be given.
-		if(!length(killobjectives) || !length(frameobjectives) || !length(protectobjectives))	//If any of these lists are empty, just give them theft objectives.
+		if(!length(killobjectives) || !length(protectobjectives))	//If any of these lists are empty, just give them theft objectives.
 			var/datum/objective/objective = pick(theftobjectives)
 			chosenobjectives += objective
 			totalweight += objective.weight
@@ -59,21 +60,31 @@
 				chosenobjectives += objective
 				totalweight += objective.weight
 				theftobjectives -= objective
-			if(51 to 85)	//Assassination Objectives (35% chance)
-				var/datum/objective/objective = pick(killobjectives)
-				chosenobjectives += objective
-				totalweight += objective.weight
-				killobjectives -= objective
-			if(86 to 95)	//Framing Objectives (10% chance)
-				var/datum/objective/objective = pick(frameobjectives)
-				chosenobjectives += objective
-				totalweight += objective.weight
-				frameobjectives -= objective
-			if(96 to 100)	//Protection Objectives (5% chance)
-				var/datum/objective/objective = pick(protectobjectives)
-				chosenobjectives += objective
-				totalweight += objective.weight
-				protectobjectives -= objective
+			if(51 to 90)	//Assassination Objectives (35% chance)
+				var/datum/objective/assassinate/objective = pick(killobjectives)
+				for(var/datum/objective/protection/conflicttest in chosenobjectives)	//Check to make sure we aren't telling them to Assassinate somebody they need to Protect.
+					if(conflicttest.target == objective.target)
+						conflict = 1
+				if(!conflict)
+					chosenobjectives += objective
+					totalweight += objective.weight
+					killobjectives -= objective
+				conflict = 0
+			//if(86 to 95)	//Framing Objectives (10% chance) 	Removing fo now.
+			//	var/datum/objective/objective = pick(frameobjectives)
+			//	chosenobjectives += objective
+			//	totalweight += objective.weight
+			//	frameobjectives -= objective
+			if(91 to 100)	//Protection Objectives (5% chance)
+				var/datum/objective/protection/objective = pick(protectobjectives)
+				for(var/datum/objective/assassinate/conflicttest in chosenobjectives)	//Check to make sure we aren't telling them to Protect somebody they need to Assassinate.
+					if(conflicttest.target == objective.target)
+						conflict = 1
+				if(!conflict)
+					chosenobjectives += objective
+					totalweight += objective.weight
+					protectobjectives -= objective
+				conflict = 0
 
 	var/hasendgame = 0
 	for(var/datum/objective/o in chosenobjectives)
@@ -157,7 +168,7 @@ datum
 				target = targeta
 				job = joba
 				points = get_points(job)
-				weight = 20
+				weight = 30
 				explanation_text = "[target.current.real_name], the [target.assigned_role] is a relative of a high ranking Syndicate Leader.  Make sure they get off the ship safely."
 
 			check_completion()
@@ -186,7 +197,7 @@ datum
 				target = targeta
 				job = joba
 				points = get_points(job)
-				weight = 50
+				weight = 60
 				explanation_text = "Assassinate [target.current.real_name], the [target.assigned_role]."
 
 			check_completion()
@@ -329,7 +340,7 @@ datum
 		steal/captainslaser
 			steal_target = /obj/item/weapon/gun/energy/laser_gun/captain
 			explanation_text = "Steal the captain's antique laser gun"
-			weight = 10
+			weight = 20
 
 			get_points(var/job)
 				switch(GetRank(job))
@@ -347,7 +358,7 @@ datum
 		steal/plasmatank
 			steal_target = /obj/item/weapon/tank/plasma
 			explanation_text = "Steal a small plasma tank"
-			weight = 10
+			weight = 20
 
 			get_points(var/job)
 				if(job == "Scientist")
@@ -382,7 +393,7 @@ datum
 		steal/handtele
 			steal_target = /obj/item/weapon/hand_tele
 			explanation_text = "Steal a hand teleporter"
-			weight = 10
+			weight = 20
 
 			get_points(var/job)
 				switch(GetRank(job))
@@ -400,7 +411,7 @@ datum
 		steal/RCD
 			steal_target = /obj/item/weapon/rcd
 			explanation_text = "Steal a rapid construction device"
-			weight = 10
+			weight = 20
 
 			get_points(var/job)
 				switch(GetRank(job))
@@ -419,7 +430,7 @@ datum
 		steal/burger
 			steal_target = /obj/item/weapon/reagent_containers/food/snacks/humanburger
 			explanation_text = "Damn those Nanotrasen burgers are good... what -is- their secret ingredient?!  Steal a hamburger, and not some crap monkeyburger, we want the real deal."
-			weight = 50
+			weight = 60
 
 			get_points(var/job)
 				switch(GetRank(job))
@@ -457,7 +468,7 @@ datum
 		steal/cyborg
 			steal_target = /obj/item/robot_parts/robot_suit
 			explanation_text = "Steal a completed cyborg shell (no brain)"
-			weight = 20
+			weight = 30
 
 			get_points(var/job)
 				switch(GetRank(job))
@@ -481,7 +492,7 @@ datum
 		steal/AI
 			steal_target = /obj/machinery/aiconstruct
 			explanation_text = "Steal a finished AI Construct (with brain)"
-			weight = 40
+			weight = 50
 
 			get_points(var/job)
 				switch(GetRank(job))
@@ -507,7 +518,7 @@ datum
 		steal/drugs
 			steal_target = /datum/reagent/space_drugs
 			explanation_text = "Steal some space drugs"
-			weight = 30
+			weight = 40
 
 			get_points(var/job)
 				switch(GetRank(job))
@@ -533,7 +544,7 @@ datum
 		steal/pacid
 			steal_target = /datum/reagent/pacid
 			explanation_text = "Steal some polytrinic acid"
-			weight = 30
+			weight = 40
 
 			get_points(var/job)
 				switch(GetRank(job))
