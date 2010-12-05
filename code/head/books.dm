@@ -56,17 +56,6 @@ datum/bookhand/New()
 			B.by = bywho[T]
 			B.texts = texts[T]
 			src.books += B
-	/*	if(!books.len)
-			return
-		var/list/books2 = list()
-		for(var/datum/bookhand/book/BC in books)
-			var/obj/item/weapon/book/B = new()
-			B.name = BC.title
-			B.by = BC.bywho
-			B.text = BC.text
-			books2 += B
-		if(books2.len >= 1)
-			world << "We got some books"*/
 mob/verb/newbookhand()
 	Bookhandler = new()
 mob/verb/getbooks()
@@ -88,3 +77,16 @@ obj/machinery/bookcase/New()
 obj/machinery/bookcase/attack_hand(mob/user)
 	var/obj/item/weapon/book/B = input(user,"Choose a book to take out","Books") as obj in src.contents
 	B.loc = user.loc
+
+
+obj/machinery/writersdesk/attack_hand(mob/user)
+	switch(alert("Would you like to write a book?",,"Yes","No"))
+		if("No")
+			return
+	var/text = input(user,"Write a book!","Booker","type something here") as text
+	var/title = input(user,"Give a title to your book!","Bookia","Title here") as message
+	var/author = input(user,"Whats your name?","Namey",user.name) as message
+	var/DBQuery/x_query = dbcon.NewQuery("INSERT INTO `books` ('title', 'author', 'text') VALUES ('[dbcon.Quote(title)]', '[dbcon.Quote(author)]', '[dbcon.Quote(text)]')")
+	if(!x_query.Execute())
+		diary << "Failed-[x_query.ErrorMsg()]"
+

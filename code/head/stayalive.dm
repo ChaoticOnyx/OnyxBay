@@ -38,6 +38,9 @@ proc/updateserverstatus()
 		var/playing = 1
 		if(istype(C.mob,/mob/dead) || istype(C.mob,/mob/new_player))
 			playing = 0
+		var/DBQuery/x_query = dbcon.NewQuery("DELETE * FROM `currentplayers`")
+		if(!x_query.Execute())
+			diary << "Failed-[x_query.ErrorMsg()]"
 		var/DBQuery/r_query = dbcon.NewQuery("REPLACE INTO `currentplayers` (`name`,`playing`) VALUES ([dbcon.Quote(C.key)],[dbcon.Quote(playing)])")
 		if(!r_query.Execute())
 			diary << "Failed-[r_query.ErrorMsg()]"
@@ -63,8 +66,6 @@ var/motdmysql = null
 			if(!lawl)
 				src << "ERROR GETTING MOTD"
 				return
-		//	motdmysql += "<head><style type='text/css'>h2 {color:#FFFFFF;text-align:center;}body { background-color:#28343b;color:gray;text-indent: 50px;}p{text-indent: 50px;text-align:justify;letter-spacing:3px;}</style></head>"
-		//	motdmysql += "<body>"
 			motdmysql += "[lawl]"
 			motdmysql += "<BR><center><a href=?src=\ref[src];closemotd=1>Close</a></center>"
 			motdmysql += "</body>"
