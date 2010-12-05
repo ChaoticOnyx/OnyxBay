@@ -27,6 +27,7 @@
 	icon = 'chemical.dmi'
 	item_state = "contsolid"
 	can_hold = list("/obj/item/weapon/reagent_containers/pill")
+	w_class = 2.0
 
 /obj/item/weapon/storage/box
 	name = "Box"
