@@ -44,6 +44,7 @@
 	icon = 'ammo.dmi'
 	icon_state = "rcd"
 	item_state = "rcdammo"
+	w_class = 1
 	opacity = 0
 	density = 0
 	anchored = 0.0

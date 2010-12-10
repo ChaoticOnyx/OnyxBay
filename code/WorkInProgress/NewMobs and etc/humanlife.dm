@@ -368,6 +368,9 @@
 		stand_icon.Blend(rgb(100,100,100))
 		lying_icon.Blend(rgb(100,100,100))
 		pale = 1
+	else
+		update_body()
+		pale = 0
 /mob/living/carbon/human/handle_disabilities()
 	if(zombie == 1)
 		return

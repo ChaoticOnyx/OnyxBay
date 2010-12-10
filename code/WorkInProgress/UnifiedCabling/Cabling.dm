@@ -194,7 +194,7 @@
 	if (Direction1 != Direction && Direction2 != Direction)
 		return
 	if(CanConnect(Object))
-		world << "Can Connect, adding"
+	//	world << "Can Connect, adding"
 		var/datum/UnifiedNetwork/Network = Networks[EquivalentCableType]
 		Network.AddNode(Object, src)
 
