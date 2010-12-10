@@ -1,6 +1,6 @@
 /obj/machinery/optable/New()
 	..()
-	for(var/obj/machinery/computer/operating/O in oview(5))
+	for(var/obj/machinery/computer/operating/O in orange(5))
 //		if(src.id == O.id) It was bugged in robotics for a reason we couldn't identify. - Abi79 & Head
 		src.computer = O
 		break
