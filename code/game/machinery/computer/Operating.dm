@@ -1,8 +1,9 @@
 /obj/machinery/computer/operating/New()
 	..()
-	for(var/obj/machinery/optable/O in world)
-		if(src.id == O.id)
-			src.table = O
+	for(var/obj/machinery/optable/O in oview(5))
+//		if(src.id == O.id) It was bugged in robotics for a reason we couldn't identify. - Abi79 & Head
+		src.table = O
+		break
 
 /obj/machinery/computer/operating/attack_ai(mob/user)
 	add_fingerprint(user)
