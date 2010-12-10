@@ -275,6 +275,94 @@
 		druggy = max(0, druggy)
 
 	return 1
+
+/mob/living/carbon/human/proc/morph()
+	set name = "Morph"
+	if(!(src.mutations & mMorph))
+		src.verbs -= /mob/living/carbon/human/proc/morph
+		return
+
+	var/new_facial = input("Please select facial hair color.", "Character Generation") as color
+	if(new_facial)
+		r_facial = hex2num(copytext(new_facial, 2, 4))
+		g_facial = hex2num(copytext(new_facial, 4, 6))
+		b_facial = hex2num(copytext(new_facial, 6, 8))
+
+
+
+	var/new_eyes = input("Please select eye color.", "Character Generation") as color
+	if(new_eyes)
+		r_eyes = hex2num(copytext(new_eyes, 2, 4))
+		g_eyes = hex2num(copytext(new_eyes, 4, 6))
+		b_eyes = hex2num(copytext(new_eyes, 6, 8))
+
+	var/new_tone = input("Please select skin tone level: 1-220 (1=albino, 35=caucasian, 150=black, 220='very' black)", "Character Generation")  as text
+
+	if (new_tone)
+		s_tone = max(min(round(text2num(new_tone)), 220), 1)
+		s_tone =  -s_tone + 35
+
+	var/new_style = input("Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Fag", "Bedhead", "Dreadlocks", "Bald" )
+
+	if (new_style)
+		h_style = new_style
+
+	new_style = input("Please select facial style", "Character Generation")  as null|anything in list("Watson", "Chaplin", "Selleck", "Full Beard", "Long Beard", "Neckbeard", "Van Dyke", "Elvis", "Abe", "Chinstrap", "Hipster", "Goatee", "Hogan", "Shaved")
+
+	if (new_style)
+		f_style = new_style
+
+	var/new_gender = input("Please select gender") as null|anything in list("Male","Female")
+	if (new_gender)
+		if(new_gender == "Male")
+			gender = MALE
+		else
+			gender = FEMALE
+	update_body()
+	update_face()
+
+	for(var/mob/M in view())
+		M.show_message("[src.name] just morphed!")
+
+/mob/living/carbon/human/proc/remotesay()
+	set name = "Project mind"
+	if(!(src.mutations & mRemotetalk))
+		src.verbs -= /mob/living/carbon/human/proc/remotesay
+		return
+
+	var/mob/target = input ("Who do you want to project your mind to ?") as mob in world
+
+	var/say = input ("What do you wish to say")
+
+	target.show_message("\blue You hear a voice: [say]")
+
+
+/mob/living/carbon/human/proc/remoteobserve()
+	set name = "Remote View"
+
+	if(!(src.mutations & mRemote))
+		src.verbs -= /mob/living/carbon/human/proc/remoteobserve
+		return
+
+	var/list/mob/creatures = list()
+
+	for(var/mob/living/carbon/human/h in world)
+		creatures += h
+	client.perspective = EYE_PERSPECTIVE
+
+	var/eye_name = null
+
+	eye_name = input("Who do you wish to see ?", "Observe", null, null) as null|anything in creatures
+
+	if (!eye_name)
+		return
+
+	var/mob/eye = creatures[eye_name]
+	if (eye)
+		client.eye = eye
+	else
+		client.eye = client.mob
+
 /mob/living/carbon/human/proc/updatepale()
 	if(!pale)
 		stand_icon.Blend(rgb(100,100,100))
@@ -283,6 +371,25 @@
 /mob/living/carbon/human/handle_disabilities()
 	if(zombie == 1)
 		return
+
+	if(mutations & mSmallsize)
+		if(!(flags & TABLEPASS))
+			flags |= TABLEPASS
+	else
+		if(flags & TABLEPASS)
+			flags &= ~TABLEPASS
+
+	if(mutations & mMorph)
+		if(!(/mob/living/carbon/human/proc/morph in src.verbs))
+			src.verbs += /mob/living/carbon/human/proc/morph
+
+	if(mutations & mRemote)
+		if(!(/mob/living/carbon/human/proc/remoteobserve in src.verbs))
+			src.verbs += /mob/living/carbon/human/proc/remoteobserve
+
+	if(mutations & mRemotetalk)
+		if(!(/mob/living/carbon/human/proc/remotesay in src.verbs))
+			src.verbs += /mob/living/carbon/human/proc/remotesay
 
 	if(hallucination > 0)
 
@@ -299,6 +406,19 @@
 		halloss = 0
 		for(var/obj/a in hallucinations)
 			del a
+
+	if (mutations & mHallucination)
+		hallucination = 100
+		halloss = 0
+
+	if (mutations & mRegen)
+		src.bruteloss -= 1
+		src.fireloss -= 1
+		src.oxyloss -= 1
+
+		for(var/datum/organ/external/o in GetOrgans())
+			if(o.broken)
+				o.heal_damage(1,1,1)
 
 
 	if (disabilities & 2)
@@ -416,6 +536,7 @@
 	..()
 
 /mob/living/carbon/human/breathe()
+	if(mutations & mNobreath)	return
 	if(reagents.has_reagent("lexorin")) return
 	if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
 

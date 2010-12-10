@@ -155,9 +155,12 @@ proc/countJob(rank)
 				if(B.contents.len < 7 && W.w_class <= 3)
 					W.loc = B
 					equipped = 1
+					W.loc = B
 
 	if(equipped)
 		W.layer = 20
+		if(!(slot == slot_in_backpack))
+			W.loc = src
 	else
 		del(W)
 

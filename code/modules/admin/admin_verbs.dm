@@ -109,7 +109,9 @@
 			src.verbs += /client/proc/new_eventa
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/zombify
-
+			src.verbs += /client/proc/createoffical
+			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/nanoshuttle
 
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
@@ -190,7 +192,7 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 			src.verbs += /client/proc/zombify
-
+			src.verbs += /client/proc/createoffical
 			src.verbs += /client/proc/general_report
 			//src.verbs += /client/proc/air_report
 			//src.verbs += /client/proc/air_status
@@ -205,7 +207,8 @@
 			src.verbs += /client/proc/toggleinvite
 
 			src.verbs += /client/proc/Zone_Info
-
+			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/nanoshuttle
 
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
@@ -272,7 +275,8 @@
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 			src.verbs += /client/proc/cmd_admin_create_centcom_report
 			src.verbs += /client/proc/cmd_admin_subtle_message
-
+			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/general_report
 			//src.verbs += /client/proc/air_report
 			//src.verbs += /client/proc/air_status
@@ -285,7 +289,7 @@
 			src.verbs += /client/proc/toggleinvite
 			src.verbs += /client/proc/Zone_Info
 			src.verbs += /client/proc/zombify
-
+			src.verbs += /client/proc/createoffical
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
 			src.verbs += /client/proc/loadmaphere
@@ -331,9 +335,10 @@
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/LSD_effect
-
+			src.verbs += /client/proc/createoffical
 //				src.verbs += /client/proc/modifytemperature
-
+			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/cmd_admin_prison
 
 			src.verbs += /obj/admins/proc/vmode   				//start vote
@@ -391,7 +396,9 @@
 			src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
 			src.verbs += /obj/admins/proc/toggleAI
 			src.verbs += /client/proc/delay				//Toggle the AI
-
+			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/nanoshuttle
+			src.verbs += /client/proc/createoffical
 			src.verbs += /obj/admins/proc/delay					//game start delay
 
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
@@ -843,3 +850,133 @@
 	set category = "Debug"
 	set name = "Zombify"
 	p.zombify()
+
+/client/proc/nanoshuttle()
+	set category = "Roleplay"
+	set name = "Send nanotrasen(admin) shuttle"
+	var/area/from = locate(/area/nanotrasenshuttle)
+	var/area/adminshuttle/go = locate(/area/adminshuttle)
+	if(go.shuttle == "")
+		from.move_contents_to(go)
+		go.shuttle = "nanotrasen"
+	else
+		src << "\blue Already a shuttle there"
+
+/client/proc/returnadminshuttle()
+	set category = "Roleplay"
+	set name = "Return admin-shuttle"
+	var/area/adminshuttle/from = locate(/area/adminshuttle)
+	if(from.shuttle == "nanotrasen")
+		var/area/go = locate(/area/nanotrasenshuttle)
+		from.move_contents_to(go)
+		from.shuttle = ""
+
+/client/proc/createoffical(var/name as text)
+	set category = "Roleplay"
+	set name = "Create Nanotrasen offical"
+	var/area/A
+	for(var/area/nanotrasenshuttle/b in world)
+		A = b
+
+	var/job = input ("What job would you like to give your nanotrasen char") in list ("Agent","Overseer","Syndicate managment taskforce","Prisoner Managment")
+	var/mob/living/carbon/human/new_character = new /mob/living/carbon/human(src)
+	new_character.loc = pick(get_area_turfs(A))
+	new_character.dna.ready_dna(new_character)
+
+	var/uniform
+	var/gloves
+	var/shoes
+	var/over
+	var/back1
+	var/back2
+	var/back3
+	var/back4
+	var/mask
+	var/eyes
+	var/head
+	switch(job)
+		if("Agent")
+			uniform = /obj/item/clothing/under/chameleon
+			gloves = /obj/item/clothing/gloves/black
+			shoes = /obj/item/clothing/shoes/black
+			head = /obj/item/clothing/head/helmet/swat
+			eyes = /obj/item/clothing/glasses/thermal
+			mask = /obj/item/clothing/mask/gas/swat
+			over = /obj/item/clothing/suit/armor/swat
+			back2 = /obj/item/weapon/gun/revolver
+			back1 = /obj/item/weapon/cloaking_device
+			back3 = /obj/item/weapon/rcd
+			back4 = /obj/item/device/hacktool
+		if("Overseer")
+			uniform = /obj/item/clothing/under/color/green
+			shoes = /obj/item/clothing/shoes/brown
+			back1 = /obj/item/weapon/gun/energy/general
+			back2 = /obj/item/weapon/handcuffs
+		if("Syndicate managment taskforce")
+			uniform = /obj/item/clothing/under/color/black
+			gloves = /obj/item/clothing/gloves/black
+			shoes = /obj/item/clothing/shoes/black
+			head = /obj/item/clothing/head/helmet/swat
+			eyes = /obj/item/clothing/glasses/thermal
+			mask = /obj/item/clothing/mask/gas/swat
+			over = /obj/item/clothing/suit/armor/swat
+			back1 = /obj/item/weapon/handcuffs
+			back2 = /obj/item/weapon/gun/energy/laser_gun
+		if("Prisoner Managment")
+			uniform = /obj/item/clothing/under/lightred
+			shoes = /obj/item/clothing/shoes/red
+			gloves = /obj/item/clothing/gloves/latex
+			back1 = /obj/item/weapon/handcuffs
+			back2 = /obj/item/weapon/gun/energy/taser_gun
+
+
+
+
+	new_character.real_name = name
+	new_character.name = name
+	var/mob/living/carbon/human/player = new_character
+
+
+	var/obj/item/weapon/card/id/id = new /obj/item/weapon/card/id/captains_spare(player)
+	id.registered = player.real_name
+	id.assignment = job
+	id.name = "[player.real_name]'s Offical ID"
+	player.equip_if_possible(id,player.slot_wear_id)
+
+	player.equip_if_possible(new /obj/item/device/radio/headset/security,player.slot_ears)
+
+
+	player.equip_if_possible(new /obj/item/weapon/storage/backpack,player.slot_back)
+
+	if(uniform)
+		player.equip_if_possible(new uniform,player.slot_w_uniform)
+	if(gloves)
+		player.equip_if_possible(new gloves,player.slot_gloves)
+	if(shoes)
+		player.equip_if_possible(new shoes,player.slot_shoes)
+	if(over)
+		player.equip_if_possible(new over,player.slot_wear_suit)
+
+	if(back1)
+		player.equip_if_possible(new back1,player.slot_in_backpack)
+	if(back2)
+		player.equip_if_possible(new back2,player.slot_in_backpack)
+	if(back3)
+		player.equip_if_possible(new back3,player.slot_in_backpack)
+	if(back4)
+		player.equip_if_possible(new back4,player.slot_in_backpack)
+	if(mask)
+		player.equip_if_possible(new mask,player.slot_wear_mask)
+	if(eyes)
+		player.equip_if_possible(new eyes,player.slot_glasses)
+	if(head)
+		player.equip_if_possible(new head,player.slot_head)
+	player.update_clothing()
+
+
+	if(src.mob.mind)
+		src.mob.mind.transfer_to(new_character)
+	else
+		src.mob = new_character
+
+	return

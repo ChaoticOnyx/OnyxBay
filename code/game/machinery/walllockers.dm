@@ -18,7 +18,7 @@
 	return
 /obj/machinery/walllocker/emerglocker
 	name = "Emergency Locker"
-	spawnitems = list(/obj/item/weapon/tank/emergency_oxygen,/obj/item/clothing/mask/gas,/obj/item/weapon/crowbar)
+	spawnitems = list(/obj/item/weapon/tank/emergency_oxygen,/obj/item/clothing/mask/breath,/obj/item/weapon/crowbar)
 /obj/machinery/walllocker/emerglocker/north
 	pixel_y = 32
 	dir = SOUTH

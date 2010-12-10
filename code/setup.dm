@@ -152,3 +152,15 @@ var/const
 //These are not actual Z levels, but arguments to a function that returns a Z level.
 #define Z_STATION	1
 #define Z_SPACE		2
+
+#define mSmallsize 32768
+#define mShock 16384
+#define mFingerprints 8192
+#define mHallucination 4096
+#define mBlend 2048
+#define mMorph 1024
+#define mRemotetalk 512
+#define mRun 256
+#define mRegen 128
+#define mRemote 64
+#define mNobreath 32

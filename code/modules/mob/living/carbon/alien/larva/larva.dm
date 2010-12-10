@@ -161,7 +161,7 @@
 		if (stunned >= 3) stunned -= 3
 		if (weakened >= 3) weakened -= 3
 		for(var/mob/O in viewers(src, null))
-			O.show_message(text("\blue The monkey shakes [src] trying to wake him up!", ), 1)
+			O.show_message(text("\blue The alien larva shakes [src] trying to wake him up!", ), 1)
 	else
 		if (istype(wear_mask, /obj/item/clothing/mask/muzzle))
 			return

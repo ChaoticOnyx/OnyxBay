@@ -20,7 +20,7 @@
 
 /obj/alien/facehugger
 	name = "alien"
-	desc = "An alien, looks pretty scary!"
+	desc = "A small alien. Looks pretty scary!"
 	icon_state = "facehugger"
 	layer = 5.0
 	density = 1
@@ -59,11 +59,11 @@
 		set src in view()
 		..()
 		if(!alive)
-			usr << text("\red <B>the alien is not moving</B>")
+			usr << text("\red <B>The alien is not moving.</B>")
 		else if (src.health > 15)
-			usr << text("\red <B>the alien looks fresh, just out of the egg</B>")
+			usr << text("\red <B>The alien looks fresh, just out of the egg.</B>")
 		else
-			usr << text("\red <B>the alien looks pretty beat up</B>")
+			usr << text("\red <B>The alien looks pretty beat up.</B>")
 		return
 
 
@@ -134,7 +134,7 @@
 
 	verb/follow()
 		set src in view()
-		set name = "follow me"
+		set name = "Follow me"
 		if(!alive) return
 		if(!isalien(usr))
 			usr << text("\red <B>The alien ignores you.</B>")
@@ -142,20 +142,20 @@
 		if(state != 2 || health < maxhealth)
 			usr << text("\red <B>The alien is too busy to follow you.</B>")
 			return
-		usr << text("\green <B>The alien will now try to follow you.</B>")
+		usr << text("\green <B>The alien will try to follow you.</B>")
 		trg_idle = usr
 		path_idle = new/list()
 		return
 
 	verb/stop()
 		set src in view()
-		set name = "stop following"
+		set name = "Stop following"
 		if(!alive) return
 		if(!isalien(usr))
 			usr << text("\red <B>The alien ignores you.</B>")
 			return
 		if(state != 2)
-			usr << text("\red <B>The alien is too busy to follow you.</B>")
+			usr << text("\red <B>The alien is too busy to listen to you.</B>")
 			return
 		usr << text("\green <B>The alien stops following you.</B>")
 		set_null()
@@ -224,7 +224,7 @@
 			if(can_see(src,target,viewrange))
 				if(distance <= 1)
 					for(var/mob/O in viewers(world.view,src))
-						O.show_message("\red <B>[src.target] has been leapt on by the alien!</B>", 1, "\red You hear someone fall", 2)
+						O.show_message("\red <B>[src.target] has been leapt on by the alien!</B>", 1, "\red You hear someone fall.", 2)
 					target:bruteloss += 10
 					target:paralysis = max(target:paralysis, 10)
 					src.loc = target.loc

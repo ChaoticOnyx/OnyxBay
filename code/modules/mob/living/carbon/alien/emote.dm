@@ -97,9 +97,7 @@
 		if (m_type & 1)
 			for(var/mob/O in viewers(src, null))
 				O.show_message(message, m_type)
-				//Foreach goto(703)
 		else
 			for(var/mob/O in hearers(src, null))
 				O.show_message(message, m_type)
-				//Foreach goto(746)
 	return

@@ -1040,4 +1040,17 @@
 	applyalertstatus = 0
 
 
+/area/adminshuttle
+	name = "Docking bay D"
+	icon_state = "ai_chamber"
+	var/shuttle = ""
 
+/area/syndicateshuttle
+	name = "Syndicate shuttle"
+	icon_state = "ai_chamber"
+/area/nanotrasenshuttle
+	name = "Nanotrasen shuttle"
+	icon_state = "ai_chamber"
+/area/alienshuttle
+	name = "Alien shuttle"
+	icon_state = "ai_chamber"

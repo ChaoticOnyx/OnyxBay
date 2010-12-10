@@ -70,6 +70,13 @@
 			new /obj/item/weapon/table_parts( src.loc )
 		src.density = 0
 		del(src)
+	if (usr.mutations & mSmallsize)
+		step(user, get_dir(user, src))
+		if (user.loc == src.loc)
+			user.layer = TURF_LAYER
+			for(var/mob/M in viewers(user, null))
+				M.show_message("The person hides under the table!", 1)
+				//Foreach goto(69)
 	return
 
 

@@ -130,6 +130,7 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
+#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -461,7 +462,6 @@
 #include "code\game\objects\items\weapons\papers_bins.dm"
 #include "code\game\objects\items\weapons\RCD.dm"
 #include "code\game\objects\items\weapons\surgery_tools.dm"
-#include "code\game\objects\items\weapons\swords_axes_etc.dm"
 #include "code\game\objects\items\weapons\table_rack_parts.dm"
 #include "code\game\objects\items\weapons\teleportation.dm"
 #include "code\game\objects\items\weapons\tiles_wires.dm"
@@ -559,7 +559,6 @@
 #include "code\modules\mob\living\carbon\monkey\examine.dm"
 #include "code\modules\mob\living\carbon\monkey\hud.dm"
 #include "code\modules\mob\living\carbon\monkey\life.dm"
-#include "code\modules\mob\living\carbon\monkey\login.dm"
 #include "code\modules\mob\living\carbon\monkey\monkey.dm"
 #include "code\modules\mob\living\carbon\monkey\say.dm"
 #include "code\modules\mob\living\silicon\say.dm"
