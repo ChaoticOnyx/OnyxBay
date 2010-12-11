@@ -708,6 +708,14 @@
 	item_state = "bl_suit"
 	color = "chapblack"
 
+/obj/item/clothing/under/rank/chemist
+	desc = "Made of a special fiber that gives protection against biohazards. Has a Chemist rank stripe on it."
+	name = "Chemistry Jumpsuit"
+	icon_state = "chemistry"
+	item_state = "w_suit"
+	color = "chemistry"
+	permeability_coefficient = 0.40
+
 /obj/item/clothing/under/rank/engineer
 	desc = "It has an Engineering rank stripe on it."
 	name = "Engineering Jumpsuit"
@@ -723,7 +731,7 @@
 	color = "forensicsred"
 
 /obj/item/clothing/under/rank/geneticist
-	desc = "Made of a special fiber that gives special protection against biohazards. Has a genetics rank stripe on it."
+	desc = "Made of a special fiber that gives protection against biohazards. Has a genetics rank stripe on it."
 	name = "Genetics Jumpsuit"
 	icon_state = "genetics"
 	item_state = "w_suit"
@@ -735,7 +743,7 @@
 	name = "Head of Personnel Jumpsuit"
 	icon_state = "hop"
 	item_state = "b_suit"
-	color = "hopgreen"
+	color = "hopblue"
 
 /obj/item/clothing/under/rank/head_of_security
 	desc = "It has a Head of Security rank stripe on it."
@@ -787,6 +795,14 @@
 	item_state = "g_suit"
 	color = "hydroponics"
 	permeability_coefficient = 0.50
+
+/obj/item/clothing/under/rank/roboticist
+	desc = "Made of a special fiber that gives protection against electrocution. Has a Robotics rank stripe on it."
+	name = "Robotics Jumpsuit"
+	icon_state = "robotics"
+	item_state = "w_suit"
+	color = "robotics"
+	siemens_coefficient = 0.50
 
 // OTHER NONRANKED STATION JOBS
 

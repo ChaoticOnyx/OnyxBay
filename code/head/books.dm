@@ -145,7 +145,7 @@ obj/machinery/writersdesk/attack_hand(mob/user)
 	var/cat = 1
 	var/text = input(user,"Write a book!","Booker","type something here") as message
 	var/title = input(user,"Give a title to your book!","Bookia","Title here") as text
-	var/author = input(user,"Whats your name?","Namey",user.name) as text
+	var/author = input(user,"What's your name?","Namey",user.name) as text
 	var/catname = input(user,"What catagory is this book in?","Fiction") in list("Fiction","Engineering","Medical","History","Business","SelfHelp","Science","Religion","Cooking")
 	switch(catname)
 		if("Fiction")
