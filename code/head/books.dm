@@ -1,3 +1,25 @@
+/*
+Catagories
+-----------
+Fiction
+Engineering
+Medical
+History
+Business
+Self-Help
+Science
+Religion
+Cooking
+*/
+#define Fiction 1
+#define Engineering 2
+#define Medical 3
+#define History 4
+#define Business 5
+#define SelfHelp 6
+#define Science 7
+#define Religion 8
+#define Cooking 9
 obj/item/weapon/book
 	name = "book"
 	icon = 'items.dmi'
@@ -5,6 +27,7 @@ obj/item/weapon/book
 	var/by = "name"
 	var/list/pages = list()
 	var/texts
+	var/cat = Fiction
 obj/item/weapon/book/attack_self(mob/user)
 /*	if(!pages.len)
 		user << "This book has no pages"
@@ -45,17 +68,22 @@ datum/bookhand/New()
 		var/list/titles = list()
 		var/list/bywho = list()
 		var/list/texts = list()
+		var/list/cats = list()
 		while(cquery.NextRow())
 			var/list/data = cquery.GetRowData()
 			titles += data["title"]
 			bywho[data["title"]] = data["author"]
 			texts[data["title"]]  = data["text"]
+			cats[data["title"]] = text2num(data["cat"])
 		for(var/T in titles)
 			var/obj/item/weapon/book/B = new()
 			B.name = T
 			B.by = bywho[T]
 			B.texts = texts[T]
+			B.cat = cats[T]
 			src.books += B
+		for(var/obj/machinery/bookcase/BS)
+			BS.update()
 mob/verb/newbookhand()
 	Bookhandler = new()
 mob/verb/getbooks()
@@ -64,29 +92,82 @@ mob/verb/getbooks()
 		B.loc = usr.loc
 
 obj/machinery/bookcase
-	name = "Bookcase"
+	name = "Fiction Bookcase"
 	icon = 'computer.dmi'
 	icon_state = "messyfiles"
-obj/machinery/bookcase/New()
-	..()
+	var/cat = Fiction
+
+obj/machinery/bookcase/engi
+	name = "Engineering Bookcase"
+	cat = Engineering
+obj/machinery/bookcase/med
+	name = "Medical Bookcase"
+	cat = Medical
+obj/machinery/bookcase/his
+	name = "History Bookcase"
+	cat = History
+obj/machinery/bookcase/bus
+	name = "Business Bookcase"
+	cat = Business
+obj/machinery/bookcase/sh
+	name = "Self-Help Bookcase"
+	cat = SelfHelp
+obj/machinery/bookcase/sci
+	name = "Science Bookcase"
+	cat = Science
+obj/machinery/bookcase/reli
+	name = "Religion Bookcase"
+	cat = Religion
+obj/machinery/bookcase/cook
+	name = "Cooking Bookcase"
+	cat = Cooking
+obj/machinery/bookcase/proc/update()
 	for(var/obj/item/weapon/book/BC in Bookhandler.books)
-		var/obj/item/weapon/book/B = new(src)
-		B.name = BC.name
-		B.by = BC.by
-		B.texts = BC.texts
+		if(BC.cat == src.cat)
+			var/obj/item/weapon/book/B = new(src)
+			B.name = BC.name
+			B.by = BC.by
+			B.texts = BC.texts
+			B.cat = BC.cat
 obj/machinery/bookcase/attack_hand(mob/user)
 	var/obj/item/weapon/book/B = input(user,"Choose a book to take out","Books") as obj in src.contents
 	B.loc = user.loc
 
-
+obj/machinery/writersdesk
+	name = "Writer Desk"
+	desc = "A desk with various tools to write a book"
+	icon = 'structures.dmi'
+	icon_state = "writers"
 obj/machinery/writersdesk/attack_hand(mob/user)
 	switch(alert("Would you like to write a book?",,"Yes","No"))
 		if("No")
 			return
-	var/text = input(user,"Write a book!","Booker","type something here") as text
-	var/title = input(user,"Give a title to your book!","Bookia","Title here") as message
-	var/author = input(user,"Whats your name?","Namey",user.name) as message
-	var/DBQuery/x_query = dbcon.NewQuery("INSERT INTO `books` ('title', 'author', 'text') VALUES ('[dbcon.Quote(title)]', '[dbcon.Quote(author)]', '[dbcon.Quote(text)]')")
+	var/cat = 1
+	var/text = input(user,"Write a book!","Booker","type something here") as message
+	var/title = input(user,"Give a title to your book!","Bookia","Title here") as text
+	var/author = input(user,"Whats your name?","Namey",user.name) as text
+	var/catname = input(user,"What catagory is this book in?","Fiction") in list("Fiction","Engineering","Medical","History","Business","SelfHelp","Science","Religion","Cooking")
+	switch(catname)
+		if("Fiction")
+			cat = Fiction
+		if("Engineering")
+			cat = Engineering
+		if("Medical")
+			cat = Medical
+		if("History")
+			cat = History
+		if("Business")
+			cat = Business
+		if("SelfHelp")
+			cat = SelfHelp
+		if("Science")
+			cat = Science
+		if("Religion")
+			cat = Religion
+		if("Cooking")
+			cat = Cooking
+	var/DBQuery/x_query = dbcon.NewQuery("INSERT INTO `books` (`title`, `author`, `text`,`cat`) VALUES ('[dbcon.Quote(title)]', '[dbcon.Quote(author)]','[dbcon.Quote(text)]','[cat]')")
+	//"INSERT INTO `books` (`title`, `author`, `text`,`cat`) VALUES ('[dbcon.Quote(title)]', '[dbcon.Quote(author)]', '[dbcon.Quote(text)]','[cat]')")
 	if(!x_query.Execute())
-		diary << "Failed-[x_query.ErrorMsg()]"
+		world << "Failed-[x_query.ErrorMsg()]"
 
