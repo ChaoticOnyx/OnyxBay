@@ -2,16 +2,11 @@
 	return
 /obj/alien/weeds/
 	layer = 2
+	var/health = 15
 	var/dead
 /obj/alien/weeds/New()
 	if(istype(src.loc, /turf/space))
 		del(src)
-/*	var/obj/cable/C = locate() in src.loc
-	if(C)
-		del(C)
-	var/obj/machinery/light/L = locate() in src.loc
-	if(L)
-		L.broken()*/
 	updateicon()
 /obj/alien/weeds/process()
 	spawn while(!dead)
@@ -41,20 +36,20 @@
 	var/dir
 	if(!north)
 		dir += "north"
-	else if(spread)
-		north.updateicon(0)
+	else
+		north.updateicon()
 	if(!south)
 		dir += "south"
-	else if(spread)
-		south.updateicon(0)
+	else
+		south.updateicon()
 	if(!west)
 		dir += "west"
-	else if(spread)
-		west.updateicon(0)
+	else
+		west.updateicon()
 	if(!east)
 		dir += "east"
-	else if(spread)
-		east.updateicon(0)
+	else
+		east.updateicon()
 	if(!dir)
 		icon_state = "creep_center"
 	else
@@ -63,19 +58,6 @@
 
 /obj/alien/weeds/proc/Life()
 	var/turf/U = src.loc
-/*
-	if (locate(/obj/movable, U))
-		U = locate(/obj/movable, U)
-		if(U.density == 1)
-			del(src)
-			return
-
-Alien plants should do something if theres a lot of poison
-	if(U.poison> 200000)
-		src.health -= round(U.poison/200000)
-		src.update()
-		return
-*/
 	if (istype(U, /turf/space))
 		del(src)
 		return
@@ -108,6 +90,7 @@ Alien plants should do something if theres a lot of poison
 					if(B)
 						B.Life()
 						B.updateicon()
+						sleep(100)
 						continue
 			else
 				del(B)
@@ -124,10 +107,11 @@ Alien plants should do something if theres a lot of poison
 					B.loc = T
 					B.Life()
 					B.updateicon()
+					sleep(100)
 					continue
 				else
 					del(B)
-		else if(!(locate(/obj/alien/weeds) in T) && prob(10))
+		else if(!(locate(/obj/alien/weeds) in T))
 			var/obj/alien/weeds/B = new /obj/alien/weeds(U)
 			B.icon_state = pick("")
 			B.loc = T
@@ -135,9 +119,11 @@ Alien plants should do something if theres a lot of poison
 			if(B)
 				B.Life()
 				B.updateicon()
+				sleep(100)
 				continue
 			else
 				del(B)
+		sleep(100)
 		/*
 		if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
 			B.loc = T
@@ -162,12 +148,11 @@ Alien plants should do something if theres a lot of poison
 				return
 		else
 	return
-/*
-/obj/alien/weeds/burn(fi_amount)
-	if (fi_amount > 18000)
-		spawn( 0 )
-			del(src)
-			return
-		return 0
-	return 1
-*/
+/obj/alien/weeds/attackby(obj/item/weapon/weldingtool/P as obj, mob/user as mob)
+	if (istype(P, /obj/item/weapon/weldingtool))
+		if ((P:welding && P:welding))
+			for(var/mob/O in viewers(user, null))
+				O.show_message(text("\red [] burns [] with the welding tool!", user, src), 1, "\red You hear a small burning noise", 2)
+			src.health -= rand(3,5)
+			if(src.health <= 0)
+				del(src)
