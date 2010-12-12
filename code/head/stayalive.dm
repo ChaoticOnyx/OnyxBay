@@ -36,7 +36,7 @@ proc/updateserverstatus()
 	var/DBQuery/x_query = dbcon.NewQuery("TRUNCATE TABLE `currentplayers`")
 	if(!x_query.Execute())
 		diary << "Failed-[x_query.ErrorMsg()]"
-	for(var/client/C)
+	for(var/client/C in world)
 		players++
 		var/playing = 1
 		var/DBQuery/r_query = dbcon.NewQuery("INSERT INTO `currentplayers` (`name`,`playing`) VALUES ([dbcon.Quote(C.key)],[dbcon.Quote(playing)])")
