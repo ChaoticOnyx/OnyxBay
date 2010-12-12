@@ -234,6 +234,7 @@
 	new /obj/item/clothing/shoes/white( src )
 	new /obj/item/clothing/shoes/white( src )
 	new /obj/item/weapon/storage/stma_kit( src )
+	new /obj/item/weapon/storage/lglo_kit( src )
 	new /obj/item/clothing/suit/labcoat(src)
 	new /obj/item/clothing/suit/labcoat(src)
 	new /obj/item/clothing/suit/labcoat(src)

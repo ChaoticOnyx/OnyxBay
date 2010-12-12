@@ -6,7 +6,7 @@
 	var/locked
 	name = "Body scanner"
 	icon = 'Cryogenic2.dmi'
-	icon_state = "sleeper_0"
+	icon_state = "body_scanner_0"
 	density = 1
 	anchored = 1
 
@@ -44,7 +44,7 @@
 	usr.client.eye = src
 	usr.loc = src
 	src.occupant = usr
-	src.icon_state = "sleeper_1"
+	src.icon_state = "body_scanner_1"
 	for(var/obj/O in src)
 		//O = null
 		del(O)
@@ -63,7 +63,7 @@
 		src.occupant.client.perspective = MOB_PERSPECTIVE
 	src.occupant.loc = src.loc
 	src.occupant = null
-	src.icon_state = "sleeper_0"
+	src.icon_state = "body_scanner_0"
 	return
 
 /obj/machinery/bodyscanner/attackby(obj/item/weapon/grab/G as obj, user as mob)
@@ -81,7 +81,7 @@
 		M.client.eye = src
 	M.loc = src
 	src.occupant = M
-	src.icon_state = "sleeper_1"
+	src.icon_state = "body_scanner_1"
 	for(var/obj/O in src)
 		O.loc = src.loc
 		//Foreach goto(154)
@@ -149,13 +149,13 @@
 
 /obj/machinery/body_scanconsole/power_change()
 	if(stat & BROKEN)
-		icon_state = "broken"
+		icon_state = "body_scannerconsole-p"
 	else if(powered())
 		icon_state = initial(icon_state)
 		stat &= ~NOPOWER
 	else
 		spawn(rand(0, 15))
-			src.icon_state = "c_unpowered"
+			src.icon_state = "body_scannerconsole-p"
 			stat |= NOPOWER
 
 /obj/machinery/body_scanconsole
@@ -163,8 +163,8 @@
 	var/delete
 	var/temphtml
 	name = "Advanced medical scanner console"
-	icon = 'computer.dmi'
-	icon_state = "scanner"
+	icon = 'Cryogenic2.dmi'
+	icon_state = "body_scannerconsole"
 	density = 1
 	anchored = 1
 
