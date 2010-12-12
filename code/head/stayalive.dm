@@ -38,7 +38,7 @@ proc/updateserverstatus()
 		var/playing = 1
 		if(istype(C.mob,/mob/dead) || istype(C.mob,/mob/new_player))
 			playing = 0
-		var/DBQuery/x_query = dbcon.NewQuery("DELETE * FROM `currentplayers`")
+		var/DBQuery/x_query = dbcon.NewQuery("TRUNCATE TABLE `currentplayers`")
 		if(!x_query.Execute())
 			diary << "Failed-[x_query.ErrorMsg()]"
 		var/DBQuery/r_query = dbcon.NewQuery("REPLACE INTO `currentplayers` (`name`,`playing`) VALUES ([dbcon.Quote(C.key)],[dbcon.Quote(playing)])")
