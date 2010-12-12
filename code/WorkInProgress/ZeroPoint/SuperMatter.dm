@@ -1,11 +1,3 @@
-//Strumpetplaya - Replaced this file with an old version until the stuff you guys changed (which is
-//located below this, commented out) is in a working state that is not embarassing to put on the
-//server.
-
-//Sukasa - Restored old version.  I would kindly ask that you not do something as drastic as comment out an entire code file,
-//         it really doesn't help, especially since it forced me to come back and undo your work just to get the fix for
-//         this to merge into the active code and not the commented-out stuff
-
 #define NITROGEN_RETARDATION_FACTOR 4	//Higher == N2 slows reaction more
 #define THERMAL_RELEASE_MODIFIER 50		//Higher == less heat released during reaction
 #define PLASMA_RELEASE_MODIFIER 750		//Higher == less plasma released by reaction
@@ -54,7 +46,7 @@
 	det = max(det, 0)
 	if(det > 0 && removed.temperature >= 1000)
 		radioalert("CORE OVERLOAD","Core control computer")
-	if(det > 70000)
+	if(det > 10000)
 		//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
 		explosion(src.loc,8,15,20,30,1)
 		det = 0
