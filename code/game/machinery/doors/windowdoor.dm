@@ -71,7 +71,7 @@
 /obj/machinery/door/window/open()
 	if (src.operating == 1) //doors can still open when emag-disabled
 		return 0
-	if (!ticker)
+	if (!ticker || src.locked)
 		return 0
 	if(!src.operating) //in case of emag
 		src.operating = 1
@@ -87,6 +87,9 @@
 	if(operating == 1) //emag again
 		src.operating = 0
 	return 1
+
+/obj/machinery/door/window/forceopen()
+	return src.open()
 
 /obj/machinery/door/window/close()
 	if (src.operating)

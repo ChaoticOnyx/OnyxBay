@@ -12,7 +12,7 @@
 	anchored = 1
 
 
-/obj/alien/head
+/obj/alien/head  // To do: Hmm? Vat is this? - Abi
 	name = "severed head"
 	desc = "A severed head..."
 	icon_state = "weeds"

@@ -665,7 +665,7 @@
 			if(istype(M, /mob/dead/observer/))
 				name += " \[ghost\]"
 			else if(istype(M,/mob/dead/official))
-				name += "NanoTrasen Offical"
+				name += "NanoTrasen Official"
 			else
 				name += " \[dead\]"
 		creatures[name] = M

@@ -41,7 +41,6 @@
 	var/secondsBackupPowerLost = 0 //The number of seconds until power is restored.
 	var/spawnPowerRestoreRunning = 0
 	var/welded = null
-	var/locked = 0
 	var/wires = 511
 	secondsElectrified = 0 //How many seconds remain until the door is no longer electrified. -1 if it is permanently electrified until someone fixes it.
 	var/aiDisabledIdScanner = 0
@@ -147,11 +146,11 @@
 	return ..()
 
 
-/obj/machinery/door/airlock/proc/forcedopen()
+/obj/machinery/door/airlock/forceopen()
 	if(!density)
 		return 1
 	if (src.operating == 1) //doors can still open when emag-disabled
-		return
+		return 0
 	if (!ticker)
 		return 0
 	if(!src.operating) //in case of emag
@@ -167,10 +166,6 @@
 
 	if(operating == 1) //emag again
 		src.operating = 0
-
-	if(autoclose)
-		spawn(150)
-			autoclose()
 	return 1
 
 
@@ -971,7 +966,6 @@ About the new airlock wires panel:
 
 
 /obj/machinery/door/airlock/attackby(C as obj, mob/user as mob)
-	//world << text("airlock attackby src [] obj [] mob []", src, C, user)
 	if (!istype(usr, /mob/living/silicon))
 		if (src.isElectrified())
 			if(src.shock(user, 75))
