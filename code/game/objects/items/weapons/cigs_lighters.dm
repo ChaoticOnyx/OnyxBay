@@ -57,7 +57,29 @@ ZIPPO
 	else
 		return ..()
 	return
+/obj/item/weapon/zippo/lighter/attack_self(mob/user)
+	if(user.r_hand == src || user.l_hand == src)
+		if(!src.lit)
+			src.lit = 1
+			src.icon_state = "lighteron"
+			src.item_state = "zippoon"
+			for(var/mob/O in viewers(user, null))
+				O.show_message("\red [user] lights the [src] in one smooth movement.", 1)
 
+			user.ul_SetLuminosity(user.luminosity + ZIPPO_LUM)
+			spawn(0)
+				process()
+		else
+			src.lit = 0
+			src.icon_state = "lighter"
+			src.item_state = "zippo"
+			for(var/mob/O in viewers(user, null))
+				O.show_message("\red [user] shuts the [src] off", 1)
+
+			user.ul_SetLuminosity(user.luminosity - ZIPPO_LUM)
+	else
+		return ..()
+	return
 
 /obj/item/weapon/zippo/process()
 
