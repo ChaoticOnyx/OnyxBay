@@ -1420,7 +1420,16 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	var/lit = 0
 	flags = ONBELT | TABLEPASS | CONDUCT
 
-
+/obj/item/weapon/zippo/lighter
+	name = "BENKY lighter"
+	desc = "A lighter"
+	icon = 'items.dmi'
+	icon_state = "lighter"
+	item_state = "zippo"
+	w_class = 1
+	throwforce = 4
+	lit = 0
+	flags = ONBELT | TABLEPASS
 /obj/item/weapon/mousetrap
 	name = "mousetrap"
 	desc = "A handy little spring-loaded trap for catching pesty rodents."

@@ -33,15 +33,13 @@ world
 */
 proc/updateserverstatus()
 	var/players = 0
-	for(var/client/C)
+	var/DBQuery/x_query = dbcon.NewQuery("TRUNCATE TABLE `currentplayers`")
+	if(!x_query.Execute())
+		diary << "Failed-[x_query.ErrorMsg()]"
+	for(var/client/C in world)
 		players++
 		var/playing = 1
-		if(istype(C.mob,/mob/dead) || istype(C.mob,/mob/new_player))
-			playing = 0
-		var/DBQuery/x_query = dbcon.NewQuery("TRUNCATE TABLE `currentplayers`")
-		if(!x_query.Execute())
-			diary << "Failed-[x_query.ErrorMsg()]"
-		var/DBQuery/r_query = dbcon.NewQuery("REPLACE INTO `currentplayers` (`name`,`playing`) VALUES ([dbcon.Quote(C.key)],[dbcon.Quote(playing)])")
+		var/DBQuery/r_query = dbcon.NewQuery("INSERT INTO `currentplayers` (`name`,`playing`) VALUES ([dbcon.Quote(C.key)],[dbcon.Quote(playing)])")
 		if(!r_query.Execute())
 			diary << "Failed-[r_query.ErrorMsg()]"
 	var/mode
