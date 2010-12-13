@@ -452,7 +452,7 @@
 
 	flags = FPRINT|TABLEPASS|PLASMAGUARD
 
-/obj/item/clothing/suit/det_suit
+/obj/item/clothing/suit/storage/det_suit
 	name = "coat"
 	desc = "Someone who wears this means business"
 	icon_state = "detective"
@@ -466,7 +466,7 @@
 	item_state = "judge"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
-/obj/item/clothing/suit/labcoat
+/obj/item/clothing/suit/storage/labcoat
 	name = "labcoat"
 	desc = "A suit that protects against minor chemical spills."
 	icon_state = "labcoat"

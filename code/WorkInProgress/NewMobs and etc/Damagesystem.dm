@@ -1048,7 +1048,7 @@
 			var/icon/stain_icon = null
 			if (istype(wear_suit, /obj/item/clothing/suit/armor/vest || /obj/item/clothing/suit/wcoat || /obj/item/clothing/suit/armor/a_i_a_ptank))
 				stain_icon = icon('blood.dmi', "armorblood[!lying ? "" : "2"]")
-			else if (istype(wear_suit, /obj/item/clothing/suit/det_suit || /obj/item/clothing/suit/labcoat))
+			else if (istype(wear_suit, /obj/item/clothing/suit/storage/det_suit || /obj/item/clothing/suit/storage/labcoat))
 				stain_icon = icon('blood.dmi', "coatblood[!lying ? "" : "2"]")
 			else
 				stain_icon = icon('blood.dmi', "suitblood[!lying ? "" : "2"]")
