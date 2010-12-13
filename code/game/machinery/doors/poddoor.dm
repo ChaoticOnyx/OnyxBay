@@ -49,5 +49,6 @@
 	sleep(10)
 	src.operating = 0
 	return
+
 /obj/machinery/door/poddoor/roofdoor
 	name = "Retractable roof"
