@@ -136,7 +136,9 @@
 				continue
 			else
 				del(B)
-		sleep(100)		/*		if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
+		sleep(100)
+
+/*		if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
 			B.loc = T
 			updateicon()
 			spawn(80)
