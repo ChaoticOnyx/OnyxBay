@@ -28,8 +28,9 @@
 	var/CableType  = /obj/cabling
 
 /obj/item/weapon/CableCoil/New(var/Location, var/Length)
-	if(!src || !Length)
+	if(!Length)
 		world << "Shit something went pretty wrong here"
+		del(src)
 		return
 	Amount = Length
 	item_state     = "[CoilColour]coil"
