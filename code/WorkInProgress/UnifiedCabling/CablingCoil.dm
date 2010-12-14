@@ -27,7 +27,10 @@
 	var/Amount     = 30
 	var/CableType  = /obj/cabling
 
-/obj/item/weapon/CableCoil/New(var/Location, var/Length = Amount)
+/obj/item/weapon/CableCoil/New(var/Location, var/Length)
+	if(!src || !Length)
+		world << "Shit something went pretty wrong here"
+		return
 	Amount = Length
 	item_state     = "[CoilColour]coil"
 	icon_state     = "[CoilColour]coil"

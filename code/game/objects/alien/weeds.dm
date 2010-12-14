@@ -5,11 +5,10 @@
 	layer = 2
 	var/health = 15
 	var/dead
-
+	var/list/allowed = list(/obj/closet,/obj/table,/obj/machinery/computer,/obj/machinery/disposal)
 /obj/alien/weeds/New()
 	if(istype(src.loc, /turf/space))
 		del(src)
-	updateicon()
 /obj/alien/weeds/process()
 	spawn while(!dead)
 		sleep(-1)
@@ -23,8 +22,7 @@
 			return
 		if(!north||!west||!east||!south)
 			Life()
-		else
-			updateicon(0)
+		updateicon(0)
 		sleep(50)
 		if(dead) return
 		src.process()
@@ -40,23 +38,23 @@
 
 	if(!north)
 		dir += "north"
-	else
-		north.updateicon()
+	else if(spread)
+		north.updateicon(0)
 
 	if(!south)
 		dir += "south"
-	else
-		south.updateicon()
+	else if(spread)
+		south.updateicon(0)
 
 	if(!west)
 		dir += "west"
-	else
-		west.updateicon()
+	else if(spread)
+		west.updateicon(0)
 
 	if(!east)
 		dir += "east"
-	else
-		east.updateicon()
+	else if(spread)
+		east.updateicon(0)
 
 	if(!dir)
 		icon_state = "creep_center"
@@ -81,7 +79,44 @@
 
 	if(prob(1))
 		src.loc.ex_act(2)
+	for(var/dirn in cardinal)
+		var/turf/T = get_step(src,dirn)
+		if (istype(T.loc, /area/shuttle/arrival))
+			continue
 
+		if(T.density)
+			continue
+		if(locate(/obj/machinery/door) in T)
+			var/obj/machinery/door/D = locate() in T
+			if(D.density)
+				D.forceopen()
+			sleep(10)
+			var/obj/alien/weeds/B = new(src.loc)
+			B.icon_state = ""
+			if(T.Enter(B) && !(locate(/obj/alien/weeds) in T))
+				B.loc = T
+				B.Life()
+				B.updateicon(1)
+				continue
+			else
+				del(B)
+		if(locate(/obj/closet) in T || locate(/obj/table) in T || locate(/obj/machinery/computer) in T || locate(/obj/machinery/disposal) in T)
+			var/obj/alien/weeds/B = new(T)
+			B.Life()
+			B.updateicon(1)
+			continue
+		if(!locate(/obj/alien/weeds) in T)
+			var/obj/alien/weeds/B = new(src.loc)
+			B.icon_state = ""
+			if(T.Enter(B))
+				B.loc = T
+				B.Life()
+				B.updateicon(1)
+				continue
+			else
+				del(B)
+
+	/*
 	for(var/mob/living/carbon/human/h in src.loc)
 		h.hallucination += 10
 
@@ -119,7 +154,6 @@
 					if(B)
 						B.Life()
 						B.updateicon()
-						sleep(100)
 						continue
 			else
 				del(B)
@@ -132,18 +166,17 @@
 			if(B)
 				B.Life()
 				B.updateicon()
-				sleep(100)
 				continue
 			else
 				del(B)
-		sleep(100)		/*		if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
+						/*		if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
 			B.loc = T
 			updateicon()
 			spawn(80)
 				if(B)
 					B.Life()
 			// open cell, so expand
-			*/
+			*/*/
 
 /obj/alien/weeds/ex_act(severity)
 	switch(severity)
