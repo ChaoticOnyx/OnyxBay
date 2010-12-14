@@ -180,6 +180,12 @@ CIRCULAR SAW
 			O.show_message(text("\red [M] gets his [S.display_name] sawed off with [src] by [user]."), 1)
 		S.destroyed = 1
 		M:update_body()
+
+	if(icon_state == "saw3") // Bloodying it up
+		icon_state = "saw2"
+	else if (icon_state == "saw2")
+		icon_state = "saw1"
+
 	return
 
 // Surgical scapel
