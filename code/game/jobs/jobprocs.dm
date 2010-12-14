@@ -303,7 +303,7 @@
 
 		if ("Chemist")
 			src.equip_if_possible(new /obj/item/device/pda/toxins(src), slot_belt)
-			src.equip_if_possible(new /obj/item/clothing/under/rank/geneticist(src), slot_w_uniform)
+			src.equip_if_possible(new /obj/item/clothing/under/rank/chemist(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/white(src), slot_shoes)
 			src.equip_if_possible(new /obj/item/clothing/suit/storage/labcoat(src), slot_wear_suit)
 
@@ -434,7 +434,7 @@
 
 		if ("Roboticist")
 			src.equip_if_possible(new /obj/item/device/pda/medical(src), slot_belt)
-			src.equip_if_possible(new /obj/item/clothing/under/color/black(src), slot_w_uniform)
+			src.equip_if_possible(new /obj/item/clothing/under/rank/roboticist(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)
 			src.equip_if_possible(new /obj/item/clothing/suit/storage/labcoat(src), slot_wear_suit)
 			src.equip_if_possible(new /obj/item/weapon/crowbar(src), slot_in_backpack)

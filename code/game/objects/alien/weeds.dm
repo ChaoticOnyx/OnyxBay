@@ -5,16 +5,20 @@
 	layer = 2
 	var/health = 15
 	var/dead
-	var/list/allowed = list(/obj/closet,/obj/table,/obj/machinery/computer,/obj/machinery/disposal)
+	var/list/allowed = list(/obj/closet, /obj/secure_closet, /obj/table, /obj/machinery/computer, /obj/machinery/disposal)
+
 /obj/alien/weeds/New()
-	del(src)
-	return
+/*	del(src)
+	return*/
 	if(istype(src.loc, /turf/space))
 		del(src)
+
+
 /obj/alien/weeds/process()
 	spawn while(!dead)
 		sleep(-1)
 		var/turf/T = src.loc
+
 		var/obj/alien/weeds/north = locate() in T.north
 		var/obj/alien/weeds/west = locate() in T.west
 		var/obj/alien/weeds/east = locate() in T.east
@@ -24,6 +28,7 @@
 			return
 		if(!north||!west||!east||!south)
 			Life()
+
 		updateicon(0)
 		sleep(50)
 		if(dead) return
@@ -81,6 +86,7 @@
 
 	if(prob(1))
 		src.loc.ex_act(2)
+
 	for(var/dirn in cardinal)
 		var/turf/T = get_step(src,dirn)
 		if (istype(T.loc, /area/shuttle/arrival))
@@ -88,6 +94,7 @@
 
 		if(T.density)
 			continue
+
 		if(locate(/obj/machinery/door) in T)
 			var/obj/machinery/door/D = locate() in T
 			if(D.density)
@@ -97,23 +104,28 @@
 			B.icon_state = ""
 			if(T.Enter(B) && !(locate(/obj/alien/weeds) in T))
 				B.loc = T
-				B.Life()
 				B.updateicon(1)
+				sleep(20)
+				B.Life()
 				continue
 			else
 				del(B)
-		if(locate(/obj/closet) in T || locate(/obj/table) in T || locate(/obj/machinery/computer) in T || locate(/obj/machinery/disposal) in T)
+
+		if(locate(/obj/closet) in T || locate(/obj/secure_closet) in T || locate(/obj/table) in T || locate(/obj/machinery/computer) in T || locate(/obj/machinery/disposal) in T)
 			var/obj/alien/weeds/B = new(T)
-			B.Life()
 			B.updateicon(1)
+			sleep(20)
+			B.Life()
 			continue
+
 		if(!locate(/obj/alien/weeds) in T)
 			var/obj/alien/weeds/B = new(src.loc)
 			B.icon_state = ""
 			if(T.Enter(B))
 				B.loc = T
-				B.Life()
 				B.updateicon(1)
+				sleep(20)
+				B.Life()
 				continue
 			else
 				del(B)
@@ -171,14 +183,16 @@
 				continue
 			else
 				del(B)
-						/*		if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
+
+		/*if(T.Enter(B,src) && !(locate(/obj/alien/weeds) in T))
 			B.loc = T
 			updateicon()
 			spawn(80)
 				if(B)
 					B.Life()
 			// open cell, so expand
-			*/*/
+		*/
+		*/
 
 /obj/alien/weeds/ex_act(severity)
 	switch(severity)
@@ -196,11 +210,23 @@
 		else
 	return
 
-/obj/alien/weeds/attackby(obj/item/weapon/weldingtool/P as obj, mob/user as mob)
-	if (istype(P, /obj/item/weapon/weldingtool))
-		if ((P:welding && P:welding))
+/obj/alien/weeds/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if (istype(W, /obj/item/weapon/weldingtool))
+		if (W:welding)
 			for(var/mob/O in viewers(user, null))
-				O.show_message(text("\red [] burns [] with the welding tool!", user, src), 1, "\red You hear a small burning noise", 2)
+				O.show_message("\red [user] burns [src] with the welding tool!", 1, "\red You hear a small burning noise.", 2)
 			src.health -= rand(3,5)
 			if(src.health <= 0)
 				del(src)
+
+	else if(istype(W, /obj/item/weapon/zippo))
+		if (W:lit)
+			if(prob(45))
+				for(var/mob/O in viewers(user, null))
+					O.show_message("\red [src] catches on fire from [user]'s [W.name]!", 1, "\red You hear a small burning noise.", 2)
+				src.health -= rand(2,4)
+				if(src.health <= 0)
+					del(src)
+			else
+				for(var/mob/O in viewers(user, null))
+					O.show_message("\red The [W.name]'s flame does not seem to weaken the weeds.", 1)

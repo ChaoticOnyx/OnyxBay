@@ -767,7 +767,7 @@
 	color = "director"
 
 /obj/item/clothing/under/rank/janitor
-	desc = "Official clothing of the station's poopscooper."
+	desc = "The janitorial crew jumpsuit."
 	name = "Janitor's Jumpsuit"
 	icon_state = "janitor"
 	color = "janitor"
