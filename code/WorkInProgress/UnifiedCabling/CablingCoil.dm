@@ -29,9 +29,7 @@
 
 /obj/item/weapon/CableCoil/New(var/Location, var/Length)
 	if(!Length)
-		world << "Shit something went pretty wrong here"
-		del(src)
-		return
+		Length = MaxAmount
 	Amount = Length
 	item_state     = "[CoilColour]coil"
 	icon_state     = "[CoilColour]coil"
