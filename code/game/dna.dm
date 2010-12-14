@@ -21,7 +21,7 @@
 	// determine DNA fragment from hairstyle
 	// :wtc:
 
-	var/list/styles = list("bald", "hair_a", "hair_b", "hair_c", "hair_d", "hair_e", "hair_f", "hair_bedhead", "hair_dreads" )
+	var/list/styles = list("bald", "hair_a", "hair_b", "hair_c", "hair_d", "hair_e", "hair_f", "hair_bedhead", "hair_dreads", "hair_ponytail" )
 	var/hrange = round(4095 / styles.len)
 
 	var/style = styles.Find(character.hair_icon_state)
@@ -252,7 +252,7 @@
 		var/hairnum = hex2num(getblock(structure,13,3))
 
 
-		var/list/styles = list("bald", "hair_a", "hair_b", "hair_c", "hair_d", "hair_e", "hair_f", "hair_bedhead", "hair_dreads" )
+		var/list/styles = list("bald", "hair_a", "hair_b", "hair_c", "hair_d", "hair_e", "hair_f", "hair_bedhead", "hair_dreads", "hair_ponytail" )
 		var/hrange = round(4095 / styles.len)
 
 		var/style = round(hairnum / hrange)
