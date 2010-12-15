@@ -101,7 +101,8 @@ datum/controller/game_controller
 			return 0
 
 		var/start_time = world.timeofday
-
+		//world.keepalive()
+		sleep(1)
 		air_master.process()
 
 		sleep(1)

@@ -28,7 +28,7 @@
 					return
 				if(name == "r arm")
 					var/obj/item/weapon/organ/r_arm/H = new(owner.loc)
-					if(owner:organs["l_hand"])
+					if(owner:organs["r_hand"])
 						var/datum/organ/external/S = owner:organs["r_hand"]
 						if(!S.destroyed)
 							var/obj/item/weapon/organ/r_hand/X = new(owner.loc)

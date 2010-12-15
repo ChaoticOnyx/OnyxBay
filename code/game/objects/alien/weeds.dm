@@ -7,8 +7,8 @@
 	var/dead
 	var/list/allowed = list(/obj/closet,/obj/table,/obj/machinery/computer,/obj/machinery/disposal)
 /obj/alien/weeds/New()
-	del(src)
-	return
+//	del(src)
+//	return
 	if(istype(src.loc, /turf/space))
 		del(src)
 /obj/alien/weeds/process()
@@ -66,6 +66,7 @@
 	return
 
 /obj/alien/weeds/proc/Life()
+	src.updateicon(0)
 	var/turf/U = src.loc
 	if (istype(U, /turf/space))
 		del(src)
@@ -78,10 +79,11 @@
 	var/obj/machinery/power/apc/A = locate() in src.loc
 	if(A)
 		A.set_broken()
-
 	if(prob(1))
 		src.loc.ex_act(2)
 	for(var/dirn in cardinal)
+	//	sleep(100)
+		sleep(10)
 		var/turf/T = get_step(src,dirn)
 		if (istype(T.loc, /area/shuttle/arrival))
 			continue

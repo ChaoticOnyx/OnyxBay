@@ -3,19 +3,16 @@ world
 	proc
 		startmysql(var/silent)
 			dbcon.Connect("dbi:mysql:[DB_DBNAME]:[DB_SERVER]:[DB_PORT]","[DB_USER]","[DB_PASSWORD]")
-			if(!dbcon.IsConnected()) CRASH(dbcon.ErrorMsg())
+			if(!dbcon.IsConnected()) //CRASH(dbcon.ErrorMsg())
 			else
 				if(!silent)
 					world << "\red \b Mysql connection established..."
-				keepalive()
 		keepalive()
-			spawn while(1)
-				sleep(200)
-				if(!dbcon.IsConnected())
-					dbcon.Connect("dbi:mysql:[DB_DBNAME]:[DB_SERVER]:[DB_PORT]","[DB_USER]","[DB_PASSWORD]")
-				updateserverstatus()
+			if(!dbcon.IsConnected())
+				dbcon.Connect("dbi:mysql:[DB_DBNAME]:[DB_SERVER]:[DB_PORT]","[DB_USER]","[DB_PASSWORD]")
 
 
+			//updateserverstatus()
 
 /*mob/verb/updateserverstatus()
 	var/players = 0
