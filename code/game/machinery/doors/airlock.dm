@@ -834,7 +834,6 @@ About the new airlock wires panel:
 						usr << text("The door bolts are down!<br>\n")
 					else if (src.density)
 						open()
-	//					close()
 					else
 						usr << text("The airlock is already opened.<br>\n")
 
@@ -1011,6 +1010,7 @@ About the new airlock wires panel:
 
 				if (!istype(src, /obj/machinery/door/airlock/glass))
 					src.ul_SetOpacity(0)
+				update_nearby_tiles()
 				src.operating = 0
 				return
 		else
@@ -1025,6 +1025,7 @@ About the new airlock wires panel:
 
 					if ((src.visible) && (!istype(src, /obj/machinery/door/airlock/glass)))
 						src.ul_SetOpacity(1)
+					update_nearby_tiles()
 					src.operating = 0
 
 	else

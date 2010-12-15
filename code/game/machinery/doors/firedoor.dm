@@ -47,6 +47,7 @@
 				update_icon()
 
 				src.ul_SetOpacity(0)
+				update_nearby_tiles()
 				src.operating = 0
 				return
 		else //close it up again
@@ -59,6 +60,7 @@
 				update_icon()
 
 				src.ul_SetOpacity(1)
+				update_nearby_tiles()
 				src.operating = 0
 				return
 	return
