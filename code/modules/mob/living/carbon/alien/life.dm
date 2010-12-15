@@ -97,7 +97,8 @@
 	//If there are alien weeds on the ground then heal if needed or give some toxins
 	if(locate(/obj/alien/weeds) in loc)
 		if(health >= health_full)
-			toxloss += toxgain
+			if(toxloss + toxgain <= toxgainmax)
+				toxloss += toxgain
 		else
 			bruteloss -= 5
 			fireloss -= 5

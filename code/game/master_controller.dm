@@ -125,8 +125,6 @@ datum/controller/game_controller
 		for(var/obj/item/item in processing_items)
 			item.process()
 
-
-
 		for(var/datum/pipe_network/network in pipe_networks)
 			network.process()
 

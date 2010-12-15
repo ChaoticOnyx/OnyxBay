@@ -104,7 +104,7 @@ datum
 		dwine
 			name = "Dwarven Wine"
 			id = "dwine"
-			description = "Traditionally made of potatoes, NanoTrasen vodka contains NO organic material!"
+			description = "Strike the planet! Celebratory NanoTrasen drink, limited edition."
 			reagent_state = LIQUID
 			on_mob_life(var/mob/M)
 				if(!data) data = 1

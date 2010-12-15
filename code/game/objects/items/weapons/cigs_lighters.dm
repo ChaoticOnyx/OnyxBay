@@ -64,7 +64,7 @@ ZIPPO
 			src.icon_state = "lighteron"
 			src.item_state = "zippoon"
 			for(var/mob/O in viewers(user, null))
-				O.show_message("\red [user] lights the [src] in one smooth movement.", 1)
+				O.show_message("\red [user] lights the [src].", 1)
 
 			user.ul_SetLuminosity(user.luminosity + ZIPPO_LUM)
 			spawn(0)
