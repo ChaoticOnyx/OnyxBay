@@ -8,12 +8,18 @@ mob/living/npc
 	var/search = 0 // will he seek out friends?
 	var/helpfull = 0 // will he do something heplfull to friends?
 	var/list/friends = list(/mob/living/npc/test)
-	var/breath = 0
+	var/breath = 0 // does he require air or something else to survive.
 	var/list/say = list()
+	var/list/findtargets = list()
+	var/atom/findtarget
+	var/list/path_target = list()// astar
+	var/find = 0 // will he try to find something in the findtargets list()
+	var/sayprob = 10 // probabilty to say something.
 	var/mob/target
 	var/slashattack = 0 // will he cause bleeding?
 	var/superblunt = 0 // Will he have a incressed chance to destory limbs?
 	var/attackmessage = "punches"
+	var/helpmesage = "massages"
 	var/brutedmg = 0 // brute dmg taken per attack
 	var/firedmg = 0 // fire dmg taken per attack
 	var/oxydmg = 0 // oxy dmg taken per attack
@@ -24,8 +30,9 @@ mob/living/npc/Life()
 		Breath()
 	if(bruteloss||fireloss||oxyloss)
 		Healthcheck()
-	Act()
-	if(say.len && prob(10))
+	if(!src.client)
+		Act()
+	if(say.len && prob(sayprob))
 		DoSay()
 mob/living/npc/proc/Healthcheck()
 	if((bruteloss + fireloss + oxyloss) > 200)
@@ -56,9 +63,14 @@ mob/living/npc/proc/Act()
 			isidle = 0
 			target = null
 	if(target in viewers(src))// we see him
-		//world << "OH I SEE HIM"
-		step_towards(src,target)
-		sleep(10)
+		if(!path_target.len)
+			MoveAstar(target)
+			if(path_target.len <= 0)
+				return
+		var/turf/next = path_target[1]
+		step_towards_3d(src,get_step_towards_3d2(next))
+		path_target -= next
+		isidle = 0
 	else if(hunt || search) // we lost him
 		target = null
 		for(var/mob/living/M in viewers(src))
@@ -71,6 +83,13 @@ mob/living/npc/proc/Act()
 				target = M
 				isidle = 0
 				step_towards(src,target)
+				break
+	else if(find && findtargets.len)
+		for(var/atom/A in findtarget)
+			var/atom/B = locate(A) in world
+			if(B)
+				//astar ghere
+				isidle = 0
 				break
 	if(isidle)
 		DoIdle()
@@ -111,9 +130,18 @@ mob/living/npc/proc/Help(mob/M)
 	else
 		src.lastDblClick = world.time
 mob/living/npc/proc/DoIdle()
+	world << "IDLE"
 	step_rand(src)
-	sleep(10)
 	return
+mob/living/npc/proc/MoveAstar(atom/trg)
+		//target = trg
+	if(isturf(trg))
+		path_target = AStar(src.loc, target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, null,null)
+		path_target = reverselist(path_target)
+		return
+	path_target = AStar(src.loc, target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, null,null)
+	path_target = reverselist(path_target)
+
 mob/living/npc/test
 	name = "crab"
 //	rname = "crab"
