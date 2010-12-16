@@ -44,6 +44,7 @@
 	icon = 'ammo.dmi'
 	icon_state = "rcd"
 	item_state = "rcdammo"
+	w_class = 1
 	opacity = 0
 	density = 0
 	anchored = 0.0
@@ -1365,7 +1366,7 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 /obj/item/weapon/circular_saw
 	name = "circular saw"
 	icon = 'surgery.dmi'
-	icon_state = "saw1"
+	icon_state = "saw3"
 	flags = FPRINT | TABLEPASS | CONDUCT
 	force = 15.0
 	w_class = 1.0
@@ -1419,7 +1420,16 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	var/lit = 0
 	flags = ONBELT | TABLEPASS | CONDUCT
 
-
+/obj/item/weapon/zippo/lighter
+	name = "BENKY lighter"
+	desc = "A lighter"
+	icon = 'items.dmi'
+	icon_state = "lighter"
+	item_state = "zippo"
+	w_class = 1
+	throwforce = 4
+	lit = 0
+	flags = ONBELT | TABLEPASS
 /obj/item/weapon/mousetrap
 	name = "mousetrap"
 	desc = "A handy little spring-loaded trap for catching pesty rodents."

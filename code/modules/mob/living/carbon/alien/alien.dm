@@ -6,6 +6,7 @@
 /mob/living/carbon/alien/species = "Alien"
 
 /mob/living/carbon/alien/var/toxgain = 5 // How much toxins is gained from weeds per tick
+/mob/living/carbon/alien/var/toxgainmax = 350 // Needs to be tested for balance. The maximum amount of toxins aliens can gain.
 /mob/living/carbon/alien/var/alien_invis = 0.0
 
 /mob/living/carbon/alien/updatehealth()

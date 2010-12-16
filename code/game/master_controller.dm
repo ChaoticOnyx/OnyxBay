@@ -101,7 +101,8 @@ datum/controller/game_controller
 			return 0
 
 		var/start_time = world.timeofday
-
+		//world.keepalive()
+		sleep(1)
 		air_master.process()
 
 		sleep(1)
@@ -123,8 +124,6 @@ datum/controller/game_controller
 
 		for(var/obj/item/item in processing_items)
 			item.process()
-
-
 
 		for(var/datum/pipe_network/network in pipe_networks)
 			network.process()

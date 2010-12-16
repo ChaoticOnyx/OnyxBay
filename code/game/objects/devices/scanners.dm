@@ -183,11 +183,11 @@ GAS ANALYZER
 			var/calc =  lol / 560
 			calc *= 100
 			if(amt <= 448)
-				user.show_message("\red <b>Warning: Blood Level LOW: [calc]% [amt]ml")
+				user.show_message("\red <b>Warning: Blood Level LOW: [calc]% [amt]cl")
 			else if(amt <= 336)
-				user.show_message("\red <b>Warning: Blood Level CRITICAL: [calc]% [amt]ml")
+				user.show_message("\red <b>Warning: Blood Level CRITICAL: [calc]% [amt]cl")
 			else
-				user.show_message("\blue Blood Level Normal: [calc]% [amt]ml")
+				user.show_message("\blue Blood Level Normal: [calc]% [amt]cl")
 	src.add_fingerprint(user)
 	return
 /obj/item/device/healthanalyzer/afterattack(atom/A as mob|obj|turf, mob/user as mob)

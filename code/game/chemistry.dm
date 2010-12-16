@@ -289,6 +289,21 @@
 	new /obj/item/weapon/reagent_containers/glass/beaker( src )
 	new /obj/item/weapon/reagent_containers/glass/beaker( src )
 
+/obj/item/weapon/storage/pillbottlebox
+	name = "Pill Bottle Box"
+	icon_state = "pillbottle"
+	item_state = "syringe_kit"
+
+/obj/item/weapon/storage/pillbottlebox/New()
+	..()
+	new /obj/item/weapon/storage/pill_bottle( src )
+	new /obj/item/weapon/storage/pill_bottle( src )
+	new /obj/item/weapon/storage/pill_bottle( src )
+	new /obj/item/weapon/storage/pill_bottle( src )
+	new /obj/item/weapon/storage/pill_bottle( src )
+	new /obj/item/weapon/storage/pill_bottle( src )
+	new /obj/item/weapon/storage/pill_bottle( src )
+
 /obj/item/weapon/paper/alchemy/
 	name = "paper- 'Chemistry Information'"
 

@@ -109,7 +109,7 @@
 			src.verbs += /client/proc/new_eventa
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/zombify
-			src.verbs += /client/proc/createoffical
+			src.verbs += /client/proc/createofficial
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/nanoshuttle
 
@@ -192,7 +192,7 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 			src.verbs += /client/proc/zombify
-			src.verbs += /client/proc/createoffical
+			src.verbs += /client/proc/createofficial
 			src.verbs += /client/proc/general_report
 			//src.verbs += /client/proc/air_report
 			//src.verbs += /client/proc/air_status
@@ -289,7 +289,7 @@
 			src.verbs += /client/proc/toggleinvite
 			src.verbs += /client/proc/Zone_Info
 			src.verbs += /client/proc/zombify
-			src.verbs += /client/proc/createoffical
+			src.verbs += /client/proc/createofficial
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
 			src.verbs += /client/proc/loadmaphere
@@ -335,7 +335,7 @@
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/LSD_effect
-			src.verbs += /client/proc/createoffical
+			src.verbs += /client/proc/createofficial
 //				src.verbs += /client/proc/modifytemperature
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/nanoshuttle
@@ -398,7 +398,7 @@
 			src.verbs += /client/proc/delay				//Toggle the AI
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/nanoshuttle
-			src.verbs += /client/proc/createoffical
+			src.verbs += /client/proc/createofficial
 			src.verbs += /obj/admins/proc/delay					//game start delay
 
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
@@ -871,9 +871,9 @@
 		from.move_contents_to(go)
 		from.shuttle = ""
 
-/client/proc/createoffical(var/name as text)
+/client/proc/createofficial(var/name as text)
 	set category = "Roleplay"
-	set name = "Create Nanotrasen offical"
+	set name = "Create Nanotrasen official"
 	var/area/A
 	for(var/area/nanotrasenshuttle/b in world)
 		A = b
@@ -940,7 +940,7 @@
 	var/obj/item/weapon/card/id/id = new /obj/item/weapon/card/id/captains_spare(player)
 	id.registered = player.real_name
 	id.assignment = job
-	id.name = "[player.real_name]'s Offical ID"
+	id.name = "[player.real_name]'s Official ID"
 	player.equip_if_possible(id,player.slot_wear_id)
 
 	player.equip_if_possible(new /obj/item/device/radio/headset/security,player.slot_ears)

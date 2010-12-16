@@ -4,7 +4,7 @@
 	icon = 'old_or_unused.dmi'
 	icon_state = "utilitybelt"
 	item_state = "utility"
-	can_hold = list("/obj/item/weapon/crowbar","/obj/item/weapon/screwdriver","/obj/item/weapon/weldingtool","/obj/item/weapon/wirecutters","/obj/item/weapon/wrench","/obj/item/device/multitool","/obj/item/device/flashlight","/obj/item/weapon/cable_coil")
+	can_hold = list("/obj/item/weapon/crowbar","/obj/item/weapon/screwdriver","/obj/item/weapon/weldingtool","/obj/item/weapon/wirecutters","/obj/item/weapon/wrench","/obj/item/device/multitool","/obj/item/device/flashlight","/obj/item/weapon/CableCoil/power")
 	flags = FPRINT | TABLEPASS | ONBELT
 
 /obj/item/weapon/storage
@@ -27,7 +27,7 @@
 	icon = 'chemical.dmi'
 	item_state = "contsolid"
 	can_hold = list("/obj/item/weapon/reagent_containers/pill")
-	w_class = 2.0
+	w_class = 1.0
 
 /obj/item/weapon/storage/box
 	name = "Box"

@@ -76,8 +76,9 @@
 		src.text += "are [prob_right_dude]% sure that [traitor_name] may have been involved, and should be closely observed."
 		src.text += "<BR>Note: This group are known to be untrustworthy, so do not act on this information without proper discourse."
 	else
-		src.text += "discovered the following set of fingerprints ([fingerprints]) on sensitive materials, and their owner should be closely observed."
-		src.text += "However, these could also belong to a current Cent. Com employee, so do not act on this without reason."
+		if(fingerprints)
+			src.text += "discovered the following set of fingerprints ([fingerprints]) on sensitive materials, and their owner should be closely observed."
+			src.text += "However, these could also belong to a current Cent. Com employee, so do not act on this without reason."
 
 /datum/intercept_text/proc/build_rev(correct_mob)
 	var/name_1 = pick(src.org_names_1)

@@ -302,7 +302,7 @@
 		s_tone = max(min(round(text2num(new_tone)), 220), 1)
 		s_tone =  -s_tone + 35
 
-	var/new_style = input("Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Fag", "Bedhead", "Dreadlocks", "Bald" )
+	var/new_style = input("Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Fag", "Bedhead", "Dreadlocks", "Ponytail", "Bald" )
 
 	if (new_style)
 		h_style = new_style
@@ -368,6 +368,9 @@
 		stand_icon.Blend(rgb(100,100,100))
 		lying_icon.Blend(rgb(100,100,100))
 		pale = 1
+	else
+		update_body()
+		pale = 0
 /mob/living/carbon/human/handle_disabilities()
 	if(zombie == 1)
 		return

@@ -452,7 +452,7 @@
 
 	flags = FPRINT|TABLEPASS|PLASMAGUARD
 
-/obj/item/clothing/suit/det_suit
+/obj/item/clothing/suit/storage/det_suit
 	name = "coat"
 	desc = "Someone who wears this means business"
 	icon_state = "detective"
@@ -466,7 +466,7 @@
 	item_state = "judge"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
-/obj/item/clothing/suit/labcoat
+/obj/item/clothing/suit/storage/labcoat
 	name = "labcoat"
 	desc = "A suit that protects against minor chemical spills."
 	icon_state = "labcoat"
@@ -708,6 +708,14 @@
 	item_state = "bl_suit"
 	color = "chapblack"
 
+/obj/item/clothing/under/rank/chemist
+	desc = "Made of a special fiber that gives protection against biohazards. Has a Chemist rank stripe on it."
+	name = "Chemistry Jumpsuit"
+	icon_state = "chemistry"
+	item_state = "w_suit"
+	color = "chemistry"
+	permeability_coefficient = 0.40
+
 /obj/item/clothing/under/rank/engineer
 	desc = "It has an Engineering rank stripe on it."
 	name = "Engineering Jumpsuit"
@@ -723,7 +731,7 @@
 	color = "forensicsred"
 
 /obj/item/clothing/under/rank/geneticist
-	desc = "Made of a special fiber that gives special protection against biohazards. Has a genetics rank stripe on it."
+	desc = "Made of a special fiber that gives protection against biohazards. Has a genetics rank stripe on it."
 	name = "Genetics Jumpsuit"
 	icon_state = "genetics"
 	item_state = "w_suit"
@@ -735,7 +743,7 @@
 	name = "Head of Personnel Jumpsuit"
 	icon_state = "hop"
 	item_state = "b_suit"
-	color = "hopgreen"
+	color = "hopblue"
 
 /obj/item/clothing/under/rank/head_of_security
 	desc = "It has a Head of Security rank stripe on it."
@@ -759,7 +767,7 @@
 	color = "director"
 
 /obj/item/clothing/under/rank/janitor
-	desc = "Official clothing of the station's poopscooper."
+	desc = "The janitorial crew jumpsuit."
 	name = "Janitor's Jumpsuit"
 	icon_state = "janitor"
 	color = "janitor"
@@ -787,6 +795,14 @@
 	item_state = "g_suit"
 	color = "hydroponics"
 	permeability_coefficient = 0.50
+
+/obj/item/clothing/under/rank/roboticist
+	desc = "Made of a special fiber that gives protection against electrocution. Has a Robotics rank stripe on it."
+	name = "Robotics Jumpsuit"
+	icon_state = "robotics"
+	item_state = "w_suit"
+	color = "robotics"
+	siemens_coefficient = 0.50
 
 // OTHER NONRANKED STATION JOBS
 

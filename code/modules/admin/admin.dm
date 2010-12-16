@@ -1279,7 +1279,7 @@ var/showadminmessages = 1
 			if(istype(M, /mob/dead/observer))
 				dat += "<td>Ghost</td>"
 			if(istype(M, /mob/dead/official))
-				dat += "<td>Offical</td>"
+				dat += "<td>Official</td>"
 			if(istype(M, /mob/living/carbon/monkey))
 				dat += "<td>Monkey</td>"
 			if(istype(M, /mob/living/carbon/alien))
