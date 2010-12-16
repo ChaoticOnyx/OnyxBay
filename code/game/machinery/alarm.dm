@@ -1,8 +1,8 @@
 /obj/machinery/alarm
 	var/const/ALERT_ATMOSPHERE_L = ONE_ATMOSPHERE*0.9
 	var/const/ALERT_ATMOSPHERE_U = ONE_ATMOSPHERE*1.1
-	var/const/UNSAFE_ATMOSPHERE_L = ONE_ATMOSPHERE*0.8
-	var/const/UNSAFE_ATMOSPHERE_U = ONE_ATMOSPHERE*1.2
+	var/const/UNSAFE_ATMOSPHERE_L = ONE_ATMOSPHERE*0.7
+	var/const/UNSAFE_ATMOSPHERE_U = ONE_ATMOSPHERE*1.4
 	var/const/ALERT_O2_L = MOLES_O2STANDARD*0.9
 	var/const/ALERT_O2_U = MOLES_O2STANDARD*1.1
 	var/const/UNSAFE_O2_L = MOLES_O2STANDARD*0.8
@@ -61,33 +61,22 @@
 		alert_info = 1
 		if((environment_pressure < UNSAFE_ATMOSPHERE_L) || (environment_pressure > UNSAFE_ATMOSPHERE_U))
 			safe = 0
-		else safe = 1
 
 	if(safe && ((environment.oxygen < ALERT_O2_L) || (environment.oxygen > ALERT_O2_U)))
 		//Oxygen Levels Sensor
 		alert_info = 2
-		if(environment.oxygen < UNSAFE_O2_L)
-			safe = 0
-		else safe = 1
 
 	if(safe && ((environment.temperature < ALERT_TEMPERATURE_L) || (environment.temperature > ALERT_TEMPERATURE_U)))
 		//Temperature Sensor
 		alert_info = 3
-		if((environment.temperature < UNSAFE_TEMPERATURE_L) || (environment.temperature > UNSAFE_TEMPERATURE_U))
-			safe = 0
-		else safe = 1
 
 	if(safe && (environment.carbon_dioxide > 0.05))
 		//CO2 Levels Sensor
 		alert_info = 4
-		if(environment.carbon_dioxide > 0.1)
-			safe = 0
-		else safe = 1
 
 	if(safe && (environment.toxins > 1))
 		//Plasma Levels Sensor
 		alert_info = 5
-		safe = 0
 
 
 	if(safe == 2) src.skipprocess = 1
