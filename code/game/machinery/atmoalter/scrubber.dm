@@ -56,6 +56,9 @@
 				if(istype(trace_gas, /datum/gas/oxygen_agent_b))
 					removed.trace_gases -= trace_gas
 					filtered_out.trace_gases += trace_gas
+				if(istype(trace_gas, /datum/gas/sleeping_agent))
+					removed.trace_gases -= trace_gas
+					filtered_out.trace_gases += trace_gas
 
 		//Remix the resulting gases
 		air_contents.merge(filtered_out)
