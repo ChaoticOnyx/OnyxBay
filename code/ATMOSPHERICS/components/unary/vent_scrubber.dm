@@ -11,6 +11,7 @@
 	var/scrubbing = 1 //0 = siphoning, 1 = scrubbing
 	var/scrub_CO2 = 1
 	var/scrub_Toxins = 1
+	var/srub_sleep = 1
 
 	var/volume_rate = 120
 
@@ -53,6 +54,9 @@
 				if(removed.trace_gases.len>0)
 					for(var/datum/gas/trace_gas in removed.trace_gases)
 						if(istype(trace_gas, /datum/gas/oxygen_agent_b))
+							removed.trace_gases -= trace_gas
+							filtered_out.trace_gases += trace_gas
+						if(istype(trace_gas, /datum/gas/sleeping_agent))
 							removed.trace_gases -= trace_gas
 							filtered_out.trace_gases += trace_gas
 
