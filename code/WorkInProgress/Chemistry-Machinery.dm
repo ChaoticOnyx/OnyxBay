@@ -8,20 +8,20 @@
 	anchored = 1
 	icon = 'chemical.dmi'
 	icon_state = "dispenser"
-	var/energy = 25
-	var/max_energy = 25
+	var/energy = 10
+	//var/max_energy = 25
 	var/list/dispensable_reagents = list("water","oxygen","nitrogen","hydrogen","potassium","mercury","sulfur","carbon","chlorine","fluorine","phosphorus","lithium","acid","radium","iron","aluminium","silicon","plasma","sugar","ethanol")
 
-	proc
-		recharge()
-			if(stat & BROKEN) return
-			if(energy != max_energy)
-				energy++
-				use_power(50)
-			spawn(600) recharge()
+	//proc
+		//recharge()
+		//	if(stat & BROKEN) return
+		//	if(energy != max_energy)
+		//		energy++
+		//		use_power(50)
+		//	spawn(600) recharge()
 
 	New()
-		recharge()
+		//recharge()
 
 	ex_act(severity)
 		switch(severity)
@@ -51,7 +51,7 @@
 		if (href_list["dispense"])
 			if(!energy)
 				var/dat = "Not enough energy.<BR><A href='?src=\ref[src];ok=1'>OK</A>"
-				usr << browse("<TITLE>Chemical Dispenser</TITLE>Chemical dispenser:<BR>Energy = [energy]/[max_energy]<BR><BR>[dat]", "window=chem_dispenser")
+				usr << browse("<TITLE>Chemical Dispenser</TITLE>Chemical dispenser:<BR>Energy = [energy]<BR><BR>[dat]", "window=chem_dispenser")
 				return
 			var/id = href_list["dispense"]
 			var/obj/item/weapon/reagent_containers/glass/dispenser/G = new/obj/item/weapon/reagent_containers/glass/dispenser(src.loc)
@@ -91,7 +91,7 @@
 				if(temp.id == re)
 					dat += "<A href='?src=\ref[src];dispense=[temp.id];state=[temp.reagent_state];name=[temp.name]'>[temp.name]</A><BR>"
 					dat += "[temp.description]<BR><BR>"
-		user << browse("<TITLE>Chemical Dispenser</TITLE>Chemical dispenser:<BR>Energy = [energy]/[max_energy]<BR><BR>[dat]", "window=chem_dispenser")
+		user << browse("<TITLE>Chemical Dispenser</TITLE>Chemical dispenser:<BR>Energy = [energy]<BR><BR>[dat]", "window=chem_dispenser")
 
 		onclose(user, "chem_dispenser")
 		return
@@ -100,14 +100,22 @@
 	if(istype(B))
 		del(B)
 		user << "You place the glass into the machine."
-		if (energy < max_energy)
-			energy++
+		//if (energy < max_energy)
+		//	energy++
 		spawn(0)
 			for(var/mob/O in hearers(src, null))
 				O.show_message("<B>[src] whirs as it recycles the glass!</B>", 1)
 		return
 	..()
 
+
+/obj/machinery/chem_dispenser/attackby(obj/item/weapon/vending_charge/chemistry/V, mob/user)
+	if (istype(V,/obj/item/weapon/vending_charge/chemistry))
+		energy += V.charge_amt
+		del(V)
+		user << "You load the charge into the machine."
+		return
+	..()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
