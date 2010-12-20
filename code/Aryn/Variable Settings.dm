@@ -1,4 +1,4 @@
-var/global/vs_control/vsc = new()
+var/global/vs_control/vsc
 vs_control
 	var
 		list/settings = list()

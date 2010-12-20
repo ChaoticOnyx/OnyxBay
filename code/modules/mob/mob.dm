@@ -1180,7 +1180,7 @@ mob/verb/turnwest()
 
 	var/cancel
 	for (var/client/C)
-		if (C.mob && !C.mob.stat)
+		if (C.mob && C.mob.stat < 2)
 			cancel = 1
 			break
 
@@ -2080,7 +2080,7 @@ mob/verb/turnwest()
 	if (client && mind)
 		var/mob/dead/observer/newmob
 
-		newmob = new/mob/dead/observer(src)
+		newmob = new/mob/dead/observer(src.loc,src)
 		src:client:mob = newmob
 		mind.transfer_to(newmob)
 		if(istype(src,/mob/living/silicon/robot))	//Robots don't gib like humans! - Strumpetplaya

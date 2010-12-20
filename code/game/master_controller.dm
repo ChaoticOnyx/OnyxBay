@@ -23,7 +23,7 @@ datum/controller/game_controller
 			world.update_status()
 
 		ShieldNetwork = new /datum/shieldnetwork()
-
+		vsc = new()
 		world << "\red Setting up shields.."
 
 		ShieldNetwork.makenetwork()
@@ -120,6 +120,8 @@ datum/controller/game_controller
 			machine.process()
 
 		sleep(-1)
+		for(var/obj/fire/F in world)
+			F.process()
 		sleep(1)
 
 		for(var/obj/item/item in processing_items)
