@@ -1,6 +1,10 @@
 /obj/machinery/computer/gasmon
 	name = "Gas Monitor"
 	icon_state = "gas"
+	brightnessred = 0
+	brightnessgreen = 0
+	brightnessblue = 2
+
 	var/id = ""
 	var/frequency = 1439
 	var/label = ""

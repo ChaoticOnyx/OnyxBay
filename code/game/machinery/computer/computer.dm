@@ -97,16 +97,19 @@ Pod/Blast Doors computer
 		if(stat & BROKEN)
 			icon_state = initial(icon_state)
 			src.icon_state += "b"
+			ul_SetLuminosity(0,0,2)
 
 		else if(powered())
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
+			ul_SetLuminosity(brightnessred,brightnessgreen,brightnessblue)
 		else
 			spawn(rand(0, 15))
 				//src.icon_state = "c_unpowered"
 				icon_state = initial(icon_state)
 				src.icon_state += "0"
 				stat |= NOPOWER
+				ul_SetLuminosity(0,0,0)
 
 /obj/machinery/computer/process()
 	if(stat & (NOPOWER|BROKEN))

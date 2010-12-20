@@ -430,6 +430,9 @@
 	icon_state = "power"
 	density = 1
 	anchored = 1
+	var/brightnessred = 0
+	var/brightnessgreen = 0
+	var/brightnessblue = 0
 
 #define SMESMAXCHARGELEVEL 200000
 #define SMESMAXOUTPUT 200000
