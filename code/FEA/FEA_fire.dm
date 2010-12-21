@@ -188,7 +188,6 @@ obj/fire/proc/process()
 			continue
 		if(locate(/obj/fire) in TS)
 			continue
-
 		if(TS.air.temperature >= 250  && TS.air.toxins > 0.5 && TS.air.oxygen > 0.5 )
 			new/obj/fire(TS)
 	for(var/atom/item in loc)
@@ -208,8 +207,8 @@ obj/fire/New()
 	var/turf/simulated/floor/T = src.loc
 	T.air.temperature += temperature
 	dir = pick(cardinal)
-	//ul_SetLuminosity(7,3,0)
+	ul_SetLuminosity(7,3,0)
 
 obj/fire/Del()
-//	src.ul_Extinguish()
+	src.ul_SetLuminosity(0)
 	loc = null
