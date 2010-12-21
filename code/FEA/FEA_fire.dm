@@ -171,11 +171,11 @@ obj/fire/proc/process()
 	if(!istype(src.loc,/turf/simulated/floor))
 		del(src)
 	if(T.air.temperature < FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
-		world << "NOT HOT ENOUGH [T.air.temperature] : [FIRE_MINIMUM_TEMPERATURE_TO_EXIST]"
+		//world << "NOT HOT ENOUGH [T.air.temperature] : [FIRE_MINIMUM_TEMPERATURE_TO_EXIST]"
 		del(src)
 		return
 	if(T.air.toxins <= 0.5 || T.air.oxygen <= 0.5)
-		world << "NOT HOT ENOUGH shit"
+		//world << "NOT HOT ENOUGH shit"
 		del(src)
 	if(T.wet) T.wet = 0
 	burn(0.5,0.5)
@@ -188,7 +188,6 @@ obj/fire/proc/process()
 			continue
 		if(locate(/obj/fire) in TS)
 			continue
-
 		if(TS.air.temperature >= 250  && TS.air.toxins > 0.5 && TS.air.oxygen > 0.5 )
 			new/obj/fire(TS)
 	for(var/atom/item in loc)
@@ -200,16 +199,16 @@ obj/fire/proc/burn(tox,oxy)
 	T.air.toxins -= tox
 	T.air.carbon_dioxide += oxy + tox
 	T.air.temperature += tox
-mob/verb/createfire()
-	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
-	new/obj/fire(src.loc)
+//mob/verb/createfire()
+//	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
+//	new/obj/fire(src.loc)
 obj/fire/New()
 	..()
 	var/turf/simulated/floor/T = src.loc
 	T.air.temperature += temperature
 	dir = pick(cardinal)
-	//ul_SetLuminosity(7,3,0)
+	ul_SetLuminosity(7,3,0)
 
 obj/fire/Del()
-//	src.ul_Extinguish()
+	src.ul_SetLuminosity(0)
 	loc = null
