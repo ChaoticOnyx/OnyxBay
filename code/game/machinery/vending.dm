@@ -8,7 +8,8 @@
 /datum/data/vending_product
 	var/product_name = "generic"
 	var/product_path = null
-	var/amount = 0
+	//var/amount = 0
+	var/price = 0
 	var/display_color = "blue"
 
 /obj/machinery/vending/New()
@@ -17,16 +18,18 @@
 	//	src.slogan_list = dd_text2List(src.product_slogans, ";")
 		src.slogan_list = list()
 		var/list/temp_paths = dd_text2List(src.product_paths, ";")
-		var/list/temp_amounts = dd_text2List(src.product_amounts, ";")
+		//var/list/temp_amounts = dd_text2List(src.product_amounts, ";")
+		var/list/temp_prices = dd_text2List(src.product_prices, ";")
 		var/list/temp_hidden = dd_text2List(src.product_hidden, ";")
+		var/list/temp_hiddenprices = dd_text2List(src.hidden_prices, ";")
 		//Little sanity check here
-		if ((isnull(temp_paths)) || (isnull(temp_amounts)) || (temp_paths.len != temp_amounts.len))
+		if ((isnull(temp_paths)) || (isnull(temp_prices)) || (temp_paths.len != temp_prices.len))
 			stat |= BROKEN
 			return
 
-		src.build_inventory(temp_paths,temp_amounts)
+		src.build_inventory(temp_paths,temp_prices)
 		 //Add hidden inventory
-		src.build_inventory(temp_hidden,null,1)
+		src.build_inventory(temp_hidden,temp_hiddenprices,1)
 		return
 
 	return
@@ -58,7 +61,7 @@
 
 	return
 
-/obj/machinery/vending/proc/build_inventory(var/list/path_list,var/list/amt_list,hidden=0)
+/obj/machinery/vending/proc/build_inventory(var/list/path_list,var/list/price_list,hidden=0)
 
 	for(var/p=1, p <= path_list.len ,p++)
 		var/checkpath = text2path(path_list[p])
@@ -71,11 +74,11 @@
 		R.display_color = pick("red","blue","green")
 
 		if(hidden)
-			R.amount = rand(1,6)
+			R.price = text2num(price_list[p])
 			src.hidden_records += R
 
 		else
-			R.amount = text2num(amt_list[p])
+			R.price = text2num(price_list[p])
 			src.product_records += R
 
 		del(temp)
@@ -98,8 +101,93 @@
 			src.overlays += image(src.icon, "[initial(icon_state)]-panel")
 		src.updateUsrDialog()
 		return
+	else if (istype(W,/obj/item/weapon/vending_charge/))
+		DoCharge(W,user)
+			//points += W.charge_amt
+			//del(W)
 	else
 		..()
+
+/obj/machinery/vending/proc/DoCharge(obj/item/weapon/vending_charge/V as obj, mob/user as mob)
+	if(charge_type == V.charge_type)
+		points += V.charge_amt
+		del(V)
+		user << "You insert the charge into the machine."
+
+/obj/item/weapon/vending_charge
+	name = "Vending Charge"
+	var/charge_amt = 10
+	var/charge_type = "generic"
+	icon = 'vending.dmi'
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/medical
+	name = "Medical Charge"
+	charge_type = "medical"
+	icon_state = "medical-charge"
+
+/obj/item/weapon/vending_charge/chemistry
+	name = "Chemistry Charge"
+	charge_type = "chemistry"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/genetics
+	name = "Genetics Charge"
+	charge_type = "genetics"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/toxins
+	name = "Toxins Charge"
+	charge_type = "toxins"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/robotics
+	name = "Robotics Charge"
+	charge_type = "robotics"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/bar
+	name = "Bar Charge"
+	charge_type = "bar"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/kitchen
+	name = "Kitchen Charge"
+	charge_type = "kitchen"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/engineering
+	name = "Engineering Charge"
+	charge_type = "engineering"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/security
+	name = "Security Charge"
+	charge_type = "security"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/coffee
+	name = "Coffee Charge"
+	charge_type = "coffee"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/snack
+	name = "Snack Charge"
+	charge_type = "snack"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/cart
+	name = "Cart Charge"
+	charge_type = "cart"
+	icon_state = "generic-charge"
+
+/obj/item/weapon/vending_charge/cigarette
+	name = "Cigarette Charge"
+	charge_type = "cigarette"
+	icon_state = "generic-charge"
+
+
+
 
 /obj/machinery/vending/attack_paw(mob/user as mob)
 	return attack_hand(user)
@@ -143,7 +231,7 @@
 		user << browse(pdat, "window=vendwires")
 		onclose(user, "vendwires")
 
-	var/dat = "<TT><b>Select an item:</b><br>"
+	var/dat = "<TT><b>Select an item:</b></TT><br>"
 
 	if (src.product_records.len == 0)
 		dat += "<font color = 'red'>No product loaded!</font>"
@@ -151,17 +239,18 @@
 		var/list/display_records = src.product_records
 		if(src.extended_inventory)
 			display_records = (src.product_records + src.hidden_records)
+		dat += "<TABLE width=100%><TR><TD><TT><B>Product:</B></TT></TD> <TD><TT><B>Cost:</B></TT></TD><TD></TD></TR>"
 
 		for (var/datum/data/vending_product/R in display_records)
-			dat += "<FONT color = '[R.display_color]'><B>[R.product_name]</B>:"
-			dat += " [R.amount] </font>"
-			if (R.amount > 0)
-				dat += "<a href='byond://?src=\ref[src];vend=\ref[R]'>Vend</A>"
+			dat += "<TR><TD><TT><FONT color = '[R.display_color]'><B>[R.product_name]</B></TT></TD>"
+			dat += " <TD><TT>[R.price]</TT></TD> </font>"
+			if (R.price <= points)
+				dat += "<TD><TT><a href='byond://?src=\ref[src];vend=\ref[R]'>Vend</A></TT></TD></TR>"
 			else
-				dat += "<font color = 'red'>SOLD OUT</font>"
-			dat += "<br>"
+				dat += "<TD><TT><font color = 'red'>NOT ENOUGH POINTS</font></TD></TT></TR>"
+			//dat += "<br>"
 
-		dat += "</TT>"
+		dat += "</TABLE><br><TT><b>Points available: [points]</b><br></TT>"
 
 	user << browse(dat, "window=vending")
 	onclose(user, "vending")
@@ -197,11 +286,11 @@
 				src.vend_ready = 1
 				return
 
-			if (R.amount <= 0)
+			if (R.price > points)
 				src.vend_ready = 1
 				return
 
-			R.amount--
+			points -= R.price
 
 			if(((src.last_reply + (src.vend_delay + 200)) <= world.time) && src.vend_reply)
 				spawn(0)
@@ -293,44 +382,44 @@
 
 //Oh no we're malfunctioning!  Dump out some product and break.
 /obj/machinery/vending/proc/malfunction()
-	for(var/datum/data/vending_product/R in src.product_records)
-		if (R.amount <= 0) //Try to use a record that actually has something to dump.
-			continue
-		var/dump_path = text2path(R.product_path)
-		if (!dump_path)
-			continue
-
-		while(R.amount>0)
-			new dump_path(src.loc)
-			R.amount--
-		break
-
-	stat |= BROKEN
-	src.icon_state = "[initial(icon_state)]-broken"
-	return
+//	for(var/datum/data/vending_product/R in src.product_records)
+//		if (R.amount <= 0) //Try to use a record that actually has something to dump.
+//			continue
+//		var/dump_path = text2path(R.product_path)
+//		if (!dump_path)
+//			continue
+//
+//		while(R.amount>0)
+//			new dump_path(src.loc)
+//			R.amount--
+//		break
+//
+//	stat |= BROKEN
+//	src.icon_state = "[initial(icon_state)]-broken"
+//	return
 
 //Somebody cut an important wire and now we're following a new definition of "pitch."
 /obj/machinery/vending/proc/throw_item()
-	var/obj/throw_item = null
-	var/mob/living/target = locate() in view(7,src)
-	if(!target)
-		return 0
-
-	for(var/datum/data/vending_product/R in src.product_records)
-		if (R.amount <= 0) //Try to use a record that actually has something to dump.
-			continue
-		var/dump_path = text2path(R.product_path)
-		if (!dump_path)
-			continue
-
-		R.amount--
-		throw_item = new dump_path(src.loc)
-		break
-
-	spawn(0)
-		throw_item.throw_at(target, 16, 3)
-	src.visible_message("\red <b>[src] launches [throw_item.name] at [target.name]!</b>")
-	return 1
+//	var/obj/throw_item = null
+//	var/mob/living/target = locate() in view(7,src)
+//	if(!target)
+//		return 0
+//
+//	for(var/datum/data/vending_product/R in src.product_records)
+//		if (R.amount <= 0) //Try to use a record that actually has something to dump.
+//			continue
+//		var/dump_path = text2path(R.product_path)
+//		if (!dump_path)
+//			continue
+//
+//		R.amount--
+//		throw_item = new dump_path(src.loc)
+//		break
+//
+//	spawn(0)
+//		throw_item.throw_at(target, 16, 3)
+//	src.visible_message("\red <b>[src] launches [throw_item.name] at [target.name]!</b>")
+//	return 1
 
 /obj/machinery/vending/proc/isWireColorCut(var/wireColor)
 	var/wireFlag = APCWireColorToFlag[wireColor]

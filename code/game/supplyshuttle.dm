@@ -45,6 +45,90 @@ var/supply_shuttle_points = 50
 	containername = "Special Ops crate"
 	hidden = 1
 
+/datum/supply_packs/medical
+	name = "Medical Charge"
+	contains = list("/obj/item/weapon/vending_charge/medical")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Medical charge crate"
+
+/datum/supply_packs/chemistry
+	name = "Chemistry Charge"
+	contains = list("/obj/item/weapon/vending_charge/chemistry")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Chemistry charge crate"
+
+/datum/supply_packs/toxins
+	name = "Toxins Research Charge"
+	contains = list("/obj/item/weapon/vending_charge/toxins")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Toxins Reasearch charge crate"
+
+/datum/supply_packs/robotics
+	name = "Robotics Charge"
+	contains = list("/obj/item/weapon/vending_charge/robotics")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Robotics charge crate"
+
+/datum/supply_packs/bar
+	name = "Bar Charge"
+	contains = list("/obj/item/weapon/vending_charge/bar")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Bar charge crate"
+
+/datum/supply_packs/kitchen
+	name = "Kitchen Charge"
+	contains = list("/obj/item/weapon/vending_charge/kitchen")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Kitchen charge crate"
+
+/datum/supply_packs/engineering
+	name = "Engineering Charge"
+	contains = list("/obj/item/weapon/vending_charge/engineering")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Engineering charge crate"
+
+/datum/supply_packs/security
+	name = "Security Charge"
+	contains = list("/obj/item/weapon/vending_charge/security")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Security charge crate"
+
+/datum/supply_packs/coffee
+	name = "Coffee Charge"
+	contains = list("/obj/item/weapon/vending_charge/coffee")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Coffee charge crate"
+
+/datum/supply_packs/snack
+	name = "Snack Charge"
+	contains = list("/obj/item/weapon/vending_charge/snack")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Snack charge crate"
+
+/datum/supply_packs/cart
+	name = "PDA Cart Charge"
+	contains = list("/obj/item/weapon/vending_charge/cart")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "PDA Cart charge crate"
+
+/datum/supply_packs/cigarette
+	name = "Cigarette Charge"
+	contains = list("/obj/item/weapon/vending_charge/cigarette")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Cigarette charge crate"
+
 /datum/supply_packs/wizard
 	name = "Wizard costume"
 	contains = list("/obj/item/weapon/staff",
@@ -83,46 +167,46 @@ var/supply_shuttle_points = 50
 	containertype = "/obj/crate/internals"
 	containername = "Internals crate"
 
-/datum/supply_packs/food
-	name = "Food crate"
-	contains = list("/obj/item/weapon/reagent_containers/food/snacks/flour",
-					"/obj/item/weapon/reagent_containers/food/snacks/flour",
-					"/obj/item/weapon/reagent_containers/food/snacks/flour",
+///datum/supply_packs/food
+//	name = "Food crate"
+//	contains = list("/obj/item/weapon/reagent_containers/food/snacks/flour",
+//					"/obj/item/weapon/reagent_containers/food/snacks/flour",
+//					"/obj/item/weapon/reagent_containers/food/snacks/flour",
 			//		"/obj/item/weapon/reagent_containers/food/snacks/meatball",
 			//		"/obj/item/weapon/reagent_containers/food/snacks/meatball",
 			//		"/obj/item/weapon/reagent_containers/food/snacks/meatball",
-					"/obj/item/kitchen/egg_box",
-					"/obj/item/weapon/banana",
-					"/obj/item/weapon/banana",
-					"/obj/item/weapon/banana")
-	cost = 5
-	containertype = "/obj/crate/freezer"
-	containername = "Food crate"
+//					"/obj/item/kitchen/egg_box",
+//					"/obj/item/weapon/banana",
+//					"/obj/item/weapon/banana",
+//					"/obj/item/weapon/banana")
+//	cost = 5
+//	containertype = "/obj/crate/freezer"
+//	containername = "Food crate"
 
-/datum/supply_packs/engineering
-	name = "Engineering crate"
-	contains = list("/obj/item/weapon/storage/toolbox/electrical",
-					"/obj/item/weapon/storage/toolbox/electrical",
-					"/obj/item/clothing/head/helmet/welding",
-					"/obj/item/clothing/head/helmet/welding",
-					"/obj/item/clothing/gloves/yellow",
-					"/obj/item/clothing/gloves/yellow")
-	cost = 5
-	containertype = "/obj/crate"
-	containername = "Engineering crate"
+///datum/supply_packs/engineering
+//	name = "Engineering crate"
+//	contains = list("/obj/item/weapon/storage/toolbox/electrical",
+//					"/obj/item/weapon/storage/toolbox/electrical",
+//					"/obj/item/clothing/head/helmet/welding",
+//					"/obj/item/clothing/head/helmet/welding",
+//					"/obj/item/clothing/gloves/yellow",
+//					"/obj/item/clothing/gloves/yellow")
+//	cost = 5
+//	containertype = "/obj/crate"
+//	containername = "Engineering crate"
 
-/datum/supply_packs/medical
-	name = "Medical crate"
-	contains = list("/obj/item/weapon/storage/firstaid/regular",
-					"/obj/item/weapon/storage/firstaid/fire",
-					"/obj/item/weapon/storage/firstaid/toxin",
-					"/obj/item/weapon/reagent_containers/glass/bottle/antitoxin",
-					"/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline",
-					"/obj/item/weapon/reagent_containers/glass/bottle/stoxin",
-					"/obj/item/weapon/storage/firstaid/syringes")
-	cost = 10
-	containertype = "/obj/crate/medical"
-	containername = "Medical crate"
+///datum/supply_packs/medical
+//	name = "Medical crate"
+//	contains = list("/obj/item/weapon/storage/firstaid/regular",
+//					"/obj/item/weapon/storage/firstaid/fire",
+//					"/obj/item/weapon/storage/firstaid/toxin",
+//					"/obj/item/weapon/reagent_containers/glass/bottle/antitoxin",
+//					"/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline",
+//					"/obj/item/weapon/reagent_containers/glass/bottle/stoxin",
+//					"/obj/item/weapon/storage/firstaid/syringes")
+//	cost = 10
+//	containertype = "/obj/crate/medical"
+//	containername = "Medical crate"
 
 /datum/supply_packs/janitor
 	name = "Janitorial supplies"
@@ -136,31 +220,31 @@ var/supply_shuttle_points = 50
 	containertype = "/obj/crate"
 	containername = "Janitorial supplies"
 
-/datum/supply_packs/plasma
-	name = "Plasma assembly crate"
-	contains = list("/obj/item/weapon/tank/plasma",
-					"/obj/item/device/igniter",
-					"/obj/item/device/prox_sensor",
-					"/obj/item/device/timer")
-	cost = 10
-	containertype = "/obj/crate/secure/plasma"
-	containername = "Plasma assembly crate"
-	access = access_tox
+///datum/supply_packs/plasma
+//	name = "Plasma assembly crate"
+//	contains = list("/obj/item/weapon/tank/plasma",
+//					"/obj/item/device/igniter",
+//					"/obj/item/device/prox_sensor",
+//					"/obj/item/device/timer")
+//	cost = 10
+//	containertype = "/obj/crate/secure/plasma"
+//	containername = "Plasma assembly crate"
+//	access = access_tox
 
-/datum/supply_packs/weapons
-	name = "Weapons crate"
-	contains = list("/obj/item/weapon/baton",
-					"/obj/item/weapon/baton",
-					"/obj/item/weapon/gun/energy/laser_gun",
-					"/obj/item/weapon/gun/energy/laser_gun",
-					"/obj/item/weapon/gun/energy/taser_gun",
-					"/obj/item/weapon/gun/energy/taser_gun",
-					"/obj/item/weapon/storage/flashbang_kit",
-					"/obj/item/weapon/storage/flashbang_kit")
-	cost = 20
-	containertype = "/obj/crate/secure/weapon"
-	containername = "Weapons crate"
-	access = access_security
+///datum/supply_packs/weapons
+//	name = "Weapons crate"
+//	contains = list("/obj/item/weapon/baton",
+//					"/obj/item/weapon/baton",
+//					"/obj/item/weapon/gun/energy/laser_gun",
+//					"/obj/item/weapon/gun/energy/laser_gun",
+//					"/obj/item/weapon/gun/energy/taser_gun",
+//					"/obj/item/weapon/gun/energy/taser_gun",
+//					"/obj/item/weapon/storage/flashbang_kit",
+//					"/obj/item/weapon/storage/flashbang_kit")
+//	cost = 20
+//	containertype = "/obj/crate/secure/weapon"
+//	containername = "Weapons crate"
+//	access = access_security
 
 /datum/supply_packs/eweapons
 	name = "Experimental weapons crate"
@@ -338,6 +422,9 @@ var/supply_shuttle_points = 50
 	icon = 'computer.dmi'
 	icon_state = "supply"
 	var/temp = null
+	brightnessred = 2
+	brightnessgreen = 2
+	brightnessblue = 2
 
 /obj/marker/supplymarker
 	icon_state = "X"
