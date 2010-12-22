@@ -83,12 +83,15 @@
 
 	if(stat & BROKEN)
 		icon_state = "broken"
+		ul_SetLuminosity(0,0,2)
 	else
 		if( powered() )
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
+			ul_SetLuminosity(0,0,2)
 		else
 			spawn(rand(0, 15))
 				src.icon_state = "c_unpowered"
 				stat |= NOPOWER
+				ul_SetLuminosity(0,0,0)
 

@@ -261,7 +261,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 			user << "\blue It's already fully loaded!"
 			return 1
 		if (A.amount_left <= 0)
-			user << "\red There is no more bullets!"
+			user << "\red There are no more bullets!"
 			return 1
 		if (A.amount_left < (7 - src.bullets))
 			src.bullets += A.amount_left

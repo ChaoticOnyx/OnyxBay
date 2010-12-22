@@ -56,16 +56,15 @@ mob/living/npc/proc/Attacked(mob/user,obj/item/weapon/W)
 mob/living/npc/proc/Act()
 	var/isidle = 1
 	var/mob/ohshit
-	if(target.stat == 2)
-		target = null
+	if(target)
+		if(target.stat == 2)
+			target = null
 	for(var/mob/M in view(1))
-		if(!friends.Find(M.type) && M.type == src.type && M.stat < 2 && agressive)
+		if(!friends.Find(M.type) && M.type != src.type && M.stat < 2 && agressive)
 			ohshit = M
 			break
 	if(target in view(1,src))
-	//	world << " I SEE EM"
 		if(!friends.Find(target.type) && target.stat < 2 && agressive)
-			//world << "ATTACKING"
 			Attack(target,brutedmg,firedmg,oxydmg)
 			isidle = 0
 			target = null
@@ -81,23 +80,15 @@ mob/living/npc/proc/Act()
 		ohshit = null
 	else if(ranged && target in view(rangedrange,src))
 		RangedAttack(target)
-		world << "MOTHERFUCKING SHOOTING"
 		if(!path_target.len)
 			MoveAstar(target)
 			if(path_target.len <= 0)
 				path_target = list()
 				return
 		var/turf/next = path_target[1]
-		var/turf/oldloc = src.loc
 		step_towards_3d(src,get_step_towards_3d2(next))
 		path_target -= next
-		if(oldloc == src.loc)
-			frust += 5
 		isidle = 0
-	else if(target in view(4,src))
-		step_towards_3d(src,get_step_towards_3d2(target))
-		isidle = 0
-		path_target = list()
 	else if(target in viewers(src))// we see him
 		if(!path_target.len)
 			MoveAstar(target)

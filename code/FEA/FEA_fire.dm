@@ -1,4 +1,4 @@
-
+#define OXYGEN
 atom
 	proc
 		temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
@@ -12,7 +12,7 @@ turf
 			var/datum/gas_mixture/air_contents = return_air(1)
 			if(!air_contents)
 				return 0
-			if(active_hotspot)
+		/*	if(active_hotspot)
 				if(soh)
 					if(air_contents.toxins > 0.5 && air_contents.oxygen > 0.5)
 						if(active_hotspot.temperature < exposed_temperature)
@@ -20,9 +20,10 @@ turf
 						if(active_hotspot.volume < exposed_volume)
 							active_hotspot.volume = exposed_volume
 				return 1
-
+*/
 			var/igniting = 0
-
+			if(locate(/obj/fire) in src)
+				return 1
 			if((exposed_temperature > PLASMA_MINIMUM_BURN_TEMPERATURE) && air_contents.toxins > 0.5)
 				igniting = 1
 
@@ -33,11 +34,11 @@ turf
 				if(parent&&parent.group_processing)
 					parent.suspend_group_processing()
 
-				active_hotspot = new(src)
-				active_hotspot.temperature = exposed_temperature
-				active_hotspot.volume = exposed_volume
+				var/obj/fire/F = new(src)
+				F.temperature = exposed_temperature
+				F.volume = exposed_volume
 
-				active_hotspot.just_spawned = (current_cycle < air_master.current_cycle)
+				//active_hotspot.just_spawned = (current_cycle < air_master.current_cycle)
 					//remove just_spawned protection if no longer processing this cell
 
 			return igniting
@@ -145,3 +146,69 @@ obj
 
 
 			..()
+
+
+obj/fire
+	anchored = 1
+	mouse_opacity = 0
+	icon = 'fire.dmi'
+	icon_state = "3"
+	layer = OBJ_LAYER
+	opacity = 1
+	var
+		temperature = FIRE_MINIMUM_TEMPERATURE_TO_EXIST
+		just_spawned = 1
+		volume = 125
+		bypassing = 0
+
+	//				for(var/atom/item in loc)
+	//				item.temperature_expose(null, temperature, volume)
+obj/fire/proc/process()
+	if(just_spawned)
+		just_spawned = 0
+		return
+	var/turf/simulated/floor/T = src.loc
+	if(!istype(src.loc,/turf/simulated/floor))
+		del(src)
+	if(T.air.temperature < FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
+		//world << "NOT HOT ENOUGH [T.air.temperature] : [FIRE_MINIMUM_TEMPERATURE_TO_EXIST]"
+		del(src)
+		return
+	if(T.air.toxins <= 0.5 || T.air.oxygen <= 0.5)
+		//world << "NOT HOT ENOUGH shit"
+		del(src)
+	if(T.wet) T.wet = 0
+	burn(0.5,0.5)
+	T.burn_tile()
+	for(var/dirs in cardinal)
+		var/turf/simulated/floor/TS = get_step(src,dirs)
+		if(!TS || !TS.air)
+			continue
+		if(prob(50))
+			continue
+		if(locate(/obj/fire) in TS)
+			continue
+		if(TS.air.temperature >= 250  && TS.air.toxins > 0.5 && TS.air.oxygen > 0.5 )
+			new/obj/fire(TS)
+	for(var/atom/item in loc)
+		item.temperature_expose(null, T.air.temperature, volume)
+obj/fire/proc/burn(tox,oxy)
+	var/turf/simulated/floor/T = src.loc
+//	var/datum/gas_mixture/affected = T.air.remove_ratio(volume/T.air.volume)
+	T.air.oxygen -= oxy
+	T.air.toxins -= tox
+	T.air.carbon_dioxide += oxy + tox
+	T.air.temperature += tox
+//mob/verb/createfire()
+//	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
+//	new/obj/fire(src.loc)
+obj/fire/New()
+	..()
+	var/turf/simulated/floor/T = src.loc
+	T.air.temperature += temperature
+	dir = pick(cardinal)
+	ul_SetLuminosity(7,3,0)
+
+obj/fire/Del()
+	src.ul_SetLuminosity(0)
+	loc = null
