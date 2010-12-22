@@ -372,7 +372,7 @@ About the new airlock wires panel:
 	return (in_range(src, usr) && src.synDoorHacked==0 && !src.isAllPowerCut());
 
 /obj/machinery/door/airlock/proc/arePowerSystemsOn()
-	return (src.secondsMainPowerLost==0 || src.secondsBackupPowerLost==0)
+	return (powered() && (src.secondsMainPowerLost==0 || src.secondsBackupPowerLost==0))
 
 /obj/machinery/door/airlock/requiresID()
 	return !(src.isWireCut(AIRLOCK_WIRE_IDSCAN) || aiDisabledIdScanner)
