@@ -26,6 +26,7 @@
 		if ("Host")
 			src.deadchat = 1
 			src.holder.level = 6
+			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /client/proc/addchange
@@ -119,6 +120,7 @@
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
+			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
@@ -216,6 +218,7 @@
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
@@ -297,7 +300,7 @@
 
 			src.deadchat = 1
 			src.holder.level = 3
-
+			src.verbs += /client/proc/checkticker
 			if(src.holder.state == 2) //observing
 				src.verbs += /client/proc/switchtowindow
 				src.verbs += /obj/admins/proc/toggleooc				//toggle ooc

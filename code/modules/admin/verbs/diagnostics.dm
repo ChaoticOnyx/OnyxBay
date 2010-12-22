@@ -104,3 +104,6 @@
 		message_admins("[key_name_admin(largest_click_mob)] had the largest click delay with [largest_click_time] frames / [largest_click_time/10] seconds!", 1)
 		message_admins("world.time = [world.time]", 1)
 		return
+
+	checkticker()
+		message_admins("Ticker bug: [ticker_debug]")
