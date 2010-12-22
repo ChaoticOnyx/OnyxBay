@@ -110,6 +110,7 @@
 	return 0
 
 /datum/game_mode/traitoramongus/check_finished()
+	return 0
 	var/mob/living/carbon/human/mob = chosentraitor.current
 	var/humansalive = 0
 	for(var/mob/living/carbon/human/h in world)
