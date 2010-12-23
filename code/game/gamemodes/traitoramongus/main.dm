@@ -76,6 +76,7 @@
 	del player.l_store
 	del player.wear_suit
 	del player.w_uniform
+	del player.ears
 
 	var/uniform = pick(/obj/item/clothing/under/color/black,/obj/item/clothing/under/color/blue,/obj/item/clothing/under/color/green,/obj/item/clothing/under/color/grey,/obj/item/clothing/under/color/orange,/obj/item/clothing/under/color/pink,/obj/item/clothing/under/color/red,/obj/item/clothing/under/color/white,/obj/item/clothing/under/color/yellow)
 
