@@ -89,6 +89,15 @@
 	spawn(1)
 		update()
 
+
+/obj/machinery/light/small/New()
+	..()
+	if(prob(10))
+		status = LIGHT_BROKEN
+
+	spawn(1)
+		update()
+
 // update the icon_state and luminosity of the light depending on its state
 // skip_check is currently used for ghosts flickering lights. It skips the status check, so that burned lights can also work.
 // It also skips the burning probability check. In flickering, that means the light has a chance of burning only when it reverts to its default state
