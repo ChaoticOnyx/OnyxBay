@@ -71,7 +71,8 @@
 			src.verbs += /client/proc/jobbans
 			src.verbs += /client/proc/sendmob
 			src.verbs += /client/proc/Debug2					//debug toggle switch
-			src.verbs += /client/proc/callproc
+			src.verbs += /client/proc/callprocgen
+			src.verbs += /client/proc/callprocobj
 			src.verbs += /client/proc/funbutton
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /obj/admins/proc/vmode   				//start vote
@@ -169,7 +170,8 @@
 			src.verbs += /client/proc/jobbans
 			src.verbs += /client/proc/sendmob
 			src.verbs += /client/proc/Debug2					//debug toggle switch
-			src.verbs += /client/proc/callproc
+			src.verbs += /client/proc/callprocgen
+			src.verbs += /client/proc/callprocobj
 			src.verbs += /client/proc/funbutton
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /obj/admins/proc/vmode   				//start vote
