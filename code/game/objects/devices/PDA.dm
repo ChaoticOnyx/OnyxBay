@@ -778,8 +778,8 @@
 					dat += "<a href='byond://?src=\ref[src];lock_uplink=1'>Lock</a><br>"
 				else
 					dat += "<a href='byond://?src=\ref[src];editnote=1'>Edit</a><br>"
-
-				dat += src.note
+				var/t = dd_replacetext(src.note, "\n", "<BR>")			//Allow linebreaks in PDA Notekeeper
+				dat += t
 
 			if (6)
 				if (!src.smode)
