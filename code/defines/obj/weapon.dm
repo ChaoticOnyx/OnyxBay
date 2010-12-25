@@ -705,6 +705,7 @@
 	icon = 'items.dmi'
 	icon_state = "paper"
 	var/info = null
+	var/stamped = 0
 	throwforce = 0
 	w_class = 1.0
 	throw_speed = 3

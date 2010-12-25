@@ -65,6 +65,9 @@ CLIPBOARDS
 /obj/item/weapon/paper/attackby(obj/item/weapon/P as obj, mob/user as mob)
 
 	if (istype(P, /obj/item/weapon/pen))
+		if(src.stamped == 1)
+			user << "\blue This paper has been stamped and can no longer be edited."
+			return
 		var/t = input(user, "What text do you wish to add?", text("[]", src.name), text("[src.info]"))  as message
 		if ((!in_range(src, usr) && src.loc != user && !( istype(src.loc, /obj/item/weapon/clipboard) ) && src.loc.loc != user && user.equipped() != P))
 			return
@@ -86,7 +89,7 @@ CLIPBOARDS
 				return
 			src.info += text("<BR><i>This paper has been stamped with the [].</i><BR>", P.name)
 			src.icon_state = "paper_stamped"
-
+			src.stamped = 1
 			user << "\blue You stamp the paper with your rubber stamp."
 	/*
 	else
