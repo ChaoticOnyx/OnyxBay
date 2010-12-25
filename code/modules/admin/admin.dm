@@ -609,8 +609,8 @@ var/showadminmessages = 1
 			foo += text("<A href='?src=\ref[src];jobban2=\ref[M]'>Jobban</A> | ")
 			foo += text("<A href='?src=\ref[src];boot2=\ref[M]'>Boot</A> | ")
 		foo += text("<A href='?src=\ref[src];jumpto=\ref[M]'>Jump to</A> | ")
-		foo += text("<A href='?src=\ref[src];newban=\ref[M]'>Ban</A> \]")
-		foo += text("<A href='?src=\ref[src];invite=\ref[M]'>Toggle invite</A> \]")
+		foo += text("<A href='?src=\ref[src];newban=\ref[M]'>Ban</A> | ")
+		foo += text("<A href='?src=\ref[src];invite=\ref[M]'>Toggle invite</A>\]")
 		dat += text("<body>[foo]</body></html>")
 		usr << browse(dat, "window=adminplayeropts;size=480x100")
 
@@ -1047,8 +1047,11 @@ var/showadminmessages = 1
 							Wall.ex_act(rand(2,1)) */
 				if("wave")
 					if ((src.rank in list("Primary Administrator", "Super Administrator", "Coder", "Host"  )))
-						meteor_wave()
-						message_admins("[key_name_admin(usr)] has spawned meteors", 1)
+						var/nrMet = input("Meteor number:","Num",1) as num
+						for(var/i = 1; i <= nrMet; i++)
+							spawn(0)
+								spawn_meteor()
+						message_admins("[key_name_admin(usr)] has spawned [nrMet] meteors", 1)
 					else
 						alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 						return
