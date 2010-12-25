@@ -18,77 +18,95 @@
 		alert("Coders only baby")
 		return
 
-/client/proc/callproc()
+
+/client/proc/callprocgen()
 	set category = "Debug"
-	set name = "Advanced ProcCall"
+	set name = "ProcCall"
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
-	var/target = null
-	var/arguments = null
+
+	var/class = null
 	var/returnval = null
-	//var/class = null
+	var/procname = input("Procpath","path", null)
 
-	switch(alert("Proc owned by obj?",,"Yes","No"))
-		if("Yes")
-			target = input("Enter target:","Target",null) as obj|mob|area|turf in world
-		if("No")
-			target = null
-
-	var/procname = input("Procpath","path:", null)
-
-	if (target)
-		arguments = input("Arguments","Arguments:", null)
-		usr << "\blue Calling '[procname]' with arguments '[arguments]' on '[target]'"
-		returnval = call(target,procname)(arguments)
-	else
-		arguments = input("Arguments","Arguments:", null)
-		usr << "\blue Calling '[procname]' with arguments '[arguments]'"
-		returnval = call(procname)(arguments)
-
-	usr << "\blue Proc returned: [returnval ? returnval : "null"]"
-/*
-	var/argnum = input("Number of arguments:","Number",null) as num
-
+	var/argNum = input("Number of arguments:","Number",null) as num //input("Arguments","Arguments:", null)
+	var/list/argL = new/list()
 
 	var/i
-	for(i=0, i<argnum, i++)
-
-		class = input("Type of Argument #[i]","Variable Type", default) in list("text","num","type","reference","mob reference", "icon","file","cancel")
+	for(i=0; i<argNum; i++)
+		class = input("Type of Argument #[i]","Variable Type", "text") in list("text","num","type","reference","icon","file","cancel")
 		switch(class)
 			if("cancel")
 				return
 
 			if("text")
-				var/"argu"+i = input("Enter new text:","Text",null) as text
+				argL.Add( input("Enter new text:","Text",null) as text )
 
 			if("num")
-				O.vars[variable] = input("Enter new number:","Num",\
-					O.vars[variable]) as num
+				argL.Add( input("Enter new number:","Num",null) as num )
 
 			if("type")
-				O.vars[variable] = input("Enter type:","Type",O.vars[variable]) \
-					in typesof(/obj,/mob,/area,/turf)
+				argL.Add( input("Enter type:","Type",null) in typesof(/obj,/mob,/area,/turf) )
 
 			if("reference")
-				O.vars[variable] = input("Select reference:","Reference",\
-					O.vars[variable]) as mob|obj|turf|area in world
-
-			if("mob reference")
-				O.vars[variable] = input("Select reference:","Reference",\
-					O.vars[variable]) as mob in world
-
-			if("file")
-				O.vars[variable] = input("Pick file:","File",O.vars[variable]) \
-					as file
+				argL.Add( input("Select reference:","Reference",null) as mob|obj|turf|area in world )
 
 			if("icon")
-				O.vars[variable] = input("Pick icon:","Icon",O.vars[variable]) \
-					as icon
-		spawn(0)
-			call(T,wproc)(warg)
-*/
+				argL.Add( input("Pick icon:","Icon",null) as icon )
 
+			if("file")
+				argL.Add( input("Pick file:","File",null) as file )
+
+	usr << "\blue Calling '[procname]'"
+	returnval = call(procname)(arglist(argL))
+
+	usr << "\blue Proc returned: [returnval ? returnval : "null"]"
+
+
+/client/proc/callprocobj(var/target as obj|mob|area|turf in world)
+	set category = "Debug"
+	set name = "Object ProcCall"
+	if(!src.holder)
+		src << "Only administrators may use this command."
+		return
+
+	var/class = null
+	var/returnval = null
+	var/procname = input("Procpath","path:", null)
+
+	var/argNum = input("Number of arguments:","Number",null) as num //input("Arguments","Arguments:", null)
+	var/list/argL = new/list()
+
+	var/i
+	for(i=0; i<argNum; i++)
+		class = input("Type of Argument #[i]","Variable Type", "text") in list("text","num","type","reference","icon","file","cancel")
+		switch(class)
+			if("cancel")
+				return
+
+			if("text")
+				argL.Add( input("Enter new text:","Text",null) as text )
+
+			if("num")
+				argL.Add( input("Enter new number:","Num",null) as num )
+
+			if("type")
+				argL.Add( input("Enter type:","Type",null) in typesof(/obj,/mob,/area,/turf) )
+
+			if("reference")
+				argL.Add( input("Select reference:","Reference",null) as mob|obj|turf|area in world )
+
+			if("icon")
+				argL.Add( input("Pick icon:","Icon",null) as icon )
+
+			if("file")
+				argL.Add( input("Pick file:","File",null) as file )
+
+	usr << "\blue Calling '[procname]' on '[target]'"
+	returnval = call(target,procname)(arglist(argL))
+
+	usr << "\blue Proc returned: [returnval ? returnval : "null"]"
 
 
 /client/proc/Cell()

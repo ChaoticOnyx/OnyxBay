@@ -26,6 +26,7 @@
 		if ("Host")
 			src.deadchat = 1
 			src.holder.level = 6
+			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /client/proc/addchange
@@ -70,7 +71,8 @@
 			src.verbs += /client/proc/jobbans
 			src.verbs += /client/proc/sendmob
 			src.verbs += /client/proc/Debug2					//debug toggle switch
-			src.verbs += /client/proc/callproc
+			src.verbs += /client/proc/callprocgen
+			src.verbs += /client/proc/callprocobj
 			src.verbs += /client/proc/funbutton
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /obj/admins/proc/vmode   				//start vote
@@ -119,6 +121,7 @@
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
+			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
@@ -167,7 +170,8 @@
 			src.verbs += /client/proc/jobbans
 			src.verbs += /client/proc/sendmob
 			src.verbs += /client/proc/Debug2					//debug toggle switch
-			src.verbs += /client/proc/callproc
+			src.verbs += /client/proc/callprocgen
+			src.verbs += /client/proc/callprocobj
 			src.verbs += /client/proc/funbutton
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /obj/admins/proc/vmode   				//start vote
@@ -216,6 +220,7 @@
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
@@ -297,7 +302,7 @@
 
 			src.deadchat = 1
 			src.holder.level = 3
-
+			src.verbs += /client/proc/checkticker
 			if(src.holder.state == 2) //observing
 				src.verbs += /client/proc/switchtowindow
 				src.verbs += /obj/admins/proc/toggleooc				//toggle ooc

@@ -597,8 +597,8 @@
 /obj/machinery/vending/cart
 	name = "PTech"
 	desc = "Cartridges for PDAs"
-	icon_state = "sec"
-	icon_deny = "sec-deny"
+	icon_state = "cart"
+	icon_deny = "cart-deny"
 	points = 10
 	product_paths = "/obj/item/weapon/cartridge/medical;/obj/item/weapon/cartridge/engineering;/obj/item/weapon/cartridge/security;/obj/item/weapon/cartridge/janitor;/obj/item/weapon/cartridge/signal/toxins;/obj/item/device/pda/heads;/obj/item/weapon/cartridge/captain;/obj/item/weapon/cartridge/quartermaster"
 	//product_amounts = "10;10;10;10;10;10;10;10"
@@ -698,8 +698,8 @@
 /obj/machinery/vending/robotics
 	name = "Robotech Deluxe"
 	desc = "All the tools you need to create your own robot army."
-	icon_state = "generic"
-	//icon_deny = "med-deny"
+	icon_state = "robotics"
+	icon_deny = "robotics-deny"
 	req_access_txt = "29"
 	points = 10
 	product_paths = "/obj/item/weapon/CableCoil/power;/obj/item/device/flash;/obj/item/weapon/circuitry;/obj/item/weapon/cell;/obj/item/device/prox_sensor;/obj/item/device/healthanalyzer;/obj/item/weapon/scalpel;/obj/item/weapon/circular_saw;/obj/item/weapon/tank/anesthetic;/obj/item/clothing/mask/medical;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar"
@@ -712,8 +712,8 @@
 /obj/machinery/vending/bar
 	name = "Brewmaster 9000"
 	desc = "The Brewmaster 9000 has just what you need to make your customers forget about, well... everything."
-	icon_state = "generic"
-	//icon_deny = "med-deny"
+	icon_state = "bar"
+	icon_deny = "bar-deny"
 	req_access_txt = "25"
 	points = 10
 	product_paths = "/obj/item/weapon/reagent_containers/food/drinks/cola;/obj/item/weapon/reagent_containers/food/drinks/beer;/obj/item/weapon/reagent_containers/food/drinks/vodka;/obj/item/weapon/reagent_containers/food/drinks/dwine;/obj/reagent_dispensers/beerkeg"
@@ -726,8 +726,8 @@
 /obj/machinery/vending/kitchen
 	name = "Kitchen Mate Plus"
 	desc = "The Kitchen Mate Plus.  Better ingredients.  Better burgers."
-	icon_state = "generic"
-	//icon_deny = "med-deny"
+	icon_state = "kitchen"
+	icon_deny = "kitchen-deny"
 	req_access_txt = "28"
 	points = 10
 	product_paths = "/obj/item/weapon/reagent_containers/food/snacks/donkpocket;/obj/item/weapon/reagent_containers/food/drinks/cola;/obj/item/weapon/reagent_containers/food/drinks/coffee;/obj/item/weapon/reagent_containers/food/snacks/flour;/obj/item/kitchen/egg_box;/obj/item/weapon/reagent_containers/food/snacks/plump;/obj/item/weapon/reagent_containers/food/snacks/meatball"

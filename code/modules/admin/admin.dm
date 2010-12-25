@@ -304,6 +304,7 @@ var/showadminmessages = 1
 			<A href='?src=\ref[src];c_mode2=confliction'>Confliction (TESTING)</A><br>
 			<A href='?src=\ref[src];c_mode2=ctf'>Capture The Flag (Beta)</A><br><br>
 			<A href='?src=\ref[src];c_mode2=derelict'>Derelict (Beta)</A><br><br>
+			<A href='?src=\ref[src];c_mode2=among'>Traitor among us (Beta)</A><br><br>
 			Now: [master_mode]\n"})
 			usr << browse(dat, "window=c_mode")
 
@@ -346,6 +347,8 @@ var/showadminmessages = 1
 					master_mode = "ctf"
 				if("derelict")
 					master_mode = "derelict"
+				if("among")
+					master_mode = "traitoramongus"
 				else
 			log_admin("[key_name(usr)] set the mode as [master_mode].")
 			message_admins("\blue [key_name_admin(usr)] set the mode as [master_mode].", 1)
@@ -1287,7 +1290,7 @@ var/showadminmessages = 1
 			dat += {"<td>[(M.client ? "[M.client]" : "No client")]</td>
 			<td align=center><A HREF='?src=\ref[src];adminplayeropts=\ref[M]'>X</A></td>
 			<td align=center><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>
-			<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'>[checktraitor(M) ? "<font color=red>" : "<font>"]Traitor?</font></A></td></tr>
+			<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'>Traitor?</A></td></tr>
 			"}
 
 	dat += "</table></body></html>"
@@ -1755,6 +1758,9 @@ var/showadminmessages = 1
 				return 1
 		if("nuclear")
 			if(M.mind in ticker.mode:syndicates)
+				return 1
+		if("traitoramongus")
+			if(M.mind in ticker.mode:chosentraitor)
 				return 1
 		//if("wizard")
 		//	if(M.mind == ticker.mode:wizard)

@@ -1,6 +1,6 @@
 /proc/replace(haystack, needle, newneedle)
 	var
-		list/find_list = stringsplit(needle, haystack)
+		list/find_list = stringsplit(haystack, needle)
 		final_text = listjoin(find_list,newneedle)
 	return final_text
 
@@ -41,9 +41,7 @@
 	ndir |= (dir&DOWN)?UP : 0
 	return ndir
 
-
-
-/proc/stringsplit(character, txt)
+/proc/stringsplit(txt, character)
 	var
 		cur_text = txt
 		last_found = 1
