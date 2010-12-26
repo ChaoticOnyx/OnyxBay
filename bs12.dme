@@ -669,6 +669,5 @@
 #include "code\WorkInProgress\ZeroPoint\LaserComputer.dm"
 #include "code\WorkInProgress\ZeroPoint\SuperMatter.dm"
 #include "interface\skin.dmf"
-#include "maps\New Bay Station 12.dmm"
 #include "maps\NSV_Luna.dmm"
 // END_INCLUDE
