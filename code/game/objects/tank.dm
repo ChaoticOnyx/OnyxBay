@@ -115,10 +115,17 @@
 			range = min(range, 12)		// was 8
 			var/turf/epicenter = get_turf(loc)
 
-			//world << "\blue Exploding Pressure: [pressure] kPa, intensity: [range]"
 
-			explosion(epicenter, round(range*0.25), round(range*0.5), round(range), round(range*1.5), 1)
-			del(src)
+			//world << "\blue Exploding Pressure: [pressure] kPa, intensity: [range]"
+			if(epicenter)
+				explosion(epicenter, round(range*0.25), round(range*0.5), round(range), round(range*1.5), 1)
+				del(src)
+				return
+			else
+				message_admins("Whoops a bomb fucked up, [loc]")
+				del(src)
+				return
+
 
 		else if(pressure > TANK_RUPTURE_PRESSURE)
 			//world << "\blue[x],[y] tank is rupturing: [pressure] kPa, integrity [integrity]"

@@ -8,5 +8,5 @@
 	new /obj/item/clothing/shoes/white( src )
 	new /obj/item/clothing/gloves/latex( src )
 	new /obj/item/clothing/head/bio_hood( src )
-	new /obj/item/clothing/suit/labcoat(src)
+	new /obj/item/clothing/suit/storage/labcoat(src)
 	return

@@ -128,7 +128,7 @@
 	return Connections
 
 /datum/UnifiedNetwork/proc/AddNode(var/obj/NewNode, var/obj/cabling/Cable)
-	world << "Adding [NewNode.name] to \[[Cable.EquivalentCableType]\] Network [NetworkNumber]"
+	//world << "Adding [NewNode.name] to \[[Cable.EquivalentCableType]\] Network [NetworkNumber]"
 	var/datum/UnifiedNetwork/CurrentNetwork = NewNode.Networks[Cable.EquivalentCableType]
 
 	if (CurrentNetwork == src)

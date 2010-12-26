@@ -154,7 +154,7 @@
 		return ret
 	else
 
-		if(votes["default"] < votes["restart"])
+		if(votes["No"] < votes["restart"])
 
 			vote.winner = "restart"
 			return "Restart"
@@ -255,10 +255,10 @@
 
 			text += "Restart the world?<BR><UL>"
 
-			var/list/VL = list("default","restart")
+			var/list/VL = list("No","restart")
 
 			for(var/md in VL)
-				var/disp = (md=="default"? "No":"Yes")
+				var/disp = (md=="No"? "No":"Yes")
 
 				if(src.client.vote == md)
 					text += "<LI><B>[disp]</B>"

@@ -89,6 +89,15 @@
 	spawn(1)
 		update()
 
+
+/obj/machinery/light/small/New()
+	..()
+	if(prob(10))
+		status = LIGHT_BROKEN
+
+	spawn(1)
+		update()
+
 // update the icon_state and luminosity of the light depending on its state
 // skip_check is currently used for ghosts flickering lights. It skips the status check, so that burned lights can also work.
 // It also skips the burning probability check. In flickering, that means the light has a chance of burning only when it reverts to its default state
@@ -466,7 +475,6 @@
 	flags = FPRINT | TABLEPASS
 	force = 2
 	throwforce = 5
-	w_class = 2
 	var/status = 0		// LIGHT_OK, LIGHT_BURNED or LIGHT_BROKEN
 	var/base_state
 	var/switchcount = 0	// number of times switched
@@ -476,6 +484,7 @@
 /obj/item/weapon/light/tube
 	name = "light tube"
 	desc = "A replacement light tube."
+	w_class = 3.0
 	icon_state = "ltube"
 	base_state = "ltube"
 	item_state = "c_tube"
@@ -484,6 +493,7 @@
 /obj/item/weapon/light/bulb
 	name = "light bulb"
 	desc = "A replacement light bulb."
+	w_class = 2.0
 	icon_state = "lbulb"
 	base_state = "lbulb"
 	item_state = "contvapour"

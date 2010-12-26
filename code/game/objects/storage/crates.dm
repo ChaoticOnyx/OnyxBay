@@ -40,6 +40,16 @@
 	openicon = "crateopen"
 	closedicon = "crate"
 
+/obj/crate/engineering
+	desc = "A crate for the storage of engineering equipment."
+	name = "Engineering crate"
+	icon = 'storage.dmi'
+	icon_state = "crate"
+	density = 1
+	openicon = "crateopen"
+	closedicon = "crate"
+
+
 /obj/crate/freezer
 	desc = "A freezer."
 	name = "Freezer"
@@ -136,6 +146,15 @@
 	new /obj/item/weapon/tank/air(src)
 	new /obj/item/clothing/mask/gas(src)
 	new /obj/item/weapon/tank/air(src)
+
+/obj/crate/engineering/New()
+	..()
+	new /obj/item/weapon/weldingtool(src)
+	new /obj/item/weapon/weldingtool(src)
+	new /obj/item/weapon/wrench(src)
+	new /obj/item/weapon/wrench(src)
+	new /obj/item/clothing/head/helmet/welding(src)
+	new /obj/item/clothing/head/helmet/welding(src)
 
 /obj/crate/rcd/New()
 	..()

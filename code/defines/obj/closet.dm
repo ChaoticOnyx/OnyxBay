@@ -144,8 +144,18 @@
 	icon_state = "white"
 	icon_closed = "white"
 
+/obj/closet/wardrobe/chemistry_white
+	name = "Chemistry Wardrobe"
+	icon_state = "white"
+	icon_closed = "white"
+
 /obj/closet/wardrobe/toxins_white
 	name = "Toxins Wardrobe"
+	icon_state = "white"
+	icon_closed = "white"
+
+/obj/closet/wardrobe/robotics_white
+	name = "Robotics Wardrobe"
 	icon_state = "white"
 	icon_closed = "white"
 

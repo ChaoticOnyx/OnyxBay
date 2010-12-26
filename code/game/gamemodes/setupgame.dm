@@ -21,6 +21,18 @@
 	avnums.Add(3)
 	avnums.Add(5)
 	avnums.Add(7)
+	avnums.Add(14)
+	avnums.Add(15)
+	avnums.Add(16)
+	avnums.Add(17)
+	avnums.Add(18)
+	avnums.Add(19)
+	avnums.Add(20)
+	avnums.Add(21)
+	avnums.Add(22)
+	avnums.Add(23)
+	avnums.Add(24)
+	avnums.Add(25)
 
 	tempnum = pick(avnums)
 	avnums.Remove(tempnum)
@@ -67,6 +79,52 @@
 	tempnum = pick(avnums)
 	avnums.Remove(tempnum)
 	NERVOUSBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	NOBREATHBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	REMOTEVIEWBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	REGENERATEBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	INCREASERUNBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	REMOTETALKBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	MORPHBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	BLENDBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	HALLUCINATIONBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	NOPRINTSBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	SHOCKIMMUNITYBLOCK = tempnum
+
+	tempnum = pick(avnums)
+	avnums.Remove(tempnum)
+	SMALLSIZEBLOCK = tempnum
+
+
 
 //setupdooralarms() goes through every door in the world before the game starts, checks all the squares
 //adjacent to them, and if the adjacent square does not contain a dense turf and is not in the same

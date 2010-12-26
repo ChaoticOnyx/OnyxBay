@@ -56,6 +56,16 @@ RCD
 			user << "The RCD now holds [matter]/30 matter-units."
 			desc = "A RCD. It currently holds [matter]/30 matter-units."
 			return
+		if (istype(A, /turf/simulated/floor/open) && matter >= 1)
+			user << "Building Floor (1)..."
+			playsound(src.loc, 'Deconstruct.ogg', 50, 1)
+			spark_system.set_up(5, 0, src)
+			src.spark_system.start()
+			A:ReplaceWithFloor()
+			matter--
+			user << "The RCD now holds [matter]/30 matter-units."
+			desc = "A RCD. It currently holds [matter]/30 matter-units."
+			return
 		if (istype(A, /turf/simulated/floor) && matter >= 3)
 			user << "Building Wall (3)..."
 			playsound(src.loc, 'click.ogg', 50, 1)

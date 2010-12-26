@@ -10,6 +10,7 @@
 			sleep(15)
 			src.density = 0
 			src.ul_SetOpacity(0)
+			update_nearby_tiles()
 			src.operating = 0
 			return
 	return
@@ -49,5 +50,6 @@
 	sleep(10)
 	src.operating = 0
 	return
+
 /obj/machinery/door/poddoor/roofdoor
 	name = "Retractable roof"

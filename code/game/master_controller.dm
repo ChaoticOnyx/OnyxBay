@@ -1,5 +1,5 @@
 var/global/datum/controller/game_controller/master_controller //Set in world.New()
-
+var/ticker_debug
 datum/controller/game_controller
 	var/processing = 1
 
@@ -23,7 +23,7 @@ datum/controller/game_controller
 			world.update_status()
 
 		ShieldNetwork = new /datum/shieldnetwork()
-
+		vsc = new()
 		world << "\red Setting up shields.."
 
 		ShieldNetwork.makenetwork()
@@ -101,40 +101,49 @@ datum/controller/game_controller
 			return 0
 
 		var/start_time = world.timeofday
-
+		//world.keepalive()
+		sleep(1)
+		ticker_debug = "Airprocess"
 		air_master.process()
 
 		sleep(1)
-
+		ticker_debug = "Sun calc"
 		sun.calc_position()
 
 		sleep(-1)
 
 		for(var/mob/M in world)
+			ticker_debug = "[M] [M.real_name] life calc"
 			M.Life()
 
 		sleep(-1)
 
 		for(var/obj/machinery/machine in machines)
+			ticker_debug = "[machine.name] processing"
 			machine.process()
 
 		sleep(-1)
+		for(var/obj/fire/F in world)
+			ticker_debug = "fire processing"
+			F.process()
 		sleep(1)
 
 		for(var/obj/item/item in processing_items)
+			ticker_debug = "[item] [item.name] processing"
 			item.process()
 
-
-
 		for(var/datum/pipe_network/network in pipe_networks)
+			ticker_debug = "pipe processing"
 			network.process()
 
 		for(var/OuterKey in AllNetworks)
+			ticker_debug = "uninet processing"
 			var/list/NetworkSet = AllNetworks[OuterKey]
 			for(var/datum/UnifiedNetwork/Network in NetworkSet)
 				Network.Controller.Process()
 
 		for(var/turf/t in processing_turfs)
+			ticker_debug = "turf processing"
 			t.process()
 
 		sleep(-1)

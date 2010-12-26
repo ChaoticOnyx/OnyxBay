@@ -13,7 +13,7 @@
 	icon           = 'Coils.dmi'
 	flags          = TABLEPASS | USEDELAY | FPRINT | CONDUCT
 	throwforce     = 10
-	w_class        = 2.0
+	w_class        = 1.5
 	throw_speed    = 2
 	throw_range    = 5
 	item_state     = ""
@@ -27,7 +27,9 @@
 	var/Amount     = 30
 	var/CableType  = /obj/cabling
 
-/obj/item/weapon/CableCoil/New(var/Location, var/Length = Amount)
+/obj/item/weapon/CableCoil/New(var/Location, var/Length)
+	if(!Length)
+		Length = MaxAmount
 	Amount = Length
 	item_state     = "[CoilColour]coil"
 	icon_state     = "[CoilColour]coil"

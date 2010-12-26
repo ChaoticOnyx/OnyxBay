@@ -31,7 +31,7 @@
 		if (emitter && emitter.online)
 			emitter.Draw(strength * 200)
 		#ifdef DEBUG
-		world << "Shield Handled blast wave"
+	//	world << "Shield Handled blast wave"
 		#endif
 	else if (density)
 		world << "Active shield ex_act called with positive value?  What?  This makes no sense and should not have happened.  Tell a dev."

@@ -548,6 +548,8 @@
 					if(ismob(target) && target != user)
 						if(ishuman(target))
 							var/mob/living/carbon/human/H = target
+							if(!H.vessel.get_reagent_amount("blood") < 5)
+								return
 							for(var/mob/O in viewers(world.view, user))
 								O.show_message(text("\red <B>[] is trying to draw blood from []!</B>", user, target), 1)
 							if(!do_mob(user, target)) return

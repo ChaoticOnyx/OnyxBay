@@ -21,7 +21,7 @@
 	new /obj/item/clothing/under/det( src )
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/head/det_hat( src )
-	new /obj/item/clothing/suit/det_suit( src )
+	new /obj/item/clothing/suit/storage/det_suit( src )
 	new /obj/item/weapon/storage/fcard_kit( src )
 	new /obj/item/weapon/storage/fcard_kit( src )
 	new /obj/item/weapon/storage/fcard_kit( src )
@@ -78,5 +78,5 @@
 	new /obj/item/clothing/under/rank/research_director( src )
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/glasses/regular( src )
-	new /obj/item/clothing/suit/labcoat( src )
+	new /obj/item/clothing/suit/storage/labcoat( src )
 	return

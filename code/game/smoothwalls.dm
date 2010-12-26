@@ -16,7 +16,9 @@
 		if(abs(src.x-W.x)-abs(src.y-W.y)) //doesn't count diagonal walls
 			junction |= get_dir(src,W)
 */
-	if(istype(src,/turf/simulated/wall/r_wall))
+	if(istype(src, /turf/simulated/wall/heatshield))
+		return
+	else if(istype(src, /turf/simulated/wall/r_wall))
 		src.icon_state = "rwall[junction]"
 	else
 		src.icon_state = "wall[junction]"

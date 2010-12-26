@@ -75,6 +75,7 @@ obj/machinery/aiconstruct/attackby(obj/item/weapon/W as obj, mob/user as mob)
 			if(istype(W,/obj/item/brain))
 				user << "You place the [W] inside the [src]."
 				user.u_equip(W)
+				W.dropped()
 				W.loc = src
 				bb = W:owner
 				buildstate++

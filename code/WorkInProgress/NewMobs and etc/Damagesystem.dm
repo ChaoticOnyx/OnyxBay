@@ -20,7 +20,7 @@
 /mob/living/carbon/human/var/s_tone = 0.0
 /mob/living/carbon/human/var/age = 30.0
 /mob/living/carbon/human/var/b_type = "A+"
-
+/mob/living/carbon/human/var/obj/overlay/hair
 /mob/living/carbon/human/var/obj/item/weapon/r_store = null
 /mob/living/carbon/human/var/obj/item/weapon/l_store = null
 
@@ -1048,7 +1048,7 @@
 			var/icon/stain_icon = null
 			if (istype(wear_suit, /obj/item/clothing/suit/armor/vest || /obj/item/clothing/suit/wcoat || /obj/item/clothing/suit/armor/a_i_a_ptank))
 				stain_icon = icon('blood.dmi', "armorblood[!lying ? "" : "2"]")
-			else if (istype(wear_suit, /obj/item/clothing/suit/det_suit || /obj/item/clothing/suit/labcoat))
+			else if (istype(wear_suit, /obj/item/clothing/suit/storage/det_suit || /obj/item/clothing/suit/storage/labcoat))
 				stain_icon = icon('blood.dmi', "coatblood[!lying ? "" : "2"]")
 			else
 				stain_icon = icon('blood.dmi', "suitblood[!lying ? "" : "2"]")
@@ -1066,7 +1066,32 @@
 				hand = 0
 				drop_item()
 				hand = h
+//	var/icon/hair = icon()
+	if(!lying)
+		var/icon/hair_s = new/icon("icon" = 'human_face.dmi', "icon_state" = "[hair_icon_state]_s")
+		hair_s.Blend(rgb(r_hair, g_hair, b_hair), ICON_ADD)
+		overlays += image("icon" = hair_s, "layer" = MOB_LAYER)
+/*		if(src.hair)
+			src.hair.icon = hair_s
+		else
+			hair = new/obj/overlay(src)
+			src.hair.icon = hair_s
+			src.layer  = MOB_LAYER
+		overlays += hair*/
+	else
+		var/icon/hair_l = new/icon("icon" = 'human_face.dmi', "icon_state" = "[hair_icon_state]_l")
+		hair_l.Blend(rgb(r_hair, g_hair, b_hair), ICON_ADD)
+		overlays += image("icon" = hair_l, "layer" = MOB_LAYER)
+	//	if(src.hair)
+		//	src.hair.icon = hair_l
 
+	//	else
+			//hair = new/obj/overlay(src)
+			//src.hair.icon = hair_l
+			//src.layer = MOB_LAYER
+
+
+		//hair.layer = MOB_LAYER + 1
 	// Head
 	if (head)
 		var/t1 = head.icon_state
@@ -1651,10 +1676,11 @@
 			stand_icon.Blend(new /icon('human.dmi', "chest_[g]_s"), ICON_OVERLAY)
 			lying_icon.Blend(new /icon('human.dmi', "chest_[g]_l"), ICON_OVERLAY)
 			continue
-		if (underwear > 0)
-			if(!obese)
-				stand_icon.Blend(new /icon('human.dmi', "underwear[underwear]_[g]_s"), ICON_OVERLAY)
-				lying_icon.Blend(new /icon('human.dmi', "underwear[underwear]_[g]_l"), ICON_OVERLAY)
+		if(istype(part,/datum/organ/external/chest))
+			if (underwear > 0)
+				if(!obese)
+					stand_icon.Blend(new /icon('human.dmi', "underwear[underwear]_[g]_s"), ICON_OVERLAY)
+					lying_icon.Blend(new /icon('human.dmi', "underwear[underwear]_[g]_l"), ICON_OVERLAY)
 		if(!part.destroyed)
 			stand_icon.Blend(new /icon('human.dmi', "[part.icon_name]_s"), ICON_OVERLAY)
 			lying_icon.Blend(new /icon('human.dmi', "[part.icon_name]_l"), ICON_OVERLAY)
@@ -1700,11 +1726,6 @@
 	eyes_s.Blend(rgb(r_eyes, g_eyes, b_eyes), ICON_ADD)
 	eyes_l.Blend(rgb(r_eyes, g_eyes, b_eyes), ICON_ADD)
 
-	var/icon/hair_s = new/icon("icon" = 'human_face.dmi', "icon_state" = "[hair_icon_state]_s")
-	var/icon/hair_l = new/icon("icon" = 'human_face.dmi', "icon_state" = "[hair_icon_state]_l")
-	hair_s.Blend(rgb(r_hair, g_hair, b_hair), ICON_ADD)
-	hair_l.Blend(rgb(r_hair, g_hair, b_hair), ICON_ADD)
-
 	var/icon/facial_s = new/icon("icon" = 'human_face.dmi', "icon_state" = "[face_icon_state]_s")
 	var/icon/facial_l = new/icon("icon" = 'human_face.dmi', "icon_state" = "[face_icon_state]_l")
 	facial_s.Blend(rgb(r_facial, g_facial, b_facial), ICON_ADD)
@@ -1713,8 +1734,8 @@
 	var/icon/mouth_s = new/icon("icon" = 'human_face.dmi', "icon_state" = "mouth_[g]_s")
 	var/icon/mouth_l = new/icon("icon" = 'human_face.dmi', "icon_state" = "mouth_[g]_l")
 
-	eyes_s.Blend(hair_s, ICON_OVERLAY)
-	eyes_l.Blend(hair_l, ICON_OVERLAY)
+	//eyes_s.Blend(hair_s, ICON_OVERLAY)
+	//eyes_l.Blend(hair_l, ICON_OVERLAY)
 	eyes_s.Blend(mouth_s, ICON_OVERLAY)
 	eyes_l.Blend(mouth_l, ICON_OVERLAY)
 	eyes_s.Blend(facial_s, ICON_OVERLAY)
@@ -1729,8 +1750,8 @@
 	del(mouth_s)
 	del(facial_l)
 	del(facial_s)
-	del(hair_l)
-	del(hair_s)
+	//del(hair_l)
+	//del(hair_s)
 	del(eyes_l)
 	del(eyes_s)
 

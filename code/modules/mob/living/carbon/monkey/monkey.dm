@@ -19,7 +19,7 @@
 			gender = pick(MALE, FEMALE)
 		dna = new /datum/dna( null )
 		dna.uni_identity = "00600200A00E0110148FC01300B009"
-		dna.struc_enzymes = "0983E840344C39F4B059D5145FC5785DC6406A4BB8"
+		dna.struc_enzymes = "0983E840344C39F4B059D5145FC5785DC6406A4BB8186248487555169453220780579106750610"
 		dna.unique_enzymes = md5(name)
 				//////////blah
 		var/gendervar

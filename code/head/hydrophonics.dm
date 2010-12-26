@@ -17,7 +17,7 @@ datum/plants/tomato
 	health = 100
 	growth
 	growthtime = 100
-	waterneeded = 1 //per tick
+	waterneeded = 0.01 //per tick
 	co2needed = 1 // per tick
 	uvneeded = 1
 	growthstages = 5
@@ -86,6 +86,9 @@ datum/plants/tomato
 	updateicon()
 /obj/machinery/hydro/soilbed/proc/updateicon()
 	overlays = null
+	if(dead)
+		icon_state = "soilbed"
+		overlays += image(src.icon,"dead")
 	if(hasplant)
 		var/icon_s
 		if(stage >= 100)
@@ -108,5 +111,6 @@ datum/plants/tomato
 	hasplant = null
 	dead = 1
 /obj/machinery/hydro/soilbed/attack_hand()
-
+	if(dead)
+		return
 /obj/machinery/hydro/soilbed/attackby()

@@ -61,7 +61,8 @@
 /obj/item/weapon/storage/pill_bottle/antitox
 	name = "Pill bottle (Anti-toxin)"
 	desc = "Contains pills used to counter toxins."
-
+/obj/item/weapon/storage/pill_bottle/
+	w_class = 1.0
 /obj/item/weapon/storage/pill_bottle/antitox/New()
 	..()
 	new /obj/item/weapon/reagent_containers/pill/antitox( src )

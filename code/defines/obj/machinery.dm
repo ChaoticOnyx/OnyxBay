@@ -430,6 +430,9 @@
 	icon_state = "power"
 	density = 1
 	anchored = 1
+	var/brightnessred = 0
+	var/brightnessgreen = 0
+	var/brightnessblue = 0
 
 #define SMESMAXCHARGELEVEL 200000
 #define SMESMAXOUTPUT 200000
@@ -540,10 +543,13 @@
 	var/active = 1 //No sales pitches if off!
 	var/vend_ready = 1 //Are we ready to vend?? Is it time??
 	var/vend_delay = 10 //How long does it take to vend?
+	var/points = 0
 	var/product_paths = "" //String of product paths separated by semicolons.
 	var/product_amounts = "" //String of product amounts separated by semicolons, must have amount for every path in product_paths
+	var/product_prices = "" //String of product prices in Points separated by semicolons, must have amount for every path in product_paths
 	var/product_slogans = "" //String of slogans separated by semicolons, optional
 	var/product_hidden = "" //String of products that are hidden unless hacked.
+	var/hidden_prices = "" //String of product prices for hidden items
 	var/list/product_records = list()
 	var/list/hidden_records = list()
 	var/list/slogan_list = list()
@@ -559,43 +565,62 @@
 	var/extended_inventory = 0 //can we access the hidden inventory?
 	var/panel_open = 0 //Hacking that vending machine. Gonna get a free candy bar.
 	var/wires = 15
+	var/charge_type = ""
 
 /obj/machinery/vending/coffee
 	name = "Coffee Machine"
 	desc = "A Robust Coffee vending machine."
 	icon_state = "coffee"
 	icon_vend = "coffee-vend"
+	points = 10
 	product_paths = "/obj/item/weapon/reagent_containers/food/drinks/coffee"
-	product_amounts = "25"
+	//product_amounts = "25"
+	product_prices = "1"
 	vend_delay = 34
 	product_hidden = "/obj/item/weapon/reagent_containers/food/drinks/cola"
+	hidden_prices = "1"
+	charge_type = "coffee"
 
 /obj/machinery/vending/snack
 	name = "Snack Machine"
 	desc = "All manner of tasty, but unhealthy snacks"
 	icon_state = "snack"
+	points = 10
 	product_paths = "/obj/item/weapon/reagent_containers/food/snacks/candy;/obj/item/weapon/reagent_containers/food/snacks/chips"
-	product_amounts = "10;10"
+	//product_amounts = "10;10"
+	product_prices = "1;1"
 	product_slogans = "Try our new nougat bar!;Twice the calories for half the price!"
 	product_hidden = "/obj/item/weapon/reagent_containers/food/snacks/donut"
+	hidden_prices = "1"
+	charge_type = "snack"
+
 /obj/machinery/vending/cart
 	name = "PTech"
 	desc = "Cartridges for PDAs"
-	icon_state = "sec"
-	icon_deny = "sec-deny"
+	icon_state = "cart"
+	icon_deny = "cart-deny"
+	points = 10
 	product_paths = "/obj/item/weapon/cartridge/medical;/obj/item/weapon/cartridge/engineering;/obj/item/weapon/cartridge/security;/obj/item/weapon/cartridge/janitor;/obj/item/weapon/cartridge/signal/toxins;/obj/item/device/pda/heads;/obj/item/weapon/cartridge/captain;/obj/item/weapon/cartridge/quartermaster"
-	product_amounts = "10;10;10;10;10;10;10;10"
+	//product_amounts = "10;10;10;10;10;10;10;10"
+	product_prices = "1;1;1;1;1;1;3;1"
 	product_slogans = ""
 	product_hidden = ""
+	hidden_prices = ""
+	charge_type = "cart"
+
 /obj/machinery/vending/cigarette
 	name = "Cigarette Vendor"
 	desc = "If you want to get cancer, might as well do it in style"
 	icon_state = "cigs"
-	product_paths = "/obj/item/weapon/cigpacket"
-	product_amounts = "10"
+	points = 10
+	product_paths = "/obj/item/weapon/cigpacket;/obj/item/weapon/zippo/lighter"
+	//product_amounts = "10;10"
+	product_prices = "1;1"
 	product_slogans = "Space cigs taste good like a cigarette should.;I'd rather toolbox than switch.;Smoke!;Don't believe the reports - smoke today!"
 	vend_delay = 34
 	product_hidden = "/obj/item/weapon/zippo"
+	hidden_prices = "2"
+	charge_type = "cigarette"
 
 /obj/machinery/vending/medical
 	name = "NanoMed Plus"
@@ -603,9 +628,14 @@
 	icon_state = "med"
 	icon_deny = "med-deny"
 	req_access_txt = "5"
-	product_paths = "/obj/item/weapon/reagent_containers/glass/bottle/antitoxin;/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline;/obj/item/weapon/reagent_containers/glass/bottle/stoxin;/obj/item/weapon/reagent_containers/glass/bottle/toxin;/obj/item/weapon/reagent_containers/syringe"
-	product_amounts = "4;4;4;4;12"
-	product_hidden = "/obj/item/weapon/reagent_containers/pill/tox;/obj/item/device/healthanalyzer"
+	points = 10
+	product_paths = "/obj/item/device/healthanalyzer;/obj/item/weapon/medical/bruise_pack;/obj/item/weapon/medical/ointment;/obj/item/weapon/medical/bandaid;/obj/item/weapon/reagent_containers/glass/bottle/antitoxin;/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline;/obj/item/weapon/reagent_containers/glass/bottle/stoxin;/obj/item/weapon/reagent_containers/syringe;/obj/item/weapon/tank/anesthetic;/obj/item/clothing/mask/medical;/obj/item/clothing/gloves/latex;/obj/item/weapon/storage/firstaid/regular;/obj/item/weapon/storage/firstaid/toxin;/obj/item/weapon/storage/firstaid/fire;/obj/item/weapon/gun/syringe"
+	//product_amounts = "4;4;4;4;12"
+	product_prices = "2;1;1;1;3;3;3;1;2;1;1;1;1;1;4"
+	product_hidden = "/obj/item/weapon/reagent_containers/pill/tox;/obj/item/weapon/reagent_containers/glass/bottle/toxin;"
+	hidden_prices = "3;3"
+	charge_type = "medical"
+
 
 /obj/machinery/vending/security
 	name = "SecTech"
@@ -613,9 +643,114 @@
 	icon_state = "sec"
 	icon_deny = "sec-deny"
 	req_access_txt = "1"
-	product_paths = "/obj/item/weapon/handcuffs;/obj/item/weapon/flashbang; /obj/item/device/flash"
-	product_amounts = "8;5;4"
-	product_hidden = "/obj/item/clothing/head/helmet"
+	points = 10
+	product_paths = "/obj/item/clothing/head/helmet;/obj/item/clothing/suit/armor/vest;/obj/item/device/radio/headset/security;/obj/item/clothing/glasses/sunglasses;/obj/item/clothing/glasses/thermal;/obj/item/weapon/handcuffs;/obj/item/weapon/baton;/obj/item/weapon/gun/energy/taser_gun;/obj/item/weapon/flashbang;/obj/item/device/flash"
+	//product_amounts = "8;5;4"
+	product_prices = "3;3;1;1;4;1;4;4;3;3"
+	product_hidden = "/obj/item/kitchen/donut_box"
+	hidden_prices = "3"
+	charge_type = "security"
+
+/*	Not used, adapted the old chem dispenser to be compatible with the chemistry charge unit.
+/obj/machinery/vending/chemistry
+	name = "Chem Dispenser"
+	desc = "A chemical dispenser."
+	icon_state = "generic"
+	//icon_deny = "med-deny"
+	req_access_txt = "33"
+	points = 10
+	product_paths = "/obj/item/weapon/reagent_containers/glass/bottle/antitoxin;/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline;/obj/item/weapon/reagent_containers/glass/bottle/stoxin;/obj/item/weapon/reagent_containers/glass/bottle/toxin;/obj/item/weapon/reagent_containers/syringe"
+	//product_amounts = "4;4;4;4;12"
+	product_prices = "2;2;2;2;1"
+	product_hidden = ""
+	hidden_prices = ""
+	charge_type = "chemistry"
+*/
+/obj/machinery/vending/genetics
+	name = "Genetics Dispenser"
+	desc = "Medical drug dispenser."
+	icon_state = "med"
+	icon_deny = "med-deny"
+	req_access_txt = "5"
+	points = 10
+	product_paths = "/obj/item/weapon/reagent_containers/glass/bottle/antitoxin;/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline;/obj/item/weapon/reagent_containers/glass/bottle/stoxin;/obj/item/weapon/reagent_containers/glass/bottle/toxin;/obj/item/weapon/reagent_containers/syringe"
+	//product_amounts = "4;4;4;4;12"
+	product_prices = "2;2;2;2;1"
+	product_hidden = ""
+	hidden_prices = ""
+	charge_type = "genetics"
+
+/obj/machinery/vending/toxins
+	name = "Toxins dispenser"
+	desc = "Medical drug dispenser."
+	icon = 'objects.dmi'
+	icon_state = "dispenser"
+	//icon_deny = "med-deny"
+	req_access_txt = "7"
+	points = 10
+	product_paths = "/obj/item/clothing/suit/bio_suit;/obj/item/clothing/head/bio_hood;/obj/item/weapon/screwdriver;/obj/item/weapon/wrench;/obj/item/weapon/tank/oxygen;/obj/item/weapon/tank/plasma;/obj/item/device/transfer_valve;/obj/item/device/igniter;/obj/item/device/timer;/obj/item/device/prox_sensor;/obj/item/device/radio/signaler;/obj/item/weapon/chem_grenade"
+	//product_amounts = "4;4;4;4;12"
+	product_prices = "2;2;1;1;1;2;3;2;2;2;2;2"
+	product_hidden = ""
+	hidden_prices = ""
+	charge_type = "toxins"
+
+/obj/machinery/vending/robotics
+	name = "Robotech Deluxe"
+	desc = "All the tools you need to create your own robot army."
+	icon_state = "robotics"
+	icon_deny = "robotics-deny"
+	req_access_txt = "29"
+	points = 10
+	product_paths = "/obj/item/weapon/CableCoil/power;/obj/item/device/flash;/obj/item/weapon/circuitry;/obj/item/weapon/cell;/obj/item/device/prox_sensor;/obj/item/device/healthanalyzer;/obj/item/weapon/scalpel;/obj/item/weapon/circular_saw;/obj/item/weapon/tank/anesthetic;/obj/item/clothing/mask/medical;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar"
+	//product_amounts = "4;4;4;4;12"
+	product_prices = "1;3;1;3;2;2;4;4;2;1;1;1"
+	product_hidden = ""
+	hidden_prices = ""
+	charge_type = "robotics"
+
+/obj/machinery/vending/bar
+	name = "Brewmaster 9000"
+	desc = "The Brewmaster 9000 has just what you need to make your customers forget about, well... everything."
+	icon_state = "bar"
+	icon_deny = "bar-deny"
+	req_access_txt = "25"
+	points = 10
+	product_paths = "/obj/item/weapon/reagent_containers/food/drinks/cola;/obj/item/weapon/reagent_containers/food/drinks/beer;/obj/item/weapon/reagent_containers/food/drinks/vodka;/obj/item/weapon/reagent_containers/food/drinks/dwine;/obj/reagent_dispensers/beerkeg"
+	//product_amounts = "4;4;4;4;12"
+	product_prices = "1;2;3;5;10"
+	product_hidden = ""
+	hidden_prices = ""
+	charge_type = "bar"
+
+/obj/machinery/vending/kitchen
+	name = "Kitchen Mate Plus"
+	desc = "The Kitchen Mate Plus.  Better ingredients.  Better burgers."
+	icon_state = "kitchen"
+	icon_deny = "kitchen-deny"
+	req_access_txt = "28"
+	points = 10
+	product_paths = "/obj/item/weapon/reagent_containers/food/snacks/donkpocket;/obj/item/weapon/reagent_containers/food/drinks/cola;/obj/item/weapon/reagent_containers/food/drinks/coffee;/obj/item/weapon/reagent_containers/food/snacks/flour;/obj/item/kitchen/egg_box;/obj/item/weapon/reagent_containers/food/snacks/plump;/obj/item/weapon/reagent_containers/food/snacks/meatball"
+	//product_amounts = "4;4;4;4;12"
+	product_prices = "1;1;1;1;2;3;2"
+	product_hidden = ""
+	hidden_prices = ""
+	charge_type = "kitchen"
+
+/obj/machinery/vending/engineering
+	name = "Robco Tool Maker"
+	desc = "Everything you need for do-it-yourself ship repair."
+	icon_state = "generic"
+	//icon_deny = "med-deny"
+	req_access_txt = "10"
+	points = 10
+	product_paths = "/obj/item/weapon/storage/utilitybelt;/obj/item/clothing/glasses/meson;/obj/item/clothing/gloves/yellow;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar;/obj/item/weapon/wirecutters;/obj/item/device/multitool;/obj/item/weapon/wrench;/obj/item/device/t_scanner;/obj/item/weapon/CableCoil/power;/obj/item/weapon/circuitry;/obj/item/weapon/cell;/obj/item/weapon/weldingtool;/obj/item/clothing/head/helmet/welding;/obj/item/weapon/light/tube;/obj/item/clothing/suit/fire"
+	//product_amounts = "4;4;4;4;12"
+	product_prices = "2;1;2;1;1;2;2;1;1;1;2;2;1;1;1;2"
+	product_hidden = ""
+	hidden_prices = ""
+	charge_type = "engineering"
+
 
 /obj/machinery/microwave
 	name = "Microwave"
@@ -642,4 +777,3 @@
 	var/dirty = 0 // Does it need cleaning?
 	var/gibtime = 40 // Time from starting until meat appears
 	var/mob/occupant // Mob who has been put inside
-

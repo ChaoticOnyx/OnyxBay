@@ -243,7 +243,7 @@
 	icon_state = "forensic0"
 	var/amount = 20.0
 	var/printing = 0.0
-	w_class = 3.0
+	w_class = 2.0
 	item_state = "electronic"
 	flags = FPRINT | TABLEPASS | ONBELT | CONDUCT | USEDELAY
 

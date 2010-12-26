@@ -32,7 +32,7 @@
 	var/datum/data/record/active_record = null
 	var/obj/item/weapon/disk/data/genetics/diskette = null //Mostly so the geneticist can steal everything.
 
-/obj/item/weapon/disk/data/genetics/demo
+/*/obj/item/weapon/disk/data/genetics/demo
 	name = "cloning data disk - 'Farmer Jeff'"
 	data = "0C80C80C80C80C80C8000000000000161FBDDEF"
 	ue = 1
@@ -42,7 +42,7 @@
 	name = "cloning data disk - 'Mr. Muggles'"
 	data_type = "se"
 	data = "0983E840344C39F4B059D5145FC5785DC6406A4FFF"
-	read_only = 1
+	read_only = 1*/
 
 /obj/machinery/computer/cloning/New()
 	..()
@@ -153,13 +153,11 @@
 
 				if (!isnull(src.diskette))
 					dat += "<a href='byond://?src=\ref[src];disk=load'>Load from disk.</a>"
-
-					dat += " | Save: <a href='byond://?src=\ref[src];save_disk=ue'>UI + UE</a>"
+					dat += " | Save: <a href='byond://?src=\ref[src];save_disk=ui_ue'>UI + UE</a>"
 					dat += " | Save: <a href='byond://?src=\ref[src];save_disk=ui'>UI</a>"
 					dat += " | Save: <a href='byond://?src=\ref[src];save_disk=se'>SE</a>"
-					dat += "<br>"
-				else
-					dat += "<br>" //Keeping a line empty for appearances I guess.
+
+				dat += "<br>"
 
 				dat += {"<b>UI:</b> [src.active_record.fields["UI"]]<br>
 				<b>SE:</b> [src.active_record.fields["SE"]]<br><br>

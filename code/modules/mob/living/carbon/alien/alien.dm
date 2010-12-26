@@ -6,6 +6,7 @@
 /mob/living/carbon/alien/species = "Alien"
 
 /mob/living/carbon/alien/var/toxgain = 5 // How much toxins is gained from weeds per tick
+/mob/living/carbon/alien/var/toxgainmax = 350 // Needs to be tested for balance. The maximum amount of toxins aliens can gain.
 /mob/living/carbon/alien/var/alien_invis = 0.0
 
 /mob/living/carbon/alien/updatehealth()
@@ -17,7 +18,7 @@
 		health = health_full
 		stat = 0
 
-/mob/living/carbon/alien/FireBurn() // Should probably make this affect all carbon mobs except for aliens (This applies to contaminate and pl_effects as well)
+/mob/living/carbon/alien/FireBurn() // It should make this affect all carbon mobs except for aliens (This applies to contaminate and pl_effects as well)
 /mob/living/carbon/alien/contaminate()
 /mob/living/carbon/alien/pl_effects()
 
@@ -33,7 +34,7 @@
 
 /mob/living/carbon/alien/Bump(atom/movable/AM as mob|obj, yes)
 	spawn(0)
-		if ((!( yes ) || now_pushing))
+		if ( (!( yes ) || now_pushing) )
 			return
 		now_pushing = 1
 		if(ismob(AM))
@@ -42,7 +43,7 @@
 				if(prob(70))
 					for(var/mob/M in viewers(src, null))
 						if(M.client)
-							M << "\red <B>[src] fails to push [tmob]'s fat ass out of the way.</B>"
+							M << "\red <B>[src] fails to push [tmob] out of the way.</B>"
 					now_pushing = 0
 					return
 		now_pushing = 0
