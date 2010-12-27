@@ -9,6 +9,11 @@
 //at it and give me your opinion on it and point out any issues you see.  Until then, you're wasting
 //your time.
 
+//Sukasa - Or, you know, you could just accept that someone was trying to be helpful
+//without having to be difficult about it.  I just happen to have a fair bit more
+//experience with ss13 and figured I could at least try and be helpful is all
+//BTW, this is the "Work in Progress" folder.  The name means stuff in here is incomplete.
+
 /sound/turntable/test
 	file = 'TestLoop1.ogg'
 	falloff = 2

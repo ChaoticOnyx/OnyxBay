@@ -34,6 +34,7 @@ var/global/datum/controller/gameticker/ticker
 
 	spawn setup()
 
+
 /datum/controller/gameticker/proc/setup()
 	//Create and announce mode
 	if(master_mode=="secret")

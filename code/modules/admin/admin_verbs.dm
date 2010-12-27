@@ -858,7 +858,7 @@
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"
-	set name = "Send nanotrasen(admin) shuttle"
+	set name = "Send Nanotrasen (admin) shuttle"
 	var/area/from = locate(/area/nanotrasenshuttle)
 	var/area/adminshuttle/go = locate(/area/adminshuttle)
 	if(go.shuttle == "")

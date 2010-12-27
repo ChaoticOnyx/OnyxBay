@@ -287,6 +287,7 @@ Frequency:
 	else if (ending == "!")
 		return "2"
 	return "0"
+
 /obj/item/device/radio/hear_talk(mob/M as mob, msg)
 	if (src.broadcasting)
 		talk_into(M, msg)

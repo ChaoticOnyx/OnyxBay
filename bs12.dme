@@ -152,6 +152,7 @@
 #define FILE_DIR "code/modules"
 #define FILE_DIR "code/modules/admin"
 #define FILE_DIR "code/modules/admin/verbs"
+#define FILE_DIR "code/modules/Chemistry"
 #define FILE_DIR "code/modules/mob"
 #define FILE_DIR "code/modules/mob/dead"
 #define FILE_DIR "code/modules/mob/dead/observer"
@@ -169,7 +170,6 @@
 #define FILE_DIR "code/modules/mob/living/silicon/robot"
 #define FILE_DIR "code/modules/mob/new_player"
 #define FILE_DIR "code/modules/power"
-#define FILE_DIR "code/modules/power/antimatter"
 #define FILE_DIR "code/obj"
 #define FILE_DIR "code/unused"
 #define FILE_DIR "code/WorkInProgress"
@@ -225,7 +225,6 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
-#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -489,7 +488,6 @@
 #include "code\game\objects\portals.dm"
 #include "code\game\objects\secure_area.dm"
 #include "code\game\objects\secure_closets.dm"
-#include "code\game\objects\shieldgen.dm"
 #include "code\game\objects\stool.dm"
 #include "code\game\objects\structures.dm"
 #include "code\game\objects\tables_racks.dm"
@@ -618,6 +616,13 @@
 #include "code\modules\admin\verbs\randomverbs.dm"
 #include "code\modules\admin\verbs\switch.dm"
 #include "code\modules\admin\verbs\ticklag.dm"
+#include "code\modules\Chemistry\Chemistry-Holder.dm"
+#include "code\modules\Chemistry\Chemistry-Machinery.dm"
+#include "code\modules\Chemistry\Chemistry-Readme.dm"
+#include "code\modules\Chemistry\Chemistry-Reagents.dm"
+#include "code\modules\Chemistry\Chemistry-Recipes.dm"
+#include "code\modules\Chemistry\Chemistry-Tools.dm"
+#include "code\modules\Chemistry\ChemistrySystemIV.dm"
 #include "code\modules\mob\login.dm"
 #include "code\modules\mob\logout.dm"
 #include "code\modules\mob\mob.dm"
@@ -702,20 +707,11 @@
 #include "code\modules\power\tracker.dm"
 #include "code\modules\power\turbine.dm"
 #include "code\modules\power\UltraLight.dm"
-#include "code\modules\power\antimatter\computer.dm"
-#include "code\modules\power\antimatter\engine.dm"
-#include "code\modules\power\antimatter\fuel.dm"
 #include "code\obj\assemble.dm"
 #include "code\WorkInProgress\alarm.dm"
 #include "code\WorkInProgress\BrokenInhands.dm"
 #include "code\WorkInProgress\buildmode.dm"
 #include "code\WorkInProgress\Cameras.dm"
-#include "code\WorkInProgress\Chemistry-Holder.dm"
-#include "code\WorkInProgress\Chemistry-Machinery.dm"
-#include "code\WorkInProgress\Chemistry-Reagents.dm"
-#include "code\WorkInProgress\Chemistry-Recipes.dm"
-#include "code\WorkInProgress\Chemistry-Tools.dm"
-#include "code\WorkInProgress\ChemistrySystemIV.dm"
 #include "code\WorkInProgress\cloning.dm"
 #include "code\WorkInProgress\explosion_particles.dm"
 #include "code\WorkInProgress\KeelinsStuff.dm"

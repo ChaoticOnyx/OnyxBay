@@ -30,16 +30,36 @@ datum/controller/radio
 			frequency.frequency = new_frequency
 			frequencies[new_frequency] = frequency
 
-		frequency.devices += device
+		if (frequency.scrambled)
+			frequency.devices_scrambled += device
+		else
+			frequency.devices += device
+
 		return frequency
+
+	proc/RegisterScrambler(var/Frequency)
+		var/datum/radio_frequency/frequency = frequencies[Frequency]
+		frequency.scrambled++
+		frequency.devices_scrambled |= frequency.devices
+		frequency.devices = list( )
+
+	proc/UnregisterScrambler(var/Frequency)
+		var/datum/radio_frequency/frequency = frequencies[Frequency]
+		frequency.scrambled--
+		if (!frequency.scrambled)
+			frequency.devices = frequency.devices_scrambled
+			frequency.devices_scrambled = list()
 
 	proc/remove_object(obj/device, old_frequency)
 		var/datum/radio_frequency/frequency = frequencies[old_frequency]
 
 		if(frequency)
-			frequency.devices -= device
+			if (frequency.scrambled)
+				frequency.devices_scrambled -= device
+			else
+				frequency.devices -= device
 
-			if(frequency.devices.len < 1)
+			if(frequency.devices.len < 1 && !frequency.scrambled)
 				del(frequency)
 				frequencies -= old_frequency
 
@@ -51,6 +71,8 @@ datum/controller/radio
 datum/radio_frequency
 	var/frequency
 	var/list/obj/devices = list()
+	var/list/obj/devices_scrambled = list()
+	var/scrambled = 0
 
 	proc
 		post_signal(obj/source, datum/signal/signal, range)

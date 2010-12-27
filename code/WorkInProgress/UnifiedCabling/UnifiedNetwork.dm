@@ -67,6 +67,7 @@
 		if(O.NetworkNumber[Cable.EquivalentCableType] == 0)
 
 			var/datum/UnifiedNetwork/NewNetwork = CreateUnifiedNetwork(Cable.EquivalentCableType)
+			NewNetwork.BuildFrom(Cable, Cable.NetworkControllerType)
 
 			PropagateNetwork(O, NewNetwork.NetworkNumber)
 
@@ -124,7 +125,7 @@
 			else
 				Possibilities -= Component
 
-	world.log << "Created Unified Network with [Connections.len] Components from [Start.x], [Start.y], [Start.z]"
+	world.log << "Created Unified Network (Type [Start.EquivalentCableType]) with [Connections.len] Components from [Start.x], [Start.y], [Start.z]"
 	return Connections
 
 /datum/UnifiedNetwork/proc/AddNode(var/obj/NewNode, var/obj/cabling/Cable)
