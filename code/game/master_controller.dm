@@ -140,7 +140,8 @@ datum/controller/game_controller
 			ticker_debug = "uninet processing"
 			var/list/NetworkSet = AllNetworks[OuterKey]
 			for(var/datum/UnifiedNetwork/Network in NetworkSet)
-				Network.Controller.Process()
+				if(Network)
+					Network.Controller.Process()
 
 		for(var/turf/t in processing_turfs)
 			ticker_debug = "turf processing"
