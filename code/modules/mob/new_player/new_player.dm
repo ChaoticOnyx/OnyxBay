@@ -175,7 +175,7 @@ mob/new_player
 				if ("17")
 					AttemptLateSpawn("Roboticist", roboticsMax)
 				if ("18")
-					AttemptLateSpawn("Assistant", 10000)
+					AttemptLateSpawn("Unassigned", 10000)
 				if ("19")
 					AttemptLateSpawn("Quartermaster", cargoMax)
 				if ("20")
@@ -220,7 +220,7 @@ mob/new_player
 		else
 			src << alert("[rank] is not available. Please try another.")
 
-// This fxn creates positions for assistants based on existing positions. This could be more elgant.
+// This fxn creates positions for unassigned people based on existing positions. This could be more elegant.
 	proc/LateChoices()
 		var/dat = "<html><body>"
 		dat += "Choose from the following open positions:<br>"
@@ -288,8 +288,8 @@ mob/new_player
 //		if (IsJobavailable("Hydroponist",hydroponicsMax))
 //			dat += "<a href='byond://?src=\ref[src];SelectedJob=22'>Hydroponist</a><br>"
 */
-		if (!jobban_isbanned(src,"Assistant"))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=18'>Assistant</a><br>"
+		if (!jobban_isbanned(src,"Unassigned"))
+			dat += "<a href='byond://?src=\ref[src];SelectedJob=18'>Unassigned</a><br>"
 
 		src << browse(dat, "window=latechoices;size=300x640;can_close=0")
 
