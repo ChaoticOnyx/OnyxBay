@@ -394,7 +394,7 @@
 			M.mutations |= 2
 	if (isblockon(getblock(M.dna.struc_enzymes, BLINDBLOCK,3),BLINDBLOCK))
 		M.sdisabilities |= 1
-		M << "\red You cant seem to see anything."
+		M << "\red You can't seem to see anything."
 	if (isblockon(getblock(M.dna.struc_enzymes, TELEBLOCK,3),TELEBLOCK))
 		if(inj || prob(15))
 			M << "\blue You feel smarter."

@@ -36,6 +36,7 @@
 
 /obj/machinery/camera
 	name = "Security Camera"
+	desc = "A security camera with exposed wires."
 	icon = 'monitors.dmi'
 	icon_state = "camera"
 	var/network = "Luna"
@@ -47,11 +48,9 @@
 	var/invuln = null
 	var/bugged = 0
 
-
-
 /obj/machinery/dispenser
-	desc = "A simple yet bulky one-way storage device for gas tanks. Holds 10 plasma and 10 oxygen tanks."
 	name = "Tank Storage Unit"
+	desc = "A simple yet bulky one-way storage device for gas tanks. Holds 10 plasma and 10 oxygen tanks."
 	icon = 'objects.dmi'
 	icon_state = "dispenser"
 	density = 1

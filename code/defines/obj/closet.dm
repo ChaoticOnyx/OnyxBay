@@ -52,17 +52,17 @@
 	icon_opened = "bioopen"
 
 /obj/closet/syndicate
-	desc = "Why is this here?"
+	desc = "Syndicate preparations closet."
 	name = "Weapons Closet"
 	icon_state = "syndicate"
 	icon_closed = "syndicate"
 	icon_opened = "syndicateopen"
 
 /obj/closet/syndicate/personal
-	desc = "Gear preperations closet."
+	desc = "Gear preparations closet."
 
 /obj/closet/syndicate/nuclear
-	desc = "Nuclear preperations closet."
+	desc = "Nuclear preparations closet."
 
 /obj/closet/thunderdome
 	desc = "Everything you need!"
@@ -127,6 +127,11 @@
 	name = "Pink Wardrobe"
 	icon_state = "pink"
 	icon_closed = "pink"
+
+/obj/closet/wardrobe/quartermasters
+	name = "Quartermasters Wardrobe"
+	icon_state = "yellow"
+	icon_closed = "yellow"
 
 /obj/closet/wardrobe/red
 	name = "Red Wardrobe"

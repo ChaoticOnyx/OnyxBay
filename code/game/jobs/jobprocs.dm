@@ -54,11 +54,11 @@
 				if (player.preferences.occupation3 == "AI")
 					player.preferences.occupation3 = "Captain"
 			if (jobban_isbanned(player, player.preferences.occupation1))
-				player.preferences.occupation1 = "Assistant"
+				player.preferences.occupation1 = "Unassigned"
 			if (jobban_isbanned(player, player.preferences.occupation2))
-				player.preferences.occupation2 = "Assistant"
+				player.preferences.occupation2 = "Unassigned"
 			if (jobban_isbanned(player, player.preferences.occupation3))
-				player.preferences.occupation3 = "Assistant"
+				player.preferences.occupation3 = "Unassigned"
 
 	if (unassigned.len == 0)
 		return 0
@@ -330,7 +330,7 @@
 			src.equip_if_possible(new /obj/item/weapon/crowbar(src), slot_in_backpack)
 			src.equip_if_possible(new /obj/item/device/t_scanner(src), slot_r_store)
 
-		if ("Assistant")
+		if ("Unassigned")
 			src.equip_if_possible(new /obj/item/clothing/under/color/grey(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)
 

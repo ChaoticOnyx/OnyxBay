@@ -157,11 +157,11 @@ datum/preferences
 			dat += "\t<a href=\"byond://?src=\ref[user];preferences=1;occ=1\"><b>[occupation1]</b></a><br>"
 		else
 			if (jobban_isbanned(user, occupation1))
-				occupation1 = "Assistant"
+				occupation1 = "Unassigned"
 			if (jobban_isbanned(user, occupation2))
-				occupation2 = "Assistant"
+				occupation2 = "Unassigned"
 			if (jobban_isbanned(user, occupation3))
-				occupation3 = "Assistant"
+				occupation3 = "Unassigned"
 			if (occupation1 != "No Preference")
 				dat += "\tFirst Choice: <a href=\"byond://?src=\ref[user];preferences=1;occ=1\"><b>[occupation1]</b></a><br>"
 
