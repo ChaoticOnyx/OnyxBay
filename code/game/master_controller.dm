@@ -62,8 +62,8 @@ datum/controller/game_controller
 		setupgenetics()
 
 		setupdooralarms()		//Added by Strumpetplaya - Alarm Change
-
-
+		BOOKHAND = new()
+		world << "\red Setting up the book system..."
 	// Handled by datum declerations now in the shuttle controller file
 
 	//	main_shuttle = new /datum/shuttle_controller/main_shuttle()
