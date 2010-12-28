@@ -858,22 +858,22 @@
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"
-	set name = "Send nanotrasen(admin) shuttle"
+	set name = "Send Nanotrasen (admin) shuttle"
 	var/area/from = locate(/area/nanotrasenshuttle)
-	var/area/adminshuttle/go = locate(/area/adminshuttle)
-	if(go.shuttle == "")
-		from.move_contents_to(go)
-		go.shuttle = "nanotrasen"
+	var/area/admindockingbay/dest = locate(/area/admindockingbay)
+	if(dest.shuttle == "")
+		from.move_contents_to(dest)
+		dest.shuttle = "nanotrasen"
 	else
 		src << "\blue Already a shuttle there"
 
 /client/proc/returnadminshuttle()
 	set category = "Roleplay"
-	set name = "Return admin-shuttle"
-	var/area/adminshuttle/from = locate(/area/adminshuttle)
+	set name = "Return NT admin-shuttle"
+	var/area/admindockingbay/from = locate(/area/admindockingbay)
 	if(from.shuttle == "nanotrasen")
-		var/area/go = locate(/area/nanotrasenshuttle)
-		from.move_contents_to(go)
+		var/area/dest = locate(/area/nanotrasenshuttle)
+		from.move_contents_to(dest)
 		from.shuttle = ""
 
 /client/proc/createofficial(var/name as text)
@@ -883,7 +883,7 @@
 	for(var/area/nanotrasenshuttle/b in world)
 		A = b
 
-	var/job = input ("What job would you like to give your nanotrasen char") in list ("Agent","Overseer","Syndicate managment taskforce","Prisoner Managment")
+	var/job = input ("What job would you like to give your Nanotrasen char") in list ("Agent","Overseer","Syndicate Management Taskforce","Prisoner Management")
 	var/mob/living/carbon/human/new_character = new /mob/living/carbon/human(src)
 	new_character.loc = pick(get_area_turfs(A))
 	new_character.dna.ready_dna(new_character)
@@ -917,7 +917,7 @@
 			shoes = /obj/item/clothing/shoes/brown
 			back1 = /obj/item/weapon/gun/energy/general
 			back2 = /obj/item/weapon/handcuffs
-		if("Syndicate managment taskforce")
+		if("Syndicate Management Taskforce")
 			uniform = /obj/item/clothing/under/color/black
 			gloves = /obj/item/clothing/gloves/black
 			shoes = /obj/item/clothing/shoes/black
@@ -927,7 +927,7 @@
 			over = /obj/item/clothing/suit/armor/swat
 			back1 = /obj/item/weapon/handcuffs
 			back2 = /obj/item/weapon/gun/energy/laser_gun
-		if("Prisoner Managment")
+		if("Prisoner Management")
 			uniform = /obj/item/clothing/under/lightred
 			shoes = /obj/item/clothing/shoes/red
 			gloves = /obj/item/clothing/gloves/latex

@@ -73,6 +73,7 @@
 		if(O.NetworkNumber[Cable.EquivalentCableType] == 0)
 
 			var/datum/UnifiedNetwork/NewNetwork = CreateUnifiedNetwork(Cable.EquivalentCableType)
+			NewNetwork.BuildFrom(Cable, Cable.NetworkControllerType)
 
 			PropagateNetwork(O, NewNetwork.NetworkNumber)
 

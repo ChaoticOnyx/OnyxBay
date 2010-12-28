@@ -20,7 +20,7 @@ var/list/occupations = list(
 	"Quartermaster","Quartermaster","Quartermaster")
 
 var/list/assistant_occupations = list(
-	"Assistant")
+	"Unassigned")
 
 /proc/IsResearcher(var/job)
 	switch(job)
@@ -39,7 +39,7 @@ var/list/assistant_occupations = list(
 
 /proc/GetRank(var/job)
 	switch(job)
-		if("Assistant")
+		if("Unassigned")
 			return 0
 		if("Engineer")
 			return 1

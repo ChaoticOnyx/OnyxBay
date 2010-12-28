@@ -105,7 +105,7 @@
 			return list(access_engine, access_incinerator, access_engine_equip, access_tech_storage,
 						access_maint_tunnels, access_external_airlocks, access_laboratories_doors, access_maintenance_hall,
 						access_shield_generator)
-		if("Assistant")
+		if("Unassigned")
 			return list(access_maint_tunnels)
 		if("Counselor")
 			return list(access_morgue, access_chapel_office, access_crematorium, access_maint_tunnels)
@@ -258,7 +258,7 @@
 /proc/get_type_jobs(T)
 	switch(T)
 		if ("Civilian")
-			return list("Assistant", "Barman", "Counselor", "Chef")
+			return list("Unassigned", "Barman", "Counselor", "Chef")
 		if ("Security")
 			return list("Security Officer", "Detective")
 		if ("Med/Sci")

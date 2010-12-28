@@ -1040,8 +1040,8 @@
 	applyalertstatus = 0
 
 
-/area/adminshuttle
-	name = "Docking bay D"
+/area/admindockingbay
+	name = "Docking Bay D"
 	icon_state = "ai_chamber"
 	var/shuttle = ""
 
@@ -1050,7 +1050,7 @@
 	icon_state = "ai_chamber"
 /area/nanotrasenshuttle
 	name = "Nanotrasen shuttle"
-	icon_state = "ai_chamber"
+	icon_state = "nt_shuttle"
 /area/alienshuttle
 	name = "Alien shuttle"
 	icon_state = "ai_chamber"
