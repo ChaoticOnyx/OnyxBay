@@ -420,6 +420,7 @@
 /turf/simulated/asteroid/floor
 	oxygen = 0.01
 	nitrogen = 0.01
+	level = 1
 	name = "rocky floor"
 	icon = 'mining.dmi'
 	icon_state = "floor"

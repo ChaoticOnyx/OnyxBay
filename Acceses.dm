@@ -1,3 +1,6 @@
+
+//code/game/jobs/access.dm contains the code, whereas this is..  documentation? -Sukasa
+
 /*
 Luna updated:
 Captain has access to everything.
@@ -28,7 +31,7 @@ Checked jobs: HoP, HoS, Security Officer, Doctor, CE, Detective, Scientist RD, C
     access_counselor = 22 (Counselor)
     access_aux_storage = 23 (HoP, HoS, CE, RD, Roboticist, Atmos Tec, Engineer)
     access_atmos = 24 (HoS, CE, Atmos Tec)
-    ??? = 25 (HoS, HoP, Barman)
+    access_bar = 25 (HoS, HoP, Barman)
     access_janitor = 26 (HoP, HoS, Janitor)
     access_chapel_incinerator = 27 (HoP, Counselor)
     access_kitchen_and_bar = 28 (HoP, Chef, Barman, HoS)
@@ -38,6 +41,9 @@ Checked jobs: HoP, HoS, Security Officer, Doctor, CE, Detective, Scientist RD, C
     access_construction = 32 (CE) (Got name from Strumpet. What is this? Couldnt find it ingame.)
     access_chemistry = 33 (HoP, HoS, RD, Chemist)
     access_mule = 34 (Mule itself has this. The doors behind Security Checkpoint require this. QM, HoP)
+    	//This is supposed to only be held by the bots normally, or it's used twice and needs to be split up.
+    	//The security checkpoint doors use this to (try) and restrict the access to only bots, and prevent humans (normally)
+    	//If this is the access needed to /control/ bots, then it's doubly used and needs to be split.
     access_security_hq = 35 (Security Officer, Detective, CE, HoS, HoP, RD)
     access_research_hallway = 36 (Security Officer, Detective, HoS, HoP, CE, RD, Doctor, Scientist, Chemist, Geneticist, Janitor, Engineer)
     access_incinerator = 37 (HoS, Security Officer, HoP, Janitor, Engineer)

@@ -38,7 +38,7 @@
 	access_maintenance_hall = 38
 	access_shield_generator = 39
 
-	password_firedoor = 100
+	password_firedoor = 100 //Stubs from networking 1.0, may be removed, may be used... for now, just avoid them but leave them in -Sukasa
 	password_smeg = 101
 	password_digitalvalve = 102
 	password_router = 103
