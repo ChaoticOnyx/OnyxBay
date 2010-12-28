@@ -23,6 +23,7 @@
 
 /obj/machinery/camera/motion
 	name = "Motion Security Camera"
+	desc = "A motion security camera with its wires hidden from view."
 	var/list/motionTargets = list()
 	var/detectTime = 0
 	var/locked = 1
