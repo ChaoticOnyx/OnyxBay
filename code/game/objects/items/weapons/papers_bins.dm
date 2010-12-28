@@ -313,7 +313,7 @@ CLIPBOARDS
 /obj/spresent/relaymove(mob/user as mob)
 	if (user.stat)
 		return
-	user << "\blue You cant move."
+	user << "\blue You can't move."
 
 /obj/spresent/attackby(obj/item/weapon/W as obj, mob/user as mob)
 

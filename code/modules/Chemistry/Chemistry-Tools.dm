@@ -939,7 +939,7 @@
 
 		if(target.is_open_container() == 1 && target.reagents)
 			if(!target.reagents.total_volume)
-				user << "\red [target] is empty. Cant dissolve pill."
+				user << "\red [target] is empty. Can't dissolve pill."
 				return
 			user << "\blue You dissolve the pill in [target]"
 			reagents.trans_to(target, reagents.total_volume)
