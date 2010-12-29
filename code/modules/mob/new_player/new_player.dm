@@ -22,7 +22,8 @@ mob/new_player
 			mind = new
 			mind.key = key
 			mind.current = src
-
+		if (join_motd)
+			src.client.showmotd()
 		new_player_panel()
 		var/starting_loc = pick(newplayer_start)
 		loc = starting_loc
@@ -39,7 +40,7 @@ mob/new_player
 			preferences.ShowChoices(src)
 
 
-		src << sound('main.ogg', 0, 0, 0, 100)
+		src << sound('main.ogg', 0, 0, 0, 35)
 
 
 	Logout()
@@ -60,12 +61,16 @@ mob/new_player
 				else
 					output += "You are ready.<BR>"
 			else
+				output += "<a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A><BR><BR>"
 				output += "<a href='byond://?src=\ref[src];late_join=1'>Join Game!</A><BR>"
 
 			output += "<BR><a href='byond://?src=\ref[src];observe=1'>Observe</A><BR>"
 
-			src << browse(output,"window=playersetup;size=250x200;can_close=0")
-
+			if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
+				src << browse(output,"window=playersetup;size=250x200;can_close=0")
+			else
+				src << browse(output,"window=playersetup;size=250x233;can_close=0") // Adding the "View the Crew Manifest" option to the size of the window
+				// A nice interface makes for an appealing game :D
 	Stat()
 		..()
 
@@ -89,7 +94,8 @@ mob/new_player
 		if(href_list["show_preferences"])
 			preferences.ShowChoices(src)
 			return 1
-
+		if(href_list["closemotd"])
+			src << browse(null,"window=motd;")
 		if(href_list["ready"])
 			if (config.invite_only)
 				if(!invite_isallowed(src))
@@ -119,6 +125,9 @@ mob/new_player
 
 		if(href_list["late_join"])
 			LateChoices()
+
+		if(href_list["manifest"])
+			ViewManifest()
 
 		if(href_list["SelectedJob"])
 			if (!enter_allowed)
@@ -156,7 +165,7 @@ mob/new_player
 				if ("12")
 					AttemptLateSpawn("Detective", detectiveMax)
 				if ("13")
-					AttemptLateSpawn("Counselor", chaplainMax)
+					AttemptLateSpawn("Counselor", CounselorMax)
 				if ("14")
 					AttemptLateSpawn("Janitor", janitorMax)
 				if ("15")
@@ -166,7 +175,7 @@ mob/new_player
 				if ("17")
 					AttemptLateSpawn("Roboticist", roboticsMax)
 				if ("18")
-					AttemptLateSpawn("Assistant", 10000)
+					AttemptLateSpawn("Unassigned", 10000)
 				if ("19")
 					AttemptLateSpawn("Quartermaster", cargoMax)
 				if ("20")
@@ -181,14 +190,14 @@ mob/new_player
 		else if(!href_list["late_join"])
 			new_player_panel()
 
-	proc/IsJobAvailable(rank, maxAllowed)
+	proc/IsJobavailable(rank, maxAllowed)
 		if(countJob(rank) < maxAllowed && !jobban_isbanned(src,rank))
 			return 1
 		else
 			return 0
 
 	proc/AttemptLateSpawn(rank, maxAllowed)
-		if(IsJobAvailable(rank, maxAllowed))
+		if(IsJobavailable(rank, maxAllowed))
 			var/mob/living/carbon/human/character = create_character()
 
 			character.Equip_Rank(rank, joined_late=1)
@@ -211,76 +220,76 @@ mob/new_player
 		else
 			src << alert("[rank] is not available. Please try another.")
 
-// This fxn creates positions for assistants based on existing positions. This could be more elgant.
+// This fxn creates positions for unassigned people based on existing positions. This could be more elegant.
 	proc/LateChoices()
 		var/dat = "<html><body>"
 		dat += "Choose from the following open positions:<br>"
 /*
-		if (IsJobAvailable("Captain",captainMax))
+		if (IsJobavailable("Captain",captainMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=1'>Captain</a><br>"
 
-		if (IsJobAvailable("Head of Security",hosMax))
+		if (IsJobavailable("Head of Security",hosMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=2'>Head of Security</a><br>"
 
-		if (IsJobAvailable("Head of Personnel",hopMax))
+		if (IsJobavailable("Head of Personnel",hopMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=3'>Head of Personnel</a><br>"
 
-		if (IsJobAvailable("Research Director",directorMax))
+		if (IsJobavailable("Research Director",directorMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=20'>Research Director</a><br>"
 
-		if (IsJobAvailable("Chief Engineer",chiefMax))
+		if (IsJobavailable("Chief Engineer",chiefMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=21'>Chief Engineer</a><br>"
 
-		if (IsJobAvailable("Engineer",engineerMax))
+		if (IsJobavailable("Engineer",engineerMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=4'>Engineer</a><br>"
 */
-		if (IsJobAvailable("Barman",barmanMax))
+		if (IsJobavailable("Barman",barmanMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=5'>Barman</a><br>"
 /*
-		if (IsJobAvailable("Scientist",scientistMax))
+		if (IsJobavailable("Scientist",scientistMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=6'>Scientist</a><br>"
 
-		if (IsJobAvailable("Chemist",chemistMax))
+		if (IsJobavailable("Chemist",chemistMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=7'>Chemist</a><br>"
 
-		if (IsJobAvailable("Geneticist",geneticistMax))
+		if (IsJobavailable("Geneticist",geneticistMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=8'>Geneticist</a><br>"
 
-		if (IsJobAvailable("Security Officer",securityMax))
+		if (IsJobavailable("Security Officer",securityMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=9'>Security Officer</a><br>"
 
-		if (IsJobAvailable("Medical Doctor",doctorMax))
+		if (IsJobavailable("Medical Doctor",doctorMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=10'>Medical Doctor</a><br>"
 
-		if (IsJobAvailable("Atmospheric Technician",atmosMax))
+		if (IsJobavailable("Atmospheric Technician",atmosMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=11'>Atmospheric Technician</a><br>"
 
-		if (IsJobAvailable("Detective",detectiveMax))
+		if (IsJobavailable("Detective",detectiveMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=12'>Detective</a><br>"
 */
-		if (IsJobAvailable("Counselor",chaplainMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=13'>Chaplain</a><br>"
+		if (IsJobavailable("Counselor",CounselorMax))
+			dat += "<a href='byond://?src=\ref[src];SelectedJob=13'>Counselor</a><br>"
 
-		if (IsJobAvailable("Janitor",janitorMax))
+		if (IsJobavailable("Janitor",janitorMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=14'>Janitor</a><br>"
 /*
-		if (IsJobAvailable("Clown",clownMax))
+		if (IsJobavailable("Clown",clownMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=15'>Clown</a><br>"
 
-		if (IsJobAvailable("Chef",chefMax))
+		if (IsJobavailable("Chef",chefMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=16'>Chef</a><br>"
 
-		if (IsJobAvailable("Roboticist",roboticsMax))
+		if (IsJobavailable("Roboticist",roboticsMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=17'>Roboticist</a><br>"
 
-		if (IsJobAvailable("Quartermaster",cargoMax))
+		if (IsJobavailable("Quartermaster",cargoMax))
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=19'>Quartermaster</a><br>"
 
-//		if (IsJobAvailable("Hydroponist",hydroponicsMax))
+//		if (IsJobavailable("Hydroponist",hydroponicsMax))
 //			dat += "<a href='byond://?src=\ref[src];SelectedJob=22'>Hydroponist</a><br>"
 */
-		if (!jobban_isbanned(src,"Assistant"))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=18'>Assistant</a><br>"
+		if (!jobban_isbanned(src,"Unassigned"))
+			dat += "<a href='byond://?src=\ref[src];SelectedJob=18'>Unassigned</a><br>"
 
 		src << browse(dat, "window=latechoices;size=300x640;can_close=0")
 
@@ -297,6 +306,15 @@ mob/new_player
 
 		return new_character
 
+	proc/ViewManifest()
+		var/dat = "<html><body>"
+		dat += "<h4>Crew Manifest</h4>"
+		for (var/datum/data/record/t in data_core.general)
+			dat += "[t.fields["name"]] - [t.fields["rank"]]<br>"
+		dat += "<br>"
+
+		src << browse(dat, "window=manifest;size=300x420;can_close=1")
+
 	Move()
 		return 0
 
@@ -304,6 +322,7 @@ mob/new_player
 	proc/close_spawn_windows()
 		src << browse(null, "window=latechoices") //closes late choices window
 		src << browse(null, "window=playersetup") //closes the player setup window
+		src << browse(null, "window=manifest") //closes the crew manifest window
 
 /*
 /obj/begin/verb/enter()

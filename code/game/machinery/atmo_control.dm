@@ -66,7 +66,9 @@ obj/machinery/air_sensor
 obj/machinery/computer/general_air_control
 	icon = 'computer.dmi'
 	icon_state = "computer_generic"
-
+	brightnessred = 0
+	brightnessgreen = 2
+	brightnessblue = 0
 	name = "Computer"
 
 	var/frequency = 1439

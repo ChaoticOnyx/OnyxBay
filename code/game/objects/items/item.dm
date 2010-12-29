@@ -211,7 +211,7 @@
 					if (prob(50))
 						if (ticker.mode.name == "revolution")
 							ticker.mode:remove_revolutionary(H.mind)
-				if (b_dam && prob(25 + (b_dam * 2)))
+				if (b_dam && prob(25 + (b_dam * 2)) && b.)
 					src.add_blood(H)
 					if (prob(65))
 						var/turf/location = H.loc

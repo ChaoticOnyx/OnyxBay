@@ -38,7 +38,7 @@
 	access_maintenance_hall = 38
 	access_shield_generator = 39
 
-	password_firedoor = 100
+	password_firedoor = 100 //Stubs from networking 1.0, may be removed, may be used... for now, just avoid them but leave them in -Sukasa
 	password_smeg = 101
 	password_digitalvalve = 102
 	password_router = 103
@@ -93,9 +93,9 @@
 	if(!I || !istype(I, /obj/item/weapon/card/id) || !I.access) //not ID or no access
 		return 0
 	for(var/req in src.req_access)
-		if(!(req in I.access)) //doesn't have this access
-			return 0
-	return 1
+		if((req in I.access))	//doesn't have this access - Edited by Strumpetplaya - Changing this
+			return 1			//so instead of needing to have access to all the requirements, you
+	return 0					//only need access to one of them.
 
 /proc/get_access(job)
 	switch(job)
@@ -105,7 +105,7 @@
 			return list(access_engine, access_incinerator, access_engine_equip, access_tech_storage,
 						access_maint_tunnels, access_external_airlocks, access_laboratories_doors, access_maintenance_hall,
 						access_shield_generator)
-		if("Assistant")
+		if("Unassigned")
 			return list(access_maint_tunnels)
 		if("Counselor")
 			return list(access_morgue, access_chapel_office, access_crematorium, access_maint_tunnels)
@@ -147,8 +147,7 @@
 		if("Chef")
 			return list(access_kitchen, access_maint_tunnels)
 		if("Roboticist")
-			return list(access_robotics, access_tech_storage, access_medical, access_morgue, access_engine,
-			            access_maint_tunnels)
+			return list(access_robotics, access_tech_storage, access_medical, access_morgue, access_maint_tunnels)
 		if("Quartermaster")
 			return list(access_maint_tunnels, access_cargo, access_cargo_bot)
 		if("Chief Engineer")
@@ -250,6 +249,8 @@
 			return "Maintenance Hall"
 		if(access_shield_generator)
 			return "Shield Generator"
+		if(access_robotics)
+			return "Robotics"
 
 /proc/get_job_types()
 	return list("Civilian", "Security", "Med/Sci", "Maintenance", "Management")
@@ -257,7 +258,7 @@
 /proc/get_type_jobs(T)
 	switch(T)
 		if ("Civilian")
-			return list("Assistant", "Barman", "Counselor", "Chef")
+			return list("Unassigned", "Barman", "Counselor", "Chef")
 		if ("Security")
 			return list("Security Officer", "Detective")
 		if ("Med/Sci")

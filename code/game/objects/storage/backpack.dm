@@ -8,7 +8,7 @@
 
 //	if (src.loc != usr)
 //		return
-	if ((istype(usr, /mob/living/carbon/human) || (ticker && ticker.mode.name == "monkey")))
+	if ((istype(usr, /mob/living/carbon/human) || istype(usr,/mob/living/carbon/monkey) || (ticker && ticker.mode.name == "monkey")))
 		var/mob/M = usr
 		if (!( istype(over_object, /obj/screen) ))
 			return ..()

@@ -230,6 +230,6 @@ turf/Entered(obj/item/I)
 	. = ..()
 	if(istype(I))
 		var/datum/gas_mixture/env = return_air(1)
-		if(env.toxins > 0.01)
+		if(env.toxins > 0.35)
 			if(I.can_contaminate())
 				I.contaminated = 1

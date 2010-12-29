@@ -111,6 +111,7 @@ datum
 		steal
 			var/obj/item/steal_target
 			var/target_name
+			var/points
 			proc/find_target()
 				var/list/items = list("captain's antique laser gun", "hand teleporter", "RCD", "jetpack",\
 				 "captains jumpsuit", "small plasma tank", "Medical Records circuitboard",\

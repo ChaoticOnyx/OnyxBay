@@ -1,9 +1,11 @@
 /obj/machinery/optable/New()
 	..()
-	for(var/obj/machinery/computer/operating/O in world)
-		if(src.id == O.id)
-			src.computer = O
-	spawn(100)
+	spawn(100) // Delaying to let the operating computers load
+		for(var/obj/machinery/computer/operating/O in world)
+			if(src.id == O.id)
+				src.computer = O
+				break
+
 		process()
 
 /obj/machinery/optable/ex_act(severity)

@@ -244,7 +244,7 @@
 						zone.Connect(src,floorbelow)
 
 	plating
-		name = "plating"
+		name = "Plating"
 		icon_state = "plating"
 		intact = 0
 
@@ -255,7 +255,7 @@
 		a.update()
 
 /turf/simulated/floor/plating/airless
-	name = "airless plating"
+	name = "Airless Plating"
 	oxygen = 0.01
 	nitrogen = 0.01
 	temperature = TCMB
@@ -269,7 +269,7 @@
 	icon_state = "circuit"
 
 /turf/simulated/wall
-	name = "wall"
+	name = "Wall"
 	icon = 'walls.dmi'
 	opacity = 1
 	density = 1
@@ -280,7 +280,7 @@
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m steel wall
 	var/Zombiedamage
 /turf/simulated/wall/r_wall
-	name = "r wall"
+	name = "Reinforced Wall"
 	icon = 'walls.dmi'
 	icon_state = "r_wall"
 	opacity = 1
@@ -293,7 +293,7 @@
 	thermal_conductivity = 0
 	opacity = 0
 	explosionstrength = 5
-	name = "heatshield"
+	name = "Heat Shielding"
 	icon = 'thermal.dmi'
 	icon_state = "thermal"
 
@@ -303,13 +303,13 @@
 	return
 
 /turf/simulated/shuttle
-	name = "shuttle"
+	name = "Shuttle"
 	icon = 'shuttle.dmi'
 	thermal_conductivity = 0.05
-	heat_capacity = 0
+	heat_capacity = 10000000
 
 /turf/simulated/shuttle/wall
-	name = "wall"
+	name = "Shuttle Wall"
 	icon_state = "wall1"
 	explosionstrength = 4
 	opacity = 1
@@ -317,21 +317,21 @@
 	blocks_air = 1
 
 /turf/simulated/shuttle/floor
-	name = "floor"
+	name = "Shuttle Floor"
 	icon_state = "floor"
 
 /turf/unsimulated
-	name = "command"
+	name = "Command"
 	oxygen = MOLES_O2STANDARD
 	nitrogen = MOLES_N2STANDARD
 
 /turf/unsimulated/floor
-	name = "floor"
+	name = "Floor"
 	icon = 'floors.dmi'
 	icon_state = "Floor3"
 
 /turf/unsimulated/wall
-	name = "wall"
+	name = "Wall"
 	icon = 'walls.dmi'
 	icon_state = "riveted"
 	opacity = 1
@@ -347,6 +347,15 @@
 		for(var/turf/simulated/t in oview(src,1))
 			if(!t.density && !LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 				L.Add(t)
+
+		return L
+	Railturfs()
+
+		var/L[] = new()
+		for(var/turf/simulated/t in oview(src,1))
+			if(!t.density && !LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+				if(locate(/obj/rail) in t)
+					L.Add(t)
 
 		return L
 	Distance(turf/t)
@@ -412,6 +421,7 @@
 /turf/simulated/asteroid/floor
 	oxygen = 0.01
 	nitrogen = 0.01
+	level = 1
 	name = "rocky floor"
 	icon = 'mining.dmi'
 	icon_state = "floor"

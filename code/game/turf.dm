@@ -108,6 +108,9 @@
 /turf/proc/ReplaceWithOpen()
 	if(!icon_old) icon_old = icon_state
 	new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
+	for(var/obj/machinery/shielding/emitter/plate/P in range(src,10))
+		P.AddShield(src)
+		return
 /turf/proc/ReplaceWithHull()
 	if(!icon_old) icon_old = icon_state
 	new /turf/unsimulated/floor/hull( locate(src.x, src.y, src.z) )
@@ -221,145 +224,6 @@ turf/simulated/wall/bullet_act(flag,dir)
 	S.ul_SetOpacity(1)
 	return S
 
-/turf/simulated/wall/New()
-	..()
-	if (!istype(src, /turf/simulated/wall/heatshield)) checkDynamicOverlays(src)
-
-
-/turf/proc/checkDynamicOverlays(var/turf/simulated/wall/S)
-
-	var/turf/simulated/wall/north
-	var/turf/simulated/wall/east
-	var/turf/simulated/wall/south
-	var/turf/simulated/wall/west
-	var/turf/simulated/wall/T
-
-	// Removing the overlays first to fix bug that is causd upon map initialisation, where multiple overlayss of the same direction can be applied.
-	if (istype(locate((S.x - 1),S.y,S.z), /turf/simulated/wall))
-		S.removeoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))
-		S.addoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))
-		west = locate((S.x - 1),S.y,S.z)
-		west.removeoverlay(image('walls.dmi',icon_state="wall1",dir=EAST))
-		west.addoverlay(image('walls.dmi',icon_state="wall1",dir=EAST))
-		if (istype(locate(west.x,(west.y + 1),west.z), /turf/simulated/wall))
-			west.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-			west.addoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-		if (istype(locate(west.x,(west.y - 1),west.z), /turf/simulated/wall))
-			west.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-			west.addoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-	if (istype(locate((S.x + 1),S.y,S.z), /turf/simulated/wall))
-		S.removeoverlay(image('walls.dmi',icon_state="wall1",dir=EAST))
-		S.addoverlay(image('walls.dmi',icon_state="wall1",dir=EAST))
-		east = locate((S.x + 1),S.y,S.z)
-		east.removeoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))
-		east.addoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))
-		if (istype(locate(east.x,(east.y + 1),east.z), /turf/simulated/wall))
-			east.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-			east.addoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-		if (istype(locate(east.x,(east.y - 1),east.z), /turf/simulated/wall))
-			east.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-			east.addoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-	if (istype(locate(S.x,(S.y - 1),S.z), /turf/simulated/wall))
-		S.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTH))
-		S.addoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTH))
-		south = locate(S.x,(S.y - 1),S.z)
-		south.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTH))
-		south.addoverlay(image('walls.dmi',icon_state="wall1",dir=NORTH))
-		if (istype(locate((south.x + 1),south.y,south.z), /turf/simulated/wall))
-			south.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-			south.addoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-		if (istype(locate((south.x - 1),south.y,south.z), /turf/simulated/wall))
-			south.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-			south.addoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-	if (istype(locate(S.x,(S.y + 1),S.z), /turf/simulated/wall))
-		S.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTH))
-		S.addoverlay(image('walls.dmi',icon_state="wall1",dir=NORTH))
-		north = locate(S.x,(S.y + 1),S.z)
-		north.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTH))
-		north.addoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTH))
-		if (istype(locate((north.x + 1),north.y,north.z), /turf/simulated/wall))
-			north.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-			north.addoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-		if (istype(locate((north.x - 1),north.y,north.z), /turf/simulated/wall))
-			north.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-			north.addoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-
-	if (north && west)
-		if (istype(locate((north.x - 1), (north.y + 1), north.z), /turf/simulated/wall) && istype(locate((north.x - 1), north.y, north.z), /turf/simulated/wall) && istype(locate(north.x, (north.y + 1), north.z), /turf/simulated/wall))
-			T = locate((north.x - 1), north.y, north.z)
-			north.removeoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))
-			north.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-			north.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=EAST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-		if (istype(locate((west.x - 1), (west.y + 1), west.z), /turf/simulated/wall) && istype(locate(west.x, (west.y + 1), west.z), /turf/simulated/wall) && istype(locate((west.x - 1), west.y, west.z), /turf/simulated/wall))
-			T = locate(west.x, (west.y + 1), west.z)
-			west.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTH))
-			west.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-			west.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTH))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-		S.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-		S.addoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-	if (north && east)
-		if (istype(locate((north.x + 1), (north.y + 1), north.z), /turf/simulated/wall) && istype(locate((north.x + 1), north.y, north.z), /turf/simulated/wall) && istype(locate(north.x, (north.y + 1), north.z), /turf/simulated/wall))
-			T = locate((north.x + 1), north.y, north.z)
-			north.removeoverlay(image('walls.dmi',icon_state="wall1",dir=EAST))
-			north.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-			north.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-		if (istype(locate((east.x + 1), (east.y + 1), east.z), /turf/simulated/wall) && istype(locate(east.x, (east.y + 1), east.z), /turf/simulated/wall) && istype(locate((east.x + 1), east.y, east.z), /turf/simulated/wall))
-			T = locate(east.x, (east.y + 1), east.z)
-			east.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTH))
-			east.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-			east.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTH))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-		S.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-		S.addoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-	if (south && west)
-		if (istype(locate((south.x - 1), (south.y - 1), south.z), /turf/simulated/wall) && istype(locate((south.x - 1), south.y, south.z), /turf/simulated/wall) && istype(locate(south.x, (south.y - 1), south.z), /turf/simulated/wall))
-			T = locate((south.x - 1), south.y, south.z)
-			south.removeoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))
-			south.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-			south.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=EAST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-		if (istype(locate((west.x - 1), (west.y - 1), west.z), /turf/simulated/wall) && istype(locate(west.x, (west.y - 1), west.z), /turf/simulated/wall) && istype(locate((west.x - 1), west.y, west.z), /turf/simulated/wall))
-			T = locate(west.x, (west.y - 1), west.z)
-			west.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTH))
-			west.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-			west.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTH))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-		S.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-		S.addoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-	if (south && east)
-		if (istype(locate((south.x + 1), (south.y - 1), south.z), /turf/simulated/wall) && istype(locate((south.x + 1), south.y, south.z), /turf/simulated/wall) && istype(locate(south.x, (south.y - 1), south.z), /turf/simulated/wall))
-			T = locate((south.x + 1), south.y, south.z)
-			south.removeoverlay(image('walls.dmi',icon_state="wall1",dir=EAST))
-			south.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-			south.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-		if (istype(locate((east.x + 1), (east.y - 1), east.z), /turf/simulated/wall) && istype(locate(east.x, (east.y - 1), east.z), /turf/simulated/wall) && istype(locate((east.x + 1), east.y, east.z), /turf/simulated/wall))
-			T = locate(east.x, (east.y - 1), east.z)
-			east.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTH))
-			east.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-			east.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTH))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-			T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-		S.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-		S.addoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
 
 /turf/simulated/wall/proc/dismantle_wall(devastated=0)
 	var/turf/simulated/wall/S = src
@@ -384,25 +248,6 @@ turf/simulated/wall/bullet_act(flag,dir)
 			new /obj/item/weapon/sheet/metal( src )
 
 	S.ReplaceWithFloor()
-	for (var/turf/simulated/wall/T in range(1,src))
-		if (!istype(T, /turf/simulated/wall/heatshield) && z == T.z)
-			checkDynamicOverlays(T)
-			if (y == (T.y - 1) && x == T.x)
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTH))
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-			else if (y == (T.y + 1) && x == T.x)
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTH))
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-			else if (x == (T.x - 1) && y == T.y)
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=WEST))
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHWEST))
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHWEST))
-			else if (x == (T.x + 1) && y == T.y)
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=EAST))
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=NORTHEAST))
-				T.removeoverlay(image('walls.dmi',icon_state="wall1",dir=SOUTHEAST))
 
 /turf/simulated/wall/examine()
 	set src in oview(1)
@@ -774,7 +619,10 @@ turf/simulated/floor/proc/update_icon()
 					if (C:amount <= 0) del(C) //wtf
 					playsound(src.loc, 'Deconstruct.ogg', 80, 1)
 			else
-				user << "\red You need more rods."
+				if (istype(src,/turf/simulated/floor/open))
+					new /obj/lattice(src)
+				else
+					user << "\red You need more rods."
 		else
 			user << "\red You must remove the plating first."
 		return
@@ -787,10 +635,10 @@ turf/simulated/floor/proc/update_icon()
 			del(T)
 			return
 
-	if(istype(C, /obj/item/weapon/cable_coil))
+	if(istype(C, /obj/item/weapon/CableCoil))
 		if(!intact)
-			var/obj/item/weapon/cable_coil/coil = C
-			coil.turf_place(src, user)
+			var/obj/item/weapon/CableCoil/coil = C
+			coil.LayOnTurf(src, user)
 		else
 			user << "\red You must remove the plating first."
 
@@ -934,80 +782,43 @@ turf/simulated/floor/proc/update_icon()
 						step(M, M.inertia_dir) //TODO: DEFERRED
 	if(ticker && ticker.mode && ticker.mode.name == "nuclear emergency")
 		return
-	if (src.x <= 2)
-		if(prob(50))
-			if(istype(A, /obj/meteor))
-				del(A)
-				return
-			A.z = 3
-			A.x = world.maxx - 2
-			spawn (0)
-				if ((A && A.loc))
-					A.loc.Entered(A)
-		else
-			if(istype(A, /obj/meteor))
-				del(A)
-				return
-			A.z = 4
-			A.x = world.maxx - 2
-			spawn (0)
-				if ((A && A.loc))
-					A.loc.Entered(A)
-	else if (A.x >= (world.maxx - 1))
-		if(prob(50))
-			if(istype(A, /obj/meteor))
-				del(A)
-				return
-			A.z = 3
-			A.x = 3
-			spawn (0)
-				if ((A && A.loc))
-					A.loc.Entered(A)
-		else
-			if(istype(A, /obj/meteor))
-				del(A)
-				return
-			A.z = 4
-			A.x = 3
-			spawn (0)
-				if ((A && A.loc))
-					A.loc.Entered(A)
-	else if (src.y <= 2)
-		if(prob(50))
-			if(istype(A, /obj/meteor))
-				del(A)
-				return
-			A.z = 3
-			A.y = world.maxy - 2
-			spawn (0)
-				if ((A && A.loc))
-					A.loc.Entered(A)
-		else
-			if(istype(A, /obj/meteor))
-				del(A)
-				return
-			A.z = 4
-			A.y = world.maxy - 2
-			spawn (0)
-				if ((A && A.loc))
-					A.loc.Entered(A)
 
-	else if (A.y >= (world.maxy - 1))
-		if(prob(50))
-			if(istype(A, /obj/meteor))
-				del(A)
-				return
-			A.z = 3
+	//Copied from old code
+	if (A.x <= 2 || A.x >= (world.maxx - 1) || A.y <= 2 || A.y >= (world.maxy - 1))
+		if(istype(A, /obj/meteor))
+			del(A)
+			return
+
+		if(A.x <= 2)
+			A.x = world.maxx - 2
+		else if(A.x >= (world.maxx - 1))
+			A.x = 3
+
+		if(A.y <= 2)
+			A.y = world.maxy - 2
+		else if(A.y >= (world.maxy - 1))
 			A.y = 3
-			spawn (0)
-				if ((A && A.loc))
-					A.loc.Entered(A)
-		else
-			if(istype(A, /obj/meteor))
-				del(A)
-				return
-			A.z = 4
-			A.y = 3
-			spawn (0)
-				if ((A && A.loc))
-					A.loc.Entered(A)
+
+		A.z = getZLevel(Z_SPACE)
+		spawn (0)
+			if ((A && A.loc))
+				A.loc.Entered(A)
+
+//Copied from old code
+/proc/getZLevel(var/level)
+	if(level==Z_STATION)
+		return pick(1, 2, 3, 4)
+	else if(level==Z_SPACE)
+		return pick(1, 2, 3, 4) //Replace this once someone decides where on the map space can be found.
+	return 1//Default
+
+	//Old function:
+	//if(level==Z_STATION)
+	//	return pick(stationfloors)
+	//else if(level==Z_SPACE)
+	//	return pick(3,4,5)
+	//else if(level==Z_CENTCOM)
+	//	return pick(centcomfloors)
+	//else if(level==Z_ENGINE_EJECT)
+	//	return engine_eject_z_target
+	//return 1//Default

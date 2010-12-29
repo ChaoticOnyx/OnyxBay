@@ -1163,7 +1163,8 @@ mob/verb/turnwest()
 		var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch
 		mind.store_memory("Time of death: [tod]", 0)
 	timeofdeath = world.time
-	add_stat(2,1)
+	if(!istype(src,/mob/living/carbon/))
+		add_stat(2,1)
 	// Necessary in the event of the mob getting deleted before the check can complete (i.e. gibbed)
 	if (client)
 		spawn check_death(client)
@@ -1179,7 +1180,7 @@ mob/verb/turnwest()
 
 	var/cancel
 	for (var/client/C)
-		if (C.mob && !C.mob.stat)
+		if (C.mob && C.mob.stat < 2)
 			cancel = 1
 			break
 
@@ -1445,12 +1446,14 @@ mob/verb/turnwest()
 
 /mob/verb/changes()
 	set name = "Changelog"
-	if (client)
+	src.client.changes = 1
+	src.client.showchanges()
+/*	if (client)
 		src << browse_rsc('postcardsmall.jpg')
 		src << browse_rsc('somerights20.png')
 		src << browse_rsc('88x31.png')
 		src << browse('changelog.html', "window=changes;size=400x650")
-		client.changes = 1
+		client.changes = 1*/
 
 /mob/verb/succumb()
 	set hidden = 1
@@ -1597,8 +1600,11 @@ mob/verb/turnwest()
 	..()
 	if(M != usr) return
 	if(usr == src) return
-	if(get_dist(usr,src) > 1) return
 	if(istype(M,/mob/living/silicon/ai)) return
+	if(M.mutations & 1)
+		show_inv(usr)
+		return
+	if(get_dist(usr,src) > 1) return
 	if(LinkBlocked(usr.loc,loc)) return
 	show_inv(usr)
 
@@ -1866,20 +1872,21 @@ mob/verb/turnwest()
 					if (((M.pulling == mob && (!( M.restrained() ) && M.stat == 0)) || locate(/obj/item/weapon/grab, mob.grabbed_by.len)))
 						src << "\blue You're restrained! You can't move!"
 						return 0
-/*			var/lleg = mob.organs["l_leg"]
-			var/rleg = mob.organs["r_leg"]
-			if(lleg.broken && rleg.broken)
-				src << "\blue You feel a sharp pain as you try to walk!"
-				mob.paralysis += 10
-				return 0
-			if(lleg.broken || rleg.broken)
-				if(mob.r_hand)
-					if(istype(mob.r_hand,/obj/item/weapon/cane) || istype(mob.l_hand,/obj/item/weapon/cane))
-						src << "\blue You able to support yourself on the [mob.r_hand]"
-				else if(prob(50))
+			if(ishuman(mob))
+				var/datum/organ/external/lleg = mob.organs["l_leg"]
+				var/datum/organ/external/rleg = mob.organs["r_leg"]
+				if(lleg.broken && rleg.broken)
 					src << "\blue You feel a sharp pain as you try to walk!"
 					mob.paralysis += 10
-					return 0*/
+					return 0
+				if(lleg.broken || rleg.broken)
+					if(mob.r_hand)
+						if(istype(mob.r_hand,/obj/item/weapon/cane) || istype(mob.l_hand,/obj/item/weapon/cane))
+							src << "\blue You able to support yourself on the [mob.r_hand]"
+					else if(prob(50))
+						src << "\blue You feel a sharp pain as you try to walk!"
+						mob.paralysis += 10
+						return 0
 			moving = 1
 			if (locate(/obj/item/weapon/grab, mob))
 				move_delay = max(move_delay, world.time + 7)
@@ -1946,9 +1953,19 @@ mob/verb/turnwest()
 		world.update_status()
 
 	..()
+	//	src << "<div class=\"motd\">[join_motd]</div>"
 
-	if (join_motd)
-		src << "<div class=\"motd\">[join_motd]</div>"
+
+	//////////////Added by Strumpetplaya - Alert Changes - Draw current lights for new players joining
+	//If this is causing lag, may need to change the light spawning code to create a list to use instead
+	//of using the world list.
+	for(var/obj/alertlighting/firelight/F in world)
+		var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+		src << imagelight
+	for(var/obj/alertlighting/atmoslight/G in world)
+		var/image/imagelight = image('alert.dmi',G,icon_state = "blueold")
+		src << imagelight
+	//////////////End Strumpetplaya Add
 
 //new admin bit - Nannek
 
@@ -1998,6 +2015,8 @@ mob/verb/turnwest()
 //sort of a legacy burn method for /electrocute, /shock, and the e_chair
 /mob/proc/burn_skin(burn_amount)
 	if(istype(src, /mob/living/carbon/human) && (!mutations & 2))
+		if(src.mutations & mShock)
+			return 0
 		var/mob/living/carbon/human/H = src	//make this damage method divide the damage to be done among all the body parts, then burn each body part for that much damage. will have better effect then just randomly picking a body part
 		var/divided_damage = (burn_amount)/(H.organs.len)
 		var/datum/organ/external/affecting = null
@@ -2061,14 +2080,19 @@ mob/verb/turnwest()
 	if (client && mind)
 		var/mob/dead/observer/newmob
 
-		newmob = new/mob/dead/observer(src)
+		newmob = new/mob/dead/observer(src.loc,src)
 		src:client:mob = newmob
 		mind.transfer_to(newmob)
-
-		gibs(loc, virus)
+		if(istype(src,/mob/living/silicon/robot))	//Robots don't gib like humans! - Strumpetplaya
+			robogibs(loc,virus)
+		else
+			gibs(loc, virus)
 
 	else if (!client)
-		gibs(loc, virus)
+		if(istype(src,/mob/living/silicon/robot))
+			robogibs(loc,virus)
+		else
+			gibs(loc, virus)
 
 	sleep(15)
 	del(src)

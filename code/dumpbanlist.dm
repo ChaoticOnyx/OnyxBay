@@ -1,3 +1,5 @@
+//This could just as easily be deleted.  I originally wrote it to dump the ban lists from the pregoon system into a MySQL-friendly format -Sukasa
+
 mob/verb/dumpbans()
 	Banlist = new("data/banlist.bdb")
 	log_admin("Loading Banlist")

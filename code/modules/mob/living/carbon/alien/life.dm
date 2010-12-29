@@ -18,12 +18,12 @@
 		if(prob(5 + round((nutrition - 200) / 2)))
 			src << "\red You suddenly feel blubbery!"
 			mutations |= 32
-//					update_body()
+				//update_body()
 	if (nutrition < 100 && mutations & 32)
 		if(prob(round((50 - nutrition) / 100)))
 			src << "\blue You feel fit again!"
 			mutations &= ~32
-//					update_body()
+				//update_body()
 	if (nutrition > 0)
 		nutrition--
 
@@ -47,6 +47,34 @@
 
 	return //TODO: DEFERRED
 
+
+/mob/living/carbon/alien/breathe()
+	// Aliens right now do not breathe at all, only absorb the plasma around them and let oxygen out
+
+	// if(mutations & mNobreath) return  // TODO: Mutations maybe? Make them absorb more stuff? - Abi
+
+	// if(reagents.has_reagent("lexorin")) return // TODO: Give aliens chemical interaction, but give them other effects and keep it secret from the players.
+												// Promote catching aliens and research - Abi
+
+	if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
+
+	var/datum/gas_mixture/environment = loc.return_air(1)
+	var/datum/air_group/breath
+
+	if(istype(loc, /obj/))
+		var/obj/location_as_object = loc
+		breath = location_as_object.handle_internal_lifeform(src, BREATH_VOLUME)
+	else if (istype(loc, /turf/))
+		var/breath_moles = 0
+		breath_moles = environment.total_moles()*BREATH_PERCENTAGE
+		breath = loc.remove_air(breath_moles)
+
+	handle_breath(breath)
+
+	if(breath)
+		loc.assume_air(breath)
+
+
 /mob/living/carbon/alien/handle_breath(datum/gas_mixture/breath)
 	if(nodamage)
 		return
@@ -67,7 +95,6 @@
 		toxins_alert = max(toxins_alert, 1)
 
 		toxins_used = breath.toxins
-
 	else
 		toxins_alert = 0
 
@@ -97,7 +124,8 @@
 	//If there are alien weeds on the ground then heal if needed or give some toxins
 	if(locate(/obj/alien/weeds) in loc)
 		if(health >= health_full)
-			toxloss += toxgain
+			if(toxloss + toxgain <= toxgainmax)
+				toxloss += toxgain
 		else
 			bruteloss -= 5
 			fireloss -= 5

@@ -6,7 +6,7 @@
 	icon = 'stationobjs.dmi'
 	icon_state = "mflash1"
 	var/id = null
-	var/range = 2 //this is roughly the size of brig cell
+	var/range = 3 //this is roughly the size of brig cell
 	var/disable = 0
 	var/last_flash = 0 //Don't want it getting spammed like regular flashes
 	var/strength = 10 //How weakened targets are when flashed.

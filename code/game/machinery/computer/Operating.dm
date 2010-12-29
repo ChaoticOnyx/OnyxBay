@@ -1,8 +1,10 @@
 /obj/machinery/computer/operating/New()
 	..()
-	for(var/obj/machinery/optable/O in world)
-		if(src.id == O.id)
-			src.table = O
+	spawn(100)
+		for(var/obj/machinery/optable/O in world)
+			if(src.id == O.id)
+				src.table = O
+				break
 
 /obj/machinery/computer/operating/attack_ai(mob/user)
 	add_fingerprint(user)
@@ -67,3 +69,17 @@
 		use_power(500)
 
 	src.updateDialog()
+
+
+/obj/machinery/power/monitor/power_change()
+
+	if(stat & BROKEN)
+		icon_state = "broken"
+	else
+		if( powered() )
+			icon_state = initial(icon_state)
+			stat &= ~NOPOWER
+		else
+			spawn(rand(0, 15))
+				src.icon_state = "operating0"
+				stat |= NOPOWER

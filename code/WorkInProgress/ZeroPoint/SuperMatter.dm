@@ -9,17 +9,32 @@
 	desc = "A strangely translucent and iridescent crystal.  \red You get headaches just from looking at it."
 	icon = 'engine.dmi'
 	icon_state = "darkmatter"
-
 	density = 1
 	anchored = 1
 
 	var/gasefficency = 0.25
 	var/det = 0
 
+/obj/machinery/engine/klaxon
+	name = "Emergency Klaxon"
+	icon = 'engine.dmi'
+	icon_state = "darkmatter"
+	density = 1
+	anchored = 1
+	var/obj/machinery/engine/supermatter/sup
+
+/obj/machinery/engine/klaxon/process()
+	if(!sup)
+		for(var/obj/machinery/engine/supermatter/T in world)
+			sup = T
+			break
+	if(sup.det >= 1)
+		return
 
 /obj/machinery/engine/supermatter/process()
 
 	var/turf/simulated/L = loc
+	var/warningtime = 5 // Make the CORE OVERLOAD message repeat only every 5 seconds
 
 	//Ok, get the air from the turf
 	var/datum/gas_mixture/env = L.return_air()
@@ -28,21 +43,19 @@
 	var/transfer_moles = gasefficency * env.total_moles()
 	var/datum/gas_mixture/removed = env.remove(transfer_moles)
 
+	det += (removed.temperature - 1000) / 150
+	det = max(det, 0)
 
-	if(removed.temperature > 1000)
-		det += 1
-		if(det == 1)
-			spawn(0)
-				while(det >= 1)
-					sleep(200)
-					radioalert("CORE OVERLOAD","Core control computer")
+	if(det > 0 && removed.temperature >= 1000)
+		if(warningtime < 5)
+			warningtime++
+		if(warningtime>=5)
+			radioalert("CORE OVERLOAD","Core control computer")
+			warningtime = 0
 
-		if(det > 70)
-			//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
-			explosion(src.loc,8,15,20,30,1)
-			det = 0
-	else
-
+	if(det > 5500)
+		//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
+		explosion(src.loc,8,15,20,30,1)
 		det = 0
 
 	if (!removed)
@@ -84,14 +97,11 @@
 
 	env.merge(removed)
 
-	for(var/mob/living/l in range(3))
-		l.gib()
-	for(var/mob/dead/l in range(10))
-		if(prob(20))
-			var/virus = l.virus
-			gibs(l.loc, virus)
-	for(var/mob/living/l in range(8))
-		if(prob(5))
-			l.hallucination += 100
-	return 1
+	for(var/mob/living/l in range(src, 6)) // you have to be seeing the core to get hallucinations
+		if(prob(10) && !(l.glasses && istype(l.glasses, /obj/item/clothing/glasses/meson)))
+			l.hallucination = 50
 
+	for(var/mob/living/l in range(src,3))
+		l.gib()
+
+	return 1

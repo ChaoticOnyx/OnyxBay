@@ -5,6 +5,10 @@
 	var/w_amt = 0	// waster amounts
 	var/global/tagcnum = 0
 	var/explosionstrength = 0
+
+	var/list/NetworkNumber = list( )
+	var/list/Networks = list( )
+
 	animate_movement = 2
 
 	proc
@@ -28,6 +32,7 @@
 	desc = "A roll of police tape used to block off crime scenes from the public."
 	icon = 'policetape.dmi'
 	icon_state = "rollstart"
+	flags = FPRINT
 	var/tapestartx = 0
 	var/tapestarty = 0
 	var/tapestartz = 0
@@ -64,51 +69,6 @@
 		anchored = 1
 		layer = 99
 		mouse_opacity = 0
-
-/obj/shieldgen
-		name = "shield generator"
-		desc = "Used to seal minor hull breaches."
-		icon = 'objects.dmi'
-		icon_state = "shieldoff"
-		var/active = 0
-		var/health = 100
-		var/malfunction = 0
-		density = 1
-		opacity = 0
-		anchored = 0
-		pressure_resistance = 2*ONE_ATMOSPHERE
-
-/obj/shieldwallgen
-		name = "shieldwall thing"
-		desc = "dont know"
-		icon = 'wizard.dmi'
-		icon_state = "dontknow"
-		var/active = 0
-		var/range = 1
-		density = 0
-		opacity = 0
-		anchored = 0
-		pressure_resistance = 2*ONE_ATMOSPHERE
-
-/obj/shield
-		name = "shield"
-		desc = "An energy shield."
-		icon = 'effects.dmi'
-		explosionstrength = 9
-		icon_state = "shieldsparkles"
-		density = 1
-		opacity = 0
-		anchored = 1
-
-/obj/shieldwall
-		name = "shield"
-		desc = "An energy shield."
-		icon = 'effects.dmi'
-		explosionstrength = 9
-		icon_state = "test"
-		density = 1
-		opacity = 0
-		anchored = 1
 
 /obj/admins
 	name = "admins"
@@ -229,6 +189,7 @@
 	icon = 'structures.dmi'
 	icon_state = "grille"
 	density = 1
+	layer = 2.9
 	var/health = 10.0
 	var/destroyed = 0.0
 	anchored = 1.0
@@ -282,7 +243,7 @@
 	icon_state = "forensic0"
 	var/amount = 20.0
 	var/printing = 0.0
-	w_class = 3.0
+	w_class = 2.0
 	item_state = "electronic"
 	flags = FPRINT | TABLEPASS | ONBELT | CONDUCT | USEDELAY
 
@@ -368,7 +329,6 @@
 	item_state = "electronic"
 	m_amt = 150
 
-
 /obj/item/device/multitool
 	name = "multitool"
 	icon_state = "multitool"
@@ -382,6 +342,20 @@
 	m_amt = 50
 	g_amt = 20
 
+// So far, its functionality is found only in code/game/machinery/doors/airlock.dm
+/obj/item/device/hacktool
+	name = "hacktool"
+	icon_state = "hacktool"
+	flags = FPRINT | TABLEPASS | CONDUCT
+	var/in_use = 0
+	force = 5.0
+	w_class = 2.0
+	throwforce = 5.0
+	throw_range = 15
+	throw_speed = 3
+	desc = "An item of dubious origins, with wires and antennas protruding out of it."
+	m_amt = 60
+	g_amt = 20
 
 /obj/item/device/prox_sensor
 	name = "Proximity Sensor"
@@ -424,6 +398,7 @@
 	anchored = 1.0
 
 /obj/landmark/derelict
+	name = "Derelict Info Node"
 
 	nodamage
 		icon_state = "blocked"
@@ -442,6 +417,7 @@
 	nopath
 		invisibility = 101
 		name = "Bot No-Path"
+
 /obj/laser
 	name = "laser"
 	icon = 'projectiles.dmi'
@@ -455,7 +431,7 @@
 	icon_state = "lattice"
 	density = 0
 	anchored = 1.0
-	layer = 2.5
+	layer = 2
 	//	flags = 64.0
 
 /obj/list_container
@@ -484,22 +460,6 @@
 	layer = 2.0
 	var/obj/crematorium/connected = null
 	anchored = 1.0
-
-
-
-
-
-/obj/cable
-	level = 1
-	anchored =1
-	var/netnum = 0
-	name = "power cable"
-	desc = "A flexible superconducting cable for heavy-duty power transfer."
-	icon = 'power_cond.dmi'
-	icon_state = "0-1"
-	var/d1 = 0
-	var/d2 = 1
-	layer = 2.5
 
 /obj/manifest
 	name = "manifest"

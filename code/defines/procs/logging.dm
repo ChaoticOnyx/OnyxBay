@@ -11,12 +11,10 @@
 	check_diary()
 	if (config.log_game)
 		diary << "[timestamp()]GAME: [text]"
-
 /proc/log_vote(text)
 	check_diary()
 	if (config.log_vote)
 		diary << "[timestamp()]VOTE: [text]"
-
 /proc/log_access(text)
 	check_diary()
 	if (config.log_access)
@@ -26,6 +24,7 @@
 	check_diary()
 	if (config.log_say)
 		diary << "[timestamp()]SAY: [text]"
+
 
 /proc/log_ooc(text)
 	check_diary()

@@ -29,17 +29,18 @@
 	var/t = "<TT><B>Power Monitoring</B><HR>"
 
 
-	if(!powernet)
+	if(!Networks[/obj/cabling/power])
 		t += "\red No connection"
 	else
-
+		var/datum/UnifiedNetwork/PowerNetwork = Networks[/obj/cabling/power]
+		var/datum/UnifiedNetworkController/PowernetController/Controller = PowerNetwork.Controller
 		var/list/L = list()
-		for(var/obj/machinery/power/terminal/term in powernet.nodes)
+		for(var/obj/machinery/power/terminal/term in PowerNetwork.Nodes)
 			if(istype(term.master, /obj/machinery/power/apc))
 				var/obj/machinery/power/apc/A = term.master
 				L += A
 
-		t += "<PRE>Total power: [powernet.avail] W<BR>Total load:  [num2text(powernet.viewload,10)] W<BR>"
+		t += "<PRE>Total power: [Controller.TotalSupply()] W<BR>Total load:  [num2text(Controller.OldDraw,10)] W<BR>"
 
 		t += "<FONT SIZE=-1>"
 
@@ -58,7 +59,8 @@
 		t += "</FONT></PRE>"
 
 	t += "<BR><HR><A href='?src=\ref[src];close=1'>Close</A></TT>"
-
+	//user << output(t,"pda_1")
+	//winshow(user, "pda1",1)
 	user << browse(t, "window=powcomp;size=420x700")
 	onclose(user, "powcomp")
 
@@ -81,12 +83,15 @@
 
 	if(stat & BROKEN)
 		icon_state = "broken"
+		ul_SetLuminosity(0,0,2)
 	else
 		if( powered() )
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
+			ul_SetLuminosity(0,0,2)
 		else
 			spawn(rand(0, 15))
 				src.icon_state = "c_unpowered"
 				stat |= NOPOWER
+				ul_SetLuminosity(0,0,0)
 

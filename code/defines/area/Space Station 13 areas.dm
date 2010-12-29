@@ -48,7 +48,7 @@
 	var/list/related			// the other areas of the same type as this
 
 	var/list/alldoors         // Doors which are not in the area, but should still be closed in case of emergency.
-
+	var/auxdoors = list()		//Added by Strumpetplaya - Alarm Change - Contains a list of doors adjacent to this area
 
 /area/engine/
 
@@ -69,8 +69,8 @@
 	name = "Admin room"
 	icon_state = "start"
 	applyalertstatus = 0
-
-
+	requires_power = 0
+	ul_Lighting = 1
 
 //These are shuttle areas, they must contain two areas in a subgroup if you want to move a shuttle from one
 //place to another. Look at escape shuttle for example.
@@ -532,6 +532,10 @@
 	name = "Fitness Room"
 	icon_state = "fitness"
 
+/area/crew_quarters/laundromat
+	name = "Laundromat"
+	icon_state = "fitness"
+
 /area/crew_quarters/lounge
 	name = "Crew Lounge"
 	icon_state = "crewlounge"
@@ -839,7 +843,7 @@
 
 
 /area/chapel/office
-	name = "Chapel Office"
+	name = "Counselor's Office"
 	icon_state = "chapeloffice"
 
 
@@ -1036,4 +1040,17 @@
 	applyalertstatus = 0
 
 
+/area/admindockingbay
+	name = "Docking Bay D"
+	icon_state = "ai_chamber"
+	var/shuttle = ""
 
+/area/syndicateshuttle
+	name = "Syndicate shuttle"
+	icon_state = "ai_chamber"
+/area/nanotrasenshuttle
+	name = "Nanotrasen shuttle"
+	icon_state = "nt_shuttle"
+/area/alienshuttle
+	name = "Alien shuttle"
+	icon_state = "ai_chamber"

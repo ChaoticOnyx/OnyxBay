@@ -14,7 +14,6 @@
 <B># of Machines:</B> [machines.len]<BR>
 <B># of Pipe Networks:</B> [pipe_networks.len]<BR>
 <B># of Processing Items:</B> [processing_items.len]<BR>
-<B># of Power Nets:</B> [powernets.len]<BR>
 <B># of Mobs:</B> [mobs]<BR>
 "}
 
@@ -105,3 +104,8 @@
 		message_admins("[key_name_admin(largest_click_mob)] had the largest click delay with [largest_click_time] frames / [largest_click_time/10] seconds!", 1)
 		message_admins("world.time = [world.time]", 1)
 		return
+
+	checkticker()
+		set category = "Diagnostics"
+		set name = "Check ticker status"
+		message_admins("Ticker bug: [ticker_debug]")

@@ -28,13 +28,13 @@
 	// RANDOM BODY
 	gib = new /obj/decal/cleanable/blood/gibs/body(location)
 	gib.virus = virus
-	gib.streak(alldirs)
+	gib.streak(cardinal8)
 
 	// RANDOM LIMBS
 	for (var/i = 0, i < pick(0, 1, 2), i++)
 		gib = new /obj/decal/cleanable/blood/gibs/limb(location)
 		gib.virus = virus
-		gib.streak(alldirs)
+		gib.streak(cardinal8)
 
 	// CORE
 	gib = new /obj/decal/cleanable/blood/gibs/core(location)
@@ -70,9 +70,9 @@
 
 	// RANDOM
 	gib = new /obj/decal/cleanable/robot_debris(location)
-	gib.streak(alldirs)
+	gib.streak(cardinal8)
 
 	// RANDOM LIMBS
 	for (var/i = 0, i < pick(0, 1, 2), i++)
 		gib = new /obj/decal/cleanable/robot_debris/limb(location)
-		gib.streak(alldirs)
+		gib.streak(cardinal8)

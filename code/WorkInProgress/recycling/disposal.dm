@@ -243,6 +243,12 @@
 		if(stat & BROKEN)			// nothing can happen if broken
 			return
 
+		if(length(src.contents) > 0)
+			flush = 1
+
+
+
+
 		src.updateDialog()
 
 		if(flush && air_contents.return_pressure() >= 2*ONE_ATMOSPHERE)	// flush can happen even without power
@@ -281,6 +287,8 @@
 			mode = 2
 			update()
 		return
+
+
 
 	// perform a flush
 	proc/flush()
@@ -474,7 +482,7 @@
 	var/dpdir = 0		// bitmask of pipe directions
 	dir = 0				// dir will contain dominant direction for junction pipes
 	var/health = 10 	// health points 0-10
-	layer = 2.4			// slightly lower than wires
+	layer = 2.6			// slightly lower than wires
 	var/base_icon_state	// initial icon state on map
 
 	// new pipe, set the icon_state as on map
@@ -979,7 +987,7 @@
 	if(direction)
 		dirs = list( direction, turn(direction, -45), turn(direction, 45))
 	else
-		dirs = alldirs.Copy()
+		dirs = cardinal8.Copy()
 
 	src.streak(dirs)
 
@@ -988,6 +996,6 @@
 	if(direction)
 		dirs = list( direction, turn(direction, -45), turn(direction, 45))
 	else
-		dirs = alldirs.Copy()
+		dirs = cardinal8.Copy()
 
 	src.streak(dirs)

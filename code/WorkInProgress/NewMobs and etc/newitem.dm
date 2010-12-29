@@ -167,9 +167,12 @@
 	log_attack("[M.name] attacked by [user.name]([user.key]) with [src]")
 	user.log_m("Attacked [M.name]([M.real_name]) with [src]")
 	M.log_m("Attacked by [user.name]([user.real_name])([user.key]) with [src]")
+	var/mob/user3 = user
+	if(user.mutations & 1)
+		user3 = null
 	if(!istype(M, /mob/living/carbon/human))
 		for(var/mob/O in viewers(M, null))
-			O.show_message(text("\red <B>[] has been attacked with [][] </B>", M, src, (user ? text(" by [].", user) : ".")), 1)
+			O.show_message(text("\red <B>[] has been attacked with [][] </B>", M, src, (user3 ? text(" by [].", user3) : ".")), 1)
 	var/power = src.force
 	if (istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
@@ -186,11 +189,11 @@
 		if(affecting)
 			if(affecting.destroyed)
 				for(var/mob/O in viewers(M, null))
-					O.show_message(text("\red <B>[user] has missed [M] with [src] </B>"),1)
+					O.show_message(text("\red <B>[user3] has missed [M] with [src] </B>"),1)
 				return
 			var/hit_area = parse_zone(def_zone)
 			for(var/mob/O in viewers(M, null))
-				O.show_message(text("\red <B>[] has been attacked in the [] with [][] </B>", M, hit_area, src, (user ? text(" by [].", user) : ".")), 1)
+				O.show_message(text("\red <B>[] has been attacked in the [] with [][] </B>", M, hit_area, src, (user3 ? text(" by [].", user3) : ".")), 1)
 			if (istype(affecting, /datum/organ/external))
 				var/b_dam = (src.damtype == "brute" ? src.force : 0)
 				var/f_dam = (src.damtype == "fire" ? src.force : 0)
@@ -218,7 +221,7 @@
 							if (prob(50))
 								if (ticker.mode.name == "revolution")
 									ticker.mode:remove_revolutionary(H.mind)
-					if (b_dam && prob(25 + (b_dam * 2)))
+					if (b_dam && prob(25 + (b_dam * 2)) && !(user.mutations & 1))
 						src.add_blood(H)
 						if (prob(65))
 							var/turf/location = H.loc
@@ -262,7 +265,7 @@
 							for(var/mob/O in viewers(H, null))
 								O.show_message(text("\red <B>[] has been stunned!</B>", H), 1)
 						if(H.stat != 2)	H.stat = 1
-					if (b_dam && prob(25 + (b_dam * 2)))
+					if (b_dam && prob(25 + (b_dam * 2)) && !(user.mutations & 1))
 						src.add_blood(H)
 						if (prob(65))
 							var/turf/location = H.loc
@@ -304,7 +307,7 @@
 							for(var/mob/O in viewers(H, null))
 								O.show_message(text("\red <B>[] has been stunned!</B>", H), 1)
 							if(H.stat != 2)	H.stat = 1
-						if (b_dam && prob(25 + (b_dam * 2)))
+						if (b_dam && prob(25 + (b_dam * 2)) && !(user.mutations & 1))
 							src.add_blood(H)
 							if (prob(65))
 								var/turf/location = H.loc
@@ -331,7 +334,7 @@
 										user2.w_uniform.add_blood(H)
 						affecting.take_damage(b_dam, f_dam,slash,superblunt)
 				else
-					if (b_dam && prob(25 + (b_dam * 2)))
+					if (b_dam && prob(25 + (b_dam * 2)) && !(user.mutations & 1))
 						src.add_blood(H)
 						if (prob(65))
 							var/turf/location = H.loc

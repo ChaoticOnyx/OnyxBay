@@ -96,7 +96,7 @@
 	var/access_security = 0
 	var/access_engine = 0
 	var/access_medical = 0
-	var/access_manifest = 0
+	//var/access_manifest = 0
 	var/access_clown = 0
 	var/access_janitor = 0
 	var/access_reagent_scanner = 0
@@ -104,6 +104,7 @@
 	var/remote_door_id = ""
 	var/access_status_display = 0
 	var/access_quartermaster = 0
+	var/access_games = 0
 
 	// common cartridge procs
 
@@ -152,7 +153,9 @@
 		else
 			..(signal)
 
-		if(istype(P)) P.updateSelfDialog()
+		if(istype(P))
+			if(P.mode == 2)
+				P.updateSelfDialog()
 
 	proc/return_text()
 		var/list/data = signal_info
@@ -228,7 +231,9 @@
 				var/list/b = signal.data
 				botstatus = b.Copy()
 
-		if(istype(P)) P.updateSelfDialog()
+		if(istype(P))
+			if(P.mode == 14)
+				P.updateSelfDialog()
 
 
 
@@ -264,6 +269,7 @@
 	desc = "The ultimate in clean-room design."
 	icon_state = "cart-j"
 	access_janitor = 1
+	access_games = 1
 
 /obj/item/weapon/cartridge/clown
 	name = "Honkworks 5.0"
@@ -293,7 +299,7 @@
 /obj/item/weapon/cartridge/head
 	name = "Easy-Record DELUXE"
 	icon_state = "cart-h"
-	access_manifest = 1
+	//access_manifest = 1
 	access_engine = 1
 	access_security = 1
 	access_status_display = 1
@@ -317,7 +323,9 @@
 		else
 			..(signal)
 
-		if(istype(P)) P.updateSelfDialog()
+		if(istype(P))
+			if(P.mode == 2)
+				P.updateSelfDialog()
 
 	proc/return_text()
 		var/list/data = signal_info
@@ -349,7 +357,7 @@
 	name = "Value-PAK Cartridge"
 	desc = "Now with 200% more value!"
 	icon_state = "cart-c"
-	access_manifest = 1
+	//access_manifest = 1
 	access_engine = 1
 	access_security = 1
 	access_medical = 1
@@ -375,7 +383,9 @@
 		else
 			..(signal)
 
-		if(istype(P)) P.updateSelfDialog()
+		if(istype(P))
+			if(P.mode == 2)
+				P.updateSelfDialog()
 
 	proc/return_text()
 		var/list/data = signal_info
@@ -601,15 +611,16 @@
 				dat += "<ul>"
 				dat += "<li><a href='byond://?src=\ref[src];note=1'>Notekeeper</a></li>"
 				dat += "<li><a href='byond://?src=\ref[src];mess=1'>Messenger</a></li>"
+				dat += "<li><a href='byond://?src=\ref[src];cm=1'>View Crew Manifest</a></li>"
+
 				if (!isnull(src.cartridge) && src.cartridge.access_clown)
 					dat += "<li><a href='byond://?src=\ref[src];honk=1'>Honk Synthesizer</a></li>"
 
-				if (!isnull(src.cartridge) && src.cartridge.access_manifest)
-					dat += "<li><a href='byond://?src=\ref[src];cm=1'>View Crew Manifest</a></li>"
-
-
 				if(cartridge && cartridge.access_status_display)
 					dat += "<li><a href='byond://?src=\ref[src];sd=1'>Set Status Display</a></li>"
+
+				if(cartridge && cartridge.access_games)
+					dat += "<li><a href='byond://?src=\ref[src];ep3=1'>Play Half-life 2: Episode 3 (Requires Steam)</a></li>"
 
 
 				dat += "</ul>"
@@ -767,8 +778,8 @@
 					dat += "<a href='byond://?src=\ref[src];lock_uplink=1'>Lock</a><br>"
 				else
 					dat += "<a href='byond://?src=\ref[src];editnote=1'>Edit</a><br>"
-
-				dat += src.note
+				var/t = dd_replacetext(src.note, "\n", "<BR>")			//Allow linebreaks in PDA Notekeeper
+				dat += t
 
 			if (6)
 				if (!src.smode)
@@ -1194,7 +1205,7 @@ Code:
 						A.show_message("<i>Intercepted message from <b>[P:owner]</b>: [t]</i>")
 
 				if (!P.silent)
-					playsound(P.loc, 'twobeep.ogg', 50, 1)
+					playsound(P.loc, 'twobeep.wav', 50, 1)
 					for (var/mob/O in hearers(3, P.loc))
 						O.show_message(text("\icon[P] *[P.ttone]*"))
 
@@ -1301,7 +1312,6 @@ Code:
 					difficulty += P.cartridge.access_engine
 					difficulty += P.cartridge.access_clown
 					difficulty += P.cartridge.access_janitor
-					difficulty += P.cartridge.access_manifest * 2
 				else
 					difficulty += 2
 
@@ -1368,6 +1378,15 @@ Code:
 			if (last_honk && world.time < last_honk + 20)
 				return
 			playsound(src.loc, 'bikehorn.ogg', 50, 1)
+			src.last_honk = world.time
+		else if (href_list["ep3"])
+			if (last_honk && world.time < last_honk + 20)
+				return
+			var/obj/P = src
+			for (var/mob/O in hearers(3, P.loc))
+				O.show_message(text("\icon[P] *Steam is currently offline due to massive demand for the Episode 3 teaser*"))
+				O.show_message(text("\icon[P] *We are only 800 years late. Valve Time has never approached convergence with the Real Time this much.*"))
+				O.show_message(text("\icon[P] *In the mean time, do you feel like a game of Left 4 Dead 43? (this account does not yet own this game)*"))
 			src.last_honk = world.time
 
 		//Toxins PDA signaler stuff
@@ -1693,6 +1712,7 @@ Code:
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=jump'>Chameleon Jumpsuit</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=card'>Syndicate Card</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=emag'>Electromagnet Card</A> (3)<BR>"
+	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=hacktool'>Hacktool</A> (4)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_freedom'>Freedom Implant (with injector)</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_compress'>Compressed Matter Implant (with injector)</A> (5)<BR>"
 //	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_tele'>Teleport Implant (with injector) + Beacon</A> (10)<BR>"
@@ -1765,6 +1785,10 @@ Code:
 				if (src.uses >= 3)
 					src.uses -= 3
 					new /obj/item/weapon/card/emag(get_turf(src.hostpda))
+			if("hacktool")
+				if (src.uses >= 4)
+					src.uses -= 4
+					new /obj/item/device/hacktool(get_turf(src.hostpda))
 			if("imp_freedom")
 				if (src.uses >= 3)
 					src.uses -= 3

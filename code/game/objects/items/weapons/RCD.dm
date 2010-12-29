@@ -13,7 +13,7 @@ RCD
 /obj/item/weapon/rcd/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/weapon/rcd_ammo))
 		if ((matter + 10) > 30)
-			user << "The RCD cant hold any more matter."
+			user << "The RCD can't hold any more matter."
 			return
 		del(W)
 		matter += 10
@@ -47,6 +47,16 @@ RCD
 
 	if (istype(A, /turf) && mode == 1)
 		if (istype(A, /turf/space) && matter >= 1)
+			user << "Building Floor (1)..."
+			playsound(src.loc, 'Deconstruct.ogg', 50, 1)
+			spark_system.set_up(5, 0, src)
+			src.spark_system.start()
+			A:ReplaceWithFloor()
+			matter--
+			user << "The RCD now holds [matter]/30 matter-units."
+			desc = "A RCD. It currently holds [matter]/30 matter-units."
+			return
+		if (istype(A, /turf/simulated/floor/open) && matter >= 1)
 			user << "Building Floor (1)..."
 			playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 			spark_system.set_up(5, 0, src)
@@ -137,7 +147,7 @@ RCD
 		if (istype(W, /obj/item/weapon/rcd))
 			var/obj/item/weapon/rcd/N = W
 			if ((N.matter + 10) > 30)
-				user << "The RCD cant hold any more matter."
+				user << "The RCD can't hold any more matter."
 				return
 			N.matter += 10
 			playsound(src.loc, 'click.ogg', 50, 1)

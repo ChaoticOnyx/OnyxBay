@@ -115,10 +115,17 @@
 			range = min(range, 12)		// was 8
 			var/turf/epicenter = get_turf(loc)
 
-			//world << "\blue Exploding Pressure: [pressure] kPa, intensity: [range]"
 
-			explosion(epicenter, round(range*0.25), round(range*0.5), round(range), round(range*1.5), 1)
-			del(src)
+			//world << "\blue Exploding Pressure: [pressure] kPa, intensity: [range]"
+			if(epicenter)
+				explosion(epicenter, round(range*0.25), round(range*0.5), round(range), round(range*1.5), 1)
+				del(src)
+				return
+			else
+				message_admins("Whoops a bomb fucked up, [loc]")
+				del(src)
+				return
+
 
 		else if(pressure > TANK_RUPTURE_PRESSURE)
 			//world << "\blue[x],[y] tank is rupturing: [pressure] kPa, integrity [integrity]"
@@ -278,7 +285,14 @@
 	else
 		src.ion_trail.stop()
 	return
-
+/obj/item/weapon/tank/jetpack/syndie/toggle()
+	src.on = !( src.on )
+	src.icon_state = text("jetpack[]_s", src.on)
+	if(src.on)
+		src.ion_trail.start()
+	else
+		src.ion_trail.stop()
+	return
 /obj/item/weapon/tank/jetpack/proc/allow_thrust(num, mob/user as mob)
 	if (!( src.on ))
 		return 0
@@ -305,14 +319,32 @@
 	//G = null
 	del(G)
 	return
-
+/obj/item/weapon/tank/jetpack/MouseDrop(obj/over_object as obj)
+	if ((istype(usr, /mob/living/carbon/human) || (ticker && ticker.mode.name == "monkey")))
+		var/mob/M = usr
+		if (!( istype(over_object, /obj/screen) ))
+			return ..()
+		if ((!( M.restrained() ) && !( M.stat ) && M.back == src))
+			if (over_object.name == "r_hand")
+				if (!( M.r_hand ))
+					M.u_equip(src)
+					M.r_hand = src
+			else
+				if (over_object.name == "l_hand")
+					if (!( M.l_hand ))
+						M.u_equip(src)
+						M.l_hand = src
+			M.update_clothing()
+			src.add_fingerprint(usr)
+			return
+	return
 /obj/item/weapon/tank/jetpack/proc/move_z(cardinal, mob/user as mob)
 	if(allow_thrust(0.01, user))
 		switch(cardinal)
 			if (UP)
 				if (user.z > 1)
 					var/turf/T = locate(user.x, user.y, user.z - 1)
-					if(T && istype(T, /turf/space))
+					if(T && istype(T, /turf/space) && istype(user.loc, /turf/space))
 						user.Move(T)
 					else if (!T)
 						user << "\red The ships gravity well keeps you in orbit!"
@@ -323,7 +355,7 @@
 			if (DOWN)
 				if (user.z < 4)
 					var/turf/T = locate(user.x, user.y, user.z + 1)
-					if(T && istype(T, /turf/space))
+					if(T && istype(T, /turf/space) && istype(user.loc, /turf/space))
 						user.Move(T)
 					else if (!T)
 						user << "\red The ships gravity well keeps you in orbit!"

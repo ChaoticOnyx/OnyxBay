@@ -2,7 +2,9 @@
 	if (istype(other, /mob/living/silicon/ai))
 		return 1
 	if (istype(other, /mob/living/carbon/human))
-		return 1
+		var/mob/living/carbon/human/D = other
+		if(!D.zombie)
+			return 1
 	return ..()
 
 /mob/living/silicon/robot/say_quote(var/text)

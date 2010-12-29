@@ -11,7 +11,7 @@
 /atom/proc/attack_ai(mob/user as mob)
 	return
 
-//for aliens, it works the same as monkeys except for alien-> mob interactions which will be defined in the
+//for aliens, it works the same as monkeys except for alien -> mob interactions which will be defined in the
 //appropiate mob files
 /atom/proc/attack_alien(mob/user as mob)
 	src.attack_paw(user)
@@ -55,6 +55,11 @@
 	if (M.gloves)
 		if(src.fingerprintslast != M.key)
 			src.fingerprintshidden += "(Wearing gloves). Real name: [M.real_name], Key: [M.key]"
+			src.fingerprintslast = M.key
+		return 0
+	if (M.mutations & mFingerprints)
+		if(src.fingerprintslast != M.key)
+			src.fingerprintshidden += "(Has no fingerprints) Real name: [M.real_name], Key: [M.key]"
 			src.fingerprintslast = M.key
 		return 0
 	if (!( src.fingerprints ))
@@ -263,7 +268,7 @@
 			if (!( ok ))
 				return 0
 
-		if (!( usr.restrained() ))
+		if ( !(usr.restrained()) )
 			if (W)
 				if (t5)
 					src.alog(W,usr)

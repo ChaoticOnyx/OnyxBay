@@ -261,7 +261,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 			user << "\blue It's already fully loaded!"
 			return 1
 		if (A.amount_left <= 0)
-			user << "\red There is no more bullets!"
+			user << "\red There are no more bullets!"
 			return 1
 		if (A.amount_left < (7 - src.bullets))
 			src.bullets += A.amount_left
@@ -277,7 +277,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 
 /obj/item/weapon/gun/detectiverevolver/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
 
-	//var/detective = (istype(user:w_uniform, /obj/item/clothing/under/det) && istype(user:head, /obj/item/clothing/head/det_hat)  && istype(user:wear_suit, /obj/item/clothing/suit/det_suit))
+	//var/detective = (istype(user:w_uniform, /obj/item/clothing/under/det) && istype(user:head, /obj/item/clothing/head/det_hat)  && istype(user:wear_suit, /obj/item/clothing/suit/storage/det_suit))
 
 	if (flag)
 		return
@@ -319,7 +319,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 /obj/item/weapon/gun/detectiverevolver/attack(mob/M as mob, mob/user as mob)
 	src.add_fingerprint(user)
 	var/mob/living/carbon/human/H = M
-//	var/detective = (istype(user:w_uniform, /obj/item/clothing/under/det) && istype(user:head, /obj/item/clothing/head/det_hat)  && istype(user:wear_suit, /obj/item/clothing/suit/det_suit))
+//	var/detective = (istype(user:w_uniform, /obj/item/clothing/under/det) && istype(user:head, /obj/item/clothing/head/det_hat)  && istype(user:wear_suit, /obj/item/clothing/suit/storage/det_suit))
 
 // ******* Check
 //

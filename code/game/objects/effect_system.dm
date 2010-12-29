@@ -107,7 +107,7 @@ steam.start() -- spawns the effect
 			if(src.cardinals)
 				direction = pick(cardinal)
 			else
-				direction = pick(alldirs)
+				direction = pick(cardinal8)
 			for(i=0, i<pick(1,2,3), i++)
 				sleep(5)
 				step(steam,direction)
@@ -192,7 +192,7 @@ steam.start() -- spawns the effect
 			if(src.cardinals)
 				direction = pick(cardinal)
 			else
-				direction = pick(alldirs)
+				direction = pick(cardinal8)
 			for(i=0, i<pick(1,2,3), i++)
 				sleep(5)
 				step(sparks,direction)
@@ -274,7 +274,7 @@ steam.start() -- spawns the effect
 				if(src.cardinals)
 					direction = pick(cardinal)
 				else
-					direction = pick(alldirs)
+					direction = pick(cardinal8)
 			for(i=0, i<pick(0,1,1,1,2,2,2,3), i++)
 				sleep(10)
 				step(smoke,direction)
@@ -378,7 +378,7 @@ steam.start() -- spawns the effect
 				if(src.cardinals)
 					direction = pick(cardinal)
 				else
-					direction = pick(alldirs)
+					direction = pick(cardinal8)
 			for(i=0, i<pick(0,1,1,1,2,2,2,3), i++)
 				sleep(10)
 				step(smoke,direction)
@@ -409,7 +409,7 @@ steam.start() -- spawns the effect
 /obj/effects/mustard_gas/Move()
 	..()
 	for(var/mob/living/carbon/human/R in get_turf(src))
-		if (R.internal != null && usr.wear_mask && (R.wear_mask.flags & MASKINTERNALS) && R.wear_suit != null && !istype(R.wear_suit, /obj/item/clothing/suit/labcoat) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket && !istype(R.wear_suit, /obj/item/clothing/suit/armor)))
+		if (R.internal != null && usr.wear_mask && (R.wear_mask.flags & MASKINTERNALS) && R.wear_suit != null && !istype(R.wear_suit, /obj/item/clothing/suit/storage/labcoat) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket && !istype(R.wear_suit, /obj/item/clothing/suit/armor)))
 		else
 			R.burn_skin(0.75)
 			if (R.coughedtime != 1)
@@ -423,7 +423,7 @@ steam.start() -- spawns the effect
 /obj/effects/mustard_gas/HasEntered(mob/living/carbon/human/R as mob )
 	..()
 	if (istype(R, /mob/living/carbon/human))
-		if (R.internal != null && usr.wear_mask && (R.wear_mask.flags & MASKINTERNALS) && R.wear_suit != null && !istype(R.wear_suit, /obj/item/clothing/suit/labcoat) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket && !istype(R.wear_suit, /obj/item/clothing/suit/armor)))
+		if (R.internal != null && usr.wear_mask && (R.wear_mask.flags & MASKINTERNALS) && R.wear_suit != null && !istype(R.wear_suit, /obj/item/clothing/suit/storage/labcoat) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket && !istype(R.wear_suit, /obj/item/clothing/suit/armor)))
 			return
 		R.burn_skin(0.75)
 		if (R.coughedtime != 1)
@@ -472,7 +472,7 @@ steam.start() -- spawns the effect
 				if(src.cardinals)
 					direction = pick(cardinal)
 				else
-					direction = pick(alldirs)
+					direction = pick(cardinal8)
 			for(i=0, i<pick(0,1,1,1,2,2,2,3), i++)
 				sleep(10)
 				step(smoke,direction)

@@ -26,11 +26,13 @@
 		if ("Host")
 			src.deadchat = 1
 			src.holder.level = 6
+			src.verbs += /client/proc/checkticker
+			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/cmd_admin_delete
+			src.verbs += /client/proc/addchange
 			src.verbs += /proc/possess
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
-			src.verbs += /proc/givetestverbs
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /client/proc/cmd_modify_object_variables
 			src.verbs += /client/proc/cmd_modify_ticker_variables
@@ -69,7 +71,8 @@
 			src.verbs += /client/proc/jobbans
 			src.verbs += /client/proc/sendmob
 			src.verbs += /client/proc/Debug2					//debug toggle switch
-			src.verbs += /client/proc/callproc
+			src.verbs += /client/proc/callprocgen
+			src.verbs += /client/proc/callprocobj
 			src.verbs += /client/proc/funbutton
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /obj/admins/proc/vmode   				//start vote
@@ -105,10 +108,12 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
-			src.verbs += /client/proc/new_eventa
+			src.verbs += /client/proc/new_event
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/zombify
-
+			src.verbs += /client/proc/createofficial
+			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/nanoshuttle
 
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
@@ -116,6 +121,9 @@
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
+			src.verbs += /client/proc/checkticker
+			src.verbs += /client/proc/switchtowindow
+			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/toggleevents
@@ -123,7 +131,6 @@
 			src.verbs += /proc/possess
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
-			src.verbs += /proc/givetestverbs
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /client/proc/cmd_debug_tog_aliens
 			src.verbs += /client/proc/cmd_modify_object_variables
@@ -163,7 +170,8 @@
 			src.verbs += /client/proc/jobbans
 			src.verbs += /client/proc/sendmob
 			src.verbs += /client/proc/Debug2					//debug toggle switch
-			src.verbs += /client/proc/callproc
+			src.verbs += /client/proc/callprocgen
+			src.verbs += /client/proc/callprocobj
 			src.verbs += /client/proc/funbutton
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /obj/admins/proc/vmode   				//start vote
@@ -188,7 +196,7 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 			src.verbs += /client/proc/zombify
-
+			src.verbs += /client/proc/createofficial
 			src.verbs += /client/proc/general_report
 			//src.verbs += /client/proc/air_report
 			//src.verbs += /client/proc/air_status
@@ -203,7 +211,8 @@
 			src.verbs += /client/proc/toggleinvite
 
 			src.verbs += /client/proc/Zone_Info
-
+			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/nanoshuttle
 
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
@@ -211,6 +220,9 @@
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/checkticker
+			src.verbs += /client/proc/switchtowindow
+			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/debug_variables
@@ -228,7 +240,6 @@
 			src.verbs += /client/proc/jumptomob
 			src.verbs += /client/proc/modifytemperature
 			src.verbs += /proc/toggle_adminmsg
-//				src.verbs += /client/proc/grillify
 			src.verbs += /client/proc/cmd_admin_check_contents
 			src.verbs += /proc/togglebuildmode
 			src.verbs += /client/proc/Jump
@@ -269,7 +280,8 @@
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 			src.verbs += /client/proc/cmd_admin_create_centcom_report
 			src.verbs += /client/proc/cmd_admin_subtle_message
-
+			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/general_report
 			//src.verbs += /client/proc/air_report
 			//src.verbs += /client/proc/air_status
@@ -282,7 +294,7 @@
 			src.verbs += /client/proc/toggleinvite
 			src.verbs += /client/proc/Zone_Info
 			src.verbs += /client/proc/zombify
-
+			src.verbs += /client/proc/createofficial
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
 			src.verbs += /client/proc/loadmaphere
@@ -290,9 +302,9 @@
 
 			src.deadchat = 1
 			src.holder.level = 3
-
+			src.verbs += /client/proc/checkticker
 			if(src.holder.state == 2) //observing
-
+				src.verbs += /client/proc/switchtowindow
 				src.verbs += /obj/admins/proc/toggleooc				//toggle ooc
 				src.verbs += /obj/admins/proc/toggletraitorscaling
 				src.verbs += /client/proc/cmd_admin_drop_everything
@@ -328,10 +340,10 @@
 			src.verbs += /client/proc/cmd_admin_remove_plasma
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/LSD_effect
-
+			src.verbs += /client/proc/createofficial
 //				src.verbs += /client/proc/modifytemperature
-//				src.verbs += /client/proc/grillify
-
+			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/cmd_admin_prison
 
 			src.verbs += /obj/admins/proc/vmode   				//start vote
@@ -367,7 +379,7 @@
 				src.verbs += /client/proc/jumptokey
 				src.verbs += /obj/admins/proc/toggleaban			//abandon mob
 				src.verbs += /client/proc/deadchat					//toggles deadchat
-
+			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/cmd_admin_pm
 			src.verbs += /client/proc/cmd_admin_say
 			src.verbs += /client/proc/dsay
@@ -389,7 +401,9 @@
 			src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
 			src.verbs += /obj/admins/proc/toggleAI
 			src.verbs += /client/proc/delay				//Toggle the AI
-
+			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/nanoshuttle
+			src.verbs += /client/proc/createofficial
 			src.verbs += /obj/admins/proc/delay					//game start delay
 
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
@@ -409,7 +423,7 @@
 				src.verbs += /client/proc/cmd_admin_check_contents
 
 			src.verbs += /client/proc/cmd_admin_pm
-
+			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/cmd_admin_say
 			src.verbs += /client/proc/dsay
 			src.verbs += /client/proc/cmd_admin_prison
@@ -458,6 +472,7 @@
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 //				src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
 //				src.verbs += /obj/admins/proc/adjump				//toggle admin jumping
+			src.verbs += /client/proc/switchtowindow
 			src.verbs += /obj/admins/proc/unprison
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
@@ -506,7 +521,6 @@
 	src.verbs -= /client/proc/cmd_admin_gib
 	src.verbs -= /client/proc/cmd_admin_gib_self
 //				src.verbs -= /client/proc/modifytemperature
-//				src.verbs -= /client/proc/grillify
 	src.verbs -= /client/proc/Jump
 	src.verbs -= /client/proc/cmd_admin_rejuvenate
 	src.verbs -= /client/proc/funbutton
@@ -831,13 +845,144 @@
 	set name = "Fake attack"
 	fake_attack(p)
 	return
-/client/proc/new_eventa(sev as text)
+
+/client/proc/new_event()
 	set category = "Debug"
 	set name = "Spawn event"
-	new_event(sev)
+	SpawnEvent()
 	return
 
 /client/proc/zombify(var/mob/living/carbon/human/p in world)
 	set category = "Debug"
 	set name = "Zombify"
 	p.zombify()
+
+/client/proc/nanoshuttle()
+	set category = "Roleplay"
+	set name = "Send Nanotrasen (admin) shuttle"
+	var/area/from = locate(/area/nanotrasenshuttle)
+	var/area/admindockingbay/dest = locate(/area/admindockingbay)
+	if(dest.shuttle == "")
+		from.move_contents_to(dest)
+		dest.shuttle = "nanotrasen"
+	else
+		src << "\blue Already a shuttle there"
+
+/client/proc/returnadminshuttle()
+	set category = "Roleplay"
+	set name = "Return NT admin-shuttle"
+	var/area/admindockingbay/from = locate(/area/admindockingbay)
+	if(from.shuttle == "nanotrasen")
+		var/area/dest = locate(/area/nanotrasenshuttle)
+		from.move_contents_to(dest)
+		from.shuttle = ""
+
+/client/proc/createofficial(var/name as text)
+	set category = "Roleplay"
+	set name = "Create Nanotrasen official"
+	var/area/A
+	for(var/area/nanotrasenshuttle/b in world)
+		A = b
+
+	var/job = input ("What job would you like to give your Nanotrasen char") in list ("Agent","Overseer","Syndicate Management Taskforce","Prisoner Management")
+	var/mob/living/carbon/human/new_character = new /mob/living/carbon/human(src)
+	new_character.loc = pick(get_area_turfs(A))
+	new_character.dna.ready_dna(new_character)
+
+	var/uniform
+	var/gloves
+	var/shoes
+	var/over
+	var/back1
+	var/back2
+	var/back3
+	var/back4
+	var/mask
+	var/eyes
+	var/head
+	switch(job)
+		if("Agent")
+			uniform = /obj/item/clothing/under/chameleon
+			gloves = /obj/item/clothing/gloves/black
+			shoes = /obj/item/clothing/shoes/black
+			head = /obj/item/clothing/head/helmet/swat
+			eyes = /obj/item/clothing/glasses/thermal
+			mask = /obj/item/clothing/mask/gas/swat
+			over = /obj/item/clothing/suit/armor/swat
+			back2 = /obj/item/weapon/gun/revolver
+			back1 = /obj/item/weapon/cloaking_device
+			back3 = /obj/item/weapon/rcd
+			back4 = /obj/item/device/hacktool
+		if("Overseer")
+			uniform = /obj/item/clothing/under/color/green
+			shoes = /obj/item/clothing/shoes/brown
+			back1 = /obj/item/weapon/gun/energy/general
+			back2 = /obj/item/weapon/handcuffs
+		if("Syndicate Management Taskforce")
+			uniform = /obj/item/clothing/under/color/black
+			gloves = /obj/item/clothing/gloves/black
+			shoes = /obj/item/clothing/shoes/black
+			head = /obj/item/clothing/head/helmet/swat
+			eyes = /obj/item/clothing/glasses/thermal
+			mask = /obj/item/clothing/mask/gas/swat
+			over = /obj/item/clothing/suit/armor/swat
+			back1 = /obj/item/weapon/handcuffs
+			back2 = /obj/item/weapon/gun/energy/laser_gun
+		if("Prisoner Management")
+			uniform = /obj/item/clothing/under/lightred
+			shoes = /obj/item/clothing/shoes/red
+			gloves = /obj/item/clothing/gloves/latex
+			back1 = /obj/item/weapon/handcuffs
+			back2 = /obj/item/weapon/gun/energy/taser_gun
+
+
+
+
+	new_character.real_name = name
+	new_character.name = name
+	var/mob/living/carbon/human/player = new_character
+
+
+	var/obj/item/weapon/card/id/id = new /obj/item/weapon/card/id/captains_spare(player)
+	id.registered = player.real_name
+	id.assignment = job
+	id.name = "[player.real_name]'s Official ID"
+	player.equip_if_possible(id,player.slot_wear_id)
+
+	player.equip_if_possible(new /obj/item/device/radio/headset/security,player.slot_ears)
+
+
+	player.equip_if_possible(new /obj/item/weapon/storage/backpack,player.slot_back)
+
+	if(uniform)
+		player.equip_if_possible(new uniform,player.slot_w_uniform)
+	if(gloves)
+		player.equip_if_possible(new gloves,player.slot_gloves)
+	if(shoes)
+		player.equip_if_possible(new shoes,player.slot_shoes)
+	if(over)
+		player.equip_if_possible(new over,player.slot_wear_suit)
+
+	if(back1)
+		player.equip_if_possible(new back1,player.slot_in_backpack)
+	if(back2)
+		player.equip_if_possible(new back2,player.slot_in_backpack)
+	if(back3)
+		player.equip_if_possible(new back3,player.slot_in_backpack)
+	if(back4)
+		player.equip_if_possible(new back4,player.slot_in_backpack)
+	if(mask)
+		player.equip_if_possible(new mask,player.slot_wear_mask)
+	if(eyes)
+		player.equip_if_possible(new eyes,player.slot_glasses)
+	if(head)
+		player.equip_if_possible(new head,player.slot_head)
+	player.update_clothing()
+
+
+	if(src.mob.mind)
+		src.mob.mind.transfer_to(new_character)
+	else
+		src.mob = new_character
+
+	return

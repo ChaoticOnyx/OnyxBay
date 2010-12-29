@@ -242,6 +242,8 @@ obj/item/weapon/cane
 
 
 /mob/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if ( istype(W, /obj/item/weapon/reagent_containers/syringe) && istype(src, /mob/living/silicon/ai) ) // The cyborgs have their own attackby
+		return
 	var/shielded = 0
 	for(var/obj/item/device/shield/S in src)
 		if (S.active)

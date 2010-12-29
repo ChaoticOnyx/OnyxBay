@@ -2,7 +2,7 @@ obj/machinery/aiconstruct
 	name = "AI CONSTRUCT"
 	var/buildstate = 0
 	icon = 'mob.dmi'
-	icon_state = "ai-new"
+	icon_state = "ai_new0"
 	var/mob/bb
 obj/machinery/aiconstruct/attack_hand(mob/user)
 	if(user.stat >= 2)
@@ -37,26 +37,29 @@ obj/machinery/aiconstruct/attackby(obj/item/weapon/W as obj, mob/user as mob)
 				user << "You place the [W] inside the [src]."
 				del(W)
 				buildstate++
+				icon_state = "ai_new1"
 		if(1)
 			if(istype(W,/obj/item/weapon/screwdriver))
 				user << "You screw the circuitry in place with [W]."
-				del(W)
 				buildstate++
 		if(2)
-			if(istype(W,/obj/item/weapon/cable_coil))
-				if(W:amount < 3)
+			if(istype(W,/obj/item/weapon/CableCoil))
+				var/obj/item/weapon/CableCoil/Coil = W
+				if (Coil.CableType != /obj/cabling/power)
+					user << "That's the wrong cable type, you need electrical cable!"
+					return
+				if(!Coil.UseCable(3))
 					user << "Not enough cable."
 					return
-				W:amount -= 3
 				user << "You wire up the inside of the [src]."
-				if(W:amount <= 0)
-					del(W)
 				buildstate++
+				icon_state = "ai_new2"
 		if(3)
 			if(istype(W,/obj/item/weapon/cell))
 				user << "You place the [W] inside the [src]."
 				del(W)
 				buildstate++
+				icon_state = "ai_new3"
 		if(4)
 			if(istype(W,/obj/item/weapon/sheet/glass))
 				if(W:amount < 1)
@@ -67,19 +70,25 @@ obj/machinery/aiconstruct/attackby(obj/item/weapon/W as obj, mob/user as mob)
 				if(W:amount <= 0)
 					del(W)
 				buildstate++
+				icon_state = "ai_new4"
 		if(5)
 			if(istype(W,/obj/item/brain))
 				user << "You place the [W] inside the [src]."
 				user.u_equip(W)
+				W.dropped()
 				W.loc = src
 				bb = W:owner
 				buildstate++
+				icon_state = "ai_new5"
 obj/machinery/aiconstruct/proc/boot()
 	if(bb)
 		if(!bb.client)
 			return
 		var/mob/living/silicon/ai/A = new(src.loc)
 		A.key = bb.client.key
+		bb.mind.transfer_to(A)
+		sleep(10)
+		A.AIize()
 		del(src)
 mob/living/verb/head()
 	set hidden = 1

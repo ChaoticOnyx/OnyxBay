@@ -1,5 +1,5 @@
 /obj/machinery/door/Bumped(atom/AM)
-	if(p_open || operating || !density) return
+	if(p_open || operating || !density || !autoopen) return
 	if(ismob(AM))
 		var/mob/M = AM
 		if(world.timeofday - AM.last_bumped <= 5) return
@@ -193,27 +193,9 @@
 		spawn(150)
 			autoclose()
 	return 1
+
 /obj/machinery/door/proc/forceopen()
-	if(!density)
-		return 1
-	if (!ticker)
-		return 0
-
-	animate("opening")
-	sleep(10)
-	src.density = 0
-	update_icon()
-
-	src.ul_SetOpacity(0)
-	update_nearby_tiles()
-
-	if(operating == 1) //emag again
-		src.operating = 0
-
-	if(autoclose)
-		spawn(150)
-			autoclose()
-	return 1
+	return
 
 /obj/machinery/door/proc/close()
 	if(density)
@@ -244,7 +226,7 @@
 /obj/machinery/door/unpowered
 	explosionstrength = 1
 	autoclose = 0
-	var/locked = 0
+	//var/locked = 0
 
 /obj/machinery/door/unpowered/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
@@ -272,11 +254,12 @@
 	icon_state = "door1"
 	opacity = 1
 	density = 1
+	autoopen = 0
 
 // ***************************************
 // Networking Support
 // ***************************************
-
+/*
 /obj/machinery/door/NetworkIdentInfo()
 	return "DOOR [!src.density ? "OPEN" : "CLOSED"]"
 
@@ -296,3 +279,5 @@
 				close()
 				return 1
 	return 0
+
+*/

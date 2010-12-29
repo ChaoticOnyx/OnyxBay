@@ -40,7 +40,7 @@ Pod/Blast Doors computer
 		if (!istype(user, /mob/living/silicon))
 			usr << "\red You don't have the dexterity to do this!"
 			return 1
-	if ((get_dist(src, user) > 1 || !istype(src.loc, /turf)) && !istype(user, /mob/living/silicon))
+	if ((!(in_range(src, user)) || !istype(src.loc, /turf)) && !istype(user, /mob/living/silicon))
 		return 1
 	if (ishuman(user))
 		if(user.brainloss >= 60)
@@ -97,16 +97,19 @@ Pod/Blast Doors computer
 		if(stat & BROKEN)
 			icon_state = initial(icon_state)
 			src.icon_state += "b"
+			ul_SetLuminosity(0,0,2)
 
 		else if(powered())
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
+			ul_SetLuminosity(brightnessred,brightnessgreen,brightnessblue)
 		else
 			spawn(rand(0, 15))
 				//src.icon_state = "c_unpowered"
 				icon_state = initial(icon_state)
 				src.icon_state += "0"
 				stat |= NOPOWER
+				ul_SetLuminosity(0,0,0)
 
 /obj/machinery/computer/process()
 	if(stat & (NOPOWER|BROKEN))

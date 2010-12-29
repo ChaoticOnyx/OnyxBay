@@ -29,7 +29,15 @@ CLIPBOARDS
 		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", src.name, stars(src.info)), text("window=[]", src.name))
 		onclose(usr, "[src.name]")
 	else
-		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", src.name, src.info), text("window=[]", src.name))
+		var/t = dd_replacetext(src.info, "\n", "<BR>")
+		t = dd_replacetext(t, "\[b\]", "<B>")
+		t = dd_replacetext(t, "\[/b\]", "</B>")
+		t = dd_replacetext(t, "\[i\]", "<I>")
+		t = dd_replacetext(t, "\[/i\]", "</I>")
+		t = dd_replacetext(t, "\[u\]", "<U>")
+		t = dd_replacetext(t, "\[/u\]", "</U>")
+		t = text("<font face=calligrapher>[]</font>", t)
+		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", src.name, t), text("window=[]", src.name))
 		onclose(usr, "[src.name]")
 	return
 
@@ -57,27 +65,31 @@ CLIPBOARDS
 /obj/item/weapon/paper/attackby(obj/item/weapon/P as obj, mob/user as mob)
 
 	if (istype(P, /obj/item/weapon/pen))
-		var/t = input(user, "What text do you wish to add?", text("[]", src.name), null)  as message
+		if(src.stamped == 1)
+			user << "\blue This paper has been stamped and can no longer be edited."
+			return
+		var/t = input(user, "What text do you wish to add?", text("[]", src.name), text("[src.info]"))  as message
 		if ((!in_range(src, usr) && src.loc != user && !( istype(src.loc, /obj/item/weapon/clipboard) ) && src.loc.loc != user && user.equipped() != P))
 			return
-		t = copytext(sanitize(t),1,MAX_MESSAGE_LEN)
-		t = dd_replacetext(t, "\n", "<BR>")
-		t = dd_replacetext(t, "\[b\]", "<B>")
-		t = dd_replacetext(t, "\[/b\]", "</B>")
-		t = dd_replacetext(t, "\[i\]", "<I>")
-		t = dd_replacetext(t, "\[/i\]", "</I>")
-		t = dd_replacetext(t, "\[u\]", "<U>")
-		t = dd_replacetext(t, "\[/u\]", "</U>")
-		t = dd_replacetext(t, "\[sign\]", text("<font face=vivaldi>[]</font>", user.real_name))
-		t = text("<font face=calligrapher>[]</font>", t)
-		src.info += t
+		//t = copytext(sanitize(t),1,MAX_MESSAGE_LEN)
+		t = copytext(t,1,MAX_MESSAGE_LEN)			//Allow line breaks on paper
+		//t = dd_replacetext(t, "\n", "<BR>")		//Moved all this crap up to the display rather than the input.
+		//t = dd_replacetext(t, "\[b\]", "<B>")
+		//t = dd_replacetext(t, "\[/b\]", "</B>")
+		//t = dd_replacetext(t, "\[i\]", "<I>")
+		//t = dd_replacetext(t, "\[/i\]", "</I>")
+		//t = dd_replacetext(t, "\[u\]", "<U>")
+		//t = dd_replacetext(t, "\[/u\]", "</U>")
+		//t = dd_replacetext(t, "\[sign\]", text("<font face=vivaldi>[]</font>", user.real_name))
+		//t = text("<font face=calligrapher>[]</font>", t)
+		src.info = t
 	else
 		if(istype(P, /obj/item/weapon/stamp))
 			if ((!in_range(src, usr) && src.loc != user && !( istype(src.loc, /obj/item/weapon/clipboard) ) && src.loc.loc != user && user.equipped() != P))
 				return
 			src.info += text("<BR><i>This paper has been stamped with the [].</i><BR>", P.name)
 			src.icon_state = "paper_stamped"
-
+			src.stamped = 1
 			user << "\blue You stamp the paper with your rubber stamp."
 	/*
 	else
@@ -301,7 +313,7 @@ CLIPBOARDS
 /obj/spresent/relaymove(mob/user as mob)
 	if (user.stat)
 		return
-	user << "\blue You cant move."
+	user << "\blue You can't move."
 
 /obj/spresent/attackby(obj/item/weapon/W as obj, mob/user as mob)
 

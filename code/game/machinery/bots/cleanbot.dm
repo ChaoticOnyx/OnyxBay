@@ -8,6 +8,7 @@
 	throwforce = 10.0
 	throw_speed = 2
 	throw_range = 5
+	var/created_name
 	w_class = 3.0
 	flags = TABLEPASS
 
@@ -27,6 +28,7 @@
 	var/screwloose = 0
 	var/oddbutton = 0
 	var/blood = 1
+	var/oil = 1
 	var/panelopen = 0
 	var/list/target_types = list()
 	var/obj/decal/cleanable/target
@@ -46,12 +48,13 @@
 	dat += text({"
 <TT><B>Automatic Station Cleaner v1.0</B></TT><BR><BR>
 Status: []<BR>
-Behaviour controls are [src.locked ? "locked" : "unlocked"]""},
+Behaviour controls are [src.locked ? "locked" : "unlocked"]"},
 text("<A href='?src=\ref[src];operation=start'>[src.on ? "On" : "Off"]</A>"))
+
 	if(!src.locked)
-		dat += text({"<BR>
-Cleans Blood: []<BR>"},
-text("<A href='?src=\ref[src];operation=blood'>[src.blood ? "Yes" : "No"]</A>"))
+		dat += text("<BR>Cleans Blood: []<BR>",text("<A href='?src=\ref[src];operation=blood'>[src.blood ? "Yes" : "No"]</A>"))
+		dat += text("<BR>Cleans Oil: []<BR>", text("<A href='?src=\ref[src];operation=oil'>[src.oil ? "Yes" : "No"]</A>"))
+
 	if(src.panelopen && !src.locked)
 		dat += text({"
 Odd looking screw twiddled: []<BR>
@@ -78,7 +81,11 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 			src.path = new()
 			src.updateUsrDialog()
 		if("blood")
-			src.blood =!src.blood
+			src.blood = !src.blood
+			src.get_targets()
+			src.updateUsrDialog()
+		if("oil")
+			src.oil = !src.oil
 			src.get_targets()
 			src.updateUsrDialog()
 		if("screw")
@@ -194,7 +201,13 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 	src.target_types = new/list()
 	if(src.blood)
 		target_types += /obj/decal/cleanable/blood/
+		target_types += /obj/decal/cleanable/blood/drip/
 		target_types += /obj/decal/cleanable/blood/gibs/
+		target_types += /obj/decal/cleanable/blood/splatter/
+		target_types += /obj/decal/cleanable/blood/tracks/
+	if(src.oil)
+		target_types += /obj/decal/cleanable/oil/
+		target_types += /obj/decal/cleanable/oil/streak/
 
 /obj/machinery/bot/cleanbot/proc/clean(var/obj/decal/cleanable/target)
 	src.anchored = 1
@@ -209,16 +222,27 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 		src.anchored = 0
 		src.target = null
 
-/obj/item/weapon/bucket_sensor/attackby(var/obj/item/robot_parts/P, mob/user as mob)
-	if(!istype(P, /obj/item/robot_parts/l_arm) && !istype(P, /obj/item/robot_parts/r_arm))
+/obj/item/weapon/bucket_sensor/attackby(var/obj/item/W, mob/user as mob)
+	if (istype(W, /obj/item/weapon/pen))
+		var/t = input(user, "Enter new robot name", src.name, src.created_name) as text
+		t = copytext(sanitize(t), 1, MAX_MESSAGE_LEN)
+		if (!t)
+			return
+		if (!in_range(src, usr) && src.loc != usr)
+			return
+		src.created_name = t
+		return
+	if(!istype(W, /obj/item/robot_parts/l_arm) && !istype(W, /obj/item/robot_parts/r_arm))
 		return
 	var/obj/machinery/bot/cleanbot/A = new /obj/machinery/bot/cleanbot
 	if(user.r_hand == src || user.l_hand == src)
 		A.loc = user.loc
 	else
 		A.loc = src.loc
+	if(created_name)
+		A.name = created_name
 	user << "You add the robot arm to the bucket and sensor assembly! Beep boop!"
-	del(P)
+	del(W)
 	del(src)
 
 

@@ -3,10 +3,13 @@
 	icon = 'lockwall.dmi'
 	icon_state = "emerg"
 	var/list/spawnitems = list()
+	anchored = 1
 	var/ammount = 3 // spawns each items X times.
-/obj/machinery/walllocker/attack_hand()
+/obj/machinery/walllocker/attack_hand(mob/user as mob)
+	if (istype(user, /mob/living/silicon/ai))	//Added by Strumpetplaya - AI shouldn't be able to
+		return									//activate emergency lockers.  This fixes that.
 	if(!ammount)
-		usr << "It's eampty.."
+		usr << "It's empty.."
 		return
 	if(ammount)
 		for(var/path in spawnitems)

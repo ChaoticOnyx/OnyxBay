@@ -18,11 +18,7 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 		if(devastation_range > 1)
 			message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in area [epicenter.loc.name] ")
 
-		if(0) //TODO replace with locate() of shield wall - shields just absorb the blast
-			//Damage Shield
-			return
-
-		defer_powernet_rebuild += 1
+		defer_cables_rebuild ++
 
 		sleep(5)
 
@@ -90,8 +86,19 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 				var/newdist = floordist[T] + addition
 
 				for(var/obj/O in U)
-					if (!O.CanPass(D, T, 0, 1)) //If an object on the turf is blocking the blast wave...
+					if (!O.CanPass(D, T, 0, 2)) //If an object on the turf is blocking the blast wave...
+
+						//Preblast, useful for things that may block shields but still react to them (shields)
+						//Use of negative values will prevent blast damage from being simulated unintentionally
+						if(floordist[T] <= devastation_range)
+							O.ex_act(-3)
+						else if (floordist[T] <= heavy_impact_range)
+							O.ex_act(-2)
+						else if (floordist[T] <= light_impact_range)
+							O.ex_act(-1)
+
 						newdist += O.explosionstrength	//Then add its explosion resistance to the distance-from-epicenter var
+
 
 				if(U in checked) //Now, has this turf been looked at before?
 					if (U in fillqueue)//Yes, so only compare epicenter distances
@@ -166,9 +173,9 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 							flick("flash", mob:flash)
 
 
-			defer_powernet_rebuild -= 1
-			if (!defer_powernet_rebuild)
-				makepowernets()
+			defer_cables_rebuild --
+			if (!defer_cables_rebuild)
+				HandleUNExplosionDamage()
 	return 1
 
 

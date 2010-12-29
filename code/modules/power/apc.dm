@@ -2,7 +2,8 @@
 #define APC_WIRE_MAIN_POWER1 2
 #define APC_WIRE_MAIN_POWER2 3
 #define APC_WIRE_AI_CONTROL 4
-
+var/fillertext = {" Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur magna cupidatat do ullamco velit Excepteur consectetur sint do id esse est Duis quis ea cillum ut minim irure consequat. ullamco sint pariatur. dolor aliqua. laboris adipisicing ad nostrud qui Duis anim incididunt in eu commodo cupidatat minim ullamco sunt exercitation adipisicing proident, exercitation dolor sit "}
 // the Area Power Controller (APC), formerly Power Distribution Unit (PDU)
 // one per area, needs wire conection to power network
 
@@ -33,6 +34,7 @@
 	var/operating = 1
 	var/charging = 0
 	var/chargemode = 1
+	var/shielding = 1 // 1= Auto, 2= Forced, 0 = off
 	var/health = 30
 	var/chargecount = 0
 	var/locked = 1
@@ -53,7 +55,6 @@
 	var/crit = 0
 	var/wiresexposed = 0
 	var/apcwires = 15
-	netnum = -1		// set so that APCs aren't found as powernet nodes
 //	luminosity = 1
 
 /proc/RandomAPCWires()
@@ -204,9 +205,12 @@
 			repair_state = 4
 			updateicon()
 			user << "\blue You detach the old wiring."
-		else if(repair_state == 4 && istype(W,/obj/item/weapon/cable_coil))
-			var/obj/item/weapon/cable_coil/S = W
-			if(!S.use(5))
+		else if(repair_state == 4 && istype(W,/obj/item/weapon/CableCoil))
+			var/obj/item/weapon/CableCoil/S = W
+			if(S.CableType != /obj/cabling/power)
+				user << "This is the wrong cable type!"
+				return
+			if(!S.UseCable(5))
 				user << "Not enough wiring"
 				return
 			repair_state = 5
@@ -377,6 +381,7 @@
 		t += "Equipment:    [add_lspace(lastused_equip, 6)] W : <B>[L[equipment+1]]</B><BR>"
 		t += "Lighting:     [add_lspace(lastused_light, 6)] W : <B>[L[lighting+1]]</B><BR>"
 		t += "Environmental:[add_lspace(lastused_environ, 6)] W : <B>[L[environ+1]]</B><BR>"
+		t += "Shield generator: <B>[L[shielding+1]]</B><BR>"
 
 		t += "<BR>Total load: [lastused_light + lastused_equip + lastused_environ] W</PRE>"
 		t += "<HR>Cover lock: <B>[coverlocked ? "Engaged" : "Disengaged"]</B>"
@@ -435,6 +440,19 @@
 				t += "<A href='?src=\ref[src];env=1'>Off</A> <A href='?src=\ref[src];env=2'>On</A> <B>Auto (On)</B>"
 
 
+		t += "Shielding : "
+		switch(shielding)
+			if(0)
+				t += "<B>Off</B> <A href='?src=\ref[src];sld=2'>On</A> <A href='?src=\ref[src];sld=1'>Auto</A>"
+			if(1)
+				t += "<A href='?src=\ref[src];sld=1'>Off</A> <A href='?src=\ref[src];sld=2'>On</A> <B>Auto (Off)</B>"
+			if(2)
+				t += "<A href='?src=\ref[src];sld=1'>Off</A> <B>On</B> <A href='?src=\ref[src];sld=3'>Auto</A>"
+			if(3)
+				t += "<A href='?src=\ref[src];sld=1'>Off</A> <A href='?src=\ref[src];sld=2'>On</A> <B>Auto (On)</B>"
+
+
+
 
 		t += "<BR>Total load: [lastused_light + lastused_equip + lastused_environ] W</PRE>"
 		t += "<HR>Cover lock: [coverlocked ? "<B><A href='?src=\ref[src];lock=1'>Engaged</A></B>" : "<B><A href='?src=\ref[src];lock=1'>Disengaged</A></B>"]"
@@ -482,21 +500,23 @@
 
 /obj/machinery/power/apc/proc/shock(mob/user, prb)
 	if(!prob(prb))
+		//world << "NO PRB"
 		return 0
 	var/net = get_connection()		// find the powernet of the connected cable
 	if(!net)		// cable is unpowered
+		//world << "NO NET"
 		return 0
-	return src.apcelectrocute(user, prb, net)
+	return src.apcElectrocute(user, prb, net)
 
-/obj/machinery/power/apc/proc/apcelectrocute(mob/user, prb, netnum)
+/obj/machinery/power/apc/proc/apcElectrocute(mob/user, prb, netnum)
 
 	if(stat == 2)
 		return 0
-
 	if(!prob(prb))
+		//world << "NO PRB"
 		return 0
-
 	if(!netnum)		// unconnected cable is unpowered
+		//world << "NO NET"
 		return 0
 
 	var/prot = 1
@@ -510,6 +530,7 @@
 		return 0
 
 	if(prot == 0)		// elec insulted gloves protect completely
+		//world << "PROTECTION"
 		return 0
 
 	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
@@ -536,8 +557,8 @@
 		shock_damage = min(rand(20,65),rand(20,65))*prot
 		cell_type = cell_type - 50
 	else
+		//world << "NO SHOCK"
 		return 0
-
 	user.burn_skin(shock_damage)
 	user << "\red <B>You feel a powerful shock course through your body!</B>"
 	sleep(1)
@@ -707,19 +728,19 @@
 
 	return
 
-/obj/machinery/power/apc/surplus()
+/obj/machinery/power/apc/Surplus()
 	if(terminal)
-		return terminal.surplus()
+		return terminal.Surplus()
 	else
 		return 0
 
-/obj/machinery/power/apc/add_load(var/amount)
-	if(terminal && terminal.powernet)
-		terminal.powernet.newload += amount
-
-/obj/machinery/power/apc/avail()
+/obj/machinery/power/apc/AddLoad(var/amount)
 	if(terminal)
-		return terminal.avail()
+		terminal.AddLoad(amount)
+
+/obj/machinery/power/apc/PowerAvailable()
+	if(terminal)
+		return terminal.PowerAvailable()
 	else
 		return 0
 
@@ -754,9 +775,9 @@
 	var/last_en = environ
 	var/last_ch = charging
 
-	var/excess = surplus()
+	var/excess = Surplus()
 
-	if(!src.avail())
+	if(!src.PowerAvailable())
 		main_status = 0
 	else if(excess < 0)
 		main_status = 1
@@ -764,8 +785,10 @@
 		main_status = 2
 
 	var/perapc = 0
-	if(terminal && terminal.powernet)
-		perapc = terminal.powernet.perapc
+	if(terminal)
+		var/datum/UnifiedNetworkController/PowernetController/TerminalController = terminal.GetPowernet()
+
+		perapc = TerminalController.PowerPerAPC
 
 	if(cell && !shorted)
 
@@ -778,7 +801,7 @@
 														// by the same amount just used
 
 			cell.give(cellused)
-			add_load(cellused/CELLRATE)		// add the load used to recharge the cell
+			AddLoad(cellused/CELLRATE)		// add the load used to recharge the cell
 
 
 		else		// no excess, and not enough per-apc
@@ -786,7 +809,7 @@
 			if( (cell.charge/CELLRATE+perapc) >= lastused_total)		// can we draw enough from cell+grid to cover last usage?
 
 				cell.charge = min(cell.maxcharge, cell.charge + CELLRATE * perapc)	//recharge with what we can
-				add_load(perapc)		// so draw what we can from the grid
+				AddLoad(perapc)		// so draw what we can from the grid
 				charging = 0
 
 			else	// not enough power available to run the last tick!
@@ -827,7 +850,7 @@
 			if(excess > 0)		// check to make sure we have enough to charge
 				// Max charge is perapc share, capped to cell capacity, or % per second constant (Whichever is smallest)
 				var/ch = min(perapc, (cell.maxcharge - cell.charge), (cell.maxcharge*CHARGELEVEL))
-				add_load(ch) // Removes the power we're taking from the grid
+				AddLoad(ch) // Removes the power we're taking from the grid
 				cell.give(ch) // actually recharge the cell
 
 			else

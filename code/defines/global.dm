@@ -10,7 +10,7 @@ var/global
 	list/processing_turfs = list()
 		//items that ask to be called every cycle
 
-	defer_powernet_rebuild = 0		// true if net rebuild will be called manually after an event
+	defer_cables_rebuild = 0		// true if all unified networks will be rebuilt on post-event
 
 var
 
@@ -26,6 +26,22 @@ var
 	FAKEBLOCK = 0
 	BLOCKADD = 0
 	DIFFMUT = 0
+	HEADACHEBLOCK = 0
+	COUGHBLOCK = 0
+	TWITCHBLOCK = 0
+	NERVOUSBLOCK = 0
+	NOBREATHBLOCK = 0
+	REMOTEVIEWBLOCK = 0
+	REGENERATEBLOCK = 0
+	INCREASERUNBLOCK = 0
+	REMOTETALKBLOCK = 0
+	MORPHBLOCK = 0
+	BLENDBLOCK = 0
+	HALLUCINATIONBLOCK = 0
+	NOPRINTSBLOCK = 0
+	SHOCKIMMUNITYBLOCK = 0
+	SMALLSIZEBLOCK = 0
+
 
 	skipupdate = 0
 	///////////////
@@ -75,7 +91,7 @@ var
 	chiefMax = 1
 	atmosMax = 4
 	detectiveMax = 1
-	chaplainMax = 1
+	CounselorMax = 1
 	janitorMax = 2
 	doctorMax = 4
 	clownMax = 0
@@ -114,16 +130,15 @@ var
 	list/blobs = list()
 //	list/traitors = list()	//traitor list
 	list/cardinal = list( NORTH, SOUTH, EAST, WEST )
+	list/cardinal8 = list( NORTH, NORTHEAST, NORTHWEST, SOUTH, SOUTHEAST, SOUTHWEST, EAST, WEST )
 	list/cardinal3d = list( NORTH, SOUTH, EAST, WEST, UP, DOWN )
-	list/alldirs = list(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
 
 	datum/station_state/start_state = null
 	datum/configuration/config = null
 	datum/vote/vote = null
 	datum/sun/sun = null
 
-
-	list/powernets = null
+	list/list/AllNetworks = list( )
 
 	Debug = 0	// global debug switch
 	Debug2 = 0
@@ -161,7 +176,7 @@ var
 	list/accesspasswords = list()
 
 	//Routing table used for networking
-	datum/rtable/routingtable = new /datum/rtable()
+	//datum/rtable/routingtable = new /datum/rtable()
 
 	//airlockWireColorToIndex takes a number representing the wire color, e.g. the orange wire is always 1, the dark red wire is always 2, etc. It returns the index for whatever that wire does.
 	//airlockIndexToWireColor does the opposite thing - it takes the index for what the wire does, for example AIRLOCK_WIRE_IDSCAN is 1, AIRLOCK_WIRE_POWER1 is 2, etc. It returns the wire color number.

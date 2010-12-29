@@ -37,12 +37,16 @@ SYNDICATE UPLINK
 			dat += "<A href='byond://?src=\ref[src];item_jump=1'>Chameleon Jumpsuit</A> (3)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_card=1'>Syndicate Card</A> (3)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_emag=1'>Electromagnet Card</A> (3)<BR>"
+			dat += "<A href='byond://?src=\ref[src];item_hacktool=1'>Hacktool</A> (4)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_imp_freedom=1'>Freedom Implant (with injector)</A> (3)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_sleepypen=1'>Sleepy Pen</A> (4)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_cloak=1'>Cloaking Device</A> (4)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_sword=1'>Energy Sword</A> (4)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_bomb=1'>Syndicate Bomb</A> (4)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_powersink=1'>Power Sink</A> (5)<BR>"
+			dat += "<A href='byond://?src=\ref[src];buy_item=imp_compress'>Compressed Matter Implant (with injector)</A> (5)<BR>"
+			dat += "<A href='byond://?src=\ref[src];buy_item=imp_vfac'>Viral Factory Implant</A> (5)<BR>"
+			dat += "<A href='byond://?src=\ref[src];buy_item=imp_explosive'>Explosive Implant (with injector)</A> (6)<BR>"
 			dat += "<li><A href='byond://?src=\ref[src];item_cartridge=1'>Detomatix Cartridge</A> (3)</li>"
 			dat += "<HR>"
 			if (src.origradio)
@@ -52,7 +56,7 @@ SYNDICATE UPLINK
 	user << browse(dat, "window=radio")
 	onclose(user, "radio")
 	return
-
+	// DERPGO
 /obj/item/weapon/syndicate_uplink/Topic(href, href_list)
 	..()
 	if (usr.stat || usr.restrained())
@@ -66,6 +70,10 @@ SYNDICATE UPLINK
 			if (src.uses >= 3)
 				src.uses -= 3
 				new /obj/item/weapon/card/emag( H.loc )
+		else if (href_list["item_hacktool"])
+			if (src.uses >= 4)
+				src.uses -= 4
+				new /obj/item/device/hacktool( H.loc )
 		else if (href_list["item_empbox"])
 			if (src.uses >= 4)
 				src.uses -= 4
@@ -125,6 +133,35 @@ SYNDICATE UPLINK
 			if (src.uses >= 5)
 				src.uses -= 5
 				new /obj/item/device/powersink(H.loc)
+
+//RAGE
+		else if("imp_alien")
+			if (src.uses >= 10)
+				src.uses -= 10
+				var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(H.loc))
+				O.imp = new /obj/item/weapon/implant/alien(O)
+		else if("imp_compress")
+			if (src.uses >= 5)
+				src.uses -= 5
+				var/obj/item/weapon/implanter/compress/O = new /obj/item/weapon/implanter/compress(get_turf(H.loc))
+				O.imp = new /obj/item/weapon/implant/compressed(O)
+		else if("imp_tele")
+			if (src.uses >= 10)
+				src.uses -= 10
+				var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(H.loc))
+				O.imp = new /obj/item/weapon/implant/timplant(O)
+				new /obj/item/device/radio/beacon/traitor(get_turf(H.loc))
+		else if("imp_explosive")
+			if (src.uses >= 6)
+				src.uses -= 6
+				var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(H.loc))
+				O.imp = new /obj/item/weapon/implant/explosive(O)
+				O.name = "(BIO-HAZARD) BIO-detpack"
+		else if("imp_vfac")
+			if (src.uses >= 5)
+				src.uses -= 5
+				var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(H.loc))
+				O.imp = new /obj/item/weapon/implant/vfac(O)
 		else if (href_list["lock"] && src.origradio)
 			// presto chango, a regular radio again! (reset the freq too...)
 			usr.machine = null

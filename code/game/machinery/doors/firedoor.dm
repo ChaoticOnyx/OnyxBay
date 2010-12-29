@@ -7,6 +7,18 @@
 	else
 		stat |= NOPOWER
 
+/obj/machinery/door/firedoor/process()
+	if(src.operating)
+		return
+	if(src.nextstate)
+		if(src.nextstate == OPEN && src.density)
+			spawn()
+				src.open()
+		else if(src.nextstate == CLOSED && !src.density)
+			spawn()
+				src.close()
+		src.nextstate = null
+
 /obj/machinery/door/firedoor/attackby(obj/item/weapon/C as obj, mob/user as mob)
 	src.add_fingerprint(user)
 	if ((istype(C, /obj/item/weapon/weldingtool) && !( src.operating ) && src.density))
@@ -35,6 +47,7 @@
 				update_icon()
 
 				src.ul_SetOpacity(0)
+				update_nearby_tiles()
 				src.operating = 0
 				return
 		else //close it up again
@@ -47,21 +60,10 @@
 				update_icon()
 
 				src.ul_SetOpacity(1)
+				update_nearby_tiles()
 				src.operating = 0
 				return
 	return
-
-/obj/machinery/door/firedoor/process()
-	if(src.operating)
-		return
-	if(src.nextstate)
-		if(src.nextstate == OPEN && src.density)
-			spawn()
-				src.open()
-		else if(src.nextstate == CLOSED && !src.density)
-			spawn()
-				src.close()
-		src.nextstate = null
 
 /obj/machinery/door/firedoor/border_only
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)

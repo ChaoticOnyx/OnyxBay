@@ -1,3 +1,3 @@
 /obj/machinery/shielding
-	var/shieldnetwork = null
+	var/datum/shieldNetwork = null
 	var/tmp/shieldnetnum = 0

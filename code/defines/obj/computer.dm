@@ -3,6 +3,9 @@
 	icon = 'computer.dmi'
 	density = 1
 	anchored = 1.0
+	var/brightnessred = 2
+	var/brightnessgreen = 2
+	var/brightnessblue = 2
 /*
 /obj/machinery/computer/airtunnel
 	name = "Air Tunnel Control"
@@ -15,7 +18,7 @@
 	density = 1
 	anchored = 1.0
 	icon = 'computer.dmi'
-	icon_state = "comm"
+	icon_state = "operating"
 
 	var/mob/living/carbon/human/victim = null
 
@@ -38,10 +41,18 @@
 	var/enemy_mp = 20
 	var/gameover = 0
 	var/blocked = 0 //Player cannot attack/heal while set
+	brightnessred = 0
+	brightnessgreen = 2
+	brightnessblue = 0
+
+
 
 /obj/machinery/computer/aiupload
 	name = "AI Upload"
 	icon_state = "aiupload"
+	brightnessred = 0
+	brightnessgreen = 2
+	brightnessblue = 0
 
 /obj/machinery/computer/atmosphere
 	name = "atmos"
@@ -87,11 +98,17 @@
 	var/mode = 0.0
 	var/printing = null
 	req_access = list(access_change_ids)
+	brightnessred = 0
+	brightnessgreen = 0
+	brightnessblue = 2
 
 /obj/machinery/computer/communications
 	name = "Communications Console"
 	icon_state = "comm"
 	req_access = list(access_heads)
+	brightnessred = 0
+	brightnessgreen = 2
+	brightnessblue = 0
 	var/prints_intercept = 1
 	var/authenticated = 0
 	var/list/messagetitle = list()
@@ -150,8 +167,11 @@
 
 /obj/machinery/computer/med_data
 	name = "Medical Records"
-	icon_state = "dna"
+	icon_state = "medical"
 	req_access = list(access_medical)
+	brightnessred = 0
+	brightnessgreen = 2
+	brightnessblue = 0
 	var/obj/item/weapon/card/id/scan = null
 	var/authenticated = null
 	var/rank = null
@@ -161,6 +181,7 @@
 	var/a_id = null
 	var/temp = null
 	var/printing = null
+	var/obj/item/weapon/disk/data/diskette = null
 
 /obj/machinery/computer/pod
 	name = "Pod Launch Control"
@@ -189,8 +210,11 @@
 
 /obj/machinery/computer/secure_data
 	name = "Security Records"
-	icon_state = "computer_generic"
+	icon_state = "security"
 	req_access = list(access_security)
+	brightnessred = 2
+	brightnessgreen = 0
+	brightnessblue = 0
 	var/obj/item/weapon/card/id/scan = null
 	var/authenticated = null
 	var/rank = null
@@ -201,6 +225,7 @@
 	var/temp = null
 	var/printing = null
 	var/can_change_id = 0
+	var/obj/item/weapon/disk/data/diskette = null
 
 /obj/machinery/computer/secure_data/detective_computer
 	icon = 'computer.dmi'
@@ -208,7 +233,7 @@
 
 /obj/machinery/computer/security
 	name = "Security Cameras"
-	icon_state = "security"
+	icon_state = "seccam"
 	var/obj/machinery/camera/current = null
 	var/last_pic = 1.0
 	var/network = "Luna"

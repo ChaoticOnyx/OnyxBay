@@ -213,6 +213,9 @@
 	if(tally < 0)
 		tally = 0
 
+	if(mutations & mRun)
+		tally = 0
+
 	return tally
 
 /mob/living/carbon/human/Stat()
@@ -1000,7 +1003,7 @@
 			var/icon/stain_icon = null
 			if (istype(wear_suit, /obj/item/clothing/suit/armor/vest || /obj/item/clothing/suit/wcoat || /obj/item/clothing/suit/armor/a_i_a_ptank))
 				stain_icon = icon('blood.dmi', "armorblood[!lying ? "" : "2"]")
-			else if (istype(wear_suit, /obj/item/clothing/suit/det_suit || /obj/item/clothing/suit/labcoat))
+			else if (istype(wear_suit, /obj/item/clothing/suit/storage/det_suit || /obj/item/clothing/suit/storage/labcoat))
 				stain_icon = icon('blood.dmi', "coatblood[!lying ? "" : "2"]")
 			else
 				stain_icon = icon('blood.dmi', "suitblood[!lying ? "" : "2"]")
@@ -1730,11 +1733,11 @@
 					del(src)
 					return
 			if("internal")
-				if ((!( (istype(target.wear_mask, /obj/item/clothing/mask) && istype(target.back, /obj/item/weapon/tank) && !( target.internal )) ) && !( target.internal )))
+				if (!istype(target.wear_mask, /obj/item/clothing/mask) && !istype(target.back, /obj/item/weapon/tank) && !target.internal)
 					//SN src = null
 					del(src)
 					return
-
+				else if((!( (istype(target.wear_mask, /obj/item/clothing/mask) && !istype(target.belt, /obj/item/weapon/tank) && !( target.internal )) ) && !( target.internal )))
 	var/list/L = list( "syringe", "pill", "drink", "dnainjector", "fuel")
 	if ((item && !( L.Find(place) )))
 		for(var/mob/O in viewers(target, null))
@@ -2230,7 +2233,14 @@
 						for(var/mob/M in viewers(target, 1))
 							M.show_message(text("[] is now running on internals.", target), 1)
 						target.internal.add_fingerprint(source)
+					else if(istype(target.belt, /obj/item/weapon/tank)))
+						target.internal = target.belt
+						for(var/mob/M in viewers(target, 1))
+							M.show_message(text("[] is now running on internals.", target), 1)
+						target.internal.add_fingerprint(source)
+
 		else
+
 	if(source)
 		source.update_clothing()
 	if(target)

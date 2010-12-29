@@ -1,4 +1,5 @@
-/obj/alertlighting/firelight	//LORAK ADD 9/27/10 - Alarm Lighting Changes
+//These can probably be moved to the regular defines area.
+/obj/alertlighting/firelight
 	icon = 'alert.dmi'
 	icon_state = "invi"
 	mouse_opacity = 0
@@ -6,4 +7,12 @@
 	anchored = 1
 	density = 0
 	invisibility = 15
-/obj/machinery/door/firedoor/var/secondary_alarm = "null"
+
+/obj/alertlighting/atmoslight
+	icon = 'alert.dmi'
+	icon_state = "invi"
+	mouse_opacity = 0
+	layer = 4
+	anchored = 1
+	density = 0
+	invisibility = 15

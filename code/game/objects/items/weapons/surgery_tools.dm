@@ -6,8 +6,8 @@ CIRCULAR SAW
 */
 
 /obj/item/weapon/scalpel/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M, /mob))
-		return
+	if(!istype(M, /mob) || istype(M, /mob/living/carbon/monkey)) //Adding basic organs to monkeys for implants.
+		return													 //TO DO: Remove the monkey check once you're sure monkey organs are safe to cut. - Abi79
 
 	if((usr.mutations & 16) && prob(50))
 		M << "\red You stab yourself in the eye."
@@ -97,8 +97,8 @@ CIRCULAR SAW
 // CIRCULAR SAW
 
 /obj/item/weapon/circular_saw/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M, /mob))
-		return
+	if(!istype(M, /mob) || istype(M, /mob/living/carbon/monkey)) //Adding basic organs to monkeys for implants.
+		return													 //TO DO: Remove the monkey check once you're sure monkey organs are safe to cut. - Abi79
 
 	if((usr.mutations & 16) && prob(50))
 		M << "\red You cut out your eyes."
@@ -180,6 +180,12 @@ CIRCULAR SAW
 			O.show_message(text("\red [M] gets his [S.display_name] sawed off with [src] by [user]."), 1)
 		S.destroyed = 1
 		M:update_body()
+
+	if(icon_state == "saw3") // Bloodying it up
+		icon_state = "saw2"
+	else if (icon_state == "saw2")
+		icon_state = "saw1"
+
 	return
 
 // Surgical scapel
@@ -448,7 +454,7 @@ and then you have (1-3sec to respond to this eg by applying cotton.
 		if(4)
 			z="[usr] pops [m]'s [organ.display_name] bone into the wrong place"
 		if(5)
-			z="[usr] preforms chiropractice on [m]'s [organ.display_name]"
+			z="[usr] performs chiropractice on [m]'s [organ.display_name]"
 	return z
 
 /obj/item/weapon/surgical_tool/blooddrainer
@@ -460,7 +466,7 @@ and then you have (1-3sec to respond to this eg by applying cotton.
 	stage += 1
 	wound = "blood"
 
-/obj/item/weapon/surgical_tool/bonecracker/get_message(var/n,var/m,var/usr,var/datum/organ/external/organ)
+/obj/item/weapon/surgical_tool/boneddrainer/get_message(var/n,var/m,var/usr,var/datum/organ/external/organ)
 	var/z
 	switch(n)
 		if(1)

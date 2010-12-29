@@ -54,11 +54,11 @@
 				if (player.preferences.occupation3 == "AI")
 					player.preferences.occupation3 = "Captain"
 			if (jobban_isbanned(player, player.preferences.occupation1))
-				player.preferences.occupation1 = "Assistant"
+				player.preferences.occupation1 = "Unassigned"
 			if (jobban_isbanned(player, player.preferences.occupation2))
-				player.preferences.occupation2 = "Assistant"
+				player.preferences.occupation2 = "Unassigned"
 			if (jobban_isbanned(player, player.preferences.occupation3))
-				player.preferences.occupation3 = "Assistant"
+				player.preferences.occupation3 = "Unassigned"
 
 	if (unassigned.len == 0)
 		return 0
@@ -291,24 +291,21 @@
 
 	switch(rank)
 		if ("Counselor")
-			src.equip_if_possible(new /obj/item/weapon/storage/bible(src), slot_l_hand)
 			src.equip_if_possible(new /obj/item/device/pda/chaplain(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/chaplain(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)
-			if(prob(15))
-				src.see_invisible = 15
 
 		if ("Geneticist")
 			src.equip_if_possible(new /obj/item/device/pda/medical(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/geneticist(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/white(src), slot_shoes)
-			src.equip_if_possible(new /obj/item/clothing/suit/labcoat(src), slot_wear_suit)
+			src.equip_if_possible(new /obj/item/clothing/suit/storage/labcoat(src), slot_wear_suit)
 
 		if ("Chemist")
 			src.equip_if_possible(new /obj/item/device/pda/toxins(src), slot_belt)
-			src.equip_if_possible(new /obj/item/clothing/under/rank/geneticist(src), slot_w_uniform)
+			src.equip_if_possible(new /obj/item/clothing/under/rank/chemist(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/white(src), slot_shoes)
-			src.equip_if_possible(new /obj/item/clothing/suit/labcoat(src), slot_wear_suit)
+			src.equip_if_possible(new /obj/item/clothing/suit/storage/labcoat(src), slot_wear_suit)
 
 		if ("Janitor")
 			src.equip_if_possible(new /obj/item/device/pda/janitor(src), slot_belt)
@@ -333,7 +330,7 @@
 			src.equip_if_possible(new /obj/item/weapon/crowbar(src), slot_in_backpack)
 			src.equip_if_possible(new /obj/item/device/t_scanner(src), slot_r_store)
 
-		if ("Assistant")
+		if ("Unassigned")
 			src.equip_if_possible(new /obj/item/clothing/under/color/grey(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)
 
@@ -346,7 +343,7 @@
 			src.equip_if_possible(new /obj/item/clothing/gloves/black(src), slot_gloves)
 			src.equip_if_possible(new /obj/item/weapon/storage/fcard_kit(src), slot_in_backpack)
 			src.equip_if_possible(new /obj/item/weapon/fcardholder(src), slot_in_backpack)
-			src.equip_if_possible(new /obj/item/clothing/suit/det_suit(src), slot_wear_suit)
+			src.equip_if_possible(new /obj/item/clothing/suit/storage/det_suit(src), slot_wear_suit)
 			src.equip_if_possible(new /obj/item/device/detective_scanner(src), slot_in_backpack)
 			src.equip_if_possible(new /obj/item/weapon/zippo(src), slot_l_store)
 
@@ -354,7 +351,7 @@
 			src.equip_if_possible(new /obj/item/device/pda/medical(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/medical(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/white(src), slot_shoes)
-			src.equip_if_possible(new /obj/item/clothing/suit/labcoat(src), slot_wear_suit)
+			src.equip_if_possible(new /obj/item/clothing/suit/storage/labcoat(src), slot_wear_suit)
 			src.equip_if_possible(new /obj/item/weapon/storage/firstaid/regular(src), slot_l_hand)
 
 		if ("Captain")
@@ -437,9 +434,9 @@
 
 		if ("Roboticist")
 			src.equip_if_possible(new /obj/item/device/pda/medical(src), slot_belt)
-			src.equip_if_possible(new /obj/item/clothing/under/color/black(src), slot_w_uniform)
+			src.equip_if_possible(new /obj/item/clothing/under/rank/roboticist(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)
-			src.equip_if_possible(new /obj/item/clothing/suit/labcoat(src), slot_wear_suit)
+			src.equip_if_possible(new /obj/item/clothing/suit/storage/labcoat(src), slot_wear_suit)
 			src.equip_if_possible(new /obj/item/weapon/crowbar(src), slot_in_backpack)
 			src.equip_if_possible(new /obj/item/clothing/gloves/latex(src), slot_gloves)
 			src.equip_if_possible(new /obj/item/weapon/storage/toolbox/mechanical(src), slot_l_hand)
@@ -469,7 +466,7 @@
 			src.equip_if_possible(new /obj/item/device/pda/heads(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/shoes/brown(src), slot_shoes)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/research_director(src), slot_w_uniform)
-			src.equip_if_possible(new /obj/item/clothing/suit/labcoat(src), slot_wear_suit)
+			src.equip_if_possible(new /obj/item/clothing/suit/storage/labcoat(src), slot_wear_suit)
 			src.equip_if_possible(new /obj/item/weapon/clipboard(src), slot_r_hand)
 
 		else
@@ -503,8 +500,10 @@
 				src.loc = start
 		if (istype(S, /obj/landmark/start) && istype(S.loc, /turf))
 			src.loc = S.loc
+			add_stat(1,1)
 	else
 		src.loc = pick(latejoin)
+		src.add_stat(1,1)
 	return
 
 /mob/living/carbon/human/proc/spawnId(rank)

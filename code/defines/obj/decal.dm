@@ -28,7 +28,7 @@
 	blood_DNA = null
 	blood_type = null
 	var/mob/blood_owner = null
-/obj/decal/cleanable/drip
+/obj/decal/cleanable/blood/drip
 	name = "drips of blood"
 	desc = "It's red."
 	density = 0
@@ -36,10 +36,8 @@
 	layer = 2
 	icon = 'drip.dmi'
 	icon_state = "1"
-	var/datum/disease/virus = null
 	blood_DNA = null
 	blood_type = null
-	var/mob/blood_owner = null
 /obj/decal/cleanable/blood/splatter
 	random_icon_states = list("gibbl1", "gibbl2", "gibbl3", "gibbl4", "gibbl5")
 
@@ -146,7 +144,15 @@
 	layer = 3
 	icon = 'old_or_unused.dmi'
 	icon_state = "cobweb2"
-
+/obj/decal/cleanable/water
+	name = "a pool of water"
+	desc = "Someone could get hurt that."
+	density = 0
+	anchored = 1
+	layer = 3
+	icon = 'water.dmi'
+	icon_state = "floor1"
+	random_icon_states = list("floor1", "floor2")
 /obj/decal/sign
 	icon = 'decals.dmi'
 	anchored = 1.0
@@ -157,6 +163,26 @@
 	desc = "A warning sign which reads 'BIO HAZARD'"
 	name = "BIO HAZARD"
 	icon_state = "bio"
+
+/obj/decal/sign/deck1
+	desc = "A silver sign which reads 'DECK I'"
+	name = "DECK I"
+	icon_state = "deck1"
+
+/obj/decal/sign/deck2
+	desc = "A silver sign which reads 'DECK II'"
+	name = "DECK II"
+	icon_state = "deck2"
+
+/obj/decal/sign/deck3
+	desc = "A silver sign which reads 'DECK III'"
+	name = "DECK III"
+	icon_state = "deck3"
+
+/obj/decal/sign/deck4
+	desc = "A silver sign which reads 'DECK IV'"
+	name = "DECK IV"
+	icon_state = "deck4"
 
 /obj/decal/sign/electrical
 	desc = "A warning sign which reads 'ELECTRICAL HAZARD'"
@@ -182,6 +208,11 @@
 	desc = "A warning sign which reads 'SPACE DEPRESSURIZATION'"
 	name = "SPACE DEPRESSURIZATION"
 	icon_state = "space"
+
+/obj/decal/sign/memetic
+	desc = "A warning sign of memetic danger, which reads 'MEMETIC DANGER, USE MESONS'."
+	name = "MEMETIC DANGER, USE MESONS."
+	icon_state = "memetic"
 
 /obj/decal/sign/stairsup
 	desc = "A sign which shows an arrow pointing up stairs"

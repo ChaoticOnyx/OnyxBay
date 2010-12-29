@@ -34,6 +34,7 @@ var/global/datum/controller/gameticker/ticker
 
 	spawn setup()
 
+
 /datum/controller/gameticker/proc/setup()
 	//Create and announce mode
 	if(master_mode=="secret")
@@ -96,18 +97,10 @@ var/global/datum/controller/gameticker/ticker
 		//Start master_controller.process()
 		world << "<FONT color='blue'><B>Enjoy the game!</B></FONT>"
 
-//	spawn (3000)
-//		start_events()
-//	spawn ((18000+rand(3000)))
-//		event()
 	spawn(0)
-		var/eventa = 1
 		while(1)
-			eventa += 1
-			if(eventa > 3)
-				eventa = 1
 			sleep(10000)
-			new_event(eventa)
+			SpawnEvent()
 
 	spawn master_controller.process()
 

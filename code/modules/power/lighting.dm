@@ -24,6 +24,7 @@
 	var/status = LIGHT_OK		// LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 	var/isalert = 0
 	var/switching = 0
+	var/flickering = 0			// 0 or 1. Prevents ghosts from flickering lights while that light is already being flickered
 
 	var/light_type = /obj/item/weapon/light/tube		// the type of light item
 
@@ -42,6 +43,10 @@
 		brightnessred = 5
 		brightnessgreen = 5
 
+	red
+		brightnessgreen = 2
+		brightnessblue = 2
+
 // the smaller bulb light fixture
 
 /obj/machinery/light/small
@@ -57,6 +62,10 @@
 	red
 		brightnessgreen = 0
 		brightnessblue = 0
+
+/obj/machinery/light/broken
+	icon_state = "tube-broken"
+	status = LIGHT_BROKEN
 
 // the desk lamp
 /obj/machinery/light/lamp
@@ -88,24 +97,37 @@
 	spawn(1)
 		update()
 
+
+/obj/machinery/light/small/New()
+	..()
+	if(prob(10))
+		status = LIGHT_BROKEN
+
+	spawn(1)
+		update()
+
 // update the icon_state and luminosity of the light depending on its state
-/obj/machinery/light/proc/update()
+// skip_check is currently used for ghosts flickering lights. It skips the status check, so that burned lights can also work.
+// It also skips the burning probability check. In flickering, that means the light has a chance of burning only when it reverts to its default state
+/obj/machinery/light/proc/update(var/skip_check = 0)
 	set background=1
 	if (switching)
 		return
-
-	switch(status)		// set icon_states
-		if(LIGHT_OK)
-			icon_state = "[base_state][on]"
-		if(LIGHT_EMPTY)
-			icon_state = "[base_state]-empty"
-			on = 0
-		if(LIGHT_BURNED)
-			icon_state = "[base_state]-burned"
-			on = 0
-		if(LIGHT_BROKEN)
-			icon_state = "[base_state]-broken"
-			on = 0
+	if(!skip_check)
+		switch(status)		// set icon_states
+			if(LIGHT_OK)
+				icon_state = "[base_state][on]"
+			if(LIGHT_EMPTY)
+				icon_state = "[base_state]-empty"
+				on = 0
+			if(LIGHT_BURNED)
+				icon_state = "[base_state]-burned"
+				on = 0
+			if(LIGHT_BROKEN)
+				icon_state = "[base_state]-broken"
+				on = 0
+	else
+		icon_state = "[base_state][on]"
 
 	var/oldlum = ul_Luminosity()
 
@@ -120,7 +142,7 @@
 		if(status == LIGHT_OK)
 			if(on && rigged)
 				explode()
-			if( prob( min(60, switchcount*switchcount*burnchance) ) )
+			if( prob(min(60, switchcount*switchcount*burnchance)) && !skip_check )
 				status = LIGHT_BURNED
 				icon_state = "[base_state]-burned"
 				on = 0
@@ -149,9 +171,49 @@
 				usr << "[desc] The [fitting] has been smashed."
 
 
+// flicker lights on and off - ghosts
+/obj/machinery/light/Click()
+	..()
+	//if(flickering)
+	//	return
+	if(istype(usr, /mob/dead/observer) && get_dist(usr,src) <= 1 && !flickering)
+		flickering = 1
+
+		if(status == LIGHT_EMPTY || status == LIGHT_BROKEN)
+			usr << "There is no [fitting] in this light."
+			return
+		if(on)
+			usr << "Your touch robs the [fitting] of its energy!"
+		else
+			usr << "Your touch breathes energy into the [fitting]!"
+
+		on = !on
+		update(1) // Flicker once
+		sleep(10)
+		on = !on
+		update(1) // Flicker back to initial state
+		sleep(10)
+		on = !on
+		update(1) // Flicker again
+		sleep(30)
+		on = !on
+		update()	// And return to default state
+
+		flickering = 0
+
+	return
+
+///obj/machinery/light/verb/flicker(obj/machinery/light/L in view())
+//	set name = "Flicker"
+//	set src in view()
+//	set invisibility = 15
+//	if(!istype(usr, /mob/dead/observer))
+//		usr << "You can not find a way to flicker the lights from here."
+//		return
+//	L.flickerL(usr, L)
+
 
 // attack with item - insert light (if right type), otherwise try to break the light
-
 /obj/machinery/light/attackby(obj/item/W, mob/user)
 
 	if (istype(user, /mob/living/silicon))
@@ -195,7 +257,7 @@
 				M.show_message("[user.name] smashed the light!", 3, "You hear a tinkle of breaking glass", 2)
 			if(on && (W.flags & CONDUCT))
 				if(!user.mutations & 2)
-					src.electrocute(user, 50, null, 20000)
+					src.Electrocute(user, 50, null, 20000)
 			broken()
 
 
@@ -210,7 +272,7 @@
 			s.set_up(3, 1, src)
 			s.start()
 			if(!user.mutations & 2)
-				src.electrocute(user, 75, null, 20000)
+				src.Electrocute(user, 75, null, 20000)
 
 
 // returns whether this light has power
@@ -220,17 +282,12 @@
 	return A.master.lightswitch && A.master.power_light
 
 
-// ai attack - do nothing
-
-/obj/machinery/light/attack_ai(mob/user)
-	return
-
-
 // attack with hand - remove tube/bulb
 // if hands aren't protected and the light is on, burn the player
 
 /obj/machinery/light/attack_hand(mob/user)
-
+	if (istype(user, /mob/living/silicon))
+		return
 	add_fingerprint(user)
 
 	if(status == LIGHT_EMPTY)
@@ -246,7 +303,6 @@
 
 			if(H.gloves)
 				var/obj/item/clothing/gloves/G = H.gloves
-
 				prot = (G.heat_transfer_coefficient < 0.5)	// *** TODO: better handling of glove heat protection
 		else
 			prot = 1
@@ -427,7 +483,6 @@
 	flags = FPRINT | TABLEPASS
 	force = 2
 	throwforce = 5
-	w_class = 2
 	var/status = 0		// LIGHT_OK, LIGHT_BURNED or LIGHT_BROKEN
 	var/base_state
 	var/switchcount = 0	// number of times switched
@@ -437,6 +492,7 @@
 /obj/item/weapon/light/tube
 	name = "light tube"
 	desc = "A replacement light tube."
+	w_class = 3.0
 	icon_state = "ltube"
 	base_state = "ltube"
 	item_state = "c_tube"
@@ -445,6 +501,7 @@
 /obj/item/weapon/light/bulb
 	name = "light bulb"
 	desc = "A replacement light bulb."
+	w_class = 2.0
 	icon_state = "lbulb"
 	base_state = "lbulb"
 	item_state = "contvapour"

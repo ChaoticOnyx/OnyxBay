@@ -10,7 +10,8 @@
 	var/operating = 0
 	anchored = 1
 	var/autoclose = 0
-
+	var/autoopen = 1
+	var/locked = 0 // Currently in use for airlocks and window doors (alien weeds forcing the window doors open)
 /obj/machinery/door/firedoor
 	name = "Firelock"
 	explosionstrength = 4

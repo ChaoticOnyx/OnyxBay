@@ -52,17 +52,17 @@
 	icon_opened = "bioopen"
 
 /obj/closet/syndicate
-	desc = "Why is this here?"
+	desc = "Syndicate preparations closet."
 	name = "Weapons Closet"
 	icon_state = "syndicate"
 	icon_closed = "syndicate"
 	icon_opened = "syndicateopen"
 
 /obj/closet/syndicate/personal
-	desc = "Gear preperations closet."
+	desc = "Gear preparations closet."
 
 /obj/closet/syndicate/nuclear
-	desc = "Nuclear preperations closet."
+	desc = "Nuclear preparations closet."
 
 /obj/closet/thunderdome
 	desc = "Everything you need!"
@@ -103,7 +103,7 @@
 	icon_state = "black"
 	icon_closed = "black"
 
-/obj/closet/wardrobe/chaplain_black
+/obj/closet/wardrobe/Counselor_black
 	name = "Counselor Wardrobe"
 	icon_state = "black"
 	icon_closed = "black"
@@ -128,6 +128,11 @@
 	icon_state = "pink"
 	icon_closed = "pink"
 
+/obj/closet/wardrobe/quartermasters
+	name = "Quartermasters Wardrobe"
+	icon_state = "yellow"
+	icon_closed = "yellow"
+
 /obj/closet/wardrobe/red
 	name = "Red Wardrobe"
 	icon_state = "red"
@@ -144,8 +149,18 @@
 	icon_state = "white"
 	icon_closed = "white"
 
+/obj/closet/wardrobe/chemistry_white
+	name = "Chemistry Wardrobe"
+	icon_state = "white"
+	icon_closed = "white"
+
 /obj/closet/wardrobe/toxins_white
 	name = "Toxins Wardrobe"
+	icon_state = "white"
+	icon_closed = "white"
+
+/obj/closet/wardrobe/robotics_white
+	name = "Robotics Wardrobe"
 	icon_state = "white"
 	icon_closed = "white"
 

@@ -1,6 +1,6 @@
 /proc/replace(haystack, needle, newneedle)
 	var
-		list/find_list = stringsplit(needle, haystack)
+		list/find_list = stringsplit(haystack, needle)
 		final_text = listjoin(find_list,newneedle)
 	return final_text
 
@@ -15,11 +15,15 @@
 	return final_text
 
 /proc/get_dir_3d(var/atom/ref, var/atom/target)
+	if (get_turf(ref) == get_turf(target))
+		return 0
 	return get_dir(ref, target) | (target.z > ref.z ? DOWN : 0) | (target.z < ref.z ? UP : 0)
 
 //Bwahahaha! I am extending a built-in proc for personal gain!
 //(And a bit of nonpersonal gain, I guess)
 /proc/get_step_3d(atom/ref,dir)
+	if(!dir)
+		return get_turf(ref)
 	if(!dir&(UP|DOWN))
 		return get_step(ref,dir)
 	//Well, it *did* use temporary vars dx, dy, and dz, but this probably should be as fast as possible
@@ -37,9 +41,7 @@
 	ndir |= (dir&DOWN)?UP : 0
 	return ndir
 
-
-
-/proc/stringsplit(character, txt)
+/proc/stringsplit(txt, character)
 	var
 		cur_text = txt
 		last_found = 1
@@ -661,7 +663,7 @@
 			if(istype(M, /mob/dead/observer/))
 				name += " \[ghost\]"
 			else if(istype(M,/mob/dead/official))
-				name += "NanoTrasen Offical"
+				name += "NanoTrasen Official"
 			else
 				name += " \[dead\]"
 		creatures[name] = M

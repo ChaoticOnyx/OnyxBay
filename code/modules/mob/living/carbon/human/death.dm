@@ -7,7 +7,7 @@
 		//hallucination = 0
 		halloss = 0
 		// And the suffocation was a hallucination (lazy)
-		oxyloss = max(oxyloss - 50,0)
+		oxyloss = 0
 		return
 	if(zombifying)
 		zombify()
@@ -18,10 +18,10 @@
 
 	if(!suiciding)
 		add_stat(2,1)
-		unlock_medal("Downsizing", 0, "You are no longer a profitable assert.", "easy")
+		unlock_medal("Downsizing", 0, "You are no longer a profitable asset.", "easy")
 	else
 		add_stat(3,1)
-		unlock_medal("I can't take it anymore!", 0, "Kill yourself..", "easy")
+		unlock_medal("I can't take it anymore!", 0, "Kill yourself...", "easy")
 	if (!gibbed)
 		emote("deathgasp") //let the world KNOW WE ARE DEAD
 

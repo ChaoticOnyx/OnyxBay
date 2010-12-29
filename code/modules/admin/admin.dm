@@ -6,9 +6,11 @@ var/showadminmessages = 1
 	for (var/client/C)
 		if (C.holder)
 			if (admin_ref)
-				C.mob << dd_replaceText(rendered, "%admin_ref%", "\ref[C.mob]")
+				if(C.inchat) C.mob << dd_replaceText(rendered, "%admin_ref%", "\ref[C.mob]")
+				C.mob << output(rendered, "adminoutput")
 			else
-				C.mob << rendered
+				if(C.inchat) C.mob << rendered
+				C.mob << output(rendered, "adminoutput")
 
 /proc/toggle_adminmsg()
 	showadminmessages = !showadminmessages
@@ -28,7 +30,8 @@ var/showadminmessages = 1
 				return
 			switch(href_list["call_shuttle"])
 				if("1")
-					if ((!( ticker ) || main_shuttle.location))
+					if ((!( ticker ) || main_shuttle.location == 0))
+						world << "This seems to be killing it."
 						return
 					LaunchControl.start()
 					world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(LaunchControl.timeleft()/60)] minutes.</B>"
@@ -301,6 +304,7 @@ var/showadminmessages = 1
 			<A href='?src=\ref[src];c_mode2=confliction'>Confliction (TESTING)</A><br>
 			<A href='?src=\ref[src];c_mode2=ctf'>Capture The Flag (Beta)</A><br><br>
 			<A href='?src=\ref[src];c_mode2=derelict'>Derelict (Beta)</A><br><br>
+			<A href='?src=\ref[src];c_mode2=among'>Traitor among us (Beta)</A><br><br>
 			Now: [master_mode]\n"})
 			usr << browse(dat, "window=c_mode")
 
@@ -343,6 +347,8 @@ var/showadminmessages = 1
 					master_mode = "ctf"
 				if("derelict")
 					master_mode = "derelict"
+				if("among")
+					master_mode = "traitoramongus"
 				else
 			log_admin("[key_name(usr)] set the mode as [master_mode].")
 			message_admins("\blue [key_name_admin(usr)] set the mode as [master_mode].", 1)
@@ -603,8 +609,8 @@ var/showadminmessages = 1
 			foo += text("<A href='?src=\ref[src];jobban2=\ref[M]'>Jobban</A> | ")
 			foo += text("<A href='?src=\ref[src];boot2=\ref[M]'>Boot</A> | ")
 		foo += text("<A href='?src=\ref[src];jumpto=\ref[M]'>Jump to</A> | ")
-		foo += text("<A href='?src=\ref[src];newban=\ref[M]'>Ban</A> \]")
-		foo += text("<A href='?src=\ref[src];invite=\ref[M]'>Toggle invite</A> \]")
+		foo += text("<A href='?src=\ref[src];newban=\ref[M]'>Ban</A> | ")
+		foo += text("<A href='?src=\ref[src];invite=\ref[M]'>Toggle invite</A>\]")
 		dat += text("<body>[foo]</body></html>")
 		usr << browse(dat, "window=adminplayeropts;size=480x100")
 
@@ -628,7 +634,7 @@ var/showadminmessages = 1
 				else if(M.mind in current_mode:revolutionaries)
 					alert("Is a Revolutionary!")
 				return
-			if("wizard")
+		/*	if("wizard")
 				if(current_mode:wizard && M.mind == current_mode:wizard)
 					var/datum/mind/antagonist = M.mind
 					var/t = ""
@@ -637,7 +643,7 @@ var/showadminmessages = 1
 					if(antagonist.objectives.len == 0)
 						t = "None defined."
 					alert("Is a WIZARD. Objective(s):\n[t]", "[M.key]")
-					return
+					return*/
 			if("malfunction")
 				if(M.mind in current_mode:malf_ai)
 					alert("Is malfunctioning!")
@@ -1041,8 +1047,11 @@ var/showadminmessages = 1
 							Wall.ex_act(rand(2,1)) */
 				if("wave")
 					if ((src.rank in list("Primary Administrator", "Super Administrator", "Coder", "Host"  )))
-						meteor_wave()
-						message_admins("[key_name_admin(usr)] has spawned meteors", 1)
+						var/nrMet = input("Meteor number:","Num",1) as num
+						for(var/i = 1; i <= nrMet; i++)
+							spawn(0)
+								spawn_meteor()
+						message_admins("[key_name_admin(usr)] has spawned [nrMet] meteors", 1)
 					else
 						alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 						return
@@ -1276,7 +1285,7 @@ var/showadminmessages = 1
 			if(istype(M, /mob/dead/observer))
 				dat += "<td>Ghost</td>"
 			if(istype(M, /mob/dead/official))
-				dat += "<td>Offical</td>"
+				dat += "<td>Official</td>"
 			if(istype(M, /mob/living/carbon/monkey))
 				dat += "<td>Monkey</td>"
 			if(istype(M, /mob/living/carbon/alien))
@@ -1284,7 +1293,7 @@ var/showadminmessages = 1
 			dat += {"<td>[(M.client ? "[M.client]" : "No client")]</td>
 			<td align=center><A HREF='?src=\ref[src];adminplayeropts=\ref[M]'>X</A></td>
 			<td align=center><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>
-			<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'>[checktraitor(M) ? "<font color=red>" : "<font>"]Traitor?</font></A></td></tr>
+			<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'>Traitor?</A></td></tr>
 			"}
 
 	dat += "</table></body></html>"
@@ -1753,9 +1762,12 @@ var/showadminmessages = 1
 		if("nuclear")
 			if(M.mind in ticker.mode:syndicates)
 				return 1
-		if("wizard")
-			if(M.mind == ticker.mode:wizard)
+		if("traitoramongus")
+			if(M.mind in ticker.mode:chosentraitor)
 				return 1
+		//if("wizard")
+		//	if(M.mind == ticker.mode:wizard)
+		//		return 1
 	if(M.mind in ticker.mode.traitors)
 		return 1
 
