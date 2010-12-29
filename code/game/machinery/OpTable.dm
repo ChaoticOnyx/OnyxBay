@@ -1,6 +1,6 @@
 /obj/machinery/optable/New()
 	..()
-	spawn(100)
+	spawn(100) // Delaying to let the operating computers load
 		for(var/obj/machinery/computer/operating/O in world)
 			if(src.id == O.id)
 				src.computer = O
