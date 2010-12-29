@@ -62,8 +62,8 @@ datum/controller/game_controller
 		setupgenetics()
 
 		setupdooralarms()		//Added by Strumpetplaya - Alarm Change
-
-
+		BOOKHAND = new()
+		world << "\red Setting up the book system..."
 	// Handled by datum declerations now in the shuttle controller file
 
 	//	main_shuttle = new /datum/shuttle_controller/main_shuttle()
@@ -140,7 +140,8 @@ datum/controller/game_controller
 			ticker_debug = "uninet processing"
 			var/list/NetworkSet = AllNetworks[OuterKey]
 			for(var/datum/UnifiedNetwork/Network in NetworkSet)
-				Network.Controller.Process()
+				if(Network)
+					Network.Controller.Process()
 
 		for(var/turf/t in processing_turfs)
 			ticker_debug = "turf processing"

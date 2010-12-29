@@ -5,7 +5,6 @@
 // BEGIN_INTERNALS
 // END_INTERNALS
 // BEGIN_FILE_DIR
-#define FILE_DIR .
 #define FILE_DIR "code"
 #define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
@@ -103,6 +102,14 @@
 #define FILE_DIR "code/WorkInProgress/Strumpetplaya"
 #define FILE_DIR "code/WorkInProgress/UnifiedCabling"
 #define FILE_DIR "code/WorkInProgress/ZeroPoint"
+#define FILE_DIR "config"
+#define FILE_DIR "config/names"
+#define FILE_DIR "config/namesold"
+#define FILE_DIR "data"
+#define FILE_DIR "data/logs"
+#define FILE_DIR "data/logs/2010"
+#define FILE_DIR "data/logs/2010/11-November"
+#define FILE_DIR "data/logs/2010/12-December"
 #define FILE_DIR "icons"
 #define FILE_DIR "icons/effects"
 #define FILE_DIR "icons/misc"
@@ -113,6 +120,7 @@
 #define FILE_DIR "icons/obj/doors"
 #define FILE_DIR "icons/obj/machines"
 #define FILE_DIR "icons/obj/pipes"
+#define FILE_DIR "icons/PSD files"
 #define FILE_DIR "icons/Testing"
 #define FILE_DIR "icons/turf"
 #define FILE_DIR "icons/UI"
@@ -120,6 +128,7 @@
 #define FILE_DIR "maps"
 #define FILE_DIR "maps/backup"
 #define FILE_DIR "maps/travel"
+#define FILE_DIR "music"
 #define FILE_DIR "sound"
 #define FILE_DIR "sound/ambience"
 #define FILE_DIR "sound/effects"
@@ -132,6 +141,7 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
+#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -221,12 +231,14 @@
 #include "code\defines\obj\clothing\spacesuits.dm"
 #include "code\defines\obj\spawner\bomb.dm"
 #include "code\defines\procs\AStar.dm"
+#include "code\defines\procs\church_name.dm"
 #include "code\defines\procs\command_alert.dm"
 #include "code\defines\procs\command_name.dm"
 #include "code\defines\procs\gamehelpers.dm"
 #include "code\defines\procs\helpers.dm"
 #include "code\defines\procs\logging.dm"
 #include "code\defines\procs\navigation.dm"
+#include "code\defines\procs\religion_name.dm"
 #include "code\defines\procs\station_name.dm"
 #include "code\defines\procs\syndicate_name.dm"
 #include "code\FEA\FEA_airgroup.dm"
@@ -493,6 +505,7 @@
 #include "code\game\verbs\ooc.dm"
 #include "code\game\verbs\suicide.dm"
 #include "code\game\verbs\who.dm"
+#include "code\head\books.dm"
 #include "code\head\changelog.dm"
 #include "code\head\medals.dm"
 #include "code\head\mysql.dm"

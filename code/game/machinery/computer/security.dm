@@ -437,7 +437,7 @@ Note: If the ingame version of this differs, than this is the version to follow.
 <td><b>Resisting Arrest</b>
 </td><td>Not cooperating with the officer who demands you turn yourself in peacefully. Shouting "No!" or otherwise making the officer have the need to tase you to put handcuffs on.
 </td><td> +30 seconds to original time
-</td><td> See manhunt if the suspect runs away. Or attack on an officer if he fights back. This is for shouting/swearing and moving around a bit (just so you cant cuff him) only.
+</td><td> See manhunt if the suspect runs away. Or attack on an officer if he fights back. This is for shouting/swearing and moving around a bit (just so you can't cuff him) only.
 </td></tr>
 <tr>
 <td><b>Petty Theft</b>
