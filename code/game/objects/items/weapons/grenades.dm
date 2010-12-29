@@ -194,9 +194,14 @@ FLASHBANG
 		if(istype(A, /obj/machinery/camera))
 			A.icon_state = "cameraemp"
 			A:network = null                   //Not the best way but it will do. I think.
+
+			var/initial_status = A:status	   //So that motion cameras get disabled and won't send any messages when EMPed
+			A:status = 0
+
 			spawn(900)
 				A:network = initial(A:network)
 				A:icon_state = initial(A:icon_state)
+				A:status = initial_status
 			for(var/mob/living/silicon/ai/O in world)
 				if (O.current == A)
 					O.cancel_camera()
