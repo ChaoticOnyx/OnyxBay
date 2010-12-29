@@ -43,8 +43,12 @@
 	proc
 		BlowLight() //Blow out a light fixture
 			var/obj/machinery/light/Light = null
+			var/insanity = 0
 			while (Light == null || Light.status != LIGHT_OK)
 				Light = pick(Lights)
+				insanity++
+				if (insanity >= Lights.len)
+					return
 
 			spawn(0) //Overload the light, spectacularly.
 				Light.ul_SetLuminosity(10)
@@ -53,9 +57,13 @@
 				Light.broken()
 
 		DisruptAPC()
+			var/insanity = 0
 			var/obj/machinery/power/apc/APC
 			while (!APC || !APC.operating)
 				APC = pick(APCs)
+				insanity++
+				if (insanity >= APCs.len)
+					return
 
 			if (prob(40))
 				APC.operating = 0 //Blow its breaker

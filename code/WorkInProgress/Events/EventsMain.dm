@@ -1,3 +1,12 @@
+/*
+
+	New events system, by Sukasa
+	 * Much easier to add to
+	 * Very, very simple code, easy to maintain
+
+*/
+
+
 var/list/EventTypes = typesof(/datum/event) - /datum/event
 var/datum/event/ActiveEvent = null
 var/datum/event/LongTermEvent = null
