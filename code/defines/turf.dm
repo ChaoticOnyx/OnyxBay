@@ -386,6 +386,7 @@
 	nitrogen = 0.01
 	opacity = 1
 	density = 1
+	blocks_air = 1
 
 /turf/simulated/asteroid/wall/New()
 	processing_turfs.Add(src)
