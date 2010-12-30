@@ -584,6 +584,17 @@
 	name = "microexplosive"
 	var/phrase = "flatlander"
 
+/obj/item/weapon/implant/master
+	name = "master"
+	var/phrase = "123"
+	var/obj/item/weapon/implant/slave/s
+
+/obj/item/weapon/implant/slave
+	name = "slave"
+	var/phrase = "123"
+	var/obj/item/weapon/implant/master/m
+	var/mob/living/carbon/human/derp/d
+
 /obj/item/weapon/implant/vfac
 	name = "viral factory"
 	var/phrase = "flatlander"

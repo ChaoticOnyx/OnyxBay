@@ -3,6 +3,8 @@
 /mob/animate_movement = 2
 /mob/mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
+/mob/var/mholder = null
+
 /mob/var/datum/mind/mind
 
 /mob/var/uses_hud = 0
