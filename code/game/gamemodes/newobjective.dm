@@ -426,7 +426,7 @@ datum
 					if(4)
 						return INFINITY
 
-
+/*
 		steal/burger
 			steal_target = /obj/item/weapon/reagent_containers/food/snacks/humanburger
 			explanation_text = "Damn those Nanotrasen burgers are good... what -is- their secret ingredient?!  Steal a hamburger, and not some crap monkeyburger, we want the real deal."
@@ -443,7 +443,7 @@ datum
 					if(3)
 						return 30
 					if(4)
-						return INFINITY
+						return INFINITY*/
 
 
 		/*Needs some work before it can be put in the game to differentiate ship implanters from syndicate implanters.

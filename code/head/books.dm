@@ -86,6 +86,7 @@ obj/machinery/bookcase
 	icon_state = "messyfiles"
 	density = 1
 	var/cat = Fiction
+	anchored = 1
 
 obj/machinery/bookcase/engi
 	name = "Engineering Bookcase"

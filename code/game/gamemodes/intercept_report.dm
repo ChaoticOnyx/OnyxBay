@@ -91,7 +91,7 @@
 		traitor_job = correct_mob:assigned_role
 	else
 		var/list/job_tmp = get_all_jobs()
-		job_tmp.Remove("Captain", "Security Officer", "Detective", "Head Of Security", "Head of Personnel", "Chief Engineer", "Research Director")
+		job_tmp.Remove("Captain", "Security Officer", "Forensics Technician", "Head Of Security", "Head of Personnel", "Chief Engineer", "Research Director")
 		traitor_job = pick(job_tmp)
 	if(prob(prob_right_dude) && ticker.mode == "revolution")
 		traitor_name = correct_mob:current
