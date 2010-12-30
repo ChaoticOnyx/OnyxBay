@@ -85,6 +85,7 @@ obj/machinery/bookcase
 	icon = 'computer.dmi'
 	icon_state = "messyfiles"
 	var/cat = Fiction
+	anchored = 1
 
 obj/machinery/bookcase/engi
 	name = "Engineering Bookcase"
