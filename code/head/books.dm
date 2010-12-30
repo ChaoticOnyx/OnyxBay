@@ -84,6 +84,7 @@ obj/machinery/bookcase
 	name = "Fiction Bookcase"
 	icon = 'computer.dmi'
 	icon_state = "messyfiles"
+	density = 1
 	var/cat = Fiction
 
 obj/machinery/bookcase/engi
@@ -131,6 +132,7 @@ obj/machinery/bookcase/attackby(obj/item/weapon/book/B,mob/user)
 obj/machinery/writersdesk
 	name = "Writer Desk"
 	desc = "A desk with various tools to write a book"
+	density = 1
 	icon = 'structures.dmi'
 	icon_state = "writers"
 obj/machinery/writersdesk/attack_hand(mob/user)
