@@ -707,9 +707,9 @@
 	icon_state = "security"
 
 
-/area/randr
-	name = "R&R room"
-	icon_state = "yellow"
+/area/security/detectives_office
+	name = "Detectives Office"
+	icon_state = "detective"
 
 /area/solar
 	requires_power = 0

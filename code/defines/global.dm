@@ -90,7 +90,7 @@ var
 	directorMax = 1
 	chiefMax = 1
 	atmosMax = 4
-	ForensicsTechnicianMax = 1
+	detectiveMax = 1
 	CounselorMax = 1
 	janitorMax = 2
 	doctorMax = 4

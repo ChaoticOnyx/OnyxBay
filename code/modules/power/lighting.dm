@@ -102,8 +102,6 @@
 	..()
 	if(prob(10))
 		status = LIGHT_BROKEN
-	if(prob(10))
-		del(src)
 
 	spawn(1)
 		update()

@@ -176,7 +176,7 @@
 	item_state = "syringe_kit"
 
 /obj/item/weapon/storage/donkpocket_kit
-	name = "Cheezy Chrisps"
+	name = "Donk-Pockets"
 	desc = "Remember to fully heat prior to serving.  Product will cool if not eaten within seven minutes."
 	icon_state = "donk_kit"
 	item_state = "syringe_kit"
