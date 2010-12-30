@@ -5,7 +5,7 @@
 
 /datum/game_mode/traitoramongus/announce()
 	world << "<B>The current game mode is - Traitor among us!</B>"
-	world << "<B>Somebody is a triator!</B>"
+	world << "<B>Somebody is a traitor!</B>"
 
 /datum/game_mode/traitoramongus/pre_setup()
 

@@ -490,7 +490,7 @@
 
 /obj/item/clothing/suit/wizrobe
 	name = "robe"
-	desc = "A magnificant blue robe that seems to radiate power"
+	desc = "A magnificent blue robe that seems to radiate power"
 	icon_state = "wizard"
 	item_state = "wizrobe"
 	gas_transfer_coefficient = 0.01 // IT'S MAGICAL OKAY JEEZ +1 TO NOT DIE

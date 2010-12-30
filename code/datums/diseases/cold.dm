@@ -22,11 +22,11 @@
 				affected_mob.resistances += affected_mob.virus.type
 				affected_mob.virus = null
 				return
-			if(prob(1))
+			if(prob(15))
 				affected_mob.emote("sneeze")
-			if(prob(1))
+			if(prob(5))
 				affected_mob.emote("cough")
-			if(prob(1))
+			if(prob(30))
 				affected_mob << "\red Your throat feels sore."
 			if(prob(1))
 				affected_mob << "\red Mucous runs down the back of your throat."
@@ -40,13 +40,13 @@
 				affected_mob << "\blue You feel better."
 				affected_mob.resistances += affected_mob.virus.type
 				affected_mob.virus = null
-			if(prob(1))
+			if(prob(20))
 				affected_mob.emote("sneeze")
-			if(prob(1))
+			if(prob(10))
 				affected_mob.emote("cough")
-			if(prob(1))
+			if(prob(40))
 				affected_mob << "\red Your throat feels sore."
-			if(prob(1))
+			if(prob(32))
 				affected_mob << "\red Mucous runs down the back of your throat."
 		if(4)
 			if(affected_mob.sleeping && prob(25))

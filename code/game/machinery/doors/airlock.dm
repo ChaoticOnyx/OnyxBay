@@ -25,7 +25,7 @@
 	regainMainPower - handles the effects of main power coming back on.
 	loseMainPower - handles the effects of main power going offline. Usually (if one isn't already running) spawn a thread to count down how long it will be offline - counting down won't happen if main power was completely cut along with backup power, though, the thread will just sleep.
 	loseBackupPower - handles the effects of backup power going offline.
-	regainBackupPower - handles the effects of main power coming back on.
+	regainBackupPower - handles the effects of backup power coming back on.
 	shock - has a chance of electrocuting its target.
 */
 
@@ -236,14 +236,14 @@ About the new airlock wires panel:
 			//raises them if they are down (only if power's on)
 			if (!src.locked)
 				src.locked = 1
-				usr << "You hear a click from the bottom of the door."
+				//usr << "You hear a click from the bottom of the door."
 				src.updateUsrDialog()
 			else
 				if(src.arePowerSystemsOn()) //only can raise bolts if power's on
 					src.locked = 0
 					src.air_locked = 0
 					src.updateUsrDialog()
-				usr << "You hear a click from inside the door."
+				//usr << "You hear a click from inside the door."
 			update_icon()
 
 		if (AIRLOCK_WIRE_BACKUP_POWER1 || AIRLOCK_WIRE_BACKUP_POWER2)

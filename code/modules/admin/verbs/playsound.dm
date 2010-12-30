@@ -25,7 +25,7 @@
 			usr << "You already used up your jukebox monies this round!"
 			del(uploaded_sound)
 //	else
-//		usr << "Cant play Sound."
+//		usr << "Can't play Sound."
 
 
 	//else

@@ -519,7 +519,7 @@
 			//Stop baking in the tubes you jerks.
 			src.occupant.fireloss = max(src.occupant.fireloss-2, 0)
 
-			use_power(75000) //This might need tweaking.
+			use_power(65000) //This might need tweaking.
 			return
 
 		else if((src.occupant.health >= src.heal_level) && (!src.eject_wait))

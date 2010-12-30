@@ -395,6 +395,7 @@
 	nitrogen = 0.01
 	opacity = 1
 	density = 1
+	blocks_air = 1
 
 /turf/simulated/asteroid/wall/New()
 	processing_turfs.Add(src)
@@ -420,6 +421,7 @@
 /turf/simulated/asteroid/floor
 	oxygen = 0.01
 	nitrogen = 0.01
+	level = 1
 	name = "rocky floor"
 	icon = 'mining.dmi'
 	icon_state = "floor"

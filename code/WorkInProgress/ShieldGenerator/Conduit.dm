@@ -1,6 +1,9 @@
 /obj/cabling/shield
 	icon = 'shield_cable.dmi'
 
+	name = "Shielding Cable"
+	layer = 2.4
+
 	ConnectableTypes = list( /obj/machinery/shielding )
 	NetworkControllerType = /datum/UnifiedNetworkController/ShieldingNetworkController
 	DropCablePieceType = /obj/item/weapon/CableCoil/shield

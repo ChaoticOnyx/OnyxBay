@@ -1,4 +1,6 @@
 /mob/living/carbon/human/death(gibbed)
+	if(src.mholder)
+		mholder:death()
 	if(stat == 2)
 		return
 	if(healths)

@@ -64,6 +64,8 @@ datum/plants/tomato
 			hasplant.health -= 5
 		if(reagents.has_reagent("water"))
 			reagents.remove_reagent("water",hasplant.waterneeded)
+		else
+			hasplant.health -= 5
 		if(!fullygrown)
 			if(hasplant.growthtime <= 0)
 				fullygrown = 1

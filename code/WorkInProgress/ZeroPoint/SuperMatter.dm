@@ -34,6 +34,7 @@
 /obj/machinery/engine/supermatter/process()
 
 	var/turf/simulated/L = loc
+	var/warningtime = 5 // Make the CORE OVERLOAD message repeat only every 5 seconds
 
 	//Ok, get the air from the turf
 	var/datum/gas_mixture/env = L.return_air()
@@ -44,9 +45,15 @@
 
 	det += (removed.temperature - 1000) / 150
 	det = max(det, 0)
+
 	if(det > 0 && removed.temperature >= 1000)
-		radioalert("CORE OVERLOAD","Core control computer")
-	if(det > 7000)
+		if(warningtime < 5)
+			warningtime++
+		if(warningtime>=5)
+			radioalert("CORE OVERLOAD","Core control computer")
+			warningtime = 0
+
+	if(det > 5500)
 		//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
 		explosion(src.loc,8,15,20,30,1)
 		det = 0

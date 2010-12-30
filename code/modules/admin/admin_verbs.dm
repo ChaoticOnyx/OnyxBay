@@ -71,7 +71,8 @@
 			src.verbs += /client/proc/jobbans
 			src.verbs += /client/proc/sendmob
 			src.verbs += /client/proc/Debug2					//debug toggle switch
-			src.verbs += /client/proc/callproc
+			src.verbs += /client/proc/callprocgen
+			src.verbs += /client/proc/callprocobj
 			src.verbs += /client/proc/funbutton
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /obj/admins/proc/vmode   				//start vote
@@ -107,7 +108,7 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
-			src.verbs += /client/proc/new_eventa
+			src.verbs += /client/proc/new_event
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/zombify
 			src.verbs += /client/proc/createofficial
@@ -169,7 +170,8 @@
 			src.verbs += /client/proc/jobbans
 			src.verbs += /client/proc/sendmob
 			src.verbs += /client/proc/Debug2					//debug toggle switch
-			src.verbs += /client/proc/callproc
+			src.verbs += /client/proc/callprocgen
+			src.verbs += /client/proc/callprocobj
 			src.verbs += /client/proc/funbutton
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /obj/admins/proc/vmode   				//start vote
@@ -843,10 +845,11 @@
 	set name = "Fake attack"
 	fake_attack(p)
 	return
-/client/proc/new_eventa(sev as text)
+
+/client/proc/new_event()
 	set category = "Debug"
 	set name = "Spawn event"
-	new_event(sev)
+	SpawnEvent()
 	return
 
 /client/proc/zombify(var/mob/living/carbon/human/p in world)
@@ -856,22 +859,22 @@
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"
-	set name = "Send nanotrasen(admin) shuttle"
+	set name = "Send Nanotrasen (admin) shuttle"
 	var/area/from = locate(/area/nanotrasenshuttle)
-	var/area/adminshuttle/go = locate(/area/adminshuttle)
-	if(go.shuttle == "")
-		from.move_contents_to(go)
-		go.shuttle = "nanotrasen"
+	var/area/admindockingbay/dest = locate(/area/admindockingbay)
+	if(dest.shuttle == "")
+		from.move_contents_to(dest)
+		dest.shuttle = "nanotrasen"
 	else
 		src << "\blue Already a shuttle there"
 
 /client/proc/returnadminshuttle()
 	set category = "Roleplay"
-	set name = "Return admin-shuttle"
-	var/area/adminshuttle/from = locate(/area/adminshuttle)
+	set name = "Return NT admin-shuttle"
+	var/area/admindockingbay/from = locate(/area/admindockingbay)
 	if(from.shuttle == "nanotrasen")
-		var/area/go = locate(/area/nanotrasenshuttle)
-		from.move_contents_to(go)
+		var/area/dest = locate(/area/nanotrasenshuttle)
+		from.move_contents_to(dest)
 		from.shuttle = ""
 
 /client/proc/createofficial(var/name as text)
@@ -881,7 +884,7 @@
 	for(var/area/nanotrasenshuttle/b in world)
 		A = b
 
-	var/job = input ("What job would you like to give your nanotrasen char") in list ("Agent","Overseer","Syndicate managment taskforce","Prisoner Managment")
+	var/job = input ("What job would you like to give your Nanotrasen char") in list ("Agent","Overseer","Syndicate Management Taskforce","Prisoner Management")
 	var/mob/living/carbon/human/new_character = new /mob/living/carbon/human(src)
 	new_character.loc = pick(get_area_turfs(A))
 	new_character.dna.ready_dna(new_character)
@@ -915,7 +918,7 @@
 			shoes = /obj/item/clothing/shoes/brown
 			back1 = /obj/item/weapon/gun/energy/general
 			back2 = /obj/item/weapon/handcuffs
-		if("Syndicate managment taskforce")
+		if("Syndicate Management Taskforce")
 			uniform = /obj/item/clothing/under/color/black
 			gloves = /obj/item/clothing/gloves/black
 			shoes = /obj/item/clothing/shoes/black
@@ -925,7 +928,7 @@
 			over = /obj/item/clothing/suit/armor/swat
 			back1 = /obj/item/weapon/handcuffs
 			back2 = /obj/item/weapon/gun/energy/laser_gun
-		if("Prisoner Managment")
+		if("Prisoner Management")
 			uniform = /obj/item/clothing/under/lightred
 			shoes = /obj/item/clothing/shoes/red
 			gloves = /obj/item/clothing/gloves/latex
