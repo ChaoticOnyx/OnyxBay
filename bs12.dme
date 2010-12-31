@@ -4,7 +4,7 @@
 
 // BEGIN_INTERNALS
 // END_INTERNALS
-// BEGIN_FILE_DIR
+// BEGIN_FILE_DIR/////////////////////////////////
 #define FILE_DIR "code"
 #define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
@@ -508,6 +508,7 @@
 #include "code\game\verbs\who.dm"
 #include "code\head\books.dm"
 #include "code\head\changelog.dm"
+#include "code\head\fireworks.dm"
 #include "code\head\medals.dm"
 #include "code\head\mysql.dm"
 #include "code\head\stats.dm"

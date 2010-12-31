@@ -787,8 +787,8 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 	var/perapc = 0
 	if(terminal)
 		var/datum/UnifiedNetworkController/PowernetController/TerminalController = terminal.GetPowernet()
-
-		perapc = TerminalController.PowerPerAPC
+		if(TerminalController && TerminalController.PowerPerAPC)
+			perapc = TerminalController.PowerPerAPC
 
 	if(cell && !shorted)
 

@@ -337,5 +337,6 @@ area
 			if(ul_Lighting)
 				if(!findtext(tag,":UL"))
 					ul_Light()
+			world.log << tag
 
 			return
