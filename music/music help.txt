@@ -1,1 +1,7 @@
 To make music work open up maps/Space Station 13 Areas.dm and add music = "music/bla" below an entry and include musicplayer.dm at compiletime
+Supported music formats are: MIDI (.mid or .midi), and module formats .mod, .it, .s3m, .xm, and .oxm. A sample file used for sound effects can be .wav, .ogg, .raw, .wma, or .aiff.*
+
+*The MP3 format is not presently supported by BYOND due to licensing issues. Ogg-Vorbis, however, is a good alternative. For music the module formats are also a good choice, and tend to be smaller.
+
+
+Right click in oggdropXPd's window for a ton of settings. Just drag and drop otherwise.
