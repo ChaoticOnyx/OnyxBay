@@ -887,14 +887,14 @@ var/showadminmessages = 1
 						spawn(0)
 							H.monkeyize()
 					ok = 1
-				if("power")
+		/*		if("power")
 					power_restore()
 					log_admin("[key_name(usr)] made all areas powered", 1)
 					message_admins("\blue [key_name_admin(usr)] made all areas powered", 1)
 				if("unpower")
 					power_failure()
 					log_admin("[key_name(usr)] made all areas unpowered", 1)
-					message_admins("\blue [key_name_admin(usr)] made all areas unpowered", 1)
+					message_admins("\blue [key_name_admin(usr)] made all areas unpowered", 1)*/
 				if("activateprison")
 					world << "\blue <B>Transit signature detected.</B>"
 					world << "\blue <B>Incoming shuttle.</B>"
