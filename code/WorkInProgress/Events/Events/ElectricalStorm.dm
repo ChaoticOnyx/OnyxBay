@@ -26,7 +26,7 @@
 				Doors += Door
 
 	Tick()
-		for(var/x = 0; x < 5; x++)
+		for(var/x = 0; x < 2; x++)
 			if (prob(75))
 				BlowLight()
 		if (prob(20))
