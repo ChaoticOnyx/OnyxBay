@@ -163,7 +163,7 @@ mob/new_player
 				if ("11")
 					AttemptLateSpawn("Atmospheric Technician", atmosMax)
 				if ("12")
-					AttemptLateSpawn("Forensics Technician", ForensicsTechnicianMax)
+					AttemptLateSpawn("Detective", detectiveMax)
 				if ("13")
 					AttemptLateSpawn("Counselor", CounselorMax)
 				if ("14")

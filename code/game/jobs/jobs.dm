@@ -1,7 +1,7 @@
 var/list/occupations = list(
 	"Engineer", "Engineer", "Engineer", "Engineer", "Engineer",
 	"Security Officer", "Security Officer", "Security Officer", "Security Officer", "Security Officer",
-	"Forensics Technician",
+	"Detective",
 	"Geneticist",
 	"Scientist",	"Scientist", "Scientist",
 	"Atmospheric Technician", "Atmospheric Technician", "Atmospheric Technician",
@@ -45,7 +45,7 @@ var/list/assistant_occupations = list(
 			return 1
 		if("Security Officer")
 			return 2
-		if("Forensics Technician")
+		if("Detective")
 			return 2
 		if("Geneticist")
 			return 1
@@ -85,7 +85,7 @@ var/list/assistant_occupations = list(
 /proc/IsSecurity(var/job)
 	if("Security Officer")
 		return 1
-	if("Forensics Technician")
+	if("Detective")
 		return 1
 	if("Head of Security")
 		return 2

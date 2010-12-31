@@ -1285,7 +1285,7 @@
 			src.name = "frosted donut"
 			src.heal_amt = 2
 	heal(var/mob/M)
-		if(istype(M, /mob/living/carbon/human) && M.job in list("Security Officer", "Head of Security", "Forensics Technician"))
+		if(istype(M, /mob/living/carbon/human) && M.job in list("Security Officer", "Head of Security", "Detective"))
 			src.heal_amt *= 2
 			..()
 			src.heal_amt /= 2
@@ -1335,8 +1335,8 @@
 		..()
 
 /obj/item/weapon/reagent_containers/food/snacks/donkpocket
-	name = "Cheezy Chrisps"
-	desc = "Great meal!"
+	name = "donk-pocket"
+	desc = "The food of choice for the seasoned traitor."
 	icon_state = "donkpocket"
 	heal_amt = 1
 	amount = 1

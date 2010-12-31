@@ -1,5 +1,5 @@
 /datum/event/radiation
-
+	Lifetime = 10
 	Announce()
 		command_alert("The ship is now travelling through a radiation belt", "Medical Alert")
 
@@ -8,7 +8,7 @@
 			H.radiation += rand(1,5)
 			if (prob(5))
 				H.radiation += rand(3,5)
-			if (prob(2))
+			if (prob(1))
 				if (prob(75))
 					randmutb(H)
 					domutcheck(H,null,1)
