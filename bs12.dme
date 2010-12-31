@@ -122,7 +122,6 @@
 #define FILE_DIR "maps"
 #define FILE_DIR "maps/backup"
 #define FILE_DIR "maps/travel"
-#define FILE_DIR "music"
 #define FILE_DIR "sound"
 #define FILE_DIR "sound/ambience"
 #define FILE_DIR "sound/damage"
