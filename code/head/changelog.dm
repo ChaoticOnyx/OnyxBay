@@ -54,6 +54,7 @@ client/proc/showchanges()
 		src << browse(changelogmysql,"window=changes;size=400x650;")
 	else
 		src << browse(changelogmysql,"window=changes;size=400x650;")
+
 client/proc/addchange(var/changes as message)
 	set name = "Add a changelog entry."
 	set category  = "Special Verbs"

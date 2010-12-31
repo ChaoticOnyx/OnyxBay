@@ -428,9 +428,9 @@
 	name = "Engineering Deck Aft Maintenance"
 	icon_state = "amaint"
 
-/area/maintenance/aft4
+/*/area/maintenance/aft4					// Moved under ai_monitored
 	name = "Bridge Deck Aft Maintenance"
-	icon_state = "amaint"
+	icon_state = "amaint"*/
 
 
 /area/maintenance/starboardsolar
@@ -544,7 +544,6 @@
 	name = "Captain's Quarters"
 	icon_state = "captain"
 
-
 /area/crew_quarters/cafeteria
 	name = "Cafeteria"
 	icon_state = "cafeteria"
@@ -623,12 +622,6 @@
 /area/engine/launcher
 	name = "Engine Launcher Room"
 	icon_state = "engine_monitoring"
-
-
-/area/teleporter
-	name = "Teleporter"
-	icon_state = "teleporter"
-	music = "signal"
 
 
 /area/AIsattele
@@ -714,9 +707,9 @@
 	icon_state = "security"
 
 
-/area/security/detectives_office
-	name = "Detectives Office"
-	icon_state = "detective"
+/area/randr
+	name = "R&R room"
+	icon_state = "yellow"
 
 /area/solar
 	requires_power = 0
@@ -968,6 +961,16 @@
 	name = "Abandoned ship"
 	icon_state = "yellow"
 
+
+/area/ai_monitored/teleporter
+	name = "Teleporter"
+	icon_state = "teleporter"
+	music = "signal"
+
+/area/ai_monitored/maintenance/aft4
+	name = "Bridge Deck Aft Maintenance"
+	icon_state = "amaint"
+
 /area/ai_monitored/storage/eva
 	name = "EVA Storage"
 	icon_state = "eva"
@@ -980,9 +983,30 @@
 	name = "Emergency Storage"
 	icon_state = "storage"
 
+
 /area/turret_protected/ai_upload
 	name = "AI Upload Chamber"
 	icon_state = "ai_upload"
+	var/obj/machinery/camera/motion/motioncamera = null
+
+/area/turret_protected/ai_upload/New()
+	..()
+	// locate and store the motioncamera
+	spawn (20) // spawn on a delay to let turfs/objs load
+		for (var/obj/machinery/camera/motion/M in src)
+			motioncamera = M
+			return
+	return
+
+/area/turret_protected/ai_upload/Entered(atom/movable/O)
+	..()
+	if (istype(O, /mob) && motioncamera)
+		motioncamera.newTarget(O)
+
+/area/turret_protected/ai_upload/Exited(atom/movable/O)
+	..()
+	if (istype(O, /mob) && motioncamera)
+		motioncamera.lostTarget(O)
 
 /area/turret_protected/ai_upload_foyer
 	name = "AI Upload Foyer"

@@ -43,6 +43,10 @@
 		brightnessred = 5
 		brightnessgreen = 5
 
+	red
+		brightnessgreen = 2
+		brightnessblue = 2
+
 // the smaller bulb light fixture
 
 /obj/machinery/light/small
@@ -58,6 +62,10 @@
 	red
 		brightnessgreen = 0
 		brightnessblue = 0
+
+/obj/machinery/light/broken
+	icon_state = "tube-broken"
+	status = LIGHT_BROKEN
 
 // the desk lamp
 /obj/machinery/light/lamp
@@ -94,6 +102,8 @@
 	..()
 	if(prob(10))
 		status = LIGHT_BROKEN
+	if(prob(10))
+		del(src)
 
 	spawn(1)
 		update()

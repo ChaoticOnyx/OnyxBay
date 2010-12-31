@@ -8,6 +8,12 @@
 
 // Unified Cable Network System - Generic Network Class
 
+
+
+
+//TODO: Instead of forcing machines to connect to only one Unified Network for each cable type, allow them to connect to multiple
+//      networks if that network type allows it (or just always?)
+
 /proc/CreateUnifiedNetwork(var/CableType)
 	var/datum/UnifiedNetwork/NewNetwork = new()
 	var/list/NetworkList = AllNetworks[CableType]
@@ -125,7 +131,9 @@
 			else
 				Possibilities -= Component
 
+#ifdef DEBUG
 	world.log << "Created Unified Network (Type [Start.EquivalentCableType]) with [Connections.len] Components from [Start.x], [Start.y], [Start.z]"
+#endif
 	return Connections
 
 /datum/UnifiedNetwork/proc/AddNode(var/obj/NewNode, var/obj/cabling/Cable)

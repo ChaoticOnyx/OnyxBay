@@ -108,7 +108,7 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
-			src.verbs += /client/proc/new_eventa
+			src.verbs += /client/proc/new_event
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/zombify
 			src.verbs += /client/proc/createofficial
@@ -845,10 +845,11 @@
 	set name = "Fake attack"
 	fake_attack(p)
 	return
-/client/proc/new_eventa(sev as text)
+
+/client/proc/new_event()
 	set category = "Debug"
 	set name = "Spawn event"
-	new_event(sev)
+	SpawnEvent()
 	return
 
 /client/proc/zombify(var/mob/living/carbon/human/p in world)

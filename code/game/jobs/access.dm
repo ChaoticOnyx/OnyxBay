@@ -38,7 +38,7 @@
 	access_maintenance_hall = 38
 	access_shield_generator = 39
 
-	password_firedoor = 100
+	password_firedoor = 100 //Stubs from networking 1.0, may be removed, may be used... for now, just avoid them but leave them in -Sukasa
 	password_smeg = 101
 	password_digitalvalve = 102
 	password_router = 103
@@ -109,7 +109,7 @@
 			return list(access_maint_tunnels)
 		if("Counselor")
 			return list(access_morgue, access_chapel_office, access_crematorium, access_maint_tunnels)
-		if("Detective")
+		if("Forensics Technician")
 			return list(access_security, access_forensics_lockers, access_morgue, access_maint_tunnels, access_security_passthrough, access_medical)
 		if("Medical Doctor")
 			return list(access_medical, access_morgue, access_medlab, access_maint_tunnels, access_laboratories_doors)
@@ -260,7 +260,7 @@
 		if ("Civilian")
 			return list("Unassigned", "Barman", "Counselor", "Chef")
 		if ("Security")
-			return list("Security Officer", "Detective")
+			return list("Security Officer", "Forensics Technician")
 		if ("Med/Sci")
 			return list("Chemist", "Geneticist", "Scientist", "Roboticist", "Medical Doctor")
 		if ("Maintenance")

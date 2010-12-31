@@ -1,3 +1,5 @@
+//UltraLight system, by Sukasa
+
 var
 	const
 		UL_LUMINOSITY = 0
