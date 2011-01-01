@@ -5,7 +5,7 @@
 
 /obj/machinery/clonepod
 	anchored = 1
-	name = "cloning pod"
+	name = "Cloning Pod"
 	desc = "An electronically-lockable pod for growing organic tissue."
 	density = 1
 	icon = 'cloning.dmi'
@@ -20,7 +20,7 @@
 	var/eject_wait = 0 //Don't eject them as soon as they are created fuckkk
 
 /obj/machinery/computer/cloning
-	name = "Cloning console"
+	name = "Cloning Console"
 	icon = 'computer.dmi'
 	icon_state = "dna"
 	req_access = list(access_heads) //Only used for record deletion right now.

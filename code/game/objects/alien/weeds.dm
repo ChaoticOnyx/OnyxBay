@@ -6,11 +6,13 @@
 	var/health = 15
 	var/dead
 	var/list/allowed = list(/obj/closet,/obj/table,/obj/machinery/computer,/obj/machinery/disposal)
+
 /obj/alien/weeds/New()
-//	del(src)
-//	return
+	//del(src)
+	//return
 	if(istype(src.loc, /turf/space))
 		del(src)
+
 /obj/alien/weeds/process()
 	spawn while(!dead)
 		sleep(-1)

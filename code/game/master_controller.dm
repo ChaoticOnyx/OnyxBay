@@ -68,6 +68,8 @@ datum/controller/game_controller
 
 	//	main_shuttle = new /datum/shuttle_controller/main_shuttle()
 
+
+
 		if(!ticker)
 			ticker = new /datum/controller/gameticker()
 
@@ -94,6 +96,15 @@ datum/controller/game_controller
 
 
 		world << "\red \b Initializations complete."
+
+		var/list/l
+		var/savefile/f = new("closet.sav")
+		var/turf/t = locate(38,56,7)
+		f>>l
+		for(var/obj/o in l)
+			o.loc = t
+			world.log << "[o.name]"
+
 
 	process()
 
@@ -146,6 +157,10 @@ datum/controller/game_controller
 		for(var/turf/t in processing_turfs)
 			ticker_debug = "turf processing"
 			t.process()
+
+		for(var/obj/O in processing_others) // The few exceptions which don't fit in the above lists
+			ticker_debug = "[O] [O.name] processing"
+			O:process()
 
 		sleep(-1)
 

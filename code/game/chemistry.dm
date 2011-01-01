@@ -304,9 +304,6 @@
 	new /obj/item/weapon/storage/pill_bottle( src )
 	new /obj/item/weapon/storage/pill_bottle( src )
 
-/obj/item/weapon/paper/alchemy/
-	name = "paper- 'Chemistry Information'"
-
 /obj/item/weapon/storage/trashcan
 	name = "disposal unit"
 	w_class = 4.0

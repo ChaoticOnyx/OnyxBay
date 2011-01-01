@@ -288,7 +288,7 @@ var/showadminmessages = 1
 				return alert(usr, "The game has already started.", null, null, null, null)
 			var/dat = text({"<B>What mode do you wish to play?</B><HR>
 			<A href='?src=\ref[src];c_mode2=secret'>Secret</A><br>
-			<A href='?src=\ref[src];c_mode2=wizard'>Wizard</A><br>
+			<!-- <A href='?src=\ref[src];c_mode2=wizard'>Wizard</A><br> -->
 			<A href='?src=\ref[src];c_mode2=restructuring'>Corporate Restructuring</A><br>
 			<A href='?src=\ref[src];c_mode2=random'>Random</A><br>
 			<A href='?src=\ref[src];c_mode2=traitor'>Traitor</A><br>

@@ -1,9 +1,8 @@
-//mob/living/carbon/human/derp
+mob/living/carbon/human/derp
 	name = "derp"
-	proc
-		Life()
-			return
-		say()
-			return
-		DblClick()
-			return
+	Life()
+		return
+	say()
+		return
+	DblClick()
+		return

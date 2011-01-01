@@ -347,7 +347,7 @@ No Implant Specifics"}
 		var/mob/m = loc
 		m.contract_disease(virus, 1)
 
-/*/obj/item/weapon/implant/slave/New()
+/obj/item/weapon/implant/slave/New()
 	src.d = new/mob/living/carbon/human/derp
 
 
@@ -358,6 +358,8 @@ No Implant Specifics"}
 			src.s.loc:key = src.loc:key
 			src.s.loc:verbs+=/mob/proc/endmindcontrol
 			src.s.loc<<"Use endmindcontrol to end."
+
+
 
 /obj/item/weapon/implanter/proc/update()
 	if (src.imp)
@@ -467,5 +469,3 @@ mob/proc/endmindcontrol()
 
 
 
-
-*/

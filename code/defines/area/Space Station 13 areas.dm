@@ -91,38 +91,34 @@
 	icon_state = "shuttle"
 
 /area/shuttle/escape
-	name = "Escape Pod A"
+	name = "Escape Pod"
 	music = "music/escape.ogg"
 
 /area/shuttle/escape/transit
 	icon_state = "shuttle2"
 
 /area/shuttle/escape/transit/pod1
+	name = "Escape Pod A"
 
 /area/shuttle/escape/transit/pod2
+	name = "Escape Pod B"
 
 /area/shuttle/escape/station/pod1
+	name = "Escape Pod A"
 
 /area/shuttle/escape/station/pod2
+	name = "Escape Pod B"
 
 /area/shuttle/escape/centcom/pod1
+	name = "Escape Pod A"
 
 /area/shuttle/escape/centcom/pod2
+	name = "Escape Pod B"
 
 /area/shuttle/escape/station
 	icon_state = "shuttle2"
 
 /area/shuttle/escape/centcom
-	icon_state = "shuttle"
-
-/area/shuttle/escape2
-	name= "Escape Pod B"
-	music = "music/escape.ogg"
-
-/area/shuttle/escape2/station //Made for the two escape pods in NSV Luna
-	icon_state = "shuttle2"
-
-/area/shuttle/escape2/centcom
 	icon_state = "shuttle"
 
 /area/shuttle/prison/
@@ -451,9 +447,14 @@
 	name = "Waste Disposal"
 	icon_state = "disposal"
 
+
 /area/hallway/primary/admin
 	name = "Administrative Block Hallway"
-	icon_state = "hallA"
+	icon_state = "hallAdmin"
+
+/area/hallway/primary/aftadmin
+	name = "Administrative Block Hallway Aft"
+	icon_state = "hallaftAdmin"
 
 /area/hallway/primary/fore
 	name = "Fore Primary Hallway"
@@ -483,6 +484,22 @@
 
 
 /area/hallway/primary/central
+	name = "Central Primary Hallway"
+	icon_state = "hallC"
+
+/area/hallway/primary/aftportcentral
+	name = "Central Primary Hallway"
+	icon_state = "hallC"
+
+/area/hallway/primary/aftstarboardcentral
+	name = "Central Primary Hallway"
+	icon_state = "hallC"
+
+/area/hallway/primary/portcentral
+	name = "Central Primary Hallway"
+	icon_state = "hallC"
+
+/area/hallway/primary/starboardcentral
 	name = "Central Primary Hallway"
 	icon_state = "hallC"
 
@@ -559,7 +576,7 @@
 	icon_state = "bar"
 
 
-/area/crew_quarters/heads
+/area/crew_quarters/hop
 	name = "Head of Personnel's Quarters"
 	icon_state = "head_quarters"
 
@@ -869,6 +886,10 @@
 	name = "EVA Storage"
 	icon_state = "eva"
 
+/area/storage/library
+	name = "Library"
+	icon_state = "library"
+
 /area/storage/secure
 	name = "Secure Storage"
 	icon_state = "storage"
@@ -1064,10 +1085,14 @@
 	applyalertstatus = 0
 
 
-/area/admindockingbay
+/area/dockingbay/admin
 	name = "Docking Bay D"
 	icon_state = "ai_chamber"
 	var/shuttle = ""
+
+/area/dockingbay/main
+	name = "External Airlocks"
+
 
 /area/syndicateshuttle
 	name = "Syndicate shuttle"

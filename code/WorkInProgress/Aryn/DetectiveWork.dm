@@ -228,14 +228,15 @@ obj/item/clothing/gloves/var
 
 turf/Exited(mob/living/carbon/human/M)
 	if(istype(M,/mob/living))
-		if(M.track_blood > 0)
-			M.track_blood--
-			src.add_bloody_footprints(M.track_blood_mob,1,M.dir,get_tracks(M))
-		else if(istype(M,/mob/living/carbon/human))
-			if(M.shoes)
-				if(M.shoes.track_blood > 0)
-					M.shoes.track_blood--
-					src.add_bloody_footprints(M.shoes.track_blood_mob,1,M.dir,M.shoes.name)
+		if(!istype(src, /turf/space))  // Bloody tracks code starts here
+			if(M.track_blood > 0)
+				M.track_blood--
+				src.add_bloody_footprints(M.track_blood_mob,1,M.dir,get_tracks(M))
+			else if(istype(M,/mob/living/carbon/human))
+				if(M.shoes)
+					if(M.shoes.track_blood > 0)
+						M.shoes.track_blood--
+						src.add_bloody_footprints(M.shoes.track_blood_mob,1,M.dir,M.shoes.name) // And bloody tracks end here
 	. = ..()
 turf/Entered(mob/living/carbon/human/M)
 	if(istype(M,/mob/living))
