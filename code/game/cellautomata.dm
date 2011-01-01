@@ -135,7 +135,19 @@
 	..()
 */
 /world/Reboot(var/reason)
+
+	var/turf/t = locate(38,56,7)
+	var/area/a = t.loc
+	var/list/l = new()
+	for(var/obj/o in a)
+		l.Add(o)
+	var/savefile/F = new("closet.sav")
+	F<<l
+
+
 	world << "\red <B>Rebooting! (This may take a while, just hang on unless you receive an error message!)</B>"
+
+
 	spawn(0)
 		for(var/client/C)
 			C << link("byond://[world.internet_address]:[world.port]")
