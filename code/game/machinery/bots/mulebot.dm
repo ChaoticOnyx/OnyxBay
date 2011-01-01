@@ -571,7 +571,7 @@
 
 					if(istype( next, /turf/simulated))
 
-						if(bloodiness)
+						if(bloodiness && !istype(src.loc, /turf/space))
 							var/obj/decal/cleanable/blood/tracks/B = new(loc)
 							var/newdir = get_dir(next, loc)
 							if(newdir == dir)
@@ -768,9 +768,10 @@
 		H.TakeDamage("l_arm",0.5*damage, 0)
 		H.TakeDamage("r_arm",0.5*damage, 0)
 
-		var/obj/decal/cleanable/blood/B = new(src.loc)
-		B.blood_DNA = H.dna.unique_enzymes
-		B.blood_type = H.b_type
+		if(!istype(src.loc, /turf/space))
+			var/obj/decal/cleanable/blood/B = new(src.loc)
+			B.blood_DNA = H.dna.unique_enzymes
+			B.blood_type = H.b_type
 
 		bloodiness += 4
 

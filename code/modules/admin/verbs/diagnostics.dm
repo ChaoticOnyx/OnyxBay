@@ -108,4 +108,4 @@
 	checkticker()
 		set category = "Diagnostics"
 		set name = "Check ticker status"
-		message_admins("Ticker bug: [ticker_debug]")
+		message_admins("Ticker check: [ticker_debug]")

@@ -68,7 +68,7 @@
 	anchored = 1.0
 
 /obj/machinery/dna_scannernew
-	name = "DNA Modifier"
+	name = "DNA Scanner"
 	icon = 'Cryogenic2.dmi'
 	icon_state = "scanner_0"
 	density = 1
