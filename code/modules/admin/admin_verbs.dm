@@ -861,7 +861,7 @@
 	set category = "Roleplay"
 	set name = "Send Nanotrasen (admin) shuttle"
 	var/area/from = locate(/area/nanotrasenshuttle)
-	var/area/admindockingbay/dest = locate(/area/admindockingbay)
+	var/area/dockingbay/admin/dest = locate(/area/dockingbay/admin)
 	if(dest.shuttle == "")
 		from.move_contents_to(dest)
 		dest.shuttle = "nanotrasen"
@@ -870,8 +870,8 @@
 
 /client/proc/returnadminshuttle()
 	set category = "Roleplay"
-	set name = "Return NT admin-shuttle"
-	var/area/admindockingbay/from = locate(/area/admindockingbay)
+	set name = "Return Nanotrasen (admin) shuttle"
+	var/area/dockingbay/admin/from = locate(/area/dockingbay/admin)
 	if(from.shuttle == "nanotrasen")
 		var/area/dest = locate(/area/nanotrasenshuttle)
 		from.move_contents_to(dest)
