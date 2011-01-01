@@ -1,4 +1,6 @@
-/obj/machinery/computer/teleporter/interserver/attack_hand()
+/obj/machinery/computer/teleporter/interserver/attack_hand(mob/user as mob)
+	user << "\red Out of order."
+	/*	Commented out to prevent usage for now, as all it can really do is crash the server.
 	if(stat & (NOPOWER|BROKEN))
 		return
 	var/address = input("Enter address") as text
@@ -14,6 +16,7 @@
 	src.addr = address
 	src.add_fingerprint(usr)
 	return
+	*/
 
 /obj/machinery/teleport/hub/interserver/teleport(atom/movable/M as mob|obj)
 	var/atom/l = src.loc

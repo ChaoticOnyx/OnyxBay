@@ -59,10 +59,10 @@ mob/living/npc/proc/Act()
 	if(target)
 		if(target.stat == 2)
 			target = null
-	for(var/mob/M in view(1))
-		if(!friends.Find(M.type) && M.type != src.type && M.stat < 2 && agressive)
-			ohshit = M
-			break
+//	for(var/mob/M in view(1))
+//		if(!friends.Find(M.type) && M.type != src.type && M.stat < 2 && agressive)
+	//		ohshit = M
+	//		break
 	if(target in view(1,src))
 		if(!friends.Find(target.type) && target.stat < 2 && agressive)
 			Attack(target,brutedmg,firedmg,oxydmg)
@@ -72,12 +72,6 @@ mob/living/npc/proc/Act()
 			Help(target)
 			isidle = 0
 			target = null
-	else if(ohshit in view(1,src))
-		Attack(ohshit,brutedmg,firedmg,oxydmg)
-		isidle = 0
-		target = ohshit
-		path_target = list()
-		ohshit = null
 	else if(ranged && target in view(rangedrange,src))
 		RangedAttack(target)
 		if(!path_target.len)

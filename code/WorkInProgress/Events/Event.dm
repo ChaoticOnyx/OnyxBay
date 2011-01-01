@@ -5,7 +5,8 @@
 
 	New()
 		..()
-		Lifetime = rand(30, 120)
+		if(!Lifetime)
+			Lifetime = rand(30, 120)
 
 	proc
 		Announce()
