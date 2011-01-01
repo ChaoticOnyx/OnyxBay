@@ -359,6 +359,8 @@ No Implant Specifics"}
 			src.s.loc:verbs+=/mob/proc/endmindcontrol
 			src.s.loc<<"Use endmindcontrol to end."
 
+
+
 /obj/item/weapon/implanter/proc/update()
 	if (src.imp)
 		src.icon_state = "implanter1"

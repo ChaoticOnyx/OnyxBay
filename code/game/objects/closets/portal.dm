@@ -2,7 +2,7 @@
 
 /obj/closet/portal/proc/activate()
 	src.locked=0
-	machines.Add(src)
+	processing_others.Add(src)
 	src.icon_opened = "portalopen"
 	src.icon_closed = "portal"
 	if(opened)
@@ -17,7 +17,7 @@
 
 /obj/closet/portal/proc/deactivate()
 	src.locked=1
-	machines.Remove(src)
+	processing_others.Remove(src)
 	src.icon_opened = "open"
 	src.icon_closed = "closet"
 	if(opened)

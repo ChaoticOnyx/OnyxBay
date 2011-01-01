@@ -7,6 +7,7 @@ var/global
 
 	list/machines = list()
 	list/processing_items = list()
+	list/processing_others = list() // The few exceptions that don't fit in the other lists
 	list/processing_turfs = list()
 		//items that ask to be called every cycle
 
