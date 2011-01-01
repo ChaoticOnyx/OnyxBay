@@ -65,7 +65,7 @@
 
 /mob/living/carbon/alien/humanoid/verb/plant()
 	set name = "Plant Weeds (100)"
-	set desc = "Plants some alien weeds"
+	set desc = "Plants alien weeds"
 	set category = "Alien"
 
 	if(stat)
@@ -78,9 +78,9 @@
 		var/obj/alien/weeds/W = new /obj/alien/weeds(loc)
 		W.updateicon()
 		W.Life()
-
 	else
 		src << "\green Not enough plasma stored"
+
 	return
 
 /mob/living/carbon/alien/humanoid/verb/call_to()

@@ -129,9 +129,9 @@ datum/controller/game_controller
 
 		sleep(-1)
 
-		for(var/obj/machine in machines)
+		for(var/obj/machinery/machine in machines)
 			ticker_debug = "[machine.name] processing"
-			machine:process()
+			machine.process()
 
 		sleep(-1)
 		for(var/obj/fire/F in world)
@@ -157,6 +157,10 @@ datum/controller/game_controller
 		for(var/turf/t in processing_turfs)
 			ticker_debug = "turf processing"
 			t.process()
+
+		for(var/obj/O in processing_others) // The few exceptions which don't fit in the above lists
+			ticker_debug = "[O] [O.name] processing"
+			O:process()
 
 		sleep(-1)
 
