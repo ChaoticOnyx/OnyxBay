@@ -886,6 +886,10 @@
 	name = "EVA Storage"
 	icon_state = "eva"
 
+/area/storage/library
+	name = "Library"
+	icon_state = "library"
+
 /area/storage/secure
 	name = "Secure Storage"
 	icon_state = "storage"
