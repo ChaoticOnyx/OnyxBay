@@ -22,12 +22,12 @@
 				R.cell:give(added)
 			use_power(added)
 			//The following was added for cyborgchargers to refill cyborg modules.
-			if(R.class == "standard")
-				R.module_state_1 = null
-				R.module_state_2 = null
-				R.module_state_3 = null
-				del(R.module)
-				R.module = new /obj/item/weapon/robot_module/standard(src)
+			//if(R.class == "standard")		Removed Standard module refilling to fix problem with standard robots standing on recharge pad being unable to pick a module.
+			//	R.module_state_1 = null
+			//	R.module_state_2 = null
+			//	R.module_state_3 = null
+			//	del(R.module)
+			//	R.module = new /obj/item/weapon/robot_module/standard(src)
 			if(R.class == "engineer")
 				R.module_state_1 = null
 				R.module_state_2 = null

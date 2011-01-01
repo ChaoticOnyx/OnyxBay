@@ -3241,7 +3241,7 @@
 "bkq" = (/obj/machinery/door/poddoor{id = "toxinsgasexp"; name = "Toxins Gas Exposure Room Vent"},/turf/simulated/floor/plating,/area/toxins/lab)
 "bkr" = (/obj/rack{dir = 4},/obj/item/clothing/suit/fire,/obj/item/weapon/tank/emergency_oxygen,/obj/item/clothing/mask/gas,/turf/simulated/floor,/area/firefighting)
 "bks" = (/obj/closet/emcloset,/turf/simulated/floor,/area/firefighting)
-"bkt" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/space,/area/firefighting)
+"bkt" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/turf/simulated/floor,/area/firefighting)
 "bku" = (/turf/simulated/floor{dir = 8; icon_state = "escape"; tag = "icon-escape (WEST)"},/area/hallway/primary/central)
 "bkv" = (/turf/simulated/wall,/area/hallway/primary/aft)
 "bkw" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; initialize_directions = 7},/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "1-4"},/obj/machinery/light/small{dir = 4},/turf/simulated/floor/plating,/area/maintenance/pmaintcentral2)
