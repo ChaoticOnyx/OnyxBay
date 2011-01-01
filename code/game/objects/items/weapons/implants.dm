@@ -347,7 +347,7 @@ No Implant Specifics"}
 		var/mob/m = loc
 		m.contract_disease(virus, 1)
 
-/*/obj/item/weapon/implant/slave/New()
+/obj/item/weapon/implant/slave/New()
 	src.d = new/mob/living/carbon/human/derp
 
 
@@ -467,5 +467,3 @@ mob/proc/endmindcontrol()
 
 
 
-
-*/
