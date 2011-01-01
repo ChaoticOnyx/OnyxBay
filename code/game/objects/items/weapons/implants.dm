@@ -346,8 +346,8 @@ No Implant Specifics"}
 		var/datum/disease/virus = new src.virus
 		var/mob/m = loc
 		m.contract_disease(virus, 1)
-
-/*/obj/item/weapon/implant/slave/New()
+/*
+/obj/item/weapon/implant/slave/New()
 	src.d = new/mob/living/carbon/human/derp
 
 
@@ -358,7 +358,7 @@ No Implant Specifics"}
 			src.s.loc:key = src.loc:key
 			src.s.loc:verbs+=/mob/proc/endmindcontrol
 			src.s.loc<<"Use endmindcontrol to end."
-
+*/
 /obj/item/weapon/implanter/proc/update()
 	if (src.imp)
 		src.icon_state = "implanter1"
@@ -438,7 +438,7 @@ No Implant Specifics"}
 
 
 
-
+/*
 /obj/item/weapon/implant/slave/proc/death()
 	if(src.m && src.d.key)
 		if(rand(5))
@@ -464,8 +464,4 @@ mob/proc/endmindcontrol()
 	usr.mholder:m:loc:key = usr.key
 	usr.key = usr.mholder:d:key
 	usr.mholder:d:key = ""
-
-
-
-
 */
