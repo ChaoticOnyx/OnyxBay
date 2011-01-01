@@ -149,6 +149,7 @@
 // BEGIN_INCLUDE
 #include "code\mapLoader.dm"
 #include "code\names.dm"
+#include "code\savetest.dm"
 #include "code\setup.dm"
 #include "code\stylesheet.dm"
 #include "code\TakePicture.dm"
