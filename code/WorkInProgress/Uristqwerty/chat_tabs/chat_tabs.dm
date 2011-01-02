@@ -37,7 +37,6 @@
 
 /client/Topic(href,href_list[],hsrc)
 	..()
-	src << "[href_list["tab_action"]] [href_list["tab_name"]]"
 	if(href_list["tab_action"] == "hide")
 		if(!tab_blocked(href_list["tab_name"]))
 			src.tab_only += href_list["tab_name"]
