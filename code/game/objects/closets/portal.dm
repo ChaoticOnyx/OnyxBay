@@ -19,7 +19,7 @@
 	src.locked=1
 	processing_others.Remove(src)
 	src.icon_opened = "open"
-	src.icon_closed = "closet"
+	src.icon_closed = "closed"
 	if(opened)
 		src.icon_state = src.icon_opened
 		src.open()

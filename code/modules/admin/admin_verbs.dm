@@ -123,6 +123,8 @@
 			src.holder.level = 5
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
+			src.verbs += /proc/ClearCloset
+			src.verbs += /proc/ClearClosetSave
 			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/cmd_explode_turf

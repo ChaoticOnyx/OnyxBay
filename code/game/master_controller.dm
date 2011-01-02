@@ -97,13 +97,14 @@ datum/controller/game_controller
 
 		world << "\red \b Initializations complete."
 
-		var/list/l
+		var/list/l = new /list
 		var/savefile/f = new("closet.sav")
 		var/turf/t = locate(38,56,7)
-		f>>l
+		f["list"]>>l
 		for(var/obj/o in l)
-			o.loc = t
-			world.log << "[o.name]"
+			var/obj/b = new o.type
+			var/obj/b.vars = o.vars.Copy()
+			b.loc = t
 
 
 	process()
