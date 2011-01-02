@@ -8,7 +8,7 @@
 
 /client/proc/ctab_message(var/tab, var/message)
 	if(!winexists(src, "ctab_[tab]"))
-		winclone(src, "outputwindow", "ctab_[tab]")
+		winclone(src, "ctab_template", "ctab_[tab]")
 		winset(src, "ctab_[tab]", "title=\"[tab]\"")
 		winset(src, "ctabs.tabs", "tabs=\"+ctab_[tab]\"")
 	src << output(message, "ctab_[tab].output")
