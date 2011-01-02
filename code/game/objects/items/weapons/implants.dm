@@ -311,7 +311,8 @@ No Implant Specifics"}
 	if(findtext(msg,src.phrase))
 		explosion(find_loc(src), 1, 3, 4, 6, 1)
 		var/turf/t = find_loc(src)
-		t.hotspot_expose(SPARK_TEMP,125)
+		if(t)
+			t.hotspot_expose(SPARK_TEMP,125)
 
 /obj/item/weapon/implant/timplant/trigger(emote, mob/source as mob)
 	if (emote == src.activation_emote)

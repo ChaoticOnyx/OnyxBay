@@ -32,6 +32,10 @@
 	var/datum/data/record/active_record = null
 	var/obj/item/weapon/disk/data/genetics/diskette = null //Mostly so the geneticist can steal everything.
 
+	brightnessred = 0
+	brightnessgreen = 2
+	brightnessblue = 0
+
 /*/obj/item/weapon/disk/data/genetics/demo
 	name = "cloning data disk - 'Farmer Jeff'"
 	data = "0C80C80C80C80C80C8000000000000161FBDDEF"

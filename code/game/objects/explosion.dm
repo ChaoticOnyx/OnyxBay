@@ -12,6 +12,8 @@
 #endif
 
 proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
+	if(!epicenter)
+		return
 	if(!force)
 		return
 	spawn(0)

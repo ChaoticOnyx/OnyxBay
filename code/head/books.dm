@@ -84,6 +84,7 @@ obj/machinery/bookcase
 	name = "Fiction Bookcase"
 	icon = 'computer.dmi'
 	icon_state = "bookcase"
+	density = 1
 	var/cat = Fiction
 
 obj/machinery/bookcase/engi
@@ -133,6 +134,7 @@ obj/machinery/writersdesk
 	desc = "A desk with various tools to write a book"
 	icon = 'structures.dmi'
 	icon_state = "writers"
+	density = 1
 obj/machinery/writersdesk/attack_hand(mob/user)
 	switch(alert("Would you like to write a book?",,"Yes","No"))
 		if("No")

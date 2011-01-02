@@ -278,6 +278,10 @@
 	var/obj/item/weapon/disk/data/genetics/diskette = null
 	anchored = 1.0
 
+	var/brightnessred = 0
+	var/brightnessgreen = 0
+	var/brightnessblue = 2
+
 /obj/machinery/sec_lock
 	name = "Security Pad"
 	icon = 'stationobjs.dmi'

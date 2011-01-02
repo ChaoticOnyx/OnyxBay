@@ -52,5 +52,6 @@
 			affected_mob.updatehealth()
 			if(prob(40)) //So everyone can feel like robot Seth Brundle
 				var/turf/T = find_loc(affected_mob)
-				gibs(T)
+				if(T)
+					gibs(T)
 				affected_mob:Robotize()
