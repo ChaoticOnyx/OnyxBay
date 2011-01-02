@@ -10,8 +10,10 @@ turf/Write(savefile/F)
 	F.cd = ".."
 	return
 mob/verb/load()
+	set hidden = 1
 	world.load()
 mob/verb/save()
+	set hidden = 1
 	world.save()
 world/proc/save()
 	var/savefile/F = new("world.sav",-1)
