@@ -5,6 +5,7 @@
 // BEGIN_INTERNALS
 // END_INTERNALS
 // BEGIN_FILE_DIR
+#define FILE_DIR .
 #define FILE_DIR "code"
 #define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
@@ -106,16 +107,6 @@
 #define FILE_DIR "code/WorkInProgress/Uristqwerty"
 #define FILE_DIR "code/WorkInProgress/Uristqwerty/chat_tabs"
 #define FILE_DIR "code/WorkInProgress/ZeroPoint"
-#define FILE_DIR "config"
-#define FILE_DIR "config/names"
-#define FILE_DIR "config/namesold"
-#define FILE_DIR "data"
-#define FILE_DIR "data/logs"
-#define FILE_DIR "data/logs/2010"
-#define FILE_DIR "data/logs/2010/11-November"
-#define FILE_DIR "data/logs/2010/12-December"
-#define FILE_DIR "data/logs/2011"
-#define FILE_DIR "data/logs/2011/01-January"
 #define FILE_DIR "icons"
 #define FILE_DIR "icons/effects"
 #define FILE_DIR "icons/misc"
@@ -126,7 +117,6 @@
 #define FILE_DIR "icons/obj/doors"
 #define FILE_DIR "icons/obj/machines"
 #define FILE_DIR "icons/obj/pipes"
-#define FILE_DIR "icons/PSD files"
 #define FILE_DIR "icons/Testing"
 #define FILE_DIR "icons/turf"
 #define FILE_DIR "icons/UI"
@@ -326,7 +316,6 @@
 #include "code\game\gamemodes\sandbox\sandbox.dm"
 #include "code\game\gamemodes\traitor\traitor.dm"
 #include "code\game\gamemodes\traitor\traitorinfo.dm"
-#include "code\game\gamemodes\traitoramongus\main.dm"
 #include "code\game\gamemodes\wizard\spell10.dm"
 #include "code\game\gamemodes\wizard\spell11.dm"
 #include "code\game\gamemodes\wizard\spell12.dm"
