@@ -2,7 +2,6 @@
 	set category = "Special Verbs"
 	set name = "play sound"
 
-	//if(Debug2)
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return

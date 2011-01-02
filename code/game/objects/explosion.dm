@@ -1,5 +1,4 @@
 /client/proc/cmd_explode_turf(obj/O as turf in world)
-#ifdef DEBUG
 	var/A = text2num(input("Explosion"))
 	explosion(O, A, A*1.5, A*2, A*3, A*3)
 	//if (!usr:holder)
@@ -7,9 +6,6 @@
 	//	return
 
 	message_admins("\red <b>Explosion spawned by [usr.client.key]</b>")
-#else
-	usr << "Function not available in RELEASE configuration"
-#endif
 
 proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
 	if(!epicenter)
