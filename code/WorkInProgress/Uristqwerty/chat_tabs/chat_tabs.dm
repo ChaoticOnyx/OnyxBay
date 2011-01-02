@@ -13,6 +13,9 @@
 
 	if(!winexists(src, "ctab_[tab]"))
 		winclone(src, "ctab_template", "ctab_[tab]")
+		if(!winexists(src, "ctab_[tab]"))
+			usr << "Tried to create tab [tab], but failed"
+			return
 		winset(src, "ctab_[tab]", "title=\"[tab]\"")
 		winset(src, "ctabs.tabs", "tabs=\"+ctab_[tab]\"")
 		if(tab_blocked(tab))
