@@ -7,7 +7,6 @@ mob/living/npc/vermin/Act()
 	if(hunger)
 		hunger--
 	if(hunger >= 70)
-		world << "REPLICATEING"
 		Replicate()
 	if(findtarget)
 		if(findtarget in view(1,src))
@@ -56,7 +55,6 @@ mob/living/npc/vermin/proc/Eat(atom/A)
 		del(A)
 mob/living/npc/vermin/proc/Replicate()
 	hunger -= 70
-	world << "hunger is now [hunger]"
 	var/obj/egg/E = new(src.loc,src.type)
 	world << "spawned [E]"
 mob/living/npc/vermin/crab

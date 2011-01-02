@@ -31,6 +31,7 @@
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /client/proc/addchange
 			src.verbs += /proc/possess
+			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
 			src.verbs += /client/proc/debug_variables
@@ -123,8 +124,12 @@
 			src.holder.level = 5
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
+
 			src.verbs += /proc/ClearCloset
 			src.verbs += /proc/ClearClosetSave
+
+			src.verbs += /mob/living/proc/CheckHandcuff
+
 			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/cmd_explode_turf
@@ -288,7 +293,7 @@
 			//src.verbs += /client/proc/air_report
 			//src.verbs += /client/proc/air_status
 			src.verbs += /client/proc/fix_next_move
-
+			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /client/proc/toggle_view_range
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/delay
@@ -347,7 +352,7 @@
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/cmd_admin_prison
-
+			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /obj/admins/proc/vmode   				//start vote
 			src.verbs += /obj/admins/proc/votekill 				//abort vote
 			src.verbs += /obj/admins/proc/voteres 				//toggle votes
@@ -407,7 +412,7 @@
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/createofficial
 			src.verbs += /obj/admins/proc/delay					//game start delay
-
+			src.verbs += /mob/living/proc/CheckHandcuff
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 //				src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
 //				src.verbs += /obj/admins/proc/adjump				//toggle admin jumping
@@ -440,7 +445,7 @@
 			src.verbs += /obj/admins/proc/startnow				//start now bitch
 			src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
 			src.verbs += /obj/admins/proc/toggleAI				//Toggle the AI
-
+			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /obj/admins/proc/delay					//game start delay
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 //				src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning

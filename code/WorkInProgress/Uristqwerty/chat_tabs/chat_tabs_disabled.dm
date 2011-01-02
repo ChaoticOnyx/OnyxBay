@@ -3,7 +3,7 @@
 //
 
 /mob/proc/ctab_message(var/tab, var/message)
-	src message
+	src << message
 
 /client/proc/ctab_message(var/tab, var/message)
-	src message
+	src << message

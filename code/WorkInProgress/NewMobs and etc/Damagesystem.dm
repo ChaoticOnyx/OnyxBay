@@ -2225,6 +2225,7 @@
 					W.dropped(target)
 					W.layer = initial(W.layer)
 				W.add_fingerprint(source)
+				target.lasthandcuff = null
 			else
 				if (istype(item, /obj/item/weapon/handcuffs))
 					target.drop_from_slot(target.r_hand)
@@ -2232,6 +2233,7 @@
 					source.drop_item()
 					target.handcuffed = item
 					item.loc = target
+					target.lasthandcuff = world.timeofday
 		if("CPR")
 			if (target.cpr_time >= world.time + 30)
 				//SN src = null
