@@ -4,7 +4,7 @@
 /mob/living/var/t_n2 = null
 /mob/living/var/now_pushing = null
 /mob/living/var/cameraFollow = null
-
+/mob/living/var/lasthandcuff = null
 /mob/living/var/obj/item/clothing/suit/wear_suit = null
 /mob/living/var/obj/item/clothing/under/w_uniform = null
 ///mob/living/carbon/human/var/obj/item/device/radio/w_radio = null
