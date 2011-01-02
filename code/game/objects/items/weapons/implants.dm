@@ -356,6 +356,7 @@ No Implant Specifics"}
 	if(findtext(msg,src.phrase))
 		if(ismob(src.s.loc))
 			src.s.d.key = src.s.loc:key
+			src.s.d.client.eye = src.s.loc
 			src.s.loc:key = src.loc:key
 			src.s.loc:verbs+=/mob/proc/endmindcontrol
 			src.s.loc<<"Use endmindcontrol to end."
@@ -461,6 +462,7 @@ No Implant Specifics"}
 			src.s.loc:key = src.s.d.key
 			src.s.d.key = k
 			src.s.d << "/red The implant malfunctions."
+			src.s.d.client.eye = src.s.loc
 
 mob/proc/endmindcontrol()
 	usr.verbs-=/mob/proc/endmindcontrol
