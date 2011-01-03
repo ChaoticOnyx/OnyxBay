@@ -36,16 +36,6 @@ area/bs12/New()
 	for(var/obj/machinery/power/APC in src)
 		APC.name = src.name + " APC"
 
-
-area/closet
-	name = "Closet"
-	music = ""
-
-area/closet/save
-	name = "Stasis"
-	music = ""
-
-
 // Primary Hallways
 area/bs12/hallway/east
 	name = "East Hallway"

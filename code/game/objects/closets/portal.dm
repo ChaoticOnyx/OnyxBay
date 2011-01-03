@@ -1,4 +1,6 @@
+/*
 
+Alfie's magic closet, which saves items for a next round
 
 /obj/closet/portal/proc/activate()
 	src.locked=0
@@ -91,5 +93,5 @@
 /obj/closet/portal/New()
 	spawn(1)
 		LinkUp()
-
+*/
 

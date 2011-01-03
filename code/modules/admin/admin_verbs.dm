@@ -125,9 +125,6 @@
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 
-			src.verbs += /proc/ClearCloset
-			src.verbs += /proc/ClearClosetSave
-
 			src.verbs += /mob/living/proc/CheckHandcuff
 
 			src.verbs += /client/proc/addchange
