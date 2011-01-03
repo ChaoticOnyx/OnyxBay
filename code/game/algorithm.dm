@@ -1,6 +1,8 @@
 /world/New()
 	..()
 
+	visibility = 0
+
 	diary = file("data/logs/[time2text(world.realtime, "YYYY/MM-Month/DD-Day")].log")
 	diary << ""
 	diary << ""
