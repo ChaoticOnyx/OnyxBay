@@ -469,7 +469,7 @@ window "ctab_template"
 window "ctab_window"
 	elem "ctab_window"
 		type = MAIN
-		pos = 632,214
+		pos = 632,304
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -489,7 +489,7 @@ window "ctab_window"
 		title = "Chat window"
 		titlebar = true
 		statusbar = true
-		can-close = true
+		can-close = false
 		can-minimize = true
 		can-resize = true
 		is-pane = false
