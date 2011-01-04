@@ -25,5 +25,3 @@
 				C.mob.ctab_message("Admin", "<span class=\"gfartadmin\"><span class=\"prefix\">ADMIN:</span> <span class=\"name\">[key_name(usr, C.mob)]:</span> <span class=\"message\">[msg]</span></span>")
 			else
 				C.mob.ctab_message("Admin", "<span class=\"admin\"><span class=\"prefix\">ADMIN:</span> <span class=\"name\">[key_name(usr, C.mob)]:</span> <span class=\"message\">[msg]</span></span>")
-	if(tab_blocked("Admin"))
-		winset(usr, "ctabs.tabs", "current-tab=\"ctab_["Admin"]\"")

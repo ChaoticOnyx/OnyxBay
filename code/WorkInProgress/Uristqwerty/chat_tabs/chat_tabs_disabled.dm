@@ -8,5 +8,6 @@
 /client/proc/ctab_message(var/tab, var/message)
 	src << message
 
-/client/proc/tab_blocked(var/tab)
-	return 0
+/client/proc/ctab_update()
+	return
+

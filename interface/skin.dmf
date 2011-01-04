@@ -339,7 +339,7 @@ window "coatinv"
 window "derpadmin"
 	elem "derpadmin"
 		type = MAIN
-		pos = 281,0
+		pos = 632,239
 		size = 640x480
 		anchor1 = none
 		anchor2 = none

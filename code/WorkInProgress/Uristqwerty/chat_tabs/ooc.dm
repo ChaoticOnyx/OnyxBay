@@ -33,5 +33,4 @@
 			C.ctab_message("OOC", "<span class=\"ooc\"><span class=\"prefix\">OOC:</span> <span class=\"name\">[src.client.stealth ? src.client.fakekey : src.key]:</span> <span class=\"message\">[msg]</span></span>")
 	for(var/mob/C)
 		C.log_m("OOC:[msg]")
-	if(src.client.tab_blocked("OOC"))
-		winset(usr, "ctabs.tabs", "current-tab=\"ctab_["OOC"]\"")
+

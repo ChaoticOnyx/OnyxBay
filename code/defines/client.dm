@@ -19,7 +19,7 @@
 	var/fakekey = null
 	var/warned = 0
 	var/admin_invis = 0
-	var/list/tab_only = list()
+	var/list/ctab_settings = list()
 
 	// comment out the line below when debugging locally to enable the options & messages menu
 	control_freak = 1

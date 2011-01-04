@@ -336,6 +336,71 @@ window "coatinv"
 		style = ""
 		is-list = true
 
+window "ctab_settings"
+	elem "ctab_settings"
+		type = MAIN
+		pos = 634,239
+		size = 640x480
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "pos;size;is-minimized;is-maximized"
+		title = "Tab Options"
+		titlebar = false
+		statusbar = false
+		can-close = false
+		can-minimize = false
+		can-resize = false
+		is-pane = true
+		is-minimized = false
+		is-maximized = false
+		can-scroll = none
+		icon = ""
+		image = ""
+		image-mode = stretch
+		keep-aspect = false
+		transparent-color = none
+		alpha = 255
+		macro = ""
+		menu = ""
+		on-close = ""
+	elem "browser"
+		type = BROWSER
+		pos = 0,0
+		size = 640x480
+		anchor1 = 0,0
+		anchor2 = 100,100
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = ""
+		show-history = false
+		show-url = false
+		auto-format = true
+		use-title = false
+		on-show = ""
+		on-hide = ""
+
 window "ctab_template"
 	elem "ctab_template"
 		type = MAIN
@@ -401,10 +466,75 @@ window "ctab_template"
 		max-lines = 1000
 		image = ""
 
+window "ctab_window"
+	elem "ctab_window"
+		type = MAIN
+		pos = 632,214
+		size = 640x480
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = false
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "pos;size;is-minimized;is-maximized"
+		title = "Chat window"
+		titlebar = true
+		statusbar = true
+		can-close = true
+		can-minimize = true
+		can-resize = true
+		is-pane = false
+		is-minimized = false
+		is-maximized = false
+		can-scroll = none
+		icon = ""
+		image = ""
+		image-mode = stretch
+		keep-aspect = false
+		transparent-color = none
+		alpha = 255
+		macro = ""
+		menu = ""
+		on-close = ""
+	elem "child"
+		type = CHILD
+		pos = 0,0
+		size = 640x480
+		anchor1 = 0,0
+		anchor2 = 100,100
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "splitter"
+		left = ""
+		right = ""
+		is-vert = false
+		splitter = 50
+		show-splitter = true
+		lock = none
+
 window "ctabs"
 	elem "ctabs"
 		type = MAIN
-		pos = 634,320
+		pos = 634,298
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -459,7 +589,7 @@ window "ctabs"
 		drop-zone = false
 		right-click = false
 		saved-params = ""
-		tabs = "outputwindow"
+		tabs = "outputwindow, ctab_settings"
 		current-tab = ""
 		multi-line = true
 		on-tab = ""
@@ -467,7 +597,7 @@ window "ctabs"
 window "derpadmin"
 	elem "derpadmin"
 		type = MAIN
-		pos = 632,320
+		pos = 632,239
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -924,7 +1054,7 @@ window "pda1"
 window "rpane"
 	elem "rpane"
 		type = MAIN
-		pos = 632,317
+		pos = 632,239
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
