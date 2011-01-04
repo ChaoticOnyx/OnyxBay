@@ -534,7 +534,7 @@ window "ctab_window"
 window "ctabs"
 	elem "ctabs"
 		type = MAIN
-		pos = 634,298
+		pos = 634,281
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -592,7 +592,7 @@ window "ctabs"
 		tabs = "outputwindow, ctab_settings"
 		current-tab = ""
 		multi-line = true
-		on-tab = ""
+		on-tab = ".ctab_tabread"
 
 window "derpadmin"
 	elem "derpadmin"

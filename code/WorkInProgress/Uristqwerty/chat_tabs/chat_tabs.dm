@@ -52,11 +52,24 @@
 			src << message
 		else
 			src << output(message, "ctab_tab_[lowertext(t)].output")
+			ctab_updated(t)
 
 
 /client/New()
 	..()
 	ctab_update()
+
+/client/proc/ctab_updated(var/tab)
+	var/tabl = lowertext(tab)
+	if(winget(src, "ctabs.tabs", "current-tab") != "ctab_tab_[tabl]")
+		winset(src, "ctab_tab_[tabl]", "title=\"![tab]!\"")
+
+/client/verb/ctab_tabread()
+	set name = ".ctab_tabread"
+	var/tab = winget(src, "ctabs.tabs", "current-tab")
+	var/title = winget(src, tab, "title")
+	if(text2ascii(title) == text2ascii("!"))
+		winset(src, tab, "title=\"[copytext(title, 2, lentext(title))]\"")
 
 /client/proc/ctab_update()
 	var/contents = ""
@@ -130,7 +143,7 @@
 					var/failed = 0
 					for(i=1, i<=len, i++)
 						var/a = text2ascii(tab, i)
-						if(!((a >= text2ascii("a") && a <= text2ascii("z")) || (a >= text2ascii("A") && a <= text2ascii("Z")) || (a >= text2ascii("0") && a <= text2ascii("0")) || a == text2ascii("_")))
+						if(!((a >= text2ascii("a") && a <= text2ascii("z")) || (a >= text2ascii("A") && a <= text2ascii("Z")) || (a >= text2ascii("0") && a <= text2ascii("9")) || a == text2ascii("_")))
 							failed = 1
 					if(failed)
 						alert(src, "At least one invalid character was found. You can only use letters (a-z, A-Z), numbers (0-9), and underscores (_).")
