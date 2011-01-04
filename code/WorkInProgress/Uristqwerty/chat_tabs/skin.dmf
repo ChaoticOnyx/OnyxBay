@@ -469,8 +469,8 @@ window "ctab_template"
 window "ctab_window"
 	elem "ctab_window"
 		type = MAIN
-		pos = 632,304
-		size = 640x480
+		pos = 1655,340
+		size = 473x411
 		anchor1 = none
 		anchor2 = none
 		font-family = ""
@@ -505,10 +505,33 @@ window "ctab_window"
 		macro = ""
 		menu = ""
 		on-close = ""
+	elem "input1"
+		type = INPUT
+		pos = 1,391
+		size = 473x20
+		anchor1 = 0,100
+		anchor2 = 100,100
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = #d3b5b5
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = sunken
+		drop-zone = false
+		right-click = false
+		saved-params = ""
+		command = ""
+		multi-line = false
+		is-password = false
+		no-command = false
 	elem "child"
 		type = CHILD
 		pos = 0,0
-		size = 640x480
+		size = 473x391
 		anchor1 = 0,0
 		anchor2 = 100,100
 		font-family = ""
