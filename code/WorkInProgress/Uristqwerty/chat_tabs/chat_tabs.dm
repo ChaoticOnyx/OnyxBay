@@ -26,7 +26,6 @@
 		if(!winexists(src, "ctab_tab_[tabl]"))
 			usr << "Tried to create tab [tab], but failed"
 			return
-
 		if(winget(src, "ctabs.tabs", "current-tab") == "ctab_settings")
 			winset(src, "ctab_tab_[tabl]", "title=\"[tab]\"")
 			winset(src, "ctabs.tabs", "tabs=\"-ctab_settings\"")
@@ -36,15 +35,30 @@
 			winset(src, "ctab_tab_[tabl]", "title=\"[tab]\"")
 			winset(src, "ctabs.tabs", "tabs=\"-ctab_settings\"")
 			winset(src, "ctabs.tabs", "tabs=\"+ctab_tab_[tabl],ctab_settings\"")
-
 		if(!ctab_settings["display_[tabl]"])
 			ctab_settings["display_[tabl]"] = list("Game", tab)
 		ctab_settings["tab_[tabl]"] = "show"
-
 		if(!ctab_settings["tabs"])
 			ctab_settings["tabs"] = list()
 		ctab_settings["tabs"] += tab
+		ctab_update()
 
+	else if(!ctab_settings["tabs"] || !(tab in ctab_settings["tabs"]))
+		if(winget(src, "ctabs.tabs", "current-tab") == "ctab_settings")
+			winset(src, "ctab_tab_[tabl]", "title=\"[tab]\"")
+			winset(src, "ctabs.tabs", "tabs=\"-ctab_settings\"")
+			winset(src, "ctabs.tabs", "tabs=\"+ctab_tab_[tabl],ctab_settings\"")
+			winset(src, "ctabs.tabs", "current-tab=\"ctab_settings\"")
+		else
+			winset(src, "ctab_tab_[tabl]", "title=\"[tab]\"")
+			winset(src, "ctabs.tabs", "tabs=\"-ctab_settings\"")
+			winset(src, "ctabs.tabs", "tabs=\"+ctab_tab_[tabl],ctab_settings\"")
+		if(!ctab_settings["display_[tabl]"])
+			ctab_settings["display_[tabl]"] = list("Game", tab)
+		ctab_settings["tab_[tabl]"] = "show"
+		if(!ctab_settings["tabs"])
+			ctab_settings["tabs"] = list()
+		ctab_settings["tabs"] += tab
 		ctab_update()
 
 	for(var/t in ctab_settings["display_[tabl]"])
@@ -148,7 +162,7 @@
 					if(failed)
 						alert(src, "At least one invalid character was found. You can only use letters (a-z, A-Z), numbers (0-9), and underscores (_).")
 					else
-						if(lowertext(tab) in ctab_settings["tabs"])
+						if(tab in ctab_settings["tabs"])
 							alert (src, "That tab already exists!")
 						else
 							ctab_message(tab, "Tab opened.")
