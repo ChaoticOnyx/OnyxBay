@@ -404,7 +404,7 @@ window "ctab_settings"
 window "ctab_tab_ooc"
 	elem "ctab_tab_ooc"
 		type = MAIN
-		pos = 634,292
+		pos = 634,337
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -461,7 +461,7 @@ window "ctab_tab_ooc"
 		saved-params = "max-lines"
 		link-color = #0000ff
 		visited-color = #ff00ff
-		style = ""
+		style = ".system {color:#ff0000;}body{font-family: Verdana, sans-serif;}h1, h2, h3, h4, h5, h6{color: #00f;font-family: Georgia, Verdana, sans-serif;}.motd{color: #638500;font-family: Verdana, sans-serif;}.motd h1, .motd h2, .motd h3, .motd h4, .motd h5, .motd h6{\tcolor: #638500;\ttext-decoration: underline;}.motd a, .motd a:link, .motd a:visited, .motd a:active, .motd a:hover{\tcolor: #638500;}.prefix{\tfont-weight: bold;}.ooc{\tfont-weight: bold;\tcolor: #002eb8;}.adminooc{\tfont-weight: bold;\tcolor: #b82e00;}.admin{\tfont-weight: bold;\tcolor: #386aff;}.gfartooc{\tfont-weight: bold;\tcolor: #0099cc;}.gfartadmin{\tfont-weight: bold;\tcolor: #996600;}.medal{\tfont-weight: bold;\tcolor: #808000;}.name{\tfont-weight: bold;}.say{}.deadsay{\tcolor: #5c00e6;}.radio{\tcolor: #008000;}.recorder{\tcolor: #9B30FF;}.securityradio{\tcolor: #FF0000;}.alert{\tcolor: #ff0000;}h1.alert, h2.alert{\tcolor: #000000;}"
 		enable-http-images = false
 		max-lines = 1000
 		image = ""
@@ -469,7 +469,7 @@ window "ctab_tab_ooc"
 window "ctab_template"
 	elem "ctab_template"
 		type = MAIN
-		pos = 632,305
+		pos = 634,337
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
