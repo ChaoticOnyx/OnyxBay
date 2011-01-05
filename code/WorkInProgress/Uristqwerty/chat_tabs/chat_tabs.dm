@@ -31,7 +31,8 @@
 
 	var/tabl = lowertext(tab)
 
-	if(!winexists(src, "ctab_tab_[tabl]"))
+	//winexists was probably fetching data from the client. Speed this up by checking a server-side var first.
+	if(!ctab_settings["tab_[tabl]"] && !winexists(src, "ctab_tab_[tabl]"))
 		winclone(src, "ctab_template", "ctab_tab_[tabl]")
 		if(!winexists(src, "ctab_tab_[tabl]"))
 			usr << "Tried to create tab [tab], but failed"
@@ -75,6 +76,8 @@
 	var/list/hidden_tabs = stringsplit(winget(src, "ctabs_hidden.tabs", "tabs"), ",")
 	var/list/tabs = stringsplit(winget(src, "ctabs.tabs", "tabs"), ",")
 	for(var/t in hidden_tabs)
+		if(t == "" || t == " ")
+			continue
 		var/tab = winget(src, t, "title")
 		if(text2ascii(tab) == text2ascii("!"))
 			tab = copytext(tab, 2, lentext(tab))
