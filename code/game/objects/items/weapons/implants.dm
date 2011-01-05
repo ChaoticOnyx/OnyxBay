@@ -354,9 +354,10 @@ No Implant Specifics"}
 
 /obj/item/weapon/implant/master/hear(var/msg)
 	if(findtext(msg,src.phrase))
-		if(ismob(src.s.loc))
+		if(ismob(src.s.loc)&&!src.s.d.key)
 			src.s.d.key = src.s.loc:key
 			src.s.d.client.eye = src.s.loc
+			src.s.d.loc = src.s.loc
 			src.s.loc:key = src.loc:key
 			src.s.loc:verbs+=/mob/proc/endmindcontrol
 			src.s.loc<<"Use endmindcontrol to end."
@@ -466,6 +467,7 @@ No Implant Specifics"}
 
 mob/proc/endmindcontrol()
 	usr.verbs-=/mob/proc/endmindcontrol
+	usr.contents.Remove(usr.mholder:d)
 	usr.mholder:m:loc:key = usr.key
 	usr.key = usr.mholder:d:key
 	usr.mholder:d:key = ""
