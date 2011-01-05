@@ -336,53 +336,6 @@
 
 	return
 
-/proc/call_prison_shuttle(var/mob/usr)
-	if ((!( ticker ) || main_shuttle.location == 1))
-		return
-	if(ticker.mode.name == "blob" || ticker.mode.name == "Corporate Restructuring" || ticker.mode.name == "Sandbox")
-		usr << "Under directive 7-10, [station_name()] is quarantined until further notice."
-		return
-	if(ticker.mode.name == "revolution")
-		usr << "Centcom will not allow the shuttle to be called, due to the possibility of sabotage by revolutionaries."
-		return
-	if(ticker.mode.name == "AI malfunction")
-		usr << "Centcom will not allow the shuttle to be called."
-		return
-	for(var/obj/machinery/computer/prison_shuttle/PS in world)
-		if(!PS.allowedtocall)
-			usr << "\red Centcom will not allow the shuttle to be called"
-			return
-		if(PS.z == 3)
-			usr << "\red Already in transit! Please wait!"
-			return
-		var/A = locate(/area/shuttle/prison/)
-		for(var/mob/M in A)
-			M.show_message("\red Launch sequence initiated!")
-			spawn(0)	shake_camera(M, 10, 1)
-		sleep(10)
-
-		if(PS.z == 2)	//This is the laziest proc ever
-			for(var/atom/movable/AM as mob|obj in A)
-				AM.z = 3
-				AM.Move()
-			sleep(rand(600,1800))
-			for(var/atom/movable/AM as mob|obj in A)
-				AM.z = 1
-				AM.Move()
-		else
-			for(var/atom/movable/AM as mob|obj in A)
-				AM.z = 3
-				AM.Move()
-			sleep(rand(600,1800))
-			for(var/atom/movable/AM as mob|obj in A)
-				AM.z = 2
-				AM.Move()
-		for(var/mob/M in A)
-			M.show_message("\red Prison shuttle has arrived at destination!")
-		return
-	return
-
-
 /proc/enable_prison_shuttle(var/mob/user)
 	for(var/obj/machinery/computer/prison_shuttle/PS in world)
 		PS.allowedtocall = !(PS.allowedtocall)

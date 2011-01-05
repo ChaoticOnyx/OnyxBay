@@ -24,8 +24,8 @@
 		message_admins("[key_name_admin(src)] has attempted to advertise in OOC.")
 		return
 
-	log_ooc("[src.name]/[src.key] : [msg]")
-
+//	log_ooc("[src.name]/[src.key] : [msg]")
+	record(ACTION_OOC,"[src.name]([src.key])",null,msg)
 	for (var/client/C)
 		if (src.client.holder && (!src.client.stealth || C.holder))
 			C << "<span class=\"adminooc\"><span class=\"prefix\">OOC:</span> <span class=\"name\">[src.key][src.client.stealth ? "/([src.client.fakekey])" : ""]:</span> <span class=\"message\">[msg]</span></span>"
