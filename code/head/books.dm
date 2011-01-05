@@ -29,13 +29,6 @@ obj/item/weapon/book
 	var/texts
 	var/cat = Fiction
 obj/item/weapon/book/attack_self(mob/user)
-/*	if(!pages.len)
-		user << "This book has no pages"
-		return
-	var/datum/bookhand/page/pagex = pages[1]
-	var/dat = pagex.texts
-	if(!isnull(pages[2]))
-		dat += "<A href='?src=\ref[src];page=2'>Next page</A>"*/
 	usr << browse(texts,"window=bookwin")
 obj/item/weapon/book/Topic(href, href_list)
 	if(href_list["page"])
@@ -50,51 +43,48 @@ obj/item/weapon/book/Topic(href, href_list)
 				winset(usr,"bookwin", "title=[src.name]")
 				usr << browse(dat,"window=bookwin")
 
-var/datum/bookhand/Bookhandler
+var/datum/bookhand/BOOKHAND
 datum/bookhand/page
 	var/texts = null
-datum/bookhand/book
-	var/title
-	var/bywho
-	var/text
+datum/book
+	var/name
+	var/by
+	var/texts
+	var/cat
 datum/bookhand
 	var/list/books = list()
+
 datum/bookhand/New()
+	BOOKHAND = src // I shouldent need to fucking do this.
+	GetBooks()
+	world.log << "Loaded Books: [src.books.len]"
+	Update()
+datum/bookhand/proc/GetBooks()
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT * FROM `books`")
 	if(!cquery.Execute())
 		message_admins(cquery.ErrorMsg())
-		debug(cquery.ErrorMsg())
-	else
-		var/list/titles = list()
-		var/list/bywho = list()
-		var/list/texts = list()
-		var/list/cats = list()
-		while(cquery.NextRow())
-			var/list/data = cquery.GetRowData()
-			titles += data["title"]
-			bywho[data["title"]] = data["author"]
-			texts[data["title"]]  = data["text"]
-			cats[data["title"]] = text2num(data["cat"])
-		for(var/T in titles)
-			var/obj/item/weapon/book/B = new()
-			B.name = T
-			B.by = bywho[T]
-			B.texts = texts[T]
-			B.cat = cats[T]
-			src.books += B
-		for(var/obj/machinery/bookcase/BS)
-			BS.update()
-mob/verb/newbookhand()
-	Bookhandler = new()
-mob/verb/getbooks()
-	for(var/obj/item/weapon/book/B in Bookhandler.books)
-		usr << B.name
-		B.loc = usr.loc
+		log_admin(cquery.ErrorMsg())
+		return
+	while(cquery.NextRow())
+		var/list/data = cquery.GetRowData()
+		MakeBook(data["title"],data["author"],data["text"],text2num(data["cat"]))
+datum/bookhand/proc/MakeBook(var/title,var/author,var/text,var/cat)
+	var/datum/book/B = new()
+	B.name = title
+	B.by = author
+	B.texts = text
+	B.cat = cat
+	src.books += B
 
+datum/bookhand/proc/Update()
+	for(var/obj/machinery/bookcase/B in world)
+		B.update()
+		world.log << "Updateing [B]"
 obj/machinery/bookcase
 	name = "Fiction Bookcase"
 	icon = 'computer.dmi'
-	icon_state = "messyfiles"
+	icon_state = "bookcase"
+	density = 1
 	var/cat = Fiction
 
 obj/machinery/bookcase/engi
@@ -122,28 +112,36 @@ obj/machinery/bookcase/cook
 	name = "Cooking Bookcase"
 	cat = Cooking
 obj/machinery/bookcase/proc/update()
-	for(var/obj/item/weapon/book/BC in Bookhandler.books)
+	for(var/datum/book/BC in BOOKHAND.books)
 		if(BC.cat == src.cat)
 			var/obj/item/weapon/book/B = new(src)
 			B.name = BC.name
 			B.by = BC.by
-			B.texts = BC.texts
+			B.texts = dd_replacetext(BC.texts, "\n", "<BR>")
 			B.cat = BC.cat
 obj/machinery/bookcase/attack_hand(mob/user)
+	if(src.contents.len <= 0)
+		user << "Seems someone forgot to restock \the [src]..."
+		return
 	var/obj/item/weapon/book/B = input(user,"Choose a book to take out","Books") as obj in src.contents
 	B.loc = user.loc
-
+obj/machinery/bookcase/attackby(obj/item/weapon/book/B,mob/user)
+	if(B)
+		user.drop_item()
+		B.loc = src
 obj/machinery/writersdesk
 	name = "Writer Desk"
 	desc = "A desk with various tools to write a book"
 	icon = 'structures.dmi'
 	icon_state = "writers"
+	density = 1
 obj/machinery/writersdesk/attack_hand(mob/user)
 	switch(alert("Would you like to write a book?",,"Yes","No"))
 		if("No")
 			return
 	var/cat = 1
-	var/text = input(user,"Write a book!","Booker","type something here") as message
+	var/t = input(user,"Write a book!","Booker","Note: This is all logged abuseing this system will get you banned.") as message
+	var/text = copytext(t,1,0)
 	var/title = input(user,"Give a title to your book!","Bookia","Title here") as text
 	var/author = input(user,"What's your name?","Namey",user.name) as text
 	var/catname = input(user,"What catagory is this book in?","Fiction") in list("Fiction","Engineering","Medical","History","Business","SelfHelp","Science","Religion","Cooking")
@@ -166,8 +164,13 @@ obj/machinery/writersdesk/attack_hand(mob/user)
 			cat = Religion
 		if("Cooking")
 			cat = Cooking
-	var/DBQuery/x_query = dbcon.NewQuery("INSERT INTO `books` (`title`, `author`, `text`,`cat`) VALUES ('[dbcon.Quote(title)]', '[dbcon.Quote(author)]','[dbcon.Quote(text)]','[cat]')")
-	//"INSERT INTO `books` (`title`, `author`, `text`,`cat`) VALUES ('[dbcon.Quote(title)]', '[dbcon.Quote(author)]', '[dbcon.Quote(text)]','[cat]')")
+	var/DBQuery/x_query = dbcon.NewQuery("INSERT INTO `books` (`title`, `author`, `text`,`cat`) VALUES ([dbcon.Quote(title)], [dbcon.Quote(author)],[dbcon.Quote(text)],'[cat]')")
+	var/DBQuery/Y_query = dbcon.NewQuery("INSERT INTO `booklog` (`ckey` ,`title`, `author`, `text`,`cat`) VALUES ([dbcon.Quote(user.ckey)],[dbcon.Quote(title)], [dbcon.Quote(author)],[dbcon.Quote(text)],'[cat]')")
+	//"REPLACE INTO `medals` (`ckey`, `medal`, `medaldesc`, `medaldiff`) VALUES ('[src.ckey]', [tit2], [medaldesc2], '[diff]')
 	if(!x_query.Execute())
-		world << "Failed-[x_query.ErrorMsg()]"
-
+		world.log << "Failed-[x_query.ErrorMsg()]"
+		user << "sadly something went wrong.."
+		user << browse(text,"window=derp")
+	if(!Y_query.Execute())
+		world.log << "Failed-[Y_query.ErrorMsg()]"
+//http://img513.imageshack.us/i/20101228234919.png/

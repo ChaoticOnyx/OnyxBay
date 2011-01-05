@@ -2,7 +2,6 @@
 	set category = "Special Verbs"
 	set name = "play sound"
 
-	//if(Debug2)
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
@@ -25,7 +24,7 @@
 			usr << "You already used up your jukebox monies this round!"
 			del(uploaded_sound)
 //	else
-//		usr << "Cant play Sound."
+//		usr << "Can't play Sound."
 
 
 	//else

@@ -47,7 +47,7 @@
 		Finalize()
 			return
 
-		BeginMerge(var/datum/UnifiedNetwork/TargetNetwork, var/Slave)
+		BeginMerge(var/datum/UnifiedNetwork/TargetNetwork, var/IsSlave)
 			return
 
 		FinishMerge()

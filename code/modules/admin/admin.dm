@@ -6,10 +6,10 @@ var/showadminmessages = 1
 	for (var/client/C)
 		if (C.holder)
 			if (admin_ref)
-				if(C.inchat) C.mob << dd_replaceText(rendered, "%admin_ref%", "\ref[C.mob]")
+				if(C.inchat) C.ctab_message("Log", dd_replaceText(rendered, "%admin_ref%", "\ref[C.mob]"))
 				C.mob << output(rendered, "adminoutput")
 			else
-				if(C.inchat) C.mob << rendered
+				if(C.inchat) C.ctab_message("Log", rendered)
 				C.mob << output(rendered, "adminoutput")
 
 /proc/toggle_adminmsg()
@@ -20,8 +20,7 @@ var/showadminmessages = 1
 
 	if (usr.client != src.owner)
 		world << "\blue [usr.key] has attempted to override the admin panel!"
-	//	log_admin("[key_name(usr)] tried to use the admin panel without authorization.")
-		record("ACTION_AUTH","[usr.key]",null,"tried to use the admin panel without authorization.")
+		log_admin("[key_name(usr)] tried to use the admin panel without authorization.")
 		return
 
 	if(href_list["call_shuttle"])
@@ -36,8 +35,7 @@ var/showadminmessages = 1
 						return
 					LaunchControl.start()
 					world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(LaunchControl.timeleft()/60)] minutes.</B>"
-				//	log_admin("[key_name(usr)] called the Emergency Shuttle")
-					record("ACTION_SHUTTLE","[usr.key]",null,"called the Emergency Shuttle")
+					log_admin("[key_name(usr)] called the Emergency Shuttle")
 					message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
 
 				if("2")
@@ -47,14 +45,12 @@ var/showadminmessages = 1
 						if(-1)
 							LaunchControl.start()
 							world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(LaunchControl.timeleft()/60)] minutes.</B>"
-						//	log_admin("[key_name(usr)])
-							record("ACTION_SHUTTLE","[usr.key]",null," called the Emergency Shuttle")
+							log_admin("[key_name(usr)] called the Emergency Shuttle")
 							message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
 						if(1)
 							LaunchControl.stop()
 							world << "\blue <B>Alert: The escape pod launch sequence has been cancelled!</B>"
-						//	log_admin("[key_name(usr)] )
-							record("ACTION_SHUTTLE","[usr.key]",null,"cancelled the escape pod launch sequence")
+							log_admin("[key_name(usr)] cancelled the escape pod launch sequence")
 							message_admins("\blue [key_name_admin(usr)] cancelled the escape pod launch sequence", 1)
 
 			href_list["secretsadmin"] = "check_antagonist"
@@ -65,8 +61,7 @@ var/showadminmessages = 1
 	if(href_list["edit_shuttle_time"])
 		if (src.rank in list("Super Administrator", "Coder", "Host"))
 			LaunchControl.settimeleft( input("Enter new escape pod duration (seconds):","Edit Escape Pod Timeleft", LaunchControl.timeleft() ) as num )
-		//	log_admin("[key_name(usr)] ")
-			record("ACTION_SHUTTLE","[usr.key]",null,"edited the escape pod's timeleft to [LaunchControl.timeleft()]")
+			log_admin("[key_name(usr)] edited the escape pod's timeleft to [LaunchControl.timeleft()]")
 			message_admins("\blue [key_name_admin(usr)] edited the escape pod's timeleft to [LaunchControl.timeleft()]", 1)
 			href_list["secretsadmin"] = "check_antagonist"
 		else
@@ -106,7 +101,7 @@ var/showadminmessages = 1
 		var/DBQuery/key_query = dbcon.NewQuery("SELECT * FROM `bans` WHERE ckey='[href_list["unbane"]]'")
 		var/list/ban = list()
 		if(!key_query.Execute())
-			debug("[key_query.ErrorMsg()]")
+			log_admin("[key_query.ErrorMsg()]")
 		else
 			while(key_query.NextRow())
 				ban = key_query.GetRowData()
@@ -136,13 +131,12 @@ var/showadminmessages = 1
 				if(!reason)
 					return
 		var/mins2 = (mins + CMinutes)
-		//log_admin("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins2)]")
-		record("ACTION_BANEDIT",usr.key,banned_key,"Changed [banned_key] ban Reason:[reason] Duration:[GetExp(mins2)]")
+		log_admin("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins2)]")
 		message_admins("\blue [key_name_admin(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins2)]", 1)
 		var/reason1 = dbcon.Quote(reason)
 		var/DBQuery/query = dbcon.NewQuery("UPDATE `bans` SET `reason`=[reason1], `temp`='[temp]',`minute`='[mins2]', `bannedby`='[usr.ckey]' WHERE `ckey`='[ban["ckey"]]'")
 		if(!query.Execute())
-			debug("[query.ErrorMsg()]")
+			log_admin("[query.ErrorMsg()]")
 		unbanpanel()
 
 
@@ -185,14 +179,12 @@ var/showadminmessages = 1
 				alert("You cannot perform this action. You must be of a higher administrative rank!")
 				return
 			if (jobban_isbanned(M, job))
-			//	log_admin("[key_name(usr)] unbanned [key_name(M)] from [job]")
-				record("ACTION_UNBAN","usr.key",key_name(M),"Unbanned [key_name(M)] from [job]")
+				log_admin("[key_name(usr)] unbanned [key_name(M)] from [job]")
 				message_admins("\blue [key_name_admin(usr)] unbanned [key_name_admin(M)] from [job]", 1)
 				jobban_unban(M, job)
 				href_list["jobban2"] = 1
 			else
-			//	log_admin("[key_name(usr)] banned [key_name(M)] from [job]")
-				record("ACTION_BAN","[usr.key]",key_name(M),"Banned [key_name(M)] from [job]")
+				log_admin("[key_name(usr)] banned [key_name(M)] from [job]")
 				message_admins("\blue [key_name_admin(usr)] banned [key_name_admin(M)] from [job]", 1)
 				jobban_fullban(M, job)
 				href_list["jobban2"] = 1 // lets it fall through and refresh
@@ -205,8 +197,7 @@ var/showadminmessages = 1
 				if ((M.client && M.client.holder && (M.client.holder.level >= src.level)))
 					alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 					return
-			//	log_admin("[key_name(usr)] booted [key_name(M)].")
-				record("ACTION_BOOT","[usr.key]",key_name(M),"Booted [key_name(M)]")
+				log_admin("[key_name(usr)] booted [key_name(M)].")
 				message_admins("\blue [key_name_admin(usr)] booted [key_name_admin(M)].", 1)
 				//M.client = null
 				del(M.client)
@@ -240,8 +231,7 @@ var/showadminmessages = 1
 					AddBan(M.ckey, M.computer_id,M.client.address, reason, usr.ckey, 1, mins)
 					M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 					M << "\red This is a temporary ban, it will be removed in [mins] minutes."
-					//log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
-					record("ACTION_BAN","[usr.key]",key_name(M),"Banned [key_name(M)] Reason: [reason]\nThis will be removed in [mins] minutes.")
+					log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
 					message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
 
 					del(M.client)
@@ -253,9 +243,8 @@ var/showadminmessages = 1
 					AddBan(M.ckey, M.computer_id,M.client.address, reason, usr.ckey, 0, 0)
 					M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 					M << "\red This is a permanent ban."
-					M << "\red To try to resolve this matter by pming one of the admins on http://www.bay12station.com/"
-				//	log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
-					record("ACTION_BAN","[usr.key]",key_name(M),"Banned [key_name(M)] Reason: [reason]\nThis is a permanent ban.")
+					M << "\red To try to resolve this matter by pming one of the admins on http://www.bay12forums.com/"
+					log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
 					message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
 
 					del(M.client)
@@ -289,8 +278,7 @@ var/showadminmessages = 1
 					alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 					return
 				M.muted = !M.muted
-				//log_admin("[key_name(usr)] has [(M.muted ? "muted" : "voiced")] [key_name(M)].")
-				record("ACTION_MUTE",usr.key,key_name(M),"[(M.muted ? "muted" : "voiced")] [key_name(M)].")
+				log_admin("[key_name(usr)] has [(M.muted ? "muted" : "voiced")] [key_name(M)].")
 				message_admins("\blue [key_name_admin(usr)] has [(M.muted ? "muted" : "voiced")] [key_name_admin(M)].", 1)
 				M << "You have been [(M.muted ? "muted" : "voiced")]."
 
@@ -300,7 +288,7 @@ var/showadminmessages = 1
 				return alert(usr, "The game has already started.", null, null, null, null)
 			var/dat = text({"<B>What mode do you wish to play?</B><HR>
 			<A href='?src=\ref[src];c_mode2=secret'>Secret</A><br>
-			<A href='?src=\ref[src];c_mode2=wizard'>Wizard</A><br>
+			<!-- <A href='?src=\ref[src];c_mode2=wizard'>Wizard</A><br> -->
 			<A href='?src=\ref[src];c_mode2=restructuring'>Corporate Restructuring</A><br>
 			<A href='?src=\ref[src];c_mode2=random'>Random</A><br>
 			<A href='?src=\ref[src];c_mode2=traitor'>Traitor</A><br>
@@ -316,7 +304,7 @@ var/showadminmessages = 1
 			<A href='?src=\ref[src];c_mode2=confliction'>Confliction (TESTING)</A><br>
 			<A href='?src=\ref[src];c_mode2=ctf'>Capture The Flag (Beta)</A><br><br>
 			<A href='?src=\ref[src];c_mode2=derelict'>Derelict (Beta)</A><br><br>
-			<A href='?src=\ref[src];c_mode2=among'>Traitor among us (Beta)</A><br><br>
+			<!-- <A href='?src=\ref[src];c_mode2=among'>Traitor among us (Beta)</A><br><br> -->
 			Now: [master_mode]\n"})
 			usr << browse(dat, "window=c_mode")
 
@@ -359,11 +347,10 @@ var/showadminmessages = 1
 					master_mode = "ctf"
 				if("derelict")
 					master_mode = "derelict"
-				if("among")
-					master_mode = "traitoramongus"
+				/*if("among")
+					master_mode = "traitoramongus"*/
 				else
-			//log_admin("[key_name(usr)] set the mode as [master_mode].")
-			record(ACTION_ADMIN,usr.key,null,"set the mode as [master_mode].")
+			log_admin("[key_name(usr)] set the mode as [master_mode].")
 			message_admins("\blue [key_name_admin(usr)] set the mode as [master_mode].", 1)
 			world << "\blue <b>The mode is now: [master_mode]</b>"
 
@@ -376,8 +363,7 @@ var/showadminmessages = 1
 				return
 			if(istype(M, /mob/living/carbon/human))
 				var/mob/living/carbon/human/N = M
-				//log_admin("[key_name(usr)] attempting to monkeyize [key_name(M)]")
-				record("ACTION_MONKEY",usr.key,M.key,"attempting to monkeyize.")
+				log_admin("[key_name(usr)] attempting to monkeyize [key_name(M)]")
 				message_admins("\blue [key_name_admin(usr)] attempting to monkeyize [key_name_admin(M)]", 1)
 				N.monkeyize()
 			if(istype(M, /mob/living/silicon))
@@ -393,8 +379,7 @@ var/showadminmessages = 1
 					return
 				M.say(speech)
 				speech = copytext(sanitize(speech), 1, MAX_MESSAGE_LEN)
-			//	log_admin("[key_name(usr)] forced [key_name(M)] to say: [speech]")
-				record(ACTION_ADMIN,usr.key,M.key,"forced to say [speech].")
+				log_admin("[key_name(usr)] forced [key_name(M)] to say: [speech]")
 				message_admins("\blue [key_name_admin(usr)] forced [key_name_admin(M)] to say: [speech]")
 		else
 			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
@@ -429,8 +414,7 @@ var/showadminmessages = 1
 					prisoner.equip_if_possible(new /obj/item/clothing/shoes/orange(prisoner), prisoner.slot_shoes)
 				spawn(50)
 					M << "\red You have been sent to the prison station!"
-			//	log_admin("[key_name(usr)] sent [key_name(M)] to the prison station.")
-				record(ACTION_ADMIN,usr.key,M.key,"sent to the prison station.")
+				log_admin("[key_name(usr)] sent [key_name(M)] to the prison station.")
 				message_admins("\blue [key_name_admin(usr)] sent [key_name_admin(M)] to the prison station.", 1)
 		else
 			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
@@ -496,8 +480,7 @@ var/showadminmessages = 1
 				if(config.allow_admin_rev)
 					M.revive()
 					message_admins("\red Admin [key_name_admin(usr)] healed / revived [key_name_admin(M)]!", 1)
-					//log_admin("[key_name(usr)] healed / Rrvived [key_name(M)]")
-					record("ACTION_REVIVED",usr.key,M.key,"healed / Rrvived [key_name(M)].")
+					log_admin("[key_name(usr)] healed / Rrvived [key_name(M)]")
 					return
 				else
 					alert("Admin revive disabled")
@@ -626,8 +609,8 @@ var/showadminmessages = 1
 			foo += text("<A href='?src=\ref[src];jobban2=\ref[M]'>Jobban</A> | ")
 			foo += text("<A href='?src=\ref[src];boot2=\ref[M]'>Boot</A> | ")
 		foo += text("<A href='?src=\ref[src];jumpto=\ref[M]'>Jump to</A> | ")
-		foo += text("<A href='?src=\ref[src];newban=\ref[M]'>Ban</A> \]")
-		foo += text("<A href='?src=\ref[src];invite=\ref[M]'>Toggle invite</A> \]")
+		foo += text("<A href='?src=\ref[src];newban=\ref[M]'>Ban</A> | ")
+		foo += text("<A href='?src=\ref[src];invite=\ref[M]'>Toggle invite</A>\]")
 		dat += text("<body>[foo]</body></html>")
 		usr << browse(dat, "window=adminplayeropts;size=480x100")
 
@@ -778,14 +761,12 @@ var/showadminmessages = 1
 			C.clear_admin_verbs()
 			C.update_admins(null)
 			log_admin("[key_name(usr)] has removed [C]'s adminship")
-			record("DEMOTE",key_name(usr),C,"Demoted")
 			message_admins("[key_name_admin(usr)] has removed [C]'s adminship", 1)
 			admins.Remove(C.ckey)
 		else
 			C.clear_admin_verbs()
 			C.update_admins(rank)
 			log_admin("[key_name(usr)] has made [C] a [rank]")
-			record("SETRANK",key_name(usr),C,"Prmoted/demoted to [rank]")
 			message_admins("[key_name_admin(usr)] has made [C] a [rank]", 1)
 			admins[C.ckey] = rank
 
@@ -846,15 +827,13 @@ var/showadminmessages = 1
 								return
 
 				if (number == 1)
-				//	log_admin("[key_name(usr)] created a [english_list(paths)]")
-					record("SPAWNED",key_name(usr),english_list(paths))
+					log_admin("[key_name(usr)] created a [english_list(paths)]")
 					for(var/path in paths)
 						if(ispath(path, /mob))
 							message_admins("[key_name_admin(usr)] created a [english_list(paths)]", 1)
 							break
 				else
-					//log_admin("[key_name(usr)] created [number]ea [english_list(paths)]")
-					record("SPAWNED",key_name(usr),english_list(paths),"number:[number]")
+					log_admin("[key_name(usr)] created [number]ea [english_list(paths)]")
 					for(var/path in paths)
 						if(ispath(path, /mob))
 							message_admins("[key_name_admin(usr)] created [number]ea [english_list(paths)]", 1)
@@ -908,16 +887,14 @@ var/showadminmessages = 1
 						spawn(0)
 							H.monkeyize()
 					ok = 1
-				if("power")
+		/*		if("power")
 					power_restore()
-				//	log_admin("[key_name(usr)] made all areas powered", 1)
-					record("POWER_RESTORE",key_name(usr))
+					log_admin("[key_name(usr)] made all areas powered", 1)
 					message_admins("\blue [key_name_admin(usr)] made all areas powered", 1)
 				if("unpower")
 					power_failure()
-				//	log_admin("[key_name(usr)] made all areas unpowered", 1)
-					record("POWER_REMOVE",key_name(usr))
-					message_admins("\blue [key_name_admin(usr)] made all areas unpowered", 1)
+					log_admin("[key_name(usr)] made all areas unpowered", 1)
+					message_admins("\blue [key_name_admin(usr)] made all areas unpowered", 1)*/
 				if("activateprison")
 					world << "\blue <B>Transit signature detected.</B>"
 					world << "\blue <B>Incoming shuttle.</B>"
@@ -995,7 +972,6 @@ var/showadminmessages = 1
 							traitorize(A, objective, 0)
 						message_admins("\blue [key_name_admin(usr)] used everyone is a traitor secret. Objective is [objective]", 1)
 						log_admin("[key_name(usr)] used everyone is a traitor secret. Objective is [objective]")
-						record("TRAITOR_SECRET",key_name(usr),null,objective)
 					else
 						alert("You're not of a high enough rank to do this")
 				if("flicklights")
@@ -1071,8 +1047,11 @@ var/showadminmessages = 1
 							Wall.ex_act(rand(2,1)) */
 				if("wave")
 					if ((src.rank in list("Primary Administrator", "Super Administrator", "Coder", "Host"  )))
-						meteor_wave()
-						message_admins("[key_name_admin(usr)] has spawned meteors", 1)
+						var/nrMet = input("Meteor number:","Num",1) as num
+						for(var/i = 1; i <= nrMet; i++)
+							spawn(0)
+								spawn_meteor()
+						message_admins("[key_name_admin(usr)] has spawned [nrMet] meteors", 1)
 					else
 						alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 						return
@@ -1109,8 +1088,7 @@ var/showadminmessages = 1
 						alert("You cannot perform this action. You must be of a higher administrative rank!")
 						return
 			if (usr)
-			//	log_admin("[key_name(usr)] used secret [href_list["secretsfun"]]")
-				record("SECRET",key_name(usr),href_list["secretsfun"])
+				log_admin("[key_name(usr)] used secret [href_list["secretsfun"]]")
 				if (ok)
 					world << text("<B>A secret has been activated by []!</B>", usr.key)
 		return
@@ -1255,8 +1233,7 @@ var/showadminmessages = 1
 					usr << browse(dat, "window=fingerprints;size=440x410")
 				else
 			if (usr)
-			//	log_admin("[key_name(usr)] used secret [href_list["secretsadmin"]]")
-				record("SECRET",key_name(usr),href_list["secretsfun"])
+				log_admin("[key_name(usr)] used secret [href_list["secretsadmin"]]")
 				if (ok)
 					world << text("<B>A secret has been activated by []!</B>", usr.key)
 		return
@@ -1514,8 +1491,7 @@ var/showadminmessages = 1
 	world << "\red<B>*** A vote to [vote.mode?"change game mode":"restart"] has been initiated by Admin [usr.key].</B>"
 	world << "\red     You have [vote.timetext(config.vote_period)] to vote."
 
-	//log_admin("Voting to [vote.mode?"change mode":"restart round"] forced by admin [key_name(usr)]")
-	record("VOTEFORCE",key_name(usr),"[vote.mode?"change mode":"restart round"]")
+	log_admin("Voting to [vote.mode?"change mode":"restart round"] forced by admin [key_name(usr)]")
 
 	for(var/client/C)
 		if(config.vote_no_default || (config.vote_no_dead && C.mob.stat == 2))
@@ -1539,7 +1515,7 @@ var/showadminmessages = 1
 	world << "\red <b>*** Voting aborted by [usr.client.stealth ? "Administrator" : usr.key].</b>"
 
 	log_admin("Voting aborted by [key_name(usr)]")
-	record("VOTEABORT",key_name(usr))
+
 	vote.voting = 0
 	vote.nextvotetime = world.timeofday + 10*config.vote_delay
 
@@ -1558,15 +1534,15 @@ var/showadminmessages = 1
 	if(confirm == "Restart [config.allow_vote_restart ? "Off" : "On"]")
 		config.allow_vote_restart = !config.allow_vote_restart
 		world << "<b>Player restart voting toggled to [config.allow_vote_restart ? "On" : "Off"]</b>."
-	//	log_admin("Restart voting toggled to [config.allow_vote_restart ? "On" : "Off"] by [key_name(usr)].")
-		record("VOTETOGGLERESTART",key_name(usr),"[config.allow_vote_restart ? "On" : "Off"] ","Restart")
+		log_admin("Restart voting toggled to [config.allow_vote_restart ? "On" : "Off"] by [key_name(usr)].")
+
 		if(config.allow_vote_restart)
 			vote.nextvotetime = world.timeofday
 	if(confirm == "Change Game Mode [config.allow_vote_mode ? "Off" : "On"]")
 		config.allow_vote_mode = !config.allow_vote_mode
 		world << "<b>Player mode voting toggled to [config.allow_vote_mode ? "On" : "Off"]</b>."
-	//	log_admin("Mode voting toggled to [config.allow_vote_mode ? "On" : "Off"] by [key_name(usr)].")
-		record("VOTETOGGLEMODE",key_name(usr),"[config.allow_vote_mode ? "On" : "Off"]","Change mode") // ABI-LOOK-HERE record("action","who","target,"notes")
+		log_admin("Mode voting toggled to [config.allow_vote_mode ? "On" : "Off"] by [key_name(usr)].")
+
 		if(config.allow_vote_mode)
 			vote.nextvotetime = world.timeofday
 
@@ -1786,9 +1762,9 @@ var/showadminmessages = 1
 		if("nuclear")
 			if(M.mind in ticker.mode:syndicates)
 				return 1
-		if("traitoramongus")
+		/*if("traitoramongus")
 			if(M.mind in ticker.mode:chosentraitor)
-				return 1
+				return 1*/
 		//if("wizard")
 		//	if(M.mind == ticker.mode:wizard)
 		//		return 1

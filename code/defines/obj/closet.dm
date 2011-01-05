@@ -10,6 +10,24 @@
 	var/welded = 0
 	flags = FPRINT
 
+
+
+/obj/closet/portal
+	desc = "It's a closet!"
+	name = "Closet"
+	icon = 'closet.dmi'
+	icon_state = "closed"
+	density = 1
+	anchored = 1
+	var/id
+	var/t_id
+	var/locked = 1
+	var/turf/target = null
+	var/obj/closet/portal/link = null
+	req_access = list(access_captain)
+	flags = FPRINT
+
+
 /obj/spresent
 	desc = "It's a ... present?"
 	name = "strange present"
@@ -52,17 +70,17 @@
 	icon_opened = "bioopen"
 
 /obj/closet/syndicate
-	desc = "Why is this here?"
+	desc = "Syndicate preparations closet."
 	name = "Weapons Closet"
 	icon_state = "syndicate"
 	icon_closed = "syndicate"
 	icon_opened = "syndicateopen"
 
 /obj/closet/syndicate/personal
-	desc = "Gear preperations closet."
+	desc = "Gear preparations closet."
 
 /obj/closet/syndicate/nuclear
-	desc = "Nuclear preperations closet."
+	desc = "Nuclear preparations closet."
 
 /obj/closet/thunderdome
 	desc = "Everything you need!"
@@ -127,6 +145,11 @@
 	name = "Pink Wardrobe"
 	icon_state = "pink"
 	icon_closed = "pink"
+
+/obj/closet/wardrobe/quartermasters
+	name = "Quartermasters Wardrobe"
+	icon_state = "yellow"
+	icon_closed = "yellow"
 
 /obj/closet/wardrobe/red
 	name = "Red Wardrobe"

@@ -1833,80 +1833,76 @@
 				for(var/mob/O in viewers(target, null))
 					O.show_message(text("\red <B>[] is trying to force [] to swallow []!</B>", source, target, item), 1)
 			else
-				if(place == "fuel")
+				if (place == "drink")
 					for(var/mob/O in viewers(target, null))
-						O.show_message(text("\red [source] is trying to force [target] to eat the [item:content]!"), 1)
+						O.show_message(text("\red <B>[] is trying to force [] to swallow a gulp of []!</B>", source, target, item), 1)
 				else
-					if (place == "drink")
+					if (place == "dnainjector")
 						for(var/mob/O in viewers(target, null))
-							O.show_message(text("\red <B>[] is trying to force [] to swallow a gulp of []!</B>", source, target, item), 1)
+							O.show_message(text("\red <B>[] is trying to inject [] with the []!</B>", source, target, item), 1)
 					else
-						if (place == "dnainjector")
-							for(var/mob/O in viewers(target, null))
-								O.show_message(text("\red <B>[] is trying to inject [] with the []!</B>", source, target, item), 1)
-						else
-							var/message = null
-							switch(place)
-								if("mask")
-									message = text("\red <B>[] is trying to take off \a [] from []'s head!</B>", source, target.wear_mask, target)
-/*								if("headset")
-									message = text("\red <B>[] is trying to take off \a [] from []'s face!</B>", source, target.w_radio, target) */
-								if("l_hand")
-									message = text("\red <B>[] is trying to take off \a [] from []'s left hand!</B>", source, target.l_hand, target)
-								if("r_hand")
-									message = text("\red <B>[] is trying to take off \a [] from []'s right hand!</B>", source, target.r_hand, target)
-								if("gloves")
-									message = text("\red <B>[] is trying to take off the [] from []'s hands!</B>", source, target.gloves, target)
-								if("eyes")
-									message = text("\red <B>[] is trying to take off the [] from []'s eyes!</B>", source, target.glasses, target)
-								if("ears")
-									message = text("\red <B>[] is trying to take off the [] from []'s ears!</B>", source, target.ears, target)
-								if("head")
-									message = text("\red <B>[] is trying to take off the [] from []'s head!</B>", source, target.head, target)
-								if("shoes")
-									message = text("\red <B>[] is trying to take off the [] from []'s feet!</B>", source, target.shoes, target)
-								if("belt")
-									message = text("\red <B>[] is trying to take off the [] from []'s belt!</B>", source, target.belt, target)
-								if("suit")
-									message = text("\red <B>[] is trying to take off \a [] from []'s body!</B>", source, target.wear_suit, target)
-								if("back")
-									message = text("\red <B>[] is trying to take off \a [] from []'s back!</B>", source, target.back, target)
-								if("handcuff")
-									message = text("\red <B>[] is trying to unhandcuff []!</B>", source, target)
-								if("uniform")
-									message = text("\red <B>[] is trying to take off \a [] from []'s body!</B>", source, target.w_uniform, target)
-								if("pockets")
-									for(var/obj/item/weapon/mousetrap/MT in  list(target.l_store, target.r_store))
-										if(MT.armed)
-											for(var/mob/O in viewers(target, null))
-												if(O == source)
-													O.show_message(text("\red <B>You reach into the [target]'s pockets, but there was a live mousetrap in there!</B>"), 1)
-												else
-													O.show_message(text("\red <B>[source] reaches into [target]'s pockets and sets off a hidden mousetrap!</B>"), 1)
-											target.u_equip(MT)
-											if (target.client)
-												target.client.screen -= MT
-											MT.loc = source.loc
-											MT.triggered(source, source.hand ? "l_hand" : "r_hand")
-											MT.layer = OBJ_LAYER
-											return
-									message = text("\red <B>[] is trying to empty []'s pockets!!</B>", source, target)
-								if("CPR")
-									if (target.cpr_time >= world.time + 3)
-										//SN src = null
-										del(src)
+						var/message = null
+						switch(place)
+							if("mask")
+								message = text("\red <B>[] is trying to take off \a [] from []'s head!</B>", source, target.wear_mask, target)
+/*							if("headset")
+								message = text("\red <B>[] is trying to take off \a [] from []'s face!</B>", source, target.w_radio, target) */
+							if("l_hand")
+								message = text("\red <B>[] is trying to take off \a [] from []'s left hand!</B>", source, target.l_hand, target)
+							if("r_hand")
+								message = text("\red <B>[] is trying to take off \a [] from []'s right hand!</B>", source, target.r_hand, target)
+							if("gloves")
+								message = text("\red <B>[] is trying to take off the [] from []'s hands!</B>", source, target.gloves, target)
+							if("eyes")
+								message = text("\red <B>[] is trying to take off the [] from []'s eyes!</B>", source, target.glasses, target)
+							if("ears")
+								message = text("\red <B>[] is trying to take off the [] from []'s ears!</B>", source, target.ears, target)
+							if("head")
+								message = text("\red <B>[] is trying to take off the [] from []'s head!</B>", source, target.head, target)
+							if("shoes")
+								message = text("\red <B>[] is trying to take off the [] from []'s feet!</B>", source, target.shoes, target)
+							if("belt")
+								message = text("\red <B>[] is trying to take off the [] from []'s belt!</B>", source, target.belt, target)
+							if("suit")
+								message = text("\red <B>[] is trying to take off \a [] from []'s body!</B>", source, target.wear_suit, target)
+							if("back")
+								message = text("\red <B>[] is trying to take off \a [] from []'s back!</B>", source, target.back, target)
+							if("handcuff")
+								message = text("\red <B>[] is trying to unhandcuff []!</B>", source, target)
+							if("uniform")
+								message = text("\red <B>[] is trying to take off \a [] from []'s body!</B>", source, target.w_uniform, target)
+							if("pockets")
+								for(var/obj/item/weapon/mousetrap/MT in  list(target.l_store, target.r_store))
+									if(MT.armed)
+										for(var/mob/O in viewers(target, null))
+											if(O == source)
+												O.show_message(text("\red <B>You reach into the [target]'s pockets, but there was a live mousetrap in there!</B>"), 1)
+											else
+												O.show_message(text("\red <B>[source] reaches into [target]'s pockets and sets off a hidden mousetrap!</B>"), 1)
+										target.u_equip(MT)
+										if (target.client)
+											target.client.screen -= MT
+										MT.loc = source.loc
+										MT.triggered(source, source.hand ? "l_hand" : "r_hand")
+										MT.layer = OBJ_LAYER
 										return
-									message = text("\red <B>[] is trying perform CPR on []!</B>", source, target)
-								if("id")
-									message = text("\red <B>[] is trying to take off [] from []'s uniform!</B>", source, target.wear_id, target)
-								if("internal")
-									if (target.internal)
-										message = text("\red <B>[] is trying to remove []'s internals</B>", source, target)
-									else
-										message = text("\red <B>[] is trying to set on []'s internals.</B>", source, target)
+								message = text("\red <B>[] is trying to empty []'s pockets!!</B>", source, target)
+							if("CPR")
+								if (target.cpr_time >= world.time + 3)
+									//SN src = null
+									del(src)
+									return
+								message = text("\red <B>[] is trying perform CPR on []!</B>", source, target)
+							if("id")
+								message = text("\red <B>[] is trying to take off [] from []'s uniform!</B>", source, target.wear_id, target)
+							if("internal")
+								if (target.internal)
+									message = text("\red <B>[] is trying to remove []'s internals</B>", source, target)
 								else
-							for(var/mob/M in viewers(target, null))
-								M.show_message(message, 1)
+									message = text("\red <B>[] is trying to set on []'s internals.</B>", source, target)
+							else
+						for(var/mob/M in viewers(target, null))
+							M.show_message(message, 1)
 	spawn( 40 )
 		done()
 		return
@@ -2229,6 +2225,7 @@
 					W.dropped(target)
 					W.layer = initial(W.layer)
 				W.add_fingerprint(source)
+				target.lasthandcuff = null
 			else
 				if (istype(item, /obj/item/weapon/handcuffs))
 					target.drop_from_slot(target.r_hand)
@@ -2236,6 +2233,7 @@
 					source.drop_item()
 					target.handcuffed = item
 					item.loc = target
+					target.lasthandcuff = world.timeofday
 		if("CPR")
 			if (target.cpr_time >= world.time + 30)
 				//SN src = null
@@ -2252,21 +2250,6 @@
 				for(var/mob/O in viewers(source, null))
 					O.show_message(text("\red [] performs CPR on []!", source, target), 1)
 				source << "\red Repeat every 7 seconds AT LEAST."
-		if("fuel")
-			var/obj/item/weapon/fuel/S = item
-			if (!( istype(S, /obj/item/weapon/fuel) ))
-				//SN src = null
-				del(src)
-				return
-			if (S.s_time >= world.time + 30)
-				//SN src = null
-				del(src)
-				return
-			S.s_time = world.time
-			var/a = S.content
-			for(var/mob/O in viewers(source, null))
-				O.show_message(text("\red [source] forced [target] to eat the [a]!"), 1)
-			S.injest(target)
 		if("dnainjector")
 			if (item)
 				var/obj/item/weapon/dnainjector/S = item

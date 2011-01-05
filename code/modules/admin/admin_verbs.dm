@@ -31,6 +31,7 @@
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /client/proc/addchange
 			src.verbs += /proc/possess
+			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
 			src.verbs += /client/proc/debug_variables
@@ -108,7 +109,7 @@
 			src.verbs += /client/proc/delay
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleinvite
-			src.verbs += /client/proc/new_eventa
+			src.verbs += /client/proc/new_event
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/zombify
 			src.verbs += /client/proc/createofficial
@@ -123,6 +124,9 @@
 			src.holder.level = 5
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
+
+			src.verbs += /mob/living/proc/CheckHandcuff
+
 			src.verbs += /client/proc/addchange
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/cmd_explode_turf
@@ -286,7 +290,7 @@
 			//src.verbs += /client/proc/air_report
 			//src.verbs += /client/proc/air_status
 			src.verbs += /client/proc/fix_next_move
-
+			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /client/proc/toggle_view_range
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/delay
@@ -345,7 +349,7 @@
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/cmd_admin_prison
-
+			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /obj/admins/proc/vmode   				//start vote
 			src.verbs += /obj/admins/proc/votekill 				//abort vote
 			src.verbs += /obj/admins/proc/voteres 				//toggle votes
@@ -405,7 +409,7 @@
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/createofficial
 			src.verbs += /obj/admins/proc/delay					//game start delay
-
+			src.verbs += /mob/living/proc/CheckHandcuff
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 //				src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
 //				src.verbs += /obj/admins/proc/adjump				//toggle admin jumping
@@ -438,7 +442,7 @@
 			src.verbs += /obj/admins/proc/startnow				//start now bitch
 			src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
 			src.verbs += /obj/admins/proc/toggleAI				//Toggle the AI
-
+			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /obj/admins/proc/delay					//game start delay
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 //				src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
@@ -845,10 +849,11 @@
 	set name = "Fake attack"
 	fake_attack(p)
 	return
-/client/proc/new_eventa(sev as text)
+
+/client/proc/new_event()
 	set category = "Debug"
 	set name = "Spawn event"
-	new_event(sev)
+	SpawnEvent()
 	return
 
 /client/proc/zombify(var/mob/living/carbon/human/p in world)
@@ -858,22 +863,22 @@
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"
-	set name = "Send nanotrasen(admin) shuttle"
+	set name = "Send Nanotrasen (admin) shuttle"
 	var/area/from = locate(/area/nanotrasenshuttle)
-	var/area/adminshuttle/go = locate(/area/adminshuttle)
-	if(go.shuttle == "")
-		from.move_contents_to(go)
-		go.shuttle = "nanotrasen"
+	var/area/dockingbay/admin/dest = locate(/area/dockingbay/admin)
+	if(dest.shuttle == "")
+		from.move_contents_to(dest)
+		dest.shuttle = "nanotrasen"
 	else
 		src << "\blue Already a shuttle there"
 
 /client/proc/returnadminshuttle()
 	set category = "Roleplay"
-	set name = "Return admin-shuttle"
-	var/area/adminshuttle/from = locate(/area/adminshuttle)
+	set name = "Return Nanotrasen (admin) shuttle"
+	var/area/dockingbay/admin/from = locate(/area/dockingbay/admin)
 	if(from.shuttle == "nanotrasen")
-		var/area/go = locate(/area/nanotrasenshuttle)
-		from.move_contents_to(go)
+		var/area/dest = locate(/area/nanotrasenshuttle)
+		from.move_contents_to(dest)
 		from.shuttle = ""
 
 /client/proc/createofficial(var/name as text)
@@ -883,7 +888,7 @@
 	for(var/area/nanotrasenshuttle/b in world)
 		A = b
 
-	var/job = input ("What job would you like to give your nanotrasen char") in list ("Agent","Overseer","Syndicate managment taskforce","Prisoner Managment")
+	var/job = input ("What job would you like to give your Nanotrasen char") in list ("Agent","Overseer","Syndicate Management Taskforce","Prisoner Management")
 	var/mob/living/carbon/human/new_character = new /mob/living/carbon/human(src)
 	new_character.loc = pick(get_area_turfs(A))
 	new_character.dna.ready_dna(new_character)
@@ -917,7 +922,7 @@
 			shoes = /obj/item/clothing/shoes/brown
 			back1 = /obj/item/weapon/gun/energy/general
 			back2 = /obj/item/weapon/handcuffs
-		if("Syndicate managment taskforce")
+		if("Syndicate Management Taskforce")
 			uniform = /obj/item/clothing/under/color/black
 			gloves = /obj/item/clothing/gloves/black
 			shoes = /obj/item/clothing/shoes/black
@@ -927,7 +932,7 @@
 			over = /obj/item/clothing/suit/armor/swat
 			back1 = /obj/item/weapon/handcuffs
 			back2 = /obj/item/weapon/gun/energy/laser_gun
-		if("Prisoner Managment")
+		if("Prisoner Management")
 			uniform = /obj/item/clothing/under/lightred
 			shoes = /obj/item/clothing/shoes/red
 			gloves = /obj/item/clothing/gloves/latex

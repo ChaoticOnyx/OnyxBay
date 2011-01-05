@@ -41,7 +41,8 @@
 		Direction2 = NewDirection2
 
 	if(level == 1)
-		Hide(src.loc)
+		var/turf/T = src.loc
+		hide(T.intact)
 
 	if (ticker)
 		var/list/P = AllConnections(get_step_3d(Location, Direction1), 1) | AllConnections(get_step_3d(Location, Direction2), 1)
@@ -61,11 +62,9 @@
 		Network.Controller.CableTouched(src, User)
 
 
-/obj/cabling/proc/Hide(var/turf/Location)
-	if (!istype(Location))
-		return
-	if(!istype(loc, /turf/space))
-		invisibility = Location.intact ? 101 : 0
+/obj/cabling/hide(var/intact)
+	if(!istype(loc, /turf/space) && level == 1)
+		invisibility = intact ? 101 : 0
 	UpdateIcon()
 
 

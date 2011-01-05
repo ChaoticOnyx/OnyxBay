@@ -61,12 +61,16 @@ mob/new_player
 				else
 					output += "You are ready.<BR>"
 			else
+				output += "<a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A><BR><BR>"
 				output += "<a href='byond://?src=\ref[src];late_join=1'>Join Game!</A><BR>"
 
 			output += "<BR><a href='byond://?src=\ref[src];observe=1'>Observe</A><BR>"
 
-			src << browse(output,"window=playersetup;size=250x200;can_close=0")
-
+			if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
+				src << browse(output,"window=playersetup;size=250x200;can_close=0")
+			else
+				src << browse(output,"window=playersetup;size=250x233;can_close=0") // Adding the "View the Crew Manifest" option to the size of the window
+				// A nice interface makes for an appealing game :D
 	Stat()
 		..()
 
@@ -122,6 +126,9 @@ mob/new_player
 		if(href_list["late_join"])
 			LateChoices()
 
+		if(href_list["manifest"])
+			ViewManifest()
+
 		if(href_list["SelectedJob"])
 			if (!enter_allowed)
 				usr << "\blue There is an administrative lock on entering the game!"
@@ -168,7 +175,7 @@ mob/new_player
 				if ("17")
 					AttemptLateSpawn("Roboticist", roboticsMax)
 				if ("18")
-					AttemptLateSpawn("Assistant", 10000)
+					AttemptLateSpawn("Unassigned", 10000)
 				if ("19")
 					AttemptLateSpawn("Quartermaster", cargoMax)
 				if ("20")
@@ -213,7 +220,7 @@ mob/new_player
 		else
 			src << alert("[rank] is not available. Please try another.")
 
-// This fxn creates positions for assistants based on existing positions. This could be more elgant.
+// This fxn creates positions for unassigned people based on existing positions. This could be more elegant.
 	proc/LateChoices()
 		var/dat = "<html><body>"
 		dat += "Choose from the following open positions:<br>"
@@ -281,8 +288,8 @@ mob/new_player
 //		if (IsJobavailable("Hydroponist",hydroponicsMax))
 //			dat += "<a href='byond://?src=\ref[src];SelectedJob=22'>Hydroponist</a><br>"
 */
-		if (!jobban_isbanned(src,"Assistant"))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=18'>Assistant</a><br>"
+		if (!jobban_isbanned(src,"Unassigned"))
+			dat += "<a href='byond://?src=\ref[src];SelectedJob=18'>Unassigned</a><br>"
 
 		src << browse(dat, "window=latechoices;size=300x640;can_close=0")
 
@@ -299,6 +306,15 @@ mob/new_player
 
 		return new_character
 
+	proc/ViewManifest()
+		var/dat = "<html><body>"
+		dat += "<h4>Crew Manifest</h4>"
+		for (var/datum/data/record/t in data_core.general)
+			dat += "[t.fields["name"]] - [t.fields["rank"]]<br>"
+		dat += "<br>"
+
+		src << browse(dat, "window=manifest;size=300x420;can_close=1")
+
 	Move()
 		return 0
 
@@ -306,6 +322,7 @@ mob/new_player
 	proc/close_spawn_windows()
 		src << browse(null, "window=latechoices") //closes late choices window
 		src << browse(null, "window=playersetup") //closes the player setup window
+		src << browse(null, "window=manifest") //closes the crew manifest window
 
 /*
 /obj/begin/verb/enter()

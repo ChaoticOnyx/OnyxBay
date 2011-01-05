@@ -1,3 +1,5 @@
+//UltraLight system, by Sukasa
+
 var
 	const
 		UL_LUMINOSITY = 0
@@ -337,5 +339,6 @@ area
 			if(ul_Lighting)
 				if(!findtext(tag,":UL"))
 					ul_Light()
+			world.log << tag
 
 			return

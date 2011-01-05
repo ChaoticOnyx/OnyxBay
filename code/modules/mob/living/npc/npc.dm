@@ -46,8 +46,6 @@ mob/living/npc/proc/Die()
 	return
 mob/living/npc/proc/Breath()
 	return
-mob/living/npc/attack_hand(mob/user)
-	Attacked(user)
 mob/living/npc/proc/Attacked(mob/user,obj/item/weapon/W)
 	if(!W)
 		for(var/mob/M in viewers(user))
@@ -55,14 +53,10 @@ mob/living/npc/proc/Attacked(mob/user,obj/item/weapon/W)
 		src.brutedmg += rand(1,3)
 mob/living/npc/proc/Act()
 	var/isidle = 1
-	var/mob/ohshit
+
 	if(target)
 		if(target.stat == 2)
 			target = null
-	for(var/mob/M in view(1))
-		if(!friends.Find(M.type) && M.type != src.type && M.stat < 2 && agressive)
-			ohshit = M
-			break
 	if(target in view(1,src))
 		if(!friends.Find(target.type) && target.stat < 2 && agressive)
 			Attack(target,brutedmg,firedmg,oxydmg)
@@ -72,12 +66,6 @@ mob/living/npc/proc/Act()
 			Help(target)
 			isidle = 0
 			target = null
-	else if(ohshit in view(1,src))
-		Attack(ohshit,brutedmg,firedmg,oxydmg)
-		isidle = 0
-		target = ohshit
-		path_target = list()
-		ohshit = null
 	else if(ranged && target in view(rangedrange,src))
 		RangedAttack(target)
 		if(!path_target.len)
@@ -116,7 +104,6 @@ mob/living/npc/proc/Act()
 		for(var/atom/A in findtarget)
 			var/atom/B = locate(A) in world
 			if(B)
-				//astar ghere
 				isidle = 0
 				break
 	if(isidle)

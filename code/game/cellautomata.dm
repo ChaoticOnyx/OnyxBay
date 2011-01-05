@@ -134,8 +134,33 @@
 	world.Export("http://127.0.0.1:31338")
 	..()
 */
+
+/*proc/ClearCloset()
+	var/turf/t = locate(38,56,7)
+	for(var/area/a in t.loc:related)
+		for(var/obj/o in a)
+			o.Del()
+
+proc/ClearClosetSave()
+	var/list/l = new /list
+	var/savefile/f = new("closet.sav")
+	f["list"]<<l*/
+
 /world/Reboot(var/reason)
+
+	/*var/turf/t = locate(38,56,7)
+
+	var/list/l = new /list
+	for(var/area/a in t.loc:related)
+		for(var/obj/o in a)
+			l+=o
+	var/savefile/F = new("closet.sav")
+	F["list"]<<l*/
+
+
 	world << "\red <B>Rebooting! (This may take a while, just hang on unless you receive an error message!)</B>"
+
+
 	spawn(0)
 		for(var/client/C)
 			C << link("byond://[world.internet_address]:[world.port]")

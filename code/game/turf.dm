@@ -619,7 +619,10 @@ turf/simulated/floor/proc/update_icon()
 					if (C:amount <= 0) del(C) //wtf
 					playsound(src.loc, 'Deconstruct.ogg', 80, 1)
 			else
-				user << "\red You need more rods."
+				if (istype(src,/turf/simulated/floor/open))
+					new /obj/lattice(src)
+				else
+					user << "\red You need more rods."
 		else
 			user << "\red You must remove the plating first."
 		return

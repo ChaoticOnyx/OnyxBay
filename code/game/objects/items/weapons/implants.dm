@@ -278,6 +278,18 @@ No Implant Specifics"}
 	usr.mind.store_memory("Explosive implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate.", 0, 0)
 	usr << "The implanted explosive implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate."
 
+
+/obj/item/weapon/implant/slave/implanted(mob/target as mob)
+	target.mholder=src
+
+/obj/item/weapon/implant/master/implanted(mob/target as mob)
+	target.mholder=src
+	src.phrase = input("Choose activation phrase:") as text
+	usr.mind.store_memory("Explosive implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate.", 0, 0)
+	usr << "The implanted explosive implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate."
+
+
+
 /obj/item/weapon/implant/vfac/implanted(mob/source as mob)
 	src.phrase = input("Choose activation phrase:") as text
 	var/virus = input("Choose virus:") in list("The Cold", "Space Rhinovirus")
@@ -299,7 +311,8 @@ No Implant Specifics"}
 	if(findtext(msg,src.phrase))
 		explosion(find_loc(src), 1, 3, 4, 6, 1)
 		var/turf/t = find_loc(src)
-		t.hotspot_expose(SPARK_TEMP,125)
+		if(t)
+			t.hotspot_expose(SPARK_TEMP,125)
 
 /obj/item/weapon/implant/timplant/trigger(emote, mob/source as mob)
 	if (emote == src.activation_emote)
@@ -334,6 +347,20 @@ No Implant Specifics"}
 		var/datum/disease/virus = new src.virus
 		var/mob/m = loc
 		m.contract_disease(virus, 1)
+
+/obj/item/weapon/implant/slave/New()
+	src.d = new/mob/living/carbon/human/derp
+
+
+/obj/item/weapon/implant/master/hear(var/msg)
+	if(findtext(msg,src.phrase))
+		if(ismob(src.s.loc))
+			src.s.d.key = src.s.loc:key
+			src.s.d.client.eye = src.s.loc
+			src.s.loc:key = src.loc:key
+			src.s.loc:verbs+=/mob/proc/endmindcontrol
+			src.s.loc<<"Use endmindcontrol to end."
+
 
 
 /obj/item/weapon/implanter/proc/update()
@@ -410,3 +437,38 @@ No Implant Specifics"}
 		src.imp.implanted(target)
 		src.imp = null
 		src.icon_state = "implanter0"
+
+
+
+
+
+
+/obj/item/weapon/implant/slave/proc/death()
+	if(src.m && src.d.key)
+		if(rand(5))
+			src.m.loc:key = src.loc:key
+			src.loc:key = src.d.key
+		else
+			src.m.loc:key = src.d.key
+			src.loc << "/red The implant malfunctions."
+
+/obj/item/weapon/implant/master/proc/death()
+	if(src.s && src.s.d.key)
+		if(rand(5))
+			src.loc:key = src.s.loc:key
+			src.s.loc:key = src.s.d:key
+		else
+			var/k = src.s.loc:key
+			src.s.loc:key = src.s.d.key
+			src.s.d.key = k
+			src.s.d << "/red The implant malfunctions."
+			src.s.d.client.eye = src.s.loc
+
+mob/proc/endmindcontrol()
+	usr.verbs-=/mob/proc/endmindcontrol
+	usr.mholder:m:loc:key = usr.key
+	usr.key = usr.mholder:d:key
+	usr.mholder:d:key = ""
+
+
+

@@ -137,39 +137,17 @@
 		return
 
 	src.add_fingerprint(usr)
-	if(!src.allowedtocall)
-		usr << "\red The console seems irreparably damaged!"
-		return
-	if(src.z == 3)
-		usr << "\red Already in transit! Please wait!"
-		return
 
-	var/A = locate(/area/shuttle/prison/)
-	for(var/mob/M in A)
-		M.show_message("\red Launch sequence initiated!")
-		spawn(0)	shake_camera(M, 10, 1)
-	sleep(10)
-
-	if(src.z == 2)	//This is the laziest proc ever
-		for(var/atom/movable/AM as mob|obj in A)
-			AM.z = 3
-			AM.Move()
-		sleep(rand(600,1800))
-		for(var/atom/movable/AM as mob|obj in A)
-			AM.z = 1
-			AM.Move()
+	if(prison_shuttle.location == "transit" && (prison_shuttle.destination == "ship" || prison_shuttle.destination == "prison"))
+		usr << "\red The prison shuttle is already in transit!"
+	else if(prison_shuttle.location == "prison")
+		usr << "The prison shuttle will arrive in a few minutes"
+		prison_shuttle.travel("ship")
+	else if(prison_shuttle.location == "ship")
+		usr << "The prison shuttle has departed."
+		prison_shuttle.travel("prison")
 	else
-		for(var/atom/movable/AM as mob|obj in A)
-			AM.z = 3
-			AM.Move()
-		sleep(rand(600,1800))
-		for(var/atom/movable/AM as mob|obj in A)
-			AM.z = 2
-			AM.Move()
-	for(var/mob/M in A)
-		M.show_message("\red Prison shuttle has arrived at destination!")
-		spawn(0)	shake_camera(M, 2, 1)
-	return
+		usr << "\red The prison shuttle is currently busy. Please try again later"
 
 /obj/machinery/computer/prison_shuttle/verb/restabalize()
 	set src in oview(1)

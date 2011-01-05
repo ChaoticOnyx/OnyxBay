@@ -55,6 +55,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 	var/crit = 0
 	var/wiresexposed = 0
 	var/apcwires = 15
+	var/eventoff = 0
 //	luminosity = 1
 
 /proc/RandomAPCWires()
@@ -476,7 +477,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 
 
 /obj/machinery/power/apc/proc/update()
-	if(operating && !shorted)
+	if(operating && !shorted && (!eventoff))
 		area.power_light = (lighting > 1)
 		area.power_equip = (equipment > 1)
 		area.power_environ = (environ > 1)
@@ -787,8 +788,8 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 	var/perapc = 0
 	if(terminal)
 		var/datum/UnifiedNetworkController/PowernetController/TerminalController = terminal.GetPowernet()
-
-		perapc = TerminalController.PowerPerAPC
+		if(TerminalController && TerminalController.PowerPerAPC)
+			perapc = TerminalController.PowerPerAPC
 
 	if(cell && !shorted)
 

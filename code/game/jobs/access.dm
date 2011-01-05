@@ -38,7 +38,7 @@
 	access_maintenance_hall = 38
 	access_shield_generator = 39
 
-	password_firedoor = 100
+	password_firedoor = 100 //Stubs from networking 1.0, may be removed, may be used... for now, just avoid them but leave them in -Sukasa
 	password_smeg = 101
 	password_digitalvalve = 102
 	password_router = 103
@@ -105,7 +105,7 @@
 			return list(access_engine, access_incinerator, access_engine_equip, access_tech_storage,
 						access_maint_tunnels, access_external_airlocks, access_laboratories_doors, access_maintenance_hall,
 						access_shield_generator)
-		if("Assistant")
+		if("Unassigned")
 			return list(access_maint_tunnels)
 		if("Counselor")
 			return list(access_morgue, access_chapel_office, access_crematorium, access_maint_tunnels)
@@ -258,7 +258,7 @@
 /proc/get_type_jobs(T)
 	switch(T)
 		if ("Civilian")
-			return list("Assistant", "Barman", "Counselor", "Chef")
+			return list("Unassigned", "Barman", "Counselor", "Chef")
 		if ("Security")
 			return list("Security Officer", "Detective")
 		if ("Med/Sci")

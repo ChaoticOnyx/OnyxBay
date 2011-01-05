@@ -70,16 +70,17 @@
 	icon_state = "start"
 	applyalertstatus = 0
 	requires_power = 0
-	ul_Lighting = 1
+	luminosity = 1
+	ul_Lighting = 0
 
 //These are shuttle areas, they must contain two areas in a subgroup if you want to move a shuttle from one
 //place to another. Look at escape shuttle for example.
 
 /area/shuttle //DO NOT TURN THE ul_Lighting STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
+	applyalertstatus = 0
 	requires_power = 0
 	luminosity = 1
 	ul_Lighting = 0
-	applyalertstatus = 0
 
 /area/shuttle/arrival
 	name = "Arrival Shuttle"
@@ -91,38 +92,34 @@
 	icon_state = "shuttle"
 
 /area/shuttle/escape
-	name = "Escape Pod A"
+	name = "Escape Pod"
 	music = "music/escape.ogg"
 
 /area/shuttle/escape/transit
 	icon_state = "shuttle2"
 
 /area/shuttle/escape/transit/pod1
+	name = "Escape Pod A"
 
 /area/shuttle/escape/transit/pod2
+	name = "Escape Pod B"
 
 /area/shuttle/escape/station/pod1
+	name = "Escape Pod A"
 
 /area/shuttle/escape/station/pod2
+	name = "Escape Pod B"
 
 /area/shuttle/escape/centcom/pod1
+	name = "Escape Pod A"
 
 /area/shuttle/escape/centcom/pod2
+	name = "Escape Pod B"
 
 /area/shuttle/escape/station
 	icon_state = "shuttle2"
 
 /area/shuttle/escape/centcom
-	icon_state = "shuttle"
-
-/area/shuttle/escape2
-	name= "Escape Pod B"
-	music = "music/escape.ogg"
-
-/area/shuttle/escape2/station //Made for the two escape pods in NSV Luna
-	icon_state = "shuttle2"
-
-/area/shuttle/escape2/centcom
 	icon_state = "shuttle"
 
 /area/shuttle/prison/
@@ -132,6 +129,9 @@
 	icon_state = "shuttle"
 
 /area/shuttle/prison/prison
+	icon_state = "shuttle2"
+
+/area/shuttle/prison/transit
 	icon_state = "shuttle2"
 
 // === Trying to remove these areas:
@@ -428,9 +428,9 @@
 	name = "Engineering Deck Aft Maintenance"
 	icon_state = "amaint"
 
-/area/maintenance/aft4
+/*/area/maintenance/aft4					// Moved under ai_monitored
 	name = "Bridge Deck Aft Maintenance"
-	icon_state = "amaint"
+	icon_state = "amaint"*/
 
 
 /area/maintenance/starboardsolar
@@ -451,9 +451,14 @@
 	name = "Waste Disposal"
 	icon_state = "disposal"
 
+
 /area/hallway/primary/admin
 	name = "Administrative Block Hallway"
-	icon_state = "hallA"
+	icon_state = "hallAdmin"
+
+/area/hallway/primary/aftadmin
+	name = "Administrative Block Hallway Aft"
+	icon_state = "hallaftAdmin"
 
 /area/hallway/primary/fore
 	name = "Fore Primary Hallway"
@@ -483,6 +488,22 @@
 
 
 /area/hallway/primary/central
+	name = "Central Primary Hallway"
+	icon_state = "hallC"
+
+/area/hallway/primary/aftportcentral
+	name = "Central Primary Hallway"
+	icon_state = "hallC"
+
+/area/hallway/primary/aftstarboardcentral
+	name = "Central Primary Hallway"
+	icon_state = "hallC"
+
+/area/hallway/primary/portcentral
+	name = "Central Primary Hallway"
+	icon_state = "hallC"
+
+/area/hallway/primary/starboardcentral
 	name = "Central Primary Hallway"
 	icon_state = "hallC"
 
@@ -544,7 +565,6 @@
 	name = "Captain's Quarters"
 	icon_state = "captain"
 
-
 /area/crew_quarters/cafeteria
 	name = "Cafeteria"
 	icon_state = "cafeteria"
@@ -560,7 +580,7 @@
 	icon_state = "bar"
 
 
-/area/crew_quarters/heads
+/area/crew_quarters/hop
 	name = "Head of Personnel's Quarters"
 	icon_state = "head_quarters"
 
@@ -623,12 +643,6 @@
 /area/engine/launcher
 	name = "Engine Launcher Room"
 	icon_state = "engine_monitoring"
-
-
-/area/teleporter
-	name = "Teleporter"
-	icon_state = "teleporter"
-	music = "signal"
 
 
 /area/AIsattele
@@ -876,6 +890,10 @@
 	name = "EVA Storage"
 	icon_state = "eva"
 
+/area/storage/library
+	name = "Library"
+	icon_state = "library"
+
 /area/storage/secure
 	name = "Secure Storage"
 	icon_state = "storage"
@@ -968,6 +986,16 @@
 	name = "Abandoned ship"
 	icon_state = "yellow"
 
+
+/area/ai_monitored/teleporter
+	name = "Teleporter"
+	icon_state = "teleporter"
+	music = "signal"
+
+/area/ai_monitored/maintenance/aft4
+	name = "Bridge Deck Aft Maintenance"
+	icon_state = "amaint"
+
 /area/ai_monitored/storage/eva
 	name = "EVA Storage"
 	icon_state = "eva"
@@ -980,9 +1008,30 @@
 	name = "Emergency Storage"
 	icon_state = "storage"
 
+
 /area/turret_protected/ai_upload
 	name = "AI Upload Chamber"
 	icon_state = "ai_upload"
+	var/obj/machinery/camera/motion/motioncamera = null
+
+/area/turret_protected/ai_upload/New()
+	..()
+	// locate and store the motioncamera
+	spawn (20) // spawn on a delay to let turfs/objs load
+		for (var/obj/machinery/camera/motion/M in src)
+			motioncamera = M
+			return
+	return
+
+/area/turret_protected/ai_upload/Entered(atom/movable/O)
+	..()
+	if (istype(O, /mob) && motioncamera)
+		motioncamera.newTarget(O)
+
+/area/turret_protected/ai_upload/Exited(atom/movable/O)
+	..()
+	if (istype(O, /mob) && motioncamera)
+		motioncamera.lostTarget(O)
 
 /area/turret_protected/ai_upload_foyer
 	name = "AI Upload Foyer"
@@ -1040,17 +1089,21 @@
 	applyalertstatus = 0
 
 
-/area/adminshuttle
-	name = "Docking bay D"
+/area/dockingbay/admin
+	name = "Docking Bay D"
 	icon_state = "ai_chamber"
 	var/shuttle = ""
+
+/area/dockingbay/main
+	name = "External Airlocks"
+
 
 /area/syndicateshuttle
 	name = "Syndicate shuttle"
 	icon_state = "ai_chamber"
 /area/nanotrasenshuttle
 	name = "Nanotrasen shuttle"
-	icon_state = "ai_chamber"
+	icon_state = "nt_shuttle"
 /area/alienshuttle
 	name = "Alien shuttle"
 	icon_state = "ai_chamber"

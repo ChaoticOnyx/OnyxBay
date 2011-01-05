@@ -1,14 +1,3 @@
-//Incomplete.  Messy.  No  real icons.  Completely useless.  But really cool!!
-
-
-//Sukasa - Hey, just for the record, stuff shouldn't go into just /obj/item - and some of the things in here
-// like the laser emitter should be machinery, while other stuff should just be in /obj/effects/ or elsewhere
-
-//Yes, I'm aware.  Lasers can be picked up and put in your pocket and stupid shit like that.  When
-//I say this is in a finished state (note the first line up above) then you can feel free to look
-//at it and give me your opinion on it and point out any issues you see.  Until then, you're wasting
-//your time.
-
 /sound/turntable/test
 	file = 'TestLoop1.ogg'
 	falloff = 2
@@ -16,7 +5,7 @@
 
 /mob/var/music = 0
 
-/obj/item/turntable
+/obj/machinery/party/turntable
 	name = "turntable"
 	desc = "A turntable used for parties and shit."
 	icon = 'lasers2.dmi'
@@ -24,25 +13,33 @@
 	var/playing = 0
 	anchored = 1
 
-/obj/item/turntable/New()
+/obj/machinery/party/mixer
+	name = "mixer"
+	desc = "A mixing board for mixing music"
+	icon = 'lasers2.dmi'
+	icon_state = "mixer"
+	anchored = 1
+
+
+/obj/machinery/party/turntable/New()
 	..()
 	sleep(2)
 	new /sound/turntable/test(src)
 	return
 
-/obj/item/turntable/attack_hand(mob/user as mob)
+/obj/machinery/party/turntable/attack_hand(mob/user as mob)
 
 	var/t = "<B>Turntable Interface</B><br><br>"
-	t += "<A href='?src=\ref[src];on=1'>On</A><br>"
+	//t += "<A href='?src=\ref[src];on=1'>On</A><br>"
 	t += "<A href='?src=\ref[src];off=1'>Off</A><br><br>"
-	t += "<A href='?src=\ref[src];on1=Testloop1'>TestLoop1</A><br>"
-	t += "<A href='?src=\ref[src];on2=Testloop2'>TestLoop2</A><br>"
-	t += "<A href='?src=\ref[src];on3=Testloop3'>TestLoop3</A><br>"
+	t += "<A href='?src=\ref[src];on1=Testloop1'>One</A><br>"
+	//t += "<A href='?src=\ref[src];on2=Testloop2'>TestLoop2</A><br>"
+	//t += "<A href='?src=\ref[src];on3=Testloop3'>TestLoop3</A><br>"
 
 	user << browse(t, "window=turntable;size=420x700")
 
 
-/obj/item/turntable/Topic(href, href_list)
+/obj/machinery/party/turntable/Topic(href, href_list)
 	..()
 	if( href_list["on1"] )
 		if(src.playing == 0)
@@ -59,16 +56,18 @@
 			//		M << S
 			//		M.music = 1
 			var/area/A = src.loc.loc
-			for(var/obj/item/lasermachine/L in A)
-				L.turnon()
+
+			for(var/area/RA in A.related)
+				for(var/obj/machinery/party/lasermachine/L in RA)
+					L.turnon()
 			playing = 1
 			while(playing == 1)
 				for(var/mob/M in world)
-					if(M.loc.loc == src.loc.loc && M.music == 0)
+					if((M.loc.loc in A.related) && M.music == 0)
 						//world << "Found the song..."
 						M << S
 						M.music = 1
-					else if(M.loc.loc != src.loc.loc && M.music == 1)
+					else if(!(M.loc.loc in A.related) && M.music == 1)
 						var/sound/Soff = sound(null)
 						Soff.channel = 10
 						M << Soff
@@ -90,7 +89,7 @@
 			//		M << S
 			//		M.music = 1
 			var/area/A = src.loc.loc
-			for(var/obj/item/lasermachine/L in A)
+			for(var/obj/machinery/party/lasermachine/L in A)
 				L.turnon()
 			playing = 1
 			while(playing == 1)
@@ -121,7 +120,7 @@
 			//		M << S
 			//		M.music = 1
 			var/area/A = src.loc.loc
-			for(var/obj/item/lasermachine/L in A)
+			for(var/obj/machinery/party/lasermachine/L in A)
 				L.turnon()
 			playing = 1
 			while(playing == 1)
@@ -149,12 +148,13 @@
 				M.music = 0
 			playing = 0
 			var/area/A = src.loc.loc
-			for(var/obj/item/lasermachine/L in A)
-				L.turnoff()
+			for(var/area/RA in A.related)
+				for(var/obj/machinery/party/lasermachine/L in RA)
+					L.turnoff()
 
 
 
-/obj/item/lasermachine
+/obj/machinery/party/lasermachine
 	name = "laser machine"
 	desc = "A laser machine that shoots lasers."
 	icon = 'lasers2.dmi'
@@ -162,18 +162,18 @@
 	anchored = 1
 	var/mirrored = 0
 
-/obj/item/laser
+/obj/effects/laser
 	name = "laser"
 	desc = "A laser..."
 	icon = 'lasers2.dmi'
 	icon_state = "laserred1"
 	anchored = 1
-	layer = 100000001
+	layer = 4
 
 /obj/item/lasermachine/New()
 	..()
 
-/obj/item/lasermachine/proc/turnon()
+/obj/machinery/party/lasermachine/proc/turnon()
 	var/wall = 0
 	var/cycle = 1
 	var/area/A = get_area(src)
@@ -182,7 +182,7 @@
 	if(mirrored == 0)
 		while(wall == 0)
 			if(cycle == 1)
-				var/obj/item/laser/F = new/obj/item/laser(src)
+				var/obj/effects/laser/F = new/obj/effects/laser(src)
 				F.x = src.x+X
 				F.y = src.y+Y
 				F.z = src.z
@@ -190,13 +190,14 @@
 				var/area/AA = get_area(F)
 				var/turf/T = get_turf(F)
 				if(T.density == 1 || AA.name != A.name)
+					del(F)
 					return
 				cycle++
 				if(cycle > 3)
 					cycle = 1
 				X++
 			if(cycle == 2)
-				var/obj/item/laser/F = new/obj/item/laser(src)
+				var/obj/effects/laser/F = new/obj/effects/laser(src)
 				F.x = src.x+X
 				F.y = src.y+Y
 				F.z = src.z
@@ -204,13 +205,14 @@
 				var/area/AA = get_area(F)
 				var/turf/T = get_turf(F)
 				if(T.density == 1 || AA.name != A.name)
+					del(F)
 					return
 				cycle++
 				if(cycle > 3)
 					cycle = 1
 				Y++
 			if(cycle == 3)
-				var/obj/item/laser/F = new/obj/item/laser(src)
+				var/obj/effects/laser/F = new/obj/effects/laser(src)
 				F.x = src.x+X
 				F.y = src.y+Y
 				F.z = src.z
@@ -218,6 +220,7 @@
 				var/area/AA = get_area(F)
 				var/turf/T = get_turf(F)
 				if(T.density == 1 || AA.name != A.name)
+					del(F)
 					return
 				cycle++
 				if(cycle > 3)
@@ -226,7 +229,7 @@
 	if(mirrored == 1)
 		while(wall == 0)
 			if(cycle == 1)
-				var/obj/item/laser/F = new/obj/item/laser(src)
+				var/obj/effects/laser/F = new/obj/effects/laser(src)
 				F.x = src.x+X
 				F.y = src.y-Y
 				F.z = src.z
@@ -234,13 +237,14 @@
 				var/area/AA = get_area(F)
 				var/turf/T = get_turf(F)
 				if(T.density == 1 || AA.name != A.name)
+					del(F)
 					return
 				cycle++
 				if(cycle > 3)
 					cycle = 1
 				Y++
 			if(cycle == 2)
-				var/obj/item/laser/F = new/obj/item/laser(src)
+				var/obj/effects/laser/F = new/obj/effects/laser(src)
 				F.x = src.x+X
 				F.y = src.y-Y
 				F.z = src.z
@@ -248,13 +252,14 @@
 				var/area/AA = get_area(F)
 				var/turf/T = get_turf(F)
 				if(T.density == 1 || AA.name != A.name)
+					del(F)
 					return
 				cycle++
 				if(cycle > 3)
 					cycle = 1
 				X++
 			if(cycle == 3)
-				var/obj/item/laser/F = new/obj/item/laser(src)
+				var/obj/effects/laser/F = new/obj/effects/laser(src)
 				F.x = src.x+X
 				F.y = src.y-Y
 				F.z = src.z
@@ -262,6 +267,7 @@
 				var/area/AA = get_area(F)
 				var/turf/T = get_turf(F)
 				if(T.density == 1 || AA.name != A.name)
+					del(F)
 					return
 				cycle++
 				if(cycle > 3)
@@ -270,7 +276,10 @@
 
 
 
-/obj/item/lasermachine/proc/turnoff()
+/obj/machinery/party/lasermachine/proc/turnoff()
 	var/area/A = src.loc.loc
-	for(var/obj/item/laser/F in A)
-		del(F)
+	for(var/area/RA in A.related)
+		for(var/obj/effects/laser/F in RA)
+			del(F)
+
+
