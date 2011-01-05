@@ -8,10 +8,11 @@
 
 
 
-/client/proc/ctab_message(var/tab, var/message)
+/client/proc/ctab_message(var/tab, var/message, var/send_to)
 	if(cmptext(tab, "game"))
 		src << message
 		return
+
 	if(cmptext(tab, "all"))
 		src << message
 		if(!ctab_settings["tabs"])
@@ -19,6 +20,15 @@
 		for(var/t in ctab_settings["tabs"])
 			src << output(message, "ctab_tab_[lowertext(t)].output")
 		return
+
+	if(istype(tab,/list))
+		for(var/t in tab)
+			ctab_message(t, message, send_to)
+		return
+
+	if(!istext(tab))
+		return
+
 	var/tabl = lowertext(tab)
 
 	if(!winexists(src, "ctab_tab_[tabl]"))
@@ -36,7 +46,13 @@
 			winset(src, "ctabs.tabs", "tabs=\"-ctab_settings\"")
 			winset(src, "ctabs.tabs", "tabs=\"+ctab_tab_[tabl],ctab_settings\"")
 		if(!ctab_settings["display_[tabl]"])
-			ctab_settings["display_[tabl]"] = list("Game", tab)
+			if(send_to)
+				if(istype(send_to,/list))
+					ctab_settings["display_[tabl]"] = send_to
+				else
+					ctab_settings["display_[tabl]"] = list(send_to)
+			else
+				ctab_settings["display_[tabl]"] = list("Game", tab)
 		ctab_settings["tab_[tabl]"] = "show"
 		if(!ctab_settings["tabs"])
 			ctab_settings["tabs"] = list()
