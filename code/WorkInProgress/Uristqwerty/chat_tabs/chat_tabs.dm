@@ -43,24 +43,6 @@
 		ctab_settings["tabs"] += tab
 		ctab_update()
 
-	else if(!ctab_settings["tabs"] || !(tab in ctab_settings["tabs"]))
-		if(winget(src, "ctabs.tabs", "current-tab") == "ctab_settings")
-			winset(src, "ctab_tab_[tabl]", "title=\"[tab]\"")
-			winset(src, "ctabs.tabs", "tabs=\"-ctab_settings\"")
-			winset(src, "ctabs.tabs", "tabs=\"+ctab_tab_[tabl],ctab_settings\"")
-			winset(src, "ctabs.tabs", "current-tab=\"ctab_settings\"")
-		else
-			winset(src, "ctab_tab_[tabl]", "title=\"[tab]\"")
-			winset(src, "ctabs.tabs", "tabs=\"-ctab_settings\"")
-			winset(src, "ctabs.tabs", "tabs=\"+ctab_tab_[tabl],ctab_settings\"")
-		if(!ctab_settings["display_[tabl]"])
-			ctab_settings["display_[tabl]"] = list("Game", tab)
-		ctab_settings["tab_[tabl]"] = "show"
-		if(!ctab_settings["tabs"])
-			ctab_settings["tabs"] = list()
-		ctab_settings["tabs"] += tab
-		ctab_update()
-
 	for(var/t in ctab_settings["display_[tabl]"])
 		if(cmptext(t, "game"))
 			src << message
@@ -69,14 +51,43 @@
 			ctab_updated(t)
 
 
+
 /client/New()
 	..()
+	if(!ctab_settings["tabs"])
+		ctab_settings["tabs"] = list()
+	var/list/hidden_tabs = stringsplit(winget(src, "ctabs_hidden.tabs", "tabs"), ",")
+	var/list/tabs = stringsplit(winget(src, "ctabs.tabs", "tabs"), ",")
+	for(var/t in hidden_tabs)
+		var/tab = winget(src, t, "title")
+		if(text2ascii(tab) == text2ascii("!"))
+			tab = copytext(tab, 2, lentext(tab))
+		var/tabl = lowertext(tab)
+		ctab_settings["display_[tabl]"] = list("Game", tab)
+		ctab_settings["tab_[tabl]"] = "hide"
+		ctab_settings["tabs"] += tab
+	for(var/t in tabs)
+		if(t == "ctab_settings" || t == "" || t == " ")
+			continue
+		var/tab = winget(src, t, "title")
+		if(text2ascii(tab) == text2ascii("!"))
+			tab = copytext(tab, 2, lentext(tab))
+		if(cmptext(tab, "game"))
+			continue
+		var/tabl = lowertext(tab)
+		ctab_settings["display_[tabl]"] = list("Game", tab)
+		ctab_settings["tab_[tabl]"] = "show"
+		ctab_settings["tabs"] += tab
 	ctab_update()
+
+
 
 /client/proc/ctab_updated(var/tab)
 	var/tabl = lowertext(tab)
 	if(winget(src, "ctabs.tabs", "current-tab") != "ctab_tab_[tabl]")
 		winset(src, "ctab_tab_[tabl]", "title=\"![tab]!\"")
+
+
 
 /client/verb/ctab_tabread()
 	set name = ".ctab_tabread"
@@ -84,6 +95,8 @@
 	var/title = winget(src, tab, "title")
 	if(text2ascii(title) == text2ascii("!"))
 		winset(src, tab, "title=\"[copytext(title, 2, lentext(title))]\"")
+
+
 
 /client/proc/ctab_update()
 	var/contents = ""
@@ -131,7 +144,7 @@
 			if("toggle_tab_display")
 				if(ctab_settings["tab_[tabl]"] == "show")
 					ctab_settings["tab_[tabl]"] = "hide"
-					winset(src, "ctabs.tabs", "tabs=\"-ctab_tab_[tabl]\"")
+					winset(src, "ctabs_hidden.tabs", "tabs=\"+ctab_tab_[tabl]\"")
 				else
 					ctab_settings["tab_[tabl]"] = "show"
 					winset(src, "ctabs.tabs", "tabs=\"-ctab_settings\"")
@@ -168,6 +181,8 @@
 							ctab_message(tab, "Tab opened.")
 
 		ctab_update()
+
+
 
 /client/proc/ctab_update_edit_tab_window(var/tab)
 	var/tabl = lowertext(tab)
