@@ -1,8 +1,8 @@
 
 
 /datum/prison_shuttle
-	var/location = "nanotrasen"
-	var/destination = "nanotrasen"
+	var/location = "prison"
+	var/destination = "prison"
 	var/timer = 0
 	var/transit_time = 180
 	var/list/destinations = list(	"transit"	= /area/shuttle/prison/transit,
