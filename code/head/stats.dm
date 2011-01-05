@@ -4,7 +4,7 @@ mob/proc/add_stat(type,add)
 		var/DBQuery/cquery = dbcon.NewQuery("SELECT `ckey` FROM `stats` WHERE ckey='[src.ckey]'")
 		if(!cquery.Execute())
 			message_admins(cquery.ErrorMsg())
-			log_admin(cquery.ErrorMsg())
+			debug(cquery.ErrorMsg())
 		else
 			while(cquery.NextRow())
 				var/list/column_data = cquery.GetRowData()
@@ -19,7 +19,7 @@ mob/proc/add_stat(type,add)
 			var/DBQuery/xquery = dbcon.NewQuery("SELECT * FROM `stats` WHERE ckey='[src.ckey]'")
 			if(!xquery.Execute())
 				message_admins(xquery.ErrorMsg())
-				log_admin(xquery.ErrorMsg())
+				debug(xquery.ErrorMsg())
 				return
 			else
 				while(xquery.NextRow())
@@ -40,7 +40,7 @@ mob/proc/add_stat(type,add)
 				var/DBQuery/rquery = dbcon.NewQuery("REPLACE INTO `stats` (`ckey`, `deaths`, `roundsplayed`, `suicides`,`traitorwin` ) VALUES ('[src.ckey]', '[deaths]' , '[roundplayed]', '[suicides]','[traitorwin]');")
 				if(!rquery.Execute())
 					message_admins(rquery.ErrorMsg())
-					log_admin(rquery.ErrorMsg())
+					debug(rquery.ErrorMsg())
 					return
 		else
 			switch(type)
@@ -55,5 +55,5 @@ mob/proc/add_stat(type,add)
 			var/DBQuery/rquery = dbcon.NewQuery("REPLACE INTO `stats` (`ckey`, `deaths`, `roundsplayed`, `suicides`,`traitorwin` ) VALUES ('[src.ckey]', '[deaths]' , '[roundplayed]', '[suicides]','[traitorwin]');")
 			if(!rquery.Execute())
 				message_admins(rquery.ErrorMsg())
-				log_admin(rquery.ErrorMsg())
+				debug(rquery.ErrorMsg())
 				return

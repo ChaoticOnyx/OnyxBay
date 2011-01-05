@@ -30,7 +30,7 @@
 	check_diary()
 	if (config.log_ooc)
 		diary << "[timestamp()]OOC: [text]"
-
+		//FINDOOCLATER
 /proc/log_whisper(text)
 	check_diary()
 	if (config.log_whisper)
@@ -49,3 +49,16 @@
 		current_date = time2text(world.realtime, "YYYYMMDD")
 		diary << "New Day, continuing from previous"
 		diary << "---------------------"
+
+/*
+#define ACTION_MESSAGE 	"Message"
+#define ACTION_ERROR	"Error"
+#define ACTION_STARTUP	"Startup"
+#define ACTION_SHUTDOWN "Shutdown"
+#define ACTION_BAN		"Ban"
+#define ACTION_KICK		"Kick"
+#define ACTION_MUTE		"Mute"
+#define ACTION_SAY		"Say"
+#define ACTION_OOC "OOC"
+#define ACTION_ATTACK "Attack"
+#define ACTION_ADMIN "Admin"*/

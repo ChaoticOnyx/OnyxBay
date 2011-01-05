@@ -6,7 +6,7 @@
 			var/DBQuery/cquery = dbcon.NewQuery("SELECT `medal` FROM `medals` WHERE ckey='[src.ckey]'")
 			if(!cquery.Execute())
 				message_admins(cquery.ErrorMsg())
-				log_admin(cquery.ErrorMsg())
+				debug(cquery.ErrorMsg())
 			else
 				while(cquery.NextRow())
 					var/list/column_data = cquery.GetRowData()
@@ -17,7 +17,7 @@
 			var/DBQuery/xquery = dbcon.NewQuery("REPLACE INTO `medals` (`ckey`, `medal`, `medaldesc`, `medaldiff`) VALUES ('[src.ckey]', [tit2], [medaldesc2], '[diff]');")
 			if(!xquery.Execute())
 				message_admins(xquery.ErrorMsg())
-				log_admin(xquery.ErrorMsg())
+				debug(xquery.ErrorMsg())
 				src << "Medal save failed"
 			var/H
 			switch(diff)
@@ -46,7 +46,7 @@ mob/verb/show_medal()
 	else
 		src << "You have no medals"
 		message_admins(xquery.ErrorMsg())
-		log_admin(xquery.ErrorMsg())
+		debug(xquery.ErrorMsg())
 	if(gquery.Execute())
 		while(gquery.NextRow())
 			var/list/column_data = gquery.GetRowData()

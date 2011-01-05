@@ -63,7 +63,7 @@ datum/bookhand/New()
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT * FROM `books`")
 	if(!cquery.Execute())
 		message_admins(cquery.ErrorMsg())
-		log_admin(cquery.ErrorMsg())
+		debug(cquery.ErrorMsg())
 	else
 		var/list/titles = list()
 		var/list/bywho = list()
