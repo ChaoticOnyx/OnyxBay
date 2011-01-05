@@ -7,13 +7,12 @@
 	var/transit_time = 180
 	var/list/destinations = list(	"transit"	= /area/shuttle/prison/transit,
 									"prison"	= /area/shuttle/prison/prison,
-									"nanotrasen"= /area/nanotrasenshuttle,
-									"ship"		= /area/dockingbay/admin)
+									"ship"		= /area/dockingbay/admin)//temporary
 
 
 
 /datum/prison_shuttle/proc/travel(var/new_destination, var/instant, var/override)
-	world << "[new_destination]: [destinations[new_destination]], [destination]: [destinations[destination]], [location]: [destinations[location]]"
+	return
 	if(location == "transit" && !override)
 		return
 	if(destination == new_destination && !instant)
@@ -38,7 +37,6 @@
 		while(1)
 			if(location != destination)
 				timer--
-				world << "prison_shuttle.timer = [timer]"
 				if(timer < 1)
 					var/area/current = locate(destinations[location])
 					var/area/dest
@@ -90,5 +88,5 @@ var/datum/prison_shuttle/prison_shuttle = new
 		usr << "Centcom will not allow the shuttle to be called."
 		return*/
 
-/client/verb/test_prison_shuttle(var/dest as anything in prison_shuttle.destinations, var/instant as num, var/override as num)
-	prison_shuttle.travel(dest, instant, override)
+///client/verb/test_prison_shuttle(var/dest as anything in prison_shuttle.destinations, var/instant as num, var/override as num)
+//	prison_shuttle.travel(dest, instant, override)
