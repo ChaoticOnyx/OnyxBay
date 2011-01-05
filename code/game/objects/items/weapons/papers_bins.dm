@@ -71,8 +71,8 @@ CLIPBOARDS
 		var/t = input(user, "What text do you wish to add?", text("[]", src.name), text("[src.info]"))  as message
 		if ((!in_range(src, usr) && src.loc != user && !( istype(src.loc, /obj/item/weapon/clipboard) ) && src.loc.loc != user && user.equipped() != P))
 			return
-		//t = copytext(sanitize(t),1,MAX_MESSAGE_LEN)
-		t = copytext(t,1,MAX_MESSAGE_LEN)			//Allow line breaks on paper
+		//t = copytext(sanitize(t),1,MAX_PAPER_MESSAGE_LEN)
+		t = copytext(t,1,MAX_PAPER_MESSAGE_LEN)			//Allow line breaks on paper
 		//t = dd_replacetext(t, "\n", "<BR>")		//Moved all this crap up to the display rather than the input.
 		//t = dd_replacetext(t, "\[b\]", "<B>")
 		//t = dd_replacetext(t, "\[/b\]", "</B>")

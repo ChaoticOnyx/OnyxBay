@@ -164,3 +164,5 @@ var/const
 #define mRegen 128
 #define mRemote 64
 #define mNobreath 32
+
+#define TABBED_PM	1

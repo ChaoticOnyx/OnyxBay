@@ -10,6 +10,10 @@
 	anchored = 1
 	var/id
 	var/on = 0
+	var/freq = 50000
+	var/phase = 0
+	var/phase_variance = 0
+
 /obj/machinery/engine/laser/process()
 	if(on)
 		if(!first)
@@ -17,6 +21,9 @@
 			src.first.master = src
 			src.first.dir = src.dir
 			src.first.power = src.power
+			src.first.freq = src.freq
+			src.first.phase = src.phase
+			src.first.phase_variance = src.phase_variance
 			step(first, dir)
 			if(first)
 				src.first.updatebeam()
@@ -39,6 +46,9 @@
 	var/obj/machinery/engine/laser/master = null
 	var/obj/beam/e_beam/next = null
 	var/power
+	var/freq = 50000
+	var/phase = 0
+	var/phase_variance = 0
 	anchored = 1
 
 /obj/beam/e_beam/New()
@@ -46,28 +56,33 @@
 
 /obj/beam/e_beam/proc/updatebeam()
 	if(!next)
-		var/obj/beam/e_beam/e = new /obj/beam/e_beam(src.loc)
-		e.dir = src.dir
-		src.next = e
-		e.master = src.master
-		e.power = src.power
-		step(e,e.dir)
-		if(src.loc.density == 0)
-			for(var/obj/o in src.loc.contents)
-				if(o.density || o == src.master || ismob(o) )
-					del e
-					return
-			if(e)
-				e.updatebeam()
-		else
-			del e
-			return
+		if(get_step(src.loc,src.dir))
+			var/obj/beam/e_beam/e = new /obj/beam/e_beam(src.loc)
+			e.dir = src.dir
+			src.next = e
+			e.master = src.master
+			e.power = src.power
+			e.phase = src.phase+src.phase_variance
+			e.freq = src.freq
+			e.phase_variance = src.phase_variance
+			step(e,e.dir)
+			if(src.loc.density == 0)
+				for(var/obj/o in src.loc.contents)
+					if(o.density || o == src.master || ismob(o) )
+						del e
+						return
+				if(e)
+					e.updatebeam()
+			else
+				del e
+				return
 	else
 		next.updatebeam()
 
 /obj/beam/e_beam/Bump()
 	del(src)
 	return
+
 
 /obj/beam/e_beam/proc/setpower(var/powera)
 	src.power = powera

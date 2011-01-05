@@ -6,14 +6,12 @@
 		return
 	if(src.holder.rank == "Coder")
 		Debug2 = !Debug2
-
-		world << "Debugging [Debug2 ? "On" : "Off"]"
 		log_admin("[key_name(src)] toggled debugging to [Debug2]")
+		message_admins("[key_name_admin(usr)] toggled debugging to [Debug2].", 1)
 	else if(src.holder.rank == "Host")
 		Debug2 = !Debug2
-
-		world << "Debugging [Debug2 ? "On" : "Off"]"
 		log_admin("[key_name(src)] toggled debugging to [Debug2]")
+		message_admins("[key_name_admin(usr)] toggled debugging to [Debug2].", 1)
 	else
 		alert("Coders only baby")
 		return
@@ -28,7 +26,7 @@
 
 	var/class = null
 	var/returnval = null
-	var/procname = input("Procpath","path", null)
+	var/procname = input("Procpath (in full)","path", null)
 
 	var/argNum = input("Number of arguments:","Number",null) as num //input("Arguments","Arguments:", null)
 	var/list/argL = new/list()
@@ -73,7 +71,7 @@
 
 	var/class = null
 	var/returnval = null
-	var/procname = input("Procpath","path:", null)
+	var/procname = input("Procpath (e.g. just \"update\" for lights)","path:", null)
 
 	var/argNum = input("Number of arguments:","Number",null) as num //input("Arguments","Arguments:", null)
 	var/list/argL = new/list()

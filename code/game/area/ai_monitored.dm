@@ -2,7 +2,6 @@
 	name = "AI Monitored Area"
 	var/obj/machinery/camera/motion/motioncamera = null
 
-
 /area/ai_monitored/New()
 	..()
 	// locate and store the motioncamera

@@ -3,6 +3,8 @@
 /mob/animate_movement = 2
 /mob/mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
+/mob/var/mholder = null
+
 /mob/var/datum/mind/mind
 
 /mob/var/uses_hud = 0
@@ -1575,21 +1577,37 @@ mob/verb/turnwest()
 			if (!( t ))
 				return
 			if (usr.client && usr.client.holder)
-				M << "\red Admin PM from-<b>[key_name(usr, M, 0)]</b>: [t]"
-				usr << "\blue Admin PM to-<b>[key_name(M, usr, 1)]</b>: [t]"
+				if(TABBED_PM)
+					M.ctab_message("PM", "\red Admin PM from-<b>[key_name(usr, M, 0)]</b>: [t]")
+					usr.ctab_message("PM", "\blue Admin PM to-<b>[key_name(M, usr, 1)]</b>: [t]")
+				else
+					M << "\red Admin PM from-<b>[key_name(usr, M, 0)]</b>: [t]"
+					usr << "\blue Admin PM to-<b>[key_name(M, usr, 1)]</b>: [t]"
 			else
 				if (M.client && M.client.holder)
-					M << "\blue Reply PM from-<b>[key_name(usr, M, 1)]</b>: [t]"
+					if(TABBED_PM)
+						M.ctab_message("PM", "\blue Reply PM from-<b>[key_name(usr, M, 1)]</b>: [t]")
+					else
+						M << "\blue Reply PM from-<b>[key_name(usr, M, 1)]</b>: [t]"
 				else
-					M << "\red Reply PM from-<b>[key_name(usr, M, 0)]</b>: [t]"
-				usr << "\blue Reply PM to-<b>[key_name(M, usr, 0)]</b>: [t]"
+					if(TABBED_PM)
+						M.ctab_message("PM", "\red Reply PM from-<b>[key_name(usr, M, 0)]</b>: [t]")
+					else
+						M << "\red Reply PM from-<b>[key_name(usr, M, 0)]</b>: [t]"
+				if(TABBED_PM)
+					usr.ctab_message("PM", "\blue Reply PM to-<b>[key_name(M, usr, 0)]</b>: [t]")
+				else
+					usr << "\blue Reply PM to-<b>[key_name(M, usr, 0)]</b>: [t]"
 
 			log_admin("PM: [key_name(usr)]->[key_name(M)] : [t]")
 
 			//we don't use message_admins here because the sender/receiver might get it too
 			for (var/client/C)
 				if(C.holder && C.mob.key != usr.key && C.mob.key != M.key)
-					C.mob << "<b><font color='blue'>PM: [key_name(usr, C.mob)]->[key_name(M, C.mob)]:</b> \blue [t]</font>"
+					if(TABBED_PM)
+						C.ctab_message("PM", "<b><font color='blue'>PM: [key_name(usr, C.mob)]->[key_name(M, C.mob)]:</b> \blue [t]</font>")
+					else
+						C.mob << "<b><font color='blue'>PM: [key_name(usr, C.mob)]->[key_name(M, C.mob)]:</b> \blue [t]</font>"
 	..()
 	return
 

@@ -24,7 +24,7 @@ datum/controller/game_controller
 
 		ShieldNetwork = new /datum/shieldnetwork()
 		vsc = new()
-		world << "\red Setting up shields.."
+		world << "\red \b Setting up shields.."
 
 		ShieldNetwork.makenetwork()
 
@@ -63,10 +63,12 @@ datum/controller/game_controller
 
 		setupdooralarms()		//Added by Strumpetplaya - Alarm Change
 		BOOKHAND = new()
-		world << "\red Setting up the book system..."
+		world << "\red \b Setting up the book system..."
 	// Handled by datum declerations now in the shuttle controller file
 
 	//	main_shuttle = new /datum/shuttle_controller/main_shuttle()
+
+
 
 		if(!ticker)
 			ticker = new /datum/controller/gameticker()
@@ -88,12 +90,22 @@ datum/controller/game_controller
 			machine.build_network()
 
 
-		world << "\red Building Unified Networks"
+		world << "\red \b Building Unified Networks"
 
 		MakeUnifiedNetworks()
 
 
 		world << "\red \b Initializations complete."
+
+		/*var/list/l = new /list
+		var/savefile/f = new("closet.sav")
+		var/turf/t = locate(38,56,7)
+		f["list"]>>l
+		for(var/obj/o in l)
+			var/obj/b = new o.type
+			//var/obj/b.vars = o.vars.Copy()
+			b.loc = t*/
+
 
 	process()
 
@@ -146,6 +158,10 @@ datum/controller/game_controller
 		for(var/turf/t in processing_turfs)
 			ticker_debug = "turf processing"
 			t.process()
+
+		for(var/obj/O in processing_others) // The few exceptions which don't fit in the above lists
+			ticker_debug = "[O] [O.name] processing"
+			O:process()
 
 		sleep(-1)
 

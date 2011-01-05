@@ -10,6 +10,24 @@
 	var/welded = 0
 	flags = FPRINT
 
+
+
+/obj/closet/portal
+	desc = "It's a closet!"
+	name = "Closet"
+	icon = 'closet.dmi'
+	icon_state = "closed"
+	density = 1
+	anchored = 1
+	var/id
+	var/t_id
+	var/locked = 1
+	var/turf/target = null
+	var/obj/closet/portal/link = null
+	req_access = list(access_captain)
+	flags = FPRINT
+
+
 /obj/spresent
 	desc = "It's a ... present?"
 	name = "strange present"

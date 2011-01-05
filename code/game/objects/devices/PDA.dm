@@ -1715,6 +1715,7 @@ Code:
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=hacktool'>Hacktool</A> (4)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_freedom'>Freedom Implant (with injector)</A> (3)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_compress'>Compressed Matter Implant (with injector)</A> (5)<BR>"
+	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_control'>Mind Control Implant (with injectors)</A> (10)<BR>"
 //	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_tele'>Teleport Implant (with injector) + Beacon</A> (10)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_vfac'>Viral Factory Implant</A> (5)<BR>"
 	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_explosive'>Explosive Implant (with injector)</A> (6)<BR>"
@@ -1821,6 +1822,17 @@ Code:
 					src.uses -= 5
 					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
 					O.imp = new /obj/item/weapon/implant/vfac(O)
+			if("imp_control")
+				if (src.uses >= 10)
+					src.uses -= 10
+					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
+					O.name = "master"
+					O.imp = new /obj/item/weapon/implant/master(O)
+					var/obj/item/weapon/implanter/S = new /obj/item/weapon/implanter(get_turf(src.hostpda))
+					S.name = "slave"
+					S.imp = new /obj/item/weapon/implant/slave(S)
+					S.imp:m = O.imp
+					O.imp:s = S.imp
 			if("sleepypen")
 				if (src.uses >= 4)
 					src.uses -= 4

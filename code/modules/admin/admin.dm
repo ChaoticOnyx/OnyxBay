@@ -288,7 +288,7 @@ var/showadminmessages = 1
 				return alert(usr, "The game has already started.", null, null, null, null)
 			var/dat = text({"<B>What mode do you wish to play?</B><HR>
 			<A href='?src=\ref[src];c_mode2=secret'>Secret</A><br>
-			<A href='?src=\ref[src];c_mode2=wizard'>Wizard</A><br>
+			<!-- <A href='?src=\ref[src];c_mode2=wizard'>Wizard</A><br> -->
 			<A href='?src=\ref[src];c_mode2=restructuring'>Corporate Restructuring</A><br>
 			<A href='?src=\ref[src];c_mode2=random'>Random</A><br>
 			<A href='?src=\ref[src];c_mode2=traitor'>Traitor</A><br>
@@ -304,7 +304,7 @@ var/showadminmessages = 1
 			<A href='?src=\ref[src];c_mode2=confliction'>Confliction (TESTING)</A><br>
 			<A href='?src=\ref[src];c_mode2=ctf'>Capture The Flag (Beta)</A><br><br>
 			<A href='?src=\ref[src];c_mode2=derelict'>Derelict (Beta)</A><br><br>
-			<A href='?src=\ref[src];c_mode2=among'>Traitor among us (Beta)</A><br><br>
+			<!-- <A href='?src=\ref[src];c_mode2=among'>Traitor among us (Beta)</A><br><br> -->
 			Now: [master_mode]\n"})
 			usr << browse(dat, "window=c_mode")
 
@@ -347,8 +347,8 @@ var/showadminmessages = 1
 					master_mode = "ctf"
 				if("derelict")
 					master_mode = "derelict"
-				if("among")
-					master_mode = "traitoramongus"
+				/*if("among")
+					master_mode = "traitoramongus"*/
 				else
 			log_admin("[key_name(usr)] set the mode as [master_mode].")
 			message_admins("\blue [key_name_admin(usr)] set the mode as [master_mode].", 1)
@@ -887,14 +887,14 @@ var/showadminmessages = 1
 						spawn(0)
 							H.monkeyize()
 					ok = 1
-				if("power")
+		/*		if("power")
 					power_restore()
 					log_admin("[key_name(usr)] made all areas powered", 1)
 					message_admins("\blue [key_name_admin(usr)] made all areas powered", 1)
 				if("unpower")
 					power_failure()
 					log_admin("[key_name(usr)] made all areas unpowered", 1)
-					message_admins("\blue [key_name_admin(usr)] made all areas unpowered", 1)
+					message_admins("\blue [key_name_admin(usr)] made all areas unpowered", 1)*/
 				if("activateprison")
 					world << "\blue <B>Transit signature detected.</B>"
 					world << "\blue <B>Incoming shuttle.</B>"
@@ -1762,9 +1762,9 @@ var/showadminmessages = 1
 		if("nuclear")
 			if(M.mind in ticker.mode:syndicates)
 				return 1
-		if("traitoramongus")
+		/*if("traitoramongus")
 			if(M.mind in ticker.mode:chosentraitor)
-				return 1
+				return 1*/
 		//if("wizard")
 		//	if(M.mind == ticker.mode:wizard)
 		//		return 1

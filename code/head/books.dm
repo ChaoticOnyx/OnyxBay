@@ -83,7 +83,8 @@ datum/bookhand/proc/Update()
 obj/machinery/bookcase
 	name = "Fiction Bookcase"
 	icon = 'computer.dmi'
-	icon_state = "messyfiles"
+	icon_state = "bookcase"
+	density = 1
 	var/cat = Fiction
 
 obj/machinery/bookcase/engi
@@ -120,7 +121,7 @@ obj/machinery/bookcase/proc/update()
 			B.cat = BC.cat
 obj/machinery/bookcase/attack_hand(mob/user)
 	if(src.contents.len <= 0)
-		user << "Seems someone forgot to restock this one..."
+		user << "Seems someone forgot to restock \the [src]..."
 		return
 	var/obj/item/weapon/book/B = input(user,"Choose a book to take out","Books") as obj in src.contents
 	B.loc = user.loc
@@ -133,6 +134,7 @@ obj/machinery/writersdesk
 	desc = "A desk with various tools to write a book"
 	icon = 'structures.dmi'
 	icon_state = "writers"
+	density = 1
 obj/machinery/writersdesk/attack_hand(mob/user)
 	switch(alert("Would you like to write a book?",,"Yes","No"))
 		if("No")

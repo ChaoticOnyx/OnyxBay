@@ -68,7 +68,7 @@
 	anchored = 1.0
 
 /obj/machinery/dna_scannernew
-	name = "DNA Modifier"
+	name = "DNA Scanner"
 	icon = 'Cryogenic2.dmi'
 	icon_state = "scanner_0"
 	density = 1
@@ -277,6 +277,10 @@
 	var/obj/machinery/dna_scanner/connected = null
 	var/obj/item/weapon/disk/data/genetics/diskette = null
 	anchored = 1.0
+
+	var/brightnessred = 0
+	var/brightnessgreen = 0
+	var/brightnessblue = 2
 
 /obj/machinery/sec_lock
 	name = "Security Pad"
@@ -701,9 +705,9 @@
 	icon_deny = "robotics-deny"
 	req_access_txt = "29"
 	points = 10
-	product_paths = "/obj/item/weapon/CableCoil/power;/obj/item/device/flash;/obj/item/weapon/circuitry;/obj/item/weapon/cell;/obj/item/device/prox_sensor;/obj/item/device/healthanalyzer;/obj/item/weapon/scalpel;/obj/item/weapon/circular_saw;/obj/item/weapon/tank/anesthetic;/obj/item/clothing/mask/medical;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar"
+	product_paths = "/obj/item/weapon/CableCoil/power;/obj/item/device/flash;/obj/item/weapon/circuitry;/obj/item/weapon/cell;/obj/item/device/prox_sensor;/obj/item/device/radio/signaler;/obj/item/device/healthanalyzer;/obj/item/weapon/scalpel;/obj/item/weapon/circular_saw;/obj/item/weapon/tank/anesthetic;/obj/item/clothing/mask/medical;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar"
 	//product_amounts = "4;4;4;4;12"
-	product_prices = "1;3;1;3;2;2;4;4;2;1;1;1"
+	product_prices = "1;3;1;3;2;2;2;4;4;2;1;1;1"
 	product_hidden = ""
 	hidden_prices = ""
 	charge_type = "robotics"
@@ -739,8 +743,8 @@
 /obj/machinery/vending/engineering
 	name = "Robco Tool Maker"
 	desc = "Everything you need for do-it-yourself ship repair."
-	icon_state = "generic"
-	//icon_deny = "med-deny"
+	icon_state = "engi"
+	icon_deny = "engi-deny"
 	req_access_txt = "10"
 	points = 10
 	product_paths = "/obj/item/weapon/storage/utilitybelt;/obj/item/clothing/glasses/meson;/obj/item/clothing/gloves/yellow;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar;/obj/item/weapon/wirecutters;/obj/item/device/multitool;/obj/item/weapon/wrench;/obj/item/device/t_scanner;/obj/item/weapon/CableCoil/power;/obj/item/weapon/circuitry;/obj/item/weapon/cell;/obj/item/weapon/weldingtool;/obj/item/clothing/head/helmet/welding;/obj/item/weapon/light/tube;/obj/item/clothing/suit/fire"

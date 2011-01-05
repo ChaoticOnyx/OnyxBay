@@ -44,9 +44,9 @@ SYNDICATE UPLINK
 			dat += "<A href='byond://?src=\ref[src];item_sword=1'>Energy Sword</A> (4)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_bomb=1'>Syndicate Bomb</A> (4)<BR>"
 			dat += "<A href='byond://?src=\ref[src];item_powersink=1'>Power Sink</A> (5)<BR>"
-			dat += "<A href='byond://?src=\ref[src];buy_item=imp_compress'>Compressed Matter Implant (with injector)</A> (5)<BR>"
-			dat += "<A href='byond://?src=\ref[src];buy_item=imp_vfac'>Viral Factory Implant</A> (5)<BR>"
-			dat += "<A href='byond://?src=\ref[src];buy_item=imp_explosive'>Explosive Implant (with injector)</A> (6)<BR>"
+			dat += "<A href='byond://?src=\ref[src];imp_compress=1'>Compressed Matter Implant (with injector)</A> (5)<BR>"
+			dat += "<A href='byond://?src=\ref[src];imp_vfac=1'>Viral Factory Implant</A> (5)<BR>"
+			dat += "<A href='byond://?src=\ref[src];imp_explosive=1'>Explosive Implant (with injector)</A> (6)<BR>"
 			dat += "<li><A href='byond://?src=\ref[src];item_cartridge=1'>Detomatix Cartridge</A> (3)</li>"
 			dat += "<HR>"
 			if (src.origradio)
@@ -133,31 +133,29 @@ SYNDICATE UPLINK
 			if (src.uses >= 5)
 				src.uses -= 5
 				new /obj/item/device/powersink(H.loc)
-
-//RAGE
-		else if("imp_alien")
+		else if(href_list["imp_alien"])
 			if (src.uses >= 10)
 				src.uses -= 10
 				var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(H.loc))
 				O.imp = new /obj/item/weapon/implant/alien(O)
-		else if("imp_compress")
+		else if(href_list["imp_compress"])
 			if (src.uses >= 5)
 				src.uses -= 5
 				var/obj/item/weapon/implanter/compress/O = new /obj/item/weapon/implanter/compress(get_turf(H.loc))
 				O.imp = new /obj/item/weapon/implant/compressed(O)
-		else if("imp_tele")
+		else if(href_list["imp_tele"])
 			if (src.uses >= 10)
 				src.uses -= 10
 				var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(H.loc))
 				O.imp = new /obj/item/weapon/implant/timplant(O)
 				new /obj/item/device/radio/beacon/traitor(get_turf(H.loc))
-		else if("imp_explosive")
+		else if(href_list["imp_explosive"])
 			if (src.uses >= 6)
 				src.uses -= 6
 				var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(H.loc))
 				O.imp = new /obj/item/weapon/implant/explosive(O)
 				O.name = "(BIO-HAZARD) BIO-detpack"
-		else if("imp_vfac")
+		else if(href_list["imp_vfac"])
 			if (src.uses >= 5)
 				src.uses -= 5
 				var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(H.loc))
