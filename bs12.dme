@@ -691,6 +691,7 @@
 #include "code\WorkInProgress\UnifiedCabling\CablingCoil.dm"
 #include "code\WorkInProgress\UnifiedCabling\NetworkController.dm"
 #include "code\WorkInProgress\UnifiedCabling\UnifiedNetwork.dm"
+#include "code\WorkInProgress\Uristqwerty\prison_shuttle.dm"
 #include "code\WorkInProgress\Uristqwerty\chat_tabs\adminhelp.dm"
 #include "code\WorkInProgress\Uristqwerty\chat_tabs\adminsay.dm"
 #include "code\WorkInProgress\Uristqwerty\chat_tabs\chat_tabs.dm"
