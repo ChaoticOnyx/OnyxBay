@@ -90,10 +90,12 @@
 #define FILE_DIR "code/obj"
 #define FILE_DIR "code/unused"
 #define FILE_DIR "code/WorkInProgress"
+#define FILE_DIR "code/WorkInProgress/AjaxSimulacrum"
 #define FILE_DIR "code/WorkInProgress/Alfie275"
 #define FILE_DIR "code/WorkInProgress/Aryn"
 #define FILE_DIR "code/WorkInProgress/Events"
 #define FILE_DIR "code/WorkInProgress/Events/Events"
+#define FILE_DIR "code/WorkInProgress/newcomputer"
 #define FILE_DIR "code/WorkInProgress/NewMobs and etc"
 #define FILE_DIR "code/WorkInProgress/optics"
 #define FILE_DIR "code/WorkInProgress/plants"
@@ -124,6 +126,7 @@
 #define FILE_DIR "maps"
 #define FILE_DIR "maps/backup"
 #define FILE_DIR "maps/travel"
+#define FILE_DIR "music"
 #define FILE_DIR "sound"
 #define FILE_DIR "sound/ambience"
 #define FILE_DIR "sound/effects"
@@ -164,7 +167,6 @@
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
-#include <dantom\cgi\CGI.dme>
 #include "code\mapLoader.dm"
 #include "code\names.dm"
 #include "code\savetest.dm"
@@ -523,6 +525,7 @@
 #include "code\game\verbs\begin.dm"
 #include "code\game\verbs\suicide.dm"
 #include "code\game\verbs\who.dm"
+#include "code\head\books.dm"
 #include "code\head\changelog.dm"
 #include "code\head\fireworks.dm"
 #include "code\head\medals.dm"
@@ -652,6 +655,8 @@
 #include "code\WorkInProgress\NewBan.dm"
 #include "code\WorkInProgress\rails.dm"
 #include "code\WorkInProgress\test.dm"
+#include "code\WorkInProgress\AjaxSimulacrum\ASLib.dm"
+#include "code\WorkInProgress\AjaxSimulacrum\TESTOBJECT.dm"
 #include "code\WorkInProgress\Aryn\DetectiveWork.dm"
 #include "code\WorkInProgress\Aryn\TextFilters.dm"
 #include "code\WorkInProgress\Events\Event.dm"
