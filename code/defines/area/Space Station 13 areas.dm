@@ -131,6 +131,9 @@
 /area/shuttle/prison/prison
 	icon_state = "shuttle2"
 
+/area/shuttle/prison/transit
+	icon_state = "shuttle2"
+
 // === Trying to remove these areas:
 
 /area/airtunnel1/      // referenced in airtunnel.dm:759
