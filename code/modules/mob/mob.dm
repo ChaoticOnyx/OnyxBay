@@ -1026,14 +1026,19 @@ mob/verb/turnwest()
 				for(var/mob/O in viewers(usr, null))
 					O.show_message(text("\red <B>[] resists!</B>", usr), 1)
 
-			if(usr:handcuffed && usr:canmove && (usr.last_special <= world.time))
+			if(usr:handcuffed && (usr.last_special <= world.time))
+				var/breakouttime = 1200
+				var/displaytime = 2
+				if(!usr:canmove)
+					breakouttime = 2400
+					displaytime = 4
 				usr.next_move = world.time + 100
 				usr.last_special = world.time + 100
-				usr << "\red You attempt to remove your handcuffs. (This will take around 2 minutes and you need to stand still)"
+				usr << "\red You attempt to remove your handcuffs. (This will take around [displaytime] minutes and you need to stand still)"
 				for(var/mob/O in viewers(usr))
 					O.show_message(text("\red <B>[] attempts to remove the handcuffs!</B>", usr), 1)
 				spawn(0)
-					if(do_after(usr, 1200))
+					if(do_after(usr, breakouttime))
 						if(!usr:handcuffed) return
 						for(var/mob/O in viewers(usr))
 							O.show_message(text("\red <B>[] manages to remove the handcuffs!</B>", usr), 1)
