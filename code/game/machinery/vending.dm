@@ -129,7 +129,7 @@
 /obj/item/weapon/vending_charge/chemistry
 	name = "Chemistry Charge"
 	charge_type = "chemistry"
-	icon_state = "generic-charge"
+	icon_state = "chemistry-charge"
 
 /obj/item/weapon/vending_charge/genetics
 	name = "Genetics Charge"
@@ -139,52 +139,52 @@
 /obj/item/weapon/vending_charge/toxins
 	name = "Toxins Charge"
 	charge_type = "toxins"
-	icon_state = "generic-charge"
+	icon_state = "toxins-charge"
 
 /obj/item/weapon/vending_charge/robotics
 	name = "Robotics Charge"
 	charge_type = "robotics"
-	icon_state = "generic-charge"
+	icon_state = "robotics-charge"
 
 /obj/item/weapon/vending_charge/bar
 	name = "Bar Charge"
 	charge_type = "bar"
-	icon_state = "generic-charge"
+	icon_state = "bar-charge"
 
 /obj/item/weapon/vending_charge/kitchen
 	name = "Kitchen Charge"
 	charge_type = "kitchen"
-	icon_state = "generic-charge"
+	icon_state = "kitchen-charge"
 
 /obj/item/weapon/vending_charge/engineering
 	name = "Engineering Charge"
 	charge_type = "engineering"
-	icon_state = "generic-charge"
+	icon_state = "engineering-charge"
 
 /obj/item/weapon/vending_charge/security
 	name = "Security Charge"
 	charge_type = "security"
-	icon_state = "generic-charge"
+	icon_state = "security-charge"
 
 /obj/item/weapon/vending_charge/coffee
 	name = "Coffee Charge"
 	charge_type = "coffee"
-	icon_state = "generic-charge"
+	icon_state = "coffee-charge"
 
 /obj/item/weapon/vending_charge/snack
 	name = "Snack Charge"
 	charge_type = "snack"
-	icon_state = "generic-charge"
+	icon_state = "snack-charge"
 
 /obj/item/weapon/vending_charge/cart
 	name = "Cart Charge"
 	charge_type = "cart"
-	icon_state = "generic-charge"
+	icon_state = "cart-charge"
 
 /obj/item/weapon/vending_charge/cigarette
 	name = "Cigarette Charge"
 	charge_type = "cigarette"
-	icon_state = "generic-charge"
+	icon_state = "cigarette-charge"
 
 
 
