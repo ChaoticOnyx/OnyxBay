@@ -535,6 +535,7 @@
 #include "code\head\stats.dm"
 #include "code\head\stayalive.dm"
 #include "code\head\stuff.dm"
+#include "code\head\Usefullprocs.dm"
 #include "code\modules\admin\admin.dm"
 #include "code\modules\admin\admin_verbs.dm"
 #include "code\modules\admin\banjob.dm"

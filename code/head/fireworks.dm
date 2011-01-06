@@ -45,7 +45,6 @@ obj/item/weapon/sparkler/attackby(obj/item/weapon/W,mob/user)
 		del(src)
 /obj/crate/fireworks
 	name = "Fireworks!"
-
 /obj/crate/fireworks/New()
 	new /obj/item/weapon/sparkler(src)
 	new /obj/item/weapon/sparkler(src)
