@@ -237,8 +237,6 @@
 	return src.attackby(null, user)
 
 /obj/machinery/door/unpowered/attackby(obj/item/I as obj, mob/user as mob)
-	if (src.operating)
-		return
 	src.add_fingerprint(user)
 	if (src.allowed(user))
 		if (src.density && !locked)
@@ -254,6 +252,31 @@
 	opacity = 1
 	density = 1
 	autoopen = 0
+
+/obj/machinery/door/unpowered/shuttle/attackby(obj/item/I as obj, mob/user as mob)
+	if (src.operating)
+		return
+	if(!LaunchControl.online)
+		if(src.density)
+			var/area/A = user.loc.loc
+			if(A.name == "Escape Pod A" || A.name == "Escape Pod B" || A.name == "Space")
+				user.show_viewers(text("\blue [] opens the shuttle door.", user))
+				src.add_fingerprint(user)
+				open()
+				spawn(100)
+					if(!LaunchControl.online && !src.density)
+						src.add_fingerprint(user)
+						close()
+		else
+			src.add_fingerprint(user)
+			close()
+		return
+	if(LaunchControl.online)
+		src.add_fingerprint(user)
+		if(src.density)
+			open()
+		else
+			close()
 
 // ***************************************
 // Networking Support
