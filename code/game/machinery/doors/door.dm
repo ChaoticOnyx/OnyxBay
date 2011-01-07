@@ -256,6 +256,9 @@
 /obj/machinery/door/unpowered/shuttle/attackby(obj/item/I as obj, mob/user as mob)
 	if (src.operating)
 		return
+	if(src.loc.loc.name == "Arrival Shuttle")
+		..()
+		return
 	if(!LaunchControl.online)
 		if(src.density)
 			var/area/A = user.loc.loc
