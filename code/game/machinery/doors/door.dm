@@ -256,7 +256,7 @@
 /obj/machinery/door/unpowered/shuttle/attackby(obj/item/I as obj, mob/user as mob)
 	if (src.operating)
 		return
-	if(src.loc.loc.name == "Arrival Shuttle")
+	if(src.loc.loc.name == "Arrival Shuttle" || src.loc.loc.name == "supply shuttle" || src.loc.loc.name == "Docking Bay D")
 		..()
 		return
 	if(!LaunchControl.online)
@@ -268,7 +268,6 @@
 				open()
 				spawn(100)
 					if(!LaunchControl.online && !src.density)
-						src.add_fingerprint(user)
 						close()
 		else
 			src.add_fingerprint(user)
