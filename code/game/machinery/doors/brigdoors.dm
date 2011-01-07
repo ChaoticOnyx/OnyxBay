@@ -92,16 +92,28 @@
 	var/id = null
 	var/time = 30.0
 	var/timing = 0.0
-
+	var/timerstart
 /obj/machinery/door_timer/process()
 	..()
 	if (src.timing)
+		if(world.timeofday >= timerstart)
+			alarm()
+			src.time = 0
+			src.timing = 0
+			timerstart = null
+		else
+			var/times = timerstart - world.timeofday
+			times /= 10
+			src.time = round(times)
+
+/*		if(!timerstart)
+			timerstart = world.timeofday
 		if (src.time > 0)
 			src.time = round(src.time) - 1
 		else
 			alarm()
 			src.time = 0
-			src.timing = 0
+			src.timing = 0*/
 		src.updateDialog()
 		src.update_icon()
 	return
@@ -149,7 +161,10 @@
 		d2 = text("<A href='?src=\ref[];time=1'>Initiate Time</A><br>", src)
 	var/second = src.time % 60
 	var/minute = (src.time - second) / 60
-	dat += text("<br><HR>\nTimer System: [d2]\nTime Left: [(minute ? text("[minute]:") : null)][second] <A href='?src=\ref[src];tp=-30'>-</A> <A href='?src=\ref[src];tp=-1'>-</A> <A href='?src=\ref[src];tp=1'>+</A> <A href='?src=\ref[src];tp=30'>+</A>")
+	if(!src.timing)
+		dat += text("<br><HR>\nTimer System: [d2]\nTime Left: [(minute ? text("[minute]:") : null)][second] <A href='?src=\ref[src];tp=-30'>-</A> <A href='?src=\ref[src];tp=-1'>-</A> <A href='?src=\ref[src];tp=1'>+</A> <A href='?src=\ref[src];tp=30'>+</A>")
+	else
+		dat += "<br><HR>\nTimer System: [d2]\nTime Left: [(minute ? text("[minute]:") : null)][second] "
 	for(var/obj/machinery/flasher/F in world)
 		if(F.id == src.id)
 			if(F.last_flash && world.time < F.last_flash + 150)
@@ -169,6 +184,11 @@
 		if (href_list["time"])
 			if(src.allowed(usr))
 				src.timing = text2num(href_list["time"])
+				if(text2num(href_list["time"]))
+					var/num = src.time * 10
+					timerstart = world.timeofday +  num
+				else
+					timerstart = null
 		else
 			if (href_list["tp"])
 				if(src.allowed(usr))

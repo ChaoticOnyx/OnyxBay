@@ -19,3 +19,5 @@ obj/proc/CatchMessage(msg,mob/source)
 		else
 			for(var/mob/M in viewers(src))
 				M << "[src]: Access Denied"*/
+
+

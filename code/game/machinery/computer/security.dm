@@ -420,10 +420,15 @@
 
 /obj/item/weapon/paper/security
 	name = "Security Sentences"
-	info = {" </p><p><font size="3" color="red"><b>The maximum time someone can be put in jail for is 10 minutes (exceptions are listed below)</b></font><br />
+	info = {" <p><b>If you can't find the crime listed in here you need to set up a proper trial</b> Go here: <a href="/index.php/Legal_Standard_Operating_Procedure" title="Legal Standard Operating Procedure">Legal Standard Operating Procedure</a>
+</p><p>The time you took for bringing the suspect in and the time you spend questioning are NOT to be calculated into this. This is the pure time someone spends in a cell starring at the wall.<br />
+On laggy games first take a look at how quickly the cell timer tick... we don't want people to spend an eternity in jail for staling a pair of gloves. I am sure you have a system clock on your PC that you can keep an eye on.
+</p><p><font size="3" color="red"><b>The maximum time someone can be put in jail for is 10 minutes (exceptions are listed below)</b></font><br />
 Always remember that when you add crimes together!
 </p><p><br />
-Note: If the ingame version of this differs, than this is the version to follow. It's easier to update stuff in the wiki than in the game.
+Note: Compare the ingame version of this found in Security with the version on the wiki regularly. If the ingame version differs, follow the rules on the wiki, since they are easier to update.
+Link to the wiki page: <a href="http://wiki.baystation12.co.cc/index.php/Security_Sentences" class="external free" title="http://wiki.baystation12.co.cc/index.php/Security_Sentences" rel="nofollow">http://wiki.baystation12.co.cc/index.php/Security_Sentences</a>
+Compare changes here: <a href="http://wiki.baystation12.co.cc/index.php?title=Security_Sentences&amp;action=history" class="external free" title="http://wiki.baystation12.co.cc/index.php?title=Security_Sentences&amp;action=history" rel="nofollow">http://wiki.baystation12.co.cc/index.php?title=Security_Sentences&amp;action=history</a>
 </p>
 <a name="Minor_Crimes" id="Minor_Crimes"></a><h3> <span class="mw-headline"> Minor Crimes </span></h3>
 <table width="1150px" style="text-align:center; background-color:#ffee99;" border="1" cellspacing="0">
@@ -437,19 +442,25 @@ Note: If the ingame version of this differs, than this is the version to follow.
 <td><b>Resisting Arrest</b>
 </td><td>Not cooperating with the officer who demands you turn yourself in peacefully. Shouting "No!" or otherwise making the officer have the need to tase you to put handcuffs on.
 </td><td> +30 seconds to original time
-</td><td> See manhunt if the suspect runs away. Or attack on an officer if he fights back. This is for shouting/swearing and moving around a bit (just so you can't cuff him) only.
+</td><td> See manhunt if the suspect runs away. Or attack on an officer if he fights back. This is for shouting/swearing and moving around a bit (just so you cant cuff him) only.
 </td></tr>
 <tr>
 <td><b>Petty Theft</b>
 </td><td>Stealing non-crucial items from the ship. Items can include anything from toolboxes to metal to insulated gloves. To steal something the person must take it from a place which he doesn't have access to.
-</td><td> 60 seconds (2m)
-</td><td> Remember to take the items away from them and return them to where they stole them. Add another 60 seconds if the item was a weapon, an ID or something else dangerous in the wrong hands.
+</td><td> 60 seconds (Half the time of Theft)
+</td><td> Remember to take the items away from them and return them to where they stole them.
+</td></tr>
+<tr>
+<td><b>Theft</b>
+</td><td>Stealing of important, dangerous or otherwise crucial items like IDs, weapons or something similar. To steal something the person must take it from a place which he doesn't have access to.
+</td><td> 2 minutes (2x the time of Petty Theft)
+</td><td> Remember to take the items away from them and return them to where they stole them. Compare Robbery.
 </td></tr>
 <tr>
 <td><b>Robbery</b>
 </td><td> Robbery is stealing items from another person's possession. This can be the stealing of ID's, backpack contents or anything else.
-</td><td> 1m 30s (2m 30s)
-</td><td> Remember to take the stolen items from the person and return them, if you can find the person they've been stolen from. Otherwise put them in a locker in security. Taking the items for yourself is considered stealing!!
+</td><td> 1m 30s (3m)
+</td><td> Remember to take the stolen items from the person and return them, if you can find the person they've been stolen from. Otherwise put them in a locker in security. Taking the items for yourself is considered stealing!! Remember to double the time if the robbed item was an ID or something else crucial or dangerous. Compare Theft and Petty Theft.
 </td></tr>
 <tr>
 <td><b>Assault</b>
@@ -540,6 +551,12 @@ Note: If the ingame version of this differs, than this is the version to follow.
 </th><th style="background-color:#ff8855;" width="300px">Notes
 </th></tr>
 <tr>
+<td><b>Identity Theft</b>
+</td><td> Stealing someones ID and/or other objects of identification with the purpose to appear to others as them or to enter into areas where the suspect would normally not have access.
+</td><td> 10 minutes
+</td><td> The case of impersonation regarding ship equipment(doors, computer terminals, AI, etc) or personnel has to be proven, otherwise see Petty Theft/Robbery. Remember to double the time if the object was an ID or something similar crucial (Compare Petty Theft).
+</td></tr>
+<tr>
 <td><b>Syndicate collaboration</b>
 </td><td> Being either a traitor, a syndicate operative or a head revolutionary
 </td><td> Until the end of the round <br />(disregard maximum sentence time) <br />or DEATH <br />(if approved by the <a href="/index.php/Captain" title="Captain">Captain</a>)
@@ -548,14 +565,14 @@ Note: If the ingame version of this differs, than this is the version to follow.
 <tr>
 <td><b>Murder</b>
 </td><td> Killing someone with the intent to kill.
-</td><td> 10m (+3m for every subsequent victim disregarding maximum sentence time obviously)
-</td><td> Not to be confused with Manslaughter.
+</td><td> Death Sentence if authorised by the Captain. Otherwise brigging for the rest of the round.
+</td><td> Not to be confused with Manslaughter. Hint: Cyborgification is a valid execution method, since he will be bound by laws.
 </td></tr>
 <tr>
 <td><b>Attempted Murder</b>
 </td><td> Attempting to kill someone. The victim survives.
-</td><td> 10m
-</td><td> Regardless if you succeed or not, if you try to commit murder, the punishment is the same!
+</td><td> See Murder
+</td><td> Regardless if you succeed or not, if you try to commit murder, the punishment is the same! You have to be sure there was intent to kill though!
 </td></tr>
 <tr>
 <td><b>Compromising Ship Integrity</b>
