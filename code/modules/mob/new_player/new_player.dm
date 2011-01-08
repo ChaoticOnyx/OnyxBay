@@ -208,9 +208,11 @@ mob/new_player
 					t.fields["rank"] = rank
 
 			if (ticker.current_state == GAME_STATE_PLAYING)
-				for (var/mob/living/silicon/ai/A in world)
+				radioalert("[character.real_name] has signed up as [rank].","Arrivals Notice")
+
+				/*for (var/mob/living/silicon/ai/A in world) // Use this if we want to revert to the AI announcing new arrivals
 					if (!A.stat)
-						A.say("[character.real_name] has signed up as [rank].")
+						A.say("[character.real_name] has signed up as [rank].")*/
 
 			var/starting_loc = pick(latejoin)
 			character.loc = starting_loc

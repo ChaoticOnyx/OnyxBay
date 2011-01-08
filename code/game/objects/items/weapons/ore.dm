@@ -5,6 +5,10 @@
 	processing_items+=src
 	..()
 
+/obj/item/weapon/ore/Del()
+	processing_items -= src
+	..()
+
 /obj/item/weapon/ore/proc/cook()
 	var/obj/item/weapon/sheet/metal/m = new /obj/item/weapon/sheet/metal( src.loc )
 	m.amount = src.amt

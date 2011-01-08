@@ -31,9 +31,9 @@ THE SOFTWARE.
 #define ACTION_KICK		"Kick"
 #define ACTION_MUTE		"Mute"
 #define ACTION_SAY		"Say"
-#define ACTION_OOC "OOC"
-#define ACTION_ATTACK "Attack"
-#define ACTION_ADMIN "Admin"
+#define ACTION_OOC      "OOC"
+#define ACTION_ATTACK   "Attack"
+#define ACTION_ADMIN    "Admin"
 
 var
 	logger/logger = new(

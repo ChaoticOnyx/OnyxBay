@@ -392,6 +392,14 @@
 			src.equip_if_possible(new /obj/item/clothing/mask/gas(src), slot_wear_mask)
 			src.equip_if_possible(new /obj/item/weapon/tank/air(src), slot_l_hand)
 
+		if ("Anomalist")
+			src.equip_if_possible(new /obj/item/device/pda/toxins(src), slot_belt)
+			src.equip_if_possible(new /obj/item/clothing/under/rank/scientist(src), slot_w_uniform)
+			src.equip_if_possible(new /obj/item/clothing/shoes/white(src), slot_shoes)
+//			src.equip_if_possible(new /obj/item/clothing/suit/bio_suit(src), slot_wear_suit)
+//			src.equip_if_possible(new /obj/item/clothing/head/bio_hood(src), slot_head)
+			src.equip_if_possible(new /obj/item/weapon/weldingtool(src), slot_l_hand)
+
 		if ("Head of Security")
 			src.equip_if_possible(new /obj/item/device/radio/headset/security(src), slot_ears)
 			src.equip_if_possible(new /obj/item/device/pda/heads(src), slot_belt)
