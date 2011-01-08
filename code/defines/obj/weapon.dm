@@ -593,7 +593,7 @@
 	name = "slave"
 	var/phrase = "123"
 	var/obj/item/weapon/implant/master/m
-	var/mob/living/carbon/human/derp/d
+	var/mob/living/carbon/human/limited/d
 
 /obj/item/weapon/implant/vfac
 	name = "viral factory"
