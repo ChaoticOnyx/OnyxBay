@@ -53,7 +53,6 @@ mob/living/npc/proc/Attacked(mob/user,obj/item/weapon/W)
 		src.brutedmg += rand(1,3)
 mob/living/npc/proc/Act()
 	var/isidle = 1
-
 	if(target)
 		if(target.stat == 2)
 			target = null

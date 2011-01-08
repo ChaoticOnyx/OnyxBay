@@ -56,7 +56,6 @@ mob/living/npc/vermin/proc/Eat(atom/A)
 mob/living/npc/vermin/proc/Replicate()
 	hunger -= 70
 	var/obj/egg/E = new(src.loc,src.type)
-	world << "spawned [E]"
 mob/living/npc/vermin/crab
 	name = "Space Crab"
 	icon = 'beach.dmi'
