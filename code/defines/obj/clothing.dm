@@ -619,7 +619,7 @@
 
 /obj/item/clothing/under/chameleon
 //starts off as black
-	name = "Black Jumpsuit"
+	name = "Chameleon Jumpsuit"
 	icon_state = "black"
 	item_state = "bl_suit"
 	color = "black"

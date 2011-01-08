@@ -5,7 +5,12 @@
 	var/probability = 1
 	// this includes admin-appointed traitors and multitraitors. Easy!
 	var/list/datum/mind/traitors = list()
-	var/list/logtraitors = list( )
+	var/list/logtraitors = list()
+
+	var/uplink_welcome
+	var/uplink_items
+	var/uplink_uses
+
 	var/enabled = 1
 
 /datum/game_mode/proc/announce()
@@ -123,7 +128,7 @@
 		traitor_mob << "Unfortunately, the Syndicate wasn't able to get you a radio."
 	else
 		if (istype(R, /obj/item/device/radio))
-			var/obj/item/weapon/syndicate_uplink/T = new /obj/item/weapon/syndicate_uplink(R)
+			var/obj/item/device/uplink/radio/T = new /obj/item/device/uplink/radio(R)
 			R:traitorradio = T
 			R:traitor_frequency = freq
 			T.name = R.name
@@ -132,9 +137,9 @@
 			traitor_mob << "The Syndicate have cunningly disguised a Syndicate Uplink as your [R.name] [loc]. Simply dial the frequency [format_frequency(freq)] to unlock its hidden features."
 			traitor_mob.mind.store_memory("<B>Radio Freq:</B> [format_frequency(freq)] ([R.name] [loc]).")
 		else if (istype(R, /obj/item/device/pda))
-			var/obj/item/weapon/integrated_uplink/T = new /obj/item/weapon/integrated_uplink(R)
+			var/obj/item/device/uplink/pda/T = new /obj/item/device/uplink/pda(R)
 			R:uplink = T
-			T.lock_code = pda_pass
+			T.unlocking_code = pda_pass
 			T.hostpda = R
 			traitor_mob << "The Syndicate have cunningly disguised a Syndicate Uplink as your [R.name] [loc]. Simply enter the code \"[pda_pass]\" into the ringtone select to unlock its hidden features."
 			traitor_mob.mind.store_memory("<B>Uplink Passcode:</B> [pda_pass] ([R.name] [loc]).")

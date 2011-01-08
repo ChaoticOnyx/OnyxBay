@@ -17,10 +17,53 @@
 	var/const/waittime_l = 600 //lower bound on time before intercept arrives (in tenths of seconds)
 	var/const/waittime_h = 1800 //upper bound on time before intercept arrives (in tenths of seconds)
 
+	uplink_welcome = "Syndicate Uplink Console:"
+	uplink_items = {"/obj/item/weapon/storage/syndie_kit/imp_freedom (3);/obj/item/weapon/storage/syndie_kit/imp_compress (5);
+/obj/item/weapon/storage/syndie_kit/imp_alien (10);/obj/item/weapon/storage/syndie_kit/imp_vfac (5);
+/obj/item/weapon/storage/syndie_kit/imp_explosive (6);/obj/item/device/hacktool (4);
+/obj/item/clothing/under/chameleon (3);/obj/item/weapon/gun/revolver (7);
+/obj/item/weapon/ammo/a357 (3);/obj/item/weapon/card/emag (3);
+/obj/item/weapon/card/id/syndicate (3);/obj/item/weapon/cloaking_device (5);
+/obj/item/weapon/storage/emp_kit (4);/obj/item/device/powersink (5);
+/obj/item/weapon/cartridge/syndicate (3);/obj/item/device/chameleon (4);
+/obj/item/weapon/sword (5);/obj/item/weapon/pen/sleepypen (4);
+/obj/item/weapon/gun/energy/crossbow (5);/obj/spawner/newbomb/timer/syndicate (4);
+/obj/item/clothing/mask/gas/voice (3)"}
+
+	uplink_uses = 10
+
 
 /datum/game_mode/revolution/announce()
 	world << "<B>The current game mode is - Revolution!</B>"
 	world << "<B>Some crewmembers are attempting to start a revolution!<BR>\nRevolutionaries - Kill the Captain, HoP, and HoS. Convert other crewmembers (excluding the Captain, HoP, HoS, and security officers) to your cause by flashing them. Protect your leaders.<BR>\nPersonnel - Protect the Captain, HoP, and HoR. Kill the leaders of the revolution, and brainwash the other revolutionaries (by beating them in the head).</B>"
+
+/datum/game_mode/revolution/send_intercept()
+	var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested staus information:</FONT><HR>"
+	intercepttext += "<B> Cent. Com has recently been contacted by the following syndicate affiliated organisations in your area, please investigate any information you may have:</B>"
+
+	var/list/possible_modes = list()
+	possible_modes.Add("revolution", "wizard", "nuke", "traitor", "malf")
+	possible_modes -= "nuke"
+	var/number = pick(2, 3)
+	var/i = 0
+	for(i = 0, i < number, i++)
+		possible_modes.Remove(pick(possible_modes))
+	possible_modes.Insert(rand(possible_modes.len), "nuke")
+
+	var/datum/intercept_text/i_text = new /datum/intercept_text
+	for(var/A in possible_modes)
+		intercepttext += i_text.build(A, pick(head_revolutionaries))
+
+	for (var/obj/machinery/computer/communications/comm in world)
+		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
+			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
+			intercept.name = "paper- 'Cent. Com. Status Summary'"
+			intercept.info = intercepttext
+
+			comm.messagetitle.Add("Cent. Com. Status Summary")
+			comm.messagetext.Add(intercepttext)
+
+	command_alert("Summary downloaded and printed out at all communications consoles.", "Enemy communication intercept. Security Level Elevated.")
 
 /datum/game_mode/revolution/post_setup()
 
@@ -111,7 +154,7 @@
 		if (!R)
 			rev_mob << "Unfortunately, the Syndicate wasn't able to get you a radio."
 		else
-			var/obj/item/weapon/syndicate_uplink/T = new /obj/item/weapon/syndicate_uplink(R)
+			var/obj/item/device/uplink/radio/T = new /obj/item/device/uplink/radio(R)
 			R.traitorradio = T
 			R.traitor_frequency = freq
 			T.name = R.name

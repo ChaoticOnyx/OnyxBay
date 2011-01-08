@@ -15,6 +15,9 @@
 	var/gasefficency = 0.25
 	var/det = 0
 
+	var/const/warningtime = 10 // Make the CORE OVERLOAD message repeat only 10 ticks (1 tick = 1/10th of a second unless changed from ticklag())
+	var/lastwarning = warningtime // How long ago the last CORE OVERLOAD was sent
+
 /obj/machinery/engine/klaxon
 	name = "Emergency Klaxon"
 	icon = 'engine.dmi'
@@ -34,7 +37,6 @@
 /obj/machinery/engine/supermatter/process()
 
 	var/turf/simulated/L = loc
-	var/warningtime = 5 // Make the CORE OVERLOAD message repeat only every 5 seconds
 
 	//Ok, get the air from the turf
 	var/datum/gas_mixture/env = L.return_air()
@@ -47,11 +49,11 @@
 	det = max(det, 0)
 
 	if(det > 0 && removed.temperature >= 1000)
-		if(warningtime < 5)
-			warningtime++
-		if(warningtime>=5)
+		if(lastwarning < warningtime)
+			lastwarning++
+		if(lastwarning >= warningtime)
 			radioalert("CORE OVERLOAD","Core control computer")
-			warningtime = 0
+			lastwarning = 0
 
 	if(det > 5500)
 		//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)

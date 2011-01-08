@@ -153,4 +153,4 @@
 			OT.air_contents.temperature = btemp2 + T0C
 
 			V.update_icon()
-	del(src)
+	//del(src)

@@ -213,7 +213,7 @@
 		wizard_mob << "Unfortunately, the Space Wizards Federation wasn't able to get you a radio."
 	else
 		if (istype(R, /obj/item/device/radio))
-			var/obj/item/weapon/SWF_uplink/T = new /obj/item/weapon/SWF_uplink(R)
+			var/obj/item/device/uplink/radio/wizard/T = new /obj/item/device/uplink/radio/wizard(R)
 			R:traitorradio = T
 			R:traitor_frequency = freq
 			T.name = R.name
@@ -222,9 +222,9 @@
 			wizard_mob << "The Space Wizards Federation have cunningly disguised a spell book as your [R.name] [loc]. Simply dial the frequency [format_frequency(freq)] to unlock it's hidden features."
 			wizard_mob.mind.store_memory("<B>Radio Freq:</B> [format_frequency(freq)] ([R.name] [loc]).")
 		else if (istype(R, /obj/item/device/pda))
-			var/obj/item/weapon/integrated_uplink/SWF/T = new /obj/item/weapon/integrated_uplink/SWF(R)
+			var/obj/item/device/uplink/pda/wizard/T = new /obj/item/device/uplink/pda/wizard(R)
 			R:uplink = T
-			T.lock_code = pda_pass
+			T.unlocking_code = pda_pass
 			T.hostpda = R
 			wizard_mob << "The Space Wizards Federation have cunningly enchanted a spellbook into your PDA [loc]. Simply enter the code \"[pda_pass]\" into the ringtone select to unlock its hidden features."
 			wizard_mob.mind.store_memory("<B>Uplink Passcode:</B> [pda_pass] ([R.name] [loc]).")
@@ -311,17 +311,7 @@
 	else
 		return 0
 
-/obj/item/weapon/SWF_uplink/proc/explode()
-	var/turf/location = get_turf(src.loc)
-	location.hotspot_expose(SPARK_TEMP, 125)
-
-	explosion(location, 0, 0, 2, 4, 1)
-
-	del(src.master)
-	del(src)
-	return
-
-/obj/item/weapon/SWF_uplink/attack_self(mob/user as mob)
+/obj/item/device/uplink/radio/wizard/attack_self(mob/user as mob)
 	user.machine = src
 	var/dat
 	if (src.selfdestruct)
@@ -356,7 +346,7 @@
 	onclose(user, "radio")
 	return
 
-/obj/item/weapon/SWF_uplink/Topic(href, href_list)
+/obj/item/device/uplink/radio/wizard/Topic(href, href_list)
 	..()
 	if (usr.stat || usr.restrained())
 		return
@@ -430,7 +420,7 @@
 			usr.machine = null
 			usr << browse(null, "window=radio")
 			var/obj/item/device/radio/T = src.origradio
-			var/obj/item/weapon/SWF_uplink/R = src
+			var/obj/item/uplink/radio/wizard/SWF_uplink/R = src
 			R.loc = T
 			T.loc = usr
 			// R.layer = initial(R.layer)
@@ -466,12 +456,7 @@
 					src.attack_self(M)
 	return
 
-/obj/item/weapon/integrated_uplink/SWF
-	name = "enchanted uplink"
-	uses = 4
-	var/temp = null
-
-/obj/item/weapon/integrated_uplink/SWF/generate_menu()
+/obj/item/device/uplink/pda/wizard/generate_menu()
 	src.menu_message = "<b>Wizarding Uplink Console:</b><br>"
 	src.menu_message += "Tele-Crystals left: [src.uses]<BR>"
 	src.menu_message += "<HR>"
@@ -497,7 +482,7 @@
 	src.menu_message += "<HR>"
 	return
 
-/obj/item/weapon/integrated_uplink/SWF/Topic(href, href_list)
+/obj/item/device/uplink/pda/wizard/Topic(href, href_list)
 	if ((isnull(src.hostpda)) || (!src.active))
 		return
 
