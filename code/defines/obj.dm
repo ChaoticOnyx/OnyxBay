@@ -27,6 +27,8 @@
 	New()
 		src.tag = "obj[++tagcnum]"
 
+
+
 /obj/item/policetaperoll
 	name = "police tape roll"
 	desc = "A roll of police tape used to block off crime scenes from the public."

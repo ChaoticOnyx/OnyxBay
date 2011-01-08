@@ -31,10 +31,11 @@ datum
 							M.reagents.add_reagent(self.id,self.volume/2)
 				return
 
-			reaction_obj(var/obj/O, var/volume) //By default we transfer a small part of the reagent to the object
-				src = null						//if it can hold reagents. nope!
-				//if(O.reagents)
-				//	O.reagents.add_reagent(id,volume/3)
+			reaction_obj(var/obj/O, var/volume) //By default we transfer a small part of the reagent to the object				//if it can hold reagents. nope!
+				var/datum/reagent/self = src
+				src = null
+				if(O.reagents)
+					O.reagents.add_reagent(self.id,self.volume)
 				return
 
 			reaction_turf(var/turf/T, var/volume)
@@ -522,6 +523,9 @@ datum
 					M:bruteloss += 15
 
 			reaction_obj(var/obj/O, var/volume)
+				if(istype(O,/obj/item/weapon/anomaly))
+					O:acid(volume)
+					return
 				if(istype(O,/obj/item) && prob(40))
 					var/obj/decal/cleanable/molten_item/I = new/obj/decal/cleanable/molten_item(O.loc)
 					I.desc = "Looks like this was \an [O] some time ago."
@@ -576,6 +580,9 @@ datum
 						M:bruteloss += 15
 
 			reaction_obj(var/obj/O, var/volume)
+				if(istype(O,/obj/item/weapon/anomaly))
+					O:acid(volume)
+					return
 				if(istype(O,/obj/item))
 					var/obj/decal/cleanable/molten_item/I = new/obj/decal/cleanable/molten_item(O.loc)
 					I.desc = "Looks like this was \an [O] some time ago."

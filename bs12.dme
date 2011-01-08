@@ -657,6 +657,7 @@
 #include "code\WorkInProgress\NewBan.dm"
 #include "code\WorkInProgress\rails.dm"
 #include "code\WorkInProgress\test.dm"
+#include "code\WorkInProgress\Alfie275\anomalies.dm"
 #include "code\WorkInProgress\Aryn\DetectiveWork.dm"
 #include "code\WorkInProgress\Aryn\TextFilters.dm"
 #include "code\WorkInProgress\Events\Event.dm"
