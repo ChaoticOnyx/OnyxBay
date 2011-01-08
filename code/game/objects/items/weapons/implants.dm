@@ -349,7 +349,7 @@ No Implant Specifics"}
 		m.contract_disease(virus, 1)
 
 /obj/item/weapon/implant/slave/New()
-	src.d = new/mob/living/carbon/human/derp
+	src.d = new/mob/living/carbon/human/limited
 
 
 /obj/item/weapon/implant/master/hear(var/msg)
