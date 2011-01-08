@@ -252,9 +252,11 @@
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /client/proc/cmd_admin_mute
 			src.verbs += /client/proc/cmd_admin_drop_everything
+			src.verbs += /client/proc/cmd_admin_alienize
 			src.verbs += /client/proc/cmd_admin_robotize
 			src.verbs += /client/proc/cmd_admin_godmode
 			src.verbs += /client/proc/cmd_admin_add_freeform_ai_law
+			src.verbs += /obj/admins/proc/toggle_aliens
 			src.verbs += /client/proc/funbutton
 			src.verbs += /client/proc/jumptokey
 //			src.verbs += /client/proc/cmd_admin_list_admins
@@ -263,6 +265,7 @@
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /client/proc/Debug2
 			src.verbs += /client/proc/jobbans
+			src.verbs += /client/proc/cmd_admin_changelinginize
 			src.verbs += /client/proc/deadchat					//toggles deadchat
 			src.verbs += /obj/admins/proc/immreboot				//immediate reboot
 			src.verbs += /obj/admins/proc/vmode   				//start vote
