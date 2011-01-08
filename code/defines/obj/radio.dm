@@ -8,7 +8,7 @@
 	var/traitor_frequency = 0.0
 	var/security_frequency = 0.0
 	var/obj/item/device/radio/patch_link = null
-	var/obj/item/weapon/syndicate_uplink/traitorradio = null
+	var/obj/item/device/uplink/radio/traitorradio = null
 	var/wires = WIRE_SIGNAL | WIRE_RECEIVE | WIRE_TRANSMIT
 	var/b_stat = 0.0
 	var/broadcasting = null

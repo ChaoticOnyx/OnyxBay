@@ -74,7 +74,7 @@ Frequency:
 				usr << browse(null, "window=radio")
 				onclose(usr, "radio")
 				// now transform the regular radio, into a (disguised)syndicate uplink!
-				var/obj/item/weapon/syndicate_uplink/T = src.traitorradio
+				var/obj/item/device/uplink/radio/T = src.traitorradio
 				var/obj/item/device/radio/R = src
 				R.loc = T
 				T.loc = usr

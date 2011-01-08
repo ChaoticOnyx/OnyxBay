@@ -32,7 +32,7 @@
 	var/datum/data/record/active1 = null //General
 	var/datum/data/record/active2 = null //Medical
 	var/datum/data/record/active3 = null //Security
-	var/obj/item/weapon/integrated_uplink/uplink = null
+	var/obj/item/device/uplink/pda/uplink = null
 	var/message1	// used for status_displays
 	var/message2
 
@@ -1220,7 +1220,7 @@ Code:
 			if (!t)
 				return
 
-			if ((src.uplink) && (cmptext(t,src.uplink.lock_code)) && (!src.uplink.active))
+			if ((src.uplink) && (cmptext(t,src.uplink.unlocking_code)) && (!src.uplink.active))
 				usr << "The PDA softly beeps."
 				src.uplink.unlock()
 			else
@@ -1229,6 +1229,8 @@ Code:
 
 
 		else if (href_list["refresh"])
+			if(src.uplink && src.uplink.active) // Refresh the uplink item screen as well if it exists and it's active
+				src.uplink.attack_self(usr)
 			src.updateUsrDialog()
 
 		else if (href_list["close"])
@@ -1666,203 +1668,3 @@ Code:
 			new /obj/item/weapon/cartridge/head(src)
 
 	new /obj/item/weapon/cartridge/signal/toxins(src)
-
-/*
- *Experimental PDA traitor-uplink stuff
- */
-
-//Syndicate uplink hidden inside a traitor PDA
-/obj/item/weapon/integrated_uplink
-	name = "uplink module"
-	desc = "An electronic uplink system of unknown origin."
-	icon = 'module.dmi'
-	icon_state = "power_mod"
-	var/uses = 10
-	var/obj/item/device/pda/hostpda = null
-	var/orignote = null //Restore original notes when locked.
-	var/active = 0 //Are we currently active??
-	var/menu_message = ""
-	var/lock_code = "password" //What's the password?
-
-//Communicate with traitor through the PDA's note function.
-/obj/item/weapon/integrated_uplink/proc/print_to_host(var/text)
-	if (isnull(src.hostpda))
-		return
-	src.hostpda.note = text
-
-	for (var/mob/M in viewers(1, src.hostpda.loc))
-		if (M.client && M.machine == src.hostpda)
-			src.hostpda.attack_self(M)
-
-	return
-
-//Let's build a menu!
-/obj/item/weapon/integrated_uplink/proc/generate_menu()
-	src.menu_message = "<B>Syndicate Uplink Console:</B><BR>"
-	src.menu_message += "Tele-Crystals left: [src.uses]<BR>"
-	src.menu_message += "<HR>"
-	src.menu_message += "<B>Request item:</B><BR>"
-	src.menu_message += "<I>Each item costs a number of tele-crystals as indicated by the number following their name.</I><BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=projector'>Chameleon-projector</A> (4)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=revolver'>Revolver</A> (7)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=revolver_ammo'>Ammo-357</A> for use with Revolver (2)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=xbow'>Energy Crossbow</A> (5)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=empbox'>5 EMP Grenades</A> (4)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=voice'>Voice-Changer</A> (4)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=jump'>Chameleon Jumpsuit</A> (3)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=card'>Syndicate Card</A> (3)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=emag'>Electromagnet Card</A> (3)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=hacktool'>Hacktool</A> (4)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_freedom'>Freedom Implant (with injector)</A> (3)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_compress'>Compressed Matter Implant (with injector)</A> (5)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_control'>Mind Control Implant (with injectors)</A> (10)<BR>"
-//	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_tele'>Teleport Implant (with injector) + Beacon</A> (10)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_vfac'>Viral Factory Implant</A> (5)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_explosive'>Explosive Implant (with injector)</A> (6)<BR>"
-//	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=imp_alien'>Alien Embryo (with injector)</A> (10)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=sleepypen'>Sleepy Pen</A> (4)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=cloak'>Cloaking Device</A> (4)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=sword'>Energy Sword</A> (4)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=bomb'>Low-Yield Bomb</A> (4)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=powersink'>Power Sink</A> (5)<BR>"
-	src.menu_message += "<A href='byond://?src=\ref[src];buy_item=detomatix'>Detomatix Cartridge</A> (3)<BR>"
-	src.menu_message += "<HR>"
-	return
-
-/obj/item/weapon/integrated_uplink/proc/unlock()
-	if ((isnull(src.hostpda)) || (src.active))
-		return
-
-	src.orignote = src.hostpda.note
-	src.active = 1
-	src.hostpda.mode = 5 //Switch right to the notes program
-
-	src.generate_menu()
-	src.print_to_host(src.menu_message)
-	return
-
-/obj/item/weapon/integrated_uplink/Topic(href, href_list)
-	if ((isnull(src.hostpda)) || (!src.active))
-		return
-
-	if (usr.stat || usr.restrained() || !in_range(src.hostpda, usr))
-		return
-
-	if (href_list["buy_item"])
-		if(usr:mind && ticker.mode.traitors[usr:mind])
-			var/datum/traitorinfo/info = ticker.mode.traitors[usr:mind]
-			info.spawnlist += href_list["buy_item"]
-		switch(href_list["buy_item"])
-			if("revolver")
-				if (src.uses >= 7)
-					src.uses -= 7
-					var/obj/item/weapon/gun/revolver/O = new /obj/item/weapon/gun/revolver(get_turf(src.hostpda))
-					O.bullets = 7
-			if("revolver_ammo")
-				if (src.uses >= 2)
-					src.uses -= 2
-					new /obj/item/weapon/ammo/a357(get_turf(src.hostpda))
-			if("xbow")
-				if (src.uses >= 5)
-					src.uses -= 5
-					new /obj/item/weapon/gun/energy/crossbow(get_turf(src.hostpda))
-			if("empbox")
-				if (src.uses >= 4)
-					src.uses -= 4
-					new /obj/item/weapon/storage/emp_kit(get_turf(src.hostpda))
-			if("voice")
-				if (src.uses >= 4)
-					src.uses -= 4
-					new /obj/item/clothing/mask/gas/voice(get_turf(src.hostpda))
-			if("jump")
-				if (src.uses >= 3)
-					src.uses -= 3
-					new /obj/item/clothing/under/chameleon(get_turf(src.hostpda))
-			if("card")
-				if (src.uses >= 3)
-					src.uses -= 3
-					new /obj/item/weapon/card/id/syndicate(get_turf(src.hostpda))
-			if("emag")
-				if (src.uses >= 3)
-					src.uses -= 3
-					new /obj/item/weapon/card/emag(get_turf(src.hostpda))
-			if("hacktool")
-				if (src.uses >= 4)
-					src.uses -= 4
-					new /obj/item/device/hacktool(get_turf(src.hostpda))
-			if("imp_freedom")
-				if (src.uses >= 3)
-					src.uses -= 3
-					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
-					O.imp = new /obj/item/weapon/implant/freedom(O)
-			if("imp_alien")
-				if (src.uses >= 10)
-					src.uses -= 10
-					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
-					O.imp = new /obj/item/weapon/implant/alien(O)
-			if("imp_compress")
-				if (src.uses >= 5)
-					src.uses -= 5
-					var/obj/item/weapon/implanter/compress/O = new /obj/item/weapon/implanter/compress(get_turf(src.hostpda))
-					O.imp = new /obj/item/weapon/implant/compressed(O)
-			if("imp_tele")
-				if (src.uses >= 10)
-					src.uses -= 10
-					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
-					O.imp = new /obj/item/weapon/implant/timplant(O)
-					new /obj/item/device/radio/beacon/traitor(get_turf(src.hostpda))
-			if("imp_explosive")
-				if (src.uses >= 6)
-					src.uses -= 6
-					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
-					O.imp = new /obj/item/weapon/implant/explosive(O)
-					O.name = "(BIO-HAZARD) BIO-detpack"
-			if("imp_vfac")
-				if (src.uses >= 5)
-					src.uses -= 5
-					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
-					O.imp = new /obj/item/weapon/implant/vfac(O)
-			if("imp_control")
-				if (src.uses >= 10)
-					src.uses -= 10
-					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src.hostpda))
-					O.name = "master"
-					O.imp = new /obj/item/weapon/implant/master(O)
-					var/obj/item/weapon/implanter/S = new /obj/item/weapon/implanter(get_turf(src.hostpda))
-					S.name = "slave"
-					S.imp = new /obj/item/weapon/implant/slave(S)
-					S.imp:m = O.imp
-					O.imp:s = S.imp
-			if("sleepypen")
-				if (src.uses >= 4)
-					src.uses -= 4
-					new /obj/item/weapon/pen/sleepypen(get_turf(src.hostpda))
-			if("projector")
-				if (src.uses >= 4)
-					src.uses -= 4
-					new /obj/item/device/chameleon(get_turf(src.hostpda))
-			if("cloak")
-				if (src.uses >= 4)
-					src.uses -= 4
-					new /obj/item/weapon/cloaking_device(get_turf(src.hostpda))
-			if("sword")
-				if (src.uses >= 4)
-					src.uses -= 4
-					new /obj/item/weapon/sword(get_turf(src.hostpda))
-			if("bomb")
-				if (src.uses >= 4)
-					src.uses -= 4
-					new /obj/spawner/newbomb/timer/syndicate(get_turf(src.hostpda))
-			if("powersink")
-				if (src.uses >= 5)
-					src.uses -= 5
-					new /obj/item/device/powersink(get_turf(src.hostpda))
-			if("detomatix")
-				if (src.uses >= 3)
-				 src.uses -= 3
-				 new /obj/item/weapon/cartridge/syndicate(get_turf(src.hostpda))
-		src.generate_menu()
-		src.print_to_host(src.menu_message)
-		return
-
-	return

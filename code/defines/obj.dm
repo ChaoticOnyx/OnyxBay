@@ -52,25 +52,25 @@
 	req_access = list(access_security)
 
 /obj/blob
-		icon = 'blob.dmi'
-		icon_state = "bloba0"
-		var/health = 30
-		density = 1
-		opacity = 0
-		anchored = 1
+	icon = 'blob.dmi'
+	icon_state = "bloba0"
+	var/health = 30
+	density = 1
+	opacity = 0
+	anchored = 1
 
 /obj/blob/idle
-		name = "blob"
-		desc = "it looks... frightened"
-		icon_state = "blobidle0"
+	name = "blob"
+	desc = "it looks... frightened"
+	icon_state = "blobidle0"
 
 /obj/mark
-		var/mark = ""
-		icon = 'mark.dmi'
-		icon_state = "blank"
-		anchored = 1
-		layer = 99
-		mouse_opacity = 0
+	var/mark = ""
+	icon = 'mark.dmi'
+	icon_state = "blank"
+	anchored = 1
+	layer = 99
+	mouse_opacity = 0
 
 /obj/admins
 	name = "admins"

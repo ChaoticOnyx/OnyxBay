@@ -1,5 +1,5 @@
 
-//code/game/jobs/access.dm contains the code, whereas this is..  documentation? -Sukasa
+//code/game/jobs/access.dm contains the code, whereas this is documentation
 
 /*
 Luna updated:

@@ -500,10 +500,10 @@
 	force = 10
 
 /obj/item/weapon/gun/revolver
-	desc = "There are 0 bullets left. Uses 357"
+	desc = "There are 7 bullets left. Uses 357"
 	name = "revolver"
 	icon_state = "revolver"
-	var/bullets = 0.0
+	var/bullets = 7.0
 	w_class = 3.0
 	throw_speed = 2
 	throw_range = 10
@@ -635,14 +635,8 @@
 	w_class = 2.0
 
 /obj/item/weapon/implanter/compress
-	name = "implanter"
-	icon = 'items.dmi'
 	icon_state = "cimplanter0"
 	imp = /obj/item/weapon/implant/compressed
-	item_state = "syringe_0"
-	throw_speed = 1
-	throw_range = 5
-	w_class = 2.0
 
 
 
@@ -1019,40 +1013,6 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	throw_range = 4
 	w_class = 3.0
 	flags = FPRINT | TABLEPASS | CONDUCT
-
-
-/obj/item/weapon/syndicate_uplink
-	name = "station bounced radio"
-	icon = 'device.dmi'
-	icon_state = "radio"
-	var/temp = null
-	var/uses = 10.0
-	var/selfdestruct = 0.0
-	var/traitor_frequency = 0.0
-	var/obj/item/device/radio/origradio = null
-	flags = FPRINT | TABLEPASS | CONDUCT | ONBELT
-	w_class = 2.0
-	item_state = "radio"
-	throw_speed = 4
-	throw_range = 20
-	m_amt = 100
-
-/obj/item/weapon/SWF_uplink
-	name = "station bounced radio"
-	icon = 'device.dmi'
-	icon_state = "radio"
-	var/temp = null
-	var/uses = 4.0
-	var/selfdestruct = 0.0
-	var/traitor_frequency = 0.0
-	var/obj/item/device/radio/origradio = null
-	flags = FPRINT | TABLEPASS| CONDUCT | ONBELT
-	item_state = "radio"
-	throwforce = 5
-	w_class = 2.0
-	throw_speed = 4
-	throw_range = 20
-	m_amt = 100
 
 /obj/item/weapon/staff
 	name = "wizards staff"

@@ -90,6 +90,7 @@
 #define FILE_DIR "code/obj"
 #define FILE_DIR "code/unused"
 #define FILE_DIR "code/WorkInProgress"
+#define FILE_DIR "code/WorkInProgress/Abi79"
 #define FILE_DIR "code/WorkInProgress/AjaxSimulacrum"
 #define FILE_DIR "code/WorkInProgress/Alfie275"
 #define FILE_DIR "code/WorkInProgress/Aryn"
@@ -164,7 +165,6 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
-#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -423,7 +423,6 @@
 #include "code\game\objects\noticeboard.dm"
 #include "code\game\objects\object_procs.dm"
 #include "code\game\objects\policetape.dm"
-#include "code\game\objects\portals.dm"
 #include "code\game\objects\secure_area.dm"
 #include "code\game\objects\secure_closets.dm"
 #include "code\game\objects\stool.dm"
@@ -502,7 +501,6 @@
 #include "code\game\objects\items\weapons\tiles_wires.dm"
 #include "code\game\objects\items\weapons\toilets.dm"
 #include "code\game\objects\items\weapons\tools.dm"
-#include "code\game\objects\items\weapons\uplinks.dm"
 #include "code\game\objects\radio\beacon.dm"
 #include "code\game\objects\radio\electropack.dm"
 #include "code\game\objects\radio\intercom.dm"
@@ -657,6 +655,8 @@
 #include "code\WorkInProgress\NewBan.dm"
 #include "code\WorkInProgress\rails.dm"
 #include "code\WorkInProgress\test.dm"
+#include "code\WorkInProgress\Abi79\uplink_kits.dm"
+#include "code\WorkInProgress\Abi79\uplinks.dm"
 #include "code\WorkInProgress\Alfie275\anomalies.dm"
 #include "code\WorkInProgress\Aryn\DetectiveWork.dm"
 #include "code\WorkInProgress\Aryn\TextFilters.dm"
