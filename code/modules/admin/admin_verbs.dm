@@ -119,6 +119,8 @@
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
 			src.verbs += /client/proc/loadmaphere
+
+			src.verbs += /client/proc/hidemode
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
@@ -221,6 +223,7 @@
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
 			src.verbs += /client/proc/loadmaphere
+			src.verbs += /client/proc/hidemode
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
@@ -305,6 +308,7 @@
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
 			src.verbs += /client/proc/loadmaphere
+			src.verbs += /client/proc/hidemode
 		if ("Primary Administrator")
 
 			src.deadchat = 1
@@ -373,6 +377,7 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/hubvis
+			src.verbs += /client/proc/hidemode
 
 		if ("Administrator")
 
@@ -422,6 +427,7 @@
 			src.verbs += /client/proc/warn
 			src.verbs += /client/proc/hubvis
 			src.verbs += /client/proc/toggleevents
+			src.verbs += /client/proc/hidemode
 		if ("Secondary Administrator")
 			src.holder.level = 1
 
@@ -993,3 +999,14 @@
 		src.mob = new_character
 
 	return
+
+/client/proc/hidemode()
+	set name = "Toggle hide mode"
+	set category = "Admin"
+
+	ticker.hide_mode = !ticker.hide_mode
+
+	if(ticker.hide_mode)
+		message_admins("\blue <b> Mode hidden toggled on by [usr.client.key]</b>")
+	else
+		message_admins("\blue <b> Mode hidden toggled off by [usr.client.key]</b>")

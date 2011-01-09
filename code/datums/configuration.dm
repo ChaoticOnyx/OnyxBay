@@ -30,6 +30,7 @@
 	var/allow_ai = 1					// allow ai job
 	var/hostedby = null
 	var/respawn = 1
+	var/mode_hidden = 0
 
 /datum/configuration/New()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
@@ -97,6 +98,8 @@
 				DB_DBNAME = value
 			if ("log_ooc")
 				config.log_ooc = 1
+			if ("mode_hidden")
+				config.mode_hidden = 1
 
 			if ("log_access")
 				config.log_access = 1

@@ -3,8 +3,7 @@
 	config_tag = "traitor"
 
 	uplink_welcome = "Syndicate Uplink Console:"
-	uplink_items = {"/obj/item/weapon/storage/syndie_kit/imp_freedom (3);/obj/item/weapon/storage/syndie_kit/imp_compress (5);
-/obj/item/weapon/storage/syndie_kit/imp_alien (10);/obj/item/weapon/storage/syndie_kit/imp_vfac (5);
+	uplink_items = {"/obj/item/weapon/storage/syndie_kit/imp_freedom (3);/obj/item/weapon/storage/syndie_kit/imp_compress (5);/obj/item/weapon/storage/syndie_kit/imp_vfac (5);
 /obj/item/weapon/storage/syndie_kit/imp_explosive (6);/obj/item/device/hacktool (4);
 /obj/item/clothing/under/chameleon (3);/obj/item/weapon/gun/revolver (7);
 /obj/item/weapon/ammo/a357 (3);/obj/item/weapon/card/emag (3);

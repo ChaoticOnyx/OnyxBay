@@ -352,7 +352,10 @@
 				else
 			log_admin("[key_name(usr)] set the mode as [master_mode].")
 			message_admins("\blue [key_name_admin(usr)] set the mode as [master_mode].", 1)
-			world << "\blue <b>The mode is now: [master_mode]</b>"
+			if(!ticker.hide_mode)
+				world << "\blue <b>The mode is now: [master_mode]</b>"
+			else
+				world << "\blue <b>The mode is now: secret </b>"
 
 			world.save_mode(master_mode)
 
