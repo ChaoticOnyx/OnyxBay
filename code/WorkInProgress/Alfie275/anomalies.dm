@@ -12,14 +12,36 @@
 		src.reagents = r
 		r.my_atom = src
 		src.method = rand(2)
-		src.inside = pick("/obj/item/weapon/crystal","/obj/item/weapon/sword",
-							"/obj/item/weapon/axe","/obj/item/weapon/crystal",
-							"/obj/item/weapon/pen","obj/item/weapon/crystal")
+		src.inside = pick("/obj/item/weapon/crystal","/obj/item/weapon/fossil/bone",
+							"/obj/item/weapon/fossil/shell","/obj/item/weapon/crystal",
+							"/obj/item/weapon/fossil/skull","obj/item/weapon/crystal")
 
 /obj/item/weapon/crystal
 	name = "Crystal"
 	icon = 'rubble.dmi'
 	icon_state = "crystal"
+	desc = "A beautiful crystal."
+
+/obj/item/weapon/fossil
+	name = "Fossil"
+	icon = 'fossil.dmi'
+	icon_state = "bone"
+	desc = "It's a fossil."
+
+/obj/item/weapon/fossil/bone
+	name = "Fossilised bone"
+	icon_state = "bone"
+	desc = "It's a fossilised bone from an unknown creature."
+
+/obj/item/weapon/fossil/shell
+	name = "Fossilised shell"
+	icon_state = "shell"
+	desc = "It's a fossilised shell from some sort of space mollusc."
+
+/obj/item/weapon/fossil/skull
+	name = "Fossilised skull"
+	icon_state = "skull"
+	desc = "It's a fossilised skull, it has a human appearance but has two horns."
 
 /obj/item/weapon/anomaly/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/weldingtool/))
