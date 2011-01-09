@@ -72,13 +72,18 @@
 				going = 1
 		var/wintext = capitalize(winner)
 		if(winner=="default")
-			world << "Result is \red No change."
+			if(!ticker.hide_mode)
+				world << "Result is \red No change."
+			else
+				world << "Result is \red Hidden."
 			return
 
 		// otherwise change mode
 
-
-		world << "Result is change to \red [wintext]"
+		if(!ticker.hide_mode)
+			world << "Result is change to \red [wintext]"
+		else
+			world << "Result is \red Hidden."
 		world.save_mode(winner)
 
 		if(ticker.current_state != 1)
@@ -221,8 +226,10 @@
 			text += "[vote.endwait()] until voting is closed.<BR>"
 
 			var/list/votes = vote.getvotes()
-
-			text += "Current game mode is: <B>[master_mode]</B>.<BR>Select the mode to change to:<UL>"
+			if(!ticker.hide_mode)
+				text += "Current game mode is: <B>[master_mode]</B>.<BR>Select the mode to change to:<UL>"
+			else
+				text += "<BR>Select the mode to change to:<UL>"
 
 			for(var/md in config.votable_modes)
 				var/disp = capitalize(md)
@@ -235,12 +242,14 @@
 					text += "<LI><B>[disp]</B>"
 				else
 					text += "<LI><A href='?src=\ref[vote];voter=\ref[src];vote=[md]'>[disp]</A>"
-
-				text += "[votes[md]>0?" - [votes[md]] vote\s":null]<BR>"
+				if(!ticker.hide_mode)
+					text += "[votes[md]>0?" - [votes[md]] vote\s":null]<BR>"
 
 			text += "</UL>"
-
-			text +="<p>Current winner: <B>[vote.calcwin()]</B><BR>"
+			if(!ticker.hide_mode)
+				text +="<p>Current winner: <B>[vote.calcwin()]</B><BR>"
+			else
+				text +="<p>Current winner: <B>Pole is secret>/B><BR>"
 
 			text += footer
 
