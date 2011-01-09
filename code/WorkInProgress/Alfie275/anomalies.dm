@@ -56,7 +56,9 @@
 	if(src.ahealth<1)
 		for(var/mob/O in viewers(world.view, user))
 			O.show_message("\red The rock explodes.",1)
-		explosion(find_loc(src), 1, 1, 1, 1, 1)
+		var/turf/t = find_loc(src)
+		t.hotspot_expose(SPARK_TEMP,125)
+		explosion(t, -1, -1, 5, 3, 1)
 		del src
 	if(src.rock<1)
 		var/obj/o = new src.inside
