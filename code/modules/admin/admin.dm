@@ -1,10 +1,9 @@
-var/showadminmessages = 1
+/obj/admins/var/showadminmessages = 1
 ////////////////////////////////
 /proc/message_admins(var/text, var/admin_ref = 0)
-	if(!showadminmessages) return
 	var/rendered = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[text]</span></span>"
 	for (var/client/C)
-		if (C.holder)
+		if (C.holder && C.holder.showadminmessages)
 			if (admin_ref)
 				if(C.inchat) C.ctab_message("Log", dd_replaceText(rendered, "%admin_ref%", "\ref[C.mob]"))
 				C.mob << output(rendered, "adminoutput")
@@ -12,8 +11,9 @@ var/showadminmessages = 1
 				if(C.inchat) C.ctab_message("Log", rendered)
 				C.mob << output(rendered, "adminoutput")
 
-/proc/toggle_adminmsg()
+/obj/admins/proc/toggle_adminmsg()
 	showadminmessages = !showadminmessages
+	usr << "Now [showadminmessages?"<SPAN STYLE='color: #080'>showing</SPAN>":"<SPAN STYLE='color: #800'>hiding"] admin messages"
 
 /obj/admins/Topic(href, href_list)
 	..()
