@@ -21,6 +21,15 @@
 	icon = 'rubble.dmi'
 	icon_state = "crystal"
 
+
+
+/obj/item/weapon/talkingcrystal
+	name = "Crystal"
+	icon = 'rubble.dmi'
+	icon_state = "crystal2"
+	var/list/words = list()
+/obj/item/weapon/talkingcrystal/CatchMessage(msg,mob/source)
+	words += msg
 /obj/item/weapon/anomaly/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/weldingtool/))
 		if(src.method)
@@ -66,3 +75,6 @@
 			O.show_message("\blue The rock fizzes away revealing \a [o.name].",1)
 
 		del src
+
+
+

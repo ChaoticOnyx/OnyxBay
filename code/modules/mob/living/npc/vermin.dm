@@ -55,7 +55,7 @@ mob/living/npc/vermin/proc/Eat(atom/A)
 		del(A)
 mob/living/npc/vermin/proc/Replicate()
 	hunger -= 70
-	var/obj/egg/E = new(src.loc,src.type)
+	new /obj/egg (src.loc,src.type)
 mob/living/npc/vermin/crab
 	name = "Space Crab"
 	icon = 'beach.dmi'
