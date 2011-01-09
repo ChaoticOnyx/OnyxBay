@@ -538,7 +538,6 @@
 	name = "portal"
 	icon = 'stationobjs.dmi'
 	icon_state = "portal"
-	density = 1
 	var/failchance = 5
 	var/obj/item/target = null
 	var/creator = null
