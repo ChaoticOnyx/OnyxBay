@@ -601,6 +601,11 @@ Auto Patrol: []"},
 					if ((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "*Arrest*"))
 						threatcount = 4
 						break
+				for (var/datum/data/record/R in data_core.medical)
+					if ((R.fields["id"] == E.fields["id"]) && (R.fields["m_stat"] == "*Insane*"))
+						threatcount = 4
+						break
+
 
 	return threatcount
 
