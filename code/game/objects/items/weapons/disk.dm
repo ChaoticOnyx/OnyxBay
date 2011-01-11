@@ -45,3 +45,10 @@
 	name = "Nuclear Authentication Disk"
 	icon_state = "nucleardisk"
 	item_state = "card-id"
+
+/obj/item/weapon/disk/nuclear/Del()
+	if (ticker.mode && ticker.mode.name == "nuclear emergency")
+		if(blobstart.len > 0)
+			var/obj/D = new /obj/item/weapon/disk/nuclear(pick(blobstart))
+			message_admins("[src] has been destroyed. Spawning [D] at ([D.x], [D.y], [D.z]).")
+	..()
