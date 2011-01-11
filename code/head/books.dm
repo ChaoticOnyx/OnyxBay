@@ -124,7 +124,8 @@ obj/machinery/bookcase/attack_hand(mob/user)
 		user << "Seems someone forgot to restock \the [src]..."
 		return
 	var/obj/item/weapon/book/B = input(user,"Choose a book to take out","Books") as obj in src.contents
-	B.loc = user.loc
+	if(in_range(src,user))
+		B.loc = user.loc
 obj/machinery/bookcase/attackby(obj/item/weapon/book/B,mob/user)
 	if(B)
 		user.drop_item()
