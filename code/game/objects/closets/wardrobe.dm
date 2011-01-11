@@ -153,6 +153,11 @@
 	new /obj/item/clothing/shoes/black( src )
 	new /obj/item/clothing/shoes/black( src )
 	new /obj/item/clothing/shoes/black( src )
+	new /obj/item/device/radio/headset/security/engineer(src)
+	new /obj/item/device/radio/headset/security/engineer(src)
+	new /obj/item/device/radio/headset/security/engineer(src)
+	new /obj/item/device/radio/headset/security/engineer(src)
+	new /obj/item/device/radio/headset/security/engineer(src)
 	return
 /obj/closet/wardrobe/engineering_yellow/New()
 	..()
@@ -168,6 +173,11 @@
 	new /obj/item/clothing/shoes/orange( src )
 	new /obj/item/clothing/shoes/orange( src )
 	new /obj/item/clothing/shoes/orange( src )
+	new /obj/item/device/radio/headset/security/engineer(src)
+	new /obj/item/device/radio/headset/security/engineer(src)
+	new /obj/item/device/radio/headset/security/engineer(src)
+	new /obj/item/device/radio/headset/security/engineer(src)
+	new /obj/item/device/radio/headset/security/engineer(src)
 	return
 
 /obj/closet/wardrobe/quartermasters/New()
@@ -208,6 +218,10 @@
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
+	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/device/radio/headset/security/medical(src)
 	return
 /obj/closet/wardrobe/chemistry_white/New()
 	..()
@@ -225,6 +239,9 @@
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
+	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/device/radio/headset/security/medical(src)
 	return
 /obj/closet/wardrobe/toxins_white/New()
 	..()
@@ -242,6 +259,9 @@
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
+	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/device/radio/headset/security/medical(src)
 	return
 /obj/closet/wardrobe/robotics_white/New()
 	..()
@@ -259,6 +279,8 @@
 	new /obj/item/weapon/storage/lglo_kit( src )
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
+	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	return
 /obj/closet/wardrobe/genetics_white/New()
@@ -277,6 +299,8 @@
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
+	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/device/radio/headset/security/medical(src)
 	return
 /obj/closet/wardrobe/grey/New()
 	..()
