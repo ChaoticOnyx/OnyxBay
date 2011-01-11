@@ -156,7 +156,7 @@
 			heard_a += M
 		else
 			heard_b += M
-
+	var/renderedold2 = message
 	var/rendered = null
 	if (length(heard_a))
 		var/message_a = say_quote(message)
@@ -223,7 +223,7 @@
 				R.disk.memory["[id]"] += renderedold
 				R.disk.mobtype["[id]"] += "human"
 	for(var/obj/O in oview(message_range,src))
-		//O.CatchMessage(renderedold,src)
+		O.CatchMessage(renderedold2,src)
 	for(var/mob/M in viewers(message_range,src))
 		var/obj/item/weapon/implant/I = locate() in M.contents
 		if(I)

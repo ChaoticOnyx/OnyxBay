@@ -164,6 +164,12 @@ obj/machinery/writersdesk/attack_hand(mob/user)
 			cat = Religion
 		if("Cooking")
 			cat = Cooking
+	switch(alert("Are you sure you want to save the book?",,"Yes","No"))
+		if("No")
+			return
+	if(title == "Title here"|| text == "Note: This is all logged abuseing this system will get you banned.")
+		user << "Dude. what the hell?"
+		return
 	var/DBQuery/x_query = dbcon.NewQuery("INSERT INTO `books` (`title`, `author`, `text`,`cat`) VALUES ([dbcon.Quote(title)], [dbcon.Quote(author)],[dbcon.Quote(text)],'[cat]')")
 	var/DBQuery/Y_query = dbcon.NewQuery("INSERT INTO `booklog` (`ckey` ,`title`, `author`, `text`,`cat`) VALUES ([dbcon.Quote(user.ckey)],[dbcon.Quote(title)], [dbcon.Quote(author)],[dbcon.Quote(text)],'[cat]')")
 	//"REPLACE INTO `medals` (`ckey`, `medal`, `medaldesc`, `medaldiff`) VALUES ('[src.ckey]', [tit2], [medaldesc2], '[diff]')

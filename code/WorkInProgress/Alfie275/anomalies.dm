@@ -28,8 +28,43 @@
 	icon = 'rubble.dmi'
 	icon_state = "crystal2"
 	var/list/words = list()
+	var/lastsaid
+/obj/item/weapon/talkingcrystal/New()
+	..()
+	processing_items += src
+	return
 /obj/item/weapon/talkingcrystal/CatchMessage(msg,mob/source)
-	words += msg
+	var/Z = findtext(msg," ")
+	if(Z)
+		if(rand(50))
+			Z = 1
+	if(length(msg) < 10)
+		Z = 1
+	var/Y = findtext(msg," ",Z)
+	if(!Y)
+		Y = 1
+	var/X = copytext(msg,Z,Y)
+	words += X
+	for(var/mob/O in viewers(src))
+		O.show_message("\blue The crystal hums for bit then stops...", 1)
+/obj/item/weapon/talkingcrystal/proc/SaySomething()
+	var/msg
+	var/list/prevwords = list()
+	var/limit = rand(7)
+	for(var/y,y <= limit,y++)
+		var/text = " [pick(words)]"
+		if(!prevwords.Find(text))
+			msg += text
+			prevwords += text
+			continue
+		else
+			continue
+	for(var/mob/M in viewers(src))
+		M << "\blue You hear \"[msg]\" from the [src]"
+	lastsaid = world.timeofday + rand(900,1600)
+/obj/item/weapon/talkingcrystal/process()
+	if(prob(25) && world.timeofday >= lastsaid && words.len >= 1)
+		SaySomething()
 /obj/item/weapon/anomaly/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/weldingtool/))
 		if(src.method)

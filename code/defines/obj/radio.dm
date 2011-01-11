@@ -53,7 +53,18 @@
 	icon_state = "security_headset"
 	item_state = "security_headset"
 	security_frequency = 1399
-
+/obj/item/device/radio/headset/security/engineer
+	name = "Engineering Headset"
+	desc = "Headset which uses an additional frequency for secure transmissions. (Use say :h to transmit on secure channel.)"
+	icon_state = "engi_headset"
+	item_state = "headset"
+	security_frequency = 1400
+/obj/item/device/radio/headset/security/medical
+	name = "Medical Headset"
+	desc = "Headset which uses an additional frequency for secure transmissions. (Use say :h to transmit on secure channel.)"
+	icon_state = "med_headset"
+	item_state = "headset"
+	security_frequency = 1401
 /obj/item/device/radio/intercom
 	name = "Station Intercom (Radio)"
 	icon_state = "intercom"
