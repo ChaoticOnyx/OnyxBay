@@ -222,7 +222,7 @@
 			if(istype(src, /mob/living/carbon/human))
 				R.disk.memory["[id]"] += renderedold
 				R.disk.mobtype["[id]"] += "human"
-	for(var/obj/O in oview(message_range,src))
+	for(var/obj/O in view(3,src))
 		O.CatchMessage(renderedold2,src)
 	for(var/mob/M in viewers(message_range,src))
 		var/obj/item/weapon/implant/I = locate() in M.contents
