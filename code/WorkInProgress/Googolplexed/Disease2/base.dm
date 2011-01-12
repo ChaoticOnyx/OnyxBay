@@ -126,7 +126,7 @@
 			return
 		if(mob.stat == 2)
 			return
-		if(prob(stageprob) && prob(10 + (clicks/50)) && stage != 4)
+		if(prob(stageprob) && prob(25 + (clicks/25)) && stage != 4)
 			stage++
 			clicks = 0
 		for(var/datum/disease2/effectholder/e in effects)
