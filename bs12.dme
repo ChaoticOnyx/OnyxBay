@@ -676,6 +676,8 @@
 #include "code\WorkInProgress\Events\Events\RadiationBelt.dm"
 #include "code\WorkInProgress\Events\Events\VirusEpidemic.dm"
 #include "code\WorkInProgress\Googolplexed\Disease2\base.dm"
+#include "code\WorkInProgress\Googolplexed\Disease2\cureimplanter.dm"
+#include "code\WorkInProgress\Googolplexed\Disease2\curer.dm"
 #include "code\WorkInProgress\Googolplexed\Disease2\isolator.dm"
 #include "code\WorkInProgress\NewMobs and etc\aiconstruct.dm"
 #include "code\WorkInProgress\NewMobs and etc\Damagesystem.dm"
