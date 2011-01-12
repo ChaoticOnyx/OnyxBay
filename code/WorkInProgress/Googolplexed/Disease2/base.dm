@@ -77,6 +77,7 @@
 	var/stage = 1
 	var/stageprob = 7
 	var/dead = 0
+	var/clicks = 0
 
 	var/uniqueID = 0
 	var/list/datum/disease2/effectholder/effects = list()
@@ -123,8 +124,11 @@
 		if(dead)
 			mob.virus2 = null
 			return
-		if(prob(stageprob) && prob(10) && stage != 4)
+		if(mob.stat == 2)
+			return
+		if(prob(stageprob) && prob(10 + (clicks/50)) && stage != 4)
 			stage++
+			clicks = 0
 		for(var/datum/disease2/effectholder/e in effects)
 			e.runeffect(mob,stage)
 
