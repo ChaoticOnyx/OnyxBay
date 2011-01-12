@@ -38,6 +38,9 @@
 			M.virus2 = disease.getcopy()
 			M.virus2.minormutate()
 
+			for(var/datum/disease2/resistance/res in M.resistances)
+				if(res.resistsdisease(M.virus2)
+					M.virus2 = null
 
 
 
@@ -95,7 +98,7 @@
 		holder.getrandomeffect()
 		effects += holder
 		uniqueID = rand(0,10000)
-		infectionchance = rand(5,40)
+		infectionchance = rand(1,15)
 		spreadtype = "Airborne"
 	proc/minormutate()
 		var/datum/disease2/effectholder/holder = pick(effects)
