@@ -10,9 +10,57 @@
 		if(M.virus2)
 			return
 		else
+			var/score = 0
+			if(istype(M, /mob/living/carbon/human))
+				if(M:gloves)
+					score += 5
+				if(istype(M:wear_suit, /obj/item/clothing/suit/space)) score += 10
+				if(istype(M:wear_suit, /obj/item/clothing/suit/bio_suit)) score += 10
+				if(istype(M:wear_suit, /obj/item/clothing/head/helmet/space)) score += 5
+				if(istype(M:head, /obj/item/clothing/head/bio_hood)) score += 5
+			if(M.wear_mask)
+				score += 5
+				if((istype(M:wear_mask, /obj/item/clothing/mask) || istype(M:wear_mask, /obj/item/clothing/mask/surgical)) && !M.internal)
+					score += 5
+				if(M.internal)
+					score += 5
+			if(score > 20)
+				return
+			else if(score == 20 && prob(95))
+				return
+			else if(score == 15 && prob(75))
+				return
+			else if(score == 10 && prob(55))
+				return
+			else if(score == 5 && prob(35))
+				return
+
 			M.virus2 = disease.getcopy()
 			M.virus2.minormutate()
 
+
+
+
+/datum/disease2/resistance
+	var/list/datum/disease2/effect/resistances = list()
+
+	proc/resistsdisease(var/datum/disease2/disease/virus2)
+		var/list/res2 = list()
+		for(var/datum/disease2/effect/e in resistances)
+			res2 += e.type
+		for(var/datum/disease2/effectholder/holder in virus2)
+			if(!(holder.effect.type in res2))
+				return 0
+			else
+				res2 -= holder.effect.type
+		if(res2.len > 0)
+			return 0
+		else
+			return 1
+
+	New(var/datum/disease2/disease/virus2)
+		for(var/datum/disease2/effectholder/h in virus2.effects)
+			resistances += h.effect.type
 
 
 /proc/infect_mob_random(var/mob/living/carbon/M)
@@ -25,6 +73,7 @@
 	var/spreadtype = "Blood" // Can also be "Airborne"
 	var/stage = 1
 	var/stageprob = 1
+	var/dead = 0
 
 	var/uniqueID = 0
 	var/list/datum/disease2/effectholder/effects = list()
@@ -68,10 +117,17 @@
 		return equal
 
 	proc/activate(var/mob/living/carbon/mob)
-		if(prob(stageprob) && stage != 4)
+		if(dead)
+			mob.virus2 = null
+			return
+		if(prob(stageprob) && prob(10) && stage != 4)
 			stage++
 		for(var/datum/disease2/effectholder/e in effects)
 			e.runeffect(mob,stage)
+
+	proc/cure_added(var/datum/disease2/resistance/res)
+		if(res.resistsdisease(src))
+			dead = 1
 
 
 	proc/getcopy()
@@ -120,6 +176,32 @@
 	activate(var/mob/living/carbon/mob,var/multiplyer)
 		mob.toxloss += (2*multiplyer)
 
+/datum/disease2/effect/scream
+	name = "Random screaming syndrome"
+	stage = 2
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		mob.say("*scream")
+
+/datum/disease2/effect/drowsness
+	name = "Automated sleeping syndrome"
+	stage = 2
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		mob.drowsyness += 10
+
+/datum/disease2/effect/shakey
+	name = "World Shaking syndrome"
+	stage = 3
+	maxm = 3
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		shake_camera(mob,5*multiplyer)
+
+/datum/disease2/effect/deaf
+	name = "Hard of hearing syndrome"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		mob.ear_deaf += 20
+
+
 /datum/disease2/effect/sneeze
 	name = "Coldingtons Effect"
 	stage = 1
@@ -161,7 +243,7 @@
 			if(f.stage == src.stage)
 				list += f
 		effect = pick(list)
-		chance = rand(1,15)
+		chance = rand(1,6)
 
 	proc/minormutate()
 		switch(pick(1,2,3,4,5))

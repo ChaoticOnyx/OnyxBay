@@ -119,3 +119,6 @@
 	icon_state = "implantcase-b"
 	var/datum/disease2/disease/virus2 = null
 	var/growth = 0
+
+
+
