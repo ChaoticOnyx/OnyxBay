@@ -104,6 +104,9 @@
 /obj/item/weapon/circuitboard/swfdoor
 	name = "Circuit board (Magix)"
 	computertype = "/obj/machinery/computer/pod/old/swf"
+/obj/item/weapon/circuitboard/curer
+	name = "Circuit board (Cure machine)"
+	computertype = "/obj/machinery/computer/curer"
 
 
 
