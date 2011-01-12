@@ -72,7 +72,7 @@
 	var/infectionchance = 10
 	var/spreadtype = "Blood" // Can also be "Airborne"
 	var/stage = 1
-	var/stageprob = 1
+	var/stageprob = 7
 	var/dead = 0
 
 	var/uniqueID = 0
@@ -238,7 +238,7 @@
 	proc/getrandomeffect()
 		var/list/datum/disease2/effect/list = list()
 		for(var/e in (typesof(/datum/disease2/effect) - /datum/disease2/effect))
-			world << "Making [e]"
+		//	world << "Making [e]"
 			var/datum/disease2/effect/f = new e
 			if(f.stage == src.stage)
 				list += f
