@@ -13,10 +13,13 @@
 	anchored = 1
 
 	var/gasefficency = 0.25
-	var/det = 0
 
-	var/const/warningtime = 10 // Make the CORE OVERLOAD message repeat only 10 ticks (1 tick = 1/10th of a second unless changed from ticklag())
-	var/lastwarning = warningtime // How long ago the last CORE OVERLOAD was sent
+	var/det = 0
+	var/previousdet = 0
+	var/const/explosiondet = 5000
+
+	var/const/warningtime = 10 	// Make the CORE OVERLOAD message repeat only every aprox. 10 seconds
+	var/lastwarning = 0			// Time in 1/10th of seconds since the last sent warning
 
 /obj/machinery/engine/klaxon
 	name = "Emergency Klaxon"
@@ -45,17 +48,23 @@
 	var/transfer_moles = gasefficency * env.total_moles()
 	var/datum/gas_mixture/removed = env.remove(transfer_moles)
 
+	previousdet = det
 	det += (removed.temperature - 1000) / 150
 	det = max(det, 0)
 
-	if(det > 0 && removed.temperature >= 1000)
-		if(lastwarning < warningtime)
-			lastwarning++
-		if(lastwarning >= warningtime)
-			radioalert("CORE OVERLOAD","Core control computer")
-			lastwarning = 0
+	if(det > 0 && removed.temperature > 600) // while the core is still damaged and it's still worth noting its status
+		if((world.timeofday - lastwarning) * 10 >= warningtime)
 
-	if(det > 5500)
+			if(explosiondet - det <= 300)
+				radioalert("CORE EXPLOSION IMMINENT","Core control computer")
+			else if(det >= previousdet)   // The damage is still going up
+				radioalert("CORE OVERLOAD","Core control computer")
+			else						  // Phew, we're safe
+				radioalert("Core returning to safe operating levels.","Core control computer")
+
+			lastwarning = world.timeofday
+
+	if(det > explosiondet)
 		//proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, force = 0)
 		explosion(src.loc,8,15,20,30,1)
 		det = 0

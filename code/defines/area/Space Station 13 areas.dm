@@ -99,22 +99,22 @@
 	icon_state = "shuttle2"
 
 /area/shuttle/escape/transit/pod1
-	name = "Escape Pod A"
+	name = "Escape Pod B"
 
 /area/shuttle/escape/transit/pod2
-	name = "Escape Pod B"
+	name = "Escape Pod A"
 
 /area/shuttle/escape/station/pod1
-	name = "Escape Pod A"
+	name = "Escape Pod B"
 
 /area/shuttle/escape/station/pod2
-	name = "Escape Pod B"
-
-/area/shuttle/escape/centcom/pod1
 	name = "Escape Pod A"
 
-/area/shuttle/escape/centcom/pod2
+/area/shuttle/escape/centcom/pod1
 	name = "Escape Pod B"
+
+/area/shuttle/escape/centcom/pod2
+	name = "Escape Pod A"
 
 /area/shuttle/escape/station
 	icon_state = "shuttle2"
