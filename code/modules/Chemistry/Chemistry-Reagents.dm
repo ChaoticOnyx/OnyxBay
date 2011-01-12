@@ -183,6 +183,7 @@ datum
 				blood_DNA = "unknown"
 				mob/taken_from
 				virus
+			var/datum/disease2/disease/virus2
 
 			on_mob_life(mob/M)
 				if (ishuman(M) && blood_incompatible(blood_type,M:b_type))
@@ -220,6 +221,7 @@ datum
 					id = other.id
 					taken_from = other.taken_from
 					virus = other.virus
+					virus2 = other.virus2.getcopy()
 					description = other.description
 				if(!istype(M))
 					if(istype(M,/mob/living/carbon/monkey))

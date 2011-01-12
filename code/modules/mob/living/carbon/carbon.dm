@@ -14,6 +14,8 @@
 /mob/living/carbon/var/oxylossparalysis = 50
 /mob/living/carbon/var/species = null
 
+/mob/living/carbon/var/datum/disease2/disease/virus2 = null
+
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()
 	if(.)

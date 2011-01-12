@@ -137,6 +137,12 @@ datum
 
 				return 1
 
+			get_reagent(var/reagent)
+				for(var/A in reagent_list)
+					var/datum/reagent/R = A
+					if (R.id == reagent)
+						return R
+
 			update_total()
 				total_volume = 0
 				for(var/datum/reagent/R in reagent_list)

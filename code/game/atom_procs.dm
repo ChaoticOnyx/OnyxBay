@@ -109,6 +109,7 @@
 			this.blood_DNA = M.dna.unique_enzymes
 			this.blood_type = M.b_type
 			this.virus = M.virus
+			this.virus2 = M.virus2.getcopy()
 			this.blood_owner = M
 		else if (istype(src, /mob/living/carbon/human))
 			src.blood_DNA = M.dna.unique_enzymes
