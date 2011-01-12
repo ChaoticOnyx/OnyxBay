@@ -96,7 +96,7 @@
 				for(var/datum/reagent/blood/G in R.reagent_list)
 					dat += "[G.name]:<A href='?src=\ref[src];isolate=[G.id]'> Run ISOLATION procedure</a>"
 		user << browse("<TITLE>Pathogenic ISOLATOR</TITLE>Isolator menu:<BR><BR>[dat]", "window=isolator;size=575x400")
-		onclose(user, "chem_master")
+		onclose(user, "isolator")
 		return
 
 
