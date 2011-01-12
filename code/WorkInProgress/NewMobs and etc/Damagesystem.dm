@@ -140,7 +140,8 @@
 		if(B.id == "blood")
 			B.blood_type = src.b_type
 			B.blood_DNA = src.dna.unique_enzymes
-			B.virus2 = virus2.getcopy()
+			if(virus2)
+				B.virus2 = virus2.getcopy()
 /mob/living/carbon/human/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!( yes ) || now_pushing))
 		return

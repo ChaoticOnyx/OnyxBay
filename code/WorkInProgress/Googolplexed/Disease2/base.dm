@@ -24,7 +24,7 @@
 	var/infectionchance = 10
 	var/spreadtype = "Blood" // Can also be "Airborne"
 	var/stage = 1
-	var/stageprob = 40
+	var/stageprob = 1
 
 	var/uniqueID = 0
 	var/list/datum/disease2/effectholder/effects = list()
@@ -68,20 +68,20 @@
 		return equal
 
 	proc/activate(var/mob/living/carbon/mob)
-		if(dprob(stageprob) && stage != 4)
+		if(prob(stageprob) && stage != 4)
 			stage++
 		for(var/datum/disease2/effectholder/e in effects)
 			e.runeffect(mob,stage)
 
 
 	proc/getcopy()
-		world << "getting copy"
+//		world << "getting copy"
 		var/datum/disease2/disease/disease = new /datum/disease2/disease
 		disease.infectionchance = infectionchance
 		disease.spreadtype = spreadtype
 		disease.stageprob = stageprob
 		for(var/datum/disease2/effectholder/holder in effects)
-			world << "adding effects"
+	//		world << "adding effects"
 			var/datum/disease2/effectholder/newholder = new /datum/disease2/effectholder
 			newholder.effect = new holder.effect.type
 			newholder.chance = holder.chance
@@ -90,8 +90,8 @@
 			newholder.happensonce = holder.happensonce
 			newholder.stage = holder.stage
 			disease.effects += newholder
-			world << "[newholder.effect.name]"
-		world << "[disease]"
+	//		world << "[newholder.effect.name]"
+	//	world << "[disease]"
 		return disease
 
 /datum/disease2/effect
@@ -130,6 +130,12 @@
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplyer)
 		mob.say("*collapse")
+
+/datum/disease2/effect/mind
+	name = "Lazy mind syndrome"
+	stage = 3
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		mob.brainloss = 50
 
 
 /datum/disease2/effectholder
