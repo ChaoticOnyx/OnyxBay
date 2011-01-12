@@ -1,3 +1,6 @@
+/mob/living/silicon
+	gender = NEUTER
+
 /mob/living/silicon/proc/cancelAlarm()
 	return
 
