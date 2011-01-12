@@ -822,3 +822,25 @@ turf/simulated/floor/proc/update_icon()
 	//else if(level==Z_ENGINE_EJECT)
 	//	return engine_eject_z_target
 	//return 1//Default
+
+
+
+
+
+/turf/simulated/asteroid/wall/ex_act(severity)
+	if(severity==3)
+		if(!rand(2))
+			src.health-=rand(50)+50
+			if(src.health<1)
+				src.mine()
+		else
+			src.mine()
+	else if(severity==2)
+		if(!rand(4))
+			src.health-=rand(50)+50
+			if(src.health<1)
+				src.mine()
+		else
+			src.mine()
+	else
+		src.mine()
