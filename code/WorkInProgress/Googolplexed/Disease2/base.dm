@@ -39,7 +39,7 @@
 			M.virus2.minormutate()
 
 			for(var/datum/disease2/resistance/res in M.resistances)
-				if(res.resistsdisease(M.virus2)
+				if(res.resistsdisease(M.virus2))
 					M.virus2 = null
 
 
