@@ -32,8 +32,8 @@
 	dna = null
 	O.dna.uni_identity = "00600200A00E0110148FC01300B009"
 	O.dna.struc_enzymes = "0983E840344C39F4B059D5145FC5785DC6406A4BB8"
-	if (client)
-		client.mob = O
+	if (mind)
+		mind.transfer_to(O)
 	O.loc = loc
 	O.a_intent = "hurt"
 	O << "<B>You are now a monkey.</B>"

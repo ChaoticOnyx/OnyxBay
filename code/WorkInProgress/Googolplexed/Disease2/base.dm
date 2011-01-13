@@ -279,6 +279,17 @@
 	activate(var/mob/living/carbon/mob,var/multiplyer)
 		mob.brainloss = 50
 
+/datum/disease2/effect/suicide
+	name = "Suicidal syndrome"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		mob.suiciding = 1
+		//instead of killing them instantly, just put them at -175 health and let 'em gasp for a while
+		viewers(mob) << "\red <b>[src] is holding \his breath. It looks like \he's trying to commit suicide.</b>"
+		mob.oxyloss = max(175 - mob.toxloss - mob.fireloss - mob.bruteloss, mob.oxyloss)
+		mob.updatehealth()
+		spawn(200) //in case they get revived by cryo chamber or something stupid like that, let them suicide again in 20 seconds
+			mob.suiciding = 0
 
 /datum/disease2/effectholder
 	var/name = "Holder"
