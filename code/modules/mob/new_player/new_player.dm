@@ -41,6 +41,7 @@ mob/new_player
 			preferences.ShowChoices(src)
 
 		startup = sound('clouds.s3m')
+		startup.volume = 50
 
 		spawn(25)
 			src << startup
