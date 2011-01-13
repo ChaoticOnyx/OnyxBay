@@ -104,7 +104,7 @@
 	proc/minormutate()
 		var/datum/disease2/effectholder/holder = pick(effects)
 		holder.minormutate()
-		infectionchance = min(50,infectionchance + rand(-2,5))
+		infectionchance = min(5,infectionchance + rand(-1,1))
 	proc/issame(var/datum/disease2/disease/disease)
 		var/list/types = list()
 		var/list/types2 = list()
