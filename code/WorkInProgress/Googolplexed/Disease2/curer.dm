@@ -64,7 +64,7 @@
 	var/dat
 	if(curing)
 		dat = "Antibody production in progress"
-	if(virusing)
+	else if(virusing)
 		dat = "Virus production in progress"
 	else if(dish)
 		dat = "Virus dish inserted"
