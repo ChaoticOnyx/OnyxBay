@@ -142,6 +142,9 @@ obj/machinery/atmospherics/pipe
 					parent.temperature_interact(loc, volume, thermal_conductivity)
 
 		check_pressure(pressure)
+		 // Biscuitry temporarily removed pipes bursting until building of new pipes can be implemented.
+		 // Head added the ability to repair broken pipes (proc/connect() and attackby) below.
+		 // TO DO: Add a pipe dispenser of sorts, or make them acquireable from the QM, continuing from Head's work at commit efc3ec22a868fe4d7d20f2ecb7714124d7ff8688
 			/*
 			var/turf/T = get_turf(src)
 
