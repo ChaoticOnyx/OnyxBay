@@ -685,6 +685,10 @@
 	name = "Medical Research"
 	icon_state = "medresearch"
 
+/area/medical/virology
+	name = "Virology"
+	icon_state = "medbay"
+
 
 /area/medical/morgue
 	name = "Morgue"

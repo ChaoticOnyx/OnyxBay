@@ -92,11 +92,13 @@
 	if(curing)
 		curing -= 1
 		if(curing == 0)
-			createcure(dish.virus2)
+			if(dish.virus2)
+				createcure(dish.virus2)
 	if(virusing)
 		virusing -= 1
 		if(virusing == 0)
-			createvirus(dish.virus2)
+			if(dish.virus2)
+				createvirus(dish.virus2)
 
 	return
 
