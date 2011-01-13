@@ -121,6 +121,8 @@
 			src.verbs += /client/proc/loadmaphere
 
 			src.verbs += /client/proc/hidemode
+
+			src.verbs += /client/proc/givedisease
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
@@ -219,7 +221,7 @@
 			src.verbs += /client/proc/Zone_Info
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/nanoshuttle
-
+			src.verbs += /client/proc/givedisease
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
 			src.verbs += /client/proc/loadmaphere
@@ -309,6 +311,7 @@
 			src.verbs += /client/proc/loadmap
 			src.verbs += /client/proc/loadmaphere
 			src.verbs += /client/proc/hidemode
+			src.verbs += /client/proc/givedisease
 		if ("Primary Administrator")
 
 			src.deadchat = 1
@@ -775,6 +778,14 @@
 
 		del(M.client)
 		del(M)
+
+/client/proc/givedisease(var/mob/living/carbon/M in world)
+	set category = "Debug"
+	set name = "Give disease 2.0"
+	set desc = "Does what it says on the tin"
+	infect_mob_random(M)
+	message_admins("\blue [src.ckey] infected [M.real_name]([M.ckey]) with a random disease 2.0")
+
 
 
 /client/proc/clearmap()

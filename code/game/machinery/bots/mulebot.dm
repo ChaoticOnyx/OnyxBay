@@ -772,6 +772,8 @@
 			var/obj/decal/cleanable/blood/B = new(src.loc)
 			B.blood_DNA = H.dna.unique_enzymes
 			B.blood_type = H.b_type
+			if(H.virus2)
+				B.virus2 = H.virus2.getcopy()
 
 		bloodiness += 4
 

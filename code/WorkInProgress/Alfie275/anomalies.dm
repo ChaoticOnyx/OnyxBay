@@ -1,6 +1,6 @@
-var/list/anomalies = list("/obj/item/weapon/crystal" = 2,
-							"/obj/item/weapon/fossil/bone" =2 ,
-							"/obj/item/weapon/fossil/shell" =1 ,
+var/list/anomalies = list("/obj/item/weapon/crystal" = 4,
+							"/obj/item/weapon/fossil/bone" =8 ,
+							"/obj/item/weapon/fossil/shell" =4 ,
 							"/obj/item/weapon/fossil/skull" =1)
 
 
@@ -19,6 +19,8 @@ var/list/anomalies = list("/obj/item/weapon/crystal" = 2,
 		r.my_atom = src
 		src.method = rand(2)
 		src.inside = pickweight(anomalies)
+
+
 
 
 
@@ -65,6 +67,9 @@ var/list/anomalies = list("/obj/item/weapon/crystal" = 2,
 /obj/item/weapon/talkingcrystal/process()
 	if(prob(25) && world.timeofday >= lastsaid && words.len >= 1)
 		SaySomething()
+
+
+
 /obj/item/weapon/anomaly/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/weldingtool/))
 		if(src.method)

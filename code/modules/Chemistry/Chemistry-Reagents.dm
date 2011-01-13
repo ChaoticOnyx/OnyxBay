@@ -183,6 +183,7 @@ datum
 				blood_DNA = "unknown"
 				mob/taken_from
 				virus
+			var/datum/disease2/disease/virus2
 
 			on_mob_life(mob/M)
 				if (ishuman(M) && blood_incompatible(blood_type,M:b_type))
@@ -220,6 +221,8 @@ datum
 					id = other.id
 					taken_from = other.taken_from
 					virus = other.virus
+					if(other.virus2)
+						virus2 = other.virus2.getcopy()
 					description = other.description
 				if(!istype(M))
 					if(istype(M,/mob/living/carbon/monkey))
@@ -229,6 +232,8 @@ datum
 						taken_from = M
 						virus = M.virus
 						description = "Type: [blood_type]<br>DNA: [blood_DNA]"
+						if(M.virus2)
+							virus2 = M.virus2.getcopy()
 					return 0
 				blood_type = M.b_type
 				blood_DNA = M.dna.unique_enzymes
@@ -236,6 +241,8 @@ datum
 				taken_from = M
 				virus = M.virus
 				description = "Type: [blood_type]<br>DNA: [blood_DNA]"
+				if(M.virus2)
+					virus2 = M.virus2.getcopy()
 				return 1
 
 		lube
@@ -1091,4 +1098,38 @@ datum
 			name = "Diethylamine"
 			id = "diethylamine"
 			description = "A secondary amine, mildly corrosive."
+			reagent_state = LIQUID
+
+
+
+
+
+
+/*
+		cure
+			name = "Experimental cure"
+			id = "cure"
+			description = "An experimental set of antibodies designed to fight disease"
+			reagent_state = LIQUID
+			var/works = 0
+			var/datum/disease2/resistance/resistance = null
+			on_mob_life(var/mob/living/carbon/M)
+				if(works == 0)
+					M.resistances2 += resistance
+					if(M.virus2)
+						M.virus2.cure_added(resistance)
+					holder.remove_reagent(src.id,9999999)
+				else if(works == 1)
+					M.toxloss += 5
+				else if(works == 2)
+					M.gib()
+				else if(works == 3)
+					M.bruteloss += 15
+				..()*/
+
+
+		virusfood
+			name = "Virus food"
+			id = "virusfood"
+			description = "A set of specially engineered food for the growth of viral cells"
 			reagent_state = LIQUID

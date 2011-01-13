@@ -1,4 +1,4 @@
-/proc/gibs(atom/location, var/datum/disease/virus)
+/proc/gibs(atom/location, var/datum/disease/virus,var/datum/disease2/disease/virus2 = null)
 	var/obj/decal/cleanable/blood/gibs/gib = null
 
 	// NORTH
@@ -7,6 +7,8 @@
 		gib.icon_state = "gibup1"
 	gib.virus = virus
 	gib.streak(list(NORTH, NORTHEAST, NORTHWEST))
+	if(virus2)
+		gib.virus2 = virus2.getcopy()
 
 	// SOUTH
 	gib = new /obj/decal/cleanable/blood/gibs(location)
@@ -14,32 +16,38 @@
 		gib.icon_state = "gibdown1"
 	gib.virus = virus
 	gib.streak(list(SOUTH, SOUTHEAST, SOUTHWEST))
-
+	if(virus2)
+		gib.virus2 = virus2.getcopy()
 	// WEST
 	gib = new /obj/decal/cleanable/blood/gibs(location)
 	gib.virus = virus
 	gib.streak(list(WEST, NORTHWEST, SOUTHWEST))
-
+	if(virus2)
+		gib.virus2 = virus2.getcopy()
 	// EAST
 	gib = new /obj/decal/cleanable/blood/gibs(location)
 	gib.virus = virus
 	gib.streak(list(EAST, NORTHEAST, SOUTHEAST))
-
+	if(virus2)
+		gib.virus2 = virus2.getcopy()
 	// RANDOM BODY
 	gib = new /obj/decal/cleanable/blood/gibs/body(location)
 	gib.virus = virus
 	gib.streak(cardinal8)
-
+	if(virus2)
+		gib.virus2 = virus2.getcopy()
 	// RANDOM LIMBS
 	for (var/i = 0, i < pick(0, 1, 2), i++)
 		gib = new /obj/decal/cleanable/blood/gibs/limb(location)
 		gib.virus = virus
 		gib.streak(cardinal8)
-
+		if(virus2)
+			gib.virus2 = virus2.getcopy()
 	// CORE
 	gib = new /obj/decal/cleanable/blood/gibs/core(location)
 	gib.virus = virus
-
+	if(virus2)
+		gib.virus2 = virus2.getcopy()
 /proc/robogibs(atom/location, var/datum/disease/virus)
 	var/obj/decal/cleanable/robot_debris/gib = null
 
