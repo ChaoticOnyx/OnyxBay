@@ -111,10 +111,10 @@
 		usr.machine = src
 
 		if (href_list["antibody"])
-			curing = 50
+			curing = 40
 			dish.growth -= 50
 		if (href_list["virus"])
-			virusing = 50
+			virusing = 40
 			dish.growth -= 100
 		else if(href_list["eject"])
 			dish.loc = src.loc
