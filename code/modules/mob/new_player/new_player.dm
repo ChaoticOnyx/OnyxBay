@@ -11,6 +11,7 @@ mob/new_player
 	canmove = 0
 
 	anchored = 1	//  don't get pushed around
+	var/sound/startup = null
 
 	Login()
 		..()
@@ -39,8 +40,11 @@ mob/new_player
 		if(!preferences.savefile_load(src,0,1))
 			preferences.ShowChoices(src)
 
+		startup = sound('clouds.s3m')
 
-		src << sound('main.ogg', 0, 0, 0, 35)
+		spawn(25)
+			src << startup
+	//	src << sound('main.ogg', 0, 0, 0, 35)
 
 
 	Logout()
@@ -111,6 +115,8 @@ mob/new_player
 				var/mob/dead/observer/observer = new()
 
 				close_spawn_windows()
+				startup.status = SOUND_PAUSED
+				src << startup
 				var/obj/O = locate("landmark*Observer-Start")
 				src << "\blue Now teleporting."
 				observer.loc = O.loc
@@ -119,6 +125,7 @@ mob/new_player
 					preferences.randomize_name()
 				observer.name = preferences.real_name
 				observer.real_name = observer.name
+
 
 				del(src)
 				return 1
@@ -138,6 +145,9 @@ mob/new_player
 				if(!invite_isallowed(src))
 					src << "\blue This is an invite only game"
 					return
+
+			startup.status = SOUND_PAUSED
+			src << startup
 
 			switch(href_list["SelectedJob"])
 				if ("1")
@@ -296,6 +306,8 @@ mob/new_player
 		src << browse(dat, "window=latechoices;size=300x640;can_close=0")
 
 	proc/create_character()
+		startup.status = SOUND_PAUSED
+		src << startup
 		var/mob/living/carbon/human/new_character = new(loc)
 
 		close_spawn_windows()
