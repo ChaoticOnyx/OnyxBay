@@ -2115,7 +2115,7 @@ mob/verb/turnwest()
 		if(istype(src,/mob/living/silicon/robot))
 			robogibs(loc,virus)
 		else
-			gibs(loc, virus)
+			gibs(loc, virus,src:virus2)
 
 	sleep(15)
 	del(src)

@@ -4,6 +4,7 @@
 	icon_state = "implanter1"
 	var/datum/disease2/resistance/resistance = null
 	var/works = 0
+	var/datum/disease2/disease/virus2 = null
 	item_state = "syringe_0"
 	throw_speed = 1
 	throw_range = 5
@@ -29,13 +30,13 @@
 
 		var/mob/living/carbon/M = target
 
-		if(works == 0)
+		if(works == 0 && prob(25))
 			M.resistances2 += resistance
 			if(M.virus2)
 				M.virus2.cure_added(resistance)
 		else if(works == 1)
-			M.toxloss += 25
+			M.toxloss += 60
 		else if(works == 2)
 			M.gib()
 		else if(works == 3)
-			M.bruteloss += 60
+			infect_virus2(M,virus2)

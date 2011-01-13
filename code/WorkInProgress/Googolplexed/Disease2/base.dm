@@ -75,7 +75,7 @@
 	var/infectionchance = 10
 	var/spreadtype = "Blood" // Can also be "Airborne"
 	var/stage = 1
-	var/stageprob = 7
+	var/stageprob = 2
 	var/dead = 0
 	var/clicks = 0
 
@@ -126,7 +126,12 @@
 			return
 		if(mob.stat == 2)
 			return
-		if(prob(stageprob) && prob(25 + (clicks/25)) && stage != 4)
+		if(mob.radiation > 50)
+			if(prob(1))
+				majormutate()
+		if(mob.reagents.has_reagent("spaceacillin"))
+			return
+		if(prob(stageprob) && prob(25 + (clicks/100)) && stage != 4)
 			stage++
 			clicks = 0
 		for(var/datum/disease2/effectholder/e in effects)
@@ -135,6 +140,10 @@
 	proc/cure_added(var/datum/disease2/resistance/res)
 		if(res.resistsdisease(src))
 			dead = 1
+
+	proc/majormutate()
+		var/datum/disease2/effectholder/holder = pick(effects)
+		holder.majormutate()
 
 
 	proc/getcopy()
@@ -208,12 +217,56 @@
 	activate(var/mob/living/carbon/mob,var/multiplyer)
 		mob.ear_deaf += 20
 
+/datum/disease2/effect/invisible
+	name = "Waiting Syndrome"
+	stage = 1
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		return
+
+/datum/disease2/effect/telepathic
+	name = "Telepathy Syndrome"
+	stage = 3
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		mob.mutations |= 512
+
+/datum/disease2/effect/noface
+	name = "Identity Loss syndrome"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		mob.real_name = "Unknown"
+
+/datum/disease2/effect/monkey
+	name = "Monkism syndrome"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		if(istype(mob,/mob/living/carbon/human))
+			var/mob/living/carbon/human/h = mob
+			h.monkeyize()
 
 /datum/disease2/effect/sneeze
 	name = "Coldingtons Effect"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplyer)
 		mob.say("*sneeze")
+
+/datum/disease2/effect/gunck
+	name = "Flemmingtons"
+	stage = 1
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		mob << "\red Mucous runs down the back of your throat."
+
+/datum/disease2/effect/killertoxins
+	name = "Toxification syndrome"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		mob.toxloss += 15
+
+/datum/disease2/effect/hallucinations
+	name = "Hallucinational Syndrome"
+	stage = 3
+	activate(var/mob/living/carbon/mob,var/multiplyer)
+		mob.hallucination += 25
+
 /datum/disease2/effect/sleepy
 	name = "Resting syndrome"
 	stage = 2

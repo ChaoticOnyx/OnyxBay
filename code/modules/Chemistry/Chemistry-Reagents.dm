@@ -1105,7 +1105,7 @@ datum
 
 
 
-
+/*
 		cure
 			name = "Experimental cure"
 			id = "cure"
@@ -1125,4 +1125,11 @@ datum
 					M.gib()
 				else if(works == 3)
 					M.bruteloss += 15
-				..()
+				..()*/
+
+
+		virusfood
+			name = "Virus food"
+			id = "virusfood"
+			description = "A set of specially engineered food for the growth of viral cells"
+			reagent_state = LIQUID

@@ -394,3 +394,11 @@ datum
 			result = "cleaner"
 			required_reagents = list("ammonia" = 1, "water" = 1)
 			result_amount = 1
+
+
+		virusfood
+			name = "Virus food"
+			id = "virusfood"
+			result = "virusfood"
+			required_reagents = list("water" = 1, "milk" = 1)
+			result_amount = 5

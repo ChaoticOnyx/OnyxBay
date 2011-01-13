@@ -167,6 +167,7 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
+#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -677,6 +678,7 @@
 #include "code\WorkInProgress\Googolplexed\Disease2\base.dm"
 #include "code\WorkInProgress\Googolplexed\Disease2\cureimplanter.dm"
 #include "code\WorkInProgress\Googolplexed\Disease2\curer.dm"
+#include "code\WorkInProgress\Googolplexed\Disease2\dishincubator.dm"
 #include "code\WorkInProgress\Googolplexed\Disease2\isolator.dm"
 #include "code\WorkInProgress\NewMobs and etc\aiconstruct.dm"
 #include "code\WorkInProgress\NewMobs and etc\Damagesystem.dm"

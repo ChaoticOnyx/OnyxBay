@@ -120,5 +120,11 @@
 	var/datum/disease2/disease/virus2 = null
 	var/growth = 0
 
-
+/obj/item/weapon/virusdish/attackby(var/obj/item/weapon/W as obj,var/mob/living/carbon/user as mob)
+	..()
+	if(prob(50))
+		user << "The dish shatters"
+		if(virus2.infectionchance > 0)
+			infect_virus2(user,virus2)
+		del src
 
