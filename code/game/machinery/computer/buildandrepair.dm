@@ -107,6 +107,13 @@
 /obj/item/weapon/circuitboard/curer
 	name = "Circuit board (Cure machine)"
 	computertype = "/obj/machinery/computer/curer"
+/obj/item/weapon/circuitboard/diseaseanalyser
+	name = "Circuit board (Disease Analyser)"
+	computertype = "/obj/machinery/computer/diseaseanalyer"
+/obj/item/weapon/circuitboard/diseasesplicer
+	name = "Circuit board (Disease Splicer)"
+	computertype = "/obj/machinery/computer/diseasesplicer"
+
 
 
 

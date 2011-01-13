@@ -158,7 +158,7 @@
 			newholder.effect = new holder.effect.type
 			newholder.chance = holder.chance
 			newholder.cure = holder.cure
-			newholder.multiplyer = holder.multiplyer
+			newholder.multiplier = holder.multiplier
 			newholder.happensonce = holder.happensonce
 			newholder.stage = holder.stage
 			disease.effects += newholder
@@ -170,75 +170,75 @@
 	var/name = "Blanking effect"
 	var/stage = 4
 	var/maxm = 1
-	proc/activate(var/mob/living/carbon/mob,var/multiplyer)
+	proc/activate(var/mob/living/carbon/mob,var/multiplier)
 
 /datum/disease2/effect/gibbingtons
 	name = "Gibbingtons Syndrome"
 	stage = 4
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.gib()
 
 /datum/disease2/effect/radian
 	name = "Radian's syndrome"
 	stage = 4
 	maxm = 3
-	activate(var/mob/living/carbon/mob,var/multiplyer)
-		mob.radiation += (2*multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.radiation += (2*multiplier)
 
 /datum/disease2/effect/toxins
 	name = "Hyperacid Syndrome"
 	stage = 3
 	maxm = 3
-	activate(var/mob/living/carbon/mob,var/multiplyer)
-		mob.toxloss += (2*multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.toxloss += (2*multiplier)
 
 /datum/disease2/effect/scream
 	name = "Random screaming syndrome"
 	stage = 2
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*scream")
 
 /datum/disease2/effect/drowsness
 	name = "Automated sleeping syndrome"
 	stage = 2
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.drowsyness += 10
 
 /datum/disease2/effect/shakey
 	name = "World Shaking syndrome"
 	stage = 3
 	maxm = 3
-	activate(var/mob/living/carbon/mob,var/multiplyer)
-		shake_camera(mob,5*multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		shake_camera(mob,5*multiplier)
 
 /datum/disease2/effect/deaf
 	name = "Hard of hearing syndrome"
 	stage = 4
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.ear_deaf += 20
 
 /datum/disease2/effect/invisible
 	name = "Waiting Syndrome"
 	stage = 1
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		return
 
 /datum/disease2/effect/telepathic
 	name = "Telepathy Syndrome"
 	stage = 3
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.mutations |= 512
 
 /datum/disease2/effect/noface
 	name = "Identity Loss syndrome"
 	stage = 4
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.real_name = "Unknown"
 
 /datum/disease2/effect/monkey
 	name = "Monkism syndrome"
 	stage = 4
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		if(istype(mob,/mob/living/carbon/human))
 			var/mob/living/carbon/human/h = mob
 			h.monkeyize()
@@ -246,43 +246,43 @@
 /datum/disease2/effect/sneeze
 	name = "Coldingtons Effect"
 	stage = 1
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*sneeze")
 
 /datum/disease2/effect/gunck
 	name = "Flemmingtons"
 	stage = 1
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob << "\red Mucous runs down the back of your throat."
 
 /datum/disease2/effect/killertoxins
 	name = "Toxification syndrome"
 	stage = 4
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.toxloss += 15
 
 /datum/disease2/effect/hallucinations
 	name = "Hallucinational Syndrome"
 	stage = 3
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.hallucination += 25
 
 /datum/disease2/effect/sleepy
 	name = "Resting syndrome"
 	stage = 2
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*collapse")
 
 /datum/disease2/effect/mind
 	name = "Lazy mind syndrome"
 	stage = 3
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.brainloss = 50
 
 /datum/disease2/effect/suicide
 	name = "Suicidal syndrome"
 	stage = 4
-	activate(var/mob/living/carbon/mob,var/multiplyer)
+	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.suiciding = 1
 		//instead of killing them instantly, just put them at -175 health and let 'em gasp for a while
 		viewers(mob) << "\red <b>[src] is holding \his breath. It looks like \he's trying to commit suicide.</b>"
@@ -297,7 +297,7 @@
 	var/chance = 0 //Chance in percentage each tick
 	var/cure = "" //Type of cure it requires
 	var/happensonce = 0
-	var/multiplyer = 1 //The chance the effects are WORSE
+	var/multiplier = 1 //The chance the effects are WORSE
 	var/stage = 0
 
 	proc/runeffect(var/mob/living/carbon/human/mob,var/stage)
@@ -321,7 +321,7 @@
 			if(1)
 				chance = rand(0,100)
 			if(2)
-				multiplyer = rand(1,effect.maxm)
+				multiplier = rand(1,effect.maxm)
 	proc/majormutate()
 		getrandomeffect()
 

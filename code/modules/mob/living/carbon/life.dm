@@ -112,7 +112,6 @@
 	return null
 
 /mob/living/carbon/proc/handle_virus_updates()
-	/*
 	if(bodytemperature > 406)
 		resistances += virus
 		virus = null
@@ -136,7 +135,7 @@
 						D.strain_data = B.virus.strain_data
 						contract_disease(D)
 	else
-		virus.stage_act()*/
+		virus.stage_act()
 
 
 	if(!virus2)

@@ -78,6 +78,8 @@
 			dat += "<BR>Please check dish contents"
 
 		dat += "<BR><A href='?src=\ref[src];eject=1'>Eject disk</a>"
+	else
+		dat = "Please insert dish"
 
 	user << browse(dat, "window=computer;size=400x500")
 	onclose(user, "computer")
