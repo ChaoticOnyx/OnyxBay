@@ -1008,7 +1008,8 @@ datum
 					if(M.virus.stage <= 0)
 						M.resistances += M.virus.type
 						M.virus = null
-				holder.remove_reagent(src.id, 0.2)
+				if(prob(5))
+					holder.remove_reagent(src.id, 0.2)
 				return
 
 

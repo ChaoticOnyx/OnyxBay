@@ -71,8 +71,7 @@ var/global/datum/controller/gameticker/ticker
 
 	//Distribute jobs
 	distribute_jobs()
-	// Set the titles for jobs
-	SetTitles()
+
 	//Create player characters and transfer them
 	create_characters()
 
@@ -128,8 +127,7 @@ var/global/datum/controller/gameticker/ticker
 			if(player.mind && player.mind.assigned_role)
 				if(player.mind.assigned_role != "MODE")
 					player.Equip_Rank(player.mind.assigned_role)
-	proc/settitles_characters()
-		return
+
 	proc/process()
 		if(current_state != GAME_STATE_PLAYING)
 			return 0

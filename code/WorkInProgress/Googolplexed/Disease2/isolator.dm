@@ -123,6 +123,8 @@
 	var/analysed = 0
 
 /obj/item/weapon/virusdish/attackby(var/obj/item/weapon/W as obj,var/mob/living/carbon/user as mob)
+	if(istype(W,/obj/item/weapon/hand_labeler))
+		return
 	..()
 	if(prob(50))
 		user << "The dish shatters"

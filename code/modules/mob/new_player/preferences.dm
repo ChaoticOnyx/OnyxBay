@@ -11,9 +11,7 @@ datum/preferences
 	var/occupation1 = "No Preference"
 	var/occupation2 = "No Preference"
 	var/occupation3 = "No Preference"
-	var/title1
-	var/title2
-	var/title3
+
 	var/h_style = "Short Hair"
 	var/f_style = "Shaved"
 	var/slotname
@@ -166,25 +164,14 @@ datum/preferences
 				occupation3 = "Unassigned"
 			if (occupation1 != "No Preference")
 				dat += "\tFirst Choice: <a href=\"byond://?src=\ref[user];preferences=1;occ=1\"><b>[occupation1]</b></a><br>"
-				if(HasTitles(occupation1))
-					if(!title1)
-						title1 = occupation1
-					dat += "\t [occupation1] Title: <a href=\"byond://?src=\ref[user];preferences=1;occ=1;showtitle=1\"><b>[title1]</b></a><br>"
+
 				if (destructive.Find(occupation2))
 					dat += "\tSecond Choice: <a href=\"byond://?src=\ref[user];preferences=1;occ=2\"><b>[occupation2]</b></a><BR>"
 
 				else
 					if (occupation2 != "No Preference")
 						dat += "\tSecond Choice: <a href=\"byond://?src=\ref[user];preferences=1;occ=2\"><b>[occupation2]</b></a><BR>"
-						if(HasTitles(occupation2))
-							if(!title2)
-								title2 = occupation2
-							dat += "\t [occupation2] Title: <a href=\"byond://?src=\ref[user];preferences=1;occ=2;showtitle=1\"><b>[title2]</b></a><br>"
-						dat += "\tLast Choice: <a href=\"byond://?src=\ref[user];preferences=1;occ=3\"><b>[occupation3]</b></a><BR	>"
-						if(HasTitles(occupation3))
-							if(!title3)
-								title3 = occupation3
-							dat += "\t [occupation3] Title: <a href=\"byond://?src=\ref[user];preferences=1;occ=3;showtitle=1\"><b>[title3]</b></a><br>"
+						dat += "\tLast Choice: <a href=\"byond://?src=\ref[user];preferences=1;occ=3\"><b>[occupation3]</b></a><BR>"
 
 					else
 						dat += "\tSecond Choice: <a href=\"byond://?src=\ref[user];preferences=1;occ=2\">No Preference</a><br>"
@@ -236,6 +223,17 @@ datum/preferences
 		dat += "<hr>"
 
 		if (!IsGuestKey(user.key))
+/*			var/list/slot = list()
+			var/DBQuery/query = dbcon.NewQuery("SELECT `slot` FROM `players` WHERE ckey='[usr.ckey]'")
+			if(!query.Execute())
+				usr << "ERROR"
+			while(query.NextRow())
+				var/list/row = query.GetRowData()
+				slot += row["slot"]
+
+			for(var/T in slot)
+				dat += "<a href='byond://?src=\ref[user];preferences=1;loadslot=[T]'>Load Slot [T]</a><br>"
+				*/
 			if(!curslot)
 				dat += "<a href='byond://?src=\ref[user];preferences=1;saveslot=1'>Save Slot 1</a><br>"
 			else
@@ -293,45 +291,6 @@ datum/preferences
 		user << browse(HTML, "window=mob_occupation;size=320x500")
 		return
 
-	proc/ShowTitle(mob/user,choice=1)
-		var/HTML = "<body>"
-		HTML += "<tt><center>"
-		world << choice
-		switch(choice)
-			if(1.0)
-				HTML += "<b>Which title would you for [occupation1].</b><br><br>"
-				for(var/datum/title/T in titles)
-					if(T.jobname == occupation1)
-						for(var/A in T.title)
-							HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[choice];title=[A]\">[A]</a><br>"
-			if(2.0)
-				HTML += "<b>Which title would you for [occupation2].</b><br><br>"
-				for(var/datum/title/T in titles)
-					if(T.jobname == occupation2)
-						for(var/A in T.title)
-							HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[choice];title=[A]\">[A]</a><br>"
-			if(3.0)
-				HTML += "<b>Which title would you for [occupation3].</b><br><br>"
-				for(var/datum/title/T in titles)
-					if(T.jobname == occupation3)
-						for(var/A in T.title)
-							HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[choice];title=[A]\">[A]</a><br>"
-		HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[choice];cancel=1\">\[Cancel\]</a>"
-		HTML += "</center></tt>"
-		user << browse(null, "window=preferences")
-		user << browse(HTML, "window=mob_title;size=320x500")
-
-	proc/SetTitle(mob/user,choice,title)
-		switch(choice)
-			if(1.0)
-				title1 = title
-			if(2.0)
-				title2 = title
-			if(3.0)
-				title3 = title
-		user << browse(null, "window=mob_title")
-		ShowChoices(user)
-		return
 	proc/SetJob(mob/user, occ=1, job="Captain")
 		if ((!( occupations.Find(job) ) && !( assistant_occupations.Find(job) ) && job != "Captain") && job != "No Preference")
 			return
@@ -424,12 +383,8 @@ datum/preferences
 			if (link_tags["cancel"])
 				user << browse(null, "window=mob_occupation")
 				ShowChoices(user)
-			else if(link_tags["showtitle"])
-				ShowTitle(user,text2num(link_tags["occ"]))
 			else if(link_tags["job"])
 				SetJob(user, text2num(link_tags["occ"]), link_tags["job"])
-			else if(link_tags["title"])
-				SetTitle(user,text2num(link_tags["occ"]),link_tags["title"])
 			else
 				SetChoices(user, text2num(link_tags["occ"]))
 

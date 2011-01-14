@@ -7,7 +7,7 @@ datum/mind
 	var/assigned_role
 	var/special_role
 
-	var/title
+
 	var/datum/logging/log
 
 	var/list/datum/objective/objectives = list()

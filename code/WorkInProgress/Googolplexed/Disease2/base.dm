@@ -5,7 +5,7 @@
 //Stage 4 = Death/Really Really really bad effect
 
 
-/proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease2/disease/disease)
+/proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease2/disease/disease,var/forced = 0)
 	if(prob(disease.infectionchance))
 		if(M.virus2)
 			return
@@ -24,6 +24,8 @@
 					score += 5
 				if(M.internal)
 					score += 5
+			if(forced)
+				score = 0
 			if(score > 20)
 				return
 			else if(score == 20 && prob(95))
@@ -99,12 +101,12 @@
 		holder.getrandomeffect()
 		effects += holder
 		uniqueID = rand(0,10000)
-		infectionchance = rand(1,5)
+		infectionchance = rand(1,10)
 		spreadtype = "Airborne"
 	proc/minormutate()
 		var/datum/disease2/effectholder/holder = pick(effects)
 		holder.minormutate()
-		infectionchance = min(5,infectionchance + rand(-1,1))
+		infectionchance = min(10,infectionchance + rand(0,1))
 	proc/issame(var/datum/disease2/disease/disease)
 		var/list/types = list()
 		var/list/types2 = list()
@@ -285,7 +287,7 @@
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.suiciding = 1
 		//instead of killing them instantly, just put them at -175 health and let 'em gasp for a while
-		viewers(mob) << "\red <b>[src] is holding \his breath. It looks like \he's trying to commit suicide.</b>"
+		viewers(mob) << "\red <b>[mob.name] is holding \his breath. It looks like \he's trying to commit suicide.</b>"
 		mob.oxyloss = max(175 - mob.toxloss - mob.fireloss - mob.bruteloss, mob.oxyloss)
 		mob.updatehealth()
 		spawn(200) //in case they get revived by cryo chamber or something stupid like that, let them suicide again in 20 seconds
