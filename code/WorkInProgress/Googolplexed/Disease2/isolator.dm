@@ -62,7 +62,7 @@
 			var/datum/reagent/gent = R.get_reagent(href_list["isolate"])
 			if(gent:virus2)
 				virus2 = gent:virus2
-				isolating = 50
+				isolating = 100
 			src.updateUsrDialog()
 			return
 
@@ -123,6 +123,8 @@
 	var/analysed = 0
 
 /obj/item/weapon/virusdish/attackby(var/obj/item/weapon/W as obj,var/mob/living/carbon/user as mob)
+	if(istype(W,/obj/item/weapon/hand_labeler))
+		return
 	..()
 	if(prob(50))
 		user << "The dish shatters"

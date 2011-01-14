@@ -117,7 +117,7 @@
 		usr.machine = src
 
 		if (href_list["scan"])
-			scanning = 10
+			scanning = 25
 			dish.growth -= 10
 		else if(href_list["eject"])
 			dish.loc = src.loc
