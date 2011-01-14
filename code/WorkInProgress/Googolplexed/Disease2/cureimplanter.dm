@@ -39,4 +39,4 @@
 		else if(works == 2)
 			M.gib()
 		else if(works == 3)
-			infect_virus2(M,virus2)
+			infect_virus2(M,virus2,1)
