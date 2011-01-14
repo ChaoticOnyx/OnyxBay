@@ -94,11 +94,13 @@
 	if(curing)
 		curing -= 1
 		if(curing == 0)
+			icon_state = "curer"
 			if(dish.virus2)
 				createcure(dish.virus2)
 	if(virusing)
 		virusing -= 1
 		if(virusing == 0)
+			icon_state = "curer"
 			if(dish.virus2)
 				createvirus(dish.virus2)
 
@@ -113,9 +115,11 @@
 		if (href_list["antibody"])
 			curing = 50
 			dish.growth -= 50
+			src.icon_state = "curer_processing"
 		if (href_list["virus"])
 			virusing = 50
 			dish.growth -= 100
+			src.icon_state = "curer_processing"
 		else if(href_list["eject"])
 			dish.loc = src.loc
 			dish = null
@@ -144,4 +148,4 @@
 
 /obj/machinery/computer/curer/proc/state(var/msg)
 	for(var/mob/O in hearers(src, null))
-		O.show_message(msg, 2)
+		O.show_message("\icon[src] \blue [msg]", 2)

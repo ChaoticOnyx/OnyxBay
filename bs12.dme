@@ -667,6 +667,7 @@
 #include "code\WorkInProgress\Events\Events\Poweroffline.dm"
 #include "code\WorkInProgress\Events\Events\RadiationBelt.dm"
 #include "code\WorkInProgress\Events\Events\VirusEpidemic.dm"
+#include "code\WorkInProgress\Googolplexed\Prob.dm"
 #include "code\WorkInProgress\Googolplexed\Disease2\analyser.dm"
 #include "code\WorkInProgress\Googolplexed\Disease2\base.dm"
 #include "code\WorkInProgress\Googolplexed\Disease2\biohazard destroyer.dm"

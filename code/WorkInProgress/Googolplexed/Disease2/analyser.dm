@@ -1,11 +1,12 @@
 /obj/machinery/disease2/diseaseanalyser
 	name = "Disease Analyser"
-	icon = 'stationobjs.dmi'
-	icon_state = "autolathe1"
+	icon = 'virology.dmi'
+	icon_state = "analyser"
 	anchored = 1
 	density = 1
 
 	var/scanning = 0
+	var/pause = 0
 
 	var/obj/item/weapon/virusdish/dish = null
 
@@ -36,16 +37,6 @@
 	src.updateDialog()
 
 
-	if(dish && !scanning)
-		if(dish.virus2 && dish.growth > 50)
-			dish.growth -= 10
-			scanning = 25
-		else
-			dish.loc = src.loc
-			dish = null
-			for(var/mob/M in viewers(src))
-				M.show_message("\blue The [src.name] buzzes", 2)
-
 	if(scanning)
 		scanning -= 1
 		if(scanning == 0)
@@ -61,9 +52,23 @@
 			dish.analysed = 1
 			dish.loc = src.loc
 			dish = null
+			icon_state = "analyser"
 
 			for(var/mob/O in hearers(src, null))
-				O.show_message("\blue The [src.name] prints a sheet of paper", 3)
+				O.show_message("\icon[src] \blue The [src.name] prints a sheet of paper", 3)
+	else if(dish && !scanning && !pause)
+		if(dish.virus2 && dish.growth > 50)
+			dish.growth -= 10
+			scanning = 25
+			icon_state = "analyser_processing"
+		else
+			pause = 1
+			spawn(25)
+				dish.loc = src.loc
+				dish = null
+				for(var/mob/M in viewers(src))
+					M.show_message("\icon[src] \blue The [src.name] buzzes", 2)
+				pause = 0
 
 
 

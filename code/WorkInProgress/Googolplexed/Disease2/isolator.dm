@@ -2,8 +2,8 @@
 	name = "Pathogenic Isolator"
 	density = 1
 	anchored = 1
-	icon = 'chemical.dmi'
-	icon_state = "mixer0"
+	icon = 'virology.dmi'
+	icon_state = "isolator"
 	var/datum/disease2/disease/virus2 = null
 	var/isolating = 0
 	var/beaker = null
@@ -27,14 +27,11 @@
 		return
 
 	attackby(var/obj/item/weapon/reagent_containers/glass/B as obj, var/mob/user as mob)
-		if(!istype(B, /obj/item/weapon/reagent_containers/glass) && !istype(B,/obj/item/weapon/reagent_containers/syringe))
+		if(!istype(B,/obj/item/weapon/reagent_containers/syringe))
 			return
 
 		if(src.beaker)
-			if(istype(beaker,/obj/item/weapon/reagent_containers/syringe))
-				user << "A syringe is already loaded into the machine."
-			else
-				user << "A beaker is already loaded into the machine."
+			user << "A syringe is already loaded into the machine."
 			return
 
 		src.beaker =  B
@@ -43,11 +40,7 @@
 		if(istype(B,/obj/item/weapon/reagent_containers/syringe))
 			user << "You add the syringe to the machine!"
 			src.updateUsrDialog()
-			icon_state = "mixers"
-		else
-			user << "You add the beaker to the machine!"
-			src.updateUsrDialog()
-			icon_state = "mixer1"
+			icon_state = "isolator_in"
 
 	Topic(href, href_list)
 		if(stat & BROKEN) return
@@ -63,6 +56,7 @@
 			if(gent:virus2)
 				virus2 = gent:virus2
 				isolating = 100
+				icon_state = "isolator_processing"
 			src.updateUsrDialog()
 			return
 
@@ -85,7 +79,7 @@
 			dat = "Please insert sample into the isolator.<BR>"
 			dat += "<A href='?src=\ref[src];close=1'>Close</A>"
 		else if(isolating)
-			dat = "ISOLATION IN PROGRESS"
+			dat = "Isolating"
 		else
 			var/datum/reagents/R = beaker:reagents
 			dat += "<A href='?src=\ref[src];eject=1'>Eject</A><BR><BR>"
@@ -94,8 +88,8 @@
 			else
 				dat += "Contained reagents:<BR>"
 				for(var/datum/reagent/blood/G in R.reagent_list)
-					dat += "[G.name]:<A href='?src=\ref[src];isolate=[G.id]'> Run ISOLATION procedure</a>"
-		user << browse("<TITLE>Pathogenic ISOLATOR</TITLE>Isolator menu:<BR><BR>[dat]", "window=isolator;size=575x400")
+					dat += "    [G.name]: <A href='?src=\ref[src];isolate=[G.id]'>Isolate</a>"
+		user << browse("<TITLE>Pathogenic Isolator</TITLE>Isolator menu:<BR><BR>[dat]", "window=isolator;size=575x400")
 		onclose(user, "isolator")
 		return
 
@@ -109,6 +103,7 @@
 				var/obj/item/weapon/virusdish/d = new /obj/item/weapon/virusdish(src.loc)
 				d.virus2 = virus2.getcopy()
 				virus2 = null
+				icon_state = "isolator"
 
 
 

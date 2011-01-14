@@ -2,8 +2,8 @@
 	name = "Pathogenic incubator"
 	density = 1
 	anchored = 1
-	icon = 'chemical.dmi'
-	icon_state = "dishgrower"
+	icon = 'virology.dmi'
+	icon_state = "incubator"
 	var/obj/item/weapon/virusdish/dish
 	var/obj/item/weapon/reagent_containers/glass/beaker = null
 	var/radiation = 0
@@ -75,9 +75,9 @@
 		if (href_list["power"])
 			on = !on
 			if(on)
-				icon_state = "dishgrower_on"
+				icon_state = "incubator_on"
 			else
-				icon_state = "dishgrower"
+				icon_state = "incubator"
 		if (href_list["ejectchem"])
 			if(beaker)
 				beaker.loc = src.loc
@@ -105,24 +105,25 @@
 		if(!dish)
 			dat = "Please insert dish into the incubator.<BR>"
 			dat += "<A href='?src=\ref[src];close=1'>Close</A>"
-		else
-			var/string = "Off"
-			if(on)
-				string = "On"
-			dat += "Power status : <A href='?src=\ref[src];power=1'>[string]</a>"
+		var/string = "Off"
+		if(on)
+			string = "On"
+		dat += "Power status : <A href='?src=\ref[src];power=1'>[string]</a>"
+		dat += "<BR>"
+		dat += "Food supply : [foodsupply]"
+		dat += "<BR>"
+		dat += "Radiation Levels : [radiation] RADS : <A href='?src=\ref[src];rad=1'>Radiate</a>"
+		dat += "<BR>"
+		dat += "Toxins : [toxins]"
+		dat += "<BR><BR>"
+		if(beaker)
+			dat += "Eject chemicals : <A href='?src=\ref[src];ejectchem=1'> Eject</a>"
 			dat += "<BR>"
-			dat += "Food supply : [foodsupply]"
-			dat += "<BR>"
-			dat += "Radiation Levels : [radiation] RADS : <A href='?src=\ref[src];rad=1'>Radiate</a>"
-			dat += "<BR>"
-			dat += "Toxins : [toxins]"
-			dat += "<BR>"
-			if(beaker)
-				dat += "Eject chemicals : <A href='?src=\ref[src];ejectchem=1'> Eject</a>"
-				dat += "<BR>"
+		if(dish)
 			dat += "Eject Virus dish : <A href='?src=\ref[src];ejectdish=1'> Eject</a>"
 			dat += "<BR>"
-			dat += "<A href='?src=\ref[src];flush=1'>Flush system</a>"
+		dat += "<BR><BR>"
+		dat += "<A href='?src=\ref[src];flush=1'>Flush system</a>"
 
 
 		user << browse("<TITLE>Pathogenic incubator</TITLE>incubator menu:<BR><BR>[dat]", "window=incubator;size=575x400")
@@ -133,11 +134,12 @@
 
 
 	process()
+
 		if(dish && on && dish.virus2)
 			use_power(50,EQUIP)
 			if(!powered(EQUIP))
 				on = 0
-				icon_state = "dishgrower"
+				icon_state = "incubator"
 			if(foodsupply)
 				foodsupply -= 1
 				dish.growth += 1
@@ -158,6 +160,9 @@
 				dish.virus2.infectionchance -= 1
 			if(toxins > 50)
 				dish.virus2 = null
+		else if(!dish)
+			on = 0
+			icon_state = "incubator"
 
 
 		if(beaker)
@@ -168,4 +173,4 @@
 
 	proc/state(var/msg)
 		for(var/mob/O in hearers(src, null))
-			O.show_message(msg, 2)
+			O.show_message("\icon[src] \blue [msg]", 2)
