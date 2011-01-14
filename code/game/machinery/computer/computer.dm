@@ -356,7 +356,10 @@ Pod/Blast Doors computer
 			var/datum/data/record/S = new /datum/data/record(  )
 			var/obj/item/weapon/card/id/C = H.wear_id
 			if (C)
-				G.fields["rank"] = C.assignment
+				if(!H.mind.title)
+					G.fields["rank"] = C.assignment
+				else
+					G.fields["rank"] = H.mind.title
 			else
 				G.fields["rank"] = "Unassigned"
 			G.fields["name"] = H.real_name
