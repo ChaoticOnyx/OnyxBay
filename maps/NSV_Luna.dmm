@@ -2152,7 +2152,7 @@
 "aPt" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/maintenance{name = "Morgue Maintenance"; req_access_txt = "6"},/turf/simulated/floor/plating,/area/maintenance/fsmaint2)
 "aPu" = (/obj/machinery/vending/medical,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aPv" = (/obj/machinery/computer/diseasesplicer,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
-"aPw" = (/obj/machinery/disease2/diseaseanalyser{pixel_x = 3},/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
+"aPw" = (/obj/machinery/disease2/diseaseanalyser{pixel_x = 0},/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aPx" = (/obj/machinery/computer/curer,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aPy" = (/obj/machinery/disease2/biodestroyer,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aPz" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/obj/machinery/atmospherics/pipe/simple,/turf/simulated/floor/plating,/area/maintenance/fpmaint2)
