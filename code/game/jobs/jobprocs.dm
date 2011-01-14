@@ -32,7 +32,15 @@
 		return randomcandidates[1]
 
 	return null
-
+/proc/SetTitles()
+	for (var/mob/new_player/player in world)
+		if(player.preferences.occupation1 == player.mind.assigned_role && player.preferences.title1)
+			player.mind.title = player.preferences.title1
+		else if(player.preferences.occupation2 == player.mind.assigned_role && player.preferences.title2)
+			player.mind.title = player.preferences.title2
+		else if(player.preferences.occupation3 == player.mind.assigned_role && player.preferences.title3)
+			player.mind.title = player.preferences.title3
+	return 0
 /proc/DivideOccupations()
 	var/list/unassigned = list()
 	var/list/occupation_choices = occupations.Copy()
@@ -490,7 +498,7 @@
 	src << "<B>You are the [rank].</B>"
 	src.job = rank
 	src.mind.assigned_role = rank
-
+	//DERP
 	if (!joined_late && rank != "Tourist")
 		var/obj/S = null
 		for(var/obj/landmark/start/sloc in world)
@@ -527,7 +535,10 @@
 	if(C)
 		C.registered = src.real_name
 		C.assignment = rank
-		C.name = "[C.registered]'s ID Card ([C.assignment])"
+		if(src.mind.title)
+			C.name = "[C.registered]'s ID Card ([src.mind.title])"
+		else
+			C.name = "[C.registered]'s ID Card ([C.assignment])"
 		C.access = get_access(C.assignment)
 		src.equip_if_possible(C, slot_wear_id)
 	src.equip_if_possible(new /obj/item/weapon/pen(src), slot_r_store)

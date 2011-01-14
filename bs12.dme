@@ -622,6 +622,7 @@
 #include "code\modules\mob\living\silicon\robot\say.dm"
 #include "code\modules\mob\new_player\new_player.dm"
 #include "code\modules\mob\new_player\preferences.dm"
+#include "code\modules\mob\new_player\titles.dm"
 #include "code\modules\power\apc.dm"
 #include "code\modules\power\Cabling.dm"
 #include "code\modules\power\cell.dm"

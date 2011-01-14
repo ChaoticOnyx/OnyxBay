@@ -140,7 +140,7 @@
 				icon_state = "dishgrower"
 			if(foodsupply)
 				foodsupply -= 1
-				dish.growth += 1
+				dish.growth += 2
 				if(dish.growth == 100)
 					state("The [src.name] pings")
 			if(radiation)

@@ -40,11 +40,10 @@ mob/new_player
 		if(!preferences.savefile_load(src,0,1))
 			preferences.ShowChoices(src)
 
-		startup = sound('clouds.s3m')
-		startup.volume = 50
-
+		startup = sound('clouds.s3m', volume = 50)
 		spawn(25)
 			src << startup
+
 	//	src << sound('main.ogg', 0, 0, 0, 35)
 
 
