@@ -9,6 +9,7 @@ datum/title/doctor
 datum/title/scientist
 	jobname = "Scientist"
 	title = list("Scientist","Anomalist")
+
 datum/title/New()
 	titles += src
 world/New()
