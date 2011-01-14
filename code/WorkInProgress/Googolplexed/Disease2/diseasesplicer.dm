@@ -1,10 +1,11 @@
 /obj/machinery/computer/diseasesplicer
 	name = "Disease Splicer"
 	icon = 'computer.dmi'
-	icon_state = "gas"
+	icon_state = "splicer"
 	brightnessred = 0
 	brightnessgreen = 2
 	brightnessblue = 2
+	broken_icon
 
 	var/datum/disease2/effectholder/memorybank = null
 	var/analysed = 0
@@ -84,14 +85,16 @@
 		if(memorybank)
 			dat += "<A href='?src=\ref[src];splice=1'>"
 			if(analysed)
-				dat += "[memorybank.effect.name]"
+				dat += "[memorybank.effect.name] ([5-memorybank.effect.stage])"
 			else
-				dat += "Unknown DNA strand"
+				dat += "Unknown DNA strand ([5-memorybank.effect.stage])"
 			dat += "</a>"
 
 			dat += "<BR><A href='?src=\ref[src];disk=1'>Burn DNA Sequence to data storage disk</a>"
 		else
 			dat += "Empty"
+
+		dat += "<BR><BR>"
 
 		if(dish)
 			if(dish.virus2)
@@ -100,13 +103,13 @@
 						dat += "<BR><A href='?src=\ref[src];grab=\ref[e]'> DNA strand"
 						if(dish.analysed)
 							dat += ": [e.effect.name]"
-						dat += "</a>"
+						dat += " (5-[e.effect.stage])</a>"
 				else
 					dat += "<BR>Insufficent cells to attempt gene splicing"
 			else
 				dat += "<BR>No virus found in dish"
 
-			dat += "<BR><A href='?src=\ref[src];eject=1'>Eject disk</a>"
+			dat += "<BR><BR><A href='?src=\ref[src];eject=1'>Eject disk</a>"
 		else
 			dat += "<BR>Please insert dish"
 
@@ -124,10 +127,12 @@
 		scanning -= 1
 		if(!scanning)
 			state("The [src.name] beeps")
+			icon_state = "splicer"
 	if(splicing)
 		splicing -= 1
 		if(!splicing)
 			state("The [src.name] pings")
+			icon_state = "splicer"
 	if(burning)
 		burning -= 1
 		if(!burning)
@@ -138,6 +143,7 @@
 				d.name = "Unknown GNA disk (Stage: [5-memorybank.effect.stage])"
 			d.effect = memorybank
 			state("The [src.name] zings")
+			icon_state = "splicer"
 
 
 	return
@@ -154,6 +160,7 @@
 			del(dish)
 			dish = null
 			scanning = 50
+			icon_state = "splicer_processing"
 
 		else if(href_list["eject"])
 			dish.loc = src.loc
@@ -165,9 +172,11 @@
 					e.effect = memorybank.effect
 			splicing = 100
 			dish.virus2.spreadtype = "Blood"
+			icon_state = "splicer_processing"
 
 		else if(href_list["disk"])
 			burning = 50
+			icon_state = "splicer_processing"
 
 		src.add_fingerprint(usr)
 	src.updateUsrDialog()

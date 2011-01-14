@@ -92,6 +92,10 @@ Pod/Blast Doors computer
 		set_broken()
 		src.density = 0
 
+/obj/machinery/computer
+	var/broken_icon = ""
+	var/off_icon = ""
+
 /obj/machinery/computer/power_change()
 	if(!istype(src,/obj/machinery/computer/security/telescreen))
 		if(stat & BROKEN)
