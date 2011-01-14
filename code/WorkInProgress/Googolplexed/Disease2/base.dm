@@ -99,12 +99,12 @@
 		holder.getrandomeffect()
 		effects += holder
 		uniqueID = rand(0,10000)
-		infectionchance = rand(1,5)
+		infectionchance = rand(1,10)
 		spreadtype = "Airborne"
 	proc/minormutate()
 		var/datum/disease2/effectholder/holder = pick(effects)
 		holder.minormutate()
-		infectionchance = min(5,infectionchance + rand(-1,1))
+		infectionchance = min(10,infectionchance + rand(0,1))
 	proc/issame(var/datum/disease2/disease/disease)
 		var/list/types = list()
 		var/list/types2 = list()
