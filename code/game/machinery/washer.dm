@@ -1,7 +1,7 @@
 code/game/machinery/washer.dm
 /obj/machinery/washer
 	name = "Laundromat"
-	desc = "Cleans shit"
+	desc = "Cleans stuff"
 	icon = 'washer.dmi'
 	icon_state = "land01"
 	density = 1

@@ -122,8 +122,12 @@
 
 	if(scanning)
 		scanning -= 1
+		if(!scanning)
+			state("The [src.name] beeps")
 	if(splicing)
 		splicing -= 1
+		if(!splicing)
+			state("The [src.name] pings")
 	if(burning)
 		burning -= 1
 		if(!burning)
@@ -133,6 +137,7 @@
 			else
 				d.name = "Unknown GNA disk (Stage: [5-memorybank.effect.stage])"
 			d.effect = memorybank
+			state("The [src.name] zings")
 
 
 	return
@@ -167,6 +172,10 @@
 		src.add_fingerprint(usr)
 	src.updateUsrDialog()
 	return
+
+/obj/machinery/computer/diseasesplicer/proc/state(var/msg)
+	for(var/mob/O in hearers(src, null))
+		O.show_message(msg, 2)
 
 
 /obj/item/weapon/diseasedisk

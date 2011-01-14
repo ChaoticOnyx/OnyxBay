@@ -129,9 +129,16 @@
 	var/obj/item/weapon/cureimplanter/implanter = new /obj/item/weapon/cureimplanter(src.loc)
 	implanter.resistance = new /datum/disease2/resistance(dish.virus2)
 	implanter.works = rand(0,2)
+	state("The [src.name] Buzzes")
 
 /obj/machinery/computer/curer/proc/createvirus(var/datum/disease2/disease/virus2)
 	var/obj/item/weapon/cureimplanter/implanter = new /obj/item/weapon/cureimplanter(src.loc)
 	implanter.name = "Viral implanter (MAJOR BIOHAZARD)"
 	implanter.virus2 = dish.virus2.getcopy()
 	implanter.works = 3
+	state("The [src.name] Buzzes")
+
+
+/obj/machinery/computer/curer/proc/state(var/msg)
+	for(var/mob/O in hearers(src, null))
+		O.show_message(msg, 2)
