@@ -6,6 +6,7 @@
 	density = 1
 
 	var/scanning = 0
+	var/pause = 0
 
 	var/obj/item/weapon/virusdish/dish = null
 
@@ -55,16 +56,19 @@
 
 			for(var/mob/O in hearers(src, null))
 				O.show_message("\icon[src] \blue The [src.name] prints a sheet of paper", 3)
-	else if(dish && !scanning)
+	else if(dish && !scanning && !pause)
 		if(dish.virus2 && dish.growth > 50)
 			dish.growth -= 10
 			scanning = 25
 			icon_state = "analyser_processing"
 		else
-			dish.loc = src.loc
-			dish = null
-			for(var/mob/M in viewers(src))
-				M.show_message("\icon[src] \blue The [src.name] buzzes", 2)
+			pause = 1
+			spawn(25)
+				dish.loc = src.loc
+				dish = null
+				for(var/mob/M in viewers(src))
+					M.show_message("\icon[src] \blue The [src.name] buzzes", 2)
+				pause = 0
 
 
 
