@@ -176,7 +176,8 @@ obj/machinery/writersdesk/attack_hand(mob/user)
 	//"REPLACE INTO `medals` (`ckey`, `medal`, `medaldesc`, `medaldiff`) VALUES ('[src.ckey]', [tit2], [medaldesc2], '[diff]')
 	if(!x_query.Execute())
 		world.log << "Failed-[x_query.ErrorMsg()]"
-		user << "Sadly something went wrong.."
+		user << "sadly something went wrong.."
 		user << browse(text,"window=derp")
 	if(!Y_query.Execute())
 		world.log << "Failed-[Y_query.ErrorMsg()]"
+//http://img513.imageshack.us/i/20101228234919.png/
