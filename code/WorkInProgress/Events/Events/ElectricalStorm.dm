@@ -27,7 +27,7 @@
 
 	Tick()
 		for(var/x = 0; x < 2; x++)
-			if (prob(75))
+			if (prob(50))
 				BlowLight()
 		if (prob(20))
 			DisruptAPC()
