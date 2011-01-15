@@ -6,8 +6,8 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 */
 /obj/item/weapon/flamethrower
 	name = "flamethrower"
-	icon_state = "flamethrower_loaded_0"
-	item_state = "flamethrower_0"
+	icon_state = "flamethrower0"
+	item_state = "flamethrower0"
 	desc = "You are a firestarter!"
 	flags = FPRINT | TABLEPASS| CONDUCT
 	force = 3.0
@@ -137,7 +137,7 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 			src.icon_state = "flamethrower"
 		else
 			user.show_message("\blue The igniter is now unsecured!", 1)
-			src.icon_state = "w_r_ignite"
+			src.icon_state = "welder_rods_igniter"
 		src.add_fingerprint(user)
 		return
 
@@ -170,8 +170,8 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 		lit = 0
 		force = 3
 		damtype = "brute"
-		icon_state = "flamethrower_loaded_0"
-		item_state = "flamethrower_0"
+		icon_state = "flamethrower0"
+		item_state = "flamethrower0"
 	else if (istype(W, /obj/item/device/analyzer) && get_dist(user, src) <= 1 && src.part4)
 		var/obj/item/weapon/icon = src
 
@@ -258,14 +258,14 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 		if(src.part4.air_contents.toxins < 1)	return
 		lit = !(lit)
 		if(lit)
-			icon_state = "flamethrower_loaded_1"
-			item_state = "flamethrower_1"
+			icon_state = "flamethrower1"
+			item_state = "flamethrower1"
 			force = 17
 			damtype = "fire"
 			processing_items.Add(src)
 		else
-			icon_state = "flamethrower_loaded_0"
-			item_state = "flamethrower_0"
+			icon_state = "flamethrower0"
+			item_state = "flamethrower0"
 			force = 3
 			damtype = "brute"
 	if (href_list["amount"])
@@ -281,7 +281,7 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 		force = 3
 		damtype = "brute"
 		icon_state = "flamethrower"
-		item_state = "flamethrower_0"
+		item_state = "flamethrower0"
 		usr.machine = null
 		usr << browse(null, "window=flamethrower")
 	for(var/mob/M in viewers(1, src.loc))

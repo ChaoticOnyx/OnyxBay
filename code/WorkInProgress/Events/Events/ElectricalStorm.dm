@@ -31,7 +31,7 @@
 				BlowLight()
 		if (prob(20))
 			DisruptAPC()
-		if (prob(30))
+		if (prob(20))
 			DisableDoor()
 
 
