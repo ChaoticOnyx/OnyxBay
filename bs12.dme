@@ -635,6 +635,7 @@
 #include "code\modules\power\Machinery.dm"
 #include "code\modules\power\port_gen.dm"
 #include "code\modules\power\portable.dm"
+#include "code\modules\power\PowerEvents.dm"
 #include "code\modules\power\PowernetController.dm"
 #include "code\modules\power\smes.dm"
 #include "code\modules\power\solar.dm"

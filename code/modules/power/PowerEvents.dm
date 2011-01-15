@@ -1,7 +1,7 @@
 /proc/power_failure()
 	command_alert("Abnormal activity detected in [station_name()]'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure")
 	for(var/obj/machinery/power/apc/C in world)
-		if(C.cell && C.< 5)
+		if(C.cell && C.z< 5)
 			C.cell.charge = 0
 	for(var/obj/machinery/power/smes/S in world)
 		if(istype(get_area(S), /area/turret_protected) || S.z > 4)
