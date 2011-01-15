@@ -17,6 +17,7 @@
 
 //	beta_tester_loadfile()
 
+	setuptitles()
 
 	spawn(30)
 		//EXPERIMENTAL

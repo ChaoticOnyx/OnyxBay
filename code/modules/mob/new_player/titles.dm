@@ -3,19 +3,21 @@ var/list/titles = list()
 datum/title/
 	var/jobname
 	var/list/title = list()
+
 datum/title/doctor
 	jobname = "Medical Doctor"
-	title = list("Medical Doctor","Surgeon")
+	title = list("Medical Doctor","Virologist","Surgeon")
+
 datum/title/scientist
 	jobname = "Scientist"
-	title = list("Scientist","Anomalist")
+	title = list("Scientist","Plasma Researcher","Anomalist")
+
 datum/title/New()
 	titles += src
-world/New()
-	setuptitles() // MOVE THIS!!!!
-	..()
+
 proc/setuptitles()
-	new 	/datum/title/doctor ()
+	new /datum/title/doctor()
+	new /datum/titles/scientist()
 
 proc/HasTitles(job)
 	for(var/datum/title/A in titles)

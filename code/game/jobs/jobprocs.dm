@@ -377,7 +377,6 @@
 //			src.equip_if_possible(new /obj/item/weapon/gun/energy/laser_gun(src), slot_in_backpack)
 			src.equip_if_possible(new /obj/item/weapon/storage/id_kit(src), slot_in_backpack)
 
-
 		if ("Security Officer")
 			src.equip_if_possible(new /obj/item/device/radio/headset/security(src), slot_ears)
 			src.equip_if_possible(new /obj/item/device/pda/security(src), slot_belt)
@@ -393,7 +392,6 @@
 //			src.equip_if_possible(new /obj/item/weapon/baton(src), slot_belt)
 //			src.equip_if_possible(new /obj/item/device/flash(src), slot_l_store)
 
-
 		if ("Scientist")
 			src.equip_if_possible(new /obj/item/device/pda/toxins(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/scientist(src), slot_w_uniform)
@@ -403,14 +401,6 @@
 			src.equip_if_possible(new /obj/item/clothing/mask/gas(src), slot_wear_mask)
 			src.equip_if_possible(new /obj/item/weapon/tank/air(src), slot_l_hand)
 			src.equip_if_possible(new /obj/item/device/radio/headset/security/medical,slot_ears)
-		if ("Anomalist")
-			src.equip_if_possible(new /obj/item/device/pda/toxins(src), slot_belt)
-			src.equip_if_possible(new /obj/item/clothing/under/rank/scientist(src), slot_w_uniform)
-			src.equip_if_possible(new /obj/item/clothing/shoes/white(src), slot_shoes)
-//			src.equip_if_possible(new /obj/item/clothing/suit/bio_suit(src), slot_wear_suit)
-//			src.equip_if_possible(new /obj/item/clothing/head/bio_hood(src), slot_head)
-			src.equip_if_possible(new /obj/item/weapon/weldingtool(src), slot_l_hand)
-			src.equip_if_possible(new /obj/item/device/radio/headset/security/medical,slot_ears)
 		if ("Head of Security")
 			src.equip_if_possible(new /obj/item/device/radio/headset/security(src), slot_ears)
 			src.equip_if_possible(new /obj/item/device/pda/heads(src), slot_belt)
@@ -418,7 +408,6 @@
 			src.equip_if_possible(new /obj/item/clothing/suit/armor/vest(src), slot_wear_suit)
 			src.equip_if_possible(new /obj/item/clothing/shoes/brown(src), slot_shoes)
 			src.equip_if_possible(new /obj/item/clothing/head/helmet/HoS(src), slot_head)
-
 
 		if ("Head of Personnel")
 			src.equip_if_possible(new /obj/item/device/radio/headset/security(src), slot_ears)
@@ -432,7 +421,6 @@
 //			src.equip_if_possible(new /obj/item/weapon/gun/energy/laser_gun(src), slot_in_backpack)
 			src.equip_if_possible(new /obj/item/weapon/storage/id_kit(src), slot_in_backpack)
 //			src.equip_if_possible(new /obj/item/device/flash(src), slot_l_store)
-
 
 		if ("Atmospheric Technician")
 			src.equip_if_possible(new /obj/item/clothing/under/rank/atmospheric_technician(src), slot_w_uniform)
@@ -460,6 +448,7 @@
 			src.equip_if_possible(new /obj/item/clothing/gloves/latex(src), slot_gloves)
 			src.equip_if_possible(new /obj/item/weapon/storage/toolbox/mechanical(src), slot_l_hand)
 			src.equip_if_possible(new /obj/item/device/radio/headset/security/medical,slot_ears)
+
 		if ("Hydroponist")
 			src.equip_if_possible(new /obj/item/device/pda/medical(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/hydroponics(src), slot_w_uniform)
