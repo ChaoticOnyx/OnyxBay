@@ -17,7 +17,7 @@ datum/title/New()
 
 proc/setuptitles()
 	new /datum/title/doctor()
-	new /datum/titles/scientist()
+	new /datum/title/scientist()
 
 proc/HasTitles(job)
 	for(var/datum/title/A in titles)
