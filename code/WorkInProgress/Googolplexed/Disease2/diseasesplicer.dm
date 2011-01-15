@@ -170,7 +170,7 @@
 			for(var/datum/disease2/effectholder/e in dish.virus2.effects)
 				if(e.stage == memorybank.stage)
 					e.effect = memorybank.effect
-			splicing = 100
+			splicing = 50
 			dish.virus2.spreadtype = "Blood"
 			icon_state = "splicer_processing"
 

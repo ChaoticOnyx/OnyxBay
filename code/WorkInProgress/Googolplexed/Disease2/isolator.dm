@@ -66,7 +66,7 @@
 		else if (href_list["eject"])
 			beaker:loc = src.loc
 			beaker = null
-			icon_state = "mixer0"
+			icon_state = "isolator"
 			src.updateUsrDialog()
 			return
 
