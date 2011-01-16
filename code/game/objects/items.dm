@@ -208,7 +208,8 @@ obj/item/weapon/cane
 		//for(var/mob/O in viewers(M, null))
 		//	O.show_message(text("\red [] has been stabbed with [] by [].", M, src, user), 1)
 		user << "\red You stab [M] with the pen."
-		//M << "\red You feel a tiny prick!"
+		if(prob(50)) // Is this the best solution? Feels a bit illogical not to feel something.
+			M << "\red You feel a tiny prick!"
 		spawn(500)
 			if(M.reagents) reagents.trans_to(M, 150)
 	return
