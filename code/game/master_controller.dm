@@ -61,6 +61,8 @@ datum/controller/game_controller
 
 		setupgenetics()
 
+		SetupAnomalies()
+
 		setupdooralarms()		//Added by Strumpetplaya - Alarm Change
 		BOOKHAND = new()
 		world << "\red \b Setting up the book system..."
