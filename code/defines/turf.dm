@@ -308,6 +308,10 @@
 	thermal_conductivity = 0.05
 	heat_capacity = 10000000
 
+/turf/simulated/shuttle/floor
+	name = "Shuttle Floor"
+	icon_state = "floor"
+
 /turf/simulated/shuttle/wall
 	name = "Shuttle Wall"
 	icon_state = "wall1"
@@ -316,9 +320,12 @@
 	density = 1
 	blocks_air = 1
 
-/turf/simulated/shuttle/floor
-	name = "Shuttle Floor"
-	icon_state = "floor"
+/turf/simulated/shuttle/window
+	name = "Shuttle Window"
+	icon_state = "window1"
+	explosionstrength = 4
+	density = 1
+	blocks_air = 1
 
 /turf/unsimulated
 	name = "Command"

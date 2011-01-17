@@ -163,7 +163,6 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
-#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -708,9 +707,8 @@
 #include "code\WorkInProgress\Uristqwerty\prison_shuttle.dm"
 #include "code\WorkInProgress\Uristqwerty\chat_tabs\adminhelp.dm"
 #include "code\WorkInProgress\Uristqwerty\chat_tabs\adminsay.dm"
-#include "code\WorkInProgress\Uristqwerty\chat_tabs\chat_tabs.dm"
+#include "code\WorkInProgress\Uristqwerty\chat_tabs\chat_tabs_disabled.dm"
 #include "code\WorkInProgress\Uristqwerty\chat_tabs\ooc.dm"
-#include "code\WorkInProgress\Uristqwerty\chat_tabs\skin.dmf"
 #include "code\WorkInProgress\ZeroPoint\Laser2.dm"
 #include "code\WorkInProgress\ZeroPoint\LaserComputer.dm"
 #include "code\WorkInProgress\ZeroPoint\SuperMatter.dm"
@@ -718,5 +716,6 @@
 #include "code\XML\Handler.dm"
 #include "code\XML\Reader.dm"
 #include "code\XML\Writer.dm"
+#include "interface\skin.dmf"
 #include "maps\NSV_Luna.dmm"
 // END_INCLUDE

@@ -73,18 +73,23 @@
 	..()
 	if(!ctab_settings["tabs"])
 		ctab_settings["tabs"] = list()
+
 	var/list/hidden_tabs = stringsplit(winget(src, "ctabs_hidden.tabs", "tabs"), ",")
 	var/list/tabs = stringsplit(winget(src, "ctabs.tabs", "tabs"), ",")
+
 	for(var/t in hidden_tabs)
 		if(t == "" || t == " ")
 			continue
+
 		var/tab = winget(src, t, "title")
 		if(text2ascii(tab) == text2ascii("!"))
 			tab = copytext(tab, 2, lentext(tab))
+
 		var/tabl = lowertext(tab)
 		ctab_settings["display_[tabl]"] = list("Game", tab)
 		ctab_settings["tab_[tabl]"] = "hide"
 		ctab_settings["tabs"] += tab
+
 	for(var/t in tabs)
 		if(t == "ctab_settings" || t == "" || t == " ")
 			continue
@@ -97,6 +102,7 @@
 		ctab_settings["display_[tabl]"] = list("Game", tab)
 		ctab_settings["tab_[tabl]"] = "show"
 		ctab_settings["tabs"] += tab
+
 	ctab_update()
 
 
