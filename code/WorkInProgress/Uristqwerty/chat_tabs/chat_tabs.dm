@@ -65,7 +65,8 @@
 			src << message
 		else
 			src << output(message, "ctab_tab_[lowertext(t)].output")
-			ctab_updated(t)
+			spawn()//Unknown, but the winget in ctab_updated may wait for the client to respond with the answer. Thus, spawning probably lets it continue with the rest while it waits for a reply.
+				ctab_updated(t)
 
 
 
