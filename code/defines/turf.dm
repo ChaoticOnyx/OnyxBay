@@ -320,13 +320,6 @@
 	density = 1
 	blocks_air = 1
 
-/turf/simulated/shuttle/window
-	name = "Shuttle Window"
-	icon_state = "window1"
-	explosionstrength = 4
-	density = 1
-	blocks_air = 1
-
 /turf/unsimulated
 	name = "Command"
 	oxygen = MOLES_O2STANDARD
