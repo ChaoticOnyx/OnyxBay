@@ -53,6 +53,9 @@
 /mob/var/disabilities = 0
 /mob/var/atom/movable/pulling = null
 /mob/var/stat = 0.0
+#define STAT_ALIVE 0
+#define STAT_ASLEEP 1
+#define STAT_DEAD 2
 /mob/var/next_move = null
 /mob/var/prev_move = null
 /mob/var/monkeyizing = null
