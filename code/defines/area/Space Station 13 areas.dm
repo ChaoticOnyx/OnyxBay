@@ -795,7 +795,7 @@
 
 
 /area/quartermaster/
-	name = "Quartermasters"
+	name = "Quartermaster's"
 	icon_state = "quart"
 
 /area/network/
@@ -803,7 +803,7 @@
 	icon_state = "networkcenter"
 
 /area/janitor/
-	name = "Janitors Closet"
+	name = "Janitor's Closet"
 	icon_state = "janitor"
 
 /area/firefighting

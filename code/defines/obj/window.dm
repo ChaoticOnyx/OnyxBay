@@ -42,6 +42,50 @@
 /obj/window/basic/southeast
 	dir = SOUTHEAST
 
+// Pod
+/obj/window_pod
+	name = "window"
+	icon = 'shuttle.dmi'
+	icon_state = "window1"
+	desc = "A thick window secured into its frame."
+	dir = NORTHWEST
+	anchored = 1
+	density = 1
+
+/obj/window_pod/attack_hand()
+	return
+
+/obj/window_pod/attack_paw()
+	return
+
+/obj/window_pod/blob_act()
+	return
+
+/obj/window_pod/bullet_act(flag)
+	return
+
+/obj/window_pod/ex_act(severity)
+	return
+
+/obj/window_pod/hitby(AM as mob|obj)
+	..()
+	for(var/mob/O in viewers(src, null))
+		O.show_message(text("\red <B>[src] was hit by [AM].</B>"), 1)
+	playsound(src.loc, 'Glasshit.ogg', 100, 1)
+	return
+
+/obj/window/meteorhit()
+	return
+
+/obj/window_pod/CanPass(atom/movable/mover, turf/source, height=0, air_group=0)
+	if(istype(mover, /obj/beam))
+		return 1
+
+	return 0
+
+/obj/window_pod/Move()
+	return 0
+
 // Reinforced
 
 /obj/window/reinforced
