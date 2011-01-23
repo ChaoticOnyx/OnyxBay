@@ -73,8 +73,28 @@
 //TESTING A LAYOUT
 */
 
+/obj/hud
+	name = "hud"
+	var/mob/mymob = null
+	var/list/adding = null
+	var/list/other = null
+	var/list/intents = null
+	var/list/mov_int = null
+	var/list/mon_blo = null
+	var/list/m_ints = null
+	var/obj/screen/druggy = null
+	var/vimpaired = null
+	var/obj/screen/alien_view = null
+	var/obj/screen/g_dither = null
+	var/obj/screen/blurry = null
+	var/list/darkMask = null
+	var/obj/screen/station_explosion = null
+	var/h_type = /obj/screen
+
+
 mob/living/carbon/uses_hud = 1
 mob/living/silicon/robot/uses_hud = 1
+
 
 obj/hud/New()
 	src.instantiate()

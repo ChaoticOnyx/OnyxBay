@@ -198,25 +198,6 @@
 	flags = FPRINT | CONDUCT
 	pressure_resistance = 5*ONE_ATMOSPHERE
 
-/obj/hud
-	name = "hud"
-	var/mob/mymob = null
-	var/list/adding = null
-	var/list/other = null
-	var/list/intents = null
-	var/list/mov_int = null
-	var/list/mon_blo = null
-	var/list/m_ints = null
-	var/obj/screen/druggy = null
-	var/vimpaired = null
-	var/obj/screen/alien_view = null
-	var/obj/screen/g_dither = null
-	var/obj/screen/blurry = null
-	var/list/darkMask = null
-	var/obj/screen/station_explosion = null
-
-	var/h_type = /obj/screen
-
 /obj/item
 	name = "item"
 	icon = 'items.dmi'

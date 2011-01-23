@@ -685,8 +685,7 @@
 			u_equip(W)
 			back = W
 			W.equipped(src, text)
-
-/*		if("headset")
+/*		if("headset") // No specialized headset slot yet. Headsets use the ears slot
 			if (ears)
 				if (emptyHand)
 					ears.DblClick()
