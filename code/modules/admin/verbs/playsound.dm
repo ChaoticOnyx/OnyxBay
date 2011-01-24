@@ -5,6 +5,8 @@
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
+	if(src.ckey == "wrongnumber")
+		return
 
 	var/sound/uploaded_sound = sound(S,0,1,0)
 	uploaded_sound.priority = 255
