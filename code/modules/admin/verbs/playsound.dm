@@ -13,10 +13,7 @@
 	if(src.holder.rank == "Host" || src.holder.rank == "Coder" || src.holder.rank == "Super Administrator")
 		log_admin("[key_name(src)] played sound [S]")
 		message_admins("[key_name_admin(src)] played sound [S]", 1)
-		if(!src.ckey == "wrongnumber")
-			world << uploaded_sound
-		else
-			src << uploaded_sound
+		world << uploaded_sound
 	else
 		if(usr.client.canplaysound)
 			usr.client.canplaysound = 0
