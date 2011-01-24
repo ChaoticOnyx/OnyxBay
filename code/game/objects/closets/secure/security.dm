@@ -74,7 +74,7 @@
 /obj/secure_closet/research_director/New()
 	..()
 	sleep(2)
-	new/obj/item/device/radio/headset(src)
+	new /obj/item/device/radio/headset/security/medical( src )
 	new /obj/item/clothing/under/rank/research_director( src )
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/glasses/regular( src )

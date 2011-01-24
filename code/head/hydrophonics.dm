@@ -11,6 +11,7 @@ datum/plants/
 	var/uvneeded = 1
 	var/growthstages
 	var/needheat
+
 datum/plants/tomato
 	name = "plants"
 	icon_name = "tomatoes"
@@ -22,9 +23,10 @@ datum/plants/tomato
 	uvneeded = 1
 	growthstages = 5
 	needheat = 1
+
 /obj/machinery/hydro/soilbed
 	name = "Soilbed"
-	desc = "A table with a container that should contain soil.."
+	desc = "A table with a container that should contain soil."
 	icon = 'hydro.dmi'
 	icon_state = "soilbed"
 	var/soil = 0
@@ -33,38 +35,51 @@ datum/plants/tomato
 	var/dead = 0
 	var/stage
 	var/debug = 1
+
 /obj/machinery/hydro/soilbed/verb/derp()
 	set src in view()
 	hasplant = new /datum/plants/tomato ()
+
 /obj/machinery/hydro/soilbed/New()
 	..()
 	var/datum/reagents/R = new/datum/reagents(30)
 	reagents = R
+
 /obj/machinery/hydro/soilbed/process()
 	updateicon()
+
 	if(hasplant && istype(hasplant,/datum/plants))
 		if(hasplant.health <= 0)
 			plantdie()
 			return
 			if(debug) world << "DIEING"
+
 		var/turf/L = src.loc
 		var/datum/gas_mixture/env = L.return_air()
+
 		if(env.temperature < 283.15)
 			hasplant.health -= 5
+
 		var/uvhave = src.loc.ul_IsLuminous()
+
 		world << "Light:[uvhave]"
+
 		if(!uvhave && hasplant.uvneeded == 1)
 			hasplant.health -= 5
 			if(debug) world << "EATING LIGHT"
+
 		if(uvhave == 1 && hasplant.uvneeded == 1)
 			env.oxygen += hasplant.co2needed * 2
 			if(debug) world << "BE MAKEING O2"
+
 		if(env.toxins)
 			hasplant.health -= 5
+
 		if(reagents.has_reagent("water"))
 			reagents.remove_reagent("water",hasplant.waterneeded)
 		else
 			hasplant.health -= 5
+
 		if(!fullygrown)
 			if(hasplant.growthtime <= 0)
 				fullygrown = 1
@@ -85,6 +100,7 @@ datum/plants/tomato
 							plants++
 					hasplant.growthtime = env.carbon_dioxide / plants
 	updateicon()
+
 /obj/machinery/hydro/soilbed/proc/updateicon()
 	overlays = null
 	if(dead)
@@ -108,12 +124,15 @@ datum/plants/tomato
 		overlays += image(src.icon,"[hasplant.icon_name][icon_s]")
 	else
 		icon_state = "soilbed"
+
 /obj/machinery/hydro/soilbed/proc/plantdie()
 	del(hasplant)
 	dead = 1
+
 /obj/machinery/hydro/soilbed/attack_hand()
 	if(dead)
 		return
+
 /obj/machinery/hydro/soilbed/attackby(obj/item/weapon/W,mob/user)
 	if(istype(W,/obj/item/weapon/pruner) && dead)
 		dead = 0
@@ -134,6 +153,7 @@ datum/plants/tomato
 				user << "You ran out of seeds"
 		else
 			user << "The [src] is empty.."
+
 obj/item/weapon/pruner
 	name = "pruner"
 	desc = "A common gardening tool"
@@ -146,11 +166,13 @@ obj/item/weapon/pruner
 	throw_range = 9
 	w_class = 2.0
 	m_amt = 80
+
 obj/item/weapon/food/harvest/tomato
 	name = "tomato"
 	desc = "It's a goddamm tomato"
 	icon = 'items.dmi'
 	icon_state = "cutters"
+
 obj/item/weapon/seeds
 	name = "seeds"
 	icon = 'hydro.dmi'

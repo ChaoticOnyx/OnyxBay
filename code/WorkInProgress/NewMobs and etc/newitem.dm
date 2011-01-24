@@ -17,15 +17,14 @@
 /obj/item/proc/dropped(mob/user as mob)
 	return
 
-// called just as an item is picked up (loc is not yet changed)
+// Called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
 	return
 
-// called after an item is placed in an equipment slot
-// user is mob that equipped it
-// slot is text of slot type e.g. "head"
-// for items that can be placed in multiple slots
-// note this isn't called during the initial dressing of a player
+/* Called after an item is placed in an equipment slot.
+   user is mob that equipped it, slot is text of slot type e.g. "head".
+   For items that can be placed in multiple slots
+   Note this isn't called during the initial dressing of a player */
 /obj/item/proc/equipped(var/mob/user, var/slot)
 	return
 //
@@ -99,7 +98,9 @@
 			if (M.s_active == src.loc)
 				if (M.client)
 					M.client.screen -= src
+
 	src.throwing = 0
+
 	if (src.loc == user)
 		user.u_equip(src)
 	else
@@ -126,6 +127,7 @@
 				return
 		else
 			user.r_hand = src
+
 	src.loc = user
 	src.layer = 20
 	add_fingerprint(user)
