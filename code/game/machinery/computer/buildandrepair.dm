@@ -131,6 +131,8 @@
 				if(do_after(user, 20))
 					user << "\blue You deconstruct the frame."
 					var/obj/item/weapon/sheet/metal/A = new /obj/item/weapon/sheet/metal( src.loc )
+					if(src.circuit)
+						circuit.loc = src.loc
 					A.amount = 5
 					del(src)
 		if(1)

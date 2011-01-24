@@ -826,8 +826,8 @@ mob/verb/turnwest()
 
 	switch(name)
 		if("map")
-
 			usr.clearmap()
+
 		if("maprefresh")
 			var/obj/machinery/computer/security/seccomp = usr.machine
 

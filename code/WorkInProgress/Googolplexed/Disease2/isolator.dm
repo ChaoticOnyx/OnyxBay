@@ -103,7 +103,7 @@
 				var/obj/item/weapon/virusdish/d = new /obj/item/weapon/virusdish(src.loc)
 				d.virus2 = virus2.getcopy()
 				virus2 = null
-				icon_state = "isolator"
+				icon_state = "isolator_in"
 
 
 
