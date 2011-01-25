@@ -25,7 +25,8 @@ mob/new_player
 			mind.current = src
 		if (join_motd)
 			src.client.showmotd()
-		new_player_panel()
+		spawn(25)
+			new_player_panel()
 		var/starting_loc = pick(newplayer_start)
 		loc = starting_loc
 		sight |= SEE_TURFS

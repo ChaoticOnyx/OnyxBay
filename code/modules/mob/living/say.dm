@@ -66,6 +66,9 @@
 		else if (copytext(message, 1 ,3) == ":h")
 			message_mode = "security_headset"
 			message = copytext(message, 3)
+
+	if(src.stunned)
+		message_mode = "" //Stunned people shouldn't be able to physically turn on their radio/hold down the button to speak into it
 	//
 
 	message = trim(message)

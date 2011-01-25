@@ -908,7 +908,7 @@
 	for(var/area/nanotrasenshuttle/b in world)
 		A = b
 
-	var/job = input ("What job would you like to give your Nanotrasen char") in list ("Agent","Overseer","Syndicate Management Taskforce","Prisoner Management")
+	var/job = input ("What job would you like to give your Nanotrasen char") in list ("Overseer","Syndicate Management Taskforce","Prisoner Management")
 	var/mob/living/carbon/human/new_character = new /mob/living/carbon/human(src)
 	new_character.loc = pick(get_area_turfs(A))
 	new_character.dna.ready_dna(new_character)

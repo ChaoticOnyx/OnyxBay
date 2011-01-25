@@ -7,6 +7,7 @@
 #define AIRLOCK_WIRE_OPEN_DOOR 7
 #define AIRLOCK_WIRE_AI_CONTROL 8
 #define AIRLOCK_WIRE_ELECTRIFY 9
+#define AIRLOCK_WIRE_CRUSH 10
 
 /*
 	New methods:
@@ -41,13 +42,13 @@
 	var/secondsBackupPowerLost = 0 //The number of seconds until power is restored.
 	var/spawnPowerRestoreRunning = 0
 	var/welded = null
-	var/wires = 511
+	var/wires = 1023
 	secondsElectrified = 0 //How many seconds remain until the door is no longer electrified. -1 if it is permanently electrified until someone fixes it.
 	var/aiDisabledIdScanner = 0
 	var/aiHacking = 0
 	var/obj/machinery/door/airlock/closeOther = null
 	var/closeOtherId = null
-	var/list/signalers[9]
+	var/list/signalers[10]
 	var/lockdownbyai = 0
 	var/air_locked = 0 //Set if the airlock was locked in an emergency seal.
 	autoclose = 1
@@ -181,15 +182,15 @@
 //This generates the randomized airlock wire assignments for the game.
 /proc/RandomAirlockWires()
 	//to make this not randomize the wires, just set index to 1 and increment it in the flag for loop (after doing everything else).
-	var/list/wires = list(0, 0, 0, 0, 0, 0, 0, 0, 0)
-	airlockIndexToFlag = list(0, 0, 0, 0, 0, 0, 0, 0, 0)
-	airlockIndexToWireColor = list(0, 0, 0, 0, 0, 0, 0, 0, 0)
-	airlockWireColorToIndex = list(0, 0, 0, 0, 0, 0, 0, 0, 0)
+	var/list/wires = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+	airlockIndexToFlag = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+	airlockIndexToWireColor = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+	airlockWireColorToIndex = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 	var/flagIndex = 1
-	for (var/flag=1, flag<512, flag+=flag)
+	for (var/flag=1, flag<1024, flag+=flag)
 		var/valid = 0
 		while (!valid)
-			var/colorIndex = rand(1, 9)
+			var/colorIndex = rand(1, 10)
 			if (wires[colorIndex]==0)
 				valid = 1
 				wires[colorIndex] = flag
@@ -281,6 +282,8 @@ About the new airlock wires panel:
 					open()
 				else
 					close()
+		if(AIRLOCK_WIRE_CRUSH)
+			src.forcecrush = !src.forcecrush
 
 
 /obj/machinery/door/airlock/proc/cut(var/wireColor)
@@ -537,6 +540,13 @@ About the new airlock wires panel:
 	if (src.isWireCut(AIRLOCK_WIRE_BACKUP_POWER2))
 		t1 += text("Backup Power Output wire is cut.<br>\n")
 
+	if (src.isWireCut(AIRLOCK_WIRE_CRUSH))
+		t1 += text("Airlock extra force wire is cut.<br>\n")
+	else if(!src.forcecrush)
+		t1 += text("Airlock extra force disabled <A href='?src=\ref[src];aiEnable=8'>Enable it?</a><br>\n")
+	else
+		t1 += text("Airlock extra force enabled <A href='?src=\ref[src];aiDisable=8'>Disable it?</a><br>\n")
+
 	if (src.isWireCut(AIRLOCK_WIRE_DOOR_BOLTS))
 		t1 += text("Door bolt drop wire is cut.<br>\n")
 	else if (!src.locked)
@@ -773,6 +783,11 @@ About the new airlock wires panel:
 						close()
 					else
 						usr << text("The airlock is already closed.<br>\n")
+				if (8)
+					if(!src.forcecrush)
+						usr << text("Door extra force not enabled!.<br>\n")
+					else
+						src.forcecrush = 0
 
 		else if (href_list["aiEnable"])
 			var/code = text2num(href_list["aiEnable"])
@@ -836,6 +851,11 @@ About the new airlock wires panel:
 						open()
 					else
 						usr << text("The airlock is already opened.<br>\n")
+				if (8)
+					if(src.forcecrush)
+						usr << text("Door extra force already enabled!.<br>\n")
+					else
+						src.forcecrush = 1
 
 		if(!istype(usr, /mob/living/silicon))
 			add_fingerprint(usr) // Adding again in case we implement something to wipe fingeprints from things
@@ -926,7 +946,7 @@ About the new airlock wires panel:
 		user.machine = src
 		var/t1 = text("<B>Access Panel</B><br>\n")
 
-		//t1 += text("[]: ", airlockFeatureNames[airlockWireColorToIndex[9]])
+		//t1 += text("[]: ", airlockFeatureNames[airlockWireColorToIndex[]])
 		var/list/wires = list(
 			"Orange" = 1,
 			"Dark red" = 2,
@@ -936,7 +956,8 @@ About the new airlock wires panel:
 			"Blue" = 6,
 			"Green" = 7,
 			"Grey" = 8,
-			"Black" = 9
+			"Black" = 9,
+			"Pink" = 10
 		)
 		for(var/wiredesc in wires)
 			var/is_uncut = src.wires & airlockWireColorToFlag[wires[wiredesc]]
