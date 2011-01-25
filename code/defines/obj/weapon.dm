@@ -715,7 +715,6 @@
 	w_class = 1.0
 	throw_speed = 3
 	throw_range = 15
-	layer = 4
 	var/see_face = 1
 	var/body_parts_covered = HEAD
 	var/protective_temperature = T0C + 10
