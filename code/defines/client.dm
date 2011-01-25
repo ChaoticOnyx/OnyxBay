@@ -11,6 +11,7 @@
 	var/canplaysound = 1
 	var/ambience_playing = null
 	var/no_ambi = 0
+	var/playadminsound = 0
 	var/area = null
 	var/played = 0
 	var/team = null
