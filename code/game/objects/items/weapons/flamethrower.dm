@@ -6,8 +6,8 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 */
 /obj/item/weapon/flamethrower
 	name = "flamethrower"
-	icon_state = "flamethrower"
-	item_state = "flamethrower"
+	icon_state = "flamethrower0"
+	item_state = "flamethrower0"
 	desc = "You are a firestarter!"
 	flags = FPRINT | TABLEPASS| CONDUCT
 	force = 3.0
@@ -137,7 +137,7 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 			src.icon_state = "flamethrower"
 		else
 			user.show_message("\blue The igniter is now unsecured!", 1)
-			src.icon_state = "w_r_ignite"
+			src.icon_state = "welder_rods_igniter"
 		src.add_fingerprint(user)
 		return
 
@@ -259,13 +259,13 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 		lit = !(lit)
 		if(lit)
 			icon_state = "flamethrower1"
-			item_state = "flamethrower_1"
+			item_state = "flamethrower1"
 			force = 17
 			damtype = "fire"
 			processing_items.Add(src)
 		else
 			icon_state = "flamethrower0"
-			item_state = "flamethrower_0"
+			item_state = "flamethrower0"
 			force = 3
 			damtype = "brute"
 	if (href_list["amount"])
@@ -281,7 +281,7 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 		force = 3
 		damtype = "brute"
 		icon_state = "flamethrower"
-		item_state = "flamethrower_0"
+		item_state = "flamethrower0"
 		usr.machine = null
 		usr << browse(null, "window=flamethrower")
 	for(var/mob/M in viewers(1, src.loc))
@@ -326,14 +326,12 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 			src.attack_self(M)
 	return
 
-/obj/item/weapon/flamethrower/proc/ignite_turf(turf/simulated/target)
+/obj/item/weapon/flamethrower/proc/ignite_turf(turf/target)
 	//TODO: DEFERRED Consider checking to make sure tank pressure is high enough before doing this...
 
 	//Transfer 5% of current tank air contents to turf
-	var/howmuch = part4.air_contents.toxins * 0.10
-	part4.air_contents.toxins -= howmuch
-	target.air.toxins += howmuch
-
+	var/datum/gas_mixture/air_transfer = part4.air_contents.remove_ratio(0.05)
+	target.assume_air(air_transfer)
 
 	//Burn it based on transfered gas
-	target.hotspot_expose(SPARK_TEMP,300)
+	target.hotspot_expose(part4.air_contents.temperature*2,300)

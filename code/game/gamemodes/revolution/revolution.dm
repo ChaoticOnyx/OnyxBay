@@ -113,6 +113,7 @@
 		return
 
 	spawn (100)
+		/*
 		var/freq = 1441
 		var/list/freqlist = list()
 		while (freq <= 1489)
@@ -160,8 +161,8 @@
 			T.name = R.name
 			T.icon_state = R.icon_state
 			T.origradio = R
-			rev_mob << "The Syndicate have cunningly disguised a Syndicate Uplink as your [R.name] [loc]. Simply dial the frequency [format_frequency(freq)] to unlock it's hidden features."
-			rev_mob.mind.store_memory("<B>Radio Freq:</B> [format_frequency(freq)] ([R.name] [loc]).", 0, 0)
+			rev_mob << "The Syndicate have cunningly disguised a Syndicate Uplink as your [R.name] [loc]. Simply dial the frequency [format_frequency(freq)] to unlock it's hidden features.
+			rev_mob.mind.store_memory("<B>Radio Freq:</B> [format_frequency(freq)] ([R.name] [loc]).", 0, 0)*/
 		if (rev_mob.r_store)
 			rev_mob.equip_if_possible(new /obj/item/device/flash(rev_mob), rev_mob.slot_l_store)
 		if (rev_mob.l_store)

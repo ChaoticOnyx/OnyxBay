@@ -12,7 +12,7 @@ var/datum/event/ActiveEvent = null
 var/datum/event/LongTermEvent = null
 
 /proc/SpawnEvent()
-	if(ActiveEvent)
+	if(!EventsOn || ActiveEvent)
 		return
 	var/Type = pick(EventTypes)
 	ActiveEvent = new Type()

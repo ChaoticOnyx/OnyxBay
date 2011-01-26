@@ -4,7 +4,6 @@ var/list/occupations = list(
 	"Detective",
 	"Geneticist",
 	"Scientist",	"Scientist", "Scientist",
-	"Anomalist",
 	"Atmospheric Technician", "Atmospheric Technician", "Atmospheric Technician",
 	"Medical Doctor", "Medical Doctor",
 	"Head of Personnel",
@@ -51,8 +50,6 @@ var/list/assistant_occupations = list(
 		if("Geneticist")
 			return 1
 		if("Scientist")
-			return 1
-		if("Anomalist")
 			return 1
 		if("Atmospheric Technician")
 			return 1
