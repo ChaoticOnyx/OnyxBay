@@ -291,18 +291,18 @@ turf/simulated/wall/bullet_act(flag,dir)
 /turf/simulated/wall/attack_hand(mob/user as mob)
 	if ((user.mutations & 8))
 		if (prob(40))
-			usr << text("\blue You smash through the wall.")
+			user << text("\blue You smash through the wall.")
 			dismantle_wall(1)
 			return
 		else
-			usr << text("\blue You punch the wall.")
+			user << text("\blue You punch the wall.")
 			return
 	if(ishuman(user) && user:zombie)
 		Zombiedamage += rand(5,7)
-		usr << text("\blue You claw the wall.")
+		user << text("\blue You claw the wall.")
 		if(Zombiedamage > 80)
 			dismantle_wall(1)
-			usr << text("\blue You smash through the wall.")
+			user << text("\blue You smash through the wall.")
 
 	user << "\blue You push the wall but nothing happens!"
 	playsound(src.loc, 'Genhit.ogg', 25, 1)

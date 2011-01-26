@@ -2351,6 +2351,8 @@
 	del(body_lying)
 	body_lying = list()
 
+	// FIXME: code that modifies gamelogic doesn't belong in a proc
+	// called UpdateDamageIcon
 	bruteloss = 0
 	fireloss = 0
 
@@ -2359,6 +2361,9 @@
 			O.update_icon()
 			bruteloss += O.brute_dam
 			fireloss += O.burn_dam
+
+			if(zombie)
+				O.damage_state = "30"
 
 			var/icon/DI = new /icon('dam_human.dmi', O.damage_state)			// the damage icon for whole human
 			DI.Blend(new /icon('dam_mask.dmi', O.icon_name), ICON_MULTIPLY)		// mask with this organ's pixels
@@ -2446,6 +2451,7 @@
 	for(var/mob/O in viewers(src, null))
 		O.show_message(text("\red <B>[src] seizes up and falls limp, \his eyes dead and lifeless...</B>"), 1)
 	UpdateZombieIcons()
+	UpdateDamageIcon()
 
 
 /proc/UpdateZombieIcons()

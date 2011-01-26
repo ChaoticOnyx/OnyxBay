@@ -23,7 +23,6 @@
 	real_name = "Zombie"
 	desc = "A zombie, looks pretty scary!"
 	a_intent = "hurt"
-	var/state = ZOMBIE_SLEEP
 	density = 1
 	var/list/path = new/list()
 
@@ -44,11 +43,9 @@
 		zombify()
 		sleep(10)
 		// main loop
-		spawn while(1)
+		spawn while(stat != STAT_DEAD)
 			sleep(cycle_pause)
-			if(!src.process())
-				break // this happens e.g. when
-					  // the zombie dies
+			src.process()
 		name = "zombie"
 		real_name  = "zombie"
 		return
@@ -93,22 +90,25 @@
 					var/obj/window/WW = locate() in src.loc
 					if(W)
 						W.attack_hand(src)
-						return
+						return 1
 					else if(WW)
 						WW.attack_hand(src)
-						return
+						return 1
 		else if(CanReachThrough(src.loc , target.loc,target))
 			target.attack_hand(src)
-			return
+			// sometimes push the enemy
+			if(prob(30))
+				step(src,direct)
+			return 1
 		else
 			var/obj/window/W = locate() in target.loc
 			var/obj/window/WW = locate() in src.loc
 			if(W)
 				W.attack_hand(src)
-				return
+				return 1
 			else if(WW)
 				WW.attack_hand(src)
-				return
+				return 1
 
 	// main loop
 	proc/process()
@@ -159,12 +159,16 @@
 					target = C
 					break
 
+			if(target.stat == STAT_DEAD || iszombie(target))
+				target = null
+
 
 			var/distance = get_dist(src, target)
 
 			if(target in orange(viewrange,src))
 				if(distance <= 1)
-					attack_target()
+					if(attack_target())
+						return 1
 				if(step_towards_3d(src,target))
 					return 1
 			else
@@ -176,7 +180,7 @@
 
 			frustration = 0
 
-			if(state != ZOMBIE_IDLE || stat == STAT_DEAD || target) return
+			if(stat == STAT_DEAD) return 0
 
 			var/prev_loc = loc
 			// make sure they don't walk into space
@@ -185,6 +189,7 @@
 			// if we couldn't move, pick a different direction
 			// also change the direction at random sometimes
 			if(loc == prev_loc || prob(20))
+				sleep(5)
 				dir = pick(NORTH,SOUTH,EAST,WEST)
 
 			return 1
@@ -218,7 +223,7 @@
 					object_target = D
 					return 1
 		// before clawing through walls, try to find a direct path first
-		if(!target || frustration > 8 )
+		if(frustration > 8 )
 			if(istype(get_step(src,src.dir),/turf/simulated/wall))
 				var/turf/simulated/wall/W = get_step(src,src.dir)
 				if(W)
