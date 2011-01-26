@@ -22,7 +22,7 @@
 /obj/item/weapon/cartridge/syndicate (3);/obj/item/device/chameleon (4);
 /obj/item/weapon/sword (5);/obj/item/weapon/pen/sleepypen (4);
 /obj/item/weapon/gun/energy/crossbow (5);/obj/spawner/newbomb/timer/syndicate (4);
-/obj/item/clothing/mask/gas/voice (3)"}
+/obj/item/clothing/mask/gas/voice (3);/obj/item/weapon/aiModule/freeform (3)"}
 
 	uplink_uses = 10
 
