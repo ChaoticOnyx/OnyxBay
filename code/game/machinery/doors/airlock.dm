@@ -450,10 +450,10 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/update_icon()
 	if(overlays) overlays = null
 	if(density)
-		if(locked)
-			icon_state = "door_locked"
-		else
-			icon_state = "door_closed"
+	//	if(locked)
+	//		icon_state = "door_locked"
+	//	else
+		icon_state = "door_closed"
 		if(p_open || welded)
 			overlays = list()
 			if(p_open)
