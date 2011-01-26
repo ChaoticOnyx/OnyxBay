@@ -43,11 +43,9 @@
 		zombify()
 		sleep(10)
 		// main loop
-		spawn while(1)
+		spawn while(stat != STAT_DEAD)
 			sleep(cycle_pause)
-			if(!src.process())
-				break // this happens e.g. when
-					  // the zombie dies
+			src.process()
 		name = "zombie"
 		real_name  = "zombie"
 		return
@@ -160,6 +158,9 @@
 				if(get_dist(src, target) >= get_dist(src, C) && prob(30))
 					target = C
 					break
+
+			if(target.stat == STAT_DEAD || iszombie(target))
+				target = null
 
 
 			var/distance = get_dist(src, target)
