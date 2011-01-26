@@ -1041,6 +1041,10 @@
 	name = "AI Upload Foyer"
 	icon_state = "ai_foyer"
 
+/area/turret_protected/ai_behind
+	name = "AI rear"
+	icon_state = "ai_foyer"
+
 /area/turret_protected/ai
 	name = "AI Chamber"
 	icon_state = "ai_chamber"
