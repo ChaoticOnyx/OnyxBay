@@ -191,6 +191,7 @@ Auto Patrol: []"},
 	else if ((W.force) && (!src.target))
 		src.target = user
 		src.mode = SECBOT_HUNT
+		src.arrestreasons += "Damage to station property"
 	..()
 
 /obj/machinery/bot/secbot/attackby(obj/item/weapon/card/emag/W, mob/user)
@@ -256,6 +257,8 @@ Auto Patrol: []"},
 				src.last_found = world.time
 				src.frustration = 0
 				src.mode = 0
+				src.secure_arrest = 0
+				src.arrestreasons = list()
 				walk_to(src,0)
 
 			if (target)		// make sure target exists
