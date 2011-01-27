@@ -63,6 +63,7 @@
 		for(var/md in vote.choices)
 			vote.choices -= md
 		return
+
 	nextvotetime = world.timeofday + 10*config.vote_delay
 
 	if(mode == 1)
@@ -89,7 +90,7 @@
 		if(ticker.current_state != 1)
 			world <<"\red <B>World will reboot in 10 seconds</B>"
 
-			sleep(100)
+			sleep(100 * tick_multiplier)
 			log_game("Rebooting due to mode vote")
 			world.Reboot()
 		else
@@ -105,7 +106,7 @@
 
 		world <<"\red <B>World will reboot in 5 seconds</B>"
 
-		sleep(50)
+		sleep(50 * tick_multiplier)
 		log_game("Rebooting due to restart vote")
 		world.Reboot()
 	return
@@ -143,7 +144,6 @@
 				break
 			else
 				ret += capitalize(w)
-
 
 
 		if(winners.len != 1)
@@ -187,11 +187,11 @@
 		return
 
 	if(vote.voting)
-		// vote in progress, do the current
+		// vote in progress
 
 		if(vote.mode == 2)
 
-			text += "A custom vote in progress.<BR>"
+			text += "A custom vote is in progress.<BR>"
 			text += "[vote.endwait()] until voting is closed.<BR>"
 
 			var/list/votes = vote.getvotes()
@@ -222,7 +222,7 @@
 
 		else if(vote.mode == 1)		// true if changing mode
 
-			text += "Vote to [vote.mode?"change mode":"restart round"] in progress.<BR>"
+			text += "A vote to change the mode is in progress.<BR>"
 			text += "[vote.endwait()] until voting is closed.<BR>"
 
 			var/list/votes = vote.getvotes()
@@ -257,7 +257,7 @@
 
 		else	// voting to restart
 
-			text += "Vote to [vote.mode?"change mode":"restart round"] in progress.<BR>"
+			text += "A vote to restart is in progress.<BR>"
 			text += "[vote.endwait()] until voting is closed.<BR>"
 
 			var/list/votes = vote.getvotes()
@@ -286,7 +286,6 @@
 
 
 	else		//no vote in progress
-
 		if(shuttlecoming == 1)
 			usr << "\blue Cannot start Vote - Shuttle has been called."
 			return
@@ -372,7 +371,7 @@
 			vote.enteringchoices = 0
 			vote.votetime = world.timeofday + config.vote_period*10	// when the vote will end
 
-			spawn(config.vote_period*10)
+			spawn(config.vote_period * 10 * tick_multiplier)
 				vote.endvote()
 
 			world << "\red<B>*** A custom vote has been initiated by [M.key].</B>"
@@ -413,7 +412,7 @@
 		vote.voting = 1						// now voting
 		vote.votetime = world.timeofday + config.vote_period*10	// when the vote will end
 
-		spawn(config.vote_period*10)
+		spawn(config.vote_period * 10 * tick_multiplier)
 			vote.endvote()
 
 		world << "\red<B>*** A vote to [vote.mode?"change game mode":"restart"] has been initiated by [M.key].</B>"
@@ -427,9 +426,8 @@
 			else
 				C.vote = "default"
 
-		if(M) M.vote()
-		return
-
+		if(M)
+			M.vote()
 
 		return
 
@@ -437,11 +435,8 @@
 		if(M && M.client)
 			M.client.vote = href_list["vote"]
 
-			//world << "Setting client [M.key]'s vote to: [href_list["vote"]]."
-
 			M.vote()
 		return
-
 
 
 /client/proc/cmd_admin_custom_vote(mob/M as mob in world)
