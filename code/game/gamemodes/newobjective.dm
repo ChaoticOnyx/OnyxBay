@@ -426,10 +426,9 @@ datum
 					if(4)
 						return INFINITY
 
-/* Removing as objective, on a 12 player server, a vote came back with about 9 people wanting it gone (they wanted the gibber to stay though)
 		steal/burger
 			steal_target = /obj/item/weapon/reagent_containers/food/snacks/humanburger
-			explanation_text = "Damn those Nanotrasen burgers are good... what -is- their secret ingredient?!  Steal a hamburger, and not some crap monkeyburger, we want the real deal."
+			explanation_text = "Steal a burger made out of human organs, this will be presented as proof of Nanotrasen's cronic lack of standards"
 			weight = 60
 
 			get_points(var/job)
@@ -444,7 +443,7 @@ datum
 						return 30
 					if(4)
 						return INFINITY
-*/
+
 
 		/*Needs some work before it can be put in the game to differentiate ship implanters from syndicate implanters.
 		steal/implanter
