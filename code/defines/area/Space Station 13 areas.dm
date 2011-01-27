@@ -1110,7 +1110,7 @@
 	name = "Syndicate shuttle"
 	icon_state = "ai_chamber"
 /area/nanotrasenshuttle
-	name = "Nanotrasen shuttle"
+	name = "NanoTrasen shuttle"
 	icon_state = "nt_shuttle"
 /area/alienshuttle
 	name = "Alien shuttle"

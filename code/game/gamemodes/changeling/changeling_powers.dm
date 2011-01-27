@@ -2,7 +2,7 @@
 	src.verbs += /client/proc/changeling_lesser_transform
 	src.verbs += /client/proc/changeling_fakedeath
 
-	spawn(600)
+	spawn(600*tick_multiplier)
 		src.verbs += /client/proc/changeling_neurotoxic_sting
 		usr.verbs += /client/proc/changeling_hallucinogenic_sting
 
@@ -15,7 +15,7 @@
 	src.verbs += /client/proc/changeling_lesser_form
 	src.verbs += /client/proc/changeling_fakedeath
 
-	spawn(600)
+	spawn(600*tick_multiplier)
 		src.verbs += /client/proc/changeling_neurotoxic_sting
 		usr.verbs += /client/proc/changeling_hallucinogenic_sting
 
@@ -151,7 +151,7 @@
 	animation.icon = 'mob.dmi'
 	animation.master = src
 	flick("h2monkey", animation)
-	sleep(48)
+	sleep(48*tick_multiplier)
 	del(animation)
 
 	var/mob/living/carbon/monkey/O = new /mob/living/carbon/monkey(src)
@@ -232,7 +232,7 @@
 	animation.icon = 'mob.dmi'
 	animation.master = src
 	flick("monkey2h", animation)
-	sleep(48)
+	sleep(48*tick_multiplier)
 	del(animation)
 
 	var/mob/living/carbon/human/O = new /mob/living/carbon/human( src )
@@ -287,7 +287,7 @@
 
 	usr.emote("deathgasp")
 
-	spawn(600)
+	spawn(600*tick_multiplier)
 		if (usr.stat != 2)
 			if(istype(usr, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = usr
@@ -339,7 +339,7 @@
 
 	usr.verbs -= /client/proc/changeling_neurotoxic_sting
 
-	spawn(600)
+	spawn(600*tick_multiplier)
 		usr.verbs += /client/proc/changeling_neurotoxic_sting
 
 	return
@@ -355,12 +355,12 @@
 
 	usr << "\blue We stealthily sting [T]."
 
-	spawn(50) //Give the changeling a chance to calmly walk away before the target FREAKS THE FUCK OUT
+	spawn(50*tick_multiplier) //Give the changeling a chance to calmly walk away before the target FREAKS THE FUCK OUT
 		T.reagents.add_reagent("LSD", 30)
 
 	usr.verbs -= /client/proc/changeling_hallucinogenic_sting
 
-	spawn(600)
+	spawn(600*tick_multiplier)
 		usr.verbs += /client/proc/changeling_hallucinogenic_sting
 
 	return

@@ -25,12 +25,12 @@
 		usr << "I don't feel strong enough without my hat."
 		return
 	usr.verbs -= /client/proc/forcewall
-	spawn(100)
+	spawn(100*tick_multiplier)
 		usr.verbs += /client/proc/forcewall
 	var/forcefield
 	var/mob/living/carbon/human/G = usr
 	G.say("TARCOL MINTI ZHERI")
 	forcefield =  new /obj/forcefield(locate(usr.x,usr.y,usr.z))
-	spawn (300)
+	spawn (300*tick_multiplier)
 		del (forcefield)
 	return

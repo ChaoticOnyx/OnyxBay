@@ -114,7 +114,7 @@
 			del O // Spawners need to have del called on them to avoid leaving a marker behind
 			continue
 
-	spawn (rand(waittime_l, waittime_h))
+	spawn (rand(waittime_l, waittime_h)*tick_multiplier)
 		send_intercept()
 
 	return

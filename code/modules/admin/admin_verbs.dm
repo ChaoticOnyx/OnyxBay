@@ -883,7 +883,7 @@
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"
-	set name = "Send Nanotrasen (admin) shuttle"
+	set name = "Send NanoTrasen (admin) shuttle"
 	var/area/from = locate(/area/nanotrasenshuttle)
 	var/area/dockingbay/admin/dest = locate(/area/dockingbay/admin)
 	if(dest.shuttle == "")
@@ -894,7 +894,7 @@
 
 /client/proc/returnadminshuttle()
 	set category = "Roleplay"
-	set name = "Return Nanotrasen (admin) shuttle"
+	set name = "Return NanoTrasen (admin) shuttle"
 	var/area/dockingbay/admin/from = locate(/area/dockingbay/admin)
 	if(from.shuttle == "nanotrasen")
 		var/area/dest = locate(/area/nanotrasenshuttle)
@@ -903,12 +903,12 @@
 
 /client/proc/createofficial(var/name as text)
 	set category = "Roleplay"
-	set name = "Create Nanotrasen official"
+	set name = "Create NanoTrasen official"
 	var/area/A
 	for(var/area/nanotrasenshuttle/b in world)
 		A = b
 
-	var/job = input ("What job would you like to give your Nanotrasen char") in list ("Overseer","Syndicate Management Taskforce","Prisoner Management")
+	var/job = input ("What job would you like to give your NanoTrasen char") in list ("Overseer","Syndicate Management Taskforce","Prisoner Management")
 	var/mob/living/carbon/human/new_character = new /mob/living/carbon/human(src)
 	new_character.loc = pick(get_area_turfs(A))
 	new_character.dna.ready_dna(new_character)
