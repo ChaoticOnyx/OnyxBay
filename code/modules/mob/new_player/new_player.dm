@@ -1,3 +1,8 @@
+mob/new_player/proc/forcestart()
+	set name = "forcestart"
+	set hidden = 1
+	ready = 1
+
 mob/new_player
 	anchored = 1
 
@@ -15,6 +20,7 @@ mob/new_player
 
 	Login()
 		..()
+		src.verbs += /mob/new_player/proc/forcestart
 		unlock_medal("First Timer", 0, "Welcome!", "easy")
 		if(!preferences)
 			preferences = new

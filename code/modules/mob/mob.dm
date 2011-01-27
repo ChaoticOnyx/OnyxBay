@@ -1972,7 +1972,7 @@ mob/verb/turnwest()
 		alert(src,"You have been banned.\nReason : [isbanned]","Ban","Ok")
 		del(src)
 	if(IsGuestKey(src.key))
-		alert(src,"Baystation12 don't allow guest accounts to play. Please go to http:\\www.byond.com and register for a key.","Guest","Ok")
+		alert(src,"Baystation12 doesn't allow guest accounts to play. Please go to http:\\www.byond.com and register for a key.","Guest","Ok")
 		del(src)
 	if (((world.address == address || !(address)) && !(host)))
 		host = key
@@ -1994,6 +1994,7 @@ mob/verb/turnwest()
 	//////////////End Strumpetplaya Add
 
 //new admin bit - Nannek
+
 
 	if (admins.Find(ckey))
 		holder = new /obj/admins(src)
