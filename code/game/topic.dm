@@ -62,11 +62,9 @@
 
 
 world/proc/makejson()
-	if(isfile("test.json"))
-		if(shell("rm test.json")) world << "deleted test.json"
-
-		if(shell("del test.json")) world << "deleted test.json"
-	var/F = file("test.json")
+	if(!fdel("/home/bay12/public_html/info.json"))
+		world.log << "Error cant delete json"
+	var/F = file("info.json")
 	var/mode
 	if(ticker.hide_mode)
 		mode = "SECRET"
@@ -82,6 +80,7 @@ world/proc/makejson()
 			if(!C.stealth)
 				admins = "yes"
 	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\"}"
-
-mob/verb/testjson()
+	if(fcopy("info.json","/home/bay12/public_html"))
+		world.log << "copied json"
+client/proc/testjson()
  	world.makejson()
