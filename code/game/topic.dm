@@ -63,7 +63,7 @@
 
 world/proc/makejson()
 	if(!fdel("/home/bay12/public_html/info.json"))
-		world.log << "Error cant delete json"
+		usr << "Error cant delete json"
 	var/F = file("info.json")
 	var/mode
 	if(ticker.hide_mode)
@@ -81,6 +81,6 @@ world/proc/makejson()
 				admins = "yes"
 	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\"}"
 	if(fcopy("info.json","/home/bay12/public_html"))
-		world.log << "copied json"
+		usr << "copied json"
 client/proc/testjson()
  	world.makejson()
