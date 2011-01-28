@@ -58,3 +58,30 @@
 		if(ticker)
 			return 1
 		return 2
+
+
+
+world/proc/makejson()
+	if(isfile("test.json"))
+		if(shell("rm test.json")) world << "deleted test.json"
+
+		if(shell("del test.json")) world << "deleted test.json"
+	var/F = file("test.json")
+	var/mode
+	if(ticker.hide_mode)
+		mode = "SECRET"
+	else
+		mode = master_mode
+	var/playerscount = 0
+	var/players = ""
+	var/admins = "no"
+	for(var/client/C)
+		playerscount++
+		players += "[C.key];"
+		if(C.holder)
+			if(!C.stealth)
+				admins = "yes"
+	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\"}"
+
+mob/verb/testjson()
+ 	world.makejson()
