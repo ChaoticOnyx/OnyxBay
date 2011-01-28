@@ -62,6 +62,8 @@
 
 
 world/proc/makejson()
+	if(!makejson)
+		return
 	if(!fdel("/home/bay12/public_html/info.json"))
 		usr << "Error cant delete json"
 	else

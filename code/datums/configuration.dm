@@ -31,7 +31,7 @@
 	var/hostedby = null
 	var/respawn = 1
 	var/mode_hidden = 0
-
+var/makejson
 /datum/configuration/New()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for (var/T in L)
@@ -96,6 +96,8 @@
 				DB_PASSWORD = value
 			if("db_dbname")
 				DB_DBNAME = value
+			if("makejson")
+				makejson = 1
 			if ("log_ooc")
 				config.log_ooc = 1
 			if ("mode_hidden")
