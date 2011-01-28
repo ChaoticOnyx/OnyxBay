@@ -426,10 +426,9 @@ datum
 					if(4)
 						return INFINITY
 
-
 		steal/burger
 			steal_target = /obj/item/weapon/reagent_containers/food/snacks/humanburger
-			explanation_text = "Damn those Nanotrasen burgers are good... what -is- their secret ingredient?!  Steal a hamburger, and not some crap monkeyburger, we want the real deal."
+			explanation_text = "Steal a burger made out of human organs, this will be presented as proof of NanoTrasen's chronic lack of standards."
 			weight = 60
 
 			get_points(var/job)

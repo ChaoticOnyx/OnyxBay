@@ -12,7 +12,7 @@
 /obj/item/weapon/cartridge/syndicate (3);/obj/item/device/chameleon (4);
 /obj/item/weapon/sword (5);/obj/item/weapon/pen/sleepypen (4);
 /obj/item/weapon/gun/energy/crossbow (5);/obj/spawner/newbomb/timer/syndicate (4);
-/obj/item/clothing/mask/gas/voice (3)"}
+/obj/item/clothing/mask/gas/voice (3);/obj/item/weapon/aiModule/freeform (3)"}
 
 	uplink_uses = 10
 
@@ -177,7 +177,7 @@
 		traitor.current << "\red <B>You are the traitor.</B>"
 		traitor.current << "\red <B>REPEAT</B>"
 		traitor.current << "\red <B>You are the traitor.</B>"
-		spawn(6000)			//Strumpetplaya - Just another friendly reminder so people don't forget they're the traitor.
+		spawn(6000*tick_multiplier)			//Strumpetplaya - Just another friendly reminder so people don't forget they're the traitor.
 			traitor.current << "\red <B>In case you missed it the first time - YOU ARE THE TRAITOR!</B>"
 		var/obj_count = 1
 		for(var/datum/objective/objective in traitor.objectives)
@@ -185,7 +185,7 @@
 			obj_count++
 		traitor.current << "\red <B>You have 1 and 1/2 hours to complete your objective</B>"
 		traitor.current << "\red <B>If you do not complete your objective and return within the allotted time, we will be forced to reveal your identity</B>"
-		spawn(54000)
+		spawn(54000*tick_multiplier)
 			command_alert("Summary downloaded and printed out at all communications consoles.", "The traitor has been determined")
 			var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested status information:</FONT><HR>"
 			intercepttext += "We have determined the traitors name to be: [traitor.current.real_name]"
@@ -197,11 +197,11 @@
 
 					comm.messagetitle.Add("Cent. Com. Status Summary")
 					comm.messagetext.Add(intercepttext)
-			spawn(12000)
+			spawn(12000*tick_multiplier)
 				command_alert("Repeating the previous message over intercoms due to urgency. The station has a traitor onboard by the name of [traitor.current.real_name], please arrest them and bring them on the emergency shuttle at once", "The traitor has been determined")
 
 
-	spawn (rand(waittime_l, waittime_h))
+	spawn (rand(waittime_l, waittime_h)*tick_multiplier)
 		send_intercept()
 
 

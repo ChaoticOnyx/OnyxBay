@@ -8,7 +8,7 @@
 	world << "<B>Escape on the shuttle but the humans have precedence!</B>"
 
 /datum/game_mode/monkey/post_setup()
-	spawn (50)
+	spawn (50*tick_multiplier)
 		var/list/players = list()
 		for (var/mob/living/carbon/human/player in world)
 			if (player.client)

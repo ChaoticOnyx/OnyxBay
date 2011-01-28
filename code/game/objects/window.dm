@@ -20,6 +20,7 @@
 	if(ismob(AM) && iszombie(AM))
 		src.attack_hand(AM)
 	return ..()
+
 /obj/window/ex_act(severity)
 	switch(severity)
 		if(1.0)

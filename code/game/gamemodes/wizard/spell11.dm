@@ -15,7 +15,7 @@
 		return
 
 	usr.verbs -= /client/proc/invisibility
-	spawn(300)
+	spawn(300*tick_multiplier)
 		usr.verbs += /client/proc/invisibility
 
 	spell_invisibility(usr)
@@ -47,9 +47,9 @@
 		steam.location = mobloc
 		steam.start()
 		H.canmove = 0
-		sleep(20)
+		sleep(20*tick_multiplier)
 		flick("reappear",animation)
-		sleep(5)
+		sleep(5*tick_multiplier)
 		H.loc = mobloc
 		H.canmove = 1
 		H.client.eye = H
@@ -89,7 +89,7 @@
 			src.y--
 			src.x--
 	src.canmove = 0
-	spawn(2) src.canmove = 1
+	spawn(2*tick_multiplier) src.canmove = 1
 
 /obj/dummy/spell_invis/ex_act(blah)
 	return

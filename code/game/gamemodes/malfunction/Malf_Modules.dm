@@ -75,7 +75,7 @@ rcd light flash thingy on matter drain
 			overload.uses --
 			for(var/mob/V in viewers(src, null))
 				V.show_message(text("\blue You hear a loud electrical buzzing sound!"))
-			spawn(50)
+			spawn(50*tick_multiplier)
 				explosion(get_turf(M), 0,1,1,0,1)
 		if(overload.uses == 0)
 			usr.verbs -= /client/proc/overload_machine

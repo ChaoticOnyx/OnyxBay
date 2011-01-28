@@ -12,7 +12,7 @@
 			sleep(0)
 			calc = 0
 	world << "Damaging floors"
-	sleep(20)
+	sleep(20*tick_multiplier)
 	for(var/turf/simulated/floor/a in world)
 		if(locate(/obj/landmark/derelict/nodamage) in a)
 			continue
@@ -27,7 +27,7 @@
 		if(prob(1) && prob(5))
 			explosion(a,3,5,7,9, 1)
 	world << "Destroying walls (SLOW)"
-	sleep(20)
+	sleep(20*tick_multiplier)
 	for(var/turf/simulated/wall/a in world)
 		if(locate(/obj/landmark/derelict/nodamage) in a)
 			continue
@@ -38,7 +38,7 @@
 		if(prob(25))
 			a.ex_act(3)
 	world << "Smashing windows"
-	sleep(20)
+	sleep(20*tick_multiplier)
 	for(var/obj/window/a in world)
 		if(locate(/obj/landmark/derelict/nodamage) in get_turf(a))
 			continue
@@ -49,7 +49,7 @@
 			sleep(0)
 			calc = 0
 	world << "Hacking airlocks"
-	sleep(20)
+	sleep(20*tick_multiplier)
 	for(var/obj/window/a in world)
 		if(locate(/obj/landmark/derelict/nodamage) in get_turf(a))
 			continue
@@ -60,7 +60,7 @@
 			sleep(0)
 			calc = 0
 	world << "Breaking alarms"
-	sleep(20)
+	sleep(20*tick_multiplier)
 
 	for(var/obj/machinery/alarm/a in world)
 		if(locate(/obj/landmark/derelict/nodamage) in get_turf(a))

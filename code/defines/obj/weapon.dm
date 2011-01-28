@@ -715,7 +715,6 @@
 	w_class = 1.0
 	throw_speed = 3
 	throw_range = 15
-	layer = 4
 	var/see_face = 1
 	var/body_parts_covered = HEAD
 	var/protective_temperature = T0C + 10
@@ -1298,7 +1297,8 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 /obj/item/weapon/kitchen/utensil/knife
 	name = "knife"
 	icon_state = "knife"
-	force = 10.0
+	force = 9.0
+	slash = 1
 	throwforce = 10.0
 
 /obj/item/weapon/kitchen/utensil/spoon

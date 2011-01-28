@@ -75,7 +75,7 @@
 
 	if(!revs_possible || !heads)
 		world << "<B> \red Not enough players for revolution game mode. Restarting world in 5 seconds."
-		sleep(50)
+		sleep(50*tick_multiplier)
 		world.Reboot()
 		return
 
@@ -105,14 +105,14 @@
 			rev_mind.current << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
 			obj_count++
 
-	spawn (rand(waittime_l, waittime_h))
+	spawn (rand(waittime_l, waittime_h)*tick_multiplier)
 		send_intercept()
 
 /datum/game_mode/revolution/proc/equip_revolutionary(mob/living/carbon/human/rev_mob)
 	if(!istype(rev_mob))
 		return
 
-	spawn (100)
+	spawn (100*tick_multiplier)
 		/*
 		var/freq = 1441
 		var/list/freqlist = list()

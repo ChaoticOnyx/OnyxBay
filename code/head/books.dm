@@ -79,7 +79,7 @@ datum/bookhand/proc/MakeBook(var/title,var/author,var/text,var/cat)
 datum/bookhand/proc/Update()
 	for(var/obj/machinery/bookcase/B in world)
 		B.update()
-		world.log << "Updateing [B]"
+		world.log << "Updating [B]"
 obj/machinery/bookcase
 	name = "Fiction Bookcase"
 	icon = 'computer.dmi'
@@ -127,9 +127,12 @@ obj/machinery/bookcase/attack_hand(mob/user)
 	if(in_range(src,user))
 		B.loc = user.loc
 obj/machinery/bookcase/attackby(obj/item/weapon/book/B,mob/user)
-	if(B)
+	if(istype(B))		//Change by Mloc: Books should be the only things to go in bookcases!
+		user << "\blue You add the \"[B.name]\" to the [src.name]."
 		user.drop_item()
 		B.loc = src
+	else
+		user << "\red You can't add \a [B.name] to a bookshelf!"
 obj/machinery/writersdesk
 	name = "Writer Desk"
 	desc = "A desk with various tools to write a book"

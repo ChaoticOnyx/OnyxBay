@@ -178,7 +178,7 @@
 		src.operating = 1
 
 	animate("opening")
-	sleep(10)
+	sleep(6)
 	src.density = 0
 	update_icon()
 
@@ -205,7 +205,43 @@
 
 	animate("closing")
 	src.density = 1
-	sleep(10)
+	spawn(4)
+		if(!istype(src, /obj/machinery/door/window))
+			for(var/mob/living/L in src.loc)
+				if(src.forcecrush)
+					L << "\red The door CRUSHES you"
+
+					//Save an AI, crush a limb
+
+					var/limbname = pick("l arm","r arm","l foot","r foot")
+					for(var/organ in L:organs)
+						var/datum/organ/external/temp = L:organs["[organ]"]
+						if (istype(temp, /datum/organ/external))
+							if(temp.name == limbname)
+								temp.take_damage(60, 0) //OH GOD IT HURTS
+
+
+
+				else
+					L << "\red The door forces you out of the way" //Lucky you
+				var/jumped = 0
+				var/list/lst = list(NORTH,SOUTH,EAST,WEST)
+				while(lst.len > 0 && jumped == 0)
+					var/dir = pick(lst)
+					lst -= dir
+					var/turf/T = get_step(L,dir)
+					var/possible = 1
+					if(T.density == 0)
+						for(var/obj/I in T)
+							if(I.density == 1)
+								possible = 0
+
+						if(possible)
+							jumped = 1
+							L.loc = T
+
+
+	sleep(6)
 	update_icon()
 
 	if (src.visible && (!istype(src, /obj/machinery/door/airlock/glass)))

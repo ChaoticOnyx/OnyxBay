@@ -6,6 +6,9 @@
 // END_INTERNALS
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "backup"
+#define FILE_DIR "cmdline"
+#define FILE_DIR "cmdline/code"
 #define FILE_DIR "code"
 #define FILE_DIR "code/Aryn"
 #define FILE_DIR "code/ATMOSPHERICS"
@@ -93,6 +96,7 @@
 #define FILE_DIR "code/WorkInProgress/Events"
 #define FILE_DIR "code/WorkInProgress/Events/Events"
 #define FILE_DIR "code/WorkInProgress/Googolplexed"
+#define FILE_DIR "code/WorkInProgress/Googolplexed/Computer2"
 #define FILE_DIR "code/WorkInProgress/Googolplexed/Disease2"
 #define FILE_DIR "code/WorkInProgress/NewMobs and etc"
 #define FILE_DIR "code/WorkInProgress/optics"
@@ -160,6 +164,8 @@
 #define FILE_DIR "sound/turntable"
 #define FILE_DIR "sound/voice"
 #define FILE_DIR "sound/weapons"
+#define FILE_DIR "xk"
+#define FILE_DIR "xk/src"
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
@@ -173,6 +179,7 @@
 #include "code\setup.dm"
 #include "code\stylesheet.dm"
 #include "code\TakePicture.dm"
+#include "code\Ticklag.dm"
 #include "code\Aryn\Airflow.dm"
 #include "code\Aryn\Atmos-ZAS3-Zones.dm"
 #include "code\Aryn\Variable Settings.dm"
@@ -518,6 +525,7 @@
 #include "code\game\verbs\AI_status.dm"
 #include "code\game\verbs\begin.dm"
 #include "code\game\verbs\suicide.dm"
+#include "code\game\verbs\toggleadminsound.dm"
 #include "code\game\verbs\who.dm"
 #include "code\head\books.dm"
 #include "code\head\changelog.dm"

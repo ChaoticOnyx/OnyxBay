@@ -53,6 +53,9 @@
 /mob/var/disabilities = 0
 /mob/var/atom/movable/pulling = null
 /mob/var/stat = 0.0
+#define STAT_ALIVE 0
+#define STAT_ASLEEP 1
+#define STAT_DEAD 2
 /mob/var/next_move = null
 /mob/var/prev_move = null
 /mob/var/monkeyizing = null
@@ -823,8 +826,8 @@ mob/verb/turnwest()
 
 	switch(name)
 		if("map")
-
 			usr.clearmap()
+
 		if("maprefresh")
 			var/obj/machinery/computer/security/seccomp = usr.machine
 
@@ -1969,7 +1972,7 @@ mob/verb/turnwest()
 		alert(src,"You have been banned.\nReason : [isbanned]","Ban","Ok")
 		del(src)
 	if(IsGuestKey(src.key))
-		alert(src,"Baystation12 don't allow guest accounts to play. Please go to http:\\www.byond.com and register for a key.","Guest","Ok")
+		alert(src,"Baystation12 doesn't allow guest accounts to play. Please go to http:\\www.byond.com and register for a key.","Guest","Ok")
 		del(src)
 	if (((world.address == address || !(address)) && !(host)))
 		host = key
@@ -1991,6 +1994,7 @@ mob/verb/turnwest()
 	//////////////End Strumpetplaya Add
 
 //new admin bit - Nannek
+
 
 	if (admins.Find(ckey))
 		holder = new /obj/admins(src)
