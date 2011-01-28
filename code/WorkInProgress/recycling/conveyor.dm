@@ -340,7 +340,7 @@
 	..()
 	update()
 
-	spawn(5)		// allow map load
+	spawn(10)		// allow map load
 		conveyors = list()
 		for(var/obj/machinery/conveyor/C in world)
 			if(C.id == id)

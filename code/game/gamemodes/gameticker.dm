@@ -144,7 +144,6 @@ var/global/datum/controller/gameticker/ticker
 		for(var/datum/shuttle/s in shuttles)
 			s.process()
 
-
 		if(mode.check_finished())
 			current_state = GAME_STATE_FINISHED
 
