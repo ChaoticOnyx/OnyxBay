@@ -212,7 +212,9 @@
 		if(!istype(src, /obj/machinery/door/window))
 			for(var/mob/living/L in src.loc)
 				if(src.forcecrush)
-					L << "\red The door CRUSHES you"
+					L << "\red The airlock CRUSHES you!"
+					for(var/mob/O in viewers(L, null))
+						O.show_message("\red The airlock CRUSHES [L.name]!", 1)
 
 					//Save an AI, crush a limb
 
@@ -224,9 +226,11 @@
 								temp.take_damage(60, 0) //OH GOD IT HURTS
 
 
-
 				else
-					L << "\red The door forces you out of the way" //Lucky you
+					L << "\red The airlock forces you out of the way!" //Lucky you
+					for(var/mob/O in viewers(L, null))
+						O.show_message("\red The airlock pushes [L.name] out of the way!", 1)
+
 				var/jumped = 0
 				var/list/lst = list(NORTH,SOUTH,EAST,WEST)
 				while(lst.len > 0 && jumped == 0)

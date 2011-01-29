@@ -632,6 +632,13 @@ About the new airlock wires panel:
 	if (src.isWireCut(AIRLOCK_WIRE_BACKUP_POWER2))
 		t1 += text("Backup Power Output wire is cut.<br>\n")
 
+	if (src.isWireCut(AIRLOCK_WIRE_CRUSH))
+		t1 += text("Airlock extra force wire is cut.<br>\n")
+	else if(!src.forcecrush)
+		t1 += text("Airlock extra force disabled <A href='?src=\ref[src];aiEnable=8'>Enable it?</a><br>\n")
+	else
+		t1 += text("Airlock extra force enabled <A href='?src=\ref[src];aiDisable=8'>Disable it?</a><br>\n")
+
 	if (src.isWireCut(AIRLOCK_WIRE_DOOR_BOLTS))
 		t1 += text("Door bolt drop wire is cut.<br>\n")
 	else if (!src.locked)
