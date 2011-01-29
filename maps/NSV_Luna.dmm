@@ -1455,7 +1455,7 @@
 "aBY" = (/obj/machinery/light,/turf/simulated/floor,/area/security/main)
 "aBZ" = (/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact-f"; initialize_directions = 5; layer = 3},/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor/plating,/area/security/main)
 "aCa" = (/obj/machinery/atmospherics/unary/vent_filter{dir = 8},/obj/table/reinforced{tag = "icon-reinf_tabledir (SOUTHEAST)"; icon_state = "reinf_tabledir"; dir = 6},/turf/simulated/floor,/area/security/main)
-"aCb" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (SOUTHWEST)"; icon_state = "reinf_tabledir"; dir = 10},/turf/simulated/floor,/area/security/main)
+"aCb" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (SOUTHWEST)"; icon_state = "reinf_tabledir"; dir = 10},/obj/item/weapon/hand_labeler,/turf/simulated/floor,/area/security/main)
 "aCc" = (/obj/machinery/atmospherics/pipe/simple/multiz/up{tag = "icon-up (EAST)"; icon_state = "up"; dir = 4},/obj/cabling/power{tag = "icon-4-16"; icon_state = "4-16"},/turf/simulated/floor/plating,/area/maintenance/aft3)
 "aCd" = (/obj/machinery/atmospherics/pipe/simple{dir = 9; icon_state = "intact-f"; layer = 3},/obj/cabling/power{icon_state = "2-8"},/turf/simulated/floor/plating,/area/maintenance/aft3)
 "aCe" = (/turf/simulated/wall,/area/maintenance/aft3)
