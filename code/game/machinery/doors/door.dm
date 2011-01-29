@@ -101,14 +101,17 @@
 	if (istype(user, /mob/living/carbon/human) && user:zombie)
 		user << "\blue You claw the airlock"
 		Zombiedamage += rand(4,8)
-		if(Zombiedamage > 80)
+		if(Zombiedamage > 80 || (locked && Zombiedamage > 200))
+			src.locked = 0
 			user << "\blue You break the circuitry"
 			src.operating = -1
 			flick("door_spark", src)
 			sleep(6)
 			open()
 			return 1
-		return
+		operating = 1
+		spawn(6) operating = 0
+		return 1
 
 	if (!src.requiresID())
 		//don't care who they are or what they have, act as if they're NOTHING
