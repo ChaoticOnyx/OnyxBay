@@ -80,6 +80,7 @@ datum/bookhand/proc/Update()
 	for(var/obj/machinery/bookcase/B in world)
 		B.update()
 		world.log << "Updating [B]"
+
 obj/machinery/bookcase
 	name = "Fiction Bookcase"
 	icon = 'computer.dmi'

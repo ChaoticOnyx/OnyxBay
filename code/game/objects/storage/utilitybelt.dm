@@ -1,7 +1,7 @@
-/obj/item/weapon/storage/utilitybelt/dropped(mob/user as mob)
+/obj/item/weapon/storage/belt/utility/dropped(mob/user as mob)
 	..()
 
-/obj/item/weapon/storage/utilitybelt/MouseDrop(obj/over_object as obj, src_location, over_location)
+/obj/item/weapon/storage/belt/utility/MouseDrop(obj/over_object as obj, src_location, over_location)
 	var/mob/M = usr
 	if (!istype(over_object, /obj/screen))
 		if(can_use())
@@ -24,10 +24,10 @@
 		src.add_fingerprint(usr)
 		return
 
-/obj/item/weapon/storage/utilitybelt/attack_paw(mob/user as mob)
+/obj/item/weapon/storage/belt/utility/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 
-/obj/item/weapon/storage/utilitybelt/attack_hand(mob/user as mob)
+/obj/item/weapon/storage/belt/utility/attack_hand(mob/user as mob)
 	if (src.loc == user)
 		if(can_use())
 			playsound(src.loc, "rustle", 50, 1, -5)
@@ -42,14 +42,14 @@
 
 	src.add_fingerprint(user)
 
-/obj/item/weapon/storage/utilitybelt/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/storage/belt/utility/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(!can_use())
 		user << "\red I need to wear the belt for that."
 		return
 	else
 		..()
 
-/obj/item/weapon/storage/utilitybelt/proc/can_use()
+/obj/item/weapon/storage/belt/utility/proc/can_use()
 	if(!ismob(loc)) return 0
 	return 1
 	//var/mob/M = loc

@@ -711,17 +711,3 @@ obj/item/brain
 		var/datum/reagents/R = new/datum/reagents(30)
 		reagents = R
 		R.my_atom = src
-
-/obj/item/weapon/storage/glassbox
-	name = "Glassware Box"
-	icon_state = "beakerbox"
-	item_state = "syringe_kit"
-	New()
-		..()
-		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
-		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
-		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
-		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
-		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
-		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
-		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )

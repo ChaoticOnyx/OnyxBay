@@ -1,4 +1,12 @@
-/obj/item/weapon/storage/utilitybelt
+/obj/item/weapon/storage
+	icon = 'storage.dmi'
+	name = "storage"
+	var/list/can_hold = new/list()
+	var/obj/screen/storage/boxes = null
+	var/obj/screen/close/closer = null
+	w_class = 3.0
+
+/obj/item/weapon/storage/belt/utility
 	name = "utility belt"
 	desc = "Can hold various tools."
 	icon = 'old_or_unused.dmi'
@@ -7,13 +15,14 @@
 	can_hold = list("/obj/item/weapon/crowbar","/obj/item/weapon/screwdriver","/obj/item/weapon/weldingtool","/obj/item/weapon/wirecutters","/obj/item/weapon/wrench","/obj/item/device/multitool","/obj/item/device/flashlight","/obj/item/weapon/CableCoil/power")
 	flags = FPRINT | TABLEPASS | ONBELT
 
-/obj/item/weapon/storage
-	icon = 'storage.dmi'
-	name = "storage"
-	var/list/can_hold = new/list()
-	var/obj/screen/storage/boxes = null
-	var/obj/screen/close/closer = null
-	w_class = 3.0
+/obj/item/weapon/storage/belt/utility
+	name = "utility belt"
+	desc = "Can hold various tools."
+	icon = 'old_or_unused.dmi'
+	icon_state = "utilitybelt"
+	item_state = "utility"
+	can_hold = list("/obj/item/policetaperoll","")
+	flags = FPRINT | TABLEPASS | ONBELT
 
 /obj/item/weapon/storage/backpack
 	name = "backpack"
@@ -33,6 +42,20 @@
 	name = "Box"
 	icon_state = "box"
 	item_state = "syringe_kit"
+
+/obj/item/weapon/storage/glassbox
+	name = "Glassware Box"
+	icon_state = "beakerbox"
+	item_state = "syringe_kit"
+	New()
+		..()
+		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
+		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
+		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
+		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
+		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
+		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
+		new /obj/item/weapon/reagent_containers/food/drinks/glass( src )
 
 /obj/item/weapon/storage/briefcase
 	name = "briefcase"
