@@ -1533,7 +1533,7 @@
 								for(var/mob/O in viewers(src, null))
 									O.show_message(text("\red <B>[] has bit []!</B>", M, src), 1)
 								zombifying = 1
-								zombietime = rand(600,1800)
+								zombietime = rand(600,1200)
 								UpdateZombieIcons()
 						else
 							var/mes = pick(list("clawed","scraped"))

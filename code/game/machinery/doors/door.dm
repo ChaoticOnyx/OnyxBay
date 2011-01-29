@@ -107,7 +107,7 @@
 			src.operating = -1
 			flick("door_spark", src)
 			sleep(6)
-			open()
+			forceopen()
 			return 1
 		operating = 1
 		spawn(6) operating = 0
