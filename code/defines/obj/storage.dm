@@ -15,14 +15,14 @@
 	can_hold = list("/obj/item/weapon/crowbar","/obj/item/weapon/screwdriver","/obj/item/weapon/weldingtool","/obj/item/weapon/wirecutters","/obj/item/weapon/wrench","/obj/item/device/multitool","/obj/item/device/flashlight","/obj/item/weapon/CableCoil/power")
 	flags = FPRINT | TABLEPASS | ONBELT
 
-/obj/item/weapon/storage/belt/utility
+/*/obj/item/weapon/storage/belt/utility
 	name = "utility belt"
 	desc = "Can hold various tools."
 	icon = 'old_or_unused.dmi'
 	icon_state = "utilitybelt"
 	item_state = "utility"
 	can_hold = list("/obj/item/policetaperoll","")
-	flags = FPRINT | TABLEPASS | ONBELT
+	flags = FPRINT | TABLEPASS | ONBELT*/
 
 /obj/item/weapon/storage/backpack
 	name = "backpack"
