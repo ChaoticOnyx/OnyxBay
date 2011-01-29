@@ -57,7 +57,7 @@ datum/bookhand
 datum/bookhand/New()
 	BOOKHAND = src // I shouldent need to fucking do this.
 	GetBooks()
-	world.log << "Loaded Books: [src.books.len]"
+//	world.log << "Loaded Books: [src.books.len]"
 	Update()
 datum/bookhand/proc/GetBooks()
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT * FROM `books`")
@@ -79,7 +79,7 @@ datum/bookhand/proc/MakeBook(var/title,var/author,var/text,var/cat)
 datum/bookhand/proc/Update()
 	for(var/obj/machinery/bookcase/B in world)
 		B.update()
-		world.log << "Updating [B]"
+		//world.log << "Updating [B]"
 
 obj/machinery/bookcase
 	name = "Fiction Bookcase"

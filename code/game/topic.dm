@@ -74,7 +74,9 @@ world/proc/makejson()
 		usr << "Deleted local json"
 	var/F = file("info.json")
 	var/mode
-	if(ticker.hide_mode)
+	if(ticker.current_state == 1)
+		mode = "Round Setup"
+	else if(ticker.hide_mode)
 		mode = "SECRET"
 	else
 		mode = master_mode
