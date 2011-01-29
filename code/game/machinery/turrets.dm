@@ -226,6 +226,7 @@
 	var/id = ""
 	var/lethal = 0
 	var/locked = 1
+	var/similar_controls
 	var/turrets
 
 /obj/machinery/turretid/east
@@ -247,6 +248,11 @@
 		for(var/obj/machinery/turret/T in world)
 			if(T.id == id)
 				turrets += T
+
+		similar_controls = list() // On modifying a control, all the similar controls should change their icon_state as well
+		for(var/obj/machinery/turretid/TC in world)
+			if(TC.id == id && TC != src)
+				similar_controls += TC
 
 /obj/machinery/turretid/attackby(obj/item/weapon/W, mob/user)
 	if(stat & BROKEN) return
@@ -313,18 +319,17 @@
 /obj/machinery/turretid/proc/updateTurrets()
 	if (src.enabled)
 		if (src.lethal)
-			icon_state = "motion1"
+			src.icon_state = "motion1"
+			for(var/obj/machinery/turretid/TC in src.similar_controls) //Change every similar control's icon as well
+				TC.icon_state = "motion1"
 		else
-			icon_state = "motion3"
+			src.icon_state = "motion3"
+			for(var/obj/machinery/turretid/TC in src.similar_controls)
+				TC.icon_state = "motion3"
 	else
-		icon_state = "motion0"
-
-	var/loc = src.loc
-	if (istype(loc, /turf))
-		loc = loc:loc
-	if (!istype(loc, /area))
-		world << text("Turret badly positioned - loc.loc is [loc].")
-		return
+		src.icon_state = "motion0"
+		for(var/obj/machinery/turretid/TC in src.similar_controls)
+			TC.icon_state = "motion0"
 
 	for (var/obj/machinery/turret/aTurret in turrets)
 		aTurret.setState(enabled, lethal)

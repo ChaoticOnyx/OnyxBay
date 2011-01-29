@@ -119,6 +119,7 @@
 	var/emag = "securecrateemag"
 	var/broken = 0
 	locked = 1
+	req_access = list(access_security)
 
 
 /obj/crate/New()
