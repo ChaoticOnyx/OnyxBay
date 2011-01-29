@@ -39,17 +39,19 @@
 	name = "turret"
 	icon = 'turrets.dmi'
 	icon_state = "grey_target_prism"
-	var/raised = 0
-	var/enabled = 1
 	anchored = 1
-	layer = 3
-	invisibility = 2
 	density = 1
-	var/lasers = 0
-	var/health = 18
+	invisibility = 2
+	layer = 3
 	var/obj/machinery/turretcover/cover = null
+	var/enabled = 1
+	var/health = 18
+	var/id = ""
+	var/lasers = 0
 	var/popping = 0
+	var/raised = 0
 	var/wasvalid = 0
+
 	var/lastfired = 0
 	var/shot_delay = 30 //3 seconds between shots
 
@@ -219,10 +221,32 @@
 	icon_state = "motion3"
 	anchored = 1
 	density = 0
+	req_access = list(access_ai_upload)
 	var/enabled = 1
+	var/id = ""
 	var/lethal = 0
 	var/locked = 1
-	req_access = list(access_ai_upload)
+	var/turrets
+
+/obj/machinery/turretid/east
+	pixel_x = 28
+
+/obj/machinery/turretid/south
+	pixel_y = -28
+
+/obj/machinery/turretid/west
+	pixel_x = -28
+
+/obj/machinery/turretid/north
+	pixel_y = 28
+
+/obj/machinery/turretid/New()
+	..()
+	spawn(10)		// allow map load
+		turrets = list()
+		for(var/obj/machinery/turret/T in world)
+			if(T.id == id)
+				turrets += T
 
 /obj/machinery/turretid/attackby(obj/item/weapon/W, mob/user)
 	if(stat & BROKEN) return
@@ -301,7 +325,6 @@
 	if (!istype(loc, /area))
 		world << text("Turret badly positioned - loc.loc is [loc].")
 		return
-	var/area/area = loc
 
-	for (var/obj/machinery/turret/aTurret in get_area_all_atoms(area))
+	for (var/obj/machinery/turret/aTurret in turrets)
 		aTurret.setState(enabled, lethal)

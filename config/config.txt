@@ -19,6 +19,9 @@ LOG_VOTE
 # log client Whisper
 LOG_WHISPER
 
+#Makes a json file every 5 minutes
+# MAKEJSON
+
 # probablities for game modes chosen in "secret" and "random" modes
 # 
 # default probablity is 1, increase to make that mode more likely to be picked

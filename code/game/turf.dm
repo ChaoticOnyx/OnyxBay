@@ -3,7 +3,7 @@
 		return move_camera_by_click()
 	if(usr.stat || usr.restrained() || usr.lying)
 		return ..()
-	/*
+
 	if(usr.hand && istype(usr.l_hand, /obj/item/weapon/flamethrower))
 		var/turflist = getline(usr,src)
 		var/obj/item/weapon/flamethrower/F = usr.l_hand
@@ -14,8 +14,6 @@
 		var/obj/item/weapon/flamethrower/F = usr.r_hand
 		F.flame_turf(turflist)
 		..()
-	else
-	*/
 	return ..()
 
 /turf/New()
