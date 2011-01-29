@@ -326,12 +326,13 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 			src.attack_self(M)
 	return
 
-/obj/item/weapon/flamethrower/proc/ignite_turf(turf/target)
+/obj/item/weapon/flamethrower/proc/ignite_turf(turf/simulated/target)
 	//TODO: DEFERRED Consider checking to make sure tank pressure is high enough before doing this...
 
-	//Transfer 5% of current tank air contents to turf
-	var/datum/gas_mixture/air_transfer = part4.air_contents.remove_ratio(0.05)
-	target.assume_air(air_transfer)
+	//Transfer current tank air contents to turf
+	var/howmuch = part4.air_contents.toxins * 0.10
+	part4.air_contents.toxins -= howmuch
+	target.air.toxins += howmuch
 
 	//Burn it based on transfered gas
-	target.hotspot_expose(part4.air_contents.temperature*2,300)
+	target.hotspot_expose(SPARK_TEMP,300)
