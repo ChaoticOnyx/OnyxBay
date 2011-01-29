@@ -32,6 +32,13 @@
 /obj/multiz/ladder/attack_hand(var/mob/M)
 	M.Move(locate(src.x, src.y, targetZ()))
 
+/obj/multiz/ladder/blob_act()
+	var/newblob = 1
+	for(var/obj/blob in locate(src.x, src.y, targetZ()))
+		newblob = 0
+	if(newblob)
+		new /obj/blob(locate(src.x, src.y, targetZ()))
+
 //Stairs.  var/dir on all four component objects should be the dir you'd walk from top to bottom
 /obj/multiz/stairs
 	name = "Stairs"
