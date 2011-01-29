@@ -1779,6 +1779,8 @@ mob/verb/turnwest()
 	else if(istype(mob, /mob/living/carbon))
 		if (mob:back && istype(mob:back, /obj/item/weapon/tank/jetpack))
 			mob:back:move_z(UP, mob)
+		else if(isobj(mob.loc))
+			mob.loc:relaymove(mob,UP)
 		else
 			mob:swap_hand()
 
@@ -1792,6 +1794,8 @@ mob/verb/turnwest()
 			AIMoveZ(DOWN, mob)
 	else if(istype(mob, /mob/living/carbon) && mob:back && istype(mob:back, /obj/item/weapon/tank/jetpack))
 		mob:back:move_z(DOWN, mob)
+	else if(isobj(mob.loc))
+		mob.loc:relaymove(mob,DOWN)
 	else if (W)
 		W.attack_self(mob)
 
