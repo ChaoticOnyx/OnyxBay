@@ -356,10 +356,10 @@ Auto Patrol: []"},
 								var/obj/I = src.target:back
 								I.name += " (Captured by [src.name] from [target.name])"
 								I.moveto(src)
-							if(src.target:wear_id)
-								var/obj/I = src.target:wear_id
-								I.name += " (Captured by [src.name] from [target.name])"
-								I.moveto(src)
+						///	if(src.target:wear_id)
+						//		var/obj/I = src.target:wear_id
+						//		I.name += " (Captured by [src.name] from [target.name])"
+						//		I.moveto(src)
 							if(src.target:l_store)
 								var/obj/I = src.target:l_store
 								I.name += " (Captured by [src.name] from [target.name])"
