@@ -170,7 +170,7 @@ datum/controller/game_controller
 
 		ticker.process()
 
-		sleep(world.timeofday+10-start_time)
+		sleep((world.timeofday+10-start_time) * tick_multiplier)
 
 		spawn process()
 

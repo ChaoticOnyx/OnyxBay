@@ -1326,11 +1326,11 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	m_amt = 10000
 	g_amt = 5000
 
-
 /obj/item/weapon/circular_saw
 	name = "circular saw"
 	icon = 'surgery.dmi'
 	icon_state = "saw3"
+	item_state = "saw1" // Naming needs to be cleaned up for the saw icons
 	flags = FPRINT | TABLEPASS | CONDUCT
 	force = 15.0
 	w_class = 1.0
