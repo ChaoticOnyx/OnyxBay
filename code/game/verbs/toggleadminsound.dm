@@ -1,10 +1,9 @@
 /client/verb/adminsounds()
 	set name = "Toggle admin sounds"
 
-	src.playadminsound = !src.playadminsound
-	if(src.playadminsound == 0)
-		var/sound/S = sound(null)
-		S.channel = 999
+	src.play_adminsound = !src.play_adminsound
+	if(src.play_adminsound == 0)
+		var/sound/S = sound(null,0,0,7,100)
 		src << S
 
-	src << "Toggled [src.playadminsound]"
+	src << "Toggled [src.play_adminsound]."

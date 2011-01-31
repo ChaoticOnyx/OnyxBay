@@ -10,8 +10,8 @@
 	var/changes = 0
 	var/canplaysound = 1
 	var/ambience_playing = null
-	var/no_ambi = 0
-	var/playadminsound = 1
+	var/play_ambiences = 1
+	var/play_adminsound = 1
 	var/area = null
 	var/played = 0
 	var/team = null
@@ -21,6 +21,3 @@
 	var/warned = 0
 	var/admin_invis = 0
 	var/list/ctab_settings = list()
-
-	// comment out the line below when debugging locally to enable the options & messages menu
-	control_freak = 1
