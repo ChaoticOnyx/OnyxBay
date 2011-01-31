@@ -3707,7 +3707,7 @@
 "bto" = (/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor/plating,/area/maintenance/fsmaint1)
 "btp" = (/obj/cabling/power{icon_state = "1-2"},/obj/machinery/light/small{dir = 8},/turf/simulated/floor/plating,/area/maintenance/fsmaint1)
 "btq" = (/obj/window/reinforced/south,/obj/window/reinforced/east,/obj/landmark/derelict/nodamage,/turf/space,/area/hangar/exposed)
-"btr" = (/obj/window/reinforced/west,/obj/window/reinforced/east,/obj/machinery/door/window/brigdoor/northright,/obj/landmark/derelict/nodamage,/turf/simulated/floor{icon_state = "delivery"},/area/hangar)
+"btr" = (/obj/window/reinforced/west,/obj/window/reinforced/east,/obj/landmark/derelict/nodamage,/obj/machinery/door/window/brigdoor/northright{name = "Docking Bay D"; req_access_txt = "19"},/turf/simulated/floor{icon_state = "delivery"},/area/hangar)
 "bts" = (/obj/window/reinforced/west,/obj/window/reinforced/south,/obj/landmark/derelict/nodamage,/turf/space,/area/hangar/exposed)
 "btt" = (/obj/window/reinforced/east,/obj/window/reinforced/south,/obj/landmark/derelict/nodamage,/turf/space,/area/hangar/supply)
 "btu" = (/obj/window/reinforced/west,/obj/window/reinforced/east,/obj/machinery/door/window/brigdoor/northright{name = "Supply Shuttle Door"; req_access_txt = "31"},/obj/landmark/derelict/nodamage,/turf/simulated/floor{icon_state = "delivery"},/area/hangar/supply)
