@@ -23,5 +23,6 @@
 /obj/machinery/bot/proc/calc_path(dest, var/turf/avoid = null)
 	path = AStar(src.loc, dest, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=list(/obj/landmark/alterations/nopath, avoid))
 	path = reverselist(src.path)
+
 /obj/machinery/bot/proc/shutdowns()
 	return

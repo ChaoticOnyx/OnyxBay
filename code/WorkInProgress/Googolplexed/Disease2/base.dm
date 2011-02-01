@@ -103,10 +103,12 @@
 		uniqueID = rand(0,10000)
 		infectionchance = rand(1,10)
 		spreadtype = "Airborne"
+
 	proc/minormutate()
 		var/datum/disease2/effectholder/holder = pick(effects)
 		holder.minormutate()
 		infectionchance = min(10,infectionchance + rand(0,1))
+
 	proc/issame(var/datum/disease2/disease/disease)
 		var/list/types = list()
 		var/list/types2 = list()
@@ -290,7 +292,7 @@
 		viewers(mob) << "\red <b>[mob.name] is holding \his breath. It looks like \he's trying to commit suicide.</b>"
 		mob.oxyloss = max(175 - mob.toxloss - mob.fireloss - mob.bruteloss, mob.oxyloss)
 		mob.updatehealth()
-		spawn(200) //in case they get revived by cryo chamber or something stupid like that, let them suicide again in 20 seconds
+		spawn(200*tick_multiplier) //in case they get revived by cryo chamber or something stupid like that, let them suicide again in 20 seconds
 			mob.suiciding = 0
 
 /datum/disease2/effectholder
