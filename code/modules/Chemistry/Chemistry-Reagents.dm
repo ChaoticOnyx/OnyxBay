@@ -566,7 +566,7 @@ datum
 							M << "\red Your helmet melts into uselessness!"
 							return
 						var/datum/organ/external/affecting = M:organs["head"]
-						affecting.take_damage(75, 0)
+						affecting.take_damage((30 * max(1, volume / 30)), 0)
 						M:UpdateDamage()
 						M:UpdateDamageIcon()
 						M:emote("scream")
@@ -577,7 +577,7 @@ datum
 				else
 					if(istype(M, /mob/living/carbon/human) && prob(25))
 						var/datum/organ/external/affecting = M:organs["head"]
-						affecting.take_damage(75, 0)
+						affecting.take_damage((30 * max(1, volume / 30)), 0)
 						M:UpdateDamage()
 						M:UpdateDamageIcon()
 						M:emote("scream")
