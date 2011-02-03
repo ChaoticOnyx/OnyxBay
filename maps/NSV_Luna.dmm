@@ -1316,7 +1316,7 @@
 "azp" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; initialize_directions = 12; layer = 3},/obj/table/reinforced{tag = "icon-reinf_tabledir (SOUTHEAST)"; icon_state = "reinf_tabledir"; dir = 6},/obj/item/kitchen/donut_box,/turf/simulated/floor,/area/security/main)
 "azq" = (/obj/machinery/camera{c_tag = "Communications Control"; dir = 2; name = "Hallway Camera"; network = "Luna"},/obj/machinery/computer/med_data,/obj/machinery/atmospherics/pipe/manifold{dir = 4; initialize_directions = 11},/turf/simulated/floor,/area/security/main)
 "azr" = (/obj/machinery/computer/forensic_scanning,/turf/simulated/floor,/area/security/main)
-"azs" = (/obj/rack,/turf/simulated/floor,/area/security/main)
+"azs" = (/obj/rack,/obj/item/weapon/storage/belt/security,/obj/item/weapon/storage/belt/security,/obj/item/weapon/storage/belt/security,/obj/item/weapon/storage/belt/security,/turf/simulated/floor,/area/security/main)
 "azt" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/obj/item/clothing/glasses/thermal,/turf/simulated/floor,/area/security/main)
 "azu" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; initialize_directions = 7},/turf/simulated/floor/plating,/area/maintenance/apmaint3)
 "azv" = (/obj/machinery/atmospherics/pipe/simple,/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; layer = 3},/obj/cabling/power{icon_state = "0-4"},/obj/machinery/power/apc{dir = 4; name = "East APC"; pixel_x = 0},/turf/simulated/floor/plating,/area/maintenance/apmaint3)
