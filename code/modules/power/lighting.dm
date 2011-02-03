@@ -571,18 +571,19 @@
 	icon_state = "light"
 	item_state = "syringe_kit"
 
-/obj/item/weapon/storage/lightbox/New()
+/obj/item/weapon/storage/lightbox/New(flag as text)
 	..()
-	new /obj/item/weapon/light/tube(src)
-	new /obj/item/weapon/light/tube(src)
-	new /obj/item/weapon/light/tube(src)
+	if(!flag == "NODUPE")
+		new /obj/item/weapon/light/tube(src)
+		new /obj/item/weapon/light/tube(src)
+		new /obj/item/weapon/light/tube(src)
 
-	new /obj/item/weapon/light/bulb(src)
-	new /obj/item/weapon/light/bulb(src)
-	new /obj/item/weapon/light/bulb(src)
+		new /obj/item/weapon/light/bulb(src)
+		new /obj/item/weapon/light/bulb(src)
+		new /obj/item/weapon/light/bulb(src)
 
 /obj/item/weapon/storage/lightbox/tubes/New()
-	..()
+	..(flag = "NODUPE")
 	new /obj/item/weapon/light/tube(src)
 	new /obj/item/weapon/light/tube(src)
 	new /obj/item/weapon/light/tube(src)
