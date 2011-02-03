@@ -522,6 +522,7 @@
 #include "code\game\verbs\suicide.dm"
 #include "code\game\verbs\toggleadminsound.dm"
 #include "code\game\verbs\who.dm"
+#include "code\head\bodybag.dm"
 #include "code\head\books.dm"
 #include "code\head\changelog.dm"
 #include "code\head\fireworks.dm"
