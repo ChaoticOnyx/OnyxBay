@@ -2,12 +2,14 @@ var
 	jobban_runonce	// Updates legacy bans with new info
 	jobban_keylist[0]		//to store the keys & ranks
 
-/proc/jobban_fullban(mob/M, rank)
+/proc/jobban_fullban(mob/M, rank,mob/bywho)
 	if (!M || !M.key || !M.client) return
 	var/DBQuery/xquery = dbcon.NewQuery("INSERT INTO jobban VALUES ('[M.ckey]','[rank]')")
+	var/DBQuery/yquery = dbcon.NewQuery("INSERT INTO jobbanlog VALUES ('[bywho.ckey]','[M.ckey]','[rank]')")
 	if(!xquery.Execute())
 		log_admin("[xquery.ErrorMsg()]")
-
+	if(!yquery.Execute())
+		log_admin("[yquery.ErrorMsg()]")
 /proc/jobban_isbanned(mob/M, rank)
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT `rank` FROM `jobban` WHERE ckey='[M.ckey]'")
 	var/DBQuery/kquery = dbcon.NewQuery("SELECT `ckey` FROM `jobban` WHERE ckey='[M.ckey]'")
@@ -42,8 +44,11 @@ var
 */
 /proc/jobban_unban(mob/M, rank)
 	var/DBQuery/xquery = dbcon.NewQuery("DELETE FROM jobban WHERE `ckey`='[M.ckey]' AND `rank`='[rank]'")
+	var/DBQuery/yquery = dbcon.NewQuery("DELETE FROM jobbanlog WHERE `targetckey`='[M.ckey]' AND `rank`='[rank]'")
 	if(!xquery.Execute())
 		log_admin("[xquery.ErrorMsg()]")
+	if(!yquery.Execute())
+		log_admin("[yquery.ErrorMsg()]")
 /*
 /proc/jobban_updatelegacybans()
 	if(!jobban_runonce)

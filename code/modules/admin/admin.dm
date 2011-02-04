@@ -186,7 +186,7 @@
 			else
 				log_admin("[key_name(usr)] banned [key_name(M)] from [job]")
 				message_admins("\blue [key_name_admin(usr)] banned [key_name_admin(M)] from [job]", 1)
-				jobban_fullban(M, job)
+				jobban_fullban(M, job,usr)
 				href_list["jobban2"] = 1 // lets it fall through and refresh
 
 
