@@ -1,3 +1,5 @@
+// NOT INCLUDED!
+
 /mob/living/carbon/human/examine()
 	set src in view()
 

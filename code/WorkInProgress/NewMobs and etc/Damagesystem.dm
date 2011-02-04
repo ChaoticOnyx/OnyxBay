@@ -56,38 +56,49 @@
 /mob/living/carbon/human/New()
 	..()
 	var/datum/reagents/R = new/datum/reagents(1000)
-//	random_events += "blink"
 	reagents = R
 	R.my_atom = src
 
 	if (!dna)
 		dna = new /datum/dna( null )
+
 	var/datum/organ/external/chest/chest = new /datum/organ/external/chest( src )
 	chest.owner = src
+
 	var/datum/organ/external/groin/groin = new /datum/organ/external/groin( src )
 	groin.owner = src
+
 	var/datum/organ/external/head/head = new /datum/organ/external/head( src )
 	head.owner = src
+
 	var/datum/organ/external/l_arm/l_arm = new /datum/organ/external/l_arm( src )
 	l_arm.owner = src
+
 	var/datum/organ/external/r_arm/r_arm = new /datum/organ/external/r_arm( src )
 	r_arm.owner = src
+
 	var/datum/organ/external/l_hand/l_hand = new /datum/organ/external/l_hand( src )
 	l_hand.owner = src
 	l_hand.parent = l_arm
+
 	var/datum/organ/external/r_hand/r_hand = new /datum/organ/external/r_hand( src )
 	r_hand.owner = src
 	r_hand.parent = r_arm
+
 	var/datum/organ/external/l_leg/l_leg = new /datum/organ/external/l_leg( src )
 	l_leg.owner = src
+
 	var/datum/organ/external/r_leg/r_leg = new /datum/organ/external/r_leg( src )
 	r_leg.owner = src
+
 	var/datum/organ/external/l_foot/l_foot = new /datum/organ/external/l_foot( src )
 	l_foot.owner = src
 	l_foot.parent = l_leg
+
 	var/datum/organ/external/r_foot/r_foot = new /datum/organ/external/r_foot( src )
 	r_foot.owner = src
 	r_foot.parent = r_leg
+
 	//blood
 	organs["chest"] += chest
 	organs["groin"] += groin
@@ -130,11 +141,15 @@
 	icon = stand_icon
 
 	src << "\blue Your icons have been generated!"
+
 	vessel = new/datum/reagents(560)
 	vessel.my_atom = src
 	vessel.add_reagent("blood",560)
+
 	update_clothing()
+
 	spawn(1) fixblood()
+
 /mob/living/carbon/human/proc/fixblood()
 	for(var/datum/reagent/blood/B in vessel.reagent_list)
 		if(B.id == "blood")
@@ -142,6 +157,7 @@
 			B.blood_DNA = src.dna.unique_enzymes
 			if(virus2)
 				B.virus2 = virus2.getcopy()
+
 /mob/living/carbon/human/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!( yes ) || now_pushing))
 		return
@@ -204,7 +220,8 @@
 	if(reagents.has_reagent("hyperzine")) return -1
 
 	var/health_deficiency = (health_full - health)
-	if(health_deficiency >= 40) tally += (health_deficiency / 25)
+	if(health_deficiency >= 40)
+		tally += (health_deficiency / 25)
 
 
 	for(var/organ in list("l_leg","l_foot","r_leg","r_foot"))

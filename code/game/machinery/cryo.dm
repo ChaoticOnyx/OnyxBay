@@ -54,8 +54,8 @@
 		return 1
 
 
-	allow_drop()
-		return 0
+	/*allow_drop()
+		return 0*/
 
 
 	relaymove(mob/user as mob)
