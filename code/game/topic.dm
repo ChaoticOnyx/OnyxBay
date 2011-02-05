@@ -65,13 +65,13 @@ world/proc/makejson()
 	if(!makejson)
 		return
 	if(!fdel("/home/bay12/public_html/info.json"))
-		usr << "Error cant delete json"
+		//usr << "Error cant delete json"
 	else
-		usr << "Deleted json in public html"
+		//usr << "Deleted json in public html"
 	if(!fdel("info.json"))
-		usr << "error cant delete local json"
+		//usr << "error cant delete local json"
 	else
-		usr << "Deleted local json"
+		//usr << "Deleted local json"
 	var/F = file("info.json")
 	var/mode
 	if(ticker.current_state == 1)
@@ -91,8 +91,8 @@ world/proc/makejson()
 				admins = "yes"
 	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\"}"
 	if(fcopy("info.json","/home/bay12/public_html/info.json"))
-		usr << "copied json"
+		//usr << "copied json"
 	else
-		usr << "copy fail"
+		//usr << "copy fail"
 client/proc/testjson()
  	world.makejson()
