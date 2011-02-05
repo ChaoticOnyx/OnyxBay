@@ -1681,9 +1681,9 @@
 
 /obj/admins/proc/toggleaban()
 	set category = "Special Verbs"
-	set desc="Respawn basically"
+	set desc="Toggle Respawn"
 	set name="Toggle Respawn"
-	abandon_allowed = !( abandon_allowed )
+	abandon_allowed = !abandon_allowed
 	if (abandon_allowed)
 		world << "<B>You may now respawn.</B>"
 	else

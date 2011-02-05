@@ -15,7 +15,7 @@
 	icon = 'items.dmi'
 	icon_state = "securitybelt"
 	item_state = "securitybelt"
-	can_hold = list("/obj/item/weapon/handcuffs","/obj/item/weapon/baton","/obj/item/device/radio","/obj/item/weapon/gun/energy/taser_gun","/obj/item/device/detective/scanner","/obj/item/weapon/flashbang","/obj/item/weapon/empgrenade")
+	can_hold = list("/obj/item/weapon/handcuffs","/obj/item/device/flash","/obj/item/weapon/baton","/obj/item/device/radio","/obj/item/weapon/gun/energy/taser_gun","/obj/item/device/detective_scanner","/obj/item/weapon/flashbang","/obj/item/weapon/empgrenade")
 
 /obj/item/weapon/storage/belt/dropped(mob/user as mob)
 	..()
@@ -72,7 +72,7 @@
 		for(var/A in can_hold)
 			if(istype(W, text2path(A) )) ok = 1
 		if(!ok)
-			user << "\red This container cannot hold [W]."
+			user << "\red This belt cannot hold [W]."
 			return
 
 	if (src.contents.len >= 7)

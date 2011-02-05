@@ -35,7 +35,7 @@ var/list/anomalies = list("/obj/item/weapon/crystal" = 4,
 	..()
 	processing_items += src
 	return
-/obj/item/weapon/talkingcrystal/CatchMessage(msg,mob/source)
+/obj/item/weapon/talkingcrystal/catchMessage(msg,mob/source)
 	var/Z = findtext(msg," ")
 	if(Z)
 		if(rand(50))
