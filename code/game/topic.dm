@@ -64,13 +64,13 @@
 world/proc/makejson()
 	if(!makejson)
 		return
-	if(!fdel("/home/bay12/public_html/info.json"))
+	fdel("/home/bay12/public_html/info.json")
 		//usr << "Error cant delete json"
-	else
+	//else
 		//usr << "Deleted json in public html"
-	if(!fdel("info.json"))
+	fdel("info.json")
 		//usr << "error cant delete local json"
-	else
+	//else
 		//usr << "Deleted local json"
 	var/F = file("info.json")
 	var/mode
