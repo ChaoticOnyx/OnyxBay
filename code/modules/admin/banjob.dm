@@ -48,7 +48,4 @@ var
 	html = "<HR><B>Jobbans:</B><HR><table border=1 rules=all frame=void cellspacing=0 cellpadding=3 >[html]"
 	usr << browse(html, "window=jobbanx1x;size=475x400")
 
-client/verb/ssd()
-	src.holder.showjobbans()
-
 

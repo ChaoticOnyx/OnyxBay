@@ -111,4 +111,4 @@
 				O.show_message(message, m_type)
 		else if (m_type & 2)
 			for (var/mob/O in hearers(src, null))
-				O.show_message(message, m_type)		return
+				O.show_message(message, m_type)
