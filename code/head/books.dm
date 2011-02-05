@@ -86,6 +86,7 @@ obj/machinery/bookcase
 	icon = 'computer.dmi'
 	icon_state = "bookcase"
 	density = 1
+	anchored = 1
 	var/cat = Fiction
 
 obj/machinery/bookcase/engi
@@ -140,6 +141,7 @@ obj/machinery/writersdesk
 	icon = 'structures.dmi'
 	icon_state = "writers"
 	density = 1
+	anchored = 1
 obj/machinery/writersdesk/attack_hand(mob/user)
 	switch(alert("Would you like to write a book?",,"Yes","No"))
 		if("No")

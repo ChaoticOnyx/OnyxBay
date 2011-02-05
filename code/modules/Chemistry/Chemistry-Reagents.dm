@@ -566,7 +566,7 @@ datum
 							M << "\red Your helmet melts into uselessness!"
 							return
 						var/datum/organ/external/affecting = M:organs["head"]
-						affecting.take_damage((30 * max(1, volume / 30)), 0)
+						affecting.take_damage((30 * max(1, volume / 15)), 0)
 						M:UpdateDamage()
 						M:UpdateDamageIcon()
 						M:emote("scream")
@@ -584,7 +584,7 @@ datum
 						M << "\red Your face has become disfigured!"
 						M.real_name = "Unknown"
 					else
-						M:bruteloss += 15
+						M:bruteloss += (30 * max(1, volume / 30))
 
 			reaction_obj(var/obj/O, var/volume)
 				if(istype(O,/obj/item/weapon/anomaly))
