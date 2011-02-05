@@ -296,7 +296,6 @@ datum/preferences
 	proc/ShowTitle(mob/user,choice=1)
 		var/HTML = "<body>"
 		HTML += "<tt><center>"
-		world << choice
 		switch(choice)
 			if(1.0)
 				HTML += "<b>Which title would you for [occupation1].</b><br><br>"
