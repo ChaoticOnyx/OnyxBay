@@ -51,11 +51,16 @@ obj/bodybag/proc/open()
 	icon_state = "b[open]0"
 
 obj/bodybag/proc/close()
+	for (var/obj/item/I in src.loc)
+		if (!I.anchored)
+			I.loc = src
+
 	for(var/mob/M in src.loc)
 		if(M.lying)
 			captured = M
 			M.loc = src
 			break
+
 	var/hasmob = 0
 	open = 0
 	if(captured) hasmob=1

@@ -371,8 +371,9 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/proc/canSynControl()
 	return (src.synDoorHacked && (!src.isAllPowerCut()));
 
-/obj/machinery/door/airlock/proc/canSynHack()
-	return (in_range(src, usr) && src.synDoorHacked==0 && !src.isAllPowerCut());
+/obj/machinery/door/airlock/proc/canSynHack(obj/item/device/hacktool/H)
+	if(in_range(src, usr) && get_dist(src, H) <= 1 && src.synDoorHacked==0 && !src.isAllPowerCut())
+		return 1
 
 /obj/machinery/door/airlock/proc/arePowerSystemsOn()
 	return (powered() && (src.secondsMainPowerLost==0 || src.secondsBackupPowerLost==0))
@@ -586,7 +587,7 @@ About the new airlock wires panel:
 	if(C.in_use)
 		user << "We are already hacking another airlock."
 		return
-	if (!src.canSynControl() && src.canSynHack())
+	if (!src.canSynControl() && src.canSynHack(C))
 		src.synhack(user, C)
 		return
 
@@ -877,9 +878,9 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/proc/hack(mob/user as mob)
 	if (src.aiHacking==0)
 		src.aiHacking=1
-		spawn(20)
+		spawn(20 * tick_multiplier)
 			user << "Airlock AI control has been blocked. Beginning fault-detection."
-			sleep(50)
+			sleep(50 * tick_multiplier)
 			if (src.canAIControl())
 				user << "Alert cancelled. Airlock control has been restored without our assistance."
 				src.aiHacking=0
@@ -889,9 +890,9 @@ About the new airlock wires panel:
 				src.aiHacking=0
 				return
 			user << "Fault confirmed: airlock control wire disabled or cut."
-			sleep(20)
+			sleep(20 * tick_multiplier)
 			user << "Attempting to hack into airlock. This may take some time."
-			sleep(240)
+			sleep(240 * tick_multiplier)
 			if (src.canAIControl())
 				user << "Alert cancelled. Airlock control has been restored without our assistance."
 				src.aiHacking=0
@@ -901,7 +902,7 @@ About the new airlock wires panel:
 				src.aiHacking=0
 				return
 			user << "Upload access confirmed. Loading control program into airlock software."
-			sleep(210)
+			sleep(210 * tick_multiplier)
 			if (src.canAIControl())
 				user << "Alert cancelled. Airlock control has been restored without our assistance."
 				src.aiHacking=0
@@ -911,11 +912,11 @@ About the new airlock wires panel:
 				src.aiHacking=0
 				return
 			user << "Transfer complete. Forcing airlock to execute program."
-			sleep(50)
+			sleep(50 * tick_multiplier)
 			//disable blocked control
 			src.aiControlDisabled = 2
 			user << "Receiving control information from airlock."
-			sleep(10)
+			sleep(10 * tick_multiplier)
 			//bring up airlock dialog
 			src.aiHacking = 0
 			src.attack_ai(user)
@@ -1065,23 +1066,23 @@ About the new airlock wires panel:
 	if (src.synHacking==0)
 		src.synHacking=1
 		I.in_use = 1
-		spawn(20)
+		spawn(20 * tick_multiplier)
 			user << "Jacking in. Stay close to the airlock or you'll rip the cables out and we'll have to start over."
-			sleep(25)
+			sleep(25 * tick_multiplier)
 			if (src.canSynControl())
 				user << "Hack cancelled, control already possible."
 				src.synHacking=0
 				I.in_use = 0
 				return
-			else if (!src.canSynHack())
+			else if (!src.canSynHack(I))
 				user << "\red Connection lost. Stand still and stay near the airlock!"
 				src.synHacking=0
 				I.in_use = 0
 				return
 			user << "Connection established."
-			sleep(10)
+			sleep(10 * tick_multiplier)
 			user << "Attempting to hack into airlock. This may take some time."
-			sleep(100)
+			sleep(100 * tick_multiplier)
 			// Alerting the AIs
 			var/list/cameras = list()
 			for (var/obj/machinery/camera/C in src.loc.loc.contents) // getting all cameras in the area
@@ -1107,7 +1108,7 @@ About the new airlock wires panel:
 
 			// ...And done
 
-			if (!src.canSynHack())
+			if (!src.canSynHack(I))
 				user << "\red Hack aborted: landline connection lost. Stay closer to the airlock."
 				src.synHacking=0
 				I.in_use = 0
@@ -1118,8 +1119,8 @@ About the new airlock wires panel:
 				I.in_use = 0
 				return
 			user << "Upload access confirmed. Loading control program into airlock software."
-			sleep(85)
-			if (!src.canSynHack())
+			sleep(85 * tick_multiplier)
+			if (!src.canSynHack(I))
 				user << "\red Hack aborted: cable connection lost. Do not move away from the airlock."
 				src.synHacking=0
 				I.in_use = 0
@@ -1130,11 +1131,11 @@ About the new airlock wires panel:
 				I.in_use = 0
 				return
 			user << "Transfer complete. Forcing airlock to execute program."
-			sleep(25)
+			sleep(25 * tick_multiplier)
 			//disable blocked control
 			src.synDoorHacked = 1
 			user << "Bingo! We're in. Airlock control panel coming right up."
-			sleep(5)
+			sleep(5 * tick_multiplier)
 			//bring up airlock dialog
 			src.synHacking = 0
 			I.in_use = 0
