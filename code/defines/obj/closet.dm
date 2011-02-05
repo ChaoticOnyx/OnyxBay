@@ -6,6 +6,7 @@
 	density = 1
 	var/icon_closed = "closed"
 	var/icon_opened = "open"
+	var/bang_time = 0
 	var/opened = 0
 	var/welded = 0
 	flags = FPRINT
@@ -218,6 +219,7 @@
 	density = 1
 	var/opened = 0
 	var/locked = 1
+	var/bang_time = 0
 	var/broken = 0
 	var/large = 1
 	var/icon_closed = "secure"

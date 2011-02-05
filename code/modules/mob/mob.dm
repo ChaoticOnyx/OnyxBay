@@ -393,10 +393,7 @@ mob/verb/turnwest()
 		else
 	return
 
-/proc/stars(n, pr)
-
-	if (pr == null)
-		pr = 25
+/proc/stars(n, pr = 25)
 	if (pr <= 0)
 		return null
 	else

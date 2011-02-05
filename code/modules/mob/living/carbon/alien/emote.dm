@@ -7,7 +7,7 @@
 		act = copytext(act, 1, t1)
 	var/muzzled = istype(wear_mask, /obj/item/clothing/mask/muzzle)
 	var/m_type = 1
-	var/message
+	var/message = ""
 
 	switch(act)
 		if("sign")
@@ -93,11 +93,22 @@
 			src << "choke, collapse, dance, drool, gasp, shiver, gnarl, jump, moan, nod, roar, roll, scratch,\nscretch, shake, sign-#, sit, sulk, sway, tail, twitch, whimper"
 		else
 			src << text("Invalid Emote: []", act)
-	if ((message && stat == 0))
+
+	if (isobj(src.loc)) // In case the mob is located in an object which may alter sounds coming from it (bodybags for instance)
+		message = src.loc:alterMobEmote(message, act, m_type, src)
+
+		if (message != "")
+			if (m_type & 1)
+				for (var/mob/O in viewers(src.loc, null))
+					O.show_message(message, m_type)
+			else if (m_type & 2)
+				for (var/mob/O in hearers(src.loc, null))
+					O.show_message(message, m_type)
+
+	else if (message != "")
 		if (m_type & 1)
-			for(var/mob/O in viewers(src, null))
+			for (var/mob/O in viewers(src, null))
 				O.show_message(message, m_type)
-		else
-			for(var/mob/O in hearers(src, null))
-				O.show_message(message, m_type)
-	return
+		else if (m_type & 2)
+			for (var/mob/O in hearers(src, null))
+				O.show_message(message, m_type)		return

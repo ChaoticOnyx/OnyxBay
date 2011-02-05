@@ -191,11 +191,13 @@
 	if (user.stat)
 		return
 
-	if (!src.open())
+	if (!src.open() && world.timeofday - bang_time >= 14)
 		user << "\blue It won't budge!"
 		for (var/mob/M in hearers(src, null))
 			M << text("<FONT size=[]>BANG, bang!</FONT>", max(0, 5 - get_dist(src, M)))
 		user.unlock_medal("It's a trap!", 0, "Get locked or welded into a locker...", "easy")
+		bang_time = world.timeofday
+
 /obj/closet/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 
