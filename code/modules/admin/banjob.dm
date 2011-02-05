@@ -34,7 +34,7 @@ var
 
 
 /obj/admins/proc/showjobbans()
-	world << src
+	//world << src
 	var/html = "<table>"
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT DISTINCT targetckey from jobbanlog")
 	if(!cquery.Execute())

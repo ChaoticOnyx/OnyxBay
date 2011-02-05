@@ -69,9 +69,6 @@
 			return
 
 	/////////////////////////////////////new ban stuff
-	world << "TOPIC()"
-	for(var/A in href_list)
-		world << A
 	if(href_list["jobban1"])
 		var/key = href_list["jobban1"]
 		var/html = "<B><center>[key]</center></B><br><table border='1'><tr><th>Rank</th><th>By</th><th>Time</th>"
@@ -1277,7 +1274,6 @@
 						dat += "No-one has done anything this round!"
 					usr << browse(dat, "window=coders")
 		return
-	world << "TOPIC() end"
 		//hahaha
 
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels
