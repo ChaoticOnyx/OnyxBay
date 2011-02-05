@@ -672,7 +672,11 @@
 	if (src.holder)
 		src.holder.invite_panel()
 	return
-
+/client/proc/jobban_panel()
+	set name = "Jobban Panel"
+	set category = "Admin"
+	if (src.holder)
+		src.holder.showjobbans()
 /client/proc/game_panel()
 	set name = "Game Panel"
 	set category = "Admin"
