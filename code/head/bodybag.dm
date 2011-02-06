@@ -47,6 +47,10 @@ obj/bodybag/proc/open()
 	if(captured)
 		captured.loc = src.loc
 		captured = null
+
+	for (var/obj/item/I in src)
+		I.loc = src.loc
+
 	open = 1
 	icon_state = "b[open]0"
 
