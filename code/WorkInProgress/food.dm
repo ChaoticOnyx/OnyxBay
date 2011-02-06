@@ -86,3 +86,16 @@
 			src.name = "sandwich"
 		overlays += image(W.icon,icon_state = W.icon_state)
 		user << "You put [W] ontop of the [src]"
+obj/closet/sandvich
+	name = "Food Supply Closet"
+obj/closet/sandvich/New()
+	new /obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/salami(src)
+	new /obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/salami(src)
+	new /obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/salami(src)
+	new /obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/salami(src)
+	new /obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/salami(src)
+	new /obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/salami(src)
+	new /obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/salami(src)
+	new /obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/salami(src)
+	new /obj/item/weapon/reagent_containers/food/custom/breadsys/butterpack(src)
+	new /obj/item/weapon/reagent_containers/food/custom/breadsys/butterpack(src)
