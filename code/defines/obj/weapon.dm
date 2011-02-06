@@ -1265,6 +1265,7 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	icon_state = "knife"
 	force = 9.0
 	slash = 1
+	var/butter = 0
 	throwforce = 10.0
 
 /obj/item/weapon/kitchen/utensil/spoon

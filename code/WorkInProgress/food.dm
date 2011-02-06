@@ -1,0 +1,88 @@
+/obj/item/weapon/reagent_containers/food/custom/breadsys/bread
+	name = "bread"
+	icon = 'food2.dmi'
+	icon_state = "bread"
+	var/ammount = 3
+/obj/item/weapon/reagent_containers/food/custom/breadsys/butterpack
+	name = "Butter"
+	icon = 'food2.dmi'
+	icon_state = "butterpack"
+/obj/item/weapon/reagent_containers/food/custom/breadsys/loaf
+	name = "loaf of bread"
+	icon = 'food2.dmi'
+	icon_state = "bread_01"
+	var/ammount = 10
+/obj/item/weapon/reagent_containers/food/custom/breadsys/ontop
+	icon = 'food2.dmi'
+	var/stateontop = "sals" //state when ontop a sandvich
+/obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/salami
+	name = "salami"
+	icon_state = "sal"
+	stateontop = "sals"
+/obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/butter
+	name = "butter"
+	icon_state = "butter"
+	stateontop = "butter"
+/obj/item
+/obj/item/weapon/reagent_containers/food/custom/breadsys/loaf/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/weapon/kitchen/utensil/knife))
+		new /obj/item/weapon/reagent_containers/food/custom/breadsys/bread(src.loc)
+		user << "You slice a piece of bread"
+		ammount--
+		if(ammount <= 5)
+			icon_state = "bread_02"
+		if(ammount < 1)
+			del(src)
+/obj/item/weapon/reagent_containers/food/custom/breadsys/butterpack/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/weapon/kitchen/utensil/knife))
+		W:butter = 1
+		user << "You put some butter on \the [W]"
+	else
+		..()
+/obj/item/weapon/reagent_containers/food/custom/breadsys/bread/attack(mob/M as mob, mob/user as mob)
+	if(M == user)
+		for(var/mob/O in viewers(M, null))
+			O.show_message(text("\red [] takes a bite off []", user, src), 1)
+		src.ammount--
+		if(src.ammount <= 0)
+			for(var/mob/X in viewers(M, null))
+				X.show_message(text(" [] finishes eating []", user, src), 1)
+				del src
+		return
+
+	else
+		for(var/mob/S in viewers(M, null))
+			S.show_message(text("\red [] is forcing [] to take a bite of []", user, M, src), 1)
+		src.ammount--
+		if(src.ammount == 0)
+			for(var/mob/V in viewers(M, null))
+				V.show_message(text("[] finishes eating []", user, src), 1)
+			del src
+		return
+/obj/item/weapon/reagent_containers/food/custom/breadsys/bread/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/weapon/reagent_containers/food/custom/breadsys/ontop))
+		var/state = W:stateontop
+		if(!state)
+			return
+		if(src.name != "sandwich")
+			src.name = "sandwich"
+		overlays += image(W.icon,icon_state = state)
+		user.drop_item(W)
+		W.loc = src
+		user << "You put a [W] ontop of the [src]"
+	else if(istype(W,/obj/item/weapon/kitchen/utensil/knife))
+		if(!W:butter)
+			user << "You need butter..."
+		if(src.name != "sandwich")
+			src.name = "sandwich"
+		var/obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/butter/X = new(src)
+		src.overlays += image(X.icon,icon_state = X.stateontop)
+		W:butter = 0
+		user << "You put some [X] ontop of the [src]"
+	else if(W.type == /obj/item/weapon/reagent_containers/food/custom/breadsys/bread/)
+		user.drop_item(W)
+		W.loc = src
+		if(src.name != "sandwich")
+			src.name = "sandwich"
+		overlays += image(W.icon,icon_state = W.icon_state)
+		user << "You put [W] ontop of the [src]"
