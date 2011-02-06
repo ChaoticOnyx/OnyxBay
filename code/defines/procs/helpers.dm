@@ -4,7 +4,7 @@
 		final_text = listjoin(find_list,newneedle)
 	return final_text
 
-/proc/listjoin(list/list,delimiter)
+/proc/listjoin(list/list, delimiter)
 	var
 		final_text
 		iter = 1
@@ -21,7 +21,7 @@
 
 //Bwahahaha! I am extending a built-in proc for personal gain!
 //(And a bit of nonpersonal gain, I guess)
-/proc/get_step_3d(atom/ref,dir)
+/proc/get_step_3d(atom/ref, dir)
 	if(!dir)
 		return get_turf(ref)
 	if(!dir&(UP|DOWN))
@@ -271,7 +271,7 @@
 
 	return html_encode(t)
 
-/proc/strip_html(var/t,var/limit=MAX_MESSAGE_LEN)
+/proc/strip_html(var/t, var/limit=MAX_MESSAGE_LEN)
 	t = copytext(t,1,limit)
 	var/index = findtext(t, "<")
 	while(index)
@@ -283,7 +283,7 @@
 		index = findtext(t, ">")
 	return sanitize(t)
 
-/proc/adminscrub(var/t,var/limit=MAX_MESSAGE_LEN)
+/proc/adminscrub(var/t, var/limit=MAX_MESSAGE_LEN)
 	t = copytext(t,1,limit)
 	var/index = findtext(t, "<")
 	while(index)

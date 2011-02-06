@@ -21,7 +21,6 @@ Pod/Blast Doors computer
 	src.add_fingerprint(usr)
 
 
-
 	usr.log_m("Used topic [src.name], [dd_list2text(href_list," ")]")
 	return 0
 
@@ -199,18 +198,22 @@ Pod/Blast Doors computer
 		var/target_name
 		var/target_owner
 		var/target_rank
+
 		if(src.modify)
 			target_name = src.modify.name
 		else
 			target_name = "--------"
+
 		if(src.modify && src.modify.registered)
 			target_owner = src.modify.registered
 		else
 			target_owner = "--------"
+
 		if(src.modify && src.modify.assignment)
 			target_rank = src.modify.assignment
 		else
 			target_rank = "Unassigned"
+
 		header += "Target: <a href='?src=\ref[src];modify=1'>[target_name]</a><br>"
 
 		var/scan_name
@@ -218,25 +221,35 @@ Pod/Blast Doors computer
 			scan_name = src.scan.name
 		else
 			scan_name = "--------"
+
 		header += "Confirm Identity: <a href='?src=\ref[src];scan=1'>[scan_name]</a><br>"
 		header += "<hr>"
+
 		var/body
+
 		if (src.authenticated && src.modify)
+
 			var/carddesc = "Registered: <a href='?src=\ref[src];reg=1'>[target_owner]</a><br>Assignment: [target_rank]"
+
 			var/list/alljobs = get_all_jobs() + "Custom"
 			var/jobs = ""
 			for(var/job in alljobs)
 				jobs += "<a href='?src=\ref[src];assign=[job]'>[dd_replacetext(job, " ", "&nbsp")]</a> " //make sure there isn't a line break in the middle of a job
+
 			var/accesses = ""
 			for(var/A in get_all_accesses())
 				if(A in src.modify.access)
 					accesses += "<a href='?src=\ref[src];access=[A];allowed=0'><font color=\"red\">[dd_replacetext(get_access_desc(A), " ", "&nbsp")]</font></a> "
 				else
 					accesses += "<a href='?src=\ref[src];access=[A];allowed=1'>[dd_replacetext(get_access_desc(A), " ", "&nbsp")]</a> "
+
 			body = "[carddesc]<br>[jobs]<br><br>[accesses]"
+
 		else
 			body = "<a href='?src=\ref[src];auth=1'>{Log in}</a>"
+
 		dat = "<tt>[header][body]<hr><a href='?src=\ref[src];mode=1'>Access Crew Manifest</a><br></tt>"
+
 	user << browse(dat, "window=id_com;size=700x375")
 	onclose(user, "id_com")
 	return

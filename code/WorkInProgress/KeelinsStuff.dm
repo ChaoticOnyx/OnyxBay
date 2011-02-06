@@ -124,11 +124,11 @@
 	label = str
 	usr << "\blue You set the text to '[str]'."
 
-/proc/testa()
+/*/proc/testa()
 	fake_attack(usr)
 
 /proc/testb()
-	fake_attack(input(usr) as mob in world)
+	fake_attack(input(usr) as mob in world)*/
 
 /obj/fake_attacker
 	icon = null
