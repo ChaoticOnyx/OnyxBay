@@ -45,6 +45,7 @@
 				for(var/mob/M in viewers(owner))
 					if(M != owner)
 						M.show_message("\red You hear a loud cracking sound coming from [owner.name].")
+				owner.emote("scream")
 				broken = 1
 				wound = "broken" //Randomise in future
 				perma_injury = brute_dam

@@ -42,7 +42,7 @@
 	var/t
 	for(var/obj/item/weapon/O in src)
 		t += O.w_class
-		//Foreach goto(46)
+
 	t += W.w_class
 	if (t > 20)
 		user << "You cannot fit the item inside. (Remove larger classed items)"
@@ -58,5 +58,5 @@
 	add_fingerprint(user)
 	for(var/mob/O in viewers(user, null))
 		O.show_message(text("\blue [] has added [] to []!", user, W, src), 1)
-		//Foreach goto(206)
+
 	return

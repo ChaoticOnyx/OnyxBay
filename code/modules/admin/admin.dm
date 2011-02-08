@@ -69,6 +69,19 @@
 			return
 
 	/////////////////////////////////////new ban stuff
+	if(href_list["jobban1"])
+		var/key = href_list["jobban1"]
+		var/html = "<B><center>[key]</center></B><br><table border='1'><tr><th>Rank</th><th>By</th><th>Time</th>"
+		var/DBQuery/cquery = dbcon.NewQuery("SELECT * from jobbanlog WHERE targetckey='[key]'")
+		if(!cquery.Execute())
+			log_admin("[cquery.ErrorMsg()]")
+		else
+			while(cquery.NextRow())
+				var/list/derp = cquery.GetRowData()
+				html += "<tr><td>[derp["rank"]]</td><td>[derp["ckey"]]</td><td>[derp["when"]]</td></tr>"
+		html += "</table>"
+		usr << browse(html, "window=jobbanx1x;size=475x400")
+		return
 	if(href_list["unbanf"])
 		var/key = href_list["unbanf"]
 		if(alert(usr, "Are you sure you want to unban [key]?", "Confirmation", "Yes", "No") == "Yes")
@@ -186,7 +199,7 @@
 			else
 				log_admin("[key_name(usr)] banned [key_name(M)] from [job]")
 				message_admins("\blue [key_name_admin(usr)] banned [key_name_admin(M)] from [job]", 1)
-				jobban_fullban(M, job)
+				jobban_fullban(M, job,usr)
 				href_list["jobban2"] = 1 // lets it fall through and refresh
 
 
@@ -1473,28 +1486,61 @@
 	set category = "Special Verbs"
 	set name = "Start Vote"
 	set desc="Starts vote"
-	var/confirm = alert("What vote would you like to start?", "Vote", "Restart", "Change Game Mode", "Cancel")
-	if(confirm == "Cancel")
-		return
-	if(confirm == "Restart")
-		vote.mode = 0
-	// hack to yield 0=restart, 1=changemode
-	if(confirm == "Change Game Mode")
-		vote.mode = 1
-		if(!ticker)
-			if(going)
-				world << "<B>The game start has been delayed.</B>"
+	var/confirm = input("What vote would you like to start?", "Vote", "Cancel") in list("Restart", "Custom Vote", "Change Game Mode", "Cancel")
+
+	var/message
+
+	switch(confirm)
+		if("Cancel")
+			return
+
+		if("Restart")
+			vote.mode = 0
+			message = "A vote to restart"
+
+		if("Change Game Mode")
+			vote.mode = 1
+			message = "A vote to change the game mode"
+
+			if(!ticker && going)
 				going = 0
+				world << "<B>The game start has been delayed.</B>"
+
+		if("Custom Vote")
+			vote.mode = 2
+			message = "A custom vote"
+
+			vote.enteringchoices = 1
+			vote.customname = input(usr, "What are you voting for?", "Custom Vote") as text
+			if(!vote.customname)
+				vote.enteringchoices = 0
+				vote.voting = 0
+				return
+
+			var/N = input(usr, "How many options does this vote have?", "Custom Vote", 0) as num
+			if(!N)
+				vote.enteringchoices = 0
+				vote.voting = 0
+				return
+
+			var/i
+			for(i=1; i<=N; i++)
+				var/addvote = input(usr, "What is option #[i]?", "Enter Option #[i]") as text
+				vote.choices += addvote
+
+			vote.enteringchoices = 0
+
 	vote.voting = 1
-						// now voting
+	// now voting
 	vote.votetime = world.timeofday + config.vote_period*10
 	// when the vote will end
-	spawn(config.vote_period*10)
+	spawn(config.vote_period * 10 * tick_multiplier)
 		vote.endvote()
-	world << "\red<B>*** A vote to [vote.mode?"change game mode":"restart"] has been initiated by Admin [usr.key].</B>"
+
+	world << "\red<B>*** [message] has been initiated by Admin [usr.key].</B>"
 	world << "\red     You have [vote.timetext(config.vote_period)] to vote."
 
-	log_admin("Voting to [vote.mode?"change mode":"restart round"] forced by admin [key_name(usr)]")
+	log_admin("[message] forced by admin [key_name(usr)]")
 
 	for(var/client/C)
 		if(config.vote_no_default || (config.vote_no_dead && C.mob.stat == 2))
@@ -1502,11 +1548,6 @@
 		else
 			C.vote = "default"
 
-	for(var/client/C)
-		if(config.vote_no_default || (config.vote_no_dead && C.mob.stat == 2))
-			C.vote = "none"
-		else
-			C.vote = "default"
 
 /obj/admins/proc/votekill()
 	set category = "Special Verbs"
@@ -1636,9 +1677,9 @@
 
 /obj/admins/proc/toggleaban()
 	set category = "Special Verbs"
-	set desc="Respawn basically"
+	set desc="Toggle Respawn"
 	set name="Toggle Respawn"
-	abandon_allowed = !( abandon_allowed )
+	abandon_allowed = !abandon_allowed
 	if (abandon_allowed)
 		world << "<B>You may now respawn.</B>"
 	else

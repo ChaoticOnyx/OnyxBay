@@ -130,7 +130,7 @@
 	src.timing = -1.0
 	src.yes_code = 0
 	src.icon_state = "nuclearbomb3"
-	sleep(20)
+	sleep(20*tick_multiplier)
 
 /*
 	var/turf/ground_zero = get_turf(loc)
@@ -146,10 +146,10 @@
 		ticker.mode:nuke_detonated = 1
 		ticker.mode.check_win()
 	else
-		sleep(10)
+		sleep(10*tick_multiplier)
 		world << "<B>Everyone was killed by the nuclear blast! Resetting in 30 seconds!</B>"
 
-		sleep(300)
+		sleep(300*tick_multiplier)
 		log_game("Rebooting due to nuclear destruction of station")
 		world.Reboot()
 	return

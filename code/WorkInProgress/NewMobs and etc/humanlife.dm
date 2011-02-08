@@ -161,14 +161,24 @@
 	if(resting)
 		weakened = max(weakened, 5)
 
+	// zombies can't be stunned
+	if(zombie)
+		paralysis = 0
+		weakened = 0
+
 	if(health < -100 || brain_op_stage == 4.0)
 		if(!zombie|| (toxloss +fireloss) > 100)
 			death()
-	else if(health < 0)
+		else if(zombie)
+			// dead zombies will be paralyzed
+			paralysis = max(paralysis, 5)
+
+	else if(health < 0 && !zombie)
 		if(health <= 20 && prob(1)) spawn(0) emote("gasp")
 
 		//if(!rejuv) oxyloss++
-		if(!reagents.has_reagent("inaprovaline")) oxyloss++
+		if(!reagents.has_reagent("inaprovaline"))
+			oxyloss++
 
 		if(stat != 2)	stat = 1
 		paralysis = max(paralysis, 5)
@@ -630,9 +640,8 @@
 			toxloss += 5
 		var/O2_pp = (breath.oxygen/breath.total_moles())*breath_pressure
 		if(O2_pp > 16)
-			bruteloss -= 8
-			bruteloss = max(100,bruteloss)
-			oxyloss = 0
+			for(var/datum/organ/external/org in organs2)
+				org.brute_dam = round(org.brute_dam * 0.95)
 	return ..()
 
 /*

@@ -63,7 +63,7 @@
 	player.wear_id.layer = 40
 	player.shoes = new /obj/item/clothing/shoes/black(player)
 	player.shoes.layer = 40
-	player.belt = new /obj/item/weapon/storage/utilitybelt(player)
+	player.belt = new /obj/item/weapon/storage/belt/utility(player)
 	player.belt.layer = 40
 	if(prob(50))
 		player.r_hand = new /obj/item/weapon/storage/toolbox/mechanical(player)

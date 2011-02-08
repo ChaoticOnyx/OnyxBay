@@ -207,7 +207,7 @@ proc/SetupAnomalies()
 	..()
 	processing_items += src
 	return
-/obj/item/weapon/talkingcrystal/CatchMessage(msg,mob/source)
+/obj/item/weapon/talkingcrystal/catchMessage(msg,mob/source)
 	var/Z = findtext(msg," ")
 	if(Z)
 		if(rand(50))

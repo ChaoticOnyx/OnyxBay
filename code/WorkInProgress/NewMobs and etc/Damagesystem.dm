@@ -56,38 +56,49 @@
 /mob/living/carbon/human/New()
 	..()
 	var/datum/reagents/R = new/datum/reagents(1000)
-//	random_events += "blink"
 	reagents = R
 	R.my_atom = src
 
 	if (!dna)
 		dna = new /datum/dna( null )
+
 	var/datum/organ/external/chest/chest = new /datum/organ/external/chest( src )
 	chest.owner = src
+
 	var/datum/organ/external/groin/groin = new /datum/organ/external/groin( src )
 	groin.owner = src
+
 	var/datum/organ/external/head/head = new /datum/organ/external/head( src )
 	head.owner = src
+
 	var/datum/organ/external/l_arm/l_arm = new /datum/organ/external/l_arm( src )
 	l_arm.owner = src
+
 	var/datum/organ/external/r_arm/r_arm = new /datum/organ/external/r_arm( src )
 	r_arm.owner = src
+
 	var/datum/organ/external/l_hand/l_hand = new /datum/organ/external/l_hand( src )
 	l_hand.owner = src
 	l_hand.parent = l_arm
+
 	var/datum/organ/external/r_hand/r_hand = new /datum/organ/external/r_hand( src )
 	r_hand.owner = src
 	r_hand.parent = r_arm
+
 	var/datum/organ/external/l_leg/l_leg = new /datum/organ/external/l_leg( src )
 	l_leg.owner = src
+
 	var/datum/organ/external/r_leg/r_leg = new /datum/organ/external/r_leg( src )
 	r_leg.owner = src
+
 	var/datum/organ/external/l_foot/l_foot = new /datum/organ/external/l_foot( src )
 	l_foot.owner = src
 	l_foot.parent = l_leg
+
 	var/datum/organ/external/r_foot/r_foot = new /datum/organ/external/r_foot( src )
 	r_foot.owner = src
 	r_foot.parent = r_leg
+
 	//blood
 	organs["chest"] += chest
 	organs["groin"] += groin
@@ -130,11 +141,15 @@
 	icon = stand_icon
 
 	src << "\blue Your icons have been generated!"
+
 	vessel = new/datum/reagents(560)
 	vessel.my_atom = src
 	vessel.add_reagent("blood",560)
+
 	update_clothing()
+
 	spawn(1) fixblood()
+
 /mob/living/carbon/human/proc/fixblood()
 	for(var/datum/reagent/blood/B in vessel.reagent_list)
 		if(B.id == "blood")
@@ -142,6 +157,7 @@
 			B.blood_DNA = src.dna.unique_enzymes
 			if(virus2)
 				B.virus2 = virus2.getcopy()
+
 /mob/living/carbon/human/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!( yes ) || now_pushing))
 		return
@@ -204,7 +220,8 @@
 	if(reagents.has_reagent("hyperzine")) return -1
 
 	var/health_deficiency = (health_full - health)
-	if(health_deficiency >= 40) tally += (health_deficiency / 25)
+	if(health_deficiency >= 40)
+		tally += (health_deficiency / 25)
 
 
 	for(var/organ in list("l_leg","l_foot","r_leg","r_foot"))
@@ -685,8 +702,7 @@
 			u_equip(W)
 			back = W
 			W.equipped(src, text)
-
-/*		if("headset")
+/*		if("headset") // No specialized headset slot yet. Headsets use the ears slot
 			if (ears)
 				if (emptyHand)
 					ears.DblClick()
@@ -1518,13 +1534,23 @@
 						affecting = organs["[def_zone]"]
 					if (!affecting.destroyed)
 						//Attack with zombie
-						if(!zombie && !zombifying && prob(60))
-							for(var/mob/O in viewers(src, null))
-								O.show_message(text("\red <B>[] has bit []!</B>", M, src), 1)
-								affecting.take_damage(5,0)
-							if(prob(50))
+						if(!zombie && !zombifying && prob(20))
+							// lower chance if wearing a suit
+							var/pr = 0
+							if(istype(wear_suit, /obj/item/clothing/suit/armor))
+								pr = 60
+							else if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
+								pr = 70
+							else if(istype(wear_suit, /obj/item/clothing/suit))
+								pr = 30
+							if (prob(pr))
+								for(var/mob/O in viewers(src, null))
+									O.show_message(text("\red <B>[]'s suit protects [] from the bite!</B>", src, src), 1)
+							else
+								for(var/mob/O in viewers(src, null))
+									O.show_message(text("\red <B>[] has bit []!</B>", M, src), 1)
 								zombifying = 1
-								zombietime = rand(50,200)
+								zombietime = rand(600,1800)
 								UpdateZombieIcons()
 						else
 							var/mes = pick(list("clawed","scraped"))
@@ -2352,6 +2378,8 @@
 	del(body_lying)
 	body_lying = list()
 
+	// FIXME: code that modifies gamelogic doesn't belong in a proc
+	// called UpdateDamageIcon
 	bruteloss = 0
 	fireloss = 0
 
@@ -2360,6 +2388,9 @@
 			O.update_icon()
 			bruteloss += O.brute_dam
 			fireloss += O.burn_dam
+
+			if(zombie)
+				O.damage_state = "30"
 
 			var/icon/DI = new /icon('dam_human.dmi', O.damage_state)			// the damage icon for whole human
 			DI.Blend(new /icon('dam_mask.dmi', O.icon_name), ICON_MULTIPLY)		// mask with this organ's pixels
@@ -2447,6 +2478,7 @@
 	for(var/mob/O in viewers(src, null))
 		O.show_message(text("\red <B>[src] seizes up and falls limp, \his eyes dead and lifeless...</B>"), 1)
 	UpdateZombieIcons()
+	UpdateDamageIcon()
 
 
 /proc/UpdateZombieIcons()

@@ -647,9 +647,9 @@
 	icon_deny = "sec-deny"
 	req_access_txt = "1"
 	points = 10
-	product_paths = "/obj/item/clothing/head/helmet;/obj/item/clothing/suit/armor/vest;/obj/item/device/radio/headset/security;/obj/item/clothing/glasses/sunglasses;/obj/item/clothing/glasses/thermal;/obj/item/weapon/handcuffs;/obj/item/weapon/baton;/obj/item/weapon/gun/energy/taser_gun;/obj/item/weapon/flashbang;/obj/item/device/flash"
+	product_paths = "/obj/item/clothing/head/helmet;/obj/item/clothing/suit/armor/vest;/obj/item/weapon/storage/belt/security;/obj/item/device/radio/headset/security;/obj/item/clothing/glasses/sunglasses;/obj/item/weapon/handcuffs;/obj/item/weapon/baton;/obj/item/weapon/gun/energy/taser_gun;/obj/item/weapon/flashbang;/obj/item/device/flash"
 	//product_amounts = "8;5;4"
-	product_prices = "3;3;1;1;4;1;4;4;3;3"
+	product_prices = "3;3;2;1;1;1;4;4;3;3"
 	product_hidden = "/obj/item/kitchen/donut_box"
 	hidden_prices = "3"
 	charge_type = "security"
@@ -747,7 +747,7 @@
 	icon_deny = "engi-deny"
 	req_access_txt = "10"
 	points = 10
-	product_paths = "/obj/item/weapon/storage/utilitybelt;/obj/item/clothing/glasses/meson;/obj/item/clothing/gloves/yellow;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar;/obj/item/weapon/wirecutters;/obj/item/device/multitool;/obj/item/weapon/wrench;/obj/item/device/t_scanner;/obj/item/weapon/CableCoil/power;/obj/item/weapon/circuitry;/obj/item/weapon/cell;/obj/item/weapon/weldingtool;/obj/item/clothing/head/helmet/welding;/obj/item/weapon/light/tube;/obj/item/clothing/suit/fire"
+	product_paths = "/obj/item/weapon/storage/belt/utility;/obj/item/clothing/glasses/meson;/obj/item/clothing/gloves/yellow;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar;/obj/item/weapon/wirecutters;/obj/item/device/multitool;/obj/item/weapon/wrench;/obj/item/device/t_scanner;/obj/item/weapon/CableCoil/power;/obj/item/weapon/circuitry;/obj/item/weapon/cell;/obj/item/weapon/weldingtool;/obj/item/clothing/head/helmet/welding;/obj/item/weapon/light/tube;/obj/item/clothing/suit/fire"
 	//product_amounts = "4;4;4;4;12"
 	product_prices = "2;1;2;1;1;2;2;1;1;1;2;2;1;1;1;2"
 	product_hidden = ""

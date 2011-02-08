@@ -10,6 +10,13 @@
 	anchored = 1 //About time someone fixed this.
 	density = 1
 
+/obj/machinery/sleep_console/New()
+	..()
+	spawn( 10 )
+		src.connected = locate(/obj/machinery/sleeper, get_step(src, WEST))
+		return
+	return
+
 /obj/machinery/sleep_console/ex_act(severity)
 	switch(severity)
 		if(1.0)
@@ -22,13 +29,6 @@
 				del(src)
 				return
 		else
-	return
-
-/obj/machinery/sleep_console/New()
-	..()
-	spawn( 5 )
-		src.connected = locate(/obj/machinery/sleeper, get_step(src, WEST))
-		return
 	return
 
 /obj/machinery/sleep_console/attack_ai(mob/user as mob)
@@ -52,7 +52,7 @@
 					t1 = "Unconscious"
 				if(2)
 					t1 = "*dead*"
-				else
+
 			dat += text("[]\tHealth %: [] ([])</FONT><BR>", (occupant.health > 50 ? "<font color='blue'>" : "<font color='red'>"), occupant.health, t1)
 			dat += text("[]\t-Brute Damage %: []</FONT><BR>", (occupant.bruteloss < 60 ? "<font color='blue'>" : "<font color='red'>"), occupant.bruteloss)
 			dat += text("[]\t-Respiratory Damage %: []</FONT><BR>", (occupant.oxyloss < 60 ? "<font color='blue'>" : "<font color='red'>"), occupant.oxyloss)
@@ -70,6 +70,7 @@
 /obj/machinery/sleep_console/Topic(href, href_list)
 	if(..())
 		return
+
 	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
 		usr.machine = src
 		if (href_list["rejuv"])
@@ -78,6 +79,7 @@
 		if (href_list["refresh"])
 			src.updateUsrDialog()
 		src.add_fingerprint(usr)
+
 	return
 
 /obj/machinery/sleep_console/process()
@@ -108,8 +110,8 @@
 	var/mob/occupant = null
 	anchored = 1
 
-/obj/machinery/sleeper/allow_drop()
-	return 0
+/*/obj/machinery/sleeper/allow_drop()
+	return 0*/
 
 /obj/machinery/sleeper/process()
 	src.updateDialog()
@@ -248,7 +250,7 @@
 		user << text("[]\t -Respiratory Damage %: []", (src.occupant.oxyloss < 60 ? "\blue " : "\red "), src.occupant.oxyloss)
 		user << text("[]\t -Toxin Content %: []", (src.occupant.toxloss < 60 ? "\blue " : "\red "), src.occupant.toxloss)
 		user << text("[]\t -Burn Severity %: []", (src.occupant.fireloss < 60 ? "\blue " : "\red "), src.occupant.fireloss)
-		user << "\blue Expected time till occupant can safely awake: (note: If health is below 20% these times are inaccurate)"
+		user << "\blue Expected time until the occupant can safely awake: (note: If health is below 20% these times are inaccurate)"
 		user << text("\blue \t [] second\s (if around 1 or 2 the sleeper is keeping them asleep.)", src.occupant.paralysis / 5)
 	else
 		user << "\blue There is no one inside!"

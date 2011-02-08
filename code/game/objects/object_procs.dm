@@ -1,3 +1,32 @@
+// Alters the emote of a mob from emote() - Abi79
+/obj/proc/alterMobEmote(var/message, var/type, var/m_type, var/mob/living/user)
+	return message
+
+// Overrides the spoken message of a living mob from say() - Abi79
+/obj/proc/overrideMobSay(var/message, var/mob/living/user)
+	return "not used"
+
+// Catches a message from say() - Headswe
+obj/proc/catchMessage(msg,mob/source)
+	return
+
+/*/obj/machinery/door/catchMessage(msg,mob/source)
+	if(!findtext(msg,"door,open") && !findtext(msg,"door,close"))
+		return
+	if(istype(source,/mob/living/carbon/human))
+		if(!locate(source) in view(3,src))
+			return
+		if(src.allowed(source))
+			for(var/mob/M in viewers(src))
+				M << "[src]: Access Granted"
+			if(src.density && findtext(msg,"door,open"))
+				open()
+			else if(findtext(msg,"door,close"))
+				close()
+		else
+			for(var/mob/M in viewers(src))
+				M << "[src]: Access Denied"*/
+
 /obj/proc/updateUsrDialog()
 	var/list/nearby = viewers(1, src)
 	for(var/mob/M in nearby)
@@ -17,7 +46,6 @@
 		if ((M.client && M.machine == src))
 			src.attack_hand(M)
 	AutoUpdateAI(src)
-
 
 /obj/item/proc/updateSelfDialog()
 	var/mob/M = src.loc

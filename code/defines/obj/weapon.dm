@@ -345,32 +345,6 @@
 	item_state = "clipboard"
 
 
-/obj/item/weapon/flashbang
-	desc = "It is set to detonate in 3 seconds."
-	name = "flashbang"
-	icon = 'grenade.dmi'
-	icon_state = "flashbang"
-	var/state = null
-	var/det_time = 30.0
-	w_class = 2.0
-	item_state = "flashbang"
-	throw_speed = 4
-	throw_range = 20
-	flags = FPRINT | TABLEPASS | CONDUCT | ONBELT
-
-/obj/item/weapon/empgrenade
-	desc = "It is set to detonate in 5 seconds."
-	name = "emp grenade"
-	var/state = null
-	var/det_time = 50.0
-	w_class = 2.0
-	icon = 'device.dmi'
-	icon_state = "emp"
-	item_state = "emp"
-	throw_speed = 4
-	throw_range = 20
-	flags = FPRINT | TABLEPASS | CONDUCT | ONBELT
-
 /obj/item/weapon/flasks
 	name = "flask"
 	icon = 'Cryogenic2.dmi'
@@ -715,7 +689,6 @@
 	w_class = 1.0
 	throw_speed = 3
 	throw_range = 15
-	layer = 4
 	var/see_face = 1
 	var/body_parts_covered = HEAD
 	var/protective_temperature = T0C + 10
@@ -919,14 +892,6 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	throw_speed = 5
 	throw_range = 20
 	m_amt = 1875
-
-/obj/item/weapon/rubber_chicken
-	name = "Rubber Chicken"
-	desc = "A rubber chicken, isn't that hilarious?"
-	icon = 'items.dmi'
-	icon_state = "rubber_chicken"
-	item_state = "rubber_chicken"
-	w_class = 2.0
 
 /obj/item/weapon/screwdriver
 	name = "screwdriver"
@@ -1298,7 +1263,9 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 /obj/item/weapon/kitchen/utensil/knife
 	name = "knife"
 	icon_state = "knife"
-	force = 10.0
+	force = 9.0
+	slash = 1
+	var/butter = 0
 	throwforce = 10.0
 
 /obj/item/weapon/kitchen/utensil/spoon
@@ -1334,11 +1301,11 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	m_amt = 10000
 	g_amt = 5000
 
-
 /obj/item/weapon/circular_saw
 	name = "circular saw"
 	icon = 'surgery.dmi'
 	icon_state = "saw3"
+	item_state = "saw1" // Naming needs to be cleaned up for the saw icons
 	flags = FPRINT | TABLEPASS | CONDUCT
 	force = 15.0
 	w_class = 1.0

@@ -3,7 +3,7 @@
 		return move_camera_by_click()
 	if(usr.stat || usr.restrained() || usr.lying)
 		return ..()
-	/*
+
 	if(usr.hand && istype(usr.l_hand, /obj/item/weapon/flamethrower))
 		var/turflist = getline(usr,src)
 		var/obj/item/weapon/flamethrower/F = usr.l_hand
@@ -14,8 +14,6 @@
 		var/obj/item/weapon/flamethrower/F = usr.r_hand
 		F.flame_turf(turflist)
 		..()
-	else
-	*/
 	return ..()
 
 /turf/New()
@@ -291,18 +289,18 @@ turf/simulated/wall/bullet_act(flag,dir)
 /turf/simulated/wall/attack_hand(mob/user as mob)
 	if ((user.mutations & 8))
 		if (prob(40))
-			usr << text("\blue You smash through the wall.")
+			user << text("\blue You smash through the wall.")
 			dismantle_wall(1)
 			return
 		else
-			usr << text("\blue You punch the wall.")
+			user << text("\blue You punch the wall.")
 			return
 	if(ishuman(user) && user:zombie)
 		Zombiedamage += rand(5,7)
-		usr << text("\blue You claw the wall.")
+		user << text("\blue You claw the wall.")
 		if(Zombiedamage > 80)
 			dismantle_wall(1)
-			usr << text("\blue You smash through the wall.")
+			user << text("\blue You smash through the wall.")
 
 	user << "\blue You push the wall but nothing happens!"
 	playsound(src.loc, 'Genhit.ogg', 25, 1)

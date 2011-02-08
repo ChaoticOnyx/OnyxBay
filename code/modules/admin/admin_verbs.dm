@@ -31,6 +31,7 @@
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /client/proc/addchange
 			src.verbs += /proc/possess
+			src.verbs += /client/proc/jobban_panel
 			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
@@ -126,9 +127,10 @@
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
+			src.verbs += /client/proc/jobban_panel
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
-
+			src.verbs += /client/proc/testjson
 			src.verbs += /mob/living/proc/CheckHandcuff
 
 			src.verbs += /client/proc/addchange
@@ -229,6 +231,7 @@
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/jobban_panel
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/addchange
@@ -672,7 +675,11 @@
 	if (src.holder)
 		src.holder.invite_panel()
 	return
-
+/client/proc/jobban_panel()
+	set name = "Jobban Panel"
+	set category = "Admin"
+	if (src.holder)
+		src.holder.showjobbans()
 /client/proc/game_panel()
 	set name = "Game Panel"
 	set category = "Admin"
@@ -883,7 +890,7 @@
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"
-	set name = "Send Nanotrasen (admin) shuttle"
+	set name = "Send NanoTrasen (admin) shuttle"
 	var/area/from = locate(/area/nanotrasenshuttle)
 	var/area/dockingbay/admin/dest = locate(/area/dockingbay/admin)
 	if(dest.shuttle == "")
@@ -894,7 +901,7 @@
 
 /client/proc/returnadminshuttle()
 	set category = "Roleplay"
-	set name = "Return Nanotrasen (admin) shuttle"
+	set name = "Return NanoTrasen (admin) shuttle"
 	var/area/dockingbay/admin/from = locate(/area/dockingbay/admin)
 	if(from.shuttle == "nanotrasen")
 		var/area/dest = locate(/area/nanotrasenshuttle)
@@ -903,12 +910,12 @@
 
 /client/proc/createofficial(var/name as text)
 	set category = "Roleplay"
-	set name = "Create Nanotrasen official"
+	set name = "Create NanoTrasen official"
 	var/area/A
 	for(var/area/nanotrasenshuttle/b in world)
 		A = b
 
-	var/job = input ("What job would you like to give your Nanotrasen char") in list ("Agent","Overseer","Syndicate Management Taskforce","Prisoner Management")
+	var/job = input ("What job would you like to give your NanoTrasen char") in list ("Overseer","Syndicate Management Taskforce","Prisoner Management")
 	var/mob/living/carbon/human/new_character = new /mob/living/carbon/human(src)
 	new_character.loc = pick(get_area_turfs(A))
 	new_character.dna.ready_dna(new_character)

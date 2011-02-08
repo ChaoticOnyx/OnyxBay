@@ -14,7 +14,7 @@
 		usr << "I don't feel strong enough without my hat."
 		return
 	usr.verbs -= /client/proc/blind
-	spawn(300)
+	spawn(300*tick_multiplier)
 		usr.verbs += /client/proc/blind
 	usr.say("STI KALY!")
 	var/obj/overlay/B = new /obj/overlay( M.loc )
@@ -25,12 +25,12 @@
 	B.density = 0
 	B.layer = 4
 	M.canmove = 0
-	spawn(5)
+	spawn(5*tick_multiplier)
 		del(B)
 		M.canmove = 1
 	M << text("\blue Your eyes cry out in pain!")
 	M.disabilities |= 1
-	spawn(300)
+	spawn(300*tick_multiplier)
 		M.disabilities &= ~1
 	M.eye_blind = 10
 	M.eye_blurry = 20

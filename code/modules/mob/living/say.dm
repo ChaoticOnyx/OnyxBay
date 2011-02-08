@@ -1,38 +1,35 @@
 /mob/living/say(var/message)
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 
-	if (!message)
+	// sdisabilities & 2 is the mute disability
+	if (!message || muted || stat == 1 || istype(wear_mask, /obj/item/clothing/mask/muzzle) || sdisabilities & 2)
 		return
 
 	log_say("[name]/[key] : [message]")
 
-	if (muted)
-		return
-
 	if (stat == 2)
 		return say_dead(message)
-
-	// wtf?
-	if (stat)
-		return
 
 	// emotes
 	if (copytext(message, 1, 2) == "*" && !stat)
 		return emote(copytext(message, 2))
 
-	var/alt_name = ""
+
+	// In case an object applies custom effects to the spoken message.
+	// This offers more flexibility (overwrite brainloss effects, headset stunned check etc.) here than if it were inserted further below.
+
+	// However, if you need to copy-paste a lot of the code below, consider whether it would be better to insert another hook underneath.
+	if(isobj(src.loc))
+		if(src.loc:overrideMobSay(message, src) != "not used") // if the obj has a custom effect
+			return
+
+
+	var/alt_name = "" // In case your face is burnt or you're wearing a mask
 	if (istype(src, /mob/living/carbon/human) && name != real_name)
 		if (src:wear_id && src:wear_id:registered)
 			alt_name = " (as [src:wear_id:registered])"
 		else
 			alt_name = " (as Unknown)"
-
-	// Mute disability
-	if (sdisabilities & 2)
-		return
-
-	if (istype(wear_mask, /obj/item/clothing/mask/muzzle))
-		return
 
 	var/italics = 0
 	var/message_range = null
@@ -56,17 +53,15 @@
 			message_mode = "left hand"
 			message = copytext(message, 3)
 
-		/*else if (copytext(message, 1, 3) == ":w")
-			message_mode = "whisper"
-			message = copytext(message, 3)*/
-
 		else if (copytext(message, 1, 3) == ":i")
 			message_mode = "intercom"
 			message = copytext(message, 3)
 		else if (copytext(message, 1 ,3) == ":h")
 			message_mode = "security_headset"
 			message = copytext(message, 3)
-	//
+
+	if(src.stunned > 0)
+		message_mode = "" //Stunned people shouldn't be able to physically turn on their radio/hold down the button to speak into it
 
 	message = trim(message)
 
@@ -122,11 +117,6 @@
 				message_range = 1
 				italics = 1
 
-			//Might put this back if people are used to the old system.
-			/*if ("whisper")
-				message_range = 1
-				italics = 1*/
-
 			if ("intercom")
 				for (var/obj/item/device/radio/intercom/I in view(1, null))
 					I.talk_into(src, message)
@@ -156,8 +146,12 @@
 			heard_a += M
 		else
 			heard_b += M
-	var/renderedold2 = message
+
+	for(var/obj/O in view(3,src))
+		O.catchMessage(message,src)
+
 	var/rendered = null
+
 	if (length(heard_a))
 		var/message_a = say_quote(message)
 		var/test = say_test(message)
@@ -170,11 +164,12 @@
 		else
 			rendered = "<span class='game say'><span class='name'>[real_name]</span>[alt_name] <span class='message'>[message_a]</span></span>"
 
-		for (var/mob/M in heard_a)
+		for (var/mob/M in heard_a) // Sending over the message to mobs who can understand
 			M.show_message(rendered, 6)
 			M << test2
 		spawn(30) del(test2)
-	var/renderedold = rendered
+
+	var/renderedold = rendered // Used for the voice recorders below
 
 	if (length(heard_b))
 		var/message_b
@@ -193,7 +188,7 @@
 
 		rendered = "<span class='game say'><span class='name'>[voice_name]</span> <span class='message'>[message_b]</span></span>"
 
-		for (var/mob/M in heard_b)
+		for (var/mob/M in heard_b) // Sending over the message to mobs who can't understand
 			M.show_message(rendered, 6)
 
 	message = say_quote(message)
@@ -210,6 +205,7 @@
 				continue
 			if (C.mob.stat > 1 && !(C.mob in heard_a))
 				C.mob.show_message(rendered, 2)
+
 	for(var/obj/item/weapon/recorder/R in oview(message_range,src))
 		if(R.recording)
 			over
@@ -222,8 +218,7 @@
 			if(istype(src, /mob/living/carbon/human))
 				R.disk.memory["[id]"] += renderedold
 				R.disk.mobtype["[id]"] += "human"
-	for(var/obj/O in view(3,src))
-		O.CatchMessage(renderedold2,src)
+
 	for(var/mob/M in viewers(message_range,src))
 		var/obj/item/weapon/implant/I = locate() in M.contents
 		if(I)
@@ -250,5 +245,6 @@
 				if(istype(src,/mob/living/carbon/alien))
 					R.disk.memory["[id]"] += renderedold
 					R.disk.mobtype["[id]"] += "alien"
+
 //headfindback
 	log_m("Said [message]")

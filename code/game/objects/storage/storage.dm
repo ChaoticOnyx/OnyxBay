@@ -10,17 +10,19 @@
 	src.boxes.icon_state = "block"
 	src.boxes.screen_loc = "7,7 to 10,8"
 	src.boxes.layer = 19
+
 	src.closer = new /obj/screen/close(  )
 	src.closer.master = src
 	src.closer.icon_state = "x"
 	src.closer.layer = 20
+
 	spawn( 5 )
 		src.orient_objs(7, 8, 10, 7)
 		return
+
 	return
 
 /obj/item/weapon/storage/attackby(obj/item/weapon/W as obj, mob/user as mob)
-
 	if(can_hold.len)
 		var/ok = 0
 		for(var/A in can_hold)
@@ -31,19 +33,25 @@
 
 	if (src.contents.len >= 7)
 		return
+
 	if ((W.w_class >= 3 || istype(W, /obj/item/weapon/storage) || src.loc == W))
 		return
+
 	user.u_equip(W)
 	W.loc = src
+
 	if ((user.client && user.s_active != src))
 		user.client.screen -= W
+
 	src.orient2hud(user)
 	W.dropped(user)
 	add_fingerprint(user)
+
 	if (istype(W, /obj/item/weapon/gun/energy/crossbow)) return //STEALTHY
+
 	for(var/mob/O in viewers(user, null))
 		O.show_message(text("\blue [] has added [] to []!", user, W, src), 1)
-		//Foreach goto(139)
+
 	return
 
 /obj/item/weapon/storage/dropped(mob/user as mob)

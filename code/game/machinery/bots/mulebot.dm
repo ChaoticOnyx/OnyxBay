@@ -387,12 +387,16 @@
 					if(istype(usr.equipped(), /obj/item/weapon/wirecutters))
 						var/wirebit = text2num(href_list["wire"])
 						wires &= ~wirebit
+						if(src.cell && src.cell.charge > 0)
+							Electrocute(usr)
 					else
 						usr << "\blue You need wirecutters!"
 				if("wiremend")
 					if(istype(usr.equipped(), /obj/item/weapon/wirecutters))
 						var/wirebit = text2num(href_list["wire"])
 						wires |= wirebit
+						if(src.cell && src.cell.charge > 0)
+							Electrocute(usr)
 					else
 						usr << "\blue You need wirecutters!"
 

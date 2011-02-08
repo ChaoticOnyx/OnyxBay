@@ -1,4 +1,4 @@
-/datum/event/viralinfection
+/*/datum/event/viralinfection
 
 	Announce()
 		var/virus_type = pick(/datum/disease/cold, /datum/disease/flu, /datum/disease/fake_gbs)
@@ -12,3 +12,4 @@
 
 	Tick()
 		ActiveFor = Lifetime //killme
+		*/

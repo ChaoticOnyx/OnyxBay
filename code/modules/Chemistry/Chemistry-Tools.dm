@@ -724,6 +724,8 @@
 	attack_self(mob/user as mob)
 		return
 	attack(mob/M as mob, mob/user as mob, def_zone)
+		if(!in_range(src, user))
+			return
 		if(!src.amount)
 			user << "\red None of [src] left, oh no!"
 			del(src)
@@ -1263,15 +1265,21 @@
 //Snacks
 /obj/item/weapon/reagent_containers/food/snacks/candy
 	name = "candy"
-	desc = "Man, that shit looks good. I bet it's got nougat. Fuck."
+	desc = "Man, that looks good. I bet it's got nougat."
 	icon_state = "candy"
 	heal_amt = 1
+
+/obj/item/weapon/reagent_containers/food/snacks/candy/MouseDrop(mob/user as mob)
+	return src.attack(user, user)
 
 /obj/item/weapon/reagent_containers/food/snacks/chips
 	name = "chips"
 	desc = "Commander Riker's What-The-Crisps"
 	icon_state = "chips"
 	heal_amt = 1
+
+/obj/item/weapon/reagent_containers/food/snacks/chips/MouseDrop(mob/user as mob)
+	return src.attack(user, user)
 
 /obj/item/weapon/reagent_containers/food/snacks/donut
 	name = "donut"
@@ -1401,7 +1409,8 @@
 	amount = 5
 	heal_amt = 2
 
-
+/obj/item/weapon/reagent_containers/food/snacks/waffles/MouseDrop(mob/user as mob)
+	return src.attack(user, user)
 
 /obj/item/weapon/reagent_containers/food/snacks/plump
 	name = "Plump Helmets"

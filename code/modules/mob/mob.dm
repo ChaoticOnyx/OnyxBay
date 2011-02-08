@@ -53,6 +53,9 @@
 /mob/var/disabilities = 0
 /mob/var/atom/movable/pulling = null
 /mob/var/stat = 0.0
+#define STAT_ALIVE 0
+#define STAT_ASLEEP 1
+#define STAT_DEAD 2
 /mob/var/next_move = null
 /mob/var/prev_move = null
 /mob/var/monkeyizing = null
@@ -390,10 +393,7 @@ mob/verb/turnwest()
 		else
 	return
 
-/proc/stars(n, pr)
-
-	if (pr == null)
-		pr = 25
+/proc/stars(n, pr = 25)
 	if (pr <= 0)
 		return null
 	else
@@ -823,8 +823,8 @@ mob/verb/turnwest()
 
 	switch(name)
 		if("map")
-
 			usr.clearmap()
+
 		if("maprefresh")
 			var/obj/machinery/computer/security/seccomp = usr.machine
 
@@ -1776,6 +1776,8 @@ mob/verb/turnwest()
 	else if(istype(mob, /mob/living/carbon))
 		if (mob:back && istype(mob:back, /obj/item/weapon/tank/jetpack))
 			mob:back:move_z(UP, mob)
+		else if(isobj(mob.loc))
+			mob.loc:relaymove(mob,UP)
 		else
 			mob:swap_hand()
 
@@ -1789,6 +1791,8 @@ mob/verb/turnwest()
 			AIMoveZ(DOWN, mob)
 	else if(istype(mob, /mob/living/carbon) && mob:back && istype(mob:back, /obj/item/weapon/tank/jetpack))
 		mob:back:move_z(DOWN, mob)
+	else if(isobj(mob.loc))
+		mob.loc:relaymove(mob,DOWN)
 	else if (W)
 		W.attack_self(mob)
 
@@ -1969,7 +1973,7 @@ mob/verb/turnwest()
 		alert(src,"You have been banned.\nReason : [isbanned]","Ban","Ok")
 		del(src)
 	if(IsGuestKey(src.key))
-		alert(src,"Baystation12 don't allow guest accounts to play. Please go to http:\\www.byond.com and register for a key.","Guest","Ok")
+		alert(src,"Baystation12 doesn't allow guest accounts to play. Please go to http:\\www.byond.com and register for a key.","Guest","Ok")
 		del(src)
 	if (((world.address == address || !(address)) && !(host)))
 		host = key
@@ -1991,6 +1995,7 @@ mob/verb/turnwest()
 	//////////////End Strumpetplaya Add
 
 //new admin bit - Nannek
+
 
 	if (admins.Find(ckey))
 		holder = new /obj/admins(src)

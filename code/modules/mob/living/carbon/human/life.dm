@@ -1,3 +1,5 @@
+// NOT INCLUDED!
+
 /mob/living/carbon/human/handle_regular_hud_updates()
 
 	if (stat == 2 || mutations & 4)

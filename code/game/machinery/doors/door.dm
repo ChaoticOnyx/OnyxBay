@@ -101,14 +101,17 @@
 	if (istype(user, /mob/living/carbon/human) && user:zombie)
 		user << "\blue You claw the airlock"
 		Zombiedamage += rand(4,8)
-		if(Zombiedamage > 80)
+		if(Zombiedamage > 80 || (locked && Zombiedamage > 200))
+			src.locked = 0
 			user << "\blue You break the circuitry"
 			src.operating = -1
 			flick("door_spark", src)
 			sleep(6)
 			open()
 			return 1
-		return
+		operating = 1
+		spawn(6) operating = 0
+		return 1
 
 	if (!src.requiresID())
 		//don't care who they are or what they have, act as if they're NOTHING
@@ -178,7 +181,7 @@
 		src.operating = 1
 
 	animate("opening")
-	sleep(10)
+	sleep(6)
 	src.density = 0
 	update_icon()
 
@@ -205,7 +208,44 @@
 
 	animate("closing")
 	src.density = 1
-	sleep(10)
+	spawn(4)
+		if(!istype(src, /obj/machinery/door/window))
+			for(var/mob/living/L in src.loc) // Crush mobs and move them out of the way
+
+				if(src.forcecrush) // Save an AI, crush a limb
+					var/limbname = pick("l arm", "r arm", "l hand","r hand", "l foot", "r foot")
+					var/limbdisplay
+
+					for(var/organ in L:organs)
+						var/datum/organ/external/temp = L:organs["[organ]"]
+						if (istype(temp, /datum/organ/external) && temp.name == limbname)
+							limbdisplay = temp.display_name // Take the name for down below
+							temp.take_damage(60, 0) //OH GOD IT HURTS
+							break
+
+					L << "\red The airlock crushes your [limbdisplay]!"
+					for(var/mob/O in viewers(L, null))
+						O.show_message("\red The airlock crushes [L.name]'s [limbdisplay]!", 1)
+
+
+				else
+					L << "\red The airlock forces you out of the way!" //Lucky you
+					for(var/mob/O in viewers(L, null))
+						O.show_message("\red The airlock pushes [L.name] out of the way!", 1)
+
+				var/list/lst = list(NORTH,SOUTH,EAST,WEST)
+				var/turf/T = get_random_turf(L, lst)
+				if(T)
+					L.loc = T
+
+			for(var/obj/item/I in src.loc) // Move items out of the way
+				if(!I.anchored)
+					var/list/lst = list(NORTH,SOUTH,EAST,WEST)
+					var/turf/T = get_random_turf(I, lst)
+					if(T)
+						I.loc = T
+
+	sleep(6)
 	update_icon()
 
 	if (src.visible && (!istype(src, /obj/machinery/door/airlock/glass)))

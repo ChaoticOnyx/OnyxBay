@@ -58,3 +58,41 @@
 		if(ticker)
 			return 1
 		return 2
+
+
+
+world/proc/makejson()
+	if(!makejson)
+		return
+	fdel("/home/bay12/public_html/info.json")
+		//usr << "Error cant delete json"
+	//else
+		//usr << "Deleted json in public html"
+	fdel("info.json")
+		//usr << "error cant delete local json"
+	//else
+		//usr << "Deleted local json"
+	var/F = file("info.json")
+	var/mode
+	if(ticker.current_state == 1)
+		mode = "Round Setup"
+	else if(ticker.hide_mode)
+		mode = "SECRET"
+	else
+		mode = master_mode
+	var/playerscount = 0
+	var/players = ""
+	var/admins = "no"
+	for(var/client/C)
+		playerscount++
+		players += "[C.key];"
+		if(C.holder)
+			if(!C.stealth)
+				admins = "yes"
+	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\"}"
+	if(fcopy("info.json","/home/bay12/public_html/info.json"))
+		//usr << "copied json"
+	else
+		//usr << "copy fail"
+client/proc/testjson()
+ 	world.makejson()

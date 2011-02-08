@@ -14,7 +14,7 @@
 		usr << "I don't feel strong enough without my hat."
 		return
 	usr.verbs -= /client/proc/knock
-	spawn(100)
+	spawn(100*tick_multiplier)
 		usr.verbs += /client/proc/knock
 	usr.say("AULIE OXIN FIERA")
 	for(var/obj/machinery/door/G in oview(3))

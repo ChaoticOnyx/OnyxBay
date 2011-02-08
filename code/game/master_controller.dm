@@ -1,5 +1,6 @@
 var/global/datum/controller/game_controller/master_controller //Set in world.New()
 var/ticker_debug
+var/updatetime
 datum/controller/game_controller
 	var/processing = 1
 
@@ -160,7 +161,9 @@ datum/controller/game_controller
 		for(var/turf/t in processing_turfs)
 			ticker_debug = "turf processing"
 			t.process()
-
+		if(world.timeofday >= updatetime)
+			world.makejson()
+			updatetime = world.timeofday + 3000
 		for(var/obj/O in processing_others) // The few exceptions which don't fit in the above lists
 			ticker_debug = "[O] [O.name] processing"
 			O:process()
@@ -169,7 +172,7 @@ datum/controller/game_controller
 
 		ticker.process()
 
-		sleep(world.timeofday+10-start_time)
+		sleep((world.timeofday+10-start_time) * tick_multiplier)
 
 		spawn process()
 

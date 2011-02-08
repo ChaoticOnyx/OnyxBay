@@ -25,7 +25,7 @@ var/global/datum/controller/gameticker/ticker
 	world << "Please, setup your character and select ready. Game will start in [pregame_timeleft] seconds"
 
 	while(current_state == GAME_STATE_PREGAME)
-		sleep(10)
+		sleep(10*tick_multiplier)
 		if(delay_start == 0)
 			pregame_timeleft--
 
@@ -100,7 +100,7 @@ var/global/datum/controller/gameticker/ticker
 
 	spawn(0)
 		while(1)
-			sleep(10000)
+			sleep(10000*tick_multiplier)
 			SpawnEvent()
 
 	spawn master_controller.process()
@@ -144,17 +144,16 @@ var/global/datum/controller/gameticker/ticker
 		for(var/datum/shuttle/s in shuttles)
 			s.process()
 
-
 		if(mode.check_finished())
 			current_state = GAME_STATE_FINISHED
 
 			spawn
 				declare_completion()
 
-			spawn(50)
+			spawn(50*tick_multiplier)
 				world << "\blue <B>Restarting in 25 seconds</B>"
 
-				sleep(250)
+				sleep(250*tick_multiplier)
 				world.Reboot()
 
 

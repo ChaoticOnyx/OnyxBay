@@ -57,7 +57,7 @@ datum/bookhand
 datum/bookhand/New()
 	BOOKHAND = src // I shouldent need to fucking do this.
 	GetBooks()
-	world.log << "Loaded Books: [src.books.len]"
+//	world.log << "Loaded Books: [src.books.len]"
 	Update()
 datum/bookhand/proc/GetBooks()
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT * FROM `books`")
@@ -79,12 +79,14 @@ datum/bookhand/proc/MakeBook(var/title,var/author,var/text,var/cat)
 datum/bookhand/proc/Update()
 	for(var/obj/machinery/bookcase/B in world)
 		B.update()
-		world.log << "Updateing [B]"
+		//world.log << "Updating [B]"
+
 obj/machinery/bookcase
 	name = "Fiction Bookcase"
 	icon = 'computer.dmi'
 	icon_state = "bookcase"
 	density = 1
+	anchored = 1
 	var/cat = Fiction
 
 obj/machinery/bookcase/engi
@@ -127,15 +129,19 @@ obj/machinery/bookcase/attack_hand(mob/user)
 	if(in_range(src,user))
 		B.loc = user.loc
 obj/machinery/bookcase/attackby(obj/item/weapon/book/B,mob/user)
-	if(B)
+	if(istype(B))		//Change by Mloc: Books should be the only things to go in bookcases!
+		user << "\blue You add the \"[B.name]\" to the [src.name]."
 		user.drop_item()
 		B.loc = src
+	else
+		user << "\red You can't add \a [B.name] to a bookshelf!"
 obj/machinery/writersdesk
 	name = "Writer Desk"
 	desc = "A desk with various tools to write a book"
 	icon = 'structures.dmi'
 	icon_state = "writers"
 	density = 1
+	anchored = 1
 obj/machinery/writersdesk/attack_hand(mob/user)
 	switch(alert("Would you like to write a book?",,"Yes","No"))
 		if("No")

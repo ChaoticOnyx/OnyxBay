@@ -1041,6 +1041,10 @@
 	name = "AI Upload Foyer"
 	icon_state = "ai_foyer"
 
+/area/turret_protected/ai_behind
+	name = "AI rear"
+	icon_state = "ai_foyer"
+
 /area/turret_protected/ai
 	name = "AI Chamber"
 	icon_state = "ai_chamber"
@@ -1106,7 +1110,7 @@
 	name = "Syndicate shuttle"
 	icon_state = "ai_chamber"
 /area/nanotrasenshuttle
-	name = "Nanotrasen shuttle"
+	name = "NanoTrasen shuttle"
 	icon_state = "nt_shuttle"
 /area/alienshuttle
 	name = "Alien shuttle"
