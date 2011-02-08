@@ -657,6 +657,8 @@
 #include "code\WorkInProgress\Abi79\uplinks.dm"
 #include "code\WorkInProgress\Alfie275\anomalies.dm"
 #include "code\WorkInProgress\Alfie275\anomalyanalyser.dm"
+#include "code\WorkInProgress\Alfie275\anomalyharvester.dm"
+#include "code\WorkInProgress\Alfie275\syntheticanomaly.dm"
 #include "code\WorkInProgress\Aryn\DetectiveWork.dm"
 #include "code\WorkInProgress\Aryn\TextFilters.dm"
 #include "code\WorkInProgress\Events\Event.dm"
