@@ -19,7 +19,7 @@
 
 	setuptitles()
 
-	spawn(30)
+	spawn(30 * tick_multiplier)
 		//EXPERIMENTAL
 		Optimize()
 		sleep_offline = 1
@@ -39,7 +39,7 @@ var/opt_inactive = null
 		KickInactiveClients()
 		opt_inactive = world.timeofday
 
-	spawn(100) Optimize()
+	spawn(100 * tick_multiplier) Optimize()
 
 /world/proc/KickInactiveClients()
 	for(var/client/C)

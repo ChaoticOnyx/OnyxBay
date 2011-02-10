@@ -201,7 +201,7 @@
 				external_pressure_bound = number
 
 		if(signal.data["tag"])
-			spawn(5) broadcast_status()
+			spawn(5 * tick_multiplier) broadcast_status()
 
 	hide(var/i) //to make the little pipe section invisible, the icon changes.
 		if(on&&node)
@@ -490,7 +490,7 @@
 							if(istype(node,/obj/machinery/atmospherics/pipe))
 								var/obj/machinery/atmospherics/pipe/P = node
 								P.parent.mingle_with_turf(loc, 1000)
-							sleep(1)
+							sleep(1 * tick_multiplier)
 						panic_filling = 0
 						panic_fill = 0
 /////////////////////////////End Hack Job//////////////////////////////////////////////////////
