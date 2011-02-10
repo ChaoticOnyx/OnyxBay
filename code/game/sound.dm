@@ -49,8 +49,8 @@
 	src << S
 
 client/verb/Toggle_Soundscape()
-	usr:client:no_ambi = !usr:client:no_ambi
-	if(usr:client:no_ambi)
+	usr:client:play_ambiences = !usr:client:play_ambiences
+	if(usr:client:play_ambiences == 0)
 		usr << sound('shipambience.ogg', repeat = 0, wait = 0, volume = 0, channel = 2)
 	else
 		usr << sound('shipambience.ogg', repeat = 1, wait = 0, volume = 50, channel = 2)
@@ -72,7 +72,7 @@ client/verb/Toggle_Soundscape()
 		if (!A:client) return
 		if (A:ear_deaf) return
 
-		if (A && A:client && !A:client:ambience_playing && !A:client:no_ambi) // Constant background noises
+		if (A && A:client && !A:client:ambience_playing && A:client:play_ambiences) // Constant background noises
 			A:client:ambience_playing = 1
 			A << sound('shipambience.ogg', repeat = 1, wait = 0, volume = 50, channel = 2)
 
@@ -80,6 +80,6 @@ client/verb/Toggle_Soundscape()
 			if(A && A:client && !A:client:played)
 				A << sound(pick(music), repeat = 0, wait = 0, volume = 25, channel = 1)
 				A:client:played = 1
-				spawn(600)
+				spawn(600 * tick_multiplier)
 					if(A && A:client)
 						A:client:played = 0

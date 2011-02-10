@@ -1,3 +1,5 @@
+// NOT INCLUDED!
+
 /mob/living/carbon/human/name = "human"
 /mob/living/carbon/human/voice_name = "human"
 /mob/living/carbon/human/icon = 'mob.dmi'
@@ -54,7 +56,6 @@
 /mob/living/carbon/human/New()
 	..()
 	var/datum/reagents/R = new/datum/reagents(1000)
-//	random_events += "blink"
 	reagents = R
 	R.my_atom = src
 

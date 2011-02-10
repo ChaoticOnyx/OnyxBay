@@ -44,7 +44,7 @@
 			world << "<B>Objective #[count]</B>: [objective.explanation_text] \..."
 			if (objective.check_completion())
 				world << "\green <B>Success</B>"
-				for(var/client/C in world)
+				for(var/client/C)
 					if(C.key == traitor.key)
 						C.mob.add_stat(4,1)
 						C.mob.unlock_medal("Oh I'm a terrorist?", 0, "Kinda", "medium")

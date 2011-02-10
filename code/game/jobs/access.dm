@@ -281,7 +281,8 @@
 	var/list/jobs = list()
 	for (var/type in get_job_types())
 		jobs += get_type_jobs(type)
-	return jobs
+
+	return sortList(jobs)
 
 
 /proc/get_all_passwords()

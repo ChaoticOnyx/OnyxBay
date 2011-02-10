@@ -129,7 +129,7 @@ var/supply_shuttle_points = 50
 	containertype = "/obj/crate"
 	containername = "Cigarette charge crate"
 
-/datum/supply_packs/wizard
+/*/datum/supply_packs/wizard
 	name = "Wizard costume"
 	contains = list("/obj/item/weapon/staff",
 					"/obj/item/clothing/suit/wizrobe",
@@ -137,7 +137,7 @@ var/supply_shuttle_points = 50
 					"/obj/item/clothing/head/wizard")
 	cost = 20
 	containertype = "/obj/crate"
-	containername = "Wizard costume crate"
+	containername = "Wizard costume crate"*/
 
 /datum/supply_packs/metal50
 	name = "50 Metal Sheets"
@@ -462,7 +462,7 @@ var/supply_shuttle_points = 50
 
 
 		supply_shuttle_timeleft = round( ((ticksleft / 10)/60) )
-		sleep(10)
+		sleep(10 * tick_multiplier)
 	supply_shuttle_moving = 0
 	send_supply_shuttle()
 

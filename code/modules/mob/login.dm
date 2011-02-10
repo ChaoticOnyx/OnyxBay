@@ -31,7 +31,7 @@
 	else
 		del(hud_used)
 		hud_used = new/obj/hud( src )
-
+	world.makejson()
 	next_move = 1
 	sight |= SEE_SELF
 	logged_in = 1

@@ -31,6 +31,7 @@
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /client/proc/addchange
 			src.verbs += /proc/possess
+			src.verbs += /client/proc/jobban_panel
 			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
@@ -126,6 +127,7 @@
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
+			src.verbs += /client/proc/jobban_panel
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/testjson
@@ -229,6 +231,7 @@
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/jobban_panel
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/addchange
@@ -672,7 +675,11 @@
 	if (src.holder)
 		src.holder.invite_panel()
 	return
-
+/client/proc/jobban_panel()
+	set name = "Jobban Panel"
+	set category = "Admin"
+	if (src.holder)
+		src.holder.showjobbans()
 /client/proc/game_panel()
 	set name = "Game Panel"
 	set category = "Admin"

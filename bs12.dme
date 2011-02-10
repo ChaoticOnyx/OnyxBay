@@ -163,7 +163,6 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
-#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -508,6 +507,7 @@
 #include "code\game\objects\secstorage\ssafe.dm"
 #include "code\game\objects\spawners\bomb.dm"
 #include "code\game\objects\storage\backpack.dm"
+#include "code\game\objects\storage\belts.dm"
 #include "code\game\objects\storage\bible.dm"
 #include "code\game\objects\storage\briefcase.dm"
 #include "code\game\objects\storage\coat.dm"
@@ -516,13 +516,13 @@
 #include "code\game\objects\storage\kit.dm"
 #include "code\game\objects\storage\storage.dm"
 #include "code\game\objects\storage\toolbox.dm"
-#include "code\game\objects\storage\utilitybelt.dm"
 #include "code\game\verbs\ai_lockdown.dm"
 #include "code\game\verbs\AI_status.dm"
 #include "code\game\verbs\begin.dm"
 #include "code\game\verbs\suicide.dm"
 #include "code\game\verbs\toggleadminsound.dm"
 #include "code\game\verbs\who.dm"
+#include "code\head\bodybag.dm"
 #include "code\head\books.dm"
 #include "code\head\changelog.dm"
 #include "code\head\fireworks.dm"
@@ -588,7 +588,6 @@
 #include "code\modules\mob\living\carbon\alien\larva\life.dm"
 #include "code\modules\mob\living\carbon\human\ai.dm"
 #include "code\modules\mob\living\carbon\human\death.dm"
-#include "code\modules\mob\living\carbon\human\derp.dm"
 #include "code\modules\mob\living\carbon\human\emote.dm"
 #include "code\modules\mob\living\carbon\human\hud.dm"
 #include "code\modules\mob\living\carbon\human\limited.dm"
@@ -654,6 +653,7 @@
 #include "code\WorkInProgress\Cameras.dm"
 #include "code\WorkInProgress\cloning.dm"
 #include "code\WorkInProgress\explosion_particles.dm"
+#include "code\WorkInProgress\food.dm"
 #include "code\WorkInProgress\KeelinsStuff.dm"
 #include "code\WorkInProgress\NewBan.dm"
 #include "code\WorkInProgress\rails.dm"

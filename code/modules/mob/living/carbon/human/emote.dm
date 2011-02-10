@@ -7,13 +7,13 @@
 		act = copytext(act, 1, t1)
 
 	var/muzzled = istype(wear_mask, /obj/item/clothing/mask/muzzle)
-	var/m_type = 1
+	var/m_type = 1 //visible emote (1), or hearable emote (2)
 
 	for (var/obj/item/weapon/implant/I in src)
 		if (I.implanted)
 			I.trigger(act, src)
 
-	var/message
+	var/message = ""
 	switch(act)
 		if ("blink")
 			message = "<B>[src]</B> blinks."
@@ -50,8 +50,9 @@
 			else
 				alert("Unable to use this emote, must be either hearable or visible.")
 				return
-			message = "<B>[src]</B> [input]"
 
+			if(input != "")
+				message = "<B>[src]</B> [input]"
 
 		if ("salute")
 			if (!buckled)
@@ -434,7 +435,18 @@
 		else
 			src << "\blue Unusable emote '[act]'. Say *help for a list."
 
-	if (message)
+	if (isobj(src.loc)) // In case the mob is located in an object which may alter sounds coming from it (bodybags for instance)
+		message = src.loc:alterMobEmote(message, act, m_type, src)
+
+		if (message != "")
+			if (m_type & 1)
+				for (var/mob/O in viewers(src.loc, null))
+					O.show_message(message, m_type)
+			else if (m_type & 2)
+				for (var/mob/O in hearers(src.loc, null))
+					O.show_message(message, m_type)
+
+	else if (message != "")
 		if (m_type & 1)
 			for (var/mob/O in viewers(src, null))
 				O.show_message(message, m_type)

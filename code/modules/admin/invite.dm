@@ -89,10 +89,10 @@ var
 		while(kquery.NextRow())
 			var/list/ban = kquery.GetRowData()
 			keys += ban["ckey"]
-			dat += text("<tr><td><A href='?src=\ref[src];uninvite1='[ban["ckey"]]'>(R)</A>Key: <B>[ban["ckey"]]</B></td><td>")
+			dat += text("<tr><td><A href='?src=\ref[src];uninvite1=[ban["ckey"]]'>(R)</A>Key: <B>[ban["ckey"]]</B></td><td>")
 	var/count = 0
 
 	count = keys.len
 	dat += "</table>"
-	dat = "<HR><B>Invites:</B> - <B> <A href='?src=\ref[src];invite1='1'>(Add Invite)</A> - <B><FONT COLOR=green>([count] Invites)</FONT><HR><table border=1 rules=all frame=void cellspacing=0 cellpadding=3 >[dat]"
+	dat = "<HR><B>Invites:</B> - <B> <A href='?src=\ref[src];invite1=1'>(Add Invite)</A> - <B><FONT COLOR=green>([count] Invites)</FONT><HR><table border=1 rules=all frame=void cellspacing=0 cellpadding=3 >[dat]"
 	usr << browse(dat, "window=invitep;size=875x400")

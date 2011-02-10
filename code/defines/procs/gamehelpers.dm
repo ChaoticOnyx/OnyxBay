@@ -17,12 +17,32 @@
 			return location
 	return 0
 
-/proc/get_area_name(N) //get area by it's name
+// Get an area by its name
+/proc/get_area_name(N)
 
 	for(var/area/A in world)
 		if(A.name == N)
 			return A
 	return 0
+
+// Get a random (from L) non-dense turf around an atom
+/proc/get_random_turf(var/atom/A, var/list/L)
+	while(L.len > 0)
+		var/dir = pick(L)
+		L -= dir
+		var/turf/T = get_step(A,dir)
+		var/possible = 1
+
+		if(T.density == 0)
+			for(var/obj/I in T)
+				if(I.density == 1)
+					possible = 0
+					break
+
+			if(possible)
+				return T
+
+	return
 
 /proc/in_range(source, user)
 	if(get_dist(source, user) <= 1)

@@ -157,7 +157,7 @@ zone
 
 	Update()
 		while(1)
-			sleep(vsc.zone_update_delay)
+			sleep(vsc.zone_update_delay * tick_multiplier)
 			if(stop_zones) continue
 			if(!members.len) del src
 
@@ -315,7 +315,7 @@ zone
 		rebuild_cache()
 		update_members()
 		if(ticker)
-			spawn(1) SplitCheck(T)
+			spawn(1 * tick_multiplier) SplitCheck(T)
 
 
 //	update_members()
@@ -496,7 +496,7 @@ proc/FloodFill(turf/start,remove_extras)
 //	var/list/borders = list()
 //	borders += start
 //	while(borders.len)
-//		sleep(1)
+//		sleep(1 * tick_multiplier)
 //		for(var/turf/T in borders)
 //			for(var/turf/U in T.GetDoorCardinals())
 //				if((U in borders) || (U in .)) continue
@@ -757,6 +757,6 @@ proc/RebuildAll()
 		if(Z.needs_rebuild)
 			var/turf/T = Z.starting_tile
 			del Z
-			spawn(1)
+			spawn(1 * tick_multiplier)
 				new/zone(T)
 		sleep(-1)

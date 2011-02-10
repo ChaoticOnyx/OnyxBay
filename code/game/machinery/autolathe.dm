@@ -199,7 +199,7 @@
 	src.LL += new /obj/item/weapon/flamethrower(src)
 	src.LL += new /obj/item/device/igniter(src)
 	src.LL += new /obj/item/device/timer(src)
-	src.LL += new /obj/item/weapon/rcd(src)
+	//src.LL += new /obj/item/weapon/rcd(src)
 	src.LL += new /obj/item/device/infra(src)
 	src.LL += new /obj/item/device/infra_sensor(src)
 	src.LL += new /obj/item/weapon/handcuffs(src)

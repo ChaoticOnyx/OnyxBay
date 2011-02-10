@@ -10,8 +10,8 @@
 	density = 1
 	anchored = 1
 
-/obj/machinery/bodyscanner/allow_drop()
-	return 0
+/*/obj/machinery/bodyscanner/allow_drop()
+	return 0*/
 
 /obj/machinery/bodyscanner/relaymove(mob/user as mob)
 	if (user.stat)

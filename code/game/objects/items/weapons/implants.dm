@@ -391,7 +391,7 @@ No Implant Specifics"}
 	..()
 
 /obj/item/weapon/implanter/compress/afterattack(atom/A, mob/user as mob)
-	if(istype(A,/obj))
+	if(istype(A,/obj/item))
 		var/obj/item/weapon/implant/compressed/c = src.imp
 		c.scanned = A
 		A.loc.contents.Remove(A)

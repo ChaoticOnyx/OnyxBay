@@ -69,6 +69,19 @@
 			return
 
 	/////////////////////////////////////new ban stuff
+	if(href_list["jobban1"])
+		var/key = href_list["jobban1"]
+		var/html = "<B><center>[key]</center></B><br><table border='1'><tr><th>Rank</th><th>By</th><th>Time</th>"
+		var/DBQuery/cquery = dbcon.NewQuery("SELECT * from jobbanlog WHERE targetckey='[key]'")
+		if(!cquery.Execute())
+			log_admin("[cquery.ErrorMsg()]")
+		else
+			while(cquery.NextRow())
+				var/list/derp = cquery.GetRowData()
+				html += "<tr><td>[derp["rank"]]</td><td>[derp["ckey"]]</td><td>[derp["when"]]</td></tr>"
+		html += "</table>"
+		usr << browse(html, "window=jobbanx1x;size=475x400")
+		return
 	if(href_list["unbanf"])
 		var/key = href_list["unbanf"]
 		if(alert(usr, "Are you sure you want to unban [key]?", "Confirmation", "Yes", "No") == "Yes")
@@ -186,7 +199,7 @@
 			else
 				log_admin("[key_name(usr)] banned [key_name(M)] from [job]")
 				message_admins("\blue [key_name_admin(usr)] banned [key_name_admin(M)] from [job]", 1)
-				jobban_fullban(M, job)
+				jobban_fullban(M, job,usr)
 				href_list["jobban2"] = 1 // lets it fall through and refresh
 
 
@@ -1664,9 +1677,9 @@
 
 /obj/admins/proc/toggleaban()
 	set category = "Special Verbs"
-	set desc="Respawn basically"
+	set desc="Toggle Respawn"
 	set name="Toggle Respawn"
-	abandon_allowed = !( abandon_allowed )
+	abandon_allowed = !abandon_allowed
 	if (abandon_allowed)
 		world << "<B>You may now respawn.</B>"
 	else

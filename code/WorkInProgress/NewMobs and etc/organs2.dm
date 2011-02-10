@@ -3,7 +3,7 @@
 
 /datum/organ/proc/receive_chem(chemical as obj)
 	return
-/datum/organ/external/proc/take_damage(brute, burn,slash,supbrute)
+/datum/organ/external/proc/take_damage(brute, burn, slash, supbrute)
 	if ((brute <= 0 && burn <= 0))
 		return 0
 	if(destroyed)

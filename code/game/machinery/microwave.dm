@@ -46,7 +46,9 @@
 	needs = list("donkpocket" = 1)
 	creates = "donkpocket"
 
-
+/datum/recipe/loafofbread
+	needs = list("flour" = 2,"egg" = 1)
+	creates = "/obj/item/weapon/reagent_containers/food/custom/breadsys/loaf"
 /obj/machinery/microwave/New() // *** After making the recipe in defines\obj\food.dmi, add it in here! ***
 	..()
 	src.available_recipes += new /datum/recipe/donut(src)
@@ -56,6 +58,7 @@
 	src.available_recipes += new /datum/recipe/brainburger(src)
 	src.available_recipes += new /datum/recipe/meatball(src)
 //	src.available_recipes += new /datum/recipe/roburger(src)
+	src.available_recipes += new /datum/recipe/loafofbread(src)
 	src.available_recipes += new /datum/recipe/donkpocket(src)
 	src.available_recipes += new /datum/recipe/dwbiscuits(src)
 	src.available_recipes += new /datum/recipe/donkpocket_warm(src)
