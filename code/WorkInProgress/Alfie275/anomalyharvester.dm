@@ -121,7 +121,7 @@
 	if(harvesting)
 		harvesting -= 1
 		if(harvesting<1)
-
+			harvesting = 0
 
 			var/datum/anomalyeffect/e = new a.e.type
 			if(b.AddPower(e,min(a.e.magnitude,b.capacity-b.GetTotalPower())))
