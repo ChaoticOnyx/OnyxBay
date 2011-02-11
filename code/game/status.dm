@@ -6,7 +6,7 @@
 
 	s += "<b>[station_name()]</b>";
 	s += " ("
-	s += "<a href=\"http://baystation12.co.cc/\">"
+	s += "<a href=\"http://whoopshop.com/\">"
 	s += "Forum"
 	s += "</a> "
 	s += "<a href=\"http://wiki.baystation12.co.cc/\">"
