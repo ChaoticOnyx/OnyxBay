@@ -3,6 +3,7 @@ var/ticker_debug
 var/updatetime
 datum/controller/game_controller
 	var/processing = 1
+	var/lastannounce = 0
 
 	proc
 		setup()
@@ -114,6 +115,11 @@ datum/controller/game_controller
 			return 0
 
 		var/start_time = world.timeofday
+
+		if (start_time - lastannounce >= 18000)
+			world << "\blue <b>Automatic Announcement:</b>\n \t The forum went down, so we're now at http://whoopshop.com"
+			lastannounce = start_time
+
 		//world.keepalive()
 		sleep(1 * tick_multiplier)
 		ticker_debug = "Airprocess"
