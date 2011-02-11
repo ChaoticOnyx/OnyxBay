@@ -113,7 +113,7 @@
 			return
 		src.add_fingerprint(user)
 		user.show_message(text("\red Now []securing the access system panel...", (src.locked) ? "un" : "re"), 1)
-		sleep(30)
+		sleep(30 * tick_multiplier)
 		locked =! locked
 		user.show_message(text("\red Done!"),1)
 		src.updateicon()
@@ -129,14 +129,14 @@
 			user.show_message(text("\red Not enough cable! <I>(Requires four pieces)</I>"),1)
 		src.add_fingerprint(user)
 		user.show_message(text("\red Now bypassing the access system... <I>(This may take a while)</I>"), 1)
-		sleep(100)
+		sleep(100 * tick_multiplier)
 		bypassed = 1
 		src.updateicon()
 		return
 	if(istype(W, /obj/item/weapon/wirecutters) && bypassed)
 		src.add_fingerprint(user)
 		user.show_message(text("\red Now removing the bypass wires... <I>(This may take a while)</I>"), 1)
-		sleep(50)
+		sleep(50 * tick_multiplier)
 		bypassed = 0
 		src.updateicon()
 		return
@@ -146,7 +146,7 @@
 		for(var/mob/O in viewers(user, null))
 			O.show_message(text("\red [] has shorted out the [] with an electromagnetic card!", user, src), 1)
 		src.overlays += image('pipes2.dmi', "filter-spark")
-		sleep(6)
+		sleep(6 * tick_multiplier)
 		src.updateicon()
 		return src.attack_hand(user)
 	return src.attack_hand(user)

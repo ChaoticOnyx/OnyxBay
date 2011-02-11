@@ -452,7 +452,7 @@
 	var/user_loc = user.loc
 	var/target_loc = target.loc
 	var/holding = user.equipped()
-	sleep(time)
+	sleep(time * tick_multiplier)
 	if ( user.loc == user_loc && target.loc == target_loc && user.equipped() == holding && !( user.stat ) && ( !user.stunned && !user.weakened && !user.paralysis && !user.lying ) )
 		return 1
 	else
@@ -461,7 +461,7 @@
 /proc/do_after(mob/M as mob, time as num)
 	var/turf/T = M.loc
 	var/holding = M.equipped()
-	sleep(time)
+	sleep(time * tick_multiplier)
 	if ((M.loc == T && M.equipped() == holding && !( M.stat )))
 		return 1
 	else

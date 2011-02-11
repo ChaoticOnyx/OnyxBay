@@ -224,7 +224,7 @@ var/global/datum/controller/gameticker/ticker
 					spawn_meteors()
 				if (src.timeleft <= 0 && src.timing)
 					src.timeup()
-				sleep(10)
+				sleep(10 * tick_multiplier)
 			while(src.processing)
 			return
 //Standard extended process (incorporates most game modes).
@@ -233,7 +233,7 @@ var/global/datum/controller/gameticker/ticker
 			do
 				check_win()
 				ticker.AItime += 10
-				sleep(10)
+				sleep(10 * tick_multiplier)
 				if (ticker.AItime == 6000)
 					world << "<FONT size = 3><B>Cent. Com. Update</B> AI Malfunction Detected</FONT>"
 					world << "\red It seems we have provided you with a malfunctioning AI. We're very sorry."
@@ -255,7 +255,7 @@ var/global/datum/controller/gameticker/ticker
 					spawn_meteors()
 				if (src.timeleft <= 0 && src.timing)
 					src.timeup()
-				sleep(10)
+				sleep(10 * tick_multiplier)
 			while(src.processing)
 			return
 //meteor mode!!! MORE METEORS!!!

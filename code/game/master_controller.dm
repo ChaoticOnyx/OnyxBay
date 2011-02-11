@@ -115,11 +115,11 @@ datum/controller/game_controller
 
 		var/start_time = world.timeofday
 		//world.keepalive()
-		sleep(1)
+		sleep(1 * tick_multiplier)
 		ticker_debug = "Airprocess"
 		air_master.process()
 
-		sleep(1)
+		sleep(1 * tick_multiplier)
 		ticker_debug = "Sun calc"
 		sun.calc_position()
 
@@ -136,10 +136,12 @@ datum/controller/game_controller
 			machine.process()
 
 		sleep(-1)
+
 		for(var/obj/fire/F in world)
 			ticker_debug = "fire processing"
 			F.process()
-		sleep(1)
+
+		sleep(1 * tick_multiplier)
 
 		for(var/obj/item/item in processing_items)
 			ticker_debug = "[item] [item.name] processing"
@@ -159,9 +161,12 @@ datum/controller/game_controller
 		for(var/turf/t in processing_turfs)
 			ticker_debug = "turf processing"
 			t.process()
+
 		if(world.timeofday >= updatetime)
+			ticker_debug = "creating json"
 			world.makejson()
 			updatetime = world.timeofday + 3000
+
 		for(var/obj/O in processing_others) // The few exceptions which don't fit in the above lists
 			ticker_debug = "[O] [O.name] processing"
 			O:process()
