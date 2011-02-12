@@ -1,10 +1,48 @@
-var/list/anomalies = list("/obj/item/weapon/crystal" = 4,
-							"/obj/item/weapon/fossil/bone" =8 ,
-							"/obj/item/weapon/fossil/shell" =4 ,
-							"/obj/item/weapon/fossil/skull" =1)
+proc/varcopy(var/datum/d)
+	var/datum/nd = new d.type
+	for(var/v in d.vars)
+		if(!v=="type")
+			var/nv = d.vars["[v]"]
+			nd.vars["[v]"] = nv
+	return nd
 
 
-/obj/item/weapon/anomaly
+
+var/list/artifacts = list("/obj/item/weapon/crystal" = 4,
+							"/obj/item/weapon/talkingcrystal" = 2,
+							"/obj/item/weapon/fossil/base" =8,
+							"/obj/item/weapon/anomaly"=1 )
+var/list/anomalyeffects = list("heal"=2,"hurt"=2,"tele"=1)
+var/list/anomalyrare = list()
+var/list/anomalies = list()
+
+
+proc/SetupAnomalies()
+	var/list/l = list(0,1,2,3)
+	for(var/r = 0 to 3)
+		var/i = pick(l)
+		l.Remove(i)
+		var/datum/anomaly/a = new/datum/anomaly(i)
+		a.trigger = rand(0)
+		var/e = pickweight(anomalyeffects)
+		var/npath = text2path("/datum/anomalyeffect/[e]")
+		var/datum/anomalyeffect/t = new npath
+		for(var/v in anomalyeffects)
+			anomalyeffects[v]+=t.rarity
+		anomalyeffects[e]-=t.rarity
+		anomalyrare["[t.effectname]+[t.range]+[t.magnitude]"] = 1
+
+
+		a.e = t
+
+		anomalies["[t.effectname]+[t.range]+[t.magnitude]"] = a
+	for(var/datum/anomaly/a in anomalies)
+		for(var/v in anomalyrare)
+			anomalyrare[v]+=a.e.rarity
+		anomalyrare["[a.e.effectname]+[a.e.range]+[a.e.magnitude]"]-=a.e.rarity
+
+
+/obj/item/weapon/artifact
 	name = "Strange rock"
 	icon = 'rubble.dmi'
 	icon_state = "strange"
@@ -18,12 +56,146 @@ var/list/anomalies = list("/obj/item/weapon/crystal" = 4,
 		src.reagents = r
 		r.my_atom = src
 		src.method = rand(2)
-		src.inside = pickweight(anomalies)
+		src.inside = pickweight(artifacts)
+
+/obj/item/weapon/anomaly
+	name = "Anomaly"
+	var/id
+	var/trigger
+	var/cooldown
+	var/datum/anomalyeffect/e
+	icon = 'anomaly.dmi'
+
+/obj/item/weapon/anomaly/New()
+		var/anoname = pickweight(anomalyrare)
+		var/datum/anomaly/a = anomalies["[anoname]"]
+		src.trigger = a.trigger
+		src.e = new a.e.type
+		src.e.o = src
+		src.e.range = a.e.range + rand(-(max(a.e.range/10,1)),max(a.e.range/10,1))
+		src.e.magnitude = a.e.magnitude+ rand(-(max(a.e.range/10,1)),max(a.e.range/10,1))
+		src.e.CalcCooldown()
+		src.icon_state = "ano[a.id]"
+
+/obj/item/weapon/anomaly/process()
+	if(src.cooldown)
+		src.cooldown--
+		if(!src.cooldown)
+			for(var/mob/m in hearers(get_turf(src)))
+				var/t = pick("chimes","pings","buzzes")
+				m<<"The [src.name] [t]"
+				processing_items.Remove(src)
+
+/obj/item/weapon/anomaly/proc/Activate()
+	if(!cooldown)
+		src.e.Activate()
+		src.cooldown=src.e.cooldown
+		processing_items.Add(src)
+
+
+/obj/item/weapon/anomaly/attack_hand(var/mob/living/carbon/m as mob)
+	if(!m.gloves)
+		src.Activate()
+	..()
+
+/datum/anomaly
+	var/id
+	var/trigger
+	var/datum/anomalyeffect/e
+
+	New(var/id)
+		src.id = id
+
+/datum/anomalyeffect
+	var/effectname
+	var/obj/o
+	var/range
+	var/magnitude
+	var/cooldown
+	var/fluff
+	var/rarity = 1
+
+/datum/anomalyeffect/New()
+	src.range = rand(1,10)
+	src.magnitude = rand(10,50)
+	src.CalcCooldown()
+
+
+/datum/anomalyeffect/proc/CalcCooldown()
+
+
+/datum/anomalyeffect/proc/Activate()
+
+
+/datum/anomalyeffect/heal
+	effectname = "heal"
+	fluff = "Biological stabiliser field."
+
+/datum/anomalyeffect/hurt
+	effectname = "hurt"
+	fluff = "Biological destabiliser field."
+
+/datum/anomalyeffect/tele
+	effectname = "tele"
+	fluff = "Spatial displacement field."
+	rarity = 2
 
 
 
+/datum/anomalyeffect/tele/CalcCooldown()
+	src.cooldown = src.magnitude*2+src.range
+
+/datum/anomalyeffect/heal/Activate()
+	for(var/mob/living/carbon/m in range(src.range,get_turf(src.o)))
+		for(var/t in m.organs)
+			var/datum/organ/external/affecting = m.organs["[t]"]
+			if (affecting.heal_damage(src.magnitude/16, src.magnitude/8))
+				m.UpdateDamageIcon()
+			else
+				m.UpdateDamage()
+		m.oxyloss = max(0.0,m.oxyloss-src.magnitude)
+		m.toxloss = max(0.0,m.toxloss-src.magnitude)
+		m.fireloss = max(0.0,m.fireloss-src.magnitude)
+		m.bruteloss = max(0.0,m.bruteloss-src.magnitude)
+		m.health = min(m.health_full,m.health+src.magnitude)
+		m.updatehealth()
+		m << "\blue You feel a tingling sensation."
 
 
+/datum/anomalyeffect/hurt/Activate()
+	for(var/mob/living/carbon/m in range(src.range,get_turf(src.o)))
+		for(var/t in m.organs)
+			var/datum/organ/external/affecting = m.organs["[t]"]
+			if(rand(1))
+				if (affecting.take_damage(src.magnitude/16, src.magnitude/8,0,0))
+					m.UpdateDamageIcon()
+				else
+					m.UpdateDamage()
+
+		m.updatehealth()
+		m << "\red You feel a searing pain."
+
+/datum/anomalyeffect/tele/Activate()
+	var/turf/centre = get_turf(src.o)
+	var/list/mob/living/carbon/ms = list()
+	for(var/mob/living/carbon/m in range(src.range,centre))
+		if(m.buckled)
+			if(!m.buckled.anchored)
+				ms.Add(m)
+		else
+			ms.Add(m)
+	for(var/mob/living/carbon/m in ms)
+		var/turf/t = get_turf(pick(range(src.magnitude/5,m)))
+		m.loc = t
+		var/turf/nt = get_turf(m)
+		var/n = nt.loc.name
+		m << "\blue You suddenly appear in \the [n]."
+		ms.Remove(m)
+	if(src.magnitude>35)
+		for(var/obj/o in range(src.range,centre))
+			if(!o.anchored & !rand(2))
+				var/turf/t = get_turf(pick(range(src.magnitude/10,src.o)))
+				o.loc = t
 
 /obj/item/weapon/talkingcrystal
 	name = "Crystal"
@@ -70,7 +242,7 @@ var/list/anomalies = list("/obj/item/weapon/crystal" = 4,
 
 
 
-/obj/item/weapon/anomaly/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/artifact/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/weldingtool/))
 		if(src.method)
 			src.ahealth -= 3
@@ -95,7 +267,7 @@ var/list/anomalies = list("/obj/item/weapon/crystal" = 4,
 		del src
 
 
-/obj/item/weapon/anomaly/proc/acid(var/volume)
+/obj/item/weapon/artifact/proc/acid(var/volume)
 	if(!src.method)
 		src.ahealth -= volume
 		for(var/mob/O in viewers(world.view, get_turf(src)))
@@ -131,6 +303,19 @@ var/list/anomalies = list("/obj/item/weapon/crystal" = 4,
 	icon = 'fossil.dmi'
 	icon_state = "bone"
 	desc = "It's a fossil."
+
+
+
+/obj/item/weapon/fossil/base/New()
+	spawn(0)
+		var/list/l = list("/obj/item/weapon/fossil/bone"=8,"obj/item/weapon/fossil/skull"=2,
+		"obj/item/weapon/fossil/skull/horned"=2,"obj/item/weapon/fossil/shell"=1)
+		var/t = pickweight(l)
+		new t(src.loc)
+		del src
+
+
+
 
 /obj/item/weapon/fossil/bone
 	name = "Fossilised bone"
