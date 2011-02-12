@@ -59,12 +59,13 @@
 			return 1
 		return 2
 
-
+var/jsonpath = "/var/www/html"
 
 world/proc/makejson()
+
 	if(!makejson)
 		return
-	fdel("/home/bay12/public_html/info.json")
+	fdel("[jsonpath]/info.json")
 		//usr << "Error cant delete json"
 	//else
 		//usr << "Deleted json in public html"
@@ -90,9 +91,7 @@ world/proc/makejson()
 			if(!C.stealth)
 				admins = "yes"
 	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\"}"
-	if(fcopy("info.json","/home/bay12/public_html/info.json"))
-		//usr << "copied json"
-	else
-		//usr << "copy fail"
+	fcopy("info.json","[jsonpath]/info.json")
+
 client/proc/testjson()
  	world.makejson()
