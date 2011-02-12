@@ -31,7 +31,7 @@
 			usr << "\blue [name] has a \icon[wear_suit] [wear_suit.name] on."
 
 	if (ears)
-		usr << "\blue [name] has a \icon[ears] [ears.name] by [t_his] mouth."
+		usr << "\blue [name] has a \icon[ears] [ears.name] by [t_his] ear."
 
 	if (wear_mask)
 		if (wear_mask.blood_DNA)
