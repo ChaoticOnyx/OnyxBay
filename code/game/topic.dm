@@ -95,5 +95,5 @@ world/proc/makejson()
 
 client/proc/testjson()
  	world.makejson()
-client/verb/testannoucement(var/msg as text)
- 	shell("python26 nudge.py [msg]")
+proc/send2irc(msg,msg2)
+ 	shell("python26 nudge.py [msg] [msg2]")
