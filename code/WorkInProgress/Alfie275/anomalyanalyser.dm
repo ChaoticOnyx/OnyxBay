@@ -149,10 +149,10 @@
 		usr.machine = src
 
 		if (href_list["analyse"])
-			analysing = 20
+			analysing = 15
 			icon_state = "analyser_processing"
 		if (href_list["spectral"])
-			spectral = 50
+			spectral = 40
 			icon_state = "analyser_processing"
 		if (href_list["eject"])
 			src.a.loc = src.loc

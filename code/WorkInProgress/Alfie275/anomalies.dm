@@ -55,7 +55,10 @@ proc/SetupAnomalies()
 		var/datum/reagents/r = new/datum/reagents(50)
 		src.reagents = r
 		r.my_atom = src
-		src.method = rand(2)
+		if(rand(3))
+			src.method = 0
+		else
+			src.method = 1
 		src.inside = pickweight(artifacts)
 
 /obj/item/weapon/anomaly

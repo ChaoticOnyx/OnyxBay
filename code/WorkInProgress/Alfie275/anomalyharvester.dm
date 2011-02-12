@@ -124,7 +124,7 @@
 			harvesting = 0
 
 			var/datum/anomalyeffect/e = new a.e.type
-			if(b.AddPower(e,min(a.e.magnitude,b.capacity-b.GetTotalPower())))
+			if(b.AddPower(e,min(a.e.magnitude*1.5,b.capacity-b.GetTotalPower())))
 				state("The [src.name] pings")
 			else
 				state("\red The [src.name] buzzes")
@@ -141,7 +141,7 @@
 		if (href_list["harvest"])
 			if(b.GetTotalPower()!=b.capacity)
 				if(f.effectname == a.e.effectname)
-					harvesting = min(a.e.magnitude/1.5,(b.capacity-b.GetTotalPower())/1.5)
+					harvesting = min(a.e.magnitude/3,(b.capacity-b.GetTotalPower())/3)
 					icon_state = "analyser_processing"
 				else
 					var/dat = "Error: Filter not suitable for power type."
