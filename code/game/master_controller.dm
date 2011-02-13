@@ -59,11 +59,12 @@ datum/controller/game_controller
 
 		ClearTempbans()
 
+
+
 		setup_objects()
 
 		setupgenetics()
 
-		SetupAnomalies()
 
 		setupdooralarms()		//Added by Strumpetplaya - Alarm Change
 		BOOKHAND = new()

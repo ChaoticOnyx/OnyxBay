@@ -70,6 +70,7 @@ proc/SetupAnomalies()
 	icon = 'anomaly.dmi'
 
 /obj/item/weapon/anomaly/New()
+	if(anomalyrare.len)
 		var/anoname = pickweight(anomalyrare)
 		var/datum/anomaly/a = anomalies["[anoname]"]
 		src.trigger = a.trigger
@@ -79,6 +80,8 @@ proc/SetupAnomalies()
 		src.e.magnitude = a.e.magnitude+ rand(-(max(a.e.range/10,1)),max(a.e.range/10,1))
 		src.e.CalcCooldown()
 		src.icon_state = "ano[a.id]"
+	else
+		spawn(0) src.New()
 
 /obj/item/weapon/anomaly/process()
 	if(src.cooldown)
@@ -189,6 +192,8 @@ proc/SetupAnomalies()
 			ms.Add(m)
 	for(var/mob/living/carbon/m in ms)
 		var/turf/t = get_turf(pick(range(src.magnitude/5,m)))
+		if(!istype(t,/turf/))
+			break
 		m.loc = t
 		var/turf/nt = get_turf(m)
 		var/n = nt.loc.name

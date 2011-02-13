@@ -18,7 +18,7 @@
 //	beta_tester_loadfile()
 
 	setuptitles()
-
+	SetupAnomalies()
 	spawn(30 * tick_multiplier)
 		//EXPERIMENTAL
 		Optimize()
