@@ -282,6 +282,10 @@
 		//Look for that player! They better be dead!
 		var/mob/selected = find_dead_player("[C.fields["ckey"]]")
 
+		var/answer = alert(selected,"Do you want to return to life?","Cloning","Yes","No")
+		if(answer == "No")
+			selected = null
+
 //Can't clone without someone to clone.  Or a pod.  Or if the pod is busy. Or full of gibs.
 		if ((!selected) || (!src.pod1) || (src.pod1.occupant) || (src.pod1.mess))
 			src.temp = "Unable to initiate cloning cycle." // most helpful error message in THE HISTORY OF THE WORLD
@@ -311,8 +315,12 @@
 
 	subject.dna.check_integrity()
 
+	var/ckey = subject.ckey
+	if(!ckey && subject && subject.mind && subject.mind.current)
+		ckey = subject.mind.current.ckey
+
 	var/datum/data/record/R = new /datum/data/record(  )
-	R.fields["ckey"] = subject.ckey
+	R.fields["ckey"] = ckey
 	R.fields["name"] = subject.real_name
 	R.fields["id"] = copytext(md5(subject.real_name), 2, 6)
 	R.fields["UI"] = subject.dna.uni_identity

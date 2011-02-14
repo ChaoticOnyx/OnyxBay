@@ -129,11 +129,18 @@
 			O.name = "Cyborg"
 			O.real_name = "Cyborg"
 			if (src.brain.owner.client)
-				O.lastKnownIP = src.brain.owner.client.address
-				src.brain.owner.client.mob = O
+				var/answer = alert(src.brain.owner.client.mob,"Do you want to return to life?","Cyborfication","Yes","No")
+				if(answer == "No")
+					usr << "This brain refuses to be implanted!"
+				else
+					O.lastKnownIP = src.brain.owner.client.address
+					src.brain.owner.client.mob = O
 			else
 				for(var/mob/dead/observer/G in world)
 					if(G.corpse == src.brain.owner && G.client)
+						var/answer = alert(G.client.mob,"Do you want to return to life?","Cyborfication","Yes","No")
+						if(answer == "No")
+							usr << "This brain refuses to be implanted!"
 						G.client.mob = O
 						del(G)
 						break

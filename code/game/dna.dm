@@ -544,7 +544,9 @@
 			continue
 		del(M)
 
-		O.toxloss = 101
+		O.toxloss += (M.toxloss + 20)
+		O.bruteloss += (M.bruteloss + 40)
+		O.oxyloss += M.oxyloss
 		return
 //////////////////////////////////////////////////////////// Monkey Block
 	if (M) M.update_clothing()
