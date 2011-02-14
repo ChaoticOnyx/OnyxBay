@@ -124,6 +124,7 @@
 	name = "CheMaster 3000"
 	density = 1
 	anchored = 1
+	layer = 2.5
 	icon = 'chemical.dmi'
 	icon_state = "mixer0"
 	var/beaker = null
