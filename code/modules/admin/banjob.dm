@@ -3,6 +3,9 @@ var
 	jobban_keylist[0]		//to store the keys & ranks
 
 /proc/jobban_fullban(mob/M, rank,mob/bywho)
+	if(M == bywho)
+		bywho << "FUCK YOU"
+		return
 	if (!M || !M.key || !M.client) return
 	var/DBQuery/xquery = dbcon.NewQuery("INSERT INTO jobban VALUES ('[M.ckey]','[rank]')")
 	var/DBQuery/yquery = dbcon.NewQuery("INSERT INTO jobbanlog (`ckey`,`targetckey`,`rank`) VALUES ('[bywho.ckey]','[M.ckey]','[rank]')")

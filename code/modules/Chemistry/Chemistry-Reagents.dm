@@ -530,7 +530,7 @@ datum
 					M:bruteloss += 15
 
 			reaction_obj(var/obj/O, var/volume)
-				if(istype(O,/obj/item/weapon/anomaly))
+				if(istype(O,/obj/item/weapon/artifact))
 					O:acid(volume)
 					return
 				if(istype(O,/obj/item) && prob(40))
@@ -587,7 +587,7 @@ datum
 						M:bruteloss += (30 * max(1, volume / 30))
 
 			reaction_obj(var/obj/O, var/volume)
-				if(istype(O,/obj/item/weapon/anomaly))
+				if(istype(O,/obj/item/weapon/artifact))
 					O:acid(volume)
 					return
 				if(istype(O,/obj/item))

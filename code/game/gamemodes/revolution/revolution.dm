@@ -75,6 +75,8 @@
 
 	if(!revs_possible || !heads)
 		world << "<B> \red Not enough players for revolution game mode. Restarting world in 5 seconds."
+		if(makejson)
+			send2irc(world.url,"New round in 25 seconds!")
 		sleep(50*tick_multiplier)
 		world.Reboot()
 		return

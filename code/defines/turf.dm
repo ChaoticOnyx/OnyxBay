@@ -421,7 +421,7 @@
 	if(rand(3))
 		new/obj/item/weapon/ore(locate(src.x,src.y,src.z))
 	else
-		new/obj/item/weapon/anomaly(locate(src.x,src.y,src.z))
+		new/obj/item/weapon/artifact(locate(src.x,src.y,src.z))
 	new/turf/simulated/asteroid/floor(locate(src.x,src.y,src.z))
 
 /turf/simulated/asteroid/floor
