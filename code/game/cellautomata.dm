@@ -157,7 +157,8 @@ proc/ClearClosetSave()
 	var/savefile/F = new("closet.sav")
 	F["list"]<<l*/
 
-
+	if(makejson)
+		send2irc(world.url,"Server Rebooting!")
 	world << "\red <B>Rebooting! (This may take a while, just hang on unless you receive an error message!)</B>"
 
 

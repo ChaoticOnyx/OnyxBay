@@ -1600,8 +1600,8 @@
 	if(confirm == "Yes")
 		world << "\red <b>Restarting world!</b> \blue Initiated by [usr.client.stealth ? "Administrator" : usr.key]!"
 		log_admin("[key_name(usr)] initiated a reboot.")
-		if(makejson)
-			send2irc(world.url,"New round in 25 seconds!")
+		//if(makejson)
+		//	send2irc(world.url,"New round in 25 seconds!")
 		sleep(50)
 		world.Reboot()
 

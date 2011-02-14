@@ -685,6 +685,14 @@
 	name = "Medical Research"
 	icon_state = "medresearch"
 
+/area/anomalist
+	name = "Anomaly lab"
+	icon_state = "medresearch"
+
+/area/anomalist/storage
+	name = "Anomaly Storage"
+	icon_state = "medresearch"
+
 /area/medical/virology
 	name = "Virology"
 	icon_state = "medbay"
