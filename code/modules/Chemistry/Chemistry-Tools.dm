@@ -576,11 +576,13 @@
 							if(prob(80))
 								user << "\red Oww! The pain makes you miss the vein."
 								var/datum/organ/external/org = H.organs["r_arm"]
-								org.take_damage(5,0,0,0)
+								org.take_damage(2,0,0,0)
 								H.UpdateDamageIcon()
 								H.drip(20)
 								sleep(10)
 								return
+							else
+								user << "\red You draw some blood from yourself."
 							H.vessel.remove_reagent("blood",5)
 						reagents.add_reagent("blood",5)
 						for(var/datum/reagent/blood/B in reagents.reagent_list)
@@ -663,7 +665,7 @@
 							if(prob(80))
 								user << "\red Oww! The pain makes you miss the vein."
 								var/datum/organ/external/org = H.organs["r_arm"]
-								org.take_damage(5,0,0,0)
+								org.take_damage(2,0,0,0)
 								H.UpdateDamageIcon()
 								H.drip(20)
 								sleep(10)
