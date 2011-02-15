@@ -701,12 +701,12 @@
 
 	color = "captain"
 
-/obj/item/clothing/under/rank/chaplain
+/obj/item/clothing/under/rank/counselor
 	desc = "It has a Counselor rank stripe on it."
 	name = "Counselor Jumpsuit"
-	icon_state = "chaplin"
+	icon_state = "counselor"
 	item_state = "bl_suit"
-	color = "chapblack"
+	color = "counselor"
 
 /obj/item/clothing/under/rank/chemist
 	desc = "Made of a special fiber that gives protection against biohazards. Has a Chemist rank stripe on it."

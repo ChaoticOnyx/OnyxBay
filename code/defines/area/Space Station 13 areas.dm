@@ -1050,7 +1050,7 @@
 	icon_state = "ai_foyer"
 
 /area/turret_protected/ai_behind
-	name = "AI rear"
+	name = "AI Space Extension"
 	icon_state = "ai_foyer"
 
 /area/turret_protected/ai
