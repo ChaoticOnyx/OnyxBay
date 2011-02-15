@@ -573,6 +573,14 @@
 					if(ismob(target) && target == user)
 						if(ishuman(target))
 							var/mob/living/carbon/human/H = target
+							if(prob(80))
+								user << "\red Oww! The pain makes you miss the vein."
+								var/datum/organ/external/org = H.organs["r_arm"]
+								org.take_damage(5,0,0,0)
+								H.UpdateDamageIcon()
+								H.drip(20)
+								sleep(10)
+								return
 							H.vessel.remove_reagent("blood",5)
 						reagents.add_reagent("blood",5)
 						for(var/datum/reagent/blood/B in reagents.reagent_list)
@@ -652,6 +660,14 @@
 							break
 						if(B)//FIND BACK
 							var/mob/living/carbon/human/H = target
+							if(prob(80))
+								user << "\red Oww! The pain makes you miss the vein."
+								var/datum/organ/external/org = H.organs["r_arm"]
+								org.take_damage(5,0,0,0)
+								H.UpdateDamageIcon()
+								H.drip(20)
+								sleep(10)
+								return
 							var/datum/reagents/R = new/datum/reagents(5)
 							H.vessel.add_reagent("blood",5,B)
 							src.reagents.remove_reagent("blood",5)
