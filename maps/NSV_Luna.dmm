@@ -2563,7 +2563,7 @@
 "aXo" = (/obj/machinery/atmospherics/pipe/simple,/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/maintenance{name = "Robotics Maintenance"; req_access_txt = "12;29"},/turf/simulated/floor/plating,/area/maintenance/port2)
 "aXp" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/weapon/CableCoil/power,/obj/item/weapon/CableCoil/power,/obj/item/device/healthanalyzer,/obj/item/weapon/cell{maxcharge = 7500},/obj/item/weapon/cell{maxcharge = 7500},/obj/item/weapon/cell{maxcharge = 7500},/obj/item/weapon/cell{maxcharge = 7500},/turf/simulated/floor{icon_state = "white"},/area/medical/robotics)
 "aXq" = (/obj/secure_closet/personal{name = "Personal Belongings Closet"},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
-"aXr" = (/obj/table{dir = 9; icon_state = "tabledir"; tag = ""},/obj/item/device/radio/intercom{dir = 0; pixel_x = 27},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
+"aXr" = (/obj/table{dir = 9; icon_state = "tabledir"; tag = ""},/obj/item/device/radio/intercom{dir = 0; pixel_x = 27},/obj/item/weapon/storage/belt/medical,/obj/item/weapon/storage/belt/medical,/obj/item/weapon/storage/belt/medical,/obj/item/weapon/storage/belt/medical,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aXs" = (/obj/machinery/atmospherics/portables_connector{dir = 4},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aXt" = (/obj/machinery/atmospherics/pipe/manifold{icon_state = "manifold"; level = 2},/obj/machinery/light,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "aXu" = (/obj/machinery/atmospherics/unary/cold_sink/freezer,/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
