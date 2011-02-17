@@ -60,7 +60,7 @@
 		return 2
 
 var/jsonpath = "/var/www/html"
-
+var/dmepath = "/home/bay12/git/bs12.dme"
 world/proc/makejson()
 
 	if(!makejson)
@@ -92,8 +92,42 @@ world/proc/makejson()
 				admins = "yes"
 	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\"}"
 	fcopy("info.json","[jsonpath]/info.json")
-
+/proc/switchmap(newmap,newpath)
+	var/obj/mapinfo/M = locate()
+	var/oldmap = M.mapname
+	var/text = file2text(dmepath)
+	if(!text)
+		return
+	replace(text,oldmap,newpath)
+	fdel(dmepath)
+	var/file = file(dmepath)
+	file << text
+	shell("./recompile")
+	world.Reboot("Switching to [newmap]")
+obj/mapinfo
+	invisibility = 101
+	var/mapname = "thismap"
+	var/decks = 4
+proc/GetMapInfo()
+	var/obj/mapinfo/M = locate()
+	world << M.name
+	world << M.mapname
+client/proc/ChangeMap(var/X as text)
+	switchmap(X,X)
 client/proc/testjson()
  	world.makejson()
 proc/send2irc(msg,msg2)
  	shell("python26 nudge.py [msg] [msg2]")
+
+proc/replacetext(haystack, needle, replace)
+	if(!haystack || !needle || !replace)
+		return
+	var
+		needleLen = length(needle)
+		replaceLen = length(replace)
+		pos = findtext(haystack, needle)
+	while(pos)
+		haystack = copytext(haystack, 1, pos) + \
+			replace + copytext(haystack, pos+needleLen)
+		pos = findtext(haystack, needle, pos+replaceLen)
+	return haystack

@@ -131,6 +131,7 @@
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/testjson
+			src.verbs += /client/proc/ChangeMap
 			src.verbs += /mob/living/proc/CheckHandcuff
 
 			src.verbs += /client/proc/addchange
