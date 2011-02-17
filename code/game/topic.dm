@@ -113,6 +113,8 @@ proc/GetMapInfo()
 	world << M.name
 	world << M.mapname
 client/proc/ChangeMap(var/X as text)
+	set name = "Check derp"
+	set category  = "Admin"
 	switchmap(X,X)
 client/proc/testjson()
  	world.makejson()
