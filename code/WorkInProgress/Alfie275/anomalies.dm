@@ -222,7 +222,9 @@ proc/SetupAnomalies()
 		if(!loc)
 			done = 0
 		var/X = copytext(msg,1,loc)
-		words += X
+		if(!words.Find(X,1,0))
+			x = replace(x," ","")
+			words += X
 		msg = copytext(msg,loc+1,0)
 	for(var/mob/O in viewers(src))
 		O.show_message("\blue The crystal hums for bit then stops...", 1)
