@@ -27,7 +27,7 @@
 "aaA" = (/obj/landmark/nuke_spawn,/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area/syndicate_station)
 "aaB" = (/obj/machinery/door/poddoor{id = "syndicate"; name = "Outer Airlock"},/turf/simulated/shuttle/floor{tag = "icon-floor3"; icon_state = "floor3"},/area/syndicate_station)
 "aaC" = (/obj/machinery/light{dir = 1},/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area/syndicate_station)
-"aaD" = (/obj/machinery/door/poddoor{density = 0; icon_state = "pdoor0"; id = "syndicate"; name = "Outer Airlock"; opacity = 0; p_open = 0},/obj/machinery/door/airlock/glass{name = "Shuttle Airlock"},/turf/simulated/shuttle/floor{tag = "icon-floor3"; icon_state = "floor3"},/area/syndicate_station)
+"aaD" = (/obj/machinery/door/poddoor{density = 0; icon_state = "pdoor0"; id = "syndicate"; name = "Outer Airlock"; opacity = 0; p_open = 0},/turf/simulated/shuttle/floor{tag = "icon-floor3"; icon_state = "floor3"},/area/syndicate_station)
 "aaE" = (/obj/item/weapon/pinpointer{pixel_y = 3},/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area/syndicate_station)
 "aaF" = (/obj/machinery/light,/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area/syndicate_station)
 "aaG" = (/obj/machinery/light,/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area/syndicate_station)
