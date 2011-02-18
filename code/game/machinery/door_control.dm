@@ -24,7 +24,6 @@
 				M.close()
 				//TransmitNetworkPacket(PrependNetworkAddress("[M.get_password()] CLOSE", M))
 
-	spawn(15)
 		if(!(stat & NOPOWER))
 			icon_state = "doorctrl0"
 	src.add_fingerprint(usr)
