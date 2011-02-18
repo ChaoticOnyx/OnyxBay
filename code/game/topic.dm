@@ -135,6 +135,7 @@ client/proc/ChangeMap(var/X as text)
 	set name = "Check derp"
 	set category  = "Admin"
 	switchmap(X,X)
+	//test
 client/proc/testjson()
  	world.makejson()
 proc/send2irc(msg,msg2)
