@@ -6,4 +6,7 @@
 		var/sound/S = sound(null,0,0,7,100)
 		src << S
 
-	src << "Toggled [src.play_adminsound]."
+	if(src.play_adminsound == 0)
+		src << "Toggled off."
+	else
+		src << "Toggled on."
