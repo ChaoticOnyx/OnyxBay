@@ -94,15 +94,26 @@ world/proc/makejson()
 	fcopy("info.json","[jsonpath]/info.json")
 /proc/switchmap(newmap,newpath)
 	var/obj/mapinfo/M = locate()
-	var/oldmap = M.mapname
-	var/text = file2text(dmepath)
-	if(!text)
+	if(!M)
+		world << "Did not locate mapinfo object"
 		return
-	replace(text,oldmap,newpath)
+	var/oldmap = M.mapname
+	world << M.mapname
+	var/text = file2text(dmepath)
+	var/lawl
+	if(!text)
+		world << "didn't file the proper dme"
+		return
+	lawl = replace(text,oldmap,newpath)
+	if(!lawl)
+		world << "Something bad hapepnd"
+		return
 	fdel(dmepath)
 	var/file = file(dmepath)
 	file << text
+	world << "Recompileing"
 	shell("./recompile")
+	world << "Done"
 	world.Reboot("Switching to [newmap]")
 obj/mapinfo
 	invisibility = 101
