@@ -100,14 +100,22 @@ world/proc/makejson()
 	var/oldmap = M.mapname
 	world << M.mapname
 	var/text = file2text(dmepath)
-	var/lawl
-	if(!text)
-		world << "didn't file the proper dme"
+	var/line
+	var/lineloc
+	var/l = "\\"
+	var/path = "#include \"maps[l][oldmap].dmm\""
+	var/xpath = "#include \"maps[l][newpath].dmm\""
+	var/loc = findtext(text,path,1,0)
+	if(!loc)
+		world << "NOT FOUND"
 		return
-	lawl = replace(text,oldmap,newpath)
-	if(!lawl)
-		world << "Something bad hapepnd"
-		return
+	text = copytext(text,1,loc)
+	text += "\n[xpath]"
+/*	for(var/A in lines)
+		if(findtext(A,path,1,0))
+			lineloc = lines.Find(A,1,0)
+			lines[lineloc] = xpath
+			world << "FOUND"*/
 	fdel(dmepath)
 	var/file = file(dmepath)
 	file << text
@@ -144,3 +152,21 @@ proc/replacetext(haystack, needle, replace)
 			replace + copytext(haystack, pos+needleLen)
 		pos = findtext(haystack, needle, pos+replaceLen)
 	return haystack
+proc/file2list(A)
+	var/text = file2text(A)
+	var/list/lines = list()
+	var/done
+	while (done!=1)
+		var/X = findtext(text,"\n",1,0)
+		if(!X)
+			done = 1
+			lines += text
+		//	// "DONE"
+			break
+		else
+			var/Y = copytext(text,1,X)
+			text = copytext(
+			text,X+1,0)
+			lines += Y
+		sleep(1)
+	return lines
