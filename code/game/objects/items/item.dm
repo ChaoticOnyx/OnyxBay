@@ -163,7 +163,8 @@
 	//spawn(1800)            // this wont work right
 	//	M.lastattacker = null
 	/////////////////////////
-	log_attack("[M.name] attacked by [user.name]([user.key]) with [src]")
+	if(M.client)
+		log_attack("[M.name] attacked by [user.name]([user.key]) with [src]")
 	user.log_m("Attacked [M.name]([M.real_name]) with [src]")
 	M.log_m("Attacked by [user.name]([user.real_name])([user.key]) with [src]")
 	if(!istype(M, /mob/living/carbon/human))

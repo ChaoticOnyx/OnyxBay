@@ -1,0 +1,26 @@
+"a" = (/turf/simulated/shuttle/wall{dir = 8; icon_state = "wall_space"},/area)
+"b" = (/turf/simulated/shuttle/wall,/area)
+"c" = (/obj/window_pod,/turf/simulated/shuttle/floor,/area)
+"d" = (/turf/simulated/shuttle/wall{dir = 1; icon_state = "wall_space"},/area)
+"e" = (/obj/window_pod{dir = 4},/turf/simulated/shuttle/floor,/area)
+"f" = (/obj/closet/sandvich,/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"g" = (/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area)
+"h" = (/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"i" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/turf/simulated/shuttle/floor,/area)
+"j" = (/turf/simulated/shuttle/floor,/area)
+"k" = (/obj/stool/chair,/turf/simulated/shuttle/floor{tag = "icon-floor5"; icon_state = "floor5"},/area)
+"l" = (/obj/machinery/door/unpowered/shuttle,/turf/simulated/shuttle/floor{tag = "icon-floor3"; icon_state = "floor3"},/area)
+"m" = (/obj/stool/chair{dir = 4},/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area)
+"n" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/turf/simulated/shuttle/floor{tag = "icon-floor5"; icon_state = "floor5"},/area)
+"o" = (/turf/simulated/shuttle/floor{tag = "icon-floor5"; icon_state = "floor5"},/area)
+"p" = (/obj/stool/chair{dir = 1},/turf/simulated/shuttle/floor{tag = "icon-floor5"; icon_state = "floor5"},/area)
+"q" = (/turf/simulated/shuttle/wall{icon_state = "wall_space"},/area)
+"r" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "wall_space"},/area)
+
+(1,1,1) = {"
+abcbbcbcbd
+efghijkkjl
+eggmnooool
+ehghijppjl
+qbcbbcbcbr
+"}
