@@ -27,6 +27,10 @@ obj/proc/catchMessage(msg,mob/source)
 			for(var/mob/M in viewers(src))
 				M << "[src]: Access Denied"*/
 
+/obj/proc/state(var/msg, var/color) // Yup, hmm... need to look into how to actually change the color via text
+	for(var/mob/O in hearers(src, null))
+		O.show_message("\icon[src] \blue [msg]", 2)
+
 /obj/proc/updateUsrDialog()
 	var/list/nearby = viewers(1, src)
 	for(var/mob/M in nearby)
