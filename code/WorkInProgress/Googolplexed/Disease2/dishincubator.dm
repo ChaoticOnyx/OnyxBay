@@ -144,14 +144,14 @@
 				foodsupply -= 1
 				dish.growth += 1
 				if(dish.growth == 100)
-					state("The [src.name] pings")
+					state("The [src.name] pings", "blue")
 			if(radiation)
 				if(radiation > 50 & prob(5))
 					dish.virus2.majormutate()
 					if(dish.info)
 						dish.info = "OUTDATED : [dish.info]"
 						dish.analysed = 0
-					state("The [src.name] beeps")
+					state("The [src.name] beeps", "blue")
 
 				else if(prob(5))
 					dish.virus2.minormutate()
@@ -170,7 +170,3 @@
 				foodsupply += 10
 			if(!beaker.reagents.remove_reagent("toxins",1))
 				toxins += 1
-
-	proc/state(var/msg)
-		for(var/mob/O in hearers(src, null))
-			O.show_message("\icon[src] \blue [msg]", 2)

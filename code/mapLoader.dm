@@ -11,6 +11,8 @@
 	//DEBUG
 	//world << "Unknown func in map load: [func]"
 
+var/qsow = 0
+
 /proc/QML_parseSettings(var/dat)
 	if(isnum(text2num(dat)))
 		return text2num(dat)
@@ -56,12 +58,18 @@
 /proc/QML_makeObject(var/turf/loc,var/dat)
 	if(findtext(dat,"{"))
 		var/type = text2path(copytext(dat, 1, findtext(dat, "{")))
+		if(!qsow)
+			if(type == /turf/space)
+				return
 		if(ispath(type))
 			var/obj = new type(loc)
 			if(isobj(obj))
 				QML_applySettings(obj, copytext(dat,findtext(dat,"{")+1, lentext(dat)))
 	else
 		var/type = text2path(dat)
+		if(!qsow)
+			if(type == /turf/space)
+				return
 		if(ispath(type))
 			new type(loc)
 		//DEBUG

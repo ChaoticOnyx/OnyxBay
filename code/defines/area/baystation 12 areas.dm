@@ -811,3 +811,21 @@ area/bs12/prototype
 /area/bs12/highrisk
 	name = "High risk storage"
 	icon_state = "yellow"
+
+
+
+/area/test/dock
+	name = "Docking port 12"
+	icon_state = "yellow"
+
+
+/area/test/hallway/east
+	name = "East Hallway"
+	icon_state = "ehallway"
+
+/area/test/hallway/west
+	name = "West Hallway"
+	icon_state = "whallway"
+/area/test/hallway/north
+	name = "North Hallway"
+	icon_state = "nhallway"

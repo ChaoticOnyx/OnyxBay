@@ -125,9 +125,9 @@
 
 			var/datum/anomalyeffect/e = new a.e.type
 			if(b.AddPower(e,min(a.e.magnitude*1.5,b.capacity-b.GetTotalPower())))
-				state("The [src.name] pings")
+				state("The [src.name] pings", "blue")
 			else
-				state("\red The [src.name] buzzes")
+				state("\red The [src.name] buzzes", "blue")
 			icon_state = "analyser"
 
 	return
@@ -164,8 +164,4 @@
 		src.add_fingerprint(usr)
 	src.updateUsrDialog()
 	return
-
-/obj/machinery/anomaly/anomalyharvester/proc/state(var/msg)
-	for(var/mob/O in hearers(src, null))
-		O.show_message("\icon[src] \blue [msg]", 2)
 

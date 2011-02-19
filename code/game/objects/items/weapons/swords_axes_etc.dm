@@ -52,8 +52,18 @@ STUN BATON
 
 // AXE
 
-/obj/item/weapon/axe/attack(target as mob, mob/user as mob)
-	..()
+/obj/item/weapon/axe
+	name = "Axe"
+	desc = "An energised battle axe."
+	icon_state = "axe0"
+	var/active = 0.0
+	force = 40.0
+	throwforce = 25.0
+	throw_speed = 1
+	throw_range = 5
+	slash = 1
+	w_class = 3.0
+	flags = FPRINT | CONDUCT | NOSHIELD | TABLEPASS
 
 /obj/item/weapon/axe/attack_self(mob/user as mob)
 	src.active = !( src.active )
@@ -66,11 +76,40 @@ STUN BATON
 		user << "\blue The axe can now be concealed."
 		src.force = 40
 		src.icon_state = "axe0"
-		src.w_class = 5
+		src.w_class = 3
 	src.add_fingerprint(user)
 	return
 
 
+// PICKAXE
+
+/obj/item/weapon/pickaxe
+	name = "Pickaxe"
+	desc = "An energised pickaxe."
+	icon_state = "pickaxe0"
+	var/active = 0.0
+	force = 8.0
+	throwforce = 2.0
+	throw_speed = 1
+	throw_range = 4
+	slash = 1
+	w_class = 3.0
+	flags = FPRINT | CONDUCT | NOSHIELD | TABLEPASS
+
+/obj/item/weapon/pickaxe/attack_self(mob/user as mob)
+	src.active = !( src.active )
+	if (src.active)
+		user << "\blue The pickaxe is now energised."
+		src.force = 12
+		src.icon_state = "pickaxe1"
+		src.w_class = 5
+	else
+		user << "\blue The pickaxe can now be concealed."
+		src.force = 8
+		src.icon_state = "pickaxe0"
+		src.w_class = 3
+	src.add_fingerprint(user)
+	return
 
 
 // STUN BATON

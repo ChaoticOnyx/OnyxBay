@@ -194,6 +194,10 @@ No Implant Specifics"}
 		return
 	return
 
+/obj/item/weapon/implant/catchMessage(msg,mob/source)
+	hear(msg,source)
+	return
+
 /obj/item/weapon/implant/proc/hear(message, source as mob)
 	return
 
@@ -292,12 +296,7 @@ No Implant Specifics"}
 
 /obj/item/weapon/implant/vfac/implanted(mob/source as mob)
 	src.phrase = input("Choose activation phrase:") as text
-	var/virus = input("Choose virus:") in list("The Cold", "Space Rhinovirus")
-	switch(virus)
-		if("The Cold")
-			src.virus =/datum/disease/cold
-		if("Space Rhinovirus")
-			src.virus = /datum/disease/dnaspread
+
 
 	//	else if("GBS")
 	//		src.virus =/datum/disease/gbs
@@ -309,7 +308,7 @@ No Implant Specifics"}
 
 /obj/item/weapon/implant/explosive/hear(var/msg)
 	if(findtext(msg,src.phrase))
-		explosion(find_loc(src), 1, 3, 4, 6, 1)
+		explosion(find_loc(src), 1, 3, 4, 6, 3)
 		var/turf/t = find_loc(src)
 		if(t)
 			t.hotspot_expose(SPARK_TEMP,125)
@@ -344,9 +343,8 @@ No Implant Specifics"}
 
 /obj/item/weapon/implant/vfac/hear(var/msg)
 	if(findtext(msg,src.phrase))
-		var/datum/disease/virus = new src.virus
 		var/mob/m = loc
-		m.contract_disease(virus, 1)
+		infect_mob_random(m)
 
 /obj/item/weapon/implant/slave/New()
 	src.d = new/mob/living/carbon/human/limited
