@@ -17,6 +17,13 @@
 	g_dither.layer = 18
 	g_dither.mouse_opacity = 0
 
+	r_dither = new h_type(src)
+	r_dither.screen_loc = "WEST,SOUTH to EAST,NORTH"
+	r_dither.name = "Thermals"
+	r_dither.icon_state = "ditherred"
+	r_dither.layer = 18
+	r_dither.mouse_opacity = 0
+
 	alien_view = new h_type(src)
 	alien_view.screen_loc = "WEST,SOUTH to EAST,NORTH"
 	alien_view.name = "Alien"

@@ -85,6 +85,8 @@
 	client.screen -= hud_used.blurry
 	client.screen -= hud_used.druggy
 	client.screen -= hud_used.vimpaired
+	client.screen -= hud_used.g_dither
+	client.screen -= hud_used.r_dither
 
 	if ((blind && stat != 2))
 		if ((blinded))
@@ -100,6 +102,12 @@
 
 			if (druggy)
 				client.screen += hud_used.druggy
+
+			if (istype(wear_mask, /obj/item/clothing/mask/gas))
+				client.screen += hud_used.g_dither
+
+			if (istype(glasses, /obj/item/clothing/glasses/thermal))
+				client.screen += hud_used.r_dither
 
 	if (stat != 2)
 		if (machine)
