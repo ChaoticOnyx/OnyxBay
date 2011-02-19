@@ -22,7 +22,7 @@ vs_control/var
 	AF_MOVEMENT_THRESHOLD = 250 //% difference to move dense crap and mobs.
 	AF_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which dense objects or mobs will be shifted by airflow."
 
-	AF_HUMAN_STUN_THRESHOLD = 45
+	AF_HUMAN_STUN_THRESHOLD = 200
 	AF_HUMAN_STUN_THRESHOLD_DESC = "Percent of 1 Atm. at which living things are stunned or knocked over."
 
 	AF_PERCENT_OF = ONE_ATMOSPHERE
@@ -132,7 +132,7 @@ proc/Airflow(zone/A,zone/B,n)
 					if(src:wear_suit)
 						if(src:wear_suit.airflowprot) continue
 						else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
-						M:weakened = max(M:weakened,5)
+						M:weakened = max(M:weakened,2)
 				else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
 				M:weakened = max(M:weakened,5)
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue

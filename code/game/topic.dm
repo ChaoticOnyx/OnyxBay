@@ -1,3 +1,13 @@
+var/list/maps
+datum/mapobject
+	var/name = "NSV Luna"
+	var/mapname = "NSV_Luna"
+datum/mapobject/baystation12
+	name = "Baystation 12"
+	mapname = "baystation12"
+
+
+
 /world/Topic(T, addr, master, key)
 	check_diary()
 	diary << "TOPIC: \"[T]\", from:[addr], master:[master], key:[key]"
@@ -100,8 +110,6 @@ world/proc/makejson()
 	var/oldmap = M.mapname
 	world << M.mapname
 	var/text = file2text(dmepath)
-	var/line
-	var/lineloc
 	var/l = "\\"
 	var/path = "#include \"maps[l][oldmap].dmm\""
 	var/xpath = "#include \"maps[l][newpath].dmm\""
@@ -119,7 +127,7 @@ world/proc/makejson()
 	fdel(dmepath)
 	var/file = file(dmepath)
 	file << text
-	world << "Recompileing"
+	world << "Compiling..."
 	shell("./recompile")
 	world << "Done"
 	world.Reboot("Switching to [newmap]")

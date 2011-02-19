@@ -698,7 +698,6 @@
 	name = "Captain Jumpsuit"
 	icon_state = "captain"
 	item_state = "dg_suit"
-
 	color = "captain"
 
 /obj/item/clothing/under/rank/counselor

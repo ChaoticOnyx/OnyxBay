@@ -119,28 +119,48 @@
 
 	if(istype(W, /obj/item/brain))
 		if(src.check_completion())
-			user.drop_item()
-			W.loc = get_turf(src)
+			user.drop_item() // Move the brain inside the robo suit
+			W.loc = src
 			src.brain = W
+
+			src.state("Linking the neural networks.", "blue")
+
+			// Check if player wants to respawn as cyborg
+			if (src.brain.owner.client)
+				var/answer = alert(src.brain.owner.client.mob,"Do you want to return to life?","Cyborgization","Yes","No")
+				if(answer == "No")
+					src.state("The inserted brain is not compatible with this suit's circuits.", "blue")
+					src.brain = null
+					W.loc = get_turf(src) // Drop the brain on the ground
+					return
+				else
+					src.state("Brain insertion complete.", "blue")
+			else
+				for(var/mob/dead/observer/G in world)
+					if(G.corpse == src.brain.owner && G.client)
+						var/answer = alert(G.client.mob,"Do you want to return to life?","Cyborgization","Yes","No")
+						if(answer == "No")
+							src.state("The inserted brain is not compatible with this suit's circuits.", "blue")
+							src.brain = null
+							W.loc = get_turf(src) // Drop the brain on the ground
+							return
+						else
+							src.state("Brain insertion complete.", "blue")
+
+			// Create the robo suit
 			var/mob/living/silicon/robot/O = new /mob/living/silicon/robot(get_turf(src.loc))
 			O.gender = src.brain.owner.gender
 			//O.start = 1
 			O.invisibility = 0
 			O.name = "Cyborg"
 			O.real_name = "Cyborg"
+
 			if (src.brain.owner.client)
-				var/answer = alert(src.brain.owner.client.mob,"Do you want to return to life?","Cyborfication","Yes","No")
-				if(answer == "No")
-					usr << "This brain refuses to be implanted!"
-				else
-					O.lastKnownIP = src.brain.owner.client.address
-					src.brain.owner.client.mob = O
+				O.lastKnownIP = src.brain.owner.client.address
+				src.brain.owner.client.mob = O
 			else
 				for(var/mob/dead/observer/G in world)
 					if(G.corpse == src.brain.owner && G.client)
-						var/answer = alert(G.client.mob,"Do you want to return to life?","Cyborfication","Yes","No")
-						if(answer == "No")
-							usr << "This brain refuses to be implanted!"
 						G.client.mob = O
 						del(G)
 						break
