@@ -1,0 +1,44 @@
+"a" = (/turf/simulated/shuttle/wall{dir = 8; icon_state = "wall_space"},/area)
+"b" = (/obj/window_pod,/turf/simulated/shuttle/floor,/area)
+"c" = (/turf/simulated/shuttle/wall{tag = "icon-wall (EAST)"; icon_state = "wall"; dir = 4},/area)
+"d" = (/turf/simulated/shuttle/wall{dir = 1; icon_state = "wall_space"},/area)
+"e" = (/turf/space,/area)
+"f" = (/obj/window_pod{dir = 4},/turf/simulated/shuttle/floor,/area)
+"g" = (/obj/table/reinforced{tag = "icon-reinf_tabledir"; icon_state = "reinf_tabledir"},/obj/machinery/microwave{pixel_y = 7},/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"h" = (/obj/table/reinforced{tag = "icon-reinf_tabledir"; icon_state = "reinf_tabledir"},/obj/machinery/microwave{pixel_y = 7},/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area)
+"i" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (SOUTHEAST)"; icon_state = "reinf_tabledir"; dir = 6},/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"j" = (/obj/machinery/vending/kitchen,/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area)
+"k" = (/obj/kitchenspike,/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"l" = (/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area)
+"m" = (/obj/closet/sandvich,/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"n" = (/obj/secure_closet/fridge,/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area)
+"o" = (/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"p" = (/turf/simulated/shuttle/wall,/area)
+"q" = (/obj/secure_closet/fridge,/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"r" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/turf/simulated/shuttle/floor,/area)
+"s" = (/turf/simulated/shuttle/floor,/area)
+"t" = (/obj/stool/chair,/turf/simulated/shuttle/floor{tag = "icon-floor5"; icon_state = "floor5"},/area)
+"u" = (/obj/machinery/door/unpowered/shuttle,/turf/simulated/shuttle/floor{tag = "icon-floor3"; icon_state = "floor3"},/area)
+"v" = (/obj/secure_closet/kitchen,/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area)
+"w" = (/obj/stool/chair{dir = 4},/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area)
+"x" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/turf/simulated/shuttle/floor{tag = "icon-floor5"; icon_state = "floor5"},/area)
+"y" = (/turf/simulated/shuttle/floor{tag = "icon-floor5"; icon_state = "floor5"},/area)
+"z" = (/obj/secure_closet/meat,/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"A" = (/obj/stool/chair{dir = 1},/turf/simulated/shuttle/floor{tag = "icon-floor5"; icon_state = "floor5"},/area)
+"B" = (/obj/secure_closet/meat,/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area)
+"C" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "wall_space"},/area)
+"D" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (NORTHEAST)"; icon_state = "reinf_tabledir"; dir = 5},/obj/item/weapon/vending_charge/kitchen,/obj/item/weapon/vending_charge/kitchen,/obj/item/weapon/vending_charge/kitchen,/obj/item/weapon/vending_charge/kitchen,/obj/item/weapon/vending_charge/kitchen,/obj/item/weapon/vending_charge/kitchen,/obj/item/weapon/vending_charge/kitchen,/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"E" = (/obj/machinery/gibber,/turf/simulated/shuttle/floor{tag = "icon-floor2"; icon_state = "floor2"},/area)
+"F" = (/turf/simulated/shuttle/wall{icon_state = "wall_space"},/area)
+
+(1,1,1) = {"
+abbbcbbbdeeeee
+fghijklmceeeee
+fnlololppbpbpd
+fqoolooorsttsu
+cvlllllwxyyyyu
+fzoolooorsAAsu
+fBlololppbpbpC
+fDlololEceeeee
+FbbbcbbbCeeeee
+"}

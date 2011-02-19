@@ -17,6 +17,14 @@
 	item_state = "securitybelt"
 	can_hold = list("/obj/item/weapon/handcuffs","/obj/item/device/flash","/obj/item/weapon/baton","/obj/item/device/radio","/obj/item/weapon/gun/energy/taser_gun","/obj/item/device/detective_scanner","/obj/item/weapon/flashbang","/obj/item/weapon/empgrenade")
 
+/obj/item/weapon/storage/belt/medical
+	name = "medical belt"
+	desc = "Can hold various medical items."
+	icon = 'items.dmi'
+	icon_state = "medbelt"
+	item_state = "medbelt"
+	can_hold = list("/obj/item/device/healthanalyzer","/obj/item/weapon/reagent_containers/syringe","/obj/item/weapon/medical","/obj/item/weapon/storage/pill_bottle","/obj/item/weapon/reagent_containers/glass/beaker","/obj/item/weapon/reagent_containers/glass/bottle","/obj/item/weapon/reagent_containers/glass/bloodpack","/obj/item/reagent_containers/pill")
+
 /obj/item/weapon/storage/belt/dropped(mob/user as mob)
 	..()
 

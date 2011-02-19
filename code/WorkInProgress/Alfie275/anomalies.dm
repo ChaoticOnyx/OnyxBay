@@ -216,17 +216,16 @@ proc/SetupAnomalies()
 	processing_items += src
 	return
 /obj/item/weapon/talkingcrystal/catchMessage(msg,mob/source)
-	var/Z = findtext(msg," ")
-	if(Z)
-		if(rand(50))
-			Z = 1
-	if(length(msg) < 10)
-		Z = 1
-	var/Y = findtext(msg," ",Z)
-	if(!Y)
-		Y = 1
-	var/X = copytext(msg,Z,Y)
-	words += X
+	var/done = 1
+	while(done)
+		var/loc = findtext(msg," ",1,0)
+		if(!loc)
+			done = 0
+		var/X = copytext(msg,1,loc)
+		if(!words.Find(X,1,0))
+			x = replace(x," ","")
+			words += X
+		msg = copytext(msg,loc+1,0)
 	for(var/mob/O in viewers(src))
 		O.show_message("\blue The crystal hums for bit then stops...", 1)
 /obj/item/weapon/talkingcrystal/proc/SaySomething()

@@ -1,3 +1,13 @@
+var/list/maps
+datum/mapobject
+	var/name = "NSV Luna"
+	var/mapname = "NSV_Luna"
+datum/mapobject/baystation12
+	name = "Baystation 12"
+	mapname = "baystation12"
+
+
+
 /world/Topic(T, addr, master, key)
 	check_diary()
 	diary << "TOPIC: \"[T]\", from:[addr], master:[master], key:[key]"
@@ -60,7 +70,7 @@
 		return 2
 
 var/jsonpath = "/var/www/html"
-
+var/dmepath = "/home/bay12/git/bs12.dme"
 world/proc/makejson()
 
 	if(!makejson)
@@ -92,8 +102,80 @@ world/proc/makejson()
 				admins = "yes"
 	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\"}"
 	fcopy("info.json","[jsonpath]/info.json")
-
+/proc/switchmap(newmap,newpath)
+	var/obj/mapinfo/M = locate()
+	if(!M)
+		world << "Did not locate mapinfo object"
+		return
+	var/oldmap = M.mapname
+	world << M.mapname
+	var/text = file2text(dmepath)
+	var/l = "\\"
+	var/path = "#include \"maps[l][oldmap].dmm\""
+	var/xpath = "#include \"maps[l][newpath].dmm\""
+	var/loc = findtext(text,path,1,0)
+	if(!loc)
+		world << "NOT FOUND"
+		return
+	text = copytext(text,1,loc)
+	text += "\n[xpath]"
+/*	for(var/A in lines)
+		if(findtext(A,path,1,0))
+			lineloc = lines.Find(A,1,0)
+			lines[lineloc] = xpath
+			world << "FOUND"*/
+	fdel(dmepath)
+	var/file = file(dmepath)
+	file << text
+	world << "Compiling..."
+	shell("./recompile")
+	world << "Done"
+	world.Reboot("Switching to [newmap]")
+obj/mapinfo
+	invisibility = 101
+	var/mapname = "thismap"
+	var/decks = 4
+proc/GetMapInfo()
+	var/obj/mapinfo/M = locate()
+	world << M.name
+	world << M.mapname
+client/proc/ChangeMap(var/X as text)
+	set name = "Check derp"
+	set category  = "Admin"
+	switchmap(X,X)
+	//test
 client/proc/testjson()
  	world.makejson()
 proc/send2irc(msg,msg2)
  	shell("python26 nudge.py [msg] [msg2]")
+
+proc/replacetext(haystack, needle, replace)
+	if(!haystack || !needle || !replace)
+		return
+	var
+		needleLen = length(needle)
+		replaceLen = length(replace)
+		pos = findtext(haystack, needle)
+	while(pos)
+		haystack = copytext(haystack, 1, pos) + \
+			replace + copytext(haystack, pos+needleLen)
+		pos = findtext(haystack, needle, pos+replaceLen)
+	return haystack
+proc/file2list(A)
+	var/text = file2text(A)
+	var/list/lines = list()
+	var/done
+	while (done!=1)
+		var/X = findtext(text,"\n",1,0)
+		if(!X)
+			done = 1
+			lines += text
+		//	// "DONE"
+			break
+		else
+			var/Y = copytext(text,1,X)
+			text = copytext(
+			text,X+1,0)
+			lines += Y
+		sleep(1)
+	return lines

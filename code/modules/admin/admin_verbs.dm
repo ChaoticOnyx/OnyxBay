@@ -131,6 +131,7 @@
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/testjson
+			src.verbs += /client/proc/ChangeMap
 			src.verbs += /mob/living/proc/CheckHandcuff
 
 			src.verbs += /client/proc/addchange
@@ -232,6 +233,7 @@
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
+			src.verbs += /client/proc/ChangeMap
 			src.verbs += /client/proc/jobban_panel
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow

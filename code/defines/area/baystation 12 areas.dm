@@ -65,7 +65,7 @@ area/bs12/hallway/west
 // MedBay and related
 area/bs12/medical/medbay
 	name = "Medical Bay"
-	icon_state = "medical"
+	icon_state = "medbay"
 	music = ""
 	dooraccess = "5"
 
@@ -83,30 +83,30 @@ area/bs12/medical/autopsy
 
 area/bs12/medical/waiting
 	name = "Medical Bay Waiting Room"
-	icon_state = "medical"
+	icon_state = "medbay"
 	music = ""
 
 area/bs12/medical/office
 	name = "Medical Bay Office"
-	icon_state = "medical"
+	icon_state = "medbayoffice"
 	music = ""
 	dooraccess = "5"
 
 area/bs12/medical/patientA
 	name = "In-Patient Room A"
-	icon_state = "medical"
+	icon_state = "medbay"
 	music = ""
 	dooraccess = "5"
 
 area/bs12/medical/patientB
 	name = "In-Patient Room B"
-	icon_state = "medical"
+	icon_state = "medbay"
 	music = ""
 	dooraccess = "5"
 
 area/bs12/medical/patientC // For the crazies
 	name = "Unstable Patient Room"
-	icon_state = "medical"
+	icon_state = "medbay"
 	music = ""
 	dooraccess = "5"
 

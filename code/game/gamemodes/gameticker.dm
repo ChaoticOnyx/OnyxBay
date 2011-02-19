@@ -183,8 +183,6 @@ var/global/datum/controller/gameticker/ticker
 		check_win()
 	return
 */
-client/verb/test()
-	send2irc(world.url,"New round in 25 seconds!")
 /datum/controller/gameticker/proc/declare_completion()
 
 	for (var/mob/living/silicon/ai/aiPlayer in world)
