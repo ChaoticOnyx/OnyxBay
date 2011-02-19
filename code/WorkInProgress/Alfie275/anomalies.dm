@@ -86,7 +86,7 @@ proc/SetupAnomalies()
 /obj/item/weapon/anomaly/process()
 	if(src.cooldown)
 		src.cooldown--
-		if(!src.cooldown)
+		if(src.cooldown<1)
 			for(var/mob/m in hearers(get_turf(src)))
 				var/t = pick("chimes","pings","buzzes")
 				m<<"The [src.name] [t]"

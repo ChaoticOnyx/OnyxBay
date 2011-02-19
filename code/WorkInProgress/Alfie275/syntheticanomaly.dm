@@ -3,7 +3,7 @@
 /obj/item/weapon/anobattery
 	name = "Anomaly power battery"
 	icon = 'anomaly.dmi'
-	icon_state = "anobattery"
+	icon_state = "anobattery0"
 	var/list/datum/anomalyeffect/e = list()
 	var/capacity = 200
 
@@ -115,7 +115,7 @@
 /obj/item/weapon/anodevice/process()
 	if(src.cooldown)
 		src.cooldown--
-		if(!src.cooldown)
+		if(1>src.cooldown)
 			for(var/mob/m in hearers(get_turf(src)))
 				var/t = pick("chimes","pings","buzzes")
 				m<<"The [src.name] [t]"
