@@ -316,8 +316,8 @@ proc/SetupAnomalies()
 
 /obj/item/weapon/fossil/base/New()
 	spawn(0)
-		var/list/l = list("/obj/item/weapon/fossil/bone"=8,"obj/item/weapon/fossil/skull"=2,
-		"obj/item/weapon/fossil/skull/horned"=2,"obj/item/weapon/fossil/shell"=1)
+		var/list/l = list("/obj/item/weapon/fossil/bone"=4,"/obj/item/weapon/fossil/skull"=2,
+		"/obj/item/weapon/fossil/skull/horned"=2,"/obj/item/weapon/fossil/shell"=1)
 		var/t = pickweight(l)
 		new t(src.loc)
 		del src

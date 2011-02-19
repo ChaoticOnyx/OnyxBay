@@ -227,6 +227,7 @@
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
 			src.verbs += /client/proc/loadmaphere
+			src.verbs += /client/proc/qsowtoggle
 			src.verbs += /client/proc/hidemode
 		if ("Super Administrator")
 			src.deadchat = 1
@@ -703,6 +704,15 @@
 	return
 */
 
+/client/proc/qsowtoggle()
+	set name = "QSOW toggle"
+	set category = "Admin"
+	if(qsow)
+		qsow = 0
+	else
+		qsow = 1
+	usr<<"QSOW [qsow]"
+
 /client/proc/voting()
 	set name = "Voting"
 	set category = "Admin"
@@ -810,12 +820,12 @@
 
 /client/proc/loadmaphere(turf/t as turf in world)
 	set category = "Special Verbs"
-	set name = "Load Map"
+	set name = "Load Map Here"
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
 	var/map = input("Input map path:") as text
-	QML_loadMap(map,t.x,t.y,t.z)
+	QML_loadMap(map,t.x-1,t.y-1,t.z-1)
 
 
 /client/proc/loadmap(map as text)
