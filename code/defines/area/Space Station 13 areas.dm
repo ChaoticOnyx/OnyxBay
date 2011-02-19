@@ -785,6 +785,7 @@
 	name = "Syndicate Station"
 	icon_state = "yellow"
 	requires_power = 0
+	ul_Lighting = 0
 
 /area/wizard_station
 	name = "Wizard's Den"

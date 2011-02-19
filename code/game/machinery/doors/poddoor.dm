@@ -24,7 +24,7 @@
 		src.operating = 1
 	flick("pdoorc0", src)
 	src.icon_state = "pdoor0"
-	sleep(10)
+	spawn(10)
 	src.density = 0
 	src.ul_SetOpacity(0)
 	update_nearby_tiles()
@@ -47,7 +47,7 @@
 		src.ul_SetOpacity(1)
 	update_nearby_tiles()
 
-	sleep(10)
+	spawn(10)
 	src.operating = 0
 	return
 
