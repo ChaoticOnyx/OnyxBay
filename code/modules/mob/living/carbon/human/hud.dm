@@ -24,6 +24,20 @@
 	r_dither.layer = 18
 	r_dither.mouse_opacity = 0
 
+	gray_dither = new h_type(src)
+	gray_dither.screen_loc = "WEST,SOUTH to EAST,NORTH"
+	gray_dither.name = "sunglasses"
+	gray_dither.icon_state = "dark64"
+	gray_dither.layer = 18
+	gray_dither.mouse_opacity = 0
+
+	lp_dither = new h_type(src)
+	lp_dither.screen_loc = "WEST,SOUTH to EAST,NORTH"
+	lp_dither.name = "Thermals"
+	lp_dither.icon_state = "ditherlimepulse"
+	lp_dither.layer = 18
+	lp_dither.mouse_opacity = 0
+
 	alien_view = new h_type(src)
 	alien_view.screen_loc = "WEST,SOUTH to EAST,NORTH"
 	alien_view.name = "Alien"

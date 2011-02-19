@@ -87,6 +87,8 @@
 	var/obj/screen/alien_view = null
 	var/obj/screen/g_dither = null
 	var/obj/screen/r_dither = null
+	var/obj/screen/gray_dither = null
+	var/obj/screen/lp_dither = null
 	var/obj/screen/blurry = null
 	var/list/darkMask = null
 	var/obj/screen/station_explosion = null

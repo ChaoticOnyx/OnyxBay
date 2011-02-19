@@ -87,6 +87,8 @@
 	client.screen -= hud_used.vimpaired
 	client.screen -= hud_used.g_dither
 	client.screen -= hud_used.r_dither
+	client.screen -= hud_used.gray_dither
+	client.screen -= hud_used.lp_dither
 
 	if ((blind && stat != 2))
 		if ((blinded))
@@ -103,11 +105,17 @@
 			if (druggy)
 				client.screen += hud_used.druggy
 
-			if (istype(wear_mask, /obj/item/clothing/mask/gas))
+			if (istype(wear_mask, /obj/item/clothing/mask/gas) && !istype(wear_mask, /obj/item/clothing/mask/gas/swat))
 				client.screen += hud_used.g_dither
 
-			if (istype(glasses, /obj/item/clothing/glasses/thermal))
+			if (istype(glasses, /obj/item/clothing/glasses/thermal) || istype(wear_mask, /obj/item/clothing/mask/gas/swat))
 				client.screen += hud_used.r_dither
+
+			if (istype(glasses, /obj/item/clothing/glasses/sunglasses))
+				client.screen += hud_used.gray_dither
+
+			if (istype(glasses, /obj/item/clothing/glasses/meson))
+				client.screen += hud_used.lp_dither
 
 	if (stat != 2)
 		if (machine)
