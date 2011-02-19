@@ -171,9 +171,10 @@ Frequency:
 				if(istype(R, /mob/living/silicon/ai))
 					R.show_message("[part_a][from] (Automated System) </a>[part_b][message][part_c]", 10)
 				else
+					R.show_message(rendered, 10)
 					for(var/obj/item/weapon/implant/imp in R)
 						imp.hear(message,from)
-					R.show_message(rendered, 10)
+
 				//	R << img
 
 
