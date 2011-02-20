@@ -9,9 +9,10 @@
 	anchored = 1
 	density = 1
 	var/list/emit = list()
-	var/maxcharge = 5000
-	var/charge = 1000
+	var/maxcharge = 10000000
+	var/charge = 1000000
 	var/obj/machinery/shielding/energyconverter/generator = null
+	var/shields_enabled = 0
 
 
 //Process Loop
@@ -20,12 +21,11 @@
 		charge = 0
 		updateicon()
 		return
-	if(stat & NOPOWER)
+
+	if(shields_enabled)
 		if(charge)
-			charge -= 40
+			charge -= 100000
 			charge = max(charge, 0)
-	else
-		use_power(round(charge ** 1.1))
 	updateicon()
 	return
 

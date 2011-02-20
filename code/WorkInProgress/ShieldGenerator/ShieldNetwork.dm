@@ -64,7 +64,11 @@ var/datum/shieldnetwork/ShieldNetwork
 		return
 	for(var/obj/machinery/shielding/emitter/E in Nodes)
 		E.control = 1
+	for(var/obj/machinery/shielding/capacitor/C in Nodes)
+		C.shields_enabled = 1
 
 /datum/shieldnetwork/proc/stopshields()
 	for(var/obj/machinery/shielding/emitter/E in Nodes)
 		E.control = 0
+	for(var/obj/machinery/shielding/capacitor/C in Nodes)
+		C.shields_enabled = 0

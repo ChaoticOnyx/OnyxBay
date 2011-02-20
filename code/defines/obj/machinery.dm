@@ -462,7 +462,7 @@
 	var/charging = 0
 	var/chargemode = 1
 	var/chargecount = 0
-	var/chargelevel = 30000
+	var/chargelevel = 200000
 	var/online = 1
 	var/n_tag = null
 	var/obj/machinery/power/terminal/terminal = null
