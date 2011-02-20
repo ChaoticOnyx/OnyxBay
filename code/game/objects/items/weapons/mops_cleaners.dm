@@ -5,17 +5,28 @@ MOP
 
 */
 /obj/item/weapon/cleaner/New()
-	var/datum/reagents/R = new/datum/reagents(1000)
+	var/datum/reagents/R = new/datum/reagents(100)
 	reagents = R
 	R.my_atom = src
-	R.add_reagent("cleaner", 1000)
+	R.add_reagent("cleaner", 50)
+
+/obj/item/weapon/cleaner/attack_self(mob/user as mob)
+	if(saftey == 1)
+		saftey = 0
+		user << "\blue You flick the catch to off"
+	else
+		saftey = 1
+		user << "\blue You flick the catch back on"
 
 /obj/item/weapon/cleaner/attack(mob/living/carbon/human/M as mob, mob/user as mob)
 	return
 
 /obj/item/weapon/cleaner/afterattack(atom/A as mob|obj, mob/user as mob)
+	if (saftey == 1)
+		user << "\blue The catch is still on!"
+		return
 	if (src.reagents.total_volume < 1)
-		user << "\blue Add more cleaner!"
+		user << "\blue Its empty!"
 		return
 
 	var/obj/decal/D = new/obj/decal(get_turf(src))

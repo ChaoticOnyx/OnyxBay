@@ -250,6 +250,7 @@
 	name = "space cleaner"
 	icon_state = "cleaner"
 	item_state = "cleaner"
+	var/saftey = 1
 	flags = ONBELT|TABLEPASS|OPENCONTAINER|FPRINT|USEDELAY|OPENCONTAINER
 	throwforce = 3
 	w_class = 2.0

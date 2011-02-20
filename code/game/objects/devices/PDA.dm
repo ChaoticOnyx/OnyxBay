@@ -1200,6 +1200,10 @@ Code:
 				src.tnote += "<i><b>&rarr; To [P.owner]:</b></i><br>[t]<br>"
 				P.tnote += "<i><b>&larr; From <a href='byond://?src=\ref[P];editnote=\ref[src]'>[src.owner]</a>:</b></i><br>[t]<br>"
 
+				// Give every ghost the ability to see all messages
+				for (var/mob/dead/observer/G in world)
+					G.show_message("<i>PDA message from <b>[src.owner]</b> to <b>[P:owner]</b>: [t]</i>")
+
 				if (prob(15)) //Give the AI a chance of intercepting the message
 					for (var/mob/living/silicon/ai/A in world)
 						A.show_message("<i>Intercepted message from <b>[P:owner]</b>: [t]</i>")

@@ -20,6 +20,7 @@
 /client/proc/cmd_admin_prison(mob/M as mob in world)
 	set category = "Special Verbs"
 	set name = "Prison"
+	var/turf/simulated/floor/prison
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
@@ -41,7 +42,7 @@
 		M.paralysis += 5
 		sleep(5)	//so they black out before warping
 		if(prisonwarp.len)
-			M.loc = pick(prisonwarp)
+			M.loc = prison
 			if(istype(M, /mob/living/carbon/human))
 				var/mob/living/carbon/human/prisoner = M
 				prisoner.equip_if_possible(new /obj/item/clothing/under/color/orange(prisoner), prisoner.slot_w_uniform)
@@ -308,25 +309,29 @@
 
 /client/proc/cmd_admin_gib(mob/M as mob in world)
 	set category = "Special Verbs"
-	set name = "Gib"
+	set name = "Zot"
 
 	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 
 	if(usr.key != M.key && M.client)
-		log_admin("[key_name(usr)] has gibbed [key_name(M)]")
-		message_admins("[key_name_admin(usr)] has gibbed [key_name_admin(M)]", 1)
+		log_admin("[key_name(usr)] has zotted [key_name(M)]")
+		message_admins("[key_name_admin(usr)] has zotted [key_name_admin(M)]", 1)
 
-	if (istype(M, /mob/dead/observer))
+	/*if (istype(M, /mob/dead/observer))
 		var/virus = M.virus
 		gibs(M.loc, virus)
+		return */
+
+	if (istype(M, /mob/dead/observer))
+		src << "Invalid mob"
 		return
 
 	M.gib()
 
 /client/proc/cmd_admin_gib_self()
-	set name = "gibself"
+	set name = "Zotself"
 	set category = "Special Verbs"
 	if (istype(src.mob, /mob/dead/observer)) // so they don't spam gibs everywhere
 		return

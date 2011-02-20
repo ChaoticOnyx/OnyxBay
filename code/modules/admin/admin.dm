@@ -11,10 +11,6 @@
 				if(C.inchat) C.ctab_message("Log", rendered)
 				C.mob << output(rendered, "adminoutput")
 
-/obj/admins/proc/toggle_adminmsg()
-	showadminmessages = !showadminmessages
-	usr << "Now [showadminmessages?"<SPAN STYLE='color: #080'>showing</SPAN>":"<SPAN STYLE='color: #800'>hiding"] admin messages"
-
 /obj/admins/Topic(href, href_list)
 	..()
 

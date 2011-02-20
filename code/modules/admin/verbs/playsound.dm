@@ -14,6 +14,7 @@
 		message_admins("[key_name_admin(src)] played sound [S]", 1)
 		for(var/client/C)
 			if(C.play_ambiences == 1 && C.play_adminsound == 1)
+				C << "[key_name_admin(src)] played sound [S]"
 				C << uploaded_sound
 	else
 		if(usr.client.canplaysound)

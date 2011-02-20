@@ -1,8 +1,17 @@
+/////////////////IM SORRY FOR THIS CODE \\\\\\\\\\\\\\\\\\\
+//////////////REALLY SORRY \\\\\\\\\\\\\\\\
+
+
+
+
+
+
 /obj/item/weapon/reagent_containers/food/custom/breadsys/bread
 	name = "bread"
 	icon = 'food2.dmi'
-	icon_state = "bread"
+	icon_state = "bread3"
 	var/ammount = 3
+	var/stateontop = "bread"
 /obj/item/weapon/reagent_containers/food/custom/breadsys/butterpack
 	name = "Butter"
 	icon = 'food2.dmi'
@@ -10,8 +19,8 @@
 /obj/item/weapon/reagent_containers/food/custom/breadsys/loaf
 	name = "loaf of bread"
 	icon = 'food2.dmi'
-	icon_state = "bread_01"
-	var/ammount = 10
+	icon_state = "loaf3"
+	var/ammount = 6
 /obj/item/weapon/reagent_containers/food/custom/breadsys/ontop
 	icon = 'food2.dmi'
 	var/stateontop = "sals" //state when ontop a sandvich
@@ -29,8 +38,10 @@
 		new /obj/item/weapon/reagent_containers/food/custom/breadsys/bread(src.loc)
 		user << "You slice a piece of bread"
 		ammount--
-		if(ammount <= 5)
-			icon_state = "bread_02"
+		if(ammount <= 4)
+			icon_state = "loaf2"
+		if(ammount <= 2)
+			icon_state = "loaf1"
 		if(ammount < 1)
 			del(src)
 /obj/item/weapon/reagent_containers/food/custom/breadsys/butterpack/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -48,6 +59,7 @@
 			for(var/mob/X in viewers(M, null))
 				X.show_message(text(" [] finishes eating []", user, src), 1)
 				del src
+		updateicon()
 		return
 
 	else
@@ -58,7 +70,15 @@
 			for(var/mob/V in viewers(M, null))
 				V.show_message(text("[] finishes eating []", user, src), 1)
 			del src
+		updateicon()
 		return
+/obj/item/weapon/reagent_containers/food/custom/breadsys/bread/proc/updateicon()
+	src.overlays = null
+	var/num = ammount
+	for(var/obj/item/weapon/reagent_containers/food/custom/breadsys/ontop/X in src)
+		var/iconx = "[X.stateontop][num]"
+		overlays += image(X.icon,iconx)
+
 /obj/item/weapon/reagent_containers/food/custom/breadsys/bread/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/reagent_containers/food/custom/breadsys/ontop))
 		var/state = W:stateontop
@@ -86,6 +106,7 @@
 			src.name = "sandwich"
 		overlays += image(W.icon,icon_state = W.icon_state)
 		user << "You put [W] ontop of the [src]"
+	updateicon()
 obj/closet/sandvich
 	name = "Food Supply Closet"
 obj/closet/sandvich/New()

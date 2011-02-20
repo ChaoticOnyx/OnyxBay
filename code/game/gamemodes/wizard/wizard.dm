@@ -421,10 +421,10 @@
 			usr << browse(null, "window=radio")
 			var/obj/item/device/radio/T = src.origradio
 			var/obj/item/uplink/radio/wizard/SWF_uplink/R = src
-			R.loc = T
+			usr.loc = T
 			T.loc = usr
 			// R.layer = initial(R.layer)
-			R.layer = 0
+			user.layer = 0
 			if (usr.client)
 				usr.client.screen -= R
 			if (usr.r_hand == R)

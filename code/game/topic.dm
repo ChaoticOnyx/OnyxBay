@@ -2,10 +2,15 @@ var/list/maps
 datum/mapobject
 	var/name = "NSV Luna"
 	var/mapname = "NSV_Luna"
+	var/decks = 4
+datum/mapobject/baystation12
+	name = "NSV Luna"
+	mapname = "NSV_Luna"
+	decks = 4
 datum/mapobject/baystation12
 	name = "Baystation 12"
 	mapname = "baystation12"
-
+	decks = 1
 
 
 /world/Topic(T, addr, master, key)

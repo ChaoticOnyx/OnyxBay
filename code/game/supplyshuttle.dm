@@ -35,6 +35,16 @@ var/supply_shuttle_points = 50
 //NOTE: only secure crate types use the access var (and are lockable)
 //NOTE: hidden packs only show up when the computer has been hacked.
 
+/datum/supply_packs
+	var/name = null
+	var/list/contains = new/list()
+	var/amount = null
+	var/cost = null
+	var/containertype = null
+	var/containername = null
+	var/access = null
+	var/hidden = 0
+
 /datum/supply_packs/specialops
 	name = "Special Ops supplies"
 	contains = list("/obj/item/weapon/storage/emp_kit",
@@ -278,49 +288,35 @@ var/supply_shuttle_points = 50
     name = "Gas Canister \[Air\] Crate"
     contains = list("/obj/machinery/portable_atmospherics/canister/air")
     cost = 10
-    containertype = "/obj/crate"
-    containername = "Gas Canister \[Air\] Crate"
 
 /datum/supply_packs/gascanisternitrogen
     name = "Gas Canister \[N2\] Crate"
     contains = list("/obj/machinery/portable_atmospherics/canister/nitrogen")
     cost = 10
-    containertype = "/obj/crate"
-    containername = "Gas Canister \[N2\] Crate"
 
 /datum/supply_packs/gascanisteroxygen
     name = "Gas Canister \[Oxygen\] Crate"
     contains = list("/obj/machinery/portable_atmospherics/canister/oxygen")
     cost = 10
-    containertype = "/obj/crate"
-    containername = "Gas Canister \[Oxygen\] Crate"
 
 /datum/supply_packs/gascanisterco2
     name = "Gas Canister \[CO2\] Crate"
     contains = list("/obj/machinery/portable_atmospherics/canister/carbon_dioxide")
     cost = 10
-    containertype = "/obj/crate"
-    containername = "Gas Canister \[CO2\] Crate"
 
 /datum/supply_packs/gascanisterplasma
     name = "Gas Canister \[Plasma\] Crate"
     contains = list("/obj/machinery/portable_atmospherics/canister/toxins")
     cost = 10
-    containertype = "/obj/crate"
-    containername = "Gas Canister \[Plasma\] Crate"
 
 /datum/supply_packs/gascanisterlaughgas
     name = "Gas Canister \[N2O\] Crate"
     contains = list("/obj/machinery/portable_atmospherics/canister/sleeping_agent")
     cost = 10
-    containertype = "/obj/crate"
-    containername = "Gas Canister \[N2O\] Crate"
-
 
 /datum/supply_packs/evacuation
 	name = "Emergency equipment"
 	contains = list("/obj/machinery/bot/floorbot",
-	"/obj/machinery/bot/floorbot",
 	"/obj/machinery/bot/floorbot",
 	"/obj/machinery/bot/floorbot",
 	"/obj/item/weapon/tank/air",
@@ -362,7 +358,7 @@ var/supply_shuttle_points = 50
 	cost = 20
 	containertype = "/obj/crate"
 	containername = "Clown Gear"
-*/
+
 
 /datum/supply_packs/robot
 	name = "Robotics Crate"
@@ -372,7 +368,12 @@ var/supply_shuttle_points = 50
 	cost = 35
 	containertype = "/obj/crate"
 	containername = "Robotics Crate"
+*/
 
+/datum/supply_packs/mule
+	name = "M.U.L.E. Bot"
+	contains = list("/obj/machinery/bot/mulebot")
+	cost = 20
 
 //SUPPLY PACKS
 
@@ -439,16 +440,6 @@ var/supply_shuttle_points = 50
 	var/orderedby = null
 	var/comment = null
 
-/datum/supply_packs
-	var/name = null
-	var/list/contains = new/list()
-	var/amount = null
-	var/cost = null
-	var/containertype = null
-	var/containername = null
-	var/access = null
-	var/hidden = 0
-
 /proc/supply_ticker()
 	supply_shuttle_points += SUPPLY_POINTSPER
 	spawn(SUPPLY_POINTDELAY) supply_ticker()
@@ -501,23 +492,35 @@ var/supply_shuttle_points = 50
 	for(var/S in supply_shuttle_shoppinglist)
 		var/pickedloc = 0
 		var/found = 0
-		for(var/C in markers)
-			if (locate(/obj/crate) in get_turf(C)) continue
+		for(var/C in markers) // Picking a location for every new supply pack
+			if (locate(/obj) in get_turf(C)) continue
 			found = 1
 			pickedloc = get_turf(C)
+
 		if (!found) pickedloc = get_turf(pick(markers))
+
 		var/datum/supply_order/SO = S
 		var/datum/supply_packs/SP = SO.object
 
-		var/atom/A = new SP.containertype ( pickedloc )
-		A.name = "[SP.containername] [SO.comment ? "([SO.comment])":"" ]"
-		if(SP.access)
-			A:req_access = new/list()
-			A:req_access += text2num(SP.access)
-		for(var/B in SP.contains)
-			var/thepath = text2path(B)
-			var/atom/B2 = new thepath (A)
-			if(SP.amount && B2:amount) B2:amount = SP.amount
+		if(!isnull(SP.containertype)) // If a container for this was selected
+			var/atom/A = new SP.containertype ( pickedloc )
+
+			A.name = "[SP.containername] [SO.comment ? "([SO.comment])":"" ]"
+
+			if(SP.access)
+				A:req_access = new/list()
+				A:req_access += text2num(SP.access)
+
+			for(var/B in SP.contains)
+				var/thepath = text2path(B)
+				var/atom/B2 = new thepath (A)
+				if(SP.amount && B2:amount) B2:amount = SP.amount
+
+		else	// The supply pack comes by itself, not within a container. Generally used for a single larger item
+			for(var/B in SP.contains)
+				var/thepath = text2path(B)
+				var/atom/B2 = new thepath ( pickedloc )
+				if(SP.amount && B2:amount) B2:amount = SP.amount
 
 	return
 

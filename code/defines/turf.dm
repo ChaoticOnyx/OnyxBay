@@ -30,15 +30,19 @@
 	icon = 'space.dmi'
 	name = "space"
 	icon_state = "placeholder"
-
+	var/sand = 0
 	temperature = TCMB
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 700000
 
 /turf/space/New()
 	. = ..()
-	icon = 'space.dmi'
-	icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
+	if(!sand)
+		icon = 'space.dmi'
+		icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
+	else
+		icon = 'sand.dmi'
+		icon_state = "[pick(1,2,3)]"
 
 /turf/space/proc/Check()
 	var/turf/T = locate(x, y, z + 1)
@@ -52,7 +56,16 @@
 		open.LightLevelGreen = S.LightLevelGreen
 		open.ul_UpdateLight()
 
-/turf/simulated
+/turf/simulated/floor/prison			//Its good to be lazy.
+	name = "Welcome to Admin Prison"
+	wet = 0
+	image/wet_overlay = null
+
+	thermite = 0
+	oxygen = MOLES_O2STANDARD
+	nitrogen = MOLES_N2STANDARD
+
+/turf/simulated/
 	name = "station"
 	var/wet = 0
 	var/image/wet_overlay = null
@@ -406,7 +419,7 @@
 	if(istype(W, /obj/item/weapon/pickaxe))
 		if(W:active)
 			src.health -= 20
-			user << "You use \the [W.name] to saw away part of the unwanted ore."
+			user << "You use \the [W.name] to hack away part of the unwanted ore."
 		else
 			src.health -= 5
 			user << "The [W.name] wasn't very effective against the ore."
