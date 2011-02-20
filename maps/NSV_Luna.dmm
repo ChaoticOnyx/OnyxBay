@@ -1,7 +1,7 @@
 "aaa" = (/turf/space,/area)
 "aab" = (/turf/simulated/shuttle/wall{tag = "icon-wall3 (WEST)"; icon_state = "wall3"; dir = 8},/area/syndicate_station)
 "aac" = (/turf/simulated/shuttle/wall{tag = "icon-wall3 (NORTH)"; icon_state = "wall3"; dir = 1},/area/syndicate_station)
-"aad" = (/turf/simulated/shuttle/floor{tag = "icon-floor3"; icon_state = "floor3"},/area/syndicate_station)
+"aad" = (/obj/window_pod{dir = 2; icon_state = "window5"},/turf/simulated/shuttle/floor{tag = "icon-floor3"; icon_state = "floor3"},/area/syndicate_station)
 "aae" = (/obj/table/woodentable{dir = 10},/obj/machinery/light/lamp/green{pixel_y = 6},/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area/syndicate_station)
 "aaf" = (/obj/table/woodentable,/obj/item/weapon/paper{pixel_y = 4},/obj/item/weapon/pen/sleepypen{pixel_x = -5; pixel_y = 5},/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area/syndicate_station)
 "aag" = (/obj/table/woodentable,/obj/item/weapon/pinpointer{pixel_y = 3},/obj/item/weapon/handcuffs{pixel_x = 1; pixel_y = 4},/turf/simulated/shuttle/floor{tag = "icon-floor4"; icon_state = "floor4"},/area/syndicate_station)
