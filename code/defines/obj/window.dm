@@ -48,7 +48,7 @@
 	icon = 'shuttle.dmi'
 	icon_state = "window1"
 	desc = "A thick window secured into its frame."
-	dir = NORTHWEST
+	dir = 2
 	anchored = 1
 	density = 1
 
