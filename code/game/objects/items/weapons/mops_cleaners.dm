@@ -10,7 +10,7 @@ MOP
 	R.my_atom = src
 	R.add_reagent("cleaner", 50)
 
-/obj/item/weapon/cleaner/DblClick(mob/user as mob)
+/obj/item/weapon/cleaner/attack_self(mob/user as mob)
 	if(saftey == 1)
 		saftey = 0
 		user << "\blue You flick the catch to off"
