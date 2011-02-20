@@ -119,7 +119,7 @@
 	if(analysing)
 		analysing -= 1
 		if(!analysing)
-			state("The [src.name] pings")
+			state("The [src.name] pings", "blue")
 			var/r = "[a.name]"
 			r += "<BR>Range	: [a.e.range]"
 			r += "<BR>Magnitude : [a.e.magnitude]"
@@ -132,7 +132,7 @@
 	if(spectral)
 		spectral -= 1
 		if(!spectral)
-			state("The [src.name] beeps")
+			state("The [src.name] beeps", "blue")
 			f.effectname = a.e.effectname
 			f.name = "Spectral filter A-[a.id]"
 			f.desc = "Spectral filter for \"[a.e.fluff]\""
@@ -163,10 +163,6 @@
 		src.add_fingerprint(usr)
 	src.updateUsrDialog()
 	return
-
-/obj/machinery/anomaly/anomalyanalyser/proc/state(var/msg)
-	for(var/mob/O in hearers(src, null))
-		O.show_message("\icon[src] \blue [msg]", 2)
 
 /obj/item/weapon/anomalyfilter
 	name = "Spectral filter"

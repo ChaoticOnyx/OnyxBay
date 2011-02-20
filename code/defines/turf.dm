@@ -56,7 +56,16 @@
 		open.LightLevelGreen = S.LightLevelGreen
 		open.ul_UpdateLight()
 
-/turf/simulated
+/turf/simulated/floor/prison			//Its good to be lazy.
+	name = "Welcome to Admin Prison"
+	wet = 0
+	image/wet_overlay = null
+
+	thermite = 0
+	oxygen = MOLES_O2STANDARD
+	nitrogen = MOLES_N2STANDARD
+
+/turf/simulated/
 	name = "station"
 	var/wet = 0
 	var/image/wet_overlay = null
@@ -406,9 +415,13 @@
 	..()
 
 /turf/simulated/asteroid/wall/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W,/obj/item/weapon/circular_saw))
-		src.health-=20
-		user<<"You use \the [W.name] to saw away part of the unwanted ore."
+	if(istype(W, /obj/item/weapon/pickaxe))
+		if(W:active)
+			src.health -= 20
+			user << "You use \the [W.name] to hack away part of the unwanted ore."
+		else
+			src.health -= 5
+			user << "The [W.name] wasn't very effective against the ore."
 
 /turf/simulated/asteroid/wall/process()
 	var/power

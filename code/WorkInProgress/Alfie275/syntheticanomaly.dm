@@ -3,11 +3,16 @@
 /obj/item/weapon/anobattery
 	name = "Anomaly power battery"
 	icon = 'anomaly.dmi'
-	icon_state = "anobattery"
+	icon_state = "anobattery0"
 	var/list/datum/anomalyeffect/e = list()
 	var/capacity = 200
 
 	var/list/power = list()
+
+/obj/item/weapon/anobattery/proc/UpdateSprite()
+	var/p = (GetTotalPower()/capacity)*100
+	var/s = round(p,25)
+	icon_state = "anobattery[s]"
 
 /obj/item/weapon/anobattery/proc/AddPower(var/datum/anomalyeffect/n,var/npower)
 	var/curpower
@@ -21,12 +26,14 @@
 		n.magnitude=1
 		n.o = src
 	power["[n.effectname]"]+=npower
+	UpdateSprite()
 	return 1
 
 /obj/item/weapon/anobattery/proc/TakePower(var/datum/anomalyeffect/n,var/npower)
 	power["[n.effectname]"] -= npower
 	if(power["[n.effectname]"]<1)
 		power.Remove("[n.effectname]")
+	UpdateSprite()
 
 /obj/item/weapon/anobattery/proc/GetPower(var/datum/anomalyeffect/n)
 	return power["[n.effectname]"]
@@ -46,7 +53,13 @@
 	var/cooldown
 	var/obj/item/weapon/anobattery/b
 
-
+/obj/item/weapon/anodevice/proc/UpdateSprite()
+	if(!b)
+		icon_state = "anodev"
+		return
+	var/p = (b.GetTotalPower()/b.capacity)*100
+	var/s = round(p,25)
+	icon_state = "anodev[s]"
 
 /obj/item/weapon/anodevice/proc/interact(var/mob/user)
 
@@ -61,12 +74,12 @@
 			dat += "<BR>Please insert battery"
 
 		if(b)
-			dat += "<BR>[b.name] inserted - [b.GetTotalPower()]/[b.capacity]"
+			dat += "<BR>[b.name] inserted <BR> Total Power - [b.GetTotalPower()]/[b.capacity]"
 			dat += "<BR>Effects:"
 			for(var/v in b.e)
 				var/datum/anomalyeffect/e = b.e["[v]"]
-				dat += "<BR>	[e.fluff] <BR>		power	[e.magnitude*e.range]/[b.power["[e.effectname]"]]<BR>magnitude [e.magnitude]<A href='?src=\ref[src];mu=[e.effectname]'>+</a> <A href='?src=\ref[src];md=[e.effectname]'>-</a><BR>range [e.range]<A href='?src=\ref[src];ru=[e.effectname]'>+</a> <A href='?src=\ref[src];rd=[e.effectname]'>-</a>"
-			dat+="<BR> Estimated cooldown [ccooldown()/4]"
+				dat += "<BR>	[e.fluff] <BR>		power	[e.magnitude*(e.range+1)]/[b.power["[e.effectname]"]]<BR>magnitude [e.magnitude]<A href='?src=\ref[src];mu=[e.effectname]'>+</a> <A href='?src=\ref[src];md=[e.effectname]'>-</a><BR>range [e.range]<A href='?src=\ref[src];ru=[e.effectname]'>+</a> <A href='?src=\ref[src];rd=[e.effectname]'>-</a>"
+			dat+="<BR> Estimated cooldown [round(ccooldown()/4)]"
 			dat += "<BR><A href='?src=\ref[src];a=1'>Activate</a>"
 			dat += "<BR><A href='?src=\ref[src];ejectb=1'>Eject battery</a>"
 
@@ -83,6 +96,7 @@
 			user.drop_item()
 			I.loc = src
 			src.b = I
+			UpdateSprite()
 	else
 		..()
 
@@ -101,10 +115,11 @@
 /obj/item/weapon/anodevice/process()
 	if(src.cooldown)
 		src.cooldown--
-		if(!src.cooldown)
+		if(1>src.cooldown)
 			for(var/mob/m in hearers(get_turf(src)))
 				var/t = pick("chimes","pings","buzzes")
 				m<<"The [src.name] [t]"
+
 				processing_items.Remove(src)
 
 
@@ -145,10 +160,12 @@
 				var/datum/anomalyeffect/e = b.e["[v]"]
 				e.Activate()
 			processing_items.Add(src)
-			cooldown=ccooldown()/4
+			UpdateSprite()
+			cooldown=round(ccooldown()/4)
 		if (href_list["ejectb"])
 			src.b.loc = get_turf(src)
 			src.b = null
+			UpdateSprite()
 
 		src.add_fingerprint(usr)
 	src.updateUsrDialog()

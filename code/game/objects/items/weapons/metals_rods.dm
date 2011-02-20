@@ -350,6 +350,21 @@ LATTICE
 	onclose(user, "met_sheet")
 	return
 
+/obj/item/weapon/sheet/r_metal/attackby(obj/item/weapon/sheet/r_metal/W as obj, mob/user as mob)
+	if (! (istype(W, /obj/item/weapon/sheet/r_metal)) )
+		return
+	if (W.amount >= 5)
+		return
+	if (W.amount + src.amount > 5)
+		src.amount = W.amount + src.amount - 5
+		W.amount = 5
+	else
+		W.amount += src.amount
+		//SN src = null
+		del(src)
+		return
+	return
+
 /obj/item/weapon/sheet/r_metal/Topic(href, href_list)
 	..()
 	if ((usr.restrained() || usr.stat || usr.equipped() != src))

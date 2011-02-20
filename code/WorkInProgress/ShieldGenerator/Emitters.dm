@@ -56,7 +56,7 @@
 
 //The base energy cost for maintaining each shield tile
 /obj/machinery/shielding/emitter/proc/UseMaintenanceCharge()
-	Draw(PoweredShields.len * 0.05)
+	Draw(PoweredShields.len * 5)
 
 
 //Called when a shield tile requires additional power

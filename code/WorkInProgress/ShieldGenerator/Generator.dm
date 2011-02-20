@@ -86,13 +86,13 @@
 
 	switch(OperatingMode)
 		if(0)
-			modec = {"<b>\[Off\]</b> <a href="?set=mode&mode=1">Manual</a> <a href="?set=mode&mode=2">Auto</a> <a href="?set=mode&mode=3">Remote</a>"}
+			modec = {"<b>\[Off\]</b> <a href="?src=\ref[src]&set=mode&mode=1">Manual</a> <a href="?src=\ref[src]&set=mode&mode=2">Auto</a> <a href="?src=\ref[src]&set=mode&mode=3">Remote</a>"}
 		if(1)
-			modec = {"<a href="?set=mode&mode=0">Off</a> <b>\[Manual\]</b> <a href="?set=mode&mode=2">Auto</a> <a href="?set=mode&mode=3">Remote</a>"}
+			modec = {"<a href="?src=\ref[src]&set=mode&mode=0">Off</a> <b>\[Manual\]</b> <a href="?src=\ref[src]&set=mode&mode=2">Auto</a> <a href="?src=\ref[src]&set=mode&mode=3">Remote</a>"}
 		if(2)
-			modec = {"<a href="?set=mode&mode=0">Off</a> <a href="?set=mode&mode=1">Manual</a> b>\[Auto\]</b> <a href="?set=mode&mode=3">Remote</a>"}
+			modec = {"<a href="?src=\ref[src]&set=mode&mode=0">Off</a> <a href="?src=\ref[src]&set=mode&mode=1">Manual</a> <b>\[Auto\]</b> <a href="?src=\ref[src]&set=mode&mode=3">Remote</a>"}
 		if(3)
-			modec = {"<a href="?set=mode&mode=0">Off</a> <a href="?set=mode&mode=1">Manual</a> <a href="?set=mode&mode=2">Auto</a> b>\[Remote\]</b>"}
+			modec = {"<a href="?src=\ref[src]&set=mode&mode=0">Off</a> <a href="?src=\ref[src]&set=mode&mode=1">Manual</a> <a href="?src=\ref[src]&set=mode&mode=2">Auto</a> <b>\[Remote\]</b>"}
 
 	var/dat = {"<html><head><title>Shield Energy Converter</title></head><body><div style="position: absolute; right: 5px; top: 5px; border: 2px inset"><pre>
 Mode:           [modestring]&nbsp;
@@ -109,8 +109,6 @@ Manual Mode Generation Rate:      <a href="?src=\ref[src]&man=1">M</a> <a href="
 
 	return
 /obj/machinery/shielding/energyconverter/Topic(href, href_list)
-	if(..())
-		return
 
 	if (href_list["set"] == "mode")
 		//Set Operating mode
@@ -150,6 +148,7 @@ Manual Mode Generation Rate:      <a href="?src=\ref[src]&man=1">M</a> <a href="
 		AutoTargetChargeLevel = max(min(AutoTargetChargeLevel, 100), 0)
 
 	usr.machine = src
+	src.updateDialog()
 
 //STANDARD PROCESSING
 
@@ -187,6 +186,8 @@ Manual Mode Generation Rate:      <a href="?src=\ref[src]&man=1">M</a> <a href="
 
 	use_power(round(ConversionRate ** 2.15))
 	use_power(-round(produce_energy(ConversionRate) ** 1.25)) //Partially return shield energy that couldn't be used
+	if(! (stat & NOPOWER) )
+		Capacitor.charge += round(ConversionRate ** 2.15)
 	PreviousConversionRate = ConversionRate
 	UpdateIcon()
 	updateUsrDialog()

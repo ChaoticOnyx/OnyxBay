@@ -101,20 +101,6 @@
 	throw_speed = 4
 	throw_range = 20
 
-
-/obj/item/weapon/axe
-	name = "Axe"
-	desc = "An energised battle axe."
-	icon_state = "axe0"
-	var/active = 0.0
-	force = 40.0
-	throwforce = 25.0
-	throw_speed = 1
-	throw_range = 5
-	slash = 1
-	w_class = 3.0
-	flags = FPRINT | CONDUCT | NOSHIELD | TABLEPASS
-
 /obj/item/weapon/banana
 	name = "Banana"
 	desc = "A banana."
@@ -264,6 +250,7 @@
 	name = "space cleaner"
 	icon_state = "cleaner"
 	item_state = "cleaner"
+	var/saftey = 1
 	flags = ONBELT|TABLEPASS|OPENCONTAINER|FPRINT|USEDELAY|OPENCONTAINER
 	throwforce = 3
 	w_class = 2.0
