@@ -52,7 +52,16 @@
 		open.LightLevelGreen = S.LightLevelGreen
 		open.ul_UpdateLight()
 
-/turf/simulated
+/turf/simulated/floor/prison			//Its good to be lazy.
+	name = "Welcome to Admin Prison"
+	wet = 0
+	image/wet_overlay = null
+
+	thermite = 0
+	oxygen = MOLES_O2STANDARD
+	nitrogen = MOLES_N2STANDARD
+
+/turf/simulated/
 	name = "station"
 	var/wet = 0
 	var/image/wet_overlay = null

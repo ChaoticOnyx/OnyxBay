@@ -48,7 +48,6 @@
 			src.verbs += /client/proc/cmd_admin_gib
 			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/cmd_admin_gib_self
-			src.verbs += /obj/admins/proc/toggle_adminmsg
 //				src.verbs += /client/proc/grillify
 			src.verbs += /client/proc/jumptomob
 			src.verbs += /client/proc/Jump
@@ -156,7 +155,6 @@
 			src.verbs += /client/proc/cmd_admin_gib
 			src.verbs += /client/proc/cmd_admin_gib_self
 //			src.verbs += /proc/toggleai
-			src.verbs += /obj/admins/proc/toggle_adminmsg
 			src.verbs += /proc/togglebuildmode
 //				src.verbs += /client/proc/grillify
 			src.verbs += /client/proc/jumptomob
@@ -254,7 +252,6 @@
 			src.verbs += /client/proc/cmd_admin_gib_self
 			src.verbs += /client/proc/jumptomob
 			src.verbs += /client/proc/modifytemperature
-			src.verbs += /obj/admins/proc/toggle_adminmsg
 			src.verbs += /client/proc/cmd_admin_check_contents
 			src.verbs += /proc/togglebuildmode
 			src.verbs += /client/proc/Jump
