@@ -154,6 +154,10 @@
 			message = "<B>[src]</B> seizes up and falls limp, \his eyes dead and lifeless..."
 			m_type = 1
 
+		if("struckdown")
+			message = "<B>[src]</B>, Station Dweller, has been struck down."
+			m_type = 2
+
 		if ("giggle")
 			if (!muzzled)
 				message = "<B>[src]</B> giggles."
@@ -428,6 +432,17 @@
 			else
 				message = "<B>[src]</B> makes a very loud noise."
 				m_type = 2
+
+		if ("hungry")
+			if(prob(1))
+				message = "<B>Blue Elf</B> needs food Badly"
+			else
+				message = "<B>[src]'s</B> stomach growls"
+		if ("thirsty")
+			if(prob(1))
+				message = "<B>[src]</B> cancels destory station: Drinking"
+			else
+				message = "<B>[src]</B> thirsty"
 
 		if ("help")
 			src << "blink, blink_r, blush, bow-(none)/mob, burp, choke, chuckle, clap, collapse, cough,\ncry, custom, deathgasp, drool, eyebrow, frown, gasp, giggle, groan, grumble, handshake, hug-(none)/mob, glare-(none)/mob,\ngrin, laugh, look-(none)/mob, moan, mumble, nod, pale, point-atom, raise, salute, shake, shiver, shrug,\nsigh, signal-#1-10, smile, sneeze, sniff, snore, stare-(none)/mob, tremble, twitch, twitch_s, whimper,\nwink, yawn"
