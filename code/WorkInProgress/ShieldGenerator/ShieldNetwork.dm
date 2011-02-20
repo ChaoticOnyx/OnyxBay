@@ -14,6 +14,8 @@ var/datum/shieldnetwork/ShieldNetwork
 	var/list/Nodes = list( )
 	var/list/Cables = list( )
 
+	var/capacitators = 0
+
 
 //This entire proc should at some point be stripped, once proper shield networks are in
 /datum/shieldnetwork/proc/makenetwork()
@@ -40,10 +42,8 @@ var/datum/shieldnetwork/ShieldNetwork
 
 //Whether there is (any) shield energy available
 /datum/shieldnetwork/proc/HasPower()
-	for(var/obj/machinery/shielding/capacitor/S in Nodes)
-		if(S.charge)
-			return 1
-	return 0
+	// at least three capacitators need to be working
+	return (capacitators >= 3)
 
 //Use an amount of shield energy.  Returns 1 if the energy was supplied in full, or 0 otherwise
 /datum/shieldnetwork/proc/UsePower(Amount)

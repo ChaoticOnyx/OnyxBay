@@ -38,6 +38,7 @@
 		UpdateIcon()
 	else
 		Capacitor.generator = src
+		ShieldNetwork.capacitators += 1
 
 //PLAYER INTERACTION
 
