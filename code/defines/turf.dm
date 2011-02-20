@@ -387,7 +387,7 @@
 	icon_state = "floor"
 
 /turf/simulated/asteroid/wall
-	var/health = 100
+	var/health = 40
 	name = "rocky wall"
 	icon = 'mining.dmi'
 	icon_state = "wall"
@@ -398,6 +398,7 @@
 	blocks_air = 1
 
 /turf/simulated/asteroid/wall/New()
+	health+= rand(1)
 	processing_turfs.Add(src)
 	..()
 
@@ -409,6 +410,8 @@
 		else
 			src.health -= 5
 			user << "The [W.name] wasn't very effective against the ore."
+		if(src.health<1)
+			src.mine()
 
 /turf/simulated/asteroid/wall/process()
 	var/power
@@ -426,6 +429,7 @@
 		new/obj/item/weapon/ore(locate(src.x,src.y,src.z))
 	else
 		new/obj/item/weapon/artifact(locate(src.x,src.y,src.z))
+	processing_turfs.Remove(src)
 	new/turf/simulated/asteroid/floor(locate(src.x,src.y,src.z))
 
 /turf/simulated/asteroid/floor

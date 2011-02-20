@@ -2121,6 +2121,16 @@ mob/verb/turnwest()
 			robogibs(loc,virus)
 		else
 			gibs(loc, virus,src:virus2)
+	var/mob/M = src
+	for(var/obj/item/W in M)
+		if (istype(W,/obj/item))
+			M.u_equip(W)
+			if (M.client)
+				M.client.screen -= W
+			if (W)
+				W.loc = M.loc
+				W.dropped(M)
+				W.layer = initial(W.layer)
 
 	sleep(15)
 	del(src)
