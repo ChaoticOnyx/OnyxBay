@@ -414,7 +414,7 @@
 	if(istype(W, /obj/item/weapon/pickaxe))
 		if(W:active)
 			src.health -= 20
-			user << "You use \the [W.name] to saw away part of the unwanted ore."
+			user << "You use \the [W.name] to hack away part of the unwanted ore."
 		else
 			src.health -= 5
 			user << "The [W.name] wasn't very effective against the ore."
