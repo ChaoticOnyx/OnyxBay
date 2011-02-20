@@ -30,15 +30,19 @@
 	icon = 'space.dmi'
 	name = "space"
 	icon_state = "placeholder"
-
+	var/sand = 0
 	temperature = TCMB
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 700000
 
 /turf/space/New()
 	. = ..()
-	icon = 'space.dmi'
-	icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
+	if(!sand)
+		icon = 'space.dmi'
+		icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
+	else
+		icon = 'sand.dmi'
+		icon_state = "[pick(1,2,3)]"
 
 /turf/space/proc/Check()
 	var/turf/T = locate(x, y, z + 1)
