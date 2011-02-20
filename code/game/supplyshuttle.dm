@@ -493,7 +493,7 @@ var/supply_shuttle_points = 50
 		var/pickedloc = 0
 		var/found = 0
 		for(var/C in markers) // Picking a location for every new supply pack
-			if (locate(/obj/crate) in get_turf(C)) continue
+			if (locate(/obj) in get_turf(C)) continue
 			found = 1
 			pickedloc = get_turf(C)
 
