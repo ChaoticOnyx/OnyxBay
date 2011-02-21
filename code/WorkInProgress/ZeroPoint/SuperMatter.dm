@@ -4,6 +4,11 @@
 #define OXYGEN_RELEASE_MODIFIER 1500	//Higher == less oxygen released at high temperature/power
 #define REACTION_POWER_MODIFIER 1.1		//Higher == more overall power
 
+var/global/NITROGEN_LEVEL = 0.1
+world/New()
+	..()
+	NITROGEN_LEVEL = rand(0,10) * 0.01
+
 /obj/machinery/engine/supermatter
 	name = "Supermatter"
 	desc = "A strangely translucent and iridescent crystal.  \red You get headaches just from looking at it."
@@ -80,13 +85,18 @@
 		for(var/obj/beam/e_beam/item in T)
 			power += item.power
 
-	//Ok, 100% oxygen atmosphere = best reaction
-	//Maxes out at 100% oxygen pressure
-	var/oxygen = max(min((removed.oxygen - (removed.nitrogen * NITROGEN_RETARDATION_FACTOR)) / MOLES_CELLSTANDARD, 1), 0)
+	// NITROGEN_LEVEL should be the best ratio of N2, so first calculate how much our N2
+	// values differ from the intended level
+	var/nitrogen_mod = abs(NITROGEN_LEVEL - (removed.nitrogen / MOLES_CELLSTANDARD) ) * NITROGEN_RETARDATION_FACTOR
+	var/oxygen = max(min(removed.oxygen / MOLES_CELLSTANDARD - nitrogen_mod, 1), 0)
+	//world << "nitrogen: [nitrogen_mod]"
+	//world << "actual: [removed.oxygen / MOLES_CELLSTANDARD - nitrogen_mod]"
+	//world << "oxygen: [removed.oxygen]"
+	//world << "total_mod:[oxygen]"
 
 	var/device_energy = oxygen * power
 
-	device_energy *= removed.temperature / T0C
+	device_energy *= removed.temperature / (2*T0C)
 
 	device_energy = round(device_energy * REACTION_POWER_MODIFIER)
 
