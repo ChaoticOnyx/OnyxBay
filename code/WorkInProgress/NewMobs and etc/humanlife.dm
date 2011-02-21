@@ -368,7 +368,7 @@
 	var/say = input ("What do you wish to say")
 
 	target.show_message("\blue You hear a voice: [say]")
-
+	usr.show_message("\blue You project your mind into [target.real_name]: [say]")
 
 /mob/living/carbon/human/proc/remoteobserve()
 	set name = "Remote View"
@@ -385,14 +385,10 @@
 
 	var/eye_name = null
 
-	eye_name = input("Who do you wish to see ?", "Observe", null, null) as null|anything in creatures
+	var/mob/target = input ("Who do you want to project your mind to ?") as mob in world
 
-	if (!eye_name)
-		return
-
-	var/mob/eye = creatures[eye_name]
-	if (eye)
-		client.eye = eye
+	if (target)
+		client.eye = target
 	else
 		client.eye = client.mob
 
