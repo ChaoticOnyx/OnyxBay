@@ -1672,6 +1672,61 @@
 		return 1
 	return 0
 
+
+/mob/living/carbon/human/proc/update_hair()
+	switch(h_style)
+		if("Short Hair")
+			hair_icon_state = "hair_a"
+		if("Long Hair")
+			hair_icon_state = "hair_b"
+		if("Cut Hair")
+			hair_icon_state = "hair_c"
+		if("Mohawk")
+			hair_icon_state = "hair_d"
+		if("Balding")
+			hair_icon_state = "hair_e"
+		if("Fag")
+			hair_icon_state = "hair_f"
+		if("Bedhead")
+			hair_icon_state = "hair_bedhead"
+		if("Dreadlocks")
+			hair_icon_state = "hair_dreads"
+		if("Ponytail")
+			hair_icon_state = "hair_ponytail"
+		else
+			hair_icon_state = "bald"
+
+	switch(f_style)
+		if ("Watson")
+			face_icon_state = "facial_watson"
+		if ("Chaplin")
+			face_icon_state = "facial_chaplin"
+		if ("Selleck")
+			face_icon_state = "facial_selleck"
+		if ("Neckbeard")
+			face_icon_state = "facial_neckbeard"
+		if ("Full Beard")
+			face_icon_state = "facial_fullbeard"
+		if ("Long Beard")
+			face_icon_state = "facial_longbeard"
+		if ("Van Dyke")
+			face_icon_state = "facial_vandyke"
+		if ("Elvis")
+			face_icon_state = "facial_elvis"
+		if ("Abe")
+			face_icon_state = "facial_abe"
+		if ("Chinstrap")
+			face_icon_state = "facial_chin"
+		if ("Hipster")
+			face_icon_state = "facial_hip"
+		if ("Goatee")
+			face_icon_state = "facial_gt"
+		if ("Hogan")
+			face_icon_state = "facial_hogan"
+		else
+			face_icon_state = "bald"
+
+
 /mob/living/carbon/human/proc/update_body()
 	if(stand_icon)
 		del(stand_icon)

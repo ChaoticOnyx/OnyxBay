@@ -353,6 +353,7 @@
 			gender = FEMALE
 	update_body()
 	update_face()
+	update_hair()
 
 	for(var/mob/M in view())
 		M.show_message("[src.name] just morphed!")
@@ -383,7 +384,7 @@
 		creatures += h
 	client.perspective = EYE_PERSPECTIVE
 
-	var/eye_name = null
+
 
 	var/mob/target = input ("Who do you want to project your mind to ?") as mob in world
 

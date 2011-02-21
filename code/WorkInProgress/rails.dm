@@ -137,8 +137,9 @@ obj/railcart/Bump(atom/obstacle)
 
 obj/item/weapon/track
 	name = "Track piece"
-	g_amt = 250
+	m_amt = 250
 	icon_state = "piece"
+	icon = 'rail.dmi'
 
 
 obj/item/weapon/track/attackby(var/obj/item/weapon/W as obj, var/mob/m as mob)
