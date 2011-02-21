@@ -185,8 +185,8 @@ Manual Mode Generation Rate:      <a href="?src=\ref[src]&man=1">M</a> <a href="
 			//Remote Mode
 			ConversionRate = max(min(RemoteConversionRate, HardMaximumConversionRate), 0)
 
+	var/used_power = min(round(ConversionRate ** 2.15), 100000)
 	use_power(round(ConversionRate ** 2.15))
-	use_power(-round(produce_energy(ConversionRate) ** 1.25)) //Partially return shield energy that couldn't be used
 	if(! (stat & NOPOWER) )
 		Capacitor.charge += round(ConversionRate ** 2.15)
 	PreviousConversionRate = ConversionRate
