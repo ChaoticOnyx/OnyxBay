@@ -77,7 +77,7 @@ world/New()
 	if (!removed)
 		return 1
 
-	var/power = max(round((removed.temperature - T0C) / 20), 0) //Total laser power plus an overload factor
+	var/power = max(round((removed.temperature - 0.5 * T0C) / 20), 0) //Total laser power plus an overload factor
 
 	//Get the collective laser power
 	for(var/dir in cardinal)
@@ -93,10 +93,11 @@ world/New()
 	//world << "actual: [removed.oxygen / MOLES_CELLSTANDARD - nitrogen_mod]"
 	//world << "oxygen: [removed.oxygen]"
 	//world << "total_mod:[oxygen]"
+	//world << "power:[power]"
 
 	var/device_energy = oxygen * power
 
-	device_energy *= removed.temperature / (2*T0C)
+	device_energy *= sqrt(removed.temperature / T0C)
 
 	device_energy = round(device_energy * REACTION_POWER_MODIFIER)
 
