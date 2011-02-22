@@ -148,7 +148,7 @@ SPOON
 	desc = "He will chase you to the ends of the world..."
 	icon_state = "spoon"
 	force = 0
-	throw_force = 0
+	throwforce = 0
 
 obj/item/weapon/kitchen/utensil/admin_spoon
 	name = "spoon"
