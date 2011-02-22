@@ -215,24 +215,28 @@ proc/SetupAnomalies()
 	..()
 	processing_items += src
 	return
+
+
+// HEAD STOP USING VARIABLES THAT ARE NAMED SAME AS OBJECT VARIABES, LIKE: loc, y, x
 /obj/item/weapon/talkingcrystal/catchMessage(msg,mob/source)
 	var/done = 1
 	while(done)
-		var/loc = findtext(msg," ",1,0)
-		if(!loc)
+		var/loca = findtext(msg," ",1,0)
+		if(!loca)
 			done = 0
-		var/X = copytext(msg,1,loc)
+		var/X = copytext(msg,1,loca)
 		if(!words.Find(X,1,0))
-			x = replace(x," ","")
+			X = replace(x," ","")
 			words += X
-		msg = copytext(msg,loc+1,0)
+		msg = copytext(msg,loca+1,0)
 	for(var/mob/O in viewers(src))
 		O.show_message("\blue The crystal hums for bit then stops...", 1)
+
 /obj/item/weapon/talkingcrystal/proc/SaySomething()
 	var/msg
 	var/list/prevwords = list()
 	var/limit = rand(7)
-	for(var/y,y <= limit,y++)
+	for(var/ya,ya <= limit,ya++)
 		var/text = " [pick(words)]"
 		if(!prevwords.Find(text))
 			msg += text
@@ -243,6 +247,7 @@ proc/SetupAnomalies()
 	for(var/mob/M in viewers(src))
 		M << "\blue You hear \"[msg]\" from the [src]"
 	lastsaid = world.timeofday + rand(900,1600)
+
 /obj/item/weapon/talkingcrystal/process()
 	if(prob(25) && world.timeofday >= lastsaid && words.len >= 1)
 		SaySomething()
@@ -315,7 +320,7 @@ proc/SetupAnomalies()
 
 /obj/item/weapon/fossil/base/New()
 	spawn(0)
-		var/list/l = list("/obj/item/weapon/fossil/bone"=4,"/obj/item/weapon/fossil/skull"=2,
+		var/list/l = list("/obj/item/weapon/fossil/bone"=8,"/obj/item/weapon/fossil/skull"=2,
 		"/obj/item/weapon/fossil/skull/horned"=2,"/obj/item/weapon/fossil/shell"=1)
 		var/t = pickweight(l)
 		new t(src.loc)
@@ -378,6 +383,7 @@ proc/SetupAnomalies()
 				icon_state = "skel"
 				var/creaturename = input("Input a name for your discovery:","Name your discovery","Spaceosaurus")
 				src.bstate = 1
+				src.density = 1
 				src.name = "[creaturename] skeleton"
 				if(src.contents.Find(/obj/item/weapon/fossil/skull/horned))
 					src.desc = "A creature made of [src.contents.len-1] assorted bones and a horned skull, the plaque reads [creaturename]."

@@ -1,4 +1,8 @@
 /mob/living/carbon/human/emote(var/act)
+
+	if(src.stat == 2)
+		return
+
 	var/param = null
 
 	if (findtext(act, "-", 1, null))

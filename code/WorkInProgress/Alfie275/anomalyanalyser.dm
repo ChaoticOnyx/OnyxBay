@@ -55,6 +55,8 @@
 			if(!a.id)
 				a.id = maxid
 				maxid++
+				for(var/obj/machinery/anomaly/anomalyanalyser/an in world)
+					an.maxid = maxid
 				a.name = "Anomaly A-[a.id]"
 	if(istype(I,/obj/item/weapon/anomalyfilter))
 		if(!f)

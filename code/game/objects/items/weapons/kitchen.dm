@@ -3,9 +3,19 @@ CONTAINS:
 FORK
 ROLLING PIN
 KNIFE
-
+SPOON
 */
 
+/obj/item/weapon/kitchen
+	icon = 'kitchen.dmi'
+
+/obj/item/weapon/kitchen/utensil
+	w_class = 1.0
+	flags = FPRINT | TABLEPASS | CONDUCT
+	force = 2
+	throwforce = 4
+	throw_speed = 3
+	throw_range = 5
 
 /obj/item/weapon/kitchen/utensil/New()
 	if (prob(60))
@@ -13,10 +23,11 @@ KNIFE
 	return
 
 
-
-
-
 // FORK
+
+/obj/item/weapon/kitchen/utensil/fork
+	name = "fork"
+	icon_state = "fork"
 
 /obj/item/weapon/kitchen/utensil/fork/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M, /mob))
@@ -73,6 +84,15 @@ KNIFE
 
 // ROLLING PIN
 
+/obj/item/weapon/kitchen/rollingpin
+	name = "rolling pin"
+	icon_state = "rolling_pin"
+	force = 3.0
+	throwforce = 10.0
+	throw_speed = 2
+	throw_range = 7
+	w_class = 3.0
+
 /obj/item/weapon/kitchen/rollingpin/attack(mob/M as mob, mob/user as mob)
 	if ((usr.mutations & 16) && prob(50))
 		usr << "\red The [src] slips out of your hand and hits your head."
@@ -107,8 +127,35 @@ KNIFE
 
 // KNIFE
 
+/obj/item/weapon/kitchen/utensil/knife
+	name = "knife"
+	icon_state = "knife"
+	slash = 1
+	var/butter = 0
+	throwforce = 6.0
+
 /obj/item/weapon/kitchen/utensil/knife/attack(target as mob, mob/user as mob)
 	if ((usr.mutations & 16) && prob(50))
 		usr << "\red You accidentally cut yourself with the [src]."
 		usr.bruteloss += 20
 		return
+
+
+// SPOON
+
+/obj/item/weapon/kitchen/utensil/spoon
+	name = "spoon"
+	desc = "He will chase you to the ends of the world..."
+	icon_state = "spoon"
+	force = 0
+	throwforce = 0
+
+obj/item/weapon/kitchen/utensil/admin_spoon
+	name = "spoon"
+	desc = "It's just a spoon... Or is it."
+	icon_state = "spoon"
+	slash = 1
+	force = 50.0
+	throwforce = 20.0
+	throw_speed = 20
+	throw_range = 10

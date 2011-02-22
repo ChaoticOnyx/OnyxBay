@@ -191,6 +191,7 @@
 	src.L += new /obj/item/weapon/sheet/r_metal(src)
 	src.L += new /obj/item/weapon/sheet/rglass(src)
 	src.L += new /obj/item/weapon/rods(src)
+	src.L += new /obj/item/weapon/track(src)
 	src.L += new /obj/item/weapon/rcd_ammo(src)
 	src.L += new /obj/item/weapon/scalpel(src)
 	src.L += new /obj/item/weapon/circular_saw(src)

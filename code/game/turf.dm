@@ -713,6 +713,20 @@ turf/simulated/floor/proc/update_icon()
 			user << "\red The plating is going to need some support."
 	return
 
+/turf/asteroid/floor/attackby(obj/item/weapon/C as obj, mob/user as mob)
+
+	if (istype(C, /obj/item/weapon/tile))
+
+		playsound(src.loc, 'Genhit.ogg', 50, 1)
+		C:build(src)
+		C:amount--
+
+		if (C:amount < 1)
+			user.u_equip(C)
+			del(C)
+			return
+		return
+	return
 
 // Ported from unstable r355
 
@@ -842,3 +856,20 @@ turf/simulated/floor/proc/update_icon()
 			src.mine()
 	else
 		src.mine()
+
+
+
+/turf/simulated/asteroid/floor/attackby(obj/item/weapon/C as obj, mob/user as mob)
+
+	if (istype(C, /obj/item/weapon/tile))
+
+		playsound(src.loc, 'Genhit.ogg', 50, 1)
+		C:build(src)
+		C:amount--
+
+		if (C:amount < 1)
+			user.u_equip(C)
+			del(C)
+			return
+		return
+	return
