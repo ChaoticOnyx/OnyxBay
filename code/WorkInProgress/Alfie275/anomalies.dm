@@ -201,8 +201,8 @@ proc/SetupAnomalies()
 		ms.Remove(m)
 	if(src.magnitude>35)
 		for(var/obj/o in range(src.range,centre))
-			if(!o.anchored & !rand(2))
-				var/turf/t = get_turf(pick(range(src.magnitude/10,src.o)))
+			if(!o.anchored && !rand(0,2))
+				var/turf/t = get_turf(pick(range(src.magnitude/10,centre)))
 				o.loc = t
 
 /obj/item/weapon/talkingcrystal
