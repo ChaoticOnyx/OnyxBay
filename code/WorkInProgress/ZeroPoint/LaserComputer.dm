@@ -94,7 +94,7 @@
 				d = -100
 		for(var/obj/machinery/engine/laser/laser in src.laser)
 			laser.power += d
-			laser.setpower(max(1, min(2000, laser.power)))// clamp to range
+			laser.setpower(max(1, min(3000, laser.power)))// clamp to range
 			src.updateDialog()
 	else if( href_list["online"] )
 		for(var/obj/machinery/engine/laser/laser in src.laser)
