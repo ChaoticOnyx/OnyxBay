@@ -7,7 +7,7 @@
 	icon = 'items.dmi'
 	icon_state = "utilitybelt"
 	item_state = "utilitybelt"
-	can_hold = list("/obj/item/weapon/pickaxe","/obj/item/device/analyzer","/obj/item/weapon/crowbar","/obj/item/device/pda","/obj/item/weapon/screwdriver","/obj/item/weapon/weldingtool","/obj/item/weapon/wirecutters","/obj/item/weapon/wrench","/obj/item/device/multitool","/obj/item/device/flashlight","/obj/item/weapon/CableCoil/power")
+	can_hold = list("/obj/item/device/pda","/obj/item/device/analyzer","/obj/item/weapon/crowbar","/obj/item/weapon/screwdriver","/obj/item/weapon/weldingtool","/obj/item/weapon/wirecutters","/obj/item/weapon/wrench","/obj/item/device/multitool","/obj/item/device/flashlight","/obj/item/weapon/CableCoil/power")
 
 /obj/item/weapon/storage/belt/security
 	name = "security belt"
@@ -15,7 +15,7 @@
 	icon = 'items.dmi'
 	icon_state = "securitybelt"
 	item_state = "securitybelt"
-	can_hold = list("/obj/item/weapon/gun/energy/general","/obj/item/device/pda","/obj/item/weapon/handcuffs","/obj/item/device/flash","/obj/item/weapon/baton","/obj/item/device/radio","/obj/item/weapon/gun/energy/taser_gun","/obj/item/device/detective_scanner","/obj/item/weapon/flashbang","/obj/item/weapon/empgrenade")
+	can_hold = list("/obj/item/device/pda","/obj/item/weapon/gun/energy/general","/obj/item/weapon/handcuffs","/obj/item/device/flash","/obj/item/weapon/baton","/obj/item/weapon/classic_baton","/obj/item/device/radio","/obj/item/weapon/gun/energy/taser_gun","/obj/item/device/detective_scanner","/obj/item/weapon/flashbang","/obj/item/weapon/empgrenade")
 
 /obj/item/weapon/storage/belt/medical
 	name = "medical belt"
