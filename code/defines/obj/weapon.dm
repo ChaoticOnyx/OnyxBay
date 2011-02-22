@@ -2,55 +2,6 @@
 	name = "weapon"
 	icon = 'weapons.dmi'
 
-/obj/item/weapon/rcd
-	name = "rapid-construction-device (RCD)"
-	desc = "A device used to rapidly build walls/floor."
-	icon = 'items.dmi'
-	icon_state = "rcd"
-	opacity = 0
-	density = 0
-	anchored = 0.0
-	var/matter = 0
-	var/working = 0
-	var/mode = 1
-	flags = FPRINT | TABLEPASS| CONDUCT
-	force = 10.0
-	throwforce = 10.0
-	throw_speed = 1
-	throw_range = 5
-	w_class = 3.0
-	m_amt = 75000
-	g_amt = 15000
-	var/datum/effects/system/spark_spread/spark_system
-
-/obj/item/weapon/rcd_fake
-	name = "rapid-construction-device (RCD)"
-	desc = "A device used to rapidly build walls/floor."
-	icon = 'items.dmi'
-	icon_state = "rcd"
-	opacity = 0
-	density = 0
-	anchored = 0.0
-	flags = FPRINT | TABLEPASS| CONDUCT
-	force = 10.0
-	throwforce = 10.0
-	throw_speed = 1
-	throw_range = 5
-	w_class = 3.0
-
-/obj/item/weapon/rcd_ammo
-	name = "Compressed matter cartridge"
-	desc = "Highly compressed matter for the RCD."
-	icon = 'ammo.dmi'
-	icon_state = "rcd"
-	item_state = "rcdammo"
-	w_class = 1
-	opacity = 0
-	density = 0
-	anchored = 0.0
-	m_amt = 30000
-	g_amt = 15000
-
 /obj/item/weapon/spacecash
 	name = "Space Cash"
 	desc = "You're rich, bitch!"
@@ -1236,49 +1187,8 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	throw_range = 20
 
 
-/obj/item/weapon/kitchen
-	icon = 'kitchen.dmi'
-
-/obj/item/weapon/kitchen/rollingpin
-	name = "rolling pin"
-	icon_state = "rolling_pin"
-	force = 8.0
-	throwforce = 10.0
-	throw_speed = 2
-	throw_range = 7
-	w_class = 3.0
-
-/obj/item/weapon/kitchen/utensil
-	flags = FPRINT | TABLEPASS | CONDUCT
 
 
-/obj/item/weapon/kitchen/utensil/fork
-	name = "fork"
-	icon_state = "fork"
-
-/obj/item/weapon/kitchen/utensil/knife
-	name = "knife"
-	icon_state = "knife"
-	force = 5.0
-	slash = 1
-	var/butter = 0
-	throwforce = 6.0
-
-/obj/item/weapon/kitchen/utensil/spoon
-	name = "spoon"
-	desc = "He will chase you to the ends of the world..."
-	icon_state = "spoon"
-
-obj/item/weapon/kitchen/utensil/admin_spoon
-	name = "spoon"
-	desc = "Its just a spoon... Or is it."
-	icon_state = "spoon"
-	force = 50.0
-	w_class = 1.0
-	slash = 1
-	throwforce = 20.0
-	throw_speed = 20
-	throw_range = 10
 
 /obj/item/weapon/scalpel
 	name = "robotics scapel"
