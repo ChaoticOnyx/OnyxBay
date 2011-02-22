@@ -16,12 +16,17 @@
 
 	var/on = 0
 
+	var/datum/gas_mixture/air_contents
+
 	level = 0
 
 
 	New()
 		initialize_directions = dir
 		..()
+
+		air_contents = new
+		air_contents.volume = 200
 
 	update_icon()
 		if(node)
@@ -112,8 +117,8 @@
 	return_network_air(datum/pipe_network/reference)
 		var/list/results = list()
 
-		if(connected_device)
-			results += connected_device.air_contents
+		if(network == reference)
+			results += air_contents
 
 		return results
 
