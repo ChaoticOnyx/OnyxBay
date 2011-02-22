@@ -1110,6 +1110,7 @@
 	name = "Docking Bay D"
 	icon_state = "ai_chamber"
 	var/shuttle = ""
+	ul_Lighting = 0
 
 /area/dockingbay/main
 	name = "External Airlocks"
@@ -1121,6 +1122,7 @@
 /area/nanotrasenshuttle
 	name = "NanoTrasen shuttle"
 	icon_state = "nt_shuttle"
+	ul_Lighting = 0
 /area/alienshuttle
 	name = "Alien shuttle"
 	icon_state = "ai_chamber"

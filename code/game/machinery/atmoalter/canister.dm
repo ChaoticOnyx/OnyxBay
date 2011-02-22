@@ -97,6 +97,8 @@
 
 	if(holding)
 		environment = holding.air_contents
+	else if(connected_port)
+		environment = connected_port.air_contents
 	else
 		environment = loc.return_air()
 
@@ -113,7 +115,7 @@
 			//Actually transfer the gas
 			var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
 
-			if(holding)
+			if(holding || connected_port)
 				environment.merge(removed)
 			else
 				loc.assume_air(removed)

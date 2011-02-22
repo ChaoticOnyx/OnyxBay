@@ -445,13 +445,14 @@
 		halloss = 0
 
 	if (mutations & mRegen)
-		src.bruteloss -= 1
-		src.fireloss -= 1
-		src.oxyloss -= 1
+		src.bruteloss -= 2
+		src.fireloss -= 2
+		src.oxyloss -= 2
+		src.toxloss -= 2
 
-		for(var/datum/organ/external/o in GetOrgans())
-			if(o.broken)
-				o.heal_damage(1,1,1)
+		for(var/datum/organ/external/org in organs2)
+			org.brute_dam -= 2
+			org.burn_dam -= 2
 
 
 	if (disabilities & 2)

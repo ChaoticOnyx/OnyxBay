@@ -960,7 +960,7 @@
 			AM.pipe_eject(dir)
 			spawn(1)
 				AM.throw_at(target, 3, 1)
-		H.vent_gas(src.loc)
+		//H.vent_gas(src.loc) //Mloc: Complaints forced me to do this.  Just imagine it's stored somehow.
 		del(H)
 
 		return

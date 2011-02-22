@@ -8,9 +8,15 @@
 
 /obj/machinery/computer/lasercon/New()
 	spawn(1)
-		for(var/obj/machinery/engine/laser/las in world)
-			if(las.id == src.id)
-				laser = las
+		if(istype(src.id,/list))
+			laser = list()
+			for(var/obj/machinery/engine/laser/las in world)
+				if(las.id in src.id)
+					laser += las
+		else
+			for(var/obj/machinery/engine/laser/las in world)
+				if(las.id == src.id)
+					laser = list(las)
 
 
 
@@ -41,6 +47,7 @@
 	user.machine = src
 	var/t = "<TT><B>Laser status monitor</B><HR>"
 
+	var/obj/machinery/engine/laser/laser = src.laser[1]
 
 	if(!laser)
 		t += "\red No laser found"
@@ -85,12 +92,14 @@
 				d = 100
 			if(-3)
 				d = -100
-		laser.power += d
-		laser.setpower(max(1, min(2000, laser.power)))// clamp to range
-		src.updateDialog()
+		for(var/obj/machinery/engine/laser/laser in src.laser)
+			laser.power += d
+			laser.setpower(max(1, min(2000, laser.power)))// clamp to range
+			src.updateDialog()
 	else if( href_list["online"] )
-		laser.on = !laser.on
-		src.updateDialog()
+		for(var/obj/machinery/engine/laser/laser in src.laser)
+			laser.on = !laser.on
+			src.updateDialog()
 
 /obj/machinery/computer/lasercon/process()
 	if(!(stat & (NOPOWER|BROKEN)) )

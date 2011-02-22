@@ -1,8 +1,57 @@
 /*
 CONTAINS:
 RCD
-
 */
+
+/obj/item/weapon/rcd
+	name = "rapid-construction-device (RCD)"
+	desc = "A device used to rapidly build walls/floor."
+	icon = 'items.dmi'
+	icon_state = "rcd"
+	opacity = 0
+	density = 0
+	anchored = 0.0
+	var/matter = 0
+	var/working = 0
+	var/mode = 1
+	flags = FPRINT | TABLEPASS| CONDUCT
+	force = 10.0
+	throwforce = 10.0
+	throw_speed = 1
+	throw_range = 5
+	w_class = 3.0
+	m_amt = 75000
+	g_amt = 15000
+	var/datum/effects/system/spark_spread/spark_system
+
+/obj/item/weapon/rcd_fake
+	name = "rapid-construction-device (RCD)"
+	desc = "A device used to rapidly build walls/floor."
+	icon = 'items.dmi'
+	icon_state = "rcd"
+	opacity = 0
+	density = 0
+	anchored = 0.0
+	flags = FPRINT | TABLEPASS| CONDUCT
+	force = 10.0
+	throwforce = 10.0
+	throw_speed = 1
+	throw_range = 5
+	w_class = 3.0
+
+/obj/item/weapon/rcd_ammo
+	name = "Compressed matter cartridge"
+	desc = "Highly compressed matter for the RCD."
+	icon = 'ammo.dmi'
+	icon_state = "rcd"
+	item_state = "rcdammo"
+	w_class = 1
+	opacity = 0
+	density = 0
+	anchored = 0.0
+	m_amt = 30000
+	g_amt = 15000
+
 /obj/item/weapon/rcd/New()
 	desc = "A RCD. It currently holds [matter]/30 matter-units."
 	src.spark_system = new /datum/effects/system/spark_spread

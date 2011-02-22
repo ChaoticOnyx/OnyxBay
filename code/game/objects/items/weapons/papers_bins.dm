@@ -318,7 +318,7 @@ CLIPBOARDS
 /obj/spresent/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
 	if (!istype(W, /obj/item/weapon/wirecutters))
-		user << "/blue I need wirecutters for that."
+		user << "\blue I need wirecutters for that."
 		return
 
 	user << "\blue You cut open the present."
