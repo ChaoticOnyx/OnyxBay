@@ -7,7 +7,7 @@
 	icon = 'items.dmi'
 	icon_state = "utilitybelt"
 	item_state = "utilitybelt"
-	can_hold = list("/obj/item/device/pda","/obj/item/device/analyzer","/obj/item/weapon/crowbar","/obj/item/weapon/screwdriver","/obj/item/weapon/weldingtool","/obj/item/weapon/wirecutters","/obj/item/weapon/wrench","/obj/item/device/multitool","/obj/item/device/flashlight","/obj/item/weapon/CableCoil/power")
+	can_hold = list("/obj/item/device/pda","/obj/item/weapon/pickaxe","/obj/item/device/analyzer","/obj/item/weapon/crowbar","/obj/item/weapon/screwdriver","/obj/item/weapon/weldingtool","/obj/item/weapon/wirecutters","/obj/item/weapon/wrench","/obj/item/device/multitool","/obj/item/device/flashlight","/obj/item/weapon/CableCoil/power")
 
 /obj/item/weapon/storage/belt/security
 	name = "security belt"
@@ -73,6 +73,10 @@
 // Copy pasted from /storage, but removed the wclass check. In time, this could be made to define how many items of the same kind could go on a belt - Abi79
 	if(!can_use())
 		user << "\red I need to wear the belt for that."
+		return
+
+	if(istype(W, /obj/item/weapon/pickaxe) && W:active == 1)
+		user << "\red I can't place the activated pickaxe on the belt."
 		return
 
 	if(can_hold.len)
