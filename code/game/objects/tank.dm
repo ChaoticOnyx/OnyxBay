@@ -347,22 +347,35 @@
 					if(T && istype(T, /turf/space) && istype(user.loc, /turf/space))
 						user.Move(T)
 					else if (!T)
-						user << "\red The ships gravity well keeps you in orbit!"
+						user << "\red The ship's gravity well keeps you in orbit!"
 					else
-						user << "\red You bump into the ships plating."
+						user << "\red You bump into the ship's plating."
+
+				else if(user.z == 8)
+					var/turf/T = locate(maxx, rand(1, world.maxy), rand(1,4))
+					user.Move(T)
+					user << "\red You float away..."
+
 				else
-					user << "\red The ships gravity well keeps you in orbit!"
+					user << "\red The ship's gravity well keeps you in orbit!"
+
 			if (DOWN)
 				if (user.z < 4)
 					var/turf/T = locate(user.x, user.y, user.z + 1)
 					if(T && istype(T, /turf/space) && istype(user.loc, /turf/space))
 						user.Move(T)
 					else if (!T)
-						user << "\red The ships gravity well keeps you in orbit!"
+						user << "\red The ship's gravity well keeps you in orbit!"
 					else
-						user << "\red You bump into the ships plating."
+						user << "\red You bump into the ship's plating."
+
+				else if(user.z == 8)
+					var/turf/T = locate(1, rand(1, world.maxy), rand(1,4))
+					user.Move(T)
+					user << "\red You float away..."
+
 				else
-					user << "\red The ships gravity well keeps you in orbit!"
+					user << "\red The ship's gravity well keeps you in orbit!"
 
 /obj/item/weapon/tank/anesthetic/New()
 	..()
