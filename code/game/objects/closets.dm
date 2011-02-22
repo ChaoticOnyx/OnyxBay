@@ -1,3 +1,8 @@
+/obj/closet/New()
+	spawn(10)
+		for(var/obj/item/A in src.loc.contents)
+			A.loc = src
+
 /obj/closet/alter_health()
 	return get_turf(src)
 

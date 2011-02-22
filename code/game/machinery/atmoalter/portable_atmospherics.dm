@@ -48,9 +48,13 @@
 			anchored = 1 //Prevent movement
 
 			//Actually enforce the air sharing
-			var/datum/pipe_network/network = connected_port.return_network(src)
-			if(network && !network.gases.Find(air_contents))
-				network.gases += air_contents
+
+			// if you do this, the cannister will behave like a pipe
+			// and the release pressure will be useless
+			// commenting out for now
+			// var/datum/pipe_network/network = connected_port.return_network(src)
+			//if(network && !network.gases.Find(air_contents))
+				// network.gases += air_contents
 
 			return 1
 

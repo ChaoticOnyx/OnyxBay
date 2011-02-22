@@ -139,7 +139,7 @@
 
 /obj/item/weapon/voicedisk/
 	name = "Voice Disk"
-	icon = 'cloning.dmi'
+	icon = 'items.dmi'
 	icon_state = "datadisk0"
 	item_state = "card-id"
 	var/list/memory = list()
