@@ -471,8 +471,8 @@ proc/FloodFill(turf/start,remove_extras)
 				tmp_edges += T
 				continue
 			var/unblocked = T.GetUnblockedCardinals()
-			unblocked -= get_step(T,UP)
-			unblocked -= get_step(T,DOWN)
+			//unblocked -= get_step(T,UP)
+		//	unblocked -= get_step(T,DOWN)
 	//		var/border_added = 0
 			for(var/turf/simulated/U in unblocked)
 				if((U in borders) || (U in .)) continue

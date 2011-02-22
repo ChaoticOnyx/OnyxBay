@@ -209,7 +209,7 @@ proc/SetupAnomalies()
 	name = "Crystal"
 	icon = 'rubble.dmi'
 	icon_state = "crystal2"
-	var/list/words = list()
+	var/list/list/words = list()
 	var/lastsaid
 /obj/item/weapon/talkingcrystal/New()
 	..()
@@ -219,34 +219,79 @@ proc/SetupAnomalies()
 
 // HEAD STOP USING VARIABLES THAT ARE NAMED SAME AS OBJECT VARIABES, LIKE: loc, y, x
 /obj/item/weapon/talkingcrystal/catchMessage(msg,mob/source)
-	var/done = 1
-	while(done)
-		var/loca = findtext(msg," ",1,0)
-		if(!loca)
-			done = 0
-		var/X = copytext(msg,1,loca)
-		if(!words.Find(X,1,0))
-			X = replace(x," ","")
-			words += X
-		msg = copytext(msg,loca+1,0)
+	var/list/seperate = list()
+	if(findtext(msg," ")==0)
+		return
+	else
+		/*var/l = lentext(msg)
+		if(findtext(msg," ",l,l+1)==0)
+			msg+=" "*/
+		seperate = stringsplit(msg, " ")
+
+
+	for(var/Xa = 1,Xa<seperate.len,Xa++)
+		var/next = Xa + 1
+		if(words["[lowertext(seperate[Xa])]"])
+			var/list/w = words["[lowertext(seperate[Xa])]"]
+			w.Add("[lowertext(seperate[next])]")
+		else
+			words["[lowertext(seperate[Xa])]"] = list()
+			var/list/w = words["[lowertext(seperate[Xa])]"]
+			w.Add("[lowertext(seperate[next])]")
+		//world << "Adding [lowertext(seperate[next])] to [lowertext(seperate[Xa])]"
+
 	for(var/mob/O in viewers(src))
 		O.show_message("\blue The crystal hums for bit then stops...", 1)
+	if(!rand(0,5))
+		spawn(2) SaySomething(pick(seperate))
 
-/obj/item/weapon/talkingcrystal/proc/SaySomething()
+/obj/item/weapon/talkingcrystal/verb/debug()
+	//set src in view()
+	for(var/v in words)
+		world << "[uppertext(v)]"
+		var/list/d = words["[v]"]
+		for(var/X in d)
+			world << "[X]"
+
+/obj/item/weapon/talkingcrystal/proc/SaySomething(var/word = null)
 	var/msg
-	var/list/prevwords = list()
-	var/limit = rand(7)
+	var/limit = rand(max(5,words.len/2))+3
+	var/text
+	if(!word)
+		text = "[pick(words)]"
+	else
+		text = word
+	if(lentext(text)==1)
+		text=uppertext(text)
+	else
+		var/cap = copytext(text,1,2)
+		cap = uppertext(cap)
+		cap += copytext(text,2,lentext(text)+1)
+		text=cap
+	var/q = 0
+	msg+=text
+	if(msg=="What" | msg == "Who" | msg == "How" | msg == "Why" | msg == "Are")
+		q=1
+
+	text=lowertext(text)
 	for(var/ya,ya <= limit,ya++)
-		var/text = " [pick(words)]"
-		if(!prevwords.Find(text))
-			msg += text
-			prevwords += text
-			continue
+
+		if(words.Find("[text]"))
+			var/list/w = words["[text]"]
+			text=pick(w)
 		else
-			continue
+			text = "[pick(words)]"
+		msg+=" [text]"
+	if(q)
+		msg+="?"
+	else
+		if(rand(0,10))
+			msg+="."
+		else
+			msg+="!"
 	for(var/mob/M in viewers(src))
 		M << "\blue You hear \"[msg]\" from the [src]"
-	lastsaid = world.timeofday + rand(900,1600)
+	lastsaid = world.timeofday + rand(300,800)
 
 /obj/item/weapon/talkingcrystal/process()
 	if(prob(25) && world.timeofday >= lastsaid && words.len >= 1)
