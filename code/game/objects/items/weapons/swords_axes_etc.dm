@@ -88,7 +88,7 @@ STUN BATON
 	desc = "An energised pickaxe."
 	icon_state = "pickaxe0"
 	var/active = 0.0
-	force = 8.0
+	force = 6.0
 	throwforce = 2.0
 	throw_speed = 1
 	throw_range = 4
@@ -100,12 +100,12 @@ STUN BATON
 	src.active = !( src.active )
 	if (src.active)
 		user << "\blue The pickaxe is now energised."
-		src.force = 12
+		src.force = 8
 		src.icon_state = "pickaxe1"
 		src.w_class = 5
 	else
 		user << "\blue The pickaxe can now be concealed."
-		src.force = 8
+		src.force = 6
 		src.icon_state = "pickaxe0"
 		src.w_class = 3
 	src.add_fingerprint(user)
