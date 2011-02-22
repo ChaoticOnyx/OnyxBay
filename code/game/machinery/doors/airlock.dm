@@ -184,10 +184,10 @@
 //This generates the randomized airlock wire assignments for the game.
 /proc/RandomAirlockWires()
 	//to make this not randomize the wires, just set index to 1 and increment it in the flag for loop (after doing everything else).
-	var/list/wires = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-	airlockIndexToFlag = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-	airlockIndexToWireColor = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-	airlockWireColorToIndex = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+	var/list/wires = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0)
+	airlockIndexToFlag = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0)
+	airlockIndexToWireColor = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0)
+	airlockWireColorToIndex = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0)
 	var/flagIndex = 1
 	for (var/flag=1, flag<1024, flag+=flag)
 		var/valid = 0
