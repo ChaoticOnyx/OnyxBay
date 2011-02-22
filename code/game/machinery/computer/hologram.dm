@@ -2,6 +2,10 @@
 	..()
 	spawn( 10 )
 		src.projector = locate(/obj/machinery/hologram_proj, get_step(src.loc, NORTH))
+		for(var/obj/machinery/hologram_proj/H in world)
+			if(H.id == src.id)
+				src.projector = H
+				break //Only do ONE, do not make more than one on the map with the same ID, please.
 		return
 	return
 

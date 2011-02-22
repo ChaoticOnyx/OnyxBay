@@ -105,6 +105,7 @@
 	name = "Hologram Projector"
 	icon = 'stationobjs.dmi'
 	icon_state = "hologram0"
+	var/id = null
 	var/atom/projection = null
 	anchored = 1.0
 

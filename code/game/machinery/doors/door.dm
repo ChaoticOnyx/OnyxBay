@@ -296,7 +296,7 @@
 /obj/machinery/door/unpowered/shuttle/attackby(obj/item/I as obj, mob/user as mob)
 	if (src.operating)
 		return
-	if(src.loc.loc.name == "Arrival Shuttle" || src.loc.loc.name == "supply shuttle" || src.loc.loc.name == "Docking Bay D")
+	if(src.loc.loc.name == "Arrival Shuttle" || src.loc.loc.name == "supply shuttle" || src.loc.loc.name == "Docking Bay D" || src.loc.loc.name == "NanoTrasen shuttle")
 		..()
 		return
 	if(!LaunchControl.online)
