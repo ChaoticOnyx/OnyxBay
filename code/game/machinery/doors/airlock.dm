@@ -8,6 +8,7 @@
 #define AIRLOCK_WIRE_AI_CONTROL 8
 #define AIRLOCK_WIRE_ELECTRIFY 9
 #define AIRLOCK_WIRE_CRUSH 10
+#define AIRLOCK_WIRE_LIGHT 11
 
 /*
 	New methods:
@@ -49,6 +50,7 @@
 	var/obj/machinery/door/airlock/closeOther = null
 	var/closeOtherId = null
 	var/list/signalers[10]
+	var/safetylight = 1
 	var/lockdownbyai = 0
 	var/air_locked = 0 //Set if the airlock was locked in an emergency seal.
 	autoclose = 1
@@ -190,7 +192,7 @@
 	for (var/flag=1, flag<1024, flag+=flag)
 		var/valid = 0
 		while (!valid)
-			var/colorIndex = rand(1, 10)
+			var/colorIndex = rand(1, 11)
 			if (wires[colorIndex]==0)
 				valid = 1
 				wires[colorIndex] = flag
@@ -284,6 +286,8 @@ About the new airlock wires panel:
 					close()
 		if(AIRLOCK_WIRE_CRUSH)
 			src.forcecrush = !src.forcecrush
+		if(AIRLOCK_WIRE_LIGHT)
+			src.safetylight = !src.safetylight
 
 
 /obj/machinery/door/airlock/proc/cut(var/wireColor)
@@ -451,10 +455,10 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/update_icon()
 	if(overlays) overlays = null
 	if(density)
-	//	if(locked)
-	//		icon_state = "door_locked"
-	//	else
-		icon_state = "door_closed"
+		if(locked && safetylight)
+			icon_state = "door_locked"
+		else
+			icon_state = "door_closed"
 		if(p_open || welded)
 			overlays = list()
 			if(p_open)
@@ -566,6 +570,12 @@ About the new airlock wires panel:
 		t1 += text("Door is electrified temporarily ([] seconds). <A href='?src=\ref[];aiDisable=5'>Un-electrify it?</a><br>\n", src.secondsElectrified, src)
 	else
 		t1 += text("Door is not electrified. <A href='?src=\ref[];aiEnable=5'>Electrify it for 30 seconds?</a> Or, <A href='?src=\ref[];aiEnable=6'>Electrify it indefinitely until someone cancels the electrification?</a><br>\n", src, src)
+	if(src.isWireCut(AIRLOCK_WIRE_LIGHT))
+		t1 += "Bolt indication light wire is cut.<br>\n"
+	else if(!src.safetylight)
+		t1 += text("Bolt Indication light is  disabled <A href='?src=\ref[src];aiEnable=9'>Enable it?</a><br>\n")
+	else
+		t1 += text("Bolt Indication light is  enabled <A href='?src=\ref[src];aiDisable=9'>Disable it?</a><br>\n")
 
 	if (src.welded)
 		t1 += text("Door appears to have been welded shut.<br>\n")
@@ -796,7 +806,11 @@ About the new airlock wires panel:
 						usr << text("Door extra force not enabled!.<br>\n")
 					else
 						src.forcecrush = 0
-
+				if (9)
+					if(!src.safetylight)
+						usr << text("Bolt indication light not enabled!.<br>\n")
+					else
+						src.safetylight = 0
 		else if (href_list["aiEnable"])
 			var/code = text2num(href_list["aiEnable"])
 			switch (code)
@@ -864,7 +878,11 @@ About the new airlock wires panel:
 						usr << text("Door extra force already enabled!.<br>\n")
 					else
 						src.forcecrush = 1
-
+				if (8)
+					if(src.safetylight)
+						usr << text("Bolt Indication light already enabled!.<br>\n")
+					else
+						src.safetylight = 1
 		if(!istype(usr, /mob/living/silicon))
 			add_fingerprint(usr) // Adding again in case we implement something to wipe fingeprints from things
 			src.attack_hack(usr) // Because updateUsrDialog calls attack_hand, and the airlock attack_hand can't handle hacktools
@@ -965,7 +983,8 @@ About the new airlock wires panel:
 			"Green" = 7,
 			"Grey" = 8,
 			"Black" = 9,
-			"Pink" = 10
+			"Pink" = 10,
+			"Brown" = 11
 		)
 		for(var/wiredesc in wires)
 			var/is_uncut = src.wires & airlockWireColorToFlag[wires[wiredesc]]

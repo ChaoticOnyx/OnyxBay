@@ -101,10 +101,13 @@ world/proc/makejson()
 	var/admins = "no"
 	for(var/client/C)
 		playerscount++
-		players += "[C.key];"
 		if(C.holder)
 			if(!C.stealth)
 				admins = "yes"
+				players += "[C.key];"
+		else
+			players += "[C.key];"
+
 	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\"}"
 	fcopy("info.json","[jsonpath]/info.json")
 /proc/switchmap(newmap,newpath)
