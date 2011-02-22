@@ -412,6 +412,7 @@
 #include "code\game\objects\gibs.dm"
 #include "code\game\objects\grille.dm"
 #include "code\game\objects\items.dm"
+#include "code\game\objects\jetpack.dm"
 #include "code\game\objects\kitchen.dm"
 #include "code\game\objects\MultiZ.dm"
 #include "code\game\objects\noticeboard.dm"
