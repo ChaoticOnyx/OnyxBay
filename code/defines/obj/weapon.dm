@@ -65,6 +65,20 @@
 	throw_range = 2
 	w_class = 1.0
 
+/obj/item/weapon/pawnbucks
+	name = "Pawn Bucks"
+	desc = "100% genuine, bonified PAWN BUCKS! Real money not included."
+	icon = 'items.dmi'
+	icon_state = "spacecash"
+	opacity = 0
+	density = 0
+	anchored = 0.0
+	force = 1.0
+	throwforce = 1.0
+	throw_speed = 1
+	throw_range = 2
+	w_class = 1.0
+
 /obj/item/weapon/ammo
 	name = "ammo"
 	icon = 'ammo.dmi'
@@ -1235,11 +1249,6 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	w_class = 3.0
 
 /obj/item/weapon/kitchen/utensil
-	force = 5.0
-	w_class = 1.0
-	throwforce = 5.0
-	throw_speed = 3
-	throw_range = 5
 	flags = FPRINT | TABLEPASS | CONDUCT
 
 
@@ -1250,15 +1259,26 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 /obj/item/weapon/kitchen/utensil/knife
 	name = "knife"
 	icon_state = "knife"
-	force = 9.0
+	force = 5.0
 	slash = 1
 	var/butter = 0
-	throwforce = 10.0
+	throwforce = 6.0
 
 /obj/item/weapon/kitchen/utensil/spoon
 	name = "spoon"
-	desc = "SPOON!"
+	desc = "He will chase you to the ends of the world..."
 	icon_state = "spoon"
+
+obj/item/weapon/kitchen/utensil/admin_spoon
+	name = "spoon"
+	desc = "Its just a spoon... Or is it."
+	icon_state = "spoon"
+	force = 50.0
+	w_class = 1.0
+	slash = 1
+	throwforce = 20.0
+	throw_speed = 20
+	throw_range = 10
 
 /obj/item/weapon/scalpel
 	name = "robotics scapel"
