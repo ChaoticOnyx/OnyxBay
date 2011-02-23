@@ -148,7 +148,7 @@ proc/GetMapInfo()
 	world << M.name
 	world << M.mapname
 client/proc/ChangeMap(var/X as text)
-	set name = "Check derp"
+	set name = "Change Map"
 	set category  = "Admin"
 	switchmap(X,X)
 	//test
