@@ -84,23 +84,23 @@ world/New()
 	// values differ from the intended level
 	var/nitrogen_mod = abs(NITROGEN_LEVEL - (removed.nitrogen / total) ) * NITROGEN_RETARDATION_FACTOR
 	var/oxygen = max(min(removed.oxygen / total - nitrogen_mod, 1), 0)
-	//world << "nitrogen: [nitrogen_mod]"
-	//world << "actual: [removed.oxygen / MOLES_CELLSTANDARD - nitrogen_mod]"
-	//world << "oxygen: [removed.oxygen]"
 	//world << "total_mod:[oxygen]"
-	//world << "power:[power]"
 
-	var/temp_factor = 0
+	var/power = 0
 	if(oxygen > 0.8)
 		// with a perfect gas mix, make the power less based on heat
-		temp_factor = 100
+		power = 300 * removed.temperature / T0C + 4000
+		//world << "temperature [removed.temperature]"
 		icon_state = "darkmatter_glow"
 	else
-		// in normal mode, base the produced energy around the heat
-		temp_factor = 20
+		// in normal mode, base the produced energy strongly around the heat
+		power = (removed.temperature ** 2 / T0C)
 		icon_state = "darkmatter"
 
-	var/power = max(round((removed.temperature - T0C) / temp_factor), 0) //Total laser power plus an overload factor
+	// the more gas there is, the more power produced
+	power *= env.total_moles() / MOLES_CELLSTANDARD
+
+	//world << "base power: [power]"
 
 	//Get the collective laser power
 	for(var/dir in cardinal)
@@ -108,11 +108,13 @@ world/New()
 		for(var/obj/beam/e_beam/item in T)
 			power += item.power
 
+	//world << "add the lasers: [power]"
+
 	var/device_energy = oxygen * power
 
-	device_energy *= removed.temperature / T0C
-
 	device_energy = round(device_energy * REACTION_POWER_MODIFIER)
+
+	//world << "multiplied: [device_energy]"
 
 	//To figure out how much temperature to add each tick, consider that at one atmosphere's worth
 	//of pure oxygen, with all four lasers firing at standard energy and no N2 present, at room temperature
