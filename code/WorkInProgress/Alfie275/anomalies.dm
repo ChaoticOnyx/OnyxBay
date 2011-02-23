@@ -6,7 +6,27 @@ proc/varcopy(var/datum/d)
 			nd.vars["[v]"] = nv
 	return nd
 
+proc/CanAnom(var/atom/a as anything)
+	var/can = 1
+	if(istype(a,/mob/living/carbon/human))
+		var/mob/living/carbon/human/m = a
+		if(istype(m.wear_suit,/obj/item/clothing/suit/bio_suit/ano_suit))
+			can = 0
+	return can
 
+
+
+
+/obj/item/clothing/suit/bio_suit/ano_suit
+	name = "Anomaly Suit"
+	desc = "A bio suit lined with mundanium, protects against anomalies as well as functioning as a bio suit."
+	icon_state = "bio"
+	item_state = "bio_suit"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	gas_transfer_coefficient = 0.01
+	permeability_coefficient = 0.01
+	heat_transfer_coefficient = 0.30
+	flags = FPRINT|TABLEPASS|PLASMAGUARD
 
 var/list/artifacts = list("/obj/item/weapon/crystal" = 4,
 							"/obj/item/weapon/talkingcrystal" = 2,
@@ -153,6 +173,8 @@ proc/SetupAnomalies()
 
 /datum/anomalyeffect/heal/Activate()
 	for(var/mob/living/carbon/m in range(src.range,get_turf(src.o)))
+		if(!CanAnom(m))
+			continue
 		for(var/t in m.organs)
 			var/datum/organ/external/affecting = m.organs["[t]"]
 			if (affecting.heal_damage(src.magnitude/16, src.magnitude/8))
@@ -185,6 +207,8 @@ proc/SetupAnomalies()
 	var/turf/centre = get_turf(src.o)
 	var/list/mob/living/carbon/ms = list()
 	for(var/mob/living/carbon/m in range(src.range,centre))
+		if(!CanAnom(m))
+			continue
 		if(m.buckled)
 			if(!m.buckled.anchored)
 				ms.Add(m)
@@ -201,8 +225,10 @@ proc/SetupAnomalies()
 		ms.Remove(m)
 	if(src.magnitude>35)
 		for(var/obj/o in range(src.range,centre))
-			if(!o.anchored & !rand(2))
-				var/turf/t = get_turf(pick(range(src.magnitude/10,src.o)))
+			if(!CanAnom(o))
+				continue
+			if(!o.anchored && !rand(0,2))
+				var/turf/t = get_turf(pick(range(src.magnitude/10,centre)))
 				o.loc = t
 
 /obj/item/weapon/talkingcrystal
@@ -245,7 +271,7 @@ proc/SetupAnomalies()
 	if(!rand(0,5))
 		spawn(2) SaySomething(pick(seperate))
 
-/obj/item/weapon/talkingcrystal/verb/debug()
+/obj/item/weapon/talkingcrystal/proc/debug()
 	//set src in view()
 	for(var/v in words)
 		world << "[uppertext(v)]"

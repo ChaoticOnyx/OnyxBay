@@ -395,6 +395,7 @@
 /turf/simulated/asteroid
 	oxygen = 0.01
 	nitrogen = 0.01
+	var/mapped = 0
 	name = "rocky floor"
 	icon = 'mining.dmi'
 	icon_state = "floor"
@@ -438,12 +439,14 @@
 		src.mine()
 
 /turf/simulated/asteroid/wall/proc/mine()
-	if(rand(3))
-		new/obj/item/weapon/ore(locate(src.x,src.y,src.z))
-	else
-		new/obj/item/weapon/artifact(locate(src.x,src.y,src.z))
+	while(!rand(1))
+		if(rand(2))
+			new/obj/item/weapon/ore(locate(src.x,src.y,src.z))
+		else
+			new/obj/item/weapon/artifact(locate(src.x,src.y,src.z))
 	processing_turfs.Remove(src)
 	new/turf/simulated/asteroid/floor(locate(src.x,src.y,src.z))
+
 
 /turf/simulated/asteroid/floor
 	oxygen = 0.01

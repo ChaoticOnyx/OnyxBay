@@ -64,7 +64,7 @@ datum/controller/game_controller
 		setup_objects()
 
 		setupgenetics()
-
+		setupasteroid()
 
 		setupdooralarms()		//Added by Strumpetplaya - Alarm Change
 		BOOKHAND = new()

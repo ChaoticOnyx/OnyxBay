@@ -739,7 +739,7 @@ turf/simulated/floor/proc/update_icon()
 			user << "\red The plating is going to need some support."
 	return
 
-/turf/asteroid/floor/attackby(obj/item/weapon/C as obj, mob/user as mob)
+/turf/simulated/asteroid/floor/attackby(obj/item/weapon/C as obj, mob/user as mob)
 
 	if (istype(C, /obj/item/weapon/tile))
 
