@@ -1094,6 +1094,12 @@
 	icon_state = "asteroid"
 	applyalertstatus = 0
 
+/area/asteroid/abase
+	name = "Strange Base"
+	icon_state = "asbase"
+	applyalertstatus = 0
+
+
 /area/asteroid/base
 	name = "Mining base"
 	icon_state = "asbase"
