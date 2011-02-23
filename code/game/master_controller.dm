@@ -125,7 +125,7 @@ datum/controller/game_controller
 
 		// update the clock
 		// one real-life minute is 100 time-units
-		gametime += (100 / 60) * (world.timeofday - gametime_last_updated)
+		gametime += (100 / 60) * (world.timeofday - gametime_last_updated) / 10
 		gametime_last_updated = world.timeofday
 		if(gametime > 2200) gametime -= 2200
 
