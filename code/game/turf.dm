@@ -607,6 +607,32 @@ turf/simulated/floor/proc/update_icon()
 
 		return
 
+/*	if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
+		W:eyecheck(user)
+		var/turf/T = user.loc
+		if (!( istype(T, /turf) ))
+			return
+
+		if (thermite)
+			var/obj/overlay/O = new/obj/overlay( src )
+			O.name = "Thermite"
+			O.desc = "Looks hot."
+			O.icon = 'fire.dmi'
+			O.icon_state = "2"
+			O.anchored = 1
+			O.density = 1
+			O.layer = 5
+			var/turf/simulated/floor/F = ReplaceWithFloor()
+			F.to_plating()
+			F.burn_tile()
+			user << "\red The thermite melts the wall."
+			spawn(100) del(O)
+			return
+
+		if (W:get_fuel() < 5)
+			user << "\blue You need more welding fuel to complete this task."
+			return
+		W:use_fuel(5)*/
 	if(istype(C, /obj/item/weapon/rods))
 		if (!src.intact)
 			if (C:amount >= 2)
