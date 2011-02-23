@@ -271,7 +271,7 @@ proc/SetupAnomalies()
 	if(!rand(0,5))
 		spawn(2) SaySomething(pick(seperate))
 
-/obj/item/weapon/talkingcrystal/verb/debug()
+/obj/item/weapon/talkingcrystal/proc/debug()
 	//set src in view()
 	for(var/v in words)
 		world << "[uppertext(v)]"
