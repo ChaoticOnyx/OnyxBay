@@ -11,7 +11,7 @@
 		if(1)
 			var/time = get_shuttle_timer()
 			if(time)
-				msg = "The screen states the time until pods launchs. \nTime remaining:[time]"
+				msg = "The time reads: "+num2text(round(gametime / 100,0.001))
 		if(2)
 			if(message1 && message2)
 				msg = "The screen states the two following message. [message1] , [message2]"
@@ -89,6 +89,8 @@
 
 		if(mode==1)	// shuttle timer
 			if(LaunchControl.online)
+				icon = 'status_display.dmi'
+				icon_state = "frame"
 				var/displayloc
 				displayloc = "ETL "
 
@@ -99,6 +101,10 @@
 				update_display(displayloc, displaytime)
 				return
 			else
+				icon = 'clock.dmi'
+				icon_state = ""
+				var/dis = num2text(round(gametime / 100))
+				if(dis) icon_state = dis
 				overlays = null
 				return
 

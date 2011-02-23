@@ -1,6 +1,7 @@
 var/global/datum/controller/game_controller/master_controller //Set in world.New()
 var/ticker_debug
 var/updatetime
+var/global/gametime = 0
 datum/controller/game_controller
 	var/processing = 1
 	var/lastannounce = 0
@@ -78,6 +79,9 @@ datum/controller/game_controller
 		if(!ticker)
 			ticker = new /datum/controller/gameticker()
 
+		// setup the in-game time
+		gametime = rand(0,2200)
+
 		spawn
 			ticker.pregame()
 
@@ -116,6 +120,12 @@ datum/controller/game_controller
 
 		if(!processing)
 			return 0
+
+		world << "ahahah, processing"
+		// update the clock
+		// one real-life minute is 100 time-units
+		gametime += 100 / 60
+		if(gametime > 2200) gametime -= 2200
 
 		var/start_time = world.timeofday
 
