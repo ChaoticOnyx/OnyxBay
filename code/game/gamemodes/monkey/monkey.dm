@@ -4,8 +4,6 @@
 
 /datum/game_mode/monkey/announce()
 	world << "<B>The current game mode is - Monkey!</B>"
-	world << "<B>Some of your crew members have been infected by a mutageous virus!</B>"
-	world << "<B>Escape on the shuttle but the humans have precedence!</B>"
 
 /datum/game_mode/monkey/post_setup()
 	spawn (50*tick_multiplier)
