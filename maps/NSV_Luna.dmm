@@ -4919,115 +4919,116 @@
 "bQE" = (/turf/simulated/floor{icon_state = "carpetSW"},/area/wizard_station)
 "bQF" = (/turf/simulated/floor{icon_state = "carpetS"},/area/wizard_station)
 "bQG" = (/turf/simulated/floor{icon_state = "carpetSE"},/area/wizard_station)
-"bQH" = (/turf/simulated/wall/heatshield,/area/asteroid/base/Refinery)
-"bQI" = (/obj/grille,/obj/machinery/door/poddoor{id = "fvent"},/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
-"bQJ" = (/turf/simulated/wall,/area/asteroid/base/Refinery)
-"bQK" = (/obj/machinery/atmospherics/pipe/vent,/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
-"bQL" = (/obj/machinery/atmospherics/unary/outlet_injector{tag = "icon-on"; icon_state = "on"; dir = 2; initialize_directions = 8; on = 1},/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
-"bQM" = (/obj/machinery/igniter{icon_state = "igniter0"; id = "Furnace"; on = 0},/obj/machinery/air_sensor{id_tag = "furnace"},/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
-"bQN" = (/obj/machinery/door/poddoor{id = "smlock"; name = "Smelter airlock"},/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
-"bQO" = (/obj/machinery/door_control{name = "Smelter Door Control"; pixel_x = 0; pixel_y = 25; id = "smlock"},/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
-"bQP" = (/obj/machinery/atmospherics/pipe/simple/insulated,/turf/simulated/wall/heatshield,/area/asteroid/base/Refinery)
-"bQQ" = (/obj/machinery/atmospherics/pipe/simple/insulated{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/wall/heatshield,/area/asteroid/base/Refinery)
-"bQR" = (/obj/machinery/door/poddoor{density = 0; icon_state = "pdoor0"; id = "smlock"; name = "Smelter airlock"; opacity = 0; p_open = 0},/turf/simulated/floor,/area/asteroid/base/Refinery)
-"bQS" = (/obj/window/reinforced/east,/turf/space,/area)
-"bQT" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/turf/simulated/floor/plating,/area)
-"bQU" = (/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area)
-"bQV" = (/obj/machinery/atmospherics/binary/pump{tag = "icon-intact_on"; icon_state = "intact_on"; dir = 2; on = 1},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bQW" = (/obj/machinery/atmospherics/binary/pump{dir = 1; icon_state = "intact_on"; on = 1},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bQX" = (/obj/machinery/ignition_switch{id = "Furnace"; pixel_x = 6; pixel_y = 24},/obj/machinery/door_control{id = "fvent"; name = "Furnace Vent"; pixel_x = -4; pixel_y = 24},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bQY" = (/obj/machinery/computer/gasmon{frequency = 1439; id = "furnace"},/obj/machinery/door_control{name = "Smelter Door Control"; pixel_x = 0; pixel_y = 25; id = "smlock"},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bQZ" = (/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRa" = (/obj/machinery/autolathe,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRb" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area)
-"bRc" = (/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area)
-"bRd" = (/obj/machinery/atmospherics/pipe/vent{dir = 4; level = 2; vent_id = "AtmosVent"},/turf/space,/area)
-"bRe" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/wall,/area/asteroid/base/Refinery)
-"bRf" = (/obj/machinery/atmospherics/filter{dir = 2; filter_type = 3; icon_state = "intact_on"; name = "Carbon Dioxide Filter"; on = 1; tag = "CARBONDIOXIDE"},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRg" = (/obj/machinery/atmospherics/valve,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRh" = (/turf/simulated/wall,/area/asteroid/base)
-"bRi" = (/obj/window/reinforced/east,/obj/item/weapon/shard,/turf/space,/area)
-"bRj" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area)
-"bRk" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; initialize_directions = 7; level = 2},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRl" = (/obj/machinery/atmospherics/pipe/manifold{dir = 4; icon_state = "manifold"; initialize_directions = 11; level = 2},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRm" = (/obj/machinery/camera,/obj/machinery/floodlight,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRn" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor/plating,/area/asteroid/base)
-"bRo" = (/obj/grille,/obj/window/reinforced/south,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor/plating,/area/asteroid/base)
-"bRp" = (/obj/machinery/door/airlock/external,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor,/area/asteroid/base)
-"bRq" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/east,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor/plating,/area/asteroid/base)
-"bRr" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRs" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRt" = (/obj/machinery/atmospherics/pipe/manifold{dir = 1; icon_state = "manifold"; level = 2},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRu" = (/obj/machinery/atmospherics/pipe/simple{dir = 10; icon_state = "intact"; initialize_directions = 10; layer = 3; level = 1},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRv" = (/obj/machinery/firealarm{dir = 4; layer = 3.1; pixel_x = 24; tag = "east"},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRw" = (/obj/machinery/firealarm{dir = 8; pixel_x = -24; tag = "west"},/obj/window/reinforced/north,/obj/machinery/power/terminal{tag = "icon-term (EAST)"; icon_state = "term"; dir = 4},/obj/cabling/power{icon_state = "0-2"},/turf/simulated/floor,/area/asteroid/base)
-"bRx" = (/obj/machinery/power/smes{charge = 100000; desc = "A high-capacity superconducting magnetic energy storage (SMES) unit.  This one supplies power to the entire ship"; name = "Primary SMES Unit"},/obj/window/reinforced/north,/turf/simulated/floor,/area/asteroid/base)
-"bRy" = (/obj/machinery/light/small{dir = 1},/obj/cabling/power{icon_state = "2-8"},/obj/window/reinforced/north,/turf/simulated/floor,/area/asteroid/base)
-"bRz" = (/obj/item/weapon/shard,/turf/simulated/floor,/area/asteroid/base)
-"bRA" = (/turf/simulated/floor,/area/asteroid/base)
-"bRB" = (/obj/window/reinforced/north,/turf/simulated/floor,/area/asteroid/base)
-"bRC" = (/obj/item/weapon/cell{maxcharge = 7500},/obj/machinery/light{dir = 1},/obj/window/reinforced/north,/obj/window/reinforced/east,/turf/simulated/floor,/area/asteroid/base)
-"bRD" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor/plating,/area/asteroid/base)
-"bRE" = (/obj/machinery/power/apc{dir = 4; name = "East APC"; pixel_x = 0},/obj/cabling/power{icon_state = "0-2"},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRF" = (/obj/machinery/power/terminal{tag = "icon-term (EAST)"; icon_state = "term"; dir = 4},/obj/cabling/power,/obj/cabling/power{icon_state = "0-2"},/turf/simulated/floor,/area/asteroid/base)
-"bRG" = (/obj/machinery/power/smes{charge = 100000; desc = "A high-capacity superconducting magnetic energy storage (SMES) unit.  This one supplies power to the entire ship"; name = "Primary SMES Unit"},/turf/simulated/floor,/area/asteroid/base)
-"bRH" = (/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "2-8"},/turf/simulated/floor,/area/asteroid/base)
-"bRI" = (/obj/item/weapon/cell{maxcharge = 7500},/obj/item/clothing/glasses/meson,/obj/window/reinforced/east,/turf/simulated/floor,/area/asteroid/base)
-"bRJ" = (/obj/machinery/atmospherics/portables_connector{dir = 1},/obj/machinery/portable_atmospherics/canister/oxygen,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRK" = (/obj/machinery/light,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRL" = (/obj/machinery/atmospherics/portables_connector{dir = 1},/obj/machinery/portable_atmospherics/canister/toxins,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRM" = (/obj/cabling/power{icon_state = "1-4"},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
-"bRN" = (/obj/cabling/power{icon_state = "4-8"},/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area/asteroid/base/Refinery)
-"bRO" = (/obj/cabling/power{icon_state = "4-8"},/obj/cabling/power{icon_state = "1-4"},/turf/simulated/floor,/area/asteroid/base)
-"bRP" = (/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor,/area/asteroid/base)
-"bRQ" = (/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "1-8"},/turf/simulated/floor,/area/asteroid/base)
-"bRR" = (/obj/window/reinforced/east,/obj/item/clothing/mask/gas/emergency,/obj/item/clothing/mask/gas/emergency,/obj/item/clothing/mask/gas/emergency,/turf/simulated/floor,/area/asteroid/base)
-"bRS" = (/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor,/area/asteroid/base)
-"bRT" = (/obj/item/device/radio/beacon,/turf/simulated/floor,/area/asteroid/base)
-"bRU" = (/obj/window/reinforced/east,/obj/item/weapon/tank/oxygen,/obj/item/weapon/tank/oxygen,/obj/item/weapon/tank/oxygen,/turf/simulated/floor,/area/asteroid/base)
-"bRV" = (/turf/simulated/asteroid/wall,/area/asteroid)
-"bRW" = (/obj/item/weapon/wrench,/obj/item/weapon/wirecutters,/turf/simulated/floor,/area/asteroid/base)
-"bRX" = (/obj/window/reinforced/east,/obj/item/weapon/pickaxe,/obj/item/weapon/pickaxe,/obj/item/weapon/pickaxe,/turf/simulated/floor,/area/asteroid/base)
-"bRY" = (/obj/item/weapon/pickaxe,/turf/simulated/floor,/area/asteroid/base)
-"bRZ" = (/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "1-4"},/turf/simulated/floor,/area/asteroid/base)
-"bSa" = (/obj/cabling/power{icon_state = "2-8"},/turf/simulated/floor,/area/asteroid/base)
-"bSb" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/asteroid/base)
-"bSc" = (/obj/item/weapon/tank/oxygen,/obj/item/clothing/suit/fire,/turf/simulated/floor,/area/asteroid/base)
-"bSd" = (/obj/machinery/power/apc{dir = 2; name = "South APC"; pixel_x = 0},/obj/cabling/power,/turf/simulated/floor,/area/asteroid/base)
-"bSe" = (/obj/machinery/computer/teleporter,/turf/simulated/floor,/area/asteroid/base)
-"bSf" = (/obj/machinery/teleport/station,/turf/simulated/floor,/area/asteroid/base)
-"bSg" = (/obj/machinery/teleport/hub,/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/asteroid/base)
-"bSh" = (/obj/machinery/door/airlock/external,/obj/cabling/power{icon_state = "1-2"},/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor/plating,/area/asteroid/base)
-"bSi" = (/turf/simulated/wall,/area/asteroid)
-"bSj" = (/obj/machinery/portable_atmospherics/pump,/turf/simulated/floor,/area/asteroid)
-"bSk" = (/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor,/area/asteroid)
-"bSl" = (/turf/simulated/floor,/area/asteroid)
-"bSm" = (/obj/machinery/door/airlock/external,/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor,/area/asteroid)
-"bSn" = (/obj/machinery/power/apc{dir = 1; name = "North APC"; pixel_x = 0},/obj/cabling/power{icon_state = "0-4"},/obj/machinery/light{dir = 1},/obj/machinery/camera,/turf/simulated/floor/plating,/area/asteroid)
-"bSo" = (/obj/cabling/power{icon_state = "1-8"},/turf/simulated/floor/plating,/area/asteroid)
-"bSp" = (/obj/machinery/computer/lasercon{id = "minelaser"},/obj/machinery/light{dir = 1},/turf/simulated/floor/plating,/area/asteroid)
-"bSq" = (/turf/simulated/asteroid/floor,/area/asteroid)
-"bSr" = (/turf/simulated/floor/plating,/area/asteroid)
-"bSs" = (/obj/machinery/engine/laser{id = "minelaser"; name = "Mining laser"},/turf/simulated/floor/plating,/area/asteroid)
-"bSt" = (/obj/rail,/turf/simulated/asteroid/floor{mapped = 1},/area/asteroid)
-"bSu" = (/obj/rail,/turf/simulated/floor/plating,/area/asteroid)
-"bSv" = (/turf/simulated/asteroid/wall{mapped = 1},/area/asteroid)
-"bSw" = (/obj/machinery/floodlight,/turf/simulated/asteroid/floor{mapped = 1},/area/asteroid)
-"bSx" = (/obj/item/weapon/spacecash,/turf/simulated/asteroid/floor,/area/asteroid)
-"bSy" = (/obj/rail,/turf/simulated/asteroid/floor,/area/asteroid)
-"bSz" = (/turf/simulated/floor/grid,/area/asteroid/abase)
-"bSA" = (/turf/simulated/wall/r_wall,/area/asteroid/abase)
-"bSB" = (/obj/machinery/igniter,/obj/machinery/door/airlock,/turf/simulated/floor/grid,/area/asteroid/abase)
-"bSC" = (/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 700000},/area/asteroid/abase)
-"bSD" = (/obj/machinery/door/airlock,/turf/simulated/floor/grid,/area/asteroid/abase)
-"bSE" = (/obj/item/weapon/anomaly,/turf/simulated/floor/grid,/area/asteroid/abase)
-"bSF" = (/obj/machinery/power/smes,/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 700000},/area/asteroid/abase)
-"bSG" = (/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 700000},/area/asteroid/abase)
-"bSH" = (/obj/machinery/power/apc{dir = 1; name = "North APC"; pixel_x = 0},/obj/cabling/power{icon_state = "0-8"},/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 700000},/area/asteroid/abase)
-"bSI" = (/obj/machinery/portable_atmospherics/canister/oxygen{release_pressure = 1001.33; valve_open = 1; volume = 10000},/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 700000},/area/asteroid/abase)
-"bSJ" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area)
-"bSK" = (/turf/simulated/floor/plating,/area)
-"bSL" = (/obj/machinery/floodlight,/turf/simulated/floor/plating,/area)
+"bQH" = (/obj/mapinfo{mapname = "NSV_Luna"; name = "NSV Luna"},/turf/space,/area)
+"bQI" = (/turf/simulated/wall/heatshield,/area/asteroid/base/Refinery)
+"bQJ" = (/obj/grille,/obj/machinery/door/poddoor{id = "fvent"},/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
+"bQK" = (/turf/simulated/wall,/area/asteroid/base/Refinery)
+"bQL" = (/obj/machinery/atmospherics/pipe/vent,/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
+"bQM" = (/obj/machinery/atmospherics/unary/outlet_injector{tag = "icon-on"; icon_state = "on"; dir = 2; initialize_directions = 8; on = 1},/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
+"bQN" = (/obj/machinery/igniter{icon_state = "igniter0"; id = "Furnace"; on = 0},/obj/machinery/air_sensor{id_tag = "furnace"},/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
+"bQO" = (/obj/machinery/door/poddoor{id = "smlock"; name = "Smelter airlock"},/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
+"bQP" = (/obj/machinery/door_control{name = "Smelter Door Control"; pixel_x = 0; pixel_y = 25; id = "smlock"},/turf/simulated/floor/engine,/area/asteroid/base/Refinery)
+"bQQ" = (/obj/machinery/atmospherics/pipe/simple/insulated,/turf/simulated/wall/heatshield,/area/asteroid/base/Refinery)
+"bQR" = (/obj/machinery/atmospherics/pipe/simple/insulated{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/wall/heatshield,/area/asteroid/base/Refinery)
+"bQS" = (/obj/machinery/door/poddoor{density = 0; icon_state = "pdoor0"; id = "smlock"; name = "Smelter airlock"; opacity = 0; p_open = 0},/turf/simulated/floor,/area/asteroid/base/Refinery)
+"bQT" = (/obj/window/reinforced/east,/turf/space,/area)
+"bQU" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/turf/simulated/floor/plating,/area)
+"bQV" = (/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area)
+"bQW" = (/obj/machinery/atmospherics/binary/pump{tag = "icon-intact_on"; icon_state = "intact_on"; dir = 2; on = 1},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bQX" = (/obj/machinery/atmospherics/binary/pump{dir = 1; icon_state = "intact_on"; on = 1},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bQY" = (/obj/machinery/ignition_switch{id = "Furnace"; pixel_x = 6; pixel_y = 24},/obj/machinery/door_control{id = "fvent"; name = "Furnace Vent"; pixel_x = -4; pixel_y = 24},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bQZ" = (/obj/machinery/computer/gasmon{frequency = 1439; id = "furnace"},/obj/machinery/door_control{name = "Smelter Door Control"; pixel_x = 0; pixel_y = 25; id = "smlock"},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRa" = (/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRb" = (/obj/machinery/autolathe,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRc" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area)
+"bRd" = (/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area)
+"bRe" = (/obj/machinery/atmospherics/pipe/vent{dir = 4; level = 2; vent_id = "AtmosVent"},/turf/space,/area)
+"bRf" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/wall,/area/asteroid/base/Refinery)
+"bRg" = (/obj/machinery/atmospherics/filter{dir = 2; filter_type = 3; icon_state = "intact_on"; name = "Carbon Dioxide Filter"; on = 1; tag = "CARBONDIOXIDE"},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRh" = (/obj/machinery/atmospherics/valve,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRi" = (/turf/simulated/wall,/area/asteroid/base)
+"bRj" = (/obj/window/reinforced/east,/obj/item/weapon/shard,/turf/space,/area)
+"bRk" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/south,/turf/simulated/floor/plating,/area)
+"bRl" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; initialize_directions = 7; level = 2},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRm" = (/obj/machinery/atmospherics/pipe/manifold{dir = 4; icon_state = "manifold"; initialize_directions = 11; level = 2},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRn" = (/obj/machinery/camera,/obj/machinery/floodlight,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRo" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor/plating,/area/asteroid/base)
+"bRp" = (/obj/grille,/obj/window/reinforced/south,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor/plating,/area/asteroid/base)
+"bRq" = (/obj/machinery/door/airlock/external,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor,/area/asteroid/base)
+"bRr" = (/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/east,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor/plating,/area/asteroid/base)
+"bRs" = (/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRt" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRu" = (/obj/machinery/atmospherics/pipe/manifold{dir = 1; icon_state = "manifold"; level = 2},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRv" = (/obj/machinery/atmospherics/pipe/simple{dir = 10; icon_state = "intact"; initialize_directions = 10; layer = 3; level = 1},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRw" = (/obj/machinery/firealarm{dir = 4; layer = 3.1; pixel_x = 24; tag = "east"},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRx" = (/obj/machinery/firealarm{dir = 8; pixel_x = -24; tag = "west"},/obj/window/reinforced/north,/obj/machinery/power/terminal{tag = "icon-term (EAST)"; icon_state = "term"; dir = 4},/obj/cabling/power{icon_state = "0-2"},/turf/simulated/floor,/area/asteroid/base)
+"bRy" = (/obj/machinery/power/smes{charge = 100000; desc = "A high-capacity superconducting magnetic energy storage (SMES) unit.  This one supplies power to the entire ship"; name = "Primary SMES Unit"},/obj/window/reinforced/north,/turf/simulated/floor,/area/asteroid/base)
+"bRz" = (/obj/machinery/light/small{dir = 1},/obj/cabling/power{icon_state = "2-8"},/obj/window/reinforced/north,/turf/simulated/floor,/area/asteroid/base)
+"bRA" = (/obj/item/weapon/shard,/turf/simulated/floor,/area/asteroid/base)
+"bRB" = (/turf/simulated/floor,/area/asteroid/base)
+"bRC" = (/obj/window/reinforced/north,/turf/simulated/floor,/area/asteroid/base)
+"bRD" = (/obj/item/weapon/cell{maxcharge = 7500},/obj/machinery/light{dir = 1},/obj/window/reinforced/north,/obj/window/reinforced/east,/turf/simulated/floor,/area/asteroid/base)
+"bRE" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor/plating,/area/asteroid/base)
+"bRF" = (/obj/machinery/power/apc{dir = 4; name = "East APC"; pixel_x = 0},/obj/cabling/power{icon_state = "0-2"},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRG" = (/obj/machinery/power/terminal{tag = "icon-term (EAST)"; icon_state = "term"; dir = 4},/obj/cabling/power,/obj/cabling/power{icon_state = "0-2"},/turf/simulated/floor,/area/asteroid/base)
+"bRH" = (/obj/machinery/power/smes{charge = 100000; desc = "A high-capacity superconducting magnetic energy storage (SMES) unit.  This one supplies power to the entire ship"; name = "Primary SMES Unit"},/turf/simulated/floor,/area/asteroid/base)
+"bRI" = (/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "2-8"},/turf/simulated/floor,/area/asteroid/base)
+"bRJ" = (/obj/item/weapon/cell{maxcharge = 7500},/obj/item/clothing/glasses/meson,/obj/window/reinforced/east,/turf/simulated/floor,/area/asteroid/base)
+"bRK" = (/obj/machinery/atmospherics/portables_connector{dir = 1},/obj/machinery/portable_atmospherics/canister/oxygen,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRL" = (/obj/machinery/light,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRM" = (/obj/machinery/atmospherics/portables_connector{dir = 1},/obj/machinery/portable_atmospherics/canister/toxins,/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRN" = (/obj/cabling/power{icon_state = "1-4"},/turf/simulated/floor/plating,/area/asteroid/base/Refinery)
+"bRO" = (/obj/cabling/power{icon_state = "4-8"},/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area/asteroid/base/Refinery)
+"bRP" = (/obj/cabling/power{icon_state = "4-8"},/obj/cabling/power{icon_state = "1-4"},/turf/simulated/floor,/area/asteroid/base)
+"bRQ" = (/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor,/area/asteroid/base)
+"bRR" = (/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "1-8"},/turf/simulated/floor,/area/asteroid/base)
+"bRS" = (/obj/window/reinforced/east,/obj/item/clothing/mask/gas/emergency,/obj/item/clothing/mask/gas/emergency,/obj/item/clothing/mask/gas/emergency,/turf/simulated/floor,/area/asteroid/base)
+"bRT" = (/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor,/area/asteroid/base)
+"bRU" = (/obj/item/device/radio/beacon,/turf/simulated/floor,/area/asteroid/base)
+"bRV" = (/obj/window/reinforced/east,/obj/item/weapon/tank/oxygen,/obj/item/weapon/tank/oxygen,/obj/item/weapon/tank/oxygen,/turf/simulated/floor,/area/asteroid/base)
+"bRW" = (/turf/simulated/asteroid/wall,/area/asteroid)
+"bRX" = (/obj/item/weapon/wrench,/obj/item/weapon/wirecutters,/turf/simulated/floor,/area/asteroid/base)
+"bRY" = (/obj/window/reinforced/east,/obj/item/weapon/pickaxe,/obj/item/weapon/pickaxe,/obj/item/weapon/pickaxe,/turf/simulated/floor,/area/asteroid/base)
+"bRZ" = (/obj/item/weapon/pickaxe,/turf/simulated/floor,/area/asteroid/base)
+"bSa" = (/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "1-4"},/turf/simulated/floor,/area/asteroid/base)
+"bSb" = (/obj/cabling/power{icon_state = "2-8"},/turf/simulated/floor,/area/asteroid/base)
+"bSc" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/asteroid/base)
+"bSd" = (/obj/item/weapon/tank/oxygen,/obj/item/clothing/suit/fire,/turf/simulated/floor,/area/asteroid/base)
+"bSe" = (/obj/machinery/power/apc{dir = 2; name = "South APC"; pixel_x = 0},/obj/cabling/power,/turf/simulated/floor,/area/asteroid/base)
+"bSf" = (/obj/machinery/computer/teleporter,/turf/simulated/floor,/area/asteroid/base)
+"bSg" = (/obj/machinery/teleport/station,/turf/simulated/floor,/area/asteroid/base)
+"bSh" = (/obj/machinery/teleport/hub,/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/asteroid/base)
+"bSi" = (/obj/machinery/door/airlock/external,/obj/cabling/power{icon_state = "1-2"},/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/turf/simulated/floor/plating,/area/asteroid/base)
+"bSj" = (/turf/simulated/wall,/area/asteroid)
+"bSk" = (/obj/machinery/portable_atmospherics/pump,/turf/simulated/floor,/area/asteroid)
+"bSl" = (/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor,/area/asteroid)
+"bSm" = (/turf/simulated/floor,/area/asteroid)
+"bSn" = (/obj/machinery/door/airlock/external,/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor,/area/asteroid)
+"bSo" = (/obj/machinery/power/apc{dir = 1; name = "North APC"; pixel_x = 0},/obj/cabling/power{icon_state = "0-4"},/obj/machinery/light{dir = 1},/obj/machinery/camera,/turf/simulated/floor/plating,/area/asteroid)
+"bSp" = (/obj/cabling/power{icon_state = "1-8"},/turf/simulated/floor/plating,/area/asteroid)
+"bSq" = (/obj/machinery/computer/lasercon{id = "minelaser"},/obj/machinery/light{dir = 1},/turf/simulated/floor/plating,/area/asteroid)
+"bSr" = (/turf/simulated/asteroid/floor,/area/asteroid)
+"bSs" = (/turf/simulated/floor/plating,/area/asteroid)
+"bSt" = (/obj/machinery/engine/laser{id = "minelaser"; name = "Mining laser"},/turf/simulated/floor/plating,/area/asteroid)
+"bSu" = (/obj/rail,/turf/simulated/asteroid/floor{mapped = 1},/area/asteroid)
+"bSv" = (/obj/rail,/turf/simulated/floor/plating,/area/asteroid)
+"bSw" = (/turf/simulated/asteroid/wall{mapped = 1},/area/asteroid)
+"bSx" = (/obj/machinery/floodlight,/turf/simulated/asteroid/floor{mapped = 1},/area/asteroid)
+"bSy" = (/obj/item/weapon/spacecash,/turf/simulated/asteroid/floor,/area/asteroid)
+"bSz" = (/obj/rail,/turf/simulated/asteroid/floor,/area/asteroid)
+"bSA" = (/turf/simulated/floor/grid,/area/asteroid/abase)
+"bSB" = (/turf/simulated/wall/r_wall,/area/asteroid/abase)
+"bSC" = (/obj/machinery/igniter,/obj/machinery/door/airlock,/turf/simulated/floor/grid,/area/asteroid/abase)
+"bSD" = (/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 700000},/area/asteroid/abase)
+"bSE" = (/obj/machinery/door/airlock,/turf/simulated/floor/grid,/area/asteroid/abase)
+"bSF" = (/obj/item/weapon/anomaly,/turf/simulated/floor/grid,/area/asteroid/abase)
+"bSG" = (/obj/machinery/power/smes,/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 700000},/area/asteroid/abase)
+"bSH" = (/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 700000},/area/asteroid/abase)
+"bSI" = (/obj/machinery/power/apc{dir = 1; name = "North APC"; pixel_x = 0},/obj/cabling/power{icon_state = "0-8"},/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 700000},/area/asteroid/abase)
+"bSJ" = (/obj/machinery/portable_atmospherics/canister/oxygen{release_pressure = 1001.33; valve_open = 1; volume = 10000},/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 700000},/area/asteroid/abase)
+"bSK" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area)
+"bSL" = (/turf/simulated/floor/plating,/area)
+"bSM" = (/obj/machinery/floodlight,/turf/simulated/floor/plating,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -6090,7 +6091,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+bQHaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 "}
 
 (1,1,8) = {"
@@ -6121,93 +6122,93 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQHbQHbQIbQHbQHbQHbQHbQJaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQHbQKbQLbQMbQNbQObQHbQJaaaaaaaaaaaaabeaaaabeaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQHbQPbQQbQHbQHbQRbQHbQJaaaaaaaaabQSbQTbQUbQTagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQJbQVbQWbQXbQYbQZbRabQJaaaaaaaaabQSbRbbRcbRbagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRdbRebRfbRgbQZbQZbQZbQZbQJbRhaaaaaabRibRjbRcbRjagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQJbRkbRlbQZbQZbQZbQZbRmbRhbRnbRnbRobRnbRpbRnbRobRqagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQJbRrbRkbRsbRtbRubQZbRvbRhbRwbRxbRybRzbRAbRBbRCbRDagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQJbRgbRgbQZbRgbRgbQZbREbRhbRFbRGbRHbRAbRAbRAbRIbRDagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQJbRJbRJbRKbRLbRLbQZbRMbRNbRObRPbRQbRAbRAbRAbRRbRDagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQJbQJbQJbQJbQJbQJbQJbQJbRhbRAbRAbRSbRTbRAbRAbRUbRDagFaaaaaaaaabRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRhbRWbRAbRSbRAbRAbRAbRXbRDagFaaaaaabRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRhbRYbRAbRZbSabRAbRAbRAbRhbRVaaaaaabRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRhbSbbScbSdbRSbSebSfbSgbRhbRVbRVaaabRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRhbRhbRhbRhbShbRhbRhbRhbRhbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbSibSjbSkbSlbSibRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSibSjbSkbSlbSibRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbSibSibSmbSibSibRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbSnbSobSpbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbSrbSsbSrbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbSqbStbStbSubSrbSrbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbSqbSwbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbSqbSqbSxbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaabRVaaaaaabRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVaaaaaaaaabRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaabRVbRVbRVaaabRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVaaabRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbRVbStbRVbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbSqbSqbSqbSqbSqbSqbRVbRVbSqbSqbRVbStbRVbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbStbStbStbStbStbStbStbStbStbStbStbStbStbRVbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbStbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSybSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbSqbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSzbSzbSzbSzbSzbSzbSzbSzbSzbSzbSzbSzbSzbSzbSzbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSAbSAbSAbSAbSAbSAbSAbSzbSAbSAbSAbSAbSAbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSAbSAbSAbSAbSAbSAbSAbSBbSAbSAbSAbSAbSAbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSAbSAbSCbSCbSCbSCbSCbSCbSCbSCbSCbSCbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbSAbSAbSCbSAbSAbSAbSAbSDbSAbSAbSAbSAbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbSAbSAbSCbSAbSzbSzbSzbSzbSzbSzbSzbSAbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbSAbSAbSCbSAbSzbSzbSzbSzbSzbSzbSzbSAbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbSAbSAbSCbSAbSzbSzbSzbSzbSzbSzbSzbSAbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbSAbSAbSCbSAbSzbSzbSzbSzbSzbSzbSzbSAbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbSAbSAbSCbSAbSzbSzbSzbSzbSzbSzbSzbSAbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbSAbSAbSCbSAbSzbSzbSzbSzbSzbSzbSzbSAbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbSAbSAbSCbSAbSEbSEbSEbSEbSEbSEbSEbSAbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSAbSAbSCbSAbSAbSAbSAbSAbSAbSAbSAbSAbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSAbSAbSCbSFbSGbSGbSHbSIbSIbSIbSIbSCbSCbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbSvbSvbSvbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaabRVbRVbRVaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQIbQIbQJbQIbQIbQIbQIbQKaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQIbQLbQMbQNbQObQPbQIbQKaaaaaaaaaaaaabeaaaabeaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQIbQQbQRbQIbQIbQSbQIbQKaaaaaaaaabQTbQUbQVbQUagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQKbQWbQXbQYbQZbRabRbbQKaaaaaaaaabQTbRcbRdbRcagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRebRfbRgbRhbRabRabRabRabQKbRiaaaaaabRjbRkbRdbRkagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQKbRlbRmbRabRabRabRabRnbRibRobRobRpbRobRqbRobRpbRragFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQKbRsbRlbRtbRubRvbRabRwbRibRxbRybRzbRAbRBbRCbRDbREagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQKbRhbRhbRabRhbRhbRabRFbRibRGbRHbRIbRBbRBbRBbRJbREagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQKbRKbRKbRLbRMbRMbRabRNbRObRPbRQbRRbRBbRBbRBbRSbREagFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabQKbQKbQKbQKbQKbQKbQKbQKbRibRBbRBbRTbRUbRBbRBbRVbREagFaaaaaaaaabRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRibRXbRBbRTbRBbRBbRBbRYbREagFaaaaaabRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRibRZbRBbSabSbbRBbRBbRBbRibRWaaaaaabRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRibScbSdbSebRTbSfbSgbShbRibRWbRWaaabRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRibRibRibRibSibRibRibRibRibRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbSjbSkbSlbSmbSjbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSjbSkbSlbSmbSjbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbSjbSjbSnbSjbSjbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbSobSpbSqbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbSsbStbSsbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbSrbSubSubSvbSsbSsbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbSrbSxbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbSrbSrbSybRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaabRWaaaaaabRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWaaaaaaaaabRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaabRWbRWbRWaaabRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWaaabRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbRWbSubRWbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbSrbSrbSrbSrbSrbSrbRWbRWbSrbSrbRWbSubRWbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubSubSubSubSubSubSubSubSubSubSubSubSubSubRWbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSubRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSzbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbSrbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbSAbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSBbSBbSBbSBbSBbSBbSBbSAbSBbSBbSBbSBbSBbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSBbSBbSBbSBbSBbSBbSBbSCbSBbSBbSBbSBbSBbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSBbSBbSDbSDbSDbSDbSDbSDbSDbSDbSDbSDbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbSBbSBbSDbSBbSBbSBbSBbSEbSBbSBbSBbSBbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbSBbSBbSDbSBbSAbSAbSAbSAbSAbSAbSAbSBbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbSBbSBbSDbSBbSAbSAbSAbSAbSAbSAbSAbSBbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbSBbSBbSDbSBbSAbSAbSAbSAbSAbSAbSAbSBbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbSBbSBbSDbSBbSAbSAbSAbSAbSAbSAbSAbSBbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbSBbSBbSDbSBbSAbSAbSAbSAbSAbSAbSAbSBbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbSBbSBbSDbSBbSAbSAbSAbSAbSAbSAbSAbSBbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbSBbSBbSDbSBbSFbSFbSFbSFbSFbSFbSFbSBbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSBbSBbSDbSBbSBbSBbSBbSBbSBbSBbSBbSBbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSBbSBbSDbSGbSHbSHbSIbSJbSJbSJbSJbSDbSDbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbSBbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbSwbSwbSwbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabRWbRWbRWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -6226,13 +6227,13 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEaEEaEEaEEaEEaEEbSJaEEaEEaEEaEEaEEaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSKbSKbSKbSKbSKbSKbSKbSKbSKbSKbSKaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSKaEEaEEaEEaEEaEEaEEaEEaEEaEEbSKaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSJaEEbSLbSLbSLbSLbSLbSLbSLaEEbSJaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSKaEEbSLbSKbSKbSKbSKbSKbSLaEEbSKaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSKaEEaEEaEEaEEbSJaEEaEEaEEaEEbSKaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSKbSJbSKbSKbSKbSKbSKbSKbSKbSJbSKaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEaEEaEEaEEaEEaEEbSKaEEaEEaEEaEEaEEaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSLbSLbSLbSLbSLbSLbSLbSLbSLbSLbSLaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSLaEEaEEaEEaEEaEEaEEaEEaEEaEEbSLaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSKaEEbSMbSMbSMbSMbSMbSMbSMaEEbSKaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSLaEEbSMbSLbSLbSLbSLbSLbSMaEEbSLaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSLaEEaEEaEEaEEbSKaEEaEEaEEaEEbSLaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEbSLbSKbSLbSLbSLbSLbSLbSLbSLbSKbSLaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEEaEEaEEaEEaEEaEEaEEaEEaEEaEEaEEaEEaEEaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
