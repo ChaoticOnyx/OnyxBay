@@ -121,7 +121,6 @@ datum/controller/game_controller
 		if(!processing)
 			return 0
 
-		world << "ahahah, processing"
 		// update the clock
 		// one real-life minute is 100 time-units
 		gametime += 100 / 60
