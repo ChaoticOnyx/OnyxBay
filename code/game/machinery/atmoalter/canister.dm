@@ -119,7 +119,12 @@
 				environment.merge(removed)
 			else
 				loc.assume_air(removed)
+		else if(pressure_delta < 0 && (holding || connected_port))
+			// take in air from outside
+			transfer_moles = -pressure_delta*environment.volume/(air_contents.temperature * R_IDEAL_GAS_EQUATION)
+			var/datum/gas_mixture/removed = environment.remove(transfer_moles)
 
+			air_contents.merge(removed)
 	src.updateDialog()
 	src.update_icon()
 	return
