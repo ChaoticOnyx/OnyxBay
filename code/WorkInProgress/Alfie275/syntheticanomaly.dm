@@ -29,6 +29,13 @@
 	UpdateSprite()
 	return 1
 
+
+/obj/item/weapon/anobattery/proc/DebugAddPower(var/name,var/npower)
+	var/datum/anomalyeffect/n
+	var/path = text2path("/datum/anomalyeffect/[name]")
+	n = new path
+	return AddPower(n,npower)
+
 /obj/item/weapon/anobattery/proc/TakePower(var/datum/anomalyeffect/n,var/npower)
 	power["[n.effectname]"] -= npower
 	if(power["[n.effectname]"]<1)
@@ -51,6 +58,8 @@
 	icon = 'anomaly.dmi'
 	icon_state = "anodev"
 	var/cooldown
+	var/timing = 0
+	var/time = 60
 	var/obj/item/weapon/anobattery/b
 
 /obj/item/weapon/anodevice/proc/UpdateSprite()
@@ -79,8 +88,16 @@
 			for(var/v in b.e)
 				var/datum/anomalyeffect/e = b.e["[v]"]
 				dat += "<BR>	[e.fluff] <BR>		power	[e.magnitude*(e.range+1)]/[b.power["[e.effectname]"]]<BR>magnitude [e.magnitude]<A href='?src=\ref[src];mu=[e.effectname]'>+</a> <A href='?src=\ref[src];md=[e.effectname]'>-</a><BR>range [e.range]<A href='?src=\ref[src];ru=[e.effectname]'>+</a> <A href='?src=\ref[src];rd=[e.effectname]'>-</a>"
-			dat+="<BR> Estimated cooldown [round(ccooldown()/4)]"
+			dat+="<BR> Estimated cooldown [round(ccooldown()/4)+1]"
 			dat += "<BR><A href='?src=\ref[src];a=1'>Activate</a>"
+			if(timing)
+				dat += "<BR>Timing [time]"
+				dat += "<BR><A href='?src=\ref[src];ts=0'>Stop timer</a>"
+			else
+				dat += "<BR>Not Timing [time]"
+				dat += "<BR><A href='?src=\ref[src];st=1'>Start timer</a>"
+			dat += "<BR><A href='?src=\ref[src];tu=1'>T+</a>"
+			dat += "<BR><A href='?src=\ref[src];td=1'>T-</a>"
 			dat += "<BR><A href='?src=\ref[src];ejectb=1'>Eject battery</a>"
 
 	user << browse(dat, "window=computer;size=400x500")
@@ -113,14 +130,31 @@
 
 
 /obj/item/weapon/anodevice/process()
+	if(timing)
+		time--
+		for (var/mob/M in viewers(1, src.loc))
+			if (M.client && M.machine == src)
+				src.attack_self(M)
+		if(!time)
+			if(!cooldown)
+				for(var/v in b.e)
+					var/datum/anomalyeffect/e = b.e["[v]"]
+					b.TakePower(e,e.magnitude*(e.range+1))
+					e.Activate()
+				processing_items.Add(src)
+				UpdateSprite()
+				cooldown=round(ccooldown()/4)
+			time = 60
+			timing = 0
 	if(src.cooldown)
 		src.cooldown--
 		if(1>src.cooldown)
 			for(var/mob/m in hearers(get_turf(src)))
 				var/t = pick("chimes","pings","buzzes")
 				m<<"The [src.name] [t]"
-
-				processing_items.Remove(src)
+				if(!timing)
+					processing_items.Remove(src)
+			cooldown = 0
 
 
 
@@ -155,17 +189,35 @@
 			var/datum/anomalyeffect/e = b.e["[effectname]"]
 			if(e.range>0)
 				e.range--
+		if(href_list["st"])
+			processing_items.Add(src)
+			timing = 1
+		if(href_list["ts"])
+			if(!cooldown)
+				processing_items.Remove(src)
+			timing = 0
+		if(href_list["tu"])
+			time += 1
+		if(href_list["td"])
+			if(time)
+				time -= 1
+
 		if (href_list["a"])
 			for(var/v in b.e)
 				var/datum/anomalyeffect/e = b.e["[v]"]
+				b.TakePower(e,e.magnitude*(e.range+1))
 				e.Activate()
+
 			processing_items.Add(src)
 			UpdateSprite()
-			cooldown=round(ccooldown()/4)
+			cooldown=round(ccooldown()/4)+1
 		if (href_list["ejectb"])
 			src.b.loc = get_turf(src)
 			src.b = null
 			UpdateSprite()
+		if (href_list["close"])
+			if(usr.machine == src)
+				usr.machine = null
 
 		src.add_fingerprint(usr)
 	src.updateUsrDialog()

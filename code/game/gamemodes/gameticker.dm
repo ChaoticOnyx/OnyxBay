@@ -36,6 +36,7 @@ var/global/datum/controller/gameticker/ticker
 
 
 /datum/controller/gameticker/proc/setup()
+
 	//Create and announce mode
 	if(master_mode=="secret")
 		src.hide_mode = 1

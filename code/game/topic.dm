@@ -74,7 +74,7 @@ datum/mapobject/baystation12
 			return 1
 		return 2
 
-var/jsonpath = "/var/www/html"
+var/jsonpath = "/home/bay12/public_html"
 var/dmepath = "/home/bay12/git/bs12.dme"
 world/proc/makejson()
 
