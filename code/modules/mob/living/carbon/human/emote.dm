@@ -1,6 +1,6 @@
 /mob/living/carbon/human/emote(var/act)
 
-	if(src.stat == 2)
+	if(src.stat == 2 && act != "deathgasp")
 		return
 
 	var/param = null

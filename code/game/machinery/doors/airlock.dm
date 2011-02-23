@@ -43,13 +43,13 @@
 	var/secondsBackupPowerLost = 0 //The number of seconds until power is restored.
 	var/spawnPowerRestoreRunning = 0
 	var/welded = null
-	var/wires = 1023
+	var/wires = 2047
 	secondsElectrified = 0 //How many seconds remain until the door is no longer electrified. -1 if it is permanently electrified until someone fixes it.
 	var/aiDisabledIdScanner = 0
 	var/aiHacking = 0
 	var/obj/machinery/door/airlock/closeOther = null
 	var/closeOtherId = null
-	var/list/signalers[10]
+	var/list/signalers[11]
 	var/safetylight = 1
 	var/lockdownbyai = 0
 	var/air_locked = 0 //Set if the airlock was locked in an emergency seal.
@@ -184,16 +184,16 @@
 //This generates the randomized airlock wire assignments for the game.
 /proc/RandomAirlockWires()
 	//to make this not randomize the wires, just set index to 1 and increment it in the flag for loop (after doing everything else).
-	var/list/wires = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0)
-	airlockIndexToFlag = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0)
-	airlockIndexToWireColor = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0)
-	airlockWireColorToIndex = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0)
+	var/list/wires = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+	airlockIndexToFlag = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+	airlockIndexToWireColor = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+	airlockWireColorToIndex = list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 	var/flagIndex = 1
-	for (var/flag=1, flag<1024, flag+=flag)
+	for (var/flag=1, flag<2048, flag+=flag)
 		var/valid = 0
 		while (!valid)
 			var/colorIndex = rand(1, 11)
-			if (wires[colorIndex]==0)
+			if (wires[colorIndex] == 0)
 				valid = 1
 				wires[colorIndex] = flag
 				airlockIndexToFlag[flagIndex] = flag
@@ -668,6 +668,12 @@ About the new airlock wires panel:
 		t1 += text("Door is electrified temporarily ([] seconds). <A href='?src=\ref[];aiDisable=5'>Un-electrify it?</a><br>\n", src.secondsElectrified, src)
 	else
 		t1 += text("Door is not electrified. <A href='?src=\ref[];aiEnable=5'>Electrify it for 30 seconds?</a> Or, <A href='?src=\ref[];aiEnable=6'>Electrify it indefinitely until someone cancels the electrification?</a><br>\n", src, src)
+	if(src.isWireCut(AIRLOCK_WIRE_LIGHT))
+		t1 += "Bolt indication light wire is cut.<br>\n"
+	else if(!src.safetylight)
+		t1 += text("Bolt indication light is  disabled <A href='?src=\ref[src];aiEnable=9'>Enable it?</a><br>\n")
+	else
+		t1 += text("Bolt indication light is  enabled <A href='?src=\ref[src];aiDisable=9'>Disable it?</a><br>\n")
 
 	if (src.welded)
 		t1 += text("Door appears to have been welded shut.<br>\n")
@@ -803,12 +809,12 @@ About the new airlock wires panel:
 						usr << text("The airlock is already closed.<br>\n")
 				if (8)
 					if(!src.forcecrush)
-						usr << text("Door extra force not enabled!.<br>\n")
+						usr << text("Door extra force not enabled!<br>\n")
 					else
 						src.forcecrush = 0
 				if (9)
 					if(!src.safetylight)
-						usr << text("Bolt indication light not enabled!.<br>\n")
+						usr << text("Bolt indication light not enabled!<br>\n")
 					else
 						src.safetylight = 0
 		else if (href_list["aiEnable"])
@@ -875,12 +881,12 @@ About the new airlock wires panel:
 						usr << text("The airlock is already opened.<br>\n")
 				if (8)
 					if(src.forcecrush)
-						usr << text("Door extra force already enabled!.<br>\n")
+						usr << text("Door extra force already enabled!<br>\n")
 					else
 						src.forcecrush = 1
-				if (8)
+				if (9)
 					if(src.safetylight)
-						usr << text("Bolt Indication light already enabled!.<br>\n")
+						usr << text("Bolt indication light already enabled!<br>\n")
 					else
 						src.safetylight = 1
 		if(!istype(usr, /mob/living/silicon))
