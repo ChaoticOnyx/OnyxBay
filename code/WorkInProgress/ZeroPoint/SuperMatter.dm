@@ -1,13 +1,8 @@
-#define NITROGEN_RETARDATION_FACTOR 12	//Higher == N2 slows reaction more
+#define NITROGEN_RETARDATION_FACTOR 4	//Higher == N2 slows reaction more
 #define THERMAL_RELEASE_MODIFIER 50		//Higher == less heat released during reaction
-#define PLASMA_RELEASE_MODIFIER 5000	//Higher == less plasma released by reaction
+#define PLASMA_RELEASE_MODIFIER 750		//Higher == less plasma released by reaction
 #define OXYGEN_RELEASE_MODIFIER 1500	//Higher == less oxygen released at high temperature/power
 #define REACTION_POWER_MODIFIER 1.1		//Higher == more overall power
-
-var/global/NITROGEN_LEVEL = 0.1
-world/New()
-	..()
-	NITROGEN_LEVEL = rand(0,5) * 0.01
 
 /obj/machinery/engine/supermatter
 	name = "Supermatter"
@@ -77,30 +72,7 @@ world/New()
 	if (!removed)
 		return 1
 
-
-	var/total = removed.total_moles()
-
-	// NITROGEN_LEVEL should be the best ratio of N2, so first calculate how much our N2
-	// values differ from the intended level
-	var/nitrogen_mod = abs(NITROGEN_LEVEL - (removed.nitrogen / total) ) * NITROGEN_RETARDATION_FACTOR
-	var/oxygen = max(min(removed.oxygen / total - nitrogen_mod, 1), 0)
-	//world << "total_mod:[oxygen]"
-
-	var/power = 0
-	if(oxygen > 0.8)
-		// with a perfect gas mix, make the power less based on heat
-		power = 300 * removed.temperature / T0C + 4000
-		//world << "temperature [removed.temperature]"
-		icon_state = "darkmatter_glow"
-	else
-		// in normal mode, base the produced energy strongly around the heat
-		power = (removed.temperature ** 2 / T0C)
-		icon_state = "darkmatter"
-
-	// the more gas there is, the more power produced
-	power *= env.total_moles() / MOLES_CELLSTANDARD
-
-	//world << "base power: [power]"
+	var/power = max(round((removed.temperature - T0C) / 20), 0) //Total laser power plus an overload factor
 
 	//Get the collective laser power
 	for(var/dir in cardinal)
@@ -108,13 +80,15 @@ world/New()
 		for(var/obj/beam/e_beam/item in T)
 			power += item.power
 
-	//world << "add the lasers: [power]"
+	//Ok, 100% oxygen atmosphere = best reaction
+	//Maxes out at 100% oxygen pressure
+	var/oxygen = max(min((removed.oxygen - (removed.nitrogen * NITROGEN_RETARDATION_FACTOR)) / MOLES_CELLSTANDARD, 1), 0)
 
 	var/device_energy = oxygen * power
 
-	device_energy = round(device_energy * REACTION_POWER_MODIFIER)
+	device_energy *= removed.temperature / T0C
 
-	//world << "multiplied: [device_energy]"
+	device_energy = round(device_energy * REACTION_POWER_MODIFIER)
 
 	//To figure out how much temperature to add each tick, consider that at one atmosphere's worth
 	//of pure oxygen, with all four lasers firing at standard energy and no N2 present, at room temperature
