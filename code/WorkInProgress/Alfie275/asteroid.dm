@@ -27,6 +27,7 @@ proc/setupasteroid()
 	while(times)
 		sleep(-1)
 		for(var/Xa = 1,Xa<=walls.len,Xa++)
+			sleep(-1)
 			var/turf/w = walls[Xa]
 			var/count = 8
 			for(var/d in cardinal8)
@@ -39,6 +40,7 @@ proc/setupasteroid()
 				next[Xa] = 0
 		sleep(-1)
 		for(var/Xa = 1,Xa<=walls.len,Xa++)
+			sleep(-1)
 			if(!next[Xa])
 				var/turf/w = walls[Xa]
 				var/turf/simulated/asteroid/floor/f = new(locate(w.x,w.y, w.z))

@@ -58,7 +58,7 @@
 
 /datum/game_mode/traitor/announce()
 	..()
-	world << "<B>There is a syndicate traitor on the station. Do not let the traitor succeed!!</B>"
+//	world << "<B>There is a syndicate traitor on the station. Do not let the traitor succeed!!</B>"
 
 /datum/game_mode/traitor/pre_setup()
 	var/list/possible_traitors = get_possible_traitors()

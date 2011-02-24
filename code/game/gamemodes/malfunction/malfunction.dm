@@ -12,8 +12,6 @@
 
 /datum/game_mode/malfunction/announce()
 	world << "<B>The current game mode is - AI Malfunction!</B>"
-	world << "<B>The AI on the satellite has malfunctioned and must be destroyed.</B>"
-	world << "The AI satellite is deep in space and can only be accessed with the use of a teleporter! You have 30 minutes to disable it."
 
 /datum/game_mode/malfunction/post_setup()
 	for (var/obj/landmark/A in world)
