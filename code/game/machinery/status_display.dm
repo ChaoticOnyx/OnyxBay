@@ -109,6 +109,8 @@
 				return
 
 		if(mode==4)		// supply shuttle timer
+			icon = 'status_display.dmi'
+			icon_state = "frame"
 			var/disp1
 			var/disp2
 			if(supply_shuttle_moving)
@@ -130,6 +132,8 @@
 
 
 		if(mode==2)
+			icon = 'status_display.dmi'
+			icon_state = "frame"
 			var/line1
 			var/line2
 
