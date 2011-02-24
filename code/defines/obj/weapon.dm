@@ -2,33 +2,7 @@
 	name = "weapon"
 	icon = 'weapons.dmi'
 
-/obj/item/weapon/spacecash
-	name = "Space Cash"
-	desc = "You're rich, bitch!"
-	icon = 'items.dmi'
-	icon_state = "spacecash"
-	opacity = 0
-	density = 0
-	anchored = 0.0
-	force = 1.0
-	throwforce = 1.0
-	throw_speed = 1
-	throw_range = 2
-	w_class = 1.0
 
-/obj/item/weapon/pawnbucks
-	name = "Pawn Bucks"
-	desc = "100% genuine, bonified PAWN BUCKS! Real money not included."
-	icon = 'items.dmi'
-	icon_state = "spacecash"
-	opacity = 0
-	density = 0
-	anchored = 0.0
-	force = 1.0
-	throwforce = 1.0
-	throw_speed = 1
-	throw_range = 2
-	w_class = 1.0
 
 /obj/item/weapon/ammo
 	name = "ammo"
