@@ -355,7 +355,7 @@
 	name = "Hallucinational Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.hallucination += 5
+		mob.hallucination += 2
 
 /datum/disease2/effect/lesser
 
