@@ -30,6 +30,7 @@
 
 
 /obj/item/weapon/money/proc/updatedesc()
+	name = "[currency]"
 	desc = "A pile of [value] [currency]"
 
 /obj/item/weapon/money/New(var/nloc, var/nvalue=10,var/ncurrency  = "Space Cash")
@@ -37,7 +38,7 @@
 		value = nvalue
 	if(!currency)
 		currency = ncurrency
-	split = value/2
+	split = round(value/2,0.01)
 	updatedesc()
 	return ..(nloc)
 
@@ -92,7 +93,7 @@
 		if(href_list["split"])
 			new type(get_turf(src),split,currency)
 			value-=split
-			split=value/2
+			split = round(value/2,0.01)
 			updatedesc()
 
 
