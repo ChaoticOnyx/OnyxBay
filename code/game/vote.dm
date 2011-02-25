@@ -249,7 +249,7 @@
 			if(!ticker.hide_mode)
 				text +="<p>Current winner: <B>[vote.calcwin()]</B><BR>"
 			else
-				text +="<p>Current winner: <B>Pole is secret>/B><BR>"
+				text +="<p>Current winner: <B>Poll results are secret</B><BR>"
 
 			text += footer
 
