@@ -33,6 +33,7 @@ datum/hSB
 	var
 		owner = null
 		admin = 0
+		create_object_nonadmin_html = null
 	proc
 		update()
 			var/hsbpanel = "<center><b>h_Sandbox Panel</b></center><hr>"
@@ -150,13 +151,13 @@ datum/hSB
 							continue
 						selectable += O
 
-					if (!create_sobject_html)
+					if (!create_object_nonadmin_html)
 						var/objectjs
 						objectjs = dd_list2text(selectable, ";")
-						create_object_html = file2text('create_object.html')
-						create_object_html = dd_replacetext(create_object_html, "null /* object types */", "\"[objectjs]\"")
+						create_object_nonadmin_html = file2text('create_object.html')
+						create_object_nonadmin_html = dd_replacetext(create_object_nonadmin_html, "null /* object types */", "\"[objectjs]\"")
 
-					usr << browse(dd_replacetext(create_object_html, "/* ref src */", "\ref[src]"), "window=create_object;size=425x475")
+					usr << browse(dd_replacetext(create_object_nonadmin_html, "/* ref src */", "\ref[src]"), "window=create_object;size=425x475")
 
 		if (href_list["object_list"])
 			var/atom/loc = usr.loc
@@ -220,6 +221,3 @@ datum/hSB
 						message_admins("[key_name_admin(usr)] created [number]ea [english_list(paths)]", 1)
 						break
 			return
-
-
-var/create_sobject_html = null
