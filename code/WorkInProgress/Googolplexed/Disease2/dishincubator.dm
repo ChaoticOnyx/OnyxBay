@@ -143,7 +143,7 @@
 			if(foodsupply)
 				foodsupply -= 1
 				dish.growth += 1
-				if(dish.growth == 100)
+				if(dish.growth == 20)
 					state("The [src.name] pings", "blue")
 			if(radiation)
 				if(radiation > 50 & prob(5))
