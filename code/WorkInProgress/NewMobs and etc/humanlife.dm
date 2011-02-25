@@ -363,8 +363,10 @@
 	if(!(src.mutations & mRemotetalk))
 		src.verbs -= /mob/living/carbon/human/proc/remotesay
 		return
-
-	var/mob/target = input ("Who do you want to project your mind to ?") as mob in world
+	var/list/creatures = list()
+	for(var/mob/living/carbon/h in world)
+		creatures += h
+	var/mob/target = input ("Who do you want to project your mind to ?") as mob in creatures
 
 	var/say = input ("What do you wish to say")
 
@@ -380,13 +382,13 @@
 
 	var/list/mob/creatures = list()
 
-	for(var/mob/living/carbon/human/h in world)
+	for(var/mob/living/carbon/h in world)
 		creatures += h
 	client.perspective = EYE_PERSPECTIVE
 
 
 
-	var/mob/target = input ("Who do you want to project your mind to ?") as mob in world
+	var/mob/target = input ("Who do you want to project your mind to ?") as mob in creatures
 
 	if (target)
 		client.eye = target
