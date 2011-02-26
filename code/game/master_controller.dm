@@ -140,7 +140,7 @@ datum/controller/game_controller
 			lastannounce = start_time
 
 		//world.keepalive()
-		if(cycle % 5 == 0 && !processing_air)
+		if(cycle % 8 == 0 && !processing_air)
 			processing_air = 1
 			spawn
 				sleep(1 * tick_multiplier)

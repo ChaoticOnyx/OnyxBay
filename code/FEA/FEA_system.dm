@@ -352,6 +352,7 @@ datum
 				for(var/datum/air_group/AG in air_groups)
 					AG.process_group()
 					sleep(-1) // anti-lag
+				sleep(1)
 
 			process_singletons()
 				for(var/item in active_singletons)

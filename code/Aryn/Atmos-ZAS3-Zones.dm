@@ -450,7 +450,7 @@ zone
 		direct_connections -= Z
 		connections -= Z
 		del Z
-		sleep(-1)
+		sleep(1)
 
 //obj/debug_connect_obj
 //	icon = 'debug_connect.dmi'
