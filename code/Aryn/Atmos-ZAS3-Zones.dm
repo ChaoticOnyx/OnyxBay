@@ -430,7 +430,6 @@ zone
 			del src
 
 	Merge(zone/Z)
-		set background = 1
 		if(stop_zones) return
 		if(disable_connections) return
 		//world << "Merging..."
@@ -450,7 +449,6 @@ zone
 		direct_connections -= Z
 		connections -= Z
 		del Z
-		sleep(1)
 
 //obj/debug_connect_obj
 //	icon = 'debug_connect.dmi'

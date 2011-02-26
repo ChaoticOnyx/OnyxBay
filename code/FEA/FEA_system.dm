@@ -303,7 +303,6 @@ datum
 				if(current_cycle%10==5) //Check for groups of tiles to resume group processing every 10 cycles
 					for(var/datum/air_group/AG in air_groups)
 						AG.check_regroup()
-						sleep(-1)
 
 				return 1
 
@@ -351,8 +350,6 @@ datum
 			process_groups()
 				for(var/datum/air_group/AG in air_groups)
 					AG.process_group()
-					sleep(-1) // anti-lag
-				sleep(1)
 
 			process_singletons()
 				for(var/item in active_singletons)

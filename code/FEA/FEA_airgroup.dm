@@ -45,6 +45,8 @@ datum
 		var/length_space_border = 0
 
 		suspend_group_processing()
+			var/turf/T = pick(members)
+			debug_listeners << "Suspending group processing at [T.x],[T.y],[T.z]([T.loc.name])"
 			update_tiles_from_group()
 			group_processing = 0
 
@@ -222,7 +224,6 @@ datum
 			if(!group_processing) //Revert to individual processing
 				for(var/turf/simulated/member in members)
 					member.process_cell()
-					sleep(-1)
 			else
 				if(air.temperature > FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 					for(var/turf/simulated/member in members)
