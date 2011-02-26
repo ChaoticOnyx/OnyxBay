@@ -14,12 +14,20 @@
 	var/value
 	var/currency
 	var/split = 5
+	var/round = 0.01
 
 /obj/item/weapon/money/pawnbucks
 	name = "Pawn Bucks"
 	desc = "100% genuine, bonified PAWN BUCKS! Real money not included."
 	value = 10
 	currency = "Pawn Bucks"
+
+/obj/item/weapon/money/tickets
+	name = "Tickets"
+	desc = ""
+	value = 5
+	currency = "Tickets"
+	round = 1
 
 /obj/item/weapon/spacecash
 	New() // quickfix until I get the map
@@ -38,7 +46,7 @@
 		value = nvalue
 	if(!currency)
 		currency = ncurrency
-	split = round(value/2,0.01)
+	split = round(value/2,round)
 	updatedesc()
 	return ..(nloc)
 
@@ -58,11 +66,15 @@
 
 	dat += "<A href='?src=\ref[src];sd=5'>-</a>"
 	dat += "<A href='?src=\ref[src];sd=1'>-</a>"
-	dat += "<A href='?src=\ref[src];sd=0.1'>-</a>"
-	dat += "<A href='?src=\ref[src];sd=0.01'>-</a>"
+	if(round<=0.1)
+		dat += "<A href='?src=\ref[src];sd=0.1'>-</a>"
+		if(round<=0.01)
+			dat += "<A href='?src=\ref[src];sd=0.01'>-</a>"
 	dat += "[split]"
-	dat += "<A href='?src=\ref[src];su=0.01'>+</a>"
-	dat += "<A href='?src=\ref[src];su=0.1'>+</a>"
+	if(round<=0.01)
+		dat += "<A href='?src=\ref[src];su=0.01'>+</a>"
+	if(round<=0.1)
+		dat += "<A href='?src=\ref[src];su=0.1'>+</a>"
 	dat += "<A href='?src=\ref[src];su=1'>+</a>"
 	dat += "<A href='?src=\ref[src];su=5'>+</a>"
 	dat += "<BR><A href='?src=\ref[src];split=1'>split</a>"
@@ -93,7 +105,7 @@
 		if(href_list["split"])
 			new type(get_turf(src),split,currency)
 			value-=split
-			split = round(value/2,0.01)
+			split = round(value/2,round)
 			updatedesc()
 
 

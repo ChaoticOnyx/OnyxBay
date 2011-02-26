@@ -192,6 +192,8 @@ proc/SetupAnomalies()
 
 /datum/anomalyeffect/hurt/Activate()
 	for(var/mob/living/carbon/m in range(src.range,get_turf(src.o)))
+		if(!CanAnom(m))
+			continue
 		for(var/t in m.organs)
 			var/datum/organ/external/affecting = m.organs["[t]"]
 			if(rand(1))

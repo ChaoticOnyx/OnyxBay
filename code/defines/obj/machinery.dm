@@ -571,32 +571,7 @@
 	var/wires = 15
 	var/charge_type = ""
 
-/obj/machinery/vending/coffee
-	name = "Coffee Machine"
-	desc = "A Robust Coffee vending machine."
-	icon_state = "coffee"
-	icon_vend = "coffee-vend"
-	points = 10
-	product_paths = "/obj/item/weapon/reagent_containers/food/drinks/coffee"
-	//product_amounts = "25"
-	product_prices = "1"
-	vend_delay = 34
-	product_hidden = "/obj/item/weapon/reagent_containers/food/drinks/cola"
-	hidden_prices = "1"
-	charge_type = "coffee"
 
-/obj/machinery/vending/snack
-	name = "Snack Machine"
-	desc = "All manner of tasty, but unhealthy snacks"
-	icon_state = "snack"
-	points = 10
-	product_paths = "/obj/item/weapon/reagent_containers/food/snacks/candy;/obj/item/weapon/reagent_containers/food/snacks/chips"
-	//product_amounts = "10;10"
-	product_prices = "1;1"
-	product_slogans = "Try our new nougat bar!;Twice the calories for half the price!"
-	product_hidden = "/obj/item/weapon/reagent_containers/food/snacks/donut"
-	hidden_prices = "1"
-	charge_type = "snack"
 
 /obj/machinery/vending/cart
 	name = "PTech"
@@ -612,19 +587,7 @@
 	hidden_prices = ""
 	charge_type = "cart"
 
-/obj/machinery/vending/cigarette
-	name = "Cigarette Vendor"
-	desc = "If you want to get cancer, might as well do it in style"
-	icon_state = "cigs"
-	points = 10
-	product_paths = "/obj/item/weapon/cigpacket;/obj/item/weapon/zippo/lighter"
-	//product_amounts = "10;10"
-	product_prices = "1;1"
-	product_slogans = "Space cigs taste good like a cigarette should.;I'd rather toolbox than switch.;Smoke!;Don't believe the reports - smoke today!"
-	vend_delay = 34
-	product_hidden = "/obj/item/weapon/zippo"
-	hidden_prices = "2"
-	charge_type = "cigarette"
+
 
 /obj/machinery/vending/medical
 	name = "NanoMed Plus"
