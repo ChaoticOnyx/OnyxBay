@@ -401,7 +401,6 @@
 
 /turf/simulated/asteroid/wall/New()
 	health+= rand(1)
-	processing_turfs.Add(src)
 	..()
 
 /turf/simulated/asteroid/wall/attackby(obj/item/weapon/W, mob/user)
@@ -415,13 +414,9 @@
 		if(src.health<1)
 			src.mine()
 
-/turf/simulated/asteroid/wall/process()
-	var/power
+/turf/simulated/asteroid/wall/lase_act(var/obj/beam/e_beam/b)
+	var/power = b.power
 	//Get the collective laser power
-	for(var/dir in cardinal)
-		var/turf/T = get_step(src, dir)
-		for(var/obj/beam/e_beam/item in T)
-			power += item.power
 	src.health-=power/100
 	if(src.health<1)
 		src.mine()

@@ -27,14 +27,20 @@
 	p.tags+="MOB"
 	p.desc = "Handsome and brave looking."
 	player = p
+	var/datum/taobj/rt = new()
+	rt.name="Bridge"
+	rt.tags+="ROOM"
+	rt.desc = "An old stone bridge."
 	var/datum/taobj/r = new()
 	r.name = "CLEARING"
 	r.tags+="ROOM"
+	r.tags["NORTH"]=rt
 	r.desc = "A wide clearing."
 	player.Move(r)
 	var/datum/taobj/c = new()
 	c.name = "CHEST"
 	c.desc = "A wooden chest"
+	c.tags += "CONTAINER"
 
 
 	var/datum/taobj/s = new()
@@ -51,7 +57,7 @@
 
 /datum/textadv/proc/Do(var/msg as text)
 
-	var/l = lentext(msg)
+	//var/l = lentext(msg)
 	//if(findtext(msg," ",l,l+1)==0)
 	//	msg+=" "
 	var/list/tokens = list()
@@ -74,13 +80,13 @@
 		else
 			return "Unknown command"
 
-/datum/textadv/proc/searchrec(var/datum/taobj/container, var/target,var/visible = 1)
+/datum/textadv/proc/searchrec(var/datum/taobj/container, var/target,var/visible = 1,var/open = 1, var/cont = 1)
 	for(var/v in container.contents)
 		if(v==target)
 			return container.contents[v]
 		else
 			var/datum/taobj/other = container.contents[v]
-			if(other.contents.len && !other.tags.Find("CLOSED"))
+			if(other.contents.len && other.tags.Find("CLOSED") != open && other.tags.Find("CONTAINER") == cont)
 				var/datum/taobj/rec = searchrec(other,target,visible)
 				if(rec)
 					return rec
@@ -114,7 +120,7 @@
 		var/datum/taobj/object = searchrec(room,target)
 		if(object)
 			var/msg = "[object.desc]"
-			if(object.contents.len && !object.tags.Find("CLOSED"))
+			if(object.contents.len && !object.tags.Find("CLOSED") && object.tags.Find("CONTAINER"))
 				for(var/v in object.contents)
 					msg+="<br>In the [object.name] you can see:"
 					var/datum/taobj/o = object.contents[v]

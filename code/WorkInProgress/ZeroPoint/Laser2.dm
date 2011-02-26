@@ -62,24 +62,39 @@
 			src.next = e
 			e.master = src.master
 			e.power = src.power
-			e.phase = src.phase+src.phase_variance
+			e.phase = src.phase
+			src.phase+=src.phase_variance
 			e.freq = src.freq
 			e.phase_variance = src.phase_variance
 			step(e,e.dir)
 			if(src.loc.density == 0)
 				for(var/obj/o in src.loc.contents)
 					if(o.density || o == src.master || ismob(o) )
-						del e
+						o.lase_act(src)
+						del src
 						return
 				if(e)
 					e.updatebeam()
 			else
+				src.loc.lase_act(src)
 				del e
 				return
 	else
 		next.updatebeam()
 
-/obj/beam/e_beam/Bump()
+/atom/proc/lase_act(var/obj/beam/e_beam/b)
+	return
+
+/mob/living/carbon/lase_act(var/obj/beam/e_beam/b)
+	for(var/t in organs)
+		var/datum/organ/external/affecting = organs["[t]"]
+		if (affecting.take_damage(0, b.power/100,0,0))
+			UpdateDamageIcon()
+		else
+			UpdateDamage()
+
+/obj/beam/e_beam/Bump(atom/Obstacle)
+	Obstacle.lase_act(src)
 	del(src)
 	return
 
