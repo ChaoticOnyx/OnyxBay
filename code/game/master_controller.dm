@@ -6,6 +6,8 @@ var/global/gametime_last_updated
 datum/controller/game_controller
 	var/processing = 1
 	var/lastannounce = 0
+	var/cycle = 0
+	var/processing_air = 0
 
 	proc
 		setup()
@@ -119,6 +121,8 @@ datum/controller/game_controller
 
 
 	process()
+		set background = 1
+		cycle += 1
 
 		if(!processing)
 			return 0
@@ -136,9 +140,12 @@ datum/controller/game_controller
 			lastannounce = start_time
 
 		//world.keepalive()
-		sleep(1 * tick_multiplier)
-		ticker_debug = "Airprocess"
-		air_master.process()
+		if(cycle % 5 == 0 && !processing_air)
+			processing_air = 1
+			spawn
+				sleep(1 * tick_multiplier)
+				air_master.process()
+				processing_air = 0
 
 		sleep(1 * tick_multiplier)
 		ticker_debug = "Sun calc"
@@ -191,12 +198,11 @@ datum/controller/game_controller
 		for(var/obj/O in processing_others) // The few exceptions which don't fit in the above lists
 			ticker_debug = "[O] [O.name] processing"
 			O:process()
-
 		sleep(-1)
 
 		ticker.process()
 
-		sleep((world.timeofday+10-start_time) * tick_multiplier)
+		sleep((start_time+10-world.timeofday) * tick_multiplier)
 
 		spawn process()
 
