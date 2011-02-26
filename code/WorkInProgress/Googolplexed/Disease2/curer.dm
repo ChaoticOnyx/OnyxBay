@@ -115,11 +115,11 @@
 		usr.machine = src
 
 		if (href_list["antibody"])
-			curing = 50
+			curing = 10
 			dish.growth -= 50
 			src.icon_state = "curer_processing"
 		if (href_list["virus"])
-			virusing = 50
+			virusing = 10
 			dish.growth -= 100
 			src.icon_state = "curer_processing"
 		else if(href_list["eject"])

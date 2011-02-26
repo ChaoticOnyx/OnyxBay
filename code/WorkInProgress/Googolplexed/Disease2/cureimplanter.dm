@@ -30,7 +30,7 @@
 
 		var/mob/living/carbon/M = target
 
-		if(works == 0 && prob(25))
+		if(works == 0)
 			M.resistances2 += resistance
 			if(M.virus2)
 				M.virus2.cure_added(resistance)

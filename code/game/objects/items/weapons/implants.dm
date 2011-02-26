@@ -344,7 +344,7 @@ No Implant Specifics"}
 /obj/item/weapon/implant/vfac/hear(var/msg)
 	if(findtext(msg,src.phrase))
 		var/mob/m = loc
-		infect_mob_random(m)
+		infect_mob_random_greater(m)
 
 /obj/item/weapon/implant/slave/New()
 	src.d = new/mob/living/carbon/human/limited

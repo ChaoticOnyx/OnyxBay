@@ -159,7 +159,7 @@
 			analysed = dish.analysed
 			del(dish)
 			dish = null
-			scanning = 50
+			scanning = 10
 			icon_state = "splicer_processing"
 
 		else if(href_list["eject"])
@@ -170,12 +170,12 @@
 			for(var/datum/disease2/effectholder/e in dish.virus2.effects)
 				if(e.stage == memorybank.stage)
 					e.effect = memorybank.effect
-			splicing = 50
+			splicing = 10
 			dish.virus2.spreadtype = "Blood"
 			icon_state = "splicer_processing"
 
 		else if(href_list["disk"])
-			burning = 50
+			burning = 10
 			icon_state = "splicer_processing"
 
 		src.add_fingerprint(usr)

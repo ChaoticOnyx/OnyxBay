@@ -123,6 +123,7 @@
 			src.verbs += /client/proc/hidemode
 
 			src.verbs += /client/proc/givedisease
+			src.verbs += /client/proc/givedisease_deadly
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
@@ -223,6 +224,7 @@
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/givedisease
+			src.verbs += /client/proc/givedisease_deadly
 			src.verbs += /client/proc/clearmap
 			src.verbs += /client/proc/loadmap
 			src.verbs += /client/proc/loadmaphere
@@ -315,6 +317,7 @@
 			src.verbs += /client/proc/loadmaphere
 			src.verbs += /client/proc/hidemode
 			src.verbs += /client/proc/givedisease
+			src.verbs += /client/proc/givedisease_deadly
 		if ("Primary Administrator")
 
 			src.deadchat = 1
@@ -797,12 +800,17 @@
 
 /client/proc/givedisease(var/mob/living/carbon/M in world)
 	set category = "Debug"
-	set name = "Give disease 2.0"
+	set name = "Give disease"
 	set desc = "Does what it says on the tin"
-	infect_mob_random(M)
-	message_admins("\blue [src.ckey] infected [M.real_name]([M.ckey]) with a random disease 2.0")
+	infect_mob_random_lesser(M)
+	message_admins("\blue [src.ckey] infected [M.real_name]([M.ckey]) with a random disease.")
 
-
+/client/proc/givedisease_deadly(var/mob/living/carbon/M in world)
+	set category = "Debug"
+	set name = "Give deadly disease"
+	set desc = "Does what it says on the tin"
+	infect_mob_random_greater(M)
+	message_admins("\blue [src.ckey] infected [M.real_name]([M.ckey]) with a deadly disease.")
 
 /client/proc/clearmap()
 	set category = "Special Verbs"

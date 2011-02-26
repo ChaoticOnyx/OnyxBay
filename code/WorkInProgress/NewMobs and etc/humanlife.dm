@@ -455,6 +455,8 @@
 		for(var/datum/organ/external/org in organs2)
 			org.brute_dam -= 2
 			org.burn_dam -= 2
+			org.brute_dam = max(org.brute_dam, 0)
+			org.burn_dam = max(org.burn_dam, 0)
 
 
 	if (disabilities & 2)
