@@ -196,9 +196,31 @@ turf
 				zone.add_co2(giver.carbon_dioxide)
 			if(air)
 				if(parent&&parent.group_processing)
-					if(!parent.air.check_then_merge(giver))
-						parent.suspend_group_processing()
-						air.merge(giver)
+					// always merge with the parent
+					parent.air.merge(giver)
+				else
+					air.merge(giver)
+
+					if(!processing)
+						if(air.check_tile_graphic())
+							update_visuals(air)
+
+				return 1
+
+			else return ..()
+
+		// assume air, and do more individual processing
+		// WARNING: LOTS OF CPU
+		assume_air_individual(datum/gas_mixture/giver)
+			if(!giver) return
+			if(zone) //Update zone values.
+				zone.add_oxygen(giver.oxygen)
+				zone.add_nitrogen(giver.nitrogen)
+				zone.add_co2(giver.carbon_dioxide)
+			if(air)
+				if(parent&&parent.group_processing)
+					parent.suspend_group_processing()
+					air.merge(giver)
 				else
 					air.merge(giver)
 
@@ -261,10 +283,39 @@ turf
 					air.carbon_dioxide = zone.co2()
 
 				if(parent&&parent.group_processing)
-					removed = parent.air.check_then_remove(amount)
+					removed = parent.air.remove(amount)
 					if(!removed)
 						parent.suspend_group_processing()
 						removed = air.remove(amount)
+				else
+					removed = air.remove(amount)
+
+					if(!processing)
+						if(air.check_tile_graphic())
+							update_visuals(air)
+
+				if(removed && zone)
+					zone.add_oxygen(-removed.oxygen)
+					zone.add_nitrogen(-removed.nitrogen)
+					zone.add_co2(-removed.carbon_dioxide)
+
+				return removed
+
+			else
+				return ..()
+
+		remove_air_individual(amount as num)
+			if(air)
+				var/datum/gas_mixture/removed = null
+
+				if(zone)
+					air.oxygen = zone.oxygen()
+					air.nitrogen = zone.nitrogen()
+					air.carbon_dioxide = zone.co2()
+
+				if(parent&&parent.group_processing)
+					parent.suspend_group_processing()
+					removed = air.remove(amount)
 				else
 					removed = air.remove(amount)
 

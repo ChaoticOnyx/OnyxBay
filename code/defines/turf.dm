@@ -223,25 +223,13 @@
 					var/turf/simulated/FB = floorbelow
 					if(parent && parent.group_processing)
 						if(FB.parent && FB.parent.group_processing)
-							if(FB.parent.air.check_gas_mixture(parent.air))
-								parent.air.share(FB.parent.air)
-							else
-								FB.parent.suspend_group_processing()
-								parent.air.share(FB.air)
+							parent.air.share(FB.parent.air)
 
 						else
-							if(parent.air.check_gas_mixture(FB.air))
-								parent.air.share(FB.air)
-							else
-								parent.suspend_group_processing()
-								air.share(FB.air)
+							parent.air.share(FB.air)
 					else
 						if(FB.parent && FB.parent.group_processing)
-							if(FB.parent.air.check_gas_mixture(air))
-								air.share(FB.parent.air)
-							else
-								FB.parent.suspend_group_processing()
-								air.share(FB.air)
+							air.share(FB.parent.air)
 						else
 							air.share(FB.air)
 					//var/datum/gas_mixture/fb_air = FB.return_air(1)

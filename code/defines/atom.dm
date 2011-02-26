@@ -26,6 +26,11 @@
 	proc/remove_air(amount)
 		return null
 
+	// make some additional functions that are more accurate
+	// but take more CPU
+	proc/assume_air_individual(datum/air_group_giver)
+	proc/remove_air_individual(amount)
+
 	proc/return_air()
 		return null
 

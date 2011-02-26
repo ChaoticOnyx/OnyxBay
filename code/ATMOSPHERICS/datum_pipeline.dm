@@ -145,7 +145,8 @@ datum/pipeline
 			else
 				//Comparison failure so dissemble group and copy turf
 
-				target.parent.suspend_group_processing()
+				// TODO: check if we need to suspend group processing
+				// target.parent.suspend_group_processing()
 				target.air.copy_from(turf_copy)
 
 		else
