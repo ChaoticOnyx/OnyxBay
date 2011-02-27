@@ -14,7 +14,7 @@
 		return
 	return
 
-/obj/portal/attack_hand(mob/user as mob)
+/obj/portal/attack_hand(mob/M as mob)
 	spawn(0)
 		src.teleport(M)
 		return
