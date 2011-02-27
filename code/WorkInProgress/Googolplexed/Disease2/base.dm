@@ -78,11 +78,16 @@
 		M.virus2 = new /datum/disease2/disease
 		M.virus2.makerandom(1)
 
+/proc/infect_mob_zombie(var/mob/living/carbon/M)
+	if(!M.virus2)
+		M.virus2 = new /datum/disease2/disease
+		M.virus2.makezombie()
+
 /datum/disease2/disease
 	var/infectionchance = 10
 	var/spreadtype = "Blood" // Can also be "Airborne"
 	var/stage = 1
-	var/stageprob = 2
+	var/stageprob = 10
 	var/dead = 0
 	var/clicks = 0
 
@@ -121,6 +126,29 @@
 		infectionchance = rand(1,10)
 		spreadtype = "Airborne"
 
+	proc/makezombie()
+		var/datum/disease2/effectholder/holder = new /datum/disease2/effectholder
+		holder.stage = 1
+		holder.chance = 10
+		holder.effect = new/datum/disease2/effect/greater/gunck()
+		effects += holder
+
+		holder = new /datum/disease2/effectholder
+		holder.stage = 2
+		holder.chance = 10
+		holder.effect = new/datum/disease2/effect/lesser/cough()
+		effects += holder
+
+		holder = new /datum/disease2/effectholder
+		holder.stage = 3
+		holder.chance = 10
+		holder.effect = new/datum/disease2/effect/zombie()
+		effects += holder
+
+		uniqueID = rand(0,10000)
+		infectionchance = 0
+		spreadtype = "Airborne"
+
 	proc/minormutate()
 		var/datum/disease2/effectholder/holder = pick(effects)
 		holder.minormutate()
@@ -153,11 +181,12 @@
 		if(mob.reagents.has_reagent("spaceacillin") && prob(80))
 			mob.reagents.remove_reagent("spaceacillin",1)
 			return
-		if(prob(stageprob) && prob(25 + (clicks/100)) && stage != 4)
+		if(prob(clicks/(10*stage)) && stage != 4)
 			stage++
 			clicks = 0
 		for(var/datum/disease2/effectholder/e in effects)
 			e.runeffect(mob,stage)
+		clicks++
 
 	proc/cure_added(var/datum/disease2/resistance/res)
 		if(res.resistsdisease(src))
@@ -193,6 +222,15 @@
 	var/stage = 4
 	var/maxm = 1
 	proc/activate(var/mob/living/carbon/mob,var/multiplier)
+
+/datum/disease2/effect/zombie
+	name = "Tombstone Syndrome"
+	stage = 3
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		if(istype(mob,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = mob
+			if(!H.zombie)
+				H.zombify()
 
 /datum/disease2/effect/greater/gibbingtons
 	name = "Gibbingtons Syndrome"

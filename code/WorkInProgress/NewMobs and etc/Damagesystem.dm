@@ -1536,7 +1536,7 @@
 						affecting = organs["[def_zone]"]
 					if (!affecting.destroyed)
 						//Attack with zombie
-						if(!zombie && !zombifying && prob(20))
+						if(!zombie && prob(20))
 							// lower chance if wearing a suit
 							var/pr = 0
 							if(istype(wear_suit, /obj/item/clothing/suit/armor))
@@ -1551,9 +1551,7 @@
 							else
 								for(var/mob/O in viewers(src, null))
 									O.show_message(text("\red <B>[] has bit []!</B>", M, src), 1)
-								zombifying = 1
-								zombietime = rand(600,1200)
-								UpdateZombieIcons()
+								infect_mob_zombie(src)
 						else
 							var/mes = pick(list("clawed","scraped"))
 							for(var/mob/O in viewers(src, null))
