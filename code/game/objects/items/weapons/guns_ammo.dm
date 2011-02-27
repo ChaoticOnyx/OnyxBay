@@ -233,7 +233,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		else
 			if (M.weakened < 60)
 				M.weakened = 60
-		src.force = 30
+		src.force = 10
 		..()
 		if(M.stat != 2)	M.stat = 1
 		for(var/mob/O in viewers(M, null))
