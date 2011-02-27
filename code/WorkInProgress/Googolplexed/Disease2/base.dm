@@ -181,7 +181,7 @@
 		if(mob.reagents.has_reagent("spaceacillin") && prob(80))
 			mob.reagents.remove_reagent("spaceacillin",1)
 			return
-		if(prob(clicks/(10*stage)) && stage != 4)
+		if(prob(clicks/(20*stage)) && stage != 4)
 			stage++
 			clicks = 0
 		for(var/datum/disease2/effectholder/e in effects)
