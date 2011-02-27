@@ -316,13 +316,19 @@
 // lesser syndromes, partly just copypastes
 /datum/disease2/effect/lesser/mind
 	name = "Lazy mind syndrome"
-	stage = 5
+	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.brainloss = 50
+		mob.brainloss = 40
+
+/datum/disease2/effect/lesser/drowsy
+	name = "Bedroom Syndrome"
+	stage = 2
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.drowsyness = 10
 
 /datum/disease2/effect/lesser/deaf
 	name = "Hard of hearing syndrome"
-	stage = 5
+	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.ear_deaf += 20
 
@@ -345,7 +351,7 @@
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*sneeze")
 
-/datum/disease2/effect/lesser/sneeze
+/datum/disease2/effect/lesser/cough
 	name = "Anima Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -356,6 +362,14 @@
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.hallucination += 2
+
+/datum/disease2/effect/lesser/arm
+	name = "Disarming Syndrome"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		var/datum/organ/external/org = mob.organs["r_arm"]
+		org.take_damage(3,0,0,0)
+		mob << "\red You feel a sting in your right arm."
 
 /datum/disease2/effect/lesser
 
