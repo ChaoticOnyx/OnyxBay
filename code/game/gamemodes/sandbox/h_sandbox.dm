@@ -33,6 +33,7 @@ datum/hSB
 	var
 		owner = null
 		admin = 0
+		create_object_nonadmin_html = null
 	proc
 		update()
 			var/hsbpanel = "<center><b>h_Sandbox Panel</b></center><hr>"
@@ -128,6 +129,7 @@ datum/hSB
 					var/obj/item/weapon/storage/firstaid/hsb = new/obj/item/weapon/storage/firstaid/regular
 					hsb.loc = usr.loc
 				if("hsbobj")
+
 					if(!hsboxspawn) return
 
 					var/list/selectable = list()
@@ -149,6 +151,73 @@ datum/hSB
 							continue
 						selectable += O
 
-					var/hsbitem = input(usr, "Choose an object to spawn.", "Sandbox:") in selectable + "Cancel"
-					if(hsbitem != "Cancel")
-						new hsbitem(usr.loc)
+					if (!create_object_nonadmin_html)
+						var/objectjs
+						objectjs = dd_list2text(selectable, ";")
+						create_object_nonadmin_html = file2text('create_object.html')
+						create_object_nonadmin_html = dd_replacetext(create_object_nonadmin_html, "null /* object types */", "\"[objectjs]\"")
+
+					usr << browse(dd_replacetext(create_object_nonadmin_html, "/* ref src */", "\ref[src]"), "window=create_object;size=425x475")
+
+		if (href_list["object_list"])
+			var/atom/loc = usr.loc
+
+			var/dirty_paths
+			if (istext(href_list["object_list"]))
+				dirty_paths = list(href_list["object_list"])
+			else if (istype(href_list["object_list"], /list))
+				dirty_paths = href_list["object_list"]
+
+			var/paths = list()
+			var/removed_paths = list()
+			for (var/dirty_path in dirty_paths)
+				var/path = text2path(dirty_path)
+				if (!path)
+					removed_paths += dirty_path
+				else if (!ispath(path, /obj) && !ispath(path, /turf) && !ispath(path, /mob))
+					removed_paths += dirty_path
+				else if (ispath(path, /obj/item/weapon/gun/energy/pulse_rifle))
+					removed_paths += dirty_path
+				else
+					paths += path
+
+			if (!paths)
+				return
+			else if (length(paths) > 5)
+				alert("Select less object types, jerko.")
+				return
+			else if (length(removed_paths))
+				alert("Removed:\n" + dd_list2text(removed_paths, "\n"))
+
+			var/list/offset = dd_text2list(href_list["offset"],",")
+			var/number = dd_range(1, 100, text2num(href_list["object_count"]))
+			var/X = offset.len > 0 ? text2num(offset[1]) : 0
+			var/Y = offset.len > 1 ? text2num(offset[2]) : 0
+			var/Z = offset.len > 2 ? text2num(offset[3]) : 0
+
+			for (var/i = 1 to number)
+				switch (href_list["offset_type"])
+					if ("absolute")
+						for (var/path in paths)
+							new path(locate(0 + X,0 + Y,0 + Z))
+
+					if ("relative")
+						if (loc)
+							for (var/path in paths)
+								new path(locate(loc.x + X,loc.y + Y,loc.z + Z))
+						else
+							return
+
+			if (number == 1)
+				log_admin("[key_name(usr)] created a [english_list(paths)]")
+				for(var/path in paths)
+					if(ispath(path, /mob))
+						message_admins("[key_name_admin(usr)] created a [english_list(paths)]", 1)
+						break
+			else
+				log_admin("[key_name(usr)] created [number]ea [english_list(paths)]")
+				for(var/path in paths)
+					if(ispath(path, /mob))
+						message_admins("[key_name_admin(usr)] created [number]ea [english_list(paths)]", 1)
+						break
+			return

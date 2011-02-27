@@ -27,7 +27,7 @@
 
 	if(shields_enabled)
 		if(charge)
-			charge -= 40000
+			charge -= 80000
 			charge = max(charge, 0)
 		if(charge == 0 && on)
 			on = 0

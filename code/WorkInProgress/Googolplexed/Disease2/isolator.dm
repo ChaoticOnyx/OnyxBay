@@ -55,7 +55,7 @@
 			var/datum/reagent/gent = R.get_reagent(href_list["isolate"])
 			if(gent:virus2)
 				virus2 = gent:virus2
-				isolating = 100
+				isolating = 10
 				icon_state = "isolator_processing"
 			src.updateUsrDialog()
 			return

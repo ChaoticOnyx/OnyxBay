@@ -1,4 +1,3 @@
-code/game/machinery/washer.dm
 /obj/machinery/washer
 	name = "Laundromat"
 	desc = "Cleans stuff"

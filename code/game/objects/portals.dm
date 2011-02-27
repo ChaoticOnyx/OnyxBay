@@ -1,4 +1,24 @@
+/obj/portal
+	name = "portal"
+	icon = 'stationobjs.dmi'
+	icon_state = "portal"
+	density = 1
+	var/failchance = 4
+	var/obj/item/target = null
+	var/creator = null
+	anchored = 1.0
 
+/obj/portal/New()
+	spawn(300)
+		del(src)
+		return
+	return
+
+/obj/portal/attack_hand(mob/M as mob)
+	spawn(0)
+		src.teleport(M)
+		return
+	return
 
 /obj/portal/Bumped(mob/M as mob|obj)
 	spawn(0)
@@ -9,12 +29,6 @@
 /obj/portal/HasEntered(AM as mob|obj)
 	spawn(0)
 		src.teleport(AM)
-		return
-	return
-
-/obj/portal/New()
-	spawn(300)
-		del(src)
 		return
 	return
 

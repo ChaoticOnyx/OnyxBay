@@ -1,7 +1,5 @@
 /datum/vote/New()
-
 	nextvotetime = world.timeofday // + 10*config.vote_delay
-
 
 /datum/vote/proc/canvote()//marker1
 	var/excess = world.timeofday - vote.nextvotetime
@@ -68,10 +66,12 @@
 
 	if(mode == 1)
 		if(!ticker)
-			if(!going)
+			if(delay_start == 1)
 				world << "<B>The game will start soon.</B>"
-				going = 1
+				delay_start = 0
+
 		var/wintext = capitalize(winner)
+
 		if(winner=="default")
 			if(!ticker.hide_mode)
 				world << "Result is \red No change."
@@ -249,7 +249,7 @@
 			if(!ticker.hide_mode)
 				text +="<p>Current winner: <B>[vote.calcwin()]</B><BR>"
 			else
-				text +="<p>Current winner: <B>Pole is secret>/B><BR>"
+				text +="<p>Current winner: <B>Poll results are secret</B><BR>"
 
 			text += footer
 
@@ -286,9 +286,10 @@
 
 
 	else		//no vote in progress
-		if(shuttlecoming == 1)
+
+		/*if(shuttlecoming == 1)
 			usr << "\blue Cannot start Vote - Shuttle has been called."
-			return
+			return*/
 
 		if(!config.allow_vote_restart && !config.allow_vote_mode)
 			text += "<P>Player voting is disabled.</BODY></HTML>"
@@ -308,15 +309,15 @@
 
 		else			// voting can begin
 			if(config.allow_vote_restart)
-				text += "<A href='?src=\ref[vote];voter=\ref[src];vmode=1'>Begin restart vote.</A><BR>"
+				text += "<A href='?src=\ref[vote];voter=\ref[src];vmode=0'>Begin restart vote.</A><BR>"
 			if(config.allow_vote_mode)
-				text += "<A href='?src=\ref[vote];voter=\ref[src];vmode=2'>Begin change mode vote.</A><BR>"
+				text += "<A href='?src=\ref[vote];voter=\ref[src];vmode=1'>Begin change mode vote.</A><BR>"
 			if(src.client.holder)			//Strumpetplaya Add - Custom Votes for Admins
-				text += "<A href='?src=\ref[vote];voter=\ref[src];vmode=3'>Begin custom vote.</A><BR>"
+				text += "<A href='?src=\ref[vote];voter=\ref[src];vmode=2'>Begin custom vote.</A><BR>"
 			text += footer
 			usr << browse(text, "window=vote")
 
-	spawn(20)
+	spawn(20 * tick_multiplier)
 		if(usr.client && usr.client.showvote && !vote.enteringchoices)
 			usr.vote()
 		else
@@ -330,22 +331,17 @@
 
 	var/mob/M = locate(href_list["voter"])			// mob of player that clicked link
 
-	if(href_list["vclose"])
-
+	if(href_list["vclose"])							// close the voting window
 		if(M)
 			M << browse(null, "window=vote")
 			M.client.showvote = 0
 		return
 
-	if(href_list["vmode"])
+	if(href_list["vmode"])							// begin a new vote
 		if(vote.voting)
 			return
 
-		if(!vote.canvote() )	// double check even though this shouldn't happen
-			return
-
-		vote.mode = text2num(href_list["vmode"])-1 	// hack to yield 0=restart, 1=changemode
-
+		vote.mode = text2num(href_list["vmode"])
 
 		if(vote.mode == 2)
 			vote.enteringchoices = 1
@@ -389,26 +385,11 @@
 			return
 
 
-
-
-
-//			else if (href_list["editnote"])
-//			if (src.mode == 5)
-//				var/n = input(usr, "Please enter message", src.name, src.note) as message
-//				if (!in_range(src, usr) && src.loc != usr)
-//					return
-//				n = copytext(adminscrub(n), 1, MAX_MESSAGE_LEN)
-//				if (src.mode == 5)
-//					src.note = n
-
-
-
-//			vote.voting = 1
-
 		if(!ticker && vote.mode == 1)
-			if(going)
+			if(delay_start == 0)
 				world << "<B>The game start has been delayed.</B>"
-				going = 0
+				delay_start = 1
+
 		vote.voting = 1						// now voting
 		vote.votetime = world.timeofday + config.vote_period*10	// when the vote will end
 

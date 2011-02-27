@@ -418,7 +418,7 @@
 						W.layer = initial(W.layer)
 				//teleport person to cell
 				M.paralysis += 5
-				sleep(5) //so they black out before warping
+				sleep(5 * tick_multiplier) //so they black out before warping
 				M.loc = pick(prisonwarp)
 				if(istype(M, /mob/living/carbon/human))
 					var/mob/living/carbon/human/prisoner = M
@@ -453,7 +453,7 @@
 						W.layer = initial(W.layer)
 				//teleport person to cell
 				M.paralysis += 5
-				sleep(5)
+				sleep(5 * tick_multiplier)
 	//so they black out before warping
 				M.loc = pick(mazewarp)
 				spawn(50)
@@ -1011,7 +1011,7 @@
 									for(var/obj/W in orange(5,C.mob))
 										if(prob(25) && !W.anchored)
 											step_rand(W)
-						sleep(rand(100,1000))
+						sleep(rand(100,1000) * tick_multiplier)
 					for(var/client/C)
 						if(C.mob.stat != 2)
 							C.mob.show_message(text("\blue The chilling wind suddenly stops..."), 1)
@@ -1498,8 +1498,8 @@
 			vote.mode = 1
 			message = "A vote to change the game mode"
 
-			if(!ticker && going)
-				going = 0
+			if(!ticker && delay_start == 0)
+				delay_start = 1
 				world << "<B>The game start has been delayed.</B>"
 
 		if("Custom Vote")
@@ -1567,7 +1567,7 @@
 /obj/admins/proc/voteres()
 	set category = "Special Verbs"
 	set name = "Toggle Voting"
-	set desc="Toggles Votes"
+	set desc = "Toggles Votes"
 	var/confirm = alert("What vote would you like to toggle?", "Vote", "Restart [config.allow_vote_restart ? "Off" : "On"]", "Change Game Mode [config.allow_vote_mode ? "Off" : "On"]", "Cancel")
 	if(confirm == "Cancel")
 		return
@@ -1598,7 +1598,7 @@
 		log_admin("[key_name(usr)] initiated a reboot.")
 		//if(makejson)
 		//	send2irc(world.url,"New round in 25 seconds!")
-		sleep(50)
+		sleep(50 * tick_multiplier)
 		world.Reboot()
 
 /obj/admins/proc/announce()
@@ -1692,20 +1692,6 @@
 	aliens_allowed = !aliens_allowed
 	log_admin("[key_name(usr)] toggled Aliens to [aliens_allowed].")
 	message_admins("[key_name_admin(usr)] toggled Aliens [aliens_allowed ? "on" : "off"].", 1)
-
-/obj/admins/proc/delay()
-	set category = "Special Verbs"
-	set desc="Delay the game start"
-	set name="Delay"
-	if (ticker)
-		return alert("Too late... The game has already started!", null, null, null, null, null)
-	going = !( going )
-	if (!( going ))
-		world << "<b>The game start has been delayed.</b>"
-		log_admin("[key_name(usr)] delayed the game.")
-	else
-		world << "<b>The game will start soon.</b>"
-		log_admin("[key_name(usr)] removed the delay.")
 
 /obj/admins/proc/adjump()
 	set category = "Special Verbs"

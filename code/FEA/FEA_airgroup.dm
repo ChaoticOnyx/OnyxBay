@@ -1,3 +1,10 @@
+var/list/debug_listeners = list()
+mob/verb/listen_debug()
+	debug_listeners += src
+mob/verb/unlisten_debug()
+	if(src in debug_listeners)
+		debug_listeners -= src
+
 datum
 	air_group
 		var/tmp/group_processing = 1 //Processing all tiles as one large tile if 1
@@ -38,6 +45,8 @@ datum
 		var/length_space_border = 0
 
 		suspend_group_processing()
+			var/turf/T = pick(members)
+			debug_listeners << "Suspending group processing at [T.x],[T.y],[T.z]([T.loc.name])"
 			update_tiles_from_group()
 			group_processing = 0
 
@@ -66,8 +75,6 @@ datum
 
 			var/turf/simulated/sample = pick(members)
 			for(var/member in members)
-				if(member:active_hotspot)
-					return 0
 				if(member:air.compare(sample.air)) continue
 				else
 					return 0
@@ -79,7 +86,10 @@ datum
 
 		turf/process_group()
 			current_cycle = air_master.current_cycle
-			if(group_processing) //See if processing this group as a group
+
+			// we also don't need the group processing because aryn's zones already exchange
+			// air in masses
+			/*if(group_processing) //See if processing this group as a group
 				var/turf/simulated/list/border_individual = list()
 				var/datum/air_group/list/border_group = list()
 
@@ -116,6 +126,7 @@ datum
 							else
 								border_individual += enemy_tile
 								self_tile_borders += border_tile
+
 
 				var/abort_group = 0
 
@@ -207,6 +218,7 @@ datum
 					if(air.check_tile_graphic())
 						for(var/turf/simulated/member in members)
 							member.update_visuals(air)
+				*/
 
 
 			if(!group_processing) //Revert to individual processing
@@ -221,7 +233,7 @@ datum
 				air.react()
 
 		object/process_group()
-			current_cycle = air_master.current_cycle
+			/*current_cycle = air_master.current_cycle
 
 			if(group_processing) //See if processing this group as a group
 
@@ -297,4 +309,4 @@ datum
 								break
 
 				if(abort_group)
-					suspend_group_processing()
+					suspend_group_processing()*/
