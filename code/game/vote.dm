@@ -286,6 +286,7 @@
 
 
 	else		//no vote in progress
+
 		/*if(shuttlecoming == 1)
 			usr << "\blue Cannot start Vote - Shuttle has been called."
 			return*/

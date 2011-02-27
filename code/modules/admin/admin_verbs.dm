@@ -88,7 +88,6 @@
 			src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
 			src.verbs += /obj/admins/proc/toggleAI				//Toggle the AI
 			src.verbs += /obj/admins/proc/toggleaban			//abandon mob
-			src.verbs += /obj/admins/proc/delay					//game start delay
 			src.verbs += /client/proc/deadchat					//toggles deadchat
 			src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 			src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
@@ -196,7 +195,6 @@
 			src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
 			src.verbs += /obj/admins/proc/toggleAI				//Toggle the AI
 			src.verbs += /obj/admins/proc/toggleaban			//abandon mob
-			src.verbs += /obj/admins/proc/delay					//game start delay
 			src.verbs += /client/proc/deadchat					//toggles deadchat
 			src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 			src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
@@ -289,7 +287,6 @@
 			src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
 			src.verbs += /obj/admins/proc/toggleAI				//Toggle the AI
 			src.verbs += /obj/admins/proc/toggleaban			//abandon mob
-			src.verbs += /obj/admins/proc/delay					//game start delay
 			src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 			src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
 			src.verbs += /obj/admins/proc/adjump				//toggle admin jumping
@@ -376,7 +373,6 @@
 			src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
 			src.verbs += /obj/admins/proc/toggleAI				//Toggle the AI
 
-			src.verbs += /obj/admins/proc/delay					//game start delay
 			src.verbs += /client/proc/deadchat					//toggles deadchat
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 //				src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
@@ -425,7 +421,6 @@
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/createofficial
-			src.verbs += /obj/admins/proc/delay					//game start delay
 			src.verbs += /mob/living/proc/CheckHandcuff
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 //				src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
@@ -461,7 +456,6 @@
 			src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
 			src.verbs += /obj/admins/proc/toggleAI				//Toggle the AI
 			src.verbs += /mob/living/proc/CheckHandcuff
-			src.verbs += /obj/admins/proc/delay					//game start delay
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 //				src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
 //				src.verbs += /obj/admins/proc/adjump				//toggle admin jumping
@@ -490,7 +484,6 @@
 //				src.verbs += /obj/admins/proc/toggleenter			//Toggle enterting
 			src.verbs += /obj/admins/proc/toggleAI				//Toggle the AI
 //				src.verbs += /obj/admins/proc/toggleaban			//abandon mob
-			src.verbs += /obj/admins/proc/delay					//game start delay
 //				src.verbs += /obj/admins/proc/adrev					//toggle admin revives
 //				src.verbs += /obj/admins/proc/adspawn				//toggle admin item spawning
 //				src.verbs += /obj/admins/proc/adjump				//toggle admin jumping
@@ -575,7 +568,6 @@
 	src.verbs -= /obj/admins/proc/toggleenter			//Toggle enterting
 	src.verbs -= /obj/admins/proc/toggleAI				//Toggle the AI
 	src.verbs -= /obj/admins/proc/toggleaban			//abandon mob
-	src.verbs -= /obj/admins/proc/delay					//game start delay
 	src.verbs -= /obj/admins/proc/adrev					//toggle admin revives
 	src.verbs -= /obj/admins/proc/adspawn				//toggle admin item spawning
 	src.verbs -= /obj/admins/proc/adjump				//toggle admin jumping
