@@ -38,7 +38,7 @@
 	name_action = pick("Defeat ", "Annihilate ", "Save ", "Strike ", "Stop ", "Destroy ", "Robust ", "Romance ")
 
 	name_part1 = pick("the Automatic ", "Farmer ", "Lord ", "Professor ", "the Evil ", "the Dread King ", "the Space ", "Lord ")
-	name_part2 = pick("Melonoid", "Murdertron", "Sorcerer", "Ruin", "Jeff", "Ectoplasm", "Crushulon", "Barkeep")
+	name_part2 = pick("Melonoid", "Murdertron", "Sorcerer", "Ruin", "Jeff", "Ectoplasm", "Crushulon")
 
 	src.enemy_name = dd_replacetext((name_part1 + name_part2), "the ", "")
 	src.name = (name_action + name_part1 + name_part2)
@@ -133,13 +133,26 @@
 		src.gameover = 1
 		src.temp = "[src.enemy_name] has fallen! Rejoice!"
 		var/obj/item/prize
-		var/prizeselect = pick(1)
+		var/prizeselect = pick(1,2,4)
 		switch(prizeselect)
 			if(1)
-				prize = new/obj/item/weapon/money/tickets(src.loc,rand(5)*2+5,"Tickets")
-				prize:currency = "Tickets"
-				prize:updatedesc()
-
+				prize = new/obj/item/weapon/money/(src.loc,5,"Space Tickets")
+				prize:currency = "Space Tickets"
+				prize.desc = "It's almost like actual currency!"
+			if(2)
+				prize = new /obj/item/device/radio/beacon(src.loc)
+				prize.name = "electronic blink toy game"
+				prize.desc = "Blink.  Blink.  Blink."
+//			if(3)
+//				prize = new /obj/item/weapon/zippo(src.loc)
+//				prize.name = "Burno Lighter"
+//				prize.desc = "Almost like a decent lighter!"
+			if(4)
+				prize = new /obj/item/weapon/c_tube(src.loc)
+				prize.name = "toy sword"
+				prize.icon = 'weapons.dmi'
+				prize.icon_state = "sword1"
+				prize.desc = "A sword made of cheap plastic."
 
 	else if ((src.enemy_mp <= 5) && (prob(70)))
 		var/stealamt = rand(2,3)
