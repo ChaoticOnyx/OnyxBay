@@ -340,6 +340,7 @@
 				if(weakened <= 5)	weakened = 5
 		return
 	else if (flag == PROJECTILE_TASER)
+		if(zombie) return
 		if (istype(wear_suit, /obj/item/clothing/suit/armor))
 			if (prob(5))
 				show_message("\red Your armor absorbs the hit!", 4)
@@ -1536,11 +1537,11 @@
 						affecting = organs["[def_zone]"]
 					if (!affecting.destroyed)
 						//Attack with zombie
-						if(!zombie && prob(20))
+						if(!zombie && !virus2)
 							// lower chance if wearing a suit
 							var/pr = 0
 							if(istype(wear_suit, /obj/item/clothing/suit/armor))
-								pr = 60
+								pr = 70
 							else if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
 								pr = 70
 							else if(istype(wear_suit, /obj/item/clothing/suit))

@@ -136,16 +136,22 @@
 		holder = new /datum/disease2/effectholder
 		holder.stage = 2
 		holder.chance = 10
-		holder.effect = new/datum/disease2/effect/lesser/cough()
+		holder.effect = new/datum/disease2/effect/lesser/hungry()
 		effects += holder
 
 		holder = new /datum/disease2/effectholder
 		holder.stage = 3
 		holder.chance = 10
+		holder.effect = new/datum/disease2/effect/lesser/groan()
+		effects += holder
+
+		holder = new /datum/disease2/effectholder
+		holder.stage = 4
+		holder.chance = 10
 		holder.effect = new/datum/disease2/effect/zombie()
 		effects += holder
 
-		uniqueID = rand(0,10000)
+		uniqueID = 1220 // all zombie diseases have the same ID
 		infectionchance = 0
 		spreadtype = "Airborne"
 
@@ -225,12 +231,13 @@
 
 /datum/disease2/effect/zombie
 	name = "Tombstone Syndrome"
-	stage = 3
+	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		if(istype(mob,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
 			if(!H.zombie)
 				H.zombify()
+				del H.virus2
 
 /datum/disease2/effect/greater/gibbingtons
 	name = "Gibbingtons Syndrome"
@@ -408,6 +415,18 @@
 		var/datum/organ/external/org = mob.organs["r_arm"]
 		org.take_damage(3,0,0,0)
 		mob << "\red You feel a sting in your right arm."
+
+/datum/disease2/effect/lesser/hungry
+	name = "Appetiser Effect"
+	stage = 2
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob << "\red You feel hungry."
+
+/datum/disease2/effect/lesser/groan
+	name = "Appetiser Effect"
+	stage = 3
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.say("*groan")
 
 /datum/disease2/effect/lesser
 
