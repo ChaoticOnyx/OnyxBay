@@ -45,7 +45,7 @@
 			src.verbs += /client/proc/cmd_debug_del_all
 			src.verbs += /client/proc/play_sound
 			src.verbs += /client/proc/modifytemperature
-			src.verbs += /client/proc/cmd_admin_gib
+//			src.verbs += /client/proc/cmd_admin_gib
 			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/cmd_admin_gib_self
 //				src.verbs += /client/proc/grillify
@@ -152,7 +152,7 @@
 			src.verbs += /client/proc/cmd_debug_del_all
 			src.verbs += /client/proc/play_sound
 			src.verbs += /client/proc/modifytemperature
-			src.verbs += /client/proc/cmd_admin_gib
+//			src.verbs += /client/proc/cmd_admin_gib
 			src.verbs += /client/proc/cmd_admin_gib_self
 //			src.verbs += /proc/toggleai
 			src.verbs += /proc/togglebuildmode
@@ -248,7 +248,7 @@
 			src.verbs += /client/proc/dsay
 			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/play_sound
-			src.verbs += /client/proc/cmd_admin_gib
+//			src.verbs += /client/proc/cmd_admin_gib
 			src.verbs += /client/proc/cmd_admin_gib_self
 			src.verbs += /client/proc/jumptomob
 			src.verbs += /client/proc/modifytemperature
@@ -533,7 +533,7 @@
 	src.verbs -= /client/proc/cmd_admin_say
 	src.verbs -= /client/proc/dsay
 	src.verbs -= /client/proc/play_sound
-	src.verbs -= /client/proc/cmd_admin_gib
+//	src.verbs -= /client/proc/cmd_admin_gib
 	src.verbs -= /client/proc/cmd_admin_gib_self
 //				src.verbs -= /client/proc/modifytemperature
 	src.verbs -= /client/proc/Jump

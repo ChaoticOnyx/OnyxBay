@@ -307,7 +307,7 @@
 	for(var/t in occupations)
 		src << "[t]<br>"
 
-/client/proc/cmd_admin_gib(mob/M as mob in world)
+/*/client/proc/cmd_admin_gib(mob/M as mob in world)
 	set category = "Special Verbs"
 	set name = "Zot"
 
@@ -328,7 +328,7 @@
 		src << "Invalid mob"
 		return
 
-	M.gib()
+	M.gib()*/
 
 /client/proc/cmd_admin_gib_self()
 	set name = "Zotself"
@@ -336,7 +336,9 @@
 	if (istype(src.mob, /mob/dead/observer)) // so they don't spam gibs everywhere
 		return
 	else
-		src.mob.gib()
+		var/answer = input("Are you sure, sir, you want to gib yourself? Think about it sir. Think long and hard about it.", "Think, sir", "No") in list("Yes","No")
+		if(answer == "Yes")
+			src.mob.gib()
 /*
 /client/proc/cmd_manual_ban()
 	set name = "Manual Ban"
