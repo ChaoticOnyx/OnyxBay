@@ -1533,7 +1533,7 @@
 	spawn(config.vote_period * 10 * tick_multiplier)
 		vote.endvote()
 
-	world << "\red<B>*** [message] has been initiated by Admin [usr.key].</B>"
+	world << "\red<B>*** [message] has been initiated by Admin [usr.client.stealth ? pick("DATA EXPUNGED") : usr.key].</B>"
 	world << "\red     You have [vote.timetext(config.vote_period)] to vote."
 
 	log_admin("[message] forced by admin [key_name(usr)]")
