@@ -187,7 +187,7 @@
 
 
 		Enter(var/atom/movable/AM)
-			if (1) //TODO make this check if gravity is active (future use) - Sukasa
+			if (..()) //TODO make this check if gravity is active (future use) - Sukasa
 				spawn(1)
 					if(AM)
 						AM.Move(locate(x, y, z + 1))

@@ -176,7 +176,8 @@
 		return usr:throw_item(src)
 
 	var/obj/item/W = null
-
+	if(ismob(src) && istype(usr,/mob/living/silicon/ai))
+		usr:ai_actual_track(src)
 	if(istype(usr, /mob/living/silicon/robot))
 		var/count
 		var/list/objects = list()

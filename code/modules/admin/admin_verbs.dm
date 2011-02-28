@@ -895,7 +895,8 @@
 /client/proc/zombify(var/mob/living/carbon/human/p in world)
 	set category = "Debug"
 	set name = "Zombify"
-	p.zombify()
+	infect_mob_zombie(p)
+	message_admins("\blue [src.ckey] infected [p.real_name]([p.ckey]) with a zombie disease.")
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"

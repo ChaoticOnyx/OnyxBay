@@ -48,7 +48,14 @@
 	density = 1
 	openicon = "crateopen"
 	closedicon = "crate"
-
+/obj/crate/engineeringsuits
+	desc = "A crate for the storage of engineering space suits."
+	name = "Engineering crate"
+	icon = 'storage.dmi'
+	icon_state = "crate"
+	density = 1
+	openicon = "crateopen"
+	closedicon = "crate"
 
 /obj/crate/freezer
 	desc = "A freezer."
@@ -156,7 +163,12 @@
 	new /obj/item/weapon/wrench(src)
 	new /obj/item/clothing/head/helmet/welding(src)
 	new /obj/item/clothing/head/helmet/welding(src)
-
+/obj/crate/engineeringsuits/New()
+	..()
+	new /obj/item/clothing/head/helmet/space/spaceengi(src)
+	new /obj/item/clothing/suit/space/spaceengi(src)
+	new /obj/item/clothing/head/helmet/space/spaceengi(src)
+	new /obj/item/clothing/suit/space/spaceengi(src)
 /obj/crate/rcd/New()
 	..()
 	new /obj/item/weapon/rcd_ammo(src)
