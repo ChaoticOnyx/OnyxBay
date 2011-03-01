@@ -291,19 +291,26 @@ datum
 */
 			process()
 				current_cycle++
+				world << "start"
 				if(groups_to_rebuild.len > 0) process_rebuild_select_groups()
 				if(tiles_to_update.len > 0) process_update_tiles()
 
+				world << "groups"
 				process_groups()
+				world << "singletons"
 				process_singletons()
 
+				world << "super conductivity"
 				process_super_conductivity()
+				world << "delta"
 				process_high_pressure_delta()
 
+				world << "airgrouups"
 				if(current_cycle%10==5) //Check for groups of tiles to resume group processing every 10 cycles
 					for(var/datum/air_group/AG in air_groups)
 						AG.check_regroup()
 
+				world << "done"
 				return 1
 
 			process_update_tiles()
