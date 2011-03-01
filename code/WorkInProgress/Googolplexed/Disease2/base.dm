@@ -406,7 +406,7 @@
 	name = "Hallucinational Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.hallucination += 2
+		mob.hallucination = 25
 
 /datum/disease2/effect/lesser/arm
 	name = "Disarming Syndrome"

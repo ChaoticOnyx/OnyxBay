@@ -146,6 +146,9 @@
 	vessel.my_atom = src
 	vessel.add_reagent("blood",560)
 
+	// random infection :D
+	if(prob(2)) infect_mob_random_lesser(src)
+
 	update_clothing()
 
 	spawn(1) fixblood()
