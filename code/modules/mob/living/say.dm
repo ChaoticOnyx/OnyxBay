@@ -1,4 +1,6 @@
 /mob/living/say(var/message)
+	if(istype(src,/mob/living/carbon/human) && src:zombie)
+		message = "*howl"
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 
 	// sdisabilities & 2 is the mute disability
