@@ -313,6 +313,7 @@
 			<A href='?src=\ref[src];c_mode2=confliction'>Confliction (TESTING)</A><br>
 			<A href='?src=\ref[src];c_mode2=ctf'>Capture The Flag (Beta)</A><br><br>
 			<A href='?src=\ref[src];c_mode2=derelict'>Derelict (Beta)</A><br><br>
+			<A href='?src=\ref[src];c_mode2=zombie'>Zombie (Beta)</A><br><br>
 			<!-- <A href='?src=\ref[src];c_mode2=among'>Traitor among us (Beta)</A><br><br> -->
 			Now: [master_mode]\n"})
 			usr << browse(dat, "window=c_mode")
