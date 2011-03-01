@@ -492,7 +492,7 @@
 /obj/item/weapon/light/tube
 	name = "light tube"
 	desc = "A replacement light tube."
-	w_class = 3.0
+	w_class = 2.0
 	icon_state = "ltube"
 	base_state = "ltube"
 	item_state = "c_tube"
