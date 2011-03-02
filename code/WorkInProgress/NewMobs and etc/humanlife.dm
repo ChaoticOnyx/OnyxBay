@@ -185,7 +185,7 @@
 	if(health < -100 || brain_op_stage == 4.0)
 		if(!zombie|| (toxloss +fireloss) > 100)
 			death()
-		else if(zombie)
+		else if(zombie && health < -200)
 			// dead zombies will be paralyzed
 			paralysis = max(paralysis, 5)
 

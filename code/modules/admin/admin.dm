@@ -357,6 +357,8 @@
 					master_mode = "ctf"
 				if("derelict")
 					master_mode = "derelict"
+				if("zombie")
+					master_mode = "zombie"
 				/*if("among")
 					master_mode = "traitoramongus"*/
 				else
