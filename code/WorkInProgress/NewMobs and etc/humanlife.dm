@@ -177,11 +177,6 @@
 	if(resting)
 		weakened = max(weakened, 5)
 
-	// zombies can't be stunned
-	if(zombie)
-		paralysis = 0
-		weakened = 0
-
 	if(health < -100 || brain_op_stage == 4.0)
 		if(!zombie|| (toxloss +fireloss) > 100)
 			death()
