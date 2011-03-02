@@ -572,6 +572,10 @@
 	anchored = 1.0
 	pressure_resistance = 3*ONE_ATMOSPHERE
 
+/obj/stool/barstool
+	name = "barstool"
+	icon_state = "barstool"
+
 /obj/stool/bed
 	name = "bed"
 	icon_state = "bed"
@@ -588,6 +592,16 @@
 	var/on = 0.0
 	var/obj/item/assembly/shock_kit/part1 = null
 	var/last_time = 1.0
+
+/obj/stool/chair/comfy
+	name = "comfy chair"
+	desc = "It looks comfy."
+
+/obj/stool/chair/comfy/teal
+	icon_state = "comfychair_teal"
+
+/obj/stool/chair/comfy/black
+	icon_state = "comfychair_black"
 
 /obj/table
 	name = "table"
