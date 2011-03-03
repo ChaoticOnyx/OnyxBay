@@ -1,6 +1,7 @@
 /datum/game_mode/zombie
 	name = "zombie"
 	config_tag = "zombie"
+	enabled = 0
 
 /datum/game_mode/zombie/announce()
 	world << "<B>The current game mode is - Zombie!</B>"
