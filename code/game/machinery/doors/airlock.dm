@@ -86,7 +86,7 @@
 /obj/machinery/door/airlock/medical
 	name = "Airlock"
 	icon = 'Doormed.dmi'
-	req_access = list(access_medical)
+	//req_access = list(access_medical)
 
 /obj/machinery/door/airlock/medical/glass
 	icon = 'Doormedglass.dmi'
