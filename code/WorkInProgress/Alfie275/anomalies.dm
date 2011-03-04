@@ -6,6 +6,9 @@ proc/varcopy(var/datum/d)
 			nd.vars["[v]"] = nv
 	return nd
 
+/atom/proc/CanAnom()
+	return CanAnom(src)
+
 proc/CanAnom(var/atom/a as anything)
 	var/can = 1
 	if(istype(a,/mob/living/carbon/human))
@@ -32,24 +35,27 @@ var/list/artifacts = list("/obj/item/weapon/crystal" = 4,
 							"/obj/item/weapon/talkingcrystal" = 2,
 							"/obj/item/weapon/fossil/base" =8,
 							"/obj/item/weapon/anomaly"=1 )
-var/list/anomalyeffects = list("heal"=2,"hurt"=2,"tele"=1)
+
 var/list/anomalyrare = list()
 var/list/anomalies = list()
 
 
 proc/SetupAnomalies()
-	var/list/l = list(0,1,2,3)
-	for(var/r = 0 to 3)
+	var/list/l = list(0,1,2,3,4,5)
+	for(var/r = 0 to 5)
 		var/i = pick(l)
 		l.Remove(i)
 		var/datum/anomaly/a = new/datum/anomaly(i)
 		a.trigger = rand(0)
 		var/e = pickweight(anomalyeffects)
-		var/npath = text2path("/datum/anomalyeffect/[e]")
+		var/eff = null
+		while(!eff)
+			if(istype(e,/list))
+				e=pickweight(e)
+			else
+				eff=e
+		var/npath = text2path("/datum/anomalyeffect/[eff]")
 		var/datum/anomalyeffect/t = new npath
-		for(var/v in anomalyeffects)
-			anomalyeffects[v]+=t.rarity
-		anomalyeffects[e]-=t.rarity
 		anomalyrare["[t.effectname]+[t.range]+[t.magnitude]"] = 1
 
 
@@ -131,107 +137,6 @@ proc/SetupAnomalies()
 
 	New(var/id)
 		src.id = id
-
-/datum/anomalyeffect
-	var/effectname
-	var/obj/o
-	var/range
-	var/magnitude
-	var/cooldown
-	var/fluff
-	var/rarity = 1
-
-/datum/anomalyeffect/New()
-	src.range = rand(1,10)
-	src.magnitude = rand(10,50)
-	src.CalcCooldown()
-
-
-/datum/anomalyeffect/proc/CalcCooldown()
-
-
-/datum/anomalyeffect/proc/Activate()
-
-
-/datum/anomalyeffect/heal
-	effectname = "heal"
-	fluff = "Biological stabiliser field."
-
-/datum/anomalyeffect/hurt
-	effectname = "hurt"
-	fluff = "Biological destabiliser field."
-
-/datum/anomalyeffect/tele
-	effectname = "tele"
-	fluff = "Spatial displacement field."
-	rarity = 2
-
-
-
-/datum/anomalyeffect/tele/CalcCooldown()
-	src.cooldown = src.magnitude*2+src.range
-
-/datum/anomalyeffect/heal/Activate()
-	for(var/mob/living/carbon/m in range(src.range,get_turf(src.o)))
-		if(!CanAnom(m))
-			continue
-		for(var/t in m.organs)
-			var/datum/organ/external/affecting = m.organs["[t]"]
-			if (affecting.heal_damage(src.magnitude/16, src.magnitude/8))
-				m.UpdateDamageIcon()
-			else
-				m.UpdateDamage()
-		m.oxyloss = max(0.0,m.oxyloss-src.magnitude)
-		m.toxloss = max(0.0,m.toxloss-src.magnitude)
-		m.fireloss = max(0.0,m.fireloss-src.magnitude)
-		m.bruteloss = max(0.0,m.bruteloss-src.magnitude)
-		m.health = min(m.health_full,m.health+src.magnitude)
-		m.updatehealth()
-		m << "\blue You feel a tingling sensation."
-
-
-/datum/anomalyeffect/hurt/Activate()
-	for(var/mob/living/carbon/m in range(src.range,get_turf(src.o)))
-		if(!CanAnom(m))
-			continue
-		for(var/t in m.organs)
-			var/datum/organ/external/affecting = m.organs["[t]"]
-			if(rand(1))
-				if (affecting.take_damage(src.magnitude/16, src.magnitude/8,0,0))
-					m.UpdateDamageIcon()
-				else
-					m.UpdateDamage()
-
-		m.updatehealth()
-		m << "\red You feel a searing pain."
-
-/datum/anomalyeffect/tele/Activate()
-	var/turf/centre = get_turf(src.o)
-	var/list/mob/living/carbon/ms = list()
-	for(var/mob/living/carbon/m in range(src.range,centre))
-		if(!CanAnom(m))
-			continue
-		if(m.buckled)
-			if(!m.buckled.anchored)
-				ms.Add(m)
-		else
-			ms.Add(m)
-	for(var/mob/living/carbon/m in ms)
-		var/turf/t = get_turf(pick(range(src.magnitude/5,m)))
-		if(!istype(t,/turf/))
-			break
-		m.loc = t
-		var/turf/nt = get_turf(m)
-		var/n = nt.loc.name
-		m << "\blue You suddenly appear in \the [n]."
-		ms.Remove(m)
-	if(src.magnitude>35)
-		for(var/obj/o in range(src.range,centre))
-			if(!CanAnom(o))
-				continue
-			if(!o.anchored && !rand(0,2))
-				var/turf/t = get_turf(pick(range(src.magnitude/10,centre)))
-				o.loc = t
 
 /obj/item/weapon/talkingcrystal
 	name = "Crystal"
