@@ -157,7 +157,7 @@
 			if((index1 || index2) && repeat_update)	// if either line is scrolling
 													// and we haven't forced an update yet
 
-				spawn(5)
+				spawn(5*tick_multiplier)
 					repeat_update = 0
 					update()		// set to update again in 5 ticks
 					repeat_update = 1

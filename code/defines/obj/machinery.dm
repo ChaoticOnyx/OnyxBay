@@ -459,11 +459,11 @@
 	var/lastout = 0
 	var/loaddemand = 0
 	var/capacity = 5e6
-	var/charge = 1e6
+	var/charge = 5e6
 	var/charging = 0
 	var/chargemode = 1
 	var/chargecount = 0
-	var/chargelevel = 200000
+	var/chargelevel = 0
 	var/online = 1
 	var/n_tag = null
 	var/obj/machinery/power/terminal/terminal = null

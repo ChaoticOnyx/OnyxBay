@@ -22,7 +22,7 @@ WELDINGTOOOL
 		src.pixel_y = rand(0, 16)
 	return
 
-/obj/item/weapon/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/*/obj/item/weapon/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)  // Please add back in when robotics has access to fixing eyes.
 	if(!istype(M, /mob))
 		return
 
@@ -71,7 +71,7 @@ WELDINGTOOOL
 			M << "\red You go blind!"
 			M.sdisabilities |= 1
 	return
-
+*/
 
 
 

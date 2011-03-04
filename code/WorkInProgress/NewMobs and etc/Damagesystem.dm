@@ -146,6 +146,9 @@
 	vessel.my_atom = src
 	vessel.add_reagent("blood",560)
 
+	// random infection :D
+	if(prob(2)) infect_mob_random_lesser(src)
+
 	update_clothing()
 
 	spawn(1) fixblood()
@@ -340,6 +343,7 @@
 				if(weakened <= 5)	weakened = 5
 		return
 	else if (flag == PROJECTILE_TASER)
+		if(zombie) return
 		if (istype(wear_suit, /obj/item/clothing/suit/armor))
 			if (prob(5))
 				show_message("\red Your armor absorbs the hit!", 4)
@@ -1536,11 +1540,11 @@
 						affecting = organs["[def_zone]"]
 					if (!affecting.destroyed)
 						//Attack with zombie
-						if(!zombie && !zombifying && prob(20))
+						if(!zombie && !virus2)
 							// lower chance if wearing a suit
 							var/pr = 0
 							if(istype(wear_suit, /obj/item/clothing/suit/armor))
-								pr = 60
+								pr = 70
 							else if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
 								pr = 70
 							else if(istype(wear_suit, /obj/item/clothing/suit))
@@ -1551,14 +1555,17 @@
 							else
 								for(var/mob/O in viewers(src, null))
 									O.show_message(text("\red <B>[] has bit []!</B>", M, src), 1)
-								zombifying = 1
-								zombietime = rand(600,1200)
-								UpdateZombieIcons()
+								infect_mob_zombie(src)
 						else
-							var/mes = pick(list("clawed","scraped"))
-							for(var/mob/O in viewers(src, null))
-								O.show_message(text("\red <B>[M] has [mes] [src]!"),1)
-							affecting.take_damage(rand(1,7),0)
+							if(prob(30))
+								src.paralysis = max(1, src.paralysis)
+								for(var/mob/O in viewers(src, null))
+									O.show_message(text("\red <B>[M] has stunned [src]!"),1)
+							else
+								affecting.take_damage(rand(1,7),0)
+								var/mes = pick(list("clawed","scraped"))
+								for(var/mob/O in viewers(src, null))
+									O.show_message(text("\red <B>[M] has [mes] [src]!"),1)
 					else
 						for(var/mob/O in viewers(src, null))
 							O.show_message(text("\red <B>[] has misses []!</B>", M, src), 1)

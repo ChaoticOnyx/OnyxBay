@@ -33,7 +33,7 @@
 			update_icon()
 
 			return
-	if (!( istype(C, /obj/item/weapon/crowbar) ))
+	if (!( istype(C, /obj/item/weapon/crowbar) || (ishuman(user) && user:zombie) ))
 		return
 
 	if (!src.blocked && !src.operating)

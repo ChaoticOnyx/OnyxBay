@@ -27,7 +27,7 @@
 	usr:lastDblClick = world.time
 	usr:switchCamera(best_cam)
 
-/mob/living/silicon/ai/proc/ai_camera_list()
+/mob/living/silicon/ai/verb/ai_camera_list()
 	set category = "AI Commands"
 	set name = "Show Camera List"
 
@@ -37,16 +37,14 @@
 
 	attack_ai(src)
 
-/mob/living/silicon/ai/proc/ai_camera_track()
+/mob/living/silicon/ai/verb/ai_camera_track()
 	set category = "AI Commands"
 	set name = "Track With Camera"
 	if(usr.stat == 2)
 		usr << "You can't track with camera because you are dead!"
 		return
-
-	var/list/names = list()
-	var/list/namecounts = list()
 	var/list/creatures = list()
+	var/list/monkeys = list()
 	for (var/mob/M in world)
 		if (istype(M, /mob/new_player))
 			continue //cameras can't follow people who haven't started yet DUH OR DIDN'T YOU KNOW THAT
@@ -54,31 +52,21 @@
 			continue
 		if(!istype(M.loc, /turf)) //in a closet or something, AI can't see him anyways
 			continue
+		if(istype(M,/mob/living/carbon/monkey))
+			monkeys += M
+			continue
 		if(M.invisibility) //cloaked
 			continue
 		if(istype(M.loc,/obj/dummy))
 			continue
 		else if (M == usr)
 			continue
-
-		var/name = M.name
-		if (name in names)
-			namecounts[name]++
-			name = text("[] ([])", name, namecounts[name])
-		else
-			names.Add(name)
-			namecounts[name] = 1
-
-		creatures[name] = M
-
-	var/target_name = input(usr, "Which creature should you track?") as null|anything in creatures
-
-	if (!target_name)
+		creatures += M
+	creatures += monkeys
+	var/mob/target = input(usr, "Which creature should you track?") as mob in creatures
+	if (!target)
 		usr:cameraFollow = null
 		return
-
-	var/mob/target = creatures[target_name]
-
 	ai_actual_track(target)
 
 /mob/living/silicon/ai/proc/ai_actual_track(mob/target as mob)

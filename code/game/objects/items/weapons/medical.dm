@@ -10,7 +10,7 @@ MEDICAL
 	icon_state = "bandaid"
 /obj/item/weapon/medical/bandaid/attack(mob/M as mob, mob/user as mob)
 	if(!ishuman(user))
-		user << "You can only do that on humanz"
+		user << "You can only do that on humans"
 		return ..()
 	var/mob/living/carbon/human/MS = M
 	if(MS.bloodloss > 0)
@@ -18,10 +18,15 @@ MEDICAL
 		var/datum/organ/external/temp = MS.organs["[t]"]
 		if(!temp)
 			return
+		var/stoped = 0
 		for(var/datum/organ/external/wound/W in temp.wounds)
 			if(W.bleeding)
 				W.stopbleeding()
+				stoped = 0
 				break
+		if(!stoped)
+			user << "There is no bleeding wound at [t]"
+			return
 		src.amount--
 		if (user)
 			if (M != user)

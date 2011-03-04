@@ -78,11 +78,16 @@
 		M.virus2 = new /datum/disease2/disease
 		M.virus2.makerandom(1)
 
+/proc/infect_mob_zombie(var/mob/living/carbon/M)
+	if(!M.virus2)
+		M.virus2 = new /datum/disease2/disease
+		M.virus2.makezombie()
+
 /datum/disease2/disease
 	var/infectionchance = 10
 	var/spreadtype = "Blood" // Can also be "Airborne"
 	var/stage = 1
-	var/stageprob = 2
+	var/stageprob = 10
 	var/dead = 0
 	var/clicks = 0
 
@@ -121,6 +126,35 @@
 		infectionchance = rand(1,10)
 		spreadtype = "Airborne"
 
+	proc/makezombie()
+		var/datum/disease2/effectholder/holder = new /datum/disease2/effectholder
+		holder.stage = 1
+		holder.chance = 10
+		holder.effect = new/datum/disease2/effect/greater/gunck()
+		effects += holder
+
+		holder = new /datum/disease2/effectholder
+		holder.stage = 2
+		holder.chance = 10
+		holder.effect = new/datum/disease2/effect/lesser/hungry()
+		effects += holder
+
+		holder = new /datum/disease2/effectholder
+		holder.stage = 3
+		holder.chance = 10
+		holder.effect = new/datum/disease2/effect/lesser/groan()
+		effects += holder
+
+		holder = new /datum/disease2/effectholder
+		holder.stage = 4
+		holder.chance = 10
+		holder.effect = new/datum/disease2/effect/zombie()
+		effects += holder
+
+		uniqueID = 1220 // all zombie diseases have the same ID
+		infectionchance = 0
+		spreadtype = "Airborne"
+
 	proc/minormutate()
 		var/datum/disease2/effectholder/holder = pick(effects)
 		holder.minormutate()
@@ -153,11 +187,12 @@
 		if(mob.reagents.has_reagent("spaceacillin") && prob(80))
 			mob.reagents.remove_reagent("spaceacillin",1)
 			return
-		if(prob(stageprob) && prob(25 + (clicks/100)) && stage != 4)
+		if(prob(clicks/(20*stage)) && stage != 4)
 			stage++
 			clicks = 0
 		for(var/datum/disease2/effectholder/e in effects)
 			e.runeffect(mob,stage)
+		clicks++
 
 	proc/cure_added(var/datum/disease2/resistance/res)
 		if(res.resistsdisease(src))
@@ -193,6 +228,16 @@
 	var/stage = 4
 	var/maxm = 1
 	proc/activate(var/mob/living/carbon/mob,var/multiplier)
+
+/datum/disease2/effect/zombie
+	name = "Tombstone Syndrome"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		if(istype(mob,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = mob
+			if(!H.zombie)
+				H.zombify()
+				del H.virus2
 
 /datum/disease2/effect/greater/gibbingtons
 	name = "Gibbingtons Syndrome"
@@ -316,13 +361,19 @@
 // lesser syndromes, partly just copypastes
 /datum/disease2/effect/lesser/mind
 	name = "Lazy mind syndrome"
-	stage = 5
+	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.brainloss = 50
+		mob.brainloss = 40
+
+/datum/disease2/effect/lesser/drowsy
+	name = "Bedroom Syndrome"
+	stage = 2
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.drowsyness = 10
 
 /datum/disease2/effect/lesser/deaf
 	name = "Hard of hearing syndrome"
-	stage = 5
+	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.ear_deaf += 20
 
@@ -345,7 +396,7 @@
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*sneeze")
 
-/datum/disease2/effect/lesser/sneeze
+/datum/disease2/effect/lesser/cough
 	name = "Anima Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -355,7 +406,27 @@
 	name = "Hallucinational Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.hallucination += 2
+		mob.hallucination = 25
+
+/datum/disease2/effect/lesser/arm
+	name = "Disarming Syndrome"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		var/datum/organ/external/org = mob.organs["r_arm"]
+		org.take_damage(3,0,0,0)
+		mob << "\red You feel a sting in your right arm."
+
+/datum/disease2/effect/lesser/hungry
+	name = "Appetiser Effect"
+	stage = 2
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob << "\red You feel hungry."
+
+/datum/disease2/effect/lesser/groan
+	name = "Appetiser Effect"
+	stage = 3
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.say("*groan")
 
 /datum/disease2/effect/lesser
 

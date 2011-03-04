@@ -116,7 +116,8 @@
 		src.density = 0
 		del(src)
 	if(istype(usr,/mob/living/carbon/human))
-		if(usr:zombie && usr:bot)
+		if(usr:zombie && !(locate(/turf/space) in view(1,src)))
+			usr << text("\blue You bang on the window.")
 			for(var/mob/O in oviewers())
 				if ((O.client && !( O.blinded )))
 					O << text("\red [] bangs on the window.", usr)

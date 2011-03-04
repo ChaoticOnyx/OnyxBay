@@ -265,6 +265,15 @@
 				message = "<B>[src]</B> makes a loud noise."
 				m_type = 2
 
+		if ("howl")
+			if (!muzzled)
+				message = "<B>[src]</b> howls!"
+				m_type = 2
+			else
+				message = "<B>[src]</B> makes a loud noise."
+				m_type = 2
+
+
 		if ("moan")
 			message = "<B>[src]</B> moans!"
 			m_type = 2

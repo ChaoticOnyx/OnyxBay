@@ -313,6 +313,7 @@
 			<A href='?src=\ref[src];c_mode2=confliction'>Confliction (TESTING)</A><br>
 			<A href='?src=\ref[src];c_mode2=ctf'>Capture The Flag (Beta)</A><br><br>
 			<A href='?src=\ref[src];c_mode2=derelict'>Derelict (Beta)</A><br><br>
+			<A href='?src=\ref[src];c_mode2=zombie'>Zombie (Beta)</A><br><br>
 			<!-- <A href='?src=\ref[src];c_mode2=among'>Traitor among us (Beta)</A><br><br> -->
 			Now: [master_mode]\n"})
 			usr << browse(dat, "window=c_mode")
@@ -356,6 +357,8 @@
 					master_mode = "ctf"
 				if("derelict")
 					master_mode = "derelict"
+				if("zombie")
+					master_mode = "zombie"
 				/*if("among")
 					master_mode = "traitoramongus"*/
 				else
@@ -1533,7 +1536,7 @@
 	spawn(config.vote_period * 10 * tick_multiplier)
 		vote.endvote()
 
-	world << "\red<B>*** [message] has been initiated by Admin [usr.key].</B>"
+	world << "\red<B>*** [message] has been initiated by Admin [usr.client.stealth ? pick("DATA EXPUNGED") : usr.key].</B>"
 	world << "\red     You have [vote.timetext(config.vote_period)] to vote."
 
 	log_admin("[message] forced by admin [key_name(usr)]")
@@ -1757,7 +1760,15 @@
 			affecting = H.organs[A]
 			if(!istype(affecting, /datum/organ/external))    continue
 			affecting.heal_damage(1000, 1000)    //fixes getting hit after ingestion, killing you when game updates organ health
+			affecting.broken = 0
+			affecting.destroyed = 0
+			for(var/datum/organ/external/wound/W in affecting.wounds)
+				W.stopbleeding()
+		H.vessel = new/datum/reagents(560)
+		H.vessel.my_atom = src
+		H.vessel.add_reagent("blood",560)
 		H.UpdateDamageIcon()
+		H.update_body()
 	src.fireloss = 0
 	src.toxloss = 0
 	src.bruteloss = 0

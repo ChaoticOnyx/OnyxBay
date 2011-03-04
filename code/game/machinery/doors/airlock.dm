@@ -60,25 +60,48 @@
 	icon = 'Doorcom.dmi'
 	req_access = list(access_heads)
 
+/obj/machinery/door/airlock/glass/command
+	icon = 'Doorcomglass.dmi'
+	opacity = 0
+	req_access = list(access_heads)
+
 /obj/machinery/door/airlock/security
 	explosionstrength = 3
 	name = "Airlock"
 	icon = 'Doorsec.dmi'
 	req_access = list(access_security)
 
+/obj/machinery/door/airlock/glass/security
+	icon = 'Doorsecglass.dmi'
+	opacity = 0
+
 /obj/machinery/door/airlock/engineering
 	name = "Airlock"
 	icon = 'Dooreng.dmi'
 	req_access = list(access_engine)
 
+/obj/machinery/door/airlock/glass/engineering
+	icon = 'Doorengglass.dmi'
+	opacity = 0
+	req_access = list(access_engine)
+
 /obj/machinery/door/airlock/medical
 	name = "Airlock"
 	icon = 'Doormed.dmi'
-	req_access = list(access_medical)
+	//req_access = list(access_medical)
+
+/obj/machinery/door/airlock/glass/medical
+	icon = 'Doormedglass.dmi'
+	opacity = 0
 
 /obj/machinery/door/airlock/maintenance
 	name = "Maintenance Access"
 	icon = 'Doormaint.dmi'
+	req_access = list(access_maint_tunnels)
+
+/obj/machinery/door/airlock/maintenance/hatch
+	name = "Maintenance Access"
+	icon = 'Doorhatchmaint.dmi'
 	req_access = list(access_maint_tunnels)
 
 /obj/machinery/door/airlock/external
@@ -89,6 +112,11 @@
 	name = "Glass Airlock"
 	icon = 'Doorglass.dmi'
 	opacity = 0
+
+/obj/machinery/door/airlock/highsec
+	explosionstrength = 4
+	name = "Secure Airlock"
+	icon = 'Doorhatchele.dmi'
 
 
 /obj/machinery/door/airlock/New()

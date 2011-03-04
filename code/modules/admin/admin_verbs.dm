@@ -45,7 +45,7 @@
 			src.verbs += /client/proc/cmd_debug_del_all
 			src.verbs += /client/proc/play_sound
 			src.verbs += /client/proc/modifytemperature
-			src.verbs += /client/proc/cmd_admin_gib
+//			src.verbs += /client/proc/cmd_admin_gib
 			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/cmd_admin_gib_self
 //				src.verbs += /client/proc/grillify
@@ -152,7 +152,7 @@
 			src.verbs += /client/proc/cmd_debug_del_all
 			src.verbs += /client/proc/play_sound
 			src.verbs += /client/proc/modifytemperature
-			src.verbs += /client/proc/cmd_admin_gib
+//			src.verbs += /client/proc/cmd_admin_gib
 			src.verbs += /client/proc/cmd_admin_gib_self
 //			src.verbs += /proc/toggleai
 			src.verbs += /proc/togglebuildmode
@@ -248,7 +248,7 @@
 			src.verbs += /client/proc/dsay
 			src.verbs += /client/proc/cmd_explode_turf
 			src.verbs += /client/proc/play_sound
-			src.verbs += /client/proc/cmd_admin_gib
+//			src.verbs += /client/proc/cmd_admin_gib
 			src.verbs += /client/proc/cmd_admin_gib_self
 			src.verbs += /client/proc/jumptomob
 			src.verbs += /client/proc/modifytemperature
@@ -533,7 +533,7 @@
 	src.verbs -= /client/proc/cmd_admin_say
 	src.verbs -= /client/proc/dsay
 	src.verbs -= /client/proc/play_sound
-	src.verbs -= /client/proc/cmd_admin_gib
+//	src.verbs -= /client/proc/cmd_admin_gib
 	src.verbs -= /client/proc/cmd_admin_gib_self
 //				src.verbs -= /client/proc/modifytemperature
 	src.verbs -= /client/proc/Jump
@@ -895,7 +895,8 @@
 /client/proc/zombify(var/mob/living/carbon/human/p in world)
 	set category = "Debug"
 	set name = "Zombify"
-	p.zombify()
+	infect_mob_zombie(p)
+	message_admins("\blue [src.ckey] infected [p.real_name]([p.ckey]) with a zombie disease.")
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"

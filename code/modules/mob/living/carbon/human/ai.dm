@@ -178,7 +178,8 @@
 		// if there is no target in range, roam randomly
 		else
 
-			frustration = 0
+			frustration--
+			frustration = max(frustration, 0)
 
 			if(stat == STAT_DEAD) return 0
 
@@ -218,7 +219,7 @@
 		if(locate(/obj/machinery/door/airlock) in get_step(src,src.dir))
 			var/obj/machinery/door/airlock/D = locate() in get_step(src,src.dir)
 			if(D)
-				if(D.density)
+				if(D.density && !(locate(/turf/space) in range(1,D)) )
 					D.attack_hand(src)
 					object_target = D
 					return 1
@@ -227,7 +228,7 @@
 			if(istype(get_step(src,src.dir),/turf/simulated/wall))
 				var/turf/simulated/wall/W = get_step(src,src.dir)
 				if(W)
-					if(W.density)
+					if(W.density && !(locate(/turf/space) in range(1,W)))
 						W.attack_hand(src)
 						object_target = W
 						return 1
