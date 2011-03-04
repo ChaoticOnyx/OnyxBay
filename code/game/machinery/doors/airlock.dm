@@ -74,7 +74,6 @@
 /obj/machinery/door/airlock/glass/security
 	icon = 'Doorsecglass.dmi'
 	opacity = 0
-	req_access = list(access_security)
 
 /obj/machinery/door/airlock/engineering
 	name = "Airlock"
@@ -98,6 +97,11 @@
 /obj/machinery/door/airlock/maintenance
 	name = "Maintenance Access"
 	icon = 'Doormaint.dmi'
+	req_access = list(access_maint_tunnels)
+
+/obj/machinery/door/airlock/maintenance/hatch
+	name = "Maintenance Access"
+	icon = 'Doorhatchmaint.dmi'
 	req_access = list(access_maint_tunnels)
 
 /obj/machinery/door/airlock/external
