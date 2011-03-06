@@ -654,7 +654,7 @@
 		var/O2_pp = (breath.oxygen/breath.total_moles())*breath_pressure
 		if(O2_pp > 16)
 			for(var/datum/organ/external/org in organs2)
-				org.brute_dam = round(org.brute_dam * 0.95)
+				org.brute_dam = 0
 	return ..()
 
 /*

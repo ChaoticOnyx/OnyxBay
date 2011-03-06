@@ -358,6 +358,10 @@
 		// on nuke, only allow evacuation after an hour
 		user << "The pods are not responding.. how odd."
 		return
+	if(ticker.mode.name == "zombie" && world.time < 36000)
+		// on nuke, only allow evacuation after an hour
+		user << "The pods are not responding.. how odd."
+		return
 
 	LaunchControl.start()
 
