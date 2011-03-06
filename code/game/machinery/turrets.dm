@@ -127,8 +127,8 @@
 		else
 			if (src.wasvalid)
 				src.die()
-			else
-				world << text("ERROR: Turret at [x], [y], [z] is NOT in a turret-protected area!")
+			/*else
+				world << text("ERROR: Turret at [x], [y], [z] is NOT in a turret-protected area!")*/
 
 /obj/machinery/turret/proc/isDown()
 	return (invisibility!=0)

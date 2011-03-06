@@ -354,6 +354,14 @@
 	if(ticker.mode.name == "revolution" || ticker.mode.name == "AI malfunction" || ticker.mode.name == "confliction")
 		user << "Centcom will not allow the shuttle to be called."
 		return
+	if(ticker.mode.name == "nuclear emergency" && world.time < 36000)
+		// on nuke, only allow evacuation after an hour
+		user << "The pods are not responding.. how odd."
+		return
+	if(ticker.mode.name == "zombie" && world.time < 36000)
+		// on nuke, only allow evacuation after an hour
+		user << "The pods are not responding.. how odd."
+		return
 
 	LaunchControl.start()
 

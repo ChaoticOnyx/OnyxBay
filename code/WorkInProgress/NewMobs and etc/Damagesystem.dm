@@ -1557,15 +1557,10 @@
 									O.show_message(text("\red <B>[] has bit []!</B>", M, src), 1)
 								infect_mob_zombie(src)
 						else
-							if(prob(30))
-								src.paralysis = max(1, src.paralysis)
-								for(var/mob/O in viewers(src, null))
-									O.show_message(text("\red <B>[M] has stunned [src]!"),1)
-							else
-								affecting.take_damage(rand(1,7),0)
-								var/mes = pick(list("clawed","scraped"))
-								for(var/mob/O in viewers(src, null))
-									O.show_message(text("\red <B>[M] has [mes] [src]!"),1)
+							affecting.take_damage(rand(1,7),0)
+							var/mes = pick(list("clawed","scraped"))
+							for(var/mob/O in viewers(src, null))
+								O.show_message(text("\red <B>[M] has [mes] [src]!"),1)
 					else
 						for(var/mob/O in viewers(src, null))
 							O.show_message(text("\red <B>[] has misses []!</B>", M, src), 1)
