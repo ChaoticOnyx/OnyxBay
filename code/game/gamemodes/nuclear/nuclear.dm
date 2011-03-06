@@ -58,6 +58,12 @@
 
 
 /datum/game_mode/nuclear/post_setup()
+	for(var/mob/living/carbon/human/player in world)
+		if(player.mind)
+			var/role = player.mind.assigned_role
+			if(role == "Captain")
+				player << "After the recent theft of a nuclear device from Zebra Prime, you have been entrusted with the authentication disk which the infiltrators failed to steal. Your mission is to deliver the disk safely to CentComm and protect it from any hostile forces. This mission is top-secret, your crew and heads are not to be informed."
+
 	var/obj/landmark/synd_spawn = locate("landmark*Syndicate-Spawn")
 	var/obj/landmark/nuke_spawn = locate("landmark*Nuclear-Bomb")
 	var/obj/landmark/closet_spawn = locate("landmark*Nuclear-Closet")
