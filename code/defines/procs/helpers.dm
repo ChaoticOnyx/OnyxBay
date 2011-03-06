@@ -851,3 +851,14 @@
 	var/x = min(world.maxx, max(1, A.x + dx))
 	var/y = min(world.maxy, max(1, A.y + dy))
 	return locate(x,y,A.z)
+
+
+/proc/FindRecursive(var/target,var/atom/haystack)
+	for(var/v in haystack.contents)
+		if(v==target)
+			return v
+		else
+			var/other = FindRecursive(target,v)
+			if(other)
+				return other
+	return null

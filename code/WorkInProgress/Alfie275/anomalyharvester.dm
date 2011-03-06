@@ -124,7 +124,7 @@
 			harvesting = 0
 
 			var/datum/anomalyeffect/e = new a.e.type
-			if(b.AddPower(e,min(a.e.magnitude*1.5,b.capacity-b.GetTotalPower())))
+			if(b.AddPower(e,min(a.e.magnitude*1.5*(1+(e.range*0.25)),b.capacity-b.GetTotalPower())))
 				state("The [src.name] pings", "blue")
 			else
 				state("\red The [src.name] buzzes", "blue")
