@@ -179,6 +179,7 @@
 	var/power = src.force
 	if (istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
+		if(H.zombie) power = 0
 		if (istype(user, /mob/living/carbon/human) || istype(user, /mob/living/silicon/robot))
 			if (!( def_zone ))
 				var/mob/user2 = user
@@ -209,7 +210,7 @@
 						else
 							H.show_message("\red You have been protected from a hit to the head.")
 						return
-					if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam)))
+					if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam) && !H.zombie))
 						var/time = rand(10, 120)
 						if (prob(90))
 							if (H.paralysis < time)
@@ -256,7 +257,7 @@
 					if (b_dam && ((istype(H.wear_suit, /obj/item/clothing/suit/armor/)) && H.wear_suit.body_parts_covered & UPPER_TORSO) && prob(90 - src.force))
 						H.show_message("\red You have been protected from a hit to the chest.")
 						return
-					if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam)))
+					if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam) && !H.zombie))
 						if (prob(50))
 							if (H.weakened < 5)
 								H.weakened = 5
@@ -298,7 +299,7 @@
 					if (b_dam && (istype(H.wear_suit, /obj/item/clothing/suit/armor/) && H.wear_suit.body_parts_covered & LOWER_TORSO) && prob(90 - src.force))
 						H.show_message("\red You have been protected from a hit to the groin (phew).")
 						return
-					if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam)))
+					if ((b_dam && prob(src.force + affecting.brute_dam + affecting.burn_dam) && H.zombie ))
 						if (prob(50))
 							if (H.weakened < 5)
 								H.weakened = 5
