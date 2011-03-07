@@ -19,7 +19,7 @@ vs_control/var
 	AF_NORMAL_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which items with the normal weight class will move."
 	AF_LARGE_MOVEMENT_THRESHOLD = 95 //% difference to move large and huge items.
 	AF_LARGE_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which items with the large or huge weight class will move."
-	AF_MOVEMENT_THRESHOLD = 250 //% difference to move dense crap and mobs.
+	AF_MOVEMENT_THRESHOLD = 60 //% difference to move dense crap and mobs.
 	AF_MOVEMENT_THRESHOLD_DESC = "Percent of 1 Atm. at which dense objects or mobs will be shifted by airflow."
 
 	AF_HUMAN_STUN_THRESHOLD = 200
@@ -31,7 +31,7 @@ vs_control/var
 	AF_CANISTER_P = ONE_ATMOSPHERE*20
 	AF_CANISTER_P_DESC = "Unused, will be used to calculate airflow from canisters."
 
-	AF_SPEED_MULTIPLIER = 2 //airspeed per movement threshold value crossed.
+	AF_SPEED_MULTIPLIER = 4 //airspeed per movement threshold value crossed.
 	AF_SPEED_MULTIPLIER_DESC = "Airspeed increase per \[AF_TINY_MOVEMENT_THRESHOLD\] percent of airflow."
 	AF_DAMAGE_MULTIPLIER = 5 //Amount of damage applied per airflow_speed.
 	AF_DAMAGE_MULTIPLIER_DESC = "Amount of damage applied per unit of speed (1-15 units) at which mobs are thrown."
@@ -370,6 +370,7 @@ atom/movable
 			if ((src.x == 1 || src.x == world.maxx || src.y == 1 || src.y == world.maxy))
 				return
 			step_towards(src, src.airflow_dest)
+			if(ismob(src) && src:client) src:client:move_delay = world.time + 10
 		airflow_dest = null
 		airflow_speed = -1
 		spawn(50 * tick_multiplier) airflow_speed = 0
@@ -415,6 +416,7 @@ atom/movable
 			if ((src.x == 1 || src.x == world.maxx || src.y == 1 || src.y == world.maxy))
 				return
 			step_towards(src, src.airflow_dest)
+			if(ismob(src) && src:client) src:client:move_delay = world.time + 10
 		airflow_dest = null
 		airflow_speed = -1
 		spawn(50 * tick_multiplier) airflow_speed = 0
