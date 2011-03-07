@@ -126,9 +126,9 @@ proc/SetupAnomalies()
 
 
 /obj/item/weapon/anomaly/attack_hand(var/mob/living/carbon/m as mob)
+	..()
 	if(!m.gloves)
 		src.Activate()
-	..()
 
 /datum/anomaly
 	var/id

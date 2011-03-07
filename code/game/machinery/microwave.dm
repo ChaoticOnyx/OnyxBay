@@ -73,17 +73,17 @@ obj/machinery/microwave/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if(src.broken > 0)
 		if(src.broken == 2 && istype(O, /obj/item/weapon/screwdriver)) // If it's broken and they're using a screwdriver
 			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] starts to fix part of the microwave."))
+				V.show_message(text("\blue [user] starts to fix part of the [name]."))
 			sleep(20)
 			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] fixes part of the microwave."))
+				V.show_message(text("\blue [user] fixes part of the [name]."))
 			src.broken = 1 // Fix it a bit
 		else if(src.broken == 1 && istype(O, /obj/item/weapon/wrench)) // If it's broken and they're doing the wrench
 			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] starts to fix part of the microwave."))
+				V.show_message(text("\blue [user] starts to fix part of the [name]."))
 			sleep(20)
 			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] fixes the microwave!"))
+				V.show_message(text("\blue [user] fixes the [name]!"))
 			src.icon_state = "mw"
 			src.broken = 0 // Fix it!
 		else
@@ -91,10 +91,10 @@ obj/machinery/microwave/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	else if(src.dirty) // The microwave is all dirty so can't be used!
 		if(istype(O, /obj/item/weapon/cleaner)) // If they're trying to clean it then let them
 			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] starts to clean the microwave."))
+				V.show_message(text("\blue [user] starts to clean the [name]."))
 			sleep(20)
 			for(var/mob/V in viewers(src, null))
-				V.show_message(text("\blue [user] has cleaned the microwave!"))
+				V.show_message(text("\blue [user] has cleaned the [name]!"))
 			src.dirty = 0 // It's cleaned!
 			src.icon_state = "mw"
 		else //Otherwise bad luck!!
@@ -104,7 +104,7 @@ obj/machinery/microwave/attackby(var/obj/item/O as obj, var/mob/user as mob)
 		src.humanmeat_name = m.subjectname
 		src.humanmeat_job = m.subjectjob
 		for(var/mob/V in viewers(src, null))
-			V.show_message(text("\blue [user] adds \a [O.name] to the microwave."))
+			V.show_message(text("\blue [user] adds \a [O.name] to the [name]."))
 		user.u_equip(O)
 		O.loc = src
 		if((user.client  && user.s_active != src))
@@ -112,7 +112,7 @@ obj/machinery/microwave/attackby(var/obj/item/O as obj, var/mob/user as mob)
 		O.dropped(user)
 	else
 		for(var/mob/V in viewers(src, null))
-			V.show_message(text("\blue [user] adds \a [O.name] to the microwave."))
+			V.show_message(text("\blue [user] adds \a [O.name] to the [name]."))
 		user.u_equip(O)
 		O.loc = src
 		if((user.client  && user.s_active != src))
@@ -154,7 +154,6 @@ Please clean it before use!</TT><BR>
 <B>Contents<BR>[c]
 <BR>
 <A href='?src=\ref[src];cook=1'>Turn on!<BR>
-<A href='?src=\ref[src];cook=2'>Dispose contents!<BR>
 <A href='?src=\ref[src];cook=3'>Dispense contents<BR>
 "}
 
@@ -177,6 +176,8 @@ Please clean it before use!</TT><BR>
 
 	if(href_list["cook"])
 		if(!src.operating)
+			if(!contents.len)
+				state("Error: No ingredients")
 			var/operation = text2num(href_list["cook"])
 
 			var/cook_time = 200 // The time to wait before spawning the item
@@ -191,7 +192,7 @@ Please clean it before use!</TT><BR>
 					has["[O.type]"]++
 
 				for(var/mob/V in viewers(src, null))
-					V.show_message(text("\blue The microwave turns on."))
+					V.show_message(text("\blue The [name] turns on."))
 				 // label for skipping failed recipes
 				check_recipes:
 					for(var/datum/recipe/A in src.available_recipes)
@@ -236,14 +237,14 @@ Please clean it before use!</TT><BR>
 						sleep(40) // Then at the end let it finish normally
 						playsound(src.loc, 'ding.ogg', 50, 1)
 						for(var/mob/V in viewers(src, null))
-							V.show_message(text("\red The microwave gets covered in muck!"))
+							V.show_message(text("\red The [name] gets covered in muck!"))
 						src.dirty = 1 // Make it dirty so it can't be used util cleaned
 						src.icon_state = "mwbloody" // Make it look dirty too
 						src.operating = 0 // Turn it off again aferwards
 						// Don't clear the extra item though so important stuff can't be deleted this way and
 						// it prolly wouldn't make a mess anyway
 						for(var/obj/O in src.contents)
-							src.contents.Remove(O)
+
 							O.loc = get_turf(src)
 
 					else if(src.contents && nonfood) // However if there's a weird item inside we want to break it, not dirty it
@@ -255,14 +256,11 @@ Please clean it before use!</TT><BR>
 						s.start()
 						icon_state = "mwb" // Make it look all busted up and shit
 						for(var/mob/V in viewers(src, null))
-							V.show_message(text("\red The microwave breaks!")) //Let them know they're stupid
+							V.show_message(text("\red The [name] breaks!")) //Let them know they're stupid
 						src.broken = 2 // Make it broken so it can't be used util fixed
 						src.operating = 0 // Turn it off again aferwards
+
 						for(var/obj/O in src.contents)
-							if(findtext("/obj/item/weapon/reagent_containers/food/snacks/", O.type))
-								del O
-						for(var/obj/O in src.contents)
-							src.contents.Remove(O)
 							O.loc = get_turf(src)
 
 					else //Otherwise it was empty, so just turn it on then off again with nothing happening
@@ -274,24 +272,15 @@ Please clean it before use!</TT><BR>
 						playsound(src.loc, 'ding.ogg', 50, 1)
 						src.operating = 0
 
-			if(operation == 2) // If dispose was pressed, empty the microwave
-				for(var/obj/O in src.contents)
-					if(findtext("/obj/item/weapon/reagent_containers/food/snacks/", O.type))
-						del O
-				for(var/obj/O in src.contents)
-					src.contents.Remove(O)
-					O.loc = get_turf(src)
-				usr << "You dispose of the microwave contents."
-
 			if(operation == 3) // If dispense was pressed, empty the microwave
 				for(var/obj/O in src.contents)
 					O.loc = get_turf(src)
-				usr << "You empty the microwave of contents."
+				usr << "You empty the [name] of contents."
 
 			var/cooking = text2path(cooked_item) // Get the item that needs to be spanwed
 			if(!isnull(cooking))
 				for(var/mob/V in viewers(src, null))
-					V.show_message(text("\blue The microwave begins cooking something!"))
+					V.show_message(text("\blue The [name] begins cooking something!"))
 				src.operating = 1 // Turn it on so it can't be used again while it's cooking
 				src.icon_state = "mw1" //Make it look on too
 				src.updateUsrDialog()

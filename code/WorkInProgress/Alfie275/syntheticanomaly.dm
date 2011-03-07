@@ -87,7 +87,7 @@
 			dat += "<BR>Effects:"
 			for(var/v in b.e)
 				var/datum/anomalyeffect/e = b.e["[v]"]
-				dat += "<BR>	[e.fluff] <BR>		power	[e.magnitude*(e.range+1)]/[b.power["[e.effectname]"]]<BR>magnitude [e.magnitude]<A href='?src=\ref[src];mu=[e.effectname]'>+</a> <A href='?src=\ref[src];md=[e.effectname]'>-</a><BR>range [e.range]<A href='?src=\ref[src];ru=[e.effectname]'>+</a> <A href='?src=\ref[src];rd=[e.effectname]'>-</a>"
+				dat += "<BR>	[e.fluff] <BR>		power	[e.magnitude*(e.range+1)]/[b.power["[e.effectname]"]]<BR>magnitude [e.magnitude]<A href='?src=\ref[src];mu=[e.effectname]'>+</a> <A href='?src=\ref[src];muu=[e.effectname]'>++</a> <A href='?src=\ref[src];mdd=[e.effectname]'>--</a> <A href='?src=\ref[src];md=[e.effectname]'>-</a><BR>range [e.range]<A href='?src=\ref[src];ru=[e.effectname]'>+</a> <A href='?src=\ref[src];ruu=[e.effectname]'>++</a> <A href='?src=\ref[src];rdd=[e.effectname]'>-</a> <A href='?src=\ref[src];rd=[e.effectname]'>-</a>"
 			dat+="<BR> Estimated cooldown [round(ccooldown()/4)+1]"
 			dat += "<BR><A href='?src=\ref[src];a=1'>Activate</a>"
 			if(timing)
@@ -96,8 +96,8 @@
 			else
 				dat += "<BR>Not Timing [time]"
 				dat += "<BR><A href='?src=\ref[src];st=1'>Start timer</a>"
-			dat += "<BR><A href='?src=\ref[src];tu=1'>T+</a>"
-			dat += "<BR><A href='?src=\ref[src];td=1'>T-</a>"
+			dat += "<BR>T <A href='?src=\ref[src];tu=1'>+</a> <A href='?src=\ref[src];tu=10'>++</a>"
+			dat += "<BR>T <A href='?src=\ref[src];td=1'>-</a> <A href='?src=\ref[src];td=10'>--</a>"
 			dat += "<BR><A href='?src=\ref[src];ejectb=1'>Eject battery</a>"
 
 	user << browse(dat, "window=computer;size=400x500")
@@ -112,6 +112,9 @@
 			user << "You insert the battery."
 			user.drop_item()
 			I.loc = src
+			for(var/v in I:e)
+				var/datum/anomalyeffect/e = I:e["[v]"]
+				e.o = src
 			src.b = I
 			UpdateSprite()
 	else
@@ -152,8 +155,13 @@
 			for(var/mob/m in hearers(get_turf(src)))
 				var/t = pick("chimes","pings","buzzes")
 				m<<"The [src.name] [t]"
-				if(!timing)
-					processing_items.Remove(src)
+			if(!timing)
+				processing_items.Remove(src)
+			for(var/v in b.e)
+				var/datum/anomalyeffect/e = b.e["[v]"]
+				if(e.magnitude*(e.range+1)>b.power["[e.effectname]"])
+					e.magnitude = 1
+					e.range = 0
 			cooldown = 0
 
 
@@ -172,12 +180,12 @@
 		if (href_list["mu"])
 			var/effectname = href_list["mu"]
 			var/datum/anomalyeffect/e = b.e["[effectname]"]
-			if((e.magnitude+1)*(e.range+1)<b.power["[effectname]"])
+			if((e.magnitude+1)*(e.range+1)<=b.power["[effectname]"])
 				e.magnitude++
 		if (href_list["ru"])
 			var/effectname = href_list["ru"]
 			var/datum/anomalyeffect/e = b.e["[effectname]"]
-			if((e.range+2)*e.magnitude<b.power["[effectname]"])
+			if((e.range+2)*e.magnitude<=b.power["[effectname]"])
 				e.range++
 		if (href_list["md"])
 			var/effectname = href_list["md"]
@@ -189,6 +197,26 @@
 			var/datum/anomalyeffect/e = b.e["[effectname]"]
 			if(e.range>0)
 				e.range--
+		if (href_list["muu"])
+			var/effectname = href_list["muu"]
+			var/datum/anomalyeffect/e = b.e["[effectname]"]
+			if((e.magnitude+10)*(e.range+1)<=b.power["[effectname]"])
+				e.magnitude+=10
+		if (href_list["ruu"])
+			var/effectname = href_list["ruu"]
+			var/datum/anomalyeffect/e = b.e["[effectname]"]
+			if((e.range+11)*e.magnitude<=b.power["[effectname]"])
+				e.range+=10
+		if (href_list["mdd"])
+			var/effectname = href_list["mdd"]
+			var/datum/anomalyeffect/e = b.e["[effectname]"]
+			if(e.magnitude-10>0)
+				e.magnitude-=10
+		if (href_list["rdd"])
+			var/effectname = href_list["rrd"]
+			var/datum/anomalyeffect/e = b.e["[effectname]"]
+			if(e.range-10>=0)
+				e.range-=10
 		if(href_list["st"])
 			processing_items.Add(src)
 			timing = 1
@@ -197,10 +225,11 @@
 				processing_items.Remove(src)
 			timing = 0
 		if(href_list["tu"])
-			time += 1
+			time += text2num(href_list["tu"])
 		if(href_list["td"])
-			if(time)
-				time -= 1
+			var/amt = text2num(href_list["td"])
+			if(amt>0)
+				time -= amt
 
 		if (href_list["a"])
 			for(var/v in b.e)
@@ -213,6 +242,9 @@
 			cooldown=round(ccooldown()/4)+1
 		if (href_list["ejectb"])
 			src.b.loc = get_turf(src)
+			for(var/v in b.e)
+				var/datum/anomalyeffect/e = b.e["[v]"]
+				e.o = b
 			src.b = null
 			UpdateSprite()
 		if (href_list["close"])

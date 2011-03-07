@@ -48,6 +48,8 @@ var/list/anomalyeffects = list("heal"=2,"hurt"=2, list("march" = 1,"repel"=1,"te
 	var/dur
 
 
+
+
 /datum/anomalyeffect/tele/CalcCooldown()
 	src.cooldown = src.magnitude*2+src.range
 
@@ -104,6 +106,9 @@ var/list/anomalyeffects = list("heal"=2,"hurt"=2, list("march" = 1,"repel"=1,"te
 	for(var/obj/ob in range(src.range,centre))
 		if(!CanAnom(ob))
 			continue
+		if(get_dist(ob,o)==0)
+			if(FindRecursive(o,ob))
+				continue
 		if(!ob.anchored)
 			A.Add(ob)
 
@@ -139,8 +144,11 @@ var/list/anomalyeffects = list("heal"=2,"hurt"=2, list("march" = 1,"repel"=1,"te
 			A.Add(m)
 			m<<"\blue You feel a compulsion to walk."
 	for(var/obj/ob in range(src.range,centre))
-		if(!CanAnom(ob))
+		if(!CanAnom(ob)||ob==o)
 			continue
+		if(get_dist(ob,o)==0)
+			if(FindRecursive(o,ob))
+				continue
 		if(!ob.anchored)
 			A.Add(ob)
 
