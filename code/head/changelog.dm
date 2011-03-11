@@ -15,7 +15,7 @@ client/proc/showchanges()
 <h4>Bay Station 12 Development Team</h4>
 <p>
 	<strong>Coders:</strong> Head, Aryn, Googolplexed, alfie275, Sukasa, Tagert, Biscuitry, qwertyuiopas, Abi79, Strumpetplaya<br>
-	<strong>Spriters:</strong> Cajoes, Saint, Sukasa, Arcalane, Deon, CompactNinja, Xenone</strong>
+	<strong>Spriters:</strong> Cajoes, Saint, Sukasa, Arcalane, Deon, CompactNinja, Xenone, Dreyfus
 </p>
 
 <h5>GoonStation 13 Development Team</h5>
@@ -25,8 +25,7 @@ client/proc/showchanges()
 </p>
 <br />
 
-<p><b>Googolplexed</b> gets a special mention because he provides us with the forum and wiki server.</p>
-<p></p><b>Tagert</b> also gets a special mention for providing the game server.</p>
+<p><b>Head</b> gets a special mention because he provides us with the forum, wiki and game server.</p>
 
 <br />
 
