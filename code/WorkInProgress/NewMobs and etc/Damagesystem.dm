@@ -147,7 +147,7 @@
 	vessel.add_reagent("blood",560)
 
 	// random infection :D
-	if(prob(2)) infect_mob_random_lesser(src)
+	if(prob(10)) infect_mob_random_lesser(src)
 
 	update_clothing()
 
