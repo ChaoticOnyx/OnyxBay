@@ -145,7 +145,8 @@
 
 /obj/item/clothing/head/bio_hood
 	name = "bio hood"
-	icon_state = "bio"
+	icon_state = "bio_hood"
+	item_state = "bio_hood"
 	permeability_coefficient = 0.01
 	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES|HEADCOVERSMOUTH|PLASMAGUARD
 /obj/item/clothing/head/righelm
@@ -443,7 +444,7 @@
 /obj/item/clothing/suit/bio_suit
 	name = "bio suit"
 	desc = "A suit that protects against biological contamination."
-	icon_state = "bio"
+	icon_state = "bio_suit"
 	item_state = "bio_suit"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	gas_transfer_coefficient = 0.01
