@@ -13,7 +13,7 @@ obj/item/clothing/suit/space/spacegreen
 
 /obj/item/clothing/head/helmet/space/spaceblue
 	name = "blue space helmet"
-	desc = "Series:Biohazard Green"
+	desc = "Series:Biohazard Blue"
 	icon_state = "spaceblueh"
 	item_state = "spaceblueh"
 
@@ -38,7 +38,7 @@ obj/item/clothing/suit/space/spacedgreen
 
 /obj/item/clothing/head/helmet/space/spaceterror
 	name = "black space helmet"
-	desc = "Series:Biohazard Green"
+	desc = "Series:Biohazard Black"
 	icon_state = "spaceterrorh"
 	item_state = "spaceterrorh"
 
