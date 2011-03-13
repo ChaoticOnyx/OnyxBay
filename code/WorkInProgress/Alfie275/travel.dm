@@ -22,6 +22,8 @@ var/datum/travgrid/tgrid= new()
 			src.grid[a][b]=t
 
 	Luna = tgrid.MakeEvent(/datum/travevent/ship/Luna,rand(2)+5,5-rand(1))
+	var/datum/travevent/met = tgrid.MakeEvent(/datum/travevent/meteor,Luna.loc.x,Luna.loc.y+3)
+	met.yvel = -0.5
 	for(var/i = 1 to 50)
 		var/a = rand(1,trgrdsz)
 		var/b = rand(1,trgrdsz)
@@ -213,7 +215,7 @@ var/datum/travgrid/tgrid= new()
 	amt-=sqrt((rely*rely)+(relx*relx))
 	amt-=density/10
 	amt = amt/10
-	if(!rand(0,amt))
+	if(rand(0,amt)==0)
 		t.Meteor(1)
 		density-=1
 		if(density<1)
@@ -239,7 +241,7 @@ var/datum/travgrid/tgrid= new()
 	user.machine = src
 	var/dat
 	dat+="Map:"
-
+	user << browse_rsc(icon('travel.dmi',"space"),"space.png")
 	for(var/a = min(travy+trgrdvw,trgrdsz),a>=max(travy-trgrdvw,1),a--)
 		dat+="<BR><TR>"
 		for(var/b = max(travx-trgrdvw,1) to min(travx+trgrdvw,trgrdsz))
