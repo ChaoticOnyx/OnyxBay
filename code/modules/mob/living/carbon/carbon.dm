@@ -22,8 +22,8 @@
 	if(.)
 		if(nutrition)
 			nutrition--
-		if(mutations & 32 && m_intent == "run")
-			bodytemperature += 2
+		/*if(mutations & 32 && m_intent == "run")
+			bodytemperature += 2*/
 
 /mob/living/carbon/relaymove(var/mob/user, direction)
 	if(user in stomach_contents)

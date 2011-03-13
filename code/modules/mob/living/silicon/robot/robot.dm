@@ -229,7 +229,7 @@
 		if ((!( yes ) || now_pushing))
 			return
 		now_pushing = 1
-		if(ismob(AM))
+		/*if(ismob(AM))
 			var/mob/tmob = AM
 			if(istype(tmob, /mob/living/carbon/human) && tmob.mutations & 32)
 				if(prob(20))
@@ -237,7 +237,7 @@
 						if(M.client)
 							M << M << "\red <B>[src] fails to push [tmob]'s fat ass out of the way.</B>"
 					now_pushing = 0
-					return
+					return*/
 		now_pushing = 0
 		..()
 		if (!istype(AM, /atom/movable))
