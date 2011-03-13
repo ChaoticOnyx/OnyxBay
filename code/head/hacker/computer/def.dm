@@ -9,7 +9,7 @@ mob/verb/cmd(msg as text)
 	if(!(src.console_device in view(src,1)) && !(src.console_device in src))
 		src.hide_console()
 		return
-	src.comp.command(msg)
+	src.comp.command(msg,src)
 /datum/os/
 	var/name = "ThinkThank"
 	var/datum/dir/pwd
@@ -19,7 +19,7 @@ mob/verb/cmd(msg as text)
 	var/list/users = list()
 	var/stopprog = 0
 //	var/motd = "Welcome to the server"
-	var/mob/owner
+	var/list/owner = list()
 	var/cmdoverride = 0
 	var/input = null
 	var/network = 0
@@ -105,4 +105,5 @@ mob/verb/cmd(msg as text)
 			return Y
 
 /datum/os/proc/Message(var/msg)
-	src.owner << output(msg,"console_output")
+	for(var/mob/A in src.owner)
+		A << output(msg,"console_output")

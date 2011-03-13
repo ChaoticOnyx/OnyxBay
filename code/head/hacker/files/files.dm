@@ -111,11 +111,6 @@ datum/email
 	var/subject
 	var/contains
 	var/from
-datum/dir/file/program/test/Run(var/datum/os/client)
-	client.owner << progname
-	client.owner << "Type in something"
-	var/Y = client.GetInput()
-	client.owner << Y
 datum/dir/file/program/proc/ForwardPacket(var/datum/packet/P)
 	return 0
 datum/dir/file/program/emailclient

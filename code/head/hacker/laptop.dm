@@ -12,10 +12,10 @@ obj/item/weapon/laptop/New()
 	..()
 	address = 0
 	OS = new(src)
-
-	spawn while(1)
-		sleep(10)
-		process()
+	processing_items.Add(src) // Do this
+//	spawn while(1)
+//		sleep(10) / You don't want to do this like this.
+//		process()
 
 obj/item/weapon/laptop/proc/receive_packet(var/obj/machinery/sender, var/datum/function/P)
 	if(P.name == "response")

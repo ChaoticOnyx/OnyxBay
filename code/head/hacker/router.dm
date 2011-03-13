@@ -22,11 +22,6 @@ var/global/first_free_address_range = 1
 /obj/machinery/router/New()
 	..()
 	OS = new(src)
-	spawn while(1)
-		sleep(10)
-		process()
-
-
 	// find things that aren't connected currently
 	for(var/obj/machinery/M in orange(15,src)) if(M.networking && !M.address)
 		connect(M)
@@ -34,8 +29,9 @@ var/global/first_free_address_range = 1
 
 
 /obj/machinery/router/process()
-	if(console_user) if(!(console_user in range(1,src)) || winget(console_user, "console", "is-visible") == "false")
-		console_user.hide_console()
+	if(console_user)
+		if(!(console_user in range(1,src)) || winget(console_user, "console", "is-visible") == "false")
+			console_user.hide_console()
 
 /obj/machinery/router/proc/connect(var/obj/machinery/M)
 	if(M.address) return
