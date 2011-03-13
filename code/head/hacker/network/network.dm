@@ -25,33 +25,33 @@ datum/www/
 	X.hostnames += path
 /datum/www/proc/ConnectTo(var/ip,var/datum/os/client)
 	if(nodes[ip])
-		client.owner << "Connecting to [ip]"
+		client.Message("Connecting to [ip]")
 		sleep(30)
 		var/datum/os/server = nodes[ip]
 		if(server.CanConnect(client))
-			client.owner << "Connection etablished.."
+			client.Message("Connection etablished..")
 			server.OnConnect(client)
 		else
-			client.owner << "Connection refused"
+			client.Message("Connection refused")
 	else
-		client.owner << "Connection attempt failed.."
+		client.Message("Connection attempt failed..")
 		return
 /datum/www/proc/ConnectTo_s(var/ip,var/datum/os/client,user,pass)
 	if(nodes[ip])
-		client.owner << "Connecting to [ip]"
+		client.Message("Connecting to [ip]")
 		sleep(30)
 		var/datum/os/server = nodes[ip]
 		if(server.CanConnect(client,user,pass))
-			client.owner << "Connection etablished.."
+			client.Message("Connection etablished..")
 			server.OnConnect(client)
 		else
-			client.owner << "Connection refused"
+			client.Message("Connection refused")
 	else
-		client.owner << "Connection attempt failed.."
+		client.Message("Connection attempt failed..")
 		return
 /datum/os/proc/CanConnect(var/datum/os/client)
 		client.connected = src
-		src.owner << "Alert: user connected from [client.ip]"
+		Message("Alert: user connected from [client.ip]")
 		return 1
 /datum/packet
 	var/info = "PING"
@@ -79,10 +79,10 @@ datum/os/proc/PacketReceived(var/datum/packet/P)
 		return
 	if(P.info == "ping")
 		new /datum/packet ("pong",P.from,src.ip)
-		src.owner << "Pinged by [P.from]"
+		Message("Pinged by [P.from]")
 		return
 	else if(P.info == "pong")
-		src.owner << "Pong received from [P.from]"
+		Message("Pong received from [P.from]")
 		return
 	for(var/datum/dir/file/program/X in src.tasks)
 		if(!X.is_script)

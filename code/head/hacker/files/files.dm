@@ -189,7 +189,7 @@ P.extrainfo = a list
 datum/os/proc/Compile(path)
 	var/datum/dir/file/F = FindFile(path)
 	if(!F)
-		src.owner << "Cannot find [path]"
+		Message("Cannot find [path]")
 		return
 	var/datum/dir/file/program/P = new(path,src.pwd)
 	P.is_script = 1
@@ -197,4 +197,4 @@ datum/os/proc/Compile(path)
 	P.holder = src.pwd
 	src.pwd.contents += P
 	del(F)
-	src.owner << "[path] has been compiled.."
+	Message("[path] has been compiled..")

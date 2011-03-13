@@ -45,8 +45,8 @@ var/datum/os/server/XYzS = new("0.0.0.0","WWW AUTH","www.com")
 		client.connectedas = src.GetUser("root")
 		return 1
 /datum/os/proc/OnConnect(var/datum/os/client,user,pass)
-	client.owner << src.name
-	client.owner << src.config["motd"]
+	client.Message(src.name)
+	client.Message(src.config["motd"])
 	client.pwd = src.root
 /datum/os/proc/Login(var/datum/os/client,user,pass)
 	if(user && pass)
@@ -58,9 +58,9 @@ var/datum/os/server/XYzS = new("0.0.0.0","WWW AUTH","www.com")
 				//	client.owner << "Aceepted.."
 					return C.name
 		return 0
-	client.owner << "Username:"
+	Message("Username:")
 	var/username = client.GetInput()
-	client.owner << "Password:"
+	Message("Password:")
 	var/password = client.GetInput()
 	if(!username)
 		return
