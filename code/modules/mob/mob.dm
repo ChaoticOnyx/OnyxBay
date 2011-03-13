@@ -173,9 +173,10 @@
 /mob/var/datum/disease/virus = null
 
 //Changeling mode stuff
+/mob/var/changeling_absorbing = 0
+/mob/var/changeling_fakedeath = 0
 /mob/var/changeling_level = 0
 /mob/var/list/absorbed_dna = list()
-/mob/var/changeling_fakedeath = 0
 
 /mob/proc/Cell()
 	set category = "Admin"

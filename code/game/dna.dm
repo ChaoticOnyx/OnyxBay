@@ -434,7 +434,7 @@
 			animation.icon = 'mob.dmi'
 			animation.master = src
 			flick("h2monkey", animation)
-			sleep(48)
+			sleep(48 * tick_multiplier)
 			del(animation)
 
 		var/mob/living/carbon/monkey/O = new /mob/living/carbon/monkey(src)
@@ -495,7 +495,7 @@
 			animation.icon = 'mob.dmi'
 			animation.master = src
 			flick("monkey2h", animation)
-			sleep(48)
+			sleep(48 * tick_multiplier)
 			del(animation)
 
 		var/mob/living/carbon/human/O = new /mob/living/carbon/human( src )
