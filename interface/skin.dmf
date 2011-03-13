@@ -358,7 +358,7 @@ window "console"
 		saved-params = "pos;size;is-minimized;is-maximized"
 		title = ""
 		titlebar = true
-		statusbar = true
+		statusbar = false
 		can-close = true
 		can-minimize = true
 		can-resize = true
@@ -374,13 +374,13 @@ window "console"
 		alpha = 255
 		macro = ""
 		menu = ""
-		on-close = ""
+		on-close = "hide_console"
 	elem "console_input"
 		type = INPUT
 		pos = 0,448
 		size = 640x32
-		anchor1 = none
-		anchor2 = none
+		anchor1 = 0,93
+		anchor2 = 100,100
 		font-family = ""
 		font-size = 0
 		font-style = ""
@@ -402,8 +402,8 @@ window "console"
 		type = OUTPUT
 		pos = 0,0
 		size = 640x448
-		anchor1 = none
-		anchor2 = none
+		anchor1 = 0,0
+		anchor2 = 100,93
 		font-family = ""
 		font-size = 0
 		font-style = ""

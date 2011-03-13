@@ -18,8 +18,8 @@ datum/praser/New(var/datum/os/client,var/text,var/list/notlines,bg=0,isscript)
 datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,isscript=0)
 	if(ismain)
 		client.process += src
-	if(!background)
-		client.boot = 0
+//	if(!background)
+//		client.boot = 0
 	var/list/lines = list()
 	if(notlines)
 		if(notlines.len <= 0)
@@ -103,7 +103,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			var/lname = copytext(A,startloc+1,0)
 			var/loc = lines.Find(A)
 			if(!loc)
-				client.owner << "Error"
+				client.Message("Error")
 				continue
 			//world << lname
 			gotos[lname] = loc
@@ -119,7 +119,8 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			var/startloc = findtext(A,"(",1,0)
 			var/endloc = findtext(A,")",length(A)-1,0)
 			if(!startloc || !endloc)
-				client.owner << "Something is wrong :S"
+				client.Message("Error..")
+				return
 			var/msg = copytext(A,startloc+1,endloc)
 			if(findtext(msg,"\[",1,0))
 				var/loc = findtext(msg,"\[",1,0)
@@ -137,7 +138,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 				var/loc = findtext(msg,"\"",1,0)
 				var/loc2 = findtext(msg,"\"",loc+1,0)
 				output = copytext(msg,loc+1,loc2)
-			client.owner << "[output]"
+			client.Message("[output]")
 		else if(findtext(A,"Lower(",1,0))
 			var/output = null
 			var/variable = null
@@ -145,7 +146,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			var/endloc = findtext(A,")",length(A)-1,0)
 			var/loc
 			if(!startloc || !endloc)
-				client.owner << "Something is wrong :S"
+				client.Message("Error..")
 			var/msg = copytext(A,startloc+1,endloc)
 			if(findtext(msg,"$",1,0))
 				loc = findtext(msg,"$",1,0)
@@ -174,7 +175,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			var/endloc = findtext(A,")",1,0)
 			var/loc
 			if(!startloc || !endloc)
-				client.owner << "Something is wrong :S"
+				client.Message("Errror")
 			var/msg = copytext(A,startloc+1,endloc)
 			if(findtext(msg,"$",1,0))
 				loc = findtext(msg,"$",1,0)
@@ -211,7 +212,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 		else if(findtext(A,"exec(",1,0))
 			var/output
 			var/startloc = findtext(A,"(",1,0)
-			var/endloc = findtext(A,")",length(A)-1,0)
+			var/endloc = findtext(A,")",1,0)
 			var/msg = copytext(A,startloc+1,endloc)
 			if(findtext(msg,"$",1,0))
 				var/locr = findtext(msg,"$",1,0)
@@ -221,6 +222,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 				var/locr = findtext(msg,"\"",1,0)
 				var/loc2r = findtext(msg,"\"",locr+1,0)
 				output = copytext(msg,locr+1,loc2r)
+		//	world << output
 			client.command(output)
 		else if(findtext(A,"length(",1,0))
 			var/locstart = findtext(A,"(",1,0)
@@ -501,7 +503,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 				var/datum/func/F = func[fname]
 				F.Run(client,xy)
 			else
-				client.owner << "no function named [fname]"
+				client.Message("no function named [fname]")
 				//doshit
 //			else if(findtext(A,"!=",1,0)
 				//doshit

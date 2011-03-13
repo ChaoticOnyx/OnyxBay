@@ -9,8 +9,9 @@
 	Message("Boot Complete")
 	Message("Thank you for using ThinkThank")
 	Message("Type help for help")
-/datum/os/proc/command(xy)
-	Message(">>> "+xy)
+/datum/os/proc/command(xy,mob/user,silent=0)
+	if(!silent)
+		Message(">>> "+xy)
 	xy = sanitize(xy)
 	if(cmdoverride)
 		input = xy
@@ -190,7 +191,7 @@
 		if(xad.len == 0)
 			Message("no argument passed")
 			return
-		vi(xad[1])
+		vi(xad[1],user)
 	else if(cmd == "read")
 		if(xad.len == 0)
 			Message("no argument passed")

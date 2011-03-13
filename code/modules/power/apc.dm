@@ -48,6 +48,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 	var/lastused_environ = 0
 	var/lastused_total = 0
 	var/main_status = 0
+	networking = PROCESS_RPCS
 	var/light_consumption = 0
 	var/equip_consumption = 0
 	var/environ_consumption = 0
@@ -148,7 +149,20 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 		else
 			usr << "The cover is closed."
 
-
+/obj/machinery/power/apc/call_function(datum/function/F)
+	if(stat & BROKEN) return
+	if(F.name == "overload")
+		src.overload_lighting()
+		return
+	if (F.name == "breaker")
+		operating = !operating
+		src.update()
+		updateicon()
+	if(F.name == "charge")
+		chargemode = !chargemode
+		if(!chargemode)
+			charging = 0
+			updateicon()
 
 // update the APC icon to show the three base states
 // also add overlays for indicator lights

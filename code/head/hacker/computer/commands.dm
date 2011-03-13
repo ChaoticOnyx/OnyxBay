@@ -251,7 +251,7 @@ datum/os/proc/testpraser(var/N)
 		X.contents += "\n[text]"
 	else
 		Message("Error no file named [N]")
-/datum/os/proc/vi(var/N)
+/datum/os/proc/vi(var/N,mob/user)
 	var/datum/dir/file/X = FindFile(N)
 	if(X)
 		var/perm = X.CheckPermissions(src)
@@ -259,8 +259,7 @@ datum/os/proc/testpraser(var/N)
 			Message("You are not authorized to do that..")
 			return
 		var/text = X.contents
-		text = input(src.owner,"","VI",text) as message
-		X.contents = text
+		X.contents = input(user,"VI","VI",text) as message
 	else
 		if(FindDir(N))
 			Message("[N] is a directory")
@@ -505,7 +504,7 @@ datum/os/proc/Paste()
 	var/total = copy.len
 	for(var/datum/dir/A in copy)
 		if(FindAny(A.name))
-			src.owner << "[A.name] already exists.."
+			Message("[A.name] already exists..")
 			notpasted++
 			continue
 		if(A.type == /datum/dir)
@@ -527,7 +526,7 @@ datum/os/proc/Paste()
 			src.pwd.contents += X
 			pasted++
 	copy = list()
-	src.owner << "[pasted]/[total] were pasted, [notpasted] already existed.."
+	Message("[pasted]/[total] were pasted, [notpasted] already existed..")
 datum/os/proc/CopyFile(var/datum/dir/A,var/datum/dir/B)
 	if(A)
 		if(A.type == /datum/dir)
@@ -557,34 +556,34 @@ datum/os/proc/Connect(ip,user,pass)
 datum/os/proc/BG(path)
 	var/datum/dir/file/program/X = FindProg(path)
 	if(!X)
-		src.owner << "Cannot find file"
+		Message("Cannot find file")
 		return
 	if(connected)
 		connected.tasks += X
 	else
 		tasks += X
-	src.owner << "[path] is now being run in the background"
+	Message("[path] is now being run in the background")
 datum/os/proc/Kill(path)
 	if(connected)
 		for(var/datum/dir/file/program/X in connected.tasks)
 			if(X.name == path)
 				X.Stop(connected)
 				connected.tasks -= X
-				src.owner << "Killed [path]"
+				Message("Killed [path]")
 				return
 	else
 		for(var/datum/dir/file/program/X in src.tasks)
 			if(X.name == path)
 				X.Stop(src)
 				src.tasks -= X
-				src.owner << "Killed [path]"
+				Message("Killed [path]")
 				return
 datum/os/proc/BGLIST()
 	if(connected)
 		if(connected.tasks.len <= 0)
 			return
 		for(var/datum/dir/file/program/X in connected.tasks)
-			src.owner << X.name
+			Message(X.name)
 	else
 		if(tasks.len <= 0)
 			return
@@ -596,15 +595,12 @@ datum/os/proc/process()
 			X.Run(src)
 
 datum/os/proc/Remote(var/address,var/command,var/list/args)
-	if(owner.console_device)
-		var/datum/function/F = new
-		F.name = command
-		if(args.len >= 1) F.arg1 = args[1]
-		if(args.len >= 2) F.arg2 = args[2]
-
-		address = text2ip(address)
-		if(address == -1)
-			Message("Invalid IP supplied.")
-			return
-
-		Message(send_packet(owner.console_device,address, F))
+	var/datum/function/F = new
+	F.name = command
+	if(args.len >= 1) F.arg1 = args[1]
+	if(args.len >= 2) F.arg2 = args[2]
+	address = text2ip(address)
+	if(address == -1)
+		Message("Invalid IP supplied.")
+		return
+	Message(send_packet(src.device,address, F))

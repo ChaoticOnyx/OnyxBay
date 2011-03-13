@@ -46,16 +46,17 @@ var/global/const/PROCESS_RPCS = 2
 /obj/machinery/computer/proc/display_console(mob/user)
 	winshow(user, "console", 1)
 	console_user = user
-
-	operating_system = new/datum/os()
+	if(!operating_system)
+		operating_system = new(src)
 	user.comp = operating_system
-	operating_system.owner = user
+	operating_system.owner += user
 	operating_system.Boot()
 
 /obj/machinery/computer/process()
 	if(console_user && !(console_user in range(1,src)) )
 		winshow(console_user, "console", 0)
 		console_user.comp = null
+		src.operating_system.owner -= console_user
 		console_user = null
 	..()
 
@@ -65,7 +66,7 @@ mob/proc/display_console(var/obj/device)
 		device:console_user = src
 		src.comp = device:OS
 		src.console_device = device
-		device:OS.owner = src
+		device:OS.owner += src
 		if(!device:OS.boot)
 			device:OS.ip = device:address
 			device:OS.Boot()
@@ -74,6 +75,7 @@ mob/proc/hide_console()
 	if(src.console_device)
 		winshow(src, "console", 0)
 		src.comp = null
+		src.console_device:OS:owner -= src
 		src.console_device:console_user = null
 		src.console_device = null
 

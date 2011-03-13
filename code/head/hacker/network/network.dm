@@ -1,12 +1,12 @@
-var/datum/www/www = new()
+var/datum/www/www
 datum/www/
 	var/list/nodes = list()
 
 /datum/www/proc/GetAdress(var/datum/os/X)
-	var/x1 = rand(1,256)
-	var/x2  = rand(1,256)
-	var/x3 = rand(1,256)
-	var/x4 = rand(1,256)
+	var/x1 = rand(1,255)
+	var/x2  = rand(1,255)
+	var/x3 = rand(1,255)
+	var/x4 = rand(1,255)
 	var/ip = "[x1].[x2].[x3].[x4]"
 	var/A = nodes[ip]
 	if(A)
@@ -15,6 +15,19 @@ datum/www/
 	X.ip = ip
 	nodes[ip] = X
 	X.network = 1
+/datum/www/proc/GetAdressv2(var/T)
+	var/ip
+	spawn() while(1)
+		var/x1 = rand(1,256)
+		var/x2  = rand(1,256)
+		var/x3 = rand(1,256)
+		var/x4 = rand(1,256)
+		ip = "[x1].[x2].[x3].[x4]"
+		var/A = nodes[ip]
+		if(!A)
+			break
+	nodes[ip] = T
+	return ip
 /datum/www/proc/RegisterDomain(var/datum/os/X,path)
 	if(!X.ip)
 		return 0
@@ -51,7 +64,7 @@ datum/www/
 		return
 /datum/os/proc/CanConnect(var/datum/os/client)
 		client.connected = src
-		Message("Alert: user connected from [ip2text(client.ip)]")
+		Message("Alert: user connected from [client.ip]")
 		return 1
 /datum/packet
 	var/info = "PING"
@@ -78,7 +91,7 @@ datum/os/proc/PacketReceived(var/datum/packet/P)
 	if(!P)
 		return
 	if(P.info == "ping")
-		new /datum/packet ("pong",P.from,ip2text(src.ip))
+		new /datum/packet ("pong",P.from,src.ip)
 		Message("Pinged by [P.from]")
 		return
 	else if(P.info == "pong")
