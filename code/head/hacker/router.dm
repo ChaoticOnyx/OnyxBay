@@ -10,7 +10,7 @@ var/global/first_free_address_range = 1
 /obj/machinery/router/var/address_range
 /obj/machinery/router/var/list/connected = list()
 /obj/machinery/router/var/mob/console_user
-/obj/machinery/router/var/datum/os/OS = new()
+/obj/machinery/router/var/datum/os/OS
 
 /obj/machinery/router/New()
 	address_range = first_free_address_range
@@ -21,13 +21,14 @@ var/global/first_free_address_range = 1
 
 /obj/machinery/router/New()
 	..()
+	OS = new(src)
 	spawn while(1)
 		sleep(100)
 		process()
 
 /obj/machinery/router/process()
 	// find things that aren't connected currently
-	for(var/obj/machinery/M in oview(15,src)) if(M.networking && !M.address)
+	for(var/obj/machinery/M in orange(15,src)) if(M.networking && !M.address)
 		connect(M)
 		connected += M
 	if(console_user) if(!(console_user in range(1,src)) || winget(usr, "console", "is-visible") == "false")

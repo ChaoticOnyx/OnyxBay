@@ -81,6 +81,13 @@ mob/proc/hide_console()
 		src.console_device = null
 
 proc/send_packet(var/obj/device, var/dest_address, var/datum/function/F)
+	// for laptops, try to find a connection
+	if(istype(device,/obj/item/weapon/laptop))
+		device:address = 0
+		for(var/obj/machinery/router/R in range(20,device.loc))
+			device:address = R.address
+			break
+
 	// first, find out what router belongs to the device, if any at all
 	var/address = device:address
 

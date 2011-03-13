@@ -2,9 +2,15 @@ obj/item/weapon/laptop
 	name = "Laptop"
 	icon = 'laptop.dmi'
 	icon_state = "laptop_0"
-	var/datum/os/OS = new()
+	var/datum/os/OS
 	var/on = 0
 	var/mob/console_user
+	var/address
+
+obj/item/weapon/laptop/New()
+	..()
+	address = 0
+	OS = new(src)
 
 obj/item/weapon/laptop/proc/receive_packet(var/obj/machinery/sender, var/datum/packet/P)
 

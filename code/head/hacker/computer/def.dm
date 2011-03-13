@@ -27,6 +27,7 @@ mob/verb/cmd(msg as text)
 	var/list/copy = list()
 	var/auth = 1
 	var/boot = 0
+	var/obj/device // device that this OS runs on
 	var/ip = null
 	var/list/packets = list()
 	var/list/process = list()
@@ -61,7 +62,7 @@ mob/verb/cmd(msg as text)
 	Paste,Pastes all the files in the copy buffer and clears it
 	vi, Text editor , vi filename
 	"}
-/datum/os/New(mob/own)
+/datum/os/New(obj/dev)
 	pwd = root
 	var/datum/dir/X = new("downloads",src.pwd)
 	var/datum/dir/file/program/test/T = new("testapp",src.pwd)
@@ -76,7 +77,7 @@ mob/verb/cmd(msg as text)
 	X.permissions[user.name] = RW
 	root.permissions[user.name] = RW
 	X.owned = user
-	src.owner = own
+	src.device = dev
 
 /datum/os/proc/GetInput()
 	set background=1
