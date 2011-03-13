@@ -141,11 +141,22 @@
 		if(2.0)
 			if(prob(25))
 				del(src)
-		if(3.0)
-			if(prob(80))
+			else
+				src.forceopen()
+				src.operating = -1
 				var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 				s.set_up(2, 1, src)
 				s.start()
+				flick("door_spark", src)
+
+		if(3.0)
+			if(prob(50))
+				src.forceopen()
+				src.operating = -1
+				var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+				s.set_up(2, 1, src)
+				s.start()
+				flick("door_spark", src)
 
 /obj/machinery/door/proc/update_icon()
 	if(density)

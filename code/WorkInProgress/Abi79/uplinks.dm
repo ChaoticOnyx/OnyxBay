@@ -70,7 +70,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 	var/path_text
 
 	for(var/O in ItemList)
-		O = stringsplit(O, " (")
+		O = stringsplit(O, ":")
 
 		path_text = O[1]
 		cost = text2num(O[2])
@@ -80,7 +80,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 
 		path_obj = text2path(path_text)
 		item = new path_obj()
-		name = item:name
+		name = O[3]
 		del item
 
 		src.menu_message += "<A href='byond://?src=\ref[src];buy_item=[path_text];cost=[cost]'>[name]</A> ([cost])<BR>"
