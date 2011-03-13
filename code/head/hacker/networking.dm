@@ -97,7 +97,6 @@ proc/send_packet(var/obj/device, var/dest_address, var/datum/function/F)
 			P.destination_id = dest_address
 			P.func = F
 			R.receive_packet(device,P)
-			world << dest_address
 			return "Packet successfully transmitted to router"
 
 	return "Not connected to network."

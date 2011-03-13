@@ -603,7 +603,6 @@ datum/os/proc/Remote(var/address,var/command,var/list/args)
 		if(args.len >= 2) F.arg2 = args[2]
 
 		address = text2ip(address)
-		world << address
 		if(address == -1)
 			Message("Invalid IP supplied.")
 			return
