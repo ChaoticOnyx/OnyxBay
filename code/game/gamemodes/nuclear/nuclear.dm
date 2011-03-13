@@ -116,12 +116,12 @@
 			continue
 
 		if (A.name == "Syndicate-Bomb")
-			var/O = new /obj/item/weapon/syndie/c4explosive(A.loc)
+			new /obj/item/weapon/syndie/c4explosive(A.loc)
 			del(A)
 			continue
 
 		if (A.name == "Syndicate-Bomb-Strong")
-			var/O = new /obj/item/weapon/syndie/c4explosive/heavy(A.loc)
+			new /obj/item/weapon/syndie/c4explosive/heavy(A.loc)
 			del(A)
 			continue
 
@@ -156,8 +156,6 @@ obj/landmark/synbomb/strong
 
 	synd_mob.equip_if_possible(new /obj/item/weapon/storage/backpack(synd_mob), synd_mob.slot_back)
 	synd_mob.equip_if_possible(new /obj/item/weapon/reagent_containers/pill/tox(synd_mob), synd_mob.slot_in_backpack)
-	G.bullets = 7
-	synd_mob.equip_if_possible(G, synd_mob.slot_belt)
 
 /datum/game_mode/nuclear/check_win()
 	if (src.nuke_detonated)
