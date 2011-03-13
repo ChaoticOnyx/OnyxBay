@@ -897,9 +897,9 @@ datum
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
 				M:drowsyness = max(M:drowsyness-5, 0)
-				if(M:paralysis) M:paralysis--
-				if(M:stunned) M:stunned--
-				if(M:weakened) M:weakened--
+				if(M:paralysis) M:paralysis=0
+				if(M:stunned) M:stunned=0
+				if(M:weakened) M:weakened=0
 				..()
 				return
 

@@ -40,6 +40,10 @@
 
 /datum/vote/proc/endvote()
 
+	if(delay_start == 1)
+		world << "<B>The game will start soon.</B>"
+		delay_start = 0
+
 	if(!voting)		// means that voting was aborted by an admin
 		return
 
@@ -65,10 +69,6 @@
 	nextvotetime = world.timeofday + 10*config.vote_delay
 
 	if(mode == 1)
-		if(!ticker)
-			if(delay_start == 1)
-				world << "<B>The game will start soon.</B>"
-				delay_start = 0
 
 		var/wintext = capitalize(winner)
 

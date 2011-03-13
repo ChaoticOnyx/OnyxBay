@@ -5,7 +5,8 @@ var/global/gametime = 0
 var/global/gametime_last_updated
 datum/controller/game_controller
 	var/processing = 1
-	var/lastannounce = 0
+	//var/lastannounce = 0
+	var/tick = 0
 
 	proc
 		setup()
@@ -123,22 +124,30 @@ datum/controller/game_controller
 		if(!processing)
 			return 0
 
+		// keep track of the ticks
+		tick++
+
 		// update the clock
 		// one real-life minute is 100 time-units
 		gametime += (100 / 60) * (world.timeofday - gametime_last_updated) / 10
 		gametime_last_updated = world.timeofday
 		if(gametime > 2200) gametime -= 2200
 
+
 		var/start_time = world.timeofday
 
+
+		/*
 		if (start_time - lastannounce >= 18000)
 			world << "\blue <b>Automatic Announcement:</b>\n \t The forum went down, so we're now at http://whoopshop.com"
-			lastannounce = start_time
+			lastannounce = start_time*/
 
 		//world.keepalive()
-		sleep(1 * tick_multiplier)
-		ticker_debug = "Airprocess"
-		air_master.process()
+		// reduce frequency of the air process
+		if(tick % 5 == 0)
+			sleep(1 * tick_multiplier)
+			ticker_debug = "Airprocess"
+			air_master.process()
 
 		sleep(1 * tick_multiplier)
 		ticker_debug = "Sun calc"

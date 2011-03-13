@@ -13,7 +13,7 @@ proc/CanAnom(var/atom/a as anything)
 	var/can = 1
 	if(istype(a,/mob/living/carbon/human))
 		var/mob/living/carbon/human/m = a
-		if(istype(m.wear_suit,/obj/item/clothing/suit/bio_suit/ano_suit))
+		if(istype(m.wear_suit,/obj/item/clothing/suit/bio_suit/ano_suit) && istype(m.head,/obj/item/clothing/head/bio_hood/ano_hood))
 			can = 0
 	return can
 
@@ -23,13 +23,14 @@ proc/CanAnom(var/atom/a as anything)
 /obj/item/clothing/suit/bio_suit/ano_suit
 	name = "Anomaly Suit"
 	desc = "A bio suit lined with mundanium, protects against anomalies as well as functioning as a bio suit."
-	icon_state = "bio"
-	item_state = "bio_suit"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
-	gas_transfer_coefficient = 0.01
-	permeability_coefficient = 0.01
-	heat_transfer_coefficient = 0.30
-	flags = FPRINT|TABLEPASS|PLASMAGUARD
+	icon_state = "anom_suit"
+	item_state = "anom_suit"
+
+/obj/item/clothing/head/bio_hood/ano_hood
+	name = "Anomaly Hood"
+	desc = "A bio hood lined with mundanium, protects against anomalies as well as functioning as a bio hood."
+	icon_state = "anom_hood"
+	item_state = "anom_hood"
 
 var/list/artifacts = list("/obj/item/weapon/crystal" = 4,
 							"/obj/item/weapon/talkingcrystal" = 2,

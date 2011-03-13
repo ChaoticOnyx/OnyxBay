@@ -54,6 +54,7 @@
 	var/lockdownbyai = 0
 	var/air_locked = 0 //Set if the airlock was locked in an emergency seal.
 	autoclose = 1
+	networking = PROCESS_RPCS
 
 /obj/machinery/door/airlock/command
 	name = "Airlock"
@@ -715,6 +716,40 @@ About the new airlock wires panel:
 	user << browse(t1, "window=airlock")
 	onclose(user, "airlock")
 
+
+/obj/machinery/door/airlock/call_function(datum/function/F)
+	..()
+	if (F.name == "bolts")
+		if (!src.locked)
+			src.locked = 1
+			src.updateUsrDialog()
+		else
+			if(src.arePowerSystemsOn())
+				src.locked = 0
+				src.air_locked = 0
+				src.updateUsrDialog()
+		update_icon()
+	if (F.name == "power")
+		src.loseMainPower()
+	if (F.name == "backup_power")
+		src.loseBackupPower()
+	if (F.name == "electrify")
+		if (src.secondsElectrified==0)
+			src.secondsElectrified = 30
+			spawn(10)
+				//TODO: Move this into process() and make pulsing reset secondsElectrified to 30
+				while (src.secondsElectrified>0)
+					src.secondsElectrified-=1
+					if (src.secondsElectrified<0)
+						src.secondsElectrified = 0
+					src.updateUsrDialog()
+					sleep(10)
+	if (F.name == "open")
+		if (src.density)
+			open()
+	if (F.name == "close")
+		if (!src.density)
+			close()
 
 /obj/machinery/door/airlock/Topic(href, href_list)
 	..()

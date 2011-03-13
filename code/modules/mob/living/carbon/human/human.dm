@@ -816,21 +816,17 @@
 	overlays = null
 
 	// lol
-	var/fat = ""
-	if (mutations & 32)
-		fat = "fat"
-
 	if (mutations & 8)
-		overlays += image("icon" = 'genetics.dmi', "icon_state" = "hulk[fat][!lying ? "_s" : "_l"]")
+		overlays += image("icon" = 'genetics.dmi', "icon_state" = "hulk[!lying ? "_s" : "_l"]")
 
 	if (mutations & 2)
-		overlays += image("icon" = 'genetics.dmi', "icon_state" = "fire[fat][!lying ? "_s" : "_l"]")
+		overlays += image("icon" = 'genetics.dmi', "icon_state" = "fire[!lying ? "_s" : "_l"]")
 
 	if (mutations & 1)
-		overlays += image("icon" = 'genetics.dmi', "icon_state" = "telekinesishead[fat][!lying ? "_s" : "_l"]")
+		overlays += image("icon" = 'genetics.dmi', "icon_state" = "telekinesishead[!lying ? "_s" : "_l"]")
 
 	if (mutantrace)
-		overlays += image("icon" = 'genetics.dmi', "icon_state" = "[mutantrace][fat][!lying ? "_s" : "_l"]")
+		overlays += image("icon" = 'genetics.dmi', "icon_state" = "[mutantrace][!lying ? "_s" : "_l"]")
 		if(face_standing)
 			del(face_standing)
 		if(face_lying)

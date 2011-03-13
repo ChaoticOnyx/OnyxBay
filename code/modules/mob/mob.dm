@@ -173,9 +173,10 @@
 /mob/var/datum/disease/virus = null
 
 //Changeling mode stuff
+/mob/var/changeling_absorbing = 0
+/mob/var/changeling_fakedeath = 0
 /mob/var/changeling_level = 0
 /mob/var/list/absorbed_dna = list()
-/mob/var/changeling_fakedeath = 0
 
 /mob/proc/Cell()
 	set category = "Admin"
@@ -1578,9 +1579,17 @@ mob/verb/turnwest()
 				return
 			if (!( ismob(M) ))
 				return
-			var/t = input("Message:", text("Private message to [M.key]"))  as text
+
+			var/t
+
+			if((usr.client && usr.client.holder) || !(M.client && M.client.holder && M.client.stealth))
+				t = input("Message:", text("Private message to [M.key]"))  as text
+			else
+				t = input("Message:", text("Private message to Administrator"))  as text
+
 			if (!( t ))
 				return
+
 			if (usr.client && usr.client.holder)
 				if(TABBED_PM)
 					M.ctab_message("PM", "\red Admin PM from-<b>[key_name(usr, M, 0)]</b>: [t]")

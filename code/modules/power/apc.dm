@@ -440,6 +440,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 			if(3)
 				t += "<A href='?src=\ref[src];env=1'>Off</A> <A href='?src=\ref[src];env=2'>On</A> <B>Auto (On)</B>"
 
+		t +="<BR>"
 
 		t += "Shielding : "
 		switch(shielding)
