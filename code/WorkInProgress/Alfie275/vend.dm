@@ -315,7 +315,7 @@
 	contents+=new/obj/item/weapon/cigpacket()
 	contents+=new/obj/item/weapon/cigpacket()
 
-
+/*
 /obj/machinery/vending/cigarette/New()
 	spawn(1)
 		new/obj/machinery/vendingm/cigarette(loc)
@@ -329,7 +329,7 @@
 /obj/machinery/vending/coffee/New()
 	spawn(1)
 		new/obj/machinery/vendingm/drink(loc)
-		del src
+		del src*/
 
 
 /obj/machinery/vendingm/prize
