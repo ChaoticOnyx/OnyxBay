@@ -38,23 +38,22 @@
 
 // computers can have a console interaction
 /obj/machinery/var/mob/console_user
-/obj/machinery/var/datum/os/operating_system
+/obj/machinery/var/datum/os/operating_system = new()
 
 /obj/machinery/proc/display_console(mob/user)
 	winshow(user, "console", 1)
 	console_user = user
 
-	operating_system = new/datum/os()
 	user.comp = operating_system
-	showdinow()
 	operating_system.owner = user
-	showdinow(user,blah)
-	operating_system.boot()
+	if(!operating_system.boot)
+		operating_system.Boot()
 
 /obj/machinery/process()
 	if( !(console_user in range(1,src)) )
 		winshow(console_user, "console", 0)
 		console_user.comp = null
+		operating_system.owner = null
 		console_user = null
 	..()
 

@@ -98,4 +98,4 @@ mob/verb/cmd(msg as text)
 			return Y
 
 /datum/os/proc/Message(var/msg)
-	src.owner << output(msg,"console")
+	src.owner << output(msg,"console_output")

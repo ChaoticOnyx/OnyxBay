@@ -26,8 +26,6 @@ datum/os/server/New(ips,names,hostnamex)
 	users += F
 datum/os/server/Boot()
 	..()
-var/datum/os/server/SERVERS = new("10.10.10.10","THINLINK INC","thinlink.net")
-var/datum/os/server/XYzS = new("0.0.0.0","WWW AUTH","www.com")
 /datum/os/CanConnect(var/datum/os/client,user,pass)
 	if(src.auth == 1)
 		var/X = Login(client,user,pass)
