@@ -498,16 +498,16 @@
 	for(var/obj/item/I in src)
 		if(I.contaminated) toxloss += vsc.plc.CONTAMINATION_LOSS
 
-	if(nutrition > 400 && !(mutations & 32))
+	/*if(nutrition > 400 && !(mutations & 32))
 		if(prob(5 + round((nutrition - 200) / 2)))
 			src << "\red You suddenly feel blubbery!"
 			mutations |= 32
-			update_body()
-	if (nutrition < 100 && mutations & 32)
+			update_body()*/
+	/*if (nutrition < 100 && mutations & 32)
 		if(prob(round((50 - nutrition) / 100)))
 			src << "\blue You feel fit again!"
 			mutations &= ~32
-			update_body()
+			update_body()*/
 	if (nutrition > 0)
 		nutrition--
 

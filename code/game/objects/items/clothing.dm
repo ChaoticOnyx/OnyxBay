@@ -102,11 +102,16 @@ DEATH COMMANDO GAS MASK
 				src.process()
 	else if(istype(W, /obj/item/weapon/zippo) && W:lit)
 		if(src.lit == 0)
+			var/cool = "Damn they're cool."
+			if(istype(W, /obj/item/weapon/zippo/lighter))
+				cool = "Now that's a bland lighter!"
+
 			src.lit = 1
 			src.icon_state = "cigon"
 			src.item_state = "cigon"
+
 			for(var/mob/O in viewers(user, null))
-				O.show_message(text("\red With a single flick of his wrist, [] smoothly lights his cigarette with his []. Damn they're cool.", user, W), 1)
+				O.show_message("\red With a single flick of his wrist, [user] smoothly lights his cigarette with his [W]. [cool]", 1)
 			spawn() //start fires while it's lit
 				src.process()
 
