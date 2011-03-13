@@ -1,6 +1,4 @@
-#define R 1
-#define W 2
-#define RW 3
+
 /datum/os/proc/FindDir(var/N)
 	for(var/datum/dir/D in src.pwd.contents)
 		if(D.name == N && D.type == /datum/dir)
@@ -168,10 +166,7 @@
 			var/X = copytext(N,1,loc1)
 			N = copytext(N,loc1+1,0)
 			D += X
-		var/count = 0
 		for(var/A in D)
-			count++
-		//	world << count
 			src.pwd = start
 			start = FindDir(A)
 			Message("moved into [start.name]")
@@ -500,6 +495,7 @@ datum/os/proc/Copy(Y)
 	if(X)
 		copy += X
 		src.owner << "Added [X.name] into the copy list"
+
 datum/os/proc/Paste()
 	if(copy.len <= 0)
 		src.owner << "Nothing to paste.."
@@ -598,13 +594,3 @@ datum/os/proc/process()
 	for(var/datum/dir/file/program/X in src.tasks)
 		if(!X.running)
 			X.Run(src)
-world/proc/Tick()
-	sleep(10)
-	for(var/mob/M)
-		M.comp.process()
-	sleep(10)
-	Tick()
-world/New()
-	..()
-	Tick()
-	return
