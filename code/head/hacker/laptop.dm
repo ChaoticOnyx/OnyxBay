@@ -12,7 +12,13 @@ obj/item/weapon/laptop/New()
 	address = 0
 	OS = new(src)
 
-obj/item/weapon/laptop/proc/receive_packet(var/obj/machinery/sender, var/datum/packet/P)
+	spawn while(1)
+		sleep(10)
+		process()
+
+obj/item/weapon/laptop/proc/receive_packet(var/obj/machinery/sender, var/datum/function/P)
+	if(P.name == "response")
+		OS.receive_message(P.arg1)
 
 obj/item/weapon/laptop/proc/updateicon()
 	icon_state = "laptop_[on]"
@@ -26,8 +32,5 @@ obj/item/weapon/laptop/attack_self(mob/user as mob)
 		return
 		// DO MORE SHIT HERE
 obj/item/weapon/laptop/process()
-	if(!(console_user in range(1,src)))
-		console_user.comp = null
-		console_user.console_device = null
-		OS.owner = null
-		console_user = null
+	if(console_user) if(!(console_user in range(1,src.loc)) || winget(console_user, "console", "is-visible") == "false")
+		console_user.hide_console()

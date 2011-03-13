@@ -12,6 +12,9 @@
 		arg4 = null
 		arg5 = null
 
+		source_id = 0
+		destination_id = 0
+
 	proc/get_args()
 		var/list/rval = list()
 		if(arg1 == null) return rval
@@ -25,12 +28,6 @@
 		if(arg5 == null) return rval
 		rval += arg5
 
-/datum/message
-	var
-		datum/function/func
-		source_id = 0
-		destination_id = 0
-
 var/global/const/PROCESS_RPCS = 2
 /obj/machinery/var/networking = 0 // set to 1 if this object should be sent messages
 								  // set to 2 if the received RPCs should be directly called
@@ -38,9 +35,9 @@ var/global/const/PROCESS_RPCS = 2
 
 /obj/machinery/proc/call_function(datum/function/F)
 
-/obj/machinery/proc/receive_packet(var/obj/machinery/sender, var/datum/message/P)
+/obj/machinery/proc/receive_packet(var/obj/machinery/sender, var/datum/function/P)
 	if(networking == PROCESS_RPCS)
-		call_function(P.func)
+		call_function(P)
 
 // computers can have a console interaction
 /obj/machinery/computer/var/mob/console_user
@@ -99,11 +96,9 @@ proc/send_packet(var/obj/device, var/dest_address, var/datum/function/F)
 
 	for(var/obj/machinery/router/R in world)
 		if(R.address_range == router)
-			var/datum/message/P = new/datum/message()
-			P.source_id = address
-			P.destination_id = dest_address
-			P.func = F
-			R.receive_packet(device,P)
+			F.source_id = address
+			F.destination_id = dest_address
+			spawn R.receive_packet(device,F)
 			return "Packet successfully transmitted to router"
 
 	return "Not connected to network."

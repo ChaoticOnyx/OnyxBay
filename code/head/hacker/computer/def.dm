@@ -88,6 +88,8 @@ mob/verb/cmd(msg as text)
 	src.input = null
 	src.cmdoverride = 0
 	return xy
+/datum/os/proc/receive_message(message)
+	Message(message)
 /datum/dir/proc/CheckPermissions(var/datum/os/client)
 	if(!client.connected)
 		var/Y = src.permissions[client.user.name]

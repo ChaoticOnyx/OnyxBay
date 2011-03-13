@@ -23,15 +23,18 @@ var/global/first_free_address_range = 1
 	..()
 	OS = new(src)
 	spawn while(1)
-		sleep(100)
+		sleep(10)
 		process()
 
-/obj/machinery/router/process()
+
 	// find things that aren't connected currently
 	for(var/obj/machinery/M in orange(15,src)) if(M.networking && !M.address)
 		connect(M)
 		connected += M
-	if(console_user) if(!(console_user in range(1,src)) || winget(usr, "console", "is-visible") == "false")
+
+
+/obj/machinery/router/process()
+	if(console_user) if(!(console_user in range(1,src)) || winget(console_user, "console", "is-visible") == "false")
 		console_user.hide_console()
 
 /obj/machinery/router/proc/connect(var/obj/machinery/M)
@@ -40,8 +43,24 @@ var/global/first_free_address_range = 1
 	M.address = address_range << 8
 	M.address |= first_free_address
 	first_free_address += 1
+/obj/machinery/router/call_function(var/datum/function/F)
+	if(F.name == "who")
+		var/datum/function/R = new()
+		R.name = "response"
+		R.arg1 = ""
+		for(var/obj/machinery/M in connected)
+			R.arg1 += "[ip2text(M.address)]\t[M.name]\n"
+		R.source_id = address
+		R.destination_id = F.source_id
+		receive_packet(src, R)
+	if(F.name == "response")
+		OS.receive_message(F.arg1)
 
-/obj/machinery/router/receive_packet(var/obj/machinery/sender, var/datum/message/P)
+/obj/machinery/router/receive_packet(var/obj/machinery/sender, var/datum/function/P)
+	if(P.destination_id == src.address)
+		call_function(P)
+		return
+
 	// shift 3 bytes to the right to get the address range
 	var/router = P.destination_id >> 8
 	// if the destination is connected to this router, send to the destination

@@ -507,7 +507,6 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 				//doshit
 		continue
 	if(isscript)
-		world<< ":D"
 		if(!client.connected)
 			isscript:Stop(client)
 		else
