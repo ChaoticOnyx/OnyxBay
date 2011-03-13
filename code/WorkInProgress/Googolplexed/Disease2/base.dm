@@ -72,6 +72,7 @@
 	if(!M.virus2)
 		M.virus2 = new /datum/disease2/disease
 		M.virus2.makerandom()
+		M.virus2.infectionchance = 1
 
 /proc/infect_mob_random_greater(var/mob/living/carbon/M)
 	if(!M.virus2)
@@ -184,10 +185,13 @@
 		if(mob.radiation > 50)
 			if(prob(1))
 				majormutate()
-		if(mob.reagents.has_reagent("spaceacillin") && prob(80))
+		if(mob.reagents.has_reagent("spaceacillin"))
 			mob.reagents.remove_reagent("spaceacillin",1)
 			return
-		if(prob(clicks/(20*stage)) && stage != 4)
+		if(prob(clicks/(20*stage)))
+			if(stage == 4)
+				mob.virus2 = null
+				del src
 			stage++
 			clicks = 0
 		for(var/datum/disease2/effectholder/e in effects)
