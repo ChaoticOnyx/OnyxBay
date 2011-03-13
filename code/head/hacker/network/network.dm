@@ -51,7 +51,7 @@ datum/www/
 		return
 /datum/os/proc/CanConnect(var/datum/os/client)
 		client.connected = src
-		Message("Alert: user connected from [client.ip]")
+		Message("Alert: user connected from [ip2text(client.ip)]")
 		return 1
 /datum/packet
 	var/info = "PING"
@@ -78,7 +78,7 @@ datum/os/proc/PacketReceived(var/datum/packet/P)
 	if(!P)
 		return
 	if(P.info == "ping")
-		new /datum/packet ("pong",P.from,src.ip)
+		new /datum/packet ("pong",P.from,ip2text(src.ip))
 		Message("Pinged by [P.from]")
 		return
 	else if(P.info == "pong")

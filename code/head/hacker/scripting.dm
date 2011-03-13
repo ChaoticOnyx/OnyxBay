@@ -41,7 +41,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			lines += Y
 		sleep(1)
 	gohere
-	var1["os_ip"] = client.ip
+	var1["os_ip"] = ip2text(client.ip)
 	var1["os_user"] = client.user.name
 	if(client.connected)
 		var1["os_isconnected"] = 1
@@ -627,9 +627,9 @@ datum/praser/proc/SetVar(A)
 			T[listnum] = output
 datum/os/proc/GetIP()
 	if(connected)
-		return connected.ip
+		return ip2text(connected.ip)
 	else
-		return src.ip
+		return ip2text(src.ip)
 
 
 
@@ -667,7 +667,7 @@ datum/func/sendpacket/Run(var/datum/os/client,var/list/args)
 	var/label = args[2]
 	args -= label
 	args -= too
-	new /datum/packet (label,too,client.ip,args)
+	new /datum/packet (label,too,ip2text(client.ip),args)
 	return
 /*
 	var/datum/dir/file/F = FindFile(FY)

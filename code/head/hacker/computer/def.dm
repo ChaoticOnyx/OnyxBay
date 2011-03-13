@@ -3,8 +3,12 @@ var/global/const/W = 2
 var/global/const/RW = 3
 mob
 	var/datum/os/comp
+	var/obj/console_device
 mob/verb/cmd(msg as text)
 	set hidden = 1
+	if(!(src.console_device in view(src,1)) && !(src.console_device in src))
+		src.hide_console()
+		return
 	src.comp.command(msg)
 /datum/os/
 	var/name = "ThinkThank"

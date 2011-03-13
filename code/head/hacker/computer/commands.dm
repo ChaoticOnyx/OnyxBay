@@ -383,12 +383,12 @@ datum/os/proc/testpraser(var/N)
 	X.holder.contents += X
 /datum/os/proc/IpConfig()
 	if(connected)
-		Message("IP:[connected.ip]")
+		Message("IP:[ip2text(connected.ip)]")
 		if(connected.hostnames.len >= 1)
 			for(var/A in connected.hostnames)
 				src.owner << "HOSTNAME:[A]"
 	else
-		Message("IP:[src.ip]")
+		Message("IP:[ip2text(src.ip)]")
 		if(hostnames.len >= 1)
 			for(var/A in hostnames)
 				Message("HOSTNAME:[A]")
@@ -594,3 +594,18 @@ datum/os/proc/process()
 	for(var/datum/dir/file/program/X in src.tasks)
 		if(!X.running)
 			X.Run(src)
+
+datum/os/proc/Remote(var/address,var/command,var/list/args)
+	if(owner.console_device)
+		var/datum/function/F = new
+		F.name = command
+		if(args.len >= 1) F.arg1 = args[1]
+		if(args.len >= 2) F.arg2 = args[2]
+
+		address = text2ip(address)
+		world << address
+		if(address == -1)
+			Message("Invalid IP supplied.")
+			return
+
+		Message(send_packet(owner.console_device,address, F))

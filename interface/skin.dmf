@@ -359,7 +359,7 @@ window "console"
 		title = ""
 		titlebar = true
 		statusbar = true
-		can-close = true
+		can-close = false
 		can-minimize = true
 		can-resize = true
 		is-pane = false

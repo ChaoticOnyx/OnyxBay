@@ -4,13 +4,13 @@
 	Message("Booting...")
 	sleep(10)
 	Message("Starting eth0 interface..")
-	www.GetAdress(src)
-	Message("IP:[src.ip]")
+	Message("IP:[ip2text(src.ip)]")
 	src.boot = 1
 	Message("Boot Complete")
 	Message("Thank you for using ThinkThank")
 	Message("Type help for help")
 /datum/os/proc/command(xy)
+	Message(">>> "+xy)
 	xy = sanitize(xy)
 	if(cmdoverride)
 		input = xy
@@ -108,7 +108,7 @@
 			return
 		var/info = xad[1]
 		var/too = xad[2]
-		new /datum/packet (info,too,src.ip)
+		new /datum/packet (info,too,ip2text(src.ip))
 	else if(cmd == "compile")
 		if(xad.len < 1 )
 			Message("No arguments passed")
@@ -141,9 +141,9 @@
 		if(connected)
 			if(istype(connected,/datum/os/server))
 				connected:clients -= src
-			Message("You have disconnected from [connected.ip]")
+			Message("You have disconnected from [ip2text(connected.ip)]")
 			if(src.connected.owner)
-				src.connected.owner << "[src.ip] has disconnected."
+				src.connected.owner << "[ip2text(src.ip)] has disconnected."
 			src.connected = null
 			src.connectedas = null
 			src.pwd = src.root
@@ -231,6 +231,13 @@
 			Message("no argument passed")
 			return
 		Kill(xad[1])
+	else if(cmd == "remote")
+		if(xad.len < 2)
+			Message("not enough arguments, Usage: remote ip message \[args\]")
+		else if(xad.len == 2)
+			Remote(xad[1],xad[2], list() )
+		else
+			Remote(xad[1],xad[2],xad.Copy(3,xad.len+1) )
 //	else if(add
 	else
 		Message("Command not reconigzed")

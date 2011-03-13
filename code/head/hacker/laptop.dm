@@ -5,23 +5,23 @@ obj/item/weapon/laptop
 	var/datum/os/OS = new()
 	var/on = 0
 	var/mob/console_user
+
+obj/item/weapon/laptop/proc/receive_packet(var/obj/machinery/sender, var/datum/packet/P)
+
 obj/item/weapon/laptop/proc/updateicon()
 	icon_state = "laptop_[on]"
 obj/item/weapon/laptop/attack_self(mob/user as mob)
 	if(!on)
-		winshow(user, "console", 1)
 		on = 1
-		console_user = user
-		user.comp = OS
-		OS.owner = user
-		OS.Boot()
+		user.display_console(src)
 	else
-		winshow(user, "console", 0)
+		user.hide_console()
 		on = 0
 		return
 		// DO MORE SHIT HERE
 obj/item/weapon/laptop/process()
-	if(!console_user in range(1,src))
+	if(!(console_user in range(1,src)))
 		console_user.comp = null
+		console_user.console_device = null
 		OS.owner = null
 		console_user = null
