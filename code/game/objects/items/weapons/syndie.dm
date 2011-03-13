@@ -13,8 +13,8 @@
 	desc = "A mysterious package."
 	w_class = 3
 
-	var/power = 2.0
-	var/size = "small"
+	var/power = 2.0  /*Size of the explosion.*/
+	var/size = "small"  /*Used for the icon, this one will make c-4small_0 for the off state.*/
 
 /obj/item/weapon/syndie/c4explosive/heavy
 	icon_state = "c-4large_0"
@@ -31,7 +31,7 @@
 /obj/item/weapon/syndie/c4explosive/proc/detonate()
 	icon_state = "c-4[size]_1"
 	spawn(50*tick_multiplier)
-	explosion(src.loc, power, power*1.5, power*2, power*3, power*3)
+	explosion(get_turf(src), power, power*1.5, power*2, power*3, power*3)
 
 
 /*Detonator, disguised as a lighter*/
@@ -45,6 +45,7 @@
 	w_class = 1
 
 	var/obj/item/weapon/syndie/c4explosive/bomb
+	var/pr_open = 0  /*Is the "What do you want to do?" prompt open?*/
 
 /obj/item/weapon/syndie/c4detonator/attack_self(mob/user as mob)
 	switch(src.icon_state)
@@ -53,13 +54,16 @@
 			user << "You flick open the lighter."
 
 		if("c-4detonator_1")
-			switch(alert(user, "What would you like to do?", "Lighter", "Press the button.", "Close the lighter."))
-				if("Press the button.")
-					user << "\red You press the button."
-					flick("c-4detonator_click", src)
-					if(src.bomb)
-						src.bomb.detonate()
+			if(!pr_open)
+				pr_open = 1
+				switch(alert(user, "What would you like to do?", "Lighter", "Press the button.", "Close the lighter."))
+					if("Press the button.")
+						user << "\red You press the button."
+						flick("c-4detonator_click", src)
+						if(src.bomb)
+							src.bomb.detonate()
 
-				if("Close the lighter.")
-					src.icon_state = "c-4detonator_0"
-					user << "You close the lighter."
+					if("Close the lighter.")
+						src.icon_state = "c-4detonator_0"
+						user << "You close the lighter."
+				pr_open = 0
