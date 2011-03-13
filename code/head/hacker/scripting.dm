@@ -242,7 +242,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			var/locstart = findtext(A,"(",1,0)
 			var/locend = findtext(A,")",1,0)
 			var/msg = copytext(A,locstart+1,locend)
-			var/locI = lines.Find(A,1,0)
+		//	var/locI = lines.Find(A,1,0)
 			var/test = 1
 			var/count = countglobal +1
 			var/list/iflist = list()
@@ -631,30 +631,9 @@ datum/os/proc/GetIP()
 	else
 		return src.ip
 
-proc/sanitize(var/t)
-	t = copytext(t,1,0)
-	var/index = findtext(t, "<")
-	while(index)
-		t = copytext(t, 1, index) + copytext(t, index+1)
-		index = findtext(t, "<")
-	index = findtext(t, ">")
-	while(index)
-		t = copytext(t, 1, index) + copytext(t, index+1)
-		index = findtext(t, ">")
-	return t
 
-proc/replacetext(haystack, needle, replace)
-	if(!haystack || !needle || !replace)
-		return
-	var
-		needleLen = length(needle)
-		replaceLen = length(replace)
-		pos = findtext(haystack, needle)
-	while(pos)
-		haystack = copytext(haystack, 1, pos) + \
-			replace + copytext(haystack, pos+needleLen)
-		pos = findtext(haystack, needle, pos+replaceLen)
-	return haystack
+
+
 
 datum/func
 	var/name = "func"

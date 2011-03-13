@@ -1,7 +1,4 @@
 
-#define R 1
-#define W 2
-#define RW 3
 
 /datum/os/proc/Boot()
 	src.owner << "Booting..."
@@ -248,11 +245,7 @@
 	else
 		src.owner << "Command not reconigzed"
 
-/proc/reverselist(var/list/input)
-	var/list/output = new/list()
-	for(var/A in input)
-		output += A
-	return output
+
 /datum/os/proc/GetUser(var/N)
 	for(var/datum/user/U in users)
 		if(U.name == N)
