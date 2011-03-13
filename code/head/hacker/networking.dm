@@ -38,13 +38,38 @@
 
 // computers can have a console interaction
 /obj/machinery/var/mob/console_user
+/obj/machinery/var/datum/os/operating_system
 
 /obj/machinery/proc/display_console(mob/user)
 	winshow(user, "console", 1)
 	console_user = user
 
+	operating_system = new/datum/os()
+	user.comp = operating_system
+	showdinow()
+	operating_system.owner = user
+	showdinow(user,blah)
+	operating_system.boot()
+
 /obj/machinery/process()
 	if( !(console_user in range(1,src)) )
 		winshow(console_user, "console", 0)
+		console_user.comp = null
 		console_user = null
 	..()
+
+/obj/machinery/computer/console
+	name = "Computer Console"
+	icon = 'computer.dmi'
+	icon_state = "console"
+
+
+/obj/machinery/computer/console/attack_ai(var/mob/user as mob)
+	return src.attack_hand(user)
+
+/obj/machinery/computer/curer/attack_hand(var/mob/user as mob)
+	if(..())
+		return
+	if(!console_user)
+		src.display_console(user)
+		return 1

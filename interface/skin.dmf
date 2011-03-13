@@ -1165,7 +1165,7 @@ window "browserwindow"
 window "infowindow"
 	elem "infowindow"
 		type = MAIN
-		pos = none
+		pos = 281,0
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -1204,7 +1204,7 @@ window "infowindow"
 	elem "info"
 		type = INFO
 		pos = 0,0
-		size = 0x0
+		size = 640x498
 		anchor1 = 0,0
 		anchor2 = 100,100
 		font-family = ""
