@@ -574,9 +574,9 @@ mob/verb/turnwest()
 				if (state < 3)
 					if(istype(affecting, /mob/living/carbon/human))
 						var/mob/living/carbon/human/H = affecting
-						if(H.mutations & 32)
+						/*if(H.mutations & 32)
 							assailant << "\blue You can't strangle [affecting] through all that fat!"
-							return
+							return*/
 						for(var/obj/item/clothing/C in list(H.head, H.wear_suit, H.wear_mask, H.w_uniform))
 							if(C.body_parts_covered & HEAD)
 								assailant << "\blue You have to take off [affecting]'s [C.name] first!"
@@ -630,7 +630,7 @@ mob/verb/turnwest()
 			s_click(hud1)
 		return
 	if(M == assailant && state >= 2)
-		if( ( ishuman(user) && (user.mutations & 32) && ismonkey(affecting) ) || ( isalien(user) && iscarbon(affecting) ) )
+		if( ( ishuman(user) /*&& (user.mutations & 32)*/ && ismonkey(affecting) ) || ( isalien(user) && iscarbon(affecting) ) )
 			var/mob/living/carbon/attacker = user
 			for(var/mob/N in viewers(user, null))
 				if(N.client)
