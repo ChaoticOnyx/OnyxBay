@@ -35,6 +35,10 @@
 	set category = "Changeling"
 	set name = "Absorb DNA"
 
+	if(usr.changeling_absorbing)
+		usr << "\red We are already absorbing a creature."
+		return
+
 	if(usr.stat)
 		usr << "\red Not when we are incapacitated."
 		return
@@ -57,9 +61,11 @@
 	var/mob/living/carbon/human/T = M
 
 	usr << "\blue This creature is compatible. We must hold still..."
+	usr.changeling_absorbing = 1
 
 	if (!do_mob(usr, T, 200))
 		usr << "\red Our absorption of [T] has been interrupted!"
+		usr.changeling_absorbing = 0
 		return
 
 	usr << "\blue We extend a proboscis."
@@ -67,6 +73,7 @@
 
 	if (!do_mob(usr, T, 200))
 		usr << "\red Our absorption of [T] has been interrupted!"
+		usr.changeling_absorbing = 0
 		return
 
 	usr << "\blue We stab [T] with the proboscis."
@@ -76,6 +83,7 @@
 
 	if (!do_mob(usr, T, 200))
 		usr << "\red Our absorption of [T] has been interrupted!"
+		usr.changeling_absorbing = 0
 		return
 
 	usr << "\blue We have absorbed [T]!"
@@ -88,6 +96,8 @@
 	T.real_name = "Unknown"
 	T.mutations |= 64
 	T.update_body()
+
+	usr.changeling_absorbing = 0
 
 	return
 
@@ -154,7 +164,8 @@
 	sleep(48*tick_multiplier)
 	del(animation)
 
-	var/mob/living/carbon/monkey/O = new /mob/living/carbon/monkey(src)
+	var/mob/living/carbon/monkey/O = new /mob/living/carbon/monkey( usr.loc )
+	O.name = "monkey"
 	O.dna = usr.dna
 	usr.dna = null
 	O.absorbed_dna = usr.absorbed_dna
@@ -163,8 +174,6 @@
 		del(T)
 	for(var/R in usr.organs)
 		del(usr.organs[text("[]", R)])
-
-	O.loc = usr.loc
 
 	O.name = text("monkey ([])",copytext(md5(usr.real_name), 2, 6))
 	O.toxloss = usr.toxloss
@@ -176,14 +185,13 @@
 	for (var/obj/item/weapon/implant/I in implants)
 		I.loc = O
 		I.implanted = O
-		continue
 
 	if(usr.mind)
 		usr.mind.transfer_to(O)
 
 	O.make_lesser_changeling()
 
-	del(usr)
+	del(src.mob)
 	return
 
 /client/proc/changeling_lesser_transform()
