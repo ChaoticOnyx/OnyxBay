@@ -48,8 +48,8 @@ var/global/first_free_address_range = 1
 		var/datum/function/R = new()
 		R.name = "response"
 		R.arg1 = ""
-		for(var/obj/machinery/M in connected)
-			R.arg1 += "[ip2text(M.address)]\t[M.name]\n"
+		for(var/obj/M in connected)
+			R.arg1 += "[ip2text(M:address)]\t[M.name]\n"
 		R.source_id = address
 		R.destination_id = F.source_id
 		receive_packet(src, R)
@@ -65,8 +65,8 @@ var/global/first_free_address_range = 1
 	var/router = P.destination_id >> 8
 	// if the destination is connected to this router, send to the destination
 	if(router == src.address_range)
-		for(var/obj/machinery/M in connected) if(M.address == P.destination_id)
-			M.receive_packet(src, P)
+		for(var/obj/M in connected) if(M:address == P.destination_id)
+			M:receive_packet(src, P)
 	// otherwise, send to the router connected to the destination
 	else
 		for(var/obj/machinery/router/R in world) if(R.address_range == router)

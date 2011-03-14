@@ -6,6 +6,7 @@ obj/item/weapon/laptop
 	var/on = 0
 	var/mob/console_user
 	var/address
+	var/obj/machinery/router/R
 
 obj/item/weapon/laptop/New()
 	..()
