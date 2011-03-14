@@ -478,7 +478,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 		if(cell)
 			t += "Power cell: <B>[round(cell.percent())]%</B>"
 			t += " ([charging ? ( charging == 1 ? "Charging" : "Fully charged" ) : "Not charging"])"
-			t += " ([chargemode ? "<A href='?src=\ref[src];cmode=1'>Off</A> <B>Auto</B>" : "<B>Off</B> <A href='?src=\ref[src];cmode=1'>Auto</A>"])"
+			t += " ([chargemode ? "<A href='?src=\ref[src];function=charge'>Off</A> <B>Auto</B>" : "<B>Off</B> <A href='?src=\ref[src];function=charge'>Auto</A>"])"
 
 		else
 			t += "Power cell: <B><FONT COLOR=red>Not connected.</FONT></B>"
@@ -762,12 +762,6 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 			operating = !operating
 			src.update()
 			updateicon()
-
-		else if (href_list["cmode"])
-			chargemode = !chargemode
-			if(!chargemode)
-				charging = 0
-				updateicon()
 
 		else if (href_list["eqp"])
 			var/val = text2num(href_list["eqp"])
