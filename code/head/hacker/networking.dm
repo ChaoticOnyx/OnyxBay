@@ -87,11 +87,13 @@ proc/send_packet(var/obj/device, var/dest_address, var/datum/function/F)
 			if(device:R)
 				device:R.disconnect(device)
 				device:R = null
+				device:OS.ip = 0
 
 			device:address = 0
 			for(var/obj/machinery/router/R in range(20,device.loc))
 				device:R = R
 				R.connect(device)
+				device:OS.ip = device:address
 				break
 
 	// first, find out what router belongs to the device, if any at all
