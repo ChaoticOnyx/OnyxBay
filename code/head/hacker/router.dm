@@ -41,10 +41,20 @@ var/global/first_free_address_range = 1
 	first_free_address += 1
 /obj/machinery/router/call_function(var/datum/function/F)
 	if(F.name == "who")
+		var/tp = /obj
+		if(F.arg1 == "apc")
+			tp = /obj/machinery/power/apc
+		else if(F.arg1 == "airlock")
+			tp = /obj/machinery/door/airlock
+		else if(F.arg1 == "status_display")
+			tp = /obj/machinery/status_display
+		else if(F.arg1 == "alarm")
+			tp = /obj/machinery/alarm
+
 		var/datum/function/R = new()
 		R.name = "response"
 		R.arg1 = ""
-		for(var/obj/M in connected)
+		for(var/obj/M in connected) if(istype(M,tp))
 			R.arg1 += "[ip2text(M:address)]\t[M.name]\n"
 		R.source_id = address
 		R.destination_id = F.source_id
