@@ -197,6 +197,35 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 				var1[variable] = uppertext(var1[output])
 			else if(output)
 				var1[output] = uppertext (var1[output])
+		else if(findtext(A,"num2text(",1,0))
+			var/output = null
+			var/variable = null
+			var/startloc = findtext(A,"(",1,0)
+			var/endloc = findtext(A,")",1,0)
+			var/loc
+			if(!startloc || !endloc)
+				client.Message("Errror")
+			var/msg = copytext(A,startloc+1,endloc)
+			if(findtext(msg,"$",1,0))
+				loc = findtext(msg,"$",1,0)
+				var/varname
+				if(findtext(msg,",",1,0))
+					var/lock = findtext(msg,",",1,0)
+
+					varname = copytext(msg,loc+1,lock)
+				else
+					varname = copytext(msg,loc+1,endloc)
+				output = varname
+			if(!output)
+				break
+			if(findtext(msg,"$",loc+1,endloc))
+				var/loc2 = findtext(msg,"$",loc+1,0)
+				var/varname1 = copytext(msg,loc2+1,endloc)
+				variable = varname1
+			if(variable && output)
+				var1[variable] = num2text(var1[output])
+			else if(output)
+				var1[output] = num2text (var1[output])
 		else if(findtext(A,"$",1,0) && findtext(A,"=",1,0) && !findtext(A,"if",1,0) && !findtext(A,"+=",1,0) && !findtext(A,"-=",1,0))
 			SetVar(A)
 		else if(findtext(A,"sleep(",1,0))
@@ -257,6 +286,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 				else
 					iflist += X
 				count++
+			lines.Remove(lines[countglobal])
 			lines.Remove(iflist)
 			if(findtext(msg,"==",1,0)) // attempt to find two vars/strings
 				var/v1
@@ -407,7 +437,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			if(findtext(A,"$",1,0))
 				v1 = findtext(A,"$",1,0)
 				v1loc = v1
-				v1nam = v1
+				v1nam = copytext(A,v1+1,locS-1)
 				v1 = copytext(A,v1+1,locS-1)
 				v1 = var1[v1]
 			else if(findtext(A,"\"",1,0))
