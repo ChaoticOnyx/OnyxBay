@@ -83,14 +83,14 @@ mob/verb/closeconsoleV()
 proc/send_packet(var/obj/device, var/dest_address, var/datum/function/F)
 	// for laptops, try to find a connection
 	if(istype(device,/obj/item/weapon/laptop))
-		if(!device:R || get_dist(device:R,device.loc) > 20)
+		if(!device:R || !(device:R in device:get_routers()) )
 			if(device:R)
 				device:R.disconnect(device)
 				device:R = null
 				device:OS.ip = 0
 
 			device:address = 0
-			for(var/obj/machinery/router/R in range(20,device.loc))
+			for(var/obj/machinery/router/R in device:get_routers())
 				device:R = R
 				R.connect(device)
 				device:OS.ip = device:address
@@ -122,7 +122,7 @@ proc/text2ip(var/txt)
 		if(char == ".")
 			parts += current_part
 			current_part = ""
-		else if("1" <= char && char <= "9")
+		else if("0" <= char && char <= "9")
 			current_part += char
 		else
 			return -1

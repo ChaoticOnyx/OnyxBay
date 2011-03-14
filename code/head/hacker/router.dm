@@ -71,12 +71,16 @@ var/global/first_free_address_range = 1
 			tp = /obj/machinery/status_display
 		else if(F.arg1 == "alarm")
 			tp = /obj/machinery/alarm
+		else if(F.arg1 == "router")
+			tp = /obj/machinery/router
 
 		var/datum/function/R = new()
 		R.name = "response"
 		R.arg1 = ""
 		for(var/obj/M in connected) if(istype(M,tp))
 			R.arg1 += "[ip2text(M:address)]\t[M.name]\n"
+		for(var/obj/machinery/router/Ro in world) if(istype(Ro,tp))
+			R.arg1 += "[ip2text(Ro.address)]\tRouter\n"
 		R.source_id = address
 		R.destination_id = F.source_id
 		receive_packet(src, R)
