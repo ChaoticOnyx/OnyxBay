@@ -374,7 +374,7 @@ window "console"
 		alpha = 255
 		macro = ""
 		menu = ""
-		on-close = "hide_console"
+		on-close = "closeconsoleV"
 	elem "console_input"
 		type = INPUT
 		pos = 0,448

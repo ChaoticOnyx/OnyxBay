@@ -20,7 +20,8 @@ obj/item/weapon/laptop/New()
 obj/item/weapon/laptop/proc/receive_packet(var/obj/machinery/sender, var/datum/function/P)
 	if(P.name == "response")
 		OS.receive_message(P.arg1)
-
+	if(P.name == "MSG")
+		OS.receive_message(P.arg1)
 obj/item/weapon/laptop/proc/updateicon()
 	icon_state = "laptop_[on]"
 obj/item/weapon/laptop/attack_self(mob/user as mob)
