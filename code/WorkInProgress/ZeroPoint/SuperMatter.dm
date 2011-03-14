@@ -16,9 +16,9 @@
 
 	var/det = 0
 	var/previousdet = 0
-	var/const/explosiondet = 4500
+	var/const/explosiondet = 4000
 
-	var/const/warningtime = 15 	// Make the CORE OVERLOAD message repeat only every aprox. 10 seconds
+	var/const/warningtime = 25 	// Make the CORE OVERLOAD message repeat only every aprox. 10 seconds
 	var/lastwarning = 0			// Time in 1/10th of seconds since the last sent warning
 
 /obj/machinery/engine/klaxon

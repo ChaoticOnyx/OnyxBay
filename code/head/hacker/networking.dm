@@ -61,36 +61,40 @@ var/global/const/PROCESS_RPCS = 2
 	..()
 
 mob/proc/display_console(var/obj/device)
-	if(!src.console_device)
-		winshow(src, "console", 1)
-		device:console_user = src
-		src.comp = device:OS
-		src.console_device = device
-		device:OS.owner += src
-		if(!device:OS.boot)
-			device:OS.ip = device:address
-			device:OS.Boot()
+	winshow(src, "console", 1)
+	device:console_user = src
+	src.comp = device:OS
+	src.console_device = device
+	device:OS.owner += src
+	if(!device:OS.boot)
+		device:OS.ip = device:address
+		device:OS.Boot()
 
 mob/proc/hide_console()
 	if(src.console_device)
 		winshow(src, "console", 0)
 		src.comp = null
 		src.console_device:OS:owner -= src
-		src.console_device:console_user = null
+		if(console_device:console_user == src)
+			src.console_device:console_user = null
 		src.console_device = null
-
+mob/verb/closeconsoleV()
+	hide_console()
 proc/send_packet(var/obj/device, var/dest_address, var/datum/function/F)
 	// for laptops, try to find a connection
 	if(istype(device,/obj/item/weapon/laptop))
-		if(device:R)
-			device:R.connected -= src
-			device:R = null
-		device:address = 0
-		for(var/obj/machinery/router/R in range(20,device.loc))
-			R.connected += device
-			device:R = R
-			R.connect(device)
-			break
+		if(!device:R || !(device:R in device:get_routers()) )
+			if(device:R)
+				device:R.disconnect(device)
+				device:R = null
+				device:OS.ip = 0
+
+			device:address = 0
+			for(var/obj/machinery/router/R in device:get_routers())
+				device:R = R
+				R.connect(device)
+				device:OS.ip = device:address
+				break
 
 	// first, find out what router belongs to the device, if any at all
 	var/address = device:address
@@ -118,7 +122,7 @@ proc/text2ip(var/txt)
 		if(char == ".")
 			parts += current_part
 			current_part = ""
-		else if("1" <= char && char <= "9")
+		else if("0" <= char && char <= "9")
 			current_part += char
 		else
 			return -1

@@ -11,7 +11,7 @@
 	var/skipprocess = 0 //Experimenting
 	var/alarm_frequency = "1437"
 	var/alarm_zone = null
-
+	networking = 2
 /obj/machinery/autolathe
 	name = "Autolathe"
 	icon_state = "autolathe"

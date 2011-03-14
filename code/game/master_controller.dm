@@ -68,7 +68,9 @@ datum/controller/game_controller
 
 		setupgenetics()
 		setupasteroid()
-
+		setuptitles()
+		SetupAnomalies()
+	//	tgrid.Setup()
 		setupdooralarms()		//Added by Strumpetplaya - Alarm Change
 		BOOKHAND = new()
 		world << "\red \b Setting up the book system..."
@@ -201,7 +203,7 @@ datum/controller/game_controller
 			ticker_debug = "[O] [O.name] processing"
 			O:process()
 
-		tgrid.Tick(0)
+		//tgrid.Tick(0)
 		sleep(-1)
 
 		ticker.process()

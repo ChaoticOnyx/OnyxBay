@@ -6,9 +6,8 @@
 	anchored = 1
 
 var/global/first_free_address_range = 1
-/obj/machinery/router/var/first_free_address = 2
 /obj/machinery/router/var/address_range
-/obj/machinery/router/var/list/connected = list()
+/obj/machinery/router/var/list/connected[255]
 /obj/machinery/router/var/mob/console_user
 /obj/machinery/router/var/datum/os/OS
 
@@ -25,27 +24,63 @@ var/global/first_free_address_range = 1
 	// find things that aren't connected currently
 	for(var/obj/machinery/M in orange(15,src)) if(M.networking && !M.address)
 		connect(M)
-		connected += M
-
+/obj/machinery/router/Del()
+	for(var/obj/machinery/M in connected)
+		disconnect(M)
+	..()
 
 /obj/machinery/router/process()
 	if(console_user)
 		if(!(console_user in range(1,src)) || winget(console_user, "console", "is-visible") == "false")
 			console_user.hide_console()
+	if(OS)
+		for(var/mob/A in OS.owner)
+			if(!(A in range(1,src)) || winget(A, "console", "is-visible") == "false")
+				A.hide_console()
 
 /obj/machinery/router/proc/connect(var/obj/machinery/M)
 	if(M.address) return
+	var/i = 1
+	NewIP:
+	i+=1
+	if(i > 100)
+		M.address = 0
+		return
 	// shift the address range to the left by 3 bytes
 	M.address = address_range << 8
-	M.address |= first_free_address
-	first_free_address += 1
+	M.address |= rand(2, 255)
+
+	if(connected[M.address % 256]) goto NewIP
+
+	connected[M.address % 256] = M
+
+/obj/machinery/router/proc/disconnect(var/obj/machinery/M)
+	if(!M.address) return
+
+	connected[M.address % 256] = null
+	M.address = 0
+
 /obj/machinery/router/call_function(var/datum/function/F)
 	if(F.name == "who")
+		var/tp = /obj
+		if(F.arg1 == "apc")
+			tp = /obj/machinery/power/apc
+		else if(F.arg1 == "airlock")
+			tp = /obj/machinery/door/airlock
+		else if(F.arg1 == "status_display")
+			tp = /obj/machinery/status_display
+		else if(F.arg1 == "alarm")
+			tp = /obj/machinery/alarm
+		else if(F.arg1 == "router")
+			tp = /obj/machinery/router
+
 		var/datum/function/R = new()
 		R.name = "response"
 		R.arg1 = ""
-		for(var/obj/M in connected)
+		for(var/obj/M in connected) if(istype(M,tp))
 			R.arg1 += "[ip2text(M:address)]\t[M.name]\n"
+		for(var/obj/machinery/router/Ro in world) if(istype(Ro,tp))
+			R.arg1 += "[ip2text(Ro.address)]\tRouter\n"
 		R.source_id = address
 		R.destination_id = F.source_id
 		receive_packet(src, R)

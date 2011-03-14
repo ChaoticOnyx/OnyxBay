@@ -599,6 +599,10 @@ datum/os/proc/Remote(var/address,var/command,var/list/args)
 	F.name = command
 	if(args.len >= 1) F.arg1 = args[1]
 	if(args.len >= 2) F.arg2 = args[2]
+	if(address == "localhost")
+		src.device:receive_packet(src.device,F)
+		return
+
 	address = text2ip(address)
 	if(address == -1)
 		Message("Invalid IP supplied.")

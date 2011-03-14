@@ -374,18 +374,18 @@ window "console"
 		alpha = 255
 		macro = ""
 		menu = ""
-		on-close = "hide_console"
+		on-close = "closeconsoleV"
 	elem "console_input"
 		type = INPUT
-		pos = 0,448
-		size = 640x32
+		pos = 0,464
+		size = 640x16
 		anchor1 = 0,93
 		anchor2 = 100,100
 		font-family = ""
 		font-size = 0
 		font-style = ""
 		text-color = #ffffff
-		background-color = #000000
+		background-color = #0a0a0a
 		is-visible = true
 		is-disabled = false
 		is-transparent = false

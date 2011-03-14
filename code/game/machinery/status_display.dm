@@ -28,14 +28,41 @@
 				msg = "The screen states the time until the supply shuttle arrive. \n Time remaining:[time]"
 	usr << msg
 	return
-
+/obj/machinery/status_display/call_function(var/datum/function/F)
+	if(F.name == "location")
+		var/datum/function/R = new()
+		R.name = "response"
+		R.arg1 = "[src] at [src.loc:loc:name]\n"
+		R.source_id = address
+		R.destination_id = F.source_id
+		send_packet(src,F.source_id,R)
+		update()
+	else if(F.arg1)
+		if(F.name == "mode")
+			var/value = mode
+			switch(F.arg1)
+				if("blank")
+					value = 0
+				if("shuttle")
+					value = 1
+				if("msg")
+					value = 2
+				if("alert")
+					value = 3
+				if("supply")
+					value = 4
+			mode = value
+		else if(F.name == "msg")
+			message1 = F.arg1
+			message2 = F.arg2
+			set_message(message1,message2)
 /obj/machinery/status_display
 	icon = 'status_display.dmi'
 	icon_state = "frame"
 	name = "status display"
 	anchored = 1
 	density = 0
-
+	networking = 2
 	var/mode = 1	// 0 = Blank
 					// 1 = Shuttle timer
 					// 2 = Arbitrary message(s)

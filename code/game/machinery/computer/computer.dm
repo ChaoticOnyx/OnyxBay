@@ -22,6 +22,12 @@ Pod/Blast Doors computer
 
 
 	usr.log_m("Used topic [src.name], [dd_list2text(href_list," ")]")
+	if(href_list["function"])
+		var/datum/function/F = new
+		F.name = href_list["function"]
+		F.arg1 = href_list["arg1"]
+		F.arg2 = href_list["arg2"]
+		src.call_function(F)
 	return 0
 
 /obj/machinery/attack_ai(mob/user as mob)
