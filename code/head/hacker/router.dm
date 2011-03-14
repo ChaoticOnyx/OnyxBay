@@ -6,9 +6,8 @@
 	anchored = 1
 
 var/global/first_free_address_range = 1
-/obj/machinery/router/var/first_free_address = 2
 /obj/machinery/router/var/address_range
-/obj/machinery/router/var/list/connected = list()
+/obj/machinery/router/var/list/connected[255]
 /obj/machinery/router/var/mob/console_user
 /obj/machinery/router/var/datum/os/OS
 
@@ -25,10 +24,9 @@ var/global/first_free_address_range = 1
 	// find things that aren't connected currently
 	for(var/obj/machinery/M in orange(15,src)) if(M.networking && !M.address)
 		connect(M)
-		connected += M
 /obj/machinery/router/Del()
 	for(var/obj/machinery/M in connected)
-		M.address = 0
+		disconnect(M)
 	..()
 
 /obj/machinery/router/process()
@@ -42,10 +40,26 @@ var/global/first_free_address_range = 1
 
 /obj/machinery/router/proc/connect(var/obj/machinery/M)
 	if(M.address) return
+	var/i = 1
+	NewIP:
+	i+=1
+	if(i > 100)
+		M.address = 0
+		return
 	// shift the address range to the left by 3 bytes
 	M.address = address_range << 8
-	M.address |= first_free_address
-	first_free_address += 1
+	M.address |= rand(2, 255)
+
+	if(connected[M.address % 256]) goto NewIP
+
+	connected[M.address % 256] = M
+
+/obj/machinery/router/proc/disconnect(var/obj/machinery/M)
+	if(!M.address) return
+
+	connected[M.address % 256] = null
+	M.address = 0
+
 /obj/machinery/router/call_function(var/datum/function/F)
 	if(F.name == "who")
 		var/tp = /obj
