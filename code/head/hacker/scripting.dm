@@ -8,9 +8,22 @@ datum/praser
 	var/list/func = list()
 	var/list/gotos = list()
 	var/list/overflow = list()
+	var/list/ifs = list()
 	var/stop = 0
 	var/ismain= 0
 	var/background=0
+datum/ifs
+	var/list/lines = list()
+	var/var1
+	var/var2
+	var/typek
+	var/datum/praser/P
+datum/ifs/proc/compare(var/datum/os/client)
+	if(type == 1)
+		if(P.var1[var1] == P.var1[var1])
+			P.Prase(client,null,lines,0,1)
+	if(type == 2)
+		return
 datum/praser/New(var/datum/os/client,var/text,var/list/notlines,bg=0,isscript)
 	background=bg
 	spawn() Prase(client,text,notlines,1,isscript)
@@ -273,6 +286,10 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			var/locstart = findtext(A,"(",1,0)
 			var/locend = findtext(A,")",1,0)
 			var/msg = copytext(A,locstart+1,locend)
+			if(ifs[msg])
+				var/datum/ifs/I = ifs[msg]
+				I.compare()
+				continue
 		//	var/locI = lines.Find(A,1,0)
 			var/test = 1
 			var/count = countglobal +1
@@ -286,12 +303,14 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 				else
 					iflist += X
 				count++
-			lines.Remove(lines[countglobal])
+			//lines.Remove(lines[countglobal])
 			lines.Remove(iflist)
 			if(findtext(msg,"==",1,0)) // attempt to find two vars/strings
 				var/v1
+				var/v1nam
 				var/v1loc
 				var/v2
+				var/v2nam
 				if(findtext(msg,"\[",1,0))
 					var/loc = findtext(msg,"\[",1,0)
 					var/loc2 = findtext(msg,"\]",1,0)
@@ -308,6 +327,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 					v1 = findtext(msg,"$",1,0)
 					var/l = findtext(msg," ",v1+1,0)
 					v1loc = v1
+					v1nam = copytext(msg,v1,l)
 					v1 = copytext(msg,v1+1,l)
 					v1 = var1[v1]
 				else if(findtext(msg,"\"",1,0))
@@ -329,16 +349,21 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 					v2 = X[num]
 				else if(findtext(msg,"$",v1loc+1,0))
 					v2 = findtext(msg,"$",v1loc+1,0)
-					var/l = findtext(msg," ",v2+1,0)
-					v2 = copytext(msg,v2+1,l)
+				//	var/l = findtext(msg,")",v2+1,0)
+					v2nam = copytext(msg,v2,0)
+					v2 = copytext(msg,v2+1,0)
 					v2 = var1[v2]
 				else if(findtext(msg,"\"",v1loc+1,0))
 					var/loc1 = findtext(msg,"\"",v1loc+1,0)
 					var/loc2 = findtext(msg,"\"",loc1+1,0)
 					v2 = copytext(msg,loc1+1,loc2)
-				//world << "[v1] == [v2]"
-				if(v1 == v2)
-					src.Prase(client,null,iflist)
+				var/datum/ifs/I = new()
+				I.lines = iflist
+				I.var1 = v1nam
+				I.var2 = v2nam
+				I.typek = 1
+				src.ifs[msg] = I
+				I.compare()
 			else if(findtext(msg,"!=",1,0)) // attempt to find two vars/strings
 				var/v1
 				var/v1loc
