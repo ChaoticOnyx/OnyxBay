@@ -26,12 +26,19 @@ var/global/first_free_address_range = 1
 	for(var/obj/machinery/M in orange(15,src)) if(M.networking && !M.address)
 		connect(M)
 		connected += M
-
+/obj/machinery/router/Del()
+	for(var/obj/machinery/M in connected)
+		M.address = 0
+	..()
 
 /obj/machinery/router/process()
 	if(console_user)
 		if(!(console_user in range(1,src)) || winget(console_user, "console", "is-visible") == "false")
 			console_user.hide_console()
+	if(OS)
+		for(var/mob/A in OS.owner)
+			if(!(A in range(1,src)) || winget(A, "console", "is-visible") == "false")
+				A.hide_console()
 
 /obj/machinery/router/proc/connect(var/obj/machinery/M)
 	if(M.address) return

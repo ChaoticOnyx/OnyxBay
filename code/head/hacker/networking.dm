@@ -61,24 +61,25 @@ var/global/const/PROCESS_RPCS = 2
 	..()
 
 mob/proc/display_console(var/obj/device)
-	if(!src.console_device)
-		winshow(src, "console", 1)
-		device:console_user = src
-		src.comp = device:OS
-		src.console_device = device
-		device:OS.owner += src
-		if(!device:OS.boot)
-			device:OS.ip = device:address
-			device:OS.Boot()
+	winshow(src, "console", 1)
+	device:console_user = src
+	src.comp = device:OS
+	src.console_device = device
+	device:OS.owner += src
+	if(!device:OS.boot)
+		device:OS.ip = device:address
+		device:OS.Boot()
 
 mob/proc/hide_console()
 	if(src.console_device)
 		winshow(src, "console", 0)
 		src.comp = null
 		src.console_device:OS:owner -= src
-		src.console_device:console_user = null
+		if(console_device:console_user == src)
+			src.console_device:console_user = null
 		src.console_device = null
-
+mob/verb/closeconsoleV()
+	hide_console()
 proc/send_packet(var/obj/device, var/dest_address, var/datum/function/F)
 	// for laptops, try to find a connection
 	if(istype(device,/obj/item/weapon/laptop))

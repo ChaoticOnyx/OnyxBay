@@ -407,12 +407,8 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			if(findtext(A,"$",1,0))
 				v1 = findtext(A,"$",1,0)
 				v1loc = v1
-				if(findtext(A," ",v1+1,locS))
-					var/X = findtext(A," ",v1+1,locS)
-					v1 = copytext(A,v1+1,X)
-				else
-					v1 = copytext(A,v1+1,locS-1)
 				v1nam = v1
+				v1 = copytext(A,v1+1,locS-1)
 				v1 = var1[v1]
 			else if(findtext(A,"\"",1,0))
 				var/loc1 = findtext(A,"\"",1,0)
