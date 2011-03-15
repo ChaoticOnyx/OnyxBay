@@ -65,6 +65,15 @@
 	Y.contents += X
 	Message("Moved [X] into [Y]")
 	return
+datum/os/proc/reboot()
+	boot = 0
+	for(var/datum/praser/P in src.process)
+		del(P)
+	Boot()
+datum/os/proc/config(var/N,var/A)
+	if(N == "name")
+		src.name = A
+		Message("Changed network name to [A]")
 /datum/os/proc/Pwd()
 	var/list/dirs = list()
 	if(!connected)

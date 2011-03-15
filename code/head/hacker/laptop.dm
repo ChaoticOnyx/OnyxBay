@@ -49,9 +49,14 @@ obj/item/weapon/laptop/attack_self(mob/user as mob)
 		return
 		// DO MORE SHIT HERE
 obj/item/weapon/laptop/process()
+//	world << "LAPTOP TICK"
 	if(console_user) if(!(console_user in range(1,src.loc)) || winget(console_user.client, "console", "is-visible") == "false")
 		console_user.hide_console()
 	if(OS)
 		for(var/mob/A in OS.owner)
 			if(!(A in range(1,src)) || winget(A.client, "console", "is-visible") == "false")
 				A.hide_console()
+obj/item/weapon/laptop/verb/reboot()
+	set name = "Reboot"
+	set src in view(1)
+	OS.reboot()

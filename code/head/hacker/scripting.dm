@@ -129,7 +129,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			while (test)
 				var/X = lines[count]
 			//	world << lines[count]
-				if(findtext(X,"endf",1,0))
+				if(X == "endf")
 					xlist += X
 					test = 0
 				//	break
@@ -172,7 +172,7 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			var/list/xlist = list()
 			while (test)
 				var/X = lines[count]
-				if(findtext(X,"endi",1,0))
+				if(X == "endi")
 					xlist += X
 					test = 0
 				//	break

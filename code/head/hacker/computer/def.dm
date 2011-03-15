@@ -62,6 +62,12 @@ mob/verb/cmd(msg as text)
 	Paste,Pastes all the files in the copy buffer and clears it
 	vi, Text editor , vi filename
 	"}
+/datum/os/Del()
+	for(var/datum/praser/P in process)
+		del(P)
+	for(var/mob/A in owner)
+		owner -= A
+	..()
 /datum/os/New(obj/dev)
 	pwd = root
 	var/datum/dir/X = new("downloads",src.pwd)

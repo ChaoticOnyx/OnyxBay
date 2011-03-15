@@ -227,13 +227,7 @@
 		air_doors_close(1)
 	else if(F.name == "dealarm")
 		air_doors_open(1)
-	else if(F.name == "location")
-		var/datum/function/R = new()
-		R.name = "response"
-		R.arg1 = "[src] at [alarm_zone]\n"
-		R.source_id = address
-		R.destination_id = F.source_id
-		send_packet(src,F.source_id,R)
+	..()
 
 
 

@@ -10,16 +10,12 @@ var/global/first_free_address_range = 1
 /obj/machinery/router/var/list/connected[255]
 /obj/machinery/router/var/mob/console_user
 /obj/machinery/router/var/datum/os/OS
-
 /obj/machinery/router/New()
 	address_range = first_free_address_range
 	address = address_range << 8
 	address |= 1
-
 	first_free_address_range += 1
-
-/obj/machinery/router/New()
-	..()
+//	processing_items.Add(src) // Do this
 	OS = new(src)
 	// find things that aren't connected currently
 	for(var/obj/machinery/M in orange(15,src)) if(M.networking && !M.address)
@@ -30,12 +26,13 @@ var/global/first_free_address_range = 1
 	..()
 
 /obj/machinery/router/process()
+	world << "router tick"
 	if(console_user)
 		if(!(console_user in range(1,src)) || winget(console_user, "console", "is-visible") == "false")
 			console_user.hide_console()
 	if(OS)
 		for(var/mob/A in OS.owner)
-			if(!(A in range(1,src)) || winget(A, "console", "is-visible") == "false")
+			if(!(A in range(1,src)) || winget(A.client, "console", "is-visible") == "false")
 				A.hide_console()
 
 /obj/machinery/router/proc/connect(var/obj/machinery/M)
@@ -73,12 +70,19 @@ var/global/first_free_address_range = 1
 			tp = /obj/machinery/alarm
 		else if(F.arg1 == "router")
 			tp = /obj/machinery/router
-
+		else if(F.arg1 == "disposal")
+			tp = /obj/machinery/disposal
 		var/datum/function/R = new()
 		R.name = "response"
 		R.arg1 = ""
 		for(var/obj/M in connected) if(istype(M,tp))
-			R.arg1 += "[ip2text(M:address)]\t[M.name]\n"
+			if(istype(M,/obj/item/weapon/laptop))
+				if(M:OS:name != "ThinkThank")
+					R.arg1 += "[ip2text(M:address)]\t[M:OS:name]\n"
+				else
+					R.arg1 += "[ip2text(M:address)]\t[initial(M.name)]\n"
+			else
+				R.arg1 += "[ip2text(M:address)]\t[initial(M.name)]\n"
 		for(var/obj/machinery/router/Ro in world) if(istype(Ro,tp))
 			R.arg1 += "[ip2text(Ro.address)]\tRouter\n"
 		R.source_id = address
@@ -86,6 +90,7 @@ var/global/first_free_address_range = 1
 		receive_packet(src, R)
 	if(F.name == "response")
 		OS.receive_message(F.arg1)
+
 
 /obj/machinery/router/receive_packet(var/obj/machinery/sender, var/datum/function/P)
 	if(P.destination_id == src.address)

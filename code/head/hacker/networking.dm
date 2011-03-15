@@ -32,9 +32,15 @@ var/global/const/PROCESS_RPCS = 2
 /obj/machinery/var/networking = 0 // set to 1 if this object should be sent messages
 								  // set to 2 if the received RPCs should be directly called
 /obj/machinery/var/address = 0
-
+/obj/machinery/var/net_tag
 /obj/machinery/proc/call_function(datum/function/F)
-
+	if(F.name == "location")
+		var/datum/function/R = new()
+		R.name = "response"
+		R.arg1 = "[src] at [src.loc:name]\n"
+		R.source_id = address
+		R.destination_id = F.source_id
+		send_packet(src,F.source_id,R)
 /obj/machinery/proc/receive_packet(var/obj/machinery/sender, var/datum/function/P)
 	if(networking == PROCESS_RPCS)
 		call_function(P)
@@ -53,13 +59,13 @@ var/global/const/PROCESS_RPCS = 2
 	operating_system.Boot()
 
 /obj/machinery/computer/process()
-	if(console_user && !(console_user in range(1,src)) )
-		winshow(console_user, "console", 0)
-		console_user.comp = null
-		src.operating_system.owner -= console_user
-		console_user = null
-	..()
-
+	if(console_user)
+		if(!(console_user in range(1,src)) || winget(console_user, "console", "is-visible") == "false")
+			console_user.hide_console()
+	if(operating_system)
+		for(var/mob/A in operating_system.owner)
+			if(!(A in range(1,src)) || winget(A.client, "console", "is-visible") == "false")
+				A.hide_console()
 mob/proc/display_console(var/obj/device)
 	winshow(src, "console", 1)
 	device:console_user = src

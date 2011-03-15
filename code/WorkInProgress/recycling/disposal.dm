@@ -34,7 +34,19 @@
 			air_contents.volume = 0.125 * CELL_VOLUME
 			update()
 
+	call_function(var/datum/function/F)
+		if(F.name == "pump")
+			if(F.arg1)
+				if(F.arg1 == "off")
+					mode = 0
+				if(F.arg1 == "on")
+					mode = 1
+		if(F.name == "flush")
+			flush = !flush
+			update()
 
+		if(F.name == "eject")
+			eject()
 	// attack by item places it in to disposal
 	attackby(var/obj/item/I, var/mob/user)
 		if(stat & BROKEN)

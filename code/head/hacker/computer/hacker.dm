@@ -57,6 +57,13 @@
 		var/path = xad[1]
 		Copy(path)
 		return
+	else if(cmd == "reboot")
+		reboot()
+	else if(cmd == "config")
+		if(xad.len <= 2)
+			Message("Not enough argument passed")
+			return
+		config(xad[1],xad[2])
 	else if(cmd == "paste")
 		Paste()
 		return
