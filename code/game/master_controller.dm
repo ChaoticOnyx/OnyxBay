@@ -203,7 +203,7 @@ datum/controller/game_controller
 			ticker_debug = "[O] [O.name] processing"
 			O:process()
 
-		//tgrid.Tick(0)
+		tgrid.Tick(0)
 		sleep(-1)
 
 		ticker.process()

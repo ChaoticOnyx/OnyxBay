@@ -19,7 +19,7 @@
 
 	setuptitles()
 	SetupAnomalies()
-//	tgrid.Setup()
+	tgrid.Setup()
 	spawn(30 * tick_multiplier)
 		//EXPERIMENTAL
 		Optimize()
