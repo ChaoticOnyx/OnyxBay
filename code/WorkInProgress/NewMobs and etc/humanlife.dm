@@ -188,8 +188,6 @@
 		if(health <= 20 && prob(1)) spawn(0) emote("gasp")
 
 		//if(!rejuv) oxyloss++
-		if(!reagents.has_reagent("inaprovaline"))
-			oxyloss++
 
 		if(stat != 2)	stat = 1
 		paralysis = max(paralysis, 5)
@@ -576,8 +574,8 @@
 	var/datum/gas_mixture/environment = loc.return_air(1)
 	var/datum/gas_mixture/breath
 	// HACK NEED CHANGING LATER
-	if(health < 0 && !zombie)
-		losebreath++
+	if(health < 0 && !zombie && reagents.has_reagent("inaprovaline"))
+		losebreath+=2
 
 	//var/halfmask = 0
 
@@ -585,7 +583,7 @@
 	//	if(wear_mask.flags & 4)
 	//		halfmask = 1
 
-	if(losebreath > 10) //Suffocating so do not take a breath
+	if(losebreath > 10 || health < 0) //Suffocating so do not take a breath
 		losebreath--
 		if (prob(75)) //High chance of gasping for air
 			spawn emote("gasp")

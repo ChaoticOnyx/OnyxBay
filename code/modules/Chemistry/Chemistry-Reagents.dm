@@ -301,13 +301,13 @@ datum
 
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				M:toxloss += 1.5
+				M:toxloss += 8
 				if(!data) data = 1
 				if(data > 20)
 					//Do Toxin Shit
 					M:toxins_alert = max(M:toxins_alert,1)
 					M:toxloss += 1.5
-				..()
+				holder.remove_reagent(src.id, 1)
 				return
 
 		cyanide
@@ -831,7 +831,11 @@ datum
 			reagent_state = LIQUID
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				if(prob(33)) M.bruteloss++
+				if(istype(M,/mob/living/carbon/human/))
+					var/datum/organ/external/org = pick(M:organs2)
+					org.take_damage(2,0,0,0)
+				else
+					M:bruteloss += 1
 				holder.remove_reagent(src.id, 0.3)
 				return
 
