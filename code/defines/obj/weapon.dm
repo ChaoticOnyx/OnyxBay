@@ -227,7 +227,7 @@
 	force = 5.0
 	throwforce = 7.0
 	item_state = "wrench"
-	w_class = 3.0
+	w_class = 2.0
 	m_amt = 50
 
 /obj/item/weapon/dummy
