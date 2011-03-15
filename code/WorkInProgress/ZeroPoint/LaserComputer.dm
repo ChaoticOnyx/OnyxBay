@@ -5,6 +5,7 @@
 	var/obj/machinery/engine/laser/laser = null
 	icon_state = "atmos"
 	var/id
+	var/advanced = 0
 
 /obj/machinery/computer/lasercon/New()
 	spawn(1)
@@ -55,7 +56,8 @@
 
 
 		t += "Power level:  <A href = '?src=\ref[src];input=-4'>-</A> <A href = '?src=\ref[src];input=-3'>-</A> <A href = '?src=\ref[src];input=-2'>-</A> <A href = '?src=\ref[src];input=-1'>-</A> [add_lspace(laser.power,5)] <A href = '?src=\ref[src];input=1'>+</A> <A href = '?src=\ref[src];input=2'>+</A> <A href = '?src=\ref[src];input=3'>+</A> <A href = '?src=\ref[src];input=4'>+</A><BR>"
-
+		if(advanced)
+			t += "Frequency:  <A href = '?src=\ref[src];freq=-10000'>-</A> <A href = '?src=\ref[src];freq=-1000'>-</A> [add_lspace(laser.freq,5)] <A href = '?src=\ref[src];freq=1000'>+</A> <A href = '?src=\ref[src];freq=10000'>+</A><BR>"
 
 		t += "Output: [laser.on ? "<B>Online</B> <A href = '?src=\ref[src];online=1'>Offline</A>" : "<A href = '?src=\ref[src];online=1'>Online</A> <B>Offline</B> "]<BR>"
 
@@ -100,7 +102,12 @@
 		for(var/obj/machinery/engine/laser/laser in src.laser)
 			laser.on = !laser.on
 			src.updateDialog()
-
+	else if( href_list["freq"] )
+		var/amt = text2num(href_list["freq"])
+		for(var/obj/machinery/engine/laser/laser in src.laser)
+			if(laser.freq+amt>0)
+				laser.freq+=amt
+				src.updateDialog()
 /obj/machinery/computer/lasercon/process()
 	if(!(stat & (NOPOWER|BROKEN)) )
 		use_power(250)

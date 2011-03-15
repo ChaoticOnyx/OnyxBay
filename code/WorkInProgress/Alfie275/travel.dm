@@ -1,16 +1,23 @@
 #define trgrdsz 20
 #define trgrdvw 5
 
+/obj/landmark/mapload/travel
+
 /datum/travgrid
 	var/list/list/datum/travloc/grid[trgrdsz][trgrdsz]
 	var/list/datum/travevent/events = new
 	var/datum/travevent/ship/Luna
+	var/list/messagebacks = new
 
 var/travlocsize = 50
 var/travx
 var/travy
 
 var/datum/travgrid/tgrid= new()
+
+/datum/travgrid/proc/Announce(var/msg)
+	for(var/o in messagebacks)
+		o:tAnnounce(msg)
 
 /datum/travgrid/proc/Setup()
 	for(var/a = 1 to trgrdsz)
@@ -112,7 +119,7 @@ var/datum/travgrid/tgrid= new()
 
 /datum/travevent/proc/Info()
 	var/dat
-	dat += "[name]"
+	dat += "<BR>[name]"
 	dat += "<BR>Center of mass x,y [x],[y]"
 	dat += "<BR>Velocity x,y [xvel],[yvel]"
 	return dat
@@ -129,21 +136,22 @@ var/datum/travgrid/tgrid= new()
 	if(x< -travlocsize)
 		if(loc.x-1)
 			Move(loc.grid.grid[loc.x-1][loc.y])
-		x = x + travlocsize
+		x = x + travlocsize * 2
 	if(y< -travlocsize)
 		if(loc.y-1)
 			Move(loc.grid.grid[loc.x][loc.y-1])
-		y = y + travlocsize
+		y = y + travlocsize * 2
 	if(x> travlocsize)
 		if(loc.x!=trgrdsz)
 			Move(loc.grid.grid[loc.x+1][loc.y])
-		x = x - travlocsize
+		x = x - travlocsize * 2
 	if(y> travlocsize)
 		if(loc.y!=trgrdsz)
 			Move(loc.grid.grid[loc.x][loc.y+1])
-		y = y - travlocsize
-	for(var/datum/travevent/t in loc)
-		Interact(t)
+		y = y - travlocsize * 2
+	if(loc.contents.len > 1)
+		for(var/datum/travevent/t in loc.contents)
+			Interact(t)
 
 /datum/travevent/ship/Update()
 	var/xadd = speed
@@ -177,11 +185,11 @@ var/datum/travgrid/tgrid= new()
 
 /datum/travevent/meteor/Entered(var/datum/travevent/t)
 	if(istype(t,/datum/travevent/ship/Luna))
-		command_alert("The ship is now travelling through a meteor shower", "Meteor Alert")
+		loc.grid.Announce("The ship is now travelling through a meteor shower")
 
 /datum/travevent/meteor/Cleared(var/datum/travevent/t)
 	if(istype(t,/datum/travevent/ship/Luna))
-		command_alert("The ship has cleared the meteor shower", "Meteor Alert")
+		loc.grid.Announce("The ship has cleared the meteor shower")
 
 /datum/travevent/meteor/New()
 	..()
@@ -199,25 +207,20 @@ var/datum/travgrid/tgrid= new()
 
 
 /datum/travevent/ship/Luna/Meteor(var/amt)
-	for(var/a = 1 to amt)
-	//	world << "METEOR"
-		spawn_meteor()
+	var/num = amt
+	while(num>0)
+		//world << "LOOOL"
+		spawn(0)
+			spawn_meteor()
+		num--
 
-
+/datum/travevent/meteor/Meteor(var/amt)
+	density+=amt
 /datum/travevent/meteor/Interact(var/datum/travevent/t)
-	var/amt = 100
-	var/relx = t.xvel - xvel
-	var/rely = t.yvel - yvel
-	if(relx<0)
-		relx=relx*-1
-	if(rely<0)
-		rely=rely*-1
-	amt-=sqrt((rely*rely)+(relx*relx))
-	amt-=density/10
-	amt = amt/10
-	if(rand(0,amt)==0)
-		t.Meteor(1)
+	if(rand(4)==1)
+		t.Meteor(3)
 		density-=1
+	//	world << "LOL"
 		if(density<1)
 			for(var/datum/travevent/te in loc.contents)
 				Cleared(te)
@@ -232,7 +235,13 @@ var/datum/travgrid/tgrid= new()
 	var/datum/travevent/ship/Luna/Luna
 
 /obj/machinery/computer/travel/New()
-	Luna=tgrid.Luna
+	spawn
+		while(!Luna)
+			if(tgrid.Luna)
+				Luna=tgrid.Luna
+				tgrid.messagebacks.Add(src)
+			else
+				sleep(10)
 	..()
 	if(!machines.Find(src))
 		machines.Add(src)
@@ -277,6 +286,9 @@ var/datum/travgrid/tgrid= new()
 	for (var/mob/M in viewers(1, src.loc))
 		if (M.client && M.machine == src)
 			src.attack_hand(M)
+
+/obj/machinery/computer/travel/proc/tAnnounce(var/msg)
+	state(msg)
 
 /obj/machinery/computer/travel/Topic(href, href_list)
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
