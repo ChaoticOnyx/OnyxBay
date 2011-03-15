@@ -10,7 +10,7 @@ Checked jobs: HoP, HoS, Security Officer, Doctor, CE, Detective, Scientist RD, C
     access_security = 1 (HoS, Security Officer, Detective, HoP)
     access_brig = 2 (HoS, Security Officer, HoP) (only lockers)
     access_armory = 3 (HoS)
-    access_forensic= 4 (Security Officer, Detective, HoS, HoP)
+    access_forensic= 4 (HoS, Security Officer, Detective, HoP)
     access_medical = 5 (Geneticist, Doctor, RD, Security Officer, Detective, HoS, HoP, Chemist, Roboticist)
     access_morgue = 6 (HoS, Detective, RD, Doctor, Geneticist, Roboticist, Counselor)
     access_toxins = 7 (HoP, HoS, RD, Scientist)

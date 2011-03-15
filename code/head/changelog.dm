@@ -23,6 +23,11 @@ client/proc/showchanges()
 	<strong>Coders:</strong> Stuntwaffle, Showtime, Pantaloons, Nannek, Keelin, Exadv1, hobnob, Justicefries, 0staf, sniperchance, AngriestIBM, BrianOBlivion<br>
 	<strong>Spriters:</strong> Supernorn, Haruhi, Stuntwaffle, Pantaloons, Rho, SynthOrange, I Said No</strong>
 </p>
+
+<br />
+
+<p>A thanks goes to the /tg/ spriting team as well, for some of the sprites ingame.</p>
+
 <br />
 
 <p><b>Head</b> gets a special mention because he provides us with the forum, wiki and game server.</p>
