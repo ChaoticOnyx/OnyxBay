@@ -301,13 +301,13 @@ datum
 
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				M:toxloss += 8
-				if(!data) data = 1
-				if(data > 20)
+				M:toxloss += 1.5
+				if(!data) data = 1.5
+				if(data > 15)
 					//Do Toxin Shit
 					M:toxins_alert = max(M:toxins_alert,1)
-					M:toxloss += 1.5
-				holder.remove_reagent(src.id, 1)
+					M:toxloss += 2.5
+				..()
 				return
 
 		cyanide
@@ -868,7 +868,7 @@ datum
 			reagent_state = LIQUID
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				M:oxyloss = 0
+				M:oxyloss -= max((M:oxyloss * 0.10),5)
 				..()
 				return
 
