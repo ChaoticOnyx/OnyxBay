@@ -18,19 +18,41 @@ datum/ifs
 	var/var2
 	var/typek
 	var/datum/praser/P
+	var/datum/praser/owner
+datum/ifs/New(v1,typex,v2,var/datum/praser/K)
+	var1 = v1
+	var2 = v2
+	typek = typex
+	P = K
+	owner = P
 datum/ifs/proc/compare(var/datum/os/client)
-	if(type == 1)
-		if(P.var1[var1] == P.var1[var1])
+	var/v1 = P.var1[var1]
+	var/v2 = P.var1[var2]
+	if(typek == "==")
+		if(v1 == v2)
 			P.Prase(client,null,lines,0,1)
-	if(type == 2)
-		return
-datum/praser/New(var/datum/os/client,var/text,var/list/notlines,bg=0,isscript)
+	else if(typek == "!=")
+		if(v1 != v2)
+			P.Prase(client,null,lines)
+	else if(typek == ">=")
+		if(v1 >= v2)
+			P.Prase(client,null,lines)
+	else if(typek == "<=")
+		if(v1 <= v2)
+			P.Prase(client,null,lines)
+	else if(typek == "<")
+		if(v1 < v2)
+			P.Prase(client,null,lines)
+	else if(typek == ">")
+		if(v1 > v2)
+			P.Prase(client,null,lines)
+
+datum/praser/New(var/datum/os/client,var/text,var/list/notlines,bg=0,isscript=0)
 	background=bg
 	spawn() Prase(client,text,notlines,1,isscript)
 	return src
 datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,isscript=0)
-	if(ismain)
-		client.process += src
+	client.process += src
 //	if(!background)
 //		client.boot = 0
 	var/list/lines = list()
@@ -63,12 +85,17 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 	var/datum/func/sendpacket/KKQ = new("SendPacket",list(1,2,3),src)
 	func["SendPacket"] = KKQ
 	for(var/countglobal, countglobal <= lines.len, countglobal++)
+		if(!client)
+			del(src)
+			return 1
 		if(client.stopprog)
 			client.stopprog = 0
 			client.boot = 1
 			del(src)
 			return 1
-		if(stop)
+		if(stop || var1["stop"] == 1)
+			//world << "stopping [ismain]"
+			del(src)
 			return 1
 		var/A = lines[countglobal]
 		if(findtext(A,"func:",1,0))
@@ -109,6 +136,50 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 				else
 					xlist += X
 				count++
+			lines.Remove(xlist)
+			F.lines = xlist
+		else if(findtext(A,"if:",1,0))
+			var/loc1 = findtext(A,"<",1,0)
+			var/loc2 = findtext(A,">",1,0)
+			var/N = copytext(A,loc1+1,loc2)
+			loc1 = findtext(A,"(",1,0)
+			loc2 = findtext(A,")",1,0)
+			var/xc = copytext(A,loc1+1,loc2)
+			var/dones = 1
+			var/list/xy = list()
+			if(!xc)
+				dones = 0
+			while (dones==1)
+				var/X = findtext(xc,",",1,0)
+				if(!X)
+					done = 1
+					xy += xc
+			//		world << "DONE"
+					break
+				else
+					var/Y = copytext(xc,1,X)
+					xc = copytext(xc,X+1,0)
+					xy += Y
+			var/k = 0
+			for(var/X in xy)
+				k++
+				var/l = findtext(X,"$",1,0)
+				xy[k] = copytext(X,l+1,0)
+			var/datum/ifs/F = new(xy[1],xy[2],xy[3],src)
+			src.ifs["[N]"] = F
+			var/test = 1
+			var/count = countglobal+1
+			var/list/xlist = list()
+			while (test)
+				var/X = lines[count]
+				if(findtext(X,"endi",1,0))
+					xlist += X
+					test = 0
+				//	break
+				else
+					xlist += X
+				count++
+			lines.Remove(lines[countglobal])
 			lines.Remove(xlist)
 			F.lines = xlist
 		else if(findtext(A,"label:",1,0))
@@ -239,6 +310,35 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 				var1[variable] = num2text(var1[output])
 			else if(output)
 				var1[output] = num2text (var1[output])
+		else if(findtext(A,"text2num(",1,0))
+			var/output = null
+			var/variable = null
+			var/startloc = findtext(A,"(",1,0)
+			var/endloc = findtext(A,")",1,0)
+			var/loc
+			if(!startloc || !endloc)
+				client.Message("Errror")
+			var/msg = copytext(A,startloc+1,endloc)
+			if(findtext(msg,"$",1,0))
+				loc = findtext(msg,"$",1,0)
+				var/varname
+				if(findtext(msg,",",1,0))
+					var/lock = findtext(msg,",",1,0)
+
+					varname = copytext(msg,loc+1,lock)
+				else
+					varname = copytext(msg,loc+1,endloc)
+				output = varname
+			if(!output)
+				break
+			if(findtext(msg,"$",loc+1,endloc))
+				var/loc2 = findtext(msg,"$",loc+1,0)
+				var/varname1 = copytext(msg,loc2+1,endloc)
+				variable = varname1
+			if(variable && output)
+				var1[variable] = text2num(var1[output])
+			else if(output)
+				var1[output] = text2num(var1[output])
 		else if(findtext(A,"$",1,0) && findtext(A,"=",1,0) && !findtext(A,"if",1,0) && !findtext(A,"+=",1,0) && !findtext(A,"-=",1,0))
 			SetVar(A)
 		else if(findtext(A,"sleep(",1,0))
@@ -249,8 +349,14 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			var/locr = findtext(A,"$",1,0)
 			var/varname1 = copytext(A,locr+1,endloc)
 			var1[varname1] = client.GetInput()
-		else if(findtext(A,"Exit()",1,0))
+		else if(findtext(A,"exit(",1,0))
 			break
+		else if(findtext(A,"stop(",1,0))
+			var1["stop"] = 1
+			stop = 1
+		//	world << "stopping [ismain]"
+			del(src)
+			return 1
 		else if(findtext(A,"exec(",1,0))
 			var/output
 			var/startloc = findtext(A,"(",1,0)
@@ -288,158 +394,8 @@ datum/praser/proc/Prase(var/datum/os/client,var/text,var/list/notlines,ismain=0,
 			var/msg = copytext(A,locstart+1,locend)
 			if(ifs[msg])
 				var/datum/ifs/I = ifs[msg]
-				I.compare()
+				I.compare(client)
 				continue
-		//	var/locI = lines.Find(A,1,0)
-			var/test = 1
-			var/count = countglobal +1
-			var/list/iflist = list()
-			while (test)
-				var/X = lines[count]
-				if(findtext(X,"end",1,0))
-					iflist += X
-					test = 0
-				//	break
-				else
-					iflist += X
-				count++
-			//lines.Remove(lines[countglobal])
-			lines.Remove(iflist)
-			if(findtext(msg,"==",1,0)) // attempt to find two vars/strings
-				var/v1
-				var/v1nam
-				var/v1loc
-				var/v2
-				var/v2nam
-				if(findtext(msg,"\[",1,0))
-					var/loc = findtext(msg,"\[",1,0)
-					var/loc2 = findtext(msg,"\]",1,0)
-					var/varname = copytext(msg,1+2,loc)
-					var/num = copytext(msg,loc+1,loc2)
-					if(findtext(num,"$",1,0))
-						var/x1 = findtext(num,"$",1,0)
-						var/x2 = copytext(num,x1+1,0)
-						num = text2num(var1[x2])
-					num = text2num(num)
-					var/list/X = var1[varname]
-					v1 = X[num]
-				else if(findtext(msg,"$",1,0))
-					v1 = findtext(msg,"$",1,0)
-					var/l = findtext(msg," ",v1+1,0)
-					v1loc = v1
-					v1nam = copytext(msg,v1,l)
-					v1 = copytext(msg,v1+1,l)
-					v1 = var1[v1]
-				else if(findtext(msg,"\"",1,0))
-					var/loc1 = findtext(msg,"\"",1,0)
-					var/loc2 = findtext(msg,"\"",loc1+1,0)
-					v1 = copytext(msg,loc1+1,loc2)
-					v1loc = loc2
-				if(findtext(msg,"\[",1,0))
-					var/loc = findtext(msg,"\[",1,0)
-					var/loc2 = findtext(msg,"\]",1,0)
-					var/varname = copytext(msg,1+2,loc)
-					var/num = copytext(msg,loc+1,loc2)
-					if(findtext(num,"$",1,0))
-						var/x1 = findtext(num,"$",1,0)
-						var/x2 = copytext(num,x1+1,0)
-						num = text2num(var1[x2])
-					num = text2num(num)
-					var/list/X = var1[varname]
-					v2 = X[num]
-				else if(findtext(msg,"$",v1loc+1,0))
-					v2 = findtext(msg,"$",v1loc+1,0)
-				//	var/l = findtext(msg,")",v2+1,0)
-					v2nam = copytext(msg,v2,0)
-					v2 = copytext(msg,v2+1,0)
-					v2 = var1[v2]
-				else if(findtext(msg,"\"",v1loc+1,0))
-					var/loc1 = findtext(msg,"\"",v1loc+1,0)
-					var/loc2 = findtext(msg,"\"",loc1+1,0)
-					v2 = copytext(msg,loc1+1,loc2)
-				var/datum/ifs/I = new()
-				I.lines = iflist
-				I.var1 = v1nam
-				I.var2 = v2nam
-				I.typek = 1
-				src.ifs[msg] = I
-				I.compare()
-			else if(findtext(msg,"!=",1,0)) // attempt to find two vars/strings
-				var/v1
-				var/v1loc
-				var/v2
-				if(findtext(msg,"\[",1,0))
-					var/loc = findtext(msg,"\[",1,0)
-					var/loc2 = findtext(msg,"\]",1,0)
-					var/varname = copytext(msg,1+2,loc)
-					var/num = copytext(msg,loc+1,loc2)
-					if(findtext(num,"$",1,0))
-						var/x1 = findtext(num,"$",1,0)
-						var/x2 = copytext(num,x1+1,0)
-						num = text2num(var1[x2])
-					num = text2num(num)
-					var/list/X = var1[varname]
-					v1 = X[num]
-				else if(findtext(msg,"$",1,0))
-					v1 = findtext(msg,"$",1,0)
-					var/l = findtext(msg," ",v1+1,0)
-					v1loc = v1
-					v1 = copytext(msg,v1+1,l)
-					v1 = var1[v1]
-				else if(findtext(msg,"\"",1,0))
-					var/loc1 = findtext(msg,"\"",1,0)
-					var/loc2 = findtext(msg,"\"",loc1+1,0)
-					v1 = copytext(msg,loc1+1,loc2)
-					v1loc = loc2
-				if(findtext(msg,"\[",1,0))
-					var/loc = findtext(msg,"\[",1,0)
-					var/loc2 = findtext(msg,"\]",1,0)
-					var/varname = copytext(msg,1+2,loc)
-					var/num = copytext(msg,loc+1,loc2)
-					if(findtext(num,"$",1,0))
-						var/x1 = findtext(num,"$",1,0)
-						var/x2 = copytext(num,x1+1,0)
-						num = text2num(var1[x2])
-					num = text2num(num)
-					var/list/X = var1[varname]
-					v2 = X[num]
-				else if(findtext(msg,"$",v1loc+1,0))
-					v2 = findtext(msg,"$",v1loc+1,0)
-					var/l = findtext(msg," ",v2+1,0)
-					v2 = copytext(msg,v2+1,l)
-					v2 = var1[v2]
-				else if(findtext(msg,"\"",v1loc+1,0))
-					var/loc1 = findtext(msg,"\"",v1loc+1,0)
-					var/loc2 = findtext(msg,"\"",loc1+1,0)
-					v2 = copytext(msg,loc1+1,loc2)
-				//world << "[v1] == [v2]"
-				if(v1 != v2)
-					src.Prase(client,null,iflist)
-			else
-				var/v1
-				if(findtext(msg,"\[",1,0))
-					var/loc = findtext(msg,"\[",1,0)
-					var/loc2 = findtext(msg,"\]",1,0)
-					var/varname = copytext(msg,1+2,loc)
-					var/num = copytext(msg,loc+1,loc2)
-					num = text2num(num)
-					var/list/X = var1[varname]
-					v1 = X[num]
-				else if(findtext(msg,"$",1,0))
-					v1 = findtext(msg,"$",1,0)
-					var/l = findtext(msg," ",v1+1,0)
-					v1 = copytext(msg,v1+1,l)
-					v1 = var1[v1]
-				else if(findtext(msg,"\"",1,0))
-					var/loc1 = findtext(msg,"\"",1,0)
-					var/loc2 = findtext(msg,"\"",loc1+1,0)
-					v1 = copytext(msg,loc1+1,loc2)
-				if(findtext(A,"!",locstart,locstart+2))
-					if(!v1)
-						src.Prase(client,null,iflist)
-				else
-					if(v1)
-						src.Prase(client,null,iflist)
 		else if(findtext(A,"+=",1,0) || findtext(A,"-=",1,0))
 			var/locS = findtext(A,"=",1,0)
 			var/v1
