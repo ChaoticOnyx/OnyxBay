@@ -1,0 +1,27 @@
+"a" = (/turf/simulated/wall,/area/asteroid/abase)
+"b" = (/obj/machinery/door/airlock,/turf/simulated/floor/plating,/area/asteroid/abase)
+"c" = (/obj/machinery/washer,/turf/simulated/floor/plating,/area/asteroid/abase)
+"d" = (/turf/simulated/floor/plating,/area/asteroid/abase)
+"e" = (/obj/machinery/chem_dispenser,/turf/simulated/floor/plating,/area/asteroid/abase)
+"f" = (/obj/machinery/door/airlock/highsec,/turf/simulated/floor/plating,/area/asteroid/abase)
+"g" = (/obj/mine,/obj/mine,/obj/mine,/obj/mine,/turf/simulated/floor/plating,/area/asteroid/abase)
+"h" = (/obj/item/weapon/money{value = 1e+006},/turf/simulated/floor/plating,/area/asteroid/abase)
+"i" = (/obj/machinery/space_heater,/turf/simulated/floor/plating,/area/asteroid/abase)
+"j" = (/obj/stool/chair/comfy/black{tag = "icon-comfychair_black (WEST)"; icon_state = "comfychair_black"; dir = 8},/turf/simulated/floor/plating,/area/asteroid/abase)
+"k" = (/obj/item/weapon/flashbang,/obj/item/weapon/flashbang,/turf/simulated/floor/plating,/area/asteroid/abase)
+"l" = (/obj/item/weapon/gun/revolver,/obj/item/weapon/gun/revolver,/turf/simulated/floor/plating,/area/asteroid/abase)
+"m" = (/obj/stool/bed,/turf/simulated/floor/plating,/area/asteroid/abase)
+"n" = (/obj/item/weapon/anomaly,/turf/simulated/floor/plating,/area/asteroid/abase)
+
+(1,1,1) = {"
+aaaabaaaaa
+acdddaeeea
+addddaddda
+addddaddda
+addddbddda
+addddaafaa
+addddagdha
+adijdakdla
+admddandda
+aaaaaaaaaa
+"}

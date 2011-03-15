@@ -380,6 +380,9 @@
 	icon_state = "x2"
 	anchored = 1.0
 
+
+
+
 /*/obj/landmark/ptarget
 	name = "portal target"
 	icon = 'screen1.dmi'

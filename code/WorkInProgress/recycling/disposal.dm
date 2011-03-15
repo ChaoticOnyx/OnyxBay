@@ -17,7 +17,7 @@
 	var/flush = 0	// true if flush handle is pulled
 	var/obj/disposalpipe/trunk/trunk = null // the attached pipe trunk
 	var/flushing = 0	// true if flushing in progress
-
+	networking = 2
 	// create a new disposal
 	// find the attached trunk (if present) and init gas resvr.
 	New()

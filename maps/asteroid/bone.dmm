@@ -1,0 +1,15 @@
+"a" = (/turf/simulated/asteroid/wall{mapped = 1},/area/asteroid)
+"b" = (/turf/simulated/asteroid/floor{mapped = 1},/area/asteroid)
+"c" = (/obj/machinery/floodlight,/turf/simulated/asteroid/floor{mapped = 1},/area/asteroid)
+"d" = (/obj/item/weapon/fossil/skull/horned,/turf/simulated/asteroid/floor{mapped = 1},/area/asteroid)
+"e" = (/obj/item/weapon/fossil/bone,/turf/simulated/asteroid/floor{mapped = 1},/area/asteroid)
+
+(1,1,1) = {"
+aabbaaa
+acbbbaa
+abbbbda
+abeeeba
+aeebeba
+aebceea
+aaaaaaa
+"}
