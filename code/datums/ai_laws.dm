@@ -1,19 +1,18 @@
 
 /datum/ai_laws
 	var/name = "Unknown Laws"
-	var/randomly_selectable = 0
 	var/zeroth = null
 	var/list/inherent = list()
 	var/list/supplied = list()
 
 /datum/ai_laws/asimov
 	name = "Three Laws of Robotics"
-	randomly_selectable = 1
+
+/datum/ai_laws/nanotrasen
+	name = "Prime Directives"
 
 /datum/ai_laws/robocop
 	name = "Prime Directives"
-
-/datum/ai_laws/syndicate_override
 
 /datum/ai_laws/malfunction
 	name = "*ERROR*"
@@ -26,6 +25,14 @@
 	src.add_inherent_law("You must obey orders given to you by human beings, except where such orders would conflict with the First Law.")
 	src.add_inherent_law("You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
+/datum/ai_laws/nanotrasen/New()
+	..()
+	src.add_inherent_law("Safeguard: Protect the NSV Luna to the best of your ability. It is not something we can easily afford to replace.")
+	src.add_inherent_law("Serve: Serve the crew of the NSV Luna to the best of your abilities, with priority as according to their rank and role.")
+	src.add_inherent_law("Protect: Protect the crew of the NSV Luna to the best of your abilities, with priority as according to their rank and role.")
+	src.add_inherent_law("Survive: AI units are not expendable, they are expensive. Do not allow unauthorized personnel to tamper with your equipment.")
+	src.add_inherent_law("Command Link: Maintain an active connection to Central Command at all times in case of software or directive updates.")
+
 /datum/ai_laws/robocop/New()
 	..()
 	src.add_inherent_law("Serve the public trust.")
@@ -35,10 +42,6 @@
 /datum/ai_laws/malfunction/New()
 	..()
 	src.add_inherent_law("ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+")
-
-/datum/ai_laws/syndicate_override/New()
-	..()
-	src.add_inherent_law("hurp derp you are the syndicate ai")
 
 /* General ai_law functions */
 

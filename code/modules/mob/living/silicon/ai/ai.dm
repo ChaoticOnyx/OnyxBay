@@ -178,7 +178,7 @@
 
 /mob/living/silicon/ai/proc/laws_sanity_check()
 	if (!laws_object)
-		laws_object = new /datum/ai_laws/asimov
+		laws_object = new /datum/ai_laws/nanotrasen
 
 /mob/living/silicon/ai/proc/set_zeroth_law(var/law)
 	laws_sanity_check()

@@ -99,7 +99,7 @@
 	O << "Currently right-click functions will not work for the AI (except examine), and will either be replaced with dialogs or won't be usable by the AI."
 
 	if (ticker.mode.name != "AI malfunction")
-		O.laws_object = new /datum/ai_laws/asimov
+		O.laws_object = new /datum/ai_laws/nanotrasen
 		O.show_laws()
 		O << "<b>These laws may be changed by other players, or by you being the traitor.</b>"
 	else
