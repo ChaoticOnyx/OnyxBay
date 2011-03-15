@@ -1,3 +1,14 @@
+/obj/item/weapon/optical_unit
+	name = "optical sensor unit"
+	icon = 'items.dmi'
+	icon_state = "optical_unit"
+	item_state = "electronic"
+	throwforce = 5
+	w_class = 1.0
+	throw_speed = 4
+	throw_range = 10
+	flags = FPRINT | TABLEPASS| CONDUCT
+
 /obj/item/robot_parts
 	name = "robot parts"
 	icon = 'robot_parts.dmi'
@@ -30,8 +41,8 @@
 /obj/item/robot_parts/head
 	name = "robot head"
 	icon_state = "head"
-	var/obj/item/device/flash/flash1 = null
-	var/obj/item/device/flash/flash2 = null
+	var/obj/item/weapon/optical_unit/opt1 = null
+	var/obj/item/weapon/optical_unit/opt2 = null
 
 /obj/item/robot_parts/robot_suit
 	name = "robot suit"
@@ -109,13 +120,13 @@
 			user << "\blue You need to attach a cell to it first!"
 
 	if(istype(W, /obj/item/robot_parts/head))
-		if(W:flash2 && W:flash1)
+		if(W:opt2 && W:opt1)
 			user.drop_item()
 			W.loc = src
 			src.head = W
 			src.updateicon()
 		else
-			user << "\blue You need to attach a flash to it first!"
+			user << "\blue You need to attach an optical sensor to it first!"
 
 	if(istype(W, /obj/item/brain))
 		if(src.check_completion())
@@ -211,19 +222,19 @@
 	return
 
 /obj/item/robot_parts/head/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/device/flash))
-		if(src.flash1 && src.flash2)
+	if(istype(W, /obj/item/weapon/optical_unit))
+		if(src.opt1 && src.opt2)
 			user << "\blue You have already inserted the eyes!"
 			return
-		else if(src.flash1)
+		else if(src.opt1)
 			user.drop_item()
 			W.loc = src
-			src.flash2 = W
-			user << "\blue You insert the flash into the eye socket!"
+			src.opt2 = W
+			user << "\blue You insert the optical sensor into the eye socket!"
 		else
 			user.drop_item()
 			W.loc = src
-			src.flash1 = W
-			user << "\blue You insert the flash into the eye socket!"
+			src.opt1 = W
+			user << "\blue You insert the optical sensor into the eye socket!"
 	return
 
