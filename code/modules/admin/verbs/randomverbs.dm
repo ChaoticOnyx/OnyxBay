@@ -240,6 +240,7 @@
 				affecting.broken = 0
 				affecting.perma_injury = 0
 			H.UpdateDamageIcon()
+		M.bodytemperature = 310.055	//98.7 F
 		M.fireloss = 0
 		M.toxloss = 0
 		M.bruteloss = 0

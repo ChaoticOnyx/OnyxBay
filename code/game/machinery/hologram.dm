@@ -1,3 +1,19 @@
+/obj/machinery/hologram_ai
+	name = "Hologram Projector Platform"
+	icon = 'stationobjs.dmi'
+	icon_state = "hologram0"
+	var/atom/projection = null
+	var/temp = null
+	var/lumens = 0.0
+	var/h_r = 245.0
+	var/h_g = 245.0
+	var/h_b = 245.0
+	anchored = 1.0
+
+/obj/machinery/hologram_ai/wall_projector
+	name = "Hologram Wall Projector"
+	icon_state = "wall_hologram0"
+
 /obj/machinery/hologram_ai/New()
 	..()
 
@@ -41,14 +57,21 @@
 
 	if (href_list["power"])
 		if (src.projection)
-			src.icon_state = "hologram0"
+			if(istype(src, /obj/machinery/hologram_ai/wall_projector))
+				src.icon_state = "wall_hologram0"
+			else
+				src.icon_state = "hologram0"
+
 			//src.projector.projection = null
 			del(src.projection)
 		else
 			src.projection = new /obj/projection( src.loc )
 			src.projection.icon = 'human.dmi'
 			src.projection.icon_state = "male"
-			src.icon_state = "hologram1"
+			if(istype(src, /obj/machinery/hologram_ai/wall_projector))
+				src.icon_state = "wall_hologram1"
+			else
+				src.icon_state = "hologram1"
 			src.render()
 	else if (href_list["h_r"])
 		if (src.projection)

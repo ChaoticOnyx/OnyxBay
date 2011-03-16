@@ -1,3 +1,13 @@
+/obj/item/device/radio/signaler
+	name = "Remote Signaling Device"
+	icon_state = "signaller"
+	item_state = "signaler"
+	var/code = 30.0
+	w_class = 1.0
+	frequency = 1457
+	var/delay = 0
+	var/airlock_wire = null
+
 
 /*
 /obj/item/device/radio/signaler/examine()
