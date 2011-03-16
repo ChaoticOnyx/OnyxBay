@@ -544,7 +544,6 @@
 #include "code\head\hacker\networking.dm"
 #include "code\head\hacker\router.dm"
 #include "code\head\hacker\scripting.dm"
-#include "code\head\hacker\tool.dm"
 #include "code\head\hacker\computer\commands.dm"
 #include "code\head\hacker\computer\def.dm"
 #include "code\head\hacker\computer\hacker.dm"
