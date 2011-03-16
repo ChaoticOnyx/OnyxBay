@@ -16,9 +16,9 @@
 
 	var/det = 0
 	var/previousdet = 0
-	var/const/explosiondet = 4000
+	var/const/explosiondet = 3500
 
-	var/const/warningtime = 25 	// Make the CORE OVERLOAD message repeat only every aprox. 10 seconds
+	var/const/warningtime = 40 	// Make the CORE OVERLOAD message repeat only every aprox. 10 seconds
 	var/lastwarning = 0			// Time in 1/10th of seconds since the last sent warning
 
 /obj/machinery/engine/klaxon
@@ -52,8 +52,8 @@
 	det += (removed.temperature - 1000) / 150
 	det = max(det, 0)
 
-	if(det > 0 && removed.temperature > 600) // while the core is still damaged and it's still worth noting its status
-		if((world.timeofday - lastwarning) * 10 >= warningtime)
+	if(det > 0 && removed.temperature > 1000) // while the core is still damaged and it's still worth noting its status
+		if(((world.timeofday - lastwarning) * 10) >= warningtime)
 
 			if(explosiondet - det <= 300)
 				radioalert("CORE EXPLOSION IMMINENT","Core control computer")
