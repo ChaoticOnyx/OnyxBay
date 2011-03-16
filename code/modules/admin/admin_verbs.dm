@@ -52,6 +52,7 @@
 			src.verbs += /client/proc/jumptomob
 			src.verbs += /client/proc/Jump
 			src.verbs += /client/proc/jumptoturf
+			src.verbs += /client/proc/cmd_admin_reset_id
 			src.verbs += /client/proc/cmd_admin_rejuvenate
 			src.verbs += /client/proc/cmd_admin_robotize
 			src.verbs += /client/proc/cmd_admin_alienize
@@ -160,6 +161,7 @@
 			src.verbs += /client/proc/jumptomob
 			src.verbs += /client/proc/Jump
 			src.verbs += /client/proc/jumptoturf
+			src.verbs += /client/proc/cmd_admin_reset_id
 			src.verbs += /client/proc/cmd_admin_rejuvenate
 			src.verbs += /client/proc/cmd_admin_robotize
 			src.verbs += /client/proc/cmd_admin_alienize
@@ -256,6 +258,7 @@
 			src.verbs += /proc/togglebuildmode
 			src.verbs += /client/proc/Jump
 			src.verbs += /client/proc/jumptoturf
+			src.verbs += /client/proc/cmd_admin_reset_id
 			src.verbs += /client/proc/cmd_admin_rejuvenate
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /client/proc/cmd_admin_mute
@@ -339,6 +342,7 @@
 				src.verbs += /client/proc/cmd_admin_rejuvenate
 				src.verbs += /obj/admins/proc/toggleaban			//abandon mob
 				src.verbs += /client/proc/toggle_view_range
+			src.verbs += /client/proc/cmd_admin_reset_id
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /proc/togglebuildmode
@@ -526,6 +530,7 @@
 
 /client/proc/clear_admin_verbs()
 	src.deadchat = 0
+	src.verbs -= /client/proc/cmd_admin_reset_id
 	src.verbs -= /client/proc/debug_variables
 	src.verbs -= /client/proc/cmd_modify_object_variables
 	src.verbs -= /client/proc/cmd_modify_ticker_variables
