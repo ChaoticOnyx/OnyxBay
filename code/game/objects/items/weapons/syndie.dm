@@ -21,7 +21,7 @@
 	item_state = "c-4large"
 	desc = "A mysterious package, it's quite heavy."
 
-	power = 3.5
+	power = 3
 	size = "large"
 
 /obj/item/weapon/syndie/c4explosive/New()
@@ -31,7 +31,7 @@
 /obj/item/weapon/syndie/c4explosive/proc/detonate()
 	icon_state = "c-4[size]_1"
 	spawn(50*tick_multiplier)
-	explosion(get_turf(src), power, power*1.5, power*2, power*3, power*3)
+	explosion(get_turf(src), power, power*2, power*3, power*4, power*4)
 
 
 /*Detonator, disguised as a lighter*/

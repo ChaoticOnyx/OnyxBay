@@ -137,6 +137,8 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 			for(var/Z = 0 to maxdet)
 				if(orderdetonate["[Z]"])
 					for(var/turf/T in orderdetonate["[Z]"])
+						var/turf/AboveTurf = locate(T.x, T.y, (T.z - 1))
+
 						sleep += 1
 						if(sleep > 20)
 							sleep(15)
@@ -149,12 +151,15 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 								object.ex_act(1)
 							if(prob(5))
 								T.ex_act(2)
+								AboveTurf.ex_act(3)
 							else
 								T.ex_act(1)
+								AboveTurf.ex_act(2)
 						else if(distance < heavy_impact_range)
 							for(var/atom/object in T.contents)
 								object.ex_act(2)
 							T.ex_act(2)
+							AboveTurf.ex_act(3)
 						else if (distance == heavy_impact_range)
 							for(var/atom/object in T.contents)
 								object.ex_act(2)

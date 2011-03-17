@@ -27,7 +27,7 @@
 /obj/item/weapon/aiModule/freeform:3:Freeform AI module;/obj/item/weapon/syndie/c4explosive:4:Low power explosive charge, with detonator);
 /obj/item/weapon/syndie/c4explosive/heavy:7:High (!) power explosive charge, with detonator;/obj/item/weapon/reagent_containers/pill/tox:2:Toxin Pill"}
 
-	uplink_uses = 10
+	uplink_uses = 0
 
 /datum/game_mode/nuclear/announce()
 	world << "<B>The current game mode is - Nuclear Emergency!</B>"
@@ -39,6 +39,9 @@
 	agents_possible = (get_player_count())/3
 	if(agents_possible < 1)
 		agents_possible = 1
+	if(agents_possible > 5)
+		agents_possible = 5
+
 	var/list/possible_syndicates = list()
 	possible_syndicates = get_possible_syndicates()
 	var/agent_number = 0
@@ -59,6 +62,8 @@
 
 	for(var/datum/mind/synd_mind in syndicates)
 		synd_mind.assigned_role = "MODE" //So they aren't chosen for other jobs.
+
+	uplink_uses = (syndicates.len*10)
 
 	return 1
 
