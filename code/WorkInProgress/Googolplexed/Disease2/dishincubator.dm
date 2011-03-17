@@ -142,7 +142,7 @@
 				icon_state = "incubator"
 			if(foodsupply)
 				foodsupply -= 1
-				dish.growth += 10
+				dish.growth += 3
 				if(dish.growth >= 100)
 					state("The [src.name] pings", "blue")
 			if(radiation)

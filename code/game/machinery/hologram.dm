@@ -37,6 +37,8 @@
 
 	I.Blend(U, ICON_OVERLAY)
 
+	I.Blend(new /icon('uniform.dmi', "aqua_s"), ICON_OVERLAY)
+
 	src.projection.icon = I
 
 /obj/machinery/hologram_ai/proc/show_console(var/mob/user as mob)
