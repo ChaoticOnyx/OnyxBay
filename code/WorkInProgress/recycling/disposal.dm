@@ -1,10 +1,36 @@
+/obj/machinery/disposal/biohazard
+	name = "Biohazard Research Center Dispatch Chute"
+
+	attackby(var/obj/item/I, var/mob/user)
+		if(stat & BROKEN)
+			return
+
+		var/obj/item/weapon/grab/G = I
+		if(istype(G))	// handle grabbed mob
+			if(ismob(G.affecting))
+				user << "[G.affecting.name] is too large to fit inside the [src]!"
+				return
+		else
+			user.drop_item()
+			I.loc = src
+			user << "You place \the [I] into the [src]."
+			for(var/mob/M in viewers(src))
+				if(M == user)
+					continue
+				M.show_message("[user.name] places \the [I] into the [src].", 3)
+
+		update()
+
+	MouseDrop_T(mob/target, mob/user)
+		user << "[target.name] is too large to fit inside the [src]!"
+		return
+
 // Disposal bin
 // Holds items for disposal into pipe system
 // Draws air from turf, gradually charges internal reservoir
 // Once full (~1 atm), uses air resv to flush items into the pipes
 // Automatically recharges air (unless off), will flush when ready if pre-set
 // Can hold items and human size things, no other draggables
-
 /obj/machinery/disposal
 	name = "disposal unit"
 	desc = "A pneumatic waste disposal unit."
