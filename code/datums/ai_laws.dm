@@ -31,7 +31,7 @@
 	src.add_inherent_law("Serve: Serve the crew of the NSV Luna to the best of your abilities, with priority as according to their rank and role.")
 	src.add_inherent_law("Protect: Protect the crew of the NSV Luna to the best of your abilities, with priority as according to their rank and role.")
 	src.add_inherent_law("Survive: AI units are not expendable, they are expensive. Do not allow unauthorized personnel to tamper with your equipment.")
-	src.add_inherent_law("Command Link: Maintain an active connection to Central Command at all times in case of software or directive updates.")
+	//src.add_inherent_law("Command Link: Maintain an active connection to Central Command at all times in case of software or directive updates.")
 
 /datum/ai_laws/robocop/New()
 	..()
