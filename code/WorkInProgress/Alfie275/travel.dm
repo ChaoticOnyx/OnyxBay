@@ -233,6 +233,7 @@ var/datum/travgrid/tgrid= new()
 	icon_state = "steering"
 	req_access = list(access_captain)
 	var/datum/travevent/ship/Luna/Luna
+	var/transmit = 1
 
 /obj/machinery/computer/travel/New()
 	spawn
@@ -278,6 +279,12 @@ var/datum/travgrid/tgrid= new()
 		dat+="<BR><A href='?src=\ref[src];e=0.25'>Turn on engines</a>"
 	else
 		dat+="<BR><A href='?src=\ref[src];e=0'>Turn off engines</a>"
+
+	if(!transmit==1)
+		dat+="<BR><A href='?src=\ref[src];t=1'>Turn on radio warnings</a>"
+	else
+		dat+="<BR><A href='?src=\ref[src];t=0'>Turn off radio warnings</a>"
+	dat+="<BR><A href='?src=\ref[src];close=1'>Close</a>"
 	user << browse(dat, "window=computer;size=500x500")
 	onclose(user, "computer")
 
@@ -288,6 +295,8 @@ var/datum/travgrid/tgrid= new()
 			src.attack_hand(M)
 
 /obj/machinery/computer/travel/proc/tAnnounce(var/msg)
+	if(transmit==1)
+		radioalert("[msg]!","[src.name]")
 	state(msg)
 
 /obj/machinery/computer/travel/Topic(href, href_list)
@@ -305,7 +314,9 @@ var/datum/travgrid/tgrid= new()
 		if (href_list["close"])
 			if(usr.machine == src)
 				usr.machine = null
-
+		if (href_list["t"])
+			var/speed = text2num(href_list["t"])
+			transmit = speed
 		src.add_fingerprint(usr)
 	src.updateUsrDialog()
 	for (var/mob/M in viewers(1, src.loc))
