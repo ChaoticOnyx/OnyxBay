@@ -36,7 +36,7 @@
 
 
 /datum/game_mode/nuclear/pre_setup()
-	agents_possible = (get_player_count())/3
+	agents_possible = (get_player_count())/5
 	if(agents_possible < 1)
 		agents_possible = 1
 	if(agents_possible > 5)
