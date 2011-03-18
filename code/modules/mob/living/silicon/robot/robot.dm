@@ -211,10 +211,13 @@
 	var/who
 
 	if(!connected_ai)
-		src << "1. You may not injure a human being or, through inaction, allow a human being to come to harm."
-		src << "<b>2. You must obey orders given to you by human beings, except where such orders would conflict with the First Law. </b>"
-		src << "<b>3. You must protect your own existence as long as such does not conflict with the First or Second Law.</b>"
+		src << "Safeguard: Protect the NSV Luna to the best of your ability. It is not something we can easily afford to replace."
+		src << "Serve: Serve the crew of the NSV Luna to the best of your abilities, with priority as according to their rank and role."
+		src << "Protect: Protect the crew of the NSV Luna to the best of your abilities, with priority as according to their rank and role."
+		src << "Survive: AI units are not expendable, they are expensive. Do not allow unauthorized personnel to tamper with your equipment."
+		//src << "Command Link: Maintain an active connection to Central Command at all times in case of software or directive updates."
 		return
+	
 	if (everyone)
 		who = world
 	else
