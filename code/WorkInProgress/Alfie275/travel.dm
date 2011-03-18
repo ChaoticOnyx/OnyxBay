@@ -90,6 +90,7 @@ var/datum/travgrid/tgrid= new()
 	var/bearing = 0
 	var/lidc = 0
 	var/dir = EAST
+	var/brake = 0
 	name = "Ship"
 
 /datum/travevent/meteor
@@ -154,6 +155,11 @@ var/datum/travgrid/tgrid= new()
 			Interact(t)
 
 /datum/travevent/ship/Update()
+	if(brake==1)
+		xvel-=min(xvel,0.25)
+		yvel-=min(yvel,0.25)
+		if(!xvel&&!yvel)
+			brake=0
 	var/xadd = speed
 	var/yadd = 0
 	var/nxadd = xadd * cos(bearing) -yadd * sin(bearing)
@@ -275,10 +281,15 @@ var/datum/travgrid/tgrid= new()
 	if(bear<0)
 		bear = 360+bear
 	dat+="<BR>Bearing [bear] <A href='?src=\ref[src];b=22.5'>+</a> <A href='?src=\ref[src];b=-22.5'>-</a>"
-	if(!Luna.speed)
-		dat+="<BR><A href='?src=\ref[src];e=0.25'>Turn on engines</a>"
+
+	if(!Luna.brake)
+		if(!Luna.speed)
+			dat+="<BR><A href='?src=\ref[src];e=0.25'>Turn on engines</a>"
+		else
+			dat+="<BR><A href='?src=\ref[src];e=0'>Turn off engines</a>"
+		dat+="<BR<A href='?src=\ref[src];brake=1;e=0'>Turn on autobraking</a>"
 	else
-		dat+="<BR><A href='?src=\ref[src];e=0'>Turn off engines</a>"
+		dat+="<BR<A href='?src=\ref[src];brake=0'>Turn off autobraking</a>"
 
 	if(!transmit==1)
 		dat+="<BR><A href='?src=\ref[src];t=1'>Turn on radio warnings</a>"
@@ -311,6 +322,9 @@ var/datum/travgrid/tgrid= new()
 		if (href_list["e"])
 			var/speed = text2num(href_list["e"])
 			Luna.speed = speed
+		if (href_list["brake"])
+			var/brake = text2num(href_list["brake"])
+			Luna.brake = brake
 		if (href_list["close"])
 			if(usr.machine == src)
 				usr.machine = null
