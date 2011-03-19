@@ -156,8 +156,14 @@ var/datum/travgrid/tgrid= new()
 
 /datum/travevent/ship/Update()
 	if(brake==1)
-		xvel-=min(xvel,0.25)
-		yvel-=min(yvel,0.25)
+		if(xvel>0)
+			xvel-=min(xvel,0.25)
+		else
+			xvel-=min(xvel,-0.25)
+		if(yvel>0)
+			yvel-=min(yvel,0.25)
+		else
+			yvel-=min(yvel,-0.25)
 		if(!xvel&&!yvel)
 			brake=0
 	var/xadd = speed
@@ -287,9 +293,9 @@ var/datum/travgrid/tgrid= new()
 			dat+="<BR><A href='?src=\ref[src];e=0.25'>Turn on engines</a>"
 		else
 			dat+="<BR><A href='?src=\ref[src];e=0'>Turn off engines</a>"
-		dat+="<BR<A href='?src=\ref[src];brake=1;e=0'>Turn on autobraking</a>"
+		dat+="<BR><A href='?src=\ref[src];brake=1;e=0'>Turn on autobraking</a>"
 	else
-		dat+="<BR<A href='?src=\ref[src];brake=0'>Turn off autobraking</a>"
+		dat+="<BR><A href='?src=\ref[src];brake=0'>Turn off autobraking</a>"
 
 	if(!transmit==1)
 		dat+="<BR><A href='?src=\ref[src];t=1'>Turn on radio warnings</a>"
