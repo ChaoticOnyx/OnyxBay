@@ -152,10 +152,10 @@ var/global/datum/controller/gameticker/ticker
 				declare_completion()
 
 			spawn(50*tick_multiplier)
-				world << "\blue <B>Restarting in 25 seconds</B>"
+				world << "\blue <B>Restarting in 60 seconds</B>"
 			//	if(makejson)
 			//		send2irc(world.url,"New round in 25 seconds!")
-				sleep(250*tick_multiplier)
+				sleep(600*tick_multiplier)
 				world.Reboot()
 
 
