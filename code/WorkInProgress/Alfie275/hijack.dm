@@ -85,10 +85,10 @@
 	var/datum/travloc/baseloc
 
 /datum/objective/stealship/New()
-	var/datum/travevent/meteor/base/b = new()
-	if(tgrid.events.Find(b))
-		baseloc=tgrid.events[tgrid.events.Find(b)]
-	else
+	var/datum/travevent/meteor/base/b
+	for(var/datum/travevent/meteor/base/bas in tgrid.events)
+		b = bas
+	if(!b)
 		var/datum/travloc/t
 		var/chosen
 		while(!chosen)
@@ -99,11 +99,10 @@
 			if(!LOC.contents.Find(Luna))
 				t = tgrid.grid[a][c]
 				chosen = 1
-
 		b = tgrid.MakeEvent(/datum/travevent/meteor/base,t.x,t.y)
-		baseloc = b.loc
-		if(ticker.mode.name=="Hijack")
-			ticker.mode:baseloc=baseloc
+	baseloc = b.loc
+	if(ticker.mode.name=="Hijack")
+		ticker.mode:baseloc=baseloc
 	explanation_text = "Bring the ship to our base disguised as a meteor storm at [baseloc.x] - [baseloc.y]"
 
 
