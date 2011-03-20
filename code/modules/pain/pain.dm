@@ -49,6 +49,3 @@ mob/living/carbon/proc/handle_pain()
 				maxdam = dam
 		if(damaged_organ)
 			pain(damaged_organ.display_name, maxdam, 0)
-
-mob/verb/test_pain(partname as text, amount as num, chance as num)
-	pain(partname, amount, chance)
