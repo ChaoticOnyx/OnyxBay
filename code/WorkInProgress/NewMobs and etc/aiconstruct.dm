@@ -82,6 +82,9 @@ obj/machinery/aiconstruct/attackby(obj/item/weapon/W as obj, mob/user as mob)
 				icon_state = "ai_new5"
 obj/machinery/aiconstruct/proc/boot()
 	if(bb)
+		for(var/mob/M in world) if(M.client && M.client.key == bb.mind.key)
+			bb = M
+			break
 		if(!bb.client)
 			return
 		var/mob/living/silicon/ai/A = new(src.loc)
