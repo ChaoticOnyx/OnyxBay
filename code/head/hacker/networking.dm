@@ -31,13 +31,40 @@
 var/global/const/PROCESS_RPCS = 2
 /obj/machinery/var/networking = 0 // set to 1 if this object should be sent messages
 								  // set to 2 if the received RPCs should be directly called
+/obj/machinery/var/security = 0 // set 1 for a low security 6 char password or 2 for a 12 high security password.
+/obj/machinery/var/net_pass = null
 /obj/machinery/var/address = 0
 /obj/machinery/var/net_tag
+var/list/area_net_pass = list()
+proc/setupN()
+	for(var/obj/machinery/M in world)
+		world << M.name
+		if(M.networking)
+			var/area/A = get_area(M.loc)
+			if(M.security == 1)
+				if(area_net_pass[A.name])
+					M.net_pass = area_net_pass[A.name]
+				else
+					net_genpass(A.name)
+					M.net_pass = area_net_pass[A.name]
+			else if(M.security == 2)
+				M.net_pass = net_genpass(M.name)
+proc/net_genpass(var/N)
+	var/pass
+	var/K = md5(N)
+	K = text2num(K)
+	var/L = rand(1,5000)
+	K+=L
+	pass = md5(K)
+	area_net_pass[N] = copytext(pass,1,7)
+	return copytext(pass,1,13)
+mob/verb/testnet()
+	setupN()
 /obj/machinery/proc/call_function(datum/function/F)
 	if(F.name == "location")
 		var/datum/function/R = new()
 		R.name = "response"
-		R.arg1 = "[src] at [src.loc:name]\n"
+		R.arg1 = "[src] at [src.loc:loc:name]\n"
 		R.source_id = address
 		R.destination_id = F.source_id
 		send_packet(src,F.source_id,R)
