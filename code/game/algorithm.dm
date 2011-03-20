@@ -18,8 +18,9 @@
 //	beta_tester_loadfile()
 
 	setuptitles()
-	SetupAnomalies()
-	tgrid.Setup()
+	spawn
+		SetupAnomalies()
+		tgrid.Setup()
 	spawn(30 * tick_multiplier)
 		//EXPERIMENTAL
 		Optimize()
