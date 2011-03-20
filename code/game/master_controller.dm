@@ -135,10 +135,6 @@ datum/controller/game_controller
 		gametime_last_updated = world.timeofday
 		if(gametime > 2200) gametime -= 2200
 
-
-		var/start_time = world.timeofday
-
-
 		/*
 		if (start_time - lastannounce >= 18000)
 			world << "\blue <b>Automatic Announcement:</b>\n \t The forum went down, so we're now at http://whoopshop.com"
@@ -208,7 +204,7 @@ datum/controller/game_controller
 
 		ticker.process()
 
-		sleep((world.timeofday+10-start_time) * tick_multiplier)
+		sleep(10 * tick_multiplier)
 
 		spawn process()
 
