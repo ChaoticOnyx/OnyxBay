@@ -9,6 +9,7 @@
 
 /mob/var/uses_hud = 0
 /mob/var/obj/screen/flash = null
+/mob/var/obj/screen/pain = null
 /mob/var/obj/screen/blind = null
 /mob/var/obj/screen/hands = null
 /mob/var/obj/screen/mach = null

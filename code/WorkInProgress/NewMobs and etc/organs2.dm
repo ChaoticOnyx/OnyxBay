@@ -8,6 +8,8 @@
 		return 0
 	if(destroyed)
 		return 0
+	// make the target feel heavy pain
+	if(owner) owner.pain(display_name, (brute+burn)*3, 1)
 	if(slash)
 		var/chance = rand(1,5)
 		var/nux = brute * chance

@@ -42,6 +42,8 @@
 	//Status updates, death etc.
 	handle_regular_status_updates()
 
+	handle_pain()
+
 	// Update clothing
 	update_clothing()
 

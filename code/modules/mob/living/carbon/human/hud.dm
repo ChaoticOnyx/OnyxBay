@@ -426,6 +426,12 @@
 	mymob.flash.screen_loc = "1,1 to 15,15"
 	mymob.flash.layer = 17
 
+	mymob.pain = new /obj/screen( null )
+	mymob.pain.icon_state = "blank"
+	mymob.pain.name = "pain"
+	mymob.pain.screen_loc = "1,1 to 15,15"
+	mymob.pain.layer = 17
+
 	mymob.hands = new /obj/screen( null )
 	mymob.hands.icon_state = "hand"
 	mymob.hands.name = "hand"
@@ -537,7 +543,7 @@
 	mymob.client.screen = null
 
 	//, mymob.i_select, mymob.m_select
-	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.oxygen, mymob.toxin, mymob.bodytemp, mymob.internals, mymob.fire, mymob.hands, mymob.healths, mymob.pullin, mymob.blind, mymob.flash, mymob.rest, mymob.sleep) //, mymob.mach )
+	mymob.client.screen += list( mymob.pain, mymob.throw_icon, mymob.zone_sel, mymob.oxygen, mymob.toxin, mymob.bodytemp, mymob.internals, mymob.fire, mymob.hands, mymob.healths, mymob.pullin, mymob.blind, mymob.flash, mymob.rest, mymob.sleep) //, mymob.mach )
 	mymob.client.screen += adding + other
 
 	//if(istype(mymob,/mob/living/carbon/monkey)) mymob.client.screen += mon_blo
