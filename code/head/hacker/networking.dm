@@ -51,13 +51,21 @@ proc/setupN()
 				M.net_pass = net_genpass(M.name)
 proc/net_genpass(var/N)
 	var/pass
-	var/K = md5(N)
-	K = text2num(K)
-	var/L = rand(1,5000)
-	K+=L
-	pass = md5(K)
+	var/k
+	var/list/chars = list("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z")
+	var/list/nums = list("0","1","2","3","4","5","6","7","8","9")
+	var/count = 0
+	while(!pass)
+		count++
+		if(rand(0,1))
+			k += pick(nums)
+		else
+			k += pick(chars)
+		if(count == 12)
+			pass = k
+			break
 	area_net_pass[N] = copytext(pass,1,7)
-	return copytext(pass,1,13)
+	return pass
 mob/verb/testnet()
 	setupN()
 /obj/machinery/proc/call_function(datum/function/F)
