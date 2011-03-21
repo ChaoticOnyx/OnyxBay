@@ -66,8 +66,8 @@ proc/net_genpass(var/N)
 			break
 	area_net_pass[N] = copytext(pass,1,7)
 	return pass
-mob/verb/testnet()
-	setupN()
+//mob/verb/testnet()
+//	setupN()
 /obj/machinery/proc/call_function(datum/function/F)
 	if(F.name == "location")
 		var/datum/function/R = new()
