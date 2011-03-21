@@ -4,7 +4,7 @@
 	icon_state = "console"
 	density = 1
 	anchored = 1
-
+	security = 2
 var/global/first_free_address_range = 1
 /obj/machinery/router/var/address_range
 /obj/machinery/router/var/list/connected[255]
@@ -58,7 +58,52 @@ var/global/first_free_address_range = 1
 	M.address = 0
 
 /obj/machinery/router/call_function(var/datum/function/F)
-	if(F.name == "who")
+	if(uppertext(F.arg1) == net_pass)
+		//world << "AUTHED"
+		if(F.name == "who")
+			var/tp = /obj
+			if(F.arg1 == "apc")
+				tp = /obj/machinery/power/apc
+			else if(F.arg1 == "airlock")
+				tp = /obj/machinery/door/airlock
+			else if(F.arg1 == "status_display")
+				tp = /obj/machinery/status_display
+			else if(F.arg1 == "alarm")
+				tp = /obj/machinery/alarm
+			else if(F.arg1 == "router")
+				tp = /obj/machinery/router
+			else if(F.arg1 == "disposal")
+				tp = /obj/machinery/disposal
+			var/datum/function/R = new()
+			R.name = "response"
+			R.arg1 = ""
+			var/list/passes = list()
+			for(var/obj/M in connected) if(istype(M,tp))
+				if(istype(M,/obj/item/weapon/laptop))
+					if(M:OS:name != "ThinkThank")
+						R.arg1 += "[ip2text(M:address)]\t[M:OS:name]\n"
+					else
+						R.arg1 += "[ip2text(M:address)]\t[M.name]\n"
+				if(istype(M,/obj/machinery/))
+					var/area/A = get_area(M.loc)
+					if(M:security == 1 && !passes[A.name])
+						passes[A.name] = M:net_pass
+					else if(M:security == 2)
+						R.arg1 += "[ip2text(M:address)]\t[M.name][M:net_tag ? "([M:net_tag])" : ""]\[[M:net_pass]]\n"
+					else
+						R.arg1 += "[ip2text(M:address)]\t[M.name][M:net_tag ? "([M:net_tag])" : ""]\n"
+			for(var/obj/machinery/router/Ro in world) if(istype(Ro,tp))
+				R.arg1 += "[ip2text(Ro.address)]\tRouter\n"
+			R.arg1 += "Area Passwords\n"
+			for(var/A in passes)
+				var/pass = passes[A]
+				R.arg1 += "[A]:[pass]\n"
+			R.source_id = address
+			R.destination_id = F.source_id
+			receive_packet(src, R)
+		if(F.name == "response")
+			OS.receive_message(F.arg1)
+	else if(F.name == "who")
 		var/tp = /obj
 		if(F.arg1 == "apc")
 			tp = /obj/machinery/power/apc
