@@ -67,7 +67,8 @@ datum/controller/game_controller
 		setup_objects()
 
 		setupgenetics()
-		setupasteroid()
+		spawn
+			setupasteroid()
 		setuptitles()
 		SetupAnomalies()
 	//	tgrid.Setup()

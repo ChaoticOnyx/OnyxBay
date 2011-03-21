@@ -20,12 +20,16 @@
 	icon_state = "c-4large_0"
 	item_state = "c-4large"
 	desc = "A mysterious package, it's quite heavy."
-
 	power = 3
 	size = "large"
 
 /obj/item/weapon/syndie/c4explosive/New()
+	var/K = rand(1,2000)
+	K = md5(num2text(K)+name)
+	K = copytext(K,1,7)
+	src.desc += "\n You see [K] engraved on \the [src]"
 	var/obj/item/weapon/syndie/c4detonator/detonator = new(src.loc)
+	detonator.desc += "\n You see [K] engraved on \the [src]"
 	detonator.bomb = src
 
 /obj/item/weapon/syndie/c4explosive/proc/detonate()
@@ -62,6 +66,8 @@
 						flick("c-4detonator_click", src)
 						if(src.bomb)
 							src.bomb.detonate()
+							log_admin("[user.real_name]([user.ckey]) has triggerd [src.bomb] with [src].")
+							message_admins("\red [user.real_name]([user.ckey]) has triggerd [src.bomb] with [src].")
 
 					if("Close the lighter.")
 						src.icon_state = "c-4detonator_0"

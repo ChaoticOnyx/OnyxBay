@@ -80,9 +80,11 @@ var/global/first_free_address_range = 1
 				if(M:OS:name != "ThinkThank")
 					R.arg1 += "[ip2text(M:address)]\t[M:OS:name]\n"
 				else
-					R.arg1 += "[ip2text(M:address)]\t[initial(M.name)]\n"
+					R.arg1 += "[ip2text(M:address)]\t[M.name]\n"
+			else if(M:net_tag)
+				R.arg1 += "[ip2text(M:address)]\t[M.name]([M:net_tag])\n"
 			else
-				R.arg1 += "[ip2text(M:address)]\t[initial(M.name)]\n"
+				R.arg1 += "[ip2text(M:address)]\t[M.name]\n"
 		for(var/obj/machinery/router/Ro in world) if(istype(Ro,tp))
 			R.arg1 += "[ip2text(Ro.address)]\tRouter\n"
 		R.source_id = address

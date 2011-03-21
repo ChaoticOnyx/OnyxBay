@@ -55,6 +55,7 @@
 	var/air_locked = 0 //Set if the airlock was locked in an emergency seal.
 	autoclose = 1
 	networking = PROCESS_RPCS
+	security = 1
 
 /obj/machinery/door/airlock/command
 	name = "Airlock"
@@ -719,6 +720,8 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/call_function(datum/function/F)
 	..()
+	if(F.arg1 != net_pass)
+		return
 	if (F.name == "bolts")
 		if (!src.locked)
 			src.locked = 1
