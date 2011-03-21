@@ -30,7 +30,7 @@
 		name += pick("One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen")
 
 // And a quick hack
-	name = "Baystation 12"
+	name = "Luna"
 
 
 	station_name = name
