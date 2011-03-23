@@ -44,6 +44,7 @@
 	var/obj/disposalpipe/trunk/trunk = null // the attached pipe trunk
 	var/flushing = 0	// true if flushing in progress
 	networking = 2
+	security = 1
 	// create a new disposal
 	// find the attached trunk (if present) and init gas resvr.
 	New()
@@ -61,11 +62,19 @@
 			update()
 
 	call_function(var/datum/function/F)
+		if(uppertext(F.arg1) != net_pass)
+			var/datum/function/R = new()
+			R.name = "response"
+			R.source_id = address
+			R.destination_id = F.source_id
+			R.arg1 += "Incorrect Access token"
+			send_packet(src,F.source_id,R)
+			return 0 // send a wrong password really.
 		if(F.name == "pump")
-			if(F.arg1)
-				if(F.arg1 == "off")
+			if(F.arg2)
+				if(F.arg2 == "off")
 					mode = 0
-				if(F.arg1 == "on")
+				if(F.arg2 == "on")
 					mode = 1
 		if(F.name == "flush")
 			flush = !flush

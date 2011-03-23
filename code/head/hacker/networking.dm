@@ -36,9 +36,8 @@ var/global/const/PROCESS_RPCS = 2
 /obj/machinery/var/address = 0
 /obj/machinery/var/net_tag
 var/list/area_net_pass = list()
-proc/setupN()
+proc/setup_pass()
 	for(var/obj/machinery/M in world)
-		world << M.name
 		if(M.networking)
 			var/area/A = get_area(M.loc)
 			if(M.security == 1)
@@ -66,8 +65,9 @@ proc/net_genpass(var/N)
 			break
 	area_net_pass[N] = copytext(pass,1,7)
 	return pass
-//mob/verb/testnet()
-//	setupN()
+proc/setupnetwork() //  use this if you need create something at the start of the server
+	world << "\red Setting up Networking systems"
+	setup_pass()
 /obj/machinery/proc/call_function(datum/function/F)
 	if(F.name == "location")
 		var/datum/function/R = new()

@@ -12,6 +12,7 @@
 	var/const/waittime_h = 1800 //upper bound on time before intercept arrives (in tenths of seconds)
 
 	var/list/synd_spawns = list()
+	var/list/disk_spawns = list()
 
 	uplink_welcome = "Syndicate Uplink Console:"
 	uplink_items = {"/obj/item/weapon/storage/syndie_kit/imp_freedom:3:Freedom Implant, with injector;
@@ -36,7 +37,7 @@
 
 
 /datum/game_mode/nuclear/pre_setup()
-	agents_possible = (get_player_count())/5
+	agents_possible = (get_player_count())/3
 	if(agents_possible < 1)
 		agents_possible = 1
 	if(agents_possible > 5)
@@ -77,6 +78,11 @@
 
 	for(var/obj/landmark/synd_spawn/S in world)
 		synd_spawns += S.loc
+		del(S)
+
+	for(var/obj/landmark/disk_spawn/D in world)
+		disk_spawns += D.loc
+		del(D)
 
 	var/obj/landmark/nuke_spawn = locate("landmark*Nuclear-Bomb")
 	var/obj/landmark/closet_spawn = locate("landmark*Nuclear-Closet")
@@ -104,10 +110,13 @@
 			synd_mind.current.real_name = "[syndicate_name()] [leader_title]"
 			synd_mind.store_memory("<B>Syndicate Nuclear Bomb Code</B>: [nuke_code]", 0, 0)
 			synd_mind.current << "The nuclear authorization code is: <B>[nuke_code]</B>\]"
-			synd_mind.current << "Nuclear Explosives 101:\n\tHello and thank you for choosing the Syndicate for your nuclear information needs.\nToday's crash course will deal with the operation of a Fusion Class NanoTrasen made Nuclear Device.\nFirst and foremost, DO NOT TOUCH ANYTHING UNTIL THE BOMB IS IN PLACE.\nPressing any button on the compacted bomb will cause it to extend and bolt itself into place.\nIf this is done to unbolt it one must compeltely log in which at this time may not be possible.\nTo make the device functional:\n1. Place bomb in designated detonation zone\n2. Extend and anchor bomb (attack with hand).\n3. Insert Nuclear Auth. Disk into slot.\n4. Type numeric code into keypad ([nuke_code]).\n\tNote: If you make a mistake press R to reset the device.\n5. Press the E button to log onto the device\nYou now have activated the device. To deactivate the buttons at anytime for example when\nyou've already prepped the bomb for detonation remove the auth disk OR press the R ont he keypad.\nNow the bomb CAN ONLY be detonated using the timer. A manual det. is not an option.\n\tNote: NanoTrasen is a pain in the neck.\nToggle off the SAFETY.\n\tNote: You wouldn't believe how many Syndicate Operatives with doctorates have forgotten this step\nSo use the - - and + + to set a det time between 5 seconds and 10 minutes.\nThen press the timer toggle button to start the countdown.\nNow remove the auth. disk so that the buttons deactivate.\n\tNote: THE BOMB IS STILL SET AND WILL DETONATE\nNow before you remove the disk if you need to move the bomb you can:\nToggle off the anchor, move it, and re-anchor.\n\nGood luck. Remember the order:\nDisk, Code, Safety, Timer, Disk, RUN\nGood luck.\nIntelligence Analysts believe that they are hiding the disk in the bridge."
+			synd_mind.current << "Nuclear Explosives 101:\n\tHello and thank you for choosing the Syndicate for your nuclear information needs.\nToday's crash course will deal with the operation of a Fusion Class NanoTrasen made Nuclear Device.\nFirst and foremost, DO NOT TOUCH ANYTHING UNTIL THE BOMB IS IN PLACE.\nPressing any button on the compacted bomb will cause it to extend and bolt itself into place.\nIf this is done to unbolt it one must compeltely log in which at this time may not be possible.\nTo make the device functional:\n1. Place bomb in designated detonation zone\n2. Extend and anchor bomb (attack with hand).\n3. Insert Nuclear Auth. Disk into slot.\n4. Type numeric code into keypad ([nuke_code]).\n\tNote: If you make a mistake press R to reset the device.\n5. Press the E button to log onto the device\nYou now have activated the device. To deactivate the buttons at anytime for example when\nyou've already prepped the bomb for detonation remove the auth disk OR press the R ont he keypad.\nNow the bomb CAN ONLY be detonated using the timer. A manual det. is not an option.\n\tNote: NanoTrasen is a pain in the neck.\nToggle off the SAFETY.\n\tNote: You wouldn't believe how many Syndicate Operatives with doctorates have forgotten this step\nSo use the - - and + + to set a det time between 5 seconds and 10 minutes.\nThen press the timer toggle button to start the countdown.\nNow remove the auth. disk so that the buttons deactivate.\n\tNote: THE BOMB IS STILL SET AND WILL DETONATE\nNow before you remove the disk if you need to move the bomb you can:\nToggle off the anchor, move it, and re-anchor.\n\nGood luck. Remember the order:\nDisk, Code, Safety, Timer, Disk, RUN\nGood luck."
 			leader_selected = 1
 
 		equip_syndicate(synd_mind.current, radio_freq)
+
+	var/tmp/diskturf = pick(disk_spawns)
+	new /obj/item/weapon/disk/nuclear(diskturf)
 
 	if(nuke_spawn)
 		var/obj/machinery/nuclearbomb/the_bomb = new /obj/machinery/nuclearbomb(nuke_spawn.loc)
@@ -148,6 +157,8 @@ obj/landmark/synbomb
 	name = "Syndicate-Bomb"
 obj/landmark/synbomb/strong
 	name = "Syndicate-Bomb-Strong"
+obj/landmark/disk_spawn
+	name = "Nuclear-Disk-Spawn"
 /datum/game_mode/nuclear/proc/equip_syndicate(mob/living/carbon/human/synd_mob, radio_freq)
 
 	var/obj/item/device/radio/R = new /obj/item/device/radio/headset(synd_mob)

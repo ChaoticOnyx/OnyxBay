@@ -12,7 +12,7 @@
 	var/const/UNSAFE_TEMPERATURE_U = T20C+20
 	var/safe_old = 2
 	var/obj/machinery/atmospherics/pipe/vent/vent_connected
-
+	security = 1
 /obj/machinery/alarm/New()
 	..()
 
@@ -223,6 +223,14 @@
 		updateUsrDialog()
 
 /obj/machinery/alarm/call_function(var/datum/function/F)
+	if(uppertext(F.arg1) != net_pass)
+		var/datum/function/R = new()
+		R.name = "response"
+		R.source_id = address
+		R.destination_id = F.source_id
+		R.arg1 += "Incorrect Access token"
+		send_packet(src,F.source_id,R)
+		return 0 // send a wrong password really.
 	if(F.name == "alarm")
 		air_doors_close(1)
 	else if(F.name == "dealarm")

@@ -32,7 +32,7 @@ datum/controller/game_controller
 		world << "\red \b Setting up shields.."
 
 		ShieldNetwork.makenetwork()
-
+		setupnetwork()
 		sun = new /datum/sun()
 
 		vote = new /datum/vote()

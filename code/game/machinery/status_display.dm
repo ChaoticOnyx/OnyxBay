@@ -29,6 +29,14 @@
 	usr << msg
 	return
 /obj/machinery/status_display/call_function(var/datum/function/F)
+	if(uppertext(F.arg1) != net_pass)
+		var/datum/function/R = new()
+		R.name = "response"
+		R.source_id = address
+		R.destination_id = F.source_id
+		R.arg1 += "Incorrect Access token"
+		send_packet(src,F.source_id,R)
+		return 0 // send a wrong password really.
 	if(F.name == "location")
 		var/datum/function/R = new()
 		R.name = "response"
@@ -37,7 +45,7 @@
 		R.destination_id = F.source_id
 		send_packet(src,F.source_id,R)
 		update()
-	else if(F.arg1)
+	else if(F.arg2)
 		if(F.name == "mode")
 			var/value = mode
 			switch(F.arg1)
@@ -53,8 +61,8 @@
 					value = 4
 			mode = value
 		else if(F.name == "msg")
-			message1 = F.arg1
-			message2 = F.arg2
+			message1 = F.arg2
+			message2 = F.arg3
 			set_message(message1,message2)
 /obj/machinery/status_display
 	icon = 'status_display.dmi'
@@ -63,6 +71,7 @@
 	anchored = 1
 	density = 0
 	networking = 2
+	security = 1
 	var/mode = 1	// 0 = Blank
 					// 1 = Shuttle timer
 					// 2 = Arbitrary message(s)

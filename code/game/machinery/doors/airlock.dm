@@ -720,8 +720,14 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/call_function(datum/function/F)
 	..()
-	if(F.arg1 != net_pass)
-		return
+	if(uppertext(F.arg1) != net_pass)
+		var/datum/function/R = new()
+		R.name = "response"
+		R.source_id = address
+		R.destination_id = F.source_id
+		R.arg1 += "Incorrect Access token"
+		send_packet(src,F.source_id,R)
+		return 0 // send a wrong password really.
 	if (F.name == "bolts")
 		if (!src.locked)
 			src.locked = 1
