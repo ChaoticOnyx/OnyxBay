@@ -10,6 +10,7 @@
 	invisibility = 101
 	density = 0
 	opacity = 0
+	var/disabled = 0
 
 
 	var/blockatmosonly = 0

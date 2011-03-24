@@ -38,6 +38,11 @@
 
 	if (online != nonline)
 		for(var/obj/shielding/shield/Shield in PoweredShields)
+			if(Shield.disabled)
+				Shield.density = 0
+				Shield.invisibility = 101
+				Shield.explosionstrength = 0
+				continue
 			if (nonline)
 				Shield.density = !Shield.blockatmosonly
 				Shield.icon_state = "shieldsparkles[Shield.blockatmosonly]"
