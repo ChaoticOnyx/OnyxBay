@@ -606,8 +606,39 @@ datum/os/proc/process()
 datum/os/proc/Remote(var/address,var/command,var/list/args)
 	var/datum/function/F = new
 	F.name = command
-	if(args.len >= 1) F.arg1 = args[1]
-	if(args.len >= 2) F.arg2 = args[2]
+	var/run = 1
+	var/count = 0
+	while(run)
+		count++
+		if(count > args.len)
+			break
+		var/K = args[count]
+		if(findtext(K,"{",1,0))
+			world << "Found a '"
+			for(var/A in args)
+				if(K == A)
+					continue
+				if(findtext(A,"}",1,0))
+					world << "Found the other"
+					var/Z = K + A
+					Z = copytext(Z,1,0)
+					var/x = findtext(Z,"{",1,0)
+					var/y = findtext(Z,"}",x+1,0)
+					K = copytext(Z,x+1,y)
+					world << "breaking"
+					break
+		world << "[count]:[K]"
+		switch(count)
+			if(1)
+				F.arg1 = K
+			if(2)
+				F.arg2 = K
+			if(3)
+				F.arg3 = K
+			if(4)
+				F.arg4 = K
+			if(5)
+				F.arg5 = K
 	if(address == "localhost")
 		src.device:receive_packet(src.device,F)
 		return

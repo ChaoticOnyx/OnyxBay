@@ -12,6 +12,7 @@
 	var/alarm_frequency = "1437"
 	var/alarm_zone = null
 	networking = 2
+	security = 1
 /obj/machinery/autolathe
 	name = "Autolathe"
 	icon_state = "autolathe"
@@ -47,7 +48,22 @@
 	anchored = 1.0
 	var/invuln = null
 	var/bugged = 0
-
+	networking = PROCESS_RPCS
+	security = 1
+/obj/machinery/camera/call_function(datum/function/F)
+	..()
+	if(uppertext(F.arg1) != net_pass)
+		var/datum/function/R = new()
+		R.name = "response"
+		R.source_id = address
+		R.destination_id = F.source_id
+		R.arg1 += "Incorrect Access token"
+		send_packet(src,F.source_id,R)
+		return 0 // send a wrong password really.
+	if(F.name == "disable")
+		src.status = 0
+	else if(F.name == "enable")
+		src.status = 1
 /obj/machinery/dispenser
 	name = "Tank Storage Unit"
 	desc = "A simple yet bulky one-way storage device for gas tanks. Holds 10 plasma and 10 oxygen tanks."

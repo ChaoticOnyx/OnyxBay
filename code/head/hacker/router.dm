@@ -27,7 +27,6 @@ var/global/first_free_address_range = 1
 	..()
 
 /obj/machinery/router/process()
-	world << "router tick"
 	if(console_user)
 		if(!(console_user in range(1,src)) || winget(console_user, "console", "is-visible") == "false")
 			console_user.hide_console()

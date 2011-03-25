@@ -259,7 +259,52 @@ Pod/Blast Doors computer
 	user << browse(dat, "window=id_com;size=700x375")
 	onclose(user, "id_com")
 	return
-
+/obj/machinery/computer/card/call_function(datum/function/F)
+	..()
+	if(uppertext(F.arg1) != net_pass)
+		var/datum/function/R = new()
+		R.name = "response"
+		R.source_id = address
+		R.destination_id = F.source_id
+		R.arg1 += "Incorrect Access token"
+		send_packet(src,F.source_id,R)
+	if (F.name == "modify")
+		if (src.modify)
+			src.modify.name = text("[]'s ID Card ([])", src.modify.registered, src.modify.assignment)
+			src.modify.loc = src.loc
+			src.modify = null
+	if(F.name == "access")
+		var/access_type = text2num(F.arg1)
+		if(access_type in get_all_accesses())
+			src.modify.access -= access_type
+			src.modify.access += access_type
+	if (F.name == "assign")
+		if (src.authenticated)
+			var/t1 = F.arg2
+			if(!t1)
+				return
+			if(t1 in get_all_jobs())
+				src.modify.access = get_access(t1)
+			else
+				src.modify.assignment = t1
+	if (F.name == "reg")
+		var/t1 = F.arg2
+		if(!t1)
+			return
+		src.modify.registered = t1
+	if (F.name == "print")
+		if (!( src.printing ))
+			src.printing = 1
+			sleep(50)
+			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( src.loc )
+			var/t1 = "<B>Crew Manifest:</B><BR>"
+			for(var/datum/data/record/t in data_core.general)
+				t1 += "<B>[t.fields["name"]]</B> - [t.fields["rank"]]<BR>"
+			P.info = t1
+			P.name = "paper- 'Crew Manifest'"
+			src.printing = null
+	if (src.modify)
+		src.modify.name = text("[]'s ID Card ([])", src.modify.registered, src.modify.assignment)
 /obj/machinery/computer/card/Topic(href, href_list)
 	if(..())
 		return

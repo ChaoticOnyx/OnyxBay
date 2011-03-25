@@ -172,7 +172,84 @@
 	            access_bar, access_janitor, access_crematorium, access_robotics, access_cargo, access_cargo_bot, access_construction,
 	            access_security_passthrough, access_laboratories_doors, access_incinerator, access_maintenance_hall,
 	            access_shield_generator)
-
+/proc/get_access_num(A)
+	switch(A)
+		if("CargoBay")
+			return access_cargo
+		if("Cargo Bot Delivery")
+			return access_cargo_bot
+		if("Security")
+			return access_security
+		if("Brig")
+			return access_brig
+		if("Forensics")
+			return access_forensics_lockers
+		if("Medical")
+			return access_medical
+		if("Med-Sci")
+			return access_medlab
+		if("Morgue")
+			return access_morgue
+		if("ToxinsResearch")
+			return access_tox
+		if("ToxinsStorage")
+			return access_tox_storage
+		if("ToxinsChemical Lab")
+			return access_chemistry
+		if("Bar")
+			return access_bar
+		if("JanitorialEquipment")
+			return access_janitor
+		if("Engineering")
+			return access_engine
+		if("apc")
+			return access_engine_equip
+		if("Maintenance")
+			return access_maint_tunnels
+		if("External Airlock")
+			return access_external_airlocks
+		if(access_emergency_storage)
+			return "Emergency Storage"
+		if(access_change_ids)
+			return "ID Computer"
+		if(access_ai_upload)
+			return "AI Upload"
+		if(access_teleporter)
+			return "Teleporter"
+		if(access_eva)
+			return "EVA"
+		if(access_heads)
+			return "Head's Quarters/Bridge"
+		if(access_captain)
+			return "Captain's Quarters"
+		if(access_all_personal_lockers)
+			return "Personal Locker"
+		if(access_chapel_office)
+			return "Chapel Office"
+		if(access_tech_storage)
+			return "Technical Storage"
+		if(access_atmospherics)
+			return "Atmospherics"
+		if(access_crematorium)
+			return "Crematorium"
+		if(access_armory)
+			return "Armory"
+		if(access_construction)
+			return "Construction Site"
+		if(access_kitchen)
+			return "Kitchen"
+		if(access_security_passthrough)
+			return "Security Main Doors"
+		if(access_incinerator)
+			return "Incinerator Operation"
+		if(access_laboratories_doors)
+			return "Laboratories Hallway"
+		if(access_maintenance_hall)
+			return "Maintenance Hall"
+		if(access_shield_generator)
+			return "Shield Generator"
+		if(access_robotics)
+			return "Robotics"
 /proc/get_access_desc(A)
 	switch(A)
 		if(access_cargo)
