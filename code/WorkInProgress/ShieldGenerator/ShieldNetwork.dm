@@ -9,7 +9,7 @@ var/datum/shieldnetwork/ShieldNetwork
 
 /datum/shieldnetwork
 	var/global/NetworkCount = 0
-
+	var/on
 	var/ShieldNetNum
 	var/list/Nodes = list( )
 	var/list/Cables = list( )
@@ -66,9 +66,11 @@ var/datum/shieldnetwork/ShieldNetwork
 		E.control = 1
 	for(var/obj/machinery/shielding/capacitor/C in Nodes)
 		C.shields_enabled = 1
+	on = 1
 
 /datum/shieldnetwork/proc/stopshields()
 	for(var/obj/machinery/shielding/emitter/E in Nodes)
 		E.control = 0
 	for(var/obj/machinery/shielding/capacitor/C in Nodes)
 		C.shields_enabled = 0
+	on = 0

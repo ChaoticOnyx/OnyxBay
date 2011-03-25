@@ -35,6 +35,9 @@ var/global/datum/controller/gameticker/ticker
 	spawn setup()
 
 
+
+var/list/postsetuphooks = list()
+
 /datum/controller/gameticker/proc/setup()
 
 	//Create and announce mode
@@ -80,11 +83,14 @@ var/global/datum/controller/gameticker/ticker
 	add_minds()
 
 
+
 	//Equip characters
 	equip_characters()
 
 	data_core.manifest()
 
+	for(var/a in postsetuphooks)
+		a:post_setup()
 
 	current_state = GAME_STATE_PLAYING
 	spawn(0)
@@ -264,3 +270,4 @@ var/global/datum/controller/gameticker/ticker
 			return
 //Anything else, like sandbox, return.
 */
+

@@ -105,6 +105,7 @@
 	var/access_status_display = 0
 	var/access_quartermaster = 0
 	var/access_games = 0
+	var/access_shields = 0
 
 	// common cartridge procs
 
@@ -363,6 +364,7 @@
 	access_medical = 1
 	access_reagent_scanner = 1
 	access_status_display = 1
+	access_shields = 1
 	var/frequency = 1500
 	var/list/signal_info
 	var/id = "core"
@@ -652,6 +654,16 @@
 					dat += "<ul>"
 					dat += "<li><a href='byond://?src=\ref[src];suppshut=1'>Supply Records</A></li>"
 					dat += "<li><a href='byond://?src=\ref[src];mulectrl=1'>Delivery Bot Control</A></li>"
+					dat += "</ul>"
+
+				if(cartridge && cartridge.access_shields)
+
+					dat += "<h4>Shields: </h4>"
+					dat += "<ul>"
+					if(ShieldNetwork.on)
+						dat += "<li><a href='byond://?src=\ref[src];shield=0'>Turn off</A></li>"
+					else
+						dat += "<li><a href='byond://?src=\ref[src];shield=1'>Turn on</A></li>"
 					dat += "</ul>"
 
 				dat += "<h4>Utilities</h4>"
@@ -1285,6 +1297,13 @@ Code:
 
 		else if (href_list["jl"] && !isnull(src.cartridge) && src.cartridge.access_janitor)
 			src.mode = 8
+
+		else if (href_list["shield"] && !isnull(src.cartridge) && src.cartridge.access_shields)
+			var/shieldsetting = text2num(href_list["shield"])
+			if(shieldsetting==1)
+				ShieldNetwork.startshields()
+			else
+				ShieldNetwork.stopshields()
 
 		else if ((href_list["sigmode"]) && (!isnull(src.cartridge)) && (istype(src.cartridge, /obj/item/weapon/cartridge/signal)))
 			src.mode = 9

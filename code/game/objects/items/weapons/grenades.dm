@@ -244,6 +244,23 @@ FLASHBANG
 		if(istype(A, /obj/machinery/clonepod))
 			A:malfunction()
 
+	for(var/obj/shielding/shield/S in range(world.view-1, T))
+		S.disabled = 1
+		var/obj/overlay/pulse2 = new/obj/overlay ( S.loc )
+		pulse2.icon = 'effects.dmi'
+		pulse2.icon_state = "empdisable"
+		pulse2.name = "emp sparks"
+		pulse2.anchored = 1
+		pulse2.dir = pick(cardinal)
+		S.density = 0
+		S.invisibility = 101
+		S.explosionstrength = 0
+		spawn(40)
+			del(pulse2)
+		spawn(500)
+			if(S)
+				S.disabled = 0
+
 	del(grenade)
 
 	return

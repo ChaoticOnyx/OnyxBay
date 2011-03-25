@@ -31,7 +31,7 @@ var/datum/travgrid/tgrid= new()
 	Luna = tgrid.MakeEvent(/datum/travevent/ship/Luna,rand(2)+5,5-rand(1))
 	var/datum/travevent/met = tgrid.MakeEvent(/datum/travevent/meteor,Luna.loc.x,Luna.loc.y+3)
 	met.yvel = -0.5
-	for(var/i = 1 to 50)
+	for(var/i = 1 to 20)
 		var/a = rand(1,trgrdsz)
 		var/b = rand(1,trgrdsz)
 		var/datum/travloc/t = grid[a][b]
@@ -96,6 +96,7 @@ var/datum/travgrid/tgrid= new()
 /datum/travevent/meteor
 	name = "Meteor shower"
 	var/density
+	var/grace = 0
 
 /datum/travevent/New()
 	pic = new()
@@ -197,6 +198,7 @@ var/datum/travgrid/tgrid= new()
 
 /datum/travevent/meteor/Entered(var/datum/travevent/t)
 	if(istype(t,/datum/travevent/ship/Luna))
+		grace = rand(3)+4
 		loc.grid.Announce("The ship is now travelling through a meteor shower")
 
 /datum/travevent/meteor/Cleared(var/datum/travevent/t)
@@ -229,8 +231,10 @@ var/datum/travgrid/tgrid= new()
 /datum/travevent/meteor/Meteor(var/amt)
 	density+=amt
 /datum/travevent/meteor/Interact(var/datum/travevent/t)
-	if(rand(4)==1)
-		t.Meteor(3)
+	if(grace!=0)
+		grace--
+	else if(rand(4)==1)
+		t.Meteor(1)
 		density-=1
 	//	world << "LOL"
 		if(density<1)
@@ -334,6 +338,7 @@ var/datum/travgrid/tgrid= new()
 		if (href_list["close"])
 			if(usr.machine == src)
 				usr.machine = null
+				usr<<browse(null,"window=computer")
 		if (href_list["t"])
 			var/speed = text2num(href_list["t"])
 			transmit = speed

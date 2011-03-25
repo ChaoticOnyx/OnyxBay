@@ -131,6 +131,7 @@
 #define FILE_DIR "maps"
 #define FILE_DIR "maps/asteroid"
 #define FILE_DIR "maps/backup"
+#define FILE_DIR "maps/backup/backup"
 #define FILE_DIR "maps/travel"
 #define FILE_DIR "music"
 #define FILE_DIR "sound"
@@ -170,7 +171,6 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
-#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -686,6 +686,7 @@
 #include "code\WorkInProgress\Alfie275\anomalyeffects.dm"
 #include "code\WorkInProgress\Alfie275\anomalyharvester.dm"
 #include "code\WorkInProgress\Alfie275\asteroid.dm"
+#include "code\WorkInProgress\Alfie275\banking.dm"
 #include "code\WorkInProgress\Alfie275\economy.dm"
 #include "code\WorkInProgress\Alfie275\game.dm"
 #include "code\WorkInProgress\Alfie275\hijack.dm"
