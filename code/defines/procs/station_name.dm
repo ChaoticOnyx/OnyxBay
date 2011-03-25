@@ -4,6 +4,7 @@
 
 	var/name = ""
 
+/*
 	if (prob(10))
 		name += pick("Super", "Ultra", "Secret", "Top Secret", "Deep", "Death", "Zybourne", "Central", "Main", "Government", "Uoi", "DongLabs", "Automated", "Experimental")
 		name += " "
@@ -28,9 +29,10 @@
 		name += pick("Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", "X-ray", "Yankee", "Zulu")
 	else
 		name += pick("One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen")
+*/
 
 // And a quick hack
-	name = "Luna"
+	name = "Baystation 12"
 
 
 	station_name = name
