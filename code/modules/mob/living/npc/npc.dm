@@ -7,7 +7,7 @@ mob/living/npc
 	var/hunt = 0 // will he  seek out ennimes?
 	var/search = 0 // will he seek out friends?
 	var/helpfull = 0 // will he do something heplfull to friends?
-	var/list/friends = list(/mob/living/npc/test)
+	var/list/friends = list(/mob/living/npc/mamacrab)
 	var/breath = 0 // does he require air or something else to survive.
 	var/list/say = list()
 	var/list/findtargets = list()
@@ -39,18 +39,13 @@ mob/living/npc/Life()
 	if(say.len && prob(sayprob))
 		DoSay()
 mob/living/npc/proc/Healthcheck()
-	if((bruteloss + fireloss + oxyloss) > 200)
+	if((bruteloss + fireloss + oxyloss) > 400)
 		Die()
 mob/living/npc/proc/Die()
 	stat = 2
 	return
 mob/living/npc/proc/Breath()
 	return
-mob/living/npc/proc/Attacked(mob/user,obj/item/weapon/W)
-	if(!W)
-		for(var/mob/M in viewers(user))
-			M << "[user] punches [src]"
-		src.brutedmg += rand(1,3)
 mob/living/npc/proc/Act()
 	var/isidle = 1
 	if(target)
@@ -158,9 +153,8 @@ mob/living/npc/proc/MoveAstar(atom/trg)
 	path_target = AStar(src.loc, target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, null,null)
 	path_target = reverselist(path_target)
 
-mob/living/npc/test
-	name = "crab"
-//	rname = "crab"
+mob/living/npc/mamacrab
+	name = "Warrior Space Crab"
 	icon = 'beach.dmi'
 	icon_state = "crab2"
 	agressive = 1

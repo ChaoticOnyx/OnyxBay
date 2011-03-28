@@ -237,13 +237,14 @@ CIRCULAR SAW
 			var/a = pick(1,2,3)
 			if(a == 1)
 				msg = "\red [user]'s move slices open [M]'s wound, causing massive bleeding"
-				temp.brute_dam += 70
+				temp.brute_dam += 35
+				temp.createwound(rand(1,3))
 				temp.clean = 0
 			else if(a == 2)
 				msg = "\red [user]'s move slices open [M]'s wound, and causes him to accidentally stab himself"
-				temp.brute_dam += 70
+				temp.brute_dam += 35
 				var/datum/organ/external/userorgan = user.organs[text("chest")]
-				userorgan.brute_dam += 70
+				userorgan.brute_dam += 35
 				temp.clean = 0
 			else if(a == 3)
 				msg = "\red [user] quickly stops the surgery"

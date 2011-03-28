@@ -25,8 +25,8 @@ mob/living/npc/vermin/Act()
 			path_target -= next
 			isidle = 0
 	else
-		for(var/atom/movable/A in oview(10,src))
-			if(edible.Find(A.type))
+		for(var/obj/item/A in oview(10,src))
+			if(A.m_amt || A.g_amt)
 				findtarget = A
 				if(!path_target.len)
 					MoveAstar(findtarget)
@@ -40,16 +40,11 @@ mob/living/npc/vermin/Act()
 	if(isidle)
 		DoIdle()
 mob/living/npc/vermin/proc/Eat(atom/A)
-	var/yum = 10
+	var/yum = 25
 	hunger += yum
 	hunger = max(0,hunger)
 	findtarget = null
 	if(istype(A,/atom/movable))
-		var/atom/movable/B = A
-		B.loc = src
-		for(var/mob/M in viewers(src))
-			M << "[src] gobbles up \the [A]"
-	else
 		for(var/mob/M in viewers(src))
 			M << "[src] gobbles up \the [A]"
 		del(A)
@@ -74,5 +69,9 @@ obj/egg/New(Location,type)
 		del(src)
 	spawn(300) src.open()
 obj/egg/proc/open()
+	if(prob(1))
+		new /mob/living/npc/mamacrab(src.loc)
+		del(src)
+		return
 	new spawntype(src.loc)
 	del(src)

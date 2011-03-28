@@ -131,7 +131,6 @@
 #define FILE_DIR "maps"
 #define FILE_DIR "maps/asteroid"
 #define FILE_DIR "maps/backup"
-#define FILE_DIR "maps/backup/backup"
 #define FILE_DIR "maps/travel"
 #define FILE_DIR "music"
 #define FILE_DIR "sound"
