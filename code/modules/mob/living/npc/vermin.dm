@@ -1,20 +1,23 @@
 mob/living/npc/vermin
-	var/list/edible = list(/obj/item/weapon/crowbar)
 	var/hunger = 0
-
+mob/living/npc/vermin/Healthcheck()
+	if((bruteloss + fireloss + oxyloss) > 100)
+		Die()
 mob/living/npc/vermin/Act()
 	var/isidle = 1
 	if(hunger)
 		hunger--
 	if(hunger >= 70)
 		Replicate()
+	var/list/V = view(10,src)
+	V = reverselist(V)
 	if(findtarget)
 		if(findtarget in view(1,src))
 			Eat(findtarget)
 			if(path_target.len >= 1)
 				path_target = list()
 			isidle = 0
-		else if(findtarget in viewers(src))
+		else if(findtarget in V)
 			if(!path_target.len)
 				MoveAstar(findtarget)
 				if(path_target.len <= 0)
@@ -24,9 +27,25 @@ mob/living/npc/vermin/Act()
 			step_towards_3d(src,get_step_towards_3d2(next))
 			path_target -= next
 			isidle = 0
+		else
+			findtarget = null
+			path_target = list()
 	else
-		for(var/atom/movable/A in oview(10,src))
-			if(edible.Find(A.type))
+		for(var/obj/item/A in view(10,src))
+			if(A.m_amt || A.g_amt)
+				findtarget = A
+				if(!path_target.len)
+					MoveAstar(findtarget)
+					if(path_target.len <= 0)
+						path_target = list()
+						return
+				var/turf/next = path_target[1]
+				step_towards_3d(src,get_step_towards_3d2(next))
+				path_target -= next
+				isidle = 0
+	if(!findtarget)
+		for(var/obj/item/A in oview(10,src))
+			if(A.m_amt || A.g_amt)
 				findtarget = A
 				if(!path_target.len)
 					MoveAstar(findtarget)
@@ -40,16 +59,11 @@ mob/living/npc/vermin/Act()
 	if(isidle)
 		DoIdle()
 mob/living/npc/vermin/proc/Eat(atom/A)
-	var/yum = 10
+	var/yum = 25
 	hunger += yum
 	hunger = max(0,hunger)
 	findtarget = null
 	if(istype(A,/atom/movable))
-		var/atom/movable/B = A
-		B.loc = src
-		for(var/mob/M in viewers(src))
-			M << "[src] gobbles up \the [A]"
-	else
 		for(var/mob/M in viewers(src))
 			M << "[src] gobbles up \the [A]"
 		del(A)
@@ -74,5 +88,9 @@ obj/egg/New(Location,type)
 		del(src)
 	spawn(300) src.open()
 obj/egg/proc/open()
+	if(prob(1))
+		new /mob/living/npc/mamacrab(src.loc)
+		del(src)
+		return
 	new spawntype(src.loc)
 	del(src)

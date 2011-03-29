@@ -156,12 +156,13 @@ Manual Mode Generation Rate:      <a href="?src=\ref[src]&man=1">M</a> <a href="
 /obj/machinery/shielding/energyconverter/process()
 	if(stat & (NOPOWER|BROKEN) || !OperatingMode)
 		return
-
 	if(!Capacitor)
 		stat |= BROKEN
 		UpdateIcon()
 		return
-
+	if(Capacitor.maxcharge == Capacitor.charge || Capacitor.charge * 100 == AutoTargetChargeLevel && OperatingMode == 3)
+		UpdateIcon()
+		return
 	switch(OperatingMode)
 		if(1)
 			//Manual Mode
