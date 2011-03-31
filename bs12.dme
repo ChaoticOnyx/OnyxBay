@@ -131,6 +131,7 @@
 #define FILE_DIR "maps"
 #define FILE_DIR "maps/asteroid"
 #define FILE_DIR "maps/backup"
+#define FILE_DIR "maps/backup/backup"
 #define FILE_DIR "maps/travel"
 #define FILE_DIR "music"
 #define FILE_DIR "sound"
@@ -170,6 +171,7 @@
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
+#define DEBUG
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
@@ -537,7 +539,6 @@
 #include "code\head\fireworks.dm"
 #include "code\head\medals.dm"
 #include "code\head\mysql.dm"
-#include "code\head\spotter.dm"
 #include "code\head\stats.dm"
 #include "code\head\stayalive.dm"
 #include "code\head\stuff.dm"

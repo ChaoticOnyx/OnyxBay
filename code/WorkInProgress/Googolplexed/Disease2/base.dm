@@ -228,6 +228,7 @@
 		return disease
 
 /datum/disease2/effect
+	var/chance_maxm = 100
 	var/name = "Blanking effect"
 	var/stage = 4
 	var/maxm = 1
@@ -367,7 +368,7 @@
 	name = "Lazy mind syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.brainloss = 40
+		mob.brainloss = 20
 
 /datum/disease2/effect/lesser/drowsy
 	name = "Bedroom Syndrome"
@@ -379,7 +380,7 @@
 	name = "Hard of hearing syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.ear_deaf += 20
+		mob.ear_deaf = 20
 
 /datum/disease2/effect/lesser/gunck
 	name = "Flemmingtons"
@@ -433,6 +434,7 @@
 		mob.say("*groan")
 
 /datum/disease2/effect/lesser
+	chance_maxm = 10
 
 /datum/disease2/effectholder
 	var/name = "Holder"
@@ -471,7 +473,7 @@
 	proc/minormutate()
 		switch(pick(1,2,3,4,5))
 			if(1)
-				chance = rand(0,100)
+				chance = rand(0,effect.chance_maxm)
 			if(2)
 				multiplier = rand(1,effect.maxm)
 	proc/majormutate()
