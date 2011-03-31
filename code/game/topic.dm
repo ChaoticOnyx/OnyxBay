@@ -105,6 +105,8 @@ world/proc/makejson()
 			if(!C.stealth)
 				admins = "yes"
 				players += "[C.key];"
+			else
+				players += "[C.fakekey];"
 		else
 			players += "[C.key];"
 

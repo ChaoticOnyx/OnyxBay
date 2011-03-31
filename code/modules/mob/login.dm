@@ -39,3 +39,5 @@
 		changes()
 
 	..()
+
+mob/proc/GetInfo()

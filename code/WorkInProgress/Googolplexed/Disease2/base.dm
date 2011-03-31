@@ -6,10 +6,13 @@
 
 
 /proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease2/disease/disease,var/forced = 0)
-	if(prob(disease.infectionchance))
-		if(M.virus2)
+	if(M.virus2)
+		return
+	for(var/datum/disease2/resistance/res in M.resistances)
+		if(res.resistsdisease(disease))
 			return
-		else
+	if(prob(disease.infectionchance))
+		if(1)
 			var/score = 0
 			if(!forced)
 				if(istype(M, /mob/living/carbon/human))
@@ -40,9 +43,7 @@
 			M.virus2 = disease.getcopy()
 			M.virus2.minormutate()
 
-			for(var/datum/disease2/resistance/res in M.resistances)
-				if(res.resistsdisease(M.virus2))
-					M.virus2 = null
+
 
 
 
@@ -91,7 +92,6 @@
 	var/stageprob = 10
 	var/dead = 0
 	var/clicks = 0
-
 	var/uniqueID = 0
 	var/list/datum/disease2/effectholder/effects = list()
 	proc/makerandom(var/greater=0)

@@ -589,6 +589,46 @@ window "derpadmin"
 		max-lines = 1000
 		image = ""
 
+window "hidden"
+	elem "hidden"
+		type = MAIN
+		pos = 281,0
+		size = 116x0
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = false
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "pos;size;is-minimized;is-maximized"
+		title = ""
+		titlebar = true
+		statusbar = true
+		can-close = true
+		can-minimize = true
+		can-resize = true
+		is-pane = false
+		is-minimized = false
+		is-maximized = false
+		can-scroll = none
+		icon = ""
+		image = ""
+		image-mode = stretch
+		keep-aspect = false
+		transparent-color = none
+		alpha = 255
+		macro = ""
+		menu = ""
+		on-close = ""
+
 window "mainwindow"
 	elem "mainwindow"
 		type = MAIN
