@@ -368,7 +368,7 @@
 	name = "Lazy mind syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.brainloss = 40
+		mob.brainloss = 20
 
 /datum/disease2/effect/lesser/drowsy
 	name = "Bedroom Syndrome"
@@ -380,7 +380,7 @@
 	name = "Hard of hearing syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.ear_deaf += 20
+		mob.ear_deaf = 20
 
 /datum/disease2/effect/lesser/gunck
 	name = "Flemmingtons"
