@@ -1,18 +1,19 @@
-var
-	jobban_runonce	// Updates legacy bans with new info
-	jobban_keylist[0]		//to store the keys & ranks
-
 /proc/jobban_fullban(mob/M, rank,mob/bywho)
 	if(M == bywho)
-		bywho << "FUCK YOU"
+		bywho << "Adding job bans for yourself isn't possible."
+		return
+	var/input = input(usr, "Please enter the reason for the job ban", "Job banning", "")
+	if(!input)
+		bywho << "Job ban not added. Please retry and complete the reason field."
 		return
 	if (!M || !M.key || !M.client) return
 	var/DBQuery/xquery = dbcon.NewQuery("INSERT INTO jobban VALUES ('[M.ckey]','[rank]')")
-	var/DBQuery/yquery = dbcon.NewQuery("INSERT INTO jobbanlog (`ckey`,`targetckey`,`rank`) VALUES ('[bywho.ckey]','[M.ckey]','[rank]')")
+	var/DBQuery/yquery = dbcon.NewQuery("INSERT INTO jobbanlog (`ckey`,`targetckey`,`rank`,`why`) VALUES ('[bywho.ckey]','[M.ckey]','[rank]','[input]')")
 	if(!xquery.Execute())
 		log_admin("[xquery.ErrorMsg()]")
 	if(!yquery.Execute())
 		world << "[yquery.ErrorMsg()]"
+
 /proc/jobban_isbanned(mob/M, rank)
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT `rank` FROM `jobban` WHERE ckey='[M.ckey]'")
 	var/list/ranks = list()
@@ -26,6 +27,7 @@ var
 		return 1
 	else
 		return 0
+
 /proc/jobban_unban(mob/M, rank)
 	var/DBQuery/xquery = dbcon.NewQuery("DELETE FROM jobban WHERE `ckey`='[M.ckey]' AND `rank`='[rank]'")
 	var/DBQuery/yquery = dbcon.NewQuery("DELETE FROM jobbanlog WHERE `targetckey`='[M.ckey]' AND `rank`='[rank]'")
@@ -35,9 +37,7 @@ var
 		log_admin("[yquery.ErrorMsg()]")
 
 
-
 /obj/admins/proc/showjobbans()
-	//world << src
 	var/html = "<table>"
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT DISTINCT targetckey from jobbanlog")
 	if(!cquery.Execute())

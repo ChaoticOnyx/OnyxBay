@@ -67,16 +67,16 @@
 	/////////////////////////////////////new ban stuff
 	if(href_list["jobban1"])
 		var/key = href_list["jobban1"]
-		var/html = "<B><center>[key]</center></B><br><table border='1'><tr><th>Rank</th><th>By</th><th>Time</th>"
+		var/html = "<B><center>[key]</center></B><br><table border='1'><tr><th>Rank</th><th>By</th><th>Time</th><th>Reason</th>"
 		var/DBQuery/cquery = dbcon.NewQuery("SELECT * from jobbanlog WHERE targetckey='[key]'")
 		if(!cquery.Execute())
 			log_admin("[cquery.ErrorMsg()]")
 		else
 			while(cquery.NextRow())
 				var/list/derp = cquery.GetRowData()
-				html += "<tr><td>[derp["rank"]]</td><td>[derp["ckey"]]</td><td>[derp["when"]]</td></tr>"
+				html += "<tr><td>[derp["rank"]]</td><td>[derp["ckey"]]</td><td>[derp["when"]]</td><td>[derp["why"]]</td></tr>"
 		html += "</table>"
-		usr << browse(html, "window=jobbanx1x;size=475x400")
+		usr << browse(html, "window=jobbanx1x;size=600x400")
 		return
 	if(href_list["unbanf"])
 		var/key = href_list["unbanf"]
@@ -154,7 +154,7 @@
 	if(href_list["jobban2"])
 		var/mob/M = locate(href_list["jobban2"])
 		var/dat = ""
-		var/header = "<b>Pick Job to ban this guy from.<br>"
+		var/header = "<b>Pick the job to ban this guy from.<br>"
 		var/body
 //		var/list/alljobs = get_all_jobs()
 		var/jobs = ""
@@ -625,7 +625,7 @@
 			foo += text("<A href='?src=\ref[src];boot2=\ref[M]'>Boot</A> | ")
 		foo += text("<A href='?src=\ref[src];jumpto=\ref[M]'>Jump to</A> | ")
 		foo += text("<A href='?src=\ref[src];newban=\ref[M]'>Ban</A> | ")
-		foo += text("<A href='?src=\ref[src];invite=\ref[M]'>Toggle invite</A>\]")
+		foo += text("<A href='?src=\ref[src];invite=\ref[M]'>Toggle invite</A>\ ]")
 		dat += text("<body>[foo]</body></html>")
 		usr << browse(dat, "window=adminplayeropts;size=480x100")
 
@@ -1315,15 +1315,6 @@
 
 	usr << browse(dat, "window=players;size=540x480")
 
-
-/obj/admins/proc/Jobbans()
-
-	if ((src.rank in list( "Coder", "Host"  )))
-		var/dat = "<B>Job Bans!</B><HR><table>"
-		for(var/t in jobban_keylist)
-			dat += text("<tr><td><A href='?src=\ref[src];removejobban=[t]'>[t]</A></td></tr>")
-		dat += "</table>"
-		usr << browse(dat, "window=ban;size=400x400")
 
 /obj/admins/proc/Game()
 

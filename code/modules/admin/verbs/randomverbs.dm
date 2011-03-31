@@ -263,7 +263,7 @@
 		alert("Admin revive disabled")
 
 /client/proc/cmd_admin_create_centcom_report()
-	set category = "Special Verbs"
+	set category = "Roleplay"
 	set name = "Create Command Report"
 	if(!src.holder)
 		src << "Only administrators may use this command."
