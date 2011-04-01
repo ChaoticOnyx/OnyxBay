@@ -468,10 +468,47 @@
 		mob << "\red You feel hungry."
 
 /datum/disease2/effect/lesser/groan
-	name = "Appetiser Effect"
+	name = "Groaning Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*groan")
+
+/datum/disease2/effect/lesser/scream
+	name = "Loudness Syndrome"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.say("*scream")
+
+/datum/disease2/effect/lesser/drool
+	name = "Saliva Effect"
+	stage = 1
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.say("*drool")
+
+/datum/disease2/effect/lesser/fridge
+	name = "Refridgerator Syndrome"
+	stage = 2
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.say("*shiver")
+
+/datum/disease2/effect/lesser/twitch
+	name = "Twitcher"
+	stage = 1
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.say("*twitch")
+
+/datum/disease2/effect/lesser/deathgasp
+	name = "Zombie Syndrome"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.say("*deathgasp")
+
+/datum/disease2/effect/lesser/giggle
+	name = "Uncontrolled Laughter Effect"
+	stage = 3
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob.say("*giggle")
+
 
 /datum/disease2/effect/lesser
 	chance_maxm = 10
