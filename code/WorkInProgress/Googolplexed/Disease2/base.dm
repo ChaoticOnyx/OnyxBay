@@ -414,13 +414,13 @@
 	name = "Bedroom Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.drowsyness = 10
+		mob.drowsyness = 5
 
 /datum/disease2/effect/lesser/deaf
 	name = "Hard of hearing syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.ear_deaf = 20
+		mob.ear_deaf = 5
 
 /datum/disease2/effect/lesser/gunck
 	name = "Flemmingtons"
@@ -451,7 +451,7 @@
 	name = "Hallucinational Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.hallucination = 25
+		mob.hallucination += 5
 
 /datum/disease2/effect/lesser/arm
 	name = "Disarming Syndrome"
