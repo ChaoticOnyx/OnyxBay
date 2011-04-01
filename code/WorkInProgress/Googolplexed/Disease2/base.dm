@@ -5,6 +5,64 @@
 //Stage 4 = Death/Really Really really bad effect
 
 
+/obj/virus
+	// a virus instance that is placed on the map, moves, and infects
+	//invisibility = 100
+
+	icon = 'laptop.dmi'
+	icon_state = "laptop_0"
+
+	var/datum/disease2/D
+
+	var/i = 0
+
+	proc/process()
+		for(var/mob/M in loc)
+			infect_virus2(M,D)
+		if(i%5 == 0) step_rand(src)
+		i++
+
+		if(i > 50) del(src)
+
+	New()
+		..()
+		spawn while(1)
+			sleep(10)
+			process()
+
+/mob/living/carbon/proc/get_infection_chance()
+	var/score = 0
+	var/mob/living/carbon/M = src
+	if(istype(M, /mob/living/carbon/human))
+		if(M:gloves)
+			score += 5
+		if(istype(M:wear_suit, /obj/item/clothing/suit/space)) score += 10
+		if(istype(M:wear_suit, /obj/item/clothing/suit/bio_suit)) score += 10
+		if(istype(M:head, /obj/item/clothing/head/helmet/space)) score += 5
+		if(istype(M:head, /obj/item/clothing/head/bio_hood)) score += 5
+	if(M.wear_mask)
+		score += 5
+		if(istype(M:wear_mask, /obj/item/clothing/mask/surgical) && !M.internal)
+			score += 10
+		if(M.internal)
+			score += 10
+
+	if(score >= 30)
+		return 0
+	else if(score == 25 && prob(99))
+		return 0
+	else if(score == 20 && prob(95))
+		return 0
+	else if(score == 15 && prob(75))
+		return 0
+	else if(score == 10 && prob(55))
+		return 0
+	else if(score == 5 && prob(35))
+		return 0
+
+	return 1
+
+
 /proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease2/disease/disease,var/forced = 0)
 	if(M.virus2)
 		return
@@ -12,38 +70,19 @@
 		if(res.resistsdisease(disease))
 			return
 	if(prob(disease.infectionchance))
-		if(1)
-			var/score = 0
-			if(!forced)
-				if(istype(M, /mob/living/carbon/human))
-					if(M:gloves)
-						score += 5
-					if(istype(M:wear_suit, /obj/item/clothing/suit/space)) score += 10
-					if(istype(M:wear_suit, /obj/item/clothing/suit/bio_suit)) score += 10
-					if(istype(M:head, /obj/item/clothing/head/helmet/space)) score += 5
-					if(istype(M:head, /obj/item/clothing/head/bio_hood)) score += 5
-				if(M.wear_mask)
-					score += 5
-					if((istype(M:wear_mask, /obj/item/clothing/mask) || istype(M:wear_mask, /obj/item/clothing/mask/surgical)) && !M.internal)
-						score += 5
-					if(M.internal)
-						score += 5
-
-			if(score > 20)
-				return
-			else if(score == 20 && prob(95))
-				return
-			else if(score == 15 && prob(75))
-				return
-			else if(score == 10 && prob(55))
-				return
-			else if(score == 5 && prob(35))
+		if(M.virus2)
+			return
+		else
+			// certain clothes can prevent an infection
+			if(!forced && !M.get_infection_chance())
 				return
 
 			M.virus2 = disease.getcopy()
 			M.virus2.minormutate()
 
-
+			for(var/datum/disease2/resistance/res in M.resistances)
+				if(res.resistsdisease(M.virus2))
+					M.virus2 = null
 
 
 
@@ -92,6 +131,7 @@
 	var/stageprob = 10
 	var/dead = 0
 	var/clicks = 0
+
 	var/uniqueID = 0
 	var/list/datum/disease2/effectholder/effects = list()
 	proc/makerandom(var/greater=0)
