@@ -7,7 +7,7 @@
 
 /obj/virus
 	// a virus instance that is placed on the map, moves, and infects
-	//invisibility = 100
+	invisibility = 100
 
 	icon = 'laptop.dmi'
 	icon_state = "laptop_0"
