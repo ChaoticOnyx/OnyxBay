@@ -4,41 +4,6 @@
 datum/preferences/proc/savefile_path(mob/user)
 	return "data/player_saves/[copytext(user.ckey, 1, 2)]/[user.ckey]/preferences.sav"
 
-/*datum/preferences/proc/savefile_save(mob/user)
-	if (IsGuestKey(user.key))
-		return 0
-
-	var/savefile/F = new /savefile(savefile_path(user))
-
-	F["version"] << SAVEFILE_VERSION_MAX
-
-	F["real_name"] << real_name
-	F["gender"] << gender
-	F["age"] << age
-	F["occupation_1"] << occupation1
-	F["occupation_2"] << occupation2
-	F["occupation_3"] << occupation3
-	F["hair_red"] << r_hair
-	F["hair_green"] << g_hair
-	F["hair_blue"] << b_hair
-	F["facial_red"] << r_facial
-	F["facial_green"] << g_facial
-	F["facial_blue"] << b_facial
-	F["skin_tone"] << s_tone
-	F["hair_style_name"] << h_style
-	F["facial_style_name"] << f_style
-	F["eyes_red"] << r_eyes
-	F["eyes_green"] << g_eyes
-	F["eyes_blue"] << b_eyes
-	F["blood_type"] << b_type
-	F["be_syndicate"] << be_syndicate
-	F["underwear"] << underwear
-	F["name_is_always_random"] << be_random_name
-// loads the savefile corresponding to the mob's ckey
-// if silent=true, report incompatible savefiles
-// returns 1 if loaded (or file was incompatible)
-// returns 0 if savefile did not exist
-*/
 datum/preferences/proc/savefile_load(mob/user, var/silent = 1,var/slot = 1)
 	if (IsGuestKey(user.key))
 		return 0

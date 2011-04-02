@@ -234,6 +234,8 @@
 			if (!internal.air_contents)
 				del(internal)
 			else
+				if(!internal.name)
+					return //Dunno
 				stat("Internal Atmosphere Info", internal.name)
 				stat("Tank Pressure", internal.air_contents.return_pressure())
 				stat("Distribution Pressure", internal.distribute_pressure)

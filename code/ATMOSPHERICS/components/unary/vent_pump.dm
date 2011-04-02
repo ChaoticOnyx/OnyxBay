@@ -476,28 +476,20 @@
 		var/transfer_moles = used_pressure*air_contents.volume/(max(used_temperature,TCMB) * R_IDEAL_GAS_EQUATION)
 		var/datum/gas_mixture/env = air_contents.remove(transfer_moles)
 		var/datum/gas_mixture/filtered_out = new
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-//	This is pretty much like the biggest hack job ever, as I'm just creating air and 		//
-//	temperature out of nowhere, but it'll work for now until somebody who knows more about	//
-//	the atmos system gets it working right.		-Strumpetplaya								//
-//////////////////////////////////////////////////////////////////////////////////////////////
 		if(panic_fill && istype(loc, /turf/simulated/))
-			if (!panic_filling)
-				//var/turf/simulated/T = loc
-				if(T.air && T.air.return_pressure() < ONE_ATMOSPHERE*0.95)
-					panic_filling = 1
-					spawn(-1)
-						while(panic_fill && T.air.return_pressure() < ONE_ATMOSPHERE*0.95)
-							if(istype(node,/obj/machinery/atmospherics/pipe))
-								var/obj/machinery/atmospherics/pipe/P = node
-								P.parent.mingle_with_turf(loc, 1000)
-							sleep(1 * tick_multiplier)
-						panic_filling = 0
-						panic_fill = 0
-/////////////////////////////End Hack Job//////////////////////////////////////////////////////
-
-
+			if(T.air && T.air.return_pressure() < ONE_ATMOSPHERE*0.95)
+				if(istype(node,/obj/machinery/atmospherics/pipe))
+					var/obj/machinery/atmospherics/pipe/P = node
+					var/K = ONE_ATMOSPHERE - T.air.return_pressure()
+					K = K / T.air.volume // Calculateing the moles need to represurize
+					K = K / T.air.temperature
+					K = K / 8.31
+					K = K / 2
+					world << "moles:[K]Pressure:[T.air.return_pressure()]Total moles:[T.air.total_moles()]"
+					var/datum/gas_mixture/env2 = P.parent.air.remove(K*2)
+					T.assume_air(env2)
+			else
+				panic_fill = 0
 		if(!env)
 			return
 		if(toxins_fil && env.toxins)
