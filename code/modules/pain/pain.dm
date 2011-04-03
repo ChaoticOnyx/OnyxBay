@@ -11,6 +11,7 @@ mob/var/next_pain_time = 0
 // partname is the name of a body part
 // amount is a num from 1 to 100
 mob/proc/pain(var/partname, var/amount, var/force)
+	if(stat != STAT_ALIVE) return
 	if(world.time < next_pain_time && !force)
 		return
 	if(amount > 10 && istype(src,/mob/living/carbon/human))

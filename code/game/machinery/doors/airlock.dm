@@ -64,7 +64,6 @@
 
 /obj/machinery/door/airlock/glass/command
 	icon = 'Doorcomglass.dmi'
-	opacity = 0
 	req_access = list(access_heads)
 
 /obj/machinery/door/airlock/security
@@ -75,7 +74,6 @@
 
 /obj/machinery/door/airlock/glass/security
 	icon = 'Doorsecglass.dmi'
-	opacity = 0
 
 /obj/machinery/door/airlock/engineering
 	name = "Airlock"
@@ -84,7 +82,6 @@
 
 /obj/machinery/door/airlock/glass/engineering
 	icon = 'Doorengglass.dmi'
-	opacity = 0
 	req_access = list(access_engine)
 
 /obj/machinery/door/airlock/medical
@@ -94,7 +91,6 @@
 
 /obj/machinery/door/airlock/glass/medical
 	icon = 'Doormedglass.dmi'
-	opacity = 0
 
 /obj/machinery/door/airlock/maintenance
 	name = "Maintenance Access"
@@ -119,6 +115,9 @@
 	explosionstrength = 4
 	name = "Secure Airlock"
 	icon = 'Doorhatchele.dmi'
+
+/obj/machinery/door/airlock/freezer
+	icon = 'Doorfreezer.dmi'
 
 
 /obj/machinery/door/airlock/New()
@@ -148,8 +147,8 @@
 
 		if(M.hallucination > 50 && prob(10) && src.operating == 0)
 			M << "\red <B>You feel a powerful shock course through your body!</B>"
-			M.halloss += 50
-			M.stunned += 50
+			M.halloss += 10
+			M.stunned += 10
 			return
 
 	else if(istype(AM, /obj/machinery/bot))
