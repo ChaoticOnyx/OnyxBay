@@ -485,7 +485,7 @@
 					K = K / T.air.temperature
 					K = K / 8.31
 					K = K / 2
-					world << "moles:[K]Pressure:[T.air.return_pressure()]Total moles:[T.air.total_moles()]"
+					if(debug_info) world << "moles:[K]Pressure:[T.air.return_pressure()]Total moles:[T.air.total_moles()]"
 					var/datum/gas_mixture/env2 = P.parent.air.remove(K*2)
 					T.assume_air(env2)
 			else
