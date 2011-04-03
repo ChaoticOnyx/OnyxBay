@@ -573,8 +573,8 @@
 
 	var/datum/gas_mixture/environment = loc.return_air(1)
 	var/datum/gas_mixture/breath
-	// HACK NEED CHANGING LATER
-	if(health < 0 && !zombie && reagents.has_reagent("inaprovaline"))
+
+	if(health < 0 && !zombie && !reagents.has_reagent("inaprovaline"))
 		losebreath+=2
 
 	//var/halfmask = 0
