@@ -205,13 +205,6 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 
 /obj/item/weapon/gun/revolver/attack(mob/M as mob, mob/user as mob)
 	src.add_fingerprint(user)
-	var/mob/living/carbon/human/H = M
-
-// ******* Check
-
-	if ((istype(H, /mob/living/carbon/human) && istype(H, /obj/item/clothing/head) && H.flags & 8 && prob(80)))
-		M << "\red The helmet protects you from being hit hard in the head!"
-		return
 	if ((user.a_intent == "hurt" && src.bullets > 0))
 		if (prob(20))
 			if (M.paralysis < 10)
@@ -219,27 +212,20 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		else
 			if (M.weakened < 10)
 				M.weakened = 10
+		playsound(user, 'Gunshot.ogg', 100, 1)
 		src.bullets--
-		src.force = 90
-		..()
-		src.force = 60
+		M.bullet_act(PROJECTILE_BULLET)
 		if(M.stat != 2)	M.stat = 1
 		for(var/mob/O in viewers(M, null))
 			if(O.client)	O.show_message(text("\red <B>[] has been shot point-blank by []!</B>", M, user), 1, "\red You hear someone fall", 2)
 	else
 		if (prob(50))
-			if (M.paralysis < 60)
-				M.paralysis = 60
+			if (M.paralysis < 30)
+				M.paralysis = 30
 		else
-			if (M.weakened < 60)
-				M.weakened = 60
-		src.force = 10
+			if (M.weakened < 30)
+				M.weakened = 30
 		..()
-		if(M.stat != 2)	M.stat = 1
-		for(var/mob/O in viewers(M, null))
-			if (O.client)	O.show_message(text("\red <B>[] has been pistol whipped by []!</B>", M, user), 1, "\red You hear someone fall", 2)
-	return
-
 
 
 
@@ -437,12 +423,6 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	..()
 	src.add_fingerprint(user)
 	if ((prob(30) && M.stat < 2))
-		var/mob/living/carbon/human/H = M
-
-// ******* Check
-		if ((istype(H, /mob/living/carbon/human) && istype(H, /obj/item/clothing/head) && H.flags & 8 && prob(80)))
-			M << "\red The helmet protects you from being hit hard in the head!"
-			return
 		var/time = rand(10, 120)
 		if (prob(90))
 			if (M.paralysis < time)
@@ -453,8 +433,6 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		if(M.stat != 2)	M.stat = 1
 		for(var/mob/O in viewers(M, null))
 			if(O.client)	O.show_message(text("\red <B>[] has been knocked unconscious!</B>", M), 1, "\red You hear someone fall", 2)
-
-	return
 
 
 
@@ -525,17 +503,14 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		return
 	src.add_fingerprint(user)
 	var/mob/living/carbon/human/H = M
-	if ((istype(H, /mob/living/carbon/human) && istype(H, /obj/item/clothing/head) && H.flags & 8 && prob(80)))
-		M << "\red The helmet protects you from being hit hard in the head!"
-		return
-	if((src.charges >= 1) && (istype(H, /mob/living/carbon/human)))
+	if(src.charges >= 1 && istype(H, /mob/living/carbon/human))
 		if (user.a_intent == "hurt")
 			if (prob(20))
-				if (M.paralysis < 10 && (!(M.mutations & 8))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
+				if (M.paralysis < 10 && !M.mutations & 8)
 					M.paralysis = 10
-			else if (M.weakened < 10 && (!(M.mutations & 8))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
+			else if (M.weakened < 10 && !M.mutations & 8)
 				M.weakened = 10
-			if (M.stuttering < 10 && (!(M.mutations & 8))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
+			if (M.stuttering < 10 && !M.mutations & 8)
 				M.stuttering = 10
 			..()
 			if(M.stat != 2)	M.stat = 1
