@@ -639,7 +639,7 @@
 	points = 10
 	product_paths = "/obj/item/device/healthanalyzer;/obj/item/weapon/medical/bruise_pack;/obj/item/weapon/medical/ointment;/obj/item/weapon/medical/bandaid;/obj/item/weapon/reagent_containers/glass/bottle/antitoxin;/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline;/obj/item/weapon/reagent_containers/glass/bottle/stoxin;/obj/item/weapon/reagent_containers/syringe;/obj/item/weapon/tank/anesthetic;/obj/item/clothing/mask/medical;/obj/item/clothing/gloves/latex;/obj/item/weapon/storage/firstaid/regular;/obj/item/weapon/storage/firstaid/toxin;/obj/item/weapon/storage/firstaid/fire;/obj/item/weapon/gun/syringe"
 	//product_amounts = "4;4;4;4;12"
-	product_prices = "2;1;1;1;3;3;3;1;2;1;1;1;1;1;4"
+	product_prices = "2;1;1;1;3;3;3;1;2;1;1;9;9;9;4"
 	product_hidden = "/obj/item/weapon/reagent_containers/pill/tox;/obj/item/weapon/reagent_containers/glass/bottle/toxin;"
 	hidden_prices = "3;3"
 	charge_type = "medical"
