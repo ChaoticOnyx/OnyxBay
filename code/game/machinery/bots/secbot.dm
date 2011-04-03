@@ -260,7 +260,7 @@ Auto Patrol: []"},
 				walk_to(src,0)
 
 			if (target)		// make sure target exists
-				if (get_dist(src, src.target) <= 1)		// if right next to perp
+				if (get_dist(src, src.target) <= 1&&CanReachThrough(get_turf(src), get_turf(target), target))		// if right next to perp
 					playsound(src.loc, 'Egloves.ogg', 50, 1, -1)
 					src.icon_state = "secbot-c"
 					spawn(2)
