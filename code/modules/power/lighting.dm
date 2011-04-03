@@ -63,6 +63,14 @@
 		brightnessgreen = 0
 		brightnessblue = 0
 
+	floor
+		icon_state = "floor1"
+		base_state = "floor"
+		brightnessblue = 6
+		brightnessred = 6
+		brightnessgreen = 5
+
+
 /obj/machinery/light/broken
 	icon_state = "tube-broken"
 	status = LIGHT_BROKEN
