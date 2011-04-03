@@ -81,6 +81,7 @@
 #define FILE_DIR "code/modules/mob/living/carbon/alien/humanoid/queen"
 #define FILE_DIR "code/modules/mob/living/carbon/alien/larva"
 #define FILE_DIR "code/modules/mob/living/carbon/human"
+#define FILE_DIR "code/modules/mob/living/carbon/human/old_and_unused"
 #define FILE_DIR "code/modules/mob/living/carbon/monkey"
 #define FILE_DIR "code/modules/mob/living/npc"
 #define FILE_DIR "code/modules/mob/living/silicon"

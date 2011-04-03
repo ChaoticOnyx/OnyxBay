@@ -46,8 +46,8 @@
 
 	switch(Device.type)
 		if(/obj/item/device/multitool)
-			User << "Power available: [Power]"
-			User << "Power Draw     : [Draw]"
+			User << "Power available: [src.Power]"
+			User << "Power Draw     : [src.Draw]"
 
 	return
 
