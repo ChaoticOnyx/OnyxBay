@@ -5,8 +5,8 @@
 
 	var/param = null
 
-	if (findtext(act, "-", 1, null))
-		var/t1 = findtext(act, "-", 1, null)
+	if (findtext(act, " ", 1, null))
+		var/t1 = findtext(act, " ", 1, null)
 		param = copytext(act, t1 + 1, length(act) + 1)
 		act = copytext(act, 1, t1)
 
@@ -32,14 +32,14 @@
 				var/M = null
 				if (param)
 					for (var/mob/A in view(null, null))
-						if (param == A.name)
+						if (findtext(A.name,param,1,0))
 							M = A
 							break
 				if (!M)
 					param = null
 
-				if (param)
-					message = "<B>[src]</B> bows to [param]."
+				if (M)
+					message = "<B>[src]</B> bows to [M]."
 				else
 					message = "<B>[src]</B> bows."
 			m_type = 1
@@ -63,7 +63,7 @@
 				var/M = null
 				if (param)
 					for (var/mob/A in view(null, null))
-						if (param == A.name)
+						if (findtext(A.name,param,1,0))
 							M = A
 							break
 				if (!M)
@@ -174,7 +174,7 @@
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
-					if (param == A.name)
+					if (findtext(A.name,param,1,0))
 						M = A
 						break
 			if (!M)
@@ -189,7 +189,7 @@
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
-					if (param == A.name)
+					if (findtext(A.name,param,1,0))
 						M = A
 						break
 			if (!M)
@@ -204,7 +204,7 @@
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
-					if (param == A.name)
+					if (findtext(A.name,param,1,0))
 						M = A
 						break
 
@@ -292,8 +292,8 @@
 			if (!restrained())
 				var/mob/M = null
 				if (param)
-					for (var/atom/A as mob|obj|turf|area in view(null, null))
-						if (param == A.name)
+					for (var/mob/A in view(null, null))
+						if (findtext(A.name,param,1,0))
 							M = A
 							break
 
@@ -392,8 +392,8 @@
 			if (!restrained())
 				var/M = null
 				if (param)
-					for (var/mob/A in view(1, null))
-						if (param == A.name)
+					for (var/mob/A in view(null, null))
+						if (findtext(A.name,param,1,0))
 							M = A
 							break
 				if (M == src)
@@ -410,7 +410,7 @@
 				var/mob/M = null
 				if (param)
 					for (var/mob/A in view(1, null))
-						if (param == A.name)
+						if (findtext(A.name,param,1,0))
 							M = A
 							break
 				if (M == src)
@@ -428,7 +428,7 @@
 				var/M = null
 				if (param)
 					for (var/mob/A in view(1, null))
-						if (param == A.name)
+						if (findtext(A.name,param,1,0))
 							M = A
 							break
 				if (M)
