@@ -430,7 +430,19 @@
 			..()
 			update_icon()
 			air_contents.volume = 1500
-	//
+	attack_alien(mob/user as mob)
+		if(user in src.contents)
+			for(var/mob/A in viewers())
+				usr << "[user] bursts from the [src]"
+			user.loc = src.loc
+			burst = 1
+		else if(user in range(1,src))
+			for(var/mob/A in viewers())
+				usr << "[user] climbs into the [src]"
+			user.loc = src
+			burst = 1
+		update_icon()
+	var/burst = 0
 	var/on = 1
 	var/pump_direction = 0 //0 = equalizing, 1 = releasing, -1 = siphoning
 	var/toxins_fil = 1
@@ -453,6 +465,8 @@
 	var/debug_info = 0
 
 	update_icon()
+		if(burst)
+			icon_state = "burst"
 	//	icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
 	//	if(on&&node)
 	//		icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]out"
