@@ -19,3 +19,4 @@ obj/machinery/atmospherics/pipe/simple/relaymove(mob/user as mob,dirc)
 	if(dirc == comparedir)
 		user.loc = src.node
 
+
