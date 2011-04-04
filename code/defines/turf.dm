@@ -87,15 +87,18 @@
 	nitrogen = 0.000
 	temperature = TCMB
 
-/turf/unsimulated/floor/hull //TEST
+///turf/space/hull //TEST
+turf/space/hull
 	name = "Hull Plating"
+	icon = 'floors.dmi'
 	icon_state = "engine"
-	oxygen = 0
+turf/space/hull/New()
+	return
+/*	oxygen = 0
 	nitrogen = 0.000
 	temperature = TCMB
-	temperature = TCMB
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
-	heat_capacity = 700000
+	heat_capacity = 700000*/
 /turf/simulated/floor/
 
 /turf/simulated/floor

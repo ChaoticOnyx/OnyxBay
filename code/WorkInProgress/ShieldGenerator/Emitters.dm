@@ -80,7 +80,7 @@
 	for(var/dir in cardinal8)
 		var/turf/T = get_step(S,dir)
 		if(T)
-			if(T.type != /turf/space && T.type != /turf/unsimulated/floor/hull)
+			if(T.type != /turf/space && T.type != /turf/space/hull)
 				AddShield(S)
 				return
 
@@ -117,7 +117,7 @@
 
 	for(var/turf/space/S in range(src,range_dist))
 		UpdateTurf(S)
-	for(var/turf/unsimulated/floor/hull/S in range(src,range_dist))
+	for(var/turf/space/hull/S in range(src,range_dist))
 		UpdateTurf(S)
 
 

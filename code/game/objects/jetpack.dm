@@ -81,7 +81,7 @@
 				if(user.z != 1) // If we aren't at the very top of the ship
 					var/turf/T = locate(user.x, user.y, user.z - 1)
 					// You can only jetpack up if there's space above, and you're sitting on either hull (on the exterior), or space
-					if(T && istype(T, /turf/space) && (istype(user.loc, /turf/space) || istype(user.loc, /turf/unsimulated/floor/hull)))
+					if(T && istype(T, /turf/space) && (istype(user.loc, /turf/space) || istype(user.loc, /turf/space/hull)))
 						user.Move(T)
 					else
 						user << "\red You bump into the ship's plating."
@@ -92,7 +92,7 @@
 				if (user.z != 4) // If we aren't at the very bottom of the ship
 					var/turf/T = locate(user.x, user.y, user.z + 1)
 					// You can only jetpack down if you're sitting on space and there's space down below, or hull
-					if(T && (istype(T, /turf/space) || istype(T, /turf/unsimulated/floor/hull)) && istype(user.loc, /turf/space))
+					if(T && (istype(T, /turf/space) || istype(T, /turf/space/hull)) && istype(user.loc, /turf/space))
 						user.Move(T)
 					else
 						user << "\red You bump into the ship's plating."
