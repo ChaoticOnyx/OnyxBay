@@ -82,8 +82,8 @@
 		src.loc.ex_act(2)
 	for(var/dirn in cardinal)
 	//	sleep(100)
-		if(prob(50))
-			continue
+	//	if(prob(50))
+	//		continue
 		sleep(10)
 		var/turf/T = get_step(src,dirn)
 		if (istype(T.loc, /area/shuttle/arrival))
