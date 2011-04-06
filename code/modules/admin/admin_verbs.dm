@@ -731,7 +731,12 @@
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
-	src.stealth = !src.stealth
+	if(src.stealth) //choose whether to turn it off or use a different name to stealth as
+		var/input = input("Do you want to turn off stealth mode?") in list("Yes","No")
+		if(input == "Yes")
+			src.stealth = !src.stealth
+	else
+		src.stealth = !src.stealth
 	if(src.stealth)
 		var/new_key = trim(input("Enter your desired display name.", "Fake Key", src.key))
 		if(!new_key)
