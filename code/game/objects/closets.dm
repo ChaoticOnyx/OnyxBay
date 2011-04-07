@@ -200,7 +200,7 @@
 		user << "\blue It won't budge!"
 
 		for (var/mob/M in hearers(src, null))
-			if(!(sdisabilities & 4) && ear_deaf == 0)
+			if(!(M.sdisabilities & 4) && M.ear_deaf == 0)
 				M << text("<FONT size=[]>BANG, bang!</FONT>", max(0, 5 - get_dist(src, M)))
 
 		user.unlock_medal("It's a trap!", 0, "Get locked or welded into a locker...", "easy")
