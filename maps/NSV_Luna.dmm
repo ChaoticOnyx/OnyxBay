@@ -2423,7 +2423,7 @@
 "aUE" = (/obj/machinery/atmospherics/pipe/simple,/obj/disposalpipe/segment,/turf/simulated/wall,/area/medical/virology)
 "aUF" = (/obj/machinery/door/window/eastleft,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aUG" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/item/weapon/storage/lglo_kit,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
-"aUH" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/diseasedisk/premade{stage = 2},/obj/item/weapon/diseasedisk/premade{stage = 4},/obj/item/weapon/diseasedisk/premade,/obj/item/weapon/diseasedisk/premade,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
+"aUH" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/diseasedisk/premade{stage = 2},/obj/item/weapon/diseasedisk/premade{stage = 4},/obj/item/weapon/diseasedisk/premade,/obj/item/weapon/diseasedisk/premade{stage = 3},/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aUI" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/storage/firstaid/syringes,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aUJ" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/obj/item/weapon/storage/beakerbox,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aUK" = (/obj/decal/sign/bio,/turf/simulated/wall/r_wall,/area/medical/virology)
