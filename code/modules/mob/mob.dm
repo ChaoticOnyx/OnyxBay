@@ -1101,25 +1101,28 @@ mob/verb/turnwest()
 	return
 
 /mob/proc/show_message(msg, type, alt, alt_type)
-	if(!client)	return
+	if (!client) return
+
 	if (type)
-		if ((type & 1 && (sdisabilities & 1 || (blinded || paralysis))))
-			if (!( alt ))
-				return
+		if ((type & 1 && (sdisabilities & 1 || (blinded || paralysis)))) // If you can't see, replace msg with alt
+			if (!alt) return
 			else
 				msg = alt
 				type = alt_type
-		if ((type & 2 && (sdisabilities & 4 || ear_deaf)))
-			if (!( alt ))
-				return
-			else
-				msg = alt
-				type = alt_type
-				if ((type & 1 && sdisabilities & 1))
+				if ((type & 2 && (sdisabilities & 4 || ear_deaf))) // Can't see, but can't hear either
 					return
+
+		if ((type & 2 && (sdisabilities & 4 || ear_deaf))) // If you can't hear
+			if (!alt) return
+			else
+				msg = alt
+				type = alt_type
+				if ((type & 1 && (sdisabilities & 1 || (blinded || paralysis)))) // Can't see either
+					return
+
 	log_m("Heard [msg]")
-	// Added voice muffling for Issue 41.
-	if (stat == 1 || sleeping > 0)
+
+	if ((stat == 1 || sleeping > 0) && !(sdisabilities & 4) && ear_deaf == 0) //Can you actually hear?
 		if(type & 8) //Radio
 			src << "<I>... You hear the crackle of a radio transmission ...</I>"
 		else if(type & 4) //Said by someone

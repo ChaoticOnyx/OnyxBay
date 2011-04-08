@@ -4,7 +4,7 @@
 /obj/alien/weeds/
 	layer = 2
 	var/health = 15
-	var/dead
+	var/dead = 0
 	var/list/allowed = list(/obj/closet,/obj/table,/obj/machinery/computer,/obj/machinery/disposal)
 
 /obj/alien/weeds/New()
@@ -12,24 +12,21 @@
 	//return
 	if(istype(src.loc, /turf/space))
 		del(src)
-
+		return
+	processing_items.Add(src)
 /obj/alien/weeds/process()
-	spawn while(!dead)
-		sleep(-1)
-		var/turf/T = src.loc
-		var/obj/alien/weeds/north = locate() in T.north
-		var/obj/alien/weeds/west = locate() in T.west
-		var/obj/alien/weeds/east = locate() in T.east
-		var/obj/alien/weeds/south = locate() in T.south
-		if(north && west && east && south)
-			dead = 1
-			return
-		if(!north||!west||!east||!south)
-			Life()
-		updateicon(0)
-		sleep(50)
-		if(dead) return
-		src.process()
+	if(dead) return
+	var/turf/T = src.loc
+	var/obj/alien/weeds/north = locate() in T.north
+	var/obj/alien/weeds/west = locate() in T.west
+	var/obj/alien/weeds/east = locate() in T.east
+	var/obj/alien/weeds/south = locate() in T.south
+	if(north && west && east && south)
+		dead = 1
+		return
+	if(!north||!west||!east||!south)
+		Life()
+	updateicon(0)
 
 /obj/alien/weeds/proc/updateicon(var/spread = 1)
 	var/turf/T = src.loc
@@ -85,8 +82,8 @@
 		src.loc.ex_act(2)
 	for(var/dirn in cardinal)
 	//	sleep(100)
-		if(prob(50))
-			continue
+	//	if(prob(50))
+	//		continue
 		sleep(10)
 		var/turf/T = get_step(src,dirn)
 		if (istype(T.loc, /area/shuttle/arrival))

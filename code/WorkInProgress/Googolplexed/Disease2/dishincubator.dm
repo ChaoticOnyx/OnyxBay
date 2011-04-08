@@ -68,20 +68,19 @@
 		if(stat & BROKEN) return
 		if(usr.stat || usr.restrained()) return
 		if(!in_range(src, usr)) return
-
+		if (href_list["ejectchem"])
+			if(beaker)
+				beaker.loc = src.loc
+				beaker = null
+		if(!dish)
+			return
 		usr.machine = src
-		if(!dish) return
-
 		if (href_list["power"])
 			on = !on
 			if(on)
 				icon_state = "incubator_on"
 			else
 				icon_state = "incubator"
-		if (href_list["ejectchem"])
-			if(beaker)
-				beaker.loc = src.loc
-				beaker = null
 		if (href_list["ejectdish"])
 			if(dish)
 				dish.loc = src.loc
@@ -104,7 +103,6 @@
 		var/dat = ""
 		if(!dish)
 			dat = "Please insert dish into the incubator.<BR>"
-			dat += "<A href='?src=\ref[src];close=1'>Close</A>"
 		var/string = "Off"
 		if(on)
 			string = "On"
@@ -123,9 +121,8 @@
 			dat += "Eject Virus dish : <A href='?src=\ref[src];ejectdish=1'> Eject</a>"
 			dat += "<BR>"
 		dat += "<BR><BR>"
-		dat += "<A href='?src=\ref[src];flush=1'>Flush system</a>"
-
-
+		dat += "<A href='?src=\ref[src];flush=1'>Flush system</a><BR>"
+		dat += "<A href='?src=\ref[src];close=1'>Close</A><BR>"
 		user << browse("<TITLE>Pathogenic incubator</TITLE>incubator menu:<BR><BR>[dat]", "window=incubator;size=575x400")
 		onclose(user, "incubator")
 		return

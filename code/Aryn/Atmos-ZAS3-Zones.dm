@@ -178,7 +178,8 @@ zone
 			temp_archive = temp
 
 			for(var/turf/T in space_connections)
-				if(!istype(T,/turf/space) && !istype(T,/turf/unsimulated/floor/hull))
+				//if(!istype(T,/turf/space) && !istype(T,/turf/space/hull))
+				if(!istype(T,/turf/space))
 					space_connections -= T
 
 			if(space_connections.len)				 //Throw gas into space if it has space connections.

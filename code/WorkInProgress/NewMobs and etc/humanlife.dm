@@ -362,8 +362,10 @@
 	var/mob/target = input ("Who do you want to project your mind to ?") as mob in creatures
 
 	var/say = input ("What do you wish to say")
-
-	target.show_message("\blue You hear a voice: [say]")
+	if(target.mutations & mRemotetalk)
+		target.show_message("\blue You hear [src.real_name]'s voice: [say]")
+	else
+		target.show_message("\blue You hear a voice: [say]")
 	usr.show_message("\blue You project your mind into [target.real_name]: [say]")
 
 /mob/living/carbon/human/proc/remoteobserve()

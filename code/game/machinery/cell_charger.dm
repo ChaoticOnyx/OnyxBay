@@ -52,7 +52,8 @@
 		user.visible_message("[user] removes the cell from the charger.", "You remove the cell from the charger.")
 		chargelevel = -1
 		updateicon()
-
+obj/machinery/cell_charger/attack_ai()
+	return
 /obj/machinery/cell_charger/process()
 	//world << "ccpt [charging] [stat]"
 	if(!charging || (stat & (BROKEN|NOPOWER)) )

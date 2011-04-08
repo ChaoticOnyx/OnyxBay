@@ -195,7 +195,8 @@
 	else if(src.locked && world.timeofday - bang_time >= 14)
 		user << "\blue It's locked!"
 		for(var/mob/M in hearers(src, null))
-			M << text("<FONT size=[]>BANG, bang!</FONT>", max(0, 5 - get_dist(src, M)))
+			if(!(M.sdisabilities & 4) && M.ear_deaf == 0)
+				M << text("<FONT size=[]>BANG, bang!</FONT>", max(0, 5 - get_dist(src, M)))
 		user.unlock_medal("It's a trap!", 0, "Get locked or welded into a locker...", "easy")
 		bang_time = world.timeofday
 		return

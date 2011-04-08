@@ -17,7 +17,18 @@
 	else
 		health = health_full
 		stat = 0
+mob/living/carbon/alien/var/list/imagesP = list()
+mob/living/carbon/alien/Life()
+	..()
 
+	if(istype(src.loc,/obj/machinery/atmospherics))
+		for(var/A in imagesP)
+			del(A)
+		imagesP = null
+		for(var/obj/machinery/atmospherics/T in range(5,src))
+			var/image/A = image(T.icon,T,T.icon_state)
+			imagesP += A
+			usr << A
 /mob/living/carbon/alien/FireBurn() // It should make this affect all carbon mobs except for aliens (This applies to contaminate and pl_effects as well)
 /mob/living/carbon/alien/contaminate()
 /mob/living/carbon/alien/pl_effects()
