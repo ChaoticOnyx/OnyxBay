@@ -1033,7 +1033,7 @@ About the new airlock wires panel:
 			playsound(src.loc, 'bang.ogg', 25, 1)
 			if(!istype(H.head, /obj/item/clothing/head/helmet))
 				for(var/mob/M in viewers(src, null))
-					M << "\red [user] headbutts the airlock."
+					M.show_message("\red [user] headbutts the airlock.", 1, "\red You hear a bang.", 2)
 				var/datum/organ/external/affecting = H.organs["head"]
 				affecting.take_damage(10, 0)
 				H.stunned = 8
@@ -1042,7 +1042,7 @@ About the new airlock wires panel:
 				H.UpdateDamageIcon()
 			else
 				for(var/mob/M in viewers(src, null))
-					M << "\red [user] headbutts the airlock. Good thing they're wearing a helmet."
+					M.show_message("\red [user] headbutts the airlock. Good thing they're wearing a helmet.", 1, "\red You hear a bang.", 2)
 			return
 
 	if (src.p_open)
