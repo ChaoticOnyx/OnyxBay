@@ -911,6 +911,14 @@
 	name = "Secure Storage"
 	icon_state = "storage"
 
+/area/storage/northspare
+	icon_state = "storage"
+	name = "North Spare Storage"
+
+/area/storage/southspare
+	icon_state = "storage"
+	name = "South Spare Storage"
+
 /area/storage/emergency
 	name = "Emergency Storage A"
 	icon_state = "emergencystorage"

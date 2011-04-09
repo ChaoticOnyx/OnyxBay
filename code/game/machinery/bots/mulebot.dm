@@ -557,6 +557,7 @@
 				icon_state = "mulebot0"
 				return
 			if(1)		// loading/unloading
+				if(cell) cell.use(1)
 				return
 			if(2,3,4)		// navigating to deliver,home, or blocked
 

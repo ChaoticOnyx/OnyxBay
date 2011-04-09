@@ -190,15 +190,15 @@
 			return access_medlab
 		if("Morgue")
 			return access_morgue
-		if("ToxinsResearch")
+		if("Toxins Research")
 			return access_tox
-		if("ToxinsStorage")
+		if("Toxins Storage")
 			return access_tox_storage
-		if("ToxinsChemical Lab")
+		if("Toxins Chemical Lab")
 			return access_chemistry
 		if("Bar")
 			return access_bar
-		if("JanitorialEquipment")
+		if("Janitorial Equipment")
 			return access_janitor
 		if("Engineering")
 			return access_engine
