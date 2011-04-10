@@ -9,8 +9,8 @@
 	var/blood_type = null
 	var/last_bumped = 0
 	var/list/logs = list()
-
 	var/list/overlayslist = list()
+	var/labels[0] //for labels
 
 	///Chemistry.
 	var/datum/reagents/reagents = null

@@ -87,6 +87,7 @@
 		user.drop_item()
 		src.throw_at(target, throw_range, throw_speed)
 
+/*
 /obj/item/weapon/hand_labeler
 	icon = 'old_or_unused.dmi'
 	icon_state = "labeler"
@@ -123,6 +124,7 @@
 		return
 	label = str
 	usr << "\blue You set the text to '[str]'."
+*/
 
 /*/proc/testa()
 	fake_attack(usr)
