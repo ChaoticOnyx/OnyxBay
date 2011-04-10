@@ -21,6 +21,7 @@ var/global/datum/controller/gameticker/ticker
 	set background = 1
 
 	var/start_time = world.realtime
+	var/resuming_from_delay = 0
 	pregame_timeleft = 180
 	world << "<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>"
 	world << "Please, setup your character and select ready. Game will start in [pregame_timeleft] seconds"
@@ -28,8 +29,14 @@ var/global/datum/controller/gameticker/ticker
 	while(current_state == GAME_STATE_PREGAME)
 		sleep(10)
 		if(delay_start == 0)
+			if(resuming_from_delay)
+				resuming_from_delay = 0
+				start_time = world.realtime
+
 			pregame_timeleft -= (world.realtime - start_time) / 10
 			start_time = world.realtime
+
+		else resuming_from_delay = 1 // So that we reset start_time when a game mode vote or delay ends
 
 		if(pregame_timeleft <= 0)
 			current_state = GAME_STATE_SETTING_UP
