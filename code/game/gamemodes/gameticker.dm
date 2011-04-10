@@ -29,6 +29,7 @@ var/global/datum/controller/gameticker/ticker
 		sleep(10)
 		if(delay_start == 0)
 			pregame_timeleft -= (world.realtime - start_time) / 10
+			start_time = world.realtime
 
 		if(pregame_timeleft <= 0)
 			current_state = GAME_STATE_SETTING_UP
