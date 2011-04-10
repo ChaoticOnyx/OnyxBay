@@ -68,6 +68,8 @@
 	if (!message)
 		return
 
+	message = addtext(uppertext(copytext(message,1,2)), copytext(message, 2)) //capitalize the first letter of what they actually say
+
 	if (stuttering)
 		message = NewStutter(message,stunned)
 	if (intoxicated)
