@@ -9,8 +9,8 @@ var/savefile/Banlist
 	var/address = clientvar.address
 	if(id == null)
 		id = 0
-	if(adress == null)
-		ip = 0
+	if(address == null)
+		id = 0
 	var/DBQuery/q1 = dbcon.NewQuery("SELECT * FROM `bans` WHERE computerid='[id]'")
 	var/DBQuery/q2 = dbcon.NewQuery("SELECT * FROM `bans` WHERE ckey='[key]'")
 	var/DBQuery/q3 = dbcon.NewQuery("SELECT * FROM `bans` WHERE ips='[address]'")
