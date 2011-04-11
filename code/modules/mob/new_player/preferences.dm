@@ -455,6 +455,14 @@ datum/preferences
 			if(new_name)
 				if(length(new_name) >= 26)
 					new_name = copytext(new_name, 1, 26)
+				//arright gonna do some automatic capitalization, but only first and last words because von, van etc
+				var/lastspace = 1
+				while(findtext(new_name, " ", lastspace + 1))
+					lastspace = findtext(new_name, " ", lastspace + 1)//find last space used later
+				if(lastspace == 1)
+					new_name = addtext(uppertext(copytext(new_name, 1, 2)), copytext(new_name, 2)) //they only have a one word name, might want to put an alert or something in here to tell them that we want surnames
+				else
+					new_name = addtext(uppertext(copytext(new_name, 1, 2)), copytext(new_name, 2, lastspace + 1), uppertext(copytext(new_name, lastspace + 2, lastspace + 3)), copytext(new_name, lastspace + 4)) //this ended up longer than expected...
 				real_name = new_name
 
 		if (link_tags["age"])
