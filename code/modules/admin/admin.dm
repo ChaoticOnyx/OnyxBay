@@ -1603,7 +1603,7 @@
 	if (message)
 		if(usr.client.holder.rank != "Coder" && usr.client.holder.rank != "Host")
 			message = adminscrub(message,500)
-		world << "\blue <b>[usr.client.stealth ? "Administrator" : usr.key] Announces:</b>\n \t [message]"
+		world << "<font color=#800080><b>[usr.client.stealth ? "Administrator" : usr.key] Announces:</b> \n \t [message]</font>"
 		log_admin("Announce: [key_name(usr)] : [message]")
 /obj/admins/proc/toggleooc()
 	set category = "Special Verbs"
