@@ -1208,7 +1208,7 @@
 
 /obj/item/weapon/reagent_containers/glass/beaker
 	name = "beaker"
-	desc = "A beaker. Can hold up to 30 units."
+	desc = "A beaker. Can hold up to 50 units."
 	icon = 'chemical.dmi'
 	icon_state = "beaker0"
 	item_state = "beaker"
