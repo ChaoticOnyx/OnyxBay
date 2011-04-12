@@ -307,7 +307,7 @@ var/datum/travgrid/tgrid= new()
 		dat+="<BR><A href='?src=\ref[src];t=0'>Turn off radio warnings</a>"
 	dat+="<BR><A href='?src=\ref[src];close=1'>Close</a>"
 	user << browse(dat, "window=computer;size=500x500")
-	onclose(user, "computer")
+	onclose(user, "computer",src)
 
 
 /obj/machinery/computer/travel/process()
@@ -344,6 +344,7 @@ var/datum/travgrid/tgrid= new()
 			transmit = speed
 		src.add_fingerprint(usr)
 	src.updateUsrDialog()
+
 	for (var/mob/M in viewers(1, src.loc))
 		if (M.client && M.machine == src)
 			src.attack_hand(M)
