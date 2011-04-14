@@ -45,6 +45,7 @@
 	var/flushing = 0	// true if flushing in progress
 	networking = 2
 	security = 1
+	var/timeleft = 0	//used to give a delay after the last item was put in before flushing
 	// create a new disposal
 	// find the attached trunk (if present) and init gas resvr.
 	New()
@@ -108,7 +109,7 @@
 				if(M == user)
 					continue
 				M.show_message("[user.name] places \the [I] into the [src].", 3)
-
+		timeleft = 5
 		update()
 
 	// mouse drop another mob or self
@@ -137,7 +138,7 @@
 			if(C == user)
 				continue
 			C.show_message(msg, 3)
-
+		timeleft = 5
 		update()
 		return
 
@@ -291,10 +292,10 @@
 			return
 
 		if(length(src.contents) > 0)
-			flush = 1
-
-
-
+			if(timeleft == 0)
+				flush = 1
+			else
+				timeleft--
 
 		src.updateDialog()
 
