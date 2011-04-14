@@ -138,12 +138,22 @@ mob/new_player
 				return 1
 
 		if(href_list["late_join"])
-			LateChoices()
+			//LateChoices()
+			if (!enter_allowed)
+				usr << "\blue There is an administrative lock on entering the game!"
+				return
+			if (config.invite_only)
+				if(!invite_isallowed(src))
+					src << "\blue This is an invite only game"
+					return
+			startup.status = SOUND_PAUSED
+			src << startup
+			AttemptLateSpawn("Unassigned", -1)
 
 		if(href_list["manifest"])
 			ViewManifest()
 
-		if(href_list["SelectedJob"])
+/*		if(href_list["SelectedJob"])
 			if (!enter_allowed)
 				usr << "\blue There is an administrative lock on entering the game!"
 				return
@@ -192,7 +202,7 @@ mob/new_player
 				if ("17")
 					AttemptLateSpawn("Roboticist", roboticsMax)
 				if ("18")
-					AttemptLateSpawn("Unassigned", 10000)
+					AttemptLateSpawn("Unassigned", -1)
 				if ("19")
 					AttemptLateSpawn("Quartermaster", cargoMax)
 				if ("20")
@@ -201,6 +211,7 @@ mob/new_player
 					AttemptLateSpawn("Chief Engineer", chiefMax)
 //				if ("22")
 //					AttemptLateSpawn("Hydroponist", hydroponicsMax)
+*/
 
 		if(!ready && href_list["preferences"])
 			preferences.process_link(src, href_list)
@@ -208,7 +219,7 @@ mob/new_player
 			new_player_panel()
 
 	proc/IsJobavailable(rank, maxAllowed)
-		if(countJob(rank) < maxAllowed && !jobban_isbanned(src,rank))
+		if((countJob(rank) < maxAllowed || maxAllowed == -1) && !jobban_isbanned(src,rank))
 			return 1
 		else
 			return 0
@@ -240,7 +251,7 @@ mob/new_player
 			src << alert("[rank] is not available. Please try another.")
 
 // This fxn creates positions for unassigned people based on existing positions. This could be more elegant.
-	proc/LateChoices()
+/*	proc/LateChoices()
 		var/dat = "<html><body>"
 		dat += "Choose from the following open positions:<br>"
 /*
@@ -311,7 +322,7 @@ mob/new_player
 			dat += "<a href='byond://?src=\ref[src];SelectedJob=18'>Unassigned</a><br>"
 
 		src << browse(dat, "window=latechoices;size=300x640;can_close=0")
-
+*/
 	proc/create_character()
 		startup.status = SOUND_PAUSED
 		src << startup
