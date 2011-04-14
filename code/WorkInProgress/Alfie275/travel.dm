@@ -276,7 +276,8 @@ var/datum/travgrid/tgrid= new()
 			var/datum/travloc/l = tgrid.grid[b][a]
 			for(var/datum/travevent/d in l.contents)
 				var/icon/i = d.pic
-				t = i
+				i.Blend(t)
+				t=i
 				t.SwapColor(rgb(0,0,0,0),rgb(255,255,255,255))
 				nam = "\ref[d]"
 				user << browse_rsc(t,"[nam].png")
