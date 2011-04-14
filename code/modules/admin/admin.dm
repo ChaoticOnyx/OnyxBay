@@ -252,7 +252,7 @@
 					AddBan(M.ckey, M.computer_id,M.client.address, reason, usr.ckey, 0, 0)
 					M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 					M << "\red This is a permanent ban."
-					M << "\red To try to resolve this matter by pming one of the admins on http://www.bay12forums.com/"
+					M << "\red To try to resolve this matter by pming one of the admins on http://www.whoopshop.com/"
 					log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
 					message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
 
