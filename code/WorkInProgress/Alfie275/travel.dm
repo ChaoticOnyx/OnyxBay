@@ -8,6 +8,8 @@
 	var/list/datum/travevent/events = new
 	var/datum/travevent/ship/Luna
 	var/list/messagebacks = new
+	var/obj/machinery/propulsion/control/port
+	var/obj/machinery/propulsion/control/starboard
 
 var/travlocsize = 50
 var/travx
@@ -20,6 +22,10 @@ var/datum/travgrid/tgrid= new()
 		o:tAnnounce(msg)
 
 /datum/travgrid/proc/Setup()
+	for(var/obj/machinery/propulsion/control/p/o in world)
+		port = o
+	for(var/obj/machinery/propulsion/control/s/o in world)
+		starboard = o
 	for(var/a = 1 to trgrdsz)
 		for(var/b = 1 to trgrdsz)
 			var/datum/travloc/t = new/datum/travloc()

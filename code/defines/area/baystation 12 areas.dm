@@ -704,6 +704,23 @@ area/bs12/prototype
 	icon_state = "engine"
 	music = ""
 
+
+
+area/bs12/propulsion
+	name = "Propulsion"
+	icon_state = "engine"
+	music = ""
+
+area/bs12/propulsion/port
+	name = "Port Propulsion"
+	icon_state = "engine"
+	music = ""
+
+area/bs12/propulsion/starboard
+	name = "Starboard Propulsion"
+	icon_state = "engine"
+	music = ""
+
 //
 //Unmodified areas
 //
