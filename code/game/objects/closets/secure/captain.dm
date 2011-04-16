@@ -11,4 +11,6 @@
 	new /obj/item/clothing/head/helmet/swat( src )
 	new /obj/item/clothing/under/rank/captain(src)
 	new /obj/item/clothing/under/rank/captain/suit(src)
+	new /obj/item/clothing/gloves/green(src)
+	new /obj/item/clothing/gloves/green(src)
 	return

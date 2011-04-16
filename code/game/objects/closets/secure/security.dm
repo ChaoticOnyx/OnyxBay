@@ -12,6 +12,7 @@
 	new /obj/item/clothing/head/helmet(src)
 	new /obj/item/clothing/glasses/sunglasses(src)
 	new /obj/item/weapon/baton(src)
+	new /obj/item/clothing/gloves/red(src)
 	return
 
 /obj/secure_closet/security2/New()
@@ -66,6 +67,7 @@
 	new /obj/item/weapon/storage/flashbang_kit(src)
 	new /obj/item/weapon/handcuffs(src)
 	new /obj/item/weapon/baton(src)
+	new /obj/item/clothing/gloves/red(src)
 	return
 
 

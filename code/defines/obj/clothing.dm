@@ -136,6 +136,26 @@
 	protective_temperature = 1000
 	heat_transfer_coefficient = 0.01
 
+/obj/item/clothing/gloves/green
+	desc = "Fancy green gloves with fancy gold embroidery."
+	name = "green gloves"
+	icon_state = "green"
+	item_state = "greengloves"
+	siemens_coefficient = 0.30
+
+	protective_temperature = 1100
+	heat_transfer_coefficient = 0.05
+
+/obj/item/clothing/gloves/red
+	desc = "Heavily padded heavy-duty red gloves."
+	name = "red gloves"
+	icon_state = "red"
+	item_state = "redgloves"
+	siemens_coefficient = 0.30
+
+	protective_temperature = 1100
+	heat_transfer_coefficient = 0.05
+
 // HATS. OH MY WHAT A FINE CHAPEAU, GOOD SIR.
 
 /obj/item/clothing/head
