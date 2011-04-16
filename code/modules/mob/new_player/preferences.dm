@@ -462,7 +462,7 @@ datum/preferences
 				if(lastspace == 1)
 					new_name = addtext(uppertext(copytext(new_name, 1, 2)), copytext(new_name, 2)) //they only have a one word name, might want to put an alert or something in here to tell them that we want surnames
 				else
-					new_name = addtext(uppertext(copytext(new_name, 1, 2)), copytext(new_name, 2, lastspace + 1), uppertext(copytext(new_name, lastspace + 2, lastspace + 3)), copytext(new_name, lastspace + 4)) //this ended up longer than expected...
+					new_name = addtext(uppertext(copytext(new_name, 1, 2)), copytext(new_name, 2, lastspace + 1), uppertext(copytext(new_name, lastspace + 1, lastspace + 2)), copytext(new_name, lastspace + 2)) //this ended up longer than expected...
 				real_name = new_name
 
 		if (link_tags["age"])
