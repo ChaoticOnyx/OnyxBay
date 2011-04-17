@@ -1978,7 +1978,7 @@
 									//SN src = null
 									del(src)
 									return
-								message = text("\red <B>[] is trying perform CPR on []!</B>", source, target)
+								message = text("\red <B>[] is trying to perform CPR on []!</B>", source, target)
 							if("id")
 								message = text("\red <B>[] is trying to take off [] from []'s uniform!</B>", source, target.wear_id, target)
 							if("internal")

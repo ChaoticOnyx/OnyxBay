@@ -748,7 +748,7 @@
 "aot" = (/obj/machinery/power/smes{charge = 3e+006; chargelevel = 20000; chargemode = 1; desc = "A high-capacity superconducting magnetic energy storage (SMES) unit.  This one provides backup power to engineering"; name = "Backup SMES"; online = 0},/turf/simulated/floor,/area/crew_quarters/chief)
 "aou" = (/obj/machinery/power/monitor,/obj/cabling/power{icon_state = "0-4"},/turf/simulated/floor,/area/crew_quarters/chief)
 "aov" = (/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor,/area/crew_quarters/chief)
-"aow" = (/obj/cabling/power{icon_state = "2-8"},/turf/simulated/floor,/area/crew_quarters/chief)
+"aow" = (/obj/cabling/power{icon_state = "2-8"},/obj/machinery/computer/general_alert,/turf/simulated/floor,/area/crew_quarters/chief)
 "aox" = (/turf/simulated/floor,/area/crew_quarters/chief)
 "aoy" = (/obj/table{icon_state = "tabledir"; dir = 8},/obj/machinery/recharger,/turf/simulated/floor,/area/crew_quarters/chief)
 "aoz" = (/obj/machinery/portable_atmospherics/canister/oxygen,/obj/landmark/derelict/nodamage,/turf/simulated/floor{tag = "icon-caution (WEST)"; icon_state = "caution"; dir = 8},/area/engine/engine_mon)
