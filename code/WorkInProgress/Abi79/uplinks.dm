@@ -141,11 +141,21 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 
 	if(..() == 1) // We can afford the item
 		var/path_obj = text2path(href_list["buy_item"])
+		var/mob/A = src.hostpda.loc
 		var/item = new path_obj(get_turf(src.hostpda))
+		if(ismob(A) && !istype(item, /obj/spawner))
+			if(!A.r_hand)
+				item:loc = A
+				A.r_hand = item
+				item:layer = 20
+			else if(!A.l_hand)
+				item:loc = A
+				A.l_hand = item
+				item:layer = 20
 		if(istype(item, /obj/spawner)) // Spawners need to have del called on them to avoid leaving a marker behind
 			del item
 
-
+//HEADFINDBACK
 	src.attack_self(usr)
 	src.hostpda.attack_self(usr)
 
@@ -195,9 +205,18 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 			if(..() == 1) // We can afford the item
 				var/path_obj = text2path(href_list["buy_item"])
 				var/item = new path_obj(get_turf(src.loc))
+				var/mob/A = src.loc
+				if(ismob(A) && !istype(item, /obj/spawner))
+					if(!A.r_hand)
+						item:loc = A
+						A.r_hand = item
+						item:layer = 20
+				else if(!A.l_hand)
+					item:loc = A
+					A.l_hand = item
+					item:layer = 20
 				if(istype(item, /obj/spawner)) // Spawners need to have del called on them to avoid leaving a marker behind
 					del item
-
 			src.attack_self(usr)
 			return
 
@@ -216,6 +235,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 			if (usr.r_hand == R)
 				usr.u_equip(R)
 				usr.r_hand = T
+
 			else
 				usr.u_equip(R)
 				usr.l_hand = T

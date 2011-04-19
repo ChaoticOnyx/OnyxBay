@@ -21,11 +21,11 @@
 /client/verb/adminwho()
 	set category = "Commands"
 
-	usr << "<b>Current Admins:</b>"
+	usr << "<b>Current Nobles:</b>"
 
 	for (var/client/C)
 		if(C.holder)
 			if(usr.client.holder)
 				usr << "[C.mob.key] is a [C.holder.rank][C.stealth ? " <i>(as [C.fakekey])</i>" : ""]"
 			else if(!C.stealth)
-				usr << "\t[C]"
+				usr << "\tNoble [C]"

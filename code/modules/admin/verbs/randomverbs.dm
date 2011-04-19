@@ -309,16 +309,19 @@
 		src << "[t]<br>"
 
 /client/proc/cmd_admin_reset_id(mob/M as mob in world)
-   set category = "Special Verbs"
-   set name = "Reset ID"
-   set desc = "Resets the ID card of the mob to match a name change"
-   if(!src.holder)
-      src << "Only administrators may use this command."
-      return
+	set category = "Special Verbs"
+	set name = "Reset ID"
+	set desc = "Resets the ID card of the mob to match a name change"
+	if(!src.holder)
+		src << "Only administrators may use this command."
+		return
 
-   for(var/obj/item/weapon/card/id/I in M.contents)
-      I.name = addtext(M.real_name, copytext(I.name,findtext(I.name,"'s")))
-      I.registered = M.real_name
+	for(var/obj/item/weapon/card/id/I in M.contents)
+		I.name = addtext(M.real_name, copytext(I.name,findtext(I.name,"'s")))
+		I.registered = M.real_name
+
+	log_admin("[key_name(src)] has reset [key_name(M)]'s ID card")
+	message_admins("[key_name_admin(src)] has reset [key_name(M)]'s ID card", 1)
 
 /*/client/proc/cmd_admin_gib(mob/M as mob in world)
 	set category = "Special Verbs"
