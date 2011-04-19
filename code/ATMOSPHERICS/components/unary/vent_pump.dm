@@ -497,7 +497,7 @@
 			if(T.air && T.air.return_pressure() < ONE_ATMOSPHERE*0.95)
 				if(istype(node,/obj/machinery/atmospherics/pipe))
 					var/obj/machinery/atmospherics/pipe/P = node
-					var/K = ONE_ATMOSPHERE - T.air.return_pressure()
+					var/K = ONE_ATMOSPHERE //- T.air.return_pressure()
 					K = K / T.air.volume // Calculateing the moles need to represurize
 					K = K / T.air.temperature
 					K = K / 8.31
