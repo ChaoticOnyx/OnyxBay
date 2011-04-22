@@ -89,6 +89,8 @@ world/proc/makejson()
 	//else
 		//usr << "Deleted local json"
 	var/F = file("info.json")
+	if(!isfile(F))
+		return
 	var/mode
 	if(ticker.current_state == 1)
 		mode = "Round Setup"

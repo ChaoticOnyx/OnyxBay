@@ -74,7 +74,7 @@
 		else
 			while(cquery.NextRow())
 				var/list/derp = cquery.GetRowData()
-				html += "<tr><td>[derp["rank"]]</td><td>[derp["ckey"]]</td><td>[derp["when"]]</td><td>[derp["why"]]</td></tr>"
+				html += "<tr><td>[derp["rank"]]</td><td>[derp["ckey"]]</td><td>[derp["when"]]</td><td>[derp["why"]]</td><td><a href='?src=\ref[src];jobbanrank=[rank];jobunban=[derp[key]]'>Remove</a></td></tr>"
 		html += "</table>"
 		usr << browse(html, "window=jobbanx1x;size=600x400")
 		return
@@ -179,7 +179,9 @@
 		dat = "<tt>[header][body]</tt>"
 		usr << browse(dat, "window=jobban2;size=600x150")
 		return
-
+	if(href_list["jobbanrank"])
+		jobban_remove(href_list["jobunban"],href_list["jobbanrank"])
+		return
 	if(href_list["jobban3"])
 		if (src.rank in list( "Administrator", "Secondary Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  ))
 			var/mob/M = locate(href_list["jobban4"])

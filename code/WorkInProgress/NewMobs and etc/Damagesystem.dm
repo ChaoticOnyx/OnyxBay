@@ -1746,15 +1746,17 @@
 	else if (gender == FEMALE)
 		g = "f"
 
-	stand_icon = new /icon('human.dmi', "blank")
-	lying_icon = new /icon('human.dmi', "blank")
+	stand_icon = new /icon('human.dmi', "body_[g]_s")
+	lying_icon = new /icon('human.dmi', "body_[g]_l")
 
 	var/husk = (mutations & 64)
 	//var/obese = (mutations & 32)
 	if (husk)
 		stand_icon.Blend(new /icon('human.dmi', "husk_s"), ICON_OVERLAY)
 		lying_icon.Blend(new /icon('human.dmi', "husk_l"), ICON_OVERLAY)
-	for(var/datum/organ/external/part in organs2)
+	//stand_icon.Blend(new /icon('human.dmi', "groin_[g]_s"), ICON_OVERLAY)
+	//lying_icon.Blend(new /icon('human.dmi', "groin_[g]_l"), ICON_OVERLAY)
+/*	for(var/datum/organ/external/part in organs2)
 		if(istype(part,/datum/organ/external/groin))
 			stand_icon.Blend(new /icon('human.dmi', "groin_[g]_s"), ICON_OVERLAY)
 			lying_icon.Blend(new /icon('human.dmi', "groin_[g]_l"), ICON_OVERLAY)
@@ -1769,7 +1771,7 @@
 				lying_icon.Blend(new /icon('human.dmi', "underwear[underwear]_[g]_l"), ICON_OVERLAY)
 		if(!part.destroyed)
 			stand_icon.Blend(new /icon('human.dmi', "[part.icon_name]_s"), ICON_OVERLAY)
-			lying_icon.Blend(new /icon('human.dmi', "[part.icon_name]_l"), ICON_OVERLAY)
+			lying_icon.Blend(new /icon('human.dmi', "[part.icon_name]_l"), ICON_OVERLAY)*/
 
 
 

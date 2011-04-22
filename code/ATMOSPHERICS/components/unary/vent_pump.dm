@@ -502,8 +502,8 @@
 					K = K / T.air.temperature
 					K = K / 8.31
 					K = K / 2
-					if(debug_info) world << "moles:[K]Pressure:[T.air.return_pressure()]Total moles:[T.air.total_moles()]"
-					var/datum/gas_mixture/env2 = P.parent.air.remove(K*2)
+					if(debug_info) world << "moles:[K*4]Pressure:[T.air.return_pressure()]Total moles:[T.air.total_moles()]"
+					var/datum/gas_mixture/env2 = P.parent.air.remove(K*4)
 					T.assume_air(env2)
 			else
 				panic_fill = 0
