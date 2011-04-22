@@ -521,6 +521,10 @@
 	name = "Arrival Shuttle Hallway"
 	icon_state = "entry"
 
+/area/hallway/secondary/research
+	name = "Research Hallway"
+	icon_state = "research"
+
 /area/shieldgen
 	name = "Shield Generation"
 	icon_state = "shield"
@@ -680,6 +684,30 @@
 /area/medical/medbay/office
 	name = "Medbay"
 	icon_state = "medbayoffice"
+
+/area/medical/medbay/waiting
+	name = "Medbay Waiting Room"
+	icon_state = "medbaywait"
+
+/area/medical/medbay/surgery
+	name = "Medbay Surgery Room"
+	icon_state = "medbaysurg"
+
+/area/medical/medbay/storage
+	name = "Medical Storage"
+	icon_state = "medbaystorage"
+
+/area/medical/patientA
+	name = "In-Patient Room A"
+	icon_state = "medbaypatient"
+
+/area/medical/patientB
+	name = "In-Patient Room B"
+	icon_state = "medbaypatient"
+
+/area/medical/patientC // For the crazies
+	name = "Unstable Patient Room"
+	icon_state = "medbaypatient"
 
 /area/medical/research
 	name = "Medical Research"

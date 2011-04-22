@@ -14,22 +14,6 @@
 
 	var/datum/disease2/D
 
-	var/i = 0
-
-	proc/process()
-		for(var/mob/M in loc)
-			infect_virus2(M,D)
-		if(i%5 == 0) step_rand(src)
-		i++
-
-		if(i > 50) del(src)
-
-	New()
-		..()
-		spawn while(1)
-			sleep(10)
-			process()
-
 /mob/living/carbon/proc/get_infection_chance()
 	var/score = 0
 	var/mob/living/carbon/M = src

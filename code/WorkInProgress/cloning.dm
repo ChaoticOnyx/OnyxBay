@@ -1,3 +1,5 @@
+/var/list/geneticsrecords = list()
+
 //Cloning revival method.
 //The pod handles the actual cloning while the computer manages the clone profiles
 
@@ -28,9 +30,10 @@
 	var/obj/machinery/clonepod/pod1 = null //Linked cloning pod.
 	var/temp = "Initializing System..."
 	var/menu = 1 //Which menu screen to display
-	var/list/records = list()
+	//var/list/records = list()
 	var/datum/data/record/active_record = null
 	var/obj/item/weapon/disk/data/genetics/diskette = null //Mostly so the geneticist can steal everything.
+	var/backuponly = 0
 
 	brightnessred = 0
 	brightnessgreen = 2
@@ -57,10 +60,11 @@
 		src.temp = ""
 		if (isnull(src.scanner))
 			src.temp += " <font color=red>SCNR-ERROR</font>"
-		if (isnull(src.pod1))
-			src.temp += " <font color=red>POD1-ERROR</font>"
-		else
-			src.pod1.connected = src
+		if(!backuponly)
+			if (isnull(src.pod1))
+				src.temp += " <font color=red>POD1-ERROR</font>"
+			else
+				src.pod1.connected = src
 
 		if (src.temp == "")
 			src.temp = "System ready."
@@ -84,7 +88,7 @@
 			var/obj/item/weapon/circuitboard/cloning/M = new /obj/item/weapon/circuitboard/cloning( A )
 			for (var/obj/C in src)
 				C.loc = src.loc
-			M.records = src.records
+			//M.records = src.records
 			A.circuit = M
 			A.state = 3
 			A.icon_state = "3"
@@ -135,7 +139,7 @@
 		if(2)
 			dat += "<h4>Current records</h4>"
 			dat += "<a href='byond://?src=\ref[src];menu=1'>Back</a><br><br>"
-			for(var/datum/data/record/R in src.records)
+			for(var/datum/data/record/R in geneticsrecords)
 				dat += "<a href='byond://?src=\ref[src];view_rec=\ref[R]'>[R.fields["id"]]-[R.fields["name"]]</a><br>"
 
 		if(3)
@@ -163,9 +167,9 @@
 
 				dat += "<br>"
 
-				dat += {"<b>UI:</b> [src.active_record.fields["UI"]]<br>
-				<b>SE:</b> [src.active_record.fields["SE"]]<br><br>
-				<a href='byond://?src=\ref[src];clone=\ref[src.active_record]'>Clone</a><br>"}
+				dat += "<b>UI:</b> [src.active_record.fields["UI"]]<br><b>SE:</b> [src.active_record.fields["SE"]]<br><br>"
+				if(!src.backuponly)
+					dat += "<a href='byond://?src=\ref[src];clone=\ref[src.active_record]'>Clone</a><br>"
 
 		if(4)
 			if (!src.active_record)
@@ -218,7 +222,7 @@
 			var/obj/item/weapon/card/id/C = usr.equipped()
 			if (istype(C))
 				if(src.check_access(C))
-					src.records.Remove(src.active_record)
+					geneticsrecords.Remove(src.active_record)
 					del(src.active_record)
 					src.temp = "Record deleted."
 					src.menu = 2
@@ -291,7 +295,7 @@
 			src.temp = "Unable to initiate cloning cycle." // most helpful error message in THE HISTORY OF THE WORLD
 		else if (src.pod1.growclone(selected, C.fields["name"], C.fields["UI"], C.fields["SE"], C.fields["mind"]))
 			src.temp = "Cloning cycle activated."
-			src.records.Remove(C)
+			geneticsrecords.Remove(C)
 			del(C)
 			src.menu = 1
 
@@ -339,13 +343,13 @@
 	if (!isnull(subject.mind)) //Save that mind so traitors can continue traitoring after cloning.
 		R.fields["mind"] = "\ref[subject.mind]"
 
-	src.records += R
+	geneticsrecords += R
 	src.temp = "Subject successfully scanned."
 
 //Find a specific record by key.
 /obj/machinery/computer/cloning/proc/find_record(var/find_key)
 	var/selected_record = null
-	for(var/datum/data/record/R in src.records)
+	for(var/datum/data/record/R in geneticsrecords)
 		if (R.fields["ckey"] == find_key)
 			selected_record = R
 			break
