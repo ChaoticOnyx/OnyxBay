@@ -68,7 +68,7 @@
 			e.phase_variance = src.phase_variance
 			if(src.loc.density == 0)
 				for(var/atom/o in src.loc.contents)
-					if(o.density || o == src.master || ismob(o) )
+					if(o.density || o == src.master || (ismob(o) && !istype(o, /mob/dead)) )
 						o.lase_act(src)
 						del src
 						return
