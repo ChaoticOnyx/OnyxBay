@@ -529,6 +529,7 @@ var/mob/lastbreathT = 0
 		oxyloss = max(oxyloss-5, 0)
 		oxygen_used = breath.oxygen/6
 		oxygen_alert = 0
+		losebreath = 0
 
 	breath.oxygen -= oxygen_used
 	breath.carbon_dioxide += oxygen_used
