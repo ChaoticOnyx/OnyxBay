@@ -1749,6 +1749,10 @@
 	stand_icon = new /icon('human.dmi', "body_[g]_s")
 	lying_icon = new /icon('human.dmi', "body_[g]_l")
 
+	if (underwear > 0)
+		stand_icon.Blend(new /icon('human.dmi', "underwear[underwear]_[g]_s"), ICON_OVERLAY)
+		lying_icon.Blend(new /icon('human.dmi', "underwear[underwear]_[g]_l"), ICON_OVERLAY)
+
 	var/husk = (mutations & 64)
 	//var/obese = (mutations & 32)
 	if (husk)
