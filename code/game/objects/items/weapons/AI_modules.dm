@@ -78,13 +78,13 @@ AI MODULES
 /obj/item/weapon/aiModule/oneHuman
 	name = "'OneHuman' AI Module"
 	var/targetName = "name"
-	desc = "A 'one human' AI module: 'Only <name> is human.'"
+	desc = "A 'one human' AI module: 'Only <name> is a crew member.'"
 
 /obj/item/weapon/aiModule/oneHuman/attack_hand(var/mob/user as mob)
 	..()
-	var/targName = input(usr, "Please enter the name of the person who is the only human.", "Who?", user.real_name)
+	var/targName = input(usr, "Please enter the name of the person who is the only crew member.", "Who?", user.real_name)
 	targetName = targName
-	desc = text("A 'one human' AI module: 'Only [] is human.'", targetName)
+	desc = text("A 'one human' AI module: 'Only [] is a crew member.'", targetName)
 
 /obj/item/weapon/aiModule/oneHuman/transmitInstructions(var/mob/living/silicon/ai/target, var/mob/sender)
 	..()
