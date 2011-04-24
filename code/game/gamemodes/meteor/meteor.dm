@@ -45,3 +45,5 @@
 	else
 		meteortime -= 1
 
+obj/meteor/proc/Target(var/mob/M in world)
+	walk_towards(src,M,15)

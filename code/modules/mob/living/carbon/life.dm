@@ -7,7 +7,7 @@ var/mob/lastbreathT = 0
 
 	if (stat != 2) //still breathing
 
-		if(lastbreathT <= world.timeofday*(4/10))
+		if(lastbreathT <= world.timeofday+40)
 			//Only try to take a breath every 4 seconds, unless suffocating
 			breathe()
 		else //Still give containing object the chance to interact
