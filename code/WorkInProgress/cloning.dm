@@ -285,7 +285,7 @@
 		var/datum/data/record/C = locate(href_list["clone"])
 		//Look for that player! They better be dead!
 		var/mob/selected = find_dead_player("[C.fields["ckey"]]")
-
+		selected << 'chime.ogg'	//probably not the best sound but I think it's reasonable
 		var/answer = alert(selected,"Do you want to return to life?","Cloning","Yes","No")
 		if(answer == "No")
 			selected = null
