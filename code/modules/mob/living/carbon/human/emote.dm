@@ -45,16 +45,25 @@
 			m_type = 1
 
 		if ("custom")
-			var/input = input("Choose an emote to display.")
-			var/input2 = input("Is this a visible or hearable emote?") in list("Visible","Hearable")
-			if (input2 == "Visible")
+			if(copytext(param,1,2) == "v")
 				m_type = 1
-			else if (input2 == "Hearable")
+			else if(copytext(param,1,2) == "h")
 				m_type = 2
 			else
-				alert("Unable to use this emote, must be either hearable or visible.")
-				return
-
+				var/input2 = input("Is this a visible or hearable emote?") in list("Visible","Hearable")
+				if (input2 == "Visible")
+					m_type = 1
+				else if (input2 == "Hearable")
+					m_type = 2
+				else
+					alert("Unable to use this emote, must be either hearable or visible.")
+					return
+			param = trim(copytext(param,2))
+			var/input
+			if(param == "")
+				input = input("Choose an emote to display.")
+			else
+				input = param
 			if(input != "")
 				message = "<B>[src]</B> [input]"
 
