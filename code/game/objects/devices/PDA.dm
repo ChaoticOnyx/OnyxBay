@@ -1221,7 +1221,7 @@ Code:
 						A.show_message("<i>Intercepted message from <b>[P:owner]</b>: [t]</i>")
 
 				if (!P.silent)
-					playsound(P.loc, 'twobeep.wav', 50, 1)
+					playsound(P.loc, 'twobeep.ogg', 35, 1)
 					for (var/mob/O in hearers(3, P.loc))
 						O.show_message(text("\icon[P] *[P.ttone]*"))
 
