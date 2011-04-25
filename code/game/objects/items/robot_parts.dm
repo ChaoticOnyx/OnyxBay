@@ -138,6 +138,7 @@
 
 			// Check if player wants to respawn as cyborg
 			if (src.brain.owner.client)
+				src.brain.owner.client.mob << 'chime.ogg'
 				var/answer = alert(src.brain.owner.client.mob,"Do you want to return to life?","Cyborgization","Yes","No")
 				if(answer == "No")
 					src.state("The inserted brain is not compatible with this suit's circuits.", "blue")

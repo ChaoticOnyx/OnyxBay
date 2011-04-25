@@ -91,6 +91,7 @@ obj/machinery/aiconstruct/proc/boot()
 		A.key = bb.client.key
 		bb.mind.transfer_to(A)
 		sleep(10)
+		A << 'chime.ogg'
 		A.AIize()
 		del(src)
 mob/living/verb/head()
