@@ -470,6 +470,9 @@
 	update_icon()
 		if(burst)
 			icon_state = "burst"
+		//var/turf/locT = src.loc
+		//if(locT.zone.space_connections.len >= 1)
+		//	return
 	//	icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
 	//	if(on&&node)
 	//		icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]out"
@@ -477,8 +480,11 @@
 		return
 
 	process()
-		..()
+	//	..()
 		update_icon()
+		var/turf/locT = src.loc
+		if(locT.zone.space_connections.len >= 1)
+			return
 		if(!on)
 			return 0
 		var/datum/gas_mixture/environment = loc.return_air(1)
