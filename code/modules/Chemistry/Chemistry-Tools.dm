@@ -834,7 +834,7 @@
 			return 0
 
 		if(M == user)
-			M << "\blue You swallow a gulp of [src]."
+			M << "\blue You swallow a gulp from the [src]."
 			if(reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)

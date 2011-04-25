@@ -1927,7 +1927,7 @@
 			else
 				if (place == "drink")
 					for(var/mob/O in viewers(target, null))
-						O.show_message(text("\red <B>[] is trying to force [] to swallow a gulp of []!</B>", source, target, item), 1)
+						O.show_message(text("\red <B>[] is trying to force [] to swallow a gulp from the []!</B>", source, target, item), 1)
 				else
 					if (place == "dnainjector")
 						for(var/mob/O in viewers(target, null))
