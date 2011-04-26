@@ -14,6 +14,10 @@
 
 	var/datum/disease2/D
 
+	New()
+		..()
+		spawn(300) del(src)
+
 /mob/living/carbon/proc/get_infection_chance()
 	var/score = 0
 	var/mob/living/carbon/M = src
