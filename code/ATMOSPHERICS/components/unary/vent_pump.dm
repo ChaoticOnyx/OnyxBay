@@ -503,13 +503,10 @@
 			if(T.air && T.air.return_pressure() < ONE_ATMOSPHERE*0.95)
 				if(istype(node,/obj/machinery/atmospherics/pipe))
 					var/obj/machinery/atmospherics/pipe/P = node
-					var/K = ONE_ATMOSPHERE //- T.air.return_pressure()
-					K = K / T.air.volume // Calculateing the moles need to represurize
-					K = K / T.air.temperature
-					K = K / 8.31
-					K = K / 2
-					if(debug_info) world << "moles:[K*4]Pressure:[T.air.return_pressure()]Total moles:[T.air.total_moles()]"
-					var/datum/gas_mixture/env2 = P.parent.air.remove(K*4)
+					var/K = ONE_ATMOSPHERE - T.zone.pressure
+					K = K/R_IDEAL_GAS_EQUATION/T.zone.temp*T.zone.volume
+					if(debug_info) world << "moles:[K]Pressure:[T.zone.pressure]/[ONE_ATMOSPHERE]Total moles:[T.air.total_moles()]"
+					var/datum/gas_mixture/env2 = P.parent.air.remove(K)
 					T.assume_air(env2)
 			else
 				panic_fill = 0
