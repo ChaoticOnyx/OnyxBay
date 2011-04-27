@@ -1,4 +1,4 @@
-/mob/living/silicon/ai/proc/ai_statuschange()
+/mob/living/silicon/ai/verb/ai_statuschange()
 	set category = "AI Commands"
 	set name = "AI status"
 

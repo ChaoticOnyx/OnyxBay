@@ -27,7 +27,7 @@
 			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 
-/mob/living/silicon/ai/proc/ai_alerts()
+/mob/living/silicon/ai/verb/ai_alerts()
 	set category = "AI Commands"
 	set name = "Show Alerts"
 
@@ -159,7 +159,7 @@
 				stunned = min(5, stunned)
 	return
 
-/mob/living/silicon/ai/proc/show_laws_verb()
+/mob/living/silicon/ai/verb/show_laws_verb()
 	set category = "AI Commands"
 	set name = "Show Laws"
 	show_laws()
@@ -175,7 +175,6 @@
 
 	laws_sanity_check()
 	laws_object.show_laws(who)
-
 /mob/living/silicon/ai/proc/laws_sanity_check()
 	if (!laws_object)
 		laws_object = new /datum/ai_laws/nanotrasen

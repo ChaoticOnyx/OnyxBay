@@ -108,12 +108,12 @@
 		O:malf_picker = new /datum/game_mode/malfunction/AI_Module/module_picker
 		O.show_laws()
 		O << "<b>Kill all.</b>"
-	O.verbs += /mob/living/silicon/ai/proc/ai_call_shuttle
-	O.verbs += /mob/living/silicon/ai/proc/show_laws_verb
-	O.verbs += /mob/living/silicon/ai/proc/ai_alerts
+	//O.verbs += /mob/living/silicon/ai/proc/ai_call_shuttle
+	//O.verbs += /mob/living/silicon/ai/proc/show_laws_verb
+//	O.verbs += /mob/living/silicon/ai/proc/ai_alerts
 	O.verbs += /mob/living/silicon/ai/proc/lockdown
 	O.verbs += /mob/living/silicon/ai/proc/disablelockdown
-	O.verbs += /mob/living/silicon/ai/proc/ai_statuschange
+	//O.verbs += /mob/living/silicon/ai/proc/ai_statuschange
 
 //	O.verbs += /mob/living/silicon/ai/proc/ai_cancel_call
 	O.job = "AI"
