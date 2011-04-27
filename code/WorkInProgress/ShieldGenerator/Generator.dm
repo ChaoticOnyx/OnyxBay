@@ -190,6 +190,7 @@ Manual Mode Generation Rate:      <a href="?src=\ref[src]&man=1">M</a> <a href="
 	use_power(used_power)
 	if(! (stat & NOPOWER) )
 		Capacitor.charge += round(ConversionRate ** 2.15)
+		Capacitor.charge = min(Capacitor.charge, Capacitor.maxcharge)
 	PreviousConversionRate = ConversionRate
 	UpdateIcon()
 	updateUsrDialog()

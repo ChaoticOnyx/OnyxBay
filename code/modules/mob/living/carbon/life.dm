@@ -142,20 +142,20 @@ var/mob/lastbreathT = 0
 
 
 	if(!virus2)
-		/*for(var/mob/living/carbon/M in oviewers(4,src))
+		for(var/mob/living/carbon/M in oviewers(4,src))
 			if(M.virus2)
-				infect_virus2(src,M.virus2)*/
+				infect_virus2(src,M.virus2)
 		for(var/obj/decal/cleanable/blood/B in view(4, src))
 			if(B.virus2)
 				infect_virus2(src,B.virus2)
-/*		for(var/obj/virus/V in src.loc)
+		for(var/obj/virus/V in src.loc)
 			infect_virus2(src,V.D)
 	else if(get_infection_chance())
 		virus2.activate(src)
 		var/obj/virus/V = new(src.loc)
 		step_rand(V)
 		step_rand(V)
-		V.D = virus2.getcopy()*/
+		V.D = virus2.getcopy()
 //VIRUS FIX THESES
 
 
