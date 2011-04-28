@@ -301,9 +301,9 @@
 		..()
 		usr << "\blue It contains:"
 		if(!reagents) return
-		if(reagents.reagent_list.len)
-			for(var/datum/reagent/R in reagents.reagent_list)
-				usr << "\blue [R.volume] units of [R.name]"
+		if(reagents.total_volume)
+			reagents.update_total()
+			usr << "\blue [reagents.total_volume] units of liquid."
 		else
 			usr << "\blue Nothing."
 
@@ -373,11 +373,12 @@
 		..()
 		usr << "\blue It contains:"
 		if(!reagents) return
-		if(reagents.reagent_list.len)
-			for(var/datum/reagent/R in reagents.reagent_list)
-				usr << "\blue [R.volume] units of [R.name]"
+		if(reagents.total_volume)
+			reagents.update_total()
+			usr << "\blue [reagents.total_volume] units of liquid."
 		else
 			usr << "\blue Nothing."
+
 
 	New()
 		var/datum/reagents/R = new/datum/reagents(50)
