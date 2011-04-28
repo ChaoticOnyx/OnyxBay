@@ -1,3 +1,5 @@
+// blahblah
+
 /datum/game_mode/hostile
 	name = "hostile takeover"
 	config_tag = "takeover"
