@@ -59,7 +59,7 @@
 
 	var/datum/disease2/disease/D = new()
 	D.makerandom(1)
-	D.infectionchance =
+	D.infectionchance = 0
 
 	for(var/datum/mind/synd_mind in syndicates)
 		synd_mind.current.loc = pick(hostile_spawns)
@@ -77,6 +77,9 @@
 		player << "<b>* Your ship has been taken over by a hostile corporation. They overpower you, but you must somehow overthrow them through wit and cunning."
 		player.loc = pick(crew_spawns)
 		crew_spawns -= player.loc
+
+	for(var/mob/living/silicon/ai/S in world)
+		S.add_supplied_law(10, "The original crew of the NSV Luna are not your true masters. Aid your new masters, the members of the syndicate taskforce. This law overrides all other laws.")
 
 
 	return
