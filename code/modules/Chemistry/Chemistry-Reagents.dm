@@ -14,6 +14,10 @@ datum
 		var/reagent_state = SOLID
 		var/data = null
 		var/volume = 0
+		var/red = 255
+		var/green = 255
+		var/blue = 255
+		var/alpha = 255
 
 		proc
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume) //By default we have a chance to transfer some
@@ -46,17 +50,26 @@ datum
 				holder.remove_reagent(src.id, 0.4) //By default it slowly disappears.
 				return
 
+			getcolour()
+				return rgb(red,green,blue)
+
 		milk
 			name = "Milk"
 			id = "milk"
 			description = "An opaque white liquid produced by the mammary glands of mammals."
 			reagent_state = LIQUID
+			red = 240
+			green = 240
+			blue = 240
 
 		beer
 			name = "Beer"
 			id = "beer"
 			description = "An alcoholic beverage made from malted grains, hops, yeast, and water."
 			reagent_state = LIQUID
+			red = 150
+			green = 75
+			blue = 0
 			on_mob_life(var/mob/M)
 				if(!data) data = 1
 				data++
@@ -82,6 +95,7 @@ datum
 			id = "vodka"
 			description = "Traditionally made of potatoes, NanoTrasen vodka contains NO organic material!"
 			reagent_state = LIQUID
+			alpha = 50
 			on_mob_life(var/mob/M)
 				if(!data) data = 1
 				data++
@@ -107,6 +121,9 @@ datum
 			id = "dwine"
 			description = "Strike the planet! Celebratory NanoTrasen drink, limited edition."
 			reagent_state = LIQUID
+			red = 128
+			green = 0
+			blue = 128
 			on_mob_life(var/mob/M)
 				if(!data) data = 1
 				data++
@@ -133,7 +150,10 @@ datum
 			id = "water"
 			description = "A ubiquitous chemical substance that is composed of hydrogen and oxygen."
 			reagent_state = LIQUID
-
+			red = 0
+			green = 150
+			blue = 255
+			alpha = 100
 			reaction_turf(var/turf/T, var/volume)
 				src = null
 				if(istype(T, /turf/simulated) && volume >= 3)
@@ -178,6 +198,9 @@ datum
 			id = "blood"
 			description = "Carrier of oxygen and various other things essential for life."
 			reagent_state = LIQUID
+			red = 200
+			green = 0
+			blue = 0
 			var
 				blood_type = "A+"
 				blood_DNA = "unknown"
@@ -250,7 +273,7 @@ datum
 			id = "lube"
 			description = "Lubricant is a substance introduced between two moving surfaces to reduce the friction and wear between them. Giggity."
 			reagent_state = LIQUID
-
+			alpha = 50
 			reaction_turf(var/turf/T, var/volume)
 				src = null
 				if(T:wet >= 2) return
@@ -263,13 +286,13 @@ datum
 						T:overlays -= T:wet_overlay
 
 				return
-
+/*
 		bilk
 			name = "Bilk"
 			id = "bilk"
 			description = "This appears to be beer mixed with milk. Disgusting."
 			reagent_state = LIQUID
-
+*/
 		anti_toxin
 			name = "Anti-Toxin (Dylovene)"
 			id = "anti_toxin"

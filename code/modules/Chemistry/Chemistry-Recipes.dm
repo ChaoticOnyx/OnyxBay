@@ -12,14 +12,14 @@ datum
 				return
 
 		//I recommend you set the result amount to the total volume of all components.
-
+/*
 		bilk
 			name = "Bilk"
 			id = "bilk"
 			result = "bilk"
 			required_reagents = list("milk" = 1, "beer" = 1)
 			result_amount = 2
-
+*/
 		explosion_potassium
 			name = "Explosion"
 			id = "explosion_potassium"
