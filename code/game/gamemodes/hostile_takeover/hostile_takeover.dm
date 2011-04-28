@@ -19,7 +19,7 @@
 
 
 /datum/game_mode/hostile/pre_setup()
-	agents_possible = round( get_player_count()/2.5 )
+	agents_possible = round( get_player_count()/2.7 )
 	if(agents_possible < 1)
 		agents_possible = 1
 
@@ -73,12 +73,22 @@
 
 		synd_mind.current << "<b>* You have taken control of the NSV Luna and taken the crew as hostages. However, you do not know how to run this ship or about chemistry and virology, and you have a lethal virus that needs to be treated with spaceaillin or cured."
 
-
+	var/free = max(round(syndicates.len / 5), 1)
 	for(var/mob/living/carbon/human/player in world)
 		if(player.mind in syndicates) continue
 		player << "<b>* Your ship has been taken over by a hostile corporation. They overpower you, but you must somehow overthrow them through wit and cunning."
-		player.loc = pick(crew_spawns)
-		crew_spawns -= player.loc
+		if(free <= 0)
+			player.loc = pick(crew_spawns)
+			crew_spawns -= player.loc
+		else
+			player << "<b>* You're one of the ship's genetical research subjects."
+			if(prob(50))
+				player.mutations |= 512
+			else if(prob(80))
+				player.mutations |= 4
+			else
+				player.mutations |= 1
+			free--
 
 	for(var/mob/living/silicon/ai/S in world)
 		S.add_supplied_law(10, "The original crew of the NSV Luna are not your true masters. Aid your new masters, the members of the syndicate taskforce. This law overrides all other laws.")

@@ -221,7 +221,7 @@
 		if(mob.reagents.has_reagent("spaceacillin"))
 			mob.reagents.remove_reagent("spaceacillin",1)
 			return
-		if(prob(clicks/(20*stage)))
+		if(clicks > rand(stage*600-100,stage*600+100))
 			if(stage == 4)
 				mob.virus2 = null
 				del src
