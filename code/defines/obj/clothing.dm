@@ -64,8 +64,9 @@
 	var/already_worn = 0
 
 /obj/item/clothing/glasses/thermal
-	name = "Optical Thermal Scanner"
-	icon_state = "thermal"
+	name = "Sunglasses"
+	desc = "These don't look like ordinary sunglasses."
+	icon_state = "sun"
 	item_state = "glasses"
 
 // NO GLOVES NO LOVES

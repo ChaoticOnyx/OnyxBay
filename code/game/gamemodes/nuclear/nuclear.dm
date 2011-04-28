@@ -20,7 +20,7 @@
 /obj/item/weapon/storage/syndie_kit/imp_explosive:6:Explosive implant, with injector;/obj/item/device/hacktool:4:Hacktool;
 /obj/item/clothing/under/chameleon:2:Chameleon Jumpsuit;/obj/item/weapon/gun/revolver:7:Revolver;
 /obj/item/weapon/ammo/a357:3:Revolver Ammo;/obj/item/weapon/card/emag:3:Electromagnetic card;
-/obj/item/weapon/card/id/syndicate:4:Fake ID;/obj/item/weapon/cloaking_device:5:Cloaking device;
+/obj/item/weapon/card/id/syndicate:4:Fake ID;/obj/item/clothing/glasses/thermal:4:Thermal Glasses;
 /obj/item/weapon/storage/emp_kit:4:Box of EMP grenades;/obj/item/device/powersink:5:Power sink;
 /obj/item/weapon/cartridge/syndicate:3:Detomatix PDA cart;/obj/item/device/chameleon:4:Chameleon projector;
 /obj/item/weapon/sword:5:Energy sword;/obj/item/weapon/pen/sleepypen:4:Sleepy pen;
