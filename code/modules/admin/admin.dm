@@ -314,8 +314,9 @@
 			<A href='?src=\ref[src];c_mode2=deathmatch'>Death Commando Deathmatch</A><br>
 			<A href='?src=\ref[src];c_mode2=confliction'>Confliction (TESTING)</A><br>
 			<A href='?src=\ref[src];c_mode2=ctf'>Capture The Flag (Beta)</A><br><br>
-			<A href='?src=\ref[src];c_mode2=derelict'>Derelict (Beta)</A><br><br>
-			<A href='?src=\ref[src];c_mode2=zombie'>Zombie (Beta)</A><br><br>
+			<A href='?src=\ref[src];c_mode2=derelict'>Derelict (Beta)</A><br>
+			<A href='?src=\ref[src];c_mode2=zombie'>Zombie (Beta)</A><br>
+			<A href='?src=\ref[src];c_mode2=takeover'>Hostile Takeover (Alpha)</A><br>
 			<!-- <A href='?src=\ref[src];c_mode2=among'>Traitor among us (Beta)</A><br><br> -->
 			Now: [master_mode]\n"})
 			usr << browse(dat, "window=c_mode")
@@ -361,6 +362,8 @@
 					master_mode = "derelict"
 				if("zombie")
 					master_mode = "zombie"
+				if("takeover")
+					master_mode = "takeover"
 				/*if("among")
 					master_mode = "traitoramongus"*/
 				else
