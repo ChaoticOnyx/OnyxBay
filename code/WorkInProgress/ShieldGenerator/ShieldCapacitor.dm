@@ -29,12 +29,12 @@
 		if(charge)
 			charge -= 80000
 			charge = max(charge, 0)
-		if(charge == 0 && on)
-			on = 0
-			ShieldNetwork.capacitators -= 1
-		else if(charge == 1 && !on)
-			on = 1
-			ShieldNetwork.capacitators += 1
+	if(charge == 0 && on)
+		on = 0
+		ShieldNetwork.capacitators -= 1
+	else if(charge == 1 && !on)
+		on = 1
+		ShieldNetwork.capacitators += 1
 	updateicon()
 	return
 
