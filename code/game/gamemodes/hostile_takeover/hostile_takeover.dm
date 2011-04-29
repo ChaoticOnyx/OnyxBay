@@ -82,9 +82,8 @@
 			crew_spawns -= player.loc
 		else
 			player << "<b>* You're one of the ship's genetical research subjects."
-			if(prob(50))
-				player.mutations |= 512
-			else if(prob(80))
+			player.mutations |= 512
+			if(prob(80))
 				player.mutations |= 4
 			else
 				player.mutations |= 1
