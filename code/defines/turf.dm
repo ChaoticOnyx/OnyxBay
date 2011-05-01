@@ -320,7 +320,7 @@ turf/space/hull/New()
 
 /turf/simulated/shuttle/wall
 	name = "Shuttle Wall"
-	icon_state = "wall1"
+	icon_state = "wall"
 	explosionstrength = 4
 	opacity = 1
 	density = 1

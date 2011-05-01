@@ -21,11 +21,13 @@
 /client/verb/adminwho()
 	set category = "Commands"
 
-	usr << "<b>Current Nobles:</b>"
+	usr << "<b>Current Nobles :</b>"
 
 	for (var/client/C)
 		if(C.holder)
 			if(usr.client.holder)
 				usr << "[C.mob.key] is a [C.holder.rank][C.stealth ? " <i>(as [C.fakekey])</i>" : ""]"
 			else if(!C.stealth)
-				usr << "\tNoble [C]"
+				usr << "\t[pick(nobles)] [C]"
+
+var/list/nobles = list("Baron","Bookkeeper","Captain of the Guard","Chief medical dwarf","Count","Dungeon master","Duke","General","Mayor","Outpost liaison","Sheriff","Champion")

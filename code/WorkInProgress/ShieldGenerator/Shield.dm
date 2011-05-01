@@ -35,4 +35,5 @@
 	//	world << "Shield Handled blast wave"
 		#endif
 	else if (density)
+		return 1
 		world << "Active shield ex_act called with positive value?  What?  This makes no sense and should not have happened.  Tell a dev."
