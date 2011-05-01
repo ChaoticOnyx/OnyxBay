@@ -147,6 +147,7 @@
 					return
 				else
 					src.state("Brain insertion complete.", "blue")
+					roundinfo.revies++
 			else
 				for(var/mob/dead/observer/G in world)
 					if(G.corpse == src.brain.owner && G.client)
@@ -158,6 +159,7 @@
 							return
 						else
 							src.state("Brain insertion complete.", "blue")
+							roundinfo.revies++
 
 			// Create the robo suit
 			var/mob/living/silicon/robot/O = new /mob/living/silicon/robot(get_turf(src.loc))
