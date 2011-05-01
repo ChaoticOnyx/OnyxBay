@@ -320,12 +320,17 @@
 	dat += "<BR>\[ [(src.aistate != STATE_DEFAULT) ? "<A HREF='?src=\ref[src];operation=ai-main'>Main Menu</A> | " : ""]<A HREF='?src=\ref[user];mach_close=communications'>Close</A> \]"
 	return dat
 
-/mob/living/silicon/ai/proc/ai_call_shuttle()
+/mob/living/silicon/ai/verb/ai_call_shuttle()
 	set category = "AI Commands"
-	set name = "Call Emergency Shuttle"
+	set name = "Launch Pods"
 	if(usr.stat == 2)
-		usr << "You can't call the shuttle because you are dead!"
+		usr << "You can't launch the pods because you are dead!"
 		return
+
+	var/confirm = alert("Confirm launching pods?",,"Launch pods","Cancel")
+	if(confirm == "Cancel")
+		return
+
 	call_shuttle_proc(src)
 
 	// hack to display shuttle timer

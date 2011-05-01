@@ -577,7 +577,7 @@
 	var/datum/gas_mixture/breath
 
 	if(health < 0 && !zombie && !reagents.has_reagent("inaprovaline"))
-		losebreath+=2
+		losebreath++
 
 	//var/halfmask = 0
 

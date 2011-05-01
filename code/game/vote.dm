@@ -367,7 +367,7 @@
 			vote.enteringchoices = 0
 			vote.votetime = world.timeofday + config.vote_period*10	// when the vote will end
 
-			spawn(config.vote_period * 10 * tick_multiplier)
+			spawn(config.vote_period * 10)
 				vote.endvote()
 
 			world << "\red<B>*** A custom vote has been initiated by [M.key].</B>"
@@ -393,7 +393,7 @@
 		vote.voting = 1						// now voting
 		vote.votetime = world.timeofday + config.vote_period*10	// when the vote will end
 
-		spawn(config.vote_period * 10 * tick_multiplier)
+		spawn(config.vote_period * 10)
 			vote.endvote()
 
 		world << "\red<B>*** A vote to [vote.mode?"change game mode":"restart"] has been initiated by [M.key].</B>"

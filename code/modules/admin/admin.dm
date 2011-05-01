@@ -1531,7 +1531,7 @@
 	// now voting
 	vote.votetime = world.timeofday + config.vote_period*10
 	// when the vote will end
-	spawn(config.vote_period * 10 * tick_multiplier)
+	spawn(config.vote_period * 10)
 		vote.endvote()
 
 	world << "\red<B>*** [message] has been initiated by Admin [usr.client.stealth ? pick("DATA EXPUNGED") : usr.key].</B>"
