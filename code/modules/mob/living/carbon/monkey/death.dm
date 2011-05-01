@@ -9,7 +9,6 @@
 	if (blind)
 		blind.layer = 0
 	lying = 1
-	add_stat(2,1)
 	var/h = hand
 	hand = 0
 	drop_item()

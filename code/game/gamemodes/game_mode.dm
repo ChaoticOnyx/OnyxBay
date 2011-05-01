@@ -46,7 +46,6 @@
 				world << "\green <B>Success</B>"
 				for(var/client/C)
 					if(C.key == traitor.key)
-						C.mob.add_stat(4,1)
 						C.mob.unlock_medal("Oh I'm a terrorist?", 0, "Kinda", "medium")
 			else
 				world << "\red Failed"

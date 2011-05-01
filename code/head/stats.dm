@@ -1,67 +1,40 @@
-mob/proc/add_stat(type,add)
-	if (ismob(src) && src.key)
-		var/hassave = 0
-		var/DBQuery/cquery = dbcon.NewQuery("SELECT `ckey` FROM `stats` WHERE ckey='[src.ckey]'")
-		if(!cquery.Execute())
-			message_admins(cquery.ErrorMsg())
-			#ifdef DEBUG
-			debug(cquery.ErrorMsg())
-			#endif
-		else
-			while(cquery.NextRow())
-				var/list/column_data = cquery.GetRowData()
-				var/lawl = column_data["ckey"]
-				if(src.ckey == lawl)
-					hassave = 1
-		var/roundplayed = 0
-		var/deaths = 0
-		var/suicides = 0
-		var/traitorwin = 0
-		if(hassave)
-			var/DBQuery/xquery = dbcon.NewQuery("SELECT * FROM `stats` WHERE ckey='[src.ckey]'")
-			if(!xquery.Execute())
-				message_admins(xquery.ErrorMsg())
-				#ifdef DEBUG
-				debug(xquery.ErrorMsg())
-				#endif
-				return
-			else
-				while(xquery.NextRow())
-					var/list/column_data = xquery.GetRowData()
-					roundplayed = text2num(column_data["roundsplayed"])
-					deaths = text2num(column_data["deaths"])
-					suicides = text2num(column_data["suicide"])
-					traitorwin = text2num(column_data["traitorwin"])
-				switch(type)
-					if(1)
-						roundplayed += add
-					if(2)
-						deaths += add
-					if(3)
-						suicides += add
-					if(4)
-						traitorwin += add
-				var/DBQuery/rquery = dbcon.NewQuery("REPLACE INTO `stats` (`ckey`, `deaths`, `roundsplayed`, `suicides`,`traitorwin` ) VALUES ('[src.ckey]', '[deaths]' , '[roundplayed]', '[suicides]','[traitorwin]');")
-				if(!rquery.Execute())
-					message_admins(rquery.ErrorMsg())
-					#ifdef DEBUG
-					debug(rquery.ErrorMsg())
-					#endif
-					return
-		else
-			switch(type)
-				if(1)
-					roundplayed += add
-				if(2)
-					deaths += add
-				if(3)
-					suicides += add
-				if(4)
-					traitorwin += add
-			var/DBQuery/rquery = dbcon.NewQuery("REPLACE INTO `stats` (`ckey`, `deaths`, `roundsplayed`, `suicides`,`traitorwin` ) VALUES ('[src.ckey]', '[deaths]' , '[roundplayed]', '[suicides]','[traitorwin]');")
-			if(!rquery.Execute())
-				message_admins(rquery.ErrorMsg())
-				#ifdef DEBUG
-				debug(rquery.ErrorMsg())
-				#endif
-				return
+client/proc/add_roundsjoined()
+	if(!makejson)
+		return
+	var/DBQuery/cquery = dbcon.NewQuery("INSERT INTO `roundsjoined` (`ckey`) VALUES ('[ckey(src.key)]')")
+	if(!cquery.Execute()) message_admins(cquery.ErrorMsg())
+client/proc/add_roundssurvived()
+	if(!makejson)
+		return
+	var/DBQuery/cquery = dbcon.NewQuery("INSERT INTO `roundsurvived` (`ckey`) VALUES ('[ckey(src.key)]')")
+	if(!cquery.Execute()) message_admins(cquery.ErrorMsg())
+client/proc/onDeath(var/mob/A = src.mob)
+	if(!makejson)
+		return
+	if(!ismob(A))
+		return
+	var/ckey = src.ckey
+	var/area
+	var/attacker
+	var/tod = time2text(world.realtime)
+	var/health
+	var/last
+	if(isturf(A.loc))
+		area = A.loc:loc:name
+	else
+		area = A.loc:name
+	if(ishuman(A.lastattacker))
+		attacker = A.lastattacker:name
+	else
+		attacker = "None"
+	health = "Oxy:[A.oxyloss]Brute:[A.bruteloss]Burn:[A.fireloss]Toxins:[A.toxloss]"
+	if(A.logs.len >= 1)
+		last = A.logs[A.logs.len]
+	else
+		last = "None"
+	var/DBQuery/cquery = dbcon.NewQuery("INSERT INTO `deathlog` (`ckey`,`location`,`lastattacker`,`ToD`,`health`,`lasthit`) VALUES ('[ckey]','[area]','[attacker]','[tod]','[health]','[last]')")
+	if(!cquery.Execute()) message_admins(cquery.ErrorMsg())
+client/proc/onBought(names)
+	if(!names) return
+	var/DBQuery/cquery = dbcon.NewQuery("INSERT INTO `traitorbuy` (`type`) VALUES ('[names]')")
+	if(!cquery.Execute()) message_admins(cquery.ErrorMsg())
