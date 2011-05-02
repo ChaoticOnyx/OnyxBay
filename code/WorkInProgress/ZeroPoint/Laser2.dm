@@ -69,11 +69,11 @@
 			if(src.loc.density == 0)
 				for(var/atom/o in src.loc.contents)
 					if(o.density || o == src.master || (ismob(o) && !istype(o, /mob/dead)) )
-						o.lase_act(src)
+						o.laser_act(src)
 						del src
 						return
 			else
-				src.loc.lase_act(src)
+				src.loc.laser_act(src)
 				del e
 				return
 			step(e,e.dir)
@@ -82,10 +82,10 @@
 	else
 		next.updatebeam()
 
-/atom/proc/lase_act(var/obj/beam/e_beam/b)
+/atom/proc/laser_act(var/obj/beam/e_beam/b)
 	return
 
-/mob/living/carbon/lase_act(var/obj/beam/e_beam/b)
+/mob/living/carbon/laser_act(var/obj/beam/e_beam/b)
 	for(var/t in organs)
 		var/datum/organ/external/affecting = organs["[t]"]
 		if (affecting.take_damage(0, b.power/400,0,0))
@@ -94,7 +94,7 @@
 			UpdateDamage()
 
 /obj/beam/e_beam/Bump(atom/Obstacle)
-	Obstacle.lase_act(src)
+	Obstacle.laser_act(src)
 	del(src)
 	return
 
@@ -112,7 +112,7 @@
 	if (istype(AM, /obj/beam))
 		return
 	spawn( 0 )
-		AM.lase_act(src)
+		AM.laser_act(src)
 		src.hit()
 		return
 	return

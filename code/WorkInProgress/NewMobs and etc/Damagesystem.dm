@@ -278,6 +278,7 @@
 
 /mob/living/carbon/human/bullet_act(flag, A as obj)
 	var/shielded = 0
+
 	for(var/obj/item/device/shield/S in src)
 		if (S.active)
 			if (flag == "bullet")
@@ -285,30 +286,37 @@
 			shielded = 1
 			S.active = 0
 			S.icon_state = "shield0"
+
 	for(var/obj/item/weapon/cloaking_device/S in src)
 		if (S.active)
 			shielded = 1
 			S.active = 0
 			S.icon_state = "shield0"
-	if ((shielded && flag != "bullet"))
-		if (!flag)
+
+	if (shielded && flag != "bullet")
 			src << "\blue Your shield was disturbed by a laser!"
-			if(paralysis <= 120)	paralysis = 120
+			if(paralysis <= 30)	paralysis = 30
 			updatehealth()
+
 	if (locate(/obj/item/weapon/grab, src))
 		var/mob/safe = null
 		if (istype(l_hand, /obj/item/weapon/grab))
 			var/obj/item/weapon/grab/G = l_hand
 			if ((G.state == 3 && get_dir(src, A) == dir))
 				safe = G.affecting
+
 		if (istype(r_hand, /obj/item/weapon/grab))
 			var/obj/item/weapon.grab/G = r_hand
 			if ((G.state == 3 && get_dir(src, A) == dir))
 				safe = G.affecting
+
 		if (safe)
 			return safe.bullet_act(flag, A)
+
 	if (flag == PROJECTILE_BULLET)
+
 		var/d = 51
+
 		if (istype(wear_suit, /obj/item/clothing/suit/armor))
 			if (prob(70))
 				show_message("\red Your armor absorbs the hit!", 4)
@@ -342,6 +350,7 @@
 			if (prob(50))
 				if(weakened <= 5)	weakened = 5
 		return
+
 	else if (flag == PROJECTILE_TASER)
 		if(zombie) return
 		if (istype(wear_suit, /obj/item/clothing/suit/armor))
@@ -359,6 +368,7 @@
 			weakened = 10
 		if (stuttering < 10)
 			stuttering = 10
+
 	else if(flag == PROJECTILE_LASER)
 		var/d = 20
 		if (istype(wear_suit, /obj/item/clothing/suit/armor))
@@ -397,6 +407,7 @@
 			updatehealth()
 			if (prob(25))
 				stunned = 1
+
 	else if(flag == PROJECTILE_PULSE)
 		var/d = 40
 		if (istype(wear_suit, /obj/item/clothing/suit/armor))
@@ -431,12 +442,14 @@
 			updatehealth()
 			if (prob(50))
 				stunned = min(stunned, 5)
+
 	else if(flag == PROJECTILE_BOLT)
 		toxloss += 3
 		radiation += 100
 		updatehealth()
 		stuttering += 5
 		drowsyness += 5
+
 	return
 
 /mob/living/carbon/human/ex_act(severity)

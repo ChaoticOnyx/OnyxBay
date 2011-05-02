@@ -241,7 +241,6 @@ obj/item/weapon/cane
 	return
 
 
-
 /mob/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if ( istype(W, /obj/item/weapon/reagent_containers/syringe) && istype(src, /mob/living/silicon/ai) ) // The cyborgs have their own attackby
 		return
@@ -262,8 +261,8 @@ obj/item/weapon/cane
 				safe = G.affecting
 		if (safe)
 			return safe.attackby(W, user)
-	if ((!( shielded ) || !( W.flags ) & 32))
-		spawn( 0 )
+	if (!shielded || (shielded && (prob(65)))
+		spawn(0)
 			W.attack(src, user)
 			return
 	return
