@@ -3,6 +3,7 @@ obj/machinery/scanner
 	var/outputdir = 0
 	icon = 'computer.dmi'
 	icon_state = "aiupload"
+	denisty = 1
 obj/machinery/scanner/New()
 	if(!outputdir)
 		switch(dir)
