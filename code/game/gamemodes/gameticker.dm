@@ -1,5 +1,5 @@
 var/global/datum/controller/gameticker/ticker
-
+var/datum/roundinfo/roundinfo = new()
 #define GAME_STATE_PREGAME		1
 #define GAME_STATE_SETTING_UP	2
 #define GAME_STATE_PLAYING		3
@@ -31,7 +31,7 @@ var/global/datum/controller/gameticker/ticker
 
 		if(pregame_timeleft <= 0)
 			current_state = GAME_STATE_SETTING_UP
-
+	roundinfo.starttime = time2text(world.realtime)
 	spawn setup()
 
 
@@ -56,7 +56,7 @@ var/list/postsetuphooks = list()
 		world << "<B>Possibilities:</B> [english_list(modes)]"
 	else
 		src.mode.announce()
-
+	roundinfo.mode = master_mode
 	//Configure mode and assign player to special mode stuff
 	var/can_continue = src.mode.pre_setup()
 
@@ -153,7 +153,7 @@ var/list/postsetuphooks = list()
 
 		if(mode.check_finished())
 			current_state = GAME_STATE_FINISHED
-
+			roundinfo.endtime = time2text(world.realtime)
 			spawn
 				declare_completion()
 

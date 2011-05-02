@@ -92,6 +92,7 @@ obj/machinery/aiconstruct/proc/boot()
 		bb.mind.transfer_to(A)
 		sleep(10)
 		A << 'chime.ogg'
+		roundinfo.revies++
 		A.AIize()
 		del(src)
 mob/living/verb/head()

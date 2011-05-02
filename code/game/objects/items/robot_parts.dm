@@ -84,31 +84,40 @@
 /obj/item/robot_parts/robot_suit/attackby(obj/item/W as obj, mob/user as mob)
 
 	if(istype(W, /obj/item/robot_parts/l_leg))
+		if(src.l_leg)
+			return
 		user.drop_item()
 		W.loc = src
 		src.l_leg = W
 		src.updateicon()
 
 	if(istype(W, /obj/item/robot_parts/r_leg))
+		if(src.r_leg)
+			return
 		user.drop_item()
 		W.loc = src
 		src.r_leg = W
 		src.updateicon()
 
 	if(istype(W, /obj/item/robot_parts/l_arm))
+		if(src.l_arm)
+			return
 		user.drop_item()
 		W.loc = src
 		src.l_arm = W
 		src.updateicon()
 
 	if(istype(W, /obj/item/robot_parts/r_arm))
+		if(src.r_arm)
+			return
 		user.drop_item()
 		W.loc = src
 		src.r_arm = W
 		src.updateicon()
 
 	if(istype(W, /obj/item/robot_parts/chest))
-
+		if(src.chest)
+			return
 		if(W:wires && W:cell)
 			user.drop_item()
 			W.loc = src
@@ -120,6 +129,8 @@
 			user << "\blue You need to attach a cell to it first!"
 
 	if(istype(W, /obj/item/robot_parts/head))
+		if(src.head)
+			return
 		if(W:opt2 && W:opt1)
 			user.drop_item()
 			W.loc = src
@@ -147,6 +158,7 @@
 					return
 				else
 					src.state("Brain insertion complete.", "blue")
+					roundinfo.revies++
 			else
 				for(var/mob/dead/observer/G in world)
 					if(G.corpse == src.brain.owner && G.client)
@@ -158,6 +170,7 @@
 							return
 						else
 							src.state("Brain insertion complete.", "blue")
+							roundinfo.revies++
 
 			// Create the robo suit
 			var/mob/living/silicon/robot/O = new /mob/living/silicon/robot(get_turf(src.loc))
