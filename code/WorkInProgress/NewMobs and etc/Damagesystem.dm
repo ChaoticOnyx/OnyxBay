@@ -294,9 +294,9 @@
 			S.icon_state = "shield0"
 
 	if (shielded && flag != "bullet")
-			src << "\blue Your shield was disturbed by a laser!"
-			if(paralysis <= 30)	paralysis = 30
-			updatehealth()
+		src << "\blue Your shield was disturbed by a laser!"
+		if(paralysis <= 30)	paralysis = 30
+		updatehealth()
 
 	if (locate(/obj/item/weapon/grab, src))
 		var/mob/safe = null

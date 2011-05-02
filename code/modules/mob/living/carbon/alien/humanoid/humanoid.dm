@@ -63,9 +63,9 @@
 			S.icon_state = "shield0"
 
 	if (shielded && flag != "bullet")
-			src << "\blue Your shield was disturbed by a laser!"
-			if(paralysis <= 12)	paralysis = 12
-			updatehealth()
+		src << "\blue Your shield was disturbed by a laser!"
+		if(paralysis <= 12)	paralysis = 12
+		updatehealth()
 
 	return ..(flag, A)
 

@@ -261,7 +261,7 @@ obj/item/weapon/cane
 				safe = G.affecting
 		if (safe)
 			return safe.attackby(W, user)
-	if (!shielded || (shielded && (prob(65)))
+	if (!shielded || (shielded && (prob(65))))
 		spawn(0)
 			W.attack(src, user)
 			return
