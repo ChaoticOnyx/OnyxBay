@@ -419,7 +419,7 @@ turf/space/hull/New()
 		if(src.health<1)
 			src.mine()
 
-/turf/simulated/asteroid/wall/lase_act(var/obj/beam/e_beam/b)
+/turf/simulated/asteroid/wall/laser_act(var/obj/beam/e_beam/b)
 	var/power = b.power
 	//Get the collective laser power
 	src.health-=power/100

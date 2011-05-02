@@ -55,16 +55,18 @@
 			shielded = 1
 			S.active = 0
 			S.icon_state = "shield0"
+
 	for(var/obj/item/weapon/cloaking_device/S in src)
 		if (S.active)
 			shielded = 1
 			S.active = 0
 			S.icon_state = "shield0"
-	if ((shielded && flag != "bullet"))
-		if (!flag)
-			src << "\blue Your shield was disturbed by a laser!"
-			if(paralysis <= 12)	paralysis = 12
-			updatehealth()
+
+	if (shielded && flag != "bullet")
+		src << "\blue Your shield was disturbed by a laser!"
+		if(paralysis <= 12)	paralysis = 12
+		updatehealth()
+
 	return ..(flag, A)
 
 /mob/living/carbon/alien/humanoid/ex_act(severity)
