@@ -212,7 +212,9 @@
 			var/obj/item/weapon/reagent_containers/pill/P = new/obj/item/weapon/reagent_containers/pill(src.loc)
 			var/name = input(usr,"Name:","Name your pill!",R.get_master_reagent_name())
 			if(!name || name == " ") name = R.get_master_reagent_name()
+			var/pillsprite = input("What should the pill look like?", "Pill Style", "Cancel") in list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)
 			P.name = "[name] Pill"
+			P.icon_state = "pill[pillsprite]"
 			R.trans_to(P,R.total_volume)
 			src.updateUsrDialog()
 			return
