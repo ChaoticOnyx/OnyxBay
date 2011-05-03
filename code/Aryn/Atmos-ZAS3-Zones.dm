@@ -483,7 +483,7 @@ proc/FloodFill(turf/start,remove_extras)
 			if(!remove_extras)
 				for(var/turf/space/S in unblocked)
 					//if(T.CanPass(null,S,0,0))
-					tmp_spaceconnections += T
+					tmp_spaceconnections += S
 						//world << "Space connection made when constructing geometry."
 						//world << "T.loc = [T.loc] S.loc = [S.loc] Direction: [get_dir(T,S)] CanPass: [T.CanPass(null,S,0,0)]"
 				//	break
