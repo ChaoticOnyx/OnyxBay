@@ -4,6 +4,7 @@ obj/machinery/scanner
 	icon = 'computer.dmi'
 	icon_state = "aiupload"
 	density = 1
+	anchored = 1
 obj/machinery/scanner/New()
 	if(!outputdir)
 		switch(dir)
