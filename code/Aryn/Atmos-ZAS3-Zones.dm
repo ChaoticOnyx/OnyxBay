@@ -5,7 +5,7 @@ vs_control/var
 	VACUUM_SPEED = 1.2 //Divisor of zone gases exposed directly to space (i.e. space tiles in members)
 
 #define QUANTIZE(variable)		(round(variable,0.0001))
-
+#define PLASMA_GFX 1
 var/list/zones = list()
 var/zone_update_delay = 5
 var/stop_zones = 0
@@ -23,23 +23,23 @@ zone
 		oxygen = 0
 		nitrogen = 0
 		co2 = 0
-
+		plasma = 0
 		temp = T20C
 
 		oxygen_archive = 0
 		nitrogen_archive = 0
 		co2_archive = 0
-
+		plasma_archive = 0
 		list/space_connections = list()
 
 		temp_archive = T20C
-
+		graphic = ""
 		turf_oxy = 0
 		turf_nitro = 0
 		turf_co2 = 0
-
+		turf_plasma = 0
 		turf_other = 0
-
+		list/images = list()
 		volume = CELL_VOLUME
 		pressure = ONE_ATMOSPHERE
 
@@ -71,12 +71,14 @@ zone
 		oxygen(n) //When called with no args, these return moles/turf. When called with n, they set moles/turf to n.
 		nitrogen(n)
 		co2(n)
+		plasma(n)
 		add_oxygen(n) //Adds gas to the total.
 		add_nitrogen(n)
 		add_co2(n)
+		add_plasma(n)
 		rebuild_cache() //Recalculates turf_ values.
 		update_members()
-
+		update_visuals()
 		AddTurf(turf/T) //Adds a turf to the zone, recalculates volume, and rebuilds the cache.
 		RemoveTurf(turf/T) //Same, but removes a turf from the zone.
 
@@ -92,7 +94,7 @@ zone
 
 	//......................//
 
-	New(turf/start,soxy = 0,snitro = 0,sco2 = 0,smembers,sspace = list(),sedges)
+	New(turf/start,soxy = 0,snitro = 0,sco2 = 0, spla2 = 0,smembers,sspace = list(),sedges)
 
 		starting_tile = start
 
@@ -144,11 +146,11 @@ zone
 			else
 				oxygen = MOLES_O2STANDARD * members.len
 				nitrogen = MOLES_N2STANDARD * members.len
-		else if(soxy > 0 || snitro > 0 || sco2 > 0)
+		else if(soxy > 0 || snitro > 0 || sco2 > 0 || spla2 > 0)
 			oxygen = soxy * members.len
 			nitrogen = snitro * members.len
 			co2 = sco2 * members.len
-
+			plasma = spla2 * members.len
 		volume = members.len * CELL_VOLUME
 
 		spawn Update() //Call the update cycle.
@@ -165,9 +167,10 @@ zone
 				add_oxygen(G.oxygen - G.zone_oxygen)
 				add_nitrogen(G.nitrogen - G.zone_nitrogen)
 				add_co2(G.carbon_dioxide - G.zone_co2)
+				add_plasma(G.toxins - G.zone_plasma)
 				update_mixtures -= G
 
-			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2)
+			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2 || plasma_archive != plasma)
 				rebuild_cache()
 				//update_members()
 			//other = other_gas()
@@ -176,7 +179,7 @@ zone
 			nitrogen_archive = nitrogen
 			co2_archive = co2
 			temp_archive = temp
-
+			plasma_archive = plasma
 			for(var/turf/T in space_connections)
 				//if(!istype(T,/turf/space) && !istype(T,/turf/space/hull))
 				if(!istype(T,/turf/space))
@@ -186,6 +189,7 @@ zone
 				oxygen = QUANTIZE(oxygen/vsc.VACUUM_SPEED)
 				nitrogen = QUANTIZE(nitrogen/vsc.VACUUM_SPEED)
 				co2 = QUANTIZE(co2/vsc.VACUUM_SPEED)
+				plasma = QUANTIZE(plasma/vsc.VACUUM_SPEED)
 				//temp = min(TCMB,temp/vsc.VACUUM_SPEED)
 				for(var/turf/simulated/M in members)
 					var/datum/gas_mixture/GM = M.return_air(1)
@@ -200,7 +204,7 @@ zone
 			//				W.visible_message("\red A window bursts from the pressure!",1,"\red You hear glass breaking.")
 			if(!disable_connections)
 				for(var/zone/Z in direct_connections)
-					if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2)
+					if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2 || abs(turf_plasma - Z.turf_plasma) < 0.2)
 						Merge(Z)
 				for(var/zone/Z in connections)
 					if(Z == src) connections -= Z
@@ -221,25 +225,33 @@ zone
 						oxy_avg = (oxygen + Z.oxygen) / (members.len + Z.members.len)
 						nit_avg = (nitrogen + Z.nitrogen) / (members.len + Z.members.len)
 						co2_avg = (co2 + Z.co2) / (members.len + Z.members.len)
-
+						plasma_avg = (plasma + Z.plasma) / (members.len * Z.members.len)
 					oxygen( (turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
 					nitrogen( (turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
 					co2( (turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )
-
+					plasma((turf_plasma - plasma_avg) * (1-percent_flow/100) + plasma_avg)
 					Z.oxygen( (Z.turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
 					Z.nitrogen( (Z.turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
 					Z.co2( (Z.turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )
+					Z.plasma( (Z.turf_plasma - plasma_avg) * (1-percent_flow/100) + plasma_avg )
 						//End Magic
 				for(var/crap in connections) //Clean out invalid connections.
 					if(!istype(crap,/zone))
 						connections -= crap
-
+			if(images.len > 0)
+				for(var/A in images)
+					del(A)
+				images = list()
+			if(update_visuals())
+				for(var/turf/A in members)
+					images += image('tile_effects.dmi',A,"plasma")
+					world << images[images.len]
 	rebuild_cache()
 		if(!members.len) del src
 		turf_oxy = oxygen / members.len
 		turf_nitro = nitrogen / members.len
 		turf_co2 = co2 / members.len
-
+		turf_plasma = plasma / members.len
 		//var/tempsum = 0
 
 		//for(var/turf/simulated/M in members)
@@ -249,7 +261,12 @@ zone
 		//temp = tempsum / members.len
 
 		pressure = pressure()
-
+	update_visuals()
+		//returns 1 if graphic changed
+		graphic = null
+		if(turf_plasma > MOLES_PLASMA_VISIBLE)
+			graphic = PLASMA_GFX
+		return graphic
 	oxygen(n)
 		if(!n) return turf_oxy
 		else
@@ -265,6 +282,11 @@ zone
 		else
 			turf_co2 = n
 			co2 = turf_co2*members.len
+	plasma(n)
+		if(!n) return turf_plasma
+		else
+			turf_plasma = n
+			plasma = turf_plasma*members.len
 
 	add_oxygen(n)
 		if(n < 0 && oxygen < abs(n))
@@ -287,7 +309,13 @@ zone
 		else
 			co2 += n
 			. = abs(n)
-
+	add_plasma(n)
+		if(n < 0 && plasma < abs(n))
+			. = plasma
+			plasma = 0
+		else
+			plasma += n
+			. = abs(n)
 	AddTurf(turf/T)
 		if(T.zone) return
 		if(stop_zones)
@@ -426,8 +454,8 @@ zone
 			zone_Y = old_members - zone_X
 			space_Y = old_space_connections - space_X
 			edge_Y = old_edges - edge_X
-			new/zone(Y,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,zone_Y,space_Y,edge_Y)
-			new/zone(X,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,zone_X,space_X,edge_X)
+			new/zone(Y,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,plasma / old_members.len,zone_Y,space_Y,edge_Y)
+			new/zone(X,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,plasma / old_members.len,zone_X,space_X,edge_X)
 			del src
 
 	Merge(zone/Z)
@@ -437,6 +465,7 @@ zone
 		oxygen += Z.oxygen
 		nitrogen += Z.nitrogen
 		co2 += Z.co2
+		plasma += Z.plasma
 		//temp = (temp+Z.temp)/2
 		members += Z.members
 		volume += Z.volume
@@ -652,6 +681,7 @@ turf/proc/ZoneInfo()
 	usr << "O2: [zone.oxygen()]/tile ([zone.oxygen])"
 	usr << "N2: [zone.nitrogen()]/tile ([zone.nitrogen])"
 	usr << "CO2: [zone.co2()]/tile ([zone.co2])"
+	usr << "Plasma: [zone.plasma()]/tile ([zone.plasma])"
 	usr << "Space Connections: [zone.space_connections.len]"
 	usr << "Zone Connections: [zone.connections.len]"
 	usr << "Direct Connections: [zone.direct_connections.len]"

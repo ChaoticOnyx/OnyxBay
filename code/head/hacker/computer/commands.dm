@@ -614,18 +614,18 @@ datum/os/proc/Remote(var/address,var/command,var/list/args)
 			break
 		var/K = args[count]
 		if(findtext(K,"{",1,0))
-			world << "Found a '"
+			//world << "Found a '"
 			for(var/A in args)
 				if(K == A)
 					continue
 				if(findtext(A,"}",1,0))
-					world << "Found the other"
+					//world << "Found the other"
 					var/Z = K + A
 					Z = copytext(Z,1,0)
 					var/x = findtext(Z,"{",1,0)
 					var/y = findtext(Z,"}",x+1,0)
 					K = copytext(Z,x+1,y)
-					world << "breaking"
+					//world << "breaking"
 					break
 		world << "[count]:[K]"
 		switch(count)

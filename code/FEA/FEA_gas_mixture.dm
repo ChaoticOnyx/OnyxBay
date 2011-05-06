@@ -41,7 +41,7 @@ datum
 			zone_oxygen = 0
 			zone_nitrogen = 0
 			zone_co2 = 0
-
+			zone_plasma = 0
 			volume = CELL_VOLUME
 
 			temperature = 0 //in Kelvin, use calculate_temperature() to modify
@@ -101,6 +101,7 @@ datum
 
 		proc //Procedures used for very specific events
 			check_tile_graphic()
+				return 0
 				//returns 1 if graphic changed
 				graphic = null
 				if(toxins > MOLES_PLASMA_VISIBLE)

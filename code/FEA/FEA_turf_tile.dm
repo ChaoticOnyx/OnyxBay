@@ -194,6 +194,7 @@ turf
 				zone.add_oxygen(giver.oxygen)
 				zone.add_nitrogen(giver.nitrogen)
 				zone.add_co2(giver.carbon_dioxide)
+				zone.add_plasma(giver.toxins)
 			if(air)
 				if(parent&&parent.group_processing)
 					// always merge with the parent
@@ -217,6 +218,7 @@ turf
 				zone.add_oxygen(giver.oxygen)
 				zone.add_nitrogen(giver.nitrogen)
 				zone.add_co2(giver.carbon_dioxide)
+				zone.add_plasma(giver.toxins)
 			if(air)
 				if(parent&&parent.group_processing)
 					parent.suspend_group_processing()
@@ -252,10 +254,12 @@ turf
 						parent.air.oxygen = zone.oxygen()
 						parent.air.nitrogen = zone.nitrogen()
 						parent.air.carbon_dioxide = zone.co2()
+						parent.air.toxins = zone.plasma()
 						if(!observe_only)
 							parent.air.zone_oxygen = parent.air.oxygen
 							parent.air.zone_nitrogen = parent.air.nitrogen
 							parent.air.zone_co2 = parent.air.carbon_dioxide
+							parent.air.zone_plasma = parent.air.toxins
 							zone.update_mixtures.Add(parent.air)
 					return parent.air
 				else
@@ -263,10 +267,12 @@ turf
 						air.oxygen = zone.oxygen()
 						air.nitrogen = zone.nitrogen()
 						air.carbon_dioxide = zone.co2()
+						air.toxins = zone.plasma()
 						if(!observe_only)
 							air.zone_oxygen = air.oxygen
 							air.zone_nitrogen = air.nitrogen
 							air.zone_co2 = air.carbon_dioxide
+							air.zone_plasma = air.toxins
 							zone.update_mixtures.Add(air)
 					return air
 
@@ -281,7 +287,7 @@ turf
 					air.oxygen = zone.oxygen()
 					air.nitrogen = zone.nitrogen()
 					air.carbon_dioxide = zone.co2()
-
+					air.toxins = zone.plasma()
 				if(parent&&parent.group_processing)
 					removed = parent.air.remove(amount)
 					if(!removed)
@@ -298,7 +304,7 @@ turf
 					zone.add_oxygen(-removed.oxygen)
 					zone.add_nitrogen(-removed.nitrogen)
 					zone.add_co2(-removed.carbon_dioxide)
-
+					zone.add_plasma(-removed.toxins)
 				return removed
 
 			else
@@ -312,7 +318,7 @@ turf
 					air.oxygen = zone.oxygen()
 					air.nitrogen = zone.nitrogen()
 					air.carbon_dioxide = zone.co2()
-
+					air.toxins = zone.plasma()
 				if(parent&&parent.group_processing)
 					parent.suspend_group_processing()
 					removed = air.remove(amount)
@@ -327,7 +333,7 @@ turf
 					zone.add_oxygen(-removed.oxygen)
 					zone.add_nitrogen(-removed.nitrogen)
 					zone.add_co2(-removed.carbon_dioxide)
-
+					zone.add_plasma(-removed.toxins)
 				return removed
 
 			else

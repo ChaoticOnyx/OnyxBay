@@ -470,6 +470,7 @@
 	update_icon()
 		if(burst)
 			icon_state = "burst"
+		//if(src.loc
 		//var/turf/locT = src.loc
 		//if(locT.zone.space_connections.len >= 1)
 		//	return
