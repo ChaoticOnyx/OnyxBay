@@ -159,7 +159,7 @@ var/mob/lastbreathT = 0
 //VIRUS FIX THESES
 
 
-
+#define CAN_CONTAMINATE 1.5
 /mob/living/carbon/proc/handle_environment(datum/gas_mixture/environment)
 	if(!environment)
 		return
@@ -190,7 +190,7 @@ var/mob/lastbreathT = 0
 
 			FireBurn(volume_coefficient*resistance_coefficient)
 
-	if(environment.toxins > 0.01)
+	if(environment.toxins > CAN_CONTAMINATE)
 		contaminate()
 		pl_effects()
 
