@@ -668,6 +668,33 @@ window "mainwindow"
 		macro = "macro"
 		menu = "menu"
 		on-close = ""
+	elem "oocbutton"
+		type = BUTTON
+		pos = 600,420
+		size = 40x20
+		anchor1 = 100,100
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "is-checked"
+		text = "OOC"
+		image = ""
+		command = ".winset \"oocbutton.is-checked=true?input.command=\"!ooc \\\"\" macrobutton.is-checked=false:input.command=\""
+		is-flat = false
+		stretch = false
+		is-checked = false
+		group = ""
+		button-type = pushbox
 	elem "mainvsplit"
 		type = CHILD
 		pos = 3,0
@@ -696,7 +723,7 @@ window "mainwindow"
 	elem "input"
 		type = INPUT
 		pos = 3,420
-		size = 517x20
+		size = 557x20
 		anchor1 = 0,100
 		anchor2 = 100,100
 		font-family = ""
@@ -718,7 +745,7 @@ window "mainwindow"
 		no-command = false
 	elem "saybutton"
 		type = BUTTON
-		pos = 520,420
+		pos = 560,420
 		size = 40x20
 		anchor1 = 100,100
 		anchor2 = none
@@ -743,60 +770,6 @@ window "mainwindow"
 		is-checked = false
 		group = ""
 		button-type = pushbox
-	elem "macrobutton"
-		type = BUTTON
-		pos = 560,420
-		size = 30x20
-		anchor1 = 100,100
-		anchor2 = none
-		font-family = ""
-		font-size = 0
-		font-style = ""
-		text-color = #000000
-		background-color = none
-		is-visible = true
-		is-disabled = true
-		is-transparent = false
-		is-default = false
-		border = none
-		drop-zone = false
-		right-click = false
-		saved-params = "is-checked"
-		text = "Alt"
-		image = ""
-		command = ".winset \"macrobutton.is-checked=true?input.command=\"!.alt \" saybutton.is-checked=false:input.command=\""
-		is-flat = false
-		stretch = false
-		is-checked = false
-		group = ""
-		button-type = pushbox
-	elem "hostb"
-		type = BUTTON
-		pos = 590,420
-		size = 47x20
-		anchor1 = 100,100
-		anchor2 = none
-		font-family = ""
-		font-size = 0
-		font-style = ""
-		text-color = #000000
-		background-color = none
-		is-visible = true
-		is-disabled = true
-		is-transparent = false
-		is-default = false
-		border = none
-		drop-zone = false
-		right-click = false
-		saved-params = "is-checked"
-		text = "Host..."
-		image = ""
-		command = ".host"
-		is-flat = false
-		stretch = false
-		is-checked = false
-		group = ""
-		button-type = pushbutton
 
 window "mapwindow"
 	elem "mapwindow"
