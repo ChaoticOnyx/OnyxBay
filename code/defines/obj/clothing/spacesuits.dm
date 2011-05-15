@@ -13,7 +13,7 @@ obj/item/clothing/suit/space/spacegreen
 
 /obj/item/clothing/head/helmet/space/spaceblue
 	name = "blue space helmet"
-	desc = "Series:Biohazard Blue"
+	desc = "Series:Marine Commando"
 	icon_state = "spaceblueh"
 	item_state = "spaceblueh"
 
@@ -26,7 +26,7 @@ obj/item/clothing/suit/space/spaceblue
 
 /obj/item/clothing/head/helmet/space/spacedgreen
 	name = "dark green space helmet"
-	desc = "Series:Biohazard Green"
+	desc = "Series:Forest Commando"
 	icon_state = "spacedgreenh"
 	item_state = "spacedgreenh"
 
@@ -38,7 +38,7 @@ obj/item/clothing/suit/space/spacedgreen
 
 /obj/item/clothing/head/helmet/space/spaceterror
 	name = "black space helmet"
-	desc = "Series:Biohazard Black"
+	desc = "Series:Terror Trooper Black"
 	icon_state = "spaceterrorh"
 	item_state = "spaceterrorh"
 
@@ -49,13 +49,40 @@ obj/item/clothing/suit/space/spaceterror
 	item_state = "spaceterror"
 
 /obj/item/clothing/head/helmet/space/spaceengi
-	name = "Enginner space helmet"
-	desc = "Series:Biohazard Green"
+	name = "Engineer space helmet"
+	desc = "Series:Hazard Zone Orange"
 	icon_state = "spaceengih"
 	item_state = "spaceengih"
 
 
 obj/item/clothing/suit/space/spaceengi
-	name = "Enginner space suit"
+	name = "Engineer space suit"
 	icon_state = "spaceengi"
 	item_state = "spaceengi"
+
+
+/obj/item/clothing/head/helmet/space/synditech
+	name = "TT Tech Helmet"
+	desc = "Series:TT Tech"
+	icon_state = "synditechh"
+	item_state = "synditechh"
+
+
+obj/item/clothing/suit/space/synditech
+	name = "TT Tech Suit"
+	icon_state = "synditech"
+	item_state = "synditech"
+
+
+
+/obj/item/clothing/head/helmet/space/syndimedic
+	name = "TT Medic Helmet"
+	desc = "Series:TT Medic"
+	icon_state = "syndimedich"
+	item_state = "syndimedich"
+
+
+obj/item/clothing/suit/space/syndimedic
+	name = "TT Medic Suit"
+	icon_state = "syndimedic"
+	item_state = "syndimedic"
