@@ -22,6 +22,8 @@ AI MODULES
 /obj/machinery/computer/aiupload/attackby(obj/item/weapon/aiModule/module as obj, mob/user as mob)
 	if(istype(module, /obj/item/weapon/aiModule))
 		module.install(src)
+		log_admin("[user.real_name]([user.ckey]) has used a [module.name] on the AI upload.")
+		message_admins("[user.real_name]([user.ckey]) has used a [module.name] on the AI upload.")
 	else
 		return ..()
 
