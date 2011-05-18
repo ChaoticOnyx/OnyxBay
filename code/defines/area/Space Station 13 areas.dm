@@ -682,7 +682,7 @@
 	music = 'signal.ogg'
 
 /area/medical/medbay/office
-	name = "Medbay"
+	name = "Medbay Office"
 	icon_state = "medbayoffice"
 
 /area/medical/medbay/waiting
