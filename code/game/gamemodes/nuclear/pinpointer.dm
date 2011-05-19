@@ -29,6 +29,16 @@
 				active = 0
 				icon_state = "pinonnull"
 				return
+		overlays--
+		if(the_disk.loc.z > src.loc.z)
+			var/icon/zdirection = icon('device.dmi', "pindown")
+			overlays += zdirection
+		else if(the_disk.loc.z < src.loc.z)
+			var/icon/zdirection = icon('device.dmi', "pinup")
+			overlays += zdirection
+		else
+			var/icon/zdirection = icon('device.dmi', "pinlevel")
+			overlays += zdirection
 		src.dir = get_dir(src,the_disk)
 		switch(get_dist(src,the_disk))
 			if(0)
@@ -40,7 +50,6 @@
 			if(16 to INFINITY)
 				icon_state = "pinonfar"
 		spawn(5*tick_multiplier) .()
-
 
 /*/obj/item/weapon/pinpointer/New()
 	. = ..()
