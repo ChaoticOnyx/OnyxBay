@@ -527,7 +527,7 @@
 	if(C)
 		C.registered = src.real_name
 		C.assignment = rank
-		if(src.mind.title)
+		if(src.mind.title && HasTitles(rank))
 			C.name = "[C.registered]'s ID Card ([src.mind.title])"
 		else
 			C.name = "[C.registered]'s ID Card ([C.assignment])"
