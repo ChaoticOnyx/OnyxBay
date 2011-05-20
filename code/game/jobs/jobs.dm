@@ -80,7 +80,7 @@ var/list/assistant_occupations = list(
 		if("Captain")
 			return 4
 		else
-			world << "[job] NOT GIVEN RANK, REPORT JOB.DM ERROR TO CODER"
+			//world << "[job] NOT GIVEN RANK, REPORT JOB.DM ERROR TO CODER"
 
 /proc/IsSecurity(var/job)
 	if("Security Officer")
