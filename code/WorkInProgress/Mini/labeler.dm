@@ -56,8 +56,8 @@
    A.name += " - '[str]'"
 
 /obj/item/weapon/label
-   icon = 'card.dmi' //I used the fingerprinted fingerprint card for this, I'm sure someone will be willing to come up with something better
-   icon_state = "fingerprint1" //I hate icons.
+   icon = 'old_or_unused.dmi' //I used the fingerprinted fingerprint card for this, I'm sure someone will be willing to come up with something better
+   icon_state = "label" //I hate icons.
    name = "Label"
    var/label = ""
    var/backing = 1 //now with added being able to be put on table-ness!
