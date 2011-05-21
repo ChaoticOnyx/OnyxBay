@@ -15,6 +15,8 @@ obj/machinery/door/airlock
 
 		if (signal.data["source"] && signal.data["source"] == id_tag) return
 
+		if (signal.data["sourcetype"] == "door") return
+
 		switch(signal.data["command"])
 			if("open")
 				spawn open(1)
@@ -50,6 +52,19 @@ obj/machinery/door/airlock
 					locked = 1
 					sleep(5)
 					update_icon()
+			if("toggle")
+				if(locked)
+					locked = 0
+					sleep(5)
+					update_icon()
+				else
+					if(!density)
+						close()
+					locked = 1
+					sleep(5)
+					update_icon()
+				return
+
 
 		send_status()
 
@@ -63,6 +78,7 @@ obj/machinery/door/airlock
 			signal.data["door_status"] = density?("closed"):("open")
 			signal.data["lock_status"] = locked?("locked"):("unlocked")
 			signal.data["source"] = id_tag
+			signal.data["sourcetype"] = "door"
 
 			radio_connection.post_signal(src, signal, AIRLOCK_CONTROL_RANGE)
 
