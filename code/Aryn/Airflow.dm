@@ -3,7 +3,7 @@ vs_control/var
 	zone_update_delay = 10
 	zone_update_delay_DESC = "The delay in ticks between updates of zones. Increase if lag is bad seemingly because of air."
 	//Used in /mob/carbon/human/life
-	OXYGEN_LOSS = 5
+	OXYGEN_LOSS = 2
 	OXYGEN_LOSS_DESC = "A multiplier for damage due to lack of air, CO2 poisoning, and vacuum. Does not affect oxyloss\
 	from being incapacitated or dying."
 	TEMP_DMG = 2
