@@ -75,6 +75,9 @@
 
 	for (var/level = 1 to 3)
 		var/list/captains = FindOccupationCandidates(unassigned, "Captain", level)
+		for(var/mob/new_player/traitorcheck in captains)	//Do not allow Traitors to choose to be Captain.  Remove them from the list of potential Captains.
+			if(traitorcheck.mind.special_role)
+				captains -= traitorcheck
 		var/mob/new_player/candidate = PickOccupationCandidate(captains)
 
 		if (candidate != null)
@@ -84,6 +87,10 @@
 
 	if (captain_choice == null && unassigned.len > 0)
 		unassigned = shuffle(unassigned)
+		var/mob/new_player/traitorcheck = unassigned[1]
+		if (traitorcheck.mind.special_role)		//If a Traitor is first in the list of people checked to be Captain, reshuffle the list.  This will decrease the chance of a Traitor Captains without eliminating it entirely.
+			unassigned = shuffle(unassigned)
+
 		for(var/mob/new_player/player in unassigned)
 			if(jobban_isbanned(player, "Captain"))
 				continue
