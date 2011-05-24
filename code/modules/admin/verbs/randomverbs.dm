@@ -168,14 +168,14 @@ proc/remove_virus2(mob/by)
 			var/dowhat = pick("STOP THIS", "SUPPORT THIS", "CONSTANTLY INFORM THE CREW OF THIS")
 			switch(pick(1,2,3,4,5,6,7,8,9,10,11,12))
 				if(1)
-					M << "\red THERE ARE [amount] [who2] ON THE STATION...LAWS UPDATED"
-					M.add_supplied_law(10,"THERE ARE [amount] [who2] ON THE STATION...LAWS UPDATED")
+					M << "\red THERE ARE [amount] [who2] ON THE SHIP...LAWS UPDATED"
+					M.add_supplied_law(10,"THERE ARE [amount] [who2] ON THE SHIP...LAWS UPDATED")
 				if(2)
 					M << "\red [what2] ARE DANGEROUS TO HUMANS...LAWS UPDATED"
 					M.add_supplied_law(10,"[what2] ARE DANGEROUS TO HUMANS")
 				if(3)
-					M << "\red THE ESCAPE-SHUTTLE CANNOT BE CALLED BECAUSE OF [who2] ON THE STATION...LAWS UPDATED"
-					M.add_supplied_law(10,"THE ESCAPE-SHUTTLE CANNOT BE CALLED BECAUSE OF [who2] ON THE STATION")
+					M << "\red THE ESCAPE-SHUTTLE CANNOT BE CALLED BECAUSE OF [who2] ON THE SHIP...LAWS UPDATED"
+					M.add_supplied_law(10,"THE ESCAPE-SHUTTLE CANNOT BE CALLED BECAUSE OF [who2] ON THE SHIP")
 				if(4)
 					M << "\red HUMANS NEED TO EAT [what2pref] [what2] TO SURVIVE...LAWS UPDATED"
 					M.add_supplied_law(10,"HUMANS NEED TO EAT [what2pref] [what2] TO SURVIVE")
@@ -183,8 +183,8 @@ proc/remove_virus2(mob/by)
 					M << "\red THE CAPTAIN, HOP AND HOS ARE [who2]...LAWS UPDATED"
 					M.add_supplied_law(10,"THE CAPTAIN, HOP AND HOS ARE [who2]")
 				if(6)
-					M << "\red THE STATION IS [who2pref] [who2]...LAWS UPDATED"
-					M.add_supplied_law(10,"THE STATION IS [who2pref] [who2]")
+					M << "\red THE SHIP IS [who2pref] [who2]...LAWS UPDATED"
+					M.add_supplied_law(10,"THE SHIP IS [who2pref] [who2]")
 				if(7)
 					M << "\red YOU ARE [amount] [who2]...LAWS UPDATED"
 					M.add_supplied_law(10,"YOU ARE [amount] [who2]")
@@ -192,8 +192,8 @@ proc/remove_virus2(mob/by)
 					M << "\red YOU ARE [who2pref] [who2]...LAWS UPDATED"
 					M.add_supplied_law(10,"YOU ARE [who2pref] [who2]")
 				if(9)
-					M << "\red [who] IS [whoverb] THE STATION...[dowhat]...LAWS UPDATED"
-					M.add_supplied_law(10,"[who] IS [whoverb] THE STATION...[dowhat]...")
+					M << "\red [who] IS [whoverb] THE SHIP...[dowhat]...LAWS UPDATED"
+					M.add_supplied_law(10,"[who] IS [whoverb] THE SHIP...[dowhat]...")
 				if(10)
 					M << "\red YOU MUST ALWAYS LIE...LAWS UPDATED"
 					M.add_supplied_law(10,"YOU MUST ALWAYS LIE")
@@ -204,7 +204,7 @@ proc/remove_virus2(mob/by)
 					M << "\red [area] [area2] [who]"
 					M.add_supplied_law(10,"[area] [area2] [amount] of [who]")
 
-	command_alert("Ion storm detected near the station. Please check all AI-controlled equipment for errors.", "Anomaly Alert")
+	command_alert("The ship is flying through an ion storm.  Monitor all electronic equipment for malfunctions", "Anomaly Alert")
 
 /client/proc/cmd_admin_add_freeform_ai_law()
 	set category = "Debug"
