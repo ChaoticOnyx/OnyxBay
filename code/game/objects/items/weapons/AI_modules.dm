@@ -34,7 +34,11 @@ AI MODULES
 	if(comp.stat & BROKEN)
 		usr << "The upload computer is broken!"
 		return
-
+	if(istype(src,/obj/item/weapon/aiModule/freeform))
+		var/obj/item/weapon/aiModule/freeform/Mod = src //hrng
+		if(lentext(Mod.newFreeFormLaw) > 1000) //probably still too high but need discuss how long is reasonable
+			Mod.loc << "\red BUFFER OVERFLOW"
+			return
 	var/found=0
 	for(var/mob/living/silicon/ai/M in world)
 		if (M.stat == 2)
@@ -185,6 +189,9 @@ AI MODULES
 /obj/item/weapon/aiModule/freeform/transmitInstructions(var/mob/living/silicon/ai/target, var/mob/sender)
 	..()
 	var/law = "[newFreeFormLaw]"
+	if(lentext(newFreeFormLaw) > 2000)
+		sender << "BUFFER OVERFLOW"
+		return
 	target << law
 	target.add_supplied_law(10, law)
 
