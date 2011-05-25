@@ -1900,7 +1900,7 @@ mob/verb/turnwest()
 					mob.dir = direct
 					return
 				if("walk")
-					move_delay += 7
+					move_delay += 4
 
 
 			move_delay += mob.movement_delay()

@@ -113,6 +113,7 @@
 			src.verbs += /client/proc/zombify
 			src.verbs += /client/proc/createofficial
 			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/toggleadminshuttledoors
 			src.verbs += /client/proc/nanoshuttle
 
 			src.verbs += /client/proc/clearmap
@@ -220,6 +221,7 @@
 
 			src.verbs += /client/proc/Zone_Info
 			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/toggleadminshuttledoors
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/givedisease
 			src.verbs += /client/proc/givedisease_deadly
@@ -295,6 +297,7 @@
 			src.verbs += /client/proc/cmd_admin_create_centcom_report
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/toggleadminshuttledoors
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/general_report
 			//src.verbs += /client/proc/air_report
@@ -361,6 +364,7 @@
 			src.verbs += /client/proc/createofficial
 //				src.verbs += /client/proc/modifytemperature
 			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/toggleadminshuttledoors
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /mob/living/proc/CheckHandcuff
@@ -420,6 +424,7 @@
 			src.verbs += /obj/admins/proc/toggleAI
 			src.verbs += /client/proc/delay				//Toggle the AI
 			src.verbs += /client/proc/returnadminshuttle
+			src.verbs += /client/proc/toggleadminshuttledoors
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/createofficial
 			src.verbs += /mob/living/proc/CheckHandcuff
@@ -917,6 +922,16 @@
 		var/area/dest = locate(/area/nanotrasenshuttle)
 		from.move_contents_to(dest)
 		from.shuttle = ""
+
+/client/proc/toggleadminshuttledoors()
+	set category = "Roleplay"
+	set name = "Toggle admin shuttle dock podlocks (Ship)"
+	for(var/obj/machinery/door/poddoor/M in machines)
+		if (M.id == "adminshuttledock")
+			if (M.density)
+				M.open()
+			else
+				M.close()
 
 /client/proc/createofficial(var/name as text)
 	set category = "Roleplay"

@@ -1,4 +1,4 @@
-var/mob/lastbreathT = 0
+/mob/var/lastbreathT = 0
 /mob/living/carbon/Life()
 	set background = 1
 
@@ -6,10 +6,12 @@ var/mob/lastbreathT = 0
 		return
 
 	if (stat != 2) //still breathing
-
-		if(lastbreathT <= world.timeofday+40)
+		if(lastbreathT <= world.timeofday - 40)
 			//Only try to take a breath every 4 seconds, unless suffocating
+			lastbreathT = world.timeofday
 			breathe()
+			if(lastbreathT > world.timeofday)	//Midnight rollover check
+				lastbreathT = 0
 		else //Still give containing object the chance to interact
 			if(istype(loc, /obj/))
 				var/obj/location_as_object = loc

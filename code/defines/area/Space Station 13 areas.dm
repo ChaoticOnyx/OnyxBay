@@ -682,7 +682,7 @@
 	music = 'signal.ogg'
 
 /area/medical/medbay/office
-	name = "Medbay"
+	name = "Medbay Office"
 	icon_state = "medbayoffice"
 
 /area/medical/medbay/waiting
@@ -740,6 +740,9 @@
 	name = "Security"
 	icon_state = "security"
 
+/area/security/security_lobby
+	name = "Security Lobby"
+	icon_state = "security_lobby"
 
 /area/security/checkpoint
 	name = "Arrivals Checkpoint"
@@ -771,6 +774,10 @@
 /area/security/detectives_office
 	name = "Detectives Office"
 	icon_state = "detective"
+
+/area/security/head_of_security_office
+	name = "Head of Security's Office"
+	icon_state = "hos"
 
 /area/solar
 	requires_power = 0

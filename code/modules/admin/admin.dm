@@ -647,6 +647,15 @@
 			alert("The game hasn't started yet!")
 			return
 		var/mob/M = locate(href_list["traitor"])
+		if(M.mind)
+			M.mind.edit_memory()
+			return
+
+		/*
+		if(!ticker || !ticker.mode)
+			alert("The game hasn't started yet!")
+			return
+		var/mob/M = locate(href_list["traitor"])
 		var/datum/game_mode/current_mode = ticker.mode
 		switch(current_mode.config_tag)
 			if("revolution")
@@ -694,6 +703,8 @@
 		//they're a ghost/monkey
 		else
 			alert("Cannot make this mob a traitor")
+		*/
+
 	if (href_list["create_object"])
 		if (src.rank in list("Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"))
 			return create_object(usr)

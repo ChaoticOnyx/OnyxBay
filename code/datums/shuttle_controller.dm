@@ -133,6 +133,9 @@ datum/shuttle
 						var/area/end_location = locate(transit)
 						for(var/mob/m in start_location)
 							shake_camera(m, 3, 1)
+						for(var/turf/simulated/shuttle/wall/S in start_location)
+							if(S.icon_state == "wall_hull")
+								S.icon_state = "wall_space"  /*Quickish hack to fix the hull sprites moving with the pod --Mloc*/
 						start_location.move_contents_to(end_location)
 						location = 0
 						direction = 2
@@ -171,8 +174,8 @@ datum/shuttle
 								del(T)
 						for(var/mob/m in start_location)
 							shake_camera(m, 3, 1)
-
 						start_location.move_contents_to(end_location)
+
 
 						online = 0
 

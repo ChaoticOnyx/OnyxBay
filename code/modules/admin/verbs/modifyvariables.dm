@@ -103,10 +103,15 @@
 
 	var/list/names = sortList(L)
 
-	var/variable = input("Which var?","Var") as null|anything in names + "(ADD VAR)"
+	var/variable = input("Which var?","Var") as null|anything in names + "(ADD VAR)" + "(REMOVE ALL)"
 
 	if(variable == "(ADD VAR)")
 		mod_list_add(L)
+		return
+
+	if(variable == "(REMOVE ALL)")
+		for(var/i in L)
+			L -= i
 		return
 
 	if(!variable)

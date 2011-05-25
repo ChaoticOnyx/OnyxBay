@@ -1,8 +1,10 @@
 /mob/var/suiciding = 0
 
+
 /mob/living/carbon/human/verb/suicide()
 	set hidden = 1
-
+	usr << "Suicide has been disabled due to it annoying the shit out of me.  If you have to quit the game, please leave your character in Crew Quarters and just log out.  If you have been captured by Security and don't want to sit through interrogation/brig/whatever, tough shit.  Don't get caught next time.  We apologize for any inconvenience."
+/*
 	if (src.stat == 2)
 		src << "You're already dead!"
 		return
@@ -27,7 +29,7 @@
 			src.suiciding = 0
 		if(src.zombie)
 			src.toxloss = 1000
-
+*/
 /mob/living/carbon/monkey/verb/suicide()
 	set hidden = 1
 
@@ -112,3 +114,4 @@
 		//put em at -175
 		src.oxyloss = max(100 - src.fireloss - src.bruteloss, src.oxyloss)
 		src.updatehealth()
+
