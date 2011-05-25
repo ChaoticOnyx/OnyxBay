@@ -298,22 +298,7 @@
 	anchored = 1.0
 	req_access = list(access_brig)
 
-/obj/machinery/door_control
-	name = "Remote Door Control"
-	icon = 'stationobjs.dmi'
-	icon_state = "doorctrl0"
-	desc = "A remote control switch for a door."
-	var/id = null
-	anchored = 1.0
 
-/obj/machinery/driver_button
-	name = "Mass Driver Button"
-	icon = 'objects.dmi'
-	icon_state = "launcherbtt"
-	desc = "A remote control switch for a Mass Driver."
-	var/id = null
-	var/active = 0
-	anchored = 1.0
 
 /obj/machinery/ignition_switch
 	name = "Ignition Switch"
