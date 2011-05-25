@@ -695,7 +695,7 @@
 	icon_deny = "robotics-deny"
 	req_access_txt = "29"
 	points = 10
-	product_paths = "/obj/item/weapon/CableCoil/power;/obj/item/weapon/optical_unit;/obj/item/weapon/circuitry;/obj/item/weapon/cell;/obj/item/device/prox_sensor;/obj/item/device/radio/signaler;/obj/item/device/healthanalyzer;/obj/item/weapon/scalpel;/obj/item/weapon/circular_saw;/obj/item/weapon/tank/anesthetic;/obj/item/clothing/mask/medical;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar"
+	product_paths = "/obj/item/weapon/CableCoil/power;/obj/item/weapon/optical_unit;/obj/item/weapon/circuitry;/obj/item/weapon/cell/supercharged;/obj/item/device/prox_sensor;/obj/item/device/radio/signaler;/obj/item/device/healthanalyzer;/obj/item/weapon/scalpel;/obj/item/weapon/circular_saw;/obj/item/weapon/tank/anesthetic;/obj/item/clothing/mask/medical;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar"
 	//product_amounts = "4;4;4;4;12"
 	product_prices = "1;3;1;3;2;2;2;4;4;2;1;1;1"
 	product_hidden = ""
