@@ -762,5 +762,5 @@
 #include "code\XML\Reader.dm"
 #include "code\XML\Writer.dm"
 #include "interface\skin.dmf"
-#include "maps\iStationNano.dmm"
+#include "maps\NSV_Luna.dmm"
 // END_INCLUDE
