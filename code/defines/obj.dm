@@ -5,6 +5,7 @@
 	var/w_amt = 0	// waster amounts
 	var/global/tagcnum = 0
 	var/explosionstrength = 0
+	var/spawnchance = null 	//If this is defined, this is the percent chance that this object will spawn.  Checked in New().  Intended to be defined on the map, for some randomness in item placement.
 
 	var/list/NetworkNumber = list( )
 	var/list/Networks = list( )
@@ -26,6 +27,11 @@
 
 	New()
 		src.tag = "obj[++tagcnum]"
+		if(spawnchance)
+			if(prob(100-spawnchance))
+				del src
+
+
 
 
 
