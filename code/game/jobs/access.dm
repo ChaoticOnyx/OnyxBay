@@ -58,6 +58,7 @@
 			if(n)
 				if(!req_access_changed)
 					req_access = list()
+					req_access_changed = 1
 				req_access += n
 	..()
 
@@ -112,7 +113,7 @@
 		if("Detective")
 			return list(access_security, access_forensics_lockers, access_morgue, access_maint_tunnels, access_security_passthrough, access_medical)
 		if("Medical Doctor")
-			return list(access_medical, access_morgue, access_medlab, access_maint_tunnels, access_laboratories_doors)
+			return list(access_medical, access_morgue, access_maint_tunnels, access_laboratories_doors)
 		if("Captain")
 			return get_all_accesses()
 		if("Security Officer")
