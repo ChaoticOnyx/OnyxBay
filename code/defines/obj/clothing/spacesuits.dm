@@ -86,3 +86,9 @@ obj/item/clothing/suit/space/syndimedic
 	name = "TT Medic Suit"
 	icon_state = "syndimedic"
 	item_state = "syndimedic"
+
+
+obj/item/clothing/suit/space/ntsco
+	name = "NT Special Combat Operations Suit"
+	icon_state = "ntsco"
+	item_state = "ntsco"
