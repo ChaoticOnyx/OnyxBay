@@ -15,7 +15,7 @@
 	icon = 'items.dmi'
 	icon_state = "securitybelt"
 	item_state = "securitybelt"
-	can_hold = list("/obj/item/device/pda","/obj/item/weapon/gun/energy/general","/obj/item/weapon/handcuffs","/obj/item/device/flash","/obj/item/weapon/baton","/obj/item/weapon/classic_baton","/obj/item/device/radio","/obj/item/weapon/gun/energy/taser_gun","/obj/item/device/detective_scanner","/obj/item/weapon/flashbang","/obj/item/weapon/empgrenade")
+	can_hold = list("/obj/item/device/pda","obj/item/weapon/gun/revolver","obj/item/weapon/gun/detectiverevolver/","/obj/item/weapon/gun/energy/general","/obj/item/weapon/handcuffs","/obj/item/device/flash","/obj/item/weapon/baton","/obj/item/weapon/classic_baton","/obj/item/device/radio","/obj/item/weapon/gun/energy/taser_gun","/obj/item/device/detective_scanner","/obj/item/weapon/flashbang","/obj/item/weapon/empgrenade")
 
 /obj/item/weapon/storage/belt/security/reaper/New()
 	..()
