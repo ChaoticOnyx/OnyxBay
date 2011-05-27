@@ -227,6 +227,7 @@ var/datum/travgrid/tgrid= new()
 
 
 /datum/travevent/ship/Luna/Meteor(var/amt)
+	return 	//Disabling the Meteor Machine for now.  But we'll at least let the crew -think- they're still in danger.
 	var/num = amt
 	while(num>0)
 		//world << "LOOOL"
