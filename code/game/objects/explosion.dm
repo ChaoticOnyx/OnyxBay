@@ -19,8 +19,11 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 		sleep(5 * tick_multiplier)
 
-		playsound(epicenter.loc, 'explosionfar.ogg', 100, 1, round(devastation_range*2,1) )
+		//playsound(epicenter.loc, 'explosionfar.ogg', 100, 1, round(devastation_range*2,1) )
 		playsound(epicenter.loc, "explosion", 100, 1, round(devastation_range,1) )
+		var/sound/distant_explosion = sound('explosionfar.ogg')
+		for(var/mob/M)
+			M << distant_explosion
 
 
 		//NEW EXPLOSION CODE - NICER (3D TOO!!) BLASTS

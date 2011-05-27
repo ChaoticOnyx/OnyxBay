@@ -154,6 +154,10 @@ proc/remove_virus2(mob/by)
 		src << "Only administrators may use this command."
 		return
 
+	var/datum/event/ionstorm/randomlaw = new/datum/event/ionstorm
+	randomlaw.Announce()
+
+	/*
 	for(var/mob/living/silicon/ai/M in world)
 		if(M.stat != 2 && M.see_in_dark != 0)
 			var/who = pick("A WIZARD", "A SYNDICATE AGENT", "A CENTCOM OFFICER", "A SPACE PIRATE", "THE CAPTAIN", "A MONKEY", "A HORSE", "A BEE", "AYN RAND", "A CRAB")
@@ -205,7 +209,7 @@ proc/remove_virus2(mob/by)
 					M.add_supplied_law(10,"[area] [area2] [amount] of [who]")
 
 	command_alert("The ship is flying through an ion storm.  Monitor all electronic equipment for malfunctions", "Anomaly Alert")
-
+	*/
 /client/proc/cmd_admin_add_freeform_ai_law()
 	set category = "Debug"
 	set name = "Add AI law"
