@@ -133,6 +133,8 @@ datum/shuttle
 						var/area/end_location = locate(transit)
 						for(var/mob/m in start_location)
 							shake_camera(m, 3, 1)
+						for(var/obj/machinery/door/unpowered/shuttle/D in start_location) /*Made doors close when pod launches, too --Mloc*/
+							D.close()
 						for(var/turf/simulated/shuttle/wall/S in start_location)
 							if(S.icon_state == "wall_hull")
 								S.icon_state = "wall_space"  /*Quickish hack to fix the hull sprites moving with the pod --Mloc*/
