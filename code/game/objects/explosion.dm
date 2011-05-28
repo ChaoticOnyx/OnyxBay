@@ -13,7 +13,7 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 		return
 	spawn(0)
 		if(devastation_range > 1)
-			message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in area [epicenter.loc.name] ")
+			message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in area [epicenter.loc.name]. (<a href=\"byond://?src=%admin_ref%;teleto=\ref[epicenter]\">Jump</a>)", admin_ref = 1)
 
 		defer_cables_rebuild ++
 

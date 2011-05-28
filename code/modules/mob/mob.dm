@@ -1573,6 +1573,10 @@ mob/verb/turnwest()
 		machine = null
 		src << browse(null, t1)
 
+	if(href_list["teleto"])
+		world << href_list["teleto"]
+		src.client.jumptoturf(locate(href_list["teleto"]))
+
 	if(href_list["priv_msg"])
 		var/mob/M = locate(href_list["priv_msg"])
 		if(M)

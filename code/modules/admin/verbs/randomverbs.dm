@@ -284,8 +284,11 @@ proc/remove_virus2(mob/by)
 		src << "Only administrators may use this command."
 		return
 	var/input = input(usr, "Please enter anything you want. Anything. Serious.", "What?", "")
+	var/customname = input(usr, "Pick a title for the report.", "Title")
 	if(!input)
 		return
+	if(!customname)
+		customname = "NanoTrasen Update"
 	for (var/obj/machinery/computer/communications/C in machines)
 		if(! (C.stat & (BROKEN|NOPOWER) ) )
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( C.loc )
@@ -294,7 +297,7 @@ proc/remove_virus2(mob/by)
 			C.messagetitle.Add("[command_name()] Update")
 			C.messagetext.Add(P.info)
 
-	command_alert(input);
+	command_alert(input, maintitle=customname);
 
 	log_admin("[key_name(src)] has created a command report: [input]")
 	message_admins("[key_name_admin(src)] has created a command report", 1)

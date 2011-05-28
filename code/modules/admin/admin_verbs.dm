@@ -30,6 +30,7 @@
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/cmd_admin_delete
 			src.verbs += /client/proc/addchange
+			src.verbs += /client/proc/radioalert
 			src.verbs += /proc/possess
 			src.verbs += /client/proc/jobban_panel
 			src.verbs += /mob/living/proc/CheckHandcuff
@@ -132,6 +133,7 @@
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/testjson
 			src.verbs += /client/proc/ChangeMap
+			src.verbs += /client/proc/radioalert
 			src.verbs += /mob/living/proc/CheckHandcuff
 
 			src.verbs += /client/proc/addchange
@@ -238,6 +240,7 @@
 			src.verbs += /client/proc/checkticker
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/addchange
+			src.verbs += /client/proc/radioalert
 			src.verbs += /client/proc/LSD_effect
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/debug_variables
@@ -345,6 +348,7 @@
 			src.verbs += /client/proc/cmd_admin_reset_id
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/debug_variables
+			src.verbs += /client/proc/radioalert
 			src.verbs += /proc/togglebuildmode
 			src.verbs += /obj/admins/proc/toggleooc				//toggle ooc
 			src.verbs += /obj/admins/proc/toggletraitorscaling
@@ -404,6 +408,7 @@
 			src.verbs += /client/proc/switchtowindow
 			src.verbs += /client/proc/cmd_admin_pm
 			src.verbs += /client/proc/cmd_admin_say
+			src.verbs += /client/proc/radioalert
 			src.verbs += /client/proc/dsay
 			src.verbs += /client/proc/cmd_admin_gib_self
 //				src.verbs += /client/proc/play_sound
@@ -902,6 +907,14 @@
 	set name = "Zombify"
 	infect_mob_zombie(p)
 	message_admins("\blue [src.ckey] infected [p.real_name]([p.ckey]) with a zombie disease.")
+
+/client/proc/radioalert()
+	set category = "Roleplay"
+	set name = "Create Radio Alert"
+	var/message = input("Choose a message! (Don't forget the \"says, \" or similar at the start.)", "Message")
+	var/from = input("From whom? (Who's saying this?)", "From")
+	var/obj/item/device/radio/intercom/a = new /obj/item/device/radio/intercom(null)
+	a.autosay(message,from)
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"
