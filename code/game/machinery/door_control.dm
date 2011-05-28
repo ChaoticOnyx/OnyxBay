@@ -9,6 +9,7 @@
 	var/icon_nopower = "doorctrl-p"
 	var/needspower = 1
 	var/id = null
+	var/toggled = "0"
 	anchored = 1.0
 
 
@@ -29,6 +30,10 @@
 	if(needspower)
 		use_power(5)
 	icon_state = icon_toggled
+	if(toggled == "1")
+		toggled = "0"
+	else
+		toggled = "1"
 
 	for(var/obj/machinery/door/poddoor/M in machines)
 		if (M.id == src.id)
@@ -38,10 +43,9 @@
 			else
 				M.close()
 				//TransmitNetworkPacket(PrependNetworkAddress("[M.get_password()] CLOSE", M))
-
-		if(!(stat & NOPOWER))
-			icon_state = icon_normal
 	src.add_fingerprint(usr)
+	sleep(10)
+	icon_state = icon_normal + toggled
 
 /obj/machinery/door_control/power_change()
 	..()
@@ -50,7 +54,7 @@
 	if(stat & NOPOWER)
 		icon_state = icon_nopower
 	else
-		icon_state = icon_normal
+		icon_state = icon_normal + toggled
 
 /obj/machinery/driver_button
 	name = "Mass Driver Button"
