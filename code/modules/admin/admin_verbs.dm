@@ -36,6 +36,7 @@
 			src.verbs += /mob/living/proc/CheckHandcuff
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
+			src.verbs += /client/proc/editappear
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /client/proc/cmd_modify_object_variables
 			src.verbs += /client/proc/cmd_modify_ticker_variables
@@ -144,6 +145,7 @@
 			src.verbs += /proc/possess
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /proc/release
+			src.verbs += /client/proc/editappear
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /client/proc/cmd_debug_tog_aliens
 			src.verbs += /client/proc/cmd_modify_object_variables
@@ -245,6 +247,7 @@
 			src.verbs += /client/proc/toggleevents
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /proc/possess
+			src.verbs += /client/proc/editappear
 			src.verbs += /client/proc/cmd_admin_add_random_ai_law
 			src.verbs += /client/proc/cmd_modify_object_variables
 			src.verbs += /client/proc/cmd_modify_ticker_variables
@@ -350,6 +353,7 @@
 			src.verbs += /client/proc/debug_variables
 			src.verbs += /client/proc/radioalert
 			src.verbs += /proc/togglebuildmode
+			src.verbs += /client/proc/editappear
 			src.verbs += /obj/admins/proc/toggleooc				//toggle ooc
 			src.verbs += /obj/admins/proc/toggletraitorscaling
 			src.verbs += /client/proc/cmd_admin_say
@@ -915,6 +919,56 @@
 	var/from = input("From whom? (Who's saying this?)", "From")
 	var/obj/item/device/radio/intercom/a = new /obj/item/device/radio/intercom(null)
 	a.autosay(message,from)
+
+/client/proc/editappear(mob/living/carbon/human/M as mob in world)
+	set name = "Edit Appearance"
+	if(!istype(M, /mob/living/carbon/human))
+		usr << "\red You can only do this to humans!"
+		return
+
+	var/new_facial = input("Please select facial hair color.", "Character Generation") as color
+	if(new_facial)
+		M.r_facial = hex2num(copytext(new_facial, 2, 4))
+		M.g_facial = hex2num(copytext(new_facial, 4, 6))
+		M.b_facial = hex2num(copytext(new_facial, 6, 8))
+
+	var/new_hair = input("Please select hair color.", "Character Generation") as color
+	if(new_facial)
+		M.r_hair = hex2num(copytext(new_hair, 2, 4))
+		M.g_hair = hex2num(copytext(new_hair, 4, 6))
+		M.b_hair = hex2num(copytext(new_hair, 6, 8))
+
+	var/new_eyes = input("Please select eye color.", "Character Generation") as color
+	if(new_eyes)
+		M.r_eyes = hex2num(copytext(new_eyes, 2, 4))
+		M.g_eyes = hex2num(copytext(new_eyes, 4, 6))
+		M.b_eyes = hex2num(copytext(new_eyes, 6, 8))
+
+	var/new_tone = input("Please select skin tone level: 1-220 (1=albino, 35=caucasian, 150=black, 220='very' black)", "Character Generation")  as text
+
+	if (new_tone)
+		M.s_tone = max(min(round(text2num(new_tone)), 220), 1)
+		M.s_tone =  -M.s_tone + 35
+
+	var/new_style = input("Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Fag", "Bedhead", "Dreadlocks", "Ponytail", "Bald" )
+
+	if (new_style)
+		M.h_style = new_style
+
+	new_style = input("Please select facial style", "Character Generation")  as null|anything in list("Watson", "Chaplin", "Selleck", "Full Beard", "Long Beard", "Neckbeard", "Van Dyke", "Elvis", "Abe", "Chinstrap", "Hipster", "Goatee", "Hogan", "Shaved")
+
+	if (new_style)
+		M.f_style = new_style
+
+	var/new_gender = alert(usr, "Please select gender.", "Character Generation", "Male", "Female")
+	if (new_gender)
+		if(new_gender == "Male")
+			M.gender = MALE
+		else
+			M.gender = FEMALE
+	M.update_body()
+	M.update_face()
+	M.update_hair()
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"
