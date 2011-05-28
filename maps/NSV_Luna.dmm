@@ -78,78 +78,78 @@
 "abz" = (/obj/window/reinforced/east,/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
 "abA" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/obj/window/reinforced/south,/obj/machinery/status_display,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
 "abB" = (/obj/table/reinforced{tag = "icon-reinf_tabledir"; icon_state = "reinf_tabledir"; dir = 2},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abC" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (SOUTHEAST)"; icon_state = "reinf_tabledir"; dir = 6},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abD" = (/obj/machinery/computer/travel,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abE" = (/obj/machinery/router,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abF" = (/obj/machinery/computer/ordercomp,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abG" = (/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abH" = (/obj/stool/chair{dir = 1},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abI" = (/obj/item/weapon/extinguisher,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abJ" = (/obj/machinery/computer/card,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abK" = (/obj/window/reinforced/west,/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bridge)
-"abL" = (/obj/machinery/computer/communications,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abM" = (/obj/stool/chair{dir = 8},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abN" = (/obj/stool/chair{dir = 4},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abO" = (/obj/machinery/computer/secure_data,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abP" = (/obj/window/reinforced/east,/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
-"abQ" = (/turf/simulated/wall/r_wall,/area/hallway/primary/admin)
-"abR" = (/obj/window/reinforced/west,/obj/landmark/derelict/glass,/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bridge)
-"abS" = (/obj/machinery/computer/aiupload,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abT" = (/obj/machinery/power/monitor,/obj/cabling/power{icon_state = "0-2"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abU" = (/obj/cabling/power{icon_state = "0-2"},/obj/machinery/power/monitor,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abV" = (/obj/machinery/computer/gasmon{frequency = 1500; id = "core"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abW" = (/obj/machinery/computer/security,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abX" = (/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
-"abY" = (/obj/plasticflaps,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"abZ" = (/turf/simulated/floor,/area/hallway/primary/admin)
-"aca" = (/obj/decal/sign/deck4{pixel_y = 32},/turf/simulated/floor,/area/hallway/primary/admin)
-"acb" = (/obj/machinery/camera{c_tag = "Bridge Hallway North"; dir = 2; name = "Hallway Camera"; network = "Luna"},/turf/simulated/floor,/area/hallway/primary/admin)
-"acc" = (/obj/window/reinforced/west,/obj/machinery/alarm{dir = 4; icon_state = "alarm0"; layer = 3.1; pixel_x = -22; tag = "west"; vent_connected = "BridgeVent"},/obj/machinery/camera{c_tag = "Bridge West"; dir = 4; name = "Bridge Camera"; network = "Luna"},/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bridge)
-"acd" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"ace" = (/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acf" = (/obj/stool/chair{dir = 1},/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acg" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"ach" = (/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; layer = 3.1; pixel_x = 24; tag = "east"; vent_connected = "BridgeVent"},/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
-"aci" = (/obj/machinery/shielding/emitter/plate,/turf/simulated/floor,/area/hallway/primary/admin)
-"acj" = (/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; layer = 3.1; pixel_x = 24; tag = "east"},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/hallway/primary/admin)
-"ack" = (/obj/machinery/computer/atmosphere/alerts,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acl" = (/obj/cabling/power{icon_state = "2-4"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acm" = (/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acn" = (/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"aco" = (/obj/cabling/power{icon_state = "1-8"},/obj/machinery/hologram_ai,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acp" = (/obj/machinery/computer/med_data,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acq" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor{tag = "icon-caution_south"; icon_state = "caution_south"},/area/hallway/primary/admin)
-"acr" = (/turf/simulated/wall,/area/hallway/primary/admin)
-"acs" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass/command{name = "Bridge"; req_access_txt = "19"},/turf/simulated/floor,/area/hallway/primary/admin)
-"act" = (/obj/machinery/computer/general_alert,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acu" = (/obj/stool/chair{dir = 8},/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acv" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (NORTHWEST)"; icon_state = "reinf_tabledir"; dir = 9},/obj/cabling/power{icon_state = "1-2"},/obj/item/kitchen/donut_box,/turf/simulated/floor{tag = "icon-yellow (NORTHWEST)"; icon_state = "yellow"; dir = 9},/area/bridge)
-"acw" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (NORTH)"; icon_state = "reinf_tabledir"; dir = 1},/obj/item/device/radio/intercom{pixel_y = -12},/turf/simulated/floor{dir = 1; icon_state = "yellow"; tag = "icon-yellow(NORTH)"},/area/bridge)
-"acx" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (NORTHEAST)"; icon_state = "reinf_tabledir"; dir = 5},/turf/simulated/floor{tag = "icon-yellow (NORTHEAST)"; icon_state = "yellow"; dir = 5},/area/bridge)
-"acy" = (/obj/machinery/computer/robotics,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acz" = (/obj/machinery/firealarm{dir = 4; layer = 3.1; pixel_x = 24; tag = "east"},/obj/machinery/camera{c_tag = "Bridge East"; dir = 8; name = "Bridge Camera"; network = "Luna"},/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
-"acA" = (/obj/multiz/stairs/enter,/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/hallway/primary/admin)
-"acB" = (/obj/multiz/stairs/enter,/turf/simulated/floor,/area/hallway/primary/admin)
-"acC" = (/obj/window/reinforced/east,/turf/simulated/floor,/area/hallway/primary/admin)
-"acD" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area/hallway/primary/admin)
-"acE" = (/obj/machinery/computer/general_air_control{frequency = 1441; name = "Supply Air Tank Monitor"; sensors = list("n2_sensor" = "Nitrogen", "o2_sensor" = "Oxygen", "co2_sensor" = "Carbon Dioxide", "tox_sensor" = "Toxins")},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acF" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{tag = "icon-yellow (WEST)"; icon_state = "yellow"; dir = 8},/area/bridge)
-"acG" = (/obj/stool/chair/comfy/beige{tag = "icon-comfychair_beige (NORTH)"; icon_state = "comfychair_beige"; dir = 1},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acH" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/obj/machinery/camera{c_tag = "Bridge Command"; dir = 1; name = "Bridge Camera"; network = "Luna"},/obj/machinery/shieldsbutton,/turf/simulated/floor{dir = 4; icon_state = "yellow"; tag = "icon-yellow (EAST)"},/area/bridge)
-"acI" = (/obj/machinery/computer/lasercon{id = list("north","west","east","south")},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acJ" = (/obj/multiz/stairs/active,/turf/simulated/floor,/area/hallway/primary/admin)
-"acK" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/obj/window/reinforced/south,/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acL" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
-"acM" = (/obj/machinery/light_switch{name = "E Light Switch"; pixel_x = 24},/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
-"acN" = (/turf/simulated/floor{tag = "icon-redcorner (EAST)"; icon_state = "redcorner"; dir = 4},/area/bridge)
-"acO" = (/turf/simulated/floor{tag = "icon-red (NORTH)"; icon_state = "red"; dir = 1},/area/bridge)
-"acP" = (/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{tag = "icon-red (NORTH)"; icon_state = "red"; dir = 1},/area/bridge)
-"acQ" = (/obj/machinery/light{dir = 1},/turf/simulated/floor{tag = "icon-red (NORTH)"; icon_state = "red"; dir = 1},/area/bridge)
+"abC" = (/obj/machinery/computer/travel,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abD" = (/obj/machinery/router,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abE" = (/obj/machinery/computer/ordercomp,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abF" = (/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abG" = (/obj/stool/chair{dir = 1},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abH" = (/obj/item/weapon/extinguisher,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abI" = (/obj/machinery/computer/forensic_scanning,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abJ" = (/obj/window/reinforced/west,/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bridge)
+"abK" = (/obj/machinery/computer/communications,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abL" = (/obj/stool/chair{dir = 8},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abM" = (/obj/stool/chair{dir = 4},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abN" = (/obj/machinery/computer/secure_data,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abO" = (/obj/window/reinforced/east,/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
+"abP" = (/turf/simulated/wall/r_wall,/area/hallway/primary/admin)
+"abQ" = (/obj/window/reinforced/west,/obj/landmark/derelict/glass,/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bridge)
+"abR" = (/obj/machinery/computer/card,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abS" = (/obj/machinery/power/monitor,/obj/cabling/power{icon_state = "0-2"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abT" = (/obj/cabling/power{icon_state = "0-2"},/obj/machinery/power/monitor,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abU" = (/obj/machinery/computer/gasmon{frequency = 1500; id = "core"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abV" = (/obj/machinery/computer/security,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abW" = (/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
+"abX" = (/obj/plasticflaps,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"abY" = (/turf/simulated/floor,/area/hallway/primary/admin)
+"abZ" = (/obj/decal/sign/deck4{pixel_y = 32},/turf/simulated/floor,/area/hallway/primary/admin)
+"aca" = (/obj/machinery/camera{c_tag = "Bridge Hallway North"; dir = 2; name = "Hallway Camera"; network = "Luna"},/turf/simulated/floor,/area/hallway/primary/admin)
+"acb" = (/obj/window/reinforced/west,/obj/machinery/alarm{dir = 4; icon_state = "alarm0"; layer = 3.1; pixel_x = -22; tag = "west"; vent_connected = "BridgeVent"},/obj/machinery/camera{c_tag = "Bridge West"; dir = 4; name = "Bridge Camera"; network = "Luna"},/turf/simulated/floor{tag = "icon-red (WEST)"; icon_state = "red"; dir = 8},/area/bridge)
+"acc" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acd" = (/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"ace" = (/obj/stool/chair{dir = 1},/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acf" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acg" = (/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; layer = 3.1; pixel_x = 24; tag = "east"; vent_connected = "BridgeVent"},/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
+"ach" = (/obj/machinery/shielding/emitter/plate,/turf/simulated/floor,/area/hallway/primary/admin)
+"aci" = (/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; layer = 3.1; pixel_x = 24; tag = "east"},/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor,/area/hallway/primary/admin)
+"acj" = (/obj/machinery/computer/atmosphere/alerts,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"ack" = (/obj/cabling/power{icon_state = "2-4"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acl" = (/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acm" = (/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acn" = (/obj/cabling/power{icon_state = "1-8"},/obj/machinery/hologram_ai,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"aco" = (/obj/machinery/computer/med_data,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acp" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor{tag = "icon-caution_south"; icon_state = "caution_south"},/area/hallway/primary/admin)
+"acq" = (/turf/simulated/wall,/area/hallway/primary/admin)
+"acr" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass/command{name = "Bridge"; req_access_txt = "19"},/turf/simulated/floor,/area/hallway/primary/admin)
+"acs" = (/obj/machinery/computer/general_alert,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"act" = (/obj/stool/chair{dir = 8},/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acu" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (NORTHWEST)"; icon_state = "reinf_tabledir"; dir = 9},/obj/cabling/power{icon_state = "1-2"},/obj/item/kitchen/donut_box,/turf/simulated/floor{tag = "icon-yellow (NORTHWEST)"; icon_state = "yellow"; dir = 9},/area/bridge)
+"acv" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (NORTH)"; icon_state = "reinf_tabledir"; dir = 1},/obj/item/device/radio/intercom{pixel_y = -12},/turf/simulated/floor{dir = 1; icon_state = "yellow"; tag = "icon-yellow(NORTH)"},/area/bridge)
+"acw" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (NORTHEAST)"; icon_state = "reinf_tabledir"; dir = 5},/turf/simulated/floor{tag = "icon-yellow (NORTHEAST)"; icon_state = "yellow"; dir = 5},/area/bridge)
+"acx" = (/obj/machinery/computer/robotics,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acy" = (/obj/machinery/firealarm{dir = 4; layer = 3.1; pixel_x = 24; tag = "east"},/obj/machinery/camera{c_tag = "Bridge East"; dir = 8; name = "Bridge Camera"; network = "Luna"},/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
+"acz" = (/obj/multiz/stairs/enter,/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor,/area/hallway/primary/admin)
+"acA" = (/obj/multiz/stairs/enter,/turf/simulated/floor,/area/hallway/primary/admin)
+"acB" = (/obj/window/reinforced/east,/turf/simulated/floor,/area/hallway/primary/admin)
+"acC" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area/hallway/primary/admin)
+"acD" = (/obj/machinery/computer/general_air_control{frequency = 1441; name = "Supply Air Tank Monitor"; sensors = list("n2_sensor" = "Nitrogen", "o2_sensor" = "Oxygen", "co2_sensor" = "Carbon Dioxide", "tox_sensor" = "Toxins")},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acE" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (WEST)"; icon_state = "reinf_tabledir"; dir = 8},/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{tag = "icon-yellow (WEST)"; icon_state = "yellow"; dir = 8},/area/bridge)
+"acF" = (/obj/stool/chair/comfy/beige{tag = "icon-comfychair_beige (NORTH)"; icon_state = "comfychair_beige"; dir = 1},/turf/simulated/floor,/area/bridge)
+"acG" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (EAST)"; icon_state = "reinf_tabledir"; dir = 4},/obj/machinery/camera{c_tag = "Bridge Command"; dir = 1; name = "Bridge Camera"; network = "Luna"},/obj/machinery/shieldsbutton,/turf/simulated/floor{dir = 4; icon_state = "yellow"; tag = "icon-yellow (EAST)"},/area/bridge)
+"acH" = (/obj/multiz/stairs/active,/turf/simulated/floor,/area/hallway/primary/admin)
+"acI" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/obj/window/reinforced/south,/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acJ" = (/turf/simulated/floor,/area/bridge)
+"acK" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/window/reinforced/north,/obj/window/reinforced/south,/turf/simulated/floor{icon_state = "dark"},/area/bridge)
+"acL" = (/obj/machinery/light_switch{name = "E Light Switch"; pixel_x = 24},/turf/simulated/floor{tag = "icon-red (EAST)"; icon_state = "red"; dir = 4},/area/bridge)
+"acM" = (/turf/simulated/floor{tag = "icon-redcorner (EAST)"; icon_state = "redcorner"; dir = 4},/area/bridge)
+"acN" = (/turf/simulated/floor{tag = "icon-red (NORTH)"; icon_state = "red"; dir = 1},/area/bridge)
+"acO" = (/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{tag = "icon-red (NORTH)"; icon_state = "red"; dir = 1},/area/bridge)
+"acP" = (/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{tag = "icon-redcorner (NORTH)"; icon_state = "redcorner"; dir = 1},/area/bridge)
+"acQ" = (/obj/machinery/light{dir = 1},/turf/simulated/floor{tag = "icon-redcorner (EAST)"; icon_state = "redcorner"; dir = 4},/area/bridge)
 "acR" = (/turf/simulated/floor{tag = "icon-redcorner (NORTH)"; icon_state = "redcorner"; dir = 1},/area/bridge)
-"acS" = (/turf/simulated/floor{tag = "icon-red (NORTHEAST)"; icon_state = "red"; dir = 5},/area/bridge)
-"acT" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass/command{name = "Bridge"; req_access_txt = "19"},/obj/landmark/alterations/nopath,/turf/simulated/floor,/area/bridge)
-"acU" = (/obj/window/reinforced/east,/obj/machinery/firealarm{dir = 4; layer = 3.1; pixel_x = 24; tag = "east"},/turf/simulated/floor,/area/hallway/primary/admin)
-"acV" = (/turf/simulated/floor,/area/bridge)
+"acS" = (/obj/machinery/light{dir = 1},/turf/simulated/floor{tag = "icon-red (NORTH)"; icon_state = "red"; dir = 1},/area/bridge)
+"acT" = (/turf/simulated/floor{tag = "icon-red (NORTHEAST)"; icon_state = "red"; dir = 5},/area/bridge)
+"acU" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass/command{name = "Bridge"; req_access_txt = "19"},/obj/landmark/alterations/nopath,/turf/simulated/floor,/area/bridge)
+"acV" = (/obj/window/reinforced/east,/obj/machinery/firealarm{dir = 4; layer = 3.1; pixel_x = 24; tag = "east"},/turf/simulated/floor,/area/hallway/primary/admin)
 "acW" = (/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor,/area/bridge)
 "acX" = (/obj/machinery/navbeacon{codes_txt = "patrol;next_patrol=Chapel"; location = "Bridge"; name = "Security Naviation Beacon"},/turf/simulated/floor,/area/bridge)
 "acY" = (/obj/item/device/radio/beacon,/turf/simulated/floor,/area/bridge)
@@ -742,7 +742,7 @@
 "aon" = (/obj/machinery/power/apc{dir = 1; name = "North APC"; pixel_x = 0},/obj/cabling/power{icon_state = "0-2"},/turf/simulated/floor,/area/crew_quarters/chief)
 "aoo" = (/obj/machinery/atmospherics/unary/vent_scrubber{dir = 1; icon_state = "on"; on = 1; scrub_Toxins = 1},/obj/machinery/computer/gasmon{frequency = 1500; id = "core"},/obj/machinery/camera{c_tag = "Chief Engineer's Office"; dir = 2; name = "Engineering Camera"; network = "Luna"},/obj/item/device/radio/intercom{pixel_y = 20},/turf/simulated/floor,/area/crew_quarters/chief)
 "aop" = (/obj/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/turf/simulated/floor,/area/crew_quarters/chief)
-"aoq" = (/obj/machinery/disposal,/obj/disposalpipe/trunk{dir = 8},/obj/machinery/door_control{id = 963852; layer = 3.1; name = "Chamber Vent Control"; pixel_x = -4; pixel_y = 26},/turf/simulated/floor,/area/crew_quarters/chief)
+"aoq" = (/obj/machinery/disposal,/obj/disposalpipe/trunk{dir = 8},/turf/simulated/floor,/area/crew_quarters/chief)
 "aor" = (/obj/machinery/alarm{pixel_y = 26; tag = "North"; vent_connected = "CEVent"},/obj/table{icon_state = "tabledir"; dir = 8},/obj/item/weapon/circuitry,/obj/item/weapon/circuitry,/turf/simulated/floor,/area/crew_quarters/chief)
 "aos" = (/obj/grille,/obj/window/reinforced/east,/obj/window/reinforced/west,/turf/simulated/floor/plating,/area/crew_quarters/chief)
 "aot" = (/obj/machinery/atmospherics/unary/vent_scrubber{dir = 1; icon_state = "on"; on = 1; scrub_Toxins = 1},/obj/machinery/light{dir = 1},/obj/machinery/portable_atmospherics/canister/nitrogen,/obj/landmark/derelict/nodamage,/turf/simulated/floor{tag = "icon-caution (WEST)"; icon_state = "caution"; dir = 8},/area/engine/engine_mon)
@@ -828,8 +828,8 @@
 "apV" = (/obj/machinery/atmospherics/pipe/manifold{dir = 4; initialize_directions = 11},/obj/cabling/power{icon_state = "1-2"},/obj/grille,/obj/window/reinforced/west,/obj/window/reinforced/east,/turf/simulated/floor/plating,/area/crew_quarters/chief)
 "apW" = (/obj/machinery/power/monitor,/obj/cabling/power,/turf/simulated/floor,/area/crew_quarters/chief)
 "apX" = (/obj/table{icon_state = "tabledir"; dir = 9},/obj/machinery/atmospherics/unary/vent_filter,/obj/item/weapon/paper_bin,/turf/simulated/floor,/area/crew_quarters/chief)
-"apY" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/storage/toolbox/electrical,/turf/simulated/floor,/area/crew_quarters/chief)
-"apZ" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/cartridge/engineering,/obj/item/weapon/cartridge/engineering,/obj/item/weapon/cartridge/engineering,/obj/item/weapon/cartridge/engineering,/turf/simulated/floor,/area/crew_quarters/chief)
+"apY" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/storage/toolbox/electrical,/obj/item/weapon/cartridge/engineering,/turf/simulated/floor,/area/crew_quarters/chief)
+"apZ" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/machinery/vent_control{id = 963852},/obj/window/basic/northeast,/turf/simulated/floor,/area/crew_quarters/chief)
 "aqa" = (/obj/cabling/power{icon_state = "1-2"},/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/circuitry,/obj/item/weapon/circuitry,/obj/item/weapon/circuitry,/obj/landmark/derelict/nodamage,/turf/simulated/floor,/area/crew_quarters/chief)
 "aqb" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/hand_labeler,/turf/simulated/floor,/area/crew_quarters/chief)
 "aqc" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/storage/toolbox/emergency,/turf/simulated/floor,/area/crew_quarters/chief)
@@ -5497,31 +5497,31 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabkablablablablablablablablablablablablablabkabmabfaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnaboabpabqabqabqabqabrabpabqabqabqabqabsabnabmabfaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabuabvabvabvabvabwabvabvabvabvabxabyabnabmabfaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzabAabBabBabCabDabEabBabBabAabtabzabnabmabfaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzabFabGabGabGabHabGabGabIabJabtabzabnabmabfaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabKabzabLabMabGabGabGabGabGabNabOabtabPabkabQabQabQabQabQabQaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabRabzabSabGabGabTabUabVabGabGabWabtabXabYabZacaabZabZacbabQaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaaaaaaaaaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabkaccabzacdabGabGaceacfabGabGabGacgabtachabkabZabZaciabZacjabQaaWaaWaaWaaWaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaaWaaWaaaaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzackaclacmacnacoabGabGabGacpabtabXabkacqacqacracsacsabQabmaaWaaWaaWaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzactacuabGacvacwacxabGabNacyabtaczabkacAacBacrabZacCacDabmaaWaaWaaWaaWaaWaaaaaaaaaaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzacEaceabGacFacGacHabGabGacIabtabXabkacJacJacrabZacCacDabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzabAaceabGacKabGacLabGabGabAabtacMabkabkabkabkabZacCacDabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtacNacOacPacOacPacOacQacOacOacOacRacNacQacOacSacTabZacUabQabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabRacVacVacWacXacWacYacVacVabuacZadaadbadbadbadcacTabZaddabQabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWabkabkabkabkabkadeadfadgadhadiadjadfadkacVadladmadnadmadoadmadmadmabZacCacDabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWabkadpadqadqadradsadtaduadvadwadxadyadzadAadBadmadCadDadEadFadGadmadHacCacDabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWabkadpadqadIadradJadKadLadMadNadOadPadmadnadmadmadQadEadEadEadRadmabZadSacDabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWabkabkabkabkabkadTacVadUadVadWadXadYadmadZaeaaebaecaedaeeadEadEaefabZaegabQabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaehaehaehaeiabnaejacVacVaekacWacWaelaemaenadEadEaenadEadEadEaeoaepaeqaerabQabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaehaaWaeiabnaejacVaesaetaeuaeuaevadmaewadEadEaexaeyadEadEaezadnabZacCacDabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaehaehaehaeiaeAaeBaeCaeDaeEaeFaeGaeHadmaeIaeJaeKaeLaeMaeNaeOaePadnabZacCacDabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaehaeQaeQabkabkaeRabkabkaeSabkabkaeTadmadnaeUadnadnadmadmaeVaeWaeXabZaeYacDabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaehaeQaeZafaafbafcafdafeaffafgafdafhafiafjafkaflafmafdafnafoafpafqafracUabQabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafsaeQaftafuafvafwafxafuafyafzafxafAafBafCafDafuafuafxafEafFafGafHafIafJabQabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeQaeQafKafLafMafNafOafPafQafRafPafSafSafTafUafTafTafVafWafTafXafTabZacCacDabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeQafYafZagaagbagcagdagdageagfafPaggaghafTagiagjagkaglagmagnagoafTabZagpacDabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeQagqagragsagtaguagvagwagxagyafPafSagzagAagBaglaglaglagCaglagDafTadHacCacDabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeQaeQagEagFafPagxagxagxagxagGafPagHafaafTagIagJagKagCaglaglagLafTabZaegabQagMaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzabAabBabBabBabCabDabBabBabAabtabzabnabmabfaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzabEabFabFabFabGabFabFabHabIabtabzabnabmabfaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabJabzabKabLabFabFabFabFabFabMabNabtabOabkabPabPabPabPabPabPaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabQabzabRabFabFabSabTabUabFabFabVabtabWabXabYabZabYabYacaabPaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaaaaaaaaaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabkacbabzaccabFabFacdaceabFabFabFacfabtacgabkabYabYachabYaciabPaaWaaWaaWaaWaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaaWaaWaaaaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzacjackaclacmacnabFabFabFacoabtabWabkacpacpacqacracrabPabmaaWaaWaaWaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzacsactabFacuacvacwabFabMacxabtacyabkaczacAacqabYacBacCabmaaWaaWaaWaaWaaWaaaaaaaaaaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzacDacdabFacEacFacGabFabFacfabtabWabkacHacHacqabYacBacCabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtabzabAacdabFacIacJacKabFabFabAabtacLabkabkabkabkabYacBacCabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabtacMacNacOacNacPacJacQacNacNacNacRacMacSacNacTacUabYacVabPabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWabfabjabnabQacJacJacWacXacWacYacJacJabuacZadaadbadbadbadcacUabYaddabPabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWabkabkabkabkabkadeadfadgadhadiadjadfadkacJadladmadnadmadoadmadmadmabYacBacCabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWabkadpadqadqadradsadtaduadvadwadxadyadzadAadBadmadCadDadEadFadGadmadHacBacCabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWabkadpadqadIadradJadKadLadMadNadOadPadmadnadmadmadQadEadEadEadRadmabYadSacCabmaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWabkabkabkabkabkadTacJadUadVadWadXadYadmadZaeaaebaecaedaeeadEadEaefabYaegabPabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaehaehaehaeiabnaejacJacJaekacWacWaelaemaenadEadEaenadEadEadEaeoaepaeqaerabPabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaehaaWaeiabnaejacJaesaetaeuaeuaevadmaewadEadEaexaeyadEadEaezadnabYacBacCabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaehaehaehaeiaeAaeBaeCaeDaeEaeFaeGaeHadmaeIaeJaeKaeLaeMaeNaeOaePadnabYacBacCabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaehaeQaeQabkabkaeRabkabkaeSabkabkaeTadmadnaeUadnadnadmadmaeVaeWaeXabYaeYacCabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaehaeQaeZafaafbafcafdafeaffafgafdafhafiafjafkaflafmafdafnafoafpafqafracVabPabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafsaeQaftafuafvafwafxafuafyafzafxafAafBafCafDafuafuafxafEafFafGafHafIafJabPabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeQaeQafKafLafMafNafOafPafQafRafPafSafSafTafUafTafTafVafWafTafXafTabYacBacCabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeQafYafZagaagbagcagdagdageagfafPaggaghafTagiagjagkaglagmagnagoafTabYagpacCabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeQagqagragsagtaguagvagwagxagyafPafSagzagAagBaglaglaglagCaglagDafTadHacBacCabmaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeQaeQagEagFafPagxagxagxagxagGafPagHafaafTagIagJagKagCaglaglagLafTabYaegabPagMaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeQafSagNagOagPagxagxagxagQafPafSafOafTaglagRagSaglaglaglagTafTagUagUagVagMaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeQagWagXafPagYagZahaagxahbafPahcafOafTaglahdaglaheahfaglahgafTahhahiahjagMaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahkagVahlahmafPafPafPafPahnafPafPahoafVafTafTafTahpafTafTafTafTafTahhahiahjagMaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -5659,7 +5659,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaaWaulauFaxnayVazkazlazmaxnaznaypazoaylazpayjazqayjazrayjazsaztaypazuazuazfazvazwayuazxayaazyazzazAazBazBazBazBaycazCaydaydaydaydazDaycaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaulauFaxnazEazFazGazHazHayWazIayjazJazKazLazMazNazOazPazQazRaypazSazTazfazvazUazVazBazWazBazBazBazBazXazYazZaycaycaydaydaydaydaycaycaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaulauFaAaaAbaAcaAdaAdaAdaySaAdaAeaAeaAfaAgaAgaAgaAgaAhaypaypaypaAiaAiazfaAjaAkazWaAlaAmaAnaAoaApaAqaArazYaAsaycaycaycaycaycaycaycaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaulauFaAaaAbaAcaAtaAtaAdaAuaAdaAvaAvaAwaAxaAyaAzaAvaAAaABaACaADabZabZaAEaAFaAGaAHaAIaAJaAKaALaApaAqaAMazYaANaycaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaulauFaAaaAbaAcaAtaAtaAdaAuaAdaAvaAvaAwaAxaAyaAzaAvaAAaABaACaADabYabYaAEaAFaAGaAHaAIaAJaAKaALaApaAqaAMazYaANaycaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaulauFaAaaAbaAcaAOaAOaAdaAPaAdaAQaAvaAvaAvaAvaAvaAvaARaASafIaATafIaAUaAVaAWaAXaAYaAZaBaaBbaBcaApaAqaArazYaBdazBaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaulaAaaAaaBeaAcaBfaBgaAdaAdaAdaBhaAvaAvaBiaAvaBjaAvaBkaAdaBlaBmaBnaBoaBoaBpaBqaBrazBazWazBazBazBazBazXazYaBsazBaaWaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaWaaWaaWaaWaaWaaWaulaAaaBtaBuaBvaBwaAvaAdaBxaByaBzaAvaBAaBBaBCaBDaAvaAAaBEaBFaBGaBHaBIaBJaBKaBLaBMaBNaBOaBPaBQaBRazBazBazBazBazBaaWaaWaaWaaWaaWaaWaaWaaWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
