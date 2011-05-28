@@ -75,7 +75,7 @@
 		else
 			while(cquery.NextRow())
 				var/list/ban = cquery.GetRowData()
-				html += "<tr><td>[ban["rank"]]</td><td>[ban["ckey"]]</td><td>[ban["when"]]</td><td>[ban["why"]]</td><td><a href='?src=\ref[src];jobbanrank=[ban["rank"]];jobunbankey=[ban["ckey"]]'>Remove</a></td></tr>"
+				html += "<tr><td>[ban["rank"]]</td><td>[ban["ckey"]]</td><td>[ban["when"]]</td><td>[ban["why"]]</td><td><a href='?src=\ref[src];jobbanrank=[ban["rank"]];jobunbankey=[key]'>Remove</a></td></tr>"
 		html += "</table>"
 		usr << browse(html, "window=jobbanx1x;size=600x400")
 		return
