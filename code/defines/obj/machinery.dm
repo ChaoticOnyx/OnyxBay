@@ -744,20 +744,6 @@
 	hidden_prices = ""
 	charge_type = "engineering"
 
-/obj/machinery/microwave
-	name = "Microwave"
-	icon = 'kitchen.dmi'
-	icon_state = "mw"
-	density = 1
-	anchored = 1
-	var/operating = 0 // Is it on?
-	var/dirty = 0 // Does it need cleaning?
-	var/broken = 0 // How broken is it???
-	var/list/available_recipes = list() // List of the recipes you can use
-	var/obj/item/weapon/reagent_containers/food/snacks/being_cooked = null // The item being cooked
-	var/humanmeat_name
-	var/humanmeat_job
-
 /obj/machinery/gibber
 	name = "Gibber"
 	desc = "The name isn't descriptive enough?"

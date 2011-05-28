@@ -50,6 +50,20 @@
 	needs = list("flour" = 2,"egg" = 1)
 	creates = "/obj/item/weapon/reagent_containers/food/custom/breadsys/loaf"
 
+/obj/machinery/microwave
+	name = "Microwave"
+	icon = 'kitchen.dmi'
+	icon_state = "mw"
+	density = 1
+	anchored = 1
+	var/operating = 0 // Is it on?
+	var/dirty = 0 // Does it need cleaning?
+	var/broken = 0 // How broken is it???
+	var/list/available_recipes = list() // List of the recipes you can use
+	var/obj/item/weapon/reagent_containers/food/snacks/being_cooked = null // The item being cooked
+	var/humanmeat_name
+	var/humanmeat_job
+
 /obj/machinery/microwave/New() // *** After making the recipe in defines\obj\food.dmi, add it in here! ***
 	..()
 	src.available_recipes += new /datum/recipe/donut(src)
