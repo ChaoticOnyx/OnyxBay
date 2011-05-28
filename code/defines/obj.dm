@@ -706,19 +706,3 @@ obj/item/brain
 	var/cook = 0
 	var/cook_temp = 1000
 	var/cook_time = 30
-
-
-// TODO: robust mixology system! (and merge with beakers, maybe)
-/obj/item/weapon/reagent_containers/food/drinks/glass
-	name = "drinking glass"
-	icon = 'kitchen.dmi'
-	icon_state = "glass_empty"
-	item_state = "beaker"
-	flags = FPRINT | TABLEPASS | OPENCONTAINER
-	amount_per_transfer_from_this = 10
-	throwforce = 5
-	g_amt = 100
-	New()
-		var/datum/reagents/R = new/datum/reagents(30)
-		reagents = R
-		R.my_atom = src
