@@ -1574,7 +1574,6 @@ mob/verb/turnwest()
 		src << browse(null, t1)
 
 	if(href_list["teleto"])
-		world << href_list["teleto"]
 		src.client.jumptoturf(locate(href_list["teleto"]))
 
 	if(href_list["priv_msg"])
