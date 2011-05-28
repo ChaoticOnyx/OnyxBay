@@ -35,7 +35,9 @@
 		log_admin("[xquery.ErrorMsg()]")
 	if(!yquery.Execute())
 		log_admin("[yquery.ErrorMsg()]")
-/proc/jobban_remove(key,rank)
+	log_admin("[key_name(usr)] unbanned [M.ckey] from [rank]")
+
+/proc/jobban_remove(key, rank)
 	var/DBQuery/xquery = dbcon.NewQuery("DELETE FROM jobban WHERE `ckey`='[key]' AND `rank`='[rank]'")
 	var/DBQuery/yquery = dbcon.NewQuery("DELETE FROM jobbanlog WHERE `targetckey`='[key]' AND `rank`='[rank]'")
 	if(!xquery.Execute())
@@ -43,6 +45,7 @@
 	if(!yquery.Execute())
 		log_admin("[yquery.ErrorMsg()]")
 	log_admin("[key_name(usr)] unbanned [key] from [rank]")
+
 /obj/admins/proc/showjobbans()
 	var/html = "<table>"
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT DISTINCT targetckey from jobbanlog")

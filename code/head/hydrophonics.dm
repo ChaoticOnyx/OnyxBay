@@ -146,10 +146,10 @@ datum/plants/tomato
 			updateicon()
 			return
 	else if(istype(W,/obj/item/weapon/seeds) && !hasplant)
-		if(W:ammount)
-			W:ammount--
+		if(W:amount)
+			W:amount--
 			hasplant = new W:typevar()
-			if(W:ammount <= 0)
+			if(W:amount <= 0)
 				user << "You ran out of seeds"
 		else
 			user << "The [src] is empty.."
@@ -177,5 +177,5 @@ obj/item/weapon/seeds
 	name = "seeds"
 	icon = 'hydro.dmi'
 	icon_state = "seedpack"
-	var/ammount = 3
+	var/amount = 3
 	var/typevar = /datum/plants/tomato

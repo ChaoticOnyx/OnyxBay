@@ -4,17 +4,17 @@
 	icon_state = "emerg"
 	var/list/spawnitems = list()
 	anchored = 1
-	var/ammount = 3 // spawns each items X times.
+	var/amount = 3 // spawns each items X times.
 /obj/machinery/walllocker/attack_hand(mob/user as mob)
 	if (istype(user, /mob/living/silicon/ai))	//Added by Strumpetplaya - AI shouldn't be able to
 		return									//activate emergency lockers.  This fixes that.
-	if(!ammount)
+	if(!amount)
 		usr << "It's empty.."
 		return
-	if(ammount)
+	if(amount)
 		for(var/path in spawnitems)
 			new path(src.loc)
-		ammount--
+		amount--
 	return
 /obj/machinery/walllocker/emerglocker
 	name = "Emergency Locker"
