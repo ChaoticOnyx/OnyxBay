@@ -26,9 +26,7 @@
 				isblind = 1
 				stat = 1
 			else if (cell.charge <= 100)
-				module_state_1 = null
-				module_state_2 = null
-				module_state_3 = null
+				deactivate_all_modules()
 				cell.use(1)
 			else
 				if(module_state_1)

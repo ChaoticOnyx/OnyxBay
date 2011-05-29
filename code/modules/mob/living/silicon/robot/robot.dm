@@ -570,12 +570,21 @@
 		if(!module_state_1)
 			module_state_1 = O
 			contents += O
+			O.screen_loc = ui_id
+			client.screen += O
+			O.layer = 20
 		else if(!module_state_2)
 			module_state_2 = O
 			contents += O
+			O.screen_loc = ui_iclothing
+			client.screen += O
+			O.layer = 20
 		else if(!module_state_3)
 			module_state_3 = O
 			contents += O
+			O.screen_loc = ui_belt
+			client.screen += O
+			O.layer = 20
 		else
 			src << "You need to disable a module first!"
 		installed_modules()
@@ -584,19 +593,17 @@
 		var/obj/item/O = locate(href_list["deact"])
 		if(activated(O))
 			if(module_state_1 == O)
-				module_state_1 = null
-				contents -= O
+				deactivate_module(1)
 			else if(module_state_2 == O)
-				module_state_2 = null
-				contents -= O
+				deactivate_module(2)
 			else if(module_state_3 == O)
-				module_state_3 = null
-				contents -= O
+				deactivate_module(3)
 			else
 				src << "Module isn't activated."
 		else
 			src << "Module isn't activated"
 		installed_modules()
+
 	if (href_list["locked"])
 		if (emagged)
 			src << "The interface is broken"
@@ -619,6 +626,20 @@
 
 
 	return
+
+/mob/living/silicon/robot/proc/deactivate_all_modules()
+	deactivate_module(1)
+	deactivate_module(2)
+	deactivate_module(3)
+
+/mob/living/silicon/robot/proc/deactivate_module(var/num)
+	var/obj/item/O = vars["module_state_[num]"]
+	if(!O)
+		return
+	O.layer = initial(O.layer)
+	client.screen -= O
+	contents -= O
+	vars["module_state_[num]"] = null
 
 /mob/living/silicon/robot/equipped()
 	var/list/objects = list()
