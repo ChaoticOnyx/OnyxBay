@@ -236,7 +236,7 @@
 /obj/item/clothing/head/helmet
 	name = "helmet"
 	icon_state = "helmet"
-	flags = FPRINT|TABLEPASS|SUITSPACE|HEADCOVERSEYES
+	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES
 	item_state = "helmet"
 
 	protective_temperature = 500
@@ -257,33 +257,33 @@
 /obj/item/clothing/head/helmet/swat
 	name = "swat helmet"
 	icon_state = "swat"
-	flags = FPRINT | TABLEPASS | SUITSPACE | HEADSPACE | HEADCOVERSEYES
+	flags = FPRINT | TABLEPASS | HEADSPACE | HEADCOVERSEYES
 	item_state = "swat"
 
 /obj/item/clothing/head/helmet/thunderdome
 	name = "Thunderdome helmet"
 	icon_state = "thunderdome"
-	flags = FPRINT | TABLEPASS | SUITSPACE | HEADSPACE | HEADCOVERSEYES
+	flags = FPRINT | TABLEPASS | HEADCOVERSEYES
 	item_state = "thunderdome"
 
 /obj/item/clothing/head/helmet/hardhat
 	name = "hard hat"
 	icon_state = "hardhat0"
-	flags = FPRINT | TABLEPASS | SUITSPACE
+	flags = FPRINT | TABLEPASS
 	item_state = "hardhat0"
 	var/on = 0
 
 /obj/item/clothing/head/helmet/plump
 	name = "Plump helmet helmet"
 	icon_state = "plump"
-	flags = FPRINT | TABLEPASS | SUITSPACE | HEADSPACE | HEADCOVERSEYES
+	flags = FPRINT | TABLEPASS | HEADCOVERSEYES
 	item_state = "plump"
 
 /obj/item/clothing/head/helmet/welding
 	name = "welding helmet"
 	desc = "A head-mounted face cover designed to protect the wearer completely from space-arc eye."
 	icon_state = "welding"
-	flags = FPRINT | TABLEPASS | SUITSPACE | HEADCOVERSEYES
+	flags = FPRINT | TABLEPASS | HEADCOVERSEYES
 	see_face = 0.0
 	item_state = "welding"
 	protective_temperature = 1300
@@ -293,7 +293,7 @@
 /obj/item/clothing/head/helmet/HoS
 	name = "HoS helmet"
 	icon_state = "hoscap"
-	flags = FPRINT | TABLEPASS | SUITSPACE | HEADCOVERSEYES
+	flags = FPRINT | TABLEPASS | HEADCOVERSEYES
 
 // MASK WAS THAT MOVIE WITH THAT GUY WITH THE MESSED UP FACE. WHAT'S HIS NAME . . . JIM CARREY, I THINK.
 
@@ -307,7 +307,7 @@
 	name = "gas mask"
 	desc = "A close-fitting mask that can filter some environmental toxins or be connected to an air supply."
 	icon_state = "gas_mask"
-	flags = FPRINT|TABLEPASS|SUITSPACE|MASKCOVERSMOUTH|MASKCOVERSEYES
+	flags = FPRINT|TABLEPASS|MASKCOVERSMOUTH|MASKCOVERSEYES
 	w_class = 3.0
 	see_face = 0.0
 	item_state = "gas_mask"
@@ -338,7 +338,7 @@
 	name = "Breath Mask"
 	icon_state = "breath"
 	item_state = "breath"
-	flags = FPRINT | TABLEPASS | SUITSPACE | HEADSPACE | MASKCOVERSMOUTH
+	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH
 	w_class = 2
 	protective_temperature = 420
 	heat_transfer_coefficient = 0.90
@@ -356,7 +356,7 @@
 	name = "Medical Mask"
 	icon_state = "medical"
 	item_state = "medical"
-	flags = FPRINT|TABLEPASS|SUITSPACE|HEADSPACE|MASKCOVERSMOUTH
+	flags = FPRINT|TABLEPASS|MASKCOVERSMOUTH
 	w_class = 3
 	protective_temperature = 420
 	gas_transfer_coefficient = 0.10
@@ -374,7 +374,7 @@
 	icon_state = "sterile"
 	item_state = "sterile"
 	w_class = 1
-	flags = FPRINT|TABLEPASS|HEADSPACE|MASKCOVERSMOUTH
+	flags = FPRINT|TABLEPASS|MASKCOVERSMOUTH
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.05
 
@@ -450,6 +450,7 @@
 	var/fire_resist = T0C+100
 	flags = FPRINT | TABLEPASS
 	var/airflowprot = 0
+
 /obj/item/clothing/suit/rig
 	name = "Robust Suit"
 	desc = "Robust"
@@ -462,6 +463,7 @@
 	heat_transfer_coefficient = 0.02
 	gas_transfer_coefficient = 0.01
 	airflowprot = 1
+
 /obj/item/clothing/suit/bio_suit
 	name = "bio suit"
 	desc = "A suit that protects against biological contamination."
@@ -614,7 +616,7 @@
 	icon_state = "space"
 	gas_transfer_coefficient = 0.01
 	item_state = "s_suit"
-	flags = FPRINT | TABLEPASS | SUITSPACE
+	flags = FPRINT | TABLEPASS | SUITSPACE | PLASMAGUARD
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	permeability_coefficient = 0.02
 	protective_temperature = 1000
