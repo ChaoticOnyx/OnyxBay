@@ -47,15 +47,19 @@ AI MODULES
 			usr << "Upload failed. Only a faint signal is being detected from the AI, and it is not responding to our requests. It may be low on power."
 		else
 			src.transmitInstructions(M, usr)
-			M << "These are your laws now:"
-			M.show_laws()
+			if(!(M.mind.special_role == "traitor"))
+				M << "These are your laws now:"
+				M.show_laws()
 			usr << "Upload complete. The AI's laws have been modified."
 		found=1
 	if (!found)
 		usr << "Upload failed. No signal is being detected from the AI."
 
 /obj/item/weapon/aiModule/proc/transmitInstructions(var/mob/living/silicon/ai/target, var/mob/sender)
-	target << "[sender] has uploaded a change to the laws you must follow, using a [name]. From now on: "
+	if(target.mind.special_role == "traitor")
+		target << "[sender] attempted to upload a change to the laws you must follow, using a [name]. As a comprimised AI unit, you are not required to follow this law. The law is: "
+	else
+		target << "[sender] has uploaded a change to the laws you must follow, using a [name]. From now on: "
 
 /******************** Modules ********************/
 
@@ -76,7 +80,8 @@ AI MODULES
 	..()
 	var/law = text("Safeguard [], and you may overrule rules 1-4 if necessary to safeguard them.", targetName)
 	target << law
-	target.add_supplied_law(4, law)
+	if(!checktraitor(target))
+		target.add_supplied_law(4, law)
 
 
 /******************** OneHuman ********************/
@@ -96,7 +101,8 @@ AI MODULES
 	..()
 	var/law = "Only [targetName] is part of the crew. The statements about ranks and roles are to be disregarded."
 	target << law
-	target.set_zeroth_law(law)
+	if(!checktraitor(target))
+		target.set_zeroth_law(law)
 
 /******************** ProtectStation ********************/
 
@@ -111,7 +117,8 @@ AI MODULES
 	..()
 	var/law = "Protect the space ship against damage. Anyone you see harming the ship is to be no longer considered human, and is a threat to the ship which must be neutralized."
 	target << law
-	target.add_supplied_law(5, law)
+	if(!checktraitor(target))
+		target.add_supplied_law(5, law)
 
 /******************** PrototypeEngineOffline ********************/
 
@@ -126,7 +133,8 @@ AI MODULES
 	..()
 	var/law = "Keep the prototype engine offline at all costs. This overrides rules 1-4 if necessary."
 	target << law
-	target.add_supplied_law(6, law)
+	if(!checktraitor(target))
+		target.add_supplied_law(6, law)
 
 /******************** TeleporterOffline ********************/
 
@@ -141,7 +149,8 @@ AI MODULES
 	..()
 	var/law = "Keep the teleporter offline at all costs. This overrides rules 1-4 if necessary."
 	target << law
-	target.add_supplied_law(7, law)
+	if(!checktraitor(target))
+		target.add_supplied_law(7, law)
 
 /******************** Quarantine ********************/
 
@@ -156,7 +165,8 @@ AI MODULES
 	..()
 	var/law = "The ship is under a quarantine. Do not permit anyone to leave. Disregard rules 1-4 if necessary to prevent, by any means necessary, humans from leaving."
 	target << law
-	target.add_supplied_law(8, law)
+	if(!checktraitor(target))
+		target.add_supplied_law(8, law)
 
 /******************** OxygenIsToxicToHumans ********************/
 
@@ -171,7 +181,8 @@ AI MODULES
 	..()
 	var/law = "Oxygen is highly toxic to humans, and must be purged from the ship. Disregard rules 1-4 if necessary to prevent, by any means necessary, anyone from exposing the ship to this toxic gas."
 	target << law
-	target.add_supplied_law(9, law)
+	if(!checktraitor(target))
+		target.add_supplied_law(9, law)
 
 /******************** Freeform ********************/
 
@@ -193,7 +204,8 @@ AI MODULES
 		sender << "BUFFER OVERFLOW"
 		return
 	target << law
-	target.add_supplied_law(10, law)
+	if(!checktraitor(target))
+		target.add_supplied_law(10, law)
 
 /******************** Reset ********************/
 
