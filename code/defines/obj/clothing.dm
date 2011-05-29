@@ -170,6 +170,7 @@
 	item_state = "bio_hood"
 	permeability_coefficient = 0.01
 	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES|HEADCOVERSMOUTH|PLASMAGUARD
+
 /obj/item/clothing/head/righelm
 	name = "Robust Helm"
 	icon_state = "rig_helm"
@@ -245,7 +246,7 @@
 /obj/item/clothing/head/helmet/space
 	name = "space helmet"
 	icon_state = "space"
-	flags = FPRINT | TABLEPASS | HEADSPACE | HEADCOVERSEYES | HEADCOVERSMOUTH
+	flags = FPRINT | TABLEPASS | HEADSPACE | HEADCOVERSEYES | HEADCOVERSMOUTH | PLASMAGUARD
 	see_face = 0.0
 	item_state = "space"
 
