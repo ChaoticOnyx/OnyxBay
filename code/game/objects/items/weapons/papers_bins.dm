@@ -68,9 +68,20 @@ CLIPBOARDS
 		if(src.stamped == 1)
 			user << "\blue This paper has been stamped and can no longer be edited."
 			return
-		var/t = input(user, "What text do you wish to add?", text("[]", src.name), text("[src.info]"))  as message
-		if ((!in_range(src, usr) && src.loc != user && !( istype(src.loc, /obj/item/weapon/clipboard) ) && src.loc.loc != user && user.equipped() != P))
-			return
+
+		var/t = "[src.info]"
+		do
+			t = input(user, "What text do you wish to add?", text("[]", src.name), t)  as message
+			if ((!in_range(src, usr) && src.loc != user && !( istype(src.loc, /obj/item/weapon/clipboard) ) && src.loc.loc != user && user.equipped() != P))
+				return
+
+			if(lentext(t) >= MAX_PAPER_MESSAGE_LEN)
+				var/cont = input(user, "Your message is too long! Would you like to continue editing it?", "", "yes") in list("yes", "no")
+				if(cont == "no")
+					break
+		while(lentext(t) > MAX_PAPER_MESSAGE_LEN)
+
+
 		//t = copytext(sanitize(t),1,MAX_PAPER_MESSAGE_LEN)
 		t = copytext(t,1,MAX_PAPER_MESSAGE_LEN)			//Allow line breaks on paper
 		//t = dd_replacetext(t, "\n", "<BR>")		//Moved all this crap up to the display rather than the input.
