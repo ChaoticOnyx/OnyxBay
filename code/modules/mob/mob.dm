@@ -952,6 +952,27 @@ mob/verb/turnwest()
 			if (istype(usr, /mob/living/silicon/robot))
 				var/mob/living/silicon/robot/M = usr
 				M.installed_modules()
+
+		if ("module1")
+			if (istype(usr, /mob/living/silicon/robot))
+				var/mob/living/silicon/robot/M = usr
+				M.select_module(1)
+
+		if ("module2")
+			if (istype(usr, /mob/living/silicon/robot))
+				var/mob/living/silicon/robot/M = usr
+				M.select_module(2)
+
+		if ("module3")
+			if (istype(usr, /mob/living/silicon/robot))
+				var/mob/living/silicon/robot/M = usr
+				M.select_module(3)
+
+		if ("store")
+			if (istype(usr, /mob/living/silicon/robot))
+				var/mob/living/silicon/robot/M = usr
+				M.deactivate_module(0)
+
 		if ("panel")
 			if (istype(usr, /mob/living/silicon/robot))
 				var/mob/living/silicon/robot/M = usr

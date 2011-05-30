@@ -10,6 +10,8 @@
 	var/module_state_1 = null
 	var/module_state_2 = null
 	var/module_state_3 = null
+	var/module_selected = 0
+	var/obj/screen/module_selector = null
 
 	var/mob/living/silicon/ai/connected_ai = null
 	var/obj/item/weapon/cell/cell = null
@@ -217,7 +219,7 @@
 		src << "Survive: AI units are not expendable, they are expensive. Do not allow unauthorized personnel to tamper with your equipment."
 		//src << "Command Link: Maintain an active connection to Central Command at all times in case of software or directive updates."
 		return
-	
+
 	if (everyone)
 		who = world
 	else
@@ -568,23 +570,11 @@
 			src << "Already activated"
 			return
 		if(!module_state_1)
-			module_state_1 = O
-			contents += O
-			O.screen_loc = ui_id
-			client.screen += O
-			O.layer = 20
+			activate_module(1, O)
 		else if(!module_state_2)
-			module_state_2 = O
-			contents += O
-			O.screen_loc = ui_iclothing
-			client.screen += O
-			O.layer = 20
+			activate_module(2, O)
 		else if(!module_state_3)
-			module_state_3 = O
-			contents += O
-			O.screen_loc = ui_belt
-			client.screen += O
-			O.layer = 20
+			activate_module(3, O)
 		else
 			src << "You need to disable a module first!"
 		installed_modules()
@@ -633,31 +623,102 @@
 	deactivate_module(3)
 
 /mob/living/silicon/robot/proc/deactivate_module(var/num)
+	if(num == 0)
+		num = module_selected
+		if(module_selected == 0)
+			return
+
 	var/obj/item/O = vars["module_state_[num]"]
 	if(!O)
 		return
+
 	O.layer = initial(O.layer)
 	client.screen -= O
 	contents -= O
 	vars["module_state_[num]"] = null
 
+/mob/living/silicon/robot/proc/activate_module(var/num, var/obj/item/O)
+	if(vars["module_state_[num]"] == O)
+		return
+
+	if(num == 0)
+		if(!module_state_1)
+			activate_module(1, O)
+		else if(!module_state_2)
+			activate_module(2, O)
+		else if(!module_state_3)
+			activate_module(3, O)
+		return
+
+	if(vars["module_state_[num]"])
+		deactivate_module(num)
+
+	contents += O
+	client.screen += O
+	O.layer = 20
+	switch(num)
+		if(1)
+			module_state_1 = O
+			O.screen_loc = ui_id
+		if(2)
+			module_state_2 = O
+			O.screen_loc = ui_iclothing
+		if(3)
+			module_state_3 = O
+			O.screen_loc = ui_belt
+
+/mob/living/silicon/robot/proc/selected_module()
+	if(module_selected == 0)
+		return null
+	else
+		return vars["module_state_[module_selected]"]
+
+/mob/living/silicon/robot/proc/select_module(var/num)
+	if(!module_selector)
+		module_selector = new /obj/screen()
+		module_selector.icon = 'screen1_robot.dmi'
+		module_selector.icon_state = "module_select"
+		module_selector.mouse_opacity = 0
+		module_selector.layer = 21
+		module_selector.screen_loc = ui_id
+
+	if(module_selected == num)
+		module_selected = 0
+	else
+		module_selected = num
+
+	if(module_selected == 0)
+		client.screen -= module_selector
+	else
+		client.screen += module_selector
+		switch(module_selected)
+			if(1)
+				module_selector.screen_loc = ui_id
+			if(2)
+				module_selector.screen_loc = ui_iclothing
+			if(3)
+				module_selector.screen_loc = ui_belt
+
+
 /mob/living/silicon/robot/equipped()
 	var/list/objects = list()
 	var/obj/item/W
-	if(module_state_1)
-		objects += module_state_1
-	if(module_state_2)
-		objects += module_state_2
-	if(module_state_3)
-		objects += module_state_3
+	W = selected_module()
+	if(!W)
+		if(module_state_1)
+			objects += module_state_1
+		if(module_state_2)
+			objects += module_state_2
+		if(module_state_3)
+			objects += module_state_3
 
-	if (objects.len > 1)
-		var/input = input("Please, select an item!", "Item", null, null) as obj in objects
-		W = input
-	else if(objects.len)
-		W = objects[1]
-	else
-		W = null
+		if (objects.len > 1)
+			var/input = input("Please, select an item!", "Item", null, null) as obj in objects
+			W = input
+		else if(objects.len)
+			W = objects[1]
+		else
+			W = null
 	return W
 
 /mob/living/silicon/robot/proc/activated(obj/item/O)
