@@ -62,6 +62,30 @@
 				req_access += n
 	..()
 
+
+
+/mob/proc/has_access(list/req_access)
+	if(req_access == null || !istype(req_access, /list) || req_access.len < 1)
+		return 1
+	if(istype(src, /mob/living/silicon))
+		return 1
+	else if(istype(src, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = src
+		if(id_has_access(H.equipped(), req_access) || id_has_access(H.wear_id, req_access))
+			return 1
+	else if(istype(src, /mob/living/carbon/monkey) || istype(src, /mob/living/carbon/alien/humanoid))
+		var/mob/living/carbon/george = src
+		if(george.equipped() && istype(george.equipped(), /obj/item/weapon/card/id) && id_has_access(george.equipped(), req_access))
+			return 1
+	return 0
+
+/mob/proc/id_has_access(obj/item/weapon/card/id/I, list/req_access)
+	if(I && istype(I, /obj/item/weapon/card/id))
+		for(var/req in req_access)
+			if((req in I.access))
+				return 1
+	return 0
+
 //returns 1 if this mob has sufficient access to use this object
 /obj/proc/allowed(mob/M)
 	//check if it doesn't require any access at all

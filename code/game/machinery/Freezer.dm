@@ -8,6 +8,12 @@
 
 	current_heat_capacity = 1000
 
+	var/safety_off = 0
+	var/maximum_temperature = T0C + 90
+	var/safe_maximum_temperature = T0C + 90
+	var/minimum_temperature = T0C - 200
+	var/safe_minimum_temperature = T0C - 200
+
 	New()
 		..()
 		initialize_directions = NORTH
@@ -55,7 +61,8 @@
 		Current status: [ on ? "<A href='?src=\ref[src];start=1'>Off</A> <B>On</B>" : "<B>Off</B> <A href='?src=\ref[src];start=1'>On</A>"]<BR>
 		Current gas temperature: [temp_text]<BR>
 		Current air pressure: [air_contents.return_pressure()]<BR>
-		Target gas temperature: <A href='?src=\ref[src];temp=-100'></A> <A href='?src=\ref[src];temp=-10'>-</A> <A href='?src=\ref[src];temp=-1'>-</A> [current_temperature] <A href='?src=\ref[src];temp=1'>+</A> <A href='?src=\ref[src];temp=10'>+</A> <A href='?src=\ref[src];temp=100'>+</A><BR>
+		Target gas temperature: [safety_off?"<A href='?src=\ref[src];temp=min'>min</A> <A href='?src=\ref[src];temp=-100'>-</A>":"min -"] <A href='?src=\ref[src];temp=-10'>-</A> <A href='?src=\ref[src];temp=-1'>-</A> [current_temperature] <A href='?src=\ref[src];temp=1'>+</A> <A href='?src=\ref[src];temp=10'>+</A> [safety_off?"<A href='?src=\ref[src];temp=100'>+</A> <A href='?src=\ref[src];temp=max'>max</A>":"+ max"]<BR>
+		[safety_off?"":"<A href='?src=\ref[src];safety-off=1'>disable safety limits</a><br>"]
 		"}
 
 		user << browse(dat, "window=freezer;size=400x500")
@@ -67,12 +74,47 @@
 			if (href_list["start"])
 				src.on = !src.on
 				update_icon()
+
 			if(href_list["temp"])
-				var/amount = text2num(href_list["temp"])
-				if(amount > 0)
-					src.current_temperature = min(T0C + 90, src.current_temperature+amount)
+				var/old = current_temperature
+				if(href_list["temp"] == "min")
+					src.current_temperature = minimum_temperature
+				else if(href_list["temp"] == "max")
+					src.current_temperature = maximum_temperature
 				else
-					src.current_temperature = max((T0C - 200), src.current_temperature+amount)
+					var/amount = text2num(href_list["temp"])
+					if(amount > 0)
+						src.current_temperature = min(maximum_temperature, src.current_temperature+amount)
+					else
+						src.current_temperature = max(minimum_temperature, src.current_temperature+amount)
+				var/change = abs(old - current_temperature)
+
+				if(change > 10)
+					safety_off = safety_off //Avoid 'if statement has no effect'. Remove once real code is added
+					//Todo: A chance of something bad happening here.
+
+				if(current_temperature < safe_minimum_temperature || current_temperature > safe_maximum_temperature)
+					safety_off = safety_off //Avoid 'if statement has no effect'. Remove once real code is added
+					//Todo: Here, as well
+
+			if(href_list["safety-off"])
+				var/message =	"Warning! The limits are there for a reason, and bypassing them may damage the equipment. Without them, it is possible to change the temperature too quickly, or to values outside of the safe operating range, risking equipment damage.<br><br>"
+				message +=		"<A href='?src=\ref[src];safety-off-confirm=1'>Disable limits</A> (Note: requires officer ID)"
+				usr << browse(message, "window=freezerlimits")
+
+			if(href_list["safety-off-confirm"])
+				if(usr.has_access(list(access_heads)))
+					safety_off = 1
+					minimum_temperature = safe_minimum_temperature - 50
+					maximum_temperature = safe_maximum_temperature + 50
+					usr << browse(null, "window=freezerlimits")
+				else
+					var/message =	"Warning! The limits are there for a reason, and bypassing them may damage the equipment. Without them, it is possible to change the temperature too quickly, or to values outside of the safe operating range, risking equipment damage.<br><br>"
+					message +=		"<A href='?src=\ref[src];safety-off-confirm=1'>Disable limits</A> (Note: requires officer ID)<br>"
+					message +=		"<FONT COLOR=red>Inadequate ID!</FONT>"
+					usr << browse(message, "window=freezerlimits")
+
+
 		src.updateUsrDialog()
 		src.add_fingerprint(usr)
 		return
