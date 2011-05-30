@@ -308,7 +308,7 @@
 	name = "gas mask"
 	desc = "A close-fitting mask that can filter some environmental toxins or be connected to an air supply."
 	icon_state = "gas_mask"
-	flags = FPRINT|TABLEPASS|MASKCOVERSMOUTH|MASKCOVERSEYES
+	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH | MASKCOVERSEYES | MASKINTERNALS
 	w_class = 3.0
 	see_face = 0.0
 	item_state = "gas_mask"
@@ -339,7 +339,7 @@
 	name = "Breath Mask"
 	icon_state = "breath"
 	item_state = "breath"
-	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH
+	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH | MASKINTERNALS
 	w_class = 2
 	protective_temperature = 420
 	heat_transfer_coefficient = 0.90
@@ -357,7 +357,7 @@
 	name = "Medical Mask"
 	icon_state = "medical"
 	item_state = "medical"
-	flags = FPRINT|TABLEPASS|MASKCOVERSMOUTH
+	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH | MASKINTERNALS
 	w_class = 3
 	protective_temperature = 420
 	gas_transfer_coefficient = 0.10
@@ -366,7 +366,7 @@
 	name = "muzzle"
 	icon_state = "muzzle"
 	item_state = "muzzle"
-	flags = FPRINT|TABLEPASS|MASKCOVERSMOUTH
+	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH
 	w_class = 2
 	gas_transfer_coefficient = 0.90
 
@@ -375,7 +375,7 @@
 	icon_state = "sterile"
 	item_state = "sterile"
 	w_class = 1
-	flags = FPRINT|TABLEPASS|MASKCOVERSMOUTH
+	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.05
 
