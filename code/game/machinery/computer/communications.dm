@@ -283,7 +283,7 @@
 				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=toggle-redalert'>Declare Red Alert</A> \]"
 			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=ai-status'>Set Status Display</A> \]"
 		if(STATE_CALLSHUTTLE)
-			dat += "Are you sure you want to start the escape pod launch sequence?? \[ <A HREF='?src=\ref[src];operation=ai-callshuttle2'>OK</A> | <A HREF='?src=\ref[src];operation=ai-main'>Cancel</A> \]"
+			dat += "Are you sure you want to start the escape pod launch sequence? \[ <A HREF='?src=\ref[src];operation=ai-callshuttle2'>OK</A> | <A HREF='?src=\ref[src];operation=ai-main'>Cancel</A> \]"
 		if(STATE_MESSAGELIST)
 			dat += "Messages:"
 			for(var/i = 1; i<=src.messagetitle.len; i++)
