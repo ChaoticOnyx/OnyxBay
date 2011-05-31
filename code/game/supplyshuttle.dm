@@ -387,12 +387,14 @@ var/supply_shuttle_points = 50
 	anchored = 1
 	layer = 4
 
+
 /obj/plasticflaps/CanPass(atom/A, turf/T)
 	if (istype(A, /mob/living)) // You Shall Not Pass!
-		var/mob/living/M = A
-		if(!M.lying)			// unless you're lying down
-			return 0
+		//var/mob/living/M = A
+		//if(!M.lying)			// unless you're lying down
+		return 0
 	return ..()
+
 
 /obj/plasticflaps/ex_act(severity)
 	switch(severity)
