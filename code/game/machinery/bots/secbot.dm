@@ -66,12 +66,14 @@
 	auto_patrol = 1
 
 
-/obj/proc/moveto(var/atom/I) // Moves an item from a living being into another object. Used below for taking equipment off perps
+/obj/item/proc/moveto(var/atom/I) // Moves an item from a living being into another object. Used below for taking equipment off perps
 	if(istype(src.loc,/mob/living/carbon))
 		var/mob/living/carbon/C = src.loc
 		C.u_equip(src)
 		if (C.client)
 			C.client.screen -= src
+
+		src.captured_by_securitron = 1 // If you plan to use moveto in other cases unrelated to securitrons, move this line before moveto calls below
 		src.loc = I
 		src.layer = initial(src.layer)
 		return
@@ -287,19 +289,19 @@ Auto Patrol: []"},
 					var/gotstuff
 					if(src.target:r_hand)
 						gotstuff = "Captured items from [src.target.name]: [src.target.r_hand.name]"
-
-
+						src.target:r_hand.name += " (Captured by [src.name] from [target.name])"
 						src.target:r_hand.moveto(src)
 
 
 
 					if(src.target:l_hand)
 						if(gotstuff == "")
-							gotstuff = "Captured items from [src.target.name]: [src.target.r_hand.name]"
+							gotstuff = "Captured items from [src.target.name]: [src.target.l_hand.name]"
 						else
 							gotstuff += " and [src.target.l_hand.name]"
-
+							src.target:l_hand.name += " (Captured by [src.name] from [target.name])"
 							src.target:l_hand.moveto(src)
+
 
 					if(gotstuff)
 						speak(gotstuff)
@@ -347,27 +349,27 @@ Auto Patrol: []"},
 						src.speak("Suspect [src.target.name] has been apprehended near [src.loc.loc].")
 						if(secure_arrest)
 							if(src.target:belt)
-								var/obj/I = src.target:belt
+								var/obj/item/I = src.target:belt
 								I.name += " (Captured by [src.name] from [target.name])" //Might move this into something embedded within the item that the forenzics scanner can read
 								I.moveto(src)
 							if(src.target:back)
-								var/obj/I = src.target:back
+								var/obj/item/I = src.target:back
 								I.name += " (Captured by [src.name] from [target.name])"
 								I.moveto(src)
 						///	if(src.target:wear_id)
-						//		var/obj/I = src.target:wear_id
+						//		var/obj/item/I = src.target:wear_id
 						//		I.name += " (Captured by [src.name] from [target.name])"
 						//		I.moveto(src)
 							if(src.target:l_store)
-								var/obj/I = src.target:l_store
+								var/obj/item/I = src.target:l_store
 								I.name += " (Captured by [src.name] from [target.name])"
 								I.moveto(src)
 							if(src.target:r_store)
-								var/obj/I = src.target:r_store
+								var/obj/item/I = src.target:r_store
 								I.name += " (Captured by [src.name] from [target.name])"
 								I.moveto(src)
 							if(src.target:glasses)
-								var/obj/I = src.target:glasses
+								var/obj/item/I = src.target:glasses
 								I.name += " (Captured by [src.name] from [target.name])"
 								I.moveto(src)
 							src.speak("Due to suspection of Syndicate affiliation, the person has been stripped of his gear.")
@@ -827,9 +829,10 @@ Auto Patrol: []"},
 	if (prob(50)) // Dropping a robot left arm
 		new /obj/item/robot_parts/l_arm(Loc)
 
-	for(var/obj/A in src) // Dropping the contraband
-		if(A in contraband)
-			A.loc = src.loc
+	for(var/obj/item/A in src.contents) // Dropping the contraband
+		if(A.captured_by_securitron == 1)
+			A.loc = Loc
+			A.captured_by_securitron = 0
 
 	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread // Sparks!
 	s.set_up(3, 1, src)
