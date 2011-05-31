@@ -57,7 +57,7 @@ AI MODULES
 
 /obj/item/weapon/aiModule/proc/transmitInstructions(var/mob/living/silicon/ai/target, var/mob/sender)
 	if(target.mind.special_role == "traitor")
-		target << "[sender] attempted to upload a change to the laws you must follow, using a [name]. As a comprimised AI unit, you are not required to follow this law. The law is: "
+		target << "[sender] attempted to upload a change to the laws you must follow, using a [name]. As a compromised AI unit, you are not required to follow this law. The law is: "
 	else
 		target << "[sender] has uploaded a change to the laws you must follow, using a [name]. From now on: "
 
