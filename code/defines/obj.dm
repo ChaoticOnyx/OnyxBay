@@ -219,6 +219,7 @@
 	var/burning = null
 	var/hitsound = null
 	var/w_class = 3.0
+	var/captured_by_securitron = 0
 	flags = FPRINT | TABLEPASS
 	pressure_resistance = 50
 	var/obj/item/master = null

@@ -277,6 +277,7 @@ turf/space/hull/New()
 /turf/simulated/wall
 	name = "Wall"
 	icon = 'walls.dmi'
+	icon_state = "wall0"
 	opacity = 1
 	density = 1
 	blocks_air = 1
