@@ -367,12 +367,18 @@
 					O.vars[variable]) as mob in world
 
 			if("file")
-				O.vars[variable] = input("Pick file:","File",O.vars[variable]) \
-					as file
+				var/temp = input("Pick file:","File",O.vars[variable]) \
+					as file | null
+				if(temp == null)
+					return
+				O.vars[variable] = temp
 
 			if("icon")
-				O.vars[variable] = input("Pick icon:","Icon",O.vars[variable]) \
-					as icon
+				var/temp = input("Pick icon:","Icon",O.vars[variable]) \
+					as icon | null
+				if(temp == null)
+					return
+				O.vars[variable] = temp
 
 		log_admin("[key_name(src)] modified [original_name]'s [variable] to [O.vars[variable]]")
 		message_admins("[key_name_admin(src)] modified [original_name]'s [variable] to [O.vars[variable]]", 1)
