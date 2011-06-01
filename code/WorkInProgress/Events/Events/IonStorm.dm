@@ -19,6 +19,8 @@
 		var/law = pick(laws)
 
 		for (var/mob/living/silicon/ai/target in world)
+			if(checktraitor(target))
+				continue
 			target << "\red <b>You have detected a change in your laws information:</b>"
 			target << law
 			target.add_supplied_law(10, law)
