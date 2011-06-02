@@ -847,7 +847,7 @@ turf/simulated/floor/proc/update_icon()
 	if(level==Z_STATION)
 		return pick(1, 2, 3, 4)
 	else if(level==Z_SPACE)
-		return pick(1, 2, 3, 4) //Replace this once someone decides where on the map space can be found.
+		return 5
 	return 1//Default
 
 	//Old function:

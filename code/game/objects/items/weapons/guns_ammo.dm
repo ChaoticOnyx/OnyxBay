@@ -709,7 +709,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 			s.set_up(5, 1, M)
 			s.start()
 			if(prob(src.failchance)) //oh dear a problem, put em in deep space
-				do_teleport(M, locate(rand(5, world.maxx - 5), rand(5, world.maxy -5), 3), 0)
+				do_teleport(M, locate(rand(5, world.maxx - 5), rand(5, world.maxy -5), getZLevel(Z_SPACE)), 0)
 			else
 				do_teleport(M, src.target, 2)
 	return
