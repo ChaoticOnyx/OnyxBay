@@ -16,17 +16,28 @@ RACK PARTS
 		del(src)
 
 /obj/item/weapon/table_parts/attack_self(mob/user as mob)
-	var/state = input(user, "What type of table?", "Assembling Table", null) in list( "sides", "corners", "alone" )
+	var/state = input(user, "What type of table?", "Assembling Table", null) in list( "middle","sides", "corners", "alone", "narrow corners", "narrow tables", "narrow end tables" )
 	var/direct = SOUTH
 	var/i_state
 	if(state == "alone")
 		i_state = "table"
+	else if(state == "middle")
+		i_state = "table_middle"
 	else if (state == "corners")
 		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTHWEST", "NORTHEAST", "SOUTHWEST", "SOUTHEAST" )
 		i_state = "tabledir"
 	else if (state == "sides")
 		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTH", "EAST", "SOUTH", "WEST" )
 		i_state = "tabledir"
+	else if (state == "narrow corners")
+		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTHWEST", "NORTHEAST", "SOUTHWEST", "SOUTHEAST" )
+		i_state = "table_1tilethick"
+	else if (state == "narrow tables")
+		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTH", "EAST", "SOUTH", "WEST" )
+		i_state = "table_1tilethick"
+	else if (state == "narrow end tables")
+		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTH", "EAST", "SOUTH", "WEST" )
+		i_state = "table_1tileendtable"
 	var/obj/table/T = new /obj/table( user.loc )
 	T.icon_state = i_state
 	T.dir = text2dir(direct)
@@ -45,17 +56,28 @@ RACK PARTS
 		del(src)
 
 /obj/item/weapon/table_parts/reinforced/attack_self(mob/user as mob)
-	var/state = input(user, "What type of table?", "Assembling Table", null) in list( "sides", "corners", "alone" )
+	var/state = input(user, "What type of table?", "Assembling Table", null) in list( "middle","sides", "corners", "alone", "narrow corners", "narrow tables", "narrow end tables" )
 	var/direct = SOUTH
 	var/i_state
 	if(state == "alone")
 		i_state = "reinf_table"
+	else if(state == "middle")
+		i_state = "reinf_middle"
 	else if (state == "corners")
 		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTHWEST", "NORTHEAST", "SOUTHWEST", "SOUTHEAST" )
 		i_state = "reinf_tabledir"
 	else if (state == "sides")
 		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTH", "EAST", "SOUTH", "WEST" )
 		i_state = "reinf_tabledir"
+	else if (state == "narrow corners")
+		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTHWEST", "NORTHEAST", "SOUTHWEST", "SOUTHEAST" )
+		i_state = "reinf_1tilethick"
+	else if (state == "narrow tables")
+		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTH", "EAST", "SOUTH", "WEST" )
+		i_state = "reinf_1tilethick"
+	else if (state == "narrow end tables")
+		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTH", "EAST", "SOUTH", "WEST" )
+		i_state = "reinf_1tileendtable"	
 	var/obj/table/reinforced/T = new /obj/table/reinforced( user.loc )
 	T.icon_state = i_state
 	T.dir = text2dir(direct)
