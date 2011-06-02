@@ -89,7 +89,7 @@
 					user << "\red The ship's gravity well keeps you in orbit!" // Assuming the ship starts on z level 1, you don't want to go past it
 
 			if (DOWN) // Going down!
-				if (user.z != 4) // If we aren't at the very bottom of the ship
+				if (user.z != 4 && user.z != 5) // If we aren't at the very bottom of the ship, or out in space
 					var/turf/T = locate(user.x, user.y, user.z + 1)
 					// You can only jetpack down if you're sitting on space and there's space down below, or hull
 					if(T && (istype(T, /turf/space) || istype(T, /turf/space/hull)) && istype(user.loc, /turf/space))
