@@ -113,7 +113,10 @@
 	if (istype(W, /obj/item/weapon/wrench))
 		user << "\blue Now disassembling table"
 		playsound(src.loc, 'Ratchet.ogg', 50, 1)
+		var/T = user.loc
 		sleep(50)
+		if(!(user.loc == T && user.equipped() == W)) //if they moved away or lost the wrench STOP
+			return
 		new /obj/item/weapon/table_parts( src.loc )
 		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 		//SN src = null
