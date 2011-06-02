@@ -90,14 +90,13 @@
 		newmeat3.name = sourcename + newmeat3.name
 		newmeat3.subjectname = sourcename
 		newmeat3.subjectjob = sourcejob
-		if(src.occupant.client)
-			var/mob/dead/observer/newmob
-			newmob = new/mob/dead/observer(src.occupant)
-			src.occupant:client:mob = newmob
-			newmob:client:eye = newmob
-			del(src.occupant)
-		else
-			del(src.occupant)
+
+		if(src.occupant.key)
+			var/mob/dead/observer/newmob = new(loc, src.occupant)
+			newmob.key = src.occupant.key
+
+		del(src.occupant)
+
 		spawn(src.gibtime)
 			playsound(src.loc, 'splat.ogg', 50, 1)
 			operating = 0
