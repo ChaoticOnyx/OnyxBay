@@ -45,6 +45,9 @@
 	if(!(loc in visibleTurfs))
 		return
 
+	hasChanged()
+
+/datum/camerachunk/proc/hasChanged()
 	if(visible)
 		if(!updating)
 			updating = 1
@@ -217,6 +220,21 @@ var/datum/cameranet/cameranet = new()
 	var/datum/camerachunk/chunk = getCameraChunk(loc.x & ~0xf, loc.y & ~0xf, loc.z)
 	chunk.visibilityChanged(loc)
 
+/datum/cameranet/proc/addCamera(obj/machinery/camera/c)
+	var/x1 = max(0, c.x - 16) & ~0xf
+	var/y1 = max(0, c.y - 16) & ~0xf
+	var/x2 = min(world.maxx, c.x + 16) & ~0xf
+	var/y2 = min(world.maxy, c.y + 16) & ~0xf
+
+	for(var/x = x1; x <= x2; x += 16)
+		for(var/y = y1; y <= y2; y += 16)
+			if(chunkGenerated(x, y, c.z))
+				var/datum/camerachunk/chunk = getCameraChunk(x, y, c.z)
+				if(!(c in chunk.cameras))
+					chunk.cameras += c
+					chunk.hasChanged()
+
+
 /mob/living/silicon/ai/var/mob/aiEye/eyeobj = new()
 
 /mob/living/silicon/ai/New()
@@ -265,3 +283,11 @@ var/datum/cameranet/cameranet = new()
 		if(AI.client.eye == AI.eyeobj)
 			return
 	return ..()
+
+/obj/machinery/door/update_nearby_tiles()
+	. = ..()
+	cameranet.updateVisibility(loc)
+
+/obj/machinery/camera/New()
+	..()
+	cameranet.addCamera(src)
