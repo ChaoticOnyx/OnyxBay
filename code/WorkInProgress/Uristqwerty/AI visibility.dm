@@ -284,8 +284,8 @@ var/datum/cameranet/cameranet = new()
 			return
 	return ..()
 
-/obj/machinery/door/update_nearby_tiles()
-	. = ..()
+/obj/machinery/door/update_nearby_tiles(need_rebuild)
+	. = ..(need_rebuild)
 	cameranet.updateVisibility(loc)
 
 /obj/machinery/camera/New()
