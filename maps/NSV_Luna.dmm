@@ -1895,7 +1895,7 @@
 "aKw" = (/obj/closet/emcloset,/obj/machinery/atmospherics/unary/vent_filter{dir = 1; initialize_directions = 1},/turf/simulated/floor,/area/storage/emergency2)
 "aKx" = (/turf/simulated/floor,/area/storage/emergency2)
 "aKy" = (/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/obj/table,/obj/item/weapon/storage/toolbox/emergency,/turf/simulated/floor,/area/storage/emergency2)
-"aKz" = (/obj/table{icon_state = "tabledir"; dir = 9},/turf/simulated/floor{icon_state = "carpetW"},/area/chapel/office)
+"aKz" = (/turf/simulated/floor{icon_state = "carpetW"},/area/chapel/office)
 "aKA" = (/obj/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/machinery/atmospherics/unary/vent_filter{dir = 1; initialize_directions = 1},/turf/simulated/floor{icon_state = "carpet"},/area/chapel/office)
 "aKB" = (/obj/disposalpipe/junction,/turf/simulated/floor{icon_state = "carpet"},/area/chapel/office)
 "aKC" = (/obj/machinery/light_switch{name = "E Light Switch"; pixel_x = 24},/turf/simulated/floor{icon_state = "carpetE"},/area/chapel/office)
