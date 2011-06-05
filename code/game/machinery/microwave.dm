@@ -2,53 +2,151 @@
 	var/list/needs = list()
 	var/creates = "" // The item that is spawned when the recipe is made
 
-/datum/recipe/donut
-	needs = list("egg" = 1, "flour" = 1)
-	creates = "donut"
+/datum/recipe/cereal
+	needs = list("flour" = 1)
+	creates = "cereal"
 
-/datum/recipe/dwbiscuits
-	needs = list("plump" = 2)
-	creates = "dwbiscuits"
+/datum/recipe/candycane
+	needs = list("sugar" = 2)
+	creates = "candycane"
 
-/datum/recipe/monkeyburger
-	needs = list("monkeymeat" = 1, "flour" = 1)
-	creates = "monkeyburger"
+/datum/recipe/sweetapple
+	needs = list("apple" = 1, "sugar" = 1)
+	creates = "sweetapple"
 
-/datum/recipe/humanburger
-	needs = list("flour" = 1, "humanmeat" = 1)
-	creates = "humanburger"
+/datum/recipe/bun
+	needs = list("dough" = 1)
+	creates = "bun"
 
-/datum/recipe/brainburger
-	needs = list("flour" = 1, "/obj/item/brain" = 1)
-	creates = "brainburger"
-
-/datum/recipe/roburger/
-	needs = list("flour" = 1, "/obj/item/robot_parts/head" = 1)
-	creates = "roburger"
-
-/datum/recipe/waffles
-	needs = list("egg" = 2, "flour" = 2)
-	creates = "waffles"
-
-/datum/recipe/meatball
-	needs = list("monkeymeat" = 1, "humanmeat" = 1)
-	creates = "meatball"
+/datum/recipe/flatbread
+	needs = list("flatdough" = 1)
+	creates = "flatbread"
 
 /datum/recipe/pie
 	needs = list("flour" = 2, "/obj/item/weapon/banana" = 1)
 	creates = "pie"
 
+/datum/recipe/waffles
+	needs = list("flatdough" = 1, "sugar" = 1)
+	creates = "waffles"
+
+/datum/recipe/boiledegg
+	needs = list("egg" = 1)
+	creates = "boiledegg"
+
+/datum/recipe/omelette
+	needs = list("egg" = 2)
+	creates = "omelette"
+
+/datum/recipe/donut
+	needs = list("egg" = 1, "flour" = 1)
+	creates = "donut"
+
+/datum/recipe/loaf
+	needs = list("dough" = 1, "egg" = 1)
+	creates = "breadsys/loaf"
+
+/datum/recipe/steak
+	needs = list("meat" = 1)
+	creates = "steak"
+
+/datum/recipe/chips
+	needs = list("rawsticks" = 1)
+	creates = "chips"
+
+/datum/recipe/frenchfries
+	needs = list("rawsticks" = 1, "breadsys/ontop/butter" = 1)
+	creates = "frenchfries"
+
+/datum/recipe/cutlet
+	needs = list("rawcutlet" = 1)
+	creates = "cutlet"
+
+/datum/recipe/meatball
+	needs = list("rawmeatball" = 1)
+	creates = "meatball"
+
+/datum/recipe/sausage
+	needs = list("cutlet" = 1)
+	creates = "sausage"
+
+/datum/recipe/bakedpotato
+	needs = list("potato" = 1)
+	creates = "bakedpotato"
+
+/datum/recipe/spaghetti
+	needs = list("noodles" = 1)
+	creates = "spaghetti"
+
+/datum/recipe/meatspaghetti
+	needs = list("noodles" = 1, "rawmeatball" = 1)
+	creates = "meatspaghetti"
+
+/datum/recipe/pieapple
+	needs = list("dough" = 1, "sugar" = 1, "apple" = 1)
+	creates = "pieapple"
+
+/datum/recipe/pattyapple
+	needs = list("doughslice" = 1, "apple" = 1)
+	creates = "pattyapple"
+
+/datum/recipe/piepotato
+	needs = list("dough" = 1, "breadsys/ontop/butter" = 1, "potato" = 1)
+	creates = "piepotato"
+
+/datum/recipe/pieshroom
+	needs = list("dough" = 1, "breadsys/ontop/butter" = 1, "fungi" = 1)
+	creates = "pieshroom"
+
+/datum/recipe/piemeat
+	needs = list("dough" = 1, "breadsys/ontop/butter" = 1, "meat" = 1)
+	creates = "piemeat"
+
+/datum/recipe/taco
+	needs = list("doughslice" = 1, "cutlet" = 1, "breadsys/ontop/cheese" = 1)
+	creates = "taco"
+
 /datum/recipe/donkpocket
-	needs = list("flour" = 1, "meatball" = 1)
+	needs = list("doughslice" = 1, "meatball" = 1)
 	creates = "donkpocket"
+
+/datum/recipe/pizza
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1)
+	creates = "pizza"
+
+/datum/recipe/pizzashroom
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "fungi" = 1)
+	creates = "pizzashroom"
+
+/datum/recipe/pizzameat
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "cutlet" = 2)
+	creates = "pizzashroom"
+
+/datum/recipe/pizzameatshroom
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "cutlet" = 2, "fungi" = 1)
+	creates = "pizzameatshroom"
+
+/datum/recipe/pizzasalami
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "breadsys/ontop/salami" = 2)
+	creates = "pizzashroom"
+
+/datum/recipe/pizzasalamishroom
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "breadsys/ontop/salami" = 2, "fungi" = 1)
+	creates = "pizzameatshroom"
+
+/datum/recipe/pizzapotato
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "potato" = 1)
+	creates = "pizzapotato"
+////////////////////////////////////////////////////
+
+
+/datum/recipe/dwbiscuits
+	needs = list("plump" = 2)
+	creates = "dwbiscuits"
 
 /datum/recipe/donkpocket_warm
 	needs = list("donkpocket" = 1)
 	creates = "donkpocket"
-
-/datum/recipe/loafofbread
-	needs = list("flour" = 2,"egg" = 1)
-	creates = "/obj/item/weapon/reagent_containers/food/custom/breadsys/loaf"
 
 /obj/machinery/microwave
 	name = "Microwave"
@@ -66,19 +164,41 @@
 
 /obj/machinery/microwave/New() // *** After making the recipe in defines\obj\food.dmi, add it in here! ***
 	..()
-	src.available_recipes += new /datum/recipe/donut(src)
-	src.available_recipes += new /datum/recipe/monkeyburger(src)
-	src.available_recipes += new /datum/recipe/humanburger(src)
-	src.available_recipes += new /datum/recipe/waffles(src)
-	src.available_recipes += new /datum/recipe/brainburger(src)
-	src.available_recipes += new /datum/recipe/meatball(src)
-//	src.available_recipes += new /datum/recipe/roburger(src)
-	src.available_recipes += new /datum/recipe/loafofbread(src)
-	src.available_recipes += new /datum/recipe/donkpocket(src)
-	src.available_recipes += new /datum/recipe/dwbiscuits(src)
-	src.available_recipes += new /datum/recipe/donkpocket_warm(src)
+	src.available_recipes += new /datum/recipe/cereal(src)
+	src.available_recipes += new /datum/recipe/candycane(src)
+	src.available_recipes += new /datum/recipe/sweetapple(src)
+	src.available_recipes += new /datum/recipe/bun(src)
+	src.available_recipes += new /datum/recipe/flatbread(src)
 	src.available_recipes += new /datum/recipe/pie(src)
-
+	src.available_recipes += new /datum/recipe/waffles(src)
+	src.available_recipes += new /datum/recipe/boiledegg(src)
+	src.available_recipes += new /datum/recipe/omelette(src)
+	src.available_recipes += new /datum/recipe/donut(src)
+	src.available_recipes += new /datum/recipe/loaf(src)
+	src.available_recipes += new /datum/recipe/steak(src)
+	src.available_recipes += new /datum/recipe/cutlet(src)
+	src.available_recipes += new /datum/recipe/meatball(src)
+	src.available_recipes += new /datum/recipe/sausage(src)
+	src.available_recipes += new /datum/recipe/chips(src)
+	src.available_recipes += new /datum/recipe/frenchfries(src)
+	src.available_recipes += new /datum/recipe/bakedpotato(src)
+	src.available_recipes += new /datum/recipe/spaghetti(src)
+	src.available_recipes += new /datum/recipe/meatspaghetti(src)
+	src.available_recipes += new /datum/recipe/pieapple(src)
+	src.available_recipes += new /datum/recipe/pattyapple(src)
+	src.available_recipes += new /datum/recipe/pieshroom(src)
+	src.available_recipes += new /datum/recipe/piemeat(src)
+	src.available_recipes += new /datum/recipe/taco(src)
+	src.available_recipes += new /datum/recipe/donkpocket(src)
+	src.available_recipes += new /datum/recipe/pizza(src)
+	src.available_recipes += new /datum/recipe/pizzashroom(src)
+	src.available_recipes += new /datum/recipe/pizzameat(src)
+	src.available_recipes += new /datum/recipe/pizzameatshroom(src)
+	src.available_recipes += new /datum/recipe/pizzasalami(src)
+	src.available_recipes += new /datum/recipe/pizzasalamishroom(src)
+	src.available_recipes += new /datum/recipe/pizzapotato(src)
+	src.available_recipes += new /datum/recipe/donkpocket_warm(src)
+	src.available_recipes += new /datum/recipe/dwbiscuits(src)
 
 /*******************
 *   Item Adding
@@ -114,10 +234,10 @@ obj/machinery/microwave/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			src.icon_state = "mw"
 		else //Otherwise bad luck!!
 			return
-	else if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/humanmeat))
-		var/obj/item/weapon/reagent_containers/food/snacks/humanmeat/m = O
-		src.humanmeat_name = m.subjectname
-		src.humanmeat_job = m.subjectjob
+	else if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/meat))
+		var/obj/item/weapon/reagent_containers/food/snacks/meat/M = O
+		src.humanmeat_name = M.subjectname
+		src.humanmeat_job = M.subjectjob
 		for(var/mob/V in viewers(src, null))
 			V.show_message(text("\blue [user] adds \a [O.name] to the [name]."))
 		user.u_equip(O)
@@ -195,7 +315,7 @@ Please clean it before use!</TT><BR>
 				state("Error: No ingredients")
 			var/operation = text2num(href_list["cook"])
 
-			var/cook_time = 200 // The time to wait before spawning the item
+			var/cook_time = 150 // The time to wait before spawning the item
 			var/cooked_item = null
 
 			if(operation == 1) // If cook was pressed
@@ -292,7 +412,7 @@ Please clean it before use!</TT><BR>
 					O.loc = get_turf(src)
 				usr << "You empty the [name] of contents."
 
-			var/cooking = text2path(cooked_item) // Get the item that needs to be spanwed
+			var/cooking = text2path(cooked_item) // Get the item that needs to be spawned
 			if(!isnull(cooking))
 				for(var/mob/V in viewers(src, null))
 					V.show_message(text("\blue The [name] begins cooking something!"))
@@ -304,9 +424,6 @@ Please clean it before use!</TT><BR>
 				spawn(cook_time) //After the cooking time
 					if(!isnull(src.being_cooked))
 						playsound(src.loc, 'ding.ogg', 50, 1)
-						if(istype(src.being_cooked, /obj/item/weapon/reagent_containers/food/snacks/humanburger))
-							src.being_cooked.name = src.humanmeat_name + src.being_cooked.name
-							src.being_cooked:job = src.humanmeat_job
 						if(istype(src.being_cooked, /obj/item/weapon/reagent_containers/food/snacks/donkpocket))
 							src.being_cooked:warm = 1
 							src.being_cooked.name = "warm " + src.being_cooked.name
@@ -317,5 +434,3 @@ Please clean it before use!</TT><BR>
 					src.icon_state = "mw"
 			else
 				return
-
-

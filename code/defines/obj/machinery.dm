@@ -717,18 +717,36 @@
 	charge_type = "bar"
 
 /obj/machinery/vending/kitchen
-	name = "Kitchen Mate Plus"
-	desc = "The Kitchen Mate Plus.  Better ingredients.  Better burgers."
-	icon_state = "kitchen"
-	icon_deny = "kitchen-deny"
-	req_access_txt = "28"
-	points = 10
-	product_paths = "/obj/item/clothing/under/chef;/obj/item/clothing/head/chefhat;/obj/item/weapon/reagent_containers/food/snacks/donkpocket;/obj/item/weapon/reagent_containers/food/drinks/cola;/obj/item/weapon/reagent_containers/food/drinks/coffee;/obj/item/weapon/reagent_containers/food/snacks/flour;/obj/item/kitchen/egg_box;/obj/item/weapon/reagent_containers/food/snacks/plump;/obj/item/weapon/reagent_containers/food/snacks/meatball"
-	//product_amounts = "4;4;4;4;12"
-	product_prices = "1;1;1;1;1;1;2;3;2"
-	product_hidden = ""
-	hidden_prices = ""
-	charge_type = "kitchen"
+    name = "Kitchen Mate Plus"
+    desc = "The Kitchen Mate Plus.  Better ingredients.  Better burgers."
+    icon_state = "kitchen"
+    icon_deny = "kitchen-deny"
+    req_access_txt = "28"
+    points = 30
+    product_paths = {"/obj/item/weapon/kitchen/utensil/knife;
+/obj/item/weapon/kitchen/rollingpin;
+/obj/item/weapon/reagent_containers/food/drinks/cola;
+/obj/item/weapon/reagent_containers/food/drinks/coffee;
+/obj/item/kitchen/egg_box;
+/obj/item/weapon/reagent_containers/food/snacks/breadsys/butterpack;
+/obj/item/weapon/reagent_containers/food/snacks/breadsys/salamistick;
+/obj/item/weapon/reagent_containers/food/snacks/breadsys/bigcheese;
+/obj/item/weapon/reagent_containers/food/snacks/sugar;
+/obj/item/weapon/reagent_containers/food/snacks/flour;
+/obj/item/weapon/reagent_containers/food/snacks/noodles;
+/obj/item/weapon/reagent_containers/food/snacks/meat;
+/obj/item/weapon/reagent_containers/food/snacks/rawmeatball;
+/obj/item/weapon/reagent_containers/food/snacks/ketchup;
+/obj/item/weapon/reagent_containers/food/snacks/potato;
+/obj/item/weapon/reagent_containers/food/snacks/tomato;
+/obj/item/weapon/reagent_containers/food/snacks/apple;
+/obj/item/weapon/reagent_containers/food/snacks/fungi;
+/obj/item/weapon/reagent_containers/food/snacks/plump"}
+    //product_amounts = "10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10"
+    product_prices = "1;1;1;1;2;2;2;2;1;1;1;1;1;1;1;1;1;1;2"
+    product_hidden = ""
+    hidden_prices = ""
+    charge_type = "kitchen"
 
 /obj/machinery/vending/engineering
 	name = "Robco Tool Maker"

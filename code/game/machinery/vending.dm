@@ -17,17 +17,18 @@
 	spawn(4)
 	//	src.slogan_list = dd_text2list(src.product_slogans, ";")
 		src.slogan_list = list()
-		var/list/temp_paths = dd_text2list(src.product_paths, ";")
+		var/list/temp_paths = dd_replacetext(src.product_paths, "\n", "")
+		var/list/temp_pathsL = dd_text2list(temp_paths, ";")
 		//var/list/temp_amounts = dd_text2list(src.product_amounts, ";")
 		var/list/temp_prices = dd_text2list(src.product_prices, ";")
 		var/list/temp_hidden = dd_text2list(src.product_hidden, ";")
 		var/list/temp_hiddenprices = dd_text2list(src.hidden_prices, ";")
 		//Little sanity check here
-		if ((isnull(temp_paths)) || (isnull(temp_prices)) || (temp_paths.len != temp_prices.len))
+		if ((isnull(temp_pathsL)) || (isnull(temp_prices)) || (temp_pathsL.len != temp_prices.len))
 			stat |= BROKEN
 			return
 
-		src.build_inventory(temp_paths,temp_prices)
+		src.build_inventory(temp_pathsL,temp_prices)
 		 //Add hidden inventory
 		src.build_inventory(temp_hidden,temp_hiddenprices,1)
 		return

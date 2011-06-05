@@ -711,7 +711,6 @@
 #include "code\WorkInProgress\Events\Events\Poweroffline.dm"
 #include "code\WorkInProgress\Events\Events\RadiationBelt.dm"
 #include "code\WorkInProgress\Events\Events\VirusEpidemic.dm"
-#include "code\WorkInProgress\food\custom_food.dm"
 #include "code\WorkInProgress\food\drinks.dm"
 #include "code\WorkInProgress\food\snacks.dm"
 #include "code\WorkInProgress\Googolplexed\Prob.dm"

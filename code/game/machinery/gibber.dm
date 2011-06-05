@@ -78,9 +78,9 @@
 		src.dirty += 1
 		var/sourcename = src.occupant.real_name
 		var/sourcejob = src.occupant.job
-		var/obj/item/weapon/reagent_containers/food/snacks/humanmeat/newmeat1 = new /obj/item/weapon/reagent_containers/food/snacks/humanmeat
-		var/obj/item/weapon/reagent_containers/food/snacks/humanmeat/newmeat2 = new /obj/item/weapon/reagent_containers/food/snacks/humanmeat
-		var/obj/item/weapon/reagent_containers/food/snacks/humanmeat/newmeat3 = new /obj/item/weapon/reagent_containers/food/snacks/humanmeat
+		var/obj/item/weapon/reagent_containers/food/snacks/meat/newmeat1 = new /obj/item/weapon/reagent_containers/food/snacks/meat
+		var/obj/item/weapon/reagent_containers/food/snacks/meat/newmeat2 = new /obj/item/weapon/reagent_containers/food/snacks/meat
+		var/obj/item/weapon/reagent_containers/food/snacks/meat/newmeat3 = new /obj/item/weapon/reagent_containers/food/snacks/meat
 		newmeat1.name = sourcename + newmeat1.name
 		newmeat1.subjectname = sourcename
 		newmeat1.subjectjob = sourcejob
