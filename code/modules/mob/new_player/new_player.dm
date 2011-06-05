@@ -236,7 +236,10 @@ mob/new_player
 					t.fields["rank"] = rank
 
 			if (ticker.current_state == GAME_STATE_PLAYING)
-				radioalert("[character.real_name] has signed up as [rank].","Arrivals Notice")
+				if(rank == "Unassigned")
+					radioalert("[character.real_name] has arrived on the ship.","Arrivals Notice")	//unassigneds are not special
+				else
+					radioalert("[character.real_name] has arrived on the ship as a [rank].","Arrivals Notice")	//oh no engineers
 
 				/*for (var/mob/living/silicon/ai/A in world) // Use this if we want to revert to the AI announcing new arrivals
 					if (!A.stat)

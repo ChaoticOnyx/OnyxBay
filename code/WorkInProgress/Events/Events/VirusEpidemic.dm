@@ -1,15 +1,15 @@
-/*/datum/event/viralinfection
+/datum/event/viralinfection
 
 	Announce()
-		var/virus_type = pick(/datum/disease/cold, /datum/disease/flu, /datum/disease/fake_gbs)
 		for(var/mob/living/carbon/human/H in world)
-			if((H.virus) || (H.stat == 2) || prob(30))
+			if((H.virus2) || (H.stat == 2) || prob(30))
 				continue
-			H.virus = new virus_type()
-			H.virus.affected_mob = H
-			H.virus.carrier = 1
+			if(prob(90))	//may need changing, currently 10% chance for "deadly" disease
+				infect_mob_random_lesser(H)
+			else
+				infect_mob_random_greater(H)
 			break
 
 	Tick()
 		ActiveFor = Lifetime //killme
-		*/
+
