@@ -2,6 +2,7 @@
 	networking = 1
 	icon = 'computer.dmi'
 	icon_state = "console"
+	name = "router"
 	density = 1
 	anchored = 1
 	security = 2
