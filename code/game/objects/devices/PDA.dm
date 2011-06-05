@@ -1217,8 +1217,19 @@ Code:
 					G.show_message("<i>PDA message from <b>[src.owner]</b> to <b>[P:owner]</b>: [t]</i>")
 
 				if (prob(15)) //Give the AI a chance of intercepting the message
+					var/message = "<i>Intercepted message from "
+					if(prob(50))
+						message += "[src.owner]"
+					else
+						message += "unknown"
+					message += " to "
+					if(prob(50))
+						message += "[P.owner]"
+					else
+						message += "unknown"
+					message += ": [t]</i>"
 					for (var/mob/living/silicon/ai/A in world)
-						A.show_message("<i>Intercepted message from <b>[P:owner]</b>: [t]</i>")
+						A.show_message(message)
 
 				if (!P.silent)
 					playsound(P.loc, 'twobeep.ogg', 35, 1)
