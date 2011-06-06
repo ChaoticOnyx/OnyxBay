@@ -158,7 +158,7 @@ datum/mind
 						new_objective:target = null
 						new_objective.explanation_text = "Free objective"
 					else
-						new_objective = new /datum/objective/assassinate(null,null,new_target:mind)
+						new_objective = new /datum/objective/assassinate(null,new_target:mind:assigned_role,new_target:mind)
 						new_objective.owner = src
 						new_objective:target = new_target:mind
 						new_objective.explanation_text = "Assassinate [new_target:real_name], the [new_target:mind:assigned_role]."
@@ -174,7 +174,7 @@ datum/mind
 
 					var/new_target = input("Select target:", "Objective target", def_target) as null|anything in possible_targets
 					if (!new_target) return
-					new_objective = new /datum/objective/protection(null,null,new_target:mind)
+					new_objective = new /datum/objective/protection(null,new_target:mind:assigned_role,new_target:mind)
 					new_objective.owner = src
 					new_objective:target = new_target:mind
 					new_objective.explanation_text = "[new_target:real_name], the [new_target:mind:assigned_role] is a relative of a high ranking Syndicate Leader.  Make sure they get off the ship safely."

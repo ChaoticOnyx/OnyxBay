@@ -333,6 +333,8 @@ mob/new_player
 
 		close_spawn_windows()
 
+		ticker.minds += mind	//Strumpet - Add new players' minds to the ticker list to be used for traitor objectives.
+
 		preferences.copy_to(new_character)
 		new_character.dna.ready_dna(new_character)
 
