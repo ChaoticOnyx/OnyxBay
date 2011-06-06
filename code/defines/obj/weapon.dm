@@ -623,6 +623,15 @@
 	var/permeability_coefficient = 0.99
 	var/siemens_coefficient = 0.80
 
+/obj/item/weapon/paper/Router_pass
+	name = "paper- 'NSV Luna Network Router Passwords'"
+
+	New()
+		..()
+		spawn(100)
+			for(var/obj/machinery/router/R in world)
+				info += "[R.name] password: [R.net_pass]<BR>\n"
+
 /obj/item/weapon/paper/Internal
 	name = "paper- 'Internal Atmosphere Operating Instructions'"
 	info = "Equipment:<BR>\n\t1+ Tank(s) with appropriate atmosphere<BR>\n\t1 Gas Mask w regulator (standard issue)<BR>\n<BR>\nProcedure:<BR>\n\t1. Wear mask<BR>\n\t2. Attach oxygen tank pipe to regulater (automatic))<BR>\n\t3. Set internal!<BR>\n<BR>\nNotes:<BR>\n\tDon't forget to stop internal when tank is low by<BR>\n\tremoving internal!<BR>\n<BR>\n\tDo not use a tank that has a high concentration of toxins.<BR>\n\tThe filters shut down on internal mode!<BR>\n<BR>\n\tWhen exiting a high danger environment it is advised<BR>\n\tthat you exit through a decontamination zone!<BR>\n<BR>\n\tRefill a tank at a oxygen canister by equiping the tank (Double Click)<BR>\n\tthen 'attacking' the canister (Double Click the canister)."

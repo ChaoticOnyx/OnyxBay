@@ -12,6 +12,8 @@ var/global/first_free_address_range = 1
 /obj/machinery/router/var/mob/console_user
 /obj/machinery/router/var/datum/os/OS
 /obj/machinery/router/New()
+	var/area/A = src.loc.loc
+	src.name = "[A.name] Router"
 	address_range = first_free_address_range
 	address = address_range << 8
 	address |= 1
