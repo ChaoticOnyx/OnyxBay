@@ -627,7 +627,7 @@ datum/os/proc/Remote(var/address,var/command,var/list/args)
 					K = copytext(Z,x+1,y)
 					//world << "breaking"
 					break
-		world << "[count]:[K]"
+		//world << "[count]:[K]"
 		switch(count)
 			if(1)
 				F.arg1 = K
