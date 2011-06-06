@@ -856,7 +856,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/burger/attackby(obj/item/weapon/reagent_containers/food/snacks/breadsys/ontop/cheese/W as obj, mob/user as mob)
 	if(istype(W))
 		var/turf/spawnloc = foodloc(user, src)
-		new /obj/item/weapon/reagent_containers/food/breadsys/ontop/cheeseburger(spawnloc)
+		new /obj/item/weapon/reagent_containers/food/snacks/cheeseburger(spawnloc)
 		user << "You make a cheeseburger."
 		del(W)
 		del(src)
@@ -867,7 +867,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/hamburger/attackby(obj/item/weapon/reagent_containers/food/snacks/breadsys/ontop/cheese/W as obj, mob/user as mob)
 	if(istype(W))
 		var/turf/spawnloc = foodloc(user, src)
-		new /obj/item/weapon/reagent_containers/food/breadsys/ontop/cheeseburger(spawnloc)
+		new /obj/item/weapon/reagent_containers/food/snacks/cheeseburger(spawnloc)
 		user << "You make a cheeseburger."
 		del(W)
 		del(src)
