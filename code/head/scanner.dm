@@ -5,6 +5,7 @@ obj/machinery/scanner
 	icon_state = "aiupload"
 	density = 1
 	anchored = 1
+	var/lastuser = null
 obj/machinery/scanner/New()
 	if(!outputdir)
 		switch(dir)
@@ -19,8 +20,9 @@ obj/machinery/scanner/New()
 		if(!outputdir)
 			outputdir = 8
 obj/machinery/scanner/attack_hand(mob/user)
-	if(!ishuman(user))
+	if(!ishuman(user) || lastuser == user.real_name)
 		return
+	lastuser = user.real_name
 	var/mname = user.real_name
 	var/dna = user.dna.unique_enzymes
 	var/bloodtype = user:b_type
