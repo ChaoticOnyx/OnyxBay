@@ -268,7 +268,9 @@
 				for(i=0, i<10, i++)
 					sleep(10)
 					M:fireloss += 30
-				new /obj/decal/ash(M:loc)
+				var/obj/item/weapon/urn/U = new(M:loc)
+				U.name += " - " + M:real_name
+				U.desc = "This contains the ashes of " + M:real_name + "."
 
 				//newmob.loc = src.loc
 
@@ -285,7 +287,9 @@
 					for(i=0, i<10, i++)
 						sleep(10)
 						M:fireloss += 50
-					new /obj/decal/ash(M:loc)
+					var/obj/item/weapon/urn/U = new(M:loc)
+					U.name += " - " + M:real_name
+					U.desc = "This contains the ashes of " + M:real_name + "."
 					for (var/obj/item/weapon/W in M)
 						if (prob(10))
 							W.loc = M:loc
