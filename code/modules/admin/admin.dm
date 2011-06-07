@@ -30,9 +30,9 @@
 						world << "This seems to be killing it."
 						return
 					LaunchControl.start()
-					world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(LaunchControl.timeleft()/60)] minutes.</B>"
-					log_admin("[key_name(usr)] called the Emergency Shuttle")
-					message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
+					world << "\blue <B>Alert: The escape pods are being launched. They will launch in [round(LaunchControl.timeleft()/60)] minutes.</B>"
+					log_admin("[key_name(usr)] launched the escape pods")
+					message_admins("\blue [key_name_admin(usr)] launched the escape pods", 1)
 
 				if("2")
 					if ((!( ticker ) || main_shuttle.location || main_shuttle.direction == 0))
@@ -40,9 +40,9 @@
 					switch(main_shuttle.direction)
 						if(-1)
 							LaunchControl.start()
-							world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(LaunchControl.timeleft()/60)] minutes.</B>"
-							log_admin("[key_name(usr)] called the Emergency Shuttle")
-							message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
+							world << "\blue <B>Alert: The escape pods are being launched. They will launch in [round(LaunchControl.timeleft()/60)] minutes.</B>"
+							log_admin("[key_name(usr)] launched the escape pods")
+							message_admins("\blue [key_name_admin(usr)] launched the escape pods", 1)
 						if(1)
 							LaunchControl.stop()
 							world << "\blue <B>Alert: The escape pod launch sequence has been cancelled!</B>"
