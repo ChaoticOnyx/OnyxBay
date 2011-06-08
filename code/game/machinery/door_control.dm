@@ -12,7 +12,6 @@
 	var/toggled = "0"
 	anchored = 1.0
 
-
 /obj/machinery/door_control/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
 
@@ -112,32 +111,15 @@
 
 	return
 
-/obj/machinery/vent_control
+/obj/machinery/door_contol/vent_control
 	name = "Remote Vent Control"
-	icon = 'stationobjs.dmi'
 	icon_state = "leverbig00"
 	desc = "A heavy hydraulic control switch for the core vents. Pushing it towards the reactor opens the vents, pulling it away from the reactor closes the vents."
 	var/icon_toggled = "leverbig01"
 	var/icon_normal = "leverbig0"
-	var/icon_nopower = "doorctrl-p"
 	var/needspower = 0
-	var/id = null
-	var/toggled = "0"
-	anchored = 1.0
 
-
-/obj/machinery/vent_control/attack_ai(mob/user as mob)
-	return src.attack_hand(user)
-
-/obj/machinery/vent_control/attack_paw(mob/user as mob)
-	return src.attack_hand(user)
-
-/obj/machinery/vent_control/attackby(obj/item/weapon/W, mob/user as mob)
-	if(istype(W, /obj/item/device/detective_scanner))
-		return
-	return src.attack_hand(user)
-
-/obj/machinery/vent_control/attack_hand(mob/user as mob)
+/obj/machinery/door_control/vent_control/attack_hand(mob/user as mob)
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(needspower)
@@ -161,14 +143,8 @@
 				M.close()
 				//TransmitNetworkPacket(PrependNetworkAddress("[M.get_password()] CLOSE", M))
 	src.add_fingerprint(usr)
-
 	icon_state = icon_normal + toggled
-
-/obj/machinery/vent_control/power_change()
-	..()
-	if(!needspower)
-		return
-	if(stat & NOPOWER)
-		icon_state = icon_nopower
-	else
-		icon_state = icon_normal + toggled
+	spawn(1 * tick_multiplier)
+	for(var/obj/machinery/engine/supermatter/S in world)
+		var/turf/T = S.loc
+		T.RebuildZone()

@@ -834,7 +834,7 @@
 "aqb" = (/obj/machinery/power/monitor,/obj/cabling/power,/turf/simulated/floor,/area/crew_quarters/chief)
 "aqc" = (/obj/table{icon_state = "tabledir"; dir = 9},/obj/machinery/atmospherics/unary/vent_filter,/obj/item/weapon/paper_bin,/turf/simulated/floor,/area/crew_quarters/chief)
 "aqd" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/storage/toolbox/electrical,/obj/item/weapon/cartridge/engineering,/turf/simulated/floor,/area/crew_quarters/chief)
-"aqe" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/machinery/vent_control{id = 963852},/obj/window/basic/northeast{name = "Safety Glass"},/turf/simulated/floor,/area/crew_quarters/chief)
+"aqe" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/machinery/door_control/vent_control{icon_nopower = "leverbig00"; icon_normal = "leverbig0"; icon_state = "leverbig00"; icon_toggled = "leverbig01"; id = 963852},/obj/window/basic/northeast{name = "Safety Glass"},/turf/simulated/floor,/area/crew_quarters/chief)
 "aqf" = (/obj/cabling/power{icon_state = "1-2"},/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/circuitry,/obj/item/weapon/circuitry,/obj/item/weapon/circuitry,/obj/landmark/derelict/nodamage,/turf/simulated/floor,/area/crew_quarters/chief)
 "aqg" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/hand_labeler,/turf/simulated/floor,/area/crew_quarters/chief)
 "aqh" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/storage/toolbox/emergency,/turf/simulated/floor,/area/crew_quarters/chief)
