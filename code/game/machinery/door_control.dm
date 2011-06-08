@@ -161,8 +161,11 @@
 				M.close()
 				//TransmitNetworkPacket(PrependNetworkAddress("[M.get_password()] CLOSE", M))
 	src.add_fingerprint(usr)
-
 	icon_state = icon_normal + toggled
+	spawn(1 * tick_multiplier)
+	for(var/obj/machinery/engine/supermatter/S in world)
+		var/turf/T = S.loc
+		T.RebuildZone()
 
 /obj/machinery/vent_control/power_change()
 	..()
