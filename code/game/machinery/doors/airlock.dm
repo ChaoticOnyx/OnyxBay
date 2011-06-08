@@ -1137,6 +1137,7 @@ About the new airlock wires panel:
 					src.ul_SetOpacity(0)
 				update_nearby_tiles()
 				src.operating = 0
+				src.desc = "The airlock is dented at the opening."
 				return
 		else
 			if ((!src.density) && (!( src.welded ) && !( src.operating ) && !( src.locked )))
@@ -1152,6 +1153,7 @@ About the new airlock wires panel:
 						src.ul_SetOpacity(1)
 					update_nearby_tiles()
 					src.operating = 0
+					src.desc = "The airlock is dented at the opening."
 
 	else
 		..()
