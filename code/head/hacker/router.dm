@@ -35,6 +35,9 @@ var/global/first_free_address_range = 1
 			console_user.hide_console()
 	if(OS)
 		for(var/mob/A in OS.owner)
+			if(!A)
+				OS.owner -= A
+				continue
 			if(!(A in range(1,src)) || winget(A.client, "console", "is-visible") == "false")
 				A.hide_console()
 
