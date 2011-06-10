@@ -5,7 +5,7 @@ obj/item/weapon/areaadd
 	item_state = "electronic"
 	var/turf/Xturf
 	var/turf/Yturf
-var/datum/areamanger/AM = new()
+var/datum/areamanger/areaManger = new()
 datum/areamanger
 	var/count = 0
 	var/list/areas = list()
@@ -19,11 +19,11 @@ obj/item/weapon/areaadd/attack_self(mob/user)
 		if(turfs.len <= 0)
 			user << "NO TURFS"
 			return
-		AM.count++
-		if(AM.count > 10)
+		areaManger.count++
+		if(areaManger.count > 10)
 			user << "No more custom areas"
 			return
-		var/namer = Num2text2(AM.count)
+		var/namer = Num2text2(areaManger.count)
 		world << namer
 		var/type = "/area/custom/"
 		var/area/custom/NA = new type ()
@@ -83,39 +83,6 @@ obj/machinery/verb/checkmachines()
 area/
 	var/iscustom = 0
 area/custom/
-//	iscustom = 1
-//	ul_Lighting = 1
-/*area/custom/New()
-	spawn(1)
-		tag = name
-		ul_Prep()
-		if(findtext(tag,":UL") != 0)
-			related += src
-			return
-
-		master = src
-		related = list(src)
-
-		src.icon = 'alert.dmi'
-		src.layer = 10
-
-		if(name == "Space")			// override defaults for space
-			requires_power = 0
-
-		if(!requires_power)
-			power_light = 1
-			power_equip = 1
-			power_environ = 1
-			//luminosity = 1
-			ul_Lighting = 0			// *DAL*
-		else
-			luminosity = 0
-			//ul_SetLuminosity(0)		// *DAL*
-
-
-		spawn(15)
-			src.power_change()		// all machines set to current power level, also updates lighting icon
-			alldoors = get_doors(src)*/
 area/custom/one
 area/custom/two
 area/custom/three
