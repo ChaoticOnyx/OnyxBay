@@ -532,6 +532,7 @@
 #include "code\game\objects\storage\kit.dm"
 #include "code\game\objects\storage\storage.dm"
 #include "code\game\objects\storage\toolbox.dm"
+#include "code\game\verbs\afk.dm"
 #include "code\game\verbs\ai_lockdown.dm"
 #include "code\game\verbs\AI_status.dm"
 #include "code\game\verbs\begin.dm"
