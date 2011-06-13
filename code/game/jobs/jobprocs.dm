@@ -522,6 +522,7 @@
 	else
 		src.loc = pick(latejoin)
 	src.client.add_roundsjoined()
+	src.update_clothing()
 	return
 
 /mob/living/carbon/human/proc/spawnId(rank)
