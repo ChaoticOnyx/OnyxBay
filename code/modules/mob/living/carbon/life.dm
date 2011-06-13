@@ -48,7 +48,7 @@
 	handle_pain()
 
 	// Update clothing
-	update_clothing()
+	//update_clothing()		Strumpet - Removing this to see if it's really necessary.  Could save some processing.
 
 	if(client)
 		handle_regular_hud_updates()

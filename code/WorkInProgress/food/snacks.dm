@@ -60,6 +60,7 @@
 				playsound(M.loc,'eatfood.ogg', rand(10,50), 1)
 				if(!src.amount)
 					user << "\red You finish eating [src]."
+					user.u_equip(src)
 					del(src)
 				return 1
 			else
@@ -80,6 +81,7 @@
 				playsound(M.loc, 'eatfood.ogg', rand(10,50), 1)
 				if(!src.amount)
 					user << "\red [M] finishes eating [src]."
+					user.u_equip(src)
 					del(src)
 				return 1
 
