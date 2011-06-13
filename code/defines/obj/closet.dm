@@ -253,6 +253,17 @@
 	name = "Captain's Closet"
 	req_access = list(access_captain)
 
+
+/obj/secure_closet/medical	//Empty medical closet
+	name = "Medical Closet"
+	icon_state = "medical1"
+	icon_closed = "medical"
+	icon_locked = "medical1"
+	icon_opened = "medicalopen"
+	icon_broken = "medicalbroken"
+	icon_off = "medical1"
+	req_access = list(access_medical)
+
 /obj/secure_closet/medical1
 	name = "Medicine Closet"
 	icon_state = "medical1"

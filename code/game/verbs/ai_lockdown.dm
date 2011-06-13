@@ -2,6 +2,8 @@
 	set category = "AI Commands"
 	set name = "Lockdown"
 
+	usr << "\red Lockdown command temporarily disabled until we can keep it from lagging the crap out of everything."
+/*
 	if(usr.stat == 2)
 		usr <<"You cannot initiate lockdown because you are dead!"
 		return
@@ -22,6 +24,7 @@
 	var/obj/machinery/computer/communications/C = locate() in world
 	if(C)
 		C.post_status("alert", "lockdown")
+*/
 
 /*	src.verbs -= /mob/living/silicon/ai/proc/lockdown
 	src.verbs += /mob/living/silicon/ai/proc/disablelockdown
