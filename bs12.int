@@ -2,9 +2,9 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 482.1091
-DIR: code code\defines code\WorkInProgress 
-FILE: code\defines\turf.dm
-LAST_COMPILE_TIME: 1307930481
+DIR: code code\defines code\WorkInProgress code\WorkInProgress\Googolplexed code\WorkInProgress\Googolplexed\Disease2 
+FILE: code\WorkInProgress\Googolplexed\Disease2\base.dm
+LAST_COMPILE_TIME: 1307944018
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
