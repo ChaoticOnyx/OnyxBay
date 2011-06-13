@@ -223,6 +223,9 @@
 			return
 		if(clicks > rand(stage*400-100,stage*400+100))
 			if(stage == 4)
+				var/datum/disease2/resistance/res = new /datum/disease2/resistance(src)
+				mob.immunevirus2 += src.getcopy()
+				mob.resistances2 += res
 				mob.virus2 = null
 				del src
 			stage++
