@@ -174,6 +174,8 @@ obj/landmark/disk_spawn
 	synd_mob.equip_if_possible(new /obj/item/weapon/storage/backpack(synd_mob), synd_mob.slot_back)
 	synd_mob.equip_if_possible(new /obj/item/weapon/reagent_containers/pill/tox(synd_mob), synd_mob.slot_in_backpack)
 
+	synd_mob.update_clothing()
+
 /datum/game_mode/nuclear/check_win()
 	if (src.nuke_detonated)
 		finished = 1

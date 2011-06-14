@@ -119,6 +119,7 @@ obj/landmark/crew_spawn
 	synd_mob.equip_if_possible(new /obj/item/weapon/gun/revolver(synd_mob), synd_mob.slot_in_backpack)
 	synd_mob.equip_if_possible(new /obj/item/weapon/baton(synd_mob), synd_mob.slot_in_backpack)
 
+	synd_mob.update_clothing()
 
 /datum/game_mode/hostile/check_win()
 /*	if (src.nuke_detonated)
