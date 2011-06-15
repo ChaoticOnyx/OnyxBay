@@ -1,8 +1,6 @@
 var/CMinutes = null
 var/savefile/Banlist
 
-	return 1
-
 /proc/CheckBan(var/client/clientvar)
 
 	var/id = clientvar.computer_id
