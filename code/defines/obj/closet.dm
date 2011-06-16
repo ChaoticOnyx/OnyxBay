@@ -191,8 +191,8 @@
 
 /obj/closet/wardrobe/yellow
 	name = "Yellow Wardrobe"
-	icon_state = "wardrobe-y"
-	icon_closed = "wardrobe-y"
+	icon_state = "yellow"
+	icon_closed = "yellow"
 
 /obj/closet/wardrobe/engineering_yellow
 	name = "Engineering Wardrobe"
@@ -209,6 +209,11 @@
 	name = "Grey Wardrobe"
 	icon_state = "grey"
 	icon_closed = "grey"
+
+/obj/closet/wardrobe/bar
+	name = "Bar Wardrobe"
+	icon_state = "black"
+	icon_closed = "black"
 
 
 /obj/secure_closet

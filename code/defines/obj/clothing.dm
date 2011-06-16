@@ -500,6 +500,13 @@
 	permeability_coefficient = 0.25
 	heat_transfer_coefficient = 0.75
 
+/obj/item/clothing/suit/storage/chef
+	name = "chef coat"
+	desc = "A fancy chef's coat."
+	icon_state = "chef"
+	item_state = "chef"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+
 /obj/item/clothing/suit/straight_jacket
 	name = "straight jacket"
 	desc = "A suit that totally restrains an individual"
