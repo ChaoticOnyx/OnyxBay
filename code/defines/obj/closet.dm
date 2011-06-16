@@ -191,8 +191,8 @@
 
 /obj/closet/wardrobe/yellow
 	name = "Yellow Wardrobe"
-	icon_state = "wardrobe-y"
-	icon_closed = "wardrobe-y"
+	icon_state = "yellow"
+	icon_closed = "yellow"
 
 /obj/closet/wardrobe/engineering_yellow
 	name = "Engineering Wardrobe"
@@ -209,6 +209,11 @@
 	name = "Grey Wardrobe"
 	icon_state = "grey"
 	icon_closed = "grey"
+
+/obj/closet/wardrobe/bar
+	name = "Bar Wardrobe"
+	icon_state = "black"
+	icon_closed = "black"
 
 
 /obj/secure_closet
@@ -252,6 +257,17 @@
 /obj/secure_closet/captains
 	name = "Captain's Closet"
 	req_access = list(access_captain)
+
+
+/obj/secure_closet/medical	//Empty medical closet
+	name = "Medical Closet"
+	icon_state = "medical1"
+	icon_closed = "medical"
+	icon_locked = "medical1"
+	icon_opened = "medicalopen"
+	icon_broken = "medicalbroken"
+	icon_off = "medical1"
+	req_access = list(access_medical)
 
 /obj/secure_closet/medical1
 	name = "Medicine Closet"

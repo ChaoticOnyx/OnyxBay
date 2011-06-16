@@ -1,4 +1,6 @@
 /mob/var/lastbreathT = 0
+/mob/living/carbon/var/lyingcheck = 0
+
 /mob/living/carbon/Life()
 	set background = 1
 
@@ -48,7 +50,10 @@
 	handle_pain()
 
 	// Update clothing
-	update_clothing()
+	//update_clothing()		Strumpet - Removing this to see if it's really necessary.  Could save some processing.
+	if(lyingcheck != lying)		//This is a fix for falling down / standing up not updating icons.  Instead of going through and changing every
+		update_clothing()		//instance in the code where lying is modified, I've just added a new variable "lyingcheck" which will be compared
+		lyingcheck = lying		//to lying, so if lying ever changes, update_clothing() will run like normal.
 
 	if(client)
 		handle_regular_hud_updates()

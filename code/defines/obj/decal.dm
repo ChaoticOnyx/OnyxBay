@@ -262,3 +262,21 @@
 		icon_state = "bridge1"
 	part3
 		icon_state = "bridge2"
+
+/obj/decal/sign/pinkflamingo1 // sign is 32.64, hence two objects
+	desc = "The Pink Flamingo, Space Cantina"
+	name = "The Pink Flamingo"
+	icon = 'decals.dmi'
+	icon_state = "pinkflamingo1"
+	anchored = 1.0
+	opacity = 0
+	density = 0
+
+/obj/decal/sign/pinkflamingo2
+	desc = "The Pink Flamingo, Space Cantina"
+	name = "The Pink Flamingo"
+	icon = 'decals.dmi'
+	icon_state = "pinkflamingo2"
+	anchored = 1.0
+	opacity = 0
+	density = 0

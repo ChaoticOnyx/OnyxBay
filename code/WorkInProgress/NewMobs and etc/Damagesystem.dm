@@ -5,6 +5,7 @@
 
 /mob/living/carbon/human/random_events = list("blink")
 /mob/living/carbon/human/species = "Human"
+/mob/living/carbon/human/var/lastnutritioncomplaint = 0
 /mob/living/carbon/human/var/bloodloss = 0
 /mob/living/carbon/human/var/r_hair = 0.0
 /mob/living/carbon/human/var/g_hair = 0.0

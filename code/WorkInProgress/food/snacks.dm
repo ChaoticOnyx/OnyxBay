@@ -4,6 +4,7 @@
 		heal(var/mob/M)
 			if(istype(M, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = M
+				H.nutrition += 2000
 				for(var/A in H.organs)
 					var/datum/organ/external/affecting = null
 					if(!H.organs[A])	continue
@@ -60,6 +61,7 @@
 				playsound(M.loc,'eatfood.ogg', rand(10,50), 1)
 				if(!src.amount)
 					user << "\red You finish eating [src]."
+					user.u_equip(src)
 					del(src)
 				return 1
 			else
@@ -80,6 +82,7 @@
 				playsound(M.loc, 'eatfood.ogg', rand(10,50), 1)
 				if(!src.amount)
 					user << "\red [M] finishes eating [src]."
+					user.u_equip(src)
 					del(src)
 				return 1
 

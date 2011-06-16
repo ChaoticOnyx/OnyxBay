@@ -113,7 +113,7 @@
 						KeepDrawing = 1
 
 				for(var/atom/A in Turf)
-					if (A.layer >= LowestLayerLeftToDraw)
+					if (A.layer >= LowestLayerLeftToDraw && A.invisibility != 101)
 						Tile.Blend(icon(A.icon, A.icon_state, A.dir, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31 + A.pixel_x, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31 + A.pixel_y)
 						HighestDrawnLayer = A.layer
 			if(Turf.loc:ul_Lighting)
