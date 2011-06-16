@@ -62,9 +62,11 @@
 			if(!connected_port)
 				return 0
 
-			var/datum/pipe_network/network = connected_port.return_network(src)
-			if(network)
-				network.gases -= air_contents
+			if(!istype(connected_port,/obj/machinery/atmos_new/connector))
+
+				var/datum/pipe_network/network = connected_port.return_network(src)
+				if(network)
+					network.gases -= air_contents
 
 			anchored = 0
 
@@ -100,6 +102,13 @@
 					user << "\blue [name] failed to connect to the port."
 					return
 			else
+				possible_port = locate(/obj/machinery/atmos_new/connector) in loc
+				if(connect(possible_port))
+					user << "\blue You connect [name] to the port."
+					return
+				else
+					user << "\blue [name] failed to connect to the port."
+					return
 				user << "\blue Nothing happens."
 				return
 

@@ -178,6 +178,7 @@
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
+#include "Acceses.dm"
 #include "code\mapLoader.dm"
 #include "code\names.dm"
 #include "code\nlog.dm"
@@ -187,6 +188,7 @@
 #include "code\Ticklag.dm"
 #include "code\Aryn\Airflow.dm"
 #include "code\Aryn\Atmos-ZAS3-Zones.dm"
+#include "code\Aryn\NewPipes.dm"
 #include "code\Aryn\Variable Settings.dm"
 #include "code\Aryn\ZAS Plasma.dm"
 #include "code\ATMOSPHERICS\atmospherics.dm"
@@ -349,6 +351,7 @@
 #include "code\game\machinery\camera.dm"
 #include "code\game\machinery\cell_charger.dm"
 #include "code\game\machinery\cryo.dm"
+#include "code\game\machinery\cryo2.dm"
 #include "code\game\machinery\cyborgcharger.dm"
 #include "code\game\machinery\dispenser.dm"
 #include "code\game\machinery\door_control.dm"
@@ -662,6 +665,7 @@
 #include "code\modules\power\engine.dm"
 #include "code\modules\power\generator.dm"
 #include "code\modules\power\generator_type2.dm"
+#include "code\modules\power\generator_type3.dm"
 #include "code\modules\power\lighting.dm"
 #include "code\modules\power\MachineProcs.dm"
 #include "code\modules\power\Machinery.dm"

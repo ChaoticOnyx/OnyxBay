@@ -11,8 +11,19 @@ var/zone_update_delay = 5
 var/stop_zones = 0
 
 turf/var/zone/zone
+turf/var/image/z_image
 
 turf/simulated/var/disable_connections = 0
+
+proc/ZoneSetup()
+	world << "\red <b>Defining Zones...</b>"
+	for(var/turf/simulated/S in world)
+		if(S.HasDoor())
+			spawn(1) S.add_to_other_zone()
+		else
+			if(S.CanPass(null,S,0,0) && !S.zone)
+				new/zone(S)
+	world << "\red <b>Zone Definition Complete.</b>"
 
 zone
 	var
@@ -39,15 +50,15 @@ zone
 		turf_co2 = 0
 		turf_plasma = 0
 		turf_other = 0
-		list/images = list()
+		//image/images
 		volume = CELL_VOLUME
 		pressure = ONE_ATMOSPHERE
 
 		list/connections = list()
 		list/direct_connections = list() //Zones with doors connecting them to us, so that we know not to merge.
 
-		list/merge_with = list()
-		list/edges = list()
+		//list/merge_with = list()
+		//list/edges = list()
 
 		list/update_mixtures = list()
 
@@ -83,18 +94,22 @@ zone
 		RemoveTurf(turf/T) //Same, but removes a turf from the zone.
 
 		pressure()
-			return (oxygen+nitrogen+co2)*R_IDEAL_GAS_EQUATION*temp/volume
+			return (oxygen+nitrogen+co2+plasma)*R_IDEAL_GAS_EQUATION*temp/volume
+
+		total_moles()
+			return (oxygen+nitrogen+co2+plasma)
+
 
 		other_gas()
 			for(var/turf/T in members)
 				var/datum/gas_mixture/GM = T.return_air(1)
-				. += GM.toxins
+				//. += GM.toxins
 				for(var/datum/gas/G in GM.trace_gases)
 					. += G.moles
 
 	//......................//
 
-	New(turf/start,soxy = 0,snitro = 0,sco2 = 0, spla2 = 0,smembers,sspace = list(),sedges)
+	New(turf/start,soxy = 0,snitro = 0,sco2 = 0, spla2 = 0,smembers,sspace)//,sedges)
 
 		starting_tile = start
 
@@ -108,20 +123,21 @@ zone
 		zones += src //Add to the zone list
 		if(smembers)
 			members = smembers
+			if(!sspace) sspace = list()
 			space_connections = sspace
 			//if(space_connections.len)
 				//world << "Space connections passed through sspace var."
 				//world << "Area: [start.loc]"
-			edges = sedges
+			//edges = sedges
 		else
 			tmp_spaceconnections.len = 0
-			tmp_edges.len = 0
+			//tmp_edges.len = 0
 			members = FloodFill(start) //Do a floodfill to get new members.
 			if(ticker)
 				space_connections = tmp_spaceconnections.Copy()
 				tmp_spaceconnections.len = 0
-			edges = tmp_edges.Copy()
-			tmp_edges.len = 0
+			//edges = tmp_edges.Copy()
+			//tmp_edges.len = 0
 
 		if(!members.len) //Bug here.
 			//world << "Warning: Zone created with no members at [start.x],[start.y],[start.z]."
@@ -195,7 +211,7 @@ zone
 					var/datum/gas_mixture/GM = M.return_air(1)
 					GM.remove_ratio(1/vsc.VACUUM_SPEED)
 				spawn AirflowSpace(src)
-			merge_with.len = 0
+			//merge_with.len = 0
 			//if(pressure > 225)
 			//	for(var/turf/T in edges)
 			//		for(var/obj/window/W in T)
@@ -238,14 +254,11 @@ zone
 				for(var/crap in connections) //Clean out invalid connections.
 					if(!istype(crap,/zone))
 						connections -= crap
-			if(images.len > 0)
-				for(var/A in images)
-					del(A)
-				images = list()
 			if(update_visuals())
 				for(var/turf/A in members)
-					images += image('tile_effects.dmi',A,"plasma")
-					world << images[images.len]
+					del A.z_image
+					A.z_image = image('tile_effects.dmi',A,"plasma")
+					world << A.z_image
 	rebuild_cache()
 		if(!members.len) del src
 		turf_oxy = oxygen / members.len
@@ -427,7 +440,7 @@ zone
 		var/list
 			old_members = list()
 			old_space_connections = list()
-			old_edges = list()
+			//old_edges = list()
 		var
 			zone_X = list()
 			space_X = list()
@@ -439,7 +452,7 @@ zone
 			old_members += T
 			T.zone = null
 		old_space_connections = space_connections
-		old_edges = edges
+		//old_edges = edges
 		zone_X = FloodFill(X)
 		if(Y in zone_X)
 			members = old_members //No need to change.
@@ -448,12 +461,12 @@ zone
 		else
 			space_X = tmp_spaceconnections.Copy()
 			tmp_spaceconnections.len = 0
-			edge_X = tmp_edges.Copy()
-			tmp_edges.len = 0
+			//edge_X = tmp_edges.Copy()
+			//tmp_edges.len = 0
 			//world << "Split: Floodfill procedure passed. Creating new zones."
 			zone_Y = old_members - zone_X
 			space_Y = old_space_connections - space_X
-			edge_Y = old_edges - edge_X
+			//edge_Y = old_edges - edge_X
 			new/zone(Y,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,plasma / old_members.len,zone_Y,space_Y,edge_Y)
 			new/zone(X,oxygen / old_members.len,nitrogen / old_members.len,co2 / old_members.len,plasma / old_members.len,zone_X,space_X,edge_X)
 			del src
@@ -471,8 +484,8 @@ zone
 		volume += Z.volume
 		connections += Z.connections
 		space_connections += Z.space_connections
-		edges += Z.edges
-		merge_with += Z.merge_with
+		//edges += Z.edges
+		//merge_with += Z.merge_with
 		for(var/turf/simulated/T in Z.members)
 			T.zone = src
 		//world << "Merged zones."
@@ -486,11 +499,11 @@ zone
 //	layer = 150
 
 var/list/tmp_spaceconnections = list()
-var/list/tmp_edges = list()
+//var/list/tmp_edges = list()
 proc/FloodFill(turf/start,remove_extras)
 	if(!istype(start,/turf/simulated)) return
 	tmp_spaceconnections.len = 0 //Clear the space list in case it's still full of data.
-	tmp_edges.len = 0
+	//tmp_edges.len = 0
 	. = list()
 	var/list/borders = list()
 	borders += start
@@ -499,7 +512,7 @@ proc/FloodFill(turf/start,remove_extras)
 			if(T.HasDoor())
 				. += T
 				borders -= T
-				tmp_edges += T
+				//tmp_edges += T
 				continue
 			var/unblocked = T.GetUnblockedCardinals()
 			//unblocked -= get_step(T,UP)

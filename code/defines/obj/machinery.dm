@@ -417,6 +417,21 @@
 	var/lastgen = 0
 	var/lastgenlev = -1
 
+/obj/machinery/power/generator_type3
+	name = "Thermo-Electric Generator"
+	desc = "A high efficiency thermoelectric generator."
+	icon_state = "teg"
+	anchored = 1
+	density = 1
+	var/transferpercent = 100
+	var/outputpercent = 100
+
+	var/obj/machinery/atmos_new/generator_input/input1
+	var/obj/machinery/atmos_new/generator_input/input2
+
+	var/lastgen = 0
+	var/lastgenlev = -1
+
 /obj/machinery/power/monitor
 	name = "Power Monitoring Computer"
 	icon = 'computer.dmi'

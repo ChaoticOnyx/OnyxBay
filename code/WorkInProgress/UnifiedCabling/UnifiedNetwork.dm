@@ -64,6 +64,7 @@
 
 	Cable.loc = null
 	Cables -= Cable
+	if(Cable in ConnectedCables) CRASH("Cable connects to self.")
 
 	PropagateNetwork(ConnectedCables[1], NetworkNumber)
 
@@ -73,19 +74,31 @@
 		if(O.NetworkNumber[Cable.EquivalentCableType] == 0)
 
 			var/datum/UnifiedNetwork/NewNetwork = CreateUnifiedNetwork(Cable.EquivalentCableType)
-			NewNetwork.BuildFrom(Cable, Cable.NetworkControllerType)
+			NewNetwork.BuildFrom(O, Cable.NetworkControllerType)
 
-			PropagateNetwork(O, NewNetwork.NetworkNumber)
+			//PropagateNetwork(O, NewNetwork.NetworkNumber) [This is redundant after BuildFrom(). -Aryn]
 
 			Controller.StartSplit(NewNetwork)
 
-			for(var/obj/cabling/C in Cables)
-				if(!C.NetworkNumber[Cable.EquivalentCableType])
-					NewNetwork.AddCable(C)
+			for(var/obj/cabling/C in NewNetwork.Cables)
+				Controller.RemoveCable(C)
+				Cables -= C
 
-			for(var/obj/Node in Nodes)
-				if(!Node.NetworkNumber[Cable.EquivalentCableType])
-					NewNetwork.AddNode(Node)
+			for(var/obj/Node in NewNetwork.Nodes)
+				Nodes -= Node
+
+			//BuildFrom() has already given the new network its boundaries,
+			//so there's no need to add here. Instead, we should take away
+			//anything now governed by the split network from this one's list.
+			// -Aryn
+
+			//for(var/obj/cabling/C in Cables)
+			//	if(!C.NetworkNumber[Cable.EquivalentCableType])
+			//		NewNetwork.AddCable(C)
+
+			//for(var/obj/Node in Nodes)
+			//	if(!Node.NetworkNumber[Cable.EquivalentCableType])
+			//		NewNetwork.AddNode(Node,Cable)
 
 			Controller.FinishSplit(NewNetwork)
 
@@ -138,6 +151,8 @@
 
 /datum/UnifiedNetwork/proc/AddNode(var/obj/NewNode, var/obj/cabling/Cable)
 	//world << "Adding [NewNode.name] to \[[Cable.EquivalentCableType]\] Network [NetworkNumber]"
+	if(!istype(Cable,/obj/cabling))
+		CRASH("Faulty second arg to AddNode: [Cable]")
 	var/datum/UnifiedNetwork/CurrentNetwork = NewNode.Networks[Cable.EquivalentCableType]
 
 	if (CurrentNetwork == src)
@@ -188,7 +203,7 @@
 				AddCable(CC)
 
 			for (var/obj/M in OtherNetwork.Nodes)
-				AddNode(M)
+				AddNode(M,Cable)
 
 			Controller.FinishMerge()
 			OtherNetwork.Controller.FinishMerge()
@@ -198,8 +213,9 @@
 			del OtherNetwork
 
 	for(var/obj/Object in Connections - MergeCables)
-		AddNode(Object)
+		AddNode(Object,Cable)
 
+	AddCable(Cable)
 	Controller.AddCable(Cable)
 	Cable.NetworkNumber[Cable.EquivalentCableType] = NetworkNumber
 	Cable.Networks[Cable.EquivalentCableType] = src

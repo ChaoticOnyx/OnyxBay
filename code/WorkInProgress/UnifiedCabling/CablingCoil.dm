@@ -26,6 +26,7 @@
 	var/MaxAmount  = 30
 	var/Amount     = 30
 	var/CableType  = /obj/cabling
+	var/CanLayDiagonally = 1
 
 /obj/item/weapon/CableCoil/New(var/Location, var/Length)
 	if(!Length)
@@ -125,6 +126,10 @@
 		else
 			NewDirection = get_dir(Target, user)
 
+		if(!CanLayDiagonally && (NewDirection & NewDirection - 1))
+			user << "This type of cable cannot be laid diagonally."
+			return
+
 		var/obj/cabling/Cable = new CableType(null)
 
 		for(var/obj/cabling/ExistingCable in Target)
@@ -161,6 +166,10 @@
 		return
 
 	var/DirectionToUser = get_dir(Cable, user)
+
+	if(!CanLayDiagonally && (DirectionToUser & DirectionToUser - 1))
+		user << "This type of cable cannot be laid diagonally."
+		return
 
 	if(Cable.Direction1 == DirectionToUser || Cable.Direction2 == DirectionToUser)
 		if(UserLocation.intact)
