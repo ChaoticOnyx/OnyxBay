@@ -333,6 +333,15 @@
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
 	return
+/obj/closet/wardrobe/bar/New()
+	..()
+	new /obj/item/clothing/under/bartender( src )
+	new /obj/item/clothing/under/bartender( src )
+	new /obj/item/clothing/under/bartender( src )
+	new /obj/item/clothing/head/that( src )
+	new /obj/item/clothing/head/that( src )
+	new /obj/item/clothing/head/that( src )
+	return
 /obj/closet/lawcloset/New()
 	..()
 	new /obj/item/clothing/under/lawyer/black( src )
