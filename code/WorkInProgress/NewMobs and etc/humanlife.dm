@@ -193,7 +193,8 @@
 		paralysis = max(paralysis, 5)
 
 	if (stat != 2) //Alive.
-
+		if(nutrition > 0)
+			nutrition--
 		if (paralysis || stunned || weakened || changeling_fakedeath) //Stunned etc.
 			if (stunned > 0)
 				stunned--
@@ -275,7 +276,7 @@
 				toxloss = 100
 		else if(lol <= 122)
 			death()
-			src.unlock_medal("Were all sold out on blood", 0, "You bled to death..", "easy")
+			src.unlock_medal("We're all sold out on blood", 0, "You bled to death..", "easy")
 	if (eye_blind)
 		eye_blind--
 		blinded = 1
@@ -299,6 +300,13 @@
 	if (druggy > 0)
 		druggy--
 		druggy = max(0, druggy)
+
+	if(src.stat != 2)
+		if(lastnutritioncomplaint > world.timeofday)
+			lastnutritioncomplaint = 0
+		if(world.timeofday >= lastnutritioncomplaint + 6000)
+			lastnutritioncomplaint  = world.timeofday
+			src << pick("You feel hungry", "You feel thirsty", "Perhaps you should grab a bite to eat", "Your stomach rumbles")
 
 	return 1
 
@@ -477,7 +485,7 @@
 					if(1)
 						emote("twitch")
 					if(2 to 3)
-						say("[prob(50) ? ";" : ""][pick("DWARFS","MAGMA","ARMOK","BERR")]!")
+						say("[prob(50) ? ";" : ""][pick("DWARFS","MAGMA","ARMOK","BERR","APPLES")]!")
 				var/old_x = pixel_x
 				var/old_y = pixel_y
 				pixel_x += rand(-2,2)
