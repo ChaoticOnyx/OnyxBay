@@ -302,11 +302,12 @@
 		druggy = max(0, druggy)
 
 	if(src.stat != 2)
-		if(lastnutritioncomplaint > world.timeofday)
-			lastnutritioncomplaint = 0
-		if(world.timeofday >= lastnutritioncomplaint + 6000)
-			lastnutritioncomplaint  = world.timeofday
-			src << pick("You feel hungry", "You feel thirsty", "Perhaps you should grab a bite to eat", "Your stomach rumbles")
+		if(nutrition == 0)
+			if(lastnutritioncomplaint > world.timeofday)
+				lastnutritioncomplaint = 0
+			if(world.timeofday >= lastnutritioncomplaint + 6000)
+				lastnutritioncomplaint  = world.timeofday
+				src << pick("You feel hungry", "You feel thirsty", "Perhaps you should grab a bite to eat", "Your stomach rumbles", "Perhaps you should have a drink...","You feel empty inside", "You feel a bit peckish","Whatever you last ate didn't do much to fill you up...","Hmm, some pizza would be nice",)
 
 	return 1
 
