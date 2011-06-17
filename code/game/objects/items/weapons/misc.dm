@@ -73,6 +73,7 @@ DNA INJECTOR
 			M.requests += O
 			spawn( 0 )
 				O.process()
+				user.update_clothing()
 				return
 		else
 			for(var/mob/O in viewers(M, null))

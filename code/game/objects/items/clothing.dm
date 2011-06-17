@@ -110,8 +110,14 @@ DEATH COMMANDO GAS MASK
 			src.icon_state = "cigon"
 			src.item_state = "cigon"
 
+			var/gendercheck = "its"
+			if(user.gender == MALE)
+				gendercheck = "his"
+			if(user.gender == FEMALE)
+				gendercheck = "her"
+
 			for(var/mob/O in viewers(user, null))
-				O.show_message("\red With a single flick of his wrist, [user] smoothly lights his cigarette with his [W]. [cool]", 1)
+				O.show_message("\red With a single flick of [gendercheck] wrist, [user] smoothly lights [gendercheck] cigarette with [gendercheck] [W]. [cool]", 1)
 			spawn() //start fires while it's lit
 				src.process()
 

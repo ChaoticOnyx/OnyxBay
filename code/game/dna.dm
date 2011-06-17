@@ -542,11 +542,12 @@
 			I.loc = O
 			I.implanted = O
 			continue
-		del(M)
 
+		O.update_clothing()
 		O.toxloss += (M.toxloss + 20)
 		O.bruteloss += (M.bruteloss + 40)
 		O.oxyloss += M.oxyloss
+		del(M)
 		return
 //////////////////////////////////////////////////////////// Monkey Block
 	if (M) M.update_clothing()
