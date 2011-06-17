@@ -98,7 +98,16 @@
 	if(holding)
 		environment = holding.air_contents
 	else if(connected_port)
-		environment = connected_port.air_contents
+		if(istype(connected_port,/obj/machinery/atmos_new/connector))
+			var/datum/UnifiedNetwork/Network = connected_port.Networks[/obj/cabling/flexipipe]
+			if(Network)
+				var/datum/UnifiedNetworkController/FlexipipeNetworkController/Controller = Network.Controller
+				if(Controller)
+					environment = Controller.air_contents
+			if(!environment)
+				environment = loc.return_air()
+		else
+			environment = connected_port.air_contents
 	else
 		environment = loc.return_air()
 

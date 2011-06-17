@@ -1,4 +1,6 @@
 /mob/var/lastbreathT = 0
+/mob/living/carbon/var/lyingcheck = 0
+
 /mob/living/carbon/Life()
 	set background = 1
 
@@ -49,6 +51,9 @@
 
 	// Update clothing
 	//update_clothing()		Strumpet - Removing this to see if it's really necessary.  Could save some processing.
+	if(lyingcheck != lying)		//This is a fix for falling down / standing up not updating icons.  Instead of going through and changing every
+		update_clothing()		//instance in the code where lying is modified, I've just added a new variable "lyingcheck" which will be compared
+		lyingcheck = lying		//to lying, so if lying ever changes, update_clothing() will run like normal.
 
 	if(client)
 		handle_regular_hud_updates()
@@ -580,6 +585,9 @@
 			src << "\red You feel a searing heat in your lungs!"
 		fire_alert = max(fire_alert, 1)
 	else
+		if(breath.temperature < (T0C) && !(mutations & 2))
+			if(prob(20))
+				src << "\blue Your throat feels like ice!"
 		fire_alert = 0
 
 	if(oxyloss > 10)
@@ -643,7 +651,7 @@
 	if(wear_suit && (wear_suit.body_parts_covered & UPPER_TORSO))
 		thermal_protection += 0.5
 	if(w_uniform && (w_uniform.body_parts_covered & UPPER_TORSO))
-		thermal_protection += 0.5
+		thermal_protection += 0.1
 	if(wear_suit && (wear_suit.body_parts_covered & LEGS))
 		thermal_protection += 0.2
 	if(wear_suit && (wear_suit.body_parts_covered & ARMS))
@@ -651,7 +659,7 @@
 	if(wear_suit && (wear_suit.body_parts_covered & HANDS))
 		thermal_protection += 0.2
 	if(shoes && (shoes.body_parts_covered & FEET))
-		thermal_protection += 0.2
+		thermal_protection += 0.1
 	if(wear_suit && (wear_suit.flags & SUITSPACE))
 		thermal_protection += 3
 	if(head && (head.flags & HEADSPACE))

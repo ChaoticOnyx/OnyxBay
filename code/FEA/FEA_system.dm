@@ -176,11 +176,7 @@ datum
 				for(var/turf/simulated/S in world)
 					if(!S.blocks_air && !S.parent)
 						assemble_group_turf(S)
-					if(S.HasDoor())
-						spawn(1) S.add_to_other_zone()
-					else
-						if(S.CanPass(null,S,0,0) && !S.zone)
-							new/zone(S)
+				ZoneSetup()
 				for(var/turf/simulated/S in world) //Update all pathing and border information as well
 					S.update_air_properties()
 /*

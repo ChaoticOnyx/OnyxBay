@@ -205,3 +205,8 @@ obj/fire/New()
 	T.air.temperature += temperature
 	dir = pick(cardinal)
 	ul_SetLuminosity(7,3,0)
+
+obj/fire/Del()
+	ul_SetLuminosity(0)
+	loc = null
+	..()

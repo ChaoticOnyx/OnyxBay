@@ -218,6 +218,20 @@ datum
 				//Proportionally removes amount of gas from the gas_mixture
 				//Returns: gas_mixture with the gases removed
 
+			exchange_to(datum/gas_mixture/receiver,bound,multiplier)
+				//Transfers gas from src to receiver based on how far below
+				//bound the pressure of receiver is.
+				//Returns: null
+
+			exchange_from(datum/gas_mixture/sender,bound,multiplier)
+				//Transfers gas from sender to src based on how far above
+				//bound the pressure of sender is.
+				//Returns: null
+
+			exchange_delta(datum/gas_mixture/sharer,multiplier)
+				//Equalizes pressure between two mixtures.
+				//Returns: null
+
 			subtract(datum/gas_mixture/right_side)
 				//Subtracts right_side from air_mixture. Used to help turfs mingle
 
@@ -407,6 +421,52 @@ datum
 			removed.temperature = temperature
 
 			return removed
+
+		exchange_to(datum/gas_mixture/receiver,bound,mult=1)
+			var/pressure_delta = (bound - receiver.return_pressure())*mult
+			//Can not have a pressure delta that would cause environment pressure > tank pressure
+
+			var/transfer_moles = 0
+			if(temperature > 0)
+				transfer_moles = pressure_delta*receiver.volume/(temperature * R_IDEAL_GAS_EQUATION)
+
+				//Actually transfer the gas
+				var/datum/gas_mixture/removed = remove(transfer_moles)
+
+				receiver.merge(removed)
+
+		exchange_from(datum/gas_mixture/sender,bound,mult=1)
+			var/pressure_delta = (sender.return_pressure() - bound)*mult
+			//Can not have a pressure delta that would cause environment pressure > tank pressure
+
+			var/transfer_moles = 0
+			if(sender.temperature > 0)
+				transfer_moles = pressure_delta*volume/(sender.temperature * R_IDEAL_GAS_EQUATION)
+
+				//Actually transfer the gas
+				var/datum/gas_mixture/removed = sender.remove(transfer_moles)
+
+				merge(removed)
+
+		exchange_delta(datum/gas_mixture/sharer,mult=1)
+			var/sharer_pressure = sharer.return_pressure()
+			var/pressure_delta = (return_pressure() - sharer_pressure)*mult
+			//Can not have a pressure delta that would cause environment pressure > tank pressure
+
+			var/transfer_moles = 0
+			if((temperature > 0) && (pressure_delta > 0))
+				transfer_moles = pressure_delta*sharer.volume/(temperature * R_IDEAL_GAS_EQUATION)
+
+				//Actually transfer the gas
+				var/datum/gas_mixture/removed = remove(transfer_moles)
+
+				sharer.merge(removed)
+			else if(pressure_delta < 0)
+				// take in air from outside
+				transfer_moles = -pressure_delta*sharer.volume/(temperature * R_IDEAL_GAS_EQUATION)
+				var/datum/gas_mixture/removed = sharer.remove(transfer_moles)
+
+				merge(removed)
 
 		check_then_remove(amount)
 

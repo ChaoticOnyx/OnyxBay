@@ -417,6 +417,21 @@
 	var/lastgen = 0
 	var/lastgenlev = -1
 
+/obj/machinery/power/generator_type3
+	name = "Thermo-Electric Generator"
+	desc = "A high efficiency thermoelectric generator."
+	icon_state = "teg"
+	anchored = 1
+	density = 1
+	var/transferpercent = 100
+	var/outputpercent = 100
+
+	var/obj/machinery/atmos_new/generator_input/input1
+	var/obj/machinery/atmos_new/generator_input/input2
+
+	var/lastgen = 0
+	var/lastgenlev = -1
+
 /obj/machinery/power/monitor
 	name = "Power Monitoring Computer"
 	icon = 'computer.dmi'
@@ -709,9 +724,16 @@
 	icon_deny = "bar-deny"
 	req_access_txt = "25"
 	points = 10
-	product_paths = "/obj/item/clothing/under/bartender;/obj/item/weapon/reagent_containers/food/drinks/cola;/obj/item/weapon/reagent_containers/food/drinks/beer;/obj/item/weapon/reagent_containers/food/drinks/vodka;/obj/item/weapon/reagent_containers/food/drinks/dwine;/obj/reagent_dispensers/beerkeg"
+	product_paths = {"/obj/item/clothing/under/bartender;
+/obj/item/clothing/head/that;
+/obj/item/weapon/reagent_containers/food/drinks/glass;
+/obj/item/weapon/reagent_containers/food/drinks/cola;
+/obj/item/weapon/reagent_containers/food/drinks/beer;
+/obj/item/weapon/reagent_containers/food/drinks/vodka;
+/obj/item/weapon/reagent_containers/food/drinks/dwine;
+/obj/reagent_dispensers/beerkeg"}
 	//product_amounts = "4;4;4;4;12"
-	product_prices = "1;1;2;3;5;10"
+	product_prices = "1;1;1;1;2;3;5;10"
 	product_hidden = ""
 	hidden_prices = ""
 	charge_type = "bar"
@@ -723,7 +745,10 @@
     icon_deny = "kitchen-deny"
     req_access_txt = "28"
     points = 30
-    product_paths = {"/obj/item/weapon/kitchen/utensil/knife;
+    product_paths = {"/obj/item/clothing/under/chef;
+/obj/item/clothing/suit/storage/chef;
+/obj/item/clothing/head/chefhat;
+/obj/item/weapon/kitchen/utensil/knife;
 /obj/item/weapon/kitchen/rollingpin;
 /obj/item/weapon/reagent_containers/food/drinks/cola;
 /obj/item/weapon/reagent_containers/food/drinks/coffee;
@@ -743,7 +768,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/fungi;
 /obj/item/weapon/reagent_containers/food/snacks/plump"}
     //product_amounts = "10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10"
-    product_prices = "1;1;1;1;2;2;2;2;1;1;1;1;1;1;1;1;1;1;2"
+    product_prices = "1;1;1;1;1;1;1;2;2;2;2;1;1;1;1;1;1;1;1;1;1;2"
     product_hidden = ""
     hidden_prices = ""
     charge_type = "kitchen"
