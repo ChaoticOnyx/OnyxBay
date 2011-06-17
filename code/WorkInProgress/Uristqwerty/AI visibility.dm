@@ -242,6 +242,9 @@ var/datum/cameranet/cameranet = new()
 	eyeobj.ai = src
 
 /mob/living/silicon/ai/verb/freelook()
+	current = null	//cancel camera view first, it causes problems
+	cameraFollow = null
+	machine = null
 	if(client.eye == eyeobj)
 		client.eye = src
 		for(var/datum/camerachunk/c in eyeobj.visibleCameraChunks)
@@ -251,7 +254,6 @@ var/datum/cameranet/cameranet = new()
 		eyeobj.loc = loc
 		cameranet.visibility(eyeobj)
 		cameraFollow = null
-
 /mob/aiEye/Move()
 	. = ..()
 	if(.)
