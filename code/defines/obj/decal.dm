@@ -280,3 +280,21 @@
 	anchored = 1.0
 	opacity = 0
 	density = 0
+
+/obj/decal/sign/magmasea1 // sign is 32.64, hence two objects
+	desc = "The Magma Sea, Space Cantina"
+	name = "The Magma Sea"
+	icon = 'decals.dmi'
+	icon_state = "magmasea1"
+	anchored = 1.0
+	opacity = 0
+	density = 0
+
+/obj/decal/sign/magmasea2
+	desc = "The Magma Sea, Space Cantina"
+	name = "The Magma Sea"
+	icon = 'decals.dmi'
+	icon_state = "magmasea2"
+	anchored = 1.0
+	opacity = 0
+	density = 0
