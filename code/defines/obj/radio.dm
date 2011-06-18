@@ -1,5 +1,5 @@
 /obj/item/device/radio
-	name = "station bounced radio"
+	name = "ship bounced radio"
 	suffix = "\[3\]"
 	icon_state = "walkietalkie"
 	item_state = "walkietalkie"
@@ -66,7 +66,7 @@
 	item_state = "headset"
 	security_frequency = 1401
 /obj/item/device/radio/intercom
-	name = "Station Intercom (Radio)"
+	name = "Ship Intercom (Radio)"
 	icon_state = "intercom"
 	anchored = 1.0
 	var/number = 0

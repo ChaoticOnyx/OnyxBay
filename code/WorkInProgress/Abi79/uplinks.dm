@@ -34,7 +34,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 	var/unlocking_code = "" 	//The unlocking password.
 
 /obj/item/device/uplink/radio
-	name = "station bounced radio"
+	name = "ship bounced radio"
 	icon = 'device.dmi'
 	icon_state = "radio"
 	var/temp = null 			//Temporary storage area for a message offering the option to destroy the radio
