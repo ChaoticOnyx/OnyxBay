@@ -1,5 +1,5 @@
 /obj/item/device/radio
-	name = "ship bounced radio"
+	name = "handheld radio"
 	suffix = "\[3\]"
 	icon_state = "walkietalkie"
 	item_state = "walkietalkie"

@@ -507,6 +507,13 @@
 	item_state = "chef"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
+/obj/item/clothing/suit/storage/apron
+	name = "apron"
+	desc = "A simple blue apron. It has a big pocket on the front you could store something in."
+	icon_state = "apron"
+	item_state = "apron"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+
 /obj/item/clothing/suit/straight_jacket
 	name = "straight jacket"
 	desc = "A suit that totally restrains an individual"
