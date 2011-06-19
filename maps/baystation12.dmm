@@ -148,7 +148,7 @@
 "cR" = (/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/nwcorridor)
 "cS" = (/obj/machinery/door/airlock/maintenance,/turf/simulated/floor,/area)
 "cT" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor,/area/bs12/security/holding)
-"cU" = (/obj/machinery/door/airlock/command{name = "Head of Personnel's Quarters"; req_access = null; req_access_txt = "19"},/obj/cabling/power{tag = "icon-1-5-f"; icon_state = "1-5-f"},/turf/simulated/floor,/area/crew_quarters/hop)
+"cU" = (/obj/cabling/power{tag = "icon-1-6"; icon_state = "1-6"},/obj/machinery/door/airlock/command{name = "Head of Personnel's Quarters"; req_access = null; req_access_txt = "19"},/turf/simulated/floor,/area/crew_quarters/hop)
 "cV" = (/obj/stool/chair{dir = 1},/obj/cabling/power{tag = "icon-6-9"; icon_state = "6-9"},/turf/simulated/floor,/area/bs12/facilities/meeting)
 "cW" = (/obj/stool/chair{dir = 1},/turf/simulated/floor,/area/bs12/facilities/meeting)
 "cX" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area/bs12/maintenance/corridor/nwcorridor)
