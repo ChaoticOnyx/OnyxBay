@@ -31,7 +31,7 @@
 	name = "space"
 	icon_state = "placeholder"
 	var/sand = 0
-	temperature = TCMB
+	temperature = T0C
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 700000
 
@@ -85,7 +85,7 @@
 	icon_state = "engine"
 	oxygen = 0
 	nitrogen = 0.000
-	temperature = TCMB
+	temperature = T0C
 
 ///turf/space/hull //TEST
 turf/space/hull
@@ -96,7 +96,7 @@ turf/space/hull/New()
 	return
 /*	oxygen = 0
 	nitrogen = 0.000
-	temperature = TCMB
+	temperature = T0C
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 700000*/
 /turf/simulated/floor/
@@ -133,7 +133,7 @@ turf/space/hull/New()
 		name = "airless floor"
 		oxygen = 0.01
 		nitrogen = 0.01
-		temperature = TCMB
+		temperature = T0C
 
 		New()
 			..()
@@ -264,7 +264,7 @@ turf/space/hull/New()
 	name = "Airless Plating"
 	oxygen = 0.01
 	nitrogen = 0.01
-	temperature = TCMB
+	temperature = T0C
 
 	New()
 		..()
