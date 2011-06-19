@@ -54,6 +54,21 @@
 		blobstart += src.loc
 		del(src)
 
+	//Pod Spawn point.
+	//Place this 20 or so tiles NORTH of an escape pod dock in centcom or elsewhere.
+	if(name == "Pod-Spawn")
+		podspawns += src.loc
+		del(src)
+
+	//Pod Dock point
+	//Place this in the middle of a pod dock in order to have it properly accept escape pods.
+	//Have one open pod door to the north and one closed one to the south.  When a pod enters the north door and lands
+	//On this tile, it'll stop due to the south door.  The game wil automatically close the north door and open the south one.
+	//After air has entered the lock from the south, the player can leave the pod and figure out where they are.
+	if(name == "Pod-Dock")
+		poddocks += src.loc
+		del(src)
+
 	return 1
 
 /obj/landmark/start/New()
