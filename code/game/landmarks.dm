@@ -54,6 +54,7 @@
 		blobstart += src.loc
 		del(src)
 
+/*	Strumpetplaya - Commenting this block of code out for now.  It appears PersonalEscapePods.dm didn't get added to the git, so the server is not compiling.  This should fix it.
 	//Pod Spawn point.
 	//Place this 20 or so tiles NORTH of an escape pod dock in centcom or elsewhere.
 	if(name == "Pod-Spawn")
@@ -70,6 +71,8 @@
 		del(src)
 
 	return 1
+
+*/
 
 /obj/landmark/start/New()
 	..()
