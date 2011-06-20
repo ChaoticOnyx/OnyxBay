@@ -166,3 +166,7 @@ var/const
 #define mNobreath 32
 
 #define TABBED_PM	1
+
+//For ze mini pods (take from old code).
+/var/list/podspawns = list( )
+/var/list/poddocks = list( )
