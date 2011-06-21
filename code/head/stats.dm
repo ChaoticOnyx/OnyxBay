@@ -33,7 +33,7 @@ client/proc/onDeath(var/mob/A = src.mob)
 		last = A.logs[A.logs.len]
 	else
 		last = "None"
-	var/DBQuery/cquery = dbcon.NewQuery("INSERT INTO `deathlog` (`ckey`,`location`,`lastattacker`,`ToD`,`health`,`lasthit`) VALUES ('[ckey]',[dbcon.Quote(area)],'[attacker]','[tod]','[health]','[dbcon.Quote(last)]')")
+	var/DBQuery/cquery = dbcon.NewQuery("INSERT INTO `deathlog` (`ckey`,`location`,`lastattacker`,`ToD`,`health`,`lasthit`) VALUES ('[ckey]',[dbcon.Quote(area)],[dbcon.Quote(attacker)],'[tod]','[health]','[dbcon.Quote(last)]')")
 	if(!cquery.Execute()) message_admins(cquery.ErrorMsg())
 client/proc/onBought(names)
 	if(!makejson) return
