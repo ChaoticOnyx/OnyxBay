@@ -131,15 +131,18 @@
 			newname = dd_replacetext(newname, ">", "'")
 			O.real_name = newname
 			O.name = newname
-		var/aisprite = input(O,"What do you want to look like?", "AI image", "Cancel") in list("Blue Face","Red Face","Text","Smiley") //Let's player change AI sprite. Will add more sprites later. -CN
-		if (aisprite == "Blue Face")
-			O.icon_state = "ai"
-		if (aisprite == "Red Face")
-			O.icon_state = "ai-malf"
-		if (aisprite == "Text")
-			O.icon_state = "ai-2"
-		if (aisprite == "Smiley")
-			O.icon_state = "ai-3"
+		if (O.name == "B.A.N.N.E.D.")
+			O.icon_state = "ai-banned"
+		else
+			var/aisprite = input(O,"What do you want to look like?", "AI image", "Cancel") in list("Blue Face","Red Face","Text","Smiley") //Let's player change AI sprite. Will add more sprites later. -CN
+			if (aisprite == "Blue Face")
+				O.icon_state = "ai"
+			if (aisprite == "Red Face")
+				O.icon_state = "ai-malf"
+			if (aisprite == "Text")
+				O.icon_state = "ai-2"
+			if (aisprite == "Smiley")
+				O.icon_state = "ai-3"
 		world << text("<b>[O.real_name] is the AI!</b>")
 		del(src)
 
