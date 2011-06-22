@@ -271,4 +271,5 @@
 		return
 	proc/ChangeSign(var/Text)
 		src.icon_state = "[Text]"
+		ul_SetLuminosity(4)
 		return
