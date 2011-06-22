@@ -43,7 +43,7 @@
 		zombify()
 		sleep(10)
 		// main loop
-		spawn while(stat != STAT_DEAD)
+		spawn while(stat != STAT_DEAD && bot)
 			sleep(cycle_pause)
 			src.process()
 		name = "zombie"

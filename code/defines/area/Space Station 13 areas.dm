@@ -713,6 +713,14 @@
 	name = "Medical Research"
 	icon_state = "medresearch"
 
+/area/medical/medbay_hall
+	name = "Medical Hallway"
+	icon_state = "medbay_hall"
+
+/area/medical/medbay_restricted_hall
+	name = "Restricted Medical Hallway"
+	icon_state = "medbay_restricted_hall"
+
 /area/anomalist
 	name = "Anomaly lab"
 	icon_state = "medresearch"
@@ -779,6 +787,18 @@
 	name = "Head of Security's Office"
 	icon_state = "hos"
 
+/area/security/officer_lounge
+	name = "Security Lounge"
+	icon_state = "officer_lounge"
+
+/area/security/forensics
+	name = "Forensics"
+	icon_state = "forensics"
+
+/area/security/interrogation
+	name = "Interrogation Room"
+	icon_state = "interrogation"
+
 /area/solar
 	requires_power = 0
 	luminosity = 1
@@ -837,6 +857,25 @@
 	name = "Quartermaster's Storage"
 	icon_state = "quartstorage"
 
+/area/quartermaster/quart_med
+	name = "Quatermaster's Medical Storage"
+	icon_state = "quart_med"
+
+/area/quartermaster/quart_eng
+	name = "Quartermaster's Engineering Storage"
+	icon_state = "quart_eng"
+
+/area/quartermaster/quart_gen
+	name = "Quartermaster's General Storage"
+	icon_state = "quart_gen"
+
+/area/quartermaster/quart_sec
+	name = "Quartermaster's Security Storage"
+	icon_state = "quart_sec"
+
+/area/quartermaster/quart_pub_access
+	name = "Quartermaster's Public Access Hallway"
+	icon_state = "quart_pub_access"
 
 /area/quartermaster/
 	name = "Quartermaster's"
