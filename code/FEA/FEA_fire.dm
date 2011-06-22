@@ -190,11 +190,11 @@ obj/fire/proc/process()
 obj/fire/proc/burn(tox,oxy)
 	var/turf/simulated/floor/T = src.loc
 //	var/datum/gas_mixture/affected = T.air.remove_ratio(volume/T.air.volume)
-	T.air.oxygen -= Round(oxy)
-	T.air.toxins -= Round(tox)
-	var/newco = Round(oxy + tox)
+	T.air.oxygen -= round(oxy)
+	T.air.toxins -= round(tox)
+	var/newco = round(oxy + tox)
 	T.air.carbon_dioxide += newco
-	T.air.temperature += Round(tox)
+	T.air.temperature += round(tox)
 
 /*mob/verb/createfire()
 	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)

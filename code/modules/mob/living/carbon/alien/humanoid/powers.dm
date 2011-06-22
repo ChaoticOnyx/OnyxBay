@@ -75,7 +75,7 @@
 		toxloss -= 100
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\green <B>[src] has planted some alien weeds!</B>"), 1)
-		var/obj/alien/weeds/W = new /obj/alien/weeds(loc)
+		var/obj/item/alien/weeds/W = new /obj/item/alien/weeds(loc)
 		W.updateicon()
 		W.Life()
 	else
