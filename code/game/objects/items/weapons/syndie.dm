@@ -35,7 +35,8 @@
 /obj/item/weapon/syndie/c4explosive/proc/detonate()
 	icon_state = "c-4[size]_1"
 	spawn(50*tick_multiplier)
-	explosion(get_turf(src), power, power*2, power*3, power*4, power*4)
+		explosion(get_turf(src), power, power*2, power*3, power*4, power*4)
+		del(src)
 
 
 /*Detonator, disguised as a lighter*/
