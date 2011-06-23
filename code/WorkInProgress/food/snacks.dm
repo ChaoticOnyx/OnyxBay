@@ -4,7 +4,7 @@
 		heal(var/mob/M)
 			if(istype(M, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = M
-				H.nutrition += 1500
+				H.nutrition += 400
 				for(var/A in H.organs)
 					var/datum/organ/external/affecting = null
 					if(!H.organs[A])	continue

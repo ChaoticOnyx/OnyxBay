@@ -99,7 +99,7 @@
 /mob/var/charges = 0.0
 /mob/var/urine = 0.0
 /mob/var/poo = 0.0
-/mob/var/nutrition = 6000 //dun break
+/mob/var/nutrition = 1600 //dun break
 /mob/var/paralysis = 0.0
 /mob/var/stunned = 0.0
 /mob/var/weakened = 0.0
