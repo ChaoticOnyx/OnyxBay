@@ -308,7 +308,7 @@
 			if(world.timeofday >= lastnutritioncomplaint + 6000)
 				lastnutritioncomplaint  = world.timeofday
 				src << pick("You feel hungry", "You feel thirsty", "Perhaps you should grab a bite to eat", "Your stomach rumbles", "Perhaps you should have a drink...","You feel empty inside", "You feel a bit peckish","Whatever you last ate didn't do much to fill you up...","Hmm, some pizza would be nice",)
-				world << "nutrition is now 0 for [src.name]"
+				//world << "nutrition is now 0 for [src.name]"
 
 	return 1
 
