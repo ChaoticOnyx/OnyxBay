@@ -134,7 +134,7 @@
 		if (O.name == "B.A.N.N.E.D.")
 			O.icon_state = "ai-banned"
 		else
-			var/aisprite = input(O,"What do you want to look like?", "AI image", "Cancel") in list("Blue Face","Red Face","Text","Smiley") //Let's player change AI sprite. Will add more sprites later. -CN
+			var/aisprite = input(O,"What do you want to look like?", "AI image", "Cancel") in list("Blue Face","Red Face","Text","Smiley", "Matrix \"rain\"") //Let's player change AI sprite. Will add more sprites later. -CN
 			if (aisprite == "Blue Face")
 				O.icon_state = "ai"
 			if (aisprite == "Red Face")
@@ -143,6 +143,8 @@
 				O.icon_state = "ai-2"
 			if (aisprite == "Smiley")
 				O.icon_state = "ai-3"
+			if (aisprite == "Matrix \"rain\"")
+				O.icon_state = "ai-matrix"
 		world << text("<b>[O.real_name] is the AI!</b>")
 		del(src)
 
