@@ -119,6 +119,9 @@
 	var/icon_normal = "leverbig0"
 	var/needspower = 0
 
+/obj/machinery/door_control/vent_control/attack_ai(mob/user as mob)
+	return	//lolno
+
 /obj/machinery/door_control/vent_control/attack_hand(mob/user as mob)
 	if(stat & (NOPOWER|BROKEN))
 		return
