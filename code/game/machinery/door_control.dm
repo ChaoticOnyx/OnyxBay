@@ -120,7 +120,7 @@
 	var/needspower = 0
 
 /obj/machinery/door_control/vent_control/attack_ai(mob/user as mob)
-	if (in_range(src, usr) && get_dist(src, usr) <= 1 && istype(user, /mob/living/silicon/robot))
+	if (in_range(src, user) && get_dist(src, user) <= 1 && istype(user, /mob/living/silicon/robot))
 		src.attack_hand(user)
 		return
 	else
