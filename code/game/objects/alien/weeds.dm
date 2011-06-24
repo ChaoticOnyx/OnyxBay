@@ -9,6 +9,7 @@
 	anchored = 1
 	var/dead = 0
 	var/list/allowed = list(/obj/closet,/obj/table,/obj/machinery/computer,/obj/machinery/disposal)
+	var/spreadlimit = 10
 
 /obj/item/alien/weeds/New()
 	//del(src)
@@ -74,6 +75,9 @@
 	return
 
 /obj/item/alien/weeds/proc/Life()
+	world << "durr"
+	if (spreadlimit <= 0)
+		return
 	src.updateicon(0)
 	var/turf/U = src.loc
 	if (istype(U, /turf/space))
@@ -111,6 +115,7 @@
 				//sleep(10)
 				var/obj/item/alien/weeds/B = new(src.loc)
 				B.icon_state = ""
+				B.spreadlimit = src.spreadlimit - 1
 				if(T.Enter(B) && !(locate(/obj/alien/weeds) in T))
 					B.loc = T
 					//B.Life()
@@ -120,11 +125,13 @@
 					del(B)
 		if(locate(/obj/closet) in T || locate(/obj/table) in T || locate(/obj/machinery/computer) in T || locate(/obj/machinery/disposal) in T)
 			var/obj/item/alien/weeds/B = new(T)
+			B.spreadlimit = src.spreadlimit - 1
 			//B.Life()
 			B.updateicon(1)
 			continue
 		if(!locate(/obj/item/alien/weeds) in T)
 			var/obj/item/alien/weeds/B = new(src.loc)
+			B.spreadlimit = src.spreadlimit - 1
 			B.icon_state = ""
 			if(T.Enter(B))
 				B.loc = T
