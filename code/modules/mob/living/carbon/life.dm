@@ -174,7 +174,7 @@
 	var/loc_temp = T0C
 	if(istype(loc, /turf/space))
 		environment_heat_capacity = loc:heat_capacity
-		loc_temp = 2.7
+		loc_temp = TESPC
 	else if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))
 		loc_temp = loc:air_contents.temperature
 	else
