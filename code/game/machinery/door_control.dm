@@ -120,7 +120,13 @@
 	var/needspower = 0
 
 /obj/machinery/door_control/vent_control/attack_ai(mob/user as mob)
-	return	//lolno
+	if (in_range(src, usr) && get_dist(src, usr) <= 1 && istype(user, /mob/living/silicon/robot))
+		src.attack_hand(user)
+		return
+	else
+		user << "This switch is operated by hydraulics, you cannot use it remotely."
+		return	//lolno
+	return	//just in case
 
 /obj/machinery/door_control/vent_control/attack_hand(mob/user as mob)
 	if(stat & (NOPOWER|BROKEN))
