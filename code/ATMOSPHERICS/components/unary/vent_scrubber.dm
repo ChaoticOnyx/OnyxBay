@@ -68,6 +68,14 @@
 				if(network)
 					network.update = 1
 
+			var/turf/simulated/T = loc
+			if(T.air && T.air.return_pressure() > ONE_ATMOSPHERE*1.05)
+				var/transfer_moles = environment.total_moles()*(volume_rate/environment.volume)
+				var/datum/gas_mixture/removed = loc.remove_air(transfer_moles)
+				air_contents.merge(removed)
+				if(network)
+					network.update = 1
+
 		else //Just siphoning all air
 			var/transfer_moles = environment.total_moles()*(volume_rate/environment.volume)
 

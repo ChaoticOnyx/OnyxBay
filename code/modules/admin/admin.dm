@@ -319,6 +319,7 @@
 			<A href='?src=\ref[src];c_mode2=derelict'>Derelict (Beta)</A><br>
 			<A href='?src=\ref[src];c_mode2=zombie'>Zombie (Beta)</A><br>
 			<A href='?src=\ref[src];c_mode2=takeover'>Hostile Takeover (Alpha)</A><br>
+			<A href='?src=\ref[src];c_mode2=Extend-A-Traitormongous'>Auto Traitor (Beta)</A><br>
 			<!-- <A href='?src=\ref[src];c_mode2=among'>Traitor among us (Beta)</A><br><br> -->
 			Now: [master_mode]\n"})
 			usr << browse(dat, "window=c_mode")
@@ -368,6 +369,8 @@
 					master_mode = "takeover"
 				/*if("among")
 					master_mode = "traitoramongus"*/
+				if("Extend-A-Traitormongous")
+					master_mode = "Extend-A-Traitormongous"
 				else
 			log_admin("[key_name(usr)] set the mode as [master_mode].")
 			message_admins("\blue [key_name_admin(usr)] set the mode as [master_mode].", 1)

@@ -114,6 +114,10 @@ obj/machinery/atmospherics/pipe
 				var/turf/locT = src.loc
 				if(locT.zone && locT.zone.space_connections.len >= 1)
 					return
+				if(locT.zone)
+					for(var/zone/Z in locT.zone.connections)
+						if (Z.space_connections.len >= 1)
+							return
 				parent.mingle_with_turf(get_step(loc, node1dir), volume)
 				if(!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
@@ -123,6 +127,10 @@ obj/machinery/atmospherics/pipe
 				var/turf/locT = src.loc
 				if(locT.zone && locT.zone.space_connections.len >= 1)
 					return
+				if(locT.zone)
+					for(var/zone/Z in locT.zone.connections)
+						if (Z.space_connections.len >= 1)
+							return
 				parent.mingle_with_turf(get_step(loc, node2dir), volume)
 				if(!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"

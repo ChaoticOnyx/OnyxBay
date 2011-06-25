@@ -685,6 +685,7 @@ datum/preferences
 		if(be_random_name)
 			randomize_name()
 		character.real_name = real_name
+		character.be_syndicate = be_syndicate
 
 		character.gender = gender
 
