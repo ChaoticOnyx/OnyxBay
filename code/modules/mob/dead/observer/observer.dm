@@ -29,7 +29,10 @@
 	set desc = "You cannot be revived as a ghost"
 	if(client)
 		if(isturf(src.loc))
-			client.mob = new/mob/dead/observer(src.loc,src)
+			var/mob/dead/observer/newghost = new/mob/dead/observer(src.loc,src)
+			newghost.timeofdeath = src.timeofdeath
+			client.mob = newghost
+
 		else
 			var/atom/object = src.loc
 			client.mob = new/mob/dead/observer(object.loc,src)

@@ -13,6 +13,7 @@
 
 /datum/game_mode/traitor/autotraitor/post_setup()
 	..()
+	abandon_allowed = 1
 	traitorcheckloop()
 
 /datum/game_mode/traitor/autotraitor/proc/traitorcheckloop()

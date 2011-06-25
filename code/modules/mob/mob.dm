@@ -1439,6 +1439,24 @@ mob/verb/turnwest()
 	if ((stat != 2 || !( ticker )))
 		usr << "\blue <B>You must be dead to use this!</B>"
 		return
+	if (ticker.mode.name == "AutoTraitor")
+		var/deathtime = world.time - src.timeofdeath
+		var/deathtimeminutes = round(deathtime / 600)
+		var/pluralcheck = "minute"
+		if(deathtimeminutes == 0)
+			pluralcheck = ""
+		else if(deathtimeminutes == 1)
+			pluralcheck = " [deathtimeminutes] minute and"
+		else if(deathtimeminutes > 1)
+			pluralcheck = " [deathtimeminutes] minutes and"
+		var/deathtimeseconds = round((deathtime - deathtimeminutes * 600) / 10,1)
+		usr << "You have been dead for[pluralcheck] [deathtimeseconds] seconds ."
+		if (deathtime < 36000)
+			usr << "You must wait 60 minutes to respawn!"
+			return
+		else
+			usr << "You can respawn now, enjoy your new life! :-D"
+
 
 	log_game("[usr.name]/[usr.key] used abandon mob.")
 
