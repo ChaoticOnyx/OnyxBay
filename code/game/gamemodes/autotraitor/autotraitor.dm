@@ -39,7 +39,7 @@
 		var/r = rand(5)
 		var/target_traitors = 1
 
-		target_traitors = max(1, min(round((num_players + r) / 10, 1), traitors_possible))
+		target_traitors = max(1, min(round((playercount + r) / 10, 1), traitors_possible))
 		message_admins("Target Traitor Count is: [target_traitors]")
 
 		if (traitorcount < target_traitors)
@@ -88,7 +88,7 @@
 		var/r = rand(5)
 		var/target_traitors = 1
 
-		target_traitors = max(1, min(round((num_players + r) / 10, 1), traitors_possible))
+		target_traitors = max(1, min(round((playercount + r) / 10, 1), traitors_possible))
 		message_admins("Target Traitor Count is: [target_traitors]")
 		if (traitorcount < target_traitors)
 			message_admins("Number of Traitors is below Target.  Making New Arrival Traitor.")
