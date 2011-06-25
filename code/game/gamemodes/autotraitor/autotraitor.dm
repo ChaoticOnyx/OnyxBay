@@ -27,7 +27,7 @@
 				playercount += 1
 			if (player.mind && player.mind.special_role && player.stat != 2)
 				traitorcount += 1
-			if (player.mind && !player.mind.special_role && player.stat != 2 && player.be_syndicate)
+			if (player.client && player.mind && !player.mind.special_role && player.stat != 2 && player.be_syndicate)
 				possible_traitors += player
 		message_admins("Live Players: [playercount]")
 		message_admins("Live Traitors: [traitorcount]")
