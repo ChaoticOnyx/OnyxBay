@@ -148,6 +148,9 @@
 
 /mob/var/underwear = 1
 /mob/var/be_syndicate = 0
+/mob/var/be_nuke_agent = 0
+/mob/var/be_hijack_agent = 0
+/mob/var/be_takeover_agent = 0
 /mob/var/be_random_name = 0
 /mob/var/const/blindness = 1
 /mob/var/const/deafness = 2
