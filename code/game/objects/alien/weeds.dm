@@ -20,7 +20,6 @@
 	processing_items.Add(src)
 /obj/item/alien/weeds/process()
 	if(dead) return
-	//world << "hurr"
 /*	var/turf/T = src.loc
 	var/obj/item/alien/weeds/north = locate() in T.north
 	var/obj/item/alien/weeds/west = locate() in T.west
@@ -38,7 +37,6 @@
 	updateicon(0)
 
 /obj/item/alien/weeds/proc/updateicon(var/spread = 1)
-	//world << "durr"
 	var/turf/T = src.loc
 	var/obj/item/alien/weeds/north = locate() in T.north
 	var/obj/item/alien/weeds/west = locate() in T.west
@@ -75,7 +73,6 @@
 	return
 
 /obj/item/alien/weeds/proc/Life()
-	world << "durr"
 	if (spreadlimit <= 0)
 		return
 	src.updateicon(0)
