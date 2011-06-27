@@ -13,14 +13,14 @@
 	desc = "A mysterious package."
 	w_class = 3
 
-	var/power = 2.0  /*Size of the explosion.*/
+	var/power = 1  /*Size of the explosion.*/
 	var/size = "small"  /*Used for the icon, this one will make c-4small_0 for the off state.*/
 
 /obj/item/weapon/syndie/c4explosive/heavy
 	icon_state = "c-4large_0"
 	item_state = "c-4large"
 	desc = "A mysterious package, it's quite heavy."
-	power = 3
+	power = 2
 	size = "large"
 
 /obj/item/weapon/syndie/c4explosive/New()
