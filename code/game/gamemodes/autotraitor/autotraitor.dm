@@ -33,7 +33,7 @@
 	var/num_traitors = 1
 	var/max_traitors = 1
 	var/traitor_prob = 0
-	max_traitors = round(num_players, 10) + 1
+	max_traitors = round(num_players, 10) / 10 + 1
 	traitor_prob = min((num_players - (max_traitors - 1) * 10) * 10, 100)
 
 	// Stop setup if no possible traitors
@@ -96,7 +96,7 @@
 //		var/target_traitors = 1
 		var/max_traitors = 1
 		var/traitor_prob = 0
-		max_traitors = round(playercount, 10) + 1
+		max_traitors = round(playercount, 10) / 10 + 1
 		traitor_prob = min((playercount - (max_traitors - 1) * 10) * 10, 100) / 2
 
 
@@ -186,7 +186,7 @@
 		//var/target_traitors = 1
 		var/max_traitors = 1
 		var/traitor_prob = 0
-		max_traitors = round(playercount, 10) + 1
+		max_traitors = round(playercount, 10) / 10 + 1
 		traitor_prob = min((playercount - (max_traitors - 1) * 10) * 10, 100) / 2
 
 
