@@ -209,6 +209,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 /datum/PodControl
 	var/endtime
 	var/online = 0
+	var/departed = 0
 
 	var/last60 = 0
 	var/unlocked = 0
@@ -272,7 +273,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 			for(var/datum/shuttle/s in shuttles)
 				s.depart()
 			online = 0
-
+			departed = 1
 
 
 

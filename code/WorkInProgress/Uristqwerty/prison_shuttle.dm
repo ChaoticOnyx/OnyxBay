@@ -7,7 +7,7 @@
 	var/transit_time = 180
 	var/list/destinations = list(	"transit"	= /area/shuttle/prison/transit,
 									"prison"	= /area/shuttle/prison/prison,
-									"ship"		= /area/dockingbay/admin)//temporary
+									"ship"		= /area/shuttle/prison/station)//temporary
 
 
 
@@ -19,7 +19,7 @@
 		return
 	if(!instant)
 		if(location == "transit")
-			timer = 180
+			timer = 10
 		else
 			timer = 0
 		destination = new_destination
@@ -69,7 +69,7 @@ var/datum/prison_shuttle/prison_shuttle = new
 	if(prison_shuttle.location == "transit" && (prison_shuttle.destination == "ship" || prison_shuttle.destination == "prison"))
 		usr << "\red The prison shuttle is already in transit!"
 	else if(prison_shuttle.location == "prison")
-		usr << "The prison shuttle will arrive in a few minutes"
+		usr << "The prison shuttle will arrive in a few minutes durr"
 		prison_shuttle.travel("ship")
 	else if(prison_shuttle.location == "ship")
 		usr << "The prison shuttle has departed."
