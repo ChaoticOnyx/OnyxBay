@@ -484,11 +484,12 @@
 	//	..()
 		update_icon()
 		var/turf/locT = src.loc
-		if(locT.zone.space_connections.len >= 1)
+		if(locT.zone && locT.zone.space_connections.len >= 1)
 			return
-		for(var/zone/Z in locT.zone.connections)
-			if (Z.space_connections.len >= 1)
-				return
+		if(locT.zone)
+			for(var/zone/Z in locT.zone.connections)
+				if (Z.space_connections.len >= 1)
+					return
 		if(!on)
 			return 0
 		var/datum/gas_mixture/environment = loc.return_air(1)
