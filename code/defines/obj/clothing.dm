@@ -349,8 +349,8 @@
 /obj/item/clothing/mask/clown_hat
 	name = "clown wig and mask"
 	desc = "You're gay for even considering wearing this."
-	icon_state = "clown"
-	item_state = "clown_hat"
+	icon_state = ""
+	item_state = ""
 
 /obj/item/clothing/mask/medical
 	desc = "This mask does not work very well in low pressure environments."
@@ -440,8 +440,8 @@
 /obj/item/clothing/shoes/clown_shoes
 	desc = "Damn, thems some big shoes."
 	name = "clown shoes"
-	icon_state = "clown"
-	item_state = "clown_shoes"
+	icon_state = ""
+	item_state = ""
 
 // SUITS
 
@@ -870,8 +870,8 @@
 /obj/item/clothing/under/clown
 	name = "clown suit"
 	desc = "Wearing this, all the children love you, for all the wrong reasons."
-	icon_state = "clown"
-	color = "clown"
+	icon_state = ""
+	color = ""
 
 /obj/item/clothing/under/chef
 	desc = "Issued only to the most hardcore chefs in space."
