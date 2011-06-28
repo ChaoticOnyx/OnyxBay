@@ -101,7 +101,7 @@ datum
 					if(total_matching_reagents == total_required_reagents)
 						var/multiplier = min(multipliers)
 						for(var/B in C.required_reagents)
-							del_reagent(B)
+							del_reagent(B, C.required_reagents[B] * multiplier)
 
 						var/created_volume = C.result_amount*multiplier
 						if(C.result)
@@ -124,12 +124,15 @@ datum
 						del_reagent(R.id)
 						update_total()
 
-			del_reagent(var/reagent)
+			del_reagent(var/reagent, var/amount = 0)
 				for(var/A in reagent_list)
 					var/datum/reagent/R = A
 					if (R.id == reagent)
-						reagent_list -= A
-						del(A)
+						if(amount == 0 || amount >= R.volume)
+							reagent_list -= A
+							del(A)
+						else
+							R.volume -= amount
 						update_total()
 						my_atom.on_reagent_change()
 						return 0
