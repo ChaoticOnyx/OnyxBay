@@ -274,7 +274,7 @@
 			return safe.bullet_act(flag, A)
 	if (flag == PROJECTILE_BULLET)
 		var/d = 51
-		if (istype(wear_suit, /obj/item/clothing/suit/armor))
+		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 			if (prob(70))
 				show_message("\red Your armor absorbs the hit!", 4)
 				return

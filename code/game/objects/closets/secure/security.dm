@@ -9,6 +9,7 @@
 	new /obj/item/clothing/under/color/red(src)
 	new /obj/item/clothing/shoes/brown(src)
 	new /obj/item/clothing/suit/armor/vest(src)
+	new /obj/item/clothing/suit/storage/gearharness(src)
 	new /obj/item/clothing/head/helmet(src)
 	new /obj/item/clothing/glasses/sunglasses(src)
 	new /obj/item/weapon/baton(src)
@@ -47,7 +48,7 @@
 	new /obj/item/clothing/under/rank/head_of_personnel( src )
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/glasses/sunglasses( src )
-	new /obj/item/clothing/suit/armor/vest( src )
+	new /obj/item/clothing/suit/storage/armourrigvest( src )
 	new /obj/item/clothing/head/helmet( src )
 	return
 

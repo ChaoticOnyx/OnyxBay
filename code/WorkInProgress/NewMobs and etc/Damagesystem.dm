@@ -318,7 +318,7 @@
 
 		var/d = 51
 
-		if (istype(wear_suit, /obj/item/clothing/suit/armor))
+		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 			if (prob(70))
 				show_message("\red Your armor absorbs the hit!", 4)
 				return
@@ -354,7 +354,7 @@
 
 	else if (flag == PROJECTILE_TASER)
 		if(zombie) return
-		if (istype(wear_suit, /obj/item/clothing/suit/armor))
+		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 			if (prob(5))
 				show_message("\red Your armor absorbs the hit!", 4)
 				return
@@ -372,7 +372,7 @@
 
 	else if(flag == PROJECTILE_LASER)
 		var/d = 20
-		if (istype(wear_suit, /obj/item/clothing/suit/armor))
+		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 			if (prob(40))
 				show_message("\red Your armor absorbs the hit!", 4)
 				return
@@ -411,7 +411,7 @@
 
 	else if(flag == PROJECTILE_PULSE)
 		var/d = 40
-		if (istype(wear_suit, /obj/item/clothing/suit/armor))
+		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 			if (prob(20))
 				show_message("\red Your armor absorbs the hit!", 4)
 				return
@@ -1244,7 +1244,7 @@
 					for(var/mob/O in viewers(src, null))
 						O.show_message(text("\red <B>[M.name] has attempted to bite []!</B>", src), 1)
 					return
-			else if (istype(wear_suit, /obj/item/clothing/suit/armor))
+			else if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 				if (prob(25))
 					for(var/mob/O in viewers(src, null))
 						O.show_message(text("\red <B>[M.name] has attempted to bite []!</B>", src), 1)
@@ -1305,7 +1305,7 @@
 					for(var/mob/O in viewers(src, null))
 						O.show_message(text("\red <B>[M.name] has attempted to bite []!</B>", src), 1)
 					return
-			else if (istype(wear_suit, /obj/item/clothing/suit/armor))
+			else if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 				if (prob(25))
 					for(var/mob/O in viewers(src, null))
 						O.show_message(text("\red <B>[M.name] has attempted to bite []!</B>", src), 1)
@@ -1557,7 +1557,7 @@
 						if(!zombie && !virus2)
 							// lower chance if wearing a suit
 							var/pr = 0
-							if(istype(wear_suit, /obj/item/clothing/suit/armor))
+							if(istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 								pr = 70
 							else if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
 								pr = 70

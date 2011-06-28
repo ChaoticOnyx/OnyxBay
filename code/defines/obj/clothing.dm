@@ -547,6 +547,22 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
 
+/obj/item/clothing/suit/storage/gearharness
+	name = "gear harness"
+	desc = "A simple security harness, used for storing small objects"
+	icon_state = "gearharness"
+	item_state = "gearharness"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
+
+/obj/item/clothing/suit/storage/armourrigvest
+	name = "armour rig vest"
+	desc = "An important looking armoured vest, outfitted with pockets."
+	icon_state = "armourrigvest"
+	item_state = "armourrigvest"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
+
 /obj/item/clothing/suit/armor/a_i_a_ptank
 	desc = "A wearable bomb with a health analyzer attached"
 	name = "Analyzer/Igniter/Armor/Plasmatank Assembly"

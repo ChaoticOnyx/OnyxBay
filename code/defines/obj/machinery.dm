@@ -652,9 +652,9 @@
 	icon_deny = "sec-deny"
 	req_access_txt = "1"
 	points = 10
-	product_paths = "/obj/item/clothing/under/color/red;/obj/item/clothing/under/det;/obj/item/clothing/suit/storage/det_suit;/obj/item/clothing/head/det_hat;/obj/item/clothing/head/helmet;/obj/item/clothing/suit/armor/vest;/obj/item/weapon/storage/belt/security;/obj/item/device/radio/headset/security;/obj/item/clothing/glasses/sunglasses;/obj/item/weapon/handcuffs;/obj/item/weapon/baton;/obj/item/weapon/gun/energy/taser_gun;/obj/item/weapon/flashbang;/obj/item/device/flash"
+	product_paths = "/obj/item/clothing/under/color/red;/obj/item/clothing/under/det;/obj/item/clothing/suit/storage/det_suit;/obj/item/clothing/head/det_hat;/obj/item/clothing/head/helmet;/obj/item/clothing/suit/armor/vest;/obj/item/clothing/suit/storage/gearharness;/obj/item/weapon/storage/belt/security;/obj/item/device/radio/headset/security;/obj/item/clothing/glasses/sunglasses;/obj/item/weapon/handcuffs;/obj/item/weapon/baton;/obj/item/weapon/gun/energy/taser_gun;/obj/item/weapon/flashbang;/obj/item/device/flash"
 	//product_amounts = "8;5;4"
-	product_prices = "1;1;1;1;3;3;2;1;1;1;4;4;3;3"
+	product_prices = "1;1;1;1;3;3;3;2;1;1;1;4;4;3;3"
 	product_hidden = "/obj/item/kitchen/donut_box"
 	hidden_prices = "3"
 	charge_type = "security"
