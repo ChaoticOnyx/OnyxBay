@@ -241,9 +241,14 @@
 				tally += 1.3
 			if(/obj/item/clothing/suit/fire/heavy)	//	firesuits slow you down a bit
 				tally += 1.7
+			if(/obj/item/clothing/suit/armor/riot) //	riot gear is heavy mang
+				tally += 2
 			if(/obj/item/clothing/suit/space)
 				if(!istype(loc, /turf/space))		//	space suits slow you down a bit unless in space
 					tally += 3
+			if(/obj/item/clothing/suit/space/spaceengi)
+				if(!istype(loc, /turf/space))		//	reinstating the slowdown for engineering suits~ :3
+					tally += 2
 
 	if (istype(shoes, /obj/item/clothing/shoes))
 		if (shoes.chained)
