@@ -616,6 +616,13 @@
 	item_state = "heavy"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 
+/obj/item/clothing/suit/armor/riot
+	name = "riot suit"
+	desc = "Heavy segmented armor designed to help control rioters."
+	icon_state = "riotsuit"
+	item_state = "riotsuit"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+
 // FIRE SUITS
 
 /obj/item/clothing/suit/fire
