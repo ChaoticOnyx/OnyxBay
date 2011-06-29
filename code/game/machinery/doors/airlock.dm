@@ -74,6 +74,10 @@
 
 /obj/machinery/door/airlock/glass/security
 	icon = 'Doorsecglass.dmi'
+	req_access = list(access_security)
+
+/obj/machinery/door/airlock/security/hatch
+	icon = 'Doorhatcharmoury.dmi'
 
 /obj/machinery/door/airlock/engineering
 	name = "Airlock"
