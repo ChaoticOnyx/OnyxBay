@@ -49,9 +49,19 @@
 
 			query_list += char
 
+		else if(char in list("=", "+", "-", "<", ">", "!", "*")) //No division, because that would collide with paths
+			if(word != "")
+				query_list += word
+				word = ""
 
-		else if(0)
-			//Should split on operator => text and text => operator here. Or really, just add operators directly at this point.
+			word += char
+
+			if(i < len && (copytext(query_text, i + 1, i + 2) in list("=", ">")))
+				word += copytext(query_text, i + 1, i + 2)
+				i++
+
+			query_list += word
+			word = ""
 
 		else
 			word += char
@@ -355,8 +365,19 @@
 
 
 /proc/SDQL_evaluate(datum/object, list/equation)
-	if(equation.len == 1)
+	if(equation.len == 0)
+		return null
+
+	else if(equation.len == 1)
 		return SDQL_text2value(object, equation[1])
+
+	else if(equation[1] == "!")
+		return !SDQL_evaluate(object, equation.Copy(2))
+
+	else if(equation[1] == "-")
+		return -SDQL_evaluate(object, equation.Copy(2))
+
+
 	else
 		usr << "Sorry, equations not yet supported :("
 		return null
