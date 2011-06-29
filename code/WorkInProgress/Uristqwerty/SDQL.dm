@@ -117,8 +117,6 @@
 			usr << "Invalid or missing set in query \"[query_text]\". Please check your syntax and try again."
 			return
 
-		i++
-
 	var/list/where = list()
 
 	if(i <= query_list.len && lowertext(query_list[i]) == "where")
@@ -273,7 +271,7 @@
 					break
 
 			if(!currently_false)
-				var/value = (v in t.vars)? t.vars[v] : null
+				var/value = SDQL_text2value(t, v)
 				var/result = SDQL_evaluate(t, where.Copy(i, j))
 
 				switch(compare_op)
@@ -345,7 +343,8 @@
 		if("update")
 			for(var/datum/t in objs)
 				for(var/v in set_vars)
-					t.vars[v] = SDQL_text2value(t, set_vars[v])
+					if(v in t.vars)
+						t.vars[v] = SDQL_text2value(t, set_vars[v])
 
 		if("select")
 			var/text = ""
@@ -373,7 +372,20 @@
 	else if(copytext(text, 1, 2) == "/")
 		return text2path(text)
 	else
-		return object.vars[text]
+		if(findtext(text, "."))
+			var/split = findtext(text, ".")
+			var/v = copytext(text, 1, split)
+
+			if((v in object.vars) && istype(object.vars[v], /datum))
+				return SDQL_text2value(object.vars[v], copytext(text, split + 1))
+			else
+				return null
+
+		else
+			if(text in object.vars)
+				return object.vars[text]
+			else
+				return null
 
 
 /proc/text_starts_with(text, start)
