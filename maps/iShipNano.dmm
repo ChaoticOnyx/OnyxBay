@@ -1025,22 +1025,23 @@
 "tK" = (/obj/closet/wardrobe/mixed,/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
 "tL" = (/turf/simulated/shuttle/wall{tag = "icon-wall3 (EAST)"; icon_state = "wall3"; dir = 4},/area/shuttle/arrival/station)
 "tM" = (/obj/closet/emcloset,/turf/simulated/shuttle/floor,/area/shuttle/escape/station/pod2)
-"tN" = (/obj/closet/emcloset,/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
-"tO" = (/obj/stool/chair{dir = 1},/turf/simulated/shuttle/floor,/area/shuttle/escape/station/pod2)
-"tP" = (/obj/landmark{name = "JoinLate"},/obj/machinery/light,/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
-"tQ" = (/turf/simulated/shuttle/wall{icon_state = "wall_space"},/area/shuttle/escape/station/pod2)
-"tR" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "wall_space"},/area/shuttle/escape/station/pod2)
-"tS" = (/turf/simulated/shuttle/wall{tag = "icon-wall3_space"; icon_state = "wall3_space"; dir = 2},/area/shuttle/arrival/station)
-"tT" = (/turf/simulated/shuttle/wall{tag = "icon-wall3_space (EAST)"; icon_state = "wall3_space"; dir = 4},/area/shuttle/arrival/station)
-"tU" = (/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/obj/machinery/camera{c_tag = "Lab Hallway (Fore)"; dir = 4; name = "Hallway Camera"},/turf/simulated/floor,/area/hangar)
-"tV" = (/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/turf/simulated/floor,/area/hangar)
-"tW" = (/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/obj/machinery/camera{c_tag = "Bridge Hallway Southeast"; dir = 8; name = "Hallway Camera"; network = "Luna"},/turf/simulated/floor,/area/hangar)
-"tX" = (/obj/machinery/light,/turf/simulated/floor,/area/hangar)
-"tY" = (/obj/closet/emcloset,/turf/simulated/floor,/area/hangar)
-"tZ" = (/obj/table{dir = 9; icon_state = "tabledir"; tag = ""},/obj/item/device/radio/intercom,/obj/machinery/camera{c_tag = "Services Hallway (Incinerator)"; dir = 1; name = "Hallway Camera"},/turf/simulated/floor,/area/hangar)
-"ua" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/device/radio,/turf/simulated/floor,/area/hangar)
-"ub" = (/obj/table{dir = 5; icon_state = "tabledir"},/obj/item/device/radio/intercom,/turf/simulated/floor,/area/hangar)
-"uc" = (/obj/grille,/obj/window/reinforced,/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/obj/window/reinforced/southeast,/turf/space,/area/hangar)
+"tN" = (/obj/landmark/start,/turf/simulated/floor,/area/hangar)
+"tO" = (/obj/closet/emcloset,/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
+"tP" = (/obj/stool/chair{dir = 1},/turf/simulated/shuttle/floor,/area/shuttle/escape/station/pod2)
+"tQ" = (/obj/landmark{name = "JoinLate"},/obj/machinery/light,/turf/simulated/shuttle/floor,/area/shuttle/arrival/station)
+"tR" = (/turf/simulated/shuttle/wall{icon_state = "wall_space"},/area/shuttle/escape/station/pod2)
+"tS" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "wall_space"},/area/shuttle/escape/station/pod2)
+"tT" = (/turf/simulated/shuttle/wall{tag = "icon-wall3_space"; icon_state = "wall3_space"; dir = 2},/area/shuttle/arrival/station)
+"tU" = (/turf/simulated/shuttle/wall{tag = "icon-wall3_space (EAST)"; icon_state = "wall3_space"; dir = 4},/area/shuttle/arrival/station)
+"tV" = (/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/obj/machinery/camera{c_tag = "Lab Hallway (Fore)"; dir = 4; name = "Hallway Camera"},/turf/simulated/floor,/area/hangar)
+"tW" = (/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/turf/simulated/floor,/area/hangar)
+"tX" = (/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/obj/machinery/camera{c_tag = "Bridge Hallway Southeast"; dir = 8; name = "Hallway Camera"; network = "Luna"},/turf/simulated/floor,/area/hangar)
+"tY" = (/obj/machinery/light,/turf/simulated/floor,/area/hangar)
+"tZ" = (/obj/closet/emcloset,/turf/simulated/floor,/area/hangar)
+"ua" = (/obj/table{dir = 9; icon_state = "tabledir"; tag = ""},/obj/item/device/radio/intercom,/obj/machinery/camera{c_tag = "Services Hallway (Incinerator)"; dir = 1; name = "Hallway Camera"},/turf/simulated/floor,/area/hangar)
+"ub" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/device/radio,/turf/simulated/floor,/area/hangar)
+"uc" = (/obj/table{dir = 5; icon_state = "tabledir"},/obj/item/device/radio/intercom,/turf/simulated/floor,/area/hangar)
+"ud" = (/obj/grille,/obj/window/reinforced,/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/obj/window/reinforced/southeast,/turf/space,/area/hangar)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -1168,12 +1169,12 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatctdtdtdtetftdtd
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasOtltltltltdtltltltltdtmtntntotptltltdtltltltlsOaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatqtrtstrtttrtstrtutvtdtdtwtxtytytytztytytytAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatBtCtCtCtDtCtCtEtFtvtdtdtwtGtHtItJtItJtItKtLaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatBtDtDtDtDtDtDtMtFtvtdtdtwtGtNtItItItItItKtLaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatBtOtOtOtDtOtOtEtFtvtdtdtwtGtHtItPtItPtItKtLaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatQtrtstrtttrtstrtRtvtdtdtwtStytytytztytytytTaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasOtUtVtVtVtdtVtVtVtVtdtdtdtdtVtVtVtVtdtVtVtVtWsOaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatctdtdtdtdtXtdtdtdtYtZuauaubtYtdtdtdtXtdtdtdtdtcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasOucucucucucucucucucsOsOsOsOucucucucucucucucucsOaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatBtDtDtDtDtDtDtMtFtvtNtdtwtGtOtItItItItItKtLaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatBtPtPtPtDtPtPtEtFtvtdtdtwtGtHtItQtItQtItKtLaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatRtrtstrtttrtstrtStvtdtdtwtTtytytytztytytytUaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasOtVtWtWtWtdtWtWtWtWtdtdtdtdtWtWtWtWtdtWtWtWtXsOaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatctdtdtdtdtYtdtdtdtZuaububuctZtdtdtdtYtdtdtdtdtcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasOudududududududududsOsOsOsOudududududududududsOaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
