@@ -243,6 +243,12 @@
 	protective_temperature = 500
 	heat_transfer_coefficient = 0.10
 
+/obj/item/clothing/head/helmet/riot
+	name = "riot helmet"
+	icon_state = "riothelmet"
+	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES|HEADCOVERSMOUTH
+	item_state = "riothelmet"
+
 /obj/item/clothing/head/helmet/space
 	name = "space helmet"
 	icon_state = "space"
@@ -339,6 +345,18 @@
 	name = "Breath Mask"
 	icon_state = "breath"
 	item_state = "breath"
+	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH | MASKINTERNALS
+	w_class = 2
+	protective_temperature = 420
+	heat_transfer_coefficient = 0.90
+	gas_transfer_coefficient = 0.10
+	permeability_coefficient = 0.50
+
+/obj/item/clothing/mask/milbreath
+	desc = "A hard, dark plastic version of the normal breathmask, usually used by military personnel. Not rated for operations in vacuum."
+	name = "Military Breath Mask"
+	icon_state = "milbreath"
+	item_state = "milbreath"
 	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH | MASKINTERNALS
 	w_class = 2
 	protective_temperature = 420
