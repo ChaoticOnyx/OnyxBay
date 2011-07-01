@@ -33,8 +33,8 @@
 	var/num_traitors = 1
 	var/max_traitors = 1
 	var/traitor_prob = 0
-	max_traitors = round(num_players, 10) / 10 + 1
-	traitor_prob = min((num_players - (max_traitors - 1) * 10) * 10, 100)
+	max_traitors = round(num_players / 10) + 1
+	traitor_prob = (num_players - (max_traitors - 1) * 10) * 10
 
 	// Stop setup if no possible traitors
 	if(!possible_traitors.len)
@@ -88,17 +88,16 @@
 				possible_traitors += player
 		message_admins("Live Players: [playercount]")
 		message_admins("Live Traitors: [traitorcount]")
-		message_admins("Potential Traitors:")
-		for(var/mob/living/traitorlist in possible_traitors)
-			message_admins("[traitorlist.real_name]")
+//		message_admins("Potential Traitors:")
+//		for(var/mob/living/traitorlist in possible_traitors)
+//			message_admins("[traitorlist.real_name]")
 
 //		var/r = rand(5)
 //		var/target_traitors = 1
 		var/max_traitors = 1
 		var/traitor_prob = 0
-		max_traitors = round(playercount, 10) / 10 + 1
-		traitor_prob = min((playercount - (max_traitors - 1) * 10) * 10, 100) / 2
-
+		max_traitors = round(playercount / 10) + 1
+		traitor_prob = (playercount - (max_traitors - 1) * 10) * 5
 
 		if(traitorcount < max_traitors)
 			message_admins("Number of Traitors is below maximum.  Rolling for new Traitor.")
@@ -186,8 +185,8 @@
 		//var/target_traitors = 1
 		var/max_traitors = 1
 		var/traitor_prob = 0
-		max_traitors = round(playercount, 10) / 10 + 1
-		traitor_prob = min((playercount - (max_traitors - 1) * 10) * 10, 100) / 2
+		max_traitors = round(playercount / 10) + 1
+		traitor_prob = (playercount - (max_traitors - 1) * 10) * 5
 
 
 		//target_traitors = max(1, min(round((playercount + r) / 10, 1), traitors_possible))

@@ -116,6 +116,7 @@
 			src.verbs += /client/proc/createofficial
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/toggleadminshuttledoors
+			src.verbs += /client/proc/toggleadminsectordoors
 			src.verbs += /client/proc/nanoshuttle
 
 			src.verbs += /client/proc/clearmap
@@ -226,6 +227,7 @@
 			src.verbs += /client/proc/Zone_Info
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/toggleadminshuttledoors
+			src.verbs += /client/proc/toggleadminsectordoors
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/givedisease
 			src.verbs += /client/proc/givedisease_deadly
@@ -304,6 +306,7 @@
 			src.verbs += /client/proc/cmd_admin_subtle_message
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/toggleadminshuttledoors
+			src.verbs += /client/proc/toggleadminsectordoors
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/general_report
 			//src.verbs += /client/proc/air_report
@@ -373,6 +376,7 @@
 //				src.verbs += /client/proc/modifytemperature
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/toggleadminshuttledoors
+			src.verbs += /client/proc/toggleadminsectordoors
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/cmd_admin_prison
 			src.verbs += /mob/living/proc/CheckHandcuff
@@ -434,6 +438,7 @@
 			src.verbs += /client/proc/delay				//Toggle the AI
 			src.verbs += /client/proc/returnadminshuttle
 			src.verbs += /client/proc/toggleadminshuttledoors
+			src.verbs += /client/proc/toggleadminsectordoors
 			src.verbs += /client/proc/nanoshuttle
 			src.verbs += /client/proc/createofficial
 			src.verbs += /mob/living/proc/CheckHandcuff
@@ -995,6 +1000,16 @@
 	set name = "Toggle admin shuttle dock podlocks (Ship)"
 	for(var/obj/machinery/door/poddoor/M in machines)
 		if (M.id == "adminshuttledock")
+			if (M.density)
+				M.open()
+			else
+				M.close()
+				
+/client/proc/toggleadminsectordoors()
+	set category = "Roleplay"
+	set name = "Toggle admin sector doors (NT)"
+	for(var/obj/machinery/door/poddoor/M in machines)
+		if (M.id == "adminsector")
 			if (M.density)
 				M.open()
 			else

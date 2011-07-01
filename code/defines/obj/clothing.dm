@@ -193,13 +193,13 @@
 /obj/item/clothing/head/caphat
 	name = "Captain's hat"
 	icon_state = "captain"
-	flags = FPRINT|TABLEPASS|SUITSPACE
+	flags = FPRINT|TABLEPASS
 	item_state = "caphat"
 
 /obj/item/clothing/head/centhat
 	name = "Cent. Comm. hat"
 	icon_state = "centcom"
-	flags = FPRINT|TABLEPASS|SUITSPACE
+	flags = FPRINT|TABLEPASS
 	item_state = "centcom"
 
 /obj/item/clothing/head/det_hat
@@ -229,7 +229,7 @@
 	name = "Chef's hat"
 	icon_state = "chef"
 	item_state = "chef"
-	flags = FPRINT | TABLEPASS | HEADSPACE
+	flags = FPRINT | TABLEPASS
 
 
 // CHUMP HELMETS: COOKING THEM DESTROYS THE CHUMP HELMET SPAWN.
@@ -237,7 +237,7 @@
 /obj/item/clothing/head/helmet
 	name = "helmet"
 	icon_state = "helmet"
-	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES
+	flags = FPRINT|TABLEPASS|HEADCOVERSEYES
 	item_state = "helmet"
 
 	protective_temperature = 500
@@ -264,7 +264,7 @@
 /obj/item/clothing/head/helmet/swat
 	name = "swat helmet"
 	icon_state = "swat"
-	flags = FPRINT | TABLEPASS | HEADSPACE | HEADCOVERSEYES
+	flags = FPRINT | TABLEPASS | HEADCOVERSEYES
 	item_state = "swat"
 
 /obj/item/clothing/head/helmet/thunderdome
@@ -439,6 +439,13 @@
 /obj/item/clothing/shoes/swat
 	name = "SWAT shoes"
 	icon_state = "swat"
+
+/obj/item/clothing/shoes/boots
+	name = "black boots"
+	icon_state = "boots"
+	protective_temperature = 1500
+	heat_transfer_coefficient = 0.01
+	permeability_coefficient = 0.25
 
 /obj/item/clothing/shoes/white
 	name = "White Shoes"
