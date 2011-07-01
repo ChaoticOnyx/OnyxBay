@@ -70,6 +70,8 @@ var/list/postsetuphooks = list()
 
 		return 0
 
+
+
 	//start supply ticker
 	spawn(SUPPLY_POINTDELAY) supply_ticker()
 

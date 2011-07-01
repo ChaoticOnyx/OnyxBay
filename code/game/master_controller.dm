@@ -69,6 +69,10 @@ datum/controller/game_controller
 		setupgenetics()
 		spawn
 			setupasteroid()
+
+		//mining setup
+		setupmining()
+
 		setuptitles()
 		SetupAnomalies()
 	//	tgrid.Setup()

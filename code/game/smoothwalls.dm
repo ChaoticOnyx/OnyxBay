@@ -5,7 +5,8 @@
 //Also assemblies.dm for falsewall checking for this when used.
 
 /atom/proc/relativewall() //atom because it should be useable both for walls and false walls
-
+	if(istype(src, /turf/simulated/wall/asteroid))
+		return
 	var/junction = 0 //will be used to determine from which side the wall is connected to other walls
 
 	for(var/turf/simulated/wall/W in orange(src,1))
@@ -32,9 +33,11 @@
 
 
 /turf/simulated/wall/New()
+
 	update_nearby_tiles(1)
 	for(var/turf/simulated/wall/W in range(src,1))
-		W.relativewall()
+		if(!istype(src, /turf/simulated/wall/asteroid))
+			W.relativewall()
 /*
 	for(var/obj/falsewall/W in range(src,1))
 		W.relativewall()
@@ -43,7 +46,6 @@
 
 
 /turf/simulated/wall/Del()
-
 	var/temploc = src.loc
 
 	spawn(10)
