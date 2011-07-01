@@ -440,6 +440,13 @@
 	name = "SWAT shoes"
 	icon_state = "swat"
 
+/obj/item/clothing/shoes/boots
+	name = "black boots"
+	icon_state = "boots"
+	protective_temperature = 1500
+	heat_transfer_coefficient = 0.01
+	permeability_coefficient = 0.25
+
 /obj/item/clothing/shoes/white
 	name = "White Shoes"
 	icon_state = "white"
