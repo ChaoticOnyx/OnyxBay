@@ -402,3 +402,10 @@ datum
 			result = "virusfood"
 			required_reagents = list("water" = 1, "milk" = 1)
 			result_amount = 5
+
+		weedkiller
+			name = "Atrazine"
+			id = "weedkiller"
+			result = "weedkiller"
+			required_reagents = list("chlorine" = 1, "ethanol" = 1, "ammonia" =1)
+			result_amount = 3

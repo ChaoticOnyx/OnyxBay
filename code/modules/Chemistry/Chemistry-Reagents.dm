@@ -1161,3 +1161,9 @@ datum
 			id = "virusfood"
 			description = "A set of specially engineered food for the growth of viral cells"
 			reagent_state = LIQUID
+
+		virusfood
+			name = "Atrazine"
+			id = "weedkiller"
+			description = "A chemical, poisonous to weeds."
+			reagent_state = LIQUID

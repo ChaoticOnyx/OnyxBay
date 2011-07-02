@@ -428,7 +428,7 @@
 
 /area/hydroponics
 	name = "Hydroponics"
-	icon_state = "hydro"
+	icon_state = "hydroponics"
 
 /obj/item/clothing/under/rank/hydro
 	name = "Hydroponics Jumpsuit"
@@ -1882,10 +1882,10 @@
 		R.add_reagent("poo", 60)
 
 /obj/item/weapon/reagent_containers/glass/bottle/weedkiller
-	name = "weedkiller"
+	name = "atrazine bottle"
 	desc = "A small bottle filled with Atrazine, an effective weedkiller."
 	icon = 'chemical.dmi'
-	icon_state = "bottle16"
+	icon_state = "bottle10"
 	amount_per_transfer_from_this = 10
 
 	New()
