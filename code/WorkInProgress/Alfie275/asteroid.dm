@@ -16,7 +16,7 @@ proc/setupasteroid()
 			maps-=map
 			QML_loadMap("maps/asteroid/[map].dmm",m.x-1,m.y-1,m.z-1)
 		del m
-	sleep(-1)
+/*	sleep(-1)
 	sleep(10)
 	var/list/walls = list()
 	for(var/turf/simulated/asteroid/w in world)
@@ -80,3 +80,5 @@ proc/setupasteroid()
 				var/turf/w = walls[Xa]
 				var/turf/simulated/asteroid/wall/f = new(locate(w.x,w.y, w.z))
 				walls[Xa] = f
+*/
+/*Mloc hates laggy asteroid generators~*/
