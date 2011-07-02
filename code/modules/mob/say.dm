@@ -42,15 +42,17 @@
 		return 1
 	return 0
 
-/mob/proc/say_quote(var/text)
+/mob/proc/say_quote(var/text, var/mode)
 	var/ending = copytext(text, length(text))
 	if (stuttering)
 		return "stammers, \"[text]\"";
 	if (brainloss >= 60)
 		return "gibbers, \"[text]\"";
+	if(mode != "")
+		return "[mode], \"[text]\""
 	if (ending == "?")
 		return "asks, \"[text]\"";
-	else if (ending == "!")
+	if (ending == "!")
 		return "exclaims, \"[text]\"";
 
 	return "says, \"[text]\"";
