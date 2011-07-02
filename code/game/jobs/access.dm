@@ -37,6 +37,12 @@
 	access_incinerator = 37
 	access_maintenance_hall = 38
 	access_shield_generator = 39
+	access_hydroponics = 40
+
+
+// these are big, seperate numbers
+	access_syndicate = 70
+	access_nanotrasen = 80
 
 	password_firedoor = 100 //Stubs from networking 1.0, may be removed, may be used... for now, just avoid them but leave them in -Sukasa
 	password_smeg = 101
