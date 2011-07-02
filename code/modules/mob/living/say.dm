@@ -23,6 +23,13 @@
 		if(src.loc:overrideMobSay(message, src) != "not used") // if the obj has a custom effect
 			return
 
+	//custom modes
+	//if theres no space then theyre being a derpface
+	var/custommode = ""
+	var/firstspace = findtext(message, " ")
+	if(copytext(message,1,6) == "&amp;" && firstspace > 7) //one character verbs?
+		custommode = copytext(message,6,firstspace)
+		message = copytext(message, firstspace+1,0)
 
 	var/alt_name = "" // In case your face is burnt or you're wearing a mask
 	if (istype(src, /mob/living/carbon/human) && name != real_name)
@@ -155,7 +162,7 @@
 	var/rendered = null
 
 	if (length(heard_a))
-		var/message_a = say_quote(message)
+		var/message_a = say_quote(message, custommode)
 		var/test = say_test(message)
 		var/image/test2 = image('talk.dmi',src,"h[test]")
 		if (italics)
@@ -183,7 +190,7 @@
 			message_b = voice_message
 		else
 			message_b = stars(message)
-			message_b = say_quote(message_b)
+			message_b = say_quote(message_b, custommode)
 
 		if (italics)
 			message_b = "<i>[message_b]</i>"
@@ -193,7 +200,7 @@
 		for (var/mob/M in heard_b) // Sending over the message to mobs who can't understand
 			M.show_message(rendered, 6)
 
-	message = say_quote(message)
+	message = say_quote(message, custommode)
 	if (italics)
 		message = "<i>[message]</i>"
 
