@@ -351,6 +351,8 @@ turf/space/hull/New()
 /turf/unsimulated/shuttle/wall
 	name = "Shuttle Wall"
 	icon_state = "wall"
+	opacity = 1
+	density = 1
 
 /turf/unsimulated/floor
 	name = "Floor"
