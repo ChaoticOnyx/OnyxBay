@@ -233,6 +233,7 @@
 	name = "Centcom"
 	icon_state = "purple"
 	requires_power = 0
+	ul_Lighting = 0
 	applyalertstatus = 0
 
 /area/atmos

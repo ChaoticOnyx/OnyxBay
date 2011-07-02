@@ -80,8 +80,8 @@ datum
 					if (!M:intoxicated) M:intoxicated = 1
 					M:intoxicated += 3
 				if(data >= 90 && prob(33))
-					if (!M:confused) M:confused = 1
-					M:confused += 2
+					if (!M:staggering) M:staggering = 1
+					M:staggering += 2
 				if(data >= 245)
 					M.eye_blurry = max(M.eye_blurry, 10)
 					M:drowsyness  = max(M:drowsyness, 20)
