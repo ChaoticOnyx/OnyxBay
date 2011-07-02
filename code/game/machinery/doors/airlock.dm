@@ -93,8 +93,16 @@
 	icon = 'Doormed.dmi'
 	//req_access = list(access_medical)
 
+/obj/machinery/door/airlock/science
+	name = "Airlock"
+	icon = 'Doorsci.dmi'
+	//req_access = list(access_medical)
+
 /obj/machinery/door/airlock/glass/medical
 	icon = 'Doormedglass.dmi'
+
+/obj/machinery/door/airlock/glass/science
+	icon = 'Doorsciglass.dmi'
 
 /obj/machinery/door/airlock/maintenance
 	name = "Maintenance Access"
