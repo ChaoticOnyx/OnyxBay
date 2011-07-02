@@ -352,3 +352,13 @@
 	new /obj/item/clothing/shoes/black(src)
 	new /obj/item/weapon/storage/briefcase(src)
 	new /obj/item/weapon/storage/briefcase(src)
+/obj/closet/wardrobe/hydroponics/New()
+	..()
+	new /obj/item/clothing/under/rank/hydroponics( src )
+	new /obj/item/clothing/under/rank/hydroponics( src )
+	new /obj/item/clothing/shoes/black( src )
+	new /obj/item/clothing/shoes/black( src )
+	new /obj/item/weapon/storage/lglo_kit( src )
+	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/device/radio/headset/security/medical(src)
+	return

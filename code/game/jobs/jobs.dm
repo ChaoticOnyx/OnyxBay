@@ -12,6 +12,7 @@ var/list/occupations = list(
 	"Research Director",
 	"Counselor",
 	"Roboticist",
+	"Hydroponicist",
 	"AI",
 	"Barman",
 	"Chef",
@@ -31,6 +32,8 @@ var/list/assistant_occupations = list(
 		if("Medical Doctor")
 			return 1
 		if("Roboticist")
+			return 1
+		if("Hydroponicist")
 			return 1
 		if("Research Director")
 			return 2
@@ -66,6 +69,8 @@ var/list/assistant_occupations = list(
 		if("Counselor")
 			return 1
 		if("Roboticist")
+			return 1
+		if("Hydroponicist")
 			return 1
 		if("Barman")
 			return 0

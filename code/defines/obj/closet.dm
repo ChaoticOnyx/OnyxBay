@@ -204,6 +204,10 @@
 	icon_state = "yellow"
 	icon_closed = "yellow"
 
+/obj/closet/wardrobe/hydroponics
+	name = "Hydroponics Wardrobe"
+	icon_state = "green"
+	icon_closed = "green"
 
 /obj/closet/wardrobe/grey
 	name = "Grey Wardrobe"

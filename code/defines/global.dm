@@ -97,7 +97,7 @@ var
 	chefMax = 1
 	roboticsMax = 3
 	cargoMax = 3
-	hydroponicsMax = 3
+	hydroponicsMax = 1
 
 	list/bombers = list(  )
 	list/admin_log = list (  )
