@@ -9,14 +9,15 @@
 	New()
 
 proc/setupasteroid()
-	var/list/maps = list("bone","cartel")
+	return
+/*	var/list/maps = list("bone","cartel")
 	for(var/obj/landmark/mapload/asteroid/m in world)
 		if(maps.len&&rand(0,1)==1)
 			var/map = pick(maps)
 			maps-=map
 			QML_loadMap("maps/asteroid/[map].dmm",m.x-1,m.y-1,m.z-1)
 		del m
-/*	sleep(-1)
+	sleep(-1)
 	sleep(10)
 	var/list/walls = list()
 	for(var/turf/simulated/asteroid/w in world)
