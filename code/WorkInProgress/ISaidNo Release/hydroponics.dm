@@ -1858,7 +1858,7 @@
 	desc = "Used to water things. Obviously."
 	icon = 'hydromisc.dmi'
 	icon_state = "watercan"
-	amount_per_transfer_from_this = 10
+	amount_per_transfer_from_this = 30
 	w_class = 3.0
 
 	New()
