@@ -48,7 +48,7 @@
 		return "stammers, \"[text]\"";
 	if (brainloss >= 60)
 		return "gibbers, \"[text]\"";
-	if(mode != "")
+	if(mode && mode != "")
 		return "[mode], \"[text]\""
 	if (ending == "?")
 		return "asks, \"[text]\"";

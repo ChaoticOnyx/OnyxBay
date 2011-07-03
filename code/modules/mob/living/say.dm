@@ -29,7 +29,7 @@
 	var/firstspace = findtext(message, " ")
 	if(copytext(message,1,6) == "&amp;" && firstspace > 7) //one character verbs?
 		custommode = copytext(message,6,firstspace)
-		message = copytext(message, firstspace+1,0)
+		message = copytext(message, firstspace+1)
 
 	var/alt_name = "" // In case your face is burnt or you're wearing a mask
 	if (istype(src, /mob/living/carbon/human) && name != real_name)
