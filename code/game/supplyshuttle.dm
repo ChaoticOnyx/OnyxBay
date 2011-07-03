@@ -377,7 +377,7 @@ var/supply_shuttle_points = 50
 
 /datum/supply_packs/watertank
     name = "Water Tank"
-    contains = list("/obj/reagent_dispensers/fueltank")
+    contains = list("/obj/reagent_dispensers/watertank")
     cost = 15
 
 /datum/supply_packs/fueltank
