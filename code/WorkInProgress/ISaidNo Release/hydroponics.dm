@@ -1858,7 +1858,7 @@
 	desc = "Used to water things. Obviously."
 	icon = 'hydromisc.dmi'
 	icon_state = "watercan"
-	amount_per_transfer_from_this = 60
+	amount_per_transfer_from_this = 10
 	w_class = 3.0
 
 	New()
@@ -1869,7 +1869,7 @@
 
 /obj/item/weapon/reagent_containers/glass/compostbag/
 	name = "compost bag"
-	desc = "A big bag of shit."
+	desc = "A big bag of manure."
 	icon = 'hydromisc.dmi'
 	icon_state = "compost"
 	amount_per_transfer_from_this = 10
