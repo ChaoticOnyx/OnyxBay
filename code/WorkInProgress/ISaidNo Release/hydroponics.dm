@@ -1889,10 +1889,10 @@
 	amount_per_transfer_from_this = 10
 
 	New()
-		var/datum/reagents/R = new/datum/reagents(40)
+		var/datum/reagents/R = new/datum/reagents(30)
 		reagents = R
 		R.my_atom = src
-		R.add_reagent("weedkiller", 40)
+		R.add_reagent("weedkiller", 30)
 
 /obj/item/weapon/seedplanter
 	name = "Portable Seed Fabricator"
