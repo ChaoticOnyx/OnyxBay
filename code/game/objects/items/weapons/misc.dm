@@ -75,7 +75,7 @@ DNA INJECTOR
 				O.process()
 				user.update_clothing()
 				return
-		else
+		if(istype(M, /mob/living/carbon/monkey))
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red [] has been injected with [] by [].", M, src, user), 1)
 				//Foreach goto(192)
