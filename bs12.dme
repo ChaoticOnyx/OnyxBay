@@ -264,6 +264,7 @@
 #include "code\defines\obj\storage.dm"
 #include "code\defines\obj\weapon.dm"
 #include "code\defines\obj\window.dm"
+#include "code\defines\obj\clothing\biosuits.dm"
 #include "code\defines\obj\clothing\gimmick.dm"
 #include "code\defines\obj\clothing\spacesuits.dm"
 #include "code\defines\obj\spawner\bomb.dm"

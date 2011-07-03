@@ -405,8 +405,12 @@
 				user << "\red [src] is full."
 				return
 
-			var/trans = target.reagents.trans_to(src, 10)
-			user << "\blue You fill [src] with [trans] units of the contents of [target]."
+			if(istype(src, /obj/item/weapon/reagent_containers/glass/wateringcan))
+				var/trans = target.reagents.trans_to(src, 30)
+				user << "\blue You fill [src] with [trans] units of the contents of [target]."
+			else
+				var/trans = target.reagents.trans_to(src, 10)
+				user << "\blue You fill [src] with [trans] units of the contents of [target]."
 
 		else if(target.is_open_container() && target.reagents) //Something like a glass. Player probably wants to transfer TO it.
 			if(!reagents.total_volume)
