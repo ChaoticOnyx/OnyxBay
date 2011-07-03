@@ -447,6 +447,14 @@
 	heat_transfer_coefficient = 0.01
 	permeability_coefficient = 0.25
 
+/obj/item/clothing/shoes/jackboots
+	name = "jackboots"
+	desc = "heavy duty protective boots"
+	icon_state = "jackboots"
+	protective_temperature = 1500
+	heat_transfer_coefficient = 0.01
+	permeability_coefficient = 0.25
+
 /obj/item/clothing/shoes/white
 	name = "White Shoes"
 	icon_state = "white"
