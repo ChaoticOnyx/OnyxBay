@@ -75,7 +75,7 @@
 		if(LaunchControl.departed)
 			return
 		message_admins("Performing AutoTraitor Check")
-		var/playercount = 0
+		var/playercount = 11
 		var/traitorcount = 0
 		var/possible_traitors[0]
 		for(var/mob/living/player in world)
@@ -98,6 +98,9 @@
 		var/traitor_prob = 0
 		max_traitors = round(playercount / 10) + 1
 		traitor_prob = (playercount - (max_traitors - 1) * 10) * 5
+		if(traitorcount < max_traitors - 1)
+			traitor_prob += 50
+
 
 		if(traitorcount < max_traitors)
 			message_admins("Number of Traitors is below maximum.  Rolling for new Traitor.")
@@ -187,7 +190,8 @@
 		var/traitor_prob = 0
 		max_traitors = round(playercount / 10) + 1
 		traitor_prob = (playercount - (max_traitors - 1) * 10) * 5
-
+		if(traitorcount < max_traitors - 1)
+			traitor_prob += 50
 
 		//target_traitors = max(1, min(round((playercount + r) / 10, 1), traitors_possible))
 		//message_admins("Target Traitor Count is: [target_traitors]")
