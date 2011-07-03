@@ -1162,7 +1162,7 @@ datum
 			description = "A set of specially engineered food for the growth of viral cells"
 			reagent_state = LIQUID
 
-		virusfood
+		weedkiller
 			name = "Atrazine"
 			id = "weedkiller"
 			description = "A chemical, poisonous to weeds."
