@@ -375,6 +375,16 @@ var/supply_shuttle_points = 50
 	contains = list("/obj/machinery/bot/mulebot")
 	cost = 20
 
+/datum/supply_packs/watertank
+    name = "Water Tank"
+    contains = list("/obj/reagent_dispensers/fueltank")
+    cost = 15
+
+/datum/supply_packs/fueltank
+    name = "Fuel Tank"
+    contains = list("/obj/reagent_dispensers/fueltank")
+    cost = 15
+
 //SUPPLY PACKS
 
 /obj/plasticflaps //HOW DO YOU CALL THOSE THINGS ANYWAY

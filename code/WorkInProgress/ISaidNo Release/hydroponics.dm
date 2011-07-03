@@ -1836,7 +1836,7 @@
 
 /obj/machinery/vending/seeds
 	name = "Seed Vendor"
-	desc = "Gardening made easy for people without asperger's syndrome."
+	desc = "Gardening made easy."
 	icon_state = "cigs"
 	product_paths = "/obj/item/weapon/seed/tomato;/obj/item/weapon/seed/orange;/obj/item/weapon/seed/grape;/obj/item/weapon/seed/melon;/obj/item/weapon/seed/chili;/obj/item/weapon/seed/apple;/obj/item/weapon/seed/banana;/obj/item/weapon/seed/lemon;/obj/item/weapon/seed/lime;/obj/item/weapon/seed/carrot;/obj/item/weapon/seed/wheat;/obj/item/weapon/seed/synthmeat;/obj/item/weapon/seed/sugar;/obj/item/weapon/seed/contusine;/obj/item/weapon/seed/nureous;/obj/item/weapon/seed/asomna;/obj/item/weapon/seed/commol;/obj/item/weapon/seed/venne"
 	product_amounts = "20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20"
@@ -1858,7 +1858,7 @@
 	desc = "Used to water things. Obviously."
 	icon = 'hydromisc.dmi'
 	icon_state = "watercan"
-	amount_per_transfer_from_this = 60
+	amount_per_transfer_from_this = 10
 	w_class = 3.0
 
 	New()
@@ -1869,7 +1869,7 @@
 
 /obj/item/weapon/reagent_containers/glass/compostbag/
 	name = "compost bag"
-	desc = "A big bag of shit."
+	desc = "A big bag of compost."
 	icon = 'hydromisc.dmi'
 	icon_state = "compost"
 	amount_per_transfer_from_this = 10
