@@ -75,7 +75,7 @@
 		if(LaunchControl.departed)
 			return
 		message_admins("Performing AutoTraitor Check")
-		var/playercount = 11
+		var/playercount = 0
 		var/traitorcount = 0
 		var/possible_traitors[0]
 		for(var/mob/living/player in world)
