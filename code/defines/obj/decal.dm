@@ -273,3 +273,84 @@
 		src.icon_state = "[Text]"
 		//ul_SetLuminosity(4)
 		return
+
+/obj/decal/signnew
+	icon = 'decals-new.dmi'
+	anchored = 1.0
+	opacity = 0
+	density = 0
+
+/obj/decal/signnew/biohazard
+	name = "BIOLOGICAL HAZARD"
+	desc = "Warning: Biological and-or toxic hazards present in this area!"
+	icon_state = "biohazard"
+
+/obj/decal/signnew/corrosives
+	name = "CORROSIVE SUBSTANCES"
+	desc = "Warning: Corrosive substances prezent in this area!"
+	icon_state = "corrosives"
+
+/obj/decal/signnew/explosives
+	name = "EXPLOSIVE SUBSTANCES"
+	desc = "Warning: Explosive substances present in this area!"
+	icon_state = "explosives"
+
+/obj/decal/signnew/flammables
+	name = "FLAMMABLE SUBSTANCES"
+	desc = "Warning: Flammable substances present in this area!"
+	icon_state = "flammable"
+
+/obj/decal/signnew/laserhazard
+	name = "LASER HAZARD"
+	desc = "Warning: High powered laser emitters operating in this area!"
+	icon_state = "laser"
+
+/obj/decal/signnew/danger
+	name = "DANGEROUS AREA"
+	desc = "Warning: Generally hazardous area! Exercise caution."
+	icon_state = "danger"
+
+/obj/decal/signnew/magnetics
+	name = "MAGNETIC FIELD HAZARD"
+	desc = "Warning: Extremely powerful magnetic fields present in this area!"
+	icon_state = "magnetics"
+
+/obj/decal/signnew/opticals
+	name = "OPTICAL HAZARD"
+	desc = "Warning: Optical hazards present in this area!"
+	icon_state = "optical"
+
+/obj/decal/signnew/radiation
+	name = "RADIATION HAZARD"
+	desc = "Warning: Significant levels of radiation present in this area!"
+	icon_state = "radiation"
+
+/obj/decal/signnew/secure
+	name = "SECURE AREA"
+	desc = "Warning: Secure Area! Do not enter without authorization!"
+	icon_state = "secure"
+
+/obj/decal/signnew/electrical
+	name = "ELECTRICAL HAZARD"
+	desc = "Warning: Electrical hazards! Wear protective equipment."
+	icon_state = "electrical"
+
+/obj/decal/signnew/cryogenics
+	name = "CRYOGENIC TEMPERATURES"
+	desc = "Warning: Extremely low temperatures in this area."
+	icon_state = "cryogenics"
+
+/obj/decal/signnew/canisters
+	name = "PRESSURIZED CANISTERS"
+	desc = "Warning: Highly pressurized canister storage."
+	icon_state = "canisters"
+
+/obj/decal/signnew/oxidants
+	name = "OXIDIZING AGENTS"
+	desc = "Warning: Oxidizing agents in this area, do not start fires!"
+	icon_state = "oxidants"
+
+/obj/decal/signnew/memetic
+	name = "MEMETIC HAZARD"
+	desc = "Warning: Memetic hazard, wear meson goggles!"
+	icon_state = "memetic"
