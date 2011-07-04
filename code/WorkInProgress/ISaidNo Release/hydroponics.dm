@@ -698,7 +698,7 @@
 					O.show_message(text("<b>[]</b> fastens the [] to the floor.", user, src), 1)
 				playsound(src.loc, 'Screwdriver.ogg', 100, 1)
 				src.anchored = 1
-		else if (istype(W, /obj/item/weapon/weldingtool) || istype(W, /obj/item/weapon/zippo) || istype(W, /obj/item/device/igniter))
+/*		else if (istype(W, /obj/item/weapon/weldingtool) || istype(W, /obj/item/weapon/zippo) || istype(W, /obj/item/device/igniter))			Rawr, I don't like hydroponicists welding plants! - CN
 			if (istype(W, /obj/item/weapon/weldingtool) && !W:welding)
 				user << "\red It would help if you lit it first, dumbass!"
 				return
@@ -728,6 +728,7 @@
 							usr << "\red The lasher grabs and smashes your [W]!"
 							del W
 						return
+*/
 /* Strumpetplaya - commenting this out as it has components we don't support.
 		else if(istype(W,/obj/item/weapon/saw))
 			if (src.current)
@@ -2041,12 +2042,12 @@
 				src.pixel_y = rand(1, 5)
 			else
 		return
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		..()
-		if (!( istype(W, /obj/item/weapon/weldingtool) && W:welding )) return
-		W:eyecheck(user)
-		user << "\red The crystal shard resists the heat!"
-		return
+	//attackby(obj/item/weapon/W as obj, mob/user as mob)			Rawr, I don't like hydroponicists welding plants! - CN
+	//	..()
+	//	if (!( istype(W, /obj/item/weapon/weldingtool) && W:welding )) return
+	//	W:eyecheck(user)
+	//	user << "\red The crystal shard resists the heat!"
+	//	return
 	HasEntered(AM as mob|obj)
 		if(ismob(AM))
 			var/mob/M = AM
