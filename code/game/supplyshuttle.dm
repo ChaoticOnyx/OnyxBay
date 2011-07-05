@@ -380,6 +380,11 @@ var/supply_shuttle_points = 50
     contains = list("/obj/reagent_dispensers/watertank")
     cost = 15
 
+/datum/supply_packs/hvwatertank
+    name = "High-Velocity Water Tank"
+    contains = list("/obj/reagent_dispensers/hvwatertank")
+    cost = 45
+
 /datum/supply_packs/fueltank
     name = "Fuel Tank"
     contains = list("/obj/reagent_dispensers/fueltank")
