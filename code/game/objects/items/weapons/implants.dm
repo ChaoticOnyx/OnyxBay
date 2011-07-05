@@ -312,6 +312,7 @@ No Implant Specifics"}
 		var/turf/t = find_loc(src)
 		if(t)
 			t.hotspot_expose(SPARK_TEMP,125)
+		del(src)
 
 /obj/item/weapon/implant/timplant/trigger(emote, mob/source as mob)
 	if (emote == src.activation_emote)
