@@ -894,7 +894,7 @@
 	name = "pickaxe"
 	desc = "A thing to bash rocks with until they become smaller rocks."
 	icon = 'mining.dmi'
-	icon_state = "pickaxe"
+	icon_state = "pickaxe0"
 	w_class = 2
 	flags = ONBELT
 	force = 4
@@ -904,7 +904,7 @@
 	name = "power pick"
 	desc = "An energised mining tool. It has 30 charges left."
 	icon = 'mining.dmi'
-	icon_state = "powerpick"
+	icon_state = "pickaxe1"
 	flags = ONBELT
 	w_class = 2
 	var/charges = 30
