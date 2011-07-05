@@ -381,7 +381,7 @@ var/supply_shuttle_points = 50
     cost = 15
 
 /datum/supply_packs/hvwatertank
-    name = "High-Velocity Water Tank"
+    name = "High-Volume Water Tank"
     contains = list("/obj/reagent_dispensers/hvwatertank")
     cost = 45
 

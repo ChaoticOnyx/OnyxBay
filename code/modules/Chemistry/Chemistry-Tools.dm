@@ -1165,7 +1165,7 @@
 		reagents.add_reagent("water",1000)
 
 /obj/reagent_dispensers/hvwatertank
-	name = "high-velocity watertank"
+	name = "high-volume watertank"
 	desc = "A large watertank"
 	icon = 'objects.dmi'
 	icon_state = "hvwatertank"
