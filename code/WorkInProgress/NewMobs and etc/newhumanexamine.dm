@@ -84,28 +84,34 @@
 			if(100 to 200)
 				usr << "\red [src] is twitching ever so slightly."
 
+	var/distance = get_dist(usr,src)
+	if(istype(usr, /mob/dead/observer) || usr.stat == 2) // ghosts can see anything
+		distance = 1
+	if (stat == 1 || stat == 2)
+		usr << "\red [name] doesn't seem to be responding to anything around [t_him], [t_his] eyes closed as though asleep."
+		if(health < 0 && distance <= 3)
+			usr << "\red [name] does not appear to be breathing."
+	else if (brainloss >= 60)
+		usr << "\red [name] has a stupid expression on [t_his] face."
+	if (bruteloss)
+		if (bruteloss < 30)
+			usr << "\red [name] looks slightly injured!"
+		else
+			usr << "\red <B>[name] looks severely injured!</B>"
+
+	if (fireloss)
+		if (fireloss < 30)
+			usr << "\red [name] looks slightly burned!"
+		else
+			usr << "\red <B>[name] looks severely burned!</B>"
+
 	if (stat == 2 || changeling_fakedeath == 1 || zombie)
-		var/datum/organ/external/T = organs["head"]
-		usr << "\red [src] is limp and unresponsive[T.destroyed ? "." : ", a dull lifeless look in [t_his] eyes"]"
-	else
-		if (bruteloss)
-			if (bruteloss < 30)
-				usr << "\red [name] looks slightly injured!"
-			else
-				usr << "\red <B>[name] looks severely injured!</B>"
+		if(distance <= 1)
+			if(istype(usr, /mob/living/carbon/human) && usr.stat == 0)
+				for(var/mob/O in viewers(usr.loc, null))
+					O.show_message("[usr] checks [src]'s pulse.", 1)
+			usr << "\red [name] has no pulse!"
 
-		if (fireloss)
-			if (fireloss < 30)
-				usr << "\red [name] looks slightly burned!"
-			else
-				usr << "\red <B>[name] looks severely burned!</B>"
-
-		if (stat == 1)
-			usr << "\red [name] doesn't seem to be responding to anything around [t_him], [t_his] eyes closed as though asleep."
-			if(health < 0)
-				usr << "\red [name] does not appear to be breathing."
-		else if (brainloss >= 60)
-			usr << "\red [name] has a stupid expression on [t_his] face."
 	for(var/datum/organ/external/temp in organs2)
 		if(temp.destroyed)
 			usr << "\red [name] is missing [t_his] [temp.display_name]."
