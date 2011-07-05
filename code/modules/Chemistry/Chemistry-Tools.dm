@@ -292,9 +292,14 @@
 		return
 
 	New()
-		var/datum/reagents/R = new/datum/reagents(1000)
-		reagents = R
-		R.my_atom = src
+		if(istype(src, /obj/reagent_dispensers/hvwatertank/))
+			var/datum/reagents/R = new/datum/reagents(3000)
+			reagents = R
+			R.my_atom = src
+		else
+			var/datum/reagents/R = new/datum/reagents(1000)
+			reagents = R
+			R.my_atom = src
 
 	examine()
 		set src in view(2)
@@ -1158,6 +1163,17 @@
 	New()
 		..()
 		reagents.add_reagent("water",1000)
+
+/obj/reagent_dispensers/hvwatertank
+	name = "high-volume watertank"
+	desc = "A large watertank"
+	icon = 'objects.dmi'
+	icon_state = "hvwatertank"
+	amount_per_transfer_from_this = 10
+
+	New()
+		..()
+		reagents.add_reagent("water",3000)
 
 /obj/reagent_dispensers/fueltank
 	name = "fueltank"

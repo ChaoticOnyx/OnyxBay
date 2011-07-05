@@ -119,7 +119,7 @@ obj/item/weapon/cane
 /obj/item/weapon/extinguisher/afterattack(atom/target, mob/user , flag)
 	//TODO; Add support for reagents in water.
 
-	if( istype(target, /obj/reagent_dispensers/watertank) && get_dist(src,target) <= 1)
+	if( istype(target, (/obj/reagent_dispensers/watertank || /obj/reagent_dispensers/hvwatertank)) && get_dist(src,target) <= 1)
 		var/obj/o = target
 		o.reagents.trans_to(src, 50)
 		user << "\blue Extinguisher refilled"
