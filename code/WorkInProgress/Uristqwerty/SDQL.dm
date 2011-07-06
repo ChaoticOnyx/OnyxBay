@@ -3,7 +3,12 @@
 
 //Note: For use in BS12, need text_starts_with proc, and to modify the action on select to use BS12's object edit command(s).
 
-/client/verb/SDQL_query(query_text as message)
+/client/proc/SDQL_query(query_text as message)
+	set category = "Admin"
+	if(!usr.client.holder)  //Shouldn't happen... but just to be safe.
+		message_admins("\red ERROR: Non-admin [usr.key] attempted to execute a SDQL query!")
+		log_admin("Non-admin [usr.key] attempted to execute a SDQL query!")
+
 	var/list/whitespace = list(" ", "\n", "\t")
 
 	var/i
@@ -322,6 +327,7 @@
 
 
 	usr << "Query: [query_text]"
+	message_admins("[usr] executed SDQL query: \"[query_text]\".")
 /*
 	for(var/t in types)
 		usr << "Type: [t]"

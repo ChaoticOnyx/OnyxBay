@@ -70,6 +70,7 @@
 	//Verbs for everyone super administrator and up.
 	var/list/averbs_super_admin = list(
 			/client/proc/addchange,
+			/client/proc/CarbonCopy,
 			/client/proc/clearmap,
 			/client/proc/cmd_admin_add_freeform_ai_law,
 			/client/proc/cmd_admin_alienize,
@@ -98,6 +99,7 @@
 			/client/proc/loadmap,
 			/client/proc/loadmaphere,
 			/client/proc/modifytemperature,
+			/client/proc/SDQL_query,
 			/client/proc/sendmob,
 			/client/proc/zombify,
 			/obj/admins/proc/adjump,				//toggle admin jumping
@@ -940,3 +942,11 @@
 		message_admins("\blue <b> Mode hidden toggled on by [usr.client.key]</b>")
 	else
 		message_admins("\blue <b> Mode hidden toggled off by [usr.client.key]</b>")
+
+/client/proc/CarbonCopy(atom/movable/O as mob|obj in world)
+	set category = "Admin"
+	var/mob/NewObj = new O.type(usr.loc)
+	for(var/V in O.vars)
+		if (issaved(O.vars[V]))
+			NewObj.vars[V] = O.vars[V]
+	return
