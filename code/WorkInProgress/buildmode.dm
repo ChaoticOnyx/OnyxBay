@@ -81,6 +81,8 @@
 	var/obj/buildhelp/buildhelp = null
 	var/obj/buildmode/buildmode = null
 	var/obj/buildquit/buildquit = null
+	var/list/argL = null
+	var/procname = null
 
 /obj/builddir/Click()
 	switch(dir)
@@ -135,8 +137,13 @@
 				master.cl.buildmode = 3
 				src.icon_state = "buildmode3"
 			if(3)
-				master.cl.buildmode = 1
-				src.icon_state = "buildmode1"
+				if(master.cl.holder.rank in list("Host", "Coder"))
+					master.cl.buildmode = 4
+					src.icon_state = "procgun"
+				else
+					master.cl.buildmode = 1
+					src.icon_state = "buildmode1"
+
 	else if(pa.Find("right"))
 		switch(master.cl.buildmode)
 			if(1)
@@ -168,6 +175,36 @@
 						master.buildmode.valueholder = input(usr,"Enter variable value:" ,"Value") as obj in world
 					if("turf-reference")
 						master.buildmode.valueholder = input(usr,"Enter variable value:" ,"Value") as turf in world
+
+			if(4)
+				master.procname = input(usr, "Enter full proc path:", "ProcPath")
+				var/argNum = input("Number of arguments:","Number",null) as num
+				master.argL = new/list()
+				var/class
+				var/i
+				for(i=0; i<argNum; i++)
+					class = input("Type of Argument #[i]","Variable Type", "text") in list("text","num","type","reference","icon","file","cancel")
+					switch(class)
+						if("cancel")
+							return
+
+						if("text")
+							master.argL.Add( input("Enter new text:","Text",null) as text )
+
+						if("num")
+							master.argL.Add( input("Enter new number:","Num",null) as num )
+
+						if("type")
+							master.argL.Add( input("Enter type:","Type",null) in typesof(/obj,/mob,/area,/turf) )
+
+						if("reference")
+							master.argL.Add( input("Select reference:","Reference",null) as mob|obj|turf|area in world )
+
+						if("icon")
+							master.argL.Add( input("Pick icon:","Icon",null) as icon )
+
+						if("file")
+							master.argL.Add( input("Pick file:","File",null) as file )
 
 
 /proc/build_click(var/mob/user, buildmode, location, control, params, var/obj/object)
@@ -257,6 +294,11 @@
 					blink(object)
 				else
 					usr << "\red [initial(object.name)] does not have a var called '[holder.buildmode.varholder]'"
+		if(4)
+			blink(object)
+			var/returnval = call(object, holder.procname)(arglist(holder.argL))
+			usr << "\blue Proc \"[holder.procname]\" returned: [returnval ? returnval : "null"]"
+
 
 /proc/blink(atom/A)
 	A.icon += rgb(0,75,75)

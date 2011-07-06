@@ -171,13 +171,12 @@
 	else
 		alert("Invalid mob")
 
-/client/proc/cmd_debug_del_all()
+/client/proc/cmd_debug_del_all(var/path as text)
 	set category = "Debug"
 	set name = "Del-All"
 
-	// to prevent REALLY stupid deletions
-	var/blocked = list(/obj, /mob, /mob/living, /mob/living/carbon, /mob/living/carbon/human)
-	var/hsbitem = input(usr, "Choose an object to delete.", "Delete:") as null|anything in typesof(/obj) + typesof(/mob) - blocked
+	var/hsbitem = text2path(path)
+
 	if(hsbitem)
 		for(var/atom/O in world)
 			if(istype(O, hsbitem))

@@ -127,6 +127,9 @@
 
 			src.verbs += /client/proc/givedisease
 			src.verbs += /client/proc/givedisease_deadly
+
+			src.verbs += /client/proc/SDQL_query
+			src.verbs += /client/proc/CarbonCopy
 		if ("Coder")
 			src.deadchat = 1
 			src.holder.level = 5
@@ -236,6 +239,9 @@
 			src.verbs += /client/proc/loadmaphere
 			src.verbs += /client/proc/qsowtoggle
 			src.verbs += /client/proc/hidemode
+
+			src.verbs += /client/proc/SDQL_query
+			src.verbs += /client/proc/CarbonCopy
 		if ("Super Administrator")
 			src.deadchat = 1
 			src.holder.level = 4
@@ -327,6 +333,9 @@
 			src.verbs += /client/proc/hidemode
 			src.verbs += /client/proc/givedisease
 			src.verbs += /client/proc/givedisease_deadly
+
+			src.verbs += /client/proc/SDQL_query
+			src.verbs += /client/proc/CarbonCopy
 		if ("Primary Administrator")
 
 			src.deadchat = 1
@@ -1004,7 +1013,7 @@
 				M.open()
 			else
 				M.close()
-				
+
 /client/proc/toggleadminsectordoors()
 	set category = "Roleplay"
 	set name = "Toggle admin sector doors (NT)"
@@ -1135,3 +1144,11 @@
 		message_admins("\blue <b> Mode hidden toggled on by [usr.client.key]</b>")
 	else
 		message_admins("\blue <b> Mode hidden toggled off by [usr.client.key]</b>")
+
+/client/proc/CarbonCopy(atom/movable/O as mob|obj in world)
+	set category = "Admin"
+	var/mob/NewObj = new O.type(usr.loc)
+	for(var/V in O.vars)
+		if (issaved(O.vars[V]))
+			NewObj.vars[V] = O.vars[V]
+	return
