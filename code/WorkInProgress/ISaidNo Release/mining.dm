@@ -893,7 +893,7 @@
 /obj/item/weapon/pickaxe
 	name = "pickaxe"
 	desc = "A thing to bash rocks with until they become smaller rocks."
-	icon = 'mining.dmi'
+	icon = 'weapons.dmi'
 	icon_state = "pickaxe0"
 	w_class = 2
 	flags = ONBELT
@@ -903,7 +903,7 @@
 /obj/item/weapon/pickaxe/powered
 	name = "power pick"
 	desc = "An energised mining tool. It has 30 charges left."
-	icon = 'mining.dmi'
+	icon = 'weapons.dmi'
 	icon_state = "pickaxe1"
 	flags = ONBELT
 	w_class = 2
