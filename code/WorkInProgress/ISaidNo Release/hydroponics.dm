@@ -1184,6 +1184,7 @@
 	var/obj/item/weapon/reagent_containers/beaker = null
 	var/list/ingredients = list()
 	var/working = 0
+	var/pcount = 0
 	var/list/allowed = list(/obj/item/weapon/reagent_containers/food/snacks/plant/,\
 	/obj/item/weapon/reagent_containers/food/snacks/mushroom/,\
 	/obj/item/weapon/plant/,\
@@ -1265,20 +1266,21 @@
 						if (prob(3)) G.reagents.add_reagent("necrovirus", 5)
 					else if(istype(I,/obj/item/weapon/plant))
 						var/obj/item/weapon/plant/P = I
-						if(istype(I,/obj/item/weapon/plant/contusine)) G.reagents.add_reagent("bicaridine", 20 + P.potency)
-						else if(istype(I,/obj/item/weapon/plant/nureous)) G.reagents.add_reagent("hyronalin", 20 + P.potency)
-						else if(istype(I,/obj/item/weapon/plant/asomna)) G.reagents.add_reagent("inaprovaline", 20 + P.potency)
-						else if(istype(I,/obj/item/weapon/plant/commol)) G.reagents.add_reagent("kelotane", 20 + P.potency)
-						else if(istype(I,/obj/item/weapon/plant/venne)) G.reagents.add_reagent("anti_toxin", 20 + P.potency)
-						else if(istype(I,/obj/item/weapon/plant/cannabis/black)) G.reagents.add_reagent("cyanide", 20 + P.potency)
-						else if(istype(I,/obj/item/weapon/plant/cannabis/mega)) G.reagents.add_reagent("LSD", 20 + P.potency)
-						else if(istype(I,/obj/item/weapon/plant/cannabis/white)) G.reagents.add_reagent("tricordrazine", 2 + (P.potency / 3))
-						else if(istype(I,/obj/item/weapon/plant/cannabis)) G.reagents.add_reagent("THC", 20 + P.potency)
+						if(istype(I,/obj/item/weapon/plant/contusine)) G.reagents.add_reagent("bicaridine", round((20 + P.potency), 5))
+						else if(istype(I,/obj/item/weapon/plant/nureous)) G.reagents.add_reagent("hyronalin", round((20 + P.potency), 5))
+						else if(istype(I,/obj/item/weapon/plant/asomna)) G.reagents.add_reagent("inaprovaline", round((20 + P.potency), 5))
+						else if(istype(I,/obj/item/weapon/plant/commol)) G.reagents.add_reagent("kelotane", round((20 + P.potency), 5))
+						else if(istype(I,/obj/item/weapon/plant/venne)) G.reagents.add_reagent("anti_toxin", round((20 + P.potency), 5))
+						else if(istype(I,/obj/item/weapon/plant/cannabis/black)) G.reagents.add_reagent("cyanide", round((20 + P.potency), 5))
+						else if(istype(I,/obj/item/weapon/plant/cannabis/mega)) G.reagents.add_reagent("LSD", round((20 + P.potency), 5))
+						else if(istype(I,/obj/item/weapon/plant/cannabis/white)) G.reagents.add_reagent("tricordrazine", round((2 + (P.potency / 3)), 5))
+						else if(istype(I,/obj/item/weapon/plant/cannabis)) G.reagents.add_reagent("THC", round((20 + P.potency), 5))
 					src.ingredients -= I
 					del I
-				sleep(50)
+				sleep(50 * src.pcount)
 				for(var/mob/O in viewers(src, null)) O.show_message(text("[] finishes the extraction.", src), 1)
 				src.working = 0
+				src.pcount = 0
 				icon_state = "reex-off"
 				src.updateUsrDialog()
 			if(operation == 2) // Eject Beaker
@@ -1289,6 +1291,7 @@
 				for(var/obj/item/I in src.contents)
 					if (istype(I, /obj/item/weapon/reagent_containers/glass) || istype(I, /obj/item/weapon/reagent_containers/food/drinks/)) continue
 					I.loc = src.loc
+				src.pcount = 0
 				src.updateUsrDialog()
 
 	attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
@@ -1315,6 +1318,7 @@
 				return
 			user << "\blue You add [W] to the machine!"
 			user.u_equip(W)
+			src.pcount += 1
 			if ((user.client && user.s_active != src)) user.client.screen -= W
 			W.loc = src
 			src.ingredients += W

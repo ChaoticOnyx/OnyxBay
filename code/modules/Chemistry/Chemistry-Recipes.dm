@@ -408,4 +408,4 @@ datum
 			id = "weedkiller"
 			result = "weedkiller"
 			required_reagents = list("chlorine" = 1, "ethanol" = 1, "ammonia" =1)
-			result_amount = 3
+			result_amount = 5
