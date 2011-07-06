@@ -143,6 +143,9 @@
 				else
 					master.cl.buildmode = 1
 					src.icon_state = "buildmode1"
+			if(4)
+				master.cl.buildmode = 1
+				src.icon_state = "buildmode1"
 
 	else if(pa.Find("right"))
 		switch(master.cl.buildmode)
