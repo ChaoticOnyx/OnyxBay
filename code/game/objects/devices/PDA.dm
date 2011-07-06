@@ -83,6 +83,16 @@
 	owner = "John Doe"
 	toff = 1
 
+/obj/item/device/pda/b1
+	default_cartridge = /obj/item/weapon/cartridge/head
+	icon_state = "pda-black1"
+	toff = 1
+
+/obj/item/device/pda/b2
+	default_cartridge = /obj/item/weapon/cartridge/head
+	icon_state = "pda-black2"
+	toff = 1
+
 /obj/item/device/pda/chaplain
 
 /obj/item/weapon/cartridge
