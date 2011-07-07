@@ -9,72 +9,7 @@
 		message_admins("\red ERROR: Non-admin [usr.key] attempted to execute a SDQL query!")
 		log_admin("Non-admin [usr.key] attempted to execute a SDQL query!")
 
-	var/list/whitespace = list(" ", "\n", "\t")
-
-	var/i
-	var/word = ""
-	var/len = length(query_text)
-	var/list/query_list = list()
-
-	for(i = 1, i <= len, i++)
-		var/char = copytext(query_text, i, i + 1)
-
-		if(char in whitespace)
-			if(word != "")
-				query_list += word
-				word = ""
-
-		else if(char == "'")
-			if(word != "")
-				var/j = i
-				for(j, j <= len && !(copytext(query_text, j, j + 1) in whitespace), j++)
-					word += copytext(query_text, j, j + 1)
-
-				usr << "Unexpected ' in \"[word]\", in query \"[query_text]\". Please check your syntax and try again."
-				return
-
-			for(i++, i <= len, i++)
-				char = copytext(query_text, i, i + 1)
-				if(char == "'")
-					if(copytext(query_text, i + 1, i + 2) == "'")
-						word += "'"
-						i++
-					else
-						break
-				else
-					word += char
-
-			query_list += "'[word]'"
-			word = ""
-
-		else if(char == ",")
-			if(word != "")
-				query_list += word
-				word = ""
-
-			query_list += char
-
-		else if(char in list("=", "+", "-", "<", ">", "!", "*")) //No division, because that would collide with paths
-			if(word != "")
-				query_list += word
-				word = ""
-
-			word += char
-
-			if(i < len && (copytext(query_text, i + 1, i + 2) in list("=", ">")))
-				word += copytext(query_text, i + 1, i + 2)
-				i++
-
-			query_list += word
-			word = ""
-
-		else
-			word += char
-
-
-
-		if(i == len && word != "")
-			query_list += word
+	var/list/query_list = SDQL_tokenize(query_text)
 
 	if(query_list.len < 2)
 		if(query_list.len > 0)
@@ -87,6 +22,7 @@
 
 	var/list/types = list()
 
+	var/i
 	for(i = 2; i <= query_list.len; i += 2)
 		types += query_list[i]
 
@@ -423,3 +359,113 @@
 	else
 		return 0
 
+
+
+
+
+/proc/SDQL_tokenize(query_text)
+
+	var/list/whitespace = list(" ", "\n", "\t")
+	var/list/single = list("(", ")", ",", "+", "-")
+	var/list/multi = list(
+					"=" = list("", "="),
+					"<" = list("", "=", ">"),
+					">" = list("", "="),
+					"!" = list("", "="))
+
+	var/word = ""
+	var/list/query_list = list()
+	var/len = length(query_text)
+
+	for(var/i = 1, i <= len, i++)
+		var/char = copytext(query_text, i, i + 1)
+
+		if(char in whitespace)
+			if(word != "")
+				query_list += word
+				word = ""
+
+		else if(char in single)
+			if(word != "")
+				query_list += word
+				word = ""
+
+			query_list += char
+
+		else if(char in multi)
+			if(word != "")
+				query_list += word
+				word = ""
+
+			var/char2 = copytext(query_text, i + 1, i + 2)
+
+			if(char2 in multi[char])
+				query_list += "[char][char2]"
+				i++
+
+			else
+				query_list += char
+
+		else if(char == "'")
+			if(word != "")
+				usr << "You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>[query_text]</font>\" following \"<font color=gray>[word]</font>\". Please check your syntax, and try again."
+				return null
+
+			word = "'"
+
+			for(i++, i <= len, i++)
+				char = copytext(query_text, i, i + 1)
+
+				if(char == "'")
+					if(copytext(query_text, i + 1, i + 2) == "'")
+						word += "'"
+						i++
+
+					else
+						break
+
+				else
+					word += char
+
+			if(i > len)
+				usr << "You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>[query_text]</font>\". Please check your syntax, and try again."
+				return null
+
+			query_list += "[word]'"
+			word = ""
+
+		else if(char == "\"")
+			if(word != "")
+				usr << "You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>[query_text]</font>\" following \"<font color=gray>[word]</font>\". Please check your syntax, and try again."
+				return null
+
+			word = "\""
+
+			for(i++, i <= len, i++)
+				char = copytext(query_text, i, i + 1)
+
+				if(char == "\"")
+					if(copytext(query_text, i + 1, i + 2) == "'")
+						word += "\""
+						i++
+
+					else
+						break
+
+				else
+					word += char
+
+			if(i > len)
+				usr << "You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>[query_text]</font>\". Please check your syntax, and try again."
+				return null
+
+			query_list += "[word]\""
+			word = ""
+
+		else
+			word += char
+
+	if(word != "")
+		query_list += word
+
+	return query_list
