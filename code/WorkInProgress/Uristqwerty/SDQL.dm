@@ -3,73 +3,13 @@
 
 //Note: For use in BS12, need text_starts_with proc, and to modify the action on select to use BS12's object edit command(s).
 
-/client/verb/SDQL_query(query_text as message)
-	var/list/whitespace = list(" ", "\n", "\t")
+/client/proc/SDQL_query(query_text as message)
+	set category = "Admin"
+	if(!usr.client.holder)  //Shouldn't happen... but just to be safe.
+		message_admins("\red ERROR: Non-admin [usr.key] attempted to execute a SDQL query!")
+		log_admin("Non-admin [usr.key] attempted to execute a SDQL query!")
 
-	var/i
-	var/word = ""
-	var/len = length(query_text)
-	var/list/query_list = list()
-
-	for(i = 1, i <= len, i++)
-		var/char = copytext(query_text, i, i + 1)
-
-		if(char in whitespace)
-			if(word != "")
-				query_list += word
-				word = ""
-
-		else if(char == "'")
-			if(word != "")
-				var/j = i
-				for(j, j <= len && !(copytext(query_text, j, j + 1) in whitespace), j++)
-					word += copytext(query_text, j, j + 1)
-
-				usr << "Unexpected ' in \"[word]\", in query \"[query_text]\". Please check your syntax and try again."
-				return
-
-			for(i++, i <= len, i++)
-				char = copytext(query_text, i, i + 1)
-				if(char == "'")
-					if(copytext(query_text, i + 1, i + 2) == "'")
-						word += "'"
-						i++
-					else
-						break
-				else
-					word += char
-
-			query_list += "'[word]'"
-			word = ""
-
-		else if(char == ",")
-			if(word != "")
-				query_list += word
-				word = ""
-
-			query_list += char
-
-		else if(char in list("=", "+", "-", "<", ">", "!", "*")) //No division, because that would collide with paths
-			if(word != "")
-				query_list += word
-				word = ""
-
-			word += char
-
-			if(i < len && (copytext(query_text, i + 1, i + 2) in list("=", ">")))
-				word += copytext(query_text, i + 1, i + 2)
-				i++
-
-			query_list += word
-			word = ""
-
-		else
-			word += char
-
-
-
-		if(i == len && word != "")
-			query_list += word
+	var/list/query_list = SDQL_tokenize(query_text)
 
 	if(query_list.len < 2)
 		if(query_list.len > 0)
@@ -82,6 +22,7 @@
 
 	var/list/types = list()
 
+	var/i
 	for(i = 2; i <= query_list.len; i += 2)
 		types += query_list[i]
 
@@ -142,59 +83,60 @@
 			else if(copytext(f, 1, 2) != "/")
 				from_objs += locate(f)
 			else
+				var/f2 = text2path(f)
 				if(text_starts_with(f, "/mob"))
 					for(var/mob/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 
 				else if(text_starts_with(f, "/turf/space"))
 					for(var/turf/space/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 
 				else if(text_starts_with(f, "/turf/simulated"))
 					for(var/turf/simulated/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 
 				else if(text_starts_with(f, "/turf/unsimulated"))
 					for(var/turf/unsimulated/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 
 				else if(text_starts_with(f, "/turf"))
 					for(var/turf/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 
 				else if(text_starts_with(f, "/area"))
 					for(var/area/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 
 				else if(text_starts_with(f, "/obj/item"))
 					for(var/obj/item/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 
 				else if(text_starts_with(f, "/obj/machinery"))
 					for(var/obj/machinery/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 
 				else if(text_starts_with(f, "/obj"))
 					for(var/obj/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 
 				else if(text_starts_with(f, "/atom"))
 					for(var/atom/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 /*
 				else
 					for(var/datum/m in world)
-						if(istype(m, text2path(f)))
+						if(istype(m, f2))
 							from_objs += m
 */
 
@@ -210,59 +152,60 @@
 				else if(copytext(f, 1, 2) != "/")
 					objs += locate(f) in from_obj
 				else
+					var/f2 = text2path(f)
 					if(text_starts_with(f, "/mob"))
 						for(var/mob/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 					else if(text_starts_with(f, "/turf/space"))
 						for(var/turf/space/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 					else if(text_starts_with(f, "/turf/simulated"))
 						for(var/turf/simulated/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 					else if(text_starts_with(f, "/turf/unsimulated"))
 						for(var/turf/unsimulated/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 					else if(text_starts_with(f, "/turf"))
 						for(var/turf/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 					else if(text_starts_with(f, "/area"))
 						for(var/area/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 					else if(text_starts_with(f, "/obj/item"))
 						for(var/obj/item/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 					else if(text_starts_with(f, "/obj/machinery"))
 						for(var/obj/machinery/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 					else if(text_starts_with(f, "/obj"))
 						for(var/obj/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 					else if(text_starts_with(f, "/atom"))
 						for(var/atom/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 					else
 						for(var/datum/m in from_obj)
-							if(istype(m, text2path(f)))
+							if(istype(m, f2))
 								objs += m
 
 
@@ -320,6 +263,7 @@
 
 
 	usr << "Query: [query_text]"
+	message_admins("[usr] executed SDQL query: \"[query_text]\".")
 /*
 	for(var/t in types)
 		usr << "Type: [t]"
@@ -415,3 +359,113 @@
 	else
 		return 0
 
+
+
+
+
+/proc/SDQL_tokenize(query_text)
+
+	var/list/whitespace = list(" ", "\n", "\t")
+	var/list/single = list("(", ")", ",", "+", "-")
+	var/list/multi = list(
+					"=" = list("", "="),
+					"<" = list("", "=", ">"),
+					">" = list("", "="),
+					"!" = list("", "="))
+
+	var/word = ""
+	var/list/query_list = list()
+	var/len = length(query_text)
+
+	for(var/i = 1, i <= len, i++)
+		var/char = copytext(query_text, i, i + 1)
+
+		if(char in whitespace)
+			if(word != "")
+				query_list += word
+				word = ""
+
+		else if(char in single)
+			if(word != "")
+				query_list += word
+				word = ""
+
+			query_list += char
+
+		else if(char in multi)
+			if(word != "")
+				query_list += word
+				word = ""
+
+			var/char2 = copytext(query_text, i + 1, i + 2)
+
+			if(char2 in multi[char])
+				query_list += "[char][char2]"
+				i++
+
+			else
+				query_list += char
+
+		else if(char == "'")
+			if(word != "")
+				usr << "You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>[query_text]</font>\" following \"<font color=gray>[word]</font>\". Please check your syntax, and try again."
+				return null
+
+			word = "'"
+
+			for(i++, i <= len, i++)
+				char = copytext(query_text, i, i + 1)
+
+				if(char == "'")
+					if(copytext(query_text, i + 1, i + 2) == "'")
+						word += "'"
+						i++
+
+					else
+						break
+
+				else
+					word += char
+
+			if(i > len)
+				usr << "You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>[query_text]</font>\". Please check your syntax, and try again."
+				return null
+
+			query_list += "[word]'"
+			word = ""
+
+		else if(char == "\"")
+			if(word != "")
+				usr << "You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>[query_text]</font>\" following \"<font color=gray>[word]</font>\". Please check your syntax, and try again."
+				return null
+
+			word = "\""
+
+			for(i++, i <= len, i++)
+				char = copytext(query_text, i, i + 1)
+
+				if(char == "\"")
+					if(copytext(query_text, i + 1, i + 2) == "'")
+						word += "\""
+						i++
+
+					else
+						break
+
+				else
+					word += char
+
+			if(i > len)
+				usr << "You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>[query_text]</font>\". Please check your syntax, and try again."
+				return null
+
+			query_list += "[word]\""
+			word = ""
+
+		else
+			word += char
+
+	if(word != "")
+		query_list += word
+
+	return query_list

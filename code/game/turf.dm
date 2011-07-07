@@ -662,6 +662,10 @@ turf/simulated/floor/proc/update_icon()
 			del(T)
 			return
 
+	if(istype(C, /obj/item/weapon/table_parts))
+		spawn()
+			new /datum/construction_UI/table (src, user, C)
+
 	if(istype(C, /obj/item/weapon/CableCoil))
 		if(!intact)
 			var/obj/item/weapon/CableCoil/coil = C
