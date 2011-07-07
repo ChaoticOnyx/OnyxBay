@@ -78,7 +78,7 @@
 		from_objs += world
 	else
 		for(var/f in from)
-			if(copytext(f, 1, 2) == "'")
+			if(copytext(f, 1, 2) == "'" || copytext(f, 1, 2) == "\"")
 				from_objs += locate(copytext(f, 2, length(f)))
 			else if(copytext(f, 1, 2) != "/")
 				from_objs += locate(f)
@@ -147,7 +147,7 @@
 			objs += from_obj:contents
 		else
 			for(var/f in types)
-				if(copytext(f, 1, 2) == "'")
+				if(copytext(f, 1, 2) == "'" || copytext(f, 1, 2) == "\"")
 					objs += locate(copytext(f, 2, length(f))) in from_obj
 				else if(copytext(f, 1, 2) != "/")
 					objs += locate(f) in from_obj
@@ -255,7 +255,7 @@
 				else
 					break
 
-			i = j + 1
+			i = j
 
 		if(currently_false)
 			objs -= t
@@ -303,9 +303,30 @@
 		if("select")
 			var/text = ""
 			for(var/datum/t in objs)
-				//text += "<a href='?src=\ref[t];action=editvars'>[t]</a><br>"
-				text += "[t]<br>"
+				if(istype(t, /atom))
+					var/atom/a = t
+
+					if(a.x)
+						text += "<a href='?src=\ref[t];SDQL_select=\ref[t]'>\ref[t]</a>: [t] at ([a.x], [a.y], [a.z])<br>"
+
+					else if(a.loc && a.loc.x)
+						text += "<a href='?src=\ref[t];SDQL_select=\ref[t]'>\ref[t]</a>: [t] in [a.loc] at ([a.loc.x], [a.loc.y], [a.loc.z])<br>"
+
+					else
+						text += "<a href='?src=\ref[t];SDQL_select=\ref[t]'>\ref[t]</a>: [t]<br>"
+
+				else
+					text += "<a href='?src=\ref[t];SDQL_select=\ref[t]'>\ref[t]</a>: [t]<br>"
+
+				//text += "[t]<br>"
 			usr << browse(text, "window=sdql_result")
+
+
+/client/Topic(href,href_list[],hsrc)
+	if(href_list["SDQL_select"])
+		debug_variables(locate(href_list["SDQL_select"]))
+
+	..()
 
 
 /proc/SDQL_evaluate(datum/object, list/equation)
@@ -332,7 +353,7 @@
 		return text2num(text)
 	else if(text == "null")
 		return null
-	else if(copytext(text, 1, 2) == "'")
+	else if(copytext(text, 1, 2) == "'" || copytext(text, 1, 2) == "\"" )
 		return copytext(text, 2, length(text))
 	else if(copytext(text, 1, 2) == "/")
 		return text2path(text)
