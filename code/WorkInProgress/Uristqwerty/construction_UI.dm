@@ -12,6 +12,7 @@
 	var/selected_dir
 	var/list/states = list()
 	var/list/state_images = list()
+	var/global/list/state_images_cache = list()
 	var/image/tile_image
 	var/mob/user
 	var/display_mode = "icons only" //Use anything else to add line breaks and show the name of the state (or the associated text, if there is an association (like list("somestate" = "Show This Text"))
@@ -47,7 +48,11 @@
 			dir = text2num(copytext(state, pos + 5))
 			icon_state = copytext(state, 1, pos)
 
-		state_images[state] = icon(icon, icon_state, dir)
+		if(!state_images_cache["[icon]:[icon_state]:[dir]"])
+			state_images_cache["[icon]:[icon_state]:[dir]"] = icon(icon, icon_state, dir)
+
+		state_images[state] = state_images_cache["[icon]:[icon_state]:[dir]"]
+
 		user << browse_rsc(state_images[state], "[state].png")
 
 		if(display_mode == "icons only")

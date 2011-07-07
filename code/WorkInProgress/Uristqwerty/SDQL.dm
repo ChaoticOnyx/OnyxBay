@@ -296,9 +296,14 @@
 
 		if("update")
 			for(var/datum/t in objs)
+				objs[t] = list()
 				for(var/v in set_vars)
 					if(v in t.vars)
-						t.vars[v] = SDQL_text2value(t, set_vars[v])
+						objs[t][v] = SDQL_text2value(t, set_vars[v])
+
+			for(var/datum/t in objs)
+				for(var/v in objs[t])
+					t.vars[v] = objs[t][v]
 
 		if("select")
 			var/text = ""
