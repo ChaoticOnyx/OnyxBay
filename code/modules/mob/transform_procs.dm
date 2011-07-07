@@ -71,6 +71,7 @@
 
 
 /mob/proc/AIize()
+	log_admin("AIizing... (This sometimes might be failing during ai construct boot)")
 	client.screen.len = null
 	var/mob/living/silicon/ai/O = new /mob/living/silicon/ai( loc )
 
@@ -82,15 +83,18 @@
 	O.aiRestorePowerRoutine = 0
 	O.lastKnownIP = client.address
 
+	log_admin("AIizing: Mind transfer")
 	mind.transfer_to(O)
+	log_admin("AIizing: Mind transfered")
 
 	var/obj/loc_landmark
 	//if (ticker.mode.name  == "AI malfunction")
 		//loc_landmark = locate("landmark*ai")
 	//else
-	loc_landmark = locate(text("start*AI"))
+	loc_landmark = locate("start*AI")
 
 	O.loc = loc_landmark.loc
+	log_admin("AIizing: Moving to start (End logging, when a construct fails to fully AIize, it doesn't move)")
 
 	O << "<B>You are playing the station's AI. The AI cannot move, but can interact with many objects while viewing them (through cameras).</B>"
 	O << "<B>To look at other parts of the station, double-click yourself to get a camera menu.</B>"

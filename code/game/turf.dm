@@ -664,7 +664,10 @@ turf/simulated/floor/proc/update_icon()
 
 	if(istype(C, /obj/item/weapon/table_parts))
 		spawn()
-			new /datum/construction_UI/table (src, user, C)
+			if(istype(C, /obj/item/weapon/table_parts/reinforced))
+				new /datum/construction_UI/table/reinforced(src, user, C)
+			else
+				new /datum/construction_UI/table(src, user, C)
 
 	if(istype(C, /obj/item/weapon/CableCoil))
 		if(!intact)

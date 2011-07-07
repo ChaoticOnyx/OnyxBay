@@ -18,10 +18,10 @@
 	var/turf/standing
 
 /datum/construction_UI/table/New(atom/loc, mob/user, obj/item/weapon/table_parts/parts)
-	if(istype(parts, /obj/item/weapon/table_parts/reinforced) && !istype(src, /datum/construction_UI/table/reinforced))
+	/*if(istype(parts, /obj/item/weapon/table_parts/reinforced) && !istype(src, /datum/construction_UI/table/reinforced))
 		new /datum/construction_UI/table/reinforced(loc, user, parts)
 		del(src)
-		return
+		return*/
 
 	src.parts = parts
 	standing = user.loc
