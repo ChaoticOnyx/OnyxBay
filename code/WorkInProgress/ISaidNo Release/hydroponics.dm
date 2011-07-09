@@ -40,9 +40,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/tomato
 	seed = /obj/item/weapon/seed/tomato
 	starthealth = 20
-	growtime = 75
-	harvtime = 110
-	cropsize = 3
+	growtime = 375
+	harvtime = 550
+	cropsize = 2
 	harvests = 3
 	endurance = 3
 	mutable = 0
@@ -55,9 +55,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/grape
 	seed = /obj/item/weapon/seed/grape
 	starthealth = 5
-	growtime = 40
-	harvtime = 120
-	cropsize = 5
+	growtime = 200
+	harvtime = 600
+	cropsize = 3
 	harvests = 2
 	endurance = 0
 	isvine = 1
@@ -68,9 +68,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/orange
 	seed = /obj/item/weapon/seed/orange
 	starthealth = 20
-	growtime = 60
-	harvtime = 100
-	cropsize = 2
+	growtime = 300
+	harvtime = 500
+	cropsize = 1
 	harvests = 3
 	endurance = 3
 
@@ -80,9 +80,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/melon
 	seed = /obj/item/weapon/seed/melon
 	starthealth = 80
-	growtime = 120
-	harvtime = 200
-	cropsize = 2
+	growtime = 600
+	harvtime = 1000
+	cropsize = 1
 	harvests = 5
 	endurance = 5
 	commuts = list("immortal","seedless")
@@ -93,9 +93,9 @@
 	crop = /obj/item/weapon/plant/cannabis
 	seed = /obj/item/weapon/seed/cannabis
 	starthealth = 10
-	growtime = 30
-	harvtime = 80
-	cropsize = 6
+	growtime = 150
+	harvtime = 300
+	cropsize = 3
 	harvests = 1
 	endurance = 0
 	isgrass = 1
@@ -110,9 +110,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/chili
 	seed = /obj/item/weapon/seed/chili
 	starthealth = 20
-	growtime = 60
-	harvtime = 100
-	cropsize = 3
+	growtime = 300
+	harvtime = 500
+	cropsize = 2
 	harvests = 3
 	endurance = 3
 	mutable = 1
@@ -123,9 +123,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/ingredient/meat/synthmeat
 	seed = /obj/item/weapon/seed/synthmeat
 	starthealth = 5
-	growtime = 60
-	harvtime = 120
-	cropsize = 3
+	growtime = 300
+	harvtime = 600
+	cropsize = 2
 	harvests = 2
 	endurance = 3
 
@@ -135,9 +135,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/apple
 	seed = /obj/item/weapon/seed/apple
 	starthealth = 40
-	growtime = 200
-	harvtime = 260
-	cropsize = 3
+	growtime = 1000
+	harvtime = 1300
+	cropsize = 2
 	harvests = 10
 	endurance = 5
 
@@ -147,9 +147,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/banana
 	seed = /obj/item/weapon/seed/banana
 	starthealth = 15
-	growtime = 120
-	harvtime = 160
-	cropsize = 5
+	growtime = 600
+	harvtime = 800
+	cropsize = 3
 	harvests = 4
 	endurance = 3
 
@@ -159,9 +159,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/lime
 	seed = /obj/item/weapon/seed/lime
 	starthealth = 30
-	growtime = 30
-	harvtime = 100
-	cropsize = 3
+	growtime = 150
+	harvtime = 500
+	cropsize = 2
 	harvests = 3
 	endurance = 3
 
@@ -171,9 +171,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/lemon
 	seed = /obj/item/weapon/seed/lemon
 	starthealth = 30
-	growtime = 100
-	harvtime = 130
-	cropsize = 3
+	growtime = 500
+	harvtime = 650
+	cropsize = 2
 	harvests = 3
 	endurance = 3
 
@@ -183,9 +183,9 @@
 	crop = /obj/item/weapon/plant/wheat
 	seed = /obj/item/weapon/seed/wheat
 	starthealth = 15
-	growtime = 40
-	harvtime = 80
-	cropsize = 5
+	growtime = 200
+	harvtime = 400
+	cropsize = 3
 	harvests = 1
 	isgrass = 1
 	endurance = 0
@@ -198,9 +198,9 @@
 	crop = /obj/item/weapon/plant/sugar
 	seed = /obj/item/weapon/seed/sugar
 	starthealth = 10
-	growtime = 30
-	harvtime = 60
-	cropsize = 7
+	growtime = 150
+	harvtime = 300
+	cropsize = 4
 	harvests = 1
 	isgrass = 1
 	endurance = 0
@@ -211,9 +211,9 @@
 	crop = /obj/item/weapon/plant/contusine
 	seed = /obj/item/weapon/seed/contusine
 	starthealth = 20
-	growtime = 30
-	harvtime = 100
-	cropsize = 5
+	growtime = 150
+	harvtime = 500
+	cropsize = 3
 	harvests = 1
 	isgrass = 1
 	endurance = 0
@@ -224,9 +224,9 @@
 	crop = /obj/item/weapon/plant/nureous
 	seed = /obj/item/weapon/seed/nureous
 	starthealth = 20
-	growtime = 30
-	harvtime = 100
-	cropsize = 5
+	growtime = 150
+	harvtime = 500
+	cropsize = 3
 	harvests = 1
 	isgrass = 1
 	endurance = 0
@@ -237,9 +237,9 @@
 	crop = /obj/item/weapon/plant/asomna
 	seed = /obj/item/weapon/seed/asomna
 	starthealth = 20
-	growtime = 30
-	harvtime = 100
-	cropsize = 5
+	growtime = 150
+	harvtime = 500
+	cropsize = 3
 	harvests = 1
 	isgrass = 1
 	endurance = 0
@@ -250,9 +250,9 @@
 	crop = /obj/item/weapon/plant/commol
 	seed = /obj/item/weapon/seed/commol
 	starthealth = 20
-	growtime = 30
-	harvtime = 100
-	cropsize = 5
+	growtime = 150
+	harvtime = 500
+	cropsize = 3
 	harvests = 1
 	isgrass = 1
 	endurance = 0
@@ -263,9 +263,9 @@
 	crop = /obj/item/weapon/plant/venne
 	seed = /obj/item/weapon/seed/venne
 	starthealth = 20
-	growtime = 30
-	harvtime = 100
-	cropsize = 5
+	growtime = 150
+	harvtime = 500
+	cropsize = 3
 	harvests = 1
 	isgrass = 1
 	endurance = 0
@@ -276,9 +276,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/lettuce
 	seed = /obj/item/weapon/seed/lettuce
 	starthealth = 30
-	growtime = 40
-	harvtime = 80
-	cropsize = 8
+	growtime = 200
+	harvtime = 400
+	cropsize = 4
 	harvests = 1
 	isgrass = 1
 	endurance = 5
@@ -289,9 +289,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/carrot
 	seed = /obj/item/weapon/seed/carrot
 	starthealth = 20
-	growtime = 50
-	harvtime = 100
-	cropsize = 6
+	growtime = 250
+	harvtime = 500
+	cropsize = 3
 	harvests = 1
 	isgrass = 1
 	endurance = 5
@@ -302,9 +302,9 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/potato
 	seed = /obj/item/weapon/seed/potato
 	starthealth = 40
-	growtime = 80
-	harvtime = 160
-	cropsize = 4
+	growtime = 400
+	harvtime = 800
+	cropsize = 2
 	harvests = 1
 	isgrass = 1
 	endurance = 10
@@ -327,12 +327,12 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/mushroom
 	seed = /obj/item/weapon/seed/fungus
 	starthealth = 20
-	growtime = 30
-	harvtime = 250
+	growtime = 150
+	harvtime = 1250
 	harvests = 10
 	endurance = 40
 	mutable = 2
-	cropsize = 3
+	cropsize = 2
 	mutcrop1 = /obj/item/weapon/reagent_containers/food/snacks/mushroom/amanita
 	mutcrop2 = /obj/item/weapon/reagent_containers/food/snacks/mushroom/psilocybin
 
@@ -341,8 +341,8 @@
 	growthmode = "weed"
 	seed = /obj/item/weapon/seed/lasher
 	starthealth = 45
-	growtime = 50
-	harvtime = 100
+	growtime = 250
+	harvtime = 500
 	harvestable = 0
 	endurance = 50
 	isgrass = 1
@@ -352,8 +352,8 @@
 	growthmode = "weed"
 	seed = /obj/item/weapon/seed/creeper
 	starthealth = 30
-	growtime = 30
-	harvtime = 100
+	growtime = 150
+	harvtime = 500
 	harvestable = 0
 	endurance = 40
 	isgrass = 1
@@ -363,8 +363,8 @@
 	growthmode = "weed"
 	seed = /obj/item/weapon/seed/radweed
 	starthealth = 40
-	growtime = 140
-	harvtime = 200
+	growtime = 700
+	harvtime = 1000
 	harvestable = 0
 	endurance = 80
 
@@ -375,10 +375,10 @@
 	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit
 	seed = /obj/item/weapon/seed/slurrypod
 	starthealth = 25
-	growtime = 30
-	harvtime = 60
+	growtime = 150
+	harvtime = 300
 	harvests = 1
-	cropsize = 3
+	cropsize = 2
 	endurance = 30
 	mutcrop1 = /obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit/omega
 
@@ -390,8 +390,8 @@
 	seed = /obj/item/weapon/seed/grass
 	isgrass = 1
 	starthealth = 5
-	growtime = 15
-	harvtime = 50
+	growtime = 75
+	harvtime = 250
 	harvests = 1
 	cropsize = 8
 	endurance = 10
@@ -401,8 +401,8 @@
 	growthmode = "carnivore"
 	seed = /obj/item/weapon/seed/maneater
 	starthealth = 40
-	growtime = 30
-	harvtime = 60
+	growtime = 150
+	harvtime = 300
 	harvestable = 0
 	endurance = 10
 
@@ -411,8 +411,8 @@
 	growthmode = "boring"
 	seed = /obj/item/weapon/shard/crystal
 	starthealth = 50
-	growtime = 300
-	harvtime = 600
+	growtime = 1500
+	harvtime = 3000
 	harvestable = 0
 	endurance = 100
 
@@ -421,8 +421,8 @@
 	growthmode = "plasmavore"
 	seed = /obj/item/weapon/seed/plasmabloom
 	starthealth = 8
-	growtime = 120
-	harvtime = 360
+	growtime = 600
+	harvtime = 1800
 	harvestable = 0
 	endurance = 100
 
@@ -464,7 +464,7 @@
 
 	process()
 		..()
-		if (!src.current && prob(1) && prob(8))
+		if (!src.current && prob(1) && prob(4))
 			switch (rand(1,6))
 				if (1)
 					var/obj/item/weapon/seed/fungus/WS = new(src)
