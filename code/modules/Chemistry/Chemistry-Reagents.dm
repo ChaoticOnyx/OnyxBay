@@ -788,6 +788,7 @@ datum
 			on_mob_life(var/mob/M)
 				M:drowsyness = max(0,M:drowsyness-5)
 				M.bodytemperature = max(310, M.bodytemperature-5) //310 is the normal bodytemp. 310.055
+				M:nutrition += 2
 				..()
 
 		plasma
