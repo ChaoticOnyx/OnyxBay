@@ -7,7 +7,7 @@
 	var/amount = 3 // spawns each items X times.
 /obj/machinery/walllocker/attack_hand(mob/user as mob)
 	if (istype(user, /mob/living/silicon/ai))	//Added by Strumpetplaya - AI shouldn't be able to
-		return									//activate emergency lockers.  This fixes that.
+		return									//activate emergency lockers.  This fixes that.  (Does this make sense, the AI can't call attack_hand, can it? --Mloc)
 	if(!amount)
 		usr << "It's empty.."
 		return
@@ -18,7 +18,7 @@
 	return
 /obj/machinery/walllocker/emerglocker
 	name = "Emergency Locker"
-	spawnitems = list(/obj/item/weapon/tank/emergency_oxygen,/obj/item/clothing/mask/gas,/obj/item/weapon/crowbar)
+	spawnitems = list(/obj/item/weapon/tank/emergency_oxygen,/obj/item/clothing/mask/breath,/obj/item/weapon/crowbar)
 /obj/machinery/walllocker/emerglocker/north
 	pixel_y = 32
 	dir = SOUTH

@@ -137,7 +137,7 @@
 				master.cl.buildmode = 3
 				src.icon_state = "buildmode3"
 			if(3)
-				if(master.cl.holder.rank in list("Host", "Coder"))
+				if(master.cl.holder && master.cl.holder.rank in list("Host", "Coder"))
 					master.cl.buildmode = 4
 					src.icon_state = "procgun"
 				else

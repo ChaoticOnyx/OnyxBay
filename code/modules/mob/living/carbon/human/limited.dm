@@ -1,5 +1,6 @@
 mob/living/carbon/human/limited
 	name = "limited"
+	real_name = "limited"
 	var/cansay = 0
 	var/moveenabled = 0
 	var/canlive

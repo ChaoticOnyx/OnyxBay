@@ -542,6 +542,10 @@
 	name = "Locker Room"
 	icon_state = "locker"
 
+/area/crew_quarters/laundry
+	name = "Laundry Room"
+	icon_state = "laundry"
+
 /area/crew_quarters/sleeping/
 	icon_state = "bedroom"
 

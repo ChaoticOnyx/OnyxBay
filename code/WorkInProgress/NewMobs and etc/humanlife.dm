@@ -18,6 +18,8 @@
 		sight |= SEE_MOBS
 		see_in_dark = 4
 		see_invisible = 2
+	else if (istype(head, /obj/item/clothing/head/helmet/welding))
+		see_in_dark = 1
 	else if (stat != 2)
 		sight &= ~SEE_TURFS
 		sight &= ~SEE_MOBS
@@ -89,6 +91,8 @@
 	client.screen -= hud_used.r_dither
 	client.screen -= hud_used.gray_dither
 	client.screen -= hud_used.lp_dither
+	client.screen -= hud_used.breath
+	client.screen -= hud_used.welding
 
 	if ((blind && stat != 2))
 		if ((blinded))
@@ -116,6 +120,12 @@
 
 			if (istype(glasses, /obj/item/clothing/glasses/meson))
 				client.screen += hud_used.lp_dither
+
+			if ((istype(wear_mask, /obj/item/clothing/mask/breath) || istype(wear_mask, /obj/item/clothing/mask/milbreath) || istype(wear_mask, /obj/item/clothing/mask/gas) || istype(head, /obj/item/clothing/head/helmet/welding)) && stat != STAT_DEAD)
+				client.screen += hud_used.breath
+
+			if (istype(head, /obj/item/clothing/head/helmet/welding))
+				client.screen += hud_used.welding
 
 	if (stat != 2)
 		if (machine)

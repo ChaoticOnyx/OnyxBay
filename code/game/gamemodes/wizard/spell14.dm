@@ -82,7 +82,7 @@
 				G.update_icon()
 
 		if ((istype(M, /mob/living/carbon/human)) && (istype(M:glasses, /obj/item/clothing/glasses/thermal)))
-			M << "\red <B>Your thermals malfunction.</B>"
+			M << "\red <B>Your thermal glasses malfunction.</B>"
 			M.eye_blind = 3
 			M.eye_blurry = 5
 			M.disabilities |= 1
