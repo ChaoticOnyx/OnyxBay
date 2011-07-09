@@ -1377,7 +1377,7 @@
 			src.name = "frosted donut"
 			src.heal_amt = 2
 	heal(var/mob/M)
-		if(istype(M, /mob/living/carbon/human) && M.job in list("Security Officer", "Head of Security", "Detective"))
+		if(istype(M, /mob/living/carbon/human) && M.job in list("Security Officer", "Head of Security", "Forensic Technician"))
 			src.heal_amt *= 2
 			..()
 			src.heal_amt /= 2

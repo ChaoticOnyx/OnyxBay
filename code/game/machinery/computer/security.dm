@@ -496,7 +496,7 @@ Compare changes here: <a href="http://wiki.baystation12.co.cc/index.php?title=Se
 </td></tr>
 <tr>
 <td><b>Assault on an officer</b>
-</td><td> Assault with whichever weapon or object on an officer. An officer is defined as either a member of the security force (detective included) or one of the heads of staff.
+</td><td> Assault with whichever weapon or object on an officer. An officer is defined as either a member of the security force (forensic technician included) or one of the heads of staff.
 </td><td> 5m
 </td><td> Don't abuse him. I know you want to, but don't. At least try not to. You'll get fired. Most likely.
 </td></tr>

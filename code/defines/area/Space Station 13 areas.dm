@@ -785,7 +785,7 @@
 
 
 /area/security/detectives_office
-	name = "Detectives Office"
+	name = "Forensic Technician's Office"
 	icon_state = "detective"
 
 /area/security/head_of_security_office

@@ -1608,7 +1608,7 @@
 "aEV" = (/obj/table/woodentable{dir = 6},/obj/item/weapon/storage/photo_album,/turf/simulated/floor{icon_state = "grimy"},/area/security/detectives_office)
 "aEW" = (/obj/disposalpipe/segment,/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor{icon_state = "carpetSW"},/area/security/detectives_office)
 "aEX" = (/turf/simulated/floor{icon_state = "carpetS"},/area/security/detectives_office)
-"aEY" = (/obj/stool/chair/comfy/brown{tag = "icon-comfychair_brown (EAST)"; icon_state = "comfychair_brown"; dir = 4},/obj/landmark/start{name = "Detective"},/turf/simulated/floor{icon_state = "carpetSE"},/area/security/detectives_office)
+"aEY" = (/obj/stool/chair/comfy/brown{tag = "icon-comfychair_brown (EAST)"; icon_state = "comfychair_brown"; dir = 4},/obj/landmark/start{name = "Forensic Technician"},/turf/simulated/floor{icon_state = "carpetSE"},/area/security/detectives_office)
 "aEZ" = (/obj/table/woodentable{tag = "icon-wood_1tileendtable (NORTH)"; icon_state = "wood_1tileendtable"; dir = 1},/obj/item/weapon/paper_bin{pixel_y = 6},/turf/simulated/floor{icon_state = "grimy"},/area/security/detectives_office)
 "aFa" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass/security{name = "Security Lobby"; req_access = null},/turf/simulated/floor,/area/security/security_lobby)
 "aFb" = (/obj/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple,/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor,/area/security/head_of_security_office)

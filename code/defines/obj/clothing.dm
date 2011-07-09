@@ -894,7 +894,7 @@
 	desc = "Made of a special fiber that gives protection against electrocution. Has a Robotics rank stripe on it."
 	name = "Robotics Jumpsuit"
 	icon_state = "robotics"
-	item_state = "w_suit"
+	item_state = "bl_suit"
 	color = "robotics"
 	siemens_coefficient = 0.50
 
@@ -925,6 +925,13 @@
 	icon_state = "detective"
 	item_state = "det"
 	color = "detective"
+
+/obj/item/clothing/under/ftech
+	name = "forensic technician jumpsuit"
+	desc = "A variant of the security outfit, for forensic techs."
+	icon_state = "forensicsred"
+	item_state = "r_suit"
+	color = "forensicsred"
 
 /obj/item/clothing/under/lawyer
 	desc = "Slick threads."
