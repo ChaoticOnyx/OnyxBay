@@ -12,12 +12,17 @@ datum/title/scientist
 	jobname = "Scientist"
 	title = list("Scientist","Plasma Researcher","Anomalist")
 
+datum/title/detective
+	jobname = "Forensic Technician"
+	title = list("Forensic Technician", "Detective")
+
 datum/title/New()
 	titles += src
 
 proc/setuptitles()
 	new /datum/title/doctor()
 	new /datum/title/scientist()
+	new /datum/title/detective()
 
 proc/HasTitles(job)
 	for(var/datum/title/A in titles)
