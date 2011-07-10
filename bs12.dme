@@ -777,6 +777,8 @@
 #include "code\WorkInProgress\Uristqwerty\construction_UI_table.dm"
 #include "code\WorkInProgress\Uristqwerty\prison_shuttle.dm"
 #include "code\WorkInProgress\Uristqwerty\SDQL.dm"
+#include "code\WorkInProgress\Uristqwerty\SDQL_2.dm"
+#include "code\WorkInProgress\Uristqwerty\SDQL_2_parser.dm"
 #include "code\WorkInProgress\Uristqwerty\chat_tabs\adminsay.dm"
 #include "code\WorkInProgress\Uristqwerty\chat_tabs\chat_tabs_disabled.dm"
 #include "code\WorkInProgress\Uristqwerty\chat_tabs\ooc.dm"
