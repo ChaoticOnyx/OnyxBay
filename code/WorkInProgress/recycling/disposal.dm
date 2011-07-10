@@ -1,4 +1,4 @@
-/obj/machinery/disposal/biohazard
+/obj/machinery/disposal/small
 	name = "Biohazard Research Center Dispatch Chute"
 
 	attackby(var/obj/item/I, var/mob/user)
