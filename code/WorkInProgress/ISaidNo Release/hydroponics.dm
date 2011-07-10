@@ -525,27 +525,27 @@
 				if (growing.growthmode == "carnivore" && !prob(src.endurance)) src.health -= rand(0,1)
 			if (src.reagents.has_reagent("poo"))
 				src.health += 1
-				if (src.reagents.has_reagent("water")) src.reagents.remove_reagent("water", 0.1)
+				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
 			if (src.reagents.has_reagent("phosphorus"))
 				src.health += 2
 				src.growth += 1
-				if (src.reagents.has_reagent("water")) src.reagents.remove_reagent("water", 0.1)
+				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
 			if (src.reagents.has_reagent("ammonia"))
 				src.growth += 2
 				src.health += 1
-				if (src.reagents.has_reagent("water")) src.reagents.remove_reagent("water", 0.1)
+				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
 			if (src.reagents.has_reagent("diethylamine"))
 				src.growth += rand(1,2)
 				src.health += rand(1,2)
-				if (src.reagents.has_reagent("water")) src.reagents.remove_reagent("water", 0.1)
+				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
 			if (src.reagents.has_reagent("plant_nutrients"))
 				src.growth += 2
 				src.health += 2
-				if (src.reagents.has_reagent("water")) src.reagents.remove_reagent("water", 0.1)
+				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
 			if (src.reagents.has_reagent("plant_nutrients_plus"))
 				src.growth += rand(2,4)
 				src.health += rand(2,4)
-				if (src.reagents.has_reagent("water")) src.reagents.remove_reagent("water", 0.1)
+				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
 			if (src.reagents.has_reagent("mutagen") || src.reagents.has_reagent("dna_mutagen") || src.reagents.has_reagent("radium"))
 				if (prob(12))
 					HYPmutateplant("normal")
