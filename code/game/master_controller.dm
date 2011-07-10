@@ -67,8 +67,6 @@ datum/controller/game_controller
 		setup_objects()
 
 		setupgenetics()
-		spawn
-			setupasteroid()
 
 		//mining setup
 		setupmining()
@@ -204,7 +202,7 @@ datum/controller/game_controller
 			ticker_debug = "[O] [O.name] processing"
 			O:process()
 
-		tgrid.Tick(0)
+		//tgrid.Tick(0) // Part of Alfie's travel code
 		sleep(-1)
 
 		ticker.process()

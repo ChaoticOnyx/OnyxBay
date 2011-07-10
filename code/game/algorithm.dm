@@ -20,7 +20,7 @@
 	setuptitles()
 	spawn
 		SetupAnomalies()
-		tgrid.Setup()
+		//tgrid.Setup() //Part of Alfie's travel code
 	spawn(30 * tick_multiplier)
 		//EXPERIMENTAL
 		Optimize()
