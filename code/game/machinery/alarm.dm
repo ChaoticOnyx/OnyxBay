@@ -481,6 +481,8 @@ obj/machinery/alarm/proc
 /obj/machinery/firealarm/proc/reset()
 	if (!( src.working ))
 		return
+	if(stat & (NOPOWER|BROKEN))
+		return
 	var/area/A = src.loc
 	A = A.loc
 	if (!( istype(A, /area) ))
@@ -511,6 +513,8 @@ obj/machinery/alarm/proc
 //alarm() Edited by Strumpetplaya
 /obj/machinery/firealarm/proc/alarm()
 	if (!( src.working ))
+		return
+	if(stat & (NOPOWER|BROKEN))
 		return
 	var/area/A = src.loc
 	A = A.loc
