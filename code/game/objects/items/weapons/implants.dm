@@ -308,6 +308,9 @@ No Implant Specifics"}
 
 /obj/item/weapon/implant/explosive/hear(var/msg)
 	if(findtext(msg,src.phrase))
+		if(istype(loc, /mob/))
+			var/mob/T = loc
+			T.gib()
 		explosion(find_loc(src), 1, 3, 4, 6, 3)
 		var/turf/t = find_loc(src)
 		if(t)
