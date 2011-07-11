@@ -1063,13 +1063,25 @@ mob/verb/turnwest()
 				for(var/mob/O in viewers(usr))
 					O.show_message(text("\red <B>[] attempts to remove the handcuffs!</B>", usr), 1)
 				spawn(0)
-					if(do_after(usr, breakouttime))
-						if(!usr:handcuffed) return
-						for(var/mob/O in viewers(usr))
-							O.show_message(text("\red <B>[] manages to remove the handcuffs!</B>", usr), 1)
-						usr << "\blue You successfully remove your handcuffs."
-						usr:handcuffed:loc = usr:loc
-						usr:handcuffed = null
+					var/increment = 150
+					for(var/i = 0, i < breakouttime, i += increment)
+						if(!do_after(usr, increment))
+							return
+
+						else
+							usr << pick("You hear something click, but it doesn't open yet.",	// - Uristqwerty
+										"The latch resists!",									// - IRC: BowlSoldier
+										"The chain is starting to give!",						// - IRC: BowlSoldier
+										"The chain bends a little.",							// - IRC: STALKER
+										"Your wrist hurts.",									// - IRC: STALKER
+										"Unnng")												// - IRC: Doug_H_Nuts
+
+					if(!usr:handcuffed) return
+					for(var/mob/O in viewers(usr))
+						O.show_message(text("\red <B>[] manages to remove the handcuffs!</B>", usr), 1)
+					usr << "\blue You successfully remove your handcuffs."
+					usr:handcuffed:loc = usr:loc
+					usr:handcuffed = null
 
 		else
 			DblClick()
