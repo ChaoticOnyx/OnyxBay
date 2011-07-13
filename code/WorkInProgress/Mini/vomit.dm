@@ -6,12 +6,14 @@
 	icon = 'decals.dmi'
 	icon_state = "vomit"
 	random_icon_states = list("vomit") //add more if you want
+	var/vomitter
 
 /mob/living/carbon/human/proc/vomit(var/returns = 0)
 	var/message = "<B>[src]</B> "
 	lastnutritioncomplaint = world.timeofday //you don't feel hungry right after you vomit silly
 	if(nutrition > 0) //vomit
-		new /obj/decal/cleanable/vomit(src.loc)
+		var/obj/decal/cleanable/vomit/V = new /obj/decal/cleanable/vomit(src.loc)
+		V.vomitter = "[src]([src.ckey])"
 		message += "vomits."
 		nutrition = 0
 		for(var/datum/reagent/R in reagents)
