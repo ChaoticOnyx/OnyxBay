@@ -100,9 +100,9 @@
 	endurance = 0
 	isgrass = 1
 	mutable = 3
-	mutcrop1 = /obj/item/weapon/plant/cannabis/mega
-	mutcrop2 = /obj/item/weapon/plant/cannabis/black
-	mutcrop3 = /obj/item/weapon/plant/cannabis/white
+	//mutcrop1 = /obj/item/weapon/plant/cannabis/mega
+	//mutcrop2 = /obj/item/weapon/plant/cannabis/black
+	//mutcrop3 = /obj/item/weapon/plant/cannabis/white
 
 /datum/plant/chili
 	name = "chili"
@@ -116,7 +116,7 @@
 	harvests = 3
 	endurance = 3
 	mutable = 1
-	mutcrop1 = /obj/item/weapon/reagent_containers/food/snacks/plant/chili/chilly
+	//mutcrop1 = /obj/item/weapon/reagent_containers/food/snacks/plant/chili/chilly
 
 /datum/plant/synthmeat
 	name = "synthmeat"
@@ -190,7 +190,7 @@
 	isgrass = 1
 	endurance = 0
 	mutable = 1
-	mutcrop1 = /obj/item/weapon/plant/wheat/metal
+	//mutcrop1 = /obj/item/weapon/plant/wheat/metal
 
 /datum/plant/sugar
 	name = "sugar"
@@ -333,8 +333,8 @@
 	endurance = 40
 	mutable = 2
 	cropsize = 2
-	mutcrop1 = /obj/item/weapon/reagent_containers/food/snacks/mushroom/amanita
-	mutcrop2 = /obj/item/weapon/reagent_containers/food/snacks/mushroom/psilocybin
+	//mutcrop1 = /obj/item/weapon/reagent_containers/food/snacks/mushroom/amanita
+	//mutcrop2 = /obj/item/weapon/reagent_containers/food/snacks/mushroom/psilocybin
 
 /datum/plant/lasher
 	name = "lasher"
@@ -380,7 +380,7 @@
 	harvests = 1
 	cropsize = 2
 	endurance = 30
-	mutcrop1 = /obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit/omega
+	//mutcrop1 = /obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit/omega
 
 /datum/plant/grass
 	name = "grass"

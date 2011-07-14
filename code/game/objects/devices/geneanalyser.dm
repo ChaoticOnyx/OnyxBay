@@ -3,6 +3,7 @@
 	name = "Genetics Analyser"
 	icon = 'device.dmi'
 	icon_state = "genetics"
+	w_class = 2
 
 /obj/item/device/geneticsanalyzer/attack(mob/M as mob, mob/user as mob)
 	for(var/mob/O in viewers(M, null))

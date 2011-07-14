@@ -118,11 +118,11 @@
 			if (istype(glasses, /obj/item/clothing/glasses/sunglasses))
 				client.screen += hud_used.gray_dither
 
+			if (istype(head, /obj/item/clothing/head/helmet/riot))
+				client.screen += hud_used.gray_dither
+
 			if (istype(glasses, /obj/item/clothing/glasses/meson))
 				client.screen += hud_used.lp_dither
-
-			if ((istype(wear_mask, /obj/item/clothing/mask/breath) || istype(wear_mask, /obj/item/clothing/mask/milbreath) || istype(wear_mask, /obj/item/clothing/mask/gas) || istype(head, /obj/item/clothing/head/helmet/welding)) && stat != STAT_DEAD)
-				client.screen += hud_used.breath
 
 			if (istype(head, /obj/item/clothing/head/helmet/welding))
 				client.screen += hud_used.welding

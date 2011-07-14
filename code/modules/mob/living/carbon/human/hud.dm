@@ -27,7 +27,7 @@
 	gray_dither = new h_type(src)
 	gray_dither.screen_loc = "WEST,SOUTH to EAST,NORTH"
 	gray_dither.name = "sunglasses"
-	gray_dither.icon_state = "dark64"
+	gray_dither.icon_state = "dark32"
 	gray_dither.layer = 18
 	gray_dither.mouse_opacity = 0
 
@@ -48,7 +48,7 @@
 	welding = new h_type( src )
 	welding.screen_loc = "WEST,SOUTH to EAST,NORTH"
 	welding.name = "welding helmet"
-	welding.icon_state = "dark192"
+	welding.icon_state = "dark128"
 	welding.layer = 18
 	welding.mouse_opacity = 0
 
