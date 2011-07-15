@@ -28,7 +28,11 @@
 			disablelockdown(usr)
 			post_status("alert", "default")
 		if("call-prison")
-			call_prison_shuttle(usr)
+			PrisonControl.start()
+			radioalert("Prisoner Shuttle launching in one minute.","Prison Notice")
+		if("recall-prison")
+			PrisonControl.recall()
+			radioalert("Prisoner Shuttle returning in two minutes.","Prison Notice")
 		if("callshuttle")
 			src.state = STATE_DEFAULT
 			if(src.authenticated)
@@ -209,7 +213,14 @@
 		if(STATE_DEFAULT)
 			if (src.authenticated)
 				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=logout'>Log Out</A> \]"
-				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=call-prison'>Send Prison Shutle</A> \]"
+				if(PrisonControl.departed)
+					dat += "<BR>Prison Shuttle in flight..."
+				else if(PrisonControl.location == 1)
+					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=call-prison'>Send Prison Shutle</A> \]"
+				else
+					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=recall-prison'>Recall Prison Shutle</A> \]"
+
+				//dat += "<BR>\[ <A HREF='?src=\ref[src];operation=call-prison'>Send Prison Shutle</A> \]"
 				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=nolockdown'>Disable Lockdown</A> \]"
 				var/area/CurArea = get_area(src)
 				if (CurArea.redalert)
@@ -344,6 +355,7 @@
 /proc/enable_prison_shuttle(var/mob/user)
 	for(var/obj/machinery/computer/prison_shuttle/PS in world)
 		PS.allowedtocall = !(PS.allowedtocall)
+
 
 /proc/call_shuttle_proc(var/mob/user)
 	if ((!( ticker ) || main_shuttle.location == 0))

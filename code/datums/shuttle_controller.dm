@@ -38,6 +38,8 @@ var/global/datum/shuttle/main_shuttle
 
 var/global/list/datum/shuttle/shuttles = list()
 
+var/global/list/datum/shuttle/prisonshuttles = list()
+
 datum/shuttle
 	var
 		name = "Shuttle"
@@ -202,8 +204,10 @@ datum/shuttle
 proc/CreateShuttles() //Would do this via config, but map changes are rare and need source code anyway
 	var/datum/shuttle/pod1 = new /datum/shuttle("Escape pod 1","/area/shuttle/escape/station/pod1","/area/shuttle/escape/transit/pod1","/area/shuttle/escape/centcom/pod1")
 	var/datum/shuttle/pod2 = new /datum/shuttle("Escape pod 2","/area/shuttle/escape/station/pod2","/area/shuttle/escape/transit/pod2","/area/shuttle/escape/centcom/pod2")
+	var/datum/shuttle/prisonshuttle/prisonshuttle1 = new /datum/shuttle/prisonshuttle("Prison Shuttle","/area/shuttle/prison/station","/area/shuttle/prison/transit","/area/shuttle/prison/prison")
 	shuttles += pod1
 	shuttles += pod2
+	prisonshuttles += prisonshuttle1
 	main_shuttle = pod1 // Hack, until proper gameplay for multiple shuttles is established
 
 /datum/PodControl
@@ -236,7 +240,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 
 
 	proc/process()
-	//	world << "PODCON[timeleft()]"
+		//world << "PODCONo[timeleft()]"
 		var/timeleft = timeleft()
 		if(timeleft > 1e5)		// midnight rollover protection
 			timeleft = 0
@@ -280,3 +284,185 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 /proc/radioalert(var/message,var/from)
 	var/obj/item/device/radio/intercom/a = new /obj/item/device/radio/intercom(null)
 	a.autosay(message,from)
+
+
+/datum/shuttle/prisonshuttle/
+	name = "Prison Shuttle"
+	location = 1 // 0 = Transit, 1 = Start, 2 = dest
+	online = 0
+	direction = 1 // 1 = Start, 2 = Dest
+	area
+		centcom //Destination
+		station //Start
+		transit //Transit area
+	var/area/holding = "/area/shuttle/prison/holding"
+	endtime			// timeofday that shuttle arrives
+		//timeleft = 360 //600
+
+	depart()
+		settimeleft(60)
+		online = 1
+		if(location == 1)
+			direction = 2
+		else
+			direction = 1
+	recall()
+		if(direction == 1)
+			setdirection(2)
+			online = 1
+			settimeleft(120)
+		else
+			setdirection(1)
+			online = 1
+			settimeleft(120)
+
+
+	process()
+		//world << "T:[timeleft()],O:[online],D[direction],L:[location],E:[endtime],W:[world.timeofday]"
+		if(!online) return
+		var/timeleft = timeleft()
+		if(timeleft > 1e5)		// midnight rollover protection
+			timeleft = 0
+
+
+
+		switch(location)
+
+
+
+			//If at location 1 or 2 (Starting points), and the timer is still running, then move to the transit point
+
+
+			if(1)
+				//world << "HURR 1"
+				if(timeleft>0)
+				//	world << "MOVE"
+					var/area/start_location = locate(station)
+					var/area/end_location = locate(transit)
+					for(var/mob/m in start_location)
+						shake_camera(m, 3, 1)
+					for(var/obj/machinery/door/unpowered/shuttle/D in start_location) /*Made doors close when pod launches, too --Mloc*/
+						D.close()
+					for(var/turf/simulated/shuttle/wall/S in start_location)
+						if(S.icon_state == "wall_hull")
+							S.icon_state = "wall_space"  /*Quickish hack to fix the hull sprites moving with the pod --Mloc*/
+					start_location.move_contents_to(end_location)
+					location = 0
+					direction = 2
+					radioalert("Prisoner Shuttle has departed.","Prison Notice")
+
+			if(0)
+				//world << "DURR 0"
+				if(timeleft > 0)
+					return 0
+
+				else if(timeleft <= 0)
+					//Move
+					location = direction
+
+					var/area/start_location = locate(transit)
+					var/area/end_location
+					if(direction == 1)
+						end_location = locate(station)
+					else
+						end_location = locate(centcom)
+
+					var/list/dstturfs = list()
+					var/throwy = world.maxy
+
+					for(var/turf/T in end_location)
+						dstturfs += T
+						if(T.y < throwy)
+							throwy = T.y
+
+					// hey you, get out of the way!
+					for(var/turf/T in dstturfs)
+						// find the turf to move things to
+						var/turf/D = locate(T.x, throwy - 1, 1)
+						//var/turf/E = get_step(D, SOUTH)
+						for(var/atom/movable/AM as mob|obj in T)
+							AM.Move(D)
+						if(istype(T, /turf/simulated))
+							del(T)
+					for(var/mob/m in start_location)
+						shake_camera(m, 3, 1)
+					start_location.move_contents_to(end_location)
+
+					//var/area/holdingarea = locate(holding)
+					for(var/mob/living/carbon/human/prisoner in locate(centcom))
+						//world << "Found a prisoner, moving his ass."
+						prisoner.loc = locate(holding)
+						prisoner.dir = 2
+						prisoner.update_clothing()
+						var/occupied = 1
+						while(occupied == 1)
+							var/mob/living/carbon/human/occupant = locate() in prisoner.loc
+							if(occupant != prisoner || prisoner.loc.density == 1)
+								prisoner.x--
+							else
+								occupied = 0
+						var/mob/dead/observer/newghost = new/mob/dead/observer(prisoner.loc,null)
+						newghost.timeofdeath = world.time
+						prisoner.client.mob = newghost
+
+
+					online = 0
+					PrisonControl.location = 2
+					PrisonControl.departed = 0
+					radioalert("Prisoner Shuttle has arrived at the prison.","Prison Notice")
+
+					return 1
+
+			if(2)
+				//world << "HURRR 2"
+				if(timeleft <= 0)
+			//		world << "MOVE"
+					var/area/start_location = locate(centcom)
+					for(var/mob/m in start_location)
+						shake_camera(m, 3, 1)
+					var/area/end_location = locate(station)
+					start_location.move_contents_to(end_location)
+					location = 1
+					online = 0
+					PrisonControl.location = 1
+					PrisonControl.departed = 0
+					radioalert("Prisoner Shuttle has arrived.","Prison Notice")
+
+
+			else
+				return 1
+
+
+
+/datum/PodControl/prisonPodControl/
+	endtime
+	online = 0
+	departed = 0
+	var/location = 1
+
+	last60 = 0
+	unlocked = 0
+
+	start()
+		settimeleft(60)
+		online = 1
+		last60 = timeleft()
+
+	proc/recall()
+		for(var/datum/shuttle/prisonshuttle/s in prisonshuttles)
+			s.recall()
+		online = 0
+		departed = 1
+
+	process()
+		//world << "PODCON[timeleft()]"
+		var/timeleft = timeleft()
+		if(timeleft > 1e5)		// midnight rollover protection
+			timeleft = 0
+
+		if(online && timeleft <= 0)
+			for(var/datum/shuttle/prisonshuttle/s in prisonshuttles)
+				s.depart()
+			online = 0
+			departed = 1
+

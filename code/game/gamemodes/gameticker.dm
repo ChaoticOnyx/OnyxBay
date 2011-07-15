@@ -150,7 +150,10 @@ var/list/postsetuphooks = list()
 	//	main_shuttle.process()
 
 		LaunchControl.process()
+		PrisonControl.process()
 		for(var/datum/shuttle/s in shuttles)
+			s.process()
+		for(var/datum/shuttle/s in prisonshuttles)
 			s.process()
 
 		if(mode.check_finished())
