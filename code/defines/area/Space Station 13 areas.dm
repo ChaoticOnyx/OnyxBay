@@ -86,10 +86,10 @@
 	name = "Arrival Shuttle"
 
 /area/shuttle/arrival/pre_game
-	icon_state = "shuttle2"
+	icon_state = "shuttle1_2"
 
 /area/shuttle/arrival/station
-	icon_state = "shuttle"
+	icon_state = "shuttle1_1"
 
 /area/shuttle/escape
 	name = "Escape Pod"
@@ -100,21 +100,27 @@
 
 /area/shuttle/escape/transit/pod1
 	name = "Escape Pod B"
+	icon_state = "shuttle1_2"
 
 /area/shuttle/escape/transit/pod2
 	name = "Escape Pod A"
+	icon_state = "shuttle2_2"
 
 /area/shuttle/escape/station/pod1
 	name = "Escape Pod B"
+	icon_state = "shuttle1_1"
 
 /area/shuttle/escape/station/pod2
 	name = "Escape Pod A"
+	icon_state = "shuttle2_1"
 
 /area/shuttle/escape/centcom/pod1
 	name = "Escape Pod B"
+	icon_state = "shuttle1_3"
 
 /area/shuttle/escape/centcom/pod2
 	name = "Escape Pod A"
+	icon_state = "shuttle2_3"
 
 /area/shuttle/escape/station
 	icon_state = "shuttle2"
@@ -126,13 +132,17 @@
 	name = "Prison Shuttle"
 
 /area/shuttle/prison/station
-	icon_state = "shuttle"
+	icon_state = "shuttle1_1"
 
 /area/shuttle/prison/prison
-	icon_state = "shuttle2"
+	icon_state = "shuttle1_2"
 
 /area/shuttle/prison/transit
-	icon_state = "shuttle2"
+	icon_state = "shuttle1_2"
+
+/area/shuttle/prison/holding
+	icon_state = "shuttle1_1"
+
 
 // === Trying to remove these areas:
 
