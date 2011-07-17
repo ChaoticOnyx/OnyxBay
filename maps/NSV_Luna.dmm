@@ -1329,7 +1329,7 @@
 "azC" = (/obj/grille,/obj/window/reinforced/west{dir = 1},/obj/window/reinforced/west{dir = 3},/obj/window/reinforced/east,/turf/simulated/floor/plating,/area/security/brig)
 "azD" = (/obj/machinery/atmospherics/pipe/simple/insulated,/turf/simulated/floor,/area/security/brig)
 "azE" = (/obj/machinery/atmospherics/pipe/simple,/turf/simulated/floor,/area/security/brig)
-"azF" = (/obj/machinery/atmospherics/pipe/simple{dir = 6; icon_state = "intact-f"; layer = 3},/obj/cabling/power{icon_state = "2-4"},/turf/simulated/wall,/area/maintenance/pmaintcentral3)
+"azF" = (/obj/machinery/atmospherics/pipe/simple{dir = 6; icon_state = "intact-f"; layer = 3},/obj/cabling/power{icon_state = "2-4"},/turf/simulated/wall,/area/security/brig)
 "azG" = (/obj/machinery/atmospherics/pipe/simple{dir = 9; icon_state = "intact-f"; initialize_directions = 9; layer = 3},/obj/cabling/power{icon_state = "1-8"},/obj/machinery/door/airlock/maintenance{name = "Security Maintenance"; req_access_txt = "0"},/turf/simulated/floor/plating,/area/maintenance/pmaintcentral3)
 "azH" = (/obj/machinery/atmospherics/pipe/simple{dir = 6; icon_state = "intact-f"; layer = 3},/obj/cabling/power{icon_state = "1-2"},/turf/simulated/wall/r_wall,/area/security/brig)
 "azI" = (/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact-f"; layer = 3},/obj/grille,/obj/window/reinforced/north,/obj/window/reinforced/south,/obj/window/reinforced/east,/turf/simulated/floor/plating,/area/security/brig)
