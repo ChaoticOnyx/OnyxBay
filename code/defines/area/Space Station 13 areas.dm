@@ -73,6 +73,14 @@
 	luminosity = 1
 	ul_Lighting = 0
 
+/area/adminsafety
+	name = "Admin safe zone"
+	icon_state = "start"
+	applyalertstatus = 0
+	requires_power = 0
+	luminosity = 1
+	ul_Lighting = 0
+
 //These are shuttle areas, they must contain two areas in a subgroup if you want to move a shuttle from one
 //place to another. Look at escape shuttle for example.
 

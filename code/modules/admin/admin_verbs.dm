@@ -827,7 +827,7 @@
 	set category = "Roleplay"
 	set name = "Create NanoTrasen official"
 	var/area/A
-	for(var/area/nanotrasenshuttle/b in world)
+	for(var/area/adminsafety/b in world)
 		A = b
 
 	var/job = input ("What job would you like to give your NanoTrasen char") in list ("Overseer","Syndicate Management Taskforce","Prisoner Management")
@@ -892,7 +892,7 @@
 	var/obj/item/weapon/card/id/id = new /obj/item/weapon/card/id/captains_spare(player)
 	id.registered = player.real_name
 	id.assignment = job
-	id.name = "[player.real_name]'s Official ID"
+	id.name = "[player.real_name]'s [job] ID"
 	player.equip_if_possible(id,player.slot_wear_id)
 
 	player.equip_if_possible(new /obj/item/device/radio/headset/security,player.slot_ears)
