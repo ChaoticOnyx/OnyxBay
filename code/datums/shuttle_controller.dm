@@ -402,7 +402,11 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 							else
 								occupied = 0
 						var/mob/dead/observer/newghost = new/mob/dead/observer(prisoner.loc,null)
-						newghost.timeofdeath = world.time
+						newghost.name = prisoner.real_name
+						newghost.real_name = prisoner.real_name
+						newghost.timeofdeath = world.time - 18000
+						if(!prisoner.mind.special_role)
+							newghost.timeofdeath -= 9000
 						prisoner.client.mob = newghost
 
 
