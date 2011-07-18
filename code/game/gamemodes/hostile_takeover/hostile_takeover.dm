@@ -4,6 +4,7 @@
 	name = "hostile takeover"
 	config_tag = "takeover"
 	enabled = 1
+	votable = 0
 
 	var/agents_possible = 0
 
