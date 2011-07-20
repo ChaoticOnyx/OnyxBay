@@ -407,7 +407,8 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 						newghost.timeofdeath = world.time - 18000
 						if(!prisoner.mind.special_role)
 							newghost.timeofdeath -= 9000
-						prisoner.client.mob = newghost
+						if(prisoner.client)
+							prisoner.client.mob = newghost
 
 
 					online = 0
