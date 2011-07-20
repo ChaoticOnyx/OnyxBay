@@ -13,6 +13,6 @@
 	for (var/client/C)
 		if (C.holder)
 			C.ctab_message("Admin", "\blue <b><font color=red>HELP: </font>[key_name(src, C.mob)](<A HREF='?src=\ref[C.holder];adminplayeropts=\ref[src]'>X</A>):</b> [msg]")
-	send2adminirc("#bs12admin","HELP: [key_name(src)]: [msg]")
+	send2adminirc("#bs12admin","HELP: [src.key]: [msg]")
 	usr << "Your message has been broadcast to administrators."
 	log_admin("HELP: [key_name(src)]: [msg]")

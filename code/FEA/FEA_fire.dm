@@ -193,7 +193,7 @@ obj/fire/proc/burn(tox,oxy)
 	T.air.oxygen -= round(oxy)
 	T.air.toxins -= round(tox)
 	var/newco = round(oxy + tox)
-	T.air.carbon_dioxide += newco
+	T.air.carbon_dioxide += newco/4
 	T.air.temperature += round(tox)
 
 /*mob/verb/createfire()

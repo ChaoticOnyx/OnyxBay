@@ -3,7 +3,7 @@ world
 	proc
 		startmysql(var/silent)
 			dbcon.Connect("dbi:mysql:[DB_DBNAME]:[DB_SERVER]:[DB_PORT]","[DB_USER]","[DB_PASSWORD]")
-			if(!dbcon.IsConnected()) //CRASH(dbcon.ErrorMsg())
+			if(!dbcon.IsConnected()) return
 			else
 				if(!silent)
 					world << "\red \b MySQL connection established..."
