@@ -394,18 +394,19 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 						prisoner.loc = locate(holding)
 						prisoner.dir = 2
 						prisoner.update_clothing()
-						var/occupied = 1
-						while(occupied == 1)
+						var/occupied = 10
+						while(occupied >= 1)
 							var/mob/living/carbon/human/occupant = locate() in prisoner.loc
 							if(occupant != prisoner || prisoner.loc.density == 1)
 								prisoner.x--
+								occupied--
 							else
 								occupied = 0
 						var/mob/dead/observer/newghost = new/mob/dead/observer(prisoner.loc,null)
 						newghost.name = prisoner.real_name
 						newghost.real_name = prisoner.real_name
 						newghost.timeofdeath = world.time - 18000
-						if(!prisoner.mind.special_role)
+						if(prisoner.mind && !prisoner.mind.special_role)
 							newghost.timeofdeath -= 9000
 						if(prisoner.client)
 							prisoner.client.mob = newghost

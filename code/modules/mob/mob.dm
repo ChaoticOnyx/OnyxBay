@@ -443,6 +443,8 @@ mob/verb/turnwest()
 	if(!M || !M.client || M.shakecamera)
 		return
 	spawn(1)
+		if(!M.client)
+			return
 		var/oldeye=M.client.eye
 		var/x
 		M.shakecamera = 1
