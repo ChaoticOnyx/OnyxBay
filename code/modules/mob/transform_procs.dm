@@ -150,7 +150,7 @@
 			if (aisprite == "Matrix \"rain\"")
 				O.icon_state = "ai-matrix"
 			if (aisprite == "Angry Face")
-				O.icon_state = "ai-angryface")
+				O.icon_state = "ai-angryface"
 		world << text("<b>[O.real_name] is the AI!</b>")
 		del(src)
 

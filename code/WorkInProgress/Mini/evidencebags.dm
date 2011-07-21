@@ -1,8 +1,8 @@
 /obj/item/weapon/evidencebag
 	name = "evidence bag"
 	desc = "An empty evidence bag."
-	icon = 'structures.dmi'
-	icon_state = "window"
+	icon = 'storage.dmi'
+	icon_state = "evidence"
 
 /obj/item/weapon/evidencebag/attackby(obj/item/weapon/O, mob/user as mob)
 	return src.afterattack(O, user)
