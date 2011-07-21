@@ -4,8 +4,10 @@
 	icon = 'storage.dmi'
 	icon_state = "evidence"
 
+/* buggy and stuff
 /obj/item/weapon/evidencebag/attackby(obj/item/weapon/O, mob/user as mob)
 	return src.afterattack(O, user)
+*/
 
 /obj/item/weapon/evidencebag/afterattack(obj/item/O, mob/user as mob)
 	if(!(O && istype(O)))
@@ -24,3 +26,17 @@
 	user << "You take the [I] out of the [src]."
 	I.loc = user.loc
 	src.underlays -= I
+
+/obj/item/weapon/storage/box/evidence
+	name = "evidence bag box"
+	desc = "A box claiming to contain evidence bags."
+	New()
+		new /obj/item/weapon/evidencebag(src)
+		new /obj/item/weapon/evidencebag(src)
+		new /obj/item/weapon/evidencebag(src)
+		new /obj/item/weapon/evidencebag(src)
+		new /obj/item/weapon/evidencebag(src)
+		new /obj/item/weapon/evidencebag(src)
+		new /obj/item/weapon/evidencebag(src)
+		..()
+		return
