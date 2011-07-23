@@ -1269,7 +1269,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/burger/
 	name = "burger"
 	desc = "A burger."
-	icon_state = "hburger"
+	icon_state = "burger"
 	amount = 5
 	heal_amt = 2
 
@@ -1296,7 +1296,7 @@
 	var/hname = ""
 	var/job = null
 	desc = "A bloody burger."
-	icon_state = "hburger"
+	icon_state = "burger"
 	heal(var/mob/M)
 		if(src.job == "Clown")
 			M.unlock_medal("That Tasted Funny", 1)
@@ -1305,12 +1305,12 @@
 /obj/item/weapon/reagent_containers/food/snacks/burger/monkeyburger
 	name = "monkeyburger"
 	desc = "The cornerstone of every nutritious breakfast."
-	icon_state = "mburger"
+	icon_state = "burger"
 
 /obj/item/weapon/reagent_containers/food/snacks/burger/fishburger
 	name = "Fish-Fil-A"
 	desc = "A delicious alternative to heart-grinding beef patties."
-	icon_state = "fishburger"
+	icon_state = "burger"
 
 /obj/item/weapon/reagent_containers/food/snacks/burger/roburger
 	name = "roburger"
@@ -1325,7 +1325,7 @@
 		R.add_reagent("nanites", 5)
 
 /obj/item/weapon/reagent_containers/food/snacks/burger/synthburger
-	name = "synthburger"
+	name = "burger"
 	desc = "A thoroughly artificial snack."
 	icon_state = "mburger"
 	amount = 5
@@ -1598,14 +1598,14 @@
 /obj/item/weapon/reagent_containers/food/snacks/burger/cheeseburger
 	name = "cheeseburger"
 	desc = "Tasty, but not paticularly healthy."
-	icon_state = "hburger"
+	icon_state = "cheeseburger"
 	amount = 6
 	heal_amt = 2
 /* Strumpetplaya - commenting this out as it has components we don't support.
 /obj/item/weapon/reagent_containers/food/snacks/burger/cheeseburger_m
 	name = "monkey cheese burger"
 	desc = "How very dadaist."
-	icon_state = "hburger"
+	icon_state = "cheeseburger"
 	amount = 6
 	heal_amt = 2
 
