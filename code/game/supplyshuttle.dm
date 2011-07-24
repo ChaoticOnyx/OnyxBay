@@ -139,6 +139,13 @@ var/supply_shuttle_points = 50
 	containertype = "/obj/crate"
 	containername = "Cigarette charge crate"
 
+/datum/supply_packs/soda
+	name = "Soda Charge"
+	contains = list("/obj/item/weapon/vending_charge/soda")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Soda machine charge crate"
+
 /*/datum/supply_packs/wizard
 	name = "Wizard costume"
 	contains = list("/obj/item/weapon/staff",

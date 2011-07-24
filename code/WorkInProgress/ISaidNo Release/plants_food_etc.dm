@@ -1463,11 +1463,11 @@
 /obj/item/weapon/reagent_containers/food/snacks/pizza/
 	name = "plain pizza"
 	desc = "A plain cheese and tomato pizza."
-	icon_state = "pizza_p"
+	icon_state = "pizza1"
 	amount = 6
 	heal_amt = 3
 	var/sliced = 0
-	var/slice_icon = "pslice"
+	var/slice_icon = "pizzaslice1"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		if (istype(W, /obj/item/weapon/axe) || istype(W, /obj/item/weapon/circular_saw) || istype(W, /obj/item/weapon/kitchen/utensil/knife) || istype(W, /obj/item/weapon/scalpel) || istype(W, /obj/item/weapon/sword))
@@ -2100,17 +2100,3 @@
 		reagents = R
 		R.my_atom = src
 		R.add_reagent("chickensoup", 30)
-
-/obj/item/weapon/reagent_containers/food/drinks/cola
-	name = "space cola"
-	desc = "Cola. in space."
-	icon_state = "cola"
-	heal_amt = 1
-	New()
-		var/datum/reagents/R = new/datum/reagents(50)
-		reagents = R
-		R.my_atom = src
-		R.add_reagent("cola", 30)
-
-		if(prob(50))
-			src.icon_state = "cola-diet"

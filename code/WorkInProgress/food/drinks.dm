@@ -122,7 +122,7 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/cola
 	name = "space cola"
-	desc = "Cola. in space."
+	desc = "Cola... in space."
 	icon_state = "cola"
 	heal_amt = 1
 	New()
@@ -133,7 +133,7 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/beer
 	name = "Space Beer"
-	desc = "Beer. in space."
+	desc = "Beer... in space."
 	icon_state = "beer"
 	heal_amt = 1
 	New()
