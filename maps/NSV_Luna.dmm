@@ -3684,7 +3684,7 @@
 "bsR" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/device/timer{pixel_x = -3; pixel_y = -5},/obj/item/device/timer,/obj/item/device/timer{pixel_x = 4; pixel_y = -8},/obj/item/device/timer{pixel_x = -3; pixel_y = -5},/obj/item/device/timer{pixel_x = -3; pixel_y = -5},/turf/simulated/floor{icon_state = "white"},/area/toxins/lab)
 "bsS" = (/obj/table{icon_state = "tabledir"; dir = 5},/obj/item/device/transfer_valve,/obj/item/device/transfer_valve,/obj/item/device/transfer_valve,/obj/item/device/transfer_valve,/turf/simulated/floor{icon_state = "white"},/area/toxins/lab)
 "bsT" = (/obj/window/reinforced/east,/obj/window/reinforced/west,/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/obj/machinery/meter,/turf/simulated/wall/heatshield,/area/toxins/lab)
-"bsU" = (/obj/machinery/atmospherics/unary/vent_filter{dir = 8},/turf/simulated/floor/engine,/area/toxins/lab)
+"bsU" = (/obj/machinery/atmospherics/pipe/vent{dir = 8},/turf/simulated/floor/engine,/area/toxins/lab)
 "bsV" = (/obj/machinery/atmospherics/unary/thermal_plate,/turf/simulated/floor/engine,/area/toxins/lab)
 "bsW" = (/obj/machinery/door/poddoor{dir = 4; id = "toxinsgasexp"; name = "Toxins Gas Exposure Room Vent"},/turf/simulated/floor/plating,/area/toxins/lab)
 "bsX" = (/obj/rack{dir = 4},/obj/item/clothing/suit/fire,/obj/item/weapon/tank/emergency_oxygen,/obj/item/clothing/mask/gas,/turf/simulated/floor,/area/firefighting)
