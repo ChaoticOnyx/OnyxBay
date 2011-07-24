@@ -2113,4 +2113,4 @@
 		R.add_reagent("cola", 30)
 
 		if(prob(50))
-			src.icon_state = "cola-blue"
+			src.icon_state = "cola-diet"
