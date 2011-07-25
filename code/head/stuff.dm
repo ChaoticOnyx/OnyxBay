@@ -3,6 +3,7 @@
 	desc = "Records voice"
 	icon = 'items.dmi'
 	icon_state = "implantpad-0"
+	w_class = 2.0
 	var/obj/item/weapon/voicedisk/disk
 	var/recording = 0
 	var/playing = 0
@@ -142,6 +143,7 @@
 	icon = 'items.dmi'
 	icon_state = "datadisk0"
 	item_state = "card-id"
+	w_class = 1.0
 	var/list/memory = list()
 	var/list/mobtype = list()
 

@@ -411,6 +411,7 @@
 	set name = "Hide Admin Verbs"
 	verbs -= averbs
 	verbs -= /client/proc/disable_averbs
+	verbs += /client/proc/cmd_admin_say
 	verbs += /client/proc/enable_averbs
 
 /client/proc/enable_averbs()

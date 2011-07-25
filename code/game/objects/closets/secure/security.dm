@@ -40,6 +40,7 @@
 	new /obj/item/device/detective_scanner( src )
 	new /obj/item/device/detective_scanner( src )
 	new /obj/item/device/detective_scanner( src )
+	new /obj/item/weapon/storage/box/evidence( src )
 	return
 
 /obj/secure_closet/highsec/New()
