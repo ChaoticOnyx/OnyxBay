@@ -48,7 +48,7 @@
 		camera = new /obj/machinery/camera(src)
 		camera.c_tag = real_name
 		camera.network = "Luna"
-		radio = new /obj/item/device/radio(src)
+		radio = new /obj/item/device/radio/headset(src)
 
 
 /mob/living/silicon/robot/proc/pick_module()
@@ -65,16 +65,22 @@
 			module_icon.icon_state = "medical"
 			class = "medical"
 			icon_state = "[class]robot"
+			del(radio)
+			radio = new /obj/item/device/radio/headset/security/medical(src)
 		if("Security")
 			module = new /obj/item/weapon/robot_module/security(src)
 			module_icon.icon_state = "security"
 			class = "security"
 			icon_state = "[class]robot"
+			del(radio)
+			radio = new /obj/item/device/radio/headset/security(src)
 		if("Engineering")
 			module = new /obj/item/weapon/robot_module/engineering(src)
 			module_icon.icon_state = "engineer"
 			class = "engineer"
 			icon_state = "[class]robot"
+			del(radio)
+			radio = new /obj/item/device/radio/headset/security/engineer(src)
 		if("Janitor")
 			module = new /obj/item/weapon/robot_module/janitor(src)
 			module_icon.icon_state = "janitor"
