@@ -22,6 +22,7 @@ obj/machinery/atmospherics/valve
 			icon_state = "valve[open]"
 
 	New()
+
 		switch(dir)
 			if(NORTH || SOUTH)
 				initialize_directions = NORTH|SOUTH

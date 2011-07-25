@@ -15,6 +15,7 @@
 	var/safe_minimum_temperature = T0C - 200
 
 	New()
+
 		..()
 		initialize_directions = NORTH
 

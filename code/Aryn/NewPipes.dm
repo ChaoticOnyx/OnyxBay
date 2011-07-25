@@ -154,7 +154,12 @@
 				. = ..()
 				air_contents.oxygen = (35*ONE_ATMOSPHERE*O2STANDARD)*(air_contents.volume)/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
 				air_contents.nitrogen = (35*ONE_ATMOSPHERE*N2STANDARD)*(air_contents.volume)/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
-
+		nitro_tank
+			name = "Gas Tank \[Nitrogen\]"
+			icon = 'red_pipe_tank.dmi'
+			New()
+				. = ..()
+				air_contents.nitrogen = (35*ONE_ATMOSPHERE)*(air_contents.volume)/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
 	vent
 		name = "Gas Vent"
 		icon_state = "vent"
@@ -261,7 +266,7 @@
 		var/scrubbing = 1 //0 = siphoning, 1 = scrubbing
 		var/scrub_CO2 = 1
 		var/scrub_Toxins = 1
-		var/srub_sleep = 1
+		var/scrub_Sleep = 1
 
 		var/volume_rate = 120
 		Process(datum/UnifiedNetworkController/FlexipipeNetworkController/Controller)
@@ -288,14 +293,17 @@
 						filtered_out.carbon_dioxide = removed.carbon_dioxide
 						removed.carbon_dioxide = 0
 
+
 					if(removed.trace_gases.len>0)
 						for(var/datum/gas/trace_gas in removed.trace_gases)
 							if(istype(trace_gas, /datum/gas/oxygen_agent_b))
-								removed.trace_gases -= trace_gas
-								filtered_out.trace_gases += trace_gas
+								if(scrub_Toxins)
+									removed.trace_gases -= trace_gas
+									filtered_out.trace_gases += trace_gas
 							if(istype(trace_gas, /datum/gas/sleeping_agent))
-								removed.trace_gases -= trace_gas
-								filtered_out.trace_gases += trace_gas
+								if(scrub_Sleep)
+									removed.trace_gases -= trace_gas
+									filtered_out.trace_gases += trace_gas
 
 					//Remix the resulting gases
 					air_contents.merge(filtered_out)
@@ -311,6 +319,148 @@
 				air_contents.merge(removed)
 
 			return 1
+	vent_pump
+		icon_state = "vent"
+		name = "Vent Pump"
+		var/on = 1
+		var/pump_direction = 1 //0 = siphoning, 1 = releasing
+
+		var/external_pressure_bound = ONE_ATMOSPHERE
+		var/internal_pressure_bound = 0
+
+		var/pressure_checks = 1
+		//1: Do not pass external_pressure_bound
+		//2: Do not pass internal_pressure_bound
+		//3: Do not pass either
+
+		Process(datum/UnifiedNetworkController/FlexipipeNetworkController/Controller)
+			..()
+			if(!on)
+				icon_state = "vent"
+				return 0
+
+			if(pump_direction)
+				icon_state = "out"
+			else
+				icon_state = "in"
+
+			var/datum/gas_mixture/environment = loc.return_air(1)
+			var/datum/gas_mixture/air_contents = Controller.air_contents
+			//var/environment_pressure = environment.return_pressure()
+			if(pump_direction)
+				var/pressure_delta = external_pressure_bound - environment.return_pressure()
+				//Can not have a pressure delta that would cause environment pressure > tank pressure
+
+				var/transfer_moles = 0
+				if(air_contents.temperature > 0)
+					transfer_moles = pressure_delta*environment.volume/(air_contents.temperature * R_IDEAL_GAS_EQUATION)
+					transfer_moles *= 10 // fuck it, just speed up the process by 10 times
+
+					//Actually transfer the gas
+					var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
+
+					if(removed) loc.assume_air(removed)
+			else
+				var/pressure_delta = internal_pressure_bound - air_contents.return_pressure()
+				//Can not have a pressure delta that would cause environment pressure > tank pressure
+
+				var/transfer_moles = 0
+				if(environment.temperature > 0)
+					transfer_moles = pressure_delta*air_contents.volume/(environment.temperature * R_IDEAL_GAS_EQUATION)
+					transfer_moles *= 10
+
+					//Actually transfer the gas
+					var/datum/gas_mixture/removed
+
+					removed = loc.remove_air(transfer_moles)
+
+					if(removed) air_contents.merge(removed)
+
+		//Radio remote control
+
+		proc
+			set_frequency(new_frequency)
+				radio_controller.remove_object(src, "[frequency]")
+				frequency = new_frequency
+				if(frequency)
+					radio_connection = radio_controller.add_object(src, "[frequency]")
+
+			broadcast_status()
+				if(!radio_connection)
+					return 0
+
+				var/datum/signal/signal = new
+				signal.transmission_method = 1 //radio signal
+				signal.source = src
+
+				signal.data["tag"] = id
+				signal.data["device"] = "AVP"
+				signal.data["power"] = on?("on"):("off")
+				signal.data["direction"] = pump_direction?("release"):("siphon")
+				signal.data["checks"] = pressure_checks
+				signal.data["internal"] = internal_pressure_bound
+				signal.data["external"] = external_pressure_bound
+
+				radio_connection.post_signal(src, signal)
+
+				return 1
+
+		var/frequency = 0
+		var/id = null
+		var/datum/radio_frequency/radio_connection
+
+		New()
+			..()
+			if(frequency)
+				set_frequency(frequency)
+
+		receive_signal(datum/signal/signal)
+			if(signal.data["tag"] && (signal.data["tag"] != id))
+				return 0
+
+			switch(signal.data["command"])
+				if("power_on")
+					on = 1
+
+				if("power_off")
+					on = 0
+
+				if("power_toggle")
+					on = !on
+
+				if("set_direction")
+					var/number = text2num(signal.data["parameter"])
+					if(number > 0.5)
+						pump_direction = 1
+					else
+						pump_direction = 0
+
+				if("purge")
+					pressure_checks &= ~1
+					pump_direction = 0
+
+				if("stabalize")
+					pressure_checks |= 1
+					pump_direction = 1
+
+				if("set_checks")
+					var/number = round(text2num(signal.data["parameter"]),1)
+					pressure_checks = number
+
+				if("set_internal_pressure")
+					var/number = text2num(signal.data["parameter"])
+					number = min(max(number, 0), ONE_ATMOSPHERE*50)
+
+					internal_pressure_bound = number
+
+				if("set_external_pressure")
+					var/number = text2num(signal.data["parameter"])
+					number = min(max(number, 0), ONE_ATMOSPHERE*50)
+
+					external_pressure_bound = number
+
+			if(signal.data["tag"])
+				spawn(5 * tick_multiplier) broadcast_status()
 
 
 	filter
@@ -458,11 +608,16 @@
 		var/node1_concentration = 0.5
 		var/node2_concentration = 0.5
 		var/target_pressure = 1000
+		var/datum/gas_mixture
+			air_in1
+			air_in2
+			air_out
 		var/turf
 			A
 			B
 			C
 		var/on = 0
+		var/id
 		Process(datum/UnifiedNetworkController/FlexipipeNetworkController/Controller)
 			if(!on)
 				icon_state = "mixer_off"
@@ -488,10 +643,9 @@
 					OutputNet = P.Networks[P.type]
 
 			if(InputANet && InputBNet && OutputNet)
-				var/datum/gas_mixture
-					air_in1 = InputANet.Controller:air_contents
-					air_in2 = InputBNet.Controller:air_contents
-					air_out = OutputNet.Controller:air_contents
+				air_in1 = InputANet.Controller:air_contents
+				air_in2 = InputBNet.Controller:air_contents
+				air_out = OutputNet.Controller:air_contents
 
 				var/output_starting_pressure = air_out.return_pressure()
 

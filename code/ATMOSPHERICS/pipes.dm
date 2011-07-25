@@ -85,6 +85,7 @@ obj/machinery/atmospherics/pipe
 		level = 1
 
 		New()
+
 			..()
 			switch(dir)
 				if(SOUTH || NORTH)
@@ -299,7 +300,6 @@ obj/machinery/atmospherics/pipe
 		down
 			dir2 = DOWN
 			icon_state = "down"
-
 		New()
 			..()
 			initialize_directions = dir | dir2
@@ -328,6 +328,7 @@ obj/machinery/atmospherics/pipe
 		alert_pressure = 900*ONE_ATMOSPHERE
 
 		level = 2
+
 
 
 	simple/junction
@@ -392,6 +393,7 @@ obj/machinery/atmospherics/pipe
 		var/obj/machinery/atmospherics/node1
 
 		New()
+
 			initialize_directions = dir
 			..()
 
@@ -446,6 +448,7 @@ obj/machinery/atmospherics/pipe
 			name = "Pressure Tank (Oxygen)"
 
 			New()
+
 				air_temporary = new
 				air_temporary.volume = volume
 				air_temporary.temperature = T20C
@@ -459,6 +462,7 @@ obj/machinery/atmospherics/pipe
 			name = "Pressure Tank (Nitrogen)"
 
 			New()
+
 				air_temporary = new
 				air_temporary.volume = volume
 				air_temporary.temperature = T20C
@@ -472,6 +476,7 @@ obj/machinery/atmospherics/pipe
 			name = "Pressure Tank (Air)"
 
 			New()
+
 				air_temporary = new
 				air_temporary.volume = volume
 				air_temporary.temperature = T20C
@@ -651,6 +656,7 @@ obj/machinery/atmospherics/pipe
 		level = 1
 
 		New()
+
 			switch(dir)
 				if(NORTH)
 					initialize_directions = EAST|SOUTH|WEST

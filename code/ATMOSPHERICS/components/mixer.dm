@@ -43,6 +43,7 @@ obj/machinery/atmospherics/mixer
 		return
 
 	New()
+
 		id = tag
 		..()
 		switch(dir)

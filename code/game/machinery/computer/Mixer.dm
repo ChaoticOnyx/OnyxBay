@@ -15,6 +15,16 @@
 				mixer.node1_concentration = rates[1] / 100
 				mixer.node2_concentration = rates[2] / 100
 				return
+		for(var/obj/machinery/atmos_new/mixer/M in world)
+			if (M.id == targettag)
+				mixer = M
+				rates[1] = M.node1_concentration * 100
+				rates[2] = 100 - rates[1]
+				rates[1] = min(max(rates[1], 0), 100)
+				rates[2] = min(max(rates[2], 0), 100)
+				mixer.node1_concentration = rates[1] / 100
+				mixer.node2_concentration = rates[2] / 100
+				return
 
 /obj/machinery/computer/atmosphere/mixer/Topic(href, href_list)
 	if(..() || !mixer)
@@ -37,7 +47,7 @@
 
 	if(href_list["power"])
 		mixer.on = !mixer.on
-		mixer.update_icon()
+		if(istype(mixer,/obj/machinery/atmospherics)) mixer.update_icon()
 
 	src.updateUsrDialog()
 

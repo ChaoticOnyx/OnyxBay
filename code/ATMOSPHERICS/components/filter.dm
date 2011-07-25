@@ -46,6 +46,7 @@ Filter types:
 				radio_connection = radio_controller.add_object(src, "[frequency]")
 
 	New()
+
 		..()
 		switch(dir)
 			if(NORTH)

@@ -18,6 +18,7 @@
 
 
 	New()
+
 		..()
 		build_icon()
 		initialize_directions = SOUTH
