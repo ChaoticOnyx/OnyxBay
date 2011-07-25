@@ -2032,9 +2032,9 @@ mob/verb/turnwest()
 	return
 
 /client/New()
-	if(findtextEx(key, "Telnet @"))
-		src << "Sorry, this game does not support Telnet."
-		del(src)
+//	if(findtextEx(key, "Telnet @"))
+//		src << "Sorry, this game does not support Telnet."
+//		del(src)
 	var/isbanned = CheckBan(src)
 	if (isbanned)
 		log_access("Failed Login: [src] - Banned")

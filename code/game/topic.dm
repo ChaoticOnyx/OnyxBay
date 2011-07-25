@@ -15,7 +15,7 @@ datum/mapobject/baystation12
 
 /world/Topic(T, addr, master, key)
 	check_diary()
-	diary << "TOPIC: \"[T]\", from:[addr], master:[master], key:[key]"
+//	world << "TOPIC: \"[T]\", from:[addr], master:[master], key:[key]"
 
 	if (T == "ping")
 		var/x = 1
@@ -45,6 +45,12 @@ datum/mapobject/baystation12
 			n++
 		s["players"] = n
 		return list2params(s)
+	else if(findtext(T,"MSG:",1,0))
+		var/name = copytext(T,findtext(T,":",1,0)+1,findtext(T,"/",1,0))
+		var/msg =  copytext(T,findtext(T,"/",1,0)+1,0)
+		for (var/client/C)
+			if (C.holder)
+				C.mob.ctab_message("Admin", "<span class=\"admin\"><span class=\"prefix\">ADMINIRC:</span> <span class=\"name\">[name]:</span> <span class=\"message\">[msg]</span></span>")
 	else if(T == "teleplayer")
         //download and open savefile
 		var/savefile/F = new(Import())
