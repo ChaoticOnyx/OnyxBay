@@ -139,6 +139,13 @@ var/supply_shuttle_points = 50
 	containertype = "/obj/crate"
 	containername = "Cigarette charge crate"
 
+/datum/supply_packs/soda
+	name = "Soda Charge"
+	contains = list("/obj/item/weapon/vending_charge/soda")
+	cost = 10
+	containertype = "/obj/crate"
+	containername = "Soda machine charge crate"
+
 /*/datum/supply_packs/wizard
 	name = "Wizard costume"
 	contains = list("/obj/item/weapon/staff",
@@ -374,6 +381,21 @@ var/supply_shuttle_points = 50
 	name = "M.U.L.E. Bot"
 	contains = list("/obj/machinery/bot/mulebot")
 	cost = 20
+
+/datum/supply_packs/watertank
+    name = "Water Tank"
+    contains = list("/obj/reagent_dispensers/watertank")
+    cost = 15
+
+/datum/supply_packs/hvwatertank
+    name = "High-Volume Water Tank"
+    contains = list("/obj/reagent_dispensers/hvwatertank")
+    cost = 45
+
+/datum/supply_packs/fueltank
+    name = "Fuel Tank"
+    contains = list("/obj/reagent_dispensers/fueltank")
+    cost = 15
 
 //SUPPLY PACKS
 

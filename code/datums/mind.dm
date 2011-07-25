@@ -197,7 +197,7 @@ datum/mind
 						"a small plasma tank" = new /datum/objective/steal/plasmatank,
 						"a hand teleporter" = new /datum/objective/steal/handtele,
 						"a rapid construction device" = new /datum/objective/steal/RCD,
-						"a burger made of human organs" = new /datum/objective/steal/burger,
+					//	"a burger made of human organs" = new /datum/objective/steal/burger,
 						"a cyborg shell" = new /datum/objective/steal/cyborg,
 						"a finished AI Construct" = new /datum/objective/steal/AI,
 						"some space drugs" = new /datum/objective/steal/drugs,

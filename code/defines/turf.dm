@@ -31,9 +31,17 @@
 	name = "space"
 	icon_state = "placeholder"
 	var/sand = 0
-	temperature = TCMB
+	temperature = TSPC
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 700000
+
+/turf/space/sand
+	name = "sand"
+	icon = 'sand.dmi'
+	icon_state = "placeholder"
+	sand = 1
+	temperature = T20C + 80
+
 
 /turf/space/New()
 	. = ..()
@@ -85,7 +93,7 @@
 	icon_state = "engine"
 	oxygen = 0
 	nitrogen = 0.000
-	temperature = TCMB
+	temperature = TSPC
 
 ///turf/space/hull //TEST
 turf/space/hull
@@ -96,7 +104,7 @@ turf/space/hull/New()
 	return
 /*	oxygen = 0
 	nitrogen = 0.000
-	temperature = TCMB
+	temperature = TSPC
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 700000*/
 /turf/simulated/floor/
@@ -133,7 +141,7 @@ turf/space/hull/New()
 		name = "airless floor"
 		oxygen = 0.01
 		nitrogen = 0.01
-		temperature = TCMB
+		temperature = TSPC
 
 		New()
 			..()
@@ -264,7 +272,7 @@ turf/space/hull/New()
 	name = "Airless Plating"
 	oxygen = 0.01
 	nitrogen = 0.01
-	temperature = TCMB
+	temperature = TSPC
 
 	New()
 		..()
@@ -331,6 +339,20 @@ turf/space/hull/New()
 	name = "Command"
 	oxygen = MOLES_O2STANDARD
 	nitrogen = MOLES_N2STANDARD
+
+/turf/unsimulated/shuttle
+	name = "Shuttle"
+	icon = 'shuttle.dmi'
+
+/turf/unsimulated/shuttle/floor
+	name = "Shuttle Floor"
+	icon_state = "floor"
+
+/turf/unsimulated/shuttle/wall
+	name = "Shuttle Wall"
+	icon_state = "wall"
+	opacity = 1
+	density = 1
 
 /turf/unsimulated/floor
 	name = "Floor"
@@ -405,6 +427,10 @@ turf/space/hull/New()
 	density = 1
 	blocks_air = 1
 
+/turf/simulated/asteroid/wall/planet
+	mapped = 1
+	thermal_conductivity = 0
+
 /turf/simulated/asteroid/wall/New()
 	health+= rand(1)
 	..()
@@ -445,4 +471,16 @@ turf/space/hull/New()
 	icon = 'mining.dmi'
 	icon_state = "floor"
 
+/turf/simulated/asteroid/floor/planet
+	mapped = 1
+	name = "sand"
+	icon = 'sand.dmi'
+	icon_state = "placeholder"
+	carbon_dioxide = 0.3 * ONE_ATMOSPHERE
+	toxins = 0.54 * ONE_ATMOSPHERE
+	nitrogen = 0.03 * ONE_ATMOSPHERE
+	temperature = 742
 
+/turf/simulated/asteroid/floor/planet/New()
+	icon_state = "sand[rand(1,3)]"
+	return ..()

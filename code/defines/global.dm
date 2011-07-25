@@ -76,6 +76,7 @@ var
 
 
 	datum/PodControl/LaunchControl = new /datum/PodControl()
+	datum/PodControl/prisonPodControl/PrisonControl = new /datum/PodControl/prisonPodControl()
 
 	captainMax = 1
 	engineerMax = 5
@@ -89,7 +90,7 @@ var
 	directorMax = 1
 	chiefMax = 1
 	atmosMax = 4
-	detectiveMax = 1
+	forensictechnicianMax = 1
 	CounselorMax = 1
 	janitorMax = 2
 	doctorMax = 4
@@ -97,7 +98,7 @@ var
 	chefMax = 1
 	roboticsMax = 3
 	cargoMax = 3
-	hydroponicsMax = 3
+	hydroponicsMax = 1
 
 	list/bombers = list(  )
 	list/admin_log = list (  )

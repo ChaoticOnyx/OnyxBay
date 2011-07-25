@@ -75,6 +75,7 @@ obj/machinery/aiconstruct/attackby(obj/item/weapon/W as obj, mob/user as mob)
 			if(istype(W,/obj/item/brain))
 				user << "You place the [W] inside the [src]."
 				user.u_equip(W)
+				user.drop_item()
 				W.dropped()
 				W.loc = src
 				bb = W:owner
@@ -82,6 +83,7 @@ obj/machinery/aiconstruct/attackby(obj/item/weapon/W as obj, mob/user as mob)
 				icon_state = "ai_new5"
 obj/machinery/aiconstruct/proc/boot()
 	if(bb)
+		log_admin("Starting AI construct (1/3)")
 		for(var/mob/M in world) if(M.client && M.client.key == bb.mind.key)
 			bb = M
 			break
@@ -93,7 +95,9 @@ obj/machinery/aiconstruct/proc/boot()
 		sleep(10)
 		A << 'chime.ogg'
 		roundinfo.revies++
+		log_admin("Starting AI construct (2/3)")
 		A.AIize()
+		log_admin("Starting AI construct (3/3)")
 		del(src)
 mob/living/verb/head()
 	set hidden = 1

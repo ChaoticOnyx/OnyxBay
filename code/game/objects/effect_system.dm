@@ -405,14 +405,14 @@ steam.start() -- spawns the effect
 				M.emote("cough")
 				spawn ( 20 )
 					M.coughedtime = 0
+	for(var/atom/A in src)
+		reagents.reaction(A, 1, 1)
 	return
 
 /obj/effects/bad_smoke/HasEntered(mob/living/carbon/M as mob )
 	..()
 	if(istype(M, /mob/living/carbon))
-		if (M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
-			return
-		else
+		if (!(M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS)))
 			M.drop_item()
 			M.oxyloss += 1
 			if (M.coughedtime != 1)
@@ -420,6 +420,8 @@ steam.start() -- spawns the effect
 				M.emote("cough")
 				spawn ( 20 )
 					M.coughedtime = 0
+		if(reagents)
+			src.reagents.reaction(M, 1, 1)
 	return
 
 /datum/effects/system/bad_smoke_spread
@@ -429,8 +431,9 @@ steam.start() -- spawns the effect
 	var/atom/holder
 	var/total_smoke = 0 // To stop it being spammed and lagging!
 	var/direction
+	var/list/carried_reagents
 
-/datum/effects/system/bad_smoke_spread/proc/set_up(n = 5, c = 0, loca, direct)
+/datum/effects/system/bad_smoke_spread/proc/set_up(n = 5, c = 0, loca, direct, var/datum/reagents/carry = null)
 	if(n > 20)
 		n = 20
 	number = n
@@ -441,7 +444,9 @@ steam.start() -- spawns the effect
 		location = get_turf(loca)
 	if(direct)
 		direction = direct
-
+	if(carry)
+		for(var/datum/reagent/RE in carry.reagent_list)
+			carried_reagents += RE.id
 
 /datum/effects/system/bad_smoke_spread/proc/attach(atom/atom)
 	holder = atom
@@ -465,6 +470,9 @@ steam.start() -- spawns the effect
 			for(i=0, i<pick(0,1,1,1,2,2,2,3), i++)
 				sleep(10)
 				step(smoke,direction)
+			smoke.create_reagents(50)
+			for(var/datum/reagent/RE in src.carried_reagents)
+				smoke.reagents.add_reagent(RE, 5)
 			spawn(150+rand(10,30))
 				del(smoke)
 				src.total_smoke--

@@ -4,6 +4,7 @@
 	name = "hostile takeover"
 	config_tag = "takeover"
 	enabled = 1
+	votable = 0
 
 	var/agents_possible = 0
 
@@ -179,7 +180,7 @@ obj/landmark/crew_spawn
 
 	for(var/mob/new_player/player in world)
 		if((player.client) &&  (player.ready))
-			if(player.be_syndicate)
+			if(player.be_takeover_agent)
 				candidates += player.mind
 
 	if(candidates.len < 1)

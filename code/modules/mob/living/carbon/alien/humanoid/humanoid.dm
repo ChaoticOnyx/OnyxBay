@@ -414,6 +414,7 @@
 		M << "No attacking people at spawn, you jackass."
 		return
 
+/*Removed stungloves as they are dodgy weapons :3. -CN
 	if ((M.gloves && M.gloves.elecgen == 1 && M.a_intent == "hurt") /*&& (!istype(src:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
 		if(M.gloves.uses > 0)
 			M.gloves.uses--
@@ -429,7 +430,7 @@
 		else
 			M.gloves.elecgen = 0
 			M << "\red Not enough charge! "
-			return
+			return*/
 
 	if (M.a_intent == "help")
 		if (health > 0)

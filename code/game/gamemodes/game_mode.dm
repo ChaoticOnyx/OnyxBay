@@ -56,7 +56,7 @@
 
 		var/datum/traitorinfo/info = logtraitors[traitor]
 		if (info)
-			var/DBQuery/query = dbcon.NewQuery("INSERT INTO `bay12`.`traitorlogs` (`CKey`, `Objective`, `Succeeded`, `Spawned`, `Occupation`, `PlayerCount`) VALUES ('[info.ckey]', '[info.starting_objective]', '[traitorwin]', '[dd_list2text(info.spawnlist, ";")]', '[info.starting_occupation]', '[info.starting_player_count]')")
+			var/DBQuery/query = dbcon.NewQuery("INSERT INTO `bay12`.`traitorlogs` (`CKey`, `Objective`, `Succeeded`, `Spawned`, `Occupation`, `PlayerCount`) VALUES ('[info.ckey]', [dbcon.Quote(info.starting_objective)], '[traitorwin]', '[dd_list2text(info.spawnlist, ";")]', '[info.starting_occupation]', '[info.starting_player_count]')")
 			query.Execute()
 
 	check_round()

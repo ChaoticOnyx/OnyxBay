@@ -77,7 +77,9 @@
 
 
 /obj/item/weapon/cell/attackby(obj/item/W, mob/user)
+/*Removed stungloves as they are dodgy weapons :3. -CN
 	var/obj/item/clothing/gloves/G = W
+
 	if(istype(G))
 		if(charge < 1000)
 			return
@@ -87,8 +89,8 @@
 		use(G.uses*1000)
 		updateicon()
 		user << "\red These gloves are now electrically charged!"
-
-	else if(istype(W, /obj/item/weapon/reagent_containers/syringe))
+*/
+	if(istype(W, /obj/item/weapon/reagent_containers/syringe))
 		var/obj/item/weapon/reagent_containers/syringe/S = W
 
 		user << "You inject the solution into the power cell."

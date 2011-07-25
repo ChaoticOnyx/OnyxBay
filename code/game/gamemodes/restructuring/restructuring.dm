@@ -5,6 +5,7 @@
 /datum/game_mode/restructuring
 	name = "Corporate Restructuring"
 	config_tag = "restructuring"
+	votable = 0
 
 /datum/game_mode/restructuring/announce()
 	..()

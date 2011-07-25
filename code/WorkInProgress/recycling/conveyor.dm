@@ -264,18 +264,21 @@
 
 
 // *** TESTING click to toggle
-/obj/machinery/diverter/Click()
-	toggle()
+/obj/machinery/diverter/attack_hand(mob/user)
+	if(!toggle())
+		user << "\blue You toggle the diverter."
+	else
+		user << "\red <b>The diverter isn't working!</b>"
 
 
 // toggle between arm deployed and not deployed, showing animation
 //
 /obj/machinery/diverter/proc/toggle()
 	if( stat & (NOPOWER|BROKEN))
-		return
+		return 1
 
 	if(operating)
-		return
+		return 1
 
 	use_power(50)
 	operating = 1
@@ -292,6 +295,7 @@
 	operating = 0
 	update()
 	set_divert()
+	return 0
 
 // don't allow movement into the 'backwards' direction if deployed
 /obj/machinery/diverter/CanPass(atom/movable/O, var/turf/target)

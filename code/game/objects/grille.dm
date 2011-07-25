@@ -31,7 +31,7 @@
 	return
 
 /obj/grille/attack_hand(var/obj/M)
-	if ((usr.mutations & 8))
+	if ((usr.mutations & 8)) // If hulk
 		usr << text("\blue You kick the grille.")
 		for(var/mob/O in oviewers())
 			if ((O.client && !( O.blinded )))
@@ -39,16 +39,15 @@
 		src.health -= 2
 		healthcheck()
 		return
-	else if(istype(usr,/mob/living/carbon/human))
-		if(usr:zombie)
-			usr << text("\blue You bang on the grille.")
-			for(var/mob/O in oviewers())
-				if ((O.client && !( O.blinded )))
-					O << text("\red [] bangs on the grille.", usr)
-			src.health -= 2
-			healthcheck()
-			return
-	else if(!shock(usr, 70))
+	else if(istype(usr,/mob/living/carbon/human) && usr:zombie) // or zombie
+		usr << text("\blue You bang on the grille.")
+		for(var/mob/O in oviewers())
+			if ((O.client && !( O.blinded )))
+				O << text("\red [] bangs on the grille.", usr)
+		src.health -= 2
+		healthcheck()
+		return
+	else if(!shock(usr, 70)) // or anyone else.
 		usr << text("\blue You kick the grille.")
 		for(var/mob/O in oviewers())
 			if ((O.client && !( O.blinded )))

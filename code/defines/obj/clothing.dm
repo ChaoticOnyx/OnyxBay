@@ -193,13 +193,13 @@
 /obj/item/clothing/head/caphat
 	name = "Captain's hat"
 	icon_state = "captain"
-	flags = FPRINT|TABLEPASS|SUITSPACE
+	flags = FPRINT|TABLEPASS
 	item_state = "caphat"
 
 /obj/item/clothing/head/centhat
 	name = "Cent. Comm. hat"
 	icon_state = "centcom"
-	flags = FPRINT|TABLEPASS|SUITSPACE
+	flags = FPRINT|TABLEPASS
 	item_state = "centcom"
 
 /obj/item/clothing/head/det_hat
@@ -229,7 +229,7 @@
 	name = "Chef's hat"
 	icon_state = "chef"
 	item_state = "chef"
-	flags = FPRINT | TABLEPASS | HEADSPACE
+	flags = FPRINT | TABLEPASS
 
 
 // CHUMP HELMETS: COOKING THEM DESTROYS THE CHUMP HELMET SPAWN.
@@ -237,11 +237,17 @@
 /obj/item/clothing/head/helmet
 	name = "helmet"
 	icon_state = "helmet"
-	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES
+	flags = FPRINT|TABLEPASS|HEADCOVERSEYES
 	item_state = "helmet"
 
 	protective_temperature = 500
 	heat_transfer_coefficient = 0.10
+
+/obj/item/clothing/head/helmet/riot
+	name = "riot helmet"
+	icon_state = "riothelmet"
+	flags = FPRINT|TABLEPASS|HEADSPACE|HEADCOVERSEYES|HEADCOVERSMOUTH
+	item_state = "riothelmet"
 
 /obj/item/clothing/head/helmet/space
 	name = "space helmet"
@@ -258,7 +264,7 @@
 /obj/item/clothing/head/helmet/swat
 	name = "swat helmet"
 	icon_state = "swat"
-	flags = FPRINT | TABLEPASS | HEADSPACE | HEADCOVERSEYES
+	flags = FPRINT | TABLEPASS | HEADCOVERSEYES
 	item_state = "swat"
 
 /obj/item/clothing/head/helmet/thunderdome
@@ -346,11 +352,23 @@
 	gas_transfer_coefficient = 0.10
 	permeability_coefficient = 0.50
 
+/obj/item/clothing/mask/milbreath
+	desc = "A hard, dark plastic version of the normal breathmask, usually used by military personnel. Not rated for operations in vacuum."
+	name = "Military Breath Mask"
+	icon_state = "milbreath"
+	item_state = "milbreath"
+	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH | MASKINTERNALS
+	w_class = 2
+	protective_temperature = 420
+	heat_transfer_coefficient = 0.90
+	gas_transfer_coefficient = 0.10
+	permeability_coefficient = 0.50
+
 /obj/item/clothing/mask/clown_hat
 	name = "clown wig and mask"
 	desc = "You're gay for even considering wearing this."
 	icon_state = "clown"
-	item_state = "clown_hat"
+	item_state = "clown"
 
 /obj/item/clothing/mask/medical
 	desc = "This mask does not work very well in low pressure environments."
@@ -422,6 +440,21 @@
 	name = "SWAT shoes"
 	icon_state = "swat"
 
+/obj/item/clothing/shoes/boots
+	name = "black boots"
+	icon_state = "boots"
+	protective_temperature = 1500
+	heat_transfer_coefficient = 0.01
+	permeability_coefficient = 0.25
+
+/obj/item/clothing/shoes/jackboots
+	name = "jackboots"
+	desc = "heavy duty protective boots"
+	icon_state = "jackboots"
+	protective_temperature = 1500
+	heat_transfer_coefficient = 0.01
+	permeability_coefficient = 0.25
+
 /obj/item/clothing/shoes/white
 	name = "White Shoes"
 	icon_state = "white"
@@ -441,7 +474,7 @@
 	desc = "Damn, thems some big shoes."
 	name = "clown shoes"
 	icon_state = "clown"
-	item_state = "clown_shoes"
+	item_state = "clown"
 
 // SUITS
 
@@ -507,6 +540,13 @@
 	item_state = "chef"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
+/obj/item/clothing/suit/storage/apron
+	name = "apron"
+	desc = "A simple blue apron. It has a big pocket on the front you could store something in."
+	icon_state = "apron"
+	item_state = "apron"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+
 /obj/item/clothing/suit/straight_jacket
 	name = "straight jacket"
 	desc = "A suit that totally restrains an individual"
@@ -537,6 +577,22 @@
 	desc = "An armored vest that protects against some damage."
 	icon_state = "armor"
 	item_state = "armor"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
+
+/obj/item/clothing/suit/storage/gearharness
+	name = "gear harness"
+	desc = "A simple security harness, used for storing small objects"
+	icon_state = "gearharness"
+	item_state = "gearharness"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
+
+/obj/item/clothing/suit/storage/armourrigvest
+	name = "armour rig vest"
+	desc = "An important looking armoured vest, outfitted with pockets."
+	icon_state = "armourrigvest"
+	item_state = "armourrigvest"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
 
@@ -592,6 +648,13 @@
 	icon_state = "heavy"
 	item_state = "heavy"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+
+/obj/item/clothing/suit/armor/riot
+	name = "riot suit"
+	desc = "Heavy segmented armor designed to help control rioters."
+	icon_state = "riotsuit"
+	item_state = "riotsuit"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
 // FIRE SUITS
 
@@ -831,7 +894,7 @@
 	desc = "Made of a special fiber that gives protection against electrocution. Has a Robotics rank stripe on it."
 	name = "Robotics Jumpsuit"
 	icon_state = "robotics"
-	item_state = "w_suit"
+	item_state = "bl_suit"
 	color = "robotics"
 	siemens_coefficient = 0.50
 
@@ -862,6 +925,13 @@
 	icon_state = "detective"
 	item_state = "det"
 	color = "detective"
+
+/obj/item/clothing/under/ftech
+	name = "forensic technician jumpsuit"
+	desc = "A variant of the security outfit, for forensic techs."
+	icon_state = "forensicsred"
+	item_state = "r_suit"
+	color = "forensicsred"
 
 /obj/item/clothing/under/lawyer
 	desc = "Slick threads."

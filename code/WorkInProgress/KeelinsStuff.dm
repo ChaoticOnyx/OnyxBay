@@ -175,7 +175,8 @@
 
 /obj/fake_attacker/New()
 	spawn(300)
-		my_target.hallucinations -= src
+		if(my_target)
+			my_target.hallucinations -= src
 		del(src)
 	step_away(src,my_target,2)
 	proccess()

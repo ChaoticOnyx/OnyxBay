@@ -259,6 +259,9 @@ zone
 					del A.z_image
 					A.z_image = image('tile_effects.dmi',A,"plasma")
 					world << A.z_image
+			else
+				for(var/turf/A in members)
+					del A.z_image
 	rebuild_cache()
 		if(!members.len) del src
 		turf_oxy = oxygen / members.len

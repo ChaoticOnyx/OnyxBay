@@ -426,7 +426,7 @@ datum
 					if(4)
 						return INFINITY
 
-		steal/burger
+		/*steal/burger add this back in after humanburgers can be made again
 			steal_target = /obj/item/weapon/reagent_containers/food/snacks/humanburger
 			explanation_text = "Steal a burger made out of human organs, this will be presented as proof of NanoTrasen's chronic lack of standards."
 			weight = 60
@@ -442,7 +442,7 @@ datum
 					if(3)
 						return 30
 					if(4)
-						return INFINITY
+						return INFINITY*/
 
 
 		/*Needs some work before it can be put in the game to differentiate ship implanters from syndicate implanters.

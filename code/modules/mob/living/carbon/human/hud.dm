@@ -12,14 +12,14 @@
 
 	g_dither = new h_type( src )
 	g_dither.screen_loc = "WEST,SOUTH to EAST,NORTH"
-	g_dither.name = "Mask"
+	g_dither.name = "gasmask"
 	g_dither.icon_state = "dither12g"
 	g_dither.layer = 18
 	g_dither.mouse_opacity = 0
 
 	r_dither = new h_type(src)
 	r_dither.screen_loc = "WEST,SOUTH to EAST,NORTH"
-	r_dither.name = "Thermals"
+	r_dither.name = "thermal glasses"
 	r_dither.icon_state = "ditherred"
 	r_dither.layer = 18
 	r_dither.mouse_opacity = 0
@@ -27,16 +27,30 @@
 	gray_dither = new h_type(src)
 	gray_dither.screen_loc = "WEST,SOUTH to EAST,NORTH"
 	gray_dither.name = "sunglasses"
-	gray_dither.icon_state = "dark64"
+	gray_dither.icon_state = "dark32"
 	gray_dither.layer = 18
 	gray_dither.mouse_opacity = 0
 
 	lp_dither = new h_type(src)
 	lp_dither.screen_loc = "WEST,SOUTH to EAST,NORTH"
-	lp_dither.name = "Thermals"
+	lp_dither.name = "mesons"
 	lp_dither.icon_state = "ditherlimepulse"
 	lp_dither.layer = 18
 	lp_dither.mouse_opacity = 0
+
+	breath = new h_type( src )
+	breath.screen_loc = "WEST,SOUTH to EAST,NORTH"
+	breath.name = "breath"
+	breath.icon_state = "breath"
+	breath.layer = 18
+	breath.mouse_opacity = 0
+
+	welding = new h_type( src )
+	welding.screen_loc = "WEST,SOUTH to EAST,NORTH"
+	welding.name = "welding helmet"
+	welding.icon_state = "dark128"
+	welding.layer = 18
+	welding.mouse_opacity = 0
 
 	alien_view = new h_type(src)
 	alien_view.screen_loc = "WEST,SOUTH to EAST,NORTH"

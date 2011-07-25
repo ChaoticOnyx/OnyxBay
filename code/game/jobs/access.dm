@@ -37,6 +37,12 @@
 	access_incinerator = 37
 	access_maintenance_hall = 38
 	access_shield_generator = 39
+	access_hydroponics = 40
+
+
+// these are big, seperate numbers
+	access_syndicate = 70
+	access_nanotrasen = 80
 
 	password_firedoor = 100 //Stubs from networking 1.0, may be removed, may be used... for now, just avoid them but leave them in -Sukasa
 	password_smeg = 101
@@ -134,7 +140,7 @@
 			return list(access_maint_tunnels)
 		if("Counselor")
 			return list(access_morgue, access_chapel_office, access_crematorium, access_maint_tunnels)
-		if("Detective")
+		if("Forensic Technician")
 			return list(access_security, access_forensics_lockers, access_morgue, access_maint_tunnels, access_security_passthrough, access_medical)
 		if("Medical Doctor")
 			return list(access_medical, access_morgue, access_maint_tunnels, access_laboratories_doors)
@@ -150,14 +156,14 @@
 			return list(access_incinerator, access_medical, access_morgue, access_tox, access_tox_storage, access_chemistry, access_medlab,
 			            access_teleporter, access_heads, access_tech_storage, access_security, access_brig, access_atmospherics,
 			            access_maint_tunnels, access_bar, access_janitor, access_kitchen, access_robotics, access_laboratories_doors,
-			             access_armory, access_engine, access_security_passthrough, access_maintenance_hall, access_shield_generator, access_forensics_lockers)
+			             access_armory, access_engine, access_security_passthrough, access_maintenance_hall, access_shield_generator, access_forensics_lockers, access_hydroponics)
 		if("Head of Personnel")
 			return list(access_security, access_brig, access_forensics_lockers, access_incinerator,
 			            access_tox, access_tox_storage, access_chemistry, access_medical, access_medlab, access_engine,
 			            access_emergency_storage, access_change_ids, access_ai_upload, access_eva, access_heads,
 			            access_all_personal_lockers, access_tech_storage, access_maint_tunnels, access_bar, access_janitor,
 			            access_crematorium, access_kitchen, access_robotics, access_cargo, access_cargo_bot,
-			            access_security_passthrough, access_laboratories_doors, access_maintenance_hall, access_shield_generator)
+			            access_security_passthrough, access_laboratories_doors, access_maintenance_hall, access_shield_generator, access_hydroponics)
 		if("Atmospheric Technician")
 			return list(access_atmospherics, access_maint_tunnels, access_emergency_storage, access_tech_storage,
 						access_external_airlocks, access_maintenance_hall)
@@ -183,7 +189,9 @@
 		if("Research Director")
 			return list(access_medical, access_morgue, access_medlab, access_robotics,
 			            access_tech_storage, access_maint_tunnels, access_heads, access_tox,
-			            access_tox_storage, access_chemistry, access_teleporter, access_security_passthrough, access_laboratories_doors)
+			            access_tox_storage, access_chemistry, access_teleporter, access_security_passthrough, access_laboratories_doors, access_hydroponics)
+		if("Hydroponicist")
+			return list(access_medical, access_hydroponics, access_maint_tunnels)
 		else
 			return list()
 
@@ -196,7 +204,7 @@
 	            access_tech_storage, access_chapel_office, access_atmospherics, access_kitchen,
 	            access_bar, access_janitor, access_crematorium, access_robotics, access_cargo, access_cargo_bot, access_construction,
 	            access_security_passthrough, access_laboratories_doors, access_incinerator, access_maintenance_hall,
-	            access_shield_generator)
+	            access_shield_generator, access_hydroponics)
 /proc/get_access_num(A)
 	switch(A)
 		if("CargoBay")
@@ -275,6 +283,8 @@
 			return "Shield Generator"
 		if(access_robotics)
 			return "Robotics"
+		if(access_hydroponics)
+			return "Hydroponics"
 /proc/get_access_desc(A)
 	switch(A)
 		if(access_cargo)
@@ -353,6 +363,8 @@
 			return "Shield Generator"
 		if(access_robotics)
 			return "Robotics"
+		if(access_hydroponics)
+			return "Hydroponics"
 
 /proc/get_job_types()
 	return list("Civilian", "Security", "Med/Sci", "Maintenance", "Management")
@@ -362,9 +374,9 @@
 		if ("Civilian")
 			return list("Unassigned", "Barman", "Counselor", "Chef", "Janitor", "Quartermaster")
 		if ("Security")
-			return list("Security Officer", "Detective")
+			return list("Security Officer", "Forensic Technician")
 		if ("Med/Sci")
-			return list("Chemist", "Geneticist", "Scientist", "Roboticist", "Medical Doctor")
+			return list("Chemist", "Geneticist", "Scientist", "Roboticist", "Medical Doctor", "Hydroponicist")
 		if ("Maintenance")
 			return list("Engineer", "Atmospheric Technician")
 		if ("Management")

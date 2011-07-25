@@ -230,7 +230,7 @@ obj/landmark/disk_spawn
 
 	for(var/mob/new_player/player in world)
 		if((player.client) &&  (player.ready))
-			if(player.be_syndicate)
+			if(player.be_nuke_agent)
 				candidates += player.mind
 
 	if(candidates.len < 1)

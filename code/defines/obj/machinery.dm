@@ -585,8 +585,8 @@
 	//product_amounts = "25"
 	product_prices = "1"
 	vend_delay = 34
-	product_hidden = "/obj/item/weapon/reagent_containers/food/drinks/cola"
-	hidden_prices = "1"
+	product_hidden = ""
+	hidden_prices = ""
 	charge_type = "coffee"
 
 /obj/machinery/vending/snack
@@ -640,7 +640,7 @@
 	product_paths = "/obj/item/clothing/under/rank/medical;/obj/item/clothing/under/rank/chemist;/obj/item/clothing/suit/storage/labcoat;/obj/item/clothing/shoes/white;/obj/item/device/healthanalyzer;/obj/item/weapon/medical/bruise_pack;/obj/item/weapon/medical/ointment;/obj/item/weapon/medical/bandaid;/obj/item/weapon/reagent_containers/glass/bottle/antitoxin;/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline;/obj/item/weapon/reagent_containers/glass/bottle/stoxin;/obj/item/weapon/reagent_containers/syringe;/obj/item/weapon/tank/anesthetic;/obj/item/clothing/mask/medical;/obj/item/clothing/gloves/latex;/obj/item/weapon/storage/firstaid/regular;/obj/item/weapon/storage/firstaid/toxin;/obj/item/weapon/storage/firstaid/fire;/obj/item/weapon/gun/syringe"
 	//product_amounts = "4;4;4;4;12"
 	product_prices = "1;1;1;1;2;1;1;1;3;3;3;1;2;1;1;9;9;9;4"
-	product_hidden = "/obj/item/weapon/reagent_containers/pill/tox;/obj/item/weapon/reagent_containers/glass/bottle/toxin;"
+	product_hidden = "/obj/item/weapon/reagent_containers/pill/tox;/obj/item/weapon/reagent_containers/glass/bottle/toxin"
 	hidden_prices = "3;3"
 	charge_type = "medical"
 
@@ -652,9 +652,9 @@
 	icon_deny = "sec-deny"
 	req_access_txt = "1"
 	points = 10
-	product_paths = "/obj/item/clothing/under/color/red;/obj/item/clothing/under/det;/obj/item/clothing/suit/storage/det_suit;/obj/item/clothing/head/det_hat;/obj/item/clothing/head/helmet;/obj/item/clothing/suit/armor/vest;/obj/item/weapon/storage/belt/security;/obj/item/device/radio/headset/security;/obj/item/clothing/glasses/sunglasses;/obj/item/weapon/handcuffs;/obj/item/weapon/baton;/obj/item/weapon/gun/energy/taser_gun;/obj/item/weapon/flashbang;/obj/item/device/flash"
+	product_paths = "/obj/item/clothing/under/color/red;/obj/item/clothing/under/ftech;/obj/item/clothing/under/det;/obj/item/clothing/suit/storage/det_suit;/obj/item/clothing/head/det_hat;/obj/item/clothing/head/helmet;/obj/item/clothing/suit/armor/vest;/obj/item/clothing/suit/storage/gearharness;/obj/item/weapon/storage/belt/security;/obj/item/device/radio/headset/security;/obj/item/clothing/glasses/sunglasses;/obj/item/weapon/handcuffs;/obj/item/weapon/baton;/obj/item/weapon/gun/energy/taser_gun;/obj/item/weapon/flashbang;/obj/item/device/flash;/obj/item/weapon/storage/box/evidence"
 	//product_amounts = "8;5;4"
-	product_prices = "1;1;1;1;3;3;2;1;1;1;4;4;3;3"
+	product_prices = "1;1;1;1;1;3;3;3;2;1;1;1;4;4;3;3;2"
 	product_hidden = "/obj/item/kitchen/donut_box"
 	hidden_prices = "3"
 	charge_type = "security"
@@ -712,7 +712,7 @@
 	points = 10
 	product_paths = "/obj/item/clothing/suit/storage/labcoat;/obj/item/clothing/under/rank/roboticist;/obj/item/weapon/CableCoil/power;/obj/item/weapon/optical_unit;/obj/item/weapon/circuitry;/obj/item/weapon/cell/supercharged;/obj/item/device/prox_sensor;/obj/item/device/radio/signaler;/obj/item/device/healthanalyzer;/obj/item/weapon/scalpel;/obj/item/weapon/circular_saw;/obj/item/weapon/tank/anesthetic;/obj/item/clothing/mask/medical;/obj/item/weapon/screwdriver;/obj/item/weapon/crowbar"
 	//product_amounts = "4;4;4;4;12"
-	product_prices = "1;1;1;3;1;3;2;2;2;4;4;2;1;1;1"
+	product_prices = "1;1;1;1;1;3;2;2;2;4;4;2;1;1;1"
 	product_hidden = ""
 	hidden_prices = ""
 	charge_type = "robotics"

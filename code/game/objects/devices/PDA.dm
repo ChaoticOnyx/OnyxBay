@@ -83,6 +83,16 @@
 	owner = "John Doe"
 	toff = 1
 
+/obj/item/device/pda/b1
+	default_cartridge = /obj/item/weapon/cartridge/head
+	icon_state = "pda-black1"
+	toff = 1
+
+/obj/item/device/pda/b2
+	default_cartridge = /obj/item/weapon/cartridge/head
+	icon_state = "pda-black2"
+	toff = 1
+
 /obj/item/device/pda/chaplain
 
 /obj/item/weapon/cartridge
@@ -425,7 +435,7 @@
 	var/list/botstatus			// the status signal sent by the bot
 	var/list/beacons
 
-	var/beacon_freq = 1445
+	var/beacon_freq = 1337
 	var/control_freq = 1447
 
 	// create a new QM cartridge, and register to receive bot control & beacon message

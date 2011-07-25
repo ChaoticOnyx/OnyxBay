@@ -12,7 +12,7 @@
 	if(!xquery.Execute())
 		log_admin("[xquery.ErrorMsg()]")
 	if(!yquery.Execute())
-		world << "[yquery.ErrorMsg()]"
+		log_admin("[yquery.ErrorMsg()]")
 
 /proc/jobban_isbanned(mob/M, rank)
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT `rank` FROM `jobban` WHERE ckey='[M.ckey]'")

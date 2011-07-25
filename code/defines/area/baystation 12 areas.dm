@@ -846,3 +846,14 @@ area/bs12/propulsion/starboard
 /area/test/hallway/north
 	name = "North Hallway"
 	icon_state = "nhallway"
+
+// new arrivals areas
+area/bs12/arrivals/hallway
+	name = "Arrivals Hallway"
+	icon_state = "arrivalshall"
+	music = ""
+
+area/bs12/arrivals/escapehang
+	name = "Escape Hangar"
+	icon_state = "arrivalsescapepod"
+	music = ""

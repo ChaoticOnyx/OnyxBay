@@ -461,7 +461,7 @@
 	name = "Appetiser Effect"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob << "\red You feel hungry."
+		mob.nutrition = max(0, mob.nutrition - 200)
 
 /datum/disease2/effect/lesser/groan
 	name = "Groaning Syndrome"

@@ -13,14 +13,14 @@
 	desc = "A mysterious package."
 	w_class = 3
 
-	var/power = 2.0  /*Size of the explosion.*/
+	var/power = 1  /*Size of the explosion.*/
 	var/size = "small"  /*Used for the icon, this one will make c-4small_0 for the off state.*/
 
 /obj/item/weapon/syndie/c4explosive/heavy
 	icon_state = "c-4large_0"
 	item_state = "c-4large"
 	desc = "A mysterious package, it's quite heavy."
-	power = 3
+	power = 2
 	size = "large"
 
 /obj/item/weapon/syndie/c4explosive/New()
@@ -35,7 +35,16 @@
 /obj/item/weapon/syndie/c4explosive/proc/detonate()
 	icon_state = "c-4[size]_1"
 	spawn(50*tick_multiplier)
-	explosion(get_turf(src), power, power*2, power*3, power*4, power*4)
+		explosion(get_turf(src), power, power*2, power*3, power*4, power*4)
+		for(var/dirn in cardinal)		//This is to guarantee that C4 at least breaks down all immediately adjacent walls and doors.
+			var/turf/simulated/wall/T = get_step(src,dirn)
+			if(locate(/obj/machinery/door/airlock) in T)
+				var/obj/machinery/door/airlock/D = locate() in T
+				if(D.density)
+					D.forceopen()
+			if(istype(T,/turf/simulated/wall))
+				T.dismantle_wall(1)
+		del(src)
 
 
 /*Detonator, disguised as a lighter*/

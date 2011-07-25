@@ -241,9 +241,14 @@
 				tally += 1.3
 			if(/obj/item/clothing/suit/fire/heavy)	//	firesuits slow you down a bit
 				tally += 1.7
+			if(/obj/item/clothing/suit/armor/riot) //	riot gear is heavy mang
+				tally += 2
 			if(/obj/item/clothing/suit/space)
 				if(!istype(loc, /turf/space))		//	space suits slow you down a bit unless in space
 					tally += 3
+			if(/obj/item/clothing/suit/space/spaceengi)
+				if(!istype(loc, /turf/space))		//	reinstating the slowdown for engineering suits~ :3
+					tally += 2
 
 	if (istype(shoes, /obj/item/clothing/shoes))
 		if (shoes.chained)
@@ -318,7 +323,7 @@
 
 		var/d = 51
 
-		if (istype(wear_suit, /obj/item/clothing/suit/armor))
+		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 			if (prob(70))
 				show_message("\red Your armor absorbs the hit!", 4)
 				return
@@ -354,7 +359,7 @@
 
 	else if (flag == PROJECTILE_TASER)
 		if(zombie) return
-		if (istype(wear_suit, /obj/item/clothing/suit/armor))
+		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 			if (prob(5))
 				show_message("\red Your armor absorbs the hit!", 4)
 				return
@@ -372,7 +377,7 @@
 
 	else if(flag == PROJECTILE_LASER)
 		var/d = 20
-		if (istype(wear_suit, /obj/item/clothing/suit/armor))
+		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 			if (prob(40))
 				show_message("\red Your armor absorbs the hit!", 4)
 				return
@@ -411,7 +416,7 @@
 
 	else if(flag == PROJECTILE_PULSE)
 		var/d = 40
-		if (istype(wear_suit, /obj/item/clothing/suit/armor))
+		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 			if (prob(20))
 				show_message("\red Your armor absorbs the hit!", 4)
 				return
@@ -1244,7 +1249,7 @@
 					for(var/mob/O in viewers(src, null))
 						O.show_message(text("\red <B>[M.name] has attempted to bite []!</B>", src), 1)
 					return
-			else if (istype(wear_suit, /obj/item/clothing/suit/armor))
+			else if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 				if (prob(25))
 					for(var/mob/O in viewers(src, null))
 						O.show_message(text("\red <B>[M.name] has attempted to bite []!</B>", src), 1)
@@ -1305,7 +1310,7 @@
 					for(var/mob/O in viewers(src, null))
 						O.show_message(text("\red <B>[M.name] has attempted to bite []!</B>", src), 1)
 					return
-			else if (istype(wear_suit, /obj/item/clothing/suit/armor))
+			else if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 				if (prob(25))
 					for(var/mob/O in viewers(src, null))
 						O.show_message(text("\red <B>[M.name] has attempted to bite []!</B>", src), 1)
@@ -1474,6 +1479,7 @@
 		M << "No attacking people at spawn, you jackass."
 		return
 
+/*Removed stungloves as they are dodgy weapons :3. -CN
 	if ((M.gloves && M.gloves.elecgen == 1 && M.a_intent == "hurt") /*&& (!istype(src:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
 		if(M.gloves.uses > 0)
 			M.gloves.uses--
@@ -1490,6 +1496,7 @@
 			M.gloves.elecgen = 0
 			M << "\red Not enough charge! "
 			return
+			*/
 
 	if (M.a_intent == "help")
 		if (M.zombie)
@@ -1557,7 +1564,7 @@
 						if(!zombie && !virus2)
 							// lower chance if wearing a suit
 							var/pr = 0
-							if(istype(wear_suit, /obj/item/clothing/suit/armor))
+							if(istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
 								pr = 70
 							else if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
 								pr = 70

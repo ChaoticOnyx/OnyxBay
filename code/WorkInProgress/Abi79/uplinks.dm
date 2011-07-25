@@ -34,7 +34,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 	var/unlocking_code = "" 	//The unlocking password.
 
 /obj/item/device/uplink/radio
-	name = "station bounced radio"
+	name = "ship bounced radio"
 	icon = 'device.dmi'
 	icon_state = "radio"
 	var/temp = null 			//Temporary storage area for a message offering the option to destroy the radio
@@ -152,6 +152,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 				item:loc = A
 				A.l_hand = item
 				item:layer = 20
+		usr.update_clothing()
 		usr.client.onBought("[item:name]")
 		if(istype(item, /obj/spawner)) // Spawners need to have del called on them to avoid leaving a marker behind
 			del item

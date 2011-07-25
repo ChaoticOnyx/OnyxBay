@@ -1,10 +1,11 @@
 /obj/item/weapon/reagent_containers/food
 	var/heal_amt = 0
+	var/nutmod = 1
 	proc
 		heal(var/mob/M)
 			if(istype(M, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = M
-				H.nutrition += 2000
+				H.nutrition += 400 * nutmod
 				for(var/A in H.organs)
 					var/datum/organ/external/affecting = null
 					if(!H.organs[A])	continue
@@ -298,7 +299,7 @@
 			src.name = "frosted donut"
 			src.heal_amt = 2
 	heal(var/mob/M)
-		if(istype(M, /mob/living/carbon/human) && M.job in list("Security Officer", "Head of Security", "Detective"))
+		if(istype(M, /mob/living/carbon/human) && M.job in list("Security Officer", "Head of Security", "Forensic Technician"))
 			src.heal_amt *= 2
 			..()
 			src.heal_amt /= 2
@@ -1229,6 +1230,7 @@
 	desc = "Man, that looks good. I bet it's got nougat."
 	icon_state = "candy"
 	heal_amt = 1
+	nutmod = 0.1
 
 /obj/item/weapon/reagent_containers/food/snacks/candy/MouseDrop(mob/user as mob)
 	return src.attack(user, user)
@@ -1238,6 +1240,7 @@
 	desc = "Commander Riker's What-The-Crisps"
 	icon_state = "chips"
 	heal_amt = 2
+	nutmod = 0.1
 
 /obj/item/weapon/reagent_containers/food/snacks/chips/MouseDrop(mob/user as mob)
 	return src.attack(user, user)

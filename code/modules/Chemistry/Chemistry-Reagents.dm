@@ -80,8 +80,8 @@ datum
 					if (!M:intoxicated) M:intoxicated = 1
 					M:intoxicated += 3
 				if(data >= 90 && prob(33))
-					if (!M:confused) M:confused = 1
-					M:confused += 2
+					if (!M:staggering) M:staggering = 1
+					M:staggering += 2
 				if(data >= 245)
 					M.eye_blurry = max(M.eye_blurry, 10)
 					M:drowsyness  = max(M:drowsyness, 20)
@@ -788,6 +788,7 @@ datum
 			on_mob_life(var/mob/M)
 				M:drowsyness = max(0,M:drowsyness-5)
 				M.bodytemperature = max(310, M.bodytemperature-5) //310 is the normal bodytemp. 310.055
+				M:nutrition += 2
 				..()
 
 		plasma
@@ -1160,4 +1161,10 @@ datum
 			name = "Virus food"
 			id = "virusfood"
 			description = "A set of specially engineered food for the growth of viral cells"
+			reagent_state = LIQUID
+
+		weedkiller
+			name = "Atrazine"
+			id = "weedkiller"
+			description = "A chemical, poisonous to weeds."
 			reagent_state = LIQUID

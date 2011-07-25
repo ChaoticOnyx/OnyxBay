@@ -26,6 +26,7 @@ ZIPPO
 			else
 				user.r_hand = W
 			W.layer = 20
+			user.update_clothing()
 	else
 		return ..()
 	src.update_icon()

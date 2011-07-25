@@ -367,6 +367,8 @@
 
 			if(H)
 				H.UpdateDamageIcon()
+				H.update_clothing()
+			user.update_clothing()
 	else
 		switch(src.damtype)
 			if("brute")

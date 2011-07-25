@@ -1,39 +1,47 @@
 /obj/alien/proc/process()
 	return
 
-/obj/alien/weeds/
+/obj/item/alien/weeds/
 	layer = 2
-	var/health = 15
+	health = 15
+	icon = 'alien.dmi'
+	name = "weeds"
+	anchored = 1
 	var/dead = 0
 	var/list/allowed = list(/obj/closet,/obj/table,/obj/machinery/computer,/obj/machinery/disposal)
+	var/spreadlimit = 10
 
-/obj/alien/weeds/New()
+/obj/item/alien/weeds/New()
 	//del(src)
 	//return
 	if(istype(src.loc, /turf/space))
 		del(src)
 		return
 	processing_items.Add(src)
-/obj/alien/weeds/process()
+/obj/item/alien/weeds/process()
 	if(dead) return
-	var/turf/T = src.loc
-	var/obj/alien/weeds/north = locate() in T.north
-	var/obj/alien/weeds/west = locate() in T.west
-	var/obj/alien/weeds/east = locate() in T.east
-	var/obj/alien/weeds/south = locate() in T.south
+/*	var/turf/T = src.loc
+	var/obj/item/alien/weeds/north = locate() in T.north
+	var/obj/item/alien/weeds/west = locate() in T.west
+	var/obj/item/alien/weeds/east = locate() in T.east
+	var/obj/item/alien/weeds/south = locate() in T.south
+
 	if(north && west && east && south)
 		dead = 1
 		return
 	if(!north||!west||!east||!south)
 		Life()
+*/
+	dead = 1	//No real reason for a weed to spread more than once.
+	Life()
 	updateicon(0)
 
-/obj/alien/weeds/proc/updateicon(var/spread = 1)
+/obj/item/alien/weeds/proc/updateicon(var/spread = 1)
 	var/turf/T = src.loc
-	var/obj/alien/weeds/north = locate() in T.north
-	var/obj/alien/weeds/west = locate() in T.west
-	var/obj/alien/weeds/east = locate() in T.east
-	var/obj/alien/weeds/south = locate() in T.south
+	var/obj/item/alien/weeds/north = locate() in T.north
+	var/obj/item/alien/weeds/west = locate() in T.west
+	var/obj/item/alien/weeds/east = locate() in T.east
+	var/obj/item/alien/weeds/south = locate() in T.south
 	src.overlays = null
 	var/dir
 
@@ -64,7 +72,9 @@
 
 	return
 
-/obj/alien/weeds/proc/Life()
+/obj/item/alien/weeds/proc/Life()
+	if (spreadlimit <= 0)
+		return
 	src.updateicon(0)
 	var/turf/U = src.loc
 	if (istype(U, /turf/space))
@@ -84,38 +94,45 @@
 	//	sleep(100)
 	//	if(prob(50))
 	//		continue
-		sleep(10)
+		//sleep(10)
 		var/turf/T = get_step(src,dirn)
 		if (istype(T.loc, /area/shuttle/arrival))
 			continue
 
 		if(T.density)
 			continue
-		if(locate(/obj/machinery/door) in T)
-			var/obj/machinery/door/D = locate() in T
-			if(D.density)
-				D.forceopen()
-			sleep(10)
-			var/obj/alien/weeds/B = new(src.loc)
-			B.icon_state = ""
-			if(T.Enter(B) && !(locate(/obj/alien/weeds) in T))
-				B.loc = T
-				B.Life()
-				B.updateicon(1)
+		if(locate(/obj/machinery/door/airlock) in T)
+			if(locate(/obj/machinery/door/airlock/external) in T)
 				continue
-			else
-				del(B)
+			if(!locate(/obj/item/alien/weeds) in T)
+			//	src.dead = 0
+				var/obj/machinery/door/airlock/D = locate() in T
+				if(D.density)
+					D.forceopen()
+				//sleep(10)
+				var/obj/item/alien/weeds/B = new(src.loc)
+				B.icon_state = ""
+				B.spreadlimit = src.spreadlimit - 1
+				if(T.Enter(B) && !(locate(/obj/alien/weeds) in T))
+					B.loc = T
+					//B.Life()
+					B.updateicon(1)
+					continue
+				else
+					del(B)
 		if(locate(/obj/closet) in T || locate(/obj/table) in T || locate(/obj/machinery/computer) in T || locate(/obj/machinery/disposal) in T)
-			var/obj/alien/weeds/B = new(T)
-			B.Life()
+			var/obj/item/alien/weeds/B = new(T)
+			B.spreadlimit = src.spreadlimit - 1
+			//B.Life()
 			B.updateicon(1)
 			continue
-		if(!locate(/obj/alien/weeds) in T)
-			var/obj/alien/weeds/B = new(src.loc)
+		if(!locate(/obj/item/alien/weeds) in T)
+			var/obj/item/alien/weeds/B = new(src.loc)
+			B.spreadlimit = src.spreadlimit - 1
 			B.icon_state = ""
 			if(T.Enter(B))
 				B.loc = T
-				B.Life()
+				//B.Life()
 				B.updateicon(1)
 				continue
 			else
@@ -183,7 +200,7 @@
 			// open cell, so expand
 			*/*/
 
-/obj/alien/weeds/ex_act(severity)
+/obj/item/alien/weeds/ex_act(severity)
 	switch(severity)
 		if(1.0)
 			del(src)
@@ -199,7 +216,13 @@
 		else
 	return
 
-/obj/alien/weeds/attackby(obj/item/weapon/weldingtool/P as obj, mob/user as mob)
+/obj/item/alien/weeds/attack_hand(mob/user as mob)
+	return
+
+/obj/item/alien/weeds/attack_paw(mob/user as mob)
+	return
+
+/obj/item/alien/weeds/attackby(obj/item/weapon/weldingtool/P as obj, mob/user as mob)
 	if (istype(P, /obj/item/weapon/weldingtool))
 		if ((P:welding && P:welding))
 			for(var/mob/O in viewers(user, null))

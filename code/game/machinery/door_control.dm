@@ -119,6 +119,15 @@
 	var/icon_normal = "leverbig0"
 	var/needspower = 0
 
+/obj/machinery/door_control/vent_control/attack_ai(mob/user as mob)
+	if (in_range(src, user) && get_dist(src, user) <= 1 && istype(user, /mob/living/silicon/robot))
+		src.attack_hand(user)
+		return
+	else
+		user << "This switch is operated by hydraulics, you cannot use it remotely."
+		return	//lolno
+	return	//just in case
+
 /obj/machinery/door_control/vent_control/attack_hand(mob/user as mob)
 	if(stat & (NOPOWER|BROKEN))
 		return

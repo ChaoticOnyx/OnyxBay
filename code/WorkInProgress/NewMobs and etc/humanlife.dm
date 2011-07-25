@@ -18,6 +18,8 @@
 		sight |= SEE_MOBS
 		see_in_dark = 4
 		see_invisible = 2
+	else if (istype(head, /obj/item/clothing/head/helmet/welding))
+		see_in_dark = 1
 	else if (stat != 2)
 		sight &= ~SEE_TURFS
 		sight &= ~SEE_MOBS
@@ -89,6 +91,8 @@
 	client.screen -= hud_used.r_dither
 	client.screen -= hud_used.gray_dither
 	client.screen -= hud_used.lp_dither
+	client.screen -= hud_used.breath
+	client.screen -= hud_used.welding
 
 	if ((blind && stat != 2))
 		if ((blinded))
@@ -114,8 +118,14 @@
 			if (istype(glasses, /obj/item/clothing/glasses/sunglasses))
 				client.screen += hud_used.gray_dither
 
+			if (istype(head, /obj/item/clothing/head/helmet/riot))
+				client.screen += hud_used.gray_dither
+
 			if (istype(glasses, /obj/item/clothing/glasses/meson))
 				client.screen += hud_used.lp_dither
+
+			if (istype(head, /obj/item/clothing/head/helmet/welding))
+				client.screen += hud_used.welding
 
 	if (stat != 2)
 		if (machine)
@@ -302,11 +312,13 @@
 		druggy = max(0, druggy)
 
 	if(src.stat != 2)
-		if(lastnutritioncomplaint > world.timeofday)
-			lastnutritioncomplaint = 0
-		if(world.timeofday >= lastnutritioncomplaint + 6000)
-			lastnutritioncomplaint  = world.timeofday
-			src << pick("You feel hungry", "You feel thirsty", "Perhaps you should grab a bite to eat", "Your stomach rumbles")
+		if(nutrition == 0)
+			if(lastnutritioncomplaint > world.timeofday)
+				lastnutritioncomplaint = 0
+			if(world.timeofday >= lastnutritioncomplaint + 6000)
+				lastnutritioncomplaint  = world.timeofday
+				src << pick("You feel hungry", "You feel thirsty", "Perhaps you should grab a bite to eat", "Your stomach rumbles", "Perhaps you should have a drink...","You feel empty inside", "You feel a bit peckish","Whatever you last ate didn't do much to fill you up...","Hmm, some pizza would be nice",)
+				//world << "nutrition is now 0 for [src.name]"
 
 	return 1
 
@@ -375,6 +387,8 @@
 	else
 		target.show_message("\blue You hear a voice: [say]")
 	usr.show_message("\blue You project your mind into [target.real_name]: [say]")
+	for(var/mob/dead/observer/G in world)
+		G.show_message("<i>Telepathic message from <b>[src]</b> to <b>[target]</b>: [say]</i>")
 
 /mob/living/carbon/human/proc/remoteobserve()
 	set name = "Remote View"

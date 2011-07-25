@@ -9,7 +9,8 @@
 	New()
 
 proc/setupasteroid()
-	var/list/maps = list("bone","cartel")
+	return
+/*	var/list/maps = list("bone","cartel")
 	for(var/obj/landmark/mapload/asteroid/m in world)
 		if(maps.len&&rand(0,1)==1)
 			var/map = pick(maps)
@@ -80,3 +81,5 @@ proc/setupasteroid()
 				var/turf/w = walls[Xa]
 				var/turf/simulated/asteroid/wall/f = new(locate(w.x,w.y, w.z))
 				walls[Xa] = f
+*/
+/*Mloc hates laggy asteroid generators~*/

@@ -16,6 +16,9 @@ RACK PARTS
 		del(src)
 
 /obj/item/weapon/table_parts/attack_self(mob/user as mob)
+	spawn()
+		new /datum/construction_UI/table (user.loc, user, src)
+	/*
 	var/state = input(user, "What type of table?", "Assembling Table", null) in list( "middle","sides", "corners", "alone", "narrow corners", "narrow tables", "narrow end tables" )
 	var/direct = SOUTH
 	var/i_state
@@ -44,6 +47,7 @@ RACK PARTS
 	T.add_fingerprint(user)
 	del(src)
 	return
+	*/
 
 
 
@@ -56,6 +60,9 @@ RACK PARTS
 		del(src)
 
 /obj/item/weapon/table_parts/reinforced/attack_self(mob/user as mob)
+	spawn()
+		new /datum/construction_UI/table/reinforced (user.loc, user, src)
+	/*
 	var/state = input(user, "What type of table?", "Assembling Table", null) in list( "middle","sides", "corners", "alone", "narrow corners", "narrow tables", "narrow end tables" )
 	var/direct = SOUTH
 	var/i_state
@@ -84,6 +91,7 @@ RACK PARTS
 	T.add_fingerprint(user)
 	del(src)
 	return
+	*/
 
 
 

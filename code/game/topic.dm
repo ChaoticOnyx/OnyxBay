@@ -160,7 +160,9 @@ client/proc/testjson()
  	world.makejson()
 proc/send2irc(msg,msg2)
  	shell("python26 nudge.py [msg] [msg2]")
-
+proc/send2adminirc(channel,msg)
+	world << channel << " "<< msg
+	shell("python26 nudge.py '[channel]' [msg]")
 proc/replacetext(haystack, needle, replace)
 	if(!haystack || !needle || !replace)
 		return

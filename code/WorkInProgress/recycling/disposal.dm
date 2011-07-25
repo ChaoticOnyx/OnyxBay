@@ -1,4 +1,4 @@
-/obj/machinery/disposal/biohazard
+/obj/machinery/disposal/small
 	name = "Biohazard Research Center Dispatch Chute"
 
 	attackby(var/obj/item/I, var/mob/user)
@@ -115,7 +115,7 @@
 	// mouse drop another mob or self
 	//
 	MouseDrop_T(mob/target, mob/user)
-		if (!istype(target) || target.buckled || get_dist(user, src) > 1 || get_dist(user, target) > 1 || user.stat || istype(user, /mob/living/silicon/ai))
+		if (!istype(target) || target.buckled || get_dist(user, src) > 1 || get_dist(user, target) > 1 || user.stat || istype(user, /mob/living/silicon/ai) || user.restrained() || user.stunned || user.weakened)
 			return
 
 		var/msg

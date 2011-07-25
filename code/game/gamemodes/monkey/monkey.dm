@@ -1,6 +1,7 @@
 /datum/game_mode/monkey
 	name = "monkey"
 	config_tag = "monkey"
+	votable = 0
 
 /datum/game_mode/monkey/announce()
 	world << "<B>The current game mode is - Monkey!</B>"

@@ -175,10 +175,10 @@ obj/fire/proc/process()
 	burn(0.5,0.5)
 	T.burn_tile()
 	for(var/dirs in cardinal)
+		if(prob(50))
+			continue
 		var/turf/simulated/floor/TS = get_step(src,dirs)
 		if(!TS || !TS.air)
-			continue
-		if(prob(50))
 			continue
 		if(locate(/obj/fire) in TS)
 			continue
@@ -190,10 +190,11 @@ obj/fire/proc/process()
 obj/fire/proc/burn(tox,oxy)
 	var/turf/simulated/floor/T = src.loc
 //	var/datum/gas_mixture/affected = T.air.remove_ratio(volume/T.air.volume)
-	T.air.oxygen -= oxy
-	T.air.toxins -= tox
-	T.air.carbon_dioxide += oxy + tox
-	T.air.temperature += tox
+	T.air.oxygen -= round(oxy)
+	T.air.toxins -= round(tox)
+	var/newco = round(oxy + tox)
+	T.air.carbon_dioxide += newco/4
+	T.air.temperature += round(tox)
 
 /*mob/verb/createfire()
 	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)

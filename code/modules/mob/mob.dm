@@ -99,7 +99,7 @@
 /mob/var/charges = 0.0
 /mob/var/urine = 0.0
 /mob/var/poo = 0.0
-/mob/var/nutrition = 18000  //dun break
+/mob/var/nutrition = 1600 //dun break
 /mob/var/paralysis = 0.0
 /mob/var/stunned = 0.0
 /mob/var/weakened = 0.0
@@ -148,6 +148,8 @@
 
 /mob/var/underwear = 1
 /mob/var/be_syndicate = 0
+/mob/var/be_nuke_agent = 0
+/mob/var/be_takeover_agent = 0
 /mob/var/be_random_name = 0
 /mob/var/const/blindness = 1
 /mob/var/const/deafness = 2
@@ -441,6 +443,8 @@ mob/verb/turnwest()
 	if(!M || !M.client || M.shakecamera)
 		return
 	spawn(1)
+		if(!M.client)
+			return
 		var/oldeye=M.client.eye
 		var/x
 		M.shakecamera = 1
@@ -1061,13 +1065,25 @@ mob/verb/turnwest()
 				for(var/mob/O in viewers(usr))
 					O.show_message(text("\red <B>[] attempts to remove the handcuffs!</B>", usr), 1)
 				spawn(0)
-					if(do_after(usr, breakouttime))
-						if(!usr:handcuffed) return
-						for(var/mob/O in viewers(usr))
-							O.show_message(text("\red <B>[] manages to remove the handcuffs!</B>", usr), 1)
-						usr << "\blue You successfully remove your handcuffs."
-						usr:handcuffed:loc = usr:loc
-						usr:handcuffed = null
+					var/increment = 150
+					for(var/i = 0, i < breakouttime, i += increment)
+						if(!do_after(usr, increment))
+							return
+
+						else
+							usr << pick("You hear something click, but it doesn't open yet.",	// - Uristqwerty
+										"The latch resists!",									// - IRC: BowlSoldier
+										"The chain is starting to give!",						// - IRC: BowlSoldier
+										"The chain bends a little.",							// - IRC: STALKER
+										"Your wrist hurts.",									// - IRC: STALKER
+										"Unnng")												// - IRC: Doug_H_Nuts
+
+					if(!usr:handcuffed) return
+					for(var/mob/O in viewers(usr))
+						O.show_message(text("\red <B>[] manages to remove the handcuffs!</B>", usr), 1)
+					usr << "\blue You successfully remove your handcuffs."
+					usr:handcuffed:loc = usr:loc
+					usr:handcuffed = null
 
 		else
 			DblClick()
@@ -1439,6 +1455,24 @@ mob/verb/turnwest()
 	if ((stat != 2 || !( ticker )))
 		usr << "\blue <B>You must be dead to use this!</B>"
 		return
+	if (ticker.mode.name == "AutoTraitor")
+		var/deathtime = world.time - src.timeofdeath
+		var/deathtimeminutes = round(deathtime / 600)
+		var/pluralcheck = "minute"
+		if(deathtimeminutes == 0)
+			pluralcheck = ""
+		else if(deathtimeminutes == 1)
+			pluralcheck = " [deathtimeminutes] minute and"
+		else if(deathtimeminutes > 1)
+			pluralcheck = " [deathtimeminutes] minutes and"
+		var/deathtimeseconds = round((deathtime - deathtimeminutes * 600) / 10,1)
+		usr << "You have been dead for[pluralcheck] [deathtimeseconds] seconds ."
+		if (deathtime < 36000)
+			usr << "You must wait 60 minutes to respawn!"
+			return
+		else
+			usr << "You can respawn now, enjoy your new life! :-D"
+
 
 	log_game("[usr.name]/[usr.key] used abandon mob.")
 
@@ -2005,10 +2039,10 @@ mob/verb/turnwest()
 	if (isbanned)
 		log_access("Failed Login: [src] - Banned")
 		message_admins("\blue Failed Login: [src] - Banned")
-		alert(src,"You have been banned.\nReason : [isbanned]","Ban","Ok")
+		alert(src,"You have been banned.\nReason : [isbanned]","You're banned!","OK")
 		del(src)
 	if(IsGuestKey(src.key))
-		alert(src,"Baystation12 doesn't allow guest accounts to play. Please go to http:\\www.byond.com and register for a key.","Guest","Ok")
+		alert(src,"Baystation12 doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
 		del(src)
 	if (((world.address == address || !(address)) && !(host)))
 		host = key

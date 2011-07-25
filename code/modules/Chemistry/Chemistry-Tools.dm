@@ -292,9 +292,14 @@
 		return
 
 	New()
-		var/datum/reagents/R = new/datum/reagents(1000)
-		reagents = R
-		R.my_atom = src
+		if(istype(src, /obj/reagent_dispensers/hvwatertank/))
+			var/datum/reagents/R = new/datum/reagents(3000)
+			reagents = R
+			R.my_atom = src
+		else
+			var/datum/reagents/R = new/datum/reagents(1000)
+			reagents = R
+			R.my_atom = src
 
 	examine()
 		set src in view(2)
@@ -405,8 +410,12 @@
 				user << "\red [src] is full."
 				return
 
-			var/trans = target.reagents.trans_to(src, 10)
-			user << "\blue You fill [src] with [trans] units of the contents of [target]."
+			if(istype(src, /obj/item/weapon/reagent_containers/glass/wateringcan))
+				var/trans = target.reagents.trans_to(src, 30)
+				user << "\blue You fill [src] with [trans] units of the contents of [target]."
+			else
+				var/trans = target.reagents.trans_to(src, 10)
+				user << "\blue You fill [src] with [trans] units of the contents of [target]."
 
 		else if(target.is_open_container() && target.reagents) //Something like a glass. Player probably wants to transfer TO it.
 			if(!reagents.total_volume)
@@ -420,7 +429,7 @@
 			var/trans = src.reagents.trans_to(target, 10)
 			user << "\blue You transfer [trans] units of the solution to [target]."
 
-		else if(reagents.total_volume  && !istype(target,/obj/machinery/chem_master/) && !istype(target,/obj/machinery/disease2/incubator) && !istype(target,/obj/machinery/disposal) && !istype(target,/obj/table) && !istype(target,/obj/secure_closet) && !istype(target,/obj/closet) && !istype(target,/obj/item/weapon/storage) && !istype(target, /obj/machinery/atmospherics/unary/cryo_cell) && !istype(target, /obj/item/weapon/chem_grenade) && !istype(target, /obj/machinery/bot/medbot))
+		else if(reagents.total_volume  && !istype(target,/obj/machinery/chem_master/) && !istype(target,/obj/machinery/disease2/incubator) && !istype(target,/obj/machinery/disposal) && !istype(target,/obj/table) && !istype(target,/obj/secure_closet) && !istype(target,/obj/closet) && !istype(target,/obj/item/weapon/storage) && !istype(target, /obj/machinery/atmospherics/unary/cryo_cell) && !istype(target, /obj/item/weapon/chem_grenade) && !istype(target, /obj/machinery/bot/medbot) && !istype(target, /obj/machinery/plantpot))
 			user << "\blue You splash the solution onto [target]."
 			src.reagents.reaction(target, TOUCH)
 			spawn(5) src.reagents.clear_reagents()
@@ -1154,6 +1163,17 @@
 	New()
 		..()
 		reagents.add_reagent("water",1000)
+
+/obj/reagent_dispensers/hvwatertank
+	name = "high-volume watertank"
+	desc = "A large watertank"
+	icon = 'objects.dmi'
+	icon_state = "hvwatertank"
+	amount_per_transfer_from_this = 10
+
+	New()
+		..()
+		reagents.add_reagent("water",3000)
 
 /obj/reagent_dispensers/fueltank
 	name = "fueltank"

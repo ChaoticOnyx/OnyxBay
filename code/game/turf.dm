@@ -640,7 +640,9 @@ turf/simulated/floor/proc/update_icon()
 				if(do_after(user, 30))
 					ReplaceWithEngineFloor()
 					C:amount -= 2
-					if (C:amount <= 0) del(C) //wtf
+					if (C:amount <= 0)
+						user.u_equip(C)
+						del(C) //wtf
 					playsound(src.loc, 'Deconstruct.ogg', 80, 1)
 			else
 				if (istype(src,/turf/simulated/floor/open))
@@ -656,8 +658,16 @@ turf/simulated/floor/proc/update_icon()
 		var/obj/item/weapon/tile/T = C
 		playsound(src.loc, 'Genhit.ogg', 50, 1)
 		if(--T.amount < 1)
+			user.u_equip(C)
 			del(T)
 			return
+
+	if(istype(C, /obj/item/weapon/table_parts))
+		spawn()
+			if(istype(C, /obj/item/weapon/table_parts/reinforced))
+				new /datum/construction_UI/table/reinforced(src, user, C)
+			else
+				new /datum/construction_UI/table(src, user, C)
 
 	if(istype(C, /obj/item/weapon/CableCoil))
 		if(!intact)

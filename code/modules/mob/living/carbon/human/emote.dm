@@ -463,6 +463,9 @@
 				message = "<B>[src]</B> cancels destory station: Drinking"
 			else
 				message = "<B>[src]</B> thirsty"
+		if ("vomit")
+			message = vomit(1) //this way it can do all of food and thign overeating
+			m_type = 1
 
 		if ("help")
 			src << "blink, blink_r, blush, bow-(none)/mob, burp, choke, chuckle, clap, collapse, cough,\ncry, custom, deathgasp, drool, eyebrow, frown, gasp, giggle, groan, grumble, handshake, hug-(none)/mob, glare-(none)/mob,\ngrin, laugh, look-(none)/mob, moan, mumble, nod, pale, point-atom, raise, salute, shake, shiver, shrug,\nsigh, signal-#1-10, smile, sneeze, sniff, snore, stare-(none)/mob, tremble, twitch, twitch_s, whimper,\nwink, yawn"

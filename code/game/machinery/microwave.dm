@@ -225,6 +225,13 @@ obj/machinery/microwave/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			user << "It's broken!"
 	else if(src.dirty) // The microwave is all dirty so can't be used!
 		if(istype(O, /obj/item/weapon/cleaner)) // If they're trying to clean it then let them
+			var/obj/item/weapon/cleaner/C = O
+			if(C.saftey == 1)
+				user << "\blue The catch is still on!"
+				return
+			if (C.reagents.total_volume < 1)
+				user << "\blue Its empty!"
+				return
 			for(var/mob/V in viewers(src, null))
 				V.show_message(text("\blue [user] starts to clean the [name]."))
 			sleep(20)

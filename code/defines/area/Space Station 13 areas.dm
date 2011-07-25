@@ -73,6 +73,14 @@
 	luminosity = 1
 	ul_Lighting = 0
 
+/area/adminsafety
+	name = "Admin safe zone"
+	icon_state = "start"
+	applyalertstatus = 0
+	requires_power = 0
+	luminosity = 1
+	ul_Lighting = 0
+
 //These are shuttle areas, they must contain two areas in a subgroup if you want to move a shuttle from one
 //place to another. Look at escape shuttle for example.
 
@@ -86,10 +94,10 @@
 	name = "Arrival Shuttle"
 
 /area/shuttle/arrival/pre_game
-	icon_state = "shuttle2"
+	icon_state = "shuttle1_2"
 
 /area/shuttle/arrival/station
-	icon_state = "shuttle"
+	icon_state = "shuttle1_1"
 
 /area/shuttle/escape
 	name = "Escape Pod"
@@ -100,21 +108,27 @@
 
 /area/shuttle/escape/transit/pod1
 	name = "Escape Pod B"
+	icon_state = "shuttle1_2"
 
 /area/shuttle/escape/transit/pod2
 	name = "Escape Pod A"
+	icon_state = "shuttle2_2"
 
 /area/shuttle/escape/station/pod1
 	name = "Escape Pod B"
+	icon_state = "shuttle1_1"
 
 /area/shuttle/escape/station/pod2
 	name = "Escape Pod A"
+	icon_state = "shuttle2_1"
 
 /area/shuttle/escape/centcom/pod1
 	name = "Escape Pod B"
+	icon_state = "shuttle1_3"
 
 /area/shuttle/escape/centcom/pod2
 	name = "Escape Pod A"
+	icon_state = "shuttle2_3"
 
 /area/shuttle/escape/station
 	icon_state = "shuttle2"
@@ -126,13 +140,17 @@
 	name = "Prison Shuttle"
 
 /area/shuttle/prison/station
-	icon_state = "shuttle"
+	icon_state = "shuttle1_1"
 
 /area/shuttle/prison/prison
-	icon_state = "shuttle2"
+	icon_state = "shuttle1_2"
 
 /area/shuttle/prison/transit
-	icon_state = "shuttle2"
+	icon_state = "shuttle1_2"
+
+/area/shuttle/prison/holding
+	icon_state = "shuttle1_1"
+
 
 // === Trying to remove these areas:
 
@@ -233,6 +251,7 @@
 	name = "Centcom"
 	icon_state = "purple"
 	requires_power = 0
+	ul_Lighting = 0
 	applyalertstatus = 0
 
 /area/atmos
@@ -541,6 +560,10 @@
 	name = "Locker Room"
 	icon_state = "locker"
 
+/area/crew_quarters/laundry
+	name = "Laundry Room"
+	icon_state = "laundry"
+
 /area/crew_quarters/sleeping/
 	icon_state = "bedroom"
 
@@ -713,6 +736,14 @@
 	name = "Medical Research"
 	icon_state = "medresearch"
 
+/area/medical/medbay_hall
+	name = "Medical Hallway"
+	icon_state = "medbay_hall"
+
+/area/medical/medbay_restricted_hall
+	name = "Restricted Medical Hallway"
+	icon_state = "medbay_restricted_hall"
+
 /area/anomalist
 	name = "Anomaly lab"
 	icon_state = "medresearch"
@@ -772,12 +803,24 @@
 
 
 /area/security/detectives_office
-	name = "Detectives Office"
+	name = "Forensic Technician's Office"
 	icon_state = "detective"
 
 /area/security/head_of_security_office
 	name = "Head of Security's Office"
 	icon_state = "hos"
+
+/area/security/officer_lounge
+	name = "Security Lounge"
+	icon_state = "officer_lounge"
+
+/area/security/forensics
+	name = "Forensics"
+	icon_state = "forensics"
+
+/area/security/interrogation
+	name = "Interrogation Room"
+	icon_state = "interrogation"
 
 /area/solar
 	requires_power = 0
@@ -837,6 +880,25 @@
 	name = "Quartermaster's Storage"
 	icon_state = "quartstorage"
 
+/area/quartermaster/quart_med
+	name = "Quatermaster's Medical Storage"
+	icon_state = "quart_med"
+
+/area/quartermaster/quart_eng
+	name = "Quartermaster's Engineering Storage"
+	icon_state = "quart_eng"
+
+/area/quartermaster/quart_gen
+	name = "Quartermaster's General Storage"
+	icon_state = "quart_gen"
+
+/area/quartermaster/quart_sec
+	name = "Quartermaster's Security Storage"
+	icon_state = "quart_sec"
+
+/area/quartermaster/quart_pub_access
+	name = "Quartermaster's Public Access Hallway"
+	icon_state = "quart_pub_access"
 
 /area/quartermaster/
 	name = "Quartermaster's"
