@@ -411,6 +411,7 @@
 	set name = "Hide Admin Verbs"
 	verbs -= averbs
 	verbs -= /client/proc/disable_averbs
+	verbs += /client/proc/cmd_admin_say
 	verbs += /client/proc/enable_averbs
 
 /client/proc/enable_averbs()
@@ -763,7 +764,7 @@
 		M.s_tone = max(min(round(text2num(new_tone)), 220), 1)
 		M.s_tone =  -M.s_tone + 35
 
-	var/new_style = input("Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Fag", "Bedhead", "Dreadlocks", "Ponytail", "Bald" )
+	var/new_style = input("Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Wave", "Bedhead", "Dreadlocks", "Ponytail", "Bald" )
 
 	if (new_style)
 		M.h_style = new_style
@@ -782,6 +783,7 @@
 	M.update_body()
 	M.update_face()
 	M.update_hair()
+	M.update_clothing()
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"

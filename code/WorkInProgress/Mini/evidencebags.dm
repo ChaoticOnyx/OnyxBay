@@ -10,7 +10,7 @@
 */
 
 /obj/item/weapon/evidencebag/afterattack(obj/item/O, mob/user as mob)
-	if(!(O && istype(O)))
+	if(!(O && istype(O)) || O.anchored == 0)
 		user << "You can't put that inside the [src]!"
 		return
 	if(src.contents.len > 0)

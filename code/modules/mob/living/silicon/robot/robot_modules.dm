@@ -59,7 +59,6 @@
 
 /obj/item/weapon/robot_module/security/New()
 	modules += new /obj/item/weapon/baton(src)
-
 	modules += new /obj/item/weapon/handcuffs(src)
 	modules += new /obj/item/weapon/gun/energy/taser_gun(src)
 	modules += new /obj/item/device/flash(src)

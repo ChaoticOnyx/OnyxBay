@@ -11,11 +11,28 @@
 			message = copytext(message, 3)
 			message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 			robot_talk(message)
+		else if(copytext(message,1,2) == ";" && isrobot(src))
+			message = copytext(message, 2)
+			message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
+			radio_talk(message)
+			return ..(message)
+		else if(copytext(message,1,3) == ":h" && isrobot(src))
+			message = copytext(message, 3)
+			message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
+			secure_talk(message)
+			return ..(message)
 		else
 			return ..(message)
 	else
 		return ..(message)
 
+/mob/living/silicon/proc/radio_talk(var/message)
+	if(src:radio)
+		src:radio.talk_into(src,message)
+
+/mob/living/silicon/proc/secure_talk(var/message)
+	if(src:radio)
+		src:radio.security_talk_into(src,message)
 
 /mob/living/silicon/proc/robot_talk(var/message)
 

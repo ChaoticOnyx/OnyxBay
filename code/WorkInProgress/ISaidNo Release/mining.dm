@@ -219,7 +219,12 @@
 	var/hardness = 1
 	var/amount = null
 	var/event = null
-	New()	//Strumpetplaya - added for totally random asteroids
+	New()
+		..()
+		name = "miningmarker[rand(1,1000)]"
+
+
+/*	New()	//Strumpetplaya - added for totally random asteroids
 		..()
 		name = "miningmarker[rand(1,10)]"
 		switch(rand(1,10))
@@ -235,7 +240,7 @@
 				veintype = 5
 			if(6 to 10)
 				veintype = null
-
+*/
 /obj/landmark/random_asteroid		//Strumpetplaya - added for totally random asteroids.  Place this landmark down wherever you want to generate a random asteroid.
 	name = "RandomAsteroidMarker"
 	icon = 'mark.dmi'
@@ -516,7 +521,7 @@
 			return
 		if(istype(W,/obj/item/weapon/drill) || istype(W,/obj/item/weapon/pickaxe/))
 			if (istype(W,/obj/item/weapon/pickaxe/powered))
-				if (W:status) playsound(user.loc, 'bang.ogg', 100, 1)
+				if (W:status) playsound(user.loc, 'welder.ogg', 100, 1)
 				//else playsound(user.loc, 'pickaxe.ogg', 100, 1)	Strumpetplaya - Commented out as it is currently unsupported
 			//else if (istype(W,/obj/item/weapon/pickaxe)) playsound(user.loc, 'pickaxe.ogg', 100, 1)	Strumpetplaya - Commented out as it is currently unsupported
 			else playsound(user.loc, 'welder.ogg', 100, 1)
@@ -600,7 +605,7 @@
 
 			var/collapse = 0
 			if (src.weakened && prob(90)) collapse = 1
-			playsound(user.loc, 'bang.ogg', 100, 1)
+			playsound(user.loc, 'welder.ogg', 100, 1)
 			user << "You start hammering at the asteroid!"
 			for(var/mob/M in viewers(src))
 				if(M == user)	continue
@@ -673,7 +678,7 @@
 		for(makeores = src.amount, makeores > 0, makeores--)
 			if (src.explosive && plasmacutter)
 				for(var/mob/M in viewers(src)) M.show_message("\red <b>The rock violently explodes!</b>")
-				explosion(src, 2, 4, 6, 12)
+				explosion(src, 2, 4, 6, 12, 1)
 				return
 			switch(src.ore1)
 				if("mauxite") new/obj/item/weapon/ore/mauxite(src)
@@ -702,7 +707,7 @@
 		//if (src.ore2) score_oremined += 1		Strumpetplaya - Commented out as it is currently unsupported
 		switch(src.event)
 			if("artifact")
-				//new/obj/machinery/artifact(src)	Strumpetplaya - Commented out as it is currently unsupported
+				new/obj/item/weapon/artifact(src)
 				for(var/mob/O in viewers(src, null)) O.show_message(text("\blue An artifact was unearthed!"), 1)
 			if("worm")
 				new/obj/critter/rockworm(src)
@@ -745,7 +750,7 @@
 /obj/item/weapon/cutter
 	name = "Plasma Cutter"
 	icon = 'mining.dmi'
-	icon_state = "cutter-a-p"
+	icon_state = "cutter"
 	var/active = 0
 	var/obj/item/weapon/tank/plasma/P = null
 	flags = FPRINT | TABLEPASS| CONDUCT | ONBELT
@@ -893,8 +898,8 @@
 /obj/item/weapon/pickaxe
 	name = "pickaxe"
 	desc = "A thing to bash rocks with until they become smaller rocks."
-	icon = 'weapons.dmi'
-	icon_state = "pickaxe0"
+	icon = 'mining.dmi'
+	icon_state = "pickaxe"
 	w_class = 2
 	flags = ONBELT
 	force = 4
@@ -904,7 +909,7 @@
 	name = "power pick"
 	desc = "An energised mining tool. It has 30 charges left."
 	icon = 'weapons.dmi'
-	icon_state = "pickaxe1"
+	icon_state = "pickaxe0"
 	flags = ONBELT
 	w_class = 2
 	var/charges = 30
@@ -914,7 +919,7 @@
 
 	New()
 		..()
-		src.overlays += image('mining.dmi', "pp-glow")
+		src.overlays += image('weapons.dmi', "pickaxe1")
 		src.status = 1
 		src.minelevel = 2
 
@@ -922,7 +927,7 @@
 		if (src.charges)
 			if (!src.status)
 				user << "You power up [src]."
-				src.overlays += image('mining.dmi', "pp-glow")
+				src.overlays += image('weapons.dmi', "pickaxe1")
 				src.status = 1
 				src.minelevel = 2
 			else

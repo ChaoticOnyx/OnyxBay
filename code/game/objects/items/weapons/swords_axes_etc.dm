@@ -83,7 +83,7 @@ STUN BATON
 
 
 // PICKAXE
-
+/*	Strumpetplaya - Commented this out as it conflicts with the mining pickaxe
 /obj/item/weapon/pickaxe
 	name = "Pickaxe"
 	desc = "An energised pickaxe."
@@ -96,7 +96,6 @@ STUN BATON
 	slash = 1
 	w_class = 3.0
 	flags = FPRINT | CONDUCT | NOSHIELD | TABLEPASS
-
 /obj/item/weapon/pickaxe/attack_self(mob/user as mob)
 	src.active = !( src.active )
 	if (src.active)
@@ -112,7 +111,7 @@ STUN BATON
 	src.add_fingerprint(user)
 	return
 
-
+*/
 // STUN BATON
 
 /obj/item/weapon/baton/proc/update_icon()
