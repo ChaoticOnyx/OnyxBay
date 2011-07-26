@@ -764,7 +764,7 @@
 		M.s_tone = max(min(round(text2num(new_tone)), 220), 1)
 		M.s_tone =  -M.s_tone + 35
 
-	var/new_style = input("Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Fag", "Bedhead", "Dreadlocks", "Ponytail", "Bald" )
+	var/new_style = input("Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Wave", "Bedhead", "Dreadlocks", "Ponytail", "Bald" )
 
 	if (new_style)
 		M.h_style = new_style
@@ -783,6 +783,7 @@
 	M.update_body()
 	M.update_face()
 	M.update_hair()
+	M.update_clothing()
 
 /client/proc/nanoshuttle()
 	set category = "Roleplay"

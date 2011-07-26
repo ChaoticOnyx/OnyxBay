@@ -1710,7 +1710,7 @@
 			hair_icon_state = "hair_d"
 		if("Balding")
 			hair_icon_state = "hair_e"
-		if("Fag")
+		if("Wave")
 			hair_icon_state = "hair_f"
 		if("Bedhead")
 			hair_icon_state = "hair_bedhead"
