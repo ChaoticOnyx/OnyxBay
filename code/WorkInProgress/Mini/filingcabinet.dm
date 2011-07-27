@@ -2,7 +2,7 @@
 	name = "Filing Cabinet"
 	desc = "A large cabinet with drawers."
 	icon = 'computer.dmi'
-	icon_state = "bookcase"
+	icon_state = "messyfiles"
 	density = 1
 	anchored = 1
 
