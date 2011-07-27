@@ -127,14 +127,18 @@ proc/Airflow(zone/A,zone/B,n)
 			if(M.anchored && !ismob(M)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
-				if(istype(src, /mob/living/carbon/human))
-					if(src:buckled) continue
-					if(src:wear_suit)
-						if(src:wear_suit.airflowprot) continue
-						else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
-						M:weakened = max(M:weakened,2)
-				else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
-				M:weakened = max(M:weakened,5)
+				if(M:nodamage) continue
+				if(istype(M, /mob/living/carbon/human))
+					if(M:buckled) continue
+					if(M:wear_suit)
+						if(M:wear_suit.airflowprot) continue
+					if(M:shoes)
+						if(M:shoes.type == /obj/item/clothing/shoes/magnetic) continue
+					if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+					M:weakened = max(M:weakened,2)
+				else
+					if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+					M:weakened = max(M:weakened,5)
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
 			if(istype(M,/obj/item))
 				switch(M:w_class)
@@ -164,14 +168,18 @@ proc/Airflow(zone/A,zone/B,n)
 			if(M.anchored && !ismob(M)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
-				if(istype(src, /mob/living/carbon/human))
-					if(src:buckled) continue
-					if(src:wear_suit)
-						if(src:wear_suit.airflowprot) continue
-						else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
-						M:weakened = max(M:weakened,5)
-				else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
-				M:weakened = max(M:weakened,5)
+				if(M:nodamage) continue
+				if(istype(M, /mob/living/carbon/human))
+					if(M:buckled) continue
+					if(M:wear_suit)
+						if(M:wear_suit.airflowprot) continue
+					if(M:shoes)
+						if(M:shoes.type == /obj/item/clothing/shoes/magnetic) continue
+					if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+					M:weakened = max(M:weakened,2)
+				else
+					if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+					M:weakened = max(M:weakened,5)
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
 			if(istype(M,/obj/item))
 				switch(M:w_class)
@@ -217,14 +225,18 @@ proc/AirflowSpace(zone/A)
 			if(M.anchored && !ismob(M)) continue
 
 			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
+				if(M:nodamage) continue
 				if(istype(M, /mob/living/carbon/human))
 					if(M:buckled) continue
 					if(M:wear_suit)
 						if(M:wear_suit.airflowprot) continue
-						else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
-						M:weakened = max(M:weakened,5)
-				else if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
-				M:weakened = max(M:weakened,5)
+					if(M:shoes)
+						if(M:shoes.type == /obj/item/clothing/shoes/magnetic) continue
+					if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+					M:weakened = max(M:weakened,2)
+				else
+					if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+					M:weakened = max(M:weakened,5)
 
 			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
 			if(istype(M,/obj/item))
@@ -342,6 +354,8 @@ atom/movable
 					if(src:buckled) return
 					if(src:wear_suit)
 						if(src:wear_suit.airflowprot) return
+					if(src:shoes)
+						if(src:shoes.type == /obj/item/clothing/shoes/magnetic) return
 			src << "\red You are sucked away by airflow!"
 		airflow_speed = min(round(n),9)
 		//world << "[src]'s headed to [airflow_dest] at [n] times the SPEED OF LIGHT!"
@@ -391,6 +405,8 @@ atom/movable
 					if(src:buckled) return
 					if(src:wear_suit)
 						if(src:wear_suit.airflowprot) return
+					if(src:shoes)
+						if(src:shoes.type == /obj/item/clothing/shoes/magnetic) return
 			src << "\red You are pushed away by airflow!"
 		airflow_speed = min(round(n),9)
 		//airflow_dest = get_step(src,Get_Dir(airflow_dest,src))

@@ -803,6 +803,9 @@ turf/simulated/floor/proc/update_icon()
 					prob_slip -= 1
 				else if (M.r_hand.w_class <= 2)
 					prob_slip -= 0.5
+			if(istype(M,/mob/living))
+				if(M:shoes)
+					if(M:shoes.type == /obj/item/clothing/shoes/magnetic) prob_slip -= 3
 			prob_slip = round(prob_slip)
 			if (prob_slip < 5) //next to something, but they might slip off
 				if (prob(prob_slip) )

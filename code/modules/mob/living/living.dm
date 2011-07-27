@@ -14,3 +14,8 @@
 /mob/living/var/obj/item/clothing/glasses/glasses = null
 /mob/living/var/obj/item/clothing/head/head = null
 /mob/living/var/obj/item/clothing/ears/ears = null
+
+/mob/living/movement_delay()
+	. = ..()
+	if(shoes)
+		if(shoes.type == /obj/item/clothing/shoes/magnetic) . += 4

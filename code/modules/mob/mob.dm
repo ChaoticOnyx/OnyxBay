@@ -1978,7 +1978,7 @@ mob/verb/turnwest()
 				if(lleg.broken || rleg.broken)
 					if(mob.r_hand)
 						if(istype(mob.r_hand,/obj/item/weapon/cane) || istype(mob.l_hand,/obj/item/weapon/cane))
-							src << "\blue You able to support yourself on the [mob.r_hand]"
+							src << "\blue You are able to support yourself on the [mob.r_hand]"
 					else if(prob(50))
 						src << "\blue You feel a sharp pain as you try to walk!"
 						mob.paralysis += 10

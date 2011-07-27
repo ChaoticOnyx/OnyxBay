@@ -428,6 +428,13 @@
 	protective_temperature = 1500
 	heat_transfer_coefficient = 0.01
 
+/obj/item/clothing/shoes/magnetic
+	name = "Magnetic Boots"
+	icon_state = "boots"
+
+	protective_temperature = 1500
+	heat_transfer_coefficient = 0.01
+
 /obj/item/clothing/shoes/brown
 	name = "Brown Shoes"
 	icon_state = "brown"

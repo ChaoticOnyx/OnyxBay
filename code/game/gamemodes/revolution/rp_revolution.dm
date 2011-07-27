@@ -197,7 +197,7 @@
 	var/list/uncons = get_unconvertables()
 	if(!(rev_mind in revolutionaries) && !(rev_mind in head_revolutionaries) && !(rev_mind in uncons))
 		revolutionaries += rev_mind
-		rev_mind.current << "\red <FONT size = 3> You are now a revolutionary! Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them kill the heads to win the game!</FONT>"
+		rev_mind.current << "\red <FONT size = 3> You are now a revolutionary! Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them take the head IDs to win the game!</FONT>"
 		update_rev_icons_added(rev_mind)
 
 /datum/game_mode/rp_revolution/proc/remove_revolutionary(datum/mind/rev_mind)
