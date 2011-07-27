@@ -217,7 +217,7 @@
 	icon_state = "robotics"
 
 /area/medical/robotics/office
-	name = "Robotics"
+	name = "Roboticist's Office"
 	icon_state = "roboffice"
 
 /area/prison/solar
