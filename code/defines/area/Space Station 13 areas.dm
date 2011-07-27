@@ -214,7 +214,11 @@
 
 /area/medical/robotics
 	name = "Robotics"
-	icon_state = "medresearch"
+	icon_state = "robotics"
+
+/area/medical/robotics/office
+	name = "Robotics"
+	icon_state = "roboffice"
 
 /area/prison/solar
 	name = "Prison Solar Array"
