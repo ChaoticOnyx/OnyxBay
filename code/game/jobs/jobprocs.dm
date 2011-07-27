@@ -34,6 +34,7 @@
 	return null
 /proc/SetTitles()
 	for (var/mob/new_player/player in world)
+		if(!player.preferences) continue
 		if(player.preferences.occupation1 == player.mind.assigned_role && player.preferences.title1)
 			player.mind.title = player.preferences.title1
 		else if(player.preferences.occupation2 == player.mind.assigned_role && player.preferences.title2)
@@ -196,6 +197,7 @@
 
 		// Build candidate list from already-assigned players.
 		for (var/mob/new_player/player in world)
+			if(!player.mind) continue
 			// Clear the list if an existing head is found. We don't want two HoDs.
 			if (player.mind.assigned_role == head)
 				candidate_list = list()

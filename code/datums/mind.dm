@@ -12,12 +12,17 @@ datum/mind
 
 	var/list/datum/objective/objectives = list()
 
+	var/rev_cooldown = 0
+
 	proc/transfer_to(mob/new_character)
 		if(current)
 			current.mind = null
 
 		new_character.mind = src
 		current = new_character
+
+		if(ticker.mode.name == "rp-revolution" && istype(current,/mob/living/carbon))
+			current.verbs += /mob/living/carbon/human/revolution/verb/Convert
 
 		new_character.key = key
 
@@ -47,6 +52,14 @@ datum/mind
 		var/datum/game_mode/current_mode = ticker.mode
 		switch (current_mode.config_tag)
 			if ("revolution")
+				if (src in current_mode:head_revolutionaries)
+					dat += "<font color=red>Head Revolutionary</font> "
+					cantoggle = 0
+				else if(src in current_mode:revolutionaries)
+					dat += "<a href='?src=\ref[src];traitorize=headrev'>Head Revolutionary</a> <font color=red>Revolutionary</font> "
+				else
+					dat += "<a href='?src=\ref[src];traitorize=headrev'>Head Revolutionary</a> <a href='?src=\ref[src];traitorize=rev'>Revolutionary</a> "
+			if ("rp-revolution")
 				if (src in current_mode:head_revolutionaries)
 					dat += "<font color=red>Head Revolutionary</font> "
 					cantoggle = 0
@@ -327,6 +340,20 @@ datum/mind
 		// clear gamemode specific values
 		switch (current_mode.config_tag)
 			if ("revolution")
+				if (src in current_mode:head_revolutionaries)
+					current_mode:head_revolutionaries -= src
+					if (!silent)
+						src.current << "\red <B>You are no longer a head revolutionary!</B>"
+					current_mode:update_rev_icons_removed(src)
+
+				else if(src in current_mode:revolutionaries)
+					if (silent)
+						current_mode:revolutionaries -= src
+						current_mode:update_rev_icons_removed(src)
+					else
+						current_mode:remove_revolutionary(src)
+
+			if ("rp-revolution")
 				if (src in current_mode:head_revolutionaries)
 					current_mode:head_revolutionaries -= src
 					if (!silent)

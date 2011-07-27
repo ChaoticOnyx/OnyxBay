@@ -93,7 +93,7 @@
 		var/list/job_tmp = get_all_jobs()
 		job_tmp.Remove("Captain", "Security Officer", "Forensic Technician", "Head Of Security", "Head of Personnel", "Chief Engineer", "Research Director")
 		traitor_job = pick(job_tmp)
-	if(prob(prob_right_dude) && ticker.mode == "revolution")
+	if(prob(prob_right_dude) && (ticker.mode == "revolution" || ticker.mode == "rp-revolution"))
 		traitor_name = correct_mob:current
 	else
 		traitor_name = src.pick_mob()

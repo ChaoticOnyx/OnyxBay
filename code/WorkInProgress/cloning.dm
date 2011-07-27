@@ -478,6 +478,10 @@
 			if ((src.occupant.mind in ticker.mode:revolutionaries) || (src.occupant.mind in ticker.mode:head_revolutionaries))
 				ticker.mode:add_revolutionary(src.occupant.mind)
 				ticker.mode:update_all_rev_icons() //So the icon actually appears
+		if ("rp-revolution")
+			if ((src.occupant.mind in ticker.mode:revolutionaries) || (src.occupant.mind in ticker.mode:head_revolutionaries))
+				ticker.mode:add_revolutionary(src.occupant.mind)
+				ticker.mode:update_all_rev_icons() //So the icon actually appears
 
 	// -- End mode specific stuff
 
