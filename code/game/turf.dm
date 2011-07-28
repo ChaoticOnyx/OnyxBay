@@ -65,7 +65,7 @@
 
 
 /turf/Entered(atom/movable/M as mob|obj)
-	if(ismob(M) && !istype(src, /turf/space))
+	if(ismob(M) && src.type != /turf/space)
 		var/mob/tmob = M
 		tmob.inertia_dir = 0
 	..()

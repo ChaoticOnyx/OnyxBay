@@ -21,8 +21,8 @@ datum/mind
 		new_character.mind = src
 		current = new_character
 
-		if(ticker.mode.name == "rp-revolution" && istype(current,/mob/living/carbon))
-			current.verbs += /mob/living/carbon/human/revolution/verb/Convert
+		if(ticker.mode.name == "rp-revolution" && (src in ticker.mode:head_revolutionaries | ticker.mode:revolutionaries))
+			current.verbs += /mob/living/carbon/human/proc/RevConvert
 
 		new_character.key = key
 

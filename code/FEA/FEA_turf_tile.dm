@@ -387,7 +387,7 @@ turf
 							//	zone.RemoveTurf(T)
 							if(T.zone in zone.connections)
 								zone.Disconnect(src,T)
-							if(istype(T,/turf/space) || istype(T,/turf/space/hull))
+							if(istype(T,/turf/space))
 								//if(!CanPass(null,T,0,0))
 								zone.space_connections -= T
 			if(parent)
@@ -409,7 +409,7 @@ turf
 							//if(ticker) world << "Update: Non-simulated T detected."
 
 							//See what kind of border it is
-							if(istype(T,/turf/space) || istype(T,/turf/space/hull))
+							if(istype(T,/turf/space))
 								//if(ticker) world << "Update: Space tile handled."
 								if(parent.space_borders)
 									parent.space_borders -= src
@@ -448,7 +448,7 @@ turf
 								//	zone.RemoveTurf(T)
 								if(T.zone in zone.connections)
 									zone.Disconnect(src,T)
-								if(istype(T,/turf/space) || istype(T,/turf/space/hull))
+								if(istype(T,/turf/space))
 									//if(!CanPass(null,T,0,0))
 									zone.space_connections -= T
 							//if(direction & old_air_directions)

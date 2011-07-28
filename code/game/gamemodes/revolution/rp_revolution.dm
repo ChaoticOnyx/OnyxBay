@@ -82,16 +82,13 @@
 		world.Reboot()
 		return
 
-	for(var/mob/living/carbon/M in world)
-		M.verbs += /mob/living/carbon/human/revolution/verb/Convert
-
 	if(revs_possible.len >= 3)
 		rev_number = 3
 	else
 		rev_number = revs_possible.len
 
 	while(rev_number > 0)
-		head_revolutionaries += pick(revs_possible)
+		head_revolutionaries += pick(revs_possible - head_revolutionaries)
 		rev_number--
 
 	for(var/datum/mind/rev_mind in head_revolutionaries)
@@ -101,6 +98,7 @@
 			rev_obj.find_target_by_role(head_mind.assigned_role)
 			rev_mind.objectives += rev_obj
 		equip_revolutionary(rev_mind.current)
+		rev_mind.current.verbs += /mob/living/carbon/human/proc/RevConvert
 		update_rev_icons_added(rev_mind)
 
 	for(var/datum/mind/rev_mind in head_revolutionaries)
@@ -197,13 +195,15 @@
 	var/list/uncons = get_unconvertables()
 	if(!(rev_mind in revolutionaries) && !(rev_mind in head_revolutionaries) && !(rev_mind in uncons))
 		revolutionaries += rev_mind
-		rev_mind.current << "\red <FONT size = 3> You are now a revolutionary! Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them take the head IDs to win the game!</FONT>"
+		rev_mind.current << "\red <FONT size = 3> You are now a revolutionary! Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them capture the heads to win the game!</FONT>"
+		rev_mind.current.verbs += /mob/living/carbon/human/proc/RevConvert
 		update_rev_icons_added(rev_mind)
 
 /datum/game_mode/rp_revolution/proc/remove_revolutionary(datum/mind/rev_mind)
 	if(rev_mind in revolutionaries)
 		revolutionaries -= rev_mind
 		rev_mind.current << "\red <FONT size = 3><B>You are no longer a revolutionary!</B></FONT>"
+		rev_mind.current.verbs -= /mob/living/carbon/human/proc/RevConvert
 		update_rev_icons_removed(rev_mind)
 
 /datum/game_mode/rp_revolution/proc/update_all_rev_icons()
@@ -356,14 +356,9 @@
 	for(var/datum/mind/rev_mind in head_revolutionaries)
 		if(rev_mind.current.stat != 2)
 			var/turf/revloc = rev_mind.current.loc
-			if(!istype(revloc.loc,/area/security/brig))
-				all_brigged = 0
+			if(!istype(revloc.loc,/area/security/brig) && !rev_mind.current.handcuffed)
 				return 0
-	if(!all_brigged)
-		brigged_time = world.time
-	else
-		if(brigged_time > world.time + 3000)
-			return 1
+	return 1
 
 /datum/game_mode/rp_revolution/declare_completion()
 
@@ -462,51 +457,25 @@ proc/RevConvert(mob/living/carbon/M,mob/user)
 			. = 0
 		M.mind.rev_cooldown = world.time+50*/
 
-mob/living/carbon/human/revolution/verb
-	Convert()
-		set src in oview(usr)
-		if(((usr.mind in ticker.mode:head_revolutionaries) || (usr.mind in ticker.mode:revolutionaries)))
-			if((src.mind in ticker.mode:head_revolutionaries) || (src.mind in ticker.mode:revolutionaries))
-				usr << "\red <b>[src] is already be a revolutionary!</b>"
+mob/living/carbon/human/proc
+	RevConvert(mob/M as mob in oview(src))
+		set name = "Rev-Convert"
+		if(((src.mind in ticker.mode:head_revolutionaries) || (src.mind in ticker.mode:revolutionaries)))
+			if((M.mind in ticker.mode:head_revolutionaries) || (M.mind in ticker.mode:revolutionaries))
+				src << "\red <b>[M] is already be a revolutionary!</b>"
 			else if(src.mind in ticker.mode:get_unconvertables())
-				usr << "\red <b>[src] cannot be a revolutionary!</b>"
+				src << "\red <b>[M] cannot be a revolutionary!</b>"
 			else
-				if(world.time < src.mind.rev_cooldown)
-					usr << "\red Wait five seconds before reconversion attempt."
+				if(world.time < M.mind.rev_cooldown)
+					src << "\red Wait five seconds before reconversion attempt."
 					return
-				usr << "\red Attempting to convert [src]..."
-				var/choice = alert(src,"Asked by [usr]: Do you want to join the revolution?","Align Thyself with the Revolution!","No!","Yes!")
+				src << "\red Attempting to convert [M]..."
+				var/choice = alert(M,"Asked by [src]: Do you want to join the revolution?","Align Thyself with the Revolution!","No!","Yes!")
 				if(choice == "Yes!")
-					ticker.mode:add_revolutionary(src.mind)
-					src << "\blue You join the revolution!"
-					usr << "\blue <b>[src] joins the revolution!</b>"
+					ticker.mode:add_revolutionary(M.mind)
+					M << "\blue You join the revolution!"
+					src << "\blue <b>[M] joins the revolution!</b>"
 				else if(choice == "No!")
-					src << "\red You reject this traitorous cause!"
-					usr << "\red <b>[src] does not support the revolution!</b>"
-				src.mind.rev_cooldown = world.time+50
-		else
-			if(src.mind in ticker.mode:get_unconvertables())
-				usr << "\red <b>The [src.mind.assigned_role] cannot possibly be a revolutionary!</b>"
-			else
-				if(world.time < src.mind.rev_cooldown)
-					usr << "\red Wait five seconds before reconversion attempt."
-					return
-				usr << "\red Attempting to convert [src]..."
-				var/choice = alert(src,"Asked by [usr]: Do you want to reject the revolution?","Align Thyself with the Captain!","Deny!","No!","Yes!")
-				if(choice == "Yes!")
-					if(src.mind in ticker.mode:head_revolutionaries)
-						src << "\red You claim you have renounced your cause."
-						usr << "\blue <b>[src] rejects the revolution!</b>"
-						src.mind.rev_cooldown = world.time+50
-						return
-
-					src << "\blue You renounce the cause of the revolution!"
-					ticker.mode:remove_revolutionary(src.mind)
-					usr << "\blue <b>[src] rejects the revolution!</b>"
-				else if(choice == "No!")
-					src << "\red You do not give up!"
-					usr << "\red <b>[src] does not reject the revolution!</b>"
-				else
-					src << "\red You deny you were even involved!"
-					usr << "\red <b>[src] claims \he isn't even a revolutionary!</b>"
-				src.mind.rev_cooldown = world.time+50
+					M << "\red You reject this traitorous cause!"
+					src << "\red <b>[M] does not support the revolution!</b>"
+				M.mind.rev_cooldown = world.time+50
