@@ -850,7 +850,13 @@ turf/simulated/floor/proc/update_icon()
 		else if(A.y >= (world.maxy - 1))
 			A.y = 3
 
-		A.z = getZLevel(Z_SPACE)
+		if(A.z == 5)
+			if(prob(33))
+				A.z = getZLevel(Z_SPACE)
+			else
+				A.z = getZLevel(Z_STATION)
+		else
+			A.z = getZLevel(Z_SPACE)
 		spawn (0)
 			if ((A && A.loc))
 				A.loc.Entered(A)
