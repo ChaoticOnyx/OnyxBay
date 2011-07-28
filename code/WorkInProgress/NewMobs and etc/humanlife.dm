@@ -195,7 +195,7 @@
 			paralysis = max(paralysis, 5)
 
 	else if(health < 0 && !zombie)
-		if(health <= 20 && prob(1)) spawn(0) emote("gasp")
+		if(health <= 20 && prob(1)) spawn(0) emote("gasp_air")
 
 		//if(!rejuv) oxyloss++
 
@@ -489,7 +489,7 @@
 		if ((prob(5) && paralysis <= 1 && r_ch_cou < 1))
 			drop_item()
 			spawn( 0 )
-				emote("cough")
+				emote("cough_disease")
 				return
 	if (disabilities & 8)
 		if ((prob(10) && paralysis <= 1 && r_Tourette < 1))
@@ -499,7 +499,7 @@
 					if(1)
 						emote("twitch")
 					if(2 to 3)
-						say("[prob(50) ? ";" : ""][pick("DWARFS","MAGMA","ARMOK","BERR","APPLES")]!")
+						say("[prob(50) ? ";" : ""][pick("DWARFS","MAGMA","ARMOK","BERR","APPLES","SPACEMEN","NINJAS")]!")
 				var/old_x = pixel_x
 				var/old_y = pixel_y
 				pixel_x += rand(-2,2)
@@ -610,7 +610,7 @@
 	if(losebreath > 10 && health < 0) //Suffocating so do not take a breath
 		losebreath--
 		if (prob(75)) //High chance of gasping for air
-			spawn emote("gasp")
+			spawn emote("gasp_air")
 		if(istype(loc, /obj/))
 			var/obj/location_as_object = loc
 			location_as_object.handle_internal_lifeform(src, 0)

@@ -114,7 +114,7 @@ obj/item/proc
 			burn_skin(0.75)
 			if (coughedtime != 1)
 				coughedtime = 1
-				emote("gasp")
+				emote("gasp_air")
 				spawn (20)
 					coughedtime = 0
 			updatehealth()

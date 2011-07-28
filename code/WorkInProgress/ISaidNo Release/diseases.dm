@@ -95,7 +95,7 @@
 				affected_mob.ailments -= src
 				return
 			if(prob(10))
-				affected_mob.emote("groan")
+				affected_mob.emote("groan_pain")
 			if(prob(5))
 				affected_mob << "\red Your stomach aches."
 			if(prob(5))
@@ -111,7 +111,7 @@
 			if(prob(10))
 				affected_mob.emote("moan")
 			if(prob(10))
-				affected_mob.emote("groan")
+				affected_mob.emote("groan_pain")
 			if(prob(1))
 				affected_mob << "\red Your stomach hurts."
 			if(prob(1))
@@ -241,7 +241,7 @@
 	..()
 	switch(stage)
 		if(1)
-			if(prob(5)) affected_mob.emote(pick("cough", "sneeze"))
+			if(prob(5)) affected_mob.emote(pick("cough_disease", "sneeze_disease"))
 			if (prob(8))
 				var/procmessage = pick("You feel utterly horrible.","You feel deathly ill.","You feel like your body is shutting down...")
 				affected_mob <<"\red [procmessage]"
@@ -250,7 +250,7 @@
 				for(var/datum/ailment/A in affected_mob.ailments)
 					affected_mob.toxloss += 1
 					affected_mob.updatehealth()
-			if(prob(8)) affected_mob.emote("sneeze")
+			if(prob(8)) affected_mob.emote("sneeze_disease")
 			if (prob(8))
 				var/procmessage = pick("You feel like you're dying...","Your innards ache horribly.")
 				affected_mob <<"\red [procmessage]"
@@ -259,7 +259,7 @@
 				for(var/datum/ailment/A in affected_mob.ailments)
 					affected_mob.toxloss += 1
 					affected_mob.updatehealth()
-			if(prob(5)) affected_mob.emote(pick("cough", "sneeze"))
+			if(prob(5)) affected_mob.emote(pick("cough_disease", "sneeze_disease"))
 			if (prob(8))
 				var/procmessage = pick("It feels like you could drop dead any second...","Pain and nausea wrack your entire body.")
 				affected_mob <<"\red [procmessage]"
@@ -298,7 +298,7 @@
 	..()
 	var/toxdamage = stage * 2
 	var/stuntime = stage * 3
-	if(prob(9)) affected_mob.emote(pick("cough","groan", "gasp"))
+	if(prob(9)) affected_mob.emote(pick("cough_disease","groan_pain", "gasp_air"))
 	if(prob(12))
 		if (prob(33)) affected_mob << "\red You feel sickly and weak."
 		affected_mob.toxloss += toxdamage

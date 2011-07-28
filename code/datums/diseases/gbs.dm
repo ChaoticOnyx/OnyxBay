@@ -15,17 +15,17 @@
 				affected_mob.toxloss += 5
 				affected_mob.updatehealth()
 			if(prob(1))
-				affected_mob.emote("sneeze")
+				affected_mob.emote("sneeze_disease")
 		if(3)
 			if(prob(5))
-				affected_mob.emote("cough")
+				affected_mob.emote("cough_disease")
 			else if(prob(5))
-				affected_mob.emote("gasp")
+				affected_mob.emote("gasp_air")
 			if(prob(10))
 				affected_mob << "\red You're starting to feel very weak..."
 		if(4)
 			if(prob(10))
-				affected_mob.emote("cough")
+				affected_mob.emote("cough_disease")
 			affected_mob.toxloss += 5
 			affected_mob.updatehealth()
 		if(5)

@@ -251,7 +251,7 @@
 		if ((prob(5) && paralysis <= 1 && r_ch_cou < 1))
 			drop_item()
 			spawn( 0 )
-				emote("cough")
+				emote("cough_disease")
 				return
 	if (disabilities & 8)
 		if ((prob(10) && paralysis <= 1 && r_Tourette < 1))

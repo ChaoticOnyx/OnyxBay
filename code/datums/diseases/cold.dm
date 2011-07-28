@@ -23,9 +23,9 @@
 				affected_mob.virus = null
 				return
 			if(prob(15))
-				affected_mob.emote("sneeze")
+				affected_mob.emote("sneeze_disease")
 			if(prob(5))
-				affected_mob.emote("cough")
+				affected_mob.emote("cough_disease")
 			if(prob(30))
 				affected_mob << "\red Your throat feels sore."
 			if(prob(1))
@@ -41,9 +41,9 @@
 				affected_mob.resistances += affected_mob.virus.type
 				affected_mob.virus = null
 			if(prob(20))
-				affected_mob.emote("sneeze")
+				affected_mob.emote("sneeze_disease")
 			if(prob(10))
-				affected_mob.emote("cough")
+				affected_mob.emote("cough_disease")
 			if(prob(40))
 				affected_mob << "\red Your throat feels sore."
 			if(prob(32))
@@ -59,6 +59,6 @@
 				affected_mob.resistances += affected_mob.virus.type
 				affected_mob.virus = null
 			if(prob(1))
-				affected_mob.emote("gasp")
+				affected_mob.emote("gasp_air")
 			if(prob(25))
 				affected_mob.contract_disease(new /datum/disease/flu,1)

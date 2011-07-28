@@ -83,7 +83,7 @@
 	if(losebreath > 10) //Suffocating so do not take a breath
 		losebreath--
 		if (prob(75)) //High chance of gasping for air
-			emote("gasp")
+			emote("gasp_air")
 		if(istype(loc, /obj/))
 			var/obj/location_as_object = loc
 			location_as_object.handle_internal_lifeform(src, 0)
@@ -355,11 +355,11 @@
 	if (disabilities & 4)
 		if ((prob(5) && paralysis <= 1 && r_ch_cou < 1))
 			drop_item()
-			emote("cough")
+			emote("cough_disease")
 	if (disabilities & 8)
 		if ((prob(10) && paralysis <= 1 && r_Tourette < 1))
 			stunned = max(10, stunned)
-			emote("twitch")
+			emote("twitch_s")
 	if (disabilities & 16)
 		if (prob(10))
 			stuttering = max(10, stuttering)
@@ -385,7 +385,7 @@
 		death()
 	else if(health < 0)
 		if(health <= 20 && prob(1))
-			emote("gasp")
+			emote("gasp_air")
 
 		//if(!rejuv) oxyloss++
 		if(!reagents.has_reagent("inaprovaline"))
@@ -518,7 +518,7 @@
 
 	if(O2_pp < safe_oxygen_min) 			// Too little oxygen
 		if(prob(20))
-			emote("gasp")
+			emote("gasp_air")
 		if(O2_pp > 0)
 			var/ratio = safe_oxygen_min/O2_pp
 			oxyloss += min(5*ratio, 7)
@@ -550,7 +550,7 @@
 			if(world.time - co2overloadtime > 300) // They've been in here 30s now, lets start to kill them for their own good!
 				oxyloss += 8*vsc.OXYGEN_LOSS
 		if(prob(20)) // Lets give them some chance to know somethings not right though I guess.
-			emote("cough")
+			emote("cough_disease")
 
 	else
 		co2overloadtime = 0
