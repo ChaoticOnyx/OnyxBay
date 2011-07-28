@@ -842,12 +842,7 @@
 				param = null
 
 			if (M)
-				if (M.gender == MALE)
-					message = "<B>[src]</B> kneels before [param] and praises him extravagantly."
-				else if (M.gender == FEMALE)
-					message = "<B>[src]</B> kneels before [param] and praises her extravagantly."
-				else
-					message = "<B>[src]</B> kneels before [param] and praises it extravagantly."
+				message = "<B>[src]</B> kneels before [param] and praises them extravagantly."
 			else
 				message = "<B>[src]</B> falls to \his kneels and praises everyone extravagantly."
 
@@ -1102,12 +1097,7 @@
 				param = null
 
 			if (M)
-				if (M.gender == MALE)
-					message = "<B>[src]</B> runs up to [param] and envelops him in a massive bear hug."
-				else if (M.gender == FEMALE)
-					message = "<B>[src]</B> runs up to [param] and envelops her in a massive bear hug."
-				else
-					message = "<B>[src]</B> runs up to [param] and envelops it in a massive bear hug."
+				message = "<B>[src]</B> runs up to [param] and envelops them in a massive bear hug."
 			else
 				message = "<B>[src]</B> gives \himself a massive bear hug because no one else will."
 
@@ -1124,12 +1114,7 @@
 				param = null
 
 			if (M)
-				if (M.gender == MALE)
-					message = "<B>[src]</B> makes a beckoning motion to [param], bidding him to follow."
-				else if (M.gender == FEMALE)
-					message = "<B>[src]</B> makes a beckoning motion to [param], bidding her to follow."
-				else
-					message = "<B>[src]</B> makes a beckoning motion to [param], bidding it to follow."
+				message = "<B>[src]</B> makes a beckoning motion to [param], bidding them to follow."
 			else
 				message = "<B>[src]</B> makes a beckoning motion to nobody in particular."
 
@@ -1214,12 +1199,7 @@
 				param = null
 
 			if (M)
-				if (M.gender == MALE)
-					message = "<B>[src]</B> stares blankly at [param], disbelieving of what he just said."
-				else if (M.gender == FEMALE)
-					message = "<B>[src]</B> stares blankly at [param], disbelieving of what she just said."
-				else
-					message = "<B>[src]</B> stares blankly at [param], disbelieving of what it just said."
+				message = "<B>[src]</B> stares blankly at [param], disbelieving of what \he just heard."
 			else
 				message = "<B>[src]</B> stares blankly, disbelieving of what \he just heard."
 
