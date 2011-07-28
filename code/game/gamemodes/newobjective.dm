@@ -255,7 +255,7 @@ datum
 
 				return target
 
-		take_id
+		capture
 			var/datum/mind/target
 			var/separation_time = 0
 			var/almost_complete = 0
@@ -263,27 +263,17 @@ datum
 			New(var/text,var/joba,var/datum/mind/targeta)
 				target = targeta
 				job = joba
-				explanation_text = "Separate [target.current.real_name], the [target.assigned_role], from their ID for at least five minutes."
+				explanation_text = "Capture [target.current.real_name], the [target.assigned_role]."
 
 			check_completion()
 				if(target && target.current)
-					if(!target.current.check_contents_for_id(target.assigned_role))
-						if(!almost_complete)
-							almost_complete = 1
-							separation_time = world.time
-						return 0
-					if(almost_complete)
-						if(target.current.check_contents_for_id(target.assigned_role))
-							almost_complete = 0
-							separation_time = 0
-							return 0
-						else
-							if(world.time > separation_time + 3000)
-								return 1
+					if(target.current.stat == 2)
+						if(vsc.RPREV_REQUIRE_HEADS_ALIVE) return 0
 					else
-						return 0
-				else
-					return 1
+						if(!target.current.handcuffed)
+							return 0
+				else if(vsc.RPREV_REQUIRE_HEADS_ALIVE) return 0
+				return 1
 
 			proc/find_target_by_role(var/role)
 				for(var/datum/mind/possible_target in ticker.minds)
@@ -292,7 +282,7 @@ datum
 						break
 
 				if(target && target.current)
-					explanation_text = "Separate [target.current.real_name], the [target.assigned_role], from their ID for at least five minutes."
+					explanation_text = "Capture [target.current.real_name], the [target.assigned_role]."
 				else
 					explanation_text = "Free Objective"
 

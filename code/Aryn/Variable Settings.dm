@@ -4,6 +4,10 @@ vs_control
 		list/settings = list()
 		list/bitflags = list("1","2","4","8","16","32","64","128","256","512","1024")
 		pl_control/plc = new()
+		RPREV_REQUIRE_HEADS_ALIVE = 0
+		RPREV_REQUIRE_HEADS_ALIVE_DESC = "Require the heads to be captured alive in RP Rev, rather than either dead or captured."
+		RPREV_REQUIRE_REVS_ALIVE = 0
+		RPREV_REQUIRE_REVS_ALIVE_DESC = "Require the rev leaders to be captured alive in RP Rev, rather than either dead or captured."
 	New()
 		. = ..()
 		settings = vars.Copy()

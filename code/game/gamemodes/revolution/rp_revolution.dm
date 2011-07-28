@@ -93,7 +93,7 @@
 
 	for(var/datum/mind/rev_mind in head_revolutionaries)
 		for(var/datum/mind/head_mind in heads)
-			var/datum/objective/take_id/rev_obj = new
+			var/datum/objective/capture/rev_obj = new
 			rev_obj.owner = rev_mind
 			rev_obj.find_target_by_role(head_mind.assigned_role)
 			rev_mind.objectives += rev_obj
@@ -358,6 +358,7 @@
 			var/turf/revloc = rev_mind.current.loc
 			if(!istype(revloc.loc,/area/security/brig) && !rev_mind.current.handcuffed)
 				return 0
+		else if(vsc.RPREV_REQUIRE_REVS_ALIVE) return 0
 	return 1
 
 /datum/game_mode/rp_revolution/declare_completion()
