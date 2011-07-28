@@ -36,7 +36,23 @@
 				message = "<B>[src]</B> blinks incredulously."
 			m_type = 1
 
-		if ("blink_r" || "rapidblink")
+		if ("blink_r")
+			var/M = null
+			if (param)
+				for (var/mob/A in view(null, null))
+					if (findtext(A.name,param,1,0))
+						M = A
+						break
+			if (!M)
+				param = null
+
+			if (M)
+				message = "<B>[src]</B> blinks rapidly at [M]."
+			else
+				message = "<B>[src]</B> blinks rapidly."
+			m_type = 1
+
+		if ("rapidblink")
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
@@ -108,7 +124,23 @@
 				message = "<B>[src]</b> gives a sharp salute."
 			m_type = 1
 
-		if ("militarysalute" || "attention")
+		if ("militarysalute")
+			var/M = null
+			if (param)
+				for (var/mob/A in view(null, null))
+					if (findtext(A.name,param,1,0))
+						M = A
+						break
+			if (!M)
+				param = null
+
+			if (M)
+				message = "<B>[src]</B> clicks \his heels together and gives a sharp salute to [param]."
+			else
+				message = "<B>[src]</B> clicks \his heels together and gives a sharp salute."
+			m_type = 1
+
+		if ("attention")
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
@@ -303,9 +335,9 @@
 				param = null
 
 			if (M)
-				message = "<B>[src]</B> blushes at [param] furiously."
+				message = "<B>[src]</B> blushes at [param] furiously!"
 			else
-				message = "<B>[src]</B> blushes."
+				message = "<B>[src]</B> blushes!"
 			m_type = 1
 
 		if ("gasp")
@@ -424,9 +456,9 @@
 				param = null
 
 			if (M)
-				message = "<B>[src]</B> collapses into [param]'s arms and begins to cry."
+				message = "<B>[src]</B> collapses into [param]'s arms and begins to cry!"
 			else
-				message = "<B>[src]</B> cries."
+				message = "<B>[src]</B> sniffs as tears fill \his eyes and begin to slowly run down \his face."
 			m_type = 1
 
 		if ("sigh")
@@ -563,7 +595,7 @@
 				else
 			m_type = 1
 
-		if ("raise" || "raisehand")
+		if ("raise")
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
@@ -579,7 +611,39 @@
 				message = "<B>[src]</B> raises \his hand."
 			m_type = 1
 
-		if("shake" || "no")
+		if ("raisehand")
+			var/M = null
+			if (param)
+				for (var/mob/A in view(null, null))
+					if (findtext(A.name,param,1,0))
+						M = A
+						break
+			if (!M)
+				param = null
+
+			if (M)
+				message = "<B>[src]</B> raises \his hand and waves it around, hoping [param] will notice."
+			else
+				message = "<B>[src]</B> raises \his hand."
+			m_type = 1
+
+		if("shake")
+			var/M = null
+			if (param)
+				for (var/mob/A in view(null, null))
+					if (findtext(A.name,param,1,0))
+						M = A
+						break
+			if (!M)
+				param = null
+
+			if (M)
+				message = "<B>[src]</B> shakes \his head at [param]."
+			else
+				message = "<B>[src]</B> shakes \his head."
+			m_type = 1
+
+		if("no")
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
@@ -882,7 +946,7 @@
 
 			m_type = 2
 
-		if ("aha" || "ahah")
+		if ("aha")
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
@@ -899,7 +963,24 @@
 
 			m_type = 2
 
-		if ("ahem" || "clearthroat")
+		if ("ahah")
+			var/M = null
+			if (param)
+				for (var/mob/A in view(null, null))
+					if (findtext(A.name,param,1,0))
+						M = A
+						break
+			if (!M)
+				param = null
+
+			if (M)
+				message = "<B>[src]</B> triumphantly exclaims, \"Aha!\" at [param]."
+			else
+				message = "<B>[src]</B> triumphantly exclaims, \"Aha!\""
+
+			m_type = 2
+
+		if ("ahem")
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
@@ -916,7 +997,7 @@
 
 			m_type = 2
 
-		if ("ahem" || "clearthroat")
+		if ("clearthroat")
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
@@ -1290,7 +1371,24 @@
 
 			m_type = 1
 
-		if ("bollocks" || "bollox")
+		if ("bollocks")
+			var/M = null
+			if (param)
+				for (var/mob/A in view(null, null))
+					if (findtext(A.name,param,1,0))
+						M = A
+						break
+			if (!M)
+				param = null
+
+			if (M)
+				message = "<B>[src]</B> exclaims to [param], with a derisive sneer, \"Bollocks!\""
+			else
+				message = "<B>[src]</B> exclaims, with a derisive sneer, \"Bollocks!\""
+
+			m_type = 2
+
+		if ("bollox")
 			var/M = null
 			if (param)
 				for (var/mob/A in view(null, null))
