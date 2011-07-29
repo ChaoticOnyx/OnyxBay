@@ -355,7 +355,7 @@
 	name = "Coldingtons Effect"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.say("*sneeze_disease")
+		mob.say("*sneeze")
 
 /datum/disease2/effect/greater/gunck
 	name = "Flemmingtons"
@@ -435,13 +435,13 @@
 	name = "Coldingtons Effect"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.say("*sneeze_disease")
+		mob.say("*sneeze")
 
 /datum/disease2/effect/lesser/cough
 	name = "Anima Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.say("*cough_disease")
+		mob.say("*cough")
 
 /datum/disease2/effect/lesser/hallucinations
 	name = "Hallucinational Syndrome"
@@ -467,7 +467,7 @@
 	name = "Groaning Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.say("*groan_pain")
+		mob.say("*groan")
 
 /datum/disease2/effect/lesser/scream
 	name = "Loudness Syndrome"

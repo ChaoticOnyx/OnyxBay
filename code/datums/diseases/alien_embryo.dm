@@ -18,27 +18,27 @@
 	switch(stage)
 		if(2)
 			if(prob(1))
-				affected_mob.emote("sneeze_disease")
+				affected_mob.emote("sneeze")
 			if(prob(1))
-				affected_mob.emote("cough_disease")
+				affected_mob.emote("cough")
 			if(prob(1))
 				affected_mob << "\red Your throat feels sore."
 			if(prob(1))
 				affected_mob << "\red Mucous runs down the back of your throat."
 		if(3)
 			if(prob(1))
-				affected_mob.emote("sneeze_disease")
+				affected_mob.emote("sneeze")
 			if(prob(1))
-				affected_mob.emote("cough_disease")
+				affected_mob.emote("cough")
 			if(prob(1))
 				affected_mob << "\red Your throat feels sore."
 			if(prob(1))
 				affected_mob << "\red Mucous runs down the back of your throat."
 		if(4)
 			if(prob(1))
-				affected_mob.emote("sneeze_disease")
+				affected_mob.emote("sneeze")
 			if(prob(1))
-				affected_mob.emote("cough_disease")
+				affected_mob.emote("cough")
 			if(prob(2))
 				affected_mob << "\red Your muscles ache."
 				if(prob(20))

@@ -12,9 +12,9 @@
 	switch(stage)
 		if(2)
 			if(prob(1))
-				affected_mob.emote("sneeze_disease")
+				affected_mob.emote("sneeze")
 			if(prob(1))
-				affected_mob.emote("cough_disease")
+				affected_mob.emote("cough")
 			if(prob(1))
 				affected_mob << "\red Your muscles ache."
 				if(prob(20))
@@ -28,9 +28,9 @@
 
 		if(3)
 			if(prob(1))
-				affected_mob.emote("sneeze_disease")
+				affected_mob.emote("sneeze")
 			if(prob(1))
-				affected_mob.emote("cough_disease")
+				affected_mob.emote("cough")
 			if(prob(1))
 				affected_mob << "\red Your muscles ache."
 				if(prob(20))
@@ -46,9 +46,9 @@
 				affected_mob.eye_blurry += 20
 		if(4)
 			if(prob(1))
-				affected_mob.emote("sneeze_disease")
+				affected_mob.emote("sneeze")
 			if(prob(1))
-				affected_mob.emote("cough_disease")
+				affected_mob.emote("cough")
 			if(prob(1))
 				affected_mob << "\red Your muscles ache."
 				if(prob(20))

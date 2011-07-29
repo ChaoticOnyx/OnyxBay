@@ -402,7 +402,7 @@ steam.start() -- spawns the effect
 			M.oxyloss += 1
 			if (M.coughedtime != 1)
 				M.coughedtime = 1
-				M.emote("cough_disease")
+				M.emote("cough")
 				spawn ( 20 )
 					M.coughedtime = 0
 	for(var/atom/A in src)
@@ -417,7 +417,7 @@ steam.start() -- spawns the effect
 			M.oxyloss += 1
 			if (M.coughedtime != 1)
 				M.coughedtime = 1
-				M.emote("cough_disease")
+				M.emote("cough")
 				spawn ( 20 )
 					M.coughedtime = 0
 		if(reagents)
@@ -505,7 +505,7 @@ steam.start() -- spawns the effect
 			R.burn_skin(0.75)
 			if (R.coughedtime != 1)
 				R.coughedtime = 1
-				R.emote("gasp_air")
+				R.emote("gasp")
 				spawn (20)
 					R.coughedtime = 0
 			R.updatehealth()
@@ -519,7 +519,7 @@ steam.start() -- spawns the effect
 		R.burn_skin(0.75)
 		if (R.coughedtime != 1)
 			R.coughedtime = 1
-			R.emote("gasp_air")
+			R.emote("gasp")
 			spawn (20)
 				R.coughedtime = 0
 		R.updatehealth()
