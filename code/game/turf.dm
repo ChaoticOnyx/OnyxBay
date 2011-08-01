@@ -105,7 +105,22 @@
 			O.hide(0)
 /turf/proc/ReplaceWithOpen()
 	if(!icon_old) icon_old = icon_state
-	new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
+	var/turf/simulated/floor/W
+	var/old_icon = icon_old
+	var/old_dir = dir
+
+	W = new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
+
+	W.dir = old_dir
+	W.icon_old = old_icon
+	if(old_icon) W.icon_state = old_icon
+	W.opacity = 1
+	W.ul_SetOpacity(0)
+	W.levelupdate()
+
+	//var/icon/tempicon = icon_state
+	//var/turf/newopen = new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
+	//newopen.icon_old = tempicon
 	for(var/obj/machinery/shielding/emitter/plate/P in range(src,10))
 		P.AddShield(src)
 		return
@@ -206,8 +221,23 @@ turf/simulated/wall/bullet_act(flag,dir)
 
 /turf/proc/ReplaceWithLattice()
 	if(!icon_old) icon_old = icon_state
-	new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
+	var/turf/simulated/floor/W
+	var/old_icon = icon_old
+	var/old_dir = dir
+
+	W = new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
+
+	W.dir = old_dir
+	W.icon_old = old_icon
+	if(old_icon) W.icon_state = old_icon
+	W.opacity = 1
+	W.ul_SetOpacity(0)
+	W.levelupdate()
 	new /obj/lattice( locate(src.x, src.y, src.z) )
+
+	//if(!icon_old) icon_old = icon_state
+	//new /turf/simulated/floor/open( locate(src.x, src.y, src.z) )
+	//new /obj/lattice( locate(src.x, src.y, src.z) )
 
 
 /turf/proc/ReplaceWithWall()
@@ -636,19 +666,20 @@ turf/simulated/floor/proc/update_icon()
 	if(istype(C, /obj/item/weapon/rods))
 		if (!src.intact)
 			if (C:amount >= 2)
-				user << "\blue Reinforcing the floor..."
-				if(do_after(user, 30))
-					ReplaceWithEngineFloor()
-					C:amount -= 2
-					if (C:amount <= 0)
-						user.u_equip(C)
-						del(C) //wtf
-					playsound(src.loc, 'Deconstruct.ogg', 80, 1)
-			else
 				if (istype(src,/turf/simulated/floor/open))
-					new /obj/lattice(src)
+					ReplaceWithLattice()
+					return
 				else
-					user << "\red You need more rods."
+					user << "\blue Reinforcing the floor..."
+					if(do_after(user, 30))
+						ReplaceWithEngineFloor()
+						C:amount -= 2
+						if (C:amount <= 0)
+							user.u_equip(C)
+							del(C) //wtf
+						playsound(src.loc, 'Deconstruct.ogg', 80, 1)
+			else
+				user << "\red You need more rods."
 		else
 			user << "\red You must remove the plating first."
 		return
