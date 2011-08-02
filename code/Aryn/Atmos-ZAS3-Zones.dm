@@ -220,7 +220,7 @@ zone
 			//				W.visible_message("\red A window bursts from the pressure!",1,"\red You hear glass breaking.")
 			if(!disable_connections)
 				for(var/zone/Z in direct_connections)
-					if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2 || abs(turf_plasma - Z.turf_plasma) < 0.2)
+					if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2 && abs(turf_plasma - Z.turf_plasma) < 0.2)
 						Merge(Z)
 				for(var/zone/Z in connections)
 					if(Z == src) connections -= Z
@@ -241,7 +241,7 @@ zone
 						oxy_avg = (oxygen + Z.oxygen) / (members.len + Z.members.len)
 						nit_avg = (nitrogen + Z.nitrogen) / (members.len + Z.members.len)
 						co2_avg = (co2 + Z.co2) / (members.len + Z.members.len)
-						plasma_avg = (plasma + Z.plasma) / (members.len * Z.members.len)
+						plasma_avg = (plasma + Z.plasma) / (members.len + Z.members.len)
 					oxygen( (turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
 					nitrogen( (turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
 					co2( (turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )

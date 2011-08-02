@@ -560,7 +560,7 @@
 			if (src.reagents.has_reagent("fuel") || src.reagents.has_reagent("chlorine") || src.reagents.has_reagent("mercury") || src.reagents.has_reagent("toxin") || src.reagents.has_reagent("toxic_slurry"))
 				if (!istype(growing,/datum/plant/slurrypod) && !istype(growing,/datum/plant/radweed) && !prob(src.endurance)) src.health -= 1
 			if (src.reagents.has_reagent("weedkiller") && growing.growthmode == "weed") src.health -= 2
-			src.reagents.remove_any(0.1)
+			if(prob(0.1)) src.reagents.remove_any(1)
 		if (growing.growthmode == "weed")
 			if (!src.reagents.has_reagent("weedkiller")) src.growth += 1
 		if (growing.growthmode == "boring") src.growth += 1

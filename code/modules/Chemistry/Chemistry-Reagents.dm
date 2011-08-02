@@ -546,11 +546,11 @@ datum
 							M << "\red Your face has become disfigured!"
 							M.real_name = "Unknown"
 						else
-							M:bruteloss += 15
+							M:fireloss += 15
 					else
-						M:bruteloss += 15
+						M:fireloss += 15
 				else
-					M:bruteloss += 15
+					M:fireloss += 15
 
 			reaction_obj(var/obj/O, var/volume)
 				if(istype(O,/obj/item/weapon/artifact))
@@ -572,8 +572,9 @@ datum
 
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				if(prob(15))
+				if(prob(75))
 					M:toxloss++
+				if(prob(75))
 					M:fireloss++
 				..()
 				return
@@ -596,7 +597,7 @@ datum
 						M << "\red Your face has become disfigured!"
 						M.real_name = "Unknown"
 					else
-						M:bruteloss += 15
+						M:fireloss += 15
 				else
 					if(istype(M, /mob/living/carbon/human) && prob(25))
 						var/datum/organ/external/affecting = M:organs["head"]
@@ -607,7 +608,7 @@ datum
 						M << "\red Your face has become disfigured!"
 						M.real_name = "Unknown"
 					else
-						M:bruteloss += (30 * max(1, volume / 30))
+						M:fireloss += (30 * max(1, volume / 30))
 
 			reaction_obj(var/obj/O, var/volume)
 				if(istype(O,/obj/item/weapon/artifact))
@@ -682,7 +683,7 @@ datum
 				return
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				M.radiation += 3
+				M.radiation += 2
 				..()
 				return
 

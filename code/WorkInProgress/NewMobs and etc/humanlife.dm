@@ -499,7 +499,7 @@
 					if(1)
 						emote("twitch")
 					if(2 to 3)
-						say("[prob(50) ? ";" : ""][pick("DWARFS","MAGMA","ARMOK","BERR","APPLES")]!")
+						say("[prob(50) ? ";" : ""][pick("DWARFS","MAGMA","ARMOK","BERR","APPLES","SPACEMEN","NINJAS")]!")
 				var/old_x = pixel_x
 				var/old_y = pixel_y
 				pixel_x += rand(-2,2)

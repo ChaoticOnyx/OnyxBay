@@ -18,6 +18,7 @@ RACK PARTS
 /obj/item/weapon/table_parts/attack_self(mob/user as mob)
 	spawn()
 		new /datum/construction_UI/table (user.loc, user, src)
+		user.update_clothing()
 	/*
 	var/state = input(user, "What type of table?", "Assembling Table", null) in list( "middle","sides", "corners", "alone", "narrow corners", "narrow tables", "narrow end tables" )
 	var/direct = SOUTH
@@ -84,7 +85,7 @@ RACK PARTS
 		i_state = "reinf_1tilethick"
 	else if (state == "narrow end tables")
 		direct = input(user, "Direction?", "Assembling Table", null) in list( "NORTH", "EAST", "SOUTH", "WEST" )
-		i_state = "reinf_1tileendtable"	
+		i_state = "reinf_1tileendtable"
 	var/obj/table/reinforced/T = new /obj/table/reinforced( user.loc )
 	T.icon_state = i_state
 	T.dir = text2dir(direct)

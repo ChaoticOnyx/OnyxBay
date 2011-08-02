@@ -24,6 +24,7 @@
 					del(O)
 
 				user << "You insert [count] metal sheet\s into the fabricator."
+				user.update_clothing()
 				updateDialog()
 		else
 			user << "The robot part maker is full. Please remove metal from the robot part maker in order to insert more."

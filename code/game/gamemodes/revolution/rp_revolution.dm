@@ -471,6 +471,8 @@ mob/living/carbon/human/proc
 					src << "\red Wait five seconds before reconversion attempt."
 					return
 				src << "\red Attempting to convert [M]..."
+				log_admin("[src]([src.ckey]) attempted to convert [M].")
+				message_admins("\red [src]([src.ckey]) attempted to convert [M].")
 				var/choice = alert(M,"Asked by [src]: Do you want to join the revolution?","Align Thyself with the Revolution!","No!","Yes!")
 				if(choice == "Yes!")
 					ticker.mode:add_revolutionary(M.mind)

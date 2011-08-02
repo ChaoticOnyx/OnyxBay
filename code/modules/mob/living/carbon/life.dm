@@ -359,7 +359,7 @@
 	if (disabilities & 8)
 		if ((prob(10) && paralysis <= 1 && r_Tourette < 1))
 			stunned = max(10, stunned)
-			emote("twitch")
+			emote("twitch_s")
 	if (disabilities & 16)
 		if (prob(10))
 			stuttering = max(10, stuttering)

@@ -124,6 +124,8 @@
 						src.status = 1
 						src.start_sequence()
 						src.temp = null
+						log_admin("[usr.real_name]([usr.ckey]) has make robot explode.")
+						message_admins("\red [usr.real_name]([usr.ckey]) has make robot explode.")
 				else
 					usr << "\red Access Denied."
 
