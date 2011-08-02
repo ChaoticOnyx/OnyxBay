@@ -890,6 +890,7 @@
 #include "code\WorkInProgress\Events\Event.dm"
 #include "code\WorkInProgress\Events\EventsMain.dm"
 #include "code\WorkInProgress\Events\Events\ElectricalStorm.dm"
+#include "code\WorkInProgress\Events\Events\GasLeak.dm"
 #include "code\WorkInProgress\Events\Events\IonStorm.dm"
 #include "code\WorkInProgress\Events\Events\MeteorStorm.dm"
 #include "code\WorkInProgress\Events\Events\PortalStorm.dm"
