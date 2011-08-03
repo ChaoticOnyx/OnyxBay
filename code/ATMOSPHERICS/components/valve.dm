@@ -205,6 +205,10 @@ obj/machinery/atmospherics/valve
 			node2 = null
 
 		return null
+
+	examine()
+		usr << "[desc] It is [ open? "open" : "closed"]."
+
 	digital		// can be controlled by AI
 		name = "digital valve"
 		desc = "A digitally controlled valve."
