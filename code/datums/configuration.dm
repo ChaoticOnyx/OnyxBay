@@ -178,6 +178,8 @@ var/makejson
 				check_diary()
 				diary << "Unknown setting in configuration: '[name]'"
 
+	load_mysql()
+
 /datum/configuration/proc/load_mysql()
 	var/text = file2text("config/db_config.txt")
 	var/list/CL = dd_text2list(text, "\n")
