@@ -36,11 +36,11 @@
 // TODO: Investigate more recent type additions and see if I can handle them. - Nadrew
 
 var
-	DB_SERVER
-	DB_PORT
-	DB_DBNAME
-	DB_USER
-	DB_PASSWORD
+	DB_SERVER = "" // This is the location of your MySQL server (localhost is USUALLY fine)
+	DB_PORT = 0 // This is the port your MySQL server is running on (3306 is the default)
+	DB_DBNAME = ""
+	DB_USER = ""
+	DB_PASSWORD = ""
 
 DBConnection
 	New(dbi_handler,username,password_handler,cursor_handler)
