@@ -74,11 +74,12 @@ obj/machinery/aiconstruct/attackby(obj/item/weapon/W as obj, mob/user as mob)
 		if(5)
 			if(istype(W,/obj/item/brain))
 				user << "You place the [W] inside the [src]."
-				user.u_equip(W)
-				user.drop_item()
-				W.dropped()
-				W.loc = src
+				//user.u_equip(W)
+				//user.drop_item()
+				//W.dropped()
+				//W.loc = src
 				bb = W:owner
+				del(W)
 				buildstate++
 				icon_state = "ai_new5"
 obj/machinery/aiconstruct/proc/boot()
