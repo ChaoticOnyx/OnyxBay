@@ -194,10 +194,7 @@ obj/item/weapon/cane
 	var/datum/reagents/R = new/datum/reagents(300)
 	reagents = R
 	R.my_atom = src
-	R.add_reagent("stoxin", 100)
-	R.add_reagent("impedrezene", 100)
-	R.add_reagent("cryptobiolin", 100)
-	R.add_reagent("LSD",100)
+	R.add_reagent("stoxin", 300)
 	..()
 	return
 
