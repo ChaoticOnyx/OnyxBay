@@ -321,8 +321,8 @@
 	subject.dna.check_integrity()
 
 	var/ckey = subject.ckey
-	if(!ckey && subject && subject.mind && subject.mind.current)
-		ckey = subject.mind.current.ckey
+	if(!ckey && subject && subject.mind)
+		ckey = subject.mind.key
 
 	var/datum/data/record/R = new /datum/data/record(  )
 	R.fields["ckey"] = ckey
@@ -371,6 +371,27 @@
 
 
 //Find a dead mob with a brain and client.
+/*
+/proc/find_dead_player(var/find_key)
+	if (isnull(find_key))
+		return
+
+	var/mob/selected = null
+	for(var/mob/C)
+		//Dead people only thanks!
+		if ((C.stat != 2))
+			continue
+		//They need a brain!
+		if ((istype(C, /mob/living/carbon/human)) && (C:brain_op_stage >= 4.0))
+			continue
+
+		if ("[C.mind.key]" == find_key)
+			selected = C
+			break
+	if(!selected) //Search for a ghost if dead body with client isn't found.
+	return selected
+*/
+
 /proc/find_dead_player(var/find_key)
 	if (isnull(find_key))
 		return
@@ -387,6 +408,11 @@
 		if ("[C.ckey]" == find_key)
 			selected = C.mob
 			break
+	if(!selected) //Search for a ghost if dead body with client isn't found.
+		for(var/mob/dead/observer/ghost in world)
+			if (ghost.corpse.mind.key == find_key)
+				selected = ghost
+				break
 	return selected
 
 
