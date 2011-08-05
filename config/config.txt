@@ -60,12 +60,3 @@ VOTE_PERIOD 60
 
 # disable abandon mob
 NORESPAWN
-
-# set a hosted by name for unix platforms
-HOSTEDBY BS12
-
-DB_SERVER whoopshop.com
-DB_USER bay12
-DB_PASSWORD xsEZdX2Re34X2CZs
-DB_DBNAME bay12
-DB_PORT 3306

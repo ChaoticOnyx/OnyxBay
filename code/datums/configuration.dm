@@ -86,16 +86,6 @@ var/makejson
 			continue
 
 		switch (name)
-			if("db_server")
-				DB_SERVER = value
-			if("db_port")
-				DB_PORT = text2num(value)
-			if("db_user")
-				DB_USER = value
-			if("db_password")
-				DB_PASSWORD = value
-			if("db_dbname")
-				DB_DBNAME = value
 			if("makejson")
 				makejson = 1
 			if ("log_ooc")
@@ -187,6 +177,47 @@ var/makejson
 			else
 				check_diary()
 				diary << "Unknown setting in configuration: '[name]'"
+
+	load_mysql()
+
+/datum/configuration/proc/load_mysql()
+	var/text = file2text("config/db_config.txt")
+	var/list/CL = dd_text2list(text, "\n")
+
+	for (var/t in CL)
+		if (!t)
+			continue
+
+		t = trim(t)
+		if (length(t) == 0)
+			continue
+		else if (copytext(t, 1, 2) == "#")
+			continue
+
+		var/pos = findtext(t, " ")
+		var/name = null
+		var/value = null
+
+		if (pos)
+			name = lowertext(copytext(t, 1, pos))
+			value = copytext(t, pos + 1)
+		else
+			name = lowertext(t)
+
+		if (!name)
+			continue
+
+		switch (name)
+			if("db_server")
+				DB_SERVER = value
+			if("db_port")
+				DB_PORT = text2num(value)
+			if("db_user")
+				DB_USER = value
+			if("db_password")
+				DB_PASSWORD = value
+			if("db_dbname")
+				DB_DBNAME = value
 
 /datum/configuration/proc/pick_mode(mode_name)
 	for (var/T in (typesof(/datum/game_mode) - /datum/game_mode))

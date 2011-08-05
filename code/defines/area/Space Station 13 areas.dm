@@ -220,6 +220,14 @@
 	name = "Roboticist's Office"
 	icon_state = "roboffice"
 
+/area/medical/cryo
+	name = "Cryogenics"
+	icon_state = "cryogenics"
+
+/area/medical/intensivecare
+	name = "Intensive Care Unit"
+	icon_state = "intensivecare"
+
 /area/prison/solar
 	name = "Prison Solar Array"
 	icon_state = "storage"

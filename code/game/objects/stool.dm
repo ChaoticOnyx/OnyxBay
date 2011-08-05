@@ -19,7 +19,7 @@
 	return
 
 /obj/stool/blob_act()
-	if(prob(50))
+	if(prob(75))
 		new /obj/item/weapon/sheet/metal( src.loc )
 		del(src)
 
@@ -57,49 +57,73 @@
 	return
 
 /obj/stool/bed/Del()
-	for(var/mob/M in src.loc)
+	for(var/mob/M in src.buckled_mobs)
 		if (M.buckled == src)
-			M.buckled = null
 			M.lying = 0
-			M.anchored = 0
+	unbuckle_all()
 	..()
 	return
 
-/obj/stool/bed/MouseDrop_T(mob/M as mob, mob/user as mob)
+/obj/stool/proc/unbuckle_all()
+	for(var/mob/M in src:buckled_mobs)
+		if (M.buckled == src)
+			M.buckled = null
+			M.anchored = 0
+
+/obj/stool/proc/manual_unbuckle_all(mob/user as mob)
+	var/N = 0;
+	for(var/mob/M in src:buckled_mobs)
+		if (M.buckled == src)
+			if (M != user)
+				M.visible_message(\
+					"\blue [M.name] was unbuckled by [user.name]!",\
+					"You unbuckled from [src] by [user.name].",\
+					"You hear metal clanking")
+			else
+				M.visible_message(\
+					"\blue [M.name] was unbuckled himself!",\
+					"You unbuckle yourself from [src].",\
+					"You hear metal clanking")
+//			world << "[M] is no longer buckled to [src]"
+			M.anchored = 0
+			M.buckled = null
+			N++
+	return N
+
+/obj/stool/proc/buckle_mob(mob/M as mob, mob/user as mob)
 	if (!ticker)
 		user << "You can't buckle anyone in before the game starts."
 	if ((!( istype(M, /mob) ) || get_dist(src, user) > 1 || M.loc != src.loc || user.restrained() || usr.stat))
 		return
 	if (M == usr)
-		for(var/mob/O in viewers(user, null))
-			if ((O.client && !( O.blinded )))
-				O << text("\blue [] buckles in!", M)
+		M.visible_message(\
+			"\blue [M.name] buckles in!",\
+			"You buckle yourself to [src].",\
+			"You hear metal clanking")
 	else
-		for(var/mob/O in viewers(user, null))
-			if ((O.client && !( O.blinded )))
-				O << text("\blue [] is buckled in by [].", M, user)
-	M.lying = 1
+		M.visible_message(\
+			"\blue [M.name] is buckled in to [src] by [user.name]!",\
+			"You buckled in to [src] by [user.name].",\
+			"You hear metal clanking")
 	M.anchored = 1
 	M.buckled = src
 	M.loc = src.loc
+	src:buckled_mobs += M
 	src.add_fingerprint(user)
 	return
 
+/obj/stool/bed/MouseDrop_T(mob/M as mob, mob/user as mob)
+	if (!istype(M)) return
+	buckle_mob(M, user)
+	M.lying = 1
+	return
+
 /obj/stool/bed/attack_hand(mob/user as mob)
-	for(var/mob/M in src.loc)
-		if (M.buckled)
-			if (M != user)
-				for(var/mob/O in viewers(user, null))
-					if ((O.client && !( O.blinded )))
-						O << text("\blue [] is unbuckled by [].", M, user)
-			else
-				for(var/mob/O in viewers(user, null))
-					if ((O.client && !( O.blinded )))
-						O << text("\blue [] unbuckles.", M)
-//			world << "[M] is no longer buckled to [src]"
-			M.anchored = 0
-			M.buckled = null
-			src.add_fingerprint(user)
+	for(var/mob/M in src.buckled_mobs)
+		if (M.buckled == src)
+			M.lying = 0
+	if (manual_unbuckle_all(user))
+		src.add_fingerprint(user)
 	return
 
 /obj/stool/chair/e_chair/New()
@@ -134,6 +158,8 @@
 	return
 
 /obj/stool/chair/e_chair/verb/toggle_power()
+	set name = "Toggle Electric Chair"
+	set category = "Object"
 	set src in oview(1)
 
 	if ((usr.stat || usr.restrained() || !( usr.canmove ) || usr.lying))
@@ -162,12 +188,16 @@
 
 	flick("e_chairs", src)
 	flick("e_chairos", src.overl)
-	for(var/mob/M in src.loc)
+	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+	s.set_up(12, 1, src)
+	s.start()
+	for(var/mob/living/M in src.loc)
 		M.burn_skin(85)
 		M << "\red <B>You feel a deep shock course through your body!</B>"
 		sleep(1)
 		M.burn_skin(85)
-		if(M.stunned < 600)	M.stunned = 600
+		if(M.stunned < 600)
+			M.stunned = 600
 	for(var/mob/M in hearers(src, null))
 		M.show_message("\red The electric chair went off!.", 3, "\red You hear a deep sharp shock.", 2)
 
@@ -176,9 +206,7 @@
 	return
 
 /obj/stool/chair/ex_act(severity)
-	for(var/mob/M in src.loc)
-		if(M.buckled == src)
-			M.buckled = null
+	unbuckle_all()
 	switch(severity)
 		if(1.0)
 			del(src)
@@ -194,10 +222,8 @@
 	return
 
 /obj/stool/chair/blob_act()
-	if(prob(50))
-		for(var/mob/M in src.loc)
-			if(M.buckled == src)
-				M.buckled = null
+	if(prob(75))
+		unbuckle_all()
 		del(src)
 
 /obj/stool/chair/New()
@@ -208,13 +234,13 @@
 	return
 
 /obj/stool/chair/Del()
-	for(var/mob/M in src.loc)
-		if (M.buckled == src)
-			M.buckled = null
+	unbuckle_all()
 	..()
 	return
 
 /obj/stool/chair/verb/rotate()
+	set name = "Rotate Chair"
+	set category = "Object"
 	set src in oview(1)
 
 	src.dir = turn(src.dir, 90)
@@ -225,41 +251,77 @@
 	return
 
 /obj/stool/chair/MouseDrop_T(mob/M as mob, mob/user as mob)
-	if (!ticker)
-		user << "You can't buckle anyone in before the game starts."
-		return
-	if ((!( istype(M, /mob) ) || get_dist(src, user) > 1 || M.loc != src.loc || user.restrained() || usr.stat))
-		return
-	if (M == usr)
-		for(var/mob/O in viewers(user, null))
-			if ((O.client && !( O.blinded )))
-				O << text("\blue [] buckles in!", user)
-	else
-		for(var/mob/O in viewers(user, null))
-			if ((O.client && !( O.blinded )))
-				O << text("\blue [] is buckled in by []!", M, user)
-	M.anchored = 1
-	M.buckled = src
-	M.loc = src.loc
-	src.add_fingerprint(user)
+	buckle_mob(M, user)
 	return
 
 /obj/stool/chair/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 
 /obj/stool/chair/attack_hand(mob/user as mob)
-	for(var/mob/M in src.loc)
-		if (M.buckled)
-			if (M != user)
-				for(var/mob/O in viewers(user, null))
-					if ((O.client && !( O.blinded )))
-						O << text("\blue [] is unbuckled by [].", M, user)
-			else
-				for(var/mob/O in viewers(user, null))
-					if ((O.client && !( O.blinded )))
-						O << text("\blue [] unbuckles.", M)
-//			world << "[M] is no longer buckled to [src]"
-			M.anchored = 0
-			M.buckled = null
-			src.add_fingerprint(user)
+	if (manual_unbuckle_all(user))
+		src.add_fingerprint(user)
 	return
+
+//roller bed
+
+/obj/stool/bed/roller
+	name = "stretcher"
+	icon = 'rollerbed.dmi'
+	icon_state = "down"
+	anchored = 0
+
+	Move()
+		..()
+		for(var/mob/M in src:buckled_mobs)
+			if (M.buckled == src)
+				M.loc = src.loc
+
+	buckle_mob(mob/M as mob, mob/user as mob)
+		if (!ticker)
+			user << "You can't buckle anyone in before the game starts."
+			return 0
+		if ((!( istype(M, /mob) ) || get_dist(src, user) > 1 || M.loc != src.loc || user.restrained() || usr.stat || M.buckled))
+			return 0
+		if (M == usr)
+			M.visible_message(\
+				"\blue [M.name] buckles in!",\
+				"You buckle yourself to [src].",\
+				"You hear metal clanking")
+		else
+			M.visible_message(\
+				"\blue [M.name] is buckled in to [src] by [user.name]!",\
+				"You buckled in to [src] by [user.name].",\
+				"You hear metal clanking")
+		M.anchored = 1
+		M.buckled = src
+		M.loc = src.loc
+		M.pixel_y = 6
+		M.update_clothing()
+		src:buckled_mobs += M
+		src.add_fingerprint(user)
+		density = 1
+		icon_state = "up"
+		return 1
+
+	manual_unbuckle_all(mob/user as mob)
+		var/N = 0;
+		for(var/mob/M in src:buckled_mobs)
+			if (M.buckled == src)
+				if (M != user)
+					M.visible_message(\
+						"\blue [M.name] was unbuckled by [user.name]!",\
+						"You unbuckled from [src] by [user.name].",\
+						"You hear metal clanking")
+				else
+					M.visible_message(\
+						"\blue [M.name] was unbuckled himself!",\
+						"You unbuckle yourself from [src].",\
+						"You hear metal clanking")
+				M.pixel_y = 0
+				M.anchored = 0
+				M.buckled = null
+				N++
+		if(N)
+			density = 0
+			icon_state = "down"
+		return N

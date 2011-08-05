@@ -313,6 +313,7 @@ About the new airlock wires panel:
 					//TODO: Move this into process() and make pulsing reset secondsElectrified to 30
 					while (src.secondsElectrified>0)
 						src.secondsElectrified-=1
+						src.updateUsrDialog()
 						if (src.secondsElectrified<0)
 							src.secondsElectrified = 0
 						src.updateUsrDialog()
@@ -364,7 +365,7 @@ About the new airlock wires panel:
 			//Cutting this wire electrifies the door, so that the next person to touch the door without insulated gloves gets electrocuted.
 			if (src.secondsElectrified != -1)
 				src.secondsElectrified = -1
-
+			src.updateUsrDialog()
 
 /obj/machinery/door/airlock/proc/mend(var/wireColor)
 	var/wireFlag = airlockWireColorToFlag[wireColor]
@@ -392,6 +393,7 @@ About the new airlock wires panel:
 		if (AIRLOCK_WIRE_ELECTRIFY)
 			if (src.secondsElectrified == -1)
 				src.secondsElectrified = 0
+			src.updateUsrDialog()
 
 
 /obj/machinery/door/airlock/proc/isElectrified()
@@ -760,6 +762,7 @@ About the new airlock wires panel:
 				//TODO: Move this into process() and make pulsing reset secondsElectrified to 30
 				while (src.secondsElectrified>0)
 					src.secondsElectrified-=1
+					src.updateUsrDialog()
 					if (src.secondsElectrified<0)
 						src.secondsElectrified = 0
 					src.updateUsrDialog()
@@ -1089,7 +1092,7 @@ About the new airlock wires panel:
 					t1 += "<a href='?src=\ref[src];signaler=[wires[wiredesc]]'>Attach signaler</a>"
 			t1 += "<br>"
 
-		t1 += text("<br>\n[]<br>\n[]<br>\n[]", (src.locked ? "The door bolts have fallen!" : "The door bolts look up."), ((src.arePowerSystemsOn() && !(stat & NOPOWER)) ? "The test light is on." : "The test light is off!"), (src.aiControlDisabled==0 ? "The 'AI control allowed' light is on." : "The 'AI control allowed' light is off."))
+		t1 += text("<br>\n[]<br>\n[]<br>\n[]<br>\n[]<br>\n[]", (src.locked ? "The door bolts have fallen!" : "The door bolts look up."), ((src.arePowerSystemsOn() && !(stat & NOPOWER)) ? "The test light is on." : "The test light is off!"), (src.aiControlDisabled==0 ? "The 'AI control allowed' light is on." : "The 'AI control allowed' light is off."), (src.secondsElectrified!=0 ? "The safety light is flashing!" : "The safety light is on."), (src.forcecrush==0 ? "The hydraulics control light is a solid green." : "The hydraulics control light is flashing red."))
 
 		t1 += text("<p><a href='?src=\ref[];close=1'>Close</a></p>\n", src)
 
