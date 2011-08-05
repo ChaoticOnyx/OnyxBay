@@ -1662,7 +1662,7 @@
 		dat += "<b>Venne</b>: <A href='?src=\ref[src];vend=21'><U>Vend</U></A><br>"
 		dat += "<b>Potato</b>: <A href='?src=\ref[src];vend=28'><u>Vend</u></A><br>"
 		if (src.hacked)
-			dat += "<b>Cannabis</b>: <A href='?src=\ref[src];vend=22'><U>Vend</U></A><br>"
+			//dat += "<b>Cannabis</b>: <A href='?src=\ref[src];vend=22'><U>Vend</U></A><br>"	Removing Cannabis for now.
 			dat += "<b>Fungus</b>: <A href='?src=\ref[src];vend=23'><U>Vend</U></A><br>"
 			dat += "<b>Lasher</b>: <A href='?src=\ref[src];vend=24'><U>Vend</U></A><br>"
 			dat += "<b>Creeper</b>: <A href='?src=\ref[src];vend=25'><U>Vend</U></A><br>"
