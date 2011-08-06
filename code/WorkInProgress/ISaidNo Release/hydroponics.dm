@@ -37,7 +37,7 @@
 /datum/plant/tomato
 	name = "tomato"
 	harvtype = "fruit"
-	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/tomato
+	crop = /obj/item/weapon/reagent_containers/food/snacks/tomato
 	seed = /obj/item/weapon/seed/tomato
 	starthealth = 20
 	growtime = 375
@@ -132,7 +132,7 @@
 /datum/plant/apple
 	name = "apple"
 	harvtype = "fruit"
-	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/apple
+	crop = /obj/item/weapon/reagent_containers/food/snacks/apple
 	seed = /obj/item/weapon/seed/apple
 	starthealth = 40
 	growtime = 1000
@@ -324,7 +324,7 @@
 /datum/plant/fungus
 	name = "fungus"
 	growthmode = "weed"
-	crop = /obj/item/weapon/reagent_containers/food/snacks/mushroom
+	crop = /obj/item/weapon/reagent_containers/food/snacks/fungi
 	seed = /obj/item/weapon/seed/fungus
 	starthealth = 20
 	growtime = 150
