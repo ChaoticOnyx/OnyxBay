@@ -109,7 +109,7 @@ var/list/postsetuphooks = list()
 
 	spawn(0)
 		while(1)
-			sleep(10000*tick_multiplier)
+			sleep(10000)
 			SpawnEvent()
 
 	spawn master_controller.process()
