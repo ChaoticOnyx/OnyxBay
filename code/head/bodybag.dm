@@ -17,7 +17,7 @@ obj/bodybag
 
 /obj/bodybag/overrideMobSay(var/message, var/mob/living/user)
 	user << "You try to say \"[message]\"."
-	message = stars(message, 50)
+	message = Ellipsis(message, 50)
 	for(var/mob/M in hearers(null, src))
 		M.show_message("You hear \"[message]\" coming from somewhere nearby.", 2)
 

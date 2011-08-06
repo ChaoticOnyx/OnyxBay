@@ -17,7 +17,7 @@
 		return
 
 	var/alt_name = ""
-	if (istype(src, /mob/living/carbon/human) && name != real_name)
+	if (istype(src, /mob/living/carbon/human) && (name != real_name || face_dmg))
 		if (src:wear_id && src:wear_id:registered)
 			alt_name = " (as [src:wear_id:registered])"
 		else
@@ -80,6 +80,8 @@
 
 		if (!istype(src, /mob/living/carbon/human) || istype(wear_mask, /obj/item/clothing/mask/gas/voice))
 			rendered = "<span class='game say'><span class='name'>[name]</span> whispers, <span class='message'>\"[message_a]\"</span></span>"
+		else if(face_dmg)
+			rendered = "<span class='game say'><span class='name'>Unknown</span>[alt_name] whispers, <span class='message'>\"[message_a]\"</span></span>"
 		else
 			rendered = "<span class='game say'><span class='name'>[real_name]</span>[alt_name] whispers, <span class='message'>\"[message_a]\"</span></span>"
 
@@ -92,7 +94,7 @@
 		if (voice_message)
 			message_b = voice_message
 		else
-			message_b = stars(message)
+			message_b = Ellipsis(message)
 
 		if (italics)
 			message_b = "<i>[message_b]</i>"
@@ -105,9 +107,11 @@
 	for (var/mob/M in eavesdropping)
 		if (M.say_understands(src))
 			var/message_c
-			message_c = stars(message)
+			message_c = Ellipsis(message)
 			if (!istype(src, /mob/living/carbon/human) || istype(wear_mask, /obj/item/clothing/mask/gas/voice))
 				rendered = "<span class='game say'><span class='name'>[name]</span> whispers, <span class='message'>\"[message_c]\"</span></span>"
+			else if(face_dmg)
+				rendered = "<span class='game say'><span class='name'>Unknown</span>[alt_name] whispers, <span class='message'>\"[message_c]\"</span></span>"
 			else
 				rendered = "<span class='game say'><span class='name'>[real_name]</span>[alt_name] whispers, <span class='message'>\"[message_c]\"</span></span>"
 			M.show_message(rendered, 2)
@@ -120,6 +124,8 @@
 
 	if (!istype(src, /mob/living/carbon/human) || istype(wear_mask, /obj/item/clothing/mask/gas/voice))
 		rendered = "<span class='game say'><span class='name'>[name]</span> whispers, <span class='message'>\"[message]\"</span></span>"
+	else if(face_dmg)
+		rendered = "<span class='game say'><span class='name'>Unknown</span>[alt_name] whispers, <span class='message'>\"[message]\"</span></span>"
 	else
 		rendered = "<span class='game say'><span class='name'>[real_name]</span>[alt_name] whispers, <span class='message'>\"[message]\"</span></span>"
 

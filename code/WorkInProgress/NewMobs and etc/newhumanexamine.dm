@@ -71,7 +71,7 @@
 
 	if (wear_id)
 		if (wear_id.registered != real_name && in_range(src, usr) && prob(10))
-			usr << "\red [name] is wearing \icon[wear_id] [wear_id.name] yet doesn't seem to be that person!!!"
+			usr << "\red [name] is wearing \icon[wear_id] [wear_id.name], but something's amiss..."
 		else
 			usr << "\blue [name] is wearing \icon[wear_id] [wear_id.name]."
 

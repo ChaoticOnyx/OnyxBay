@@ -467,7 +467,7 @@ datum
 			reagent_state = GAS
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				M:bruteloss++
+				M:toxloss++
 				..()
 				return
 
@@ -544,7 +544,7 @@ datum
 							M:UpdateDamageIcon()
 							M:emote("scream")
 							M << "\red Your face has become disfigured!"
-							M.real_name = "Unknown"
+							M.face_dmg = 1
 						else
 							M:fireloss += 15
 					else
@@ -595,7 +595,7 @@ datum
 						M:UpdateDamageIcon()
 						M:emote("scream")
 						M << "\red Your face has become disfigured!"
-						M.real_name = "Unknown"
+						M.face_dmg = 1
 					else
 						M:fireloss += 15
 				else
@@ -606,7 +606,7 @@ datum
 						M:UpdateDamageIcon()
 						M:emote("scream")
 						M << "\red Your face has become disfigured!"
-						M.real_name = "Unknown"
+						M.face_dmg = 1
 					else
 						M:fireloss += (30 * max(1, volume / 30))
 

@@ -88,7 +88,7 @@
 				if(istype(M,/mob/living/silicon) || istype(M,/mob/living/carbon/human))
 					M << "<span class='game recorder'><span class='name'></span><b> \icon[src]\[[src.name]\]</b> <span class='message'>[msg]</span></span>"
 				else
-					M << stars(msg)
+					M << Ellipsis(msg)
 			return
 		if(types == "alien")
 			for(var/mob/M in viewers(world.view,src))
@@ -121,7 +121,7 @@
 					if(istype(M,/mob/living/silicon) || istype(M,/mob/living/carbon/human))
 						M << "<span class='game recorder'><span class='name'></span><b> \icon[src]\[[src.name]\]</b> <span class='message'>[msg]</span></span>"
 					else
-						M << stars(msg)
+						M << Ellipsis(msg)
 			if(types == "alien")
 				for(var/mob/M in viewers(world.view,src))
 					if(istype(M,/mob/living/carbon/alien))

@@ -144,65 +144,121 @@
 	if (!( istype(location, /turf) ))
 		return
 
-	var/datum/gas_mixture/environment = location.return_air(1)
-
-	var/pressure = environment.return_pressure()
-	var/total_moles = environment.total_moles()
-
 	var/dat = ""
 
-	dat += "\blue <B>[alarm_zone] Atmosphere:</B><br>"
-	if(abs(pressure - ONE_ATMOSPHERE) < 10)
-		dat += "\blue Pressure: [round(pressure,0.1)] kPa<br>"
+	if(check_panel(user))
+
+		var/datum/gas_mixture/environment = location.return_air(1)
+
+		var/pressure = environment.return_pressure()
+		var/total_moles = environment.total_moles()
+
+		dat += "\blue <B>[alarm_zone] Atmosphere:</B><br>"
+		if(abs(pressure - ONE_ATMOSPHERE) < 10)
+			dat += "\blue Pressure: [round(pressure,0.1)] kPa<br>"
+		else
+			dat += "\red Pressure: [round(pressure,0.1)] kPa<br>"
+		if(total_moles)
+			var/o2_concentration = environment.oxygen/total_moles
+			var/n2_concentration = environment.nitrogen/total_moles
+			var/co2_concentration = environment.carbon_dioxide/total_moles
+			var/plasma_concentration = environment.toxins/total_moles
+
+			var/unknown_concentration =  1-(o2_concentration+n2_concentration+co2_concentration+plasma_concentration)
+			if(abs(n2_concentration - N2STANDARD) < 20)
+				dat += "\blue Nitrogen: [round(n2_concentration*100)]%<br>"
+			else
+				dat += "\red Nitrogen: [round(n2_concentration*100)]%<br>"
+
+			if(abs(o2_concentration - O2STANDARD) < 2)
+				dat += "\blue Oxygen: [round(o2_concentration*100)]%<br>"
+			else
+				dat += "\red Oxygen: [round(o2_concentration*100)]%<br>"
+
+			if(co2_concentration > 0.01)
+				dat += "\red CO2: [round(co2_concentration*100)]%<br>"
+			else
+				dat += "\blue CO2: [round(co2_concentration*100)]%<br>"
+
+			if(plasma_concentration > 0.01)
+				dat += "\red Plasma: [round(plasma_concentration*100)]%<br>"
+
+			if(unknown_concentration > 0.01)
+				dat += "\red Unknown: [round(unknown_concentration*100)]%<br>"
+			if(abs(environment.temperature - T20C) < 7)
+				dat += "\blue Temperature: [round(environment.temperature-T0C)]&deg;C"
+			else
+				dat += "\red Temperature: [round(environment.temperature-T0C)]&deg;C"
+		if((user in range(1,src)) || istype(user, /mob/living/silicon/))
+			dat += "<BR><BR>"
+			var/area/A = get_area(loc)
+			if(!A.air_doors_activated)
+				dat += "<A href='?src=\ref[src];activate_alarm=1'>Activate Emergency Seal</A>"
+			else
+				dat += "<A href='?src=\ref[src];deactivate_alarm=1'>Deactivate Emergency Seal</A>"
+			dat += "<BR><BR>"
+			if(vent_connected)
+				if(!vent_connected.panic_fill)
+					dat += "<A href='?src=\ref[src];activate_panic_fill=1'>Activate Panic Fill</A>"
+				else
+					dat += "<A href='?src=\ref[src];deactivate_panic_fill=1'>Deactivate Panic Fill</A>"
+			else
+				dat += "\red No vents connected!"
+		dat += text("<BR><BR><A href='?src=\ref[];mach_close=alarm'>Close</A>", user)
+		user << browse(dat, "window=alarm;size=400x500")
 	else
-		dat += "\red Pressure: [round(pressure,0.1)] kPa<br>"
-	if(total_moles)
-		var/o2_concentration = environment.oxygen/total_moles
-		var/n2_concentration = environment.nitrogen/total_moles
-		var/co2_concentration = environment.carbon_dioxide/total_moles
-		var/plasma_concentration = environment.toxins/total_moles
+		var/list/readouts = list()
+
+		var/list/fake_gases = list(
+		"Argon","Chlorine","Butane","Fat","N2O","Radon","Krypton","Fluorine","Plasma","Cyanide","Intelligence","Lizards",
+		"Children","Luck","Skill","Concentrated Power of Will","Leeroy Jenkins","Bumcivilian","Pig Iron","Boiling Bronze",
+		"Intelligent Calcium","Vacuum","Wanted Level"
+		)
+
+		var/pressure = rand(0,1201) + rand()
+
+		if(abs(pressure - ONE_ATMOSPHERE) < 10)
+			readouts += "\blue Pressure: [round(pressure,0.1)] kPa<br>"
+		else
+			readouts += "\red Pressure: [round(pressure,0.1)] kPa<br>"
+
+		var/o2_concentration = rand()
+		var/n2_concentration = rand()
+		var/co2_concentration = rand()
+		var/plasma_concentration = rand()
 
 		var/unknown_concentration =  1-(o2_concentration+n2_concentration+co2_concentration+plasma_concentration)
-		if(abs(n2_concentration - N2STANDARD) < 20)
-			dat += "\blue Nitrogen: [round(n2_concentration*100)]%<br>"
-		else
-			dat += "\red Nitrogen: [round(n2_concentration*100)]%<br>"
 
-		if(abs(o2_concentration - O2STANDARD) < 2)
-			dat += "\blue Oxygen: [round(o2_concentration*100)]%<br>"
-		else
-			dat += "\red Oxygen: [round(o2_concentration*100)]%<br>"
+		readouts += "\blue [pick(fake_gases)]: [round(n2_concentration*100)]%<br>"
 
-		if(co2_concentration > 0.01)
-			dat += "\red CO2: [round(co2_concentration*100)]%<br>"
-		else
-			dat += "\blue CO2: [round(co2_concentration*100)]%<br>"
+		readouts += "\blue [pick(fake_gases)]: [round(o2_concentration*100)]%<br>"
+
+		readouts += "\blue [pick(fake_gases)]: [round(co2_concentration*100)]%<br>"
 
 		if(plasma_concentration > 0.01)
-			dat += "\red Plasma: [round(plasma_concentration*100)]%<br>"
+			readouts += "\red [pick(fake_gases)]: [round(plasma_concentration*100)]%<br>"
 
 		if(unknown_concentration > 0.01)
-			dat += "\red Unknown: [round(unknown_concentration*100)]%<br>"
-		if(abs(environment.temperature - T20C) < 7)
-			dat += "\blue Temperature: [round(environment.temperature-T0C)]&deg;C"
-		else
-			dat += "\red Temperature: [round(environment.temperature-T0C)]&deg;C"
-	if((user in range(1,src)) || istype(user, /mob/living/silicon/))
-		dat += "<BR><BR>"
-		var/area/A = get_area(loc)
-		if(!A.air_doors_activated)
-			dat += "<A href='?src=\ref[src];activate_alarm=1'>Activate Emergency Seal</A>"
-		else
-			dat += "<A href='?src=\ref[src];deactivate_alarm=1'>Deactivate Emergency Seal</A>"
-		dat += "<BR><BR>"
-		if(vent_connected)
-			if(!vent_connected.panic_fill)
-				dat += "<A href='?src=\ref[src];activate_panic_fill=1'>Activate Panic Fill</A>"
+			readouts += "\red [pick(fake_gases)]: [round(unknown_concentration*100)]%<br>"
+
+		var/temp = rand(-270,1200)
+		readouts += "\blue Temperature: [round(temp)]&deg;C"
+
+		var/list/buttons = list()
+		if((user in range(1,src)) || istype(user, /mob/living/silicon/))
+			var/area/A = get_area(loc)
+			if(!A.air_doors_activated)
+				buttons += "activate_alarm=1"
 			else
-				dat += "<A href='?src=\ref[src];deactivate_panic_fill=1'>Deactivate Panic Fill</A>"
-		else
-			dat += "\red No vents connected!"
-	dat += text("<BR><BR><A href='?src=\ref[];mach_close=alarm'>Close</A>", user)
+				buttons += "deactivate_alarm=1"
+			if(vent_connected)
+				if(!vent_connected.panic_fill)
+					buttons += "activate_panic_fill=1"
+				else
+					buttons += "deactivate_panic_fill=1"
+
+		dat = mockpanel(buttons,"\blue <B>[alarm_zone] Atmosphere:</B><br>",null,readouts)
+
 	user << browse(dat, "window=alarm;size=400x500")
 	user.machine = src
 	onclose(user, "alarm")
@@ -218,6 +274,8 @@
 		vent_connected.panic_fill = 1
 	if(href_list["deactivate_panic_fill"])
 		vent_connected.panic_fill = 0
+
+	mocktxt = null
 
 	spawn(10)					//Added by Strumpetplaya - Alarm Changes - Moved Door Delay to here
 		updateUsrDialog()
@@ -416,7 +474,7 @@ obj/machinery/alarm/proc
 	var/area/A = src.loc
 	var/d1
 	var/d2
-	if (istype(user, /mob/living/carbon/human) || istype(user, /mob/living/silicon/ai))
+	if (check_panel(user))
 		A = A.loc
 
 		if (A.fire)
@@ -433,24 +491,40 @@ obj/machinery/alarm/proc
 		user << browse(dat, "window=firealarm")
 		onclose(user, "firealarm")
 	else
+
 		A = A.loc
+		var/list/possible_buttons = list()
 		if (A.fire)
-			d1 = text("<A href='?src=\ref[];reset=1'>[]</A>", src, stars("Reset - Lockdown"))
+			possible_buttons += "reset=1"
 		else
-			d1 = text("<A href='?src=\ref[];alarm=1'>[]</A>", src, stars("Alarm - Lockdown"))
+			possible_buttons += "alarm=1"
 		if (src.timing)
-			d2 = text("<A href='?src=\ref[];time=0'>[]</A>", src, stars("Stop Time Lock"))
+			possible_buttons += "time=0"
 		else
-			d2 = text("<A href='?src=\ref[];time=1'>[]</A>", src, stars("Initiate Time Lock"))
-		var/second = src.time % 60
-		var/minute = (src.time - second) / 60
-		var/dat = text("<HTML><HEAD></HEAD><BODY><TT><B>[]</B> []\n<HR>\nTimer System: []<BR>\nTime Left: [][] <A href='?src=\ref[];tp=-30'>-</A> <A href='?src=\ref[];tp=-1'>-</A> <A href='?src=\ref[];tp=1'>+</A> <A href='?src=\ref[];tp=30'>+</A>\n</TT></BODY></HTML>", stars("Fire alarm"), d1, d2, (minute ? text("[]:", minute) : null), second, src, src, src, src)
-		user << browse(dat, "window=firealarm")
+			possible_buttons += "time=1"
+
+		possible_buttons += "tp=-30"
+		possible_buttons += "tp=-1"
+		possible_buttons += "tp=1"
+		possible_buttons += "tp=30"
+
+		var/timer_txt = pick("Countdown to Apocalypse: ","Shuttle ETA: ","Unimportant Numbers: ","X = ","You Are Customer #","Party Begins In: ")
+
+		var/dat = mockpanel(possible_buttons,"<HTML><HEAD></HEAD><BODY><TT><b>Fire Alarm</b><BR><HR><BR>","<br>[timer_txt]")
+
+
+		var/rnd_time = rand(1,900)
+
+		var/second = rnd_time % 60
+		var/minute = (rnd_time - second) / 60
+
+		user << browse(dat + "<TT>[minute]:[second]</TT>", "window=firealarm")
 		onclose(user, "firealarm")
 	return
 
 /obj/machinery/firealarm/Topic(href, href_list)
 	..()
+	mocktxt = null
 	if (usr.stat || stat & (BROKEN|NOPOWER))
 		return
 	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
@@ -487,6 +561,7 @@ obj/machinery/alarm/proc
 	A = A.loc
 	if (!( istype(A, /area) ))
 		return
+	mocktxt = null
 	for(var/obj/machinery/door/firedoor/E in A.auxdoors)
 		var/area/B = get_area(E.loc)
 		if(B.fire != 1)
@@ -518,6 +593,7 @@ obj/machinery/alarm/proc
 		return
 	var/area/A = src.loc
 	A = A.loc
+	mocktxt = null
 	if (!( istype(A, /area) ))
 		return
 	for(var/obj/machinery/door/firedoor/E in A.auxdoors)

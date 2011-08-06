@@ -239,7 +239,7 @@
 	var/datum/organ/external/head/head = organs["head"]
 	if(head && src.real_name != "Unknown")
 		if(head.brute_dam >= 45 || head.burn_dam >= 45)
-			src.real_name = "Unknown"
+			src.face_dmg = 1
 			src << "\red Your face has become disfigured."
 	for(var/datum/organ/external/temp in organs2)
 		if(!temp.bleeding)

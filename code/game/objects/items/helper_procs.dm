@@ -99,7 +99,7 @@
 		else if (M.voice_message)
 			message_b = M.voice_message
 		else
-			message_b = stars(message)
+			message_b = Ellipsis(message)
 			message_b = M.say_quote(message_b)
 
 		if (italics)

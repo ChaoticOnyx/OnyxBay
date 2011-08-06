@@ -710,21 +710,21 @@
 	var/list/objects = list()
 	var/obj/item/W
 	W = selected_module()
-	if(!W)
-		if(module_state_1)
-			objects += module_state_1
-		if(module_state_2)
-			objects += module_state_2
-		if(module_state_3)
-			objects += module_state_3
+	//if(!W)
+	//	if(module_state_1)
+	//		objects += module_state_1
+	//	if(module_state_2)
+	//		objects += module_state_2
+	//	if(module_state_3)
+	//		objects += module_state_3
 
-		if (objects.len > 1)
-			var/input = input("Please, select an item!", "Item", null, null) as obj in objects
-			W = input
-		else if(objects.len)
-			W = objects[1]
-		else
-			W = null
+	//	if (objects.len > 1)
+	//		var/input = input("Please, select an item!", "Item", null, null) as obj in objects
+	//		W = input
+	//	else if(objects.len)
+	//		W = objects[1]
+	//	else
+	//		W = null
 	return W
 
 /mob/living/silicon/robot/proc/activated(obj/item/O)

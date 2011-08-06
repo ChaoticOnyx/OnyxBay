@@ -341,7 +341,7 @@
 	name = "Identity Loss syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.real_name = "Unknown"
+		mob.face_dmg = 1
 
 /datum/disease2/effect/greater/monkey
 	name = "Monkism syndrome"

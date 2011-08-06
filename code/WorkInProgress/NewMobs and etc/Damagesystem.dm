@@ -1159,6 +1159,8 @@
 	else
 		if (wear_id && wear_id.registered != real_name)
 			name = "[real_name] (as [wear_id.registered])"
+		else if(face_dmg)
+			name = "Unknown (as [wear_id.registered])"
 		else
 			name = real_name
 

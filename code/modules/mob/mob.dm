@@ -69,6 +69,7 @@
 /mob/var/stuttering = null
 /mob/var/intoxicated = null
 /mob/var/real_name = null
+/mob/var/face_dmg = 0
 /mob/var/blinded = null
 /mob/var/rejuv = null
 /mob/var/druggy = 0

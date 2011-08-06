@@ -103,6 +103,7 @@
 			/client/proc/SDQL2_query,
 			/client/proc/sendmob,
 			/client/proc/zombify,
+			/client/proc/Force_Event,
 			/obj/admins/proc/adjump,				//toggle admin jumping
 			/obj/admins/proc/adrev,					//toggle admin revives
 			/obj/admins/proc/adspawn,				//toggle admin item spawning

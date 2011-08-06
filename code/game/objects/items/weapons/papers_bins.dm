@@ -26,7 +26,7 @@ CLIPBOARDS
 
 	..()
 	if (!( istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead) || istype(usr, /mob/living/silicon) ))
-		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", src.name, stars(src.info)), text("window=[]", src.name))
+		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", src.name, Ellipsis(src.info)), text("window=[]", src.name))
 		onclose(usr, "[src.name]")
 	else
 		var/t = dd_replacetext(src.info, "\n", "<BR>")
@@ -58,7 +58,7 @@ CLIPBOARDS
 		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", src.name, src.info), text("window=[]", src.name))
 		onclose(usr, "[src.name]")
 	else
-		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", src.name, stars(src.info)), text("window=[]", src.name))
+		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", src.name, Ellipsis(src.info)), text("window=[]", src.name))
 		onclose(usr, "[src.name]")
 	return
 
@@ -524,7 +524,7 @@ CLIPBOARDS
 			var/obj/item/weapon/paper/P = locate(href_list["read"])
 			if ((P && P.loc == src))
 				if (!( istype(usr, /mob/living/carbon/human) ))
-					usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", P.name, stars(P.info)), text("window=[]", P.name))
+					usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", P.name, Ellipsis(P.info)), text("window=[]", P.name))
 					onclose(usr, "[P.name]")
 				else
 					usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", P.name, P.info), text("window=[]", P.name))

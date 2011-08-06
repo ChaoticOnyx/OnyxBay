@@ -270,11 +270,11 @@ Frequency:
 				//	R << img
 
 		if (length(heard_garbled))
-			var/rendered = "[part_a][M.voice_name][part_b][M.say_quote(stars(message))][part_c]"
+			var/rendered = "[part_a][M.voice_name][part_b][M.say_quote(Ellipsis(message))][part_c]"
 
 			for (var/mob/R in heard_garbled)
 				if(istype(R, /mob/living/silicon/ai))
-					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.voice_name]</a>[part_b][M.say_quote(stars(message))][part_c]", 2)
+					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.voice_name]</a>[part_b][M.say_quote(Ellipsis(message))][part_c]", 2)
 				else
 					R.show_message(rendered, 10)
 				//	R << img
@@ -432,10 +432,10 @@ Frequency:
 					R.show_message(rendered, 2)
 
 		if (length(heard_garbled))
-			var/rendered = "[part_a][M.voice_name][part_b][M.say_quote(stars(message))][part_c]"
+			var/rendered = "[part_a][M.voice_name][part_b][M.say_quote(Ellipsis(message))][part_c]"
 
 			for (var/mob/R in heard_garbled)
 				if(istype(R, /mob/living/silicon/ai))
-					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.voice_name]</a>[part_b][M.say_quote(stars(message))][part_c]", 2)
+					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.voice_name]</a>[part_b][M.say_quote(Ellipsis(message))][part_c]", 2)
 				else
 					R.show_message(rendered, 2)

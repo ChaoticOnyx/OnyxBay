@@ -32,7 +32,7 @@
 		message = copytext(message, firstspace+1)
 
 	var/alt_name = "" // In case your face is burnt or you're wearing a mask
-	if (istype(src, /mob/living/carbon/human) && name != real_name)
+	if (istype(src, /mob/living/carbon/human) && (name != real_name || face_dmg))
 		if (src:wear_id && src:wear_id:registered)
 			alt_name = " (as [src:wear_id:registered])"
 		else
@@ -170,6 +170,8 @@
 
 		if (!istype(src, /mob/living/carbon/human) || istype(wear_mask, /obj/item/clothing/mask/gas/voice))
 			rendered = "<span class='game say'><span class='name'>[name]</span> <span class='message'>[message_a]</span></span>"
+		else if(face_dmg)
+			rendered = "<span class='game say'><span class='name'>Unknown</span>[alt_name] <span class='message'>[message_a]</span></span>"
 		else
 			rendered = "<span class='game say'><span class='name'>[real_name]</span>[alt_name] <span class='message'>[message_a]</span></span>"
 
@@ -189,7 +191,7 @@
 		else if (voice_message)
 			message_b = voice_message
 		else
-			message_b = stars(message)
+			message_b = Ellipsis(message)
 			message_b = say_quote(message_b, custommode)
 
 		if (italics)
@@ -206,6 +208,8 @@
 
 	if (!istype(src, /mob/living/carbon/human) || istype(wear_mask, /obj/item/clothing/mask/gas/voice))
 		rendered = "<span class='game say'><span class='name'>[name]</span> <span class='message'>[message]</span></span>"
+	else if (face_dmg)
+		rendered = "<span class='game say'><span class='name'>Unknown</span>[alt_name] <span class='message'>[message]</span></span>"
 	else
 		rendered = "<span class='game say'><span class='name'>[real_name]</span>[alt_name] <span class='message'>[message]</span></span>"
 	for (var/client/C)

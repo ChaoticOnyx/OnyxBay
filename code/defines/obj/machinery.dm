@@ -2,6 +2,7 @@
 	name = "machinery"
 	icon = 'stationobjs.dmi'
 	var/stat = 0
+	var/mocktxt = null
 
 /obj/machinery/alarm
 	name = "alarm"
