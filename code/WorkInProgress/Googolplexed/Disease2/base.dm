@@ -221,7 +221,7 @@
 		if(mob.reagents.has_reagent("spaceacillin"))
 			mob.reagents.remove_reagent("spaceacillin",1)
 			return
-		if(clicks > rand(stage*400-100,stage*400+100))
+		if(clicks > stage*100 && prob(10))
 			if(stage == 4)
 				var/datum/disease2/resistance/res = new /datum/disease2/resistance(src)
 				mob.immunevirus2 += src.getcopy()
