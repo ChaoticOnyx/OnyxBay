@@ -1494,7 +1494,7 @@
 "aCL" = (/obj/machinery/atmospherics/unary/vent_filter{dir = 1; initialize_directions = 1},/obj/machinery/alarm{pixel_y = 26},/turf/simulated/floor,/area/hallway/primary/admin)
 "aCM" = (/obj/cabling/power{icon_state = "1-2"},/obj/cabling/power{icon_state = "2-4"},/turf/simulated/floor{dir = 1; icon_state = "warning"; tag = "icon-caution_east"},/area/hallway/primary/admin)
 "aCN" = (/obj/cabling/power{icon_state = "4-8"},/obj/disposalpipe/segment,/turf/simulated/floor{dir = 5; icon_state = "warning"; tag = "icon-corner_south"},/area/hallway/primary/admin)
-"aCO" = (/obj/machinery/atmospherics/pipe/simple,/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/security/hatch{name = "Armory"; req_access_txt = "3"},/turf/simulated/floor,/area/ai_monitored/storage/secure)
+"aCO" = (/obj/machinery/atmospherics/pipe/simple,/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/security/hatch{name = "Armory"; req_access_txt = "3"},/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor,/area/ai_monitored/storage/secure)
 "aCP" = (/obj/cabling/power{icon_state = "2-8"},/turf/simulated/floor{dir = 8; icon_state = "warning"; tag = "icon-caution_east"},/area/ai_monitored/storage/secure)
 "aCQ" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; initialize_directions = 7},/turf/simulated/floor,/area/ai_monitored/storage/secure)
 "aCR" = (/obj/machinery/atmospherics/unary/vent_filter{dir = 8},/turf/simulated/floor,/area/ai_monitored/storage/secure)
