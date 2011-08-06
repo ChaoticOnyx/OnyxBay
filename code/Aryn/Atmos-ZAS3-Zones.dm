@@ -170,6 +170,10 @@ zone
 
 		//.....................//
 
+	Del()
+		zones -= src
+		. = ..()
+
 	Update()
 		while(1)
 			sleep(vsc.zone_update_delay * tick_multiplier)

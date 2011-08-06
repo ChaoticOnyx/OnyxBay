@@ -123,7 +123,7 @@
 		del(src)
 		return
 	user.drop_item()
-	if(W && W.loc)	W.loc = src.loc
+	if(W && W.loc && !W.is_module)	W.loc = src.loc
 	return
 
 /obj/table/reinforced/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -163,7 +163,7 @@
 			del(src)
 			return
 	user.drop_item()
-	if(W && W.loc)	W.loc = src.loc
+	if(W && W.loc && !W.is_module)	W.loc = src.loc
 	return
 
 /obj/rack/ex_act(severity)
@@ -215,7 +215,7 @@
 		del(src)
 		return
 	user.drop_item()
-	if(W && W.loc)	W.loc = src.loc
+	if(W && W.loc && !W.is_module)	W.loc = src.loc
 	return
 
 /obj/rack/meteorhit(obj/O as obj)

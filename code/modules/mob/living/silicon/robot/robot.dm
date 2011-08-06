@@ -707,7 +707,7 @@
 
 
 /mob/living/silicon/robot/equipped()
-	var/list/objects = list()
+	//var/list/objects = list()
 	var/obj/item/W
 	W = selected_module()
 	//if(!W)

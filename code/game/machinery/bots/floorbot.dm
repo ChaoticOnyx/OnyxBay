@@ -173,6 +173,11 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 				src.oldtarget = D
 				src.target = D
 				break
+		for(var/turf/simulated/floor/open/O in view(7,src))
+			if(!(O in floorbottargets) && O != src.oldtarget)
+				src.oldtarget = O
+				src.target = O
+				break
 		if((!src.target || src.target == null ) && src.improvefloors)
 			for (var/turf/simulated/floor/F in view(7,src))
 				if(!(F in floorbottargets) && F != src.oldtarget && F.broken && !(istype(F, /turf/simulated/floor/plating)))
@@ -234,7 +239,7 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 		return
 	src.anchored = 1
 	src.icon_state = "floorbot-c"
-	if(istype(target, /turf/space/))
+	if(istype(target, /turf/space/) || istype(target,/turf/simulated/floor/open))
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\red [src] begins to repair the hole"), 1)
 		var/obj/item/weapon/tile/T = new /obj/item/weapon/tile

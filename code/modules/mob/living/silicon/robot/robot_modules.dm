@@ -78,3 +78,10 @@
 	modules += new /obj/item/weapon/reagent_containers/food/drinks/beer(src)
 	modules += new /obj/item/weapon/reagent_containers/food/drinks/beer(src)
 	modules += new /obj/item/weapon/reagent_containers/food/drinks/beer(src)
+
+/obj/item/var/is_module = 0
+
+/obj/item/New(newLoc)
+	. = ..()
+	if(istype(newLoc,/obj/item/weapon/robot_module))
+		is_module = 1

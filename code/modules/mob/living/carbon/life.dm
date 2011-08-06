@@ -373,13 +373,13 @@
 	if(oxyloss > oxylossparalysis) paralysis = max(paralysis, 3)
 
 	if(sleeping)
-		paralysis = max(paralysis, 5)
+		paralysis = max(paralysis, 3)
 		if (prob(1) && health)
 			emote("snore")
 		sleeping--
 
 	if(resting)
-		weakened = max(weakened, 5)
+		weakened = max(weakened, 1)
 
 	if(health < -100 || brain_op_stage == 4.0)
 		death()

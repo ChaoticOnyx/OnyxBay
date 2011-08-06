@@ -84,6 +84,8 @@
 
 		if (!istype(M, /mob/living/carbon/human) || istype(M.wear_mask, /obj/item/clothing/mask/gas/voice))
 			rendered = "<span class='game say'><span class='name'>[M.name]</span> <span class='message'>[message_a]</span></span>"
+		else if(M.face_dmg)
+			rendered = "<span class='game say'><span class='name'>Unknown</span> <span class='message'>[message_a]</span></span>"
 		else
 			rendered = "<span class='game say'><span class='name'>[M.real_name]</span>[alt_name] <span class='message'>[message_a]</span></span>"
 

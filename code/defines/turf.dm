@@ -168,6 +168,12 @@ turf/space/hull/New()
 				update()
 			var/turf/T = locate(x, y, z + 1)
 			if(T)
+				//Fortunately, I've done this before. - Aryn
+				if(istype(T,/turf/space) || T.z > 4)
+					new/turf/space(src)
+				else if(!istype(T,/turf/simulated/floor))
+					new/turf/simulated/floor/plating(src)
+				/*
 				switch (T.type) //Somehow, I don't think I thought this cunning plan all the way through - Sukasa
 					if (/turf/simulated/floor)
 						//Do nothing - valid
@@ -192,7 +198,7 @@ turf/space/hull/New()
 					else
 						var/turf/simulated/floor/plating/F = new(src)				//Then change to a floor tile (no falling into unknown crap)
 						F.name = F.name
-						return
+						return*/
 		Del()
 			if(zone)
 				zone.Disconnect(src,floorbelow)
@@ -205,9 +211,13 @@ turf/space/hull/New()
 					if(AM)
 						AM.Move(locate(x, y, z + 1))
 						if (istype(AM, /mob))
-							AM:bruteloss += 5
+							AM:bruteloss += 20 //You were totally doin it wrong. 5 damage? Really? - Aryn
+							AM:weakened = max(AM:weakened,5)
 							AM:updatehealth()
 			return ..()
+
+
+		attackby()
 
 
 		proc
@@ -217,17 +227,14 @@ turf/space/hull/New()
 				src.clearoverlays()
 				src.addoverlay(floorbelow)
 
-				for(var/obj/o in src)
-					o.layer = initial(o.layer) + 3
-
 				for(var/obj/o in floorbelow.contents)
-					src.addoverlay(image(o, dir=o.dir))
+					src.addoverlay(image(o, dir=o.dir, layer = TURF_LAYER+0.05*o.layer))
 
 				var/image/I = image('ULIcons.dmi', "[min(max(floorbelow.LightLevelRed - 4, 0), 7)]-[min(max(floorbelow.LightLevelGreen - 4, 0), 7)]-[min(max(floorbelow.LightLevelBlue - 4, 0), 7)]")
-				I.layer = MOB_LAYER - 0.05
+				I.layer = TURF_LAYER + 0.2
 				src.addoverlay(I)
 				I = image('ULIcons.dmi', "1-1-1")
-				I.layer = MOB_LAYER - 0.05
+				I.layer = TURF_LAYER + 0.2
 				src.addoverlay(I)
 
 			process_extra()

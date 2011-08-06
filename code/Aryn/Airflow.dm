@@ -139,44 +139,44 @@ proc/Airflow(zone/A,zone/B,n)
 		if(!M.airflow_speed)
 			M.airflow_dest = pick(connected_turfs)
 			spawn M.GotoAirflowDest(abs(n) / (vsc.AF_TINY_MOVEMENT_THRESHOLD/vsc.AF_SPEED_MULTIPLIER))
-		for(var/atom/movable/M in otherpplz)
-			if(istype(M,/mob/living/silicon/ai)) continue
-			if(istype(M,/mob/dead/observer)) continue
-			if(istype(M,/mob/living/silicon/robot)) continue
-			if(M.anchored && !ismob(M)) continue
+	for(var/atom/movable/M in otherpplz)
+		if(istype(M,/mob/living/silicon/ai)) continue
+		if(istype(M,/mob/dead/observer)) continue
+		if(istype(M,/mob/living/silicon/robot)) continue
+		if(M.anchored && !ismob(M)) continue
 
-			if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
-				if(M:nodamage) continue
-				if(istype(M, /mob/living/carbon/human))
-					if(M:buckled) continue
-					if(M:wear_suit)
-						if(M:wear_suit.airflowprot) continue
-					if(M:shoes)
-						if(M:shoes.type == /obj/item/clothing/shoes/magnetic) continue
-					if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
-					M:weakened = max(M:weakened,2)
-				else
-					if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
-					M:weakened = max(M:weakened,5)
-			if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
-			if(istype(M,/obj/item))
-				switch(M:w_class)
-					if(2)
-						if(n < vsc.AF_SMALL_MOVEMENT_THRESHOLD) continue
-					if(3)
-						if(n < vsc.AF_NORMAL_MOVEMENT_THRESHOLD) continue
-					if(4)
-						if(n < vsc.AF_LARGE_MOVEMENT_THRESHOLD) continue
-					if(5)
-						if(n < vsc.AF_LARGE_MOVEMENT_THRESHOLD) continue
+		if(ismob(M) && n > vsc.AF_HUMAN_STUN_THRESHOLD)
+			if(M:nodamage) continue
+			if(istype(M, /mob/living/carbon/human))
+				if(M:buckled) continue
+				if(M:wear_suit)
+					if(M:wear_suit.airflowprot) continue
+				if(M:shoes)
+					if(M:shoes.type == /obj/item/clothing/shoes/magnetic) continue
+				if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+				M:weakened = max(M:weakened,2)
+			else
+				if(M:weakened <= 0) M << "\red The sudden rush of air knocks you over!"
+				M:weakened = max(M:weakened,5)
+		if(!istype(M,/obj/item) && n < vsc.AF_MOVEMENT_THRESHOLD) continue
+		if(istype(M,/obj/item))
+			switch(M:w_class)
+				if(2)
+					if(n < vsc.AF_SMALL_MOVEMENT_THRESHOLD) continue
+				if(3)
+					if(n < vsc.AF_NORMAL_MOVEMENT_THRESHOLD) continue
+				if(4)
+					if(n < vsc.AF_LARGE_MOVEMENT_THRESHOLD) continue
+				if(5)
+					if(n < vsc.AF_LARGE_MOVEMENT_THRESHOLD) continue
 
-			var/fail = 1
-			for(var/turf/U in connected_turfs)
-				if(M in range(U)) fail = 0
-			if(fail) continue
-			if(M && !M.airflow_speed)
-				M.airflow_dest = pick(connected_turfs)
-				spawn M.RepelAirflowDest(abs(n) / (vsc.AF_TINY_MOVEMENT_THRESHOLD/vsc.AF_SPEED_MULTIPLIER))
+		var/fail = 1
+		for(var/turf/U in connected_turfs)
+			if(M in range(U)) fail = 0
+		if(fail) continue
+		if(M && !M.airflow_speed)
+			M.airflow_dest = pick(connected_turfs)
+			spawn M.RepelAirflowDest(abs(n) / (vsc.AF_TINY_MOVEMENT_THRESHOLD/vsc.AF_SPEED_MULTIPLIER))
 proc/AirflowSpace(zone/A)
 
 	var/n = (A.turf_oxy + A.turf_nitro + A.turf_co2)*vsc.AF_SPACE_MULTIPLIER

@@ -501,6 +501,12 @@ turf/simulated/wall/bullet_act(flag,dir)
 		dismantle_wall()
 	return 0
 
+/turf/simulated/floor/New()
+	. = ..()
+	if(type != /turf/simulated/floor/open)
+		var/obj/lattice/L = locate() in src
+		if(L) del L
+
 /turf/simulated/floor/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if ((istype(mover, /obj/machinery/vehicle) && !(src.burnt)))
 		if (!( locate(/obj/machinery/mass_driver, src) ))
@@ -685,13 +691,29 @@ turf/simulated/floor/proc/update_icon()
 		return
 
 	if(istype(C, /obj/item/weapon/tile) && !intact)
-		restore_tile()
-		var/obj/item/weapon/tile/T = C
-		playsound(src.loc, 'Genhit.ogg', 50, 1)
-		if(--T.amount < 1)
-			user.u_equip(C)
-			del(T)
-			return
+		if(istype(src,/turf/simulated/floor/open)) //Act like space if open.
+			if(locate(/obj/lattice, src))
+				var/obj/lattice/L = locate(/obj/lattice, src)
+				del(L)
+				playsound(src.loc, 'Genhit.ogg', 50, 1)
+				C:build(src)
+				C:amount--
+
+				if (C:amount < 1)
+					user.u_equip(C)
+					del(C)
+					return
+				return
+			else
+				user << "\red The plating is going to need some support."
+		else
+			restore_tile()
+			var/obj/item/weapon/tile/T = C
+			playsound(src.loc, 'Genhit.ogg', 50, 1)
+			if(--T.amount < 1)
+				user.u_equip(C)
+				del(T)
+				return
 
 	if(istype(C, /obj/item/weapon/table_parts))
 		spawn()
