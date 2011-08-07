@@ -665,21 +665,21 @@
 		return
 
 	proc/destroy_asteroid(var/plasmacutter = 1)
-		if (src.event == "volatile")
-			for(var/mob/M in viewers(src)) M.show_message("\red <b>The rock begins shaking violently and heating up!</b>")
-			src.overlays += image('walls.dmi', "unstable")
-			src.event = null
-			var/boomtime = rand(3,6)
-			boomtime *= 10
-			sleep(boomtime)
-			explosion(src, 1, 2, 4, 8)
-			return
+		//if (src.event == "volatile")
+		//	for(var/mob/M in viewers(src)) M.show_message("\red <b>The rock begins shaking violently and heating up!</b>")
+		//	src.overlays += image('walls.dmi', "unstable")
+		//	src.event = null
+		//	var/boomtime = rand(3,6)
+		//	boomtime *= 10
+		//	sleep(boomtime)
+		//	explosion(src, 1, 2, 4, 8)
+		//	return
 		var/makeores
 		for(makeores = src.amount, makeores > 0, makeores--)
-			if (src.explosive && plasmacutter)
-				for(var/mob/M in viewers(src)) M.show_message("\red <b>The rock violently explodes!</b>")
-				explosion(src, 2, 4, 6, 12, 1)
-				return
+			//if (src.explosive && plasmacutter)
+			//	for(var/mob/M in viewers(src)) M.show_message("\red <b>The rock violently explodes!</b>")
+			//	explosion(src, 2, 4, 6, 12, 1)
+			//	return
 			switch(src.ore1)
 				if("mauxite") new/obj/item/weapon/ore/mauxite(src)
 				if("pharosium") new/obj/item/weapon/ore/pharosium(src)
@@ -1280,16 +1280,18 @@
 		else ..()
 
 	ex_act(severity)
-		switch(severity)
-			if(1)
-				explosion(src.loc, 2, 4, 6, 8, 1)
-				del src
-			if(2)
-				explosion(src.loc, 1, 2, 4, 6, 1)
-				del src
-			if(3)
-				explosion(src.loc, 0, 1, 2, 4, 1)
-				del src
+		//Honestly, what idiot thought this was a good idea? - Aryn
+		//switch(severity)
+		//	if(1)
+		//		explosion(src.loc, 2, 4, 6, 8, 1)
+		//		del src
+		//	if(2)
+		//		explosion(src.loc, 1, 2, 4, 6, 1)
+		//		del src
+		//	if(3)
+		//		explosion(src.loc, 0, 1, 2, 4, 1)
+		//		del src
+		del src
 		return
 
 	temperature_expose(null, temp, volume)

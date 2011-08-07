@@ -57,6 +57,8 @@ zone
 		list/connections = list()
 		list/direct_connections = list() //Zones with doors connecting them to us, so that we know not to merge.
 
+		list/zone_space_connections = list()
+
 		//list/merge_with = list()
 		//list/edges = list()
 
@@ -92,6 +94,10 @@ zone
 		update_visuals()
 		AddTurf(turf/T) //Adds a turf to the zone, recalculates volume, and rebuilds the cache.
 		RemoveTurf(turf/T) //Same, but removes a turf from the zone.
+
+		AddSpace(turf/space/S)
+		RemoveSpace(turf/space/S)
+		UpdateSpace()
 
 		pressure()
 			return (oxygen+nitrogen+co2+plasma)*R_IDEAL_GAS_EQUATION*temp/volume
@@ -200,9 +206,13 @@ zone
 			for(var/turf/T in space_connections)
 				//if(!istype(T,/turf/space) && !istype(T,/turf/space/hull))
 				if(!istype(T,/turf/space))
-					space_connections -= T
+					RemoveSpace(T)
 
-			if(space_connections.len)				 //Throw gas into space if it has space connections.
+			for(var/Z in zone_space_connections)
+				if(!istype(Z,/zone)) zone_space_connections -= Z
+				else if(!Z:space_connections.len) zone_space_connections -= Z
+
+			if(space_connections.len || zone_space_connections.len)				 //Throw gas into space if it has space connections.
 				oxygen = QUANTIZE(oxygen/vsc.VACUUM_SPEED)
 				nitrogen = QUANTIZE(nitrogen/vsc.VACUUM_SPEED)
 				co2 = QUANTIZE(co2/vsc.VACUUM_SPEED)
@@ -342,7 +352,7 @@ zone
 		members += T
 		T.zone = src
 		for(var/turf/space/S in T.GetUnblockedCardinals())
-			space_connections += S
+			AddSpace(S)
 		volume = CELL_VOLUME*members.len
 		if(!ticker)
 			oxygen += MOLES_O2STANDARD
@@ -357,12 +367,43 @@ zone
 		members -= T
 		T.zone = null
 		for(var/turf/space/S in T.GetBasicCardinals())
-			space_connections -= S
+			RemoveSpace(S)
 		volume = CELL_VOLUME*members.len
 		rebuild_cache()
 		update_members()
 		if(ticker)
 			spawn(1 * tick_multiplier) SplitCheck(T)
+
+	AddSpace(turf/space/S)
+		if(S in space_connections) return
+		space_connections += S
+		for(var/zone/Z in connections)
+			if(!(src in Z.zone_space_connections))
+				Z.zone_space_connections += src
+			Z.zone_space_connections[src] = space_connections.len
+
+	UpdateSpace()
+		for(var/zone/Z in connections)
+			if(!space_connections.len)
+				if(!space_connections.len)
+					Z.zone_space_connections -= src
+				else
+					Z.zone_space_connections[src] = space_connections.len
+			else
+				if(!(src in Z.zone_space_connections))
+					Z.zone_space_connections += src
+				Z.zone_space_connections[src] = space_connections.len
+
+	RemoveSpace(turf/space/S)
+		if(!(S in space_connections)) return
+		space_connections -= S
+		for(var/zone/Z in connections)
+			if(!(src in Z.zone_space_connections))
+				continue
+			if(!space_connections.len)
+				Z.zone_space_connections -= src
+			else
+				Z.zone_space_connections[src] = space_connections.len
 
 
 //	update_members()
@@ -386,6 +427,15 @@ zone
 			T.zone.connections += src
 			connections[T.zone] = list()
 			T.zone.connections[src] = list()
+			if(space_connections)
+				if(!(src in T.zone.zone_space_connections))
+					T.zone.zone_space_connections += src
+				T.zone.zone_space_connections[src] = space_connections.len
+			if(T.zone.space_connections)
+				if(!(T.zone in zone_space_connections))
+					zone_space_connections += T.zone
+				zone_space_connections[T.zone] = T.zone.space_connections.len
+
 		if(!(T in connections[T.zone]) && !(S in T.zone.connections[src]))
 			connections[T.zone] += T
 			T.zone.connections[src] += S
@@ -410,6 +460,8 @@ zone
 			T.zone.connections -= src
 			T.zone.direct_connections -= src
 			direct_connections -= T.zone
+		T.zone.zone_space_connections -= src
+		zone_space_connections -= T.zone
 
 	Split(turf/X,turf/Y)
 		if(disable_connections) return
@@ -464,6 +516,7 @@ zone
 		connections -= Z
 		del Z
 		sleep(1)
+		UpdateSpace()
 
 var/list/tmp_spaceconnections = list()
 //var/list/tmp_edges = list()
@@ -618,8 +671,6 @@ var/zone_debug_verbs = 0
 
 turf/proc/ZoneInfo()
 	set src in view()
-	if(usr.ckey != "iaryni")
-		usr << "This verb is restricted to Aryn for purposes of debugging the atmospherics system."
 	usr << "Zone #[zones.Find(zone)]"
 	usr << "Members: [zone.members.len]"
 	usr << "O2: [zone.oxygen()]/tile ([zone.oxygen])"
@@ -629,6 +680,7 @@ turf/proc/ZoneInfo()
 	usr << "Space Connections: [zone.space_connections.len]"
 	usr << "Zone Connections: [zone.connections.len]"
 	usr << "Direct Connections: [zone.direct_connections.len]"
+	usr << "Indirect Space Connections: [zone.zone_space_connections.len]"
 	for(var/turf/simulated/T)
 		T.overlays -= 'debug_group.dmi'
 		T.overlays -= 'debug_space.dmi'

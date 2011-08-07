@@ -209,12 +209,15 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 						src.oldtarget = src.target
 						src.target = null
 		return
-	if(src.path.len > 0 && src.target && (src.target != null))
+	if(src.path.len > 1 && src.target && (src.target != null))
 		step_towards_3d(src, src.path[1])
 		src.path -= src.path[1]
 	else if(src.path.len == 1)
-		step_towards_3d(src, target)
-		src.path = new()
+		if(!istype(target,/turf/simulated/floor/open))
+			step_towards_3d(src, target)
+			src.path = new()
+		else
+			repair(src.target)
 
 	if(src.loc == src.target || src.loc == src.target.loc)
 		if(istype(src.target, /obj/item/weapon/tile))

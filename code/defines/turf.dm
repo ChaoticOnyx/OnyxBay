@@ -34,6 +34,7 @@
 	temperature = TSPC
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 700000
+	mouse_opacity = 2
 
 /turf/space/sand
 	name = "sand"
@@ -155,6 +156,8 @@ turf/space/hull/New()
 		var/icon/darkoverlays = null
 		var/turf/floorbelow
 		floorstrength = 1
+
+		mouse_opacity = 2
 
 		New()
 			..()

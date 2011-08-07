@@ -1,5 +1,5 @@
 /client/proc/cmd_explode_turf(obj/O as turf in world)
-	var/A = text2num(input("Explosion"))
+	var/A = input("Explosion") as num
 	explosion(O, A, A*1.5, A*2, A*3, A*3)
 	//if (!usr:holder)
 	//	message_admins("\red <b>Explosion spawn by [usr.client.key] blocked</b>")
@@ -16,6 +16,8 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 			message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in area [epicenter.loc.name]. (<a href=\"byond://?src=%admin_ref%;teleto=\ref[epicenter]\">Jump</a>)", admin_ref = 1)
 
 		defer_cables_rebuild ++
+
+		stop_zones++
 
 		sleep(5 * tick_multiplier)
 
@@ -39,6 +41,8 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 		var/list/list/orderdetonate = list( )
 		var/maxdet
 
+		var/list/redo_zones = list()
+
 		fillqueue += epicenter
 		checked += epicenter
 		floordist[epicenter] = 0
@@ -49,6 +53,9 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 			var/turf/T = fillqueue[1]
 			fillqueue -= T
+
+			if(T.zone)
+				redo_zones += T.zone
 
 			if ((floordist[T] > flash_range))
 				continue
@@ -181,8 +188,10 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 
 			defer_cables_rebuild --
+			stop_zones--
 			if (!defer_cables_rebuild)
 				HandleUNExplosionDamage()
+
 	return 1
 
 

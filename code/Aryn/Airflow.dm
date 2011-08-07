@@ -182,7 +182,12 @@ proc/AirflowSpace(zone/A)
 	var/n = (A.turf_oxy + A.turf_nitro + A.turf_co2)*vsc.AF_SPACE_MULTIPLIER
 	if(n < vsc.air_base_thresh) return
 
-	var/list/connected_turfs = A.space_connections
+	var/list/connected_turfs
+	if(!A.space_connections)
+		for(var/zone/Z in A.zone_space_connections)
+			connected_turfs += A.connections[Z]
+	else
+		connected_turfs = A.space_connections
 	var/list/pplz = A.movables()
 	if(1)
 		for(var/atom/movable/M in pplz)
@@ -227,10 +232,11 @@ proc/AirflowSpace(zone/A)
 				M.airflow_dest = pick(connected_turfs)
 				spawn
 					if(M) M.GotoAirflowDest(abs(n) / (vsc.AF_TINY_MOVEMENT_THRESHOLD/vsc.AF_SPEED_MULTIPLIER))
-proc/AirflowRepel(zone/A,turf/T,n)
+proc/AirflowRepel(zone/A,turf/T,n,per = 0)
 
 
-	n = round(n/vsc.AF_CANISTER_P * 100,0.1)
+	if(!per)
+		n = round(n/vsc.AF_CANISTER_P * 100,0.1)
 
 	if(n < 0) return
 	if(abs(n) > vsc.AF_TINY_MOVEMENT_THRESHOLD)

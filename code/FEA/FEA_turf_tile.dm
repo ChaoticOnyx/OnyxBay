@@ -370,8 +370,7 @@ turf
 						//if(istype(T,/turf/space) || istype(T,/turf/space/hull))
 							if(istype(T,/turf/space))
 								//if(ticker) world << "Space connections handled."
-								zone.space_connections -= T
-								zone.space_connections += T
+								zone.AddSpace(T)
 
 						else
 							if(T.zone != src.zone)
@@ -389,7 +388,7 @@ turf
 								zone.Disconnect(src,T)
 							if(istype(T,/turf/space))
 								//if(!CanPass(null,T,0,0))
-								zone.space_connections -= T
+								zone.RemoveSpace(T)
 			if(parent)
 				if(parent.borders)
 					parent.borders -= src
@@ -420,8 +419,7 @@ turf
 
 								if(zone)
 									//if(ticker) world << "Space connections handled."
-									zone.space_connections -= T
-									zone.space_connections += T
+									zone.AddSpace(T)
 
 							else
 								if(parent.borders)
@@ -450,7 +448,7 @@ turf
 									zone.Disconnect(src,T)
 								if(istype(T,/turf/space))
 									//if(!CanPass(null,T,0,0))
-									zone.space_connections -= T
+									zone.RemoveSpace(T)
 							//if(direction & old_air_directions)
 								//if(!ticker || !old_air_directions || !air_check_directions) return
 								//else
