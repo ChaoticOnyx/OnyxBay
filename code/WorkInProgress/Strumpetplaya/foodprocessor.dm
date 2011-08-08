@@ -43,3 +43,10 @@ obj/machinery/food_processor/attackby(obj/item/weapon/reagent_containers/food/F 
 
 /obj/item/weapon/plant/sugar
 	process_result = /obj/item/weapon/reagent_containers/food/snacks/sugar
+
+/obj/item/weapon/reagent_containers/food/snacks/ingredient/meat/synthmeat
+	process_result = /obj/item/weapon/reagent_containers/food/snacks/rawcutlet
+
+/obj/item/weapon/reagent_containers/food/snacks/potato
+	process_result = /obj/item/weapon/reagent_containers/food/snacks/rawsticks
+
