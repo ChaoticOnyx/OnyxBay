@@ -10,12 +10,12 @@
 */
 
 /obj/item/weapon/evidencebag/afterattack(obj/item/O, mob/user as mob)
-	if(!(O && istype(O)) || O.anchored == 0)
+	if(!(O && istype(O)) || O.anchored == 1)
 		user << "You can't put that inside the [src]!"
-		return
+		return ..()
 	if(src.contents.len > 0)
 		user << "The [src] already has something inside it."
-		return
+		return ..()
 	user << "You put the [O] inside the [src]."
 	O.loc = src
 	src.underlays += O
