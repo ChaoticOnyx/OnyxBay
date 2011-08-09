@@ -1090,8 +1090,8 @@
 /obj/item/weapon/oreprospector
 	name = "geological scanner"
 	desc = "A device capable of detecting nearby mineral deposits."
-	icon = 'mining.dmi'
-	icon_state = "minanal"
+	icon = 'device.dmi'
+	icon_state = "svarog"
 	flags = ONBELT
 	w_class = 1.0
 	var/working = 0
@@ -1103,6 +1103,7 @@
 		user << "\blue Taking geological reading, please do not move..."
 		var/staystill = user.loc
 		src.working = 1
+		src.icon_state = "sva-ani"
 		var/stone = 0
 		var/metalH = 0
 		var/metalL = 0
@@ -1135,6 +1136,7 @@
 			user << "Sedimentaries: [sediment]"
 			user << "Anomalous Readings: [unusual]"
 			user << "----------------------------------"
+			src.icon_state = "svarog"
 			for (var/turf/simulated/wall/asteroid/T in range(user,6))
 				if (T.event)
 					var/image/O = image('mining.dmi',T,"scan-anom",AREA_LAYER+1)
