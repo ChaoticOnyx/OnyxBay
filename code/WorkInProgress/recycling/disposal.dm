@@ -1050,3 +1050,62 @@
 		dirs = cardinal8.Copy()
 
 	src.streak(dirs)
+
+
+//delivery chute!
+
+/obj/machinery/disposal/deliveryChute
+	name = "Delivery chute"
+	desc = "A chute for big and small packages alike!"
+	density = 0
+	icon = 'disposal.dmi'
+	icon_state = "intake"
+
+	interact()
+		return
+
+	HasEntered(AM as mob|obj) //Go straight into the chute
+		if (istype(AM, /obj))
+			var/obj/O = AM
+			O.loc = src
+		else if (istype(AM, /mob))
+			var/mob/M = AM
+			M.loc = src
+		src.flush()
+
+	flush()
+		flushing = 1
+		flick("intake-closing", src)
+//		var/deliveryCheck = 0
+		var/obj/disposalholder/H = new()	// virtual holder object which actually
+											// travels through the pipes.
+											//delivery system which we don't have
+	//	for(var/obj/bigDelivery/O in src)
+	//		deliveryCheck = 1
+	//		if(O.sortTag == 0)
+	//			O.sortTag = 1
+	//	for(var/obj/item/smallDelivery/O in src)
+	//		deliveryCheck = 1
+	//		if (O.sortTag == 0)
+	//			O.sortTag = 1
+	//	if(deliveryCheck == 0)
+	//		H.destinationTag = 1
+
+
+		H.init(src)	// copy the contents of disposer to holder
+
+		air_contents = new()		// new empty gas resv.
+
+		sleep(10)
+		playsound(src, 'disposalflush.ogg', 50, 0, 0)
+		sleep(5) // wait for animation to finish
+
+
+		H.start(src) // start the holder processing movement
+		flushing = 0
+		// now reset disposal state
+		flush = 0
+		if(mode == 2)	// if was ready,
+			mode = 1	// switch to charging
+		update()
+		return
