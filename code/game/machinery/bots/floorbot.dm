@@ -298,7 +298,7 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 		src.repairing = 1
 		spawn(50)
 			target.ReplaceWithFloor()
-			for(var/lattice/L in target)
+			for(var/obj/lattice/L in target)
 				del(L)
 				src.amount++
 			src.repairing = 0
