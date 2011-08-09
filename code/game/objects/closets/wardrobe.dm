@@ -12,6 +12,12 @@
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
 
 /obj/closet/wardrobe/red/New()
@@ -28,6 +34,12 @@
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
 	return
 /obj/closet/wardrobe/forensics_red/New()
 	..()
@@ -43,6 +55,12 @@
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
 	return
 
 /obj/closet/wardrobe/pink/New()
@@ -59,6 +77,12 @@
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
 
 /obj/closet/wardrobe/black/New()
@@ -75,6 +99,12 @@
 	new /obj/item/clothing/shoes/black( src )
 	new /obj/item/clothing/shoes/black( src )
 	new /obj/item/clothing/shoes/black( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
 /obj/closet/wardrobe/chaplain_black/New()
 	..()
@@ -90,6 +120,12 @@
 	new /obj/item/clothing/shoes/black( src )
 	new /obj/item/clothing/shoes/black( src )
 	new /obj/item/clothing/shoes/black( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
 
 /obj/closet/wardrobe/green/New()
@@ -106,6 +142,12 @@
 	new /obj/item/clothing/shoes/black( src )
 	new /obj/item/clothing/shoes/black( src )
 	new /obj/item/clothing/shoes/black( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
 
 /obj/closet/wardrobe/orange/New()
@@ -122,6 +164,12 @@
 	new /obj/item/clothing/shoes/orange( src )
 	new /obj/item/clothing/shoes/orange( src )
 	new /obj/item/clothing/shoes/orange( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
 
 /obj/closet/wardrobe/yellow/New()
@@ -138,7 +186,14 @@
 	new /obj/item/clothing/shoes/orange( src )
 	new /obj/item/clothing/shoes/orange( src )
 	new /obj/item/clothing/shoes/orange( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
+	
 /obj/closet/wardrobe/atmospherics_yellow/New()
 	..()
 	new /obj/item/clothing/under/rank/atmospheric_technician( src )
@@ -158,7 +213,14 @@
 	new /obj/item/device/radio/headset/security/engineer(src)
 	new /obj/item/device/radio/headset/security/engineer(src)
 	new /obj/item/device/radio/headset/security/engineer(src)
+	new /obj/item/weapon/storage/backpack/engineer( src )
+	new /obj/item/weapon/storage/backpack/engineer( src )
+	new /obj/item/weapon/storage/backpack/engineer( src )
+	new /obj/item/weapon/storage/backpack/engineer( src )
+	new /obj/item/weapon/storage/backpack/engineer( src )
+	new /obj/item/weapon/storage/backpack/engineer( src )
 	return
+	
 /obj/closet/wardrobe/engineering_yellow/New()
 	..()
 	new /obj/item/clothing/under/rank/engineer( src )
@@ -178,6 +240,12 @@
 	new /obj/item/device/radio/headset/security/engineer(src)
 	new /obj/item/device/radio/headset/security/engineer(src)
 	new /obj/item/device/radio/headset/security/engineer(src)
+	new /obj/item/weapon/storage/backpack/engineer( src )
+	new /obj/item/weapon/storage/backpack/engineer( src )
+	new /obj/item/weapon/storage/backpack/engineer( src )
+	new /obj/item/weapon/storage/backpack/engineer( src )
+	new /obj/item/weapon/storage/backpack/engineer( src )
+	new /obj/item/weapon/storage/backpack/engineer( src )
 	return
 
 /obj/closet/wardrobe/quartermasters/New()
@@ -201,6 +269,13 @@
 	new /obj/item/clothing/shoes/black ( src )
 	new /obj/item/clothing/shoes/black ( src )
 	new /obj/item/clothing/shoes/black ( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	return
 
 /obj/closet/wardrobe/white/New()
 	..()
@@ -222,7 +297,11 @@
 	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/weapon/storage/backpack/medical( src )
+	new /obj/item/weapon/storage/backpack/medical( src )
+	new /obj/item/weapon/storage/backpack/medical( src )
 	return
+	
 /obj/closet/wardrobe/chemistry_white/New()
 	..()
 	new /obj/item/clothing/under/rank/chemist( src )
@@ -242,7 +321,11 @@
 	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/weapon/storage/backpack/medical( src )
+	new /obj/item/weapon/storage/backpack/medical( src )
+	new /obj/item/weapon/storage/backpack/medical( src )
 	return
+	
 /obj/closet/wardrobe/toxins_white/New()
 	..()
 	new /obj/item/clothing/under/rank/scientist( src )
@@ -262,6 +345,9 @@
 	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/weapon/storage/backpack/medical( src )
+	new /obj/item/weapon/storage/backpack/medical( src )
+	new /obj/item/weapon/storage/backpack/medical( src )
 	return
 /obj/closet/wardrobe/robotics_white/New()
 	..()
@@ -282,6 +368,8 @@
 	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/clothing/suit/storage/labcoat(src)
+	new /obj/item/weapon/storage/backpack/medical( src )
+	new /obj/item/weapon/storage/backpack/medical( src )
 	return
 /obj/closet/wardrobe/genetics_white/New()
 	..()
@@ -301,6 +389,8 @@
 	new /obj/item/clothing/suit/storage/labcoat(src)
 	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/weapon/storage/backpack/medical( src )
+	new /obj/item/weapon/storage/backpack/medical( src )
 	return
 /obj/closet/wardrobe/grey/New()
 	..()
@@ -316,6 +406,12 @@
 	new /obj/item/clothing/shoes/black( src )
 	new /obj/item/clothing/shoes/black( src )
 	new /obj/item/clothing/shoes/black( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
 
 /obj/closet/wardrobe/mixed/New()
@@ -332,6 +428,12 @@
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/shoes/brown( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
 /obj/closet/wardrobe/bar/New()
 	..()
@@ -341,6 +443,7 @@
 	new /obj/item/clothing/head/that( src )
 	new /obj/item/clothing/head/that( src )
 	new /obj/item/clothing/head/that( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
 /obj/closet/lawcloset/New()
 	..()
@@ -361,4 +464,6 @@
 	new /obj/item/weapon/storage/lglo_kit( src )
 	new /obj/item/device/radio/headset/security/medical(src)
 	new /obj/item/device/radio/headset/security/medical(src)
+	new /obj/item/weapon/storage/backpack( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
