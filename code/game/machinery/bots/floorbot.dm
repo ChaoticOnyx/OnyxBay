@@ -146,7 +146,7 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 		for(var/obj/machinery/bot/floorbot/bot in world)
 			if(bot != src)
 				floorbottargets += bot.target
-	if(src.amount <= 0 && ((src.target == null) || !src.target))
+	if(src.amount <= 0 && !src.target)
 		if(src.eattiles)
 			for(var/obj/item/weapon/tile/T in view(7, src))
 				if(T != src.oldtarget && !(target in floorbottargets))
@@ -167,6 +167,56 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("[src] makes an excited booping beeping sound!"), 1)
 
+
+	if(!src.target)
+		if(improvefloors)
+			for(var/turf/T in view(7,src))
+				if(T in floorbottargets) // make sure they are not being repaired by the other floorbots
+					continue
+				else if(istype(T,/turf/simulated/floor/open))
+					src.oldtarget = T
+					src.target = T
+					break
+				else if(istype(T,/turf/simulated/floor) && T:broken && src.improvefloors)
+					src.oldtarget = T
+					src.target = T
+					break
+		if(!src.target && src.eattiles) // No tile found find some tiles to eat
+			for(var/obj/item/weapon/tile/T in view(7,src))
+				src.oldtarget = T
+				src.target = T
+				break
+		if(!src.target && src.maketiles) // No tiles found to eat lets look for some metal to chow on
+			for(var/obj/item/weapon/sheet/metal/T in view(7,src))
+				src.oldtarget = T
+				src.target = T
+				break
+	if(src.target && src.path.len == 0)
+		spawn(0)
+			if(istype(src.loc,/turf))
+				if(!istype(src.target,/turf))// it's a item so we need to use it loc to path too.
+					src.path = AStar(src.loc, src.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=list(/obj/landmark/alterations/nopath))
+				else // It's a turf use itself as a location
+					src.path = AStar(src.loc, src.target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=list(/obj/landmark/alterations/nopath))
+				src.path = reverselist(src.path)
+				if(src.path.len == 0)
+					src.oldtarget = src.target
+					src.target = null
+	if(src.target && src.path.len > 1)
+		step_towards_3d(src,src.path[1])
+		src.path -= src.path[1]
+	else if(src.target && src.path.len == 1 || src.target && src.target.loc == src.loc)
+		if(istype(src.target,/turf))
+			repair(src.target)
+		else if(istype(src.target,/obj/item/weapon/tile))
+			eattile(src.target)
+		else
+			maketile(src.target)
+		src.path = new()
+		return
+
+
+/*
 	if(!src.target || src.target == null)
 		for (var/turf/space/D in view(7,src))
 			if(!(D in floorbottargets) && D != src.oldtarget && (D.loc.name != "Space"))
@@ -228,15 +278,15 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 			repair(src.target)
 		src.path = new()
 		return
-
+*/
 	src.oldloc = src.loc
 
 
 /obj/machinery/bot/floorbot/proc/repair(var/turf/target)
-	if(istype(target, /turf/space/))
-		if(target.loc.name == "Space")
-			return
-	else if(!istype(target, /turf/simulated/floor))
+//	if(istype(target, /turf/space/))
+//		if(target.loc.name == "Space")
+//			return
+	if(!istype(target, /turf/simulated/floor))
 		return
 	if(src.amount <= 0)
 		return
@@ -245,17 +295,19 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 	if(istype(target, /turf/space/) || istype(target,/turf/simulated/floor/open))
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\red [src] begins to repair the hole"), 1)
-		var/obj/item/weapon/tile/T = new /obj/item/weapon/tile
 		src.repairing = 1
 		spawn(50)
-			T.build(src.loc)
+			target.ReplaceWithFloor()
+			for(var/lattice/L in target)
+				del(L)
+				src.amount++
 			src.repairing = 0
 			src.amount -= 1
 			src.updateicon()
 			src.anchored = 0
 			src.target = null
 	else
-		var/turf/simulated/floor/L = src.loc
+		var/turf/simulated/floor/L = target
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\red [src] begins to improve the floor."), 1)
 		src.repairing = 1
@@ -295,6 +347,8 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 
 /obj/machinery/bot/floorbot/proc/maketile(var/obj/item/weapon/sheet/metal/M)
 	if(!istype(M, /obj/item/weapon/sheet/metal))
+		src.target = null
+		src.path = new()
 		return
 	if(M.amount > 1)
 		return
