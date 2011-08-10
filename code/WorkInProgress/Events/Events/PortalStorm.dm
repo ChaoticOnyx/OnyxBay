@@ -12,7 +12,7 @@
 				turfs += T
 
 		for(var/turf/T in world)
-			if(prob(20) && T.z < 5 && istype(T,/turf/simulated/floor))
+			if(prob(10) && T.z < 5 && istype(T,/turf/simulated/floor))
 				spawn(50+rand(0,3000))
 					picked = pick(turfs)
 					var/obj/portal/P = new /obj/portal( T )
@@ -22,5 +22,5 @@
 					P.failchance = 0
 					P.icon_state = "anom"
 					P.name = "wormhole"
-					spawn(rand(300,600))
+					spawn(rand(100,150))
 						del(P)
