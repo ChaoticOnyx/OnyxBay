@@ -19,6 +19,7 @@
 #define FILE_DIR ".git/objects/01"
 #define FILE_DIR ".git/objects/02"
 #define FILE_DIR ".git/objects/03"
+#define FILE_DIR ".git/objects/04"
 #define FILE_DIR ".git/objects/05"
 #define FILE_DIR ".git/objects/06"
 #define FILE_DIR ".git/objects/07"

@@ -51,7 +51,7 @@ proc/NewStutter(phrase,stunned)
 			if(2)
 				word = "[first_letter]-[first_letter]-[word]"
 			if(3)
-				word = "[first_letter]-[first_letter]-[first_letter]-[word]"
+				word = "[first_letter]-[word]"
 
 		split_phrase[index] = word
 
@@ -60,7 +60,7 @@ proc/NewStutter(phrase,stunned)
 proc/Stagger(mob/M,d) //Technically not a filter, but it relates to drunkenness.
 	step(M, pick(d,turn(d,90),turn(d,-90)))
 
-proc/Ellipsis(original_msg, chance = 25)
+proc/Ellipsis(original_msg, chance = 50)
 	if(chance <= 0) return "..."
 	if(chance >= 100) return original_msg
 
