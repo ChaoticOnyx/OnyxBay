@@ -1471,7 +1471,7 @@
 "aCo" = (/turf/simulated/wall/r_wall,/area/maintenance/apmaint3)
 "aCp" = (/obj/machinery/atmospherics/pipe/simple,/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor/plating,/area/maintenance/apmaint3)
 "aCq" = (/obj/multiz/stairs/active{tag = "icon-ramptop (NORTH)"; icon_state = "ramptop"; dir = 1},/turf/simulated/floor,/area/security/security_lobby)
-"aCr" = (/obj/secure_closet/brig{id = 2; name = "Brig Locker 3"},/turf/simulated/floor,/area/maintenance/pmaintcentral3)
+"aCr" = (/obj/secure_closet/brig{id = 2; name = "Brig Locker 3"},/turf/simulated/floor,/area/security/security_lobby)
 "aCs" = (/turf/simulated/floor,/area/security/security_lobby)
 "aCt" = (/turf/simulated/floor{dir = 1; icon_state = "warning"; tag = "icon-caution_east"},/area/security/security_lobby)
 "aCu" = (/obj/table/reinforced{tag = "icon-reinf_tabledir (SOUTHWEST)"; icon_state = "reinf_tabledir"; dir = 10},/obj/item/clothing/glasses/sunglasses,/turf/simulated/floor,/area/security/security_lobby)
@@ -1495,7 +1495,7 @@
 "aCM" = (/obj/machinery/hologram_ai,/turf/simulated/floor,/area/ai_monitored/storage/secure)
 "aCN" = (/obj/table/reinforced{tag = "icon-reinf_1tileendtable (EAST)"; icon_state = "reinf_1tileendtable"; dir = 4},/obj/window/reinforced,/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/obj/window/reinforced{tag = "icon-rwindow (WEST)"; icon_state = "rwindow"; dir = 8},/obj/landmark/disk_spawn,/obj/machinery/camera/motion{c_tag = "Armory"; dir = 8; name = "Armory Motion Camera"},/turf/simulated/floor,/area/ai_monitored/storage/secure)
 "aCO" = (/obj/multiz/stairs/enter{tag = "icon-ramptop (NORTH)"; icon_state = "ramptop"; dir = 1},/turf/simulated/floor,/area/security/security_lobby)
-"aCP" = (/obj/secure_closet/brig{id = 2; name = "Brig Locker 2"},/obj/machinery/firealarm{dir = 8; pixel_x = -24; tag = "west"},/turf/simulated/floor,/area/maintenance/pmaintcentral3)
+"aCP" = (/obj/secure_closet/brig{id = 2; name = "Brig Locker 2"},/obj/machinery/firealarm{dir = 8; pixel_x = -24; tag = "west"},/turf/simulated/floor,/area/security/security_lobby)
 "aCQ" = (/obj/landmark/derelict/metal,/turf/simulated/floor,/area/security/security_lobby)
 "aCR" = (/obj/cabling/power{icon_state = "2-4"},/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor,/area/security/security_lobby)
 "aCS" = (/obj/cabling/power{icon_state = "4-8"},/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass/command{name = "Bridge"; req_access_txt = "19"},/obj/landmark/alterations/nopath,/turf/simulated/floor,/area/hallway/primary/admin)
@@ -5887,7 +5887,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaazOazPazQazPazRabxabxaz
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaazPaAqaAraAsazPaAtaAuazGaAvaAwaAxazGaAyazBaAzaAAaABaACaADaAEaAFazhaAGaAHaAIazhaAGaAHaAJazmaAKaAKaALaAMaANaAOaxKaAPaxJaxJaxKaxJabxabxabxazMaAQaARaApaApaApaASazMabxabxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaazQaAraAraAraATaAUaAVaAUaAWaAXaAYaAZaBaaBbaBcaBdazBaBeazBaBfaBgaBhazBaBiaBgaBjazBaBkaBlazGaBmaBmaBnaBoaBpazLaxKazsaxKaxKaBqaBraBraBraBraBraBsaBtaApaApaApaBuazMabxabxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaazPaAqaAraAsazPaBvaBwazGaBxaByaBzazGaBAaBBaBCaBbaBbaBDaBEaBFaBFazBazBazBazBazBaBGaBHaBIazGaBJaBKaBLaBMaBNaBOaBraBPaBraBQaBraBraBRaBSaBRaBrazMaARaBTaApaApazMazMabxabxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaBUazPazQazPaBVabxabxazGazGazSazGazGaBWaBXaBYaBYaBYayzaBYaBZaBZaCaaCbaCbaCbaCbaCcazGazGazGaCdaCdaBLaCeaCfaBPaCgaChaCiaCjaCkaClaCmaCjaCnaBrazMazMazMazMazMazMabxabxabxabxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaBUazPazQazPaBVabxabxazGazGazSazGazGaBWaBXaBYaBYaBYaBYaBYaBZaBZaCaaCbaCbaCbaCbaCcazGazGazGaCdaCdaBLaCeaCfaBPaCgaChaCiaCjaCkaClaCmaCjaCnaBrazMazMazMazMazMazMabxabxabxabxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabxabxabxabxabxabxavoadhaCoaCpaBXaCqaCqaBYaCraCsaCtaCtaCuaCvaCwaCxaCsaCyaCzaCAaCBacCacCaCCaCDaCEaCFaCGaCHaCIaCJaCKaCLaCMaCJaCNaBrabxalpabxabxabxabxabxabxabxabxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabxabxabxabxabxabxavoadhaCoaCpaBXaCOaCOaBYaCPaCsaCQaCsaCsaCsaCsaCsaCsaCRaCSaglaCTaglaCUaCVaCWaCXaCYaCZaDaaDbaDcaDdaDeaDfaDgaCnaBrabxalpabxabxabxabxabxabxabxabxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabxabxabxabxabxabxavoaCoaCoaDhaBXaDiaCtaDjaDkaCsaCsaCsaDlaCsaDmaCsaCsaDnaBYaDoaDpaDqaDraDraDsaDtaDuaBraBPaBraBQaBraBraDvaDvaDvaBrabxalpabxabxabxabxabxabxabxabxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
