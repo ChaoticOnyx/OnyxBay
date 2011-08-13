@@ -149,9 +149,6 @@
 
 
 	if(!virus2)
-		for(var/mob/living/carbon/M in oviewers(4,src))
-			if(M.virus2)
-				infect_virus2(src,M.virus2)
 		for(var/obj/decal/cleanable/blood/B in view(4, src))
 			if(B.virus2)
 				infect_virus2(src,B.virus2)

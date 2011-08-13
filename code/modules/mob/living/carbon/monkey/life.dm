@@ -9,6 +9,15 @@
 		if(prob(1))
 			emote(pick("scratch","jump","roll","tail"))
 
+	if(virus2)
+		var/obj/virus/V = new(src.loc)
+		step_rand(V)
+		step_rand(V)
+		V.D = virus2.getcopy()
+	if(!src.virus2)
+		for(var/obj/virus/V in src.loc)
+			infect_virus2(src,V.D)
+
 /mob/living/carbon/monkey/clamp_values()
 	stunned = max(stunned,0)
 	paralysis = max(paralysis, 0)
