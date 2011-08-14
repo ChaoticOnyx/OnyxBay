@@ -1,3 +1,26 @@
+/mob/living/carbon/human/proc/radiation_protection()
+	var/pr = 0
+	if(istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
+		pr += 5
+	else if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
+		pr += 40
+	else if(istype(wear_suit, /obj/item/clothing/suit))
+		pr += 5
+
+	return pr
+
+/mob/living/carbon/human/radiate(amount)
+	amount -= radiation_protection()
+	if(amount > 0)
+		src.radiation += amount
+		if (prob(amount))
+			if (prob(75))
+				randmutb(src)
+				domutcheck(src,null,1)
+			else
+				randmutg(src)
+				domutcheck(src,null,1)
+
 /mob/living/carbon/human/handle_regular_hud_updates()
 
 	if (stat == 2 || mutations & 4)
@@ -317,7 +340,7 @@
 				lastnutritioncomplaint = 0
 			if(world.timeofday >= lastnutritioncomplaint + 6000)
 				lastnutritioncomplaint  = world.timeofday
-				src << pick("You feel hungry", "You feel thirsty", "Perhaps you should grab a bite to eat", "Your stomach rumbles", "Perhaps you should have a drink...","You feel empty inside", "You feel a bit peckish","Whatever you last ate didn't do much to fill you up...","Hmm, some pizza would be nice",)
+				src << pick("You feel hungry", "You feel thirsty", "Perhaps you should grab a bite to eat", "Your stomach rumbles", "Perhaps you should have a drink...","You feel empty inside", "You feel a bit peckish","Whatever you last ate didn't do much to fill you up...","Hmm, some pizza would be nice","You feel the darkness consuming you from within. You think you should find some food to soothe the devil inside you.","Are you on hunger strike or something?","You feel a void forming in yourself","Your stomach files a complaint with your brain.","You feel a nagging sense of emptiness")
 				//world << "nutrition is now 0 for [src.name]"
 
 	return 1

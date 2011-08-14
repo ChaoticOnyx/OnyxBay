@@ -23,16 +23,16 @@ turf/simulated/hotspot_expose(exposed_temperature, exposed_volume, soh)
 
 	if((exposed_temperature > PLASMA_MINIMUM_BURN_TEMPERATURE) && air_contents.toxins > 0.5)
 		igniting = 1
-	if(igniting)
 		if(air_contents.oxygen < 0.5 || air_contents.toxins < 0.5)
 			return 0
 
 		if(parent&&parent.group_processing)
 			parent.suspend_group_processing()
 
-		var/obj/fire/F = new(src)
-		F.temperature = exposed_temperature
-		F.volume = exposed_volume
+		if(! (locate(/obj/fire) in src))
+			var/obj/fire/F = new(src)
+			F.temperature = exposed_temperature
+			F.volume = exposed_volume
 
 		//active_hotspot.just_spawned = (current_cycle < air_master.current_cycle)
 		//remove just_spawned protection if no longer processing this cell
@@ -159,6 +159,14 @@ obj/fire
 
 obj/fire/proc/process()
 	if(just_spawned)
+		for(var/dirs in cardinal)
+			var/turf/simulated/floor/TS = get_step(src,dirs)
+			if(!TS || !TS.air)
+				continue
+			if(locate(/obj/fire) in TS)
+				continue
+			if(TS.air.temperature >= T0C && TS.air.toxins > 0.5 && TS.air.oxygen > 0.5 )
+				new/obj/fire(TS)
 		just_spawned = 0
 		return
 	var/turf/simulated/floor/T = src.loc
@@ -172,9 +180,21 @@ obj/fire/proc/process()
 		//world << "NOT HOT ENOUGH shit"
 		del(src)
 	if(T.wet) T.wet = 0
-	burn(0.5,0.5)
+	burn(T.air.toxins/50,T.air.oxygen/100)
 	T.burn_tile()
 	for(var/dirs in cardinal)
+		var/turf/TC = get_step(src,dirs)
+		if(T.air.temperature > 2500 && prob(20))
+			// melt any nearby glass
+			for(var/obj/window/W in TC)
+				del W
+				var/obj/item/weapon/sheet/glass/g = new(TC)
+				g.amount = rand(2, 30)
+			// destroy nearby thermal shielding
+			if(istype(TC, /turf/simulated/wall/heatshield))
+				// melt the heat shielding
+				new/turf/simulated/floor(TC)
+
 		if(prob(50))
 			continue
 		var/turf/simulated/floor/TS = get_step(src,dirs)
@@ -189,13 +209,14 @@ obj/fire/proc/process()
 
 obj/fire/proc/burn(tox,oxy)
 	var/turf/simulated/floor/T = src.loc
-//	var/datum/gas_mixture/affected = T.air.remove_ratio(volume/T.air.volume)
-	T.air.oxygen -= round(oxy)
-	T.air.toxins -= round(tox)
-	var/newco = round(oxy + tox)
-	T.air.carbon_dioxide += newco/4
-	T.air.temperature += round(tox)
 
+//	var/datum/gas_mixture/affected = T.air.remove_ratio(volume/T.air.volume)
+	var/burn_amount = min(tox,oxy)
+	T.air.oxygen -= max(0,round(burn_amount))
+	T.air.toxins -= max(0,round(burn_amount))
+	var/newco = round(burn_amount)
+	T.air.carbon_dioxide += newco
+	T.air.temperature += 30*round(burn_amount)
 /*mob/verb/createfire()
 	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 	new/obj/fire(src.loc)*/
@@ -203,10 +224,10 @@ obj/fire/proc/burn(tox,oxy)
 obj/fire/New()
 	..()
 	var/turf/simulated/floor/T = src.loc
-	T.air.temperature += temperature
+	burn(T.air.toxins / 3,T.air.oxygen / 3) // when igniting a lot of fuel is burned
 	dir = pick(cardinal)
 	ul_SetLuminosity(7,3,0)
-
+	just_spawned = 1
 obj/fire/Del()
 	ul_SetLuminosity(0)
 	loc = null

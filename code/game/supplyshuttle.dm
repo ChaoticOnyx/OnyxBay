@@ -262,7 +262,7 @@ var/supply_shuttle_points = 50
 //	containertype = "/obj/crate/secure/weapon"
 //	containername = "Weapons crate"
 //	access = access_security
-
+/*
 /datum/supply_packs/eweapons
 	name = "Experimental weapons crate"
 	contains = list("/obj/item/clothing/gloves/stungloves")
@@ -270,7 +270,7 @@ var/supply_shuttle_points = 50
 	containertype = "/obj/crate/secure/weapon"
 	containername = "Experimental weapons crate"
 	access = access_heads
-/*
+
 /datum/supply_packs/riot
 	name = "Riot crate"
 	contains = list("/obj/item/weapon/baton",

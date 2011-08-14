@@ -599,10 +599,10 @@
 					else O.show_message(text("\red <b>[]</b> slashes [] with thorny vines!", src, M), 1)
 		if (istype(growing,/datum/plant/radweed) && src.growth > 160 && prob(5))
 			for (var/mob/living/carbon/M in range(1,src))
-				if (src.plantcond == "poor") M.radiation += 5
-				if (src.plantcond == "normal") M.radiation += 10
-				if (src.plantcond == "good") M.radiation += 20
-				if (src.plantcond == "excellent") M.radiation += 40
+				if (src.plantcond == "poor") M.radiate(5)
+				if (src.plantcond == "normal") M.radiate(10)
+				if (src.plantcond == "good") M.radiate(20)
+				if (src.plantcond == "excellent") M.radiate(40)
 				M << "\red You feel uneasy for a moment."
 			for (var/obj/machinery/plantpot/C in range(1,src))
 				if (src.plantcond == "poor") break

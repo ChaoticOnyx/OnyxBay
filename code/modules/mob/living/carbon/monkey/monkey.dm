@@ -69,6 +69,9 @@
 	organs["l_foot"] = l_foot
 	organs["r_foot"] = r_foot
 
+	if(prob(5))
+		infect_mob_random_lesser(src)
+
 	return
 
 /mob/living/carbon/monkey/movement_delay()

@@ -980,7 +980,7 @@
 	..()
 
 // Cheeseburger + ketchup
-/obj/item/weapon/reagent_containers/food/breadsys/ontop/cheeseburger/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/reagent_containers/food/snacks/cheeseburger/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/reagent_containers/food/snacks/ketchup))
 		var/turf/spawnloc = foodloc(user, src)
 		new /obj/item/weapon/reagent_containers/food/snacks/scheeseburger(spawnloc)
