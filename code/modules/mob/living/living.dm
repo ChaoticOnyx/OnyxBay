@@ -19,3 +19,6 @@
 	. = ..()
 	if(shoes)
 		if(shoes.type == /obj/item/clothing/shoes/magnetic) . += 4
+
+// overwritten by individual subtypes
+mob/living/proc/radiate(amount)

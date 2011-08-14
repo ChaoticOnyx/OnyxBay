@@ -109,7 +109,7 @@
 				stunned = min(stunned, 5)
 	else if(flag == PROJECTILE_BOLT)
 		toxloss += 3
-		radiation += 100
+		radiate(100)
 		updatehealth()
 		stuttering += 5
 		drowsyness += 5
