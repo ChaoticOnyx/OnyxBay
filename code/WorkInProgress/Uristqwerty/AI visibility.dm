@@ -23,6 +23,7 @@
 /mob/aiEye
 	var/list/visibleCameraChunks = list()
 	var/mob/ai = null
+	density = 0
 
 /datum/camerachunk/proc/add(mob/aiEye/ai)
 	ai.visibleCameraChunks += src

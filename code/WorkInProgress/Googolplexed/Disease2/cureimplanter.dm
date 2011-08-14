@@ -32,8 +32,8 @@
 
 		if(works == 0)
 			M.resistances2 += resistance
+			M.immunevirus2 += M.virus2.getcopy()
 			if(M.virus2)
-				M.immunevirus2 += M.virus2.getcopy()
 				M.virus2.cure_added(resistance)
 		else if(works == 1)
 			M.toxloss += 60

@@ -27,11 +27,11 @@
 
 	Tick()
 		for(var/x = 0; x < 2; x++)
-			if (prob(50))
+			if (prob(20))
 				BlowLight()
-		if (prob(20))
+		if (prob(10))
 			DisruptAPC()
-		if (prob(20))
+		if (prob(10))
 			DisableDoor()
 
 

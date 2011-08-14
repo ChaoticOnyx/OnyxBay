@@ -16,6 +16,10 @@
 
 /mob/verb/ksa_DumpImage()
 	set name = "Dump Map"
+	if(!src.client.holder)
+		src << "Only administrators may use this command."
+		return
+
 	ksa_DumpInternal()
 
 /mob/verb/ksa_DumpImageSpecific()
