@@ -48,7 +48,16 @@
 	. = ..()
 	if(!sand)
 		icon = 'space.dmi'
-		icon_state = "[rand(1,25)]"
+		//icon_state = "[rand(1,25)]"
+		icon_state = pick("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+					"11", "12", "13", "14", "15", "16", "17", "18", "19",
+					"20", "21", "22", "23", "24", "25")
+		/* Just did a quick test: In an otherwise empty project and a 1000x1000 map,
+			pick()ing from a list took less than half as long as creating a string
+			from the result of rand(). (~3 seconds vs ~7).
+
+			Would be even faster if a numerical index could be used directly,
+			without the "[]", though.*/
 	else
 		icon = 'sand.dmi'
 		icon_state = "[rand(1,3)]"
