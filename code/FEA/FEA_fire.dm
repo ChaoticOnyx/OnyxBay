@@ -189,13 +189,16 @@ obj/fire/proc/process()
 
 obj/fire/proc/burn(tox,oxy)
 	var/turf/simulated/floor/T = src.loc
+	tox = max(tox + 3 - T.air.temperature / 300, 0)
+	oxy = max(oxy + 3 - T.air.temperature / 300, 0)
+
 //	var/datum/gas_mixture/affected = T.air.remove_ratio(volume/T.air.volume)
 	var/burn_amount = min(tox,oxy)
 	T.air.oxygen -= max(0,round(burn_amount))
 	T.air.toxins -= max(0,round(burn_amount))
 	var/newco = round(2*burn_amount)
 	T.air.carbon_dioxide += newco
-	T.air.temperature += 100*round(burn_amount)
+	T.air.temperature += 30*round(burn_amount)
 /*mob/verb/createfire()
 	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 	new/obj/fire(src.loc)*/
@@ -203,7 +206,7 @@ obj/fire/proc/burn(tox,oxy)
 obj/fire/New()
 	..()
 	var/turf/simulated/floor/T = src.loc
-	burn(T.air.toxins / 10,T.air.oxygen / 10) // when igniting a lot of fuel is burned
+	burn(T.air.toxins / 5,T.air.oxygen / 5) // when igniting a lot of fuel is burned
 	dir = pick(cardinal)
 	ul_SetLuminosity(7,3,0)
 
