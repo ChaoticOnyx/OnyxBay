@@ -9,6 +9,9 @@
 		if(prob(1))
 			emote(pick("scratch","jump","roll","tail"))
 
+
+	if(reagents.has_reagent("spaceacillin"))
+		return
 	if(virus2)
 		var/obj/virus/V = new(src.loc)
 		step_rand(V)

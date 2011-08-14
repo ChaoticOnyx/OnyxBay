@@ -5,7 +5,7 @@
 
 	Tick()
 		for(var/mob/living/L in world)
-			L.radiate(rand(1,15))
+			L.radiate(rand(1,25))
 
 	Die()
 		command_alert("The ship has cleared the radiation belt", "Medical Alert")
