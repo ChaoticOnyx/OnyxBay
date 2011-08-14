@@ -183,6 +183,18 @@ obj/fire/proc/process()
 	burn(T.air.toxins/50,T.air.oxygen/100)
 	T.burn_tile()
 	for(var/dirs in cardinal)
+		var/turf/TC = get_step(src,dirs)
+		if(T.air.temperature > 2500 && prob(20))
+			// melt any nearby glass
+			for(var/obj/window/W in TC)
+				del W
+				var/obj/item/weapon/sheet/glass/g = new(TC)
+				g.amount = rand(2, 30)
+			// destroy nearby thermal shielding
+			if(istype(TC, /turf/simulated/wall/heatshield))
+				// melt the heat shielding
+				new/turf/simulated/floor(TC)
+
 		if(prob(50))
 			continue
 		var/turf/simulated/floor/TS = get_step(src,dirs)
@@ -197,8 +209,6 @@ obj/fire/proc/process()
 
 obj/fire/proc/burn(tox,oxy)
 	var/turf/simulated/floor/T = src.loc
-	tox = max(tox + 3 - T.air.temperature / 400, 0)
-	oxy = max(oxy + 3 - T.air.temperature / 400, 0)
 
 //	var/datum/gas_mixture/affected = T.air.remove_ratio(volume/T.air.volume)
 	var/burn_amount = min(tox,oxy)
@@ -206,7 +216,7 @@ obj/fire/proc/burn(tox,oxy)
 	T.air.toxins -= max(0,round(burn_amount))
 	var/newco = round(burn_amount)
 	T.air.carbon_dioxide += newco
-	T.air.temperature += 20*round(burn_amount)
+	T.air.temperature += 30*round(burn_amount)
 /*mob/verb/createfire()
 	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 	new/obj/fire(src.loc)*/
