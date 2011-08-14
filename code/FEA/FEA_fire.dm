@@ -172,7 +172,7 @@ obj/fire/proc/process()
 		//world << "NOT HOT ENOUGH shit"
 		del(src)
 	if(T.wet) T.wet = 0
-	burn(T.air.toxins/50,T.air.oxygen/50)
+	burn(T.air.toxins/50,T.air.oxygen/100)
 	T.burn_tile()
 	for(var/dirs in cardinal)
 		if(prob(50))
@@ -198,7 +198,7 @@ obj/fire/proc/burn(tox,oxy)
 	T.air.toxins -= max(0,round(burn_amount))
 	var/newco = round(burn_amount)
 	T.air.carbon_dioxide += newco
-	T.air.temperature += 10*round(burn_amount)
+	T.air.temperature += 20*round(burn_amount)
 /*mob/verb/createfire()
 	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 	new/obj/fire(src.loc)*/
