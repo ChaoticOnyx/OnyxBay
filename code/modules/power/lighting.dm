@@ -393,7 +393,7 @@
 // timed process
 // use power
 
-#define LIGHTING_POWER_FACTOR 25		//25W per unit luminosity
+#define LIGHTING_POWER_FACTOR 10		//25W per unit luminosity
 
 /obj/machinery/light/process()
 	set background=1
