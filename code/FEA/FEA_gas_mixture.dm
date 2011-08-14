@@ -144,7 +144,7 @@ datum
 				return reacting
 
 			fire()
-				var/energy_released = 0
+				/*var/energy_released = 0
 				var/old_heat_capacity = heat_capacity()
 
 				var/datum/gas/volatile_fuel/fuel_store = locate(/datum/gas/volatile_fuel/) in trace_gases
@@ -195,6 +195,7 @@ datum
 						temperature = (temperature*old_heat_capacity + energy_released)/new_heat_capacity
 
 				return fuel_burnt
+				*/
 
 		proc
 			archive()
