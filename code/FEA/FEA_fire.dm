@@ -159,6 +159,14 @@ obj/fire
 
 obj/fire/proc/process()
 	if(just_spawned)
+		for(var/dirs in cardinal)
+			var/turf/simulated/floor/TS = get_step(src,dirs)
+			if(!TS || !TS.air)
+				continue
+			if(locate(/obj/fire) in TS)
+				continue
+			if(TS.air.temperature >= T0C && TS.air.toxins > 0.5 && TS.air.oxygen > 0.5 )
+				new/obj/fire(TS)
 		just_spawned = 0
 		return
 	var/turf/simulated/floor/T = src.loc
@@ -209,7 +217,7 @@ obj/fire/New()
 	burn(T.air.toxins / 3,T.air.oxygen / 3) // when igniting a lot of fuel is burned
 	dir = pick(cardinal)
 	ul_SetLuminosity(7,3,0)
-
+	just_spawned = 1
 obj/fire/Del()
 	ul_SetLuminosity(0)
 	loc = null
