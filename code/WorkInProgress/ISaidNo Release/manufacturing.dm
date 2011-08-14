@@ -674,6 +674,7 @@
 		src.available += new /datum/manufacture/jetpack(src)
 		src.available += new /datum/manufacture/geoscanner(src)
 		src.available += new /datum/manufacture/eyes_meson(src)
+		src.available += new /datum/manufacture/miningbelt(src)
 		//src.available += new /datum/manufacture/rigsuit(src)
 		//src.available += new /datum/manufacture/righelm(src)
 		src.hidden += new /datum/manufacture/RCD(src)
@@ -879,6 +880,16 @@
 	amount1 = 2
 	time = 10
 	create = 1
+
+/datum/manufacture/miningbelt
+	name = "Mining Belt"
+	item = /obj/item/weapon/storage/miningbelt
+	cost1 = /obj/item/weapon/ore/fabric
+	cname1 = "Fabric"
+	amount1 = 1
+	time = 5
+	create = 1
+
 /*
 /datum/manufacture/cable
 	name = "Electrical Cable Piece"

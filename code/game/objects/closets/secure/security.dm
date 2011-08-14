@@ -14,6 +14,7 @@
 	new /obj/item/clothing/glasses/sunglasses(src)
 	new /obj/item/weapon/baton(src)
 	new /obj/item/clothing/gloves/red(src)
+	new /obj/item/weapon/storage/backpack/security( src )
 	return
 
 /obj/secure_closet/security2/New()
@@ -40,6 +41,8 @@
 	new /obj/item/device/detective_scanner( src )
 	new /obj/item/device/detective_scanner( src )
 	new /obj/item/device/detective_scanner( src )
+	new /obj/item/weapon/storage/backpack/security( src )
+	new /obj/item/weapon/storage/backpack/security( src )
 	new /obj/item/weapon/storage/box/evidence( src )
 	return
 
@@ -55,6 +58,7 @@
 	new /obj/item/clothing/glasses/sunglasses( src )
 	new /obj/item/clothing/suit/armor/vest( src )
 	new /obj/item/clothing/head/helmet( src )
+	new /obj/item/weapon/storage/backpack( src )
 	return
 
 /obj/secure_closet/hos/New()
@@ -74,6 +78,7 @@
 	new /obj/item/weapon/handcuffs(src)
 	new /obj/item/weapon/baton(src)
 	new /obj/item/clothing/gloves/red(src)
+	new /obj/item/weapon/storage/backpack/security( src )
 	return
 
 

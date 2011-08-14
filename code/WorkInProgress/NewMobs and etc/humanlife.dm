@@ -237,7 +237,7 @@
 	if (stuttering) stuttering--
 	if (intoxicated) intoxicated--
 	var/datum/organ/external/head/head = organs["head"]
-	if(head && src.real_name != "Unknown")
+	if(head && !src.face_dmg)
 		if(head.brute_dam >= 45 || head.burn_dam >= 45)
 			src.face_dmg = 1
 			src << "\red Your face has become disfigured."

@@ -938,7 +938,7 @@
 	if(istype(W,/obj/item/weapon/reagent_containers/food/snacks/ketchup))
 		var/turf/spawnloc = foodloc(user, src)
 		new /obj/item/weapon/reagent_containers/food/snacks/sbakedpotato(spawnloc)
-		user << "You add ketchup to baked potato."
+		user << "You add ketchup to the baked potato."
 		del(src)
 
 // Spaghetti + ketchup

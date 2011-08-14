@@ -18,10 +18,10 @@
 
 /turf/New()
 	..()
-	spawn( 0 )
-		for(var/atom/movable/AM as mob|obj in src)
-			src.Entered(AM)
-			return
+	//spawn( 0 )
+	for(var/atom/movable/AM as mob|obj in src)
+		src.Entered(AM)
+	//	return
 	return
 
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
