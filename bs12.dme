@@ -439,6 +439,7 @@
 
 // BEGIN_INCLUDE
 #include "Acceses.dm"
+#include "TempUI.dm"
 #include "code\mapLoader.dm"
 #include "code\names.dm"
 #include "code\nlog.dm"
@@ -480,8 +481,6 @@
 #include "code\datums\chemical.dm"
 #include "code\datums\computerfiles.dm"
 #include "code\datums\configuration.dm"
-#include "code\datums\construction_UI.dm"
-#include "code\datums\construction_UI_table.dm"
 #include "code\datums\datumvars.dm"
 #include "code\datums\disease.dm"
 #include "code\datums\mind.dm"

@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1313445653 source:c:\bs12dll\main.cpp
+	"main.h"
+	<string.h>
+
+1313445653 c:\bs12dll\main.h
+	<windows.h>
+
