@@ -184,7 +184,7 @@ obj/fire/proc/process()
 	T.burn_tile()
 	for(var/dirs in cardinal)
 		var/turf/TC = get_step(src,dirs)
-		if(T.air.temperature > 2500 && prob(20))
+		if(T.air.temperature > 2800 && prob(20))
 			// melt any nearby glass
 			for(var/obj/window/W in TC)
 				del W
