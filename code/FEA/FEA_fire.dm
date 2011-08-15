@@ -182,16 +182,24 @@ obj/fire/proc/process()
 	if(T.wet) T.wet = 0
 	burn( (T.air.toxins - T.air.carbon_dioxide / 2) / 50, (T.air.oxygen - T.air.carbon_dioxide / 2) / 100)
 	T.burn_tile()
+	if(istype(T, /turf/simulated) && T.air.temperature > 4000)
+		T.ReplaceWithOpen()
 	for(var/dirs in cardinal)
 		var/turf/TC = get_step(src,dirs)
-		if(T.air.temperature > 2800 && prob(20))
+		if(T.air.temperature > 2000 && prob(20))
 			// melt any nearby glass
 			for(var/obj/window/W in TC)
 				del W
 				var/obj/item/weapon/sheet/glass/g = new(TC)
 				g.amount = rand(2, 30)
+			// destroy nearby r-walls
+			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 3000)
+				new/turf/simulated/floor(TC)
+			// destroy nearby regular walls
+			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 2000)
+				new/turf/simulated/floor(TC)
 			// destroy nearby thermal shielding
-			if(istype(TC, /turf/simulated/wall/heatshield))
+			if(istype(TC, /turf/simulated/wall/heatshield) && T.air.temperature > 2800)
 				// melt the heat shielding
 				new/turf/simulated/floor(TC)
 
