@@ -23,13 +23,13 @@ var/global/last_core_explosion = 0
 
 			// core overload message
 			if(id == "core")
-
+				if(text2num(signal.data["temperature"]) >= 2200 && world.time > last_core_explosion + 1000)
+					last_core_explosion = world.time
+					last_core_overload = world.time
+					radioalert("CORE EXPLOSION IMMINENT","Core control computer")
 				if(text2num(signal.data["temperature"]) >= 1900 && world.time > last_core_overload + 1000)
 					last_core_overload = world.time
 					radioalert("CORE OVERLOAD","Core control computer")
-				if(text2num(signal.data["temperature"]) >= 2200 && world.time > last_core_explosion + 1000)
-					last_core_explosion = world.time
-					radioalert("CORE EXPLOSION IMMINENT","Core control computer")
 		else
 			..(signal)
 
