@@ -308,6 +308,11 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 			for(var/obj/lattice/L in target)
 				del(L)
 				src.amount++
+			src.repairing = 0
+			src.amount -= 1
+			src.updateicon()
+			src.anchored = 0
+			src.target = null
 	/*	//BYOND has decided that turfs can NEVER BE INTACT, so this doesn't work for some reason (it continuously repairs the same tile)
 		//so I commented it for now, someone else see if they can fix it.
 	else if(istype(target, /turf/simulated/floor/plating))
@@ -319,6 +324,11 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 			L.restore_tile()
 			L.update_icon()
 			L.intact = 1
+			src.repairing = 0
+			src.amount -= 1
+			src.updateicon()
+			src.anchored = 0
+			src.target = null
 	*/
 	else
 		var/turf/simulated/floor/L = target
@@ -331,11 +341,11 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 			else
 				L.icon_state = "floor"
 			L.broken = 0
-	src.repairing = 0
-	src.amount -= 1
-	src.updateicon()
-	src.anchored = 0
-	src.target = null
+			src.repairing = 0
+			src.amount -= 1
+			src.updateicon()
+			src.anchored = 0
+			src.target = null
 
 /obj/machinery/bot/floorbot/proc/eattile(var/obj/item/weapon/tile/T)
 	if(!istype(T, /obj/item/weapon/tile))
