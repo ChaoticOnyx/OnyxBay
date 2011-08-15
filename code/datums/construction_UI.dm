@@ -99,7 +99,8 @@
 
 
 
-//Example usage. Won't work in SS13.
+//Example usage. Won't work in SS13 (Because SS13 uses a different pipe object and naming system,
+//                                   not because the code is broken or anything, since it isn't).
 
 /*
 

@@ -504,7 +504,7 @@
 			var/staystill = user.loc
 			for(var/obj/item/weapon/ore/M in view(1,user))
 				if (!M.manuaccept) continue
-				if (istype(M, /obj/item/weapon/ore/cerenkite) && user.mining_radcheck(user) == 0) user.radiation += 10
+				if (istype(M, /obj/item/weapon/ore/cerenkite) && user.mining_radcheck(user) == 0) user:radiate(10)
 				M.loc = src
 				sleep(3)
 				if (user.loc != staystill) break

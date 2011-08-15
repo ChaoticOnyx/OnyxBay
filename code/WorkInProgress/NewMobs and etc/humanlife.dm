@@ -1,3 +1,26 @@
+/mob/living/carbon/human/proc/radiation_protection()
+	var/pr = 0
+	if(istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
+		pr += 5
+	else if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
+		pr += 40
+	else if(istype(wear_suit, /obj/item/clothing/suit))
+		pr += 5
+
+	return pr
+
+/mob/living/carbon/human/radiate(amount)
+	amount -= radiation_protection()
+	if(amount > 0)
+		src.radiation += amount
+		if (prob(amount))
+			if (prob(75))
+				randmutb(src)
+				domutcheck(src,null,1)
+			else
+				randmutg(src)
+				domutcheck(src,null,1)
+
 /mob/living/carbon/human/handle_regular_hud_updates()
 
 	if (stat == 2 || mutations & 4)

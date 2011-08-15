@@ -516,7 +516,7 @@
 				if(A.radioactive)
 					if (user.mining_radcheck(user) == 0)
 						if (user.job == "Miner") user << "\red It's a bad idea to dig here without a full RIG Suit!"
-						user.radiation += 15
+						user:radiate(15)
 				A.destroy_asteroid(1)
 			return
 		if(istype(W,/obj/item/weapon/drill) || istype(W,/obj/item/weapon/pickaxe/))
@@ -558,7 +558,7 @@
 			if(src.radioactive)
 				if (user.mining_radcheck(user) == 0)
 					if (user.job == "Miner") user << "\red It's a bad idea to dig here without a full RIG Suit!"
-					user.radiation += 15
+					user:radiate(15)
 
 			var/minedifference = src.hardness - W:minelevel
 			if (minedifference == -1)
@@ -1309,7 +1309,7 @@
 		if (user.mining_radcheck(user)) ..()
 		else
 			if (user:job == "Miner") user << "\red It really isn't a good idea to handle this stuff without a full RIG suit!"
-			user:radiation += 10
+			user:radiate(10)
 			..()
 
 /mob/proc/mining_radcheck(var/mob/user as mob)

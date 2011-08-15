@@ -32,6 +32,7 @@
 
 	if(on)
 		var/transfer_moles = min(1, volume_rate/environment.volume*5)*environment.total_moles()
+		transfer_moles *= 10
 
 		//Take a gas sample
 		var/datum/gas_mixture/removed

@@ -120,7 +120,7 @@
 
 /datum/recipe/pizzameat
 	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "cutlet" = 2)
-	creates = "pizzashroom"
+	creates = "pizzameat"
 
 /datum/recipe/pizzameatshroom
 	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "cutlet" = 2, "fungi" = 1)

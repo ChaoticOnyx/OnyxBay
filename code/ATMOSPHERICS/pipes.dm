@@ -591,7 +591,7 @@ obj/machinery/atmospherics/pipe
 							panic_filling = 1
 							spawn(-1)
 								while(parent && panic_fill && T.air.return_pressure() < ONE_ATMOSPHERE*0.95)
-									parent.mingle_with_turf(loc, 1000)
+									parent.mingle_with_turf(loc, 10000)
 									sleep(1 * tick_multiplier)
 								panic_filling = 0
 								panic_fill = 0

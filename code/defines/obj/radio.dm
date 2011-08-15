@@ -60,7 +60,7 @@
 	item_state = "headset"
 	security_frequency = 1400
 /obj/item/device/radio/headset/security/medical
-	name = "Medical Headset"
+	name = "Med-Sci Headset"
 	desc = "Headset which uses an additional frequency for secure transmissions. (Use say :h to transmit on secure channel.)"
 	icon_state = "med_headset"
 	item_state = "headset"
