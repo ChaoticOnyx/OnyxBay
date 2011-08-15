@@ -44,6 +44,7 @@
 	var/turf/oldtarget
 	var/oldloc = null
 	req_access = list(access_atmospherics)
+	var/list/plating_turfs = list(/area/maintenance, /area/turret_protected)
 
 
 /obj/machinery/bot/floorbot/New()
@@ -177,10 +178,16 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 					src.oldtarget = T
 					src.target = T
 					break
-				else if(istype(T,/turf/simulated/floor) && T:broken && src.improvefloors)
+				else if(istype(T,/turf/simulated/floor) && T:broken)
 					src.oldtarget = T
 					src.target = T
 					break
+				//else if(istype(T,/turf/simulated/floor/plating) || !T.intact)	//see below for why this is commented
+				//	if(T.loc in plating_turfs)
+				//		break
+				//	src.oldtarget = T
+				//	src.target = T
+				//	break
 		if(!src.target && src.eattiles) // No tile found find some tiles to eat
 			for(var/obj/item/weapon/tile/T in view(7,src))
 				src.oldtarget = T
@@ -301,11 +308,18 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 			for(var/obj/lattice/L in target)
 				del(L)
 				src.amount++
-			src.repairing = 0
-			src.amount -= 1
-			src.updateicon()
-			src.anchored = 0
-			src.target = null
+	/*	//BYOND has decided that turfs can NEVER BE INTACT, so this doesn't work for some reason (it continuously repairs the same tile)
+		//so I commented it for now, someone else see if they can fix it.
+	else if(istype(target, /turf/simulated/floor/plating))
+		var/turf/simulated/floor/L = target
+		for(var/mob/O in viewers(src, null))
+			O.show_message(text("\red [src] begins to tile the floor."), 1)
+		src.repairing = 1
+		spawn(50)
+			L.restore_tile()
+			L.update_icon()
+			L.intact = 1
+	*/
 	else
 		var/turf/simulated/floor/L = target
 		for(var/mob/O in viewers(src, null))
@@ -317,11 +331,11 @@ text("<A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A>
 			else
 				L.icon_state = "floor"
 			L.broken = 0
-			src.repairing = 0
-			src.amount -= 1
-			src.updateicon()
-			src.anchored = 0
-			src.target = null
+	src.repairing = 0
+	src.amount -= 1
+	src.updateicon()
+	src.anchored = 0
+	src.target = null
 
 /obj/machinery/bot/floorbot/proc/eattile(var/obj/item/weapon/tile/T)
 	if(!istype(T, /obj/item/weapon/tile))
