@@ -44,7 +44,8 @@ zone
 		list/space_connections = list()
 
 		temp_archive = T20C
-		graphic = ""
+		//graphic = ""
+		shows_plasma = 0
 		turf_oxy = 0
 		turf_nitro = 0
 		turf_co2 = 0
@@ -194,9 +195,16 @@ zone
 				update_mixtures -= G
 
 			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2 || plasma_archive != plasma)
-				rebuild_cache()
-				//update_members()
-			//other = other_gas()
+				turf_oxy = oxygen / members.len
+				turf_nitro = nitrogen / members.len
+				turf_co2 = co2 / members.len
+				turf_plasma = plasma / members.len
+				pressure = pressure()
+
+			oxygen = max(0,oxygen)
+			nitrogen = max(0,nitrogen)
+			co2 = max(0,co2)
+			plasma = max(0,plasma)
 
 			oxygen_archive = oxygen		 //Update the archives, so we can do things like calculate delta.
 			nitrogen_archive = nitrogen
@@ -253,68 +261,63 @@ zone
 						nit_avg = (nitrogen + Z.nitrogen) / (members.len + Z.members.len)
 						co2_avg = (co2 + Z.co2) / (members.len + Z.members.len)
 						plasma_avg = (plasma + Z.plasma) / (members.len + Z.members.len)
-					oxygen( (turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
-					nitrogen( (turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
-					co2( (turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )
-					plasma((turf_plasma - plasma_avg) * (1-percent_flow/100) + plasma_avg)
-					Z.oxygen( (Z.turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg )
-					Z.nitrogen( (Z.turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg )
-					Z.co2( (Z.turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg )
-					Z.plasma( (Z.turf_plasma - plasma_avg) * (1-percent_flow/100) + plasma_avg )
+
+					turf_oxy = (turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg
+					turf_nitro = (turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg
+					turf_co2 = (turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg
+					turf_plasma = (turf_plasma - plasma_avg) * (1-percent_flow/100) + plasma_avg
+
+					oxygen = turf_oxy * members.len
+					nitrogen = turf_nitro * members.len
+					co2 = turf_co2 * members.len
+					plasma = turf_plasma * members.len
+
+					Z.turf_oxy = (Z.turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg
+					Z.turf_nitro = (Z.turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg
+					Z.turf_co2 = (Z.turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg
+					Z.turf_plasma = (Z.turf_plasma - plasma_avg) * (1-percent_flow/100) + plasma_avg
+
+					Z.oxygen = Z.turf_oxy * Z.members.len
+					Z.nitrogen = Z.turf_nitro * Z.members.len
+					Z.co2 = Z.turf_co2 * Z.members.len
+					Z.plasma = Z.turf_plasma * Z.members.len
+
 					//End Magic
 
 				for(var/crap in connections) //Clean out invalid connections.
 					if(!istype(crap,/zone))
 						connections -= crap
-			if(update_visuals())
-				for(var/turf/A in members)
-					del A.z_image
-					A.z_image = image('tile_effects.dmi',A,"plasma")
-					world << A.z_image
+			if(turf_plasma > MOLES_PLASMA_VISIBLE)
+				if(!shows_plasma)
+					shows_plasma = 1
+					for(var/turf/A in members)
+						A.z_image = image('tile_effects.dmi',A,"plasma")
+						world << A.z_image
 			else
-				for(var/turf/A in members)
-					del A.z_image
-	rebuild_cache()
-		if(!members.len) del src
-		turf_oxy = oxygen / members.len
-		turf_nitro = nitrogen / members.len
-		turf_co2 = co2 / members.len
-		turf_plasma = plasma / members.len
-		//var/tempsum = 0
-
-		//for(var/turf/simulated/M in members)
-		//	if(M.air)
-		//		tempsum += M.air.temperature
-
-		//temp = tempsum / members.len
-
-		pressure = pressure()
-	update_visuals()
-		//returns 1 if graphic changed
-		graphic = null
-		if(turf_plasma > MOLES_PLASMA_VISIBLE)
-			graphic = PLASMA_GFX
-		return graphic
+				if(shows_plasma)
+					shows_plasma = 0
+					for(var/turf/A in members)
+						del A.z_image
 	oxygen(n)
 		if(!n) return turf_oxy
 		else
-			turf_oxy = n
-			oxygen = turf_oxy*members.len
+			turf_oxy = max(0,n)
+			oxygen = max(0,turf_oxy*members.len)
 	nitrogen(n)
 		if(!n) return turf_nitro
 		else
-			turf_nitro = n
-			nitrogen = turf_nitro*members.len
+			turf_nitro = max(0,n)
+			nitrogen = max(0,turf_nitro*members.len)
 	co2(n)
 		if(!n) return turf_co2
 		else
-			turf_co2 = n
-			co2 = turf_co2*members.len
+			turf_co2 = max(0,n)
+			co2 = max(0,turf_co2*members.len)
 	plasma(n)
 		if(!n) return turf_plasma
 		else
-			turf_plasma = n
-			plasma = turf_plasma*members.len
+			turf_plasma = max(0,n)
+			plasma = max(0,turf_plasma*members.len)
 
 	add_oxygen(n)
 		if(n < 0 && oxygen < abs(n))
@@ -322,6 +325,7 @@ zone
 			oxygen = 0
 		else
 			oxygen += n
+			oxygen = max(0,oxygen)
 			. = abs(n)
 	add_nitrogen(n)
 		if(n < 0 && nitrogen < abs(n))
@@ -329,6 +333,7 @@ zone
 			nitrogen = 0
 		else
 			nitrogen += n
+			nitrogen = max(0,nitrogen)
 			. = abs(n)
 	add_co2(n)
 		if(n < 0 && co2 < abs(n))
@@ -336,6 +341,7 @@ zone
 			co2 = 0
 		else
 			co2 += n
+			co2 = max(0,co2)
 			. = abs(n)
 	add_plasma(n)
 		if(n < 0 && plasma < abs(n))
@@ -343,6 +349,7 @@ zone
 			plasma = 0
 		else
 			plasma += n
+			plasma = max(0,plasma)
 			. = abs(n)
 	AddTurf(turf/T)
 		if(T.zone) return
@@ -410,8 +417,8 @@ zone
 		//for(var/turf/T in members)
 			//var/datum/gas_mixture/GM = T.return_air()
 		//	GM.oxygen = oxygen()
-		//	GM.nitrogen = nitrogen()
-		//	GM.carbon_dioxide = co2()
+		//	GM.nitrogen = turf_nitro
+		//	GM.carbon_dioxide = turf_co2
 
 	Connect(turf/S,turf/T,pc)
 		if(!istype(T,/turf/simulated)) return
@@ -673,10 +680,10 @@ turf/proc/ZoneInfo()
 	set src in view()
 	usr << "Zone #[zones.Find(zone)]"
 	usr << "Members: [zone.members.len]"
-	usr << "O2: [zone.oxygen()]/tile ([zone.oxygen])"
-	usr << "N2: [zone.nitrogen()]/tile ([zone.nitrogen])"
-	usr << "CO2: [zone.co2()]/tile ([zone.co2])"
-	usr << "Plasma: [zone.plasma()]/tile ([zone.plasma])"
+	usr << "O2: [zone.turf_oxy]/tile ([zone.oxygen])"
+	usr << "N2: [zone.turf_nitro]/tile ([zone.nitrogen])"
+	usr << "CO2: [zone.turf_co2]/tile ([zone.co2])"
+	usr << "Plasma: [zone.turf_plasma]/tile ([zone.plasma])"
 	usr << "Space Connections: [zone.space_connections.len]"
 	usr << "Zone Connections: [zone.connections.len]"
 	usr << "Direct Connections: [zone.direct_connections.len]"

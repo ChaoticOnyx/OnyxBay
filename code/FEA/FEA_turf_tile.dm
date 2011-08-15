@@ -251,10 +251,10 @@ turf
 			if(air)
 				if(parent && parent.group_processing)
 					if(zone)
-						parent.air.oxygen = zone.oxygen()
-						parent.air.nitrogen = zone.nitrogen()
-						parent.air.carbon_dioxide = zone.co2()
-						parent.air.toxins = zone.plasma()
+						parent.air.oxygen = zone.turf_oxy
+						parent.air.nitrogen = zone.turf_nitro
+						parent.air.carbon_dioxide = zone.turf_co2
+						parent.air.toxins = zone.turf_plasma
 						if(!observe_only)
 							parent.air.zone_oxygen = parent.air.oxygen
 							parent.air.zone_nitrogen = parent.air.nitrogen
@@ -264,10 +264,10 @@ turf
 					return parent.air
 				else
 					if(zone)
-						air.oxygen = zone.oxygen()
-						air.nitrogen = zone.nitrogen()
-						air.carbon_dioxide = zone.co2()
-						air.toxins = zone.plasma()
+						air.oxygen = zone.turf_oxy
+						air.nitrogen = zone.turf_nitro
+						air.carbon_dioxide = zone.turf_co2
+						air.toxins = zone.turf_plasma
 						if(!observe_only)
 							air.zone_oxygen = air.oxygen
 							air.zone_nitrogen = air.nitrogen
@@ -284,10 +284,10 @@ turf
 				var/datum/gas_mixture/removed = null
 
 				if(zone)
-					air.oxygen = zone.oxygen()
-					air.nitrogen = zone.nitrogen()
-					air.carbon_dioxide = zone.co2()
-					air.toxins = zone.plasma()
+					air.oxygen = zone.turf_oxy
+					air.nitrogen = zone.turf_nitro
+					air.carbon_dioxide = zone.turf_co2
+					air.toxins = zone.turf_plasma
 				if(parent&&parent.group_processing)
 					removed = parent.air.remove(amount)
 					if(!removed)
@@ -315,10 +315,10 @@ turf
 				var/datum/gas_mixture/removed = null
 
 				if(zone)
-					air.oxygen = zone.oxygen()
-					air.nitrogen = zone.nitrogen()
-					air.carbon_dioxide = zone.co2()
-					air.toxins = zone.plasma()
+					air.oxygen = zone.turf_oxy
+					air.nitrogen = zone.turf_nitro
+					air.carbon_dioxide = zone.turf_co2
+					air.toxins = zone.turf_plasma
 				if(parent&&parent.group_processing)
 					parent.suspend_group_processing()
 					removed = air.remove(amount)

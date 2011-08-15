@@ -337,17 +337,20 @@ datum
 				var/combined_heat_capacity = giver_heat_capacity + self_heat_capacity
 				if(combined_heat_capacity != 0)
 					temperature = (giver.temperature*giver_heat_capacity + temperature*self_heat_capacity)/combined_heat_capacity
+				//var/new_temp = call("BS12.dll","temperature")(temperature,giver.temperature,heat_capacity(),giver.heat_capacity())
+				//if(new_temp)
+				//	temperature = new_temp
 
-			if((group_multiplier>1)||(giver.group_multiplier>1))
-				oxygen += giver.oxygen*giver.group_multiplier/group_multiplier
-				carbon_dioxide += giver.carbon_dioxide*giver.group_multiplier/group_multiplier
-				nitrogen += giver.nitrogen*giver.group_multiplier/group_multiplier
-				toxins += giver.toxins*giver.group_multiplier/group_multiplier
-			else
-				oxygen += giver.oxygen
-				carbon_dioxide += giver.carbon_dioxide
-				nitrogen += giver.nitrogen
-				toxins += giver.toxins
+			//if((group_multiplier>1)||(giver.group_multiplier>1))
+			//	oxygen += giver.oxygen*giver.group_multiplier/group_multiplier
+			//	carbon_dioxide += giver.carbon_dioxide*giver.group_multiplier/group_multiplier
+			//	nitrogen += giver.nitrogen*giver.group_multiplier/group_multiplier
+			//	toxins += giver.toxins*giver.group_multiplier/group_multiplier
+			//else
+			oxygen += giver.oxygen
+			carbon_dioxide += giver.carbon_dioxide
+			nitrogen += giver.nitrogen
+			toxins += giver.toxins
 
 			if(giver.trace_gases.len)
 				for(var/datum/gas/trace_gas in giver.trace_gases)
@@ -355,9 +358,9 @@ datum
 					if(!corresponding)
 						corresponding = new trace_gas.type()
 						trace_gases += corresponding
-					corresponding.moles += trace_gas.moles*giver.group_multiplier/group_multiplier
+					corresponding.moles += trace_gas.moles//*giver.group_multiplier/group_multiplier
 
-			del(giver)
+			//del(giver)
 			return 1
 
 		remove(amount)
