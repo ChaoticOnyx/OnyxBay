@@ -74,7 +74,7 @@
 	spawn(9000)
 		if(LaunchControl.departed)
 			return
-		message_admins("Performing AutoTraitor Check")
+		//message_admins("Performing AutoTraitor Check")
 		var/playercount = 0
 		var/traitorcount = 0
 		var/possible_traitors[0]
@@ -86,8 +86,8 @@
 				traitorcount += 1
 			if (player.client && player.mind && !player.mind.special_role && player.stat != 2 && player.be_syndicate)
 				possible_traitors += player
-		message_admins("Live Players: [playercount]")
-		message_admins("Live Traitors: [traitorcount]")
+		//message_admins("Live Players: [playercount]")
+		//message_admins("Live Traitors: [traitorcount]")
 //		message_admins("Potential Traitors:")
 //		for(var/mob/living/traitorlist in possible_traitors)
 //			message_admins("[traitorlist.real_name]")
@@ -103,17 +103,17 @@
 
 
 		if(traitorcount < max_traitors)
-			message_admins("Number of Traitors is below maximum.  Rolling for new Traitor.")
-			message_admins("The probability of a new traitor is [traitor_prob]%")
+			//message_admins("Number of Traitors is below maximum.  Rolling for new Traitor.")
+			//message_admins("The probability of a new traitor is [traitor_prob]%")
 
 			if(prob(traitor_prob))
-				message_admins("New traitor roll passed.  Making a new Traitor.")
+				//message_admins("New traitor roll passed.  Making a new Traitor.")
 				if(!possible_traitors.len)
-					message_admins("No potential traitors.  Cancelling new traitor.")
+					//message_admins("No potential traitors.  Cancelling new traitor.")
 					traitorcheckloop()
 					return
 				var/mob/living/newtraitor = pick(possible_traitors)
-				message_admins("[newtraitor.real_name] is the new Traitor.")
+				//message_admins("[newtraitor.real_name] is the new Traitor.")
 
 				for(var/datum/objective/o in SelectObjectives(newtraitor.mind.assigned_role, newtraitor.mind))
 					o.owner = newtraitor.mind
@@ -129,10 +129,10 @@
 				for(var/datum/objective/objective in newtraitor.mind.objectives)
 					newtraitor << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
 					obj_count++
-			else
-				message_admins("No new traitor being added.")
-		else
-			message_admins("Number of Traitors is at maximum.  Not making a new Traitor.")
+			//else
+				//message_admins("No new traitor being added.")
+		//else
+			//message_admins("Number of Traitors is at maximum.  Not making a new Traitor.")
 
 
 /*	Old equation.  Commenting out.
@@ -169,20 +169,20 @@
 	..()
 	if(LaunchControl.departed)
 		return
-	message_admins("Late Join Check")
+	//message_admins("Late Join Check")
 	if(character.be_syndicate == 1)
-		message_admins("Late Joiner has Be Syndicate")
-		message_admins("Checking number of players")
+		//message_admins("Late Joiner has Be Syndicate")
+		//message_admins("Checking number of players")
 		var/playercount = 0
 		var/traitorcount = 0
 		for(var/mob/living/player in world)
 
 			if (player.client && player.stat != 2)
 				playercount += 1
-			if (player.mind && player.mind.special_role && player.stat != 2)
+			if (player.client && player.mind && player.mind.special_role && player.stat != 2)
 				traitorcount += 1
-		message_admins("Live Players: [playercount]")
-		message_admins("Live Traitors: [traitorcount]")
+		//message_admins("Live Players: [playercount]")
+		//message_admins("Live Traitors: [traitorcount]")
 
 		//var/r = rand(5)
 		//var/target_traitors = 1
@@ -196,10 +196,10 @@
 		//target_traitors = max(1, min(round((playercount + r) / 10, 1), traitors_possible))
 		//message_admins("Target Traitor Count is: [target_traitors]")
 		if (traitorcount < max_traitors)
-			message_admins("Number of Traitors is below maximum.  Rolling for New Arrival Traitor.")
-			message_admins("The probability of a new traitor is [traitor_prob]%")
+			//message_admins("Number of Traitors is below maximum.  Rolling for New Arrival Traitor.")
+			//message_admins("The probability of a new traitor is [traitor_prob]%")
 			if(prob(traitor_prob))
-				message_admins("New traitor roll passed.  Making a New Arrival Traitor.")
+				//message_admins("New traitor roll passed.  Making a New Arrival Traitor.")
 				for(var/datum/objective/o in SelectObjectives(character.mind.assigned_role, character.mind))
 					o.owner = character.mind
 					character.mind.objectives += o
@@ -212,10 +212,10 @@
 				for(var/datum/objective/objective in character.mind.objectives)
 					character << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
 					obj_count++
-			else
-				message_admins("New traitor roll failed.  No new traitor.")
-	else
-		message_admins("Late Joiner does not have Be Syndicate")
+			//else
+				//message_admins("New traitor roll failed.  No new traitor.")
+	//else
+		//message_admins("Late Joiner does not have Be Syndicate")
 
 
 
