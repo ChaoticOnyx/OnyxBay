@@ -516,7 +516,7 @@
 				if(A.radioactive)
 					if (user.mining_radcheck(user) == 0)
 						if (user.job == "Miner") user << "\red It's a bad idea to dig here without a full RIG Suit!"
-						user:radiate(15)
+						user.radiation += 15
 				A.destroy_asteroid(1)
 			return
 		if(istype(W,/obj/item/weapon/drill) || istype(W,/obj/item/weapon/pickaxe/))
@@ -558,7 +558,7 @@
 			if(src.radioactive)
 				if (user.mining_radcheck(user) == 0)
 					if (user.job == "Miner") user << "\red It's a bad idea to dig here without a full RIG Suit!"
-					user:radiate(15)
+					user.radiation += 15
 
 			var/minedifference = src.hardness - W:minelevel
 			if (minedifference == -1)
@@ -1025,8 +1025,8 @@
 /obj/item/weapon/cargotele
 	name = "Cargo Transporter"
 	desc = "A device for teleporting crated goods. 10 charges remain."
-	icon = 'mining.dmi'
-	icon_state = "cargotele"
+	icon = 'MTransporter.dmi'
+	icon_state = "Norm"
 	var/charges = 10
 	var/maximum_charges = 10.0
 	var/robocharge = 250
@@ -1035,63 +1035,128 @@
 	flags = ONBELT
 	//mats = 4		Strumpetplaya - Commented out as it is currently unsupported
 
-	attack_self() // Fixed --melon
-		if (src.charges < 1)
-			usr << "\red The transporter is out of charge."
-			return
-		var/list/pads = list()
-		for(var/obj/submachine/cargopad/A in world)
-			if (!A.active) continue
-			// I suspect it's not consulting the user because it's a list of locations, I cant be sure though --- You're right, so I made this a list of pads.
-			pads.Add(A)
-		if (!pads.len) usr << "\red No recievers available."
+	proc/cargoteleport(var/obj/A, var/mob/user)
+		var/list/padsloc = list()
+		var/list/L = list()
+		var/list/areaindex = list()
+
+		//Make sure that the sendee is on an active pad.
+		var/obj/submachine/cargopad/D = locate() in A.loc
+		if(D != null)
+			if(D.active != 1)
+				usr << "\red Please place the [A] on an active pad."
+				src.icon_state = "Bad"
+				spawn(25)
+				src.icon_state = "Norm"
+				return
 		else
-		//here i set up an empty var that can take any object, and tell it to look for absolutely anything in the list
-			var/selection = input("Select Cargo Pad Location:", "Cargo Pads", null, null) as null|anything in pads
+			usr << "\red Please place the [A] on an active pad."
+			src.icon_state = "Bad"
+			spawn(25)
+			src.icon_state = "Norm"
+			return
+
+		//List all active pads in the worl, putting their area in L and the turf in padsloc
+		for(var/obj/submachine/cargopad/B in world)
+			if(B.active == 1)
+				var/turf/C = find_loc(B)
+				if (!C)	continue
+				var/tmpname = C.loc.name
+				if(areaindex[tmpname])
+					tmpname = "[tmpname] ([++areaindex[tmpname]])"
+				else
+					areaindex[tmpname] = 1
+				L[tmpname] = B
+				padsloc[tmpname] = get_turf(B)
+		if (!L.len)
+			usr << "\red No recievers available."
+			src.icon_state = "Bad"
+			spawn(25)
+			src.icon_state = "Norm"
+		else
+			//Let the player shoose which location to send to. (Don't ask about the syntax. Goons did it and it works somehow)
+			var/selection = input("Select Cargo Pad Location:", "Cargo Pads", null, null) as null|anything in L
 			if(!selection)
 				return
-			var/turf/T = get_turf(selection)
-			//get the turf of the pad itself
+			var/turf/T = padsloc[selection]
 			if (!T)
 				usr << "\red Target not set!"
 				return
 			usr << "Target set to [T.loc]."
-			//blammo! works!
 			src.target = T
-
-	proc/cargoteleport(var/obj/T, var/mob/user)
+		//Check to make sure a target is set (This should honestly never come up)
 		if (!src.target)
 			user << "\red You need to set a target first!"
 			return
+		//Check for charge
 		if (src.charges < 1)
 			user << "\red The transporter is out of charge."
+			src.icon_state = "Bad"
+			spawn(25)
+			src.icon_state = "Norm"
 			return
-		if (istype(user,/mob/living/silicon/robot))
-			var/mob/living/silicon/robot/R = user
-			if (R.cell.charge < src.robocharge)
-				user << "\red There is not enough charge left in your cell to use this."
-				return
-		user << "Teleporting [T]..."
+
+		//Commented out because this has to do with a goon robot teleporter module
+		//if (istype(user,/mob/living/silicon/robot))
+		//	var/mob/living/silicon/robot/R = user
+		//	if (R.cell.charge < src.robocharge)
+		//		user << "\red There is not enough charge left in your cell to use this."
+		//		return
+		user << "Teleporting [A]..."
 		playsound(user.loc, 'click.ogg', 50, 1)
-		if(do_after(user, 50))
-			T.loc = src.target
+		src.icon_state = "Working"
+		for(var/obj/submachine/cargopad in src.target)
+			var/obj/submachine/cargopad/H = locate() in src.target
+			H.icon_state = "PadIn"
+		D.icon_state = "PadIn"
+		if(do_after(user, 25)) //Wait a few while the item does it's magic
 			var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
-			s.set_up(5, 1, src)
+			s.set_up(5, 1, A)
 			s.start()
-			if (istype(user,/mob/living/silicon/robot))
-				var/mob/living/silicon/robot/R = user
-				R.cell.charge -= src.robocharge
-			else
-				src.charges -= 1
-				src.desc = "A device for teleporting crated goods. [src.charges] charges remain."
-				user << "[src.charges] charges remain."
+
+			//Make a crate, bodybag, or mob on the receiver land on the receiver.
+			for(var/obj/crate in src.target)
+				var/obj/crate/E = locate() in src.target
+				if(E != null)
+					E.loc = A.loc
+			for(var/obj/bodybag in src.target)
+				var/obj/bodybag/F = locate() in src.target
+				if(F != null)
+					F.loc = A.loc
+			for(var/mob/living/carbon in src.target)
+				var/mob/living/carbon/G = locate() in src.target
+				if(G != null)
+					G.oxyloss = 110
+					G.loc = A.loc
+
+			A.loc = src.target //Actually change position
+
+			var/datum/effects/system/spark_spread/s2 = new /datum/effects/system/spark_spread
+			s2.set_up(5, 1, A)
+			s2.start()
+
+			//if (istype(user,/mob/living/silicon/robot))
+			//	var/mob/living/silicon/robot/R = user
+			//	R.cell.charge -= src.robocharge
+			//else
+			src.charges -= 1
+			src.target = null
+			src.desc = "A device for teleporting crated goods. [src.charges] charges remain."
+			user << "[src.charges] charges remain."
+			src.icon_state = "Good"
+			spawn(25)
+			src.icon_state = "Norm"
+			for(var/obj/submachine/cargopad in src.target)
+				var/obj/submachine/cargopad/H = locate() in src.target
+				H.icon_state = "PadOn"
+			D.icon_state = "PadOn"
 		return
 
 /obj/item/weapon/oreprospector
 	name = "geological scanner"
 	desc = "A device capable of detecting nearby mineral deposits."
-	icon = 'device.dmi'
-	icon_state = "svarog"
+	icon = 'mining.dmi'
+	icon_state = "minanal"
 	flags = ONBELT
 	w_class = 1.0
 	var/working = 0
@@ -1103,7 +1168,6 @@
 		user << "\blue Taking geological reading, please do not move..."
 		var/staystill = user.loc
 		src.working = 1
-		src.icon_state = "sva-ani"
 		var/stone = 0
 		var/metalH = 0
 		var/metalL = 0
@@ -1136,7 +1200,6 @@
 			user << "Sedimentaries: [sediment]"
 			user << "Anomalous Readings: [unusual]"
 			user << "----------------------------------"
-			src.icon_state = "svarog"
 			for (var/turf/simulated/wall/asteroid/T in range(user,6))
 				if (T.event)
 					var/image/O = image('mining.dmi',T,"scan-anom",AREA_LAYER+1)
@@ -1152,23 +1215,38 @@
 /obj/submachine/cargopad
 	name = "Cargo Pad"
 	desc = "Used to recieve objects transported by a Cargo Transporter."
-	icon = 'objects.dmi'
-	icon_state = "cargopad"
-	anchored = 1
-	var/active = 1
+	icon = 'MTransporter.dmi'
+	icon_state = "PadOff"
+	anchored = 0
+	var/active = 0
 
 	New()
 		src.overlays += image('objects.dmi', "cpad-rec")
 
 	attack_hand(var/mob/user as mob)
-		if (src.active == 1)
-			user << "You switch the reciever off."
-			src.overlays = null
-			src.active = 0
+		if (src.anchored == 0)
+			user << "\red You must first wrench the pad to the ground!"
 		else
-			user << "You switch the reciever on."
-			src.overlays += image('objects.dmi', "cpad-rec")
-			src.active = 1
+			if (src.active == 1)
+				user << "\blue You switch the reciever off."
+				src.icon_state = "PadOff"
+				src.active = 0
+			else
+				user << "\blue You switch the reciever on."
+				src.icon_state = "PadOn"
+				src.active = 1
+
+/obj/submachine/cargopad/attackby(I as obj, user as mob)
+	if(istype(I, /obj/item/weapon/wrench))
+		if(src.active == 1)
+			user << "\red You must first deactivate the pad!"
+		else
+			if(src.anchored == 0)
+				user << "\blue You wrench the pad to the ground."
+				src.anchored = 1
+			else
+				user << "\blue You detach the pad from the ground."
+				src.anchored = 0
 
 /obj/item/weapon/storage/miningbelt
 	name = "miner's belt"
@@ -1309,7 +1387,7 @@
 		if (user.mining_radcheck(user)) ..()
 		else
 			if (user:job == "Miner") user << "\red It really isn't a good idea to handle this stuff without a full RIG suit!"
-			user:radiate(10)
+			user:radiation += 10
 			..()
 
 /mob/proc/mining_radcheck(var/mob/user as mob)

@@ -212,6 +212,9 @@
 	return ..()
 
 /obj/crate/secure/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/weapon/cargotele))
+		W:cargoteleport(src,user)
+		return
 	if(istype(user,/mob/living/silicon))
 		return attack_hand(user)
 	if(istype(W, /obj/item/weapon/card) && src.allowed(user) && !locked && !opened && !broken)
@@ -237,6 +240,9 @@
 	return attack_hand(user)
 
 /obj/crate/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/weapon/cargotele))
+		W:cargoteleport(src,user)
+		return
 	if(istype(user,/mob/living/silicon))
 		return attack_hand(user)
 	if(opened)
