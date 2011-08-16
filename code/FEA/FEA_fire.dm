@@ -182,6 +182,7 @@ obj/fire/proc/process()
 	if(T.wet) T.wet = 0
 	burn( (T.air.toxins - T.air.carbon_dioxide / 2) / 50, (T.air.oxygen - T.air.carbon_dioxide / 2) / 100)
 	T.burn_tile()
+	/*	Strumpetplaya - Commenting this out for now til can receive better testing.  As it is currently, it melts through the floor and wrecks medbay almost immediately after being lit, and starts breaking the windows next to the heat shielding.
 	if(istype(T, /turf/simulated) && T.air.temperature > 4000)
 		T.ReplaceWithOpen()
 	for(var/dirs in cardinal)
@@ -196,13 +197,13 @@ obj/fire/proc/process()
 			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 3000)
 				new/turf/simulated/floor(TC)
 			// destroy nearby regular walls
-			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 2000)
+			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 2000)		//You're checking r_walls twice.
 				new/turf/simulated/floor(TC)
 			// destroy nearby thermal shielding
 			if(istype(TC, /turf/simulated/wall/heatshield) && T.air.temperature > 2800)
 				// melt the heat shielding
 				new/turf/simulated/floor(TC)
-
+	*/
 		if(prob(50))
 			continue
 		var/turf/simulated/floor/TS = get_step(src,dirs)
