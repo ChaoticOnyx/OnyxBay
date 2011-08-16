@@ -1140,7 +1140,6 @@
 			//	R.cell.charge -= src.robocharge
 			//else
 			src.charges -= 1
-			src.target = null
 			src.desc = "A device for teleporting crated goods. [src.charges] charges remain."
 			user << "[src.charges] charges remain."
 			src.icon_state = "Good"
@@ -1149,6 +1148,7 @@
 			for(var/obj/submachine/cargopad in src.target)
 				var/obj/submachine/cargopad/H = locate() in src.target
 				H.icon_state = "PadOn"
+			src.target = null
 			D.icon_state = "PadOn"
 		return
 
