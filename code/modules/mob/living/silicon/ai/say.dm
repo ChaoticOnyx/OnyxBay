@@ -11,6 +11,6 @@
 	if (ending == "?")
 		return "queries, \"[text]\"";
 	else if (ending == "!")
-		return "declares, \"[copytext(text, 1, length(text))]\"";
+		return "declares, \"[copytext(text, 1, length(text))].\"";
 
 	return "states, \"[text]\"";
