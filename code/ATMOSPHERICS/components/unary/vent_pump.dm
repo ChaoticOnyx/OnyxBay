@@ -21,6 +21,8 @@
 	var/external_pressure_bound = ONE_ATMOSPHERE
 	var/internal_pressure_bound = 0
 
+	var/volume_rate = 1000
+
 	var/pressure_checks = 1
 	//1: Do not pass external_pressure_bound
 	//2: Do not pass internal_pressure_bound
@@ -86,13 +88,11 @@
 
 		return 1*/
 		if(pump_direction)
-			var/pressure_delta = external_pressure_bound - environment.return_pressure()
 			//Can not have a pressure delta that would cause environment pressure > tank pressure
 
 			var/transfer_moles = 0
 			if(air_contents.temperature > 0)
-				transfer_moles = pressure_delta*environment.volume/(air_contents.temperature * R_IDEAL_GAS_EQUATION)
-				transfer_moles *= 10 // fuck it, just speed up the process by 10 times
+				transfer_moles = min(1, volume_rate/environment.volume)*environment.total_moles()
 
 				//Actually transfer the gas
 				var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
@@ -101,13 +101,11 @@
 				if (network)
 					network.update = 1
 		else
-			var/pressure_delta = internal_pressure_bound - air_contents.return_pressure()
 			//Can not have a pressure delta that would cause environment pressure > tank pressure
 
 			var/transfer_moles = 0
 			if(environment.temperature > 0)
-				transfer_moles = pressure_delta*air_contents.volume/(environment.temperature * R_IDEAL_GAS_EQUATION)
-				transfer_moles *= 10
+				transfer_moles = min(1, volume_rate/environment.volume)*environment.total_moles()
 
 				//Actually transfer the gas
 				var/datum/gas_mixture/removed

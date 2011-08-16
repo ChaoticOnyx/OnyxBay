@@ -187,11 +187,10 @@ obj/fire/proc/process()
 		T.ReplaceWithOpen()
 	*/
 	for(var/dirs in cardinal)
-		/*
 		var/turf/TC = get_step(src,dirs)
 		if(T.air.temperature > 2000 && prob(20))
 			// melt any nearby glass
-			for(var/obj/window/W in TC)
+			for(var/obj/window/W in TC && T.air.temperature > 2500)
 				del W
 				var/obj/item/weapon/sheet/glass/g = new(TC)
 				g.amount = rand(2, 30)
@@ -199,13 +198,12 @@ obj/fire/proc/process()
 			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 3000)
 				new/turf/simulated/floor(TC)
 			// destroy nearby regular walls
-			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 2000)		//You're checking r_walls twice.
+			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 2500)		//You're checking r_walls twice.
 				new/turf/simulated/floor(TC)
 			// destroy nearby thermal shielding
 			if(istype(TC, /turf/simulated/wall/heatshield) && T.air.temperature > 2800)
 				// melt the heat shielding
 				new/turf/simulated/floor(TC)
-		*/
 		if(prob(50))
 			continue
 		var/turf/simulated/floor/TS = get_step(src,dirs)

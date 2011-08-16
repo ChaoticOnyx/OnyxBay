@@ -8,7 +8,7 @@
 	var/on = 0
 	var/volume_rate = 1800
 
-	volume = 750
+	volume = 2000
 
 /obj/machinery/portable_atmospherics/scrubber/update_icon()
 	src.overlays = 0
@@ -31,7 +31,7 @@
 
 
 	if(on)
-		var/transfer_moles = min(1, volume_rate/environment.volume*5)*environment.total_moles()
+		var/transfer_moles = min(1, volume_rate/environment.volume)*environment.total_moles()
 
 		//Take a gas sample
 		var/datum/gas_mixture/removed

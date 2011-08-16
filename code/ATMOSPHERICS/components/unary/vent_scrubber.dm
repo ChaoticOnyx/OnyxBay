@@ -13,7 +13,7 @@
 	var/scrub_Toxins = 1
 	var/srub_sleep = 1
 
-	var/volume_rate = 120
+	var/volume_rate = 1000
 
 	update_icon()
 		if(on&&node)
