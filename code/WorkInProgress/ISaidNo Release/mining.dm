@@ -1247,6 +1247,9 @@
 			else
 				user << "\blue You detach the pad from the ground."
 				src.anchored = 0
+	if(istype(I, /obj/item/weapon/cargotele))
+		W:cargoteleport(null,user)
+		return
 
 /obj/item/weapon/storage/miningbelt
 	name = "miner's belt"
