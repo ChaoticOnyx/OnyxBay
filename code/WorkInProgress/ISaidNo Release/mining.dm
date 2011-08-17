@@ -1150,6 +1150,20 @@
 				H.icon_state = "PadOn"
 			src.target = null
 			D.icon_state = "PadOn"
+		else
+			var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+			s.set_up(5, 1, src)
+			s.start()
+			for(var/obj/submachine/cargopad in src.target)
+				var/obj/submachine/cargopad/H = locate() in src.target
+				H.icon_state = "PadOn"
+			D.icon_state = "PadOn"
+			user << "\red Transport Aborted. Please do not waste Charges."
+			src.charges -= 1
+			user << "[src.charges] charges remain."
+			src.icon_state = "Bad"
+			spawn(25)
+			src.icon_state = "Norm"
 		return
 
 /obj/item/weapon/oreprospector
