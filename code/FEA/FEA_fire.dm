@@ -180,8 +180,13 @@ obj/fire/proc/process()
 		//world << "NOT HOT ENOUGH shit"
 		del(src)
 	if(T.wet) T.wet = 0
-	burn( (T.air.toxins - T.air.carbon_dioxide / 2) / 50, (T.air.oxygen - T.air.carbon_dioxide / 2) / 100)
+	burn( (T.air.toxins - T.air.carbon_dioxide / 2) / 150, (T.air.oxygen - T.air.carbon_dioxide / 2) / 150)
 	T.burn_tile()
+
+
+	for(var/obj/machinery/portable_atmospherics/canister/P in T)
+		P.health -= max(T.air.temperature-300,0) / 50
+		P.healthcheck()
 	/*	Strumpetplaya - Commenting the melting code out for now til it can receive better testing.  As it is currently, it melts through the floor and wrecks medbay almost immediately after being lit, and starts breaking the windows next to the heat shielding.
 	if(istype(T, /turf/simulated) && T.air.temperature > 4000)
 		T.ReplaceWithOpen()
@@ -233,7 +238,7 @@ obj/fire/proc/burn(tox,oxy)
 obj/fire/New()
 	..()
 	var/turf/simulated/floor/T = src.loc
-	burn((T.air.toxins - T.air.carbon_dioxide / 2) / 3, (T.air.oxygen - T.air.carbon_dioxide / 2) / 3) // when igniting a lot of fuel is burned
+	burn((T.air.toxins - T.air.carbon_dioxide / 2) / 5, (T.air.oxygen - T.air.carbon_dioxide / 2) / 5) // when igniting a lot of fuel is burned
 	dir = pick(cardinal)
 	ul_SetLuminosity(7,3,0)
 	just_spawned = 1
