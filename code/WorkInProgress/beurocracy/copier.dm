@@ -9,7 +9,7 @@
 	var/copying = 0			// are we copying
 	var/job_num_copies = 0	// number of copies remaining
 	var/top_open = 1		// the top is open
-	var/obj/item/weapon/paper/template // the paper being scanned
+	var/obj/item/weapon/template // the paper OR photo being scanned
 	var/copy_wait = 0		// wait for current page to finish
 
 /obj/machinery/copier/New()
@@ -17,7 +17,10 @@
 	update()
 
 /obj/machinery/copier/attackby(obj/item/weapon/O as obj, mob/user as mob)
-	if (istype(O, /obj/item/weapon/paper) && top_open)
+	if(!top_open)
+		return
+
+	if (istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/photo))
 		// put it inside
 		template = O
 		usr.drop_item()
@@ -67,7 +70,7 @@
 			dat += "<A href='?src=\ref[src];copy=1'>Copy</a>"
 		else
 			dat += "<b>No paper to be copied.<br>"
-			dat += "Please place a paper on top and close the lid.</b>"
+			dat += "Please place a paper or photograph on top and close the lid.</b>"
 
 	dat += "<hr></TT>"
 
@@ -117,12 +120,19 @@
 		// make noise
 		playsound(src, 'polaroid1.ogg', 50, 1)
 		spawn(5)
-			// make duplicate paper
-			var/obj/item/weapon/paper/P = new(src.loc)
-			P.name = template.name
-			P.info = template.info
-			P.stamped = template.stamped
-			P.icon_state = template.icon_state
+			if(istype(template, /obj/item/weapon/paper))
+				// make duplicate paper
+				var/obj/item/weapon/paper/P = new(src.loc)
+				P.name = template.name
+				P.info = template:info
+				P.stamped = template:stamped
+				P.icon_state = template.icon_state
+			else if(istype(template, /obj/item/weapon/photo))
+				// make duplicate photo
+				var/obj/item/weapon/photo/P = new(src.loc)
+				P.name = template.name
+				P.desc = template.desc
+				P.icon = template.icon
 
 			// copy counting stuff
 			job_num_copies -= 1
