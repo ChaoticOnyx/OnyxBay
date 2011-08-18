@@ -69,17 +69,6 @@
 		var/mob/tmob = M
 		tmob.inertia_dir = 0
 	..()
-	if(prob(1) && ishuman(M))
-		var/mob/living/carbon/human/tmob = M
-		if (!tmob.lying && istype(tmob.shoes, /obj/item/clothing/shoes/clown_shoes))
-			if(istype(tmob.head, /obj/item/clothing/head/helmet))
-				tmob << "\red You stumble and fall to the ground. Thankfully, the helmet protected you."
-				tmob.weakened = max(rand(1,2), tmob.weakened)
-			else
-				tmob << "\red You stumble and hit your head."
-				tmob.weakened = max(rand(3,10), tmob.weakened)
-				tmob.stuttering = max(rand(0,3), tmob.stuttering)
-				tmob.make_dizzy(150)
 	for(var/atom/A as mob|obj|turf|area in src)
 		spawn( 0 )
 			if ((A && M))
