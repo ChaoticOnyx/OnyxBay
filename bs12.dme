@@ -475,7 +475,6 @@
 #include "code\game\objects\closets\secure\animal.dm"
 #include "code\game\objects\closets\secure\bar.dm"
 #include "code\game\objects\closets\secure\brig.dm"
-#include "code\game\objects\closets\secure\captain.dm"
 #include "code\game\objects\closets\secure\courtroom.dm"
 #include "code\game\objects\closets\secure\medical.dm"
 #include "code\game\objects\closets\secure\personal.dm"
