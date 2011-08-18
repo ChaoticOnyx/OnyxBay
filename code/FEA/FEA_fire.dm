@@ -199,16 +199,10 @@ obj/fire/proc/process()
 				del W
 				var/obj/item/weapon/sheet/glass/g = new(TC)
 				g.amount = rand(2, 30)
-			// destroy nearby r-walls
-			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 3000)
+
+			if(istype(TC, /turf/simulated/wall) && TC.melting_point > 0 && T.air.temperature > TC.melting_point)
 				new/turf/simulated/floor(TC)
-			// destroy nearby regular walls
-			if(istype(TC, /turf/simulated/wall) && T.air.temperature > 2500)
-				new/turf/simulated/floor(TC)
-			// destroy nearby thermal shielding
-			if(istype(TC, /turf/simulated/wall/heatshield) && T.air.temperature > 2800)
-				// melt the heat shielding
-				new/turf/simulated/floor(TC)
+
 		if(prob(50))
 			continue
 		var/turf/simulated/floor/TS = get_step(src,dirs)

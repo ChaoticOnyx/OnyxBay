@@ -25,6 +25,8 @@
 		explosionstrength = 1 //NEVER SET THIS BELOW 1
 		floorstrength = 6
 
+		melting_point = 0 //Either the temperature to melt at, or 0 if it doesn't melt
+
 
 /turf/space
 	icon = 'space.dmi'
@@ -313,6 +315,8 @@ turf/space/hull/New()
 	thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m steel wall
 	var/Zombiedamage
+	melting_point = 2500
+
 /turf/simulated/wall/r_wall
 	name = "Reinforced Wall"
 	icon = 'walls.dmi'
@@ -321,6 +325,7 @@ turf/space/hull/New()
 	density = 1
 	var/d_state = 0
 	explosionstrength = 4
+	melting_point = 3000
 
 
 /turf/simulated/wall/heatshield
@@ -330,6 +335,7 @@ turf/space/hull/New()
 	name = "Heat Shielding"
 	icon = 'thermal.dmi'
 	icon_state = "thermal"
+	melting_point = 2800
 
 /turf/simulated/wall/heatshield/attackby()
 	return
