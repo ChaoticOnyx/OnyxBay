@@ -298,8 +298,18 @@
 	g_amt = 1000
 
 /obj/item/clothing/head/helmet/HoS
-	name = "HoS helmet"
+	name = "Head of Security helmet"
 	icon_state = "hoscap"
+	flags = FPRINT | TABLEPASS | HEADCOVERSEYES
+
+/obj/item/clothing/head/helmet/HoP
+	name = "Head of Personnel helmet"
+	icon_state = "hopcap"
+	flags = FPRINT | TABLEPASS | HEADCOVERSEYES
+
+/obj/item/clothing/head/helmet/captain
+	name = "Captain's helmet"
+	icon_state = "captaincap"
 	flags = FPRINT | TABLEPASS | HEADCOVERSEYES
 
 // MASK WAS THAT MOVIE WITH THAT GUY WITH THE MESSED UP FACE. WHAT'S HIS NAME . . . JIM CARREY, I THINK.

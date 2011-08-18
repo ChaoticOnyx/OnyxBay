@@ -1,3 +1,20 @@
+/obj/secure_closet/captains/New()
+	..()
+	sleep(2)
+	new /obj/item/device/radio/headset/security(src)
+	new /obj/item/weapon/gun/energy/general( src )
+	new /obj/item/weapon/storage/id_kit( src )
+	new /obj/item/clothing/under/rank/captain( src )
+	new /obj/item/clothing/shoes/brown( src )
+	new /obj/item/clothing/glasses/sunglasses( src )
+	new /obj/item/clothing/suit/armor/vest( src )
+	new /obj/item/clothing/under/rank/captain(src)
+	new /obj/item/clothing/under/rank/captain/suit(src)
+	new /obj/item/clothing/gloves/green(src)
+	new /obj/item/clothing/gloves/green(src)
+	new /obj/item/clothing/head/helmet/captain(src)
+	return
+
 /obj/secure_closet/security1/New()
 	..()
 	sleep(2)
@@ -54,10 +71,10 @@
 	new /obj/item/device/flash( src )
 	new /obj/item/weapon/storage/id_kit( src )
 	new /obj/item/clothing/under/rank/head_of_personnel( src )
+	new /obj/item/clothing/head/helmet/HoP(src)
 	new /obj/item/clothing/shoes/brown( src )
 	new /obj/item/clothing/glasses/sunglasses( src )
 	new /obj/item/clothing/suit/armor/vest( src )
-	new /obj/item/clothing/head/helmet( src )
 	new /obj/item/weapon/storage/backpack( src )
 	return
 
