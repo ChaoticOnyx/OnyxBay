@@ -203,7 +203,7 @@ obj/fire/proc/process()
 			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 3000)
 				new/turf/simulated/floor(TC)
 			// destroy nearby regular walls
-			if(istype(TC, /turf/simulated/wall/r_wall) && T.air.temperature > 2500)		//You're checking r_walls twice.
+			if(istype(TC, /turf/simulated/wall) && T.air.temperature > 2500)
 				new/turf/simulated/floor(TC)
 			// destroy nearby thermal shielding
 			if(istype(TC, /turf/simulated/wall/heatshield) && T.air.temperature > 2800)
