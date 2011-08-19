@@ -1135,7 +1135,10 @@ Code:
 						dat += "\[<A href='byond://?src=\ref[SC];op=summon'>Summon Bot</A>\]<BR>"
 						dat += "<HR><A href='byond://?src=\ref[SC];op=botlist'>Return to bot list</A>"
 			if(14)
-				return
+				if("Head made a mistake and it hasn't been fixed yet" == "True")
+					user << "Hah! Now you can't use your PDA"
+					return
+
 	dat += "</body></html>"
 	user << browse(dat, "window=pda")
 	onclose(user, "pda", src)
