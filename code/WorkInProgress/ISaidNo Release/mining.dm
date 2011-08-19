@@ -1039,7 +1039,6 @@
 		var/list/padsloc = list()
 		var/list/L = list()
 		var/list/areaindex = list()
-
 		//Make sure that the sendee is on an active pad.
 		var/obj/submachine/cargopad/D = locate() in A.loc
 		if(D != null)
@@ -1095,7 +1094,62 @@
 			spawn(25)
 			src.icon_state = "Norm"
 			return
-
+		if(istype(A,/obj/submachine/cargopad))
+			user << "Teleporting [A]..."
+			playsound(user.loc, 'click.ogg', 50, 1)
+			src.icon_state = "Working"
+			for(var/obj/submachine/cargopad in src.target)
+				var/obj/submachine/cargopad/H = locate() in src.target
+				H.icon_state = "PadIn"
+			D.icon_state = "PadIn"
+			if(do_after(user, 25)) //Wait a few while the item does it's magic
+				var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+				s.set_up(5, 1, src.target)
+				s.start()
+				//Make a crate, bodybag, or mob on the receiver land on the sender.
+				for(var/obj/crate in src.target)
+					var/obj/crate/E = locate() in src.target
+					if(E != null)
+						E.loc = D.loc
+				for(var/obj/bodybag in src.target)
+					var/obj/bodybag/F = locate() in src.target
+					if(F != null)
+						F.loc = D.loc
+				for(var/mob/living/carbon in src.target)
+					var/mob/living/carbon/G = locate() in src.target
+					if(G != null)
+						G.oxyloss = 110
+						G.loc = D.loc
+				var/datum/effects/system/spark_spread/s2 = new /datum/effects/system/spark_spread
+				s2.set_up(5, 1, D)
+				s2.start()
+				src.charges -= 1
+				src.desc = "A device for teleporting crated goods. [src.charges] charges remain."
+				user << "[src.charges] charges remain."
+				src.icon_state = "Good"
+				spawn(25)
+				src.icon_state = "Norm"
+				for(var/obj/submachine/cargopad in src.target)
+					var/obj/submachine/cargopad/H = locate() in src.target
+					H.icon_state = "PadOn"
+				src.target = null
+				D.icon_state = "PadOn"
+				return
+			else
+				var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+				s.set_up(5, 1, src)
+				s.start()
+				for(var/obj/submachine/cargopad in src.target)
+					var/obj/submachine/cargopad/H = locate() in src.target
+					H.icon_state = "PadOn"
+				D.icon_state = "PadOn"
+				user << "\red Transport Aborted. Please do not waste Charges."
+				src.charges -= 1
+				user << "[src.charges] charges remain."
+				src.icon_state = "Bad"
+				spawn(25)
+				src.icon_state = "Norm"
+				return
 		//Commented out because this has to do with a goon robot teleporter module
 		//if (istype(user,/mob/living/silicon/robot))
 		//	var/mob/living/silicon/robot/R = user
@@ -1114,7 +1168,7 @@
 			s.set_up(5, 1, A)
 			s.start()
 
-			//Make a crate, bodybag, or mob on the receiver land on the receiver.
+			//Make a crate, bodybag, or mob on the receiver land on the sender.
 			for(var/obj/crate in src.target)
 				var/obj/crate/E = locate() in src.target
 				if(E != null)
@@ -1262,7 +1316,7 @@
 				user << "\blue You detach the pad from the ground."
 				src.anchored = 0
 	if(istype(I, /obj/item/weapon/cargotele))
-		W:cargoteleport(null,user)
+		I:cargoteleport(src,user)
 		return
 
 /obj/item/weapon/storage/miningbelt
