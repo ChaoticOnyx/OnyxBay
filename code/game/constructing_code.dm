@@ -16,6 +16,15 @@
 					user << "There are't enough sheets of material left to continue construction."
 					return 1
 
+			else if(istype(tool, /obj/item/weapon/weldingtool))
+				if(tool:get_fuel() < result["use_amount"])
+					user << "There isn't enough fuel to continue."
+					return 1
+
+				else if(!tool:welding)
+					user << "You may want to light that first."
+					return 1
+
 		if("start_message" in result)
 			user << result["start_message"]
 
@@ -29,6 +38,18 @@
 					user << "There are't enough sheets of material left to continue construction."
 					return 1
 
+			else if(istype(tool, /obj/item/weapon/weldingtool))
+				if(tool:get_fuel() < result["use_amount"])
+					user << "There isn't enough fuel to continue."
+					return 1
+
+				else if(!tool:welding)
+					user << "How can you weld something, if you turn off your welder mid-job?"
+					return 1
+
+				else
+					tool:use_fuel(result["use_amount"])
+
 			else
 				if(state["use_amount"] > 0)
 					del tool	//If a tool doesn't support using an amount, just use it entirely
@@ -41,6 +62,12 @@
 
 		if("done_message" in result)
 			user << result["done_message"]
+
+		if("name" in result)
+			name = result["name"]
+
+		if("desc" in result)
+			desc = result["desc"]
 
 		if(("state" in result) && result["state"])
 			set_state(result["state"])
@@ -59,10 +86,14 @@
 /obj/constructing/attackby(obj/C, mob/user)
 	var/list/tools = list(
 		/obj/item/weapon/crowbar = "crowbar",
+		/obj/item/weapon/screwdriver = "screwdriver",
 		/obj/item/weapon/sheet/metal = "metal",
 		/obj/item/weapon/sheet/glass = "glass",
 		/obj/item/weapon/sheet/r_metal = "rmetal",
 		/obj/item/weapon/sheet/rglass = "rglass",
+		/obj/item/weapon/wirecutters = "wirecutters",
+		/obj/item/weapon/weldingtool = "weldingtool",
+		/obj/item/weapon/wrench = "wrench",
 	)
 
 	if(C.type in tools)
