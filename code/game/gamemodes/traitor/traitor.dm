@@ -58,6 +58,8 @@
 
 	var/num_players = 0
 
+	var/list/traitor_suspects = list()
+
 /datum/game_mode/traitor/announce()
 	..()
 //	world << "<B>There is a syndicate traitor on the station. Do not let the traitor succeed!!</B>"
@@ -103,7 +105,17 @@
 
 
 /datum/game_mode/traitor/post_setup()
+	while(traitor_suspects.len < min(num_players / 2, 5))
+		for(var/mob/living/carbon/human/M in world) if(M.client && prob(50))
+			traitor_suspects += M
+
+
+
 	for(var/datum/mind/traitor in traitors)
+
+		if(! (traitor.current in traitor_suspects))
+			traitor_suspects += traitor.current
+
 		var/datum/traitorinfo/info = new
 		info.ckey = traitor.key
 		info.starting_player_count = num_players
@@ -179,18 +191,21 @@
 		traitor.current << "\red <B>You are the traitor.</B>"
 		traitor.current << "\red <B>REPEAT</B>"
 		traitor.current << "\red <B>You are the traitor.</B>"
-		spawn(6000*tick_multiplier)			//Strumpetplaya - Just another friendly reminder so people don't forget they're the traitor.
+		spawn(600*tick_multiplier)			//Strumpetplaya - Just another friendly reminder so people don't forget they're the traitor.
 			traitor.current << "\red <B>In case you missed it the first time - YOU ARE THE TRAITOR!</B>"
 		var/obj_count = 1
 		for(var/datum/objective/objective in traitor.objectives)
 			traitor.current << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
 			obj_count++
-		traitor.current << "\red <B>You have 1 and 1/2 hours to complete your objective</B>"
-		traitor.current << "\red <B>If you do not complete your objective and return within the allotted time, we will be forced to reveal your identity</B>"
-		spawn(54000*tick_multiplier)
-			command_alert("Summary downloaded and printed out at all communications consoles.", "The traitor has been determined")
+		traitor.current << "\red <B>We fear that NanoTrasen agents are right on your trail. They may be sending information on your identity to your workplace shortly.</B>"
+		spawn(rand(30,90)*10*60) // 10*60 = minutes
+			command_alert("Summary downloaded and printed out at all communications consoles.", "Security Update")
 			var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested status information:</FONT><HR>"
-			intercepttext += "We have determined the traitors name to be: [traitor.current.real_name]"
+			intercepttext += "We have made certain that the traitor is among the following people: "
+			for(var/mob/living/carbon/human/H in traitor_suspects)
+				intercepttext += H.name
+				intercepttext += ", "
+			intercepttext = copytext(intercepttext,0,lentext(intercepttext-1)) // remove the last two characters which are ", "
 			for (var/obj/machinery/computer/communications/comm in world)
 				if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
 					var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
@@ -199,9 +214,6 @@
 
 					comm.messagetitle.Add("Cent. Com. Status Summary")
 					comm.messagetext.Add(intercepttext)
-			spawn(12000*tick_multiplier)
-				command_alert("Repeating the previous message over intercoms due to urgency. The station has a traitor onboard by the name of [traitor.current.real_name], please arrest them and bring them on the emergency shuttle at once", "The traitor has been determined")
-
 
 	spawn (rand(waittime_l, waittime_h)*tick_multiplier)
 		send_intercept()
@@ -225,17 +237,17 @@
 	var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested status information:</FONT><HR>"
 	intercepttext += "<B> Cent. Com has recently been contacted by the following syndicate affiliated organisations in your area, please investigate any information you may have:</B>"
 
-	var/list/possible_modes = list()
+	/*var/list/possible_modes = list()
 	possible_modes.Add("revolution", "nuke", "traitor", "malf")
 	possible_modes -= "[ticker.mode]"
 	var/number = pick(2, 3)
 	for(var/i = 0, i < number, i++)
 		possible_modes.Remove(pick(possible_modes))
-	possible_modes.Insert(rand(possible_modes.len), "[ticker.mode]")
+	possible_modes.Insert(rand(possible_modes.len), "[ticker.mode]")*/
 
-	var/datum/intercept_text/i_text = new /datum/intercept_text
+	/*var/datum/intercept_text/i_text = new /datum/intercept_text
 	for(var/A in possible_modes)
-		intercepttext += i_text.build(A, pick(traitors))
+		intercepttext += i_text.build(A, pick(traitors))*/
 
 	for (var/obj/machinery/computer/communications/comm in world)
 		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
