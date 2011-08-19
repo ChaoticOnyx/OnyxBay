@@ -42,4 +42,16 @@
 				),
 			),
 		),
+
+		//This state exists only to show features not present in the other examples
+		"another state" = list(
+			"icon" = 'constructing_door.dmi',
+			"icon_state" = "invisible",
+
+			/obj/item/weapon/book = list(
+				state = null,
+				"name" = "alternate name",
+				"desc" = "alternate description",
+			),
+		),
 	)
