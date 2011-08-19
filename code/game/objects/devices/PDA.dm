@@ -624,7 +624,7 @@
 				dat += "<li><a href='byond://?src=\ref[src];note=1'>Notekeeper</a></li>"
 				dat += "<li><a href='byond://?src=\ref[src];mess=1'>Messenger</a></li>"
 				dat += "<li><a href='byond://?src=\ref[src];cm=1'>View Crew Manifest</a></li>"
-
+				dat += "<li><a href='byond://?src=\ref[src];vm=1'>View Map</a></li>"
 				if (!isnull(src.cartridge) && src.cartridge.access_clown)
 					dat += "<li><a href='byond://?src=\ref[src];honk=1'>Honk Synthesizer</a></li>"
 
@@ -1134,7 +1134,8 @@ Code:
 						dat += "\[<A href='byond://?src=\ref[SC];op=go'>Start Patrol</A>\] "
 						dat += "\[<A href='byond://?src=\ref[SC];op=summon'>Summon Bot</A>\]<BR>"
 						dat += "<HR><A href='byond://?src=\ref[SC];op=botlist'>Return to bot list</A>"
-
+			if(14)
+				return
 	dat += "</body></html>"
 	user << browse(dat, "window=pda")
 	onclose(user, "pda", src)
@@ -1154,7 +1155,8 @@ Code:
 
 		else if (href_list["cm"])
 			src.mode = 1
-
+		else if (href_list["vm"])
+			src.mode = 14
 		else if (href_list["am"])
 			src.mode = 3
 
