@@ -1,16 +1,18 @@
+// Contains: copy machine
+
 /obj/machinery/copier
 	name = "Copy Machine"
 	icon = 'beurocracy.dmi'
 	icon_state = "copier"
 	density = 1
 	anchored = 1
-	var/p_amt = 0
 	var/num_copies = 1		// number of copies selected, will be maintained between jobs
 	var/copying = 0			// are we copying
 	var/job_num_copies = 0	// number of copies remaining
 	var/top_open = 1		// the top is open
 	var/obj/item/weapon/template // the paper OR photo being scanned
 	var/copy_wait = 0		// wait for current page to finish
+	var/max_copies = 10		// MAP EDITOR: can set the number of max copies, possibly to 5 or something for public, more for QM, robutist, etc.
 
 /obj/machinery/copier/New()
 	..()
@@ -27,6 +29,7 @@
 		O.loc = src
 		top_open = 0
 		update()
+		updateDialog()
 
 /obj/machinery/copier/attack_paw(user as mob)
 	return src.attack_hand(user)
@@ -53,7 +56,8 @@
 	dat = "<HEAD><TITLE>Copy Machine</TITLE></HEAD><TT><b>Xeno Corp. Copying Machine</b><hr>"
 
 	if(copying)
-		dat += "[job_num_copies] copies remaining."
+		dat += "[job_num_copies] copies remaining.<br><br>"
+		dat += "<A href='?src=\ref[src];cancel=1'>Cancel</a>"
 	else
 		if(!top_open)
 			dat += "<A href='?src=\ref[src];open=1'>Open Top</a><br><br>"
@@ -95,8 +99,8 @@
 		num_copies += text2num(href_list["num"])
 		if(num_copies < 1)
 			num_copies = 1
-		else if(num_copies > 20)
-			num_copies = 20
+		else if(num_copies > max_copies)
+			num_copies = max_copies
 		updateDialog()
 	if(href_list["open"])
 		template.loc = src.loc
@@ -107,6 +111,11 @@
 	if(href_list["copy"])
 		copying = 1
 		job_num_copies = num_copies
+		update()
+		updateDialog()
+	if(href_list["cancel"])
+		copying = 0
+		job_num_copies = 0
 		update()
 		updateDialog()
 
@@ -120,6 +129,9 @@
 		// make noise
 		playsound(src, 'polaroid1.ogg', 50, 1)
 		spawn(5)
+			if(!copying)
+				return // user cancelled
+
 			if(istype(template, /obj/item/weapon/paper))
 				// make duplicate paper
 				var/obj/item/weapon/paper/P = new(src.loc)
