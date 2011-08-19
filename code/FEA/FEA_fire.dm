@@ -195,7 +195,7 @@ obj/fire/proc/process()
 		var/turf/TC = get_step(src,dirs)
 		if(T.air.temperature > 2000 && prob(20))
 			// melt any nearby glass
-			for(var/obj/window/W in TC && T.air.temperature > 2500)
+			if(T.air.temperature > 2500) for(var/obj/window/W in TC)
 				del W
 				var/obj/item/weapon/sheet/glass/g = new(TC)
 				g.amount = rand(2, 30)
