@@ -52,9 +52,9 @@
 
 	return 0
 
-/obj/constructing/New()
+/obj/constructing/New(location, state = initial_state)
 	..()
-	set_state(initial_state)
+	set_state(state)
 
 /obj/constructing/attackby(obj/C, mob/user)
 	var/list/tools = list(

@@ -704,6 +704,9 @@ turf/simulated/floor/proc/update_icon()
 				del(T)
 				return
 
+	if(istype(C, /obj/item/weapon/light_fixture))
+		C:build_light(user, src)
+
 	if(istype(C, /obj/item/weapon/table_parts))
 		spawn()
 			if(istype(C, /obj/item/weapon/table_parts/reinforced))

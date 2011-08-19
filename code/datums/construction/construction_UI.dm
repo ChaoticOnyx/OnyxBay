@@ -49,7 +49,9 @@
 			icon_state = copytext(state, 1, pos)
 
 		if(!state_images_cache["[icon]:[icon_state]:[dir]"])
-			state_images_cache["[icon]:[icon_state]:[dir]"] = icon(icon, icon_state, dir)
+			var/icon/i = icon(icon, icon_state, dir)
+			i.Blend(rgb(255, 255, 255, 255), ICON_UNDERLAY) //Put on a white background, to make clicking easier
+			state_images_cache["[icon]:[icon_state]:[dir]"] = i
 
 		state_images[state] = state_images_cache["[icon]:[icon_state]:[dir]"]
 
