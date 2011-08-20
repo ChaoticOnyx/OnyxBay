@@ -226,7 +226,7 @@ obj/fire/proc/burn(tox,oxy)
 	T.air.toxins -= max(0,round(burn_amount))
 	var/newco = round(burn_amount)
 	T.air.carbon_dioxide += newco
-	T.air.temperature += 30*round(burn_amount)
+	T.air.temperature += 60*round(burn_amount)
 /*mob/verb/createfire()
 	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 	new/obj/fire(src.loc)*/
