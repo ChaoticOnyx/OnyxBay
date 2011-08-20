@@ -134,6 +134,10 @@
 			var/datum/gas_mixture/removed = environment.remove(transfer_moles)
 
 			air_contents.merge(removed)
+	else
+		if(air_contents.return_pressure() > src.maximum_pressure)
+			src.health -= 10
+			healthcheck()
 	src.updateDialog()
 	src.update_icon()
 	return
