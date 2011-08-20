@@ -84,7 +84,7 @@ obj/machinery/recharger
 		else
 			src.icon_state = "recharger2"
 	if ((src.charging4) && ! (stat & NOPOWER) )
-		if (src.charging4.charges < src.charging3.maximum_charges)
+		if (src.charging4.charges < src.charging4.maximum_charges)
 			src.charging4.charges++
 			src.charging4.desc = "An energised mining tool. It has 15 charges left."
 			src.icon_state = "recharger1"
@@ -92,7 +92,7 @@ obj/machinery/recharger
 		else
 			src.icon_state = "recharger2"
 	if ((src.charging5) && ! (stat & NOPOWER) )
-		if (src.charging5.charges < src.charging3.maximum_charges)
+		if (src.charging5.charges < src.charging5.maximum_charges)
 			src.charging5.charges++
 			src.charging5.desc = "An energised mining tool. It has 30 charges left."
 			src.icon_state = "recharger1"
