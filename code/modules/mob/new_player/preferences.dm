@@ -88,6 +88,10 @@ datum/preferences
 				h_style_r = "hair_dreads"
 			if("Ponytail")
 				h_style_r = "hair_ponytail"
+			if("Alternate Ponytail")
+				h_style_r = "hair_pa"
+			if("Medium Long")
+				h_style_r = "hair_old"
 			else
 				h_style_r = "bald"
 
@@ -567,7 +571,7 @@ datum/preferences
 				s_tone =  -s_tone + 35
 
 		if (link_tags["h_style"])
-			var/new_style = input(user, "Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Wave", "Bedhead", "Dreadlocks", "Ponytail", "Bald" )
+			var/new_style = input(user, "Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Wave", "Bedhead", "Dreadlocks", "Ponytail", "Alternate Ponytail", "Medium Long", "Bald" )
 
 			if (new_style)
 				h_style = new_style
@@ -740,6 +744,10 @@ datum/preferences
 				character.hair_icon_state = "hair_dreads"
 			if("Ponytail")
 				character.hair_icon_state = "hair_ponytail"
+			if("Alternate Ponytail")
+				character.hair_icon_state = "hair_pa"
+			if("Medium Long")
+				character.hair_icon_state = "hair_old"
 			else
 				character.hair_icon_state = "bald"
 
