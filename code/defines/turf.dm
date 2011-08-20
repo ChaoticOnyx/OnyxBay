@@ -337,6 +337,8 @@ turf/space/hull/New()
 	icon_state = "thermal"
 	melting_point = 2800
 
+	var/health = 10
+
 /turf/simulated/wall/heatshield/attackby()
 	return
 /turf/simulated/wall/heatshield/attack_hand()
