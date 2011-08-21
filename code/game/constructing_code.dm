@@ -10,7 +10,7 @@
 	if(tool_type in state)
 		var/list/result = state[tool_type]
 
-		if("use_amount" in result)
+		if(result["use_amount"] > 0)
 			if(istype(tool, /obj/item/weapon/sheet))
 				if(tool:amount < result["use_amount"])
 					user << "There are't enough sheets of material left to continue construction."
@@ -25,14 +25,14 @@
 					user << "You may want to light that first."
 					return 1
 
-		if("start_message" in result)
+		if(result["start_message"])
 			user << result["start_message"]
 
-		if("wait" in result)
+		if(result["wait"])
 			if(!do_after(user, result["wait"]))
 				return 1
 
-		if("use_amount" in result)
+		if(result["use_amount"] > 0)
 			if(istype(tool, /obj/item/weapon/sheet))
 				if(!use_sheet(user, tool, result["use_amount"]))
 					user << "There are't enough sheets of material left to continue construction."
@@ -51,25 +51,22 @@
 					tool:use_fuel(result["use_amount"])
 
 			else
-				if(state["use_amount"] > 0)
-					del tool	//If a tool doesn't support using an amount, just use it entirely
+				del tool	//If a tool doesn't support using an amount, just use it entirely
 
-		if("drop" in result)
+		if(result["drop"])
 			create_drops(result["drop"])
 
-		if("create" in result)
+		if(result["create"])
 			create_drops(result["create"])
 
-		if("done_message" in result)
+		if(result["done_message"])
 			user << result["done_message"]
 
-		if("name" in result)
-			name = result["name"]
+		for(var/property in list("name", "desc", "anchored"))
+			if(property in result)
+				vars[property] = result[property]
 
-		if("desc" in result)
-			desc = result["desc"]
-
-		if(("state" in result) && result["state"])
+		if(result["state"])
 			set_state(result["state"])
 
 		else
@@ -134,11 +131,11 @@
 	current_state = new_state
 	var/list/state = states[current_state]
 
-	if("icon" in state)
+	if(state["icon"])
 		icon = state["icon"]
 
 	if("icon_state" in state)
-		icon = state["icon_state"]
+		icon_state = state["icon_state"]
 
 	else
 		icon_state = current_state
