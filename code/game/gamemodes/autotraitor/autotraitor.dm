@@ -107,7 +107,7 @@
 			//message_admins("The probability of a new traitor is [traitor_prob]%")
 
 			if(prob(traitor_prob))
-				//message_admins("New traitor roll passed.  Making a new Traitor.")
+				message_admins("Making a new Traitor.")
 				if(!possible_traitors.len)
 					//message_admins("No potential traitors.  Cancelling new traitor.")
 					traitorcheckloop()
@@ -199,7 +199,7 @@
 			//message_admins("Number of Traitors is below maximum.  Rolling for New Arrival Traitor.")
 			//message_admins("The probability of a new traitor is [traitor_prob]%")
 			if(prob(traitor_prob))
-				//message_admins("New traitor roll passed.  Making a New Arrival Traitor.")
+				message_admins("New traitor roll passed.  Making a new Traitor.")
 				for(var/datum/objective/o in SelectObjectives(character.mind.assigned_role, character.mind))
 					o.owner = character.mind
 					character.mind.objectives += o
