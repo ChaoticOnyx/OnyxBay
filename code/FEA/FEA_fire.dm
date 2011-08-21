@@ -185,8 +185,11 @@ obj/fire/proc/process()
 
 
 	for(var/obj/machinery/portable_atmospherics/canister/P in T)
-		P.health -= max(T.air.temperature-300,0) / 50
+		P.health -= max(T.air.temperature-200,0) / 50
 		P.healthcheck()
+
+		if(P.health < -50)
+			del P
 	/*	Strumpetplaya - Commenting the melting code out for now til it can receive better testing.  As it is currently, it melts through the floor and wrecks medbay almost immediately after being lit, and starts breaking the windows next to the heat shielding.
 	if(istype(T, /turf/simulated) && T.air.temperature > 4000)
 		T.ReplaceWithOpen()
