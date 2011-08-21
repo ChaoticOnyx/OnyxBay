@@ -13,7 +13,7 @@
 	amount -= radiation_protection()
 	if(amount > 0)
 		src.radiation += amount
-		if (prob(amount / 10))
+		if (prob(amount / 5))
 			if (prob(75))
 				randmutb(src)
 				domutcheck(src,null,1)
