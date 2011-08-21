@@ -70,6 +70,17 @@
 				state = "frame_anchored",
 				anchored = 1,
 				desc = "The frame for an airlock.",
+				done_message = "You attach the airlock frame to the floor.",
+			),
+
+			"screwdriver" = list(
+				state = null
+				wait = 10,
+				start_message = "You start to disassemble the airlock frame.",
+				done_message = "You finish disassembling the airlock frame.",
+				drop = list(
+					/obj/item/weapon/sheet/metal {amount = 1},
+				),
 			),
 		),
 
@@ -80,16 +91,37 @@
 				state = "frame",
 				anchored = 0,
 				desc = "The frame for an airlock. It isn't attached to anything.",
+				done_message = "You detach the airlock frame.",
 			),
 
 			"glass" = list(
 				state = "frame_glass",
 				use_amount = 1,
+				desc = "The frame for an airlock with windows.",
 			),
 
 			"metal" = list(
 				state = "frame_metal",
 				use_amount = 1,
+			),
+		),
+
+		"frame_glass" = list(
+			"wrench" = list(
+				state = "frame_anchored",
+				desc = "The frame for an airlock.",
+				drop = list(
+					/obj/item/weapon/sheet/glass {amount = 1},
+				),
+			),
+		),
+
+		"frame_metal" = list(
+			"wrench" = list(
+				state = "frame_anchored",
+				drop = list(
+					/obj/item/weapon/sheet/metal {amount = 1},
+				),
 			),
 		),
 	)
