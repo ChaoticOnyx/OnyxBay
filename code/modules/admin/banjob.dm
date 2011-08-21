@@ -13,6 +13,7 @@
 		log_admin("[xquery.ErrorMsg()]")
 	if(!yquery.Execute())
 		log_admin("[yquery.ErrorMsg()]")
+	M << "\red You have been jobbanned from [rank], reason: [why]"
 
 /proc/jobban_isbanned(mob/M, rank)
 	var/DBQuery/cquery = dbcon.NewQuery("SELECT `rank` FROM `jobban` WHERE ckey='[M.ckey]'")
@@ -36,6 +37,7 @@
 	if(!yquery.Execute())
 		log_admin("[yquery.ErrorMsg()]")
 	log_admin("[key_name(usr)] unbanned [M.ckey] from [rank]")
+	M << "\red You have been unjobbanned from [rank]."
 
 /proc/jobban_remove(key, rank)
 	var/DBQuery/xquery = dbcon.NewQuery("DELETE FROM jobban WHERE `ckey`='[key]' AND `rank`='[rank]'")
@@ -45,6 +47,7 @@
 	if(!yquery.Execute())
 		log_admin("[yquery.ErrorMsg()]")
 	log_admin("[key_name(usr)] unbanned [key] from [rank]")
+	M << "\red You have been unjobbanned from [rank]."
 
 /obj/admins/proc/showjobbans()
 	var/html = "<table>"
