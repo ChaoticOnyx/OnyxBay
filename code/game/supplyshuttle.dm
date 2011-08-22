@@ -339,7 +339,7 @@ var/supply_shuttle_points = 50
 	containertype = "/obj/crate/internals"
 	containername = "Emergency Crate"
 
-/datum/supply_packs/emergency-med
+/datum/supply_packs/emergencymed
 	name = "Emergency equipment \[Medical\]"
 	contains = list("/obj/item/weapon/storage/firstaid/regular",
 	"/obj/item/weapon/storage/firstaid/regular",
