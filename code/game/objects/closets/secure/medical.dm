@@ -12,6 +12,7 @@
 	new /obj/item/weapon/reagent_containers/glass/bottle/stoxin( src )
 	new /obj/item/weapon/reagent_containers/glass/bottle/toxin( src )
 	new /obj/item/weapon/storage/firstaid/syringes( src )
+	new /obj/item/weapon/storage/pill_bottle/kelotane( src )
 	new /obj/item/weapon/reagent_containers/dropper( src )
 	new /obj/item/weapon/reagent_containers/dropper( src )
 	new /obj/item/weapon/reagent_containers/glass/beaker( src )
