@@ -58,7 +58,7 @@
 
 
 /obj/constructing/airlock
-	//icon = 'constructing_airlock.dmi'
+	icon = 'constructing_airlock.dmi'
 	initial_state = "frame"
 	name = "Airlock frame"
 	anchored = 0
