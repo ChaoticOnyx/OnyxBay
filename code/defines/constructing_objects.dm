@@ -58,7 +58,7 @@
 
 
 /obj/constructing/airlock
-	icon = 'constructing_airlock.dmi'
+	//icon = 'constructing_airlock.dmi'
 	initial_state = "frame"
 	name = "Airlock frame"
 	anchored = 0
@@ -74,7 +74,7 @@
 			),
 
 			"screwdriver" = list(
-				state = null
+				state = null,
 				wait = 10,
 				start_message = "You start to disassemble the airlock frame.",
 				done_message = "You finish disassembling the airlock frame.",

@@ -128,7 +128,7 @@
 
 
 
-/obj/constructing/proc/has_amount(mob/user, /obj/item/weapon/tool, amount_required)
+/obj/constructing/proc/has_amount(mob/user, obj/item/weapon/tool, amount_required)
 
 	if(istype(tool, /obj/item/weapon/sheet))
 		if(tool:amount < amount_required)
@@ -148,7 +148,7 @@
 
 
 
-/obj/constructing/proc/use_amount(mob/user, /obj/item/weapon/tool, amount_used)
+/obj/constructing/proc/use_amount(mob/user, obj/item/weapon/tool, amount_used)
 
 	if(istype(tool, /obj/item/weapon/sheet))
 		if(!use_sheet(user, tool, amount_used))
