@@ -624,7 +624,7 @@
 				dat += "<li><a href='byond://?src=\ref[src];note=1'>Notekeeper</a></li>"
 				dat += "<li><a href='byond://?src=\ref[src];mess=1'>Messenger</a></li>"
 				dat += "<li><a href='byond://?src=\ref[src];cm=1'>View Crew Manifest</a></li>"
-				dat += "<li><a href='byond://?src=\ref[src];vm=1'>View Map</a></li>"
+				//dat += "<li><a href='byond://?src=\ref[src];vm=1'>View Map</a></li>"
 				if (!isnull(src.cartridge) && src.cartridge.access_clown)
 					dat += "<li><a href='byond://?src=\ref[src];honk=1'>Honk Synthesizer</a></li>"
 
