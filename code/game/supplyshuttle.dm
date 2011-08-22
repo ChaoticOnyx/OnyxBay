@@ -321,23 +321,36 @@ var/supply_shuttle_points = 50
     contains = list("/obj/machinery/portable_atmospherics/canister/sleeping_agent")
     cost = 10
 
-/datum/supply_packs/evacuation
-	name = "Emergency equipment"
+/datum/supply_packs/emergency
+	name = "Emergency equipment \[Tools\]"
 	contains = list("/obj/machinery/bot/floorbot",
 	"/obj/machinery/bot/floorbot",
-	"/obj/machinery/bot/floorbot",
-	"/obj/item/weapon/tank/air",
-	"/obj/item/weapon/tank/air",
-	"/obj/item/weapon/tank/air",
-	"/obj/item/weapon/tank/air",
-	"/obj/item/weapon/tank/air",
-	"/obj/item/clothing/mask/gas",
-	"/obj/item/clothing/mask/gas",
-	"/obj/item/clothing/mask/gas",
-	"/obj/item/clothing/mask/gas",
-	"/obj/item/clothing/mask/gas")
+	"/obj/item/weapon/storage/toolbox/emergency",
+	"/obj/item/weapon/storage/toolbox/emergency",
+	"/obj/item/weapon/storage/toolbox/emergency",
+	"/obj/item/weapon/storage/toolbox/mechanical",
+	"/obj/item/weapon/storage/toolbox/mechanical",
+	"/obj/item/weapon/storage/toolbox/electrical",
+	"/obj/item/weapon/storage/toolbox/electrical",
+	"/obj/item/device/multitool",
+	"/obj/item/device/multitool"
+	)
 	cost = 75
 	containertype = "/obj/crate/internals"
+	containername = "Emergency Crate"
+
+/datum/supply_packs/emergency-med
+	name = "Emergency equipment \[Medical\]"
+	contains = list("/obj/item/weapon/storage/firstaid/regular",
+	"/obj/item/weapon/storage/firstaid/regular",
+	"/obj/item/weapon/storage/firstaid/fire",
+	"/obj/item/weapon/storage/firstaid/toxin",
+	"/obj/item/weapon/reagent_containers/glass/bottle/antitoxin",
+	"/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline",
+	"/obj/item/weapon/storage/firstaid/syringes"
+	)
+	cost = 60
+	containertype = "/obj/crate/medical"
 	containername = "Emergency Crate"
 
 /datum/supply_packs/party
