@@ -26,7 +26,7 @@
 	else
 		var/area/current = locate(destinations[location])
 		var/area/dest = locate(destinations[new_destination])
-		current.move_contents_to(dest)
+		current.move_contents_to(dest, /turf/space)
 		destination = new_destination
 		location = destination
 
@@ -42,11 +42,11 @@
 					var/area/dest
 					if(location == "transit")
 						dest = locate(destinations[destination])
-						current.move_contents_to(dest)
+						current.move_contents_to(dest, /turf/space)
 						location = destination
 					else
 						dest = locate(destinations["transit"])
-						current.move_contents_to(dest)
+						current.move_contents_to(dest, /turf/space)
 						location = "transit"
 						timer = transit_time
 			sleep(10)

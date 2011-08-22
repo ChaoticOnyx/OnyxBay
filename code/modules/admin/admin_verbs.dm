@@ -792,7 +792,7 @@
 	var/area/from = locate(/area/nanotrasenshuttle)
 	var/area/dockingbay/admin/dest = locate(/area/dockingbay/admin)
 	if(dest.shuttle == "")
-		from.move_contents_to(dest)
+		from.move_contents_to(dest, /turf/space)
 		dest.shuttle = "nanotrasen"
 	else
 		src << "\blue Already a shuttle there"
@@ -803,7 +803,7 @@
 	var/area/dockingbay/admin/from = locate(/area/dockingbay/admin)
 	if(from.shuttle == "nanotrasen")
 		var/area/dest = locate(/area/nanotrasenshuttle)
-		from.move_contents_to(dest)
+		from.move_contents_to(dest, /turf/space)
 		from.shuttle = ""
 
 /client/proc/toggleadminshuttledoors()

@@ -820,5 +820,5 @@ var/supply_shuttle_points = 50
 
 	if(!from || !dest) return
 
-	from.move_contents_to(dest)
+	from.move_contents_to(dest, /turf/space)
 	supply_shuttle_at_station = !supply_shuttle_at_station

@@ -140,7 +140,7 @@ datum/shuttle
 						for(var/turf/simulated/shuttle/wall/S in start_location)
 							if(S.icon_state == "wall_hull")
 								S.icon_state = "wall_space"  /*Quickish hack to fix the hull sprites moving with the pod --Mloc*/
-						start_location.move_contents_to(end_location)
+						start_location.move_contents_to(end_location, /turf/space)
 						location = 0
 						direction = 2
 
@@ -178,7 +178,7 @@ datum/shuttle
 								del(T)
 						for(var/mob/m in start_location)
 							shake_camera(m, 3, 1)
-						start_location.move_contents_to(end_location)
+						start_location.move_contents_to(end_location, /turf/space)
 
 
 						online = 0
@@ -192,7 +192,7 @@ datum/shuttle
 						for(var/mob/m in start_location)
 							shake_camera(m, 3, 1)
 						var/area/end_location = locate(transit)
-						start_location.move_contents_to(end_location)
+						start_location.move_contents_to(end_location, /turf/space)
 						location = 0
 						direction = 1
 
@@ -346,7 +346,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 					for(var/turf/simulated/shuttle/wall/S in start_location)
 						if(S.icon_state == "wall_hull")
 							S.icon_state = "wall_space"  /*Quickish hack to fix the hull sprites moving with the pod --Mloc*/
-					start_location.move_contents_to(end_location)
+					start_location.move_contents_to(end_location, /turf/space)
 					location = 0
 					direction = 2
 					radioalert("Prisoner Shuttle has departed.","Prison Notice")
@@ -386,7 +386,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 							del(T)
 					for(var/mob/m in start_location)
 						shake_camera(m, 3, 1)
-					start_location.move_contents_to(end_location)
+					start_location.move_contents_to(end_location, /turf/space)
 
 					//var/area/holdingarea = locate(holding)
 					for(var/mob/living/carbon/human/prisoner in locate(centcom))
@@ -427,7 +427,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 					for(var/mob/m in start_location)
 						shake_camera(m, 3, 1)
 					var/area/end_location = locate(station)
-					start_location.move_contents_to(end_location)
+					start_location.move_contents_to(end_location, /turf/space)
 					location = 1
 					online = 0
 					PrisonControl.location = 1
