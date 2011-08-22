@@ -37,50 +37,51 @@
 "aK" = (/obj/cabling/power{icon_state = "2-4"},/turf/simulated/floor/plating,/area)
 "aL" = (/obj/cabling/power{icon_state = "4-8"},/turf/simulated/floor/plating,/area)
 "aM" = (/obj/cabling/power{icon_state = "1-8"},/obj/cabling/power{icon_state = "2-8"},/turf/simulated/floor/plating,/area)
-"aN" = (/obj/machinery/atmospherics/pipe/tank/oxygen,/turf/simulated/floor/plating,/area)
-"aO" = (/obj/machinery/atmospherics/pipe/tank/toxins,/turf/simulated/floor/plating,/area)
-"aP" = (/obj/cabling/power{icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/plating,/area)
-"aQ" = (/obj/machinery/power/generator_type2,/obj/cabling/power,/turf/simulated/floor/plating,/area)
-"aR" = (/obj/machinery/atmospherics/pipe/manifold{dir = 1; icon_state = "manifold"; initialize_directions = 14; level = 2},/obj/machinery/meter,/turf/simulated/floor/plating,/area)
-"aS" = (/obj/machinery/atmospherics/pipe/manifold{dir = 1; icon_state = "manifold"; level = 2},/turf/space,/area)
-"aT" = (/obj/machinery/atmospherics/pipe/manifold{dir = 4; icon_state = "manifold"; initialize_directions = 11; level = 2},/obj/machinery/meter,/turf/simulated/floor/plating,/area)
-"aU" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; initialize_directions = 7; level = 2},/obj/machinery/meter,/turf/simulated/floor/plating,/area)
-"aV" = (/obj/machinery/atmospherics/pipe/tank/toxins,/obj/cabling/power{tag = "icon-1-4"; icon_state = "1-4"},/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor/plating,/area)
-"aW" = (/obj/cabling/power{icon_state = "2-8"},/turf/simulated/floor/plating,/area)
-"aX" = (/obj/machinery/atmospherics/pipe/manifold{dir = 4; icon_state = "manifold"; initialize_directions = 11; level = 2},/turf/simulated/floor/plating,/area)
-"aY" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; initialize_directions = 7; level = 2},/turf/simulated/floor/plating,/area)
-"aZ" = (/obj/machinery/power/terminal,/obj/cabling/power,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/plating,/area)
-"ba" = (/obj/machinery/power/terminal,/obj/cabling/power,/turf/simulated/floor/plating,/area)
-"bb" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/floor/plating,/area)
-"bc" = (/obj/landmark/start,/obj/landmark/start{name = "Unassigned"},/turf/simulated/floor/plating,/area)
-"bd" = (/obj/machinery/atmospherics/pipe/simple{dir = 9; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/plating,/area)
-"be" = (/obj/machinery/power/smes{charge = 0},/obj/machinery/atmospherics/pipe/simple{dir = 9; icon_state = "intact"; layer = 3; level = 1},/turf/simulated/floor/plating,/area)
-"bf" = (/obj/machinery/power/smes{charge = 0},/turf/simulated/floor/plating,/area)
-"bg" = (/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact"; layer = 3; level = 2},/turf/space,/area)
-"bh" = (/obj/item/weapon/CableCoil/flexipipe,/turf/simulated/floor/plating,/area)
-"bi" = (/obj/machinery/atmos_new/tank/co2_tank,/turf/simulated/floor/plating,/area)
-"bj" = (/obj/cabling/flexipipe/manifold{tag = "icon-manifold (NORTH)"; icon_state = "manifold"; dir = 1},/turf/simulated/floor/plating,/area)
-"bk" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/wall/heatshield,/area)
-"bl" = (/obj/machinery/atmos_new/thermal_plate,/turf/simulated/floor/plating,/area)
-"bm" = (/obj/machinery/atmos_new/tank/plasma_tank,/turf/simulated/floor/plating,/area)
-"bn" = (/obj/machinery/atmos_new/tank/oxy_tank,/turf/simulated/floor/plating,/area)
-"bo" = (/obj/machinery/atmos_new/generator_input{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/floor/plating,/area)
-"bp" = (/obj/machinery/power/generator_type2,/turf/simulated/floor/plating,/area)
-"bq" = (/obj/machinery/atmos_new/generator_input,/turf/simulated/floor/plating,/area)
-"br" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/floor/plating,/area)
-"bs" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (NORTHEAST)"; icon_state = "intact"; dir = 5},/turf/simulated/floor/plating,/area)
-"bt" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/floor/plating,/area)
-"bu" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/obj/cabling/flexipipe/simple,/turf/simulated/floor/plating,/area)
-"bv" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/obj/machinery/atmos_new/meter,/turf/simulated/floor/plating,/area)
-"bw" = (/obj/machinery/atmos_new/pump,/turf/simulated/floor/plating,/area)
-"bx" = (/obj/cabling/flexipipe/simple,/turf/simulated/wall/r_wall,/area)
-"by" = (/obj/cabling/flexipipe/simple,/obj/machinery/atmos_new/meter,/turf/simulated/wall/r_wall,/area)
-"bz" = (/obj/cabling/flexipipe/simple,/turf/space,/area)
-"bA" = (/obj/cabling/flexipipe/manifold{tag = "icon-manifold (WEST)"; icon_state = "manifold"; dir = 8},/turf/space,/area)
-"bB" = (/obj/machinery/atmos_new/thermal_plate,/turf/space,/area)
-"bC" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (NORTHEAST)"; icon_state = "intact"; dir = 5},/turf/space,/area)
-"bD" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/space,/area)
-"bE" = (/obj/cabling/flexipipe/manifold,/turf/space,/area)
+"aN" = (/obj/machinery/power/generator_type2,/turf/simulated/floor/plating,/area)
+"aO" = (/obj/machinery/atmospherics/pipe/manifold{dir = 4; icon_state = "manifold"; initialize_directions = 11; level = 2},/turf/simulated/floor/plating,/area)
+"aP" = (/obj/machinery/atmospherics/pipe/tank/oxygen,/turf/simulated/floor/plating,/area)
+"aQ" = (/obj/machinery/atmospherics/pipe/tank/toxins,/turf/simulated/floor/plating,/area)
+"aR" = (/obj/cabling/power{icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple{dir = 4; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/plating,/area)
+"aS" = (/obj/machinery/power/generator_type2,/obj/cabling/power,/turf/simulated/floor/plating,/area)
+"aT" = (/obj/machinery/atmospherics/pipe/manifold{dir = 1; icon_state = "manifold"; initialize_directions = 14; level = 2},/obj/machinery/meter,/turf/simulated/floor/plating,/area)
+"aU" = (/obj/machinery/atmospherics/pipe/manifold{dir = 1; icon_state = "manifold"; level = 2},/turf/space,/area)
+"aV" = (/obj/machinery/atmospherics/unary/cold_sink/freezer{tag = "icon-freezer"; icon_state = "freezer"},/turf/simulated/floor/plating,/area)
+"aW" = (/obj/machinery/atmospherics/pipe/manifold{dir = 4; icon_state = "manifold"; initialize_directions = 11; level = 2},/obj/machinery/meter,/turf/simulated/floor/plating,/area)
+"aX" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; initialize_directions = 7; level = 2},/obj/machinery/meter,/turf/simulated/floor/plating,/area)
+"aY" = (/obj/machinery/atmospherics/pipe/tank/toxins,/obj/cabling/power{tag = "icon-1-4"; icon_state = "1-4"},/obj/cabling/power{icon_state = "1-2"},/turf/simulated/floor/plating,/area)
+"aZ" = (/obj/cabling/power{icon_state = "2-8"},/turf/simulated/floor/plating,/area)
+"ba" = (/obj/machinery/atmospherics/pipe/manifold{dir = 8; icon_state = "manifold"; initialize_directions = 7; level = 2},/turf/simulated/floor/plating,/area)
+"bb" = (/obj/machinery/power/terminal,/obj/cabling/power,/obj/machinery/atmospherics/pipe/simple{icon_state = "intact"; level = 2},/turf/simulated/floor/plating,/area)
+"bc" = (/obj/machinery/power/terminal,/obj/cabling/power,/turf/simulated/floor/plating,/area)
+"bd" = (/obj/machinery/atmospherics/pipe/tank/carbon_dioxide{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/floor/plating,/area)
+"be" = (/obj/landmark/start,/obj/landmark/start{name = "Unassigned"},/turf/simulated/floor/plating,/area)
+"bf" = (/obj/machinery/atmospherics/pipe/simple{dir = 9; icon_state = "intact"; layer = 3; level = 2},/turf/simulated/floor/plating,/area)
+"bg" = (/obj/machinery/power/smes{charge = 0},/obj/machinery/atmospherics/pipe/simple{dir = 9; icon_state = "intact"; layer = 3; level = 1},/turf/simulated/floor/plating,/area)
+"bh" = (/obj/machinery/power/smes{charge = 0},/turf/simulated/floor/plating,/area)
+"bi" = (/obj/machinery/atmospherics/pipe/simple{dir = 5; icon_state = "intact"; layer = 3; level = 2},/turf/space,/area)
+"bj" = (/obj/item/weapon/CableCoil/flexipipe,/turf/simulated/floor/plating,/area)
+"bk" = (/obj/machinery/atmos_new/tank/co2_tank,/turf/simulated/floor/plating,/area)
+"bl" = (/obj/cabling/flexipipe/manifold{tag = "icon-manifold (NORTH)"; icon_state = "manifold"; dir = 1},/turf/simulated/floor/plating,/area)
+"bm" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/wall/heatshield,/area)
+"bn" = (/obj/machinery/atmos_new/thermal_plate,/turf/simulated/floor/plating,/area)
+"bo" = (/obj/machinery/atmos_new/tank/plasma_tank,/turf/simulated/floor/plating,/area)
+"bp" = (/obj/machinery/atmos_new/tank/oxy_tank,/turf/simulated/floor/plating,/area)
+"bq" = (/obj/machinery/atmos_new/generator_input{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/floor/plating,/area)
+"br" = (/obj/machinery/atmos_new/generator_input,/turf/simulated/floor/plating,/area)
+"bs" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/floor/plating,/area)
+"bt" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (NORTHEAST)"; icon_state = "intact"; dir = 5},/turf/simulated/floor/plating,/area)
+"bu" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/simulated/floor/plating,/area)
+"bv" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/obj/cabling/flexipipe/simple,/turf/simulated/floor/plating,/area)
+"bw" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/obj/machinery/atmos_new/meter,/turf/simulated/floor/plating,/area)
+"bx" = (/obj/machinery/atmos_new/pump,/turf/simulated/floor/plating,/area)
+"by" = (/obj/cabling/flexipipe/simple,/turf/simulated/wall/r_wall,/area)
+"bz" = (/obj/cabling/flexipipe/simple,/obj/machinery/atmos_new/meter,/turf/simulated/wall/r_wall,/area)
+"bA" = (/obj/cabling/flexipipe/simple,/turf/space,/area)
+"bB" = (/obj/cabling/flexipipe/manifold{tag = "icon-manifold (WEST)"; icon_state = "manifold"; dir = 8},/turf/space,/area)
+"bC" = (/obj/machinery/atmos_new/thermal_plate,/turf/space,/area)
+"bD" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (NORTHEAST)"; icon_state = "intact"; dir = 5},/turf/space,/area)
+"bE" = (/obj/cabling/flexipipe/simple{tag = "icon-intact (EAST)"; icon_state = "intact"; dir = 4},/turf/space,/area)
+"bF" = (/obj/cabling/flexipipe/manifold,/turf/space,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -149,25 +150,25 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabacadacadaeacadadacafafacac
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabagahagahahagahahagahahagagagagabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiajaiajakaialalaialamanaoaiaiabapaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaarasatalauavavatalalaiamavanaoawaxabayaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabazaAaBaAalalalalaialalaiaiaiajabayaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabalaiaCaDaAalakakaialaCaEaFaGaHasaIaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaCaDaDaDaDaAalaJaialaKaLaMaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiaiaiaiaiaNalalaOaCaPaEaQaGaRasaSaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiaiaiaiaNaCaTaUaAaOaVaWaiaiajabayaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiaiawaNaCaDaXaYaDaAaZbaaiawbbabayaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbcaiaiaCaDaDbdaCaDaDbebfaiaiaiabbgaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababaiababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiaiaibhbhbhbibjbkblaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbmaiaibnbhaiaiboagaiaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbmaiaibnaiaiaibpagaiaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbmaiaibnaibiaibqagaiaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaibrbsbtbtbubvbubkbwaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaibsbtbtbtbubvbubkbwaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababbxabbyabababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabzaabAbBaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabzaabAbBaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabzaabAbBaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabCbDbEbBaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababababababababababazaAaBaAalalalalaialalaiaiaiajabayaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiaiaiaiaiaiaiaiaiaiaiabalaiaCaDaAalakakaialaCaEaFaGaHasaIaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiaxaiaiaiaiaiaxaiaiaiabaCaDaDaDaDaAalaJaialaKaLaMaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiamaDaEaNaGaDaOaiaiaiabaiaiaiaiaiaPalalaQaCaRaEaSaGaTasaUaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiaVaiaiaiaiaiaVaiaiaiaiaiaiaiaiaPaCaWaXaAaQaYaZaiaiajabayaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiaiaiaiaiaiaiaiaiaiaiabaiaiawaPaCaDaObaaDaAbbbcaiawbdabayaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiaiaiaiaiaiaiaiaiaiaiabbeaiaiaCaDaDbfaCaDaDbgbhaiaiaiabbiaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababababababababaiababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaiaiaibjbjbjbkblbmbnaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabboaiaibpbjaiaibqagaiaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabboaiaibpaiaiaiaNagaiaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabboaiaibpaibkaibragaiaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaibsbtbububvbwbvbmbxaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaibtbubububvbwbvbmbxaiaiabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababbyabbzabababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabAaabBbCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabAaabBbCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabAaabBbCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabDbEbFbCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

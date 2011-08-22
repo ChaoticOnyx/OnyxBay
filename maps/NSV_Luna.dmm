@@ -3164,7 +3164,7 @@
 "biR" = (/obj/table{dir = 10; icon_state = "tabledir"},/obj/item/weapon/storage/pill_bottle/inaprovaline,/obj/item/weapon/storage/pill_bottle/kelotane,/obj/item/weapon/storage/pill_bottle/antitox,/obj/item/weapon/storage/daimp_kit,/obj/machinery/light{tag = "icon-tube1 (EAST)"; icon_state = "tube1"; dir = 4},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay/office)
 "biS" = (/obj/machinery/light{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/simulated/floor{icon_state = "white"},/area/chemistry)
 "biT" = (/obj/machinery/chem_dispenser,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
-"biU" = (/obj/machinery/atmospherics/pipe/simple,/obj/table{tag = "icon-table_1tileendtable (NORTHEAST)"; icon_state = "table_1tileendtable"; dir = 5},/turf/simulated/floor{icon_state = "white"},/area/chemistry)
+"biU" = (/obj/machinery/atmospherics/pipe/simple,/obj/table{dir = 2; icon_state = "table_1tileendtable"; tag = "icon-table_1tileendtable (NORTHEAST)"},/turf/simulated/floor{icon_state = "white"},/area/chemistry)
 "biV" = (/obj/table{icon_state = "tabledir"; dir = 9},/obj/item/weapon/storage/beakerbox,/obj/item/weapon/clipboard,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
 "biW" = (/obj/table{icon_state = "tabledir"; dir = 1},/obj/item/weapon/hand_labeler,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
 "biX" = (/obj/table{icon_state = "tabledir"; dir = 5},/obj/item/weapon/paper/Medicine_Information,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
