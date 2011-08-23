@@ -66,10 +66,11 @@
 
 	states = list(
 		"frame" = list(
+			desc = "The frame for an airlock. It isn't attached to anything.",
+			anchored = 0,
+
 			"wrench" = list(
 				state = "frame_anchored",
-				anchored = 1,
-				desc = "The frame for an airlock.",
 				done_message = "You attach the airlock frame to the floor.",
 			),
 
@@ -86,30 +87,40 @@
 
 		"frame_anchored" = list(
 			icon_state = "frame",
+			"desc" = "The frame for an airlock.",
+			anchored = 1,
+			density = 0,
 
 			"wrench" = list(
 				state = "frame",
-				anchored = 0,
-				desc = "The frame for an airlock. It isn't attached to anything.",
 				done_message = "You detach the airlock frame.",
 			),
 
 			"glass" = list(
 				state = "frame_glass",
 				use_amount = 1,
-				desc = "The frame for an airlock with windows.",
+				wait = 20,
+				start_message = "You start putting glass windows in the airlock frame.",
+				done_message = "You finish putting glass windows in the airlock frame.",
 			),
 
 			"metal" = list(
 				state = "frame_metal",
 				use_amount = 1,
+				wait = 20,
+				start_message = "You start putting metal plates in the airlock frame.",
+				done_message = "You finish putting metal plates in the airlock frame.",
 			),
 		),
 
 		"frame_glass" = list(
+			"desc" = "The frame for an airlock with windows.",
+			density = 1,
+
 			"wrench" = list(
 				state = "frame_anchored",
-				desc = "The frame for an airlock.",
+				wait = 10,
+				start_message = "You start removing the windows from the airlock frame.",
 				drop = list(
 					/obj/item/weapon/sheet/glass {amount = 1},
 				),
@@ -117,8 +128,12 @@
 		),
 
 		"frame_metal" = list(
+			density = 1,
+
 			"wrench" = list(
 				state = "frame_anchored",
+				wait = 10,
+				start_message = "You start removing the plates from the airlock frame.",
 				drop = list(
 					/obj/item/weapon/sheet/metal {amount = 1},
 				),
