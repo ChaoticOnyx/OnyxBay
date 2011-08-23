@@ -731,7 +731,6 @@
 #include "code\WorkInProgress\Events\Events\IonStorm.dm"
 #include "code\WorkInProgress\Events\Events\MeteorStorm.dm"
 #include "code\WorkInProgress\Events\Events\PortalStorm.dm"
-#include "code\WorkInProgress\Events\Events\Poweroffline.dm"
 #include "code\WorkInProgress\Events\Events\RadiationBelt.dm"
 #include "code\WorkInProgress\Events\Events\VirusEpidemic.dm"
 #include "code\WorkInProgress\food\drinks.dm"
