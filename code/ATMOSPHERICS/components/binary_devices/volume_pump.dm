@@ -109,5 +109,5 @@ obj/machinery/atmospherics/binary/volume_pump
 				transfer_rate = number
 
 		if(signal.data["tag"])
-			spawn(5 * tick_multiplier) broadcast_status()
+			spawn(5 ) broadcast_status()
 		update_icon()

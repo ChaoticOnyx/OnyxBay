@@ -49,7 +49,7 @@
 				icon_state = "pinonmedium"
 			if(16 to INFINITY)
 				icon_state = "pinonfar"
-		spawn(5*tick_multiplier) .()
+		spawn(5) .()
 
 /*/obj/item/weapon/pinpointer/New()
 	. = ..()

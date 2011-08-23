@@ -16,9 +16,9 @@
 /datum/game_mode/restructuring/post_setup()
 	var/list/mobs = get_mob_list()
 	while (mobs.len == 0)
-		sleep(30*tick_multiplier)
+		sleep(30)
 		mobs = get_mob_list()
-	spawn (120*tick_multiplier)
+	spawn (120)
 		pick_target()
 
 /datum/game_mode/restructuring/proc/pick_target(who)

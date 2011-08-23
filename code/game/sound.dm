@@ -72,6 +72,6 @@ client/verb/Toggle_Soundscape()
 			if(A && A:client && !A:client:played)
 				A << sound(pick(music), repeat = 0, wait = 0, volume = 25, channel = 1)
 				A:client:played = 1
-				spawn(600 * tick_multiplier)
+				spawn(600 )
 					if(A && A:client)
 						A:client:played = 0

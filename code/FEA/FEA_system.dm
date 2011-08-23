@@ -168,7 +168,7 @@ datum
 				LoadTweaks()
 
 				world << "\red \b Processing Geometry..."
-				sleep(1 * tick_multiplier)
+				sleep(1 )
 
 				//var/list/door_tiles = list()
 

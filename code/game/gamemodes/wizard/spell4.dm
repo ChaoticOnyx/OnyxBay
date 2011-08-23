@@ -16,7 +16,7 @@
 		usr << "I don't feel strong enough without my hat."
 		return
 	usr.verbs -= /client/proc/fireball
-	spawn(200*tick_multiplier)
+	spawn(200)
 		usr.verbs += /client/proc/fireball
 	var/obj/overlay/A = new /obj/overlay( usr.loc )
 	A.icon_state = "fireball"

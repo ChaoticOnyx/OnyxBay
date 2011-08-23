@@ -11,10 +11,10 @@
 
 /datum/game_mode/blob/post_setup()
 
-	spawn(10*tick_multiplier)
+	spawn(10)
 		start_state = new /datum/station_state()
 		start_state.count()
-	spawn (20*tick_multiplier)
+	spawn (20)
 		var/turf/location = pick(blobstart)
 
 		blobs = list()

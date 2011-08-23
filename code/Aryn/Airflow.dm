@@ -327,9 +327,9 @@ atom/movable
 			airflow_speed -= vsc.AF_SPEED_DECAY
 			if(airflow_speed > 7)
 				if(airflow_time++ >= airflow_speed - 7)
-					sleep(1 * tick_multiplier)
+					sleep(1 )
 			else
-				sleep(max(1,10-(airflow_speed+3)) * tick_multiplier)
+				sleep(max(1,10-(airflow_speed+3)) )
 			if ((!( src.airflow_dest ) || src.loc == src.airflow_dest))
 				src.airflow_dest = locate(min(max(src.x + xo, 1), world.maxx), min(max(src.y + yo, 1), world.maxy), src.z)
 			if ((src.x == 1 || src.x == world.maxx || src.y == 1 || src.y == world.maxy))
@@ -338,7 +338,7 @@ atom/movable
 			if(ismob(src) && src:client) src:client:move_delay = world.time + 10
 		airflow_dest = null
 		airflow_speed = -1
-		spawn(50 * tick_multiplier) airflow_speed = 0
+		spawn(50 ) airflow_speed = 0
 		if(od)
 			density = 0
 	proc/RepelAirflowDest(n)
@@ -374,9 +374,9 @@ atom/movable
 			airflow_speed -= vsc.AF_SPEED_DECAY
 			if(airflow_speed > 7)
 				if(airflow_time++ >= airflow_speed - 7)
-					sleep(1 * tick_multiplier)
+					sleep(1 )
 			else
-				sleep(max(1,10-(airflow_speed+3)) * tick_multiplier)
+				sleep(max(1,10-(airflow_speed+3)) )
 			if ((!( src.airflow_dest ) || src.loc == src.airflow_dest))
 				src.airflow_dest = locate(min(max(src.x + xo, 1), world.maxx), min(max(src.y + yo, 1), world.maxy), src.z)
 			if ((src.x == 1 || src.x == world.maxx || src.y == 1 || src.y == world.maxy))
@@ -385,7 +385,7 @@ atom/movable
 			if(ismob(src) && src:client) src:client:move_delay = world.time + 10
 		airflow_dest = null
 		airflow_speed = -1
-		spawn(50 * tick_multiplier) airflow_speed = 0
+		spawn(50 ) airflow_speed = 0
 		if(od)
 			density = 0
 	Bump(atom/A)
@@ -420,7 +420,7 @@ atom/movable
 				else
 					src:stunned += round(airflow_speed * vsc.AF_STUN_MULTIPLIER/2)
 			airflow_speed = min(-1,airflow_speed-1)
-			spawn(50 * tick_multiplier) airflow_speed = min(0,airflow_speed+1)
+			spawn(50 ) airflow_speed = min(0,airflow_speed+1)
 			airflow_dest = null
 		else if(!airflow_speed)
 			. = ..()

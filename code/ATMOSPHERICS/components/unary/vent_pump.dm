@@ -201,7 +201,7 @@
 				external_pressure_bound = number
 
 		if(signal.data["tag"])
-			spawn(5 * tick_multiplier) broadcast_status()
+			spawn(5 ) broadcast_status()
 
 	hide(var/i) //to make the little pipe section invisible, the icon changes.
 		if(on&&node)
