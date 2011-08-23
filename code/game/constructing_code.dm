@@ -36,12 +36,9 @@
 		if(result["done_message"])
 			user << result["done_message"]
 
-		for(var/property in list("name", "desc", "anchored"))
-			if(property in result)
-				vars[property] = result[property]
-
 		if(result["state"])
 			set_state(result["state"])
+			apply_properties(result)
 
 		else
 			del src
@@ -49,6 +46,25 @@
 		return 1
 
 	return 0
+
+
+
+/obj/constructing/proc/set_state(new_state)
+	if(!(new_state in states))
+		return
+
+	current_state = new_state
+	icon_state = new_state //Unless otherwise specified, use the new state as the icon state.
+
+	apply_properties(states[new_state])
+
+
+
+/obj/constructing/proc/apply_properties(list/node)
+
+	for(var/property in list("icon", "icon_state", "name", "desc", "anchored", "density", "opacity"))
+		if(property in node)
+			vars[property] = node[property]
 
 
 
@@ -107,24 +123,6 @@
 			del tool
 
 	return 1
-
-
-
-/obj/constructing/proc/set_state(new_state)
-	if(!(new_state in states))
-		return
-
-	current_state = new_state
-	var/list/state = states[current_state]
-
-	if(state["icon"])
-		icon = state["icon"]
-
-	if("icon_state" in state)
-		icon_state = state["icon_state"]
-
-	else
-		icon_state = current_state
 
 
 
