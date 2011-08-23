@@ -1085,6 +1085,7 @@ mob/verb/turnwest()
 					usr << "\blue You successfully remove your handcuffs."
 					usr:handcuffed:loc = usr:loc
 					usr:handcuffed = null
+					usr:update_clothing()
 
 		else
 			DblClick()

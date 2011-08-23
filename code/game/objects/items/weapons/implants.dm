@@ -249,6 +249,7 @@ No Implant Specifics"}
 				dropped(source)
 				if (W)
 					W.layer = initial(W.layer)
+			source.update_clothing()
 
 
 /obj/item/weapon/implant/compressed/trigger(emote, mob/source as mob)

@@ -69,6 +69,7 @@
 		if (M.buckled == src)
 			M.buckled = null
 			M.anchored = 0
+			M.update_clothing()
 
 /obj/stool/proc/manual_unbuckle_all(mob/user as mob)
 	var/N = 0;
@@ -87,6 +88,7 @@
 //			world << "[M] is no longer buckled to [src]"
 			M.anchored = 0
 			M.buckled = null
+			M.update_clothing()
 			N++
 	return N
 
@@ -107,6 +109,7 @@
 			"You hear metal clanking")
 	M.anchored = 1
 	M.buckled = src
+	M.update_clothing()
 	M.loc = src.loc
 	src:buckled_mobs += M
 	src.add_fingerprint(user)
@@ -320,6 +323,7 @@
 				M.pixel_y = 0
 				M.anchored = 0
 				M.buckled = null
+				M.update_clothing()
 				N++
 		if(N)
 			density = 0

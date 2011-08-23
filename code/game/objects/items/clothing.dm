@@ -143,6 +143,8 @@ DEATH COMMANDO GAS MASK
 			if(M != null)
 				M << "\red Your cigarette goes out."
 			C.loc = location
+			M.u_equip(src)
+			M.update_clothing()
 			del(src)
 			return
 		if (istype(location, /turf)) //start a fire if possible
