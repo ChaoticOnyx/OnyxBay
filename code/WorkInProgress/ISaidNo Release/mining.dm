@@ -1027,6 +1027,7 @@
 	desc = "A device for teleporting crated goods. 10 charges remain."
 	icon = 'MTransporter.dmi'
 	icon_state = "Norm"
+	item_state = "cargotele"
 	var/charges = 10
 	var/maximum_charges = 10.0
 	var/robocharge = 250
