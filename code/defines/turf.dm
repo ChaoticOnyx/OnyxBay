@@ -335,7 +335,7 @@ turf/space/hull/New()
 	name = "Heat Shielding"
 	icon = 'thermal.dmi'
 	icon_state = "thermal"
-	melting_point = 2800
+	melting_point = 3500
 
 	var/health = 10
 
