@@ -2,7 +2,7 @@
 	set category = "Debug"
 	set name = "Edit Variables"
 	set desc="(target) Edit a target item's variables"
-	if(!O || istype(/obj/admins, O)
+	if(!O || istype(/obj/admins, O))
 		return
 	src.modify_variables(O)
 
