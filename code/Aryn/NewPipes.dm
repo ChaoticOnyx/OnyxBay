@@ -460,7 +460,7 @@
 					external_pressure_bound = number
 
 			if(signal.data["tag"])
-				spawn(5 ) broadcast_status()
+				spawn(5 * tick_multiplier) broadcast_status()
 
 
 	filter

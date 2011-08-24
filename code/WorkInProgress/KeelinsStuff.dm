@@ -455,7 +455,7 @@
 	var/user_loc = user.loc
 	var/target_loc = target.loc
 	var/holding = user.equipped()
-	sleep(time )
+	sleep(time * tick_multiplier)
 	if ( user.loc == user_loc && target.loc == target_loc && user.equipped() == holding && !( user.stat ) && ( !user.stunned && !user.weakened && !user.paralysis && !user.lying ) )
 		return 1
 	else

@@ -434,7 +434,7 @@
 						W.layer = initial(W.layer)
 				//teleport person to cell
 				M.paralysis += 5
-				sleep(5 ) //so they black out before warping
+				sleep(5 * tick_multiplier) //so they black out before warping
 				M.loc = pick(prisonwarp)
 				if(istype(M, /mob/living/carbon/human))
 					var/mob/living/carbon/human/prisoner = M
@@ -469,7 +469,7 @@
 						W.layer = initial(W.layer)
 				//teleport person to cell
 				M.paralysis += 5
-				sleep(5 )
+				sleep(5 * tick_multiplier)
 	//so they black out before warping
 				M.loc = pick(mazewarp)
 				spawn(50)
@@ -1038,7 +1038,7 @@
 									for(var/obj/W in orange(5,C.mob))
 										if(prob(25) && !W.anchored)
 											step_rand(W)
-						sleep(rand(100,1000) )
+						sleep(rand(100,1000) * tick_multiplier)
 					for(var/client/C)
 						if(C.mob.stat != 2)
 							C.mob.show_message(text("\blue The chilling wind suddenly stops..."), 1)
@@ -1635,7 +1635,7 @@
 		log_admin("[key_name(usr)] initiated a reboot.")
 		//if(makejson)
 		//	send2irc(world.url,"New round in 25 seconds!")
-		sleep(50 )
+		sleep(50 * tick_multiplier)
 		world.Reboot()
 
 /obj/admins/proc/announce()

@@ -21,7 +21,7 @@
 	if(istype(W, /obj/item/weapon/screwdriver))
 		src.add_fingerprint(user)
 		user.show_message(text("\red Now [] the panel...", (src.locked) ? "unscrewing" : "reattaching"), 1)
-		sleep(30 )
+		sleep(30 * tick_multiplier)
 		src.locked =! src.locked
 		src.updateicon()
 		return

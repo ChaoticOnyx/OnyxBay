@@ -90,7 +90,7 @@
 		if(ticker.current_state != 1)
 			world <<"\red <B>World will reboot in 10 seconds</B>"
 
-			sleep(100 )
+			sleep(100 * tick_multiplier)
 			log_game("Rebooting due to mode vote")
 			world.Reboot()
 		else
@@ -106,7 +106,7 @@
 
 		world <<"\red <B>World will reboot in 5 seconds</B>"
 
-		sleep(50 )
+		sleep(50 * tick_multiplier)
 		log_game("Rebooting due to restart vote")
 		world.Reboot()
 	return
@@ -317,7 +317,7 @@
 			text += footer
 			usr << browse(text, "window=vote")
 
-	spawn(20 )
+	spawn(20 * tick_multiplier)
 		if(usr.client && usr.client.showvote && !vote.enteringchoices)
 			usr.vote()
 		else

@@ -12,7 +12,7 @@
 
 	wavesecret = 1
 	for(var/i = 0 to meteors_in_wave)
-		spawn(rand(10,100))
+		spawn(rand(10,100)*tick_multiplier)
 			spawn_meteor()
 	spawn(meteor_wave_delay)
 		wavesecret = 0

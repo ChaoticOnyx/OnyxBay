@@ -109,7 +109,7 @@ obj/machinery/atmospherics/valve
 
 	attack_hand(mob/user as mob)
 		update_icon(1)
-		sleep(10 )
+		sleep(10 * tick_multiplier)
 		if (src.open)
 			src.close()
 		else

@@ -118,7 +118,7 @@
 				volume_rate = number
 
 		if(signal.data["tag"])
-			spawn(5 ) broadcast_status()
+			spawn(5 * tick_multiplier) broadcast_status()
 		update_icon()
 
 	hide(var/i) //to make the little pipe section invisible, the icon changes.

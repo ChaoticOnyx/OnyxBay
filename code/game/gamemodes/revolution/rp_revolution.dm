@@ -78,7 +78,7 @@
 
 	if(!revs_possible || !heads)
 		world << "<B> \red Not enough players for RP revolution game mode. Restarting world in 5 seconds."
-		sleep(50)
+		sleep(50*tick_multiplier)
 		world.Reboot()
 		return
 
@@ -108,7 +108,7 @@
 			rev_mind.current << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
 			obj_count++
 
-	spawn (rand(waittime_l, waittime_h))
+	spawn (rand(waittime_l, waittime_h)*tick_multiplier)
 		send_intercept()
 
 /datum/game_mode/rp_revolution/send_intercept()
@@ -139,7 +139,7 @@
 
 	command_alert("Summary downloaded and printed out at all communications consoles.", "Enemy communication intercept. Security Level Elevated.")
 
-	spawn(54000)
+	spawn(54000*tick_multiplier)
 		command_alert("Summary downloaded and printed out at all communications consoles.", "The revolution leaders have been determined.")
 		intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested status information:</FONT><HR>"
 		intercepttext += "We have determined the revolution leaders to be:"
@@ -154,7 +154,7 @@
 
 				comm.messagetitle.Add("Cent. Com. Status Summary")
 				comm.messagetext.Add(intercepttext)
-		spawn(12000)
+		spawn(12000*tick_multiplier)
 			command_alert("Repeating the previous message over intercoms due to urgency. The station has enemy operatives onboard by the names of [reveal_rev_heads()], please arrest them at once.", "The revolution leaders have been determined.")
 
 
@@ -171,7 +171,7 @@
 //	if(!istype(rev_mob))
 //		return
 
-//	spawn (100)
+//	spawn (100*tick_multiplier)
 //		if (rev_mob.r_store)
 //			rev_mob.equip_if_possible(new /obj/item/weapon/paper/communist_manifesto(rev_mob), rev_mob.slot_l_store)
 //		if (rev_mob.l_store)

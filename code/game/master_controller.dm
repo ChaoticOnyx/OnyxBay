@@ -146,11 +146,11 @@ datum/controller/game_controller
 		//world.keepalive()
 		// reduce frequency of the air process
 		if(tick % 5 == 0)
-			sleep(1 )
+			sleep(1 * tick_multiplier)
 			ticker_debug = "Airprocess"
 			air_master.process()
 
-		sleep(1 )
+		sleep(1 * tick_multiplier)
 		ticker_debug = "Sun calc"
 		sun.calc_position()
 
@@ -172,7 +172,7 @@ datum/controller/game_controller
 			ticker_debug = "fire processing"
 			F.process()
 
-		sleep(1 )
+		sleep(1 * tick_multiplier)
 
 		for(var/obj/item/item in processing_items)
 			ticker_debug = "[item] [item.name] processing"
@@ -207,7 +207,7 @@ datum/controller/game_controller
 
 		ticker.process()
 
-		sleep(10 )
+		sleep(10 * tick_multiplier)
 
 		spawn process()
 

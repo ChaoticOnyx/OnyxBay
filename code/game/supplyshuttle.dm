@@ -490,7 +490,7 @@ var/supply_shuttle_points = 50
 
 
 		supply_shuttle_timeleft = round( ((ticksleft / 10)/60) )
-		sleep(10 )
+		sleep(10 * tick_multiplier)
 	supply_shuttle_moving = 0
 	send_supply_shuttle()
 

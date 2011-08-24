@@ -102,7 +102,7 @@
 		S.path = AStar(S.loc, S.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=S.botcard, exclude=list(/obj/landmark/alterations/nopath, avoid=null))
 		S.path = reverselist(S.path)
 		while (S.target && get_dist(S,S.target) > min)
-			sleep(lag )
+			sleep(lag * tick_multiplier)
 			var/turf/next
 			if (S.path.len > 0)
 				next = S.path[1]
