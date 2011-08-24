@@ -243,7 +243,7 @@
 
 /obj/stool/chair/verb/rotate()
 	set name = "Rotate Chair"
-	set category = "Object"
+	set category = "Commands"
 	set src in oview(1)
 
 	src.dir = turn(src.dir, 90)
