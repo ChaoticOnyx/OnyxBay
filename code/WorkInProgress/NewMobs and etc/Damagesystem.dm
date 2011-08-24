@@ -793,9 +793,9 @@
 				if (emptyHand)
 					head.DblClick()
 				return
-			if (( istype(W, /obj/item/weapon/paper) ))
-				u_equip(W)
-				head = W
+			//if (( istype(W, /obj/item/weapon/paper) )) NO.
+			//	u_equip(W)
+			//	head = W
 			else if (!( istype(W, /obj/item/clothing/head) ))
 				return
 			u_equip(W)
