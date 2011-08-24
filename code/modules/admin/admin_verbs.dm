@@ -2,6 +2,7 @@
 //AND A -= TO CLEAR_ADMIN_VERBS
 
 /client/var/list/averbs = list()
+/client/var/list/hidden_averb_types = list()
 
 /client/proc/update_admins(var/rank)
 
@@ -15,6 +16,7 @@
 			/client/proc/cmd_admin_subtle_message,
 			/client/proc/delay,
 			/client/proc/dsay,
+			/client/proc/set_hidden_averbs,
 			/client/proc/switchtowindow,
 			/client/proc/warn,
 			/obj/admins/proc/announce,				//global announce
@@ -333,78 +335,35 @@
 	src.verbs += src.averbs
 	src.verbs += /client/proc/disable_averbs
 
+	refresh_hidden_averbs()
+
 /client/proc/clear_admin_verbs()
 	src.deadchat = 0
 
 	src.verbs -= src.averbs
 	src.averbs = list()
-	/*
-	src.verbs -= /client/proc/cmd_admin_reset_id
-	src.verbs -= /client/proc/debug_variables
-	src.verbs -= /client/proc/cmd_modify_object_variables
-	src.verbs -= /client/proc/cmd_modify_ticker_variables
-	src.verbs -= /client/proc/cmd_admin_pm
-	src.verbs -= /client/proc/cmd_admin_say
-	src.verbs -= /client/proc/dsay
-	src.verbs -= /client/proc/play_sound
-//	src.verbs -= /client/proc/cmd_admin_gib
-	src.verbs -= /client/proc/cmd_admin_gib_self
-//				src.verbs -= /client/proc/modifytemperature
-	src.verbs -= /client/proc/Jump
-	src.verbs -= /client/proc/cmd_admin_rejuvenate
-	src.verbs -= /client/proc/funbutton
-	src.verbs -= /client/proc/cmd_admin_delete
-	src.verbs -= /client/proc/cmd_admin_mute
-	src.verbs -= /client/proc/cmd_admin_drop_everything
-	src.verbs -= /client/proc/cmd_debug_tog_aliens
-	src.verbs -= /client/proc/cmd_admin_godmode
-	src.verbs -= /client/proc/cmd_admin_add_freeform_ai_law
-	src.verbs -= /client/proc/cmd_admin_check_contents
-	src.verbs -= /client/proc/jumptomob
-	src.verbs -= /client/proc/jumptokey
-	src.verbs -= /client/proc/cmd_admin_alienize
-	src.verbs -= /client/proc/cmd_admin_changelinginize
-//	src.verbs -= /client/proc/cmd_admin_list_admins
-	src.verbs -= /client/proc/Getmob
-	src.verbs -= /client/proc/sendmob
-	src.verbs -= /client/proc/cmd_admin_prison
-	src.verbs -= /client/proc/Debug2
-	src.verbs -= /client/proc/deadchat					//toggles deadchat
-	src.verbs -= /obj/admins/proc/immreboot				//immediate reboot
-	src.verbs -= /obj/admins/proc/vmode   				//start vote
-	src.verbs -= /obj/admins/proc/votekill 				//abort vote
-	src.verbs -= /obj/admins/proc/voteres 				//toggle votes
-	src.verbs -= /obj/admins/proc/restart				//restart
-	src.verbs -= /obj/admins/proc/announce				//global announce
-	src.verbs -= /obj/admins/proc/toggleooc				//toggle ooc
-	src.verbs -= /obj/admins/proc/startnow				//start now bitch
-	src.verbs -= /obj/admins/proc/toggleenter			//Toggle enterting
-	src.verbs -= /obj/admins/proc/toggleAI				//Toggle the AI
-	src.verbs -= /obj/admins/proc/toggleaban			//abandon mob
-	src.verbs -= /obj/admins/proc/adrev					//toggle admin revives
-	src.verbs -= /obj/admins/proc/adspawn				//toggle admin item spawning
-	src.verbs -= /obj/admins/proc/adjump				//toggle admin jumping
-	src.verbs -= /obj/admins/proc/unprison
-	src.verbs -= /client/proc/cmd_admin_create_centcom_report
-	src.verbs -= /client/proc/game_panel
-	src.verbs -= /client/proc/player_panel
-	src.verbs -= /client/proc/unban_panel
-	src.verbs -= /client/proc/invite_panel
-	src.verbs -= /client/proc/secrets
-	src.verbs -= /client/proc/voting
-	src.verbs -= /client/proc/admin_play
-	src.verbs -= /client/proc/admin_observe
-	src.verbs -= /client/proc/stealth
 
-	src.verbs -= /client/proc/general_report
-	//src.verbs -= /client/proc/air_report
-	//src.verbs -= /client/proc/air_status
-
-	src.verbs -= /client/proc/toggle_view_range
-	src.verbs -= /obj/admins/proc/toggle_aliens
-	*/
 	if(src.holder)
 		src.holder.level = 0
+
+
+/client/proc/refresh_hidden_averbs()
+	verbs |= averbs
+
+	for(var/category in hidden_averb_types)
+		verbs -= admin_verb_categories[category]
+
+
+/client/proc/set_hidden_averbs()
+	set category = "Admin"
+	set name = "Set Hidden Verb Types"
+	hidden_averb_types = list()
+
+	for(var/category in admin_verb_categories)
+		if((input(src, "Hide '[category]' verbs?", "Hide verbs", "No") in list("Yes", "No")) == "Yes")
+			hidden_averb_types += category
+
+	refresh_hidden_averbs()
 
 
 /client/proc/disable_averbs()

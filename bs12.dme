@@ -582,6 +582,7 @@
 #include "code\head\hacker\network\network.dm"
 #include "code\head\hacker\server\server.dm"
 #include "code\modules\admin\admin.dm"
+#include "code\modules\admin\admin_verb_categories.dm"
 #include "code\modules\admin\admin_verbs.dm"
 #include "code\modules\admin\banjob.dm"
 #include "code\modules\admin\changelog.dm"
