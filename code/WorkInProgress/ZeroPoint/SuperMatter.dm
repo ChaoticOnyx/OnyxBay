@@ -112,6 +112,7 @@
 			l.hallucination = 50
 
 	for(var/mob/living/l in range(src,3))
-		l.gib()
+		l.bruteloss += 50
+		l.updatehealth()
 
 	return 1
