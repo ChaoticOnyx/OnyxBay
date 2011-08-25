@@ -24,7 +24,7 @@
 	/*if(malf_ai.len < 1)
 		world << "Uh oh, its malfunction and there is no AI! Please report this."
 		world << "Rebooting world in 5 seconds."
-		sleep(50*tick_multiplier)
+		sleep(50)
 		world.Reboot()
 		return*/
 
@@ -34,7 +34,7 @@
 
 	malf_ai.current.icon_state = "ai-malf"
 
-	spawn (rand(waittime_l, waittime_h)*tick_multiplier)
+	spawn (rand(waittime_l, waittime_h))
 		send_intercept()
 
 /datum/game_mode/malfunction/proc/hack_intercept()
@@ -98,25 +98,25 @@
 /datum/game_mode/malfunction/proc/ai_win()
 
 	world << "Self-destructing in 10"
-	sleep(10*tick_multiplier)
+	sleep(10)
 	world << "9"
-	sleep(10*tick_multiplier)
+	sleep(10)
 	world << "8"
-	sleep(10*tick_multiplier)
+	sleep(10)
 	world << "7"
-	sleep(10*tick_multiplier)
+	sleep(10)
 	world << "6"
-	sleep(10*tick_multiplier)
+	sleep(10)
 	world << "5"
-	sleep(10*tick_multiplier)
+	sleep(10)
 	world << "4"
-	sleep(10*tick_multiplier)
+	sleep(10)
 	world << "3"
-	sleep(10*tick_multiplier)
+	sleep(10)
 	world << "2"
-	sleep(10*tick_multiplier)
+	sleep(10)
 	world << "1"
-	sleep(10*tick_multiplier)
+	sleep(10)
 	var/turf/ground_zero = locate("landmark*blob-directive")
 
 	if (ground_zero)

@@ -35,7 +35,7 @@
 		if(istype(bot))
 			if(density && src.check_access(bot.botcard))
 				open()
-				sleep(50 * tick_multiplier)
+				sleep(50 )
 				close()
 		return
 	if (!( ticker ))
@@ -45,9 +45,9 @@
 	if (src.density && src.allowed(AM))
 		open()
 		if(src.check_access(null))
-			sleep(50 * tick_multiplier)
+			sleep(50 )
 		else //secure doors close faster
-			sleep(20 * tick_multiplier)
+			sleep(20 )
 		close()
 	return
 

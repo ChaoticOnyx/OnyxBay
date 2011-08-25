@@ -15,7 +15,7 @@
 		return
 
 	usr.verbs -= /mob/proc/tech
-	spawn(400*tick_multiplier)
+	spawn(400)
 		usr.verbs += /mob/proc/tech
 
 	usr.say("NEC CANTIO")
@@ -27,7 +27,7 @@
 	pulse.icon_state = "emppulse"
 	pulse.name = "emp pulse"
 	pulse.anchored = 1
-	spawn(20*tick_multiplier)
+	spawn(20)
 		del(pulse)
 
 	for(var/obj/item/weapon/W in range(world.view-1, myturf))
@@ -86,7 +86,7 @@
 			M.eye_blind = 3
 			M.eye_blurry = 5
 			M.disabilities |= 1
-			spawn(100*tick_multiplier)
+			spawn(100)
 				M.disabilities &= ~1
 
 		if (locate(/obj/item/device/radio, M))
@@ -109,7 +109,7 @@
 				C.desc = "Groovy!"
 				C.icon_state = "psyche"
 				C.color = "psyche"
-				spawn(200*tick_multiplier)
+				spawn(200)
 					C.name = "Black Jumpsuit"
 					C.icon_state = "bl_suit"
 					C.color = "black"
@@ -128,7 +128,7 @@
 		pulse2.anchored = 1
 		pulse2.dir = pick(cardinal)
 
-		spawn(10*tick_multiplier)
+		spawn(10)
 			del(pulse2)
 
 		if(istype(A, /obj/machinery/turret))
@@ -149,7 +149,7 @@
 			A:charge -= 1e6
 			if (A:charge < 0)
 				A:charge = 0
-			spawn(100*tick_multiplier)
+			spawn(100)
 				A:output = initial(A:output)
 				A:charging = initial(A:charging)
 				A:online = initial(A:online)
@@ -159,7 +159,7 @@
 				A:open()
 			if(A:secondsElectrified != 0) continue
 			A:secondsElectrified = -1
-			spawn(300*tick_multiplier)
+			spawn(300)
 				A:secondsElectrified = 0
 
 		if(istype(A, /obj/machinery/power/apc))
@@ -170,14 +170,14 @@
 			A:lighting = 0
 			A:equipment = 0
 			A:environ = 0
-			spawn(600*tick_multiplier)
+			spawn(600)
 				A:equipment = 3
 				A:environ = 3
 
 		if(istype(A, /obj/machinery/camera))
 			A.icon_state = "cameraemp"
 			A:network = null                   //Not the best way but it will do. I think.
-			spawn(600*tick_multiplier)
+			spawn(600)
 				A:network = initial(A:network)
 				A:icon_state = initial(A:icon_state)
 			for(var/mob/living/silicon/ai/O in world)

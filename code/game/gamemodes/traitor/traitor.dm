@@ -191,7 +191,7 @@
 		traitor.current << "\red <B>You are the traitor.</B>"
 		traitor.current << "\red <B>REPEAT</B>"
 		traitor.current << "\red <B>You are the traitor.</B>"
-		spawn(600*tick_multiplier)			//Strumpetplaya - Just another friendly reminder so people don't forget they're the traitor.
+		spawn(600)			//Strumpetplaya - Just another friendly reminder so people don't forget they're the traitor.
 			traitor.current << "\red <B>In case you missed it the first time - YOU ARE THE TRAITOR!</B>"
 		var/obj_count = 1
 		for(var/datum/objective/objective in traitor.objectives)
@@ -215,7 +215,7 @@
 					comm.messagetitle.Add("Cent. Com. Status Summary")
 					comm.messagetext.Add(intercepttext)
 
-	spawn (rand(waittime_l, waittime_h)*tick_multiplier)
+	spawn (rand(waittime_l, waittime_h))
 		send_intercept()
 
 

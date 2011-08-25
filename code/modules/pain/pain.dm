@@ -33,7 +33,7 @@ mob/proc/pain(var/partname, var/amount, var/force)
 	if(msg && (msg != last_pain_message || prob(10)))
 		last_pain_message = msg
 		src << msg
-	next_pain_time = world.time + (100 - amount) * tick_multiplier
+	next_pain_time = world.time + (100 - amount)
 
 mob/living/carbon/proc/handle_pain()
 	// not when sleeping

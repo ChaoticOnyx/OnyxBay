@@ -14,7 +14,7 @@
 		usr << "I don't feel strong enough without my hat."
 		return
 	usr.verbs -= /client/proc/mutate
-	spawn(400*tick_multiplier)
+	spawn(400)
 		usr.verbs += /client/proc/mutate
 	usr.say("BIRUZ BENNAR")
 	usr << text("\blue You feel strong! Your mind expands!")
@@ -22,7 +22,7 @@
 		usr.mutations |= 8
 	if (!(usr.mutations & 1))
 		usr.mutations |= 1
-	spawn (300*tick_multiplier)
+	spawn (300)
 		if (usr.mutations & 1) usr.mutations &= ~1
 		if (usr.mutations & 8) usr.mutations &= ~8
 	return

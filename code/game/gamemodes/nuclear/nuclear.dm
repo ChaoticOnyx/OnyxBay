@@ -141,7 +141,7 @@
 			del(A)
 			continue
 
-	spawn (rand(waittime_l, waittime_h)*tick_multiplier)
+	spawn (rand(waittime_l, waittime_h))
 		send_intercept()
 
 	return
