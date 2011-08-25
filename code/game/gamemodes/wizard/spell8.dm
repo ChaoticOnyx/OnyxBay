@@ -42,9 +42,9 @@
 					M.fireloss += 10
 					del(A)
 					return
-				sleep(5*tick_multiplier)
+				sleep(5)
 			del(A)
 
 	usr.verbs -= /client/proc/magicmissile
-	spawn(100*tick_multiplier)
+	spawn(100)
 		usr.verbs += /client/proc/magicmissile

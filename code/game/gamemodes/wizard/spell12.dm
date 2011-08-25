@@ -16,7 +16,7 @@
 		return
 	var/A
 	usr.verbs -= /mob/proc/teleport
-	spawn(450*tick_multiplier)
+	spawn(450)
 		usr.verbs += /mob/proc/teleport
 
 	var/list/theareas = new/list()

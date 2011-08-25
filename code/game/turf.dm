@@ -969,5 +969,5 @@ turf/proc/RebuildZone()
 	var/zone/Z = src.zone
 	var/turf/T = Z.starting_tile
 	del Z
-	spawn(1 * tick_multiplier)
+	spawn(1 )
 		new/zone(T)

@@ -21,7 +21,7 @@
 	spawn
 		SetupAnomalies()
 		//tgrid.Setup() //Part of Alfie's travel code
-	spawn(30 * tick_multiplier)
+	spawn(30 )
 		//EXPERIMENTAL
 		Optimize()
 		sleep_offline = 1
@@ -41,7 +41,7 @@ var/opt_inactive = null
 		KickInactiveClients()
 		opt_inactive = world.timeofday
 
-	spawn(100 * tick_multiplier) Optimize()
+	spawn(100 ) Optimize()
 
 /world/proc/KickInactiveClients()
 	for(var/client/C)

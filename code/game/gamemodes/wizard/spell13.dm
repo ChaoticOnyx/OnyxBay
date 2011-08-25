@@ -29,5 +29,5 @@
 	if(!isturf(picked)) return
 	usr.loc = picked
 	usr.verbs -= /client/proc/blink
-	spawn(40*tick_multiplier)
+	spawn(40)
 		usr.verbs += /client/proc/blink

@@ -162,11 +162,11 @@ var/list/postsetuphooks = list()
 			spawn
 				declare_completion()
 
-			spawn(50*tick_multiplier)
+			spawn(50)
 				world << "\blue <B>Restarting in 60 seconds</B>"
 			//	if(makejson)
 			//		send2irc(world.url,"New round in 25 seconds!")
-				sleep(600*tick_multiplier)
+				sleep(600)
 				world.Reboot()
 
 
@@ -236,7 +236,7 @@ var/list/postsetuphooks = list()
 					spawn_meteors()
 				if (src.timeleft <= 0 && src.timing)
 					src.timeup()
-				sleep(10 * tick_multiplier)
+				sleep(10 )
 			while(src.processing)
 			return
 //Standard extended process (incorporates most game modes).
@@ -245,7 +245,7 @@ var/list/postsetuphooks = list()
 			do
 				check_win()
 				ticker.AItime += 10
-				sleep(10 * tick_multiplier)
+				sleep(10 )
 				if (ticker.AItime == 6000)
 					world << "<FONT size = 3><B>Cent. Com. Update</B> AI Malfunction Detected</FONT>"
 					world << "\red It seems we have provided you with a malfunctioning AI. We're very sorry."
@@ -267,7 +267,7 @@ var/list/postsetuphooks = list()
 					spawn_meteors()
 				if (src.timeleft <= 0 && src.timing)
 					src.timeup()
-				sleep(10 * tick_multiplier)
+				sleep(10 )
 			while(src.processing)
 			return
 //meteor mode!!! MORE METEORS!!!

@@ -7,7 +7,7 @@
 	world << "<B>The current game mode is - Monkey!</B>"
 
 /datum/game_mode/monkey/post_setup()
-	spawn (50*tick_multiplier)
+	spawn (50)
 		var/list/players = list()
 		for (var/mob/living/carbon/human/player in world)
 			if (player.client)

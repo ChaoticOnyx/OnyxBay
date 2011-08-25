@@ -14,7 +14,7 @@
 		usr << "I don't feel strong enough without my hat."
 		return
 	usr.verbs -= /mob/proc/kill
-	spawn(600*tick_multiplier)
+	spawn(600)
 		usr.verbs += /mob/proc/kill
 	usr.say("EI NATH")
 	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread

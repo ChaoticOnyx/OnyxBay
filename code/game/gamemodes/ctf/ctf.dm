@@ -112,7 +112,7 @@
 	abandon_allowed = 1
 	setup_game()
 
-	spawn (50*tick_multiplier)
+	spawn (50)
 		var/obj/L = locate("landmark*Red-Flag")
 		if (L)
 			new /obj/item/weapon/ctf_flag/red(L.loc)

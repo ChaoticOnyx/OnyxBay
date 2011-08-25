@@ -18,7 +18,7 @@
 	src.update()
 	for(var/obj/blob/B in orange(1,src))
 		if(prob(100/(iteration/2))) //200, 100 etc
-			spawn(rand(10,100)*tick_multiplier)
+			spawn(rand(10,100))
 				if(B)
 					B.poisoned(iteration+1)
 
@@ -214,7 +214,7 @@
 /obj/blob/idle/Del()		//idle blob that spawns a normal blob when killed.
 
 	var/obj/blob/B = new /obj/blob( src.loc )
-	spawn(30*tick_multiplier)
+	spawn(30)
 		B.Life()
 	..()
 
