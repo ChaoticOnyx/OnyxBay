@@ -354,3 +354,14 @@
 	name = "MEMETIC HAZARD"
 	desc = "Warning: Memetic hazard, wear meson goggles!"
 	icon_state = "memetic"
+
+
+/obj/decal/warning_stripes
+	icon = 'decal_warning_stripes.dmi'
+	layer = 2
+
+/obj/decal/warning_stripes/New()
+	..()
+
+	loc.overlays += src
+	del src
