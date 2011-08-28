@@ -449,6 +449,7 @@
 			src.equip_if_possible(new /obj/item/weapon/storage/toolbox/mechanical(src), slot_l_hand)
 			src.equip_if_possible(new /obj/item/weapon/storage/backpack/engineer(src), slot_back)
 			src.equip_if_possible(new /obj/item/weapon/crowbar(src), slot_in_backpack)
+			src.equip_if_possible(new /obj/item/device/radio/headset/security/engineer,slot_ears)
 
 		if ("Barman")
 			src.equip_if_possible(new /obj/item/clothing/under/bartender(src), slot_w_uniform)
