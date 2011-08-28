@@ -54,6 +54,19 @@
 	brightnessgreen = 2
 	brightnessblue = 0
 
+/obj/machinery/computer/aiupload/mainframe
+	name = "AI Mainframe Upload"
+	icon = 'mainframe.dmi'
+	icon_state = "aimainframe"
+
+/obj/machinery/computer/aistatus
+	name = "AI Status Panel"
+	icon = 'mainframe.dmi'
+	icon_state = "left"
+	brightnessred = 0
+	brightnessgreen = 2
+	brightnessblue = 0
+
 /obj/machinery/computer/atmosphere
 	name = "atmos"
 
