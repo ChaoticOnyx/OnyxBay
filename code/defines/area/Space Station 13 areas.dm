@@ -1170,6 +1170,7 @@
 /area/turret_protected/ai_behind
 	name = "AI Space Extension"
 	icon_state = "ai_foyer"
+	ul_Lighting = 0
 
 /area/turret_protected/ai
 	name = "AI Chamber"
