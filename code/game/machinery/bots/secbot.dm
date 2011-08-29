@@ -701,16 +701,17 @@ Auto Patrol: []"},
 			arrestreasons = list()
 			return 0
 
+/*
 		if(istype(perp:belt, /obj/item/weapon/gun) || istype(perp.belt, /obj/item/weapon/baton))
 			arrestreasons += "Unauthorized weapon on belt [perp.belt.name]"
 			threatcount += 4
+*/
 
-
-		if(istype(perp.l_hand, /obj/item/weapon/gun) || istype(perp.l_hand, /obj/item/weapon/baton))
+		if(istype(perp.l_hand, /obj/item/weapon/gun) && !istype(perp.l_hand, /obj/item/weapon/gun/syringe) || istype(perp.l_hand, /obj/item/weapon/baton))
 			arrestreasons += "Unauthorized weapon in left hand: [perp.l_hand.name]"
 			threatcount += 4
 
-		if(istype(perp.r_hand, /obj/item/weapon/gun) || istype(perp.r_hand, /obj/item/weapon/baton))
+		if(istype(perp.r_hand, /obj/item/weapon/gun) && !istype(perp.l_hand, /obj/item/weapon/gun/syringe) || istype(perp.r_hand, /obj/item/weapon/baton))
 			arrestreasons += "Unauthorized weapon in right hand [perp.r_hand.name]"
 			threatcount += 4
 
