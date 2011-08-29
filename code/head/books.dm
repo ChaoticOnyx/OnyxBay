@@ -121,6 +121,8 @@ obj/machinery/bookcase/proc/update()
 			B.by = BC.by
 			B.texts = dd_replacetext(BC.texts, "\n", "<BR>")
 			B.cat = BC.cat
+obj/machinery/bookcase/attack_ai(mob/user)
+	return
 obj/machinery/bookcase/attack_hand(mob/user)
 	if(src.contents.len <= 0)
 		user << "Seems someone forgot to restock \the [src]..."
