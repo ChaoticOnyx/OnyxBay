@@ -103,6 +103,7 @@
 		if(!(t in visibleTurfs))
 			if(!t.dim)
 				t.dim = image('cameravis.dmi', t, "dim", 15)
+				t.mouse_opacity = 0
 
 			dim += t.dim
 			for(var/mob/aiEye/m in seenby)
