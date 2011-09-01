@@ -225,6 +225,10 @@ obj/fire/proc/burn(tox,oxy)
 
 //	var/datum/gas_mixture/affected = T.air.remove_ratio(volume/T.air.volume)
 	var/burn_amount = min(tox,oxy)
+	// make sure burn_amount >= 0
+	burn_amount = max(burn_amount, 0)
+	if(burn_amount == 0)
+		del src
 	T.air.oxygen -= max(0,round(burn_amount))
 	T.air.toxins -= max(0,round(burn_amount))
 	var/newco = round(burn_amount)
