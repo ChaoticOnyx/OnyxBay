@@ -119,6 +119,7 @@
 
 /datum/disease2/disease
 	var/infectionchance = 10
+	var/speed = 1
 	var/spreadtype = "Blood" // Can also be "Airborne"
 	var/stage = 1
 	var/stageprob = 10
@@ -232,7 +233,7 @@
 			clicks = 0
 		for(var/datum/disease2/effectholder/e in effects)
 			e.runeffect(mob,stage)
-		clicks++
+		clicks+=speed
 
 	proc/cure_added(var/datum/disease2/resistance/res)
 		if(res.resistsdisease(src))

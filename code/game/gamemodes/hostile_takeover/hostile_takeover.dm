@@ -63,6 +63,7 @@
 	var/datum/disease2/disease/D = new()
 	D.makerandom(1)
 	D.infectionchance = 0
+	D.speed = 0.3
 
 	for(var/datum/mind/synd_mind in syndicates)
 		synd_mind.current.loc = pick(hostile_spawns)
