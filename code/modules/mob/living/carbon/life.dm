@@ -158,8 +158,6 @@
 		else if(get_infection_chance())
 			virus2.activate(src)
 			var/obj/virus/V = new(src.loc)
-			step_rand(V)
-			step_rand(V)
 			V.D = virus2.getcopy()
 //VIRUS FIX THESES
 

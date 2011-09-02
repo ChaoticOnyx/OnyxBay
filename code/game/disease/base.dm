@@ -16,6 +16,9 @@
 
 	New()
 		..()
+		step_rand(src)
+		step_rand(src)
+		anchored = 1
 		spawn(300) del(src)
 
 /mob/living/carbon/proc/get_infection_chance()
