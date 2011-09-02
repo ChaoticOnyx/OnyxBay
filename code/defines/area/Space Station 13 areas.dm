@@ -655,7 +655,7 @@
 
 /area/engine/engine_gas_storage
 	name = "Engine Storage"
-	icon_state = "engine_gas_storage"
+	icon_state = "engine_storage"
 
 
 /area/engine/engine_hallway
