@@ -49,3 +49,4 @@ obj/machinery/scanner/attack_hand(mob/user)
 	var/obj/item/weapon/paper/print = new(T)
 	print.name = "[mname] Report"
 	print.info = text
+	print.stamped = 1
