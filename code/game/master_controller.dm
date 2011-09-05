@@ -149,9 +149,6 @@ datum/controller/game_controller
 			sleep(1 )
 			ticker_debug = "Airprocess"
 			air_master.process()
-			for(var/zone/Z in zones)
-				spawn Z.Update()
-				sleep(-1)
 
 		sleep(1 )
 		ticker_debug = "Sun calc"

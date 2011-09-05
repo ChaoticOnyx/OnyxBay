@@ -182,120 +182,122 @@ zone
 		. = ..()
 
 	Update()
-		if(stop_zones) return
-		if(!members.len) del src
+		while(1)
+			sleep(vsc.zone_update_delay * tick_multiplier)
+			if(stop_zones) continue
+			if(!members.len) del src
 
-		for(var/datum/gas_mixture/G in update_mixtures)
-			add_oxygen(G.oxygen - G.zone_oxygen)
-			add_nitrogen(G.nitrogen - G.zone_nitrogen)
-			add_co2(G.carbon_dioxide - G.zone_co2)
-			add_plasma(G.toxins - G.zone_plasma)
-			update_mixtures -= G
+			for(var/datum/gas_mixture/G in update_mixtures)
+				add_oxygen(G.oxygen - G.zone_oxygen)
+				add_nitrogen(G.nitrogen - G.zone_nitrogen)
+				add_co2(G.carbon_dioxide - G.zone_co2)
+				add_plasma(G.toxins - G.zone_plasma)
+				update_mixtures -= G
 
-		if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2 || plasma_archive != plasma)
-			turf_oxy = oxygen / members.len
-			turf_nitro = nitrogen / members.len
-			turf_co2 = co2 / members.len
-			turf_plasma = plasma / members.len
-			pressure = pressure()
+			if(oxygen_archive != oxygen || nitrogen_archive != nitrogen || co2_archive != co2 || plasma_archive != plasma)
+				turf_oxy = oxygen / members.len
+				turf_nitro = nitrogen / members.len
+				turf_co2 = co2 / members.len
+				turf_plasma = plasma / members.len
+				pressure = pressure()
 
-		oxygen = max(0,oxygen)
-		nitrogen = max(0,nitrogen)
-		co2 = max(0,co2)
-		plasma = max(0,plasma)
+			oxygen = max(0,oxygen)
+			nitrogen = max(0,nitrogen)
+			co2 = max(0,co2)
+			plasma = max(0,plasma)
 
-		oxygen_archive = oxygen		 //Update the archives, so we can do things like calculate delta.
-		nitrogen_archive = nitrogen
-		co2_archive = co2
-		temp_archive = temp
-		plasma_archive = plasma
-		for(var/turf/T in space_connections)
-			//if(!istype(T,/turf/space) && !istype(T,/turf/space/hull))
-			if(!istype(T,/turf/space))
-				RemoveSpace(T)
+			oxygen_archive = oxygen		 //Update the archives, so we can do things like calculate delta.
+			nitrogen_archive = nitrogen
+			co2_archive = co2
+			temp_archive = temp
+			plasma_archive = plasma
+			for(var/turf/T in space_connections)
+				//if(!istype(T,/turf/space) && !istype(T,/turf/space/hull))
+				if(!istype(T,/turf/space))
+					RemoveSpace(T)
 
-		for(var/Z in zone_space_connections)
-			if(!istype(Z,/zone)) zone_space_connections -= Z
-			else if(!Z:space_connections.len) zone_space_connections -= Z
+			for(var/Z in zone_space_connections)
+				if(!istype(Z,/zone)) zone_space_connections -= Z
+				else if(!Z:space_connections.len) zone_space_connections -= Z
 
-		if(space_connections.len || zone_space_connections.len)				 //Throw gas into space if it has space connections.
-			oxygen = QUANTIZE(oxygen/vsc.VACUUM_SPEED)
-			nitrogen = QUANTIZE(nitrogen/vsc.VACUUM_SPEED)
-			co2 = QUANTIZE(co2/vsc.VACUUM_SPEED)
-			plasma = QUANTIZE(plasma/vsc.VACUUM_SPEED)
-			//temp = min(TCMB,temp/vsc.VACUUM_SPEED)
-			for(var/turf/simulated/M in members)
-				var/datum/gas_mixture/GM = M.return_air(1)
-				GM.remove_ratio(1/vsc.VACUUM_SPEED)
-			spawn AirflowSpace(src)
-		//merge_with.len = 0
-		//if(pressure > 225)
-		//	for(var/turf/T in edges)
-		//		for(var/obj/window/W in T)
-		//			if(prob(25))
-		//				W.ex_act(pick(2,3))
-		//				W.visible_message("\red A window bursts from the pressure!",1,"\red You hear glass breaking.")
-		if(!disable_connections)
-			for(var/zone/Z in direct_connections)
-				if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2 && abs(turf_plasma - Z.turf_plasma) < 0.2)
-					Merge(Z)
-			for(var/zone/Z in connections)
-				if(Z == src) connections -= Z
+			if(space_connections.len || zone_space_connections.len)				 //Throw gas into space if it has space connections.
+				oxygen = QUANTIZE(oxygen/vsc.VACUUM_SPEED)
+				nitrogen = QUANTIZE(nitrogen/vsc.VACUUM_SPEED)
+				co2 = QUANTIZE(co2/vsc.VACUUM_SPEED)
+				plasma = QUANTIZE(plasma/vsc.VACUUM_SPEED)
+				//temp = min(TCMB,temp/vsc.VACUUM_SPEED)
+				for(var/turf/simulated/M in members)
+					var/datum/gas_mixture/GM = M.return_air(1)
+					GM.remove_ratio(1/vsc.VACUUM_SPEED)
+				spawn AirflowSpace(src)
+			//merge_with.len = 0
+			//if(pressure > 225)
+			//	for(var/turf/T in edges)
+			//		for(var/obj/window/W in T)
+			//			if(prob(25))
+			//				W.ex_act(pick(2,3))
+			//				W.visible_message("\red A window bursts from the pressure!",1,"\red You hear glass breaking.")
+			if(!disable_connections)
+				for(var/zone/Z in direct_connections)
+					if(abs(turf_oxy - Z.turf_oxy) < 0.2 && abs(turf_nitro- Z.turf_nitro) < 0.2 && abs(turf_co2 - Z.turf_co2) < 0.2 && abs(turf_plasma - Z.turf_plasma) < 0.2)
+						Merge(Z)
+				for(var/zone/Z in connections)
+					if(Z == src) connections -= Z
 
-				var/list/borders = connections[Z] //Get the list of border tiles.
+					var/list/borders = connections[Z] //Get the list of border tiles.
 
-				if(!istype(borders,/list))
-					connections -= Z
-					continue
-				var/percent_flow = max(90,vsc.FLOW_PERCENT*borders.len) //This is the percentage of gas that will flow.
+					if(!istype(borders,/list))
+						connections -= Z
+						continue
+					var/percent_flow = max(90,vsc.FLOW_PERCENT*borders.len) //This is the percentage of gas that will flow.
 
-				spawn
-					if(Z) Airflow(src,Z,pressure-Z.pressure)
+					spawn
+						if(Z) Airflow(src,Z,pressure-Z.pressure)
 
 
-				//Magic Happens Here
-				var
-					oxy_avg = (oxygen + Z.oxygen) / (members.len + Z.members.len)
-					nit_avg = (nitrogen + Z.nitrogen) / (members.len + Z.members.len)
-					co2_avg = (co2 + Z.co2) / (members.len + Z.members.len)
-					plasma_avg = (plasma + Z.plasma) / (members.len + Z.members.len)
+					//Magic Happens Here
+					var
+						oxy_avg = (oxygen + Z.oxygen) / (members.len + Z.members.len)
+						nit_avg = (nitrogen + Z.nitrogen) / (members.len + Z.members.len)
+						co2_avg = (co2 + Z.co2) / (members.len + Z.members.len)
+						plasma_avg = (plasma + Z.plasma) / (members.len + Z.members.len)
 
-				turf_oxy = (turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg
-				turf_nitro = (turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg
-				turf_co2 = (turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg
-				turf_plasma = (turf_plasma - plasma_avg) * (1-percent_flow/100) + plasma_avg
+					turf_oxy = (turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg
+					turf_nitro = (turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg
+					turf_co2 = (turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg
+					turf_plasma = (turf_plasma - plasma_avg) * (1-percent_flow/100) + plasma_avg
 
-				oxygen = turf_oxy * members.len
-				nitrogen = turf_nitro * members.len
-				co2 = turf_co2 * members.len
-				plasma = turf_plasma * members.len
+					oxygen = turf_oxy * members.len
+					nitrogen = turf_nitro * members.len
+					co2 = turf_co2 * members.len
+					plasma = turf_plasma * members.len
 
-				Z.turf_oxy = (Z.turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg
-				Z.turf_nitro = (Z.turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg
-				Z.turf_co2 = (Z.turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg
-				Z.turf_plasma = (Z.turf_plasma - plasma_avg) * (1-percent_flow/100) + plasma_avg
+					Z.turf_oxy = (Z.turf_oxy - oxy_avg) * (1-percent_flow/100) + oxy_avg
+					Z.turf_nitro = (Z.turf_nitro - nit_avg) * (1-percent_flow/100) + nit_avg
+					Z.turf_co2 = (Z.turf_co2 - co2_avg) * (1-percent_flow/100) + co2_avg
+					Z.turf_plasma = (Z.turf_plasma - plasma_avg) * (1-percent_flow/100) + plasma_avg
 
-				Z.oxygen = Z.turf_oxy * Z.members.len
-				Z.nitrogen = Z.turf_nitro * Z.members.len
-				Z.co2 = Z.turf_co2 * Z.members.len
-				Z.plasma = Z.turf_plasma * Z.members.len
+					Z.oxygen = Z.turf_oxy * Z.members.len
+					Z.nitrogen = Z.turf_nitro * Z.members.len
+					Z.co2 = Z.turf_co2 * Z.members.len
+					Z.plasma = Z.turf_plasma * Z.members.len
 
-				//End Magic
+					//End Magic
 
-			for(var/crap in connections) //Clean out invalid connections.
-				if(!istype(crap,/zone))
-					connections -= crap
-		if(turf_plasma > MOLES_PLASMA_VISIBLE)
-			if(!shows_plasma)
-				shows_plasma = 1
-				for(var/turf/A in members)
-					A.z_image = image('tile_effects.dmi',A,"plasma")
-					world << A.z_image
-		else
-			if(shows_plasma)
-				shows_plasma = 0
-				for(var/turf/A in members)
-					del A.z_image
+				for(var/crap in connections) //Clean out invalid connections.
+					if(!istype(crap,/zone))
+						connections -= crap
+			if(turf_plasma > MOLES_PLASMA_VISIBLE)
+				if(!shows_plasma)
+					shows_plasma = 1
+					for(var/turf/A in members)
+						A.z_image = image('tile_effects.dmi',A,"plasma")
+						world << A.z_image
+			else
+				if(shows_plasma)
+					shows_plasma = 0
+					for(var/turf/A in members)
+						del A.z_image
 	oxygen(n)
 		if(!n) return turf_oxy
 		else
