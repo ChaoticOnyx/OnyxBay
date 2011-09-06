@@ -460,7 +460,7 @@
 "aiR" = (/obj/cabling/power{icon_state = "2-8"},/obj/cabling/power{icon_state = "4-8"},/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/turf/space/hull,/area)
 "aiS" = (/obj/cabling/power{icon_state = "2-8"},/obj/window/reinforced{tag = "icon-rwindow (NORTH)"; icon_state = "rwindow"; dir = 1},/turf/space/hull,/area)
 "aiT" = (/obj/machinery/power/tracker,/obj/cabling/power,/turf/simulated/floor/plating/airless{icon_state = "solarpanel"; name = "Solar Panel"},/area/solar/fore)
-"aiU" = (/obj/cabling/power,/obj/machinery/power/solar{genmod = 0.001; id = "emergsolar"; name = "Backup Solar Panel"},/turf/simulated/floor/plating/airless{icon_state = "solarpanel"; name = "Solar Panel"},/area/solar/fore)
+"aiU" = (/obj/cabling/power,/obj/machinery/power/solar{genmod = 1.5e-009; id = "emergsolar"; name = "Backup Solar Panel"},/turf/simulated/floor/plating/airless{icon_state = "solarpanel"; name = "Solar Panel"},/area/solar/fore)
 "aiV" = (/turf/simulated/wall/r_wall,/area/maintenance/fore3)
 "aiW" = (/obj/grille,/obj/machinery/door/firedoor/border_only{name = "Emergency Shutter"},/obj/window/reinforced/south,/obj/window/reinforced/north,/turf/simulated/floor/plating,/area/maintenance/fore3)
 "aiX" = (/obj/machinery/firealarm{layer = 3.1; pixel_y = 26; tag = "north"},/turf/simulated/floor/plating,/area/maintenance/fore3)
