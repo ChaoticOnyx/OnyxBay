@@ -271,6 +271,30 @@
  	icon_state = "atmos"
  	music = list('ambiatm1.ogg')
 
+/area/atmos/o2
+	name = "Atmospherics Oxygen Storage"
+	icon_state = "atmoso2"
+	ul_Lighting = 0
+
+/area/atmos/n2
+	name = "Atmospherics Nitrogen Storage"
+	icon_state = "atmosn2"
+	ul_Lighting = 0
+
+/area/atmos/air
+	name = "Atmospherics Air Storage"
+	icon_state = "atmosair"
+	ul_Lighting = 0
+
+/area/atmos/co2
+	name = "Atmospherics CO2 Storage"
+	icon_state = "atmosco2"
+	ul_Lighting = 0
+
+/area/atmos/plasma
+	name = "Atmospherics Plasma Storage"
+	icon_state = "atmosplasma"
+	ul_Lighting = 0
 
 /area/maintenance/fpmaint1
 	name = "Sub Deck Fore Port Maintenance"
@@ -634,7 +658,6 @@
 	icon_state = "head_quarters"
 
 
-
 /area/crew_quarters/courtlobby
 	name = "Courtroom Lobby"
 	icon_state = "courtroom"
@@ -648,15 +671,23 @@
 	name = "Engine SMES Room"
 	icon_state = "engine"
 
-
 /area/engine/engine_walls
 	name = "Engine Walls"
 	icon_state = "engine"
+	ul_Lighting = 0
 
 /area/engine/engine_gas_storage
 	name = "Engine Storage"
 	icon_state = "engine_storage"
+	ul_Lighting = 0
 
+/area/engine/engine_gas_storage/o2cell
+	name = "O2 Cell"
+	icon_state = "atmoso2"
+
+/area/engine/engine_gas_storage/plasmacell
+	name = "Plasma Cell"
+	icon_state = "atmosplasma"
 
 /area/engine/engine_hallway
 	name = "Engine Hallway"
