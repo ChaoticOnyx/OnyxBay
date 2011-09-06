@@ -68,7 +68,7 @@
 	//return //TODO: FIX
 
 	if(!obscured)
-		var/sgen = SOLARGENRATE * sunfrac
+		var/sgen = SOLARGENRATE * sunfrac * genmod
 		AddPower(sgen)
 		if(Network && control)
 			if(control in Network.Nodes) //this line right here...

@@ -489,6 +489,7 @@
 	var/ndir = SOUTH
 	var/turn_angle = 0
 	var/obj/machinery/power/solar_control/control
+	var/genmod = 0.000000001 //so that you can control the amount of power a solar generates for different maps, this is for the Luna, assumes 1m^2
 
 /obj/machinery/power/solar_control
 	name = "Solar Panel Controller"
