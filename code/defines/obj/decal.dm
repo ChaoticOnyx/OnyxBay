@@ -47,7 +47,7 @@
 	random_icon_states = null
 
 /obj/decal/cleanable/blood/gibs
-	name = "gibs"
+	name = "gore"
 	desc = "Grisly..."
 	density = 0
 	anchored = 0
