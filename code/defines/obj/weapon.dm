@@ -183,6 +183,16 @@
 		access = get_access("Captain")
 		..()
 
+/obj/item/weapon/card/id/admin_special
+	name = "Nanotrasen ID"
+	icon_state = "gold"
+	item_state = "gold_id"
+	registered = "Official"
+	assignment = "Official"
+	New()
+		access = get_access("Official")
+		..()
+
 /obj/item/weapon/cleaner
 	desc = "Space Cleaner!"
 	icon = 'janitor.dmi'

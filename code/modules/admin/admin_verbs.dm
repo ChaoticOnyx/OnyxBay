@@ -851,7 +851,7 @@
 	var/mob/living/carbon/human/player = new_character
 
 
-	var/obj/item/weapon/card/id/id = new /obj/item/weapon/card/id/captains_spare(player)
+	var/obj/item/weapon/card/id/id = new /obj/item/weapon/card/id/admin_special(player)
 	id.registered = player.real_name
 	id.assignment = job
 	id.name = "[player.real_name]'s [job] ID"

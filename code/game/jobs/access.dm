@@ -192,6 +192,8 @@
 			            access_tox_storage, access_chemistry, access_teleporter, access_security_passthrough, access_laboratories_doors, access_hydroponics)
 		if("Hydroponicist")
 			return list(access_medical, access_hydroponics, access_maint_tunnels)
+		if("Official")
+			return get_admin_accesses()
 		else
 			return list()
 
@@ -205,6 +207,19 @@
 	            access_bar, access_janitor, access_crematorium, access_robotics, access_cargo, access_cargo_bot, access_construction,
 	            access_security_passthrough, access_laboratories_doors, access_incinerator, access_maintenance_hall,
 	            access_shield_generator, access_hydroponics)
+	            
+/proc/get_admin_accesses()
+	return list(access_security, access_brig, access_armory, access_forensics_lockers,
+	            access_medical, access_medlab, access_morgue,
+	            access_tox, access_tox_storage, access_chemistry, access_engine, access_engine_equip, access_maint_tunnels,
+	            access_external_airlocks, access_emergency_storage, access_change_ids, access_ai_upload,
+	            access_teleporter, access_eva, access_heads, access_captain, access_all_personal_lockers,
+	            access_tech_storage, access_chapel_office, access_atmospherics, access_kitchen,
+	            access_bar, access_janitor, access_crematorium, access_robotics, access_cargo, access_cargo_bot, access_construction,
+	            access_security_passthrough, access_laboratories_doors, access_incinerator, access_maintenance_hall,
+	            access_shield_generator, access_hydroponics,
+	            access_syndicate,access_nanotrasen)
+	            
 /proc/get_access_num(A)
 	switch(A)
 		if("CargoBay")
