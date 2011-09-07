@@ -591,6 +591,9 @@
 	icon_state = "bridge"
 	music = 'signal.ogg'
 
+/area/bridge/solar
+	name = "Bridge Solar Control"
+	icon_state = "bridge"
 
 /area/crew_quarters/locker
 	name = "Locker Room"
