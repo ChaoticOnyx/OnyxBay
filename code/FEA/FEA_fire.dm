@@ -21,7 +21,7 @@ turf/simulated/hotspot_expose(exposed_temperature, exposed_volume, soh)
 	if(locate(/obj/fire) in src)
 		return 1
 
-	if((exposed_temperature > PLASMA_MINIMUM_BURN_TEMPERATURE) && air_contents.toxins > 0.5)
+	if(air_contents.toxins > 0.5)
 		igniting = 1
 		if(air_contents.oxygen < 0.5 || air_contents.toxins < 0.5)
 			return 0
@@ -114,12 +114,11 @@ obj/hotspot/proc/process(turf/simulated/list/possible_spread)
 		location.burn_tile()
 
 		//Possible spread due to radiated heat
-		if(location.air.temperature > FIRE_MINIMUM_TEMPERATURE_TO_SPREAD)
-			var/radiated_temperature = location.air.temperature*FIRE_SPREAD_RADIOSITY_SCALE
+		var/radiated_temperature = location.air.temperature*FIRE_SPREAD_RADIOSITY_SCALE
 
-			for(var/turf/simulated/possible_target in possible_spread)
-				if(!possible_target.active_hotspot)
-					possible_target.hotspot_expose(radiated_temperature, CELL_VOLUME/4)
+		for(var/turf/simulated/possible_target in possible_spread)
+			if(!possible_target.active_hotspot)
+				possible_target.hotspot_expose(radiated_temperature, CELL_VOLUME/4)
 
 	else
 		if(volume > CELL_VOLUME*0.4)
@@ -154,9 +153,6 @@ obj/fire
 		volume = 125
 		bypassing = 0
 
-	//				for(var/atom/item in loc)
-	//				item.temperature_expose(null, temperature, volume)
-
 obj/fire/proc/process()
 	if(just_spawned)
 		for(var/dirs in cardinal)
@@ -172,12 +168,7 @@ obj/fire/proc/process()
 	var/turf/simulated/floor/T = src.loc
 	if(!istype(src.loc,/turf/simulated/floor))
 		del(src)
-	if(T.air.temperature < FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
-		//world << "NOT HOT ENOUGH [T.air.temperature] : [FIRE_MINIMUM_TEMPERATURE_TO_EXIST]"
-		del(src)
-		return
 	if(T.air.toxins <= 0.5 || T.air.oxygen <= 0.5)
-		//world << "NOT HOT ENOUGH shit"
 		del(src)
 	if(T.wet) T.wet = 0
 	burn( (T.air.toxins - T.air.carbon_dioxide / 2) / 300, (T.air.oxygen - T.air.carbon_dioxide / 2) / 300)
@@ -223,10 +214,9 @@ obj/fire/proc/process()
 obj/fire/proc/burn(tox,oxy)
 	var/turf/simulated/floor/T = src.loc
 
-//	var/datum/gas_mixture/affected = T.air.remove_ratio(volume/T.air.volume)
 	var/burn_amount = min(tox,oxy)
-	// make sure burn_amount >= 0
-	burn_amount = max(burn_amount, 0)
+	// make sure burn_amount > 0
+	burn_amount = round(max(burn_amount, 0), 0.01)
 	if(burn_amount == 0)
 		del src
 	T.air.oxygen -= max(0,burn_amount)
@@ -234,9 +224,6 @@ obj/fire/proc/burn(tox,oxy)
 	var/newco = burn_amount
 	T.air.carbon_dioxide += newco
 	T.air.temperature += 120*burn_amount
-/*mob/verb/createfire()
-	src.loc:air:temperature += round(FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
-	new/obj/fire(src.loc)*/
 
 obj/fire/New()
 	..()
