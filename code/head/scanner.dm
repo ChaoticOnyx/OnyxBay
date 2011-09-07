@@ -35,13 +35,13 @@ obj/machinery/scanner/attack_hand(mob/user)
 			var/list/row = cquery.GetRowData()
 			marks += row["rank"]
 	var/text = {"
-	<center>Report</center><br>
-	Name:[mname]<br>
-	DNA:[dna]<br>
-	Blood Type:[bloodtype]<br>
-	Fingerprint:[fingerprint]<br>
+	<font size=4><center>Report</center></font><br>
+	<b><u>Name</u></b>: [mname]<br>
+	<b><u>DNA</u></b>: [dna]<br>
+	<b><u>Blood Type</u></b>: [bloodtype]<br>
+	<b><u>Fingerprint</u></b>: [fingerprint]<br>
 
-	Black Marks<br> "}
+	<b><u>Black Marks</u></b>:<br> "}
 	for(var/A in marks)
 		text += "\red[A]<br>"
 	user << "\blue You feel a sting"
