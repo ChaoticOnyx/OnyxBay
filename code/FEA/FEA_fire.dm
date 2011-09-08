@@ -157,7 +157,7 @@ obj/fire/proc/process()
 	if(just_spawned)
 		for(var/dirs in cardinal)
 			var/turf/simulated/floor/TS = get_step(src,dirs)
-			if(!TS || !TS.air)
+			if(!TS || !istype(TS,/turf/simulated/floor) || !TS.air)
 				continue
 			if(locate(/obj/fire) in TS)
 				continue
@@ -202,7 +202,7 @@ obj/fire/proc/process()
 		if(prob(50))
 			continue
 		var/turf/simulated/floor/TS = get_step(src,dirs)
-		if(!TS || !TS.air)
+		if(!TS || !istype(TS,/turf/simulated/floor) || !TS.air)
 			continue
 		if(locate(/obj/fire) in TS)
 			continue
