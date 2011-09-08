@@ -17,7 +17,7 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 		defer_cables_rebuild ++
 
-		stop_zones++
+		//stop_zones++
 
 		sleep(5 )
 
@@ -188,7 +188,7 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 
 			defer_cables_rebuild --
-			stop_zones--
+			//stop_zones--
 			if (!defer_cables_rebuild)
 				HandleUNExplosionDamage()
 
