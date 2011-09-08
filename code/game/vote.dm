@@ -310,7 +310,7 @@
 		else			// voting can begin
 			if(config.allow_vote_restart)
 				text += "<A href='?src=\ref[vote];voter=\ref[src];vmode=0'>Begin restart vote.</A><BR>"
-			if(config.allow_vote_mode)
+			if(config.allow_vote_mode && ticker.current_state == 1) //stop people from starting game mode votes during rounds, since they always restart the game if there is a winner
 				text += "<A href='?src=\ref[vote];voter=\ref[src];vmode=1'>Begin change mode vote.</A><BR>"
 			if(src.client.holder)			//Strumpetplaya Add - Custom Votes for Admins
 				text += "<A href='?src=\ref[vote];voter=\ref[src];vmode=2'>Begin custom vote.</A><BR>"
