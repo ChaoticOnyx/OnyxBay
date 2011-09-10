@@ -357,13 +357,38 @@
 /client/proc/set_hidden_averbs()
 	set category = "Admin"
 	set name = "Set Hidden Verb Types"
-	hidden_averb_types = list()
+	show_set_hidden_averbs_popup()
+
+
+/client/proc/show_set_hidden_averbs_popup()
+	var/text = "<table border=1>"
 
 	for(var/category in admin_verb_categories)
-		if((input(src, "Hide '[category]' verbs?", "Hide verbs", "No") in list("Yes", "No")) == "Yes")
-			hidden_averb_types += category
+		text += "<tr><td><a href='?src=\ref[src];averb-set-hide-cat=1;averb-category-number=[admin_verb_categories.Find(category)][(category in hidden_averb_types)? "'>hidden" : ";hide-averb-category=1'>visible"]</a></td>"
+		text += "<td>[category]</td></tr>"
 
-	refresh_hidden_averbs()
+	text += "</table>"
+	usr << browse(text, "window=set-hidden-averbs")
+
+
+/client/Topic(href, href_list[], hsrc)
+	..()
+
+	if(href_list["averb-set-hide-cat"])
+		if(!src.holder)
+			alert("You are not an admin! How did you get here?!?")
+			return
+
+		if(href_list["averb-category-number"])
+			var/category = admin_verb_categories[text2num(href_list["averb-category-number"])]
+
+			if(href_list["hide-averb-category"])
+				hidden_averb_types += category
+			else
+				hidden_averb_types -= category
+
+			refresh_hidden_averbs()
+			show_set_hidden_averbs_popup()
 
 
 /client/proc/disable_averbs()

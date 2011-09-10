@@ -18,32 +18,14 @@ var/list/admin_verb_categories = list(
 		/client/proc/callprocobj,
 	),
 
-	"Toggle" = list(
-		/obj/admins/proc/toggleAI,				//Toggle the AI
-		/obj/admins/proc/toggleooc,				//toggle ooc
-		/obj/admins/proc/toggleenter,			//Toggle enterting
-		/client/proc/deadchat,					//toggles deadchat
-		/client/proc/Debug2,					//debug toggle switch
-		/obj/admins/proc/adjump,				//toggle admin jumping
-		/obj/admins/proc/adrev,					//toggle admin revives
-		/obj/admins/proc/adspawn,				//toggle admin item spawning
-		/client/proc/toggleinvite,
-		/client/proc/toggle_view_range,
-		/client/proc/toggleadminsectordoors,
-		/client/proc/toggleadminshuttledoors,
-		/client/proc/toggleevents,
-		/obj/admins/proc/toggletraitorscaling,
-		/obj/admins/proc/voteres, 				//toggle votes
-		/client/proc/hubvis,
-		/obj/admins/proc/toggleaban,			//abandon mob
-		/obj/admins/proc/toggle_aliens,
+	"Chat" = list(
+		/client/proc/dsay,
+		/client/proc/cmd_admin_say,
+		/client/proc/cmd_admin_pm,
 	),
 
 	"Communication" = list(
-		/client/proc/dsay,
-		/client/proc/cmd_admin_say,
 		/client/proc/cmd_admin_subtle_message,
-		/client/proc/cmd_admin_pm,
 		/obj/admins/proc/announce,				//global announce
 		/client/proc/cmd_admin_create_centcom_report,
 		/client/proc/radioalert,
@@ -69,7 +51,7 @@ var/list/admin_verb_categories = list(
 		/client/proc/givedisease_deadly,
 	),
 
-	"Transportation" = list(
+	"Teleportation" = list(
 		/client/proc/Getmob,
 		/client/proc/Jump,
 		/client/proc/jumptokey,
@@ -92,32 +74,52 @@ var/list/admin_verb_categories = list(
 		/client/proc/cmd_admin_prison,
 		/client/proc/cmd_admin_mute,
 	),
+
+	"Toggle" = list(
+		/obj/admins/proc/toggleAI,				//Toggle the AI
+		/obj/admins/proc/toggleooc,				//toggle ooc
+		/obj/admins/proc/toggleenter,			//Toggle enterting
+		/client/proc/deadchat,					//toggles deadchat
+		/client/proc/Debug2,					//debug toggle switch
+		/obj/admins/proc/adjump,				//toggle admin jumping
+		/obj/admins/proc/adrev,					//toggle admin revives
+		/obj/admins/proc/adspawn,				//toggle admin item spawning
+		/client/proc/toggleinvite,
+		/client/proc/toggle_view_range,
+		/client/proc/toggleadminsectordoors,
+		/client/proc/toggleadminshuttledoors,
+		/client/proc/toggleevents,
+		/obj/admins/proc/toggletraitorscaling,
+		/obj/admins/proc/voteres, 				//toggle votes
+		/client/proc/hubvis,
+		/obj/admins/proc/toggleaban,			//abandon mob
+		/obj/admins/proc/toggle_aliens,
+	),
+
+	"Other" = list(
+		/obj/admins/proc/startnow,				//start now bitch
+		/obj/admins/proc/immreboot,				//immediate reboot
+		/obj/admins/proc/restart,				//restart
+		/client/proc/hidemode,
+		/obj/admins/proc/vmode,   				//start vote
+		/obj/admins/proc/votekill, 				//abort vote
+		/client/proc/delay,
+		/client/proc/switchtowindow,
+		/client/proc/checkticker,
+		/client/proc/cmd_admin_check_contents,
+		/client/proc/cmd_admin_reset_id,
+		/client/proc/editappear,
+		/client/proc/LSD_effect,
+		/client/proc/addchange,
+		/client/proc/fix_next_move,
+		/proc/possess,
+		/client/proc/Cell,
+		/client/proc/cmd_admin_list_occ,
+		/client/proc/get_admin_state,
+		/client/proc/ticklag,
+		/mob/living/proc/CheckHandcuff,
+		/proc/release,
+	),
 )
 
-
-
-//A bunch more, probably not even all of them!
-/*
-	/obj/admins/proc/startnow,				//start now bitch
-	/obj/admins/proc/immreboot,				//immediate reboot
-	/obj/admins/proc/restart,				//restart
-	/client/proc/hidemode,
-	/obj/admins/proc/vmode,   				//start vote
-	/obj/admins/proc/votekill, 				//abort vote
-	/client/proc/delay,
-	/client/proc/switchtowindow,
-	/client/proc/checkticker,
-	/client/proc/cmd_admin_check_contents,
-	/client/proc/cmd_admin_reset_id,
-	/client/proc/editappear,
-	/client/proc/LSD_effect,
-	/client/proc/addchange,
-	/client/proc/fix_next_move,
-	/proc/possess,
-	/client/proc/Cell,
-	/client/proc/cmd_admin_list_occ,
-	/client/proc/get_admin_state,
-	/client/proc/ticklag,
-		/mob/living/proc/CheckHandcuff,
-	/proc/release,
-*/
+//Still probably missing some. Probably need a bit more organization, too.
