@@ -85,29 +85,25 @@
 
 /obj/grille/attackby(obj/item/weapon/W, mob/user)
 	if (istype(W, /obj/item/weapon/wirecutters))
-		if(!shock(user, 100))
-			playsound(src.loc, 'Wirecutter.ogg', 100, 1)
-			src.health = 0
+		playsound(src.loc, 'Wirecutter.ogg', 100, 1)
+		src.health = 0
 	else if ((istype(W, /obj/item/weapon/screwdriver) && (istype(src.loc, /turf/simulated) || src.anchored)))
-		if(!shock(user, 90))
-			playsound(src.loc, 'Screwdriver.ogg', 100, 1)
-			src.anchored = !( src.anchored )
-			user << (src.anchored ? "You have fastened the grille to the floor." : "You have unfastened the grill.")
-			for(var/mob/O in oviewers())
-				O << text("\red [user] [src.anchored ? "fastens" : "unfastens"] the grille.")
-			return
+		playsound(src.loc, 'Screwdriver.ogg', 100, 1)
+		src.anchored = !( src.anchored )
+		user << (src.anchored ? "You have fastened the grille to the floor." : "You have unfastened the grill.")
+		for(var/mob/O in oviewers())
+			O << text("\red [user] [src.anchored ? "fastens" : "unfastens"] the grille.")
+		return
 	else if(istype(W, /obj/item/weapon/shard))	// can't get a shock by attacking with glass shard
 		src.health -= W.force * 0.1
 
 	else						// anything else, chance of a shock
-		if(!shock(user, 70))
-			playsound(src.loc, 'grillehit.ogg', 80, 1)
-			switch(W.damtype)
-				if("fire")
-					src.health -= W.force
-				if("brute")
-					src.health -= W.force * 0.1
-
+		playsound(src.loc, 'grillehit.ogg', 80, 1)
+		switch(W.damtype)
+			if("fire")
+				src.health -= W.force
+			if("brute")
+				src.health -= W.force * 0.1
 	src.healthcheck()
 	..()
 	return
