@@ -121,23 +121,31 @@ world/proc/makejson()
 
 	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\"}"
 	fcopy("info.json","[jsonpath]/info.json")
+
 /proc/switchmap(newmap,newpath)
+	var/oldmap
 	var/obj/mapinfo/M = locate()
-	if(!M)
-		world << "Did not locate mapinfo object"
+
+	if(M)
+		oldmap = M.mapname
+
+	else
+		message_admins("Did not locate mapinfo object. Go bug the mapper to add a /obj/mapinfo to their map!\n For now, you can probably spawn one manually. If you do, be sure to set it's mapname var correctly, or else you'll just get an error again.")
 		return
-	var/oldmap = M.mapname
-	world << M.mapname
+
+	message_admins("Current map: [oldmap]")
 	var/text = file2text(dmepath)
-	var/l = "\\"
-	var/path = "#include \"maps[l][oldmap].dmm\""
-	var/xpath = "#include \"maps[l][newpath].dmm\""
+	var/path = "#include \"maps\\[oldmap].dmm\""
+	var/xpath = "#include \"maps\\[newpath].dmm\""
 	var/loc = findtext(text,path,1,0)
 	if(!loc)
-		world << "NOT FOUND"
+		message_admins("Could not find '#include \"maps\\[oldmap].dmm\"' in the bs12.dme. The mapinfo probably has an incorrect mapname var. Alternatively, could not find the .dme itself, at [dmepath].")
 		return
+
+	var/rest = copytext(text, loc + length(path))
 	text = copytext(text,1,loc)
 	text += "\n[xpath]"
+	text += rest
 /*	for(var/A in lines)
 		if(findtext(A,path,1,0))
 			lineloc = lines.Find(A,1,0)
@@ -146,10 +154,11 @@ world/proc/makejson()
 	fdel(dmepath)
 	var/file = file(dmepath)
 	file << text
-	world << "Compiling..."
+	message_admins("Compiling...")
 	shell("./recompile")
-	world << "Done"
+	message_admins("Done")
 	world.Reboot("Switching to [newmap]")
+
 obj/mapinfo
 	invisibility = 101
 	var/mapname = "thismap"
