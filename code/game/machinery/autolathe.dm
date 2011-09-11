@@ -190,6 +190,8 @@
 	src.L += new /obj/item/weapon/sheet/glass(src)
 	src.L += new /obj/item/weapon/sheet/r_metal(src)
 	src.L += new /obj/item/weapon/sheet/rglass(src)
+	src.L += new /obj/item/weapon/pipe_segment(src)
+	src.L += new /obj/item/weapon/pipe_segment/bent(src)
 	src.L += new /obj/item/weapon/rods(src)
 	src.L += new /obj/item/weapon/track(src)
 	src.L += new /obj/item/weapon/rcd_ammo(src)

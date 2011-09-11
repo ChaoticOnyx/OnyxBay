@@ -206,14 +206,14 @@ obj/machinery/atmospherics/pipe
 			else
 				icon_state = "exposed[invisibility ? "-f" : "" ]"
 
-				if(node1)
-					dir = get_dir(src,node1)
+				//if(node1)
+				//	dir = get_dir(src,node1)
 
-				else if(node2)
-					dir = get_dir(src,node2)
+				//else if(node2)
+				//	dir = get_dir(src,node2)
 
-				else
-					del(src)
+				//else
+				//	del(src)
 
 		proc/get_connect_directions()
 

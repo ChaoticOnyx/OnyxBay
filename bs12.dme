@@ -782,6 +782,7 @@
 #include "code\WorkInProgress\ShieldGenerator\ShieldingNetworkController.dm"
 #include "code\WorkInProgress\ShieldGenerator\ShieldNetwork.dm"
 #include "code\WorkInProgress\Strumpetplaya\foodprocessor.dm"
+#include "code\WorkInProgress\Strumpetplaya\pipebuilding.dm"
 #include "code\WorkInProgress\Strumpetplaya\turntable.dm"
 #include "code\WorkInProgress\UnifiedCabling\BuildUnifiedNetworks.dm"
 #include "code\WorkInProgress\UnifiedCabling\Cabling.dm"
