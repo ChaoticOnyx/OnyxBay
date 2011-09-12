@@ -378,7 +378,7 @@
 			src.equip_if_possible(new /obj/item/device/radio/headset/security/medical,slot_ears)
 
 		if ("Captain")
-			src.equip_if_possible(new /obj/item/weapon/storage/backpack(src), slot_back)
+			src.equip_if_possible(new /obj/item/weapon/storage/backpack/security(src), slot_back)
 			src.equip_if_possible(new /obj/item/device/radio/headset/security(src), slot_ears)
 			src.equip_if_possible(new /obj/item/device/pda/captain(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/captain(src), slot_w_uniform)
@@ -415,7 +415,7 @@
 			src.equip_if_possible(new /obj/item/clothing/shoes/white(src), slot_shoes)
 //			src.equip_if_possible(new /obj/item/clothing/suit/bio_suit(src), slot_wear_suit)
 //			src.equip_if_possible(new /obj/item/clothing/head/bio_hood(src), slot_head)
-			src.equip_if_possible(new /obj/item/clothing/mask/gas(src), slot_wear_mask)
+//			src.equip_if_possible(new /obj/item/clothing/mask/gas(src), slot_wear_mask)
 			src.equip_if_possible(new /obj/item/weapon/tank/air(src), slot_l_hand)
 			src.equip_if_possible(new /obj/item/device/radio/headset/security/medical,slot_ears)
 
