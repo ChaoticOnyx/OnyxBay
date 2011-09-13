@@ -81,4 +81,5 @@ DNA INJECTOR
 				//Foreach goto(192)
 			inject(M)
 			user.show_message(text("\red You inject [M]"))
+			user.update_clothing()
 	return

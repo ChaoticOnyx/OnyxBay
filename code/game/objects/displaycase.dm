@@ -67,6 +67,26 @@
 
 
 /obj/displaycase/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/weapon/gun/energy/laser_gun/captain))
+		if(!src.occupied)
+			user << "\b You put the [W] back into the display case."
+			del(W)
+			src.occupied = 1
+			update_icon()
+			return
+	if(istype(W, /obj/item/weapon/sheet/glass))
+		if(src.occupied && src.destroyed)
+			var/obj/item/weapon/sheet/glass/G = W
+			user << "\b You repair the display case."
+			G.amount--
+			if (G.amount <= 0)
+				user.update_clothing()
+				del(G)
+			src.destroyed = 0
+			src.density = 1
+			src.health = 30
+			update_icon()
+			return
 	src.health -= W.force
 	src.healthcheck()
 	..()
