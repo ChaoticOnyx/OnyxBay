@@ -70,13 +70,13 @@
 	ai_actual_track(target)
 
 /mob/living/silicon/ai/proc/ai_actual_track(mob/target as mob)
+	if(checkcameravis(target.loc))
+		usr << "Target is not on or near any active cameras on the station."
+		return
 	if(src.eyeobj == src.client.eye)
-		if(checkcameravis(target.loc))
-			eyeobj.loc = target.loc
-			cameranet.visibility(eyeobj)
-			usr << "Now tracking [target] on camera."
-		else
-			usr << "Target is not on or near any active cameras on the station."
+		eyeobj.loc = target.loc
+		cameranet.visibility(eyeobj)
+		usr << "Now tracking [target] on camera."
 		return
 	usr:cameraFollow = target
 	usr << text("Now tracking [] on camera.", target.name)
