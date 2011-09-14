@@ -213,6 +213,8 @@
 			if(!name || name == " ") name = R.get_master_reagent_name()
 			var/pillsprite = input("What should the pills look like?", "Pill Style", "Cancel") in list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)
 			var/pillstrength = input(usr, "What amount of chemicals per pill?", "Pill Strength", R.total_volume)
+			if(pillstrength == 0) //no peel heer
+				return
 			if (pillstrength < 1 || pillstrength > R.total_volume)
 				pillstrength = R.total_volume
 			while (R.total_volume >= pillstrength)
