@@ -135,12 +135,16 @@ world/proc/makejson()
 
 	message_admins("Current map: [oldmap]")
 	var/text = file2text(dmepath)
-	var/path = "#include \"maps\\[oldmap].dmm\""
-	var/xpath = "#include \"maps\\[newpath].dmm\""
+	var/path = "#include \"maps/[oldmap].dmm\""
+	var/xpath = "#include \"maps/[newpath].dmm\""
 	var/loc = findtext(text,path,1,0)
 	if(!loc)
-		message_admins("Could not find '#include \"maps\\[oldmap].dmm\"' in the bs12.dme. The mapinfo probably has an incorrect mapname var. Alternatively, could not find the .dme itself, at [dmepath].")
-		return
+		path = "#include \"maps\\[oldmap].dmm\""
+		xpath = "#include \"maps\\[newpath].dmm\""
+		loc = findtext(text,path,1,0)
+		if(!loc)
+			message_admins("Could not find '#include \"maps\\[oldmap].dmm\"' or '\"maps/[oldmap].dmm\"' in the bs12.dme. The mapinfo probably has an incorrect mapname var. Alternatively, could not find the .dme itself, at [dmepath].")
+			return
 
 	var/rest = copytext(text, loc + length(path))
 	text = copytext(text,1,loc)
