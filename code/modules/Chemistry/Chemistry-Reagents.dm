@@ -390,6 +390,13 @@ datum
 				if(M.canmove) step(M, pick(cardinal))
 				if(prob(7)) M:emote(pick("twitch","drool","moan","giggle"))
 				holder.remove_reagent(src.id, 0.2)
+				//overdose
+				if(volume > 50)
+					M.toxloss++
+					if(prob(5))
+						M.emote("tremble")
+					if(volume > 70)
+						M.paralysis = max(M.paralysis, (volume-70)/2)
 				return
 
 		silicate
