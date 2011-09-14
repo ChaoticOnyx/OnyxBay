@@ -524,7 +524,7 @@
 					if(2)
 						say("[prob(50) ? ";" : ""][pick("EELS","MOTORBOATS","MERDE","ANTIDISESTABLISHMENTARIANISM","OGOPOGO","POPEMOBILE","RHOMBUS","TUMESCENCE","ZIGGURAT","DIRIGIBLES","WAFFLES","PICKLES","BIKINI","DUCK","KNICKERBOCKERS","LOQUACIOUS","MACADAMIA","MAHOGANY","KUMQUAT","PERCOLATOR","AUBERGINES","FLANGES","GOURDS","DONUTS","CALLIPYGIAN","DARJEELING","DWARFS","MAGMA","ARMOK","BERR","APPLES","SPACEMEN","NINJAS","PIRATES","BUNION")]!")
 					if(3)
-						say("[prob(50) ? ";" : ""][pick("Who are you","What is that","Where are we going","What's your name","Where am I","What do all those numbers mean","What does that sign mean","What are you doing with that","Are you my friend")]?")
+						//say("[prob(50) ? ";" : ""][pick("Who are you","What is that","Where are we going","What's your name","Where am I","What do all those numbers mean","What does that sign mean","What are you doing with that","Are you my friend")]?")
 				var/old_x = pixel_x
 				var/old_y = pixel_y
 				pixel_x += rand(-2,2)
