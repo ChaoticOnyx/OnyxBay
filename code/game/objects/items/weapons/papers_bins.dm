@@ -22,10 +22,10 @@ CLIPBOARDS
 
 
 /obj/item/weapon/paper/examine()
+	set src in view()
 	if(istype(usr, /mob/living/carbon/monkey))
 		usr << "You can't read."
 		return
-	set src in view()
 
 	..()
 	if (!( istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead) || istype(usr, /mob/living/silicon) ))
