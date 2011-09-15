@@ -420,7 +420,7 @@ datum
 			result_amount = 3
 
 		anti_toxin
-			name = "Anti-Toxin (Dylovene)"
+			name = "Dylovene"
 			id = "anti_toxin"
 			result = "anti_toxin"
 			required_reagents = list("silicon" = 1, "potassium" = 1, "nitrogen" = 1)
