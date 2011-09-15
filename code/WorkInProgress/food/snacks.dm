@@ -257,7 +257,7 @@
 	name = "apple patty"
 	desc = "Like grandma's."
 	icon_state = "pattyapple"
-	amount = 2
+	amount = 3
 	heal_amt = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/bun
@@ -271,14 +271,14 @@
 	name = "flatbread"
 	desc = "Bland but filling."
 	icon_state = "flatbread"
-	amount = 3
+	amount = 2
 	heal_amt = 1
 
 /obj/item/weapon/reagent_containers/food/snacks/pie
 	name = "custard pie"
 	desc = "It smells delicious. You just want to plant your face in it."
 	icon_state = "pie"
-	amount = 3
+	amount = 4
 
 /obj/item/weapon/reagent_containers/food/snacks/waffles
 	name = "waffles"
@@ -321,63 +321,63 @@
 	name = "baked potato"
 	desc = "It smells good."
 	icon_state = "bakedpotato"
-	amount = 2
+	amount = 3
 	heal_amt = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/sbakedpotato
 	name = "sauced potatoes"
 	desc = "It smells and tastes great!"
 	icon_state = "sbakedpotato"
-	amount = 2
+	amount = 4
 	heal_amt = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/spaghetti
 	name = "spaghetti"
 	desc = "Long and tasteless - 'Noodles'."
 	icon_state = "spaghetti"
-	amount = 2
+	amount = 4
 	heal_amt = 1
 
 /obj/item/weapon/reagent_containers/food/snacks/sspaghetti
 	name = "sauced spaghetti"
 	desc = "Long and tasty - 'Tomato Noodles'."
 	icon_state = "sspaghetti"
-	amount = 2
+	amount = 5
 	heal_amt = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/meatspaghetti
 	name = "spaghetti with meatballs"
 	desc = "A standard dinner - 'Spaghetti Monster'."
 	icon_state = "meatspaghetti"
-	amount = 2
+	amount = 5
 	heal_amt = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/smeatspaghetti
 	name = "sauced spaghetti with meatballs"
 	desc = "A tasty dinner - 'Spaghetti Terror'."
 	icon_state = "smeatspaghetti"
-	amount = 2
+	amount = 6
 	heal_amt = 4
 
 /obj/item/weapon/reagent_containers/food/snacks/boiledegg
 	name = "boiled egg"
 	desc = "Boiled in its own shell - 'Humpty Dumpty'."
 	icon_state = "boiled egg"
-	amount = 1
+	amount = 2
 	heal_amt = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/omelette
 	name = "omelette"
 	desc = "A filling breakfast dish for every scientist - 'Eggheads'."
 	icon_state = "omelette"
-	amount = 2
+	amount = 3
 	heal_amt = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/somelette
 	name = "sauced omelette"
 	desc = "A saucy dish - 'Bloody Alien'."
 	icon_state = "somelette"
-	amount = 2
+	amount = 4
 	heal_amt = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/steak
@@ -391,7 +391,7 @@
 	name = "sauced steak"
 	desc = "A sauced meat steak."
 	icon_state = "ssteak"
-	amount = 3
+	amount = 4
 	heal_amt = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/cutlet
@@ -405,7 +405,7 @@
 	name = "sausage"
 	desc = "A sausage."
 	icon_state = "sausage"
-	amount = 1
+	amount = 2
 	heal_amt = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/meatball
@@ -425,63 +425,63 @@
 	name = "hotdog"
 	desc = "Unrelated to dogs."
 	icon_state = "hotdog"
-	amount = 2
+	amount = 3
 	heal_amt = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/shotdog
 	name = "sauced hotdog"
 	desc = "Unrelated to dogs - 'Royal Hotdog'."
 	icon_state = "shotdog"
-	amount = 2
+	amount = 4
 	heal_amt = 4
 
 /obj/item/weapon/reagent_containers/food/snacks/burger
 	name = "burger"
 	desc = "A fast way to become fat."
 	icon_state = "burger"
-	amount = 2
+	amount = 4
 	heal_amt = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/sburger
 	name = "sauced burger"
 	desc = "A fast way to become fat - 'Space Burger'."
 	icon_state = "sburger"
-	amount = 2
+	amount = 5
 	heal_amt = 4
 
 /obj/item/weapon/reagent_containers/food/snacks/hamburger
 	name = "hamburger"
 	desc = "A fast way to become fat."
 	icon_state = "hamburger"
-	amount = 2
+	amount = 4
 	heal_amt = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/shamburger
 	name = "sauced hamburger"
 	desc = "A fast way to become fat - 'Star Hamburger'."
 	icon_state = "shamburger"
-	amount = 2
+	amount = 5
 	heal_amt = 4
 
 /obj/item/weapon/reagent_containers/food/snacks/cheeseburger
 	name = "cheeseburger"
 	desc = "The cheese adds a good flavor."
 	icon_state = "cheeseburger"
-	amount = 2
+	amount = 5
 	heal_amt = 4
 
 /obj/item/weapon/reagent_containers/food/snacks/scheeseburger
 	name = "saused cheeseburger"
 	desc = "The cheese adds a good flavor - 'Space Cheeseburger'."
 	icon_state = "scheeseburger"
-	amount = 2
+	amount = 6
 	heal_amt = 4
 
 /obj/item/weapon/reagent_containers/food/snacks/taco
 	name = "taco"
 	desc = "Take a bite!"
 	icon_state = "taco"
-	amount = 2
+	amount = 3
 	heal_amt = 4
 
 ///////////////////////////////////////////////////////
@@ -494,28 +494,28 @@
 	name = "apple pie"
 	desc = "Om nom nom."
 	icon_state = "pieapple"
-	amount = 3
+	amount = 4
 	heal_amt = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/piepotato
 	name = "potato pie"
 	desc = "Om nom nom."
 	icon_state = "pieapple"
-	amount = 3
+	amount = 4
 	heal_amt = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/pieshroom
 	name = "mushroom pie"
 	desc = "Eat fresh."
 	icon_state = "pieshroom"
-	amount = 3
+	amount = 4
 	heal_amt = 4
 
 /obj/item/weapon/reagent_containers/food/snacks/piemeat
 	name = "meat pie"
 	desc = "Fat and filling."
 	icon_state = "piemeat"
-	amount = 3
+	amount = 4
 	heal_amt = 4
 
 ///////////////////////////////////////////////////////
