@@ -1265,8 +1265,7 @@
 	heal(var/mob/M)
 		M.give_power(new /datum/power/accent_swedish, 180)
 		..()
-*/
-/obj/item/weapon/reagent_containers/food/snacks/burger/
+/obj/item/weapon/reagent_containers/food/snacks/burger
 	name = "burger"
 	desc = "A burger."
 	icon_state = "burger"
@@ -1274,8 +1273,8 @@
 	heal_amt = 2
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/reagent_containers/food/snacks/condiment/)) src.amount += 1
-
+		if (istype(W, /obj/item/weapon/reagent_containers/food/snacks/condiment/)) src.amount += 1	//why do we have their food system too, this conflicts with our hamburgers
+*/
 /obj/item/weapon/reagent_containers/food/snacks/burger/assburger
 	name = "assburger"
 	desc = "This burger gives off an air of awkwardness."
