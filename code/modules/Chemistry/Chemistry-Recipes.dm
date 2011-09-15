@@ -409,3 +409,26 @@ datum
 			result = "weedkiller"
 			required_reagents = list("chlorine" = 1, "ethanol" = 1, "ammonia" =1)
 			result_amount = 5
+
+//addin' stupid shit :D - Arc
+
+		inaprovaline
+			name = "Inaprovaline"
+			id = "inaprovaline"
+			result = "inaprovaline"
+			required_reagents = list("oxygen" = 1, "carbon" = 1, "sugar" = 1)
+			result_amount = 3
+
+		anti_toxin
+			name = "Anti-Toxin (Dylovene)"
+			id = "anti_toxin"
+			result = "anti_toxin"
+			required_reagents = list("silicon" = 1, "potassium" = 1, "nitrogen" = 1)
+			result_amount = 3
+
+		stoxin
+			name = "Sleep Toxin"
+			id = "stoxin"
+			result = "stoxin"
+			required_reagents = list("impedrezene" = 1, "iron" = 1, "hydrogen" = 1)
+			result_amount = 3
