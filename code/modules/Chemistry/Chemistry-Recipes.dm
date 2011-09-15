@@ -70,8 +70,8 @@ datum
 			name = "Lexorin"
 			id = "lexorin"
 			result = "lexorin"
-			required_reagents = list("plasma" = 1, "hydrogen" = 1, "nitrogen" = 1)
-			result_amount = 3
+			required_reagents = list("plasma" = 1, "ammonia" = 1)
+			result_amount = 2
 
 		space_drugs
 			name = "Space Drugs"
