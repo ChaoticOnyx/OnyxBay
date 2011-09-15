@@ -294,7 +294,7 @@ datum
 			reagent_state = LIQUID
 */
 		anti_toxin
-			name = "Anti-Toxin (Dylovene)"
+			name = "Dylovene"
 			id = "anti_toxin"
 			description = "Dylovene is a broad-spectrum antitoxin."
 			reagent_state = LIQUID

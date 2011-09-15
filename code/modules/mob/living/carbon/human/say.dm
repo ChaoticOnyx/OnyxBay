@@ -1,5 +1,5 @@
 /mob/living/carbon/human/say(var/message)
-	if(mutantrace == "lizard")
+	if(mutantrace == "lizard" && message[0] != "*")
 		message = dd_replaceText(message, "s", stutter("ss"))
 	..(message)
 

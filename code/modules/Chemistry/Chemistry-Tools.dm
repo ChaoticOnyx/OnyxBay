@@ -1007,7 +1007,7 @@
 		R.add_reagent("stoxin", 30)
 
 /obj/item/weapon/reagent_containers/glass/bottle/antitoxin
-	name = "anti-toxin bottle"
+	name = "dylovene bottle"
 	desc = "A small bottle."
 	icon = 'chemical.dmi'
 	icon_state = "bottle17"
@@ -1098,7 +1098,7 @@
 
 //Pills
 /obj/item/weapon/reagent_containers/pill/antitox
-	name = "Anti-toxins pill"
+	name = "dylovene pill"
 	desc = "Neutralizes many common toxins."
 	icon_state = "pill17"
 
