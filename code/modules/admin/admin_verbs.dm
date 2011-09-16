@@ -26,7 +26,14 @@
 			/obj/admins/proc/unprison,
 			/obj/admins/proc/vmode,   				//start vote
 			/obj/admins/proc/votekill, 				//abort vote
-			/obj/admins/proc/voteres 				//toggle votes
+			/obj/admins/proc/voteres, 				//toggle votes
+			/client/proc/admin_play,
+			/client/proc/admin_observe,
+			/client/proc/voting,
+			/client/proc/game_panel,
+			/client/proc/unban_panel,
+			/client/proc/invite_panel,
+			/client/proc/player_panel,
 			)
 
 	//Verbs for everyone secondary administrator and up.
@@ -52,7 +59,9 @@
 			/client/proc/toggleadminsectordoors,
 			/client/proc/toggleadminshuttledoors,
 			/client/proc/toggleevents,
-			/obj/admins/proc/toggletraitorscaling	//toggle traitor scaling
+			/obj/admins/proc/toggletraitorscaling,	//toggle traitor scaling
+			/client/proc/stealth,
+			/client/proc/admin_invis,
 			)
 
 	//Verbs for everyone primary administrator and up.
@@ -158,13 +167,6 @@
 
 			src.averbs += /client/proc/new_event
 
-			//src.averbs += /client/proc/air_report
-			//src.averbs += /client/proc/air_status
-//			src.averbs += /client/proc/getmobs
-//			src.averbs += /client/proc/cmd_admin_list_admins
-//			src.averbs += /client/proc/cmd_admin_gib
-//			src.averbs += /client/proc/grillify
-
 
 		if ("Coder")
 			src.deadchat = 1
@@ -184,14 +186,6 @@
 			src.averbs += /client/proc/ChangeMap
 			src.averbs += /client/proc/Zone_Info
 
-			//src.averbs += /client/proc/air_report
-			//src.averbs += /client/proc/air_status
-//			src.averbs += /client/proc/getmobs
-//			src.averbs += /client/proc/cmd_admin_list_admins
-//			src.averbs += /client/proc/cmd_admin_gib
-//			src.averbs += /proc/toggleai
-//				src.averbs += /client/proc/grillify
-
 
 		if ("Super Administrator")
 			src.deadchat = 1
@@ -205,11 +199,6 @@
 
 			src.averbs += /client/proc/ChangeMap
 			src.averbs += /client/proc/Zone_Info
-
-			//src.averbs += /client/proc/air_report
-			//src.averbs += /client/proc/air_status
-//			src.averbs += /client/proc/cmd_admin_gib
-//			src.averbs += /client/proc/cmd_admin_list_admins
 
 
 		if ("Primary Administrator")
@@ -228,7 +217,6 @@
 				src.averbs += /client/proc/debug_variables
 				src.averbs += /client/proc/cmd_modify_object_variables
 				src.averbs += /client/proc/cmd_modify_ticker_variables
-//				src.averbs += /client/proc/cmd_admin_gib
 				src.averbs += /client/proc/jumptokey
 				src.averbs += /client/proc/jumptomob
 				src.averbs += /client/proc/Jump
@@ -240,12 +228,6 @@
 				src.averbs += /obj/admins/proc/toggleaban			//abandon mob
 				src.averbs += /client/proc/toggle_view_range
 
-//			src.averbs += /client/proc/modifytemperature
-//			src.averbs += /client/proc/cmd_admin_list_admins
-
-//			src.averbs += /obj/admins/proc/adrev					//toggle admin revives
-//			src.averbs += /obj/admins/proc/adspawn				//toggle admin item spawning
-//			src.averbs += /obj/admins/proc/adjump				//toggle admin jumping
 
 		if ("Administrator")
 
@@ -264,11 +246,6 @@
 				src.averbs += /obj/admins/proc/toggleaban			//abandon mob
 				src.averbs += /client/proc/deadchat					//toggles deadchat
 
-//			src.averbs += /client/proc/play_sound
-
-//			src.averbs += /obj/admins/proc/adrev					//toggle admin revives
-//			src.averbs += /obj/admins/proc/adspawn				//toggle admin item spawning
-//			src.averbs += /obj/admins/proc/adjump				//toggle admin jumping
 
 		if ("Secondary Administrator")
 			src.holder.level = 1
@@ -280,26 +257,12 @@
 				src.averbs += /obj/admins/proc/toggleaban			//abandon mob
 				src.averbs += /client/proc/cmd_admin_check_contents
 
-//			src.averbs += /obj/admins/proc/adrev					//toggle admin revives
-//			src.averbs += /obj/admins/proc/adspawn				//toggle admin item spawning
-//			src.averbs += /obj/admins/proc/adjump				//toggle admin jumping
-
 
 		if ("Moderator")
 			src.holder.level = 0
 
 			src.averbs += averbs_moderator
 
-//			src.averbs += /obj/admins/proc/restart				//restart
-//			src.averbs += /obj/admins/proc/immreboot				//immediate reboot
-//			src.averbs += /obj/admins/proc/toggleenter			//Toggle enterting
-
-//			src.averbs += /obj/admins/proc/adrev					//toggle admin revives
-//			src.averbs += /obj/admins/proc/adspawn				//toggle admin item spawning
-//			src.averbs += /obj/admins/proc/adjump				//toggle admin jumping
-
-//			src.averbs += /obj/admins/proc/boot					//boot someone
-//			src.averbs += /obj/admins/proc/toggleaban			//abandon mob
 
 		if ("Goat Fart")
 			src.holder.level = -1
@@ -316,18 +279,6 @@
 
 	if (src.holder)
 		src.holder.owner = src
-		if (src.holder.level > -1)
-			src.averbs += /client/proc/admin_play
-			src.averbs += /client/proc/admin_observe
-			src.averbs += /client/proc/voting
-			src.averbs += /client/proc/game_panel
-			src.averbs += /client/proc/unban_panel
-			src.averbs += /client/proc/invite_panel
-			src.averbs += /client/proc/player_panel
-
-		if(src.holder.level > 1)
-			src.averbs += /client/proc/stealth
-			src.averbs += /client/proc/admin_invis
 
 		if(( src.holder.state == 2 ) || ( src.holder.level > 3 ))
 			src.averbs += /client/proc/secrets
@@ -348,15 +299,21 @@
 
 
 /client/proc/refresh_hidden_averbs()
-	verbs |= averbs
+    //Since changing verbs directly causes verb flickering,
+    //Store them in a list, and first make changes to that list.
+	var/list/new_verbs = verbs | averbs
 
 	for(var/category in hidden_averb_types)
-		verbs -= admin_verb_categories[category]
+		new_verbs -= admin_verb_categories[category]
+
+	//Since setting verbs directly causes a runtime error
+	verbs &= new_verbs //First remove anything not in the new list
+	verbs |= new_verbs //Then add anything in the new list that isn't already in verbs
 
 
 /client/proc/set_hidden_averbs()
 	set category = "Admin"
-	set name = "Set Hidden Verb Types"
+	set name = "Show/Hide Admin Verbs"
 	show_set_hidden_averbs_popup()
 
 
@@ -393,7 +350,8 @@
 
 /client/proc/disable_averbs()
 	set category = "Admin"
-	set name = "Hide Admin Verbs"
+	set name = "Hide All Admin Verbs"
+
 	verbs -= averbs
 	verbs -= /client/proc/disable_averbs
 	verbs += /client/proc/cmd_admin_say
@@ -401,10 +359,12 @@
 
 /client/proc/enable_averbs()
 	set category = "Admin"
-	set name = "Show Admin Verbs"
-	verbs += averbs
+	set name = "Show All Admin Verbs"
+
+	verbs |= averbs
 	verbs += /client/proc/disable_averbs
 	verbs -= /client/proc/enable_averbs
+	refresh_hidden_averbs()
 
 
 /client/proc/admin_observe()
@@ -506,14 +466,19 @@
 	return
 */
 
+
 /client/proc/qsowtoggle()
-	set name = "QSOW toggle"
+	set name = "QML Space Overwrite"
 	set category = "Admin"
-	if(qsow)
-		qsow = 0
+
+	QML_space_overwrite = !QML_space_overwrite
+
+	if(QML_space_overwrite)
+		usr << "When loading maps, QML will treat /turf/space like any other turf, overwriting existing turfs with it where it appears on the loaded map."
+
 	else
-		qsow = 1
-	usr<<"QSOW [qsow]"
+		usr << "When loading maps, QML will now ignore space turfs, leaving whatever turf is already there unchanged when the loaded map has /turf/space."
+
 
 /client/proc/voting()
 	set name = "Voting"

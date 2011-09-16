@@ -16,6 +16,7 @@ var/list/admin_verb_categories = list(
 		/client/proc/debug_variables,
 		/client/proc/callprocgen,
 		/client/proc/callprocobj,
+		/client/proc/qsowtoggle,
 	),
 
 	"Chat" = list(
@@ -94,6 +95,15 @@ var/list/admin_verb_categories = list(
 		/client/proc/hubvis,
 		/obj/admins/proc/toggleaban,			//abandon mob
 		/obj/admins/proc/toggle_aliens,
+		/client/proc/cmd_debug_tog_aliens,
+	),
+
+	"Panels" = list(
+		/client/proc/game_panel,
+		/client/proc/unban_panel,
+		/client/proc/invite_panel,
+		/client/proc/player_panel,
+		/client/proc/secrets,
 	),
 
 	"Other" = list(
@@ -119,6 +129,14 @@ var/list/admin_verb_categories = list(
 		/client/proc/ticklag,
 		/mob/living/proc/CheckHandcuff,
 		/proc/release,
+		/client/proc/stealth,
+		/client/proc/admin_invis,
+		/client/proc/admin_play,
+		/client/proc/admin_observe,
+		/client/proc/voting,
+		/client/proc/ChangeMap,
+		/client/proc/Zone_Info,
+		/client/proc/testjson,
 	),
 )
 
