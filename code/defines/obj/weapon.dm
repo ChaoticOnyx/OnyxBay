@@ -308,6 +308,7 @@
 	name = "Gaming Kit"
 	icon = 'items.dmi'
 	icon_state = "game_kit"
+	desc = "A holographic gaming board."
 	var/selected = null
 	var/board_stat = null
 	var/data = ""
