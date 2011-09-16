@@ -25,17 +25,21 @@ datum
 			id = "explosion_potassium"
 			result = null
 			required_reagents = list("water" = 1, "potassium" = 1)
-			result_amount = null
+			result_amount = 1
 			on_reaction(var/datum/reagents/holder, var/created_volume)
+				if(istype(holder.my_atom, /mob/living/carbon))
+					var/mob/living/carbon/M = holder.my_atom
+					M.bruteloss += result_amount
 				var/location = get_turf(holder.my_atom)
 				var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 				s.set_up(2, 1, location)
 				s.start()
-				for(var/mob/M in viewers(5, location))
+				for(var/mob/M in viewers(min(max(5, created_volume-5), 8), location))
 					M << "\red The solution violently explodes."
-				for(var/mob/M in viewers(1, location))
+				for(var/mob/M in viewers(min(max(1, (created_volume/2)-4), 5), location))
 					M << "\red The explosion knocks you down."
-					M:weakened += 3
+					M:weakened += round((created_volume/3)+0.5)
+				del(src)
 				return
 
 		silicate
