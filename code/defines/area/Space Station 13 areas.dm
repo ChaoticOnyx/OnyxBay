@@ -506,6 +506,13 @@
 	name = "Waste Disposal"
 	icon_state = "disposal"
 
+/area/maintenance/research_wing
+	name = "Research Wing Maintenance"
+	icon_state = "res_wing_maint"
+
+/area/maintenance/qm_maint
+	name = "Quartermaster Maintenance"
+	icon_state = "qm_maint"
 
 /area/hallway/primary/admin
 	name = "Administrative Block Hallway"
@@ -579,6 +586,10 @@
 /area/hallway/secondary/research
 	name = "Research Hallway"
 	icon_state = "research"
+
+/area/hallway/secondary/research_connector
+	name = "Research Hallway Connector"
+	icon_state = "research_connector"
 
 /area/shieldgen
 	name = "Shield Generation"
