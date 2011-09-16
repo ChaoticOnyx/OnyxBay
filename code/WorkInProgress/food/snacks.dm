@@ -1,3 +1,5 @@
+//some stuff is in the ISaidNo folder - Mini
+
 /obj/item/weapon/reagent_containers/food
 	var/heal_amt = 0
 	var/nutmod = 1
@@ -119,13 +121,6 @@
 	icon_state = "sugar"
 	edible = 0
 
-/obj/item/weapon/reagent_containers/food/snacks/tomato
-	name = "tomato"
-	desc = "Better than ketchup."
-	icon_state = "tomato"
-	amount = 1
-	heal_amt = 2
-
 /obj/item/weapon/reagent_containers/food/snacks/dough
 	name = "dough"
 	desc = "A dough."
@@ -182,13 +177,6 @@
 //                                                   //
 ///////////////////////////////////////////////////////
 
-/obj/item/weapon/reagent_containers/food/snacks/potato
-	name = "potato"
-	desc = "Maybe you should cook it first?"
-	icon_state = "potato"
-	amount = 1
-	heal_amt = 1
-
 /obj/item/weapon/reagent_containers/food/snacks/rawsticks
 	name = "raw potato sticks"
 	desc = "Maybe you should cook it first?"
@@ -196,17 +184,11 @@
 	amount = 1
 	heal_amt = 1
 
-/obj/item/weapon/reagent_containers/food/snacks/apple
-	name = "apple"
-	desc = "Lots of iron and vitamins."
-	icon_state = "apple"
-	amount = 1
-	heal_amt = 2
-
 /obj/item/weapon/reagent_containers/food/snacks/fungi
 	name = "Space fungi"
 	desc = "Common space mushrooms which grow in any environment."
 	icon_state = "fungi"
+	amount = 1
 	heal_amt = 1
 
 /obj/item/weapon/reagent_containers/food/snacks/plump

@@ -754,7 +754,7 @@
 #include "code\WorkInProgress\ISaidNo Release\hydroponics.dm"
 #include "code\WorkInProgress\ISaidNo Release\manufacturing.dm"
 #include "code\WorkInProgress\ISaidNo Release\mining.dm"
-#include "code\WorkInProgress\ISaidNo Release\plants_food_etc.dm"
+#include "code\WorkInProgress\ISaidNo Release\plants_food_Mini.dm"
 #include "code\WorkInProgress\Mini\checkvis.dm"
 #include "code\WorkInProgress\Mini\evidencebags.dm"
 #include "code\WorkInProgress\Mini\filingcabinet.dm"

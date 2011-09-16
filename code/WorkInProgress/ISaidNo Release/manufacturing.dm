@@ -400,9 +400,9 @@
 					new /obj/item/weapon/ore/mauxite(src)
 					new /obj/item/weapon/ore/molitz(src)
 			load = 2
-		else if (istype(W, /obj/item/weapon/plant/wheat/metal))
-			new /obj/item/weapon/ore/mauxite(src)
-			load = 2
+		//else if (istype(W, /obj/item/weapon/plant/wheat/metal))
+		//	new /obj/item/weapon/ore/mauxite(src)
+		//	load = 2
 		/*else if(istype(W, /obj/item/weapon/cable_coil/))
 			for(var/mob/O in viewers(user, null)) O.show_message(text("\blue [] loads [] into the [].", user, W, src), 1)
 			for (var/amt = W:amount, amt > 0, amt--)
@@ -509,7 +509,7 @@
 				sleep(3)
 				if (user.loc != staystill) break
 			user << "\blue You finish stuffing ore into [src]!"
-		else if (istype(O, /obj/item/weapon/plant/wheat/metal))
+		/*else if (istype(O, /obj/item/weapon/plant/wheat/metal))
 			for(var/mob/V in viewers(user, null)) V.show_message(text("\blue [] begins quickly stuffing [O] into []!", user, src), 1)
 			var/staystill = user.loc
 			for(var/obj/item/weapon/plant/wheat/metal/M in view(1,user))
@@ -517,7 +517,7 @@
 				del M
 				sleep(3)
 				if (user.loc != staystill) break
-			user << "\blue You finish stuffing [O] into [src]!"
+			user << "\blue You finish stuffing [O] into [src]!"*/
 		else ..()
 		src.updateUsrDialog()
 
@@ -623,10 +623,10 @@
 		src.available += new /datum/manufacture/light_tube(src)
 		src.available += new /datum/manufacture/breathmask(src)
 		src.available += new /datum/manufacture/RCDammo(src)
-		src.available += new /datum/manufacture/cola_bottle(src)
+		//src.available += new /datum/manufacture/cola_bottle(src)
 		//src.hidden += new /datum/manufacture/vuvuzela(src)
 		//src.hidden += new /datum/manufacture/harmonica(src)
-		src.hidden += new /datum/manufacture/bikehorn(src)
+		//src.hidden += new /datum/manufacture/bikehorn(src)
 		//src.hidden += new /datum/manufacture/stunrounds
 
 /obj/machinery/manufacturer/robotics
@@ -738,7 +738,7 @@
 	amount1 = 1
 	time = 5
 	create = 1
-*/
+
 /datum/manufacture/cola_bottle
 	name = "Glass Bottle"
 	item = /obj/item/weapon/reagent_containers/food/drinks/cola_bottle
@@ -756,7 +756,7 @@
 	amount1 = 1
 	time = 5
 	create = 1
-/*
+
 /datum/manufacture/stunrounds
 	name = ".38 Stunner Rounds"
 	item = /obj/item/weapon/ammo/bullets/a38/stun

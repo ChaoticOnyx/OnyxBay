@@ -37,7 +37,7 @@
 /datum/plant/tomato
 	name = "tomato"
 	harvtype = "fruit"
-	crop = /obj/item/weapon/reagent_containers/food/snacks/tomato
+	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/tomato
 	seed = /obj/item/weapon/seed/tomato
 	starthealth = 20
 	growtime = 375
@@ -86,7 +86,7 @@
 	harvests = 5
 	endurance = 5
 	commuts = list("immortal","seedless")
-
+/*
 /datum/plant/cannabis
 	name = "cannabis"
 	harvtype = "plant"
@@ -103,7 +103,7 @@
 	//mutcrop1 = /obj/item/weapon/plant/cannabis/mega
 	//mutcrop2 = /obj/item/weapon/plant/cannabis/black
 	//mutcrop3 = /obj/item/weapon/plant/cannabis/white
-
+*/
 /datum/plant/chili
 	name = "chili"
 	harvtype = "fruit"
@@ -132,7 +132,7 @@
 /datum/plant/apple
 	name = "apple"
 	harvtype = "fruit"
-	crop = /obj/item/weapon/reagent_containers/food/snacks/apple
+	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/apple
 	seed = /obj/item/weapon/seed/apple
 	starthealth = 40
 	growtime = 1000
@@ -1119,7 +1119,7 @@
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		var/load = 1
 		if (istype(W,/obj/item/weapon/reagent_containers/food/snacks/plant/)) src.reagents.add_reagent("poo", 20)
-		else if (istype(W,/obj/item/weapon/reagent_containers/food/snacks/mushroom/)) src.reagents.add_reagent("poo", 25)
+		else if (istype(W,/obj/item/weapon/reagent_containers/food/snacks/fungi/)) src.reagents.add_reagent("poo", 25)
 		else if (istype(W,/obj/item/weapon/seed/)) src.reagents.add_reagent("poo", 2)
 		else if (istype(W,/obj/item/weapon/plant/)) src.reagents.add_reagent("poo", 15)
 		//else if (istype(W,/obj/item/weapon/reagent_containers/poo)) src.reagents.add_reagent("poo", 20)	 Strumpetplaya - commenting this out as it has components we don't support.
@@ -1136,7 +1136,7 @@
 		else ..()
 
 	MouseDrop_T(atom/movable/O as mob|obj, mob/user as mob)
-		if (istype(O, /obj/item/weapon/reagent_containers/food/snacks/plant/) || istype(O, /obj/item/weapon/reagent_containers/food/snacks/mushroom/) || istype(O, /obj/item/weapon/seed/) || istype(O, /obj/item/weapon/plant/))
+		if (istype(O, /obj/item/weapon/reagent_containers/food/snacks/plant/) || istype(O, /obj/item/weapon/reagent_containers/food/snacks/fungi/) || istype(O, /obj/item/weapon/seed/) || istype(O, /obj/item/weapon/plant/))
 			for(var/mob/V in viewers(user, null)) V.show_message(text("\blue [] begins quickly stuffing items into []!", user, src), 1)
 			var/staystill = user.loc
 			for(var/obj/item/weapon/P in view(1,user))
@@ -1149,7 +1149,7 @@
 					playsound(src.loc, 'blobattack.ogg', 50, 1)
 					del P
 					sleep(3)
-				else if (istype(P,/obj/item/weapon/reagent_containers/food/snacks/mushroom/))
+				else if (istype(P,/obj/item/weapon/reagent_containers/food/snacks/fungi/))
 					src.reagents.add_reagent("poo", 25)
 					playsound(src.loc, 'blobattack.ogg', 50, 1)
 					del P
@@ -1186,7 +1186,7 @@
 	var/working = 0
 	var/pcount = 0
 	var/list/allowed = list(/obj/item/weapon/reagent_containers/food/snacks/plant/,\
-	/obj/item/weapon/reagent_containers/food/snacks/mushroom/,\
+	/obj/item/weapon/reagent_containers/food/snacks/fungi/,\
 	/obj/item/weapon/plant/,\
 	/obj/item/weapon/medical/ointment,\
 	/obj/item/weapon/dnainjector)
@@ -1247,8 +1247,8 @@
 					if(G.reagents.total_volume == G.reagents.maximum_volume) break
 					if(istype(I,/obj/item/weapon/reagent_containers/glass)) continue
 					else if(istype(I,/obj/item/weapon/reagent_containers/food/drinks)) continue
-					if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/chili/chilly)) G.reagents.add_reagent("cryostylane", 20)
-					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/chili)) G.reagents.add_reagent("capsaicin", 20)
+					//if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/chili/chilly)) G.reagents.add_reagent("cryostylane", 20)
+					if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/chili)) G.reagents.add_reagent("capsaicin", 20)
 					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/orange)) G.reagents.add_reagent("juice_orange", 20)
 					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/lime)) G.reagents.add_reagent("juice_lime", 20)
 					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/lemon)) G.reagents.add_reagent("juice_lemon", 20)
@@ -1256,14 +1256,12 @@
 					else if(istype(I,/obj/item/weapon/medical/ointment)) G.reagents.add_reagent("kelotane", 20)
 					else if(istype(I,/obj/item/weapon/dnainjector)) G.reagents.add_reagent("mutagen", 20)
 					else if(istype(I,/obj/item/weapon/plant/sugar)) G.reagents.add_reagent("sugar", 20)
-					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/ingredient/sugar)) G.reagents.add_reagent("sugar", 20)
-					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/mushroom/psilocybin)) G.reagents.add_reagent("psilocybin", 20)
-					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/mushroom/amanita)) G.reagents.add_reagent("amanitin", 20)
-					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/mushroom)) G.reagents.add_reagent("space_fungus", 20)
+					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/sugar)) G.reagents.add_reagent("sugar", 20)
+					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/fungi)) G.reagents.add_reagent("space_fungus", 20)
 					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit)) G.reagents.add_reagent("toxic_slurry", 20)
-					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit/omega))
-						G.reagents.add_reagent("toxic_slurry", 20)
-						if (prob(3)) G.reagents.add_reagent("necrovirus", 5)
+					//else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit/omega))
+					//	G.reagents.add_reagent("toxic_slurry", 20)
+					//	if (prob(3)) G.reagents.add_reagent("necrovirus", 5)
 					else if(istype(I,/obj/item/weapon/plant))
 						var/obj/item/weapon/plant/P = I
 						if(istype(I,/obj/item/weapon/plant/contusine)) G.reagents.add_reagent("bicaridine", round((20 + P.potency), 5))
@@ -1271,10 +1269,10 @@
 						else if(istype(I,/obj/item/weapon/plant/asomna)) G.reagents.add_reagent("inaprovaline", round((20 + P.potency), 5))
 						else if(istype(I,/obj/item/weapon/plant/commol)) G.reagents.add_reagent("kelotane", round((20 + P.potency), 5))
 						else if(istype(I,/obj/item/weapon/plant/venne)) G.reagents.add_reagent("anti_toxin", round((20 + P.potency), 5))
-						else if(istype(I,/obj/item/weapon/plant/cannabis/black)) G.reagents.add_reagent("cyanide", round((20 + P.potency), 5))
-						else if(istype(I,/obj/item/weapon/plant/cannabis/mega)) G.reagents.add_reagent("LSD", round((20 + P.potency), 5))
-						else if(istype(I,/obj/item/weapon/plant/cannabis/white)) G.reagents.add_reagent("tricordrazine", round((2 + (P.potency / 3)), 5))
-						else if(istype(I,/obj/item/weapon/plant/cannabis)) G.reagents.add_reagent("THC", round((20 + P.potency), 5))
+						//else if(istype(I,/obj/item/weapon/plant/cannabis/black)) G.reagents.add_reagent("cyanide", round((20 + P.potency), 5))
+						//else if(istype(I,/obj/item/weapon/plant/cannabis/mega)) G.reagents.add_reagent("LSD", round((20 + P.potency), 5))
+						//else if(istype(I,/obj/item/weapon/plant/cannabis/white)) G.reagents.add_reagent("tricordrazine", round((2 + (P.potency / 3)), 5))
+						//else if(istype(I,/obj/item/weapon/plant/cannabis)) G.reagents.add_reagent("THC", round((20 + P.potency), 5))
 					src.ingredients -= I
 					del I
 				sleep(50 * src.pcount)
@@ -1735,7 +1733,7 @@
 				if(19) getseed = /obj/item/weapon/seed/contusine
 				if(20) getseed = /obj/item/weapon/seed/commol
 				if(21) getseed = /obj/item/weapon/seed/venne
-				if(22) getseed = /obj/item/weapon/seed/cannabis
+				//if(22) getseed = /obj/item/weapon/seed/cannabis
 				if(23) getseed = /obj/item/weapon/seed/fungus
 				if(24) getseed = /obj/item/weapon/seed/lasher
 				if(25) getseed = /obj/item/weapon/seed/creeper
