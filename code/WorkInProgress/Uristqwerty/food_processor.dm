@@ -9,8 +9,8 @@
 	var/list/processables = list(
 		/obj/item/weapon/plant/sugar = /obj/item/weapon/reagent_containers/food/snacks/sugar,
 
-		/obj/item/weapon/reagent_containers/food/snacks/tomato = list(/obj/item/weapon/reagent_containers/food/snacks/condiment/ketchup,
-																	  /obj/item/weapon/reagent_containers/food/snacks/condiment/ketchup)
+		/obj/item/weapon/reagent_containers/food/snacks/plant/tomato = list(/obj/item/weapon/reagent_containers/food/snacks/ketchup,
+																	  /obj/item/weapon/reagent_containers/food/snacks/ketchup)
 		)
 
 	//Note:Associations in output list could be used for something. Perhaps probability of creation?
