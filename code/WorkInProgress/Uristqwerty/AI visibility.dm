@@ -244,6 +244,8 @@ var/datum/cameranet/cameranet = new()
 	eyeobj.ai = src
 
 /mob/living/silicon/ai/verb/freelook()
+	set category = "AI Commands"
+	set name = "freelook"
 	current = null	//cancel camera view first, it causes problems
 	cameraFollow = null
 	machine = null

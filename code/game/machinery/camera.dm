@@ -70,7 +70,7 @@
 	ai_actual_track(target)
 
 /mob/living/silicon/ai/proc/ai_actual_track(mob/target as mob)
-	if(checkcameravis(target.loc))
+	if(!checkcameravis(target.loc))
 		usr << "Target is not on or near any active cameras on the station."
 		return
 	if(src.eyeobj == src.client.eye)
