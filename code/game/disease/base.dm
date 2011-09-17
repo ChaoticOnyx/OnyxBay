@@ -57,6 +57,8 @@
 /proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease2/disease/disease,var/forced = 0)
 	if(M.virus2)
 		return
+	if(!disease)
+		return
 	//immunity
 	for(var/iii = 1, iii <= M.immunevirus2.len, iii++)
 		if(disease.issame(M.immunevirus2[iii]))
