@@ -324,7 +324,7 @@
 /datum/plant/fungus
 	name = "fungus"
 	growthmode = "weed"
-	crop = /obj/item/weapon/reagent_containers/food/snacks/fungi
+	crop = /obj/item/weapon/reagent_containers/food/snacks/mushroom
 	seed = /obj/item/weapon/seed/fungus
 	starthealth = 20
 	growtime = 150
@@ -1119,7 +1119,7 @@
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		var/load = 1
 		if (istype(W,/obj/item/weapon/reagent_containers/food/snacks/plant/)) src.reagents.add_reagent("poo", 20)
-		else if (istype(W,/obj/item/weapon/reagent_containers/food/snacks/fungi/)) src.reagents.add_reagent("poo", 25)
+		else if (istype(W,/obj/item/weapon/reagent_containers/food/snacks/mushroom)) src.reagents.add_reagent("poo", 25)
 		else if (istype(W,/obj/item/weapon/seed/)) src.reagents.add_reagent("poo", 2)
 		else if (istype(W,/obj/item/weapon/plant/)) src.reagents.add_reagent("poo", 15)
 		//else if (istype(W,/obj/item/weapon/reagent_containers/poo)) src.reagents.add_reagent("poo", 20)	 Strumpetplaya - commenting this out as it has components we don't support.
@@ -1136,7 +1136,7 @@
 		else ..()
 
 	MouseDrop_T(atom/movable/O as mob|obj, mob/user as mob)
-		if (istype(O, /obj/item/weapon/reagent_containers/food/snacks/plant/) || istype(O, /obj/item/weapon/reagent_containers/food/snacks/fungi/) || istype(O, /obj/item/weapon/seed/) || istype(O, /obj/item/weapon/plant/))
+		if (istype(O, /obj/item/weapon/reagent_containers/food/snacks/plant/) || istype(O, /obj/item/weapon/reagent_containers/food/snacks/mushroom/) || istype(O, /obj/item/weapon/seed/) || istype(O, /obj/item/weapon/plant/))
 			for(var/mob/V in viewers(user, null)) V.show_message(text("\blue [] begins quickly stuffing items into []!", user, src), 1)
 			var/staystill = user.loc
 			for(var/obj/item/weapon/P in view(1,user))
@@ -1149,7 +1149,7 @@
 					playsound(src.loc, 'blobattack.ogg', 50, 1)
 					del P
 					sleep(3)
-				else if (istype(P,/obj/item/weapon/reagent_containers/food/snacks/fungi/))
+				else if (istype(P,/obj/item/weapon/reagent_containers/food/snacks/mushroom/))
 					src.reagents.add_reagent("poo", 25)
 					playsound(src.loc, 'blobattack.ogg', 50, 1)
 					del P
@@ -1186,7 +1186,7 @@
 	var/working = 0
 	var/pcount = 0
 	var/list/allowed = list(/obj/item/weapon/reagent_containers/food/snacks/plant/,\
-	/obj/item/weapon/reagent_containers/food/snacks/fungi/,\
+	/obj/item/weapon/reagent_containers/food/snacks/mushroom/,\
 	/obj/item/weapon/plant/,\
 	/obj/item/weapon/medical/ointment,\
 	/obj/item/weapon/dnainjector)
@@ -1257,7 +1257,7 @@
 					else if(istype(I,/obj/item/weapon/dnainjector)) G.reagents.add_reagent("mutagen", 20)
 					else if(istype(I,/obj/item/weapon/plant/sugar)) G.reagents.add_reagent("sugar", 20)
 					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/sugar)) G.reagents.add_reagent("sugar", 20)
-					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/fungi)) G.reagents.add_reagent("space_fungus", 20)
+					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/mushroom)) G.reagents.add_reagent("space_fungus", 20)
 					else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit)) G.reagents.add_reagent("toxic_slurry", 20)
 					//else if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit/omega))
 					//	G.reagents.add_reagent("toxic_slurry", 20)

@@ -11,7 +11,7 @@
 	creates = "candycane"
 
 /datum/recipe/sweetapple
-	needs = list("apple" = 1, "sugar" = 1)
+	needs = list("plant/apple" = 1, "sugar" = 1)
 	creates = "sweetapple"
 
 /datum/recipe/bun
@@ -71,7 +71,7 @@
 	creates = "sausage"
 
 /datum/recipe/bakedpotato
-	needs = list("potato" = 1)
+	needs = list("plant/potato" = 1)
 	creates = "bakedpotato"
 
 /datum/recipe/spaghetti
@@ -83,19 +83,19 @@
 	creates = "meatspaghetti"
 
 /datum/recipe/pieapple
-	needs = list("dough" = 1, "sugar" = 1, "apple" = 1)
+	needs = list("dough" = 1, "sugar" = 1, "plant/apple" = 1)
 	creates = "pieapple"
 
 /datum/recipe/pattyapple
-	needs = list("doughslice" = 1, "apple" = 1)
+	needs = list("doughslice" = 1, "plant/apple" = 1)
 	creates = "pattyapple"
 
 /datum/recipe/piepotato
-	needs = list("dough" = 1, "breadsys/ontop/butter" = 1, "potato" = 1)
+	needs = list("dough" = 1, "breadsys/ontop/butter" = 1, "plant/potato" = 1)
 	creates = "piepotato"
 
 /datum/recipe/pieshroom
-	needs = list("dough" = 1, "breadsys/ontop/butter" = 1, "fungi" = 1)
+	needs = list("dough" = 1, "breadsys/ontop/butter" = 1, "mushroom" = 1)
 	creates = "pieshroom"
 
 /datum/recipe/piemeat
@@ -115,7 +115,7 @@
 	creates = "pizza"
 
 /datum/recipe/pizzashroom
-	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "fungi" = 1)
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "mushroom" = 1)
 	creates = "pizzashroom"
 
 /datum/recipe/pizzameat
@@ -123,7 +123,7 @@
 	creates = "pizzameat"
 
 /datum/recipe/pizzameatshroom
-	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "cutlet" = 2, "fungi" = 1)
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "cutlet" = 2, "mushroom" = 1)
 	creates = "pizzameatshroom"
 
 /datum/recipe/pizzasalami
@@ -131,11 +131,11 @@
 	creates = "pizzasalami"
 
 /datum/recipe/pizzasalamishroom
-	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "breadsys/ontop/salami" = 2, "fungi" = 1)
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "breadsys/ontop/salami" = 2, "mushroom" = 1)
 	creates = "pizzasalamishroom"
 
 /datum/recipe/pizzapotato
-	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "potato" = 1)
+	needs = list("flatdough" = 1, "breadsys/ontop/cheese" = 1, "ketchup" = 1, "plant/potato" = 1)
 	creates = "pizzapotato"
 ////////////////////////////////////////////////////
 

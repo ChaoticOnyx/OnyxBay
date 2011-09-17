@@ -764,10 +764,10 @@
 /obj/item/weapon/reagent_containers/food/snacks/meat;
 /obj/item/weapon/reagent_containers/food/snacks/rawmeatball;
 /obj/item/weapon/reagent_containers/food/snacks/ketchup;
-/obj/item/weapon/reagent_containers/food/snacks/potato;
-/obj/item/weapon/reagent_containers/food/snacks/tomato;
-/obj/item/weapon/reagent_containers/food/snacks/apple;
-/obj/item/weapon/reagent_containers/food/snacks/fungi;
+/obj/item/weapon/reagent_containers/food/snacks/plant/potato;
+/obj/item/weapon/reagent_containers/food/snacks/plant/tomato;
+/obj/item/weapon/reagent_containers/food/snacks/plant/apple;
+/obj/item/weapon/reagent_containers/food/snacks/mushroom;
 /obj/item/weapon/reagent_containers/food/snacks/plump"}
     //product_amounts = "10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10"
     product_prices = "1;1;1;1;1;1;1;2;2;2;2;1;1;1;1;1;1;1;1;1;1;2"

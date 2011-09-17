@@ -184,13 +184,6 @@
 	amount = 1
 	heal_amt = 1
 
-/obj/item/weapon/reagent_containers/food/snacks/fungi
-	name = "Space fungi"
-	desc = "Common space mushrooms which grow in any environment."
-	icon_state = "fungi"
-	amount = 1
-	heal_amt = 1
-
 /obj/item/weapon/reagent_containers/food/snacks/plump
 	name = "Plump Helmets"
 	desc = "Mushrooms selectively bred to be alcoholic."

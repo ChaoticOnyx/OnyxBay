@@ -584,3 +584,19 @@
 	icon = 'hydroponics.dmi'
 	icon_state = "venne"
 	potency = 8
+
+/obj/item/weapon/reagent_containers/food/snacks/mushroom
+	name = "space mushroom"
+	desc = "A mushroom cap of Space Fungus. Probably tastes pretty bad."
+	icon = 'cooking.dmi'
+	icon_state = "fungi"
+	amount = 1
+	heal_amt = 0
+	heal(var/mob/M)
+		var/ranchance = rand(1,10)
+		if (ranchance == 1)
+			M << "\red You feel very sick."
+			M.reagents.add_reagent("cyanide", rand(1,5))
+		else if (ranchance <= 5 && ranchance != 1)
+			M << "\red That tasted absolutely FOUL."
+		else M << "\red Yuck!"
