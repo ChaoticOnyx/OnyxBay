@@ -120,7 +120,7 @@
 
 /datum/plant/synthmeat
 	name = "synthmeat"
-	crop = /obj/item/weapon/reagent_containers/food/snacks/ingredient/meat/synthmeat
+	crop = /obj/item/weapon/reagent_containers/food/snacks/meat/synthmeat
 	seed = /obj/item/weapon/seed/synthmeat
 	starthealth = 5
 	growtime = 300
@@ -678,7 +678,7 @@
 						sleep(25)
 						//playsound(src.loc, pick('burp_alien.ogg'), 50, 0)	 Strumpetplaya - commenting this out as it has components we don't support.
 						return
-				else if (istype(W, /obj/item/weapon/reagent_containers/food/snacks/ingredient/meat))
+				else if (istype(W, /obj/item/weapon/reagent_containers/food/snacks/meat))
 					if (src.growth > 60) user << "\red It's going to need something more substantial than that now..."
 					else
 						src.reagents.add_reagent("blood", 5)

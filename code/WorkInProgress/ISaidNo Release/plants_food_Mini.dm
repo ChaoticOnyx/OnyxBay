@@ -600,3 +600,11 @@
 		else if (ranchance <= 5 && ranchance != 1)
 			M << "\red That tasted absolutely FOUL."
 		else M << "\red Yuck!"
+
+/obj/item/weapon/reagent_containers/food/snacks/meat/synthmeat
+	name = "synthmeat"
+	desc = "A raw meat subsitute slab."
+
+/datum/recipe/steak
+	needs = list("meat/synthmeat" = 1)
+	creates = "steak"
