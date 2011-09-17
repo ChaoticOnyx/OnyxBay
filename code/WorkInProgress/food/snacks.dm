@@ -3,6 +3,9 @@
 /obj/item/weapon/reagent_containers/food
 	var/heal_amt = 0
 	var/nutmod = 1
+	MouseDrop_T(mob/O, mob/user)
+		if (!istype(O) || !istype(user) || user.buckled || get_dist(user, src) > 1 || get_dist(user, O) > 1 || get_dist(O, src) > 1 || user.stat) return
+		src.attack(O, user)
 	proc
 		heal(var/mob/M)
 			if(istype(M, /mob/living/carbon/human))
