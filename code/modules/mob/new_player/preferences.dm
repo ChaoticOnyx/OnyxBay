@@ -313,18 +313,21 @@ datum/preferences
 					if(T.jobname == occupation1)
 						for(var/A in T.title)
 							HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[choice];title=[A]\">[A]</a><br>"
+						break
 			if(2.0)
 				HTML += "<b>Which title would you for [occupation2].</b><br><br>"
 				for(var/datum/title/T in titles)
 					if(T.jobname == occupation2)
 						for(var/A in T.title)
 							HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[choice];title=[A]\">[A]</a><br>"
+						break
 			if(3.0)
 				HTML += "<b>Which title would you for [occupation3].</b><br><br>"
 				for(var/datum/title/T in titles)
 					if(T.jobname == occupation3)
 						for(var/A in T.title)
 							HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[choice];title=[A]\">[A]</a><br>"
+						break
 		HTML += "<a href=\"byond://?src=\ref[user];preferences=1;occ=[choice];cancel=1\">\[Cancel\]</a>"
 		HTML += "</center></tt>"
 		user << browse(null, "window=preferences")
