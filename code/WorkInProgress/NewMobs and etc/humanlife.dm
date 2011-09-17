@@ -444,6 +444,7 @@
 		update_body()
 		pale = 0
 /mob/living/carbon/human/handle_disabilities()
+	if(stat == 2) return
 	if(zombie == 1)
 		return
 
