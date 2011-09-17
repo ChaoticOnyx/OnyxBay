@@ -1,6 +1,13 @@
 
-/atom/proc/MouseDrop_T()
-	return
+/atom/proc/MouseDrop_T(atom/movable/A, mob/living/carbon/human/M, atom/B)
+	if(M.mutations & 1 && istype(A) && !A.anchored)
+		step_towards(A, B)
+		if(in_range(A,B))
+			if(istype(A,/obj/item))
+				B:attackby(A, M)
+				//A:attack(B, M)
+				A:afterattack(B, M)
+				return
 
 /atom/proc/attack_hand(mob/user as mob)
 	return
@@ -143,10 +150,10 @@
 			source2.icon = I
 	return
 
-/atom/MouseDrop(atom/over_object as mob|obj|turf|area)
+/atom/MouseDrop(atom/over_object as mob|obj|turf|area,src_location,over_location)
 	spawn( 0 )
 		if (istype(over_object, /atom))
-			over_object.MouseDrop_T(src, usr)
+			over_object.MouseDrop_T(src, usr, over_location)
 		return
 	..()
 	return
