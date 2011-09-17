@@ -523,44 +523,45 @@
 			else
 				if (growing.growthmode == "normal" && !prob(src.endurance)) src.health -= 1
 				if (growing.growthmode == "carnivore" && !prob(src.endurance)) src.health -= rand(0,1)
-			if (src.reagents.has_reagent("poo"))
-				src.health += 1
-				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
-			if (src.reagents.has_reagent("phosphorus"))
-				src.health += 2
-				src.growth += 1
-				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
-			if (src.reagents.has_reagent("ammonia"))
-				src.growth += 2
-				src.health += 1
-				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
-			if (src.reagents.has_reagent("diethylamine"))
-				src.growth += rand(1,2)
-				src.health += rand(1,2)
-				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
-			if (src.reagents.has_reagent("plant_nutrients"))
-				src.growth += 2
-				src.health += 2
-				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
-			if (src.reagents.has_reagent("plant_nutrients_plus"))
-				src.growth += rand(2,4)
-				src.health += rand(2,4)
-				if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
-			if (src.reagents.has_reagent("mutagen") || src.reagents.has_reagent("dna_mutagen") || src.reagents.has_reagent("radium"))
-				if (prob(12))
-					HYPmutateplant("normal")
+			if(prob(10))
+				if (src.reagents.has_reagent("poo"))
+					src.health += 1
+					if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
+				if (src.reagents.has_reagent("phosphorus"))
+					src.health += 2
+					src.growth += 1
+					if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
+				if (src.reagents.has_reagent("ammonia"))
+					src.growth += 2
+					src.health += 1
+					if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
+				if (src.reagents.has_reagent("diethylamine"))
+					src.growth += rand(1,2)
+					src.health += rand(1,2)
+					if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
+				if (src.reagents.has_reagent("plant_nutrients"))
+					src.growth += 2
+					src.health += 2
+					if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
+				if (src.reagents.has_reagent("plant_nutrients_plus"))
+					src.growth += rand(2,4)
+					src.health += rand(2,4)
+					if (src.reagents.has_reagent("water") && prob(10)) src.reagents.remove_reagent("water", 1)
+				if (src.reagents.has_reagent("mutagen") || src.reagents.has_reagent("dna_mutagen") || src.reagents.has_reagent("radium"))
+					if (prob(12))
+						HYPmutateplant("normal")
+						if (!prob(src.endurance)) src.health -= 2
+				if (growing.growthmode == "carnivore" && src.reagents.has_reagent("blood") || src.reagents.has_reagent("synthflesh")) src.growth += 3
+				if (src.reagents.has_reagent("acid") || src.reagents.has_reagent("pacid"))
+					src.growth -= 3
 					if (!prob(src.endurance)) src.health -= 2
-			if (growing.growthmode == "carnivore" && src.reagents.has_reagent("blood") || src.reagents.has_reagent("synthflesh")) src.growth += 3
-			if (src.reagents.has_reagent("acid") || src.reagents.has_reagent("pacid"))
-				src.growth -= 3
-				if (!prob(src.endurance)) src.health -= 2
-			if (src.reagents.has_reagent("plasma"))
-				if (!growing.growthmode == "plasmavore") src.health -= 5
-				else src.growth += 1
-			if (src.reagents.has_reagent("fuel") || src.reagents.has_reagent("chlorine") || src.reagents.has_reagent("mercury") || src.reagents.has_reagent("toxin") || src.reagents.has_reagent("toxic_slurry"))
-				if (!istype(growing,/datum/plant/slurrypod) && !istype(growing,/datum/plant/radweed) && !prob(src.endurance)) src.health -= 1
-			if (src.reagents.has_reagent("weedkiller") && growing.growthmode == "weed") src.health -= 2
-			if(prob(0.1)) src.reagents.remove_any(1)
+				if (src.reagents.has_reagent("plasma"))
+					if (!growing.growthmode == "plasmavore") src.health -= 5
+					else src.growth += 1
+				if (src.reagents.has_reagent("fuel") || src.reagents.has_reagent("chlorine") || src.reagents.has_reagent("mercury") || src.reagents.has_reagent("toxin") || src.reagents.has_reagent("toxic_slurry"))
+					if (!istype(growing,/datum/plant/slurrypod) && !istype(growing,/datum/plant/radweed) && !prob(src.endurance)) src.health -= 1
+				if (src.reagents.has_reagent("weedkiller") && growing.growthmode == "weed") src.health -= 2
+				if(prob(50))src.reagents.remove_any(1)
 		if (growing.growthmode == "weed")
 			if (!src.reagents.has_reagent("weedkiller")) src.growth += 1
 		if (growing.growthmode == "boring") src.growth += 1
