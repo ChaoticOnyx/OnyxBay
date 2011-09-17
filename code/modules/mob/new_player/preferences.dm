@@ -358,6 +358,7 @@ datum/preferences
 					user << browse(null, "window=mob_occupation")
 					return
 				else
+					title1 = null
 					if (job == "No Preference")
 						occupation1 = "No Preference"
 						ShowChoices(user)
@@ -378,6 +379,7 @@ datum/preferences
 					user << browse(null, "window=mob_occupation")
 					ShowChoices(user)
 				else
+					title2 = null
 					if (job == "No Preference")
 						if (occupation3 != "No Preference")
 							occupation2 = occupation3
@@ -404,6 +406,7 @@ datum/preferences
 					user << browse(null, "window=mob_occupation")
 					ShowChoices(user)
 				else
+					title3 = null
 					if (job == "No Preference")
 						occupation3 = "No Preference"
 					else
