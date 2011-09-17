@@ -29,8 +29,8 @@
 			usr << "\red [name] has a[wear_suit.blood_DNA ? " bloody " : " "] \icon[wear_suit] [wear_suit.name] on!"
 		else
 			usr << "\blue [name] has a \icon[wear_suit] [wear_suit.name] on."
-	if(eyes)
-		usr << "\blue [name] is wearing a pair of \icon[eyes] [eyes.name]."
+	if(glasses)
+		usr << "\blue [name] is wearing a pair of \icon[glasses] [glasses.name]."
 	if (ears)
 		usr << "\blue [name] has a \icon[ears] [ears.name] by [t_his] ear."
 
