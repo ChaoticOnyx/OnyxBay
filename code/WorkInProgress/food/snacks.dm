@@ -691,7 +691,7 @@
 		del(src)
 
 // Potato in potato sticks
-/obj/item/weapon/reagent_containers/food/snacks/potato/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/reagent_containers/food/snacks/plant/potato/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/kitchen/utensil/knife))
 		var/turf/spawnloc = foodloc(user, src)
 		new /obj/item/weapon/reagent_containers/food/snacks/rawsticks(spawnloc)

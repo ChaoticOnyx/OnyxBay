@@ -299,7 +299,7 @@
 /datum/plant/potato
 	name = "potato"
 	harvtype = "fruit"
-	crop = /obj/item/weapon/reagent_containers/food/snacks/potato
+	crop = /obj/item/weapon/reagent_containers/food/snacks/plant/potato
 	seed = /obj/item/weapon/seed/potato
 	starthealth = 40
 	growtime = 400

@@ -67,7 +67,7 @@ CLIPBOARDS
 
 /obj/item/weapon/paper/attackby(obj/item/weapon/P as obj, mob/user as mob)
 
-	if (istype(P, /obj/item/weapon/pen))
+	if (istype(P, /obj/item/weapon/pen) || (istype(P, /obj/item/weapon/clipboard && P.pen))
 		if(src.stamped == 1)
 			user << "\blue This paper has been stamped and can no longer be edited."
 			return
