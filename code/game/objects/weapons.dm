@@ -288,6 +288,7 @@
 	return
 
 /obj/item/assembly/rad_prox/HasProximity(atom/movable/AM as mob|obj)
+	if(!part2) return
 	if (istype(AM, /obj/beam))
 		return
 	if (AM.move_speed < 12)
@@ -333,16 +334,18 @@
 
 /obj/item/assembly/rad_prox/Move()
 	..()
-	src.part2.sense()
+	if(part2)
+		src.part2.sense()
 	return
 
 /obj/item/assembly/rad_prox/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 
 /obj/item/assembly/rad_prox/dropped()
-	spawn( 0 )
-		src.part2.sense()
-		return
+	if(part2)
+		spawn( 0 )
+			src.part2.sense()
+			return
 	return
 //************************
 /obj/item/assembly/rad_infra/c_state(n)
@@ -420,14 +423,15 @@
 	return
 
 /obj/item/assembly/prox_ignite/HasProximity(atom/movable/AM as mob|obj)
-
+	if(!part1) return
 	if (istype(AM, /obj/beam))
 		return
-	if (AM.move_speed < 12 && src.part1)
+	if (AM.move_speed < 12)
 		src.part1.sense()
 	return
 
 /obj/item/assembly/prox_ignite/dropped()
+	if(!part1) return
 	spawn( 0 )
 		src.part1.sense()
 		return
@@ -531,9 +535,10 @@
 	return
 
 /obj/item/assembly/m_i_ptank/HasProximity(atom/movable/AM as mob|obj)
+	if(!part1) return
 	if (istype(AM, /obj/beam))
 		return
-	if (AM.move_speed < 12 && src.part1)
+	if (AM.move_speed < 12)
 		src.part1.sense()
 	return
 
@@ -566,6 +571,7 @@
 
 
 /obj/item/assembly/m_i_ptank/dropped()
+	if(!part1) return
 
 	spawn( 0 )
 		src.part1.sense()
