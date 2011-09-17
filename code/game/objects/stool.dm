@@ -82,7 +82,7 @@
 					"You hear metal clanking")
 			else
 				M.visible_message(\
-					"\blue [M.name] was unbuckled himself!",\
+					"\blue [M.name] unbuckled \himself!",\
 					"You unbuckle yourself from [src].",\
 					"You hear metal clanking")
 //			world << "[M] is no longer buckled to [src]"
