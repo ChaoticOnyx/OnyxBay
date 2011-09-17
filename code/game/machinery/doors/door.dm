@@ -329,6 +329,7 @@
 			var/area/A = user.loc.loc
 			if(A.name == "Escape Pod A" || A.name == "Escape Pod B" || A.name == "Space")
 				user.show_viewers(text("\blue [] opens the shuttle door.", user))
+				log_game("[user] opens the shuttle door.")
 				src.add_fingerprint(user)
 				open()
 				spawn(100)
