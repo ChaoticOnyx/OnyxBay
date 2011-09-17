@@ -275,7 +275,7 @@ LATTICE
 					usr << text("\red You haven't got enough metal to create the grenade casing!")
 					return
 				src.amount--
-				new /obj/item/weapon/chem_grenade( usr.loc )
+				new /obj/item/device/chem_grenade( usr.loc )
 
 			if("closet")
 				if (src.amount < 2)
