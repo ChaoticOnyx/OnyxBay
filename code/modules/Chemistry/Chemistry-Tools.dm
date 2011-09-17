@@ -19,7 +19,7 @@
 	var/list/beakers = new/list()
 	throw_speed = 4
 	throw_range = 20
-	flags = FPRINT | TABLEPASS | CONDUCT | ONBELT | USEDELAY
+	flags = FPRINT | TABLEPASS | CONDUCT | ONBELT | USEDELAY | NOSPLASH
 
 	New()
 		var/datum/reagents/R = new/datum/reagents(1000)
@@ -429,7 +429,10 @@
 			var/trans = src.reagents.trans_to(target, 10)
 			user << "\blue You transfer [trans] units of the solution to [target]."
 
-		else if(reagents.total_volume  && !istype(target,/obj/machinery/chem_master/) && !istype(target,/obj/machinery/disease2/incubator) && !istype(target,/obj/machinery/disposal) && !istype(target,/obj/table) && !istype(target,/obj/secure_closet) && !istype(target,/obj/closet) && !istype(target,/obj/item/weapon/storage) && !istype(target, /obj/machinery/atmospherics/unary/cryo_cell) && !istype(target, /obj/item/weapon/chem_grenade) && !istype(target, /obj/machinery/bot/medbot) && !istype(target, /obj/machinery/plantpot))
+		else if(target.flags & NOSPLASH)
+			return
+
+		else if(reagents.total_volume)
 			user << "\blue You splash the solution onto [target]."
 			src.reagents.reaction(target, TOUCH)
 			spawn(5) src.reagents.clear_reagents()

@@ -623,6 +623,7 @@
 	icon_state = "table"
 	density = 1
 	anchored = 1.0
+	flags = FPRINT | NOSPLASH
 
 /obj/table/reinforced
 	name = "reinforced table"

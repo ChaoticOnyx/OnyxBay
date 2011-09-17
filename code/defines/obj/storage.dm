@@ -5,6 +5,7 @@
 	var/obj/screen/storage/boxes = null
 	var/obj/screen/close/closer = null
 	w_class = 3.0
+	flags = FPRINT | NOSPLASH
 
 /obj/item/weapon/storage/backpack
 	name = "backpack"

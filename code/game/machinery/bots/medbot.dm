@@ -12,6 +12,7 @@
 	density = 1
 	anchored = 0
 	req_access =list(access_medical)
+	flags = FPRINT | NOSPLASH
 	var/health = 20
 	var/stunned = 0 //It can be stunned by tasers. Delicate circuits.
 	var/locked = 1

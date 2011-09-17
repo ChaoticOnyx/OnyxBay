@@ -118,6 +118,8 @@ vs_control/var/FIRE_PLASMA_ENERGY_RELEASED_DESC = "Determines the temp increase 
 
 #define ONESIZEFITSALL	8192	// can be worn by fatties (or children? ugh)
 
+#define NOSPLASH 16384
+
 
 // bitflags for clothing parts
 #define HEAD			1

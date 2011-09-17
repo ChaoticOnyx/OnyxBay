@@ -13,6 +13,7 @@
 
 	var/foodsupply = 0
 	var/toxins = 0
+	flags = FPRINT | NOSPLASH
 
 	ex_act(severity)
 		switch(severity)

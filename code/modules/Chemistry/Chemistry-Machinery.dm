@@ -128,6 +128,7 @@
 	icon = 'chemical.dmi'
 	icon_state = "mixer0"
 	var/beaker = null
+	flags = FPRINT | NOSPLASH
 
 	ex_act(severity)
 		switch(severity)

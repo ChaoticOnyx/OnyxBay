@@ -5,6 +5,7 @@
 	density = 1
 	anchored = 1.0
 	layer = 5
+	flags = FPRINT | NOSPLASH
 
 	var/on = 0
 	var/temperature_archived

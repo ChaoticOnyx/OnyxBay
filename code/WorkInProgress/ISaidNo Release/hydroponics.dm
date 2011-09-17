@@ -442,7 +442,7 @@
 	icon_state = "pot-empty"
 	anchored = 1
 	density = 1
-	//flags = NOSPLASH	 Strumpetplaya - commenting this out as it has components we don't support.
+	flags = NOSPLASH
 	var/current = null // What is currently growing in the plant pot
 	var/plantgenes = null // Set this up in New
 	var/plantcond = "normal"  // Automatic. How healthy the plant is.

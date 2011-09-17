@@ -9,7 +9,7 @@
 	var/bang_time = 0
 	var/opened = 0
 	var/welded = 0
-	flags = FPRINT
+	flags = FPRINT | NOSPLASH
 
 
 
@@ -226,6 +226,7 @@
 	icon = 'closet.dmi'
 	icon_state = "secure1"
 	density = 1
+	flags = FPRINT | NOSPLASH
 	var/opened = 0
 	var/locked = 1
 	var/bang_time = 0
