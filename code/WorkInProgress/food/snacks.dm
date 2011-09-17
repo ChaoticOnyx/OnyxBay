@@ -1205,7 +1205,7 @@
 	desc = "Man, that looks good. I bet it's got nougat."
 	icon_state = "candy"
 	heal_amt = 1
-	nutmod = 0.1
+	nutmod = 0.3
 
 /obj/item/weapon/reagent_containers/food/snacks/candy/MouseDrop(mob/user as mob)
 	return src.attack(user, user)
@@ -1215,7 +1215,7 @@
 	desc = "Commander Riker's What-The-Crisps"
 	icon_state = "chips"
 	heal_amt = 2
-	nutmod = 0.1
+	nutmod = 0.5
 
 /obj/item/weapon/reagent_containers/food/snacks/chips/MouseDrop(mob/user as mob)
 	return src.attack(user, user)
