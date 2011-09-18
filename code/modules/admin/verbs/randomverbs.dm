@@ -446,29 +446,16 @@ proc/remove_virus2(mob/by)
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
-// DEFERRED
-/*
-	spawn(0)
-		for(var/turf/T in view())
-			T.poison = 0
-			T.oldpoison = 0
-			T.tmppoison = 0
-			T.oxygen = 755985
-			T.oldoxy = 755985
-			T.tmpoxy = 755985
-			T.co2 = 14.8176
-			T.oldco2 = 14.8176
-			T.tmpco2 = 14.8176
-			T.n2 = 2.844e+006
-			T.on2 = 2.844e+006
-			T.tn2 = 2.844e+006
-			T.tsl_gas = 0
-			T.osl_gas = 0
-			T.sl_gas = 0
-			T.temp = 293.15
-			T.otemp = 293.15
-			T.ttemp = 293.15
-*/
+
+	if(istype(src.mob.loc, /turf/simulated/floor))
+		var/turf/temp_t = get_turf(src.mob)
+		var/zone/Z = temp_t.zone
+		Z.oxygen(MOLES_O2STANDARD)
+		Z.nitrogen(MOLES_N2STANDARD)
+		Z.co2(0)
+		Z.plasma(0)
+		Z.temp = T20C
+		message_admins("[src.mob]([src.key]) stabilized atmos in [src.mob.loc.loc]")
 
 /client/proc/toggle_view_range()
 	set category = "Special Verbs"
@@ -476,6 +463,6 @@ proc/remove_virus2(mob/by)
 	set desc = "switches between 1x and custom views"
 
 	if(src.view == world.view)
-		src.view = input("Select view range:", "FUCK YE", 7) in list(1,2,3,4,5,6,7,8,9,10,11,12,13,14)
+		src.view = input("Select view range:", "Camera View Range", 7) as num
 	else
 		src.view = world.view
