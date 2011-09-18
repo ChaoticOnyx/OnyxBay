@@ -49,6 +49,7 @@
 		W.loc = src
 		for(var/mob/M in viewers())
 			M << "[usr] adds [W] into the [src]"
+		icon_state = "land02"
 		return 0
 	if(hacked)
 		usr.drop_item()
@@ -68,6 +69,7 @@
 		usr << "The door is locked"
 	for(var/atom/movable/O in src.contents)
 		O.loc = loc
+		icon_state = "land01"
 
 /obj/machinery/washer/attack_hand()
 	if(stat & (BROKEN|NOPOWER))
