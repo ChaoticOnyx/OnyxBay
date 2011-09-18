@@ -2,13 +2,9 @@
 	if(mutantrace == "lizard")
 		var/list/wordlist = dd_text2list(message," ")
 		var/i = 1
-		world << "Before for"
-		world << wordlist.len
 		for(,i <= (wordlist.len),i++)
-			world << "Forloop"
 			var/word = wordlist[i]
 			var/randomS = rand(1,4)
-			world << "Word before text change: " + word
 			switch(randomS)
 				if(1)
 					word = dd_replaceText(word, "s", "ss")
@@ -19,7 +15,6 @@
 				if(4)
 					word = word
 			wordlist[i] = word
-			world << "Word after text change: " + word
 		message = sanitize(dd_list2text(wordlist," "))
 	..(message)
 
