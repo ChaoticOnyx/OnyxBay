@@ -455,7 +455,7 @@ proc/remove_virus2(mob/by)
 		Z.co2(0)
 		Z.plasma(0)
 		Z.temp = T20C
-		message_admins("[src.mob]([src.key]) stabilized atmos in [src.mob.loc.loc]")
+		message_admins("[src.mob]([src.key]) stabilized atmos in [temp_t.loc]")
 
 /client/proc/toggle_view_range()
 	set category = "Special Verbs"

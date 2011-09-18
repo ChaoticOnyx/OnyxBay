@@ -573,12 +573,21 @@ turf/simulated/floor/proc/update_icon()
 /turf/simulated/floor/proc/to_plating()
 	if(istype(src,/turf/simulated/floor/engine)) return
 	if(!intact) return
-	if(!icon_old) icon_old = icon_state
-	src.icon_state = "plating"
-	intact = 0
-	broken = 0
-	burnt = 0
-	levelupdate()
+	if(!icon_old && icon_old == "plating") icon_old = "floor"
+	var/turf/simulated/floor/plating/W
+	var/old_icon = icon_old
+	var/old_dir = dir
+
+	W = new /turf/simulated/floor/plating(locate(src.x, src.y, src.z))
+
+	W.dir = old_dir
+	W.icon_old = old_icon
+	W.opacity = 1
+	W.ul_SetOpacity(0)
+	W.intact = 0
+	W.broken = 0
+	W.burnt = 0
+	W.levelupdate()
 
 /turf/simulated/floor/proc/break_tile_to_plating()
 	if(intact) to_plating()
@@ -765,24 +774,11 @@ turf/simulated/floor/proc/update_icon()
 
 /turf/space/attackby(obj/item/weapon/C as obj, mob/user as mob)
 
-	if (istype(C, /obj/item/weapon/rods))
-		user << "\blue Constructing support lattice ..."
-		playsound(src.loc, 'Genhit.ogg', 50, 1)
-		ReplaceWithLattice()
-		C:amount--
-
-		if (C:amount < 1)
-			user.u_equip(C)
-			del(C)
-			return
-		return
-
-	if (istype(C, /obj/item/weapon/tile))
-		if(locate(/obj/lattice, src))
-			var/obj/lattice/L = locate(/obj/lattice, src)
-			del(L)
+	if(type == /turf/space) //Kludgy, but needed! Putting rods on hull plating shouldn't make an airleak!
+		if (istype(C, /obj/item/weapon/rods))
+			user << "\blue Constructing support lattice ..."
 			playsound(src.loc, 'Genhit.ogg', 50, 1)
-			C:build(src)
+			ReplaceWithLattice()
 			C:amount--
 
 			if (C:amount < 1)
@@ -790,9 +786,23 @@ turf/simulated/floor/proc/update_icon()
 				del(C)
 				return
 			return
-		else
-			user << "\red The plating is going to need some support."
-	return
+
+		if (istype(C, /obj/item/weapon/tile))
+			if(locate(/obj/lattice, src))
+				var/obj/lattice/L = locate(/obj/lattice, src)
+				del(L)
+				playsound(src.loc, 'Genhit.ogg', 50, 1)
+				C:build(src)
+				C:amount--
+
+				if (C:amount < 1)
+					user.u_equip(C)
+					del(C)
+					return
+				return
+			else
+				user << "\red The plating is going to need some support."
+		return
 
 /turf/simulated/asteroid/floor/attackby(obj/item/weapon/C as obj, mob/user as mob)
 
@@ -971,3 +981,33 @@ turf/proc/RebuildZone()
 	del Z
 	spawn(1 )
 		new/zone(T)
+
+/turf/simulated/floor/open/attackby(obj/item/weapon/C as obj, mob/user as mob) //Stolen from /turf/space.
+	if (istype(C, /obj/item/weapon/rods))
+		user << "\blue Constructing support lattice ..."
+		playsound(src.loc, 'Genhit.ogg', 50, 1)
+		ReplaceWithLattice()
+		C:amount--
+
+		if (C:amount < 1)
+			user.u_equip(C)
+			del(C)
+			return
+		return
+
+	if (istype(C, /obj/item/weapon/tile))
+		if(locate(/obj/lattice, src))
+			var/obj/lattice/L = locate(/obj/lattice, src)
+			del(L)
+			playsound(src.loc, 'Genhit.ogg', 50, 1)
+			C:build(src)
+			C:amount--
+
+			if (C:amount < 1)
+				user.u_equip(C)
+				del(C)
+				return
+			return
+		else
+			user << "\red The plating is going to need some support."
+	return

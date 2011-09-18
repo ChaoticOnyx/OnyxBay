@@ -21,7 +21,11 @@
 		M.pixel_y = rand(-10, 10)
 
 /obj/aiuploadcloset/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	return attack_hand(user)
+	if(istype(W, /obj/item/weapon/aiModule))
+		user.drop_item()
+		W.loc = get_turf(src)
+	else
+		return attack_hand(user)
 
 /obj/aiuploadcloset/attack_hand(mob/user as mob)
 	if(!open)
