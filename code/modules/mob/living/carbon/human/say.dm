@@ -11,9 +11,9 @@
 				if(1)
 					word = dd_replaceText(word, "s", "ss")
 				if(2)
-					word = dd_replaceText(word, "s", NewStutter("s"))
+					word = dd_replaceText(word, "s", stutter("s"))
 				if(3)
-					word = dd_replaceText(word, "s", NewStutter("ss"))
+					word = dd_replaceText(word, "s", stutter("ss"))
 				if(4)
 					word = word
 			wordlist[i] = word
