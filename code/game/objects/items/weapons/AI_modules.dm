@@ -21,6 +21,7 @@ AI MODULES
 
 /obj/machinery/computer/aiupload/attackby(obj/item/weapon/aiModule/module as obj, mob/user as mob)
 	if(istype(module, /obj/item/weapon/aiModule))
+		user << "You upload a new law to the upload."
 		module.install(src)
 		log_admin("[user.real_name]([user.ckey]) has used a [module.name] on the AI upload.")
 		message_admins("[user.real_name]([user.ckey]) has used a [module.name] on the AI upload.")
@@ -37,12 +38,12 @@ AI MODULES
 	if(istype(src,/obj/item/weapon/aiModule/freeform))
 		var/obj/item/weapon/aiModule/freeform/Mod = src //hrng
 		if(lentext(Mod.newFreeFormLaw) > 1000) //probably still too high but need discuss how long is reasonable
-			Mod.loc << "\red BUFFER OVERFLOW"
+			usr << "\red BUFFER OVERFLOW"
 			return
 	var/found=0
 	for(var/mob/living/silicon/ai/M in world)
 		if (M.stat == 2)
-			usr << "Upload failed. No signal is being detected from the AI."
+			continue;
 		else if (M.see_in_dark == 0)
 			usr << "Upload failed. Only a faint signal is being detected from the AI, and it is not responding to our requests. It may be low on power."
 		else
