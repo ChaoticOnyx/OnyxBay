@@ -1,14 +1,3 @@
-
-/atom/proc/MouseDrop_T(atom/movable/A, mob/living/carbon/human/M, atom/B)
-	if(M.mutations & 1 && istype(A) && !A.anchored)
-		step_towards(A, B)
-		if(in_range(A,B))
-			if(istype(A,/obj/item))
-				B:attackby(A, M)
-				//A:attack(B, M)
-				A:afterattack(B, M)
-				return
-
 /atom/proc/attack_hand(mob/user as mob)
 	return
 
@@ -150,13 +139,29 @@
 			source2.icon = I
 	return
 
-/atom/MouseDrop(atom/over_object as mob|obj|turf|area,src_location,over_location)
-	spawn( 0 )
-		if (istype(over_object, /atom))
-			over_object.MouseDrop_T(src, usr, over_location)
-		return
-	..()
-	return
+/atom/MouseDrop(atom/B)
+	if(usr.mutations & 1 && !src:anchored)
+		step_towards(src, B)
+		if(in_range(src,B))
+			if(istype(src,/obj/item))
+				B:attackby(src, usr)
+				if(istype(B, /mob))
+					src:attack(B, usr)
+				src:afterattack(B, usr)
+		var/obj/overlay/O = new /obj/overlay(locate(src.loc))
+		O.name = "sparkles"
+		O.anchored = 1
+		O.density = 0
+		O.layer = FLY_LAYER
+		O.dir = pick(cardinal)
+		O.icon = 'effects.dmi'
+		O.icon_state = "nothing"
+		flick("empdisable",O)
+		spawn(5)
+			del(O)
+
+/atom/proc/MouseDrop_T()
+        return
 
 /atom/Click(location,control,params)
 	//world << "atom.Click() on [src] by [usr] : src.type is [src.type]"
@@ -222,7 +227,9 @@
 	if ((!( src in usr.contents ) && (((!( isturf(src) ) && (!( isturf(src.loc) ) && (src.loc && !( isturf(src.loc.loc) )))) || !( isturf(usr.loc) )) && (src.loc != usr.loc && (!( istype(src, /obj/screen) ) && !( usr.contents.Find(src.loc) ))))))
 		return
 
-	var/t5 = in_range(src, usr) || src.loc == usr
+	var/t5
+	if(istype(src, /obj/item)) t5 = in_range(src, usr, 0) || src.loc == usr
+	else t5 = in_range(src, usr) || src.loc == usr
 
 	if (istype(usr, /mob/living/silicon/ai))
 		t5 = 1

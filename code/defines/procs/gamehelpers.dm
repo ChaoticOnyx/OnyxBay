@@ -44,12 +44,12 @@
 
 	return
 
-/proc/in_range(source, user)
+/proc/in_range(source, user, telepathy=1)
 	if(get_dist(source, user) <= 1)
 		return 1
 	else
 		if (istype(user, /mob/living/carbon))
-			if (user:mutations & 1)
+			if (user:mutations & telepathy)
 				var/X = source:x
 				var/Y = source:y
 				var/Z = source:z
