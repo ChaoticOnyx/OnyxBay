@@ -5,6 +5,8 @@
 		var/list/wordlist = dd_text2list(message," ")
 		var/i = 1
 		for(,i <= (wordlist.len),i++)
+			if(copytext(message(1,2) == "&")
+				continue;
 			var/word = wordlist[i]
 			var/randomS = rand(1,4)
 			switch(randomS)
