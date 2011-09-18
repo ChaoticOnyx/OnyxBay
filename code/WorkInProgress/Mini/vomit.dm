@@ -25,3 +25,4 @@
 		return message
 	for (var/mob/O in viewers(src, null))
 		O.show_message(message, 1)
+
