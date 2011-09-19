@@ -149,7 +149,7 @@
 	edible = 0
 
 /obj/item/weapon/reagent_containers/food/snacks/meat
-	name = " meat"
+	name = "meat"
 	desc = "A raw meat slab."
 	icon_state = "meat"
 	edible = 0
