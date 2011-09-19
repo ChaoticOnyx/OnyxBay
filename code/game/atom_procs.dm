@@ -160,8 +160,8 @@
 		spawn(5)
 			del(O)
 	spawn( 0 )
-		if (istype(over_object, /atom))
-			over_object.MouseDrop_T(src, usr, over_location)
+		if (istype(B))
+			B.MouseDrop_T(src, usr)
 		return
 
 /atom/proc/MouseDrop_T()

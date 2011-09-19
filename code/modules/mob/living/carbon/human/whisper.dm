@@ -34,23 +34,13 @@
 	var/message_range = 1
 
 	if (stuttering)
-		world << "IMALIZARD"
 		message = NewStutter(message,stunned)
 	if (intoxicated)
 		message = Intoxicated(message)
-
-
-
 	if(mutantrace == "lizard")
-		world << "IMALIZARD"
-		if(copytext(message,1,2) == "*")
-			return ..(message)
 		var/list/wordlist = dd_text2list(message," ")
 		var/i = 1
-		world << "beforefor"
 		for(,i <= (wordlist.len),i++)
-			if(copytext(message,1,2) == "&")
-				continue
 			var/word = wordlist[i]
 			var/randomS = rand(1,4)
 			switch(randomS)
@@ -65,7 +55,7 @@
 			wordlist[i] = word
 		message = sanitize(dd_list2text(wordlist," "))
 
-
+	message = addtext(uppertext(copytext(message,1,2)), copytext(message, 2))
 
 	for (var/obj/O in view(message_range, src))
 		spawn (0)
