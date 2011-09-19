@@ -327,7 +327,6 @@
 #include "code\game\events\Events\IonStorm.dm"
 #include "code\game\events\Events\MeteorStorm.dm"
 #include "code\game\events\Events\PortalStorm.dm"
-#include "code\game\events\Events\Poweroffline.dm"
 #include "code\game\events\Events\RadiationBelt.dm"
 #include "code\game\events\Events\VirusEpidemic.dm"
 #include "code\game\gamemodes\game_mode.dm"
