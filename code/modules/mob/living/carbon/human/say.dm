@@ -2,6 +2,7 @@
 	if(mutantrace == "lizard")
 		if(copytext(message,1,2) == "*")
 			return ..(message)
+		message = html_decode(message)
 		var/list/wordlist = dd_text2list(message," ")
 		var/i = 1
 		for(,i <= (wordlist.len),i++)
