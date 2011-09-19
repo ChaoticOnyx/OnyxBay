@@ -29,6 +29,7 @@ YOUR MUMS BOX
 		if(amount < 6)
 			user.drop_item()
 			W.loc = src
+			amount++
 			usr << "You place a donut back into the [src]."
 		else
 			usr << "The [src] is full"
@@ -64,6 +65,7 @@ YOUR MUMS BOX
 				usr.l_hand = P
 				usr.update_clothing()
 				usr << "You take a donut out of the [src]."
+				amount--
 				break
 			else if (!usr.r_hand)
 				P.loc = usr
@@ -71,6 +73,7 @@ YOUR MUMS BOX
 				usr.r_hand = P
 				usr.update_clothing()
 				usr << "You take a donut out of the [src]."
+				amount--
 				break
 	else
 		if (src.amount >= 1)
