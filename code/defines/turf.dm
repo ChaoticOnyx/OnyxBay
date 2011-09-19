@@ -315,7 +315,18 @@ turf/space/hull/New()
 	thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m steel wall
 	var/Zombiedamage
+	var/obj/wall_contents/trapped_objects = null
 	melting_point = 2500
+
+/obj/wall_contents
+	icon = 'walls.dmi'
+	icon_state = "wall-contents-alert"
+	invisibility = 2
+	layer = 10
+	anchored = 1
+	var/image/meson_image = null
+	var/bang_time
+
 
 /turf/simulated/wall/r_wall
 	name = "Reinforced Wall"

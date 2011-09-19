@@ -157,6 +157,8 @@ var
 	no_auth_motd = null
 	forceblob = 0
 
+	list/meson_wall_overlays = list()
+
 	// **********************************
 	//	Networking Support
 	// **********************************

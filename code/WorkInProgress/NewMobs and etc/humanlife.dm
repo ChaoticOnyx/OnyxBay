@@ -117,6 +117,11 @@
 	client.screen -= hud_used.breath
 	client.screen -= hud_used.welding
 
+	client.images -= meson_wall_overlays
+
+	if(istype(glasses, /obj/item/clothing/glasses/meson))
+		client.images += meson_wall_overlays
+
 	if ((blind && stat != 2))
 		if ((blinded))
 			blind.layer = 18
