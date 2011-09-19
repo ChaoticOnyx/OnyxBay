@@ -354,49 +354,51 @@ and then you have (1-3sec to respond to this eg by applying cotton.
 	return stage == a
 
 /obj/item/weapon/surgical_tool/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M, /mob))
-		return
-//	world << "Start"
-	if((usr.mutations & 16) && prob(50))
-		M << "\red You stab yourself in the eye."
-		M.sdisabilities |= 1
-		M.weakened += 4
-		M.bruteloss += 10
+        if(!istype(M, /mob))
+                return
+//      world << "Start"
+        if((usr.mutations & 16) && prob(50))
+                M << "\red You stab yourself in the eye."
+                M.sdisabilities |= 1
+                M.weakened += 4
+                M.bruteloss += 10
 
-	src.add_fingerprint(user)
+        src.add_fingerprint(user)
 
-	if(!(locate(/obj/machinery/optable, M.loc) && M.resting))
-		return ..()
+        if(!(locate(/obj/machinery/optable, M.loc) && M.resting))
+                return ..()
 
-	var/zone = user.zone_sel.selecting
-//	world << zone
-	if (istype(M.organs[text("[]", zone)], /datum/organ/external))
-		var/datum/organ/external/temp = M.organs[text("[]", zone)]
-		var/msg
+        var/zone = user.zone_sel.selecting
+//      world << zone
+        if (istype(M.organs[text("[]", zone)], /datum/organ/external))
+                var/datum/organ/external/temp = M.organs[text("[]", zone)]
+                var/msg
 
-		msg = get_message(1,M,user,temp)
-		for(var/mob/O in viewers(M,null))
-			O.show_message("\red [msg]",1)
-		if(do_mob(user,M,time))
-			if(temp.open)
-				if(temp.wound == wound)
-					if(temp.stage in stage)
-						temp.stage += 1
+                msg = get_message(1,M,user,temp)
+                for(var/mob/O in viewers(M,null))
+                        O.show_message("\red [msg]",1)
+                if(do_mob(user,M,time))
+                        if(temp.open)
+                                if(temp.wound == wound)
+                                        if(temp.stage in stage)
+                                                temp.stage += 1
 
-						if(IsFinalStage(temp.stage))
-							temp.broken = 0
-							temp.stage = 0
-						msg = get_message(2,M,user,temp)
-					else
-						msg = get_message(4,M,user,temp)
-						screw_up(M,user,temp)
-			else
-				msg = get_message(5,M,user,temp)
-		else
-			msg = get_message(3,M,user,temp)
+                                                if(IsFinalStage(temp.stage))
+                                                        temp.broken = 0
+                                                        temp.stage = 0
+                                                        temp.perma_injury = 0
+                                                        temp.brute_dam = temp.min_broken_damage -1
+                                                msg = get_message(2,M,user,temp)
+                                        else
+                                                msg = get_message(4,M,user,temp)
+                                                screw_up(M,user,temp)
+                        else
+                                msg = get_message(5,M,user,temp)
+                else
+                        msg = get_message(3,M,user,temp)
 
-		for(var/mob/O in viewers(M,null))
-			O.show_message("\red [msg]",1)
+                for(var/mob/O in viewers(M,null))
+                        O.show_message("\red [msg]",1)
 
 
 //Broken bone
