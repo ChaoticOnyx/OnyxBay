@@ -34,9 +34,38 @@
 	var/message_range = 1
 
 	if (stuttering)
+		world << "IMALIZARD"
 		message = NewStutter(message,stunned)
 	if (intoxicated)
 		message = Intoxicated(message)
+
+
+
+	if(mutantrace == "lizard")
+		world << "IMALIZARD"
+		if(copytext(message,1,2) == "*")
+			return ..(message)
+		var/list/wordlist = dd_text2list(message," ")
+		var/i = 1
+		world << "beforefor"
+		for(,i <= (wordlist.len),i++)
+			if(copytext(message,1,2) == "&")
+				continue
+			var/word = wordlist[i]
+			var/randomS = rand(1,4)
+			switch(randomS)
+				if(1)
+					word = dd_replaceText(word, "s", "ss")
+				if(2)
+					word = dd_replaceText(word, "s", stutter("s"))
+				if(3)
+					word = dd_replaceText(word, "s", stutter("ss"))
+				if(4)
+					word = word
+			wordlist[i] = word
+		message = sanitize(dd_list2text(wordlist," "))
+
+
 
 	for (var/obj/O in view(message_range, src))
 		spawn (0)
