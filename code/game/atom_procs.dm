@@ -159,6 +159,10 @@
 		flick("empdisable",O)
 		spawn(5)
 			del(O)
+	spawn( 0 )
+		if (istype(over_object, /atom))
+			over_object.MouseDrop_T(src, usr, over_location)
+		return
 
 /atom/proc/MouseDrop_T()
         return
