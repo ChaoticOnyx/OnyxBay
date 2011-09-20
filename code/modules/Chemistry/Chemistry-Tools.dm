@@ -67,12 +67,12 @@
 					playsound(src.loc, 'Screwdriver.ogg', 25, -3)
 					name = "grenade"
 					icon_state = "chemg3"
-					active = 1
+					active = 2
 				else
 					user << "\red You need to add all components before locking the assembly."
 
 /obj/item/device/chem_grenade/attack_self(mob/user as mob)
-	if(active)
+	if(active == 2)
 		attached_device.attack_self(usr)
 		return
 	user.machine = src
@@ -152,7 +152,7 @@
 		beaker_one = new(src)
 		beaker_two = new(src)
 		attached_device = new /obj/item/device/timer(src)
-
+		attached_device.master = src
 
 		beaker_one.reagents.add_reagent("aluminium", 30)
 		beaker_two.reagents.add_reagent("foaming_agent", 10)
@@ -169,10 +169,27 @@
 		beaker_one = new(src)
 		beaker_two = new(src)
 		attached_device = new /obj/item/device/timer(src)
+		attached_device.master = src
 
 		beaker_one.reagents.add_reagent("fluorosurfactant", 30)
 		beaker_two.reagents.add_reagent("water", 10)
 		beaker_two.reagents.add_reagent("cleaner", 10)
+
+/obj/item/device/chem_grenade/flashbang
+	name = "flashbang grenade"
+	icon_state = "chemg3"
+	active = 2
+
+	New()
+		..()
+		beaker_one = new(src)
+		beaker_two = new(src)
+		attached_device = new /obj/item/device/timer(src)
+		attached_device.master = src
+
+		beaker_one.reagents.add_reagent("potassium", 10)
+		beaker_one.reagents.add_reagent("sulfur", 10)
+		beaker_two.reagents.add_reagent("aluminium", 10)
 
 ///////////////////////////////Grenades
 
