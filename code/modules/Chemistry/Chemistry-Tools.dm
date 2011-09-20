@@ -1059,6 +1059,7 @@
 //Syringes
 /obj/item/weapon/reagent_containers/syringe/robot
 	name = "Syringe (mixed)"
+	label = list("mixed")
 	desc = "Contains inaprovaline & anti-toxins."
 	New()
 		var/datum/reagents/R = new/datum/reagents(15)
@@ -1072,6 +1073,7 @@
 
 /obj/item/weapon/reagent_containers/syringe/inaprovaline
 	name = "Syringe (inaprovaline)"
+	label = list("inaprovaline")
 	desc = "Contains inaprovaline - used to stabilize patients."
 	New()
 		var/datum/reagents/R = new/datum/reagents(15)
@@ -1082,7 +1084,8 @@
 		update_icon()
 
 /obj/item/weapon/reagent_containers/syringe/antitoxin
-	name = "Syringe (anti-toxin)"
+	name = "Syringe (dylovene)"
+	label = list("dylovene")
 	desc = "Contains anti-toxins."
 	New()
 		var/datum/reagents/R = new/datum/reagents(15)
@@ -1094,6 +1097,7 @@
 
 /obj/item/weapon/reagent_containers/syringe/antiviral
 	name = "Syringe (spaceacillin)"
+	label = list("spaceacillin")
 	desc = "Contains antiviral agents."
 	New()
 		var/datum/reagents/R = new/datum/reagents(15)

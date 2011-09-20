@@ -100,6 +100,7 @@
 
 /obj/item/weapon/storage/firstaid/syringes
 	name = "Syringes (Biohazard Alert)"
+	labels = list("Biohazard Alert")
 	icon_state = "syringe"
 
 /obj/item/weapon/storage/firstaid/toxin
