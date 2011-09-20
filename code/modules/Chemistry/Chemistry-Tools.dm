@@ -138,7 +138,8 @@
 	spawn(50)		   //To make sure all reagents can work
 		del(src)	   //correctly before deleting the grenade.
 
-/obj/item/device/chem_grenade/proc/c_state()
+/obj/item/device/chem_grenade/proc/c_state(n)
+	icon_state = "chemg[n+3]"
 	return
 
 /obj/item/device/chem_grenade/metalfoam
