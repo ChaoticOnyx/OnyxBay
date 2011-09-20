@@ -90,7 +90,7 @@
 	if(href_list["gen"])	//rank (rank), sex (sex), physical status (p_stat), mental status (m_stat)
 		if(href_list["entry"] == "rank")
 			if(href_list["rank"])
-				if(href_list["rank"] == "Custom"
+				if(href_list["rank"] == "Custom")
 					gen_rec.fields["rank"] = input("Job name:")
 				else
 					gen_rec.fields["rank"] = href_list["rank"]
