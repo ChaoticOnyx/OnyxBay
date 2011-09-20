@@ -39,6 +39,8 @@ datum
 				for(var/mob/M in viewers(min(max(1, (created_volume/2)-4), 5), location))
 					M << "\red The explosion knocks you down."
 					M:weakened += round((created_volume/3)+0.5)
+					M.ear_damage += (created_volume / 2) - range(src, M) * 5
+					M.ear_deaf += (created_volume * 2) - range(src, M) * 5
 				del(src)
 				return
 
