@@ -1,7 +1,7 @@
 /obj/machinery/disease2/biodestroyer
 	name = "Biohazard destroyer"
 	icon = 'disposal.dmi'
-	icon_state = "disposal"
+	icon_state = "disposalbio"
 	var/list/accepts = list(/obj/item/clothing,/obj/item/weapon/virusdish/,/obj/item/weapon/cureimplanter,/obj/item/weapon/diseasedisk)
 	density = 1
 	anchored = 1
