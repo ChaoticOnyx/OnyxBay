@@ -1,8 +1,8 @@
 /obj/machinery/sink
 	name = "sink"
-	icon = 'device.dmi'
+	icon = 'kitchen.dmi'
 	icon_state = "sink"
-	desc = "A sink used for washing one's hands and face."
+	desc = "A sink used for washing one's hands and face AND CUPS."
 	anchored = 1
 
 
@@ -30,6 +30,10 @@
 					C:head.clean_blood()
 		for(var/mob/V in viewers(src, null))
 			V.show_message(text("\blue [M] washes up using \the [src]."))
+
+	attackby(var/obj/item/weapon/reagent_containers/food/B as obj, var/mob/user as mob)
+		if(!istype(B, /obj/item/weapon/reagent_containers/food/drinks))
+			return
 
 	shower
 		name = "Shower"

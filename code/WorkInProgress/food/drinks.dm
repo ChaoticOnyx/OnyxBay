@@ -1,25 +1,37 @@
 /obj/item/weapon/reagent_containers/food/drinks
 	name = "drink"
-	desc = "yummy"
+	desc = "It's a glass."
 	icon = 'food.dmi'
 	icon_state = null
 	flags = FPRINT | TABLEPASS | OPENCONTAINER
 	var/gulp_size = 5 //This is now officially broken ... need to think of a nice way to fix it.
 		//The gulp size has been marked as broken since the goon code. What exactly is broken?
 
+	examine()
+		set src in view(2)
+		..()
+		usr << "\blue It contains:"
+		if(!reagents) return
+		if(reagents.total_volume)
+			reagents.update_total()
+			usr << "\blue [reagents.total_volume] units of liquid."
+		else
+			usr << "\blue Nothing."
+
 	New()
 		var/datum/reagents/R = new/datum/reagents(50)
 		reagents = R
 		R.my_atom = src
-		update_gulp_size()
+	/*	update_gulp_size()
 
 	proc
 		update_gulp_size()
 			gulp_size = round(reagents.total_volume / 5)
 			if (gulp_size < 5) gulp_size = 5
+			Go away gulp_size, you are not wanted here!
 
 	on_reagent_change()
-		update_gulp_size()
+		update_gulp_size() GO AWAY GULP SIZE, YOU ARE NOT WANTED HERE! */
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		return
@@ -92,6 +104,13 @@
 			var/trans = src.reagents.trans_to(target, 10)
 			user << "\blue You transfer [trans] units of the solution to [target]."
 
+		else if (istype(target, /obj/machinery/sink)) //THIS ARE FOR MAKE PUT DRINK IN SINK SO EMPTY CUP.
+			if(!reagents.total_volume)
+				user << "\red [src] is empty."
+				return
+
+			var/trans = src.reagents.remove_any(30)
+			user << "\blue You tip [trans] units of the solution down the [target]."
 		return
 
 
