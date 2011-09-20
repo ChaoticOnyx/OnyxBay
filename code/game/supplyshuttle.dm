@@ -543,6 +543,8 @@ var/supply_shuttle_points = 50
 			var/atom/A = new SP.containertype ( pickedloc )
 
 			A.name = "[SP.containername] [SO.comment ? "([SO.comment])":"" ]"
+			if(SO.comment)
+				A.labels += SO.comment
 
 			if(SP.access)
 				A:req_access = new/list()
