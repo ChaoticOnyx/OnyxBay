@@ -70,6 +70,13 @@
 					active = 2
 				else
 					user << "\red You need to add all components before locking the assembly."
+		if(2)
+			if(istype(item, /obj/item/weapon/screwdriver))
+				user << "/blue You disarm the [src]!"
+				playsound(src.loc, 'Screwdriver.ogg', 25, -3)
+				name = "grenade casing"
+				icon_state = "chemg2"
+				active = 1
 
 /obj/item/device/chem_grenade/attack_self(mob/user as mob)
 	if(active == 2)
@@ -124,6 +131,7 @@
 	if(exploding) return
 	exploding = 1
 	playsound(src.loc, 'bamf.ogg', 50, 1)
+	beaker_two.reagents.maximum_volume += beaker_one.reagents.maximum_volume // make sure everything can mix
 	beaker_one.reagents.update_total()
 	beaker_one.reagents.trans_to(beaker_two, beaker_one.reagents.total_volume)
 	if(beaker_one.reagents.total_volume) //The possible reactions didnt use up all reagents.
@@ -188,9 +196,9 @@
 		attached_device = new /obj/item/device/timer(src)
 		attached_device.master = src
 
-		beaker_one.reagents.add_reagent("potassium", 10)
-		beaker_one.reagents.add_reagent("sulfur", 10)
-		beaker_two.reagents.add_reagent("aluminium", 10)
+		beaker_one.reagents.add_reagent("potassium", 25)
+		beaker_one.reagents.add_reagent("sulfur", 25)
+		beaker_two.reagents.add_reagent("aluminium", 25)
 
 ///////////////////////////////Grenades
 
