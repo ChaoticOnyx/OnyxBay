@@ -108,13 +108,11 @@ var/global/const/LIGHT_OK = 0
 
 /obj/machinery/light/small/New()
 	..()
-//	if(prob(10))
-//		status = LIGHT_BROKEN
+	if(prob(10))
+		status = LIGHT_BROKEN
 
 	spawn(1)
 		update()
-		
-//NOPE, commenting this out
 
 // update the icon_state and luminosity of the light depending on its state
 // skip_check is currently used for ghosts flickering lights. It skips the status check, so that burned lights can also work.
