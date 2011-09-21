@@ -981,6 +981,7 @@
 				var/icon/stain_icon = icon('blood.dmi', "uniformblood[!lying ? "" : "2"]")
 				overlays += image("icon" = stain_icon, "layer" = MOB_LAYER)
 
+
 	if (wear_id)
 		overlays += image("icon" = 'mob.dmi', "icon_state" = "id[!lying ? null : "2"]", "layer" = MOB_LAYER)
 
@@ -1223,6 +1224,9 @@
 				return
 
 	last_b_state = stat
+	//tails
+	if(mutantrace && !lying)
+		overlays += image("icon" = 'genetics.dmi', "icon_state" = "[mutantrace]_t", "layer" = MOB_LAYER)
 
 /mob/living/carbon/human/hand_p(mob/M as mob)
 	if (!ticker)
