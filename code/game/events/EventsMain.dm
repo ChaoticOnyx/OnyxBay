@@ -45,6 +45,6 @@ client/proc/Force_Event(Type as null|anything in typesof(/datum/event))
 			ActiveEvent.Tick()
 			ActiveEvent.ActiveFor++
 			sleep(10)
+			if(!ActiveEvent) return
 		ActiveEvent.Die()
 		del ActiveEvent
-

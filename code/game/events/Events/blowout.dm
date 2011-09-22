@@ -4,6 +4,10 @@
 		..()
 		Lifetime += 45
 	Announce()
+		if(prob(90))
+			ActiveEvent = null
+			SpawnEvent()
+			del src
 		command_alert("Warning: Ship approaching high-density radiation cloud. Seek cover immediately.")
 	Tick()
 		if(ActiveFor == 45)
