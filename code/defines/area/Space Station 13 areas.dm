@@ -651,6 +651,9 @@
 	name = "Kitchen"
 	icon_state = "kitchen"
 
+/area/crew_quarters/kitchen/freezer
+	name = "Kitchen Freezer"
+	icon_state = "kitchenfreezer"
 
 /area/crew_quarters/bar
 	name= "Bar"
