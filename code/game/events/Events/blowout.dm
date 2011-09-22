@@ -1,5 +1,5 @@
 /datum/event/blowout
-	var/list/safezones = list(/area/maintenance, /area/ai_monitored/maintenance, /area/centcom, /area/admin, /area/adminsafety, /area/shuttle, /area/syndicate_station, /area/asteroid)
+	var/list/safezones = list(/area/maintenance, /area/ai_monitored/maintenance, /area/centcom, /area/admin, /area/adminsafety, /area/shuttle, /area/syndicate_station, /area/asteroid, /area/crew_quarters/sleeping)
 	New()
 		..()
 		Lifetime += 45
@@ -19,6 +19,6 @@
 						safe = 1
 						break
 				if(M.radiation < 95 && !M.stat && !safe)
-					M.radiate(10)
+					M.radiate(rand(0,10))
 	Die()
 		command_alert("The ship has cleared the radiation cloud. It is now safe to leave cover.")
