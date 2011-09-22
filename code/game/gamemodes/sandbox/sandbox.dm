@@ -1,6 +1,7 @@
 /datum/game_mode/sandbox
 	name = "Sandbox"
 	config_tag = "sandbox"
+	votable = 0
 	uplink_welcome = "Syndicate Uplink Console:"
 	uplink_items = {"/obj/item/weapon/storage/syndie_kit/imp_freedom:3:Freedom Implant, with injector;
 /obj/item/weapon/storage/syndie_kit/imp_compress:5:Compressed matter implant, with injector;/obj/item/weapon/storage/syndie_kit/imp_vfac:5:Viral factory implant, with injector;
