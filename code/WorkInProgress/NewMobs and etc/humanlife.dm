@@ -1,13 +1,11 @@
 /mob/living/carbon/human/proc/radiation_protection()
-	var/pr = 0
+	if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
+		return 40
 	if(istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
-		pr += 5
-	else if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
-		pr += 40
-	else if(istype(wear_suit, /obj/item/clothing/suit))
-		pr += 5
-
-	return pr
+		return 4
+	if(istype(wear_suit, /obj/item/clothing/suit))
+		return 2
+	return 0
 
 /mob/living/carbon/human/radiate(amount)
 	amount -= radiation_protection()
