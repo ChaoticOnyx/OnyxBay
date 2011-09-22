@@ -323,6 +323,7 @@
 #include "code\game\disease\monkeydispensor.dm"
 #include "code\game\events\Event.dm"
 #include "code\game\events\EventsMain.dm"
+#include "code\game\events\Events\blowout.dm"
 #include "code\game\events\Events\ElectricalStorm.dm"
 #include "code\game\events\Events\IonStorm.dm"
 #include "code\game\events\Events\MeteorStorm.dm"
