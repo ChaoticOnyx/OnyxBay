@@ -49,6 +49,9 @@
 	del player.l_store
 	del player.wear_suit
 	del player.w_uniform
+	del player.wear_mask
+	del player.back
+	del player.r_hand
 
 	player.wear_suit = new /obj/item/clothing/suit/fire(player)
 	player.wear_suit.layer = 40
@@ -79,8 +82,13 @@
 	var/obj/item/weapon/storage/backpack/bp = new /obj/item/weapon/storage/backpack(player)
 	player.back = bp
 	player.back.layer = 40
-	new /obj/item/weapon/circuitry(player.back)
-	new /obj/item/weapon/circuitry(player.back)
+	player.l_store = new /obj/item/weapon/circuitry(player) // i dont care if cierucuitry cant fit in pockers
+	player.l_store.layer = 40
+	player.wear_mask = new /obj/item/clothing/mask/gas(player)
+	player.wear_mask.layer = 40
+	player.back = new /obj/item/weapon/tank/air(player)
+	player.back.layer = 40
+	player.internal = player.back
 /*		var/obj/item/clothing/suit/wear_suit = null
 	var/obj/item/clothing/under/w_uniform = null
 //	var/obj/item/device/radio/w_radio = null
@@ -93,6 +101,7 @@
 	var/obj/item/weapon/card/id/wear_id = null
 	var/obj/item/weapon/r_store = null
 	var/obj/item/weapon/l_store = null*/
+	player.update_clothing()
 
 /datum/game_mode/derelict/latespawn(var/mob/living/carbon/human/player)
 	equip_scavenger(player)
