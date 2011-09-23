@@ -242,6 +242,75 @@ turf/simulated/wall/bullet_act(flag,dir)
 	return S
 
 
+/turf/simulated/wall/New()
+	..()
+	spawn(1)
+		var/list/stuff = list()
+		for(var/atom/movable/m in src)
+			if(!m.anchored && !istype(m, /mob/dead))
+				stuff += m
+
+		if(stuff.len > 0)
+			trapped_objects = new(src)
+			for(var/atom/movable/m in stuff)
+				m.loc = trapped_objects
+				if(istype(m, /mob/living) && m:client)
+					m:client.perspective = EYE_PERSPECTIVE
+					m:client.eye = src
+
+/obj/wall_contents/New()
+	..()
+	meson_image = image(icon, loc, icon_state, layer, dir)
+	meson_image.override = 0
+	meson_wall_overlays += meson_image
+
+/obj/wall_contents/Del()
+	meson_wall_overlays -= meson_image
+	del meson_image
+	..()
+
+/obj/wall_contents/relaymove(mob/user as mob)
+	if (user.stat)
+		return
+
+	var/obj/item/tool = user.equipped()
+	var/list/break_times = list(
+		/obj/item/weapon/crowbar = 90,
+		/obj/item/weapon/wrench = 60,
+		/obj/item/weapon/screwdriver = 120,
+		)
+
+	if(tool && tool.type in break_times)
+		spawn()
+			user << "You try to break the wall open! It's rather cramped, so it will take a while..."
+			if(do_after(user, break_times[tool.type]))
+				if(user.loc == src && loc && istype(loc, /turf/simulated/wall))
+					var/turf/simulated/wall/wall = loc
+					wall.dismantle_wall()
+
+	else if (world.timeofday - bang_time >= 14)
+		user << "\blue You're stuck!"
+
+		for (var/mob/M in hearers(src, null))
+			if(!(M.sdisabilities & 4) && M.ear_deaf == 0)
+				M << text("<FONT size=[]>BANG, bang!</FONT>", max(0, 5 - get_dist(src, M)))
+
+		bang_time = world.timeofday
+
+
+/turf/simulated/wall/Del()
+	if(trapped_objects)
+		for(var/atom/movable/m in trapped_objects)
+			m.loc = src
+
+			if(istype(m, /mob) && m:client)
+				m:client.eye = m:client.mob
+				m:client.perspective = MOB_PERSPECTIVE
+
+		del trapped_objects
+
+	..()
+
 /turf/simulated/wall/proc/dismantle_wall(devastated=0)
 	var/turf/simulated/wall/S = src
 	if(istype(src,/turf/simulated/wall/r_wall))

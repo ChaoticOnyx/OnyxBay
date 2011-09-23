@@ -82,7 +82,7 @@
 					"You hear metal clanking")
 			else
 				M.visible_message(\
-					"\blue [M.name] unbuckled \himself!",\
+					"\blue [M.name] unbuckled [M.gender == "male" ? "him" : "her"]self!",\
 					"You unbuckle yourself from [src].",\
 					"You hear metal clanking")
 //			world << "[M] is no longer buckled to [src]"
@@ -109,7 +109,8 @@
 			"You hear metal clanking")
 	M.anchored = 1
 	M.buckled = src
-	M.update_clothing()
+	spawn(5)
+		M.update_clothing()
 	M.loc = src.loc
 	src:buckled_mobs += M
 	src.add_fingerprint(user)

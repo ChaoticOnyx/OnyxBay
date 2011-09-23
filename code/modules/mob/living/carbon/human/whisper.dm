@@ -37,6 +37,26 @@
 		message = NewStutter(message,stunned)
 	if (intoxicated)
 		message = Intoxicated(message)
+	if(mutantrace == "lizard")
+		message = html_decode(message)
+		var/list/wordlist = dd_text2list(message," ")
+		var/i = 1
+		for(,i <= (wordlist.len),i++)
+			var/word = wordlist[i]
+			var/randomS = rand(1,4)
+			switch(randomS)
+				if(1)
+					word = dd_replaceText(word, "s", "ss")
+				if(2)
+					word = dd_replaceText(word, "s", stutter("s"))
+				if(3)
+					word = dd_replaceText(word, "s", stutter("ss"))
+				if(4)
+					word = word
+			wordlist[i] = word
+		message = sanitize(dd_list2text(wordlist," "))
+
+	message = addtext(uppertext(copytext(message,1,2)), copytext(message, 2))
 
 	for (var/obj/O in view(message_range, src))
 		spawn (0)

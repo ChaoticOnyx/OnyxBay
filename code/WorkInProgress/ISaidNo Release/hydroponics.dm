@@ -1653,7 +1653,6 @@
 		dat += "<b>Synthmeat</b>: <A href='?src=\ref[src];vend=13'><U>Vend</U></A><br>"
 		dat += "<b>Lettuce</b>: <A href='?src=\ref[src];vend=15'><U>Vend</U></A><br>"
 		dat += "<b>Carrot</b>: <A href='?src=\ref[src];vend=14'><U>Vend</U></A><br>"
-		dat += "<b>Pumpkin</b>: <A href='?src=\ref[src];vend=16'><U>Vend</U></A><br>"
 		dat += "<b>Asomna</b>: <A href='?src=\ref[src];vend=17'><U>Vend</U></A><br>"
 		dat += "<b>Nureous</b>: <A href='?src=\ref[src];vend=18'><U>Vend</U></A><br>"
 		dat += "<b>Contusine</b>: <A href='?src=\ref[src];vend=19'><U>Vend</U></A><br>"

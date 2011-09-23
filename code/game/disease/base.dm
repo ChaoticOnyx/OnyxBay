@@ -217,6 +217,7 @@
 
 	proc/activate(var/mob/living/carbon/mob)
 		if(dead)
+			cure(mob)
 			mob.virus2 = null
 			return
 		if(mob.stat == 2)
@@ -239,6 +240,21 @@
 		for(var/datum/disease2/effectholder/e in effects)
 			e.runeffect(mob,stage)
 		clicks+=speed
+
+	proc/cure(var/mob/living/carbon/mob)
+		var/datum/disease2/effectholder/E
+		if(stage>1)
+			E = effects[1]
+			E.effect.deactivate(mob)
+		if(stage>2)
+			E = effects[2]
+			E.effect.deactivate(mob)
+		if(stage>3)
+			E = effects[3]
+			E.effect.deactivate(mob)
+		if(stage>4)
+			E = effects[4]
+			E.effect.deactivate(mob)
 
 	proc/cure_added(var/datum/disease2/resistance/res)
 		if(res.resistsdisease(src))
@@ -275,6 +291,7 @@
 	var/stage = 4
 	var/maxm = 1
 	proc/activate(var/mob/living/carbon/mob,var/multiplier)
+	proc/deactivate(var/mob/living/carbon/mob)
 
 /datum/disease2/effect/zombie
 	name = "Tombstone Syndrome"
@@ -347,7 +364,9 @@
 	name = "Identity Loss syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.face_dmg = 1
+		mob.face_dmg++
+	deactivate(var/mob/living/carbon/mob)
+		mob.face_dmg--
 
 /datum/disease2/effect/greater/monkey
 	name = "Monkism syndrome"

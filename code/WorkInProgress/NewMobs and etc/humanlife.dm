@@ -1,13 +1,11 @@
 /mob/living/carbon/human/proc/radiation_protection()
-	var/pr = 0
+	if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
+		return 40
 	if(istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
-		pr += 5
-	else if(istype(wear_suit, /obj/item/clothing/suit/bio_suit))
-		pr += 40
-	else if(istype(wear_suit, /obj/item/clothing/suit))
-		pr += 5
-
-	return pr
+		return 4
+	if(istype(wear_suit, /obj/item/clothing/suit))
+		return 2
+	return 0
 
 /mob/living/carbon/human/radiate(amount)
 	amount -= radiation_protection()
@@ -116,6 +114,11 @@
 	client.screen -= hud_used.lp_dither
 	client.screen -= hud_used.breath
 	client.screen -= hud_used.welding
+
+	client.images -= meson_wall_overlays
+
+	if(istype(glasses, /obj/item/clothing/glasses/meson))
+		client.images += meson_wall_overlays
 
 	if ((blind && stat != 2))
 		if ((blinded))
@@ -262,7 +265,7 @@
 	var/datum/organ/external/head/head = organs["head"]
 	if(head && !src.face_dmg)
 		if(head.brute_dam >= 45 || head.burn_dam >= 45)
-			src.face_dmg = 1
+			src.face_dmg++
 			src << "\red Your face has become disfigured."
 	for(var/datum/organ/external/temp in organs2)
 		if(!temp.bleeding)

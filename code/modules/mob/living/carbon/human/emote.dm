@@ -45,6 +45,7 @@
 			m_type = 1
 
 		if ("custom")
+			m_type = 0
 			if(copytext(param,1,2) == "v")
 				m_type = 1
 			else if(copytext(param,1,2) == "h")
@@ -58,7 +59,10 @@
 				else
 					alert("Unable to use this emote, must be either hearable or visible.")
 					return
-			param = trim(copytext(param,2))
+			if(m_type)
+				param = trim(copytext(param,2))
+			else
+				param = trim(param)
 			var/input
 			if(param == "")
 				input = input("Choose an emote to display.")

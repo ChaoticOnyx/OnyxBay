@@ -551,7 +551,7 @@ datum
 							M:UpdateDamageIcon()
 							M:emote("scream")
 							M << "\red Your face has become disfigured!"
-							M.face_dmg = 1
+							M.face_dmg++
 						else
 							M:fireloss += 15
 					else
@@ -602,7 +602,7 @@ datum
 						M:UpdateDamageIcon()
 						M:emote("scream")
 						M << "\red Your face has become disfigured!"
-						M.face_dmg = 1
+						M.face_dmg++
 					else
 						M:fireloss += 15
 				else
@@ -613,7 +613,7 @@ datum
 						M:UpdateDamageIcon()
 						M:emote("scream")
 						M << "\red Your face has become disfigured!"
-						M.face_dmg = 1
+						M.face_dmg++
 					else
 						M:fireloss += (30 * max(1, volume / 30))
 

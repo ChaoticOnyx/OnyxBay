@@ -157,8 +157,9 @@
 				infect_virus2(src,V.D)
 		else if(get_infection_chance())
 			virus2.activate(src)
-			var/obj/virus/V = new(src.loc)
-			V.D = virus2.getcopy()
+			if(virus2)	//activate can sometimes remove the virus i think ~mini
+				var/obj/virus/V = new(src.loc)
+				V.D = virus2.getcopy()
 //VIRUS FIX THESES
 
 

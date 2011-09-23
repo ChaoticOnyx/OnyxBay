@@ -74,6 +74,7 @@
 	new /obj/item/weapon/implantcase/death_alarm( src )
 	new /obj/item/weapon/implantcase/death_alarm( src )
 	new /obj/item/weapon/implantcase/death_alarm( src )
+	new /obj/item/weapon/implantcase/death_alarm( src )
 	new /obj/item/weapon/implanter( src )
 	new /obj/item/weapon/implantpad( src )
 	..()

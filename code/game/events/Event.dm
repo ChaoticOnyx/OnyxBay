@@ -2,6 +2,7 @@
 
 	var/Lifetime  = 0
 	var/ActiveFor = 0
+	var/forced = 0
 
 	New()
 		..()

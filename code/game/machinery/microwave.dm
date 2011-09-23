@@ -176,6 +176,7 @@
 	src.available_recipes += new /datum/recipe/donut(src)
 	src.available_recipes += new /datum/recipe/loaf(src)
 	src.available_recipes += new /datum/recipe/steak(src)
+	src.available_recipes += new /datum/recipe/synthsteak
 	src.available_recipes += new /datum/recipe/cutlet(src)
 	src.available_recipes += new /datum/recipe/meatball(src)
 	src.available_recipes += new /datum/recipe/sausage(src)
@@ -349,12 +350,12 @@ Please clean it before use!</TT><BR>
 							else//otherwise
 								var/text="/obj/item/weapon/reagent_containers/food/snacks/"+B//add onto end of snacks path
 								req["[text]"] =A.needs["[B]"]//add to list
-						//	var/a = B
-						//	usr << "needs [a] [req[req.len]]"
+							//var/a = B
+							//usr << "needs [a] [req[req.len]]"
 						for(var/B in has)
-						//	usr << "[has[B]] [B],[req[B]] [B]"
+							//usr << "[has[B]] [B],[req[B]] [B]"
 							if(has[B]!=req[B])
-							//	usr << "fail"
+								//usr << "fail"
 								continue check_recipes
 						if(!findtext("/obj/",A.creates))//If full path is not specified
 							cooked_item = "/obj/item/weapon/reagent_containers/food/snacks/"+A.creates

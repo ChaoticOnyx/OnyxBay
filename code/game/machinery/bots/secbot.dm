@@ -290,6 +290,7 @@ Auto Patrol: []"},
 					if(src.target:r_hand)
 						gotstuff = "Captured items from [src.target.name]: [src.target.r_hand.name]"
 						src.target:r_hand.name += " (Captured by [src.name] from [target.name])"
+						src.target:r_hand.labels += "Captured by [src.name] from [target.name]"
 						src.target:r_hand.moveto(src)
 
 
@@ -300,6 +301,7 @@ Auto Patrol: []"},
 						else
 							gotstuff += " and [src.target.l_hand.name]"
 							src.target:l_hand.name += " (Captured by [src.name] from [target.name])"
+							src.target:l_hand.labels += "Captured by [src.name] from [target.name]"
 							src.target:l_hand.moveto(src)
 
 
@@ -351,10 +353,12 @@ Auto Patrol: []"},
 							if(src.target:belt)
 								var/obj/item/I = src.target:belt
 								I.name += " (Captured by [src.name] from [target.name])" //Might move this into something embedded within the item that the forenzics scanner can read
+								I.labels += "Captured by [src.name] from [target.name]"
 								I.moveto(src)
 							if(src.target:back)
 								var/obj/item/I = src.target:back
 								I.name += " (Captured by [src.name] from [target.name])"
+								I.labels += "Captured by [src.name] from [target.name]"
 								I.moveto(src)
 						///	if(src.target:wear_id)
 						//		var/obj/item/I = src.target:wear_id
@@ -363,14 +367,17 @@ Auto Patrol: []"},
 							if(src.target:l_store)
 								var/obj/item/I = src.target:l_store
 								I.name += " (Captured by [src.name] from [target.name])"
+								I.labels += "Captured by [src.name] from [target.name]"
 								I.moveto(src)
 							if(src.target:r_store)
 								var/obj/item/I = src.target:r_store
 								I.name += " (Captured by [src.name] from [target.name])"
+								I.labels += "Captured by [src.name] from [target.name]"
 								I.moveto(src)
 							if(src.target:glasses)
 								var/obj/item/I = src.target:glasses
 								I.name += " (Captured by [src.name] from [target.name])"
+								I.labels += "Captured by [src.name] from [target.name]"
 								I.moveto(src)
 							src.speak("Due to suspection of Syndicate affiliation, the person has been stripped of his gear.")
 

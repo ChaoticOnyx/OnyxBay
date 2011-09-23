@@ -67,12 +67,19 @@
 					playsound(src.loc, 'Screwdriver.ogg', 25, -3)
 					name = "grenade"
 					icon_state = "chemg3"
-					active = 1
+					active = 2
 				else
 					user << "\red You need to add all components before locking the assembly."
+		if(2)
+			if(istype(item, /obj/item/weapon/screwdriver))
+				user << "/blue You disarm the [src]!"
+				playsound(src.loc, 'Screwdriver.ogg', 25, -3)
+				name = "grenade casing"
+				icon_state = "chemg2"
+				active = 1
 
 /obj/item/device/chem_grenade/attack_self(mob/user as mob)
-	if(active)
+	if(active == 2)
 		attached_device.attack_self(usr)
 		return
 	user.machine = src
@@ -124,6 +131,7 @@
 	if(exploding) return
 	exploding = 1
 	playsound(src.loc, 'bamf.ogg', 50, 1)
+	beaker_two.reagents.maximum_volume += beaker_one.reagents.maximum_volume // make sure everything can mix
 	beaker_one.reagents.update_total()
 	beaker_one.reagents.trans_to(beaker_two, beaker_one.reagents.total_volume)
 	if(beaker_one.reagents.total_volume) //The possible reactions didnt use up all reagents.
@@ -138,7 +146,8 @@
 	spawn(50)		   //To make sure all reagents can work
 		del(src)	   //correctly before deleting the grenade.
 
-/obj/item/device/chem_grenade/proc/c_state()
+/obj/item/device/chem_grenade/proc/c_state(n)
+	icon_state = "chemg[n+3]"
 	return
 
 /obj/item/device/chem_grenade/metalfoam
@@ -152,7 +161,7 @@
 		beaker_one = new(src)
 		beaker_two = new(src)
 		attached_device = new /obj/item/device/timer(src)
-
+		attached_device.master = src
 
 		beaker_one.reagents.add_reagent("aluminium", 30)
 		beaker_two.reagents.add_reagent("foaming_agent", 10)
@@ -169,10 +178,27 @@
 		beaker_one = new(src)
 		beaker_two = new(src)
 		attached_device = new /obj/item/device/timer(src)
+		attached_device.master = src
 
 		beaker_one.reagents.add_reagent("fluorosurfactant", 30)
 		beaker_two.reagents.add_reagent("water", 10)
 		beaker_two.reagents.add_reagent("cleaner", 10)
+
+/obj/item/device/chem_grenade/flashbang
+	name = "flashbang grenade"
+	icon_state = "chemg3"
+	active = 2
+
+	New()
+		..()
+		beaker_one = new(src)
+		beaker_two = new(src)
+		attached_device = new /obj/item/device/timer(src)
+		attached_device.master = src
+
+		beaker_one.reagents.add_reagent("potassium", 25)
+		beaker_one.reagents.add_reagent("sulfur", 25)
+		beaker_two.reagents.add_reagent("aluminium", 25)
 
 ///////////////////////////////Grenades
 
@@ -1059,6 +1085,7 @@
 //Syringes
 /obj/item/weapon/reagent_containers/syringe/robot
 	name = "Syringe (mixed)"
+	label = list("mixed")
 	desc = "Contains inaprovaline & anti-toxins."
 	New()
 		var/datum/reagents/R = new/datum/reagents(15)
@@ -1072,6 +1099,7 @@
 
 /obj/item/weapon/reagent_containers/syringe/inaprovaline
 	name = "Syringe (inaprovaline)"
+	label = list("inaprovaline")
 	desc = "Contains inaprovaline - used to stabilize patients."
 	New()
 		var/datum/reagents/R = new/datum/reagents(15)
@@ -1082,7 +1110,8 @@
 		update_icon()
 
 /obj/item/weapon/reagent_containers/syringe/antitoxin
-	name = "Syringe (anti-toxin)"
+	name = "Syringe (dylovene)"
+	label = list("dylovene")
 	desc = "Contains anti-toxins."
 	New()
 		var/datum/reagents/R = new/datum/reagents(15)
@@ -1094,6 +1123,7 @@
 
 /obj/item/weapon/reagent_containers/syringe/antiviral
 	name = "Syringe (spaceacillin)"
+	label = list("spaceacillin")
 	desc = "Contains antiviral agents."
 	New()
 		var/datum/reagents/R = new/datum/reagents(15)

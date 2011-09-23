@@ -116,6 +116,11 @@ RCD
 			desc = "A RCD. It currently holds [matter]/30 matter-units."
 			return
 		if (istype(A, /turf/simulated/floor) && matter >= 3)
+			for(var/atom/movable/m in A)
+				if(!m.anchored)
+					user << "RCD SAFETY SYSTEM: Unable to build a wall there, due to the [m] in the way. Please remove it, and try again."
+					return
+
 			user << "Building Wall (3)..."
 			playsound(src.loc, 'click.ogg', 50, 1)
 			if(do_after(user, 20))

@@ -1,5 +1,6 @@
 /obj/machinery/disposal/small
-	name = "Biohazard Research Center Dispatch Chute"
+	name = "Biohazard Research Centre Dispatch Chute"
+	icon_state = "disposalviro"
 
 	attackby(var/obj/item/I, var/mob/user)
 		if(stat & BROKEN)
@@ -343,7 +344,10 @@
 	proc/flush()
 
 		flushing = 1
-		flick("disposal-flush", src)
+		if (src.icon_state == "disposalviro")
+			flick("disposalviro-flush", src)
+		else
+			flick("disposal-flush", src)
 
 		var/obj/disposalholder/H = new()	// virtual holder object which actually
 											// travels through the pipes.
