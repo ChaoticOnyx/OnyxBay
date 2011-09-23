@@ -605,6 +605,6 @@
 	name = "synthmeat"
 	desc = "A raw meat subsitute slab."
 
-/datum/recipe/steak
+/datum/recipe/synthsteak
 	needs = list("meat/synthmeat" = 1)
 	creates = "steak"
