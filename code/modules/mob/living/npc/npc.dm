@@ -193,7 +193,7 @@ mob/living/npc/testrange/RangedAttack(atom/trg)
 	if(!istype(U, /turf))
 		return
 
-	var/obj/bullet/electrode/A = new /obj/bullet/electrode(src.loc)
+	var/obj/projectile/electrode/A = new /obj/projectile/electrode(src.loc)
 
 	A.current = U
 	A.yo = U.y - T.y

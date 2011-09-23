@@ -454,7 +454,7 @@
 	if (flag == PROJECTILE_BULLET)
 		src.health -= 18
 
-	else if (flag == PROJECTILE_TASER)
+	else if (flag == PROJECTILE_TASER || flag == PROJECTILE_STUNBOLT)
 		src.stunned += 10
 		if(src.stunned > 20)
 			src.stunned = 20

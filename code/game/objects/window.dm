@@ -51,6 +51,8 @@
 /obj/window/CanPass(atom/movable/mover, turf/source, height=0, air_group=0)
 	if(istype(mover, /obj/beam))
 		return 1
+	if(istype(mover, /obj/projectile) && mover:pass_windows)
+		return 1
 	if (src.dir == SOUTHWEST || src.dir == SOUTHEAST || src.dir == NORTHWEST || src.dir == NORTHEAST)
 		return 0 //full tile window, you can't move into it!
 	if(get_dir(loc, source) == dir)
@@ -60,6 +62,8 @@
 
 /obj/window/CheckExit(atom/movable/O as mob|obj, target as turf)
 	if(istype(O, /obj/beam))
+		return 1
+	if(istype(O, /obj/projectile) && O:pass_windows)
 		return 1
 	if (get_dir(O.loc, target) == src.dir)
 		return 0

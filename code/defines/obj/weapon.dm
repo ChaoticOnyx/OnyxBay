@@ -409,6 +409,7 @@
 /obj/item/weapon/gun/energy/laser_gun/captain
 	icon_state = "caplaser"
 	force = 10
+	charges = 2
 
 /obj/item/weapon/gun/revolver
 	desc = "There are 7 bullets left. Uses 357"

@@ -15,9 +15,12 @@ obj/machinery/recharger
 	if (src.charging || src.charging2)
 		return
 	if (istype(G, /obj/item/weapon/gun/energy))
-		user.drop_item()
-		G.loc = src
-		src.charging = G
+		if (istype(src, /obj/item/weapon/gun/energy/laser_gun/captain))
+			user << "\red The recharging port is too big!"
+		else
+			user.drop_item()
+			G.loc = src
+			src.charging = G
 	if (istype(G, /obj/item/weapon/baton))
 		user.drop_item()
 		G.loc = src

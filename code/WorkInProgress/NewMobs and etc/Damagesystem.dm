@@ -375,6 +375,32 @@
 		if (stuttering < 10)
 			stuttering = 10
 
+	else if (flag == PROJECTILE_STUNBOLT)
+		if(zombie) return
+		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))
+			if (prob(5))
+				show_message("\red Your armor absorbs the hit!", 4)
+				return
+		else
+			if (istype(wear_suit, /obj/item/clothing/suit/swat_suit))
+				if (prob(35))
+					show_message("\red Your armor absorbs the hit!", 4)
+					return
+		if (prob(75) && stunned <= 20)
+			stunned = 20
+		else
+			weakened = 20
+		if (stuttering < 20)
+			stuttering = 20
+
+		if(stat != STAT_DEAD)
+			var/organ = organs[ran_zone("chest")]
+			if (istype(organ, /datum/organ/external))
+				var/datum/organ/external/temp = organ
+				if(temp.destroyed)
+					return
+				temp.take_damage(rand(10,20), 0)
+
 	else if(flag == PROJECTILE_LASER)
 		var/d = 20
 		if (istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))

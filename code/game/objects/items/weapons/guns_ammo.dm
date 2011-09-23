@@ -13,14 +13,6 @@ TELEPORT GUN
 
 */
 
-/var/const/PROJECTILE_TASER = 1
-/var/const/PROJECTILE_LASER = 2
-/var/const/PROJECTILE_BULLET = 3
-/var/const/PROJECTILE_PULSE = 4
-/var/const/PROJECTILE_BOLT = 5
-/var/const/PROJECTILE_WEAKBULLET = 6
-/var/const/PROJECTILE_TELEGUN = 7
-
 
 
 
@@ -58,11 +50,11 @@ TELEPORT GUN
 				return
 		else if(mode == 2)
 			if (targloc == curloc)
-				user.bullet_act(PROJECTILE_TASER)
+				user.bullet_act(PROJECTILE_STUNBOLT)
 				return
 
 		if(mode == 1)
-			var/obj/beam/a_laser/A = new /obj/beam/a_laser/pulse_laser(user.loc)
+			var/obj/projectile/laser/A = new /obj/projectile/laser/pulse_laser(user.loc)
 			A.current = curloc
 			A.yo = targloc.y - curloc.y
 			A.xo = targloc.x - curloc.x
@@ -71,7 +63,7 @@ TELEPORT GUN
 				A.process()
 
 		else if(mode == 2)
-			var/obj/bullet/electrode/A = new /obj/bullet/electrode(user.loc)
+			var/obj/projectile/electrode/A = new /obj/projectile/stunbolt(user.loc)
 			A.current = curloc
 			A.yo = targloc.y - curloc.y
 			A.xo = targloc.x - curloc.x
@@ -190,7 +182,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	if (U == T)
 		user.bullet_act(PROJECTILE_BULLET)
 		return
-	var/obj/bullet/A = new /obj/bullet( user.loc )
+	var/obj/projectile/bullet/A = new /obj/projectile/bullet( user.loc )
 	if (!istype(U, /turf))
 		del(A)
 		return
@@ -289,7 +281,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	if (U == T)
 		user.bullet_act(PROJECTILE_WEAKBULLET)
 		return
-	var/obj/bullet/weakbullet/A = new /obj/bullet/weakbullet( user.loc )
+	var/obj/projectile/bullet/weak/A = new /obj/projectile/bullet/weak( user.loc )
 	if (!istype(U, /turf))
 		del(A)
 		return
@@ -409,7 +401,11 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	if(!istype(U, /turf))
 		return
 
-	var/obj/beam/a_laser/A = new /obj/beam/a_laser( user.loc )
+	var/obj/projectile/A
+	if (istype(src, /obj/item/weapon/gun/energy/laser_gun/captain))
+		A = new /obj/projectile/stunbolt(user.loc)
+	else
+		A = new /obj/projectile/laser(user.loc)
 
 	A.current = U
 	A.yo = U.y - T.y
@@ -487,7 +483,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	if(!istype(U, /turf))
 		return
 
-	var/obj/bullet/electrode/A = new /obj/bullet/electrode(user.loc)
+	var/obj/projectile/electrode/A = new /obj/projectile/electrode(user.loc)
 
 	A.current = U
 	A.yo = U.y - T.y
@@ -603,7 +599,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	if(!istype(U, /turf))
 		return
 
-	var/obj/bullet/cbbolt/A = new /obj/bullet/cbbolt(user.loc)
+	var/obj/projectile/cbbolt/A = new /obj/projectile/cbbolt(user.loc)
 
 	A.current = U
 	A.yo = U.y - T.y
@@ -683,7 +679,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	if(!istype(U, /turf))
 		return
 
-	var/obj/bullet/teleshot/A = new /obj/bullet/teleshot(user.loc)
+	var/obj/projectile/teleshot/A = new /obj/projectile/teleshot(user.loc)
 
 	A.target = src.target
 	A.current = U
@@ -806,7 +802,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 				return
 
 		if(mode == 1)
-			var/obj/beam/a_laser/A = new /obj/beam/a_laser(user.loc)
+			var/obj/projectile/laser/A = new /obj/projectile/laser(user.loc)
 			A.current = curloc
 			A.yo = targloc.y - curloc.y
 			A.xo = targloc.x - curloc.x
@@ -815,7 +811,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 				A.process()
 
 		else if(mode == 2)
-			var/obj/bullet/electrode/A = new /obj/bullet/electrode(user.loc)
+			var/obj/projectile/electrode/A = new /obj/projectile/electrode(user.loc)
 			A.current = curloc
 			A.yo = targloc.y - curloc.y
 			A.xo = targloc.x - curloc.x

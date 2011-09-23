@@ -164,12 +164,12 @@
 	if (!( istype(T, /turf) ))
 		return
 
-	var/obj/beam/a_laser/A
+	var/obj/projectile/laser/A
 	if (src.lasers)
-		A = new /obj/beam/a_laser( loc )
+		A = new /obj/projectile/laser( loc )
 		use_power(50)
 	else
-		A = new /obj/bullet/electrode( loc )
+		A = new /obj/projectile/electrode( loc )
 		use_power(100)
 
 	if (!( istype(U, /turf) ))

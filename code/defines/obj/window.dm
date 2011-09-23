@@ -80,6 +80,8 @@
 /obj/window_pod/CanPass(atom/movable/mover, turf/source, height=0, air_group=0)
 	if(istype(mover, /obj/beam))
 		return 1
+	if(istype(mover, /obj/projectile) && mover:pass_windows)
+		return 1
 
 	return 0
 
