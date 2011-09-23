@@ -1,5 +1,5 @@
 /obj/item/weapon/storage/belt
-	flags = FPRINT | TABLEPASS | ONBELT
+	flags = FPRINT | TABLEPASS | ONBELT | NOSPLASH
 
 /obj/item/weapon/storage/belt/utility
 	name = "utility belt"

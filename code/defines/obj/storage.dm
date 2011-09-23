@@ -12,28 +12,28 @@
 	desc = "It is a backpack. You put things in it."
 	icon_state = "backpack"
 	w_class = 4.0
-	flags = 259.0
+	flags = 259.0 | NOSLPLASH
 
 /obj/item/weapon/storage/backpack/security
 	name = "backpack"
 	desc = "A fancy backpack for security. The antenna does not actually do anything yet."
 	icon_state = "securitypack"
 	w_class = 4.0
-	flags = 259.0
+	flags = 259.0 | NOSLPLASH
 
 /obj/item/weapon/storage/backpack/medical
 	name = "backpack"
 	desc = "A little pack for medical staff to hold extra supplies."
 	icon_state = "medicalpack"
 	w_class = 4.0
-	flags = 259.0
+	flags = 259.0 | NOSLPLASH
 
 /obj/item/weapon/storage/backpack/engineer
 	name = "backpack"
 	desc = "A rugged backpack for engineers and engineering accessories."
 	icon_state = "engiepack"
 	w_class = 4.0
-	flags = 259.0
+	flags = 259.0 | NOSLPLASH
 
 /obj/item/weapon/storage/pill_bottle
 	name = "Pill bottle"
