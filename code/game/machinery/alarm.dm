@@ -10,8 +10,9 @@
 	var/const/ALERT_TEMPERATURE_U = T20C+10
 	var/const/UNSAFE_TEMPERATURE_L = T20C-20
 	var/const/UNSAFE_TEMPERATURE_U = T20C+20
-	var/safe_old = 2
+	var/safe_old = -1
 	var/obj/machinery/atmospherics/pipe/vent/vent_connected
+	var/locked = 1
 	security = 1
 /obj/machinery/alarm/New()
 	..()
@@ -59,35 +60,40 @@
 	if((environment_pressure < ALERT_ATMOSPHERE_L) || (environment_pressure > ALERT_ATMOSPHERE_U))
 		//Pressure sensor
 		alert_info = 1
+		safe = 1
 		if((environment_pressure < UNSAFE_ATMOSPHERE_L) || (environment_pressure > UNSAFE_ATMOSPHERE_U))
 			safe = 0
 
 	if(safe && ((environment.oxygen < ALERT_O2_L) || (environment.oxygen > ALERT_O2_U)))
 		//Oxygen Levels Sensor
 		alert_info = 2
+		safe = 1
 
 	if(safe && ((environment.temperature < ALERT_TEMPERATURE_L) || (environment.temperature > ALERT_TEMPERATURE_U)))
 		//Temperature Sensor
 		alert_info = 3
+		safe = 1
 
 	if(safe && (environment.carbon_dioxide > 0.05))
 		//CO2 Levels Sensor
 		alert_info = 4
+		safe = 1
 
 	if(safe && (environment.toxins > 1))
 		//Plasma Levels Sensor
 		alert_info = 5
+		safe = 1
 
 
 	if(safe == 2) src.skipprocess = 1
 	else if(alarm_frequency)
 		post_alert(safe, alert_info)
-	if (safe != safe_old || !A.air_doors_activated)
-		src.icon_state = "alarm[!safe]"
-		if(!safe && !A.air_doors_activated)
-			spawn(50)
-				air_doors_close()
-		else if (safe && A.air_doors_activated)
+	if(!safe && !A.air_doors_activated)
+		spawn(50)
+			air_doors_close()
+	if (safe != safe_old)
+		src.icon_state = "alarm[safe]"
+		if (safe && A.air_doors_activated)
 			air_doors_open()
 	safe_old = safe
 	updateUsrDialog()
@@ -190,20 +196,25 @@
 			else
 				dat += "\red Temperature: [round(environment.temperature-T0C)]&deg;C"
 		if((user in range(1,src)) || istype(user, /mob/living/silicon/))
-			dat += "<BR><BR>"
-			var/area/A = get_area(loc)
-			if(!A.air_doors_activated)
-				dat += "<A href='?src=\ref[src];activate_alarm=1'>Activate Emergency Seal</A>"
-			else
-				dat += "<A href='?src=\ref[src];deactivate_alarm=1'>Deactivate Emergency Seal</A>"
-			dat += "<BR><BR>"
-			if(vent_connected)
-				if(!vent_connected.panic_fill)
-					dat += "<A href='?src=\ref[src];activate_panic_fill=1'>Activate Panic Fill</A>"
+			if(!locked)
+				dat += "<BR><BR>"
+				var/area/A = get_area(loc)
+				if(!A.air_doors_activated)
+					dat += "<A href='?src=\ref[src];activate_alarm=1'>Activate Emergency Seal</A>"
 				else
-					dat += "<A href='?src=\ref[src];deactivate_panic_fill=1'>Deactivate Panic Fill</A>"
-			else
-				dat += "\red No vents connected!"
+					dat += "<A href='?src=\ref[src];deactivate_alarm=1'>Deactivate Emergency Seal</A>"
+				dat += "<BR><BR>"
+				if(vent_connected)
+					if(!vent_connected.panic_fill)
+						dat += "<A href='?src=\ref[src];activate_panic_fill=1'>Activate Panic Fill</A>"
+					else
+						dat += "<A href='?src=\ref[src];deactivate_panic_fill=1'>Deactivate Panic Fill</A>"
+				else
+					dat += "\red No vents connected!"
+			dat += "<br><a href='?src=\ref[src];lock=1'>"
+			if(locked)	dat += "Unlock"
+			else dat += "Lock"
+			dat += "</a>"
 		dat += text("<BR><BR><A href='?src=\ref[];mach_close=alarm'>Close</A>", user)
 		user << browse(dat, "window=alarm;size=400x500")
 	else
@@ -245,17 +256,19 @@
 		readouts += "\blue Temperature: [round(temp)]&deg;C"
 
 		var/list/buttons = list()
-		if((user in range(1,src)) || istype(user, /mob/living/silicon/))
-			var/area/A = get_area(loc)
-			if(!A.air_doors_activated)
-				buttons += "activate_alarm=1"
-			else
-				buttons += "deactivate_alarm=1"
-			if(vent_connected)
-				if(!vent_connected.panic_fill)
-					buttons += "activate_panic_fill=1"
+		if(((user in range(1,src))) || istype(user, /mob/living/silicon/))
+			if(!locked)
+				var/area/A = get_area(loc)
+				if(!A.air_doors_activated)
+					buttons += "activate_alarm=1"
 				else
-					buttons += "deactivate_panic_fill=1"
+					buttons += "deactivate_alarm=1"
+				if(vent_connected)
+					if(!vent_connected.panic_fill)
+						buttons += "activate_panic_fill=1"
+					else
+						buttons += "deactivate_panic_fill=1"
+			buttons += "lock=1"
 
 		dat = mockpanel(buttons,"\blue <B>[alarm_zone] Atmosphere:</B><br>",null,readouts)
 
@@ -268,12 +281,19 @@
 /obj/machinery/alarm/Topic(href,href_list[])
 	if(href_list["activate_alarm"])
 		air_doors_close(1)
+		skipprocess+=1
 	if(href_list["deactivate_alarm"])
 		air_doors_open(1)
+		skipprocess+=1
 	if(href_list["activate_panic_fill"])
 		vent_connected.panic_fill = 1
 	if(href_list["deactivate_panic_fill"])
 		vent_connected.panic_fill = 0
+	if(href_list["lock"])
+		if(!locked)
+			locked = 1
+		else if(usr.has_access("24"))
+			locked = 0
 
 	mocktxt = null
 
@@ -366,6 +386,7 @@ obj/machinery/alarm/proc
 						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 			RA.activate_air_doors(manual*5)
+		A.air_doors_activated = 1
 
 	air_doors_open(manual)
 		var/area/A = get_area(loc)
@@ -395,6 +416,7 @@ obj/machinery/alarm/proc
 				for (var/obj/alertlighting/atmoslight/F in T)
 					del(F)
 			RA.deactivate_air_doors(manual*5)
+		A.air_doors_activated = 0
 
 
 
