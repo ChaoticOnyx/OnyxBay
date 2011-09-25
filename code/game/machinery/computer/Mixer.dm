@@ -45,6 +45,14 @@
 		mixer.node1_concentration = rates[1] / 100
 		mixer.node2_concentration = rates[2] / 100
 
+	if(href_list["target_pressure"])
+		if(href_list["target_pressure"] == "custom")
+			var/input = text2num(input("Input new target pressure.", "Target pressure:", "[mixer.target_pressure]"))
+			if(input > 0)
+				mixer.target_pressure = input
+		else
+			mixer.target_pressure = mixer.target_pressure + text2num(href_list["target_pressure"])
+
 	if(href_list["power"])
 		mixer.on = !mixer.on
 		if(istype(mixer,/obj/machinery/atmospherics)) mixer.update_icon()
@@ -113,6 +121,14 @@
     <a href="?src=\ref[src];adjust=2&by=1">+</a>
     <a href="?src=\ref[src];adjust=2&by=5">+</a>
     <a href="?src=\ref[src];adjust=2&by=25">+</a><br />
+    <b>Target:</b>
+    <a href="?src=\ref[src];target_pressure=-25">-</a>
+    <a href="?src=\ref[src];target_pressure=-5">-</a>
+    <a href="?src=\ref[src];target_pressure=-1">-</a>
+    <a href="?src=\ref[src];target_pressure=custom">[mixer.target_pressure]kPa</a>
+    <a href="?src=\ref[src];target_pressure=1">+</a>
+    <a href="?src=\ref[src];target_pressure=5">+</a>
+    <a href="?src=\ref[src];target_pressure=25">+</a><br />
     <br />
     <b>Input Gas:</b><br />
     <b>A:</b> [mixer.air_in1.return_pressure()]kPa [round(mixer.air_in1.temperature, 0.1)]K<br />
