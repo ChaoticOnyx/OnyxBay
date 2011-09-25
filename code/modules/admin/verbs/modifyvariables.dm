@@ -2,8 +2,6 @@
 	set category = "Debug"
 	set name = "Edit Variables"
 	set desc="(target) Edit a target item's variables"
-	if(!O || istype(/obj/admins, O))
-		return
 	src.modify_variables(O)
 
 /client/proc/cmd_modify_ticker_variables()
@@ -241,6 +239,10 @@
 	var/list/locked = list()
 	if(!src.holder)
 		src << "Only administrators may use this command."
+		return
+
+	if(istype(O,/obj/admins))
+		usr << "Dun promote yarsalf."
 		return
 
 	var/list/names = list()
