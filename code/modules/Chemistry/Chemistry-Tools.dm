@@ -72,7 +72,7 @@
 					user << "\red You need to add all components before locking the assembly."
 		if(2)
 			if(istype(item, /obj/item/weapon/screwdriver))
-				user << "/blue You disarm the [src]!"
+				user << "\blue You disarm the [src]!"
 				playsound(src.loc, 'Screwdriver.ogg', 25, -3)
 				name = "grenade casing"
 				icon_state = "chemg2"
