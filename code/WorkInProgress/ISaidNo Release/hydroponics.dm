@@ -439,7 +439,7 @@
 	name = "plant pot"
 	desc = "A tub filled with soil capable of sustaining plantlife."
 	icon = 'hydroponics.dmi'
-	icon_state = "pot-empty"
+	icon_state = "pot-covered"
 	anchored = 1
 	density = 1
 	flags = NOSPLASH
@@ -452,6 +452,7 @@
 	var/endurance = 0 // Automatic. Probability from 0-100 of not losing health/dying to hazards.
 	var/isready = 0   // Automatic. Signals whether or not a plant is harvestable right now.
 	var/generation = 0 // Automatic. Just a fun thing to track how many generations a plant has been bred.
+	var/covered = 1
 
 	New()
 		..()
@@ -464,7 +465,7 @@
 
 	process()
 		..()
-		if (!src.current && prob(1) && prob(4))
+		if (!src.current && prob(1) && prob(4) && !src.covered)
 			switch (rand(1,6))
 				if (1)
 					var/obj/item/weapon/seed/fungus/WS = new(src)
@@ -640,6 +641,8 @@
 		return
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
+		if (src.covered)
+			return
 		if (src.current)
 			if (istype(src.current,/datum/plant/crystal))
 				if (W.force < 0) user << "\red Your [W] bounces off [src] uselessly!"
@@ -819,6 +822,8 @@
 		if (istype(user, /mob/living/silicon/robot) && get_dist(src, user) <= 1) return src.attack_hand(user)
 
 	attack_hand(var/mob/user as mob)
+		if (src.covered)
+			return
 		if (istype(user, /mob/living/silicon/ai) || istype(user, /mob/dead/)) return // naughty AIs used to be able to harvest plants
 		src.add_fingerprint(user)
 		if (src.current)
@@ -1020,7 +1025,11 @@
 				for (var/X in DNA.commuts)
 					if (X == "immortal") src.overlays += image('hydroponics.dmi', "mut-sparkle")
 			else src.icon_state = "[growing.name]-G0"
-		else src.icon_state = "pot-empty"
+		else
+			if(src.covered)
+				src.icon_state = "pot-covered"
+			else
+				src.icon_state = "pot-empty"
 
 		return
 
@@ -1106,6 +1115,40 @@
 		src.isready = 0
 		src.generation = 0
 		update_icon()
+
+
+/obj/machinery/pot_control
+	name = "Pot Cover Switch"
+	icon = 'stationobjs.dmi'
+	icon_state = "doorctrl01"
+	desc = "A single use switch for the hydroponics pot covers."
+	var/toggled = 0
+	anchored = 1.0
+
+/obj/machinery/pot_control/attack_ai(mob/user as mob)
+	return src.attack_hand(user)
+
+/obj/machinery/pot_control/attack_paw(mob/user as mob)
+	return src.attack_hand(user)
+
+/obj/machinery/pot_control/attackby(obj/item/weapon/W, mob/user as mob)
+	if(istype(W, /obj/item/device/detective_scanner))
+		return
+	return src.attack_hand(user)
+
+/obj/machinery/pot_control/attack_hand(mob/user as mob)
+	src.add_fingerprint(usr)
+	if(!src.toggled)
+		src.toggled = 1
+		var/area/A = src.loc.loc
+		for(var/obj/machinery/plantpot/P in A)
+			P.covered = 0
+			P.icon_state = "pot-empty"
+			flick ("pot-opening", P)
+		icon_state = "doorctrl00"
+	else
+		return
+
 
 /obj/reagent_dispensers/compostbin
 	name = "compost tank"

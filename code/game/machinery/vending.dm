@@ -187,6 +187,11 @@
 	charge_type = "cigarette"
 	icon_state = "cigarette-charge"
 
+/obj/item/weapon/vending_charge/hydroponics
+	name = "Hydroponics Charge"
+	charge_type = "hydroponics"
+	icon_state = "hydroponics-charge"
+
 
 
 
