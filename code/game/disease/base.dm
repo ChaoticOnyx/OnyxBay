@@ -518,11 +518,12 @@
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*twitch")
 
+/*Removed on request by Spaceman, due to it being detrimental to RP. -CN
 /datum/disease2/effect/lesser/deathgasp
 	name = "Zombie Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob.say("*deathgasp")
+		mob.say("*deathgasp")*/
 
 /datum/disease2/effect/lesser/giggle
 	name = "Uncontrolled Laughter Effect"
