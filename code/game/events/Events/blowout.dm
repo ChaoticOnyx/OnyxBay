@@ -10,19 +10,18 @@
 /area/crew_quarters/sleeping/radsafe = 1
 
 /datum/event/blowout
-	New()
-		..()
-		Lifetime += 45
+	Lifetime = 150
 	Announce()
 		if(!forced && prob(90))
 			ActiveEvent = null
 			SpawnEvent()
 			del src
+			return
 		command_alert("Warning: Ship approaching high-density radiation cloud. Seek cover immediately.")
 	Tick()
-		if(ActiveFor == 45)
+		if(ActiveFor == 50)
 			command_alert("Ship has entered radiation cloud. Do not leave cover until it has passed.")
-		if(ActiveFor == (Lifetime+45)/3 || ActiveFor == (Lifetime+45)*2/3)	//1/3 and 2/3 f the way after it start proper make peope be half dead mostly
+		if(ActiveFor == 100 || ActiveFor == 150)	//1/2 and 2/2 f the way after it start proper make peope be half dead mostly
 			for(var/mob/living/carbon/M in world)
 				var/area = M.loc.loc
 				while(!istype(area, /area))
