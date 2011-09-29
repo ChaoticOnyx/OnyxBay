@@ -789,6 +789,45 @@
 	hidden_prices = ""
 	charge_type = "engineering"
 
+/obj/machinery/vending/hydroponics
+	name = "EZ-Seedz Vendotron"
+	desc = "All the seedz you needz."
+	icon_state = "hydroponics"
+	icon_deny = "hydroponics-deny"
+	req_access_txt = "40"
+	points = 10
+	product_paths = {"/obj/item/weapon/seed/tomato;
+/obj/item/weapon/seed/grape;
+/obj/item/weapon/seed/orange;
+/obj/item/weapon/seed/melon;
+/obj/item/weapon/seed/chili;
+/obj/item/weapon/seed/apple;
+/obj/item/weapon/seed/banana;
+/obj/item/weapon/seed/lemon;
+/obj/item/weapon/seed/lime;
+/obj/item/weapon/seed/wheat;
+/obj/item/weapon/seed/sugar;
+/obj/item/weapon/seed/synthmeat;
+/obj/item/weapon/seed/lettuce;
+/obj/item/weapon/seed/carrot;
+/obj/item/weapon/seed/asmona;
+/obj/item/weapon/seed/nureous;
+/obj/item/weapon/seed/contusine;
+/obj/item/weapon/seed/commol;
+/obj/item/weapon/seed/venne;
+/obj/item/weapon/seed/potato;
+/obj/item/weapon/reagent_containers/glass/bottle/weedkiller"}
+	//product_amounts = "4;4;4;4;12"
+	product_prices = "1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;2"
+	product_hidden = {"/obj/item/weapon/lasher/
+/obj/item/weapon/seed/fungus/;
+/obj/item/weapon/seed/creeper/;
+/obj/item/weapon/seed/radweed;
+/obj/item/weapon/seed/slurrypod;
+/obj/item/weapon/seed/grass"}
+	hidden_prices = "1;1;1;1;1;1"
+	charge_type = "hydroponics"
+
 /obj/machinery/gibber
 	name = "Gibber"
 	desc = "The name isn't descriptive enough?"
