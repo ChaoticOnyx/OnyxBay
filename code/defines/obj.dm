@@ -363,7 +363,7 @@
 	icon_state = "lattice"
 	density = 0
 	anchored = 1.0
-	layer = 2
+	layer = 2.5
 	//	flags = 64.0
 
 /obj/list_container
