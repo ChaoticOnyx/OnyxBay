@@ -115,6 +115,15 @@
 	brightnessgreen = 0
 	brightnessblue = 2
 
+/obj/machinery/computer/prison_shuttle
+	name = "Prison Shuttle Control"
+	req_access = list(access_security)
+	var/authenticated = 0
+	brightnessred = 0
+	brightnessgreen = 2
+	brightnessblue = 0
+
+
 /obj/machinery/computer/communications
 	name = "Communications Console"
 	icon_state = "comm"

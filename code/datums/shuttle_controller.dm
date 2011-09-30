@@ -389,6 +389,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 					start_location.move_contents_to(end_location, /turf/space)
 
 					//var/area/holdingarea = locate(holding)
+					/*
 					for(var/mob/living/carbon/human/prisoner in locate(centcom))
 						//world << "Found a prisoner, moving his ass."
 						prisoner.loc = locate(holding)
@@ -410,7 +411,7 @@ proc/CreateShuttles() //Would do this via config, but map changes are rare and n
 							newghost.timeofdeath -= 9000
 						if(prisoner.client)
 							prisoner.client.mob = newghost
-
+					*/
 
 					online = 0
 					PrisonControl.location = 2
