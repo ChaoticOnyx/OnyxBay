@@ -525,6 +525,10 @@
 	anchored = 1.0
 	var/list/buckled_mobs = list(  )
 
+/obj/stool/bed/prison
+	name = "prison bed"
+	desc = "This bed doesn't look comfortable enough for the amount of time you're likely to spend in it."
+
 /obj/stool/chair
 	name = "chair"
 	desc = "You sit in this. Either by will or force."

@@ -64,6 +64,22 @@
 	..()
 	return
 
+/obj/stool/bed/prison/verb/pass_the_time()
+	set name = "Pass the time"
+	set category = "Object"
+	set src in oview(0)
+	for(var/mob/dead/observer/ghost_check in world)
+		if(ghost_check.real_name == usr.real_name)
+			usr.client.mob = ghost_check
+			return
+	var/mob/dead/observer/newghost = new/mob/dead/observer(usr.loc,usr)
+	newghost.timeofdeath = world.time - 18000
+	if(usr.mind && !usr.mind.special_role)
+		newghost.timeofdeath -= 9000
+	if(usr.client)
+		usr.client.mob = newghost
+
+
 /obj/stool/proc/unbuckle_all()
 	for(var/mob/M in src:buckled_mobs)
 		if (M.buckled == src)

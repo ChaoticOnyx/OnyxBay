@@ -70,9 +70,9 @@
 
 /mob/dead/observer/proc/reenter_corpse()
 	set category = "Special Verbs"
-	set name = "Re-enter Corpse"
+	set name = "Re-enter Body"
 	if(!corpse)
-		alert("You don't have a corpse!")
+		alert("You don't have a body!")
 		return
 //	if(corpse.stat == 2)
 //		alert("Your body is dead!")

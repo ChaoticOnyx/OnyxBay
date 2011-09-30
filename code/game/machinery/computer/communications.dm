@@ -5,6 +5,67 @@
 	if(state != STATE_STATUSDISPLAY)
 		src.updateDialog()
 
+
+
+
+
+/obj/machinery/computer/prison_shuttle/Topic(href, href_list)
+	if(..())
+		return
+	usr.machine = src
+
+	if(!href_list["operation"])
+		return
+	switch(href_list["operation"])
+		if("login")
+			var/mob/M = usr
+			var/obj/item/weapon/card/id/I = M.equipped()
+			if (I && istype(I))
+				if(src.check_access(I))
+					authenticated = 1
+		if("logout")
+			authenticated = 0
+		if("call-prison")
+			PrisonControl.start()
+			radioalert("Prisoner Shuttle launching in one minute.","Prison Notice")
+		if("recall-prison")
+			PrisonControl.recall()
+			radioalert("Prisoner Shuttle returning in two minutes.","Prison Notice")
+	src.updateUsrDialog()
+
+
+
+/obj/machinery/computer/prison_shuttle/attack_hand(var/mob/user as mob)
+	if(..())
+		return
+
+	user.machine = src
+	var/dat = "<head><title>Prison Shuttle Control Console</title></head><body>"
+	if (src.authenticated)
+		dat += "<BR>\[ <A HREF='?src=\ref[src];operation=logout'>Log Out</A> \]"
+		if(PrisonControl.departed)
+			dat += "<BR>Prison Shuttle in flight..."
+		else if(PrisonControl.location == 1)
+			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=call-prison'>Send Prison Shuttle to Prison</A> \]"
+		else
+			dat += "<BR>\[ <A HREF='?src=\ref[src];operation=recall-prison'>Return Prison Shuttle from Prison</A> \]"
+	else
+		dat += "<BR>\[ <A HREF='?src=\ref[src];operation=login'>Log In</A> \]"
+
+
+	//dat += "<BR>\[ [(src.state != STATE_DEFAULT) ? "<A HREF='?src=\ref[src];operation=main'>Main Menu</A> | " : ""]<A HREF='?src=\ref[user];mach_close=communications'>Close</A> \]"
+	user << browse(dat, "window=communications;size=400x500")
+	onclose(user, "communications")
+
+
+
+
+
+
+
+
+
+
 /obj/machinery/computer/communications/Topic(href, href_list)
 	if(..())
 		return
