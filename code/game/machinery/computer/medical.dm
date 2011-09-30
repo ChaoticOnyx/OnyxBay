@@ -439,8 +439,14 @@
 					R.fields["name"] = src.active1.fields["name"]
 					R.fields["id"] = src.active1.fields["id"]
 					R.name = text("Medical Record #[]", R.fields["id"])
-					R.fields["b_type"] = "Unknown"
-					R.fields["bloodsample"] = "Unknown"
+					if(!src.active1.fields["b_type"])
+						R.fields["b_type"] = "Unknown"
+					else
+						R.fields["b_type"] = src.active1.fields["b_type"]
+					if(!src.active1.fields["bloodsample"])
+						R.fields["bloodsample"] = "Unknown"
+					else
+						R.fields["bloodsample"] = src.active1.fields["bloodsample"]
 					R.fields["mi_dis"] = "None"
 					R.fields["mi_dis_d"] = "No minor disabilities have been declared."
 					R.fields["ma_dis"] = "None"
