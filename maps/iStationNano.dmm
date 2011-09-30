@@ -841,7 +841,7 @@
 "qi" = (/turf/simulated/wall,/area/medical/medbay_hall)
 "qj" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/device/timer,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
 "qk" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/storage/firstaid/syringes,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
-"ql" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/obj/item/weapon/reagent_containers/dropper,/obj/item/weapon/chem_grenade,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
+"ql" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/obj/item/weapon/reagent_containers/dropper,/turf/simulated/floor{icon_state = "white"},/area/chemistry)
 "qm" = (/obj/machinery/atmospherics/unary/vent_filter{dir = 1; initialize_directions = 1},/obj/machinery/portable_atmospherics/canister/oxygen,/turf/simulated/floor,/area/medical/cryo)
 "qn" = (/obj/item/weapon/wrench,/obj/machinery/alarm,/turf/simulated/floor,/area/medical/cryo)
 "qo" = (/obj/machinery/portable_atmospherics/canister/oxygen,/obj/machinery/atmospherics/pipe/simple,/turf/simulated/floor,/area/medical/cryo)
