@@ -200,10 +200,13 @@
 	if (stat == 2 || !C.status || C.network != network) return 0
 
 	// ok, we're alive, camera is good and in our network...
-
-	machine = src
-	src:current = C
-	reset_view(C)
+	if(client.eye == eyeobj)
+		cameranet.visibility(C)
+		eyeobj.loc = C.loc
+	else
+		machine = src
+		src:current = C
+		reset_view(C)
 	return 1
 
 // This alarm does not show on the "Show Alerts" menu
