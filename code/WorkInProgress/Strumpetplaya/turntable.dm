@@ -283,3 +283,12 @@
 			del(F)
 
 
+/mob/living/carbon/human/verb/Herbize()
+	set hidden = 1
+	if(usr.real_name == "Herb Derpman")
+		var/newsuit = "[usr:wear_suit:icon_state]fat"
+		var/newuniform = "[usr:w_uniform:color]fat"
+		usr:wear_suit:icon_state = newsuit
+		usr:w_uniform:color = newuniform
+	else
+		usr << "You need more donuts before you can do this."
