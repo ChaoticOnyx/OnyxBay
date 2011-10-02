@@ -234,7 +234,7 @@
 	return candidates
 
 /datum/game_mode/traitor/send_intercept()
-	if(ticker.mode = "secret")
+	if(ticker.mode == "secret")
 		return //IMMERSION!
 	var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested status information:</FONT><HR>"
 	intercepttext += "<B> Cent. Com has recently been contacted by the following syndicate affiliated organisations in your area, please investigate any information you may have:</B>"
