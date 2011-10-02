@@ -24,18 +24,12 @@ LOG_WHISPER
 
 # probablities for game modes chosen in "secret" and "random" modes
 # 
-# default probablity is 1, increase to make that mode more likely to be picked
+# default probablity is 0, increase to make that mode more likely to be picked
 # set to 0 to disable that mode
 PROBABILITY EXTENDED 5
-PROBABILITY TRAITOR 8
-PROBABILITY METEOR 2
-PROBABILITY MALFUNCTION 2
-PROBABILITY BLOB 0
-PROBABILITY NUCLEAR 5
-PROBABILITY SANDBOX 0
-PROBABILITY WIZARD 3
-PROBABILITY RESTRUCTURING 0
-PROBABILITY REVOLUTION 5
+PROBABILITY TRAITOR 2
+PROBABILITY EXTEND-A-TRAITORMONGOUS 4
+PROBABILITY NUCLEAR 2
 
 # allow players to initiate a restart vote
 ALLOW_VOTE_RESTART

@@ -50,10 +50,7 @@ var/list/postsetuphooks = list()
 		src.mode = config.pick_mode(master_mode)
 
 	if(hide_mode)
-		var/modes = sortList(config.get_used_mode_names())
-
 		world << "<B>The current game mode is - Secret!</B>"
-		world << "<B>Possibilities:</B> [english_list(modes)]"
 	else
 		src.mode.announce()
 	roundinfo.mode = master_mode
