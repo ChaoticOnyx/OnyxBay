@@ -43,7 +43,7 @@ var/makejson
 				diary << "Adding game mode [M.name] ([M.config_tag]) to configuration."
 				src.modes += M.config_tag
 				src.mode_names[M.config_tag] = M.name
-				src.probabilities[M.config_tag] = M.probability
+				src.probabilities[M.config_tag] = 0
 				if (M.votable)
 					src.votable_modes += M.config_tag
 		del(M)

@@ -234,6 +234,8 @@
 	return candidates
 
 /datum/game_mode/traitor/send_intercept()
+	if(ticker.mode == "secret")
+		return //IMMERSION!
 	var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested status information:</FONT><HR>"
 	intercepttext += "<B> Cent. Com has recently been contacted by the following syndicate affiliated organisations in your area, please investigate any information you may have:</B>"
 
@@ -259,6 +261,7 @@
 			comm.messagetext.Add(intercepttext)
 
 	command_alert("Summary downloaded and printed out at all communications consoles.", "Enemy communication intercept. Security Level Elevated.")
+	return
 
 
 /datum/game_mode/traitor/declare_completion()
