@@ -40,7 +40,7 @@
 			A.name = copytext(A.name,1,labelstart)
 			A.labels -= t
 			return
-      user << "\red Something broke. Please report this (that you were trying to remove a label and what the full name of the item was) to an admin or something."
+		user << "\red Something broke. Please report this (that you were trying to remove a label and what the full name of the item was) to an admin or something."
 
 /obj/item/weapon/hand_labeler/attack_self(mob/user as mob)
 	var/str = input(usr,"Label text?","Set label","")
