@@ -189,6 +189,7 @@
 	src.available_recipes += new /datum/recipe/pattyapple(src)
 	src.available_recipes += new /datum/recipe/pieshroom(src)
 	src.available_recipes += new /datum/recipe/piemeat(src)
+	src.available_recipes += new /datum/recipe/piepotato(src)
 	src.available_recipes += new /datum/recipe/taco(src)
 	src.available_recipes += new /datum/recipe/donkpocket(src)
 	src.available_recipes += new /datum/recipe/pizza(src)
