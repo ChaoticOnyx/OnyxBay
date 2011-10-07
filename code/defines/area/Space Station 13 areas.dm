@@ -603,7 +603,7 @@
 	music = 'signal.ogg'
 
 /area/bridge/solar
-	name = "Bridge Solar Control"
+	name = "Bridge Power Storage"
 	icon_state = "bridge"
 
 /area/crew_quarters/locker

@@ -205,6 +205,7 @@ AI MODULES
 		sender << "BUFFER OVERFLOW"
 		return
 	target << law
+	log_admin("[sender.real_name]([sender.ckey]) has uploaded the following law: '[law]'.")
 	if(!checktraitor(target))
 		target.add_supplied_law(10, law)
 
