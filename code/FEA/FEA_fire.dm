@@ -219,11 +219,11 @@ obj/fire/proc/burn(tox,oxy)
 	burn_amount = round(max(burn_amount, 0), 0.01)
 	if(burn_amount == 0)
 		del src
-	T.air.oxygen -= max(0,burn_amount)
-	T.air.toxins -= max(0,burn_amount)
+	T.zone.oxygen -= max(0,burn_amount)
+	T.zone.plasma -= max(0,burn_amount)
 	var/newco = burn_amount
-	T.air.carbon_dioxide += newco
-	T.air.temperature += 120*burn_amount
+	T.zone.co2 += newco
+	T.zone.temp += 120*burn_amount/T.zone.members.len
 
 obj/fire/New()
 	..()
