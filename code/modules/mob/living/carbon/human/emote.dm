@@ -1,6 +1,6 @@
 /mob/living/carbon/human/emote(var/act)
 
-	if(src.stat == 2 && act != "deathgasp")
+	if(src.stat == 2 && act != "stopbreath")
 		return
 
 	var/param = null
@@ -166,11 +166,17 @@
 			else
 				message = "<B>[src]</B> makes a weak noise."
 				m_type = 2
-
-		if ("deathgasp")
-			message = "<B>[src]</B> seizes up and falls limp, \his eyes dead and lifeless..."
+		if ("breathe")
+			message = "<B>[src]</B> breathes."
 			m_type = 1
-
+			holdbreath = 0
+		if ("stopbreath")
+			message = "<B>[src]</B> stops breathing..."
+			m_type = 1
+		if ("holdbreath")
+			message = "<B>[src]</B> stops breathing..."
+			m_type = 1
+			holdbreath = 1
 		if("struckdown")
 			message = "<B>[src]</B>, Station Dweller, has been struck down."
 			m_type = 2

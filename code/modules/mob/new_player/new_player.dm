@@ -32,7 +32,7 @@ mob/new_player
 			src.client.showmotd()
 		spawn(25)
 			new_player_panel()
-		src << "<font size=7><b>We now have <a href='http://whoopshop.com/index.php/topic,1632.0.html'>guidelines</a>. Read them before playing or fear the wrath of the banhammer!</font>"
+		src << "<b>We now have <a href='http://whoopshop.com/index.php/topic,1632.0.html'>guidelines</a>. Read them before playing or fear the wrath of the banhammer!"
 		var/starting_loc = pick(newplayer_start)
 		loc = starting_loc
 		sight |= SEE_TURFS

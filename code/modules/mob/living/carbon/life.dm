@@ -1,5 +1,7 @@
 /mob/var/lastbreathT = 0
 /mob/living/carbon/var/lyingcheck = 0
+/mob/living/carbon/var/isbreathing = 1
+/mob/living/carbon/var/holdbreath = 0
 
 /mob/living/carbon/Life()
 	set background = 1
@@ -490,11 +492,14 @@
 		return
 
 	if(!breath || (breath.total_moles() == 0))
-		if(health > 0)
-			oxyloss += 14*vsc.OXYGEN_LOSS
-		else
-			oxyloss += 5
-		oxygen_alert = max(oxygen_alert, 1)
+		losebreath++
+		// only start losing health once there's no air in the lungs
+		if(losebreath > 3)
+			if(health > 0)
+				oxyloss += 8*vsc.OXYGEN_LOSS
+			else
+				oxyloss += 5
+			oxygen_alert = max(oxygen_alert, 1)
 		return 0
 
 	var/safe_oxygen_min = 16 // Minimum safe partial pressure of O2, in kPa
@@ -514,14 +519,18 @@
 	var/CO2_pp = (breath.carbon_dioxide/breath.total_moles())*breath_pressure
 
 	if(O2_pp < safe_oxygen_min) 			// Too little oxygen
-		if(prob(20))
-			emote("gasp")
 		if(O2_pp > 0)
-			var/ratio = safe_oxygen_min/O2_pp
-			oxyloss += min(5*ratio, 7)
-			oxygen_used = breath.oxygen*ratio/6
+			losebreath++
+			// only start losing health once there's no air in the lungs
+			if(losebreath > 3)
+				var/ratio = safe_oxygen_min/O2_pp
+				oxyloss += min(5*ratio, 7)
+				oxygen_used = breath.oxygen*ratio/6
 		else
-			oxyloss += 7*vsc.OXYGEN_LOSS
+			losebreath++
+			// only start losing health once there's no air in the lungs
+			if(losebreath > 3)
+				oxyloss += 7*vsc.OXYGEN_LOSS
 		oxygen_alert = max(oxygen_alert, 1)
 	/*else if (O2_pp > safe_oxygen_max) 		// Too much oxygen (commented this out for now, I'll deal with pressure damage elsewhere I suppose)
 		spawn(0) emote("cough")
@@ -533,6 +542,9 @@
 		oxyloss = max(oxyloss-5, 0)
 		oxygen_used = breath.oxygen/6
 		oxygen_alert = 0
+		losebreath = 0
+		// can't go below 0
+		losebreath = max(losebreath, 0)
 
 
 	breath.oxygen -= oxygen_used
@@ -587,8 +599,6 @@
 				src << "\blue Your throat feels like ice!"
 		fire_alert = 0
 
-	if(oxyloss > 10)
-		losebreath++
 	//Temporary fixes to the alerts.
 
 	return 1
