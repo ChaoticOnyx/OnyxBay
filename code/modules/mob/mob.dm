@@ -1017,7 +1017,8 @@ mob/verb/turnwest()
 		if("pull")
 			usr.pulling = null
 		if("sleep")
-			usr.sleeping = !( usr.sleeping )
+			if(usr.sleeping) usr.sleeping = 0
+			else usr.sleeping = 10000
 		if("rest")
 			usr.resting = !( usr.resting )
 		if("throw")
