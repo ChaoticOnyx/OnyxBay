@@ -761,7 +761,7 @@ datum
 				else
 					O.clean_blood()
 			reaction_turf(var/turf/T, var/volume)
-				T.overlays = null
+			//	T.overlays = null
 				T.clean_blood()
 				for(var/obj/decal/cleanable/C in src)
 					del(C)
