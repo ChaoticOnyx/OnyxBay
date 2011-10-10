@@ -223,7 +223,7 @@ obj/fire/proc/burn(tox,oxy)
 	T.zone.plasma -= max(0,burn_amount)
 	var/newco = burn_amount
 	T.zone.co2 += newco
-	T.zone.temp += 120*burn_amount/T.zone.members.len
+	T.air.temperature += 120*burn_amount/T.zone.members.len
 
 obj/fire/New()
 	..()
