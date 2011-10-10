@@ -637,7 +637,7 @@
 				losebreath = 0
 			else
 				// we're running out of air, gasp for it!
-				if (prob(75)) //High chance of gasping for air
+				if (prob(25)) //High chance of gasping for air
 					spawn emote("gasp")
 
 		// do we fall into a coma?
@@ -651,7 +651,7 @@
 			if(health < 30)
 				holdbreath = 0
 				isbreathing = 1
-				emote("gasp")
+				spawn emote("custom h inhales sharply.")
 		else
 			isbreathing = 1
 			emote("breathe")

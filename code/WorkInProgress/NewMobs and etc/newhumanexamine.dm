@@ -87,9 +87,9 @@
 	var/distance = get_dist(usr,src)
 	if(istype(usr, /mob/dead/observer) || usr.stat == 2) // ghosts can see anything
 		distance = 1
-	if (stat == 1 || stat == 2)
+	if (stat == 1 || stat == 2 || holdbreath)
 		usr << "\red [name] doesn't seem to be responding to anything around [t_him], [t_his] eyes closed as though asleep."
-		if(!isbreathing && distance <= 3)
+		if( (!isbreathing || holdbreath) && distance <= 3)
 			usr << "\red [name] does not appear to be breathing."
 	else if (brainloss >= 60)
 		usr << "\red [name] has a stupid expression on [t_his] face."
