@@ -140,7 +140,7 @@
 	return
 
 /atom/MouseDrop(atom/B)
-	if((usr.mutations & 1 || (in_range(src,usr,0) && in_range(B,usr,0))) && !src:anchored)
+	if(usr.mutations & 1 && !src:anchored)
 		step_towards(src, B)
 		if(in_range(src,B))
 			if(istype(src,/obj/item))
@@ -149,17 +149,16 @@
 					src:attack(B, usr)
 				src:afterattack(B, usr)
 		var/obj/overlay/O = new /obj/overlay(locate(src.loc))
-		if(usr.mutations & 1)
-			O.name = "sparkles"
-			O.anchored = 1
-			O.density = 0
-			O.layer = FLY_LAYER
-			O.dir = pick(cardinal)
-			O.icon = 'effects.dmi'
-			O.icon_state = "nothing"
-			flick("empdisable",O)
-			spawn(5)
-				del(O)
+		O.name = "sparkles"
+		O.anchored = 1
+		O.density = 0
+		O.layer = FLY_LAYER
+		O.dir = pick(cardinal)
+		O.icon = 'effects.dmi'
+		O.icon_state = "nothing"
+		flick("empdisable",O)
+		spawn(5)
+			del(O)
 	spawn( 0 )
 		if (istype(B))
 			B.MouseDrop_T(src, usr)
