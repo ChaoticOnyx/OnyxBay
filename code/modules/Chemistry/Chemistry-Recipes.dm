@@ -438,3 +438,10 @@ datum
 			result = "stoxin"
 			required_reagents = list("impedrezene" = 1, "iron" = 1, "hydrogen" = 1)
 			result_amount = 3
+			
+		anti_booze
+			name = "Tanalat"
+			id = "anti_booze"
+			result = "anti_booze"
+			required_reagents = list ("anti_toxin" = 1, "sugar" = 1, "carbon" = 1)
+			result_amount = 3
