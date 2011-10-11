@@ -1194,6 +1194,6 @@ datum
 					holder.remove_reagent("vodka", 2)
 				if(holder.has_reagent("dwine"))
 					holder.remove_reagent("dwine", 1)
-				M:bruteloss += 2
+				M:toxloss += 2
 				..()
 				return
