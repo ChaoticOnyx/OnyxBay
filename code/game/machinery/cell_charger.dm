@@ -44,6 +44,7 @@
 			user.l_hand = charging
 		else
 			user.r_hand = charging
+		user.update_clothing()
 
 		charging.add_fingerprint(user)
 		charging.updateicon()

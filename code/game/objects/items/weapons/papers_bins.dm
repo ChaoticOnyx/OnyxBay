@@ -195,7 +195,14 @@ CLIPBOARDS
 	else
 		if (src.amount >= 1)
 			src.amount--
-			new /obj/item/weapon/paper( usr.loc )
+			var/obj/item/weapon/paper/P = new( usr.loc )
+			P.loc = user
+			P.layer = 20
+			if (user.hand )
+				user.l_hand = P
+			else
+				user.r_hand = P
+			user.update_clothing()
 	src.update()
 	return
 
