@@ -24,6 +24,8 @@ AI MODULES
 		user << "You upload a new law to the upload."
 		module.install(src)
 		log_admin("[user.real_name]([user.ckey]) has used a [module.name] on the AI upload.")
+		if(istype(module,/obj/item/weapon/aiModule/freeform))
+			log_admin("Freeform law: [module:newFreeFormLaw]")
 		message_admins("[user.real_name]([user.ckey]) has used a [module.name] on the AI upload.")
 	else
 		return ..()
@@ -36,8 +38,7 @@ AI MODULES
 		usr << "The upload computer is broken!"
 		return
 	if(istype(src,/obj/item/weapon/aiModule/freeform))
-		var/obj/item/weapon/aiModule/freeform/Mod = src //hrng
-		if(lentext(Mod.newFreeFormLaw) > 1000) //probably still too high but need discuss how long is reasonable
+		if(lentext(src:newFreeFormLaw) > 1000) //probably still too high but need discuss how long is reasonable
 			usr << "\red BUFFER OVERFLOW"
 			return
 	var/found=0
@@ -201,7 +202,7 @@ AI MODULES
 /obj/item/weapon/aiModule/freeform/transmitInstructions(var/mob/living/silicon/ai/target, var/mob/sender)
 	..()
 	var/law = "[newFreeFormLaw]"
-	if(lentext(newFreeFormLaw) > 2000)
+	if(lentext(law) > 2000)
 		sender << "BUFFER OVERFLOW"
 		return
 	target << law

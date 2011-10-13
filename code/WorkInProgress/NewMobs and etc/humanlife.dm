@@ -203,7 +203,8 @@
 
 	UpdateDamage()
 	updatehealth()
-	if(oxyloss > 50) paralysis = max(paralysis, 3)
+	// commented out because people with oxyloss will faint soon enough
+	//if(oxyloss > 50) paralysis = max(paralysis, 3)
 
 	if(sleeping)
 		paralysis = max(paralysis, 3)
@@ -625,43 +626,42 @@
 	var/datum/gas_mixture/environment = loc.return_air(1)
 	var/datum/gas_mixture/breath
 
-	if(health < 0 && !zombie && !reagents.has_reagent("inaprovaline"))
-		losebreath++
+	if(holdbreath)
+		isbreathing = 0
 
-	//var/halfmask = 0
+	if(isbreathing)
+		// are we running out of air in our lungs?
+		if(losebreath > 0)
+			// inaprovaline prevents the need to breathe for a while
+			if(reagents.has_reagent("inaprovaline"))
+				losebreath = 0
+			else
+				// we're running out of air, gasp for it!
+				if (prob(25)) //High chance of gasping for air
+					spawn emote("gasp")
 
-	//if(wear_mask && internal)
-	//	if(wear_mask.flags & 4)
-	//		halfmask = 1
+		// do we fall into a coma?
+		if(health < 0)
+			isbreathing = 0
+			spawn emote("stopbreath")
 
-	if(losebreath > 10 && health < 0) //Suffocating so do not take a breath
-		losebreath--
-		if (prob(75)) //High chance of gasping for air
-			spawn emote("gasp")
+	else if(health >= 0)
+		if(holdbreath)
+			// we're simply holding our breath, see if we can hold it longer
+			if(health < 30)
+				holdbreath = 0
+				isbreathing = 1
+				spawn emote("custom h inhales sharply.")
+		else
+			isbreathing = 1
+			emote("breathe")
+	else
+		// we've fallen into a coma
 		if(istype(loc, /obj/))
 			var/obj/location_as_object = loc
 			location_as_object.handle_internal_lifeform(src, 0)
-	/*else if(halfmask)
-		var/datum/gas_mixture/breath2
 
-		breath = get_breath_from_internal(BREATH_VOLUME/2)
-
-		if(istype(loc, /obj/))
-			var/obj/location_as_object = loc
-			breath2 = location_as_object.handle_internal_lifeform(src, BREATH_VOLUME/2)
-		else if(istype(loc, /turf/))
-			var/breath_moles = 0
-			/*if(environment.return_pressure() > ONE_ATMOSPHERE)
-				// Loads of air around (pressure effects will be handled elsewhere), so lets just take a enough to fill our lungs at normal atmos pressure (using n = Pv/RT)
-				breath_moles = (ONE_ATMOSPHERE*BREATH_VOLUME/R_IDEAL_GAS_EQUATION*environment.temperature)
-				else*/
-				// Not enough air around, take a percentage of what's there to model this properly
-			breath_moles = environment.total_moles()*((BREATH_VOLUME/2)/CELL_VOLUME)
-
-			breath2 = loc.remove_air(breath_moles)
-
-		breath.merge(breath2)*/
-	else
+	if(isbreathing)
 		//First, check for air from internal atmosphere (using an air tank and mask generally)
 		breath = get_breath_from_internal(BREATH_VOLUME)
 

@@ -1,5 +1,5 @@
 /mob/Logout()
-	log_access("Logout: [key_name(src)]")
+	log_access("Logout: [src.key]([src])")
 	logged_in = 0
 	world.makejson()
 	..()

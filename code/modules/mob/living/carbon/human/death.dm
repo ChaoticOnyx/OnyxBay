@@ -22,7 +22,7 @@
 	else
 		unlock_medal("I can't take it anymore!", 0, "Kill yourself...", "easy")
 	if (!gibbed)
-		emote("deathgasp") //let the world KNOW WE ARE DEAD
+		//emote("deathgasp") //let the world KNOW WE ARE DEAD
 
 		canmove = 0
 		if(client)

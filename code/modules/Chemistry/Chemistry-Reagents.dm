@@ -761,7 +761,7 @@ datum
 				else
 					O.clean_blood()
 			reaction_turf(var/turf/T, var/volume)
-				T.overlays = null
+			//	T.overlays = null
 				T.clean_blood()
 				for(var/obj/decal/cleanable/C in src)
 					del(C)
@@ -1176,3 +1176,24 @@ datum
 			id = "weedkiller"
 			description = "A chemical, poisonous to weeds."
 			reagent_state = LIQUID
+
+		anti_booze
+			name = "Tanalat"
+			id = "anti_booze"
+			description = "Tanalat is a powerful substance that purges alcohol from your system. Unfortunately, it also does a pretty nasty number on your liver and causes internal tissue damage as a result. Administer with extreme care."
+			reagent_state = LIQUID
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+				M:drowsyness = max(M:drowsyness-2, 0)
+				M:intoxicated = max(M:intoxicated-2, 0)
+				M:eye_blurry = max(M.eye_blurry-2, 0)
+				if(holder.has_reagent("beer"))
+					holder.remove_reagent("beer", 3)
+				if(holder.has_reagent("vodka"))
+					holder.remove_reagent("vodka", 2)
+				if(holder.has_reagent("dwine"))
+					holder.remove_reagent("dwine", 1)
+				M:toxloss += 2
+				..()
+				return

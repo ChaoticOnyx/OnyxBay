@@ -293,7 +293,7 @@
 	usr.changeling_fakedeath = 1
 	usr.remove_changeling_powers()
 
-	usr.emote("deathgasp")
+	//usr.emote("deathgasp")
 
 	spawn(600)
 		if (usr.stat != 2)

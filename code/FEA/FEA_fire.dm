@@ -161,17 +161,17 @@ obj/fire/proc/process()
 				continue
 			if(locate(/obj/fire) in TS)
 				continue
-			if(TS.air.temperature >= T0C && TS.air.toxins > 0.5 && TS.air.oxygen > 0.5 )
+			if(TS.air.temperature >= T0C && TS.zone.plasma / TS.zone.members.len > 0.5 && TS.zone.oxygen / TS.zone.members.len > 0.5 )
 				new/obj/fire(TS)
 		just_spawned = 0
 		return
 	var/turf/simulated/floor/T = src.loc
 	if(!istype(src.loc,/turf/simulated/floor))
 		del(src)
-	if(T.air.toxins <= 0.5 || T.air.oxygen <= 0.5)
+	if(T.zone.plasma / T.zone.members.len <= 0.5 || T.zone.oxygen / T.zone.members.len <= 0.5)
 		del(src)
 	if(T.wet) T.wet = 0
-	burn( (T.air.toxins - T.air.carbon_dioxide / 2) / 300, (T.air.oxygen - T.air.carbon_dioxide / 2) / 300)
+	burn( (T.zone.plasma - T.zone.co2 / 2) / (300*T.zone.members.len), (T.zone.oxygen - T.zone.co2 / 2) / (300*T.zone.members.len))
 	T.burn_tile()
 
 
@@ -206,7 +206,7 @@ obj/fire/proc/process()
 			continue
 		if(locate(/obj/fire) in TS)
 			continue
-		if(TS.air.temperature >= 250  && TS.air.toxins > 0.5 && TS.air.oxygen > 0.5 )
+		if(TS.air.temperature >= 250  && TS.zone.plasma / TS.zone.members.len > 0.5 && TS.zone.oxygen / TS.zone.members.len > 0.5 )
 			new/obj/fire(TS)
 	for(var/atom/item in loc)
 		item.temperature_expose(null, T.air.temperature, volume)
@@ -219,10 +219,10 @@ obj/fire/proc/burn(tox,oxy)
 	burn_amount = round(max(burn_amount, 0), 0.01)
 	if(burn_amount == 0)
 		del src
-	T.air.oxygen -= max(0,burn_amount)
-	T.air.toxins -= max(0,burn_amount)
+	T.zone.oxygen -= max(0,burn_amount)
+	T.zone.plasma -= max(0,burn_amount)
 	var/newco = burn_amount
-	T.air.carbon_dioxide += newco
+	T.zone.co2 += newco
 	T.air.temperature += 120*burn_amount
 
 obj/fire/New()
