@@ -67,11 +67,11 @@
 	for(var/obj/machinery/camera/c in cameras)
 		var/lum = c.luminosity
 		c.luminosity = 6
-		for(var/turf/t in view(5, c))
+		for(var/turf/t in view(7, c))
 			if(t in turfs)
 				newDimTurfs += t
 
-		for(var/turf/t in view(4, c))
+		for(var/turf/t in view(6, c))
 			if(t in turfs)
 				newVisibleTurfs += t
 
@@ -154,11 +154,11 @@
 	for(var/obj/machinery/camera/c in cameras)
 		var/lum = c.luminosity
 		c.luminosity = 6
-		for(var/turf/t in view(5, c))
+		for(var/turf/t in view(7, c))
 			if(t in turfs)
 				dimTurfs += t
 
-		for(var/turf/t in view(4, c))
+		for(var/turf/t in view(6, c))
 			if(t in turfs)
 				visibleTurfs += t
 
@@ -176,7 +176,7 @@
 	for(var/turf/t in dimTurfs)
 		if(!(t in visibleTurfs))
 			if(!t.dim)
-				t.dim = image('cameravis.dmi', t, "dim", 15)
+				t.dim = image('cameravis.dmi', t, "dim", TURF_LAYER)
 
 			dim += t.dim
 
