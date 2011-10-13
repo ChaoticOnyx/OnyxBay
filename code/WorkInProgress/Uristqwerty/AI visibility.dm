@@ -27,8 +27,9 @@
 
 /datum/camerachunk/proc/add(mob/aiEye/ai)
 	ai.visibleCameraChunks += src
-	ai.ai.client.images += obscured
-	ai.ai.client.images += dim
+	if(ai.ai.client)
+		ai.ai.client.images += obscured
+		ai.ai.client.images += dim
 	visible++
 	seenby += ai
 	if(changed && !updating)
@@ -36,8 +37,9 @@
 
 /datum/camerachunk/proc/remove(mob/aiEye/ai)
 	ai.visibleCameraChunks -= src
-	ai.ai.client.images -= obscured
-	ai.ai.client.images -= dim
+	if(ai.ai.client)
+		ai.ai.client.images -= obscured
+		ai.ai.client.images -= dim
 	seenby -= ai
 	if(visible > 0)
 		visible--
@@ -89,7 +91,8 @@
 		if(t.dim)
 			dim -= t.dim
 			for(var/mob/aiEye/m in seenby)
-				m.ai.client.images -= t.dim
+				if(m.ai.client)
+					m.ai.client.images -= t.dim
 
 		if(!(t in visibleTurfs))
 			if(!t.obscured)
@@ -97,7 +100,8 @@
 
 			obscured += t.obscured
 			for(var/mob/aiEye/m in seenby)
-				m.ai.client.images += t.obscured
+				if(m.ai.client)
+					m.ai.client.images += t.obscured
 
 	for(var/turf/t in dimAdded)
 		if(!(t in visibleTurfs))
@@ -107,18 +111,21 @@
 
 			dim += t.dim
 			for(var/mob/aiEye/m in seenby)
-				m.ai.client.images += t.dim
+				if(m.ai.client)
+					m.ai.client.images += t.dim
 
 			if(t.obscured)
 				obscured -= t.obscured
 				for(var/mob/aiEye/m in seenby)
-					m.ai.client.images -= t.obscured
+					if(m.ai.client)
+						m.ai.client.images -= t.obscured
 
 	for(var/turf/t in visAdded)
 		if(t.obscured)
 			obscured -= t.obscured
 			for(var/mob/aiEye/m in seenby)
-				m.ai.client.images -= t.obscured
+				if(m.ai.client)
+					m.ai.client.images -= t.obscured
 
 	for(var/turf/t in visRemoved)
 		if(t in obscuredTurfs)
@@ -127,7 +134,8 @@
 
 			obscured += t.obscured
 			for(var/mob/aiEye/m in seenby)
-				m.ai.client.images += t.obscured
+				if(m.ai.client)
+					m.ai.client.images += t.obscured
 
 
 
@@ -136,7 +144,8 @@
 	y &= ~0xf
 
 	for(var/obj/machinery/camera/c in range(16, locate(x + 8, y + 8, z)))
-		cameras += c
+		if(c.status)
+			cameras += c
 
 	for(var/turf/t in range(10, locate(x + 8, y + 8, z)))
 		if(t.x >= x && t.y >= y && t.x < x + 16 && t.y < y + 16)
