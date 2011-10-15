@@ -1,6 +1,5 @@
 #include "main.h"
 
-// test.dll, a win32 C++ library compiled in VC++:
 #include <string.h>
 
 extern "C" __declspec(dllexport) float temperature(int n, float *v[])
@@ -73,4 +72,9 @@ extern "C" __declspec(dllexport) float *zone_update(int n, float *v[])
       results[8] = ((zplasma/ztiles) - plasma_avg) * (1-flow/100) + plasma_avg;
 
       return results;
+}
+
+extern "C" __declspec(dllexport) const char* test(int argc, char* args[]) {
+	static const char* rval = "very good";
+	return rval;
 }
