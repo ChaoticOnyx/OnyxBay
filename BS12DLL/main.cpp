@@ -1,80 +1,158 @@
-#include "main.h"
-
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/regex.hpp>
 #include <string.h>
+#include <string>
 
-extern "C" __declspec(dllexport) float temperature(int n, float *v[])
-{
-      if(n != 4)
-      {
-            return 0.0;
-      }
+using boost::lexical_cast;
+using boost::bad_lexical_cast;
 
-      float temp, giver_temp;
-      temp = *v[1];
-      giver_temp = *v[2];
+#ifdef __WIN32
+#include "windows.h"
+#endif
 
-      float heat_capacity,giver_capacity;
-      heat_capacity = *v[3];
-      giver_capacity = *v[4];
+#include "main.h"
+#include "tile.hpp"
 
-      //var/combined_heat_capacity = giver_heat_capacity + self_heat_capacity
-      //if(combined_heat_capacity != 0)
-      //	temperature = (giver.temperature*giver_heat_capacity + temperature*self_heat_capacity)/combined_heat_capacity
-      float combined_capacity = heat_capacity + giver_capacity;
-      if(combined_capacity > 0)
-      {
-            return (giver_temp * giver_capacity + temp * heat_capacity)/combined_capacity;
-      }
-      return 0.0;
+// Store metadata about the simulation.
+struct Simulation {
+	int maxx, maxy, maxz;
+	int x, y, z; // the cursor/tile we're currently working with
+};
+
+// uses static information to get the map position
+static inline Tile* get_map() {
+	char** memrange = (char**) 0x50000000;
+	return (Tile*) (*memrange)+sizeof(Simulation);
 }
 
-extern "C" __declspec(dllexport) float *zone_update(int n, float *v[])
-{
-      if(n != 11)
-      {
-            return NULL;
-      }
-      float oxygen, nitrogen, co2, plasma, tiles;
-      float zoxygen, znitrogen, zco2, zplasma, ztiles;
-      float flow;
-
-      static float results[8];
-
-      oxygen = *v[1];
-      nitrogen = *v[2];
-      co2 = *v[3];
-      plasma = *v[4];
-      tiles = *v[5];
-
-      zoxygen = *v[6];
-      znitrogen = *v[7];
-      zco2 = *v[8];
-      zplasma = *v[9];
-      ztiles = *v[10];
-
-      flow = *v[11];
-
-      float oxy_avg, nitro_avg, co2_avg, plasma_avg;
-
-      oxy_avg = (oxygen + zoxygen) / (tiles + ztiles);
-      nitro_avg = (nitrogen + znitrogen) / (tiles + ztiles);
-      co2_avg = (co2 + zco2) / (tiles + ztiles);
-      plasma_avg = (plasma + zplasma) / (tiles + ztiles);
-
-      results[1] = ((oxygen/tiles) - oxy_avg) * (1-flow/100) + oxy_avg;
-      results[2] = ((nitrogen/tiles) - nitro_avg) * (1-flow/100) + nitro_avg;
-      results[3] = ((co2/tiles) - co2_avg) * (1-flow/100) + co2_avg;
-      results[4] = ((plasma/tiles) - plasma_avg) * (1-flow/100) + plasma_avg;
-
-      results[5] = ((zoxygen/ztiles) - oxy_avg) * (1-flow/100) + oxy_avg;
-      results[6] = ((znitrogen/ztiles) - nitro_avg) * (1-flow/100) + nitro_avg;
-      results[7] = ((zco2/ztiles) - co2_avg) * (1-flow/100) + co2_avg;
-      results[8] = ((zplasma/ztiles) - plasma_avg) * (1-flow/100) + plasma_avg;
-
-      return results;
+// uses static information to get the metadata
+static inline Simulation* get_simulation() {
+	Simulation** memrange = (Simulation**) 0x50000000;
+	return *memrange;
 }
 
-extern "C" __declspec(dllexport) const char* test(int argc, char* args[]) {
-	static const char* rval = "very good";
-	return rval;
+static inline Tile* get_tile() {
+	Simulation* sim = get_simulation();
+	Tile* map = get_map();
+	return &map[sim->x + sim->y * sim->maxx + sim->z * sim->maxy * sim->maxx];
+}
+
+
+// allocateMap(x,y,z)
+extern "C" __declspec(dllexport) const char* allocateMap(int argc, char* args[]) {
+	int x = lexical_cast<int>(args[0]);
+	int y = lexical_cast<int>(args[1]);
+	int z = lexical_cast<int>(args[2]);
+
+	#ifdef _WIN32
+		void** memrange = (void**) VirtualAlloc((void*) 0x50000000, 32, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+		if(memrange != (void*) 0x50000000) {
+			return "failure";
+		}
+		size_t alloc_size = x * y * z * sizeof(Tile) + sizeof(Simulation);
+		*memrange = malloc(alloc_size);
+		if(!*memrange) return "failure";
+
+		// initialize all the tiles to zero
+		memset(*memrange, 0, alloc_size);
+
+		Simulation* metadata = get_simulation();
+		metadata->maxx = x;
+		metadata->maxy = y;
+		metadata->maxz = z;
+
+		return "success";
+	#endif
+}
+
+uint32* pointer_to_gas(Tile* tile, std::string gasname) {
+	if(gasname == "oxygen") return &tile->oxygen;
+	else return 0;
+}
+
+// setTile(x,y,z)
+extern "C" __declspec(dllexport) const char* setTile(int argc, char* args[]) {
+	Simulation* sim = get_simulation();
+	sim->x = lexical_cast<int>(args[0]);
+	sim->y = lexical_cast<int>(args[1]);
+	sim->z = lexical_cast<int>(args[2]);
+	return 0;
+}
+
+// setGas(gasname, amount)
+extern "C" __declspec(dllexport) const char* setGas(int argc, char* args[]) {
+	std::string gasname = lexical_cast<std::string>(args[0]);
+	int32 amount = lexical_cast<int32>(args[1]);
+
+	Tile* tile = get_tile();
+
+	uint32* gas = pointer_to_gas(tile, gasname);
+	if(gas) *gas = amount;
+
+	return 0;
+
+}
+
+// addGas(gasname, amount)
+extern "C" __declspec(dllexport) const char* addGas(int argc, char* args[]) {
+	std::string gasname = lexical_cast<std::string>(args[0]);
+	int32 amount = lexical_cast<int32>(args[1]);
+
+	Tile* tile = get_tile();
+
+	uint32* gas = pointer_to_gas(tile, gasname);
+	if(gas) *gas += amount;
+
+	return 0;
+}
+
+// getGas(gasname)
+extern "C" __declspec(dllexport) const char* getGas(int argc, char* args[]) {
+	std::string gasname = lexical_cast<std::string>(args[0]);
+
+	Tile* tile = get_tile();
+
+	uint32* gas = pointer_to_gas(tile, gasname);
+	std::string rval = lexical_cast<std::string>(*gas);
+	return rval.c_str();
+}
+
+// getTotalGas()
+extern "C" __declspec(dllexport) const char* getTotalGas(int argc, char* args[]) {
+	std::string gasname = lexical_cast<std::string>(args[0]);
+
+	Tile* tile = get_tile();
+
+	// return the sum of all gases
+	std::string rval = lexical_cast<std::string>(tile->oxygen + tile->toxins + tile->co2 + tile->n2);
+	return rval.c_str();
+}
+
+// setDensity()
+extern "C" __declspec(dllexport) const char* setDensity(int argc, char* args[]) {
+	Tile* tile = get_tile();
+
+	tile->flags |= DENSITY;
+
+	return 0;
+}
+
+// unsetDensity()
+extern "C" __declspec(dllexport) const char* unsetDensity(int argc, char* args[]) {
+	Tile* tile = get_tile();
+
+	tile->flags &= ~DENSITY;
+
+	return 0;
+}
+
+// setDefaultAtmosphere
+extern "C" __declspec(dllexport) const char* setDefaultAtmosphere(int argc, char* args[]) {
+	Tile* tile = get_tile();
+
+	tile->n2     = 80000;
+	tile->oxygen = 20000;
+
+	return 0;
 }

@@ -18,9 +18,6 @@
 extern "C"
 {
 #endif
-
-extern "C" float temperature(int n, float *v[]);
-extern "C" float *zone_update(int n, float *v[]);
 extern "C" const char* test(int argc, char* args[]);
 
 #ifdef __cplusplus
