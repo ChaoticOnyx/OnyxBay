@@ -32,7 +32,7 @@ datum/EC_event/airflow_push/var/dir
 datum/EC_event/airflow_push/var/power
 
 
-mob/verb/test()
+/*mob/verb/test()
 	var/start = world.timeofday
 	for(var/turf/simulated/T in world)
 		T.select()
@@ -41,7 +41,7 @@ mob/verb/test()
 		if(T.density)
 			call("BS12DLL.dll","setDensity")()
 	world << "DONE"
-	world << world.timeofday - start
+	world << world.timeofday - start*/
 
 proc/setDimensions(x, y, z)
 	var/success = call("BS12DLL.dll","allocateMap")(num2text(x), num2text(y), num2text(z))
