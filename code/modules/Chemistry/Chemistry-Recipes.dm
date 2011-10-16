@@ -433,7 +433,7 @@ datum
 			result_amount = 3
 
 		stoxin
-			name = "Sleep Toxin"
+			name = "Saripidem"
 			id = "stoxin"
 			result = "stoxin"
 			required_reagents = list("sugar" = 1, "nitrogen" = 1, "hydrogen" = 1)

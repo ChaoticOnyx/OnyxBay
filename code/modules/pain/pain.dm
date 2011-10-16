@@ -22,7 +22,6 @@ mob/proc/pain(var/partname, var/amount, var/force)
 	var/msg
 	switch(amount)
 		if(1 to 10)
-			flash_weak_pain()
 			msg = "<b>Your [partname] hurts a bit."
 		if(11 to 90)
 			flash_weak_pain()

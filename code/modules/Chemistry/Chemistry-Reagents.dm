@@ -346,7 +346,7 @@ datum
 				return
 
 		stoxin
-			name = "Sleep Toxin"
+			name = "Saripidem"
 			id = "stoxin"
 			description = "An effective hypnotic used to treat insomnia."
 			reagent_state = LIQUID
