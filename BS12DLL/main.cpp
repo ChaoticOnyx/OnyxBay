@@ -7,6 +7,9 @@
 using boost::lexical_cast;
 using boost::bad_lexical_cast;
 
+#define GAS_ACCURACY 10000
+#define EXCHANGE_ACCURACY 10
+
 #ifdef __WIN32
 #include "windows.h"
 #endif
@@ -14,11 +17,24 @@ using boost::bad_lexical_cast;
 #include "main.h"
 #include "tile.hpp"
 
+static inline int get_total_gas(Tile* tile) {
+	int rval = 0;
+	for(int i = 0; i < gases_end; i++) {
+		rval += tile->gases[i];
+	}
+	return rval;
+}
+
 // Store metadata about the simulation.
 struct Simulation {
 	int maxx, maxy, maxz;
 	int x, y, z; // the cursor/tile we're currently working with
+	std::vector<std::string> events;
 };
+
+static inline int get_tile_offset(Simulation* sim, int x, int y, int z) {
+	return x + y * sim->maxx + z * sim->maxy * sim->maxx;
+}
 
 // uses static information to get the map position
 static inline Tile* get_map() {
@@ -35,9 +51,10 @@ static inline Simulation* get_simulation() {
 static inline Tile* get_tile() {
 	Simulation* sim = get_simulation();
 	Tile* map = get_map();
-	return &map[sim->x + sim->y * sim->maxx + sim->z * sim->maxy * sim->maxx];
+	return &map[get_tile_offset(sim, sim->x, sim->y, sim->z)];
 }
 
+#include "airflow.hpp"
 
 // allocateMap(x,y,z)
 extern "C" __declspec(dllexport) const char* allocateMap(int argc, char* args[]) {
@@ -68,7 +85,7 @@ extern "C" __declspec(dllexport) const char* allocateMap(int argc, char* args[])
 }
 
 uint32* pointer_to_gas(Tile* tile, std::string gasname) {
-	if(gasname == "oxygen") return &tile->oxygen;
+	if(gasname == "oxygen") return &tile->gases[oxygen];
 	else return 0;
 }
 
@@ -84,6 +101,7 @@ extern "C" __declspec(dllexport) const char* setTile(int argc, char* args[]) {
 }
 
 // setGas(gasname, amount)
+// note that 1 mole of gas in SS13 equals to GAS_ACCURACY moles in our simulation
 extern "C" __declspec(dllexport) const char* setGas(int argc, char* args[]) {
 	std::string gasname = lexical_cast<std::string>(args[0]);
 	int32 amount = lexical_cast<int32>(args[1]);
@@ -91,7 +109,7 @@ extern "C" __declspec(dllexport) const char* setGas(int argc, char* args[]) {
 	Tile* tile = get_tile();
 
 	uint32* gas = pointer_to_gas(tile, gasname);
-	if(gas) *gas = amount;
+	if(gas) *gas = amount * GAS_ACCURACY;
 
 	return 0;
 
@@ -105,7 +123,7 @@ extern "C" __declspec(dllexport) const char* addGas(int argc, char* args[]) {
 	Tile* tile = get_tile();
 
 	uint32* gas = pointer_to_gas(tile, gasname);
-	if(gas) *gas += amount;
+	if(gas) *gas += amount * GAS_ACCURACY;
 
 	return 0;
 }
@@ -117,7 +135,7 @@ extern "C" __declspec(dllexport) const char* getGas(int argc, char* args[]) {
 	Tile* tile = get_tile();
 
 	uint32* gas = pointer_to_gas(tile, gasname);
-	std::string rval = lexical_cast<std::string>(*gas);
+	std::string rval = lexical_cast<std::string>(*gas / GAS_ACCURACY);
 	return rval.c_str();
 }
 
@@ -128,24 +146,24 @@ extern "C" __declspec(dllexport) const char* getTotalGas(int argc, char* args[])
 	Tile* tile = get_tile();
 
 	// return the sum of all gases
-	std::string rval = lexical_cast<std::string>(tile->oxygen + tile->toxins + tile->co2 + tile->n2);
+	std::string rval = lexical_cast<std::string>(get_total_gas(tile) / GAS_ACCURACY);
 	return rval.c_str();
 }
 
-// setDensity()
+// setDensity(direction)
 extern "C" __declspec(dllexport) const char* setDensity(int argc, char* args[]) {
 	Tile* tile = get_tile();
 
-	tile->flags |= DENSITY;
+	tile->flags |= CNORTH;
 
 	return 0;
 }
 
-// unsetDensity()
+// unsetDensity(direction)
 extern "C" __declspec(dllexport) const char* unsetDensity(int argc, char* args[]) {
 	Tile* tile = get_tile();
 
-	tile->flags &= ~DENSITY;
+	tile->flags &= ~CNORTH;
 
 	return 0;
 }
@@ -157,8 +175,14 @@ extern "C" __declspec(dllexport) const char* setDefaultAtmosphere(int argc, char
 
 	if((int) tile > ((int) ((((char*)get_simulation)) + sim->maxx * sim->maxy * sim->maxz * sizeof(Tile) + sizeof(Simulation)))) return "failure";
 
-	tile->n2     = 80000;
-	tile->oxygen = 20000;
+	tile->gases[n2]     = 80000;
+	tile->gases[oxygen] = 20000;
 
+	return 0;
+}
+
+// tick()
+extern "C" __declspec(dllexport) const char* tick(int argc, char* args[]) {
+	process_map();
 	return 0;
 }
