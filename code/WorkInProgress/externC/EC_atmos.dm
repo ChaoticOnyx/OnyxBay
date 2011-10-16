@@ -35,14 +35,11 @@ datum/EC_event/airflow_push/var/power
 mob/verb/test()
 	var/start = world.timeofday
 	for(var/turf/simulated/T in world)
-		world << "[T.x],[T.y],[T.z]"
-		world << T.select()
-		world << "a"
-		call("BS12DLL.dll","setDefaultAtmosphere")()
-		world << "b"
+		T.select()
+		var/rval = call("BS12DLL.dll","setDefaultAtmosphere")()
+		if(rval) world << rval
 		if(T.density)
 			call("BS12DLL.dll","setDensity")()
-			world << "c"
 	world << "DONE"
 	world << world.timeofday - start
 
@@ -52,7 +49,9 @@ proc/setDimensions(x, y, z)
 		world << "<b>FATAL ERROR during C map allocation."
 
 turf/select()
-	call("BS12DLL.dll","setTile")(num2text(x), num2text(y), num2text(z))
+	var/result = call("BS12DLL.dll","setTile")(num2text(x), num2text(y), num2text(z))
+	if(result)
+		world << result
 
 setGas(name, amount)
 	call("BS12DLL.dll","setGas")(name, num2text(amount))

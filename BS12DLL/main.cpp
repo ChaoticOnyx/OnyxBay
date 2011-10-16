@@ -51,6 +51,7 @@ extern "C" __declspec(dllexport) const char* allocateMap(int argc, char* args[])
 			return "failure";
 		}
 		size_t alloc_size = x * y * z * sizeof(Tile) + sizeof(Simulation);
+		alloc_size *= 4;
 		*memrange = malloc(alloc_size);
 		if(!*memrange) return "failure";
 
@@ -77,6 +78,8 @@ extern "C" __declspec(dllexport) const char* setTile(int argc, char* args[]) {
 	sim->x = lexical_cast<int>(args[0]);
 	sim->y = lexical_cast<int>(args[1]);
 	sim->z = lexical_cast<int>(args[2]);
+
+	if(sim->x > sim->maxx || sim->y > sim->maxy || sim->z > sim->maxz) return "failure";
 	return 0;
 }
 
@@ -150,6 +153,9 @@ extern "C" __declspec(dllexport) const char* unsetDensity(int argc, char* args[]
 // setDefaultAtmosphere
 extern "C" __declspec(dllexport) const char* setDefaultAtmosphere(int argc, char* args[]) {
 	Tile* tile = get_tile();
+	Simulation* sim = get_simulation();
+
+	if((int) tile > ((int) ((((char*)get_simulation)) + sim->maxx * sim->maxy * sim->maxz * sizeof(Tile) + sizeof(Simulation)))) return "failure";
 
 	tile->n2     = 80000;
 	tile->oxygen = 20000;

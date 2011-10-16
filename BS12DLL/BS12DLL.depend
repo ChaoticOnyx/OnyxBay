@@ -6,3 +6,24 @@
 1313445653 c:\bs12dll\main.h
 	<windows.h>
 
+1318731798 source:f:\bay12\bs12dll\main.cpp
+	<boost/lexical_cast.hpp>
+	<boost/algorithm/string.hpp>
+	<boost/regex.hpp>
+	<string.h>
+	<string>
+	"windows.h"
+	"main.h"
+	"tile.hpp"
+
+1318668634 f:\bay12\bs12dll\main.h
+	<windows.h>
+
+1318683558 f:\bay12\bs12dll\tile.hpp
+	"utils.hpp"
+
+1318669919 f:\bay12\bs12dll\utils.hpp
+	<stdlib.h>
+	<iostream>
+	<time.h>
+
