@@ -6,6 +6,11 @@
 		message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 		return say_dead(message)
 
+
+	// emotes
+	if (copytext(message, 1, 2) == "*")
+		return emote(copytext(message, 2))
+
 	if (length(message) >= 2)
 		if (copytext(message, 1, 3) == ":s")
 			message = copytext(message, 3)
@@ -80,3 +85,54 @@
 			continue
 		if (C.mob.stat > 1)
 			C.mob.show_message(rendered, 2)
+
+
+
+/mob/living/silicon/emote(var/act)
+	if(src.stat == 2 && act != "stopbreath")
+		return
+
+	var/param = null
+
+	if (findtext(act, " ", 1, null))
+		var/t1 = findtext(act, " ", 1, null)
+		param = copytext(act, t1 + 1, length(act) + 1)
+		act = copytext(act, 1, t1)
+
+	var/message = ""
+	var/m_type = 0
+	switch(act)
+		if ("custom")
+			m_type = 0
+			if(copytext(param,1,2) == "v")
+				m_type = 1
+			else if(copytext(param,1,2) == "h")
+				m_type = 2
+			else
+				var/input2 = input("Is this a visible or hearable emote?") in list("Visible","Hearable")
+				if (input2 == "Visible")
+					m_type = 1
+				else if (input2 == "Hearable")
+					m_type = 2
+				else
+					alert("Unable to use this emote, must be either hearable or visible.")
+					return
+			if(m_type)
+				param = trim(copytext(param,2))
+			else
+				param = trim(param)
+			var/input
+			if(param == "")
+				input = input("Choose an emote to display.")
+			else
+				input = param
+			if(input != "")
+				message = "<B>[src]</B> [input]"
+
+	if (message != "")
+		if (m_type & 1)
+			for (var/mob/O in viewers(src, null))
+				O.show_message(message, m_type)
+		else if (m_type & 2)
+			for (var/mob/O in hearers(src, null))
+				O.show_message(message, m_type)
