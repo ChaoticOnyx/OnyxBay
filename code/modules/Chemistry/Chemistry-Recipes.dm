@@ -436,9 +436,9 @@ datum
 			name = "Sleep Toxin"
 			id = "stoxin"
 			result = "stoxin"
-			required_reagents = list("impedrezene" = 1, "iron" = 1, "hydrogen" = 1)
+			required_reagents = list("sugar" = 1, "nitrogen" = 1, "hydrogen" = 1)
 			result_amount = 3
-			
+
 		anti_booze
 			name = "Tanalat"
 			id = "anti_booze"

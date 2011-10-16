@@ -1028,7 +1028,7 @@
 		R.add_reagent("toxin", 30)
 
 /obj/item/weapon/reagent_containers/glass/bottle/stoxin
-	name = "sleep-toxin bottle"
+	name = "saripidem bottle"
 	desc = "A small bottle."
 	icon = 'chemical.dmi'
 	icon_state = "bottle20"
