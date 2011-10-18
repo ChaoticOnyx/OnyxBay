@@ -5,6 +5,8 @@
 	desc = "A sink used for washing one's hands and face AND CUPS."
 	anchored = 1
 
+	attack_ai()
+		return
 
 	attack_hand(mob/M as mob)
 		M.clean_blood()
