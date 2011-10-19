@@ -90,9 +90,6 @@ obj/machinery/aiconstruct/proc/boot()
 			break
 		if(!bb.client)
 			return
-		var/mob/living/silicon/ai/A = new(src.loc)
-		A.key = bb.client.key
-		bb.mind.transfer_to(A)
 		sleep(10)
 		A << 'chime.ogg'
 		roundinfo.revies++
