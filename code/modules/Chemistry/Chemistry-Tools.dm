@@ -421,7 +421,7 @@
 		reagents = R
 		R.my_atom = src
 
-	afterattack(obj/target, mob/user , flag)
+	afterattack(obj/target, mob/user , flag, params)
 
 		if(ismob(target) && target.reagents && reagents.total_volume)
 			user << "\blue You splash the solution onto [target]."
@@ -456,9 +456,13 @@
 			if(target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
-
-			var/trans = src.reagents.trans_to(target, 10)
-			user << "\blue You transfer [trans] units of the solution to [target]."
+			var/list/pa = params2list(params)
+			var/amnt
+			if(pa.Find("ctrl"))
+				amnt = src.reagents.trans_to(target, reagents.maximum_volume)
+			else
+				amnt = src.reagents.trans_to(target, 10)
+			user << "\blue You transfer [amnt == reagents.maximum_volume ? "all" : "[amnt] units"] of the solution to [target]."
 
 		else if(target.flags & NOSPLASH)
 			return
