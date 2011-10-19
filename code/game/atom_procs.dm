@@ -174,9 +174,9 @@
 		build_click(usr, usr.client.buildmode, location, control, params, src)
 		return
 
-	return DblClick()
+	return DblClick(location,control,params)
 
-/atom/DblClick() //TODO: DEFERRED: REWRITE
+/atom/DblClick(location,control,params) //TODO: DEFERRED: REWRITE
 	if (world.time <= usr:lastDblClick+2)
 		//world << "BLOCKED atom.DblClick() on [src] by [usr] : src.type is [src.type]"
 		return
@@ -298,7 +298,7 @@
 					src.alog(W,usr)
 					src.attackby(W, usr)
 				if (W)
-					W.afterattack(src, usr, (t5 ? 1 : 0))
+					W.afterattack(src, usr, (t5 ? 1 : 0), params)
 			else
 				if (istype(usr, /mob/living/carbon/human))
 					src.attack_hand(usr, usr.hand)

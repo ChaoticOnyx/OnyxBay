@@ -421,7 +421,7 @@
 		reagents = R
 		R.my_atom = src
 
-	afterattack(obj/target, mob/user , flag)
+	afterattack(obj/target, mob/user , flag, params)
 
 		if(ismob(target) && target.reagents && reagents.total_volume)
 			user << "\blue You splash the solution onto [target]."
@@ -456,9 +456,13 @@
 			if(target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
-
-			var/trans = src.reagents.trans_to(target, 10)
-			user << "\blue You transfer [trans] units of the solution to [target]."
+			var/list/pa = params2list(params)
+			var/amnt
+			if(pa.Find("ctrl"))
+				amnt = src.reagents.trans_to(target, reagents.maximum_volume)
+			else
+				amnt = src.reagents.trans_to(target, 10)
+			user << "\blue You transfer [amnt == reagents.maximum_volume ? "all" : "[amnt] units"] of the solution to [target]."
 
 		else if(target.flags & NOSPLASH)
 			return
@@ -583,8 +587,10 @@
 	attackby(obj/item/I as obj, mob/user as mob)
 		return
 
-	afterattack(obj/target, mob/user , flag)
+	afterattack(obj/target, mob/user , flag, params)
 		if(!target.reagents) return
+		var/list/pa = params2list(params)
+		var/amount = (pa.Find("ctrl") ? 15 : 5)
 
 		switch(mode)
 			if("d")
@@ -599,8 +605,8 @@
 							if(!do_mob(user, target)) return
 							for(var/mob/O in viewers(world.view, user))
 								O.show_message(text("\red [] draws blood from []!", user, target), 1)
-							H.vessel.remove_reagent("blood",5)
-							reagents.add_reagent("blood",5)
+							H.vessel.remove_reagent("blood",amount)
+							reagents.add_reagent("blood",amount)
 							for(var/datum/reagent/blood/B in reagents.reagent_list)
 								if(B.id == "blood")
 									B.copy_from(target)
@@ -610,7 +616,7 @@
 						if(!do_mob(user, target)) return
 						for(var/mob/O in viewers(world.view, user))
 							O.show_message(text("\red [] draws blood from []!", user, target), 1)
-						reagents.add_reagent("blood",5)
+						reagents.add_reagent("blood",amount)
 						for(var/datum/reagent/blood/B in reagents.reagent_list)
 							if(B.id == "blood")
 								B.copy_from(target)
@@ -627,8 +633,8 @@
 								return
 							else
 								user << "\red You draw some blood from yourself."
-							H.vessel.remove_reagent("blood",5)
-						reagents.add_reagent("blood",5)
+							H.vessel.remove_reagent("blood",amount)
+						reagents.add_reagent("blood",amount)
 						for(var/datum/reagent/blood/B in reagents.reagent_list)
 							if(B.id == "blood")
 								B.copy_from(target)
@@ -646,9 +652,9 @@
 					user << "\red You cannot directly remove reagents from this object."
 					return
 
-				target.reagents.trans_to(src, 5)
+				var/trans = target.reagents.trans_to(src, amount)
 
-				user << "\blue You fill the syringe with 5 units of the solution."
+				user << "\blue You fill the syringe with [trans < amount ? "all" : "[trans] units"] of the solution."
 
 			if("i")
 				if(!reagents.total_volume)
@@ -674,23 +680,23 @@
 							break
 						if(B)//FIND BACK
 							var/datum/reagents/R = new/datum/reagents(5)
-							H.vessel.add_reagent("blood",5,B)
-							src.reagents.remove_reagent("blood",5)
+							H.vessel.add_reagent("blood",amount,B)
+							src.reagents.remove_reagent("blood",amount)
 							if(!do_mob(user, target)) return
 							for(var/mob/O in viewers(world.view, user))
 								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
-							R.trans_to(H.vessel,5)
+							var/trans = R.trans_to(H.vessel,amount)
 							del(R)
 							spawn(5)
-								user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
+								user << "\blue You inject [trans < amount ? "all" : "[trans] units"] of the solution.[src.reagents.total_volume > 0 ? "The syringe now contains [src.reagents.total_volume] units." : ""]"
 							return
 						else
 							if(!do_mob(user, target)) return
 							for(var/mob/O in viewers(world.view, user))
 								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
-							src.reagents.trans_to(target, 5)
+							var/trans = reagents.trans_to(H.vessel,amount)
 							spawn(5)
-								user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
+								user << "\blue You inject [trans < amount ? "all" : "[trans] units"] of the solution.[src.reagents.total_volume > 0 ? "The syringe now contains [src.reagents.total_volume] units." : ""]"
 							return
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red <B>[] is trying to inject []!</B>", user, target), 1)
@@ -715,18 +721,18 @@
 								sleep(10)
 								return
 							var/datum/reagents/R = new/datum/reagents(5)
-							H.vessel.add_reagent("blood",5,B)
-							src.reagents.remove_reagent("blood",5)
+							H.vessel.add_reagent("blood",amount,B)
+							src.reagents.remove_reagent("blood",amount)
 							if(!do_mob(user, target)) return
 							for(var/mob/O in viewers(world.view, user))
 								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
 							del(R)
 							spawn(5)
-								user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
+								user << "\blue You inject [amount] units of the solution. The syringe now contains [src.reagents.total_volume] units."
 							return
 				spawn(5)
-					src.reagents.trans_to(target, 5)
-					user << "\blue You inject 5 units of the solution. The syringe now contains [src.reagents.total_volume] units."
+					var/trans = reagents.trans_to(target.reagents,amount)
+					user << "\blue You inject [trans < amount ? "all" : "[trans] units"] of the solution.[src.reagents.total_volume > 0 ? "The syringe now contains [src.reagents.total_volume] units." : ""]"
 		return
 
 	proc
