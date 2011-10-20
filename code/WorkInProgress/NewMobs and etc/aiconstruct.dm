@@ -90,13 +90,12 @@ obj/machinery/aiconstruct/proc/boot()
 			break
 		if(!bb.client)
 			return
+		var/mob/ting = bb.client.CarbonCopy(bb) as mob
 		sleep(10)
-		bb << 'chime.ogg'
-		var/mob/M = new /mob()
-		M.key = bb.key
+		ting << 'chime.ogg'
 		roundinfo.revies++
 		log_admin("Starting AI construct (2/3)")
-		M.AIize()
+		ting.AIize()
 		log_admin("Starting AI construct (3/3)")
 		del(src)
 mob/living/verb/head()
