@@ -902,4 +902,4 @@
 	for(var/V in O.vars)
 		if (issaved(O.vars[V]))
 			NewObj.vars[V] = O.vars[V]
-	return
+	return NewObj
