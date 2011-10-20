@@ -66,7 +66,7 @@
 
 	for(var/obj/machinery/camera/c in cameras)
 		var/lum = c.luminosity
-		c.luminosity = 6
+		c.luminosity = 7
 		for(var/turf/t in view(7, c))
 			if(t in turfs)
 				newDimTurfs += t
@@ -153,7 +153,7 @@
 
 	for(var/obj/machinery/camera/c in cameras)
 		var/lum = c.luminosity
-		c.luminosity = 6
+		c.luminosity = 7
 		for(var/turf/t in view(7, c))
 			if(t in turfs)
 				dimTurfs += t
