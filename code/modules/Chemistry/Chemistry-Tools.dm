@@ -590,7 +590,9 @@
 	afterattack(obj/target, mob/user , flag, params)
 		if(!target.reagents) return
 		var/list/pa = params2list(params)
-		var/amount = (pa.Find("ctrl") ? 15 : 5)
+		var/amount = 5
+		if(pa.Find("ctrl"))
+			amount = 15
 
 		switch(mode)
 			if("d")
