@@ -234,7 +234,6 @@ datum/preferences
 */
 		dat += "<hr><b>Disabilities: </b><a href=\"byond://?src=\ref[user];preferences=1;disabilities=1\">[disabilities]</a><br>"
 		dat += "<hr>"
-		world << "disalawlties"
 		if(!jobban_isbanned(user, "Syndicate"))
 			dat += "<b>Be syndicate?:</b> <a href =\"byond://?src=\ref[user];preferences=1;b_syndicate=1\"><b>[(be_syndicate ? "Yes" : "No")]</b></a><br>"
 			dat += "<b>Be nuke agent?:</b> <a href =\"byond://?src=\ref[user];preferences=1;b_nuke_agent=1\"><b>[(be_nuke_agent ? "Yes" : "No")]</b></a><br>"
@@ -799,12 +798,6 @@ datum/preferences
 			character.underwear = 0
 
 		var/list/disabilitylist
-		world << HEADACHEBLOCK
-		world << COUGHBLOCK
-		world << TWITCHBLOCK
-		world << NERVOUSBLOCK
-		world << DEAFBLOCK
-		world << BLINDBLOCK
 		//if(disabilities & 1)
 			//blurry eyes
 		if(disabilities & 2)
