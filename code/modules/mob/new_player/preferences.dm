@@ -32,6 +32,7 @@ datum/preferences
 	var/g_eyes = 0.0
 	var/b_eyes = 0.0
 	var/curslot = 0
+	var/disabilities = 0
 	var/icon/preview_icon = null
 
 	New()
@@ -231,7 +232,9 @@ datum/preferences
 		dat += " <font color=\"#00[num2hex(g_eyes, 2)]00\">Green</font> - <a href='byond://?src=\ref[user];preferences=1;g_eyes=input'>[g_eyes]</a>"
 		dat += " <font color=\"#0000[num2hex(b_eyes, 2)]\">Blue</font> - <a href='byond://?src=\ref[user];preferences=1;b_eyes=input'>[b_eyes]</a>"
 */
+		dat += "<hr><b>Disabilities: </b><a href=\"byond://?src=\ref[user];preferences=1;disabilities=1\">[disabilities]</a><br>"
 		dat += "<hr>"
+		world << "disalawlties"
 		if(!jobban_isbanned(user, "Syndicate"))
 			dat += "<b>Be syndicate?:</b> <a href =\"byond://?src=\ref[user];preferences=1;b_syndicate=1\"><b>[(be_syndicate ? "Yes" : "No")]</b></a><br>"
 			dat += "<b>Be nuke agent?:</b> <a href =\"byond://?src=\ref[user];preferences=1;b_nuke_agent=1\"><b>[(be_nuke_agent ? "Yes" : "No")]</b></a><br>"
@@ -619,7 +622,7 @@ datum/preferences
 				var/slot = link_tags["saveslot"]
 				var/bio2 = dbcon.Quote(bio)
 				var/
-				var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`slotname`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `be_nuke_agent`, `be_takeover_agent`, `underwear`,`name_is_always_random`,`bios`) VALUES ('[user.ckey]','[slot]',[dbcon.Quote(slotname)] ,[dbcon.Quote(real_name)], '[lowertext(gender)]', '[age]', '[occupation1]','[occupation2]', '[occupation3]', '[r_hair]', '[g_hair]', '[b_hair]', '[r_facial]', '[g_facial]', '[b_facial]', '[s_tone]', '[h_style]', '[f_style]', '[r_eyes]', '[g_eyes]', '[b_eyes]', '[b_type]', '[be_syndicate]', '[be_nuke_agent]', '[be_takeover_agent]', '[underwear]','[be_random_name]',[bio2]);")
+				var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`slotname`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `be_nuke_agent`, `be_takeover_agent`, `underwear`,`name_is_always_random`,`bios`,`disabilities`) VALUES ('[user.ckey]','[slot]',[dbcon.Quote(slotname)] ,[dbcon.Quote(real_name)], '[lowertext(gender)]', '[age]', '[occupation1]','[occupation2]', '[occupation3]', '[r_hair]', '[g_hair]', '[b_hair]', '[r_facial]', '[g_facial]', '[b_facial]', '[s_tone]', '[h_style]', '[f_style]', '[r_eyes]', '[g_eyes]', '[b_eyes]', '[b_type]', '[be_syndicate]', '[be_nuke_agent]', '[be_takeover_agent]', '[underwear]','[be_random_name]',[bio2],'[disabilities]');")
 				if(!query.Execute())
 					usr << query.ErrorMsg()
 					usr << "Report this."
@@ -664,7 +667,7 @@ datum/preferences
 				return
 			var/slotname = input(usr,"Choose a name for your slot","Name","Default")
 			slotname = dbcon.Quote(slotname)
-			var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`slotname`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `be_nuke_agent`, `be_takeover_agent`, `underwear`,`name_is_always_random`,`bios`) VALUES ('[user.ckey]','[count]',[slotname] ,'New Char', 'MALE', '30', 'No Preference','No Preference', 'No Preference', '0', '0', '0', '0', '0', '0', '0', 'Short Hair', 'Shaved', '0', '0', '0', 'A+', '0', '0', '0', '1','0','Nothing here yet...');")
+			var/DBQuery/query = dbcon.NewQuery("REPLACE INTO `players` (`ckey`,`slot`,`slotname`,`real_name`, `gender`, `ages`, `occupation1`, `occupation2`, `occupation3`,`hair_red`, `hair_green`, `hair_blue`, `facial_red`, `facial_green`, `facial_blue`, `skin_tone`, `hair_style_name`, `facial_style_name`, `eyes_red`,`eyes_green`, `eyes_blue`, `blood_type`, `be_syndicate`, `be_nuke_agent`, `be_takeover_agent`, `underwear`,`name_is_always_random`,`bios`,`disabilities`) VALUES ('[user.ckey]','[count]',[slotname] ,'New Char', 'MALE', '30', 'No Preference','No Preference', 'No Preference', '0', '0', '0', '0', '0', '0', '0', 'Short Hair', 'Shaved', '0', '0', '0', 'A+', '0', '0', '0', '1','0','Nothing here yet...','0');")
 			if(!query.Execute())
 				usr << query.ErrorMsg()
 				usr << "Report this."
@@ -699,6 +702,9 @@ datum/preferences
 			b_eyes = 0.0
 			s_tone = 0.0
 			b_type = "A+"
+			disabilities = 0
+		if(link_tags["disabilities"])
+			disabilities = input(usr,"Disability number","Disabilities",disabilities) as num
 
 
 		ShowChoices(user)
@@ -792,8 +798,34 @@ datum/preferences
 		else
 			character.underwear = 0
 
+		var/list/disabilitylist
+		world << HEADACHEBLOCK
+		world << COUGHBLOCK
+		world << TWITCHBLOCK
+		world << NERVOUSBLOCK
+		world << DEAFBLOCK
+		world << BLINDBLOCK
+		//if(disabilities & 1)
+			//blurry eyes
+		if(disabilities & 2)
+			character.dna.struc_enzymes = setblock(character.dna.struc_enzymes,HEADACHEBLOCK,toggledblock(getblock(character.dna.struc_enzymes,HEADACHEBLOCK,3)),3)
+		if(disabilities & 4)
+			character.dna.struc_enzymes = setblock(character.dna.struc_enzymes,COUGHBLOCK,toggledblock(getblock(character.dna.struc_enzymes,COUGHBLOCK,3)),3)
+		if(disabilities & 8)
+			character.dna.struc_enzymes = setblock(character.dna.struc_enzymes,TWITCHBLOCK,toggledblock(getblock(character.dna.struc_enzymes,TWITCHBLOCK,3)),3)
+		if(disabilities & 16)
+			character.dna.struc_enzymes = setblock(character.dna.struc_enzymes,NERVOUSBLOCK,toggledblock(getblock(character.dna.struc_enzymes,NERVOUSBLOCK,3)),3)
+		if(disabilities & 32)
+			character.dna.struc_enzymes = setblock(character.dna.struc_enzymes,DEAFBLOCK,toggledblock(getblock(character.dna.struc_enzymes,DEAFBLOCK,3)),3)
+		//if(disabilitylist & 64)
+			//mute
+		if(disabilitylist & 128)
+			character.dna.struc_enzymes = setblock(character.dna.struc_enzymes,BLINDBLOCK,toggledblock(getblock(character.dna.struc_enzymes,BLINDBLOCK,3)),3)
+		character.disabilities = disabilities
+
 		character.update_face()
 		character.update_body()
+
 
 /*
 

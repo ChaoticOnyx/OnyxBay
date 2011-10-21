@@ -202,9 +202,9 @@
 
 	density = !( lying )
 
-	if ((sdisabilities & 1 || istype(glasses, /obj/item/clothing/glasses/blindfold)))
+	if ((disabilities & 128 || istype(glasses, /obj/item/clothing/glasses/blindfold)))
 		blinded = 1
-	if ((sdisabilities & 4 || istype(ears, /obj/item/clothing/ears/earmuffs)))
+	if ((disabilities & 32 || istype(ears, /obj/item/clothing/ears/earmuffs)))
 		ear_deaf = 1
 
 	if (eye_blurry > 0)

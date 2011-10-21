@@ -1,8 +1,8 @@
 /mob/living/say(var/message)
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 
-	// sdisabilities & 2 is the mute disability
-	if (!message || muted || stat == 1 || istype(wear_mask, /obj/item/clothing/mask/muzzle) || sdisabilities & 2)
+	// disabilities & 64 is the mute disability
+	if (!message || muted || stat == 1 || istype(wear_mask, /obj/item/clothing/mask/muzzle) || disabilities & 64)
 		return
 
 	log_say("[name]/[key] : [message]")

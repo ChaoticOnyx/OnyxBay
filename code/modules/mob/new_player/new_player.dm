@@ -47,7 +47,7 @@ mob/new_player
 		if(!preferences.savefile_load(src,0,1))
 			preferences.ShowChoices(src)
 
-		startup = sound('clouds.s3m', volume = 50)
+		startup = sound('clouds.s3m', volume = 30)
 		spawn(25)
 			src << startup
 

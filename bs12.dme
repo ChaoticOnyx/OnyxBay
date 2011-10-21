@@ -738,7 +738,6 @@
 #include "code\WorkInProgress\Aryn\HalPanels.dm"
 #include "code\WorkInProgress\Aryn\TextFilters.dm"
 #include "code\WorkInProgress\bureaucracy\copier.dm"
-#include "code\WorkInProgress\externC\EC_atmos.dm"
 #include "code\WorkInProgress\food\drinks.dm"
 #include "code\WorkInProgress\food\snacks.dm"
 #include "code\WorkInProgress\Foxs-Stuff\SodaAdditions.dm"

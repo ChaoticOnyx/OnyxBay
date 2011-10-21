@@ -28,7 +28,7 @@ WELDINGTOOOL
 
 	if((usr.mutations & 16) && prob(50))
 		M << "\red You stab yourself in the eye."
-		M.sdisabilities |= 1
+		M.disabilities |= 128
 		M.weakened += 4
 		M.bruteloss += 10
 
@@ -69,7 +69,7 @@ WELDINGTOOOL
 			M.drop_item()
 		if (prob(M.eye_stat - 10 + 1))
 			M << "\red You go blind!"
-			M.sdisabilities |= 1
+			M.disabilities |= 128
 	return
 */
 
@@ -193,7 +193,7 @@ WELDINGTOOOL
 		user << "\red Your eyes are really starting to hurt. This can't be good for you!"
 	if (prob(user.eye_stat - 25 + 1))
 		user << "\red You go blind!"
-		user.sdisabilities |= 1
+		user.disabilities |= 128
 	else if (prob(user.eye_stat - 15 + 1))
 		user << "\red You go blind!"
 		user.eye_blind = 5

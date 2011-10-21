@@ -758,19 +758,18 @@
 			var/mental1 = (length(H.primary.struc_enzyme) >= 31 ? hex2num(copytext(H.primary.struc_enzyme, 28, 31)) : 1)
 			var/mental2 = (length(H.primary.struc_enzyme) >= 28 ? hex2num(copytext(H.primary.struc_enzyme, 25, 28)) : 1)
 			var/speak2 = (length(H.primary.struc_enzyme) >= 22 ? hex2num(copytext(H.primary.struc_enzyme, 19, 22)) : 1)
-			H.sdisabilities = 0
 			H.disabilities = 0
 			if (speak < 3776)
 				H.disabilities = H.disabilities | 4
 			else
 				if (speak > 3776)
-					H.sdisabilities = H.sdisabilities | 2
+					H.disabilities = H.disabilities | 64
 			if (speak2 < 2640)
 				H.disabilities = H.disabilities | 16
 			if (ears > 3226)
-				H.sdisabilities = H.sdisabilities | 4
+				H.disabilities = H.disabilities | 32
 			if (vision < 1447)
-				H.sdisabilities = H.sdisabilities | 1
+				H.disabilities = H.disabilities | 128
 			else
 				if (vision > 1447)
 					H.disabilities = H.disabilities | 1

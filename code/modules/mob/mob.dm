@@ -50,7 +50,6 @@
 /mob/var/other_mobs = null
 /mob/var/memory = ""
 /mob/var/poll_answer = 0.0
-/mob/var/sdisabilities = 0
 /mob/var/disabilities = 0
 /mob/var/atom/movable/pulling = null
 /mob/var/stat = 0.0
@@ -1144,25 +1143,25 @@ mob/verb/turnwest()
 	if (!client) return
 
 	if (type)
-		if ((type & 1 && (sdisabilities & 1 || (blinded || paralysis)))) // If you can't see, replace msg with alt
+		if ((type & 1 && (disabilities & 128 || (blinded || paralysis)))) // If you can't see, replace msg with alt
 			if (!alt) return
 			else
 				msg = alt
 				type = alt_type
-				if ((type & 2 && (sdisabilities & 4 || ear_deaf))) // Can't see, but can't hear either
+				if ((type & 2 && (disabilities & 32 || ear_deaf))) // Can't see, but can't hear either
 					return
 
-		if ((type & 2 && (sdisabilities & 4 || ear_deaf))) // If you can't hear
+		if ((type & 2 && (disabilities & 32 || ear_deaf))) // If you can't hear
 			if (!alt) return
 			else
 				msg = alt
 				type = alt_type
-				if ((type & 1 && (sdisabilities & 1 || (blinded || paralysis)))) // Can't see either
+				if ((type & 1 && (disabilities & 128 || (blinded || paralysis)))) // Can't see either
 					return
 
 	log_m("Heard [msg]")
 
-	if ((stat == 1 || sleeping > 0) && !(sdisabilities & 4) && ear_deaf == 0) //Can you actually hear?
+	if ((stat == 1 || sleeping > 0) && !(disabilities & 32) && ear_deaf == 0) //Can you actually hear?
 		if(type & 8) //Radio
 			src << "<I>... You hear the crackle of a radio transmission ...</I>"
 		else if(type & 4) //Said by someone
