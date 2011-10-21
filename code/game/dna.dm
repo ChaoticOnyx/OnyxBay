@@ -73,9 +73,9 @@
 	var/mutstring = ""
 	for(var/i = 1, i <= 26, i++)
 		if(struc_enzymes[(i-1)*3])
-			mutstring += struc_enzymes[(i-1)*3]
-			mutstring += struc_enzymes[(i-1)*3+1]
-			mutstring += struc_enzymes[(i-1)*3+2]
+			mutstring += copytext(struc_enzymes,(i-1)*3,(i-1)*3+1)
+			mutstring += copytext(struc_enzymes,(i-1)*3+1,(i-1)*3+2)
+			mutstring += copytext(struc_enzymes,(i-1)*3+2,(i-1)*3+3)
 		else
 			mutstring += add_zero2(num2hex(rand(1,1024)),3)
 
