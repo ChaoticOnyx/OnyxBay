@@ -301,16 +301,16 @@
 					W.afterattack(src, usr, (t5 ? 1 : 0), params)
 			else
 				if (istype(usr, /mob/living/carbon/human))
-					src.attack_hand(usr, usr.hand)
+					src.attack_hand(usr, usr.hand, params)
 				else
 					if (istype(usr, /mob/living/carbon/monkey))
-						src.attack_paw(usr, usr.hand)
+						src.attack_paw(usr, usr.hand, params)
 					else
 						if (istype(usr, /mob/living/carbon/alien/humanoid))
-							src.attack_alien(usr, usr.hand)
+							src.attack_alien(usr, usr.hand, params)
 						else
 							if (istype(usr, /mob/living/silicon))
-								src.attack_ai(usr, usr.hand)
+								src.attack_ai(usr, usr.hand, params)
 		else
 			if (istype(usr, /mob/living/carbon/human))
 				src.hand_h(usr, usr.hand)

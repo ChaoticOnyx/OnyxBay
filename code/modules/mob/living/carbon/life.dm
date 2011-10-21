@@ -124,31 +124,6 @@
 	return null
 
 /mob/living/carbon/proc/handle_virus_updates()
-	if(bodytemperature > 406)
-		resistances += virus
-		virus = null
-
-	if(!virus)
-		if(prob(40))
-			for(var/mob/living/carbon/M in oviewers(4, src))
-				if(M.virus && M.virus.spread == "Airborne")
-					if(M.virus.affected_species.Find(species))
-						if(resistances.Find(M.virus.type))
-							continue
-						var/datum/disease/D = new M.virus.type //Making sure strain_data is preserved
-						D.strain_data = M.virus.strain_data
-						contract_disease(D)
-			for(var/obj/decal/cleanable/blood/B in view(4, src))
-				if(B.virus && B.virus.spread == "Airborne")
-					if(B.virus.affected_species.Find(species))
-						if(resistances.Find(B.virus.type))
-							continue
-						var/datum/disease/D = new B.virus.type
-						D.strain_data = B.virus.strain_data
-						contract_disease(D)
-	else
-		virus.stage_act()
-
 
 	if(!reagents.has_reagent("spaceacillin"))
 		if(!virus2)

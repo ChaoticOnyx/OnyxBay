@@ -1307,8 +1307,6 @@
 					else
 						UpdateDamage()
 				updatehealth()
-				if(istype(M.virus, /datum/disease/jungle_fever))
-					monkeyize()
 	return
 
 /mob/living/carbon/human/attack_paw(mob/M as mob)
@@ -1367,8 +1365,6 @@
 					else
 						UpdateDamage()
 				updatehealth()
-				if(istype(M.virus, /datum/disease/jungle_fever))
-					monkeyize()
 	return
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/alien/humanoid/M as mob)

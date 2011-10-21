@@ -101,7 +101,7 @@
 			/client/proc/general_report,
 			/client/proc/Getmob,
 			/client/proc/givedisease,
-			/client/proc/givedisease_deadly,
+			/client/proc/givedisease_lethal,
 			/client/proc/jobban_panel,
 			/client/proc/Jump,
 			/client/proc/jumptokey,
@@ -575,9 +575,9 @@
 	infect_mob_random_lesser(M)
 	message_admins("\blue [src.ckey] infected [M.real_name]([M.ckey]) with a random disease.")
 
-/client/proc/givedisease_deadly(var/mob/living/carbon/M in world)
+/client/proc/givedisease_lethal(var/mob/living/carbon/M in world)
 	set category = "Debug"
-	set name = "Give deadly disease"
+	set name = "Give lethal disease"
 	set desc = "Does what it says on the tin"
 	infect_mob_random_greater(M)
 	message_admins("\blue [src.ckey] infected [M.real_name]([M.ckey]) with a deadly disease.")
@@ -902,4 +902,4 @@
 	for(var/V in O.vars)
 		if (issaved(O.vars[V]))
 			NewObj.vars[V] = O.vars[V]
-	return
+	return NewObj
