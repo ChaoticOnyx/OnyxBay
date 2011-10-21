@@ -2606,7 +2606,7 @@
 "aYf" = (/obj/machinery/atmospherics/pipe/simple,/obj/disposalpipe/segment,/turf/simulated/wall/r_wall,/area/medical/virology)
 "aYg" = (/obj/machinery/door/window/eastleft,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aYh" = (/obj/decal/warning_stripes{tag = "icon-W"; icon_state = "W"},/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
-"aYi" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/item/weapon/storage/lglo_kit{pixel_y = 0},/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
+"aYi" = (/obj/table{tag = "icon-tabledir (SOUTHWEST)"; icon_state = "tabledir"; dir = 10},/obj/item/weapon/storage/lglo_kit{pixel_y = 0},/obj/item/weapon/virusdish/random,/obj/item/weapon/virusdish/random,/obj/item/weapon/virusdish/random,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aYj" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/diseasedisk/premade{stage = 2},/obj/item/weapon/diseasedisk/premade{stage = 4},/obj/item/weapon/diseasedisk/premade,/obj/item/weapon/diseasedisk/premade{stage = 3},/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aYk" = (/obj/table{icon_state = "tabledir"; dir = 2},/obj/item/weapon/storage/firstaid/syringes{pixel_x = 6; pixel_y = 2},/turf/simulated/floor{icon_state = "white"},/area/medical/virology)
 "aYl" = (/obj/table{tag = "icon-tabledir (SOUTHEAST)"; icon_state = "tabledir"; dir = 6},/obj/item/weapon/storage/beakerbox,/turf/simulated/floor{icon_state = "white"},/area/medical/virology)

@@ -507,11 +507,6 @@
 	var/obj/item/weapon/implant/master/m
 	var/mob/living/carbon/human/limited/d
 
-/obj/item/weapon/implant/vfac
-	name = "viral factory"
-	var/phrase = "flatlander"
-	var/datum/disease/virus = /datum/disease/cold
-
 /obj/item/weapon/implant/alien
 	name = "alien embryo"
 	var/activation_emote = "chuckle"

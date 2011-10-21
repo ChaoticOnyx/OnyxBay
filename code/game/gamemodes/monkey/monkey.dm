@@ -24,9 +24,6 @@
 				players -= player
 				amount--
 
-		for (var/mob/living/carbon/monkey/rabid_monkey in world)
-			rabid_monkey.contract_disease(new /datum/disease/jungle_fever)
-
 /datum/game_mode/monkey/check_finished()
 	if(main_shuttle.location==2)
 		return 1

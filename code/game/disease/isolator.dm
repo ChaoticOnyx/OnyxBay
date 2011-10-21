@@ -117,6 +117,16 @@
 	var/info = 0
 	var/analysed = 0
 
+/obj/item/weapon/virusdish/random
+	name = "Virus Sample"
+
+/obj/item/weapon/virusdish/random/New()
+	..()
+	// add a random virus to this dish
+	src.virus2 = new /datum/disease2/disease
+	src.virus2.makerandom()
+	growth = rand(5, 50)
+
 /obj/item/weapon/virusdish/attackby(var/obj/item/weapon/W as obj,var/mob/living/carbon/user as mob)
 	if(istype(W,/obj/item/weapon/hand_labeler))
 		return

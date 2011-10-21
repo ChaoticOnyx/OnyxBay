@@ -231,9 +231,8 @@
 
 					if(!target.alien_egg_flag && ( ishuman(target) || ismonkey(target) ) )
 						target.alien_egg_flag = 1
-						var/mob/trg = target
 						src.death()
-						trg.contract_disease(new /datum/disease/alien_embryo, 1)
+						// TODO: virus2 alien disease here
 						return
 					else
 						set_null()
