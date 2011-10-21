@@ -479,7 +479,6 @@ Doing this because FindTurfs() isn't even used
 		health = 100
 		if(stat > 1) stat=0
 		disabilities = initial(disabilities)
-		sdisabilities = initial(sdisabilities)
 		for(var/datum/organ/external/e in src)
 			e.brute_dam = 0.0
 			e.burn_dam = 0.0

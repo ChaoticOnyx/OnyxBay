@@ -35,7 +35,7 @@ SPOON
 
 	if((usr.mutations & 16) && prob(50))
 		M << "\red You stab yourself in the eye."
-		M.sdisabilities |= 1
+		M.disabilities |= 128
 		M.weakened += 4
 		M.bruteloss += 10
 
@@ -76,7 +76,7 @@ SPOON
 			M.drop_item()
 		if (prob(M.eye_stat - 10 + 1))
 			M << "\red You go blind!"
-			M.sdisabilities |= 1
+			M.disabilities |= 128
 	return
 
 

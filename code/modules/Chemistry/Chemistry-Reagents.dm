@@ -655,7 +655,6 @@ datum
 				if(!M) M = holder.my_atom
 				M.mutations = 0
 				M.disabilities = 0
-				M.sdisabilities = 0
 				..()
 				return
 

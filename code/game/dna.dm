@@ -278,6 +278,7 @@
 
 /proc/domutcheck(mob/M as mob, connected, inj)
 	if (!M) return
+	//mutations
 	//telekinesis = 1
 	//firemut = 2
 	//xray = 4
@@ -295,11 +296,19 @@
 	//shockimmunity = 16384
 	//smallsize = 32768
 
+	//disabilities
+	//1 = blurry eyes
+	//2 = headache
+	//4 = coughing
+	//8 = twitch
+	//16 = nervous
+	//32 = deaf
+	//64 = mute
+	//128 = blind
 
 	M.dna.check_integrity()
 
 	M.disabilities = 0
-	M.sdisabilities = 0
 	M.mutations = 0
 
 	M.see_in_dark = 2
@@ -393,14 +402,14 @@
 			M << "\blue Your body feels warm."
 			M.mutations |= 2
 	if (isblockon(getblock(M.dna.struc_enzymes, BLINDBLOCK,3),BLINDBLOCK))
-		M.sdisabilities |= 1
+		M.disabilities |= 128
 		M << "\red You can't seem to see anything."
 	if (isblockon(getblock(M.dna.struc_enzymes, TELEBLOCK,3),TELEBLOCK))
 		if(inj || prob(15))
 			M << "\blue You feel smarter."
 			M.mutations |= 1
 	if (isblockon(getblock(M.dna.struc_enzymes, DEAFBLOCK,3),DEAFBLOCK))
-		M.sdisabilities |= 4
+		M.disabilities |= 32
 		M.ear_deaf = 1
 		M << "\red Its kinda quiet..."
 
