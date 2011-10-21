@@ -49,5 +49,7 @@ Checked jobs: HoP, HoS, Security Officer, Doctor, CE, Detective, Scientist RD, C
     access_incinerator = 37 (HoS, Security Officer, HoP, Janitor, Engineer)
     ??? = 38 (HoS, Security Officer, HoP, CE, Janitor, Atmos Tec, Engineer)
     access_shields = 39 (HoS, Security Officer, HoP, CE, Engineer)
+    access_hydroponics = 40 (hydroponics)
+    access_lawyer = 41 (courtroom, lawyer room)
 
     */
