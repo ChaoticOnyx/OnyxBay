@@ -173,7 +173,7 @@
 
 //Monkey/infected mode
 /mob/var/list/resistances = list()
-/mob/var/datum/disease/virus = null
+/mob/var/list/antibodies = 0
 
 //Changeling mode stuff
 /mob/var/changeling_absorbing = 0
@@ -2161,7 +2161,7 @@ mob/verb/turnwest()
 
 /mob/proc/gib(give_medal)
 	if (istype(src, /mob/dead/observer))
-		gibs(loc, virus)
+		gibs(loc, microorganism)
 		return
 	death(1)
 	var/atom/movable/overlay/animation = null
@@ -2183,15 +2183,15 @@ mob/verb/turnwest()
 		src:client:mob = newmob
 		mind.transfer_to(newmob)
 		if(istype(src,/mob/living/silicon/robot))	//Robots don't gib like humans! - Strumpetplaya
-			robogibs(loc,virus)
+			robogibs(loc)
 		else
-			gibs(loc, virus)
+			gibs(loc, microorganism)
 
 	else if (!client)
 		if(istype(src,/mob/living/silicon/robot))
-			robogibs(loc,virus)
+			robogibs(loc,microorganism)
 		else
-			gibs(loc, virus,src:virus2)
+			gibs(loc, microorganism)
 	var/mob/M = src
 	for(var/obj/item/W in M)
 		if (istype(W,/obj/item))

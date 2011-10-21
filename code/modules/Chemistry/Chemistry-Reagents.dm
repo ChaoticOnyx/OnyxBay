@@ -204,9 +204,10 @@ datum
 			var
 				blood_type = "A+"
 				blood_DNA = "unknown"
+				antibodies = 0
 				mob/taken_from
 				virus
-			var/datum/disease2/disease/virus2
+				datum/microorganism/disease/microorganism
 
 			on_mob_life(mob/M)
 				if (ishuman(M) && blood_incompatible(blood_type,M:b_type))
@@ -217,7 +218,6 @@ datum
 				return
 
 			reaction_mob(mob/M,method)
-				if(virus) M.contract_disease(virus)
 				if(method == TOUCH)
 					var/mob/living/carbon/human/H = M
 					if(istype(H))
@@ -244,29 +244,31 @@ datum
 					id = other.id
 					taken_from = other.taken_from
 					virus = other.virus
-					if(other.virus2)
-						virus2 = other.virus2.getcopy()
+					if(other.microorganism)
+						microorganism = other.microorganism.getcopy()
 					description = other.description
+					antibodies = other.antibodies
 				if(!istype(M))
 					if(istype(M,/mob/living/carbon/monkey))
+						antibodies = M.antibodies
 						blood_type = "O+"
 						blood_DNA = M.dna.unique_enzymes
 						id = "blood-[M.dna.unique_enzymes]"
 						taken_from = M
-						virus = M.virus
 						description = "Type: [blood_type]<br>DNA: [blood_DNA]"
-						if(M.virus2)
-							virus2 = M.virus2.getcopy()
+						if(M.microorganism)
+							microorganism = M.microorganism.getcopy()
 					return 0
 				blood_type = M.b_type
 				blood_DNA = M.dna.unique_enzymes
 				id = "blood"
 				taken_from = M
-				virus = M.virus
 				description = "Type: [blood_type]<br>DNA: [blood_DNA]"
-				if(M.virus2)
-					virus2 = M.virus2.getcopy()
+				antibodies = M.antibodies
+				if(M.microorganism)
+					microorganism = M.microorganism.getcopy()
 				return 1
+
 
 		lube
 			name = "Space Lube"
@@ -1036,13 +1038,6 @@ datum
 
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
-				if((M.virus) && (prob(8)))
-					if(M.virus.spread == "Airborne")
-						M.virus.spread = "Remissive"
-					M.virus.stage--
-					if(M.virus.stage <= 0)
-						M.resistances += M.virus.type
-						M.virus = null
 				if(prob(5))
 					holder.remove_reagent(src.id, 0.2)
 				return
@@ -1121,33 +1116,6 @@ datum
 			id = "diethylamine"
 			description = "A secondary amine, mildly corrosive."
 			reagent_state = LIQUID
-
-
-
-
-
-
-/*
-		cure
-			name = "Experimental cure"
-			id = "cure"
-			description = "An experimental set of antibodies designed to fight disease"
-			reagent_state = LIQUID
-			var/works = 0
-			var/datum/disease2/resistance/resistance = null
-			on_mob_life(var/mob/living/carbon/M)
-				if(works == 0)
-					M.resistances2 += resistance
-					if(M.virus2)
-						M.virus2.cure_added(resistance)
-					holder.remove_reagent(src.id,9999999)
-				else if(works == 1)
-					M.toxloss += 5
-				else if(works == 2)
-					M.gib()
-				else if(works == 3)
-					M.bruteloss += 15
-				..()*/
 
 
 		virusfood

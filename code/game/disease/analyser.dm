@@ -1,4 +1,4 @@
-/obj/machinery/disease2/diseaseanalyser
+/obj/machinery/microorganism/diseaseanalyser
 	name = "Disease Analyser"
 	icon = 'virology.dmi'
 	icon_state = "analyser"
@@ -10,7 +10,7 @@
 
 	var/obj/item/weapon/virusdish/dish = null
 
-/obj/machinery/disease2/diseaseanalyser/attackby(var/obj/I as obj, var/mob/user as mob)
+/obj/machinery/microorganism/diseaseanalyser/attackby(var/obj/I as obj, var/mob/user as mob)
 	if(istype(I,/obj/item/weapon/virusdish))
 		var/mob/living/carbon/c = user
 		if(!dish)
@@ -30,7 +30,7 @@
 	return
 
 
-/obj/machinery/disease2/diseaseanalyser/process()
+/obj/machinery/microorganism/diseaseanalyser/process()
 	if(stat & (NOPOWER|BROKEN))
 		return
 	use_power(500)
@@ -41,10 +41,10 @@
 		scanning -= 1
 		if(scanning == 0)
 			var/r = "GNAv2 based virus lifeform"
-			r += "<BR>Infection rate : [dish.virus2.infectionchance * 10]"
-			r += "<BR>Spread form : [dish.virus2.spreadtype]"
-			r += "<BR>Progress Speed : [dish.virus2.stageprob * 10]"
-			for(var/datum/disease2/effectholder/E in dish.virus2.effects)
+			r += "<BR>Infection rate : [dish.microorganism.infectionchance * 10]"
+			r += "<BR>Spread form : [dish.microorganism.spreadtype]"
+			r += "<BR>Progress Speed : [dish.microorganism.stageprob * 10]"
+			for(var/datum/microorganism/effectholder/E in dish.microorganism.effects)
 				r += "<BR>Effect:[E.effect.name]. Strength : [E.multiplier * 8]. Verosity : [E.chance * 15]. Type : [5-E.stage]."
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(src.loc)
 			P.info = r
@@ -57,7 +57,7 @@
 			for(var/mob/O in hearers(src, null))
 				O.show_message("\icon[src] \blue The [src.name] prints a sheet of paper", 3)
 	else if(dish && !scanning && !pause)
-		if(dish.virus2 && dish.growth > 50)
+		if(dish.microorganism && dish.growth > 50)
 			dish.growth -= 10
 			scanning = 5
 			icon_state = "analyser_processing"

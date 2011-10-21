@@ -1,4 +1,4 @@
-/obj/machinery/disease2/incubator/
+/obj/machinery/microorganism/incubator/
 	name = "Pathogenic incubator"
 	density = 1
 	anchored = 1
@@ -133,7 +133,7 @@
 
 	process()
 
-		if(dish && on && dish.virus2)
+		if(dish && on && dish.microorganism)
 			use_power(50,EQUIP)
 			if(!powered(EQUIP))
 				on = 0
@@ -145,19 +145,19 @@
 					state("The [src.name] pings", "blue")
 			if(radiation)
 				if(radiation > 50 & prob(5))
-					dish.virus2.majormutate()
+					dish.microorganism.majormutate()
 					if(dish.info)
 						dish.info = "OUTDATED : [dish.info]"
 						dish.analysed = 0
 					state("The [src.name] beeps", "blue")
 
 				else if(prob(5))
-					dish.virus2.minormutate()
+					dish.microorganism.minormutate()
 				 radiation -= 1
 			if(toxins && prob(5))
-				dish.virus2.infectionchance -= 1
+				dish.microorganism.infectionchance -= 1
 			if(toxins > 50)
-				dish.virus2 = null
+				dish.microorganism = null
 		else if(!dish)
 			on = 0
 			icon_state = "incubator"

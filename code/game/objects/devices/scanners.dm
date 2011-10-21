@@ -109,8 +109,6 @@ GAS ANALYZER
 	if (istype(A, /obj/decal/cleanable/blood))
 		if(A.blood_DNA)
 			user << "\blue Blood type: [A.blood_type]\nDNA: [A.blood_DNA]"
-		if(A:virus)
-			user << "\red Warning, virus found in the blood! Name: [A:virus.name]"
 	else if (A.blood_DNA)
 		user << "\blue Blood found on [A]. Analysing..."
 		sleep(15)
@@ -160,9 +158,7 @@ GAS ANALYZER
 	user.show_message("\blue Key: Suffocation/Toxin/Burns/Brute", 1)
 	user.show_message("\blue Body Temperature: [M.bodytemperature-T0C]&deg;C ([M.bodytemperature*1.8-459.67]&deg;F)", 1)
 	user.show_message(text("\blue [] | [] | [] | []", M.oxyloss > 50 ? "\red Severe oxygen deprivation detected\blue" : "Subject bloodstream oxygen level normal", M.toxloss > 50 ? "\red Dangerous amount of toxins detected\blue" : "Subject bloodstream toxin level minimal", M.fireloss > 50 ? "\red Severe burn damage detected\blue" : "Subject burn injury status O.K", M.bruteloss > 50 ? "\red Severe anatomical damage detected\blue" : "Subject brute-force injury status O.K"), 1)
-	if (M.virus)
-		user.show_message(text("\red <b>Warning: Pathogen Detected</b>\nName: [M.virus.name].\nType: [M.virus.spread].\nStage: [M.virus.stage]/[M.virus.max_stages].\nPossible Cure: [M.virus.cure]"))
-	if (istype(M, /mob/living/carbon) && M:virus2)
+	if (istype(M, /mob/living/carbon) && M:microorganism)
 		user.show_message(text("\red <b>Warning: Unknown Pathogen Detected</b>"))
 	if (M.reagents && M.reagents:get_reagent_amount("inaprovaline"))
 		user.show_message(text("\blue Bloodstream Analysis located [M.reagents:get_reagent_amount("inaprovaline")] units of rejuvenation chemicals."), 1)
@@ -258,3 +254,10 @@ GAS ANALYZER
 
 	src.add_fingerprint(user)
 	return
+
+
+/obj/item/device/antibody_scanner/attack(mob/living/carbon/human/M as mob, mob/user as mob)
+	if(! istype(M, /mob/living/carbon))
+		user << "Unable to detect antibodies.."
+	else
+		user << text("\blue [M] The antibody scanner displays a cryptic code: [M.antibodies]")

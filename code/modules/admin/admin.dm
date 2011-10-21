@@ -63,8 +63,8 @@
 		else
 			alert("You cannot perform this action. You must be of a higher administrative rank!")
 			return
-	if(href_list["remove_virus2"])
-		remove_virus2(usr)
+	if(href_list["remove_microorganism"])
+		remove_microorganism(usr)
 	/////////////////////////////////////new ban stuff
 	if(href_list["jobban1"])
 		var/key = href_list["jobban1"]
@@ -1428,7 +1428,7 @@
 <A href='?src=\ref[src];secretsadmin=clear_bombs'>Remove all bombs currently in existence</A><BR>
 <A href='?src=\ref[src];secretsadmin=list_bombers'>Bombing List</A><BR>
 <A href='?src=\ref[src];secretsadmin=check_antagonist'>Show current traitors and objectives</A><BR>
-<A href='?src=\ref[src];remove_virus2=1'>Remove every silly disesse</A><BR>
+<A href='?src=\ref[src];remove_microorganism=1'>Remove every silly disesse</A><BR>
 <A href='?src=\ref[src];secretsadmin=list_signalers'>Show last [length(lastsignalers)] signalers</A><BR>
 <A href='?src=\ref[src];secretsadmin=showailaws'>Show AI Laws</A><BR>
 <A href='?src=\ref[src];secretsadmin=showgm'>Show Game Mode</A><BR>

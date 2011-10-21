@@ -232,7 +232,7 @@
 					if(!target.alien_egg_flag && ( ishuman(target) || ismonkey(target) ) )
 						target.alien_egg_flag = 1
 						src.death()
-						// TODO: virus2 alien disease here
+						// TODO: microorganism alien disease here
 						return
 					else
 						set_null()

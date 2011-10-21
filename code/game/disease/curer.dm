@@ -68,7 +68,7 @@
 		dat = "Virus production in progress"
 	else if(dish)
 		dat = "Virus dish inserted"
-		if(dish.virus2)
+		if(dish.microorganism)
 			if(dish.growth >= 100)
 				dat += "<BR><A href='?src=\ref[src];antibody=1'>Begin antibody production</a>"
 				dat += "<BR><A href='?src=\ref[src];virus=1'>Begin virus production</a>"
@@ -97,14 +97,14 @@
 		curing -= 1
 		if(curing == 0)
 			icon_state = "curer"
-			if(dish.virus2)
-				createcure(dish.virus2)
+			if(dish.microorganism)
+				createcure(dish.microorganism)
 	if(virusing)
 		virusing -= 1
 		if(virusing == 0)
 			icon_state = "curer"
-			if(dish.virus2)
-				createvirus(dish.virus2)
+			if(dish.microorganism)
+				createvirus(dish.microorganism)
 
 	return
 
@@ -131,18 +131,18 @@
 	return
 
 
-/obj/machinery/computer/curer/proc/createcure(var/datum/disease2/disease/virus2)
+/obj/machinery/computer/curer/proc/createcure(var/datum/microorganism/disease/microorganism)
 	var/obj/item/weapon/cureimplanter/implanter = new /obj/item/weapon/cureimplanter(src.loc)
-	implanter.resistance = new /datum/disease2/resistance(dish.virus2)
+	implanter.resistance = new /datum/microorganism/resistance(dish.microorganism)
 	if(probG("Virus curing",3))
 		implanter.works = 0
 	else
 		implanter.works = rand(1,2)
 	state("The [src.name] Buzzes", "blue")
 
-/obj/machinery/computer/curer/proc/createvirus(var/datum/disease2/disease/virus2)
+/obj/machinery/computer/curer/proc/createvirus(var/datum/microorganism/disease/microorganism)
 	var/obj/item/weapon/cureimplanter/implanter = new /obj/item/weapon/cureimplanter(src.loc)
 	implanter.name = "Viral implanter (MAJOR BIOHAZARD)"
-	implanter.virus2 = dish.virus2.getcopy()
+	implanter.microorganism = dish.microorganism.getcopy()
 	implanter.works = 3
 	state("The [src.name] Buzzes", "blue")

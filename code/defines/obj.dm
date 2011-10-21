@@ -180,6 +180,14 @@
 	item_state = "electronic"
 	flags = FPRINT | TABLEPASS | ONBELT | CONDUCT | USEDELAY
 
+/obj/item/device/antibody_scanner
+	name = "Scanner"
+	desc = "Used to scan living beings for antibodies."
+	icon_state = "antibody"
+	w_class = 2.0
+	item_state = "electronic"
+	flags = FPRINT | TABLEPASS | ONBELT | CONDUCT | USEDELAY
+
 
 /obj/item/device/flash
 	name = "flash"

@@ -1,10 +1,3 @@
-//To simplify, all diseases have 4 stages, with effects starting at stage 2
-//Stage 1 = Rest,Minor disease
-//Stage 2 = Minimal effect
-//Stage 3 = Medium effect
-//Stage 4 = Death/Really Really really bad effect
-
-
 /obj/virus
 	// a virus instance that is placed on the map, moves, and infects
 	invisibility = 100
@@ -12,7 +5,7 @@
 	icon = 'laptop.dmi'
 	icon_state = "laptop_0"
 
-	var/datum/disease2/D
+	var/datum/microorganism/D
 
 	New()
 		..()
@@ -20,6 +13,8 @@
 		step_rand(src)
 		anchored = 1
 		spawn(300) del(src)
+
+mob/var/datum/microorganism/disease/microorganism = null
 
 /mob/living/carbon/proc/get_infection_chance()
 	var/score = 0
@@ -54,44 +49,47 @@
 	return 1
 
 
-/proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease2/disease/disease,var/forced = 0)
-	if(M.virus2)
+/proc/infect_microorganism(var/mob/living/carbon/M,var/datum/microorganism/disease/disease,var/forced = 0)
+	if(M.microorganism)
 		return
 	if(!disease)
 		return
 	//immunity
-	for(var/iii = 1, iii <= M.immunevirus2.len, iii++)
-		if(disease.issame(M.immunevirus2[iii]))
+	for(var/iii = 1, iii <= M.immunemicroorganism.len, iii++)
+		if(disease.issame(M.immunemicroorganism[iii]))
 			return
 
-	for(var/datum/disease2/resistance/res in M.resistances)
+	// if one of the antibodies in the mob's body matches one of the disease's antigens, don't infect
+	if(M.antibodies & disease.antigen != 0) return
+
+	for(var/datum/microorganism/resistance/res in M.resistances)
 		if(res.resistsdisease(disease))
 			return
 	if(prob(disease.infectionchance))
-		if(M.virus2)
+		if(M.microorganism)
 			return
 		else
 			// certain clothes can prevent an infection
 			if(!forced && !M.get_infection_chance())
 				return
 
-			M.virus2 = disease.getcopy()
-			M.virus2.minormutate()
+			M.microorganism = disease.getcopy()
+			M.microorganism.minormutate()
 
-			for(var/datum/disease2/resistance/res in M.resistances)
-				if(res.resistsdisease(M.virus2))
-					M.virus2 = null
+			for(var/datum/microorganism/resistance/res in M.resistances)
+				if(res.resistsdisease(M.microorganism))
+					M.microorganism = null
 
 
 
-/datum/disease2/resistance
-	var/list/datum/disease2/effect/resistances = list()
+/datum/microorganism/resistance
+	var/list/datum/microorganism/effect/resistances = list()
 
-	proc/resistsdisease(var/datum/disease2/disease/virus2)
+	proc/resistsdisease(var/datum/microorganism/disease/microorganism)
 		var/list/res2 = list()
-		for(var/datum/disease2/effect/e in resistances)
+		for(var/datum/microorganism/effect/e in resistances)
 			res2 += e.type
-		for(var/datum/disease2/effectholder/holder in virus2)
+		for(var/datum/microorganism/effectholder/holder in microorganism)
 			if(!(holder.effect.type in res2))
 				return 0
 			else
@@ -101,28 +99,30 @@
 		else
 			return 1
 
-	New(var/datum/disease2/disease/virus2)
-		for(var/datum/disease2/effectholder/h in virus2.effects)
+	New(var/datum/microorganism/disease/microorganism)
+		for(var/datum/microorganism/effectholder/h in microorganism.effects)
 			resistances += h.effect.type
 
 
 /proc/infect_mob_random_lesser(var/mob/living/carbon/M)
-	if(!M.virus2)
-		M.virus2 = new /datum/disease2/disease
-		M.virus2.makerandom()
-		M.virus2.infectionchance = 1
+	if(!M.microorganism)
+		M.microorganism = new /datum/microorganism/disease
+		M.microorganism.makerandom()
+		M.microorganism.infectionchance = 1
 
 /proc/infect_mob_random_greater(var/mob/living/carbon/M)
-	if(!M.virus2)
-		M.virus2 = new /datum/disease2/disease
-		M.virus2.makerandom(1)
+	if(!M.microorganism)
+		M.microorganism = new /datum/microorganism/disease
+		M.microorganism.makerandom(1)
 
 /proc/infect_mob_zombie(var/mob/living/carbon/M)
-	if(!M.virus2)
-		M.virus2 = new /datum/disease2/disease
-		M.virus2.makezombie()
+	if(!M.microorganism)
+		M.microorganism = new /datum/microorganism/disease
+		M.microorganism.makezombie()
 
-/datum/disease2/disease
+/datum/microorganism/var/antigen = 0 // 16 bits describing the antigens, when one bit is set, a cure with that bit can dock here
+
+/datum/microorganism/disease
 	var/infectionchance = 10
 	var/speed = 1
 	var/spreadtype = "Blood" // Can also be "Airborne"
@@ -132,30 +132,30 @@
 	var/clicks = 0
 
 	var/uniqueID = 0
-	var/list/datum/disease2/effectholder/effects = list()
+	var/list/datum/microorganism/effectholder/effects = list()
 	proc/makerandom(var/greater=0)
-		var/datum/disease2/effectholder/holder = new /datum/disease2/effectholder
+		var/datum/microorganism/effectholder/holder = new /datum/microorganism/effectholder
 		holder.stage = 1
 		if(greater)
 			holder.getrandomeffect_greater()
 		else
 			holder.getrandomeffect_lesser()
 		effects += holder
-		holder = new /datum/disease2/effectholder
+		holder = new /datum/microorganism/effectholder
 		holder.stage = 2
 		if(greater)
 			holder.getrandomeffect_greater()
 		else
 			holder.getrandomeffect_lesser()
 		effects += holder
-		holder = new /datum/disease2/effectholder
+		holder = new /datum/microorganism/effectholder
 		holder.stage = 3
 		if(greater)
 			holder.getrandomeffect_greater()
 		else
 			holder.getrandomeffect_lesser()
 		effects += holder
-		holder = new /datum/disease2/effectholder
+		holder = new /datum/microorganism/effectholder
 		holder.stage = 4
 		if(greater)
 			holder.getrandomeffect_greater()
@@ -164,31 +164,34 @@
 		effects += holder
 		uniqueID = rand(0,10000)
 		infectionchance = rand(1,10)
+		// pick 2 antigents
+		antigen |= pick(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096)
+		antigen |= pick(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096)
 		spreadtype = "Airborne"
 
 	proc/makezombie()
-		var/datum/disease2/effectholder/holder = new /datum/disease2/effectholder
+		var/datum/microorganism/effectholder/holder = new /datum/microorganism/effectholder
 		holder.stage = 1
 		holder.chance = 10
-		holder.effect = new/datum/disease2/effect/greater/gunck()
+		holder.effect = new/datum/microorganism/effect/greater/gunck()
 		effects += holder
 
-		holder = new /datum/disease2/effectholder
+		holder = new /datum/microorganism/effectholder
 		holder.stage = 2
 		holder.chance = 10
-		holder.effect = new/datum/disease2/effect/lesser/hungry()
+		holder.effect = new/datum/microorganism/effect/lesser/hungry()
 		effects += holder
 
-		holder = new /datum/disease2/effectholder
+		holder = new /datum/microorganism/effectholder
 		holder.stage = 3
 		holder.chance = 10
-		holder.effect = new/datum/disease2/effect/lesser/groan()
+		holder.effect = new/datum/microorganism/effect/lesser/groan()
 		effects += holder
 
-		holder = new /datum/disease2/effectholder
+		holder = new /datum/microorganism/effectholder
 		holder.stage = 4
 		holder.chance = 10
-		holder.effect = new/datum/disease2/effect/zombie()
+		holder.effect = new/datum/microorganism/effect/zombie()
 		effects += holder
 
 		uniqueID = 1220 // all zombie diseases have the same ID
@@ -196,18 +199,18 @@
 		spreadtype = "Airborne"
 
 	proc/minormutate()
-		var/datum/disease2/effectholder/holder = pick(effects)
+		var/datum/microorganism/effectholder/holder = pick(effects)
 		holder.minormutate()
 		infectionchance = min(10,infectionchance + rand(0,1))
 
-	proc/issame(var/datum/disease2/disease/disease)
+	proc/issame(var/datum/microorganism/disease/disease)
 		var/list/types = list()
 		var/list/types2 = list()
-		for(var/datum/disease2/effectholder/d in effects)
+		for(var/datum/microorganism/effectholder/d in effects)
 			types += d.effect.type
 		var/equal = 1
 
-		for(var/datum/disease2/effectholder/d in disease.effects)
+		for(var/datum/microorganism/effectholder/d in disease.effects)
 			types2 += d.effect.type
 
 		for(var/type in types)
@@ -218,10 +221,13 @@
 	proc/activate(var/mob/living/carbon/mob)
 		if(dead)
 			cure(mob)
-			mob.virus2 = null
+			mob.microorganism = null
 			return
 		if(mob.stat == 2)
 			return
+		// with a certain chance, the mob may become immune to the disease before it starts properly
+		if(stage <= 1 && clicks == 2)
+			if(prob(20)) mob.antibodies |= antigen // 20% immunity is a good chance IMO, because it allows finding an immune person easily
 		if(mob.radiation > 50)
 			if(prob(1))
 				majormutate()
@@ -230,19 +236,20 @@
 			return
 		if(clicks > stage*100 && prob(10))
 			if(stage == 4)
-				var/datum/disease2/resistance/res = new /datum/disease2/resistance(src)
-				mob.immunevirus2 += src.getcopy()
+				var/datum/microorganism/resistance/res = new /datum/microorganism/resistance(src)
+				mob.immunemicroorganism += src.getcopy()
 				mob.resistances2 += res
-				mob.virus2 = null
+				mob.antibodies |= src.antigen
+				mob.microorganism = null
 				del src
 			stage++
 			clicks = 0
-		for(var/datum/disease2/effectholder/e in effects)
+		for(var/datum/microorganism/effectholder/e in effects)
 			e.runeffect(mob,stage)
 		clicks+=speed
 
 	proc/cure(var/mob/living/carbon/mob)
-		var/datum/disease2/effectholder/E
+		var/datum/microorganism/effectholder/E
 		if(stage>1)
 			E = effects[1]
 			E.effect.deactivate(mob)
@@ -256,24 +263,25 @@
 			E = effects[4]
 			E.effect.deactivate(mob)
 
-	proc/cure_added(var/datum/disease2/resistance/res)
+	proc/cure_added(var/datum/microorganism/resistance/res)
 		if(res.resistsdisease(src))
 			dead = 1
 
 	proc/majormutate()
-		var/datum/disease2/effectholder/holder = pick(effects)
+		var/datum/microorganism/effectholder/holder = pick(effects)
 		holder.majormutate()
 
 
 	proc/getcopy()
 //		world << "getting copy"
-		var/datum/disease2/disease/disease = new /datum/disease2/disease
+		var/datum/microorganism/disease/disease = new /datum/microorganism/disease
 		disease.infectionchance = infectionchance
 		disease.spreadtype = spreadtype
 		disease.stageprob = stageprob
-		for(var/datum/disease2/effectholder/holder in effects)
+		disease.antigen   = antigen
+		for(var/datum/microorganism/effectholder/holder in effects)
 	//		world << "adding effects"
-			var/datum/disease2/effectholder/newholder = new /datum/disease2/effectholder
+			var/datum/microorganism/effectholder/newholder = new /datum/microorganism/effectholder
 			newholder.effect = new holder.effect.type
 			newholder.chance = holder.chance
 			newholder.cure = holder.cure
@@ -285,7 +293,7 @@
 	//	world << "[disease]"
 		return disease
 
-/datum/disease2/effect
+/datum/microorganism/effect
 	var/chance_maxm = 100
 	var/name = "Blanking effect"
 	var/stage = 4
@@ -293,7 +301,7 @@
 	proc/activate(var/mob/living/carbon/mob,var/multiplier)
 	proc/deactivate(var/mob/living/carbon/mob)
 
-/datum/disease2/effect/zombie
+/datum/microorganism/effect/zombie
 	name = "Tombstone Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -301,66 +309,66 @@
 			var/mob/living/carbon/human/H = mob
 			if(!H.zombie)
 				H.zombify()
-				del H.virus2
+				del H.microorganism
 
-/datum/disease2/effect/greater/gibbingtons
+/datum/microorganism/effect/greater/gibbingtons
 	name = "Gibbingtons Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.gib()
 
-/datum/disease2/effect/greater/radian
+/datum/microorganism/effect/greater/radian
 	name = "Radian's syndrome"
 	stage = 4
 	maxm = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.radiation += (2*multiplier)
 
-/datum/disease2/effect/greater/toxins
+/datum/microorganism/effect/greater/toxins
 	name = "Hyperacid Syndrome"
 	stage = 3
 	maxm = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.toxloss += (2*multiplier)
 
-/datum/disease2/effect/greater/scream
+/datum/microorganism/effect/greater/scream
 	name = "Random screaming syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*scream")
 
-/datum/disease2/effect/greater/drowsness
+/datum/microorganism/effect/greater/drowsness
 	name = "Automated sleeping syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.drowsyness += 10
 
-/datum/disease2/effect/greater/shakey
+/datum/microorganism/effect/greater/shakey
 	name = "World Shaking syndrome"
 	stage = 3
 	maxm = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		shake_camera(mob,5*multiplier)
 
-/datum/disease2/effect/greater/deaf
+/datum/microorganism/effect/greater/deaf
 	name = "Hard of hearing syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.ear_deaf += 20
 
-/datum/disease2/effect/invisible
+/datum/microorganism/effect/invisible
 	name = "Waiting Syndrome"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		return
 
-/datum/disease2/effect/greater/telepathic
+/datum/microorganism/effect/greater/telepathic
 	name = "Telepathy Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.mutations |= 512
 
-/datum/disease2/effect/greater/noface
+/datum/microorganism/effect/greater/noface
 	name = "Identity Loss syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -368,7 +376,7 @@
 	deactivate(var/mob/living/carbon/mob)
 		mob.face_dmg--
 
-/datum/disease2/effect/greater/monkey
+/datum/microorganism/effect/greater/monkey
 	name = "Monkism syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -376,43 +384,43 @@
 			var/mob/living/carbon/human/h = mob
 			h.monkeyize()
 
-/datum/disease2/effect/greater/sneeze
+/datum/microorganism/effect/greater/sneeze
 	name = "Coldingtons Effect"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*sneeze")
 
-/datum/disease2/effect/greater/gunck
+/datum/microorganism/effect/greater/gunck
 	name = "Flemmingtons"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob << "\red Mucous runs down the back of your throat."
 
-/datum/disease2/effect/greater/killertoxins
+/datum/microorganism/effect/greater/killertoxins
 	name = "Toxification syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.toxloss += 15
 
-/datum/disease2/effect/greater/hallucinations
+/datum/microorganism/effect/greater/hallucinations
 	name = "Hallucinational Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.hallucination += 25
 
-/datum/disease2/effect/greater/sleepy
+/datum/microorganism/effect/greater/sleepy
 	name = "Resting syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*collapse")
 
-/datum/disease2/effect/greater/mind
+/datum/microorganism/effect/greater/mind
 	name = "Lazy mind syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.brainloss = 50
 
-/datum/disease2/effect/greater/suicide
+/datum/microorganism/effect/greater/suicide
 	name = "Suicidal syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -425,56 +433,56 @@
 			mob.suiciding = 0
 
 // lesser syndromes, partly just copypastes
-/datum/disease2/effect/lesser/mind
+/datum/microorganism/effect/lesser/mind
 	name = "Lazy mind syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.brainloss = 20
 
-/datum/disease2/effect/lesser/drowsy
+/datum/microorganism/effect/lesser/drowsy
 	name = "Bedroom Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.drowsyness = 5
 
-/datum/disease2/effect/lesser/deaf
+/datum/microorganism/effect/lesser/deaf
 	name = "Hard of hearing syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.ear_deaf = 5
 
-/datum/disease2/effect/lesser/gunck
+/datum/microorganism/effect/lesser/gunck
 	name = "Flemmingtons"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob << "\red Mucous runs down the back of your throat."
 
-/datum/disease2/effect/lesser/radian
+/datum/microorganism/effect/lesser/radian
 	name = "Radian's syndrome"
 	stage = 4
 	maxm = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.radiation += 1
 
-/datum/disease2/effect/lesser/sneeze
+/datum/microorganism/effect/lesser/sneeze
 	name = "Coldingtons Effect"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*sneeze")
 
-/datum/disease2/effect/lesser/cough
+/datum/microorganism/effect/lesser/cough
 	name = "Anima Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*cough")
 
-/datum/disease2/effect/lesser/hallucinations
+/datum/microorganism/effect/lesser/hallucinations
 	name = "Hallucinational Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.hallucination += 5
 
-/datum/disease2/effect/lesser/arm
+/datum/microorganism/effect/lesser/arm
 	name = "Disarming Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -482,62 +490,62 @@
 		org.take_damage(3,0,0,0)
 		mob << "\red You feel a sting in your right arm."
 
-/datum/disease2/effect/lesser/hungry
+/datum/microorganism/effect/lesser/hungry
 	name = "Appetiser Effect"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.nutrition = max(0, mob.nutrition - 200)
 
-/datum/disease2/effect/lesser/groan
+/datum/microorganism/effect/lesser/groan
 	name = "Groaning Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*groan")
 
-/datum/disease2/effect/lesser/scream
+/datum/microorganism/effect/lesser/scream
 	name = "Loudness Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*scream")
 
-/datum/disease2/effect/lesser/drool
+/datum/microorganism/effect/lesser/drool
 	name = "Saliva Effect"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*drool")
 
-/datum/disease2/effect/lesser/fridge
+/datum/microorganism/effect/lesser/fridge
 	name = "Refridgerator Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*shiver")
 
-/datum/disease2/effect/lesser/twitch
+/datum/microorganism/effect/lesser/twitch
 	name = "Twitcher"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*twitch")
 
 /*Removed on request by Spaceman, due to it being detrimental to RP. -CN
-/datum/disease2/effect/lesser/deathgasp
+/datum/microorganism/effect/lesser/deathgasp
 	name = "Zombie Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*deathgasp")*/
 
-/datum/disease2/effect/lesser/giggle
+/datum/microorganism/effect/lesser/giggle
 	name = "Uncontrolled Laughter Effect"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*giggle")
 
 
-/datum/disease2/effect/lesser
+/datum/microorganism/effect/lesser
 	chance_maxm = 10
 
-/datum/disease2/effectholder
+/datum/microorganism/effectholder
 	var/name = "Holder"
-	var/datum/disease2/effect/effect
+	var/datum/microorganism/effect/effect
 	var/chance = 0 //Chance in percentage each tick
 	var/cure = "" //Type of cure it requires
 	var/happensonce = 0
@@ -551,19 +559,19 @@
 				happensonce = -1
 
 	proc/getrandomeffect_greater()
-		var/list/datum/disease2/effect/list = list()
-		for(var/e in (typesof(/datum/disease2/effect/greater) - /datum/disease2/effect/greater))
+		var/list/datum/microorganism/effect/list = list()
+		for(var/e in (typesof(/datum/microorganism/effect/greater) - /datum/microorganism/effect/greater))
 		//	world << "Making [e]"
-			var/datum/disease2/effect/f = new e
+			var/datum/microorganism/effect/f = new e
 			if(f.stage == src.stage)
 				list += f
 		effect = pick(list)
 		chance = rand(1,6)
 
 	proc/getrandomeffect_lesser()
-		var/list/datum/disease2/effect/list = list()
-		for(var/e in (typesof(/datum/disease2/effect/lesser) - /datum/disease2/effect/lesser))
-			var/datum/disease2/effect/f = new e
+		var/list/datum/microorganism/effect/list = list()
+		for(var/e in (typesof(/datum/microorganism/effect/lesser) - /datum/microorganism/effect/lesser))
+			var/datum/microorganism/effect/f = new e
 			if(f.stage == src.stage)
 				list += f
 		effect = pick(list)

@@ -687,6 +687,8 @@
 							if(!do_mob(user, target)) return
 							for(var/mob/O in viewers(world.view, user))
 								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
+							// when injecting blood, some extra events(such as transmitting diseases) can happen, make room for this
+							H.inject_blood(B)
 							var/trans = R.trans_to(H.vessel,amount)
 							del(R)
 							spawn(5)
@@ -703,6 +705,11 @@
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red <B>[] is trying to inject []!</B>", user, target), 1)
 					if(!do_mob(user, target)) return
+					// monkeys should have blood injecting processed, too
+					if(istype(target,/mob/living/carbon))
+						var/mob/living/carbon/H = target
+						for(var/datum/reagent/blood/d in src.reagents.reagent_list)
+							H.inject_blood(d)
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
 					src.reagents.reaction(target, INGEST)
@@ -726,6 +733,7 @@
 							H.vessel.add_reagent("blood",amount,B)
 							src.reagents.remove_reagent("blood",amount)
 							if(!do_mob(user, target)) return
+							H.inject_blood(B)
 							for(var/mob/O in viewers(world.view, user))
 								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
 							del(R)

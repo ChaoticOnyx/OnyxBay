@@ -14,9 +14,8 @@
 /mob/living/carbon/var/oxylossparalysis = 50
 /mob/living/carbon/var/species = null
 
-/mob/living/carbon/var/datum/disease2/disease/virus2 = null
-/mob/living/carbon/var/list/datum/disease2/disease/immunevirus2 = list()
-/mob/living/carbon/var/list/datum/disease2/resistance/resistances2 = list()
+/mob/living/carbon/var/list/datum/microorganism/disease/immunemicroorganism = list()
+/mob/living/carbon/var/list/datum/microorganism/resistance/resistances2 = list()
 
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()

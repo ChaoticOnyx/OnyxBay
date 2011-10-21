@@ -329,7 +329,7 @@ No Implant Specifics"}
 
 
 /obj/item/weapon/implant/alien/implanted(mob/source as mob)
-	// TODO: make a virus2 infection
+	// TODO: make a microorganism infection
 	del src
 
 /obj/item/weapon/implant/slave/New()

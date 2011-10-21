@@ -7,7 +7,7 @@
 	brightnessblue = 2
 	broken_icon
 
-	var/datum/disease2/effectholder/memorybank = null
+	var/datum/microorganism/effectholder/memorybank = null
 	var/analysed = 0
 	var/obj/item/weapon/virusdish/dish = null
 	var/burning = 0
@@ -97,9 +97,9 @@
 		dat += "<BR><BR>"
 
 		if(dish)
-			if(dish.virus2)
+			if(dish.microorganism)
 				if(dish.growth >= 50)
-					for(var/datum/disease2/effectholder/e in dish.virus2.effects)
+					for(var/datum/microorganism/effectholder/e in dish.microorganism.effects)
 						dat += "<BR><A href='?src=\ref[src];grab=\ref[e]'> DNA strand"
 						if(dish.analysed)
 							dat += ": [e.effect.name]"
@@ -167,11 +167,11 @@
 			dish = null
 
 		else if(href_list["splice"])
-			for(var/datum/disease2/effectholder/e in dish.virus2.effects)
+			for(var/datum/microorganism/effectholder/e in dish.microorganism.effects)
 				if(e.stage == memorybank.stage)
 					e.effect = memorybank.effect
 			splicing = 10
-			dish.virus2.spreadtype = "Blood"
+			dish.microorganism.spreadtype = "Blood"
 			icon_state = "splicer_processing"
 
 		else if(href_list["disk"])
@@ -186,11 +186,11 @@
 	name = "Blank GNA disk"
 	icon = 'items.dmi'
 	icon_state = "datadisk0"
-	var/datum/disease2/effectholder/effect = null
+	var/datum/microorganism/effectholder/effect = null
 	var/stage = 1
 
 /obj/item/weapon/diseasedisk/premade/New()
 	name = "Blank GNA disk (stage: [5-stage])"
-	effect = new /datum/disease2/effectholder
-	effect.effect = new /datum/disease2/effect/invisible
+	effect = new /datum/microorganism/effectholder
+	effect.effect = new /datum/microorganism/effect/invisible
 	effect.stage = stage

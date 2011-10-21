@@ -60,7 +60,7 @@
 
 	var/radio_freq = random_radio_frequency()
 
-	var/datum/disease2/disease/D = new()
+	var/datum/microorganism/disease/D = new()
 	D.makerandom(1)
 	D.infectionchance = 0
 	D.speed = 0.3
@@ -71,7 +71,7 @@
 
 		equip_hostile(synd_mind.current, radio_freq)
 		if(istype(synd_mind.current, /mob/living/carbon/human))
-			synd_mind.current:virus2 = D.getcopy()
+			synd_mind.current:microorganism = D.getcopy()
 
 		synd_mind.current << "<b>* You have taken control of the NSV Luna and taken the crew as hostages. However, you do not know how to run this ship or about chemistry and virology, and you have a lethal virus that needs to be treated with spaceaillin or cured."
 

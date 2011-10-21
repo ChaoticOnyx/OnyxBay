@@ -77,7 +77,7 @@
 		return
 
 	else if (stat == 2 && !client)
-		gibs(loc, virus)
+		gibs(loc, microorganism)
 		del(src)
 		return
 

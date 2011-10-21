@@ -178,10 +178,9 @@
 	this.icon_state = hax
 	this.blood_DNA = src.dna.unique_enzymes
 	this.blood_type = src.b_type
-	this.virus = src.virus
 	this.blood_owner = src
-	if(src.virus2)
-		this.virus2 = src.virus2.getcopy()
+	if(src.microorganism)
+		this.microorganism = src.microorganism.getcopy()
 /mob/living/carbon/human/handle_regular_status_updates()
 	for(var/datum/organ/external/E in GetOrgans())
 		E.process()

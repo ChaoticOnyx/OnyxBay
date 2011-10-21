@@ -18,8 +18,7 @@
 			sleep(3)
 			if (i > 0)
 				var/obj/decal/cleanable/blood/b = new /obj/decal/cleanable/blood/splatter(src.loc)
-				if (src.virus)
-					b.virus = src.virus
+				b.microorganism = src.microorganism
 			if (step_to(src, get_step(src, direction), 0))
 				break
 

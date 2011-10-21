@@ -126,17 +126,17 @@
 /mob/living/carbon/proc/handle_virus_updates()
 
 	if(!reagents.has_reagent("spaceacillin"))
-		if(!virus2)
+		if(!microorganism)
 			for(var/obj/decal/cleanable/blood/B in view(4, src))
-				if(B.virus2)
-					infect_virus2(src,B.virus2)
+				if(B.microorganism)
+					infect_microorganism(src,B.microorganism)
 			for(var/obj/virus/V in src.loc)
-				infect_virus2(src,V.D)
+				infect_microorganism(src,V.D)
 		else if(get_infection_chance())
-			virus2.activate(src)
-			if(virus2)	//activate can sometimes remove the virus i think ~mini
+			microorganism.activate(src)
+			if(microorganism)	//activate can sometimes remove the virus i think ~mini
 				var/obj/virus/V = new(src.loc)
-				V.D = virus2.getcopy()
+				V.D = microorganism.getcopy()
 //VIRUS FIX THESES
 
 
