@@ -1,4 +1,4 @@
-/obj/machinery/disease2/monkeycloner
+/obj/machinery/microorganism/monkeycloner
 	name = "Monkey dispensor"
 	icon = 'cloning.dmi'
 	icon_state = "pod_0"
@@ -7,13 +7,13 @@
 
 	var/cloning = 0
 
-/obj/machinery/disease2/monkeycloner/attack_hand()
+/obj/machinery/microorganism/monkeycloner/attack_hand()
 	if(!cloning)
 		cloning = 150
 
 		icon_state = "pod_g"
 
-/obj/machinery/disease2/monkeycloner/process()
+/obj/machinery/microorganism/monkeycloner/process()
 	if(stat & (NOPOWER|BROKEN))
 		return
 	use_power(500)

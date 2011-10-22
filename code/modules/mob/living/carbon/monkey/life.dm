@@ -12,14 +12,14 @@
 
 	if(reagents.has_reagent("spaceacillin"))
 		return
-	if(virus2)
+	if(microorganism)
 		var/obj/virus/V = new(src.loc)
 		step_rand(V)
 		step_rand(V)
-		V.D = virus2.getcopy()
-	if(!src.virus2)
+		V.D = microorganism.getcopy()
+	if(!src.microorganism)
 		for(var/obj/virus/V in src.loc)
-			infect_virus2(src,V.D)
+			infect_microorganism(src,V.D)
 
 /mob/living/carbon/monkey/clamp_values()
 	stunned = max(stunned,0)

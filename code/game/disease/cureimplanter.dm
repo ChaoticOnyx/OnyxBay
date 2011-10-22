@@ -2,9 +2,9 @@
 	name = "Hypospray injector"
 	icon = 'items.dmi'
 	icon_state = "implanter1"
-	var/datum/disease2/resistance/resistance = null
+	var/datum/microorganism/resistance/resistance = null
 	var/works = 0
-	var/datum/disease2/disease/virus2 = null
+	var/datum/microorganism/disease/microorganism = null
 	item_state = "syringe_0"
 	throw_speed = 1
 	throw_range = 5
@@ -32,12 +32,12 @@
 
 		if(works == 0)
 			M.resistances2 += resistance
-			M.immunevirus2 += M.virus2.getcopy()
-			if(M.virus2)
-				M.virus2.cure_added(resistance)
+			M.immunemicroorganism += M.microorganism.getcopy()
+			if(M.microorganism)
+				M.microorganism.cure_added(resistance)
 		else if(works == 1)
 			M.toxloss += 60
 		else if(works == 2)
 			M.gib()
 		else if(works == 3)
-			infect_virus2(M,virus2,1)
+			infect_microorganism(M,microorganism,1)

@@ -421,7 +421,7 @@
 		reagents = R
 		R.my_atom = src
 
-	afterattack(obj/target, mob/user , flag)
+	afterattack(obj/target, mob/user , flag, params)
 
 		if(ismob(target) && target.reagents && reagents.total_volume)
 			user << "\blue You splash the solution onto [target]."
@@ -456,9 +456,13 @@
 			if(target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
-
-			var/trans = src.reagents.trans_to(target, 10)
-			user << "\blue You transfer [trans] units of the solution to [target]."
+			var/list/pa = params2list(params)
+			var/amnt
+			if(pa.Find("ctrl"))
+				amnt = src.reagents.trans_to(target, reagents.maximum_volume)
+			else
+				amnt = src.reagents.trans_to(target, 10)
+			user << "\blue You transfer [amnt == reagents.maximum_volume ? "all" : "[amnt] units"] of the solution to [target]."
 
 		else if(target.flags & NOSPLASH)
 			return
@@ -695,6 +699,11 @@
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red <B>[] is trying to inject []!</B>", user, target), 1)
 					if(!do_mob(user, target)) return
+					// monkeys should have blood injecting processed, too
+					if(istype(target,/mob/living/carbon))
+						var/mob/living/carbon/H = target
+						for(var/datum/reagent/blood/d in src.reagents.reagent_list)
+							H.inject_blood(d)
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
 					src.reagents.reaction(target, INGEST)
@@ -718,6 +727,7 @@
 							H.vessel.add_reagent("blood",5,B)
 							src.reagents.remove_reagent("blood",5)
 							if(!do_mob(user, target)) return
+							H.inject_blood(B)
 							for(var/mob/O in viewers(world.view, user))
 								O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
 							del(R)

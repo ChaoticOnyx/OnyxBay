@@ -293,20 +293,6 @@ No Implant Specifics"}
 	usr.mind.store_memory("Explosive implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate.", 0, 0)
 	usr << "The implanted explosive implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate."
 
-
-
-/obj/item/weapon/implant/vfac/implanted(mob/source as mob)
-	src.phrase = input("Choose activation phrase:") as text
-
-
-	//	else if("GBS")
-	//		src.virus =/datum/disease/gbs
-
-	usr.mind.store_memory("Viral factory implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate.", 0, 0)
-	usr << "The implanted viral factory implant can be activated by saying something containing the phrase ''[src.phrase]'', <B>say [src.phrase]</B> to attempt to activate."
-
-
-
 /obj/item/weapon/implant/explosive/hear(var/msg)
 	if(findtext(msg,src.phrase))
 		if(istype(loc, /mob/))
@@ -343,13 +329,8 @@ No Implant Specifics"}
 
 
 /obj/item/weapon/implant/alien/implanted(mob/source as mob)
-	source.contract_disease(new/datum/disease/alien_embryo, 1)
+	// TODO: make a microorganism infection
 	del src
-
-/obj/item/weapon/implant/vfac/hear(var/msg)
-	if(findtext(msg,src.phrase))
-		var/mob/m = loc
-		infect_mob_random_greater(m)
 
 /obj/item/weapon/implant/slave/New()
 	src.d = new/mob/living/carbon/human/limited

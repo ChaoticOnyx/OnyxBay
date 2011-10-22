@@ -159,8 +159,8 @@
 		if(B.id == "blood")
 			B.blood_type = src.b_type
 			B.blood_DNA = src.dna.unique_enzymes
-			if(virus2)
-				B.virus2 = virus2.getcopy()
+			if(microorganism)
+				B.microorganism = microorganism.getcopy()
 
 /mob/living/carbon/human/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!( yes ) || now_pushing))
@@ -492,7 +492,7 @@
 		return
 
 	else if (stat == 2 && !client)
-		gibs(loc, virus)
+		gibs(loc, microorganism)
 		del(src)
 		return
 
@@ -1307,8 +1307,6 @@
 					else
 						UpdateDamage()
 				updatehealth()
-				if(istype(M.virus, /datum/disease/jungle_fever))
-					monkeyize()
 	return
 
 /mob/living/carbon/human/attack_paw(mob/M as mob)
@@ -1367,8 +1365,6 @@
 					else
 						UpdateDamage()
 				updatehealth()
-				if(istype(M.virus, /datum/disease/jungle_fever))
-					monkeyize()
 	return
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
@@ -1590,7 +1586,7 @@
 						affecting = organs["[def_zone]"]
 					if (!affecting.destroyed)
 						//Attack with zombie
-						if(!zombie && !virus2)
+						if(!zombie && !microorganism)
 							// lower chance if wearing a suit
 							var/pr = 0
 							if(istype(wear_suit, /obj/item/clothing/suit/armor || /obj/item/clothing/suit/storage/armourrigvest))

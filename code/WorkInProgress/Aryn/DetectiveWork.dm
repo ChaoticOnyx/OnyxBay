@@ -280,7 +280,6 @@ turf/proc/add_bloody_footprints(mob/living/carbon/human/M,leaving,d,info)
 				if(istype(M,/mob/living/carbon/human))
 					T.blood_DNA = M.dna.unique_enzymes
 					T.blood_type = M.b_type
-					T.virus = M.virus
 				return
 	var/obj/decal/cleanable/blood/tracks/this = new(src)
 	if(leaving)
@@ -292,7 +291,6 @@ turf/proc/add_bloody_footprints(mob/living/carbon/human/M,leaving,d,info)
 	if(istype(M,/mob/living/carbon/human))
 		this.blood_DNA = M.dna.unique_enzymes
 		this.blood_type = M.b_type
-		this.virus = M.virus
 
 proc/get_tracks(mob/M)
 	if(istype(M,/mob/living))

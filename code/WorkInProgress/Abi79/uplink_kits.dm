@@ -52,18 +52,6 @@
 	..()
 	return
 
-
-/obj/item/weapon/storage/syndie_kit/imp_vfac
-	name = "Viral Factory Implant (with injector)"
-
-/obj/item/weapon/storage/syndie_kit/imp_vfac/New()
-	var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(src)
-	O.imp = new /obj/item/weapon/implant/vfac(O)
-	O.update()
-	..()
-	return
-
-
 /obj/item/weapon/storage/syndie_kit/imp_explosive
 	name = "Explosive Implant (with injector)"
 

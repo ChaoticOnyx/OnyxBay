@@ -154,6 +154,8 @@ extern "C" __declspec(dllexport) const char* getTotalGas(int argc, char* args[])
 extern "C" __declspec(dllexport) const char* setDensity(int argc, char* args[]) {
 	Tile* tile = get_tile();
 
+	std::string command = static_cast<std::string>(args[0]);
+
 	tile->flags |= CNORTH;
 
 	return 0;
@@ -168,7 +170,7 @@ extern "C" __declspec(dllexport) const char* unsetDensity(int argc, char* args[]
 	return 0;
 }
 
-// setDefaultAtmosphere
+// setDefaultAtmosphere()
 extern "C" __declspec(dllexport) const char* setDefaultAtmosphere(int argc, char* args[]) {
 	Tile* tile = get_tile();
 	Simulation* sim = get_simulation();

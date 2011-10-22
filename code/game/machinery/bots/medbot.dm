@@ -357,10 +357,6 @@
 	if((C.toxloss >= heal_threshold) && (!C.reagents.has_reagent(src.treatment_tox)))
 		return 1
 
-	if(C.virus && ((C.virus.stage > 1) || (C.virus.spread == "Airborne")))
-		if (!C.reagents.has_reagent(src.treatment_virus))
-			return 1 //STOP DISEASE FOREVER
-
 	return 0
 
 /obj/machinery/bot/medbot/proc/medicate_patient(mob/living/carbon/C as mob)
@@ -391,10 +387,6 @@
 
 	if(src.emagged) //Emagged! Time to poison everybody.
 		reagent_id = "toxin"
-
-	if (!reagent_id && (C.virus))
-		if(!C.reagents.has_reagent(src.treatment_virus))
-			reagent_id = src.treatment_virus
 
 	if (!reagent_id && (C.bruteloss >= heal_threshold))
 		if(!C.reagents.has_reagent(src.treatment_brute))

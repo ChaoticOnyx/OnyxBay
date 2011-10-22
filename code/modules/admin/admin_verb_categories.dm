@@ -49,7 +49,7 @@ var/list/admin_verb_categories = list(
 		/client/proc/returnadminshuttle,
 		/client/proc/cmd_admin_add_random_ai_law,
 		/client/proc/givedisease,
-		/client/proc/givedisease_deadly,
+		/client/proc/givedisease_lethal,
 	),
 
 	"Teleportation" = list(

@@ -11,7 +11,7 @@ CIRCULAR SAW
 
 	if((usr.mutations & 16) && prob(50))
 		M << "\red You stab yourself in the eye."
-		M.sdisabilities |= 1
+		M.disabilities |= 128
 		M.weakened += 4
 		M.bruteloss += 10
 
@@ -102,7 +102,7 @@ CIRCULAR SAW
 
 	if((usr.mutations & 16) && prob(50))
 		M << "\red You cut out your eyes."
-		M.sdisabilities |= 1
+		M.disabilities |= 128
 		M.weakened += 4
 		M.bruteloss += 10
 
@@ -195,7 +195,7 @@ CIRCULAR SAW
 //	world << "Start"
 	if((usr.mutations & 16) && prob(50))
 		M << "\red You stab yourself in the eye."
-		M.sdisabilities |= 1
+		M.disabilities |= 128
 		M.weakened += 4
 		M.bruteloss += 10
 
@@ -273,7 +273,7 @@ and then you have (1-3sec to respond to this eg by applying cotton.
 //	world << "Start"
 	if((usr.mutations & 16) && prob(50))
 		M << "\red You stab yourself in the eye."
-		M.sdisabilities |= 1
+		M.disabilities |= 128
 		M.weakened += 4
 		M.bruteloss += 10
 
@@ -359,7 +359,7 @@ and then you have (1-3sec to respond to this eg by applying cotton.
 //      world << "Start"
         if((usr.mutations & 16) && prob(50))
                 M << "\red You stab yourself in the eye."
-                M.sdisabilities |= 1
+                M.disabilities |= 128
                 M.weakened += 4
                 M.bruteloss += 10
 

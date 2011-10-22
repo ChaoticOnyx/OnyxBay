@@ -124,44 +124,24 @@
 	return null
 
 /mob/living/carbon/proc/handle_virus_updates()
-	if(bodytemperature > 406)
-		resistances += virus
-		virus = null
-
-	if(!virus)
-		if(prob(40))
-			for(var/mob/living/carbon/M in oviewers(4, src))
-				if(M.virus && M.virus.spread == "Airborne")
-					if(M.virus.affected_species.Find(species))
-						if(resistances.Find(M.virus.type))
-							continue
-						var/datum/disease/D = new M.virus.type //Making sure strain_data is preserved
-						D.strain_data = M.virus.strain_data
-						contract_disease(D)
-			for(var/obj/decal/cleanable/blood/B in view(4, src))
-				if(B.virus && B.virus.spread == "Airborne")
-					if(B.virus.affected_species.Find(species))
-						if(resistances.Find(B.virus.type))
-							continue
-						var/datum/disease/D = new B.virus.type
-						D.strain_data = B.virus.strain_data
-						contract_disease(D)
-	else
-		virus.stage_act()
-
+	// make sure there's antibodies in the blood
+	if(reagents.get_reagent_amount("antibodies") < 5)
+		reagents.add_reagent("antibodies",5)
+	for(var/datum/reagent/antibodies/A in reagents.reagent_list)
+		A.antibodies = src.antibodies
 
 	if(!reagents.has_reagent("spaceacillin"))
-		if(!virus2)
+		if(!microorganism)
 			for(var/obj/decal/cleanable/blood/B in view(4, src))
-				if(B.virus2)
-					infect_virus2(src,B.virus2)
+				if(B.microorganism)
+					infect_microorganism(src,B.microorganism)
 			for(var/obj/virus/V in src.loc)
-				infect_virus2(src,V.D)
+				infect_microorganism(src,V.D)
 		else if(get_infection_chance())
-			virus2.activate(src)
-			if(virus2)	//activate can sometimes remove the virus i think ~mini
+			microorganism.activate(src)
+			if(microorganism)	//activate can sometimes remove the virus i think ~mini
 				var/obj/virus/V = new(src.loc)
-				V.D = virus2.getcopy()
+				V.D = microorganism.getcopy()
 //VIRUS FIX THESES
 
 
@@ -441,9 +421,9 @@
 
 	density = !(lying)
 
-	if (sdisabilities & 1)
+	if (disabilities & 128)
 		blinded = 1
-	if (sdisabilities & 4)
+	if (disabilities & 32)
 		ear_deaf = 1
 
 	if (eye_blurry > 0)

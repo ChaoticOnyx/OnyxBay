@@ -1,10 +1,10 @@
-/obj/machinery/disease2/isolator/
+/obj/machinery/microorganism/isolator/
 	name = "Pathogenic Isolator"
 	density = 1
 	anchored = 1
 	icon = 'virology.dmi'
 	icon_state = "isolator"
-	var/datum/disease2/disease/virus2 = null
+	var/datum/microorganism/disease/microorganism = null
 	var/isolating = 0
 	var/beaker = null
 
@@ -53,8 +53,8 @@
 
 		if (href_list["isolate"])
 			var/datum/reagent/gent = R.get_reagent(href_list["isolate"])
-			if(gent:virus2)
-				virus2 = gent:virus2
+			if(gent:microorganism)
+				microorganism = gent:microorganism
 				isolating = 10
 				icon_state = "isolator_processing"
 			src.updateUsrDialog()
@@ -101,8 +101,8 @@
 			isolating -= 1
 			if(isolating == 0)
 				var/obj/item/weapon/virusdish/d = new /obj/item/weapon/virusdish(src.loc)
-				d.virus2 = virus2.getcopy()
-				virus2 = null
+				d.microorganism = microorganism.getcopy()
+				microorganism = null
 				icon_state = "isolator_in"
 
 
@@ -112,10 +112,20 @@
 	name = "Virus containment/growth dish"
 	icon = 'items.dmi'
 	icon_state = "implantcase-b"
-	var/datum/disease2/disease/virus2 = null
+	var/datum/microorganism/disease/microorganism = null
 	var/growth = 0
 	var/info = 0
 	var/analysed = 0
+
+/obj/item/weapon/virusdish/random
+	name = "Virus Sample"
+
+/obj/item/weapon/virusdish/random/New()
+	..()
+	// add a random virus to this dish
+	src.microorganism = new /datum/microorganism/disease
+	src.microorganism.makerandom()
+	growth = rand(5, 50)
 
 /obj/item/weapon/virusdish/attackby(var/obj/item/weapon/W as obj,var/mob/living/carbon/user as mob)
 	if(istype(W,/obj/item/weapon/hand_labeler))
@@ -123,8 +133,8 @@
 	..()
 	if(prob(50))
 		user << "The dish shatters"
-		if(virus2.infectionchance > 0)
-			infect_virus2(user,virus2)
+		if(microorganism.infectionchance > 0)
+			infect_microorganism(user,microorganism)
 		del src
 
 /obj/item/weapon/virusdish/examine()

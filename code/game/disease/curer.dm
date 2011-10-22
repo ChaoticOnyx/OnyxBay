@@ -8,7 +8,7 @@
 	var/curing
 	var/virusing
 
-	var/obj/item/weapon/virusdish/dish = null
+	var/obj/item/weapon/reagent_containers/container = null
 
 /obj/machinery/computer/curer/attackby(var/obj/I as obj, var/mob/user as mob)
 	if(istype(I, /obj/item/weapon/screwdriver))
@@ -37,12 +37,11 @@
 				A.icon_state = "4"
 				A.anchored = 1
 				del(src)
-	if(istype(I,/obj/item/weapon/virusdish))
-		var/mob/living/carbon/c = user
-		if(!dish)
-
-			dish = I
-			c.drop_item()
+	if(istype(I,/obj/item/weapon/reagent_containers))
+		var/mob/living/carbon/C = user
+		if(!container)
+			container = I
+			C.drop_item()
 			I.loc = src
 
 	//else
@@ -66,20 +65,18 @@
 		dat = "Antibody production in progress"
 	else if(virusing)
 		dat = "Virus production in progress"
-	else if(dish)
-		dat = "Virus dish inserted"
-		if(dish.virus2)
-			if(dish.growth >= 100)
-				dat += "<BR><A href='?src=\ref[src];antibody=1'>Begin antibody production</a>"
-				dat += "<BR><A href='?src=\ref[src];virus=1'>Begin virus production</a>"
-			else
-				dat += "<BR>Insufficent cells to attempt to create cure"
-		else
-			dat += "<BR>Please check dish contents"
+	else if(container)
+		// see if there's any blood in the container
+		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in container.reagents.reagent_list
 
-		dat += "<BR><A href='?src=\ref[src];eject=1'>Eject disk</a>"
+		if(B)
+			dat = "Blood sample inserted."
+			dat += "<BR><A href='?src=\ref[src];antibody=1'>Begin antibody production</a>"
+		else
+			dat += "<BR>Please check container contents."
+		dat += "<BR><A href='?src=\ref[src];eject=1'>Eject container</a>"
 	else
-		dat = "Please insert dish"
+		dat = "Please insert a container."
 
 	user << browse(dat, "window=computer;size=400x500")
 	onclose(user, "computer")
@@ -97,15 +94,8 @@
 		curing -= 1
 		if(curing == 0)
 			icon_state = "curer"
-			if(dish.virus2)
-				createcure(dish.virus2)
-	if(virusing)
-		virusing -= 1
-		if(virusing == 0)
-			icon_state = "curer"
-			if(dish.virus2)
-				createvirus(dish.virus2)
-
+			if(container)
+				createcure(container)
 	return
 
 /obj/machinery/computer/curer/Topic(href, href_list)
@@ -116,33 +106,27 @@
 
 		if (href_list["antibody"])
 			curing = 10
-			dish.growth -= 50
-			src.icon_state = "curer_processing"
-		if (href_list["virus"])
-			virusing = 10
-			dish.growth -= 100
 			src.icon_state = "curer_processing"
 		else if(href_list["eject"])
-			dish.loc = src.loc
-			dish = null
+			container.loc = src.loc
+			container = null
 
 		src.add_fingerprint(usr)
 	src.updateUsrDialog()
 	return
 
 
-/obj/machinery/computer/curer/proc/createcure(var/datum/disease2/disease/virus2)
-	var/obj/item/weapon/cureimplanter/implanter = new /obj/item/weapon/cureimplanter(src.loc)
-	implanter.resistance = new /datum/disease2/resistance(dish.virus2)
-	if(probG("Virus curing",3))
-		implanter.works = 0
-	else
-		implanter.works = rand(1,2)
+/obj/machinery/computer/curer/proc/createcure(var/obj/item/weapon/reagent_containers/container)
+	var/obj/item/weapon/reagent_containers/glass/beaker/product = new(src.loc)
+	product.reagents.add_reagent("antibodies",30)
+	var/datum/reagent/blood/B = locate() in container.reagents.reagent_list
+	for(var/datum/reagent/antibodies/A in product.reagents.reagent_list)
+		if(A.id == "antibodies")
+			A.antibodies = B.antibodies
 	state("The [src.name] Buzzes", "blue")
 
-/obj/machinery/computer/curer/proc/createvirus(var/datum/disease2/disease/virus2)
+/obj/machinery/computer/curer/proc/createvirus(var/datum/microorganism/disease/microorganism)
 	var/obj/item/weapon/cureimplanter/implanter = new /obj/item/weapon/cureimplanter(src.loc)
 	implanter.name = "Viral implanter (MAJOR BIOHAZARD)"
-	implanter.virus2 = dish.virus2.getcopy()
 	implanter.works = 3
 	state("The [src.name] Buzzes", "blue")

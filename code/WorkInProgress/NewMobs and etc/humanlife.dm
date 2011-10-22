@@ -178,10 +178,9 @@
 	this.icon_state = hax
 	this.blood_DNA = src.dna.unique_enzymes
 	this.blood_type = src.b_type
-	this.virus = src.virus
 	this.blood_owner = src
-	if(src.virus2)
-		this.virus2 = src.virus2.getcopy()
+	if(src.microorganism)
+		this.microorganism = src.microorganism.getcopy()
 /mob/living/carbon/human/handle_regular_status_updates()
 	for(var/datum/organ/external/E in GetOrgans())
 		E.process()
@@ -325,9 +324,9 @@
 
 	density = !( lying )
 
-	if ((sdisabilities & 1 || istype(glasses, /obj/item/clothing/glasses/blindfold)))
+	if ((disabilities & 128 || istype(glasses, /obj/item/clothing/glasses/blindfold)))
 		blinded = 1
-	if ((sdisabilities & 4 || istype(ears, /obj/item/clothing/ears/earmuffs)))
+	if ((disabilities & 32 || istype(ears, /obj/item/clothing/ears/earmuffs)))
 		ear_deaf = 1
 
 	if (eye_blurry > 0)

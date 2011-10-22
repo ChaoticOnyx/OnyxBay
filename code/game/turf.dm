@@ -292,7 +292,7 @@ turf/simulated/wall/bullet_act(flag,dir)
 		user << "\blue You're stuck!"
 
 		for (var/mob/M in hearers(src, null))
-			if(!(M.sdisabilities & 4) && M.ear_deaf == 0)
+			if(!(M.disabilities & 32) && M.ear_deaf == 0)
 				M << text("<FONT size=[]>BANG, bang!</FONT>", max(0, 5 - get_dist(src, M)))
 
 		bang_time = world.timeofday

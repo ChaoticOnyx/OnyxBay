@@ -17,15 +17,15 @@
 	log_admin("[key_name(usr)] made [key_name(M)] drop everything!")
 	message_admins("[key_name_admin(usr)] made [key_name_admin(M)] drop everything!", 1)
 
-proc/remove_virus2(mob/by)
+proc/remove_microorganism(mob/by)
 	for(var/mob/living/carbon/A in world)
-		if(A.virus2)
-			A.virus2 = null
+		if(A.microorganism)
+			A.microorganism = null
 	for(var/obj/virus/A in world)
 		del(A)
 	for(var/obj/decal/cleanable/blood/A in world)
-		if(A.virus2)
-			A.virus2 = null
+		if(A.microorganism)
+			A.microorganism = null
 	log_admin("[key_name(by)] removed all infections.")
 	message_admins("[key_name_admin(by)] just nuked the station with a medical bomb(Removed all virus stuff)", 1)
 /client/proc/cmd_admin_prison(mob/M as mob in world)
