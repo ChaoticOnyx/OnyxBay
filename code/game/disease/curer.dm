@@ -117,7 +117,7 @@
 
 
 /obj/machinery/computer/curer/proc/createcure(var/obj/item/weapon/reagent_containers/container)
-	var/obj/item/weapon/reagent_containers/glass/dispenser/product = new(src.loc)
+	var/obj/item/weapon/reagent_containers/glass/beaker/product = new(src.loc)
 	product.reagents.add_reagent("antibodies",30)
 	var/datum/reagent/blood/B = locate() in container.reagents.reagent_list
 	for(var/datum/reagent/antibodies/A in product.reagents.reagent_list)

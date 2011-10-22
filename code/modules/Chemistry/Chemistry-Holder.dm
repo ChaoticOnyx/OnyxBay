@@ -65,6 +65,15 @@ datum
 						var/datum/reagent/current_reagent = reagent_list[current_list_element]
 
 						R.add_reagent(current_reagent.id, (1 * multiplier) , current_reagent)
+
+						// special transfer code
+						if(istype(current_reagent, /datum/reagent/antibodies/))
+							var/datum/reagent/antibodies/this = current_reagent
+							var/datum/reagent/antibodies/other = locate() in R.reagent_list
+
+							if(other)
+								other.antibodies = this.antibodies
+
 						src.remove_reagent(current_reagent.id, 1)
 
 						current_list_element++

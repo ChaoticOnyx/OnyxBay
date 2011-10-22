@@ -288,6 +288,12 @@ datum
 						C.microorganism.dead = 1
 				return
 
+			proc/copy_from(mob/living/carbon/M)
+				if(istype(M,/datum/reagent/antibodies))
+					var/datum/reagent/antibodies/other = M
+					src.antibodies = other.antibodies
+				if(istype(M,/mob/living))
+					src.antibodies = M.antibodies
 
 		lube
 			name = "Space Lube"
