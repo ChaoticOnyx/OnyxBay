@@ -234,7 +234,7 @@ var/global/list/ANTIGENS = list("[ANTIGEN_A]" = "A", "[ANTIGEN_B]" = "B", "[ANTI
 		holder = new /datum/microorganism/effectholder
 		holder.stage = 3
 		holder.chance = 10
-		holder.effect = new/datum/microorganism/effect/greater/acid()
+		//holder.effect = new/datum/microorganism/effect/greater/acid()
 		effects += holder
 
 		holder = new /datum/microorganism/effectholder
@@ -369,9 +369,9 @@ var/global/list/ANTIGENS = list("[ANTIGEN_A]" = "A", "[ANTIGEN_B]" = "B", "[ANTI
 		mob.updatehealth()
 		if(prob(40))
 			if(mob.client)
-				mob.client.mob = new/mob/living/carbon/alien/larva(affected_mob.loc)
+				mob.client.mob = new/mob/living/carbon/alien/larva(mob.loc)
 			else
-				new/mob/living/carbon/alien/larva(affected_mob.loc)
+				new/mob/living/carbon/alien/larva(mob.loc)
 			var/datum/microorganism/disease/D = mob:microorganism
 			mob:gib()
 			del D
