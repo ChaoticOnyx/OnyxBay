@@ -797,7 +797,10 @@ datum/preferences
 		else
 			character.underwear = 0
 
-		var/list/disabilitylist
+		character.update_face()
+		character.update_body()
+
+	proc/copydisabilities(mob/living/carbon/human/character)
 		//if(disabilities & 1)
 			//blurry eyes
 		if(disabilities & 2)
@@ -810,15 +813,11 @@ datum/preferences
 			character.dna.struc_enzymes = setblock(character.dna.struc_enzymes,NERVOUSBLOCK,toggledblock(getblock(character.dna.struc_enzymes,NERVOUSBLOCK,3)),3)
 		if(disabilities & 32)
 			character.dna.struc_enzymes = setblock(character.dna.struc_enzymes,DEAFBLOCK,toggledblock(getblock(character.dna.struc_enzymes,DEAFBLOCK,3)),3)
-		//if(disabilitylist & 64)
+		//if(disabilities & 64)
 			//mute
-		if(disabilitylist & 128)
+		if(disabilities & 128)
 			character.dna.struc_enzymes = setblock(character.dna.struc_enzymes,BLINDBLOCK,toggledblock(getblock(character.dna.struc_enzymes,BLINDBLOCK,3)),3)
 		character.disabilities = disabilities
-
-		character.update_face()
-		character.update_body()
-
 
 /*
 

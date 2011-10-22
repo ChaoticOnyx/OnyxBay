@@ -72,11 +72,7 @@
 
 	var/mutstring = ""
 	for(var/i = 1, i <= 26, i++)
-		if(isblockon(copytext(struc_enzymes,(i-1)*3,(i-1)*3+1),0))
-			mutstring += copytext(struc_enzymes,(i-1)*3,(i-1)*3+3)
-		else
-			mutstring += add_zero2(num2hex(rand(1,1024)),3)
-
+		mutstring += add_zero2(num2hex(rand(1,1024)),3)
 	struc_enzymes = mutstring
 
 	unique_enzymes = md5(character.real_name)

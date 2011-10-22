@@ -337,6 +337,7 @@ mob/new_player
 
 		preferences.copy_to(new_character)
 		new_character.dna.ready_dna(new_character)
+		preferences.copydisabilities(new_character)
 
 		mind.transfer_to(new_character)
 
