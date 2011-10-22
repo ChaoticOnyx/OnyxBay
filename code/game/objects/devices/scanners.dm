@@ -257,7 +257,10 @@ GAS ANALYZER
 
 
 /obj/item/device/antibody_scanner/attack(mob/living/carbon/human/M as mob, mob/user as mob)
-	if(! istype(M, /mob/living/carbon))
+	if(! istype(M, /mob/living/carbon) || !M:antibodies)
 		user << "Unable to detect antibodies.."
 	else
-		user << text("\blue [M] The antibody scanner displays a cryptic code: [M.antibodies]")
+		// iterate over the list of antigens and see what matches
+		var/code = ""
+		for(var/V in ANTIGENS) if(text2num(V) & M.antibodies) code += ANTIGENS[V]
+		user << text("\blue [src] The antibody scanner displays a cryptic set of data: [code]")

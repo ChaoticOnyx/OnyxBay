@@ -46,6 +46,11 @@
 			r += "<BR>Progress Speed : [dish.microorganism.stageprob * 10]"
 			for(var/datum/microorganism/effectholder/E in dish.microorganism.effects)
 				r += "<BR>Effect:[E.effect.name]. Strength : [E.multiplier * 8]. Verosity : [E.chance * 15]. Type : [5-E.stage]."
+			// display the antigens
+			var/code = ""
+			for(var/V in ANTIGENS) if(text2num(V) & dish.microorganism.antigen) code += ANTIGENS[V]
+			r += "<BR>Antigen pattern: [code]"
+
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(src.loc)
 			P.info = r
 			dish.info = r
@@ -69,7 +74,5 @@
 				for(var/mob/M in viewers(src))
 					M.show_message("\icon[src] \blue The [src.name] buzzes", 2)
 				pause = 0
-
-
 
 	return

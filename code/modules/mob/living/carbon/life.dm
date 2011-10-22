@@ -124,6 +124,11 @@
 	return null
 
 /mob/living/carbon/proc/handle_virus_updates()
+	// make sure there's antibodies in the blood
+	if(reagents.get_reagent_amount("antibodies") < 5)
+		reagents.add_reagent("antibodies",5)
+	for(var/datum/reagent/antibodies/A in reagents.reagent_list)
+		A.antibodies = src.antibodies
 
 	if(!reagents.has_reagent("spaceacillin"))
 		if(!microorganism)

@@ -269,6 +269,31 @@ datum
 					microorganism = M.microorganism.getcopy()
 				return 1
 
+		antibodies
+			name = "Antibodies"
+			id = "antibodies"
+			description = "Little helpers produced by the body to fight off intruders."
+			reagent_state = LIQUID
+			red = 0
+			green = 50
+			blue = 255
+			var
+				antibodies = 0
+
+			on_mob_life(mob/M)
+				if (istype(M,/mob/living/carbon))
+					// the antibodies start killing stuff
+					var/mob/living/carbon/C = M
+					if(C.microorganism && C.microorganism.antigen & src.antibodies)
+						C.microorganism.dead = 1
+				return
+
+			proc/copy_from(mob/living/carbon/M)
+				if(istype(M,/datum/reagent/antibodies))
+					var/datum/reagent/antibodies/other = M
+					src.antibodies = other.antibodies
+				if(istype(M,/mob/living))
+					src.antibodies = M.antibodies
 
 		lube
 			name = "Space Lube"
