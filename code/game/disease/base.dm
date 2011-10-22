@@ -198,6 +198,35 @@ mob/var/datum/microorganism/disease/microorganism = null
 		infectionchance = 0
 		spreadtype = "Airborne"
 
+	proc/makealien()
+		var/datum/microorganism/effectholder/holder = new /datum/microorganism/effectholder
+		holder.stage = 1
+		holder.chance = 10
+		holder.effect = new/datum/microorganism/effect/lesser/gunck()
+		effects += holder
+
+		holder = new /datum/microorganism/effectholder
+		holder.stage = 2
+		holder.chance = 10
+		holder.effect = new/datum/microorganism/effect/lesser/cough()
+		effects += holder
+
+		holder = new /datum/microorganism/effectholder
+		holder.stage = 3
+		holder.chance = 10
+		holder.effect = new/datum/microorganism/effect/greater/acid()
+		effects += holder
+
+		holder = new /datum/microorganism/effectholder
+		holder.stage = 4
+		holder.chance = 10
+		holder.effect = new/datum/microorganism/effect/alien()
+		effects += holder
+
+		uniqueID = 896 // all alien diseases have the same ID
+		infectionchance = 0
+		spreadtype = "Airborne"
+
 	proc/minormutate()
 		var/datum/microorganism/effectholder/holder = pick(effects)
 		holder.minormutate()
@@ -310,6 +339,22 @@ mob/var/datum/microorganism/disease/microorganism = null
 			if(!H.zombie)
 				H.zombify()
 				del H.microorganism
+
+/datum/microorganism/effect/alien
+	name = "Unidentified Foreign Body"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob << "\red You feel something tearing its way out of your stomach..."
+		mob.toxloss += 10
+		mob.updatehealth()
+		if(prob(40))
+			if(mob.client)
+				mob.client.mob = new/mob/living/carbon/alien/larva(affected_mob.loc)
+			else
+				new/mob/living/carbon/alien/larva(affected_mob.loc)
+			var/datum/microorganism/disease/D = mob:microorganism
+			mob:gib()
+			del D
 
 /datum/microorganism/effect/greater/gibbingtons
 	name = "Gibbingtons Syndrome"
