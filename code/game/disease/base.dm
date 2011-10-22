@@ -122,6 +122,25 @@ mob/var/datum/microorganism/disease/microorganism = null
 
 /datum/microorganism/var/antigen = 0 // 16 bits describing the antigens, when one bit is set, a cure with that bit can dock here
 
+// reserving some numbers for later special antigens
+#define ANTIGEN_A  1
+#define ANTIGEN_B  2
+#define ANTIGEN_RH 4
+#define ANTIGEN_Q  8
+#define ANTIGEN_U  16
+#define ANTIGEN_V  32
+#define ANTIGEN_X  64
+#define ANTIGEN_Y  128
+#define ANTIGEN_Z  256
+#define ANTIGEN_M  512
+#define ANTIGEN_N  1024
+#define ANTIGEN_P  2048
+#define ANTIGEN_O  4096
+
+var/global/list/ANTIGENS = list(ANTIGEN_A = "A", ANTIGEN_B = "B", ANTIGEN_RH = "RH", ANTIGEN_Q = "Q", \
+								      ANTIGEN_U = "U", ANTIGEN_V = "V", ANTIGEN_Z = "Z", ANTIGEN_M = "M", \
+								      ANTIGEN_N = "N", ANTIGEN_P = "P", ANTIGEN_O = "O")
+
 /datum/microorganism/disease
 	var/infectionchance = 10
 	var/speed = 1
@@ -164,9 +183,9 @@ mob/var/datum/microorganism/disease/microorganism = null
 		effects += holder
 		uniqueID = rand(0,10000)
 		infectionchance = rand(1,10)
-		// pick 2 antigents
-		antigen |= pick(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096)
-		antigen |= pick(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096)
+		// pick 2 antigens
+		antigen |= pick(ANTIGENS)
+		antigen |= pick(ANTIGENS)
 		spreadtype = "Airborne"
 
 	proc/makezombie()

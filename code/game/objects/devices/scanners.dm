@@ -260,4 +260,8 @@ GAS ANALYZER
 	if(! istype(M, /mob/living/carbon))
 		user << "Unable to detect antibodies.."
 	else
-		user << text("\blue [M] The antibody scanner displays a cryptic code: [M.antibodies]")
+		// iterate over the list of antigens and see what matches
+		var/code = ""
+		for(var/V in ANTIGENS) if(V & M.antibodies) code += ANTIGENS[V]
+		user << M.antibodies
+		user << text("\blue [src] The antibody scanner displays a cryptic set of data: [code]")
