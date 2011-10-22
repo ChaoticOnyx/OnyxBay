@@ -559,8 +559,6 @@
 
 	if(!A || !src) return 0
 
-	stop_zones = 1
-
 	var/list/turfs_src = get_area_turfs(src.type)
 	var/list/turfs_trg = get_area_turfs(A.type)
 
@@ -605,12 +603,9 @@
 	moving:
 		for (var/turf/T in refined_src)
 			if(T.zone)
-				T.zone.space_connections.len = 0
-				for(var/zone/Z in T.zone.connections) //Disconnect everything! (We'll reconnect it later.)
-					T.zone.connections -= Z
-					T.zone.direct_connections -= Z
-					Z.connections -= T.zone
-					Z.direct_connections -= T.zone
+				if(T.zone.space_tiles) T.zone.space_tiles.len = 0
+				for(var/connection/C in T.zone.connections) //Disconnect everything! (We'll reconnect it later.)
+					del C
 			var/datum/coords/C_src = refined_src[T]
 			for (var/turf/B in refined_trg)
 				var/datum/coords/C_trg = refined_trg[B]
@@ -619,15 +614,15 @@
 					var/old_dir1 = T.dir
 					var/old_icon_state1 = T.icon_state
 					var/old_zone = T.zone
-					if(T.zone) T.zone.members -= T
+					if(T.zone) T.zone.RemoveTurf(T)
 
 					var/turf/X = new T.type(B)
 					X.dir = old_dir1
 					X.icon_state = old_icon_state1
 					X.zone = old_zone
 					if(X.zone)
-						X.zone.members += X
-						spawn(1) X.zone.space_connections -= X
+						X.zone.AddTurf(X)
+						spawn(1) X.zone.RemoveSpace(X)
 
 					for(var/atom/movable/AM as mob|obj in T)
 						AM.loc = X
@@ -679,7 +674,7 @@
 			else
 				air_master.tiles_to_update += T1
 			if(T1.zone)
-				T1.zone.space_connections.len = 0
+				T1.zone.space_tiles.len = 0
 
 	if(fromupdate.len)
 		for(var/turf/simulated/T2 in fromupdate)
@@ -690,11 +685,8 @@
 			else
 				air_master.tiles_to_update += T2
 			if(T2.zone)
-				T2.zone.space_connections.len = 0
+				T2.zone.space_tiles.len = 0
 
 	for(var/obj/O in doors)
 		O:update_nearby_tiles(1)
-
-	spawn(10)
-		stop_zones = 0
 

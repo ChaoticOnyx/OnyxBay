@@ -179,15 +179,10 @@ proc/Airflow(zone/A,zone/B,n)
 			spawn M.RepelAirflowDest(abs(n) / (vsc.AF_TINY_MOVEMENT_THRESHOLD/vsc.AF_SPEED_MULTIPLIER))
 proc/AirflowSpace(zone/A)
 
-	var/n = (A.turf_oxy + A.turf_nitro + A.turf_co2)*vsc.AF_SPACE_MULTIPLIER
+	var/n = (A.air.oxygen + A.air.nitrogen + A.air.carbon_dioxide)*vsc.AF_SPACE_MULTIPLIER
 	if(n < vsc.air_base_thresh) return
 
-	var/list/connected_turfs
-	if(!A.space_connections)
-		for(var/zone/Z in A.zone_space_connections)
-			connected_turfs += A.connections[Z]
-	else
-		connected_turfs = A.space_connections
+	var/list/connected_turfs = A.space_tiles
 	var/list/pplz = A.movables()
 	if(1)
 		for(var/atom/movable/M in pplz)
@@ -427,7 +422,7 @@ atom/movable
 
 zone/proc/movables()
 	. = list()
-	for(var/turf/T in members)
+	for(var/turf/T in contents)
 		for(var/atom/A in T)
 			. += A
 

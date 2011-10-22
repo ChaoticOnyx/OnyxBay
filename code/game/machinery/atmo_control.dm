@@ -38,12 +38,20 @@ obj/machinery/air_sensor
 
 			if(output&28)
 				var/total_moles = air_sample.total_moles()
-				if(output&4)
-					signal.data["oxygen"] = round(100*air_sample.oxygen/total_moles)
-				if(output&8)
-					signal.data["toxins"] = round(100*air_sample.toxins/total_moles)
-				if(output&16)
-					signal.data["n2"] = round(100*air_sample.nitrogen/total_moles)
+				if(total_moles)
+					if(output&4)
+						signal.data["oxygen"] = round(100*air_sample.oxygen/total_moles)
+					if(output&8)
+						signal.data["toxins"] = round(100*air_sample.toxins/total_moles)
+					if(output&16)
+						signal.data["n2"] = round(100*air_sample.nitrogen/total_moles)
+				else
+					if(output&4)
+						signal.data["oxygen"] = 0
+					if(output&8)
+						signal.data["toxins"] = 0
+					if(output&16)
+						signal.data["n2"] = 0
 
 			radio_connection.post_signal(src, signal)
 

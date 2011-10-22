@@ -37,11 +37,6 @@ datum
 			nitrogen = 0
 			toxins = 0
 
-			//If this was added to a zone's mixture update list, these are the zone's vars at the time it was retreived.
-			zone_oxygen = 0
-			zone_nitrogen = 0
-			zone_co2 = 0
-			zone_plasma = 0
 			volume = CELL_VOLUME
 
 			temperature = 0 //in Kelvin, use calculate_temperature() to modify
@@ -73,6 +68,8 @@ datum
 					for(var/datum/gas/trace_gas in trace_gases)
 						heat_capacity += trace_gas.moles*trace_gas.specific_heat
 
+				heat_capacity = max(heat_capacity,0.001)
+
 				return heat_capacity
 
 			heat_capacity_archived()
@@ -81,6 +78,8 @@ datum
 				if(trace_gases.len)
 					for(var/datum/gas/trace_gas in trace_gases)
 						heat_capacity_archived += trace_gas.moles_archived*trace_gas.specific_heat
+
+				heat_capacity_archived = max(heat_capacity_archived,0.001)
 
 				return heat_capacity_archived
 
@@ -91,19 +90,28 @@ datum
 					for(var/datum/gas/trace_gas in trace_gases)
 						moles += trace_gas.moles
 
-				return max(moles,0.0001)
+				return moles
 
 			return_pressure()
-				return total_moles()*R_IDEAL_GAS_EQUATION*temperature/volume
+				if(volume>0)
+					return total_moles()*R_IDEAL_GAS_EQUATION*temperature/volume
+				return 0
+
+			return_temperature()
+				return temperature
+
+			return_volume()
+				return max(0, volume)
 
 			thermal_energy()
 				return temperature*heat_capacity()
 
 		proc //Procedures used for very specific events
 			check_tile_graphic()
-				return 0
 				//returns 1 if graphic changed
 				graphic = null
+				for(var/obj/machinery/door/D in src)
+					if(D.density && !istype(D,/obj/machinery/door/window)) return graphic != graphic_archived
 				if(toxins > MOLES_PLASMA_VISIBLE)
 					graphic = "plasma"
 				else
@@ -144,7 +152,7 @@ datum
 				return reacting
 
 			fire()
-				/*var/energy_released = 0
+				var/energy_released = 0
 				var/old_heat_capacity = heat_capacity()
 
 				var/datum/gas/volatile_fuel/fuel_store = locate(/datum/gas/volatile_fuel/) in trace_gases
@@ -160,7 +168,7 @@ datum
 						oxygen -= fuel_store.moles
 						del(fuel_store)
 
-					energy_released += FIRE_CARBON_ENERGY_RELEASED * burned_fuel
+					energy_released += vsc.FIRE_CARBON_ENERGY_RELEASED * burned_fuel
 					carbon_dioxide += burned_fuel
 					fuel_burnt += burned_fuel
 
@@ -195,7 +203,6 @@ datum
 						temperature = (temperature*old_heat_capacity + energy_released)/new_heat_capacity
 
 				return fuel_burnt
-				*/
 
 		proc
 			archive()
@@ -218,20 +225,6 @@ datum
 			remove_ratio(ratio)
 				//Proportionally removes amount of gas from the gas_mixture
 				//Returns: gas_mixture with the gases removed
-
-			exchange_to(datum/gas_mixture/receiver,bound,multiplier)
-				//Transfers gas from src to receiver based on how far below
-				//bound the pressure of receiver is.
-				//Returns: null
-
-			exchange_from(datum/gas_mixture/sender,bound,multiplier)
-				//Transfers gas from sender to src based on how far above
-				//bound the pressure of sender is.
-				//Returns: null
-
-			exchange_delta(datum/gas_mixture/sharer,multiplier)
-				//Equalizes pressure between two mixtures.
-				//Returns: null
 
 			subtract(datum/gas_mixture/right_side)
 				//Subtracts right_side from air_mixture. Used to help turfs mingle
@@ -423,52 +416,6 @@ datum
 
 			return removed
 
-		exchange_to(datum/gas_mixture/receiver,bound,mult=1)
-			var/pressure_delta = (bound - receiver.return_pressure())*mult
-			//Can not have a pressure delta that would cause environment pressure > tank pressure
-
-			var/transfer_moles = 0
-			if(temperature > 0)
-				transfer_moles = pressure_delta*receiver.volume/(temperature * R_IDEAL_GAS_EQUATION)
-
-				//Actually transfer the gas
-				var/datum/gas_mixture/removed = remove(transfer_moles)
-
-				receiver.merge(removed)
-
-		exchange_from(datum/gas_mixture/sender,bound,mult=1)
-			var/pressure_delta = (sender.return_pressure() - bound)*mult
-			//Can not have a pressure delta that would cause environment pressure > tank pressure
-
-			var/transfer_moles = 0
-			if(sender.temperature > 0)
-				transfer_moles = pressure_delta*volume/(sender.temperature * R_IDEAL_GAS_EQUATION)
-
-				//Actually transfer the gas
-				var/datum/gas_mixture/removed = sender.remove(transfer_moles)
-
-				merge(removed)
-
-		exchange_delta(datum/gas_mixture/sharer,mult=1)
-			var/sharer_pressure = sharer.return_pressure()
-			var/pressure_delta = (return_pressure() - sharer_pressure)*mult
-			//Can not have a pressure delta that would cause environment pressure > tank pressure
-
-			var/transfer_moles = 0
-			if((temperature > 0) && (pressure_delta > 0))
-				transfer_moles = pressure_delta*sharer.volume/(temperature * R_IDEAL_GAS_EQUATION)
-
-				//Actually transfer the gas
-				var/datum/gas_mixture/removed = remove(transfer_moles)
-
-				sharer.merge(removed)
-			else if(pressure_delta < 0)
-				// take in air from outside
-				transfer_moles = -pressure_delta*sharer.volume/(temperature * R_IDEAL_GAS_EQUATION)
-				var/datum/gas_mixture/removed = sharer.remove(transfer_moles)
-
-				merge(removed)
-
 		check_then_remove(amount)
 
 			//Since it is all proportional, the check may be done on the gas as a whole
@@ -608,7 +555,7 @@ datum
 			return 1
 
 		share(datum/gas_mixture/sharer)
-			if(!sharer) return
+			if(!sharer)	return 0
 			var/delta_oxygen = QUANTIZE(oxygen_archived - sharer.oxygen_archived)/5
 			var/delta_carbon_dioxide = QUANTIZE(carbon_dioxide_archived - sharer.carbon_dioxide_archived)/5
 			var/delta_nitrogen = QUANTIZE(nitrogen_archived - sharer.nitrogen_archived)/5
@@ -935,7 +882,6 @@ datum
 			//Logic integrated from: temperature_mimic(model, conduction_coefficient) for efficiency
 
 		temperature_share(datum/gas_mixture/sharer, conduction_coefficient)
-			if(!sharer) return
 
 			var/delta_temperature = (temperature_archived - sharer.temperature_archived)
 			if(abs(delta_temperature) > MINIMUM_TEMPERATURE_DELTA_TO_CONSIDER)

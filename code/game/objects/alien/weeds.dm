@@ -38,10 +38,10 @@
 
 /obj/item/alien/weeds/proc/updateicon(var/spread = 1)
 	var/turf/T = src.loc
-	var/obj/item/alien/weeds/north = locate() in T.north
-	var/obj/item/alien/weeds/west = locate() in T.west
-	var/obj/item/alien/weeds/east = locate() in T.east
-	var/obj/item/alien/weeds/south = locate() in T.south
+	var/obj/item/alien/weeds/north = locate() in get_step(T,NORTH)
+	var/obj/item/alien/weeds/west = locate() in get_step(T,WEST)
+	var/obj/item/alien/weeds/east = locate() in get_step(T,EAST)
+	var/obj/item/alien/weeds/south = locate() in get_step(T,NORTH)
 	src.overlays = null
 	var/dir
 
