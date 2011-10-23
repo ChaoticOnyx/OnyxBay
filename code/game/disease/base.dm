@@ -234,7 +234,7 @@ var/global/list/ANTIGENS = list("[ANTIGEN_A]" = "A", "[ANTIGEN_B]" = "B", "[ANTI
 		holder = new /datum/microorganism/effectholder
 		holder.stage = 3
 		holder.chance = 10
-		//holder.effect = new/datum/microorganism/effect/greater/acid()
+		holder.effect = new/datum/microorganism/effect/greater/toxins()
 		effects += holder
 
 		holder = new /datum/microorganism/effectholder
