@@ -205,16 +205,6 @@ turf
 			if(air)
 				if(zone)
 					zone.air.merge(giver)
-				if(parent&&parent.group_processing)
-					if(!parent.air.check_then_merge(giver))
-						parent.suspend_group_processing()
-						air.merge(giver)
-				else
-					air.merge(giver)
-
-					if(!processing)
-						if(air.check_tile_graphic())
-							update_visuals(air)
 
 				return 1
 
@@ -234,34 +224,16 @@ turf
 			return air.mimic(T)
 
 		return_air()
-			if(air)
-				if(zone)
-					return zone.air
-				if(parent&&parent.group_processing)
-					return parent.air
-				else return air
+			if(zone)
+				return zone.air
 
 			else
 				return ..()
 
 		remove_air(amount as num)
-			if(air)
-				var/datum/gas_mixture/removed = null
-
-				if(zone)
-					removed = zone.air.remove(amount)
-
-				if(parent&&parent.group_processing)
-					removed = parent.air.check_then_remove(amount)
-					if(!removed)
-						parent.suspend_group_processing()
-						removed = air.remove(amount)
-				else
-					removed = air.remove(amount)
-
-					if(!processing)
-						if(air.check_tile_graphic())
-							update_visuals(air)
+			var/datum/gas_mixture/removed = null
+			if(zone)
+				removed = zone.air.remove(amount)
 
 				return removed
 

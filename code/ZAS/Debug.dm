@@ -36,11 +36,9 @@ zone/proc
 				M << "[C.A] --> [C.B] [(C.indirect?"Indirect":"Direct")]"
 				C.A.overlays += 'debug_connect.dmi'
 				C.B.overlays += 'debug_connect.dmi'
-				/*C.A.overlays += 'zone_connection_A.dmi'
-				C.B.overlays += 'zone_connection_B.dmi'
 				spawn(50)
-					C.A.overlays -= 'zone_connection_A.dmi'
-					C.B.overlays -= 'zone_connection_B.dmi'*/
+					C.A.overlays -= 'debug_connect.dmi'
+					C.B.overlays -= 'debug_connect.dmi'
 
 		else
 			dbg_output = 0
