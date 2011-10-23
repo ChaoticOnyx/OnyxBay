@@ -248,7 +248,6 @@
 					message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
 
 					del(M.client)
-					del(M)
 				if("No")
 					var/reason = input(usr,"Reason?","reason","Griefer") as text
 					if(!reason)
@@ -261,7 +260,6 @@
 					message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
 
 					del(M.client)
-					del(M)
 
 	if (href_list["removeinvitek"])
 		if ((src.rank in list( "Administrator", "Primary Administrator", "Super Administrator", "Coder", "Host"  )))
