@@ -36,9 +36,12 @@
 
 
 #define FIRE_SPREAD_RADIOSITY_SCALE		0.85
-#define FIRE_CARBON_ENERGY_RELEASED	 500000 //Amount of heat released per mole of burnt carbon into the tile
 vs_control/var/FIRE_PLASMA_ENERGY_RELEASED = 3000000 //Amount of heat released per mole of burnt plasma into the tile
-vs_control/var/FIRE_PLASMA_ENERGY_RELEASED_DESC = "Determines the temp increase from fires."
+vs_control/var/FIRE_PLASMA_ENERGY_RELEASED_DESC = "Determines the temp increase from plasma fires."
+vs_control/var/FIRE_CARBON_ENERGY_RELEASED =  750000 //Amount of heat released per mole of burnt plasma into the tile
+vs_control/var/FIRE_CARBON_ENERGY_RELEASED_DESC = "Determines the temp increase from fuel fires."
+vs_control/var/OXY_TO_PLASMA = 1
+vs_control/var/OXY_TO_PLASMA_DESC = "Ratio of oxygen to plasma burned to produce CO2."
 #define FIRE_GROWTH_RATE			50000 //For small fires
 
 //Plasma fire properties

@@ -178,7 +178,7 @@ turf/space/hull/New()
 
 				floorbelow = locate(x, y, z + 1)
 				if(ticker)
-					add_to_other_zone()
+					find_zone()
 				update()
 			var/turf/T = locate(x, y, z + 1)
 			if(T)
@@ -215,7 +215,7 @@ turf/space/hull/New()
 						return*/
 		Del()
 			if(zone)
-				zone.Disconnect(src,floorbelow)
+				ZDisconnect(src,floorbelow)
 			. = ..()
 
 
@@ -275,8 +275,7 @@ turf/space/hull/New()
 					air.temperature_mimic(floorbelow,FLOOR_HEAT_TRANSFER_COEFFICIENT,1)
 
 				if(floorbelow.zone && zone)
-					if(!(floorbelow.zone in zone.connections))
-						zone.Connect(src,floorbelow)
+					ZConnect(src,floorbelow)
 
 	plating
 		name = "Plating"

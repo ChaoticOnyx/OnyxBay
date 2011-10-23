@@ -42,6 +42,7 @@
 				var/datum/gas_mixture/removed = loc.remove_air(transfer_moles)
 
 				//Filter it
+				if(!removed) return
 				var/datum/gas_mixture/filtered_out = new
 				filtered_out.temperature = removed.temperature
 				if(scrub_Toxins)

@@ -210,11 +210,6 @@
 	update_nearby_tiles(need_rebuild=1)
 
 	src.ini_dir = src.dir
-	if(ticker && !(dir & dir - 1))
-		var/turf/L = loc
-		var/turf/M = get_step(L,src.dir)
-		if(L.zone == M.zone && L.zone)
-			L.zone.Split(L,M)
 	return
 
 /obj/window/New(Loc,re=0)
@@ -231,12 +226,6 @@
 		health = 40
 
 	update_nearby_tiles(need_rebuild=1)
-
-	if(ticker && !(dir & dir - 1))
-		var/turf/L = loc
-		var/turf/M = get_step(L,src.dir)
-		if(L.zone == M.zone && L.zone)
-			L.zone.Split(L,M)
 
 	return
 
@@ -256,12 +245,6 @@
 	src.dir = src.ini_dir
 	update_nearby_tiles(need_rebuild=1)
 
-	if(ticker && !(dir & dir - 1))
-		var/turf/L = loc
-		var/turf/M = get_step(L,src.dir)
-		if(L.zone == M.zone && L.zone)
-			L.zone.Split(L,M)
-
 	return
 
 /obj/window/proc/update_nearby_tiles(need_rebuild)
@@ -272,11 +255,15 @@
 
 	if(need_rebuild)
 		if(istype(source)) //Rebuild/update nearby group geometry
+			if(source.zone)
+				source.zone.rebuild = 1
 			if(source.parent)
 				air_master.groups_to_rebuild += source.parent
 			else
 				air_master.tiles_to_update += source
 		if(istype(target))
+			if(target.zone)
+				target.zone.rebuild = 1
 			if(target.parent)
 				air_master.groups_to_rebuild += target.parent
 			else

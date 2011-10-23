@@ -482,11 +482,9 @@
 	//	..()
 		update_icon()
 		var/turf/locT = src.loc
-		if(locT.zone && locT.zone.space_connections.len >= 1)
-			return
 		if(locT.zone)
-			for(var/zone/Z in locT.zone.connections)
-				if (Z.space_connections.len >= 1)
+			if(locT.zone.space_tiles)
+				if(locT.zone.space_tiles.len >= 1)
 					return
 		if(!on)
 			return 0
@@ -506,9 +504,9 @@
 			if(T.air && T.air.return_pressure() < ONE_ATMOSPHERE*0.95)
 				if(istype(node,/obj/machinery/atmospherics/pipe))
 					var/obj/machinery/atmospherics/pipe/P = node
-					var/K = ONE_ATMOSPHERE - T.zone.pressure
-					K = K/R_IDEAL_GAS_EQUATION/T.zone.temp*T.zone.volume
-					if(debug_info) world << "moles:[K]Pressure:[T.zone.pressure]/[ONE_ATMOSPHERE]Total moles:[T.air.total_moles()]"
+					var/K = ONE_ATMOSPHERE - T.zone.air.return_pressure()
+					K = K/R_IDEAL_GAS_EQUATION/T.zone.air.temperature*T.zone.air.volume
+					if(debug_info) world << "moles:[K]Pressure:[T.zone.air.return_pressure()]/[ONE_ATMOSPHERE]Total moles:[T.air.total_moles()]"
 					var/datum/gas_mixture/env2 = P.parent.air.remove(K)
 					T.assume_air(env2)
 			else

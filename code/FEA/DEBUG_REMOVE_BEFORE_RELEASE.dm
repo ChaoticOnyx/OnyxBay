@@ -42,6 +42,7 @@ turf/simulated/wall
 		create_floor()
 			set src in world
 			new /turf/simulated/floor(src)
+
 obj/item/weapon/tank
 	verb
 		adjust_mixture(temperature as num, target_toxin_pressure as num, target_oxygen_pressure as num)
@@ -90,7 +91,7 @@ turf/simulated/floor
 	verb
 		boom(inner_range as num, middle_range as num, outer_range as num)
 			set src in world
-			explosion(src,inner_range,middle_range,outer_range,outer_range, force=1)
+			explosion(src,inner_range,middle_range,outer_range,outer_range)
 
 	verb
 		flag_parent()
@@ -101,12 +102,12 @@ turf/simulated/floor
 	verb
 		small_explosion()
 			set src in world
-			explosion(src, 1, 2, 3, 3, 1)
+			explosion(src, 1, 2, 3, 3)
 
 	verb
 		large_explosion()
 			set src in world
-			explosion(src, 3, 5, 7, 5, 1)
+			explosion(src, 3, 5, 7, 5)
 
 obj/machinery/portable_atmospherics/canister
 	verb/test_release()
@@ -366,27 +367,27 @@ mob
 				network.marker = rand(1,4)
 
 			for(var/obj/machinery/atmospherics/pipe/P in world)
-				P.overlayss = null
+				P.overlays = null
 
 				var/datum/pipe_network/master = P.return_network()
 				if(master)
-					P.overlayss += icon('atmos_testing.dmi',"marker[master.marker]")
+					P.overlays += icon('atmos_testing.dmi',"marker[master.marker]")
 				else
 					world << "error"
-					P.overlayss += icon('atmos_testing.dmi',"marker0")
+					P.overlays += icon('atmos_testing.dmi',"marker0")
 
 			for(var/obj/machinery/atmospherics/valve/V in world)
-				V.overlayss = null
+				V.overlays = null
 
 				if(V.network_node1)
-					V.overlayss += icon('atmos_testing.dmi',"marker[V.network_node1.marker]")
+					V.overlays += icon('atmos_testing.dmi',"marker[V.network_node1.marker]")
 				else
-					V.overlayss += icon('atmos_testing.dmi',"marker0")
+					V.overlays += icon('atmos_testing.dmi',"marker0")
 
 				if(V.network_node2)
-					V.overlayss += icon('atmos_testing.dmi',"marker[V.network_node2.marker]")
+					V.overlays += icon('atmos_testing.dmi',"marker[V.network_node2.marker]")
 				else
-					V.overlayss += icon('atmos_testing.dmi',"marker0")
+					V.overlays += icon('atmos_testing.dmi',"marker0")
 
 turf/simulated
 	var/fire_verbose = 0
@@ -394,12 +395,12 @@ turf/simulated
 	verb
 		mark_direction()
 			set src in world
-			overlayss = null
+			overlays = null
 			for(var/direction in list(NORTH,SOUTH,EAST,WEST))
 				if(group_border&direction)
-					overlayss += icon('turf_analysis.dmi',"red_arrow",direction)
+					overlays += icon('turf_analysis.dmi',"red_arrow",direction)
 				else if(air_check_directions&direction)
-					overlayss += icon('turf_analysis.dmi',"arrow",direction)
+					overlays += icon('turf_analysis.dmi',"arrow",direction)
 		air_status()
 			set src in world
 			set category = "Minor"
@@ -448,7 +449,7 @@ obj/indicator
 	var/measure = "temperature"
 	anchored = 1
 
-	proc/process()
+	process()
 		icon_state = measurement()
 
 	proc/measurement()
