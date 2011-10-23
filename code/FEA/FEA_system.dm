@@ -275,11 +275,11 @@ datum
 				if(groups_to_rebuild.len > 0) process_rebuild_select_groups()
 				if(tiles_to_update.len > 0) process_update_tiles()
 
-				process_groups()
-				process_singletons()
+				//process_groups()
+				//process_singletons()
 
-				process_super_conductivity()
-				process_high_pressure_delta()
+				//process_super_conductivity()
+				//process_high_pressure_delta()
 
 				if(current_cycle%10==5) //Check for groups of tiles to resume group processing every 10 cycles
 					for(var/datum/air_group/AG in air_groups)

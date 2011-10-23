@@ -43,7 +43,10 @@ zone
 			if(istype(T,/turf/simulated))
 				var/turf/simulated/S = T
 				if(check)
-					S.update_visuals(air)
+					if(S.HasDoor(1))
+						S.update_visuals()
+					else
+						S.update_visuals(air)
 
 				if(air.temperature > FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 					for(var/atom/movable/item in S)
@@ -54,8 +57,8 @@ zone
 		if(length(connections))
 			for(var/connection/C in connections)
 				C.Cleanup()
-			for(var/zone/Z in connected_zones())
-				air.share(Z.air)
+			for(var/zone/Z in connected_zones)
+				air.share_ratio(Z.air,connected_zones[Z]*(vsc.zone_share_percent/100))
 
 
 zone/proc

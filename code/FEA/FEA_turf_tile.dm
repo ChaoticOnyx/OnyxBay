@@ -131,7 +131,7 @@ turf
 
 			update_visuals(datum/gas_mixture/model)
 				overlays = null
-
+				if(!model) return
 				switch(model.graphic)
 					if("plasma")
 						overlays.Add(plmaster)
