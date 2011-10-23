@@ -59,7 +59,7 @@
 			if(SDQL_expression(d, query_tree["where"]))
 				objs += d
 
-	usr << "Query: [query_text]"
+	//usr << "Query: [query_text]"
 	message_admins("[usr] executed SDQL query: \"[query_text]\".")
 
 	switch(query_tree[1])
