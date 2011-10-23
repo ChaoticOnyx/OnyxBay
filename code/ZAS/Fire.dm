@@ -146,7 +146,7 @@ obj/hotspot/Del()
 	..()
 
 var
-	fire_ratio_1 = 0.02
+	fire_ratio_1 = 0.05
 
 obj
 	fire
