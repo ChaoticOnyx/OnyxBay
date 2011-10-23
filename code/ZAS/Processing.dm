@@ -24,14 +24,28 @@ zone
 						new/zone(T,copy_air)
 			rebuild = 0
 
+		var/total_space = 0
+		var/turf/space/space
+
+		if(length(connected_zones))
+			for(var/zone/Z in connected_zones)
+				total_space += length(Z.space_tiles)
+				if(length(Z.space_tiles))
+					space = Z.space_tiles[1]
+
 		if(space_tiles)
 			for(var/T in space_tiles)
 				if(!istype(T,/turf/space)) space_tiles -= T
-			if(space_tiles.len)
-				air.temperature_mimic(space_tiles[1],OPEN_HEAT_TRANSFER_COEFFICIENT,space_tiles.len)
-				air.remove(MOLES_CELLSTANDARD * 0.5 * space_tiles.len)
-				if(dbg_output) world << "Space removed [MOLES_CELLSTANDARD*0.25 * space_tiles.len] moles of air."
+			total_space += length(space_tiles)
+			if(length(space_tiles))
+				space = space_tiles[1]
 
+		if(total_space)
+			air.temperature_mimic(space,OPEN_HEAT_TRANSFER_COEFFICIENT,total_space)
+			air.remove(MOLES_CELLSTANDARD * 1.5 * total_space)
+			if(dbg_output) world << "Space removed [MOLES_CELLSTANDARD*1.5*total_space] moles of air."
+
+		air.react(null,0)
 		var/check = air.check_tile_graphic()
 		for(var/turf/T in contents)
 			if(T.zone && T.zone != src)
@@ -42,6 +56,7 @@ zone
 
 			if(istype(T,/turf/simulated))
 				var/turf/simulated/S = T
+				if(S.fire_protection) S.fire_protection--
 				if(check)
 					if(S.HasDoor(1))
 						S.update_visuals()

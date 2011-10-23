@@ -32,9 +32,9 @@ connection
 			else
 				B.zone.connected_zones[A.zone]++
 	Del()
-		if(A.zone)
+		if(A.zone && A.zone.connections)
 			A.zone.connections -= src
-		if(B.zone)
+		if(B.zone && B.zone.connections)
 			B.zone.connections -= src
 
 		if(A.zone && B.zone)

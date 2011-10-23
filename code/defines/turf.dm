@@ -177,16 +177,18 @@ turf/space/hull/New()
 					return
 
 				floorbelow = locate(x, y, z + 1)
-				if(ticker)
-					find_zone()
-				update()
-			var/turf/T = locate(x, y, z + 1)
-			if(T)
-				//Fortunately, I've done this before. - Aryn
-				if(istype(T,/turf/space) || T.z > 4)
+				if(floorbelow)
+					//Fortunately, I've done this before. - Aryn
+					if(istype(floorbelow,/turf/space) || floorbelow.z > 4)
+						new/turf/space(src)
+					else if(!istype(floorbelow,/turf/simulated/floor))
+						new/turf/simulated/floor/plating(src)
+					else
+						if(ticker)
+							find_zone()
+						update()
+				else
 					new/turf/space(src)
-				else if(!istype(T,/turf/simulated/floor))
-					new/turf/simulated/floor/plating(src)
 				/*
 				switch (T.type) //Somehow, I don't think I thought this cunning plan all the way through - Sukasa
 					if (/turf/simulated/floor)
@@ -214,8 +216,8 @@ turf/space/hull/New()
 						F.name = F.name
 						return*/
 		Del()
-			if(zone)
-				ZDisconnect(src,floorbelow)
+			//if(zone)
+			//	ZDisconnect(src,floorbelow)
 			. = ..()
 
 
@@ -250,32 +252,6 @@ turf/space/hull/New()
 				I = image('ULIcons.dmi', "1-1-1")
 				I.layer = TURF_LAYER + 0.2
 				src.addoverlay(I)
-
-			process_extra()
-				if(!floorbelow) return
-				if(istype(floorbelow,/turf/simulated)) //Infeasibly complicated gooncode for the Elder System. =P
-					var/turf/simulated/FB = floorbelow
-					if(parent && parent.group_processing)
-						if(FB.parent && FB.parent.group_processing)
-							parent.air.share(FB.parent.air)
-
-						else
-							parent.air.share(FB.air)
-					else
-						if(FB.parent && FB.parent.group_processing)
-							air.share(FB.parent.air)
-						else
-							air.share(FB.air)
-					//var/datum/gas_mixture/fb_air = FB.return_air(1)
-					//var/datum/gas_mixture/my_air = return_air(1)
-					//my_air.share(fb_air)
-					//my_air.temperature_share(fb_air,FLOOR_HEAT_TRANSFER_COEFFICIENT)
-				else
-					air.mimic(floorbelow,1)
-					air.temperature_mimic(floorbelow,FLOOR_HEAT_TRANSFER_COEFFICIENT,1)
-
-				if(floorbelow.zone && zone)
-					ZConnect(src,floorbelow)
 
 	plating
 		name = "Plating"

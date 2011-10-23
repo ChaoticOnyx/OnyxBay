@@ -121,7 +121,7 @@ datum
 
 				return graphic != graphic_archived
 
-			react(atom/dump_location)
+			react(atom/dump_location,canburn = 1)
 				var/reacting = 0 //set to 1 if a notable reaction occured (used by pipe_network)
 
 				if(trace_gases.len > 0)
@@ -141,9 +141,10 @@ datum
 								reacting = 1
 
 				fuel_burnt = 0
-				if(temperature > FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
+				if(temperature > FIRE_MINIMUM_TEMPERATURE_TO_EXIST && canburn)
 					//world << "pre [temperature], [oxygen], [toxins]"
-					if(fire() > 0)
+					//if(fire() > 0)
+					if(zburn() > 0)
 						reacting = 1
 					//world << "post [temperature], [oxygen], [toxins]"
 
@@ -698,8 +699,8 @@ datum
 
 		share_ratio(datum/gas_mixture/sharer,ratio)
 			var
-				size = group_multiplier
-				share_size = sharer.group_multiplier
+				size = max(1,group_multiplier)
+				share_size = max(1,sharer.group_multiplier)
 
 				full_oxy = oxygen * size
 				full_nitro = nitrogen * size
