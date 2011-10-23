@@ -1,9 +1,10 @@
 var/global/datum/controller/gameticker/ticker
 var/datum/roundinfo/roundinfo = new()
-#define GAME_STATE_PREGAME		1
-#define GAME_STATE_SETTING_UP	2
-#define GAME_STATE_PLAYING		3
-#define GAME_STATE_FINISHED		4
+#define GAME_STATE_PREGAME		  1
+#define GAME_STATE_SETTING_UP	  2
+#define GAME_STATE_PLAYING		  3
+#define GAME_STATE_FINISHED		  4
+#define GAME_STATE_SELECTING_JOBS 5
 
 /datum/controller/gameticker
 	var/current_state = GAME_STATE_PREGAME
@@ -49,6 +50,18 @@ var/list/postsetuphooks = list()
 	else
 		src.mode = config.pick_mode(master_mode)
 
+	current_state = GAME_STATE_SELECTING_JOBS
+	started_jobselection = world.timeofday
+
+	// job selection BEFORE initializing the mode
+	world << "<B>Assigning jobs now. Use change-job to change your selection. The game will start once all required positions are occupied."
+	while(1)
+		// wait until jobs have been assigned correctly
+		if(process_selecting_jobs())
+			break
+		sleep(30)
+	current_state = GAME_STATE_SETTING_UP
+
 	if(hide_mode)
 		world << "<B>The current game mode is - Secret!</B>"
 	else
@@ -72,8 +85,6 @@ var/list/postsetuphooks = list()
 	//start supply ticker
 	spawn(SUPPLY_POINTDELAY) supply_ticker()
 
-	//Distribute jobs
-	distribute_jobs()
 	// Set the titles for jobs
 	SetTitles()
 	//Create player characters and transfer them
