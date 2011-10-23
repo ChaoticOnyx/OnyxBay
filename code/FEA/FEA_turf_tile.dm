@@ -286,6 +286,18 @@ turf
 						var/turf/simulated/T = get_step(src,direction)
 						if(T)
 							ZDisconnect(src,T)
+			else if(air)
+				// there's no zone here, but there's air
+				// if there are no zones nearby either make a new zone!
+
+				for(var/direction in cardinal)
+					if(air_check_directions&direction)
+						var/turf/simulated/T = get_step(src,direction)
+						if(T.zone) goto ZoneNearby
+
+				new/zone(src)
+
+				ZoneNearby:
 
 			if(parent)
 				if(parent.borders)
