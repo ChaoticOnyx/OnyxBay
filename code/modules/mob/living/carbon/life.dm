@@ -605,16 +605,13 @@
 			toxins_alert = 0
 			return
 
-	var/safe_oxygen_min = 16 // Minimum safe partial pressure of O2, in kPa
 	var/safe_toxins_max = 0.5
 	var/air_pressure = environment.return_pressure()
 
-	//Partial pressure of the O2 in our breath
-	var/O2_pp = (environment.oxygen/environment.total_moles())*air_pressure
 	// Same, but for the toxins
 	var/Toxins_pp = (environment.toxins/environment.total_moles())*air_pressure
 
-	if(O2_pp < safe_oxygen_min || losebreath > 3)
+	if(air_pressure < 75 || losebreath > 3)
 		oxygen_alert = max(oxygen_alert,1)
 	else
 		oxygen_alert = 0

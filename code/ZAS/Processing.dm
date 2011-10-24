@@ -72,6 +72,9 @@ zone
 		if(length(connections))
 			for(var/connection/C in connections)
 				C.Cleanup()
+				if(C && !C.indirect)
+					if(C.A.zone.air.compare(C.B.zone.air))
+						ZMerge(C.A.zone,C.B.zone)
 			for(var/zone/Z in connected_zones)
 				air.share_ratio(Z.air,connected_zones[Z]*(vsc.zone_share_percent/100))
 

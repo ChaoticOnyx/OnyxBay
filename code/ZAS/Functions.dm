@@ -58,7 +58,7 @@ turf/proc/find_zone()
 
 proc
 	ZMerge(zone/A,zone/B)
-		world << "Merge occured."
+		//world << "Merge occured."
 		var
 			a_size = A.air.group_multiplier
 			b_size = B.air.group_multiplier

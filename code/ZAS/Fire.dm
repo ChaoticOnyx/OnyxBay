@@ -1,4 +1,4 @@
-vs_control/var/IgnitionLevel = 4 //Moles of oxygen+plasma - co2 needed to burn.
+vs_control/var/IgnitionLevel = 10 //Moles of oxygen+plasma - co2 needed to burn.
 
 #define OXYGEN
 atom/proc/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
@@ -276,7 +276,7 @@ obj/liquid_fuel
 				del src
 		. = ..()
 
-vs_control/var/switch_fire = 0
+vs_control/var/switch_fire = 1
 
 turf/simulated/var/fire_protection = 0
 

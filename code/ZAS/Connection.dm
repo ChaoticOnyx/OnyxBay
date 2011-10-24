@@ -50,10 +50,9 @@ connection
 					B.zone.connected_zones[A.zone]--
 				else
 					B.zone.connected_zones -= A.zone
-
-			if(!A.zone.connected_zones.len)
+			if(A.zone.connected_zones && !A.zone.connected_zones.len)
 				A.zone.connected_zones = null
-			if(!B.zone.connected_zones.len)
+			if(B.zone.connected_zones && !B.zone.connected_zones.len)
 				B.zone.connected_zones = null
 		. = ..()
 
