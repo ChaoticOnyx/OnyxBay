@@ -1023,7 +1023,7 @@ datum
 				if(!M) M = holder.my_atom
 				if(istype(M,/mob/living/carbon/human))
 					for(var/datum/organ/external/org in M:organs2)
-						if(org.brute_dam) org.brute_dam = max(0, org.brutedam-1)
+						if(org.brute_dam) org.brute_dam = max(0, org.brute_dam-1)
 				else
 					if(M:bruteloss) M:bruteloss = max(0, M:bruteloss-1)
 				..()
