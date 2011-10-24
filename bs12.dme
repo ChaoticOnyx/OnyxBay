@@ -191,6 +191,7 @@
 #include "code\names.dm"
 #include "code\nlog.dm"
 #include "code\setup.dm"
+#include "code\stylesheet.dm"
 #include "code\TakePicture.dm"
 #include "code\Ticklag.dm"
 #include "code\Aryn\Airflow.dm"
@@ -806,5 +807,4 @@
 #include "code\ZAS\Processing.dm"
 #include "interface\skin.dmf"
 #include "maps\NSV_Luna.dmm"
-#include "maps\Space Station 13.dmm"
 // END_INCLUDE
