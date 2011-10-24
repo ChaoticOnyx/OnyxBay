@@ -4,19 +4,35 @@ var/datum/roundinfo/roundinfo = new()
 #define GAME_STATE_SETTING_UP	  2
 #define GAME_STATE_PLAYING		  3
 #define GAME_STATE_FINISHED		  4
-#define GAME_STATE_SELECTING_JOBS 5
 
 /datum/controller/gameticker
 	var/current_state = GAME_STATE_PREGAME
 
 	var/hide_mode = 0
 	var/datum/game_mode/mode = null
+	var/datum/game_mode/selection_mode = null
 	var/event_time = null
 	var/event = 0
 
 	var/list/datum/mind/minds = list()
 
 	var/pregame_timeleft = 0
+
+/datum/controller/gameticker/proc/start_jobselection()
+	if((master_mode=="random") || (master_mode=="secret"))
+		src.selection_mode = new/datum/game_mode()
+	else
+		src.selection_mode = config.pick_mode(master_mode)
+
+	if(!src.selection_mode)
+		src.selection_mode = new/datum/game_mode()
+
+	started_jobselection = world.timeofday
+	selection_mode.selected_jobs = list()
+	for(var/mob/new_player/player in world)
+		player.mind.assigned_role = null
+		player.selecting_job = 0
+	world << "<B>Assigning jobs now. Use change-job to change your selection. The game will start once all required positions are occupied."
 
 /datum/controller/gameticker/proc/pregame()
 	set background = 1
@@ -25,13 +41,17 @@ var/datum/roundinfo/roundinfo = new()
 	world << "<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>"
 	world << "Please, setup your character and select ready. Game will start in [pregame_timeleft] seconds"
 
+	start_jobselection()
+
 	while(current_state == GAME_STATE_PREGAME)
 		sleep(10)
 		if(delay_start == 0)
 			pregame_timeleft--
 
-		if(pregame_timeleft <= 0)
+		// start only if enough time has passed and job selection is done
+		if( (force_start_now || process_selecting_jobs()) && pregame_timeleft <= 0)
 			current_state = GAME_STATE_SETTING_UP
+
 	roundinfo.starttime = time2text(world.realtime)
 	spawn setup()
 
@@ -50,18 +70,6 @@ var/force_start_now = 0
 		src.mode = config.pick_random_mode()
 	else
 		src.mode = config.pick_mode(master_mode)
-
-	current_state = GAME_STATE_SELECTING_JOBS
-	started_jobselection = world.timeofday
-
-	// job selection BEFORE initializing the mode
-	world << "<B>Assigning jobs now. Use change-job to change your selection. The game will start once all required positions are occupied."
-	while(1)
-		// wait until jobs have been assigned correctly
-		if(process_selecting_jobs() || force_start_now)
-			break
-		sleep(30)
-	current_state = GAME_STATE_SETTING_UP
 
 	if(hide_mode)
 		world << "<B>The current game mode is - Secret!</B>"

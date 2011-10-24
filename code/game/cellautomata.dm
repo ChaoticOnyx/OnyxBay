@@ -12,6 +12,9 @@
 	fdel(F)
 	F << the_mode
 
+	// whenever we change the mode, restart jobselection
+	if(ticker.current_state == 1) ticker.start_jobselection() // 1 = GAME_STATE_PREGAME
+
 /world/proc/load_motd()
 	join_motd = file2text("config/motd.txt")
 	auth_motd = file2text("config/motd-auth.txt")
