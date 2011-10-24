@@ -38,6 +38,7 @@ var/datum/roundinfo/roundinfo = new()
 
 
 var/list/postsetuphooks = list()
+var/force_start_now = 0
 
 /datum/controller/gameticker/proc/setup()
 
@@ -57,7 +58,7 @@ var/list/postsetuphooks = list()
 	world << "<B>Assigning jobs now. Use change-job to change your selection. The game will start once all required positions are occupied."
 	while(1)
 		// wait until jobs have been assigned correctly
-		if(process_selecting_jobs())
+		if(process_selecting_jobs() || force_start_now)
 			break
 		sleep(30)
 	current_state = GAME_STATE_SETTING_UP

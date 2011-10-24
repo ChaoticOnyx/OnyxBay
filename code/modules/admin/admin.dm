@@ -1678,6 +1678,9 @@
 		log_admin("[usr.key] has started the game.")
 		message_admins("<font color='blue'>[usr.key] has started the game.</font>")
 		return 1
+	else if(ticker.current_sate = GAME_STATE_SELECTING_JOBS)
+		force_start_now = 1
+		return 1
 	else
 		alert("Game has already started you fucking jerk, stop spamming up the chat :ARGH:")
 		return 0
