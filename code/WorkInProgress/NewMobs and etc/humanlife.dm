@@ -75,12 +75,17 @@
 		else
 			healths.icon_state = "health7"
 
+		if(hal_screwyhud == 1)
+			healths.icon_state = "health6"
+		if(hal_screwyhud == 2)
+			healths.icon_state = "health7"
+
 	if(pullin)	pullin.icon_state = "pull[pulling ? 1 : 0]"
 
-
-	if (toxin)	toxin.icon_state = "tox[toxins_alert ? 1 : 0]"
-	if (oxygen) oxygen.icon_state = "oxy[oxygen_alert ? 1 : 0]"
-	if (fire) fire.icon_state = "fire[fire_alert ? 1 : 0]"
+	//Lazy hacks are lazy, but the indicators are unreliable sometimes.
+	if (toxin || hal_screwyhud == 4)	toxin.icon_state = "tox[toxins_alert ? 1 : 0]"
+	if (oxygen || hal_screwyhud == 2)   oxygen.icon_state = "oxy[oxygen_alert ? 1 : 0]"
+	if (fire)                           fire.icon_state = "fire[fire_alert ? 1 : 0]"
 	//NOTE: the alerts dont reset when youre out of danger. dont blame me,
 	//blame the person who coded them. Temporary fix added.
 
@@ -244,6 +249,8 @@
 				blinded = 1
 				lying = 1
 				stat = 1
+				if(prob(1) && !dreaming)
+					spawn dream()
 			var/h = hand
 			hand = 0
 			drop_item()
@@ -472,15 +479,17 @@
 
 	if(hallucination > 0)
 
-		if(hallucinations.len == 0 && hallucination >= 20 && health > 0)
-			if(prob(5))
-				fake_attack(src)
+		//if(hallucinations.len == 0 && hallucination >= 20 && health > 0)
+		//	if(prob(5))
+		//		fake_attack(src)
 		//for(var/atom/a in hallucinations)
 		//	a.hallucinate(src)
+		if(!handling_hal && hallucination > 20)
+			spawn handle_hallucinations() //The not boring kind!
 		hallucination -= 1
-		if(health < 0)
-			for(var/obj/a in hallucinations)
-				del a
+		//if(health < 0)
+		//	for(var/obj/a in hallucinations)
+		//		del a
 	else
 		halloss = 0
 		for(var/obj/a in hallucinations)
