@@ -13,6 +13,33 @@
 
 	var/enabled = 1
 
+	// a list of occupations necessary for this mode
+	var/list/required_jobs = list("Captain" = 1, "Chief Engineer" = 1)
+
+	 // a list of occupations available for this mode
+	var/list/jobs = list(
+	"Engineer" = 5,
+	"Security Officer" = 5,
+	"Forensic Technician" = 1,
+	"Geneticist" = 1,
+	"Scientist" = 3,
+	"Atmospheric Technician" = 3,
+	"Medical Doctor" = 3,
+	"Head of Personnel" = 1,
+	"Head of Security" = 1,
+	"Research Director" = 1,
+	"Counselor" = 1,
+	"Roboticist" = 1,
+	"Hydroponicist" = 1,
+	"AI" = 1,
+	"Barman" = 1,
+	"Chef" = 1,
+	"Janitor" = 1,
+	"Chemist" = 1,
+	"Quartermaster" = 3)
+
+	var/list/selected_jobs = list()
+
 /datum/game_mode/proc/announce()
 	world << "<B>The current game mode is - [name]!</B>"
 
