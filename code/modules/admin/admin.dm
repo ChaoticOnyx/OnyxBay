@@ -1517,12 +1517,17 @@
 	set category = "Special Verbs"
 	set name = "Start Vote"
 	set desc="Starts vote"
+	if(vote.voting)
+		usr << "There is already a vote in progess."
+		return
+	vote.voting = 1
 	var/confirm = input("What vote would you like to start?", "Vote", "Cancel") in list("Restart", "Custom Vote", "Change Game Mode", "Cancel")
 
 	var/message
 
 	switch(confirm)
 		if("Cancel")
+			vote.voting = 0
 			return
 
 		if("Restart")
@@ -1561,7 +1566,6 @@
 
 			vote.enteringchoices = 0
 
-	vote.voting = 1
 	// now voting
 	vote.votetime = world.timeofday + config.vote_period*10
 	// when the vote will end
