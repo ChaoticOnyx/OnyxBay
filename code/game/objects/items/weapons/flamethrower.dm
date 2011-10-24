@@ -332,7 +332,8 @@ GETLINEEEEEEEEEEEEEEEEEEEEE
 	//Transfer current tank air contents to turf
 	var/howmuch = part4.air_contents.toxins * 0.10
 	part4.air_contents.toxins -= howmuch
-	target.air.toxins += howmuch
+	var/obj/liquid_fuel/liquid = new(target)
+	liquid.amount += howmuch
 
 	//Burn it based on transfered gas
 	target.hotspot_expose(SPARK_TEMP,300)

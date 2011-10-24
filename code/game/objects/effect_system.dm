@@ -32,8 +32,11 @@ would spawn and follow the beaker, even if it is carried or thrown.
 
 /obj/effects/water/New()
 	..()
-	//var/turf/T = src.loc
-	//if (istype(T, /turf))
+	var/turf/simulated/T = src.loc
+	if (istype(T))
+		var/obj/fire/F = locate() in T
+		if(F) del F
+		T.fire_protection = 15
 	//	T.firelevel = 0 //TODO: FIX
 	spawn( 70 )
 		del(src)
@@ -44,6 +47,11 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	//var/turf/T = src.loc
 	//if (istype(T, /turf))
 	//	T.firelevel = 0 //TODO: FIX
+	var/turf/simulated/T = src.loc
+	if (istype(T))
+		var/obj/fire/F = locate() in T
+		if(F) del F
+		T.fire_protection = 15
 	..()
 	return
 
@@ -51,6 +59,12 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	//var/turf/T = src.loc
 	//if (istype(T, /turf))
 	//	T.firelevel = 0 //TODO: FIX
+	var/turf/simulated/T = src.loc
+	if (istype(T))
+		var/obj/fire/F = locate() in T
+		if(F) del F
+		T.fire_protection = 15
+
 	if (--src.life < 1)
 		//SN src = null
 		del(src)

@@ -1045,11 +1045,12 @@ turf/simulated/floor/proc/update_icon()
 
 //attempted bugfix for engine vent being derp, probably has other uses too
 turf/proc/RebuildZone()
-	var/zone/Z = src.zone
+	zone.rebuild = 1
+	/*var/zone/Z = src.zone
 	var/turf/T = Z.starting_tile
 	del Z
 	spawn(1 )
-		new/zone(T)
+		new/zone(T)*/
 
 /turf/simulated/floor/open/attackby(obj/item/weapon/C as obj, mob/user as mob) //Stolen from /turf/space.
 	if (istype(C, /obj/item/weapon/rods))

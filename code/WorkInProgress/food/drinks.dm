@@ -52,7 +52,6 @@
 					reagents.trans_to(M, gulp_size)
 
 			playsound(M.loc,'drink.ogg', rand(10,50), 1)
-			M.urine += 0.1
 			return 1
 
 		else if( istype(M, /mob/living/carbon/human) )
@@ -69,7 +68,6 @@
 					reagents.trans_to(M, gulp_size)
 
 			playsound(M.loc,'drink.ogg', rand(10,50), 1)
-			M.urine += 0.1
 			return 1
 
 		return 0

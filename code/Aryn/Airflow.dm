@@ -2,6 +2,10 @@ vs_control/var
 
 	zone_update_delay = 10
 	zone_update_delay_DESC = "The delay in ticks between updates of zones. Increase if lag is bad seemingly because of air."
+
+	zone_share_percent = 2
+	zone_share_percent_DESC = "Percent of gas per connected tile that is shared between zones."
+
 	//Used in /mob/carbon/human/life
 	OXYGEN_LOSS = 2
 	OXYGEN_LOSS_DESC = "A multiplier for damage due to lack of air, CO2 poisoning, and vacuum. Does not affect oxyloss\
@@ -179,15 +183,10 @@ proc/Airflow(zone/A,zone/B,n)
 			spawn M.RepelAirflowDest(abs(n) / (vsc.AF_TINY_MOVEMENT_THRESHOLD/vsc.AF_SPEED_MULTIPLIER))
 proc/AirflowSpace(zone/A)
 
-	var/n = (A.turf_oxy + A.turf_nitro + A.turf_co2)*vsc.AF_SPACE_MULTIPLIER
+	var/n = (A.air.oxygen + A.air.nitrogen + A.air.carbon_dioxide)*vsc.AF_SPACE_MULTIPLIER
 	if(n < vsc.air_base_thresh) return
 
-	var/list/connected_turfs
-	if(!A.space_connections)
-		for(var/zone/Z in A.zone_space_connections)
-			connected_turfs += A.connections[Z]
-	else
-		connected_turfs = A.space_connections
+	var/list/connected_turfs = A.space_tiles
 	var/list/pplz = A.movables()
 	if(1)
 		for(var/atom/movable/M in pplz)
@@ -427,7 +426,7 @@ atom/movable
 
 zone/proc/movables()
 	. = list()
-	for(var/turf/T in members)
+	for(var/turf/T in contents)
 		for(var/atom/A in T)
 			. += A
 

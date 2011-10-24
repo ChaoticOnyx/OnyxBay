@@ -62,7 +62,6 @@
 						reagents.trans_to(M, reagents.total_volume)
 				src.amount--
 				M.nutrition += src.heal_amt * 10
-				M.poo += 0.1
 				src.heal(M)
 				playsound(M.loc,'eatfood.ogg', rand(10,50), 1)
 				if(!src.amount)
@@ -83,7 +82,6 @@
 						reagents.trans_to(M, reagents.total_volume)
 				src.amount--
 				M.nutrition += src.heal_amt * 10
-				M.poo += 0.1
 				src.heal(M)
 				playsound(M.loc, 'eatfood.ogg', rand(10,50), 1)
 				if(!src.amount)

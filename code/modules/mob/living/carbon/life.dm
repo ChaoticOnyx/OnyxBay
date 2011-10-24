@@ -10,13 +10,15 @@
 		return
 
 	if (stat != 2) //still breathing
-		if(lastbreathT <= world.timeofday - 40)
+		if(lastbreathT <= world.timeofday - 20)
 			//Only try to take a breath every 4 seconds, unless suffocating
+			//BITCH PLEASE - Aryn
 			lastbreathT = world.timeofday
 			breathe()
 			if(lastbreathT > world.timeofday)	//Midnight rollover check
 				lastbreathT = 0
 		else //Still give containing object the chance to interact
+			handle_warnings()
 			if(istype(loc, /obj/))
 				var/obj/location_as_object = loc
 				location_as_object.handle_internal_lifeform(src, 0)
@@ -121,6 +123,16 @@
 		else
 			if (internals)
 				internals.icon_state = "internal0"
+	return null
+
+/mob/living/carbon/proc/get_air_from_internal()
+	if(internal)
+		if (!contents.Find(internal))
+			internal = null
+		if (!wear_mask || !(wear_mask.flags & MASKINTERNALS))
+			internal = null
+		if(internal)
+			return internal.air_contents
 	return null
 
 /mob/living/carbon/proc/handle_virus_updates()
@@ -582,6 +594,32 @@
 	//Temporary fixes to the alerts.
 
 	return 1
+
+/mob/living/carbon/proc/handle_warnings()
+	var/datum/gas_mixture/environment = get_air_from_internal()
+	if(!environment)
+		var/turf/T = get_turf(src)
+		environment = T.return_air()
+		if(!environment)
+			oxygen_alert = max(oxygen_alert,1)
+			toxins_alert = 0
+			return
+
+	var/safe_toxins_max = 0.5
+	var/air_pressure = environment.return_pressure()
+
+	// Same, but for the toxins
+	var/Toxins_pp = (environment.toxins/environment.total_moles())*air_pressure
+
+	if(air_pressure < 75 || losebreath > 3)
+		oxygen_alert = max(oxygen_alert,1)
+	else
+		oxygen_alert = 0
+	if(Toxins_pp > safe_toxins_max)
+		toxins_alert = max(toxins_alert,1)
+	else
+		toxins_alert = 0
+
 
 /mob/living/carbon/proc/handle_temperature_damage(body_part, exposed_temperature, exposed_intensity)
 	if(nodamage)

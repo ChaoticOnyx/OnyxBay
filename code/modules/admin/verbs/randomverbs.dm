@@ -450,11 +450,11 @@ proc/remove_microorganism(mob/by)
 	if(istype(src.mob.loc, /turf/simulated/floor))
 		var/turf/temp_t = get_turf(src.mob)
 		var/zone/Z = temp_t.zone
-		Z.oxygen(MOLES_O2STANDARD)
-		Z.nitrogen(MOLES_N2STANDARD)
-		Z.co2(0)
-		Z.plasma(0)
-		Z.temp = T20C
+		Z.air.oxygen = MOLES_O2STANDARD
+		Z.air.nitrogen = MOLES_N2STANDARD
+		Z.air.carbon_dioxide = 0
+		Z.air.toxins = 0
+		Z.air.temperature = T20C
 		message_admins("[src.mob]([src.key]) stabilized atmos in [temp_t.loc]")
 
 /client/proc/toggle_view_range()

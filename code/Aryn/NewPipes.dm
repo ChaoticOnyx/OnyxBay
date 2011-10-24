@@ -216,8 +216,9 @@
 
 			var/turf/locT = src.loc
 			var/datum/gas_mixture/air_contents = Controller:air_contents
-			if(locT.zone.space_connections.len >= 1)
-				return
+			if(locT.zone.space_tiles)
+				if(locT.zone.space_tiles.len >= 1)
+					return
 			if(!on)
 				return 0
 			var/datum/gas_mixture/environment = loc.return_air(1)
@@ -233,10 +234,10 @@
 			var/datum/gas_mixture/env = air_contents.remove(transfer_moles)
 			var/datum/gas_mixture/filtered_out = new
 			if(panic_fill && istype(loc, /turf/simulated/))
-				if(T.zone && T.zone.pressure < ONE_ATMOSPHERE*0.95)
-					var/K = ONE_ATMOSPHERE - T.zone.pressure
-					K = K/R_IDEAL_GAS_EQUATION/used_temperature*T.zone.volume
-					if(debug_info) world << "moles:[K]Pressure:[T.zone.pressure]/[ONE_ATMOSPHERE]Total moles:[T.zone.total_moles()]"
+				if(T.zone && T.zone.air.return_pressure() < ONE_ATMOSPHERE*0.95)
+					var/K = ONE_ATMOSPHERE - T.zone.air.return_pressure()
+					K = K/R_IDEAL_GAS_EQUATION/used_temperature*T.zone.air.volume
+					if(debug_info) world << "moles:[K]Pressure:[T.zone.air.return_pressure()]/[ONE_ATMOSPHERE]Total moles:[T.zone.air.total_moles()]"
 					var/datum/gas_mixture/env2 = air_contents.remove(K)
 					T.assume_air(env2)
 				else
@@ -793,13 +794,13 @@
 			var/external_pressure_bound = release_pressure
 			var/datum/gas_mixture/air_contents = FController:air_contents
 			if(T.zone)
-				var/pressure_delta = external_pressure_bound - T.zone.pressure()
+				var/pressure_delta = external_pressure_bound - T.zone.air.return_pressure()
 				pressure_delta *= 10
 					//Can not have a pressure delta that would cause environment pressure > tank pressure
 
 				var/transfer_moles = 0
 				if(air_contents.temperature > 0)
-					transfer_moles = pressure_delta*T.zone.volume/(air_contents.temperature * R_IDEAL_GAS_EQUATION)
+					transfer_moles = pressure_delta*T.zone.air.volume/(air_contents.temperature * R_IDEAL_GAS_EQUATION)
 
 						//Actually transfer the gas
 					var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
@@ -829,8 +830,8 @@
 				pressure_delta *= 10
 
 				var/transfer_moles = 0
-				if(T.zone.temp > 0)
-					transfer_moles = pressure_delta*air_contents.volume/(T.zone.temp * R_IDEAL_GAS_EQUATION)
+				if(T.zone.air.temperature > 0)
+					transfer_moles = pressure_delta*air_contents.volume/(T.zone.air.temperature * R_IDEAL_GAS_EQUATION)
 
 					//Actually transfer the gas
 					var/datum/gas_mixture/removed

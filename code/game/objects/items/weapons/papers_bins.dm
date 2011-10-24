@@ -172,9 +172,7 @@ CLIPBOARDS
 /obj/item/weapon/paper_bin/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 
-/obj/item/weapon/paper_bin/attack_hand(mob/user as mob, unused, flag)
-	if (flag)
-		return ..()
+/obj/item/weapon/paper_bin/attack_hand(mob/user as mob)
 	src.add_fingerprint(user)
 	if (locate(/obj/item/weapon/paper, src))
 		for(var/obj/item/weapon/paper/P in src)
@@ -183,14 +181,12 @@ CLIPBOARDS
 				P.loc = usr
 				P.layer = 20
 				P = null
-				usr.update_clothing()
 				break
 			else if (!usr.r_hand)
 				usr.r_hand = P
 				P.loc = usr
 				P.layer = 20
 				P = null
-				usr.update_clothing()
 				break
 	else
 		if (src.amount >= 1)
@@ -202,7 +198,7 @@ CLIPBOARDS
 				user.l_hand = P
 			else
 				user.r_hand = P
-			user.update_clothing()
+	usr.update_clothing()
 	src.update()
 	return
 
