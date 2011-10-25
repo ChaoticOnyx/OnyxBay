@@ -118,8 +118,7 @@ world/proc/makejson()
 				players += "[C.fakekey];"
 		else
 			players += "[C.key];"
-
-	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\",\"time\" : \"[world.realtime]\"}"
+	F << "{\"mode\":\"[mode]\",\"players\" : \"[players]\",\"playercount\" : \"[playerscount]\",\"admin\" : \"[admins]\",\"time\" : \"[time2text(world.realtime,"MM/DD - hh:mm")]\"}"
 	fcopy("info.json","[jsonpath]/info.json")
 
 /proc/switchmap(newmap,newpath)

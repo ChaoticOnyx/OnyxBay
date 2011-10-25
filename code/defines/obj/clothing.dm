@@ -328,12 +328,14 @@
 	w_class = 3.0
 	see_face = 0.0
 	item_state = "gas_mask"
+	var/filter = 100
 	protective_temperature = 500
 	heat_transfer_coefficient = 0.01
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 
-
+/obj/item/clothing/mask/gas/proc/damage_filter()
+	filter -= 0.1
 /obj/item/clothing/mask/gas/emergency
 	name = "emergency gas mask"
 	icon_state = "gas_alt"

@@ -555,19 +555,27 @@
 
 	else
 		co2overloadtime = 0
-
+//gasmasksarecool
 	if(Toxins_pp > safe_toxins_max) // Too much toxins
-		var/ratio = breath.toxins/safe_toxins_max
-		toxloss += min(ratio*vsc.plc.PLASMA_DMG, 10*vsc.plc.PLASMA_DMG)	//Limit amount of damage toxin exposure can do per second
-		toxins_alert = max(toxins_alert, 1)
-		if(vsc.plc.PLASMA_HALLUCINATION)
-			hallucination += 8
+		var/toxs = breath.toxins
+		if(istype(wear_mask,/obj/item/clothing/mask/gas)&& wear_mask:filter > 0)
+			toxs = toxs - (breath.toxins * 0.90)
+			wear_mask:damage_filter()
+		if(toxs >= safe_toxins_max)
+			var/ratio = toxs/safe_toxins_max
+			toxloss += min(ratio*vsc.plc.PLASMA_DMG, 10*vsc.plc.PLASMA_DMG)	//Limit amount of damage toxin exposure can do per second
+			toxins_alert = max(toxins_alert, 1)
+			if(vsc.plc.PLASMA_HALLUCINATION)
+				hallucination += 8
 	else
 		toxins_alert = 0
 
 	if(breath.trace_gases.len)	// If there's some other shit in the air lets deal with it here.
 		for(var/datum/gas/sleeping_agent/SA in breath.trace_gases)
 			var/SA_pp = (SA.moles/breath.total_moles())*breath_pressure
+			if(istype(wear_mask,/obj/item/clothing/mask/gas) && wear_mask:filter > 0)
+				SA_pp = SA_pp - (SA.moles * 0.40)
+				wear_mask:damage_filter()
 			if(SA_pp > SA_para_min) // Enough to make us paralysed for a bit
 				paralysis = max(paralysis, 3) // 3 gives them one second to wake up and run away a bit!
 				if(SA_pp > SA_sleep_min) // Enough to make us sleep as well
