@@ -1,5 +1,6 @@
 mob/living/carbon/verb/give(var/mob/living/carbon/A)
 	set name = "Give"
+	set src in view(1)
 	var/obj/item/I
 	if(!hand && r_hand == null)
 		usr << "You don't have anything in your right hand to give to [A.name]"
@@ -13,6 +14,12 @@ mob/living/carbon/verb/give(var/mob/living/carbon/A)
 		I = r_hand
 	if(!I)
 		return
+	var/obj/item/weapon/T = new(src.loc)
+	if(!A.loc.Enter(T))
+		usr << "Can't reach him"
+		del(T)
+		return
+	del(T)
 	if(A.r_hand == null)
 		switch(alert(A,"[src.name] wants to give you \a [I.name]?",,"Yes","No"))
 			if("Yes")
