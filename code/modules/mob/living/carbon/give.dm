@@ -1,6 +1,8 @@
 mob/living/carbon/verb/give(var/mob/living/carbon/A)
 	set name = "Give"
 	set src in view(1)
+	if(A.stat == STAT_DEAD || A.client == null)
+		return
 	var/obj/item/I
 	if(!hand && r_hand == null)
 		usr << "You don't have anything in your right hand to give to [A.name]"

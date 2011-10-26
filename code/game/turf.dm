@@ -702,6 +702,8 @@ turf/simulated/floor/proc/update_icon()
 	if(istype(C, /obj/item/weapon/crowbar) && intact)
 		if(broken || burnt)
 			user << "\red You remove the broken plating."
+		else if(icon == "white")
+			new /obj/item/weapon/tile/white(src)
 		else
 			new /obj/item/weapon/tile(src)
 
@@ -774,6 +776,8 @@ turf/simulated/floor/proc/update_icon()
 			else
 				user << "\red The plating is going to need some support."
 		else
+			if(istype(C,/obj/item/weapon/tile/white))
+				icon_old = "white"
 			restore_tile()
 			var/obj/item/weapon/tile/T = C
 			playsound(src.loc, 'Genhit.ogg', 50, 1)
