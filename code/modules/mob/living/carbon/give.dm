@@ -1,4 +1,4 @@
-mob/living/carbon/verb/give(var/mob/living/carbon/A)
+mob/living/carbon/verb/give(mob/living/carbon/A in view(src,1))
 	set name = "Give"
 	set src in view(1)
 	if(A.stat == STAT_DEAD || A.client == null)
