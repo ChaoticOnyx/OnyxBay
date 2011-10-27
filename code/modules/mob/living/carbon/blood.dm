@@ -2,5 +2,4 @@
 
 mob/living/carbon/proc/inject_blood(datum/reagent/blood/B)
 	// TODO: if the blood types are incompatible, bad things should happen
-	infect_microorganism(src,B.microorganism)
-
+	infect_microorganism(src,B.microorganism,1)

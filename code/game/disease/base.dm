@@ -65,7 +65,7 @@ mob/var/datum/microorganism/disease/microorganism = null
 	for(var/datum/microorganism/resistance/res in M.resistances)
 		if(res.resistsdisease(disease))
 			return
-	if(prob(disease.infectionchance))
+	if(prob(disease.infectionchance) || forced)
 		if(M.microorganism)
 			return
 		else

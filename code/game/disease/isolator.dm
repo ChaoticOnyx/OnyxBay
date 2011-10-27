@@ -117,6 +117,8 @@
 	var/info = 0
 	var/analysed = 0
 
+	reagents = list()
+
 /obj/item/weapon/virusdish/random
 	name = "Virus Sample"
 
@@ -128,13 +130,16 @@
 	growth = rand(5, 50)
 
 /obj/item/weapon/virusdish/attackby(var/obj/item/weapon/W as obj,var/mob/living/carbon/user as mob)
-	if(istype(W,/obj/item/weapon/hand_labeler))
+	if(istype(W,/obj/item/weapon/hand_labeler) || istype(W,/obj/item/weapon/reagent_containers/syringe))
 		return
 	..()
 	if(prob(50))
 		user << "The dish shatters"
 		if(microorganism.infectionchance > 0)
-			infect_microorganism(user,microorganism)
+			// spread around some pathogens
+			for(var/i = 0, i<= (growth / 3), i++)
+				var/obj/virus/V = new(src.loc)
+				V.D = microorganism.getcopy()
 		del src
 
 /obj/item/weapon/virusdish/examine()
