@@ -102,7 +102,7 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	use_power(500)
-	src.updateDialog()
+	//src.updateDialog()
 	return
 
 /obj/machinery/computer/robotics/Topic(href, href_list)

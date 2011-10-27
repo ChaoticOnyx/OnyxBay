@@ -68,7 +68,7 @@
 	if(!(stat & (NOPOWER|BROKEN)) )
 		use_power(500)
 
-	src.updateDialog()
+	//src.updateDialog()
 
 
 /obj/machinery/power/monitor/power_change()

@@ -94,7 +94,6 @@
 		return
 	if(lastfired && world.time - lastfired < shot_delay)
 		return
-	lastfired = world.time
 	if (src.cover==null)
 		src.cover = new /obj/machinery/turretcover(src.loc)
 	use_power(50)
@@ -102,7 +101,8 @@
 	if (istype(loc, /turf))
 		loc = loc:loc
 	if (!istype(loc, /area))
-		world << text("Badly positioned turret - loc.loc is [].", loc)
+		world.log << text("Badly positioned turret - loc.loc is [].", loc)
+		del src
 		return
 	var/area/area = loc
 	if (istype(area, /area))
@@ -123,6 +123,7 @@
 									src.shootAt(target)
 								else
 									tarea.subjectDied(target)
+								lastfired = world.time
 
 		else
 			if (src.wasvalid)

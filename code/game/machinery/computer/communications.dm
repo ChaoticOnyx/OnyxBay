@@ -2,8 +2,8 @@
 
 /obj/machinery/computer/communications/process()
 	..()
-	if(state != STATE_STATUSDISPLAY)
-		src.updateDialog()
+	//if(state != STATE_STATUSDISPLAY)
+	//	src.updateDialog()
 
 
 

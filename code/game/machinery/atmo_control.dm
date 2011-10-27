@@ -93,7 +93,7 @@ obj/machinery/computer/general_air_control
 	process()
 		..()
 
-		src.updateDialog()
+		//src.updateDialog()
 
 	attackby(I as obj, user as mob)
 		if(istype(I, /obj/item/weapon/screwdriver))
@@ -545,7 +545,7 @@ Rate: [volume_rate] L/sec<BR>"}
 
 		..()
 
-		src.updateDialog()
+		//src.updateDialog()
 
 	proc/return_text()
 		var/priority_text

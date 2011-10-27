@@ -281,9 +281,9 @@ datum
 				//process_super_conductivity()
 				//process_high_pressure_delta()
 
-				if(current_cycle%10==5) //Check for groups of tiles to resume group processing every 10 cycles
-					for(var/datum/air_group/AG in air_groups)
-						AG.check_regroup()
+				//if(current_cycle%10==5) //Check for groups of tiles to resume group processing every 10 cycles
+				//	for(var/datum/air_group/AG in air_groups)
+				//		AG.check_regroup()
 
 				return 1
 

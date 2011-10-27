@@ -1,5 +1,5 @@
 zone
-	New(turf/start,datum/gas_mixture/start_air)
+	New(turf/start)
 		if(istype(start,/list))
 			contents = start
 		else
@@ -8,15 +8,13 @@ zone
 			T.zone = src
 			if(istype(T,/turf/space))
 				AddSpace(T)
-		air = start_air
-		if(!air)
-			air = new
-			var/turf/simulated/T = pick(contents)
-			air.oxygen = T.oxygen
-			air.nitrogen = T.nitrogen
-			air.carbon_dioxide = T.carbon_dioxide
-			air.toxins = T.toxins
-			air.temperature = T.temperature
+		air = new
+		for(var/turf/simulated/T in contents)
+			air.oxygen = max(air.oxygen,T.oxygen)
+			air.nitrogen = max(air.nitrogen,T.nitrogen)
+			air.carbon_dioxide = max(air.carbon_dioxide,T.carbon_dioxide)
+			air.toxins = max(air.toxins,T.toxins)
+			air.temperature = max(air.temperature,T.temperature)
 		air.group_multiplier = contents.len
 		zones += src
 	Del()

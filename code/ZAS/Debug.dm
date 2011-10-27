@@ -48,3 +48,7 @@ zone/proc
 
 			for(var/turf/space/S in space_tiles)
 				S.overlays -= 'debug_space.dmi'
+		for(var/zone/Z in zones)
+			if(Z.air == air)
+				var/turf/zloc = pick(Z.contents)
+				M << "\red Illegal air datum shared by: [zloc.loc.name]"

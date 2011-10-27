@@ -19,9 +19,8 @@ zone
 					T.zone = null
 				for(var/turf/T in rebuild_turfs)
 					if(!T.zone)
-						var/datum/gas_mixture/copy_air = new
-						copy_air.copy_from(air)
-						new/zone(T,copy_air)
+						var/zone/Z = new/zone(T)
+						Z.air.copy_from(air)
 			rebuild = 0
 
 		var/total_space = 0
@@ -42,8 +41,8 @@ zone
 
 		if(total_space)
 			air.temperature_mimic(space,OPEN_HEAT_TRANSFER_COEFFICIENT,total_space)
-			air.remove(MOLES_CELLSTANDARD * 1.5 * total_space)
-			if(dbg_output) world << "Space removed [MOLES_CELLSTANDARD*1.5*total_space] moles of air."
+			air.remove(MOLES_CELLSTANDARD * (air.group_multiplier/40) * total_space)
+			if(dbg_output) world << "Space removed [MOLES_CELLSTANDARD*(air.group_multiplier/20)*total_space] moles of air."
 
 		air.react(null,0)
 		var/check = air.check_tile_graphic()

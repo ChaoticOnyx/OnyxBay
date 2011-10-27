@@ -134,7 +134,7 @@
 			var/datum/gas_mixture/removed = environment.remove(transfer_moles)
 
 			air_contents.merge(removed)
-	src.updateDialog()
+	//src.updateDialog()
 	src.update_icon()
 	return
 

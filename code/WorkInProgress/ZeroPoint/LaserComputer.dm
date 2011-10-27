@@ -112,7 +112,7 @@
 	if(!(stat & (NOPOWER|BROKEN)) )
 		use_power(250)
 
-	src.updateDialog()
+	//src.updateDialog()
 
 
 /obj/machinery/computer/lasercon/power_change()

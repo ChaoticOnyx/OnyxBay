@@ -77,7 +77,7 @@ var/global/last_core_explosion = 0
 	process()
 		..()
 		use_power(250)
-		src.updateDialog()
+		//src.updateDialog()
 		return
 
 	initialize()

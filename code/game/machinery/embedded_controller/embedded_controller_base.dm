@@ -58,7 +58,7 @@ obj/machinery/embedded_controller
 			program.process()
 
 		update_icon()
-		src.updateDialog()
+		//src.updateDialog()
 		..()
 
 	radio

@@ -636,14 +636,27 @@
 						for(var/datum/reagent/blood/B in reagents.reagent_list)
 							if(B.id == "blood")
 								B.copy_from(target)
-					return //Blood?
 
-				if(!target.reagents.total_volume)
-					user << "\red [target] is empty."
-					return
 
 				if(reagents.total_volume >= reagents.maximum_volume)
 					user << "\red The syringe is full."
+					return
+
+				// draw blood(for now) from virus dishes
+				if(istype(target,/obj/item/weapon/virusdish))
+					if(target:growth >= 5)
+						target:growth -= 5
+						src.reagents.add_reagent("blood",5)
+						var/datum/reagent/blood/B = locate() in src.reagents.reagent_list
+						B.microorganism = target:microorganism
+						user << "\blue You draw a sample from [target]."
+						return
+					else
+						user << "\red [target] is empty."
+						return
+
+				if(!target.reagents.total_volume)
+					user << "\red [target] is empty."
 					return
 
 				if(!target.is_open_container() && !istype(target,/obj/reagent_dispensers))

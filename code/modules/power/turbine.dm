@@ -324,5 +324,5 @@
 	return
 
 /obj/machinery/computer/turbine_computer/process()
-	src.updateDialog()
+	//src.updateDialog()
 	return
