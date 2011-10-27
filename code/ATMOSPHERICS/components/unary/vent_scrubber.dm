@@ -29,7 +29,7 @@
 
 	process()
 		..()
-		if(!on)
+		if(!on || istype(loc,/turf/space))
 			return 0
 
 		var/datum/gas_mixture/environment = loc.return_air()

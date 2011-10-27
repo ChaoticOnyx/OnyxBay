@@ -36,6 +36,8 @@ client/proc/Force_Event(Type as null|anything in typesof(/datum/event))
 		src << "There is an active event."
 		return
 	src << "Started Event: [Type]"
+	if(!ispath(Type))
+		return
 	ActiveEvent = new Type()
 	ActiveEvent.forced = 1
 	ActiveEvent.Announce()
