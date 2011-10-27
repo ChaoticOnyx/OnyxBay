@@ -13,7 +13,7 @@ obj/machinery/atmospherics/filter
 	var/datum/gas_mixture/air_in
 	var/datum/gas_mixture/air_out1
 	var/datum/gas_mixture/air_out2
-
+	var/told = 0
 	var/obj/machinery/atmospherics/node_in
 	var/obj/machinery/atmospherics/node_out1
 	var/obj/machinery/atmospherics/node_out2
@@ -78,9 +78,9 @@ Filter types:
 	New()
 		..()
 
-		air_in = new
-		air_out1 = new
-		air_out2 = new
+		air_in = new()
+		air_out1 = new()
+		air_out2 = new()
 
 		air_in.volume = 200
 		air_out1.volume = 200
@@ -109,6 +109,11 @@ Filter types:
 		//Actually transfer the gas
 
 		if(transfer_moles > 0)
+			if(air_in == null)
+				if(told) return
+				message_admins("Filter missing air_in for some reason..")
+				told = 1
+				return
 			var/datum/gas_mixture/removed = air_in.remove(transfer_moles)
 
 			var/datum/gas_mixture/filtered_out = new

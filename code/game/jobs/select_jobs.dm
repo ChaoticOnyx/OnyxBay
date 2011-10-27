@@ -4,7 +4,7 @@ var/global/started_jobselection = 0
 
 mob/new_player/Stat()
 	..()
-	if(ticker.current_state == GAME_STATE_PREGAME)
+	if(ticker && ticker.current_state == GAME_STATE_PREGAME)
 		statpanel("Jobs","Required Jobs")
 		for(var/V in ticker.selection_mode.required_jobs)
 			var/suffx = ""

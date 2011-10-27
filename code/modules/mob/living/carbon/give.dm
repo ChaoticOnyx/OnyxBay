@@ -1,55 +1,55 @@
-mob/living/carbon/verb/give(mob/living/carbon/A in view(src,1))
+mob/living/carbon/verb/give()
 	set name = "Give"
 	set src in view(1)
-	if(A.stat == STAT_DEAD || A.client == null)
+	if(src.stat == STAT_DEAD || usr.stat == STAT_DEAD || src.client == null)
 		return
 	var/obj/item/I
-	if(!hand && r_hand == null)
-		usr << "You don't have anything in your right hand to give to [A.name]"
+	if(!usr.hand && usr.r_hand == null)
+		usr << "You don't have anything in your right hand to give to [src.name]"
 		return
-	if(hand && l_hand == null)
-		usr << "You don't have anything in your left hand to give to [A.name]"
+	if(usr.hand && usr.l_hand == null)
+		usr << "You don't have anything in your left hand to give to [src.name]"
 		return
-	if(hand)
-		I = l_hand
-	else if(!hand)
-		I = r_hand
+	if(usr.hand)
+		I = usr.l_hand
+	else if(!usr.hand)
+		I = usr.r_hand
 	if(!I)
 		return
-	var/obj/item/weapon/T = new(src.loc)
-	if(!A.loc.Enter(T))
+	var/obj/item/weapon/T = new(usr.loc)
+	if(!src.loc.Enter(T))
 		usr << "Can't reach him"
 		del(T)
 		return
 	del(T)
-	if(A.r_hand == null)
-		switch(alert(A,"[src.name] wants to give you \a [I.name]?",,"Yes","No"))
+	if(src.r_hand == null)
+		switch(alert(src,"[usr.name] wants to give you \a [I.name]?",,"Yes","No"))
+			if("Yes")
+				usr.drop_item(I)
+				src.r_hand = I
+				I.loc = usr
+				I.layer = 20
+				I.add_fingerprint(src)
+				src.update_clothing()
+				usr.update_clothing()
+				action_message(src,"[usr.name] handed \the [I.name] to [src.name].")
+			if("No")
+				action_message(src,"[usr.name] tried to hand [I.name] to [src.name] but [src.name] didn't want it.")
+	else if(src.l_hand == null)
+		switch(alert(src,"[src.name] wants to give you \a [I.name]?",,"Yes","No"))
 			if("Yes")
 				drop_item(I)
-				A.r_hand = I
-				I.loc = A
+				src.l_hand = I
+				I.loc = src
 				I.layer = 20
-				I.add_fingerprint(A)
-				A.update_clothing()
+				I.add_fingerprint(src)
 				src.update_clothing()
-				action_message(src,"[src.name] handed \the [I.name] to [A.name].")
+				usr.update_clothing()
+				action_message(src,"[usr.name] handed \the [I.name] to [src.name].")
 			if("No")
-				action_message(src,"[src.name] tried to hand [I.name] to [A.name] but [A.name] didn't want it.")
-	else if(A.l_hand == null)
-		switch(alert(A,"[src.name] wants to give you \a [I.name]?",,"Yes","No"))
-			if("Yes")
-				drop_item(I)
-				A.l_hand = I
-				I.loc = A
-				I.layer = 20
-				I.add_fingerprint(A)
-				A.update_clothing()
-				src.update_clothing()
-				action_message(src,"[src.name] handed \the [I.name] to [A.name].")
-			if("No")
-				action_message(src,"[src.name] tried to hand [I.name] to [A.name] but [A.name] didn't want it.")
+				action_message(src,"[usr.name] tried to hand [I.name] to [src.name] but [src.name] didn't want it.")
 	else
-		usr << "[A.name]\s hands are full."
+		usr << "[src.name]\s hands are full."
 proc/action_message(var/mob/living/carbon/A,var/message)
 	if (message != "")
 		if (1 & 1)
