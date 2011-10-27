@@ -275,14 +275,19 @@ var/global/list/ANTIGENS = list("[ANTIGEN_A]" = "A", "[ANTIGEN_B]" = "B", "[ANTI
 		if(mob.stat == 2)
 			return
 		// with a certain chance, the mob may become immune to the disease before it starts properly
-		if(stage <= 1 && clicks == 2)
-			if(prob(20)) mob.antibodies |= antigen // 20% immunity is a good chance IMO, because it allows finding an immune person easily
+		if(stage <= 1 && clicks == 0)
+			if(prob(20))
+				mob.antibodies |= antigen // 20% immunity is a good chance IMO, because it allows finding an immune person easily
+			else
 		if(mob.radiation > 50)
 			if(prob(1))
 				majormutate()
 		if(mob.reagents.has_reagent("spaceacillin"))
-			mob.reagents.remove_reagent("spaceacillin",1)
+			mob.reagents.remove_reagent("spaceacillin",0.3)
 			return
+		if(mob.reagents.has_reagent("virusfood"))
+			mob.reagents.remove_reagent("virusfood",0.1)
+			clicks += 10
 		if(clicks > stage*100 && prob(10))
 			if(stage == 4)
 				var/datum/microorganism/resistance/res = new /datum/microorganism/resistance(src)

@@ -1004,8 +1004,9 @@ Total SMES charging rate should not exceed total power generation rate, or an ov
 	throw_range = 20
 	force = 6.0
 	throwforce = 15.0
-
-
+/obj/item/weapon/tile/white
+	name = "white steel floor tile"
+	icon_state = "wtile"
 /obj/item/weapon/teleportation_scroll
 	name = "Teleportation Scroll"
 	icon = 'items.dmi'

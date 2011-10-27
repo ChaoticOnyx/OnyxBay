@@ -217,7 +217,12 @@ datum
 			result = "spaceacillin"
 			required_reagents = list("cryptobiolin" = 1, "inaprovaline" = 1)
 			result_amount = 2
-
+		wpaint
+			name = "White Paint"
+			id = "wpaint"
+			result = "wpaint"
+			required_reagents = list("aluminium" = 1, "water" = 1)
+			result_amount = 2
 		flash_powder
 			name = "Flash powder"
 			id = "flash_powder"

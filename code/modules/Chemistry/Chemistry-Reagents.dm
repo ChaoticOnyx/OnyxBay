@@ -61,7 +61,31 @@ datum
 			red = 240
 			green = 240
 			blue = 240
+		wpaint
+			name = "White Paint"
+			id = "wpaint"
+			description = "White paint"
+			reagent_state = LIQUID
+			red = 240
+			green = 240
+			blue = 240
+			reaction_turf(var/turf/T,var/volume)
+				if(istype(T,/turf/simulated/floor))
+					T.icon = "white"
+					T:icon_old = "white"
+			reaction_obj(var/obj/O, var/volume)
+				if(istype(O,/obj/item/weapon/tile))
+					if(isturf(O.loc))
+						var/turf/T = O.loc
+						del(O)
+						new /obj/item/weapon/tile/white(T)
 
+					else if(ismob(O.loc))
+						var/mob/A = O.loc
+						A.u_equip(O)
+						del(O)
+						new /obj/item/weapon/tile/white(A.loc)
+						A.update_clothing()
 		beer
 			name = "Beer"
 			id = "beer"

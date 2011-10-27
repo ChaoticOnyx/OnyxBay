@@ -54,8 +54,8 @@ YOUR MUMS BOX
 	return src.attack_hand(user)
 
 /obj/item/kitchen/donut_box/attack_hand(mob/user as mob, unused, flag)
-	if (flag)
-		return ..()
+//	if (flag)		//What does this even do??  I'm commenting it out, here's hoping it doesn't break everything!!  -Strumpet
+//		return ..()
 	src.add_fingerprint(user)
 	if (locate(/obj/item/weapon/reagent_containers/food/snacks/donut, src))
 		for(var/obj/item/weapon/reagent_containers/food/snacks/donut/P in src)
