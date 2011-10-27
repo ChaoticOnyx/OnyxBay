@@ -26,22 +26,22 @@ mob/living/carbon/proc/handle_hallucinations()
 		switch(halpick)
 			if(0 to 15)
 				//Screwy HUD
-				src << "Screwy HUD"
+				//src << "Screwy HUD"
 				hal_screwyhud = pick(1,2,3,3,4,4)
 				spawn(rand(100,250))
 					hal_screwyhud = 0
 			if(16 to 25)
 				//Strange items
-				src << "Traitor Items"
+				//src << "Traitor Items"
 				halitem = new
-				var/list/slots_free = list("1,2","3,2")
-				if(l_hand) slots_free -= "1,2"
-				if(r_hand) slots_free -= "3,2"
+				var/list/slots_free = list("1,1","3,1")
+				if(l_hand) slots_free -= "1,1"
+				if(r_hand) slots_free -= "3,1"
 				if(istype(src,/mob/living/carbon/human))
 					var/mob/living/carbon/human/H = src
-					if(!H.belt) slots_free += "3,1"
-					if(!H.l_store) slots_free += "4,1"
-					if(!H.r_store) slots_free += "5,1"
+					if(!H.belt) slots_free += "3,0"
+					if(!H.l_store) slots_free += "4,0"
+					if(!H.r_store) slots_free += "5,0"
 				if(slots_free.len)
 					halitem.screen_loc = pick(slots_free)
 					halitem.layer = 50
@@ -77,7 +77,7 @@ mob/living/carbon/proc/handle_hallucinations()
 						del halitem
 			if(26 to 40)
 				//Flashes of danger
-				src << "Danger Flash"
+				//src << "Danger Flash"
 				var/possible_points = list()
 				for(var/turf/simulated/floor/F in view(src,world.view))
 					possible_points += F
@@ -85,14 +85,14 @@ mob/living/carbon/proc/handle_hallucinations()
 
 				switch(rand(1,3))
 					if(1)
-						src << "Space"
+						//src << "Space"
 						halimage = image('space.dmi',target,"[rand(1,25)]",TURF_LAYER)
 					if(2)
-						src << "Fire"
-						halimage = image('fire.dmi',target,"3",TURF_LAYER)
+						//src << "Fire"
+						halimage = image('fire.dmi',target,"1",TURF_LAYER)
 					if(3)
-						src << "Bomb"
-						halimage = image('assemblies.dmi',target,"timer-igniter-tank1",OBJ_LAYER+0.01)
+						//src << "C4"
+						halimage = image('syndieweapons.dmi',target,"c4small_1",OBJ_LAYER+0.01)
 
 
 				if(client) client.images += halimage
@@ -120,11 +120,7 @@ mob/living/carbon/proc/handle_hallucinations()
 						src << 'Gunshot.ogg'
 						spawn(rand(10,30))
 							src << 'Gunshot.ogg'
-					if(10)
-						//Same as above, but with whacks over the head
-						src << 'smash.ogg'
-						spawn(rand(10,30))
-							src << 'smash.ogg'
+					if(10) src << 'smash.ogg'
 					if(11)
 						//Same as above, but with tasers.
 						src << 'Taser.ogg'

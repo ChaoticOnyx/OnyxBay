@@ -68,7 +68,7 @@
 		else
 			loc.assume_air(removed)
 
-	src.updateDialog()
+	//src.updateDialog()
 	src.update_icon()
 	return
 

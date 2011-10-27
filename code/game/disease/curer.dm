@@ -88,7 +88,7 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	use_power(500)
-	src.updateDialog()
+	//src.updateDialog()
 
 	if(curing)
 		curing -= 1

@@ -476,7 +476,7 @@ obj/machinery/alarm/proc
 			alarm()
 			src.time = 0
 			src.timing = 0
-		src.updateDialog()
+		//src.updateDialog()
 	return
 
 /obj/machinery/firealarm/power_change()

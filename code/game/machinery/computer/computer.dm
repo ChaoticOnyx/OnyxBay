@@ -604,7 +604,7 @@ Pod/Blast Doors computer
 			alarm()
 			src.time = 0
 			src.timing = 0
-		src.updateDialog()
+		//src.updateDialog()
 	return
 
 /obj/machinery/computer/pod/Topic(href, href_list)

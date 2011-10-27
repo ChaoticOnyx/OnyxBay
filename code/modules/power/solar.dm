@@ -172,7 +172,7 @@
 		set_panels(cdir)
 		updateicon()
 
-	src.updateDialog()
+	//src.updateDialog()
 
 
 // called by solar tracker when sun position changes
@@ -183,7 +183,7 @@
 	set_panels(cdir)
 	updateicon()
 
-	src.updateDialog()
+	//src.updateDialog()
 
 /obj/machinery/power/solar_control/proc/interact(mob/user)
 	if(stat & (BROKEN | NOPOWER)) return

@@ -80,7 +80,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 	return apcwires
 
 /obj/machinery/power/apc/updateUsrDialog()
-	var/list/nearby = viewers(1, src)
+	var/list/nearby = range(1, src)
 	if (!(stat & BROKEN)) // unbroken
 		for(var/mob/M in nearby)
 			if ((M.client && M.machine == src))
@@ -92,8 +92,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 
 /obj/machinery/power/apc/updateDialog()
 	if(!(stat & BROKEN)) // unbroken
-		var/list/nearby = viewers(1, src)
-		for(var/mob/M in nearby)
+		for(var/mob/M in range(1, src))
 			if (M.client && M.machine == src)
 				src.interact(M)
 	AutoUpdateAI(src)
@@ -980,7 +979,7 @@ Do deserunt Ut cillum in ad Duis et laboris dolore do voluptate anim Excepteur m
 		updateicon()
 		update()
 
-	src.updateDialog()
+	//src.updateDialog()
 
 // val 0=off, 1=off(auto) 2=on 3=on(auto)
 // on 0=off, 1=on, 2=autooff

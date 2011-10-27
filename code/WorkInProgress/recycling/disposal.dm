@@ -299,7 +299,7 @@
 			else
 				timeleft--
 
-		src.updateDialog()
+		//src.updateDialog()
 
 		if(flush && air_contents.return_pressure() >= 2*ONE_ATMOSPHERE)	// flush can happen even without power
 			flush()

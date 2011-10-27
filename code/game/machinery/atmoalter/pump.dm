@@ -64,7 +64,7 @@
 
 				air_contents.merge(removed)
 
-	src.updateDialog()
+	//src.updateDialog()
 	src.update_icon()
 	return
 

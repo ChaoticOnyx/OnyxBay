@@ -2347,6 +2347,8 @@ mob/verb/turnwest()
 	if (client && client.holder)
 		stat(null, "([x], [y], [z])")
 		stat(null, "CPU: [world.cpu]")
+		stat(null, "Max CPU: [master_controller.max_cpu]")
+		stat(null, "Max CPU Process: [master_controller.max_process]")
 
 /client/proc/station_explosion_cinematic()
 	if(mob)

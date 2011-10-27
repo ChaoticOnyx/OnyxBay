@@ -35,6 +35,7 @@ zone
 		RemoveSpace(turf/space/S)
 			if(space_tiles)
 				space_tiles -= S
+				if(!space_tiles.len) space_tiles = null
 
 turf/proc/HasDoor(turf/O)
 	for(var/obj/machinery/door/D in src)

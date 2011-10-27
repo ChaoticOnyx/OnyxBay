@@ -114,7 +114,7 @@
 			alarm()
 			src.time = 0
 			src.timing = 0*/
-		src.updateDialog()
+		//src.updateDialog()
 		src.update_icon()
 	return
 

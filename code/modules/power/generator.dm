@@ -76,7 +76,7 @@
 		lastgenlev = genlev
 		updateicon()
 
-	src.updateDialog()
+	//src.updateDialog()
 
 /obj/machinery/power/generator/attack_ai(mob/user)
 	if(stat & (BROKEN|NOPOWER)) return

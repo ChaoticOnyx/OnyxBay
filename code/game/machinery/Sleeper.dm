@@ -114,7 +114,7 @@
 	return 0*/
 
 /obj/machinery/sleeper/process()
-	src.updateDialog()
+	//src.updateDialog()
 	return
 
 /obj/machinery/sleeper/ex_act(severity)
