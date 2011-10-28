@@ -172,6 +172,7 @@ datum/controller/game_controller
 		for(var/mob/M in world)
 			ticker_debug = "[M] [M.real_name] life calc"
 			M.Life()
+			ticker_debug = "[M] [M.real_name] machinery processing"
 			if(M.machine && M.client)
 				M.machine.updateDialog()
 			if(world.cpu > max_cpu)
