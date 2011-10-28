@@ -617,6 +617,8 @@
 	var/air_pressure = environment.return_pressure()
 
 	// Same, but for the toxins
+	if(environment.total_moles() <= 0)
+		return
 	var/Toxins_pp = (environment.toxins/environment.total_moles())*air_pressure
 
 	if(air_pressure < 75 || losebreath > 3)

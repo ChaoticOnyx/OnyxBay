@@ -638,6 +638,8 @@ About the new airlock wires panel:
 
 
 /obj/machinery/door/airlock/proc/attack_hack(mob/user as mob, obj/item/device/hacktool/C)
+	if(!C)
+		return
 	if(C.in_use)
 		user << "We are already hacking another airlock."
 		return
