@@ -170,26 +170,27 @@
 		if (C.network == src.network)
 			D[text("[][]", C.c_tag, (C.status ? null : " (Deactivated)"))] = C
 
-	var/t = input(user, "Which camera should you change to?") as null|anything in D
+	spawn
+		var/t = input(user, "Which camera should you change to?") as null|anything in D
 
-	if(!t)
-		user.machine = null
-		return 0
+		if(!t)
+			user.machine = null
+			return 0
 
-	var/obj/machinery/camera/C = D[t]
+		var/obj/machinery/camera/C = D[t]
 
-	if (t == "Cancel")
-		user.machine = null
-		return 0
+		if (t == "Cancel")
+			user.machine = null
+			return 0
 
-	if ((get_dist(user, src) > 1 || user.machine != src || user.blinded || !( user.canmove ) || !( C.status )) && (!istype(user, /mob/living/silicon/ai)))
-		return 0
-	else
-		src.current = C
-		use_power(50)
+		if ((get_dist(user, src) > 1 || user.machine != src || user.blinded || !( user.canmove ) || !( C.status )) && (!istype(user, /mob/living/silicon/ai)))
+			return 0
+		else
+			src.current = C
+			use_power(50)
 
-		spawn( 5 )
-			attack_hand(user)
+			spawn( 5 )
+				attack_hand(user)
 
 /mob/living/silicon/ai/attack_ai(var/mob/user as mob)
 	if (user != src)
