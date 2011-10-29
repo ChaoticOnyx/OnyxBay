@@ -137,7 +137,7 @@ datum/controller/game_controller
 		spawn while(1)
 			sleep(100)
 			if(world.time > lastProcess + 200)
-				message_admins("Ticker is unresponsive, starting a new ticker.")
+				message_admins("Ticker is unresponsive, starting a new ticker. Last ticker action: [ticker_debug].")
 				tickerID++
 				spawn process()
 
