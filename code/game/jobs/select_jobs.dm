@@ -118,7 +118,7 @@ proc/process_selecting_jobs()
 		return 0
 
 	// after 4 minutes force-assign
-	if(world.timeofday > started_jobselection + 10*60*4)
+	if(world.timeofday > started_jobselection + 10*60*2)
 		for(var/V in ticker.selection_mode.required_jobs)
 			var/list/L = ticker.selection_mode.selected_jobs[V]
 			if(!L || L.len < ticker.selection_mode.required_jobs[V])
