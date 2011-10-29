@@ -8,6 +8,11 @@ datum/controller/game_controller
 	//var/lastannounce = 0
 	var/tick = 0
 
+	var/tickerID = 0
+	var/lastProcess = 0
+
+	var/local
+
 	var
 		max_cpu = 0
 		max_process = ""
@@ -16,6 +21,7 @@ datum/controller/game_controller
 		setup()
 		setup_objects()
 		process()
+		monitor()
 
 	setup()
 		set background = 1
@@ -127,11 +133,24 @@ datum/controller/game_controller
 			//var/obj/b.vars = o.vars.Copy()
 			b.loc = t*/
 
+	monitor()
+		spawn while(1)
+			sleep(100)
+			if(world.time > lastProcess + 200)
+				message_admins("Ticker is unresponsive, starting a new ticker.")
+				tickerID++
+				spawn process()
+
 
 	process()
 
 		if(!processing)
 			return 0
+
+		if(lastProcess == 0) monitor()
+
+		var/spawnedWithID = tickerID
+		lastProcess = world.time
 
 		// keep track of the ticks
 		tick++
@@ -252,6 +271,10 @@ datum/controller/game_controller
 		ticker.process()
 
 		sleep(1)
+
+		if(spawnedWithID != tickerID)
+			message_admins("Killing duplicate ticker.")
+			return 0
 
 		spawn process()
 
