@@ -1085,6 +1085,8 @@
 				if("wave")
 					if ((src.rank in list("Primary Administrator", "Super Administrator", "Coder", "Host"  )))
 						var/nrMet = input("Meteor number:","Num",1) as num
+						if(nrMet > 50)
+							nrMet = 50
 						for(var/i = 1; i <= nrMet; i++)
 							spawn(0)
 								spawn_meteor()
