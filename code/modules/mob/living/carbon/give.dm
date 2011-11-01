@@ -34,11 +34,11 @@ mob/living/carbon/verb/give()
 				usr.update_clothing()
 				action_message(src,"[usr.name] handed \the [I.name] to [src.name].")
 			if("No")
-				action_message(src,"[usr.name] tried to hand [I.name] to [src.name] but [src.name] didn't want it.")
+				action_message(src,"[usr.name] tried to hand [I.name] to [src.name], but [src.name] didn't want it.")
 	else if(src.l_hand == null)
 		switch(alert(src,"[src.name] wants to give you \a [I.name]?",,"Yes","No"))
 			if("Yes")
-				drop_item(I)
+				usr.drop_item(I)
 				src.l_hand = I
 				I.loc = src
 				I.layer = 20
@@ -47,7 +47,7 @@ mob/living/carbon/verb/give()
 				usr.update_clothing()
 				action_message(src,"[usr.name] handed \the [I.name] to [src.name].")
 			if("No")
-				action_message(src,"[usr.name] tried to hand [I.name] to [src.name] but [src.name] didn't want it.")
+				action_message(src,"[usr.name] tried to hand [I.name] to [src.name], but [src.name] didn't want it.")
 	else
 		usr << "[src.name]\s hands are full."
 proc/action_message(var/mob/living/carbon/A,var/message)
