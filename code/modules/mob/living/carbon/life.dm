@@ -151,7 +151,7 @@
 				infect_microorganism(src,V.D)
 		else if(get_infection_chance())
 			microorganism.activate(src)
-			if(microorganism)	//activate can sometimes remove the virus i think ~mini
+			if(microorganism && microorganism.infectionchance)	//activate can sometimes remove the virus i think ~mini
 				var/obj/virus/V = new(src.loc)
 				V.D = microorganism.getcopy()
 //VIRUS FIX THESES

@@ -13,6 +13,28 @@
 	var/list/hostile_spawns = list()
 	var/list/crew_spawns = list()
 
+	 // a list of occupations available for this mode
+	jobs = list(
+	"Engineer" = 4,
+	"Security Officer" = 5,
+	"Forensic Technician" = 1,
+	"Geneticist" = 1,
+	"Scientist" = 3,
+	"Atmospheric Technician" = 3,
+	"Medical Doctor" = 4,
+	"Head of Personnel" = 1,
+	"Head of Security" = 1,
+	"Research Director" = 1,
+	"Counselor" = 1,
+	"Roboticist" = 1,
+	"Hydroponicist" = 1,
+	"Barman" = 1,
+	"Chef" = 1,
+	"Janitor" = 1,
+	"Chemist" = 1,
+	"Quartermaster" = 3)
+
+
 /datum/game_mode/hostile/announce()
 	world << "<B>The current game mode is - Hostile Takeover!</B>"
 //	world << "<B>A [syndicate_name()] Strike Force is approaching [station_name()]!</B>"
