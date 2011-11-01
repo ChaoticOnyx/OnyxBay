@@ -50,6 +50,14 @@ obj/proc/catchMessage(msg,mob/source)
 			src.attack_hand(M)
 	AutoUpdateAI(src)
 
+/obj/item/updateDialog()
+	for(var/mob/M in range(1,src))
+		if ((M.client && M.machine == src))
+			// if it's a hand-held item, only activate it if it's in the active hand
+			if( (!M.hand && M.r_hand == src) || (M.hand && M.l_hand == src) )
+				src.attack_hand(M)
+	AutoUpdateAI(src)
+
 /obj/item/proc/updateSelfDialog()
 	var/mob/M = src.loc
 	if(istype(M) && M.client && M.machine == src)
