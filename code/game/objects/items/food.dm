@@ -122,9 +122,7 @@ YOUR MUMS BOX
 /obj/item/kitchen/egg_box/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 
-/obj/item/kitchen/egg_box/attack_hand(mob/user as mob, unused, flag)
-	if (flag)
-		return ..()
+/obj/item/kitchen/egg_box/attack_hand(mob/user as mob)
 	src.add_fingerprint(user)
 	if (locate(/obj/item/weapon/reagent_containers/food/snacks/egg, src))
 		for(var/obj/item/weapon/reagent_containers/food/snacks/egg/P in src)
@@ -149,6 +147,8 @@ YOUR MUMS BOX
 			src.amount--
 			new /obj/item/weapon/reagent_containers/food/snacks/egg( src.loc )
 			usr << "You take an egg out of the box."
+		else
+			..()
 	src.update()
 	return
 

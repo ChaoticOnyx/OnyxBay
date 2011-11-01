@@ -220,11 +220,16 @@ obj
 
 						if(flow.oxygen > 0.3 && (flow.toxins || fuel_level || liquid))
 
-							icon_state = "1"
-							if(firelevel > vsc.IgnitionLevel * 2)
-								icon_state = "2"
 							if(firelevel > vsc.IgnitionLevel * 3.5)
 								icon_state = "3"
+								opacity = 1
+							else if(firelevel > vsc.IgnitionLevel * 2)
+								icon_state = "2"
+								opacity = 1
+							else
+								icon_state = "1"
+								opacity = 0
+
 							flow.temperature = max(PLASMA_MINIMUM_BURN_TEMPERATURE+0.1,flow.temperature)
 							flow.zburn(liquid)
 
