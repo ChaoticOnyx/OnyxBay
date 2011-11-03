@@ -163,10 +163,12 @@
 		var/datum/gas_mixture/napalm = new
 		var/datum/gas/volatile_fuel/fuel = new
 
-		fuel.moles = 15
+		fuel.moles = 20
 		napalm.trace_gases += fuel
 
 		target_tile.assume_air(napalm)
+
+		new /obj/liquid_fuel(target_tile)
 
 		spawn target_tile.hotspot_expose(SPARK_TEMP, 400)
 

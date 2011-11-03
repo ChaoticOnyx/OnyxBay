@@ -775,6 +775,7 @@ datum
 				fuel.moles = 15
 				napalm.trace_gases += fuel
 				the_turf.assume_air(napalm)
+				new /obj/liquid_fuel(the_turf)
 			reaction_turf(var/turf/T, var/volume)
 				src = null
 				var/datum/gas_mixture/napalm = new
@@ -782,6 +783,7 @@ datum
 				fuel.moles = 15
 				napalm.trace_gases += fuel
 				T.assume_air(napalm)
+				new /obj/liquid_fuel(T)
 				return
 
 		coffee

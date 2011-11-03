@@ -177,7 +177,7 @@ datum
 					var/oxygen_burn_rate = 0
 					//more plasma released at higher temperatures
 					var/temperature_scale
-					if(temperature > PLASMA_UPPER_TEMPERATURE)
+					if(temperature < PLASMA_UPPER_TEMPERATURE)
 						temperature_scale = 1
 					else
 						temperature_scale = (temperature-PLASMA_MINIMUM_BURN_TEMPERATURE)/(PLASMA_UPPER_TEMPERATURE-PLASMA_MINIMUM_BURN_TEMPERATURE)
