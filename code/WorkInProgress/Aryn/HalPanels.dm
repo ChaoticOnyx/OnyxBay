@@ -103,7 +103,7 @@ mob/living/carbon/proc/handle_hallucinations()
 
 			if(41 to 65)
 				//Strange audio
-				src << "Strange Audio"
+				//src << "Strange Audio"
 				switch(rand(1,12))
 					if(1) src << 'airlock.ogg'
 					if(2)

@@ -2,7 +2,7 @@
 	var/name = "Invalid"
 	var/config_tag = null
 	var/votable = 1
-	var/probability = 1
+	var/probability = 0
 	// this includes admin-appointed traitors and multitraitors. Easy!
 	var/list/datum/mind/traitors = list()
 	var/list/logtraitors = list()
