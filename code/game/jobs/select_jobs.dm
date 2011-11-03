@@ -124,16 +124,16 @@ proc/process_selecting_jobs()
 			if(!L || L.len < ticker.selection_mode.required_jobs[V])
 				for(var/mob/new_player/player in world)
 					if(player.client && player.selecting_job && !player.mind.assigned_role)
-						world << "<b>Force-assigning [player.key] to the position of [V]!"
-						player.select_job_internal(V)
-						break
+						if(player.select_job_internal(V))
+							world << "<b>Force-assigning [player.key] to the position of [V]!"
+							break
 			L = ticker.selection_mode.selected_jobs[V]
 			if(!L || L.len < ticker.selection_mode.required_jobs[V])
 				for(var/mob/new_player/player in world)
 					if(player.client && player.selecting_job && !ticker.selection_mode.required_jobs[player.mind.assigned_role])
-						world << "<b>Force-assigning [player.key] from [player.mind.assigned_role] to the position of [V]!"
-						player.select_job_internal(V)
-						break
+						if(player.select_job_internal(V))
+							world << "<b>Force-assigning [player.key] from [player.mind.assigned_role] to the position of [V]!"
+							break
 		return 1
 
 	// check if we're done choosing jobs
