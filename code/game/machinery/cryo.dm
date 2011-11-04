@@ -46,7 +46,7 @@
 
 		if(air_contents)
 			temperature_archived = air_contents.temperature
-			heat_gas_contents()
+			//heat_gas_contents()
 			expel_gas()
 
 		if(abs(temperature_archived-air_contents.temperature) > 1)
