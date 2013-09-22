@@ -23,7 +23,7 @@
 	name = "Owl uniform"
 	desc = "Twoooo!"
 	icon_state = "owl"
-	color = "owl"
+	item_color = "owl"
 
 /obj/item/clothing/gloves/cyborg
 	desc = "beep boop borp"
@@ -53,7 +53,7 @@
 	name = "Nazi uniform"
 	desc = "SIEG HEIL!"
 	icon_state = "nazi1"
-	color = "nazi"
+	item_color = "nazi"
 
 /obj/item/clothing/suit/greatcoat
 	name = "great coat"
@@ -66,7 +66,7 @@
 	name = "Johnny~~"
 	desc = "Johnny~~"
 	icon_state = "johnny"
-	color = "johnny"
+	item_color = "johnny"
 
 /obj/item/clothing/suit/johnny_coat
 	name = "Johnny~~"
@@ -80,19 +80,19 @@
 	name = "rainbow"
 	desc = "rainbow"
 	icon_state = "rainbow"
-	color = "rainbow"
+	item_color = "rainbow"
 
 /obj/item/clothing/under/cloud
 	name = "cloud"
 	desc = "cloud"
 	icon_state = "cloud"
-	color = "aqua"
+	item_color = "aqua"
 
 /obj/item/clothing/under/yay
 	name = "yay"
 	desc = "Yay!"
 	icon_state = "yay"
-	color = "yellow"
+	item_color = "yellow"
 
 // UNUSED COLORS
 
@@ -100,85 +100,85 @@
 	name = "psychedelic"
 	desc = "Groovy!"
 	icon_state = "psyche"
-	color = "psyche"
+	item_color = "psyche"
 
 /obj/item/clothing/under/maroon
 	name = "maroon"
 	desc = "maroon"
 	icon_state = "maroon"
-	color = "maroon"
+	item_color = "maroon"
 
 /obj/item/clothing/under/lightblue
 	name = "lightblue"
 	desc = "lightblue"
 	icon_state = "lightblue"
-	color = "lightblue"
+	item_color = "lightblue"
 
 /obj/item/clothing/under/aqua
 	name = "aqua"
 	desc = "aqua"
 	icon_state = "aqua"
-	color = "aqua"
+	item_color = "aqua"
 
 /obj/item/clothing/under/purple
 	name = "purple"
 	desc = "purple"
 	icon_state = "purple"
-	color = "purple"
+	item_color = "purple"
 
 /obj/item/clothing/under/lightpurple
 	name = "lightpurple"
 	desc = "lightpurple"
 	icon_state = "lightpurple"
-	color = "lightpurple"
+	item_color = "lightpurple"
 
 /obj/item/clothing/under/lightgreen
 	name = "lightgreen"
 	desc = "lightgreen"
 	icon_state = "lightgreen"
-	color = "lightgreen"
+	item_color = "lightgreen"
 
 /obj/item/clothing/under/lightblue
 	name = "lightblue"
 	desc = "lightblue"
 	icon_state = "lightblue"
-	color = "lightblue"
+	item_color = "lightblue"
 
 /obj/item/clothing/under/lightbrown
 	name = "lightbrown"
 	desc = "lightbrown"
 	icon_state = "lightbrown"
-	color = "lightbrown"
+	item_color = "lightbrown"
 
 /obj/item/clothing/under/brown
 	name = "brown"
 	desc = "brown"
 	icon_state = "brown"
-	color = "brown"
+	item_color = "brown"
 
 /obj/item/clothing/under/yellowgreen
 	name = "yellowgreen"
 	desc = "yellowgreen"
 	icon_state = "yellowgreen"
-	color = "yellowgreen"
+	item_color = "yellowgreen"
 
 /obj/item/clothing/under/darkblue
 	name = "darkblue"
 	desc = "darkblue"
 	icon_state = "darkblue"
-	color = "darkblue"
+	item_color = "darkblue"
 
 /obj/item/clothing/under/lightred
 	name = "lightred"
 	desc = "lightred"
 	icon_state = "lightred"
-	color = "lightred"
+	item_color = "lightred"
 
 /obj/item/clothing/under/darkred
 	name = "darkred"
 	desc = "darkred"
 	icon_state = "darkred"
-	color = "darkred"
+	item_color = "darkred"
 
 // STEAMPUNK STATION
 
@@ -193,35 +193,35 @@
 	desc = "A green suit and yellow necktie. Exemplifies authority."
 	icon_state = "green_suit"
 	item_state = "dg_suit"
-	color = "green_suit"
+	item_color = "green_suit"
 
 /obj/item/clothing/under/rank/head_of_personnel/suit
 	name = "Head of Personnel's Suit"
 	desc = "A teal suit and yellow necktie. An authoritative yet tacky ensemble."
 	icon_state = "teal_suit"
 	item_state = "g_suit"
-	color = "teal_suit"
+	item_color = "teal_suit"
 
 /obj/item/clothing/under/suit_jacket
 	name = "Black Suit"
 	desc = "A black suit and red tie. Very formal."
 	icon_state = "black_suit"
 	item_state = "bl_suit"
-	color = "black_suit"
+	item_color = "black_suit"
 
 /obj/item/clothing/under/suit_jacket/red
 	name = "Red Suit"
 	desc = "A red suit and blue tie. Somewhat formal."
 	icon_state = "red_suit"
 	item_state = "r_suit"
-	color = "red_suit"
+	item_color = "red_suit"
 
 /obj/item/clothing/under/rank/police
 	name = "Police Uniform"
 	desc = "Move along, nothing to see here."
 	icon_state = "police"
 	item_state = "b_suit"
-	color = "police"
+	item_color = "police"
 
 /obj/item/clothing/head/helmet/bobby
 	name = "Custodian Helmet"
@@ -240,7 +240,7 @@
 	desc = "A set of durable overalls for getting the job done."
 	icon_state = "overalls"
 	item_state = "lb_suit"
-	color = "overalls"
+	item_color = "overalls"
 
 /obj/item/weapon/classic_baton
 	name = "police baton"

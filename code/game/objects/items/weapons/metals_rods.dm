@@ -212,7 +212,7 @@ LATTICE
 					return
 				src.amount -= 2
 				var/obj/machinery/portable_atmospherics/canister/C = new /obj/machinery/portable_atmospherics/canister(usr.loc)
-				C.color = "grey"
+				C.canister_color = "grey"
 				C.icon_state = "grey"
 
 			if("o2can")
@@ -222,7 +222,7 @@ LATTICE
 				src.amount -= 2
 
 				var/obj/machinery/portable_atmospherics/canister/C = new /obj/machinery/portable_atmospherics/canister(usr.loc)
-				C.color = "blue"
+				C.canister_color = "blue"
 				C.icon_state = "blue"
 
 			if("carboncan")
@@ -232,7 +232,7 @@ LATTICE
 				src.amount -= 2
 
 				var/obj/machinery/portable_atmospherics/canister/C = new /obj/machinery/portable_atmospherics/canister(usr.loc)
-				C.color = "black"
+				C.canister_color = "black"
 				C.icon_state = "black"
 
 			if("plcan")
@@ -242,7 +242,7 @@ LATTICE
 				src.amount -= 2
 
 				var/obj/machinery/portable_atmospherics/canister/C = new /obj/machinery/portable_atmospherics/canister(usr.loc)
-				C.color = "orange"
+				C.canister_color = "orange"
 				C.icon_state = "orange"
 
 			if("n2can")
@@ -251,7 +251,7 @@ LATTICE
 					return
 				src.amount -= 2
 				var/obj/machinery/portable_atmospherics/canister/C = new /obj/machinery/portable_atmospherics/canister(usr.loc)
-				C.color = "red"
+				C.canister_color = "red"
 				C.icon_state = "red"
 			if("n2ocan")
 				if (src.amount < 2)
@@ -259,7 +259,7 @@ LATTICE
 					return
 				src.amount -= 2
 				var/obj/machinery/portable_atmospherics/canister/C = new /obj/machinery/portable_atmospherics/canister(usr.loc)
-				C.color = "redws"
+				C.canister_color = "redws"
 				C.icon_state = "redws"
 
 			if("reinforced")

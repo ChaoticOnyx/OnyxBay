@@ -201,7 +201,7 @@ var/global/const/AIRLOCK_WIRE_DOOR_BOLTS = 4
 	if(!src.operating) //in case of emag
 		src.operating = 1
 
-	animate("opening")
+	do_animate("opening")
 	sleep(10)
 	src.density = 0
 	update_icon()
@@ -272,7 +272,7 @@ About the new airlock wires panel:
 		if(AIRLOCK_WIRE_IDSCAN)
 			//Sending a pulse through this flashes the red light on the door (if the door has power).
 			if ((src.arePowerSystemsOn()) && (!(stat & NOPOWER)))
-				animate("deny")
+				do_animate("deny")
 		if (AIRLOCK_WIRE_MAIN_POWER1 || AIRLOCK_WIRE_MAIN_POWER2)
 			//Sending a pulse through either one causes a breaker to trip, disabling the door for 10 seconds if backup power is connected, or 1 minute if not (or until backup power comes back on, whichever is shorter).
 			src.loseMainPower()
@@ -515,7 +515,7 @@ About the new airlock wires panel:
 	return
 
 
-/obj/machinery/door/airlock/animate(animation)
+/obj/machinery/door/airlock/do_animate(animation)
 	switch(animation)
 		if("opening")
 			if(overlays) overlays = null
@@ -1144,7 +1144,7 @@ About the new airlock wires panel:
 		if ((src.density) && (!( src.welded ) && !( src.operating ) && ((!src.arePowerSystemsOn()) || (stat & NOPOWER)) && !( src.locked )))
 			spawn( 0 )
 				src.operating = 1
-				animate("opening")
+				do_animate("opening")
 
 				sleep(15)
 
@@ -1161,7 +1161,7 @@ About the new airlock wires panel:
 			if ((!src.density) && (!( src.welded ) && !( src.operating ) && !( src.locked )))
 				spawn( 0 )
 					src.operating = 1
-					animate("closing")
+					do_animate("closing")
 
 					src.density = 1
 					sleep(15)

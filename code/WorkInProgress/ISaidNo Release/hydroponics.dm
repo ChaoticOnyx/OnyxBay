@@ -433,7 +433,7 @@
 /obj/item/clothing/under/rank/hydro
 	name = "Hydroponics Jumpsuit"
 	icon_state = "hy_suit"
-	color = "hydro"
+	item_color = "hydro"
 
 /obj/machinery/plantpot
 	name = "plant pot"

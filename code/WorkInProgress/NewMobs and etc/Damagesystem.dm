@@ -989,7 +989,7 @@
 				c:layer = initial(c:layer)*/
 		w_uniform.screen_loc = ui_iclothing
 		if (istype(w_uniform, /obj/item/clothing/under))
-			var/t1 = w_uniform.color
+			var/t1 = w_uniform.item_color
 			if (!t1)
 				t1 = icon_state
 			/*if (mutations & 32)
