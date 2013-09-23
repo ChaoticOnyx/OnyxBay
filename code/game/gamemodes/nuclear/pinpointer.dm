@@ -1,6 +1,6 @@
 /obj/item/weapon/pinpointer
 	name = "pinpointer"
-	icon = 'device.dmi'
+	icon = 'icons/obj/device.dmi'
 	icon_state = "pinoff"
 	flags = FPRINT | TABLEPASS| CONDUCT | ONBELT
 	w_class = 2.0
@@ -31,13 +31,13 @@
 				return
 		overlays--
 		if(the_disk.loc.z > src.loc.z)
-			var/icon/zdirection = icon('device.dmi', "pindown")
+			var/icon/zdirection = icon('icons/obj/device.dmi', "pindown")
 			overlays += zdirection
 		else if(the_disk.loc.z < src.loc.z)
-			var/icon/zdirection = icon('device.dmi', "pinup")
+			var/icon/zdirection = icon('icons/obj/device.dmi', "pinup")
 			overlays += zdirection
 		else
-			var/icon/zdirection = icon('device.dmi', "pinlevel")
+			var/icon/zdirection = icon('icons/obj/device.dmi', "pinlevel")
 			overlays += zdirection
 		src.dir = get_dir(src,the_disk)
 		switch(get_dist(src,the_disk))

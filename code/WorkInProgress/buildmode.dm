@@ -35,7 +35,7 @@
 	anchored = 1
 	layer = 20
 	dir = NORTH
-	icon = 'buildmode.dmi'
+	icon = 'icons/misc/buildmode.dmi'
 	icon_state = "build"
 	screen_loc = "NORTH,WEST"
 	var/obj/buildholder/master = null
@@ -44,7 +44,7 @@
 	anchored = 1
 	layer = 20
 	dir = NORTH
-	icon = 'buildmode.dmi'
+	icon = 'icons/misc/buildmode.dmi'
 	icon_state = "buildhelp"
 	screen_loc = "NORTH,WEST+1"
 	var/obj/buildholder/master = null
@@ -53,7 +53,7 @@
 	anchored = 1
 	layer = 20
 	dir = NORTH
-	icon = 'buildmode.dmi'
+	icon = 'icons/misc/buildmode.dmi'
 	icon_state = "buildmode1"
 	screen_loc = "NORTH,WEST+2"
 	var/obj/buildholder/master = null
@@ -65,7 +65,7 @@
 	anchored = 1
 	layer = 20
 	dir = NORTH
-	icon = 'buildmode.dmi'
+	icon = 'icons/misc/buildmode.dmi'
 	icon_state = "buildquit"
 	screen_loc = "NORTH,WEST+3"
 	var/obj/buildholder/master = null

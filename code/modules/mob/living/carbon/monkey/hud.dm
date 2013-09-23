@@ -9,7 +9,7 @@
 	vimpaired = list(  )
 	darkMask = list(  )
 
-	var/icon/blocked = icon('screen1.dmi',"blocked")
+	var/icon/blocked = icon('icons/mob/screen1.dmi',"blocked")
 
 	g_dither = new h_type( src )
 	g_dither.screen_loc = "WEST,SOUTH to EAST,NORTH"
@@ -41,7 +41,7 @@
 
 	// station explosion cinematic
 	station_explosion = new h_type( src )
-	station_explosion.icon = 'station_explosion.dmi'
+	station_explosion.icon = 'icons/effects/station_explosion.dmi'
 	station_explosion.icon_state = "start"
 	station_explosion.layer = 20
 	station_explosion.mouse_opacity = 0
@@ -359,7 +359,7 @@
 */
 
 	mymob.toxin = new /obj/screen( null )
-	mymob.toxin.icon = 'screen1.dmi'
+	mymob.toxin.icon = 'icons/mob/screen1.dmi'
 	mymob.toxin.icon_state = "tox0"
 	mymob.toxin.name = "toxin"
 	mymob.toxin.screen_loc = ui_toxin
@@ -508,7 +508,7 @@
 
 	mymob.zone_sel = new /obj/screen/zone_sel( null )
 	mymob.zone_sel.overlays = null
-	mymob.zone_sel.overlays += image("icon" = 'zone_sel.dmi', "icon_state" = text("[]", mymob.zone_sel.selecting))
+	mymob.zone_sel.overlays += image("icon" = 'icons/mob/zone_sel.dmi', "icon_state" = text("[]", mymob.zone_sel.selecting))
 
 	mymob.client.screen = null
 

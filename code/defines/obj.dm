@@ -38,7 +38,7 @@
 /obj/item/policetaperoll
 	name = "police tape roll"
 	desc = "A roll of police tape used to block off crime scenes from the public."
-	icon = 'policetape.dmi'
+	icon = 'icons/policetape.dmi'
 	icon_state = "rollstart"
 	flags = FPRINT
 	var/tapestartx = 0
@@ -51,14 +51,14 @@
 /obj/item/policetape
 	name = "police tape"
 	desc = "A length of police tape.  Do not cross."
-	icon = 'policetape.dmi'
+	icon = 'icons/policetape.dmi'
 	anchored = 1
 	density = 1
 	throwpass = 1
 	req_access = list(access_security)
 
 /obj/blob
-	icon = 'blob.dmi'
+	icon = 'icons/mob/blob.dmi'
 	icon_state = "bloba0"
 	var/health = 30
 	density = 1
@@ -72,7 +72,7 @@
 
 /obj/mark
 	var/mark = ""
-	icon = 'mark.dmi'
+	icon = 'icons/misc/mark.dmi'
 	icon_state = "blank"
 	anchored = 1
 	layer = 99
@@ -88,7 +88,7 @@
 
 /obj/bhole
 	name = "black hole"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	desc = "FUCK FUCK FUCK AAAHHH"
 	icon_state = "bhole2"
 	opacity = 0
@@ -101,14 +101,14 @@
 /obj/bedsheetbin
 	name = "linen bin"
 	desc = "A bin for containing bedsheets."
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "bedbin"
 	var/amount = 23.0
 	anchored = 1.0
 
 /obj/begin
 	name = "begin"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "begin"
 	anchored = 1.0
 
@@ -137,7 +137,7 @@
 /obj/grille
 	desc = "A piece of metal with evenly spaced gridlike holes in it. Blocks large object but lets small items, gas, or energy beams through."
 	name = "grille"
-	icon = 'structures.dmi'
+	icon = 'icons/obj/structures.dmi'
 	icon_state = "grille"
 	density = 1
 	layer = 2.9
@@ -149,7 +149,7 @@
 
 /obj/item
 	name = "item"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	var/icon_old = null
 	var/abstract = 0.0
 	var/force = null
@@ -168,7 +168,7 @@
 	var/obj/item/master = null
 
 /obj/item/device
-	icon = 'device.dmi'
+	icon = 'icons/obj/device.dmi'
 
 /obj/item/device/detective_scanner
 	name = "Scanner"
@@ -325,7 +325,7 @@
 
 /obj/landmark
 	name = "landmark"
-	icon = 'screen1.dmi'
+	icon = 'icons/mob/screen1.dmi'
 	icon_state = "x2"
 	anchored = 1.0
 
@@ -334,7 +334,7 @@
 
 /*/obj/landmark/ptarget
 	name = "portal target"
-	icon = 'screen1.dmi'
+	icon = 'icons/mob/screen1.dmi'
 	icon_state = "x2"
 	anchored = 1.0
 	var/t_id*/
@@ -362,14 +362,14 @@
 
 /obj/laser
 	name = "laser"
-	icon = 'projectiles.dmi'
+	icon = 'icons/obj/projectiles.dmi'
 	var/damage = 0.0
 	var/range = 10.0
 
 /obj/lattice
 	desc = "A lightweight support lattice."
 	name = "lattice"
-	icon = 'structures.dmi'
+	icon = 'icons/obj/structures.dmi'
 	icon_state = "lattice"
 	density = 0
 	anchored = 1.0
@@ -387,7 +387,7 @@
 
 /obj/m_tray
 	name = "morgue tray"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "morguet"
 	density = 1
 	layer = 2.0
@@ -396,7 +396,7 @@
 
 /obj/c_tray
 	name = "crematorium tray"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "cremat"
 	density = 1
 	layer = 2.0
@@ -405,12 +405,12 @@
 
 /obj/manifest
 	name = "manifest"
-	icon = 'screen1.dmi'
+	icon = 'icons/mob/screen1.dmi'
 	icon_state = "x"
 
 /obj/morgue
 	name = "morgue"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "morgue1"
 	density = 1
 	var/obj/m_tray/connected = null
@@ -419,7 +419,7 @@
 /obj/crematorium
 	name = "crematorium"
 	desc = "A human incinerator."
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "crema1"
 	density = 1
 	var/obj/c_tray/connected = null
@@ -434,7 +434,7 @@
 	density = 1
 	anchored = 1
 	layer = 3
-	icon = 'weapons.dmi'
+	icon = 'icons/obj/weapons.dmi'
 	icon_state = "uglymine"
 	var/triggerproc = "explode" //name of the proc thats called when the mine is triggered
 	var/triggered = 0
@@ -473,7 +473,7 @@
 
 /obj/rack
 	name = "rack"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "rack"
 	density = 1
 	flags = FPRINT
@@ -481,7 +481,7 @@
 
 /obj/screen
 	name = "screen"
-	icon = 'screen1.dmi'
+	icon = 'icons/mob/screen1.dmi'
 	layer = 20.0
 	var/id = 0.0
 	var/obj/master
@@ -500,7 +500,7 @@
 
 /obj/screen/zone_sel
 	name = "Damage Zone"
-	icon = 'zone_sel.dmi'
+	icon = 'icons/mob/zone_sel.dmi'
 	icon_state = "blank"
 	var/selecting = "chest"
 	screen_loc = "EAST+1,NORTH"
@@ -512,13 +512,13 @@
 
 /obj/landmark/start
 	name = "start"
-	icon = 'screen1.dmi'
+	icon = 'icons/mob/screen1.dmi'
 	icon_state = "x"
 	anchored = 1.0
 
 /obj/stool
 	name = "stool"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "stool"
 	flags = FPRINT
 	anchored = 1.0
@@ -576,7 +576,7 @@
 
 /obj/table
 	name = "table"
-	icon = 'structures.dmi'
+	icon = 'icons/obj/structures.dmi'
 	icon_state = "table"
 	density = 1
 	anchored = 1.0
@@ -594,7 +594,7 @@
 /obj/mopbucket
 	desc = "Fill it with water, but don't forget a mop!"
 	name = "mop bucket"
-	icon = 'janitor.dmi'
+	icon = 'icons/obj/janitor.dmi'
 	icon_state = "mopbucket"
 	density = 1
 	flags = FPRINT
@@ -603,7 +603,7 @@
 
 /obj/kitchenspike
 	name = "a meat spike"
-	icon = 'kitchen.dmi'
+	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "spike"
 	desc = "A spike for collecting meat from animals"
 	density = 1
@@ -613,7 +613,7 @@
 
 /obj/displaycase
 	name = "Display Case"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "glassbox1"
 	desc = "A display case for prized possessions."
 	density = 1
@@ -624,7 +624,7 @@
 
 obj/item/brain
 	name = "brain"
-	icon = 'surgery.dmi'
+	icon = 'icons/obj/surgery.dmi'
 	icon_state = "brain2"
 	flags = TABLEPASS
 	force = 1.0
@@ -643,7 +643,7 @@ obj/item/brain
 
 /obj/noticeboard
 	name = "Notice Board"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "nboard00"
 	flags = FPRINT
 	desc = "A board for pinning important notices upon."
@@ -653,7 +653,7 @@ obj/item/brain
 
 /obj/deskclutter
 	name = "desk clutter"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "deskclutter"
 	desc = "Some clutter that has accumalated over the years..."
 	anchored = 1
@@ -665,7 +665,7 @@ obj/item/brain
 
 /obj/item/weapon/ore
 	name = "Rock"
-	icon = 'rubble.dmi'
+	icon = 'icons/obj/rubble.dmi'
 	icon_state = "ore"
 	var/amt = 1
 	var/cook = 0

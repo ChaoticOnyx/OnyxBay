@@ -15,7 +15,7 @@
 				var/atom/movable/overlay/animation = new(user.loc)
 				animation.layer = user.layer + 1
 				animation.icon_state = "blank"
-				animation.icon = 'mob.dmi'
+				animation.icon = 'icons/mob/mob.dmi'
 				animation.master = user
 				flick("blspell", animation)
 				sleep(5)
@@ -26,7 +26,7 @@
 					user << "\red The bulb has been burnt out!"
 					return
 				if (!( safety ) && status == 1)
-					playsound(src.loc, 'flash.ogg', 100, 1)
+					playsound(src.loc, 'sound/weapons/flash.ogg', 100, 1)
 					if(!(M.mutations & 8))  M.weakened = 10
 					if (prob(10))
 						status = 0
@@ -70,14 +70,14 @@
 	src.l_time = world.time
 	add_fingerprint(user)
 	src.shots--
-	playsound(src.loc, 'flash.ogg', 100, 1)
+	playsound(src.loc, 'sound/weapons/flash.ogg', 100, 1)
 	flick("flash2", src)
 	if(isrobot(user))
 		spawn(0)
 			var/atom/movable/overlay/animation = new(user.loc)
 			animation.layer = user.layer + 1
 			animation.icon_state = "blank"
-			animation.icon = 'mob.dmi'
+			animation.icon = 'icons/mob/mob.dmi'
 			animation.master = user
 			flick("blspell", animation)
 			sleep(5)

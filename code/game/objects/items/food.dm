@@ -11,12 +11,12 @@ YOUR MUMS BOX
 
 /obj/item/kitchen/donut_box
 	var/amount = 6
-	icon = 'food.dmi'
+	icon = 'icons/obj/food.dmi'
 	icon_state = "donutbox6"
 	name = "donut box"
 /obj/item/kitchen/egg_box
 	var/amount = 12
-	icon = 'food.dmi'
+	icon = 'icons/obj/food.dmi'
 	icon_state = "eggbox"
 	name = "egg box"
 

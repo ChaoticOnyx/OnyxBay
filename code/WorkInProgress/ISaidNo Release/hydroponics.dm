@@ -438,7 +438,7 @@
 /obj/machinery/plantpot
 	name = "plant pot"
 	desc = "A tub filled with soil capable of sustaining plantlife."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "pot-covered"
 	anchored = 1
 	density = 1
@@ -614,7 +614,7 @@
 		if (istype(growing,/datum/plant/slurrypod) && src.growth >= 30) src.reagents.add_reagent("toxic_slurry", 1)
 		if (istype(growing,/datum/plant/slurrypod) && src.growth >= 64 && prob(5))
 			for(var/mob/O in viewers(src, null)) O.show_message(text("\red <b>[]</b> bursts, sending toxic goop everywhere!", src), 1)
-			playsound(src.loc, 'splat.ogg', 50, 1)
+			playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
 			for (var/mob/living/carbon/M in range(3,src))
 				if(istype(M:wear_suit, /obj/item/clothing/suit/bio_suit) && istype(M:head, /obj/item/clothing/head/bio_hood))
 					M << "\blue You are splashed by toxic goop, but your biosuit protects you!"
@@ -649,13 +649,13 @@
 				else
 					if (prob(W.force))
 						for(var/mob/O in viewers(user, null)) O.show_message(text("\blue [] shatters!", src), 1)
-						playsound(src.loc, pick('Glassbr1.ogg','Glassbr2.ogg','Glassbr3.ogg'), 100, 1)
+						playsound(src.loc, pick('sound/effects/Glassbr1.ogg','sound/effects/Glassbr2.ogg','sound/effects/Glassbr3.ogg'), 100, 1)
 						while (src.growth > 100)
 							new/obj/item/weapon/shard/crystal(usr.loc)
 							src.growth -= 100
 						HYPdestroyplant()
 					else
-						playsound(src.loc, pick('Glasshit.ogg'), 100, 1)
+						playsound(src.loc, pick('sound/effects/Glasshit.ogg'), 100, 1)
 						..()
 			if (istype(src.current,/datum/plant/maneater))
 				if (istype(W, /obj/item/weapon/grab) && istype(W:affecting, /mob/living/carbon) && istype(src.current,/datum/plant/maneater))
@@ -676,7 +676,7 @@
 							del(M)
 						else
 							del(M)
-						playsound(src.loc, 'eatfood.ogg', 30, 1, -2)
+						playsound(src.loc, 'sound/items/eatfood.ogg', 30, 1, -2)
 						src.reagents.add_reagent("blood", 60)
 						sleep(25)
 						//playsound(src.loc, pick('burp_alien.ogg'), 50, 0)	 Strumpetplaya - commenting this out as it has components we don't support.
@@ -695,12 +695,12 @@
 			if (src.anchored == 1)
 				for(var/mob/O in viewers(user, null))
 					O.show_message(text("<b>[]</b> unfastens the [] from the floor.", user, src), 1)
-				playsound(src.loc, 'Screwdriver.ogg', 100, 1)
+				playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 				src.anchored = 0
 			else
 				for(var/mob/O in viewers(user, null))
 					O.show_message(text("<b>[]</b> fastens the [] to the floor.", user, src), 1)
-				playsound(src.loc, 'Screwdriver.ogg', 100, 1)
+				playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 				src.anchored = 1
 /*		else if (istype(W, /obj/item/weapon/weldingtool) || istype(W, /obj/item/weapon/zippo) || istype(W, /obj/item/device/igniter))			Rawr, I don't like hydroponicists welding plants! - CN
 			if (istype(W, /obj/item/weapon/weldingtool) && !W:welding)
@@ -775,7 +775,7 @@
 				return
 			else
 				for(var/mob/O in viewers(user, null)) O.show_message(text("\blue [] pours [] units of []'s contents into [].", user, W:amount_per_transfer_from_this, W, src), 1)
-				playsound(src.loc, 'slosh.ogg', 100, 1)
+				playsound(src.loc, 'sound/effects/slosh.ogg', 100, 1)
 				W.reagents.trans_to(src, W:amount_per_transfer_from_this)
 				if (!W.reagents.total_volume) user << "\red <b>[W] is now empty.</b>"
 				return
@@ -998,15 +998,15 @@
 		var/datum/plantgenes/DNA = src.plantgenes
 		src.overlays = null
 		switch (src.reagents.get_reagent_amount("water"))
-			if (0) src.overlays += image('hydroponics.dmi', "wbar-0")
-			if (1 to 40) src.overlays += image('hydroponics.dmi', "wbar-1")
-			if (41 to 100) src.overlays += image('hydroponics.dmi', "wbar-2")
-			if (101 to 200) src.overlays += image('hydroponics.dmi', "wbar-3")
-			if (201 to INFINITY) src.overlays += image('hydroponics.dmi', "wbar-4")
+			if (0) src.overlays += image('icons/GoonHydroPort/hydroponics.dmi', "wbar-0")
+			if (1 to 40) src.overlays += image('icons/GoonHydroPort/hydroponics.dmi', "wbar-1")
+			if (41 to 100) src.overlays += image('icons/GoonHydroPort/hydroponics.dmi', "wbar-2")
+			if (101 to 200) src.overlays += image('icons/GoonHydroPort/hydroponics.dmi', "wbar-3")
+			if (201 to INFINITY) src.overlays += image('icons/GoonHydroPort/hydroponics.dmi', "wbar-4")
 		if (src.current)
-			if (growing.harvestable && src.isready && src.plantcond != "dead") src.overlays += image('hydroponics.dmi', "harv-1")
-			else src.overlays += image('hydroponics.dmi', "harv-0")
-		else src.overlays += image('hydroponics.dmi', "harv-0")
+			if (growing.harvestable && src.isready && src.plantcond != "dead") src.overlays += image('icons/GoonHydroPort/hydroponics.dmi', "harv-1")
+			else src.overlays += image('icons/GoonHydroPort/hydroponics.dmi', "harv-0")
+		else src.overlays += image('icons/GoonHydroPort/hydroponics.dmi', "harv-0")
 
 		if (src.current)
 			if (src.plantcond != "dead")
@@ -1023,7 +1023,7 @@
 					else src.icon_state += "-G3"
 					if (DNA.mutantvar && growing.mutable) src.icon_state += "-M[DNA.mutantvar]"
 				for (var/X in DNA.commuts)
-					if (X == "immortal") src.overlays += image('hydroponics.dmi', "mut-sparkle")
+					if (X == "immortal") src.overlays += image('icons/GoonHydroPort/hydroponics.dmi', "mut-sparkle")
 			else src.icon_state = "[growing.name]-G0"
 		else
 			if(src.covered)
@@ -1119,7 +1119,7 @@
 
 /obj/machinery/pot_control
 	name = "Pot Cover Switch"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "doorctrl01"
 	desc = "A single use switch for the hydroponics pot covers."
 	var/toggled = 0
@@ -1153,7 +1153,7 @@
 /obj/reagent_dispensers/compostbin
 	name = "compost tank"
 	desc = "A device that mulches up unwanted produce into usable fertiliser."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "compost"
 	amount_per_transfer_from_this = 30
 
@@ -1171,7 +1171,7 @@
 
 		if(load)
 			user << "\blue [src] mulches up [W]."
-			playsound(src.loc, 'blobattack.ogg', 50, 1)
+			playsound(src.loc, 'sound/effects/blobattack.ogg', 50, 1)
 			user.u_equip(W)
 			if ((user.client && user.s_active != src)) user.client.screen -= W
 			W.dropped()
@@ -1190,27 +1190,27 @@
 				if (user.loc != staystill) break
 				if (istype(P,/obj/item/weapon/reagent_containers/food/snacks/plant/))
 					src.reagents.add_reagent("poo", 20)
-					playsound(src.loc, 'blobattack.ogg', 50, 1)
+					playsound(src.loc, 'sound/effects/blobattack.ogg', 50, 1)
 					del P
 					sleep(3)
 				else if (istype(P,/obj/item/weapon/reagent_containers/food/snacks/mushroom/))
 					src.reagents.add_reagent("poo", 25)
-					playsound(src.loc, 'blobattack.ogg', 50, 1)
+					playsound(src.loc, 'sound/effects/blobattack.ogg', 50, 1)
 					del P
 					sleep(3)
 				else if (istype(P,/obj/item/weapon/seed/))
 					src.reagents.add_reagent("poo", 2)
-					playsound(src.loc, 'blobattack.ogg', 50, 1)
+					playsound(src.loc, 'sound/effects/blobattack.ogg', 50, 1)
 					del P
 					sleep(3)
 				else if (istype(P,/obj/item/weapon/plant/))
 					src.reagents.add_reagent("poo", 15)
-					playsound(src.loc, 'blobattack.ogg', 50, 1)
+					playsound(src.loc, 'sound/effects/blobattack.ogg', 50, 1)
 					del P
 					sleep(3)
 /*				else if (istype(P,/obj/item/weapon/reagent_containers/poo))	 Strumpetplaya - commenting this out as it has components we don't support.
 					src.reagents.add_reagent("poo", 20)
-					playsound(src.loc, 'blobattack.ogg', 50, 1)
+					playsound(src.loc, 'sound/effects/blobattack.ogg', 50, 1)
 					del P
 					sleep(3)*/
 				else continue
@@ -1222,7 +1222,7 @@
 	desc = "A machine which can extract reagents from organic matter."
 	density = 1
 	anchored = 1
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "reex-off"
 	//flags = NOSPLASH	 Strumpetplaya - commenting this out as it has components we don't support.
 	var/obj/item/weapon/reagent_containers/beaker = null
@@ -1371,7 +1371,7 @@
 /obj/submachine/seedextractor
 	name = "Seed Extractor"
 	desc = "Carefully extracts viable seeds from produce."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "extractor-off"
 	anchored = 1
 	density = 1
@@ -1428,7 +1428,7 @@
 /obj/submachine/seedmutator
 	name = "Plant Gene Manipulator"
 	desc = "Exposes plant seeds to mutagenic radiation."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "geneman-off"
 	anchored = 1
 	density = 1
@@ -1653,7 +1653,7 @@
 /obj/submachine/seed_vendor
 	name = "Seed Fabricator"
 	desc = "Fabricates basic plant seeds."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "seeds"
 	density = 1
 	anchored = 1
@@ -1821,7 +1821,7 @@
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		if(istype(W, /obj/item/weapon/screwdriver))
 			if (!src.panelopen)
-				src.overlays += image('vending.dmi', "grife-panel")
+				src.overlays += image('icons/obj/vending.dmi', "grife-panel")
 				src.panelopen = 1
 			else
 				src.overlays = null
@@ -1893,7 +1893,7 @@
 /obj/item/weapon/plantanalyzer/
 	name = "Plant Analyzer"
 	desc = "A device which examines the genes of plant seeds."
-	icon = 'hydromisc.dmi'
+	icon = 'icons/GoonHydroPort/hydromisc.dmi'
 	icon_state = "plantanalyzer"
 	w_class = 1.0
 	flags = ONBELT
@@ -1902,7 +1902,7 @@
 /obj/item/weapon/reagent_containers/glass/wateringcan/
 	name = "watering can"
 	desc = "Used to water things. Obviously."
-	icon = 'hydromisc.dmi'
+	icon = 'icons/GoonHydroPort/hydromisc.dmi'
 	icon_state = "watercan"
 	amount_per_transfer_from_this = 30
 	w_class = 3.0
@@ -1916,7 +1916,7 @@
 /obj/item/weapon/reagent_containers/glass/compostbag/
 	name = "compost bag"
 	desc = "A big bag of compost."
-	icon = 'hydromisc.dmi'
+	icon = 'icons/GoonHydroPort/hydromisc.dmi'
 	icon_state = "compost"
 	amount_per_transfer_from_this = 10
 	w_class = 3.0
@@ -1930,7 +1930,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/weedkiller
 	name = "atrazine bottle"
 	desc = "A small bottle filled with Atrazine, an effective weedkiller."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle10"
 	amount_per_transfer_from_this = 10
 
@@ -1943,12 +1943,12 @@
 /obj/item/weapon/seedplanter
 	name = "Portable Seed Fabricator"
 	desc = "A tool for cyborgs used to create plant seeds."
-	icon = 'device.dmi'
+	icon = 'icons/obj/device.dmi'
 	icon_state = "forensic0"
 	var/seedpath = /obj/item/weapon/seed/apple
 
 	attack_self(var/mob/user as mob)
-		playsound(src.loc, 'click.ogg', 100, 1)
+		playsound(src.loc, 'sound/machines/click.ogg', 100, 1)
 		var/input = input(usr, "Enter the name of the seed you want.", "Seed Fabricator", null)
 		switch(input)
 			if("Apple", "apple") src.seedpath = /obj/item/weapon/seed/apple
@@ -1984,7 +1984,7 @@
 /obj/spacevine
 	name = "Space Kudzu"
 	desc = "An extremely expansionistic species of vine."
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "vine-light1"
 	anchored = 1
 	density = 0
@@ -2065,7 +2065,7 @@
 
 /obj/item/weapon/shard/crystal
 	name = "crystal shard"
-	icon = 'shards.dmi'
+	icon = 'icons/obj/shards.dmi'
 	icon_state = "clarge"
 	desc = "A shard of Plasma Crystal. Very hard and sharp."
 	w_class = 3.0
@@ -2097,7 +2097,7 @@
 		if(ismob(AM))
 			var/mob/M = AM
 			M << "\red <B>You step on the crystal shard!</B>"
-			playsound(src.loc, 'glass_step.ogg', 50, 1)
+			playsound(src.loc, 'sound/misc/glass_step.ogg', 50, 1)
 			if(ishuman(M))
 				var/mob/living/carbon/human/H = M
 				var/datum/organ/external/affecting = H.organs[pick("l_foot", "r_foot")]

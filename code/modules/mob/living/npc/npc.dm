@@ -155,7 +155,7 @@ mob/living/npc/proc/MoveAstar(atom/trg)
 
 mob/living/npc/mamacrab
 	name = "Warrior Space Crab"
-	icon = 'beach.dmi'
+	icon = 'icons/misc/beach.dmi'
 	icon_state = "crab2"
 	agressive = 1
 	hunt = 1
@@ -164,7 +164,7 @@ mob/living/npc/mamacrab
 mob/living/npc/testrange
 	name = "crab"
 //	rname = "crab"
-	icon = 'beach.dmi'
+	icon = 'icons/misc/beach.dmi'
 	icon_state = "crab2"
 	agressive = 1
 	hunt = 1

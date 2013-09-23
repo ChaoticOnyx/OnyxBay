@@ -3,7 +3,7 @@
 /obj/critter/
 	name = "critter"
 	desc = "you shouldnt be able to see this"
-	icon = 'critter.dmi'
+	icon = 'icons/GoonCritterPort/critter.dmi'
 	layer = 5.0
 	density = 1
 	anchored = 0
@@ -262,7 +262,7 @@
 /obj/critter/proc/ChaseAttack(mob/M)
 	for(var/mob/O in viewers(src, null))
 		O.show_message("\red <B>[src]</B> leaps at [src.target]!", 1)
-	//playsound(src.loc, 'genhit1.ogg', 50, 1, -1)
+	//playsound(src.loc, 'sound/weapons/genhit1.ogg', 50, 1, -1)
 
 /obj/critter/proc/CritterAttack(mob/M)
 	src.attacking = 1
@@ -363,7 +363,7 @@
 	ChaseAttack(mob/M)
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red <B>[src]</B> punches out [M]!", 1)
-		playsound(src.loc, 'bang.ogg', 50, 1, -1)
+		playsound(src.loc, 'sound/effects/bang.ogg', 50, 1, -1)
 		M.stunned = 10
 		M.weakened = 10
 
@@ -371,7 +371,7 @@
 		src.attacking = 1
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red <B>[src]</B> devours [M] in one bite!", 1)
-		playsound(src.loc, 'eatfood.ogg', 30, 1, -2)
+		playsound(src.loc, 'sound/items/eatfood.ogg', 30, 1, -2)
 		M.death(1)
 		var/atom/movable/overlay/animation = null
 		M.monkeyizing = 1
@@ -381,7 +381,7 @@
 		if(ishuman(M))
 			animation = new(src.loc)
 			animation.icon_state = "blank"
-			animation.icon = 'mob.dmi'
+			animation.icon = 'icons/mob/mob.dmi'
 			animation.master = src
 		if (M.client)
 			var/mob/dead/observer/newmob
@@ -439,7 +439,7 @@
 	ChaseAttack(mob/M)
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red <B>[src]</B> slams into [M]!", 1)
-		playsound(src.loc, 'genhit1.ogg', 50, 1, -1)
+		playsound(src.loc, 'sound/weapons/genhit1.ogg', 50, 1, -1)
 		M.stunned += rand(1,4)
 		M.weakened += rand(1,4)
 
@@ -452,7 +452,7 @@
 				if(istype(M,/mob/living/carbon))
 					for(var/mob/O in viewers(src, null))
 						O.show_message("\red <B>[src]</B> ravenously wolfs down [M]!", 1)
-					playsound(src.loc, 'eatfood.ogg', 30, 1, -2)
+					playsound(src.loc, 'sound/items/eatfood.ogg', 30, 1, -2)
 					M.death(1)
 					var/atom/movable/overlay/animation = null
 					M.monkeyizing = 1
@@ -462,7 +462,7 @@
 					if(ishuman(M))
 						animation = new(src.loc)
 						animation.icon_state = "blank"
-						animation.icon = 'mob.dmi'
+						animation.icon = 'icons/mob/mob.dmi'
 						animation.master = src
 					if (M.client)
 						var/mob/dead/observer/newmob
@@ -533,7 +533,7 @@
 	CritterDeath()
 		src.visible_message("<b>[src]</b> messily splatters into a puddle of tomato sauce!")
 		src.alive = 0
-		playsound(src.loc, 'splat.ogg', 100, 1)
+		playsound(src.loc, 'sound/effects/splat.ogg', 100, 1)
 		var/obj/decal/cleanable/blood/B = new(src.loc)
 		B.name = "ruined tomato"
 		del src
@@ -673,7 +673,7 @@
 			src.health -= rand(1,2) * src.brutevuln
 			for(var/mob/O in viewers(src, null))
 				O.show_message("\red <b>[user]</b> punches [src]!", 1)
-			playsound(src.loc, pick('punch1.ogg','punch2.ogg','punch3.ogg','punch4.ogg'), 100, 1)
+			playsound(src.loc, pick('sound/weapons/punch1.ogg','sound/weapons/punch2.ogg','sound/weapons/punch3.ogg','sound/weapons/punch4.ogg'), 100, 1)
 			if (src.alive && src.health <= 0) src.CritterDeath()
 			if (src.defensive)
 				MartianPsyblast(user)
@@ -691,7 +691,7 @@
 	for(var/mob/O in hearers(src, null))
 		O.show_message("<b>[src]</b> screeches, 'GBVQW UVQWIBJZ PKDDR!!!'", 1)
 	target << "\red You are blasted by psychic energy!"
-	playsound(target.loc, 'ghost2.ogg', 100, 1)
+	playsound(target.loc, 'sound/effects/ghost2.ogg', 100, 1)
 	target.paralysis += 10
 	target.stuttering += 60
 	target.brainloss += 20
@@ -844,7 +844,7 @@
 /obj/machinery/martianbomb
 	name = "martian bomb"
 	desc = "You'd best destroy this thing fast."
-	icon = 'critter.dmi'
+	icon = 'icons/GoonCritterPort/critter.dmi'
 	icon_state = "mbomb-off"
 	anchored = 1
 	density = 1
@@ -953,7 +953,7 @@
 
 		if(istype(M, /obj/item/weapon/ore/))
 			src.visible_message("\red <b>[src]</b> hungrily eats [src.target]!")
-			playsound(src.loc, 'eatfood.ogg', 30, 1, -2)
+			playsound(src.loc, 'sound/items/eatfood.ogg', 30, 1, -2)
 			del(src.target)
 			src.eaten++
 			src.target = null

@@ -47,29 +47,29 @@ mob/living/carbon/proc/handle_hallucinations()
 					halitem.layer = 50
 					switch(rand(1,6))
 						if(1) //revolver
-							halitem.icon = 'gun.dmi'
+							halitem.icon = 'icons/obj/gun.dmi'
 							halitem.icon_state = "revolver"
 							halitem.name = "Revolver"
 						if(2) //c4
-							halitem.icon = 'syndieweapons.dmi'
+							halitem.icon = 'icons/obj/syndieweapons.dmi'
 							halitem.icon_state = "c4small_0"
 							halitem.name = "Mysterious Package"
 							if(prob(25))
 								halitem.icon_state = "c4small_1"
 						if(3) //sword
-							halitem.icon = 'weapons.dmi'
+							halitem.icon = 'icons/obj/weapons.dmi'
 							halitem.icon_state = "sword1"
 							halitem.name = "Sword"
 						if(4) //stun baton
-							halitem.icon = 'weapons.dmi'
+							halitem.icon = 'icons/obj/weapons.dmi'
 							halitem.icon_state = "stunbaton"
 							halitem.name = "Stun Baton"
 						if(5) //emag
-							halitem.icon = 'card.dmi'
+							halitem.icon = 'icons/obj/card.dmi'
 							halitem.icon_state = "emag"
 							halitem.name = "Cryptographic Sequencer"
 						if(6) //flashbang
-							halitem.icon = 'grenade.dmi'
+							halitem.icon = 'icons/obj/grenade.dmi'
 							halitem.icon_state = "flashbang1"
 							halitem.name = "Flashbang"
 					if(client) client.screen += halitem
@@ -86,13 +86,13 @@ mob/living/carbon/proc/handle_hallucinations()
 				switch(rand(1,3))
 					if(1)
 						//src << "Space"
-						halimage = image('space.dmi',target,"[rand(1,25)]",TURF_LAYER)
+						halimage = image('icons/turf/space.dmi',target,"[rand(1,25)]",TURF_LAYER)
 					if(2)
 						//src << "Fire"
-						halimage = image('fire.dmi',target,"1",TURF_LAYER)
+						halimage = image('icons/effects/fire.dmi',target,"1",TURF_LAYER)
 					if(3)
 						//src << "C4"
-						halimage = image('syndieweapons.dmi',target,"c4small_1",OBJ_LAYER+0.01)
+						halimage = image('icons/obj/syndieweapons.dmi',target,"c4small_1",OBJ_LAYER+0.01)
 
 
 				if(client) client.images += halimage
@@ -105,34 +105,34 @@ mob/living/carbon/proc/handle_hallucinations()
 				//Strange audio
 				//src << "Strange Audio"
 				switch(rand(1,12))
-					if(1) src << 'airlock.ogg'
+					if(1) src << 'sound/machines/airlock.ogg'
 					if(2)
-						if(prob(50))src << 'Explosion1.ogg'
-						else src << 'Explosion2.ogg'
-					if(3) src << 'explosionfar.ogg'
-					if(4) src << 'Glassbr1.ogg'
-					if(5) src << 'Glassbr2.ogg'
-					if(6) src << 'Glassbr3.ogg'
-					if(7) src << 'twobeep.ogg'
-					if(8) src << 'windowdoor.ogg'
+						if(prob(50))src << 'sound/effects/Explosion1.ogg'
+						else src << 'sound/effects/Explosion2.ogg'
+					if(3) src << 'sound/effects/explosionfar.ogg'
+					if(4) src << 'sound/effects/Glassbr1.ogg'
+					if(5) src << 'sound/effects/Glassbr2.ogg'
+					if(6) src << 'sound/effects/Glassbr3.ogg'
+					if(7) src << 'sound/machines/twobeep.ogg'
+					if(8) src << 'sound/machines/windowdoor.ogg'
 					if(9)
 						//To make it more realistic, I added two gunshots (enough to kill)
-						src << 'Gunshot.ogg'
+						src << 'sound/weapons/Gunshot.ogg'
 						spawn(rand(10,30))
-							src << 'Gunshot.ogg'
-					if(10) src << 'smash.ogg'
+							src << 'sound/weapons/Gunshot.ogg'
+					if(10) src << 'sound/weapons/smash.ogg'
 					if(11)
 						//Same as above, but with tasers.
-						src << 'Taser.ogg'
+						src << 'sound/weapons/Taser.ogg'
 						spawn(rand(10,30))
-							src << 'Taser.ogg'
+							src << 'sound/weapons/Taser.ogg'
 				//Rare audio
 					if(12)
 						switch(rand(1,4))
-							if(1) src << 'ghost.ogg'
-							if(2) src << 'ghost2.ogg'
-							if(3) src << 'Heart Beat.ogg'
-							if(4) src << 'screech.ogg'
+							if(1) src << 'sound/effects/ghost.ogg'
+							if(2) src << 'sound/effects/ghost2.ogg'
+							if(3) src << 'sound/effects/Heart Beat.ogg'
+							if(4) src << 'sound/effects/screech.ogg'
 	handling_hal = 0
 
 

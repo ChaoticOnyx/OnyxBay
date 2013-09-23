@@ -43,11 +43,11 @@
 		for(var/atom/movable/A as mob|obj in src.connected.loc)
 			if (!( A.anchored ))
 				A.loc = src
-		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		//src.connected = null
 		del(src.connected)
 	else
-		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		src.connected = new /obj/m_tray( src.loc )
 		step(src.connected, EAST)
 		src.connected.layer = OBJ_LAYER
@@ -187,11 +187,11 @@
 		for(var/atom/movable/A as mob|obj in src.connected.loc)
 			if (!( A.anchored ))
 				A.loc = src
-		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		//src.connected = null
 		del(src.connected)
 	else if (src.locked == 0)
-		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		src.connected = new /obj/c_tray( src.loc )
 		step(src.connected, SOUTH)
 		src.connected.layer = OBJ_LAYER
@@ -299,7 +299,7 @@
 		spawn(100)
 			cremating = 0
 			locked = 0
-			playsound(src.loc, 'ding.ogg', 50, 1)
+			playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
 
 	return
 

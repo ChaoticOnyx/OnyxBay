@@ -21,15 +21,15 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 		sleep(5 )
 
-		//playsound(epicenter.loc, 'explosionfar.ogg', 100, 1, round(devastation_range*2,1) )
+		//playsound(epicenter.loc, 'sound/effects/explosionfar.ogg', 100, 1, round(devastation_range*2,1) )
 		playsound(epicenter.loc, "explosion", 100, 1, round(devastation_range,1) )
-		var/sound/distant_explosion = sound('explosionfar.ogg')
+		var/sound/distant_explosion = sound('sound/effects/explosionfar.ogg')
 		for(var/mob/M)
 			M << distant_explosion
 
 
 		//NEW EXPLOSION CODE - NICER (3D TOO!!) BLASTS
-		//epicenter.overlays += image('status_display.dmi', "epicenter")
+		//epicenter.overlays += image('icons/obj/status_display.dmi', "epicenter")
 
 		var/list/fillqueue = list( )
 		var/list/floordist = list( )
@@ -121,14 +121,14 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 					checked += U
 					floordist[U] = newdist
 
-				//T.overlays += image('status_display.dmi', "black")
+				//T.overlays += image('icons/obj/status_display.dmi', "black")
 
 
 		del D
 
 		//for(var/turf/T in detonate)
-		//	T.overlays += image('status_display.dmi', "red")
-		//	var/image/I = image('status_display.dmi', "[detdists[T]]")
+		//	T.overlays += image('icons/obj/status_display.dmi', "red")
+		//	var/image/I = image('icons/obj/status_display.dmi', "[detdists[T]]")
 		//	I.pixel_x = 1
 		//	I.pixel_y = -1
 		//	T.overlays += I

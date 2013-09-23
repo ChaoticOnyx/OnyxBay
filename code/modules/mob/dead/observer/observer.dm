@@ -1,5 +1,5 @@
 /mob/dead/observer
-	icon = 'mob.dmi'
+	icon = 'icons/mob/mob.dmi'
 	icon_state = "ghost"
 	layer = 4
 	density = 0

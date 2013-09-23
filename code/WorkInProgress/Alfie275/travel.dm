@@ -46,7 +46,7 @@ var/datum/travgrid/tgrid= new()
 		var/datum/travevent/m = tgrid.MakeEvent(/datum/travevent/meteor,a,b)
 		m.yvel = rand(-10,10)/10
 		m.xvel = rand(-10,10)/10
-	Luna.pic.icon = icon('travel.dmi',"luna",EAST)
+	Luna.pic.icon = icon('code/WorkInProgress/Alfie275/travel.dmi',"luna",EAST)
 
 
 /datum/travgrid/proc/Tick()
@@ -106,7 +106,7 @@ var/datum/travgrid/tgrid= new()
 
 /datum/travevent/New()
 	pic = new()
-	pic.icon = 'travel.dmi'
+	pic.icon = 'code/WorkInProgress/Alfie275/travel.dmi'
 
 /datum/travevent/proc/Move(var/datum/travloc/newloc)
 	for(var/datum/travevent/t in loc.contents)
@@ -192,11 +192,11 @@ var/datum/travgrid/tgrid= new()
 	else if(diff>=45)
 		dir = turn(dir,-45)
 		lidc+=45
-	pic = icon('travel.dmi',"luna",dir)
+	pic = icon('code/WorkInProgress/Alfie275/travel.dmi',"luna",dir)
 
 /datum/travevent/ship/New()
 	..()
-	pic = icon('travel.dmi',"luna")
+	pic = icon('code/WorkInProgress/Alfie275/travel.dmi',"luna")
 
 /datum/travevent/proc/Cleared(var/datum/travevent/t)
 
@@ -214,7 +214,7 @@ var/datum/travgrid/tgrid= new()
 /datum/travevent/meteor/New()
 	..()
 	density = rand(40)+15
-	pic.icon= icon('travel.dmi',"meteor")
+	pic.icon= icon('code/WorkInProgress/Alfie275/travel.dmi',"meteor")
 
 /datum/travevent/proc/Meteor(var/amt)
 
@@ -252,7 +252,7 @@ var/datum/travgrid/tgrid= new()
 
 /obj/machinery/computer/travel
 	name = "Helm Control"
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "steering"
 	req_access = list(access_captain)
 	var/datum/travevent/ship/Luna/Luna
@@ -274,11 +274,11 @@ var/datum/travgrid/tgrid= new()
 	user.machine = src
 	var/dat
 	dat+="Map:"
-	user << browse_rsc(icon('travel.dmi',"space"),"space.png")
+	user << browse_rsc(icon('code/WorkInProgress/Alfie275/travel.dmi',"space"),"space.png")
 	for(var/a = min(travy+trgrdvw,trgrdsz),a>=max(travy-trgrdvw,1),a--)
 		dat+="<BR><TR>"
 		for(var/b = max(travx-trgrdvw,1) to min(travx+trgrdvw,trgrdsz))
-			var/icon/t = icon('travel.dmi',"space")
+			var/icon/t = icon('code/WorkInProgress/Alfie275/travel.dmi',"space")
 			var/nam = "space"
 			var/datum/travloc/l = tgrid.grid[b][a]
 			for(var/datum/travevent/d in l.contents)

@@ -65,7 +65,7 @@
 			message2 = F.arg3
 			set_message(message1,message2)
 /obj/machinery/status_display
-	icon = 'status_display.dmi'
+	icon = 'icons/obj/status_display.dmi'
 	icon_state = "frame"
 	name = "status display"
 	anchored = 1
@@ -125,7 +125,7 @@
 
 		if(mode==1)	// shuttle timer
 			if(LaunchControl.online)
-				icon = 'status_display.dmi'
+				icon = 'icons/obj/status_display.dmi'
 				icon_state = "frame"
 				var/displayloc
 				displayloc = "ETL "
@@ -137,7 +137,7 @@
 				update_display(displayloc, displaytime)
 				return
 			else
-				icon = 'clock.dmi'
+				icon = 'icons/obj/clock.dmi'
 				icon_state = ""
 				var/dis = num2text(round(gametime / 100))
 				if(dis) icon_state = dis
@@ -145,7 +145,7 @@
 				return
 
 		if(mode==4)		// supply shuttle timer
-			icon = 'status_display.dmi'
+			icon = 'icons/obj/status_display.dmi'
 			icon_state = "frame"
 			var/disp1
 			var/disp2
@@ -168,7 +168,7 @@
 
 
 		if(mode==2)
-			icon = 'status_display.dmi'
+			icon = 'icons/obj/status_display.dmi'
 			icon_state = "frame"
 			var/line1
 			var/line2
@@ -218,7 +218,7 @@
 	proc/set_picture(var/state)
 		picture_state = state
 		overlays = null
-		overlays += image('status_display.dmi', icon_state=picture_state)
+		overlays += image('icons/obj/status_display.dmi', icon_state=picture_state)
 
 	proc/update_display(var/line1, var/line2)
 
@@ -261,7 +261,7 @@
 	// valid characters are 0-9 and :
 	// px, py are pixel offsets
 	proc/texticon(var/tn, var/px = 0, var/py = 0)
-		var/image/I = image('status_display.dmi', "blank")
+		var/image/I = image('icons/obj/status_display.dmi', "blank")
 
 
 		var/len = lentext(tn)
@@ -274,7 +274,7 @@
 			if(char == " ")
 				continue
 
-			var/image/ID = image('status_display.dmi', icon_state=char)
+			var/image/ID = image('icons/obj/status_display.dmi', icon_state=char)
 
 			ID.pixel_x = -(d-1)*5 + px
 			ID.pixel_y = py
@@ -312,7 +312,7 @@
 
 
 /obj/machinery/ai_status_display
-	icon = 'status_display.dmi'
+	icon = 'icons/obj/status_display.dmi'
 	icon_state = "frame"
 	name = "AI display"
 	anchored = 1
@@ -371,4 +371,4 @@
 	proc/set_picture(var/state)
 		picture_state = state
 		overlays = null
-		overlays += image('status_display.dmi', icon_state=picture_state)
+		overlays += image('icons/obj/status_display.dmi', icon_state=picture_state)

@@ -1,7 +1,7 @@
 /*Module Storage Unit/Closet!  Solid, only modules fit in it.*/
 /obj/aiuploadcloset
 	name = "AI Mainframe Module Storage Unit"
-	icon = 'mainframe.dmi'
+	icon = 'icons/obj/mainframe.dmi'
 	icon_state = "right-closed"
 	density = 1
 

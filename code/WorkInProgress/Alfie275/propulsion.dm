@@ -1,6 +1,6 @@
 /obj/machinery/propulsion/control
 	name = "Propulsion control"
-	icon = 'propulsion.dmi'
+	icon = 'code/WorkInProgress/Alfie275/propulsion.dmi'
 	icon_state = "ctrl"
 	networking = PROCESS_RPCS
 
@@ -12,5 +12,5 @@
 
 /obj/machinery/propulsion/prop
 	name = "Highly charged particle vent"
-	icon = 'propulsion.dmi'
+	icon = 'code/WorkInProgress/Alfie275/propulsion.dmi'
 	icon_state = "ppr"

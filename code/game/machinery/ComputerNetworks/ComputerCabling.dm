@@ -3,7 +3,7 @@
 	anchored = 1
 	name = "Network Cable"
 	desc = "A flexible cable designed for use in the Neithernet Protocol."
-	icon = 'netcable.dmi'
+	icon = 'icons/obj/machines/netcable.dmi'
 	icon_state = "1-2"
 	var/cnetnum = 0
 	var/d1 = 0
@@ -15,7 +15,7 @@
 /obj/item/weapon/computercable_coil
 	name = "Network Cable Coil"
 	var/amount = 30
-	icon = 'netcable.dmi'
+	icon = 'icons/obj/machines/netcable.dmi'
 	icon_state = "coil"
 	desc = "A coil of Network cable."
 	w_class = 2

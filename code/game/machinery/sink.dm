@@ -1,6 +1,6 @@
 /obj/machinery/sink
 	name = "sink"
-	icon = 'kitchen.dmi'
+	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "sink"
 	desc = "A sink used for washing one's hands and face AND CUPS."
 	anchored = 1

@@ -154,7 +154,7 @@ datum/hSB
 					if (!create_object_nonadmin_html)
 						var/objectjs
 						objectjs = dd_list2text(selectable, ";")
-						create_object_nonadmin_html = file2text('create_object.html')
+						create_object_nonadmin_html = file2text('icons/create_object.html')
 						create_object_nonadmin_html = dd_replacetext(create_object_nonadmin_html, "null /* object types */", "\"[objectjs]\"")
 
 					usr << browse(dd_replacetext(create_object_nonadmin_html, "/* ref src */", "\ref[src]"), "window=create_object;size=425x475")

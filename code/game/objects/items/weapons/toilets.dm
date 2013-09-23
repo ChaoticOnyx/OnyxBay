@@ -11,7 +11,7 @@ TOILET
 	var/status = 0.0
 	var/clogged = 0.0
 	anchored = 1.0
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "toilet"
 	item_state = "syringe_kit"
 
@@ -26,7 +26,7 @@ TOILET
 	if (istype(W, /obj/item/weapon/storage/))
 		return
 	if (istype(W, /obj/item/weapon/grab))
-		playsound(src.loc, 'slosh.ogg', 50, 1)
+		playsound(src.loc, 'sound/effects/slosh.ogg', 50, 1)
 		for(var/mob/O in viewers(user, null))
 			O << text("\blue [] gives [] a swirlie!", user, W)
 		return

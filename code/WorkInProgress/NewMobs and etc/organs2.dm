@@ -194,7 +194,7 @@
 		return 0
 	return
 obj/item/weapon/organ/
-	icon = 'human.dmi'
+	icon = 'icons/mob/human.dmi'
 obj/item/weapon/organ/head
 	name = "head"
 	icon_state = "head_l"

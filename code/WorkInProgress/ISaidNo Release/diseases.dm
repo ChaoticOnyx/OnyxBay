@@ -64,7 +64,7 @@
 						M.bruteloss += damage
 						M.updatehealth()
 					else
-						playsound(affected_mob.loc, 'punchmiss.ogg', 25, 1, -1)
+						playsound(affected_mob.loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 						for(var/mob/O in viewers(affected_mob, null))
 							O.show_message(text("\red <B>[] fails to hit [] with their thrashing!</B>", affected_mob, M), 1)
 						return
@@ -125,7 +125,7 @@
 				if (affected_mob.nutrition > 10)
 					for(var/mob/O in viewers(affected_mob, null))
 						O.show_message(text("\red [] vomits on the floor profusely!", affected_mob), 1)
-					playsound(affected_mob.loc, 'splat.ogg', 50, 1)
+					playsound(affected_mob.loc, 'sound/effects/splat.ogg', 50, 1)
 					new /obj/decal/cleanable/vomit(affected_mob.loc)
 					affected_mob.nutrition -= rand(3,5)
 				else

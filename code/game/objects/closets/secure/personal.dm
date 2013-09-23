@@ -41,7 +41,7 @@
 		src.broken = 1
 		src.locked = 0
 		src.desc = "It appears to be broken."
-		src.icon = 'closet.dmi'
+		src.icon = 'icons/obj/closet.dmi'
 		src.icon_state = "securebroken"
 		for(var/mob/O in viewers(user, 3))
 			if ((O.client && !( O.blinded )))

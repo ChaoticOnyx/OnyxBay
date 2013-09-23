@@ -803,7 +803,7 @@ mob/verb/turnwest()
 		return
 
 	overlays = null
-	overlays += image("icon" = 'zone_sel.dmi', "icon_state" = text("[]", selecting))
+	overlays += image("icon" = 'icons/mob/zone_sel.dmi', "icon_state" = text("[]", selecting))
 
 	return
 
@@ -1444,7 +1444,7 @@ mob/verb/turnwest()
 
 /mob/verb/help()
 	set name = "Help"
-	src << browse('help.html', "window=help")
+	src << browse('icons/help.html', "window=help")
 	return
 
 /mob/verb/abandon_mob()
@@ -1514,10 +1514,10 @@ mob/verb/turnwest()
 	src.client.changes = 1
 	src.client.showchanges()
 /*	if (client)
-		src << browse_rsc('postcardsmall.jpg')
-		src << browse_rsc('somerights20.png')
-		src << browse_rsc('88x31.png')
-		src << browse('changelog.html', "window=changes;size=400x650")
+		src << browse_rsc('icons/postcardsmall.jpg')
+		src << browse_rsc('icons/somerights20.png')
+		src << browse_rsc('icons/88x31.png')
+		src << browse('icons/changelog.html', "window=changes;size=400x650")
 		client.changes = 1*/
 
 /mob/verb/succumb()
@@ -2056,10 +2056,10 @@ mob/verb/turnwest()
 	//If this is causing lag, may need to change the light spawning code to create a list to use instead
 	//of using the world list.
 	for(var/obj/alertlighting/firelight/F in world)
-		var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+		var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blue")
 		src << imagelight
 	for(var/obj/alertlighting/atmoslight/G in world)
-		var/image/imagelight = image('alert.dmi',G,icon_state = "blueold")
+		var/image/imagelight = image('icons/effects/alert.dmi',G,icon_state = "blueold")
 		src << imagelight
 	//////////////End Strumpetplaya Add
 
@@ -2170,7 +2170,7 @@ mob/verb/turnwest()
 	if(ishuman(src))
 		animation = new(loc)
 		animation.icon_state = "blank"
-		animation.icon = 'mob.dmi'
+		animation.icon = 'icons/mob/mob.dmi'
 		animation.master = src
 		flick("gibbed", animation)
 
@@ -2365,7 +2365,7 @@ mob/verb/turnwest()
 				else
 					boom.icon_state = "start"
 		sleep(40)
-		M << sound('explosionfar.ogg')
+		M << sound('sound/effects/explosionfar.ogg')
 		boom.icon_state = "end"
 		flick("explode", boom)
 		sleep(40)

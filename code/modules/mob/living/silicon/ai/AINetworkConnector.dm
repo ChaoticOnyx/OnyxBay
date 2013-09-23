@@ -1,6 +1,6 @@
 /obj/machinery/network/AIconnector
 	name = "AI connector"
-	icon = 'netcable.dmi'
+	icon = 'icons/obj/machines/netcable.dmi'
 	icon_state = "0-1"
 	var/mob/living/silicon/ai/ai = null
 

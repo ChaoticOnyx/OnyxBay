@@ -150,7 +150,7 @@
 
 /obj/machinery/microwave
 	name = "Microwave"
-	icon = 'kitchen.dmi'
+	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "mw"
 	density = 1
 	anchored = 1
@@ -376,10 +376,10 @@ Please clean it before use!</TT><BR>
 							if(findtext("/obj/item/weapon/reagent_containers/food/snacks/", O.type))
 								del O
 						sleep(40) // Half way through
-						playsound(src.loc, 'splat.ogg', 50, 1) // Play a splat sound
+						playsound(src.loc, 'sound/effects/splat.ogg', 50, 1) // Play a splat sound
 						icon_state = "mwbloody1" // Make it look dirty!!
 						sleep(40) // Then at the end let it finish normally
-						playsound(src.loc, 'ding.ogg', 50, 1)
+						playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
 						for(var/mob/V in viewers(src, null))
 							V.show_message(text("\red The [name] gets covered in muck!"))
 						src.dirty = 1 // Make it dirty so it can't be used util cleaned
@@ -413,7 +413,7 @@ Please clean it before use!</TT><BR>
 						src.updateUsrDialog()
 						sleep(80)
 						src.icon_state = "mw"
-						playsound(src.loc, 'ding.ogg', 50, 1)
+						playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
 						src.operating = 0
 
 			if(operation == 3) // If dispense was pressed, empty the microwave
@@ -432,7 +432,7 @@ Please clean it before use!</TT><BR>
 
 				spawn(cook_time) //After the cooking time
 					if(!isnull(src.being_cooked))
-						playsound(src.loc, 'ding.ogg', 50, 1)
+						playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
 						if(istype(src.being_cooked, /obj/item/weapon/reagent_containers/food/snacks/donkpocket))
 							src.being_cooked:warm = 1
 							src.being_cooked.name = "warm " + src.being_cooked.name

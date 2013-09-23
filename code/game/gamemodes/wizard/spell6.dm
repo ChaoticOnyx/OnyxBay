@@ -1,7 +1,7 @@
 /obj/forcefield
 	desc = "A space wizard's magic wall."
 	name = "FORCEWALL"
-	icon = 'mob.dmi'
+	icon = 'icons/mob/mob.dmi'
 	icon_state = "shield"
 	anchored = 1.0
 	opacity = 0

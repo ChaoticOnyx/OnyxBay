@@ -1,6 +1,6 @@
 /obj/machinery/network/mailserver
 	name = "Mail Server"
-	icon = 'netobjs.dmi'
+	icon = 'icons/obj/machines/netobjs.dmi'
 	icon_state = "mailserv"
 	anchored = 1
 	density = 1
@@ -10,7 +10,7 @@
 	name = "Message server"
 	var/servername = "DEFAULT"
 	var/list/networkaddresses = list()
-	icon = 'netobjs.dmi'
+	icon = 'icons/obj/machines/netobjs.dmi'
 	icon_state = "mailserv"
 
 //This is a standin for a proper networking thing

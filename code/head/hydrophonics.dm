@@ -27,7 +27,7 @@ datum/plants/tomato
 /obj/machinery/hydro/soilbed
 	name = "Soilbed"
 	desc = "A table with a container that should contain soil."
-	icon = 'hydro.dmi'
+	icon = 'icons/obj/hydro.dmi'
 	icon_state = "soilbed"
 	var/soil = 0
 	var/datum/plants/hasplant = null
@@ -157,7 +157,7 @@ datum/plants/tomato
 obj/item/weapon/pruner
 	name = "pruner"
 	desc = "A common gardening tool"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "cutters"
 	flags = FPRINT | TABLEPASS| CONDUCT
 	force = 6.0
@@ -170,12 +170,12 @@ obj/item/weapon/pruner
 obj/item/weapon/food/harvest/tomato
 	name = "tomato"
 	desc = "It's a goddamm tomato"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "cutters"
 
 obj/item/weapon/seeds
 	name = "seeds"
-	icon = 'hydro.dmi'
+	icon = 'icons/obj/hydro.dmi'
 	icon_state = "seedpack"
 	var/amount = 3
 	var/typevar = /datum/plants/tomato

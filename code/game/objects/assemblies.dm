@@ -1,5 +1,5 @@
 /obj/item/device/transfer_valve
-	icon = 'assemblies.dmi'
+	icon = 'icons/obj/assemblies.dmi'
 	name = "Tank transfer valve" // because that's what it is exadv1 and don't you dare change it
 	icon_state = "valve_1"
 	desc = "Regulates the transfer of air between two tanks"

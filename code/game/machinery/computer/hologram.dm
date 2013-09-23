@@ -16,17 +16,17 @@
 	return
 
 /obj/machinery/computer/hologram_comp/proc/render()
-	var/icon/I = new /icon('human.dmi', "body_m_s")
+	var/icon/I = new /icon('icons/mob/human.dmi', "body_m_s")
 
 	if (src.lumens >= 0)
 		I.Blend(rgb(src.lumens, src.lumens, src.lumens), ICON_ADD)
 	else
 		I.Blend(rgb(- src.lumens,  -src.lumens,  -src.lumens), ICON_SUBTRACT)
 
-	I.Blend(new /icon('human.dmi', "mouth_m_s"), ICON_OVERLAY)
-	I.Blend(new /icon('human.dmi', "underwear1_m_s"), ICON_OVERLAY)
+	I.Blend(new /icon('icons/mob/human.dmi', "mouth_m_s"), ICON_OVERLAY)
+	I.Blend(new /icon('icons/mob/human.dmi', "underwear1_m_s"), ICON_OVERLAY)
 
-	var/icon/U = new /icon('human_face.dmi', "hair_a_s")
+	var/icon/U = new /icon('icons/mob/human_face.dmi', "hair_a_s")
 	U.Blend(rgb(src.h_r, src.h_g, src.h_b), ICON_ADD)
 
 	I.Blend(U, ICON_OVERLAY)
@@ -56,7 +56,7 @@
 				del(src.projector.projection)
 			else
 				src.projector.projection = new /obj/projection(src.projector.loc)
-				src.projector.projection.icon = 'human.dmi'
+				src.projector.projection.icon = 'icons/mob/human.dmi'
 				src.projector.projection.icon_state = "body_m_s"
 				src.projector.icon_state = "hologram1"
 				src.render()

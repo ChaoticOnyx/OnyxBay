@@ -1,5 +1,5 @@
 /obj/cabling/power
-	icon = 'power_cond.dmi'
+	icon = 'icons/obj/power_cond.dmi'
 
 	name = "Power Cable"
 

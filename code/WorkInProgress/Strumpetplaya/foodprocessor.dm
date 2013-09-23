@@ -6,7 +6,7 @@
 /obj/machinery/food_processor
 	name = "food processor"
 	desc = "A food processor used to... process foods."
-	icon = 'cooking.dmi'
+	icon = 'icons/obj/cooking.dmi'
 	icon_state = "food_processor"
 	anchored = 1
 	var/doing_stuff = 0

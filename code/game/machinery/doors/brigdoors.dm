@@ -1,6 +1,6 @@
 /obj/machinery/computer/door_control
 	name = "Door Control"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "sec_computer"
 	req_access = list(access_brig)
 //	var/authenticated = 0.0		if anyone wants to make it so you need to log in in future go ahead.
@@ -84,7 +84,7 @@
 
 /obj/machinery/door_timer
 	name = "Door Timer"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "doortimer0"
 	desc = "A remote control switch for a door."
 	req_access = list(access_brig)

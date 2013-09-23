@@ -1,12 +1,12 @@
 /obj/item/weapon/gavel
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "gavel"
 	name = "gavel"
 	force = 8.0
 	desc = "This is a judge's mallet."
 
 /obj/item/weapon/platform
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "platform"
 	name = "platform"
 

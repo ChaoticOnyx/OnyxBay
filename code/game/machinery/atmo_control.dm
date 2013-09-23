@@ -1,5 +1,5 @@
 obj/machinery/air_sensor
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "gsensor1"
 	name = "Gas Sensor"
 
@@ -72,7 +72,7 @@ obj/machinery/air_sensor
 			set_frequency(frequency)
 
 obj/machinery/computer/general_air_control
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "computer_generic"
 	brightnessred = 0
 	brightnessgreen = 2
@@ -97,7 +97,7 @@ obj/machinery/computer/general_air_control
 
 	attackby(I as obj, user as mob)
 		if(istype(I, /obj/item/weapon/screwdriver))
-			playsound(src.loc, 'Screwdriver.ogg', 50, 1)
+			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			if(do_after(user, 20))
 				if (src.stat & BROKEN)
 					user << "\blue The broken glass falls out."
@@ -187,7 +187,7 @@ obj/machinery/computer/general_air_control
 		set_frequency(frequency)
 
 	large_tank_control
-		icon = 'computer.dmi'
+		icon = 'icons/obj/computer.dmi'
 		icon_state = "tank"
 
 		var/input_tag
@@ -323,7 +323,7 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 				attack_hand(usr)
 
 	fuel_injection
-		icon = 'computer.dmi'
+		icon = 'icons/obj/computer.dmi'
 		icon_state = "atmos"
 
 		var/device_tag
@@ -336,7 +336,7 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 
 		attackby(I as obj, user as mob)
 			if(istype(I, /obj/item/weapon/screwdriver))
-				playsound(src.loc, 'Screwdriver.ogg', 50, 1)
+				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				if(do_after(user, 20))
 					if (src.stat & BROKEN)
 						user << "\blue The broken glass falls out."

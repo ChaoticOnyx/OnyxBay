@@ -11,7 +11,7 @@
 
 					"table_1tileendtable&dir=1", "table_1tileendtable&dir=2", "table_1tileendtable&dir=4", "table_1tileendtable&dir=8")
 
-	icon = 'structures.dmi'
+	icon = 'icons/obj/structures.dmi'
 	default_state = "table"
 
 	var/obj/item/weapon/table_parts/parts

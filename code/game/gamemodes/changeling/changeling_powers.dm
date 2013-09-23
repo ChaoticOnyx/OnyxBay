@@ -158,7 +158,7 @@
 	usr.invisibility = 101
 	var/atom/movable/overlay/animation = new /atom/movable/overlay( usr.loc )
 	animation.icon_state = "blank"
-	animation.icon = 'mob.dmi'
+	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
 	flick("h2monkey", animation)
 	sleep(48)
@@ -237,7 +237,7 @@
 	usr.invisibility = 101
 	var/atom/movable/overlay/animation = new /atom/movable/overlay( usr.loc )
 	animation.icon_state = "blank"
-	animation.icon = 'mob.dmi'
+	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
 	flick("monkey2h", animation)
 	sleep(48)

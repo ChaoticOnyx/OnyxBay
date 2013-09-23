@@ -71,7 +71,7 @@ proc/SetupAnomalies()
 
 /obj/item/weapon/artifact
 	name = "Strange rock"
-	icon = 'rubble.dmi'
+	icon = 'icons/obj/rubble.dmi'
 	icon_state = "strange"
 	var/obj/inside
 	var/method // 0 = fire 1+ = acid
@@ -94,7 +94,7 @@ proc/SetupAnomalies()
 	var/trigger
 	var/cooldown
 	var/datum/anomalyeffect/e
-	icon = 'anomaly.dmi'
+	icon = 'icons/obj/anomaly.dmi'
 
 /obj/item/weapon/anomaly/New()
 	if(anomalyrare.len)
@@ -141,7 +141,7 @@ proc/SetupAnomalies()
 
 /obj/item/weapon/talkingcrystal
 	name = "Crystal"
-	icon = 'rubble.dmi'
+	icon = 'icons/obj/rubble.dmi'
 	icon_state = "crystal2"
 	var/list/list/words = list()
 	var/lastsaid
@@ -285,13 +285,13 @@ proc/SetupAnomalies()
 
 /obj/item/weapon/crystal
 	name = "Crystal"
-	icon = 'rubble.dmi'
+	icon = 'icons/obj/rubble.dmi'
 	icon_state = "crystal"
 	desc = "A beautiful crystal."
 
 /obj/item/weapon/fossil
 	name = "Fossil"
-	icon = 'fossil.dmi'
+	icon = 'icons/obj/fossil.dmi'
 	icon_state = "bone"
 	desc = "It's a fossil."
 
@@ -339,7 +339,7 @@ proc/SetupAnomalies()
 
 /obj/skeleton
 	name = "Incomplete skeleton"
-	icon = 'fossil.dmi'
+	icon = 'icons/obj/fossil.dmi'
 	icon_state = "uskel"
 	desc = "Incomplete skeleton."
 	var/bnum = 1

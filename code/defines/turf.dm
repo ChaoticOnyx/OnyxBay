@@ -1,5 +1,5 @@
 /turf
-	icon = 'floors.dmi'
+	icon = 'icons/turf/floors.dmi'
 	var/intact = 1
 
 	level = 1.0
@@ -29,7 +29,7 @@
 
 
 /turf/space
-	icon = 'space.dmi'
+	icon = 'icons/turf/space.dmi'
 	name = "space"
 	icon_state = "placeholder"
 	var/sand = 0
@@ -40,7 +40,7 @@
 
 /turf/space/sand
 	name = "sand"
-	icon = 'sand.dmi'
+	icon = 'icons/obj/sand.dmi'
 	icon_state = "placeholder"
 	sand = 1
 	temperature = T20C + 80
@@ -49,7 +49,7 @@
 /turf/space/New()
 	. = ..()
 	if(!sand)
-		icon = 'space.dmi'
+		icon = 'icons/turf/space.dmi'
 		//icon_state = "[rand(1,25)]"
 		icon_state = pick("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
 					"11", "12", "13", "14", "15", "16", "17", "18", "19",
@@ -61,7 +61,7 @@
 			Would be even faster if a numerical index could be used directly,
 			without the "[]", though.*/
 	else
-		icon = 'sand.dmi'
+		icon = 'icons/obj/sand.dmi'
 		icon_state = "[rand(1,3)]"
 
 /turf/space/proc/Check()
@@ -110,7 +110,7 @@
 ///turf/space/hull //TEST
 turf/space/hull
 	name = "Hull Plating"
-	icon = 'floors.dmi'
+	icon = 'icons/turf/floors.dmi'
 	icon_state = "engine"
 turf/space/hull/New()
 	return
@@ -123,7 +123,7 @@ turf/space/hull/New()
 
 /turf/simulated/floor
 	name = "floor"
-	icon = 'floors.dmi'
+	icon = 'icons/turf/floors.dmi'
 	icon_state = "floor"
 	thermal_conductivity = 0.040
 	heat_capacity = 225000
@@ -246,10 +246,10 @@ turf/space/hull/New()
 				for(var/obj/o in floorbelow.contents)
 					src.addoverlay(image(o, dir=o.dir, layer = TURF_LAYER+0.05*o.layer))
 
-				var/image/I = image('ULIcons.dmi', "[min(max(floorbelow.LightLevelRed - 4, 0), 7)]-[min(max(floorbelow.LightLevelGreen - 4, 0), 7)]-[min(max(floorbelow.LightLevelBlue - 4, 0), 7)]")
+				var/image/I = image('icons/effects/ULIcons.dmi', "[min(max(floorbelow.LightLevelRed - 4, 0), 7)]-[min(max(floorbelow.LightLevelGreen - 4, 0), 7)]-[min(max(floorbelow.LightLevelBlue - 4, 0), 7)]")
 				I.layer = TURF_LAYER + 0.2
 				src.addoverlay(I)
-				I = image('ULIcons.dmi', "1-1-1")
+				I = image('icons/effects/ULIcons.dmi', "1-1-1")
 				I.layer = TURF_LAYER + 0.2
 				src.addoverlay(I)
 
@@ -275,12 +275,12 @@ turf/space/hull/New()
 		name = "plating"
 
 /turf/simulated/floor/grid
-	icon = 'floors.dmi'
+	icon = 'icons/turf/floors.dmi'
 	icon_state = "circuit"
 
 /turf/simulated/wall
 	name = "Wall"
-	icon = 'walls.dmi'
+	icon = 'icons/turf/walls.dmi'
 	icon_state = "wall0"
 	opacity = 1
 	density = 1
@@ -294,7 +294,7 @@ turf/space/hull/New()
 	melting_point = 2500
 
 /obj/wall_contents
-	icon = 'walls.dmi'
+	icon = 'icons/turf/walls.dmi'
 	icon_state = "wall-contents-alert"
 	invisibility = 2
 	layer = 10
@@ -305,7 +305,7 @@ turf/space/hull/New()
 
 /turf/simulated/wall/r_wall
 	name = "Reinforced Wall"
-	icon = 'walls.dmi'
+	icon = 'icons/turf/walls.dmi'
 	icon_state = "r_wall"
 	opacity = 1
 	density = 1
@@ -319,7 +319,7 @@ turf/space/hull/New()
 	opacity = 0
 	explosionstrength = 5
 	name = "Heat Shielding"
-	icon = 'thermal.dmi'
+	icon = 'icons/turf/thermal.dmi'
 	icon_state = "thermal"
 	melting_point = 3500
 
@@ -332,7 +332,7 @@ turf/space/hull/New()
 
 /turf/simulated/shuttle
 	name = "Shuttle"
-	icon = 'shuttle.dmi'
+	icon = 'icons/turf/shuttle.dmi'
 	thermal_conductivity = 0.05
 	heat_capacity = 10000000
 
@@ -355,7 +355,7 @@ turf/space/hull/New()
 
 /turf/unsimulated/shuttle
 	name = "Shuttle"
-	icon = 'shuttle.dmi'
+	icon = 'icons/turf/shuttle.dmi'
 
 /turf/unsimulated/shuttle/floor
 	name = "Shuttle Floor"
@@ -369,12 +369,12 @@ turf/space/hull/New()
 
 /turf/unsimulated/floor
 	name = "Floor"
-	icon = 'floors.dmi'
+	icon = 'icons/turf/floors.dmi'
 	icon_state = "Floor3"
 
 /turf/unsimulated/wall
 	name = "Wall"
-	icon = 'walls.dmi'
+	icon = 'icons/turf/walls.dmi'
 	icon_state = "riveted"
 	opacity = 1
 	density = 1
@@ -426,13 +426,13 @@ turf/space/hull/New()
 	nitrogen = 0.01
 	var/mapped = 0
 	name = "rocky floor"
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	icon_state = "floor"
 
 /turf/simulated/asteroid/wall
 	var/health = 40
 	name = "rocky wall"
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	icon_state = "wall"
 	oxygen = 0.01
 	nitrogen = 0.01
@@ -481,13 +481,13 @@ turf/space/hull/New()
 	nitrogen = 0.01
 	level = 1
 	name = "rocky floor"
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	icon_state = "floor"
 
 /turf/simulated/asteroid/floor/planet
 	mapped = 1
 	name = "sand"
-	icon = 'sand.dmi'
+	icon = 'icons/obj/sand.dmi'
 	icon_state = "placeholder"
 	carbon_dioxide = 0.3 * ONE_ATMOSPHERE
 	toxins = 0.54 * ONE_ATMOSPHERE

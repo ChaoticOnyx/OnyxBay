@@ -19,7 +19,7 @@
 	usr.say("STI KALY!")
 	var/obj/overlay/B = new /obj/overlay( M.loc )
 	B.icon_state = "blspell"
-	B.icon = 'wizard.dmi'
+	B.icon = 'icons/obj/wizard.dmi'
 	B.name = "spell"
 	B.anchored = 1
 	B.density = 0

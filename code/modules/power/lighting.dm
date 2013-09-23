@@ -13,7 +13,7 @@ var/global/const/LIGHT_OK = 0
 
 /obj/machinery/light
 	name = "light fixture"
-	icon = 'lighting.dmi'
+	icon = 'icons/effects/lighting.dmi'
 	var/base_state = "tube"		// base description and icon_state
 	icon_state = "tube1"
 	desc = "A lighting fixture."
@@ -359,7 +359,7 @@ var/global/const/LIGHT_OK = 0
 		return
 
 	if(status == LIGHT_OK || status == LIGHT_BURNED)
-		playsound(src.loc, 'Glasshit.ogg', 75, 1)
+		playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
 	if(on)
 		var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 		s.set_up(3, 1, src)
@@ -487,7 +487,7 @@ var/global/const/LIGHT_OK = 0
 // will fit into empty /obj/machinery/light of the corresponding type
 
 /obj/item/weapon/light
-	icon = 'lighting.dmi'
+	icon = 'icons/effects/lighting.dmi'
 	flags = FPRINT | TABLEPASS
 	force = 2
 	throwforce = 5
@@ -566,7 +566,7 @@ var/global/const/LIGHT_OK = 0
 		user << "The [name] shatters!"
 		status = LIGHT_BROKEN
 		force = 5
-		playsound(src.loc, 'Glasshit.ogg', 75, 1)
+		playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
 		update()
 
 
@@ -575,7 +575,7 @@ var/global/const/LIGHT_OK = 0
 
 /obj/item/weapon/storage/lightbox
 	name = "replacement lights"
-	icon = 'storage.dmi'
+	icon = 'icons/obj/storage.dmi'
 	icon_state = "light"
 	item_state = "syringe_kit"
 

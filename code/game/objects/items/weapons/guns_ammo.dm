@@ -167,7 +167,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	if (src.bullets < 1)
 		user.show_message("\red *click* *click*", 2)
 		return
-	playsound(user, 'Gunshot.ogg', 100, 1)
+	playsound(user, 'sound/weapons/Gunshot.ogg', 100, 1)
 	src.bullets--
 	for(var/mob/O in viewers(user, null))
 		O.show_message(text("\red <B>[] fires a revolver at []!</B>", user, target), 1, "\red You hear a gunshot", 2)
@@ -204,7 +204,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		else
 			if (M.weakened < 10)
 				M.weakened = 10
-		playsound(user, 'Gunshot.ogg', 100, 1)
+		playsound(user, 'sound/weapons/Gunshot.ogg', 100, 1)
 		src.bullets--
 		M.bullet_act(PROJECTILE_BULLET)
 		if(M.stat != 2)	M.stat = 1
@@ -266,7 +266,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	if (src.bullets < 1)
 		user.show_message("\red *click* *click*", 2)
 		return
-	playsound(user, 'Gunshot.ogg', 100, 1)
+	playsound(user, 'sound/weapons/Gunshot.ogg', 100, 1)
 	src.bullets--
 	for(var/mob/O in viewers(user, null))
 		O.show_message(text("\red <B>[] fires the detectives revolver at []!</B>", user, target), 1, "\red You hear a gunshot", 2)
@@ -382,7 +382,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		user << "\red *click* *click*"
 		return
 
-	playsound(user, 'Laser.ogg', 50, 1)
+	playsound(user, 'sound/weapons/Laser.ogg', 50, 1)
 	src.charges--
 	update_icon()
 
@@ -445,8 +445,8 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	src.icon_state = text("taser[]", ratio)
 	if(src.blood_DNA)
 		var/icon/I = new /icon(initial(src.icon), src.icon_state)
-		I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
-		I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+		I.Blend(new /icon('icons/effects/blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+		I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"),ICON_MULTIPLY)
 		I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
 		src.icon = I
 /obj/item/weapon/gun/energy/taser_gun/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
@@ -460,7 +460,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		user << "\red *click* *click*";
 		return
 
-	playsound(user, 'Taser.ogg', 50, 1)
+	playsound(user, 'sound/weapons/Taser.ogg', 50, 1)
 	if(isrobot(user))
 		var/mob/living/silicon/robot/R = user
 		R.cell.charge -= 20
@@ -582,7 +582,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		user << "\red *click* *click*";
 		return
 
-	playsound(user, 'Genhit.ogg', 20, 1)
+	playsound(user, 'sound/weapons/Genhit.ogg', 20, 1)
 	src.charges--
 	var/turf/T = user.loc
 	var/turf/U = (istype(target, /atom/movable) ? target.loc : target)
@@ -646,8 +646,8 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 	src.icon_state = text("taser[]", ratio)
 	if(src.blood_DNA)
 		var/icon/I = new /icon(initial(src.icon), src.icon_state)
-		I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
-		I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+		I.Blend(new /icon('icons/effects/blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+		I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"),ICON_MULTIPLY)
 		I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
 		src.icon = I
 /obj/item/weapon/gun/energy/teleport_gun/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
@@ -661,7 +661,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		user << "\red *click* *click*";
 		return
 
-	playsound(user, 'Taser.ogg', 50, 1)
+	playsound(user, 'sound/weapons/Taser.ogg', 50, 1)
 	src.charges--
 	update_icon()
 
@@ -760,8 +760,8 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 		src.icon_state = text("energy[]", ratio)
 		if(src.blood_DNA)
 			var/icon/I = new /icon(initial(src.icon), src.icon_state)
-			I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
-			I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+			I.Blend(new /icon('icons/effects/blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+			I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"),ICON_MULTIPLY)
 			I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
 			src.icon = I
 	afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
@@ -783,7 +783,7 @@ obj/item/weapon/gun/revolver/attackby(obj/item/weapon/ammo/a357/A as obj, mob/us
 			user << "\red *click* *click*";
 			return
 
-		playsound(user, 'Taser.ogg', 50, 1)
+		playsound(user, 'sound/weapons/Taser.ogg', 50, 1)
 		src.charges--
 		update_icon()
 

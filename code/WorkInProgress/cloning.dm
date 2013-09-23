@@ -10,7 +10,7 @@
 	name = "Cloning Pod"
 	desc = "An electronically-lockable pod for growing organic tissue."
 	density = 1
-	icon = 'cloning.dmi'
+	icon = 'icons/obj/cloning.dmi'
 	icon_state = "pod_0"
 	req_access = list(access_medlab) //For premature unlocking.
 	var/mob/living/occupant
@@ -23,7 +23,7 @@
 
 /obj/machinery/computer/cloning
 	name = "Cloning Console"
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "dna"
 	req_access = list(access_heads) //Only used for record deletion right now.
 	var/obj/machinery/dna_scannernew/scanner = null //Linked scanner. For scanning.
@@ -80,7 +80,7 @@
 			src.updateUsrDialog()
 			return
 	else if((istype(W, /obj/item/weapon/screwdriver)) && (src.stat & BROKEN))
-		playsound(src.loc, 'Screwdriver.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			user << "\blue The broken glass falls out."
 			var/obj/computerframe/A = new /obj/computerframe( src.loc )
@@ -285,7 +285,7 @@
 		var/datum/data/record/C = locate(href_list["clone"])
 		//Look for that player! They better be dead!
 		var/mob/selected = find_dead_player("[C.fields["ckey"]]")
-		selected << 'chime.ogg'	//probably not the best sound but I think it's reasonable
+		selected << 'sound/machines/chime.ogg'	//probably not the best sound but I think it's reasonable
 		roundinfo.revies++
 		var/answer = alert(selected,"Do you want to return to life?","Cloning","Yes","No")
 		if(answer == "No")

@@ -18,7 +18,7 @@
 /obj/machinery/manufacturer
 	name = "Manufacturing Unit"
 	desc = "A standard fabricator unit capable of producing certain items from mined ore."
-	icon = 'surgery.dmi'
+	icon = 'icons/obj/surgery.dmi'
 	icon_state = "fab-idle"
 	density = 1
 	anchored = 1
@@ -466,7 +466,7 @@
 			if (src.electrified)
 				src.manuf_zap(usr, 100)
 			if (!src.panelopen)
-				src.overlays += image('surgery.dmi', "fab-panel")
+				src.overlays += image('icons/obj/surgery.dmi', "fab-panel")
 				src.panelopen = 1
 			else
 				src.overlays = null

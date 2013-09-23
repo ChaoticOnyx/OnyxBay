@@ -1,6 +1,6 @@
 /obj/item/weapon/optical_unit
 	name = "optical sensor unit"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "optical_unit"
 	item_state = "electronic"
 	throwforce = 5
@@ -11,7 +11,7 @@
 
 /obj/item/robot_parts
 	name = "robot parts"
-	icon = 'robot_parts.dmi'
+	icon = 'icons/obj/robot_parts.dmi'
 	item_state = "buildpipe"
 	icon_state = "blank"
 	flags = FPRINT | ONBELT | TABLEPASS | CONDUCT
@@ -149,7 +149,7 @@
 
 			// Check if player wants to respawn as cyborg
 			if (src.brain.owner.client)
-				src.brain.owner.client.mob << 'chime.ogg'
+				src.brain.owner.client.mob << 'sound/machines/chime.ogg'
 				var/answer = alert(src.brain.owner.client.mob,"Do you want to return to life?","Cyborgization","Yes","No")
 				if(answer == "No")
 					src.state("The inserted brain is not compatible with this suit's circuits.", "blue")

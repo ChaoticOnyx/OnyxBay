@@ -1,7 +1,7 @@
 /mob/living/carbon/monkey/name = "monkey"
 /mob/living/carbon/monkey/voice_name = "monkey"
 /mob/living/carbon/monkey/voice_message = "chimpers"
-/mob/living/carbon/monkey/icon = 'monkey.dmi'
+/mob/living/carbon/monkey/icon = 'icons/mob/monkey.dmi'
 /mob/living/carbon/monkey/icon_state = "monkey1"
 /mob/living/carbon/monkey/gender = NEUTER
 /mob/living/carbon/monkey/flags = 258.0
@@ -192,7 +192,7 @@
 		if (paralysis >= 3) paralysis -= 3
 		if (stunned >= 3) stunned -= 3
 		if (weakened >= 3) weakened -= 3
-		playsound(loc, 'thudswoosh.ogg', 50, 1, -1)
+		playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		for(var/mob/O in viewers(src, null))
 			if ((O.client && !( O.blinded )))
 				O.show_message(text("\blue [] shakes [name] trying to wake him up!", M), 1)
@@ -217,7 +217,7 @@
 				bruteloss += damage
 				updatehealth()
 			else
-				playsound(loc, 'punchmiss.ogg', 25, 1, -1)
+				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has attempted to punch [name]!</B>", M), 1)
@@ -235,20 +235,20 @@
 				G.affecting = src
 				grabbed_by += G
 				G.synch()
-				playsound(loc, 'thudswoosh.ogg', 50, 1, -1)
+				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					O.show_message(text("\red [] has grabbed [name] passively!", M), 1)
 			else
 				if (!( paralysis ))
 					if (prob(25))
 						paralysis = 2
-						playsound(loc, 'thudswoosh.ogg', 50, 1, -1)
+						playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 						for(var/mob/O in viewers(src, null))
 							if ((O.client && !( O.blinded )))
 								O.show_message(text("\red <B>[] has pushed down [name]!</B>", M), 1)
 					else
 						drop_item()
-						playsound(loc, 'thudswoosh.ogg', 50, 1, -1)
+						playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 						for(var/mob/O in viewers(src, null))
 							if ((O.client && !( O.blinded )))
 								O.show_message(text("\red <B>[] has disarmed [name]!</B>", M), 1)
@@ -280,28 +280,28 @@
 			var/t1 = wear_mask.item_state
 			if (!( t1 ))
 				t1 = wear_mask.icon_state
-			overlays += image("icon" = 'monkey.dmi', "icon_state" = text("[][]", t1, (!( lying ) ? null : "2")), "layer" = layer)
+			overlays += image("icon" = 'icons/mob/monkey.dmi', "icon_state" = text("[][]", t1, (!( lying ) ? null : "2")), "layer" = layer)
 		wear_mask.screen_loc = ui_mask
 	if (r_hand)
-		overlays += image("icon" = 'items_righthand.dmi', "icon_state" = r_hand.item_state ? r_hand.item_state : r_hand.icon_state, "layer" = layer)
+		overlays += image("icon" = 'icons/mob/items_righthand.dmi', "icon_state" = r_hand.item_state ? r_hand.item_state : r_hand.icon_state, "layer" = layer)
 		r_hand.screen_loc = ui_rhand
 
 	if (l_hand)
-		overlays += image("icon" = 'items_lefthand.dmi', "icon_state" = l_hand.item_state ? l_hand.item_state : l_hand.icon_state, "layer" = layer)
+		overlays += image("icon" = 'icons/mob/items_lefthand.dmi', "icon_state" = l_hand.item_state ? l_hand.item_state : l_hand.icon_state, "layer" = layer)
 		l_hand.screen_loc = ui_lhand
 
 	if (back)
 		if (!( lying ))
-			overlays += image("icon" = 'monkey.dmi', "icon_state" = "back", "layer" = layer)
+			overlays += image("icon" = 'icons/mob/monkey.dmi', "icon_state" = "back", "layer" = layer)
 		else
-			overlays += image("icon" = 'monkey.dmi', "icon_state" = "back2", "layer" = layer)
+			overlays += image("icon" = 'icons/mob/monkey.dmi', "icon_state" = "back2", "layer" = layer)
 		back.screen_loc = ui_back
 	if (handcuffed)
 		pulling = null
 		if (!( lying ))
-			overlays += image("icon" = 'monkey.dmi', "icon_state" = "handcuff1", "layer" = layer)
+			overlays += image("icon" = 'icons/mob/monkey.dmi', "icon_state" = "handcuff1", "layer" = layer)
 		else
-			overlays += image("icon" = 'monkey.dmi', "icon_state" = "handcuff2", "layer" = layer)
+			overlays += image("icon" = 'icons/mob/monkey.dmi', "icon_state" = "handcuff2", "layer" = layer)
 	if (client)
 		client.screen -= contents
 		client.screen += contents

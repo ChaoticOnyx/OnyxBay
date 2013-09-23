@@ -10,7 +10,7 @@
 
 /obj/item/weapon/CableCoil
 	icon_state     = "whitecoil3"
-	icon           = 'Coils.dmi'
+	icon           = 'icons/obj/Coils.dmi'
 	flags          = TABLEPASS | USEDELAY | FPRINT | CONDUCT
 	throwforce     = 10
 	w_class        = 1.5

@@ -7,7 +7,7 @@
 //1: use labeller on item
 //2: select label to remove (if there is >1 label anyway, if there is only one it will just remove that one)
 /obj/item/weapon/hand_labeler
-	icon = 'old_or_unused.dmi' //this stuff probably isn't current for bs12
+	icon = 'icons/misc/old_or_unused.dmi' //this stuff probably isn't current for bs12
 	icon_state = "labeler"
 	item_state = "flight"
 	name = "Hand labeler"
@@ -56,7 +56,7 @@
 	A.name += " - '[str]'"
 
 /obj/item/weapon/label
-	icon = 'old_or_unused.dmi' //I used the fingerprinted fingerprint card for this, I'm sure someone will be willing to come up with something better
+	icon = 'icons/misc/old_or_unused.dmi' //I used the fingerprinted fingerprint card for this, I'm sure someone will be willing to come up with something better
 	icon_state = "label" //I hate icons.
 	name = "Label"
 	w_class = 2

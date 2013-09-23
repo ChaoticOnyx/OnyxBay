@@ -97,10 +97,10 @@
 		return
 	if ((istype(W, /obj/item/weapon/card/emag)) && (src.locked == 1) && (!src.emagged))
 		emagged = 1
-		src.overlays += image('storage.dmi', icon_sparking)
+		src.overlays += image('icons/obj/storage.dmi', icon_sparking)
 		sleep(6)
 		src.overlays = null
-		overlays += image('storage.dmi', icon_locking)
+		overlays += image('icons/obj/storage.dmi', icon_locking)
 		locked = 0
 		user << "You short out the lock on [src]."
 		return
@@ -207,7 +207,7 @@
 			else if ((src.code == src.l_code) && (src.emagged == 0) && (src.l_set == 1))
 				src.locked = 0
 				src.overlays = null
-				overlays += image('storage.dmi', icon_open)
+				overlays += image('icons/obj/storage.dmi', icon_open)
 				src.code = null
 			else
 				src.code = "ERROR"

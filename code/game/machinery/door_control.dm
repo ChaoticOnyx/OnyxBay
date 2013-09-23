@@ -1,7 +1,7 @@
 
 /obj/machinery/door_control
 	name = "Remote Door Control"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "doorctrl00"
 	desc = "A remote control switch for a door."
 	var/icon_toggled = "doorctrl1"
@@ -57,7 +57,7 @@
 
 /obj/machinery/driver_button
 	name = "Mass Driver Button"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "launcherbtt"
 	desc = "A remote control switch for a Mass Driver."
 	var/id = null
@@ -136,7 +136,7 @@
 	icon_state = icon_toggled
 
 	radioalert("CORE VENTS CYCLING","Core control computer")
-	playsound(src.loc, 'warning-buzzer.ogg', 75)
+	playsound(src.loc, 'sound/machines/warning-buzzer.ogg', 75)
 
 	if(toggled == "1")
 		toggled = "0"

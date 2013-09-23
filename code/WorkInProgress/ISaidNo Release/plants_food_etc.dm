@@ -23,7 +23,7 @@
 /obj/item/weapon/seed/
 	name = "plant seed"
 	desc = "Plant this in soil to grow something."
-	icon = 'hydromisc.dmi'
+	icon = 'icons/GoonHydroPort/hydromisc.dmi'
 	w_class = 1.0
 	var/planttype = null
 	var/plantgenes = /datum/plantgenes
@@ -341,7 +341,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/tomato/
 	name = "tomato"
 	desc = "You say tomato, I toolbox you."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "tomato"
 	amount = 1
 	heal_amt = 1
@@ -358,7 +358,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/orange/
 	name = "orange"
 	desc = "Bitter."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "orange"
 	amount = 3
 	heal_amt = 1
@@ -395,7 +395,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/grape/
 	name = "grapes"
 	desc = "Not the green ones."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "grapes"
 	amount = 5
 	heal_amt = 1
@@ -406,7 +406,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/melon/
 	name = "melon"
 	desc = "You should cut it into slices first!"
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "melon"
 	throwforce = 8
 	w_class = 3.0
@@ -452,7 +452,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/melonslice/
 	name = "melon slice"
 	desc = "That's better!"
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "melon_slice"
 	throwforce = 0
 	w_class = 1.0
@@ -531,7 +531,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/chili/
 	name = "chili pepper"
 	desc = "Caution: May or may not be red hot."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "chili"
 	w_class = 1.0
 	amount = 1
@@ -549,7 +549,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/chili/chilly
 	name = "chilly pepper"
 	desc = "It's cold to the touch."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "chilly"
 	planttype = /datum/plant/chili
 	w_class = 1.0
@@ -572,7 +572,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/lettuce/
 	name = "lettuce leaf"
 	desc = "Not spinach at all. Nope. Nuh-uh."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "spinach"
 	w_class = 1.0
 	amount = 1
@@ -585,7 +585,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/apple/
 	name = "apple"
 	desc = "Implied by folklore to repel medical staff."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "apple"
 	amount = 3
 	heal_amt = 1
@@ -611,7 +611,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/banana/
 	name = "unpeeled banana"
 	desc = "Cavendish, of course."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "banana"
 	amount = 2
 	heal_amt = 2
@@ -641,7 +641,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/carrot/
 	name = "carrot"
 	desc = "Think of how many snowmen were mutilated to power the carrot industry."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "carrot"
 	w_class = 1.0
 	amount = 3
@@ -668,7 +668,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/lime/
 	name = "lime"
 	desc = "A very sour green fruit."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "lime"
 	amount = 2
 	heal_amt = 1
@@ -679,7 +679,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/lemon/
 	name = "lemon"
 	desc = "Suprisingly not a commentary on the station's workmanship."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "lemon"
 	amount = 2
 	heal_amt = 1
@@ -690,7 +690,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit/
 	name = "slurrypod"
 	desc = "An extremely poisonous, bitter fruit.  The slurrypod fruit is regarded as a delicacy in some outer colony worlds."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "slurry"
 	amount = 1
 	heal_amt = -1
@@ -707,7 +707,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/slurryfruit/omega
 	name = "omega slurrypod"
 	desc = "An extremely poisonous, bitter fruit.  A strange light pulses from within."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "slurrymut"
 	amount = 1
 	heal_amt = -1
@@ -725,7 +725,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/plant/potato/
 	name = "potato"
 	desc = "It needs peeling first."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "potato"
 	amount = 1
 	heal_amt = 0
@@ -754,7 +754,7 @@
 /obj/item/weapon/plant/
 	name = "plant"
 	desc = "You shouldn't be able to see this item ingame!"
-	icon = 'hydromisc.dmi'
+	icon = 'icons/GoonHydroPort/hydromisc.dmi'
 	var/potency = 0 // only used for the herbs
 
 	New()
@@ -765,7 +765,7 @@
 /obj/item/weapon/plant/cannabis/
 	name = "cannabis leaf"
 	desc = "Leafs for reefin'!"
-	icon = 'hydromisc.dmi'
+	icon = 'icons/GoonHydroPort/hydromisc.dmi'
 	icon_state = "cannabisleaf"
 	potency = 1
 
@@ -819,7 +819,7 @@
 /obj/item/weapon/plant/wheat/
 	name = "wheat"
 	desc = "Never eat shredded wheat."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "wheat"
 
 /obj/item/weapon/plant/wheat/metal
@@ -830,41 +830,41 @@
 /obj/item/weapon/plant/sugar/
 	name = "sugar cane"
 	desc = "Grown lovingly in our space plantations."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "sugarcane"
 
 /obj/item/weapon/plant/contusine
 	name = "contusine herb leaves"
 	desc = "The chemical Bicaridine can be extracted from these leaves."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "contusine"
 	potency = 8
 
 /obj/item/weapon/plant/nureous
 	name = "nureous herb leaves"
 	desc = "The chemical Hyronalin can be extracted from these leaves."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "nureous"
 	potency = 8
 
 /obj/item/weapon/plant/asomna
 	name = "asomna herb leaves"
 	desc = "The chemical Inaprovaline can be extracted from these leaves."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "asomna"
 	potency = 8
 
 /obj/item/weapon/plant/commol
 	name = "commol herb leaves"
 	desc = "The chemical Kelotane can be extracted from these leaves."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "commol"
 	potency = 8
 
 /obj/item/weapon/plant/venne
 	name = "venne herb leaves"
 	desc = "The chemical Dylovene can be extracted from these leaves."
-	icon = 'hydroponics.dmi'
+	icon = 'icons/GoonHydroPort/hydroponics.dmi'
 	icon_state = "venne"
 	potency = 8
 
@@ -1351,7 +1351,7 @@
 					M << "\red There was a cyst in that burger. Now your mouth is full of pus OH JESUS THATS DISGUSTING OH FUCK"
 					M.nutrition -= 20
 					for(var/mob/O in viewers(M, null)) O.show_message(text("\red [] suddenly and violently vomits!", M), 1)
-					playsound(M.loc, 'splat.ogg', 50, 1)
+					playsound(M.loc, 'sound/effects/splat.ogg', 50, 1)
 					new /obj/decal/cleanable/vomit(M.loc)
 				if(4)
 					M << "\red You bite down on a chunk of bone, hurting your teeth."

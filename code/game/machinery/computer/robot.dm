@@ -1,6 +1,6 @@
 /obj/machinery/computer/robotics
 	name = "Robotics Control"
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "robotics"
 	req_access = list(access_captain)
 	brightnessred = 0
@@ -15,7 +15,7 @@
 
 /obj/machinery/computer/robotics/attackby(I as obj, user as mob)
 	if(istype(I, /obj/item/weapon/screwdriver))
-		playsound(src.loc, 'Screwdriver.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."

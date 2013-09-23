@@ -1,7 +1,7 @@
 /mob/living/silicon/robot
 	name = "Robot"
 	voice_name = "synthesized voice"
-	icon = 'robots.dmi'//
+	icon = 'icons/mob/robots.dmi'//
 	icon_state = "robot"
 	health = 300
 
@@ -677,7 +677,7 @@
 /mob/living/silicon/robot/proc/select_module(var/num)
 	if(!module_selector)
 		module_selector = new /obj/screen()
-		module_selector.icon = 'screen1_robot.dmi'
+		module_selector.icon = 'icons/mob/screen1_robot.dmi'
 		module_selector.icon_state = "module_select"
 		module_selector.mouse_opacity = 0
 		module_selector.layer = 21

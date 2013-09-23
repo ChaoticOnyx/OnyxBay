@@ -38,9 +38,9 @@
 /obj/machinery/power/solar/proc/updateicon()
 	overlays = null
 	if(stat & BROKEN)
-		overlays += image('power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER)
+		overlays += image('icons/obj/power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER)
 	else
-		overlays += image('power.dmi', icon_state = "solar_panel", layer = FLY_LAYER)
+		overlays += image('icons/obj/power.dmi', icon_state = "solar_panel", layer = FLY_LAYER)
 		src.dir = angle2dir(adir)
 	return
 
@@ -140,7 +140,7 @@
 	icon_state = "solar"
 	overlays = null
 	if(cdir > 0)
-		overlays += image('computer.dmi', "solcon-o", FLY_LAYER, angle2dir(cdir))
+		overlays += image('icons/obj/computer.dmi', "solcon-o", FLY_LAYER, angle2dir(cdir))
 	return
 
 /obj/machinery/power/solar_control/attack_ai(mob/user)

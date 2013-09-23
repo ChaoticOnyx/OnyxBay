@@ -2,7 +2,7 @@
 #define CONDUCTION_SKIP 0
 
 /obj/cabling/flexipipe
-	icon = 'pipes_net.dmi'
+	icon = 'icons/obj/pipes_net.dmi'
 
 	name = "Pipeline"
 	layer = 2.4
@@ -15,10 +15,10 @@
 
 	manifold
 		var/initialize_directions
-		icon = 'pipes.dmi'
+		icon = 'icons/obj/pipes.dmi'
 		icon_state = "manifold"
 		New()
-			icon = 'pipes_net.dmi'
+			icon = 'icons/obj/pipes_net.dmi'
 			switch(dir)
 				if(1)
 					new/obj/cabling/flexipipe(loc,2,4)
@@ -42,11 +42,11 @@
 					del src
 
 	simple
-		icon = 'pipes.dmi'
+		icon = 'icons/obj/pipes.dmi'
 		icon_state = "intact"
 		var/initialize_directions
 		New()
-			icon = 'pipes_net.dmi'
+			icon = 'icons/obj/pipes_net.dmi'
 			switch(dir)
 				if(1 to 2) icon_state = "1-2"
 				if(4) icon_state = "4-8"
@@ -57,10 +57,10 @@
 				if(10) icon_state = "2-8"
 			. = ..()
 		insulated
-			icon = 'red_pipe.dmi'
+			icon = 'icons/obj/atmospherics/red_pipe.dmi'
 			icon_state = "intact"
 			New()
-				icon = 'pipes_insulated.dmi'
+				icon = 'icons/obj/pipes_insulated.dmi'
 				switch(dir)
 					if(1 to 2) icon_state = "1-2"
 					if(4) icon_state = "4-8"
@@ -82,7 +82,7 @@
 	CanLayDiagonally = 0
 
 /obj/machinery/atmos_new
-	icon = 'pipes_placeholder.dmi'
+	icon = 'icons/obj/pipes_placeholder.dmi'
 	anchored = 1
 	proc/Process()
 	proc/Detach()
@@ -99,7 +99,7 @@
 
 	tank
 		name = "Gas Tank"
-		icon = 'pipe_tank.dmi'
+		icon = 'icons/obj/atmospherics/pipe_tank.dmi'
 		var/volume = 1620
 		var/datum/gas_mixture/air_contents = new
 		New()
@@ -135,28 +135,28 @@
 				air_contents.carbon_dioxide = (35*ONE_ATMOSPHERE)*(air_contents.volume)/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
 		plasma_tank
 			name = "Gas Tank \[Toxin (Bio)\]"
-			icon = 'orange_pipe_tank.dmi'
+			icon = 'icons/obj/atmospherics/orange_pipe_tank.dmi'
 			New()
 				. = ..()
 				air_contents.toxins = (35*ONE_ATMOSPHERE)*(air_contents.volume)/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
 
 		oxy_tank
 			name = "Gas Tank \[Oxygen\]"
-			icon = 'blue_pipe_tank.dmi'
+			icon = 'icons/obj/atmospherics/blue_pipe_tank.dmi'
 			New()
 				. = ..()
 				air_contents.oxygen = (35*ONE_ATMOSPHERE)*(air_contents.volume)/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
 
 		air_tank
 			name = "Gas Tank \[Air\]"
-			icon = 'red_pipe_tank.dmi'
+			icon = 'icons/obj/atmospherics/red_pipe_tank.dmi'
 			New()
 				. = ..()
 				air_contents.oxygen = (35*ONE_ATMOSPHERE*O2STANDARD)*(air_contents.volume)/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
 				air_contents.nitrogen = (35*ONE_ATMOSPHERE*N2STANDARD)*(air_contents.volume)/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
 		nitro_tank
 			name = "Gas Tank \[Nitrogen\]"
-			icon = 'red_pipe_tank.dmi'
+			icon = 'icons/obj/atmospherics/red_pipe_tank.dmi'
 			New()
 				. = ..()
 				air_contents.nitrogen = (35*ONE_ATMOSPHERE)*(air_contents.volume)/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
@@ -482,13 +482,13 @@
 				icon_state = "filter_on"
 			if(!A)
 				A = get_step(src,turn(dir,270))
-				//A.overlays += 'debug_connect.dmi'
+				//A.overlays += 'icons/debug_connect.dmi'
 			if(!B)
 				B = get_step(src,dir)
-				//B.overlays += 'debug_connect.dmi'
+				//B.overlays += 'icons/debug_connect.dmi'
 			if(!C)
 				C = get_step(src,turn(dir,180))
-				//C.overlays += 'debug_connect.dmi'
+				//C.overlays += 'icons/debug_connect.dmi'
 			var/datum/UnifiedNetwork
 				OutputANet
 				OutputBNet
@@ -601,8 +601,8 @@
 		examine()
 			var/datum/UnifiedNetwork/Network = Networks[/obj/cabling/flexipipe]
 			for(var/obj/cabling/C in Network.Cables)
-				C.overlays += 'debug_update.dmi'
-				spawn(10) C.overlays -= 'debug_update.dmi'
+				C.overlays += 'icons/debug_update.dmi'
+				spawn(10) C.overlays -= 'icons/debug_update.dmi'
 	mixer
 		name = "Pipeline Combination Hub"
 		icon_state = "mixer_off"
@@ -902,7 +902,7 @@
 
 			return 1
 	generator_input
-		icon = 'heat_exchanger.dmi'
+		icon = 'icons/obj/atmospherics/heat_exchanger.dmi'
 		icon_state = "intact"
 		density = 1
 
@@ -1034,7 +1034,7 @@
 	meter
 		name = "Pressure Meter"
 		desc = "A meter for measuring the gas pressure in pipes"
-		icon = 'meter.dmi'
+		icon = 'icons/obj/meter.dmi'
 		icon_state = "meterX"
 		var/obj/machinery/atmospherics/pipe/target = null
 		anchored = 1.0
@@ -1206,8 +1206,8 @@ var/PipeVolume = 25
 						User << "\red Unknown: [round(unknown_concentration*100)]%"
 					User << "\blue Temperature: [round(air_contents.temperature-T0C)]&deg;C"
 					//for(var/obj/cabling/C in Network.Cables)
-					//	C.overlays += 'debug_update.dmi'
-					//	spawn(5) C.overlays -= 'debug_update.dmi'
+					//	C.overlays += 'icons/debug_update.dmi'
+					//	spawn(5) C.overlays -= 'icons/debug_update.dmi'
 				else
 					User << "\blue Pipeline is empty!"
 		return

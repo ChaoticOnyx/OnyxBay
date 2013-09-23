@@ -1,13 +1,13 @@
 /obj/decal/ash
 	name = "Ashes"
 	desc = "Ashes to ashes, dust to dust."
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "ash"
 	anchored = 1
 
 /obj/decal/point
 	name = "point"
-	icon = 'screen1.dmi'
+	icon = 'icons/mob/screen1.dmi'
 	icon_state = "arrow"
 	layer = 16.0
 	anchored = 1
@@ -21,7 +21,7 @@
 	density = 0
 	anchored = 1
 	layer = 2
-	icon = 'blood.dmi'
+	icon = 'icons/effects/blood.dmi'
 	icon_state = "floor1"
 	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7")
 	var/datum/disease/virus = null
@@ -35,7 +35,7 @@
 	density = 0
 	anchored = 1
 	layer = 2
-	icon = 'drip.dmi'
+	icon = 'icons/effects/drip.dmi'
 	icon_state = "1"
 	blood_DNA = null
 	blood_type = null
@@ -52,7 +52,7 @@
 	density = 0
 	anchored = 0
 	layer = 2
-	icon = 'blood.dmi'
+	icon = 'icons/effects/blood.dmi'
 	icon_state = "gibbl5"
 	random_icon_states = list("gib1", "gib2", "gib3", "gib4", "gib5", "gib6")
 
@@ -71,7 +71,7 @@
 	density = 0
 	anchored = 0
 	layer = 2
-	icon = 'robots.dmi'
+	icon = 'icons/mob/robots.dmi'
 	icon_state = "gib1"
 	random_icon_states = list("gib1", "gib2", "gib3", "gib4", "gib5", "gib6", "gib7")
 
@@ -84,7 +84,7 @@
 	density = 0
 	anchored = 1
 	layer = 2
-	icon = 'oil.dmi'
+	icon = 'icons/effects/oil.dmi'
 	icon_state = "floor1"
 	var/datum/disease/virus = null
 	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7")
@@ -98,7 +98,7 @@
 	density = 0
 	anchored = 1
 	layer = 2
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "shards"
 
 /obj/decal/cleanable/dirt
@@ -107,7 +107,7 @@
 	density = 0
 	anchored = 1
 	layer = 2
-	icon = 'old_or_unused.dmi'
+	icon = 'icons/misc/old_or_unused.dmi'
 	icon_state = "dirt"
 
 /obj/decal/cleanable/greenglow
@@ -116,7 +116,7 @@
 	density = 0
 	anchored = 1
 	layer = 2
-	icon = 'effects.dmi'
+	icon = 'icons/effects/effects.dmi'
 	icon_state = "greenglow"
 
 /obj/decal/cleanable/cobweb
@@ -125,7 +125,7 @@
 	density = 0
 	anchored = 1
 	layer = 3
-	icon = 'old_or_unused.dmi'
+	icon = 'icons/misc/old_or_unused.dmi'
 	icon_state = "cobweb1"
 
 /obj/decal/cleanable/molten_item
@@ -134,7 +134,7 @@
 	density = 0
 	anchored = 1
 	layer = 3
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "molten"
 
 /obj/decal/cleanable/cobweb2
@@ -143,7 +143,7 @@
 	density = 0
 	anchored = 1
 	layer = 3
-	icon = 'old_or_unused.dmi'
+	icon = 'icons/misc/old_or_unused.dmi'
 	icon_state = "cobweb2"
 /obj/decal/cleanable/water
 	name = "a pool of water"
@@ -151,11 +151,11 @@
 	density = 0
 	anchored = 1
 	layer = 3
-	icon = 'water.dmi'
+	icon = 'icons/effects/water.dmi'
 	icon_state = "floor1"
 	random_icon_states = list("floor1", "floor2")
 /obj/decal/sign
-	icon = 'decals.dmi'
+	icon = 'icons/obj/decals.dmi'
 	anchored = 1.0
 	opacity = 0
 	density = 0
@@ -264,7 +264,7 @@
 		icon_state = "bridge2"
 
 /obj/decal/sign/barsign
-	icon = 'barsigns.dmi'
+	icon = 'icons/obj/barsigns.dmi'
 	icon_state = "empty"
 	New()
 		ChangeSign(pick("pinkflamingo", "magmasea", "limbo", "rustyaxe", "armokbar", "brokendrum"))
@@ -275,7 +275,7 @@
 		return
 
 /obj/decal/signnew
-	icon = 'decals-new.dmi'
+	icon = 'icons/obj/decals-new.dmi'
 	anchored = 1.0
 	opacity = 0
 	density = 0
@@ -357,7 +357,7 @@
 
 
 /obj/decal/warning_stripes
-	icon = 'decal_warning_stripes.dmi'
+	icon = 'icons/obj/decal_warning_stripes.dmi'
 	layer = 2
 
 /obj/decal/warning_stripes/New()

@@ -72,12 +72,12 @@ mob/living/npc/vermin/proc/Replicate()
 	new /obj/egg (src.loc,src.type)
 mob/living/npc/vermin/crab
 	name = "Space Crab"
-	icon = 'beach.dmi'
+	icon = 'icons/misc/beach.dmi'
 	icon_state = "crab"
 
 /obj/egg
 	name = "An egg"
-	icon = 'beach.dmi'
+	icon = 'icons/misc/beach.dmi'
 	icon_state = "segg"
 	var/spawntype
 obj/egg/New(Location,type)

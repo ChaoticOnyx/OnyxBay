@@ -1,7 +1,7 @@
 /obj/machinery/washer
 	name = "Laundromat"
 	desc = "Cleans stuff"
-	icon = 'washer.dmi'
+	icon = 'icons/obj/washer.dmi'
 	icon_state = "land01"
 	density = 1
 	opacity = 0
@@ -87,7 +87,7 @@
 	if(powder.reagents.has_reagent("cleaner",1))
 		active = 1
 		icon_state = "landanim"
-		var/sound/S = sound('WashingMachine1.ogg')
+		var/sound/S = sound('sound/machines/WashingMachine1.ogg')
 		for(var/mob/MM in viewers(,src))
 			MM << S
 		if(!wiregold)

@@ -2,7 +2,7 @@
 
 /obj/machinery/copier
 	name = "Copy Machine"
-	icon = 'beurocracy.dmi'
+	icon = 'icons/obj/beurocracy.dmi'
 	icon_state = "copier"
 	density = 1
 	anchored = 1
@@ -127,7 +127,7 @@
 	if(copying && !copy_wait)
 		copy_wait = 1
 		// make noise
-		playsound(src, 'polaroid1.ogg', 50, 1)
+		playsound(src, 'sound/items/polaroid1.ogg', 50, 1)
 		spawn(5)
 			if(!copying)
 				return // user cancelled

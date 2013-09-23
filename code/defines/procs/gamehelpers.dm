@@ -61,7 +61,7 @@
 					O.density = 0
 					O.layer = FLY_LAYER
 					O.dir = pick(cardinal)
-					O.icon = 'effects.dmi'
+					O.icon = 'icons/effects/effects.dmi'
 					O.icon_state = "nothing"
 					flick("empdisable",O)
 					spawn(5)

@@ -210,7 +210,7 @@
 
 /obj/landmark/mining
 	name = "miningmarker"
-	icon = 'mark.dmi'
+	icon = 'icons/misc/mark.dmi'
 	icon_state = "mining1"
 	var/veinsetup = 0
 	var/veintype = null
@@ -243,7 +243,7 @@
 */
 /obj/landmark/random_asteroid		//Strumpetplaya - added for totally random asteroids.  Place this landmark down wherever you want to generate a random asteroid.
 	name = "RandomAsteroidMarker"
-	icon = 'mark.dmi'
+	icon = 'icons/misc/mark.dmi'
 	icon_state = "mining1"
 	var/randomness = 75
 	var/finished = 0
@@ -319,71 +319,71 @@
 			icon_state += "w"
 		switch (src.icon_state)
 			if ("n")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "north[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "north[rand(1,3)]")
 			if ("s")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "south[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "south[rand(1,3)]")
 			if ("e")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "east[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "east[rand(1,3)]")
 			if ("w")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "west[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "west[rand(1,3)]")
 			if ("ne")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "ne[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "ne[rand(1,3)]")
 			if ("nw")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "nw[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "nw[rand(1,3)]")
 			if ("es")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "se[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "se[rand(1,3)]")
 			if ("sw")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "sw[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "sw[rand(1,3)]")
 			if ("on1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "on[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "on[rand(1,3)]")
 			if ("os1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "os[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "os[rand(1,3)]")
 			if ("oe1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "oe[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "oe[rand(1,3)]")
 			if ("ow1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "ow[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "ow[rand(1,3)]")
 			if ("ine1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "ine[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "ine[rand(1,3)]")
 			if ("inw1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "inw[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "inw[rand(1,3)]")
 			if ("ise1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "ise[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "ise[rand(1,3)]")
 			if ("isw1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "isw[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "isw[rand(1,3)]")
 			else
-				src.icon = 'walls.dmi'
+				src.icon = 'icons/turf/walls.dmi'
 				src.icon_state = "m[rand(1,3)]"*/
 		src.amount = rand(1,3)
 		..()
@@ -404,71 +404,71 @@
 			icon_state += "w"
 		switch (src.icon_state)
 			if ("n")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "north[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "north[rand(1,3)]")
 			if ("s")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "south[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "south[rand(1,3)]")
 			if ("e")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "east[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "east[rand(1,3)]")
 			if ("w")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "west[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "west[rand(1,3)]")
 			if ("ne")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "ne[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "ne[rand(1,3)]")
 			if ("nw")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "nw[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "nw[rand(1,3)]")
 			if ("es")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "se[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "se[rand(1,3)]")
 			if ("sw")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "sw[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "sw[rand(1,3)]")
 			if ("new")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "on[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "on[rand(1,3)]")
 			if ("esw")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "os[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "os[rand(1,3)]")
 			if ("nes")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "oe[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "oe[rand(1,3)]")
 			if ("nsw")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "ow[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "ow[rand(1,3)]")
 			if ("ine1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "ine[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "ine[rand(1,3)]")
 			if ("inw1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "inw[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "inw[rand(1,3)]")
 			if ("ise1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "ise[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "ise[rand(1,3)]")
 			if ("isw1")
-				src.icon = 'space.dmi'
+				src.icon = 'icons/turf/space.dmi'
 				src.icon_state = "[pick(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)]"
-				src.overlays += image('walls.dmi', "isw[rand(1,3)]")
+				src.overlays += image('icons/turf/walls.dmi', "isw[rand(1,3)]")
 			else
-				src.icon = 'walls.dmi'
+				src.icon = 'icons/turf/walls.dmi'
 				src.icon_state = "m[rand(1,3)]"
 
 
@@ -506,7 +506,7 @@
 				user << "\red You won't get very far without igniting it..."
 				return
 
-			playsound(user.loc, 'welder.ogg', 100, 1)
+			playsound(user.loc, 'sound/items/Welder.ogg', 100, 1)
 			user << "\blue You slash right through the rock!"
 			for(var/mob/M in viewers(src))
 				if(M == user)	continue
@@ -521,10 +521,10 @@
 			return
 		if(istype(W,/obj/item/weapon/drill) || istype(W,/obj/item/weapon/pickaxe/))
 			if (istype(W,/obj/item/weapon/pickaxe/powered))
-				if (W:status) playsound(user.loc, 'welder.ogg', 100, 1)
+				if (W:status) playsound(user.loc, 'sound/items/Welder.ogg', 100, 1)
 				//else playsound(user.loc, 'pickaxe.ogg', 100, 1)	Strumpetplaya - Commented out as it is currently unsupported
 			//else if (istype(W,/obj/item/weapon/pickaxe)) playsound(user.loc, 'pickaxe.ogg', 100, 1)	Strumpetplaya - Commented out as it is currently unsupported
-			else playsound(user.loc, 'welder.ogg', 100, 1)
+			else playsound(user.loc, 'sound/items/Welder.ogg', 100, 1)
 			user << "You start cutting into the asteroid!"
 
 			for(var/mob/M in viewers(src))
@@ -594,7 +594,7 @@
 
 			for (var/turf/simulated/wall/asteroid/A in range(1,src))
 				if (A.event == "radioactive"&& !A.radoverlay && prob(50))
-					A.overlays += image('walls.dmi', "radiation")
+					A.overlays += image('icons/turf/walls.dmi', "radiation")
 					A.radoverlay = 1
 			return
 
@@ -605,7 +605,7 @@
 
 			var/collapse = 0
 			if (src.weakened && prob(90)) collapse = 1
-			playsound(user.loc, 'welder.ogg', 100, 1)
+			playsound(user.loc, 'sound/items/Welder.ogg', 100, 1)
 			user << "You start hammering at the asteroid!"
 			for(var/mob/M in viewers(src))
 				if(M == user)	continue
@@ -628,7 +628,7 @@
 				else
 					src.weakened = 1
 					src.hardness -= 1
-					src.overlays += image('walls.dmi', "weakened")
+					src.overlays += image('icons/turf/walls.dmi', "weakened")
 					user << "\blue You weakened the rock!"
 
 			if (W:status)
@@ -667,7 +667,7 @@
 	proc/destroy_asteroid(var/plasmacutter = 1)
 		//if (src.event == "volatile")
 		//	for(var/mob/M in viewers(src)) M.show_message("\red <b>The rock begins shaking violently and heating up!</b>")
-		//	src.overlays += image('walls.dmi', "unstable")
+		//	src.overlays += image('icons/turf/walls.dmi', "unstable")
 		//	src.event = null
 		//	var/boomtime = rand(3,6)
 		//	boomtime *= 10
@@ -749,7 +749,7 @@
 
 /obj/item/weapon/cutter
 	name = "Plasma Cutter"
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	icon_state = "cutter"
 	var/active = 0
 	var/obj/item/weapon/tank/plasma/P = null
@@ -887,7 +887,7 @@
 /obj/item/weapon/drill
 	name = "laser drill"
 	desc = "Less efficient than a plasma cutter, but safer and doesn't need fuel."
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	icon_state = "lasdrill"
 	w_class = 2
 	flags = ONBELT
@@ -898,7 +898,7 @@
 /obj/item/weapon/pickaxe
 	name = "pickaxe"
 	desc = "A thing to bash rocks with until they become smaller rocks."
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	icon_state = "pickaxe"
 	w_class = 2
 	flags = ONBELT
@@ -908,7 +908,7 @@
 /obj/item/weapon/pickaxe/powered
 	name = "power pick"
 	desc = "An energised mining tool. It has 30 charges left."
-	icon = 'weapons.dmi'
+	icon = 'icons/obj/weapons.dmi'
 	icon_state = "pickaxe0"
 	flags = ONBELT
 	w_class = 2
@@ -919,7 +919,7 @@
 
 	New()
 		..()
-		src.overlays += image('weapons.dmi', "pickaxe1")
+		src.overlays += image('icons/obj/weapons.dmi', "pickaxe1")
 		src.status = 1
 		src.minelevel = 2
 
@@ -927,7 +927,7 @@
 		if (src.charges)
 			if (!src.status)
 				user << "You power up [src]."
-				src.overlays += image('weapons.dmi', "pickaxe1")
+				src.overlays += image('icons/obj/weapons.dmi', "pickaxe1")
 				src.status = 1
 				src.minelevel = 2
 			else
@@ -940,7 +940,7 @@
 /obj/item/weapon/powerhammer
 	name = "power hammer"
 	desc = "An energised mining tool. It has 15 charges left."
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	icon_state = "powerhammer"
 	w_class = 2
 	var/charges = 15
@@ -949,14 +949,14 @@
 
 	New()
 		..()
-		src.overlays += image('mining.dmi', "ph-glow")
+		src.overlays += image('icons/turf/mining.dmi', "ph-glow")
 		src.status = 1
 
 	attack_self(var/mob/user as mob)
 		if (src.charges)
 			if (!src.status)
 				user << "You power up [src]."
-				src.overlays += image('mining.dmi', "ph-glow")
+				src.overlays += image('icons/turf/mining.dmi', "ph-glow")
 				src.status = 1
 			else
 				user << "You power down [src]."
@@ -1025,7 +1025,7 @@
 /obj/item/weapon/cargotele
 	name = "Cargo Transporter"
 	desc = "A device for teleporting crated goods. 10 charges remain."
-	icon = 'MTransporter.dmi'
+	icon = 'icons/obj/MTransporter.dmi'
 	icon_state = "Norm"
 	item_state = "cargotele"
 	var/charges = 10
@@ -1097,7 +1097,7 @@
 			return
 		if(istype(A,/obj/submachine/cargopad))
 			user << "Teleporting [A]..."
-			playsound(user.loc, 'click.ogg', 50, 1)
+			playsound(user.loc, 'sound/machines/click.ogg', 50, 1)
 			src.icon_state = "Working"
 			for(var/obj/submachine/cargopad in src.target)
 				var/obj/submachine/cargopad/H = locate() in src.target
@@ -1158,7 +1158,7 @@
 		//		user << "\red There is not enough charge left in your cell to use this."
 		//		return
 		user << "Teleporting [A]..."
-		playsound(user.loc, 'click.ogg', 50, 1)
+		playsound(user.loc, 'sound/machines/click.ogg', 50, 1)
 		src.icon_state = "Working"
 		for(var/obj/submachine/cargopad in src.target)
 			var/obj/submachine/cargopad/H = locate() in src.target
@@ -1224,7 +1224,7 @@
 /obj/item/weapon/oreprospector
 	name = "geological scanner"
 	desc = "A device capable of detecting nearby mineral deposits."
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	icon_state = "minanal"
 	flags = ONBELT
 	w_class = 1.0
@@ -1271,12 +1271,12 @@
 			user << "----------------------------------"
 			for (var/turf/simulated/wall/asteroid/T in range(user,6))
 				if (T.event)
-					var/image/O = image('mining.dmi',T,"scan-anom",AREA_LAYER+1)
+					var/image/O = image('icons/turf/mining.dmi',T,"scan-anom",AREA_LAYER+1)
 					user << O
 					spawn(1200)
 						del O
 				if (T.ore2)
-					var/image/G = image('mining.dmi',T,"scan-gem",AREA_LAYER+1)
+					var/image/G = image('icons/turf/mining.dmi',T,"scan-gem",AREA_LAYER+1)
 					user << G
 					spawn(1200)
 						del G
@@ -1284,13 +1284,13 @@
 /obj/submachine/cargopad
 	name = "Cargo Pad"
 	desc = "Used to recieve objects transported by a Cargo Transporter."
-	icon = 'MTransporter.dmi'
+	icon = 'icons/obj/MTransporter.dmi'
 	icon_state = "PadOff"
 	anchored = 0
 	var/active = 0
 
 	New()
-		src.overlays += image('objects.dmi', "cpad-rec")
+		src.overlays += image('icons/obj/objects.dmi', "cpad-rec")
 
 	attack_hand(var/mob/user as mob)
 		if (src.anchored == 0)
@@ -1323,7 +1323,7 @@
 /obj/item/weapon/storage/miningbelt
 	name = "miner's belt"
 	desc = "Can hold various mining tools."
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	icon_state = "minerbelt"
 	item_state = "utility"
 	can_hold = list("/obj/item/weapon/pickaxe","/obj/item/weapon/pickaxe/powered","/obj/item/weapon/drill","/obj/item/weapon/oreprospector","/obj/item/weapon/satchel/mining","/obj/item/weapon/cargotele","/obj/item/weapon/breaching_charge/mining","/obj/item/weapon/breaching_charge/mining/light","/obj/item/weapon/powerhammer","/obj/item/device/gps")
@@ -1334,7 +1334,7 @@
 /obj/item/weapon/ore/
 	name = "ore"
 	desc = "placeholder item!"
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	force = 4
 	throwforce = 6
 	var/manuaccept = 1 // can it be loaded into a manufacturing unit?
@@ -1489,7 +1489,7 @@
 		var/gemR = rand(50,255)
 		var/gemG = rand(50,255)
 		var/gemB = rand(50,255)
-		gemovl = icon('mining.dmi', "cytineOVL")
+		gemovl = icon('icons/turf/mining.dmi', "cytineOVL")
 		gemovl.Blend(rgb(gemR, gemG, gemB), ICON_ADD)
 		src.overlays += image("icon" = gemovl, "layer" = FLOAT_LAYER)
 
@@ -1516,7 +1516,7 @@
 /obj/item/weapon/satchel
 	name = "satchel"
 	desc = "A leather bag. It holds 0/20 items."
-	icon = 'mining.dmi'
+	icon = 'icons/turf/mining.dmi'
 	icon_state = "satchel"
 	flags = ONBELT
 	w_class = 1

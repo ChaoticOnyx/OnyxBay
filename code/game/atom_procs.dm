@@ -88,8 +88,8 @@
 			var/obj/item/source2 = src
 			source2.icon_old = src.icon
 			var/icon/I = new /icon(src.icon, src.icon_state)
-			I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
-			I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+			I.Blend(new /icon('icons/effects/blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+			I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"),ICON_MULTIPLY)
 			I.Blend(new /icon(src.icon, src.icon_state),ICON_UNDERLAY)
 			src.icon = I
 			src.blood_DNA = M.dna.unique_enzymes
@@ -153,7 +153,7 @@
 		O.density = 0
 		O.layer = FLY_LAYER
 		O.dir = pick(cardinal)
-		O.icon = 'effects.dmi'
+		O.icon = 'icons/effects/effects.dmi'
 		O.icon_state = "nothing"
 		flick("empdisable",O)
 		spawn(5)

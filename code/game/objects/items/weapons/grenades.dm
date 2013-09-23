@@ -8,7 +8,7 @@ FLASHBANG
 /obj/item/weapon/flashbang
 	desc = "It is set to detonate in 3 seconds."
 	name = "flashbang"
-	icon = 'grenade.dmi'
+	icon = 'icons/obj/grenade.dmi'
 	icon_state = "flashbang"
 	var/state = null
 	var/det_time = 30.0
@@ -24,7 +24,7 @@ FLASHBANG
 	var/state = null
 	var/det_time = 50.0
 	w_class = 2.0
-	icon = 'device.dmi'
+	icon = 'icons/obj/device.dmi'
 	icon_state = "emp"
 	item_state = "emp"
 	throw_speed = 4
@@ -37,7 +37,7 @@ FLASHBANG
 			user << "\red Huh? How does this thing work?!"
 			src.state = 1
 			src.icon_state = "empar"
-			playsound(src.loc, 'armbomb.ogg', 75, 1, -3)
+			playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 			spawn( 5 )
 				prime()
 				return
@@ -45,7 +45,7 @@ FLASHBANG
 			user << "\red You prime the emp grenade! [det_time/10] seconds!"
 			src.state = 1
 			src.icon_state = "empar"
-			playsound(src.loc, 'armbomb.ogg', 75, 1, -3)
+			playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 			spawn( src.det_time )
 				prime()
 				return
@@ -57,7 +57,7 @@ FLASHBANG
 	return
 
 /obj/item/weapon/empgrenade/proc/prime()
-	playsound(src.loc, 'Welder2.ogg', 25, 1)
+	playsound(src.loc, 'sound/items/Welder2.ogg', 25, 1)
 	var/turf/T = get_turf(src)
 	if(T)
 		T.hotspot_expose(SPARK_TEMP,125)
@@ -66,7 +66,7 @@ FLASHBANG
 	src = null
 
 	var/obj/overlay/pulse = new/obj/overlay ( T )
-	pulse.icon = 'effects.dmi'
+	pulse.icon = 'icons/effects/effects.dmi'
 	pulse.icon_state = "emppulse"
 	pulse.name = "emp pulse"
 	pulse.anchored = 1
@@ -164,7 +164,7 @@ FLASHBANG
 		A.use_power(7500)
 
 		var/obj/overlay/pulse2 = new/obj/overlay ( A.loc )
-		pulse2.icon = 'effects.dmi'
+		pulse2.icon = 'icons/effects/effects.dmi'
 		pulse2.icon_state = "empdisable"
 		pulse2.name = "emp sparks"
 		pulse2.anchored = 1
@@ -247,7 +247,7 @@ FLASHBANG
 	for(var/obj/shielding/shield/S in range(world.view-1, T))
 		S.disabled = 1
 		var/obj/overlay/pulse2 = new/obj/overlay ( S.loc )
-		pulse2.icon = 'effects.dmi'
+		pulse2.icon = 'icons/effects/effects.dmi'
 		pulse2.icon_state = "empdisable"
 		pulse2.name = "emp sparks"
 		pulse2.anchored = 1
@@ -284,7 +284,7 @@ FLASHBANG
 			user << "\red Huh? How does this thing work?!"
 			src.state = 1
 			src.icon_state = "flashbang1"
-			playsound(src.loc, 'armbomb.ogg', 75, 1, -3)
+			playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 			spawn( 5 )
 				prime()
 				return
@@ -292,7 +292,7 @@ FLASHBANG
 			user << "\red You prime the flashbang! [det_time/10] seconds!"
 			src.state = 1
 			src.icon_state = "flashbang1"
-			playsound(src.loc, 'armbomb.ogg', 75, 1, -3)
+			playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 			spawn( src.det_time )
 				prime()
 				return
@@ -312,7 +312,7 @@ FLASHBANG
 	return
 
 /obj/item/weapon/flashbang/proc/prime()
-	playsound(src.loc, 'bang.ogg', 25, 1)
+	playsound(src.loc, 'sound/effects/bang.ogg', 25, 1)
 	var/turf/T = get_turf(src)
 	if(T)
 		T.hotspot_expose(SPARK_TEMP,125)

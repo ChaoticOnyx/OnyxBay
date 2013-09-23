@@ -1,5 +1,5 @@
 obj/bodybag
-	icon = 'bodybag.dmi'
+	icon = 'icons/obj/bodybag.dmi'
 	icon_state = "b00"
 	desc = "A body bag designed to contain those with a less fortunate fate."
 	name = "body bag"

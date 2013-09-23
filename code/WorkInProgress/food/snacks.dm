@@ -31,7 +31,7 @@
 /obj/item/weapon/reagent_containers/food/snacks
 	name = "snack"
 	desc = "yummy"
-	icon = 'cooking.dmi'
+	icon = 'icons/obj/cooking.dmi'
 	icon_state = null
 	var/amount = 3   //amount of bites
 	var/edible = 1   //can you eat this?
@@ -63,7 +63,7 @@
 				src.amount--
 				M.nutrition += src.heal_amt * 10
 				src.heal(M)
-				playsound(M.loc,'eatfood.ogg', rand(10,50), 1)
+				playsound(M.loc,'sound/items/eatfood.ogg', rand(10,50), 1)
 				if(!src.amount)
 					user << "\red You finish eating [src]."
 					user.u_equip(src)
@@ -83,7 +83,7 @@
 				src.amount--
 				M.nutrition += src.heal_amt * 10
 				src.heal(M)
-				playsound(M.loc, 'eatfood.ogg', rand(10,50), 1)
+				playsound(M.loc, 'sound/items/eatfood.ogg', rand(10,50), 1)
 				if(!src.amount)
 					user << "\red [M] finishes eating [src]."
 					user.u_equip(src)
@@ -1014,7 +1014,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/breadsys/salamistick
 	name = "salami stick"
 	desc = "Don't choke on this, find a knife."
-	icon = 'cooking.dmi'
+	icon = 'icons/obj/cooking.dmi'
 	icon_state = "salamistick3"
 	edible = 0
 	amount = 5
@@ -1023,7 +1023,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/breadsys/bigcheese
 	name = "cut of cheese"
 	desc = "Cut it with a knife."
-	icon = 'cooking.dmi'
+	icon = 'icons/obj/cooking.dmi'
 	icon_state = "bigcheese"
 	heal_amt = 3
 	amount = 1
@@ -1031,7 +1031,7 @@
 // *** Now icons for the stuff which goes on top of the bread slice ***
 
 /obj/item/weapon/reagent_containers/food/snacks/breadsys/ontop
-	icon = 'cooking.dmi'
+	icon = 'icons/obj/cooking.dmi'
 	var/stateontop = "salami3" //state when ontop a sandvich
 
 // a slice of bread loaf

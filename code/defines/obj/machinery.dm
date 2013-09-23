@@ -1,12 +1,12 @@
 /obj/machinery
 	name = "machinery"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	var/stat = 0
 	var/mocktxt = null
 
 /obj/machinery/alarm
 	name = "alarm"
-	icon = 'monitors.dmi'
+	icon = 'icons/obj/monitors.dmi'
 	icon_state = "alarm0"
 	anchored = 1.0
 	var/skipprocess = 0 //Experimenting
@@ -39,7 +39,7 @@
 /obj/machinery/camera
 	name = "Security Camera"
 	desc = "A security camera with exposed wires."
-	icon = 'monitors.dmi'
+	icon = 'icons/obj/monitors.dmi'
 	icon_state = "camera"
 	var/network = "Luna"
 	layer = 5
@@ -68,7 +68,7 @@
 /obj/machinery/dispenser
 	name = "Tank Storage Unit"
 	desc = "A simple yet bulky one-way storage device for gas tanks. Holds 10 plasma and 10 oxygen tanks."
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "dispenser"
 	density = 1
 	var/o2tanks = 10.0
@@ -77,7 +77,7 @@
 
 /obj/machinery/dna_scanner
 	name = "DNA Scanner/Implanter"
-	icon = 'Cryogenic2.dmi'
+	icon = 'icons/obj/Cryogenic2.dmi'
 	icon_state = "scanner_0"
 	density = 1
 	var/locked = 0.0
@@ -86,7 +86,7 @@
 
 /obj/machinery/dna_scannernew
 	name = "DNA Scanner"
-	icon = 'Cryogenic2.dmi'
+	icon = 'icons/obj/Cryogenic2.dmi'
 	icon_state = "scanner_0"
 	density = 1
 	var/locked = 0.0
@@ -96,7 +96,7 @@
 
 /obj/machinery/firealarm
 	name = "Fire Alarm"
-	icon = 'monitors.dmi'
+	icon = 'icons/obj/monitors.dmi'
 	icon_state = "fire0"
 	var/detecting = 1.0
 	var/working = 1.0
@@ -107,7 +107,7 @@
 
 /obj/machinery/partyalarm
 	name = "Party Button"
-	icon = 'monitors.dmi'
+	icon = 'icons/obj/monitors.dmi'
 	icon_state = "fire0"
 	var/detecting = 1.0
 	var/working = 1.0
@@ -120,7 +120,7 @@
 
 /obj/machinery/hologram_proj
 	name = "Hologram Projector"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "hologram0"
 	var/id = null
 	var/atom/projection = null
@@ -128,7 +128,7 @@
 
 /obj/machinery/igniter
 	name = "Floor-mounted Igniter"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "igniter1"
 	var/id = null
 	var/on = 1.0
@@ -136,7 +136,7 @@
 
 /obj/machinery/injector
 	name = "Gas Injector"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "injector"
 	density = 1
 	anchored = 1.0
@@ -145,7 +145,7 @@
 /obj/machinery/mass_driver
 	name = "Mass Driver"
 	desc = "A device for launching objects into space"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "mass_driver"
 	var/power = 1.0
 	var/code = 1.0
@@ -156,7 +156,7 @@
 /obj/machinery/meter
 	name = "Pressure Meter"
 	desc = "A meter for measuring the gas pressure in pipes"
-	icon = 'meter.dmi'
+	icon = 'icons/obj/meter.dmi'
 	icon_state = "meterX"
 	var/obj/machinery/atmospherics/pipe/target = null
 	anchored = 1.0
@@ -166,7 +166,7 @@
 /obj/machinery/nuclearbomb
 	desc = "Uh oh."
 	name = "Nuclear Fission Explosive"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "nuclearbomb0"
 	density = 1
 	var/deployable = 0.0
@@ -183,7 +183,7 @@
 /obj/machinery/optable
 	name = "Operating Table"
 	desc = "A medical device for operating on people"
-	icon = 'surgery.dmi'
+	icon = 'icons/obj/surgery.dmi'
 	icon_state = "table2-idle"
 	density = 1
 	anchored = 1.0
@@ -196,7 +196,7 @@
 
 /obj/machinery/vehicle
 	name = "Vehicle Pod"
-	icon = 'escapepod.dmi'
+	icon = 'icons/obj/escapepod.dmi'
 	icon_state = "podfire"
 	density = 1
 	flags = FPRINT
@@ -209,14 +209,14 @@
 
 /obj/machinery/vehicle/pod
 	name = "Escape Pod"
-	icon = 'escapepod.dmi'
+	icon = 'icons/obj/escapepod.dmi'
 	icon_state = "pod"
 	can_rotate = 0
 	var/id = 1.0
 
 /obj/machinery/vehicle/recon
 	name = "Reconaissance Pod"
-	icon = 'escapepod.dmi'
+	icon = 'icons/obj/escapepod.dmi'
 	icon_state = "recon"
 	speed = 1.0
 	maximum_speed = 30.0
@@ -225,7 +225,7 @@
 
 /obj/machinery/restruct
 	name = "DNA Physical Restructurization Accelerator"
-	icon = 'Cryogenic2.dmi'
+	icon = 'icons/obj/Cryogenic2.dmi'
 	icon_state = "restruct_0"
 	density = 1
 	var/locked = 0.0
@@ -234,7 +234,7 @@
 
 /obj/machinery/scan_console
 	name = "DNA Scanner Access Console"
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "scanner"
 	density = 1
 	var/obj/item/weapon/card/data/scan = null
@@ -252,7 +252,7 @@
 
 /obj/machinery/scan_consolenew
 	name = "DNA Modifier Access Console"
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "scanner"
 	density = 1
 	var/uniblock = 1.0
@@ -290,7 +290,7 @@
 
 /obj/machinery/sec_lock
 	name = "Security Pad"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "sec_lock"
 	var/obj/item/weapon/card/id/scan = null
 	var/a_type = 0.0
@@ -303,7 +303,7 @@
 
 /obj/machinery/ignition_switch
 	name = "Ignition Switch"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "launcherbtt"
 	desc = "A remote control switch for a mounted igniter."
 	var/id = null
@@ -312,7 +312,7 @@
 
 /obj/machinery/shuttle
 	name = "shuttle"
-	icon = 'shuttle.dmi'
+	icon = 'icons/turf/shuttle.dmi'
 
 /obj/machinery/shuttle/engine
 	name = "engine"
@@ -349,7 +349,7 @@
 
 /obj/machinery/teleport
 	name = "teleport"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	density = 1
 	anchored = 1.0
 
@@ -370,12 +370,12 @@
 
 /obj/machinery/wire
 	name = "wire"
-	icon = 'power_cond.dmi'
+	icon = 'icons/obj/power_cond.dmi'
 
 
 /obj/machinery/power
 	name = null
-	icon = 'power.dmi'
+	icon = 'icons/obj/power.dmi'
 	anchored = 1.0
 	var/netnum = 0
 	var/directwired = 1		// by default, power machines are connected by a cable in a neighbouring turf
@@ -435,7 +435,7 @@
 
 /obj/machinery/power/monitor
 	name = "Power Monitoring Computer"
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "power"
 	density = 1
 	anchored = 1
@@ -476,7 +476,7 @@
 /obj/machinery/power/solar
 	name = "Solar Panel"
 	desc = "A solar electrical generator."
-	icon = 'power.dmi'
+	icon = 'icons/obj/power.dmi'
 	icon_state = "sp_base"
 	anchored = 1
 	density = 1
@@ -494,7 +494,7 @@
 /obj/machinery/power/solar_control
 	name = "Solar Panel Controller"
 	desc = "A controller for solar panel arrays."
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "solar"
 	anchored = 1
 	density = 1
@@ -513,7 +513,7 @@
 /obj/machinery/cell_charger
 	name = "Power Cell Charger"
 	desc = "A charging unit for Power Cells."
-	icon = 'power.dmi'
+	icon = 'icons/obj/power.dmi'
 	icon_state = "ccharger0"
 	var/obj/item/weapon/cell/charging = null
 	var/chargelevel = -1
@@ -522,7 +522,7 @@
 /obj/machinery/light_switch
 	desc = "A light switch"
 	name = "Light Switch"
-	icon = 'power.dmi'
+	icon = 'icons/obj/power.dmi'
 	icon_state = "light1"
 	anchored = 1.0
 	var/on = 1
@@ -533,7 +533,7 @@
 /obj/machinery/crema_switch
 	desc = "Burn baby burn!"
 	name = "Crematorium Igniter"
-	icon = 'power.dmi'
+	icon = 'icons/obj/power.dmi'
 	icon_state = "crema_switch"
 	anchored = 1.0
 	req_access = list(access_crematorium)
@@ -546,7 +546,7 @@
 /obj/machinery/vending
 	name = "Vendomat"
 	desc = "A generic vending machine."
-	icon = 'vending.dmi'
+	icon = 'icons/obj/vending.dmi'
 	icon_state = "generic"
 	anchored = 1
 	density = 1
@@ -693,7 +693,7 @@
 /obj/machinery/vending/toxins
 	name = "Toxins dispenser"
 	desc = "Medical drug dispenser."
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "dispenser"
 	//icon_deny = "med-deny"
 	req_access_txt = "7"
@@ -831,7 +831,7 @@
 /obj/machinery/gibber
 	name = "Gibber"
 	desc = "The name isn't descriptive enough?"
-	icon = 'kitchen.dmi'
+	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "grinder"
 	density = 1
 	anchored = 1

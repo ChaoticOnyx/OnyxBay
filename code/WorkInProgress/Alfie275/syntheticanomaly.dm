@@ -2,7 +2,7 @@
 
 /obj/item/weapon/anobattery
 	name = "Anomaly power battery"
-	icon = 'anomaly.dmi'
+	icon = 'icons/obj/anomaly.dmi'
 	icon_state = "anobattery0"
 	var/list/datum/anomalyeffect/e = list()
 	var/capacity = 200
@@ -55,7 +55,7 @@
 
 /obj/item/weapon/anodevice
 	name = "Anomaly power utilizer"
-	icon = 'anomaly.dmi'
+	icon = 'icons/obj/anomaly.dmi'
 	icon_state = "anodev"
 	var/cooldown
 	var/timing = 0

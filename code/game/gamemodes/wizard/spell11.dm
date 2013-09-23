@@ -31,7 +31,7 @@
 		animation.name = "water"
 		animation.density = 0
 		animation.anchored = 1
-		animation.icon = 'mob.dmi'
+		animation.icon = 'icons/mob/mob.dmi'
 		animation.icon_state = "liquify"
 		animation.layer = 5
 		animation.master = holder
@@ -58,7 +58,7 @@
 
 /obj/dummy/spell_invis
 	name = "water"
-	icon = 'effects.dmi'
+	icon = 'icons/effects/effects.dmi'
 	icon_state = "nothing"
 	invisibility = 101
 	var/canmove = 1

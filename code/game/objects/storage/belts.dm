@@ -4,7 +4,7 @@
 /obj/item/weapon/storage/belt/utility
 	name = "utility belt"
 	desc = "Can hold various tools."
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "utilitybelt"
 	item_state = "utilitybelt"
 	can_hold = list("obj/item/device/radio","obj/item/weapon/hand_labeler","obj/item/weapon/oreprospector","/obj/item/device/pda","/obj/item/weapon/pickaxe","/obj/item/device/analyzer","/obj/item/weapon/crowbar","/obj/item/weapon/screwdriver","/obj/item/weapon/weldingtool","/obj/item/weapon/wirecutters","/obj/item/weapon/wrench","/obj/item/device/multitool","/obj/item/device/flashlight","/obj/item/weapon/CableCoil/power","obj/item/device/t_scanner")
@@ -12,7 +12,7 @@
 /obj/item/weapon/storage/belt/security
 	name = "security belt"
 	desc = "Can hold various security items."
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "securitybelt"
 	item_state = "securitybelt"
 	can_hold = list("obj/item/device/radio","obj/item/device/detective_scanner","obj/item/device/ammo","/obj/item/device/pda","obj/item/weapon/gun/revolver","obj/item/weapon/gun/detectiverevolver/","/obj/item/weapon/gun/energy/general","/obj/item/weapon/handcuffs","/obj/item/device/flash","/obj/item/weapon/baton","/obj/item/weapon/classic_baton","/obj/item/weapon/gun/energy/taser_gun","/obj/item/weapon/flashbang","/obj/item/weapon/empgrenade","/obj/item/weapon/camera_test","/obj/item/weapon/recorder")
@@ -30,7 +30,7 @@
 /obj/item/weapon/storage/belt/medical
 	name = "medical belt"
 	desc = "Can hold various medical items."
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "medbelt"
 	item_state = "medbelt"
 	can_hold = list("obj/item/device/radio","/obj/item/device/pda","/obj/item/device/healthanalyzer","/obj/item/device/geneticsanalyzer","/obj/item/weapon/reagent_containers/syringe","/obj/item/weapon/medical","/obj/item/weapon/storage/pill_bottle","/obj/item/weapon/reagent_containers/glass/beaker","/obj/item/weapon/reagent_containers/glass/bottle","/obj/item/weapon/reagent_containers/glass/bloodpack","/obj/item/weapon/reagent_containers/pill","/obj/item/device/antibody_scanner")

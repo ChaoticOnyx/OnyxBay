@@ -1,6 +1,6 @@
 /obj/machinery/network/router
 	name = "Router"
-	icon = 'netobjs.dmi'
+	icon = 'icons/obj/machines/netobjs.dmi'
 	icon_state = "router"
 	desc = "A high-speed network router.  The lights are mesmerizing"
 	anchored = 1.0

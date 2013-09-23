@@ -20,7 +20,7 @@
 		spawn(0)
 			var/obj/overlay/A = new /obj/overlay( usr.loc )
 			A.icon_state = "magicm"
-			A.icon = 'wizard.dmi'
+			A.icon = 'icons/obj/wizard.dmi'
 			A.name = "a magic missile"
 			A.anchored = 0
 			A.density = 0
@@ -29,7 +29,7 @@
 			for(i=0, i<20, i++)
 				var/obj/overlay/B = new /obj/overlay( A.loc )
 				B.icon_state = "magicmd"
-				B.icon = 'wizard.dmi'
+				B.icon = 'icons/obj/wizard.dmi'
 				B.name = "trail"
 				B.anchored = 1
 				B.density = 0

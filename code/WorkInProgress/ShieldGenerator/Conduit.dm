@@ -1,5 +1,5 @@
 /obj/cabling/shield
-	icon = 'shield_cable.dmi'
+	icon = 'icons/obj/shield_cable.dmi'
 
 	name = "Shielding Cable"
 	layer = 2.4

@@ -247,11 +247,11 @@
 				if(head_rev.current.client)
 					for(var/datum/mind/rev in revolutionaries)
 						if(rev.current)
-							var/I = image('mob.dmi', loc = rev.current, icon_state = "rev")
+							var/I = image('icons/mob/mob.dmi', loc = rev.current, icon_state = "rev")
 							head_rev.current.client.images += I
 					for(var/datum/mind/head_rev_1 in head_revolutionaries)
 						if(head_rev_1.current)
-							var/I = image('mob.dmi', loc = head_rev_1.current, icon_state = "rev_head")
+							var/I = image('icons/mob/mob.dmi', loc = head_rev_1.current, icon_state = "rev_head")
 							head_rev.current.client.images += I
 
 		for(var/datum/mind/rev in revolutionaries)
@@ -259,11 +259,11 @@
 				if(rev.current.client)
 					for(var/datum/mind/head_rev in head_revolutionaries)
 						if(head_rev.current)
-							var/I = image('mob.dmi', loc = head_rev.current, icon_state = "rev")
+							var/I = image('icons/mob/mob.dmi', loc = head_rev.current, icon_state = "rev")
 							rev.current.client.images += I
 					for(var/datum/mind/rev_1 in revolutionaries)
 						if(rev_1.current)
-							var/I = image('mob.dmi', loc = rev_1.current, icon_state = "rev_head")
+							var/I = image('icons/mob/mob.dmi', loc = rev_1.current, icon_state = "rev_head")
 							rev.current.client.images += I
 
 /datum/game_mode/revolution/proc/update_rev_icons_added(datum/mind/rev_mind)
@@ -271,21 +271,21 @@
 		for(var/datum/mind/head_rev_mind in head_revolutionaries)
 			if(head_rev_mind.current)
 				if(head_rev_mind.current.client)
-					var/I = image('mob.dmi', loc = rev_mind.current, icon_state = "rev")
+					var/I = image('icons/mob/mob.dmi', loc = rev_mind.current, icon_state = "rev")
 					head_rev_mind.current.client.images += I
 			if(rev_mind.current)
 				if(rev_mind.current.client)
-					var/image/J = image('mob.dmi', loc = head_rev_mind.current, icon_state = "rev_head")
+					var/image/J = image('icons/mob/mob.dmi', loc = head_rev_mind.current, icon_state = "rev_head")
 					rev_mind.current.client.images += J
 
 		for(var/datum/mind/rev_mind_1 in revolutionaries)
 			if(rev_mind_1.current)
 				if(rev_mind_1.current.client)
-					var/I = image('mob.dmi', loc = rev_mind.current, icon_state = "rev")
+					var/I = image('icons/mob/mob.dmi', loc = rev_mind.current, icon_state = "rev")
 					rev_mind_1.current.client.images += I
 			if(rev_mind.current)
 				if(rev_mind.current.client)
-					var/image/J = image('mob.dmi', loc = rev_mind_1.current, icon_state = "rev")
+					var/image/J = image('icons/mob/mob.dmi', loc = rev_mind_1.current, icon_state = "rev")
 					rev_mind.current.client.images += J
 
 /datum/game_mode/revolution/proc/update_rev_icons_removed(datum/mind/rev_mind)

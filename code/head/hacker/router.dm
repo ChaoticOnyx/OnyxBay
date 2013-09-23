@@ -1,6 +1,6 @@
 /obj/machinery/router
 	networking = 1
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "console"
 	name = "router"
 	density = 1

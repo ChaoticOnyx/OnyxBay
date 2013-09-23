@@ -121,7 +121,7 @@
 						Tile.Blend(icon(A.icon, A.icon_state, A.dir, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31 + A.pixel_x, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31 + A.pixel_y)
 						HighestDrawnLayer = A.layer
 			if(Turf.loc:ul_Lighting)
-				Tile.Blend(icon('ULIcons.dmi', "[ul_Clamp(min(Turf.LightLevelRed, max(Turf.MaxRed)))]-[ul_Clamp(min(Turf.LightLevelGreen, max(Turf.MaxGreen)))]-[ul_Clamp(min(Turf.LightLevelBlue, max(Turf.MaxBlue)))]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
+				Tile.Blend(icon('icons/effects/ULIcons.dmi', "[ul_Clamp(min(Turf.LightLevelRed, max(Turf.MaxRed)))]-[ul_Clamp(min(Turf.LightLevelGreen, max(Turf.MaxGreen)))]-[ul_Clamp(min(Turf.LightLevelBlue, max(Turf.MaxBlue)))]", SOUTH, 1, 0), ICON_OVERLAY, ((WorldX - ((ImageX - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31, ((WorldY - ((ImageY - 1) * KSA_TILES_PER_IMAGE)) * KSA_ICON_SIZE) - 31)
 
 	usr << browse(Tile, "window=picture;file=[ImageX]-[ImageY]-[ImageZ].png;display=0")
 

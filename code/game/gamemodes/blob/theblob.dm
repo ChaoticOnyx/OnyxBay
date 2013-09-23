@@ -10,7 +10,7 @@
 /obj/blob/Del()
 	blobs -= src
 	//world << "del blob #[blobs.len]"
-	//playsound(src.loc, 'splat.ogg', 100, 1)
+	//playsound(src.loc, 'sound/effects/splat.ogg', 100, 1)
 	..()
 
 /obj/blob/proc/poisoned(iteration)
@@ -87,7 +87,7 @@
 
 /obj/blob/proc/update()
 	if(health<=0)
-		playsound(src.loc, 'splat.ogg', 50, 1)
+		playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
 		del(src)
 		return
 	if(health<10)
@@ -111,7 +111,7 @@
 
 
 /obj/blob/attackby(var/obj/item/weapon/W, var/mob/user)
-	playsound(src.loc, 'attackblob.ogg', 50, 1)
+	playsound(src.loc, 'sound/effects/attackblob.ogg', 50, 1)
 
 	src.visible_message("\red <B>The blob has been attacked with \the [W][(user ? " by [user]." : ".")]")
 
@@ -122,7 +122,7 @@
 
 		if(WT.welding)
 			damage = 15
-			playsound(src.loc, 'Welder.ogg', 100, 1)
+			playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 
 	src.health -= damage
 	src.update()

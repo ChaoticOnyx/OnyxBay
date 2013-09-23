@@ -25,7 +25,7 @@
 
 /obj/stool/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/weapon/wrench))
-		playsound(src.loc, 'Ratchet.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		new /obj/item/weapon/sheet/metal( src.loc )
 		//SN src = null
 		del(src)
@@ -35,7 +35,7 @@
 /obj/stool/bed/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
 	if (istype(W, /obj/item/weapon/wrench))
-		playsound(src.loc, 'Ratchet.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		new /obj/item/weapon/sheet/metal( src.loc )
 		del(src)
 	return
@@ -44,7 +44,7 @@
 	..()
 	if (istype(W, /obj/item/assembly/shock_kit))
 		var/obj/stool/chair/e_chair/E = new /obj/stool/chair/e_chair( src.loc )
-		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		E.dir = src.dir
 		E.part1 = W
 		W.loc = E
@@ -149,7 +149,7 @@
 /obj/stool/chair/e_chair/New()
 
 	src.overl = new /atom/movable/overlay( src.loc )
-	src.overl.icon = 'objects.dmi'
+	src.overl.icon = 'icons/obj/objects.dmi'
 	src.overl.icon_state = "e_chairo0"
 	src.overl.layer = 5
 	src.overl.name = "electrified chair"
@@ -167,7 +167,7 @@
 
 	if (istype(W, /obj/item/weapon/wrench))
 		var/obj/stool/chair/C = new /obj/stool/chair( src.loc )
-		playsound(src.loc, 'Ratchet.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		C.dir = src.dir
 		src.part1.loc = src.loc
 		src.part1.master = null
@@ -286,7 +286,7 @@
 
 /obj/stool/bed/roller
 	name = "stretcher"
-	icon = 'rollerbed.dmi'
+	icon = 'icons/obj/rollerbed.dmi'
 	icon_state = "down"
 	anchored = 0
 

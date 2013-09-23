@@ -4,7 +4,7 @@
 /obj/item/alien/weeds/
 	layer = 2
 	health = 15
-	icon = 'alien.dmi'
+	icon = 'icons/mob/alien.dmi'
 	name = "weeds"
 	anchored = 1
 	var/dead = 0

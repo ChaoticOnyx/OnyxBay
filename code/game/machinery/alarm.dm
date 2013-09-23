@@ -324,7 +324,7 @@ obj/machinery/alarm/proc
 			var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in E.loc
 			if(isnull(LightTest))
 				var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(E.loc)
-				var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+				var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
 				world << imagelight
 			if((!E.arePowerSystemsOn()) || (E.stat & NOPOWER)) continue
 			if(!E.density)
@@ -383,7 +383,7 @@ obj/machinery/alarm/proc
 					var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in T
 					if(isnull(LightTest))
 						var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(T)
-						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 			RA.activate_air_doors(manual*5)
 		A.air_doors_activated = 1
@@ -622,7 +622,7 @@ obj/machinery/alarm/proc
 		var/obj/LightTest = locate(/obj/alertlighting/firelight) in E.loc
 		if(isnull(LightTest))
 			var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(E.loc)
-			var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+			var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blue")
 			world << imagelight
 		if(!E.blocked)
 			if(E.operating)
@@ -636,10 +636,10 @@ obj/machinery/alarm/proc
 				var/obj/LightTest = locate(/obj/alertlighting/firelight) in T
 				if(isnull(LightTest))
 					var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(T)
-					var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+					var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blue")
 					world << imagelight
 		RA.firealert()
-	//playsound(src.loc, 'signal.ogg', 75, 0)
+	//playsound(src.loc, 'sound/machines/signal.ogg', 75, 0)
 	return
 
 

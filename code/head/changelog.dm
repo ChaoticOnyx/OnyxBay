@@ -4,9 +4,9 @@ client/proc/showchanges()
 	if(!changelogmysql)
 		var/DBQuery/r_query = dbcon.NewQuery("SELECT * FROM `changelog` ORDER BY `id` DESC")
 		changelogmysql += "<head><style type='text/css'>div.ex{width:400px;padding:10px;border-bottom:thin dashed #ff0000;margin:auto;}<body>body{font-size: 9pt;font-family: Verdana, sans-serif;}h1, h2, h3, h4, h5, h6{color: #00f;font-family: Georgia, Arial, sans-serif;}img { border: 0px; }p.lic {font-size: 6pt;}</style></head>"
-		src << browse_rsc('postcardsmall.jpg')
-		src << browse_rsc('somerights20.png')
-		src << browse_rsc('88x31.png')
+		src << browse_rsc('icons/postcardsmall.jpg')
+		src << browse_rsc('icons/somerights20.png')
+		src << browse_rsc('icons/88x31.png')
 		changelogmysql += {"
 <img src="postcardsmall.jpg" alt="Goon Station 13" />
 <h1>Bay Station 12</h1>

@@ -1,5 +1,5 @@
 /sound/turntable/test
-	file = 'TestLoop1.ogg'
+	file = 'sound/turntable/TestLoop1.ogg'
 	falloff = 2
 	repeat = 1
 
@@ -8,7 +8,7 @@
 /obj/machinery/party/turntable
 	name = "turntable"
 	desc = "A turntable used for parties and shit."
-	icon = 'lasers2.dmi'
+	icon = 'icons/effects/lasers2.dmi'
 	icon_state = "turntable"
 	var/playing = 0
 	anchored = 1
@@ -16,7 +16,7 @@
 /obj/machinery/party/mixer
 	name = "mixer"
 	desc = "A mixing board for mixing music"
-	icon = 'lasers2.dmi'
+	icon = 'icons/effects/lasers2.dmi'
 	icon_state = "mixer"
 	anchored = 1
 
@@ -44,7 +44,7 @@
 	if( href_list["on1"] )
 		if(src.playing == 0)
 			//world << "Should be working..."
-			var/sound/S = sound('TestLoop1.ogg')
+			var/sound/S = sound('sound/turntable/TestLoop1.ogg')
 			S.repeat = 1
 			S.channel = 10
 			S.falloff = 2
@@ -77,7 +77,7 @@
 	if( href_list["on2"] )
 		if(src.playing == 0)
 			//world << "Should be working..."
-			var/sound/S = sound('TestLoop2.ogg')
+			var/sound/S = sound('sound/turntable/TestLoop2.ogg')
 			S.repeat = 1
 			S.channel = 10
 			S.falloff = 2
@@ -108,7 +108,7 @@
 	if( href_list["on3"] )
 		if(src.playing == 0)
 			//world << "Should be working..."
-			var/sound/S = sound('TestLoop3.ogg')
+			var/sound/S = sound('sound/turntable/TestLoop3.ogg')
 			S.repeat = 1
 			S.channel = 10
 			S.falloff = 2
@@ -157,7 +157,7 @@
 /obj/machinery/party/lasermachine
 	name = "laser machine"
 	desc = "A laser machine that shoots lasers."
-	icon = 'lasers2.dmi'
+	icon = 'icons/effects/lasers2.dmi'
 	icon_state = "lasermachine"
 	anchored = 1
 	var/mirrored = 0
@@ -165,7 +165,7 @@
 /obj/effects/laser
 	name = "laser"
 	desc = "A laser..."
-	icon = 'lasers2.dmi'
+	icon = 'icons/effects/lasers2.dmi'
 	icon_state = "laserred1"
 	anchored = 1
 	layer = 4

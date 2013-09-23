@@ -26,7 +26,7 @@
 /obj/item/weapon/pipesegment/
 	name = "Pipe segment"
 	desc = "used for emergency pipe repairs"
-	icon = 'pipes.dmi'
+	icon = 'icons/obj/pipes.dmi'
 	icon_state = "exposed"
 	m_amt = 50
 /obj/item/weapon/bedsheet/attack_self(mob/user as mob)
@@ -36,18 +36,18 @@
 	return
 obj/item/weapon/cane
 	name = "Cane"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "cane"
 	m_amt = 5
 
 /obj/item/weapon/meltedmetal
 	name = "Ruined metal"
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "molten"
 	m_amt = 0
 /obj/item/weapon/meltedglass
 	name = "Ruined glass"
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "molten"
 	m_amt = 0
 /obj/item/weapon/meltedmetal/temperature_expose()
@@ -83,7 +83,7 @@ obj/item/weapon/cane
 		O.place = "handcuff"
 		M.requests += O
 		spawn( 0 )
-			playsound(src.loc, 'handcuffs.ogg', 30, 1, -2)
+			playsound(src.loc, 'sound/weapons/handcuffs.ogg', 30, 1, -2)
 			O.process()
 			return
 	else
@@ -96,7 +96,7 @@ obj/item/weapon/cane
 		O.place = "handcuff"
 		M.requests += O
 		spawn( 0 )
-			playsound(src.loc, 'handcuffs.ogg', 30, 1, -2)
+			playsound(src.loc, 'sound/weapons/handcuffs.ogg', 30, 1, -2)
 			O.process()
 			return
 	return
@@ -123,7 +123,7 @@ obj/item/weapon/cane
 		var/obj/o = target
 		o.reagents.trans_to(src, 50)
 		user << "\blue Extinguisher refilled"
-		playsound(src.loc, 'zzzt.ogg', 50, 1, -6)
+		playsound(src.loc, 'sound/effects/zzzt.ogg', 50, 1, -6)
 		return
 
 	if (!safety)
@@ -135,7 +135,7 @@ obj/item/weapon/cane
 
 		src.last_use = world.time
 
-		playsound(src.loc, 'spray.ogg', 75, 1, -3)
+		playsound(src.loc, 'sound/effects/spray.ogg', 75, 1, -3)
 
 		var/direction = get_dir(src,target)
 

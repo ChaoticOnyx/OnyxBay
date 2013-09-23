@@ -1,7 +1,7 @@
 /obj/item/weapon/recorder
 	name = "Voice Recorder"
 	desc = "Records voice"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "implantpad-0"
 	w_class = 2.0
 	var/obj/item/weapon/voicedisk/disk
@@ -140,7 +140,7 @@
 
 /obj/item/weapon/voicedisk/
 	name = "Voice Disk"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "datadisk0"
 	item_state = "card-id"
 	w_class = 1.0

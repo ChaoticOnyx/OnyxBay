@@ -1,6 +1,6 @@
 /obj/item/weapon/disk
 	name = "Disk"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	w_class = 1.0
 
 /obj/item/weapon/disk/data

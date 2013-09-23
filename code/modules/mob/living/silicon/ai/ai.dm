@@ -1,7 +1,7 @@
 /mob/living/silicon/ai
 	name = "AI"
 	voice_name = "synthesized voice"
-	icon = 'mob.dmi'//
+	icon = 'icons/mob/mob.dmi'//
 	icon_state = "ai"
 	var/network = "Luna"
 	var/obj/machinery/camera/current = null

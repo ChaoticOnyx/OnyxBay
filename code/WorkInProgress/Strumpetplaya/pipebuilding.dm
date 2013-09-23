@@ -1,7 +1,7 @@
 obj/item/weapon/pipe_segment
 	name = "pipe segment"
 	desc = "This is a segment of pipe."
-	icon = 'regular.dmi'
+	icon = 'icons/obj/pipes/regular.dmi'
 	icon_state = "segment"
 	m_amt = 7500
 

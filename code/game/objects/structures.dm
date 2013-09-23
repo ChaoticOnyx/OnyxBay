@@ -1,5 +1,5 @@
 obj/structure
-	icon = 'structures.dmi'
+	icon = 'icons/obj/structures.dmi'
 
 	girder
 		icon_state = "girder"
@@ -17,7 +17,7 @@ obj/structure
 
 /obj/structure/girder/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/wrench) && state == 0 && anchored && !istype(src,/obj/structure/girder/displaced))
-		playsound(src.loc, 'Ratchet.ogg', 100, 1)
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 		var/turf/T = get_turf(user)
 		user << "\blue Now disassembling the girder"
 		sleep(40)
@@ -27,7 +27,7 @@ obj/structure
 			del(src)
 
 	else if(istype(W, /obj/item/weapon/screwdriver) && state == 2 && istype(src,/obj/structure/girder/reinforced))
-		playsound(src.loc, 'Screwdriver.ogg', 100, 1)
+		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		var/turf/T = get_turf(user)
 		user << "\blue Now unsecuring support struts"
 		sleep(40)
@@ -36,7 +36,7 @@ obj/structure
 			state = 1
 
 	else if(istype(W, /obj/item/weapon/wirecutters) && istype(src,/obj/structure/girder/reinforced) && state == 1)
-		playsound(src.loc, 'Wirecutter.ogg', 100, 1)
+		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		var/turf/T = get_turf(user)
 		user << "\blue Now removing support struts"
 		sleep(40)
@@ -46,7 +46,7 @@ obj/structure
 			del(src)
 
 	else if(istype(W, /obj/item/weapon/crowbar) && state == 0 && anchored )
-		playsound(src.loc, 'Crowbar.ogg', 100, 1)
+		playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 		var/turf/T = get_turf(user)
 		user << "\blue Now dislodging the girder"
 		sleep(40)
@@ -56,7 +56,7 @@ obj/structure
 			del(src)
 
 	else if(istype(W, /obj/item/weapon/wrench) && state == 0 && !anchored )
-		playsound(src.loc, 'Ratchet.ogg', 100, 1)
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 		var/turf/T = get_turf(user)
 		user << "\blue Now securing the girder"
 		sleep(40)

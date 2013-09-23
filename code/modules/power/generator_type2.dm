@@ -17,7 +17,7 @@
 		overlays = null
 
 		if(lastgenlev != 0)
-			overlays += image('power.dmi', "teg-op[lastgenlev]")
+			overlays += image('icons/obj/power.dmi', "teg-op[lastgenlev]")
 
 /obj/machinery/power/generator_type2/process()
 

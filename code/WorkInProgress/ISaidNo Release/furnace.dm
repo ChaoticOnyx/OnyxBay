@@ -21,11 +21,11 @@
 				src.active = 0
 		var/fuelperc = (src.fuel / src.maxfuel) * 100
 		src.overlays = null
-		if (src.active) src.overlays += image('power.dmi', "furn-burn")
-		if (fuelperc >= 20) src.overlays += image('power.dmi', "furn-c1")
-		if (fuelperc >= 40) src.overlays += image('power.dmi', "furn-c2")
-		if (fuelperc >= 60) src.overlays += image('power.dmi', "furn-c3")
-		if (fuelperc >= 80) src.overlays += image('power.dmi', "furn-c4")
+		if (src.active) src.overlays += image('icons/obj/power.dmi', "furn-burn")
+		if (fuelperc >= 20) src.overlays += image('icons/obj/power.dmi', "furn-c1")
+		if (fuelperc >= 40) src.overlays += image('icons/obj/power.dmi', "furn-c2")
+		if (fuelperc >= 60) src.overlays += image('icons/obj/power.dmi', "furn-c3")
+		if (fuelperc >= 80) src.overlays += image('icons/obj/power.dmi', "furn-c4")
 
 	attack_hand(var/mob/user as mob)
 		if (!src.fuel) user << "\red There is no fuel in the furnace!"

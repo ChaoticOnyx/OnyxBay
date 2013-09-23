@@ -20,7 +20,7 @@
 		usr.verbs += /client/proc/fireball
 	var/obj/overlay/A = new /obj/overlay( usr.loc )
 	A.icon_state = "fireball"
-	A.icon = 'wizard.dmi'
+	A.icon = 'icons/obj/wizard.dmi'
 	A.name = "a fireball"
 	A.anchored = 0
 	A.density = 0

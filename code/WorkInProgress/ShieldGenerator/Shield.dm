@@ -4,7 +4,7 @@
 /obj/shielding/shield
 	name = "shield"
 	desc = "An energy shield."
-	icon = 'effects.dmi'
+	icon = 'icons/effects/effects.dmi'
 	icon_state = "shieldsparkles"
 	anchored = 1
 	invisibility = 101

@@ -2,7 +2,7 @@
 /datum/construction_UI/light_fixture
 	states = list("tube-empty&dir=1", "tube-empty&dir=2", "tube-empty&dir=4", "tube-empty&dir=8")
 
-	icon = 'lighting.dmi'
+	icon = 'icons/effects/lighting.dmi'
 	default_state = "tube-empty"
 
 	var/obj/item/weapon/light_fixture/parts
@@ -37,13 +37,13 @@
 
 
 /obj/item/weapon/light_fixture
-	icon = 'lighting.dmi'
+	icon = 'icons/effects/lighting.dmi'
 	icon_state = "tube-empty"
 	pixel_y = 16
 	name = "spare light fixture"
 
 /obj/item/weapon/light_fixture/small
-	icon = 'lighting.dmi'
+	icon = 'icons/effects/lighting.dmi'
 	icon_state = "bulb-empty"
 
 /obj/item/weapon/light_fixture/proc/build_light(mob/user, turf/location)

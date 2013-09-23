@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////
 /obj/dummy/liquid
 	name = "water"
-	icon = 'effects.dmi'
+	icon = 'icons/effects/effects.dmi'
 	icon_state = "nothing"
 	invisibility = 101
 	var/canmove = 1
@@ -14,7 +14,7 @@
 
 /obj/item/weapon/vial
 	name = "glass vial"
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	desc = "a glass vial filled with a strange liquid"
 	icon_state = "vialgreen"
 	item_state = "vialgreen"
@@ -26,14 +26,14 @@
 
 /obj/item/weapon/vial/green
 	name = "glass vial"
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	desc = "a glass vial filled with a strange green liquid"
 	icon_state = "vialgreen"
 	item_state = "vialgreen"
 
 /obj/item/weapon/vial/blue
 	name = "glass vial"
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	desc = "a glass vial filled with a shimmering blue liquid"
 	icon_state = "vialblue"
 	item_state = "vialblue"
@@ -77,12 +77,12 @@
 	O.name = "green liquid"
 	O.density = 0
 	O.anchored = 1
-	O.icon = 'effects.dmi'
+	O.icon = 'icons/effects/effects.dmi'
 	O.icon_state = "greenshatter"
 	O2.name = "broken bits of glass"
 	O2.density = 0
 	O2.anchored = 1
-	O2.icon = 'objects.dmi'
+	O2.icon = 'icons/obj/objects.dmi'
 	O2.icon_state = "shards"
 	flick("greenshatter2",O)
 	O.icon_state = "nothing"
@@ -103,12 +103,12 @@
 	O.name = "green liquid"
 	O.density = 0
 	O.anchored = 1
-	O.icon = 'effects.dmi'
+	O.icon = 'icons/effects/effects.dmi'
 	O.icon_state = "blueshatter"
 	O2.name = "broken bits of glass"
 	O2.density = 0
 	O2.anchored = 1
-	O2.icon = 'objects.dmi'
+	O2.icon = 'icons/obj/objects.dmi'
 	O2.icon_state = "shards"
 
 	liquify(user)
@@ -132,12 +132,12 @@
 	O.name = "green liquid"
 	O.density = 0
 	O.anchored = 1
-	O.icon = 'effects.dmi'
+	O.icon = 'icons/effects/effects.dmi'
 	O.icon_state = "blueshatter"
 	O2.name = "broken bits of glass"
 	O2.density = 0
 	O2.anchored = 1
-	O2.icon = 'objects.dmi'
+	O2.icon = 'icons/obj/objects.dmi'
 	O2.icon_state = "shards"
 
 	for(var/mob/living/carbon/human/H in view(1, sourceloc))
@@ -160,7 +160,7 @@
 		animation.name = "water"
 		animation.density = 0
 		animation.anchored = 1
-		animation.icon = 'mob.dmi'
+		animation.icon = 'icons/mob/mob.dmi'
 		animation.icon_state = "liquify"
 		animation.layer = 5
 		animation.master = holder
@@ -178,7 +178,7 @@
 					var/direction = pick(cardinal8)
 					water1.name = "water"
 					water1.density = 0
-					water1.icon = 'water.dmi'
+					water1.icon = 'icons/effects/water.dmi'
 					water1.icon_state = "extinguish"
 					for(i=0, i<pick(1,2,3), i++)
 						sleep(5)
@@ -200,7 +200,7 @@
 					turf = get_step(turf,direction)
 				var/obj/effects/water/water2 = new /obj/effects/water( turf )
 				water2.name = "water"
-				water2.icon = 'water.dmi'
+				water2.icon = 'icons/effects/water.dmi'
 				water2.icon_state = "extinguish"
 				walk_to(water2,mobloc,-1,5)
 				sleep(20)

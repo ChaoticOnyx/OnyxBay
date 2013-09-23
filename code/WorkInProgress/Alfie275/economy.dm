@@ -1,7 +1,7 @@
 /obj/item/weapon/money
 	name = "Space Cash"
 	desc = "You're rich, bitch!"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "spacecash"
 	opacity = 0
 	density = 0

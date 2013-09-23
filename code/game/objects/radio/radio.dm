@@ -162,7 +162,7 @@ Frequency:
 		var/test = say_test(message)
 		var/list/img = list()
 		for(var/obj/item/device/radio/R in heard_intercom)
-			var/image/ad = image('talk.dmi',R,"radio[test]")
+			var/image/ad = image('icons/misc/talk.dmi',R,"radio[test]")
 			img += ad
 		if (length(heard_normal))
 			var/rendered = "[part_a][from][part_b][message][part_c]"
@@ -236,10 +236,10 @@ Frequency:
 		var/part_b = "</span><b> \icon[src]\[[format_frequency(src.frequency)]\]</b> <span class='message'>"
 		var/part_c = "</span></span>"
 		var/test = say_test(message)
-		var/image/test2 = image('talk.dmi',src,"radio[test]")
+		var/image/test2 = image('icons/misc/talk.dmi',src,"radio[test]")
 		var/list/img = list()
 		for(var/obj/item/device/radio/R in heard_intercom)
-			var/image/ad = image('talk.dmi',R,"radio[test]")
+			var/image/ad = image('icons/misc/talk.dmi',R,"radio[test]")
 			img += ad
 		if (length(heard_masked))
 			var/rendered = "[part_a][M.name][part_b][M.say_quote(message)][part_c]"

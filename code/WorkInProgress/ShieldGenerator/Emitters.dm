@@ -8,7 +8,7 @@
 //
 
 /obj/machinery/shielding/emitter
-	icon = 'shieldgen.dmi'
+	icon = 'icons/obj/machines/shieldgen.dmi'
 	anchored = 1
 	level = 1
 	var/online = 0

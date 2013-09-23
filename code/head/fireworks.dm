@@ -1,6 +1,6 @@
 obj/item/weapon/firework
 	name = "fireworks"
-	icon = 'fireworks.dmi'
+	icon = 'icons/obj/fireworks.dmi'
 	icon_state = "rocket_0"
 	var/litzor = 0
 	var/datum/effects/system/sparkel_spread/S
@@ -22,7 +22,7 @@ obj/item/weapon/firework/attackby(obj/item/weapon/W,mob/user)
 
 obj/item/weapon/sparkler
 	name = "sparkler"
-	icon = 'fireworks.dmi'
+	icon = 'icons/obj/fireworks.dmi'
 	icon_state = "sparkler_0"
 	var/litzor = 0
 	var/datum/effects/system/spark_spread/S

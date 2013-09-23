@@ -1,5 +1,5 @@
 /obj/signpost
-	icon = 'old_or_unused.dmi'
+	icon = 'icons/misc/old_or_unused.dmi'
 	icon_state = "signpost"
 	anchored = 1
 	density = 1
@@ -26,7 +26,7 @@
 		..()
 		var/sound/S = new/sound()
 		mysound = S
-		S.file = 'shore.ogg'
+		S.file = 'sound/ambience/shore.ogg'
 		S.repeat = 1
 		S.wait = 0
 		S.channel = 123
@@ -54,7 +54,7 @@
 		var/sound/S = null
 		var/sound_delay = 0
 		if(prob(25))
-			S = sound(file=pick('seag1.ogg','seag2.ogg','seag3.ogg'), volume=100)
+			S = sound(file=pick('sound/ambience/seag1.ogg','sound/ambience/seag2.ogg','sound/ambience/seag3.ogg'), volume=100)
 			sound_delay = rand(0, 50)
 
 		for(var/mob/living/carbon/human/H in src)
@@ -71,7 +71,7 @@
 		spawn(60) .()
 
 /obj/item/weapon/beach_ball
-	icon = 'beach.dmi'
+	icon = 'icons/misc/beach.dmi'
 	icon_state = "ball"
 	name = "beach ball"
 	item_state = "clown"
@@ -89,7 +89,7 @@
 
 /*
 /obj/item/weapon/hand_labeler
-	icon = 'old_or_unused.dmi'
+	icon = 'icons/misc/old_or_unused.dmi'
 	icon_state = "labeler"
 	item_state = "flight"
 	name = "Hand labeler"
@@ -213,7 +213,7 @@
 	else
 		if(prob(15))
 			if(weapon_name)
-				my_target << sound(pick('genhit1.ogg', 'genhit2.ogg', 'genhit3.ogg'))
+				my_target << sound(pick('sound/weapons/genhit1.ogg', 'sound/weapons/genhit2.ogg', 'sound/weapons/genhit3.ogg'))
 				my_target.show_message("\red <B>[my_target] has been attacked with [weapon_name] by [src.name] </B>", 1)
 				my_target.halloss += 8
 				if(prob(20)) my_target.eye_blurry += 3
@@ -221,7 +221,7 @@
 					if(!locate(/obj/overlay) in my_target.loc)
 						fake_blood(my_target)
 			else
-				my_target << sound(pick('punch1.ogg','punch2.ogg','punch3.ogg','punch4.ogg'))
+				my_target << sound(pick('sound/weapons/punch1.ogg','sound/weapons/punch2.ogg','sound/weapons/punch3.ogg','sound/weapons/punch4.ogg'))
 				my_target.show_message("\red <B>[src.name] has punched [my_target]!</B>", 1)
 				my_target.halloss += 4
 				if(prob(33))
@@ -239,7 +239,7 @@
 /proc/fake_blood(var/mob/target)
 	var/obj/overlay/O = new/obj/overlay(target.loc)
 	O.name = "blood"
-	var/image/I = image('blood.dmi',O,"floor[rand(1,7)]",O.dir,1)
+	var/image/I = image('icons/effects/blood.dmi',O,"floor[rand(1,7)]",O.dir,1)
 	target << I
 	spawn(300)
 		del(O)

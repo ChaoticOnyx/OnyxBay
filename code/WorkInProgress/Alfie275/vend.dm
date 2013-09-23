@@ -1,7 +1,7 @@
 /obj/machinery/vendingm
 	name = "Vendomat"
 	desc = "A generic vending machine."
-	icon = 'vending.dmi'
+	icon = 'icons/obj/vending.dmi'
 	icon_state = "generic"
 	anchored = 1
 	density = 1
@@ -359,7 +359,7 @@
 	while(count)
 		var/obj/prize = new /obj/item/weapon/c_tube(src.loc)
 		prize.name = "toy sword"
-		prize.icon = 'weapons.dmi'
+		prize.icon = 'icons/obj/weapons.dmi'
 		prize.icon_state = "sword1"
 		prize.desc = "A sword made of cheap plastic."
 		contents+=prize

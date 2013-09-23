@@ -1,7 +1,7 @@
 /obj/submachine/slot_machine
 	name = "Slot Machine"
 	desc = "Gambling for the antisocial."
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "slots-off"
 	anchored = 1
 	density = 1
@@ -160,7 +160,7 @@
 /obj/item/weapon/satchel
 	name = "satchel"
 	desc = "A leather bag. It holds 0/20 items."
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "satchel"
 	flags = ONBELT
 	w_class = 1

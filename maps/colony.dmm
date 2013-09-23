@@ -1,4 +1,4 @@
-"a" = (/turf/space{icon = 'sand.dmi'; icon_state = "1"; sand = 1},/area)
+"a" = (/turf/space{icon = 'icons/obj/sand.dmi'; icon_state = "1"; sand = 1},/area)
 "b" = (/turf/simulated/wall,/area)
 "c" = (/turf/simulated/floor,/area)
 "d" = (/turf/simulated/floor{tag = "icon-caution_south"; icon_state = "caution_south"},/area)

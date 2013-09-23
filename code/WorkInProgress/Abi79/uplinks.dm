@@ -25,7 +25,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 /obj/item/device/uplink/pda
 	name = "uplink module"
 	desc = "An electronic uplink system of unknown origin."
-	icon = 'module.dmi'
+	icon = 'icons/obj/module.dmi'
 	icon_state = "power_mod"
 	var/obj/item/device/pda/hostpda = null
 
@@ -35,7 +35,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 
 /obj/item/device/uplink/radio
 	name = "ship bounced radio"
-	icon = 'device.dmi'
+	icon = 'icons/obj/device.dmi'
 	icon_state = "radio"
 	var/temp = null 			//Temporary storage area for a message offering the option to destroy the radio
 	var/selfdestruct = 0		//Set to 1 while the radio is self destructing itself.

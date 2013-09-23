@@ -291,7 +291,7 @@ zone
 				if(!shows_plasma)
 					shows_plasma = 1
 					for(var/turf/A in members)
-						A.z_image = image('tile_effects.dmi',A,"plasma")
+						A.z_image = image('icons/effects/tile_effects.dmi',A,"plasma")
 						world << A.z_image
 			else
 				if(shows_plasma)
@@ -689,13 +689,13 @@ turf/proc/ZoneInfo()
 	usr << "Direct Connections: [zone.direct_connections.len]"
 	usr << "Indirect Space Connections: [zone.zone_space_connections.len]"
 	for(var/turf/simulated/T)
-		T.overlays -= 'debug_group.dmi'
-		T.overlays -= 'debug_space.dmi'
-		T.overlays -= 'debug_connect.dmi'
+		T.overlays -= 'icons/debug_group.dmi'
+		T.overlays -= 'icons/debug_space.dmi'
+		T.overlays -= 'icons/debug_connect.dmi'
 	for(var/turf/T in zone.members)
-		T.overlays += 'debug_group.dmi'
+		T.overlays += 'icons/debug_group.dmi'
 	for(var/turf/T in zone.space_connections)
-		T.overlays += 'debug_space.dmi'
+		T.overlays += 'icons/debug_space.dmi'
 		usr << "Space connection located: [T.x],[T.y],[T.z]"
 		usr << "Turf: [T]"
 	for(var/Z in zone.connections)
@@ -703,7 +703,7 @@ turf/proc/ZoneInfo()
 			usr << "Z[zones.Find(Z)] - Connected"
 			var/turflist = zone.connections[Z]
 			for(var/turf/T in turflist)
-				T.overlays += 'debug_connect.dmi'
+				T.overlays += 'icons/debug_connect.dmi'
 		else
 			usr << "Not A Zone: [Z]"
 	for(var/Z in zone.direct_connections)
@@ -726,8 +726,8 @@ client/proc/Zone_Info(turf/T as null|turf)
 		T.ZoneInfo()
 	else
 		for(T in world)
-			T.overlays -= 'debug_space.dmi'
-			T.overlays -= 'debug_group.dmi'
+			T.overlays -= 'icons/debug_space.dmi'
+			T.overlays -= 'icons/debug_group.dmi'
 
 turf/proc
 	HasDoor(window)

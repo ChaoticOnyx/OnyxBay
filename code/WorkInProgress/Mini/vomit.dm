@@ -3,7 +3,7 @@
 	density = 0
 	anchored = 1
 	layer = 2
-	icon = 'decals.dmi'
+	icon = 'icons/obj/decals.dmi'
 	icon_state = "vomit"
 	random_icon_states = list("vomit") //add more if you want
 	var/vomitter

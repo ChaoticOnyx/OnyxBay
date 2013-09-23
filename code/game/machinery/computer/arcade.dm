@@ -1,6 +1,6 @@
 /obj/machinery/computer/arcade/attackby(I as obj, user as mob)
 	if(istype(I, /obj/item/weapon/screwdriver))
-		playsound(src.loc, 'Screwdriver.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
@@ -150,7 +150,7 @@
 			if(4)
 				prize = new /obj/item/weapon/c_tube(src.loc)
 				prize.name = "toy sword"
-				prize.icon = 'weapons.dmi'
+				prize.icon = 'icons/obj/weapons.dmi'
 				prize.icon_state = "sword1"
 				prize.desc = "A sword made of cheap plastic."
 

@@ -2,7 +2,7 @@
 
 /area/New()
 
-	src.icon = 'alert.dmi'
+	src.icon = 'icons/effects/alert.dmi'
 	spawn(1)
 	//world.log << "New: [src] [tag]"
 		if(name == "Space")			// override defaults for space
@@ -15,7 +15,7 @@
 		master = src
 		related = list(src)
 
-		src.icon = 'alert.dmi'
+		src.icon = 'icons/effects/alert.dmi'
 		src.layer = 10
 
 		if(name == "Space")			// override defaults for space
@@ -108,7 +108,7 @@
 					var/obj/LightTest = locate(/obj/alertlighting/firelight) in D.loc
 					if(isnull(LightTest))
 						var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(D.loc)
-						var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blue")
 						world << imagelight
 
 			else if(AEast.density != 1 && AEastA.name != AName)
@@ -123,7 +123,7 @@
 					var/obj/LightTest = locate(/obj/alertlighting/firelight) in D.loc
 					if(isnull(LightTest))
 						var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(D.loc)
-						var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blue")
 						world << imagelight
 
 			else if(ASouth.density != 1 && ASouthA.name != AName)
@@ -138,7 +138,7 @@
 					var/obj/LightTest = locate(/obj/alertlighting/firelight) in D.loc
 					if(isnull(LightTest))
 						var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(D.loc)
-						var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blue")
 						world << imagelight
 
 			else if(AWest.density != 1 && AWestA.name != AName)
@@ -153,7 +153,7 @@
 					var/obj/LightTest = locate(/obj/alertlighting/firelight) in D.loc
 					if(isnull(LightTest))
 						var/obj/alertlighting/firelight/F = new/obj/alertlighting/firelight(D.loc)
-						var/image/imagelight = image('alert.dmi',F,icon_state = "blue")
+						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blue")
 						world << imagelight
 			else
 				if(src.fire != 1)
@@ -283,7 +283,7 @@
 					var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in D.loc
 					if(isnull(LightTest))
 						var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(D.loc)
-						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 
 			else if(AEast.density != 1 && AEastA.name != AName)
@@ -300,7 +300,7 @@
 					var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in D.loc
 					if(isnull(LightTest))
 						var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(D.loc)
-						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 						//world << "Image should be placed"
 
@@ -318,7 +318,7 @@
 					var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in D.loc
 					if(isnull(LightTest))
 						var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(D.loc)
-						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 
 			else if(AWest.density != 1 && AWestA.name != AName)
@@ -335,7 +335,7 @@
 					var/obj/LightTest = locate(/obj/alertlighting/atmoslight) in D.loc
 					if(isnull(LightTest))
 						var/obj/alertlighting/atmoslight/F = new/obj/alertlighting/atmoslight(D.loc)
-						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
+						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 			else
 				if(src.air_doors_activated != 1)

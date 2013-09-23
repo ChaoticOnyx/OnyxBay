@@ -1,7 +1,7 @@
 /obj/filingcabinet
 	name = "Filing Cabinet"
 	desc = "A large cabinet with drawers."
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "messyfiles"
 	density = 1
 	anchored = 1

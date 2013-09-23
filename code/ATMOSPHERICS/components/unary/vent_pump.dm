@@ -1,5 +1,5 @@
 /obj/machinery/atmospherics/unary/vent_pump
-	icon = 'vent_pump.dmi'
+	icon = 'icons/obj/atmospherics/vent_pump.dmi'
 	icon_state = "off"
 
 	name = "Air Vent"
@@ -215,7 +215,7 @@
 		return
 
 /obj/machinery/atmospherics/unary/vent
-	icon = 'vent_pump.dmi'
+	icon = 'icons/obj/atmospherics/vent_pump.dmi'
 	icon_state = "equal"
 
 	name = "Air Vent"
@@ -409,7 +409,7 @@
 		icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
 		return
 /obj/machinery/atmospherics/unary/vent_filter
-	icon = 'pipe_vent.dmi'
+	icon = 'icons/obj/atmospherics/pipe_vent.dmi'
 	icon_state = "intact"
 
 	name = "Vent"

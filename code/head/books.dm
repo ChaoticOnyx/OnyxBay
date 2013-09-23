@@ -22,7 +22,7 @@ Cooking
 #define Cooking 9
 obj/item/weapon/book
 	name = "book"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "book"
 	var/by = "name"
 	var/list/pages = list()
@@ -83,7 +83,7 @@ datum/bookhand/proc/Update()
 
 obj/machinery/bookcase
 	name = "Fiction Bookcase"
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "bookcase"
 	density = 1
 	anchored = 1
@@ -140,7 +140,7 @@ obj/machinery/bookcase/attackby(obj/item/weapon/book/B,mob/user)
 obj/machinery/writersdesk
 	name = "Writer Desk"
 	desc = "A desk with various tools to write a book"
-	icon = 'structures.dmi'
+	icon = 'icons/obj/structures.dmi'
 	icon_state = "writers"
 	density = 1
 	anchored = 1

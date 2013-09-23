@@ -29,8 +29,8 @@ STUN BATON
 		src.icon_state = "sword1"
 		if(src.blood_DNA)
 			var/icon/I = new /icon(initial(src.icon), src.icon_state)
-			I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
-			I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+			I.Blend(new /icon('icons/effects/blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+			I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"),ICON_MULTIPLY)
 			I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
 			src.icon = I
 		src.w_class = 4
@@ -41,8 +41,8 @@ STUN BATON
 		src.icon_state = "sword0"
 		if(src.blood_DNA)
 			var/icon/I = new /icon(initial(src.icon), src.icon_state)
-			I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
-			I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+			I.Blend(new /icon('icons/effects/blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+			I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"),ICON_MULTIPLY)
 			I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
 			src.icon = I
 		src.w_class = 2
@@ -121,8 +121,8 @@ STUN BATON
 		icon_state = "stunbaton"
 	if(src.blood_DNA)
 		var/icon/I = new /icon(initial(src.icon), src.icon_state)
-		I.Blend(new /icon('blood.dmi', "thisisfuckingstupid"),ICON_ADD)
-		I.Blend(new /icon('blood.dmi', "itemblood"),ICON_MULTIPLY)
+		I.Blend(new /icon('icons/effects/blood.dmi', "thisisfuckingstupid"),ICON_ADD)
+		I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"),ICON_MULTIPLY)
 		I.Blend(new /icon(initial(src.icon), src.icon_state),ICON_UNDERLAY) //motherfucker
 		src.icon = I
 /obj/item/weapon/baton/attack_self(mob/user as mob)
@@ -173,7 +173,7 @@ STUN BATON
 	if((charges > 0 && status == 1) && (istype(H, /mob/living/carbon/human)))
 		flick("baton_active", src)
 		if (user.a_intent == "hurt")
-			playsound(src.loc, 'Genhit.ogg', 50, 1, -1)
+			playsound(src.loc, 'sound/weapons/Genhit.ogg', 50, 1, -1)
 			if(isrobot(user))
 				var/mob/living/silicon/robot/R = user
 				R.cell.charge -= 20
@@ -187,7 +187,7 @@ STUN BATON
 			if (M.stunned < 1 && (!(M.mutations & 8))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
 				M.stunned = 1
 		else
-			playsound(src.loc, 'Egloves.ogg', 50, 1, -1)
+			playsound(src.loc, 'sound/weapons/Egloves.ogg', 50, 1, -1)
 			if(isrobot(user))
 				var/mob/living/silicon/robot/R = user
 				R.cell.charge -= 20
@@ -206,7 +206,7 @@ STUN BATON
 	else if((charges > 0 && status == 1) && (istype(M, /mob/living/carbon/monkey)))
 		flick("baton_active", src)
 		if (user.a_intent == "hurt")
-			playsound(src.loc, 'Genhit.ogg', 50, 1, -1)
+			playsound(src.loc, 'sound/weapons/Genhit.ogg', 50, 1, -1)
 			if(isrobot(user))
 				var/mob/living/silicon/robot/R = user
 				R.cell.charge -= 20
@@ -220,7 +220,7 @@ STUN BATON
 			if (M.stunned < 1 && (!(M.mutations & 8)) )
 				M.stunned = 1
 		else
-			playsound(src.loc, 'Egloves.ogg', 50, 1, -1)
+			playsound(src.loc, 'sound/weapons/Egloves.ogg', 50, 1, -1)
 			if(isrobot(user))
 				var/mob/living/silicon/robot/R = user
 				R.cell.charge -= 20
@@ -261,7 +261,7 @@ STUN BATON
 		for(var/mob/O in viewers(M))
 			if (O.client)	O.show_message("\red <B>[M] has been beaten with the police baton by [user]!</B>", 1, "\red You hear someone fall", 2)
 	else
-		playsound(src.loc, 'Genhit.ogg', 50, 1, -1)
+		playsound(src.loc, 'sound/weapons/Genhit.ogg', 50, 1, -1)
 		if (M.weakened < 5 && (!(M.mutations & 8))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
 			M.weakened = 5
 		if (M.stunned < 5 && (!(M.mutations & 8))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)

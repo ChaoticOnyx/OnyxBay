@@ -2,7 +2,7 @@
 
 /obj/machinery/gibber/New()
 	..()
-	src.overlays += image('kitchen.dmi', "grindnotinuse")
+	src.overlays += image('icons/obj/kitchen.dmi', "grindnotinuse")
 
 /obj/machinery/gibber/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
@@ -98,7 +98,7 @@
 		del(src.occupant)
 
 		spawn(src.gibtime)
-			playsound(src.loc, 'splat.ogg', 50, 1)
+			playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
 			operating = 0
 			var/turf/Tx1 = locate(src.x - 1, src.y, src.z)
 			var/turf/Tx2 = locate(src.x - 2, src.y, src.z)
@@ -113,7 +113,7 @@
 				new /obj/decal/cleanable/blood/gibs(Tx3)
 				newmeat3.loc = get_turf(Tx3)
 			if(src.dirty == 1)
-				src.overlays += image('kitchen.dmi', "grindbloody")
+				src.overlays += image('icons/obj/kitchen.dmi', "grindbloody")
 		src.operating = 0
 
 

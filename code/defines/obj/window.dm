@@ -1,6 +1,6 @@
 /obj/window
 	name = "window"
-	icon = 'structures.dmi'
+	icon = 'icons/obj/structures.dmi'
 	icon_state = "window"
 	desc = "A window."
 	density = 1
@@ -45,7 +45,7 @@
 // Pod
 /obj/window_pod
 	name = "window"
-	icon = 'shuttle.dmi'
+	icon = 'icons/turf/shuttle.dmi'
 	icon_state = "window1"
 	desc = "A thick window secured into its frame."
 	dir = 2
@@ -71,7 +71,7 @@
 	..()
 	for(var/mob/O in viewers(src, null))
 		O.show_message(text("\red <B>[src] was hit by [AM].</B>"), 1)
-	playsound(src.loc, 'Glasshit.ogg', 100, 1)
+	playsound(src.loc, 'sound/effects/Glasshit.ogg', 100, 1)
 	return
 
 /obj/window/meteorhit()

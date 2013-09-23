@@ -12,7 +12,7 @@
 /obj/item/device/chem_grenade
 	name = "metal casing"
 	icon_state = "chemg1"
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	item_state = "flashbang"
 	w_class = 2.0
 	force = 2.0
@@ -64,7 +64,7 @@
 			else if(istype(item, /obj/item/weapon/screwdriver))
 				if(beaker_one && beaker_two && attached_device)
 					user << "\blue You lock the assembly."
-					playsound(src.loc, 'Screwdriver.ogg', 25, -3)
+					playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, -3)
 					name = "grenade"
 					icon_state = "chemg3"
 					active = 2
@@ -73,7 +73,7 @@
 		if(2)
 			if(istype(item, /obj/item/weapon/screwdriver))
 				user << "\blue You disarm the [src]!"
-				playsound(src.loc, 'Screwdriver.ogg', 25, -3)
+				playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, -3)
 				name = "grenade casing"
 				icon_state = "chemg2"
 				active = 1
@@ -130,7 +130,7 @@
 /obj/item/device/chem_grenade/proc/explode()
 	if(exploding) return
 	exploding = 1
-	playsound(src.loc, 'bamf.ogg', 50, 1)
+	playsound(src.loc, 'sound/effects/bamf.ogg', 50, 1)
 	beaker_two.reagents.maximum_volume += beaker_one.reagents.maximum_volume // make sure everything can mix
 	beaker_one.reagents.update_total()
 	beaker_one.reagents.trans_to(beaker_two, beaker_one.reagents.total_volume)
@@ -205,7 +205,7 @@
 /obj/syringe_gun_dummy
 	name = ""
 	desc = ""
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "null"
 	anchored = 1
 	density = 0
@@ -217,7 +217,7 @@
 
 /obj/item/weapon/gun/syringe
 	name = "syringe gun"
-	icon = 'gun.dmi'
+	icon = 'icons/obj/gun.dmi'
 	icon_state = "syringegun"
 	item_state = "syringegun"
 	w_class = 3.0
@@ -274,7 +274,7 @@
 			del(S)
 			D.icon_state = "syringeproj"
 			D.name = "syringe"
-			playsound(user.loc, 'syringeproj.ogg', 50, 1)
+			playsound(user.loc, 'sound/effects/syringeproj.ogg', 50, 1)
 			shoot:
 				for(var/i=0, i<6, i++)
 					if(D.loc == trg) break
@@ -310,7 +310,7 @@
 /obj/reagent_dispensers
 	name = "Dispenser"
 	desc = "..."
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "watertank"
 	density = 1
 	anchored = 0
@@ -371,7 +371,7 @@
 /obj/item/weapon/reagent_containers
 	name = "Container"
 	desc = "..."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = null
 	w_class = 1
 	var/amount_per_transfer_from_this = 5
@@ -398,7 +398,7 @@
 /obj/item/weapon/reagent_containers/glass/
 	name = " "
 	desc = " "
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "null"
 	item_state = "null"
 	amount_per_transfer_from_this = 10
@@ -483,7 +483,7 @@
 /obj/item/weapon/reagent_containers/dropper
 	name = "Dropper"
 	desc = "A dropper. Transfers 5 units."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "dropper0"
 	amount_per_transfer_from_this = 5
 	var/filled = 0
@@ -545,7 +545,7 @@
 /obj/item/weapon/reagent_containers/syringe
 	name = "Syringe"
 	desc = "A syringe."
-	icon = 'syringe.dmi'
+	icon = 'icons/obj/syringe.dmi'
 	item_state = "syringe_0"
 	icon_state = "0"
 	amount_per_transfer_from_this = 5
@@ -776,7 +776,7 @@
 /obj/item/weapon/reagent_containers/pill
 	name = "pill"
 	desc = "a pill."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = null
 	item_state = "pill"
 
@@ -854,7 +854,7 @@
 /obj/item/weapon/reagent_containers/glass/bucket
 	desc = "It's a bucket."
 	name = "bucket"
-	icon = 'janitor.dmi'
+	icon = 'icons/obj/janitor.dmi'
 	icon_state = "bucket"
 	item_state = "bucket"
 	amount_per_transfer_from_this = 10
@@ -882,7 +882,7 @@
 /obj/item/weapon/reagent_containers/glass/dispenser
 	name = "reagent glass"
 	desc = "A reagent glass."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "beaker"
 	amount_per_transfer_from_this = 10
 	flags = FPRINT | TABLEPASS | OPENCONTAINER
@@ -900,7 +900,7 @@
 /obj/item/weapon/reagent_containers/glass/large
 	name = "large reagent glass"
 	desc = "A large reagent glass."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "beakerlarge"
 	item_state = "beaker"
 	amount_per_transfer_from_this = 10
@@ -920,7 +920,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/
 	name = "bottle"
 	desc = "A small bottle."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
 	item_state = "atoxinbottle"
 	amount_per_transfer_from_this = 10
@@ -934,7 +934,7 @@
 /obj/item/weapon/reagent_containers/glass/bloodpack/
 	name = "Blood Pack"
 	desc = "A plastic bag of blood."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
 	item_state = "atoxinbottle"
 	amount_per_transfer_from_this = 10
@@ -948,7 +948,7 @@
 /obj/item/weapon/reagent_containers/glass/bloodpack/A
 	name = "Blood Pack A"
 	desc = "A plastic bag of blood with a sticker that says A."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
 	item_state = "atoxinbottle"
 	amount_per_transfer_from_this = 10
@@ -968,7 +968,7 @@
 /obj/item/weapon/reagent_containers/glass/bloodpack/B
 	name = "Blood Pack B"
 	desc = "A plastic bag of blood with a sticker that says B."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
 	item_state = "atoxinbottle"
 	amount_per_transfer_from_this = 10
@@ -988,7 +988,7 @@
 /obj/item/weapon/reagent_containers/glass/bloodpack/O
 	name = "Blood Pack O"
 	desc = "A plastic bag of blood with a sticker that says O."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
 	item_state = "atoxinbottle"
 	amount_per_transfer_from_this = 10
@@ -1007,7 +1007,7 @@
 /obj/item/weapon/reagent_containers/glass/bloodpack/AB
 	name = "Blood Pack AB"
 	desc = "A plastic bag of blood with a sticker that says AB."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
 	item_state = "atoxinbottle"
 	amount_per_transfer_from_this = 10
@@ -1027,7 +1027,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/inaprovaline
 	name = "inaprovaline bottle"
 	desc = "A small bottle. Contains inaprovaline - used to stabilize patients."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
 	amount_per_transfer_from_this = 10
 
@@ -1040,7 +1040,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/toxin
 	name = "toxin bottle"
 	desc = "A small bottle."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle12"
 	amount_per_transfer_from_this = 5
 
@@ -1053,7 +1053,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/stoxin
 	name = "saripidem bottle"
 	desc = "A small bottle."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle20"
 	amount_per_transfer_from_this = 5
 
@@ -1066,7 +1066,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/antitoxin
 	name = "dylovene bottle"
 	desc = "A small bottle."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle17"
 	amount_per_transfer_from_this = 5
 
@@ -1081,7 +1081,7 @@
 /obj/item/weapon/reagent_containers/glass/beaker
 	name = "beaker"
 	desc = "A beaker. Can hold up to 50 units."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "beaker0"
 	item_state = "beaker"
 
@@ -1094,7 +1094,7 @@
 /obj/item/weapon/reagent_containers/glass/beaker/cryoxadone
 	name = "beaker"
 	desc = "A beaker. Can hold up to 30 units."
-	icon = 'chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "beaker0"
 	item_state = "beaker"
 
@@ -1217,7 +1217,7 @@
 /obj/reagent_dispensers/watertank
 	name = "watertank"
 	desc = "A watertank"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "watertank"
 	amount_per_transfer_from_this = 10
 
@@ -1228,7 +1228,7 @@
 /obj/reagent_dispensers/hvwatertank
 	name = "high-volume watertank"
 	desc = "A large watertank"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "hvwatertank"
 	amount_per_transfer_from_this = 10
 
@@ -1239,7 +1239,7 @@
 /obj/reagent_dispensers/fueltank
 	name = "fueltank"
 	desc = "A fueltank"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "weldtank"
 	amount_per_transfer_from_this = 10
 
@@ -1250,7 +1250,7 @@
 /obj/reagent_dispensers/beerkeg
 	name = "beer keg"
 	desc = "A beer keg"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "beertankTEMP"
 	amount_per_transfer_from_this = 10
 

@@ -21,7 +21,7 @@
 	var/air_door_close_delay = 0
 	level = null
 	name = "Space"
-	icon = 'areas.dmi'
+	icon = 'icons/turf/areas.dmi'
 	icon_state = "unknown"
 	layer = 10
 	mouse_opacity = 0
@@ -269,7 +269,7 @@
 /area/atmos
  	name = "Atmospherics"
  	icon_state = "atmos"
- 	music = list('ambiatm1.ogg')
+ 	music = list('sound/ambience/ambiatm1.ogg')
 
 /area/atmos/o2
 	name = "Atmospherics Oxygen Storage"
@@ -594,13 +594,13 @@
 /area/shieldgen
 	name = "Shield Generation"
 	icon_state = "shield"
-	music = 'hiss.ogg'
+	music = 'sound/machines/hiss.ogg'
 
 
 /area/bridge
 	name = "Bridge"
 	icon_state = "bridge"
-	music = 'signal.ogg'
+	music = 'sound/machines/signal.ogg'
 
 /area/bridge/solar
 	name = "Bridge Power Storage"
@@ -725,7 +725,7 @@
 /area/engine/engine_control
 	name = "Engine Control"
 	icon_state = "engine_control"
-	music = list('ambieng1.ogg')
+	music = list('sound/ambience/ambieng1.ogg')
 
 /area/engine/launcher
 	name = "Engine Launcher Room"
@@ -762,7 +762,7 @@
 /area/medical/medbay
 	name = "Medbay"
 	icon_state = "medbay"
-	music = 'signal.ogg'
+	music = 'sound/machines/signal.ogg'
 
 /area/medical/medbay/office
 	name = "Medbay Office"
@@ -820,11 +820,11 @@
 /area/medical/morgue
 	name = "Morgue"
 	icon_state = "morgue"
-	music = list('ambimo1.ogg','ambimo2.ogg')
+	music = list('sound/ambience/ambimo1.ogg','sound/ambience/ambimo2.ogg')
 /area/medical/morgue/autopsy
 	name = "Autopsy"
 	icon_state = "morgue"
-	music = list('ambimo1.ogg','ambimo2.ogg')
+	music = list('sound/ambience/ambimo1.ogg','sound/ambience/ambimo2.ogg')
 
 
 /area/security/main
@@ -1023,7 +1023,7 @@
 /area/chapel/main
 	name = "Chapel"
 	icon_state = "chapel"
-	music = list('ambicha1.ogg','ambicha2.ogg','ambicha3.ogg','ambicha4.ogg')
+	music = list('sound/ambience/ambicha1.ogg','sound/ambience/ambicha2.ogg','sound/ambience/ambicha3.ogg','sound/ambience/ambicha4.ogg')
 
 
 /area/chapel/office

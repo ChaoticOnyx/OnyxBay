@@ -1,7 +1,7 @@
 /obj/item/weapon/reagent_containers/food/drinks
 	name = "drink"
 	desc = "It's a glass."
-	icon = 'food.dmi'
+	icon = 'icons/obj/food.dmi'
 	icon_state = null
 	flags = FPRINT | TABLEPASS | OPENCONTAINER
 	var/gulp_size = 5 //This is now officially broken ... need to think of a nice way to fix it.
@@ -51,7 +51,7 @@
 				spawn(5)
 					reagents.trans_to(M, gulp_size)
 
-			playsound(M.loc,'drink.ogg', rand(10,50), 1)
+			playsound(M.loc,'sound/items/drink.ogg', rand(10,50), 1)
 			return 1
 
 		else if( istype(M, /mob/living/carbon/human) )
@@ -67,7 +67,7 @@
 				spawn(5)
 					reagents.trans_to(M, gulp_size)
 
-			playsound(M.loc,'drink.ogg', rand(10,50), 1)
+			playsound(M.loc,'sound/items/drink.ogg', rand(10,50), 1)
 			return 1
 
 		return 0
@@ -114,7 +114,7 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/glass
 	name = "drinking glass"
-	icon = 'kitchen.dmi'
+	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "glass_empty"
 	item_state = "beaker"
 	flags = FPRINT | TABLEPASS | OPENCONTAINER

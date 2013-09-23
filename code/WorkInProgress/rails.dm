@@ -1,6 +1,6 @@
 obj/rail
 	name = "Rail Track"
-	icon = 'rail.dmi'
+	icon = 'code/WorkInProgress/rail.dmi'
 	anchored = 1
 	var/obj/rail/node1
 	var/obj/rail/node2
@@ -49,7 +49,7 @@ obj/rail/attackby(var/obj/item/weapon/W as obj, var/mob/m as mob)
 
 obj/railcart
 	name = "Cart"
-	icon = 'rail.dmi'
+	icon = 'code/WorkInProgress/rail.dmi'
 	icon_state = "cart"
 	var/obj/rail/oldloc
 	var/on = 0
@@ -139,7 +139,7 @@ obj/item/weapon/track
 	name = "Track piece"
 	m_amt = 250
 	icon_state = "piece"
-	icon = 'rail.dmi'
+	icon = 'code/WorkInProgress/rail.dmi'
 
 
 obj/item/weapon/track/attackby(var/obj/item/weapon/W as obj, var/mob/m as mob)

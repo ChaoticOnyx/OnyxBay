@@ -164,7 +164,7 @@
 	if (length(heard_a))
 		var/message_a = say_quote(message, custommode)
 		var/test = say_test(message)
-		var/image/test2 = image('talk.dmi',src,"h[test]")
+		var/image/test2 = image('icons/misc/talk.dmi',src,"h[test]")
 		if (italics)
 			message_a = "<i>[message_a]</i>"
 

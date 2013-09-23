@@ -2,7 +2,7 @@
 
 
 /obj/constructing/example_object
-	icon = 'constructing_door.dmi'
+	icon = 'icons/constructing_door.dmi'
 	initial_state = "sheet"
 
 	states = list(
@@ -45,7 +45,7 @@
 
 		//This state exists only to show features not present in the other examples
 		"another state" = list(
-			"icon" = 'constructing_door.dmi',
+			"icon" = 'icons/constructing_door.dmi',
 			"icon_state" = "invisible",
 
 			/obj/item/weapon/book = list(
@@ -58,7 +58,7 @@
 
 
 /obj/constructing/airlock
-	icon = 'constructing_airlock.dmi'
+	icon = 'icons/obj/doors/constructing_airlock.dmi'
 	initial_state = "frame"
 	name = "Airlock frame"
 	anchored = 0
@@ -145,50 +145,50 @@
 The following are the various types of door, and their icons/states:
 
 	/obj/machinery/door/airlock
-		icon = 'doorint.dmi'
+		icon = 'icons/obj/doors/doorint.dmi'
 		icon_state = "door_closed"
 	/obj/machinery/door/airlock/command
 		name = "Airlock"
-		icon = 'Doorcom.dmi'
+		icon = 'icons/obj/doors/Doorcom.dmi'
 	/obj/machinery/door/airlock/glass/command
-		icon = 'Doorcomglass.dmi'
+		icon = 'icons/obj/doors/Doorcomglass.dmi'
 	/obj/machinery/door/airlock/security
 		name = "Airlock"
-		icon = 'Doorsec.dmi'
+		icon = 'icons/obj/doors/Doorsec.dmi'
 	/obj/machinery/door/airlock/glass/security
-		icon = 'Doorsecglass.dmi'
+		icon = 'icons/obj/doors/Doorsecglass.dmi'
 	/obj/machinery/door/airlock/security/hatch
-		icon = 'Doorhatcharmoury.dmi'
+		icon = 'icons/obj/doors/Doorhatcharmoury.dmi'
 	/obj/machinery/door/airlock/engineering
 		name = "Airlock"
-		icon = 'Dooreng.dmi'
+		icon = 'icons/obj/doors/Dooreng.dmi'
 	/obj/machinery/door/airlock/glass/engineering
-		icon = 'Doorengglass.dmi'
+		icon = 'icons/obj/doors/Doorengglass.dmi'
 	/obj/machinery/door/airlock/medical
 		name = "Airlock"
-		icon = 'Doormed.dmi'
+		icon = 'icons/obj/doors/doormed.dmi'
 	/obj/machinery/door/airlock/science
 		name = "Airlock"
-		icon = 'Doorsci.dmi'
+		icon = 'icons/obj/doors/doorsci.dmi'
 	/obj/machinery/door/airlock/glass/medical
-		icon = 'Doormedglass.dmi'
+		icon = 'icons/obj/doors/doormedglass.dmi'
 	/obj/machinery/door/airlock/glass/science
-		icon = 'Doorsciglass.dmi'
+		icon = 'icons/obj/doors/doorsciglass.dmi'
 	/obj/machinery/door/airlock/maintenance
 		name = "Maintenance Access"
-		icon = 'Doormaint.dmi'
+		icon = 'icons/obj/doors/Doormaint.dmi'
 	/obj/machinery/door/airlock/maintenance/hatch
 		name = "Maintenance Access"
-		icon = 'Doorhatchmaint.dmi'
+		icon = 'icons/obj/doors/Doorhatchmaint.dmi'
 	/obj/machinery/door/airlock/external
 		name = "External Airlock"
-		icon = 'Doorext.dmi'
+		icon = 'icons/obj/doors/Doorext.dmi'
 	/obj/machinery/door/airlock/glass
 		name = "Glass Airlock"
-		icon = 'Doorglass.dmi'
+		icon = 'icons/obj/doors/Doorglass.dmi'
 	/obj/machinery/door/airlock/highsec
 		name = "Secure Airlock"
-		icon = 'Doorhatchele.dmi'
+		icon = 'icons/obj/doors/Doorhatchele.dmi'
 	/obj/machinery/door/airlock/freezer
-		icon = 'Doorfreezer.dmi'
+		icon = 'icons/obj/doors/Doorfreezer.dmi'
 */

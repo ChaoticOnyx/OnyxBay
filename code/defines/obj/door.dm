@@ -1,6 +1,6 @@
 /obj/machinery/door
 	name = "Door"
-	icon = 'doorint.dmi'
+	icon = 'icons/obj/doors/doorint.dmi'
 	icon_state = "door1"
 	opacity = 1
 	density = 1
@@ -16,7 +16,7 @@
 /obj/machinery/door/firedoor
 	name = "Firelock"
 	explosionstrength = 4
-	icon = 'Doorfire.dmi'
+	icon = 'icons/obj/doors/Doorfire.dmi'
 	icon_state = "door0"
 	var/blocked = null
 	opacity = 0
@@ -25,19 +25,19 @@
 
 /obj/machinery/door/firedoor/border_only
 	name = "Firelock"
-	icon = 'door_fire2.dmi'
+	icon = 'icons/obj/doors/door_fire2.dmi'
 	icon_state = "door0"
 
 /obj/machinery/door/poddoor
 	explosionstrength = 3
 	name = "Podlock"
-	icon = 'rapid_pdoor.dmi'
+	icon = 'icons/obj/doors/rapid_pdoor.dmi'
 	icon_state = "pdoor1"
 	var/id = 1.0
 
 /obj/machinery/door/window
 	name = "Interior Door"
-	icon = 'windoor.dmi'
+	icon = 'icons/obj/doors/windoor.dmi'
 	icon_state = "left"
 	var/base_state = "left"
 	visible = 0.0
@@ -63,7 +63,7 @@
 			open()
 /obj/machinery/door/window/brigdoor
 	name = "Brig Door"
-	icon = 'windoor.dmi'
+	icon = 'icons/obj/doors/windoor.dmi'
 	icon_state = "leftsecure"
 	base_state = "leftsecure"
 	var/id = 1.0

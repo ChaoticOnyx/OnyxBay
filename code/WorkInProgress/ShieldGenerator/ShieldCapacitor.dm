@@ -4,7 +4,7 @@
 /obj/machinery/shielding/capacitor
 	name = "Shielding Capacitor"
 	desc = "A storage device for shield energy"
-	icon = 'shieldgen.dmi'
+	icon = 'icons/obj/machines/shieldgen.dmi'
 	icon_state = "cap"
 	anchored = 1
 	density = 1
@@ -43,7 +43,7 @@
 /obj/machinery/shielding/capacitor/proc/updateicon()
 	clearoverlays()
 	icon_state = "cap[stat & (NOPOWER|BROKEN) ? "-p" : ""]"
-	addoverlay(image('shieldgen.dmi', "c[round(charge * 5 / maxcharge)]"))
+	addoverlay(image('icons/obj/machines/shieldgen.dmi', "c[round(charge * 5 / maxcharge)]"))
 	if(generator && (!generator.OperatingMode || generator.stat))
-		addoverlay(image('shieldgen.dmi', "cap-o"))
+		addoverlay(image('icons/obj/machines/shieldgen.dmi', "cap-o"))
 	return

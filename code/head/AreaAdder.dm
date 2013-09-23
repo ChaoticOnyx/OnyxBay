@@ -1,6 +1,6 @@
 obj/item/weapon/areaadd
 	name = "Area something"
-	icon = 'pda.dmi'
+	icon = 'icons/obj/pda.dmi'
 	icon_state = "cart"
 	item_state = "electronic"
 	var/turf/Xturf
@@ -53,7 +53,7 @@ obj/item/weapon/areaadd/attack_self(mob/user)
 
 obj/item/weapon/apcinabox
 	name = "APC IN A BOX!"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "game_kit"
 obj/item/weapon/apcinabox/attack_self(mob/user)
 	var/area/A = user.loc.loc

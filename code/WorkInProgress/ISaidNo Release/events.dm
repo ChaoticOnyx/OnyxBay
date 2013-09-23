@@ -82,7 +82,7 @@ proc/randomevent_laws()
 /obj/spacevine
 	name = "Space Kudzu"
 	desc = "An extremely expansionistic species of vine."
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "vine-light1"
 	anchored = 1
 	density = 0
@@ -175,7 +175,7 @@ proc/randomevent_laws()
 /obj/item/weapon/radiojammer
 	name = "signal jammer"
 	desc = "An illegal device used to jam radio signals, preventing broadcast or transmission."
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "shieldoff"
 	w_class = 1
 	var/active = 0
