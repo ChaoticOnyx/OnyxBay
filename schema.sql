@@ -1,18 +1,24 @@
 -- phpMyAdmin SQL Dump
--- version 2.11.11.1
+-- version 4.0.6
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 02, 2011 at 06:04 PM
--- Server version: 5.0.77
--- PHP Version: 5.1.6
+-- Generation Time: Sep 25, 2013 at 02:09 PM
+-- Server version: 5.5.32-MariaDB-log
+-- PHP Version: 5.5.3
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Database: `bay12`
+-- Database: `bay12-luna`
 --
-
 
 -- --------------------------------------------------------
 
@@ -23,7 +29,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 CREATE TABLE IF NOT EXISTS `admins` (
   `ckey` varchar(255) NOT NULL,
   `rank` int(1) NOT NULL,
-  PRIMARY KEY  (`ckey`)
+  PRIMARY KEY (`ckey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -51,9 +57,9 @@ CREATE TABLE IF NOT EXISTS `bans` (
   `reason` text NOT NULL,
   `bannedby` varchar(255) NOT NULL,
   `temp` int(1) NOT NULL COMMENT '0 = perma ban / minutes banned',
-  `minute` int(255) NOT NULL default '0',
-  `timebanned` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`ckey`)
+  `minute` int(255) NOT NULL DEFAULT '0',
+  `timebanned` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ckey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -64,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `bans` (
 
 CREATE TABLE IF NOT EXISTS `booklog` (
   `ckey` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL default 'INSERT',
+  `type` varchar(255) NOT NULL DEFAULT 'INSERT',
   `title` text NOT NULL,
   `author` varchar(256) NOT NULL,
   `text` longtext NOT NULL,
@@ -78,12 +84,12 @@ CREATE TABLE IF NOT EXISTS `booklog` (
 --
 
 CREATE TABLE IF NOT EXISTS `books` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `author` varchar(255) NOT NULL,
   `text` longtext NOT NULL,
-  `cat` int(2) NOT NULL default '1',
-  PRIMARY KEY  (`id`)
+  `cat` int(2) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=138 ;
 
 -- --------------------------------------------------------
@@ -93,11 +99,11 @@ CREATE TABLE IF NOT EXISTS `books` (
 --
 
 CREATE TABLE IF NOT EXISTS `changelog` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `bywho` varchar(255) NOT NULL,
   `changes` text NOT NULL,
-  `date` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`id`)
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
 
 -- --------------------------------------------------------
@@ -122,8 +128,8 @@ CREATE TABLE IF NOT EXISTS `crban` (
   `reason` text NOT NULL COMMENT 'Why the ban was placed',
   `bannedby` varchar(255) NOT NULL COMMENT 'Who set the ban',
   `time` datetime NOT NULL COMMENT 'When the ban was placed',
-  `unban_time` datetime default NULL COMMENT 'When the loser should be Unbanned',
-  PRIMARY KEY  (`ckey`),
+  `unban_time` datetime DEFAULT NULL COMMENT 'When the loser should be Unbanned',
+  PRIMARY KEY (`ckey`),
   KEY `bannedby` (`bannedby`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -138,9 +144,9 @@ CREATE TABLE IF NOT EXISTS `crban_past` (
   `Banner` varchar(255) NOT NULL COMMENT 'Who banned them',
   `BanReason` text NOT NULL COMMENT 'Why they were banned',
   `BanTime` datetime NOT NULL COMMENT 'When the ban was placed',
-  `UnbanTime` datetime default NULL COMMENT 'When the ban was supposed to be lifted',
-  `Unbanned` datetime default NULL COMMENT 'If not null, when the ban was lifted early',
-  `Unbanner` varchar(255) default NULL COMMENT 'Who unbanned them early',
+  `UnbanTime` datetime DEFAULT NULL COMMENT 'When the ban was supposed to be lifted',
+  `Unbanned` datetime DEFAULT NULL COMMENT 'If not null, when the ban was lifted early',
+  `Unbanner` varchar(255) DEFAULT NULL COMMENT 'Who unbanned them early',
   KEY `CKey` (`CKey`),
   KEY `Banner` (`Banner`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Record of all the past bans';
@@ -153,8 +159,8 @@ CREATE TABLE IF NOT EXISTS `crban_past` (
 
 CREATE TABLE IF NOT EXISTS `currentplayers` (
   `name` varchar(255) NOT NULL,
-  `playing` int(11) NOT NULL default '1',
-  PRIMARY KEY  (`name`)
+  `playing` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -204,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `jobbanlog` (
   `ckey` varchar(255) NOT NULL COMMENT 'By who',
   `targetckey` varchar(255) NOT NULL COMMENT 'Target',
   `rank` varchar(255) NOT NULL COMMENT 'rank',
-  `when` timestamp NOT NULL default CURRENT_TIMESTAMP COMMENT 'when',
+  `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'when',
   `why` varchar(355) NOT NULL,
   UNIQUE KEY `targetckey` (`targetckey`(100),`rank`(100))
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -231,8 +237,8 @@ CREATE TABLE IF NOT EXISTS `medals` (
 
 CREATE TABLE IF NOT EXISTS `players` (
   `ckey` varchar(255) NOT NULL,
-  `slot` int(2) NOT NULL default '1',
-  `slotname` varchar(255) NOT NULL default 'Default',
+  `slot` int(2) NOT NULL DEFAULT '1',
+  `slotname` varchar(255) NOT NULL DEFAULT 'Default',
   `real_name` varchar(255) NOT NULL,
   `gender` varchar(255) NOT NULL,
   `occupation1` varchar(255) NOT NULL,
@@ -256,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `players` (
   `underwear` int(3) NOT NULL,
   `name_is_always_random` int(3) NOT NULL,
   `bios` longtext NOT NULL,
-  `show` int(1) NOT NULL default '1',
+  `show` int(1) NOT NULL DEFAULT '1',
   `be_nuke_agent` tinyint(1) NOT NULL,
   `be_takeover_agent` tinyint(1) NOT NULL,
   UNIQUE KEY `ckey` (`ckey`,`slot`)
@@ -271,8 +277,20 @@ CREATE TABLE IF NOT EXISTS `players` (
 CREATE TABLE IF NOT EXISTS `ranks` (
   `Rank` int(11) NOT NULL COMMENT 'What Numeric Rank',
   `Desc` text NOT NULL COMMENT 'What is a person with this rank?',
-  PRIMARY KEY  (`Rank`)
+  PRIMARY KEY (`Rank`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ranks`
+--
+
+INSERT INTO `ranks` (`Rank`, `Desc`) VALUES
+(6, 'Host'),
+(5, 'Coder'),
+(4, 'Super Administrator'),
+(3, 'Primary Administrator'),
+(2, 'Administrator'),
+(1, 'Secondary Administrator');
 
 -- --------------------------------------------------------
 
@@ -302,11 +320,11 @@ CREATE TABLE IF NOT EXISTS `roundsurvived` (
 
 CREATE TABLE IF NOT EXISTS `stats` (
   `ckey` varchar(255) NOT NULL COMMENT 'ckey',
-  `deaths` int(10) NOT NULL default '0' COMMENT 'player deaths',
-  `roundsplayed` int(10) NOT NULL default '0' COMMENT 'rounds played',
-  `suicides` int(10) NOT NULL default '0' COMMENT 'suicides',
-  `traitorwin` int(10) NOT NULL default '0' COMMENT 'traitor wins',
-  PRIMARY KEY  (`ckey`)
+  `deaths` int(10) NOT NULL DEFAULT '0' COMMENT 'player deaths',
+  `roundsplayed` int(10) NOT NULL DEFAULT '0' COMMENT 'rounds played',
+  `suicides` int(10) NOT NULL DEFAULT '0' COMMENT 'suicides',
+  `traitorwin` int(10) NOT NULL DEFAULT '0' COMMENT 'traitor wins',
+  PRIMARY KEY (`ckey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -316,14 +334,14 @@ CREATE TABLE IF NOT EXISTS `stats` (
 --
 
 CREATE TABLE IF NOT EXISTS `suggest` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `desc` text NOT NULL,
   `link` varchar(255) NOT NULL,
-  `votes` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
+  `votes` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
 
 -- --------------------------------------------------------
@@ -367,7 +385,7 @@ CREATE TABLE IF NOT EXISTS `unbans` (
   `bannedby` varchar(255) NOT NULL,
   `temp` int(255) NOT NULL COMMENT '0 = perma ban / minutes banned',
   `minutes` int(255) NOT NULL,
-  `timebanned` timestamp NOT NULL default CURRENT_TIMESTAMP
+  `timebanned` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
