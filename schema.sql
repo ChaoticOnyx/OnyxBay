@@ -265,6 +265,7 @@ CREATE TABLE IF NOT EXISTS `players` (
   `show` int(1) NOT NULL DEFAULT '1',
   `be_nuke_agent` tinyint(1) NOT NULL,
   `be_takeover_agent` tinyint(1) NOT NULL,
+  `disabilities` int(11) NOT NULL,
   UNIQUE KEY `ckey` (`ckey`,`slot`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
