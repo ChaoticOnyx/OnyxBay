@@ -147,7 +147,6 @@
 		return
 
 	proc/process()
-		set background = 1
 		if (!src.alive) return
 		check_health()
 		switch(task)
@@ -825,7 +824,6 @@
 
 
 	process()
-		set background = 1
 		if (!src.alive) return
 		switch(task)
 			if("thinking")

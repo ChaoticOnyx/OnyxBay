@@ -1,5 +1,4 @@
 /mob/living/carbon/monkey/Life()
-	set background = 1
 
 	..()
 

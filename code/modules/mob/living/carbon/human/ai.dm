@@ -114,7 +114,6 @@
 
 	// main loop
 	proc/process()
-		set background = 1
 
 		if (stat == STAT_DEAD)
 			return 0

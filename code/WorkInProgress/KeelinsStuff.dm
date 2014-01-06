@@ -49,7 +49,6 @@
 				Obj << mysound
 
 	proc/process()
-		set background = 1
 
 		var/sound/S = null
 		var/sound_delay = 0

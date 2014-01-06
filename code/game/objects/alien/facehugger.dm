@@ -190,7 +190,6 @@
 		frustration = 0
 
 	process()
-		set background = 1
 		var/quick_move = 0
 
 		if (!alive)
@@ -274,7 +273,6 @@
 				src.process()
 
 	proc/idle()
-		set background = 1
 		var/quick_move = 0
 
 		if(state != 2 || !alive || target) return

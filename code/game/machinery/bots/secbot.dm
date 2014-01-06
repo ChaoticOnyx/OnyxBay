@@ -233,7 +233,6 @@ Auto Patrol: []"},
 	return ..()
 
 /obj/machinery/bot/secbot/process()
-	set background = 1
 
 	if (!src.on)
 		return

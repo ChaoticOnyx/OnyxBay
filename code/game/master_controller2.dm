@@ -24,7 +24,6 @@ datum/controller/game_controller
 		monitor()
 
 	setup()
-		set background = 1
 		if(master_controller && (master_controller != src))
 			del(src)
 			//There can be only one master.

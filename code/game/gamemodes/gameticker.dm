@@ -35,7 +35,6 @@ var/datum/roundinfo/roundinfo = new()
 	world << "<B>Assigning jobs now. Use change-job to change your selection. The game will start once all required positions are occupied."
 
 /datum/controller/gameticker/proc/pregame()
-	set background = 1
 
 	pregame_timeleft = 180
 	world << "<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>"

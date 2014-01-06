@@ -74,7 +74,6 @@
 /obj/item/weapon/pinpointer/process()
 	/*
 	//TODO: REWRITE
-	set background = 1
 	var/turf/sr = get_turf(src)
 
 	if (sr)

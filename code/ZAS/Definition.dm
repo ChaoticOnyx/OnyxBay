@@ -8,7 +8,6 @@ zone_controller
 		current_tick = 0
 	proc
 		start()
-			set background = 1
 			while(1)
 				current_tick++
 				for(var/zone/Z in zones)

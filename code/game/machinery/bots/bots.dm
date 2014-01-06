@@ -8,7 +8,6 @@
 	var/list/path = new				// list of path turfs
 
 /obj/machinery/bot/proc/CloseDoor(var/obj/machinery/door/D, var/atom/L)
-	set background = 1
 	while(src.loc == L)
 		sleep(10)
 		continue

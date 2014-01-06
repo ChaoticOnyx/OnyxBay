@@ -489,7 +489,6 @@
 
 
 proc/get_doors(area/A) //Luckily for the CPU, this generally is only run once per area.
-	set background = 1
 	. = list()
 	for(var/area/AR in A.related)
 		for(var/obj/machinery/door/D in AR)

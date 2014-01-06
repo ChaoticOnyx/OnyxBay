@@ -4,7 +4,6 @@
 /mob/living/carbon/var/holdbreath = 0
 
 /mob/living/carbon/Life()
-	set background = 1
 
 	if (monkeyizing)
 		return
