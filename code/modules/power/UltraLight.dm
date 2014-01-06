@@ -93,6 +93,11 @@ atom
 					Affected.LightLevelGreen += max(DeltaGreen, 0)
 					Affected.LightLevelBlue += max(DeltaBlue, 0)
 
+					if(!Affected.MaxRed)
+						Affected.MaxRed = list()
+						Affected.MaxGreen = list()
+						Affected.MaxBlue = list()
+
 					Affected.MaxRed += LuminosityRed
 					Affected.MaxGreen += LuminosityGreen
 					Affected.MaxBlue += LuminosityBlue
@@ -245,17 +250,23 @@ turf
 		LightLevelGreen = 0
 		LightLevelBlue = 0
 
-		list/MaxRed = list( )
-		list/MaxGreen = list( )
-		list/MaxBlue = list( )
+		list/MaxRed
+		list/MaxGreen
+		list/MaxBlue
 
 	proc
 
 		ul_GetRed()
+			if(!MaxRed)
+				return 0
 			return ul_Clamp(min(LightLevelRed, max(MaxRed)))
 		ul_GetGreen()
+			if(!MaxGreen)
+				return 0
 			return ul_Clamp(min(LightLevelGreen, max(MaxGreen)))
 		ul_GetBlue()
+			if(!MaxBlue)
+				return 0
 			return ul_Clamp(min(LightLevelBlue, max(MaxBlue)))
 
 		ul_UpdateLight()
