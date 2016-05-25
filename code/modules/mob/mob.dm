@@ -467,7 +467,7 @@ mob/verb/turnwest()
 /obj/proc/hide(h)
 	return
 
-/obj/item/weapon/grab/proc/throw()
+/obj/item/weapon/grab/proc/_throw()
 	if(affecting)
 		var/grabee = affecting
 		spawn(0)
