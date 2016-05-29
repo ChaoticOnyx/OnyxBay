@@ -26,7 +26,7 @@
 
 		canmove = 0
 		if(client)
-			blind.layer = 0
+			blind.invisibility = 101
 		lying = 1
 		var/h = hand
 		hand = 0

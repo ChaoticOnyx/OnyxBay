@@ -54,8 +54,8 @@
 
 				if (!isblind)
 					//stage = 4.5
-					if (blind.layer!=0)
-						blind.layer = 0
+					if (blind.invisibility!=101)
+						blind.invisibility = 101
 					sight |= SEE_TURFS
 					sight |= SEE_MOBS
 					sight |= SEE_OBJS
@@ -84,8 +84,8 @@
 
 					//stage = 6
 					blind.screen_loc = "1,1 to 15,15"
-					if (blind.layer!=18)
-						blind.layer = 18
+					if (blind.invisibility!=0)
+						blind.invisibility = 0
 					sight = sight&~SEE_TURFS
 					sight = sight&~SEE_MOBS
 					sight = sight&~SEE_OBJS

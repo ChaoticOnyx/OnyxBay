@@ -5,7 +5,7 @@
 	camera.status = 0.0
 
 	if(blind)
-		blind.layer = 0
+		blind.invisibility = 101
 	sight |= SEE_TURFS
 	sight |= SEE_MOBS
 	sight |= SEE_OBJS

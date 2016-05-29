@@ -98,9 +98,9 @@
 
 	if ((blind && stat != 2))
 		if ((blinded))
-			blind.layer = 18
+			blind.invisibility = 0
 		else
-			blind.layer = 0
+			blind.invisibility = 101
 
 			if (disabilities & 1)
 				client.screen += hud_used.vimpaired

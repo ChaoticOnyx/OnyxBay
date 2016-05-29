@@ -44,15 +44,15 @@
 
 		if (!isblind)
 
-			if (blind.layer!=0)
-				blind.layer = 0
+			if (blind.invisibility!=101)
+				blind.invisibility = 101
 			see_in_dark = 8
 			see_invisible = 2
 
 		else
 			blind.screen_loc = "1,1 to 15,15"
-			if (blind.layer!=18)
-				blind.layer = 18
+			if (blind.invisibility!=0)
+				blind.invisibility = 0
 			see_in_dark = 0
 			see_invisible = 0
 
