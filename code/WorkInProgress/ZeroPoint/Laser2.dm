@@ -5,7 +5,7 @@
 	var/state = 1.0
 	var/obj/beam/e_beam/first
 	var/power = 500
-	icon = 'icons/obj/engine.dmi'
+	icon = 'icons/obj/machines/engine.dmi'
 	icon_state = "laser"
 	anchored = 1
 	var/id

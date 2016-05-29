@@ -487,7 +487,7 @@ var/global/const/LIGHT_OK = 0
 // will fit into empty /obj/machinery/light of the corresponding type
 
 /obj/item/weapon/light
-	icon = 'icons/effects/lighting.dmi'
+	icon = 'icons/obj/lighting.dmi'
 	flags = FPRINT | TABLEPASS
 	force = 2
 	throwforce = 5
