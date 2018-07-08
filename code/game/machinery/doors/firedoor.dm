@@ -452,4 +452,5 @@
 
 /obj/machinery/door/firedoor/multi_tile
 	icon = 'icons/obj/doors/DoorHazard2x1.dmi'
+	dir = EAST
 	width = 2
