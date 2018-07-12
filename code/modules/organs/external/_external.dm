@@ -65,6 +65,7 @@
 	// Joint/state stuff.
 	var/can_grasp                      // It would be more appropriate if these two were named "affects_grasp" and "affects_stand" at this point
 	var/can_stand                      // Modifies stance tally/ability to stand.
+	var/can_fingerprint                // Leaves a fingerprint or not.
 	var/disfigured = 0                 // Scarred/burned beyond recognition.
 	var/cannot_amputate                // Impossible to amputate.
 	var/cannot_break                   // Impossible to fracture.
@@ -89,6 +90,21 @@
 
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
+
+/obj/item/organ/external/proc/get_fingerprint()
+
+	if(can_fingerprint && dna && !is_stump() && robotic < ORGAN_ROBOT)
+		return md5(dna.uni_identity)
+
+	for(var/obj/item/organ/external/E in children)
+		var/print = E.get_fingerprint()
+		if(print)
+			return print
+
+/obj/item/organ/external/afterattack(atom/A, mob/user, proximity)
+	..()
+	if(proximity && get_fingerprint())
+		A.add_partial_print(get_fingerprint())
 
 /obj/item/organ/external/New(var/mob/living/carbon/holder)
 	..()
@@ -124,8 +140,8 @@
 	splinted = null
 
 	if(owner)
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
-		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
+		if(can_grasp) owner.grasp_limbs -= src
+		if(can_stand) owner.stance_limbs -= src
 		owner.organs -= src
 		owner.organs_by_name[organ_tag] = null
 		owner.organs_by_name -= organ_tag
@@ -310,8 +326,8 @@
 
 	if(istype(owner))
 
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs[src] = TRUE
-		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs[src] = TRUE
+		if(can_grasp) owner.grasp_limbs[src] = TRUE
+		if(can_stand) owner.stance_limbs[src] = TRUE
 		owner.organs_by_name[organ_tag] = src
 		owner.organs |= src
 
@@ -765,6 +781,31 @@ Note that amputating the affected organ does in fact remove the infection from t
 /****************************************************
 			   DISMEMBERMENT
 ****************************************************/
+/obj/item/organ/external/proc/get_droplimb_messages_for(var/droptype, var/clean)
+	switch(droptype)
+		if(DROPLIMB_EDGE)
+			if(!clean)
+				var/gore_sound = "[(robotic >= ORGAN_ROBOT) ? "tortured metal" : "ripping tendons and flesh"]"
+				return list(
+					"\The [owner]'s [src.name] flies off in an arc!",\
+					"Your [src.name] goes flying off!",\
+					"You hear a terrible sound of [gore_sound]." \
+					)
+		if(DROPLIMB_BURN)
+			var/gore = "[(robotic >= ORGAN_ROBOT) ? "": " of burning flesh"]"
+			return list(
+				"\The [owner]'s [src.name] flashes away into ashes!",\
+				"Your [src.name] flashes away into ashes!",\
+				"You hear a crackling sound[gore]." \
+				)
+		if(DROPLIMB_BLUNT)
+			var/gore = "[(robotic >= ORGAN_ROBOT) ? "": " in shower of gore"]"
+			var/gore_sound = "[(robotic >= ORGAN_ROBOT) ? "rending sound of tortured metal" : "sickening splatter of gore"]"
+			return list(
+				"\The [owner]'s [src.name] explodes[gore]!",\
+				"Your [src.name] explodes[gore]!",\
+				"You hear the [gore_sound]." \
+				)
 
 //Handles dismemberment
 /obj/item/organ/external/proc/droplimb(var/clean, var/disintegrate = DROPLIMB_EDGE, var/ignore_children, var/silent)
@@ -775,27 +816,11 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(disintegrate == DROPLIMB_EDGE && nonsolid)
 		disintegrate = DROPLIMB_BLUNT //splut
 
-	switch(disintegrate)
-		if(DROPLIMB_EDGE)
-			if(!clean)
-				var/gore_sound = "[(robotic >= ORGAN_ROBOT) ? "tortured metal" : "ripping tendons and flesh"]"
-				owner.visible_message(
-					"<span class='danger'>\The [owner]'s [src.name] flies off in an arc!</span>",\
-					"<span class='moderate'><b>Your [src.name] goes flying off!</b></span>",\
-					"<span class='danger'>You hear a terrible sound of [gore_sound].</span>")
-		if(DROPLIMB_BURN)
-			var/gore = "[(robotic >= ORGAN_ROBOT) ? "": " of burning flesh"]"
-			owner.visible_message(
-				"<span class='danger'>\The [owner]'s [src.name] flashes away into ashes!</span>",\
-				"<span class='moderate'><b>Your [src.name] flashes away into ashes!</b></span>",\
-				"<span class='danger'>You hear a crackling sound[gore].</span>")
-		if(DROPLIMB_BLUNT)
-			var/gore = "[(robotic >= ORGAN_ROBOT) ? "": " in shower of gore"]"
-			var/gore_sound = "[(robotic >= ORGAN_ROBOT) ? "rending sound of tortured metal" : "sickening splatter of gore"]"
-			owner.visible_message(
-				"<span class='danger'>\The [owner]'s [src.name] explodes[gore]!</span>",\
-				"<span class='moderate'><b>Your [src.name] explodes[gore]!</b></span>",\
-				"<span class='danger'>You hear the [gore_sound].</span>")
+	var/list/organ_msgs = get_droplimb_messages_for(disintegrate, clean)
+	if(LAZYLEN(organ_msgs) >= 3)
+		owner.visible_message("<span class='danger'>[organ_msgs[1]]</span>", \
+			"<span class='moderate'><b>[organ_msgs[2]]</b></span>", \
+			"<span class='danger'>[organ_msgs[3]]</span>")
 
 	var/mob/living/carbon/human/victim = owner //Keep a reference for post-removed().
 	var/obj/item/organ/external/parent_organ = parent
@@ -1098,7 +1123,7 @@ obj/item/organ/external/proc/remove_clamps()
 	return 0
 
 /obj/item/organ/external/is_usable()
-	return ..() && !(status & ORGAN_TENDON_CUT) && (!can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1
+	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (!can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1
 
 /obj/item/organ/external/proc/is_malfunctioning()
 	return ((robotic >= ORGAN_ROBOT) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))
@@ -1142,8 +1167,8 @@ obj/item/organ/external/proc/remove_clamps()
 	if(!owner)
 		return
 
-	if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
-	if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
+	if(can_grasp) owner.grasp_limbs -= src
+	if(can_stand) owner.stance_limbs -= src
 
 	switch(body_part)
 		if(FOOT_LEFT, FOOT_RIGHT)
@@ -1158,6 +1183,7 @@ obj/item/organ/external/proc/remove_clamps()
 			owner.drop_from_inventory(owner.wear_mask)
 
 	var/mob/living/carbon/human/victim = owner
+	var/is_robotic = robotic >= ORGAN_ROBOT
 
 	..()
 

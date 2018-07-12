@@ -72,12 +72,6 @@
 	//gendered_icon = 1
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
 
-/obj/item/organ/external/arm/stun_act(var/stun_amount, var/agony_amount)
-	if(!owner || (agony_amount < 5))
-		return
-	if(prob(25))
-		owner.grasp_damage_disarm(src)
-
 /obj/item/organ/external/arm/right
 	organ_tag = BP_R_ARM
 	name = "right arm"
@@ -107,13 +101,6 @@
 	//gendered_icon = 1
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
 
-/obj/item/organ/external/leg/stun_act(var/stun_amount, var/agony_amount)
-	if(!owner || agony_amount < 5)
-		return
-	if(prob(min(agony_amount*2,50)))
-		to_chat(owner, "<span class='warning'>Your [src] buckles from the shock!</span>")
-		owner.Weaken(5)
-
 /obj/item/organ/external/leg/right
 	organ_tag = BP_R_LEG
 	name = "right leg"
@@ -142,17 +129,6 @@
 	//gendered_icon = 1
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
 
-/obj/item/organ/external/foot/stun_act(var/stun_amount, var/agony_amount)
-	if(!owner || agony_amount < 5)
-		return
-	if(prob(min(agony_amount*4,70)))
-		to_chat(owner, "<span class='warning'>You lose your footing as your [src] spasms!</span>")
-		owner.Weaken(5)
-
-/obj/item/organ/external/foot/removed()
-	if(owner) owner.drop_from_inventory(owner.shoes)
-	..()
-
 /obj/item/organ/external/foot/right
 	organ_tag = BP_R_FOOT
 	name = "right foot"
@@ -179,17 +155,7 @@
 	has_tendon = TRUE
 	tendon_name = "carpal ligament"
 	arterial_bleed_severity = 0.5
-	//gendered_icon = 1
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP | ORGAN_FLAG_FINGERPRINT | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
-
-/obj/item/organ/external/hand/stun_act(var/stun_amount, var/agony_amount)
-	if(!owner || (agony_amount < 5))
-		return
-	owner.grasp_damage_disarm(src)
-
-/obj/item/organ/external/hand/removed()
-	owner.drop_from_inventory(owner.gloves)
-	..()
+	can_fingerprint = TRUE
 
 /obj/item/organ/external/hand/right
 	organ_tag = BP_R_HAND
