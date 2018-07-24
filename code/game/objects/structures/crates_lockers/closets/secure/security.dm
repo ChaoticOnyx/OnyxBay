@@ -46,7 +46,7 @@
 		/obj/item/weapon/cartridge/hop,
 		/obj/item/device/radio/headset/heads/hop,
 		/obj/item/weapon/storage/box/ids = 2,
-		/obj/item/weapon/gun/projectile/sec/flash,
+		/obj/item/weapon/gun/energy/gun,
 		/obj/item/device/flash
 	)
 
@@ -89,6 +89,7 @@
 	return list(
 		new/datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/security, /obj/item/weapon/storage/backpack/satchel_sec)),
 		/obj/item/clothing/head/HoS,
+		/obj/item/clothing/glasses/thermal,
 		/obj/item/clothing/head/helmet/nt,
 		/obj/item/clothing/suit/armor/vest/nt,
 		/obj/item/clothing/suit/storage/vest/nt/hos,
@@ -175,7 +176,7 @@
 		/obj/item/clothing/accessory/storage/black_vest,
 		/obj/item/clothing/head/soft/sec/corp,
 		/obj/item/clothing/under/rank/security/corp,
-		/obj/item/weapon/gun/energy/taser,
+		/obj/item/weapon/gun/energy/secure/gun,
 		/obj/item/device/holowarrant,
 	)
 

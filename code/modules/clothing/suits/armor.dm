@@ -278,19 +278,19 @@
 	blood_overlay_type = "armor"
 
 /obj/item/clothing/suit/armor/pcarrier/light
-	starting_accessories = list(/obj/item/clothing/accessory/armorplate)
+	starting_accessories = list(/obj/item/clothing/accessory/armorplate, /obj/item/clothing/accessory/legguards, /obj/item/clothing/accessory/armguards)
 
 /obj/item/clothing/suit/armor/pcarrier/light/nt
-	starting_accessories = list(/obj/item/clothing/accessory/armorplate, /obj/item/clothing/accessory/armor/tag/nt)
+	starting_accessories = list(/obj/item/clothing/accessory/armorplate, /obj/item/clothing/accessory/legguards, /obj/item/clothing/accessory/armguards, /obj/item/clothing/accessory/armor/tag/nt)
 
 /obj/item/clothing/suit/armor/pcarrier/light/press
 	starting_accessories = list(/obj/item/clothing/accessory/armorplate, /obj/item/clothing/accessory/armor/tag/press)
 
 /obj/item/clothing/suit/armor/pcarrier/medium
-	starting_accessories = list(/obj/item/clothing/accessory/armorplate/medium, /obj/item/clothing/accessory/storage/pouches)
+	starting_accessories = list(/obj/item/clothing/accessory/armorplate/medium, /obj/item/clothing/accessory/legguards, /obj/item/clothing/accessory/armguards)
 
 /obj/item/clothing/suit/armor/pcarrier/medium/nt
-	starting_accessories = list(/obj/item/clothing/accessory/armorplate/medium, /obj/item/clothing/accessory/storage/pouches, /obj/item/clothing/accessory/armor/tag/nt)
+	starting_accessories = list(/obj/item/clothing/accessory/armorplate/medium, /obj/item/clothing/accessory/legguards, /obj/item/clothing/accessory/armguards, /obj/item/clothing/accessory/armor/tag/nt)
 
 /obj/item/clothing/suit/armor/pcarrier/blue
 	name = "blue plate carrier"
@@ -314,7 +314,7 @@
 
 /obj/item/clothing/suit/armor/pcarrier/tan/tactical
 	name = "tactical plate carrier"
-	starting_accessories = list(/obj/item/clothing/accessory/armorplate/tactical, /obj/item/clothing/accessory/storage/pouches/large/tan)
+	starting_accessories = list(/obj/item/clothing/accessory/armorplate/tactical, /obj/item/clothing/accessory/armguards/tactical, /obj/item/clothing/accessory/legguards/tactical)
 
 /obj/item/clothing/suit/armor/pcarrier/merc
 	starting_accessories = list(/obj/item/clothing/accessory/armorplate/merc, /obj/item/clothing/accessory/armguards/merc, /obj/item/clothing/accessory/legguards/merc, /obj/item/clothing/accessory/storage/pouches/large)

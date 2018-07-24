@@ -110,6 +110,12 @@
 	desc = "A pair of tan arm pads reinforced with armor plating. Attaches to a plate carrier."
 	icon_state = "armguards_tan"
 
+/obj/item/clothing/accessory/armguards/tactical
+	name = "tactical arm guards"
+	desc = "A pair of tan arm pads reinforced with armor plating. Attaches to a plate carrier."
+	icon_state = "armguards_tan"
+	armor = list(melee = 40, bullet = 40, laser = 60, energy = 35, bomb = 30, bio = 0, rad = 0)
+
 /obj/item/clothing/accessory/armguards/merc
 	name = "heavy arm guards"
 	desc = "A pair of red-trimmed black arm pads reinforced with heavy armor plating. Attaches to a plate carrier."
@@ -157,6 +163,12 @@
 /obj/item/clothing/accessory/legguards/navy
 	desc = "A pair of armored leg pads in navy blue. Attaches to a plate carrier."
 	icon_state = "legguards_navy"
+
+/obj/item/clothing/accessory/legguards/tactical
+	name = "tactical leg guards"
+	desc = "A pair of armored leg pads in tan. Attaches to a plate carrier."
+	icon_state = "legguards_tan"
+	armor = list(melee = 40, bullet = 40, laser = 60, energy = 35, bomb = 30, bio = 0, rad = 0)
 
 /obj/item/clothing/accessory/legguards/green
 	desc = "A pair of armored leg pads in green. Attaches to a plate carrier."
