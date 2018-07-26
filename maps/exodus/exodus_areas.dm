@@ -405,13 +405,25 @@
     name = "\improper Ghetto Casino"
     icon_state = "ghettocasino"
 
-/area/maintenance/ghetto_dock
-    name = "\improper Ghetto Dock"
-    icon_state = "ghettodock"
+/area/maintenance/ghetto_syndie
+    name = "\improper Ghetto Syndie"
+    icon_state = "ghettosyndie"
 
-/area/maintenance/ghetto_shuttle
-    name = "\improper Ghetto Shuttle"
-    icon_state = "ghettoshuttle"
+/area/maintenance/ghetto_dockhall
+    name = "\improper Ghetto Dock Hall"
+    icon_state = "ghettodockhall"
+
+/area/maintenance/ghetto_cafe
+    name = "\improper Ghetto Cafe"
+    icon_state = "ghettocafe"
+
+/area/maintenance/ghetto_strangeplace
+    name = "\improper Ghetto Strange Place"
+    icon_state = "ghettostrangeplace"
+
+/area/maintenance/ghetto_detective
+    name = "\improper Ghetto Detective"
+    icon_state = "ghettodetective"
 
 /area/maintenance/underground/central_one
 	name = "\improper Underground Central Primary Hallway SE"
