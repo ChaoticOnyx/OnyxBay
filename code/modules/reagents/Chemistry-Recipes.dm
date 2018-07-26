@@ -67,6 +67,7 @@
 	if(result)
 		holder.add_reagent(result, amt_produced, data, safety = 1)
 
+	log_it(holder.my_atom)
 	on_reaction(holder, amt_produced)
 
 //called when a reaction processes
@@ -462,25 +463,30 @@
 /datum/chemical_reaction/plastication/on_reaction(var/datum/reagents/holder, var/created_volume)
 	new /obj/item/stack/material/plastic(get_turf(holder.my_atom), created_volume)
 
-/* Grenade reactions */
+/* Explosion reactions */
 
-/datum/chemical_reaction/explosion_potassium
+/datum/chemical_reaction/explosion
 	name = "Explosion"
-	result = null
-	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/potassium = 1)
-	result_amount = 2
 	mix_message = null
+	result_amount = 2
+	log_is_important = 1
 
-/datum/chemical_reaction/explosion_potassium/on_reaction(var/datum/reagents/holder, var/created_volume)
+/datum/chemical_reaction/explosion/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/datum/effect/effect/system/reagents_explosion/e = new()
-	e.set_up(round (created_volume/10, 1), holder.my_atom, 0, 0)
-	if(isliving(holder.my_atom))
-		e.amount *= 0.5
-		var/mob/living/L = holder.my_atom
-		if(L.stat != DEAD)
-			e.amount *= 0.5
+	e.set_up(created_volume, holder.my_atom, 0, 0)
 	e.start()
 	holder.clear_reagents()
+
+/datum/chemical_reaction/explosion/potassium
+	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/potassium = 1)
+
+/datum/chemical_reaction/explosion/nitroglycerin
+	name = "Nitroglycerin"
+	// will be deleted in on_reaction, anyways
+	// result = /datum/reagent/Nitroglycerin
+	required_reagents = list(/datum/reagent/glycerol = 1, /datum/reagent/acid/polyacid = 1, /datum/reagent/acid = 1)
+
+/* Non-explosion reactions for grenades */
 
 /datum/chemical_reaction/flash_powder
 	name = "Flash powder"
@@ -522,25 +528,6 @@
 	// 100 created volume = 4 heavy range & 7 light range. A few tiles smaller than traitor EMP grandes.
 	// 200 created volume = 8 heavy range & 14 light range. 4 tiles larger than traitor EMP grenades.
 	empulse(location, round(created_volume / 24), round(created_volume / 14), 1)
-	holder.clear_reagents()
-
-/datum/chemical_reaction/nitroglycerin
-	name = "Nitroglycerin"
-	result = /datum/reagent/nitroglycerin
-	required_reagents = list(/datum/reagent/glycerol = 1, /datum/reagent/acid/polyacid = 1, /datum/reagent/acid = 1)
-	result_amount = 2
-	log_is_important = 1
-
-/datum/chemical_reaction/nitroglycerin/on_reaction(var/datum/reagents/holder, var/created_volume)
-	var/datum/effect/effect/system/reagents_explosion/e = new()
-	e.set_up(round (created_volume/2, 1), holder.my_atom, 0, 0)
-	if(isliving(holder.my_atom))
-		e.amount *= 0.5
-		var/mob/living/L = holder.my_atom
-		if(L.stat!=DEAD)
-			e.amount *= 0.5
-	e.start()
-
 	holder.clear_reagents()
 
 /datum/chemical_reaction/napalm
