@@ -433,61 +433,48 @@ steam.start() -- spawns the effect
 	trail_type = /obj/effect/effect/steam
 
 /datum/effect/effect/system/reagents_explosion
-	var/amount 						// TNT equivalent
-	var/flashing = 0			// does explosion creates flash effect?
-	var/flashing_factor = 0		// factor of how powerful the flash effect relatively to the explosion
+	var/amount 					// units based on "1 potassium + 1 water = 2-amount explosion"
+	var/mob/living/living_holder = null
 
-	set_up (amt, loc, flash = 0, flash_fact = 0)
-		amount = amt
-		if(istype(loc, /turf/))
-			location = loc
-		else
-			location = get_turf(loc)
+	// doesn't used in build now
+	var/flashing = FALSE		// does explosion creates flash effect?
+	var/flashing_factor			// factor of how powerful the flash effect relatively to the explosion
 
-		flashing = flash
-		flashing_factor = flash_fact
+/datum/effect/effect/system/reagents_explosion/set_up(var/amount, var/loc, var/flashing = FALSE, var/flashing_factor)
+	src.amount = amount
+	if (istype(loc, /turf))
+		location = loc
+	else
+		location = get_turf(loc)
+		if (isliving(loc))
+			living_holder = loc
 
-		return
+	src.flashing = flashing
+	src.flashing_factor = flashing_factor
 
-	start()
-		if (amount <= 2)
-			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
-			s.set_up(2, 1, location)
-			s.start()
+/datum/effect/effect/system/reagents_explosion/start()
+	// living holder restrains the explosion
+	var/living_holder_restrains_factor = 1
 
-			for(var/mob/M in viewers(5, location))
-				to_chat(M, "<span class='warning'>The solution violently explodes.</span>")
-			for(var/mob/M in viewers(1, location))
-				if (prob (50 * amount))
-					to_chat(M, "<span class='warning'>The explosion knocks you down.</span>")
-					M.Weaken(rand(1,5))
-			return
-		else
-			var/devst = -1
-			var/heavy = -1
-			var/light = -1
-			var/flash = -1
+	if (living_holder)
+		living_holder_restrains_factor = 2
 
-			// Clamp all values to fractions of GLOB.max_explosion_range, following the same pattern as for tank transfer bombs
-			if (round(amount/12) > 0)
-				devst = devst + amount/12
+		var/living_holder_damage_level = 0
+		if (amount >= 100)
+			living_holder_damage_level = 1
+		else if (amount >= 60)
+			living_holder_damage_level = 2
+		else if (amount >= 30)
+			living_holder_damage_level = 3
 
-			if (round(amount/6) > 0)
-				heavy = heavy + amount/6
+		living_holder.ex_act(living_holder_damage_level)
 
-			if (round(amount/3) > 0)
-				light = light + amount/3
+	var/explosion_radius_devst = round(amount / 100 / living_holder_restrains_factor)
+	var/explosion_radius_heavy = round(amount / 60  / living_holder_restrains_factor)
+	var/explosion_radius_light = round(amount / 30  / living_holder_restrains_factor)
 
-			if (flashing && flashing_factor)
-				flash = (amount/4) * flashing_factor
+	if (!living_holder || explosion_radius_light > 0)
+		for(var/mob/M in viewers())
+			to_chat(M, "<span class='warning'>The solution violently explodes.</span>")
 
-			for(var/mob/M in viewers(8, location))
-				to_chat(M, "<span class='warning'>The solution violently explodes.</span>")
-
-			explosion(
-				location,
-				round(min(devst, BOMBCAP_DVSTN_RADIUS)),
-				round(min(heavy, BOMBCAP_HEAVY_RADIUS)),
-				round(min(light, BOMBCAP_LIGHT_RADIUS)),
-				round(min(flash, BOMBCAP_FLASH_RADIUS))
-				)
+	explosion(location, explosion_radius_devst, explosion_radius_heavy, explosion_radius_light, 0)
