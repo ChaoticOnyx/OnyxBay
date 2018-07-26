@@ -804,15 +804,14 @@ datum/objective/heist/salvage
 	var/acolytes_survived = 0
 	if(!cult)
 		return 0
+	var/area/shuttle = locate(/area/shuttle/escape/centcom)
 	for(var/datum/mind/cult_mind in cult.current_antagonists)
-		if (cult_mind.current && cult_mind.current.stat!=2)
-			var/area/A = get_area(cult_mind.current )
-			if ( is_type_in_list(A, GLOB.using_map.post_round_safe_areas))
+		if(cult_mind.current && cult_mind.current.stat!=2)
+			if(get_turf(cult_mind.current) in shuttle)
 				acolytes_survived++
 	if(acolytes_survived >= target_amount)
-		return 0
-	else
 		return 1
+	return 0
 
 /datum/objective/cult/eldergod
 	explanation_text = "Summon Nar-Sie via the use of the appropriate rune (Hell join self). It will only work if nine cultists stand on and around it. The convert rune is join blood self."
