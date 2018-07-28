@@ -18,6 +18,7 @@
 	var/material/reinf_material
 	var/last_state
 	var/construction_stage
+	var/ricochet_id = 0
 	var/hitsound = 'sound/weapons/Genhit.ogg'
 	var/list/wall_connections = list("0", "0", "0", "0")
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
@@ -56,11 +57,161 @@
 /turf/simulated/wall/proc/get_material()
 	return material
 
+// Extracts ricochet angle's tan if ischance = 1.
+// In other case it just makes bullets and lazorz go where they're supposed to.
+
+/turf/simulated/wall/proc/bullet_ricochet(var/obj/item/projectile/Proj, var/ischance = 0)
+	if(Proj.starting)
+		var/ricochet_temp_id = rand(1,1000)
+		if(!ischance) Proj.ricochet_id = ricochet_temp_id
+		var/turf/curloc = get_turf(src)
+		if(!ischance && ((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y)))
+			visible_message("\red <B>\The [Proj] critically misses!</B>")
+			var/random_value = pick(-1, 0, 1)
+			var/critical_x = Proj.starting.x + random_value
+			var/critical_y = Proj.starting.y + random_value
+			Proj.redirect(critical_x, critical_y, curloc, src)
+			return
+		var/check_x0 = 32 * curloc.x
+		var/check_y0 = 32 * curloc.y
+		var/check_x1 = 32 * Proj.starting.x
+		var/check_y1 = 32 * Proj.starting.y
+		var/check_x2 = 32 * Proj.original.x
+		var/check_y2 = 32 * Proj.original.y
+		var/corner_x0 = check_x0
+		var/corner_y0 = check_y0
+		if(check_y0 - check_y1 > 0)
+			corner_y0 = corner_y0 - 16
+		else
+			corner_y0 = corner_y0 + 16
+		if(check_x0 - check_x1 > 0)
+			corner_x0 = corner_x0 - 16
+		else
+			corner_x0 = corner_x0 + 16
+
+		// Checks if original is lower or upper than line connecting proj's starting and wall
+		// In specific coordinate system that has wall as (0,0) and 'starting' as (r, 0), where r > 0.
+		// So, this checks whether 'original's' y-coordinate is positive or negative in new c.s.
+		// In order to understand, in which direction bullet will ricochet.
+		// Actually new_y isn't y-coordinate, but it has the same sign.
+		var/new_y = (check_y2 - corner_y0) * (check_x1 - corner_x0) - (check_x2 - corner_x0) * (check_y1 - corner_y0)
+		// Here comes the thing which differs two situations:
+		// First - bullet comes from north-west or south-east, with negative func value. Second - NE or SW.
+		var/new_func = (corner_x0 - check_x1) * (corner_y0 - check_y1)
+
+		// Added these wall things because my original code works well with one-tiled walls, but ignores adjacent turfs which in my current opinion was pretty wrong.
+		var/wallnorth = 0
+		var/wallsouth = 0
+		var/walleast = 0
+		var/wallwest = 0
+		for (var/turf/simulated/wall/W in range(2, curloc))
+			var/turf/tempwall = get_turf(W)
+			if (tempwall.x == curloc.x)
+				if (tempwall.y == (curloc.y - 1))
+					wallnorth = 1
+					if (!ischance) W.ricochet_id = ricochet_temp_id
+				else if (tempwall.y == (curloc.y + 1))
+					wallsouth = 1
+					if (!ischance) W.ricochet_id = ricochet_temp_id
+			if (tempwall.y == curloc.y)
+				if (tempwall.x == (curloc.x + 1))
+					walleast = 1
+					if (!ischance) W.ricochet_id = ricochet_temp_id
+				else if (tempwall.x == (curloc.x - 1))
+					wallwest = 1
+					if (!ischance) W.ricochet_id = ricochet_temp_id
+
+		if((wallnorth || wallsouth) && ((Proj.starting.y - curloc.y)*(wallsouth - wallnorth) >= 0))
+			if(!ischance)
+				Proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), curloc, src)
+				return
+			else
+				return abs((check_y0 - check_y1) / (check_x0 - check_x1))
+
+		if((walleast || wallwest) && ((Proj.starting.x - curloc.x)*(walleast-wallwest) >= 0))
+			if(!ischance)
+				Proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), curloc, src)
+				return
+			else
+				return abs((check_x0 - check_x1) / (check_y0 - check_y1))
+
+		if((new_y * new_func) > 0)
+			if(!ischance)
+				Proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), curloc, src)
+			else
+				return abs((check_x0 - check_x1) / (check_y0 - check_y1))
+		else
+			if(!ischance)
+				Proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), curloc, src)
+			else
+				return abs((check_y0 - check_y1) / (check_x0 - check_x1))
+		return
+
+
 /turf/simulated/wall/bullet_act(var/obj/item/projectile/Proj)
+	if(ricochet_id != 0)
+		if(ricochet_id == Proj.ricochet_id)
+			ricochet_id = 0
+			return PROJECTILE_CONTINUE
+		ricochet_id = 0
+	// Walls made from reflective-able materials reflect beam-type projectiles depending on their reflectance value.
 	if(istype(Proj,/obj/item/projectile/beam))
-		burn(2500)
-	else if(istype(Proj,/obj/item/projectile/ion))
-		burn(500)
+		if(reinf_material)
+			if(material.reflectance + reinf_material.reflectance > 0)
+				// Reflection chance depends on materials' var 'reflectance'.
+				var/reflectchance = material.reflectance + reinf_material.reflectance - min(round(Proj.damage/3), 50)
+				if(prob(reflectchance))
+					visible_message("\red <B>\The [Proj] gets reflected by shiny surface of reinforced wall!</B>")
+					bullet_ricochet(Proj)
+					return PROJECTILE_CONTINUE // complete projectile permutation
+				else
+					// Walls with positive reflection values deal with laser better than walls with negative.
+					burn(1500)
+			else
+				burn(2000)
+		else
+			if(material.reflectance > 0)
+				// Reflection chance depends on materials' var 'reflectance'.
+				var/reflectchance = material.reflectance - min(round(Proj.damage/3), 50)
+				if(prob(reflectchance))
+					visible_message("\red <B>\The [Proj] gets reflected by shiny surface of wall!</B>")
+					bullet_ricochet(Proj)
+					return PROJECTILE_CONTINUE // complete projectile permutation
+				else
+					// Walls with positive reflection values deal with laser better than walls with negative.
+					burn(2000)
+			else
+				burn(2500)
+
+	//else if(istype(Proj,/obj/item/projectile/ion))
+	//	burn(500)
+
+	// Bullets ricochet from walls made of specific materials with some little chance.
+	if(istype(Proj,/obj/item/projectile/bullet))
+		if(reinf_material)
+			if(material.resilience * reinf_material.resilience > 0)
+				var/ricochetchance = round(sqrt(material.resilience * reinf_material.resilience))
+				var/turf/curloc = get_turf(src)
+				if((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y))
+					ricochetchance = round(ricochetchance / 5)
+				else
+					ricochetchance = min(100, round(bullet_ricochet(Proj, 1) * ricochetchance))
+				if(prob(ricochetchance))
+					visible_message("\red <B>\The [Proj] ricochets from the surface of reinforced wall!</B>")
+					bullet_ricochet(Proj)
+					return PROJECTILE_CONTINUE // complete projectile permutation
+		else
+			if(material.resilience > 0)
+				var/ricochetchance = round(material.resilience)
+				var/turf/curloc = get_turf(src)
+				if((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y))
+					ricochetchance = round(ricochetchance / 5)
+				else
+					ricochetchance = min(100, round(bullet_ricochet(Proj, 1) * ricochetchance))
+				if(prob(ricochetchance))
+					visible_message("\red <B>\The [Proj] ricochets from the surface of wall!</B>")
+					bullet_ricochet(Proj)
+					return PROJECTILE_CONTINUE // complete projectile permutation
 
 	var/proj_damage = Proj.get_structure_damage()
 

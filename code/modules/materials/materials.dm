@@ -104,6 +104,9 @@ var/list/name_to_material
 	var/luminescence
 	var/list/composite_material  // If set, object matter var will be a list containing these values.
 
+	var/resilience = 1			 // The higher this value is, the higher is the chance that bullets will ricochet from wall's surface. Don't set negative values.
+	var/reflectance = -50		 // Defines whether material in walls raises (positive values) or decreases (negative values) reflection chance.
+
 	// Placeholder vars for the time being, todo properly integrate windows/light tiles/rods.
 	var/created_window
 	var/rod_product
@@ -243,12 +246,15 @@ var/list/name_to_material
 	icon_reinf = "reinf_stone"
 	icon_colour = "#007a00"
 	weight = 22
+	resilience = 16
+	reflectance = 15
 	stack_origin_tech = list(TECH_MATERIAL = 5)
 
 /material/diamond
 	name = "diamond"
 	stack_type = /obj/item/stack/material/diamond
 	flags = MATERIAL_UNMELTABLE
+	integrity = 250
 	cut_delay = 60
 	icon_colour = "#00ffe1"
 	opacity = 0.4
@@ -257,6 +263,8 @@ var/list/name_to_material
 	hardness = 100
 	brute_armor = 10
 	burn_armor = 50		// Diamond walls are immune to fire, therefore it makes sense for them to be almost undamageable by burn damage type.
+	resilience = 25
+	reflectance = 50
 	stack_origin_tech = list(TECH_MATERIAL = 6)
 	conductive = 0
 
@@ -267,6 +275,8 @@ var/list/name_to_material
 	weight = 25
 	hardness = 25
 	integrity = 100
+	resilience = 4
+	reflectance = 20
 	stack_origin_tech = list(TECH_MATERIAL = 4)
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
@@ -281,6 +291,8 @@ var/list/name_to_material
 	icon_colour = "#d1e6e3"
 	weight = 22
 	hardness = 50
+	resilience = 9
+	reflectance = 25
 	stack_origin_tech = list(TECH_MATERIAL = 3)
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
@@ -294,6 +306,8 @@ var/list/name_to_material
 	icon_colour = "#e37108"
 	shard_type = SHARD_SHARD
 	hardness = 30
+	resilience = 4
+	reflectance = 25
 	stack_origin_tech = list(TECH_MATERIAL = 2, TECH_PHORON = 2)
 	door_icon_base = "stone"
 	sheet_singular_name = "crystal"
@@ -340,6 +354,7 @@ var/list/name_to_material
 	sheet_singular_name = "brick"
 	sheet_plural_name = "bricks"
 	conductive = 0
+	resilience = 9
 
 /material/stone/marble
 	name = "marble"
@@ -348,17 +363,21 @@ var/list/name_to_material
 	hardness = 60
 	brute_armor = 3
 	integrity = 201 //hack to stop kitchen benches being flippable, todo: refactor into weight system
+	resilience = 9
+	reflectance = 5
 	stack_type = /obj/item/stack/material/marble
 
 /material/steel
 	name = DEFAULT_WALL_MATERIAL
 	stack_type = /obj/item/stack/material/steel
-	integrity = 150
+	integrity = 200
 	brute_armor = 5
 	icon_base = "solid"
 	icon_reinf = "reinf_over"
 	icon_colour = "#666666"
 	hitsound = 'sound/weapons/Genhit.ogg'
+	resilience = 36
+	reflectance = 13
 
 /material/diona
 	name = "biomass"
@@ -396,6 +415,8 @@ var/list/name_to_material
 	burn_armor = 10
 	hardness = 80
 	weight = 23
+	resilience = 49
+	reflectance = 20
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	composite_material = list(DEFAULT_WALL_MATERIAL = 3750, "platinum" = 3750) //todo
 
@@ -406,6 +427,8 @@ var/list/name_to_material
 	integrity = 200
 	melting_point = 3000
 	stack_type = null
+	resilience = 49
+	reflectance = 15
 	icon_base = "metal"
 	door_icon_base = "metal"
 	icon_colour = "#d1e6e3"
@@ -414,7 +437,7 @@ var/list/name_to_material
 /material/plasteel/ocp
 	name = "osmium-carbide plasteel"
 	stack_type = /obj/item/stack/material/ocp
-	integrity = 200
+	integrity = 300
 	melting_point = 12000
 	icon_base = "solid"
 	icon_reinf = "reinf_over"
@@ -422,6 +445,8 @@ var/list/name_to_material
 	brute_armor = 4
 	burn_armor = 20
 	weight = 27
+	resilience = 49
+	reflectance = 25
 	stack_origin_tech = list(TECH_MATERIAL = 3)
 	composite_material = list("plasteel" = 7500, "osmium" = 3750)
 
@@ -440,6 +465,8 @@ var/list/name_to_material
 	weight = 14
 	brute_armor = 1
 	burn_armor = 2
+	resilience = 0
+	reflectance = 30
 	door_icon_base = "stone"
 	table_icon_base = "solid"
 	destruction_desc = "shatters"
@@ -537,6 +564,8 @@ var/list/name_to_material
 	weight = 17
 	brute_armor = 2
 	burn_armor = 3
+	resilience = 9
+	reflectance = 25
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	composite_material = list(DEFAULT_WALL_MATERIAL = 1875,"glass" = 3750)
 	window_options = list("One Direction" = 1, "Full Window" = 4, "Windoor" = 5)
@@ -554,6 +583,8 @@ var/list/name_to_material
 	burn_armor = 5
 	melting_point = T0C + 2000
 	icon_colour = "#fc2bc5"
+	resilience = 0
+	reflectance = 40
 	stack_origin_tech = list(TECH_MATERIAL = 4)
 	created_window = /obj/structure/window/phoronbasic
 	wire_product = null
@@ -566,11 +597,14 @@ var/list/name_to_material
 	melting_point = T0C + 4000
 	display_name = "reinforced borosilicate glass"
 	stack_type = /obj/item/stack/material/glass/phoronrglass
+	resilience = 36
+	reflectance = 35
 	stack_origin_tech = list(TECH_MATERIAL = 5)
 	composite_material = list() //todo
 	created_window = /obj/structure/window/phoronreinforced
-	stack_origin_tech = list(TECH_MATERIAL = 2)
-	composite_material = list() //todo
+	// I think that duplicating lines wasn't the best idea of Bay12 coders
+	//stack_origin_tech = list(TECH_MATERIAL = 2)
+	//composite_material = list() //todo
 	rod_product = null
 	integrity = 100
 
@@ -585,6 +619,8 @@ var/list/name_to_material
 	hardness = 10
 	weight = 5
 	melting_point = T0C+371 //assuming heat resistant plastic
+	resilience = 0
+	reflectance = -20
 	stack_origin_tech = list(TECH_MATERIAL = 3)
 	conductive = 0
 
@@ -632,6 +668,8 @@ var/list/name_to_material
 	stack_type = /obj/item/stack/material/platinum
 	icon_colour = "#9999ff"
 	weight = 27
+	resilience = 16
+	reflectance = 20
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
@@ -641,6 +679,8 @@ var/list/name_to_material
 	stack_type = /obj/item/stack/material/iron
 	icon_colour = "#5c5454"
 	weight = 22
+	resilience = 25
+	reflectance = 10
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
 	hitsound = 'sound/weapons/smash.ogg'
@@ -652,6 +692,8 @@ var/list/name_to_material
 	stack_type = null
 	icon_colour = "#6c7364"
 	integrity = 1200
+	resilience = 49
+	reflectance = 10
 	melting_point = 6000       // Hull plating.
 	explosion_resistance = 200 // Hull plating.
 	hardness = 500
@@ -729,6 +771,7 @@ var/list/name_to_material
 	icon_colour = "#402821"
 	icon_reinf = "reinf_cult"
 	shard_type = SHARD_STONE_PIECE
+	resilience = 16
 	sheet_singular_name = "brick"
 	sheet_plural_name = "bricks"
 	conductive = 0
@@ -739,6 +782,7 @@ var/list/name_to_material
 /material/cult/reinf
 	name = "cult2"
 	display_name = "runic inscriptions"
+	resilience = 25
 
 /material/resin
 	name = "resin"

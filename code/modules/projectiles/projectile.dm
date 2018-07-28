@@ -56,6 +56,8 @@
 	var/tracer_type
 	var/impact_type
 
+	var/ricochet_id = 0
+
 	var/fire_sound
 
 	var/vacuum_traversal = 1 //Determines if the projectile can exist in vacuum, if false, the projectile will be deleted if it enters vacuum.
