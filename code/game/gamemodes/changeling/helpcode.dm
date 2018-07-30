@@ -108,3 +108,13 @@
 	QDEL_NULL(brainchan)
 	owner.mind.changeling.true_dead = 1
 	..()
+
+/mob/living/carbon/proc/insert_biostructure()
+	var/obj/item/organ/internal/brain/brain = src.internal_organs_by_name[BP_BRAIN]
+	var/obj/item/organ/internal/biostructure/bio = src.internal_organs_by_name[BP_CHANG]
+
+	if (brain)
+		brain.vital = 0
+	if (!bio)
+		log_debug("The changeling biostructure appeares in [src.name].", notify_admin = TRUE)
+		src.internal_organs_by_name[BP_CHANG] = new /obj/item/organ/internal/biostructure(src)
