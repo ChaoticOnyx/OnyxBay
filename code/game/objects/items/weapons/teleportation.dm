@@ -148,7 +148,7 @@ Frequency:
 	w_class = ITEM_SIZE_SMALL
 	throw_speed = 3
 	throw_range = 5
-	origin_tech = list(TECH_MATERIAL = 9, TECH_BLUESPACE = 10, TECH_MAGNET = 8, TECH_POWER = 9, TECH_DATA = 8, TECH_ENGINEERING = 9, TECH_ARCANE = 4, TECH_ILLEGAL = 5)
+	origin_tech = list(TECH_MATERIAL = 9, TECH_BLUESPACE = 10, TECH_MAGNET = 8, TECH_POWER = 9, TECH_DATA = 8, TECH_ENGINEERING = 9)
 	matter = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000)
 
 /obj/item/weapon/vortex_manipulator/attack_self(mob/user as mob)
@@ -176,7 +176,7 @@ Frequency:
 			dat += "<A href='byond://?src=\ref[src];ebt_ability=1'>Teleport to random beacon </A><B>WARNING: USE IN EMERGENCY ONLY</B><BR>"
 			dat += "<A href='byond://?src=\ref[src];vma_ability=1'>Announce something to all active VM users </A><B>WARNING: EXTREME POWER DRAIN</B><BR>"
 		else
-			dat += "ALERT: THE DEVICE IS INACTIVE OR HAS NO SOURCE OF POWER"
+			dat += "ALERT: THE DEVICE IS INACTIVE OR HAS NO SOURCE OF POWER <BR>"
 			if(vcell)
 				dat += "<A href='byond://?src=\ref[src];attempt_activate=1'>Activate the Vortex Manipulator</A><BR>"
 			else
@@ -313,6 +313,9 @@ Frequency:
 
 /obj/item/weapon/vortex_manipulator/afterattack(atom/A, mob/user, proximity)
 	if(proximity || !teleport_on_click) return
+	if(!vcell || (vcell.charge <= chargecost_local * 10))
+		user << SPAN_NOTE("No power source or not enough charge to teleport locally")
+		return
 	var/turf/tempturf = get_turf(A)
 	localteleport(user, 1, tempturf.x, tempturf.y)
 
@@ -514,11 +517,13 @@ Frequency:
 	if((new_x + new_y) == 0)
 		new_x = starting.x + A
 		new_y = starting.y + B
+		deductcharge(chargecost_local * round(sqrt(A * A + B * B)))
+	else
+		deductcharge(chargecost_local * round(sqrt((new_x - starting.x) * (new_x - starting.x) + (new_y - starting.y) * (new_y - starting.y))))
 	var/turf/targetturf = locate(new_x, new_y, user.z)
 	phase_out(user,get_turf(user))
 	user.forceMove(targetturf)
 	phase_in(user,get_turf(user))
-	deductcharge(chargecost_local * round(sqrt(A * A + B * B)))
 	for(var/obj/item/grab/G in user.contents)
 		if(G.affecting)
 			phase_out(G.affecting,get_turf(G.affecting))

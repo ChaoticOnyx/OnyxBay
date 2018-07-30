@@ -36,6 +36,7 @@
 	materials = list("gold" = 3000, "diamond" = 1500, "uranium" = 250)
 	build_path = /obj/item/weapon/storage/backpack/holding
 	sort_string = "VAFAA"
+
 /datum/design/item/weapon/vortex_manipulator
 	id = "timelord_vortex"
 	name = "Vortex Manipulator"
