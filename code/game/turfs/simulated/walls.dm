@@ -160,7 +160,7 @@
 	// Walls made from reflective-able materials reflect beam-type projectiles depending on their reflectance value.
 	if(istype(Proj,/obj/item/projectile/beam))
 		if(reinf_material)
-			if(opacity != 1) return PROJECTILE_CONTINUE
+			if(material.opacity * reinf_material.opacity < 0.16) return PROJECTILE_CONTINUE
 
 			if(material.reflectance + reinf_material.reflectance > 0)
 				// Reflection chance depends on materials' var 'reflectance'.
@@ -179,7 +179,7 @@
 			else
 				burn(2000)
 		else
-			if(opacity != 1) return PROJECTILE_CONTINUE
+			if(material.opacity < 0.4) return PROJECTILE_CONTINUE
 
 			if(material.reflectance > 0)
 				// Reflection chance depends on materials' var 'reflectance'.
