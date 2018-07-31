@@ -105,7 +105,7 @@ var/list/name_to_material
 	var/list/composite_material  // If set, object matter var will be a list containing these values.
 
 	var/resilience = 1			 // The higher this value is, the higher is the chance that bullets will ricochet from wall's surface. Don't set negative values.
-	var/reflectance = -50		 // Defines whether material in walls raises (positive values) or decreases (negative values) reflection chance.
+	var/reflectance = -50		 // Defines whether material in walls raises (positive values) or decreases (negative values) reflection chance. -50 <= reflectance <= 50 - recommended values.
 
 	// Placeholder vars for the time being, todo properly integrate windows/light tiles/rods.
 	var/created_window
