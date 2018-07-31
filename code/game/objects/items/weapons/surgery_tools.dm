@@ -35,6 +35,12 @@
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	attack_verb = list("attacked", "pinched")
 
+/obj/item/weapon/hemostat/pico
+	name = "precision grasper"
+	desc = "A thin rod with pico manipulators embedded in it allowing for fast and precise extraction."
+	icon_state = "pico_grasper"
+	surgery_speed = 0.5
+
 /*
  * Cautery
  */
@@ -94,6 +100,7 @@
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field.  This one looks basic and could be improved."
 	icon_state = "scalpel_laser1_on"
 	damtype = "fire"
+	surgery_speed = 0.8
 
 /obj/item/weapon/scalpel/laser2
 	name = "laser scalpel"
@@ -101,6 +108,7 @@
 	icon_state = "scalpel_laser2_on"
 	damtype = "fire"
 	force = 12.0
+	surgery_speed = 0.6
 
 /obj/item/weapon/scalpel/laser3
 	name = "laser scalpel"
@@ -108,12 +116,14 @@
 	icon_state = "scalpel_laser3_on"
 	damtype = "fire"
 	force = 15.0
+	surgery_speed = 0.4
 
 /obj/item/weapon/scalpel/manager
 	name = "incision management system"
 	desc = "A true extension of the surgeon's body, this marvel instantly and completely prepares an incision allowing for the immediate commencement of therapeutic steps."
 	icon_state = "scalpel_manager_on"
 	force = 7.5
+	surgery_speed = 0.2
 
 /*
  * Circular Saw
@@ -136,6 +146,13 @@
 	sharp = 1
 	edge = 1
 
+/obj/item/weapon/circular_saw/plasmasaw //Orange transparent chainsaw!
+	name = "plasma saw"
+	desc = "Perfect for cutting through ice."
+	icon_state = "plasmasaw"
+	force = 25.0
+	surgery_speed = 0.5
+
 //misc, formerly from code/defines/weapons.dm
 /obj/item/weapon/bonegel
 	name = "bone gel"
@@ -155,6 +172,12 @@
 	w_class = ITEM_SIZE_SMALL
 	var/usage_amount = 10
 
+/obj/item/weapon/FixOVein/clot
+	name = "capillary laying operation tool" //C.L.O.T.
+	desc = "A canister like tool that stores synthetic vein."
+	icon_state = "clot"
+	surgery_speed = 0.5
+
 /obj/item/weapon/bonesetter
 	name = "bone setter"
 	icon = 'icons/obj/surgery.dmi'
@@ -165,3 +188,9 @@
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
 	attack_verb = list("attacked", "hit", "bludgeoned")
+
+/obj/item/weapon/bonesetter/bone_mender
+	name = "bone mender"
+	desc = "A favorite among skeletons. It even sounds like a skeleton too."
+	icon_state = "bone-mender"
+	surgery_speed = 0.5

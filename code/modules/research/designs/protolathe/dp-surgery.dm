@@ -37,6 +37,53 @@
 	build_path = /obj/item/weapon/scalpel/manager
 	sort_string = "MBEAD"
 
+/datum/design/item/surgery/pico_grasper
+	name = "Precision Grasper"
+	desc = "A thin rod with pico manipulators embedded in it allowing for fast and precise extraction."
+	id = "pico_grasper"
+	req_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3, TECH_BIO = 4)
+	materials = list (DEFAULT_WALL_MATERIAL = 10000, "glass" = 5000, "phoron" = 80)
+	build_path = /obj/item/weapon/hemostat/pico
+	sort_string = "MBEAE"
+
+/datum/design/item/surgery/plasmasaw
+	name = "Plasma Saw"
+	desc = "Perfect for cutting through ice."
+	id = "plasmasaw"
+	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5, TECH_PHORON = 3)
+	materials = list (DEFAULT_WALL_MATERIAL = 10000, "glass" = 5000, "phoron" = 500)
+	build_path = /obj/item/weapon/circular_saw/plasmasaw
+	sort_string = "MBEAF"
+
+/datum/design/item/surgery/bonemender
+	name = "Bone Mender"
+	desc = "A favorite among skeletons. It even sounds like a skeleton too."
+	id = "bonemender"
+	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5)
+	materials = list (DEFAULT_WALL_MATERIAL = 10000, "glass" = 5000, "gold" = 500, "silver" = 250)
+	category = "Surgery"
+	build_path = /obj/item/weapon/bonesetter/bone_mender
+	sort_string = "MBEAG"
+
+/datum/design/item/surgery/clot
+	name = "Capillary Laying Operation Tool"
+	desc = "A canister like tool that stores synthetic vein."
+	id = "clot"
+	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5)
+	materials = list (DEFAULT_WALL_MATERIAL = 10000, "glass" = 8000, "silver" = 1000)
+	category = "Surgery"
+	build_path = /obj/item/weapon/FixOVein/clot
+	sort_string = "MBEAH"
+
+/datum/design/item/surgery/advanced_roller
+	name = "advanced roller bed"
+	desc = "A more advanced version of the regular roller bed, with inbuilt surgical stabilisers and an improved folding system."
+	id = "roller_bed"
+	req_tech = list(TECH_BIO = 3, TECH_MATERIAL = 3, TECH_MAGNET = 3)
+	materials = list(DEFAULT_WALL_MATERIAL = 4000, "glass" = 2000, "phoron" = 2000)
+	build_path = /obj/item/roller/adv
+	sort_string = "MBEAI"
+
 /datum/design/item/biostorage/neural_lace
 	id = "neural lace"
 	req_tech = list(TECH_BIO = 4, TECH_MATERIAL = 4, TECH_MAGNET = 2, TECH_DATA = 3)

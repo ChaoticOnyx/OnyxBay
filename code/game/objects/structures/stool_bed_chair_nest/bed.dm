@@ -196,10 +196,19 @@
  */
 /obj/structure/bed/roller
 	name = "roller bed"
+	desc = "A portable bed-on-wheels made for transporting medical patients."
 	icon = 'icons/obj/rollerbed.dmi'
-	icon_state = "down"
+	icon_state = "rollerbed"
 	anchored = 0
 	buckle_pixel_shift = "x=0;y=6"
+	var/bedtype = /obj/structure/bed/roller
+	var/rollertype = /obj/item/roller
+
+/obj/structure/bed/roller/adv
+	name = "advanced roller bed"
+	icon_state = "rollerbedadv"
+	bedtype = /obj/structure/bed/roller/adv
+	rollertype = /obj/item/roller/adv
 
 /obj/structure/bed/roller/update_icon()
 	return // Doesn't care about material or anything else.
@@ -212,7 +221,7 @@
 			user_unbuckle_mob(user)
 		else
 			visible_message("[user] collapses \the [src.name].")
-			new/obj/item/roller(get_turf(src))
+			new rollertype(get_turf(src))
 			QDEL_IN(src, 0)
 		return
 	..()
@@ -221,15 +230,25 @@
 	name = "roller bed"
 	desc = "A collapsed roller bed that can be carried around."
 	icon = 'icons/obj/rollerbed.dmi'
-	icon_state = "folded"
+	icon_state = "rollerbed_folded"
 	item_state = "rbed"
 	slot_flags = SLOT_BACK
-	w_class = ITEM_SIZE_HUGE // Can't be put in backpacks. Oh well. For now.
+	w_class = ITEM_SIZE_NO_CONTAINER // Can't be put in backpacks. Oh well. For now.
+	var/rollertype = /obj/item/roller
+	var/bedtype = /obj/structure/bed/roller
+
+/obj/item/roller/adv
+	name = "advanced roller bed"
+	desc = "A high-tech, compact version of the regular roller bed."
+	icon_state = "rollerbedadv_folded"
+	w_class = ITEM_SIZE_NORMAL
+	rollertype = /obj/item/roller/adv
+	bedtype = /obj/structure/bed/roller/adv
 
 /obj/item/roller/attack_self(mob/user)
-		var/obj/structure/bed/roller/R = new /obj/structure/bed/roller(user.loc)
-		R.add_fingerprint(user)
-		qdel(src)
+	var/obj/structure/bed/roller/R = new bedtype(user.loc)
+	R.add_fingerprint(user)
+	qdel(src)
 
 /obj/item/roller/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
@@ -240,7 +259,6 @@
 			src.forceMove(RH)
 			RH.held = src
 			return
-
 	..()
 
 /obj/item/roller_holder
@@ -261,7 +279,7 @@
 		return
 
 	to_chat(user, "<span class='notice'>You deploy the roller bed.</span>")
-	var/obj/structure/bed/roller/R = new /obj/structure/bed/roller(user.loc)
+	var/obj/structure/bed/roller/R = new held.bedtype(user.loc)
 	R.add_fingerprint(user)
 	qdel(held)
 	held = null
@@ -269,10 +287,10 @@
 /obj/structure/bed/roller/post_buckle_mob(mob/living/M as mob)
 	if(M == buckled_mob)
 		set_density(1)
-		icon_state = "up"
+		icon_state = "[initial(icon_state)]_up"
 	else
 		set_density(0)
-		icon_state = "down"
+		icon_state = "[initial(icon_state)]"
 
 	return ..()
 
@@ -282,6 +300,6 @@
 		if(!ishuman(usr))	return
 		if(buckled_mob)	return 0
 		visible_message("[usr] collapses \the [src.name].")
-		new/obj/item/roller(get_turf(src))
+		new rollertype(get_turf(src))
 		QDEL_IN(src, 0)
 		return

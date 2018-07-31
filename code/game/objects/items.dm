@@ -50,6 +50,7 @@
 	var/obj/item/device/uplink/hidden_uplink = null // All items can have an uplink hidden inside, just remember to add the triggers.
 	var/zoomdevicename = null //name used for message when binoculars/scope is used
 	var/zoom = 0 //1 if item is actively being used to zoom. For scoped guns and binoculars.
+	var/surgery_speed = 1 //When this item is used as a surgery tool, multiply the delay of the surgery step by this much.
 
 	var/icon_override = null  //Used to override hardcoded clothing dmis in human clothing proc.
 
@@ -703,14 +704,14 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	var/mob_state = get_icon_state(slot)
 
 	var/mob_icon
-	
+
 	if(icon_override)
 		mob_icon = icon_override
 		if(slot == 	slot_l_hand_str || slot == slot_l_ear_str)
 			mob_state = "[mob_state]_l"
 		if(slot == 	slot_r_hand_str || slot == slot_r_ear_str)
 			mob_state = "[mob_state]_r"
-	else 
+	else
 		if(item_icons && item_icons[slot])
 			mob_icon = item_icons[slot]
 		else if (user_human && user_human.body_build)
