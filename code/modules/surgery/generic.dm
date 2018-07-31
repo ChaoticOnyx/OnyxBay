@@ -69,7 +69,7 @@
 	affected.take_damage(15, 5, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
 
 //////////////////////////////////////////////////////////////////
-//	laser scalpel surgery step
+//	incision manager surgery step
 //	acts as the cutting, bleeder clamping, and retractor surgery steps
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/incision_manager
