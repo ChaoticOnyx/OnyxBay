@@ -251,7 +251,7 @@ its easier to just keep the beam vertical.
 		else
 			f_name += "oil-stained [name][infix]."
 
-	to_chat(user, "\icon[src] That's [f_name] [suffix]")
+	to_chat(user, "[GUNCHAT_ICON(src)] That's [f_name] [suffix]")
 	to_chat(user, desc)
 
 	return distance == -1 || (get_dist(src, user) <= distance)
