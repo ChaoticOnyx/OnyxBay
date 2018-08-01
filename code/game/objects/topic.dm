@@ -18,7 +18,7 @@
 	var/id = src.GetIdCard()
 	if(id && O.check_access(id))
 		return TRUE
-	to_chat(src, "<span class='danger'>\icon[src]Access Denied!</span>")
+	to_chat(src, "<span class='danger'>[GUNCHAT_ICON(src)]Access Denied!</span>")
 	return FALSE
 
 /mob/proc/CanUseObjTopic()
