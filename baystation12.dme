@@ -944,6 +944,7 @@
 #include "code\game\objects\structures\fireaxe_cabinet.dm"
 #include "code\game\objects\structures\fitness.dm"
 #include "code\game\objects\structures\flora.dm"
+#include "code\game\objects\structures\gas_stand.dm"
 #include "code\game\objects\structures\girders.dm"
 #include "code\game\objects\structures\grille.dm"
 #include "code\game\objects\structures\handrail.dm"
