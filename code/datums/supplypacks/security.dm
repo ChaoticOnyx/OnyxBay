@@ -88,6 +88,15 @@
 	containername = "\improper Arm and leg guards crate"
 	access = access_armory
 
+/decl/hierarchy/supply_pack/security/tacguards
+	name = "Armor - Arm and leg guards, tactical"
+	contains = list(/obj/item/clothing/accessory/armguards/tactical = 2,
+					/obj/item/clothing/accessory/legguards/tactical = 2)
+	cost = 25
+	containertype = /obj/structure/closet/crate/secure
+	containername = "\improper Arm and leg guards crate"
+	access = access_armory
+
 /decl/hierarchy/supply_pack/security/riotarmor
 	name = "Armor - Riot gear"
 	contains = list(/obj/item/weapon/shield/riot = 4,
@@ -139,6 +148,15 @@
 	containername = "\improper Weapons crate"
 	access = access_security
 
+/decl/hierarchy/supply_pack/security/nonlethal
+	name = "Weapons - Non-lethal energy weapons"
+	contains = list(/obj/item/weapon/gun/energy/taser/carbine = 2,
+					/obj/item/weapon/gun/energy/stunrevolver/rifle = 2)
+	cost = 50
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Non-lethal energy weapons crate"
+	access = access_security
+
 /decl/hierarchy/supply_pack/security/egun
 	name = "Weapons - Energy sidearms"
 	contains = list(/obj/item/weapon/gun/energy/gun = 4)
@@ -148,9 +166,28 @@
 	access = access_armory
 	security_level = SUPPLY_SECURITY_ELEVATED
 
+/decl/hierarchy/supply_pack/security/laser
+	name = "Weapons - Laser carbines"
+	contains = list(/obj/item/weapon/gun/energy/laser = 2)
+	cost = 40
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Laser carbines crate"
+	access = access_armory
+	security_level = SUPPLY_SECURITY_ELEVATED
+
+/decl/hierarchy/supply_pack/security/marksman
+	name = "Weapons - Energy marksman rifles"
+	contains = list(/obj/item/weapon/gun/energy/sniperrifle = 2)
+	cost = 80
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Energy marksman rifles crate"
+	access = access_armory
+	security_level = SUPPLY_SECURITY_HIGH
+
 /decl/hierarchy/supply_pack/security/ion
 	name = "Weapons - Electromagnetic"
-	contains = list(/obj/item/weapon/gun/energy/ionrifle = 2,
+	contains = list(/obj/item/weapon/gun/energy/ionrifle,
+					/obj/item/weapon/gun/energy/ionrifle/small,
 					/obj/item/weapon/storage/box/emps)
 	cost = 50
 	containertype = /obj/structure/closet/crate/secure/weapon
@@ -176,6 +213,24 @@
 	access = access_armory
 	security_level = SUPPLY_SECURITY_ELEVATED
 
+/decl/hierarchy/supply_pack/security/smg
+	name = "Weapons - Ballistic PDW"
+	contains = list(/obj/item/weapon/gun/projectile/automatic/wt550 = 2)
+	cost = 50
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Ballistic PDW crate"
+	access = access_armory
+	security_level = SUPPLY_SECURITY_ELEVATED
+
+/decl/hierarchy/supply_pack/security/rifle
+	name = "Weapons - Ballistic rifles"
+	contains = list(/obj/item/weapon/gun/projectile/automatic/wt550 = 2)
+	cost = 80
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Ballistic rifles crate"
+	access = access_armory
+	security_level = SUPPLY_SECURITY_HIGH
+
 /decl/hierarchy/supply_pack/security/flashbang
 	name = "Weapons - Flashbangs"
 	contains = list(/obj/item/weapon/storage/box/flashbangs = 2)
@@ -191,6 +246,15 @@
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Tear gas grenades crate"
 	access = access_security
+
+/decl/hierarchy/supply_pack/security/frag
+	name = "Weapons - Frag grenades"
+	contains = list(/obj/item/weapon/storage/box/frags = 2)
+	cost = 50
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Frag grenades crate"
+	access = access_armory
+	security_level = SUPPLY_SECURITY_HIGH
 
 /decl/hierarchy/supply_pack/security/pistolammo
 	name = "Ammunition - .45 magazines"
