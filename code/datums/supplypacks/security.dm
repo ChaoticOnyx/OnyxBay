@@ -224,7 +224,7 @@
 
 /decl/hierarchy/supply_pack/security/rifle
 	name = "Weapons - Ballistic rifles"
-	contains = list(/obj/item/weapon/gun/projectile/automatic/wt550 = 2)
+	contains = list(/obj/item/weapon/gun/projectile/automatic/z8 = 2)
 	cost = 80
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Ballistic rifles crate"
