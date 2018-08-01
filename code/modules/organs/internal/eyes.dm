@@ -9,8 +9,9 @@
 	relative_size = 10
 	var/phoron_guard = 0
 	var/list/eye_colour = list(0,0,0)
-	var/innate_flash_protection = FLASH_PROTECTION_NONE
+	var/innate_flash_protection = 0
 	max_damage = 45
+	var/isRobotize = 0
 
 /obj/item/organ/internal/eyes/optics
 	robotic = ORGAN_ROBOT
@@ -27,6 +28,7 @@
 	icon_state = "camera"
 	dead_icon = "camera_broken"
 	update_colour()
+	isRobotize = 1
 
 /obj/item/organ/internal/eyes/robot
 	name = "optical sensor"
