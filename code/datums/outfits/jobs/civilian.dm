@@ -65,7 +65,7 @@
 	pda_type = /obj/item/device/pda/chaplain
 
 /decl/hierarchy/outfit/job/torch/merchant
-	name = OUTFIT_JOB_NAME("Merchant - Torch")
+	name = OUTFIT_JOB_NAME("Merchant")
 	uniform = /obj/item/clothing/under/color/black
 	l_ear = null
 	shoes = /obj/item/clothing/shoes/black
