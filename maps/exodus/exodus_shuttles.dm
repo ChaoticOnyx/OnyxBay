@@ -477,7 +477,7 @@
 
 /datum/shuttle/autodock/ferry/merchant
 	name = "Merchant"
-	warmup_time = 10
+	warmup_time = 30
 	location = 0
 	shuttle_area = /area/shuttle/merchant/home
 	waypoint_station = "nav_merchant_start"
