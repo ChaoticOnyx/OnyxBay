@@ -574,7 +574,7 @@ obj/random/obstruction/spawn_choices()
 	name = "random potted plant"
 	desc = "This is a random potted plant."
 	icon = 'icons/obj/plants.dmi'
-	icon_state = "plant-36"
+	icon_state = "random_plant_spawner"
 
 /obj/random/pottedplant/spawn_choices()
 	return list(/obj/structure/flora/pottedplant = 3,
