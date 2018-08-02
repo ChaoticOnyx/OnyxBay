@@ -137,7 +137,7 @@
 	ideal_character_age = 30
 	minimal_player_age = 7
 	create_record = 0
-	outfit_type = /decl/hierarchy/outfit/job/torch/merchant
+	outfit_type = /decl/hierarchy/outfit/job/merchant
 	latejoin_at_spawnpoints = 1
 	access = list(access_merchant)
 	announced = FALSE
