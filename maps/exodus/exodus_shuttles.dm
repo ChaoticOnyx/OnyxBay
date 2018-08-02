@@ -352,11 +352,11 @@
 	dock_target = "merc_shuttle"
 	current_location = "nav_merc_start"
 	landmark_transition = "nav_merc_transition"
-	announcer = "NSS Exodus Sensor Array"
+	announcer = "NMV Icarus Sensor Array"
 	home_waypoint = "nav_merc_start"
 	cloaked = 0
 	move_time = 120
-	announcer = "NSS Exodus Sensor Array"
+	announcer = "NMV Icarus Sensor Array"
 	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."
 	departure_message = "Your visitors are on their way out of the system, burning delta-v like it's nothing. Good riddance."
 
@@ -529,7 +529,7 @@
 	home_waypoint = "nav_skipjack_start"
 	cloaked = 0
 	move_time = 120
-	announcer = "NSS Exodus Sensor Array"
+	announcer = "NMV Icarus Sensor Array"
 	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."
 	departure_message = "Your visitors are on their way out of the system, burning delta-v like it's nothing. Good riddance."
 
