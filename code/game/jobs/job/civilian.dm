@@ -124,3 +124,20 @@
 	. = ..()
 	if(.)
 		H.implant_loyalty(H)
+
+/datum/job/merchant
+	title = "Merchant"
+	department = "Civilian"
+	department_flag = CIV
+	total_positions = 2
+	spawn_positions = 2
+	availablity_chance = 40
+	supervisors = "the invisible hand of the market"
+	selection_color = "#515151"
+	ideal_character_age = 30
+	minimal_player_age = 7
+	create_record = 0
+	outfit_type = /decl/hierarchy/outfit/job/torch/merchant
+	latejoin_at_spawnpoints = 1
+	access = list(access_merchant)
+	announced = FALSE

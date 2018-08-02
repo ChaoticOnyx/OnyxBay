@@ -381,6 +381,18 @@
 
 // Maintenance
 
+/area/maintenance/ghetto_janitor
+    name = "\improper Ghetto Janitor Room"
+    icon_state = "ghettojanitor"
+
+/area/maintenance/ghetto_virology
+    name = "\improper Ghetto Virology"
+    icon_state = "ghettovirology"
+
+/area/maintenance/ghetto_shop
+    name = "\improper Ghetto Shop"
+    icon_state = "ghettoshop"
+
 /area/maintenance/ghetto_bar
     name = "\improper Ghetto Bar"
     icon_state = "ghettobar"
