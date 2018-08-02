@@ -63,3 +63,11 @@
 	l_hand = /obj/item/weapon/storage/bible
 	id_type = /obj/item/weapon/card/id/civilian/chaplain
 	pda_type = /obj/item/device/pda/chaplain
+
+/decl/hierarchy/outfit/job/merchant
+	name = OUTFIT_JOB_NAME("Merchant")
+	uniform = /obj/item/clothing/under/color/black
+	l_ear = null
+	shoes = /obj/item/clothing/shoes/black
+	pda_type = /obj/item/device/pda
+	id_type = /obj/item/weapon/card/id/merchant
