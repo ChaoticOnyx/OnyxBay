@@ -64,7 +64,7 @@
 	id_type = /obj/item/weapon/card/id/civilian/chaplain
 	pda_type = /obj/item/device/pda/chaplain
 
-/decl/hierarchy/outfit/job/torch/merchant
+/decl/hierarchy/outfit/job/merchant
 	name = OUTFIT_JOB_NAME("Merchant")
 	uniform = /obj/item/clothing/under/color/black
 	l_ear = null
