@@ -92,6 +92,7 @@ other types of metals and chemistry for reagents).
 	sort_string = "ZAAAA"
 	var/decl/prefab/ic_assembly/fabrication
 	var/global/count = 0
+	category_items = "Misc"
 
 /datum/design/prefab/New(var/research, var/fab)
 	if(fab)
@@ -102,8 +103,8 @@ other types of metals and chemistry for reagents).
 	sort_string = "Z"
 	var/cur_count = count
 	while(cur_count > 25)
-		sort_string += ascii2text(cur_count%25+65)
-		cur_count = (cur_count - cur_count%25)/25
+		sort_string += ascii2text(cur_count % 25 + 65)
+		cur_count = (cur_count - cur_count % 25) / 25
 	sort_string += ascii2text(cur_count + 65)
 	while(length(sort_string) < 5)
 		sort_string += "A"

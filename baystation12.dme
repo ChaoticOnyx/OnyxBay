@@ -2241,6 +2241,7 @@
 #include "code\modules\research\server.dm"
 #include "code\modules\research\stock_parts.dm"
 #include "code\modules\research\designs\circuitprinter\dc-console_boards.dm"
+#include "code\modules\research\designs\circuitprinter\dc-device.dm"
 #include "code\modules\research\designs\circuitprinter\dc-engineering_boards.dm"
 #include "code\modules\research\designs\circuitprinter\dc-machine_boards.dm"
 #include "code\modules\research\designs\circuitprinter\dc-mecha_boards.dm"
