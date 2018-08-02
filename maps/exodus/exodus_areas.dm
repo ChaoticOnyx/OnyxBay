@@ -27,6 +27,10 @@
 /area/shuttle/merchant/home
 	name = "\improper Merchant Van - Home"
 
+/area/shuttle/merchant/transit
+	icon_state = "shuttle"
+	base_turf = /turf/space/transit/south
+
 /area/shuttle/merchant/away
 	name = "\improper Merchant Van - Station Side"
 
@@ -380,6 +384,26 @@
 
 
 // Maintenance
+
+/area/maintenance/ghetto_minicasino
+    name = "\improper Ghetto Mini Casino"
+    icon_state = "ghettominicasino"
+
+/area/maintenance/ghetto_rnd
+    name = "\improper Ghetto RnD"
+    icon_state = "ghettornd"
+
+/area/maintenance/ghetto_janitor
+    name = "\improper Ghetto Janitor Room"
+    icon_state = "ghettojanitor"
+
+/area/maintenance/ghetto_virology
+    name = "\improper Ghetto Virology"
+    icon_state = "ghettovirology"
+
+/area/maintenance/ghetto_shop
+    name = "\improper Ghetto Shop"
+    icon_state = "ghettoshop"
 
 /area/maintenance/ghetto_bar
     name = "\improper Ghetto Bar"
