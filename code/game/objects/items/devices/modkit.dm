@@ -1,72 +1,79 @@
-#define MODKIT_HELMET 1
-#define MODKIT_SUIT 2
-#define MODKIT_FULL 3
-
+//Was previously used exclusively to convert hardsuits. I've modified it so it can convert absolutely any item into any other item -Deity Link (24/08/2015)
 /obj/item/device/modkit
-	name = "hardsuit modification kit"
-	desc = "A kit containing all the needed tools and parts to modify a hardsuit for another user."
+	name = "modification kit"
+	desc = "A kit containing all the needed tools and parts to modify an item into another one."
 	icon_state = "modkit"
-	var/parts = MODKIT_FULL
-	var/target_species = SPECIES_HUMAN
+	origin_tech = list(TECH_MATERIAL = 2, TECH_ENGINEERING = 2)
+	var/list/parts = list()		//how many times can this kit perform a given modification
+	var/list/original = list()	//the starting parts
+	var/list/finished = list()	//the finished products
 
-	var/list/permitted_types = list(
-		/obj/item/clothing/head/helmet/space/void,
-		/obj/item/clothing/suit/space/void
-		)
+/obj/item/device/modkit/New()
+	..()
+	parts = new/list(2)
+	original = new/list(2)
+	finished = new/list(2)
 
-/obj/item/device/modkit/afterattack(obj/O, mob/user as mob, proximity)
-	if(!proximity)
+	parts[1] =	1
+	original[1] = /obj/item/clothing/head/helmet/space/rig
+	finished[1] = /obj/item/clothing/head/cardborg
+	parts[2] =	1
+	original[2] = /obj/item/clothing/suit/space/rig
+	finished[2] = /obj/item/clothing/suit/cardborg
+
+/obj/item/device/modkit/afterattack(obj/O, mob/user as mob)
+	if(get_dist(O,user) > 1)//For all those years you could use it at any range, what the actual fuck?
 		return
 
-	if (!target_species)
-		return	//it shouldn't be null, okay?
+	var/to_type = null
+	var/parts_left = 0
+	var/j = 0
 
-	if(!parts)
+	for(var/i=1;i<=original.len;i++)
+		var/original_type = original[i]
+		if(istype(O,original_type))
+			to_type = finished[i]
+			parts_left = parts[i]
+			j = i
+	if(!to_type)
+		to_chat(user, "<span class='warning'>You cannot modify \the [O] with this kit.</span>")
+		return
+	if(parts_left <= 0)
 		to_chat(user, "<span class='warning'>This kit has no parts for this modification left.</span>")
-		user.drop_from_inventory(src)
-		qdel(src)
 		return
-
-	var/allowed = 0
-	for (var/permitted_type in permitted_types)
-		if(istype(O, permitted_type))
-			allowed = 1
-
-	var/obj/item/clothing/I = O
-	if (!istype(I) || !allowed)
-		to_chat(user, "<span class='notice'>[src] is unable to modify that.</span>")
+	if(istype(O,to_type))
+		to_chat(user, "<span class='notice'>\The [O] is already modified.</span>")
 		return
-
-	var/excluding = ("exclude" in I.species_restricted)
-	var/in_list = (target_species in I.species_restricted)
-	if (excluding ^ in_list)
-		to_chat(user, "<span class='notice'>[I] is already modified.</span>")
-		return
-
 	if(!isturf(O.loc))
-		to_chat(user, "<span class='warning'>[O] must be safely placed on the ground for modification.</span>")
+		to_chat(user, "<span class='warning'>\The [O] must be safely placed on the ground for modification.</span>")
 		return
-
 	playsound(user.loc, 'sound/items/Screwdriver.ogg', 100, 1)
+	var/N = new to_type(O.loc)
+	user.visible_message("<span class='warning'>[user] opens \the [src] and modifies \the [O] into \the [N].</span>","<span class='warning'>You open \the [src] and modify \the [O] into \the [N].</span>")
+	qdel(O)
 
-	user.visible_message("<span class='notice'>\The [user] opens \the [src] and modifies \the [O].</span>","<span class='notice'>You open \the [src] and modify \the [O].</span>")
 
-	I.refit_for_species(target_species)
-
-	if (istype(I, /obj/item/clothing/head/helmet))
-		parts &= ~MODKIT_HELMET
-	if (istype(I, /obj/item/clothing/suit))
-		parts &= ~MODKIT_SUIT
-
-	if(!parts)
-		user.drop_from_inventory(src)
+	var/has_parts = 0
+	for(var/i=1;i<=original.len;i++)
+		if(i == j)
+			parts[i]--
+		if(parts[i] > 0)
+			has_parts = 1
+	if(!has_parts)
 		qdel(src)
 
-/obj/item/device/modkit/examine(mob/user)
-	. = ..(user)
-	to_chat(user, "It looks as though it modifies hardsuits to fit [target_species] users.")
 
-/obj/item/device/modkit/tajaran
-	name = "tajaran hardsuit modification kit"
-	desc = "A kit containing all the needed tools and parts to modify a hardsuit for another user. This one looks like it's meant for Tajaran."
-	target_species = SPECIES_TAJARA
+/obj/item/device/modkit/aeg_parts
+	name = "advanced energy gun modkit"
+	desc = "A kit containing all the needed tools and parts to modify an tactical taser into an advanced energy gun, granting it the ability to recharge itself."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/aeg_parts/New()
+	..()
+	parts = new/list(1)
+	original = new/list(1)
+	finished = new/list(1)
+
+	parts[1] =	1
+	original[1] = /obj/item/weapon/gun/energy/gun
+	finished[1] = /obj/item/weapon/gun/energy/gun/nuclear
