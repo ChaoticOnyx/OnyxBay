@@ -830,10 +830,6 @@
 			to_chat(user, "<span class='danger'>The cycler already contains a helmet.</span>")
 			return
 
-		if(I.icon_override == CUSTOM_ITEM_MOB)
-			to_chat(user, "You cannot refit a customised voidsuit.")
-			return
-
 		to_chat(user, "You fit \the [I] into the suit cycler.")
 		user.drop_item()
 		I.loc = src
@@ -851,10 +847,6 @@
 
 		if(suit)
 			to_chat(user, "<span class='danger'>The cycler already contains a voidsuit.</span>")
-			return
-
-		if(I.icon_override == CUSTOM_ITEM_MOB)
-			to_chat(user, "You cannot refit a customised voidsuit.")
 			return
 
 		to_chat(user, "You fit \the [I] into the suit cycler.")
