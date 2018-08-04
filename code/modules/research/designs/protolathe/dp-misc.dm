@@ -81,6 +81,7 @@
 	materials = list(DEFAULT_WALL_MATERIAL = 300, "glass" = 300)
 	build_path = /obj/item/device/encryptionkey/binary
 	sort_string = "VASAA"
+	category_items = "Misc"
 
 /datum/design/item/camouflage/chameleon
 	name = "holographic equipment kit"
@@ -90,3 +91,4 @@
 	materials = list(DEFAULT_WALL_MATERIAL = 500)
 	build_path = /obj/item/weapon/storage/backpack/chameleon/sydie_kit
 	sort_string = "VASBA"
+	category_items = "Misc"
