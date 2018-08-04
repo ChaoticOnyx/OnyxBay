@@ -1,25 +1,22 @@
 language: generic
 sudo: false
-dist: precise
+
+# notifications:
+#   webhooks:
+#     urls:
+#       - https://discordapp.com/api/webhooks/475124635164213248/HnIVHWdsJqGjNZdyKynaFy1oDEoxoMb50gGDubBsffiHmkMp_mjQXFyrYL0wUgdxOErY
+#     on_success: always  # options: [always|never|change] default: always
+#     on_failure: always  # options: [always|never|change] default: always
+#     on_start: never     # options: [always|never|change] default: always
 
 env:
-  global:
-    BYOND_MAJOR="511"
-    BYOND_MINOR="1385"
-
-# ALL MAPS MUST BE PRESENT HERE
-# IF THEY ARE NOT, YOUR BUILD WILL FAIL
-  matrix:
-    - TEST=CODE
-    - TEST=WEB
-    - TEST=MAP MAP_PATH=example
-    - TEST=MAP MAP_PATH=torch
-    - TEST=MAP MAP_PATH=overmap_example
-    - TEST=MAP MAP_PATH=away_sites_testing
+    global:
+    - BYOND_MAJOR="512"
+    - BYOND_MINOR="1416"
+    - DM_BUILDFILE="baystation12.dme"
 
 cache:
   directories:
-    - tgui/node_modules
     - $HOME/BYOND-${BYOND_MAJOR}.${BYOND_MINOR}
 
 addons:
@@ -28,9 +25,22 @@ addons:
       - libc6-i386
       - libgcc1:i386
       - libstdc++6:i386
-      - oracle-java8-set-default
-      - python
-      - python-pip
+
+before_script:
+  - chmod +x ./install-byond.sh 
+  - ./install-byond.sh
+
+after_success:
+  - chmod +x ./send-to-discord.sh
+  - ./send-to-discord.sh success $WEBHOOK_URL
+
+after_failure:
+  - chmod +x ./send-to-discord.sh
+  - ./send-to-discord.sh failure $WEBHOOK_URL
 
 script:
-  - test/run-test.sh
+#  - (! grep 'step_[xy]' maps/*.dmm)
+#  - (! grep -E "(/obj/machinery/door/firedoor).*\1" maps/*.dmm)
+  - source $HOME/BYOND-${BYOND_MAJOR}.${BYOND_MINOR}/byond/bin/byondsetup
+#  - bash dm.sh -M${DM_MAPFILE} ${DM_BUILDFILE}
+  - bash dm.sh ${DM_BUILDFILE}
