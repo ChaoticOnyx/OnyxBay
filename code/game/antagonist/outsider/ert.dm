@@ -18,10 +18,10 @@ var/datum/antagonist/ert/ert
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE | ANTAG_HAS_LEADER | ANTAG_CHOOSE_NAME | ANTAG_RANDOM_EXCEPTED
 	antaghud_indicator = "hudloyalist"
 
-	hard_cap = 5
-	hard_cap_round = 7
-	initial_spawn_req = 5
-	initial_spawn_target = 7
+	hard_cap = 4
+	hard_cap_round = 6
+	initial_spawn_req = 3
+	initial_spawn_target = 4
 	show_objectives_on_creation = 0 //we are not antagonists, we do not need the antagonist shpiel/objectives
 
 /datum/antagonist/ert/create_default(var/mob/source)

@@ -24,7 +24,7 @@ var/datum/antagonist/cultist/cult
 	id = MODE_CULTIST
 	role_text = "Cultist"
 	role_text_plural = "Cultists"
-	restricted_jobs = list(/datum/job/lawyer, /datum/job/captain, /datum/job/hos)
+	restricted_jobs = list(/datum/job/merchant, /datum/job/lawyer, /datum/job/captain, /datum/job/hos)
 	protected_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain, /datum/job/psychiatrist)
 	feedback_tag = "cult_objective"
@@ -35,10 +35,10 @@ var/datum/antagonist/cultist/cult
 	victory_feedback_tag = "win - cult win"
 	loss_feedback_tag = "loss - staff stopped the cult"
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE
-	hard_cap = 5
-	hard_cap_round = 6
-	initial_spawn_req = 4
-	initial_spawn_target = 6
+	hard_cap = 3
+	hard_cap_round = 4
+	initial_spawn_req = 2
+	initial_spawn_target = 3
 	antaghud_indicator = "hudcultist"
 
 	var/allow_narsie = 1

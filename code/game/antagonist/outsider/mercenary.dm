@@ -12,9 +12,9 @@ var/datum/antagonist/mercenary/mercs
 	antaghud_indicator = "hudoperative"
 
 	hard_cap = 4
-	hard_cap_round = 8
-	initial_spawn_req = 4
-	initial_spawn_target = 6
+	hard_cap_round = 6
+	initial_spawn_req = 3
+	initial_spawn_target = 4
 	min_player_age = 14
 
 	faction = "mercenary"
