@@ -434,7 +434,9 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/taperoll/police(src)
 	src.modules += new /obj/item/weapon/crowbar(src)
 	src.modules += new /obj/item/device/megaphone(src)
-	src.emag = new /obj/item/weapon/gun/energy/laser/mounted(src)
+	src.modules += new /obj/item/weapon/extinguisher(src)
+	src.modules += new /obj/item/weapon/gun/energy/laser/mounted(src)
+	src.emag = new /obj/item/weapon/gun/energy/lasercannon/mounted(src)
 	..()
 
 /obj/item/weapon/robot_module/security/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
