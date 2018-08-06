@@ -5,7 +5,10 @@
 	proc/randomize_appearance_and_body_for(var/mob/living/carbon/human/H)
 		var/datum/species/current_species = all_species[species]
 		if(!current_species) current_species = all_species[SPECIES_HUMAN]
-		gender = pick(current_species.genders)
+
+		var/datum/body_build/BB = pick(current_species.body_builds)
+		body = BB.name
+		gender = pick(BB.genders)
 
 		h_style = random_hair_style(gender, species)
 		f_style = random_facial_hair_style(gender, species)
