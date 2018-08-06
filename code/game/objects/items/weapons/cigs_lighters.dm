@@ -89,7 +89,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/lit = 0
 	var/icon_on
 	var/type_butt = null
-	var/chem_volume = 0
+	var/chem_volume = 15
 	var/smoketime = 0
 	var/matchmes = "USER lights NAME with FLAME"
 	var/lightermes = "USER lights NAME with FLAME"
@@ -100,8 +100,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/clothing/mask/smokable/New()
 	..()
-	atom_flags |= ATOM_FLAG_NO_REACT // so it doesn't react until you light it
-	create_reagents(chem_volume) // making the cigarrete a chemical holder with a maximum volume of 15
+	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
+	create_reagents(chem_volume) // making the cigarrete a chemical holder with a maximum volume of [chem_volume]
 
 /obj/item/clothing/mask/smokable/Destroy()
 	. = ..()
@@ -143,21 +143,21 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/smokable/proc/light(var/flavor_text = "[usr] lights the [name].")
 	if(!src.lit)
 		src.lit = 1
-		damtype = "fire"
-		if(reagents.get_reagent_amount(/datum/reagent/toxin/phoron)) // the phoron explodes when exposed to fire
+
+		var/explosion_amount = 0
+
+		if(reagents.get_reagent_amount(/datum/reagent/toxin/phoron))
+			explosion_amount += reagents.get_reagent_amount(/datum/reagent/toxin/phoron)
+		if(reagents.get_reagent_amount(/datum/reagent/fuel))
+			explosion_amount += reagents.get_reagent_amount(/datum/reagent/fuel) / 2
+
+		if (explosion_amount)
 			var/datum/effect/effect/system/reagents_explosion/e = new()
-			e.set_up(round(reagents.get_reagent_amount(/datum/reagent/toxin/phoron) / 2.5, 1), get_turf(src), 0, 0)
+			e.set_up(explosion_amount, src, 0, 0)
 			e.start()
 			qdel(src)
 			return
-		if(reagents.get_reagent_amount(/datum/reagent/fuel)) // the fuel explodes, too, but much less violently
-			var/datum/effect/effect/system/reagents_explosion/e = new()
-			e.set_up(round(reagents.get_reagent_amount(/datum/reagent/fuel) / 5, 1), get_turf(src), 0, 0)
-			e.start()
-			qdel(src)
-			return
-		atom_flags &= ~ATOM_FLAG_NO_REACT // allowing reagents to react after being lit
-		reagents.process_reactions()
+
 		update_icon()
 		var/turf/T = get_turf(src)
 		T.visible_message(flavor_text)
