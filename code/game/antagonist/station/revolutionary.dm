@@ -17,7 +17,7 @@ var/datum/antagonist/revolutionary/revs
 	hard_cap = 2
 	hard_cap_round = 3
 	initial_spawn_req = 2
-	initial_spawn_target = 2
+	initial_spawn_target = 3
 
 	//Inround revs.
 	faction_role_text = "Revolutionary"
