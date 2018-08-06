@@ -4,8 +4,7 @@ var/const/NETWORK_MAINTENANCE         = "Maintenance Deck"
 var/const/NETWORK_PRISON              = "Prison"
 var/const/NETWORK_RESEARCH_OUTPOST    = "Research Outpost"
 var/const/NETWORK_TELECOM             = "Tcomsat"
-
-
+var/const/NETWORK_MASTER              = "Master"
 
 
 /datum/map/exodus/get_network_access(var/network)
@@ -41,7 +40,8 @@ var/const/NETWORK_TELECOM             = "Tcomsat"
 		NETWORK_ALARM_MOTION,
 		NETWORK_ALARM_POWER,
 		NETWORK_THUNDER,
-		NETWORK_TELECOM
+		NETWORK_TELECOM,
+		NETWORK_MASTER
 	)
 
 //
@@ -50,25 +50,25 @@ var/const/NETWORK_TELECOM             = "Tcomsat"
 
 // Networks
 /obj/machinery/camera/network/civilian_east
-	network = list(NETWORK_CIVILIAN_EAST)
+	network = list(NETWORK_CIVILIAN_EAST, NETWORK_MASTER)
 
 /obj/machinery/camera/network/civilian_west
-	network = list(NETWORK_CIVILIAN_WEST)
+	network = list(NETWORK_CIVILIAN_WEST, NETWORK_MASTER)
 
 /obj/machinery/camera/network/command
-	network = list(NETWORK_COMMAND)
+	network = list(NETWORK_COMMAND, NETWORK_MASTER)
 
 /obj/machinery/camera/network/exodus
-	network = list(NETWORK_EXODUS)
+	network = list(NETWORK_EXODUS, NETWORK_MASTER)
 
 /obj/machinery/camera/network/maintenance
-	network = list(NETWORK_MAINTENANCE)
+	network = list(NETWORK_MAINTENANCE, NETWORK_MASTER)
 
 /obj/machinery/camera/network/prison
-	network = list(NETWORK_PRISON)
+	network = list(NETWORK_PRISON, NETWORK_MASTER)
 
 /obj/machinery/camera/network/research
-	network = list(NETWORK_RESEARCH)
+	network = list(NETWORK_RESEARCH, NETWORK_MASTER)
 
 /obj/machinery/camera/network/research_outpost
 	network = list(NETWORK_RESEARCH_OUTPOST)
@@ -81,15 +81,15 @@ var/const/NETWORK_TELECOM             = "Tcomsat"
 
 // Motion
 /obj/machinery/camera/motion/command
-	network = list(NETWORK_COMMAND)
+	network = list(NETWORK_COMMAND, NETWORK_MASTER)
 
 // X-ray
 /obj/machinery/camera/xray/medbay
-	network = list(NETWORK_MEDICAL)
+	network = list(NETWORK_MEDICAL, NETWORK_MASTER)
 
 /obj/machinery/camera/xray/research
-	network = list(NETWORK_RESEARCH)
+	network = list(NETWORK_RESEARCH, NETWORK_MASTER)
 
 /obj/machinery/camera/xray/security
-	network = list(NETWORK_SECURITY)
+	network = list(NETWORK_SECURITY, NETWORK_MASTER)
 

@@ -15,13 +15,13 @@ var/const/NETWORK_ENGINEERING_OUTPOST = "Engineering Outpost"
 
 // Networks
 /obj/machinery/camera/network/command
-	network = list(NETWORK_COMMAND)
+	network = list(NETWORK_COMMAND, NETWORK_MASTER)
 
 /obj/machinery/camera/network/crescent
 	network = list(NETWORK_CRESCENT)
 
 /obj/machinery/camera/network/engine
-	network = list(NETWORK_ENGINE)
+	network = list(NETWORK_ENGINE, NETWORK_MASTER)
 
 /obj/machinery/camera/network/engineering_outpost
 	network = list(NETWORK_ENGINEERING_OUTPOST)
