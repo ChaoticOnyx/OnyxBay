@@ -31,8 +31,6 @@
 	#include "dynamic/null-6.dmm"
 	#include "exodus-7.dmm"
 
-	#include "../../code/modules/lobby_music/my_imagination.dm"
-
 	#define USING_MAP_DATUM /datum/map/exodus
 
 #elif !defined(MAP_OVERRIDE)
