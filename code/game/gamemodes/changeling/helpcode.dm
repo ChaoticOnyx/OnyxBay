@@ -112,58 +112,54 @@
 				damage--
 				sleep(40)
 			healed_threshold = 1
-		if(owner.mind.changeling.heal)
+		if(owner.mind && owner.mind.changeling.heal && owner.mind.changeling.damaged)
 			test_damage()
-			while(owner.mind && owner.mind.changeling && owner.mind.changeling.heal && owner.mind.changeling.damaged)
-				owner.mind.changeling.chem_charges = max(owner.mind.changeling.chem_charges - 0.5, 0)
-				if(owner.getBruteLoss())
-					owner.adjustBruteLoss(-5 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
-				if(owner.getFireLoss())
-					owner.adjustFireLoss(-2 * config.organ_regeneration_multiplier)
-				if(owner.getToxLoss())
-					owner.adjustToxLoss(-5 * config.organ_regeneration_multiplier)
-					if(prob(5) && !owner.getBruteLoss() && !owner.getFireLoss())
-						var/obj/item/organ/external/head/D = owner.organs_by_name[BP_HEAD]
-						if (D.disfigured)
-							D.disfigured = 0
-				for(var/bpart in shuffle(owner.internal_organs_by_name))
-					var/obj/item/organ/internal/regen_organ = owner.internal_organs_by_name[bpart]
-					if(regen_organ.robotic >= ORGAN_ROBOT)
-						continue
-					if(istype(regen_organ))
-						if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
-							regen_organ.damage = max(regen_organ.damage - 5, 0)
-							if(prob(5))
-								to_chat(owner, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
-						if(regen_organ.status & ORGAN_DEAD)
-							regen_organ.status &= ~ORGAN_DEAD
-				if(prob(2))
-					for(var/limb_type in owner.species.has_limbs)
-						var/obj/item/organ/external/E = owner.organs_by_name[limb_type]
-						if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
-							E.removed()//...because no one wants their head to explode to make way for a new one.
-							qdel(E)
-							E= null
-						if(!E)
-							var/list/organ_data = owner.species.has_limbs[limb_type]
-							var/limb_path = organ_data["path"]
-							var/obj/item/organ/external/O = new limb_path(owner)
-							organ_data["descriptor"] = O.name
-							to_chat(owner, "<span class='danger'>With a shower of fresh blood, a new [O.name] forms.</span>")
-							owner.visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [owner]'s [O.amputation_point], forming a new [O.name]!</span>")
-							var/datum/reagent/blood/B = locate(/datum/reagent/blood) in owner.vessel.reagent_list
-							blood_splatter(owner,B,1)
-							O.set_dna(owner.dna)
-							owner.update_body()
-							return
-						else
-							E.status &= ~ORGAN_ARTERY_CUT
-							for(var/datum/wound/W in E.wounds)
-								if(W.wound_damage() == 0 && prob(50))
-									E.wounds -= W
-				sleep(20)
-				test_damage()
-
+			owner.mind.changeling.chem_charges = max(owner.mind.changeling.chem_charges - 0.5, 0)
+			if(owner.getBruteLoss())
+				owner.adjustBruteLoss(-5 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+			if(owner.getFireLoss())
+				owner.adjustFireLoss(-2 * config.organ_regeneration_multiplier)
+			if(owner.getToxLoss())
+				owner.adjustToxLoss(-5 * config.organ_regeneration_multiplier)
+			if(prob(5) && !owner.getBruteLoss() && !owner.getFireLoss())
+				var/obj/item/organ/external/head/D = owner.organs_by_name[BP_HEAD]
+				if (D.disfigured)
+					D.disfigured = 0
+			for(var/bpart in shuffle(owner.internal_organs_by_name))
+				var/obj/item/organ/internal/regen_organ = owner.internal_organs_by_name[bpart]
+				if(regen_organ.robotic >= ORGAN_ROBOT)
+					continue
+				if(istype(regen_organ))
+					if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
+						regen_organ.damage = max(regen_organ.damage - 5, 0)
+						if(prob(5))
+							to_chat(owner, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
+					if(regen_organ.status & ORGAN_DEAD)
+						regen_organ.status &= ~ORGAN_DEAD
+			if(prob(2))
+				for(var/limb_type in owner.species.has_limbs)
+					var/obj/item/organ/external/E = owner.organs_by_name[limb_type]
+					if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
+						E.removed()//...because no one wants their head to explode to make way for a new one.
+						qdel(E)
+						E= null
+					if(!E)
+						var/list/organ_data = owner.species.has_limbs[limb_type]
+						var/limb_path = organ_data["path"]
+						var/obj/item/organ/external/O = new limb_path(owner)
+						organ_data["descriptor"] = O.name
+						to_chat(owner, "<span class='danger'>With a shower of fresh blood, a new [O.name] forms.</span>")
+						owner.visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [owner]'s [O.amputation_point], forming a new [O.name]!</span>")
+						var/datum/reagent/blood/B = locate(/datum/reagent/blood) in owner.vessel.reagent_list
+						blood_splatter(owner,B,1)
+						O.set_dna(owner.dna)
+						owner.update_body()
+						return
+					else
+						E.status &= ~ORGAN_ARTERY_CUT
+						for(var/datum/wound/W in E.wounds)
+							if(W.wound_damage() == 0 && prob(50))
+								E.wounds -= W
 
 /obj/item/organ/internal/biostructure/die()
 	QDEL_NULL(brainchan)

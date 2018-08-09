@@ -1326,10 +1326,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/organ_chang_type = Bio.parent_organ
 	var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling1 = new (get_turf(M))
 	var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling1 = new (get_turf(M))
-	var/new_mob1 = /mob/living/simple_animal/hostile/little_changeling/leg_chan/
-	new new_mob1(get_turf(M))
-	var/new_mob2 = /mob/living/simple_animal/hostile/little_changeling/arm_chan/
-	new new_mob2(get_turf(M))
+	new /mob/living/simple_animal/hostile/little_changeling/leg_chan(get_turf(M))
+	new /mob/living/simple_animal/hostile/little_changeling/arm_chan(get_turf(M))
 	var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(M))
 	var/mob/living/simple_animal/hostile/little_changeling/chest_chan/chest_ling = new (get_turf(M))
 	gibs(loc, dna)
