@@ -1287,17 +1287,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(!T.organs_by_name[organ_to_remove])
 		to_chat(T,"<span class='notice'>We don't have this limb!</span>")
 		return 0
-	if(!organ_to_remove)
-		return 0
 	if(organ_to_remove == BP_L_FOOT || organ_to_remove == BP_R_FOOT || organ_to_remove == BP_L_LEG || organ_to_remove == BP_R_LEG)
-		var/new_mob1 = /mob/living/simple_animal/hostile/little_changeling/leg_chan/
-		new new_mob1(get_turf(T))
+		new /mob/living/simple_animal/hostile/little_changeling/leg_chan(get_turf(T))
 	else if(organ_to_remove == BP_L_HAND || organ_to_remove == BP_R_HAND || organ_to_remove == BP_L_ARM || organ_to_remove == BP_R_ARM)
-		var/new_mob2 = /mob/living/simple_animal/hostile/little_changeling/arm_chan/
-		new new_mob2(get_turf(T))
+		new /mob/living/simple_animal/hostile/little_changeling/arm_chan(get_turf(T))
 	else if(organ_to_remove == BP_HEAD)
-		var/new_mob2 = /mob/living/simple_animal/hostile/little_changeling/head_chan/
-		new new_mob2(get_turf(T))
+		new /mob/living/simple_animal/hostile/little_changeling/head_chan(get_turf(T))
 	organ_to_remove = T.organs_by_name[organ_to_remove]
 	organ_to_remove.droplimb(1)
 	qdel(organ_to_remove)

@@ -123,7 +123,7 @@
 				if(owner.getToxLoss())
 					owner.adjustToxLoss(-5 * config.organ_regeneration_multiplier)
 					if(prob(5) && !owner.getBruteLoss() && !owner.getFireLoss())
-						var/obj/item/organ/external/head/D = owner.organs_by_name["head"]
+						var/obj/item/organ/external/head/D = owner.organs_by_name[BP_HEAD]
 						if (D.disfigured)
 							D.disfigured = 0
 				for(var/bpart in shuffle(owner.internal_organs_by_name))
