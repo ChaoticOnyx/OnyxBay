@@ -13,8 +13,9 @@
 /datum/computer_file/program/supply/process_tick()
 	..()
 	var/datum/nano_module/supply/SNM = NM
-	if(istype(SNM))
+	if(istype(SNM) && (SNM.emagged != computer_emagged))
 		SNM.emagged = computer_emagged
+		SNM.generate_categories()
 
 /datum/nano_module/supply
 	name = "Supply Management program"
