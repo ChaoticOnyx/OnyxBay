@@ -8,15 +8,12 @@
 
 
 /obj/item/organ/internal/biostructure/proc/test_damage()
-	for(var/limb_type in (owner.species.has_limbs + BP_CHANG))
+	owner.mind.changeling.damaged = FALSE
+	for(var/limb_type in (owner.species.has_limbs | owner.organs_by_name))
 		var/obj/item/organ/external/E = owner.organs_by_name[limb_type]
-		if(E && E.damage > 0)
-			owner.mind.changeling.damaged = TRUE
-		else if(!E)
-			owner.mind.changeling.damaged = TRUE
-		else
-			owner.mind.changeling.damaged = FALSE
-
+		if((E && E.damage > 0) || !E)
+  			owner.mind.changeling.damaged = TRUE
+  			break
 
 ////////////////No Brain Gen//////////////////////////////////////////////
 
@@ -143,7 +140,6 @@
 				if(prob(2))
 					for(var/limb_type in owner.species.has_limbs)
 						var/obj/item/organ/external/E = owner.organs_by_name[limb_type]
-						E.status &= ~ORGAN_ARTERY_CUT
 						if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
 							E.removed()//...because no one wants their head to explode to make way for a new one.
 							qdel(E)
@@ -161,6 +157,7 @@
 							owner.update_body()
 							return
 						else
+							E.status &= ~ORGAN_ARTERY_CUT
 							for(var/datum/wound/W in E.wounds)
 								if(W.wound_damage() == 0 && prob(50))
 									E.wounds -= W
@@ -263,7 +260,7 @@
 		return
 
 	if(T.species.species_flags & SPECIES_FLAG_NO_SCAN)
-		to_chat(src, "<span class='warning'>We cannot extract DNA from this creature!</span>")
+		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
 
 	if(HUSK in T.mutations)
@@ -275,7 +272,7 @@
 		return
 
 	if(src.mind.changeling.isabsorbing)
-		to_chat(src, "<span class='warning'>We are already absorbing!</span>")
+		to_chat(src, "<span class='warning'>We are already infesting!</span>")
 		return
 	src.mind.changeling.isabsorbing = 1
 	for(var/stage = 1, stage<=3, stage++)
