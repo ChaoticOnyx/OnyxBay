@@ -303,3 +303,22 @@ obj/item/weapon/reagent_containers/pill/noexcutite/New()
 	..()
 	reagents.add_reagent(/datum/reagent/paroxetine, 10)
 	color = reagents.get_color()
+
+/obj/item/weapon/reagent_containers/pill/hyronalin
+	name = "Hyronalin (10u)"
+	desc = "Got some rads? Eat this!"
+	icon_state = "pill4"
+/obj/item/weapon/reagent_containers/pill/hyronalin/New()
+	..()
+	reagents.add_reagent(/datum/reagent/hyronalin, 10)
+	color = reagents.get_color()
+
+
+/obj/item/weapon/reagent_containers/pill/glucose
+	name = "Glucose (20u)"
+	desc = "Used to treat blood loss"
+	icon_state = "pill4"
+/obj/item/weapon/reagent_containers/pill/glucose/New()
+	..()
+	reagents.add_reagent(/datum/reagent/nutriment/glucose, 20)
+	color = reagents.get_color()

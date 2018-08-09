@@ -205,7 +205,7 @@
 	startswith = list(/obj/item/weapon/reagent_containers/pill/inaprovaline = 21)
 
 /obj/item/weapon/storage/pill_bottle/kelotane
-	name = "bottle of kelotane pills"
+	name = "bottle of Kelotane pills"
 	desc = "Contains pills used to treat burns."
 
 	startswith = list(/obj/item/weapon/reagent_containers/pill/kelotane = 21)
@@ -248,7 +248,19 @@
 	startswith = list(/obj/item/weapon/reagent_containers/pill/antidexafen = 21)
 
 /obj/item/weapon/storage/pill_bottle/paracetamol
-	name = "bottle of paracetamol"
+	name = "bottle of Paracetamol pills"
 	desc = "Mild painkiller, also known as Tylenol. Won't fix the cause of your headache (unlike cyanide), but might make it bearable."
 
 	startswith = list(/obj/item/weapon/reagent_containers/pill/paracetamol = 21)
+
+/obj/item/weapon/storage/pill_bottle/hyronalin
+	name = "bottle of Hyronalin pills"
+	desc = "Effective anti radiation drug, best to use with Dylovene. 10u dose per pill"
+
+	startswith = list(/obj/item/weapon/reagent_containers/pill/hyronalin = 21)
+
+/obj/item/weapon/storage/pill_bottle/glucose
+	name = "bottle of Glucose pills"
+	desc = "These pills contain lots of nutriments, much needed for natural blood regeneration. 20u doseper pill"
+
+	startswith = list(/obj/item/weapon/reagent_containers/pill/glucose = 21)
