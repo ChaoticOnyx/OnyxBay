@@ -12,8 +12,8 @@
 	for(var/limb_type in (owner.species.has_limbs | owner.organs_by_name))
 		var/obj/item/organ/external/E = owner.organs_by_name[limb_type]
 		if((E && E.damage > 0) || !E)
-  			owner.mind.changeling.damaged = TRUE
-  			break
+			owner.mind.changeling.damaged = TRUE
+			break
 
 ////////////////No Brain Gen//////////////////////////////////////////////
 
