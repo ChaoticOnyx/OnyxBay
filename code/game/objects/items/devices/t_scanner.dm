@@ -19,6 +19,7 @@
 	var/list/active_scanned = list() //assoc list of objects being scanned, mapped to their overlay
 	var/client/user_client //since making sure overlays are properly added and removed is pretty important, so we track the current user explicitly
 	var/flicker = 0
+	var/base_state = "t-ray"
 
 	var/global/list/overlay_cache = list() //cache recent overlays
 
@@ -28,7 +29,7 @@
 		set_active(FALSE)
 
 /obj/item/device/t_scanner/update_icon()
-	icon_state = "t-ray[on]"
+	icon_state = "[base_state][on]"
 
 /obj/item/device/t_scanner/emp_act()
 	audible_message(src, "<span class = 'notice'> \The [src] buzzes oddly.</span>")
@@ -170,5 +171,14 @@
 /obj/item/device/t_scanner/dropped(mob/user)
 	set_user_client(null)
 	..()
+
+/obj/item/device/t_scanner/advanced
+	name = "\improper P-ray scanner"
+	desc = "A petahertz-ray emitter and scanner that can pick up the faintest traces of energy, used to detect the invisible. Has a significantly better range than t-ray scanners."
+	icon_state = "p-ray0"
+	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3)
+
+	base_state = "p-ray"
+	scan_range = 3
 
 #undef OVERLAY_CACHE_LEN

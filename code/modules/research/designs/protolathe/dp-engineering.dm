@@ -95,6 +95,28 @@
 	sort_string = "VAGAI"
 	category_items = "Engineering"
 
+/datum/design/tool/t_ray_scanner
+	name = "T-Ray Scanner"
+	desc = "A terahertz ray device used to pick up the faintest traces of energy, used to detect the invisible."
+	id = "tray_scanner"
+	req_tech = list(TECH_ENGINEERING = 1, TECH_MAGNET = 1)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 500, "glass" = 100)
+	build_path = /obj/item/device/t_scanner
+	sort_string = "VAGBA"
+	category_items = "Engineering"
+
+/datum/design/tool/p_ray_scanner
+	name = "P-Ray Scanner"
+	desc = "A petahertz ray device used to pick up the faintest traces of energy, used to detect the invisible."
+	id = "pray_scanner"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_MAGNET = 3)
+	build_type = PROTOLATHE
+	materials = list(DEFAULT_WALL_MATERIAL = 5000, "glass" = 1000)
+	build_path = /obj/item/device/t_scanner/advanced
+	sort_string = "VAGBB"
+	category_items = "Engineering"
+
 // Superconductive magnetic coils
 /datum/design/item/smes_coil
 	category_items = "Engineering"
