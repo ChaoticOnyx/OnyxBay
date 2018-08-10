@@ -53,11 +53,15 @@
 // Shuttles
 
 /area/shuttle/constructionsite
-	name = "\improper Construction Site Shuttle"
+	name = "Construction Site Shuttle"
 	icon_state = "yellow"
 
 /area/shuttle/constructionsite/station
-	name = "\improper Construction Site Shuttle"
+	name = "Construction Site Shuttle"
+
+/area/shuttle/constructionsite/transit
+	name = "Construction Site Shuttle Transit"
+	icon_state = "shuttle"
 
 /area/shuttle/mining
 	name = "\improper Mining Shuttle"
@@ -68,6 +72,10 @@
 
 /area/shuttle/mining/station
 	icon_state = "shuttle2"
+
+/area/shuttle/mining/transit
+	name = "Mining Shuttle Transit"
+	icon_state = "shuttle"
 
 /area/shuttle/deathsquad/centcom
 	name = "Deathsquad Shuttle"
@@ -183,6 +191,9 @@
 	icon_state = "shuttle"
 	base_turf = /turf/simulated/floor/asteroid
 
+/area/shuttle/research/transit
+	name = "Research Shuttle Transit"
+	icon_state = "shuttle"
 
 //SYNDICATES
 
