@@ -183,6 +183,7 @@ var/list/point_source_descriptions = list(
 	proc/sell()
 		var/phoron_count = 0
 		var/plat_count = 0
+		var/thal_count = 0
 		for(var/area/subarea in shuttle.shuttle_area)
 			for(var/atom/movable/MA in subarea)
 				if(MA.anchored)	continue
