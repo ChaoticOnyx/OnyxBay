@@ -212,7 +212,8 @@ var/list/point_source_descriptions = list(
 								if("phoron") phoron_count += P.get_amount()
 								if("platinum") plat_count += P.get_amount()
 						if(istype(A, /obj/item/weapon/spacecash))
-							thal_count += P.get_amount()
+							var/obj/item/weapon/spacecash/PCash = A
+							thal_count += PCash.get_amount()
 				qdel(MA)
 
 		if(thal_count)
