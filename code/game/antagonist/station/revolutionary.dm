@@ -15,9 +15,9 @@ var/datum/antagonist/revolutionary/revs
 	antaghud_indicator = "hudrevolutionary"
 
 	hard_cap = 2
-	hard_cap_round = 4
+	hard_cap_round = 3
 	initial_spawn_req = 2
-	initial_spawn_target = 4
+	initial_spawn_target = 3
 
 	//Inround revs.
 	faction_role_text = "Revolutionary"
@@ -30,7 +30,7 @@ var/datum/antagonist/revolutionary/revs
 
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg)
 	restricted_jobs = list(/datum/job/captain, /datum/job/hop, /datum/job/hos, /datum/job/chief_engineer, /datum/job/rd, /datum/job/cmo, /datum/job/lawyer)
-	protected_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
+	protected_jobs = list(/datum/job/merchant, /datum/job/officer, /datum/job/warden, /datum/job/detective)
 
 
 /datum/antagonist/revolutionary/New()
