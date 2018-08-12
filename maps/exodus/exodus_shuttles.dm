@@ -140,12 +140,13 @@
 /datum/shuttle/autodock/ferry/research
 	name = "Research"
 	warmup_time = 10
+	move_time = 10
 	location = 1
 	shuttle_area = /area/shuttle/research/station
 	dock_target = "research_shuttle"
 	waypoint_offsite = "nav_research_start"
 	waypoint_station = "nav_research_station"
-
+	landmark_transition = "nav_research_transition"
 
 /obj/effect/shuttle_landmark/research/station
 	name = "Station"
@@ -159,16 +160,23 @@
 	docking_controller = "research_outpost_dock"
 	autoset = 1
 
+/obj/effect/shuttle_landmark/research/internim
+	name = "In transit"
+	landmark_tag = "nav_research_transition"
+	autoset = 1
+
 //Engineer Shuttle
 
 /datum/shuttle/autodock/ferry/engie
 	name = "Engineering"
 	warmup_time = 10
+	move_time = 10
 	location = 0
 	shuttle_area = /area/shuttle/constructionsite
 	dock_target = "engineering_shuttle"
 	waypoint_station = "nav_engie_station"
 	waypoint_offsite = "nav_engie_outpost"
+	landmark_transition = "nav_engie_transition"
 
 /obj/effect/shuttle_landmark/engie/station
 	name = "Station"
@@ -182,16 +190,22 @@
 	docking_controller = "engineering_dock_airlock"
 	autoset = 1
 
+/obj/effect/shuttle_landmark/engie/internim
+	name = "In transit"
+	landmark_tag = "nav_engie_transition"
+	autoset = 1
 
 //Mining shuttle
 /datum/shuttle/autodock/ferry/mining
 	name = "Mining"
 	warmup_time = 10
+	move_time = 10
 	location = 0
 	shuttle_area = /area/shuttle/mining
 	dock_target = "mining_shuttle"
 	waypoint_station = "nav_mining_station"
 	waypoint_offsite = "nav_mining_outpost"
+	landmark_transition = "nav_mining_transition"
 
 /obj/effect/shuttle_landmark/mining/station
 	name = "Station"
@@ -205,6 +219,10 @@
 	docking_controller = "mining_outpost_airlock"
 	autoset = 1
 
+/obj/effect/shuttle_landmark/mining/internim
+	name = "In transit"
+	landmark_tag = "nav_mining_transition"
+	autoset = 1
 
 //Emergency Response Team Shuttle
 
