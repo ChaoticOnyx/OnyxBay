@@ -421,8 +421,7 @@
 		src << browse(null, t1)
 
 	if(href_list["item"])
-		if(!handle_strip(href_list["item"],usr,locate(href_list["holder"])))
-			show_inv(usr)
+		handle_strip(href_list["item"],usr,locate(href_list["holder"]))
 
 	if (href_list["criminal"])
 		if(hasHUD(usr, HUD_SECURITY))

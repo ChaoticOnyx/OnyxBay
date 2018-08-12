@@ -36,6 +36,7 @@
 	var/on_fire = 0 //The "Are we on fire?" var
 	var/fire_stacks
 	var/hallucination = 0
+	var/strippingActions = 0 // count of stripping actions taking place now by this mob
 
 	var/failed_last_breath = 0 //This is used to determine if the mob failed a breath. If they did fail a brath, they will attempt to breathe each tick, otherwise just once per 4 ticks.
 	var/possession_candidate // Can be possessed by ghosts if unplayed.

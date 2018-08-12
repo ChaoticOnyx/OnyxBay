@@ -1,10 +1,28 @@
-/mob/living/carbon/human/proc/handle_strip(var/slot_to_strip_text,var/mob/living/user,var/obj/item/clothing/holder)
+/mob/living/carbon/human/proc/isAggresiveStrip(var/mob/living/user)
+	if (user.a_intent == "help")
+		return FALSE
+	for (var/obj/item/grab/G in grabbed_by)
+		if (G.force_danger())
+			return TRUE
+	return FALSE
+
+/mob/living/carbon/human/proc/handle_strip(var/slot_to_strip_text, var/mob/living/user, var/obj/item/clothing/holder)
+	user.strippingActions += 1
+	_handle_strip_internal(slot_to_strip_text)
+	user.strippingActions -= 1
+
+// You really shoudn't call this function explicitly. Use handle_strip instead.
+/mob/living/carbon/human/proc/_handle_strip_internal(var/slot_to_strip_text,var/mob/living/user,var/obj/item/clothing/holder)
 	if(!slot_to_strip_text || !istype(user))
 		return
 
 	if(user.incapacitated()  || !user.Adjacent(src))
 		show_browser(user, null, "window=mob[src.name]")
-		return TRUE
+		return
+
+	if(user.strippingActions && !isAggresiveStrip(user))
+		to_chat(user, "<span class='warning'>You can't strip few items simultaneously! (Use strong Grab)</span>")
+		return
 
 	// Are we placing or stripping?
 	var/stripping = FALSE
@@ -67,6 +85,9 @@
 					user.put_in_active_hand(UW)
 				return
 
+	if(user.strippingActions == 1 && isAggresiveStrip(user) && stripping)
+		visible_message("<span class='danger'>[user] is starting to aggressively strip [src]!</span>")
+
 	var/obj/item/target_slot = get_equipped_item(text2num(slot_to_strip_text))
 	if(stripping)
 		if(!istype(target_slot))  // They aren't holding anything valid and there's nothing to remove, why are we even here?
@@ -79,13 +100,14 @@
 	else
 		visible_message("<span class='danger'>\The [user] is trying to put \a [held] on \the [src]!</span>")
 
-	if(!do_mob(user, src, HUMAN_STRIP_DELAY))
+	if(!do_after(user, HUMAN_STRIP_DELAY, src))
 		return
 
 	if(stripping)
 		if(unEquip(target_slot))
 			admin_attack_log(user, src, "Stripped \a [target_slot]", "Was stripped of \a [target_slot].", "stripped \a [target_slot] from")
-			user.put_in_active_hand(target_slot)
+			if(!isAggresiveStrip(user))
+				user.put_in_active_hand(target_slot)
 		else
 			admin_attack_log(user, src, "Attempted to strip \a [target_slot]", "Target of a failed strip of \a [target_slot].", "attempted to strip \a [target_slot] from")
 	else if(user.unEquip(held))
@@ -94,6 +116,8 @@
 			C.attach_accessory(user, held)
 		else if(!equip_to_slot_if_possible(held, text2num(slot_to_strip_text), del_on_fail=0, disable_warning=1, redraw_mob=1))
 			user.put_in_active_hand(held)
+
+	show_inv(usr)
 
 // Empty out everything in the target's pockets.
 /mob/living/carbon/human/proc/empty_pockets(var/mob/living/user)
