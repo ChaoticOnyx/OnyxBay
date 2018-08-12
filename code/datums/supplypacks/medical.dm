@@ -17,6 +17,43 @@
 	cost = 10
 	containername = "\improper Medical crate"
 
+/decl/hierarchy/supply_pack/medical/pills
+	num_contained = 5
+	contains = list(/obj/item/weapon/storage/pill_bottle/antitox,
+					/obj/item/weapon/storage/pill_bottle/bicaridine,
+					/obj/item/weapon/storage/pill_bottle/dexalin_plus,
+					/obj/item/weapon/storage/pill_bottle/dexalin,
+					/obj/item/weapon/storage/pill_bottle/dermaline,
+					/obj/item/weapon/storage/pill_bottle/inaprovaline,
+					/obj/item/weapon/storage/pill_bottle/kelotane,
+					/obj/item/weapon/storage/pill_bottle/spaceacillin,
+					/obj/item/weapon/storage/pill_bottle/tramadol,
+					/obj/item/weapon/storage/pill_bottle/antidexafen,
+					/obj/item/weapon/storage/pill_bottle/paracetamol,
+					/obj/item/weapon/storage/pill_bottle/hyronalin,
+					/obj/item/weapon/storage/pill_bottle/glucose)
+	name = "Surplus medical drugs"
+	cost = 30
+	containername = "\improper Medical drugs crate"
+	supply_method = /decl/supply_method/randomized
+
+/decl/hierarchy/supply_pack/medical/syringe_gun
+	name = "Syringe guns"
+	contains = list(/obj/item/weapon/gun/launcher/syringe = 2,
+					/obj/item/weapon/storage/box/syringegun = 2,
+					/obj/item/weapon/storage/box/syringes = 2,
+					/obj/item/weapon/reagent_containers/glass/bottle/stoxin = 2)
+	cost = 50
+	containertype = /obj/structure/closet/crate/secure
+	containername = "\improper Syringe guns crate"
+	access = access_medical
+
+/decl/hierarchy/supply_pack/medical/syringe_cartridge
+	name = "Syringe cartridges"
+	contains = list(/obj/item/weapon/storage/box/syringegun = 2)
+	cost = 25
+	containername = "\improper Syringe cartridges crate"
+
 /decl/hierarchy/supply_pack/medical/bloodpack
 	name = "Blood pack crate"
 	contains = list(/obj/item/weapon/storage/box/bloodpacks = 3)
@@ -239,17 +276,7 @@
 
 /decl/hierarchy/supply_pack/medical/surgery
 	name = "Surgery crate"
-	contains = list(/obj/item/weapon/cautery,
-					/obj/item/weapon/surgicaldrill,
-					/obj/item/clothing/mask/breath/medical,
-					/obj/item/weapon/tank/anesthetic,
-					/obj/item/weapon/FixOVein,
-					/obj/item/weapon/hemostat,
-					/obj/item/weapon/scalpel,
-					/obj/item/weapon/bonegel,
-					/obj/item/weapon/retractor,
-					/obj/item/weapon/bonesetter,
-					/obj/item/weapon/circular_saw)
+	contains = list(/obj/item/weapon/storage/firstaid/surgery)
 	cost = 25
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Surgery crate"

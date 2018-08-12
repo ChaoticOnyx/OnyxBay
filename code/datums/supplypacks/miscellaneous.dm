@@ -293,3 +293,30 @@
 	cost = 10
 	containername = "\improper Pest Control Crate"
 
+/decl/hierarchy/supply_pack/miscellaneous/tc10
+	name = "Telecrystals - 10"
+	contains = list(/obj/item/stack/telecrystal{amount = 10})
+	cost = 50
+	containername = "\improper crate"
+	hidden = 1
+
+/decl/hierarchy/supply_pack/miscellaneous/tc25
+	name = "Telecrystals - 25"
+	contains = list(/obj/item/stack/telecrystal{amount = 25})
+	cost = 100
+	containername = "\improper crate"
+	hidden = 1
+
+/decl/hierarchy/supply_pack/miscellaneous/tc60
+	name = "Telecrystals - 60"
+	contains = list(/obj/item/stack/telecrystal{amount = 30} = 2)
+	cost = 200
+	containername = "\improper crate"
+	hidden = 1
+
+/decl/hierarchy/supply_pack/miscellaneous/tc150
+	name = "Telecrystals - 150"
+	contains = list(/obj/item/stack/telecrystal{amount = 50} = 3)
+	cost = 400
+	containername = "\improper crate"
+	hidden = 1
