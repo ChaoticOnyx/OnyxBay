@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html onmouseup="window.location='byond://winset?mapwindow.map.focus=true'">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=8">
 		<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
@@ -112,7 +112,7 @@
 			.good                   {color: #4f7529; font-weight: bold;}
 			.bad                    {color: #ee0000; font-weight: bold;}
 
-			IMG.icon                {width: 32px; height: 32px;}
+			IMG.icon                {width: 16px; height: 16px;}
 
 		</style>
 		<style>
@@ -157,7 +157,7 @@
 				img.onerror=null
 				img.src='loading.gif';
 				setTimeout(function(){
-					img.onerror=img.onerror;
+					img.onerror=onerror;
 					img.src=src;
 				}, 500)
 			}
