@@ -195,16 +195,16 @@ proc/spawn_money(var/sum, spawnloc, mob/living/carbon/human/human_user as mob)
 /obj/item/weapon/spacecash/ewallet/lotto/attack_self(mob/user)
 
 	if(scratches_remaining <= 0)
-		user << "<span class='warning'>The card flashes: \"No scratches remaining!\"</span>"
+		to_chat(user, "<span class='warning'>The card flashes: \"No scratches remaining!\"</span>")
 		return
 
 	if(next_scratch > world.time)
-		user << "<span class='warning'>The card flashes: \"Please wait!\"</span>"
+		to_chat(user, "<span class='warning'>The card flashes: \"Please wait!\"</span>")
 		return
 
 	next_scratch = world.time + 6 SECONDS
 
-	user << "<span class='notice'>You initiate the simulated scratch action process on the [src]...</span>"
+	to_chat(user, "<span class='notice'>You initiate the simulated scratch action process on the [src]...</span>")
 	if(do_after(user,4.5 SECONDS))
 		var/won = 0
 		var/result = rand(1,10000)
@@ -243,9 +243,9 @@ proc/spawn_money(var/sum, spawnloc, mob/living/carbon/human/human_user as mob)
 		worth += won
 		sleep(1 SECONDS)
 		if(scratches_remaining > 0)
-			user << "<span class='notice'>The card flashes: You have: [scratches_remaining] SCRATCHES remaining! Scratch again!</span>"
+			to_chat(user, "<span class='notice'>The card flashes: You have: [scratches_remaining] SCRATCHES remaining! Scratch again!</span>")
 		else
-			user << "<span class='notice'>The card flashes: You have: [scratches_remaining] SCRATCHES remaining! You won a total of: [worth] CREDITS. Thanks for playing the space lottery!</span>"
+			to_chat(user, "<span class='notice'>The card flashes: You have: [scratches_remaining] SCRATCHES remaining! You won a total of: [worth] CREDITS. Thanks for playing the space lottery!</span>")
 
 		owner_name = user.name
 

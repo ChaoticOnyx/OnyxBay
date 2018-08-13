@@ -3,7 +3,7 @@
 	set name = "Toggle Panic Bunker"
 
 	if (!dbcon || !dbcon.IsConnected())
-		usr << "<span class='adminnotice'>The Database is not connected!</span>"
+		to_chat(usr, "<span class='adminnotice'>The Database is not connected!</span>")
 		return
 
 	config.panic_bunker = !config.panic_bunker

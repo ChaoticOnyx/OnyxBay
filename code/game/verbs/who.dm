@@ -92,10 +92,9 @@
 	if(holder && (R_ADMIN & holder.rights || R_MOD & holder.rights))
 		msg += "<b><span class='notice'>Total Living: [living]</span> | Total Dead: [dead] | <span style='color:gray'>Observing: [observers]</span> | <span style='color:gray'><i>In Lobby: [lobby]</i></span> | <span class='red'>Living Antags: [living_antags]</span> | <span class='green'>Dead Antags: [dead_antags]</span></b>\n"
 		msg += "<b>Total Players: [length(Lines)]</b>\n"
-		src << msg
 	else
 		msg += "<b>Total Players: [length(Lines)]</b>"
-		to_chat(src, msg)
+	to_chat(src, msg)
 
 /client/verb/staffwho()
 	set category = "Admin"

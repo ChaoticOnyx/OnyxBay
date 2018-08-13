@@ -133,7 +133,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 				usr.drop_item()
 				I.loc = src
 				inserted_id = I
-			else usr << "<span class='danger'>No valid ID.</span>"
+			else to_chat(usr, "<span class='danger'>No valid ID.</span>")
 	if(href_list["purchase"])
 		if(istype(inserted_id))
 			var/datum/data/mining_equipment/prize = locate(href_list["purchase"])

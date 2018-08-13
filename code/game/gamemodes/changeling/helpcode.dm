@@ -241,7 +241,7 @@
 	feedback_add_details("changeling_powers","PB")
 
 	if(last_special > world.time)
-		src << "<span class='warning'>We must wait a little while before we can use this ability again!</span>"
+		to_chat(src, "<span class='warning'>We must wait a little while before we can use this ability again!</span>")
 		return
 
 	last_special = world.time + 100

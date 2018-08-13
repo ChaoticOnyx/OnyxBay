@@ -284,7 +284,7 @@ var/list/mining_floors = list()
 			return
 		last_act = world.time
 
-		user << "<span class='warning'>You start chiselling [src] into a sculptable block.</span>"
+		to_chat(user, "<span class='warning'>You start chiselling [src] into a sculptable block.</span>")
 
 		if(!do_after(user,80))
 			return
@@ -292,7 +292,7 @@ var/list/mining_floors = list()
 		if (!istype(src, /turf/simulated/mineral))
 			return
 
-		user << "<span class='notice'>You finish chiselling [src] into a sculptable block.</span>"
+		to_chat(user, "<span class='notice'>You finish chiselling [src] into a sculptable block.</span>")
 		new /obj/structure/sculpting_block(src)
 		GetDrilled(1)
 

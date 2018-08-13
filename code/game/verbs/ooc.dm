@@ -6,7 +6,7 @@
 
 	if(src.mob)
 		if(jobban_isbanned(src.mob, "OOC"))
-			src << "<span class='danger'>You have been banned from OOC.</span>"
+			to_chat(src, "<span class='danger'>You have been banned from OOC.</span>")
 			return
 
 /client/verb/looc(message as text)
@@ -15,7 +15,7 @@
 	set category = "OOC"
 
 	if(jobban_isbanned(src.mob, "LOOC"))
-		src << "<span class='danger'>You have been banned from LOOC.</span>"
+		to_chat(src, "<span class='danger'>You have been banned from LOOC.</span>")
 		return
 
 	sanitize_and_communicate(/decl/communication_channel/ooc/looc, src, message)
