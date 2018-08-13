@@ -118,12 +118,12 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 				Console.icon_state = "req_comp[priority]"
 			if(priority > 1)
 				playsound(Console.loc, 'sound/machines/chime.ogg', 80, 1)
-				Console.audible_message("\icon[Console]<span class='warning'>\The [Console] announces: 'High priority message received from [sender]!'</span>", hearing_distance = 8)
+				Console.audible_message("[GUNCHAT_ICON(Console)]<span class='warning'>\The [Console] announces: 'High priority message received from [sender]!'</span>", hearing_distance = 8)
 				Console.message_log += "<FONT color='red'>High Priority message from <A href='?src=\ref[Console];write=[sender]'>[sender]</A></FONT><BR>[authmsg]"
 			else
 				if(!Console.silent)
 					playsound(Console.loc, 'sound/machines/twobeep.ogg', 50, 1)
-					Console.audible_message("\icon[Console]<span class='notice'>\The [Console] announces: 'Message received from [sender].'</span>", hearing_distance = 5)
+					Console.audible_message("[GUNCHAT_ICON(Console)]<span class='notice'>\The [Console] announces: 'Message received from [sender].'</span>", hearing_distance = 5)
 				Console.message_log += "<B>Message from <A href='?src=\ref[Console];write=[sender]'>[sender]</A></B><BR>[authmsg]"
 		Console.set_light(2)
 
@@ -165,7 +165,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 		if(!J)
 			continue
 		if(J.department_flag & department)
-			P.new_info(P.message_silent, tone ? tone : P.ttone, "\icon[P] [message]")
+			P.new_info(P.message_silent, tone ? tone : P.ttone, "[GUNCHAT_ICON(P)] [message]")
 			reached++
 	return reached
 
