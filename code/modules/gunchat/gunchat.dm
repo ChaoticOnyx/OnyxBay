@@ -1,11 +1,17 @@
 //see also: goonchat
 /client/proc/gunchat_init()
 	src << output('code/modules/gunchat/gunchat.html',"browseroutput")
+	if(get_preference_value(/datum/client_preference/gunchat_message_combining) == GLOB.PREF_YES)
+		src << output("","browseroutput:enableCombin")
 
-/client/verb/gunchat_toggle_combin()
-	set name = "Toggle message combining"
-	set category = "Chat"
-	src << output("","browseroutput:toggleCombin")
+/datum/client_preference/gunchat_message_combining
+	description = "Toggle message combining"
+	key = "GUNCHAT_MESSAGE_COMBINING"
+	default_value = GLOB.PREF_NO
+
+/datum/client_preference/gunchat_message_combining/changed(var/mob/preference_mob, var/new_value)
+	var/bool_value = new_value == GLOB.PREF_YES ? TRUE : FALSE;
+	preference_mob << output(bool_value, "browseroutput:setCombin")
 
 /proc/to_chat(list/target, message)
 	if(!target || !message)
