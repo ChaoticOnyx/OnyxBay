@@ -113,7 +113,7 @@ proc/get_radio_key_from_channel(var/channel)
 		verb = pick("stammers","stutters")
 		. = 1
 
-	message_data[1] = russian_to_utf8(message)
+	message_data[1] = russian_to_cp1251(message)
 	message_data[2] = verb
 
 /mob/living/proc/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)

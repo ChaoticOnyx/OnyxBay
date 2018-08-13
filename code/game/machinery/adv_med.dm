@@ -252,14 +252,14 @@
 /obj/machinery/body_scanconsole/OnTopic(user, href_list)
 	if (href_list["print"])
 		if (!src.connected)
-			to_chat(user, "[GUNCHAT_ICON(src)]<span class='warning'>Error: No body scanner connected.</span>")
+			to_chat(user, "\icon[src]<span class='warning'>Error: No body scanner connected.</span>")
 			return TOPIC_REFRESH
 		var/mob/living/carbon/human/occupant = src.connected.occupant
 		if (!src.connected.occupant)
-			to_chat(user, "[GUNCHAT_ICON(src)]<span class='warning'>The body scanner is empty.</span>")
+			to_chat(user, "\icon[src]<span class='warning'>The body scanner is empty.</span>")
 			return TOPIC_REFRESH
 		if (!istype(occupant,/mob/living/carbon/human))
-			to_chat(user, "[GUNCHAT_ICON(src)]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
+			to_chat(user, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
 			return TOPIC_REFRESH
 		new/obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
 		return TOPIC_REFRESH
