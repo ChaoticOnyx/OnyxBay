@@ -161,29 +161,12 @@
 					img.src=src;
 				}, 500)
 			}
-			function setCookie(cname, cvalue) {
-				var d = new Date();
-				d.setTime(d.getTime() + (365*24*60*60*1000));
-				document.cookie = cname + '=' + cvalue + ';expires='+d.toUTCString();
+			function enableCombin() {
+				combin = true;
 			}
-			function getCookie(cname) {
-				var name = cname + '=';
-				var ca = document.cookie.split(';');
-				for(var i=0; i < ca.length; i++) {
-					var c = ca[i];
-					while (c.charAt(0)==' ') c = c.substring(1);
-					if (c.indexOf(name) === 0) {
-						return c.substring(name.length,c.length);
-					}
-				}
-				return '';
+			function setCombin(v) {
+				combin = !!+v;
 			}
-			function toggleCombin() {
-				combin = !combin;
-				setCookie('combin', combin);
-				output('Message combining ' + (combin ? 'enabled' : 'disabled') + '.');
-			}
-			combin = getCookie('combin') == 'true' && true || false;
 		</script>
 	</head>
 	<body id="messages">
