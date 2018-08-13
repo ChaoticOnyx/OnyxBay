@@ -8,7 +8,7 @@
 
 /mob/living/carbon/human/proc/handle_strip(var/slot_to_strip_text, var/mob/living/user, var/obj/item/clothing/holder)
 	user.strippingActions += 1
-	_handle_strip_internal(slot_to_strip_text)
+	_handle_strip_internal(slot_to_strip_text, user, holder)
 	user.strippingActions -= 1
 
 // You really shoudn't call this function explicitly. Use handle_strip instead.
@@ -20,7 +20,7 @@
 		show_browser(user, null, "window=mob[src.name]")
 		return
 
-	if(user.strippingActions && !isAggresiveStrip(user))
+	if(user.strippingActions > 1 && !isAggresiveStrip(user))
 		to_chat(user, "<span class='warning'>You can't strip few items simultaneously! (Use strong Grab)</span>")
 		return
 
