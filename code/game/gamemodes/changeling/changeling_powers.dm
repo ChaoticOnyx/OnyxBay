@@ -1197,7 +1197,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/Division()
 	set category = "Changeling"
-	set name = "Division"
+	set name = "Division (20)"
 	set desc = "We will make you ours."
 
 	var/datum/changeling/changeling = changeling_power(0,0,100)
@@ -1369,3 +1369,14 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	effect.layer = 3
 	flick("summoning",effect)
 	QDEL_IN(effect, 10)
+
+/mob/proc/aggressive()
+	set category = "Changeling"
+	set name = "Agressive form"
+	set desc = "We take an aggressive form."
+	var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(src))
+	if(src.mind)
+		src.mind.transfer_to(head_ling)
+	else
+		head_ling.key = src.key
+	qdel(src.loc)
