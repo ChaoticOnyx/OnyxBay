@@ -7,7 +7,7 @@
 	parent_organ = BP_CHEST
 	vital = 1
 	var/open
-	var/obj/item/weapon/cell/cell = /obj/item/weapon/cell/hyper
+	var/obj/item/weapon/cell/cell = /obj/item/weapon/cell/high
 	//at 0.8 completely depleted after 60ish minutes of constant walking or 130 minutes of standing still
 	var/servo_cost = 0.8
 
