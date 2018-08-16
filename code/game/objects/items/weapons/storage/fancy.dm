@@ -290,18 +290,15 @@
 	name = "vial storage box"
 	w_class = ITEM_SIZE_NORMAL
 	max_w_class = ITEM_SIZE_TINY
-	storage_slots = 12
+	storage_slots = 6
 
 	key_type = /obj/item/weapon/reagent_containers/glass/beaker/vial
-	startswith = list(/obj/item/weapon/reagent_containers/glass/beaker/vial = 12)
+	startswith = list(/obj/item/weapon/reagent_containers/glass/beaker/vial = 6)
 
 /obj/item/weapon/storage/fancy/vials/update_icon()
 	var/key_count = count_by_type(contents, key_type)
-	src.icon_state = "[initial(icon_state)][Floor(key_count/2)]"
+	src.icon_state = "[initial(icon_state)][key_count]"
 
-/*
- * Not actually a "fancy" storage...
- */
 /obj/item/weapon/storage/lockbox/vials
 	name = "secure vial storage box"
 	desc = "A locked box for keeping things away from children."
@@ -311,8 +308,9 @@
 	w_class = ITEM_SIZE_NORMAL
 	max_w_class = ITEM_SIZE_TINY
 	max_storage_space = null
-	storage_slots = 12
+	storage_slots = 6
 	req_access = list(access_virology)
+	can_hold = list("/obj/item/weapon/reagent_containers/glass/beaker/vial")
 
 /obj/item/weapon/storage/lockbox/vials/New()
 	..()
@@ -320,7 +318,7 @@
 
 /obj/item/weapon/storage/lockbox/vials/update_icon()
 	var/total_contents = count_by_type(contents, /obj/item/weapon/reagent_containers/glass/beaker/vial)
-	src.icon_state = "vialbox[Floor(total_contents/2)]"
+	src.icon_state = "vialbox[Floor(total_contents)]"
 	src.overlays.Cut()
 	if (!broken)
 		overlays += image(icon, src, "led[locked]")
