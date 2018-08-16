@@ -220,6 +220,13 @@ var/list/datum/power/changeling/powerinstances = list()
 	verbpath = /mob/proc/changeling_recursive_enhancement
 
 
+/datum/power/changeling/claw
+	name = "Fake armblade"
+	desc = "We reform others arms into a fake armblade."
+	helptext = "Can't be transform into arm."
+	enhancedtext = "Doing nothing"
+	genomecost = 4
+	verbpath = /mob/proc/changeling_fake_arm_blade
 
 
 // Modularchangling, totally stolen from the new player panel.  YAYY

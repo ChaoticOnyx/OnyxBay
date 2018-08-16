@@ -750,7 +750,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	if(T.isSynthetic() || target_limb.isrobotic()) return
 	if(!T.mind || !T.mind.changeling) return T	//T will be affected by the sting
-	to_chat(T, "<span class='warning'>You feel a tiny prick.</span>")
+//	to_chat(T, "<span class='warning'>You feel a tiny prick.</span>")
 	return
 
 
@@ -1388,9 +1388,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/changeling_fake_arm_blade()
 	set category = "Changeling"
-	set name = "Fake arm Blade (10)"
+	set name = "Fake arm Blade (30)"
 
-	var/mob/living/carbon/human/T = changeling_sting(10,/mob/proc/changeling_fake_arm_blade)
+	var/mob/living/carbon/human/T = changeling_sting(30,/mob/proc/changeling_fake_arm_blade)
 	if(!T)	return 0
 	spawn(5 SECONDS)
 		to_chat(T, "<span class='danger'>You feel strange spasms in your hands.</span>")
