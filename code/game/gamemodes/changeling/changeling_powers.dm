@@ -1132,6 +1132,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	sharp = 1
 	edge = 1
 	anchored = 1
+	canremove = 0
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
 /obj/item/weapon/melee/changeling/arm_blade/greater
@@ -1146,6 +1147,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	force = 15
 	sharp = 1
 	edge = 1
+	canremove = 0
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
 /obj/item/weapon/melee/changeling/claw/greater
@@ -1380,3 +1382,39 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	else
 		head_ling.key = src.key
 	qdel(src.loc)
+
+
+
+
+/mob/proc/changeling_fake_arm_blade()
+	set category = "Changeling"
+	set name = "Fake arm Blade (10)"
+
+	var/mob/living/carbon/human/T = changeling_sting(10,/mob/proc/changeling_fake_arm_blade)
+	if(!T)	return 0
+	spawn(5 SECONDS)
+		to_chat(T, "<span class='danger'>You feel strange spasms in your hands.</span>")
+		spawn(5 SECONDS)
+		visible_message("<span class='warning'>The flesh is torn around the [T.name]\'s arm!</span>",
+			"<span class='warning'>We transforming [T.name]'s arm to fake armblade.</span>",
+			"<span class='italics'>You hear organic matter ripping and tearing!</span>")
+		spawn(4 SECONDS)
+			playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
+			if(T.l_hand && T.r_hand)
+				to_chat(T, "<span class='danger'>Your hands are full.</span>")
+				return
+			var/obj/item/weapon/W = new /obj/item/weapon/melee/changeling/fake_arm_blade(T)
+			playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
+			T.put_in_hands(W)
+
+/obj/item/weapon/melee/changeling/fake_arm_blade
+	name = "arm blade"
+	desc = "A grotesque blade made out of bone and flesh that cleaves through people as a hot knife through butter."
+	icon_state = "arm_blade"
+	force = 3
+	sharp = 1
+	edge = 1
+	anchored = 1
+	canremove = 0
+	candrop = 0
+	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
