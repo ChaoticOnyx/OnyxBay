@@ -3,7 +3,7 @@
 	icon = 'icons/obj/curtain.dmi'
 	icon_state = "closed"
 	plane = ABOVE_OBJ_PLANE
-	layer = ABOVE_WINDOW_LAYER
+	layer = BASE_ABOVE_OBJ_LAYER
 	opacity = 1
 	density = 0
 
@@ -30,11 +30,9 @@
 	if(opacity)
 		icon_state = "closed"
 		plane = ABOVE_HUMAN_PLANE
-		layer = ABOVE_WINDOW_LAYER
 	else
 		icon_state = "open"
 		plane = ABOVE_OBJ_PLANE
-		layer = ABOVE_WINDOW_LAYER
 
 /obj/structure/curtain/black
 	name = "black curtain"
