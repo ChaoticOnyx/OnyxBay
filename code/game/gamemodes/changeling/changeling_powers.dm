@@ -95,7 +95,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	var/mob/living/carbon/human/H = src
 	if(istype(H))
-		var/datum/absorbed_dna/newDNA = new(H.real_name, H.dna, H.species.name, H.languages)
+		var/datum/absorbed_dna/newDNA = new(H.real_name, H.dna, H.species.name, H.languages, H.flavor_text)
 		absorbDNA(newDNA)
 
 	return 1
@@ -222,7 +222,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	changeling_update_languages(changeling.absorbed_languages)
 
-	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages)
+	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.flavor_text)
 	absorbDNA(newDNA)
 	if(mind && T.mind)
 		mind.store_memory("[T.real_name]'s memories:")
@@ -314,7 +314,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	src.dna = chosen_dna.dna
 	src.real_name = chosen_dna.name
-	src.flavor_text = ""
+	src.flavor_text = chosen_dna.flavor_text
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
@@ -465,7 +465,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 			to_chat(C, "<span class='notice'><font size='5'>We are ready to rise.  Use the <b>Revive</b> verb when you are ready.</font></span>")
 			C.verbs += /mob/proc/changeling_revive
-
+			spawn(10 SECONDS)
+				C.changeling_revive()
 	feedback_add_details("changeling_powers","FD")
 	return 1
 
@@ -816,8 +817,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	to_chat(T, "<span class='danger'>You feel a small prick and your chest becomes tight.</span>")
 	T.make_jittery(400)
 	if(T.reagents)
-		spawn(5 SECONDS)
-			T.reagents.add_reagent(/datum/reagent/toxin/cyanide, 3)
+		spawn(10 SECONDS)
+			T.reagents.add_reagent(/datum/reagent/toxin/cyanide, 1)
+			spawn(5 SECONDS)
+				T.reagents.add_reagent(/datum/reagent/toxin/cyanide, 1)
+					spawn(10 SECONDS)
+						T.reagents.add_reagent(/datum/reagent/toxin/cyanide, 3)
 	feedback_add_details("changeling_powers","DTHS")
 	return 1
 
@@ -842,7 +847,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(src, "<span class='notice'>That species must be absorbed directly.</span>")
 		return
 
-	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages)
+	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.flavor_text)
 	absorbDNA(newDNA)
 
 	feedback_add_details("changeling_powers","ED")
@@ -1268,6 +1273,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	changeling.geneticpoints -= 4
 
 	T.make_changeling()
+	to_chat(T, "<span class='danger'>You feel a new power!</span>")
 	T.mind.changeling.geneticpoints = 6
 	T.mind.changeling.chem_charges = 40
 	changeling.isabsorbing = 0
@@ -1418,3 +1424,51 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	canremove = 0
 	candrop = 0
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+
+
+
+
+//No breathing required
+/mob/proc/no_pain()
+	set category = "Changeling"
+	set name = "Toggle feel pain"
+	set desc = "We choose whether or not to fell pain."
+
+	var/datum/changeling/changeling = changeling_power(0,0,100,UNCONSCIOUS)
+	if(!changeling)
+		return 0
+	if(istype(src,/mob/living/carbon/human))
+		var/mob/living/carbon/human/C = src
+		var/regen_rate = TRUE
+		if(C.canfeelpain == 0)
+			C.canfeelpain = 1
+			src << "<span class='notice'>We fell pain.</span>"
+			regen_rate = FALSE
+			return 1
+		else
+			C.canfeelpain = 0
+			src << "<span class='notice'>We don't feel pain.</span>"
+			regen_rate = TRUE
+		while(regen_rate)
+			sleep(1 SECOND)
+			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 0.5, 0)
+			if(C.mind.changeling.chem_charges == 0) // Dead or unconscious lings can't stay cloaked.
+				regen_rate = 0
+			if(!changeling)
+				regen_rate = 0
+	return 0
+
+/mob/proc/rapid_heal()
+	set category = "Changeling"
+	set name = "Passive Regeneration(10)"
+	set desc = "Allows you to passively regenerate when activated."
+	if(istype(src,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = src
+		var/datum/changeling/changeling = changeling_power(10,0,100,CONSCIOUS)
+		H.mind.changeling.heal = !H.mind.changeling.heal
+		if(!changeling)
+			return
+		if(H.mind.changeling.heal)
+			to_chat(H, "<span class='alium'>We activate our stemocyte pool and begin intensive fleshmending.</span>")
+		if(!H.mind.changeling.heal)
+			to_chat(H, "<span class='alium'>We inactivate our stemocyte pool and stop intensive fleshmending.</span>")
