@@ -18,6 +18,7 @@ LINEN BINS
 	throw_speed = 1
 	throw_range = 2
 	w_class = ITEM_SIZE_SMALL
+	var/folded = 0
 
 /obj/item/weapon/bedsheet/attackby(obj/item/I, mob/user)
 	if(is_sharp(I))
@@ -30,6 +31,15 @@ LINEN BINS
 		return
 	..()
 
+/obj/item/weapon/bedsheet/AltClick()
+	playsound(get_turf(loc), "rustle", 15, 1, -5)
+	if(!folded)
+		folded = 1
+		icon_state = "sheet-folded"
+	else
+		folded = 0
+		icon_state = initial(icon_state)
+		
 /obj/item/weapon/bedsheet/blue
 	icon_state = "sheetblue"
 	item_state = "sheetblue"
