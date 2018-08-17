@@ -260,13 +260,13 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 8
 	verbpath = /mob/proc/Division
 
-/datum/power/changeling/Division
+/datum/power/changeling/rapid_heal
 	name = "Passive Regeneration"
 	desc = "Allows you to passively regenerate when activated."
 	helptext = "Spends chemicals."
 	enhancedtext = "Doing nothing"
 	genomecost = 4
-	verbpath = /mob/proc/rapid_heal()
+	verbpath = /mob/proc/rapid_heal
 
 // Modularchangling, totally stolen from the new player panel.  YAYY
 /datum/changeling/proc/EvolutionMenu()//The new one
