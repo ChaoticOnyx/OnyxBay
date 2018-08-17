@@ -26,6 +26,7 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ITEM_FLAG_NO_BLUDGEON            0x0001 // When an item has this it produces no "X has been hit by Y with Z" message with the default handler.
 #define ITEM_FLAG_PHORONGUARD            0x0002 // Does not get contaminated by phoron.
 #define ITEM_FLAG_NO_PRINT               0x0004 // This object does not leave the user's prints/fibres when using it
+#define ITEM_FLAG_NO_ANIMATION           0x0008 // This object will not make an attack animation
 #define ITEM_FLAG_THICKMATERIAL          0x0010 // Prevents syringes, reagent pens, and hyposprays if equiped to slot_suit or slot_head.
 #define ITEM_FLAG_STOPPRESSUREDAMAGE     0x0020 // Counts towards pressure protection. Note that like temperature protection, body_parts_covered is considered here as well.
 #define ITEM_FLAG_AIRTIGHT               0x0040 // Functions with internals.
