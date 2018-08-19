@@ -28,6 +28,10 @@
 	icon_state = "sheet-wood"
 	default_type = "wood"
 
+/obj/item/stack/material/cyborg/marble
+	icon_state = "sheet-marble"
+	default_type = "marble"
+
 /obj/item/stack/material/cyborg/glass
 	icon_state = "sheet-glass"
 	default_type = "glass"

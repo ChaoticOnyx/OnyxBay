@@ -322,30 +322,24 @@
 	materials = list(DEFAULT_WALL_MATERIAL = 10000)
 	category = "Cyborg Upgrade Modules"
 
-/datum/design/item/robot_upgrade/rename
-	name = "Rename module"
-	desc = "Used to rename a cyborg."
-	id = "borg_rename_module"
-	build_path = /obj/item/borg/upgrade/rename
-
-/datum/design/item/robot_upgrade/reset
-	name = "Reset module"
-	desc = "Used to reset a cyborg's module. Destroys any other upgrades applied to the robot."
-	id = "borg_reset_module"
-	build_path = /obj/item/borg/upgrade/reset
-
-/datum/design/item/robot_upgrade/floodlight
-	name = "Floodlight module"
-	desc = "Used to boost cyborg's integrated light intensity."
-	id = "borg_floodlight_module"
-	build_path = /obj/item/borg/upgrade/floodlight
-
 /datum/design/item/robot_upgrade/restart
 	name = "Emergency restart module"
 	desc = "Used to force a restart of a disabled-but-repaired robot, bringing it back online."
 	id = "borg_restart_module"
 	materials = list(DEFAULT_WALL_MATERIAL = 60000, "glass" = 5000)
 	build_path = /obj/item/borg/upgrade/restart
+
+/datum/design/item/robot_upgrade/rename
+	name = "Rename module"
+	desc = "Used to rename a cyborg."
+	id = "borg_rename_module"
+	build_path = /obj/item/borg/upgrade/rename
+
+/datum/design/item/robot_upgrade/floodlight
+	name = "Floodlight module"
+	desc = "Used to boost cyborg's integrated light intensity."
+	id = "borg_floodlight_module"
+	build_path = /obj/item/borg/upgrade/floodlight
 
 /datum/design/item/robot_upgrade/vtec
 	name = "VTEC module"
@@ -354,13 +348,6 @@
 	materials = list(DEFAULT_WALL_MATERIAL = 80000, "glass" = 6000, "gold" = 5000)
 	build_path = /obj/item/borg/upgrade/vtec
 
-/datum/design/item/robot_upgrade/tasercooler
-	name = "Rapid taser cooling module"
-	desc = "Used to cool a mounted taser, increasing the potential current in it and thus its recharge rate."
-	id = "borg_taser_module"
-	materials = list(DEFAULT_WALL_MATERIAL = 80000, "glass" = 6000, "gold" = 2000, "diamond" = 500)
-	build_path = /obj/item/borg/upgrade/tasercooler
-
 /datum/design/item/robot_upgrade/jetpack
 	name = "Jetpack module"
 	desc = "A carbon dioxide jetpack suitable for low-gravity mining operations."
@@ -368,12 +355,156 @@
 	materials = list(DEFAULT_WALL_MATERIAL = 10000, "phoron" = 15000, "uranium" = 20000)
 	build_path = /obj/item/borg/upgrade/jetpack
 
+/datum/design/item/robot_upgrade/visor
+	category = "Cyborg Visor Upgrades"
+	materials = list(DEFAULT_WALL_MATERIAL = 5000, "glass" = 15000)
+
+/datum/design/item/robot_upgrade/visor/thermal
+	name = "Thermal vision module"
+	id = "borg_visor_thermal"
+	req_tech = list(TECH_COMBAT = 3, TECH_ENGINEERING = 4, TECH_MATERIAL = 3, TECH_BIO = 4)
+	materials = list(DEFAULT_WALL_MATERIAL = 15000, "glass" = 15000, "diamond" = 1000)
+	build_path = /obj/item/borg/upgrade/visor_thermal
+
+/datum/design/item/robot_upgrade/visor/flash_screen
+	name = "Flash screen"
+	id = "borg_visor_flash_screen"
+	req_tech = list(TECH_COMBAT = 4, TECH_ENGINEERING = 6, TECH_MATERIAL = 3)
+	materials = list(DEFAULT_WALL_MATERIAL = 12500, "glass" = 15000, "silver" = 1500)
+	build_path = /obj/item/borg/upgrade/visor_flash_screen
+
+/datum/design/item/robot_upgrade/visor/nvg
+	name = "Night vision module"
+	id = "borg_visor_nvg"
+	req_tech = list(TECH_COMBAT = 2, TECH_ENGINEERING = 2, TECH_MATERIAL = 3)
+	build_path = /obj/item/borg/upgrade/visor_nvg
+
+/datum/design/item/robot_upgrade/visor/meson
+	name = "Meson vision module"
+	id = "borg_visor_meson"
+	req_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 4, TECH_MATERIAL = 3)
+	build_path = /obj/item/borg/upgrade/visor_meson
+
+/datum/design/item/robot_upgrade/rped
+	name = "RPED module"
+	id = "borg_rped_module"
+	build_path = /obj/item/borg/upgrade/rped
+	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 3)
+	materials = list(DEFAULT_WALL_MATERIAL = 15000, "glass" = 5000)
+
 /datum/design/item/robot_upgrade/rcd
 	name = "RCD module"
 	desc = "A rapid construction device module for use during construction operations."
 	id = "borg_rcd_module"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 3, TECH_MAGNET = 2)
 	materials = list(DEFAULT_WALL_MATERIAL = 25000, "phoron" = 10000, "gold" = 1000, "silver" = 1000)
 	build_path = /obj/item/borg/upgrade/rcd
+
+/datum/design/item/robot_upgrade/paperwork
+	name = "Paperwork module"
+	desc = "A paperwork kit module. Democracy's best friend."
+	id = "borg_paperwork_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 8000)
+	build_path = /obj/item/borg/upgrade/paperwork
+
+/datum/design/item/robot_upgrade/x_ray
+	name = "X-ray module"
+	id = "borg_x_ray_module"
+	req_tech = list(TECH_COMBAT = 5, TECH_ENGINEERING = 6, TECH_MATERIAL = 6, TECH_BIO = 5, TECH_ILLEGAL = 5)
+	materials = list(DEFAULT_WALL_MATERIAL = 20000, "glass" = 25000, "silver" = 5000, "diamond" = 1500, "uranium" = 2500)
+	build_path = /obj/item/borg/upgrade/visor_x_ray
+
+/datum/design/item/robot_upgrade/cargo_managment
+	name = "Cargo managment module"
+	id = "borg_cargo_managment_module"
+	req_tech = list(TECH_DATA = 3, TECH_MATERIAL = 2)
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 2000)
+	build_path = /obj/item/borg/upgrade/cargo_managment
+
+/datum/design/item/robot_upgrade/bb_printer
+	name = "Bodybag printer"
+	id = "borg_bb_printer_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "phoron" = 8000, "silver" = 2000)
+	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 2, TECH_MATERIAL = 3)
+	build_path = /obj/item/borg/upgrade/bb_printer
+
+/datum/design/item/robot_upgrade/organ_printer
+	name = "Organ printer"
+	id = "borg_organ_printer_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 8000, "phoron" = 2000, "silver" = 8000, "diamond" = 500)
+	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 4, TECH_MATERIAL = 4)
+	build_path = /obj/item/borg/upgrade/organ_printer
+
+/datum/design/item/robot_upgrade/blood_printer
+	name = "Blood synthesizer"
+	id = "borg_blood_printer_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 5000, "glass" = 2000, "gold" = 2000, "silver" = 10000, "diamond" = 500)
+	req_tech = list(TECH_BIO = 5, TECH_MAGNET = 2, TECH_MATERIAL = 3)
+	build_path = /obj/item/borg/upgrade/blood_printer
+
+/datum/design/item/robot_upgrade/engineer_printer
+	name = "Construction parts printer"
+	id = "borg_engineer_printer_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 25000, "glass" = 10000, "gold" = 2000, "uranium" = 500, "diamond" = 500)
+	req_tech = list(TECH_MATERIAL = 3, TECH_ENGINEERING = 4, TECH_MAGNET = 2)
+	build_path = /obj/item/borg/upgrade/engineer_printer
+
+/datum/design/item/robot_upgrade/pipe_printer
+	name = "Pipe manufacturer"
+	id = "borg_pipe_printer_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 25000, "glass" = 5000, "silver" = 2000)
+	req_tech = list(TECH_MATERIAL = 3, TECH_ENGINEERING = 4, TECH_MAGNET = 2)
+	build_path = /obj/item/borg/upgrade/pipe_printer
+
+/datum/design/item/robot_upgrade/paramedic
+	name = "Paramedic module"
+	id = "borg_paramedic_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 5000)
+	req_tech = list(TECH_BIO = 3, TECH_MATERIAL = 3)
+	build_path = /obj/item/borg/upgrade/paramedic
+
+/datum/design/item/robot_upgrade/archeologist
+	name = "Archeologist kit"
+	id = "borg_archeologist_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 5000, "diamond" = 500)
+	req_tech = list(TECH_MATERIAL = 2, TECH_ENGINEERING = 2, TECH_MAGNET = 3)
+	build_path = /obj/item/borg/upgrade/archeologist
+
+/datum/design/item/robot_upgrade/detective
+	name = "Detective kit"
+	id = "borg_detective_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 5000, "glass" = 5000, "silver" = 2000)
+	req_tech = list(TECH_MATERIAL = 3, TECH_ENGINEERING = 1, TECH_BIO = 3)
+	build_path = /obj/item/borg/upgrade/detective
+
+/datum/design/item/robot_upgrade/storage
+	name = "Storage module"
+	id = "borg_storage_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "gold" = 3000, "uranium" = 250)
+	req_tech = list(TECH_BLUESPACE = 3, TECH_MATERIAL = 5)
+	build_path = /obj/item/borg/upgrade/storage
+
+/datum/design/item/robot_upgrade/death_alarm
+	name = "Death alarm module"
+	id = "borg_death_alarm_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 4000, "glass" = 5000, "silver" = 500)
+	req_tech = list(TECH_MATERIAL = 2, TECH_ENGINEERING = 6, TECH_DATA = 3)
+	build_path = /obj/item/borg/upgrade/death_alarm
+
+/datum/design/item/robot_upgrade/tasercooler
+	name = "Rapid taser cooling module"
+	desc = "Used to cool a mounted taser, increasing the potential current in it and thus its recharge rate."
+	id = "borg_taser_module"
+	materials = list(DEFAULT_WALL_MATERIAL = 80000, "glass" = 6000, "gold" = 2000, "diamond" = 500)
+	build_path = /obj/item/borg/upgrade/tasercooler
+
+/datum/design/item/robot_upgrade/lasercooler
+	name = "Rapid laser cooling module"
+	desc = "Used to cool a mounted laser, increasing the potential current in it and thus its recharge rate."
+	id = "borg_laser_module"
+	req_tech = list(TECH_COMBAT = 2, TECH_ENGINEERING = 6, TECH_MATERIAL = 3)
+	materials = list(DEFAULT_WALL_MATERIAL = 100000, "glass" = 8000, "silver" = 4000, "diamond" = 1000)
+	build_path = /obj/item/borg/upgrade/lasercooler
 
 /datum/design/item/robot_upgrade/syndicate
 	name = "Illegal upgrade"
@@ -608,3 +739,85 @@
 	materials = list(DEFAULT_WALL_MATERIAL = 750, "glass" = 750)
 	build_path = /obj/item/device/flash/synthetic
 	category = "Misc"
+
+/datum/design/item/robot_upgrade/remodel
+	build_type = MECHFAB
+	materials = list(DEFAULT_WALL_MATERIAL = 10000)
+	category = "Robot Modules"
+	time = 12
+
+/datum/design/item/robot_upgrade/remodel/advanced
+	time = 24
+
+/datum/design/item/robot_upgrade/remodel/default
+	name = "Default cyborg model"
+	id = "remodel_default"
+	build_path = /obj/item/borg/upgrade/remodel
+
+/datum/design/item/robot_upgrade/remodel/medical
+	name = "Medical cyborg model"
+	id = "remodel_medical"
+	build_path = /obj/item/borg/upgrade/remodel/medical
+
+/datum/design/item/robot_upgrade/remodel/advanced/medical
+	name = "Advanced medical cyborg model"
+	id = "remodel_medical_advanced"
+	build_path = /obj/item/borg/upgrade/remodel/advanced/medical
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 10000, "silver" = 5000, "phoron" = 2000)
+	req_tech = list(TECH_ENGINEERING = 5,TECH_POWER = 4,TECH_BIO = 5,TECH_BLUESPACE = 3)
+
+/datum/design/item/robot_upgrade/remodel/surgeon
+	name = "Surgeon cyborg model"
+	id = "remodel_surgeon"
+	build_path = /obj/item/borg/upgrade/remodel/surgeon
+
+/datum/design/item/robot_upgrade/remodel/advanced/surgeon
+	name = "Advanced surgeon cyborg model"
+	id = "remodel_surgeon_advanced"
+	build_path = /obj/item/borg/upgrade/remodel/advanced/surgeon
+	materials = list(DEFAULT_WALL_MATERIAL = 15000,"glass" = 5000, "gold" = 5000, "diamond" = 500)
+	req_tech = list(TECH_ENGINEERING = 4,TECH_POWER = 2,TECH_BIO = 5,TECH_BLUESPACE = 3)
+
+/datum/design/item/robot_upgrade/remodel/security
+	name = "Security cyborg model"
+	id = "remodel_security"
+	build_path = /obj/item/borg/upgrade/remodel/security
+
+/datum/design/item/robot_upgrade/remodel/engineering
+	name = "Engineering cyborg model"
+	id = "remodel_engineering"
+	build_path = /obj/item/borg/upgrade/remodel/engineering
+
+/datum/design/item/robot_upgrade/remodel/advanced/engineering
+	name = "Advanced engineering cyborg model"
+	id = "remodel_engineering_advanced"
+	build_path = /obj/item/borg/upgrade/remodel/advanced/engineering
+	materials = list(DEFAULT_WALL_MATERIAL = 20000,"glass" = 10000, "phoron" = 2000, "diamond" = 1000)
+	req_tech = list(TECH_ENGINEERING = 6, TECH_MATERIAL = 4,TECH_POWER = 4,TECH_MAGNET = 2)
+
+/datum/design/item/robot_upgrade/remodel/miner
+	name = "Miner cyborg model"
+	id = "remodel_miner"
+	build_path = /obj/item/borg/upgrade/remodel/miner
+
+/datum/design/item/robot_upgrade/remodel/advanced/miner
+	name = "Advanced miner cyborg model"
+	id = "remodel_miner_advanced"
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "phoron" = 4000, "diamond" = 5000)
+	req_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 5,TECH_POWER = 3,TECH_MAGNET = 4)
+	build_path = /obj/item/borg/upgrade/remodel/advanced/miner
+
+/datum/design/item/robot_upgrade/remodel/research
+	name = "Research cyborg model"
+	id = "remodel_research"
+	build_path = /obj/item/borg/upgrade/remodel/research
+
+/datum/design/item/robot_upgrade/remodel/service
+	name = "Service cyborg model"
+	id = "remodel_service"
+	build_path = /obj/item/borg/upgrade/remodel/service
+
+/datum/design/item/robot_upgrade/remodel/janitor
+	name = "Janitor cyborg model"
+	id = "remodel_janitor"
+	build_path = /obj/item/borg/upgrade/remodel/janitor

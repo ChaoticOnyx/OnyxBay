@@ -752,3 +752,36 @@
 		M.immunity = max(M.immunity - 0.1, 0)
 		if(M.chem_doses[type] > M.species.blood_volume/8) //half of blood was replaced with us, rip white bodies
 			M.immunity = max(M.immunity - 0.5, 0)
+
+/datum/reagent/sugar_iron_mix
+	name = "Sugar/Iron mix"
+	description = "Mix of sugar and iron, increases red blood cell production."
+	taste_description = "sweet tasting metal"
+	taste_mult = 1.8
+	reagent_state = SOLID
+	color = "#626262"
+	scannable = 1
+
+	glass_name = "mix of sugar and iron"
+	glass_desc = "Mix of sugar and iron, increases red blood cell production."
+	glass_icon = DRINK_ICON_NOISY
+
+/datum/reagent/sugar_iron_mix/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	M.nutrition += removed * 3
+
+	if(alien != IS_DIONA)
+		M.add_chemical_effect(CE_BLOODRESTORE, 8 * removed)
+
+	if(alien == IS_UNATHI)
+		if(M.chem_doses[type] < 2)
+			if(M.chem_doses[type] == metabolism * 2 || prob(5))
+				M.emote("yawn")
+		else if(M.chem_doses[type] < 5)
+			M.eye_blurry = max(M.eye_blurry, 10)
+		else if(M.chem_doses[type] < 20)
+			if(prob(50))
+				M.Weaken(2)
+			M.drowsyness = max(M.drowsyness, 20)
+		else
+			M.sleeping = max(M.sleeping, 20)
+			M.drowsyness = max(M.drowsyness, 60)

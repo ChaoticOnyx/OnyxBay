@@ -22,8 +22,6 @@
 	if(isnull(module_active))
 		return
 	if(module_state_1 == module_active)
-		if(istype(module_state_1,/obj/item/borg/sight))
-			sight_mode &= ~module_state_1:sight_mode
 		if (client)
 			client.screen -= module_state_1
 		contents -= module_state_1
@@ -32,8 +30,6 @@
 		module_state_1 = null
 		inv1.icon_state = "inv1"
 	else if(module_state_2 == module_active)
-		if(istype(module_state_2,/obj/item/borg/sight))
-			sight_mode &= ~module_state_2:sight_mode
 		if (client)
 			client.screen -= module_state_2
 		contents -= module_state_2
@@ -42,8 +38,6 @@
 		module_state_2 = null
 		inv2.icon_state = "inv2"
 	else if(module_state_3 == module_active)
-		if(istype(module_state_3,/obj/item/borg/sight))
-			sight_mode &= ~module_state_3:sight_mode
 		if (client)
 			client.screen -= module_state_3
 		contents -= module_state_3
@@ -51,14 +45,13 @@
 		module_state_3:loc = module
 		module_state_3 = null
 		inv3.icon_state = "inv3"
+	src.hud_used.update_robot_modules_display()
 	update_icon()
 
 /mob/living/silicon/robot/proc/uneq_all()
 	module_active = null
 
 	if(module_state_1)
-		if(istype(module_state_1,/obj/item/borg/sight))
-			sight_mode &= ~module_state_1:sight_mode
 		if (client)
 			client.screen -= module_state_1
 		contents -= module_state_1
@@ -66,8 +59,6 @@
 		module_state_1 = null
 		inv1.icon_state = "inv1"
 	if(module_state_2)
-		if(istype(module_state_2,/obj/item/borg/sight))
-			sight_mode &= ~module_state_2:sight_mode
 		if (client)
 			client.screen -= module_state_2
 		contents -= module_state_2
@@ -75,8 +66,6 @@
 		module_state_2 = null
 		inv2.icon_state = "inv2"
 	if(module_state_3)
-		if(istype(module_state_3,/obj/item/borg/sight))
-			sight_mode &= ~module_state_3:sight_mode
 		if (client)
 			client.screen -= module_state_3
 		contents -= module_state_3
@@ -227,22 +216,16 @@
 		O.hud_layerise()
 		O.screen_loc = inv1.screen_loc
 		contents += O
-		if(istype(module_state_1,/obj/item/borg/sight))
-			sight_mode |= module_state_1:sight_mode
 	else if(!module_state_2)
 		module_state_2 = O
 		O.hud_layerise()
 		O.screen_loc = inv2.screen_loc
 		contents += O
-		if(istype(module_state_2,/obj/item/borg/sight))
-			sight_mode |= module_state_2:sight_mode
 	else if(!module_state_3)
 		module_state_3 = O
 		O.hud_layerise()
 		O.screen_loc = inv3.screen_loc
 		contents += O
-		if(istype(module_state_3,/obj/item/borg/sight))
-			sight_mode |= module_state_3:sight_mode
 	else
 		to_chat(src, "<span class='notice'>You need to disable a module first!</span>")
 

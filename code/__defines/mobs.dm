@@ -35,6 +35,16 @@
 #define BORGTHERM 0x2
 #define BORGXRAY  0x4
 #define BORGMATERIAL  8
+//silicon vision modes
+#define SEC_VISION 1 //Security Vision mode
+#define MED_VISION 2 //Medical Vision mode
+#define MESON_VISION 3 //Meson Vision mode
+#define SCIENCE_VISION 4 //Science Vision mode
+#define NVG_VISION 5 //Night vision Vision mode
+#define MATERIAL_VISION 6 //Material Vision mode
+#define THERMAL_VISION 7 //Thermal Vision mode
+#define XRAY_VISION 8 //XRAY Vision mode
+#define FLASH_PROTECTION_VISION 9 //Flash protection mode
 
 #define HOSTILE_STANCE_IDLE      1
 #define HOSTILE_STANCE_ALERT     2
@@ -78,6 +88,7 @@
 #define ROBOT_NOTIFICATION_NEW_NAME 2
 #define ROBOT_NOTIFICATION_NEW_MODULE 3
 #define ROBOT_NOTIFICATION_MODULE_RESET 4
+#define ROBOT_NOTIFICATION_SIGNAL_LOST 5
 
 // Appearance change flags
 #define APPEARANCE_UPDATE_DNA  0x1

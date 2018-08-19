@@ -74,6 +74,7 @@ obj/structure/closet/crate
 	var/greenlight = "securecrateg"
 	var/sparks = "securecratesparks"
 	var/emag = "securecrateemag"
+	req_access = list(access_mailsorting)
 
 	setup = CLOSET_HAS_LOCK
 	locked = TRUE
@@ -217,6 +218,7 @@ obj/structure/closet/crate
 	icon_state = "weaponcrate"
 	icon_opened = "weaponcrateopen"
 	icon_closed = "weaponcrate"
+	req_access = list(access_security)
 
 /obj/structure/closet/crate/secure/phoron
 	name = "phoron crate"
@@ -224,6 +226,7 @@ obj/structure/closet/crate
 	icon_state = "phoroncrate"
 	icon_opened = "phoroncrateopen"
 	icon_closed = "phoroncrate"
+	req_access = list(access_medical,access_research,access_engine)
 
 /obj/structure/closet/crate/secure/gear
 	name = "gear crate"
@@ -231,6 +234,7 @@ obj/structure/closet/crate
 	icon_state = "secgearcrate"
 	icon_opened = "secgearcrateopen"
 	icon_closed = "secgearcrate"
+	req_access = list(access_security)
 
 /obj/structure/closet/crate/secure/hydrosec
 	name = "secure hydroponics crate"
@@ -238,6 +242,7 @@ obj/structure/closet/crate
 	icon_state = "hydrosecurecrate"
 	icon_opened = "hydrosecurecrateopen"
 	icon_closed = "hydrosecurecrate"
+	req_access = list(access_mailsorting, access_hydroponics)
 
 /obj/structure/closet/crate/secure/bin
 	name = "secure bin"
@@ -257,7 +262,6 @@ obj/structure/closet/crate
 	icon_state = "largemetal"
 	icon_opened = "largemetalopen"
 	icon_closed = "largemetal"
-
 	storage_capacity = 2 * MOB_LARGE
 	storage_types = CLOSET_STORAGE_ITEMS|CLOSET_STORAGE_STRUCTURES
 
@@ -265,6 +269,7 @@ obj/structure/closet/crate
 	icon_state = "hydro_crate_large"
 	icon_opened = "hydro_crate_large_open"
 	icon_closed = "hydro_crate_large"
+
 
 /obj/structure/closet/crate/secure/large
 	name = "large crate"
@@ -283,6 +288,7 @@ obj/structure/closet/crate
 	icon_state = "phoron_crate_large"
 	icon_opened = "phoron_crate_large_open"
 	icon_closed = "phoron_crate_large"
+	req_access = list(access_mailsorting, access_medical, access_research, access_engine)
 
 //fluff variant
 /obj/structure/closet/crate/secure/large/reinforced
@@ -316,7 +322,7 @@ obj/structure/closet/crate
 	icon_closed = "biohazard"
 	open_sound = 'sound/items/Deconstruct.ogg'
 	close_sound = 'sound/items/Deconstruct.ogg'
-	req_access = list(access_xenobiology)
+	req_access = list(access_mailsorting, access_xenobiology ,access_virology)
 	storage_types = CLOSET_STORAGE_ITEMS|CLOSET_STORAGE_MOBS
 
 /obj/structure/closet/crate/secure/biohazard/blanks/WillContain()

@@ -88,22 +88,29 @@
 			else
 				flashfail = 1
 
-	else if(issilicon(M))
-		M.Weaken(rand(str_min,6))
+	else if(isrobot(M))
+		var/mob/living/silicon/robot/R = M
+		if (R.sensor_mode != FLASH_PROTECTION_VISION)
+			M.Weaken(rand(str_min,6))
+		else
+			to_chat(user, "<span class='warning'>\The [src] doesn't seem to work on [M].</span>")
+
 	else
 		flashfail = 1
 
 	if(isrobot(user))
-		spawn(0)
-			var/atom/movable/overlay/animation = new(user.loc)
-			animation.plane = user.plane
-			animation.layer = user.layer + 0.01
-			animation.icon_state = "blank"
-			animation.icon = 'icons/mob/mob.dmi'
-			animation.master = user
-			flick("blspell", animation)
-			sleep(5)
-			qdel(animation)
+		var/mob/living/silicon/S = user
+		if (S.sensor_mode != FLASH_PROTECTION_VISION)
+			spawn(0)
+				var/atom/movable/overlay/animation = new(user.loc)
+				animation.plane = user.plane
+				animation.layer = user.layer + 0.01
+				animation.icon_state = "blank"
+				animation.icon = 'icons/mob/mob.dmi'
+				animation.master = user
+				flick("blspell", animation)
+				sleep(5)
+				qdel(animation)
 
 	if(!flashfail)
 		flick("[initial(icon_state)]_on", src)
@@ -144,16 +151,18 @@
 	playsound(src.loc, 'sound/weapons/flash.ogg', 100, 1)
 	flick("[initial(icon_state)]_on", src)
 	if(user && isrobot(user))
-		spawn(0)
-			var/atom/movable/overlay/animation = new(user.loc)
-			animation.plane = user.plane
-			animation.layer = user.layer + 0.01
-			animation.icon_state = "blank"
-			animation.icon = 'icons/mob/mob.dmi'
-			animation.master = user
-			flick("blspell", animation)
-			sleep(5)
-			qdel(animation)
+		var/mob/living/silicon/robot/S = user
+		if (S.sensor_mode != FLASH_PROTECTION_VISION)
+			spawn(0)
+				var/atom/movable/overlay/animation = new(user.loc)
+				animation.plane = user.plane
+				animation.layer = user.layer + 0.01
+				animation.icon_state = "blank"
+				animation.icon = 'icons/mob/mob.dmi'
+				animation.master = user
+				flick("blspell", animation)
+				sleep(5)
+				qdel(animation)
 
 	for(var/mob/living/carbon/M in oviewers(3, null))
 		var/safety = M.eyecheck()

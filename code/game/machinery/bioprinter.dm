@@ -231,9 +231,9 @@
 			qdel(W)
 			return
 
-	// DNA sample from syringe.
-	if(istype(W,/obj/item/weapon/reagent_containers/syringe))
-		var/obj/item/weapon/reagent_containers/syringe/S = W
+	// DNA sample from syringe or dna sampler.
+	if(istype(W,/obj/item/weapon/reagent_containers/syringe) || istype(W,/obj/item/weapon/reagent_containers/dna_sampler))
+		var/obj/item/weapon/reagent_containers/S = W
 		var/datum/reagent/blood/injected = locate() in S.reagents.reagent_list //Grab some blood
 		if(injected && injected.data)
 			loaded_dna = injected.data

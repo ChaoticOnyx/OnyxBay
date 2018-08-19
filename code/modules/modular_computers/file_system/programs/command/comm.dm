@@ -220,6 +220,8 @@
 					if(confirm == "Yes" && can_still_topic())
 						if(security_state.set_security_level(target_level))
 							feedback_inc(target_level.type,1)
+							for (var/mob/living/silicon/S in GLOB.silicon_mob_list)
+								S.update_protocols(target_level)
 			else
 				to_chat(usr, "You press the button, but a red light flashes and nothing happens.") //This should never happen
 

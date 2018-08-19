@@ -137,6 +137,9 @@
 				qdel(W)
 	else
 		..()
+/obj/structure/bed/attack_robot(var/mob/user)
+	if(Adjacent(user)) // Robots can open/close it, but not the AI.
+		attack_hand(user)
 
 /obj/structure/bed/Move()
 	. = ..()
@@ -265,7 +268,7 @@
 	name = "roller bed rack"
 	desc = "A rack for carrying a collapsed roller bed."
 	icon = 'icons/obj/rollerbed.dmi'
-	icon_state = "folded"
+	icon_state = "rollerbed_folded"
 	var/obj/item/roller/held
 
 /obj/item/roller_holder/New()

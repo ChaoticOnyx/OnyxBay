@@ -40,9 +40,9 @@
 	process_queued_alarms()
 	handle_regular_hud_updates()
 	switch(src.sensor_mode)
-		if (SEC_HUD)
+		if (SEC_VISION)
 			process_sec_hud(src,0,src.eyeobj)
-		if (MED_HUD)
+		if (MED_VISION)
 			process_med_hud(src,0,src.eyeobj)
 
 /mob/living/silicon/ai/update_living_sight()

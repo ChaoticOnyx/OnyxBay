@@ -1,3 +1,5 @@
+
+
 /mob/living/silicon
 	gender = NEUTER
 	voice_name = "synthesized voice"
@@ -18,16 +20,14 @@
 	var/obj/item/device/camera/siliconcam/silicon_camera = null //photography
 	var/local_transmit //If set, can only speak to others of the same type within a short range.
 
-	var/sensor_mode = 0 //Determines the current HUD.
+	var/sensor_mode = 0 //Determines the current HUD or Vision.
 
 	var/next_alarm_notice
 	var/list/datum/alarm/queued_alarms = new()
-
 	var/list/access_rights
 	var/obj/item/weapon/card/id/idcard = /obj/item/weapon/card/id/synthetic
 
-	#define SEC_HUD 1 //Security HUD mode
-	#define MED_HUD 2 //Medical HUD mode
+	var/list/avaliable_huds
 
 /mob/living/silicon/New()
 	GLOB.silicon_mob_list += src
@@ -42,6 +42,7 @@
 	default_language = all_languages[LANGUAGE_GALCOM]
 	init_id()
 	init_subsystems()
+	avaliable_huds = list("Disable", "Security", "Medical")		//("Security", "Medical", "Meson", "Science", "Night Vision", "Material", "Thermal", "X-Ray", "Flash Screen", "Disable")
 
 /mob/living/silicon/Destroy()
 	GLOB.silicon_mob_list -= src
@@ -65,7 +66,10 @@
 /mob/living/silicon/proc/show_laws()
 	return
 
-/mob/living/silicon/drop_item()
+/mob/living/silicon/drop_item(var/user)
+	if(isrobot(user))
+		var/mob/living/silicon/robot/R = user
+		R.hud_used.update_robot_modules_display()
 	return
 
 /mob/living/silicon/emp_act(severity)
@@ -221,14 +225,38 @@
 	return
 
 /mob/living/silicon/proc/toggle_sensor_mode()
-	var/sensor_type = input("Please select sensor type.", "Sensor Integration", null) in list("Security", "Medical","Disable")
+	hud_type = null
+	var/sensor_type = input("Please select sensor type.", "Sensor Integration", null) in avaliable_huds
 	switch(sensor_type)
 		if ("Security")
-			sensor_mode = SEC_HUD
+			sensor_mode = SEC_VISION
+			hud_type = HUD_SECURITY
 			to_chat(src, "<span class='notice'>Security records overlay enabled.</span>")
 		if ("Medical")
-			sensor_mode = MED_HUD
+			sensor_mode = MED_VISION
+			hud_type = HUD_MEDICAL
 			to_chat(src, "<span class='notice'>Life signs monitor overlay enabled.</span>")
+		if ("Meson")
+			sensor_mode = MESON_VISION
+			to_chat(src, "<span class='notice'>Meson vision overlay enabled.</span>")
+		if ("Science")
+			sensor_mode = SCIENCE_VISION
+			hud_type = HUD_SCIENCE
+			to_chat(src, "<span class='notice'>Science vision overlay enabled.</span>")
+		if ("Night Vision")
+			sensor_mode = NVG_VISION
+			to_chat(src, "<span class='notice'>Night vision overlay enabled.</span>")
+		if ("Material")
+			sensor_mode = MATERIAL_VISION
+			to_chat(src, "<span class='notice'>Material vision overlay enabled.</span>")
+		if ("Thermal")
+			sensor_mode = THERMAL_VISION
+			to_chat(src, "<span class='notice'>Thermal vision overlay enabled.</span>")
+		if ("X-Ray")
+			sensor_mode = XRAY_VISION
+			to_chat(src, "<span class='notice'>X-Ray vision overlay enabled.</span>")	
+		if ("Flash Screen")
+			sensor_mode = FLASH_PROTECTION_VISION
 		if ("Disable")
 			sensor_mode = 0
 			to_chat(src, "Sensor augmentations disabled.")
@@ -374,3 +402,20 @@
 /mob/living/silicon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
 	if(affect_silicon)
 		return ..()
+
+/mob/living/silicon/proc/update_protocols(var/decl/security_level/alert) //procs when alert level is changed
+	if (istype(src,/mob/living/silicon/robot))
+		var/mob/living/silicon/robot/R = src
+		switch (alert.name)
+			if ("code green")
+				if (R.module)
+					if (istype(R.module,/obj/item/weapon/robot_module/security/general) && !R.emagged)
+						var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate(/obj/item/weapon/gun/energy/laser/mounted/cyborg) in R.module.modules
+						LC.locked = 1
+						to_chat(src, "<span class='notice'>Security protocols has been changed: Safety locks in place.</span>")
+			if ("code red")
+				if (R.module)
+					if (istype(R.module,/obj/item/weapon/robot_module/security/general))
+						var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate(/obj/item/weapon/gun/energy/laser/mounted/cyborg) in R.module.modules
+						LC.locked = 0
+						to_chat(src, "<span class='warning'>Security protocols has been changed: Safety locks is now lifted.</span>")

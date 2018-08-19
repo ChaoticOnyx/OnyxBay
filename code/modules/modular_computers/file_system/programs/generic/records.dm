@@ -45,6 +45,7 @@
 				"milrank" = R.get_rank(),
 				"id" = R.uid
 			)))
+			all_records = sortByKey(all_records,"name")
 		data["all_records"] = all_records
 		data["creation"] = check_access(user, access_heads)
 		data["dnasearch"] = check_access(user, access_medical) || check_access(user, access_forensics_lockers)

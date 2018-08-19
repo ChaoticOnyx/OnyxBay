@@ -51,6 +51,9 @@ var/list/limb_icon_cache = list()
 
 /obj/item/organ/external/head/removed()
 	update_icon(1)
+	if(owner)
+		SetName("[owner.real_name]'s head")
+		addtimer(CALLBACK(owner, /mob/living/carbon/human/proc/update_hair), 1, TIMER_UNIQUE)
 	..()
 
 	//Head markings, duplicated (sadly) below.
@@ -68,26 +71,29 @@ var/list/limb_icon_cache = list()
 		icon = null
 	else
 		var/gender = "_m"
-		if (!gendered_icon)
+		if(!gendered_icon)
 			gender = null
 		else if (dna && dna.GetUIState(DNA_UI_GENDER))
 			gender = "_f"
 		else if(owner && owner.gender == FEMALE)
 			gender = "_f"
 
-		if (robotic < ORGAN_ROBOT)
-			body_build = owner.body_build.index
-		else
-			body_build = owner.body_build.roboindex
+		if (owner)
+			if (robotic < ORGAN_ROBOT)
+				body_build = owner.body_build.index
+			else
+				body_build = owner.body_build.roboindex
 
 		icon_state = "[icon_name][gender][body_build]"
-		if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
-			icon_state += species.base_skin_colours[s_base]
-
-		icon_cache_key = "[icon_state]_[species ? species.name : SPECIES_HUMAN]"
+		if (species)
+			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
+				icon_state += species.base_skin_colours[s_base]
+			icon_cache_key = "[icon_state]_[species ? species.name : SPECIES_HUMAN]"
 
 		if(force_icon)
 			icon = force_icon
+		else if (robotic >= ORGAN_ROBOT)
+			icon = 'icons/mob/human_races/robotic.dmi'
 		else if (!dna)
 			icon = 'icons/mob/human_races/r_human.dmi'
 		else if (status & ORGAN_MUTATED)
@@ -184,7 +190,7 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 		else
 			applying.Blend(rgb(-s_tone,  -s_tone,  -s_tone), ICON_SUBTRACT)
 		icon_cache_key += "_tone_[s_tone]"
-	if(species.appearance_flags & HAS_SKIN_COLOR)
+	if(species && species.appearance_flags & HAS_SKIN_COLOR)
 		if(s_col && s_col.len >= 3)
 			applying.Blend(rgb(s_col[1], s_col[2], s_col[3]), s_col_blend)
 			icon_cache_key += "_color_[s_col[1]]_[s_col[2]]_[s_col[3]]_[s_col_blend]"
