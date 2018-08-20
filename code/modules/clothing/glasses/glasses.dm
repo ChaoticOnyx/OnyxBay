@@ -170,6 +170,10 @@
 	vision_flags = SEE_OBJS
 	electric = TRUE
 
+/obj/item/clothing/glasses/material/Initialize()
+	. = ..()
+	overlay = GLOB.global_hud.material
+
 /obj/item/clothing/glasses/regular
 	name = "prescription glasses"
 	desc = "Made by Nerd. Co."

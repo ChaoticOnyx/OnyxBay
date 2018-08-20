@@ -1,6 +1,10 @@
 // THIS FILE IS AUTOMATICALLY CREATED BY tools/gen_globals.py
 /proc/readglobal(which)
 	switch(which)
+		if("all_warrants")
+			return GLOB.all_warrants;
+		if("all_crew_records")
+			return GLOB.all_crew_records;
 		if("ALL_ANTIGENS")
 			return global.ALL_ANTIGENS;
 		if("ANTAG_FREQS")
@@ -1036,6 +1040,10 @@
 		
 /proc/writeglobal(which, newval)
 	switch(which)
+		if("all_warrants")
+			GLOB.all_warrants=newval;
+		if("all_crew_records")
+			GLOB.all_crew_records=newval;
 		if("ALL_ANTIGENS")
 			global.ALL_ANTIGENS=newval;
 		if("ANTAG_FREQS")
@@ -2070,6 +2078,8 @@
 			global.zone_blocked=newval;
 		
 /var/list/_all_globals=list(
+	"all_warrants",
+	"all_crew_records",
 	"ALL_ANTIGENS",
 	"ANTAG_FREQS",
 	"BSACooldown",

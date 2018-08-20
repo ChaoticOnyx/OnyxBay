@@ -69,6 +69,7 @@
 	var/wiresexposed = 0
 	var/locked = 1
 	var/has_power = 1
+	var/dead = 0
 	var/spawn_module = null
 
 	var/spawn_sound = 'sound/voice/liveagain.ogg'
@@ -79,7 +80,7 @@
 	var/modtype = "Default"
 	var/lower_mod = 0
 	var/jetpack = 0
-	var/datum/effect/effect/system/ion_trail_follow/ion_trail = null
+	var/datum/effect/effect/system/trail/ion/ion_trail = null
 	var/datum/effect/effect/system/spark_spread/spark_system//So they can initialize sparks whenever/N
 	var/jeton = 0
 	var/killswitch = 0
@@ -262,21 +263,21 @@
 		to_chat(src, "<span class='warning'>Crisis mode active. Combat module available.</span>")
 		modules+="Combat"
 	modtype = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
-
 	if(module)
 		return
-	if(!(modtype in robot_modules))
+	if(!(modtype in GLOB.robot_module_types))
 		return
-
+		
 	var/module_type = robot_modules[modtype]
 	new module_type(src)
-
+	GLOB.robot_module_types.Remove(modtype)
 	hands.icon_state = lowertext(modtype)
 	feedback_inc("cyborg_[lowertext(modtype)]",1)
 	updatename()
 	recalculate_synth_capacities()
 	if(module)
 		notify_ai(ROBOT_NOTIFICATION_NEW_MODULE, module.name)
+	
 
 /mob/living/silicon/robot/proc/updatename(var/prefix as text)
 	if(prefix)
@@ -435,11 +436,18 @@
 	else
 		stat(null, text("No Cell Inserted!"))
 
+/mob/living/silicon/robot/proc/show_gps()
+	var/turf/T = get_turf(src)
+	if (T.z != 1 && T.z != 2)
+		stat(null, text("Current location: Unknown"))
+	else
+		stat(null, text("Current location:[T.x]:[T.y]:[T.z]"))
 
 // update the status screen display
 /mob/living/silicon/robot/Stat()
 	. = ..()
 	if (statpanel("Status"))
+		show_gps()
 		show_cell_power()
 		show_jetpack_pressure()
 		stat(null, text("Lights: [lights_on ? "ON" : "OFF"]"))
@@ -627,7 +635,7 @@
 			silicon_radio.attackby(W,user)//GTFO, you have your own procs
 		else
 			to_chat(user, "Unable to locate a radio.")
-	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda)||istype(W, /obj/item/weapon/card/robot))			// trying to unlock the interface with an ID card
+	else if (istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda) || istype(W, /obj/item/weapon/card/robot))			// trying to unlock the interface with an ID card
 		if(emagged)//still allow them to open the cover
 			to_chat(user, "The interface seems slightly damaged")
 		if(opened)
@@ -650,6 +658,7 @@
 		else
 			if(U.action(src))
 				to_chat(usr, "You apply the upgrade to [src]!")
+				to_chat(src, "Detected new component - [U].")
 				usr.drop_item()
 				U.loc = src
 				handle_selfinsert(W, user)
@@ -836,20 +845,14 @@
 			module_state_1 = O
 			O.hud_layerise()
 			contents += O
-			if(istype(module_state_1,/obj/item/borg/sight))
-				sight_mode |= module_state_1:sight_mode
 		else if(!module_state_2)
 			module_state_2 = O
 			O.hud_layerise()
 			contents += O
-			if(istype(module_state_2,/obj/item/borg/sight))
-				sight_mode |= module_state_2:sight_mode
 		else if(!module_state_3)
 			module_state_3 = O
 			O.hud_layerise()
 			contents += O
-			if(istype(module_state_3,/obj/item/borg/sight))
-				sight_mode |= module_state_3:sight_mode
 		else
 			to_chat(src, "You need to disable a module first!")
 		installed_modules()
@@ -915,6 +918,21 @@
 								cleaned_human.update_inv_shoes(0)
 							cleaned_human.clean_blood(1)
 							to_chat(cleaned_human, "<span class='warning'>[src] cleans your face!</span>")
+/*		if(module.type == /obj/item/weapon/robot_module/engineering)
+			var/obj/item/weapon/robot_module/engineering/general/mod = src.module
+			var/turf/tile = loc
+			world<< mod.synths
+			locate() in
+			if(isturf(tile))
+				for(var/I in tile)
+					if (istype(I,/obj/item/stack/material/steel))
+						mod.synths.metal.add_charge(1000)
+						spawn(0) //give the stacks a chance to delete themselves if necessary
+					else if (istype(I,/obj/item/stack/material/cyborg/glass/reinforced))
+						var/datum/matter_synth/metal.add_charge(500)
+						var/datum/matter_synth/glass.add_charge(1000)
+						spawn(0) //give the stacks a chance to delete themselves if necessary
+*/
 		return
 
 /mob/living/silicon/robot/proc/self_destruct()
@@ -979,13 +997,13 @@
 		if(!(icontype in module_sprites))
 			icontype = module_sprites[1]
 	else
-		icontype = input("Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_sprites
+		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_sprites
 	icon_state = module_sprites[icontype]
 	update_icon()
 
 	if (module_sprites.len > 1 && triesleft >= 1 && client)
 		icon_selection_tries--
-		var/choice = input("Look at your icon - is this what you want?") in list("Yes","No")
+		var/choice = input(src,"Look at your icon - is this what you want?") in list("Yes","No")
 		if(choice=="No")
 			choose_icon(icon_selection_tries, module_sprites)
 			return
@@ -1029,15 +1047,22 @@
 	if(!connected_ai)
 		return
 	switch(notifytype)
+		if(ROBOT_NOTIFICATION_SIGNAL_LOST)
+			to_chat(connected_ai, "<br><br><span class='notice'>NOTICE - Signal lost: [braintype] [name].</span><br>")
+			return
 		if(ROBOT_NOTIFICATION_NEW_UNIT) //New Robot
 			to_chat(connected_ai, "<br><br><span class='notice'>NOTICE - New [lowertext(braintype)] connection detected: <a href='byond://?src=\ref[connected_ai];track2=\ref[connected_ai];track=\ref[src]'>[name]</a></span><br>")
+			return
 		if(ROBOT_NOTIFICATION_NEW_MODULE) //New Module
 			to_chat(connected_ai, "<br><br><span class='notice'>NOTICE - [braintype] module change detected: [name] has loaded the [first_arg].</span><br>")
+			return
 		if(ROBOT_NOTIFICATION_MODULE_RESET)
 			to_chat(connected_ai, "<br><br><span class='notice'>NOTICE - [braintype] module reset detected: [name] has unloaded the [first_arg].</span><br>")
+			return
 		if(ROBOT_NOTIFICATION_NEW_NAME) //New Name
 			if(first_arg != second_arg)
 				to_chat(connected_ai, "<br><br><span class='notice'>NOTICE - [braintype] reclassification detected: [first_arg] is now designated as [second_arg].</span><br>")
+				return
 /mob/living/silicon/robot/proc/disconnect_from_ai()
 	if(connected_ai)
 		sync() // One last sync attempt
@@ -1074,6 +1099,8 @@
 		else
 			sleep(6)
 			if(prob(50))
+				var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate() in src.module.modules
+				LC.locked = 0
 				emagged = 1
 				lawupdate = 0
 				disconnect_from_ai()

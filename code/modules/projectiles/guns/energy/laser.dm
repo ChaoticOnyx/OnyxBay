@@ -18,6 +18,24 @@
 	use_external_power = 1
 	one_hand_penalty = 0 //just in case
 
+/obj/item/weapon/gun/energy/laser/mounted/cyborg
+	max_shots = 6
+	recharge_time = 10 //Time it takes for shots to recharge (in ticks)
+	var/locked = 1
+
+
+/obj/item/weapon/gun/energy/laser/mounted/cyborg/afterattack(atom/A, mob/living/user)
+	if (locked)
+		to_chat(user, "<span class='warning'>Current security protocols are not allowing you to use [src].</span>")
+		return
+	..()
+	
+/obj/item/weapon/gun/energy/laser/mounted/cyborg/attack(atom/A, mob/living/user)
+	if (locked)
+		to_chat(user, "<span class='warning'>Current security protocols are not allowing you to use [src].</span>")
+		return
+	..()
+
 /obj/item/weapon/gun/energy/laser/practice
 	name = "practice laser carbine"
 	desc = "A modified version of the HI G40E, this one fires less concentrated energy bolts designed for target practice."

@@ -261,7 +261,7 @@
 			if(M == user && prob(75))
 				user.visible_message("<span class='danger'>\The [user] fumbles [src].</span>", "<span class='danger'>You fumble [src].</span>", "<span class='danger'>You hear something being wrapped.</span>")
 				return
-			var/obj/item/stack/medical/splint/S = split(1)
+			var/obj/item/stack/medical/splint/S = new /obj/item/stack/medical/splint(user,1)
 			if(S)
 				if(affecting.apply_splint(S))
 					S.forceMove(affecting)
@@ -269,6 +269,7 @@
 						user.visible_message("<span class='danger'>\The [user] finishes applying [src] to [M]'s [limb].</span>", "<span class='danger'>You finish applying \the [src] to [M]'s [limb].</span>", "<span class='danger'>You hear something being wrapped.</span>")
 					else
 						user.visible_message("<span class='danger'>\The [user] successfully applies [src] to their [limb].</span>", "<span class='danger'>You successfully apply \the [src] to your [limb].</span>", "<span class='danger'>You hear something being wrapped.</span>")
+					src.use(1)
 					return
 				S.dropInto(src.loc) //didn't get applied, so just drop it
 			user.visible_message("<span class='danger'>\The [user] fails to apply [src].</span>", "<span class='danger'>You fail to apply [src].</span>", "<span class='danger'>You hear something being wrapped.</span>")

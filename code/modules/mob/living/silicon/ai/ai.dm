@@ -196,7 +196,6 @@ var/list/ai_verbs_default = list(
 	to_chat(src, "To use something, simply click on it.")
 	to_chat(src, "Use say [get_language_prefix()]b to speak to your cyborgs through binary. Use say :h to speak from an active holopad.")
 	to_chat(src, "For department channels, use the following say commands:")
-
 	var/radio_text = ""
 	for(var/i = 1 to silicon_radio.channels.len)
 		var/channel = silicon_radio.channels[i]

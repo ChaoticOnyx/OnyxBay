@@ -314,12 +314,10 @@
 		var/mob/living/carbon/human/H = M
 		var/obj/item/clothing/glasses/G = H.glasses
 		return istype(G) && ((G.hud_type & hudtype) || (G.hud && (G.hud.hud_type & hudtype)))
-	else if(istype(M, /mob/living/silicon/robot))
-		var/mob/living/silicon/robot/R = M
-		for(var/obj/item/borg/sight/sight in list(R.module_state_1, R.module_state_2, R.module_state_3))
-			if(istype(sight) && (sight.hud_type & hudtype))
-				return TRUE
-
+	else if(istype(M, /mob/living/silicon))
+		var/mob/living/silicon/R = M
+		if (R.hud_type == hudtype)
+			return TRUE
 	return FALSE
 
 /mob/living/carbon/human/verb/pose()

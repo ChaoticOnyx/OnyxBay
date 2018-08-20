@@ -7,23 +7,30 @@
 	icon_state = "gripper"
 
 	item_flags = ITEM_FLAG_NO_BLUDGEON
+	#define MODE_OPEN 1
+	#define MODE_EMPTY 2
+	var/inuse = 0
+	var/mode = 1
+	var/storage_type = null
 
 	//Has a list of items that it can hold.
 	var/list/can_hold = list(
-		/obj/item/weapon/cell,
-		/obj/item/weapon/firealarm_electronics,
-		/obj/item/weapon/airalarm_electronics,
-		/obj/item/weapon/airlock_electronics,
-		/obj/item/weapon/tracker_electronics,
-		/obj/item/weapon/module/power_control,
-		/obj/item/weapon/stock_parts,
-		/obj/item/frame,
-		/obj/item/weapon/camera_assembly,
 		/obj/item/weapon/tank,
 		/obj/item/weapon/circuitboard,
 		/obj/item/weapon/smes_coil,
+		/obj/item/weapon/stock_parts,
+		/obj/item/weapon/cell,
+		/obj/item/weapon/airlock_electronics,
+		/obj/item/weapon/tracker_electronics,
+		/obj/item/weapon/airalarm_electronics,
+		/obj/item/weapon/firealarm_electronics,
+		/obj/item/weapon/module/power_control,
+		/obj/item/weapon/camera_assembly,
 		/obj/item/weapon/computer_hardware,
-		/obj/item/weapon/fuel_assembly
+		/obj/item/weapon/fuel_assembly,
+		/obj/item/stack/material,
+		/obj/item/clamp,
+		/obj/item/frame
 		)
 
 	var/obj/item/wrapped = null // Item currently being held.
@@ -56,19 +63,53 @@
 /obj/item/weapon/gripper/chemistry
 	name = "chemistry gripper"
 	desc = "A simple grasping tool for chemical work."
+	storage_type = /obj/item/weapon/storage/box/
 
 	can_hold = list(
 		/obj/item/weapon/reagent_containers/glass,
 		/obj/item/weapon/reagent_containers/pill,
 		/obj/item/weapon/reagent_containers/ivbag,
+		/obj/item/stack/material/phoron,
 		/obj/item/weapon/storage/pill_bottle,
+		/obj/item/weapon/paper
+		)
+
+/obj/item/weapon/gripper/detective
+	name = "detective gripper"
+	desc = "A simple grasping tool for detective work."
+	storage_type = /obj/item/weapon/storage/box/
+
+	can_hold = list(
+		/obj/item/weapon/forensics,
+		/obj/item/weapon/sample/fibers,
+		/obj/item/weapon/sample/print,
+		/obj/item/weapon/paper
+		)
+
+/obj/item/weapon/gripper/security
+	name = "bag manipulator"
+	desc = "Complex of actuators and holders intended for emptying bags and boxes."
+	icon_state = "decompiler"
+	can_hold = null
+	storage_type = /obj/item/weapon/storage/
+
+/obj/item/weapon/gripper/archeologist
+	name = "archeologist gripper"
+	desc = "A simple grasping tool for archeological work."
+
+	can_hold = list(
+		/obj/item/weapon/evidencebag,
+		/obj/item/weapon/rocksliver,
+		/obj/item/weapon/ore/strangerock,
+		/obj/item/weapon/archaeological_find,
+		/obj/item/weapon/fossil
 		)
 
 /obj/item/weapon/gripper/research //A general usage gripper, used for toxins/robotics/xenobio/etc
 	name = "scientific gripper"
 	icon_state = "gripper-sci"
 	desc = "A simple grasping tool suited to assist in a wide array of research applications."
-
+	storage_type = /obj/item/weapon/storage/box/
 	can_hold = list(
 		/obj/item/weapon/cell,
 		/obj/item/weapon/stock_parts,
@@ -90,7 +131,8 @@
 		/obj/item/device/assembly/timer,
 		/obj/item/device/assembly/igniter,
 		/obj/item/device/assembly/infra,
-		/obj/item/weapon/tank
+		/obj/item/weapon/tank,
+		/obj/item/weapon/paper
 		)
 
 /obj/item/weapon/gripper/service //Used to handle food, drinks, and seeds.
@@ -106,13 +148,17 @@
 		/obj/item/weapon/glass_extra
 		)
 
-/obj/item/weapon/gripper/organ //Used to handle organs.
-	name = "organ gripper"
+/obj/item/weapon/gripper/surgical //Used to handle organs.
+	name = "surgical gripper"
 	icon_state = "gripper"
-	desc = "A simple grasping tool for holding and manipulating organic and mechanical organs, both internal and external."
-
+	desc = "A simple grasping tool for holding surgical utensils as well organs and bodyparts."
+	storage_type = /obj/item/weapon/storage/box/
 	can_hold = list(
 	/obj/item/organ,
+	/obj/item/weapon/reagent_containers/ivbag,
+	/obj/item/weapon/tank/anesthetic,
+	/obj/item/weapon/reagent_containers/food/snacks/meat,
+	/obj/item/device/mmi,
 	/obj/item/robot_parts
 	)
 
@@ -134,10 +180,21 @@
 	. = ..()
 	if(wrapped)
 		to_chat(user, "It is holding \a [wrapped].")
+	else if (storage_type)
+		to_chat(user, "[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers.")
 
 /obj/item/weapon/gripper/attack_self(mob/user as mob)
 	if(wrapped)
 		return wrapped.attack_self(user)
+	else
+		if (storage_type)
+			playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
+			if (mode == MODE_EMPTY)
+				mode = MODE_OPEN
+			else
+				mode = MODE_EMPTY
+			to_chat(user, "You changed \the [src]'s mode to [mode == MODE_EMPTY ? "empty" : "open"] containers.")
+
 	return ..()
 
 /obj/item/weapon/gripper/verb/drop_item()
@@ -173,6 +230,11 @@
 			wrapped = thing
 			break
 
+	if (inuse)
+		return
+
+	user.do_attack_animation(src)
+
 	if(wrapped) //Already have an item.
 		//Temporary put wrapped into user so target's attackby() checks pass.
 		wrapped.forceMove(user)
@@ -187,7 +249,34 @@
 
 		//If resolve_attackby forces waiting before taking wrapped, we need to let it finish before doing the rest.
 		addtimer(CALLBACK(src, .proc/finish_using, target, user, params, force_holder, resolved), 0)
-
+	else if (storage_type && istype(target,storage_type)) //Check that we're pocketing a certain container.
+		var/obj/item/weapon/storage/S = target
+		switch (mode)
+			if (MODE_OPEN)
+				if (isrobot(user))
+					var/mob/living/silicon/robot/R = user
+					if (R.shown_robot_modules)
+						R.shown_robot_modules = !R.shown_robot_modules
+						R.hud_used.update_robot_modules_display()
+				S.open(user)
+			if (MODE_EMPTY)
+				inuse = 1
+				visible_message("<span class='notice'>\The [user] starts removing item from \the [S].</span>")
+				if (do_after(user,30))
+					inuse = 0
+					if (length(S.contents))
+						var/obj/item/I = S.contents[length(S.contents)]
+						if (!I)
+							return
+						var/turf/T = get_turf(src)
+						S.remove_from_storage(I,T)
+						visible_message("<span class='notice'>\The [I] drops on \the [T].</span>")
+					else 
+						inuse = 0
+						to_chat(user, "<span class='notice'>\The [target] is empty.</span>")
+				else
+					inuse = 0
+					to_chat(user, "<span class='danger'>The process was interrupted!</span>")
 	else if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
 
 		//...and that the item is not in a container.
@@ -243,6 +332,8 @@
 				A.cell = null
 
 				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
+	else
+		to_chat(user, "<span class='notice'>[src] can't interact with \the [target].</span>")
 
 /obj/item/weapon/gripper/proc/finish_using(var/atom/target, var/mob/living/user, params, force_holder, resolved)
 	if(!resolved && wrapped && target)

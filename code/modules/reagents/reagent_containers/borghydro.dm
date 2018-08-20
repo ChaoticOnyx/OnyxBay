@@ -18,10 +18,16 @@
 	var/list/reagent_names = list()
 
 /obj/item/weapon/reagent_containers/borghypo/surgeon
-	reagent_ids = list(/datum/reagent/bicaridine, /datum/reagent/dexalin, /datum/reagent/tramadol)
+	reagent_ids = list(/datum/reagent/tramadol, /datum/reagent/bicaridine, /datum/reagent/dexalin)
+
+/obj/item/weapon/reagent_containers/borghypo/surgeon_adv
+	reagent_ids = list(/datum/reagent/tramadol/oxycodone, /datum/reagent/bicaridine, /datum/reagent/kelotane, /datum/reagent/dexalinp, /datum/reagent/dylovene, /datum/reagent/spaceacillin, /datum/reagent/sugar_iron_mix)
 
 /obj/item/weapon/reagent_containers/borghypo/crisis
 	reagent_ids = list(/datum/reagent/tricordrazine, /datum/reagent/inaprovaline, /datum/reagent/tramadol)
+
+/obj/item/weapon/reagent_containers/borghypo/crisis_adv
+	reagent_ids = list(/datum/reagent/tramadol, /datum/reagent/inaprovaline, /datum/reagent/dexalin, /datum/reagent/bicaridine, /datum/reagent/dermaline, /datum/reagent/hyronalin, /datum/reagent/peridaxon, /datum/reagent/spaceacillin)
 
 /obj/item/weapon/reagent_containers/borghypo/Initialize()
 	. = ..()

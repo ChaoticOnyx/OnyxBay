@@ -20,6 +20,10 @@
 		process_killswitch()
 		process_locks()
 		process_queued_alarms()
+	else
+		if (src.connected_ai && !src.dead)
+			src.notify_ai(ROBOT_NOTIFICATION_SIGNAL_LOST)
+			src.dead = 1
 	update_canmove()
 
 /mob/living/silicon/robot/proc/clamp_values()
@@ -149,19 +153,14 @@
 		src.blinded = 1
 
 	return 1
-
 /mob/living/silicon/robot/handle_regular_hud_updates()
 	..()
 
-	var/obj/item/borg/sight/hud/hud = (locate(/obj/item/borg/sight/hud) in src)
-	if(hud && hud.hud)
-		hud.hud.process_hud(src)
-	else
-		switch(src.sensor_mode)
-			if (SEC_HUD)
-				process_sec_hud(src,0)
-			if (MED_HUD)
-				process_med_hud(src,0)
+	switch(src.sensor_mode)
+		if (SEC_VISION)
+			process_sec_hud(src,1)
+		if (MED_VISION)
+			process_med_hud(src,1)
 
 	if (src.healths)
 		if (src.stat != 2)
@@ -258,30 +257,41 @@
 /mob/living/silicon/robot/handle_vision()
 	..()
 
-	if (src.stat == DEAD || (XRAY in mutations) || (src.sight_mode & BORGXRAY))
-		set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
-		set_see_in_dark(8)
-		set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
-	else if ((src.sight_mode & BORGMESON) && (src.sight_mode & BORGTHERM))
-		set_sight(sight|SEE_TURFS|SEE_MOBS)
-		set_see_in_dark(8)
-		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
-	else if (src.sight_mode & BORGMESON)
-		set_sight(sight|SEE_TURFS)
-		set_see_in_dark(8)
-		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
-	else if (src.sight_mode & BORGMATERIAL)
-		set_sight(sight|SEE_OBJS)
-		set_see_in_dark(8)
-	else if (src.sight_mode & BORGTHERM)
-		set_sight(sight|SEE_MOBS)
-		set_see_in_dark(8)
-		set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
-	else if (src.stat != DEAD)
-		set_sight(sight&(~SEE_TURFS)&(~SEE_MOBS)&(~SEE_OBJS))
-		set_see_in_dark(8) 			 // see_in_dark means you can FAINTLY see in the dark, humans have a range of 3 or so, tajaran have it at 8
-		set_see_invisible(SEE_INVISIBLE_LIVING) // This is normal vision (25), setting it lower for normal vision means you don't "see" things like darkness since darkness
-							 // has a "invisible" value of 15
+	if(client)
+		src.clear_fullscreen("flash_protection")
+		src.client.screen.Remove(GLOB.global_hud.nvg, GLOB.global_hud.thermal, GLOB.global_hud.meson, GLOB.global_hud.science, GLOB.global_hud.material)
+		if (src.stat == DEAD || (XRAY in mutations) || (sensor_mode == XRAY_VISION))
+			set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
+			set_see_in_dark(8)
+			set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
+		else if (sensor_mode == THERMAL_VISION)
+			set_sight(sight|SEE_MOBS)
+			set_see_in_dark(8)
+			set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+			src.client.screen |= GLOB.global_hud.thermal
+		else if (sensor_mode == MESON_VISION)
+			set_sight(sight|SEE_TURFS)
+			set_see_in_dark(8)
+			set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+			src.client.screen |= GLOB.global_hud.meson
+		else if (sensor_mode == SCIENCE_VISION)
+			src.client.screen |= GLOB.global_hud.science
+		else if (sensor_mode == MATERIAL_VISION)
+			set_sight(sight|SEE_OBJS)
+			set_see_in_dark(8)
+			src.client.screen |= GLOB.global_hud.material
+		else if (sensor_mode == NVG_VISION)
+			set_see_in_dark(7)
+			set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+			src.client.screen |= GLOB.global_hud.nvg
+		else if (sensor_mode == FLASH_PROTECTION_VISION)
+			src.set_fullscreen(1, "flash_protection", /obj/screen/fullscreen/impaired, TINT_MODERATE)
+		else if (src.stat != DEAD)
+			set_sight(sight&(~SEE_TURFS)&(~SEE_MOBS)&(~SEE_OBJS))
+			set_see_in_dark(8) 			 // see_in_dark means you can FAINTLY see in the dark, humans have a range of 3 or so, tajaran have it at 8
+			set_see_invisible(SEE_INVISIBLE_LIVING) // This is normal vision (25), setting it lower for normal vision means you don't "see" things like darkness since darkness
+								 // has a "invisible" value of 15
+
 
 
 /mob/living/silicon/robot/proc/update_items()

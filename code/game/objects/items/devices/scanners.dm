@@ -87,7 +87,7 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose)
 	. += "<span class='notice'>Brain activity:</span> [brain_result]."
 
 	if(H.stat == DEAD || (H.status_flags & FAKEDEATH))
-		. += "<span class='notice'><b>Time of Death:</b> [time2text(worldtime2stationtime(H.timeofdeath), "hh:mm")]</span>"
+		. += "<span class='notice'><b>Time of Death:</b> [worldtime2stationtime(H.timeofdeath)]</span>"
 
 	if (H.internal_organs_by_name[BP_STACK])
 		. += "<span class='notice'>Subject has a neural lace implant.</span>"
@@ -286,6 +286,62 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 	else
 		to_chat(usr, "The scanner no longer shows limb damage.")
 
+/obj/item/device/healthanalyzer_advanced
+	name = "advanced health analyzer"
+	desc = "A hand-held body scanner able to distinguish vital signs of the subject as well as all."
+	icon_state = "health_adv"
+	item_state = "analyzer"
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	slot_flags = SLOT_POCKET
+	throwforce = 3
+	w_class = ITEM_SIZE_SMALL
+	throw_speed = 5
+	throw_range = 10
+	matter = list(DEFAULT_WALL_MATERIAL = 800)
+	origin_tech = list(TECH_MAGNET = 4, TECH_BIO = 6)
+	var/dat = null
+	var/mob/living/carbon/last_target = null
+
+
+/obj/item/device/healthanalyzer_advanced/do_surgery(mob/living/carbon/human/M, mob/living/user)
+	if(user.a_intent != I_HELP) //in case it is ever used as a surgery tool
+		return ..()
+
+	if (istype(M,/mob/living/carbon/human))
+		dat = M.get_medical_data()
+		last_target = M
+		user << browse(dat, "window=scanconsole;size=430x600")
+	return 1
+
+/obj/item/device/healthanalyzer_advanced/attack_self(mob/user)
+	if (last_target && dat)
+		user << browse(dat, "window=scanconsole;size=430x600")
+
+/obj/item/device/healthanalyzer_advanced/examine(mob/user)
+	..()
+	if (last_target)
+		to_chat(user, "It contains saved data for [last_target].")
+	
+
+/obj/item/device/healthanalyzer_advanced/attack(mob/living/carbon/human/M, mob/living/user)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	if (istype(M,/mob/living/carbon/human))
+		dat = M.get_medical_data()
+		last_target = M
+		user << browse(dat, "window=scanconsole;size=430x600")
+		if(isrobot(user))
+			var/mob/living/silicon/robot/R = user
+			if(R.cell)
+				R.cell.use(60)
+
+/obj/item/device/healthanalyzer_advanced/verb/print_data()
+	set name = "Print Data"
+	set category = "Object"
+	if (last_target && dat)
+		new/obj/item/weapon/paper/(get_turf(src), "<tt>[dat]</tt>", "Body scan report - [last_target]")
+		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
+
+
 /obj/item/device/analyzer
 	name = "analyzer"
 	desc = "A hand-held environmental scanner which reports current gas levels."
@@ -405,7 +461,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 /obj/item/device/reagent_scanner
 	name = "reagent scanner"
 	desc = "A hand-held reagent scanner which identifies chemical agents."
-	icon_state = "spectrometer"
+	icon_state = "reagent"
 	item_state = "analyzer"
 	w_class = ITEM_SIZE_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
@@ -446,7 +502,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 
 /obj/item/device/reagent_scanner/adv
 	name = "advanced reagent scanner"
-	icon_state = "adv_spectrometer"
+	icon_state = "adv_reagent"
 	details = 1
 	origin_tech = list(TECH_MAGNET = 4, TECH_BIO = 2)
 

@@ -25,9 +25,9 @@
 	verbs += /mob/living/silicon/robot/drone/proc/release_ai_control_verb
 	local_transmit = FALSE
 	languages = controlling_ai.languages.Copy()
-
-	add_language("Drone Talk", 1)
-	default_language = all_languages["Drone Talk"]
+	add_language("Robot Talk", 1)
+	
+	default_language = all_languages[LANGUAGE_GALCOM]
 
 	stat = CONSCIOUS
 	if(user.mind)
@@ -35,6 +35,9 @@
 	else
 		key = user.key
 	updatename()
+	qdel(silicon_radio)
+	silicon_radio = new /obj/item/device/radio/headset/heads/ai_integrated(src)
+
 	to_chat(src, "<span class='notice'><b>You have shunted your primary control loop into \a [initial(name)].</b> Use the <b>Release Control</b> verb to return to your core.</span>")
 
 /obj/machinery/drone_fabricator/attack_ai(var/mob/living/silicon/ai/user)

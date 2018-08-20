@@ -59,6 +59,10 @@
 	breather = null
 	return ..()
 
+/obj/structure/gas_stand/attack_robot(var/mob/user)
+	if(Adjacent(user))
+		attack_hand(user)
+
 /obj/structure/gas_stand/MouseDrop(var/mob/living/carbon/human/target, src_location, over_location)
 	..()
 	if(istype(target) && CanMouseDrop(target))

@@ -24,6 +24,77 @@
 	var/visible_name = "a syringe"
 	var/time = 30
 
+/obj/item/weapon/reagent_containers/dna_sampler
+	name = "dna sampler"
+	desc = "It is device with little needle that can be used to take dna sample for bioprinter."
+	icon = 'icons/obj/syringe.dmi'
+	icon_state = "dna_sampler"
+	matter = list("glass" = 50)
+	amount_per_transfer_from_this = 1
+	possible_transfer_amounts = null
+	volume = 1
+	w_class = ITEM_SIZE_TINY
+	unacidable = 1 //glass
+
+/obj/item/weapon/reagent_containers/dna_sampler/detective
+	name = "blood sampler"
+	desc = "It is device with little needle that can be used to take blood sample."
+	amount_per_transfer_from_this = 5
+	volume = 5
+
+/obj/item/weapon/reagent_containers/dna_sampler/attack_self(mob/user as mob)
+	if (!reagents.get_free_space())
+		src.reagents.del_reagent(/datum/reagent/blood)
+		icon_state = "dna_sampler"
+		to_chat(user, "<span class='notice'>You reset \the [src].</span>")
+
+/obj/item/weapon/reagent_containers/dna_sampler/attackby(obj/item/I as obj, mob/user as mob)
+	return
+
+/obj/item/weapon/reagent_containers/dna_sampler/afterattack(obj/target, mob/user, proximity)
+	if(!proximity)
+		return
+	if(ismob(target))//Blood!
+		if(reagents.has_reagent(/datum/reagent/blood))
+			to_chat(user, "<span class='notice'>There is already a sample present.</span>")
+			return
+		if(istype(target, /mob/living/carbon))
+			if(istype(target, /mob/living/carbon/slime))
+				to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
+				return
+			var/mob/living/carbon/T = target
+			if(!T.dna)
+				to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
+				CRASH("[T] \[[T.type]\] was missing their dna datum!")
+				return
+			if(NOCLONE in T.mutations) //target done been et, no more blood in him
+				to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
+				return
+
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+			user.do_attack_animation(target)
+
+			T.take_blood(src, amount_per_transfer_from_this)
+			icon_state = "dna_sampler_full"
+			to_chat(user, "<span class='notice'>You take a blood sample from [target].</span>")
+			to_chat(T,"<span class='notice'>You feel a tiny prick.</span>")
+			for(var/mob/O in viewers(4, user))
+				O.show_message("<span class='notice'>[user] takes a blood sample from [target].</span>", 1)
+			return
+
+	if(!reagents.total_volume)
+		to_chat(user, "<span class='notice'>The syringe is empty.</span>")
+		return
+	if(!reagents.get_free_space())
+		if(!target.reagents.get_free_space())
+			to_chat(user, "<span class='notice'>[target] is full.</span>")
+			return
+		
+		var/trans = reagents.trans_to(target, amount_per_transfer_from_this)
+		to_chat(user, "<span class='notice'>You inject \the [target] with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units.</span>")
+		icon_state = "dna_sampler"
+
+
 /obj/item/weapon/reagent_containers/syringe/on_reagent_change()
 	update_icon()
 

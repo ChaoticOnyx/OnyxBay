@@ -55,7 +55,10 @@
 /datum/matter_synth/plastic
 	name = "Plastic Synthesizer"
 
+/datum/matter_synth/marble
+	name = "Marble Synthesizer"
+
 /datum/matter_synth/wire
 	name = "Wire Synthesizer"
 	max_energy = 50
-	recharge_rate = 2
+	recharge_rate = 6

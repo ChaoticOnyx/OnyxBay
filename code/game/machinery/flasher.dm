@@ -93,6 +93,12 @@
 				H.flash_eyes()
 				E.damage += rand(1, 5)
 		if(!O.blinded)
+			if (istype(O,/mob/living/silicon/ai))
+				return
+			if (istype(O,/mob/living/silicon/robot))
+				var/mob/living/silicon/robot/R = O
+				if (R.sensor_mode == FLASH_PROTECTION_VISION)
+					return
 			O.flash_eyes()
 			O.eye_blurry += flash_time
 			O.confused += (flash_time + 2)

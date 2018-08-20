@@ -120,6 +120,11 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 		. = 1
 		broadcast_security_hud_message("\A [activewarrant.fields["arrestsearch"]] warrant for <b>[activewarrant.fields["namewarrant"]]</b> has been [(activewarrant in GLOB.all_warrants) ? "edited" : "uploaded"].", nano_host())
 		GLOB.all_warrants |= activewarrant
+		
+		for(var/datum/computer_file/crew_record/person in GLOB.all_crew_records)
+			if(person.get_name() == activewarrant.fields["namewarrant"])
+				person.set_criminalStatus("Arrest")
+				break
 		activewarrant = null
 
 	if(href_list["deletewarrant"])
@@ -130,6 +135,11 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 					activewarrant = W
 					break
 		GLOB.all_warrants -= activewarrant
+
+		for(var/datum/computer_file/crew_record/person in GLOB.all_crew_records)
+			if(person.get_name() == activewarrant.fields["namewarrant"])
+				person.set_criminalStatus("None")
+				break
 		activewarrant = null
 
 	if(href_list["editwarrantname"])
