@@ -69,10 +69,11 @@
 	data["analysed"] = dish && dish.analysed ? 1 : 0
 	data["can_breed_virus"] = null
 	data["blood_already_infected"] = null
+	data["virus_blood_match_species"] = null
+	data["beaker_has_no_blood"] =null
 
 	if (beaker)
 		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in beaker.reagents.reagent_list
-		data["can_breed_virus"] = dish && dish.virus2 && B
 
 		if (B)
 			if (!B.data["virus2"])
@@ -81,6 +82,16 @@
 			var/list/virus = B.data["virus2"]
 			for (var/ID in virus)
 				data["blood_already_infected"] = virus[ID]
+			if (dish && dish.analysed)
+				var/beaker_species = B.data["species"]
+				for (var/S in dish.virus2.affected_species)
+					if (beaker_species == S)
+						data["can_breed_virus"] = dish && dish.virus2
+						data["virus_blood_match_species"] = TRUE
+						break
+		else
+			data["beaker_has_no_blood"] = TRUE
+
 
 	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
@@ -128,12 +139,8 @@
 		GLOB.nanomanager.update_uis(src)
 
 	if(beaker)
-		if(foodsupply < 100 && beaker.reagents.remove_reagent(/datum/reagent/nutriment/virus_food,5))
-			if(foodsupply + 10 <= 100)
-				foodsupply += 10
-			else
-				beaker.reagents.add_reagent(/datum/reagent/nutriment/virus_food,(100 - foodsupply)/2)
-				foodsupply = 100
+		if(foodsupply < 90 && beaker.reagents.remove_reagent(/datum/reagent/nutriment/virus_food,10))
+			foodsupply += 10
 			GLOB.nanomanager.update_uis(src)
 
 		if (locate(/datum/reagent/toxin) in beaker.reagents.reagent_list && toxins < 100)

@@ -72,12 +72,17 @@
     </div>
     <div class='itemContent'>
       <span class='{{:data.can_breed_virus ? "good" : "average"}}'>
-        {{:!data.dish_inserted ? 'N/A' : data.can_breed_virus ? 'Suitable' : 'No hemolytic samples detected'}}
+        {{:!data.dish_inserted ? 'No virus dish' : data.can_breed_virus ? 'Suitable' : data.beaker_has_no_blood ? 'No blood sample detected' : !data.analysed ? 'Unknown virus breeding enviroment' : 'Invalid'}}
       </span>
       {{if data.blood_already_infected}}
         <br/>
         <span class='bad'><i>CAUTION: Viral infection detected in blood sample.</i></span>
       {{/if}}
+      {{if data.analysed && !data.beaker_has_no_blood && !data.virus_blood_match_species}}
+        <br/>
+        <span class='bad'><i>ERROR: This virus can't be breed in this blood sample.</i></span>
+      {{/if}}
+
     </div>
   </div>
 {{else}}

@@ -72,11 +72,18 @@
 		handleBodyBag(target, user)
 		return
 
+	if(user.a_intent == I_HURT)
+		if(ismob(target))
+			syringestab(target, user)
+			return
+		if(reagents && reagents.total_volume)
+			to_chat(user, "<span class='notice'>You spurt out the contents of \the [src] onto [target].</span>") //They are on harm intent, aka wanting to spill it.
+			reagents.splash(target, reagents.total_volume)
+			mode = SYRINGE_DRAW
+			update_icon()
+			return
+			
 	if(!target.reagents)
-		return
-
-	if(user.a_intent == I_HURT && ismob(target))
-		syringestab(target, user)
 		return
 
 	handleTarget(target, user)
@@ -372,7 +379,7 @@
 /obj/item/weapon/reagent_containers/syringe/steroid
 	name = "Syringe (anabolic steroids)"
 	desc = "Contains drugs for muscle growth."
-
+	
 /obj/item/weapon/reagent_containers/syringe/steroid/New()
 	..()
 	reagents.add_reagent(/datum/reagent/adrenaline, 5)
