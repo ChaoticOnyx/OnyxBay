@@ -5,7 +5,7 @@
 	icon_state = "stunbaton"
 	item_state = "baton"
 	slot_flags = SLOT_BELT
-	force = 15
+	force = 17
 	sharp = 0
 	edge = 0
 	throwforce = 7
@@ -120,6 +120,10 @@
 		user.Weaken(30)
 		deductcharge(hitcost)
 		return
+	if(!status && user.a_intent != I_HURT)
+		to_chat(user, "<span class='notice'>Activate \the [src] or change to harm intent.</span>")
+		return
+
 	return ..()
 
 /obj/item/weapon/melee/baton/apply_hit_effect(mob/living/target, mob/living/user, var/hit_zone)
@@ -133,32 +137,14 @@
 		var/mob/living/carbon/human/H = target
 		affecting = H.get_organ(hit_zone)
 
-	if(user.a_intent == I_HURT)
-		. = ..()
-		if (!.)	//item/attack() does it's own messaging and logs
-			return 0	// item/attack() will return 1 if they hit, 0 if they missed.
-
-		//whacking someone causes a much poorer electrical contact than deliberately prodding them.
-		stun *= 0.5
-		if(status)		//Checks to see if the stunbaton is on.
-			agony *= 0.5	//whacking someone causes a much poorer contact than prodding them.
-		else
-			agony = 0	//Shouldn't really stun if it's off, should it?
-		//we can't really extract the actual hit zone from ..(), unfortunately. Just act like they attacked the area they intended to.
-	else if(!status)
-		if(affecting)
-			target.visible_message("<span class='warning'>[target] has been prodded in the [affecting.name] with [src] by [user]. Luckily it was off.</span>")
-		else
-			target.visible_message("<span class='warning'>[target] has been prodded with [src] by [user]. Luckily it was off.</span>")
-	else
+	//stun effects
+	if(status)	//Checks to see if the stunbaton is on.
 		if(affecting)
 			target.visible_message("<span class='danger'>[target] has been prodded in the [affecting.name] with [src] by [user]!</span>")
 		else
 			target.visible_message("<span class='danger'>[target] has been prodded with [src] by [user]!</span>")
 		playsound(loc, 'sound/weapons/Egloves.ogg', 50, 1, -1)
 
-	//stun effects
-	if(status)
 		target.stun_effect_act(stun, agony, hit_zone, src)
 		msg_admin_attack("[key_name(user)] stunned [key_name(target)] with the [src].")
 
@@ -167,6 +153,10 @@
 		if(ishuman(target))
 			var/mob/living/carbon/human/H = target
 			H.forcesay(GLOB.hit_appends)
+	else if(user.a_intent == I_HURT)
+		. = ..()
+		if (!.)	//item/attack() does it's own messaging and logs
+			return 0	// item/attack() will return 1 if they hit, 0 if they missed.
 
 	return 0
 
