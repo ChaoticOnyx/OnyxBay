@@ -50,13 +50,13 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "Allows you to absorb a single DNA and use it. Does not count towards your absorb objective."
 	genomecost = 0
 	verbpath = /mob/proc/changeling_hivedownload
-
+/*
 /datum/power/changeling/lesser_form
 	name = "Lesser Form"
 	desc = "We debase ourselves and become lesser.  We become a monkey."
 	genomecost = 4
 	verbpath = /mob/proc/changeling_lesser_form
-
+*/
 /datum/power/changeling/deaf_sting
 	name = "Deaf Sting"
 	desc = "We silently sting a human, completely deafening them for a short time."
@@ -220,7 +220,53 @@ var/list/datum/power/changeling/powerinstances = list()
 	verbpath = /mob/proc/changeling_recursive_enhancement
 
 
+/datum/power/changeling/fake_arm_blade
+	name = "Fake armblade"
+	desc = "We reform others arms into a fake armblade."
+	helptext = "Can't be transform into arm."
+	enhancedtext = "Doing nothing"
+	genomecost = 4
+	verbpath = /mob/proc/changeling_fake_arm_blade
 
+/datum/power/changeling/no_pain
+	name = "Painless"
+	desc = "We choose whether or not to fell pain."
+	helptext = "Toggleable ability"
+	enhancedtext = "Doing nothing"
+	genomecost = 3
+	verbpath = /mob/proc/no_pain
+
+/datum/power/changeling/gib_self
+	name = "Body disjunction"
+	desc = "Tear apart your human disguise, revealing your little form."
+	helptext = "Takes time."
+	enhancedtext = "Doing nothing"
+	genomecost = 4
+	verbpath = /mob/proc/gib_self
+
+/datum/power/changeling/detach_limb
+	name = "Detach Limb"
+	desc = "We tear off our limb, turning it into an aggressive biomass."
+	helptext = "It hurts."
+	enhancedtext = "Doing nothing"
+	genomecost = 0
+	verbpath = /mob/proc/detach_limb
+
+/datum/power/changeling/Division
+	name = "Division"
+	desc = "We will make you ours."
+	helptext = "Can't be transform the dead."
+	enhancedtext = "Doing nothing"
+	genomecost = 8
+	verbpath = /mob/proc/Division
+
+/datum/power/changeling/rapid_heal
+	name = "Passive Regeneration"
+	desc = "Allows you to passively regenerate when activated."
+	helptext = "Spends chemicals."
+	enhancedtext = "Doing nothing"
+	genomecost = 4
+	verbpath = /mob/proc/rapid_heal
 
 // Modularchangling, totally stolen from the new player panel.  YAYY
 /datum/changeling/proc/EvolutionMenu()//The new one

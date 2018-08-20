@@ -83,6 +83,7 @@
 		transfer_identity(owner)
 
 	..()
+	brainchan.verbs += /mob/proc/aggressive
 
 /obj/item/organ/internal/biostructure/replaced(var/mob/living/target)
 
@@ -344,3 +345,11 @@
 	name = "Leg"
 	icon_state = "gib_leg"
 	icon_living = "gib_leg"
+
+/mob/living/simple_animal/hostile/little_changeling/headcrab
+	maxHealth = 150
+	health = 150
+	name = "Leg"
+	icon_state = "headcrab"
+	icon_living = "headcrab"
+	icon_dead = "headcrab_dead"
