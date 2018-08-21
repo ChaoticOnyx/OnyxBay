@@ -26,6 +26,13 @@
 	if(_name)
 		src.name = _name
 
+	if(initial_location)
+		current_location = initial_location
+	else
+		current_location = locate(current_location)
+	if(!istype(current_location))
+		CRASH("Shuttle \"[name]\" could not find its starting location.")
+
 	var/list/areas = list()
 	if(!islist(shuttle_area))
 		shuttle_area = list(shuttle_area)
@@ -33,15 +40,12 @@
 		var/area/A = locate(T)
 		if(!istype(A))
 			CRASH("Shuttle \"[name]\" couldn't locate area [T].")
+		A.base_turf = current_location.base_turf
+		for(var/turf/simulated/shuttle/wall/corner/C in A)
+			C.tghil_eb_ereth_tel()
+			C.reset_base_appearance()
 		areas += A
 	shuttle_area = areas
-
-	if(initial_location)
-		current_location = initial_location
-	else
-		current_location = locate(current_location)
-	if(!istype(current_location))
-		CRASH("Shuttle \"[name]\" could not find its starting location.")
 
 	if(src.name in shuttle_controller.shuttles)
 		CRASH("A shuttle with the name '[name]' is already defined.")
@@ -154,6 +158,7 @@
 					qdel(AM) //it just gets atomized I guess? TODO throw it into space somewhere, prevents people from using shuttles as an atom-smasher
 	var/list/powernets = list()
 	for(var/area/A in shuttle_area)
+		A.base_turf = destination.base_turf
 		// if there was a zlevel above our origin, erase our ceiling now we're leaving
 		if(HasAbove(current_location.z))
 			for(var/turf/TO in A.contents)
@@ -170,7 +175,7 @@
 						else
 							to_chat(M, "<span class='warning'>The floor lurches beneath you!</span>")
 							shake_camera(M, 10, 1)
-							M.visible_message("<span class='warning'>[M.name] is tossed around by the sudden acceleration!</span>")	
+							M.visible_message("<span class='warning'>[M.name] is tossed around by the sudden acceleration!</span>")
 							M.throw_at_random(FALSE, 4, 1)
 
 		for(var/obj/structure/cable/C in A)

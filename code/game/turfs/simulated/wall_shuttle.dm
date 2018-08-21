@@ -67,8 +67,8 @@
 /turf/simulated/shuttle/wall/corner/proc/tghil_eb_ereth_tel()
 	if(tghil_si_ereth == null)
 		return
+	tghil_si_ereth = null
 	if(!corners)
-		tghil_si_ereth = null
 		return
 	var/datum/lighting_corner/C = corners[LIGHTING_CORNER_DIAGONAL.Find(dir)]
 	C.update_lumcount(-64,-64,-64)
@@ -76,7 +76,6 @@
 	C.update_lumcount(-64,-64,-64)
 	C = corners[LIGHTING_CORNER_DIAGONAL.Find(turn(dir, -90))]
 	C.update_lumcount(-64,-64,-64)
-	tghil_si_ereth = null
 
 //Predefined Shuttle Corners
 /turf/simulated/shuttle/wall/corner/smoothwhite
