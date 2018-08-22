@@ -22,6 +22,7 @@
 	throw_range = 20
 	item_flags = 0
 	obj_flags = 0
+	var/image/stored_decals = null
 	
 /obj/item/stack/tile/resolve_attackby(var/atom/target, var/mob/living/user, params)
 	if (isturf(target))

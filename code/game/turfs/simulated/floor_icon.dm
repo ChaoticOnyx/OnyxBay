@@ -10,7 +10,8 @@ var/list/flooring_cache = list()
 		SetName(flooring.name)
 		desc = flooring.desc
 		icon = flooring.icon
-		color = flooring.color
+		if (flooring.color)
+			color = flooring.color
 
 		if(flooring_override)
 			icon_state = flooring_override

@@ -42,6 +42,12 @@
 			to_chat(user, "There [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack.")
 		else
 			to_chat(user, "There is enough charge for [get_amount()].")
+	if(color)
+		to_chat(user, "It's painted.")
+	if (istype(src,/obj/item/stack/tile))
+		var/obj/item/stack/tile/T = src
+		if(length(T.stored_decals))
+			to_chat(user, "It's has painted decals on it.")
 
 /obj/item/stack/attack_self(mob/user as mob)
 	list_recipes(user)
@@ -225,6 +231,16 @@
 		return 0
 	if (isnull(tamount))
 		tamount = src.get_amount()
+	if (color != S.color)
+		return 0
+	if (istype(S,/obj/item/stack/tile) && istype(src,/obj/item/stack/tile))
+		var/obj/item/stack/tile/FT = src
+		var/obj/item/stack/tile/F = S
+		if (FT.stored_decals)
+			FT.stored_decals = null
+		if (F.stored_decals)
+			F.stored_decals = null
+		S.overlays.Cut()	//cuts off decal status icon applied in /turf/simulated/floor/proc/make_plating()
 
 	var/transfer = max(min(tamount, src.get_amount(), (S.get_max_amount() - S.get_amount())), 0)
 

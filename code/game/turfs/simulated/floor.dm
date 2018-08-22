@@ -12,7 +12,7 @@
 	var/base_desc = "The naked hull."
 	var/base_icon = 'icons/turf/flooring/plating.dmi'
 	var/base_icon_state = "plating"
-	var/base_color = COLOR_WHITE
+	var/base_color = null
 
 	// Flooring data.
 	var/flooring_override
@@ -53,15 +53,26 @@
 	desc = base_desc
 	icon = base_icon
 	icon_state = base_icon_state
-	color = base_color
 	plane = PLATING_PLANE
 
 	if(flooring)
 		flooring.on_remove()
 		if(flooring.build_type && place_product)
-			new flooring.build_type(src)
+			var/obj/F =  new flooring.build_type(src)
+			if (color)
+				F.color = color
+			var/obj/item/stack/tile/T = null	
+			if (istype(F,/obj/item/stack/tile))	//checking if stack is a tile cause only tiles can store decals
+				T = F
+				T.stored_decals = src.decals
+				src.decals = null
+				if(T.stored_decals)
+					F.overlays += icon("icons/obj/tiles.dmi", "decal_state")
 		flooring = null
 
+	if (base_color)
+		color = base_color
+	
 	set_light(0)
 	broken = null
 	burnt = null

@@ -20,22 +20,26 @@
 			else
 				return
 			playsound(src, 'sound/items/Crowbar.ogg', 80, 1)
+			color = null
 			return
 		else if(isScrewdriver(C) && (flooring.flags & TURF_REMOVE_SCREWDRIVER))
 			if(broken || burnt)
 				return
 			to_chat(user, "<span class='notice'>You unscrew and remove the [flooring.descriptor].</span>")
 			make_plating(1)
+			color = null
 			playsound(src, 'sound/items/Screwdriver.ogg', 80, 1)
 			return
 		else if(isWrench(C) && (flooring.flags & TURF_REMOVE_WRENCH))
 			to_chat(user, "<span class='notice'>You unwrench and remove the [flooring.descriptor].</span>")
 			make_plating(1)
+			color = null
 			playsound(src, 'sound/items/Ratchet.ogg', 80, 1)
 			return
 		else if(istype(C, /obj/item/weapon/shovel) && (flooring.flags & TURF_REMOVE_SHOVEL))
 			to_chat(user, "<span class='notice'>You shovel off the [flooring.descriptor].</span>")
 			make_plating(1)
+			color = null
 			playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
 			return
 		else if(isCoil(C))
@@ -76,8 +80,17 @@
 				return
 			if(flooring || !S || !user || !use_flooring)
 				return
+
 			if(S.use(use_flooring.build_cost))
 				set_flooring(use_flooring)
+				if (S.color)
+					src.color = S.color
+				var/obj/item/stack/tile/F = null
+				if (istype(S,/obj/item/stack/tile))
+					F = S
+					if(F.stored_decals)
+						src.decals = F.stored_decals
+				src.update_icon()
 				playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
 				return
 		// Repairs and Deconstruction.
@@ -91,6 +104,7 @@
 				if(do_after(user, 10 SECONDS))
 					visible_message("<span class='warning'>[user] has pried off the damaged plating.</span>")
 					new /obj/item/stack/tile/floor(src)
+					src.color = null
 					src.ReplaceWithLattice()
 					playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
 					if(T)
