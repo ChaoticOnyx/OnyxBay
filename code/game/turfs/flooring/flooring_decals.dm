@@ -263,10 +263,27 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/grey/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner_steel_grid
+	name = "corner steel_grid"
+	icon_state = "steel_grid"
+
+/obj/effect/floor_decal/corner_steel_grid/diagonal
+	name = "corner tsteel_grid diagonal"
+	icon_state = "steel_grid_diagonal"
+
+/obj/effect/floor_decal/corner_steel_grid/three_quarters
+	name = "corner steel_grid full"
+	icon_state = "steel_grid_full"
+
 /obj/effect/floor_decal/spline/plain
 	name = "spline - plain"
 	icon_state = "spline_plain"
 	alpha = 229
+
+/obj/effect/floor_decal/rust
+	name = "rust"
+	icon_state = "rust"
+	alpha = 120
 
 /obj/effect/floor_decal/spline/plain/black
 	color = "#333333"
