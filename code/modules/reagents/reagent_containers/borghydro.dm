@@ -21,10 +21,10 @@
 	reagent_ids = list(/datum/reagent/tramadol, /datum/reagent/bicaridine, /datum/reagent/dexalin)
 
 /obj/item/weapon/reagent_containers/borghypo/surgeon_adv
-	reagent_ids = list(/datum/reagent/tramadol/oxycodone, /datum/reagent/bicaridine, /datum/reagent/kelotane, /datum/reagent/dexalinp, /datum/reagent/dylovene, /datum/reagent/spaceacillin, /datum/reagent/sugar_iron_mix)
+	reagent_ids = list(/datum/reagent/tramadol/oxycodone, /datum/reagent/bicaridine, /datum/reagent/kelotane, /datum/reagent/dexalinp, /datum/reagent/dylovene, /datum/reagent/spaceacillin, /datum/reagent/nutriment/glucose)
 
 /obj/item/weapon/reagent_containers/borghypo/crisis
-	reagent_ids = list(/datum/reagent/tricordrazine, /datum/reagent/inaprovaline, /datum/reagent/tramadol)
+	reagent_ids = list(/datum/reagent/tramadol, /datum/reagent/inaprovaline, /datum/reagent/tricordrazine)
 
 /obj/item/weapon/reagent_containers/borghypo/crisis_adv
 	reagent_ids = list(/datum/reagent/tramadol, /datum/reagent/inaprovaline, /datum/reagent/dexalin, /datum/reagent/bicaridine, /datum/reagent/dermaline, /datum/reagent/hyronalin, /datum/reagent/peridaxon, /datum/reagent/spaceacillin)

@@ -325,7 +325,6 @@ var/global/list/robot_modules = list(
 	src.modules += N
 	src.modules += B
 	src.modules += new /obj/item/roller_holder(src)
-	appointed_huds += list("Science")
 	..()
 
 /obj/item/weapon/robot_module/medical/surgeon_adv/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
