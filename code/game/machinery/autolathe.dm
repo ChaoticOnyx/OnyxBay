@@ -2,6 +2,7 @@
 	name = "autolathe"
 	desc = "It produces items using metal and glass."
 	icon_state = "autolathe"
+	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
 	use_power = 1

@@ -2,6 +2,7 @@
 	name = "\improper Protolathe"
 	icon_state = "protolathe"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	layer = BELOW_OBJ_LAYER
 
 	use_power = 1
 	idle_power_usage = 30

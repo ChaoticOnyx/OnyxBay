@@ -9,6 +9,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 /obj/machinery/r_n_d/destructive_analyzer
 	name = "destructive analyzer"
 	icon_state = "d_analyzer"
+	layer = BELOW_OBJ_LAYER
 	var/obj/item/weapon/loaded_item = null
 	var/decon_mod = 0
 

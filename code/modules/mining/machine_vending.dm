@@ -51,6 +51,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 	desc = "An equipment vendor for miners, points collected at an ore redemption machine can be spent here."
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "mining"
+	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
 	var/obj/item/weapon/card/id/inserted_id

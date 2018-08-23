@@ -2,6 +2,7 @@
 	name = "Robotic Fabricator"
 	icon = 'icons/obj/robotics.dmi'
 	icon_state = "fab-idle"
+	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
 	var/metal_amount = 0
