@@ -3,6 +3,7 @@
 	icon_state = "fab-idle"
 	name = "Exosuit Fabricator"
 	desc = "A machine used for construction of robotcs and mechas."
+	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
 	use_power = 1

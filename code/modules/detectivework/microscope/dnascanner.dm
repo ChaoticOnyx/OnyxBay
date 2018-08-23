@@ -4,6 +4,7 @@
 	desc = "A high tech machine that is designed to read DNA samples properly."
 	icon = 'icons/obj/forensics.dmi'
 	icon_state = "dnaopen"
+	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
 

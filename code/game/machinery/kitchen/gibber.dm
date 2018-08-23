@@ -4,6 +4,7 @@
 	desc = "The name isn't descriptive enough?"
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "grinder"
+	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
 	req_access = list(access_kitchen,access_morgue)

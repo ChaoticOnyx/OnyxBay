@@ -13,6 +13,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	use_power = 1
 	idle_power_usage = 30
 	active_power_usage = 200
+	layer = BELOW_OBJ_LAYER
 
 	var/obj/item/weapon/card/id/scan = null // identification
 	var/authenticated = 0

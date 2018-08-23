@@ -2,6 +2,7 @@
 	name = "Pipe Dispenser"
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "pipe_d"
+	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
 	var/unwrenched = 0

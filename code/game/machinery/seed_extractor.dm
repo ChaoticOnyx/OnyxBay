@@ -3,6 +3,7 @@
 	desc = "Extracts and bags seeds from produce."
 	icon = 'icons/obj/hydroponics_machines.dmi'
 	icon_state = "sextractor"
+	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
 	use_power = 2

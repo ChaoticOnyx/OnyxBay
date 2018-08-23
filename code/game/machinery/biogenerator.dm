@@ -9,6 +9,7 @@
 	desc = ""
 	icon = 'icons/obj/biogenerator.dmi'
 	icon_state = "biogen-stand"
+	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
 	use_power = 1

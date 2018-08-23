@@ -8,6 +8,7 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 	name = "\improper Circuit Imprinter"
 	icon_state = "circuit_imprinter"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	layer = BELOW_OBJ_LAYER
 	var/list/datum/design/queue = list()
 	var/progress = 0
 

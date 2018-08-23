@@ -22,6 +22,7 @@
 	desc = "It stores, sorts, and dispenses seeds."
 	icon = 'icons/obj/vending.dmi'
 	icon_state = "seeds"
+	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
 	use_power = 1
