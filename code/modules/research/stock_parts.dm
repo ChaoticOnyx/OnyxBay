@@ -61,6 +61,15 @@
 	origin_tech = list(TECH_MATERIAL = 1)
 	matter = list(DEFAULT_WALL_MATERIAL = 80)
 
+/obj/item/weapon/stock_parts/capacitor
+	name = "capacitor"
+	desc = "A basic capacitor used in the construction of a variety of devices."
+	icon_state = "capacitor"
+	origin_tech = list(TECH_POWER = 1)
+	matter = list(DEFAULT_WALL_MATERIAL = 50,"glass" = 50)
+	var/charge = 0
+	var/max_charge = 1000
+
 //Rank 2
 
 /obj/item/weapon/stock_parts/scanning_module/adv
@@ -95,6 +104,13 @@
 	rating = 2
 	matter = list(DEFAULT_WALL_MATERIAL = 80)
 
+/obj/item/weapon/stock_parts/capacitor/adv
+	name = "advanced capacitor"
+	desc = "An advanced capacitor used in the construction of a variety of devices."
+	icon_state = "capacitor_adv"
+	origin_tech = list(TECH_POWER = 3)
+	rating = 2
+
 //Rating 3
 
 /obj/item/weapon/stock_parts/scanning_module/phasic
@@ -128,6 +144,54 @@
 	origin_tech = list(TECH_MATERIAL = 5)
 	rating = 3
 	matter = list(DEFAULT_WALL_MATERIAL = 80)
+
+/obj/item/weapon/stock_parts/capacitor/super
+	name = "super capacitor"
+	desc = "A super-high capacity capacitor used in the construction of a variety of devices."
+	icon_state = "capacitor_super"
+	origin_tech = list(TECH_POWER = 5, TECH_MATERIAL = 4)
+	rating = 3
+
+//Rating 4
+
+/obj/item/weapon/stock_parts/scanning_module/triphasic
+	name = "triphasic scanning module"
+	desc = "A compact, ultra resolution triphasic scanning module used in the construction of certain devices."
+	icon_state = "triphasic_scan_module"
+	origin_tech = list(TECH_MAGNET = 6)
+	rating = 4
+	matter = list(DEFAULT_WALL_MATERIAL = 70,"glass" = 30)
+
+/obj/item/weapon/stock_parts/manipulator/femto
+	name = "femto-manipulator"
+	desc = "A tiny little manipulator used in the construction of certain devices."
+	icon_state = "femto_mani"
+	origin_tech = list(TECH_MATERIAL = 7, TECH_DATA = 5)
+	rating = 4
+	matter = list(DEFAULT_WALL_MATERIAL = 50)
+
+/obj/item/weapon/stock_parts/micro_laser/quadultra
+	name = "quad-ultra micro-laser"
+	icon_state = "quadultra_micro_laser"
+	desc = "A tiny laser used in certain devices."
+	origin_tech = list(TECH_MAGNET = 6)
+	rating = 4
+	matter = list(DEFAULT_WALL_MATERIAL = 20,"glass" = 30)
+
+/obj/item/weapon/stock_parts/matter_bin/bluespace
+	name = "bluespace matter bin"
+	desc = "A container for hold compressed matter awaiting re-construction."
+	icon_state = "bluespace_matter_bin"
+	origin_tech = list(TECH_MATERIAL = 7)
+	rating = 4
+	matter = list(DEFAULT_WALL_MATERIAL = 100)
+
+/obj/item/weapon/stock_parts/capacitor/quadratic
+	name = "quadratic capacitor"
+	desc = "An ultra-high capacity capacitor used in the construction of a variety of devices."
+	icon_state = "quadratic_capacitor"
+	origin_tech = list(TECH_POWER = 7, TECH_MATERIAL = 5)
+	rating = 4
 
 // Subspace stock parts
 
@@ -180,15 +244,6 @@
 	origin_tech = list(TECH_MAGNET = 5, TECH_MATERIAL = 5, TECH_BLUESPACE = 3)
 	matter = list(DEFAULT_WALL_MATERIAL = 50)
 
-/obj/item/weapon/stock_parts/capacitor
-	name = "capacitor"
-	desc = "A basic capacitor used in the construction of a variety of devices."
-	icon_state = "capacitor"
-	origin_tech = list(TECH_POWER = 1)
-	matter = list(DEFAULT_WALL_MATERIAL = 50,"glass" = 50)
-	var/charge = 0
-	var/max_charge = 1000
-
 /obj/item/weapon/stock_parts/capacitor/Initialize()
 	. = ..()
 	max_charge *= rating
@@ -204,19 +259,7 @@
 		if(charge < 0)
 			charge = 0
 
-/obj/item/weapon/stock_parts/capacitor/adv
-	name = "advanced capacitor"
-	desc = "An advanced capacitor used in the construction of a variety of devices."
-	icon_state = "capacitor_adv"
-	origin_tech = list(TECH_POWER = 3)
-	rating = 2
-
-/obj/item/weapon/stock_parts/capacitor/super
-	name = "super capacitor"
-	desc = "A super-high capacity capacitor used in the construction of a variety of devices."
-	icon_state = "capacitor_super"
-	origin_tech = list(TECH_POWER = 5, TECH_MATERIAL = 4)
-	rating = 3
+// Debug tool
 
 /obj/item/weapon/research
 	name = "research debugging device"
