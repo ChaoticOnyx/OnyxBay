@@ -194,6 +194,19 @@
 	maxhealth = 600
 	block_air_zones = 1
 
+
+//For Admin Z-levels.
+//With additional health and armor
+/obj/machinery/door/blast/regular/strong
+	icon_state_open = "pdoor0"
+	icon_state_opening = "pdoorc0"
+	icon_state_closed = "pdoor1"
+	icon_state_closing = "pdoorc1"
+	icon_state = "pdoor1"
+	maxhealth = 100000
+	explosion_resistance = 100
+	block_air_zones = 1
+
 /obj/machinery/door/blast/regular/open
 	begins_closed = FALSE
 
