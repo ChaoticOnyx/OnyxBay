@@ -8,13 +8,13 @@
 
 
 /obj/item/organ/internal/biostructure/proc/test_damage()
-	owner.mind.changeling.damaged = FALSE
 	for(var/limb_type in (owner.species.has_limbs | owner.organs_by_name))
 		var/obj/item/organ/external/E = owner.organs_by_name[limb_type]
-		if((E && E.damage > 0) || !E)
+		if((E && E.damage > 0) || !E || (E && (E.status & ORGAN_BROKEN)) || (E && (E.status &= ~ORGAN_ARTERY_CUT)))
 			owner.mind.changeling.damaged = TRUE
 			break
-
+		else
+			owner.mind.changeling.damaged = FALSE
 ////////////////No Brain Gen//////////////////////////////////////////////
 
 /obj/item/organ/internal/biostructure
@@ -115,13 +115,13 @@
 			healed_threshold = 1
 		if(owner.mind && owner.mind.changeling.heal && owner.mind.changeling.damaged)
 			test_damage()
-			owner.mind.changeling.chem_charges = max(owner.mind.changeling.chem_charges - 0.5, 0)
+			owner.mind.changeling.chem_charges = max(owner.mind.changeling.chem_charges - 1, 0)
 			if(owner.getBruteLoss())
-				owner.adjustBruteLoss(-5 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+				owner.adjustBruteLoss(-10 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 			if(owner.getFireLoss())
-				owner.adjustFireLoss(-2 * config.organ_regeneration_multiplier)
+				owner.adjustFireLoss(-5 * config.organ_regeneration_multiplier)
 			if(owner.getToxLoss())
-				owner.adjustToxLoss(-5 * config.organ_regeneration_multiplier)
+				owner.adjustToxLoss(-10 * config.organ_regeneration_multiplier)
 			if(prob(5) && !owner.getBruteLoss() && !owner.getFireLoss())
 				var/obj/item/organ/external/head/D = owner.organs_by_name[BP_HEAD]
 				if (D.disfigured)
@@ -157,10 +157,12 @@
 						owner.update_body()
 						return
 					else
+						E.status &= ~ORGAN_BROKEN
 						E.status &= ~ORGAN_ARTERY_CUT
 						for(var/datum/wound/W in E.wounds)
 							if(W.wound_damage() == 0 && prob(50))
 								E.wounds -= W
+		test_damage()
 
 /obj/item/organ/internal/biostructure/die()
 	QDEL_NULL(brainchan)
