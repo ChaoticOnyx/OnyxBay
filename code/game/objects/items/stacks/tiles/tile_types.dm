@@ -22,11 +22,6 @@
 	throw_range = 20
 	item_flags = 0
 	obj_flags = 0
-	
-/obj/item/stack/tile/resolve_attackby(var/atom/target, var/mob/living/user, params)
-	if (isturf(target))
-		user.do_attack_animation(target)
-	..()
 
 /*
  * Grass

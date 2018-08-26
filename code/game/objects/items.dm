@@ -88,11 +88,6 @@
 		src.loc = null
 	return ..()
 
-/obj/item/weapon/resolve_attackby(var/atom/target, var/mob/living/user, params)
-	if (!isturf(target) && !(item_flags & ITEM_FLAG_NO_ANIMATION))
-		user.do_attack_animation(target)
-	..()
-
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
 
@@ -205,9 +200,6 @@
 		if(!temp)
 			to_chat(user, "<span class='notice'>You try to use your hand, but realize it is no longer attached!</span>")
 			return
-
-	var/old_loc = src.loc
-	
 	src.pickup(user)
 	if (istype(src.loc, /obj/item/weapon/storage))
 		var/obj/item/weapon/storage/S = src.loc
@@ -220,11 +212,7 @@
 	else
 		if(isliving(src.loc))
 			return
-
 	if(user.put_in_active_hand(src))
-		if (isturf(old_loc))
-			var/obj/effect/temporary/item_pickup_ghost/ghost = new(old_loc, src)
-			ghost.animate_towards(user)
 		if(randpixel)
 			pixel_x = rand(-randpixel, randpixel)
 			pixel_y = rand(-randpixel/2, randpixel/2)
