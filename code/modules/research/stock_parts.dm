@@ -70,6 +70,21 @@
 	var/charge = 0
 	var/max_charge = 1000
 
+/obj/item/weapon/stock_parts/capacitor/Initialize()
+	. = ..()
+	max_charge *= rating
+
+/obj/item/weapon/stock_parts/capacitor/proc/charge(var/amount)
+	charge += amount
+	if(charge > max_charge)
+		charge = max_charge
+
+/obj/item/weapon/stock_parts/capacitor/proc/use(var/amount)
+	if(charge)
+		charge -= amount
+		if(charge < 0)
+			charge = 0
+
 //Rank 2
 
 /obj/item/weapon/stock_parts/scanning_module/adv
@@ -186,10 +201,10 @@
 	rating = 4
 	matter = list(DEFAULT_WALL_MATERIAL = 100)
 
-/obj/item/weapon/stock_parts/capacitor/quadratic
-	name = "quadratic capacitor"
+/obj/item/weapon/stock_parts/capacitor/rectangular
+	name = "rectangular capacitor"
 	desc = "An ultra-high capacity capacitor used in the construction of a variety of devices."
-	icon_state = "quadratic_capacitor"
+	icon_state = "capacitor_rectangular"
 	origin_tech = list(TECH_POWER = 7, TECH_MATERIAL = 5)
 	rating = 4
 
@@ -243,21 +258,6 @@
 	desc = "A large piece of equipment used to open a window into the subspace dimension."
 	origin_tech = list(TECH_MAGNET = 5, TECH_MATERIAL = 5, TECH_BLUESPACE = 3)
 	matter = list(DEFAULT_WALL_MATERIAL = 50)
-
-/obj/item/weapon/stock_parts/capacitor/Initialize()
-	. = ..()
-	max_charge *= rating
-
-/obj/item/weapon/stock_parts/capacitor/proc/charge(var/amount)
-	charge += amount
-	if(charge > max_charge)
-		charge = max_charge
-
-/obj/item/weapon/stock_parts/capacitor/proc/use(var/amount)
-	if(charge)
-		charge -= amount
-		if(charge < 0)
-			charge = 0
 
 // Debug tool
 
