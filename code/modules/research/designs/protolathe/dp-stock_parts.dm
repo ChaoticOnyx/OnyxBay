@@ -147,11 +147,11 @@
 	build_path = /obj/item/weapon/stock_parts/matter_bin/bluespace
 	sort_string = "CAACD"
 
-/datum/design/item/stock_part/quadratic_capacitor
-	id = "quadratic_capacitor"
+/datum/design/item/stock_part/rectangular_capacitor
+	id = "rectangular_capacitor"
 	req_tech = list(TECH_POWER = 7, TECH_MATERIAL = 5, TECH_ENGINEERING = 5, TECH_BLUESPACE = 4)
 	materials = list(DEFAULT_WALL_MATERIAL = 50, "glass" = 50, "gold" = 30, "diamond" = 20)
-	build_path = /obj/item/weapon/stock_parts/capacitor/quadratic
+	build_path = /obj/item/weapon/stock_parts/capacitor/rectangular
 	sort_string = "CAAAD"
 
 /datum/design/item/stock_part/RPED
