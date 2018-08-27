@@ -218,14 +218,21 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "To check the effects for each ability, check the blue text underneath the ability in the evolution menu."
 	genomecost = 3
 	verbpath = /mob/proc/changeling_recursive_enhancement
-
-
-/datum/power/changeling/fake_arm_blade
+/*
+/datum/power/changeling/fake_blade
 	name = "Fake armblade"
 	desc = "We reform others arms into a fake armblade."
-	helptext = "Can't be transform into arm."
+	helptext = "Can't be transform into arm"
 	enhancedtext = "Doing nothing"
-	genomecost = 4
+	genomecost = 3
+	verbpath = /mob/proc/changeling_fake_arm_blade
+*/
+
+/datum/power/changeling/fablade
+	name = "Fake Armblade"
+	desc = "We reform others arms into a fake armblade."
+	helptext = "Can not be transform into arm."
+	genomecost = 3
 	verbpath = /mob/proc/changeling_fake_arm_blade
 
 /datum/power/changeling/no_pain
@@ -234,7 +241,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "Toggleable ability"
 	enhancedtext = "Doing nothing"
 	genomecost = 3
-	verbpath = /mob/proc/no_pain
+	verbpath = /mob/proc/changeling_no_pain
 
 /datum/power/changeling/gib_self
 	name = "Body disjunction"
@@ -242,7 +249,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "Takes time."
 	enhancedtext = "Doing nothing"
 	genomecost = 4
-	verbpath = /mob/proc/gib_self
+	verbpath = /mob/proc/changeling_gib_self
 
 /datum/power/changeling/detach_limb
 	name = "Detach Limb"
@@ -250,15 +257,15 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "It hurts."
 	enhancedtext = "Doing nothing"
 	genomecost = 0
-	verbpath = /mob/proc/detach_limb
+	verbpath = /mob/proc/changeling_detach_limb
 
-/datum/power/changeling/Division
+/datum/power/changeling/division
 	name = "Division"
 	desc = "We will make you ours."
-	helptext = "Can't be transform the dead."
+	helptext = "Can not be transform the dead."
 	enhancedtext = "Doing nothing"
 	genomecost = 8
-	verbpath = /mob/proc/Division
+	verbpath = /mob/proc/changeling_division
 
 /datum/power/changeling/rapid_heal
 	name = "Passive Regeneration"
@@ -266,7 +273,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "Spends chemicals."
 	enhancedtext = "Doing nothing"
 	genomecost = 4
-	verbpath = /mob/proc/rapid_heal
+	verbpath = /mob/proc/changeling_rapid_heal
 
 // Modularchangling, totally stolen from the new player panel.  YAYY
 /datum/changeling/proc/EvolutionMenu()//The new one
