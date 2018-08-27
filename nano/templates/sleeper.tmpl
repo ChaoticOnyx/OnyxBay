@@ -21,9 +21,16 @@
 			<div class="itemContent">
 			{{:helper.link(data.pump ? "Stomach pump active" : "Stomach pump inactive", null, {'pump' : !data.pump})}}
 			</div>
+		{{if data.emagged == 1}}
+			<div class="itemContent">
+			{{:helper.link(data.locked ? "Ejecting locked" : "Ejecting unlocked", null, {'locked' : !data.locked})}}
+			</div>
+		{{/if}}
+			{{if data.locked == 0}}
 			<div class="itemContent">
 				{{:helper.link("Eject occupant", null, {'eject' : 0})}}
 			</div>
+			{{/if}}
 		</div>
 	{{else}}
 		<div class="item">
@@ -38,7 +45,17 @@
 			{{:helper.link("Off", null,  {'stasis' : 1}, null, data.stasis == 1 ? 'yellowButton' : null)}}
 			{{:helper.link("2x", null,  {'stasis' : 2}, null, data.stasis == 2 ? 'yellowButton' : null)}}
 			{{:helper.link("5x", null,  {'stasis' : 5}, null, data.stasis == 5 ? 'yellowButton' : null)}}
+		{{if data.freeze >= 2}}
+			{{:helper.link("10x", null,  {'stasis' : 10}, null, data.stasis == 10 ? 'yellowButton' : null)}}
+		{{/if}}
+		{{if data.freeze >= 3}}
+			{{:helper.link("15x", null,  {'stasis' : 15}, null, data.stasis == 15 ? 'yellowButton' : null)}}
+		{{/if}}
+		{{if data.freeze == 4}}
+			{{:helper.link("20x", null,  {'stasis' : 20}, null, data.stasis == 20 ? 'yellowButton' : null)}}
+		{{/if}}
 		</div>
+	</div>
 	</div>
 	<div class="item">
 	{{for data.reagents}}
@@ -46,7 +63,6 @@
 		{{:value.name}}
 		</div>
 		<div class="itemContent">
-			{{if data.occupant}}Occupant: {{:value.amount}} units{{/if}}
 			{{:helper.link('Inject 5', null, {'chemical' : value.name, 'amount' : 5}, data.occupant ? null : 'disabled')}}{{:helper.link('Inject 10', null, {'chemical' : value.name, 'amount' : 10}, data.occupant ? null : 'disabled')}}
 		</div>
 	{{/for}}

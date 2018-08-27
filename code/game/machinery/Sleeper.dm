@@ -8,12 +8,23 @@
 	clicksound = 'sound/machines/buttonbeep.ogg'
 	clickvol = 30
 	var/mob/living/carbon/human/occupant = null
-	var/list/available_chemicals = list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Paracetamol" = /datum/reagent/paracetamol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin)
+	var/list/possible_chemicals = list(list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Paracetamol" = /datum/reagent/paracetamol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin, "Kelotane" = /datum/reagent/kelotane),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Hyronalin" = /datum/reagent/hyronalin, "Dexalin Plus" = /datum/reagent/dexalinp, "Kelotane" = /datum/reagent/kelotane, "Bicaridine" = /datum/reagent/bicaridine),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Arithrazine" = /datum/reagent/arithrazine, "Dexalin Plus" = /datum/reagent/dexalinp, "Dermaline" = /datum/reagent/dermaline, "Bicaridine" = /datum/reagent/bicaridine, "Peridaxon" = /datum/reagent/peridaxon))
+	var/available_chemicals = list()
 	var/obj/item/weapon/reagent_containers/glass/beaker = null
 	var/filtering = 0
 	var/pump
-	var/list/stasis_settings = list(1, 2, 5)
+	var/list/possible_statis = list(list(1, 2, 5),
+									list(1, 2, 5, 10),
+									list(1, 2, 5, 10, 15),
+									list(1, 2, 5, 10, 15, 20))
+	var/stasis_settings = list()
 	var/stasis = 1
+	var/freeze // Statis-upgrade
+
+	var/locked = 0 // Ehehehe
 
 	use_power = 1
 	idle_power_usage = 15
@@ -21,8 +32,9 @@
 
 	component_types = list(
 			/obj/item/weapon/circuitboard/sleeper,
-			/obj/item/weapon/stock_parts/capacitor = 2,
-			/obj/item/weapon/stock_parts/scanning_module = 2,
+			/obj/item/weapon/stock_parts/manipulator,
+			/obj/item/weapon/stock_parts/capacitor,
+			/obj/item/weapon/stock_parts/scanning_module,
 			/obj/item/weapon/stock_parts/console_screen
 )
 
@@ -62,16 +74,20 @@
 
 /obj/machinery/sleeper/RefreshParts()
 	..()
-	var/scan_rating = 0
-	var/cap_rating = 0
+	freeze = 0
+	var/drugs = 0
+	var/scanning = 0
 
 	for(var/obj/item/weapon/stock_parts/P in component_parts)
-		if(isscanner(P))
-			scan_rating += P.rating
+		if(ismanipulator(P))
+			drugs += P.rating
+		else if(isscanner(P))
+			scanning += P.rating
 		else if(iscapacitor(P))
-			cap_rating += P.rating
+			freeze += P.rating
 
-	active_power_usage = 200 - (cap_rating + scan_rating)*2
+	available_chemicals = possible_chemicals[round((scanning + drugs) / 2)]
+	stasis_settings = possible_statis[freeze]
 
 /obj/machinery/sleeper/attack_hand(var/mob/user)
 	if(..())
@@ -107,7 +123,10 @@
 		data["beaker"] = -1
 	data["filtering"] = filtering
 	data["pump"] = pump
+	data["emagged"] = emagged
+	data["locked"] = locked
 	data["stasis"] = stasis
+	data["freeze"] = freeze
 
 	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
@@ -136,6 +155,10 @@
 	if(href_list["pump"])
 		if(filtering != text2num(href_list["pump"]))
 			toggle_pump()
+			return TOPIC_REFRESH
+	if(href_list["locked"])
+		if(filtering != text2num(href_list["locked"]))
+			toggle_lock()
 			return TOPIC_REFRESH
 	if(href_list["chemical"] && href_list["amount"])
 		if(occupant && occupant.stat != DEAD)
@@ -198,6 +221,13 @@
 		go_out()
 
 	..(severity)
+
+/obj/machinery/sleeper/emag_act(var/remaining_charges, var/mob/user)
+	if(!emagged)
+		to_chat(user, "<span class='danger'>You short out locking system turning it on.</span>")
+		emagged = 1
+		return 1
+
 /obj/machinery/sleeper/proc/toggle_filter()
 	if(!occupant || !beaker)
 		filtering = 0
@@ -211,6 +241,13 @@
 		return
 	to_chat(occupant, "<span class='warning'>You feel a tube jammed down your throat.</span>")
 	pump = !pump
+
+/obj/machinery/sleeper/proc/toggle_lock()
+	if(!occupant)
+		locked = 0
+		return
+	to_chat(occupant, "<span class='warning'>You hear a quiet click as the locking bolts [locked ? "go up" : "drop down"].</span>")
+	locked = !locked
 
 /obj/machinery/sleeper/proc/go_in(var/mob/M, var/mob/user)
 	if(!M)
@@ -241,6 +278,8 @@
 
 /obj/machinery/sleeper/proc/go_out()
 	if(!occupant)
+		return
+	if(locked > 0)
 		return
 	if(occupant.client)
 		occupant.client.eye = occupant.client.mob
