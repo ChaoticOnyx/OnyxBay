@@ -268,3 +268,13 @@
 	set src in oview(1)
 
 	go_in(usr)
+
+/obj/machinery/recharge_station/MouseDrop_T(var/mob/target, var/mob/user)
+	if(!CanMouseDrop(target, user))
+		return
+	if(!istype(target,/mob/living/silicon))
+		return
+	if(target.buckled)
+		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
+		return
+	go_in(target, user)
