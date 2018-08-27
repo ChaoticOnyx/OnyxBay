@@ -29,6 +29,7 @@
 		/obj/item/weapon/computer_hardware,
 		/obj/item/weapon/fuel_assembly,
 		/obj/item/stack/material,
+		/obj/item/stack/tile,
 		/obj/item/clamp,
 		/obj/item/frame
 		)
@@ -50,6 +51,7 @@
 /obj/item/weapon/gripper/paperwork
 	name = "paperwork gripper"
 	desc = "A simple grasping tool for clerical work."
+	icon_state = "gripper-paper"
 
 	can_hold = list(
 		/obj/item/weapon/clipboard,
@@ -63,6 +65,7 @@
 /obj/item/weapon/gripper/chemistry
 	name = "chemistry gripper"
 	desc = "A simple grasping tool for chemical work."
+	icon_state = "gripper-medical"
 	storage_type = /obj/item/weapon/storage/box/
 
 	can_hold = list(
@@ -77,6 +80,7 @@
 /obj/item/weapon/gripper/detective
 	name = "detective gripper"
 	desc = "A simple grasping tool for detective work."
+	icon_state = "gripper-detective"
 	storage_type = /obj/item/weapon/storage/box/
 
 	can_hold = list(
@@ -96,6 +100,7 @@
 /obj/item/weapon/gripper/archeologist
 	name = "archeologist gripper"
 	desc = "A simple grasping tool for archeological work."
+	icon_state = "gripper-archeologist"
 
 	can_hold = list(
 		/obj/item/weapon/evidencebag,
@@ -137,7 +142,7 @@
 
 /obj/item/weapon/gripper/service //Used to handle food, drinks, and seeds.
 	name = "service gripper"
-	icon_state = "gripper"
+	icon_state = "gripper-service"
 	desc = "A simple grasping tool used to perform tasks in the service sector, such as handling food, drinks, and seeds."
 
 	can_hold = list(
@@ -150,7 +155,7 @@
 
 /obj/item/weapon/gripper/surgical //Used to handle organs.
 	name = "surgical gripper"
-	icon_state = "gripper"
+	icon_state = "gripper-medical"
 	desc = "A simple grasping tool for holding surgical utensils as well organs and bodyparts."
 	storage_type = /obj/item/weapon/storage/box/
 	can_hold = list(
@@ -235,9 +240,17 @@
 
 	user.do_attack_animation(src)
 
-	if(wrapped) //Already have an item.
+	if(wrapped)
+		if(istype(target,/obj/structure/table)) //Putting item on the table if any
+			var/obj/structure/table/T = target
+			to_chat(src.loc, "<span class='notice'>You place \the [wrapped] on \the [target].</span>")
+			wrapped.loc = get_turf(target)
+			T.auto_align(wrapped,params)
+			wrapped = null
+			return
+		//Already have an item.
 		//Temporary put wrapped into user so target's attackby() checks pass.
-		wrapped.forceMove(user)
+		wrapped.forceMove(user,params)
 
 		//The force of the wrapped obj gets set to zero during the attack() and afterattack().
 		var/force_holder = wrapped.force
@@ -300,7 +313,6 @@
 			return
 		else
 			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")
-
 	else if(istype(target,/obj/machinery/power/apc))
 		var/obj/machinery/power/apc/A = target
 		if(A.opened)

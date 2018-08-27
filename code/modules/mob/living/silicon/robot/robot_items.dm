@@ -492,8 +492,9 @@
 			if(istype(O, T))
 				if(length(held) < capacity)
 					var/mob/living/silicon/robot/R = user
-					if ((locate(O) in R.module.modules))
-						return
+					for (var/I in R.module.modules)
+						if (I == O)
+							return
 					inuse = 1
 					user.visible_message("<span class='notice'>\The [user] started picking up [O].</span>")
 					if (pickup_sound)
