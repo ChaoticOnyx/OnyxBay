@@ -97,11 +97,6 @@
 	item_cost = 45
 	path = /obj/item/weapon/gun/projectile/shotgun/doublebarrel/sawn
 
-/datum/uplink_item/item/visible_weapons/deagle
-	name = "Magnum Pistol"
-	item_cost = 52
-	path = /obj/item/weapon/gun/projectile/magnum_pistol
-
 /datum/uplink_item/item/visible_weapons/detective_revolver
 	name = "Holdout Revolver"
 	item_cost = 38

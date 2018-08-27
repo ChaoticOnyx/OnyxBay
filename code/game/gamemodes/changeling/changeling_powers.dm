@@ -95,7 +95,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	var/mob/living/carbon/human/H = src
 	if(istype(H))
-		var/datum/absorbed_dna/newDNA = new(H.real_name, H.dna, H.species.name, H.languages, H.flavor_text)
+		var/datum/absorbed_dna/newDNA = new(H.real_name, H.dna, H.species.name, H.languages)
 		absorbDNA(newDNA)
 
 	return 1
@@ -222,7 +222,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	changeling_update_languages(changeling.absorbed_languages)
 
-	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.flavor_text)
+	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages)
 	absorbDNA(newDNA)
 	if(mind && T.mind)
 		mind.store_memory("[T.real_name]'s memories:")
@@ -314,7 +314,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	src.dna = chosen_dna.dna
 	src.real_name = chosen_dna.name
-	src.flavor_text = chosen_dna.flavor_text
+	src.flavor_text = ""
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
@@ -847,7 +847,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(src, "<span class='notice'>That species must be absorbed directly.</span>")
 		return
 
-	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.flavor_text)
+	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages)
 	absorbDNA(newDNA)
 
 	feedback_add_details("changeling_powers","ED")
@@ -1202,7 +1202,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 
 
-/mob/proc/Division()
+/mob/proc/changeling_division()
 	set category = "Changeling"
 	set name = "Division (20)"
 	set desc = "We will make you ours."
@@ -1281,7 +1281,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	T.death(0)
 	return 1
 
-/mob/proc/detach_limb()
+/mob/proc/changeling_detach_limb()
 	set category = "Changeling"
 	set name = "Detach Limb"
 	set desc = "We tear off our limb, turning it into an aggressive biomass."
@@ -1306,7 +1306,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	qdel(organ_to_remove)
 
 
-/mob/proc/gib_self()
+/mob/proc/changeling_gib_self()
 	set category = "Changeling"
 	set name = "Body disjunction (40)"
 	set desc = "Tear apart your human disguise, revealing your little form."
@@ -1382,6 +1382,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Agressive form"
 	set desc = "We take an aggressive form."
+
 	var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(src))
 	if(src.mind)
 		src.mind.transfer_to(head_ling)
@@ -1389,12 +1390,10 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		head_ling.key = src.key
 	qdel(src.loc)
 
-
-
-
 /mob/proc/changeling_fake_arm_blade()
 	set category = "Changeling"
 	set name = "Fake arm Blade (30)"
+	set desc = "We reform others arms into a fake armblade."
 
 	var/mob/living/carbon/human/T = changeling_sting(30,/mob/proc/changeling_fake_arm_blade)
 	if(!T)	return 0
@@ -1402,7 +1401,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(T, "<span class='danger'>You feel strange spasms in your hands.</span>")
 		spawn(5 SECONDS)
 		visible_message("<span class='warning'>The flesh is torn around the [T.name]\'s arm!</span>",
-			"<span class='warning'>We transforming [T.name]'s arm to fake armblade.</span>",
+			"<span class='warning'>We transforming [T.name]\'s arm to fake armblade.</span>",
 			"<span class='italics'>You hear organic matter ripping and tearing!</span>")
 		spawn(4 SECONDS)
 			playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
@@ -1425,43 +1424,31 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	candrop = 0
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
-
-
-
 //No breathing required
-/mob/proc/no_pain()
+/mob/proc/changeling_no_pain()
 	set category = "Changeling"
 	set name = "Toggle feel pain"
 	set desc = "We choose whether or not to fell pain."
 
-	var/datum/changeling/changeling = changeling_power(0,0,100,UNCONSCIOUS)
-	if(!changeling)
-		return 0
-	if(istype(src,/mob/living/carbon/human))
-		var/mob/living/carbon/human/C = src
-		var/regen_rate = TRUE
-		if(C.canfeelpain == 0)
-			C.canfeelpain = 1
-			src << "<span class='notice'>We fell pain.</span>"
-			regen_rate = FALSE
-			return 1
-		else
-			C.canfeelpain = 0
-			src << "<span class='notice'>We don't feel pain.</span>"
-			regen_rate = TRUE
-		while(regen_rate)
-			sleep(1 SECOND)
-			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 0.5, 0)
-			if(C.mind.changeling.chem_charges == 0) // Dead or unconscious lings can't stay cloaked.
-				regen_rate = 0
-			if(!changeling)
-				regen_rate = 0
-	return 0
+	var/datum/changeling/changeling = changeling_power()
+	if(!changeling)	return 0
 
-/mob/proc/rapid_heal()
+	var/mob/living/carbon/human/C = src
+	if(!C.canfeelpain)	to_chat(C, "<span class='notice'>We feel pain.</span>")
+	else				to_chat(C, "<span class='notice'>We do not feel pain.</span>")
+	C.canfeelpain = !C.canfeelpain
+
+	spawn(0)
+		while(C && C.canfeelpain && C.mind && C.mind.changeling)
+			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 0.5, 0)
+			sleep(40)
+	return 1
+
+/mob/proc/changeling_rapid_heal()
 	set category = "Changeling"
 	set name = "Passive Regeneration(10)"
 	set desc = "Allows you to passively regenerate when activated."
+
 	if(istype(src,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = src
 		var/datum/changeling/changeling = changeling_power(10,0,100,CONSCIOUS)
