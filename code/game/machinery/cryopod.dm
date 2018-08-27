@@ -459,6 +459,7 @@
 			if(do_after(user, 20, src))
 				if(!M || !grab || !grab.affecting) return
 
+			qdel(grab)
 			set_occupant(M)
 
 			// Book keeping!
