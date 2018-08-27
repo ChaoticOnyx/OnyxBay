@@ -90,7 +90,7 @@
 
 /mob/living/carbon/human/set_stat(var/new_stat)
 	. = ..()
-	if(stat)
+	if(stat != new_stat)
 		update_skin(1)
 
 /mob/living/carbon/human/proc/handle_some_updates()
@@ -582,7 +582,7 @@
 		if(paralysis || sleeping)
 			blinded = 1
 			set_stat(UNCONSCIOUS)
-			animate_tail_reset()
+			animate_tail_reset(0)
 			adjustHalLoss(-3)
 			if(sleeping)
 				handle_dreams()

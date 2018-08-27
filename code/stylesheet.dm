@@ -10,6 +10,7 @@ em						{font-style: normal;font-weight: bold;}
 						{color: #638500;text-decoration: underline;}
 .motd a, .motd a:link, .motd a:visited, .motd a:active, .motd a:hover
 						{color: #638500;}
+.motd hr 				{display: block;}
 
 .prefix					{font-weight: bold;}
 .log_message			{color: #386aff;	font-weight: bold;}
