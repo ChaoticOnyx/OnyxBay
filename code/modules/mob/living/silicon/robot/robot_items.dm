@@ -481,6 +481,7 @@
 			user.visible_message("<span class='notice'>\The [user]'s \the [src] delpoys [R].</span>")
 			update_icon()
 		else
+			inuse = 0
 			to_chat(user, "<span class='notice'>You failed to deploy [R].</span>")
 
 /obj/item/robot_rack/attack_self(mob/user)
