@@ -57,20 +57,23 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 4
 	verbpath = /mob/proc/changeling_lesser_form
 */
+/*
 /datum/power/changeling/deaf_sting
 	name = "Deaf Sting"
 	desc = "We silently sting a human, completely deafening them for a short time."
 	genomecost = 1
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_deaf_sting
-
+*/
+/*
 /datum/power/changeling/blind_sting
 	name = "Blind Sting"
 	desc = "We silently sting a human, completely blinding them for a short time."
 	genomecost = 2
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_blind_sting
-
+*/
+/*
 /datum/power/changeling/silence_sting
 	name = "Silence Sting"
 	desc = "We silently sting a human, completely silencing them for a short time."
@@ -78,7 +81,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 3
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_silence_sting
-
+*/
 /datum/power/changeling/mimicvoice
 	name = "Mimic Voice"
 	desc = "We shape our vocal glands to sound like a desired voice."
@@ -100,14 +103,14 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "The target does not notice they have been stung.  The effect occurs after 30 to 60 seconds."
 	genomecost = 3
 	verbpath = /mob/proc/changeling_lsdsting
-
+/*
 /datum/power/changeling/DeathSting
 	name = "Death Sting"
 	desc = "We sting a human, filling them with potent chemicals. Their rapid death is all but assured, but our crime will be obvious."
 	helptext = "It will be clear to any surrounding witnesses if you use this power."
 	genomecost = 10
 	verbpath = /mob/proc/changeling_DEATHsting
-
+*/
 
 /datum/power/changeling/boost_range
 	name = "Boost Range"
@@ -221,8 +224,8 @@ var/list/datum/power/changeling/powerinstances = list()
 /*
 /datum/power/changeling/fake_blade
 	name = "Fake armblade"
-	desc = "We reform others arms into a fake armblade."
-	helptext = "Can't be transform into arm"
+	desc = "We reform victims arm into a fake armblade."
+	helptext = "The effect is irrevertable."
 	enhancedtext = "Doing nothing"
 	genomecost = 3
 	verbpath = /mob/proc/changeling_fake_arm_blade
@@ -230,8 +233,8 @@ var/list/datum/power/changeling/powerinstances = list()
 
 /datum/power/changeling/fablade
 	name = "Fake Armblade"
-	desc = "We reform others arms into a fake armblade."
-	helptext = "Can not be transform into arm."
+	desc = "We reform victims arm into a fake armblade."
+	helptext = "The effect is irrevertable."
 	genomecost = 3
 	verbpath = /mob/proc/changeling_fake_arm_blade
 
@@ -261,8 +264,8 @@ var/list/datum/power/changeling/powerinstances = list()
 
 /datum/power/changeling/division
 	name = "Division"
-	desc = "We will make you ours."
-	helptext = "Can not be transform the dead."
+	desc = "We infest humanoid body with the clone of our core, making them like us."
+	helptext = "Dead bodies cannot be successfully infested."
 	enhancedtext = "Doing nothing"
 	genomecost = 8
 	verbpath = /mob/proc/changeling_division
