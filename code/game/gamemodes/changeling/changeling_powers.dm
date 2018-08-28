@@ -165,7 +165,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if(!istype(T))
+	if(!istype(T) || T.isMonkey())
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
 
@@ -819,9 +819,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(T.reagents)
 		spawn(10 SECONDS)
 			T.reagents.add_reagent(/datum/reagent/toxin/cyanide, 1)
-		spawn(5 SECONDS)
+		spawn(20 SECONDS)
 			T.reagents.add_reagent(/datum/reagent/toxin/cyanide, 1)
-		spawn(10 SECONDS)
+		spawn(30 SECONDS)
 			T.reagents.add_reagent(/datum/reagent/toxin/cyanide, 3)
 	feedback_add_details("changeling_powers","DTHS")
 	return 1
