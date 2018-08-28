@@ -224,7 +224,7 @@ var/list/datum/power/changeling/powerinstances = list()
 /*
 /datum/power/changeling/fake_blade
 	name = "Fake armblade"
-	desc = "We reform victim's arm into a fake armblade."
+	desc = "We reform victims arm into a fake armblade."
 	helptext = "The effect is irrevertable."
 	enhancedtext = "Doing nothing"
 	genomecost = 3
@@ -233,7 +233,7 @@ var/list/datum/power/changeling/powerinstances = list()
 
 /datum/power/changeling/fablade
 	name = "Fake Armblade"
-	desc = "We reform victim's arm into a fake armblade."
+	desc = "We reform victims arm into a fake armblade."
 	helptext = "The effect is irrevertable."
 	genomecost = 3
 	verbpath = /mob/proc/changeling_fake_arm_blade
@@ -265,7 +265,7 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/division
 	name = "Division"
 	desc = "We infest humanoid body with the clone of our core, making them like us."
-	helptext = "Dead bodies can't be successfully infested."
+	helptext = "Dead bodies cannot be successfully infested."
 	enhancedtext = "Doing nothing"
 	genomecost = 8
 	verbpath = /mob/proc/changeling_division
