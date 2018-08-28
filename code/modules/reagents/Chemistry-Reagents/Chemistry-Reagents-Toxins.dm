@@ -116,12 +116,11 @@
 	reagent_state = LIQUID
 	color = "#cf3600"
 	strength = 20
-	metabolism = REM * 2
+	metabolism = REM * 0.5
 	target_organ = BP_HEART
 
 /datum/reagent/toxin/cyanide/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
 	..()
-	M.sleeping += 1
 
 /datum/reagent/toxin/potassium_chloride
 	name = "Potassium Chloride"
