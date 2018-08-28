@@ -113,8 +113,8 @@
 	cold_level_2 = 140 //Default 200
 	cold_level_3 = 80  //Default 120
 
-	heat_level_1 = 330 //Default 360
-	heat_level_2 = 380 //Default 400
+	heat_level_1 = 330 //Default 400
+	heat_level_2 = 400 //Default 500
 	heat_level_3 = 800 //Default 1000
 
 	primitive_form = "Farwa"
@@ -196,8 +196,8 @@
 	cold_level_2 = 220 //Default 200
 	cold_level_3 = 130 //Default 120
 
-	heat_level_1 = 420 //Default 360 - Higher is better
-	heat_level_2 = 480 //Default 400
+	heat_level_1 = 460 //Default 400 - Higher is better
+	heat_level_2 = 650 //Default 500
 	heat_level_3 = 1100 //Default 1000
 
 	reagent_tag = IS_SKRELL
