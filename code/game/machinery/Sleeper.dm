@@ -24,7 +24,7 @@
 	var/stasis = 1
 	var/freeze // Statis-upgrade
 
-	var/locked = 0 // Ehehehe
+	var/locked = 0
 
 	use_power = 1
 	idle_power_usage = 15
@@ -70,6 +70,10 @@
 		occupant.SetStasis(stasis)
 
 /obj/machinery/sleeper/update_icon()
+	if(panel_open)
+		icon_state = "sleeper_1"
+		return
+
 	icon_state = "sleeper_[occupant ? "1" : "0"]"
 
 /obj/machinery/sleeper/RefreshParts()
@@ -86,12 +90,15 @@
 		else if(iscapacitor(P))
 			freeze += P.rating
 
-	available_chemicals = possible_chemicals[round((scanning + drugs) / 2)]
+	available_chemicals = possible_chemicals[round((drugs + scanning) / 2)]
 	stasis_settings = possible_statis[freeze]
 
 /obj/machinery/sleeper/attack_hand(var/mob/user)
 	if(..())
 		return 1
+	if(panel_open)
+		to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
+		return
 
 	ui_interact(user)
 
@@ -136,6 +143,8 @@
 		ui.set_auto_update(1)
 
 /obj/machinery/sleeper/CanUseTopic(user)
+	if(panel_open)
+		return
 	if(user == occupant)
 		to_chat(usr, "<span class='warning'>You can't reach the controls from the inside.</span>")
 		return STATUS_CLOSE
@@ -257,7 +266,9 @@
 	if(occupant)
 		to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
 		return
-
+	if(panel_open)
+		to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
+		return
 	if(M == user)
 		visible_message("\The [user] starts climbing into \the [src].")
 	else
@@ -279,7 +290,7 @@
 /obj/machinery/sleeper/proc/go_out()
 	if(!occupant)
 		return
-	if(locked > 0)
+	if(locked)
 		return
 	if(occupant.client)
 		occupant.client.eye = occupant.client.mob
