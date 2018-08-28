@@ -167,7 +167,7 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 		if(CanInteract(user, GLOB.default_state))
 			if (!new_charges || !activewarrant)
 				return
-			activewarrant.fields["charges"] = new_charges
+			activewarrant.fields["charges"] = rustoutf(new_charges)
 
 	if(href_list["editwarrantauth"])
 		. = 1

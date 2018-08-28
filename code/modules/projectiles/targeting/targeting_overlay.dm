@@ -160,23 +160,33 @@ obj/aiming_overlay/proc/update_aiming_deferred()
 
 	if(owner.client)
 		owner.client.add_gun_icons()
-	to_chat(target, "<span class='danger'>You now have a gun pointed at you. No sudden moves!</span>")
-	aiming_with = thing
-	aiming_at = target
-	if(istype(aiming_with, /obj/item/weapon/gun))
-		playsound(get_turf(owner), 'sound/weapons/TargetOn.ogg', 50,1)
 
-	forceMove(get_turf(target))
-	START_PROCESSING(SSobj, src)
-
-	aiming_at.aimed |= src
-	toggle_active(1)
 	locked = 0
 	update_icon()
-	lock_time = world.time + 35
-	GLOB.moved_event.register(owner, src, /obj/aiming_overlay/proc/update_aiming)
-	GLOB.moved_event.register(aiming_at, src, /obj/aiming_overlay/proc/target_moved)
-	GLOB.destroyed_event.register(aiming_at, src, /obj/aiming_overlay/proc/cancel_aiming)
+	forceMove(get_turf(target))
+	START_PROCESSING(SSobj, src)
+	
+	if(do_after(owner,12,target,progress = 0))
+		to_chat(target, "<span class='danger'>You now have a gun pointed at you. No sudden moves!</span>")
+		aiming_with = thing
+		aiming_at = target
+		if(istype(aiming_with, /obj/item/weapon/gun))
+			playsound(get_turf(owner), 'sound/weapons/TargetOn.ogg', 50,1)
+
+		aiming_at.aimed |= src
+		toggle_active(1)
+		update_icon()
+		lock_time = world.time + 35
+		GLOB.moved_event.register(owner, src, /obj/aiming_overlay/proc/update_aiming)
+		GLOB.moved_event.register(aiming_at, src, /obj/aiming_overlay/proc/target_moved)
+		GLOB.destroyed_event.register(aiming_at, src, /obj/aiming_overlay/proc/cancel_aiming)
+	else
+		loc = null
+		STOP_PROCESSING(SSobj, src)
+		return
+
+
+	
 
 /obj/aiming_overlay/update_icon()
 	if(locked)

@@ -1,7 +1,12 @@
-/mob/living/proc/convert_to_rev(mob/M as mob in able_mobs_in_oview(src))
+/mob/living/proc/convert_to_rev(mob/M as mob)
 	set name = "Convert Bourgeoise"
 	set category = "Abilities"
+	if(!M in able_mobs_in_oview(src))
+		return
 	if(!M.mind || !M.client)
+		return
+	if (!(src in able_mobs_in_oview(M)))
+		to_chat(src, "<span class='warning'>\The [M] can't see you.</span>")
 		return
 	convert_to_faction(M.mind, revs)
 

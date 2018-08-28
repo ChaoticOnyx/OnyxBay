@@ -64,7 +64,7 @@
 			tmp_cell = TRANSLATE_COORD(x, y)
 			if (map[tmp_cell] == FLOOR_CHAR)
 				mob_spawnable_turf += tmp_cell
-	log_world("Spawnable turfs[mob_spawnable_turf.len]")
+
 	for (var/i = 0, i<max_mobs_count, i++)
 		var/check_cell = pick(mob_spawnable_turf)
 		mob_spawnable_turf -= check_cell
