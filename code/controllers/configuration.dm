@@ -99,7 +99,10 @@ var/list/gamemode_cache = list()
 	var/server
 	var/banappeals
 	var/wikiurl
+	var/rulesurl
+	var/backstoryurl
 	var/forumurl
+	var/discordurl
 	var/githuburl
 
 	var/forbid_singulo_possession = 0
@@ -429,8 +432,17 @@ var/list/gamemode_cache = list()
 				if ("wikiurl")
 					config.wikiurl = value
 
+				if ("rulesurl")
+					config.rulesurl = value
+
+				if ("backstoryurl")
+					config.backstoryurl = value
+
 				if ("forumurl")
 					config.forumurl = value
+
+				if ("discordurl")
+					config.discordurl = value
 
 				if ("githuburl")
 					config.githuburl = value

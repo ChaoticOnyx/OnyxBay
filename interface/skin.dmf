@@ -1173,56 +1173,6 @@ window "rpane"
 		saved-params = "splitter"
 		right = "outputwindow"
 		is-vert = false
-	elem "rulesb"
-		type = BUTTON
-		pos = 278,0
-		size = 60x16
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "Rules"
-		command = "rules"
-		group = "rpanemode"
-	elem "changelog"
-		type = BUTTON
-		pos = 341,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "Changelog"
-		command = "Changelog"
-		group = "rpanemode"
-	elem "Lore"
-		type = BUTTON
-		pos = 413,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "Lore"
-		command = "Lore"
-		group = "rpanemode"
-	elem "forumb"
-		type = BUTTON
-		pos = 215,0
-		size = 60x16
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "Forum"
-		command = "forum"
-		group = "rpanemode"
-	elem "wikib"
-		type = BUTTON
-		pos = 152,0
-		size = 60x16
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "Wiki"
-		command = "wiki"
-		group = "rpanemode"
 	elem "textb"
 		type = BUTTON
 		pos = 0,0
@@ -1236,18 +1186,6 @@ window "rpane"
 		is-checked = true
 		group = "rpanemode"
 		button-type = pushbox
-	elem "browseb"
-		type = BUTTON
-		pos = 464,0
-		size = 60x16
-		anchor1 = none
-		anchor2 = none
-		is-visible = false
-		saved-params = "is-checked"
-		text = "Browser"
-		command = ".winset \"rpanewindow.left=browserwindow\""
-		group = "rpanemode"
-		button-type = pushbox
 	elem "infob"
 		type = BUTTON
 		pos = 64,0
@@ -1258,6 +1196,78 @@ window "rpane"
 		saved-params = "is-checked"
 		text = "Info"
 		command = ".winset \"rpanewindow.left=infowindow\""
+		group = "rpanemode"
+		button-type = pushbox
+	elem "wikib"
+		type = BUTTON
+		pos = 152,0
+		size = 67x16
+		anchor1 = none
+		anchor2 = none
+		saved-params = "is-checked"
+		text = "Wiki"
+		command = "wiki"
+		group = "rpanemode"
+	elem "rulesb"
+		type = BUTTON
+		pos = 222,0
+		size = 67x16
+		anchor1 = none
+		anchor2 = none
+		saved-params = "is-checked"
+		text = "Rules"
+		command = "rules"
+		group = "rpanemode"
+	elem "backstoryb"
+		type = BUTTON
+		pos = 292,0
+		size = 67x16
+		anchor1 = none
+		anchor2 = none
+		saved-params = "is-checked"
+		text = "Backstory"
+		command = "backstory"
+		group = "rpanemode"
+	elem "discordb"
+		type = BUTTON
+		pos = 362,0
+		size = 67x16
+		anchor1 = none
+		anchor2 = none
+		saved-params = "is-checked"
+		text = "Discord"
+		command = "discord"
+		group = "rpanemode"
+	elem "bugreportb"
+		type = BUTTON
+		pos = 432,0
+		size = 67x16
+		anchor1 = none
+		anchor2 = none
+		saved-params = "is-checked"
+		text = "Bug Report"
+		command = "bug-report"
+		group = "rpanemode"
+	elem "changelog"
+		type = BUTTON
+		pos = 502,0
+		size = 67x16
+		anchor1 = none
+		anchor2 = none
+		saved-params = "is-checked"
+		text = "Changelog"
+		command = "Changelog"
+		group = "rpanemode"
+	elem "browseb"
+		type = BUTTON
+		pos = 464,0
+		size = 60x16
+		anchor1 = none
+		anchor2 = none
+		is-visible = false
+		saved-params = "is-checked"
+		text = "Browser"
+		command = ".winset \"rpanewindow.left=browserwindow\""
 		group = "rpanemode"
 		button-type = pushbox
 

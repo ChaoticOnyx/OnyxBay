@@ -4,11 +4,29 @@
 	set desc = "Visit the wiki."
 	set hidden = 1
 	if( config.wikiurl )
-		if(alert("This will open the wiki in your browser. Are you sure?",,"Yes","No")=="No")
-			return
 		src << link(config.wikiurl)
 	else
 		to_chat(src, "<span class='warning'>The wiki URL is not set in the server configuration.</span>")
+	return
+
+/client/verb/rules()
+	set name = "Rules"
+	set desc = "Show Server Rules."
+	set hidden = 1
+	if( config.rulesurl )
+		src << link(config.rulesurl)
+	else
+		to_chat(src, "<span class='warning'>The rules URL is not set in the server configuration.</span>")
+	return
+
+/client/verb/backstory()
+	set name = "Backstory"
+	set desc = "Show server Backstory."
+	set hidden = 1
+	if( config.backstoryurl )
+		src << link(config.backstoryurl)
+	else
+		to_chat(src, "<span class='warning'>The backstory URL is not set in the server configuration.</span>")
 	return
 
 /client/verb/forum()
@@ -16,20 +34,30 @@
 	set desc = "Visit the forum."
 	set hidden = 1
 	if( config.forumurl )
-		if(alert("This will open the forum in your browser. Are you sure?",,"Yes","No")=="No")
-			return
 		src << link(config.forumurl)
 	else
 		to_chat(src, "<span class='warning'>The forum URL is not set in the server configuration.</span>")
 	return
 
-#define RULES_FILE "config/rules.html"
-/client/verb/rules()
-	set name = "Rules"
-	set desc = "Show Server Rules."
+/client/verb/discord()
+	set name = "Discord"
+	set desc = "Visit the community Discord."
 	set hidden = 1
-	src << browse(file(RULES_FILE), "window=rules;size=480x320")
-#undef RULES_FILE
+	if( config.discordurl )
+		src << link(config.discordurl)
+	else
+		to_chat(src, "<span class='warning'>The Discord URL is not set in the server configuration.</span>")
+	return
+
+/client/verb/bugreport()
+	set name = "Bug Report"
+	set desc = "Create bug report to developers."
+	set hidden = 1
+	if( config.githuburl )
+		src << link("[config.githuburl]/issues")
+	else
+		to_chat(src, "<span class='warning'>The Github URL is not set in the server configuration.</span>")
+	return
 
 #define LORE_FILE "config/lore.html"
 /client/verb/lore_splash()
