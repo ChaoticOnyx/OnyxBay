@@ -87,10 +87,10 @@
 			scanning += P.rating
 		else if(iscapacitor(P))
 			freeze += P.rating
-	if(!emagged)
-		available_chemicals = possible_chemicals[round((drugs + scanning) / 2)]
-	else
-		available_chemicals = possible_chemicals[round((drugs + scanning) / 2)] + list("Lexorin" = /datum/reagent/lexorin)
+
+	available_chemicals = possible_chemicals[round((drugs + scanning) / 2)]
+	if(emagged)
+		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)
 
 	stasis_settings = possible_stasis[freeze]
 
