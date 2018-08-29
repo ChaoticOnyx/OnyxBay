@@ -8,28 +8,38 @@
 	clicksound = 'sound/machines/buttonbeep.ogg'
 	clickvol = 30
 	var/mob/living/carbon/human/occupant = null
-	var/list/available_chemicals = list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Paracetamol" = /datum/reagent/paracetamol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin)
+	var/list/possible_chemicals = list(list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Paracetamol" = /datum/reagent/paracetamol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin, "Kelotane" = /datum/reagent/kelotane),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Hyronalin" = /datum/reagent/hyronalin, "Dexalin Plus" = /datum/reagent/dexalinp, "Kelotane" = /datum/reagent/kelotane, "Bicaridine" = /datum/reagent/bicaridine),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Arithrazine" = /datum/reagent/arithrazine, "Dexalin Plus" = /datum/reagent/dexalinp, "Dermaline" = /datum/reagent/dermaline, "Bicaridine" = /datum/reagent/bicaridine, "Peridaxon" = /datum/reagent/peridaxon))
+	var/available_chemicals = list()
 	var/obj/item/weapon/reagent_containers/glass/beaker = null
 	var/filtering = 0
 	var/pump
-	var/list/stasis_settings = list(1, 2, 5)
+	var/list/possible_stasis = list(list(1, 2, 5),
+									list(1, 2, 5, 10),
+									list(1, 2, 5, 10, 15),
+									list(1, 2, 5, 10, 15, 20))
+	var/stasis_settings = list()
 	var/stasis = 1
+	var/freeze // Statis-upgrade
+
+	var/locked = 0
 
 	use_power = 1
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
 
-	component_types = list(
-			/obj/item/weapon/circuitboard/sleeper,
-			/obj/item/weapon/stock_parts/capacitor = 2,
-			/obj/item/weapon/stock_parts/scanning_module = 2,
-			/obj/item/weapon/stock_parts/console_screen
-)
-
 /obj/machinery/sleeper/Initialize()
 	. = ..()
-	beaker = new /obj/item/weapon/reagent_containers/glass/beaker/large(src)
-	update_icon()
+	component_parts = list(
+		new /obj/item/weapon/circuitboard/sleeper(src),
+		new /obj/item/weapon/stock_parts/manipulator(src),
+		new /obj/item/weapon/stock_parts/capacitor(src),
+		new /obj/item/weapon/stock_parts/scanning_module(src),
+		new /obj/item/weapon/stock_parts/console_screen(src),
+		new /obj/item/weapon/reagent_containers/glass/beaker/large(src))
+	RefreshParts()
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))
@@ -58,24 +68,40 @@
 		occupant.SetStasis(stasis)
 
 /obj/machinery/sleeper/update_icon()
+	if(panel_open)
+		icon_state = "sleeper_1"
+		return
+
 	icon_state = "sleeper_[occupant ? "1" : "0"]"
 
 /obj/machinery/sleeper/RefreshParts()
 	..()
-	var/scan_rating = 0
-	var/cap_rating = 0
+	freeze = 0
+	var/drugs = 0
+	var/scanning = 0
 
 	for(var/obj/item/weapon/stock_parts/P in component_parts)
-		if(isscanner(P))
-			scan_rating += P.rating
+		if(ismanipulator(P))
+			drugs += P.rating
+		else if(isscanner(P))
+			scanning += P.rating
 		else if(iscapacitor(P))
-			cap_rating += P.rating
+			freeze += P.rating
 
-	active_power_usage = 200 - (cap_rating + scan_rating)*2
+	available_chemicals = possible_chemicals[round((drugs + scanning) / 2)]
+	if(emagged)
+		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)
+
+	stasis_settings = possible_stasis[freeze]
+
+	beaker = locate(/obj/item/weapon/reagent_containers/glass/beaker) in component_parts
 
 /obj/machinery/sleeper/attack_hand(var/mob/user)
 	if(..())
 		return 1
+	if(panel_open)
+		to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
+		return
 
 	ui_interact(user)
 
@@ -107,7 +133,10 @@
 		data["beaker"] = -1
 	data["filtering"] = filtering
 	data["pump"] = pump
+	data["emagged"] = emagged
+	data["locked"] = locked
 	data["stasis"] = stasis
+	data["freeze"] = freeze
 
 	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
@@ -117,6 +146,8 @@
 		ui.set_auto_update(1)
 
 /obj/machinery/sleeper/CanUseTopic(user)
+	if(panel_open)
+		return
 	if(user == occupant)
 		to_chat(usr, "<span class='warning'>You can't reach the controls from the inside.</span>")
 		return STATUS_CLOSE
@@ -136,6 +167,10 @@
 	if(href_list["pump"])
 		if(filtering != text2num(href_list["pump"]))
 			toggle_pump()
+			return TOPIC_REFRESH
+	if(href_list["locked"])
+		if(filtering != text2num(href_list["locked"]))
+			toggle_lock()
 			return TOPIC_REFRESH
 	if(href_list["chemical"] && href_list["amount"])
 		if(occupant && occupant.stat != DEAD)
@@ -158,17 +193,24 @@
 			beaker = I
 			user.drop_item()
 			I.forceMove(src)
+			component_parts += I
 			user.visible_message("<span class='notice'>\The [user] adds \a [I] to \the [src].</span>", "<span class='notice'>You add \a [I] to \the [src].</span>")
 		else
 			to_chat(user, "<span class='warning'>\The [src] has a beaker already.</span>")
 			return
-	if(!occupant)
-		if(default_deconstruction_screwdriver(user, I))
-			return
-		if(default_deconstruction_crowbar(user, I))
-			return
-		if(default_part_replacement(user, I))
-			return
+	if(occupant && panel_open && istype(I,/obj/item/weapon/crowbar))
+		occupant.loc = get_turf(src)
+		occupant = null
+		update_use_power(1)
+		update_icon()
+		toggle_filter()
+	if(default_deconstruction_screwdriver(user, I))
+		return
+	if(default_deconstruction_crowbar(user, I))
+		return
+	if(default_part_replacement(user, I))
+		return
+
 	..()
 
 
@@ -197,7 +239,30 @@
 	if(occupant)
 		go_out()
 
+	if(!emagged && prob(10))
+		emag_act()
+
 	..(severity)
+
+/obj/machinery/sleeper/emag_act(var/remaining_charges, var/mob/user)
+
+	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+	spark_system.set_up(5, 0, src.loc)
+
+	if(!emagged)
+		to_chat(user, "<span class='danger'>You short out safety system turning it off.</span>")
+		emagged = 1
+		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)
+		spark_system.start()
+		playsound(src.loc, "sparks", 50, 1)
+		return 1
+	if(locked)
+		to_chat(user, "<span class='danger'>You short out locking system.</span>")
+		toggle_lock()
+		spark_system.start()
+		playsound(src.loc, "sparks", 50, 1)
+		return 1
+
 /obj/machinery/sleeper/proc/toggle_filter()
 	if(!occupant || !beaker)
 		filtering = 0
@@ -212,6 +277,13 @@
 	to_chat(occupant, "<span class='warning'>You feel a tube jammed down your throat.</span>")
 	pump = !pump
 
+/obj/machinery/sleeper/proc/toggle_lock()
+	if(!occupant)
+		locked = 0
+		return
+	to_chat(occupant, "<span class='warning'>You hear a quiet click as the locking bolts [locked ? "go up" : "drop down"].</span>")
+	locked = !locked
+
 /obj/machinery/sleeper/proc/go_in(var/mob/M, var/mob/user)
 	if(!M)
 		return
@@ -220,7 +292,9 @@
 	if(occupant)
 		to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
 		return
-
+	if(panel_open)
+		to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
+		return
 	if(M == user)
 		visible_message("\The [user] starts climbing into \the [src].")
 	else
@@ -242,15 +316,15 @@
 /obj/machinery/sleeper/proc/go_out()
 	if(!occupant)
 		return
+	if(locked)
+		return
 	if(occupant.client)
 		occupant.client.eye = occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
 	occupant.dropInto(loc)
 	occupant = null
 	for(var/atom/movable/A in src) // In case an object was dropped inside or something
-		if(A == beaker)
-			continue
-		if(A in component_parts)
+		if(locate(A) in component_parts)
 			continue
 		A.dropInto(loc)
 	update_use_power(1)
@@ -263,6 +337,8 @@
 		beaker = null
 		toggle_filter()
 		toggle_pump()
+		for(var/obj/item/weapon/reagent_containers/glass/beaker/A in component_parts)
+			component_parts -= A
 
 /obj/machinery/sleeper/proc/inject_chemical(var/mob/living/user, var/chemical_name, var/amount)
 	if(stat & (BROKEN|NOPOWER))
