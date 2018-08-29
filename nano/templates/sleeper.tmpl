@@ -15,6 +15,7 @@
 			<div class="statusDisplay">
 				{{:data.occupant}}
 			</div>
+		{{if data.locked == 0}}
 			<div class="itemContent">
 			{{:helper.link(data.filtering ? "Dialysis active" : "Dialysis inactive", null, {'filter' : !data.filtering})}}
 			</div>
@@ -23,14 +24,17 @@
 			</div>
 		{{if data.emagged == 1}}
 			<div class="itemContent">
-			{{:helper.link(data.locked ? "Ejecting locked" : "Ejecting unlocked", null, {'locked' : !data.locked})}}
+			{{:helper.link(data.locked ? "Unlock system" : "Lock System", null, {'locked' : !data.locked})}}
 			</div>
 		{{/if}}
-			{{if data.locked == 0}}
 			<div class="itemContent">
 				{{:helper.link("Eject occupant", null, {'eject' : 0})}}
 			</div>
-			{{/if}}
+		{{else}}
+			<span class='noticePlaceholder'>
+				(System locked. Please contact your system administrator.)
+			</span>
+		{{/if}}
 		</div>
 	{{else}}
 		<div class="item">
@@ -38,6 +42,7 @@
 		</div>
 	{{/if}}
 	<div class="item">
+	{{if data.locked == 0}}
 		<div class="itemLabel">
 			Stasis setting:
 		</div>
@@ -55,20 +60,24 @@
 			{{:helper.link("20x", null,  {'stasis' : 20}, null, data.stasis == 20 ? 'yellowButton' : null)}}
 		{{/if}}
 		</div>
+	{{/if}}
 	</div>
 	</div>
 	<div class="item">
 	{{for data.reagents}}
+	{{if data.locked == 0}}
 		<div class="itemLabel">
 		{{:value.name}}
 		</div>
 		<div class="itemContent">
 			{{:helper.link('Inject 5', null, {'chemical' : value.name, 'amount' : 5}, data.occupant ? null : 'disabled')}}{{:helper.link('Inject 10', null, {'chemical' : value.name, 'amount' : 10}, data.occupant ? null : 'disabled')}}
 		</div>
+	{{/if}}
 	{{/for}}
 	</div>
 	{{if data.beaker != -1}}
 		<div class="item">
+		{{if data.locked == 0}}
 			<div class="itemLabel">
 				Beaker:
 			</div>
@@ -76,6 +85,7 @@
 				{{:data.beaker}} units of free space remaining.
 				{{:helper.link("Eject", null, {'beaker' : 0})}}
 			</div>
+		{{/if}}
 		</div>
 	{{else}}
 		<div class="item">

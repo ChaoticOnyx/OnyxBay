@@ -16,7 +16,7 @@
 	var/obj/item/weapon/reagent_containers/glass/beaker = null
 	var/filtering = 0
 	var/pump
-	var/list/possible_statis = list(list(1, 2, 5),
+	var/list/possible_stasis = list(list(1, 2, 5),
 									list(1, 2, 5, 10),
 									list(1, 2, 5, 10, 15),
 									list(1, 2, 5, 10, 15, 20))
@@ -30,18 +30,16 @@
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
 
-	component_types = list(
-			/obj/item/weapon/circuitboard/sleeper,
-			/obj/item/weapon/stock_parts/manipulator,
-			/obj/item/weapon/stock_parts/capacitor,
-			/obj/item/weapon/stock_parts/scanning_module,
-			/obj/item/weapon/stock_parts/console_screen
-)
-
 /obj/machinery/sleeper/Initialize()
 	. = ..()
-	beaker = new /obj/item/weapon/reagent_containers/glass/beaker/large(src)
-	update_icon()
+	component_parts = list(
+		new /obj/item/weapon/circuitboard/sleeper(src),
+		new /obj/item/weapon/stock_parts/manipulator(src),
+		new /obj/item/weapon/stock_parts/capacitor(src),
+		new /obj/item/weapon/stock_parts/scanning_module(src),
+		new /obj/item/weapon/stock_parts/console_screen(src),
+		new /obj/item/weapon/reagent_containers/glass/beaker/large(src))
+	RefreshParts()
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))
@@ -89,9 +87,14 @@
 			scanning += P.rating
 		else if(iscapacitor(P))
 			freeze += P.rating
+	if(!emagged)
+		available_chemicals = possible_chemicals[round((drugs + scanning) / 2)]
+	else
+		available_chemicals = possible_chemicals[round((drugs + scanning) / 2)] + list("Lexorin" = /datum/reagent/lexorin)
 
-	available_chemicals = possible_chemicals[round((drugs + scanning) / 2)]
-	stasis_settings = possible_statis[freeze]
+	stasis_settings = possible_stasis[freeze]
+
+	beaker = locate(/obj/item/weapon/reagent_containers/glass/beaker) in component_parts
 
 /obj/machinery/sleeper/attack_hand(var/mob/user)
 	if(..())
@@ -190,17 +193,24 @@
 			beaker = I
 			user.drop_item()
 			I.forceMove(src)
+			component_parts += I
 			user.visible_message("<span class='notice'>\The [user] adds \a [I] to \the [src].</span>", "<span class='notice'>You add \a [I] to \the [src].</span>")
 		else
 			to_chat(user, "<span class='warning'>\The [src] has a beaker already.</span>")
 			return
-	if(!occupant)
-		if(default_deconstruction_screwdriver(user, I))
-			return
-		if(default_deconstruction_crowbar(user, I))
-			return
-		if(default_part_replacement(user, I))
-			return
+	if(occupant && panel_open && istype(I,/obj/item/weapon/crowbar))
+		occupant.loc = get_turf(src)
+		occupant = null
+		update_use_power(1)
+		update_icon()
+		toggle_filter()
+	if(default_deconstruction_screwdriver(user, I))
+		return
+	if(default_deconstruction_crowbar(user, I))
+		return
+	if(default_part_replacement(user, I))
+		return
+
 	..()
 
 
@@ -229,12 +239,28 @@
 	if(occupant)
 		go_out()
 
+	if(!emagged && prob(10))
+		emag_act()
+
 	..(severity)
 
 /obj/machinery/sleeper/emag_act(var/remaining_charges, var/mob/user)
+
+	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+	spark_system.set_up(5, 0, src.loc)
+
 	if(!emagged)
-		to_chat(user, "<span class='danger'>You short out locking system turning it on.</span>")
+		to_chat(user, "<span class='danger'>You short out safety system turning it off.</span>")
 		emagged = 1
+		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)
+		spark_system.start()
+		playsound(src.loc, "sparks", 50, 1)
+		return 1
+	if(locked)
+		to_chat(user, "<span class='danger'>You short out locking system.</span>")
+		toggle_lock()
+		spark_system.start()
+		playsound(src.loc, "sparks", 50, 1)
 		return 1
 
 /obj/machinery/sleeper/proc/toggle_filter()
@@ -298,9 +324,7 @@
 	occupant.dropInto(loc)
 	occupant = null
 	for(var/atom/movable/A in src) // In case an object was dropped inside or something
-		if(A == beaker)
-			continue
-		if(A in component_parts)
+		if(locate(A) in component_parts)
 			continue
 		A.dropInto(loc)
 	update_use_power(1)
@@ -313,6 +337,8 @@
 		beaker = null
 		toggle_filter()
 		toggle_pump()
+		for(var/obj/item/weapon/reagent_containers/glass/beaker/A in component_parts)
+			component_parts -= A
 
 /obj/machinery/sleeper/proc/inject_chemical(var/mob/living/user, var/chemical_name, var/amount)
 	if(stat & (BROKEN|NOPOWER))
