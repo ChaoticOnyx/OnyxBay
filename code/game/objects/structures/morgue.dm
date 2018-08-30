@@ -323,53 +323,48 @@
 
 		for(var/mob/living/M in contents)
 			admin_attack_log(M, A, "Began cremating their victim.", "Has begun being cremated.", "began cremating")
-			if(iscarbon(M))
-				var/mob/living/carbon/C = M
-				for(var/I, I < 60, I++)
-
-					if(C.stat >= UNCONSCIOUS || !(C in contents)) //In case we die or are removed at any point.
-						cremating = 0
-						update()
-						break
-
-					sleep(0.5 SECONDS)
-					if(prob(40))
-						var/desperation = rand(1,5)
-						switch(desperation) //This is messy. A better solution would probably be to make more sounds, but...
-							if(1)
-								playsound(src.loc, 'sound/weapons/genhit.ogg', 45, 1)
-								shake_animation(2)
-								playsound(src.loc, 'sound/weapons/genhit.ogg', 45, 1)
-							if(2)
-								playsound(src.loc, 'sound/effects/grillehit.ogg', 45, 1)
-								shake_animation(3)
-								playsound(src.loc, 'sound/effects/grillehit.ogg', 45, 1)
-							if(3)
+			for(var/I, I < 60, I++)
+				if(M.stat == DEAD || !(M in contents)) //In case we die or are removed at any point.
+					cremating = 0
+					update()
+					break
+				M.apply_damage(10,BURN)
+				sleep(0.5 SECONDS)
+				if(prob(40))
+					var/desperation = rand(1,5)
+					switch(desperation) //This is messy. A better solution would probably be to make more sounds, but...
+						if(1)
+							playsound(src.loc, 'sound/weapons/genhit.ogg', 45, 1)
+							shake_animation(2)
+							playsound(src.loc, 'sound/weapons/genhit.ogg', 45, 1)
+						if(2)
+							playsound(src.loc, 'sound/effects/grillehit.ogg', 45, 1)
+							shake_animation(3)
+							playsound(src.loc, 'sound/effects/grillehit.ogg', 45, 1)
+						if(3)
+							playsound(src, 'sound/effects/bang.ogg', 45, 1)
+							if(prob(50))
 								playsound(src, 'sound/effects/bang.ogg', 45, 1)
-								if(prob(50))
-									playsound(src, 'sound/effects/bang.ogg', 45, 1)
-									shake_animation()
-								else
-									shake_animation(5)
-							if(4)
-								playsound(src, 'sound/effects/clang.ogg', 45, 1)
+								shake_animation()
+							else
 								shake_animation(5)
-							if(5)
+						if(4)
+							playsound(src, 'sound/effects/clang.ogg', 45, 1)
+							shake_animation(5)
+						if(5)
+							playsound(src, 'sound/weapons/smash.ogg', 50, 1)
+							if(prob(50))
 								playsound(src, 'sound/weapons/smash.ogg', 50, 1)
-								if(prob(50))
-									playsound(src, 'sound/weapons/smash.ogg', 50, 1)
-									shake_animation(9)
-								else
-									shake_animation()
+								shake_animation(9)
+							else
+								shake_animation()
+			if(round_is_spooky())
+				if(prob(50))
+					playsound(src, 'sound/effects/ghost.ogg', 10, 5)
+				else
+					playsound(src, 'sound/effects/ghost2.ogg', 10, 5)
 
-
-			if(M.stat >= DEAD)
-				if(round_is_spooky())
-					if(prob(50))
-						playsound(src, 'sound/effects/ghost.ogg', 10, 5)
-					else
-						playsound(src, 'sound/effects/ghost2.ogg', 10, 5)
-
+			if(!M.isSynthetic())
 				admin_attack_log(M, A, "Cremated their victim.", "Was cremated.", "cremated alive")
 				M.audible_message("[M]'s screams cease, as does any movement within the [src]. All that remains is a dull, empty silence.")
 				M.dust()
