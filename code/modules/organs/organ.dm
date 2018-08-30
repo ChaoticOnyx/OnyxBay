@@ -23,7 +23,7 @@ var/list/organ_cache = list()
 	// Damage vars.
 	var/damage = 0                    // Current damage to the organ
 	var/min_broken_damage = 30     	  // Damage before becoming broken
-	var/max_damage                    // Damage cap
+	var/max_damage             	  // Damage cap
 	var/rejecting                     // Is this organ already being rejected?
 
 	var/death_time
@@ -144,7 +144,8 @@ var/list/organ_cache = list()
 
 /obj/item/organ/proc/handle_germ_effects()
 	//** Handle the effects of infections
-	var/antibiotics = owner.reagents.get_reagent_amount(/datum/reagent/spaceacillin)
+
+	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
 
 	if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(owner.virus_immunity()*0.3))
 		germ_level--
@@ -210,19 +211,18 @@ var/list/organ_cache = list()
 
 //Germs
 /obj/item/organ/proc/handle_antibiotics()
-	var/antibiotics = 0
-	if(owner)
-		antibiotics = owner.reagents.get_reagent_amount(/datum/reagent/spaceacillin)
-
-	if (!germ_level || antibiotics < 5)
+	if(!owner || !germ_level)
+		return
+	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
+	if (!antibiotics)
 		return
 
 	if (germ_level < INFECTION_LEVEL_ONE)
 		germ_level = 0	//cure instantly
 	else if (germ_level < INFECTION_LEVEL_TWO)
-		germ_level -= 6	//at germ_level == 500, this should cure the infection in a minute
+		germ_level -= 5	//at germ_level == 500, this should cure the infection in 5 minutes
 	else
-		germ_level -= 2 //at germ_level == 1000, this will cure the infection in 5 minutes
+		germ_level -= 3 //at germ_level == 1000, this will cure the infection in 10 minutes
 
 //Note: external organs have their own version of this proc
 /obj/item/organ/proc/take_damage(amount, var/silent=0)

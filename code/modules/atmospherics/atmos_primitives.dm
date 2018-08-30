@@ -64,6 +64,7 @@
 	var/power_draw = specific_power*transfer_moles
 
 	sink.merge(removed)
+	sink.adjust_gas_temp(source, transfer_moles, source.temperature, update=0)
 
 	return power_draw
 
@@ -98,6 +99,7 @@
 	if(!removed) //Just in case
 		return -1
 	sink.merge(removed)
+	sink.adjust_gas_temp(source, transfer_moles, source.temperature, update=0)
 
 	return 0
 
@@ -390,7 +392,10 @@
 		total_power_draw += power_draw
 
 		sink.merge(removed)
+		//use update=0. All the mixed gasses are supposed to be added simultaneously, so we update after the for loop.
+		sink.adjust_gas_temp(source, transfer_moles, source.temperature, update=0)
 
+	sink.update_values()
 	return total_power_draw
 
 /*

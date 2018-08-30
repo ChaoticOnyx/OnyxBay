@@ -47,6 +47,9 @@
 			break
 
 /obj/machinery/atmospherics/unary/cryo_cell/Process()
+	if(stat & (BROKEN|NOPOWER))
+		update_use_power(0)
+		update_icon()
 	..()
 	if(!node)
 		return
@@ -54,13 +57,14 @@
 		return
 
 	if(occupant)
-		if(occupant.stat != 2)
+		if(occupant.stat != DEAD)
 			process_occupant()
 
 	if(air_contents)
 		temperature_archived = air_contents.temperature
 		heat_gas_contents()
-		expel_gas()
+		if (occupant && iscarbon(occupant) && occupant.stat != DEAD && !occupant.is_asystole() && !occupant.losebreath)
+			expel_gas()
 
 	if(abs(temperature_archived-air_contents.temperature) > 1)
 		network.update = 1
@@ -95,7 +99,9 @@
 	var/data[0]
 	data["isOperating"] = on
 	data["hasOccupant"] = occupant ? 1 : 0
-
+	data["notFunctional"] = 0
+	if(stat & (BROKEN|NOPOWER))
+		data["notFunctional"] = 1
 	if (occupant)
 		var/cloneloss = "none"
 		var/amount = occupant.getCloneLoss()
@@ -135,7 +141,7 @@
 	if (!ui)
 		// the ui does not exist, so we'll create a new() one
 		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
-		ui = new(user, src, ui_key, "cryo.tmpl", "Cryo Cell Control System", 520, 410)
+		ui = new(user, src, ui_key, "cryo.tmpl", "Cryo Cell Control System", 520, 630)
 		// when the ui is first opened this is the data it will use
 		ui.set_initial_data(data)
 		// open the new ui window
@@ -196,10 +202,16 @@
 
 /obj/machinery/atmospherics/unary/cryo_cell/update_icon()
 	overlays.Cut()
-	icon_state = "pod[on]"
+	if(stat & (BROKEN|NOPOWER))
+		icon_state = "pod0"
+	else
+		icon_state = "pod[on]"
 	var/image/I
+	if(stat & (BROKEN|NOPOWER))
+		I = image(icon, "pod0_top")
+	else
+		I = image(icon, "pod[on]_top")
 
-	I = image(icon, "pod[on]_top")
 	I.pixel_z = 32
 	overlays += I
 
@@ -209,10 +221,16 @@
 		pickle.pixel_z = 18
 		overlays += pickle
 
-	I = image(icon, "lid[on]")
+	if(stat & (BROKEN|NOPOWER))
+		I = image(icon, "lid0")
+	else
+		I = image(icon, "lid[on]")
 	overlays += I
 
-	I = image(icon, "lid[on]_top")
+	if(stat & (BROKEN|NOPOWER))
+		I = image(icon, "lid0_top")
+	else
+		I = image(icon, "lid[on]_top")
 	I.pixel_z = 32
 	overlays += I
 
@@ -226,8 +244,8 @@
 		if(occupant.bodytemperature < 225)
 			if (occupant.getToxLoss())
 				occupant.adjustToxLoss(max(-1, -10/occupant.getToxLoss()))
-			var/heal_brute = occupant.getBruteLoss() ? min(1, 20/occupant.getBruteLoss()) : 0
-			var/heal_fire = occupant.getFireLoss	() ? min(1, 20/occupant.getFireLoss()) : 0
+			var/heal_brute = occupant.getBruteLoss() ? 5 : 0
+			var/heal_fire = occupant.getFireLoss	() ? 5 : 0
 			occupant.heal_organ_damage(heal_brute,heal_fire)
 		var/has_cryo_medicine = occupant.reagents.has_any_reagent(list(/datum/reagent/cryoxadone, /datum/reagent/clonexadone)) >= REM
 		if(beaker && !has_cryo_medicine)
@@ -245,13 +263,11 @@
 /obj/machinery/atmospherics/unary/cryo_cell/proc/expel_gas()
 	if(air_contents.total_moles < 1)
 		return
-//	var/datum/gas_mixture/expel_gas = new
-//	var/remove_amount = air_contents.total_moles()/50
-//	expel_gas = air_contents.remove(remove_amount)
-
+	air_contents.remove(air_contents.total_moles/50)
+	//loc.assume_air(expel_gas)
 	// Just have the gas disappear to nowhere.
 	//expel_gas.temperature = T20C // Lets expel hot gas and see if that helps people not die as they are removed
-	//loc.assume_air(expel_gas)
+	
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/go_out()
 	if(!( occupant ))
