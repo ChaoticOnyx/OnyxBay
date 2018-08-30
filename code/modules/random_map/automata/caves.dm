@@ -7,7 +7,7 @@
 	var/mineral_sparse =  /turf/simulated/mineral/random
 	var/mineral_rich = /turf/simulated/mineral/random/high_chance
 	var/list/ore_turfs = list()
-	var/max_mobs_count = 400 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
+	var/max_mobs_count = 250 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
 
 /datum/random_map/automata/cave_system/get_appropriate_path(var/value)
 	switch(value)
