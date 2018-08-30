@@ -18,8 +18,8 @@
 	throw_message = "does nothing against the hard shell of"
 	vision_range = 2
 	speed = 3
-	maxHealth = 200
-	health = 200
+	maxHealth = 100
+	health = 100
 	harm_intent_damage = 5
 	melee_damage_lower = 12
 	melee_damage_upper = 12
