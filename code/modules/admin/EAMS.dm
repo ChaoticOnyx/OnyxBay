@@ -38,7 +38,7 @@ var/global/EAMS_errorsCounter = 0
 	set name = "Toggle EAMS"
 
 	if (!dbcon || !dbcon.IsConnected())
-		usr << "<span class='adminnotice'>The Database is not connected!</span>"
+		to_chat(usr, "<span class='adminnotice'>The Database is not connected!</span>")
 		return
 
 	config.eams = !config.eams
@@ -202,7 +202,7 @@ var/global/EAMS_errorsCounter = 0
 		if (eams_info.ip_country == "")
 			eams_info.ip_country = "unknown"
 
-		usr << "<span class='warning'>You were blocked by EAMS! Please, contact Administrators.</span>"
+		to_chat(usr, "<span class='warning'>You were blocked by EAMS! Please, contact Administrators.</span>")
 		log_and_message_admins("Failed join the game: [key] ([address]) connected from [eams_info.ip_country] ([eams_info.ip_countryCode])", 0)
 
 		return FALSE

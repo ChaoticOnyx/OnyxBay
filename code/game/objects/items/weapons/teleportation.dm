@@ -187,7 +187,7 @@ Frequency:
 		onclose(user, "scroll")
 		return
 	else
-		user << SPAN_NOTE("You flip Vortex Manipulator's protective cover open")
+		to_chat(user, SPAN_NOTE("You flip Vortex Manipulator's protective cover open"))
 		cover_open = 1
 
 		if(vcell)
@@ -203,25 +203,25 @@ Frequency:
 			if(!vcell)
 				user.drop_from_inventory(W, src)
 				vcell = W
-				user << SPAN_NOTE("You install a cell in [src].")
+				to_chat(user, SPAN_NOTE("You install a cell in [src]."))
 				icon_state = "vm_open"
 				update_icon()
 			else
-				user << SPAN_NOTE("[src] already has a cell.")
+				to_chat(user, SPAN_NOTE("[src] already has a cell."))
 
 		else if(istype(W, /obj/item/weapon/screwdriver))
 			if(vcell)
 				vcell.update_icon()
 				vcell.forceMove(get_turf(src.loc))
 				vcell = null
-				user << SPAN_NOTE("You remove the cell from the [src].")
+				to_chat(user, SPAN_NOTE("You remove the cell from the [src]."))
 				icon_state = "vm_nocell"
 				update_icon()
 				return
 			..()
 		return
 	else
-		user << SPAN_NOTE("Open cover first!")
+		to_chat(user, SPAN_NOTE("Open cover first!"))
 
 /obj/item/weapon/vortex_manipulator/Topic(href, href_list)
 	if(..())
@@ -257,11 +257,11 @@ Frequency:
 			self_activate(H)
 		else if (href_list["toggle_click_tele"])
 			teleport_on_click = !teleport_on_click
-			H << SPAN_NOTE("You toggle the ability of your Vortex Manipulator to teleport you with just aiming it at some location. Is it on or off now?")
+			to_chat(H, SPAN_NOTE("You toggle the ability of your Vortex Manipulator to teleport you with just aiming it at some location. Is it on or off now?"))
 		else if (href_list["close_cover"])
 			cover_open = 0
 			icon_state = "vm_closed"
-			H << SPAN_NOTE("You flip Vortex Manipulator's protective cover closed")
+			to_chat(H, SPAN_NOTE("You flip Vortex Manipulator's protective cover closed"))
 			update_icon()
 			return
 
@@ -314,7 +314,7 @@ Frequency:
 /obj/item/weapon/vortex_manipulator/afterattack(atom/A, mob/user, proximity)
 	if(proximity || !teleport_on_click) return
 	if(!vcell || (vcell.charge <= chargecost_local * 10))
-		user << SPAN_NOTE("No power source or not enough charge to teleport locally")
+		to_chat(user, SPAN_NOTE("No power source or not enough charge to teleport locally"))
 		return
 	var/turf/tempturf = get_turf(A)
 	localteleport(user, 1, tempturf.x, tempturf.y)
@@ -322,12 +322,12 @@ Frequency:
 
 /obj/item/weapon/vortex_manipulator/proc/self_activate(var/mob/living/carbon/human/user)
 	if(!active)
-		user << SPAN_NOTE("You attempt to activate Vortex Manipulator")
+		to_chat(user, SPAN_NOTE("You attempt to activate Vortex Manipulator"))
 		if(timelord_mode)
 			unique_id = rand(1000, 9999)
 			active = 1
 			log_game("[user] has activated Vortex Manipulator [unique_id]!")
-			user << SPAN_NOTE("You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]")
+			to_chat(user, SPAN_NOTE("You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]"))
 			return
 		for(var/i in possible_ids)
 			var/check_id = 1
@@ -340,12 +340,12 @@ Frequency:
 				unique_id = i
 				active = 1
 				log_game("[user] has activated Vortex Manipulator [unique_id]!")
-				user << SPAN_NOTE("You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]")
+				to_chat(user, SPAN_NOTE("You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]"))
 				return
-		user << SPAN_WARN("You fail to activate your Vortex Manipulator - local space-time can't hold any more active VMs.")
+		to_chat(user, SPAN_WARN("You fail to activate your Vortex Manipulator - local space-time can't hold any more active VMs."))
 	else
 		//currently not used
-		user << SPAN_NOTE("You deactivate your Vortex Manipulator and clean all personal settings")
+		to_chat(user, SPAN_NOTE("You deactivate your Vortex Manipulator and clean all personal settings"))
 		unique_id = 0
 		active = 0
 		timelord_mode = 0
@@ -486,7 +486,7 @@ Frequency:
 	for(var/obj/item/weapon/vortex_manipulator/VM in world)
 		var/H = VM.get_owner()
 		if (ishuman(H) && (VM.active || nonactive_announce))
-			H << SPAN_DANG("Your Vortex Manipulator suddenly announces with voice of [user]: [input]")
+			to_chat(H, SPAN_DANG("Your Vortex Manipulator suddenly announces with voice of [user]: [input]"))
 	deductcharge(chargecost_beacon)
 
 
@@ -598,7 +598,7 @@ Frequency:
 			if(clear)
 				L+=T
 	if(!L.len)
-		user <<"The space-time travel matrix was unable to locate a suitable teleport destination for an unknown reason. Sorry."
+		to_chat(user, "The space-time travel matrix was unable to locate a suitable teleport destination for an unknown reason. Sorry.")
 		return
 	if(user && user.buckled)
 		user.buckled.unbuckle_mob()

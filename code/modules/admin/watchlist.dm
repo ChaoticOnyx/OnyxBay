@@ -23,7 +23,7 @@
 	target_ckey = sanitizeSQL(target_ckey)
 
 	if (Check(target_ckey))
-		usr << "<span class='redtext'>[target_ckey] is already on the watchlist.</span>"
+		to_chat(usr, "<span class='redtext'>[target_ckey] is already on the watchlist.</span>")
 		return
 
 	var/reason = sanitize(input_utf8(usr, "Please State Reason", "Reason"))

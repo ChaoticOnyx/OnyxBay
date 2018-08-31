@@ -21,7 +21,7 @@
 /obj/item/weapon/gun/energy/kinetic_accelerator/attack_self(mob/living/user as mob)
 	if(power_supply.charge < power_supply.maxcharge)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		user << "<span class='notice'>You begin charging \the [src]...</span>"
+		to_chat(user, "<span class='notice'>You begin charging \the [src]...</span>")
 		if(do_after(user,20))
 			playsound(src.loc, 'sound/weapons/kenetic_reload.ogg', 60, 1)
 			user.visible_message(
@@ -33,20 +33,20 @@
 /obj/item/weapon/gun/energy/kinetic_accelerator/examine(mob/user)
 	..()
 	if(max_mod_capacity)
-		user << "<b>[get_remaining_mod_capacity()]%</b> mod capacity remaining."
+		to_chat(user, "<b>[get_remaining_mod_capacity()]%</b> mod capacity remaining.")
 		for(var/A in get_modkits())
 			var/obj/item/borg/upgrade/modkit/M = A
-			user << "<span class='notice'>There is a [M.name] mod installed, using <b>[M.cost]%</b> capacity.</span>"
+			to_chat(user, "<span class='notice'>There is a [M.name] mod installed, using <b>[M.cost]%</b> capacity.</span>")
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/attackby(obj/item/A, mob/user)
 	if(isCrowbar(A))
 		if(modkits.len)
-			user << "<span class='notice'>You pry the modifications out.</span>"
+			to_chat(user, "<span class='notice'>You pry the modifications out.</span>")
 			playsound(loc, 100, 1)
 			for(var/obj/item/borg/upgrade/modkit/M in modkits)
 				M.uninstall(src)
 		else
-			user << "<span class='notice'>There are no modifications currently installed.</span>"
+			to_chat(user, "<span class='notice'>There are no modifications currently installed.</span>")
 	else if(istype(A, /obj/item/borg/upgrade/modkit))
 		var/obj/item/borg/upgrade/modkit/MK = A
 		MK.install(src, user)
@@ -115,7 +115,7 @@
 	if(mob_aoe)
 		for(var/mob/living/L in range(1, target_turf) - firer - target)
 			L.apply_damage(damage*mob_aoe, damage_type, def_zone, armor)
-			L << "<span class='danger'>You're struck by a [name]!</span>"
+			to_chat(L, "<span class='danger'>You're struck by a [name]!</span>")
 
 
 //Modkits
@@ -132,7 +132,7 @@
 
 /obj/item/borg/upgrade/modkit/examine(mob/user)
 	..()
-	user << "<span class='notice'>Occupies <b>[cost]%</b> of mod capacity.</span>"
+	to_chat(user, "<span class='notice'>Occupies <b>[cost]%</b> of mod capacity.</span>")
 
 /obj/item/borg/upgrade/modkit/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/weapon/gun/energy/kinetic_accelerator) && !issilicon(user))
@@ -160,15 +160,15 @@
 				break
 	if(KA.get_remaining_mod_capacity() >= cost)
 		if(.)
-			user << "<span class='notice'>You install the modkit.</span>"
+			to_chat(user, "<span class='notice'>You install the modkit.</span>")
 			playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 			user.unEquip(src)
 			forceMove(KA)
 			KA.modkits += src
 		else
-			user << "<span class='notice'>The modkit you're trying to install would conflict with an already installed modkit. Use a crowbar to remove existing modkits.</span>"
+			to_chat(user, "<span class='notice'>The modkit you're trying to install would conflict with an already installed modkit. Use a crowbar to remove existing modkits.</span>")
 	else
-		user << "<span class='notice'>You don't have room(<b>[KA.get_remaining_mod_capacity()]%</b> remaining, [cost]% needed) to install this modkit. Use a crowbar to remove existing modkits.</span>"
+		to_chat(user, "<span class='notice'>You don't have room(<b>[KA.get_remaining_mod_capacity()]%</b> remaining, [cost]% needed) to install this modkit. Use a crowbar to remove existing modkits.</span>")
 		. = FALSE
 
 

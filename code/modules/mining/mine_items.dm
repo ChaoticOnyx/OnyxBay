@@ -283,12 +283,12 @@
 /obj/item/weapon/ore_radar/attack_self(mob/user)
 	if(!active)
 		active = 1
-		usr << "<span class='notice'>You activate the pinpointer</span>"
+		to_chat(usr, "<span class='notice'>You activate the pinpointer</span>")
 		START_PROCESSING(SSprocessing, src)
 	else
 		active = 0
 		icon_state = "pinoff"
-		usr << "<span>You deactivate the pinpointer</span>"
+		to_chat(usr, "<span>You deactivate the pinpointer</span>")
 		STOP_PROCESSING(SSprocessing, src)
 
 /obj/item/weapon/ore_radar/Process()
@@ -362,10 +362,10 @@
 				playsound(src,'sound/effects/refill.ogg',50,1)
 				return
 			else
-				user << "<span class='info'>[src] is only effective on the dead.</span>"
+				to_chat(user, "<span class='info'>[src] is only effective on the dead.</span>")
 				return
 		else
-			user << "<span class='info'>[src] is only effective on lesser beings.</span>"
+			to_chat(user, "<span class='info'>[src] is only effective on lesser beings.</span>")
 			return
 
 /obj/item/weapon/lazarus_injector/emp_act()
@@ -375,9 +375,9 @@
 /obj/item/weapon/lazarus_injector/examine(mob/user)
 	..()
 	if(!loaded)
-		user << "<span class='info'>[src] is empty.</span>"
+		to_chat(user, "<span class='info'>[src] is empty.</span>")
 	if(malfunctioning)
-		user << "<span class='info'>The display on [src] seems to be flickering.</span>"
+		to_chat(user, "<span class='info'>The display on [src] seems to be flickering.</span>")
 
 /**********************Point Transfer Card**********************/
 
@@ -392,15 +392,15 @@
 		if(points)
 			var/obj/item/weapon/card/id/C = I
 			C.mining_points += points
-			user << "<span class='info'>You transfer [points] points to [C].</span>"
+			to_chat(user, "<span class='info'>You transfer [points] points to [C].</span>")
 			points = 0
 		else
-			user << "<span class='info'>There's no points left on [src].</span>"
+			to_chat(user, "<span class='info'>There's no points left on [src].</span>")
 	..()
 
 /obj/item/weapon/card/mining_point_card/examine(mob/user)
 	..()
-	user << "There's [points] point\s on the card."
+	to_chat(user, "There's [points] point\s on the card.")
 
 /**********************Resonator**********************/
 
@@ -444,10 +444,10 @@
 /obj/item/weapon/resonator/attack_self(mob/user)
 	if(burst_time == 50)
 		burst_time = 30
-		user << "<span class='info'>You set the resonator's fields to detonate after 3 seconds.</span>"
+		to_chat(user, "<span class='info'>You set the resonator's fields to detonate after 3 seconds.</span>")
 	else
 		burst_time = 50
-		user << "<span class='info'>You set the resonator's fields to detonate after 5 seconds.</span>"
+		to_chat(user, "<span class='info'>You set the resonator's fields to detonate after 5 seconds.</span>")
 
 /obj/item/weapon/resonator/afterattack(atom/target, mob/user, proximity_flag)
 	..()
@@ -493,7 +493,7 @@
 		var/turf/simulated/mineral/M = T
 		M.GetDrilled(1)
 	for(var/mob/living/L in T)
-		L << "<span class='danger'>The [src.name] ruptured with you in it!</span>"
+		to_chat(L, "<span class='danger'>The [src.name] ruptured with you in it!</span>")
 		L.apply_damage(resonance_damage, BRUTE)
 	qdel(src)
 
@@ -552,7 +552,7 @@
 	origin_tech = list(TECH_BLUESPACE = 4, TECH_ENGINEERING = 3)
 
 /obj/item/weapon/oreportal/attack_self(mob/user)
-	user << "<span class='info'>You pulse the ore summoner.</span>"
+	to_chat(user, "<span class='info'>You pulse the ore summoner.</span>")
 	var/limit = 10
 	for(var/obj/item/weapon/ore/O in orange(7,user))
 		if(limit <= 0)
@@ -590,7 +590,7 @@
 	set src in oview(1)
 
 	if (src.anchored || usr:stat)
-		usr << "It is fastened to the floor!"
+		to_chat(usr, "It is fastened to the floor!")
 		return 0
 	src.set_dir(turn(src.dir, 90))
 	return 1
@@ -599,7 +599,7 @@
 
 	if (isWrench(C))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
-		user << "<span class='notice'>You [anchored ? "un" : ""]anchor the [name].</span>"
+		to_chat(user, "<span class='notice'>You [anchored ? "un" : ""]anchor the [name].</span>")
 		anchored = !anchored
 
 	if (istype(C, /obj/item/weapon/autochisel))
@@ -620,7 +620,7 @@
 				sculpting_coefficient = 1
 
 			if(sculpting_coefficient >= 7)
-				user << "<span class='warning'>You hardly remember what [T] really looks like! Bah!</span>"
+				to_chat(user, "<span class='warning'>You hardly remember what [T] really looks like! Bah!</span>")
 				T = null
 
 			user.visible_message("<span class='notice'>[user] carves away at the sculpting block!</span>",
@@ -641,7 +641,7 @@
 				if(times_carved <= 9)
 					times_carved += 1
 					if(times_carved < 1)
-						user << "<span class='notice'>You review your work and see there is more to do.</span>"
+						to_chat(user, "<span class='notice'>You review your work and see there is more to do.</span>")
 					return
 				else
 					sculpted = 1

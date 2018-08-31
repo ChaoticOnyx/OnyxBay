@@ -19,7 +19,7 @@
 		var/list/allowed_mob = list()
 		var/mob/living/parasite/meme/player = locate(href_list["move"])
 		if(!istype(player))
-			usr << "\red [player] isn't meme!"
+			to_chat(usr, "\red [player] isn't meme!")
 			return
 
 		for (var/mob/living/carbon/human/H in SSmobs.mob_list)
@@ -27,7 +27,7 @@
 				allowed_mob += H
 
 		if(allowed_mob.len == 0)
-			usr << "\red There is no hosts available now!"
+			to_chat(usr, "\red There is no hosts available now!")
 		else
 			var/new_host = input("Select new host for meme ([player]).", "New host", null) as null|anything in allowed_mob
 			if (new_host)

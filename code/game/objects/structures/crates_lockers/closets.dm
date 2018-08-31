@@ -311,7 +311,7 @@
 	else if(istype(W, /obj/item/device/multitool))
 		var/obj/item/device/multitool/multi = W
 		if(multi.in_use)
-			user << "<span class='warning'>This multitool is already in use!</span>"
+			to_chat(user, "<span class='warning'>This multitool is already in use!</span>")
 			return
 		multi.in_use = 1
 		for(var/i in 1 to rand(4,8))

@@ -867,11 +867,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		var/mob/living/carbon/C = src
 		if(C.does_not_breathe == 0)
 			C.does_not_breathe = 1
-			src << "<span class='notice'>We stop breathing, as we no longer need to.</span>"
+			to_chat(src, "<span class='notice'>We stop breathing, as we no longer need to.</span>")
 			return 1
 		else
 			C.does_not_breathe = 0
-			src << "<span class='notice'>We resume breathing, as we now need to again.</span>"
+			to_chat(src, "<span class='notice'>We resume breathing, as we now need to again.</span>")
 	return 0
 
 
@@ -993,7 +993,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /obj/item/weapon/finger_lockpick/New()
 	if(ismob(loc))
-		loc << "<span class='notice'>We shape our finger to fit inside electronics, and are ready to force them open.</span>"
+		to_chat(loc, "<span class='notice'>We shape our finger to fit inside electronics, and are ready to force them open.</span>")
 
 /obj/item/weapon/finger_lockpick/dropped(mob/user)
 	to_chat(user, "<span class='notice'>We discreetly shape our finger back to a less suspicious form.</span>")

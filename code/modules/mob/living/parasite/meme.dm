@@ -106,18 +106,18 @@ be able to influence the host through various commands.
 
 	// if there are sleep toxins in the host's body, that's bad
 	if(host.reagents.has_reagent("stoxin"))
-		src << "\red <b>Something in your host's blood makes you lose consciousness.. you fade away..</b>"
+		to_chat(src, "\red <b>Something in your host's blood makes you lose consciousness.. you fade away..</b>")
 		src.death()
 		return
 	// a host without brain is no good
 /*
 	if(!host.mind)
-		src << "\red <b>Your host has no mind.. you fade away..</b>"
+		to_chat(src, "\red <b>Your host has no mind.. you fade away..</b>")
 		src.death()
 		return
 */
 	if(host.stat == DEAD)
-		src << "\red <b>Your host has died.. you fade away..</b>"
+		to_chat(src, "\red <b>Your host has died.. you fade away..</b>")
 		src.death()
 		return
 
@@ -141,10 +141,10 @@ be able to influence the host through various commands.
 /mob/living/parasite/meme/say(var/message as text)
 	message = sanitize(message)
 	if(dormant)
-		usr << "\red You're dormant!"
+		to_chat(usr, "\red You're dormant!")
 		return
 	if(!host)
-		usr << "\red You can't speak without host!"
+		to_chat(usr, "\red You can't speak without host!")
 		return
 
 	return host.say(message, 1)
@@ -153,10 +153,10 @@ be able to influence the host through various commands.
 /mob/living/parasite/meme/whisper(var/message as text)
 	message = sanitize(message)
 	if(dormant)
-		usr << "\red You're dormant!"
+		to_chat(usr, "\red You're dormant!")
 		return
 	if(!host)
-		usr << "\red You can't speak without host!"
+		to_chat(usr, "\red You can't speak without host!")
 		return
 
 	return host.whisper(message)
@@ -165,11 +165,11 @@ be able to influence the host through various commands.
 /mob/living/parasite/meme/me_verb(message as text)
 	set name = "Me"
 	if(dormant)
-		usr << "\red You're dormant!"
+		to_chat(usr, "\red You're dormant!")
 		return
 
 	if(!host)
-		usr << "\red You can't emote without host!"
+		to_chat(usr, "\red You can't emote without host!")
 		return
 	message = sanitize(message)
 	return host.emote("me", 1, message)
@@ -183,11 +183,11 @@ be able to influence the host through various commands.
 // Try to use amount points, return 1 if successful
 /mob/living/parasite/meme/proc/use_points(amount)
 	if(dormant)
-		usr << "\red You're dormant!"
+		to_chat(usr, "\red You're dormant!")
 		return 0
 
 	if(src.meme_points < amount)
-		src << "<b>* You don't have enough meme points (need [amount]).</b>"
+		to_chat(usr, "<b>* You don't have enough meme points (need [amount]).</b>")
 		return 0
 
 	src.meme_points -= round(amount)
@@ -198,7 +198,7 @@ be able to influence the host through various commands.
 
 	// Can only affect other mobs thant he host if not blinded
 	if(blinded)
-		src << "\red You are blinded, so you can not affect mobs other than your host."
+		to_chat(usr, "\red You are blinded, so you can not affect mobs other than your host.")
 		return
 
 	var/list/candidates = indoctrinated.Copy()
@@ -245,7 +245,7 @@ be able to influence the host through various commands.
 	var/rendered = "<span class='game say'><span class='name'>[speaker]</span> <span class='message'>[say_quote(message)] [message]</span></span>"
 	target.show_message(rendered)
 
-	usr << "<i>You make [target] hear:</i> [rendered]"
+	to_chat(usr, "<i>You make [target] hear:</i> [rendered]")
 
 // Mutes the host
 /mob/living/parasite/meme/verb/Mute()
@@ -256,7 +256,7 @@ be able to influence the host through various commands.
 	if(!src.host) return
 //	if(!host.speech_allowed)
 	if(host.silent)
-		usr << "\red Your host already can't speak.."
+		to_chat(usr, "\red Your host already can't speak..")
 		return
 	if(!use_points(250)) return
 
@@ -264,15 +264,15 @@ be able to influence the host through various commands.
 		// backup the host incase we switch hosts after using the verb
 		var/mob/living/carbon/human/host = src.host
 
-		host << "\red Your tongue feels numb.. You lose your ability to speak."
-		usr << "\red Your host can't speak anymore."
+		to_chat(host, "\red Your tongue feels numb.. You lose your ability to speak.")
+		to_chat(usr, "\red Your host can't speak anymore.")
 
 		host.silent += 60
 
 		sleep(1200)
 
-		host << "\red Your tongue has feeling again.."
-		usr << "\red [host] can speak again."
+		to_chat(host, "\red Your tongue has feeling again..")
+		to_chat(usr, "\red [host] can speak again.")
 
 // Makes the host unable to emote
 /mob/living/parasite/meme/verb/Paralyze()
@@ -284,19 +284,19 @@ be able to influence the host through various commands.
 
 	var/mob/living/carbon/human/host = src.host
 	if(host.weakened)
-		usr << "\red Your host already paralyzed.."
+		to_chat(usr, "\red Your host already paralyzed..")
 		return
 	if(!use_points(250)) return
 
-	host << "\red Your body feels numb.. You lose your ability to use body language."
-	usr << "\red Your host can't use body language anymore."
+	to_chat(host, "\red Your body feels numb.. You lose your ability to use body language.")
+	to_chat(usr, "\red Your host can't use body language anymore.")
 
 	host.weakened += 60
 
 	sleep(1200)
 
-	host << "\red Your body has feeling again.."
-	usr << "\red [host] can use body language again."
+	to_chat(host, "\red Your body has feeling again..")
+	to_chat(usr, "\red [host] can use body language again.")
 
 // Cause great agony with the host, used for conditioning the host
 /mob/living/parasite/meme/verb/Agony()
@@ -314,9 +314,9 @@ be able to influence the host through various commands.
 		host.paralysis = max(host.paralysis, 2)
 
 		src.flash_weak_pain()
-		host << "\red <font size=5>You feel excrutiating pain all over your body! It is so bad you can't think or articulate yourself properly..</font>"
+		to_chat(host, "\red <font size=5>You feel excrutiating pain all over your body! It is so bad you can't think or articulate yourself properly..</font>")
 
-		usr << "<b>You send a jolt of agonizing pain through [host], they should be unable to concentrate on anything else for half a minute.</b>"
+		to_chat(usr, "<b>You send a jolt of agonizing pain through [host], they should be unable to concentrate on anything else for half a minute.</b>")
 
 		src.emote("scream")
 
@@ -330,9 +330,9 @@ be able to influence the host through various commands.
 			else if(prob(10)) host.emote("collapse")
 
 			if(i == 10)
-				host << "\red THE PAIN! AGHH, THE PAIN! MAKE IT STOP! ANYTHING TO MAKE IT STOP!"
+				to_chat(host, "\red THE PAIN! AGHH, THE PAIN! MAKE IT STOP! ANYTHING TO MAKE IT STOP!")
 
-		host << "\red The pain subsides.."
+		to_chat(host, "\red The pain subsides..")
 
 // Cause great joy with the host, used for conditioning the host
 /mob/living/parasite/meme/verb/Joy()
@@ -348,14 +348,14 @@ be able to influence the host through various commands.
 		host.druggy = max(host.druggy, 50)
 		host.slurring = max(host.slurring, 10)
 
-		usr << "<b>You stimulate [host.name]'s brain, injecting waves of endorphines and dopamine into the tissue. They should now forget all their worries, particularly relating to you, for around a minute."
+		to_chat(usr, "<b>You stimulate [host.name]'s brain, injecting waves of endorphines and dopamine into the tissue. They should now forget all their worries, particularly relating to you, for around a minute.")
 
-		host << "\red You are feeling wonderful! Your head is numb and drowsy, and you can't help forgetting all the worries in the world."
+		to_chat(host, "\red You are feeling wonderful! Your head is numb and drowsy, and you can't help forgetting all the worries in the world.")
 
 		while(host.druggy > 0)
 			sleep(10)
 
-		host << "\red You are feeling clear-headed again.."
+		to_chat(host, "\red You are feeling clear-headed again..")
 
 // Cause the target to hallucinate.
 /mob/living/parasite/meme/verb/Hallucinate()
@@ -370,7 +370,7 @@ be able to influence the host through various commands.
 
 	target.hallucination += 100
 
-	usr << "<b>You make [target] hallucinate.</b>"
+	to_chat(usr, "<b>You make [target] hallucinate.</b>")
 
 // Jump to a closeby target through a whisper
 /mob/living/parasite/meme/verb/SubtleJump(mob/living/carbon/human/target as mob in view(1,host) - usr - usr:host)
@@ -379,15 +379,15 @@ be able to influence the host through various commands.
 	set desc     = "Move to a closeby human through a whisper."
 
 	if(!ishuman(target) || !target.mind)
-		src << "<b>You can't jump to this creature..</b>"
+		to_chat(src, "<b>You can't jump to this creature..</b>")
 		return
 	if(!(target in view(1, host)+src))
-		src << "<b>The target is not close enough.</b>"
+		to_chat(src, "<b>The target is not close enough.</b>")
 		return
 
 	// Find out whether we can speak
 	if ((host.disabilities & 64))
-		src << "<b>Your host can't speak..</b>"
+		to_chat(src, "<b>Your host can't speak..</b>")
 		return
 
 	for(var/mob/M in view(1, host))
@@ -395,18 +395,18 @@ be able to influence the host through various commands.
 
 	// Find out whether the target can hear
 	if(target.disabilities & 32 || target.ear_deaf)
-		src << "<b>Your target doesn't seem to hear you..</b>"
+		to_chat(src, "<b>Your target doesn't seem to hear you..</b>")
 		return
 
 	if(target.parasites.len > 0)
-		src << "<b>Your target already is possessed by something..</b>"
+		to_chat(src, "<b>Your target already is possessed by something..</b>")
 		return
 
 	if(!use_points(350)) return
 
 	src.switch_host(target)
 
-	usr << "<b>You successfully jumped to [target]."
+	to_chat(usr, "<b>You successfully jumped to [target].")
 	log_and_message_admins("[src.key] has jumped (meme) to [target]", target)
 
 // Jump to a distant target through a shout
@@ -416,15 +416,15 @@ be able to influence the host through various commands.
 	set desc     = "Move to any mob in view through a shout."
 
 	if(!ishuman(target) || !target.mind)
-		src << "<b>You can't jump to this creature..</b>"
+		to_chat(src, "<b>You can't jump to this creature..</b>")
 		return
 	if(!(target in view(host)))
-		src << "<b>The target is not close enough.</b>"
+		to_chat(src, "<b>The target is not close enough.</b>")
 		return
 
 	// Find out whether we can speak
 	if (host.silent || (host.disabilities & 64))
-		src << "<b>Your host can't speak..</b>"
+		to_chat(src, "<b>Your host can't speak..</b>")
 		return
 
 	for(var/mob/M in view(host))
@@ -432,18 +432,18 @@ be able to influence the host through various commands.
 
 	// Find out whether the target can hear
 	if(target.disabilities & 32 || target.ear_deaf)
-		src << "<b>Your target doesn't seem to hear you..</b>"
+		to_chat(src, "<b>Your target doesn't seem to hear you..</b>")
 		return
 
 	if(target.parasites.len > 0)
-		src << "<b>Your target already is possessed by something..</b>"
+		to_chat(src, "<b>Your target already is possessed by something..</b>")
 		return
 
 	if(!use_points(750)) return
 
 	src.switch_host(target)
 
-	usr << "<b>You successfully jumped to [target]."
+	to_chat(usr, "<b>You successfully jumped to [target].")
 	log_and_message_admins("[src.key] has jumped (meme) to [target]", target)
 
 // Jump to an attuned mob for free
@@ -453,22 +453,22 @@ be able to influence the host through various commands.
 	set desc     = "Move to a mob in sight that you have already attuned."
 
 	if(!ishuman(target) || !target.mind)
-		src << "<b>You can't jump to this creature..</b>"
+		to_chat(src, "<b>You can't jump to this creature..</b>")
 		return
 	if(!(target in view(host)))
-		src << "<b>You need to make eye-contact with the target.</b>"
+		to_chat(src, "<b>You need to make eye-contact with the target.</b>")
 		return
 	if(!(target in indoctrinated))
-		src << "<b>You need to attune the target first.</b>"
+		to_chat(src, "<b>You need to attune the target first.</b>")
 		return
 
 	if(target.parasites.len > 0)
-		src << "<b>Your target already is possessed by something..</b>"
+		to_chat(src, "<b>Your target already is possessed by something..</b>")
 		return
 
 	src.switch_host(target)
 
-	usr << "<b>You successfully jumped to [target]."
+	to_chat(usr, "<b>You successfully jumped to [target].")
 
 	log_and_message_admins("[src.key] has jumped (meme) to [target]", target)
 
@@ -479,7 +479,7 @@ be able to influence the host through various commands.
 	set desc     = "Change the host's brain structure, making it easier for you to manipulate him."
 
 	if(host in src.indoctrinated)
-		usr << "<b>You have already attuned this host.</b>"
+		to_chat(usr, "<b>You have already attuned this host.</b>")
 		return
 
 	if(!host) return
@@ -487,8 +487,8 @@ be able to influence the host through various commands.
 
 	src.indoctrinated.Add(host)
 
-	usr << "<b>You successfully indoctrinated [host]."
-	host << "\red Your head feels a bit roomier.."
+	to_chat(usr, "<b>You successfully indoctrinated [host].")
+	to_chat(host, "\red Your head feels a bit roomier..")
 
 	log_and_message_admins("[src.key] has attuned [host]", host)
 
@@ -501,16 +501,16 @@ be able to influence the host through various commands.
 
 	if(!host) return
 	if(!(host in indoctrinated))
-		usr << "\red You need to attune the host first."
+		to_chat(usr, "\red You need to attune the host first.")
 		return
 	if(!use_points(500)) return
 
-	usr << "<b>You inject drugs into [host]."
-	host << "\red You feel your body strengthen and your pain subside.."
+	to_chat(usr, "<b>You inject drugs into [host].")
+	to_chat(host, "\red You feel your body strengthen and your pain subside..")
 	host.analgesic = 60
 	while(host.analgesic > 0)
 		sleep(10)
-	host << "\red The dizziness wears off, and you can feel pain again.."
+	to_chat(host, "\red The dizziness wears off, and you can feel pain again..")
 
 
 /mob/proc/clearHUD()
@@ -524,12 +524,12 @@ be able to influence the host through various commands.
 
 	if(!host) return
 	if(!(host in indoctrinated))
-		usr << "\red You need to attune the host first."
+		to_chat(usr, "\red You need to attune the host first.")
 		return
 	if(!use_points(500)) return
 
-	usr << "<b>You take control of [host]!</b>"
-	host << "\red Everything goes black.."
+	to_chat(usr, "<b>You take control of [host]!</b>")
+	to_chat(host, "\red Everything goes black..")
 
 	spawn
 		log_and_message_admins("[key_name(src)] has taken possession (meme) of [key_name(host)]", host)
@@ -552,7 +552,7 @@ be able to influence the host through various commands.
 		meme_mind.transfer_to(src)
 		host_mind.transfer_to(host)
 		meme_mind.current.clearHUD()
-		src << "\red You lose control.."
+		to_chat(src, "\red You lose control..")
 
 		del dummy
 
@@ -567,7 +567,7 @@ be able to influence the host through various commands.
 	if(!host) return
 	if(!use_points(100)) return
 
-	usr << "<b>You enter dormant mode.. You won't be able to take action until all your points have recharged.</b>"
+	to_chat(usr, "<b>You enter dormant mode.. You won't be able to take action until all your points have recharged.</b>")
 
 	dormant = 1
 
@@ -576,12 +576,12 @@ be able to influence the host through various commands.
 
 	dormant = 0
 
-	usr << "\red You have regained all points and exited dormant mode!"
+	to_chat(usr, "\red You have regained all points and exited dormant mode!")
 
 /mob/living/parasite/meme/verb/Show_Points()
 	set category = "Meme"
 
-	usr << "<b>Meme Points: [src.meme_points]/[maximum_points]</b>"
+	to_chat(usr, "<b>Meme Points: [src.meme_points]/[maximum_points]</b>")
 
 // Stat panel to show meme points, copypasted from alien
 /mob/living/parasite/meme/Stat()
