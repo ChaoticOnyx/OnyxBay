@@ -69,8 +69,6 @@
 	..()
 
 /obj/machinery/firealarm/attackby(obj/item/W as obj, mob/user as mob)
-	src.add_fingerprint(user)
-
 	if(isScrewdriver(W) && buildstage == 2)
 		wiresexposed = !wiresexposed
 		update_icon()
