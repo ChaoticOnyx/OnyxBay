@@ -123,9 +123,6 @@
 					qdel(src)
 		return
 
-	src.alarm()
-	return
-
 /obj/machinery/firealarm/Process()//Note: this processing was mostly phased out due to other code, and only runs when needed
 	if(stat & (NOPOWER|BROKEN))
 		return
@@ -172,21 +169,18 @@
 /obj/machinery/firealarm/OnTopic(user, href_list)
 	if (href_list["status"] == "reset")
 		src.reset()
-		. = TOPIC_REFRESH
+		return TOPIC_REFRESH
 	else if (href_list["status"] == "alarm")
 		src.alarm()
-		. = TOPIC_REFRESH
+		return TOPIC_REFRESH
 	if (href_list["timer"] == "set")
 		time = max(0, input(user, "Enter time delay", "Fire Alarm Timer", time) as num)
 	else if (href_list["timer"] == "start")
 		src.timing = 1
-		. = TOPIC_REFRESH
+		return TOPIC_REFRESH
 	else if (href_list["timer"] == "stop")
 		src.timing = 0
-		. = TOPIC_REFRESH
-
-	if(. == TOPIC_REFRESH)
-		attack_hand(user)
+		return TOPIC_REFRESH
 
 /obj/machinery/firealarm/CanUseTopic(user)
 	if(wiresexposed)
@@ -213,7 +207,7 @@
 	for(var/obj/machinery/firealarm/FA in area)
 		fire_alarm.triggerAlarm(loc, FA, duration)
 	update_icon()
-	playsound(src, 'sound/machines/fire_alarm.ogg', 75, 0)
+	playsound(src, 'sound/machines/fire_alarm.ogg', 25, 0)
 	return
 
 /obj/machinery/firealarm/New(loc, dir, atom/frame)
