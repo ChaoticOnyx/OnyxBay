@@ -64,7 +64,7 @@
 	var/power_draw = specific_power*transfer_moles
 
 	sink.merge(removed)
-	sink.adjust_gas_temp(source, transfer_moles, source.temperature, update=0)
+	sink.adjust_gas_temp(source, transfer_moles, source.temperature, update=1)
 
 	return power_draw
 
@@ -99,7 +99,7 @@
 	if(!removed) //Just in case
 		return -1
 	sink.merge(removed)
-	sink.adjust_gas_temp(source, transfer_moles, source.temperature, update=0)
+	sink.adjust_gas_temp(source, transfer_moles, source.temperature, update=1)
 
 	return 0
 

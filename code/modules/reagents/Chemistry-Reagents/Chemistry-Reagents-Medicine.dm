@@ -155,7 +155,7 @@
 
 /datum/reagent/cryoxadone
 	name = "Cryoxadone"
-	description = "A chemical mixture with almost magical healing powers. Its main limitation is that the targets body temperature must be under 170K for it to metabolise correctly."
+	description = "A chemical mixture used in cryo cell to stabilize patient. Its main limitation is that the targets body temperature must be under 170K for it to metabolise correctly."
 	taste_description = "sludge"
 	reagent_state = LIQUID
 	color = "#8080ff"
@@ -167,9 +167,18 @@
 	M.add_chemical_effect(CE_CRYO, 1)
 	if(M.bodytemperature < 170)
 		M.adjustCloneLoss(-100 * removed)
+		M.add_chemical_effect(CE_PAINKILLER, 80)
 		M.add_chemical_effect(CE_OXYGENATED, 1)
-		M.heal_organ_damage(10 * removed, 10 * removed)
 		M.add_chemical_effect(CE_PULSE, -2)
+		if (ishuman(M))
+			var/mob/living/carbon/human/H = M
+			H.adjustToxLoss(max(-1, -12/H.getToxLoss()) * H.stasis_value)
+			for(var/obj/item/organ/external/E in H.organs)
+				if(E.status & ORGAN_BLEEDING && prob(50))
+					E.status &= ~ORGAN_BLEEDING
+					for(var/datum/wound/W in E.wounds)
+						W.clamped = 1
+					H.update_surgery()
 
 /datum/reagent/clonexadone
 	name = "Clonexadone"
@@ -185,9 +194,19 @@
 	M.add_chemical_effect(CE_CRYO, 1)
 	if(M.bodytemperature < 170)
 		M.adjustCloneLoss(-300 * removed)
+		M.add_chemical_effect(CE_PAINKILLER, 160)
 		M.add_chemical_effect(CE_OXYGENATED, 2)
-		M.heal_organ_damage(30 * removed, 30 * removed)
 		M.add_chemical_effect(CE_PULSE, -2)
+		if (ishuman(M))
+			var/mob/living/carbon/human/H = M
+			H.adjustToxLoss(max(-1, -16/H.getToxLoss()) * H.stasis_value)
+			for(var/obj/item/organ/external/E in H.organs)
+				if(E.status & ORGAN_BLEEDING && prob(80))
+					E.status &= ~ORGAN_BLEEDING
+					for(var/datum/wound/W in E.wounds)
+						W.clamped = 1
+					H.update_surgery()
+		M.heal_organ_damage(round((M.getBruteLoss()/50 + (5 * removed)) * M.stasis_value) , round((M.getFireLoss()/50 + (10 * removed)) * M.stasis_value))
 
 /* Painkillers */
 
