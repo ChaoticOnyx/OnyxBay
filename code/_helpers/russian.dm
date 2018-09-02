@@ -39,10 +39,15 @@
 
 
 //RUS CONVERTERS
-/proc/russian_to_cp1251(var/msg)//CHATBOX
+// prepare_to_browser for writing .html files direct to browser (html files line-endings must be in unix-style (LF instead of CRLF))
+/proc/russian_to_cp1251(var/msg, var/prepare_to_browser = FALSE)//CHATBOX
+	if(prepare_to_browser)
+		msg = replace_characters(msg, list("\n\n" = "<br>", "\n" = "", "\t" = ""))
 	return replacetext(msg, "ÿ", "&#255;")
 
-/proc/russian_to_utf8(var/msg)//PDA PAPER POPUPS
+/proc/russian_to_utf8(var/msg, var/prepare_to_browser = FALSE)//PDA PAPER POPUPS
+	if(prepare_to_browser)
+		msg = replace_characters(msg, list("\n\n" = "<br>", "\n" = "", "\t" = ""))
 	return replacetext(msg, "ÿ", "&#1103;")
 
 /proc/utf8_to_cp1251(msg)
