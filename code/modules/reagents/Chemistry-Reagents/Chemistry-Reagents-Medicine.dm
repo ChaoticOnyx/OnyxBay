@@ -16,6 +16,13 @@
 		M.add_chemical_effect(CE_STABLE)
 		M.add_chemical_effect(CE_PAINKILLER, 10)
 
+/datum/reagent/inaprovaline/overdose(var/mob/living/carbon/M, var/alien)
+	M.add_chemical_effect(CE_SLOWDOWN, 1)
+	if(prob(5))
+		M.slurring = max(M.slurring, 10)
+	if(prob(2))
+		M.drowsyness = max(M.drowsyness, 5)
+
 /datum/reagent/bicaridine
 	name = "Bicaridine"
 	description = "Bicaridine is an analgesic medication and can be used to treat blunt trauma."
@@ -30,6 +37,16 @@
 /datum/reagent/bicaridine/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
 	if(alien != IS_DIONA)
 		M.heal_organ_damage(6 * removed, 0)
+		M.add_chemical_effect(CE_PAINKILLER, 10)
+
+/datum/reagent/bicaridine/overdose(var/mob/living/carbon/M, var/alien)
+	..()
+	if(ishuman(M))
+		M.add_chemical_effect(CE_BLOCKAGE, (15 + volume - overdose)/100)
+		var/mob/living/carbon/human/H = M
+		for(var/obj/item/organ/external/E in H.organs)
+			if(E.status & ORGAN_ARTERY_CUT && prob(2))
+				E.status &= ~ORGAN_ARTERY_CUT
 
 /datum/reagent/kelotane
 	name = "Kelotane"
@@ -138,11 +155,11 @@
 
 /datum/reagent/cryoxadone
 	name = "Cryoxadone"
-	description = "A chemical mixture with almost magical healing powers. Its main limitation is that the targets body temperature must be under 170K for it to metabolise correctly."
+	description = "A chemical mixture used in cryo cell to stabilize patient. Its main limitation is that the targets body temperature must be under 170K for it to metabolise correctly."
 	taste_description = "sludge"
 	reagent_state = LIQUID
 	color = "#8080ff"
-	metabolism = REM * 0.05
+	metabolism = REM * 0.5
 	scannable = 1
 	flags = IGNORE_MOB_SIZE
 
@@ -150,9 +167,18 @@
 	M.add_chemical_effect(CE_CRYO, 1)
 	if(M.bodytemperature < 170)
 		M.adjustCloneLoss(-100 * removed)
+		M.add_chemical_effect(CE_PAINKILLER, 80)
 		M.add_chemical_effect(CE_OXYGENATED, 1)
-		M.heal_organ_damage(100 * removed, 100 * removed)
 		M.add_chemical_effect(CE_PULSE, -2)
+		if (ishuman(M))
+			var/mob/living/carbon/human/H = M
+			H.adjustToxLoss(max(-1, -12/H.getToxLoss()) * H.stasis_value)
+			for(var/obj/item/organ/external/E in H.organs)
+				if(E.status & ORGAN_BLEEDING && prob(50))
+					E.status &= ~ORGAN_BLEEDING
+					for(var/datum/wound/W in E.wounds)
+						W.clamped = 1
+					H.update_surgery()
 
 /datum/reagent/clonexadone
 	name = "Clonexadone"
@@ -160,7 +186,7 @@
 	taste_description = "slime"
 	reagent_state = LIQUID
 	color = "#80bfff"
-	metabolism = REM * 0.05
+	metabolism = REM * 0.5
 	scannable = 1
 	flags = IGNORE_MOB_SIZE
 
@@ -168,9 +194,19 @@
 	M.add_chemical_effect(CE_CRYO, 1)
 	if(M.bodytemperature < 170)
 		M.adjustCloneLoss(-300 * removed)
+		M.add_chemical_effect(CE_PAINKILLER, 160)
 		M.add_chemical_effect(CE_OXYGENATED, 2)
-		M.heal_organ_damage(300 * removed, 300 * removed)
 		M.add_chemical_effect(CE_PULSE, -2)
+		if (ishuman(M))
+			var/mob/living/carbon/human/H = M
+			H.adjustToxLoss(max(-1, -16/H.getToxLoss()) * H.stasis_value)
+			for(var/obj/item/organ/external/E in H.organs)
+				if(E.status & ORGAN_BLEEDING && prob(80))
+					E.status &= ~ORGAN_BLEEDING
+					for(var/datum/wound/W in E.wounds)
+						W.clamped = 1
+					H.update_surgery()
+		M.heal_organ_damage(round((M.getBruteLoss()/50 + (5 * removed)) * M.stasis_value) , round((M.getFireLoss()/50 + (10 * removed)) * M.stasis_value))
 
 /* Painkillers */
 
@@ -187,10 +223,10 @@
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/paracetamol/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
-	M.add_chemical_effect(CE_PAINKILLER, 25)
+	M.add_chemical_effect(CE_PAINKILLER, 35)
 
 /datum/reagent/paracetamol/overdose(var/mob/living/carbon/M, var/alien)
-	..()
+	M.add_chemical_effect(CE_TOXIN, 1)
 	M.druggy = max(M.druggy, 2)
 	M.add_chemical_effect(CE_PAINKILLER, 10)
 
@@ -451,6 +487,7 @@
 /datum/reagent/spaceacillin/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
 	M.immunity = max(M.immunity - 0.1, 0)
 	M.add_chemical_effect(CE_ANTIVIRAL, VIRUS_COMMON)
+	M.add_chemical_effect(CE_ANTIBIOTIC, 1)
 	if(volume > 10)
 		M.immunity = max(M.immunity - 0.3, 0)
 		M.add_chemical_effect(CE_ANTIVIRAL, VIRUS_ENGINEERED)
@@ -473,7 +510,8 @@
 	touch_met = 5
 
 /datum/reagent/sterilizine/affect_touch(var/mob/living/carbon/M, var/alien, var/removed)
-	M.germ_level -= min(removed*20, M.germ_level)
+	if(M.germ_level < INFECTION_LEVEL_TWO) // rest and antibiotics is required to cure serious infections
+		M.germ_level -= min(removed*20, M.germ_level)
 	for(var/obj/item/I in M.contents)
 		I.was_bloodied = null
 	M.was_bloodied = null
@@ -705,7 +743,7 @@
 	M.add_chemical_effect(CE_ANTIVIRAL, 1)
 
 /datum/reagent/antidexafen/overdose(var/mob/living/carbon/M, var/alien)
-	..()
+	M.add_chemical_effect(CE_TOXIN, 1)
 	M.hallucination(60, 20)
 	M.druggy = max(M.druggy, 2)
 

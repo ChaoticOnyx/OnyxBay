@@ -143,12 +143,14 @@
 	stage = 4
 	badness = VIRUS_ENGINEERED
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
-		for (var/obj/item/organ/external/E in mob.organs)
+		for (var/external in mob.organs)
+			var/obj/item/organ/external/E = external
 			if (E.status & ORGAN_BROKEN && prob(30))
 				to_chat(mob, "<span class='notice'>Your [E.name] suddenly feels much better!</span>")
 				E.status ^= ORGAN_BROKEN
 				break
-		for (var/obj/item/organ/internal/I in mob.internal_organs)
+		for (var/internal in mob.internal_organs)
+			var/obj/item/organ/internal/I = internal
 			if (I.damage && prob(30))
 				to_chat(mob, "<span class='notice'>Your [mob.get_organ(I.parent_organ)] feels a bit warm...</span>")
 				I.take_damage(-2*multiplier)
