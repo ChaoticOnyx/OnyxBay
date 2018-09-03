@@ -1165,7 +1165,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Arm Blade (20)"
 	visible_message("<span class='warning'>The flesh is torn around the [src.name]\'s arm!</span>",
-		"<span class='warning'>The flesh of our hand is transformed.</span>",
+		"<span class='warning'>The flesh of our hand is transforming.</span>",
 		"<span class='italics'>You hear organic matter ripping and tearing!</span>")
 	spawn(4 SECONDS)
 		playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
@@ -1393,7 +1393,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /mob/proc/changeling_fake_arm_blade()
 	set category = "Changeling"
 	set name = "Fake arm Blade (30)"
-	set desc = "We reform others arms into a fake armblade."
+	set desc = "We reform victims arm into a fake armblade."
 
 	var/mob/living/carbon/human/T = changeling_sting(30,/mob/proc/changeling_fake_arm_blade)
 	if(!T)	return 0
@@ -1401,7 +1401,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(T, "<span class='danger'>You feel strange spasms in your hands.</span>")
 		spawn(5 SECONDS)
 		visible_message("<span class='warning'>The flesh is torn around the [T.name]\'s arm!</span>",
-			"<span class='warning'>We transforming [T.name]\'s arm to fake armblade.</span>",
+			"<span class='warning'>We started to transform [T.name]\'s arm into fake armblade.</span>",
 			"<span class='italics'>You hear organic matter ripping and tearing!</span>")
 		spawn(4 SECONDS)
 			playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
