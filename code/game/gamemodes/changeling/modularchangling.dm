@@ -227,7 +227,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We reform victims arm into a fake armblade."
 	helptext = "The effect is irrevertable."
 	enhancedtext = "Doing nothing"
-	genomecost = 3
+	genomecost = 4
 	verbpath = /mob/proc/changeling_fake_arm_blade
 */
 
@@ -235,7 +235,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Fake Armblade"
 	desc = "We reform victims arm into a fake armblade."
 	helptext = "The effect is irrevertable."
-	genomecost = 3
+	genomecost = 4
 	verbpath = /mob/proc/changeling_fake_arm_blade
 
 /datum/power/changeling/no_pain
@@ -243,7 +243,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We choose whether or not to fell pain."
 	helptext = "Toggleable ability"
 	enhancedtext = "Doing nothing"
-	genomecost = 3
+	genomecost = 8
 	verbpath = /mob/proc/changeling_no_pain
 
 /datum/power/changeling/gib_self
@@ -275,7 +275,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "Allows you to passively regenerate when activated."
 	helptext = "Spends chemicals."
 	enhancedtext = "Doing nothing"
-	genomecost = 4
+	genomecost = 5
 	verbpath = /mob/proc/changeling_rapid_heal
 
 // Modularchangling, totally stolen from the new player panel.  YAYY
