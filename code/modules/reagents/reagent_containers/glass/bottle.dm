@@ -251,3 +251,14 @@
 	..()
 	reagents.add_reagent(/datum/reagent/frostoil, 60)
 	update_icon()
+
+/obj/item/weapon/reagent_containers/glass/bottle/spaceacillin
+	name = "spaceacillin bottle"
+	desc = "A small bottle of spaceacillin. It has antiviral and antibiotic effects."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle-4"
+
+/obj/item/weapon/reagent_containers/glass/bottle/spaceacillin/New()
+	..()
+	reagents.add_reagent(/datum/reagent/spaceacillin, 60)
+	update_icon()
