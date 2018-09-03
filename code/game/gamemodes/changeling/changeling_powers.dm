@@ -1440,7 +1440,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	spawn(0)
 		while(C && C.canfeelpain && C.mind && C.mind.changeling)
-			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 0.5, 0)
+			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 4, 0)
 			sleep(40)
 	return 1
 
