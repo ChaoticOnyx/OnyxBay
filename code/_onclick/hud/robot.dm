@@ -207,6 +207,11 @@ var/obj/screen/robot_inventory
 					y++
 
 	else
+		if(!r.module)
+			return
+
+		if(!r.module.modules)
+			return
 		//Modules display is hidden
 		//r.client.screen -= robot_inventory	//"store" icon
 		for(var/atom/A in r.module.modules)

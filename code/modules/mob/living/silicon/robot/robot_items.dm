@@ -97,7 +97,17 @@
 		flick("portable_analyzer_load", src)
 		icon_state = "portable_analyzer_full"
 
-//This is used to unlock other borg covers.
+/obj/item/weapon/portable_destructive_analyzer/examine(var/mob/user)
+	..()
+	to_chat(user, "<span class='notice'><b>Current science levels:</b></span>")
+	for(var/i = 1, i <= files.known_tech.len, i++)
+		if(files.known_tech[i].name == "ILLEGAL" || files.known_tech[i].name == "Arcane")
+			if(files.known_tech[i].level > 0)
+				to_chat(user, "<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>")
+		else
+			to_chat(user, "<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>")
+	
+	//This is used to unlock other borg covers.
 /obj/item/weapon/card/robot //This is not a child of id cards, as to avoid dumb typechecks on computers.
 	name = "access code transmission device"
 	icon_state = "id-robot"
@@ -541,6 +551,9 @@
 		/obj/item/stack/material/phoron,
 		/obj/item/clothing/mask,
 		/obj/item/clothing/gloves/latex,
+		/obj/item/weapon/cane,
+		/obj/item/clothing/glasses/regular,
+		/obj/item/device/mmi,
 		/obj/item/weapon/paper
 		)
 	interact_type = /obj/item/bodybag
@@ -629,7 +642,6 @@
 		/obj/item/clamp,
 		/obj/item/pipe,
 		/obj/item/frame
-
 		)
 	capacity = 5
 
@@ -644,7 +656,7 @@
 	pickup_time = 50
 	deploy_time = 50
 	object_type = list(
-		/obj/structure/ore_box,
+		/obj/structure/ore_box
 		)
 	capacity = 1
 
