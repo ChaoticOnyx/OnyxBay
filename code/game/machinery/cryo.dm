@@ -23,6 +23,9 @@
 
 	var/current_heat_capacity = 50
 
+	var/occupant_icon_update_timer = 0
+	var/ejecting = 0
+
 /obj/machinery/atmospherics/unary/cryo_cell/New()
 	..()
 	icon = 'icons/obj/cryogenics_split.dmi'
@@ -47,6 +50,9 @@
 			break
 
 /obj/machinery/atmospherics/unary/cryo_cell/Process()
+	if(stat & (BROKEN|NOPOWER))
+		update_use_power(0)
+		update_icon()
 	..()
 	if(!node)
 		return
@@ -54,13 +60,16 @@
 		return
 
 	if(occupant)
-		if(occupant.stat != 2)
+		if(occupant.stat != DEAD)
+			if (occupant_icon_update_timer < world.time)
+				update_icon()
 			process_occupant()
 
 	if(air_contents)
 		temperature_archived = air_contents.temperature
 		heat_gas_contents()
-		expel_gas()
+		if (occupant && iscarbon(occupant) && occupant.stat != DEAD && !occupant.is_asystole() && !occupant.losebreath)
+			expel_gas()
 
 	if(abs(temperature_archived-air_contents.temperature) > 1)
 		network.update = 1
@@ -68,9 +77,8 @@
 	return 1
 
 /obj/machinery/atmospherics/unary/cryo_cell/relaymove(mob/user as mob)
-	// note that relaymove will also be called for mobs outside the cell with UI open
-	if(src.occupant == user && !user.stat)
-		go_out()
+	if (!ejecting)
+		move_eject()
 
 /obj/machinery/atmospherics/unary/cryo_cell/attack_hand(mob/user)
 	ui_interact(user)
@@ -95,7 +103,9 @@
 	var/data[0]
 	data["isOperating"] = on
 	data["hasOccupant"] = occupant ? 1 : 0
-
+	data["notFunctional"] = 0
+	if(stat & (BROKEN|NOPOWER))
+		data["notFunctional"] = 1
 	if (occupant)
 		var/cloneloss = "none"
 		var/amount = occupant.getCloneLoss()
@@ -105,13 +115,15 @@
 			cloneloss = "significant"
 		else if(amount > 10)
 			cloneloss = "moderate"
-		else if(amount)
+		else if(amount && !emagged)
 			cloneloss = "minor"
 		var/scan = medical_scan_results(occupant)
 		scan += "<br><br>Genetic degradation: [cloneloss]"
 		scan = replacetext(scan,"'notice'","'white'")
 		scan = replacetext(scan,"'warning'","'average'")
 		scan = replacetext(scan,"'danger'","'bad'")
+		if (occupant.bodytemperature >= 170)	
+			scan += "<br><span class='average'>Warning: Patient's body temperature is not suitable.</span>"
 		scan += "<br>Cryostasis factor: [occupant.stasis_value]x"
 		data["occupant"] = scan
 
@@ -119,7 +131,7 @@
 	data["cellTemperatureStatus"] = "good"
 	if(air_contents.temperature > T0C) // if greater than 273.15 kelvin (0 celcius)
 		data["cellTemperatureStatus"] = "bad"
-	else if(air_contents.temperature > 225)
+	else if(air_contents.temperature > 170)
 		data["cellTemperatureStatus"] = "average"
 
 	data["isBeakerLoaded"] = beaker ? 1 : 0
@@ -135,7 +147,7 @@
 	if (!ui)
 		// the ui does not exist, so we'll create a new() one
 		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
-		ui = new(user, src, ui_key, "cryo.tmpl", "Cryo Cell Control System", 520, 410)
+		ui = new(user, src, ui_key, "cryo.tmpl", "Cryo Cell Control System", 520, 630)
 		// when the ui is first opened this is the data it will use
 		ui.set_initial_data(data)
 		// open the new ui window
@@ -196,23 +208,37 @@
 
 /obj/machinery/atmospherics/unary/cryo_cell/update_icon()
 	overlays.Cut()
-	icon_state = "pod[on]"
+	if(stat & (BROKEN|NOPOWER))
+		icon_state = "pod0"
+	else
+		icon_state = "pod[on]"
 	var/image/I
+	if(stat & (BROKEN|NOPOWER))
+		I = image(icon, "pod0_top")
+	else
+		I = image(icon, "pod[on]_top")
 
-	I = image(icon, "pod[on]_top")
 	I.pixel_z = 32
 	overlays += I
 
 	if(occupant)
+		occupant.UpdateDamageIcon()
 		var/image/pickle = image(occupant.icon, occupant.icon_state)
 		pickle.overlays = occupant.overlays
 		pickle.pixel_z = 18
 		overlays += pickle
+		occupant_icon_update_timer = world.time + 30
 
-	I = image(icon, "lid[on]")
+	if(stat & (BROKEN|NOPOWER))
+		I = image(icon, "lid0")
+	else
+		I = image(icon, "lid[on]")
 	overlays += I
 
-	I = image(icon, "lid[on]_top")
+	if(stat & (BROKEN|NOPOWER))
+		I = image(icon, "lid0_top")
+	else
+		I = image(icon, "lid[on]_top")
 	I.pixel_z = 32
 	overlays += I
 
@@ -223,15 +249,29 @@
 		if(occupant.stat == DEAD)
 			return
 		occupant.set_stat(UNCONSCIOUS)
-		if(occupant.bodytemperature < 225)
-			if (occupant.getToxLoss())
-				occupant.adjustToxLoss(max(-1, -10/occupant.getToxLoss()))
-			var/heal_brute = occupant.getBruteLoss() ? min(1, 20/occupant.getBruteLoss()) : 0
-			var/heal_fire = occupant.getFireLoss	() ? min(1, 20/occupant.getFireLoss()) : 0
-			occupant.heal_organ_damage(heal_brute,heal_fire)
 		var/has_cryo_medicine = occupant.reagents.has_any_reagent(list(/datum/reagent/cryoxadone, /datum/reagent/clonexadone)) >= REM
-		if(beaker && !has_cryo_medicine)
+		if(beaker && !has_cryo_medicine && !emagged)
 			beaker.reagents.trans_to_mob(occupant, REM, CHEM_BLOOD)
+		if (emagged)
+			if(prob(5))
+				to_chat(occupant, "<span class='notice'>You feel strange.</span>")
+			else if(prob(3))
+				to_chat(occupant, "<span class='notice'>Your skin is itching.</span>")
+
+			if(beaker)
+				if (beaker.reagents.has_reagent(/datum/reagent/cryoxadone))
+					occupant.adjustCloneLoss(0.6)
+					beaker.reagents.remove_reagent(/datum/reagent/cryoxadone,REM)
+					occupant.add_chemical_effect(CE_CRYO, 1)
+				else if (beaker.reagents.has_reagent(/datum/reagent/clonexadone))
+					occupant.adjustCloneLoss(1)
+					beaker.reagents.remove_reagent(/datum/reagent/clonexadone,REM)
+					occupant.add_chemical_effect(CE_CRYO, 1)
+				else
+					occupant.adjustCloneLoss(0.3)
+			else
+				occupant.adjustCloneLoss(0.3)
+
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/heat_gas_contents()
 	if(air_contents.total_moles < 1)
@@ -245,13 +285,7 @@
 /obj/machinery/atmospherics/unary/cryo_cell/proc/expel_gas()
 	if(air_contents.total_moles < 1)
 		return
-//	var/datum/gas_mixture/expel_gas = new
-//	var/remove_amount = air_contents.total_moles()/50
-//	expel_gas = air_contents.remove(remove_amount)
-
-	// Just have the gas disappear to nowhere.
-	//expel_gas.temperature = T20C // Lets expel hot gas and see if that helps people not die as they are removed
-	//loc.assume_air(expel_gas)
+	air_contents.remove(air_contents.total_moles/50)	
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/go_out()
 	if(!( occupant ))
@@ -291,7 +325,7 @@
 	M.stop_pulling()
 	M.forceMove(src)
 	M.ExtinguishMob()
-	if(M.health > -100 && (M.health < 0 || M.sleeping))
+	if(M.stat != DEAD)
 		to_chat(M, "<span class='notice'><b>You feel a cold liquid surround you. Your skin starts to freeze up.</b></span>")
 	occupant = M
 	current_heat_capacity = HEAT_CAPACITY_HUMAN
@@ -321,13 +355,14 @@
 	set category = "Object"
 	set src in oview(1)
 	if(usr == occupant)//If the user is inside the tube...
-		if (usr.stat == 2)//and he's not dead....
+		if (usr.stat == 2 || ejecting)//and he's not dead or not trying already....
 			return
 		to_chat(usr, "<span class='notice'>Release sequence activated. This will take two minutes.</span>")
-		sleep(1200)
-		if(!src || !usr || !occupant || (occupant != usr)) //Check if someone's released/replaced/bombed him already
-			return
-		go_out()//and release him from the eternal prison.
+		ejecting = 1
+		if(do_after(occupant, 1200, src, needhand = 0, incapacitation_flags = 0) && (src || usr || occupant || (occupant == usr))) //Check if someone's released/replaced/bombed him already
+			ejecting = 0
+			go_out()//and release him from the eternal prison.
+		ejecting = 0
 	else
 		if (usr.stat != 0)
 			return
@@ -373,3 +408,18 @@
 
 /datum/data/function/proc/display()
 	return
+
+/obj/machinery/atmospherics/unary/cryo_cell/emag_act(var/remaining_charges, var/mob/user)
+	if(emagged)
+		return
+	emagged = 1
+	to_chat(user, "<span class='danger'>You short out \the [src]'s circuits.</span>")
+	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+	spark_system.set_up(5, 0, src.loc)
+	spark_system.start()
+	return 1
+
+/obj/machinery/atmospherics/unary/cryo_cell/examine()
+	. = ..()
+	if(emagged)
+		to_chat(usr, "The panel is loose and circuits is charred.")
