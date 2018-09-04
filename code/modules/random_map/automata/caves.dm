@@ -8,7 +8,6 @@
 	var/mineral_rich = /turf/simulated/mineral/random/high_chance
 	var/list/ore_turfs = list()
 	var/max_mobs_count = 250 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
-
 /datum/random_map/automata/cave_system/get_appropriate_path(var/value)
 	switch(value)
 		if(DOOR_CHAR)
@@ -69,7 +68,13 @@
 		var/check_cell = pick(mob_spawnable_turf)
 		mob_spawnable_turf -= check_cell
 		map[check_cell] = MONSTER_CHAR
-
+	while(mob_spawnable_turf.len>0)
+		if(!priority_process)
+			CHECK_TICK
+		var/check_cell = pick(mob_spawnable_turf)
+		mob_spawnable_turf -= check_cell
+		if(prob(5))
+			map[check_cell] = CAVE_BIG_ROCK_CHAR
 
 	return 1
 
@@ -124,6 +129,9 @@
 					new /mob/living/simple_animal/hostile/asteroid/basilisk/spectator(T)
 					count_basilisk_spectator++
 				mobs_count++
+			if(CAVE_BIG_ROCK_CHAR)
+				new_path = floor_type
+				new /obj/structure/rock(T)
 		if (!new_path)
 			continue
 

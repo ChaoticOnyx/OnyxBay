@@ -36,11 +36,11 @@
 /mob/living/silicon/isSynthetic()
 	return 1
 
-/mob/proc/isMonkey()
+proc/isMonkey(A)
+	if (istype(A,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = A
+		return istype(H.species, /datum/species/monkey)
 	return 0
-
-/mob/living/carbon/human/isMonkey()
-	return istype(species, /datum/species/monkey)
 
 proc/isdeaf(A)
 	if(isliving(A))
