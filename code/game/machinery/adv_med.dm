@@ -305,11 +305,16 @@
 	// Blood pressure. Based on the idea of a normal blood pressure being 120 over 80.
 	if(H.get_blood_volume() <= 70)
 		dat += "<span class='danger'>Severe blood loss detected.</span>"
+	if(H.b_type)
+		dat += "<b>Blood type:</b> [H.b_type]"
 	dat += "<b>Blood pressure:</b> [H.get_blood_pressure()] ([H.get_blood_oxygenation()]% blood oxygenation)"
 	dat += "<b>Blood volume:</b> [H.vessel.get_reagent_amount(/datum/reagent/blood)]/[H.species.blood_volume]u"
-
+	if (H.chem_effects[CE_BLOCKAGE])
+		dat += "<span class='warning'>Warning: Blood clotting detected, blood transfusion recommended.</span>"
 	// Body temperature.
 	dat += "<b>Body temperature:</b> [H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)"
+	if(H.nutrition < 150)
+		dat += "<span class='warning'>Warning: Very low nutrition value detected.</span>"
 
 	dat += "<b>Physical Trauma:</b>\t[get_severity(H.getBruteLoss())]"
 	dat += "<b>Burn Severity:</b>\t[get_severity(H.getFireLoss())]"
@@ -327,17 +332,27 @@
 
 	if(H.has_brain_worms())
 		dat += "Large growth detected in frontal lobe, possibly cancerous. Surgical removal is recommended."
-
+	var/is_overdosed = 0
 	if(H.reagents.total_volume)
 		var/reagentdata[0]
 		for(var/A in H.reagents.reagent_list)
 			var/datum/reagent/R = A
 			if(R.scannable)
 				reagentdata[R.type] = "[round(H.reagents.get_reagent_amount(R.type), 1)]u [R.name]"
+				if (R.volume >= R.overdose)
+					is_overdosed = 1
 		if(reagentdata.len)
 			dat += "Beneficial reagents detected in subject's blood:"
 			for(var/d in reagentdata)
 				dat += reagentdata[d]
+	if (is_overdosed)
+		dat += "<span class='warning'>Warning: Medicine overdose detected.</span>"
+	if (H.chem_effects[CE_ALCOHOL])
+		dat += "<span class='notice'>Alcohol byproducts detected in subject's blood.</span>"
+	if (H.chem_effects[CE_ALCOHOL_TOXIC])
+		dat += "<span class='warning'>Warning: Subject suffering from alcohol intoxication.</span>"
+
+		
 
 	var/list/table = list()
 	table += "<table border='1'><tr><th>Organ</th><th>Damage</th><th>Status</th></tr>"
