@@ -665,6 +665,7 @@
 	var/list/datum/item_types = list()
 	var/datum/dispense_type/selected = null
 	var/activate_sound = 'sound/items/palaroid3.ogg'
+	var/recycling_time = 30
 
 	/datum/dispense_type
 		var/name = ""
@@ -719,6 +720,22 @@
 /obj/item/weapon/robot_item_dispenser/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity) return
 	if (!inuse)
+		for (var/datum/dispense_type/T in item_types)
+			if (istype(A,T.item_type))
+				inuse = 1
+				user.visible_message("<span class='notice'>\The [user] starts recycling [A]...</span>")
+				if(do_after(user,recycling_time,src))
+					to_chat(user, "<span class='notice'>\The [src] consumes [A] and you get some energy back.</span>")
+					A.Destroy()
+					if(istype(user,/mob/living/silicon/robot))
+						var/mob/living/silicon/robot/R = user
+						if (R.cell)
+							R.cell.add_charge(T.energy/3)
+					inuse = 0
+				else
+					to_chat(user, "<span class='danger'>You failed to recycle [A].</span>")
+					inuse = 0
+				break
 		if(istype(user,/mob/living/silicon/robot))
 			var/mob/living/silicon/robot/R = user
 			if(R.stat || !R.cell || R.cell.charge <= selected.energy)
@@ -775,6 +792,7 @@
 	desc = "A device used to rapidly construct crates."
 	icon = 'icons/obj/robot_device.dmi'
 	icon_state = "printer"
+	recycling_time = 50
 
 /obj/item/weapon/robot_item_dispenser/crates/New()
 	item_types += new /datum/dispense_type("crate",/obj/structure/closet/crate, 50, 100)
@@ -829,6 +847,18 @@
 	item_types += new /datum/dispense_type("synthesized blood pack",/obj/item/weapon/reagent_containers/ivbag/blood/OMinus, 100, 300)
 	..()
 
+/obj/item/weapon/robot_item_dispenser/janitor
+	name = "janitor supplies synthesizer"
+	desc = "A device used to rapidly synthesize janitor supplies."
+	icon = 'icons/obj/robot_device.dmi'
+	icon_state = "mini_printer"
+	recycling_time = 10
+
+/obj/item/weapon/robot_item_dispenser/janitor/New()
+	item_types += new /datum/dispense_type("wet floor sign",/obj/item/weapon/caution, 10, 70)
+	item_types += new /datum/dispense_type("mouse trap",/obj/item/device/assembly/mousetrap, 20, 50)
+	..()
+
 
 /obj/item/weapon/robot_item_dispenser/engineer
 	name = "construction part synthesizer"
@@ -855,6 +885,7 @@
 	desc = "A device that can manufacture various types of pipes."
 	icon = 'icons/obj/robot_device.dmi'
 	icon_state = "pipe_printer"
+	recycling_time = 50
 
 /obj/item/weapon/robot_item_dispenser/pipe/New()	//Fuck the guy who coded pipes
 	item_types += new /datum/dispense_type/pipe("pipe", /obj/item/pipe, 0, 50, 100)

@@ -40,6 +40,12 @@
 
 	return use(cell_amt) / CELLRATE
 
+/obj/item/weapon/cell/proc/add_charge(var/amount)
+	if (charge + amount > maxcharge)
+		charge = maxcharge
+	else
+		charge += amount
+
 /obj/item/weapon/cell/update_icon()
 
 	var/new_overlay_state = null

@@ -745,7 +745,8 @@ var/global/list/robot_modules = list(
 					"Mopbot"  = "janitorrobot",
 					"Mop Gear Rex" = "mopgearrex",
 					"Drone" = "drone-janitor",
-					"Doot" = "eyebot-janitor"
+					"Doot" = "eyebot-janitor",
+					"Robo-Maid" = "maidbot"
 					)
 
 /obj/item/weapon/robot_module/janitor/general/New()
@@ -757,7 +758,11 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/soap/nanotrasen(src)
 	src.modules += new /obj/item/weapon/storage/bag/trash(src)
 	src.modules += new /obj/item/weapon/mop(src)
+	var/obj/item/weapon/reagent_containers/glass/bucket/B = new /obj/item/weapon/reagent_containers/glass/bucket(src)
+	B.reagents.add_reagent(/datum/reagent/water,180)
+	src.modules += B
 	src.modules += new /obj/item/device/lightreplacer(src)
+	src.modules += new /obj/item/weapon/robot_item_dispenser/janitor(src)
 
 	src.emag = new /obj/item/weapon/reagent_containers/spray(src)
 	src.emag.reagents.add_reagent(/datum/reagent/lube, 250)
@@ -772,6 +777,9 @@ var/global/list/robot_modules = list(
 	if(src.emag)
 		var/obj/item/weapon/reagent_containers/spray/S = src.emag
 		S.reagents.add_reagent(/datum/reagent/lube, 20 * amount)
+	var/obj/item/weapon/reagent_containers/glass/bucket/B = locate() in src.modules
+	if (B.reagents.total_volume < B.reagents.maximum_volume)
+		B.reagents.add_reagent(/datum/reagent/water,20)
 
 /obj/item/weapon/robot_module/service
 	name = "service robot module"
@@ -800,7 +808,8 @@ var/global/list/robot_modules = list(
 					"Default" = "Service2",
 					"Drone - Service" = "drone-service",
 					"Drone - Hydro" = "drone-hydro",
-					"Doot" = "eyebot-standard"
+					"Doot" = "eyebot-standard",
+					"Robo-Maid" = "maidbot"
 				  	)
 
 /obj/item/weapon/robot_module/service/butler/New()
