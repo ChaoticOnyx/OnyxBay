@@ -1,24 +1,16 @@
-/mob/living/proc/set_m_intent(var/intent)
-	if (intent != "walk" && intent != "run")
-		return 0
-	m_intent = intent
-	if(hud_used)
-		if (hud_used.move_intent)
-			hud_used.move_intent.icon_state = intent == "walk" ? "walking" : "running"
-
-
-/obj/item/organ/internal/biostructure/proc/test_damage()
-	for(var/limb_type in (owner.species.has_limbs | owner.organs_by_name))
-		var/obj/item/organ/external/E = owner.organs_by_name[limb_type]
-		if((E && E.damage > 0) || !E || (E && (E.status & ORGAN_BROKEN)) || (E && (E.status &= ~ORGAN_ARTERY_CUT)))
+/obj/item/organ/internal/biostructure/proc/check_damage()
+	if(owner)
+		if (owner.has_damaged_organ())
 			owner.mind.changeling.damaged = TRUE
-			break
 		else
 			owner.mind.changeling.damaged = FALSE
+	else
+		if(brainchan)
+			brainchan.mind.changeling.damaged = FALSE
 ////////////////No Brain Gen//////////////////////////////////////////////
 
 /obj/item/organ/internal/biostructure
-	name = "Strange biostructure"
+	name = "strange biostructure"
 	desc = "Strange abhorrent biostructure of unknown origins. Is that an alien organ, a xenoparasite or some sort of space cancer? Is that normal to bear things like that inside you?"
 	organ_tag = BP_CHANG
 	parent_organ = BP_CHEST
@@ -32,13 +24,14 @@
 	origin_tech = list(TECH_BIO = 10, TECH_ILLEGAL = 5)
 	attack_verb = list("attacked", "slapped", "whacked")
 	relative_size = 10
-	var/mob/living/carbon/brain/brainchan = null
+	var/mob/living/carbon/brain/brainchan = null 	//notice me, biostructure-kun~ (✿˵•́ ‸ •̀˵)
 	var/const/damage_threshold_count = 10
+	var/last_regen_time = 0
 	var/damage_threshold_value
-	var/healed_threshold = 1
+	var/healing_threshold = 1
+	var/moving = 0
 
-
-/obj/item/organ/internal/biostructure/New(var/mob/living/carbon/holder)
+/obj/item/organ/internal/biostructure/New(var/mob/living/holder)
 	..()
 	max_damage = 600
 //	if(species)
@@ -46,6 +39,7 @@
 	min_bruised_damage = max_damage*0.25
 	min_broken_damage = max_damage*0.75
 
+	
 	damage_threshold_value = round(max_damage / damage_threshold_count)
 	spawn(5)
 		if(brainchan && brainchan.client)
@@ -65,16 +59,14 @@
 		brainchan.SetName(H.real_name)
 		brainchan.real_name = H.real_name
 		brainchan.dna = H.dna.Clone()
-		brainchan.timeofhostdeath = H.timeofdeath
+		brainchan.container = src
 
 	if(H.mind)
 		H.mind.transfer_to(brainchan)
 
-	to_chat(brainchan, "<span class='notice'>You feel slightly disoriented. That's normal.</span>")
+	to_chat(brainchan, "<span class='notice'>You feel slightly disoriented.</span>")
 	callHook("debrain", list(brainchan))
-
-
-
+	
 /obj/item/organ/internal/biostructure/removed(var/mob/living/user)
 	if(!istype(owner))
 		return ..()
@@ -83,7 +75,11 @@
 		transfer_identity(owner)
 
 	..()
-	brainchan.verbs += /mob/proc/aggressive
+	spawn()
+		if (istype(src.loc,/obj/item/organ/external))
+			brainchan.verbs += /mob/proc/transform_into_little_changeling
+		else
+			brainchan.verbs += /mob/proc/aggressive
 
 /obj/item/organ/internal/biostructure/replaced(var/mob/living/target)
 
@@ -102,85 +98,153 @@
 
 /obj/item/organ/internal/biostructure/Process()
 	..()
+	if(damage > max_damage / 2 && healing_threshold)
+		if (owner)
+			alert(owner, "We have taken massive core damage! We need regeneration.", "Core Damaged")
+		else
+			alert(brainchan, "We have taken massive core damage! We need host and regeneration.", "Core Damaged")
+		healing_threshold = 0
+	else if (damage <= max_damage/2 && !healing_threshold)
+		healing_threshold = 1
 	if(owner)
-		if(damage > max_damage / 2 && healed_threshold)
-			spawn()
-				alert(owner, "You have taken massive core damage! You need regeneration.", "Core Damaged")
-			healed_threshold = 0
-		if(damage <= max_damage / 2 && healed_threshold)
-			while(owner && damage > 0 && owner.mind && owner.mind.changeling)
-				owner.mind.changeling.chem_charges = max(owner.mind.changeling.chem_charges - 0.5, 0)
-				damage--
-				sleep(40)
-			healed_threshold = 1
-		if(owner.mind && owner.mind.changeling.heal && owner.mind.changeling.damaged)
-			test_damage()
-			owner.mind.changeling.chem_charges = max(owner.mind.changeling.chem_charges - 1, 0)
-			if(owner.getBruteLoss())
-				owner.adjustBruteLoss(-10 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
-			if(owner.getFireLoss())
-				owner.adjustFireLoss(-5 * config.organ_regeneration_multiplier)
-			if(owner.getToxLoss())
-				owner.adjustToxLoss(-10 * config.organ_regeneration_multiplier)
-			if(prob(5) && !owner.getBruteLoss() && !owner.getFireLoss())
-				var/obj/item/organ/external/head/D = owner.organs_by_name[BP_HEAD]
-				if (D.disfigured)
-					D.disfigured = 0
-			for(var/bpart in shuffle(owner.internal_organs_by_name))
-				var/obj/item/organ/internal/regen_organ = owner.internal_organs_by_name[bpart]
-				if(regen_organ.robotic >= ORGAN_ROBOT)
-					continue
-				if(istype(regen_organ))
-					if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
-						regen_organ.damage = max(regen_organ.damage - 5, 0)
-						if(prob(5))
-							to_chat(owner, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
-					if(regen_organ.status & ORGAN_DEAD)
-						regen_organ.status &= ~ORGAN_DEAD
-			if(prob(2))
-				for(var/limb_type in owner.species.has_limbs)
-					var/obj/item/organ/external/E = owner.organs_by_name[limb_type]
-					if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
-						E.removed()//...because no one wants their head to explode to make way for a new one.
-						qdel(E)
-						E= null
-					if(!E)
-						var/list/organ_data = owner.species.has_limbs[limb_type]
-						var/limb_path = organ_data["path"]
-						var/obj/item/organ/external/O = new limb_path(owner)
-						organ_data["descriptor"] = O.name
-						to_chat(owner, "<span class='danger'>With a shower of fresh blood, a new [O.name] forms.</span>")
-						owner.visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [owner]'s [O.amputation_point], forming a new [O.name]!</span>")
-						var/datum/reagent/blood/B = locate(/datum/reagent/blood) in owner.vessel.reagent_list
-						blood_splatter(owner,B,1)
-						O.set_dna(owner.dna)
-						owner.update_body()
-						return
-					else
-						E.status &= ~ORGAN_BROKEN
-						E.status &= ~ORGAN_ARTERY_CUT
-						for(var/datum/wound/W in E.wounds)
-							if(W.wound_damage() == 0 && prob(50))
-								E.wounds -= W
-		test_damage()
+		check_damage()
+		if(damage <= max_damage / 2 && healing_threshold && world.time < last_regen_time + 40)
+			owner.mind.changeling.chem_charges = max(owner.mind.changeling.chem_charges - 0.5, 0)
+			damage--
+			last_regen_time = world.time
 
 /obj/item/organ/internal/biostructure/die()
+	if(brainchan)
+		brainchan.mind.changeling.true_dead = 1
+		brainchan.death()
+	else 
+		var/mob/host = src.loc
+		if (istype(host))
+			host.mind.changeling.true_dead = 1
+			host.death()
+	src.dead_icon = "Strange_biostructure_dead"
 	QDEL_NULL(brainchan)
-	owner.mind.changeling.true_dead = 1
+	
 	..()
+	
+/obj/item/organ/internal/biostructure/proc/change_host(atom/destination)
+	var/atom/source = src.loc
+	//deleteing biostructure from external organ so when that organ is deleted biostructure wont be deleted
+	if (istype(source,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = source		
+		var/obj/item/organ/external/E = H.get_organ(parent_organ)
+		if(E) 
+			E.internal_organs -= src
+		H.internal_organs_by_name[BP_CHANG] = null
+		H.internal_organs_by_name -= BP_CHANG
+		H.internal_organs_by_name -= null
+		H.internal_organs -= src
+	else if (istype(source,/obj/item/organ/external))	
+		var/obj/item/organ/external/E = source
+		if(E) 
+			E.internal_organs -= src
 
-/mob/living/carbon/proc/insert_biostructure()
+	forceMove(destination)
+
+	//connecting organ
+	if(istype(destination,/mob/living/carbon/human))	
+		var/mob/living/carbon/human/H = destination	
+		owner = H
+		H.internal_organs_by_name[BP_CHANG] = src
+		var/obj/item/organ/external/E = H.get_organ(parent_organ)
+		if(E)	//wont happen but just in case
+			E.internal_organs |= src
+			if(E.status & ORGAN_CUT_AWAY)
+				E.status &= ~ORGAN_CUT_AWAY
+		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
+		if (brain)
+			brain.vital = 0
+
+/mob/living/proc/insert_biostructure()
+	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
+	if (!BIO)
+		BIO = new /obj/item/organ/internal/biostructure(src)
 	src.faction = "biomass"
+	log_debug("The changeling biostructure appeares in [src.name].")
+
+/mob/living/carbon/insert_biostructure()
+	
 	var/obj/item/organ/internal/brain/brain = src.internal_organs_by_name[BP_BRAIN]
-	var/obj/item/organ/internal/biostructure/bio = src.internal_organs_by_name[BP_CHANG]
+	var/obj/item/organ/internal/biostructure/BIO = src.internal_organs_by_name[BP_CHANG]
 
 	if (brain)
 		brain.vital = 0
-	if (!bio)
-		log_debug("The changeling biostructure appeares in [src.name].", notify_admin = TRUE)
-		src.internal_organs_by_name[BP_CHANG] = new /obj/item/organ/internal/biostructure(src)
+	if (!BIO)
+		BIO = new /obj/item/organ/internal/biostructure(src)
+		src.internal_organs_by_name[BP_CHANG] = BIO
+	else
+		src.internal_organs |= BIO
+	..()
+
+
+/mob/living/carbon/proc/move_biostructure()
+	var/obj/item/organ/internal/biostructure/BIO = src.internal_organs_by_name[BP_CHANG]
+	if (!BIO)
+		return
+	if (!BIO.moving)
+		var/list/available_limbs = src.organs.Copy()
+		for (var/obj/item/organ/external/E in available_limbs)
+			if (E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.is_stump())
+				available_limbs -= E
+		var/obj/item/organ/external/new_parent = input(src, "Where do you want to move [BIO]?") as null|anything in available_limbs
+		
+		if (new_parent)
+			to_chat(src, "<span class='notice'>We started to move our [BIO] to \the [new_parent].</span>")
+			BIO.moving = 1
+			var/move_time
+			if(src.mind.changeling.recursive_enhancement)
+				move_time = rand(20,50)
+			else
+				move_time = rand(80,150)
+			if(do_after(src, move_time, can_move = 1, needhand = 0, incapacitation_flags = 0))
+				BIO.moving = 0
+				if (src.mind)
+					if (istype(src,/mob/living/carbon/human))
+						var/mob/living/carbon/human/H = src
+						var/obj/item/organ/external/E = H.get_organ(BIO.parent_organ)
+						if(!E)
+							to_chat(src, "<span class='notice'>You are missing that limb.</span>")
+							return
+						if(istype(E)) 
+							E.internal_organs -= BIO
+						BIO.parent_organ = new_parent.organ_tag
+						E = H.get_organ(BIO.parent_organ)
+						if(!E)
+							CRASH("[src] spawned in [src] without a parent organ: [BIO.parent_organ].")
+						E.internal_organs |= BIO
+						to_chat(src, "<span class='notice'>Our [BIO] is now in our \the [new_parent].</span>")
+						log_debug("([src])The changeling biostructure moved in [new_parent].")
+
 
 //////////////////changelling mob///////////////////////////////////////////////////////////
+
+/mob/proc/transform_into_little_changeling()
+	set category = "Changeling"
+	set name = "Transform into little changeling"
+	set desc = "If we find ourselves inside severed limb we grow little legs and jaw."
+
+	var/obj/item/organ/internal/biostructure/BIO = src.loc
+	var/limb_to_del = BIO.loc
+	if (istype(BIO.loc,/obj/item/organ/external/leg))
+		var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling = new (get_turf(BIO.loc))
+		changeling_transfer_mind(leg_ling)
+	else if (istype(BIO.loc,/obj/item/organ/external/arm))
+		var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling = new (get_turf(BIO.loc))
+		changeling_transfer_mind(arm_ling)
+	else if (istype(BIO.loc,/obj/item/organ/external/head))
+		var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(BIO.loc))
+		changeling_transfer_mind(head_ling)
+	else 
+		return
+
+	BIO.loc.visible_message("<span class='warning'>[BIO.loc] suddenly grows little legs!</span>",
+		"<span class='alert'><h1><b>We transformed into mobile form! We have to survive!</b></h1></span>")
+	qdel(limb_to_del)
 
 
 /mob/living/simple_animal/hostile/little_changeling
@@ -193,7 +257,7 @@
 	speak_chance = 0
 	turns_per_move = 5
 	response_help = "touch the"
-	response_disarm = "gently pushes aside the"
+	response_disarm = "pushes aside the"
 	response_harm = "hits the"
 	speed = 0
 	maxHealth = 100
@@ -220,12 +284,27 @@
 /mob/living/simple_animal/hostile/little_changeling/New()
 	verbs += /mob/living/proc/ventcrawl
 	verbs += /mob/living/proc/hide
+	pixel_z = 6
 	..()
 
-/mob/living/simple_animal/hostile/little_changeling/verb/paralyse(mob/living/target as mob in oview())
+/mob/living/simple_animal/hostile/little_changeling/death(gibbed, deathmessage = "ripped open!", show_dead_message)
+	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
+	if (BIO)
+		BIO.removed()
+		BIO.forceMove(get_turf(src))
+	..()
+
+/mob/living/simple_animal/hostile/little_changeling/Destroy()
+	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
+	if (BIO)
+		BIO.removed()
+		BIO.forceMove(get_turf(src))
+	..()
+
+/mob/living/simple_animal/hostile/little_changeling/verb/paralyse(mob/living/target as mob in oview(1))
 	set category = "Changeling"
-	set name = "Paralyzing bite"
-	set desc = "We bite our prey and inject paralyzing saliva into them, making them harmless to us for relatively long period of time."
+	set name = "Paralyzing sting"
+	set desc = "We sting our prey and inject paralyzing venom into them, making them harmless to us for relatively long period of time."
 
 
 	if(!sting_can_reach(target, 1))
@@ -233,11 +312,13 @@
 		return
 
 	if(!target)	return 0
-	to_chat(target,"<span class='danger'>Your muscles begin to painfully tighten.</span>")
+	
 	if(target.isSynthetic())
 		return
+
+	to_chat(target,"<span class='danger'>Your muscles begin to painfully tighten.</span>")
 	target.Weaken(20)
-	src.visible_message("<span class='warning'>[src] tears a chunk from \the [target]'s flesh!</span>")
+	src.visible_message("<span class='warning'>[src] pierce \the [target] with it's sting!</span>")
 	feedback_add_details("changeling_powers","PB")
 
 	if(last_special > world.time)
@@ -248,12 +329,17 @@
 	return
 
 
-/mob/living/simple_animal/hostile/little_changeling/verb/Infest(mob/living/target as mob in oview())
+/mob/living/simple_animal/hostile/little_changeling/verb/Infest(mob/living/target as mob in oview(1))
 	set category = "Changeling"
 	set name = "Infest"
 	set desc = "We latch onto potential host and merge with their body, taking control over it."
 
 	var/mob/living/carbon/human/T = target
+
+	if(!sting_can_reach(T, 1))
+		to_chat(src, "<span class='warning'>We are too far away.</span>")
+		return
+
 	if(!istype(T))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
@@ -266,27 +352,23 @@
 		to_chat(src, "<span class='warning'>This creature's DNA is ruined beyond useability!</span>")
 		return
 
-	if(!sting_can_reach(T, 1))
-		to_chat(src, "<span class='warning'>We are too far away.</span>")
-		return
-
 	if(src.mind.changeling.isabsorbing)
 		to_chat(src, "<span class='warning'>We are already infesting!</span>")
 		return
+
+	src.visible_message("<span class='danger'>[src] has latched onto \the [T].</span>", \
+						"<span class='danger'>We have latched onto \the [T].</span>")
+	
 	src.mind.changeling.isabsorbing = 1
 	for(var/stage = 1, stage<=3, stage++)
 		switch(stage)
-			if(1)
-				to_chat(src, "<span class='notice'>We bind our tegument to our prey.</span>")
-				src.visible_message("<span class='warning'>[src]  merged their tegument with [target]</span>")
 			if(2)
-				to_chat(src, "<span class='notice'>We grow inwards.</span>")
-				src.visible_message("<span class='warning'>[src] grown their appendages into [target]</span>")
+				src.visible_message("<span class='warning'>[src] merged their tegument with [target]</span>", \
+						"<span class='notice'>We bind our tegument to our prey.</span>")
 				T.getBruteLoss(10)
 			if(3)
-				to_chat(src, "<span class='notice'> We merge with our prey.</span>")
-				src.visible_message("<span class='danger'>[src]  dissolved in [target] and merged with them completely! Oh God!</span>")
-				to_chat(T, "<span class='danger'>You feel a sharp stabbing pain!</span>")
+				src.visible_message("<span class='warning'>[src] grown their appendages into [target]</span>", \
+						"<span class='notice'>We grow inwards.</span>")
 				T.getBruteLoss(15)
 
 		feedback_add_details("changeling_powers","A[stage]")
@@ -295,19 +377,47 @@
 			src.mind.changeling.isabsorbing = 0
 			T.getBruteLoss(39)
 			return
-	if(src.mind)
-		src.mind.transfer_to(target)
-	else
-		target.key = src.key
-	target.forceMove(get_turf(src))
-	qdel(src)
-	target.make_changeling()
-	to_chat(src, "<span class='notice'>We have infested [target]!</span>")
+
+	src.visible_message("<span class='danger'>[src] dissolved in [target] and merged with them completely!</span>", \
+						"<span class='notice'>We merged with our prey.</span>")
+
+	to_chat(T, "<span class='danger'>You feel a sharp stabbing pain!</span>")
 	src.mind.changeling.isabsorbing = 0
+
+	if(istype(src,/mob/living/simple_animal/hostile/little_changeling/arm_chan))
+		if(!T.has_limb(BP_L_ARM))
+			T.restore_limb(BP_L_ARM)
+			T.restore_limb(BP_L_HAND)
+		else if (!T.has_limb(BP_R_ARM))
+			T.restore_limb(BP_R_ARM)
+			T.restore_limb(BP_R_HAND)
+	else if(istype(src,/mob/living/simple_animal/hostile/little_changeling/leg_chan))
+		if(!T.has_limb(BP_L_LEG))
+			T.restore_limb(BP_L_LEG)
+			T.restore_limb(BP_L_FOOT)
+		else if (!T.has_limb(BP_R_LEG))
+			T.restore_limb(BP_R_LEG)
+			T.restore_limb(BP_R_FOOT)
+	else if(istype(src,/mob/living/simple_animal/hostile/little_changeling/head_chan))
+		if(!T.has_limb(BP_HEAD))
+			T.restore_limb(BP_HEAD)
+			T.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/brain(T)
+			T.internal_organs_by_name[BP_EYES] = new/obj/item/organ/internal/eyes(T)
+
+	T.sync_organ_dna()
+	T.regenerate_icons()
+
+	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages)
+	absorbDNA(newDNA)
+
+	changeling_transfer_mind(T)
+
+	qdel(src)
+
 	return
 
 /mob/living/simple_animal/hostile/little_changeling/Allow_Spacemove(var/check_drift = 0)
-	return 0	//No drifting in space for space carp!	//original comments do not steal
+	return 0
 
 /mob/living/simple_animal/hostile/little_changeling/FindTarget()
 	. = ..()
@@ -315,6 +425,8 @@
 		custom_emote(1,"nashes at [.]")
 
 /mob/living/simple_animal/hostile/little_changeling/AttackingTarget()
+	if (!harm_intent_damage)
+		return
 	. =..()
 	var/mob/living/L = .
 	if(istype(L))
@@ -326,32 +438,41 @@
 /mob/living/simple_animal/hostile/little_changeling/arm_chan
 	maxHealth = 50
 	health = 50
-	name = "Arm"
+	name = "disfigured arm"
 	icon_state = "gib_arm"
 	icon_living = "gib_arm"
 /mob/living/simple_animal/hostile/little_changeling/head_chan
 	maxHealth = 50
 	health = 50
-	name = "Head"
+	name = "disfigured head"
 	icon_state = "gib_head"
 	icon_living = "gib_head"
 /mob/living/simple_animal/hostile/little_changeling/chest_chan
 	maxHealth = 200
 	health = 200
-	name = "Chest"
+	name = "disfigured chest"
 	icon_state = "gib_torso"
 	icon_living = "gib_torso"
 /mob/living/simple_animal/hostile/little_changeling/leg_chan
 	maxHealth = 50
 	health = 50
-	name = "Leg"
+	name = "disfigured leg"
 	icon_state = "gib_leg"
 	icon_living = "gib_leg"
 
+
+/mob/living/simple_animal/hostile/little_changeling/headcrab/death(gibbed, deathmessage = "went limp!", show_dead_message)
+	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
+	if (BIO)
+		BIO.die()
+	..()
+
 /mob/living/simple_animal/hostile/little_changeling/headcrab
-	maxHealth = 150
-	health = 150
-	name = "Leg"
+	maxHealth = 15
+	health = 15
+	harm_intent_damage = 0
+	speed = 4
+	name = "headcrab"
 	icon_state = "headcrab"
 	icon_living = "headcrab"
 	icon_dead = "headcrab_dead"

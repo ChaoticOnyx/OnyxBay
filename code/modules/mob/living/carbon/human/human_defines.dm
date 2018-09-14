@@ -117,4 +117,6 @@
 
 	var/obj/item/grab/current_grab_type 	// What type of grab they use when they grab someone.
 	var/skin_state = SKIN_NORMAL
-	var/canfeelpain = 1
+	var/no_pain = 0
+
+	var/debug = 0
