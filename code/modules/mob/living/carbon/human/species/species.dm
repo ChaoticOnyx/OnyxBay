@@ -505,6 +505,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		if(armor_check < 100)
 			target.visible_message("<span class='danger'>[attacker] has pushed [target]!</span>")
+			if(target.l_hand && prob(70))
+				target.drop_from_inventory(target.l_hand)
+			if(target.r_hand && prob(70))
+				target.drop_from_inventory(target.r_hand)
 		else
 			target.visible_message("<span class='warning'>[attacker] attempted to push [target]!</span>")
 		return

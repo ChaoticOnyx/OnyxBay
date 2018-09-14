@@ -113,6 +113,10 @@
 			if(limb_pain)
 				emote("scream")
 			custom_emote(VISIBLE_MESSAGE, "collapses!")
+		if(l_hand)
+			drop_from_inventory(l_hand)
+		if(r_hand)
+			drop_from_inventory(r_hand)
 		Weaken(5) //can't emote while weakened, apparently.
 
 /mob/living/carbon/human/proc/handle_grasp()
