@@ -578,5 +578,23 @@ var/list/mining_floors = list()
 				attackby(R.module_state_2,R)
 			else if(istype(R.module_state_3,/obj/item/weapon/storage/ore))
 				attackby(R.module_state_3,R)
-			else
-				return
+			if (istype(R.module,/obj/item/weapon/robot_module/miner/adv))
+				var/obj/item/robot_rack/miner/C
+				if(istype(R.module_state_1,/obj/item/robot_rack/miner))
+					C = R.module_state_1
+					if (length(C.held))
+						var/obj/structure/ore_box/OB = locate(/obj/structure/ore_box) in C
+						for(var/obj/item/weapon/ore/ore in R.loc)
+							ore.Move(OB)
+				else if(istype(R.module_state_2,/obj/item/robot_rack/miner))
+					C = R.module_state_2
+					if (length(C.held))
+						var/obj/structure/ore_box/OB = locate(/obj/structure/ore_box) in C
+						for(var/obj/item/weapon/ore/ore in R.loc)
+							ore.Move(OB)
+				else if(istype(R.module_state_3,/obj/item/robot_rack/miner))
+					C = R.module_state_3
+					if (length(C.held))
+						var/obj/structure/ore_box/OB = locate(/obj/structure/ore_box) in C
+						for(var/obj/item/weapon/ore/ore in R.loc)
+							ore.Move(OB)

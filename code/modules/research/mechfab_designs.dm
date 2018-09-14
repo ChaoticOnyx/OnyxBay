@@ -361,29 +361,36 @@
 
 /datum/design/item/robot_upgrade/visor/thermal
 	name = "Thermal vision module"
-	id = "borg_visor_thermal"
+	id = "borg_visor/thermal"
 	req_tech = list(TECH_COMBAT = 3, TECH_ENGINEERING = 4, TECH_MATERIAL = 3, TECH_BIO = 4)
 	materials = list(DEFAULT_WALL_MATERIAL = 15000, "glass" = 15000, "diamond" = 1000)
-	build_path = /obj/item/borg/upgrade/visor_thermal
+	build_path = /obj/item/borg/upgrade/visor/thermal
 
 /datum/design/item/robot_upgrade/visor/flash_screen
 	name = "Flash screen"
 	id = "borg_visor_flash_screen"
 	req_tech = list(TECH_COMBAT = 4, TECH_ENGINEERING = 6, TECH_MATERIAL = 3)
 	materials = list(DEFAULT_WALL_MATERIAL = 12500, "glass" = 15000, "silver" = 1500)
-	build_path = /obj/item/borg/upgrade/visor_flash_screen
+	build_path = /obj/item/borg/upgrade/visor/flash_screen
 
 /datum/design/item/robot_upgrade/visor/nvg
 	name = "Night vision module"
-	id = "borg_visor_nvg"
+	id = "borg_visor/nvg"
 	req_tech = list(TECH_COMBAT = 2, TECH_ENGINEERING = 2, TECH_MATERIAL = 3)
-	build_path = /obj/item/borg/upgrade/visor_nvg
+	build_path = /obj/item/borg/upgrade/visor/nvg
 
 /datum/design/item/robot_upgrade/visor/meson
 	name = "Meson vision module"
-	id = "borg_visor_meson"
+	id = "borg_visor/meson"
 	req_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 4, TECH_MATERIAL = 3)
-	build_path = /obj/item/borg/upgrade/visor_meson
+	build_path = /obj/item/borg/upgrade/visor/meson
+
+/datum/design/item/robot_upgrade/visor/x_ray
+	name = "X-ray module"
+	id = "borg_x_ray_module"
+	req_tech = list(TECH_COMBAT = 5, TECH_ENGINEERING = 6, TECH_MATERIAL = 6, TECH_BIO = 5, TECH_ILLEGAL = 5)
+	materials = list(DEFAULT_WALL_MATERIAL = 20000, "glass" = 25000, "silver" = 5000, "diamond" = 1500, "uranium" = 2500)
+	build_path = /obj/item/borg/upgrade/visor/x_ray
 
 /datum/design/item/robot_upgrade/rped
 	name = "RPED module"
@@ -406,13 +413,6 @@
 	id = "borg_paperwork_module"
 	materials = list(DEFAULT_WALL_MATERIAL = 8000)
 	build_path = /obj/item/borg/upgrade/paperwork
-
-/datum/design/item/robot_upgrade/x_ray
-	name = "X-ray module"
-	id = "borg_x_ray_module"
-	req_tech = list(TECH_COMBAT = 5, TECH_ENGINEERING = 6, TECH_MATERIAL = 6, TECH_BIO = 5, TECH_ILLEGAL = 5)
-	materials = list(DEFAULT_WALL_MATERIAL = 20000, "glass" = 25000, "silver" = 5000, "diamond" = 1500, "uranium" = 2500)
-	build_path = /obj/item/borg/upgrade/visor_x_ray
 
 /datum/design/item/robot_upgrade/cargo_managment
 	name = "Cargo managment module"
@@ -459,21 +459,21 @@
 /datum/design/item/robot_upgrade/paramedic
 	name = "Paramedic module"
 	id = "borg_paramedic_module"
-	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 5000)
+	materials = list(DEFAULT_WALL_MATERIAL = 20000, "glass" = 5000)
 	req_tech = list(TECH_BIO = 3, TECH_MATERIAL = 3)
 	build_path = /obj/item/borg/upgrade/paramedic
 
 /datum/design/item/robot_upgrade/archeologist
 	name = "Archeologist kit"
 	id = "borg_archeologist_module"
-	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 5000, "diamond" = 500)
+	materials = list(DEFAULT_WALL_MATERIAL = 25000, "glass" = 7500)
 	req_tech = list(TECH_MATERIAL = 2, TECH_ENGINEERING = 2, TECH_MAGNET = 3)
 	build_path = /obj/item/borg/upgrade/archeologist
 
 /datum/design/item/robot_upgrade/detective
 	name = "Detective kit"
 	id = "borg_detective_module"
-	materials = list(DEFAULT_WALL_MATERIAL = 5000, "glass" = 5000, "silver" = 2000)
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 5000, "silver" = 2000)
 	req_tech = list(TECH_MATERIAL = 3, TECH_ENGINEERING = 1, TECH_BIO = 3)
 	build_path = /obj/item/borg/upgrade/detective
 
