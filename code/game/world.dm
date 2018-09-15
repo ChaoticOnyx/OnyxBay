@@ -545,7 +545,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 /world/proc/load_motd()
 	join_motd = russian_to_cp1251(file2text("config/motd.txt"))
-	join_regular_announcement = russian_to_cp1251(file2text("html/regular_announcement.html"), prepare_to_browser = TRUE)
+	load_regular_announcement()
 
 
 /proc/load_configuration()

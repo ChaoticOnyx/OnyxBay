@@ -28,6 +28,7 @@
 	var/obj/item/weapon/card/id/idcard = /obj/item/weapon/card/id/synthetic
 
 	var/list/avaliable_huds
+	var/active_hud
 
 /mob/living/silicon/New()
 	GLOB.silicon_mob_list += src
@@ -225,23 +226,23 @@
 	return
 
 /mob/living/silicon/proc/toggle_sensor_mode()
-	hud_type = null
+	active_hud = null
 	var/sensor_type = input("Please select sensor type.", "Sensor Integration", null) in avaliable_huds
 	switch(sensor_type)
 		if ("Security")
 			sensor_mode = SEC_VISION
-			hud_type = HUD_SECURITY
+			active_hud = HUD_SECURITY
 			to_chat(src, "<span class='notice'>Security records overlay enabled.</span>")
 		if ("Medical")
 			sensor_mode = MED_VISION
-			hud_type = HUD_MEDICAL
+			active_hud = HUD_MEDICAL
 			to_chat(src, "<span class='notice'>Life signs monitor overlay enabled.</span>")
 		if ("Meson")
 			sensor_mode = MESON_VISION
 			to_chat(src, "<span class='notice'>Meson vision overlay enabled.</span>")
 		if ("Science")
 			sensor_mode = SCIENCE_VISION
-			hud_type = HUD_SCIENCE
+			active_hud = HUD_SCIENCE
 			to_chat(src, "<span class='notice'>Science vision overlay enabled.</span>")
 		if ("Night Vision")
 			sensor_mode = NVG_VISION

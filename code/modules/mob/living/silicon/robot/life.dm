@@ -53,7 +53,7 @@
 			cell_use_power(50)
 		if(src.module_state_3)
 			cell_use_power(50)
-
+		hud_used.update_robot_modules_display()
 		if(lights_on)
 			if(intenselight)
 				cell_use_power(100)	// Upgraded light. Double intensity, much larger power usage.
@@ -92,6 +92,7 @@
 	if (src.stat != DEAD) //Alive.
 		if (src.paralysis || src.stunned || src.weakened || !src.has_power) //Stunned etc.
 			src.set_stat(UNCONSCIOUS)
+
 			if (src.stunned > 0)
 				AdjustStunned(-1)
 			if (src.weakened > 0)
@@ -155,12 +156,12 @@
 	return 1
 /mob/living/silicon/robot/handle_regular_hud_updates()
 	..()
-
-	switch(src.sensor_mode)
-		if (SEC_VISION)
-			process_sec_hud(src,1)
-		if (MED_VISION)
-			process_med_hud(src,1)
+	if(client)
+		switch(src.sensor_mode)
+			if (SEC_VISION)
+				process_sec_hud(src,1)
+			if (MED_VISION)
+				process_med_hud(src,1)
 
 	if (src.healths)
 		if (src.stat != 2)

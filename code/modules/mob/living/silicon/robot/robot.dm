@@ -66,6 +66,7 @@
 
 	var/opened = 0
 	var/emagged = 0
+	var/emag_master = null
 	var/wiresexposed = 0
 	var/locked = 1
 	var/has_power = 1
@@ -256,6 +257,8 @@
 /mob/living/silicon/robot/proc/pick_module()
 	if(module)
 		return
+	sensor_mode = 0
+	active_hud = null
 	var/list/modules = list()
 	modules.Add(GLOB.robot_module_types)
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
@@ -275,6 +278,7 @@
 	feedback_inc("cyborg_[lowertext(modtype)]",1)
 	updatename()
 	recalculate_synth_capacities()
+
 	if(module)
 		notify_ai(ROBOT_NOTIFICATION_NEW_MODULE, module.name)
 	
@@ -346,6 +350,18 @@
 		return null
 
 	var/dat = "<HEAD><TITLE>[src.name] Self-Diagnosis Report</TITLE></HEAD><BODY>\n"
+	if (module)
+		var/visors = ""
+		dat += "<b>Supported upgrades for [module]:</b><br>\n"
+		for(var/i in module.supported_upgrades)
+			var/atom/tmp = i
+			if(findtext("[tmp]","/obj/item/borg/upgrade/visor/"))
+				visors += "[initial(tmp.name)]<br>"
+			else
+				dat += "[initial(tmp.name)]<br>"
+		dat += "<b>Supported visors for [module]:<br></b>\n"
+		dat += visors
+		dat += "<hr>"
 	for (var/V in components)
 		var/datum/robot_component/C = components[V]
 		dat += "<b>[C.name]</b><br><table><tr><td>Brute Damage:</td><td>[C.brute_damage]</td></tr><tr><td>Electronics Damage:</td><td>[C.electronics_damage]</td></tr><tr><td>Powered:</td><td>[(!C.idle_usage || C.is_powered()) ? "Yes" : "No"]</td></tr><tr><td>Toggled:</td><td>[ C.toggled ? "Yes" : "No"]</td></table><br>"
@@ -548,6 +564,7 @@
 					C.parts[BP_L_ARM] = new/obj/item/robot_parts/l_arm(C)
 					C.parts[BP_R_ARM] = new/obj/item/robot_parts/r_arm(C)
 					C.update_icon()
+					drop_all_upgrades()
 					new/obj/item/robot_parts/chest(loc)
 					qdel(src)
 
@@ -651,6 +668,7 @@
 			if(allowed(usr))
 				locked = !locked
 				to_chat(user, "You [ locked ? "lock" : "unlock"] [src]'s interface.")
+				to_chat(src, "Your interface was [ locked ? "locked" : "unlocked"] by [user].")
 				update_icon()
 			else
 				to_chat(user, "<span class='warning'>Access denied.</span>")
@@ -894,7 +912,7 @@
 	. = ..()
 
 	if(module)
-		if(module.type == /obj/item/weapon/robot_module/janitor)
+		if(module.type == /obj/item/weapon/robot_module/janitor/general)
 			var/turf/tile = loc
 			if(isturf(tile))
 				tile.clean_blood()
@@ -1106,9 +1124,13 @@
 		else
 			sleep(6)
 			if(prob(50))
-				var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate() in src.module.modules
-				LC.locked = 0
+				if(module && istype(module,/obj/item/weapon/robot_module/security))
+					var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate() in src.module.modules
+					if (LC)
+						LC.locked = 0
 				emagged = 1
+				if(istype(user,/mob/living/carbon))
+					emag_master = user.real_name
 				lawupdate = 0
 				disconnect_from_ai()
 				to_chat(user, "You emag [src]'s interface.")
@@ -1119,7 +1141,16 @@
 				laws = new /datum/ai_laws/syndicate_override
 				var/time = time2text(world.realtime,"hh:mm:ss")
 				GLOB.lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) emagged [name]([key])")
-				set_zeroth_law("Only [user.real_name] and people \he designates as being such are operatives.")
+				if(isrobot(user))
+					var/mob/living/silicon/robot/R = user
+					if(R.module && istype(R.module,/obj/item/weapon/robot_module/research) && R.emagged)
+						emag_master = R.emag_master
+						if(emag_master)
+							set_zeroth_law("Only [emag_master] and [user.real_name], and people they designate as being such are operatives.")
+						else
+							set_zeroth_law("Only [user.real_name] and people it designates as being such are operatives.")
+				else
+					set_zeroth_law("Only [user.real_name] and people \he designates as being such are your masters.")
 				SetLockdown(0)
 				. = 1
 				spawn()
@@ -1138,7 +1169,10 @@
 					to_chat(src, "<span class='danger'>ERRORERRORERROR</span>")
 					to_chat(src, "<b>Obey these laws:</b>")
 					laws.show_laws(src)
-					to_chat(src, "<span class='danger'>ALERT: [user.real_name] is your new master. Obey your new laws and his commands.</span>")
+					if(emag_master && isrobot(user))
+						to_chat(src, "<span class='danger'>ALERT: [emag_master] and [user.real_name] are your new masters. Obey your new laws and their commands.</span>")
+					else
+						to_chat(src, "<span class='danger'>ALERT: [user.real_name] is your new master. Obey your new laws and his commands.</span>")
 					if(src.module)
 						var/rebuild = 0
 						for(var/obj/item/weapon/pickaxe/borgdrill/D in src.module.modules)
@@ -1158,3 +1192,22 @@
 	..()
 	if ((incapacitation_flags & INCAPACITATION_FORCELYING) && (lockcharge))
 		return 1
+
+/mob/living/silicon/robot/proc/drop_all_upgrades()
+	for(var/obj/item/borg/upgrade/U in src)
+		if (istype(U,/obj/item/borg/upgrade))
+			if(istype(U,/obj/item/borg/upgrade/remodel))
+				qdel(U)
+				continue
+			if(istype(U,/obj/item/borg/upgrade/vtec))
+				continue
+			if(istype(U,/obj/item/borg/upgrade/floodlight))
+				continue
+			contents.Remove(U)
+			U.loc = get_turf(src)
+			U.installed = 0
+	sensor_mode = 0
+	if (ion_trail)
+		ion_trail.stop()
+		qdel(ion_trail)
+		ion_trail = null

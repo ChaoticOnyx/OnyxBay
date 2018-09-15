@@ -316,7 +316,7 @@
 		return istype(G) && ((G.hud_type & hudtype) || (G.hud && (G.hud.hud_type & hudtype)))
 	else if(istype(M, /mob/living/silicon))
 		var/mob/living/silicon/R = M
-		if (R.hud_type == hudtype)
+		if (R.active_hud == hudtype)
 			return TRUE
 	return FALSE
 

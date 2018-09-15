@@ -172,7 +172,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if(!istype(T) || T.isMonkey())
+	if(!istype(T) || isMonkey(T))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
 
@@ -1175,7 +1175,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Arm Blade (20)"
 	visible_message("<span class='warning'>The flesh is torn around the [src.name]\'s arm!</span>",
-		"<span class='warning'>The flesh of our hand is transformed.</span>",
+		"<span class='warning'>The flesh of our hand is transforming.</span>",
 		"<span class='italics'>You hear organic matter ripping and tearing!</span>")
 	spawn(4 SECONDS)
 		playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
@@ -1434,7 +1434,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /mob/proc/changeling_fake_arm_blade()
 	set category = "Changeling"
 	set name = "Fake arm Blade (30)"
-	set desc = "We reform others arms into a fake armblade."
+	set desc = "We reform victims arm into a fake armblade."
 
 	var/mob/living/carbon/human/T = changeling_sting(30,/mob/proc/changeling_fake_arm_blade)
 	if(!T)	return 0
@@ -1508,6 +1508,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		var/datum/changeling/changeling = changeling_power(10,0,100,CONSCIOUS)
 		if(!changeling)
 			return
+
 		H.mind.changeling.heal = !H.mind.changeling.heal
 		to_chat(H, "<span class='notice'>We activate our stemocyte pool and begin intensive fleshmending.</span>")
 
@@ -1565,21 +1566,15 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		return
 	var/mob/M = A
 
-	world << src
-	world << M
-
 	BIO.change_host(A)
 
 	if (src.mind)	//basicaly if its mob then mind transfers to mob otherwise creating brain inside of biostucture
 		if(istype(M) && !istype(M,/mob/living/carbon/brain))
-			world << "mob not brain"
 			src.mind.transfer_to(M)
 		else 
-			world << "brain"
 			BIO.transfer_identity(BIO.owner)
 	else
 		if(istype(M))
-			world << "no mind"
 			M.key = src.key
 		return
 
@@ -1591,7 +1586,6 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/mob/living/carbon/human/H = A
 	if (istype(H))
 		if(H.stat == DEAD)
-			world << "dead bruh"
 			H.setBrainLoss(0)
 			H.SetParalysis(0)
 			H.SetStunned(0)
@@ -1604,5 +1598,4 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			H.set_stat(CONSCIOUS)
 			H.failed_last_breath = 0 //So mobs that died of oxyloss don't revive and have perpetual out of breath.
 			H.reload_fullscreen()
-		else
-			world << "not dead bruh"
+

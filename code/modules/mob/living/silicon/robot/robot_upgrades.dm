@@ -24,25 +24,6 @@
 			return 0
 	return 1
 
-/obj/item/borg/upgrade/proc/delete_all_upgrades(var/mob/living/silicon/robot/R)
-	for(var/obj/item/borg/upgrade/U in R)
-		if (istype(U,/obj/item/borg/upgrade))
-			if(istype(U,/obj/item/borg/upgrade/remodel))
-				qdel(U)
-				continue
-			if(istype(U,/obj/item/borg/upgrade/vtec))
-				continue
-			if(istype(U,/obj/item/borg/upgrade/floodlight))
-				continue
-			R.contents.Remove(U)
-			U.loc = get_turf(R)
-			U.installed = 0
-	R.sensor_mode = 0
-	if (R.ion_trail)
-		R.ion_trail.stop()
-		qdel(R.ion_trail)
-		R.ion_trail = null
-
 /obj/item/borg/upgrade/proc/action(var/mob/living/silicon/robot/R)
 	if(R.stat == DEAD)
 		to_chat(usr, "<span class='warning'>The [src] will not function on a deceased robot.</span>")
@@ -72,9 +53,9 @@
 
 /obj/item/borg/upgrade/remodel
 	name = "default model board"
-	desc = "Used to remodel a cyborg. Destroys any other upgrades applied to the robot."
+	desc = "Used to remodel a cyborg."
 	icon_state = "cyborg_upgrade1"
-	require_module = 1
+	require_module = 0
 	var/module = "Standard"
 
 /obj/item/borg/upgrade/remodel/advanced
@@ -82,16 +63,19 @@
 
 /obj/item/borg/upgrade/remodel/action(var/mob/living/silicon/robot/R, var/mob/user)
 	if(..()) return 0
-	spawn(1)
-		R.uneq_all()
-		R.hands.icon_state = initial(R.hands.icon_state)
-		if (R.shown_robot_modules)
-			R.shown_robot_modules = !R.shown_robot_modules
-			R.hud_used.update_robot_modules_display()
-		R.module.Reset(R)
-		qdel(R.module)
-		delete_all_upgrades(R)
-		R.module = null
+	R.active_hud = 0
+	R.sensor_mode = 0
+	spawn(1)	//will do stuff after proc end so item can be put in borg
+		if(R.module)
+			R.uneq_all()
+			R.hands.icon_state = initial(R.hands.icon_state)
+			if (R.shown_robot_modules)
+				R.shown_robot_modules = !R.shown_robot_modules
+				R.hud_used.update_robot_modules_display()
+			R.module.Reset(R)
+			qdel(R.module)
+			R.module = null
+		R.drop_all_upgrades()
 		var/module_type = robot_modules[module]
 		new module_type(R)
 		R.modtype = module
@@ -166,12 +150,13 @@
 
 /obj/item/borg/upgrade/rename/action(var/mob/living/silicon/robot/R)
 	if(..()) return 0
-	if (heldname == "")
-		heldname = sanitizeSafe(input(R, "Enter new robot name", "Robot Reclassification", heldname), MAX_NAME_LEN)
-	R.notify_ai(ROBOT_NOTIFICATION_NEW_NAME, R.name, heldname)
-	R.SetName(heldname)
-	R.custom_name = heldname
-	R.real_name = heldname
+	spawn(1)
+		if (heldname == "")
+			heldname = sanitizeSafe(input(R, "Enter new robot name", "Robot Reclassification", heldname), MAX_NAME_LEN)
+		R.notify_ai(ROBOT_NOTIFICATION_NEW_NAME, R.name, heldname)
+		R.SetName(heldname)
+		R.custom_name = heldname
+		R.real_name = heldname
 
 	return 1
 
@@ -320,13 +305,13 @@
 		installed = 1
 		return 1
 
-/obj/item/borg/upgrade/visor_thermal
+/obj/item/borg/upgrade/visor/thermal
 	name = "thermal visor upgrade"
 	desc = "Module contains callibration settings for cyborg visial sensors (THERMAL)."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/visor_thermal/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/visor/thermal/action(var/mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -336,13 +321,13 @@
 		installed = 1
 		return 1
 
-/obj/item/borg/upgrade/visor_nvg
+/obj/item/borg/upgrade/visor/nvg
 	name = "night visor upgrade"
 	desc = "Module contains callibration settings for cyborg visial sensors (NIGHT VISION)."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/visor_nvg/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/visor/nvg/action(var/mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -352,13 +337,13 @@
 		installed = 1
 		return 1
 
-/obj/item/borg/upgrade/visor_flash_screen
+/obj/item/borg/upgrade/visor/flash_screen
 	name = "flash screen visor upgrade"
 	desc = "Module contains lenses with toggleable tint that protects against bright light."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/visor_flash_screen/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/visor/flash_screen/action(var/mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -368,13 +353,13 @@
 		installed = 1
 		return 1
 
-/obj/item/borg/upgrade/visor_meson
+/obj/item/borg/upgrade/visor/meson
 	name = "meson visor upgrade"
 	desc = "Module contains callibration settings for cyborg visial sensors (MESON VISION)."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/visor_meson/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/visor/meson/action(var/mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -384,13 +369,13 @@
 		installed = 1
 		return 1
 
-/obj/item/borg/upgrade/visor_x_ray
+/obj/item/borg/upgrade/visor/x_ray
 	name = "x-ray visor upgrade"
 	desc = "Module contains callibration settings for cyborg visial sensors (X-RAY)."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/visor_x_ray/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/visor/x_ray/action(var/mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))

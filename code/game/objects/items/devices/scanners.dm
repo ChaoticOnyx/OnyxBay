@@ -34,7 +34,7 @@ REAGENT SCANNER
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	scan_mob(M, user)
 
-/obj/item/device/healthanalyzer/proc/scan_mob(var/mob/living/carbon/human/H, var/mob/living/user)
+/obj/item/device/healthanalyzer/proc/scan_mob(var/mob/living/carbon/C, var/mob/living/user)
 
 	if (!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You are not nimble enough to use this device.</span>")
@@ -46,14 +46,27 @@ REAGENT SCANNER
 		to_chat(user, "Overall Status: Healthy</span>")
 		return
 
-	if (!istype(H) || H.isSynthetic())
-		to_chat(user, "<span class='warning'>\The [src] is designed for organic humanoid patients only.</span>")
-		return
+	
 
-	user.visible_message("<span class='notice'>\The [user] runs \the [src] over \the [H].</span>")
-	to_chat(user, "<hr>")
-	to_chat(user, medical_scan_results(H, mode))
-	to_chat(user, "<hr>")
+	user.visible_message("<span class='notice'>\The [user] runs \the [src] over \the [C].</span>")
+	var/results = null
+	if (!istype(C,/mob/living/carbon/human/) || C.isSynthetic())
+		to_chat(user, "<span class='warning'>\The [src] is designed for organic humanoid patients only.</span>")
+	else
+		var/mob/living/carbon/human/H = C
+		results += medical_scan_results(H, mode)
+
+	if(C.antibodies.len && istype(C))
+		if (CLUMSY in user.mutations && prob(50))
+			// I was tempted to be really evil and rot13 the output.
+			results += "Antibodies detected: [reverse_text(antigens2string(C.antibodies))]"
+		else
+			results += "Antibodies detected: [antigens2string(C.antibodies)]"
+
+	if(results)
+		to_chat(user, "<hr>")
+		to_chat(user, results)
+		to_chat(user, "<hr><br>")
 
 proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose)
 	. = list()
@@ -251,7 +264,6 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose)
 
 	if(print_reagent_default_message)
 		. += "No results."
-	. = jointext(.,"<br>")
 
 // Calculates severity based on the ratios defined external limbs.
 proc/get_wound_severity(var/damage_ratio, var/vital = 0)
