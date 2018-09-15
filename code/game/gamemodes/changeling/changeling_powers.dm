@@ -456,7 +456,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	if(!src.stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
 		return
-	to_chat(src, "<span class='notice'>We will attempt to regenerate our form.</span>")
+	to_chat(src, "<span class='notice'>We relocated our organ in chest and will attempt to regenerate our form.</span>")
 
 	var/mob/living/carbon/C = src
 
@@ -1355,7 +1355,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	M.visible_message("<span class='danger'>You hear a loud cracking sound coming from \the [M].</span>", \
 						"<span class='danger'>We begin disjunction of our body to form a pack of autonomous organisms.</span>")
 
-	if(!do_after(src,60,can_move = 1,needhand = 0,incapacitation_flags = INCAPACITATION_DISABLED))
+	if(!do_after(src,60,needhand = 0,incapacitation_flags = INCAPACITATION_DISABLED))
 		M.visible_message("<span class='danger'>[M]'s transformation abruptly reverts itself!</span>", \
 							"<span class='danger'>Our transformation has been interrupted!</span>")
 		return 0
@@ -1428,7 +1428,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	changeling_transfer_mind(HC)
 
 	HC.visible_message("<span class='warning'>[BIO] suddenly grows tiny legs!</span>",
-		"<span class='alert'><h1><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></h1></span>")
+		"<span class='danger'><font size='2'><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></font></span>")
 	
 
 /mob/proc/changeling_fake_arm_blade()
@@ -1487,7 +1487,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	spawn(0)
 		while(C && !C.can_feel_pain() && C.mind && C.mind.changeling)
-			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 4, 0)
+			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 3, 0)
 			if (C.mind.changeling.chem_charges == 0)
 				C.no_pain = !C.no_pain
 			sleep(40)
@@ -1543,7 +1543,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 				if(H.mind.changeling.chem_charges == 0)
 					H.mind.changeling.heal = !H.mind.changeling.heal
 					to_chat(H, "<span class='warning'>We inactivate our stemocyte pool and stop intensive fleshmending because we run out of chemicals.</span>")
-			sleep(40)
+				sleep(40)
 		
 
 /mob/proc/changeling_move_biostructure()
@@ -1572,16 +1572,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		if(istype(M) && !istype(M,/mob/living/carbon/brain))
 			src.mind.transfer_to(M)
 		else 
-			BIO.transfer_identity(BIO.owner)
+			BIO.mind_into_biostructure(src)
 	else
 		if(istype(M))
 			M.key = src.key
 		return
-
-	if(istype(M,/mob/living))
-		if (BIO.brainchan)
-			qdel(BIO.brainchan)
-			BIO.brainchan = null
 
 	var/mob/living/carbon/human/H = A
 	if (istype(H))

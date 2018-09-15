@@ -41,45 +41,40 @@
 
 	
 	damage_threshold_value = round(max_damage / damage_threshold_count)
+
+	brainchan = new(src)
+	brainchan.container = src
+
 	spawn(5)
 		if(brainchan && brainchan.client)
 			brainchan.client.screen.len = null //clear the hud
-
-
 
 /obj/item/organ/internal/biostructure/Destroy()
 	QDEL_NULL(brainchan)
 	. = ..()
 
-/obj/item/organ/internal/biostructure/proc/transfer_identity(var/mob/living/carbon/H)
+/obj/item/organ/internal/biostructure/proc/mind_into_biostructure(var/mob/living/M)
 	if(status & ORGAN_DEAD) return
-
-	if(!brainchan)
-		brainchan = new(src)
-		brainchan.SetName(H.real_name)
-		brainchan.real_name = H.real_name
-		brainchan.dna = H.dna.Clone()
-		brainchan.container = src
-
-	if(H.mind)
-		H.mind.transfer_to(brainchan)
-
-	to_chat(brainchan, "<span class='notice'>You feel slightly disoriented.</span>")
-	callHook("debrain", list(brainchan))
+	world << "MIND_INTO"
+	if(M && M.mind && brainchan)
+		M.mind.transfer_to(brainchan)
+		to_chat(brainchan, "<span class='notice'>You feel slightly disoriented.</span>")
 	
 /obj/item/organ/internal/biostructure/removed(var/mob/living/user)
-	if(!istype(owner))
-		return ..()
-
 	if(vital)
-		transfer_identity(owner)
+		world << "REMOVED"
+		if (owner)
+			mind_into_biostructure(owner)
+		else if (istype(src.loc,/mob/living))
+			world << "BIO_INSIDE_MOB"
+			mind_into_biostructure(src.loc)
 
+		spawn()
+			if (istype(src.loc,/obj/item/organ/external))
+				brainchan.verbs += /mob/proc/transform_into_little_changeling
+			else
+				brainchan.verbs += /mob/proc/aggressive
 	..()
-	spawn()
-		if (istype(src.loc,/obj/item/organ/external))
-			brainchan.verbs += /mob/proc/transform_into_little_changeling
-		else
-			brainchan.verbs += /mob/proc/aggressive
 
 /obj/item/organ/internal/biostructure/replaced(var/mob/living/target)
 
@@ -115,7 +110,8 @@
 
 /obj/item/organ/internal/biostructure/die()
 	if(brainchan)
-		brainchan.mind.changeling.true_dead = 1
+		if(brainchan.mind)
+			brainchan.mind.changeling.true_dead = 1
 		brainchan.death()
 	else 
 		var/mob/host = src.loc
@@ -159,6 +155,8 @@
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 		if (brain)
 			brain.vital = 0
+	else
+		owner = null
 
 /mob/living/proc/insert_biostructure()
 	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
@@ -243,7 +241,7 @@
 		return
 
 	BIO.loc.visible_message("<span class='warning'>[BIO.loc] suddenly grows little legs!</span>",
-		"<span class='alert'><h1><b>We transformed into mobile form! We have to survive!</b></h1></span>")
+		"<span class='alert'><font size='2'><b>We transformed into mobile form! We have to find a new host!</b></font></span>")
 	qdel(limb_to_del)
 
 
@@ -287,11 +285,12 @@
 	pixel_z = 6
 	..()
 
-/mob/living/simple_animal/hostile/little_changeling/death(gibbed, deathmessage = "ripped open!", show_dead_message)
+/mob/living/simple_animal/hostile/little_changeling/death(gibbed, deathmessage = "has been ripped open!", show_dead_message)
 	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
 	if (BIO)
 		BIO.removed()
 		BIO.forceMove(get_turf(src))
+		return
 	..()
 
 /mob/living/simple_animal/hostile/little_changeling/Destroy()
@@ -299,6 +298,7 @@
 	if (BIO)
 		BIO.removed()
 		BIO.forceMove(get_turf(src))
+		return
 	..()
 
 /mob/living/simple_animal/hostile/little_changeling/verb/paralyse(mob/living/target as mob in oview(1))
@@ -381,7 +381,8 @@
 	src.visible_message("<span class='danger'>[src] dissolved in [target] and merged with them completely!</span>", \
 						"<span class='notice'>We merged with our prey.</span>")
 
-	to_chat(T, "<span class='danger'>You feel a sharp stabbing pain!</span>")
+	to_chat(T, "<span class='danger'><h3>Your neural network has been overtaken by \the [src]!</h3></span>")
+	to_chat(T,"<span class='deadsay'>You have died.</span>")
 	src.mind.changeling.isabsorbing = 0
 
 	if(istype(src,/mob/living/simple_animal/hostile/little_changeling/arm_chan))
@@ -410,6 +411,7 @@
 	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages)
 	absorbDNA(newDNA)
 
+	T.ghostize()
 	changeling_transfer_mind(T)
 
 	qdel(src)
