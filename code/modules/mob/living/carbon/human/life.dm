@@ -542,6 +542,9 @@
 
 // Check if we should die.
 /mob/living/carbon/human/proc/handle_death_check()
+	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
+	if(BIO && src.mind && src.mind.changeling)
+		return FALSE
 	if(should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
 		if(!brain || (brain.status & ORGAN_DEAD))

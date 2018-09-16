@@ -17,6 +17,35 @@
 		. = TRUE
 	last_dam = damage_this_tick
 
+/mob/living/carbon/human/proc/restore_limb(var/limb_type, var/show_message = FALSE)	//only for changling for now
+	var/obj/item/organ/external/E = organs_by_name[limb_type]
+	if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
+		E.removed()//...because no one wants their head to explode to make way for a new one.
+		qdel(E)
+		E= null
+	if(!E)
+		var/list/organ_data = species.has_limbs[limb_type]
+		var/limb_path = organ_data["path"]
+		var/obj/item/organ/external/O = new limb_path(src)
+		organ_data["descriptor"] = O.name
+		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in vessel.reagent_list
+		blood_splatter(src,B,1)
+		O.set_dna(dna)
+		update_body()
+		if (show_message)
+			to_chat(src, "<span class='danger'>With a shower of fresh blood, a new [O.name] forms.</span>")
+			visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [src]'s [O.amputation_point], forming a new [O.name]!</span>")
+		return 1
+	else if (E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
+		E.status &= ~ORGAN_BROKEN
+		E.status &= ~ORGAN_ARTERY_CUT
+		for(var/datum/wound/W in E.wounds)
+			if(W.wound_damage() == 0 && prob(50))
+				E.wounds -= W
+		return 1
+	else
+		return 0
+
 // Takes care of organ related updates, such as broken and missing limbs
 /mob/living/carbon/human/proc/handle_organs()
 
@@ -125,7 +154,7 @@
 			var/obj/item/organ/external/E = get_organ(limb_tag)
 			if(!E)
 				visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
-				drop_from_inventory(l_hand)
+				drop_from_inventory(l_hand,force = 1)
 				break
 
 	if(r_hand)
@@ -133,7 +162,7 @@
 			var/obj/item/organ/external/E = get_organ(limb_tag)
 			if(!E)
 				visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
-				drop_from_inventory(r_hand)
+				drop_from_inventory(r_hand,force = 1)
 				break
 
 	// Check again...
@@ -162,7 +191,7 @@
 
 	if(!thing)
 		return
-
+		
 	drop_from_inventory(thing)
 
 	if(affected.robotic >= ORGAN_ROBOT)
@@ -181,7 +210,7 @@
 			var/obj/item/organ/external/hand = pick(affected.children)
 			grasp_name = hand.name
 
-		if(affected.can_feel_pain())
+		if(!no_pain && affected.can_feel_pain())
 			var/emote_scream = pick("screams in pain", "lets out a sharp cry", "cries out")
 			var/emote_scream_alt = pick("scream in pain", "let out a sharp cry", "cry out")
 			visible_message(
@@ -212,3 +241,10 @@
 		if(!istype(heart) || !heart.is_working())
 			return TRUE
 	return FALSE
+
+/mob/living/carbon/human/proc/has_damaged_organ()
+	for(var/limb_type in (species.has_limbs | organs_by_name))
+		var/obj/item/organ/external/E = organs_by_name[limb_type]
+		if((E && E.damage > 0) || !E || (E && (E.status & ORGAN_BROKEN)) || (E && (E.status &= ~ORGAN_ARTERY_CUT)))
+			return 1
+	return 0

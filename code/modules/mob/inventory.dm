@@ -172,6 +172,10 @@ var/list/slot_equipment_priority = list( \
 	if(hand)	return drop_l_hand(Target, force)
 	else		return drop_r_hand(Target, force)
 
+/mob/proc/drop_item_inactive_hand(var/atom/Target, var/force = 0)
+	if(hand)	return drop_r_hand(Target, force)
+	else		return drop_l_hand(Target, force)
+
 /*
 	Removes the object from any slots the mob might have, calling the appropriate icon update proc.
 	Does nothing else.

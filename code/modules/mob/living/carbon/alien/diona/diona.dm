@@ -32,7 +32,7 @@
 	if(hat)
 		to_chat(user, "<span class='notice'>It is wearing \icon[hat] \a [hat].</span>")
 
-/mob/living/carbon/alien/diona/drop_from_inventory(var/obj/item/W, var/atom/Target = null)
+/mob/living/carbon/alien/diona/drop_from_inventory(var/obj/item/W, var/atom/Target = null, var/force = null)
 	. = ..()
 	if(W == hat)
 		hat = null
