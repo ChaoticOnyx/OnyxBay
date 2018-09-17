@@ -90,6 +90,30 @@ var/const/NO_EMAG_ACT = -50
 
 	return 1
 
+/obj/item/weapon/card/emag/robot
+	desc = "It's a card with a magnetic strip attached to some circuitry."
+	name = "cryptographic sequencer"
+	icon_state = "emag"
+	item_state = "card-id"
+	origin_tech = list(TECH_MAGNET = 2, TECH_ILLEGAL = 2)
+	uses = 3
+
+/obj/item/weapon/card/emag/robot/resolve_attackby(atom/A, mob/user)
+	var/used_uses = A.emag_act(uses, user, src)
+	if(used_uses == NO_EMAG_ACT)
+		return ..(A, user)
+
+	uses -= used_uses
+	if(used_uses)
+		log_and_message_admins("emagged \an [A].")
+
+	if(uses<1)
+		user.visible_message("<span class='warning'>\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent.</span>")
+	return 1
+/obj/item/weapon/card/emag/robot/examine(mob/user)
+	..()
+	to_chat(usr, "<span class='notice'>It has [uses] uses left.</span>")
+
 /obj/item/weapon/card/id
 	name = "identification card"
 	desc = "A card used to provide ID and determine access."

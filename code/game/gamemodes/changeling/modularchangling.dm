@@ -32,7 +32,6 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We become weakened to a death-like state, where we will rise again from death."
 	helptext = "Can be used before or after death. Duration varies greatly."
 	genomecost = 0
-	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_fakedeath
 
 // Hivemind
@@ -57,23 +56,23 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 4
 	verbpath = /mob/proc/changeling_lesser_form
 */
-/*
+
 /datum/power/changeling/deaf_sting
 	name = "Deaf Sting"
 	desc = "We silently sting a human, completely deafening them for a short time."
 	genomecost = 1
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_deaf_sting
-*/
-/*
+
+
 /datum/power/changeling/blind_sting
 	name = "Blind Sting"
 	desc = "We silently sting a human, completely blinding them for a short time."
 	genomecost = 2
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_blind_sting
-*/
-/*
+
+
 /datum/power/changeling/silence_sting
 	name = "Silence Sting"
 	desc = "We silently sting a human, completely silencing them for a short time."
@@ -81,12 +80,13 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 3
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_silence_sting
-*/
+
 /datum/power/changeling/mimicvoice
 	name = "Mimic Voice"
 	desc = "We shape our vocal glands to sound like a desired voice."
 	helptext = "Will turn your voice into the name that you enter. We must constantly expend chemicals to maintain our form like this"
 	genomecost = 1
+	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_mimicvoice
 
 /datum/power/changeling/extractdna
@@ -199,7 +199,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Arm Blade"
 	desc = "We reform one of our arms into a deadly blade."
 	helptext = "We may retract our armblade by dropping it.  It can deflect projectiles."
-	enhancedtext = "The blade will have armor peneratration."
+	enhancedtext = "The blade would have armor peneratration."
 	genomecost = 8
 	verbpath = /mob/proc/changeling_arm_blade
 
@@ -210,7 +210,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Claw"
 	desc = "We reform one of our arms into a deadly claw."
 	helptext = "We may retract our claw by dropping it."
-	enhancedtext = "The claw will have armor peneratration."
+	enhancedtext = "The claw would have armor peneratration."
 	genomecost = 6
 	verbpath = /mob/proc/changeling_claw
 
@@ -227,7 +227,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We reform victims arm into a fake armblade."
 	helptext = "The effect is irrevertable."
 	enhancedtext = "Doing nothing"
-	genomecost = 3
+	genomecost = 6
 	verbpath = /mob/proc/changeling_fake_arm_blade
 */
 
@@ -235,22 +235,20 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Fake Armblade"
 	desc = "We reform victims arm into a fake armblade."
 	helptext = "The effect is irrevertable."
-	genomecost = 3
+	genomecost = 5
 	verbpath = /mob/proc/changeling_fake_arm_blade
 
 /datum/power/changeling/no_pain
 	name = "Painless"
 	desc = "We choose whether or not to fell pain."
-	helptext = "Toggleable ability"
-	enhancedtext = "Doing nothing"
-	genomecost = 3
+	helptext = "Toggleable ability, high chemical cost."
+	genomecost = 8
 	verbpath = /mob/proc/changeling_no_pain
 
 /datum/power/changeling/gib_self
-	name = "Body disjunction"
+	name = "Body Disjunction"
 	desc = "Tear apart your human disguise, revealing your little form."
 	helptext = "Takes time."
-	enhancedtext = "Doing nothing"
 	genomecost = 4
 	verbpath = /mob/proc/changeling_gib_self
 
@@ -258,15 +256,21 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Detach Limb"
 	desc = "We tear off our limb, turning it into an aggressive biomass."
 	helptext = "It hurts."
-	enhancedtext = "Doing nothing"
 	genomecost = 0
 	verbpath = /mob/proc/changeling_detach_limb
+
+/datum/power/changeling/move_biostructure
+	name = "Relocate Biostructure"
+	desc = "We move our precious organ in other place."
+	helptext = "Takes time."
+	enhancedtext = "Would relocate faster"
+	genomecost = 0
+	verbpath = /mob/proc/changeling_move_biostructure
 
 /datum/power/changeling/division
 	name = "Division"
 	desc = "We infest humanoid body with the clone of our core, making them like us."
 	helptext = "Dead bodies cannot be successfully infested."
-	enhancedtext = "Doing nothing"
 	genomecost = 8
 	verbpath = /mob/proc/changeling_division
 
@@ -274,8 +278,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Passive Regeneration"
 	desc = "Allows you to passively regenerate when activated."
 	helptext = "Spends chemicals."
-	enhancedtext = "Doing nothing"
-	genomecost = 4
+	genomecost = 6
 	verbpath = /mob/proc/changeling_rapid_heal
 
 // Modularchangling, totally stolen from the new player panel.  YAYY
@@ -349,7 +352,7 @@ var/list/datum/power/changeling/powerinstances = list()
 
 				}
 
-				function expand(id,name,desc,helptext,power,ownsthis){
+				function expand(id,name,desc,helptext,enhancedtext,power,ownsthis){
 
 					clearAll();
 
@@ -362,6 +365,11 @@ var/list/datum/power/changeling/powerinstances = list()
 					body += "<font size='2'><b>"+desc+"</b></font> <BR>"
 
 					body += "<font size='2'><font color = 'red'><b>"+helptext+"</b></font></font><BR>"
+
+					if(enhancedtext)
+					{
+						body += "<font size='2'><font color = 'DeepSkyBlue'><b>"+enhancedtext+"</b></font></font><BR>"
+					}
 
 					if(!ownsthis)
 					{
@@ -518,7 +526,7 @@ var/list/datum/power/changeling/powerinstances = list()
 				<td align='center' bgcolor='[color]'>
 					<span id='notice_span[i]'></span>
 					<a id='link[i]'
-					onmouseover='expand("item[i]","[P.name]","[P.desc]","[P.helptext]","[P]",[ownsthis])'
+					onmouseover='expand("item[i]","[P.name]","[P.desc]","[P.helptext]","[P.enhancedtext]","[P]",[ownsthis])'
 					>
 					<span id='search[i]'><b>Evolve [P] - Cost: [ownsthis ? "Purchased" : P.genomecost]</b></span>
 					</a>

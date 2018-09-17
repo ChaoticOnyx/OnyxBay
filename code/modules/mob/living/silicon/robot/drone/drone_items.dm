@@ -11,7 +11,7 @@
 	#define MODE_EMPTY 2
 	var/inuse = 0
 	var/mode = 1
-	var/storage_type = null
+	var/list/storage_type = list()
 
 	//Has a list of items that it can hold.
 	var/list/can_hold = list(
@@ -66,7 +66,11 @@
 	name = "chemistry gripper"
 	desc = "A simple grasping tool for chemical work."
 	icon_state = "gripper-medical"
-	storage_type = /obj/item/weapon/storage/box/
+	storage_type = list(
+		/obj/item/weapon/storage/box/,
+		/obj/item/weapon/storage/fancy/vials,
+		/obj/item/weapon/storage/lockbox/vials
+		)
 
 	can_hold = list(
 		/obj/item/weapon/reagent_containers/glass,
@@ -74,6 +78,8 @@
 		/obj/item/weapon/reagent_containers/ivbag,
 		/obj/item/stack/material/phoron,
 		/obj/item/weapon/storage/pill_bottle,
+		/obj/item/weapon/reagent_containers/food/snacks/monkeycube,
+		/obj/item/weapon/virusdish,
 		/obj/item/weapon/paper
 		)
 
@@ -81,7 +87,9 @@
 	name = "detective gripper"
 	desc = "A simple grasping tool for detective work."
 	icon_state = "gripper-detective"
-	storage_type = /obj/item/weapon/storage/box/
+	storage_type = list(
+		/obj/item/weapon/storage/box/
+		)
 
 	can_hold = list(
 		/obj/item/weapon/forensics,
@@ -95,7 +103,9 @@
 	desc = "Complex of actuators and holders intended for emptying bags and boxes."
 	icon_state = "decompiler"
 	can_hold = null
-	storage_type = /obj/item/weapon/storage/
+	storage_type = list(
+		/obj/item/weapon/storage/
+		)
 
 /obj/item/weapon/gripper/archeologist
 	name = "archeologist gripper"
@@ -114,7 +124,11 @@
 	name = "scientific gripper"
 	icon_state = "gripper-sci"
 	desc = "A simple grasping tool suited to assist in a wide array of research applications."
-	storage_type = /obj/item/weapon/storage/box/
+	storage_type = list(
+		/obj/item/weapon/storage/box/,
+		/obj/item/weapon/storage/fancy/vials,
+		/obj/item/weapon/storage/lockbox/vials
+		)
 	can_hold = list(
 		/obj/item/weapon/cell,
 		/obj/item/weapon/stock_parts,
@@ -157,14 +171,17 @@
 	name = "surgical gripper"
 	icon_state = "gripper-medical"
 	desc = "A simple grasping tool for holding surgical utensils as well organs and bodyparts."
-	storage_type = /obj/item/weapon/storage/box/
+	storage_type = list(
+		/obj/item/weapon/storage/box/
+		)
 	can_hold = list(
 	/obj/item/organ,
 	/obj/item/weapon/reagent_containers/ivbag,
 	/obj/item/weapon/tank/anesthetic,
 	/obj/item/weapon/reagent_containers/food/snacks/meat,
 	/obj/item/device/mmi,
-	/obj/item/robot_parts
+	/obj/item/robot_parts,
+	/obj/item/weapon/paper
 	)
 
 /obj/item/weapon/gripper/no_use //Used when you want to hold and put items in other things, but not able to 'use' the item
@@ -185,14 +202,14 @@
 	. = ..()
 	if(wrapped)
 		to_chat(user, "It is holding \a [wrapped].")
-	else if (storage_type)
+	else if (length(storage_type))
 		to_chat(user, "[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers.")
 
 /obj/item/weapon/gripper/attack_self(mob/user as mob)
 	if(wrapped)
 		return wrapped.attack_self(user)
 	else
-		if (storage_type)
+		if (length(storage_type))
 			playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
 			if (mode == MODE_EMPTY)
 				mode = MODE_OPEN
@@ -262,35 +279,38 @@
 
 		//If resolve_attackby forces waiting before taking wrapped, we need to let it finish before doing the rest.
 		addtimer(CALLBACK(src, .proc/finish_using, target, user, params, force_holder, resolved), 0)
-	else if (storage_type && istype(target,storage_type)) //Check that we're pocketing a certain container.
-		var/obj/item/weapon/storage/S = target
-		switch (mode)
-			if (MODE_OPEN)
-				if (isrobot(user))
-					var/mob/living/silicon/robot/R = user
-					if (R.shown_robot_modules)
-						R.shown_robot_modules = !R.shown_robot_modules
-						R.hud_used.update_robot_modules_display()
-				S.open(user)
-			if (MODE_EMPTY)
-				inuse = 1
-				visible_message("<span class='notice'>\The [user] starts removing item from \the [S].</span>")
-				if (do_after(user,30))
-					inuse = 0
-					if (length(S.contents))
-						var/obj/item/I = S.contents[length(S.contents)]
-						if (!I)
-							return
-						var/turf/T = get_turf(src)
-						S.remove_from_storage(I,T)
-						visible_message("<span class='notice'>\The [I] drops on \the [T].</span>")
-					else 
+		return
+	for(var/type in storage_type)//Check that we're pocketing a certain container.
+		if(istype(target,type))
+			var/obj/item/weapon/storage/S = target
+			switch (mode)
+				if (MODE_OPEN)
+					if (isrobot(user))
+						var/mob/living/silicon/robot/R = user
+						if (R.shown_robot_modules)
+							R.shown_robot_modules = !R.shown_robot_modules
+							R.hud_used.update_robot_modules_display()
+					S.open(user)
+				if (MODE_EMPTY)
+					inuse = 1
+					visible_message("<span class='notice'>\The [user] starts removing item from \the [S].</span>")
+					if (do_after(user,30))
 						inuse = 0
-						to_chat(user, "<span class='notice'>\The [target] is empty.</span>")
-				else
-					inuse = 0
-					to_chat(user, "<span class='danger'>The process was interrupted!</span>")
-	else if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
+						if (length(S.contents))
+							var/obj/item/I = S.contents[length(S.contents)]
+							if (!I)
+								return
+							var/turf/T = get_turf(src)
+							S.remove_from_storage(I,T)
+							visible_message("<span class='notice'>\The [I] drops on \the [T].</span>")
+						else 
+							inuse = 0
+							to_chat(user, "<span class='notice'>\The [target] is empty.</span>")
+					else
+						inuse = 0
+						to_chat(user, "<span class='danger'>The process was interrupted!</span>")
+			return
+	if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
 
 		//...and that the item is not in a container.
 		if(!isturf(target.loc))

@@ -34,7 +34,7 @@ REAGENT SCANNER
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	scan_mob(M, user)
 
-/obj/item/device/healthanalyzer/proc/scan_mob(var/mob/living/carbon/human/H, var/mob/living/user)
+/obj/item/device/healthanalyzer/proc/scan_mob(var/mob/living/carbon/C, var/mob/living/user)
 
 	if (!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You are not nimble enough to use this device.</span>")
@@ -76,7 +76,6 @@ REAGENT SCANNER
 		ui.set_initial_data(data)
 		ui.set_window_options("focus=0;can_close=1;can_minimize=1;can_maximize=0;can_resize=0;titlebar=1;")
 		ui.open()
-
 
 proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separate_result)
 	
@@ -322,6 +321,7 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separa
 				virus_data += "<span class='warning'>Warning: Pathogen <b>[V.fields["name"]]</b> detected in subject's blood. Known antigen : <b>[V.fields["antigen"]]</b></span>"
 
 	if(print_reagent_default_message)
+
 		reagents_data += "No results."
 
 	p_name = jointext(p_name,"<br>")
@@ -360,6 +360,7 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separa
 		. += "<hr>"
 		. += virus_data
 		. = jointext(.,"")
+
 
 // Calculates severity based on the ratios defined external limbs.
 proc/get_wound_severity(var/damage_ratio, var/vital = 0)

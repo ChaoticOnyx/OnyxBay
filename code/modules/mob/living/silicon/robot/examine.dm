@@ -40,6 +40,20 @@
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.
 		msg += "\nIt is [pose]"
 
+	if(hasHUD(user, HUD_SCIENCE))
+		if (module)
+			msg += "<hr>"
+			var/visors = ""
+			msg += "<b><span class='notice'>Supported upgrades:</b></span>\n"
+			for(var/i in module.supported_upgrades)
+				var/atom/tmp = i
+				if(findtext("[tmp]","/obj/item/borg/upgrade/visor/"))
+					visors += "<span class='notice'>	[initial(tmp.name)]<br></span>"
+				else
+					msg += "<span class='notice'>	[initial(tmp.name)]<br></span>"
+			msg += "<b><span class='notice'>Supported visors:</b></span>\n"
+			msg += visors
+			
 	to_chat(user, msg)
 	user.showLaws(src)
 	return

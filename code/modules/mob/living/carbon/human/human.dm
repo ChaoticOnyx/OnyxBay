@@ -1326,7 +1326,7 @@
 		to_chat(S, "<span class='danger'>[U] pops your [current_limb.joint] back in!</span>")
 	current_limb.undislocate()
 
-/mob/living/carbon/human/drop_from_inventory(var/obj/item/W, var/atom/Target = null)
+/mob/living/carbon/human/drop_from_inventory(var/obj/item/W, var/atom/Target = null, var/force = null)
 	if(W in organs)
 		return
 	. = ..()
@@ -1435,8 +1435,22 @@
 		return 0
 	return (species && species.has_organ[organ_check])
 
+/mob/living/carbon/human/has_limb(var/limb_check)	//returns 1 if found, 2 if limb is robotic, 0 if not found and null if its chest or groin (dont pass those)
+
+	if (limb_check == BP_CHEST || limb_check == BP_GROIN)	//obviously doesnt work with them
+		return
+
+	var/obj/item/organ/external/limb
+	limb = organs_by_name[limb_check]
+
+	if(limb && !limb.is_stump())
+		if(limb.robotic >= ORGAN_ROBOT)
+			return 2
+		else return 1
+	return 0
+
 /mob/living/carbon/human/can_feel_pain(var/obj/item/organ/check_organ)
-	if(!canfeelpain)
+	if(no_pain)
 		return 0
 	if(isSynthetic())
 		return 0

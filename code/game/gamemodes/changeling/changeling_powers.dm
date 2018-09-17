@@ -72,8 +72,15 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/lesser_form = !ishuman(src)
 
 	var/mob/living/carbon/Z = src
-	if(istype(Z))
+	var/obj/item/organ/internal/biostructure/BIO = locate() in Z.contents
+	if(istype(Z) && !BIO && !istype(Z,/mob/living/carbon/brain))
 		Z.insert_biostructure()
+	else if (istype(Z))
+		// make our brain not vital
+		var/obj/item/organ/internal/brain/brain = Z.internal_organs_by_name[BP_BRAIN]
+		if (brain)
+			brain.vital = 0
+
 	if(!powerinstances.len)
 		for(var/P in powers)
 			powerinstances += new P()
@@ -165,7 +172,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if(!istype(T) || T.isMonkey())
+	if(!istype(T) || isMonkey(T))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
 
@@ -443,15 +450,16 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/datum/changeling/changeling = changeling_power(20,1,100,DEAD)
 	if(!changeling)	return
 
+	if(src.mind.changeling.true_dead)
+		to_chat(src, "<span class='notice'>We can not do this. We are really dead.</span>")
+		return
+
+	if(!src.stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
+		return
+	to_chat(src, "<span class='notice'>We relocated our organ in chest and will attempt to regenerate our form.</span>")
+
 	var/mob/living/carbon/C = src
 
-	if(C.mind.changeling.true_dead)
-		to_chat(C, "<span class='notice'>We can not do this. We are really dead.</span>")
-		return
-
-	if(!C.stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
-		return
-	to_chat(C, "<span class='notice'>We will attempt to regenerate our form.</span>")
 	C.status_flags |= FAKEDEATH		//play dead
 	C.update_canmove()
 	C.remove_changeling_powers()
@@ -467,6 +475,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 			C.verbs += /mob/proc/changeling_revive
 			spawn(10 SECONDS)
 				C.changeling_revive()
+	
 	feedback_add_details("changeling_powers","FD")
 	return 1
 
@@ -751,7 +760,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	if(T.isSynthetic() || target_limb.isrobotic()) return
 	if(!T.mind || !T.mind.changeling) return T	//T will be affected by the sting
-//	to_chat(T, "<span class='warning'>You feel a tiny prick.</span>")
+	T.flash_pain(75)
+	to_chat(T, "<span class='danger'>Your [target_limb.name] hurts.</span>")
 	return
 
 
@@ -1165,7 +1175,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Arm Blade (20)"
 	visible_message("<span class='warning'>The flesh is torn around the [src.name]\'s arm!</span>",
-		"<span class='warning'>The flesh of our hand is transformed.</span>",
+		"<span class='warning'>The flesh of our hand is transforming.</span>",
 		"<span class='italics'>You hear organic matter ripping and tearing!</span>")
 	spawn(4 SECONDS)
 		playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
@@ -1283,94 +1293,121 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/changeling_detach_limb()
 	set category = "Changeling"
-	set name = "Detach Limb"
+	set name = "Detach Limb (10)"
 	set desc = "We tear off our limb, turning it into an aggressive biomass."
 
 
-	var/datum/changeling/changeling = changeling_power(0,0,100)
+	var/datum/changeling/changeling = changeling_power(10,0,100)
 	if(!changeling)	return
 	var/mob/living/carbon/T = src
 	T.faction = "biomass"
-	var/obj/item/organ/external/organ_to_remove = input(T, "Which organ do you want to detach?") as null|anything in (T.organs_by_name - T.internal_organs_by_name - BP_GROIN - BP_CHEST)
-	if(!T.organs_by_name[organ_to_remove])
+	var/list/detachable_limbs = T.organs.Copy()
+	for (var/obj/item/organ/external/E in detachable_limbs)
+		if (E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.is_stump())
+			detachable_limbs -= E
+	var/obj/item/organ/external/organ_to_remove = input(T, "Which organ do you want to detach?") as null|anything in detachable_limbs
+	if(!organ_to_remove)
+		return 0
+	if(!T.organs.Find(organ_to_remove))
 		to_chat(T,"<span class='notice'>We don't have this limb!</span>")
 		return 0
-	if(organ_to_remove == BP_L_FOOT || organ_to_remove == BP_R_FOOT || organ_to_remove == BP_L_LEG || organ_to_remove == BP_R_LEG)
-		new /mob/living/simple_animal/hostile/little_changeling/leg_chan(get_turf(T))
-	else if(organ_to_remove == BP_L_HAND || organ_to_remove == BP_R_HAND || organ_to_remove == BP_L_ARM || organ_to_remove == BP_R_ARM)
-		new /mob/living/simple_animal/hostile/little_changeling/arm_chan(get_turf(T))
-	else if(organ_to_remove == BP_HEAD)
-		new /mob/living/simple_animal/hostile/little_changeling/head_chan(get_turf(T))
-	organ_to_remove = T.organs_by_name[organ_to_remove]
+
+	src.visible_message("<span class='danger'>\the [organ_to_remove] ripping off from [src].</span>", \
+					"<span class='danger'>We begin ripping our \the [organ_to_remove].</span>")
+	if(!do_after(src,10,can_move = 1,needhand = 0,incapacitation_flags = INCAPACITATION_DISABLED))
+		src.visible_message("<span class='notice'>\the [organ_to_remove] connecting back to [src].</span>", \
+					"<span class='danger'>We were interrupted.</span>")
+		return 0
+	playsound(loc, 'sound/effects/bonebreak1.ogg', 100, 1)
+	T.mind.changeling.chem_charges -= 10
+	var/mob/living/L
+
+	if(organ_to_remove.organ_tag == BP_L_LEG || organ_to_remove.organ_tag == BP_R_LEG)
+		L = new /mob/living/simple_animal/hostile/little_changeling/leg_chan(get_turf(T))
+	else if(organ_to_remove.organ_tag == BP_L_ARM || organ_to_remove.organ_tag == BP_R_ARM)
+		L = new /mob/living/simple_animal/hostile/little_changeling/arm_chan(get_turf(T))
+	else if(organ_to_remove.organ_tag == BP_HEAD)
+		L = new /mob/living/simple_animal/hostile/little_changeling/head_chan(get_turf(T))
+
+	var/obj/item/organ/internal/biostructure/BIO = T.internal_organs_by_name[BP_CHANG]
+	if (organ_to_remove.organ_tag == BIO.parent_organ)
+		changeling_transfer_mind(L)
+
 	organ_to_remove.droplimb(1)
 	qdel(organ_to_remove)
+
+	var/mob/living/carbon/human/H = T
+	if(istype(H))
+		H.regenerate_icons()
 
 
 /mob/proc/changeling_gib_self()
 	set category = "Changeling"
-	set name = "Body disjunction (40)"
+	set name = "Body Disjunction (40)"
 	set desc = "Tear apart your human disguise, revealing your little form."
 
 	var/datum/changeling/changeling = changeling_power(40,0,0)
 	if(!changeling)	return 0
-	src.mind.changeling.chem_charges -= 40
+	
 
 	var/mob/living/carbon/M = src
 
 	M.visible_message("<span class='danger'>You hear a loud cracking sound coming from \the [M].</span>", \
 						"<span class='danger'>We begin disjunction of our body to form a pack of autonomous organisms.</span>")
-	if(!do_after(src,60))
+
+	if(!do_after(src,60,needhand = 0,incapacitation_flags = INCAPACITATION_DISABLED))
 		M.visible_message("<span class='danger'>[M]'s transformation abruptly reverts itself!</span>", \
 							"<span class='danger'>Our transformation has been interrupted!</span>")
 		return 0
-
-	M.visible_message("<span class='danger'>[M] begins to fall apart, their limbs forming a gross monstrosities!</span>")
+	src.mind.changeling.chem_charges -= 40
+	M.visible_message("<span class='danger'>[M] falls apart, their limbs formed a gross monstrosities!</span>")
 	playsound(loc, 'sound/hallucinations/far_noise.ogg', 100, 1)
-	playsound(loc, 'sound/effects/bonebreak1.ogg', 100, 1)
-	playsound(loc, 'sound/effects/bonebreak2.ogg', 100, 1)
-	playsound(loc, 'sound/effects/bonebreak3.ogg', 100, 1)
+	spawn(8)
+		playsound(loc, 'sound/effects/bonebreak1.ogg', 100, 1)
+	spawn(5)
+		playsound(loc, 'sound/effects/bonebreak3.ogg', 100, 1)
 	playsound(loc, 'sound/effects/bonebreak4.ogg', 100, 1)
-	var/obj/item/organ/internal/biostructure/Bio = M.internal_organs_by_name[BP_CHANG]
-	var/organ_chang_type = Bio.parent_organ
-	var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling1 = new (get_turf(M))
-	var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling1 = new (get_turf(M))
-	new /mob/living/simple_animal/hostile/little_changeling/leg_chan(get_turf(M))
-	new /mob/living/simple_animal/hostile/little_changeling/arm_chan(get_turf(M))
-	var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(M))
+	var/obj/item/organ/internal/biostructure/BIO = M.internal_organs_by_name[BP_CHANG]
+	var/organ_chang_type = BIO.parent_organ
+
+	var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling
+	var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling
+	var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling2
+	var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling2
+	var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling
+	if (M.has_limb(BP_L_LEG))
+		leg_ling = new (get_turf(M))
+		if(organ_chang_type == BP_L_LEG)
+			changeling_transfer_mind(leg_ling)
+	if (M.has_limb(BP_R_LEG))
+		leg_ling2 = new (get_turf(M))
+		if(organ_chang_type == BP_R_LEG)
+			changeling_transfer_mind(leg_ling2)
+	if (M.has_limb(BP_L_ARM))
+		arm_ling = new (get_turf(M))
+		if(organ_chang_type == BP_L_ARM)
+			changeling_transfer_mind(arm_ling)
+	if (M.has_limb(BP_R_ARM))
+		arm_ling2 = new (get_turf(M))
+		if(organ_chang_type == BP_R_ARM)
+			changeling_transfer_mind(arm_ling2)
+	if (M.has_limb(BP_HEAD))
+		head_ling = new (get_turf(M))
+		if(organ_chang_type == BP_HEAD)
+			changeling_transfer_mind(head_ling)
 	var/mob/living/simple_animal/hostile/little_changeling/chest_chan/chest_ling = new (get_turf(M))
+	if(organ_chang_type == BP_CHEST || organ_chang_type == BP_GROIN)
+		changeling_transfer_mind(chest_ling)
+
 	gibs(loc, dna)
 	if(istype(M,/mob/living/carbon/human))
 		for(var/obj/item/I in M.contents)
 			if(isorgan(I))
 				continue
 			M.drop_from_inventory(I)
-	if(organ_chang_type == BP_L_FOOT || organ_chang_type == BP_R_FOOT || organ_chang_type == BP_L_LEG || organ_chang_type == BP_R_LEG)
-		if(M.mind)
-			M.mind.transfer_to(leg_ling1)
-		else
-			leg_ling1.key = M.key
-		leg_ling1.forceMove(get_turf(M))
-	else if(organ_chang_type == BP_L_HAND || organ_chang_type == BP_R_HAND || organ_chang_type == BP_L_ARM || organ_chang_type == BP_R_ARM)
-		if(M.mind)
-			M.mind.transfer_to(arm_ling1)
-		else
-			arm_ling1.key = M.key
-		arm_ling1.forceMove(get_turf(M))
-	else if(organ_chang_type == BP_HEAD)
-		if(M.mind)
-			M.mind.transfer_to(head_ling)
-		else
-			head_ling.key = M.key
-		head_ling.forceMove(get_turf(M))
-	else if(organ_chang_type == BP_CHEST || organ_chang_type == BP_GROIN)
-		if(M.mind)
-			M.mind.transfer_to(chest_ling)
-		else
-			chest_ling.key = M.key
-		chest_ling.forceMove(get_turf(M))
-		qdel(M)
-	M.mind.assigned_role = "Changeling"
+	
 	var/atom/movable/overlay/effect = new /atom/movable/overlay(get_turf(M))
+
 	effect.density = 0
 	effect.anchored = 1
 	effect.icon = 'icons/effects/effects.dmi'
@@ -1378,51 +1415,58 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	flick("summoning",effect)
 	QDEL_IN(effect, 10)
 
+	qdel(M)
+
 /mob/proc/aggressive()
 	set category = "Changeling"
-	set name = "Agressive form"
-	set desc = "We take an aggressive form."
+	set name = "Runaway form"
+	set desc = "We take our weakest form."
 
-	var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(src))
-	if(src.mind)
-		src.mind.transfer_to(head_ling)
-	else
-		head_ling.key = src.key
-	qdel(src.loc)
+	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
+	var/obj/item/organ/internal/biostructure/BIO = src.loc
+	
+	changeling_transfer_mind(HC)
+
+	HC.visible_message("<span class='warning'>[BIO] suddenly grows tiny legs!</span>",
+		"<span class='danger'><font size='2'><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></font></span>")
+	
 
 /mob/proc/changeling_fake_arm_blade()
 	set category = "Changeling"
 	set name = "Fake arm Blade (30)"
-	set desc = "We reform others arms into a fake armblade."
+	set desc = "We reform victims arm into a fake armblade."
 
 	var/mob/living/carbon/human/T = changeling_sting(30,/mob/proc/changeling_fake_arm_blade)
 	if(!T)	return 0
-	spawn(5 SECONDS)
-		to_chat(T, "<span class='danger'>You feel strange spasms in your hands.</span>")
-		spawn(5 SECONDS)
-		visible_message("<span class='warning'>The flesh is torn around the [T.name]\'s arm!</span>",
-			"<span class='warning'>We transforming [T.name]\'s arm to fake armblade.</span>",
-			"<span class='italics'>You hear organic matter ripping and tearing!</span>")
-		spawn(4 SECONDS)
+	spawn(10 SECONDS)
+		to_chat(T, "<span class='danger'>You feel strange spasms in your hand.</span>")
+		spawn(15 SECONDS)
 			playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
-			if(T.l_hand && T.r_hand)
-				T.drop_l_hand()
-				T.drop_r_hand()
-			var/obj/item/weapon/W = new /obj/item/weapon/melee/changeling/fake_arm_blade(T)
-			playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
-			T.put_in_hands(W)
+			var/hand = pick(list(BP_R_HAND,BP_L_HAND))
+			var/failed
+			switch(hand)
+				if(BP_R_HAND)
+					if(!isProsthetic(T.r_hand))
+						T.drop_r_hand()
+					else if(!isProsthetic(T.l_hand))
+						T.drop_l_hand()
+						hand = BP_L_HAND
+					else 
+						failed = TRUE
 
-/obj/item/weapon/melee/changeling/fake_arm_blade
-	name = "arm blade"
-	desc = "A grotesque blade made out of bone and flesh that cleaves through people as a hot knife through butter."
-	icon_state = "arm_blade"
-	force = 3
-	sharp = 1
-	edge = 1
-	anchored = 1
-	canremove = 0
-	candrop = 0
-	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+				if(BP_L_HAND)
+					if(!isProsthetic(T.l_hand))
+						T.drop_l_hand()
+					else if(!isProsthetic(T.r_hand))
+						T.drop_r_hand()
+						hand = BP_R_HAND
+					else 
+						failed = TRUE
+			if (!failed)
+				T.visible_message("<span class='warning'>The flesh is torn around the [T.name]\'s arm!</span>",
+									"<span class='warning'>We are transforming [T.name]\'s arm to fake armblade.</span>",
+									"<span class='italics'>You hear organic matter ripping and tearing!</span>")
+				new /obj/item/weapon/melee/prosthetic/bio/fake_arm_blade(T,T.organs_by_name[hand])
 
 //No breathing required
 /mob/proc/changeling_no_pain()
@@ -1434,13 +1478,18 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(!changeling)	return 0
 
 	var/mob/living/carbon/human/C = src
-	if(!C.canfeelpain)	to_chat(C, "<span class='notice'>We feel pain.</span>")
-	else				to_chat(C, "<span class='notice'>We do not feel pain.</span>")
-	C.canfeelpain = !C.canfeelpain
+	C.no_pain = !C.no_pain
+
+	if(C.can_feel_pain())
+		to_chat(C, "<span class='notice'>We feel pain.</span>")
+	else
+		to_chat(C, "<span class='notice'>We do not feel pain.</span>")
 
 	spawn(0)
-		while(C && C.canfeelpain && C.mind && C.mind.changeling)
-			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 0.5, 0)
+		while(C && !C.can_feel_pain() && C.mind && C.mind.changeling)
+			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 3, 0)
+			if (C.mind.changeling.chem_charges == 0)
+				C.no_pain = !C.no_pain
 			sleep(40)
 	return 1
 
@@ -1451,11 +1500,97 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	if(istype(src,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = src
+		if(H.mind.changeling.heal)
+			H.mind.changeling.heal = !H.mind.changeling.heal
+			to_chat(H, "<span class='notice'>We inactivate our stemocyte pool and stop intensive fleshmending.</span>")
+			return
+
 		var/datum/changeling/changeling = changeling_power(10,0,100,CONSCIOUS)
-		H.mind.changeling.heal = !H.mind.changeling.heal
 		if(!changeling)
 			return
-		if(H.mind.changeling.heal)
-			to_chat(H, "<span class='alium'>We activate our stemocyte pool and begin intensive fleshmending.</span>")
-		if(!H.mind.changeling.heal)
-			to_chat(H, "<span class='alium'>We inactivate our stemocyte pool and stop intensive fleshmending.</span>")
+
+		H.mind.changeling.heal = !H.mind.changeling.heal
+		to_chat(H, "<span class='notice'>We activate our stemocyte pool and begin intensive fleshmending.</span>")
+
+		spawn(0)
+			while(H && H.mind && H.mind.changeling.heal && H.mind.changeling.damaged)
+				H.mind.changeling.chem_charges = max(H.mind.changeling.chem_charges - 1, 0)
+				if(H.getBruteLoss())
+					H.adjustBruteLoss(-10 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+				if(H.getFireLoss())
+					H.adjustFireLoss(-5 * config.organ_regeneration_multiplier)
+				if(H.getToxLoss())
+					H.adjustToxLoss(-10 * config.organ_regeneration_multiplier)
+				if(prob(5) && !H.getBruteLoss() && !H.getFireLoss())
+					var/obj/item/organ/external/head/D = H.organs_by_name[BP_HEAD]
+					if (D.disfigured)
+						D.disfigured = 0
+				for(var/bpart in shuffle(H.internal_organs_by_name))
+					var/obj/item/organ/internal/regen_organ = H.internal_organs_by_name[bpart]
+					if(regen_organ.robotic >= ORGAN_ROBOT)
+						continue
+					if(istype(regen_organ))
+						if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
+							regen_organ.damage = max(regen_organ.damage - 5, 0)
+							if(prob(5))
+								to_chat(H, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
+						if(regen_organ.status & ORGAN_DEAD)
+							regen_organ.status &= ~ORGAN_DEAD
+				if(prob(2))
+					for(var/limb_type in H.species.has_limbs)
+						if (H.restore_limb(limb_type,1))
+							break
+				if(H.mind.changeling.chem_charges == 0)
+					H.mind.changeling.heal = !H.mind.changeling.heal
+					to_chat(H, "<span class='warning'>We inactivate our stemocyte pool and stop intensive fleshmending because we run out of chemicals.</span>")
+				sleep(40)
+		
+
+/mob/proc/changeling_move_biostructure()
+	set category = "Changeling"
+	set name = "Move Biostructure"
+	set desc = "We relocate our precious organ."
+
+	var/mob/living/carbon/T = src
+	if(T)
+		T.move_biostructure()
+
+/mob/proc/changeling_transfer_mind(var/atom/A)
+	var/obj/item/organ/internal/biostructure/BIO
+	if (istype(src,/mob/living/carbon/brain))
+		BIO = src.loc
+	else
+		BIO = locate() in src.contents
+
+	if(!BIO)
+		return
+	var/mob/M = A
+
+	BIO.change_host(A)
+
+	if (src.mind)	//basicaly if its mob then mind transfers to mob otherwise creating brain inside of biostucture
+		if(istype(M) && !istype(M,/mob/living/carbon/brain))
+			src.mind.transfer_to(M)
+		else 
+			BIO.mind_into_biostructure(src)
+	else
+		if(istype(M))
+			M.key = src.key
+		return
+
+	var/mob/living/carbon/human/H = A
+	if (istype(H))
+		if(H.stat == DEAD)
+			H.setBrainLoss(0)
+			H.SetParalysis(0)
+			H.SetStunned(0)
+			H.SetWeakened(0)
+			H.shock_stage = 0
+			H.timeofdeath = 0
+			H.switch_from_dead_to_living_mob_list()
+			var/obj/item/organ/internal/heart/heart = H.internal_organs_by_name[BP_HEART]
+			heart.pulse = 1
+			H.set_stat(CONSCIOUS)
+			H.failed_last_breath = 0 //So mobs that died of oxyloss don't revive and have perpetual out of breath.
+			H.reload_fullscreen()
+

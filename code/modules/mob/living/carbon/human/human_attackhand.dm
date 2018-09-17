@@ -8,7 +8,7 @@
 			return u_attack
 	return null
 
-/mob/living/carbon/human/attack_hand(mob/living/carbon/M as mob)
+/mob/living/carbon/human/attack_hand(mob/living/M as mob)
 
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
@@ -52,7 +52,8 @@
 			return
 
 	if(istype(M,/mob/living/carbon))
-		M.spread_disease_to(src, "Contact")
+		var/mob/living/carbon/C = M
+		C.spread_disease_to(src, "Contact")
 
 	if(istype(H))
 		for (var/obj/item/grab/G in H)

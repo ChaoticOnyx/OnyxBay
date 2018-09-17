@@ -1087,6 +1087,20 @@ Note that amputating the affected organ does in fact remove the infection from t
 	var/is_robotic = robotic >= ORGAN_ROBOT
 	var/mob/living/carbon/human/victim = owner
 
+
+	//temparary plug before augmentation module is complete
+	if(src.organ_tag == BP_L_ARM || src.organ_tag == BP_R_ARM)
+		if(isProsthetic(owner.l_hand) || isProsthetic(owner.r_hand))
+			victim.bad_external_organs -= src
+			var/obj/item/weapon/melee/prosthetic/P = src.organ_tag == BP_L_ARM ? owner.l_hand : owner.r_hand
+			P.remove_prosthetic()
+			owner.drop_from_inventory(P,force = 1)
+			if(src.organ_tag == BP_L_ARM || src.organ_tag == BP_R_ARM)
+				for(var/obj/item/organ/external/O in children)
+					qdel(O)
+				qdel(src)
+			return
+
 	..()
 
 	victim.bad_external_organs -= src

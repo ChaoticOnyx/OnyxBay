@@ -42,7 +42,7 @@ var/global/list/robot_modules = list(
 	var/list/datum/matter_synth/synths = list()
 	var/obj/item/emag = null
 	var/list/subsystems = list()
-	var/list/obj/item/borg/upgrade/supported_upgrades = list(/obj/item/borg/upgrade/paperwork,/obj/item/borg/upgrade/visor_nvg,/obj/item/borg/upgrade/jetpack,/obj/item/borg/upgrade/visor_x_ray,/obj/item/borg/upgrade/storage,/obj/item/borg/upgrade/visor_flash_screen,/obj/item/borg/upgrade/death_alarm)
+	var/list/obj/item/borg/upgrade/supported_upgrades = list(/obj/item/borg/upgrade/paperwork,/obj/item/borg/upgrade/visor/nvg,/obj/item/borg/upgrade/jetpack,/obj/item/borg/upgrade/visor/x_ray,/obj/item/borg/upgrade/storage,/obj/item/borg/upgrade/visor/flash_screen,/obj/item/borg/upgrade/death_alarm)
 
 	// Bookkeeping
 	var/list/original_languages = list()
@@ -209,7 +209,7 @@ var/global/list/robot_modules = list(
 
 /obj/item/weapon/robot_module/medical/New()
 	..()
-	supported_upgrades += list(/obj/item/borg/upgrade/visor_thermal,/obj/item/borg/upgrade/visor_meson, /obj/item/borg/upgrade/bb_printer)
+	supported_upgrades += list(/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/visor/meson, /obj/item/borg/upgrade/bb_printer)
 
 /obj/item/weapon/robot_module/medical/surgeon
 	name = "surgeon robot module"
@@ -265,10 +265,11 @@ var/global/list/robot_modules = list(
 	..()
 
 /obj/item/weapon/robot_module/medical/surgeon/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
+	..()
 	if(src.emag)
 		var/obj/item/weapon/reagent_containers/spray/PS = src.emag
 		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 5 * amount)
-	..()
+	
 
 /obj/item/weapon/robot_module/medical/surgeon_adv
 	name = "advanced surgeon robot module"
@@ -328,14 +329,13 @@ var/global/list/robot_modules = list(
 	..()
 
 /obj/item/weapon/robot_module/medical/surgeon_adv/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
+	..()
 	if(src.emag)
 		var/obj/item/weapon/reagent_containers/spray/PS = src.emag
 		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 5 * amount)
 
 	var/obj/item/weapon/reagent_containers/spray/cleaner/drone/SC = locate(/obj/item/weapon/reagent_containers/spray/cleaner/drone) in src.modules
 	SC.reagents.add_reagent(/datum/reagent/space_cleaner,10 * amount)
-
-	..()
 
 /obj/item/weapon/robot_module/medical/crisis
 	name = "medical robot module"
@@ -392,6 +392,7 @@ var/global/list/robot_modules = list(
 	..()
 
 /obj/item/weapon/robot_module/medical/crisis/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
+	..()
 	var/obj/item/weapon/reagent_containers/syringe/S = locate() in src.modules
 	if(S.mode == 2)
 		S.reagents.clear_reagents()
@@ -402,8 +403,6 @@ var/global/list/robot_modules = list(
 	if(src.emag)
 		var/obj/item/weapon/reagent_containers/spray/PS = src.emag
 		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 5 * amount)
-
-	..()
 
 /obj/item/weapon/robot_module/medical/crisis_adv
 	name = "advanced medical robot module"
@@ -466,6 +465,7 @@ var/global/list/robot_modules = list(
 	..()
 
 /obj/item/weapon/robot_module/medical/crisis_adv/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
+	..()
 	var/obj/item/weapon/reagent_containers/syringe/S = locate() in src.modules
 	if(S.mode == 2)
 		S.reagents.clear_reagents()
@@ -479,9 +479,6 @@ var/global/list/robot_modules = list(
 
 	var/obj/item/weapon/reagent_containers/spray/cleaner/drone/SC = locate(/obj/item/weapon/reagent_containers/spray/cleaner/drone) in src.modules
 	SC.reagents.add_reagent(/datum/reagent/space_cleaner,10 * amount)
-
-	..()
-
 
 /obj/item/weapon/robot_module/engineering
 	name = "engineering robot module"
@@ -568,9 +565,10 @@ var/global/list/robot_modules = list(
 	..()
 
 /obj/item/weapon/robot_module/engineering/general/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
+	..()
 	var/obj/item/device/lightreplacer/LR = locate() in src.modules
 	LR.Charge(R, amount)
-	..()
+	
 
 /obj/item/weapon/robot_module/engineering/adv
 	name = "advanced engineering robot module"
@@ -578,6 +576,7 @@ var/global/list/robot_modules = list(
 
 
 /obj/item/weapon/robot_module/engineering/adv/New()
+	supported_upgrades += list(/obj/item/borg/upgrade/rped)
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/weapon/extinguisher(src)
 	src.modules += new /obj/item/weapon/weldingtool/hugetank(src)
@@ -663,10 +662,11 @@ var/global/list/robot_modules = list(
 	appointed_huds += list("Meson", "Material")
 	..()
 
-/obj/item/weapon/robot_module/engineering/general/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
+/obj/item/weapon/robot_module/engineering/adv/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
+	..()
 	var/obj/item/device/lightreplacer/advanced/LR = locate() in src.modules
 	LR.Charge(R, amount)
-	..()
+	
 
 /obj/item/weapon/robot_module/security
 	name = "security robot module"
@@ -677,7 +677,7 @@ var/global/list/robot_modules = list(
 
 /obj/item/weapon/robot_module/security/New()
 	..()
-	supported_upgrades += list(/obj/item/borg/upgrade/lasercooler,/obj/item/borg/upgrade/tasercooler,/obj/item/borg/upgrade/visor_thermal,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/detective)
+	supported_upgrades += list(/obj/item/borg/upgrade/lasercooler,/obj/item/borg/upgrade/tasercooler,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/detective)
 
 /obj/item/weapon/robot_module/security/general
 	sprites = list(
@@ -745,7 +745,8 @@ var/global/list/robot_modules = list(
 					"Mopbot"  = "janitorrobot",
 					"Mop Gear Rex" = "mopgearrex",
 					"Drone" = "drone-janitor",
-					"Doot" = "eyebot-janitor"
+					"Doot" = "eyebot-janitor",
+					"Robo-Maid" = "maidbot"
 					)
 
 /obj/item/weapon/robot_module/janitor/general/New()
@@ -757,7 +758,11 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/soap/nanotrasen(src)
 	src.modules += new /obj/item/weapon/storage/bag/trash(src)
 	src.modules += new /obj/item/weapon/mop(src)
+	var/obj/item/weapon/reagent_containers/glass/bucket/B = new /obj/item/weapon/reagent_containers/glass/bucket(src)
+	B.reagents.add_reagent(/datum/reagent/water,180)
+	src.modules += B
 	src.modules += new /obj/item/device/lightreplacer(src)
+	src.modules += new /obj/item/weapon/robot_item_dispenser/janitor(src)
 
 	src.emag = new /obj/item/weapon/reagent_containers/spray(src)
 	src.emag.reagents.add_reagent(/datum/reagent/lube, 250)
@@ -772,6 +777,9 @@ var/global/list/robot_modules = list(
 	if(src.emag)
 		var/obj/item/weapon/reagent_containers/spray/S = src.emag
 		S.reagents.add_reagent(/datum/reagent/lube, 20 * amount)
+	var/obj/item/weapon/reagent_containers/glass/bucket/B = locate() in src.modules
+	if (B.reagents.total_volume < B.reagents.maximum_volume)
+		B.reagents.add_reagent(/datum/reagent/water,20)
 
 /obj/item/weapon/robot_module/service
 	name = "service robot module"
@@ -789,7 +797,7 @@ var/global/list/robot_modules = list(
 					)
 /obj/item/weapon/robot_module/service/New()
 	..()
-	supported_upgrades += list(/obj/item/borg/upgrade/paramedic)
+	supported_upgrades += list(/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/cargo_managment)
 
 
 /obj/item/weapon/robot_module/service/butler
@@ -800,7 +808,8 @@ var/global/list/robot_modules = list(
 					"Default" = "Service2",
 					"Drone - Service" = "drone-service",
 					"Drone - Hydro" = "drone-hydro",
-					"Doot" = "eyebot-standard"
+					"Doot" = "eyebot-standard",
+					"Robo-Maid" = "maidbot"
 				  	)
 
 /obj/item/weapon/robot_module/service/butler/New()
@@ -859,7 +868,7 @@ var/global/list/robot_modules = list(
 
 /obj/item/weapon/robot_module/miner/New()
 	..()
-	supported_upgrades += list(/obj/item/borg/upgrade/cargo_managment,/obj/item/borg/upgrade/visor_thermal,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/archeologist)
+	supported_upgrades += list(/obj/item/borg/upgrade/cargo_managment,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/archeologist)
 
 /obj/item/weapon/robot_module/miner/general/New()
 	src.modules += new /obj/item/device/flash(src)
@@ -906,7 +915,7 @@ var/global/list/robot_modules = list(
 					)
 
 /obj/item/weapon/robot_module/research/general/New()
-	supported_upgrades += list(/obj/item/borg/upgrade/cargo_managment,/obj/item/borg/upgrade/visor_thermal,/obj/item/borg/upgrade/visor_meson,/obj/item/borg/upgrade/rped,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/archeologist)
+	supported_upgrades += list(/obj/item/borg/upgrade/cargo_managment,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/visor/meson,/obj/item/borg/upgrade/rped,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/archeologist)
 
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/weapon/extinguisher/mini(src)
@@ -924,7 +933,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/circular_saw(src)
 	src.modules += new /obj/item/weapon/reagent_containers/syringe(src)
 	src.modules += new /obj/item/weapon/gripper/chemistry(src)
-	src.emag = new /obj/prefab/hand_teleporter(src)
+	src.emag = new /obj/item/weapon/card/emag/robot(src)
 
 	var/datum/matter_synth/nanite = new /datum/matter_synth/nanite(10000)
 	synths += nanite
@@ -937,6 +946,21 @@ var/global/list/robot_modules = list(
 	appointed_huds += list("Science")
 	..()
 
+/obj/item/weapon/robot_module/research/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
+	..()
+	var/obj/item/weapon/reagent_containers/syringe/S = locate() in src.modules
+	if(S.mode == 2)
+		S.reagents.clear_reagents()
+		S.mode = initial(S.mode)
+		S.desc = initial(S.desc)
+		S.update_icon()
+	if(src.emag)
+		var/obj/item/weapon/card/emag/robot/E = src.emag
+		if(E.uses<3 && prob(20))
+			E.uses++
+
+
+
 /obj/item/weapon/robot_module/syndicate
 	name = "illegal robot module"
 	hide_on_manifest = 1
@@ -946,7 +970,7 @@ var/global/list/robot_modules = list(
 	var/id
 
 /obj/item/weapon/robot_module/syndicate/New(var/mob/living/silicon/robot/R)
-	supported_upgrades += list(/obj/item/borg/upgrade/tasercooler,/obj/item/borg/upgrade/lasercooler,/obj/item/borg/upgrade/visor_thermal,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/detective)
+	supported_upgrades += list(/obj/item/borg/upgrade/tasercooler,/obj/item/borg/upgrade/lasercooler,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/detective)
 
 	loc = R
 	src.modules += new /obj/item/device/flash(src)
@@ -1086,7 +1110,7 @@ var/global/list/robot_modules = list(
 	..()
 
 /obj/item/weapon/robot_module/drone/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
+	..()
 	var/obj/item/device/lightreplacer/LR = locate() in src.modules
 	LR.Charge(R, amount)
-	..()
 	return
