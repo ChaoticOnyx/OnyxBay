@@ -219,7 +219,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Recursive Enhancement"
 	desc = "We cause our abilities to have increased or additional effects."
 	helptext = "To check the effects for each ability, check the blue text underneath the ability in the evolution menu."
-	genomecost = 3
+	genomecost = 6
 	verbpath = /mob/proc/changeling_recursive_enhancement
 /*
 /datum/power/changeling/fake_blade

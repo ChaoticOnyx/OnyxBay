@@ -1142,7 +1142,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	name = "arm blade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people as a hot knife through butter."
 	icon_state = "arm_blade"
-	force = 40
+	force = 25
 	armor_penetration = 15
 	sharp = 1
 	edge = 1
@@ -1153,6 +1153,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /obj/item/weapon/melee/changeling/arm_blade/greater
 	name = "arm greatblade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people and armor as a hot knife through butter."
+	force = 30
 	armor_penetration = 30
 
 /obj/item/weapon/melee/changeling/claw
