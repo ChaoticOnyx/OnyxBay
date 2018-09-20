@@ -570,6 +570,18 @@ div.notice {
     text-align: center;
 }
 
+.scanner_red{
+    color: #c80000;
+}
+
+.scanner_yellow {
+    color: #dcb914;
+}
+
+.scanner_orange {
+    color: #ff9225;
+}
+
 table.fixed { 
 	table-layout:fixed;
 }

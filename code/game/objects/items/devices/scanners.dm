@@ -40,11 +40,11 @@ REAGENT SCANNER
 		to_chat(user, "<span class='warning'>You are not nimble enough to use this device.</span>")
 		return
 
-	if (!istype(H) || H.isSynthetic())
+	if (!istype(C) || C.isSynthetic())
 		to_chat(user, "<span class='warning'>\The [src] is designed for organic humanoid patients only.</span>")
 		return
 	//user << browse(medical_scan_results(H, mode), "window=scanconsole;size=550x400")
-	ui_interact(user,target = H)
+	ui_interact(user,target = C)
 
 /obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1,var/mob/living/carbon/human/target)
 	
@@ -59,8 +59,8 @@ REAGENT SCANNER
 		var/list/scan_data = medical_scan_results(target, mode, 1)
 		for(var/i = 1,i <= scan_data.len,i++)
 			scan_data[i] = replacetext(scan_data[i],"'notice'","'black'")
-			scan_data[i] = replacetext(scan_data[i],"'warning'","'average'")
-			scan_data[i] = replacetext(scan_data[i],"'danger'","'bad'")
+			scan_data[i] = replacetext(scan_data[i],"'warning'","'scanner_orange'")
+			scan_data[i] = replacetext(scan_data[i],"'danger'","'scanner_red'")
 		data["p_name"] = scan_data[1]
 		data["brain"] = scan_data[2]
 		data["blood"] = scan_data[3]
@@ -206,13 +206,13 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separa
 				continue
 			if(E.brute_dam > 0)
 				limb_damaged = TRUE
-				limb_result = "[limb_result] \[<font color = 'red'>[get_wound_severity(E.brute_ratio, E.vital)] physical trauma</font>\]"
+				limb_result = "[limb_result] \[<span class='scanner_red'>[get_wound_severity(E.brute_ratio, E.vital)] physical trauma</span>\]"
 			if(E.burn_dam > 0)
 				limb_damaged = TRUE
-				limb_result = "[limb_result] \[<font color = '#ffa500'>[get_wound_severity(E.burn_ratio, E.vital)] burns</font>\]"
+				limb_result = "[limb_result] \[<span class='scanner_yellow'>[get_wound_severity(E.burn_ratio, E.vital)] burns</span>\]"
 			if(E.status & ORGAN_BLEEDING)
 				limb_damaged = TRUE
-				limb_result = "[limb_result] \[<span class='danger'>bleeding</span>\]"
+				limb_result = "[limb_result] \[<span class='scanner_red'>bleeding</span>\]"
 			if(E.status & ORGAN_BROKEN)
 				limb_damaged = TRUE
 				if(((E.organ_tag == BP_L_ARM) || (E.organ_tag == BP_R_ARM) || (E.organ_tag == BP_L_LEG) || (E.organ_tag == BP_R_LEG)) && (!E.splinted))
