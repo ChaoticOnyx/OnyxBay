@@ -118,7 +118,7 @@
 		else if(amount && !emagged)
 			cloneloss = "minor"
 		var/scan = medical_scan_results(occupant)
-		scan += "<br><br>Genetic degradation: [cloneloss]"
+		scan += "<br>Genetic degradation: [cloneloss]"
 		scan = replacetext(scan,"'notice'","'white'")
 		scan = replacetext(scan,"'warning'","'average'")
 		scan = replacetext(scan,"'danger'","'bad'")

@@ -1,0 +1,70 @@
+<!-- 
+Title: Health Analyser UI 
+Used In File(s): \code\game\objects\items\devices\scanners.dm
+ -->
+
+<head>
+	<style type="text/css">
+		html {
+			height: 100%;
+		}
+
+		.health_analyser_container {
+			border-style: double;
+			border-width: 10px;
+			border-radius: 8px;
+			border-color: #166117;
+			background: #268027;
+			padding: 0px;
+			color: #011302;
+			margin: 5px;
+			overflow:auto;
+			height: 265px;
+		}
+		.border_top {
+			padding: 5px;
+			border-top:8px double #166117
+		}
+	</style>
+</head>
+
+<div class='health_analyser_container'>
+	<div style="padding: 5px;">
+		{{if data.p_name}}
+			{{:data.p_name}}
+			<br>
+		{{/if}}
+		{{if data.brain}}
+			{{:data.brain}}
+			<br>
+		{{/if}}
+		{{if data.blood}}
+			{{:data.blood}}
+		{{/if}}
+	</div>
+	{{if data.status}}
+		<div class = 'border_top'>
+			{{:data.status}}
+		</div>
+	{{/if}}
+	{{if data.s_limb}}
+		<div class = 'border_top'>
+			{{:data.s_limb}}
+		</div>
+	{{/if}}
+	{{if data.o_limb}}
+		<div class = 'border_top'>
+			{{:data.o_limb}}
+		</div>
+	{{/if}}
+	{{if data.reagent}}
+		<div class = 'border_top'>
+			{{:data.reagent}}
+		</div>
+	{{/if}}
+	{{if data.virus}}
+		<div class = 'border_top'>
+			{{:data.virus}}
+		</div>
+	{{/if}}
+</div>

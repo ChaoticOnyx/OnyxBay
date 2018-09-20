@@ -618,7 +618,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 				if (parent.germ_level < INFECTION_LEVEL_ONE*2 || prob(30))
 					parent.germ_level++
 
-	if(germ_level >= INFECTION_LEVEL_THREE && antibiotics < 30)	//overdosing is necessary to stop severe infections
+	if(germ_level >= INFECTION_LEVEL_THREE && antibiotics < 15)	//overdosing is necessary to stop severe infections
 		if (!(status & ORGAN_DEAD))
 			status |= ORGAN_DEAD
 			to_chat(owner, "<span class='notice'>You can't feel your [name] anymore...</span>")
@@ -1294,6 +1294,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 /obj/item/organ/external/get_scan_results()
 	. = ..()
+	for(var/datum/wound/W in wounds)
+		if (W.damage_type == CUT && W.current_stage <= W.max_bleeding_stage && !W.bandaged)
+			. += "Open wound"
+			break
 	if(status & ORGAN_ARTERY_CUT)
 		. += "[capitalize(artery_name)] ruptured"
 	if(status & ORGAN_TENDON_CUT)
