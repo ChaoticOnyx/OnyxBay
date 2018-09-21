@@ -55,18 +55,15 @@
 
 /obj/item/organ/internal/biostructure/proc/mind_into_biostructure(var/mob/living/M)
 	if(status & ORGAN_DEAD) return
-	world << "MIND_INTO"
 	if(M && M.mind && brainchan)
 		M.mind.transfer_to(brainchan)
 		to_chat(brainchan, "<span class='notice'>You feel slightly disoriented.</span>")
 	
 /obj/item/organ/internal/biostructure/removed(var/mob/living/user)
 	if(vital)
-		world << "REMOVED"
 		if (owner)
 			mind_into_biostructure(owner)
 		else if (istype(src.loc,/mob/living))
-			world << "BIO_INSIDE_MOB"
 			mind_into_biostructure(src.loc)
 
 		spawn()
