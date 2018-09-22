@@ -51,7 +51,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 	new /datum/data/mining_equipment("Super Resonator",				/obj/item/weapon/resonator/upgraded,						10,					1250),
 	new /datum/data/mining_equipment("KA AoE Damage",				/obj/item/borg/upgrade/modkit/aoe/turfs,					15,					1500),
 	new /datum/data/mining_equipment("Diamond Pickaxe",				/obj/item/weapon/pickaxe/diamond,							10,					1500),
-	new /datum/data/mining_equipment("Plasmacutter",				/obj/item/weapon/gun/energy/plasmacutter,					1,					3750)
+	new /datum/data/mining_equipment("Plasmacutter",				/obj/item/weapon/gun/energy/plasmacutter,					1,					3750),
 	new /datum/data/mining_equipment("RIG Module: Plasmacutter",	/obj/item/rig_module/mounted/plasmacutter,					1,					4050)
 	)
 
