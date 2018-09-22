@@ -13,7 +13,7 @@
 	move_to_delay = 20
 	friendly = "buzzes near"
 	vision_range = 2
-	aggro_vision_range = 9
+	aggro_vision_range = 6
 	idle_vision_range = 2
 	speed = 3
 	maxHealth = 50
