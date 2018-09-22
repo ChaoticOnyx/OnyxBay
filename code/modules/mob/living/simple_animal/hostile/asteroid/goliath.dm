@@ -14,10 +14,10 @@
 	move_to_delay = 40
 	ranged = 1
 	ranged_cooldown = 2 //By default, start the Goliath with his cooldown off so that people can run away quickly on first sight
-	ranged_cooldown_cap = 8
+	ranged_cooldown_cap = 14
 	friendly = "wails at"
-	vision_range = 5
-	speed = 2
+	vision_range = 4
+	speed = 3
 	maxHealth = 300
 	health = 300
 	harm_intent_damage = 0
@@ -26,7 +26,7 @@
 	attacktext = "pulverizes"
 	throw_message = "does nothing to the rocky hide of the"
 	aggro_vision_range = 9
-	idle_vision_range = 5
+	idle_vision_range = 4
 	var/pre_attack = 0
 	var/dead = FALSE
 
