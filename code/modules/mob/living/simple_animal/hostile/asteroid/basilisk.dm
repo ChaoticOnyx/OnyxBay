@@ -86,6 +86,7 @@
 	icon_living = "Spectator"
 	icon_aggro = "Spectator_alert"
 	icon_dead = "Spectator_dead"
+	vision_range = 5
 	speed = 4
 	maxHealth = 250
 	health = 250
@@ -94,6 +95,7 @@
 	melee_damage_lower = 20
 	melee_damage_upper = 20
 	aggro_vision_range = 9
+	idle_vision_range = 5
 	var/list/projectiletypes = list(/obj/item/projectile/temp/basilisk/spectator,
 									/obj/item/projectile/ion/small,
 									/obj/item/projectile/energy/plasmastun,
