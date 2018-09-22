@@ -322,3 +322,14 @@ obj/item/weapon/reagent_containers/pill/noexcutite/New()
 	..()
 	reagents.add_reagent(/datum/reagent/nutriment/glucose, 20)
 	color = reagents.get_color()
+	
+	
+//Mining pills.
+/obj/item/weapon/reagent_containers/pill/leporazine
+	name = "Thermostabilizine"
+	desc = "Contents 15u of leporazine. Effectively stabilizes body temperature."
+	icon_state = "pill2"
+/obj/item/weapon/reagent_containers/pill/leporazine/New()
+	..()
+	reagents.add_reagent(/datum/reagent/leporazine, 15)
+	color = reagents.get_color()
