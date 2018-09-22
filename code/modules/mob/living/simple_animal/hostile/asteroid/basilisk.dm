@@ -18,8 +18,8 @@
 	throw_message = "does nothing against the hard shell of"
 	vision_range = 2
 	speed = 3
-	maxHealth = 100
-	health = 100
+	maxHealth = 75
+	health = 75
 	harm_intent_damage = 5
 	melee_damage_lower = 12
 	melee_damage_upper = 12
@@ -27,7 +27,7 @@
 	a_intent = "harm"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	ranged_cooldown_cap = 4
-	aggro_vision_range = 9
+	aggro_vision_range = 7
 	idle_vision_range = 2
 
 /obj/item/projectile/temp/basilisk
@@ -36,7 +36,15 @@
 	damage_type = BURN
 	nodamage = 1
 	check_armour = "energy"
-	temperature = 50
+	temperature = 25
+	
+/obj/item/projectile/temp/basilisk/spectator
+	name = "freezing blast"
+	damage = 5
+	damage_type = BURN
+	nodamage = 0
+	check_armour = "energy"
+	temperature = 30
 
 /mob/living/simple_animal/hostile/asteroid/basilisk/GiveTarget(new_target)
 	target_mob = new_target
@@ -78,14 +86,17 @@
 	icon_living = "Spectator"
 	icon_aggro = "Spectator_alert"
 	icon_dead = "Spectator_dead"
+	vision_range = 5
 	speed = 4
-	maxHealth = 300
-	health = 300
+	maxHealth = 250
+	health = 250
 	ranged_cooldown_cap = 3
 	harm_intent_damage = 15
 	melee_damage_lower = 20
 	melee_damage_upper = 20
-	var/list/projectiletypes = list(/obj/item/projectile/temp/basilisk,
+	aggro_vision_range = 9
+	idle_vision_range = 5
+	var/list/projectiletypes = list(/obj/item/projectile/temp/basilisk/spectator,
 									/obj/item/projectile/ion/small,
 									/obj/item/projectile/energy/plasmastun,
 									/obj/item/projectile/energy/declone,
@@ -93,7 +104,11 @@
 									/obj/item/projectile/energy/neurotoxin,
 									/obj/item/projectile/energy/phoron,
 									/obj/item/projectile/energy/electrode,
-									/obj/item/projectile/energy/flash)
+									/obj/item/projectile/energy/flash,
+									/obj/item/projectile/energy/flash/flare,
+									/obj/item/projectile/beam/plasmacutter,
+									/obj/item/projectile/forcebolt,
+									/obj/item/projectile/animate)
 
 /mob/living/simple_animal/hostile/asteroid/basilisk/spectator/OpenFire()
 	. = ..()
