@@ -10,7 +10,7 @@
 	var/metabolism = REM // This would be 0.2 normally
 	var/ingest_met = 0
 	var/touch_met = 0
-	var/overdose = 0
+	var/overdose = INFINITY
 	var/scannable = 0 // Shows up on health analyzers.
 	var/color = "#000000"
 	var/color_weight = 1
