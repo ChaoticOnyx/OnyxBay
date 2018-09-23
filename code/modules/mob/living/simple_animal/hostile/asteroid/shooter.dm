@@ -113,7 +113,45 @@
 		stance = HOSTILE_STANCE_ATTACK
 		if(isliving(target_mob))
 			var/mob/living/L = target_mob
-			if(L.bodytemperature > 258)
-				L.bodytemperature = 258
-				visible_message("<span class='danger'>The [src.name]'s evil stare chills [L.name] to the bone!</span>")
+			new /datum/chemical_reaction/emp_pulse/on_reaction(L, 10)
+			visible_message("<span class='danger'>The [src.name]'s evil stare chills [L.name] to the bone and disturbs any technology around them!</span>")
 	return
+
+/mob/living/simple_animal/hostile/asteroid/shooter/beholder/death(gibbed)
+	var/counter
+	for(counter=0, counter<2, counter++)
+		var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
+		D.layer = 4.1
+	new /obj/item/asteroid/beholder_eye(src.loc)
+	..(gibbed)
+
+
+////////////////Item: Beholder eye////////////////
+
+/obj/item/asteroid/beholder_eye
+	name = "The Hateful Eye"
+	desc = "The jellied, dead eye that still looks hateful and full of unknown powers. What a mighty beast owned that!"
+	icon = 'icons/obj/mining.dmi'
+	icon_state = "beholder_eye"
+	item_flags = ITEM_FLAG_NO_BLUDGEON
+	throw_speed = 3
+	throw_range = 7
+	throwforce = 10
+	damtype = BURN
+	force = 10
+	hitsound = 'sound/items/welder2.ogg'
+	w_class = 3
+	layer = 4
+	
+/obj/item/asteroid/beholder_eye/attack_self(mob/user as mob)
+	if (!(XRAY in user.mutations))
+		user.mutations.Add(XRAY)
+		user.set_sight(user.sight|SEE_MOBS|SEE_OBJS|SEE_TURFS)
+		user.set_see_in_dark(8)
+		user.set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
+		to_chat(user, "<span class='notice'>You look into the dead yet still hateful Eye of the Beholder and feel like it is looking into your own eyes. You look around and realize that walls suddenly disappear in the bright flash. When you look back at your hands there is no beholder eye. Where did it go?</span>")
+		return 1
+	return 0
+	new /datum/chemical_reaction/flash_powder/on_reaction(src, 10)
+	src.visible_message("<span class='warning'>\The [src] disappears in a bright flash!</span>")
+	qdel(src)
