@@ -45,14 +45,23 @@
 		icon_state = "Goliath_preattack"
 
 /mob/living/simple_animal/hostile/asteroid/goliath/OpenFire()
-	var/tturf = get_turf(target_mob)
 	if(get_dist(src, target_mob) <= 7)//Screen range check, so you can't get tentacle'd offscreen
-		visible_message("<span class='warning'>The [src.name] digs its tentacles under [target_mob.name]!</span>")
-		new /obj/effect/goliath_tentacle/original(tturf)
-		ranged_cooldown = ranged_cooldown_cap
-		icon_state = icon_aggro
-		pre_attack = 0
-	return
+		var/sturf = get_turf(src)
+		if(istype(sturf, /turf/simulated/mineral))//Goliath turf check. No floor-breaking tentacles! 
+		visible_message("<span class='warning'>The [src.name] tries to dig its huge tentacles under [target_mob.name]!</span>")
+			var/tturf = get_turf(target_mob)
+			if(istype(tturf, /turf/simulated/mineral))//Victim turf check. Again, no floor-breaking tentacles
+			visible_message("<span class='warning'>The [src.name] successfully digs its tentacles under [target_mob.name]!</span>")
+					new /obj/effect/goliath_tentacle/original(tturf)
+					ranged_cooldown = ranged_cooldown_cap
+					icon_state = icon_aggro
+					pre_attack = 0
+			else
+			visible_message("<span class='warning'>The [src.name] cannot dig its tentacles under [target_mob.name] because of solid obstacles!</span>")
+			ranged_cooldown = ranged_cooldown_cap
+			icon_state = icon_aggro
+			pre_attack = 0
+			return
 
 /mob/living/simple_animal/hostile/asteroid/goliath/adjustBruteLoss(damage)
 	ranged_cooldown--
@@ -91,6 +100,7 @@
 		new /obj/effect/goliath_tentacle(T)
 
 /obj/effect/goliath_tentacle/proc/Trip()
+	spawn(3)
 	for(var/mob/living/M in src.loc)
 		M.Weaken(3)
 		visible_message("<span class='warning'>The [src.name] knocks [M.name] down!</span>")
