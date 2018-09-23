@@ -1,8 +1,8 @@
-////////////////Basilisk////////////////
+////////////////Basic shooter (reworked basilisk)////////////////
 
-/mob/living/simple_animal/hostile/asteroid/basilisk
-	name = "basilisk"
-	desc = "A territorial beast, covered in a thick shell that absorbs energy. Its stare causes victims to freeze from the inside."
+/mob/living/simple_animal/hostile/asteroid/shooter
+	name = "shockzard"
+	desc = "A territorial reptile-like beast, covered in a thick shell that absorbs energy. A huge crystal on its long tail emits some sparks when the beast is nervous."
 	icon = 'icons/mob/asteroid/basilisk.dmi'
 	icon_state = "Basilisk"
 	icon_living = "Basilisk"
@@ -13,7 +13,7 @@
 	projectiletype = /obj/item/projectile/temp/basilisk
 	projectilesound = 'sound/weapons/pierce.ogg'
 	ranged = 1
-	ranged_message = "stares"
+	ranged_message = "emits energy"
 	ranged_cooldown_cap = 20
 	throw_message = "does nothing against the hard shell of"
 	vision_range = 2
@@ -30,35 +30,24 @@
 	aggro_vision_range = 7
 	idle_vision_range = 2
 
-/obj/item/projectile/temp/basilisk
-	name = "freezing blast"
-	damage = 0
-	damage_type = BURN
-	nodamage = 1
-	check_armour = "energy"
-	temperature = 25
-	
-/obj/item/projectile/temp/basilisk/spectator
-	name = "freezing blast"
+/obj/item/projectile/energy/neurotoxin/shockzard
+	name = "energy blast"
+	icon_state = "ice_2"
+	fire_sound = 'sound/weapons/pulse3.ogg'
 	damage = 5
 	damage_type = BURN
 	nodamage = 0
 	check_armour = "energy"
-	temperature = 30
-
-/mob/living/simple_animal/hostile/asteroid/basilisk/GiveTarget(new_target)
+	weaken=5
+	
+/mob/living/simple_animal/hostile/asteroid/shooter/GiveTarget(new_target)
 	target_mob = new_target
 	if(target_mob != null)
 		Aggro()
 		stance = HOSTILE_STANCE_ATTACK
-		if(isliving(target_mob))
-			var/mob/living/L = target_mob
-			if(L.bodytemperature > 261)
-				L.bodytemperature = 261
-				visible_message("<span class='danger'>The [src.name]'s stare chills [L.name] to the bone!</span>")
 	return
 
-/mob/living/simple_animal/hostile/asteroid/basilisk/ex_act(severity, target_mob)
+/mob/living/simple_animal/hostile/asteroid/shooter/ex_act(severity, target_mob)
 	switch(severity)
 		if(1.0)
 			gib()
@@ -67,7 +56,7 @@
 		if(3.0)
 			adjustBruteLoss(110)
 
-/mob/living/simple_animal/hostile/asteroid/basilisk/death(gibbed)
+/mob/living/simple_animal/hostile/asteroid/shooter/death(gibbed)
 	var/counter
 	for(counter=0, counter<2, counter++)
 		var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
@@ -76,10 +65,10 @@
 
 
 
-////////////////Spectator////////////////
+////////////////Beholder (formerly known as spectator)////////////////
 
-/mob/living/simple_animal/hostile/asteroid/basilisk/spectator
-	name = "spectator"
+/mob/living/simple_animal/hostile/asteroid/shooter/beholder
+	name = "beholder"
 	desc = "Floating orb of flesh with a large creepy mouth, hateful single central eye, and many smaller flexible eyestalks on top. It looks kinda ancient."
 	icon = 'icons/mob/asteroid/spectator.dmi'
 	icon_state = "Spectator"
@@ -90,13 +79,16 @@
 	speed = 4
 	maxHealth = 250
 	health = 250
+	ranged_message = "stares cruelly"
 	ranged_cooldown_cap = 3
 	harm_intent_damage = 15
-	melee_damage_lower = 20
-	melee_damage_upper = 20
+	melee_damage_lower = 22
+	melee_damage_upper = 22
+	attacktext = "gnaws and mauls"
 	aggro_vision_range = 9
 	idle_vision_range = 5
-	var/list/projectiletypes = list(/obj/item/projectile/temp/basilisk/spectator,
+	var/list/projectiletypes = list(/obj/item/projectile/beam/mindflayer,
+									/obj/item/projectile/energy/neurotoxin/shockzard,
 									/obj/item/projectile/ion/small,
 									/obj/item/projectile/energy/plasmastun,
 									/obj/item/projectile/energy/declone,
@@ -110,6 +102,18 @@
 									/obj/item/projectile/forcebolt,
 									/obj/item/projectile/animate)
 
-/mob/living/simple_animal/hostile/asteroid/basilisk/spectator/OpenFire()
+/mob/living/simple_animal/hostile/asteroid/shooter/beholder/OpenFire()
 	. = ..()
 	projectiletype = pick(projectiletypes)
+
+/mob/living/simple_animal/hostile/asteroid/shooter/beholder/GiveTarget(new_target)
+	target_mob = new_target
+	if(target_mob != null)
+		Aggro()
+		stance = HOSTILE_STANCE_ATTACK
+		if(isliving(target_mob))
+			var/mob/living/L = target_mob
+			if(L.bodytemperature > 258)
+				L.bodytemperature = 258
+				visible_message("<span class='danger'>The [src.name]'s evil stare chills [L.name] to the bone!</span>")
+	return
