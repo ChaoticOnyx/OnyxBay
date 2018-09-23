@@ -10,7 +10,7 @@
 	icon_dead = "Basilisk_dead"
 	icon_gib = "syndicate_gib"
 	move_to_delay = 20
-	projectiletype = /obj/item/projectile/temp/basilisk
+	projectiletype = /obj/item/projectile/energy/neurotoxin/shockzard
 	projectilesound = 'sound/weapons/pierce.ogg'
 	ranged = 1
 	ranged_message = "emits energy"
