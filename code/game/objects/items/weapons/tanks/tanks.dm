@@ -344,7 +344,7 @@ var/list/global/tank_gauge_cache = list()
 /obj/item/weapon/tank/update_icon(var/override)
 	var/needs_updating = override
 	
-	if(istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/ && !override) //So we don't eat up our tick. Every tick, when we're not actually in play.
+	if(istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/) && !override) //So we don't eat up our tick. Every tick, when we're not actually in play.
 		return
 
 	var/gauge_pressure = 0
