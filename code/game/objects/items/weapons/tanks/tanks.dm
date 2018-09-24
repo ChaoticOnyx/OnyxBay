@@ -548,21 +548,6 @@ var/list/global/tank_gauge_cache = list()
 	update_icon()
 
 /obj/item/weapon/tank/proc/ignite()	//This happens when a bomb is told to explode
-	var/obj/item/device/assembly_holder/assy = proxyassembly.assembly
-	var/ign = assy.a_right
-	var/obj/item/other = assy.a_left
-
-	if (isigniter(assy.a_left))
-		ign = assy.a_left
-		other = assy.a_right
-
-	other.dropInto(get_turf(src))
-	qdel(ign)
-	assy.master = null
-	proxyassembly.assembly = null
-	qdel(assy)
-	update_icon()
-
 	air_contents.add_thermal_energy(15000)
 
 /obj/item/device/tankassemblyproxy/update_icon()
