@@ -241,7 +241,7 @@
 	metabolism = 0.05
 	ingest_met = 0.02
 	flags = IGNORE_MOB_SIZE
-	var/pain_power = 80 //magnitide of painkilling effect
+	var/pain_power = 120 //magnitide of painkilling effect
 	var/effective_dose = 0.5 //how many units it need to process to reach max power
 
 /datum/reagent/tramadol/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
