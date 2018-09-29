@@ -127,6 +127,10 @@ var/list/flooring_types
 	icon_base = "white"
 	build_type = /obj/item/stack/tile/floor_white
 
+/decl/flooring/tiling/dirty
+	desc = "How sterile."
+	icon_base = "steel_dirty"
+
 /decl/flooring/tiling/brown
 	desc = "How sterile."
 	icon_base = "brown"
@@ -161,6 +165,34 @@ var/list/flooring_types
 	descriptor = "planks"
 	build_type = /obj/item/stack/tile/wood
 	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
+
+/decl/flooring/wood/broken0
+	name = "broken wooden floor"
+	icon_base = "wood_broken0"
+
+/decl/flooring/wood/broken1
+	name = "broken wooden floor"
+	icon_base = "wood_broken1"
+
+/decl/flooring/wood/broken2
+	name = "broken wooden floor"
+	icon_base = "wood_broken2"
+
+/decl/flooring/wood/broken3
+	name = "broken wooden floor"
+	icon_base = "wood_broken3"
+
+/decl/flooring/wood/broken4
+	name = "broken wooden floor"
+	icon_base = "wood_broken4"
+
+/decl/flooring/wood/broken5
+	name = "broken wooden floor"
+	icon_base = "wood_broken5"
+
+/decl/flooring/wood/broken6
+	name = "broken wooden floor"
+	icon_base = "wood_broken6"
 
 /decl/flooring/reinforced
 	name = "reinforced floor"

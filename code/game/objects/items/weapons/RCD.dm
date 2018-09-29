@@ -239,7 +239,7 @@
 /decl/hierarchy/rcd_mode/floor_and_walls/base_turf
 	cost = 1
 	delay = 2 SECONDS
-	work_type = /turf/simulated/floor/airless
+	work_type = /turf/simulated/floor/plating/airless
 
 /decl/hierarchy/rcd_mode/floor_and_walls/base_turf/can_handle_work(var/rcd, var/turf/target)
 	return istype(target) && (isspace(target) || istype(target, get_base_turf_by_area(target)))

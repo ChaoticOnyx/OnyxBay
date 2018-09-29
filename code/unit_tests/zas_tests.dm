@@ -55,7 +55,7 @@ proc/test_air_in_area(var/test_area, var/expectation = UT_NORMAL)
 
 	for(var/turf/simulated/T in A)
 
-		if(!istype(T) || isnull(T.zone) || istype(T, /turf/simulated/floor/airless))
+		if(!istype(T) || isnull(T.zone) || istype(T, /turf/simulated/floor/plating/airless))
 			continue
 		if(T.zone.air in GM_checked)
 			continue

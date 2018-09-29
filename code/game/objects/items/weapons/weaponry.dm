@@ -47,8 +47,8 @@
 		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
 		W.ChangeTurf(/turf/simulated/wall)
 
-	if(istype(A, /turf/simulated/floor/cult))
-		var/turf/simulated/floor/cult/F = A
+	if(istype(A, /turf/simulated/floor/misc/cult))
+		var/turf/simulated/floor/misc/cult/F = A
 		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
 		F.ChangeTurf(/turf/simulated/floor)
 

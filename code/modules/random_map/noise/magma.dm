@@ -38,7 +38,7 @@
 /datum/random_map/noise/volcanism/get_additional_spawns(var/value, var/turf/T)
 	if(value>=178)
 		if(istype(T,/turf/simulated/floor/asteroid))
-			T.ChangeTurf(/turf/simulated/floor/airless/lava)
+			T.ChangeTurf(/turf/simulated/floor/natural/lava)
 		else if(istype(T,/turf/simulated/mineral))
 			var/turf/simulated/mineral/M = T
-			M.mined_turf = /turf/simulated/floor/airless/lava
+			M.mined_turf = /turf/simulated/floor/natural/lava

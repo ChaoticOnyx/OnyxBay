@@ -30,7 +30,7 @@
 	invocation = "none"
 	invocation_type = SpI_NONE
 	range = 0
-	summon_type = list(/turf/simulated/floor/cult)
+	summon_type = list(/turf/simulated/floor/misc/cult)
 
 	hud_state = "const_floor"
 

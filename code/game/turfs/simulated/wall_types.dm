@@ -65,7 +65,7 @@
 
 /turf/simulated/wall/alium
 	icon_state = "jaggy"
-	floor_type = /turf/simulated/floor/fixed/alium
+	floor_type = /turf/simulated/floor/misc/fixed/alium
 
 /turf/simulated/wall/alium/New(var/newloc)
 	..(newloc,"alien alloy")

@@ -168,7 +168,7 @@
 	holder_var_amount = 20
 
 	spell_flags = Z2NOCAST | IGNOREPREV | IGNOREDENSE
-	summon_type = list(/turf/simulated/floor/diona)
+	summon_type = list(/turf/simulated/floor/misc/diona)
 	seed_type = /datum/seed/diona
 
 	hud_state = "wiz_diona"

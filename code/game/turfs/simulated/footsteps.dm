@@ -80,7 +80,7 @@
 /turf/simulated/floor/exoplanet/water/shallow/get_footstep_sound()
 	return safepick(footstep_sounds[FOOTSTEP_WATER])
 
-/turf/simulated/floor/fixed/get_footstep_sound()
+/turf/simulated/floor/misc/fixed/get_footstep_sound()
 	return safepick(footstep_sounds[FOOTSTEP_PLATING])
 
 /turf/simulated/floor/Entered(var/mob/living/carbon/human/H)

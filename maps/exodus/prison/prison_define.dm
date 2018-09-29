@@ -1,7 +1,7 @@
 
 /datum/map/exodus/prison
-	name = "Avalon"
-	full_name = "NSS Avalon"
+	name = "Eclipse"
+	full_name = "NSS Eclipse"
 	path = "exodus/prison"
 
 	station_levels = list(1)
@@ -14,9 +14,9 @@
 	base_turf_by_z = list("6" = /turf/simulated/floor/asteroid) // Moonbase
 	dynamic_z_levels = list("1" = 'prison-1.dmm', "3" = 'prison-3.dmm', "6" = 'prison-6.dmm')
 
-	station_name  = "NSS Avalon"
-	station_short = "Avalon"
-	dock_name     = "NAS Kekscent"
+	station_name  = "NSS Eclipse"
+	station_short = "Eclipse"
+	dock_name     = "NAS Crescent"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
 	company_name  = "NanoTrasen"
