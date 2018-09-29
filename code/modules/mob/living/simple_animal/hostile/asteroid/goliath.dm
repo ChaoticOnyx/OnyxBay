@@ -14,10 +14,10 @@
 	move_to_delay = 40
 	ranged = 1
 	ranged_cooldown = 2 //By default, start the Goliath with his cooldown off so that people can run away quickly on first sight
-	ranged_cooldown_cap = 8
+	ranged_cooldown_cap = 14
 	friendly = "wails at"
-	vision_range = 5
-	speed = 2
+	vision_range = 4
+	speed = 3
 	maxHealth = 300
 	health = 300
 	harm_intent_damage = 0
@@ -26,7 +26,7 @@
 	attacktext = "pulverizes"
 	throw_message = "does nothing to the rocky hide of the"
 	aggro_vision_range = 9
-	idle_vision_range = 5
+	idle_vision_range = 4
 	var/pre_attack = 0
 	var/dead = FALSE
 
@@ -45,14 +45,23 @@
 		icon_state = "Goliath_preattack"
 
 /mob/living/simple_animal/hostile/asteroid/goliath/OpenFire()
+	var/sturf = get_turf(src)
 	var/tturf = get_turf(target_mob)
 	if(get_dist(src, target_mob) <= 7)//Screen range check, so you can't get tentacle'd offscreen
-		visible_message("<span class='warning'>The [src.name] digs its tentacles under [target_mob.name]!</span>")
-		new /obj/effect/goliath_tentacle/original(tturf)
-		ranged_cooldown = ranged_cooldown_cap
-		icon_state = icon_aggro
-		pre_attack = 0
-	return
+		if(istype(sturf, /turf/simulated/floor/asteroid))//Goliath turf check. No floor-breaking tentacles! 
+			visible_message("<span class='warning'>The [src.name] tries to dig its huge tentacles under [target_mob.name]!</span>")
+			if(istype(tturf, /turf/simulated/floor/asteroid))//Victim turf check. Again, no floor-breaking tentacles
+				visible_message("<span class='warning'>The [src.name] successfully digs its tentacles under [target_mob.name]!</span>")
+				new /obj/effect/goliath_tentacle/original(tturf)
+				ranged_cooldown = ranged_cooldown_cap
+				icon_state = icon_aggro
+				pre_attack = 0
+			else
+				visible_message("<span class='warning'>The [src.name] cannot dig its tentacles under [target_mob.name] because of solid obstacles!</span>")
+				ranged_cooldown = ranged_cooldown_cap
+				icon_state = icon_aggro
+				pre_attack = 0
+				return
 
 /mob/living/simple_animal/hostile/asteroid/goliath/adjustBruteLoss(damage)
 	ranged_cooldown--
@@ -91,10 +100,11 @@
 		new /obj/effect/goliath_tentacle(T)
 
 /obj/effect/goliath_tentacle/proc/Trip()
-	for(var/mob/living/M in src.loc)
-		M.Weaken(3)
-		visible_message("<span class='warning'>The [src.name] knocks [M.name] down!</span>")
-	qdel(src)
+	spawn(3)
+		for(var/mob/living/M in src.loc)
+			M.Weaken(3)
+			visible_message("<span class='warning'>The [src.name] knocks [M.name] down!</span>")
+		qdel(src)
 
 /obj/effect/goliath_tentacle/Crossed(AM as mob|obj)
 	if(isliving(AM))

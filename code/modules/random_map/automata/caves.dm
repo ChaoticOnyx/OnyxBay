@@ -7,7 +7,7 @@
 	var/mineral_sparse =  /turf/simulated/mineral/random
 	var/mineral_rich = /turf/simulated/mineral/random/high_chance
 	var/list/ore_turfs = list()
-	var/max_mobs_count = 250 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
+	var/max_mobs_count = 200 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
 /datum/random_map/automata/cave_system/get_appropriate_path(var/value)
 	switch(value)
 		if(DOOR_CHAR)
@@ -89,9 +89,9 @@
 
 	var/count_goliath = 0
 	var/count_hoverhead = 0
-	var/count_sand_lurker = 0
-	var/count_basilisk = 0
-	var/count_basilisk_spectator = 0
+	var/count_cosmopterid = 0
+	var/count_shockzard = 0
+	var/count_beholder = 0
 	var/mobs_count = 0
 	for (var/thing in block(locate(origin_x, origin_y, origin_z), locate(limit_x, limit_y, origin_z)))
 		var/turf/T = thing
@@ -113,21 +113,21 @@
 			if(MONSTER_CHAR)
 				new_path = floor_type
 				var/chance = rand(100)
-				if(chance <= 40)
+				if(chance <= 66)
 					new /mob/living/simple_animal/hostile/asteroid/sand_lurker(T)
-					count_sand_lurker++
-				else if(chance <= 70 && chance > 40)
-					new /mob/living/simple_animal/hostile/asteroid/goliath(T)
-					count_goliath++
-				else if(chance <= 85 && chance > 70)
+					count_cosmopterid++
+				else if(chance <= 82 && chance > 66)
 					new /mob/living/simple_animal/hostile/asteroid/hoverhead(T)
 					count_hoverhead++
-				else if(chance <= 95 && chance > 85)
-					new /mob/living/simple_animal/hostile/asteroid/basilisk(T)
-					count_basilisk++
-				else if (chance > 95)
-					new /mob/living/simple_animal/hostile/asteroid/basilisk/spectator(T)
-					count_basilisk_spectator++
+				else if(chance <= 90 && chance > 82)
+					new /mob/living/simple_animal/hostile/asteroid/goliath(T)
+					count_goliath++
+				else if(chance <= 98 && chance > 90)
+					new /mob/living/simple_animal/hostile/asteroid/shooter(T)
+					count_shockzard++
+				else if (chance > 98)
+					new /mob/living/simple_animal/hostile/asteroid/shooter/beholder(T)
+					count_beholder++
 				mobs_count++
 			if(CAVE_BIG_ROCK_CHAR)
 				new_path = floor_type
@@ -141,9 +141,9 @@
 		CHECK_TICK
 	game_log("ASGEN", "Applied [num_applied] turfs.")
 	game_log("ASGEN", "Spawned [mobs_count] monsters (asteroid).")
-	game_log("ASGEN", "Spawned [count_goliath] goliaths (asteroid).")
+	game_log("ASGEN", "Spawned [count_cosmopterid] cosmopterids (asteroid).")
 	game_log("ASGEN", "Spawned [count_hoverhead] hoverheads (asteroid).")
-	game_log("ASGEN", "Spawned [count_sand_lurker] sand lurkers (asteroid).")
-	game_log("ASGEN", "Spawned [count_basilisk] basilisk (asteroid).")
-	game_log("ASGEN", "Spawned [count_basilisk_spectator] basilisk spectators (asteroid).")
+	game_log("ASGEN", "Spawned [count_goliath] goliaths (asteroid).")
+	game_log("ASGEN", "Spawned [count_shockzard] shockzards (asteroid).")
+	game_log("ASGEN", "Spawned [count_beholder] beholders (asteroid).")
 	log_world("Spawned [mobs_count] monsters (asteroid).")

@@ -116,7 +116,6 @@ var/list/point_source_descriptions = list(
 	"crate" = "From exported crates",
 	"phoron" = "From exported phoron",
 	"platinum" = "From exported platinum",
-	"thaler" = "From exported money",
 	"virology" = "From uploaded antibody data",
 	"total" = "Total" // If you're adding additional point sources, add it here in a new line. Don't forget to put a comma after the old last line.
 	)
@@ -134,7 +133,6 @@ var/list/point_source_descriptions = list(
 	var/points_per_slip = 2
 	var/points_per_platinum = 5 // 5 points per sheet
 	var/points_per_phoron = 5
-	var/points_per_thaler = 0.5
 	var/point_sources = list()
 	var/pointstotalsum = 0
 	var/pointstotal = 0
@@ -183,7 +181,6 @@ var/list/point_source_descriptions = list(
 	proc/sell()
 		var/phoron_count = 0
 		var/plat_count = 0
-		var/thal_count = 0
 		for(var/area/subarea in shuttle.shuttle_area)
 			for(var/atom/movable/MA in subarea)
 				if(MA.anchored)	continue
@@ -212,14 +209,7 @@ var/list/point_source_descriptions = list(
 							switch(P.get_material_name())
 								if("phoron") phoron_count += P.get_amount()
 								if("platinum") plat_count += P.get_amount()
-						if(istype(A, /obj/item/weapon/spacecash))
-							var/obj/item/weapon/spacecash/PCash = A
-							thal_count += PCash.worth
 				qdel(MA)
-
-		if(thal_count)
-			var/temp = thal_count * points_per_thaler
-			add_points_from_source(temp, "thaler")
 
 		if(phoron_count)
 			var/temp = phoron_count * points_per_phoron
