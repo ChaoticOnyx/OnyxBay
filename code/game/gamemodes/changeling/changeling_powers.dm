@@ -475,7 +475,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 			C.verbs += /mob/proc/changeling_revive
 			spawn(10 SECONDS)
 				C.changeling_revive()
-	
+
 	feedback_add_details("changeling_powers","FD")
 	return 1
 
@@ -1283,11 +1283,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	changeling.chem_charges -= 20
 	changeling.geneticpoints -= 4
 
+	changeling.isabsorbing = 0
 	T.make_changeling()
 	to_chat(T, "<span class='danger'>You feel a new power!</span>")
 	T.mind.changeling.geneticpoints = 6
 	T.mind.changeling.chem_charges = 40
-	changeling.isabsorbing = 0
 
 	T.death(0)
 	return 1
@@ -1349,7 +1349,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/datum/changeling/changeling = changeling_power(40,0,0)
 	if(!changeling)	return 0
-	
+
 
 	var/mob/living/carbon/M = src
 
@@ -1406,7 +1406,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			if(isorgan(I))
 				continue
 			M.drop_from_inventory(I)
-	
+
 	var/atom/movable/overlay/effect = new /atom/movable/overlay(get_turf(M))
 
 	effect.density = 0
@@ -1425,12 +1425,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
 	var/obj/item/organ/internal/biostructure/BIO = src.loc
-	
+
 	changeling_transfer_mind(HC)
 
 	HC.visible_message("<span class='warning'>[BIO] suddenly grows tiny legs!</span>",
 		"<span class='danger'><font size='2'><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></font></span>")
-	
+
 
 /mob/proc/changeling_fake_arm_blade()
 	set category = "Changeling"
@@ -1452,7 +1452,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 					else if(!isProsthetic(T.l_hand))
 						T.drop_l_hand()
 						hand = BP_L_HAND
-					else 
+					else
 						failed = TRUE
 
 				if(BP_L_HAND)
@@ -1461,7 +1461,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 					else if(!isProsthetic(T.r_hand))
 						T.drop_r_hand()
 						hand = BP_R_HAND
-					else 
+					else
 						failed = TRUE
 			if (!failed)
 				T.visible_message("<span class='warning'>The flesh is torn around the [T.name]\'s arm!</span>",
@@ -1545,7 +1545,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 					H.mind.changeling.heal = !H.mind.changeling.heal
 					to_chat(H, "<span class='warning'>We inactivate our stemocyte pool and stop intensive fleshmending because we run out of chemicals.</span>")
 				sleep(40)
-		
+
 
 /mob/proc/changeling_move_biostructure()
 	set category = "Changeling"
@@ -1572,7 +1572,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if (src.mind)	//basicaly if its mob then mind transfers to mob otherwise creating brain inside of biostucture
 		if(istype(M) && !istype(M,/mob/living/carbon/brain))
 			src.mind.transfer_to(M)
-		else 
+		else
 			BIO.mind_into_biostructure(src)
 	else
 		if(istype(M))
