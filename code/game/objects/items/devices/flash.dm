@@ -91,7 +91,7 @@
 	else if(isrobot(M))
 		var/mob/living/silicon/robot/R = M
 		if (R.sensor_mode != FLASH_PROTECTION_VISION)
-			M.Weaken(rand(str_min,6))
+			M.Weaken(rand(str_min,9))
 		else
 			to_chat(user, "<span class='warning'>\The [src] doesn't seem to work on [M].</span>")
 
