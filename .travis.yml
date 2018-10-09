@@ -12,7 +12,7 @@ sudo: false
 env:
     global:
     - BYOND_MAJOR="512"
-    - BYOND_MINOR="1416"
+    - BYOND_MINOR="1452"
     - DM_BUILDFILE="baystation12.dme"
 
 cache:
