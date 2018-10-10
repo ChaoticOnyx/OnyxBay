@@ -22,7 +22,7 @@
 /datum/gear/eyes/sciencegoggles
 	display_name = "Science Goggles"
 	path = /obj/item/clothing/glasses/science
-	allowed_roles = SECURITY_ROLES
+	allowed_roles = RESEARCH_ROLES
 
 /datum/gear/eyes/security
 	display_name = "Security HUD"
