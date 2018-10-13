@@ -29,7 +29,7 @@
 /datum/gear/uniform/roboticist_skirt
 	display_name = "skirt, roboticist"
 	path = /obj/item/clothing/under/rank/roboticist/skirt
-	allowed_roles = list("Roboticist")
+	allowed_roles = list(/datum/job/roboticist)
 
 /datum/gear/uniform/suit
 	display_name = "suit selection"
@@ -54,21 +54,6 @@
 	suits["formal outfit"] = /obj/item/clothing/under/rank/internalaffairs/plain
 	gear_tweaks += new/datum/gear_tweak/path(suits)
 
-/datum/gear/uniform/scrubs
-	display_name = "medical scrubs"
-	path = /obj/item/clothing/under/rank/medical/black
-	allowed_roles = list("Medical Doctor","Chief Medical Officer","Chemist","Paramedic","Geneticist")
-
-/datum/gear/uniform/scrubs/New()
-	..()
-	var/scrubcolor = list()
-	scrubcolor["black scrubs"] = /obj/item/clothing/under/rank/medical/black
-	scrubcolor["blue scrubs"] = /obj/item/clothing/under/rank/medical/blue
-	scrubcolor["green scrubs"] = /obj/item/clothing/under/rank/medical/green
-	scrubcolor["navy blue scrubs"] = /obj/item/clothing/under/rank/medical/navyblue
-	scrubcolor["purple scrubs"] = /obj/item/clothing/under/rank/medical/purple
-	gear_tweaks += new/datum/gear_tweak/path(scrubcolor)
-
 /datum/gear/uniform/dress
 	display_name = "dress selection"
 	path = /obj/item/clothing/under/dress
@@ -88,27 +73,27 @@
 /datum/gear/uniform/uniform_captain
 	display_name = "uniform, captain's dress"
 	path = /obj/item/clothing/under/dress/dress_cap
-	allowed_roles = list("Captain")
+	allowed_roles = list(/datum/job/captain)
 
 /datum/gear/uniform/corpsecsuit
 	display_name = "uniform, corporate (Security)"
 	path = /obj/item/clothing/under/rank/security/corp
-	allowed_roles = list("Security Officer","Head of Security","Warden")
+	allowed_roles = SECURITY_ROLES
 
 /datum/gear/uniform/uniform_hop
 	display_name = "uniform, HoP's dress"
 	path = /obj/item/clothing/under/dress/dress_hop
-	allowed_roles = list("Head of Personnel")
+	allowed_roles = list(/datum/job/hop)
 
 /datum/gear/uniform/uniform_hr
 	display_name = "uniform, HR director (HoP)"
 	path = /obj/item/clothing/under/dress/dress_hr
-	allowed_roles = list("Head of Personnel")
+	allowed_roles = list(/datum/job/hop)
 
 /datum/gear/uniform/navysecsuit
 	display_name = "uniform, navyblue (Security)"
 	path = /obj/item/clothing/under/rank/security/navyblue
-	allowed_roles = list("Security Officer","Head of Security","Warden")
+	allowed_roles = SECURITY_ROLES
 
 /datum/gear/uniform/skirt
 	display_name = "skirt selection"
