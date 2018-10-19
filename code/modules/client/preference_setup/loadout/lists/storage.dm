@@ -4,23 +4,19 @@
 	slot = slot_tie
 
 /datum/gear/storage/brown_vest
-	display_name = "webbing, engineering"
+	display_name = "brown webbing"
 	path = /obj/item/clothing/accessory/storage/brown_vest
 	cost = 3
-	allowed_roles = list(/datum/job/chief_engineer, /datum/job/engineer, /datum/job/roboticist, /datum/job/qm, /datum/job/cargo_tech,
-						/datum/job/mining, /datum/job/janitor)
 
 /datum/gear/storage/black_vest
-	display_name = "webbing, security"
+	display_name = "black webbing"
 	path = /obj/item/clothing/accessory/storage/black_vest
 	cost = 3
-	allowed_roles = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer)
 
 /datum/gear/storage/white_vest
-	display_name = "webbing, medical"
+	display_name = "white webbing"
 	path = /obj/item/clothing/accessory/storage/white_vest
 	cost = 3
-	allowed_roles = list(/datum/job/cmo, /datum/job/doctor)
 
 /datum/gear/storage/brown_drop_pouches
 	display_name = "drop pouches, engineering"
