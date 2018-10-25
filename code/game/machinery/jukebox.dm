@@ -178,6 +178,15 @@ datum/track/New(var/title_name, var/audio)
 		wrench_floor_bolts(user, 0)
 		power_change()
 		return
+	else if(istype(W, /obj/item/weapon/coin))
+		user.drop_item()
+		W.forceMove(src)
+		to_chat(user, "<span class='notice'>You insert \the [W] into \the [src].</span>")
+		var/newtitle = input("Type a title of the new track", "Track title", "Track") as text
+		var/sound/S = input("Select a sound", "Sound", 'sound/effects/ghost.ogg') as sound
+		tracks += new/datum/track(newtitle, S)
+		GLOB.nanomanager.update_uis(src)
+		return
 	return ..()
 
 /obj/machinery/media/jukebox/emag_act(var/remaining_charges, var/mob/user)
