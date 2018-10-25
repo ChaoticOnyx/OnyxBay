@@ -7,7 +7,7 @@
 	var/lit_up = FALSE
 
 /obj/item/jackolantern/attackby(var/obj/item/W, var/mob/user)
-	if(isflamesource(W))
+	if(isflamesource(W) & !lit_up)
 		user.visible_message("<span class='notice'>\The [user] lit up \the [src] with \the [W].</span>", "<span class='notice'>You lit up \the [src] with \the [W].</span>")
 		lit_up = TRUE
 		set_light(2, 1, COLOR_ORANGE)
