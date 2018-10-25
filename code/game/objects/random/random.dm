@@ -1089,7 +1089,7 @@ obj/random/hostile/spawn_choices()
 	icon = 'icons/obj/halloween/jackolantern.dmi'
 	icon_state = "spawner-jackolantern"
 
-/obj/random/hardsuit/spawn_choices()
+/obj/random/jackolantern/spawn_choices()
 	return list(/obj/item/jackolantern/best,
 				/obj/item/jackolantern/girl,
 				/obj/item/jackolantern/scream,
