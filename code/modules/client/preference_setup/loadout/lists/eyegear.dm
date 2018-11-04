@@ -32,64 +32,71 @@
 /datum/gear/eyes/sciencegoggles
 	display_name = "Science Goggles"
 	path = /obj/item/clothing/glasses/science
+	allowed_roles = RESEARCH_ROLES
 
 /datum/gear/eyes/security
 	display_name = "Security HUD"
 	path = /obj/item/clothing/glasses/hud/security
+	allowed_roles = SECURITY_ROLES
 
 /datum/gear/eyes/security/prescription
 	display_name = "Security HUD, prescription"
 	path = /obj/item/clothing/glasses/hud/security/prescription
+	allowed_roles = SECURITY_ROLES
 
 /datum/gear/eyes/security/sunglasses
 	display_name = "Security HUD Sunglasses"
 	path = /obj/item/clothing/glasses/sunglasses/sechud
+	allowed_roles = SECURITY_ROLES
 
 /datum/gear/eyes/security/aviators
 	display_name = "Security HUD Aviators"
 	path = /obj/item/clothing/glasses/sunglasses/sechud/toggle
+	allowed_roles = SECURITY_ROLES
 
 /datum/gear/eyes/security/ipatch
 	display_name = "HUDpatch, Security"
 	path = /obj/item/clothing/glasses/eyepatch/hud/security
+	allowed_roles = SECURITY_ROLES
 	cost = 2
 
 /datum/gear/eyes/medical
 	display_name = "Medical HUD"
 	path = /obj/item/clothing/glasses/hud/health
+	allowed_roles = MEDICAL_ROLES
 
 /datum/gear/eyes/medical/prescription
 	display_name = "Medical HUD, prescription"
 	path = /obj/item/clothing/glasses/hud/health/prescription
+	allowed_roles = MEDICAL_ROLES
 
 /datum/gear/eyes/medical/visor
 	display_name = "Medical HUD, Visor"
 	path = /obj/item/clothing/glasses/hud/health/visor
+	allowed_roles = MEDICAL_ROLES
 	cost = 2
 
 /datum/gear/eyes/medical/ipatch
 	display_name = "HUDpatch, Medical"
 	path = /obj/item/clothing/glasses/eyepatch/hud/medical
+	allowed_roles = MEDICAL_ROLES
 	cost = 2
 
 /datum/gear/eyes/meson
 	display_name = "Meson Goggles"
 	path = /obj/item/clothing/glasses/meson
-	allowed_roles = list(/datum/job/chief_engineer, /datum/job/engineer, /datum/job/mining, /datum/job/scientist, /datum/job/rd)
+	allowed_roles = TECHNICAL_ROLES
 
 /datum/gear/eyes/meson/prescription
 	display_name = "Meson Goggles, prescription"
 	path = /obj/item/clothing/glasses/meson/prescription
+	allowed_roles = TECHNICAL_ROLES
 
 /datum/gear/eyes/meson/ipatch
 	display_name = "HUDpatch, Meson"
 	path = /obj/item/clothing/glasses/eyepatch/hud/meson
+	allowed_roles = TECHNICAL_ROLES
 	cost = 2
-
-/datum/gear/eyes/material
-	display_name = "Material Goggles"
-	path = /obj/item/clothing/glasses/material
-	allowed_roles = list(/datum/job/chief_engineer, /datum/job/engineer, /datum/job/mining)
 
 /datum/gear/eyes/shades/
 	display_name = "sunglasses"
@@ -109,3 +116,4 @@
 /datum/gear/eyes/hudpatch
 	display_name = "iPatch"
 	path = /obj/item/clothing/glasses/eyepatch/hud
+	allowed_roles = COMMAND_ROLES
