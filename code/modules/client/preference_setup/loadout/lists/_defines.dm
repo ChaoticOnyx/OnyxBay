@@ -4,10 +4,10 @@
 #define COMMAND_ROLES list(/datum/job/captain, /datum/job/hop, /datum/job/rd, /datum/job/cmo, /datum/job/chief_engineer, /datum/job/hos)
 
 //For members of the medical department
-#define MEDICAL_ROLES list(/datum/job/cmo, /datum/job/doctor, /datum/job/psychiatrist, /datum/job/chemist)
+#define MEDICAL_ROLES list(/datum/job/cmo, /datum/job/doctor, /datum/job/psychiatrist, /datum/job/chemist, /datum/job/paramedic)
 
 //For members of the medical department, roboticists, and some Research
-#define STERILE_ROLES list(/datum/job/cmo, /datum/job/doctor, /datum/job/chemist, /datum/job/psychiatrist, /datum/job/roboticist, /datum/job/rd)
+#define STERILE_ROLES list(/datum/job/cmo, /datum/job/doctor, /datum/job/chemist, /datum/job/psychiatrist, /datum/job/paramedic, /datum/job/roboticist, /datum/job/rd)
 
 //For members of the engineering department
 #define ENGINEERING_ROLES list(/datum/job/chief_engineer, /datum/job/engineer, /datum/job/roboticist)
