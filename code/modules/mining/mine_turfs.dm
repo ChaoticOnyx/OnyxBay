@@ -344,6 +344,11 @@ var/list/mining_floors = list()
 		N.overlay_detail = "asteroid[rand(0,9)]"
 		N.updateMineralOverlays(1)
 
+	for(var/direction in GLOB.cardinal)
+		var/turf/simulated/mineral/T = get_step(src,direction)
+		if(istype(T))
+			T.update_icon()
+
 /turf/simulated/mineral/proc/excavate_find(var/prob_clean = 0, var/datum/find/F)
 
 	//many finds are ancient and thus very delicate - luckily there is a specialised energy suspension field which protects them when they're being extracted
@@ -444,12 +449,13 @@ var/list/mining_floors = list()
 	var/overlay_detail
 	has_resources = 1
 
-/turf/simulated/floor/asteroid/New()
+/turf/simulated/floor/asteroid/Initialize()
 	if (!mining_floors["[src.z]"])
 		mining_floors["[src.z]"] = list()
 	mining_floors["[src.z]"] += src
 	if(prob(20))
 		overlay_detail = "asteroid[rand(0,9)]"
+	updateMineralOverlays(1)
 
 /turf/simulated/floor/asteroid/Destroy()
 	if (mining_floors["[src.z]"])
