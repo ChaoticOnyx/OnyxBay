@@ -64,6 +64,12 @@
 	cost = 15
 	containername = "\improper White floor tile crate"
 
+/decl/hierarchy/supply_pack/miscellaneous/brown_tiles
+	name = "Brown floor tiles"
+	contains = list(/obj/item/stack/tile/floor_brown/fifty)
+	cost = 15
+	containername = "\improper Brown floor tile crate"
+
 /decl/hierarchy/supply_pack/miscellaneous/dark_tiles
 	name = "Dark floor tiles"
 	contains = list(/obj/item/stack/tile/floor_dark/fifty)

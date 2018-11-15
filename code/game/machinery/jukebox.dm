@@ -11,8 +11,8 @@ datum/track/New(var/title_name, var/audio)
 /obj/machinery/media/jukebox
 	name = "space jukebox"
 	icon = 'icons/obj/jukebox.dmi'
-	icon_state = "jukebox2-nopower"
-	var/state_base = "jukebox2"
+	icon_state = "jukebox-nopower"
+	var/state_base = "jukebox"
 	anchored = 1
 	density = 1
 	power_channel = EQUIP
@@ -39,6 +39,7 @@ datum/track/New(var/title_name, var/audio)
 		new/datum/track("Scratch", 'sound/music/title1.ogg'),
 		new/datum/track("Trai`Tor", 'sound/music/traitor.ogg'),
 	)
+
 
 /obj/machinery/media/jukebox/New()
 	..()
