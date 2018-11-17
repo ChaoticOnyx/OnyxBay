@@ -4,6 +4,7 @@
 	icon = 'icons/obj/doors/windoor.dmi'
 	icon_state = "left"
 	var/base_state = "left"
+	var/id = null  // for blast door button that can work with windoors now
 	min_force = 4
 	hitsound = 'sound/effects/Glasshit.ogg'
 	maxhealth = 150 //If you change this, consiter changing ../door/window/brigdoor/ health at the bottom of this .dm file
@@ -19,9 +20,10 @@
 /obj/machinery/door/window/New()
 	..()
 	update_nearby_tiles()
-	if (src.req_access && src.req_access.len)
-		src.icon_state = "[src.icon_state]"
-		src.base_state = src.icon_state
+//	if (src.req_access && src.req_access.len)                      Deleted unneeded check. It wreaks opened windoors with access
+//		src.icon_state = "[src.icon_state]"
+//		src.base_state = src.icon_state
+	update_icon()
 	return
 
 /obj/machinery/door/window/update_icon()
@@ -270,7 +272,6 @@
 	icon_state = "leftsecure"
 	base_state = "leftsecure"
 	req_access = list(access_security)
-	var/id = null
 	maxhealth = 300
 	health = 300.0 //Stronger doors for prison (regular window door health is 150)
 
