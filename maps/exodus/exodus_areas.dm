@@ -984,6 +984,10 @@
 	name = "\improper Bar Backroom"
 	icon_state = "barBR"
 
+/area/crew_quarters/ubarbackroom           ////////////// new room for bartender
+	name = "\improper Underground Bar Backroom"
+	icon_state = "ubarBR"
+
 /area/crew_quarters/mess
 	name = "\improper Mess Hall"
 	icon_state = "cafeteria"
