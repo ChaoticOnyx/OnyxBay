@@ -455,7 +455,7 @@ var/list/mining_floors = list()
 	mining_floors["[src.z]"] += src
 	if(prob(20))
 		overlay_detail = "asteroid[rand(0,9)]"
-	updateMineralOverlays(1)
+	updateMineralOverlays()
 
 /turf/simulated/floor/asteroid/Destroy()
 	if (mining_floors["[src.z]"])
