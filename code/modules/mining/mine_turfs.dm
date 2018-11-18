@@ -37,14 +37,11 @@ var/list/mining_floors = list()
 
 	has_resources = 1
 
-/turf/simulated/mineral/New()
+/turf/simulated/mineral/Initialize()
 	if (!mining_walls["[src.z]"])
 		mining_walls["[src.z]"] = list()
 	mining_walls["[src.z]"] += src
-	spawn(0)
-		MineralSpread()
-	spawn(2)
-		update_icon(1)
+	update_icon()
 
 /turf/simulated/mineral/Destroy()
 	if (mining_walls["[src.z]"])
@@ -347,6 +344,11 @@ var/list/mining_floors = list()
 		N.overlay_detail = "asteroid[rand(0,9)]"
 		N.updateMineralOverlays(1)
 
+	for(var/direction in GLOB.cardinal)
+		var/turf/simulated/mineral/T = get_step(src,direction)
+		if(istype(T))
+			T.update_icon()
+
 /turf/simulated/mineral/proc/excavate_find(var/prob_clean = 0, var/datum/find/F)
 
 	//many finds are ancient and thus very delicate - luckily there is a specialised energy suspension field which protects them when they're being extracted
@@ -412,14 +414,14 @@ var/list/mining_floors = list()
 	var/mineralSpawnChanceList = list("Uranium" = 5, "Platinum" = 5, "Iron" = 35, "Carbon" = 35, "Diamond" = 1, "Gold" = 5, "Silver" = 5, "Phoron" = 10)
 	var/mineralChance = 100 //10 //means 10% chance of this plot changing to a mineral deposit
 
-/turf/simulated/mineral/random/New()
+/turf/simulated/mineral/random/Initialize()
 	if (prob(mineralChance) && !mineral)
 		var/mineral_name = pickweight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
 		if (mineral_name && (mineral_name in ore_data))
 			mineral = ore_data[mineral_name]
 			UpdateMineral()
-
+	MineralSpread()
 	. = ..()
 
 /turf/simulated/mineral/random/high_chance
@@ -447,12 +449,13 @@ var/list/mining_floors = list()
 	var/overlay_detail
 	has_resources = 1
 
-/turf/simulated/floor/asteroid/New()
+/turf/simulated/floor/asteroid/Initialize()
 	if (!mining_floors["[src.z]"])
 		mining_floors["[src.z]"] = list()
 	mining_floors["[src.z]"] += src
 	if(prob(20))
 		overlay_detail = "asteroid[rand(0,9)]"
+	updateMineralOverlays()
 
 /turf/simulated/floor/asteroid/Destroy()
 	if (mining_floors["[src.z]"])
@@ -547,11 +550,6 @@ var/list/mining_floors = list()
 			var/image/aster_edge = image('icons/turf/flooring/asteroid.dmi', "asteroid_edges", dir = step_overlays[direction])
 			aster_edge.turf_decal_layerise()
 			overlays += aster_edge
-
-		if(istype(get_step(src, step_overlays[direction]), /turf/simulated/mineral))
-			var/image/rock_wall = image('icons/turf/walls.dmi', "rock_side", dir = step_overlays[direction])
-			rock_wall.turf_decal_layerise()
-			overlays += rock_wall
 
 	//todo cache
 	if(overlay_detail)
