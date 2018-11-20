@@ -19,19 +19,23 @@
 	cost = 3
 
 /datum/gear/storage/brown_drop_pouches
-	display_name = "brown drop pouches"
+	display_name = "drop pouches, engineering"
 	path = /obj/item/clothing/accessory/storage/drop_pouches/brown
 	cost = 3
+	allowed_roles = list(/datum/job/chief_engineer, /datum/job/engineer, /datum/job/roboticist, /datum/job/qm, /datum/job/cargo_tech,
+						/datum/job/mining, /datum/job/janitor)
 
 /datum/gear/storage/black_drop_pouches
-	display_name = "black drop pouches"
+	display_name = "drop pouches, security"
 	path = /obj/item/clothing/accessory/storage/drop_pouches/black
 	cost = 3
+	allowed_roles = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer)
 
 /datum/gear/storage/white_drop_pouches
-	display_name = "white drop pouches"
+	display_name = "drop pouches, medical"
 	path = /obj/item/clothing/accessory/storage/drop_pouches/white
 	cost = 3
+	allowed_roles = list(/datum/job/cmo, /datum/job/doctor, /datum/job/paramedic, /datum/job/psychiatrist, /datum/job/chemist)
 
 /datum/gear/storage/webbing
 	display_name = "webbing, simple"
