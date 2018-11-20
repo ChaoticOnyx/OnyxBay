@@ -70,13 +70,10 @@
 /obj/item/stack/tile/floor_brown
 	name = "brown floor tile"
 	singular_name = "brown floor tile"
-	icon_state = "tile_brown"
+	icon_state = "tile_white"
 	matter = list("plastic" = 937.5)
 
 /obj/item/stack/tile/floor_white/fifty
-	amount = 50
-
-/obj/item/stack/tile/floor_brown/fifty
 	amount = 50
 
 /obj/item/stack/tile/floor_dark
