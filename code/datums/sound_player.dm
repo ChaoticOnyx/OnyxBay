@@ -27,13 +27,13 @@ var/decl/sound_player/sound_player = new()
 	taken_channels = list()
 	source_id_uses = list()
 
-/decl/sound_player/proc/PlayLoopingSound(var/atom/source, var/sound_id, var/sound, var/volume, var/range, var/falloff, var/prefer_mute, var/stream = 0)
+/decl/sound_player/proc/PlayLoopingSound(var/atom/source, var/sound_id, var/sound, var/volume, var/range, var/falloff, var/prefer_mute)
 	var/channel = PrivGetChannel(sound_id)
 	if(!channel)
 		log_warning("All available sound channels are in active use.")
 		return
 
-	return new/datum/sound_token(source, sound_id, sound, volume, channel, range, falloff, prefer_mute, stream)
+	return new/datum/sound_token(source, sound_id, sound, volume, channel, range, falloff, prefer_mute)
 
 /decl/sound_player/proc/PrivStopSound(var/datum/sound_token/sound_token)
 	var/channel = sound_token.channel
@@ -84,7 +84,7 @@ var/decl/sound_player/sound_player = new()
 	var/datum/proximity_trigger/square/proxy_listener
 	var/list/can_be_heard_from
 
-/datum/sound_token/New(var/atom/source, var/sound_id, var/sound, var/volume, var/channel, var/range = 4, var/falloff = 1, var/prefer_mute = FALSE, stream = 0)
+/datum/sound_token/New(var/atom/source, var/sound_id, var/sound, var/volume, var/channel, var/range = 4, var/falloff = 1, var/prefer_mute = FALSE)
 	..()
 	listeners = list()
 	listener_status = list()
@@ -97,9 +97,6 @@ var/decl/sound_player/sound_player = new()
 	src.sound_id = sound_id
 	src.source = source
 	src.volume = volume
-
-	if(stream)
-		src.status |= SOUND_STREAM
 
 	GLOB.destroyed_event.register(source, src, /datum/sound_token/proc/Stop)
 
