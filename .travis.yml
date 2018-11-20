@@ -39,7 +39,7 @@ after_failure:
   - ./send-to-discord.sh failure $WEBHOOK_URL
 
 script:
-#  - (! grep 'step_[xy]' maps/*.dmm)
+  - (! grep 'step_[xy]' maps/**/*.dmm)
 #  - (! grep -E "(/obj/machinery/door/firedoor).*\1" maps/*.dmm)
   - source $HOME/BYOND-${BYOND_MAJOR}.${BYOND_MINOR}/byond/bin/byondsetup
 #  - bash dm.sh -M${DM_MAPFILE} ${DM_BUILDFILE}
