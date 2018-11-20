@@ -16,13 +16,6 @@
 	origin_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 2)
 	req_components = list(/obj/item/weapon/stock_parts/capacitor = 1)
 
-/obj/item/weapon/circuitboard/honey_extractor
-	name = T_BOARD("honey extractor")
-	build_path = /obj/machinery/honey_extractor
-	board_type = "machine"
-	origin_tech = list(TECH_ENGINEERING = 1)
-	req_components = list(/obj/item/weapon/stock_parts/manipulator = 3)
-
 /obj/item/weapon/circuitboard/sleeper
 	name = T_BOARD("sleeper")
 	desc = "The circuitboard for a sleeper."
