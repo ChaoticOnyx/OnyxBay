@@ -1083,18 +1083,6 @@ obj/random/hostile/spawn_choices()
 				/mob/living/simple_animal/hostile/carp/pike,
 				/mob/living/simple_animal/hostile/vagrant/swarm)
 
-/obj/random/jackolantern
-	name = "Random Jack o'lantern"
-	desc = "This is a random jack o'lantern."
-	icon = 'icons/obj/halloween/jackolantern.dmi'
-	icon_state = "spawner-jackolantern"
-
-/obj/random/jackolantern/spawn_choices()
-	return list(/obj/item/jackolantern/best,
-				/obj/item/jackolantern/girl,
-				/obj/item/jackolantern/scream,
-				/obj/item/jackolantern/old)
-
 /*
 	Selects one spawn point out of a group of points with the same ID and asks it to generate its items
 */
