@@ -396,10 +396,6 @@
 
 // Maintenance
 
-/area/maintenance/ghetto_medbay
-    name = "\improper Ghetto Medbay"
-    icon_state = "ghettomedbay"
-
 /area/maintenance/ghetto_minicasino
     name = "\improper Ghetto Mini Casino"
     icon_state = "ghettominicasino"
