@@ -140,15 +140,6 @@
 			else
 				spawn(0)
 					M.close()
-	for(var/obj/machinery/door/window/W in world)  // windoor rmote control
-		if(W.id == src.id)
-			if(W.density)
-				spawn(0)
-					W.open()
-					return
-			else
-				spawn(0)
-					W.close()
 					return
 
 /*
