@@ -2239,7 +2239,7 @@
 "aRc" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor/plating,/area/maintenance/bar)
 "aRd" = (/obj/machinery/navbeacon/Bar,/obj/structure/plasticflaps{opacity = 1},/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/industrial/loading{icon_state = "loadingarea"; dir = 8},/turf/simulated/floor/tiled,/area/maintenance/bar)
 "aRe" = (/obj/structure/sign/warning/smoking{pixel_x = 0; pixel_y = 28},/obj/machinery/vending/cigars,/turf/simulated/floor/trim/carpet,/area/crew_quarters/mess)
-"aRf" = (/obj/structure/bed/padded{base_icon = "bedright"; icon_state = "bedright"},/obj/item/weapon/bedsheet/yellow,/turf/simulated/floor/trim/wood,/area/crew_quarters/barbackroom)
+"aRf" = (/obj/structure/bed/padded{base_icon = "bedright"; icon_state = "bedright"},/obj/item/weapon/bedsheet/yellow,/obj/structure/sign/warning/secure_area/cctv{pixel_x = 32},/turf/simulated/floor/trim/wood,/area/crew_quarters/barbackroom)
 "aRg" = (/obj/structure/sign/warning/smoking,/turf/simulated/wall,/area/crew_quarters/mess)
 "aRh" = (/obj/machinery/alarm{pixel_y = 22},/obj/machinery/light/small{dir = 1},/turf/simulated/floor/trim/carpet,/area/crew_quarters/mess)
 "aRi" = (/obj/structure/ladder,/turf/simulated/floor/tiled/freezer,/area/crew_quarters/kitchen)

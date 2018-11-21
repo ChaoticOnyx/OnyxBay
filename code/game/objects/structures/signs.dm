@@ -193,6 +193,10 @@
 	name = "\improper ARMORY"
 	icon_state = "armory"
 
+/obj/structure/sign/warning/secure_area/cctv
+	name = "\improper CCTV"
+	icon_state = "cctv"
+
 /obj/structure/sign/warning/server_room
 	name = "\improper SERVER ROOM"
 	icon_state = "server"
