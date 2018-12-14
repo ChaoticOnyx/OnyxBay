@@ -1869,7 +1869,7 @@
 "aJW" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/machinery/computer/guestpass{pixel_y = -28},/turf/simulated/floor/tiled,/area/security/brig)
 "aJX" = (/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/cable/green{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/trim/wood,/area/crew_quarters/barbackroom)
 "aJY" = (/obj/structure/closet/wardrobe/pjs{pixel_x = 1},/obj/effect/floor_decal/corner/grey/three_quarters{dir = 4},/turf/simulated/floor/tiled/dark,/area/crew_quarters/sleep)
-"aJZ" = (/obj/item/device/violin,/obj/structure/table/woodentable,/turf/simulated/floor/trim/wood,/area/crew_quarters/barbackroom)
+"aJZ" = (/obj/item/instrument/violin,/obj/structure/table/woodentable,/turf/simulated/floor/trim/wood,/area/crew_quarters/barbackroom)
 "aKa" = (/obj/structure/disposalpipe/sortjunction{dir = 2; icon_state = "pipe-j1s"; sortType = "Bar"; name = "Bar"},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 4},/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/cable/green{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/plating,/area/maintenance/bar)
 "aKb" = (/obj/structure/reagent_dispensers/watertank,/turf/simulated/floor/plating,/area/maintenance/bar)
 "aKc" = (/obj/structure/grille,/turf/simulated/floor/plating,/area/space)
