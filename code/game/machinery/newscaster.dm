@@ -24,6 +24,7 @@
 	var/backup_author=""
 	var/views=0
 	var/censored=0
+	var/channel_id=0
 	var/is_admin_channel=0
 	var/updated = 0
 	var/announcement = ""
@@ -71,6 +72,8 @@
 		newChannel.announcement = announcement_message
 	else
 		newChannel.announcement = "Breaking news from [channel_name]!"
+
+	newChannel.channel_id = length(network_channels) + 1
 	network_channels += newChannel
 
 /datum/feed_network/proc/SubmitArticle(var/msg, var/author, var/channel_name, var/obj/item/weapon/photo/photo, var/adminMessage = 0, var/message_type = "")
@@ -92,7 +95,7 @@
 /datum/feed_network/proc/insert_message_in_channel(var/datum/feed_channel/FC, var/datum/feed_message/newMsg)
 	FC.messages += newMsg
 	if(newMsg.img)
-		register_asset("newscaster_photo_[sanitize(FC.channel_name)]_[FC.messages.len].png", newMsg.img)
+		register_asset("newscaster_photo_[FC.channel_id]_[FC.messages.len].png", newMsg.img)
 	newMsg.parent_channel = FC
 	FC.update()
 	alert_readers(FC.announcement)
@@ -338,7 +341,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 							++i
 							dat+="-[MESSAGE.body] <BR>"
 							if(MESSAGE.img)
-								var/resourc_name = "newscaster_photo_[sanitize(viewing_channel.channel_name)]_[i].png"
+								var/resourc_name = "newscaster_photo_[viewing_channel.channel_id]_[i].png"
 								send_asset(usr.client, resourc_name)
 								dat+="<img src='[resourc_name]' width = '180'><BR>"
 								if(MESSAGE.caption)
@@ -524,7 +527,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				feedback_inc("newscaster_stories",1)
 				news_network.SubmitArticle(src.msg, src.scanned_user, src.channel_name, image, 0)
 				if(photo_data)
-					photo_data.photo.forceMove(get_turf(src))
+					AttachPhoto(usr)
 				src.screen=4
 
 			src.updateUsrDialog()
@@ -839,7 +842,7 @@ obj/item/weapon/newspaper/attack_self(mob/user as mob)
 							++i
 							dat+="-[MESSAGE.body] <BR>"
 							if(MESSAGE.img)
-								var/resourc_name = "newscaster_photo_[sanitize(C.channel_name)]_[i].png"
+								var/resourc_name = "newscaster_photo_[C.channel_id]_[i].png"
 								send_asset(user.client, resourc_name)
 								dat+="<img src='[resourc_name]' width = '180'><BR>"
 							dat+="<FONT SIZE=1>\[[MESSAGE.message_type] by <FONT COLOR='maroon'>[MESSAGE.author]</FONT>\]</FONT><BR><BR>"
