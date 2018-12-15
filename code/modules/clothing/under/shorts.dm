@@ -3,7 +3,6 @@
 /obj/item/clothing/under/shorts
 	name = "athletic shorts"
 	icon_state = "shorts"
-	item_state = "greyshorts"
 	desc = "95% Polyester, 5% Spandex!"
 	gender = PLURAL
 	body_parts_covered = LOWER_TORSO
@@ -32,70 +31,70 @@
 	name = "jeans shorts"
 	desc = "Some jeans! Just in short form!"
 	icon_state = "jeans_shorts"
-	item_state = "yfshorts"
+	worn_state = "jeans_shorts"
 
 /obj/item/clothing/under/shorts/jeans/female
 	name = "jeans short shorts"
 	icon_state = "jeans_shorts_f"
-	item_state = "yfshorts"
+	worn_state = "jeans_shorts_f"
 
 /obj/item/clothing/under/shorts/jeans/classic
 	name = "classic jeans shorts"
 	icon_state = "jeansclassic_shorts"
-	item_state = "yfshorts"
+	worn_state = "jeansclassic_shorts"
 
 /obj/item/clothing/under/shorts/jeans/classic/female
 	name = "classic jeans short shorts"
 	icon_state = "jeansclassic_shorts_f"
-	item_state = "yfshorts"
+	worn_state = "jeansclassic_shorts_f"
 
 /obj/item/clothing/under/shorts/jeans/mustang
 	name = "mustang jeans shorts"
 	icon_state = "jeansmustang_shorts"
-	item_state = "yfshorts"
+	worn_state = "jeansmustang_shorts"
 
 /obj/item/clothing/under/shorts/jeans/mustang/female
 	name = "mustang jeans short shorts"
 	icon_state = "jeansmustang_shorts_f"
-	item_state = "yfshorts"
+	worn_state = "jeansmustang_shorts_f"
 
 /obj/item/clothing/under/shorts/jeans/youngfolks
 	name = "young folks jeans shorts"
 	icon_state = "jeansyoungfolks_shorts"
-	item_state = "yfshorts"
+	worn_state = "jeansyoungfolks_shorts"
 
 /obj/item/clothing/under/shorts/jeans/youngfolks/female
 	name = "young folks jeans short shorts"
 	icon_state = "jeansyoungfolks_shorts_f"
-	item_state = "yfshorts"
+	worn_state = "jeansyoungfolks_shorts_f"
 
 /obj/item/clothing/under/shorts/jeans/black
 	name = "black jeans shorts"
 	icon_state = "blackpants_shorts"
-	item_state = "blackshorts"
+	worn_state = "blackpants_shorts"
 
 /obj/item/clothing/under/shorts/jeans/black/female
 	name = "black jeans short shorts"
 	icon_state = "black_shorts_f"
-	item_state = "blackshorts"
+	worn_state = "black_shorts_f"
 
 /obj/item/clothing/under/shorts/jeans/grey
 	name = "grey jeans shorts"
 	icon_state = "greypants_shorts"
-	item_state = "greyshorts"
+	worn_state = "greypants_shorts"
 
 /obj/item/clothing/under/shorts/jeans/grey/female
 	name = "grey jeans short shorts"
 	icon_state = "grey_shorts_f"
-	item_state = "greyshorts"
+	worn_state = "grey_shorts_f"
 
 /obj/item/clothing/under/shorts/khaki
 	name = "khaki shorts"
 	desc = "For that island getaway. It's five o'clock somewhere, right?"
 	icon_state = "tanpants_shorts"
-	item_state = "khakishorts"
+	worn_state = "tanpants_shorts"
 
 /obj/item/clothing/under/shorts/khaki/female
 	name = "khaki short shorts"
 	icon_state = "khaki_shorts_f"
-	item_state = "khakishorts"
+	worn_state = "khaki_shorts_f"

@@ -63,7 +63,6 @@
 	name = "tactical mask"
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
 	icon_state = "swat"
-	item_state = "swat"
 	siemens_coefficient = 0.7
 	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75, rad = 0)
 
@@ -71,7 +70,7 @@
 	name = "clown wig and mask"
 	desc = "A true prankster's facial attire. A clown is incomplete without their wig and mask."
 	icon_state = "clown"
-	item_state = "clown"
+	item_state = "clown_hat"
 
 /obj/item/clothing/mask/gas/sexyclown
 	name = "sexy-clown wig and mask"
@@ -108,13 +107,11 @@
 	name = "cyborg visor"
 	desc = "Beep boop!"
 	icon_state = "death"
-	item_state = "death"
 
 /obj/item/clothing/mask/gas/owl_mask
 	name = "owl mask"
 	desc = "Twoooo!"
 	icon_state = "owl"
-	item_state = "owl"
 	body_parts_covered = HEAD|FACE|EYES
 
 /obj/item/clothing/mask/gas/vox
