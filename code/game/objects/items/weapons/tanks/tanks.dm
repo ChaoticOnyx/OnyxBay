@@ -32,7 +32,7 @@ var/list/global/tank_gauge_cache = list()
 	var/manipulated_by = null		//Used by _onclick/hud/screen_objects.dm internals to determine if someone has messed with our tank or not.
 						//If they have and we haven't scanned it with the PDA or gas analyzer then we might just breath whatever they put in it.
 
-	var/failure_temp = 173 //173 deg C Borate seal (yes it should be 153 F, but that's annoying)
+	var/failure_temp = 99999999 //FUCK BAYSTATION12
 	var/leaking = 0
 	var/wired = 0
 
