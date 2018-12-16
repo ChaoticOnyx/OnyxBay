@@ -1,24 +1,13 @@
 /obj/item/instrument
-	icon = 'icons/obj/items.dmi'
+	icon = 'icons/obj/musician.dmi'
 	throwforce = 0
 	throw_speed = 3
 	throw_range = 6
 	force = 0
 
-/obj/item/instrument/guitar
-	name = "guitar"
-	desc = "An antique musical instrument made of wood, originating from Earth.	It has six metal strings of different girth and tension. When moved, they vibrate and the waves resonate in the guitar's open body, producing sounds. Obtained notes can be altered by pressing the strings to the neck, affecting the vibration's frequency."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "guitar"
-
-/obj/item/instrument/guitar/attack_self(mob/user as mob)
-	user.visible_message("<span class='notice'><b>\The [user]</b> strums [src]!</span>","<span class='notice'>You strum [src]!</span>")
-
-
 /obj/item/instrument/violin
 	name = "space violin"
 	desc = "A wooden musical instrument with four strings and a bow. \"The devil went down to space, he was looking for an assistant to grief.\"."
-	icon = 'icons/obj/musician.dmi'
 	icon_state = "violin"
 	item_state = "violin"
 	force = 10
@@ -420,7 +409,6 @@
 /obj/item/instrument/guitar
 	name = "guitar"
 	desc = "A wooden musical instrument with four strings and a bow. \"The devil went down to space, he was looking for an assistant to grief.\"."
-	icon = 'icons/obj/musician.dmi'
 	icon_state = "guitar"
 	item_state = "guitar"
 	force = 10
@@ -641,6 +629,896 @@
 		else if(href_list["modifyline"])
 			var/num = round(text2num(href_list["modifyline"]),1)
 			var/content = html_encode(input("Enter your line: ", "guitar", song.lines[num]) as text|null)
+			if(!content)
+				return
+			if(lentext(content) > 50)
+				content = copytext(content, 1, 50)
+			if(num > song.lines.len || num < 1)
+				return
+			song.lines[num] = content
+
+		else if(href_list["stop"])
+			playing = 0
+
+		else if(href_list["help"])
+			help = text2num(href_list["help"]) - 1
+
+		else if(href_list["edit"])
+			edit = text2num(href_list["edit"]) - 1
+
+		else if(href_list["import"])
+			var/t = ""
+			do
+				t = html_encode(input(usr, "Please paste the entire song, formatted:", text("[]", name), t)  as message)
+				if(!in_range(src, usr))
+					return
+
+				if(lentext(t) >= 3072)
+					var/cont = input(usr, "Your message is too long! Would you like to continue editing it?", "", "yes") in list("yes", "no")
+					if(cont == "no")
+						break
+			while(lentext(t) > 3072)
+
+			//split into lines
+			spawn()
+				var/list/lines = splittext(t, "\n")
+				var/tempo = 5
+				if(copytext(lines[1],1,6) == "BPM: ")
+					tempo = 600 / text2num(copytext(lines[1],6))
+					lines.Cut(1,2)
+				if(lines.len > 50)
+					to_chat(usr, "Too many lines!")
+					lines.Cut(51)
+				var/linenum = 1
+				for(var/l in lines)
+					if(lentext(l) > 50)
+						to_chat(usr, "Line [linenum] too long!")
+						lines.Remove(l)
+					else
+						linenum++
+				song = new()
+				song.lines = lines
+				song.tempo = tempo
+
+	for(var/mob/M in viewers(1, loc))
+		if((M.client && M.machine == src))
+			attack_self(M)
+	return
+
+
+
+/obj/item/instrument/accordion
+	name = "accordion"
+	desc = "It`s something... I don`t know, what is this."
+	icon_state = "accordion"
+	item_state = "accordion"
+	force = 0
+	var/datum/song/song
+	var/playing = 0
+	var/help = 0
+	var/edit = 1
+	var/repeat = 0
+
+/obj/item/instrument/accordion/proc/playnote(var/note as text)
+//	log_debug("Note: [note]")
+
+	var/soundfile
+	/*BYOND loads resource files at compile time if they are ''. This means you can't really manipulate them dynamically.
+	Tried doing it dynamically at first but its more trouble than its worth. Would have saved many lines tho.*/
+	switch(note)
+		if("Ab2") soundfile = 'sound/accordion/Ab2.mid'
+		if("Ab3") soundfile = 'sound/accordion/Ab3.mid'
+		if("Ab4") soundfile = 'sound/accordion/Ab4.mid'
+		if("Ab5") soundfile = 'sound/accordion/Ab5.mid'
+		if("Ab6") soundfile = 'sound/accordion/Ab6.mid'
+		if("An3") soundfile = 'sound/accordion/An3.mid'
+		if("An4") soundfile = 'sound/accordion/An4.mid'
+		if("An5") soundfile = 'sound/accordion/An5.mid'
+		if("An6") soundfile = 'sound/accordion/An6.mid'
+		if("Bb2") soundfile = 'sound/accordion/Bb2.mid'
+		if("Bb3") soundfile = 'sound/accordion/Bb3.mid'
+		if("Bb4") soundfile = 'sound/accordion/Bb4.mid'
+		if("Bb5") soundfile = 'sound/accordion/Bb5.mid'
+		if("Bb6") soundfile = 'sound/accordion/Bb6.mid'
+		if("Bn3") soundfile = 'sound/accordion/Bn3.mid'
+		if("Bn4") soundfile = 'sound/accordion/Bn4.mid'
+		if("Bn5") soundfile = 'sound/accordion/Bn5.mid'
+		if("Bn6") soundfile = 'sound/accordion/Bn6.mid'
+		if("Cb2") soundfile = 'sound/accordion/Cn2.mid'
+		if("Cb3") soundfile = 'sound/accordion/Cn3.mid'
+		if("Cb4") soundfile = 'sound/accordion/Cn4.mid'
+		if("Cb5") soundfile = 'sound/accordion/Cn5.mid'
+		if("Cb6") soundfile = 'sound/accordion/Cn6.mid'
+		if("Cb7") soundfile = 'sound/accordion/Cn6.mid'
+		if("Ab2") soundfile = 'sound/accordion/Cn2.mid'
+		if("Ab2") soundfile = 'sound/accordion/Cn3.mid'
+		if("Cn4") soundfile = 'sound/accordion/Cn4.mid'
+		if("Cn5") soundfile = 'sound/accordion/Cn5.mid'
+		if("Cn6") soundfile = 'sound/accordion/Cn6.mid'
+		if("Db2") soundfile = 'sound/accordion/Db2.mid'
+		if("Db3") soundfile = 'sound/accordion/Db3.mid'
+		if("Db4") soundfile = 'sound/accordion/Db4.mid'
+		if("Db5") soundfile = 'sound/accordion/Db5.mid'
+		if("Db6") soundfile = 'sound/accordion/Db6.mid'
+		if("Dn2") soundfile = 'sound/accordion/Dn2.mid'
+		if("Dn3") soundfile = 'sound/accordion/Dn3.mid'
+		if("Dn4") soundfile = 'sound/accordion/Dn4.mid'
+		if("Dn5") soundfile = 'sound/accordion/Dn5.mid'
+		if("Dn6") soundfile = 'sound/accordion/Dn6.mid'
+		if("Eb2") soundfile = 'sound/accordion/Eb2.mid'
+		if("Eb3") soundfile = 'sound/accordion/Eb3.mid'
+		if("Eb4") soundfile = 'sound/accordion/Eb4.mid'
+		if("Eb5") soundfile = 'sound/accordion/Eb5.mid'
+		if("Eb6") soundfile = 'sound/accordion/Eb6.mid'
+		if("En2") soundfile = 'sound/accordion/En2.mid'
+		if("En3") soundfile = 'sound/accordion/En3.mid'
+		if("En4") soundfile = 'sound/accordion/En4.mid'
+		if("En5") soundfile = 'sound/accordion/En5.mid'
+		if("En6") soundfile = 'sound/accordion/En6.mid'
+		if("Fb2") soundfile = 'sound/accordion/Fn2.mid'
+		if("Fb3") soundfile = 'sound/accordion/Fn3.mid'
+		if("Fb4") soundfile = 'sound/accordion/Fn4.mid'
+		if("Fb5") soundfile = 'sound/accordion/Fn5.mid'
+		if("Fb6") soundfile = 'sound/accordion/Fn6.mid'
+		if("Fn3") soundfile = 'sound/accordion/Fn3.mid'
+		if("Fn4") soundfile = 'sound/accordion/Fn4.mid'
+		if("Fn5") soundfile = 'sound/accordion/Fn5.mid'
+		if("Fn6") soundfile = 'sound/accordion/Fn6.mid'
+		if("Gb2") soundfile = 'sound/accordion/Gb2.mid'
+		if("Gb3") soundfile = 'sound/accordion/Gb3.mid'
+		if("Gb4") soundfile = 'sound/accordion/Gb4.mid'
+		if("Gb5") soundfile = 'sound/accordion/Gb5.mid'
+		if("Gb6") soundfile = 'sound/accordion/Gb6.mid'
+		if("Gn2") soundfile = 'sound/accordion/Gn2.mid'
+		if("Gn3") soundfile = 'sound/accordion/Gn3.mid'
+		if("Gn4") soundfile = 'sound/accordion/Gn4.mid'
+		if("Gn5") soundfile = 'sound/accordion/Gn5.mid'
+		if("Gn6") soundfile = 'sound/accordion/Gn6.mid'
+		else		return
+
+	sound_to(hearers(15, get_turf(src)), sound(soundfile))
+
+/obj/item/instrument/accordion/proc/playsong()
+	do
+		var/cur_oct[7]
+		var/cur_acc[7]
+		for(var/i = 1 to 7)
+			cur_oct[i] = "3"
+			cur_acc[i] = "n"
+
+		for(var/line in song.lines)
+//			log_debug(line)
+
+			for(var/beat in splittext(lowertext(line), ","))
+//				log_debug("beat: [beat]")
+
+				var/list/notes = splittext(beat, "/")
+				for(var/note in splittext(notes[1], "-"))
+//					log_debug("note: [note]")
+
+					if(!playing || !isliving(loc))//If the accordion is playing, or isn't held by a person
+						playing = 0
+						return
+					if(lentext(note) == 0)
+						continue
+//					log_debug("Parse: [copytext(note,1,2)]")
+
+					var/cur_note = text2ascii(note) - 96
+					if(cur_note < 1 || cur_note > 7)
+						continue
+					for(var/i=2 to lentext(note))
+						var/ni = copytext(note,i,i+1)
+						if(!text2num(ni))
+							if(ni == "#" || ni == "b" || ni == "n")
+								cur_acc[cur_note] = ni
+							else if(ni == "s")
+								cur_acc[cur_note] = "#" // so shift is never required
+						else
+							cur_oct[cur_note] = ni
+					playnote(uppertext(copytext(note,1,2)) + cur_acc[cur_note] + cur_oct[cur_note])
+				if(notes.len >= 2 && text2num(notes[2]))
+					sleep(song.tempo / text2num(notes[2]))
+				else
+					sleep(song.tempo)
+		if(repeat > 0)
+			repeat-- //Infinite loops are baaaad.
+	while(repeat > 0)
+	playing = 0
+
+/obj/item/instrument/accordion/attack_self(mob/user as mob)
+	if(!isliving(user) || user.stat || user.restrained() || user.lying)	return
+	user.set_machine(src)
+
+	var/dat = "<HEAD><TITLE>accordion</TITLE></HEAD><BODY>"
+
+	if(song)
+		if(song.lines.len > 0 && !(playing))
+			dat += "<A href='?src=\ref[src];play=1'>Play Song</A><BR><BR>"
+			dat += "<A href='?src=\ref[src];repeat=1'>Repeat Song: [repeat] times.</A><BR><BR>"
+		if(playing)
+			dat += "<A href='?src=\ref[src];stop=1'>Stop Playing</A><BR>"
+			dat += "Repeats left: [repeat].<BR><BR>"
+	if(!edit)
+		dat += "<A href='?src=\ref[src];edit=2'>Show Editor</A><BR><BR>"
+	else
+		dat += "<A href='?src=\ref[src];edit=1'>Hide Editor</A><BR>"
+		dat += "<A href='?src=\ref[src];newsong=1'>Start a New Song</A><BR>"
+		dat += "<A href='?src=\ref[src];import=1'>Import a Song</A><BR><BR>"
+		if(song)
+			var/calctempo = (10/song.tempo)*60
+			dat += "Tempo : <A href='?src=\ref[src];tempo=10'>-</A><A href='?src=\ref[src];tempo=1'>-</A> [calctempo] BPM <A href='?src=\ref[src];tempo=-1'>+</A><A href='?src=\ref[src];tempo=-10'>+</A><BR><BR>"
+			var/linecount = 0
+			for(var/line in song.lines)
+				linecount += 1
+				dat += "Line [linecount]: [line] <A href='?src=\ref[src];deleteline=[linecount]'>Delete Line</A> <A href='?src=\ref[src];modifyline=[linecount]'>Modify Line</A><BR>"
+			dat += "<A href='?src=\ref[src];newline=1'>Add Line</A><BR><BR>"
+		if(help)
+			dat += "<A href='?src=\ref[src];help=1'>Hide Help</A><BR>"
+			dat += {"
+					Lines are a series of chords, separated by commas (,), each with notes seperated by hyphens (-).<br>
+					Every note in a chord will play together, with chord timed by the tempo.<br>
+					<br>
+					Notes are played by the names of the note, and optionally, the accidental, and/or the octave number.<br>
+					By default, every note is natural and in octave 3. Defining otherwise is remembered for each note.<br>
+					Example: <i>C,D,E,F,G,A,B</i> will play a C major scale.<br>
+					After a note has an accidental placed, it will be remembered: <i>C,C4,C,C3</i> is <i>C3,C4,C4,C3</i><br>
+					Chords can be played simply by seperating each note with a hyphon: <i>A-C#,Cn-E,E-G#,Gn-B</i><br>
+					A pause may be denoted by an empty chord: <i>C,E,,C,G</i><br>
+					To make a chord be a different time, end it with /x, where the chord length will be length<br>
+					defined by tempo / x: <i>C,G/2,E/4</i><br>
+					Combined, an example is: <i>E-E4/4,/2,G#/8,B/8,E3-E4/4</i>
+					<br>
+					Lines may be up to 50 characters.<br>
+					A song may only contain up to 50 lines.<br>
+					"}
+		else
+			dat += "<A href='?src=\ref[src];help=2'>Show Help</A><BR>"
+	dat += "</BODY></HTML>"
+	user << browse(dat, "window=accordion;size=700x300")
+	onclose(user, "accordion")
+
+/obj/item/instrument/accordion/Topic(href, href_list)
+	if(..())
+		return 1
+	if(!in_range(src, usr) || issilicon(usr) || !isliving(usr) || !usr.canmove || usr.restrained())
+		usr << browse(null, "window=accordion;size=700x300")
+		onclose(usr, "accordion")
+		return
+
+	if(href_list["newsong"])
+		song = new()
+	else if(song)
+		if(href_list["repeat"]) //Changing this from a toggle to a number of repeats to avoid infinite loops.
+			if(playing) return //So that people cant keep adding to repeat. If the do it intentionally, it could result in the server crashing.
+			var/tempnum = input("How many times do you want to repeat this piece? (max:10)") as num|null
+			if(tempnum > 10)
+				tempnum = 10
+			if(tempnum < 0)
+				tempnum = 0
+			repeat = round(tempnum)
+
+		else if(href_list["tempo"])
+			song.tempo += round(text2num(href_list["tempo"]))
+			if(song.tempo < 1)
+				song.tempo = 1
+
+		else if(href_list["play"])
+			if(song)
+				playing = 1
+				spawn() playsong()
+
+		else if(href_list["newline"])
+			var/newline = html_encode(input("Enter your line: ", "accordion") as text|null)
+			if(!newline)
+				return
+			if(song.lines.len > 50)
+				return
+			if(lentext(newline) > 50)
+				newline = copytext(newline, 1, 50)
+			song.lines.Add(newline)
+
+		else if(href_list["deleteline"])
+			var/num = round(text2num(href_list["deleteline"]))
+			if(num > song.lines.len || num < 1)
+				return
+			song.lines.Cut(num, num+1)
+
+		else if(href_list["modifyline"])
+			var/num = round(text2num(href_list["modifyline"]),1)
+			var/content = html_encode(input("Enter your line: ", "accordion", song.lines[num]) as text|null)
+			if(!content)
+				return
+			if(lentext(content) > 50)
+				content = copytext(content, 1, 50)
+			if(num > song.lines.len || num < 1)
+				return
+			song.lines[num] = content
+
+		else if(href_list["stop"])
+			playing = 0
+
+		else if(href_list["help"])
+			help = text2num(href_list["help"]) - 1
+
+		else if(href_list["edit"])
+			edit = text2num(href_list["edit"]) - 1
+
+		else if(href_list["import"])
+			var/t = ""
+			do
+				t = html_encode(input(usr, "Please paste the entire song, formatted:", text("[]", name), t)  as message)
+				if(!in_range(src, usr))
+					return
+
+				if(lentext(t) >= 3072)
+					var/cont = input(usr, "Your message is too long! Would you like to continue editing it?", "", "yes") in list("yes", "no")
+					if(cont == "no")
+						break
+			while(lentext(t) > 3072)
+
+			//split into lines
+			spawn()
+				var/list/lines = splittext(t, "\n")
+				var/tempo = 5
+				if(copytext(lines[1],1,6) == "BPM: ")
+					tempo = 600 / text2num(copytext(lines[1],6))
+					lines.Cut(1,2)
+				if(lines.len > 50)
+					to_chat(usr, "Too many lines!")
+					lines.Cut(51)
+				var/linenum = 1
+				for(var/l in lines)
+					if(lentext(l) > 50)
+						to_chat(usr, "Line [linenum] too long!")
+						lines.Remove(l)
+					else
+						linenum++
+				song = new()
+				song.lines = lines
+				song.tempo = tempo
+
+	for(var/mob/M in viewers(1, loc))
+		if((M.client && M.machine == src))
+			attack_self(M)
+	return
+
+
+
+/obj/item/instrument/harmonica
+	name = "harmonica"
+	desc = "An instrument just for real man. So, we have two chairs... "
+	icon_state = "harmonica"
+	item_state = "harmonica"
+	force = 0
+	var/datum/song/song
+	var/playing = 0
+	var/help = 0
+	var/edit = 1
+	var/repeat = 0
+
+/obj/item/instrument/harmonica/proc/playnote(var/note as text)
+//	log_debug("Note: [note]")
+
+	var/soundfile
+	/*BYOND loads resource files at compile time if they are ''. This means you can't really manipulate them dynamically.
+	Tried doing it dynamically at first but its more trouble than its worth. Would have saved many lines tho.*/
+	switch(note)
+		if("Ab2") soundfile = 'sound/harmonica/Ab2.mid'
+		if("Ab3") soundfile = 'sound/harmonica/Ab3.mid'
+		if("Ab4") soundfile = 'sound/harmonica/Ab4.mid'
+		if("Ab5") soundfile = 'sound/harmonica/Ab5.mid'
+		if("Ab6") soundfile = 'sound/harmonica/Ab6.mid'
+		if("An3") soundfile = 'sound/harmonica/An3.mid'
+		if("An4") soundfile = 'sound/harmonica/An4.mid'
+		if("An5") soundfile = 'sound/harmonica/An5.mid'
+		if("An6") soundfile = 'sound/harmonica/An6.mid'
+		if("Bb2") soundfile = 'sound/harmonica/Bb2.mid'
+		if("Bb3") soundfile = 'sound/harmonica/Bb3.mid'
+		if("Bb4") soundfile = 'sound/harmonica/Bb4.mid'
+		if("Bb5") soundfile = 'sound/harmonica/Bb5.mid'
+		if("Bb6") soundfile = 'sound/harmonica/Bb6.mid'
+		if("Bn3") soundfile = 'sound/harmonica/Bn3.mid'
+		if("Bn4") soundfile = 'sound/harmonica/Bn4.mid'
+		if("Bn5") soundfile = 'sound/harmonica/Bn5.mid'
+		if("Bn6") soundfile = 'sound/harmonica/Bn6.mid'
+		if("Cb2") soundfile = 'sound/harmonica/Cn2.mid'
+		if("Cb3") soundfile = 'sound/harmonica/Cn3.mid'
+		if("Cb4") soundfile = 'sound/harmonica/Cn4.mid'
+		if("Cb5") soundfile = 'sound/harmonica/Cn5.mid'
+		if("Cb6") soundfile = 'sound/harmonica/Cn6.mid'
+		if("Cb7") soundfile = 'sound/harmonica/Cn6.mid'
+		if("Ab2") soundfile = 'sound/harmonica/Cn2.mid'
+		if("Ab2") soundfile = 'sound/harmonica/Cn3.mid'
+		if("Cn4") soundfile = 'sound/harmonica/Cn4.mid'
+		if("Cn5") soundfile = 'sound/harmonica/Cn5.mid'
+		if("Cn6") soundfile = 'sound/harmonica/Cn6.mid'
+		if("Db2") soundfile = 'sound/harmonica/Db2.mid'
+		if("Db3") soundfile = 'sound/harmonica/Db3.mid'
+		if("Db4") soundfile = 'sound/harmonica/Db4.mid'
+		if("Db5") soundfile = 'sound/harmonica/Db5.mid'
+		if("Db6") soundfile = 'sound/harmonica/Db6.mid'
+		if("Dn2") soundfile = 'sound/harmonica/Dn2.mid'
+		if("Dn3") soundfile = 'sound/harmonica/Dn3.mid'
+		if("Dn4") soundfile = 'sound/harmonica/Dn4.mid'
+		if("Dn5") soundfile = 'sound/harmonica/Dn5.mid'
+		if("Dn6") soundfile = 'sound/harmonica/Dn6.mid'
+		if("Eb2") soundfile = 'sound/harmonica/Eb2.mid'
+		if("Eb3") soundfile = 'sound/harmonica/Eb3.mid'
+		if("Eb4") soundfile = 'sound/harmonica/Eb4.mid'
+		if("Eb5") soundfile = 'sound/harmonica/Eb5.mid'
+		if("Eb6") soundfile = 'sound/harmonica/Eb6.mid'
+		if("En2") soundfile = 'sound/harmonica/En2.mid'
+		if("En3") soundfile = 'sound/harmonica/En3.mid'
+		if("En4") soundfile = 'sound/harmonica/En4.mid'
+		if("En5") soundfile = 'sound/harmonica/En5.mid'
+		if("En6") soundfile = 'sound/harmonica/En6.mid'
+		if("Fb2") soundfile = 'sound/harmonica/Fn2.mid'
+		if("Fb3") soundfile = 'sound/harmonica/Fn3.mid'
+		if("Fb4") soundfile = 'sound/harmonica/Fn4.mid'
+		if("Fb5") soundfile = 'sound/harmonica/Fn5.mid'
+		if("Fb6") soundfile = 'sound/harmonica/Fn6.mid'
+		if("Fn3") soundfile = 'sound/harmonica/Fn3.mid'
+		if("Fn4") soundfile = 'sound/harmonica/Fn4.mid'
+		if("Fn5") soundfile = 'sound/harmonica/Fn5.mid'
+		if("Fn6") soundfile = 'sound/harmonica/Fn6.mid'
+		if("Gb2") soundfile = 'sound/harmonica/Gb2.mid'
+		if("Gb3") soundfile = 'sound/harmonica/Gb3.mid'
+		if("Gb4") soundfile = 'sound/harmonica/Gb4.mid'
+		if("Gb5") soundfile = 'sound/harmonica/Gb5.mid'
+		if("Gb6") soundfile = 'sound/harmonica/Gb6.mid'
+		if("Gn2") soundfile = 'sound/harmonica/Gn2.mid'
+		if("Gn3") soundfile = 'sound/harmonica/Gn3.mid'
+		if("Gn4") soundfile = 'sound/harmonica/Gn4.mid'
+		if("Gn5") soundfile = 'sound/harmonica/Gn5.mid'
+		if("Gn6") soundfile = 'sound/harmonica/Gn6.mid'
+		else		return
+
+	sound_to(hearers(15, get_turf(src)), sound(soundfile))
+
+/obj/item/instrument/harmonica/proc/playsong()
+	do
+		var/cur_oct[7]
+		var/cur_acc[7]
+		for(var/i = 1 to 7)
+			cur_oct[i] = "3"
+			cur_acc[i] = "n"
+
+		for(var/line in song.lines)
+//			log_debug(line)
+
+			for(var/beat in splittext(lowertext(line), ","))
+//				log_debug("beat: [beat]")
+
+				var/list/notes = splittext(beat, "/")
+				for(var/note in splittext(notes[1], "-"))
+//					log_debug("note: [note]")
+
+					if(!playing || !isliving(loc))//If the harmonica is playing, or isn't held by a person
+						playing = 0
+						return
+					if(lentext(note) == 0)
+						continue
+//					log_debug("Parse: [copytext(note,1,2)]")
+
+					var/cur_note = text2ascii(note) - 96
+					if(cur_note < 1 || cur_note > 7)
+						continue
+					for(var/i=2 to lentext(note))
+						var/ni = copytext(note,i,i+1)
+						if(!text2num(ni))
+							if(ni == "#" || ni == "b" || ni == "n")
+								cur_acc[cur_note] = ni
+							else if(ni == "s")
+								cur_acc[cur_note] = "#" // so shift is never required
+						else
+							cur_oct[cur_note] = ni
+					playnote(uppertext(copytext(note,1,2)) + cur_acc[cur_note] + cur_oct[cur_note])
+				if(notes.len >= 2 && text2num(notes[2]))
+					sleep(song.tempo / text2num(notes[2]))
+				else
+					sleep(song.tempo)
+		if(repeat > 0)
+			repeat-- //Infinite loops are baaaad.
+	while(repeat > 0)
+	playing = 0
+
+/obj/item/instrument/harmonica/attack_self(mob/user as mob)
+	if(!isliving(user) || user.stat || user.restrained() || user.lying)	return
+	user.set_machine(src)
+
+	var/dat = "<HEAD><TITLE>harmonica</TITLE></HEAD><BODY>"
+
+	if(song)
+		if(song.lines.len > 0 && !(playing))
+			dat += "<A href='?src=\ref[src];play=1'>Play Song</A><BR><BR>"
+			dat += "<A href='?src=\ref[src];repeat=1'>Repeat Song: [repeat] times.</A><BR><BR>"
+		if(playing)
+			dat += "<A href='?src=\ref[src];stop=1'>Stop Playing</A><BR>"
+			dat += "Repeats left: [repeat].<BR><BR>"
+	if(!edit)
+		dat += "<A href='?src=\ref[src];edit=2'>Show Editor</A><BR><BR>"
+	else
+		dat += "<A href='?src=\ref[src];edit=1'>Hide Editor</A><BR>"
+		dat += "<A href='?src=\ref[src];newsong=1'>Start a New Song</A><BR>"
+		dat += "<A href='?src=\ref[src];import=1'>Import a Song</A><BR><BR>"
+		if(song)
+			var/calctempo = (10/song.tempo)*60
+			dat += "Tempo : <A href='?src=\ref[src];tempo=10'>-</A><A href='?src=\ref[src];tempo=1'>-</A> [calctempo] BPM <A href='?src=\ref[src];tempo=-1'>+</A><A href='?src=\ref[src];tempo=-10'>+</A><BR><BR>"
+			var/linecount = 0
+			for(var/line in song.lines)
+				linecount += 1
+				dat += "Line [linecount]: [line] <A href='?src=\ref[src];deleteline=[linecount]'>Delete Line</A> <A href='?src=\ref[src];modifyline=[linecount]'>Modify Line</A><BR>"
+			dat += "<A href='?src=\ref[src];newline=1'>Add Line</A><BR><BR>"
+		if(help)
+			dat += "<A href='?src=\ref[src];help=1'>Hide Help</A><BR>"
+			dat += {"
+					Lines are a series of chords, separated by commas (,), each with notes seperated by hyphens (-).<br>
+					Every note in a chord will play together, with chord timed by the tempo.<br>
+					<br>
+					Notes are played by the names of the note, and optionally, the accidental, and/or the octave number.<br>
+					By default, every note is natural and in octave 3. Defining otherwise is remembered for each note.<br>
+					Example: <i>C,D,E,F,G,A,B</i> will play a C major scale.<br>
+					After a note has an accidental placed, it will be remembered: <i>C,C4,C,C3</i> is <i>C3,C4,C4,C3</i><br>
+					Chords can be played simply by seperating each note with a hyphon: <i>A-C#,Cn-E,E-G#,Gn-B</i><br>
+					A pause may be denoted by an empty chord: <i>C,E,,C,G</i><br>
+					To make a chord be a different time, end it with /x, where the chord length will be length<br>
+					defined by tempo / x: <i>C,G/2,E/4</i><br>
+					Combined, an example is: <i>E-E4/4,/2,G#/8,B/8,E3-E4/4</i>
+					<br>
+					Lines may be up to 50 characters.<br>
+					A song may only contain up to 50 lines.<br>
+					"}
+		else
+			dat += "<A href='?src=\ref[src];help=2'>Show Help</A><BR>"
+	dat += "</BODY></HTML>"
+	user << browse(dat, "window=harmonica;size=700x300")
+	onclose(user, "harmonica")
+
+/obj/item/instrument/harmonica/Topic(href, href_list)
+	if(..())
+		return 1
+	if(!in_range(src, usr) || issilicon(usr) || !isliving(usr) || !usr.canmove || usr.restrained())
+		usr << browse(null, "window=harmonica;size=700x300")
+		onclose(usr, "harmonica")
+		return
+
+	if(href_list["newsong"])
+		song = new()
+	else if(song)
+		if(href_list["repeat"]) //Changing this from a toggle to a number of repeats to avoid infinite loops.
+			if(playing) return //So that people cant keep adding to repeat. If the do it intentionally, it could result in the server crashing.
+			var/tempnum = input("How many times do you want to repeat this piece? (max:10)") as num|null
+			if(tempnum > 10)
+				tempnum = 10
+			if(tempnum < 0)
+				tempnum = 0
+			repeat = round(tempnum)
+
+		else if(href_list["tempo"])
+			song.tempo += round(text2num(href_list["tempo"]))
+			if(song.tempo < 1)
+				song.tempo = 1
+
+		else if(href_list["play"])
+			if(song)
+				playing = 1
+				spawn() playsong()
+
+		else if(href_list["newline"])
+			var/newline = html_encode(input("Enter your line: ", "harmonica") as text|null)
+			if(!newline)
+				return
+			if(song.lines.len > 50)
+				return
+			if(lentext(newline) > 50)
+				newline = copytext(newline, 1, 50)
+			song.lines.Add(newline)
+
+		else if(href_list["deleteline"])
+			var/num = round(text2num(href_list["deleteline"]))
+			if(num > song.lines.len || num < 1)
+				return
+			song.lines.Cut(num, num+1)
+
+		else if(href_list["modifyline"])
+			var/num = round(text2num(href_list["modifyline"]),1)
+			var/content = html_encode(input("Enter your line: ", "harmonica", song.lines[num]) as text|null)
+			if(!content)
+				return
+			if(lentext(content) > 50)
+				content = copytext(content, 1, 50)
+			if(num > song.lines.len || num < 1)
+				return
+			song.lines[num] = content
+
+		else if(href_list["stop"])
+			playing = 0
+
+		else if(href_list["help"])
+			help = text2num(href_list["help"]) - 1
+
+		else if(href_list["edit"])
+			edit = text2num(href_list["edit"]) - 1
+
+		else if(href_list["import"])
+			var/t = ""
+			do
+				t = html_encode(input(usr, "Please paste the entire song, formatted:", text("[]", name), t)  as message)
+				if(!in_range(src, usr))
+					return
+
+				if(lentext(t) >= 3072)
+					var/cont = input(usr, "Your message is too long! Would you like to continue editing it?", "", "yes") in list("yes", "no")
+					if(cont == "no")
+						break
+			while(lentext(t) > 3072)
+
+			//split into lines
+			spawn()
+				var/list/lines = splittext(t, "\n")
+				var/tempo = 5
+				if(copytext(lines[1],1,6) == "BPM: ")
+					tempo = 600 / text2num(copytext(lines[1],6))
+					lines.Cut(1,2)
+				if(lines.len > 50)
+					to_chat(usr, "Too many lines!")
+					lines.Cut(51)
+				var/linenum = 1
+				for(var/l in lines)
+					if(lentext(l) > 50)
+						to_chat(usr, "Line [linenum] too long!")
+						lines.Remove(l)
+					else
+						linenum++
+				song = new()
+				song.lines = lines
+				song.tempo = tempo
+
+	for(var/mob/M in viewers(1, loc))
+		if((M.client && M.machine == src))
+			attack_self(M)
+	return
+
+
+/obj/item/instrument/saxophone
+	name = "saxophone"
+	desc = "An instrument just for real man. So, we have two chairs... "
+	icon_state = "saxophone"
+	item_state = "saxophone"
+	force = 0
+	var/datum/song/song
+	var/playing = 0
+	var/help = 0
+	var/edit = 1
+	var/repeat = 0
+
+/obj/item/instrument/saxophone/proc/playnote(var/note as text)
+//	log_debug("Note: [note]")
+
+	var/soundfile
+	/*BYOND loads resource files at compile time if they are ''. This means you can't really manipulate them dynamically.
+	Tried doing it dynamically at first but its more trouble than its worth. Would have saved many lines tho.*/
+	switch(note)
+		if("Ab2") soundfile = 'sound/saxophone/Ab2.mid'
+		if("Ab3") soundfile = 'sound/saxophone/Ab3.mid'
+		if("Ab4") soundfile = 'sound/saxophone/Ab4.mid'
+		if("Ab5") soundfile = 'sound/saxophone/Ab5.mid'
+		if("Ab6") soundfile = 'sound/saxophone/Ab6.mid'
+		if("An3") soundfile = 'sound/saxophone/An3.mid'
+		if("An4") soundfile = 'sound/saxophone/An4.mid'
+		if("An5") soundfile = 'sound/saxophone/An5.mid'
+		if("An6") soundfile = 'sound/saxophone/An6.mid'
+		if("Bb2") soundfile = 'sound/saxophone/Bb2.mid'
+		if("Bb3") soundfile = 'sound/saxophone/Bb3.mid'
+		if("Bb4") soundfile = 'sound/saxophone/Bb4.mid'
+		if("Bb5") soundfile = 'sound/saxophone/Bb5.mid'
+		if("Bb6") soundfile = 'sound/saxophone/Bb6.mid'
+		if("Bn3") soundfile = 'sound/saxophone/Bn3.mid'
+		if("Bn4") soundfile = 'sound/saxophone/Bn4.mid'
+		if("Bn5") soundfile = 'sound/saxophone/Bn5.mid'
+		if("Bn6") soundfile = 'sound/saxophone/Bn6.mid'
+		if("Cb2") soundfile = 'sound/saxophone/Cn2.mid'
+		if("Cb3") soundfile = 'sound/saxophone/Cn3.mid'
+		if("Cb4") soundfile = 'sound/saxophone/Cn4.mid'
+		if("Cb5") soundfile = 'sound/saxophone/Cn5.mid'
+		if("Cb6") soundfile = 'sound/saxophone/Cn6.mid'
+		if("Cb7") soundfile = 'sound/saxophone/Cn6.mid'
+		if("Ab2") soundfile = 'sound/saxophone/Cn2.mid'
+		if("Ab2") soundfile = 'sound/saxophone/Cn3.mid'
+		if("Cn4") soundfile = 'sound/saxophone/Cn4.mid'
+		if("Cn5") soundfile = 'sound/saxophone/Cn5.mid'
+		if("Cn6") soundfile = 'sound/saxophone/Cn6.mid'
+		if("Db2") soundfile = 'sound/saxophone/Db2.mid'
+		if("Db3") soundfile = 'sound/saxophone/Db3.mid'
+		if("Db4") soundfile = 'sound/saxophone/Db4.mid'
+		if("Db5") soundfile = 'sound/saxophone/Db5.mid'
+		if("Db6") soundfile = 'sound/saxophone/Db6.mid'
+		if("Dn2") soundfile = 'sound/saxophone/Dn2.mid'
+		if("Dn3") soundfile = 'sound/saxophone/Dn3.mid'
+		if("Dn4") soundfile = 'sound/saxophone/Dn4.mid'
+		if("Dn5") soundfile = 'sound/saxophone/Dn5.mid'
+		if("Dn6") soundfile = 'sound/saxophone/Dn6.mid'
+		if("Eb2") soundfile = 'sound/saxophone/Eb2.mid'
+		if("Eb3") soundfile = 'sound/saxophone/Eb3.mid'
+		if("Eb4") soundfile = 'sound/saxophone/Eb4.mid'
+		if("Eb5") soundfile = 'sound/saxophone/Eb5.mid'
+		if("Eb6") soundfile = 'sound/saxophone/Eb6.mid'
+		if("En2") soundfile = 'sound/saxophone/En2.mid'
+		if("En3") soundfile = 'sound/saxophone/En3.mid'
+		if("En4") soundfile = 'sound/saxophone/En4.mid'
+		if("En5") soundfile = 'sound/saxophone/En5.mid'
+		if("En6") soundfile = 'sound/saxophone/En6.mid'
+		if("Fb2") soundfile = 'sound/saxophone/Fn2.mid'
+		if("Fb3") soundfile = 'sound/saxophone/Fn3.mid'
+		if("Fb4") soundfile = 'sound/saxophone/Fn4.mid'
+		if("Fb5") soundfile = 'sound/saxophone/Fn5.mid'
+		if("Fb6") soundfile = 'sound/saxophone/Fn6.mid'
+		if("Fn3") soundfile = 'sound/saxophone/Fn3.mid'
+		if("Fn4") soundfile = 'sound/saxophone/Fn4.mid'
+		if("Fn5") soundfile = 'sound/saxophone/Fn5.mid'
+		if("Fn6") soundfile = 'sound/saxophone/Fn6.mid'
+		if("Gb2") soundfile = 'sound/saxophone/Gb2.mid'
+		if("Gb3") soundfile = 'sound/saxophone/Gb3.mid'
+		if("Gb4") soundfile = 'sound/saxophone/Gb4.mid'
+		if("Gb5") soundfile = 'sound/saxophone/Gb5.mid'
+		if("Gb6") soundfile = 'sound/saxophone/Gb6.mid'
+		if("Gn2") soundfile = 'sound/saxophone/Gn2.mid'
+		if("Gn3") soundfile = 'sound/saxophone/Gn2.mid'
+		if("Gn4") soundfile = 'sound/saxophone/Gn4.mid'
+		if("Gn5") soundfile = 'sound/saxophone/Gn5.mid'
+		if("Gn6") soundfile = 'sound/saxophone/Gn6.mid'
+		else		return
+
+	sound_to(hearers(15, get_turf(src)), sound(soundfile))
+
+/obj/item/instrument/saxophone/proc/playsong()
+	do
+		var/cur_oct[7]
+		var/cur_acc[7]
+		for(var/i = 1 to 7)
+			cur_oct[i] = "3"
+			cur_acc[i] = "n"
+
+		for(var/line in song.lines)
+//			log_debug(line)
+
+			for(var/beat in splittext(lowertext(line), ","))
+//				log_debug("beat: [beat]")
+
+				var/list/notes = splittext(beat, "/")
+				for(var/note in splittext(notes[1], "-"))
+//					log_debug("note: [note]")
+
+					if(!playing || !isliving(loc))//If the saxophone is playing, or isn't held by a person
+						playing = 0
+						return
+					if(lentext(note) == 0)
+						continue
+//					log_debug("Parse: [copytext(note,1,2)]")
+
+					var/cur_note = text2ascii(note) - 96
+					if(cur_note < 1 || cur_note > 7)
+						continue
+					for(var/i=2 to lentext(note))
+						var/ni = copytext(note,i,i+1)
+						if(!text2num(ni))
+							if(ni == "#" || ni == "b" || ni == "n")
+								cur_acc[cur_note] = ni
+							else if(ni == "s")
+								cur_acc[cur_note] = "#" // so shift is never required
+						else
+							cur_oct[cur_note] = ni
+					playnote(uppertext(copytext(note,1,2)) + cur_acc[cur_note] + cur_oct[cur_note])
+				if(notes.len >= 2 && text2num(notes[2]))
+					sleep(song.tempo / text2num(notes[2]))
+				else
+					sleep(song.tempo)
+		if(repeat > 0)
+			repeat-- //Infinite loops are baaaad.
+	while(repeat > 0)
+	playing = 0
+
+/obj/item/instrument/saxophone/attack_self(mob/user as mob)
+	if(!isliving(user) || user.stat || user.restrained() || user.lying)	return
+	user.set_machine(src)
+
+	var/dat = "<HEAD><TITLE>saxophone</TITLE></HEAD><BODY>"
+
+	if(song)
+		if(song.lines.len > 0 && !(playing))
+			dat += "<A href='?src=\ref[src];play=1'>Play Song</A><BR><BR>"
+			dat += "<A href='?src=\ref[src];repeat=1'>Repeat Song: [repeat] times.</A><BR><BR>"
+		if(playing)
+			dat += "<A href='?src=\ref[src];stop=1'>Stop Playing</A><BR>"
+			dat += "Repeats left: [repeat].<BR><BR>"
+	if(!edit)
+		dat += "<A href='?src=\ref[src];edit=2'>Show Editor</A><BR><BR>"
+	else
+		dat += "<A href='?src=\ref[src];edit=1'>Hide Editor</A><BR>"
+		dat += "<A href='?src=\ref[src];newsong=1'>Start a New Song</A><BR>"
+		dat += "<A href='?src=\ref[src];import=1'>Import a Song</A><BR><BR>"
+		if(song)
+			var/calctempo = (10/song.tempo)*60
+			dat += "Tempo : <A href='?src=\ref[src];tempo=10'>-</A><A href='?src=\ref[src];tempo=1'>-</A> [calctempo] BPM <A href='?src=\ref[src];tempo=-1'>+</A><A href='?src=\ref[src];tempo=-10'>+</A><BR><BR>"
+			var/linecount = 0
+			for(var/line in song.lines)
+				linecount += 1
+				dat += "Line [linecount]: [line] <A href='?src=\ref[src];deleteline=[linecount]'>Delete Line</A> <A href='?src=\ref[src];modifyline=[linecount]'>Modify Line</A><BR>"
+			dat += "<A href='?src=\ref[src];newline=1'>Add Line</A><BR><BR>"
+		if(help)
+			dat += "<A href='?src=\ref[src];help=1'>Hide Help</A><BR>"
+			dat += {"
+					Lines are a series of chords, separated by commas (,), each with notes seperated by hyphens (-).<br>
+					Every note in a chord will play together, with chord timed by the tempo.<br>
+					<br>
+					Notes are played by the names of the note, and optionally, the accidental, and/or the octave number.<br>
+					By default, every note is natural and in octave 3. Defining otherwise is remembered for each note.<br>
+					Example: <i>C,D,E,F,G,A,B</i> will play a C major scale.<br>
+					After a note has an accidental placed, it will be remembered: <i>C,C4,C,C3</i> is <i>C3,C4,C4,C3</i><br>
+					Chords can be played simply by seperating each note with a hyphon: <i>A-C#,Cn-E,E-G#,Gn-B</i><br>
+					A pause may be denoted by an empty chord: <i>C,E,,C,G</i><br>
+					To make a chord be a different time, end it with /x, where the chord length will be length<br>
+					defined by tempo / x: <i>C,G/2,E/4</i><br>
+					Combined, an example is: <i>E-E4/4,/2,G#/8,B/8,E3-E4/4</i>
+					<br>
+					Lines may be up to 50 characters.<br>
+					A song may only contain up to 50 lines.<br>
+					"}
+		else
+			dat += "<A href='?src=\ref[src];help=2'>Show Help</A><BR>"
+	dat += "</BODY></HTML>"
+	user << browse(dat, "window=saxophone;size=700x300")
+	onclose(user, "saxophone")
+
+/obj/item/instrument/saxophone/Topic(href, href_list)
+	if(..())
+		return 1
+	if(!in_range(src, usr) || issilicon(usr) || !isliving(usr) || !usr.canmove || usr.restrained())
+		usr << browse(null, "window=saxophone;size=700x300")
+		onclose(usr, "saxophone")
+		return
+
+	if(href_list["newsong"])
+		song = new()
+	else if(song)
+		if(href_list["repeat"]) //Changing this from a toggle to a number of repeats to avoid infinite loops.
+			if(playing) return //So that people cant keep adding to repeat. If the do it intentionally, it could result in the server crashing.
+			var/tempnum = input("How many times do you want to repeat this piece? (max:10)") as num|null
+			if(tempnum > 10)
+				tempnum = 10
+			if(tempnum < 0)
+				tempnum = 0
+			repeat = round(tempnum)
+
+		else if(href_list["tempo"])
+			song.tempo += round(text2num(href_list["tempo"]))
+			if(song.tempo < 1)
+				song.tempo = 1
+
+		else if(href_list["play"])
+			if(song)
+				playing = 1
+				spawn() playsong()
+
+		else if(href_list["newline"])
+			var/newline = html_encode(input("Enter your line: ", "saxophone") as text|null)
+			if(!newline)
+				return
+			if(song.lines.len > 50)
+				return
+			if(lentext(newline) > 50)
+				newline = copytext(newline, 1, 50)
+			song.lines.Add(newline)
+
+		else if(href_list["deleteline"])
+			var/num = round(text2num(href_list["deleteline"]))
+			if(num > song.lines.len || num < 1)
+				return
+			song.lines.Cut(num, num+1)
+
+		else if(href_list["modifyline"])
+			var/num = round(text2num(href_list["modifyline"]),1)
+			var/content = html_encode(input("Enter your line: ", "saxophone", song.lines[num]) as text|null)
 			if(!content)
 				return
 			if(lentext(content) > 50)
