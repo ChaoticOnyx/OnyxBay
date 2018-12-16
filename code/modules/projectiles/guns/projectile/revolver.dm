@@ -46,31 +46,81 @@
 	ammo_type = /obj/item/ammo_casing/a50
 
 /obj/item/weapon/gun/projectile/revolver/detective
-	name = "revolver"
-	desc = "A cheap Martian knock-off of a Smith & Wesson Model 10. Uses .38-Special rounds."
 	icon_state = "detective"
+	item_state = "detective"
+	ammo_type = /obj/item/ammo_casing/a357
+	caliber = "357"
 	max_shells = 6
-	caliber = "38"
-	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
-	ammo_type = /obj/item/ammo_casing/c38
 
 /obj/item/weapon/gun/projectile/revolver/detective/verb/rename_gun()
 	set name = "Name Gun"
 	set category = "Object"
-	set desc = "Click to rename your gun. If you're the detective."
+	set desc = "Rename your gun. If you're the detective."
 
 	var/mob/M = usr
 	if(!M.mind)	return 0
+	if(M.incapacitated()) return 0
 	if(!M.mind.assigned_role == "Detective")
 		to_chat(M, "<span class='notice'>You don't feel cool enough to name this gun, chump.</span>")
 		return 0
 
-	var/input = sanitizeSafe(input("What do you want to name the gun?", ,""), MAX_NAME_LEN)
+	var/input = sanitizeSafe(input("What do you want to name the gun?","Rename gun"), MAX_NAME_LEN)
 
-	if(src && input && !M.stat && in_range(M,src))
-		SetName(input)
-		to_chat(M, "You name the gun [input]. Say hello to your new friend.")
+	if(src && input && !M.incapacitated() && in_range(M,src))
+		if(!findtext(input, "the", 1, 4))
+			input = "\improper [input]"
+		name = input
+		to_chat(M, "You name the gun '[input]'. Say hello to your new friend.")
 		return 1
+
+/*/obj/item/weapon/gun/projectile/revolver/detective/verb/reskin_gun()
+	set name = "Reskin gun"
+	set category = "Object"
+	set desc = "Click to reskin your gun."
+
+	var/mob/M = usr
+	if(M.incapacitated())
+		return
+
+	var/datum/detective_gun_skin/choice = input(M,"What do you want to skin the gun to?","Reskin Gun", unique_reskin) as null|anything in gun_options
+	if(src && choice && !M.incapacitated() && in_range(M,src))
+		icon_state = choice.icon_state
+		unique_reskin = choice
+		if(!unique_name)
+			SetName(choice.name)
+		to_chat(M, "Your gun is now skinned as \a [choice]. Say hello to your new friend.")
+		return 1
+
+
+//apart of reskins that have two sprites, touching may result in frustration and breaks
+/obj/item/weapon/gun/projectile/revolver/detective/attack_hand(var/mob/living/user)
+	..()
+
+/datum/detective_gun_skin
+	var/name
+	var/icon_state
+
+/datum/detective_gun_skin/default/New()
+	..()
+	var/obj/item/weapon/gun/projectile/revolver/detective/d = /obj/item/weapon/gun/projectile/revolver/detective
+	name = initial(d.name)
+	icon_state = initial(d.icon_state)
+
+/datum/detective_gun_skin/colt
+	name = "\improper Panther`s revolver"
+	icon_state = "detective_panther"
+
+
+/datum/detective_gun_skin/luger
+	name = "\improper Peacemaker`s revolver"
+	icon_state = "detective_peacemaker"
+
+/datum/detective_gun_skin/luger_brown
+	name = "\improper Leopard`s revolver"
+	icon_state = "detective_leopard"
+*/
+
+
 
 
 

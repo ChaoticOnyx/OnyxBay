@@ -21,7 +21,8 @@
 		/obj/item/clothing/shoes/brown,
 		/obj/item/device/radio/headset/heads/captain,
 		/obj/item/clothing/gloves/captain,
-		/obj/item/weapon/gun/energy/gun,
+		/obj/item/weapon/gun/projectile/colt/officer,
+		/obj/item/ammo_magazine/c45m,
 		/obj/item/clothing/suit/armor/captain,
 		/obj/item/weapon/melee/telebaton,
 		/obj/item/clothing/under/dress/dress_cap,
@@ -46,7 +47,8 @@
 		/obj/item/weapon/cartridge/hop,
 		/obj/item/device/radio/headset/heads/hop,
 		/obj/item/weapon/storage/box/ids = 2,
-		/obj/item/weapon/gun/energy/gun,
+		/obj/item/weapon/gun/projectile/colt/officer,
+		/obj/item/ammo_magazine/c45m,
 		/obj/item/device/flash
 	)
 
@@ -106,7 +108,8 @@
 		/obj/item/weapon/storage/belt/security,
 		/obj/item/device/flash,
 		/obj/item/weapon/melee/baton/loaded,
-		/obj/item/weapon/gun/energy/gun,
+		/obj/item/weapon/gun/projectile/colt/officer,
+		/obj/item/ammo_magazine/c45m,
 		/obj/item/clothing/accessory/holster/waist,
 		/obj/item/weapon/melee/telebaton,
 		/obj/item/clothing/head/beret/sec/corporate/hos,
@@ -175,7 +178,8 @@
 		/obj/item/clothing/accessory/storage/black_vest,
 		/obj/item/clothing/head/soft/sec/corp,
 		/obj/item/clothing/under/rank/security/corp,
-		/obj/item/weapon/gun/energy/secure/gun,
+		/obj/item/weapon/gun/energy/taser,
+		/obj/item/ammo_magazine/c45m,
 		/obj/item/device/holowarrant,
 	)
 
@@ -227,9 +231,9 @@
 		/obj/item/weapon/storage/box/evidence,
 		/obj/item/device/radio/headset/headset_sec,
 		/obj/item/clothing/suit/armor/vest/detective,
-		/obj/item/ammo_magazine/c45m/rubber,
+		/obj/item/ammo_magazine/a357,
 		/obj/item/taperoll/police,
-		/obj/item/weapon/gun/projectile/colt/detective,
+		/obj/item/weapon/gun/projectile/revolver/detective,
 		/obj/item/clothing/accessory/holster/armpit,
 		/obj/item/weapon/reagent_containers/food/drinks/flask/detflask,
 		/obj/item/weapon/storage/briefcase/crimekit,

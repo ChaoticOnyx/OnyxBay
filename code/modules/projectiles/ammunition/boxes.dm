@@ -1,7 +1,14 @@
+/obj/item/ammo_magazine/a357/rubber
+	name = "speed loader (.357 rubber)"
+	desc = "A speed loader for revolvers."
+	icon_state = "38"
+	caliber = "357"
+	ammo_type = /obj/item/ammo_casing/a357/rubber
+	matter = list(DEFAULT_WALL_MATERIAL = 1260)
+	max_ammo = 6
+	multiple_sprites = 1
+
 /obj/item/ammo_magazine/a357
-	//name = "ammo box (.357)"
-	//desc = "A box of .357 ammo"
-	//icon_state = "357"
 	name = "speed loader (.357)"
 	desc = "A speed loader for revolvers."
 	icon_state = "38"
