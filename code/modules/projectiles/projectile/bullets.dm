@@ -153,14 +153,23 @@
 	damage = 50 //Revolvers get snowflake bullets, to keep them relevant
 	armor_penetration = 20
 
-/obj/item/projectile/bullet/pistol/rubber //"rubber" bullets
+/obj/item/projectile/bullet/pistol/strong/revolver/rubber //"rubber" bullets
 	name = "rubber bullet"
 	check_armour = "melee"
 	damage = 5
-	agony = 30
+	agony = 77
 	embed = 0
 	sharp = 0
-	armor_penetration = 2.5
+	armor_penetration = 6
+
+/obj/item/projectile/bullet/pistol/rubber //"rubber" bullets
+	name = "rubber bullet"
+	check_armour = "melee"
+	damage = 3
+	agony = 60
+	embed = 0
+	sharp = 0
+	armor_penetration = 4
 
 /* shotgun projectiles */
 
@@ -173,8 +182,9 @@
 /obj/item/projectile/bullet/shotgun/beanbag		//because beanbags are not bullets
 	name = "beanbag"
 	check_armour = "melee"
-	damage = 25
-	agony = 60
+	damage = 0
+	nodamage = 1
+	agony = 80
 	embed = 0
 	sharp = 0
 
