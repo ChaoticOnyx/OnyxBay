@@ -3,11 +3,6 @@
 	caliber = "357"
 	projectile_type = /obj/item/projectile/bullet/pistol/strong/revolver
 
-/obj/item/ammo_casing/a357/rubber
-	desc = "A .357 rubber bullet casing."
-	caliber = "357"
-	projectile_type = /obj/item/projectile/bullet/pistol/strong/revolver/rubber
-
 /obj/item/ammo_casing/a50
 	desc = "A .50AE bullet casing."
 	caliber = ".50"

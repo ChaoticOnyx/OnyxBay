@@ -4,8 +4,13 @@
 	icon_state = "taser"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	max_shots = 5
-	projectile_type = /obj/item/projectile/energy/electrode
+	projectile_type = /obj/item/projectile/beam/stun
 	combustion = 0
+
+	firemodes = list(
+		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun),
+		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock),
+		)
 
 /obj/item/weapon/gun/energy/taser/carbine
 	name = "taser carbine"
@@ -20,6 +25,11 @@
 	accuracy = 1
 	projectile_type = /obj/item/projectile/beam/stun/heavy
 	wielded_item_state = "tasercarbine-wielded"
+
+	firemodes = list(
+		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun/heavy),
+		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock/heavy),
+		)
 
 /obj/item/weapon/gun/energy/taser/mounted
 	name = "mounted taser gun"

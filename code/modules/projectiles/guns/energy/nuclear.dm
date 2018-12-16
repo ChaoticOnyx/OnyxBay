@@ -1,18 +1,19 @@
 /obj/item/weapon/gun/energy/gun
-	name = "energy gun"
+	name = "tactical taser"
 	desc = "Crafted in underground factories of Redknight & Company Dominance Tech, the TEG02 Mjolnir is a versatile energy based sidearm, capable of switching between low, medium and high power projectile settings. In other words: stun, shock or kill."
-	icon_state = "oldenergystun100"
+	icon_state = "tasertacticalstun100"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	max_shots = 10
 	fire_delay = 10 // To balance for the fact that it is a pistol and can be used one-handed without penalty
 
 	projectile_type = /obj/item/projectile/beam/stun
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
-	modifystate = "oldenergystun"
+	modifystate = "tasertacticalstun"
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun, modifystate="oldenergystun"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="oldenergykill"),
+		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun, modifystate="tasertacticalstun"),
+		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock, modifystate="tasertacticalshock"),
+		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="tasertacticalkill"),
 		)
 
 /obj/item/weapon/gun/energy/secure/gun
