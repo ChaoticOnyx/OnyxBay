@@ -21,8 +21,7 @@
 		/obj/item/clothing/shoes/brown,
 		/obj/item/device/radio/headset/heads/captain,
 		/obj/item/clothing/gloves/captain,
-		/obj/item/weapon/gun/projectile/colt/officer,
-		/obj/item/ammo_magazine/c45m,
+		/obj/item/weapon/gun/energy/gun,
 		/obj/item/clothing/suit/armor/captain,
 		/obj/item/weapon/melee/telebaton,
 		/obj/item/clothing/under/dress/dress_cap,
@@ -47,8 +46,7 @@
 		/obj/item/weapon/cartridge/hop,
 		/obj/item/device/radio/headset/heads/hop,
 		/obj/item/weapon/storage/box/ids = 2,
-		/obj/item/weapon/gun/projectile/colt/officer,
-		/obj/item/ammo_magazine/c45m,
+		/obj/item/weapon/gun/energy/gun,
 		/obj/item/device/flash
 	)
 
@@ -108,8 +106,7 @@
 		/obj/item/weapon/storage/belt/security,
 		/obj/item/device/flash,
 		/obj/item/weapon/melee/baton/loaded,
-		/obj/item/weapon/gun/projectile/colt/officer,
-		/obj/item/ammo_magazine/c45m,
+		/obj/item/weapon/gun/energy/gun,
 		/obj/item/clothing/accessory/holster/waist,
 		/obj/item/weapon/melee/telebaton,
 		/obj/item/clothing/head/beret/sec/corporate/hos,
