@@ -74,57 +74,6 @@
 		to_chat(M, "You name the gun '[input]'. Say hello to your new friend.")
 		return 1
 
-/*/obj/item/weapon/gun/projectile/revolver/detective/verb/reskin_gun()
-	set name = "Reskin gun"
-	set category = "Object"
-	set desc = "Click to reskin your gun."
-
-	var/mob/M = usr
-	if(M.incapacitated())
-		return
-
-	var/datum/detective_gun_skin/choice = input(M,"What do you want to skin the gun to?","Reskin Gun", unique_reskin) as null|anything in gun_options
-	if(src && choice && !M.incapacitated() && in_range(M,src))
-		icon_state = choice.icon_state
-		unique_reskin = choice
-		if(!unique_name)
-			SetName(choice.name)
-		to_chat(M, "Your gun is now skinned as \a [choice]. Say hello to your new friend.")
-		return 1
-
-
-//apart of reskins that have two sprites, touching may result in frustration and breaks
-/obj/item/weapon/gun/projectile/revolver/detective/attack_hand(var/mob/living/user)
-	..()
-
-/datum/detective_gun_skin
-	var/name
-	var/icon_state
-
-/datum/detective_gun_skin/default/New()
-	..()
-	var/obj/item/weapon/gun/projectile/revolver/detective/d = /obj/item/weapon/gun/projectile/revolver/detective
-	name = initial(d.name)
-	icon_state = initial(d.icon_state)
-
-/datum/detective_gun_skin/colt
-	name = "\improper Panther`s revolver"
-	icon_state = "detective_panther"
-
-
-/datum/detective_gun_skin/luger
-	name = "\improper Peacemaker`s revolver"
-	icon_state = "detective_peacemaker"
-
-/datum/detective_gun_skin/luger_brown
-	name = "\improper Leopard`s revolver"
-	icon_state = "detective_leopard"
-*/
-
-
-
-
-
 // Blade Runner pistol.
 /obj/item/weapon/gun/projectile/revolver/deckard
 	name = "Deckard .44"
