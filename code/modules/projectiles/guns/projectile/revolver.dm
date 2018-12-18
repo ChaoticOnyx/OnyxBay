@@ -48,9 +48,8 @@
 /obj/item/weapon/gun/projectile/revolver/detective
 	icon_state = "detective"
 	item_state = "detective"
-	desc = "A cheap Martian knock-off of a Smith & Wesson Model 10. Uses .38-Special rounds."
-	ammo_type = /obj/item/ammo_casing/c38
-	caliber = "38"
+	ammo_type = /obj/item/ammo_casing/a357
+	caliber = "357"
 	max_shells = 6
 
 /obj/item/weapon/gun/projectile/revolver/detective/verb/rename_gun()

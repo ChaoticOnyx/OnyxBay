@@ -231,7 +231,7 @@
 		/obj/item/weapon/storage/box/evidence,
 		/obj/item/device/radio/headset/headset_sec,
 		/obj/item/clothing/suit/armor/vest/detective,
-		/obj/item/ammo_magazine/c38,
+		/obj/item/ammo_magazine/a357,
 		/obj/item/taperoll/police,
 		/obj/item/weapon/gun/projectile/revolver/detective,
 		/obj/item/clothing/accessory/holster/armpit,

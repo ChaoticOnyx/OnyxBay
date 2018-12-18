@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile/colt/detective
+/*obj/item/weapon/gun/projectile/colt/detective
 	var/unique_name
 	var/datum/detective_gun_skin/unique_reskin
 	var/static/list/gun_options
@@ -20,9 +20,9 @@
 			icon_state = "[unique_reskin.icon_state]-e"
 		else
 			icon_state = "[initial(icon_state)]-e"
+*/
 
-
-/obj/item/weapon/gun/projectile/colt/detective/verb/rename_gun()
+/*/obj/item/weapon/gun/projectile/colt/detective/verb/rename_gun()
 	set name = "Name Gun"
 	set category = "Object"
 	set desc = "Rename your gun. If you're the detective."
@@ -104,4 +104,23 @@
 /datum/detective_gun_skin/vp
 	name = "\improper H&K VP"
 	icon_state = "VP78"
+
+
+
+
+/obj/item/weapon/gun/projectile/revolver/detective
+	name = "revolver"
+	desc = "A cheap Martian knock-off of a Smith & Wesson Model 10. Uses .38-Special rounds."
+	icon_state = "detective"
+	max_shells = 6
+	caliber = "38"
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
+	ammo_type = /obj/item/ammo_casing/c38
+*/
+
+
+
+
+
+
 
