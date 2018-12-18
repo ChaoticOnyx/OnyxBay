@@ -31,6 +31,7 @@
 	charge_cost = 20
 	max_shots = 6
 	projectile_type = /obj/item/projectile/ion/small
+	wielded_item_state = "ionpistolonyx"
 
 /obj/item/weapon/gun/energy/decloner
 	name = "biological demolecularisor"
