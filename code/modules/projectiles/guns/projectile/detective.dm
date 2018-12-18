@@ -1,4 +1,4 @@
-/*obj/item/weapon/gun/projectile/colt/detective
+/obj/item/weapon/gun/projectile/colt/detective
 	var/unique_name
 	var/datum/detective_gun_skin/unique_reskin
 	var/static/list/gun_options
@@ -20,9 +20,8 @@
 			icon_state = "[unique_reskin.icon_state]-e"
 		else
 			icon_state = "[initial(icon_state)]-e"
-*/
 
-/*/obj/item/weapon/gun/projectile/colt/detective/verb/rename_gun()
+/obj/item/weapon/gun/projectile/colt/detective/verb/rename_gun()
 	set name = "Name Gun"
 	set category = "Object"
 	set desc = "Rename your gun. If you're the detective."
@@ -44,7 +43,7 @@
 		to_chat(M, "You name the gun '[input]'. Say hello to your new friend.")
 		return 1
 
-/obj/item/weapon/gun/projectile/colt/detective/verb/reskin_gun()
+/*/obj/item/weapon/gun/projectile/colt/detective/verb/reskin_gun()
 	set name = "Reskin gun"
 	set category = "Object"
 	set desc = "Click to reskin your gun."
@@ -61,7 +60,7 @@
 			SetName(choice.name)
 		to_chat(M, "Your gun is now skinned as \a [choice]. Say hello to your new friend.")
 		return 1
-
+*/
 
 //apart of reskins that have two sprites, touching may result in frustration and breaks
 /obj/item/weapon/gun/projectile/colt/detective/attack_hand(var/mob/living/user)
@@ -104,23 +103,3 @@
 /datum/detective_gun_skin/vp
 	name = "\improper H&K VP"
 	icon_state = "VP78"
-
-
-
-
-/obj/item/weapon/gun/projectile/revolver/detective
-	name = "revolver"
-	desc = "A cheap Martian knock-off of a Smith & Wesson Model 10. Uses .38-Special rounds."
-	icon_state = "detective"
-	max_shells = 6
-	caliber = "38"
-	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
-	ammo_type = /obj/item/ammo_casing/c38
-*/
-
-
-
-
-
-
-
