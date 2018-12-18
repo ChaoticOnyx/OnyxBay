@@ -3,7 +3,7 @@
 	icon_state = "laser"
 	fire_sound='sound/weapons/Laser.ogg'
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
-	damage = 40
+	damage = 55
 	damage_type = BURN
 	sharp = 1 //concentrated burns
 	check_armour = "laser"
@@ -26,16 +26,16 @@
 	eyeblur = 2
 
 /obj/item/projectile/beam/smalllaser
-	damage = 25
+	damage = 35
 /obj/item/projectile/beam/midlaser
-	damage = 50
+	damage = 60
 	armor_penetration = 10
 
 /obj/item/projectile/beam/heavylaser
 	name = "heavy laser"
 	icon_state = "heavylaser"
 	fire_sound = 'sound/weapons/lasercannonfire.ogg'
-	damage = 60
+	damage = 70
 	armor_penetration = 30
 
 	muzzle_type = /obj/effect/projectile/laser/heavy/muzzle
