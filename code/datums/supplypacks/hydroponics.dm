@@ -147,7 +147,7 @@
 
 /decl/hierarchy/supply_pack/hydroponics/pottedplant
 	name = "Potted plant crate"
-	num_contained = 1
+	num_contained = 2
 	contains = list(/obj/structure/flora/pottedplant,
 					/obj/structure/flora/pottedplant/large,
 					/obj/structure/flora/pottedplant/fern,
