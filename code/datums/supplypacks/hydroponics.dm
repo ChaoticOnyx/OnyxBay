@@ -147,7 +147,7 @@
 
 /decl/hierarchy/supply_pack/hydroponics/pottedplant
 	name = "Potted plant crate"
-	num_contained = 1
+	num_contained = 2
 	contains = list(/obj/structure/flora/pottedplant,
 					/obj/structure/flora/pottedplant/large,
 					/obj/structure/flora/pottedplant/fern,
@@ -175,7 +175,7 @@
 					/obj/structure/flora/pottedplant/tropical,
 					/obj/structure/flora/pottedplant/dead,
 					/obj/structure/flora/pottedplant/decorative)
-	cost = 3
+	cost = 6
 	containertype = /obj/structure/closet/crate/large/hydroponics
 	containername = "\improper Potted plant crate"
 	supply_method = /decl/supply_method/randomized
