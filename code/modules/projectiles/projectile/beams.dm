@@ -59,6 +59,9 @@
 	damage = 30
 	armor_penetration = 50
 
+/obj/item/projectile/beam/xray/midlaser/heavy
+	damage = 40
+
 /obj/item/projectile/beam/pulse
 	name = "pulse"
 	icon_state = "u_laser"

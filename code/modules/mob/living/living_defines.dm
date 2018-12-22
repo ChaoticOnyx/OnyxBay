@@ -51,3 +51,10 @@
 	var/list/obj/aura/auras = null //Basically a catch-all aura/force-field thing.
 
 	var/obj/screen/cells = null
+//////////SKILLS////////////////////////
+	var/strenght = 5
+	var/agillity = 5
+	var/intelligence = 5
+//	var/magic = 5
+//	var/flair = 5
+//	var/mental_stability = 5

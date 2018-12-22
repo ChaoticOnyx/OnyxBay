@@ -100,6 +100,9 @@
 	if(isghost(user) && check_rights(R_ADMIN, 0, user))
 		return 1
 
+	if(user.intelligence > 11)
+		return 1
+
 	if(!istype(user))
 		return 0
 

@@ -149,12 +149,14 @@
 	last_action = world.time
 
 /obj/item/grab/proc/check_action_cooldown()
-	return (world.time >= last_action + current_grab.action_cooldown)
+	return (world.time >= last_action + current_grab.action_cooldown*(1/(assailant.agillity/5))*(1/(assailant.strenght/5)))
 
 /obj/item/grab/proc/check_upgrade_cooldown()
-	return (world.time >= last_upgrade + current_grab.upgrade_cooldown)
+	return (world.time >= last_upgrade + current_grab.upgrade_cooldown*(1/(assailant.agillity/5))*(1/(assailant.strenght/5)))
 
 /obj/item/grab/proc/upgrade(var/bypass_cooldown = FALSE)
+	if(assailant.agillity >=15)
+		bypass_cooldown = TRUE
 	if(!check_upgrade_cooldown() && !bypass_cooldown)
 		to_chat(assailant, "<span class='danger'>It's too soon to upgrade.</span>")
 		return

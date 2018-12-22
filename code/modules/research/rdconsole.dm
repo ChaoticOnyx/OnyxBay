@@ -119,6 +119,13 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 
 /obj/machinery/computer/rdconsole/attackby(var/obj/item/weapon/D as obj, var/mob/user as mob)
 	//Loading a disk into it.
+//////SKILLS
+	if(ishuman(user))
+		var/mob/living/skillchecked = user
+		if(skillchecked.intelligence < 4)
+			to_chat(skillchecked, "You don't now, what you need to do.")
+			return
+///////////
 	if(istype(D, /obj/item/weapon/disk))
 		if(t_disk || d_disk)
 			to_chat(user, "A disk is already loaded into the machine.")

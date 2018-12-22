@@ -497,10 +497,14 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				var/turf/shoot_to = pick(turfs)
 				target.visible_message("<span class='danger'>[target]'s [W] goes off during the struggle!</span>")
 				return W.afterattack(shoot_to,target)
-
-	var/randn = rand(1, 100)
+///////SKILLS//////
+//	var/randn = rand(1, 100)
+	var/randn = rand(1, 100*(1/(attacker.agillity/5)))
+	if(attacker.agillity >= 15)
+		randn = rand(1,90*(1/(attacker.agillity/5)))
 	if(!(species_flags & SPECIES_FLAG_NO_SLIP) && randn <= 25)
 		var/armor_check = target.run_armor_check(affecting, "melee")
+		armor_check *= (target.agillity/5)
 		target.apply_effect(3, WEAKEN, armor_check)
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		if(armor_check < 100)

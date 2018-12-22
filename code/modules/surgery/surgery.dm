@@ -83,6 +83,10 @@
 			. -= 20
 		if(H.eye_blind)
 			. -= 60
+/////////SKILLS
+		if(H.intelligence < 4)
+			. -= 60
+///////////////
 	if(delicate)
 		if(user.slurring)
 			. -= 10

@@ -3,7 +3,6 @@
 
 	if(species.slowdown)
 		tally += species.slowdown
-
 	tally += species.handle_movement_delay_special(src)
 
 	if (istype(loc, /turf/space)) return -1 // It's hard to be slowed down in space by... anything
@@ -72,6 +71,11 @@
 		tally += (283.222 - bodytemperature) / 10 * 1.75
 
 	tally += max(2 * stance_damage, 0) //damaged/missing feet or legs is slow
+
+//SKILLS
+	tally *= (src.agillity/5)
+//
+
 
 	if(mRun in mutations)
 		tally = 0

@@ -104,6 +104,11 @@
 /obj/item/modular_computer/proc/turn_on(var/mob/user)
 	if(bsod)
 		return
+	if(ishuman(user))
+		var/mob/living/userer = user
+		if(userer.intelligence < 2)
+			to_chat(user, "You punch \the [src] and nothing happens.")
+			return
 	if(tesla_link)
 		tesla_link.enabled = 1
 	var/issynth = issilicon(user) // Robots and AIs get different activation messages.

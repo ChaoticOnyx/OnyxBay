@@ -219,3 +219,12 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 		GLOB.registered_weapons -= src
 		to_chat(user, "The authorization chip fries, giving you full use of \the [src].")
 		return 1
+
+
+/obj/item/weapon/gun/energy/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	var/mob/living/userer = user
+	if(userer.intelligence > 7)
+		if(istype(W, /obj/item/device/multitool))
+			if(istype(src, /obj/item/weapon/gun/energy/laser) || istype(src, /obj/item/weapon/gun/energy/laser/practice) || istype(src, /obj/item/weapon/gun/energy/xray) || istype(src, /obj/item/weapon/gun/energy/sniperrifle))
+				src.projectile_type = /obj/item/projectile/beam/xray/midlaser/heavy
+				to_chat(userer, "You refocused \the [src].")

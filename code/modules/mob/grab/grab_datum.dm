@@ -75,6 +75,9 @@
 	return to_write
 
 /datum/grab/proc/upgrade(var/obj/item/grab/G)
+////SKILLS
+	upgrade_cooldown *= (1/(G.assailant.strenght/5))
+//////////
 	if(!upgrab)
 		return
 
@@ -275,10 +278,10 @@
 	if(break_strength < 1)
 		to_chat(G.assailant, "<span class='warning'>You try to break free but feel that unless something changes, you'll never escape!</span>")
 		return
-
+	break_strength *=(assailant.strenght/5)
 	var/break_chance = break_chance_table[Clamp(break_strength, 1, break_chance_table.len)]
 	if(prob(break_chance))
-		if(can_downgrade_on_resist && !prob((break_chance+100)/2))
+		if(can_downgrade_on_resist && !prob((break_chance+100)*(affecting.agillity/5)/2))
 			affecting.visible_message("<span class='warning'>[affecting] has loosened [assailant]'s grip!</span>")
 			G.downgrade()
 			return

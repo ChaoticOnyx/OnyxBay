@@ -6,7 +6,9 @@
 	//Hulk modifier
 	if(HULK in user.mutations)
 		effective_force *= 2
-
+///////////SKILLS
+	effective_force *= (user.strenght/5)
+/////////////////
 	//Apply weapon damage
 	var/damage_flags = I.damage_flags()
 	if(prob(blocked)) //armour provides a chance to turn sharp/edge weapon attacks into blunt ones

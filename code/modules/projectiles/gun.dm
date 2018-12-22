@@ -119,7 +119,7 @@
 	if(HULK in M.mutations)
 		to_chat(M, "<span class='danger'>Your fingers are much too large for the trigger guard!</span>")
 		return 0
-	if((CLUMSY in M.mutations) && prob(40)) //Clumsy handling
+	if(((CLUMSY in M.mutations) || (M.agillity < 2)) && prob(40)) //Clumsy handling
 		var/obj/P = consume_next_projectile()
 		if(P)
 			if(process_projectile(P, user, user, pick(BP_L_FOOT, BP_R_FOOT)))
@@ -314,7 +314,11 @@
 	//Accuracy modifiers
 	P.accuracy = accuracy + acc_mod
 	P.dispersion = disp_mod
-
+//////SKILLS////////////////////////
+	if(istype(user, /mob/living/carbon))
+		var/mob/living/userer = user
+		P.accuracy *= (userer.agillity/5)
+////////////////////////////////////
 	//accuracy bonus from aiming
 	if (aim_targets && (target in aim_targets))
 		//If you aim at someone beforehead, it'll hit more often.

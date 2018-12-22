@@ -157,7 +157,9 @@
 	//Hulk modifier
 	if(HULK in user.mutations)
 		effective_force *= 2
-
+//////////////SKILLS
+	effective_force *= (user.strenght/5)
+/////////////////////
 	//Apply weapon damage
 	var/damage_flags = I.damage_flags()
 	if(prob(blocked)) //armour provides a chance to turn sharp/edge weapon attacks into blunt ones
@@ -179,7 +181,10 @@
 		var/miss_chance = 15
 		if (O.throw_source)
 			var/distance = get_dist(O.throw_source, loc)
-			miss_chance = max(15*(distance-2), 0)
+//			miss_chance = max(15*(distance-2), 0)
+//////////////SKILLS
+			miss_chance = max(15*(distance-2)*(src.agillity/5), 0)
+////////////////////
 
 		if (prob(miss_chance))
 			visible_message("<span class='notice'>\The [O] misses [src] narrowly!</span>")

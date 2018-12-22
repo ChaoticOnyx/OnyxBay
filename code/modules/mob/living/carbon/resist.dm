@@ -54,7 +54,12 @@
 	if(istype(H) && H.gloves && istype(H.gloves,/obj/item/clothing/gloves/rig))
 		breakouttime /= 2
 		displaytime /= 2
-
+////////////SKILLS
+	breakouttime *= (1/(H.agillity/5))
+	if(H.agillity >=15)
+		breakouttime *= 0.1
+	displaytime = breakouttime/600
+//////////////////////
 	visible_message(
 		"<span class='danger'>\The [src] attempts to remove \the [HC]!</span>",
 		"<span class='warning'>You attempt to remove \the [HC]. (This will take around [displaytime] minutes and you need to stand still)</span>"
@@ -71,6 +76,8 @@
 
 /mob/living/carbon/proc/can_break_cuffs()
 	if(HULK in mutations)
+		return 1
+	if(src.strenght >= 15)
 		return 1
 
 /mob/living/carbon/proc/break_handcuffs()

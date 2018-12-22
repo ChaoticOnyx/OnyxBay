@@ -224,6 +224,7 @@
 				real_damage *= 2 // Hulks do twice the damage
 				rand_damage *= 2
 			real_damage = max(1, real_damage)
+			real_damage *= (H.strenght/5)
 
 			var/armour = run_armor_check(hit_zone, "melee")
 			// Apply additional unarmed effects.
