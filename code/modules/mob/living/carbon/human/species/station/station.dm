@@ -83,11 +83,11 @@
 	tail = "tajtail"
 	tail_animation = 'icons/mob/species/tajaran/tail.dmi'
 	default_h_style = "Tajaran Ears"
-	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
+	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws/strong, /datum/unarmed_attack/bite/sharp)
 	darksight = 8
 	slowdown = -0.5
-	brute_mod = 1.15
-	burn_mod =  1.15
+	brute_mod = 0.8
+	burn_mod =  1.3
 	gluttonous = GLUT_TINY
 	num_alternate_languages = 2
 	secondary_langs = list(LANGUAGE_SIIK_TAJR)

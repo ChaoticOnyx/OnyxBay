@@ -13,6 +13,10 @@
 	use_power = 1
 	idle_power_usage = 60
 	active_power_usage = 10000	//10 kW. It's a big all-body scanner.
+	var/canusedbynothuman = 0
+
+/obj/machinery/bodyscanner/xeno
+	canusedbynothuman = 1
 
 /obj/machinery/bodyscanner/relaymove(mob/user as mob)
 	if (user.stat)
@@ -44,6 +48,10 @@
 	if (usr.abiotic())
 		to_chat(usr, "<span class='warning'>The subject cannot have abiotic items on.</span>")
 		return
+	if(!canusedbynothuman)
+		if(istype(target, /mob/living/carbon/human/tajaran) || istype(target, /mob/living/carbon/human/unathi) || istype(target, /mob/living/carbon/human/skrell) || istype(target, /mob/living/carbon/human/vox))
+			to_chat(user, "<span class='warning'>\The [src] system is not compatible with this species.</span>")
+			return
 	usr.pulling = null
 	usr.client.perspective = EYE_PERSPECTIVE
 	usr.client.eye = src
@@ -354,7 +362,7 @@
 	if (H.chem_effects[CE_ALCOHOL_TOXIC])
 		dat += "<span class='warning'>Warning: Subject suffering from alcohol intoxication.</span>"
 
-		
+
 
 	var/list/table = list()
 	table += "<table border='1'><tr><th>Organ</th><th>Damage</th><th>Status</th></tr>"

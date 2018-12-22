@@ -25,6 +25,11 @@
 
 	var/occupant_icon_update_timer = 0
 	var/ejecting = 0
+	var/canusedbynothuman = 0
+
+
+/obj/machinery/atmospherics/unary/cryo_cell/xeno
+	canusedbynothuman = 1
 
 /obj/machinery/atmospherics/unary/cryo_cell/New()
 	..()
@@ -122,7 +127,7 @@
 		scan = replacetext(scan,"'notice'","'white'")
 		scan = replacetext(scan,"'warning'","'average'")
 		scan = replacetext(scan,"'danger'","'bad'")
-		if (occupant.bodytemperature >= 170)	
+		if (occupant.bodytemperature >= 170)
 			scan += "<br><span class='average'>Warning: Patient's body temperature is not suitable.</span>"
 		scan += "<br>Cryostasis factor: [occupant.stasis_value]x"
 		data["occupant"] = scan
@@ -159,7 +164,7 @@
 	if(user == occupant)
 		return STATUS_CLOSE
 	return ..()
-	    
+
 /obj/machinery/atmospherics/unary/cryo_cell/OnTopic(user, href_list)
 	if(href_list["switchOn"])
 		on = 1
@@ -197,6 +202,10 @@
 	else if(istype(G, /obj/item/grab))
 		if(!ismob(G:affecting))
 			return
+		if(!canusedbynothuman)
+			if(istype(G:affecting, /mob/living/carbon/human/tajaran) || istype(G:affecting, /mob/living/carbon/human/unathi) || istype(G:affecting, /mob/living/carbon/human/skrell) || istype(G:affecting, /mob/living/carbon/human/vox))
+				to_chat(user, "<span class='warning'>\The [src] system is not compatible with this species.</span>")
+				return
 		for(var/mob/living/carbon/slime/M in range(1,G:affecting))
 			if(M.Victim == G:affecting)
 				to_chat(usr, "[G:affecting:name] will not fit into the cryo because they have a slime latched onto their head.")
@@ -285,7 +294,7 @@
 /obj/machinery/atmospherics/unary/cryo_cell/proc/expel_gas()
 	if(air_contents.total_moles < 1)
 		return
-	air_contents.remove(air_contents.total_moles/50)	
+	air_contents.remove(air_contents.total_moles/50)
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/go_out()
 	if(!( occupant ))

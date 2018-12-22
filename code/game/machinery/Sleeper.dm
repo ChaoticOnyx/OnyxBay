@@ -23,12 +23,15 @@
 	var/stasis_settings = list()
 	var/stasis = 1
 	var/freeze // Statis-upgrade
-
+	var/canusedbynothuman = 0
 	var/locked = 0
 
 	use_power = 1
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
+
+/obj/machinery/sleeper/xeno
+	canusedbynothuman = 1
 
 /obj/machinery/sleeper/Initialize()
 	. = ..()
@@ -222,6 +225,10 @@
 	if(target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
 		return
+	if(!canusedbynothuman)
+		if(istype(target, /mob/living/carbon/human/tajaran) || istype(target, /mob/living/carbon/human/unathi) || istype(target, /mob/living/carbon/human/skrell) || istype(target, /mob/living/carbon/human/vox))
+			to_chat(user, "<span class='warning'>\The [src] system is not compatible with this species.</span>")
+			return
 	go_in(target, user)
 
 /obj/machinery/sleeper/relaymove(var/mob/user)
