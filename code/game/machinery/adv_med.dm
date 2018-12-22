@@ -49,8 +49,8 @@
 		to_chat(usr, "<span class='warning'>The subject cannot have abiotic items on.</span>")
 		return
 	if(!canusedbynothuman)
-		if(istype(target, /mob/living/carbon/human/tajaran) || istype(target, /mob/living/carbon/human/unathi) || istype(target, /mob/living/carbon/human/skrell) || istype(target, /mob/living/carbon/human/vox))
-			to_chat(user, "<span class='warning'>\The [src] system is not compatible with this species.</span>")
+		if(istype(usr, /mob/living/carbon/human/tajaran) || istype(usr, /mob/living/carbon/human/unathi) || istype(usr, /mob/living/carbon/human/skrell) || istype(usr, /mob/living/carbon/human/vox))
+			to_chat(usr, "<span class='warning'>\The [src] system is not compatible with this species.</span>")
 			return
 	usr.pulling = null
 	usr.client.perspective = EYE_PERSPECTIVE
@@ -92,6 +92,10 @@
 	if (G.affecting.abiotic())
 		to_chat(user, "<span class='warning'>Subject cannot have abiotic items on.</span>")
 		return
+	if(!canusedbynothuman)
+		if(istype(G.affecting, /mob/living/carbon/human/tajaran) || istype(G.affecting, /mob/living/carbon/human/unathi) || istype(G.affecting, /mob/living/carbon/human/skrell) || istype(G.affecting, /mob/living/carbon/human/vox))
+			to_chat(user, "<span class='warning'>\The [src] system is not compatible with this species.</span>")
+			return
 	var/mob/M = G.affecting
 	M.forceMove(src)
 	src.occupant = M
