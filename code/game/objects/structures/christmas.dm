@@ -1,6 +1,6 @@
 /obj/structure/christmas/snowman
 	name = "snowman"
-	desc = "A cute snowman. How are he don`t smelting?.."
+	desc = "A cute snowman. How does it not melt?.."
 	icon = 'icons/obj/christmas.dmi'
 	icon_state = "snowman"
 	var/obj/item/clothing/head/my_hat
@@ -8,7 +8,7 @@
 
 
 /obj/structure/christmas/snowman/attack_hand(mob/user as mob)
-	user.visible_message("[user] puts [my_hat] off \the [src].", "You put [my_hat] off the \the [src]")
+	user.visible_message("[user] takes [my_hat] off \the [src].", "You take [my_hat] off \the [src]")
 	if(!user.put_in_active_hand(my_hat))
 		my_hat.loc = get_turf(user)
 	my_hat = null
@@ -20,7 +20,7 @@
 		if(istype(W,T))
 			can_hang = 1
 	if (can_hang && !my_hat)
-		user.visible_message("[user] hangs [W] on \the [src].", "You put [W] on the \the [src]")
+		user.visible_message("[user] puts [W] on \the [src].", "You put [W] on \the [src]")
 		my_hat = W
 		user.drop_from_inventory(my_hat, src)
 		update_icon()
@@ -128,7 +128,7 @@
 	desc = "A nice Christmas sock. Property of NanoTrasen."
 	icon_state = "sock_nt_ho"
 
-	/obj/structure/sign/christmas/sockfroghor
+/obj/structure/sign/christmas/sockfroghor
 	name = "froggy sock"
 	desc = "A nice Christmas sock with frog. Kwa."
 	icon_state = "sock_frog_ho"
