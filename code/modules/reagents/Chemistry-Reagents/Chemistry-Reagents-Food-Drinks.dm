@@ -2045,3 +2045,12 @@
 
 	glass_name = "special blend whiskey"
 	glass_desc = "Just when you thought regular whiskey was good... This silky, amber goodness has to come along and ruin everything."
+	
+/datum/reagent/ethanol/glintwine
+	name = "Glintwine"
+	description = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
+	color = "#eab300"
+	strength = 15
+
+	glass_name = "Glintwine"
+	glass_desc = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."	
