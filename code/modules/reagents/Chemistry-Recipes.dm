@@ -1928,3 +1928,9 @@
 	result = /datum/reagent/nanoblood
 	required_reagents = list(/datum/reagent/dexalinp = 1, /datum/reagent/iron = 1, /datum/reagent/blood = 1)
 	result_amount = 3
+	
+/datum/chemical_reaction/glintwine
+	name = "Glintwine"
+	result = /datum/reagent/ethanol/glintwine
+	required_reagents = list(/datum/reagent/ethanol/wine = 3, /datum/reagent/sugar = 2, /datum/reagent/drink/juice/orange = 2)
+	result_amount = 3	
