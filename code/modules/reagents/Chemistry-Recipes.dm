@@ -1933,4 +1933,4 @@
 	name = "Glintwine"
 	result = /datum/reagent/ethanol/glintwine
 	required_reagents = list(/datum/reagent/ethanol/wine = 3, /datum/reagent/sugar = 2, /datum/reagent/drink/juice/orange = 2)
-	result_amount = 3	
+	result_amount = 5	
