@@ -2049,10 +2049,10 @@
 /datum/reagent/ethanol/glintwine
 	name = "Glintwine"
 	description = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
-	color = "#eab300"
+	color = "#600202"
 	strength = 10
 	taste_mult = 1.5
-	druggy = 25
+	druggy = 5
 	adj_temp = 10
 	targ_temp = 360
 	taste_description = "liquid new year"
