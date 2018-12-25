@@ -2050,7 +2050,12 @@
 	name = "Glintwine"
 	description = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
 	color = "#eab300"
-	strength = 15
+	strength = 10
+	taste_mult = 1.5
+	druggy = 25
+	adj_temp = 10
+	targ_temp = 360
+	taste_description = "liquid new year"
 
 	glass_name = "Glintwine"
 	glass_desc = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."	
