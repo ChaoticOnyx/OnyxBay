@@ -2058,4 +2058,31 @@
 	taste_description = "liquid new year"
 
 	glass_name = "Glintwine"
-	glass_desc = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."	
+	glass_desc = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
+	
+/datum/reagent/ethanol/corpserevive
+	name = "Corpse Reviver"
+	description = "The best hangover cure!"
+	color = "#f3ffca"
+	strength = 15
+
+	glass_name = "Corpse Reviver"
+	glass_desc = "The best hangover cure!"	
+	
+/datum/reagent/ethanol/bdaiquiri
+	name = "Banana daiquiri"
+	description = "The magic of frozen banana sweets."
+	color = "#ffd791"
+	strength = 15
+
+	glass_name = "Banana daiquiri"
+	glass_desc = "The magic of frozen banana sweets."	
+	
+/datum/reagent/ethanol/xgrog
+	name = "Christmas Grog"
+	description = "Festive version of something very familiar."
+	color = "#ba7625"
+	strength = 100
+
+	glass_name = "Christmas Grog"
+	glass_desc = "Festive version of something very familiar."		
