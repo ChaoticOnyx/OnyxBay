@@ -2086,3 +2086,13 @@
 
 	glass_name = "Christmas Grog"
 	glass_desc = "Festive version of something very familiar."		
+	
+/datum/reagent/ethanol/afternoon
+	name = "Death in the afternoon"
+	description = "Favorite drink for chapters!"
+	color = "#d4ff66"
+	strength = 100
+	taste_description = "Sweet and bitter, like Death itself."
+
+	glass_name = "Death in the afternoon"
+	glass_desc = "Favorite drink for chapters!"			
