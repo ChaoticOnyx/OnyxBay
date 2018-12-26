@@ -1947,8 +1947,8 @@
 	required_reagents = list(/datum/reagent/ethanol/rum = 2, /datum/reagent/drink/juice/banana = 3, /datum/reagent/drink/juice/lime = 1, /datum/reagent/drink/ice = 2)
 	result_amount = 8
 
-/datum/chemical_reaction/bdaiquiri
-	name = "Banana daiquiri"
-	result = /datum/reagent/ethanol/xgrog
-	required_reagents = list(/datum/reagent/ethanol/grog = 2, /datum/reagent/drink/tea = 1, /datum/reagent/sugar = 1, /datum/reagent/drink/juice/lemon = 1)
-	result_amount = 4
+/datum/chemical_reaction/afternoon
+	name = "Death in the afternoon"
+	result = /datum/reagent/ethanol/afternoon
+	required_reagents = list(/datum/reagent/ethanol/wine/premium = 4, /datum/reagent/ethanol/absinthe = 2)
+	result_amount = 6
