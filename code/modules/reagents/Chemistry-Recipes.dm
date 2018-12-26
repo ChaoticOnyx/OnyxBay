@@ -1933,4 +1933,22 @@
 	name = "Glintwine"
 	result = /datum/reagent/ethanol/glintwine
 	required_reagents = list(/datum/reagent/ethanol/wine = 3, /datum/reagent/sugar = 2, /datum/reagent/drink/juice/orange = 2)
-	result_amount = 5	
+	result_amount = 5
+	
+/datum/chemical_reaction/corpserevive
+	name = "Corpse Reviver"
+	result = /datum/reagent/ethanol/corpserevive
+	required_reagents = list(/datum/reagent/ethanol/gin = 3, /datum/reagent/ethanol/wine = 3, /datum/reagent/drink/juice/orange = 2, /datum/reagent/drink/juice/lemon = 2)
+	result_amount = 9
+	
+/datum/chemical_reaction/bdaiquiri
+	name = "Banana daiquiri"
+	result = /datum/reagent/ethanol/bdaiquiri
+	required_reagents = list(/datum/reagent/ethanol/rum = 2, /datum/reagent/drink/juice/banana = 3, /datum/reagent/drink/juice/lime = 1, /datum/reagent/drink/ice = 2)
+	result_amount = 8
+
+/datum/chemical_reaction/afternoon
+	name = "Death in the afternoon"
+	result = /datum/reagent/ethanol/afternoon
+	required_reagents = list(/datum/reagent/ethanol/wine/premium = 4, /datum/reagent/ethanol/absinthe = 2)
+	result_amount = 6
