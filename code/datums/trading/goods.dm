@@ -23,9 +23,8 @@
 				"bribe_accept"      = "You know what, I wasn't doing anything for TIME minutes anyways.",
 				)
 
-	possible_wanted_items = list(/obj/item/toy/figure       = TRADER_THIS_TYPE,
-								/obj/item/toy/figure/ert    = TRADER_THIS_TYPE,
-								/obj/item/toy/prize/honk    = TRADER_THIS_TYPE)
+	possible_wanted_items = list(/obj/item/toy/figure/ert    = TRADER_THIS_TYPE,
+								 /obj/item/toy/prize/honk    = TRADER_THIS_TYPE)
 
 	possible_trading_items = list(/obj/item/toy/prize                 = TRADER_SUBTYPES_ONLY,
 								/obj/item/toy/prize/honk              = TRADER_BLACKLIST,
