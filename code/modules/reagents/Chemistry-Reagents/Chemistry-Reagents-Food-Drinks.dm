@@ -2045,3 +2045,54 @@
 
 	glass_name = "special blend whiskey"
 	glass_desc = "Just when you thought regular whiskey was good... This silky, amber goodness has to come along and ruin everything."
+	
+/datum/reagent/ethanol/glintwine
+	name = "Glintwine"
+	description = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
+	color = "#600202"
+	strength = 10
+	taste_mult = 1.5
+	druggy = 5
+	adj_temp = 10
+	targ_temp = 360
+	taste_description = "liquid new year"
+
+	glass_name = "Glintwine"
+	glass_desc = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
+	
+/datum/reagent/ethanol/corpserevive
+	name = "Corpse Reviver"
+	description = "The best hangover cure!"
+	color = "#f3ffca"
+	strength = 15
+
+	glass_name = "Corpse Reviver"
+	glass_desc = "The best hangover cure!"	
+	
+/datum/reagent/ethanol/bdaiquiri
+	name = "Banana daiquiri"
+	description = "The magic of frozen banana sweets."
+	color = "#ffd791"
+	strength = 15
+
+	glass_name = "Banana daiquiri"
+	glass_desc = "The magic of frozen banana sweets."	
+	
+/datum/reagent/ethanol/xgrog
+	name = "Christmas Grog"
+	description = "Festive version of something very familiar."
+	color = "#ba7625"
+	strength = 100
+
+	glass_name = "Christmas Grog"
+	glass_desc = "Festive version of something very familiar."		
+	
+/datum/reagent/ethanol/afternoon
+	name = "Death in the afternoon"
+	description = "Favorite drink for chapters!"
+	color = "#d4ff66"
+	strength = 100
+	taste_description = "Sweet and bitter, like Death itself."
+
+	glass_name = "Death in the afternoon"
+	glass_desc = "Favorite drink for chapters!"			
