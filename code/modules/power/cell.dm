@@ -28,28 +28,19 @@
 	if(istype(partner))
 		src.partner = partner
 	else
-		src.partner = new (src.loc,src)
+		src.partner = new (src.loc,partner=src)
+	..()
 
 /obj/item/weapon/cell/quantum/add_charge(var/amount)
 	amount -= partner.give(amount, recurse=FALSE)
 	..(amount)
 
-/obj/item/weapon/cell/quantum/use(var/amount)
-	var/used = min(partner.charge, amount)
-	if(partner.charge >= used)
-		partner.charge -= used
-	else
-		used = min(charge, amount)
-		charge -= used
-	update_icon()
+/obj/item/weapon/cell/quantum/use(var/amount, var/recurse=TRUE)
+	if(!recurse)
+		return ..(amount)
+	var/used = partner.use(amount, recurse=FALSE)
+	used += ..(amount-used)
 	return used
-
-/obj/item/weapon/cell/proc/give(var/amount)
-	if(maxcharge == charge) return 0
-	var/amount_used = min(maxcharge-charge,amount)
-	charge += amount_used
-	update_icon()
-	return amount_used
 
 /obj/item/weapon/cell/quantum/give(var/amount, var/recurse=TRUE)
 	if(!recurse)
@@ -128,14 +119,14 @@
 		return 0
 	use(amount)
 	return 1
-/*
+
 /obj/item/weapon/cell/proc/give(var/amount)
-	if(maxcharge < amount)	return 0
+	if(maxcharge == charge) return 0
 	var/amount_used = min(maxcharge-charge,amount)
 	charge += amount_used
 	update_icon()
 	return amount_used
-*/
+
 /obj/item/weapon/cell/examine(mob/user)
 	. = ..()
 	to_chat(user, "The label states it's capacity is [maxcharge] Wh")
