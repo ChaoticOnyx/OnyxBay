@@ -285,6 +285,7 @@ Sells devices, odds and ends, and medical stuff
 	name = "Xenolife Collector"
 	origin = "CSV Not a Poacher"
 	trade_flags = TRADER_GOODS|TRADER_MONEY|TRADER_WANTED_ONLY|TRADER_WANTED_ALL
+	want_multiplier = 15
 	possible_origins = list("XenoHugs","NT Specimen Acquisition","Lonely Pete's Exotic Companionship","Space Wei's Exotic Cuisine")
 	speech = list("hail_generic"    = "Welcome! We are always looking to acquire more exotic life forms.",
 				"hail_deny"         = "We no longer wish to speak to you. Please contact our legal representative if you wish to rectify this.",
@@ -302,13 +303,7 @@ Sells devices, odds and ends, and medical stuff
 				"insult_bad"        = "I have traded dogs with more bark than that.",
 				)
 
-	possible_wanted_items = list(/mob/living/simple_animal/tindalos    = TRADER_THIS_TYPE,
-								/mob/living/simple_animal/tomato      = TRADER_THIS_TYPE,
-								/mob/living/simple_animal/yithian     = TRADER_THIS_TYPE,
-								/mob/living/simple_animal/hostile/retaliate/beast/diyaab = TRADER_THIS_TYPE,
-								/mob/living/simple_animal/hostile/retaliate/beast/shantak= TRADER_THIS_TYPE,
-								/mob/living/simple_animal/hostile/retaliate/beast/samak= TRADER_THIS_TYPE,
-								/mob/living/simple_animal/hostile/carp = TRADER_THIS_TYPE)
+	possible_wanted_items = list(/obj/item/seeds 					  = TRADER_SUBTYPES_ONLY)
 
 	possible_trading_items = list(/mob/living/simple_animal/hostile/carp= TRADER_THIS_TYPE,
 								/obj/item/device/dociler              = TRADER_THIS_TYPE,

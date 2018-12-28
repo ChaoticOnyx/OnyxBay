@@ -10,7 +10,7 @@
 
 				"trade_complete"    = "Remember to give them attention and food. They are living beings, and you should treat them like so.",
 				"trade_blacklist"   = "Legally I can' do that. Morally, I refuse to do that.",
-				"trade_found_unwanted" = "I only slime extracts. I don't need food or shiny things. I'm looking for specific ones at that. Ones I already have the lab and reagents for.",
+				"trade_found_unwanted" = "I want only slime extracts. I don't need food or shiny things. I'm looking for specific ones at that. Ones I already have the lab and reagents for.",
 				"trade_not_enough"   = "I'd give you the animal for free, but I need the money to feed the others. So you must pay in full.",
 				"how_much"          = "This is a fine specimen. I believe it will cost you VALUE thalers.",
 				"what_want"         = "I currently need those slime extracts:",
