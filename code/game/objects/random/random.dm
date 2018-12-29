@@ -1095,6 +1095,21 @@ obj/random/hostile/spawn_choices()
 				/obj/item/jackolantern/scream,
 				/obj/item/jackolantern/old)
 
+/obj/random/sock
+	name = "Random Christmas sock"
+	desc = "This is a random Christams sock. HOU-HOU-HOU!"
+	icon = 'icons/obj/christmas.dmi'
+	icon_state = "sock_random"
+
+/obj/random/sock/spawn_choices()
+	return list(/obj/structure/sign/christmas/sock = 5,
+				/obj/structure/sign/christmas/sock2 = 3,
+				/obj/structure/sign/christmas/socknt = 5,
+				/obj/structure/sign/christmas/sockfrog = 4,
+				/obj/structure/sign/christmas/sockninja = 1,
+				/obj/structure/sign/christmas/sockwizard = 1,
+				/obj/structure/sign/christmas/socksindy = 2)
+
 /*
 	Selects one spawn point out of a group of points with the same ID and asks it to generate its items
 */
