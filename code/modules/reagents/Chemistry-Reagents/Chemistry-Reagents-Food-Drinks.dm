@@ -2089,7 +2089,7 @@
 	
 /datum/reagent/ethanol/afternoon
 	name = "Death in the afternoon"
-	description = "Favorite drink for chapters!"
+	description = "Favorite drink for functionary!"
 	color = "#d4ff66"
 	strength = 100
 	taste_description = "Sweet and bitter, like Death itself."
