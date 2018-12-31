@@ -1952,3 +1952,9 @@
 	result = /datum/reagent/ethanol/afternoon
 	required_reagents = list(/datum/reagent/ethanol/wine/premium = 4, /datum/reagent/ethanol/absinthe = 2)
 	result_amount = 6
+	
+/datum/chemical_reaction/chacha
+	name = "Сhacha"
+	result = /datum/reagent/ethanol/chacha
+	required_reagents = list(/datum/reagent/ethanol/vodka = 3, /datum/reagent/drink/juice/grape = 2)
+	result_amount = 5	
