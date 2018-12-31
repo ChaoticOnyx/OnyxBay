@@ -2089,10 +2089,20 @@
 	
 /datum/reagent/ethanol/afternoon
 	name = "Death in the afternoon"
-	description = "Favorite drink for chapters!"
+	description = "Favorite drink for functionary!"
 	color = "#d4ff66"
 	strength = 100
-	taste_description = "Sweet and bitter, like Death itself."
+	taste_description = "sweet and bitter, like Death itself."
 
 	glass_name = "Death in the afternoon"
 	glass_desc = "Favorite drink for chapters!"			
+
+/datum/reagent/ethanol/chacha
+	name = "Сhacha"
+	description = "favorite drink of mountain peoples."
+	color = "#f0db7f"
+	strength = 100
+	taste_description = "one feels the taste of a distant mountainous country"
+
+	glass_name = "Сhacha"
+	glass_desc = "favorite drink of mountain peoples."			
