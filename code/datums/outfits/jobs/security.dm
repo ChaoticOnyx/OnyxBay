@@ -4,7 +4,7 @@
 	l_ear = /obj/item/device/radio/headset/headset_sec
 	gloves = /obj/item/clothing/gloves/thick/security
 	shoes = /obj/item/clothing/shoes/jackboots
-	backpack_contents = list(/obj/item/weapon/handcuffs = 1)
+	backpack_contents = list(/obj/item/weapon/handcuffs = 1, /obj/item/clothing/head/helmet/space/santahat = 1)
 
 /decl/hierarchy/outfit/job/security/New()
 	..()
@@ -16,7 +16,7 @@
 	uniform = /obj/item/clothing/under/rank/head_of_security
 	id_type = /obj/item/weapon/card/id/security/head
 	pda_type = /obj/item/device/pda/heads/hos
-	backpack_contents = list(/obj/item/weapon/handcuffs = 1)
+	backpack_contents = list(/obj/item/weapon/handcuffs = 1, /obj/item/clothing/head/helmet/space/santahat = 1)
 
 /decl/hierarchy/outfit/job/security/warden
 	name = OUTFIT_JOB_NAME("Warden")
@@ -24,6 +24,7 @@
 	l_pocket = /obj/item/device/flash
 	id_type = /obj/item/weapon/card/id/security/warden
 	pda_type = /obj/item/device/pda/warden
+	backpack_contents = list (/obj/item/clothing/head/helmet/space/santahat = 1)
 
 /decl/hierarchy/outfit/job/security/detective
 	name = OUTFIT_JOB_NAME("Detective")
@@ -35,7 +36,7 @@
 	r_hand = /obj/item/weapon/storage/briefcase/crimekit
 	id_type = /obj/item/weapon/card/id/security/detective
 	pda_type = /obj/item/device/pda/detective
-	backpack_contents = list(/obj/item/weapon/storage/box/evidence = 1)
+	backpack_contents = list(/obj/item/weapon/storage/box/evidence = 1, /obj/item/clothing/head/helmet/space/santahat = 1)
 
 /decl/hierarchy/outfit/job/security/detective/New()
 	..()
@@ -53,3 +54,4 @@
 	r_pocket = /obj/item/weapon/handcuffs
 	id_type = /obj/item/weapon/card/id/security
 	pda_type = /obj/item/device/pda/security
+	backpack_contents = list(/obj/item/clothing/head/helmet/space/santahat = 1)

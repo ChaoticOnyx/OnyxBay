@@ -10,6 +10,7 @@
 	id_type = /obj/item/weapon/card/id/civilian
 	pda_slot = slot_belt
 	pda_type = /obj/item/device/pda
+	backpack_contents = list(/obj/item/clothing/head/helmet/space/santahat = 1)
 
 	flags = OUTFIT_HAS_BACKPACK
 

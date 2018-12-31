@@ -6,7 +6,6 @@
 	var/obj/item/clothing/head/my_hat
 	var/list/allowed = list(/obj/item/clothing/head)
 
-
 /obj/structure/christmas/snowman/attack_hand(mob/user as mob)
 	user.visible_message("[user] takes [my_hat] off \the [src].", "You take [my_hat] off \the [src]")
 	if(!user.put_in_active_hand(my_hat))
@@ -118,6 +117,21 @@
 	desc = "A nice Christmas sock with frog. Kwa."
 	icon_state = "sock_frog"
 
+/obj/structure/sign/christmas/sockninja
+	name = "ninja sock"
+	desc = "A nice Christmas sock. What`s the vanished into the air?.. "
+	icon_state = "sock_ninja"
+
+/obj/structure/sign/christmas/sockwizard
+	name = "wizard sock"
+	desc = "A nice Christmas sock. Seeing this, you can hear some strange words in your head..."
+	icon_state = "sock_mage"
+
+/obj/structure/sign/christmas/socksindy
+	name = "sydicate sock"
+	desc = "A nice Christmas sock. OH GOD DIS GAYS IN RED RIGS IN BAR CAL Z SHATL!!!"
+	icon_state = "sock_sindy"
+
 /obj/structure/sign/christmas/sockhor
 	name = "christmas sock"
 	desc = "A nice Christmas sock."
@@ -132,3 +146,11 @@
 	name = "froggy sock"
 	desc = "A nice Christmas sock with frog. Kwa."
 	icon_state = "sock_frog_ho"
+
+/obj/structure/christmas/xmastree
+	name = "xmas tree"
+	desc = "Christmas pine. Did you feel this mood?"
+	icon = 'icons/obj/flora/pinetrees.dmi'
+	icon_state = "pine_c"
+	density = 1
+	opacity = 0
