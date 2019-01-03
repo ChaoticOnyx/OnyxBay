@@ -11,7 +11,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/changelingID = "Changeling"
 	var/geneticdamage = 0
 	var/isabsorbing = 0
-	var/geneticpoints = 15
+	var/geneticpoints = 20
 	var/purchasedpowers = list()
 	var/mimicing = ""
 	var/lingabsorbedcount = 1
@@ -1280,8 +1280,15 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	to_chat(src, "<span class='notice'>We successfully transfused new core into [T]!</span>")
 	src.visible_message("<span class='danger'>[src] transfused something into [T] through their proboscis!</span>")
 	to_chat(T, "<span class='danger'>You feel like you're dying...</span>")
+	if(changeling.geneticpoints <= 2)
+		to_chat(src, "<span class='notice'>Not enough dna.</span>")
+		return
+	if(changeling.chem_charges <= 20)
+		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
+		return
+
 	changeling.chem_charges -= 20
-	changeling.geneticpoints -= 4
+	changeling.geneticpoints -= 2
 
 	changeling.isabsorbing = 0
 	T.make_changeling()
@@ -1298,7 +1305,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set desc = "We tear off our limb, turning it into an aggressive biomass."
 
 
-	var/datum/changeling/changeling = changeling_power(10,0,100)
+	var/datum/changeling/changeling = changeling_power(10,0,100,DEAD)
 	if(!changeling)	return
 	var/mob/living/carbon/T = src
 	T.faction = "biomass"
@@ -1315,7 +1322,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	src.visible_message("<span class='danger'>\the [organ_to_remove] ripping off from [src].</span>", \
 					"<span class='danger'>We begin ripping our \the [organ_to_remove].</span>")
-	if(!do_after(src,10,can_move = 1,needhand = 0,incapacitation_flags = INCAPACITATION_DISABLED))
+	if(!do_after(src,10,can_move = 1,needhand = 0,incapacitation_flags = INCAPACITATION_NONE))
 		src.visible_message("<span class='notice'>\the [organ_to_remove] connecting back to [src].</span>", \
 					"<span class='danger'>We were interrupted.</span>")
 		return 0
@@ -1347,7 +1354,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Body Disjunction (40)"
 	set desc = "Tear apart your human disguise, revealing your little form."
 
-	var/datum/changeling/changeling = changeling_power(40,0,0)
+	var/datum/changeling/changeling = changeling_power(40,0,0,DEAD)
 	if(!changeling)	return 0
 
 
@@ -1356,7 +1363,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	M.visible_message("<span class='danger'>You hear a loud cracking sound coming from \the [M].</span>", \
 						"<span class='danger'>We begin disjunction of our body to form a pack of autonomous organisms.</span>")
 
-	if(!do_after(src,60,needhand = 0,incapacitation_flags = INCAPACITATION_DISABLED))
+	if(!do_after(src,60,needhand = 0,incapacitation_flags = INCAPACITATION_NONE))
 		M.visible_message("<span class='danger'>[M]'s transformation abruptly reverts itself!</span>", \
 							"<span class='danger'>Our transformation has been interrupted!</span>")
 		return 0
@@ -1517,11 +1524,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			while(H && H.mind && H.mind.changeling.heal && H.mind.changeling.damaged)
 				H.mind.changeling.chem_charges = max(H.mind.changeling.chem_charges - 1, 0)
 				if(H.getBruteLoss())
-					H.adjustBruteLoss(-10 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+					H.adjustBruteLoss(-15 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 				if(H.getFireLoss())
-					H.adjustFireLoss(-5 * config.organ_regeneration_multiplier)
+					H.adjustFireLoss(-10 * config.organ_regeneration_multiplier)
 				if(H.getToxLoss())
-					H.adjustToxLoss(-10 * config.organ_regeneration_multiplier)
+					H.adjustToxLoss(-15 * config.organ_regeneration_multiplier)
 				if(prob(5) && !H.getBruteLoss() && !H.getFireLoss())
 					var/obj/item/organ/external/head/D = H.organs_by_name[BP_HEAD]
 					if (D.disfigured)
