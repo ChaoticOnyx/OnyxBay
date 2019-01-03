@@ -530,6 +530,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	changeling.chem_charges -= 45
 
 	var/mob/living/carbon/human/C = src
+	if(C.reagents)
+		C.reagents.clear_reagents()
 	C.set_stat(CONSCIOUS)
 	C.SetParalysis(0)
 	C.SetStunned(0)
@@ -1291,7 +1293,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	changeling.geneticpoints -= 2
 
 	changeling.isabsorbing = 0
-	T.make_changeling()
+	var/datum/antagonist/changeling/a = new
+	a.add_antagonist(T.mind, ignore_role = 1, do_not_equip = 1)
+//	T.make_changeling()
 	to_chat(T, "<span class='danger'>You feel a new power!</span>")
 	T.mind.changeling.geneticpoints = 6
 	T.mind.changeling.chem_charges = 40
