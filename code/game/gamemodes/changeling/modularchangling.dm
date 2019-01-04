@@ -274,6 +274,21 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 8
 	verbpath = /mob/proc/changeling_division
 
+
+/datum/power/changeling/chem_disp_sting
+	name = "Synthesis of chemistry"
+	desc = "We synthesize a variety of chemicals."
+	helptext = "Spends more chemicals on phoron synthesis."
+	genomecost = 0
+	verbpath = /mob/proc/chem_disp_sting
+
+/datum/power/changeling/chem_sting
+	name = "Chemical sting"
+	desc = "We inject synthesized chemicals to the victim."
+	helptext = "Spends more chemicals on phoron synthesis."
+	genomecost = 0
+	verbpath = /mob/proc/chem_sting
+
 /datum/power/changeling/rapid_heal
 	name = "Passive Regeneration"
 	desc = "Allows you to passively regenerate when activated."
