@@ -17,6 +17,41 @@
 	var/overlay_state
 	matter = list(DEFAULT_WALL_MATERIAL = 700, "glass" = 50)
 
+/obj/item/weapon/cell/quantum
+	name = "bluespace cell"
+	icon_state = "icell"
+	origin_tech = list(TECH_POWER = 6, TECH_MATERIAL = 6, TECH_BLUESPACE = 3, TECH_MAGNET = 5)
+	var/obj/item/weapon/cell/quantum/partner = null
+	maxcharge = 5000
+
+/obj/item/weapon/cell/quantum/New(loc,obj/item/weapon/cell/quantum/partner)
+	if(istype(partner))
+		src.partner = partner
+	else
+		src.partner = new (src.loc,partner=src)
+	..()
+
+/obj/item/weapon/cell/quantum/add_charge(var/amount)
+	amount -= partner.give(amount, recurse=FALSE)
+	..(amount)
+
+/obj/item/weapon/cell/quantum/use(var/amount, var/recurse=TRUE)
+	if(!recurse)
+		return ..(amount)
+	var/used = partner.use(amount, recurse=FALSE)
+	used += ..(amount-used)
+	return used
+
+/obj/item/weapon/cell/quantum/give(var/amount, var/recurse=TRUE)
+	if(!recurse)
+		return ..(amount)
+	var/amount_used = partner.give(amount, recurse=FALSE)
+	amount_used += ..(amount-amount_used)
+	return amount_used
+
+/obj/item/weapon/cell/quantum/Destroy()
+	qdel(partner)
+	return ..()
 
 /obj/item/weapon/cell/New()
 	if(isnull(charge))
@@ -86,7 +121,7 @@
 	return 1
 
 /obj/item/weapon/cell/proc/give(var/amount)
-	if(maxcharge < amount)	return 0
+	if(maxcharge == charge) return 0
 	var/amount_used = min(maxcharge-charge,amount)
 	charge += amount_used
 	update_icon()

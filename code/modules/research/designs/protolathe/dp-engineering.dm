@@ -45,6 +45,15 @@
 	build_path = /obj/item/weapon/cell/hyper
 	sort_string = "DAAAD"
 
+
+/datum/design/item/powercell/quantum
+	name = "bluespace cell"
+	id = "bluespace_cell"
+	req_tech = list(TECH_POWER = 6, TECH_MATERIAL = 6, TECH_BLUESPACE = 3, TECH_MAGNET = 5)
+	materials = list(DEFAULT_WALL_MATERIAL = 400, "gold" = 150, "silver" = 150, "glass" = 70, "diamond" = 100)
+	build_path = /obj/item/weapon/cell/quantum
+	sort_string = "DAAAE"
+
 /datum/design/item/tool/airlock_brace
 	name = "airlock brace"
 	desc = "Special door attachment that can be used to provide extra security."
