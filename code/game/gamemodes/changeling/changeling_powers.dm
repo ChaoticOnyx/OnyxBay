@@ -1658,6 +1658,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(target_chem == /datum/reagent/toxin/phoron)
 		amount *= 2
 	src.mind.changeling.chem_charges -= amount
+	src.verbs += /mob/proc/chem_sting
 
 /mob/proc/chem_sting()
 	set category = "Changeling"
@@ -1680,4 +1681,5 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(!T)	return 0
 	C.mind.changeling.pick_chemistry.trans_to_mob(T, C.mind.changeling.pick_chemistry.maximum_volume)
 	feedback_add_details("changeling_powers","CS")
+	src.verbs -= /mob/proc/chem_sting
 	return 1
