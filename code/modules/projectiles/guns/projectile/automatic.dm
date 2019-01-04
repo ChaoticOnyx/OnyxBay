@@ -283,3 +283,25 @@
 		to_chat(user, "<span class='warning'>You need to open the cover to unload [src].</span>")
 		return
 	..()
+
+
+
+/obj/item/weapon/gun/projectile/automatic/z8/customz8
+	name = "bullpup Asimov rifle"
+	desc = "/improper OMG DIS IZ AWP AZI... Oh, nevermind./ Property of Sranklin." //Customochka
+	icon_state = "custom_carbine"
+	item_state = "custom_z8carbine"
+	auto_eject_sound = 'sound/weapons/custom_smg_empty_alarm.ogg'
+	wielded_item_state = "custom_z8carbine-wielded"
+
+/obj/item/weapon/gun/projectile/automatic/z8/customz8/update_icon()
+	..()
+	if(ammo_magazine)
+		if(ammo_magazine.stored_ammo.len)
+			icon_state = "custom_carbine-loaded"
+		else
+			icon_state = "custom_carbine-empty"
+	else
+		icon_state = "custom_carbine"
+	return
+

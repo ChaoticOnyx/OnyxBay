@@ -135,3 +135,13 @@
 	name = "collectable SWAT helmet"
 	desc = "Now you can be in the Deathsquad too!"
 	icon_state = "swat"
+
+/obj/item/clothing/head/collectable/customnapoleon //Customochka
+	name = "napoleon`s hat"
+	desc = "2-edged hat. Property of SolarEclipse84."
+	icon_state = "custom_napoleon"
+	item_state = "custom_napoleon"
+	item_state_slots = list(
+		slot_l_hand_str = "custom_napoleon",
+		slot_r_hand_str = "custom_napoleon",
+		)

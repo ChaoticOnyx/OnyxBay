@@ -26,7 +26,6 @@
 	name = "parade hat"
 	desc = "No one in a commanding position should be without a perfect, white hat of ultimate authority."
 	icon_state = "officercap"
-
 //HOP
 /obj/item/clothing/head/caphat/hop
 	name = "crew resource's hat"
