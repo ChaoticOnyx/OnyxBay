@@ -1638,10 +1638,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	/datum/reagent/ethanol,
 	/datum/reagent/acid,
 	/datum/reagent/tungsten,
-	/datum/reagent/toxin/phoron,
 	/datum/reagent/water
 	)
 	var/mob/living/carbon/human/T = src
+	if(src.mind.changeling.recursive_enhancement == TRUE)
+		chemistry += /datum/reagent/toxin/phoron
 //	var/obj/item/organ/internal/biostructure/BIO = T.internal_organs_by_name[BP_CHANG]
 	var/datum/reagent/target_chem = input(T, "Ñhoose reagent:") as null|anything in chemistry
 //	T.mind.changeling.pick_chemistry.reagent_list += input(T, "Ñhoose reagent:") as null|anything in chemistry
@@ -1658,7 +1659,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(target_chem == /datum/reagent/toxin/phoron)
 		amount *= 2
 	src.mind.changeling.chem_charges -= amount
-	src.verbs += /mob/proc/chem_sting
+	if(!(/mob/proc/chem_sting in src.verbs))
+		src.verbs += /mob/proc/chem_sting
 
 /mob/proc/chem_sting()
 	set category = "Changeling"
@@ -1679,7 +1681,10 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/mob/living/carbon/human/T = changeling_sting(5, /mob/proc/chem_sting)
 	if(!T)	return 0
-	C.mind.changeling.pick_chemistry.trans_to_mob(T, C.mind.changeling.pick_chemistry.maximum_volume)
+	var/N = 10
+	if(src.mind.changeling.recursive_enhancement == TRUE)
+		N = 20
+	C.mind.changeling.pick_chemistry.trans_to_mob(T, N)
 	feedback_add_details("changeling_powers","CS")
 	src.verbs -= /mob/proc/chem_sting
 	return 1
