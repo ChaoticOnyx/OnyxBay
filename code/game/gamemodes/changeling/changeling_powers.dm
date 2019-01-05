@@ -1454,7 +1454,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	spawn(10 SECONDS)
 		to_chat(T, "<span class='danger'>You feel strange spasms in your hand.</span>")
 		spawn(15 SECONDS)
-			playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
+			playsound(T.loc, 'sound/effects/blobattack.ogg', 30, 1)
 			var/hand = pick(list(BP_R_HAND,BP_L_HAND))
 			var/failed
 			switch(hand)
