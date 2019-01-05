@@ -9,6 +9,76 @@
 			brainchan.mind.changeling.damaged = FALSE
 ////////////////No Brain Gen//////////////////////////////////////////////
 
+
+
+
+/datum/reagent/toxin/cyanide/change_toxin //Fast and Lethal
+	name = "Changeling reagent"
+	description = "A highly toxic chemical."
+	taste_mult = 0.6
+	reagent_state = LIQUID
+	color = "#cf3600"
+	strength = 30
+	metabolism = REM * 0.5
+	target_organ = BP_HEART
+
+/datum/reagent/toxin/cyanide/change_toxin/biotoxin //Fast and Lethal
+	name = "Biotoxin"
+	description = "Destroys any biological tissue in seconds."
+	taste_mult = 0.6
+	reagent_state = LIQUID
+	color = "#cf3600"
+	strength = 80
+	metabolism = REM * 0.5
+	target_organ = BP_BRAIN
+
+/datum/reagent/toxin/cyanide/change_toxin/biotoxin/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	..()
+	var/datum/changeling/changeling = M.mind.changeling
+	if(changeling)
+		M.mind.changeling.true_dead = 1
+		M.mind.changeling.geneticpoints = 0
+		M.mind.changeling.chem_storage = 0
+		M.mind.changeling.chem_recharge_rate = 0
+
+/datum/reagent/rezadone/change_reviver
+	name = "Strange liquid"
+	description = "Smells like acetone."
+	taste_description = "sourness"
+	reagent_state = LIQUID
+	color = "#cb68fc"
+	overdose = 4
+	scannable = 1
+	metabolism = 0.05
+	ingest_met = 0.02
+	flags = IGNORE_MOB_SIZE
+
+
+/datum/reagent/rezadone/change_reviver/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	..()
+	if(prob(1))
+		var/datum/antagonist/changeling/a = new
+		a.add_antagonist(M.mind, ignore_role = 1, do_not_equip = 1)
+
+
+/datum/reagent/rezadone/change_reviver/overdose(var/mob/living/carbon/M, var/alien)
+	..()
+	M.revive()
+
+/datum/chemical_reaction/change_reviver
+	name = "Strange liquid"
+	result = /datum/reagent/rezadone/change_reviver
+	required_reagents = list(/datum/reagent/toxin/cyanide/change_toxin = 5, /datum/reagent/dylovene = 5, /datum/reagent/cryoxadone = 5)
+	result_amount = 5
+
+
+/datum/chemical_reaction/Biotoxin
+	name = "Biotoxin"
+	result = /datum/reagent/toxin/cyanide/change_toxin/biotoxin
+	required_reagents = list(/datum/reagent/toxin/cyanide/change_toxin = 5, /datum/reagent/toxin/phoron = 5, /datum/reagent/mutagen = 5)
+	result_amount = 3
+
+
 /obj/item/organ/internal/biostructure
 	name = "strange biostructure"
 	desc = "Strange abhorrent biostructure of unknown origins. Is that an alien organ, a xenoparasite or some sort of space cancer? Is that normal to bear things like that inside you?"
@@ -34,12 +104,10 @@
 /obj/item/organ/internal/biostructure/New(var/mob/living/holder)
 	..()
 	max_damage = 600
-//	if(species)
-//		max_damage = species.total_health
 	min_bruised_damage = max_damage*0.25
 	min_broken_damage = max_damage*0.75
 
-	
+
 	damage_threshold_value = round(max_damage / damage_threshold_count)
 
 	brainchan = new(src)
@@ -48,6 +116,9 @@
 	spawn(5)
 		if(brainchan && brainchan.client)
 			brainchan.client.screen.len = null //clear the hud
+	var/datum/reagent/toxin/cyanide/change_toxin/R = new
+	reagents.reagent_list += R
+	R.volume = 5
 
 /obj/item/organ/internal/biostructure/Destroy()
 	QDEL_NULL(brainchan)
@@ -58,7 +129,7 @@
 	if(M && M.mind && brainchan)
 		M.mind.transfer_to(brainchan)
 		to_chat(brainchan, "<span class='notice'>You feel slightly disoriented.</span>")
-	
+
 /obj/item/organ/internal/biostructure/removed(var/mob/living/user)
 	if(vital)
 		if (owner)
@@ -110,38 +181,38 @@
 		if(brainchan.mind)
 			brainchan.mind.changeling.true_dead = 1
 		brainchan.death()
-	else 
+	else
 		var/mob/host = src.loc
 		if (istype(host))
 			host.mind.changeling.true_dead = 1
 			host.death()
 	src.dead_icon = "Strange_biostructure_dead"
 	QDEL_NULL(brainchan)
-	
+
 	..()
-	
+
 /obj/item/organ/internal/biostructure/proc/change_host(atom/destination)
 	var/atom/source = src.loc
 	//deleteing biostructure from external organ so when that organ is deleted biostructure wont be deleted
 	if (istype(source,/mob/living/carbon/human))
-		var/mob/living/carbon/human/H = source		
+		var/mob/living/carbon/human/H = source
 		var/obj/item/organ/external/E = H.get_organ(parent_organ)
-		if(E) 
+		if(E)
 			E.internal_organs -= src
 		H.internal_organs_by_name[BP_CHANG] = null
 		H.internal_organs_by_name -= BP_CHANG
 		H.internal_organs_by_name -= null
 		H.internal_organs -= src
-	else if (istype(source,/obj/item/organ/external))	
+	else if (istype(source,/obj/item/organ/external))
 		var/obj/item/organ/external/E = source
-		if(E) 
+		if(E)
 			E.internal_organs -= src
 
 	forceMove(destination)
 
 	//connecting organ
-	if(istype(destination,/mob/living/carbon/human))	
-		var/mob/living/carbon/human/H = destination	
+	if(istype(destination,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = destination
 		owner = H
 		H.internal_organs_by_name[BP_CHANG] = src
 		var/obj/item/organ/external/E = H.get_organ(parent_organ)
@@ -163,7 +234,7 @@
 	log_debug("The changeling biostructure appeares in [src.name].")
 
 /mob/living/carbon/insert_biostructure()
-	
+
 	var/obj/item/organ/internal/brain/brain = src.internal_organs_by_name[BP_BRAIN]
 	var/obj/item/organ/internal/biostructure/BIO = src.internal_organs_by_name[BP_CHANG]
 
@@ -187,7 +258,7 @@
 			if (E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.is_stump())
 				available_limbs -= E
 		var/obj/item/organ/external/new_parent = input(src, "Where do you want to move [BIO]?") as null|anything in available_limbs
-		
+
 		if (new_parent)
 			to_chat(src, "<span class='notice'>We started to move our [BIO] to \the [new_parent].</span>")
 			BIO.moving = 1
@@ -205,7 +276,7 @@
 						if(!E)
 							to_chat(src, "<span class='notice'>You are missing that limb.</span>")
 							return
-						if(istype(E)) 
+						if(istype(E))
 							E.internal_organs -= BIO
 						BIO.parent_organ = new_parent.organ_tag
 						E = H.get_organ(BIO.parent_organ)
@@ -234,7 +305,7 @@
 	else if (istype(BIO.loc,/obj/item/organ/external/head))
 		var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(BIO.loc))
 		changeling_transfer_mind(head_ling)
-	else 
+	else
 		return
 
 	BIO.loc.visible_message("<span class='warning'>[BIO.loc] suddenly grows little legs!</span>",
@@ -259,8 +330,8 @@
 	health = 100
 	pass_flags = PASS_FLAG_TABLE
 	harm_intent_damage = 15
-	melee_damage_lower = 20
-	melee_damage_upper = 10
+	melee_damage_lower = 10
+	melee_damage_upper = 20
 	attacktext = "bitten"
 	attack_sound = 'sound/weapons/bite.ogg'
 
@@ -309,7 +380,7 @@
 		return
 
 	if(!target)	return 0
-	
+
 	if(target.isSynthetic())
 		return
 
@@ -355,7 +426,7 @@
 
 	src.visible_message("<span class='danger'>[src] has latched onto \the [T].</span>", \
 						"<span class='danger'>We have latched onto \the [T].</span>")
-	
+
 	src.mind.changeling.isabsorbing = 1
 	for(var/stage = 1, stage<=3, stage++)
 		switch(stage)
@@ -428,6 +499,8 @@
 		return
 	. =..()
 	var/mob/living/L = .
+	if(src.health <= (src.maxHealth - 5))
+		src.health += 5
 	if(istype(L))
 		if(prob(15))
 			L.Weaken(3)
@@ -435,26 +508,26 @@
 
 
 /mob/living/simple_animal/hostile/little_changeling/arm_chan
-	maxHealth = 50
-	health = 50
+	maxHealth = 100
+	health = 100
 	name = "disfigured arm"
 	icon_state = "gib_arm"
 	icon_living = "gib_arm"
 /mob/living/simple_animal/hostile/little_changeling/head_chan
-	maxHealth = 50
-	health = 50
+	maxHealth = 150
+	health = 150
 	name = "disfigured head"
 	icon_state = "gib_head"
 	icon_living = "gib_head"
 /mob/living/simple_animal/hostile/little_changeling/chest_chan
-	maxHealth = 200
-	health = 200
+	maxHealth = 300
+	health = 300
 	name = "disfigured chest"
 	icon_state = "gib_torso"
 	icon_living = "gib_torso"
 /mob/living/simple_animal/hostile/little_changeling/leg_chan
-	maxHealth = 50
-	health = 50
+	maxHealth = 100
+	health = 100
 	name = "disfigured leg"
 	icon_state = "gib_leg"
 	icon_living = "gib_leg"
@@ -469,8 +542,8 @@
 /mob/living/simple_animal/hostile/little_changeling/headcrab
 	maxHealth = 15
 	health = 15
-	harm_intent_damage = 0
-	speed = 4
+	harm_intent_damage = 15
+	speed = 0
 	name = "headcrab"
 	icon_state = "headcrab"
 	icon_living = "headcrab"
