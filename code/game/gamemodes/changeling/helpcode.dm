@@ -9,6 +9,76 @@
 			brainchan.mind.changeling.damaged = FALSE
 ////////////////No Brain Gen//////////////////////////////////////////////
 
+
+
+
+/datum/reagent/toxin/cyanide/change_toxin //Fast and Lethal
+	name = "Changeling reagent"
+	description = "A highly toxic chemical."
+	taste_mult = 0.6
+	reagent_state = LIQUID
+	color = "#cf3600"
+	strength = 30
+	metabolism = REM * 0.5
+	target_organ = BP_HEART
+
+/datum/reagent/toxin/cyanide/change_toxin/biotoxin //Fast and Lethal
+	name = "Biotoxin"
+	description = "Destroys any biological tissue in seconds."
+	taste_mult = 0.6
+	reagent_state = LIQUID
+	color = "#cf3600"
+	strength = 80
+	metabolism = REM * 0.5
+	target_organ = BP_BRAIN
+
+/datum/reagent/toxin/cyanide/change_toxin/biotoxin/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	..()
+	var/datum/changeling/changeling = M.mind.changeling
+	if(changeling)
+		M.mind.changeling.true_dead = 1
+		M.mind.changeling.geneticpoints = 0
+		M.mind.changeling.chem_storage = 0
+		M.mind.changeling.chem_recharge_rate = 0
+
+/datum/reagent/rezadone/change_reviver
+	name = "Strange liquid"
+	description = "Smells like acetone."
+	taste_description = "sourness"
+	reagent_state = LIQUID
+	color = "#cb68fc"
+	overdose = 4
+	scannable = 1
+	metabolism = 0.05
+	ingest_met = 0.02
+	flags = IGNORE_MOB_SIZE
+
+
+/datum/reagent/rezadone/change_reviver/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	..()
+	if(prob(1))
+		var/datum/antagonist/changeling/a = new
+		a.add_antagonist(M.mind, ignore_role = 1, do_not_equip = 1)
+
+
+/datum/reagent/rezadone/change_reviver/overdose(var/mob/living/carbon/M, var/alien)
+	..()
+	M.revive()
+
+/datum/chemical_reaction/change_reviver
+	name = "Strange liquid"
+	result = /datum/reagent/rezadone/change_reviver
+	required_reagents = list(/datum/reagent/toxin/cyanide/change_toxin = 5, /datum/reagent/dylovene = 5, /datum/reagent/cryoxadone = 5)
+	result_amount = 5
+
+
+/datum/chemical_reaction/Biotoxin
+	name = "Biotoxin"
+	result = /datum/reagent/toxin/cyanide/change_toxin/biotoxin
+	required_reagents = list(/datum/reagent/toxin/cyanide/change_toxin = 5, /datum/reagent/toxin/phoron = 5, /datum/reagent/mutagen = 5)
+	result_amount = 3
+
+
 /obj/item/organ/internal/biostructure
 	name = "strange biostructure"
 	desc = "Strange abhorrent biostructure of unknown origins. Is that an alien organ, a xenoparasite or some sort of space cancer? Is that normal to bear things like that inside you?"
@@ -34,8 +104,6 @@
 /obj/item/organ/internal/biostructure/New(var/mob/living/holder)
 	..()
 	max_damage = 600
-//	if(species)
-//		max_damage = species.total_health
 	min_bruised_damage = max_damage*0.25
 	min_broken_damage = max_damage*0.75
 
@@ -48,6 +116,9 @@
 	spawn(5)
 		if(brainchan && brainchan.client)
 			brainchan.client.screen.len = null //clear the hud
+	var/datum/reagent/toxin/cyanide/change_toxin/R = new
+	reagents.reagent_list += R
+	R.volume = 5
 
 /obj/item/organ/internal/biostructure/Destroy()
 	QDEL_NULL(brainchan)
