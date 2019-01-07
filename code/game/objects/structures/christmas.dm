@@ -154,3 +154,4 @@
 	icon_state = "pine_c"
 	density = 1
 	opacity = 0
+	anchored = 1
