@@ -57,6 +57,9 @@
 	var/environment_smash = 0
 	var/resistance		  = 0	// Damage reduction
 
+	var/damtype = BRUTE
+	var/defense = "melee"
+
 	//Null rod stuff
 	var/supernatural = 0
 	var/purge = 0
