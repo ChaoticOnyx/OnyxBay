@@ -873,7 +873,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 /obj/machinery/computer/rdconsole/robotics
 	name = "robotics fabrication console"
 	id = 2
-	req_access = list(access_robotics, access_research)
+	req_access = list(access_robotics)
 
 /obj/machinery/computer/rdconsole/core
 	name = "core fabricator console"
