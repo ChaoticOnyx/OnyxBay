@@ -76,15 +76,10 @@
 /obj/machinery/bodyscanner/attackby(obj/item/grab/normal/G, user as mob)
 	if(!istype(G))
 		return ..()
-	if (!ismob(G.affecting))
-		return
-	if (src.occupant)
-		to_chat(user, "<span class='warning'>The scanner is already occupied!</span>")
-		return
-	if (G.affecting.abiotic())
-		to_chat(user, "<span class='warning'>Subject cannot have abiotic items on.</span>")
-		return
+
 	var/mob/M = G.affecting
+	if(!baycoder_dayn(M, user))
+		return
 	M.forceMove(src)
 	src.occupant = M
 	update_use_power(2)
@@ -94,24 +89,32 @@
 	src.add_fingerprint(user)
 	qdel(G)
 
-//Like grap-put, but for mouse-drop.
-/obj/machinery/bodyscanner/MouseDrop_T(var/mob/target, var/mob/user)
-	if(!istype(target))
-		return
-	if (!CanMouseDrop(target, user))
-		return
-	if (src.occupant)
+/obj/machinery/bodyscanner/proc/baycoder_dayn(var/mob/target, var/mob/user)
+	if(!istype(user) || !istype(target))
+		return FALSE
+	if(!CanMouseDrop(target, user))
+		return FALSE
+	if(occupant)
 		to_chat(user, "<span class='warning'>The scanner is already occupied!</span>")
-		return
-	if (target.abiotic())
+		return FALSE
+	if(target.abiotic())
 		to_chat(user, "<span class='warning'>The subject cannot have abiotic items on.</span>")
-		return
-	if (target.buckled)
+		return FALSE
+	if(target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
+		return FALSE
+	return TRUE
+
+/obj/machinery/bodyscanner/MouseDrop_T(var/mob/target, var/mob/user)
+	if(!baycoder_dayn(target, user))
 		return
 	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")
 	if(!do_after(user, 30, src))
 		return
+
+	if(!baycoder_dayn(target, user))
+		return
+
 	var/mob/M = target
 	M.forceMove(src)
 	src.occupant = M
@@ -354,7 +357,7 @@
 	if (H.chem_effects[CE_ALCOHOL_TOXIC])
 		dat += "<span class='warning'>Warning: Subject suffering from alcohol intoxication.</span>"
 
-		
+
 
 	var/list/table = list()
 	table += "<table border='1'><tr><th>Organ</th><th>Damage</th><th>Status</th></tr>"
