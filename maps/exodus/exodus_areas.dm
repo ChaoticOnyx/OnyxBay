@@ -1205,6 +1205,10 @@
 	icon_state = "medbay3"
 	ambience = list('sound/ambience/signal.ogg')
 
+/area/medical/resleever
+	name = "\improper Neural Lace Resleever"
+	icon_state = "cloning"
+
 //Security
 
 /area/security/main
