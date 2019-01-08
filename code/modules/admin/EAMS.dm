@@ -1,6 +1,6 @@
 // Epic Anti-Multiaccount System
 
-/datum/configuration/var/EAMSallowedCountries = list("RU", "AM", "AZ", "BY", "KZ", "KG", "MB", "TI", "UZ", "UA", "TM")
+/datum/configuration/var/EAMSallowedCountries = list("RU", "AM", "AZ", "BY", "KZ", "KG", "MB", "TI", "UZ", "UA", "TM", "MD", "TJ", "TM")
 /datum/configuration/var/EAMSacceptableCountOfErrors = 5
 
 var/global/EAMS_errorsCounter = 0
@@ -185,6 +185,8 @@ var/global/EAMS_errorsCounter = 0
 //
 
 /client/proc/EAMS_CheckForAccess()
+	if (!CRUEL) return TRUE
+	 
 	if (!config.eams)	// EAMS isn't active
 		return TRUE
 
