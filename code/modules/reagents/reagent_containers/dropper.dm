@@ -28,8 +28,8 @@
 			var/trans = 0
 
 			if(ismob(target))
-				if(user.a_intent == I_HELP)
-					return
+				//if(user.a_intent == I_HELP) - Who the hell made this lol? ~Toby
+				//	return
 
 				var/time = 20 //2/3rds the time of a syringe
 				user.visible_message("<span class='warning'>[user] is trying to squirt something into [target]'s eyes!</span>")
