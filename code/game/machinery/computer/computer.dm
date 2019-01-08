@@ -115,4 +115,6 @@
 		..()
 
 /obj/machinery/computer/attack_ghost(var/mob/ghost)
+	if(!is_admin(ghost))
+		return
 	attack_hand(ghost)
