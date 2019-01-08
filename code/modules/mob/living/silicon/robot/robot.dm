@@ -697,8 +697,8 @@
 
 
 /mob/living/silicon/robot/proc/handle_selfinsert(obj/item/W, mob/user)
-	var/obj/item/weapon/H = get_active_hand()	
-	if ((user == src) && istype(H,/obj/item/weapon/gripper))
+	if ((user == src) && istype(get_active_hand(),/obj/item/weapon/gripper))
+		var/obj/item/weapon/gripper/H = get_active_hand()
 		if (W.loc == H) //if this triggers something has gone very wrong, and it's safest to abort
 			return
 		else if (H.wrapped == W)
