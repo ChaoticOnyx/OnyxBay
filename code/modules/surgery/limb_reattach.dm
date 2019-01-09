@@ -15,6 +15,13 @@
 /datum/surgery_step/limb/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if (!hasorgans(target))
 		return 0
+
+	var/obj/item/organ/external/E = tool
+	var/obj/item/organ/external/P = target.organs_by_name[E.parent_organ]
+	if(!P || P.is_stump())
+		to_chat(user, "<span class='danger'>The [E.amputation_point] is missing!</span>")
+		return SURGERY_FAILURE
+
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	if (affected)
 		return 0
