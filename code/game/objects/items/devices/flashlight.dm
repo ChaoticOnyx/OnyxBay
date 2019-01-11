@@ -178,6 +178,14 @@
 	brightness_on = 4
 	light_color = "#ffc58f"
 
+/obj/item/device/flashlight/lamp/brown
+	desc = "A classic brown-shaded desk lamp."
+	icon_state = "lampbrown"
+	item_state = "lampbrown"
+	brightness_on = 4
+	light_color = "#ffc58f"
+
+
 /obj/item/device/flashlight/lamp/verb/toggle_light()
 	set name = "Toggle light"
 	set category = "Object"

@@ -705,6 +705,33 @@ var/list/name_to_material
 	display_name = "elevator panelling"
 	icon_colour = "#666666"
 
+/material/darkwood
+	name = "darkwood"
+	adjective_name = "darkwooden"
+	stack_type = /obj/item/stack/material/wood
+	icon_colour = "#892929"
+	integrity = 50
+	icon_base = "solid"
+	icon_reinf = "reinfwood"
+	table_icon_base = "solid"
+	table_reinf = "reinfwood"
+	explosion_resistance = 2
+	shard_type = SHARD_SPLINTER
+	shard_can_repair = 0 // you can't weld splinters back into planks
+	hardness = 15
+	brute_armor = 1
+	weight = 18
+	melting_point = T0C+300 //okay, not melting in this case, but hot enough to destroy wood
+	ignition_point = T0C+288
+	stack_origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
+	dooropen_noise = 'sound/effects/doorcreaky.ogg'
+	door_icon_base = "wood"
+	destruction_desc = "splinters"
+	sheet_singular_name = "plank"
+	sheet_plural_name = "planks"
+	hitsound = 'sound/effects/woodhit.ogg'
+	conductive = 0
+
 /material/wood
 	name = "wood"
 	adjective_name = "wooden"

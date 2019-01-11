@@ -34,6 +34,18 @@ var/global/list/stool_cache = list() //haha stool
 /obj/item/weapon/stool/padded/New(var/newloc, var/new_material)
 	..(newloc, "steel", "carpet")
 
+/obj/item/weapon/stool/bar_new
+	name = "wooden bar stool"
+	icon_state = "barstool_new_preview" //set for the map
+	item_state = "barstool_new"
+	base_icon = "barstool_new"
+
+/obj/item/weapon/stool/bar_new/padded
+	icon_state = "barstool_new_padded_preview"
+
+/obj/item/weapon/stool/bar_new/padded/New(var/newloc, var/new_material)
+	..(newloc, "wood", "carpet")
+
 /obj/item/weapon/stool/bar
 	name = "bar stool"
 	icon_state = "bar_stool_preview" //set for the map
@@ -47,8 +59,6 @@ var/global/list/stool_cache = list() //haha stool
 	..(newloc, "steel", "carpet")
 
 /obj/item/weapon/stool/update_icon()
-	// Prep icon.
-	icon_state = ""
 	// Base icon.
 	var/list/noverlays = list()
 	var/cache_key = "[base_icon]-[material.name]"
