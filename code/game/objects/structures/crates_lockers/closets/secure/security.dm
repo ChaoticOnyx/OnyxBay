@@ -222,7 +222,6 @@
 		/obj/item/clothing/gloves/thick,
 		/obj/item/clothing/head/det,
 		/obj/item/clothing/head/det/grey,
-		/obj/item/clothing/glasses/thermal,
 		/obj/item/clothing/shoes/laceup,
 		/obj/item/weapon/storage/box/evidence,
 		/obj/item/device/radio/headset/headset_sec,
