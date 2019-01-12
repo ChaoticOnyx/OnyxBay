@@ -3334,3 +3334,19 @@
 	New()
 		..()
 		bitesize = 3
+
+/obj/item/weapon/reagent_containers/food/snacks/cannabar
+	name = "candy"
+	desc = "Wait, it's not a regular candy! Contains THC."
+	icon_state = "candy"
+	trash = /obj/item/trash/candy
+	filling_color = "#7d5f46"
+	center_of_mass = "x=15;y=15"
+	nutriment_amt = 1
+	nutriment_desc = list("candy" = 1)
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/sugar, 3)
+		reagents.add_reagent(/datum/reagent/thc, 10)
+		bitesize = 5
