@@ -182,6 +182,11 @@
 	icon_state = "wood"
 	initial_flooring = /decl/flooring/wood
 
+/turf/simulated/floor/trim/wood/darkwood
+	name = "wooden floor"
+	icon_state = "wood_new_dark"
+	initial_flooring = /decl/flooring/wood/darkwood
+
 /turf/simulated/floor/trim/wood/broken0
 	name = "wooden floor"
 	icon_state = "wood_broken0"
@@ -233,6 +238,12 @@
 	name = "pale blue carpet"
 	icon_state = "blue2"
 	initial_flooring = /decl/flooring/carpet/blue2
+
+/turf/simulated/floor/trim/carpet/oldred
+	name = "red carpet"
+	icon = 'icons/turf/flooring/carpet.dmi'
+	icon_state = "oldred"
+	initial_flooring = /decl/flooring/carpet/oldred
 
 /turf/simulated/floor/trim/carpet/purple
 	name = "purple carpet"

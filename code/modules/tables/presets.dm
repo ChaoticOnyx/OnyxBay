@@ -25,6 +25,12 @@
 	material = DEFAULT_WALL_MATERIAL
 	reinforced = DEFAULT_WALL_MATERIAL
 
+/obj/structure/table/darkwood_reinforced
+	icon_state = "reinf_wood_preview"
+	color = COLOR_DARK_BROWN_NEW
+	material = "darkwood"
+	reinforced = "darkwood"
+
 /obj/structure/table/woodentable
 	icon_state = "solid_preview"
 	color = COLOR_BROWN_ORANGE
