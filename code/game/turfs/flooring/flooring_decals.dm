@@ -71,6 +71,10 @@ var/list/floor_decals = list()
 	name = "green carpet"
 	icon_state = "green_edges"
 
+/obj/effect/floor_decal/carpet/oldred
+	name = "red carpet"
+	icon_state = "oldred_edges"
+
 /obj/effect/floor_decal/carpet/red
 	name = "red carpet"
 	icon_state = "red_edges"

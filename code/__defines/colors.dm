@@ -24,6 +24,7 @@
 #define COLOR_GRAY             "#808080"
 #define COLOR_RED_GRAY         "#aa5f61"
 #define COLOR_BROWN            "#b19664"
+#define COLOR_DARK_BROWN_NEW   "#512B0F"
 #define COLOR_GREEN_GRAY       "#8daf6a"
 #define COLOR_BLUE_GRAY        "#6a97b0"
 #define COLOR_SUN              "#ec8b2f"

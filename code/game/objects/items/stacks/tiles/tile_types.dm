@@ -134,6 +134,15 @@
 	singular_name = "blue carpet"
 	icon_state = "tile_carpetblue"
 
+/obj/item/stack/tile/carpetoldred
+	name = "red carpet"
+	desc = "A piece of red and gold carpet."
+	singular_name = "red carpet"
+	icon_state = "tile_brown"
+
+/obj/item/stack/tile/carpetoldred/fifty
+	amount = 50
+
 /obj/item/stack/tile/carpetblue/fifty
 	amount = 50
 
