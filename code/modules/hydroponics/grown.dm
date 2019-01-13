@@ -346,16 +346,3 @@ var/list/fruit_icon_cache = list()
 		I.color = flesh_colour
 		fruit_icon_cache["slice-[rind_colour]"] = I
 	overlays |= fruit_icon_cache["slice-[rind_colour]"]
-
-/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis
-	plantname = "cannabis"
-
-/*obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/attackby(var/obj/item/weapon/W, var/mob/user)
-	..()
-	if(seed)
-		if(istype(W, /obj/item/weapon/paper))
-			user.show_message("<span class='notice'>You grind some [src] and roll a spliff!</span>", 1)
-			new /obj/item/clothing/mask/smokable/cigarette/spliff (user.loc)
-			qdel(src)
-			qdel(W)
-			return*/

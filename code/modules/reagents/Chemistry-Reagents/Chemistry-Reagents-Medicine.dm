@@ -904,3 +904,20 @@
 	M.hallucination(15, 15)
 	M.drowsyness = max(M.drowsyness, 30)
 	M.add_chemical_effect(CE_PAINKILLER, 120)
+
+
+
+/datum/reagent/albumin
+	name = "Albumin"
+	description = "Serum albumin is the most abundant blood plasma protein and is produced in the liver and forms a large proportion of all plasma protein. Used to improve blood regeneration rate."
+	taste_description = "iron"
+	reagent_state = LIQUID
+	color = "#803835"
+	scannable = 1
+	overdose = 15
+	metabolism = 0.1
+
+/datum/reagent/nanoblood/affect_blood(var/mob/living/carbon/human/M, var/alien, var/removed)
+	if(!M.should_have_organ(BP_HEART)) //We want the var for safety but we can do without the actual blood.
+		return
+	M.regenerate_blood(2 * removed)

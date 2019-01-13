@@ -3350,3 +3350,20 @@
 		reagents.add_reagent(/datum/reagent/sugar, 3)
 		reagents.add_reagent(/datum/reagent/thc, 10)
 		bitesize = 5
+
+/obj/item/weapon/reagent_containers/food/snacks/hematogen
+	name = "Hema-2-Gen"
+	desc = "It's made of blood. It makes you produce blood. Ain't that kind of suspicious?.."
+	icon_state = "hema2gen"
+	trash = /obj/item/trash/hematogen
+	filling_color = "#7d5f46"
+	center_of_mass = "x=15;y=15"
+	nutriment_amt = 2
+	nutriment_desc = list("candy" = 1)
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 3)
+		reagents.add_reagent(/datum/reagent/sugar, 2)
+		reagents.add_reagent(/datum/reagent/albumin, 10)
+		bitesize = 5
