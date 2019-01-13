@@ -917,7 +917,7 @@
 	overdose = 15
 	metabolism = 0.1
 
-/datum/reagent/nanoblood/affect_blood(var/mob/living/carbon/human/M, var/alien, var/removed)
+/datum/reagent/albumin/affect_blood(var/mob/living/carbon/human/M, var/alien, var/removed)
 	if(!M.should_have_organ(BP_HEART)) //We want the var for safety but we can do without the actual blood.
 		return
 	M.regenerate_blood(2 * removed)
