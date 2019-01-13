@@ -76,9 +76,5 @@
 	name = "bread tube"
 	icon_state = "tastybread"
 
-/obj/item/trash/hematogen
-	name = "Hema2Gen"
-	icon_state = "hema2gen"
-
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return
