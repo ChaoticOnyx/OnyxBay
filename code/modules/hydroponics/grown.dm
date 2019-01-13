@@ -181,6 +181,13 @@
 				pocell.charge = pocell.maxcharge
 				qdel(src)
 				return
+		else if(istype(W, /obj/item/weapon/paper))
+			if(seed.kitchen_tag == "cannabis")
+				user.show_message("<span class='notice'>You grind some [src] and roll a spliff!</span>", 1)
+				new /obj/item/clothing/mask/smokable/cigarette/spliff (user.loc)
+				qdel(src)
+				qdel(W)
+				return
 		else if(W.sharp)
 			if(seed.kitchen_tag == "pumpkin") // Ugggh these checks are awful.
 				user.show_message("<span class='notice'>You carve a face into [src]!</span>", 1)
