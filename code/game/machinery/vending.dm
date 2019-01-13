@@ -703,6 +703,23 @@
 					/obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers = 1, /obj/item/weapon/reagent_containers/food/snacks/tastybread = 2)
 
 
+/obj/machinery/vending/snack/medbay
+	name = "Getmore Healthy Snacks"
+	desc = "A snack machine manufactured by Getmore Chocolate Corporation, specifically for hospitals."
+	product_slogans = "Try our new Hema-2-Gen bar!;Twice the health for half the price!"
+	product_ads = "The healthiest!;Award-winning chocolate bars!;Mmm! So good!;Oh my god it's so juicy!;Have a snack.;Snacks are good for you!;Have some more Getmore!;Best quality snacks straight from mars.;We love chocolate!;Try our new jerky!"
+	icon_state = "snackmed"
+	icon_vend = "snackmed-vend"
+	vend_delay = 25
+	products = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 10,/obj/item/weapon/reagent_containers/food/snacks/grown/apple = 10,/obj/item/weapon/reagent_containers/food/snacks/hematogen = 10,
+					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 10,/obj/item/weapon/reagent_containers/food/snacks/no_raisin = 10,/obj/item/weapon/reagent_containers/food/snacks/grown/orange = 10,
+					/obj/item/weapon/reagent_containers/food/snacks/tastybread = 10)
+	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/cannabar = 3, /obj/item/weapon/reagent_containers/food/snacks/skrellsnacks = 3)
+	prices = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 1,/obj/item/weapon/reagent_containers/food/snacks/grown/apple = 1,/obj/item/weapon/reagent_containers/food/snacks/hematogen = 4,
+					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 4,/obj/item/weapon/reagent_containers/food/snacks/no_raisin = 1,/obj/item/weapon/reagent_containers/food/snacks/grown/orange = 1,
+					/obj/item/weapon/reagent_containers/food/snacks/tastybread = 2)
+
+
 
 /obj/machinery/vending/cola
 	name = "Robust Softdrinks"
