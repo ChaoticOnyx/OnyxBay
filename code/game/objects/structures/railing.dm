@@ -1,13 +1,5 @@
 /obj/structure/railing
 	name = "railing"
-	desc = "A standard steel railing. Prevents from human stupidity."
-	icon = 'icons/obj/railing.dmi'
-	density = 1
-	throwpass = 1
-	layer = 5.2
-// 	climb_speed_mult = 0.25 // experiment
-/obj/structure/railing
-	name = "railing"
 	desc = "A standart steel railing. Prevents from human stupidity."
 	icon = 'icons/obj/railing.dmi'
 	icon_state = "railing0"
@@ -50,7 +42,7 @@
 	. = ..()
 	if(health < maxhealth)
 		switch(health / maxhealth)
-			if(0.0 to 0.5)
+			if(0.0 to 0.25)
 				to_chat(user, "<span class='warning'>It looks severely damaged!</span>") // Just like me ;)
 			if(0.25 to 0.5)
 				to_chat(user, "<span class='warning'>It looks damaged!</span>")
