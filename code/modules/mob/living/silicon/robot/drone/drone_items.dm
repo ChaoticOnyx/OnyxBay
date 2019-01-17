@@ -164,7 +164,8 @@
 		/obj/item/weapon/reagent_containers/food,
 		/obj/item/seeds,
 		/obj/item/weapon/grown,
-		/obj/item/weapon/glass_extra
+		!/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom,
+		/obj/item/weapon/glass_extra,
 		)
 
 /obj/item/weapon/gripper/surgical //Used to handle organs.
