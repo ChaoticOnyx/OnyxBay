@@ -12,6 +12,7 @@
 	var/inuse = 0
 	var/mode = 1
 	var/list/storage_type = list()
+	var/list/cant_hold = new/list()
 
 	//Has a list of items that it can hold.
 	var/list/can_hold = list(
@@ -164,8 +165,10 @@
 		/obj/item/weapon/reagent_containers/food,
 		/obj/item/seeds,
 		/obj/item/weapon/grown,
-		!/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom,
 		/obj/item/weapon/glass_extra,
+		)
+	cant_hold = list(
+		/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom,
 		)
 
 /obj/item/weapon/gripper/surgical //Used to handle organs.
@@ -323,8 +326,10 @@
 		var/grab = 0
 		for(var/typepath in can_hold)
 			if(istype(I,typepath))
-				grab = 1
-				break
+				if(!cant_hold.len && is_type_in_list(cant_hold))
+			    	
+					grab = 1
+					break
 
 		//We can grab the item, finally.
 		if(grab)
