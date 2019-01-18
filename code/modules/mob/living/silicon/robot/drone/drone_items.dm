@@ -315,6 +315,12 @@
 						inuse = 0
 						to_chat(user, "<span class='danger'>The process was interrupted!</span>")
 			return
+			
+	for(var/atypepath in cant_hold)
+		if(istype(target,atypepath))
+			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")		
+			return		
+			
 	if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
 
 		//...and that the item is not in a container.
@@ -326,11 +332,9 @@
 		//Check if the item is blacklisted.
 		var/grab = 0
 		for(var/typepath in can_hold)
-			if(istype(I,typepath))
-				for(var/atypepath in cant_hold)
-					if(!istype(I,atypepath))			
-						grab = 1
-						break
+			if(istype(I,typepath))			
+				grab = 1
+				break
 
 		//We can grab the item, finally.
 		if(grab)
