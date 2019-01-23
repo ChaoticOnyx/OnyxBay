@@ -5,6 +5,8 @@
 	else
 		add_to_living_mob_list()
 		verbs -= /mob/living/proc/ghost
+	update_transform() // Some mobs may start bigger or smaller than normal.
+
 
 //mob verbs are faster than object verbs. See mob/verb/examine.
 /mob/living/verb/pulled(atom/movable/AM as mob|obj in oview(1))
@@ -297,7 +299,15 @@ default behaviour is:
 	return
 
 /mob/living/proc/getMaxHealth()
-	return maxHealth
+	var/result = maxHealth
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.max_health_flat))
+			result += M.max_health_flat
+	// Second loop is so we can get all the flat adjustments first before multiplying, otherwise the result will be different.
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.max_health_percent))
+			result *= M.max_health_percent
+	return result
 
 /mob/living/proc/setMaxHealth(var/newMaxHealth)
 	maxHealth = newMaxHealth

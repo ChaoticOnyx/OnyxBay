@@ -138,8 +138,9 @@ Please contact me on #coderbus IRC. ~Carn x
 #define L_HAND_LAYER			24
 #define R_HAND_LAYER			25
 #define FIRE_LAYER				26		//If you're on fire
-#define TARGETED_LAYER			27		//BS12: Layer for the target overlay from weapon targeting system
-#define TOTAL_LAYERS			27
+#define MODIFIER_EFFECTS_LAYER	27
+#define TARGETED_LAYER			28		//BS12: Layer for the target overlay from weapon targeting system
+#define TOTAL_LAYERS			28
 //////////////////////////////////
 
 /mob/living/carbon/human
@@ -183,7 +184,7 @@ Please contact me on #coderbus IRC. ~Carn x
 
 	if(auras)
 		overlays |= auras
-
+/*
 	var/matrix/M = matrix()
 	if(lying && !species.prone_icon) //Only rotate them if we're not drawing a specific icon for being prone.
 		M.Turn(90)
@@ -193,6 +194,9 @@ Please contact me on #coderbus IRC. ~Carn x
 		M.Scale(size_multiplier)
 		M.Translate(0, 16*(size_multiplier-1))
 	transform = M
+*/
+	update_transform()
+
 
 var/global/list/damage_icon_parts = list()
 

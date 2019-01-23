@@ -16,6 +16,18 @@
 /mob/living/carbon/human/adjustBrainLoss(var/amount)
 	if(status_flags & GODMODE)	return 0	//godmode
 	if(should_have_organ(BP_BRAIN))
+		if(amount > 0)
+			for(var/datum/modifier/M in modifiers)
+				if(!isnull(M.incoming_damage_percent))
+					amount *= M.incoming_damage_percent
+				if(!isnull(M.incoming_hal_damage_percent))
+					amount *= M.incoming_hal_damage_percent
+				if(!isnull(M.disable_duration_percent))
+					amount *= M.incoming_hal_damage_percent
+		else if(amount < 0)
+			for(var/datum/modifier/M in modifiers)
+				if(!isnull(M.incoming_healing_percent))
+					amount *= M.incoming_healing_percent
 		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			sponge.take_damage(amount)
@@ -55,6 +67,18 @@
 	var/heal = (amount < 0)
 	amount = abs(amount)
 	var/list/pick_organs = organs.Copy()
+	if(amount > 0)
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_damage_percent))
+				amount *= M.incoming_damage_percent
+			if(!isnull(M.incoming_hal_damage_percent))
+				amount *= M.incoming_hal_damage_percent
+			if(!isnull(M.disable_duration_percent))
+				amount *= M.incoming_hal_damage_percent
+	else if(amount < 0)
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_healing_percent))
+				amount *= M.incoming_healing_percent
 	while(amount > 0 && pick_organs.len)
 		var/obj/item/organ/external/E = pick(pick_organs)
 		pick_organs -= E
@@ -87,16 +111,32 @@
 /mob/living/carbon/human/adjustBruteLoss(var/amount)
 	amount = amount*species.brute_mod
 	if(amount > 0)
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_damage_percent))
+				amount *= M.incoming_damage_percent
+			if(!isnull(M.incoming_brute_damage_percent))
+				amount *= M.incoming_brute_damage_percent
 		take_overall_damage(amount, 0)
 	else
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_healing_percent))
+				amount *= M.incoming_healing_percent
 		heal_overall_damage(-amount, 0)
 	BITSET(hud_updateflag, HEALTH_HUD)
 
 /mob/living/carbon/human/adjustFireLoss(var/amount)
 	amount = amount*species.burn_mod
 	if(amount > 0)
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_damage_percent))
+				amount *= M.incoming_damage_percent
+			if(!isnull(M.incoming_fire_damage_percent))
+				amount *= M.incoming_fire_damage_percent
 		take_overall_damage(0, amount)
 	else
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_healing_percent))
+				amount *= M.incoming_healing_percent
 		heal_overall_damage(0, -amount)
 	BITSET(hud_updateflag, HEALTH_HUD)
 
@@ -127,7 +167,18 @@
 /mob/living/carbon/human/adjustCloneLoss(var/amount)
 	var/heal = amount < 0
 	amount = abs(amount)
-
+	if(amount > 0)
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_damage_percent))
+				amount *= M.incoming_damage_percent
+			if(!isnull(M.incoming_hal_damage_percent))
+				amount *= M.incoming_hal_damage_percent
+			if(!isnull(M.disable_duration_percent))
+				amount *= M.incoming_hal_damage_percent
+	else if(amount < 0)
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_healing_percent))
+				amount *= M.incoming_healing_percent
 	var/list/pick_organs = organs.Copy()
 	while(amount > 0 && pick_organs.len)
 		var/obj/item/organ/external/E = pick(pick_organs)
@@ -159,6 +210,16 @@
 		return
 	var/heal = amount < 0
 	amount = abs(amount*species.oxy_mod)
+	if(amount > 0)
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_damage_percent))
+				amount *= M.incoming_damage_percent
+			if(!isnull(M.incoming_tox_damage_percent))
+				amount *= M.incoming_tox_damage_percent
+	else if(amount < 0)
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_healing_percent))
+				amount *= M.incoming_healing_percent
 	var/obj/item/organ/internal/lungs/breathe_organ = internal_organs_by_name[species.breathing_organ]
 	if(breathe_organ)
 		if(heal)
@@ -212,7 +273,15 @@
 
 	for(var/obj/item/organ/internal/I in pick_organs)
 		if(amount <= 0)
+			for(var/datum/modifier/M in modifiers)
+				if(!isnull(M.incoming_healing_percent))
+					amount *= M.incoming_healing_percent
 			break
+		for(var/datum/modifier/M in modifiers)
+			if(!isnull(M.incoming_damage_percent))
+				amount *= M.incoming_damage_percent
+			if(!isnull(M.incoming_tox_damage_percent))
+				amount *= M.incoming_tox_damage_percent
 		if(heal)
 			if(I.damage < amount)
 				amount -= I.damage
@@ -392,9 +461,19 @@ This function restores all organs.
 	switch(damagetype)
 		if(BRUTE)
 			damage = damage*species.brute_mod
+			for(var/datum/modifier/M in modifiers)
+				if(!isnull(M.incoming_damage_percent))
+					damage *= M.incoming_damage_percent
+				if(!isnull(M.incoming_brute_damage_percent))
+					damage *= M.incoming_brute_damage_percent
 			created_wound = organ.take_damage(damage, 0, damage_flags, used_weapon)
 		if(BURN)
 			damage = damage*species.burn_mod
+			for(var/datum/modifier/M in modifiers)
+				if(!isnull(M.incoming_damage_percent))
+					damage *= M.incoming_damage_percent
+				if(!isnull(M.incoming_brute_damage_percent))
+					damage *= M.incoming_brute_damage_percent
 			created_wound = organ.take_damage(0, damage, damage_flags, used_weapon)
 		if(PAIN)
 			organ.add_pain(damage)

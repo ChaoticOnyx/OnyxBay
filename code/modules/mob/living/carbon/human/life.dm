@@ -646,7 +646,11 @@
 
 		// nutrition decrease
 		if (nutrition > 0)
-			nutrition = max (0, nutrition - species.hunger_factor)
+			var/nutrition_reduction = species.hunger_factor
+			for(var/datum/modifier/mod in modifiers)
+				if(!isnull(mod.metabolism_percent))
+					nutrition_reduction *= mod.metabolism_percent
+			nutrition = max (0, nutrition - nutrition_reduction)
 
 		if(stasis_value > 1 && drowsyness < stasis_value * 4)
 			drowsyness += min(stasis_value, 3)

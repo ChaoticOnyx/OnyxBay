@@ -14,6 +14,7 @@
 
 	//Handle temperature/pressure differences between body and environment
 	var/datum/gas_mixture/environment = loc.return_air()
+	handle_modifiers() // Do this early since it might affect other things later.
 	if(environment)
 		handle_environment(environment)
 
@@ -35,7 +36,6 @@
 	handle_actions()
 
 	update_canmove()
-
 	handle_regular_hud_updates()
 
 	return 1
