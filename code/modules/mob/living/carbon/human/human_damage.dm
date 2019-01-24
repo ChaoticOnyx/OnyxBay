@@ -472,12 +472,17 @@ This function restores all organs.
 			for(var/datum/modifier/M in modifiers)
 				if(!isnull(M.incoming_damage_percent))
 					damage *= M.incoming_damage_percent
-				if(!isnull(M.incoming_brute_damage_percent))
-					damage *= M.incoming_brute_damage_percent
+				if(!isnull(M.incoming_fire_damage_percent))
+					damage *= M.incoming_fire_damage_percent
 			created_wound = organ.take_damage(0, damage, damage_flags, used_weapon)
 		if(PAIN)
 			organ.add_pain(damage)
 		if(CLONE)
+			for(var/datum/modifier/M in modifiers)
+				if(!isnull(M.incoming_damage_percent))
+					damage *= M.incoming_damage_percent
+				if(!isnull(M.incoming_clone_damage_percent))
+					damage *= M.incoming_clone_damage_percent
 			organ.add_genetic_damage(damage)
 
 	// Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
