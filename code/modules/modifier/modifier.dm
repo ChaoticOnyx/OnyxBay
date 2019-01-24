@@ -10,48 +10,48 @@
 // each other, or other weirdness.  An excellent example is adjusting max health.
 
 /datum/modifier
-	var/name = null						// Mostly used to organize, might show up on the UI in the Future(tm)
-	var/desc = null						// Ditto.
-	var/icon_state = null				// See above.
-	var/mob/living/holder = null		// The mob that this datum is affecting.
-	var/weakref/origin = null			// A weak reference to whatever caused the modifier to appear.  THIS NEEDS TO BE A MOB/LIVING.  It's a weakref to not interfere with qdel().
-	var/expire_at = null				// world.time when holder's Life() will remove the datum.  If null, it lasts forever or until it gets deleted by something else.
-	var/on_created_text = null			// Text to show to holder upon being created.
-	var/on_expired_text = null			// Text to show to holder when it expires.
-	var/hidden = FALSE					// If true, it will not show up on the HUD in the Future(tm)
-	var/stacks = MODIFIER_STACK_FORBID	// If true, attempts to add a second instance of this type will refresh expire_at instead.
-	var/flags = 0						// Flags for the modifier, see mobs.dm defines for more details.
+	var/name = null                     // Mostly used to organize, might show up on the UI in the Future(tm)
+	var/desc = null                     // Ditto.
+	var/icon_state = null               // See above.
+	var/mob/living/holder = null        // The mob that this datum is affecting.
+	var/weakref/origin = null           // A weak reference to whatever caused the modifier to appear.  THIS NEEDS TO BE A MOB/LIVING.  It's a weakref to not interfere with qdel().
+	var/expire_at = null                // world.time when holder's Life() will remove the datum.  If null, it lasts forever or until it gets deleted by something else.
+	var/on_created_text = null          // Text to show to holder upon being created.
+	var/on_expired_text = null          // Text to show to holder when it expires.
+	var/hidden = FALSE                  // If true, it will not show up on the HUD in the Future(tm)
+	var/stacks = MODIFIER_STACK_FORBID  // If true, attempts to add a second instance of this type will refresh expire_at instead.
+	var/flags = 0                       // Flags for the modifier, see mobs.dm defines for more details.
 
-	var/light_color = null				// If set, the mob possessing the modifier will glow in this color.  Not implemented yet.
-	var/light_range = null				// How far the light for the above var goes. Not implemented yet.
-	var/light_intensity = null			// Ditto. Not implemented yet.
-	var/mob_overlay_state = null		// Icon_state for an overlay to apply to a (human) mob while this exists.  This is actually implemented.
-	var/client_color = null				// If set, the client will have the world be shown in this color, from their perspective.
+	var/light_color = null              // If set, the mob possessing the modifier will glow in this color.  Not implemented yet.
+	var/light_range = null              // How far the light for the above var goes. Not implemented yet.
+	var/light_intensity = null          // Ditto. Not implemented yet.
+	var/mob_overlay_state = null        // Icon_state for an overlay to apply to a (human) mob while this exists.  This is actually implemented.
+	var/client_color = null             // If set, the client will have the world be shown in this color, from their perspective.
 
 	// Now for all the different effects.
 	// Percentage modifiers are expressed as a multipler. (e.g. +25% damage should be written as 1.25)
-	var/max_health_flat					// Adjusts max health by a flat (e.g. +20) amount.  Note this is added to base health.
-	var/max_health_percent				// Adjusts max health by a percentage (e.g. -30%).
-	var/disable_duration_percent		// Adjusts duration of 'disables' (stun, weaken, paralyze, confusion, sleep, halloss, etc)  Setting to 0 will grant immunity.
-	var/incoming_damage_percent			// Adjusts all incoming damage.
-	var/incoming_brute_damage_percent	// Only affects bruteloss.
-	var/incoming_fire_damage_percent	// Only affects fireloss.
-	var/incoming_tox_damage_percent		// Only affects toxloss.
-	var/incoming_oxy_damage_percent		// Only affects oxyloss.
-	var/incoming_clone_damage_percent	// Only affects cloneloss.
-	var/incoming_hal_damage_percent		// Only affects halloss.
-	var/incoming_healing_percent		// Adjusts amount of healing received.
-	var/outgoing_melee_damage_percent	// Adjusts melee damage inflicted by holder by a percentage.  Affects attacks by melee weapons and hand-to-hand.
-	var/slowdown						// Negative numbers speed up, positive numbers slow down movement.
-	var/haste							// If set to 1, the mob will be 'hasted', which makes it ignore slowdown and go really fast.
-	var/evasion							// Positive numbers reduce the odds of being hit. Negative numbers increase the odds.
-	var/bleeding_rate_percent			// Adjusts amount of blood lost when bleeding.
-	var/accuracy						// Positive numbers makes hitting things with guns easier, negatives make it harder.
-	var/accuracy_dispersion				// Positive numbers make gun firing cover a wider tile range, and therefore more inaccurate.  Negatives help negate dispersion penalties.
-	var/metabolism_percent				// Adjusts the mob's metabolic rate, which affects reagent processing.  Won't affect mobs without reagent processing.
-	var/icon_scale_percent				// Makes the holder's icon get scaled up or down.
-	var/attack_speed_percent			// Makes the holder's 'attack speed' (click delay) shorter or longer.
-	var/pain_immunity					// Makes the holder not care about pain while this is on. Only really useful to human mobs.
+	var/max_health_flat                 // Adjusts max health by a flat (e.g. +20) amount.  Note this is added to base health.
+	var/max_health_percent              // Adjusts max health by a percentage (e.g. -30%).
+	var/disable_duration_percent        // Adjusts duration of 'disables' (stun, weaken, paralyze, confusion, sleep, halloss, etc)  Setting to 0 will grant immunity.
+	var/incoming_damage_percent         // Adjusts all incoming damage.
+	var/incoming_brute_damage_percent   // Only affects bruteloss.
+	var/incoming_fire_damage_percent    // Only affects fireloss.
+	var/incoming_tox_damage_percent     // Only affects toxloss.
+	var/incoming_oxy_damage_percent     // Only affects oxyloss.
+	var/incoming_clone_damage_percent   // Only affects cloneloss.
+	var/incoming_hal_damage_percent     // Only affects halloss.
+	var/incoming_healing_percent        // Adjusts amount of healing received.
+	var/outgoing_melee_damage_percent   // Adjusts melee damage inflicted by holder by a percentage.  Affects attacks by melee weapons and hand-to-hand.
+	var/slowdown                        // Negative numbers speed up, positive numbers slow down movement.
+	var/haste                           // If set to 1, the mob will be 'hasted', which makes it ignore slowdown and go really fast.
+	var/evasion                         // Positive numbers reduce the odds of being hit. Negative numbers increase the odds.
+	var/bleeding_rate_percent           // Adjusts amount of blood lost when bleeding.
+	var/accuracy                        // Positive numbers makes hitting things with guns easier, negatives make it harder.
+	var/accuracy_dispersion             // Positive numbers make gun firing cover a wider tile range, and therefore more inaccurate.  Negatives help negate dispersion penalties.
+	var/metabolism_percent              // Adjusts the mob's metabolic rate, which affects reagent processing.  Won't affect mobs without reagent processing.
+	var/icon_scale_percent              // Makes the holder's icon get scaled up or down.
+	var/attack_speed_percent            // Makes the holder's 'attack speed' (click delay) shorter or longer.
+	var/pain_immunity                   // Makes the holder not care about pain while this is on. Only really useful to human mobs.
 
 /datum/modifier/New(var/new_holder, var/new_origin)
 	holder = new_holder

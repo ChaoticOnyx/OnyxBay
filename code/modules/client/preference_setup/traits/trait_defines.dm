@@ -137,6 +137,37 @@
 	if(setup.is_FBP())
 		return "Full Body Prosthetics do not have a metabolism."
 	return ..()
+
+// 'Mental' traits are just those that only sapients can have, for now, and generally involves fears.
+// So far, all of them are just for fluff/don't have mechanical effects.
+/datum/trait/modifier/mental
+	category = "Mental"
+
+/datum/trait/modifier/mental/test_for_invalidity(var/datum/category_item/player_setup_item/traits/setup)
+	if(setup.is_FBP())
+		if(setup.get_FBP_type() == PREF_FBP_SOFTWARE)
+			return "Drone Intelligences cannot feel emotions."
+	return ..()
+
+
+/datum/trait/modifier/mental/nyctophobe
+	name = "Nyctophobic"
+	desc = "More commonly known as the fear of darkness.  The shadows can hide many dangers, which makes the prospect of going into the depths of Maintenance rather worrisome."
+	modifier_type = /datum/modifier/trait/phobia/nyctophobe
+
+
+/datum/trait/modifier/mental/haemophobe
+	name = "Haemophobia"
+	desc = "Not to be confused with Haemophilia (which makes you bleed faster), Haemophobia is the fear of blood.  Seeing a bunch of blood isn't really \
+	pleasant for most people, but for you, it is very distressing."
+	modifier_type = /datum/modifier/trait/phobia/haemophobia
+
+
+/datum/trait/modifier/mental/claustrophobe
+	name = "Claustrophobic"
+	desc = "Small spaces and tight quarters makes you feel distressed.  Unfortunately both are rather common when living in space."
+	modifier_type = /datum/modifier/trait/phobia/claustrophobe
+
 /*
 
 /datum/trait/modifier/physical/cloned
@@ -169,45 +200,11 @@
 		return "Full Body Prosthetics are already partly or fully mechanical."
 	return ..()
 
-*/
-
-// 'Mental' traits are just those that only sapients can have, for now, and generally involves fears.
-// So far, all of them are just for fluff/don't have mechanical effects.
-/datum/trait/modifier/mental
-	category = "Mental"
-
-/datum/trait/modifier/mental/test_for_invalidity(var/datum/category_item/player_setup_item/traits/setup)
-	if(setup.is_FBP())
-		if(setup.get_FBP_type() == PREF_FBP_SOFTWARE)
-			return "Drone Intelligences cannot feel emotions."
-	return ..()
-
-/*
 /datum/trait/modifier/mental/arachnophobe
 	name = "Arachnophobic"
 	desc = "Spiders are quite creepy to most people, however for you, those chitters of pure evil inspire pure dread and fear."
 	modifier_type = /datum/modifier/trait/phobia/arachnophobe
 
-*/
-/datum/trait/modifier/mental/nyctophobe
-	name = "Nyctophobic"
-	desc = "More commonly known as the fear of darkness.  The shadows can hide many dangers, which makes the prospect of going into the depths of Maintenance rather worrisome."
-	modifier_type = /datum/modifier/trait/phobia/nyctophobe
-
-
-/datum/trait/modifier/mental/haemophobe
-	name = "Haemophobia"
-	desc = "Not to be confused with Haemophilia (which makes you bleed faster), Haemophobia is the fear of blood.  Seeing a bunch of blood isn't really \
-	pleasant for most people, but for you, it is very distressing."
-	modifier_type = /datum/modifier/trait/phobia/haemophobia
-
-
-/datum/trait/modifier/mental/claustrophobe
-	name = "Claustrophobic"
-	desc = "Small spaces and tight quarters makes you feel distressed.  Unfortunately both are rather common when living in space."
-	modifier_type = /datum/modifier/trait/phobia/claustrophobe
-
-/*
 /datum/trait/modifier/mental/blennophobe
 	name = "Blennophobia"
 	desc = "Slimes are quite dangerous, but just the aspect of something being slimey is uncomfortable."
@@ -218,7 +215,6 @@
 	desc = "Syringes and needles make you very distressed. You really don't want to get sick..."
 	modifier_type = /datum/modifier/trait/phobia/trypanophobe
 
-/*
 // Uncomment this when/if these get finished.
 /datum/trait/modifier/mental/synthphobe
 	name = "Synthphobic"
@@ -274,5 +270,4 @@
 	name = "Promethean-phobic"
 	desc = "Boilerplate racism for jellos goes here."
 	mutually_exclusive = list(/datum/trait/modifier/mental/xenophobe)
-*/
 */
