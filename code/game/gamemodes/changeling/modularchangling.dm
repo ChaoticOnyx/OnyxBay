@@ -103,14 +103,14 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "The target does not notice they have been stung.  The effect occurs after 30 to 60 seconds."
 	genomecost = 3
 	verbpath = /mob/proc/changeling_lsdsting
-/*
+
 /datum/power/changeling/DeathSting
 	name = "Death Sting"
 	desc = "We sting a human, filling them with potent chemicals. Their rapid death is all but assured, but our crime will be obvious."
 	helptext = "It will be clear to any surrounding witnesses if you use this power."
 	genomecost = 10
 	verbpath = /mob/proc/changeling_DEATHsting
-*/
+
 
 /datum/power/changeling/boost_range
 	name = "Boost Range"
@@ -165,136 +165,6 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 7
 	verbpath = /mob/proc/changeling_rapidregen
 
-
-/datum/power/changeling/self_respiration
-	name = "Self Respiration"
-	desc = "We evolve our body to no longer require drawing oxygen from the atmosphere."
-	helptext = "We will no longer require internals, and we cannot inhale any gas, including harmful ones."
-	genomecost = 0
-	verbpath = /mob/proc/changeling_self_respiration
-
-
-/datum/power/changeling/visible_camouflage
-	name = "Camouflage"
-	desc = "We rapidly shape the color of our skin and secrete easily reversible dye on our clothes, to blend in with our surroundings.  \
-	We are undetectable, so long as we move slowly.(Toggle)"
-	helptext = "Running, and performing most acts will reveal us.  Our chemical regeneration is halted while we are hidden."
-	enhancedtext = "Can run while hidden."
-	genomecost = 10
-	verbpath = /mob/proc/changeling_visible_camouflage
-
-
-
-/datum/power/changeling/electric_lockpick
-	name = "Electric Lockpick"
-	desc = "We discreetly evolve a finger to be able to send a small electric charge.  \
-	We can open most electrical locks, but it will be obvious when we do so."
-	helptext = "Use the ability, then touch something that utilizes an electrical locking system, to open it.  Each use costs 10 chemicals."
-	genomecost = 10
-	verbpath = /mob/proc/changeling_electric_lockpick
-
-
-
-/datum/power/changeling/arm_blade
-	name = "Arm Blade"
-	desc = "We reform one of our arms into a deadly blade."
-	helptext = "We may retract our armblade by dropping it.  It can deflect projectiles."
-	enhancedtext = "The blade would have armor peneratration."
-	genomecost = 8
-	verbpath = /mob/proc/changeling_arm_blade
-
-//Grows a scary, and powerful arm blade.
-
-//Claws
-/datum/power/changeling/claw
-	name = "Claw"
-	desc = "We reform one of our arms into a deadly claw."
-	helptext = "We may retract our claw by dropping it."
-	enhancedtext = "The claw would have armor peneratration."
-	genomecost = 6
-	verbpath = /mob/proc/changeling_claw
-
-
-/datum/power/changeling/recursive_enhancement
-	name = "Recursive Enhancement"
-	desc = "We cause our abilities to have increased or additional effects."
-	helptext = "To check the effects for each ability, check the blue text underneath the ability in the evolution menu."
-	genomecost = 6
-	verbpath = /mob/proc/changeling_recursive_enhancement
-/*
-/datum/power/changeling/fake_blade
-	name = "Fake armblade"
-	desc = "We reform victims arm into a fake armblade."
-	helptext = "The effect is irrevertable."
-	enhancedtext = "Doing nothing"
-	genomecost = 6
-	verbpath = /mob/proc/changeling_fake_arm_blade
-*/
-
-/datum/power/changeling/fablade
-	name = "Fake Armblade"
-	desc = "We reform victims arm into a fake armblade."
-	helptext = "The effect is irrevertable."
-	genomecost = 5
-	verbpath = /mob/proc/changeling_fake_arm_blade
-
-/datum/power/changeling/no_pain
-	name = "Painless"
-	desc = "We choose whether or not to fell pain."
-	helptext = "Toggleable ability, high chemical cost."
-	genomecost = 8
-	verbpath = /mob/proc/changeling_no_pain
-
-/datum/power/changeling/gib_self
-	name = "Body Disjunction"
-	desc = "Tear apart your human disguise, revealing your little form."
-	helptext = "Takes time."
-	genomecost = 4
-	verbpath = /mob/proc/changeling_gib_self
-
-/datum/power/changeling/detach_limb
-	name = "Detach Limb"
-	desc = "We tear off our limb, turning it into an aggressive biomass."
-	helptext = "It hurts."
-	genomecost = 0
-	verbpath = /mob/proc/changeling_detach_limb
-
-/datum/power/changeling/move_biostructure
-	name = "Relocate Biostructure"
-	desc = "We move our precious organ in other place."
-	helptext = "Takes time."
-	enhancedtext = "Would relocate faster"
-	genomecost = 0
-	verbpath = /mob/proc/changeling_move_biostructure
-
-/datum/power/changeling/division
-	name = "Division"
-	desc = "We infest humanoid body with the clone of our core, making them like us."
-	helptext = "Dead bodies cannot be successfully infested."
-	genomecost = 8
-	verbpath = /mob/proc/changeling_division
-
-
-/datum/power/changeling/chem_disp_sting
-	name = "Synthesis of chemistry"
-	desc = "We synthesize a variety of chemicals."
-	helptext = "Spends more chemicals on phoron synthesis."
-	genomecost = 3
-	verbpath = /mob/proc/chem_disp_sting
-/*
-/datum/power/changeling/chem_sting
-	name = "Chemical sting"
-	desc = "We inject synthesized chemicals to the victim."
-	helptext = "Spends more chemicals on phoron synthesis. To use this, we need to have Synthesis of chemistry."
-	genomecost = 3
-	verbpath = /mob/proc/chem_sting
-*/
-/datum/power/changeling/rapid_heal
-	name = "Passive Regeneration"
-	desc = "Allows you to passively regenerate when activated."
-	helptext = "Spends chemicals."
-	genomecost = 6
-	verbpath = /mob/proc/changeling_rapid_heal
 
 // Modularchangling, totally stolen from the new player panel.  YAYY
 /datum/changeling/proc/EvolutionMenu()//The new one

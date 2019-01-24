@@ -10,7 +10,6 @@ var/list/ventcrawl_machinery = list(
 	/obj/item/weapon/holder,
 	/obj/machinery/camera,
 	/mob/living/simple_animal/borer,
-	/obj/item/organ/internal/biostructure
 	)
 
 /mob/living/var/list/icon/pipes_shown = list()
