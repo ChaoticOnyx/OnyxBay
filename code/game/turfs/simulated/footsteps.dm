@@ -96,11 +96,15 @@
 
 /mob/living/carbon/human/proc/handle_footsteps()
 	var/turf/simulated/floor/T = get_turf(src)
+
 	if(!istype(T))
 		return
 
 	if(buckled || lying || throwing)
 		return //people flying, lying down or sitting do not step
+
+	if(is_cloaked())
+		return
 
 	if(m_intent == "run")
 		if(step_count % 2) //every other turf makes a sound

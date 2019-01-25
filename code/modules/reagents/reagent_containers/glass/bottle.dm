@@ -262,3 +262,14 @@
 	..()
 	reagents.add_reagent(/datum/reagent/spaceacillin, 60)
 	update_icon()
+
+/obj/item/weapon/reagent_containers/glass/bottle/slimetoxin
+	name = "Mysterious Bottle"
+	desc = "An old ketchup bottle filled with some sort of gelatinous substance. Must be szechuan sauce! Or not."
+	icon = 'icons/obj/food.dmi'
+	icon_state = "ketchupold"
+
+/obj/item/weapon/reagent_containers/glass/bottle/slimetoxin/New()
+	..()
+	reagents.add_reagent(/datum/reagent/slimetoxin, 60)
+	update_icon()
