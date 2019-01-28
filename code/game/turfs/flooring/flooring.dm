@@ -99,6 +99,11 @@ var/list/flooring_types
 	icon_base = "red"
 	build_type = /obj/item/stack/tile/carpetred
 
+/decl/flooring/carpet/oldred
+	name = "red carpet"
+	icon_base = "oldred"
+	build_type = /obj/item/stack/tile/carpetoldred
+
 /decl/flooring/linoleum
 	name = "linoleum"
 	desc = "It's like the 2390's all over again."
@@ -165,6 +170,10 @@ var/list/flooring_types
 	descriptor = "planks"
 	build_type = /obj/item/stack/tile/wood
 	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
+
+/decl/flooring/wood/darkwood
+	name = "dark wooden floor"
+	icon_base = "wood_new_dark"
 
 /decl/flooring/wood/broken0
 	name = "broken wooden floor"

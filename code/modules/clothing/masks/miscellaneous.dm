@@ -336,3 +336,9 @@
 	icon_state = "bandskull"
 	item_state = "bandskull"
 
+/obj/item/clothing/mask/bandana/customwhite //Custom item
+	name = "white bandana"
+	desc = "A fine white bandana with nanotech lining. Can be worn on the head or face."
+	icon_state = "custom_bandwhite"
+	item_state = "custom_bandwhite"
+

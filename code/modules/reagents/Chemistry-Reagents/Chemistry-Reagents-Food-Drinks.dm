@@ -2098,11 +2098,11 @@
 	glass_desc = "Favorite drink for chapters!"			
 
 /datum/reagent/ethanol/chacha
-	name = "Сhacha"
-	description = "favorite drink of mountain peoples."
+	name = "Chacha"
+	description = "favorite drink of mountain people."
 	color = "#f0db7f"
 	strength = 100
 	taste_description = "one feels the taste of a distant mountainous country"
 
-	glass_name = "Сhacha"
-	glass_desc = "favorite drink of mountain peoples."			
+	glass_name = "Chacha"
+	glass_desc = "favorite drink of mountain people."			

@@ -375,6 +375,14 @@
 	set desc = "We sting our prey and inject paralyzing venom into them, making them harmless to us for relatively long period of time."
 
 
+	if(src.stat == DEAD)
+		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
+		return
+
+	if(last_special > world.time)
+		to_chat(src, "<span class='warning'>We must wait a little while before we can use this ability again!</span>")
+		return
+
 	if(!sting_can_reach(target, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
@@ -389,11 +397,8 @@
 	src.visible_message("<span class='warning'>[src] pierce \the [target] with it's sting!</span>")
 	feedback_add_details("changeling_powers","PB")
 
-	if(last_special > world.time)
-		to_chat(src, "<span class='warning'>We must wait a little while before we can use this ability again!</span>")
-		return
 
-	last_special = world.time + 100
+	last_special = world.time + 10 SECOND
 	return
 
 
@@ -403,6 +408,10 @@
 	set desc = "We latch onto potential host and merge with their body, taking control over it."
 
 	var/mob/living/carbon/human/T = target
+
+	if(src.stat == DEAD)
+		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
+		return
 
 	if(!sting_can_reach(T, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")

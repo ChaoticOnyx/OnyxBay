@@ -33,6 +33,16 @@
 	..()
 	icon_state = "tree_[rand(1, 6)]"
 
+/obj/structure/flora/tree/pine/old_pinteree
+	name = "xmas tree"
+	desc = "Masha, get rid of this fucking yolka!"
+	icon = 'icons/obj/flora/old_pinetrees.dmi'
+	icon_state = "old_pinetree"
+
+/obj/structure/flora/tree/pine/old_pinteree/New()
+	..()
+	icon_state = "old_pinetree"
+
 
 //grass
 /obj/structure/flora/grass

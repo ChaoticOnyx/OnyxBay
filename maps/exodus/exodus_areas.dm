@@ -857,7 +857,6 @@
 
 /area/hallway/primary/
 	sound_env = LARGE_ENCLOSED
-	ambience = list('sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
 
 /area/hallway/primary/fore
 	name = "\improper Fore Primary Hallway"
@@ -906,8 +905,6 @@
 /area/hallway/secondary/exit
 	name = "\improper Escape Shuttle Hallway"
 	icon_state = "escape"
-	ambience = list('sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
-
 
 /area/hallway/secondary/entry/pods
 	name = "\improper Arrival Shuttle Hallway - Escape Pods"
@@ -916,22 +913,18 @@
 /area/hallway/secondary/entry/fore
 	name = "\improper Arrival Shuttle Hallway - Fore"
 	icon_state = "entry_1"
-	ambience = list('sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
 
 /area/hallway/secondary/entry/port
 	name = "\improper Arrival Shuttle Hallway - Port"
 	icon_state = "entry_2"
-	ambience = list('sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
 
 /area/hallway/secondary/entry/starboard
 	name = "\improper Arrival Shuttle Hallway - Starboard"
 	icon_state = "entry_3"
-	ambience = list('sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
 
 /area/hallway/secondary/entry/aft
 	name = "\improper Arrival Shuttle Hallway - Aft"
 	icon_state = "entry_4"
-	ambience = list('sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
 
 // Command
 
@@ -1111,28 +1104,23 @@
 /area/medical/medbay
 	name = "\improper Medbay Hallway - Port"
 	icon_state = "medbay"
-	ambience = list('sound/ambience/signal.ogg','sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
 
 //Medbay is a large area, these additional areas help level out APC load.
 /area/medical/medbay2
 	name = "\improper Medbay Hallway - Starboard"
 	icon_state = "medbay2"
-	ambience = list('sound/ambience/signal.ogg','sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
 
 /area/medical/medbay3
 	name = "\improper Medbay Hallway - Fore"
 	icon_state = "medbay3"
-	ambience = list('sound/ambience/signal.ogg','sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
 
 /area/medical/medbay4
 	name = "\improper Medbay Hallway - Aft"
 	icon_state = "medbay4"
-	ambience = list('sound/ambience/signal.ogg','sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
 
 /area/medical/reception
 	name = "\improper Medbay Reception"
 	icon_state = "medbay"
-	ambience = list('sound/ambience/signal.ogg','sound/ambience/christmasamb1.ogg', 'sound/ambience/christmasamb2.ogg','sound/ambience/christmasamb3.ogg','sound/ambience/christmasamb4.ogg')
 
 /area/medical/psych
 	name = "\improper Psych Room"
@@ -1204,6 +1192,10 @@
 	name = "\improper Medbay Storage"
 	icon_state = "medbay3"
 	ambience = list('sound/ambience/signal.ogg')
+
+/area/medical/resleever
+	name = "\improper Neural Lace Resleever"
+	icon_state = "cloning"
 
 //Security
 

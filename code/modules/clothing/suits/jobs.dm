@@ -122,6 +122,13 @@
 	desc = "A red forensics technician jacket."
 	icon_state = "forensics_red"
 
+
+/obj/item/clothing/suit/storage/forensics/customred //Custom item
+	name = "red jacket"
+	desc = "A nice red forensics technician jacket."
+	icon_state = "custom_forensics_red_long"
+	item_state = "custom_forensics_red_long"
+
 /obj/item/clothing/suit/storage/forensics/blue
 	name = "blue jacket"
 	desc = "A blue forensics technician jacket."
