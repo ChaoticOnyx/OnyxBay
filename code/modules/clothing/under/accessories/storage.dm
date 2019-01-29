@@ -17,33 +17,36 @@
 	hold = new/obj/item/weapon/storage/internal/pockets(src, slots, max_w_class)
 
 /obj/item/clothing/accessory/storage/attack_hand(mob/user as mob)
-	if (has_suit)	//if we are part of a suit
+	if (has_suit && hold)	//if we are part of a suit
 		hold.open(user)
 		return
 
-	if (hold.handle_attack_hand(user))	//otherwise interact as a regular storage item
+	if(hold && hold.handle_attack_hand(user))	//otherwise interact as a regular storage item
 		..(user)
 
 /obj/item/clothing/accessory/storage/MouseDrop(obj/over_object as obj)
-	if (has_suit)
+	if (has_suit && hold)
 		return
 
-	if (hold.handle_mousedrop(usr, over_object))
+	if(hold && hold.handle_mousedrop(usr, over_object))
 		..(over_object)
 
 /obj/item/clothing/accessory/storage/attackby(obj/item/W as obj, mob/user as mob)
-	return hold.attackby(W, user)
+	if(hold)
+		return hold.attackby(W, user)
 
 /obj/item/clothing/accessory/storage/emp_act(severity)
-	hold.emp_act(severity)
-	..()
+	if(hold)
+		hold.emp_act(severity)
+		..()
 
 /obj/item/clothing/accessory/storage/attack_self(mob/user as mob)
 	to_chat(user, "<span class='notice'>You empty [src].</span>")
 	var/turf/T = get_turf(src)
 	hold.hide_from(usr)
 	for(var/obj/item/I in hold.contents)
-		hold.remove_from_storage(I, T)
+		if(hold)
+			hold.remove_from_storage(I, T)
 	src.add_fingerprint(user)
 
 /obj/item/clothing/accessory/storage/webbing
