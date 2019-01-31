@@ -13,7 +13,7 @@
 	assailant.do_attack_animation(affecting)
 	playsound(affecting.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 	var/obj/O = get_targeted_organ()
-	if(O.name == "right arm" || O.name == "left arm")
+	if(O.name == "right hand" || O.name == "left hand")
 		visible_message("<span class='notice'>[assailant] has grabbed [affecting] by their hands!</span>")
 	else
 		visible_message("<span class='warning'>[assailant] has grabbed [affecting]'s [O.name]!</span>")
