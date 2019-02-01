@@ -1024,6 +1024,34 @@
 		return
 	M.bodytemperature += 10 * TEMPERATURE_DAMAGE_COEFFICIENT
 
+/datum/reagent/drink/chicken_powder
+	name = "Chicken Powder"
+	description = "Space age food AND cold medicine. Contains Chicken Powder ^t^m and chemicals that boil in contact with water."
+	taste_description = "chicked-flavored powder"
+	reagent_state = SOLID
+	nutrition = 1
+	color = "#302000"
+
+/datum/reagent/drink/chicken_soup
+	name = "Chicken Soup"
+	description = "No chickens were harmed in the making of this soup."
+	taste_description = "somewhat tasteless chicken broth"
+	reagent_state = LIQUID
+	color = "#c9b042"
+	nutrition = 5
+	adj_temp = 5
+
+	glass_name = "chicken soup"
+	glass_desc = "A hot cup'o'soup."
+	glass_icon = DRINK_ICON_NOISY
+
+/datum/reagent/drink/chicken_soup/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	if(alien == IS_DIONA)
+		return
+
+	M.add_chemical_effect(CE_PAINKILLER, 5)
+	M.add_chemical_effect(CE_ANTIVIRAL, 0.5)
+
 /datum/reagent/drink/ice
 	name = "Ice"
 	description = "Frozen water, your dentist wouldn't like you chewing this."
@@ -1080,12 +1108,37 @@
 
 	glass_name = "beer"
 	glass_desc = "A freezing pint of beer"
+	glass_special = list(DRINK_FIZZ)
 
 /datum/reagent/ethanol/beer/affect_ingest(var/mob/living/carbon/M, var/alien, var/removed)
 	..()
 	if(alien == IS_DIONA)
 		return
 	M.jitteriness = max(M.jitteriness - 3, 0)
+
+/datum/reagent/ethanol/beer/dark
+	name = "Dark Beer"
+	description = "An alcoholic beverage made from malted grains, hops, yeast, and water."
+	taste_description = "bittersweet roasted flavor"
+	color = "#5b3500"
+	strength = 50
+	nutriment_factor = 1
+
+	glass_name = "dark beer"
+	glass_desc = "A freezing pint of dark beer"
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/beer/dark/machpella
+	name = "Machpella Dark Beer"
+	description = "An alcoholic beverage made from malted grains, hops, yeast, and water."
+	taste_description = "fairly sweet malty flavor"
+	color = "#5b3500"
+	strength = 50
+	nutriment_factor = 1
+
+	glass_name = "dark beer"
+	glass_desc = "A freezing pint of Machpella Dark Beer"
+	glass_special = list(DRINK_FIZZ)
 
 /datum/reagent/ethanol/bluecuracao
 	name = "Blue Curacao"
@@ -1183,7 +1236,7 @@
 	description = "A relatively sweet and fruity 46 proof liquor."
 	taste_description = "fruity alcohol"
 	color = "#138808" // rgb: 19, 136, 8
-	strength = 50
+	strength = 20
 
 	glass_name = "melon liquor"
 	glass_desc = "A relatively sweet and fruity 46 proof liquor."
@@ -1255,7 +1308,7 @@
 	name = "Vodka"
 	description = "Number one drink AND fueling choice for Terrans around the galaxy."
 	taste_description = "grain alcohol"
-	color = "#0064c8" // rgb: 0, 100, 200
+	color = "#9bcdff" // rgb: 211, 233, 255
 	strength = 15
 
 	glass_name = "vodka"
@@ -1269,28 +1322,32 @@
 	name = "Premium Vodka"
 	description = "Premium distilled vodka imported directly from the Terran Colonial Confederation."
 	taste_description = "clear kvass"
-	color = "#aaddff" // rgb: 170, 221, 255 - very light blue.
+	color = "#9bcdff" // rgb: 224, 242, 255 - very light blue.
 	strength = 10
 
 /datum/reagent/ethanol/whiskey
 	name = "Whiskey"
 	description = "A superb and well-aged single-malt whiskey. Damn."
 	taste_description = "molasses"
-	color = "#4c3100"
+	color = "#6d3a00"
 	strength = 25
 
 	glass_name = "whiskey"
 	glass_desc = "The silky, smokey whiskey goodness inside the glass makes the drink look very classy."
 
 /datum/reagent/ethanol/wine
-	name = "Wine"
+	name = "Red Wine"
 	description = "An premium alchoholic beverage made from distilled grape juice."
 	taste_description = "bitter sweetness"
 	color = "#7e4043" // rgb: 126, 64, 67
 	strength = 15
 
-	glass_name = "wine"
+	glass_name = "red wine"
 	glass_desc = "A very classy looking drink."
+
+/datum/reagent/ethanol/hurricane/affect_ingest(var/mob/living/carbon/M, var/alien, var/removed)
+	..()
+	M.apply_effect(max(M.radiation - 1 * removed * 0.5, 0), IRRADIATE, blocked = 0)
 
 /datum/reagent/ethanol/wine/premium
 	name = "White Wine"
@@ -1298,6 +1355,39 @@
 	taste_description = "white velvet"
 	color = "#ffddaa" // rgb: 255, 221, 170 - a light cream
 	strength = 20
+
+	glass_name = "white wine"
+	glass_desc = "A very expensive looking drink."
+
+/datum/reagent/ethanol/wine/white
+	name = "White Wine"
+	description = "Martian sauvignon blanc. For those who actually like wine."
+	taste_description = "refreshing sourness"
+	color = "#ffebb2"
+	strength = 15
+
+	glass_name = "white wine"
+	glass_desc = "A very elite looking drink."
+
+/datum/reagent/ethanol/wine/rose
+	name = "Rose Wine"
+	description = "Glamorous and fancy beyond all limits."
+	taste_description = "sweet and sour pleasure"
+	color = "#ffcbc9"
+	strength = 12
+
+	glass_name = "red wine"
+	glass_desc = "A very glamorous looking drink."
+
+/datum/reagent/ethanol/wine/sparkling
+	name = "Sparkling Wine"
+	description = "Much like regular wine, but with bubbles. This one is white."
+	color = "#fff696"
+	strength = 17
+
+	glass_name = "sparkling wine"
+	glass_desc = "A very festive looking drink."
+	glass_special = list(DRINK_FIZZ)
 
 /datum/reagent/ethanol/herbal
 	name = "Herbal Liquor"
@@ -1656,7 +1746,7 @@
 
 	glass_name = "iced beer"
 	glass_desc = "A beer so frosty, the air around it freezes."
-	glass_special = list(DRINK_ICE)
+	glass_special = list(DRINK_ICE, DRINK_FIZZ)
 
 /datum/reagent/ethanol/irishcarbomb
 	name = "Irish Car Bomb"
@@ -1728,6 +1818,7 @@
 
 	glass_name = "The Manly Dorf"
 	glass_desc = "A manly concotion made from Ale and Beer. Intended for true men only."
+	glass_special = list(DRINK_FIZZ)
 
 /datum/reagent/ethanol/margarita
 	name = "Margarita"
@@ -1928,6 +2019,7 @@
 
 	glass_name = "Snow White"
 	glass_desc = "A cold refreshment."
+	glass_special = list(DRINK_FIZZ)
 
 /datum/reagent/ethanol/suidream
 	name = "Sui Dream"
@@ -1948,6 +2040,7 @@
 
 	glass_name = "Syndicate Bomb"
 	glass_desc = "Tastes like terrorism!"
+	glass_special = list(DRINK_FIZZ)
 
 /datum/reagent/ethanol/tequilla_sunrise
 	name = "Tequila Sunrise"
@@ -2025,6 +2118,7 @@
 
 	glass_name = "whiskey cola"
 	glass_desc = "An innocent-looking mixture of cola and Whiskey. Delicious."
+	glass_special = list(DRINK_FIZZ)
 
 
 /datum/reagent/ethanol/whiskeysoda
@@ -2035,8 +2129,9 @@
 
 	glass_name = "whiskey soda"
 	glass_desc = "Ultimate refreshment."
+	glass_special = list(DRINK_FIZZ)
 
-/datum/reagent/ethanol/specialwhiskey // I have no idea what this is and where it comes from
+/datum/reagent/ethanol/whiskey/specialwhiskey // I have no idea what this is and where it comes from
 	name = "Special Blend Whiskey"
 	description = "Just when you thought regular whiskey was good... This silky, amber goodness has to come along and ruin everything."
 	taste_description = "liquid fire"
@@ -2045,7 +2140,7 @@
 
 	glass_name = "special blend whiskey"
 	glass_desc = "Just when you thought regular whiskey was good... This silky, amber goodness has to come along and ruin everything."
-	
+
 /datum/reagent/ethanol/glintwine
 	name = "Glintwine"
 	description = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
@@ -2059,7 +2154,7 @@
 
 	glass_name = "Glintwine"
 	glass_desc = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
-	
+
 /datum/reagent/ethanol/corpserevive
 	name = "Corpse Reviver"
 	description = "The best hangover cure!"
@@ -2067,8 +2162,8 @@
 	strength = 15
 
 	glass_name = "Corpse Reviver"
-	glass_desc = "The best hangover cure!"	
-	
+	glass_desc = "The best hangover cure!"
+
 /datum/reagent/ethanol/bdaiquiri
 	name = "Banana daiquiri"
 	description = "The magic of frozen banana sweets."
@@ -2076,8 +2171,8 @@
 	strength = 15
 
 	glass_name = "Banana daiquiri"
-	glass_desc = "The magic of frozen banana sweets."	
-	
+	glass_desc = "The magic of frozen banana sweets."
+
 /datum/reagent/ethanol/xgrog
 	name = "Christmas Grog"
 	description = "Festive version of something very familiar."
@@ -2085,8 +2180,8 @@
 	strength = 100
 
 	glass_name = "Christmas Grog"
-	glass_desc = "Festive version of something very familiar."		
-	
+	glass_desc = "Festive version of something very familiar."
+
 /datum/reagent/ethanol/afternoon
 	name = "Death in the afternoon"
 	description = "Favorite drink for functionary!"
@@ -2095,7 +2190,7 @@
 	taste_description = "sweet and bitter, like Death itself."
 
 	glass_name = "Death in the afternoon"
-	glass_desc = "Favorite drink for chapters!"			
+	glass_desc = "Favorite drink for chapters!"
 
 /datum/reagent/ethanol/chacha
 	name = "Chacha"
@@ -2105,4 +2200,113 @@
 	taste_description = "one feels the taste of a distant mountainous country"
 
 	glass_name = "Chacha"
-	glass_desc = "favorite drink of mountain people."			
+	glass_desc = "favorite drink of mountain people."
+
+/datum/reagent/ethanol/sexonthebeach
+	name = "Sex on the Beach"
+	description = "Don't take this as an instruction. You'll get robusted by ERP police."
+	color = "#d34b00"
+	strength = 20
+	taste_description = "fruity classic"
+
+	glass_name = "Sex on the Beach"
+	glass_desc = "Don't take this as an instruction. You'll get robusted by ERP police."
+
+/datum/reagent/ethanol/daddysindahouse
+	name = "Daddy's in da House"
+	description = "Bang, bang, bang, bang!"
+	color = "#049956"
+	strength = 14
+	taste_description = "a stab wound in your liver"
+
+	glass_name = "Daddy's in da House"
+	glass_desc = "Bang, bang, bang, bang!"
+
+/datum/reagent/ethanol/metroidscore
+	name = "Metroid's Core"
+	description = "Old good metroids... Where did you go?"
+	color = "#026841"
+	strength = 20
+	taste_description = "sharp herbal taste and sourness"
+
+	glass_name = "Metroid's Core"
+	glass_desc = "Old good metroids... Where did you go?"
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/commodore64
+	name = "Commodore 64"
+	description = "So-called ''ladies' drink,'' this sweet, fruity, unliquorly concoction that comes loaded with things like cream and egg white and a considerable charge of well-disguised inhibition- (and therefore, the theory goes, undergarment-) remover. "
+	color = "#ff6a54"
+	strength = 25
+	taste_description = "fruity sweetness"
+
+	glass_name = "Commodore 64"
+	glass_desc = "Also known as Pink Lady, Maiden's Prayer, Poet's Dream, and Angel's Wing."
+
+/datum/reagent/ethanol/georgerrmartini
+	name = "George R.R. Martini"
+	description = "Makes you think about boobs and dragons."
+	color = "#9f0000"
+	strength = 15
+	taste_description = "blood, tears and pure agony"
+
+	glass_name = "George R.R. Martini"
+	glass_desc = "Makes you think about boobs and dragons."
+
+/datum/reagent/ethanol/georgerrmartini/affect_ingest(var/mob/living/carbon/M, var/alien, var/removed)
+	..()
+	if(prob(10))
+		M.emote(pick("cry"))
+
+/datum/reagent/ethanol/siegbrau
+	name = "Siegbrau"
+	description = "A drink that even an Undead can enjoy."
+	color = "#9f0000"
+	strength = 35
+	taste_description = "malty flavor and something extremely dear and familiar"
+
+	glass_name = "Siegbrau"
+	glass_desc = "A drink that even an Undead can enjoy."
+
+/datum/reagent/ethanol/siegbrau/affect_ingest(var/mob/living/carbon/M, var/alien, var/removed)
+	..()
+	if(alien == IS_DIONA)
+		return
+	M.adjustOxyLoss(-4 * removed)
+	M.heal_organ_damage(2 * removed, 2 * removed)
+	M.adjustToxLoss(-2 * removed)
+	if(M.dizziness)
+		M.dizziness = max(0, M.dizziness - 15)
+	if(M.confused)
+		M.confused = max(0, M.confused - 5)
+
+/datum/reagent/ethanol/mojito
+	name = "Mojito"
+	description = "A refreshing summer drink."
+	color = "#76C98C"
+	strength = 20
+	taste_description = "mint and lime"
+
+	glass_name = "Mojito"
+	glass_desc = "A refreshing summer drink."
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/bacardi
+	name = "Bacardi"
+	description = "A perfect mix of white rum, lime juice and grenadine."
+	color = "#ff5e5e"
+	strength = 15
+	taste_description = "lime and grenadine"
+
+	glass_name = "Bacardi"
+	glass_desc = "A perfect mix of white rum, lime juice and grenadine."
+
+/datum/reagent/ethanol/coffee/espressomartini
+	name = "Espresso Martini"
+	description = "Perfect for breakfast, perfect for dinner."
+	color = "#72481d"
+	strength = 15
+	taste_description = "sweet espresso"
+
+	glass_name = "Espresso Martini"
+	glass_desc = "Perfect for breakfast, perfect for dinner."

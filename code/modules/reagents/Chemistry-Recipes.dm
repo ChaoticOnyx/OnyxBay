@@ -1349,6 +1349,12 @@
 	required_reagents = list(/datum/reagent/capsaicin = 1, /datum/reagent/drink/hot_ramen = 6)
 	result_amount = 6
 
+/datum/chemical_reaction/chicken_soup
+	name = "Hot Ramen"
+	result = /datum/reagent/drink/chicken_soup
+	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/drink/chicken_powder = 3)
+	result_amount = 3
+
 /* Alcohol */
 
 /datum/chemical_reaction/goldschlager
@@ -1928,19 +1934,19 @@
 	result = /datum/reagent/nanoblood
 	required_reagents = list(/datum/reagent/dexalinp = 1, /datum/reagent/iron = 1, /datum/reagent/blood = 1)
 	result_amount = 3
-	
+
 /datum/chemical_reaction/glintwine
 	name = "Glintwine"
 	result = /datum/reagent/ethanol/glintwine
 	required_reagents = list(/datum/reagent/ethanol/wine = 3, /datum/reagent/sugar = 2, /datum/reagent/drink/juice/orange = 2)
 	result_amount = 5
-	
+
 /datum/chemical_reaction/corpserevive
 	name = "Corpse Reviver"
 	result = /datum/reagent/ethanol/corpserevive
 	required_reagents = list(/datum/reagent/ethanol/gin = 3, /datum/reagent/ethanol/wine = 3, /datum/reagent/drink/juice/orange = 2, /datum/reagent/drink/juice/lemon = 2)
 	result_amount = 9
-	
+
 /datum/chemical_reaction/bdaiquiri
 	name = "Banana daiquiri"
 	result = /datum/reagent/ethanol/bdaiquiri
@@ -1952,9 +1958,63 @@
 	result = /datum/reagent/ethanol/afternoon
 	required_reagents = list(/datum/reagent/ethanol/wine/premium = 4, /datum/reagent/ethanol/absinthe = 2)
 	result_amount = 6
-	
+
 /datum/chemical_reaction/chacha
 	name = "Сhacha"
 	result = /datum/reagent/ethanol/chacha
 	required_reagents = list(/datum/reagent/ethanol/vodka = 3, /datum/reagent/drink/juice/grape = 2)
-	result_amount = 5	
+	result_amount = 5
+
+/datum/chemical_reaction/sexonthebeach
+	name = "Sex on the Beach"
+	result = /datum/reagent/ethanol/sexonthebeach
+	required_reagents = list(/datum/reagent/ethanol/vodka = 2, /datum/reagent/drink/juice/lemon = 2, /datum/reagent/ethanol/melonliquor = 1)
+	result_amount = 5
+
+/datum/chemical_reaction/daddysindahouse
+	name = "Daddy's in da House"
+	result = /datum/reagent/ethanol/daddysindahouse
+	required_reagents = list(/datum/reagent/ethanol/wine = 2, /datum/reagent/ethanol/absinthe = 1, /datum/reagent/ethanol/herbal = 1, /datum/reagent/drink/lemon_lime = 2)
+	result_amount = 6
+
+/datum/chemical_reaction/metroidscore
+	name = "Metroid's Core"
+	result = /datum/reagent/ethanol/metroidscore
+	required_reagents = list(/datum/reagent/ethanol/absinthe = 1, /datum/reagent/drink/grenadine = 1, /datum/reagent/drink/lemon_lime = 2)
+	result_amount = 4
+
+/datum/chemical_reaction/commodore64
+	name = "Commodore 64"
+	result = /datum/reagent/ethanol/commodore64
+	required_reagents = list(/datum/reagent/ethanol/whiskey = 2, /datum/reagent/drink/juice/lemon = 1, /datum/reagent/drink/juice/orange = 1, /datum/reagent/drink/grenadine = 1)
+	result_amount = 5
+
+/datum/chemical_reaction/georgerrmartini
+	name = "George R.R. Martini"
+	result = /datum/reagent/ethanol/georgerrmartini
+	required_reagents = list(/datum/reagent/blood = 2, /datum/reagent/sodiumchloride = 1, /datum/reagent/ethanol/absinthe = 2)
+	result_amount = 5
+
+/datum/chemical_reaction/siegbrau
+	name = "Siegbrau"
+	result = /datum/reagent/ethanol/siegbrau
+	required_reagents = list(/datum/reagent/tricordrazine = 2, /datum/reagent/ethanol/manly_dorf = 2, /datum/reagent/ethanol/beer/dark = 1)
+	result_amount = 5
+
+/datum/chemical_reaction/mojito
+	name = "Mojito"
+	result = /datum/reagent/ethanol/mojito
+	required_reagents = list(/datum/reagent/ethanol/rum = 1, /datum/reagent/drink/juice/lime = 1, /datum/reagent/drink/sodawater = 2, /datum/reagent/sugar = 1)
+	result_amount = 5
+
+/datum/chemical_reaction/bacardi
+	name = "Bacardi"
+	result = /datum/reagent/ethanol/bacardi
+	required_reagents = list(/datum/reagent/ethanol/rum = 2, /datum/reagent/drink/juice/lime = 1, /datum/reagent/drink/grenadine  = 1)
+	result_amount = 5
+
+/datum/chemical_reaction/espressomartini
+	name = "Espresso Martini"
+	result = /datum/reagent/ethanol/coffee/espressomartini
+	required_reagents = list(/datum/reagent/ethanol/vodka = 2, /datum/reagent/drink/coffee = 1, /datum/reagent/ethanol/coffee/kahlua = 1, /datum/reagent/sugar = 1)
+	result_amount = 5
