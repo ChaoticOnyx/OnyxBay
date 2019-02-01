@@ -87,6 +87,19 @@
 		if(!ticker || ticker.current_state <= GAME_STATE_PREGAME) // Make sure we don't ready up after the round has started
 			if (!client.EAMS_CheckForAccess())
 				return
+
+			if(jobban_isbanned(src, "MALE") && jobban_isbanned(src, "FEMALE"))
+				to_chat(src, "<span class='warning'>Only genderqueers allowed.</span>")
+				return
+
+			if(jobban_isbanned(src, "MALE") && client.prefs.gender == MALE)
+				to_chat(src, "<span class='warning'>Only traps allowed.</span>")
+				return
+
+			if(jobban_isbanned(src, "FEMALE") && client.prefs.gender == FEMALE)
+				to_chat(src, "<span class='warning'>No traps allowed.</span>")
+				return
+
 			ready = text2num(href_list["ready"])
 		else
 			ready = 0
@@ -147,6 +160,18 @@
 			return
 
 		if (!client.EAMS_CheckForAccess())
+			return
+
+		if(jobban_isbanned(src, "MALE") && jobban_isbanned(src, "FEMALE"))
+			to_chat(src, "<span class='warning'>Only genderqueers allowed.</span>")
+			return
+
+		if(jobban_isbanned(src, "MALE") && client.prefs.gender == MALE)
+			to_chat(src, "<span class='warning'>Only traps allowed.</span>")
+			return
+
+		if(jobban_isbanned(src, "FEMALE") && client.prefs.gender == FEMALE)
+			to_chat(src, "<span class='warning'>No traps allowed.</span>")
 			return
 
 		LateChoices() //show the latejoin job selection menu
@@ -461,6 +486,12 @@
 		client.prefs.randomize_appearance_and_body_for(new_character)
 	else
 		client.prefs.copy_to(new_character)
+
+		if(jobban_isbanned(src, "NAME"))
+			client.prefs.real_name = random_name(new_character.gender)
+
+		if(jobban_isbanned(src, "APPEARANCE"))
+			client.prefs.randomize_appearance_and_body_for(new_character)
 
 	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// MAD JAMS cant last forever yo
 
