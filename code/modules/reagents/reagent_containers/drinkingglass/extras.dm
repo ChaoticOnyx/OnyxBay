@@ -86,4 +86,12 @@
 	icon_state = "lime"
 	isoverlaying = 1
 
+/obj/item/weapon/glass_extra/glassholder
+	name = "glass-holder"
+	desc = "Also known as 'podstakannik'."
+	glass_addition = "holder"
+	glass_desc = "It's in a holder."
+	icon_state = "glassholder"
+	isoverlaying = 1
+
 #undef DRINK_ICON_FILE

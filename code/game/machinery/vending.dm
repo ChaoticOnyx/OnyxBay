@@ -645,6 +645,7 @@
 					/obj/item/weapon/reagent_containers/food/drinks/ice = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/vodkaglass = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/shot = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/dshot = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/cocktail = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/rocks = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/wine = 10,
@@ -653,19 +654,20 @@
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/square = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/shake = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/mug = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/bigmug = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/pint = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/bigmug = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/coffeecup/metal = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/flask/barflask = 5,
 					/obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask = 5,
+					/obj/item/weapon/bottle_extra/pourer = 15,
 					/obj/item/weapon/glass_extra/stick = 25,
 					/obj/item/weapon/glass_extra/straw = 25,
 					/obj/item/weapon/glass_extra/orange_slice = 25,
-					/obj/item/weapon/glass_extra/lime_slice = 25,
-					/obj/item/weapon/bottle_extra/pourer = 15)
+					/obj/item/weapon/glass_extra/lime_slice = 25)
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/premiumwine = 2,
 					  /obj/item/weapon/reagent_containers/food/drinks/bottle/premiumvodka = 2,
-				      /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5)
+				      /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5,
+					  /obj/item/weapon/glass_extra/glassholder = 10)
 	vend_delay = 15
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	product_slogans = "I hope nobody asks me for a bloody cup o' tea...;Alcohol is humanity's friend. Would you abandon a friend?;Quite delighted to serve you!;Is nobody thirsty on this station?"
@@ -724,6 +726,7 @@
 	vend_delay = 25
 	products = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 6,
 					/obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 6,
+					/obj/item/weapon/reagent_containers/food/drinks/chickensoup = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/chips =6,
 					/obj/item/weapon/reagent_containers/food/snacks/sosjerky = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/no_raisin = 6,
@@ -734,12 +737,13 @@
 					  /obj/item/weapon/reagent_containers/food/snacks/skrellsnacks = 3)
 	prices = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 1,
 				  /obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 5,
+				  /obj/item/weapon/reagent_containers/food/drinks/chickensoup = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/chips = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/sosjerky = 2,
+				  /obj/item/weapon/reagent_containers/food/snacks/sosjerky = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/no_raisin = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 1,
+				  /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 2,
 				  /obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 2)
+				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 3)
 
 
 /obj/machinery/vending/snack/medbay
@@ -761,11 +765,11 @@
 					  /obj/item/weapon/reagent_containers/food/snacks/skrellsnacks = 3)
 	prices = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 1,
 				  /obj/item/weapon/reagent_containers/food/snacks/grown/apple = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/hematogen = 4,
-				  /obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 4,
+				  /obj/item/weapon/reagent_containers/food/snacks/hematogen = 10,
+				  /obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/no_raisin = 1,
 				  /obj/item/weapon/reagent_containers/food/snacks/grown/orange = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 2)
+				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 3)
 
 
 

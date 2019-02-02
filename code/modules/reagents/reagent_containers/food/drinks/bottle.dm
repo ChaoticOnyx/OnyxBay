@@ -244,6 +244,11 @@
 		..()
 		reagents.add_reagent(/datum/reagent/ethanol/vodka, 100)
 
+/obj/item/weapon/reagent_containers/food/drinks/bottle/vodka/fivelakes
+	name = "Five Lakes"
+	desc = "Chief Engineer's personal rad-poisoning remedy."
+	icon_state = "fivelakesvodka"
+
 /obj/item/weapon/reagent_containers/food/drinks/bottle/tequilla
 	name = "Caccavo Guaranteed Quality Tequilla"
 	desc = "Made from premium petroleum distillates, pure thalidomide and other fine quality ingredients!"

@@ -2018,3 +2018,22 @@
 	result = /datum/reagent/ethanol/coffee/espressomartini
 	required_reagents = list(/datum/reagent/ethanol/vodka = 2, /datum/reagent/drink/coffee = 1, /datum/reagent/ethanol/coffee/kahlua = 1, /datum/reagent/sugar = 1)
 	result_amount = 5
+
+/datum/chemical_reaction/shroombeer
+	name = "shroom berr"
+	result = /datum/reagent/ethanol/shroombeer
+	required_reagents = list(/datum/reagent/psilocybin = 1, /datum/reagent/ethanol/beer/dark = 2, /datum/reagent/fuel = 1, /datum/reagent/blackpepper = 1)
+	catalysts = list(/datum/reagent/enzyme = 5)
+	result_amount = 5
+
+/datum/chemical_reaction/fullbiotickick
+	name = "Full Biotic Kick"
+	result = /datum/reagent/ethanol/fullbiotickick
+	required_reagents = list(/datum/reagent/ethanol/whiskey = 2, /datum/reagent/ethanol/rum = 1, /datum/reagent/ethanol/bluecuracao = 1, /datum/reagent/drink/dr_gibb = 1)
+	result_amount = 5
+
+/datum/chemical_reaction/vesper
+	name = "Vesper"
+	result = /datum/reagent/ethanol/vesper
+	required_reagents = list(/datum/reagent/ethanol/gin = 3, /datum/reagent/ethanol/vodka = 1, /datum/reagent/ethanol/wine/white = 1)
+	result_amount = 5

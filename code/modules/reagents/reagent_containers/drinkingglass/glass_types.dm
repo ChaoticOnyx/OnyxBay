@@ -40,7 +40,7 @@
 	base_name = "shot"
 	base_icon = "shot"
 	filling_states = "33;66;100"
-	volume = 10
+	volume = 5
 	matter = list("glass" = 15)
 	possible_transfer_amounts = "1;2;5;10"
 	rim_pos = "y=17;x_left=13;x_right=21"
@@ -91,7 +91,7 @@
 	volume = 5
 	matter = list("glass" = 15)
 	possible_transfer_amounts = "1;2;5"
-	rim_pos = "y=17;x_left=13;x_right=21"
+	rim_pos = "y=21;x_left=14;x_right=21"
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/cognac
 	name = "cognac glass"
@@ -100,7 +100,7 @@
 	filling_states = "20;40;60;80;100"
 	volume = 25
 	possible_transfer_amounts = "5;10;15;25"
-	rim_pos = "y=25;x_left=12;x_right=21"
+	rim_pos = "y=22;x_left=13;x_right=20"
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/bigmug
 	name = "large mug"
@@ -118,4 +118,13 @@
 	filling_states = "50;100"
 	volume = 30
 	possible_transfer_amounts = "5;10;15;30;45;60"
-	rim_pos = "y=22;x_left=12;x_right=20"
+	rim_pos = "y=25;x_left=13;x_right=20"
+
+/obj/item/weapon/reagent_containers/food/drinks/glass2/dshot
+	name = "double shot"
+	base_name = "dshot"
+	base_icon = "dshot"
+	filling_states = "33;66;100"
+	volume = 10
+	possible_transfer_amounts = "5;10"
+	rim_pos = "y=21;x_left=14;x_right=20"

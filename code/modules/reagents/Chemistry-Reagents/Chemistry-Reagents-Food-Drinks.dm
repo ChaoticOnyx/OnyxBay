@@ -2310,3 +2310,77 @@
 
 	glass_name = "Espresso Martini"
 	glass_desc = "Perfect for breakfast, perfect for dinner."
+
+/datum/reagent/ethanol/shroombeer
+	name = "shroom berr"
+	description = "A brew made of toxic mushrooms. What can go wrong?"
+	color = "#72487a"
+	strength = 15
+	taste_description = "BOILING RAGE WAAAAAAAAAGH"
+
+	glass_name = "shroom berr"
+	glass_desc = "tiem to go berzerk!!"
+
+
+/datum/reagent/ethanol/shroombeer/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	..()
+	if(alien == IS_DIONA || alien == IS_SKRELL)
+		return
+
+	var/threshold = 10
+
+	M.druggy = max(M.druggy, 30)
+
+	if(M.chem_doses[type] < 1 * threshold)
+		M.apply_effect(3, STUTTER)
+		M.make_dizzy(5)
+		M.add_chemical_effect(CE_PAINKILLER, 50)
+		M.add_chemical_effect(CE_SPEEDBOOST, 0.5)
+		M.add_chemical_effect(CE_PULSE, 2)
+		if(prob(5))
+			M.emote(pick("twitch", "blink_r"))
+
+	else if(M.chem_doses[type] < 2 * threshold)
+		M.apply_effect(3, STUTTER)
+		M.make_jittery(5)
+		M.make_dizzy(5)
+		M.add_chemical_effect(CE_PAINKILLER, 100)
+		M.add_chemical_effect(CE_SPEEDBOOST, 0.75)
+		M.add_chemical_effect(CE_PULSE, 3)
+
+		M.druggy = max(M.druggy, 35)
+		if(prob(10))
+			M.emote(pick("twitch", "blink_r", "shiver"))
+	else
+		M.add_chemical_effect(CE_MIND, -1)
+		M.apply_effect(3, STUTTER)
+		M.make_jittery(10)
+		M.make_dizzy(10)
+		M.add_chemical_effect(CE_PAINKILLER, 200)
+		M.add_chemical_effect(CE_ALCOHOL_TOXIC, 1)
+		M.add_chemical_effect(CE_SPEEDBOOST, 1)
+		M.add_chemical_effect(CE_PULSE, 4)
+
+		M.druggy = max(M.druggy, 40)
+		if(prob(15))
+			M.emote(pick("twitch", "blink_r", "shiver"))
+
+/datum/reagent/ethanol/fullbiotickick
+	name = "Full Biotic Kick"
+	description = "Fortunately, biotics aren't real. Are they?.."
+	color = "#d6774f"
+	strength = 15
+	taste_description = "mass effect"
+
+	glass_name = "Full Biotic Kick"
+	glass_desc = "Fortunately, biotics aren't real. Are they?.."
+
+/datum/reagent/ethanol/vesper
+	name = "Vesper Martini"
+	description = "Three measures of Gordon's, one of vodka, half a measure of Kina Lillet. Shake it very well until it's ice-cold, then add a large thin slice of lemon peel. Got it?"
+	color = "#d8c36c"
+	strength = 13
+	taste_description = "perfect dryness"
+
+	glass_name = "Vesper Martini"
+	glass_desc = "That one appears to be large and very strong and very cold and very well-made."
