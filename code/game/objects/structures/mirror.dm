@@ -14,6 +14,10 @@
 	if(shattered)	return
 
 	if(ishuman(user))
+		if(jobban_isbanned(user, "APPEARANCE"))
+			to_chat(src, "<span class='danger'>This is useless for you.</span>")
+			return
+
 		var/datum/nano_module/appearance_changer/AC = ui_users[user]
 		if(!AC)
 			AC = new(src, user)
@@ -107,6 +111,10 @@
 
 /obj/item/weapon/mirror/attack_self(mob/user as mob)
 	if(ishuman(user))
+		if(jobban_isbanned(user, "APPEARANCE"))
+			to_chat(src, "<span class='danger'>This is useless for you.</span>")
+			return
+
 		var/datum/nano_module/appearance_changer/AC = ui_users[user]
 		if(!AC)
 			AC = new(src, user)
