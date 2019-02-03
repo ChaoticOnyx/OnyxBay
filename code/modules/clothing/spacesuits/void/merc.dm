@@ -26,7 +26,7 @@
 
 /obj/item/clothing/suit/space/void/merc/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 1
+	slowdown_per_slot[slot_wear_suit] = 0
 
 /obj/item/clothing/suit/space/void/merc/prepared/New()
 	..()
