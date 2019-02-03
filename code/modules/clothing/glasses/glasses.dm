@@ -374,6 +374,33 @@
 	desc = "Used for seeing walls, floors, and stuff through anything."
 	icon_state = "meson"
 	origin_tech = list(TECH_MAGNET = 3, TECH_ILLEGAL = 4)
+	
+/obj/item/clothing/glasses/thermal/syndi/chameleon	
+	var/list/global/clothing_choices
+
+/obj/item/clothing/glasses/thermal/syndi/chameleon/New()
+	..()
+	if(!clothing_choices)
+		clothing_choices = generate_chameleon_choices(/obj/item/clothing/glasses, list(src.type))
+
+/obj/item/clothing/glasses/thermal/syndi/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
+	SetName(initial(name))
+	desc = initial(desc)
+	icon_state = initial(icon_state)
+	item_state = initial(item_state)
+	update_icon()
+	update_clothing_icon()
+
+/obj/item/clothing/glasses/thermal/syndi/chameleon/verb/change(picked in clothing_choices)
+	set name = "Change Glasses Appearance"
+	set category = "Chameleon Items"
+	set src in usr
+
+	if(!ispath(clothing_choices[picked]))
+		return
+
+	disguise(clothing_choices[picked], usr)
+	update_clothing_icon()	//so our overlays update.
 
 /obj/item/clothing/glasses/thermal/plain
 	toggleable = FALSE
