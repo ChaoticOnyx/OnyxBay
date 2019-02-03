@@ -18,6 +18,10 @@
 /obj/item/weapon/storage/box/syndie_kit/imp_freedom
 	name = "box (F)"
 	startswith = list(/obj/item/weapon/implanter/freedom)
+	
+/obj/item/weapon/storage/box/syndie_kit/adrenalin
+	name = "box (A)"
+	startswith = list(/obj/item/weapon/implanter/adrenalin)	
 
 /obj/item/weapon/storage/box/syndie_kit/imp_uplink
 	name = "box (U)"
