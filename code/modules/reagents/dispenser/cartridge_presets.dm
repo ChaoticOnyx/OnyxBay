@@ -32,6 +32,7 @@
 
 	// Bar, alcoholic
 	beer		spawn_reagent = /datum/reagent/ethanol/beer
+	darkbeer	spawn_reagent = /datum/reagent/ethanol/beer/dark
 	kahlua		spawn_reagent = /datum/reagent/ethanol/coffee/kahlua
 	whiskey		spawn_reagent = /datum/reagent/ethanol/whiskey
 	wine		spawn_reagent = /datum/reagent/ethanol/wine
@@ -58,6 +59,7 @@
 	orange		spawn_reagent = /datum/reagent/drink/juice/orange
 	lime		spawn_reagent = /datum/reagent/drink/juice/lime
 	watermelon	spawn_reagent = /datum/reagent/drink/juice/watermelon
+	lemon		spawn_reagent = /datum/reagent/drink/juice/lemon
 
 	// Bar, coffee
 	coffee		spawn_reagent = /datum/reagent/drink/coffee

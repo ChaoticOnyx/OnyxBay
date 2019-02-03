@@ -77,6 +77,7 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/New()
 	..()
+	unacidable = 1
 	icon_state = base_icon
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/on_reagent_change()
@@ -92,6 +93,7 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/update_icon()
 	underlays.Cut()
+	overlays.Cut()
 
 	if (reagents.reagent_list.len > 0)
 		var/datum/reagent/R = reagents.get_master_reagent()
@@ -138,7 +140,10 @@
 			var/image/I = image(DRINK_ICON_FILE, src, "[base_icon]_[GE.glass_addition][side]")
 			if(GE.glass_color)
 				I.color = GE.glass_color
-			underlays += I
+			if(GE.isoverlaying)
+				overlays += I
+			else
+				underlays += I
 		else if(rim_pos && istype(item, /obj/item/weapon/reagent_containers/food/snacks/fruit_slice))
 			var/obj/FS = item
 			var/image/I = image(FS)

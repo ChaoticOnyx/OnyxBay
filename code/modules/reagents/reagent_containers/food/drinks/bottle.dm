@@ -4,6 +4,8 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle
 	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "5;10;15;25;30;60"
+	var/original_pta = ""
 	volume = 100
 	item_state = "broken_beer" //Generic held-item sprite until unique ones are made.
 	force = 5
@@ -13,14 +15,21 @@
 	var/obj/item/weapon/reagent_containers/glass/rag/rag = null
 	var/rag_underlay = "rag"
 
+	var/obj/item/weapon/bottle_extra/pourer/pourer = null
+	var/pourer_overlay = "pourer_overlay"
+
 /obj/item/weapon/reagent_containers/food/drinks/bottle/New()
 	..()
 	if(isGlass) unacidable = 1
+	original_pta = possible_transfer_amounts
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/Destroy()
 	if(rag)
 		rag.forceMove(src.loc)
 	rag = null
+	if(pourer)
+		pourer.forceMove(src.loc)
+	pourer = null
 	return ..()
 
 //when thrown on impact, bottles smash and spill their contents
@@ -74,7 +83,10 @@
 	return B
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/attackby(obj/item/W, mob/user)
-	if(!rag && istype(W, /obj/item/weapon/reagent_containers/glass/rag))
+	if(!rag && !pourer && istype(W, /obj/item/weapon/bottle_extra/pourer))
+		insert_pourer(W, user)
+		return
+	if(!rag && !pourer && istype(W, /obj/item/weapon/reagent_containers/glass/rag))
 		insert_rag(W, user)
 		return
 	if(rag && istype(W, /obj/item/weapon/flame))
@@ -85,11 +97,13 @@
 /obj/item/weapon/reagent_containers/food/drinks/bottle/attack_self(mob/user)
 	if(rag)
 		remove_rag(user)
+	else if(pourer)
+		remove_pourer(user)
 	else
 		..()
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/proc/insert_rag(obj/item/weapon/reagent_containers/glass/rag/R, mob/user)
-	if(!isGlass || rag) return
+	if(!isGlass || rag || pourer) return
 	if(user.unEquip(R))
 		to_chat(user, "<span class='notice'>You stuff [R] into [src].</span>")
 		rag = R
@@ -104,16 +118,37 @@
 	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 	update_icon()
 
+/obj/item/weapon/reagent_containers/food/drinks/bottle/proc/insert_pourer(obj/item/weapon/bottle_extra/pourer/P, mob/user)
+	if(!isGlass || rag || pourer) return
+	if(user.unEquip(P))
+		to_chat(user, "<span class='notice'>You stuff [P] into [src].</span>")
+		pourer = P
+		pourer.forceMove(src)
+		possible_transfer_amounts = "0.5;1;2;3;4;5;10"
+		update_icon()
+
+/obj/item/weapon/reagent_containers/food/drinks/bottle/proc/remove_pourer(mob/user)
+	if(!pourer) return
+	user.put_in_hands(pourer)
+	pourer = null
+	possible_transfer_amounts = original_pta
+	amount_per_transfer_from_this = 5
+	update_icon()
+
 /obj/item/weapon/reagent_containers/food/drinks/bottle/open(mob/user)
 	if(rag) return
 	..()
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/update_icon()
 	underlays.Cut()
+	overlays.Cut()
 	if(rag)
 		var/underlay_image = image(icon='icons/obj/drinks.dmi', icon_state=rag.on_fire? "[rag_underlay]_lit" : rag_underlay)
 		underlays += underlay_image
 		set_light(rag.light_range, rag.light_power, rag.light_color)
+	else if(pourer)
+		overlays += pourer_overlay
+		set_light(0)
 	else
 		set_light(0)
 
@@ -165,6 +200,7 @@
 	attack_verb = list("stabbed", "slashed", "attacked")
 	sharp = 1
 	edge = 0
+	unacidable = 1
 	var/icon/broken_outline = icon('icons/obj/drinks.dmi', "broken")
 
 /obj/item/weapon/broken_bottle/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
@@ -207,6 +243,11 @@
 	New()
 		..()
 		reagents.add_reagent(/datum/reagent/ethanol/vodka, 100)
+
+/obj/item/weapon/reagent_containers/food/drinks/bottle/vodka/fivelakes
+	name = "Five Lakes"
+	desc = "Chief Engineer's personal rad-poisoning remedy."
+	icon_state = "fivelakesvodka"
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/tequilla
 	name = "Caccavo Guaranteed Quality Tequilla"
@@ -298,6 +339,33 @@
 		..()
 		reagents.add_reagent(/datum/reagent/ethanol/wine, 100)
 
+/obj/item/weapon/reagent_containers/food/drinks/bottle/winewhite
+	name = "Martian Sauvignon Blanc"
+	desc = "Martian sauvignon blanc. For those who actually like wine."
+	icon_state = "whitewine"
+	center_of_mass = "x=16;y=4"
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/ethanol/wine/white, 100)
+
+/obj/item/weapon/reagent_containers/food/drinks/bottle/winerose
+	name = "Sakura Rose"
+	desc = "Glamorous and fancy beyond all limits!"
+	icon_state = "rosewine"
+	center_of_mass = "x=16;y=4"
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/ethanol/wine/rose, 100)
+
+/obj/item/weapon/reagent_containers/food/drinks/bottle/winesparkling
+	name = "Space Champagne"
+	desc = "Goes extremely well with tangerines and caviar."
+	icon_state = "sparklingwine"
+	center_of_mass = "x=16;y=4"
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/ethanol/wine/sparkling, 100)
+
 /obj/item/weapon/reagent_containers/food/drinks/bottle/absinthe
 	name = "Jailbreaker Verte"
 	desc = "One sip of this and you just know you're gonna have a good time."
@@ -310,7 +378,7 @@
 /obj/item/weapon/reagent_containers/food/drinks/bottle/melonliquor
 	name = "Emeraldine Melon Liquor"
 	desc = "A bottle of 46 proof Emeraldine Melon Liquor. Sweet and light."
-	icon_state = "alco-green" //Placeholder.
+	icon_state = "melonliqueur" //Finally drawn by Toby. Praise Me.
 	center_of_mass = "x=16;y=6"
 	New()
 		..()
@@ -319,7 +387,7 @@
 /obj/item/weapon/reagent_containers/food/drinks/bottle/bluecuracao
 	name = "Miss Blue Curacao"
 	desc = "A fruity, exceptionally azure drink. Does not allow the imbiber to use the fifth magic."
-	icon_state = "alco-blue" //Placeholder.
+	icon_state = "bluecuracao" //Finally drawn by Toby. Praise Me.
 	center_of_mass = "x=16;y=6"
 	New()
 		..()
@@ -461,13 +529,13 @@
 	rag_underlay = "rag_small"
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/small/beer
-	name = "space beer"
+	name = "Space Beer"
 	desc = "Contains only water, malt and hops."
 	icon_state = "beer"
 	center_of_mass = "x=16;y=12"
 /obj/item/weapon/reagent_containers/food/drinks/bottle/small/beer/New()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/ethanol/beer, 30)
+	reagents.add_reagent(/datum/reagent/ethanol/beer, 45)
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/small/ale
 	name = "\improper Magm-Ale"
@@ -477,4 +545,32 @@
 	center_of_mass = "x=16;y=10"
 /obj/item/weapon/reagent_containers/food/drinks/bottle/small/ale/New()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/ethanol/ale, 30)
+	reagents.add_reagent(/datum/reagent/ethanol/ale, 50)
+
+/obj/item/weapon/reagent_containers/food/drinks/bottle/small/darkbeer
+	name = "Dark Space Beer"
+	desc = "Name brand NanoTrasen sparkling alcoholic beverage products."
+	icon_state = "darkbeer"
+	item_state = "beer"
+	center_of_mass = "x=16;y=12"
+/obj/item/weapon/reagent_containers/food/drinks/bottle/small/darkbeer/New()
+	.=..()
+	reagents.add_reagent(/datum/reagent/ethanol/beer/dark, 50)
+
+//Pourers and stuff
+
+/obj/item/weapon/bottle_extra
+	name = "generic bottle addition"
+	desc = "This goes on a bottle."
+	var/bottle_addition
+	var/bottle_desc
+	var/bottle_color
+	w_class = ITEM_SIZE_TINY
+	icon = 'icons/obj/drinks.dmi'
+
+/obj/item/weapon/bottle_extra/pourer
+	name = "bottle pourer"
+	desc = "This goes in a bottle and lets you pour drinks more precisely."
+	bottle_addition = "pourer"
+	bottle_desc = "There is a pourer in the bottle."
+	icon_state = "pourer"

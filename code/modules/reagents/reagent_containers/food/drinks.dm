@@ -215,6 +215,15 @@
 		..()
 		reagents.add_reagent(/datum/reagent/drink/dry_ramen, 30)
 
+/obj/item/weapon/reagent_containers/food/drinks/chickensoup
+	name = "cup of chicken soup"
+	desc = "Just add 10ml water, self heats! Keep yourself warm!"
+	icon_state = "chickensoup"
+	item_state = "ramen"
+	center_of_mass = "x=16;y=11"
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/drink/chicken_powder, 30)
 
 /obj/item/weapon/reagent_containers/food/drinks/sillycup
 	name = "paper cup"
