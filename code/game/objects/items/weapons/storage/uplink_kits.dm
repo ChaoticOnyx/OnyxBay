@@ -18,6 +18,10 @@
 /obj/item/weapon/storage/box/syndie_kit/imp_freedom
 	name = "box (F)"
 	startswith = list(/obj/item/weapon/implanter/freedom)
+	
+/obj/item/weapon/storage/box/syndie_kit/adrenalin
+	name = "box (A)"
+	startswith = list(/obj/item/weapon/implanter/adrenalin)	
 
 /obj/item/weapon/storage/box/syndie_kit/imp_uplink
 	name = "box (U)"
@@ -200,3 +204,22 @@
 		/obj/item/clothing/suit/armor/pcarrier/merc,
 		/obj/item/clothing/head/helmet/merc
 	)
+
+/obj/item/weapon/storage/firstaid/surgery/syndie
+	name = "surgery kit"
+	desc = "Contains tools for surgery. Has precise foam fitting for safe transport and automatically sterilizes the content between uses."
+	icon_state = "surgerykit"
+	item_state = "firstaid-surgery"
+	startswith = list(
+		/obj/item/weapon/bonesetter/bone_mender,
+		/obj/item/weapon/cautery,
+		/obj/item/weapon/circular_saw/plasmasaw,
+		/obj/item/weapon/hemostat/pico,
+		/obj/item/weapon/retractor,
+		/obj/item/weapon/scalpel/laser3,
+		/obj/item/weapon/surgicaldrill,
+		/obj/item/weapon/bonegel,
+		/obj/item/weapon/FixOVein/clot,
+		/obj/item/stack/medical/advanced/bruise_pack,
+		/obj/item/stack/nanopaste,
+		)	

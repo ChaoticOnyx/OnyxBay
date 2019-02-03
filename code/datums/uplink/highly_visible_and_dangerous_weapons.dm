@@ -78,7 +78,7 @@
 
 /datum/uplink_item/item/visible_weapons/heavysniper
 	name = "Anti-materiel Rifle with ammunition"
-	item_cost = 68
+	item_cost = 78
 	path = /obj/item/weapon/storage/secure/briefcase/heavysniper
 
 /datum/uplink_item/item/visible_weapons/machine_pistol
@@ -104,12 +104,18 @@
 
 /datum/uplink_item/item/visible_weapons/pulserifle
 	name = "Pulse Rifle"
-	item_cost = 68
+	item_cost = 78
 	antag_costs = list(MODE_MERCENARY = 30)
 	path = /obj/item/weapon/gun/energy/pulse_rifle
 
 /datum/uplink_item/item/visible_weapons/flechetterifle
 	name = "Flechette Rifle"
-	item_cost = 60
+	item_cost = 70
 	antag_costs = list(MODE_MERCENARY = 20)
 	path = /obj/item/weapon/gun/magnetic/railgun/flechette
+	
+/datum/uplink_item/item/visible_weapons/ionrifle
+	name = "Ion pistol"
+	item_cost = 32
+	antag_costs = list(MODE_MERCENARY = 15)
+	path = /obj/item/weapon/gun/energy/ionrifle/small	

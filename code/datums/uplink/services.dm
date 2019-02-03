@@ -7,44 +7,38 @@
 /datum/uplink_item/item/services/fake_ion_storm
 	name = "Ion Storm Announcement"
 	desc = "Interferes with ion sensors."
-	item_cost = 8
+	item_cost = 6
 	path = /obj/item/device/uplink_service/fake_ion_storm
 
 /datum/uplink_item/item/services/suit_sensor_garble
 	name = "Complete Suit Sensor Jamming"
 	desc = "Garbles all suit sensor data for 10 minutes."
-	item_cost = 16
+	item_cost = 12
 	path = /obj/item/device/uplink_service/jamming/garble
 
 /datum/uplink_item/item/services/fake_rad_storm
 	name = "Radiation Storm Announcement"
 	desc = "Interferes with radiation sensors."
-	item_cost = 24
+	item_cost = 22
 	path = /obj/item/device/uplink_service/fake_rad_storm
 
 /datum/uplink_item/item/services/fake_crew_annoncement
 	name = "Crew Arrival Announcement and Records"
 	desc = "Creates a fake crew arrival announcement as well as fake crew records, using your current appearance (including held items!) and worn id card. Prepare well!"
-	item_cost = 16
+	item_cost = 14
 	path = /obj/item/device/uplink_service/fake_crew_announcement
 
 /datum/uplink_item/item/services/suit_sensor_shutdown
 	name = "Complete Suit Sensor Shutdown"
 	desc = "Completely disables all suit sensors for 10 minutes."
-	item_cost = 40
+	item_cost = 33
 	path = /obj/item/device/uplink_service/jamming
-
-/datum/uplink_item/item/services/fake_update_annoncement
-	item_cost = 40
+	
+/datum/uplink_item/item/services/fake_update_announcement
+	name = "Central Command Announcement"
+	desc = "Causes a falsified central command announcement. Think carefully about the consequences!"
+	item_cost = 30
 	path = /obj/item/device/uplink_service/fake_update_announcement
-
-/datum/uplink_item/item/services/fake_update_annoncement/New()
-	..()
-	item_cost = round(DEFAULT_TELECRYSTAL_AMOUNT / 2)
-
-	spawn(2)
-		name = "[command_name()] Update Announcement"
-		desc = "Causes a falsified [command_name()] Update."
 
 /***************
 * Service Item *
@@ -172,21 +166,48 @@
 * Fake CentCom Annoncement *
 ***************************/
 /obj/item/device/uplink_service/fake_update_announcement
-	service_label = "Update Announcement"
+	service_label = "Fake Update Announcement"
+	
+/obj/item/device/uplink_service/fake_update_announcement/Destroy()
+	if(state == CURRENTLY_ACTIVE)
+		deactivate()
+		update_icon()
+	. = ..()	
 
 /obj/item/device/uplink_service/fake_update_announcement/enable(var/mob/user = usr)
-	var/title = sanitize(input(user, "Enter your announcement title.", "Announcement Title") as null|text)
-	if(!title)
+	if(state != AWAITING_ACTIVATION)
+		to_chat(user, "<span class='warning'>\The [src] won't activate again.</span>")
 		return
-	var/message = sanitize(input(user, "Enter your announcement message.", "Announcement Title") as null|text)
-	if(!message)
+	user.visible_message("<span class='notice'>\The [user] activates \the [src].</span>", "<span class='notice'>You activate \the [src].</span>")
+	log_and_message_admins("has activated the service '[service_label]'", user)
+	state = CURRENTLY_ACTIVE
+	var/input = sanitize(input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
+	var/customname = sanitizeSafe(input(usr, "Pick a title for the report.", "Title") as text|null)
+	if(!input)
 		return
+	if(!customname)
+		customname = "[command_name()] Update"
 
-	if(CanUseTopic(user, GLOB.hands_state) != STATUS_INTERACTIVE)
-		return FALSE
-	command_announcement.Announce(message, title, msg_sanitized = 1)
-	return TRUE
+	//New message handling
+	post_comm_message(customname, replacetext(input, "\n", "<br/>"))
 
+	switch(alert("Should this be announced to the general population?",,"Yes","No"))
+		if("Yes")
+			command_announcement.Announce(input, customname, new_sound = GLOB.using_map.command_report_sound, msg_sanitized = 1);
+			deactivate()
+		if("No")
+			minor_announcement.Announce(message = "New [GLOB.using_map.company_name] Update available at all communication consoles.")
+			deactivate()
+			
+/obj/item/device/uplink_service/fake_update_announcement/update_icon()
+	switch(state)
+		if(AWAITING_ACTIVATION)
+			icon_state = initial(icon_state)
+		if(CURRENTLY_ACTIVE)
+			icon_state = "sflash2"
+		if(HAS_BEEN_ACTIVATED)
+			icon_state = "flashburnt"		
+			
 /*********************************
 * Fake Crew Records/Announcement *
 *********************************/
