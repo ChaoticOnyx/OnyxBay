@@ -6,17 +6,17 @@
 
 /datum/uplink_item/item/implants/imp_freedom
 	name = "Freedom Implant"
-	item_cost = 24
+	item_cost = 4
 	path = /obj/item/weapon/storage/box/syndie_kit/imp_freedom
 
 /datum/uplink_item/item/implants/imp_compress
 	name = "Compressed Matter Implant"
-	item_cost = 32
+	item_cost = 25
 	path = /obj/item/weapon/storage/box/syndie_kit/imp_compress
 
 /datum/uplink_item/item/implants/imp_explosive
 	name = "Explosive Implant (DANGER!)"
-	item_cost = 40
+	item_cost = 30
 	path = /obj/item/weapon/storage/box/syndie_kit/imp_explosive
 
 /datum/uplink_item/item/implants/imp_uplink
@@ -33,3 +33,8 @@
 	desc = "Use on someone who is under influence of Mindbreaker to give them laws-like set of instructions. Kit comes with a dose of mindbreaker."
 	item_cost = 20
 	path = /obj/item/weapon/storage/box/syndie_kit/imp_imprinting
+	
+/datum/uplink_item/item/implants/adrenalin
+	name = "Adrenalin Implant"
+	item_cost = 15
+	path = /obj/item/weapon/implant/adrenalin	
