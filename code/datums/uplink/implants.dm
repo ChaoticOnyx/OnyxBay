@@ -37,4 +37,4 @@
 /datum/uplink_item/item/implants/adrenalin
 	name = "Adrenalin Implant"
 	item_cost = 15
-	path = /obj/item/weapon/implant/adrenalin	
+	path = /obj/item/weapon/storage/box/syndie_kit/adrenalin
