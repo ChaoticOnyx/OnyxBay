@@ -358,14 +358,19 @@
 			<A href='?_src_=holder;jobban3=OOC;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "OOC"))?"red":"blue"]>OOC</font></A> |
 			<A href='?_src_=holder;jobban3=LOOC;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "LOOC"))?"red":"blue"]>LOOC</font></A> |
 			<A href='?_src_=holder;jobban3=AHELP;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "AHELP"))?"red":"blue"]>AHelp</font></A>"}
-			
+
 		jobs += "</td>"
 
 		jobs += "</tr>"
 
 		// Species
 		jobs += "<tr>"
-		jobs += "<td><A href='?_src_=holder;jobban3=SPECIES;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "SPECIES"))?"red":"blue"]>Species</font></A></td>"
+		jobs += "<td><A href='?_src_=holder;jobban3=SPECIES;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "SPECIES"))?"red":"blue"]>Species</font></A> | "
+		jobs += "<A href='?_src_=holder;jobban3=MALE;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "MALE"))?"red":"blue"]>Male</font></A> | "
+		jobs += "<A href='?_src_=holder;jobban3=FEMALE;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "FEMALE"))?"red":"blue"]>Female</font></A> | "
+		jobs += "<A href='?_src_=holder;jobban3=APPEARANCE;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "APPEARANCE"))?"red":"blue"]>Appearance</font></A> | "
+		jobs += "<A href='?_src_=holder;jobban3=NAME;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "NAME"))?"red":"blue"]>Name</font></A></td>"
+
 		jobs += "</tr>"
 
 		jobs += "</table>"
