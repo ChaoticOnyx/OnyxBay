@@ -25,7 +25,7 @@
 	No Implant Specifics"}
 
 /obj/item/weapon/implant/freedom/New()
-	uses = rand(1, 5)
+	uses = 1
 	..()
 	return
 

@@ -72,16 +72,16 @@
 /datum/uplink_item/item/tools/thermal
 	name = "Thermal Imaging Glasses"
 	item_cost = 24
-	path = /obj/item/clothing/glasses/thermal/syndi
+	path = /obj/item/clothing/glasses/thermal
 
 /datum/uplink_item/item/tools/flashdark
 	name = "Flashdark"
-	item_cost = 32
+	item_cost = 28
 	path = /obj/item/device/flashlight/flashdark
 
 /datum/uplink_item/item/tools/powersink
 	name = "Powersink (DANGER!)"
-	item_cost = 40
+	item_cost = 85
 	path = /obj/item/device/powersink
 
 /datum/uplink_item/item/tools/teleporter
@@ -105,8 +105,8 @@
 
 /datum/uplink_item/item/tools/camera_mask
 	name = "Camera MIU"
-	item_cost = 60
-	antag_costs = list(MODE_MERCENARY = 30)
+	item_cost = 32
+	antag_costs = list(MODE_MERCENARY = 15)
 	path = /obj/item/clothing/mask/ai
 
 /datum/uplink_item/item/tools/interceptor
