@@ -326,8 +326,8 @@
 	response_disarm = "pushes aside the"
 	response_harm = "hits the"
 	speed = 0
-	maxHealth = 100
-	health = 100
+	maxHealth = 35
+	health = 35
 	pass_flags = PASS_FLAG_TABLE
 	harm_intent_damage = 15
 	melee_damage_lower = 10
@@ -402,98 +402,6 @@
 	return
 
 
-/mob/living/simple_animal/hostile/little_changeling/verb/Infest(mob/living/target as mob in oview(1))
-	set category = "Changeling"
-	set name = "Infest"
-	set desc = "We latch onto potential host and merge with their body, taking control over it."
-
-	var/mob/living/carbon/human/T = target
-
-	if(src.stat == DEAD)
-		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
-		return
-
-	if(!sting_can_reach(T, 1))
-		to_chat(src, "<span class='warning'>We are too far away.</span>")
-		return
-
-	if(!istype(T))
-		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
-		return
-
-	if(T.species.species_flags & SPECIES_FLAG_NO_SCAN)
-		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
-		return
-
-	if(HUSK in T.mutations)
-		to_chat(src, "<span class='warning'>This creature's DNA is ruined beyond useability!</span>")
-		return
-
-	if(src.mind.changeling.isabsorbing)
-		to_chat(src, "<span class='warning'>We are already infesting!</span>")
-		return
-
-	src.visible_message("<span class='danger'>[src] has latched onto \the [T].</span>", \
-						"<span class='danger'>We have latched onto \the [T].</span>")
-
-	src.mind.changeling.isabsorbing = 1
-	for(var/stage = 1, stage<=3, stage++)
-		switch(stage)
-			if(2)
-				src.visible_message("<span class='warning'>[src] merged their tegument with [target]</span>", \
-						"<span class='notice'>We bind our tegument to our prey.</span>")
-				T.getBruteLoss(10)
-			if(3)
-				src.visible_message("<span class='warning'>[src] grown their appendages into [target]</span>", \
-						"<span class='notice'>We grow inwards.</span>")
-				T.getBruteLoss(15)
-
-		feedback_add_details("changeling_powers","A[stage]")
-		if(!do_mob(src, T, 150))
-			to_chat(src, "<span class='warning'>Our infestion of [target] has been interrupted!</span>")
-			src.mind.changeling.isabsorbing = 0
-			T.getBruteLoss(39)
-			return
-
-	src.visible_message("<span class='danger'>[src] dissolved in [target] and merged with them completely!</span>", \
-						"<span class='notice'>We merged with our prey.</span>")
-
-	to_chat(T, "<span class='danger'><h3>Your neural network has been overtaken by \the [src]!</h3></span>")
-	to_chat(T,"<span class='deadsay'>You have died.</span>")
-	src.mind.changeling.isabsorbing = 0
-
-	if(istype(src,/mob/living/simple_animal/hostile/little_changeling/arm_chan))
-		if(!T.has_limb(BP_L_ARM))
-			T.restore_limb(BP_L_ARM)
-			T.restore_limb(BP_L_HAND)
-		else if (!T.has_limb(BP_R_ARM))
-			T.restore_limb(BP_R_ARM)
-			T.restore_limb(BP_R_HAND)
-	else if(istype(src,/mob/living/simple_animal/hostile/little_changeling/leg_chan))
-		if(!T.has_limb(BP_L_LEG))
-			T.restore_limb(BP_L_LEG)
-			T.restore_limb(BP_L_FOOT)
-		else if (!T.has_limb(BP_R_LEG))
-			T.restore_limb(BP_R_LEG)
-			T.restore_limb(BP_R_FOOT)
-	else if(istype(src,/mob/living/simple_animal/hostile/little_changeling/head_chan))
-		if(!T.has_limb(BP_HEAD))
-			T.restore_limb(BP_HEAD)
-			T.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/brain(T)
-			T.internal_organs_by_name[BP_EYES] = new/obj/item/organ/internal/eyes(T)
-
-	T.sync_organ_dna()
-	T.regenerate_icons()
-
-	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages)
-	absorbDNA(newDNA)
-
-	T.ghostize()
-	changeling_transfer_mind(T)
-
-	qdel(src)
-
-	return
 
 /mob/living/simple_animal/hostile/little_changeling/Allow_Spacemove(var/check_drift = 0)
 	return 0
@@ -517,26 +425,26 @@
 
 
 /mob/living/simple_animal/hostile/little_changeling/arm_chan
-	maxHealth = 100
-	health = 100
+	maxHealth = 40
+	health = 40
 	name = "disfigured arm"
 	icon_state = "gib_arm"
 	icon_living = "gib_arm"
 /mob/living/simple_animal/hostile/little_changeling/head_chan
-	maxHealth = 150
-	health = 150
+	maxHealth = 50
+	health = 50
 	name = "disfigured head"
 	icon_state = "gib_head"
 	icon_living = "gib_head"
 /mob/living/simple_animal/hostile/little_changeling/chest_chan
-	maxHealth = 300
-	health = 300
+	maxHealth = 80
+	health = 80
 	name = "disfigured chest"
 	icon_state = "gib_torso"
 	icon_living = "gib_torso"
 /mob/living/simple_animal/hostile/little_changeling/leg_chan
-	maxHealth = 100
-	health = 100
+	maxHealth = 40
+	health = 40
 	name = "disfigured leg"
 	icon_state = "gib_leg"
 	icon_living = "gib_leg"

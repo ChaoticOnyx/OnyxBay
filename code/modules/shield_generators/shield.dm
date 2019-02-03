@@ -98,8 +98,8 @@
 
 /obj/effect/shield/proc/diffuse(var/duration)
 	// The shield is trying to counter diffusers. Cause lasting stress on the shield.
-	if(gen.check_flag(MODEFLAG_BYPASS) && !diffused_for && !disabled_for)
-		take_damage(duration * rand(8, 12), SHIELD_DAMTYPE_EM)
+	if(gen.check_flag(MODEFLAG_BYPASS) && !disabled_for)
+		take_damage(duration * rand(3, 5), SHIELD_DAMTYPE_EM)
 		return
 
 	diffused_for = max(duration, 0)
