@@ -7,7 +7,7 @@
 	var/mineral_sparse =  /turf/simulated/mineral/random
 	var/mineral_rich = /turf/simulated/mineral/random/high_chance
 	var/list/ore_turfs = list()
-	var/max_mobs_count = 100 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
+	var/max_mobs_count = 50 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
 /datum/random_map/automata/cave_system/get_appropriate_path(var/value)
 	switch(value)
 		if(DOOR_CHAR)
@@ -113,19 +113,19 @@
 			if(MONSTER_CHAR)
 				new_path = floor_type
 				var/chance = rand(100)
-				if(chance <= 66)
+				if(chance <= 36)
 					new /mob/living/simple_animal/hostile/asteroid/sand_lurker(T)
 					count_cosmopterid++
-				else if(chance <= 82 && chance > 66)
+				else if(chance <= 64 && chance > 36)
 					new /mob/living/simple_animal/hostile/asteroid/hoverhead(T)
 					count_hoverhead++
-				else if(chance <= 90 && chance > 82)
+				else if(chance <= 80 && chance > 64)
 					new /mob/living/simple_animal/hostile/asteroid/goliath(T)
 					count_goliath++
-				else if(chance <= 98 && chance > 90)
+				else if(chance <= 96 && chance > 80)
 					new /mob/living/simple_animal/hostile/asteroid/shooter(T)
 					count_shockzard++
-				else if (chance > 98)
+				else if (chance > 96)
 					new /mob/living/simple_animal/hostile/asteroid/shooter/beholder(T)
 					count_beholder++
 				mobs_count++
