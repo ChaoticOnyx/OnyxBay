@@ -114,6 +114,9 @@ var/list/wireColours = list("red", "blue", "green", "darkred", "orange", "brown"
 		var/mob/living/L = usr
 		if(CanUse(L) && href_list["action"])
 			var/obj/item/I = L.get_active_hand()
+			if(istype(I,/obj/item/weapon/combotool))
+				var/obj/item/weapon/combotool/CT = L.get_active_hand()
+				I = CT.tool_u
 			holder.add_hiddenprint(L)
 			if(href_list["cut"]) // Toggles the cut/mend status
 				if(isWirecutter(I))
