@@ -956,6 +956,25 @@ May God have mercy.
 	name = "Buzzcut 2"
 	icon_state = "hair_buzzcut2"
 
+/datum/sprite_accessory/hair/leon
+	name = "Leon"
+	icon_state = "hair_leon"
+/datum/sprite_accessory/hair/wong
+	name = "Wong"
+	icon_state = "hair_wong"
+/datum/sprite_accessory/hair/dreadtail1
+	name = "Dreadtail 1"
+	icon_state = "hair_dreadtail1"
+/datum/sprite_accessory/hair/dreadtail2
+	name = "Dreadtail 2"
+	icon_state = "hair_dreadtail2"
+/datum/sprite_accessory/hair/backswept
+	name = "Backswept"
+	icon_state = "hair_backswept"
+/datum/sprite_accessory/hair/wolfmane
+	name = "Wolven mane"
+	icon_state = "hair_wolfmane"
+
 /*
 ///////////////////////////////////
 /  =---------------------------=  /
