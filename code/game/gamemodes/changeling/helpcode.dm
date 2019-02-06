@@ -369,7 +369,7 @@
 		return
 	..()
 
-/mob/living/simple_animal/hostile/little_changeling/verb/paralyse(mob/living/target as mob in oview(1))
+/mob/living/simple_animal/hostile/little_changeling/verb/paralyse(mob/living/carbon/human/target as mob in oview(1))
 	set category = "Changeling"
 	set name = "Paralyzis sting"
 	set desc = "We sting our prey and inject paralyzing toxin into them, making them harmless to us for relatively long period of time."
@@ -386,7 +386,12 @@
 	if(!sting_can_reach(target, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
-
+	
+	var/obj/item/organ/external/target_limb = target.get_organ(src.zone_sel.selecting)
+	if(!target_limb)
+		to_chat(src, "<span class='warning'>They are missing that body part!</span>")
+		return
+		
 	for(var/obj/item/clothing/clothes in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
 		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
 			to_chat(src, "<span class='warning'>[target]'s armor has protected them from our stinger.</span>")
@@ -407,7 +412,7 @@
 	last_special = world.time + 10 SECOND
 	return
 
-/mob/living/simple_animal/hostile/little_changeling/verb/Infest(mob/living/target as mob in oview(1))
+/mob/living/simple_animal/hostile/little_changeling/verb/Infest(mob/living/carbon/human/target as mob in oview(1))
 	set category = "Changeling"
 	set name = "Infest"
 	set desc = "We latch onto potential host and merge with their body, taking control over it."
@@ -422,6 +427,11 @@
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
 
+	var/obj/item/organ/external/target_limb = T.get_organ(src.zone_sel.selecting)
+	if(!target_limb)
+		to_chat(src, "<span class='warning'>They are missing that body part!</span>")
+		return
+		
 	for(var/obj/item/clothing/clothes in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
 		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
 			to_chat(src, "<span class='warning'>We can't merge with [T] because they are coated with something impenetrable for us!</span>")
