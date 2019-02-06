@@ -14,7 +14,7 @@
 
 /datum/reagent/toxin/cyanide/change_toxin //Fast and Lethal
 	name = "Changeling reagent"
-	description = "A highly toxic chemical."
+	description = "A highly toxic chemical extracted from strange alien-looking biostructure."
 	taste_mult = 0.6
 	reagent_state = LIQUID
 	color = "#cf3600"
@@ -23,7 +23,7 @@
 	target_organ = BP_HEART
 
 /datum/reagent/toxin/cyanide/change_toxin/biotoxin //Fast and Lethal
-	name = "Biotoxin"
+	name = "Strange biotoxin"
 	description = "Destroys any biological tissue in seconds."
 	taste_mult = 0.6
 	reagent_state = LIQUID
@@ -42,7 +42,7 @@
 		M.mind.changeling.chem_recharge_rate = 0
 
 /datum/reagent/rezadone/change_reviver
-	name = "Strange liquid"
+	name = "Strange bioliquid"
 	description = "Smells like acetone."
 	taste_description = "sourness"
 	reagent_state = LIQUID
@@ -66,14 +66,14 @@
 	M.revive()
 
 /datum/chemical_reaction/change_reviver
-	name = "Strange liquid"
+	name = "Strange bioliquid"
 	result = /datum/reagent/rezadone/change_reviver
 	required_reagents = list(/datum/reagent/toxin/cyanide/change_toxin = 5, /datum/reagent/dylovene = 5, /datum/reagent/cryoxadone = 5)
 	result_amount = 5
 
 
 /datum/chemical_reaction/Biotoxin
-	name = "Biotoxin"
+	name = "Strange biotoxin"
 	result = /datum/reagent/toxin/cyanide/change_toxin/biotoxin
 	required_reagents = list(/datum/reagent/toxin/cyanide/change_toxin = 5, /datum/reagent/toxin/phoron = 5, /datum/reagent/mutagen = 5)
 	result_amount = 3
@@ -292,7 +292,7 @@
 /mob/proc/transform_into_little_changeling()
 	set category = "Changeling"
 	set name = "Transform into little changeling"
-	set desc = "If we find ourselves inside severed limb we grow little legs and jaw."
+	set desc = "If we find ourselves inside severed limb we will grow little limbs and jaws."
 
 	var/obj/item/organ/internal/biostructure/BIO = src.loc
 	var/limb_to_del = BIO.loc
@@ -309,7 +309,7 @@
 		return
 
 	BIO.loc.visible_message("<span class='warning'>[BIO.loc] suddenly grows little legs!</span>",
-		"<span class='alert'><font size='2'><b>We transformed into mobile form! We have to find a new host!</b></font></span>")
+		"<span class='alert'><font size='2'><b>We have just transformed into mobile but vulnerable form! We have to find a new host quickly!</b></font></span>")
 	qdel(limb_to_del)
 
 
@@ -371,8 +371,8 @@
 
 /mob/living/simple_animal/hostile/little_changeling/verb/paralyse(mob/living/target as mob in oview(1))
 	set category = "Changeling"
-	set name = "Paralyzing sting"
-	set desc = "We sting our prey and inject paralyzing venom into them, making them harmless to us for relatively long period of time."
+	set name = "Paralyzis sting"
+	set desc = "We sting our prey and inject paralyzing toxin into them, making them harmless to us for relatively long period of time."
 
 
 	if(src.stat == DEAD)
@@ -387,21 +387,127 @@
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
 
+	for(var/obj/item/clothing/clothes in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
+		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
+			to_chat(src, "<span class='warning'>[T]'s armor has protected them from our stinger.</span>")
+			return //Проверка на одежду для стингов, хз чому Филя ее не покрал из кода стингов
+
 	if(!target)	return 0
 
 	if(target.isSynthetic())
+		to_chat(src, "<span class='warning'>[T] is not an biological organism, we can't paralyse them.</span>")
 		return
 
 	to_chat(target,"<span class='danger'>Your muscles begin to painfully tighten.</span>")
 	target.Weaken(20)
-	src.visible_message("<span class='warning'>[src] pierce \the [target] with it's sting!</span>")
+	src.visible_message("<span class='warning'>[src] grown out a huge abominable stinger and pierced \the [target] with it!</span>")
 	feedback_add_details("changeling_powers","PB")
 
 
 	last_special = world.time + 10 SECOND
 	return
 
+/mob/living/simple_animal/hostile/little_changeling/verb/Infest(mob/living/target as mob in oview(1))
+	set category = "Changeling"
+	set name = "Infest"
+	set desc = "We latch onto potential host and merge with their body, taking control over it."
 
+	var/mob/living/carbon/human/T = target
+
+	if(src.stat == DEAD)
+		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
+		return
+
+	if(!sting_can_reach(T, 1))
+		to_chat(src, "<span class='warning'>We are too far away.</span>")
+		return
+
+	for(var/obj/item/clothing/clothes in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
+		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
+			to_chat(src, "<span class='warning'>We can't merge with [T] because they are coated with something impenetrable for us!</span>")
+			return //Проверка на одежду для стингов, хз чому Филя ее не покрал из кода стингов [2]
+
+	if(!istype(T))
+		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
+		return
+
+	if(T.species.species_flags & SPECIES_FLAG_NO_SCAN)
+		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
+		return
+
+	if(HUSK in T.mutations)
+		to_chat(src, "<span class='warning'>This creature's DNA is ruined beyond useability!</span>")
+		return
+
+	if(src.mind.changeling.isabsorbing)
+		to_chat(src, "<span class='warning'>We are already infesting!</span>")
+		return
+	
+	if(T.stat != DEAD && !T.is_asystole() && !T.incapacitated() && !T.sleeping && !T.weakened && !T.stunned && !T.paralysis && !T.restrained())
+		to_chat(src, "<span class='warning'>We need our victim to be paralysed, dead or somehow else incapable of defending themself for us to latch on!</span>")
+		return //Проверка на трупность/критность/спящесть/парализованность/связанность/всетакоепрочее
+		
+	src.visible_message("<span class='danger'>[src] has latched onto \the [T].</span>", \
+						"<span class='danger'>We have latched onto \the [T].</span>")
+
+	src.mind.changeling.isabsorbing = 1
+	for(var/stage = 1, stage<=3, stage++)
+		switch(stage)
+			if(2)
+				src.visible_message("<span class='warning'>[src] merged their tegument with [target]</span>", \
+						"<span class='notice'>We bind our tegument to our prey.</span>")
+				T.getBruteLoss(10)
+			if(3)
+				src.visible_message("<span class='warning'>[src] grown their appendages into [target]</span>", \
+						"<span class='notice'>We grow inwards.</span>")
+				T.getBruteLoss(15)
+
+		feedback_add_details("changeling_powers","A[stage]")
+		if(!do_mob(src, T, 150))
+			to_chat(src, "<span class='warning'>Our infestion of [target] has been interrupted!</span>")
+			src.mind.changeling.isabsorbing = 0
+			T.getBruteLoss(39)
+			return
+
+	src.visible_message("<span class='danger'>[src] dissolved in [target] and merged with them completely!</span>", \
+						"<span class='notice'>We merged with our prey.</span>")
+
+	to_chat(T, "<span class='danger'><h3>Your neural network has been overtaken by \the [src]!</h3></span>")
+	to_chat(T,"<span class='deadsay'>You have died.</span>")
+	src.mind.changeling.isabsorbing = 0
+
+	if(istype(src,/mob/living/simple_animal/hostile/little_changeling/arm_chan))
+		if(!T.has_limb(BP_L_ARM))
+			T.restore_limb(BP_L_ARM)
+			T.restore_limb(BP_L_HAND)
+		else if (!T.has_limb(BP_R_ARM))
+			T.restore_limb(BP_R_ARM)
+			T.restore_limb(BP_R_HAND)
+	else if(istype(src,/mob/living/simple_animal/hostile/little_changeling/leg_chan))
+		if(!T.has_limb(BP_L_LEG))
+			T.restore_limb(BP_L_LEG)
+			T.restore_limb(BP_L_FOOT)
+		else if (!T.has_limb(BP_R_LEG))
+			T.restore_limb(BP_R_LEG)
+			T.restore_limb(BP_R_FOOT)
+	else if(istype(src,/mob/living/simple_animal/hostile/little_changeling/head_chan))
+		if(!T.has_limb(BP_HEAD))
+			T.restore_limb(BP_HEAD)
+			T.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/brain(T)
+			T.internal_organs_by_name[BP_EYES] = new/obj/item/organ/internal/eyes(T)
+
+	T.sync_organ_dna()
+	T.regenerate_icons()
+
+	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages)
+	absorbDNA(newDNA)
+
+	T.ghostize()
+	changeling_transfer_mind(T)
+
+	qdel(src)
+
+	return
 
 /mob/living/simple_animal/hostile/little_changeling/Allow_Spacemove(var/check_drift = 0)
 	return 0
