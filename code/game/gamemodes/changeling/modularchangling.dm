@@ -276,7 +276,7 @@ var/list/datum/power/changeling/powerinstances = list()
 
 
 /datum/power/changeling/chem_disp_sting
-	name = "Biochemical cauldron"
+	name = "Biochemical Cauldron"
 	desc = "We evolve our stinger glands to be able to synthesize a variety of chemicals."
 	helptext = "Every sting would contain 10 units of the pre-chosen solution from our glands and would require 5 units of our chemicals per injection."
 	enhancedtext = "20 units of the solution per sting and more reagents to synthesize from."
@@ -284,7 +284,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	verbpath = /mob/proc/chem_disp_sting
 /*
 /datum/power/changeling/chem_sting
-	name = "Chemical sting"
+	name = "Chemical Sting"
 	desc = "We inject synthesized chemicals to the victim."
 	helptext = "Spends more chemicals on phoron synthesis. To use this, we need to have Synthesis of chemistry."
 	genomecost = 3
