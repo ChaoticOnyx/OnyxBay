@@ -85,7 +85,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Mimic Voice"
 	desc = "We shape our vocal glands to sound like a desired voice."
 	helptext = "Will turn your voice into the name that you enter. We must constantly expend chemicals to maintain our form like this"
-	genomecost = 1
+	genomecost = 3
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_mimicvoice
 
@@ -93,7 +93,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Extract DNA"
 	desc = "We stealthily sting a target and extract the DNA from them."
 	helptext = "Will give you the DNA of your target, allowing you to transform into them. Does not count towards absorb objectives."
-	genomecost = 2
+	genomecost = 4
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_extract_dna_sting
 
@@ -115,7 +115,7 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/boost_range
 	name = "Boost Range"
 	desc = "We evolve the ability to shoot our stingers at humans, with some preperation."
-	genomecost = 2
+	genomecost = 3
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_boost_range
 
@@ -154,7 +154,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Digital Camoflauge"
 	desc = "We evolve the ability to distort our form and proprtions, defeating common altgorthms used to detect lifeforms on cameras."
 	helptext = "We cannot be tracked by camera while using this skill.  However, humans looking at us will find us.. uncanny.  We must constantly expend chemicals to maintain our form like this."
-	genomecost = 1
+	genomecost = 2
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_digitalcamo
 
@@ -177,8 +177,8 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/visible_camouflage
 	name = "Camouflage"
 	desc = "We rapidly shape the color of our skin and secrete easily reversible dye on our clothes, to blend in with our surroundings.  \
-	We are undetectable, so long as we move slowly.(Toggle)"
-	helptext = "Running, and performing most acts will reveal us.  Our chemical regeneration is halted while we are hidden."
+	We are undetectable, as long as we move slowly."
+	helptext = "Toggleable. Running, and performing most acts will reveal us.  Our chemical regeneration is halted while we are hidden."
 	enhancedtext = "Can run while hidden."
 	genomecost = 10
 	verbpath = /mob/proc/changeling_visible_camouflage
@@ -217,9 +217,9 @@ var/list/datum/power/changeling/powerinstances = list()
 
 /datum/power/changeling/recursive_enhancement
 	name = "Recursive Enhancement"
-	desc = "We cause our abilities to have increased or additional effects."
+	desc = "We cause some of our abilities to have increased or additional effects."
 	helptext = "To check the effects for each ability, check the blue text underneath the ability in the evolution menu."
-	genomecost = 6
+	genomecost = 7
 	verbpath = /mob/proc/changeling_recursive_enhancement
 /*
 /datum/power/changeling/fake_blade
@@ -247,7 +247,7 @@ var/list/datum/power/changeling/powerinstances = list()
 
 /datum/power/changeling/gib_self
 	name = "Body Disjunction"
-	desc = "Tear apart your human disguise, revealing your little form."
+	desc = "Tear apart your human disguise and become a hunting pack of lesser critters."
 	helptext = "Takes time."
 	genomecost = 4
 	verbpath = /mob/proc/changeling_gib_self
@@ -261,7 +261,7 @@ var/list/datum/power/changeling/powerinstances = list()
 
 /datum/power/changeling/move_biostructure
 	name = "Relocate Biostructure"
-	desc = "We move our precious organ in other place."
+	desc = "We move our precious core organ to different part of our body."
 	helptext = "Takes time."
 	enhancedtext = "Would relocate faster"
 	genomecost = 0
@@ -269,17 +269,17 @@ var/list/datum/power/changeling/powerinstances = list()
 
 /datum/power/changeling/division
 	name = "Division"
-	desc = "We infest humanoid body with the clone of our core, making them like us."
+	desc = "We infest humanoid body with the clone of our core organ, making them like us."
 	helptext = "Dead bodies cannot be successfully infested."
 	genomecost = 8
 	verbpath = /mob/proc/changeling_division
 
 
 /datum/power/changeling/chem_disp_sting
-	name = "Synthesis of chemistry"
-	desc = "We synthesize a variety of chemicals."
-	helptext = "Spends more chemicals on phoron synthesis."
-	genomecost = 3
+	name = "Biochemical cauldron"
+	desc = "We evolve our stinger glands to be able to synthesize a variety of chemicals."
+	helptext = "Every stinger would contain 10 units of the pre-made solution from our glands and would require 5 units of our chemicals per injection."
+	genomecost = 10
 	verbpath = /mob/proc/chem_disp_sting
 /*
 /datum/power/changeling/chem_sting
