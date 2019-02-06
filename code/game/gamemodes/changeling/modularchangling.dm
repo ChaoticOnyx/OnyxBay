@@ -219,7 +219,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Recursive Enhancement"
 	desc = "We cause some of our abilities to have increased or additional effects."
 	helptext = "To check the effects for each ability, check the blue text underneath the ability in the evolution menu."
-	genomecost = 7
+	genomecost = 8
 	verbpath = /mob/proc/changeling_recursive_enhancement
 /*
 /datum/power/changeling/fake_blade
@@ -263,7 +263,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Relocate Biostructure"
 	desc = "We move our precious core organ to different part of our body."
 	helptext = "Takes time."
-	enhancedtext = "Would relocate faster"
+	enhancedtext = "Would relocate faster."
 	genomecost = 0
 	verbpath = /mob/proc/changeling_move_biostructure
 
@@ -278,7 +278,8 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/chem_disp_sting
 	name = "Biochemical cauldron"
 	desc = "We evolve our stinger glands to be able to synthesize a variety of chemicals."
-	helptext = "Every stinger would contain 10 units of the pre-made solution from our glands and would require 5 units of our chemicals per injection."
+	helptext = "Every sting would contain 10 units of the pre-chosen solution from our glands and would require 5 units of our chemicals per injection."
+	enhancedtext = "20 units of the solution per sting and more reagents to synthesize from."
 	genomecost = 10
 	verbpath = /mob/proc/chem_disp_sting
 /*
