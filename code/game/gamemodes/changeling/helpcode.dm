@@ -387,15 +387,15 @@
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
 
-	for(var/obj/item/clothing/clothes in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
+	for(var/obj/item/clothing/clothes in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
 		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
-			to_chat(src, "<span class='warning'>[T]'s armor has protected them from our stinger.</span>")
+			to_chat(src, "<span class='warning'>[target]'s armor has protected them from our stinger.</span>")
 			return //Проверка на одежду для стингов, хз чому Филя ее не покрал из кода стингов
 
 	if(!target)	return 0
 
 	if(target.isSynthetic())
-		to_chat(src, "<span class='warning'>[T] is not an biological organism, we can't paralyse them.</span>")
+		to_chat(src, "<span class='warning'>[target] is not an biological organism, we can't paralyse them.</span>")
 		return
 
 	to_chat(target,"<span class='danger'>Your muscles begin to painfully tighten.</span>")
