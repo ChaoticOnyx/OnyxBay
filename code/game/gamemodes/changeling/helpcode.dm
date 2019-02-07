@@ -386,16 +386,11 @@
 	if(!sting_can_reach(target, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
-	
-	var/obj/item/organ/external/target_limb = target.get_organ(src.zone_sel.selecting)
-	if(!target_limb)
-		to_chat(src, "<span class='warning'>They are missing that body part!</span>")
-		return
-		
-	for(var/obj/item/clothing/clothes in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
-		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
+
+	for(var/obj/item/clothing/C in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
+		if(C && (C.body_parts_covered & affecting.body_part) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
 			to_chat(src, "<span class='warning'>[target]'s armor has protected them from our stinger.</span>")
-			return //Проверка на одежду для стингов, хз чому Филя ее не покрал из кода стингов
+			return
 
 	if(!target)	return 0
 
@@ -405,7 +400,7 @@
 
 	to_chat(target,"<span class='danger'>Your muscles begin to painfully tighten.</span>")
 	target.Weaken(20)
-	src.visible_message("<span class='warning'>[src] grown out a huge abominable stinger and pierced \the [target] with it!</span>")
+	src.visible_message("<span class='warning'>[src] has grown out a huge abominable stinger and pierced \the [target] with it!</span>")
 	feedback_add_details("changeling_powers","PB")
 
 
@@ -427,13 +422,8 @@
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
 
-	var/obj/item/organ/external/target_limb = T.get_organ(src.zone_sel.selecting)
-	if(!target_limb)
-		to_chat(src, "<span class='warning'>They are missing that body part!</span>")
-		return
-		
-	for(var/obj/item/clothing/clothes in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
-		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
+	for(var/obj/item/clothing/C in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
+		if(C && (C.body_parts_covered & affecting.body_part) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
 			to_chat(src, "<span class='warning'>We can't merge with [T] because they are coated with something impenetrable for us!</span>")
 			return //Проверка на одежду для стингов, хз чому Филя ее не покрал из кода стингов [2]
 
