@@ -334,6 +334,7 @@
 	melee_damage_upper = 20
 	attacktext = "bitten"
 	attack_sound = 'sound/weapons/bite.ogg'
+	var/cloaked = 0
 
 	//Space carp aren't affected by atmos.
 	min_gas = null
@@ -447,6 +448,10 @@
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
 		return
+		
+	if(src.cloaked == 1)
+		to_chat(src, "<span class='warning'>We can't infest while mimicking enviroment.</span>")
+		return
 
 	if(!sting_can_reach(T, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
@@ -506,9 +511,10 @@
 	if(T.stat != DEAD && !T.is_asystole() && !T.incapacitated() && !T.sleeping && !T.weakened && !T.stunned && !T.paralysis && !T.restrained())
 		to_chat(src, "<span class='warning'>We need our victim to be paralysed, dead or somehow else incapable of defending themself for us to latch on!</span>")
 		return //Проверка на трупность/критность/спящесть/парализованность/связанность/всетакоепрочее
-		
+	
+	src.forceMove(T.loc)
 	src.visible_message("<span class='danger'>[src] has latched onto \the [T].</span>", \
-						"<span class='danger'>We have latched onto \the [T].</span>")
+						"<span class='warning'>We have latched onto \the [T].</span>")
 
 	src.mind.changeling.isabsorbing = 1
 	for(var/stage = 1, stage<=3, stage++)
@@ -615,13 +621,6 @@
 	icon_state = "gib_leg"
 	icon_living = "gib_leg"
 
-
-/mob/living/simple_animal/hostile/little_changeling/headcrab/death(gibbed, deathmessage = "went limp!", show_dead_message)
-	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
-	if (BIO)
-		BIO.die()
-	..()
-
 /mob/living/simple_animal/hostile/little_changeling/headcrab
 	maxHealth = 15
 	health = 15
@@ -631,3 +630,45 @@
 	icon_state = "headcrab"
 	icon_living = "headcrab"
 	icon_dead = "headcrab_dead"
+
+/mob/living/simple_animal/hostile/little_changeling/headcrab/verb/Vanish()
+	set category = "Changeling"
+	set name = "Freeze and vanish"
+	set desc = "We smooth and contract our chromatophores, almost vanishing in the air."
+	
+	if(src.stat == DEAD)
+		to_chat(src, "<span class='warning'>We can't use this ability. We are dead.</span>")
+		return
+
+	if(src.mind.changeling.isabsorbing == 1)
+		to_chat(src, "<span class='warning'>We can't mimic environment while infesting.</span>")
+		return
+
+	if(cloaked == 1)
+		cloaked = 0
+		update_icon()
+		speed = 0
+	else
+		cloaked = 1
+		to_chat(src, "<span class='alert'>We are now mimicking our environment, but we can't move quickly in that state.</span>")
+		update_icon()
+		speed = 4
+		apply_effect(2, STUN, 0)
+		
+/mob/living/simple_animal/hostile/little_changeling/headcrab/update_icon()
+	if(cloaked == 1)
+		alpha = 25
+		set_light(0)
+		move_to_delay = initial(move_to_delay)	
+	else
+		alpha = 255
+		set_light(4)
+		move_to_delay = 2
+	return
+		
+/mob/living/simple_animal/hostile/little_changeling/headcrab/death(gibbed, deathmessage = "went limp and collapsed!", show_dead_message)
+	cloaked = 0
+	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
+	if (BIO)
+		BIO.die()
+	..()
