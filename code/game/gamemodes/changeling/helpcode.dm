@@ -386,18 +386,17 @@
 	if(!sting_can_reach(target, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
-/*		
-	for(var/mob/living/carbon/human/target)
-		var/head_not_exposed_to_changeling = 0
-		var/face_not_exposed_to_changeling = 0
-		var/eyes_not_exposed_to_changeling = 0
-		var/chest_not_exposed_to_changeling = 0
-		var/groin_not_exposed_to_changeling = 0
-		var/arms_not_exposed_to_changeling = 0
-		var/hands_not_exposed_to_changeling = 0
-		var/legs_not_exposed_to_changeling = 0
-		var/feet_not_exposed_to_changeling = 0
 	
+	var/head_not_exposed_to_changeling = 0
+	var/face_not_exposed_to_changeling = 0
+	var/eyes_not_exposed_to_changeling = 0
+	var/chest_not_exposed_to_changeling = 0
+	var/groin_not_exposed_to_changeling = 0
+	var/arms_not_exposed_to_changeling = 0
+	var/hands_not_exposed_to_changeling = 0
+	var/legs_not_exposed_to_changeling = 0
+	var/feet_not_exposed_to_changeling = 0
+
 	for(var/obj/item/clothing/C in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
 		if(C && (C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
 			head_not_exposed_to_changeling = 1
@@ -417,13 +416,11 @@
 			legs_not_exposed_to_changeling = 1
 		if(C && (C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
 			feet_not_exposed_to_changeling = 1
-	
-	for(var/mob/living/carbon/human/target)
-		var/body_not_exposed_to_changeling = head_not_exposed_to_changeling*face_not_exposed_to_changeling*eyes_not_exposed_to_changeling*chest_not_exposed_to_changeling*groin_not_exposed_to_changeling*arms_not_exposed_to_changeling*hands_not_exposed_to_changeling*legs_not_exposed_to_changeling*feet_not_exposed_to_changeling		
-	if(body_not_exposed_to_changeling = 1)
+
+	var/body_not_exposed_to_changeling = head_not_exposed_to_changeling*face_not_exposed_to_changeling*eyes_not_exposed_to_changeling*chest_not_exposed_to_changeling*groin_not_exposed_to_changeling*arms_not_exposed_to_changeling*hands_not_exposed_to_changeling*legs_not_exposed_to_changeling*feet_not_exposed_to_changeling
+	if(body_not_exposed_to_changeling == 1)
 		to_chat(src, "<span class='warning'>[target]'s armor has protected them from our stinger.</span>")
-		return	
-*/		//Ебаный рот этих проверок закрытий всего тела, блядь
+		return
 	
 	if(!target)	return 0
 
@@ -454,18 +451,17 @@
 	if(!sting_can_reach(T, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
-/*		
-	for(var/mob/living/carbon/human/T)		
-		var/head_not_exposed_to_changeling = 0
-		var/face_not_exposed_to_changeling = 0
-		var/eyes_not_exposed_to_changeling = 0
-		var/chest_not_exposed_to_changeling = 0
-		var/groin_not_exposed_to_changeling = 0
-		var/arms_not_exposed_to_changeling = 0
-		var/hands_not_exposed_to_changeling = 0
-		var/legs_not_exposed_to_changeling = 0
-		var/feet_not_exposed_to_changeling = 0
-	
+
+	var/head_not_exposed_to_changeling = 0
+	var/face_not_exposed_to_changeling = 0
+	var/eyes_not_exposed_to_changeling = 0
+	var/chest_not_exposed_to_changeling = 0
+	var/groin_not_exposed_to_changeling = 0
+	var/arms_not_exposed_to_changeling = 0
+	var/hands_not_exposed_to_changeling = 0
+	var/legs_not_exposed_to_changeling = 0
+	var/feet_not_exposed_to_changeling = 0
+
 	for(var/obj/item/clothing/C in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
 		if(C && (C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
 			head_not_exposed_to_changeling = 1
@@ -485,13 +481,11 @@
 			legs_not_exposed_to_changeling = 1
 		if(C && (C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
 			feet_not_exposed_to_changeling = 1
-	
-	for(var/mob/living/carbon/human/T)
-		var/body_not_exposed_to_changeling = head_not_exposed_to_changeling*face_not_exposed_to_changeling*eyes_not_exposed_to_changeling*chest_not_exposed_to_changeling*groin_not_exposed_to_changeling*arms_not_exposed_to_changeling*hands_not_exposed_to_changeling*legs_not_exposed_to_changeling*feet_not_exposed_to_changeling		
-	if(body_not_exposed_to_changeling = 1)
+
+	var/body_not_exposed_to_changeling = head_not_exposed_to_changeling*face_not_exposed_to_changeling*eyes_not_exposed_to_changeling*chest_not_exposed_to_changeling*groin_not_exposed_to_changeling*arms_not_exposed_to_changeling*hands_not_exposed_to_changeling*legs_not_exposed_to_changeling*feet_not_exposed_to_changeling
+	if(body_not_exposed_to_changeling == 1)
 		to_chat(src, "<span class='warning'>We can't merge with [T] because they are coated with something impenetrable for us!</span>")
-		return	
-*/		//Ебаный рот этих проверок закрытий всего тела, блядь [2]
+		return
 		
 	if(!istype(T))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
