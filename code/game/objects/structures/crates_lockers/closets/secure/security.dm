@@ -227,13 +227,12 @@
 		/obj/item/weapon/storage/box/evidence,
 		/obj/item/device/radio/headset/headset_sec,
 		/obj/item/clothing/suit/armor/vest/detective,
-		/obj/item/ammo_magazine/c45m/rubber,
 		/obj/item/taperoll/police,
-		/obj/item/weapon/gun/projectile/colt/detective,
 		/obj/item/clothing/accessory/holster/armpit,
 		/obj/item/weapon/reagent_containers/food/drinks/flask/detflask,
 		/obj/item/weapon/storage/briefcase/crimekit,
-		/obj/item/device/holowarrant
+		/obj/item/device/holowarrant,
+		/obj/item/weapon/storage/secure/guncase/detective
 	)
 
 /obj/structure/closet/secure_closet/injection

@@ -51,6 +51,22 @@
 	icon_state = "R38"
 	ammo_type = /obj/item/ammo_casing/c44/rubber
 
+/obj/item/ammo_magazine/c44/spec
+	name = "speed loader (.44 SPEC)"
+	desc = "A five-round speed loader for M2019."
+	icon_state = "44spec"
+	ammo_type = /obj/item/ammo_casing/c44/spec
+	matter = list(DEFAULT_WALL_MATERIAL = 1000)
+	max_ammo = 5
+
+/obj/item/ammo_magazine/c44/chem
+	name = "speed loader (.44 CHEM)"
+	desc = "A five-round speed loader for M2019."
+	icon_state = "44chem"
+	ammo_type = /obj/item/ammo_casing/c44/chem
+	matter = list(DEFAULT_WALL_MATERIAL = 1500)
+	max_ammo = 5
+
 /obj/item/ammo_magazine/c45m
 	name = "magazine (.45)"
 	icon_state = "45"
