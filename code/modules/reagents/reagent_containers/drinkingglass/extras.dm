@@ -52,6 +52,7 @@
 	var/glass_addition
 	var/glass_desc
 	var/glass_color
+	var/isoverlaying = 0
 	w_class = ITEM_SIZE_TINY
 	icon = DRINK_ICON_FILE
 
@@ -68,5 +69,29 @@
 	glass_addition = "straw"
 	glass_desc = "There is a straw in the glass."
 	icon_state = "straw"
+
+/obj/item/weapon/glass_extra/orange_slice
+	name = "orange slice"
+	desc = "Made of silicone."
+	glass_addition = "orange"
+	glass_desc = "There is an orange slice on a rim of the glass."
+	icon_state = "orange"
+	isoverlaying = 1
+
+/obj/item/weapon/glass_extra/lime_slice
+	name = "lime slice"
+	desc = "Tiny lime slice made of silicone."
+	glass_addition = "lime"
+	glass_desc = "There is a tiny lime slice on a rim of the glass."
+	icon_state = "lime"
+	isoverlaying = 1
+
+/obj/item/weapon/glass_extra/glassholder
+	name = "glass-holder"
+	desc = "Also known as 'podstakannik'."
+	glass_addition = "holder"
+	glass_desc = "It's in a holder."
+	icon_state = "glassholder"
+	isoverlaying = 1
 
 #undef DRINK_ICON_FILE

@@ -535,15 +535,15 @@
 	taste_description = "sludge"
 	reagent_state = LIQUID
 	color = "#13bc5e"
-	metabolism = REM * 0.2
+	metabolism = REM * 0.4
 
 /datum/reagent/slimetoxin/affect_blood(var/mob/living/carbon/human/H, var/alien, var/removed)
 	if(!istype(H))
 		return
 	if(H.species.name == SPECIES_PROMETHEAN)
 		return
-	H.adjustToxLoss(40 * removed)
-	if(H.chem_doses[type] < 1 || prob(30))
+	H.adjustToxLoss(20 * removed)
+	if(H.chem_doses[type] < 0.5 || prob(30))
 		return
 	H.chem_doses[type] = 0
 	var/list/meatchunks = list()
@@ -552,7 +552,7 @@
 		if(!E.is_stump() && E.robotic < ORGAN_ROBOT && E.species.name != SPECIES_PROMETHEAN)
 			meatchunks += E
 	if(!meatchunks.len)
-		if(prob(10))
+		if(prob(15))
 			to_chat(H, "<span class='danger'>Your flesh rapidly mutates!</span>")
 			H.set_species(SPECIES_PROMETHEAN)
 			H.shapeshifter_set_colour("#05ff9b")

@@ -124,8 +124,8 @@
 	icon_state = "flashdark"
 	item_state = "flashdark"
 	w_class = ITEM_SIZE_NORMAL
-	brightness_on = 8
-	flashlight_power = -6
+	brightness_on = 11
+	flashlight_power = -11
 
 /obj/item/device/flashlight/pen
 	name = "penlight"

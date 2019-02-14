@@ -11,7 +11,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/changelingID = "Changeling"
 	var/geneticdamage = 0
 	var/isabsorbing = 0
-	var/geneticpoints = 20
+	var/geneticpoints = 13
 	var/purchasedpowers = list()
 	var/mimicing = ""
 	var/lingabsorbedcount = 1
@@ -457,7 +457,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	if(!src.stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
 		return
-	to_chat(src, "<span class='notice'>We relocated our organ in chest and will attempt to regenerate our form.</span>")
+	to_chat(src, "<span class='notice'>We have relocated our core organ into chest and will attempt to regenerate our form.</span>")
 
 	var/mob/living/carbon/C = src
 
@@ -694,7 +694,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	if(changeling.mimicing)
 		changeling.mimicing = ""
-		to_chat(src, "<span class='notice'>We return our vocal glands to their original location.</span>")
+		to_chat(src, "<span class='notice'>We return our vocal glands to their original form.</span>")
 		return
 
 	var/mimic_voice = sanitize(input(usr, "Enter a name to mimic.", "Mimic Voice", null), MAX_NAME_LEN)
@@ -1219,7 +1219,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /mob/proc/changeling_division()
 	set category = "Changeling"
 	set name = "Division (20)"
-	set desc = "We will make you ours."
+	set desc = "You will be like us."
 
 	var/datum/changeling/changeling = changeling_power(0,0,100)
 	if(!changeling)	return
@@ -1284,7 +1284,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	src.visible_message("<span class='danger'>[src] transfused something into [T] through their proboscis!</span>")
 	to_chat(T, "<span class='danger'>You feel like you're dying...</span>")
 	if(changeling.geneticpoints <= 2)
-		to_chat(src, "<span class='notice'>Not enough dna.</span>")
+		to_chat(src, "<span class='notice'>Not enough DNA.</span>")
 		return
 	if(changeling.chem_charges <= 20)
 		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
@@ -1297,8 +1297,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/datum/antagonist/changeling/a = new
 	a.add_antagonist(T.mind, ignore_role = 1, do_not_equip = 1)
 //	T.make_changeling()
-	to_chat(T, "<span class='danger'>You feel a new power!</span>")
-	T.mind.changeling.geneticpoints = 6
+	to_chat(T, "<span class='danger'>We have become!</span>") //Фраза довольно уебская, но пафосная
+	T.mind.changeling.geneticpoints = 7
 	T.mind.changeling.chem_charges = 40
 
 	T.death(0)
@@ -1440,7 +1440,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	changeling_transfer_mind(HC)
 
-	HC.visible_message("<span class='warning'>[BIO] suddenly grows tiny legs!</span>",
+	HC.visible_message("<span class='warning'>[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!</span>",
 		"<span class='danger'><font size='2'><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></font></span>")
 
 
@@ -1477,7 +1477,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 						failed = TRUE
 			if (!failed)
 				T.visible_message("<span class='warning'>The flesh is torn around the [T.name]\'s arm!</span>",
-									"<span class='warning'>We are transforming [T.name]\'s arm to fake armblade.</span>",
+									"<span class='warning'>We are transforming [T.name]\'s arm into fake armblade.</span>",
 									"<span class='italics'>You hear organic matter ripping and tearing!</span>")
 				new /obj/item/weapon/melee/prosthetic/bio/fake_arm_blade(T,T.organs_by_name[hand])
 
@@ -1494,9 +1494,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	C.no_pain = !C.no_pain
 
 	if(C.can_feel_pain())
-		to_chat(C, "<span class='notice'>We feel pain.</span>")
+		to_chat(C, "<span class='notice'>We are able to feel pain now.</span>")
 	else
-		to_chat(C, "<span class='notice'>We do not feel pain.</span>")
+		to_chat(C, "<span class='notice'>We are unable to feel pain anymore.</span>")
 
 	spawn(0)
 		while(C && !C.can_feel_pain() && C.mind && C.mind.changeling)
@@ -1610,8 +1610,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/chem_disp_sting()
 	set category = "Changeling"
-	set name = "Synthesis of chemistry"
-	set desc = "We synthesize a variety of chemicals."
+	set name = "Biochemical Cauldron"
+	set desc = "Our stinger glands are able to synthesize a variety of chemicals."
 
 
 
@@ -1629,12 +1629,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	/datum/reagent/silicon,
 	/datum/reagent/phosphorus,
 	/datum/reagent/sulfur,
-	/datum/reagent/acid/hydrochloric,
 	/datum/reagent/potassium,
 	/datum/reagent/iron,
 	/datum/reagent/copper,
-	/datum/reagent/mercury,
-	/datum/reagent/radium,
 	/datum/reagent/ethanol,
 	/datum/reagent/acid,
 	/datum/reagent/tungsten,
@@ -1642,10 +1639,16 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	)
 	var/mob/living/carbon/human/T = src
 	if(src.mind.changeling.recursive_enhancement == TRUE)
-		chemistry += /datum/reagent/toxin/phoron
+		chemistry += list(
+		/datum/reagent/mercury,
+		/datum/reagent/radium,
+		/datum/reagent/acid/hydrochloric,
+		/datum/reagent/toxin/phoron
+		)
+					
 //	var/obj/item/organ/internal/biostructure/BIO = T.internal_organs_by_name[BP_CHANG]
-	var/datum/reagent/target_chem = input(T, "�hoose reagent:") as null|anything in chemistry
-//	T.mind.changeling.pick_chemistry.reagent_list += input(T, "�hoose reagent:") as null|anything in chemistry
+	var/datum/reagent/target_chem = input(T, "Choose reagent:") as null|anything in chemistry
+//	T.mind.changeling.pick_chemistry.reagent_list += input(T, "Choose reagent:") as null|anything in chemistry
 	var/amount = input(T,"How much reagent do we want to synthesize?", "Amount", 1) as num|null
 	if(src.mind.changeling.chem_charges < amount)
 		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
@@ -1664,8 +1667,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/chem_sting()
 	set category = "Changeling"
-	set name = "Chemical sting (5)"
-	set desc = "We inject synthesized chemicals to the victim."
+	set name = "Chemical Sting (5)"
+	set desc = "We inject synthesized chemicals into the victim."
 
 
 //	var/datum/changeling/changeling = changeling_power(10,0,100)
@@ -1679,6 +1682,10 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(!changeling)
 		return 0
 
+	if(src.status_flags & FAKEDEATH)	//Тупа проверка на лежание в стазисе
+		to_chat(src, "<span class='warning'>We can't sting until our stasis ends successfully.</span>")
+		return 0
+		
 	var/mob/living/carbon/human/T = changeling_sting(5, /mob/proc/chem_sting)
 	if(!T)	return 0
 	var/N = 10
