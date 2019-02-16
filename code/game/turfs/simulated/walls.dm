@@ -170,7 +170,7 @@
 					reflectchance = 0
 				else
 					reflectchance = round(projectile_reflection(Proj, 1) * reflectchance)
-				reflectchance = min(max(ricochetchance, 0), 100)
+				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				proj_damage /= reinf_material.burn_armor
 				if(reflectchance > 0)
@@ -194,7 +194,7 @@
 					reflectchance = 0
 				else
 					reflectchance = round(projectile_reflection(Proj, 1) * reflectchance)
-				reflectchance = min(max(ricochetchance, 0), 100)
+				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				if(reflectchance > 0)
 					visible_message("\red <B>\The [Proj] gets reflected by shiny surface of wall!</B>")
