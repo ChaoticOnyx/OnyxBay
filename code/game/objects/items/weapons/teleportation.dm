@@ -529,7 +529,7 @@ Frequency:
 			phase_out(G.affecting,get_turf(G.affecting))
 			G.affecting.forceMove(get_turf(user))
 			phase_in(G.affecting,get_turf(G.affecting))
-	if(prob(25 + (25 * malf_use)))
+	if(prob(10 + (10 * malf_use)))
 		malfunction()
 
 /*
@@ -566,7 +566,7 @@ Frequency:
 					G.affecting.forceMove(locate(user.x+rand(-1,1),user.y+rand(-1,1),T.z))
 					phase_in(G.affecting,get_turf(G.affecting))
 			break
-	if(prob(5 + (5 * malf_use)))
+	if(prob(2 + (3 * malf_use)))
 		malfunction()
 
 /*
@@ -612,5 +612,5 @@ Frequency:
 			phase_out(G.affecting,get_turf(G.affecting))
 			G.affecting.forceMove(locate(user.x+rand(-1,1),user.y+rand(-1,1),T.z))
 			phase_in(G.affecting,get_turf(G.affecting))
-	if(prob(50 + (malf_use * 50)))
+	if(prob(12 + (malf_use * 13)))
 		malfunction()

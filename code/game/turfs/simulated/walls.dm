@@ -165,6 +165,11 @@
 			if(material.reflectance + reinf_material.reflectance > 0)
 				// Reflection chance depends on materials' var 'reflectance'.
 				var/reflectchance = material.reflectance + reinf_material.reflectance - min(round(Proj.damage/3), 50)
+				var/turf/curloc = get_turf(src)
+				if((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y))
+					reflectchance = 0
+				else
+					reflectchance = round(projectile_reflection(Proj, 1) * reflectchance)
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				proj_damage /= reinf_material.burn_armor
@@ -184,6 +189,11 @@
 			if(material.reflectance > 0)
 				// Reflection chance depends on materials' var 'reflectance'.
 				var/reflectchance = material.reflectance - min(round(Proj.damage/3), 50)
+				var/turf/curloc = get_turf(src)
+				if((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y))
+					reflectchance = 0
+				else
+					reflectchance = round(projectile_reflection(Proj, 1) * reflectchance)
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				if(reflectchance > 0)
@@ -207,7 +217,7 @@
 				var/ricochetchance = round(sqrt(material.resilience * reinf_material.resilience))
 				var/turf/curloc = get_turf(src)
 				if((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y))
-					ricochetchance = round(ricochetchance / 5)
+					ricochetchance = 0
 				else
 					ricochetchance = round(projectile_reflection(Proj, 1) * ricochetchance)
 				ricochetchance = min(max(ricochetchance, 0), 100)
@@ -224,7 +234,7 @@
 				var/ricochetchance = round(material.resilience)
 				var/turf/curloc = get_turf(src)
 				if((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y))
-					ricochetchance = round(ricochetchance / 5)
+					ricochetchance = 0
 				else
 					ricochetchance = round(projectile_reflection(Proj, 1) * ricochetchance)
 				ricochetchance = min(max(ricochetchance, 0), 100)
