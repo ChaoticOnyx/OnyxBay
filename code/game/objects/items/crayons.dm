@@ -94,6 +94,9 @@
 			if("arrow")
 				drawtype = input("Choose the arrow.", "Crayon scribbles") in list("left", "right", "up", "down")
 				to_chat(user, "You start drawing an arrow on the [target.name].")
+		if(!in_range(user, target))
+			to_chat(user, "<span class = 'notice'>You must stay close to your drawing if you want to draw something.</span>")
+			return
 		if(instant || do_after(user, 50))
 			new /obj/effect/decal/cleanable/crayon(target,colour,shadeColour,drawtype)
 			to_chat(user, "You finish drawing.")
