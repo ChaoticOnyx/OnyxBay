@@ -75,7 +75,7 @@
 
 	metabolism_percent = 0.5
 	incoming_healing_percent = 0.6
-
+/*
 /datum/modifier/trait/larger
 	name = "Larger"
 	desc = "Your body is larger than average."
@@ -99,7 +99,7 @@
 	desc = "Your body is smaller than average."
 
 	icon_scale_percent = 0.9
-
+*/ //Решили пока не добавлять трейты, меняющие размер спрайта
 /datum/modifier/trait/colorblind_protanopia
 	name = "Protanopia"
 	desc = "You have a form of red-green colorblindness. You cannot see reds, and have trouble distinguishing them from yellows and greens."
