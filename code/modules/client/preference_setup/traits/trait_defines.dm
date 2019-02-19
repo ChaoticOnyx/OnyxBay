@@ -71,7 +71,7 @@
 	desc = "You're rather inexperienced with guns, you've never used one in your life, or you're just really rusty.  \
 	Regardless, you find it quite difficult to land shots where you wanted them to go."
 	modifier_type = /datum/modifier/trait/inaccurate
-
+/*
 /datum/trait/modifier/physical/smaller
 	name = "Smaller"
 	modifier_type = /datum/modifier/trait/smaller
@@ -91,7 +91,7 @@
 	name = "Larger"
 	modifier_type = /datum/modifier/trait/larger
 	mutually_exclusive = list(/datum/trait/modifier/physical/smaller, /datum/trait/modifier/physical/small, /datum/trait/modifier/physical/large)
-
+*/ //Пока решили не добавлять трейты, меняющие размер спрайтов. Может быть позже.
 /datum/trait/modifier/physical/colorblind_protanopia
 	name = "Protanopia"
 	desc = "You have a form of red-green colorblindness. You cannot see reds, and have trouble distinguishing them from yellows and greens."
