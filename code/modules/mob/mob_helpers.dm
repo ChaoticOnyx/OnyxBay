@@ -237,7 +237,7 @@ proc/slur(phrase)
 	var/t = ""//placed before the message. Not really sure what it's for.
 	n = length(n)//length of the entire word
 	var/p = null
-	var/shutterable_letters = list("‡","Û","Â","Ó","˝","ˇ","Ë","˛","¿","”","≈","Œ","›","ﬂ","»","ﬁ","b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z");
+	var/shutterable_letters = list("–±","–≤","–≥","–¥","–∂","–∑","–π","–∫","–ª","–º","–Ω","–ø","—Ä","—Å","—Ç","—Ñ","—Ö","—Ü","—á","—à","—â","b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z");
 	p = 1//1 is the start of any word
 	while(p <= n)//while P, which starts at 1 is less or equal to N which is the length.
 		var/n_letter = lowertext(copytext(te, p, p + 1))//copies text from a certain distance. In this case, only one letter at a time.
