@@ -1,6 +1,11 @@
 #define TOPIC_UPDATE_PREVIEW 4
 #define TOPIC_REFRESH_UPDATE_PREVIEW (TOPIC_REFRESH|TOPIC_UPDATE_PREVIEW)
 
+#define PREF_FBP_CYBORG "cyborg"
+#define PREF_FBP_POSI "posi"
+#define PREF_FBP_SOFTWARE "software"
+
+
 var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 
 /datum/category_group/player_setup_category/general_preferences
@@ -42,6 +47,11 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 	name = "Laws"
 	sort_order = 8
 	category_item_type = /datum/category_item/player_setup_item/law_pref
+
+/datum/category_group/player_setup_category/trait_preferences
+	name = "Traits"
+	sort_order = 9
+	category_item_type = /datum/category_item/player_setup_item/traits
 
 
 /****************************
@@ -259,3 +269,24 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 
 /datum/category_item/player_setup_item/proc/preference_species()
 	return all_species[pref.species] || all_species[SPECIES_HUMAN]
+
+// Checks in a really hacky way if a character's preferences say they are an FBP or not.
+/datum/category_item/player_setup_item/proc/is_FBP()
+	if(pref.organ_data && pref.organ_data[BP_CHEST] != "cyborg")
+		return 0
+	return 1
+
+// Returns what kind of FBP the player's prefs are.  Returns 0 if they're not an FBP.
+/datum/category_item/player_setup_item/proc/get_FBP_type()
+	if(!is_FBP())
+		return 0 // Not a robot.
+	if(BP_BRAIN in pref.organ_data)
+		switch(pref.organ_data[BP_BRAIN])
+			if("assisted")
+				return PREF_FBP_CYBORG
+			if("mechanical")
+				return PREF_FBP_POSI
+			if("digital")
+				return PREF_FBP_SOFTWARE
+	return 0 //Something went wrong!
+

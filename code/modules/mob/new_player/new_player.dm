@@ -365,7 +365,7 @@
 
 	character = job_master.EquipRank(character, job.title, 1)					//equips the human
 	equip_custom_items(character)
-
+	character.apply_traits()
 	// AIs don't need a spawnpoint, they must spawn at an empty core
 	if(character.mind.assigned_role == "AI")
 
@@ -507,6 +507,7 @@
 				R.holder = mind
 				R.info = client.prefs.relations_info[T]
 			mind.gen_relations_info = client.prefs.relations_info["general"]
+		mind.traits = client.prefs.traits.Copy()
 		mind.transfer_to(new_character)					//won't transfer key since the mind is not active
 
 	new_character.SetName(real_name)

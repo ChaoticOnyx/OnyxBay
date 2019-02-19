@@ -1024,6 +1024,8 @@
 			return
 		if(species.language)
 			remove_language(species.language)
+		if(species.icon_scale != 1)
+			update_transform()
 		if(species.default_language)
 			remove_language(species.default_language)
 		for(var/datum/language/L in species.assisted_langs)

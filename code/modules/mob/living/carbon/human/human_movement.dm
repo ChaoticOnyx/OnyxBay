@@ -17,6 +17,12 @@
 	if(CE_SLOWDOWN in chem_effects)
 		tally += chem_effects[CE_SLOWDOWN]
 
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.haste) && M.haste == TRUE)
+			return -1 // Returning -1 will actually result in a slowdown for Teshari.
+		if(!isnull(M.slowdown))
+			tally += M.slowdown
+
 	var/health_deficiency = (maxHealth - health)
 	if(health_deficiency >= 40) tally += (health_deficiency / 25)
 

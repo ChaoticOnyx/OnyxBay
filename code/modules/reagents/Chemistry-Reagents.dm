@@ -56,6 +56,9 @@
 		removed = ingest_met
 	if(touch_met && (location == CHEM_TOUCH))
 		removed = touch_met
+	for(var/datum/modifier/mod in M.modifiers)
+		if(!isnull(mod.metabolism_percent))
+			removed *= mod.metabolism_percent
 	removed = M.get_adjusted_metabolism(removed)
 
 

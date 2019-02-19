@@ -29,7 +29,7 @@
 		to_chat(user, "<span class='warning'>Current security protocols are not allowing you to use [src].</span>")
 		return
 	..()
-	
+
 /obj/item/weapon/gun/energy/laser/mounted/cyborg/attack(atom/A, mob/living/user)
 	if (locked)
 		to_chat(user, "<span class='warning'>Current security protocols are not allowing you to use [src].</span>")

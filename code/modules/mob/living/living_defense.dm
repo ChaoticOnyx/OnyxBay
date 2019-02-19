@@ -401,3 +401,10 @@
 			hud_used.hide_actions_toggle.screen_loc = hud_used.ButtonNumberToScreenCoords(button_number+1)
 			//hud_used.SetButtonCoords(hud_used.hide_actions_toggle,button_number+1)
 		client.screen += hud_used.hide_actions_toggle
+
+/mob/living/proc/get_evasion()
+	var/result = evasion // First we get the 'base' evasion.  Generally this is zero.
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.evasion))
+			result += M.evasion
+	return result
