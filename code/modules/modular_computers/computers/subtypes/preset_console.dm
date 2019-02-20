@@ -6,6 +6,10 @@
 	network_card = new/obj/item/weapon/computer_hardware/network_card/wired(src)
 
 // Engineering
+/obj/item/modular_computer/console/preset/engineering/install_default_hardware()
+	..()
+	nano_printer = new/obj/item/weapon/computer_hardware/nano_printer(src)
+
 /obj/item/modular_computer/console/preset/engineering/install_default_programs()
 	..()
 	hard_drive.store_file(new/datum/computer_file/program/power_monitor())
@@ -17,6 +21,10 @@
 	hard_drive.store_file(new/datum/computer_file/program/shields_monitor())
 
 // Medical
+/obj/item/modular_computer/console/preset/medical/install_default_hardware()
+	..()
+	nano_printer = new/obj/item/weapon/computer_hardware/nano_printer(src)
+
 /obj/item/modular_computer/console/preset/medical/install_default_programs()
 	..()
 	hard_drive.store_file(new/datum/computer_file/program/suit_sensors())
@@ -29,6 +37,7 @@
 /obj/item/modular_computer/console/preset/research/install_default_hardware()
 	..()
 	ai_slot = new/obj/item/weapon/computer_hardware/ai_slot(src)
+	nano_printer = new/obj/item/weapon/computer_hardware/nano_printer(src)
 
 /obj/item/modular_computer/console/preset/research/install_default_programs()
 	..()
@@ -44,6 +53,7 @@
 /obj/item/modular_computer/console/preset/sysadmin/install_default_hardware()
 	..()
 	ai_slot = new/obj/item/weapon/computer_hardware/ai_slot(src)
+	nano_printer = new/obj/item/weapon/computer_hardware/nano_printer(src)
 
 /obj/item/modular_computer/console/preset/sysadmin/install_default_programs()
 	..()
@@ -75,6 +85,10 @@
 	hard_drive.store_file(new/datum/computer_file/program/docking())
 
 // Security
+/obj/item/modular_computer/console/preset/security/install_default_hardware()
+	..()
+	nano_printer = new/obj/item/weapon/computer_hardware/nano_printer(src)
+
 /obj/item/modular_computer/console/preset/security/install_default_programs()
 	..()
 	hard_drive.store_file(new/datum/computer_file/program/camera_monitor())
@@ -84,6 +98,10 @@
 	hard_drive.store_file(new/datum/computer_file/program/wordprocessor())
 
 // Civilian
+/obj/item/modular_computer/console/preset/civilian/install_default_hardware()
+	..()
+	nano_printer = new/obj/item/weapon/computer_hardware/nano_printer(src)
+
 /obj/item/modular_computer/console/preset/civilian/install_default_programs()
 	..()
 	hard_drive.store_file(new/datum/computer_file/program/chatclient())
@@ -157,12 +175,20 @@
 	hard_drive.store_file(new/datum/computer_file/program/aidiag())
 
 // Merchant
+/obj/item/modular_computer/console/preset/merchant/install_default_hardware()
+	..()
+	nano_printer = new/obj/item/weapon/computer_hardware/nano_printer(src)
+
 /obj/item/modular_computer/console/preset/merchant/install_default_programs()
 	..()
 	hard_drive.store_file(new/datum/computer_file/program/merchant())
 	hard_drive.store_file(new/datum/computer_file/program/wordprocessor())
 
 // Library
+/obj/item/modular_computer/console/preset/library/install_default_hardware()
+	..()
+	nano_printer = new/obj/item/weapon/computer_hardware/nano_printer(src)
+
 /obj/item/modular_computer/console/preset/library/install_default_programs()
 	..()
 	hard_drive.store_file(new/datum/computer_file/program/nttransfer())
