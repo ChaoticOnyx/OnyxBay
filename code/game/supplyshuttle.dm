@@ -234,6 +234,7 @@ var/list/point_source_descriptions = list(
 				if(contcount)
 					continue
 				clear_turfs += T
+		var/packages = min(clear_turfs.len,shoppinglist.len)
 		for(var/S in shoppinglist)
 			if(!clear_turfs.len)	break
 			var/i = rand(1,clear_turfs.len)
@@ -256,7 +257,7 @@ var/list/point_source_descriptions = list(
 				slip.info = "<h3>[command_name()] Shipping Manifest</h3><hr><br>"
 				slip.info +="Order #[SO.ordernum]<br>"
 				slip.info +="Destination: [GLOB.using_map.station_name]<br>"
-				slip.info +="[shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
+				slip.info +="[packages] PACKAGES IN THIS SHIPMENT<br>"
 				slip.info +="CONTENTS:<br><ul>"
 
 			//spawn the stuff, finish generating the manifest while you're at it
