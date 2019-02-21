@@ -23,7 +23,7 @@
 		/obj/item/weapon/storage/toolbox/mechanical,
 		/obj/item/clothing/suit/storage/hazardvest,
 		/obj/item/clothing/mask/gas,
-		/obj/item/device/multitool,
+		/obj/item/weapon/combotool/advtool,
 		/obj/item/device/flash,
 		/obj/item/taperoll/engineering,
 		/obj/item/weapon/crowbar/brace_jack
