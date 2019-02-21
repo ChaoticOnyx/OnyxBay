@@ -82,6 +82,12 @@
 	cost = 15
 	containername = "\improper Freezer floor tile crate"
 
+/decl/hierarchy/supply_pack/miscellaneous/darkwood_tiles
+	name = "Darkwood floor tiles"
+	contains = list(/obj/item/stack/tile/darkwood/fifty)
+	cost = 25
+	containername = "\improper Darkwood floor tile crate"
+
 /decl/hierarchy/supply_pack/miscellaneous/costume
 	num_contained = 2
 	contains = list(/obj/item/clothing/suit/pirate,
