@@ -405,7 +405,7 @@
 "hO" = (/obj/effect/floor_decal/industrial/outline/yellow,/obj/structure/iv_drip,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/maintenance/ghetto_virology)
 "hP" = (/obj/effect/floor_decal/industrial/outline/yellow,/obj/structure/closet/crate/freezer/rations,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/maintenance/ghetto_virology)
 "hQ" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/maintenance/underground/hydroponics)
-"hR" = (/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 24},/obj/structure/flora/tree/pine/old_pinteree{anchored = 0; pixel_x = 0; pixel_y = 3; step_y = 0},/turf/simulated/floor/plating,/area/maintenance/underground/bar)
+"hR" = (/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 24},/obj/structure/flora/tree/pine/old_pinteree{anchored = 0; pixel_x = 0; pixel_y = 3},/turf/simulated/floor/plating,/area/maintenance/underground/bar)
 "hS" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/maintenance/underground/hydroponics)
 "hT" = (/turf/simulated/floor/plating,/area/maintenance/underground/hydroponics)
 "hU" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 8},/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 8},/turf/simulated/floor/plating,/area/maintenance/underground/hydroponics)
