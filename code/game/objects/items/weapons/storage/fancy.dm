@@ -310,7 +310,7 @@
 	max_storage_space = null
 	storage_slots = 6
 	req_access = list(access_virology)
-	can_hold = list("/obj/item/weapon/reagent_containers/glass/beaker/vial")
+	can_hold = list(/obj/item/weapon/reagent_containers/glass/beaker/vial)
 
 /obj/item/weapon/storage/lockbox/vials/New()
 	..()
