@@ -215,7 +215,7 @@
 	force = 8.0
 	throw_speed = 1
 	throw_range = 4
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEM_SIZE_LARGE
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 	var/guntype = "M1911"
