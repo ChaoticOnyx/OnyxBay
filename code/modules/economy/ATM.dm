@@ -228,8 +228,7 @@
 
 /obj/machinery/atm/Topic(var/href, var/href_list)
 	if(!in_range(src, usr))
-		to_chat(usr, "\icon[src]<span class='warning'>You have to remain close to the [src]!</span>")
-		//message_admins("[key_name_admin(usr)] tried to abuse the ATM bug. Gib this little asshole with no mercy.")  //Would be fun, but c'mon. *sigh
+		to_chat(usr, "\icon[src]<span class='warning'>You have to remain closer to the [src]!</span>")
 		return 0
 	if(href_list["choice"])
 		switch(href_list["choice"])
