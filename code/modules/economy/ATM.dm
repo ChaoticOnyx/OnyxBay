@@ -112,8 +112,6 @@
 		to_chat(user, "\icon[src] <span class='warning'>Artificial unit recognized. Artificial units do not currently receive monetary compensation, as per system banking regulation #1005.</span>")
 		return
 
-	//if(get_dist(src,user) <= 1) //Whysoever.
-
 	if(in_range(src,user))
 		//make the window the user interacts with, divided out into welcome message, card 'slot', then login/data screen
 		var/list/t = list()
@@ -230,7 +228,7 @@
 
 /obj/machinery/atm/Topic(var/href, var/href_list)
 	if(!in_range(src, usr))
-		to_chat(usr, "\icon[src]<span class='warning'>Bug abusin' scum detected. Don't move, the Pedal Squad is comin' to punish ya.</span>")
+		to_chat(usr, "\icon[src]<span class='warning'>You have to remain close to the [src]!</span>")
 		//message_admins("[key_name_admin(usr)] tried to abuse the ATM bug. Gib this little asshole with no mercy.")  //Would be fun, but c'mon. *sigh
 		return 0
 	if(href_list["choice"])
