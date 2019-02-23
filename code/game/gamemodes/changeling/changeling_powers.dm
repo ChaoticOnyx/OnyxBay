@@ -825,9 +825,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set desc = "Urges target to vomit."
 
 	var/mob/living/carbon/human/T = changeling_sting(15,/mob/proc/changeling_vomit_sting)
-	if(!T)	return 0
-	to_chat(T, "<span class='danger'>You immediately feel an urge to throw up!</span>")
-	sleep(10)
+	if(!T || T.stat == DEAD || !T.check_has_mouth())	return 0
+	sleep(10) //Небольшая задержка перед тем, как жертву стошнит
 	T.visible_message("<span class='warning'>[T] throws up!</span>","<span class='warning'>You throw up!</span>")
 	playsound(loc, 'sound/effects/splat.ogg', 50, 1)
 
@@ -842,7 +841,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /mob/proc/changeling_DEATHsting()
 	set category = "Changeling"
 	set name = "Death Sting (40)"
-	set desc = "Causes spasms onto death."
+	set desc = "Causes spasms to death."
 	var/loud = 1
 
 	var/mob/living/carbon/human/T = changeling_sting(40,/mob/proc/changeling_DEATHsting,loud)
