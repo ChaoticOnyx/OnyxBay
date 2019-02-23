@@ -16,7 +16,7 @@ var/list/global/tank_gauge_cache = list()
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 
-	force = 5.0
+	force = 10.0
 	throwforce = 10.0
 	throw_speed = 1
 	throw_range = 4
@@ -113,7 +113,7 @@ var/list/global/tank_gauge_cache = list()
 
 	if (istype(W, /obj/item/device/analyzer))
 		return
-	
+
 	if (istype(W,/obj/item/latexballon))
 		var/obj/item/latexballon/LB = W
 		LB.blow(src)
@@ -343,7 +343,7 @@ var/list/global/tank_gauge_cache = list()
 
 /obj/item/weapon/tank/update_icon(var/override)
 	var/needs_updating = override
-	
+
 	if(istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/) && !override) //So we don't eat up our tick. Every tick, when we're not actually in play.
 		return
 
@@ -356,13 +356,13 @@ var/list/global/tank_gauge_cache = list()
 			gauge_pressure = round((gauge_pressure/TANK_IDEAL_PRESSURE)*gauge_cap)
 	if (previous_gauge_pressure != gauge_pressure)
 		needs_updating = 1
-	
+
 	previous_gauge_pressure = gauge_pressure
 	if (!needs_updating)
 		return
 
 	overlays.Cut() // Each time you modify this, the object is redrawn. Cunts.
-	
+
 	if(proxyassembly.assembly || wired)
 		overlays += image(icon,"bomb_assembly")
 		if(proxyassembly.assembly)

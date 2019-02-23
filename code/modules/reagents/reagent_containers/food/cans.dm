@@ -177,3 +177,13 @@
 /obj/item/weapon/reagent_containers/food/drinks/cans/machpellabeer/New()
 	..()
 	reagents.add_reagent(/datum/reagent/ethanol/beer/dark/machpella, 40)
+
+/obj/item/weapon/reagent_containers/food/drinks/cans/applecider
+	name = "MeadBy Apple Cider"
+	desc = "Name brand MeadBy sparkling alcoholic beverage product."
+	icon_state = "applecider"
+	center_of_mass = "x=16;y=10"
+
+/obj/item/weapon/reagent_containers/food/drinks/cans/applecider/New()
+	..()
+	reagents.add_reagent(/datum/reagent/ethanol/cider/apple, 40)

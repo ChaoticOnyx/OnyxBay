@@ -9,6 +9,8 @@
 	var/base_icon
 	var/open
 	var/obj/item/held //Item inside locket.
+	var/held_alt = 0
+	var/held_alt_desc = ""
 
 /obj/item/clothing/accessory/locket/attack_self(mob/user as mob)
 	if(!base_icon)
@@ -35,6 +37,9 @@
 		return
 
 	if(istype(O,/obj/item/weapon/paper) || istype(O, /obj/item/weapon/photo))
+		if(held_alt == 1)
+			to_chat(usr, "\The [src] already has something unremovable inside it.")
+			return
 		if(held)
 			to_chat(usr, "\The [src] already has something inside it.")
 		else
@@ -42,5 +47,24 @@
 			user.drop_item()
 			O.loc = src
 			src.held = O
+			src.held_alt = 1
 		return
 	..()
+
+/obj/item/clothing/accessory/locket/verb/setphoto()
+	set name = "Set Locket"
+	set category = "Object"
+	set src in usr
+
+	if(usr.incapacitated())
+		return 0
+
+	if(src.held_alt == 1)
+		to_chat(usr, "It's too late.")
+		return 0
+	else
+		src.held_alt_desc = sanitize(input("The locket contains...") as text|null)
+		if(!held_alt_desc)
+			return
+		else
+			desc = "A silver locket. It contains [src.held_alt_desc]."

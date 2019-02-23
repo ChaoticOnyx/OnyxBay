@@ -42,17 +42,17 @@ var/datum/robolimb/basic_robolimb
 // 	restricted_to = list(SPECIES_IPC)
 // 	unavailable_at_fab = 1
 
-// /datum/robolimb/hephaestus
-// 	company = "Hephaestus Industries"
-// 	desc = "This limb has a militaristic black and green casing with gold stripes."
-// 	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_main.dmi'
-// 	unavailable_at_fab = 1
+/datum/robolimb/hephaestus
+	company = "Hephaestus Industries"
+	desc = "This limb has a militaristic black and green casing with gold stripes."
+	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_main.dmi'
+	unavailable_at_fab = 1
 
-// /datum/robolimb/hephaestus/alt
-// 	company = "Hephaestus Alt."
-// 	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_alt.dmi'
-// 	applies_to_part = list(BP_HEAD)
-// 	unavailable_at_fab = 1
+/datum/robolimb/hephaestus/alt
+	company = "Hephaestus Alt."
+	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_alt.dmi'
+	applies_to_part = list(BP_HEAD)
+	unavailable_at_fab = 1
 
 // /datum/robolimb/hesphiastos/alt/monitor
 // 	company = "Hephaestus Monitor."
@@ -61,37 +61,37 @@ var/datum/robolimb/basic_robolimb
 // 	can_eat = null
 // 	unavailable_at_fab = 1
 
-// /datum/robolimb/zenghu
-// 	company = "Zeng-Hu"
-// 	desc = "This limb has a rubbery fleshtone covering with visible seams."
-// 	icon = 'icons/mob/human_races/cyberlimbs/zenghu/zenghu_main.dmi'
-// 	can_eat = 1
-// 	unavailable_at_fab = 1
-// 	restricted_to = list(SPECIES_HUMAN, SPECIES_IPC)
+/datum/robolimb/zenghu
+	company = "Zeng-Hu"
+	desc = "This limb has a rubbery fleshtone covering with visible seams."
+	icon = 'icons/mob/human_races/cyberlimbs/zenghu/zenghu_main.dmi'
+	can_eat = 1
+	unavailable_at_fab = 1
+	restricted_to = list(SPECIES_HUMAN, SPECIES_IPC)
 
-// /datum/robolimb/xion
-// 	company = "Xion"
-// 	desc = "This limb has a minimalist black and red casing."
-// 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_main.dmi'
-// 	unavailable_at_fab = 1
+/datum/robolimb/xion
+ 	company = "Xion"
+ 	desc = "This limb has a minimalist black and red casing."
+ 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_main.dmi'
+ 	unavailable_at_fab = 1
 
-// /datum/robolimb/xion/alt
-// 	company = "Xion Alt."
-// 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt.dmi'
-// 	applies_to_part = list(BP_HEAD)
-// 	unavailable_at_fab = 1
+/datum/robolimb/xion/alt
+ 	company = "Xion Alt."
+ 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt.dmi'
+ 	applies_to_part = list(BP_HEAD)
+ 	unavailable_at_fab = 1
 
-// /datum/robolimb/xion/alt/monitor
+//  /datum/robolimb/xion/alt/monitor
 // 	company = "Xion Monitor."
 // 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_monitor.dmi'
 // 	restricted_to = list(SPECIES_IPC)
 // 	can_eat = null
 // 	unavailable_at_fab = 1
 
-// /datum/robolimb/nanotrasen
-// 	company = "NanoTrasen"
-// 	desc = "This limb is made from a cheap polymer."
-// 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_main.dmi'
+/datum/robolimb/nanotrasen
+ 	company = "NanoTrasen"
+ 	desc = "This limb is made from a cheap polymer."
+ 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_main.dmi'
 
 // /datum/robolimb/wardtakahashi
 // 	company = "Ward-Takahashi"
@@ -127,11 +127,11 @@ var/datum/robolimb/basic_robolimb
 // 	applies_to_part = list(BP_HEAD)
 // 	unavailable_at_fab = 1
 
-// /datum/robolimb/veymed
-// 	company = "Vey-Med"
-// 	desc = "This high quality limb is nearly indistinguishable from an organic one."
-// 	icon = 'icons/mob/human_races/cyberlimbs/veymed/veymed_main.dmi'
-// 	can_eat = 1
-// 	skintone = 1
-// 	unavailable_at_fab = 1
-// 	restricted_to = list(SPECIES_HUMAN)
+/datum/robolimb/veymed
+	company = "Vey-Med"
+	desc = "This high quality limb is nearly indistinguishable from an organic one."
+	icon = 'icons/mob/human_races/cyberlimbs/veymed/veymed_main.dmi'
+	can_eat = 1
+	skintone = 1
+	unavailable_at_fab = 1
+	restricted_to = list(SPECIES_HUMAN)

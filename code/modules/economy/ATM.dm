@@ -112,7 +112,7 @@
 		to_chat(user, "\icon[src] <span class='warning'>Artificial unit recognized. Artificial units do not currently receive monetary compensation, as per system banking regulation #1005.</span>")
 		return
 
-	if(get_dist(src,user) <= 1)
+	if(in_range(src,user))
 		//make the window the user interacts with, divided out into welcome message, card 'slot', then login/data screen
 		var/list/t = list()
 
@@ -227,6 +227,9 @@
 		return
 
 /obj/machinery/atm/Topic(var/href, var/href_list)
+	if(!in_range(src, usr))
+		to_chat(usr, "\icon[src]<span class='warning'>You have to remain closer to the [src]!</span>")
+		return 0
 	if(href_list["choice"])
 		switch(href_list["choice"])
 			if("transfer")

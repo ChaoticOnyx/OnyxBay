@@ -46,13 +46,19 @@
 	ammo_type = /obj/item/ammo_casing/a50
 
 /obj/item/weapon/gun/projectile/revolver/detective
-	name = "revolver"
+	name = "Legacy .38"
 	desc = "A cheap Martian knock-off of a Smith & Wesson Model 10. Uses .38-Special rounds."
 	icon_state = "detective"
 	max_shells = 6
 	caliber = "38"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	ammo_type = /obj/item/ammo_casing/c38
+
+/obj/item/weapon/gun/projectile/revolver/detective/saw620
+	name = "S&W 620"
+	desc = "A cheap Martian knock-off of a Smith & Wesson Model 620. Uses .38-Special rounds."
+	icon_state = "saw620"
+
 
 /obj/item/weapon/gun/projectile/revolver/detective/verb/rename_gun()
 	set name = "Name Gun"
@@ -71,6 +77,7 @@
 		SetName(input)
 		to_chat(M, "You name the gun [input]. Say hello to your new friend.")
 		return 1
+
 
 // Blade Runner pistol.
 /obj/item/weapon/gun/projectile/revolver/deckard
@@ -123,3 +130,130 @@
 	caliber = ".44"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	ammo_type = /obj/item/ammo_casing/c44
+
+/obj/item/weapon/gun/projectile/revolver/m2019/detective
+	name = "M2019 Detective Special"
+	desc = "Though this one resembles a regular NT's M2019, it is definitely a masterpiece. It can use any .44 round, but works best with .44 SPEC and .44 CHEM."
+	var/base_icon = "lapd2019"
+	icon_state = "lapd201900"
+	item_state = "lapd2019"
+	max_shells = 5
+	caliber = ".44"
+	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 3)
+	ammo_type = /obj/item/ammo_casing/c44
+	starts_loaded = 0
+	var/chargemode = 1
+	var/shotcost = 20
+	var/obj/item/weapon/cell/bcell
+
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/New()
+	bcell = new /obj/item/weapon/cell/device/high(src)
+	update_icon()
+	..()
+
+/*obj/item/weapon/gun/projectile/revolver/m2019/detective/proc/deductcharge(var/chrgdeductamt)
+	if(bcell)
+		if(bcell.checked_use(chrgdeductamt))
+			return 1
+		else
+			status = 0
+			update_icon()
+			return 0
+	return null*/
+
+
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/examine(mob/user)
+	. = ..()
+	if(!bcell)
+		to_chat(user, "\The [src] has no power cell installed.")
+	else
+		to_chat(user, "\The [src] is [round(bcell.percent())]% charged.")
+
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/consume_next_projectile()
+	if(chamber_offset)
+		chamber_offset--
+	//get the next casing
+	if(loaded.len)
+		chambered = loaded[1] //load next casing.
+		if(handle_casings != HOLD_CASINGS)
+			loaded -= chambered
+			if(usecharge(shotcost))
+				if(chargemode == 1)
+					if(istype(chambered, /obj/item/ammo_casing/c44/spec))
+						chambered = new /obj/item/ammo_casing/c44/spec/nonlethal(src)
+					else if(istype(chambered, /obj/item/ammo_casing/c44/chem))
+						chambered = new /obj/item/ammo_casing/c44/chem/nonlethal(src)
+				else if (chargemode == 2)
+					if(istype(chambered, /obj/item/ammo_casing/c44/spec))
+						chambered = new /obj/item/ammo_casing/c44/spec/lethal(src)
+					else if(istype(chambered, /obj/item/ammo_casing/c44/chem))
+						chambered = new /obj/item/ammo_casing/c44/chem/lethal(src)
+
+	if (chambered)
+		return chambered.BB
+	return null
+
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/attack_self(mob/living/user as mob)
+	if(chargemode == 0)
+		to_chat(user, "<span class='warning'>[src] has no battery installed!</span>")
+		return
+	else if(chargemode == 2)
+		to_chat(user, "<span class='notice'>[src] fire mode: non-lethal.</span>")
+		chargemode = 1
+	else if(chargemode == 1)
+		to_chat(user, "<span class='warning'>[src] fire mode: lethal.</span>")
+		chargemode = 2
+	update_icon()
+
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/attackby(obj/item/weapon/cell/device/C, mob/user)
+	if(!istype(C))
+		return ..()
+	insert_cell(C, user)
+	return 1
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/proc/usecharge(var/UC)
+	if(bcell)
+		if(bcell.checked_use(UC))
+			return 1
+		else
+			update_icon()
+			return 0
+	return null
+
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/proc/insert_cell(obj/item/weapon/cell/B, mob/user)
+	if(bcell)
+		to_chat(user, "<span class='notice'>[src] already has the [bcell] installed.</span>")
+		return
+	if(user.unEquip(B))
+		to_chat(user, "<span class='notice'>You install the [B] into your [src].</span>")
+		bcell = B
+		bcell.forceMove(src)
+		chargemode = 1
+		update_icon()
+
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/verb/remove_cell()
+	set name = "Remove Powercell"
+	set desc = "Remove the powercell from your gun."
+	set category = "Object"
+
+	if(!bcell) return
+	to_chat(usr, "<span class='notice'>You remove the [bcell.name] from your [src].</span>")
+	usr.put_in_hands(bcell)
+	bcell = null
+	chargemode = 0
+	update_icon()
+	return
+
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/AltClick()
+	if(CanPhysicallyInteract(usr))
+		unload_ammo(usr)
+
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/update_icon()
+	..()
+	if(loaded.len)
+		icon_state = "[src.base_icon]-loaded"
+	else
+		icon_state = "[src.base_icon]-empty"
+	if(!bcell || (bcell.charge < shotcost))
+		icon_state = "[icon_state]0"
+	else
+		icon_state = "[icon_state][chargemode]"

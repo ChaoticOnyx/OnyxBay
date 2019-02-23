@@ -57,7 +57,8 @@
 		/obj/item/device/analyzer/plant_analyzer,
 		/obj/item/taperoll,
 		/obj/item/weapon/extinguisher/mini,
-		/obj/item/weapon/marshalling_wand
+		/obj/item/weapon/marshalling_wand,
+		/obj/item/weapon/combotool/advtool
 		)
 
 

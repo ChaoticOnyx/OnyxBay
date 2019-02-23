@@ -1688,6 +1688,15 @@
 	name = "neaera cube"
 	monkey_type = /mob/living/carbon/human/neaera
 
+/obj/item/weapon/reagent_containers/food/snacks/monkeycube/punpuncube
+	name = "compressed Pun Pun"
+	desc = "What's up, little buddy? You look dehydrated."
+	monkey_type = /mob/living/carbon/human/monkey/punpun
+
+/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/punpuncube
+	name = "Pun Pun"
+	desc = "What's up, little buddy? You look dehydrated."
+	monkey_type = /mob/living/carbon/human/monkey/punpun
 
 /obj/item/weapon/reagent_containers/food/snacks/spellburger
 	name = "Spell Burger"

@@ -10,6 +10,7 @@
 	uniform = /obj/item/clothing/under/rank/bartender
 	id_type = /obj/item/weapon/card/id/civilian/bartender
 	pda_type = /obj/item/device/pda/bar
+	r_pocket = /obj/item/weapon/reagent_containers/food/snacks/monkeycube/punpuncube
 
 /decl/hierarchy/outfit/job/service/chef
 	name = OUTFIT_JOB_NAME("Chef")
