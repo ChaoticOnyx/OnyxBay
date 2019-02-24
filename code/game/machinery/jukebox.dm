@@ -187,15 +187,15 @@ datum/track/New(var/title_name, var/audio)
 	var/handled = 0
 	if (istype(W, /obj/item/weapon/spacecash/bundle))
 		var/obj/item/weapon/spacecash/bundle/cashmoney = W
-		if(80> cashmoney.worth)
+		if(300> cashmoney.worth)
 			// This is not a status display message, since it's something the character themselves is meant to see BEFORE putting the money in
-			to_chat(usr, "\icon[cashmoney] <span class='warning'>That is not enough money. You need T80.</span>")
+			to_chat(usr, "\icon[cashmoney] <span class='warning'>That is not enough money. You need T300.</span>")
 			paid = 0
 			handled = 1
 			return
 
 		visible_message("<span class='info'>\The [usr] inserts some cash into \the [src].</span>")
-		cashmoney.worth -= 80
+		cashmoney.worth -= 300
 
 		if(cashmoney.worth <= 0)
 			usr.drop_from_inventory(cashmoney)
