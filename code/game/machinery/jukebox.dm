@@ -183,19 +183,51 @@ datum/track/New(var/title_name, var/audio)
 	qdel(src)
 
 /obj/machinery/media/jukebox/attackby(obj/item/W as obj, mob/user as mob)
-	if(isWrench(W))
+	var/paid = 0
+	var/handled = 0
+	if (istype(W, /obj/item/weapon/spacecash/bundle))
+		var/obj/item/weapon/spacecash/bundle/cashmoney = W
+		if(80> cashmoney.worth)
+			// This is not a status display message, since it's something the character themselves is meant to see BEFORE putting the money in
+			to_chat(usr, "\icon[cashmoney] <span class='warning'>That is not enough money. You need T80.</span>")
+			paid = 0
+			handled = 1
+			return
+
+		visible_message("<span class='info'>\The [usr] inserts some cash into \the [src].</span>")
+		cashmoney.worth -= 80
+
+		if(cashmoney.worth <= 0)
+			usr.drop_from_inventory(cashmoney)
+			qdel(cashmoney)
+		else
+			cashmoney.update_icon()
+		paid = 1
+		handled = 1
+
+		if(paid)
+			to_chat(user, "<span class='notice'>You pay with \the [W] and \the [src] is now able to play your song.</span>")
+			var/newtitle = input("Type a title of the new track", "Track title", "Track") as text
+			var/sound/S = input("Select a sound", "Sound", 'sound/effects/ghost.ogg') as sound
+			StopPlaying()
+			current_track = new/datum/track(newtitle, S)
+			StartPlaying()
+			GLOB.nanomanager.update_uis(src)
+			return
+		else if(handled)
+			GLOB.nanomanager.update_uis(src)
+			return // don't smack that machine with your 2 thalers
+
+	if (istype(W, /obj/item/weapon/spacecash))
+		attack_hand(user)
+		return
+	else if(isWrench(W))
 		add_fingerprint(user)
 		wrench_floor_bolts(user, 0)
 		power_change()
 		return
 	else if(istype(W, /obj/item/weapon/coin))
-		user.drop_item()
-		W.forceMove(src)
-		to_chat(user, "<span class='notice'>You insert \the [W] into \the [src].</span>")
-		var/newtitle = input("Type a title of the new track", "Track title", "Track") as text
-		var/sound/S = input("Select a sound", "Sound", 'sound/effects/ghost.ogg') as sound
-		tracks += new/datum/track(newtitle, S)
-		GLOB.nanomanager.update_uis(src)
+		to_chat(user, "<span class='notice'>You need some modern cash to use \the [src]. No coins, tallers only.</span>")
 		return
 	return ..()
 
