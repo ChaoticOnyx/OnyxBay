@@ -629,6 +629,7 @@
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/small/ale = 15,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/small/darkbeer = 15,
 					/obj/item/weapon/reagent_containers/food/drinks/cans/machpellabeer = 15,
+					/obj/item/weapon/reagent_containers/food/drinks/cans/applecider = 15,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/orangejuice = 5,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/tomatojuice = 5,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/limejuice = 5,

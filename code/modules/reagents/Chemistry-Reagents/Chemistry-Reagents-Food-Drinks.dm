@@ -2384,3 +2384,55 @@
 
 	glass_name = "Vesper Martini"
 	glass_desc = "That one appears to be large and very strong and very cold and very well-made."
+
+/datum/reagent/ethanol/cider/apple
+	name = "Apple Cider"
+	description = "An alcoholic beverage made from apples."
+	taste_description = "apple cider"
+	color = "#e0e254"
+	strength = 50
+
+	glass_name = "apple cider"
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/witcher
+	name = "Witcher"
+	description = "“People,” Geralt turned his head, “like to invent monsters and monstrosities. Then they seem less monstrous themselves”"
+	color = "#f6f293"
+	strength = 15
+	taste_description = "potion"
+
+	glass_name = "witchers' drink"
+	glass_desc = "“People,” Geralt turned his head, “like to invent monsters and monstrosities. Then they seem less monstrous themselves”"
+
+/datum/reagent/ethanol/witcher/wolf
+	name = "School of the Wolf"
+	color = "#d1f2b2"
+	taste_description = "lilac and gooseberries"
+
+	glass_name = "School of the Wolf"
+
+/datum/reagent/ethanol/witcher/cat
+	name = "School of the Cat"
+	color = "#f6af93"
+	strength = 20
+	taste_description = "berbercane fruit"
+
+	glass_name = "School of the Cat"
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/witcher/bear
+	name = "School of the Bear"
+	color = "#86583C"
+	taste_description = "robust"
+	strength = 12
+
+	glass_name = "School of the Bear"
+
+/datum/reagent/ethanol/witcher/griffin
+	name = "School of the Griffin"
+	color = "#80b8e0"
+	taste_description = "mana potion"
+
+	glass_name = "School of the Griffin"
+	glass_special = list(DRINK_FIZZ)

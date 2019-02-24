@@ -106,7 +106,8 @@
 	of highly advanced cybernetic technology, causing a culture shock within Tajaran society."
 
 	body_builds = list(
-		new/datum/body_build/tajaran
+		new/datum/body_build/tajaran,
+		new/datum/body_build/slim/alt/tajaran
 	)
 
 	cold_level_1 = 200 //Default 260

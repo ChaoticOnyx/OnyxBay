@@ -49,6 +49,33 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "Allows you to absorb a single DNA and use it. Does not count towards your absorb objective."
 	genomecost = 0
 	verbpath = /mob/proc/changeling_hivedownload
+	
+//Biostructure and limb management
+
+/datum/power/changeling/move_biostructure
+	name = "Relocate Biostructure"
+	desc = "We move our precious core organ to different part of our body."
+	helptext = "Takes time."
+	enhancedtext = "Would relocate faster."
+	genomecost = 0
+	verbpath = /mob/proc/changeling_move_biostructure
+
+/datum/power/changeling/detach_limb
+	name = "Detach Limb"
+	desc = "We tear off our limb, turning it into an aggressive biomass."
+	helptext = "It hurts."
+	genomecost = 0
+	verbpath = /mob/proc/changeling_detach_limb
+
+//Other free abilities
+
+/datum/power/changeling/self_respiration
+	name = "Self Respiration"
+	desc = "We evolve our body to no longer require drawing oxygen from the atmosphere."
+	helptext = "We will no longer require internals, and we cannot inhale any gas, including harmful ones."
+	genomecost = 0
+	verbpath = /mob/proc/changeling_self_respiration
+	
 /*
 /datum/power/changeling/lesser_form
 	name = "Lesser Form"
@@ -64,14 +91,12 @@ var/list/datum/power/changeling/powerinstances = list()
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_deaf_sting
 
-
 /datum/power/changeling/blind_sting
 	name = "Blind Sting"
 	desc = "We silently sting a human, completely blinding them for a short time."
 	genomecost = 2
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_blind_sting
-
 
 /datum/power/changeling/silence_sting
 	name = "Silence Sting"
@@ -80,6 +105,14 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 3
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_silence_sting
+	
+/datum/power/changeling/vomit_sting
+	name = "Vomit Sting"
+	desc = "We silently sting a human, urging them to throw up in one second."
+	genomecost = 1
+	allowduringlesserform = 1
+	verbpath = /mob/proc/changeling_vomit_sting
+
 
 /datum/power/changeling/mimicvoice
 	name = "Mimic Voice"
@@ -165,15 +198,6 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 7
 	verbpath = /mob/proc/changeling_rapidregen
 
-
-/datum/power/changeling/self_respiration
-	name = "Self Respiration"
-	desc = "We evolve our body to no longer require drawing oxygen from the atmosphere."
-	helptext = "We will no longer require internals, and we cannot inhale any gas, including harmful ones."
-	genomecost = 0
-	verbpath = /mob/proc/changeling_self_respiration
-
-
 /datum/power/changeling/visible_camouflage
 	name = "Camouflage"
 	desc = "We rapidly shape the color of our skin and secrete easily reversible dye on our clothes, to blend in with our surroundings.  \
@@ -183,8 +207,6 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 10
 	verbpath = /mob/proc/changeling_visible_camouflage
 
-
-
 /datum/power/changeling/electric_lockpick
 	name = "Electric Lockpick"
 	desc = "We discreetly evolve a finger to be able to send a small electric charge.  \
@@ -192,8 +214,6 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "Use the ability, then touch something that utilizes an electrical locking system, to open it.  Each use costs 10 chemicals."
 	genomecost = 10
 	verbpath = /mob/proc/changeling_electric_lockpick
-
-
 
 /datum/power/changeling/arm_blade
 	name = "Arm Blade"
@@ -214,7 +234,6 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 6
 	verbpath = /mob/proc/changeling_claw
 
-
 /datum/power/changeling/recursive_enhancement
 	name = "Recursive Enhancement"
 	desc = "We cause some of our abilities to have increased or additional effects."
@@ -230,7 +249,6 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 6
 	verbpath = /mob/proc/changeling_fake_arm_blade
 */
-
 /datum/power/changeling/fablade
 	name = "Fake Armblade"
 	desc = "We reform victims arm into a fake armblade."
@@ -252,29 +270,13 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 4
 	verbpath = /mob/proc/changeling_gib_self
 
-/datum/power/changeling/detach_limb
-	name = "Detach Limb"
-	desc = "We tear off our limb, turning it into an aggressive biomass."
-	helptext = "It hurts."
-	genomecost = 0
-	verbpath = /mob/proc/changeling_detach_limb
-
-/datum/power/changeling/move_biostructure
-	name = "Relocate Biostructure"
-	desc = "We move our precious core organ to different part of our body."
-	helptext = "Takes time."
-	enhancedtext = "Would relocate faster."
-	genomecost = 0
-	verbpath = /mob/proc/changeling_move_biostructure
-
 /datum/power/changeling/division
 	name = "Division"
 	desc = "We infest humanoid body with the clone of our core organ, making them like us."
 	helptext = "Dead bodies cannot be successfully infested."
 	genomecost = 8
 	verbpath = /mob/proc/changeling_division
-
-
+	
 /datum/power/changeling/chem_disp_sting
 	name = "Biochemical Cauldron"
 	desc = "We evolve our stinger glands to be able to synthesize a variety of chemicals."

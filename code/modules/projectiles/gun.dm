@@ -297,6 +297,7 @@
 			if(G.point_blank_mult() > max_mult)
 				max_mult = G.point_blank_mult()
 	P.damage *= max_mult
+	P.accuracy += 4
 
 /obj/item/weapon/gun/proc/process_accuracy(obj/projectile, mob/user, atom/target, var/burst, var/held_twohanded)
 	var/obj/item/projectile/P = projectile

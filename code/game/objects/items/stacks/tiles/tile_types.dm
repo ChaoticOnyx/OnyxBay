@@ -51,6 +51,17 @@
 	stacktype = /obj/item/stack/tile/wood
 	build_type = /obj/item/stack/tile/wood
 
+/obj/item/stack/tile/darkwood
+	name = "darkwood floor tile"
+	singular_name = "darkwood floor tile"
+	desc = "An easy to fit darkwood floor tile."
+	icon_state = "tile-darkwood"
+	stacktype = /obj/item/stack/tile/darkwood
+	build_type = /obj/item/stack/tile/darkwood
+
+/obj/item/stack/tile/darkwood/fifty
+	amount = 50
+
 /obj/item/stack/tile/floor
 	name = "steel floor tile"
 	singular_name = "steel floor tile"

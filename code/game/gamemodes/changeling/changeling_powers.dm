@@ -818,11 +818,30 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	spawn(300)	T.sdisabilities &= ~DEAF
 	feedback_add_details("changeling_powers","DS")
 	return 1
+	
+/mob/proc/changeling_vomit_sting()
+	set category = "Changeling"
+	set name = "Vomit Sting (15)"
+	set desc = "Urges target to vomit."
+
+	var/mob/living/carbon/human/T = changeling_sting(15,/mob/proc/changeling_vomit_sting)
+	if(!T || T.stat == DEAD || !T.check_has_mouth())	return 0
+	sleep(10) //Небольшая задержка перед тем, как жертву стошнит
+	T.visible_message("<span class='warning'>[T] throws up!</span>","<span class='warning'>You throw up!</span>")
+	playsound(loc, 'sound/effects/splat.ogg', 50, 1)
+
+	var/turf/location = T.loc
+	if (istype(location, /turf/simulated))
+		location.add_vomit_floor(T, 1)
+	T.ingested.remove_any(5)
+	T.nutrition -= 30
+	feedback_add_details("changeling_powers","VS")
+	return 1
 
 /mob/proc/changeling_DEATHsting()
 	set category = "Changeling"
 	set name = "Death Sting (40)"
-	set desc = "Causes spasms onto death."
+	set desc = "Causes spasms to death."
 	var/loud = 1
 
 	var/mob/living/carbon/human/T = changeling_sting(40,/mob/proc/changeling_DEATHsting,loud)

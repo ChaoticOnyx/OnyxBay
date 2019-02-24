@@ -2016,7 +2016,7 @@
 /datum/chemical_reaction/espressomartini
 	name = "Espresso Martini"
 	result = /datum/reagent/ethanol/coffee/espressomartini
-	required_reagents = list(/datum/reagent/ethanol/vodka = 2, /datum/reagent/drink/coffee = 1, /datum/reagent/ethanol/coffee/kahlua = 1, /datum/reagent/sugar = 1)
+	required_reagents = list(/datum/reagent/ethanol/black_russian = 3, /datum/reagent/drink/coffee = 1, /datum/reagent/sugar = 1)
 	result_amount = 5
 
 /datum/chemical_reaction/shroombeer
@@ -2036,4 +2036,34 @@
 	name = "Vesper"
 	result = /datum/reagent/ethanol/vesper
 	required_reagents = list(/datum/reagent/ethanol/gin = 3, /datum/reagent/ethanol/vodka = 1, /datum/reagent/ethanol/wine/white = 1)
+	result_amount = 5
+
+/datum/chemical_reaction/witcher
+	name = "Witcher"
+	result = /datum/reagent/ethanol/witcher
+	required_reagents = list(/datum/reagent/ethanol/vodka = 1,/datum/reagent/ethanol/wine/white = 2,/datum/reagent/ethanol/cider/apple = 3)
+	result_amount = 6
+
+/datum/chemical_reaction/witcherwolf
+	name = "School of the Wolf"
+	result = /datum/reagent/ethanol/witcher/wolf
+	required_reagents = list(/datum/reagent/ethanol/witcher = 3,/datum/reagent/ethanol/vermouth = 1,/datum/reagent/ethanol/herbal = 1)
+	result_amount = 5
+
+/datum/chemical_reaction/witchercat
+	name = "School of the Cat"
+	result = /datum/reagent/ethanol/witcher/cat
+	required_reagents = list(/datum/reagent/ethanol/witcher = 3,/datum/reagent/drink/grenadine = 1,/datum/reagent/ethanol/cider/apple = 1)
+	result_amount = 5
+
+/datum/chemical_reaction/witcherbear
+	name = "School of the Bear"
+	result = /datum/reagent/ethanol/witcher/bear
+	required_reagents = list(/datum/reagent/ethanol/witcher = 3,/datum/reagent/ethanol/black_russian = 2)
+	result_amount = 5
+
+/datum/chemical_reaction/witchergriffin
+	name = "School of the Griffin"
+	result = /datum/reagent/ethanol/witcher/griffin
+	required_reagents = list(/datum/reagent/ethanol/witcher = 3,/datum/reagent/ethanol/bluecuracao = 1,/datum/reagent/ethanol/wine/sparkling = 1)
 	result_amount = 5
