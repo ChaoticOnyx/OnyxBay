@@ -195,7 +195,7 @@ datum/track/New(var/title_name, var/audio)
 			return
 			
 		if(jobban_isbanned(user, "JUKEBOX"))
-			to_chat(user, "<span class='notice'>Oopsie! Seems like you are blacklisted from NT Music Premium for bad taste. There is nothing you can do with jukebox now.</span>")
+			to_chat(user, "<span class='notice'>Oopsie! Seems like you are blacklisted from NT Music Premium for bad taste. You can't download new tracks from NTNet.</span>")
 			return
 			
 		visible_message("<span class='info'>\The [usr] inserts some cash into \the [src].</span>")
