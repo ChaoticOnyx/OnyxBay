@@ -213,9 +213,7 @@ datum/track/New(var/title_name, var/audio)
 			to_chat(user, "<span class='notice'>You pay with \the [W] and \the [src] is now able to play your song.</span>")
 			var/newtitle = input("Type a title of the new track", "Track title", "Track") as text
 			var/sound/S = input("Select a sound", "Sound", 'sound/effects/ghost.ogg') as sound
-			StopPlaying()
-			current_track = new/datum/track(newtitle, S)
-			StartPlaying()
+			tracks += new/datum/track(newtitle, S)
 			GLOB.nanomanager.update_uis(src)
 			return
 		else if(handled)
