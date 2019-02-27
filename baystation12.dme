@@ -2031,6 +2031,7 @@
 #include "code\modules\organs\internal\lungs.dm"
 #include "code\modules\organs\internal\posibrain.dm"
 #include "code\modules\organs\internal\stack.dm"
+#include "code\modules\organs\internal\stomach.dm"
 #include "code\modules\organs\subtypes\nabber_organ.dm"
 #include "code\modules\overmap\_defines.dm"
 #include "code\modules\overmap\overmap_shuttle.dm"

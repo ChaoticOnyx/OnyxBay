@@ -791,3 +791,42 @@ default behaviour is:
 	if(hud_used)
 		if (hud_used.move_intent)
 			hud_used.move_intent.icon_state = intent == "walk" ? "walking" : "running"
+
+/mob/living/proc/melee_accuracy_mods()
+	. = 0
+	if(eye_blind)
+		. += 75
+	if(eye_blurry)
+		. += 15
+	if(confused)
+		. += 30
+	if(CLUMSY in mutations)
+		. += 40
+
+/mob/living/proc/ranged_accuracy_mods()
+	. = 0
+	if(jitteriness)
+		. -= 2
+	if(confused)
+		. -= 2
+	if(eye_blind)
+		. -= 5
+	if(eye_blurry)
+		. -= 1
+	if(CLUMSY in mutations)
+		. -= 3
+
+/mob/living/proc/nervous_system_failure()
+	return FALSE
+
+/mob/living/proc/needs_wheelchair()
+	return FALSE
+
+/mob/living/proc/seizure()
+	set waitfor = 0
+	sleep(rand(5,10))
+	if(!paralysis && stat == CONSCIOUS)
+		visible_message("<span class='warning'>\The [src] starts having a seizure!")
+		Paralyse(rand(8,16))
+		make_jittery(rand(150,200))
+		adjustHalLoss(rand(50,60))

@@ -109,6 +109,8 @@
 	var/datum/mil_rank/char_rank = null
 
 	var/stance_damage = 0 //Whether this mob's ability to stand has been affected
+	var/stance_d_l = 0 // This system should be reworked (using arrays) once we add any non-humanoid species. But it's never gonna happen, so whatever. *shrug
+	var/stance_d_r = 0 // ^
 
 	var/obj/machinery/machine_visual //machine that is currently applying visual effects to this mob. Only used for camera monitors currently.
 

@@ -70,6 +70,7 @@
 	artery_name = "basilic vein"
 	arterial_bleed_severity = 0.75
 	//gendered_icon = 1
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
 
 /obj/item/organ/external/arm/stun_act(var/stun_amount, var/agony_amount)
 	if(!owner || (agony_amount < 5))
@@ -104,6 +105,7 @@
 	artery_name = "femoral artery"
 	arterial_bleed_severity = 0.75
 	//gendered_icon = 1
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
 
 /obj/item/organ/external/leg/stun_act(var/stun_amount, var/agony_amount)
 	if(!owner || agony_amount < 5)
@@ -138,6 +140,7 @@
 	tendon_name = "Achilles tendon"
 	arterial_bleed_severity = 0.5
 	//gendered_icon = 1
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
 
 /obj/item/organ/external/foot/stun_act(var/stun_amount, var/agony_amount)
 	if(!owner || agony_amount < 5)
@@ -177,6 +180,7 @@
 	tendon_name = "carpal ligament"
 	arterial_bleed_severity = 0.5
 	//gendered_icon = 1
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP | ORGAN_FLAG_FINGERPRINT | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
 
 /obj/item/organ/external/hand/stun_act(var/stun_amount, var/agony_amount)
 	if(!owner || (agony_amount < 5))

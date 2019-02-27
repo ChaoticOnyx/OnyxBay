@@ -30,6 +30,17 @@
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
 
+/obj/machinery/sleeper/verb/eject()
+	set src in oview(1)
+	set category = "Object"
+	set name = "Eject Sleeper"
+
+	if (usr.stat != 0)
+		return
+	src.go_out()
+	add_fingerprint(usr)
+	return
+
 /obj/machinery/sleeper/Initialize()
 	. = ..()
 	component_parts = list(
@@ -38,8 +49,18 @@
 		new /obj/item/weapon/stock_parts/capacitor(src),
 		new /obj/item/weapon/stock_parts/scanning_module(src),
 		new /obj/item/weapon/stock_parts/console_screen(src),
+		new /obj/item/weapon/reagent_containers/syringe(src),
+		new /obj/item/weapon/reagent_containers/syringe(src),
 		new /obj/item/weapon/reagent_containers/glass/beaker/large(src))
 	RefreshParts()
+
+/obj/machinery/sleeper/examine(mob/user)
+	. = ..()
+	if (. && user.Adjacent(src))
+		if (beaker)
+			to_chat(user, "It is loaded with a beaker.")
+		if(occupant)
+			occupant.examine(user)
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))
@@ -59,8 +80,10 @@
 	if(pump > 0)
 		if(beaker && istype(occupant))
 			if(beaker.reagents.total_volume < beaker.reagents.maximum_volume)
-				for(var/datum/reagent/x in occupant.ingested.reagent_list)
-					occupant.ingested.trans_to_obj(beaker, 3)
+				var/datum/reagents/ingested = occupant.get_ingested_reagents()
+				if(ingested)
+					for(var/datum/reagent/x in ingested.reagent_list)
+						ingested.trans_to_obj(beaker, 3)
 		else
 			toggle_pump()
 
@@ -211,8 +234,50 @@
 	if(default_part_replacement(user, I))
 		return
 
+	if(istype(I, /obj/item/grab))
+		if(!ismob(I:affecting))
+			return
+		for(var/mob/living/carbon/slime/M in range(1,I:affecting))
+			if(M.Victim == I:affecting)
+				to_chat(usr, "[I:affecting:name] will not fit into the sleeper because they have a slime latched onto their head.")
+				return
+		if(!check_compatibility(I:affecting, user))
+			return
+		visible_message("<span class='notice'>\The [user] starts placing \the [I:affecting] into \the [src].</span>", "<span class='notice'>You start placing \the [I:affecting] into \the [src].</span>")
+
+		if(do_after(user, 20, src))
+			if(occupant) //If somebody's got into the [src] while we were trying to stuff somebody in.
+				to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
+				return
+			I:affecting.stop_pulling()
+			if(I:affecting.client)
+				I:affecting.client.perspective = EYE_PERSPECTIVE
+				I:affecting.client.eye = src
+			I:affecting.forceMove(src)
+			update_use_power(2)
+			occupant = I:affecting
+			update_icon()
+			qdel(I)
+			return
+		else
+			return
 	..()
 
+/obj/machinery/sleeper/proc/check_compatibility(var/mob/target, var/mob/user)
+	if(!istype(user) || !istype(target))
+		return FALSE
+	if(!CanMouseDrop(target, user))
+		return FALSE
+	if(occupant)
+		to_chat(user, "<span class='warning'>The scanner is already occupied!</span>")
+		return FALSE
+	if(target.abiotic())
+		to_chat(user, "<span class='warning'>The subject cannot have abiotic items on.</span>")
+		return FALSE
+	if(target.buckled)
+		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
+		return FALSE
+	return TRUE
 
 /obj/machinery/sleeper/MouseDrop_T(var/mob/target, var/mob/user)
 	if(!CanMouseDrop(target, user))
@@ -221,6 +286,8 @@
 		return
 	if(target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
+		return
+	if(!check_compatibility(target, user))
 		return
 	go_in(target, user)
 

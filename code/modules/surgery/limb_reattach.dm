@@ -54,9 +54,10 @@
 
 /datum/surgery_step/limb/attach/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/E = tool
+	var/obj/item/organ/external/P = target.organs_by_name[E.parent_organ]
 	user.visible_message("<span class='warning'> [user]'s hand slips, damaging [target]'s [E.amputation_point]!</span>", \
 	"<span class='warning'> Your hand slips, damaging [target]'s [E.amputation_point]!</span>")
-	target.apply_damage(10, BRUTE, null, damage_flags=DAM_SHARP)
+	target.apply_damage(10, BRUTE, P, damage_flags=DAM_SHARP)
 
 //////////////////////////////////////////////////////////////////
 //	 limb connecting surgery step
@@ -95,9 +96,10 @@
 
 /datum/surgery_step/limb/connect/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/E = target.get_organ(target_zone)
+	var/obj/item/organ/external/P = target.organs_by_name[E.parent_organ]
 	user.visible_message("<span class='warning'> [user]'s hand slips, damaging [target]'s [E.amputation_point]!</span>", \
 	"<span class='warning'> Your hand slips, damaging [target]'s [E.amputation_point]!</span>")
-	target.apply_damage(10, BRUTE, null, damage_flags=DAM_SHARP)
+	target.apply_damage(10, BRUTE, P, damage_flags=DAM_SHARP)
 
 //////////////////////////////////////////////////////////////////
 //	 robotic limb attachment surgery step
@@ -145,6 +147,8 @@
 	qdel(tool)
 
 /datum/surgery_step/limb/mechanize/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		user.visible_message("<span class='warning'> [user]'s hand slips, damaging [target]'s flesh!</span>", \
-		"<span class='warning'> Your hand slips, damaging [target]'s flesh!</span>")
-		target.apply_damage(10, BRUTE, null, damage_flags=DAM_SHARP)
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+	var/obj/item/organ/external/P = target.organs_by_name[affected.parent_organ]
+	user.visible_message("<span class='warning'> [user]'s hand slips, damaging [target]'s flesh!</span>", \
+	"<span class='warning'> Your hand slips, damaging [target]'s flesh!</span>")
+	target.apply_damage(10, BRUTE, P, damage_flags=DAM_SHARP)

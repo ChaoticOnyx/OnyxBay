@@ -89,7 +89,8 @@
 	number = 5
 
 //Transport shuttle
-
+//Uncomment if you'll ever want to add a transport shuttle. But why would you?..
+/*
 /datum/shuttle/autodock/ferry/transport
 	name = "Transport"
 	warmup_time = 0
@@ -112,6 +113,7 @@
 	landmark_tag = "nav_transport_station"
 	docking_controller = "transport_shuttle_dock_airlock"
 	autoset = 1
+*/
 
 //Cargo shuttle
 
