@@ -23,9 +23,7 @@
 
 // Physical traits are what they sound like, and involve the character's physical body, as opposed to their mental state.
 /datum/trait/modifier/physical
-	name = "Physical Trait"
 	category = "Physical"
-
 
 /datum/trait/modifier/physical/flimsy
 	name = "Flimsy"
@@ -142,7 +140,6 @@
 // 'Mental' traits are just those that only sapients can have, for now, and generally involves fears.
 // So far, all of them are just for fluff/don't have mechanical effects.
 /datum/trait/modifier/mental
-	name = "Mental Trait"
 	category = "Mental"
 
 /datum/trait/modifier/mental/test_for_invalidity(var/datum/category_item/player_setup_item/traits/setup)
