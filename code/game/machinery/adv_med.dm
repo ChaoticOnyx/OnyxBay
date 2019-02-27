@@ -20,6 +20,12 @@
 	src.go_out()
 	return
 
+/obj/machinery/bodyscanner/examine(mob/user)
+	. = ..()
+	if (. && user.Adjacent(src))
+		if(occupant)
+			occupant.examine(user)
+
 /obj/machinery/bodyscanner/verb/eject()
 	set src in oview(1)
 	set category = "Object"
@@ -82,8 +88,7 @@
 		return
 	visible_message("<span class='notice'>\The [user] begins placing \the [M] into \the [src].</span>", "<span class='notice'>You start placing \the [M] into \the [src].</span>")
 	if(do_after(user, 20, src))
-		if(occupant) //If somebody's got into the [src] while we were trying to stuff somebody in.
-			to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
+		if(!check_compatibility(M, user))
 			return
 		M.forceMove(src)
 		src.occupant = M
@@ -110,6 +115,10 @@
 	if(target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
 		return FALSE
+	for(var/mob/living/carbon/slime/M in range(1,target))
+		if(M.Victim == target)
+			to_chat(user, "[target.name] will not fit into the sleeper because they have a slime latched onto their head.")
+			return FALSE
 	return TRUE
 
 /obj/machinery/bodyscanner/MouseDrop_T(var/mob/target, var/mob/user)
@@ -363,8 +372,6 @@
 		dat += "<span class='notice'>Alcohol byproducts detected in subject's blood.</span>"
 	if (H.chem_effects[CE_ALCOHOL_TOXIC])
 		dat += "<span class='warning'>Warning: Subject suffering from alcohol intoxication.</span>"
-
-
 
 	var/list/table = list()
 	table += "<table border='1'><tr><th>Organ</th><th>Damage</th><th>Status</th></tr>"

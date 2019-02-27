@@ -237,17 +237,12 @@
 	if(istype(I, /obj/item/grab))
 		if(!ismob(I:affecting))
 			return
-		for(var/mob/living/carbon/slime/M in range(1,I:affecting))
-			if(M.Victim == I:affecting)
-				to_chat(usr, "[I:affecting:name] will not fit into the sleeper because they have a slime latched onto their head.")
-				return
 		if(!check_compatibility(I:affecting, user))
 			return
 		visible_message("<span class='notice'>\The [user] starts placing \the [I:affecting] into \the [src].</span>", "<span class='notice'>You start placing \the [I:affecting] into \the [src].</span>")
 
 		if(do_after(user, 20, src))
-			if(occupant) //If somebody's got into the [src] while we were trying to stuff somebody in.
-				to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
+			if(!check_compatibility(I:affecting, user))
 				return
 			I:affecting.stop_pulling()
 			if(I:affecting.client)
@@ -277,6 +272,10 @@
 	if(target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
 		return FALSE
+	for(var/mob/living/carbon/slime/M in range(1,target))
+		if(M.Victim == target)
+			to_chat(user, "[target.name] will not fit into the sleeper because they have a slime latched onto their head.")
+			return FALSE
 	return TRUE
 
 /obj/machinery/sleeper/MouseDrop_T(var/mob/target, var/mob/user)
