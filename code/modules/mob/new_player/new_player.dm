@@ -546,7 +546,7 @@
 	src << browse(null, "window=latechoices") //closes late choices window
 	panel.close()
 
-/mob/new_player/proc/has_admin_rights()
+/mob/new_player/has_admin_rights()
 	return check_rights(R_ADMIN, 0, src)
 
 /mob/new_player/proc/check_species_allowed(datum/species/S, var/show_alert=1)

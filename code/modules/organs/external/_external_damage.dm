@@ -80,7 +80,17 @@
 	if(laser)
 		damage_amt += burn
 		cur_damage += burn_dam
-	if(internal_organs && internal_organs.len && (cur_damage + damage_amt >= max_damage || (((sharp && damage_amt >= 5) || damage_amt >= 10) && prob(5))))
+	var/organ_damage_threshold = 5
+	if(sharp)
+		organ_damage_threshold *= 0.5
+	var/organ_damage_prob = 6.25 * damage_amt/organ_damage_threshold //more damage, higher chance to damage
+	if(sharp)
+		organ_damage_prob *= 1.5
+	if(cur_damage >= 15)
+		organ_damage_prob *= cur_damage/15
+	if(encased && !(status & ORGAN_BROKEN)) //ribs and skulls protect
+		organ_damage_prob *= 0.5
+	if(internal_organs && internal_organs.len && (cur_damage + damage_amt >= max_damage || damage_amt >= organ_damage_threshold) && prob(organ_damage_prob))
 		// Damage an internal organ
 		var/list/victims = list()
 		for(var/obj/item/organ/internal/I in internal_organs)
@@ -91,7 +101,7 @@
 		for(var/obj/item/organ/victim in victims)
 			brute /= 2
 			if(laser)
-				burn /= 2
+				burn /= 3
 			damage_amt /= 2
 			victim.take_damage(damage_amt)
 

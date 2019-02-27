@@ -20,7 +20,6 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	my_atom = null
 
 /* Internal procs */
-
 /datum/reagents/proc/get_free_space() // Returns free space.
 	return maximum_volume - total_volume
 
@@ -370,8 +369,8 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 			var/datum/reagents/R = C.reagents
 			return trans_to_holder(R, amount, multiplier, copy)
 		if(type == CHEM_INGEST)
-			var/datum/reagents/R = C.ingested
-			return C.ingest(src,R, amount, multiplier, copy) //perhaps this is a bit of a hack, but currently there's no common proc for eating reagents
+			var/datum/reagents/R = C.get_ingested_reagents()
+			return C.ingest(src, R, amount, multiplier, copy) //perhaps this is a bit of a hack, but currently there's no common proc for eating reagents
 		if(type == CHEM_TOUCH)
 			var/datum/reagents/R = C.touching
 			return trans_to_holder(R, amount, multiplier, copy)

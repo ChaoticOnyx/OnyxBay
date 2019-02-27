@@ -78,18 +78,25 @@
 		return ..()
 
 	var/mob/M = G.affecting
-	if(!baycoder_dayn(M, user))
+	if(!check_compatibility(M, user))
 		return
-	M.forceMove(src)
-	src.occupant = M
-	update_use_power(2)
-	src.icon_state = "body_scanner_1"
-	for(var/obj/O in src)
-		O.forceMove(loc)
-	src.add_fingerprint(user)
-	qdel(G)
+	visible_message("<span class='notice'>\The [user] begins placing \the [M] into \the [src].</span>", "<span class='notice'>You start placing \the [M] into \the [src].</span>")
+	if(do_after(user, 20, src))
+		if(occupant) //If somebody's got into the [src] while we were trying to stuff somebody in.
+			to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
+			return
+		M.forceMove(src)
+		src.occupant = M
+		update_use_power(2)
+		src.icon_state = "body_scanner_1"
+		for(var/obj/O in src)
+			O.forceMove(loc)
+		src.add_fingerprint(user)
+		qdel(G)
+	else
+		return
 
-/obj/machinery/bodyscanner/proc/baycoder_dayn(var/mob/target, var/mob/user)
+/obj/machinery/bodyscanner/proc/check_compatibility(var/mob/target, var/mob/user)
 	if(!istype(user) || !istype(target))
 		return FALSE
 	if(!CanMouseDrop(target, user))
@@ -106,13 +113,13 @@
 	return TRUE
 
 /obj/machinery/bodyscanner/MouseDrop_T(var/mob/target, var/mob/user)
-	if(!baycoder_dayn(target, user))
+	if(!check_compatibility(target, user))
 		return
 	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")
-	if(!do_after(user, 30, src))
+	if(!do_after(user, 20, src))
 		return
 
-	if(!baycoder_dayn(target, user))
+	if(!check_compatibility(target, user))
 		return
 
 	var/mob/M = target

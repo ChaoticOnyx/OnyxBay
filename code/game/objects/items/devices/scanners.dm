@@ -47,7 +47,7 @@ REAGENT SCANNER
 	ui_interact(user,target = C)
 
 /obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1,var/mob/living/carbon/human/target)
-	
+
 	var/data[0]
 
 	if ((CLUMSY in user.mutations) && prob(60))
@@ -69,7 +69,7 @@ REAGENT SCANNER
 		data["o_limb"] = scan_data[6]
 		data["reagent"] = scan_data[7]
 		data["virus"] = scan_data[8]
-	
+
 	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "healthanalyzer.tmpl", " ", 640, 370)
@@ -78,7 +78,7 @@ REAGENT SCANNER
 		ui.open()
 
 proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separate_result)
-	
+
 	. = list()
 	var/p_name = list()
 	p_name = "<span class='notice'><b>Scan results for \the [H]:</b></span>"
@@ -259,7 +259,7 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separa
 			overall_limbs_data += "<span class='danger'>Arterial bleeding detected. Advanced scanner required for location.</span>"
 		if (found_tendon)
 			overall_limbs_data += "<span class='warning'>Tendon or ligament damage detected. Advanced scanner required for location.</span>"
-	
+
 	var/reagents_data = list()
 	// Reagent data.
 	reagents_data += "<span class='notice'><b>Reagent scan:</b></span>"
@@ -288,17 +288,29 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separa
 		if(unknown)
 			print_reagent_default_message = FALSE
 			reagents_data += "<span class='warning'>Warning: Unknown substance[(unknown>1)?"s":""] detected in subject's blood.</span>"
-	if(H.ingested && H.ingested.total_volume)
+
+	var/datum/reagents/ingested = H.get_ingested_reagents()
+	if(ingested && ingested.total_volume)
 		var/unknown = 0
-		for(var/datum/reagent/R in H.ingested.reagent_list)
+		for(var/datum/reagent/R in ingested.reagent_list)
 			if(R.scannable)
 				print_reagent_default_message = FALSE
-				reagents_data += "<span class='notice'><b>[R.name]</b> found in subject's stomach.</span>"
+				if(H.should_have_organ(BP_STOMACH))
+					var/obj/item/organ/internal/stomach/stomach = H.internal_organs_by_name[BP_STOMACH]
+					if(stomach)
+						reagents_data += "<span class='notice'><b>[R.name]</b> found in subject's stomach.</span>"
+					else
+						reagents_data += "<span class='notice'><b>[R.name]</b> found in subject's alimentary canal.</span>"
 			else
 				++unknown
 		if(unknown)
 			print_reagent_default_message = FALSE
-			reagents_data += "<span class='warning'>Non-medical reagent[(unknown > 1)?"s":""] found in subject's stomach.</span>"
+			if(H.should_have_organ(BP_STOMACH))
+				var/obj/item/organ/internal/stomach/stomach = H.internal_organs_by_name[BP_STOMACH]
+				if(stomach)
+					reagents_data += "<span class='warning'>Non-medical reagent[(unknown > 1)?"s":""] found in subject's stomach.</span>"
+				else
+					reagents_data += "<span class='notice'>Non-medical reagent[(unknown > 1)?"s":""] found in subject's alimentary canal.</span>"
 	if (H.chem_effects[CE_ALCOHOL])
 		reagents_data += "<span class='warning'>Alcohol byproducts detected in subject's blood.</span>"
 	if (H.chem_effects[CE_ALCOHOL_TOXIC])
@@ -430,7 +442,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 	..()
 	if (last_target)
 		to_chat(user, "It contains saved data for [last_target].")
-	
+
 
 /obj/item/device/healthanalyzer_advanced/attack(mob/living/carbon/human/M, mob/living/user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)

@@ -16,6 +16,7 @@
 	var/created = 0
 	var/amount = 1             // number of wounds of this type
 	var/germ_level = 0         // amount of germs in the wound
+	var/obj/item/organ/external/parent_organ	// the organ the wound is on, if on an organ
 
 	/*  These are defined by the wound type and should not be changed */
 	var/list/stages            // stages such as "cut", "deep cut", etc.

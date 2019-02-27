@@ -214,3 +214,4 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<span class='warning'>\The [tool] in [user]'s hand skips, jabbing the bone edges into the sides of [target]'s [affected.name]!</span>" , \
 	"<span class='warning'>Your hand jolts and \the [tool] skips, jabbing the bone edges into [target]'s [affected.name] with \the [tool]!</span>")
+	affected.take_damage(10, used_weapon = tool)
