@@ -6,8 +6,8 @@
 	parent_organ = BP_CHEST
 	w_class = ITEM_SIZE_NORMAL
 	min_bruised_damage = 25
-	min_broken_damage = 45
-	max_damage = 70
+	min_broken_damage = 50
+	max_damage = 100
 	relative_size = 60
 
 	var/active_breathing = 1
@@ -335,7 +335,7 @@
 		breathtype += pick("shallow and rapid")
 	if(!breathtype.len)
 		breathtype += "healthy"
-	
+
 	. += "[english_list(breathtype)] breathing"
 
 	return english_list(.)
