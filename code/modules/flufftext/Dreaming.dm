@@ -17,6 +17,7 @@ var/list/dreams = list(
 	"the medical contractor", "the security contractor", "the stowaway", "an old friend", "the prospector", "the NT pilot", "the passenger", "the chief of security",
 	"the master at arms", "the forensic technician", "the brig officer", "the tower", "the man with no face", "a field of flowers", "an old home", "the merc",
 	"a surgery table", "a needle", "a blade", "an ocean", "right behind you", "standing above you", "someone near by", "a place forgotten", "the exodus",
+	"the clown", "the mime", "honking", "a flying pie", "hysterical laughter",
 	)
 
 mob/living/carbon/proc/dream()

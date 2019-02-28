@@ -72,3 +72,34 @@
 	shoes = /obj/item/clothing/shoes/black
 	pda_type = /obj/item/device/pda
 	id_type = /obj/item/weapon/card/id/merchant
+
+/decl/hierarchy/outfit/job/clown
+	name = OUTFIT_JOB_NAME("Clown")
+	uniform = /obj/item/clothing/under/rank/clown
+	id_type = /obj/item/weapon/card/id/civilian/clown
+	pda_type = /obj/item/device/pda/clown
+	shoes = /obj/item/clothing/shoes/clown_shoes
+	mask = /obj/item/clothing/mask/gas/clown_hat
+	r_pocket = /obj/item/weapon/pen/crayon/rainbow
+	l_pocket = /obj/item/weapon/bikehorn
+	backpack_contents = list(/obj/item/weapon/reagent_containers/food/snacks/pie = 1,
+							 /obj/item/weapon/bananapeel = 1,
+							 /obj/item/weapon/reagent_containers/spray/waterflower = 1)
+
+/decl/hierarchy/outfit/job/clown/New()
+	..()
+	BACKPACK_OVERRIDE_CLOWN
+
+/decl/hierarchy/outfit/job/mime
+	name = OUTFIT_JOB_NAME("Mime")
+	head = /obj/item/clothing/head/beret
+	uniform = /obj/item/clothing/under/mime
+	id_type = /obj/item/weapon/card/id/civilian/mime
+	pda_type = /obj/item/device/pda/mime
+	shoes = /obj/item/clothing/shoes/mime
+	mask = /obj/item/clothing/mask/gas/mime
+	r_pocket = /obj/item/weapon/pen/crayon/mime
+	gloves = /obj/item/clothing/gloves/white
+	backpack_contents = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/bottleofnothing = 1,
+							 /obj/item/clothing/accessory/suspenders = 1,
+							 /obj/item/weapon/reagent_containers/food/snacks/baguette = 1)
