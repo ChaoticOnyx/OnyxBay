@@ -31,7 +31,6 @@
 	modifier_type = /datum/modifier/trait/flimsy
 	mutually_exclusive = list(/datum/trait/modifier/physical/frail)
 
-
 /datum/trait/modifier/physical/frail
 	name = "Frail"
 	desc = "Your body is very fragile, and has even less of an ability to endure harm."
@@ -70,27 +69,27 @@
 	desc = "You're rather inexperienced with guns, you've never used one in your life, or you're just really rusty.  \
 	Regardless, you find it quite difficult to land shots where you wanted them to go."
 	modifier_type = /datum/modifier/trait/inaccurate
-/*
+
 /datum/trait/modifier/physical/smaller
-	name = "Smaller"
+	name = "Midget"
 	modifier_type = /datum/modifier/trait/smaller
 	mutually_exclusive = list(/datum/trait/modifier/physical/small, /datum/trait/modifier/physical/large, /datum/trait/modifier/physical/larger)
 
 /datum/trait/modifier/physical/small
-	name = "Small"
+	name = "Short"
 	modifier_type = /datum/modifier/trait/small
 	mutually_exclusive = list(/datum/trait/modifier/physical/smaller, /datum/trait/modifier/physical/large, /datum/trait/modifier/physical/larger)
 
 /datum/trait/modifier/physical/large
-	name = "Large"
+	name = "Tall"
 	modifier_type = /datum/modifier/trait/large
 	mutually_exclusive = list(/datum/trait/modifier/physical/smaller, /datum/trait/modifier/physical/small, /datum/trait/modifier/physical/larger)
 
 /datum/trait/modifier/physical/larger
-	name = "Larger"
+	name = "Giant"
 	modifier_type = /datum/modifier/trait/larger
 	mutually_exclusive = list(/datum/trait/modifier/physical/smaller, /datum/trait/modifier/physical/small, /datum/trait/modifier/physical/large)
-*/ //Пока решили не добавлять трейты, меняющие размер спрайтов. Может быть позже.
+
 /datum/trait/modifier/physical/colorblind_protanopia
 	name = "Protanopia"
 	desc = "You have a form of red-green colorblindness. You cannot see reds, and have trouble distinguishing them from yellows and greens."
