@@ -324,7 +324,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	src.real_name = chosen_dna.name
 	src.flavor_text = ""
 	src.mind.traits = chosen_dna.traits
-	src.apply_traits()
+	if(ishuman(src))
+		var/mob/living/Wut = src
+		Wut.apply_traits
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
