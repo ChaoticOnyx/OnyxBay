@@ -31,7 +31,6 @@
 	modifier_type = /datum/modifier/trait/flimsy
 	mutually_exclusive = list(/datum/trait/modifier/physical/frail)
 
-
 /datum/trait/modifier/physical/frail
 	name = "Frail"
 	desc = "Your body is very fragile, and has even less of an ability to endure harm."
