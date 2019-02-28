@@ -1,5 +1,5 @@
 /obj/item/weapon/gun/energy/taser
-	name = "taser gun"
+	name = "Mk30 NL"
 	desc = "The NT Mk30 NL is a small, low capacity gun used for non-lethal takedowns. Produced by NT, it's actually a licensed version of a W-T design. It can switch between high and low intensity stun shots."
 	icon_state = "taser"
 	item_state = null	//so the human update icon uses the icon_state instead.
@@ -13,7 +13,7 @@
 		)
 
 /obj/item/weapon/gun/energy/taser/carbine
-	name = "taser carbine"
+	name = "Mk44 NL"
 	desc = "The NT Mk44 NL is a high capacity gun used for non-lethal takedowns. It can switch between high and low intensity stun shots."
 	icon_state = "tasercarbine"
 	w_class = ITEM_SIZE_LARGE
@@ -108,4 +108,14 @@
 	fire_delay = 20
 	max_shots = 4
 	projectile_type = /obj/item/projectile/energy/plasmastun
+	combustion = 0
+
+/obj/item/weapon/gun/energy/classictaser
+	name = "taser gun"
+	desc = "A small, low capacity gun used for non-lethal takedowns."
+	icon_state = "taser"
+	item_state = null
+	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_POWER = 2)
+	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
+	max_shots = 5
 	combustion = 0

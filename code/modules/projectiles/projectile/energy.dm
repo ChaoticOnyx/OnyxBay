@@ -84,6 +84,12 @@
 	damage_type = BURN
 	armor_penetration = 10
 
+/obj/item/projectile/energy/electrode/stunsphere
+	damage_type = STUN
+	agony = 70
+	stutter = 10
+	armor_penetration = 10
+
 /obj/item/projectile/energy/electrode/c44
 	name = "shock bullet"
 	icon_state = "shockbullet"

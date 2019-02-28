@@ -9,6 +9,7 @@ var/list/trait_categories = list() // The categories available for the trait men
 		var/datum/trait/T = new trait_type
 
 		if(!T.name)
+			//if(!T.category) //Well we don't want to get runtime errors for generic /datum/trait/modifier/physical and /datum/trait/modifier/mental, right?
 			error("Trait Menu - Missing name: [T.type]")
 			continue
 
