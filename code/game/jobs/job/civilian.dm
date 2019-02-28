@@ -125,6 +125,50 @@
 	if(.)
 		H.implant_loyalty(H)
 
+/datum/job/clown
+	title = "Clown"
+	department = "Civilian"
+	department_flag = CIV
+	total_positions = 1
+	spawn_positions = 1
+	supervisors = "uncommon sense"
+	selection_color = "#515151"
+	access = list(access_maint_tunnels)
+	minimal_access = list(access_maint_tunnels)
+	minimal_player_age = 10
+	outfit_type = /decl/hierarchy/outfit/job/clown
+
+/datum/job/clown/equip(var/mob/living/carbon/human/H)
+	. = ..()
+	if(.)
+		H.mutations.Add(CLUMSY)
+		var/new_name = sanitizeSafe(input(src, "Enter new name, clown. Leave blank or as is to cancel and stay boring.", "[H.real_name] - Enter new HONKy name", H.real_name))
+		if(new_name && new_name != H.real_name)
+			log_and_message_admins("has renamed the clown '[H.real_name]' to '[new_name]'")
+			H.fully_replace_character_name(new_name)
+			H.dna.real_name = new_name
+			if(H.mind)
+				H.mind.name = new_name
+		H.rename_self("clown")
+
+/datum/job/mime
+	title = "Mime"
+	department = "Civilian"
+	department_flag = CIV
+	total_positions = 1
+	spawn_positions = 1
+	supervisors = "the head of personnel"
+	selection_color = "#515151"
+	access = list(access_maint_tunnels)
+	minimal_access = list(access_maint_tunnels)
+	minimal_player_age = 10
+	outfit_type = /decl/hierarchy/outfit/job/mime
+
+/datum/job/mime/equip(var/mob/living/carbon/human/H)
+	. = ..()
+	if(.)
+		H.silent += 86400
+
 /datum/job/merchant
 	title = "Merchant"
 	department = "Civilian"
