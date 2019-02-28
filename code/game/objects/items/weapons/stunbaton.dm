@@ -16,7 +16,7 @@
 	var/agonyforce = 90
 	var/status = 0		//whether the thing is on or not
 	var/obj/item/weapon/cell/bcell
-	var/hitcost = 7
+	var/hitcost = 10
 
 /obj/item/weapon/melee/baton/loaded
 	bcell = /obj/item/weapon/cell/device/high
@@ -159,6 +159,8 @@
 
 	//stun effects
 	if(status)
+		if(prob(50))
+			stun = rand(1,3)
 		target.stun_effect_act(stun, agony, hit_zone, src)
 		msg_admin_attack("[key_name(user)] stunned [key_name(target)] with the [src].")
 

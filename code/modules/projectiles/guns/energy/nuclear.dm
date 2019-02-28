@@ -134,3 +134,20 @@
 	new_overlays += get_mode_overlay()
 
 	overlays = new_overlays
+
+/obj/item/weapon/gun/energy/egun
+	name = "energy gun"
+	desc = "A basic energy-based gun with two settings: Stun and kill."
+	icon_state = "egun"
+	item_state = null	//so the human update icon uses the icon_state instead.
+	max_shots = 10
+	fire_delay = 10 // To balance for the fact that it is a pistol and can be used one-handed without penalty
+
+	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
+	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 4, TECH_POWER = 3)
+	modifystate = "egunstun"
+
+	firemodes = list(
+		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="egunstun"),
+		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="egunkill"),
+		)
