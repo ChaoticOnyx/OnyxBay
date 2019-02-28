@@ -19,10 +19,7 @@
 	item_cost = 32
 	path = /obj/item/weapon/storage/box/syndie_kit/g9mm
 
-/datum/uplink_item/item/visible_weapons/energy_sword
-	name = "Energy Sword"
-	item_cost = 45
-	path = /obj/item/weapon/melee/energy/sword
+
 
 /datum/uplink_item/item/badassery/money_cannon
 	name = "Modified Money Cannon"
@@ -75,6 +72,11 @@
 	name = "Advanced Energy Gun"
 	item_cost = 60
 	path = /obj/item/weapon/gun/energy/gun/nuclear
+
+/datum/uplink_item/item/visible_weapons/energy_sword
+	name = "Energy Sword"
+	item_cost = 60
+	path = /obj/item/weapon/melee/energy/sword
 
 /datum/uplink_item/item/visible_weapons/heavysniper
 	name = "Anti-materiel Rifle with ammunition"
