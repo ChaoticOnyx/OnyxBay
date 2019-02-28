@@ -79,14 +79,14 @@
 	src.icon_state = "body_scanner_0"
 	return
 
-/obj/machinery/bodyscanner/attackby(obj/item/grab/normal/G, user as mob)
+/obj/machinery/bodyscanner/attackby(obj/item/grab/normal/G, mob/user as mob)
 	if(!istype(G))
 		return ..()
 
 	var/mob/M = G.affecting
 	if(!check_compatibility(M, user))
 		return
-	visible_message("<span class='notice'>\The [user] begins placing \the [M] into \the [src].</span>", "<span class='notice'>You start placing \the [M] into \the [src].</span>")
+	user.visible_message("<span class='notice'>\The [user] begins placing \the [M] into \the [src].</span>", "<span class='notice'>You start placing \the [M] into \the [src].</span>")
 	if(do_after(user, 20, src))
 		if(!check_compatibility(M, user))
 			return

@@ -239,7 +239,7 @@
 			return
 		if(!check_compatibility(I:affecting, user))
 			return
-		visible_message("<span class='notice'>\The [user] starts placing \the [I:affecting] into \the [src].</span>", "<span class='notice'>You start placing \the [I:affecting] into \the [src].</span>")
+		user.visible_message("<span class='notice'>\The [user] starts placing \the [I:affecting] into \the [src].</span>", "<span class='notice'>You start placing \the [I:affecting] into \the [src].</span>")
 
 		if(do_after(user, 20, src))
 			if(!check_compatibility(I:affecting, user))
