@@ -48,9 +48,9 @@
 
 /obj/item/organ/internal/brain/New(var/mob/living/carbon/holder)
 	..()
-	max_damage = 200
+	max_damage = 100
 	if(species)
-		max_damage = species.total_health
+		max_damage = species.total_health/2
 	min_bruised_damage = max_damage*0.25
 	min_broken_damage = max_damage*0.75
 
@@ -71,6 +71,10 @@
 		brainmob.real_name = H.real_name
 		brainmob.dna = H.dna.Clone()
 		brainmob.timeofhostdeath = H.timeofdeath
+		// Copy modifiers.
+		for(var/datum/modifier/M in H.modifiers)
+			if(M.flags & MODIFIER_GENETIC)
+				brainmob.add_modifier(M.type)
 
 	if(H.mind)
 		H.mind.transfer_to(brainmob)
@@ -170,12 +174,12 @@
 						to_chat(owner, "<span class='warning'>You feel [pick("dizzy","woozy","faint")]...</span>")
 					damprob = owner.chem_effects[CE_STABLE] ? 30 : 60
 					if(!past_damage_threshold(2) && prob(damprob))
-						take_damage(1)
+						take_damage(0.5)
 				if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
 					owner.eye_blurry = max(owner.eye_blurry,6)
 					damprob = owner.chem_effects[CE_STABLE] ? 40 : 80
 					if(!past_damage_threshold(4) && prob(damprob))
-						take_damage(1)
+						take_damage(0.5)
 					if(!owner.paralysis && prob(10))
 						owner.Paralyse(rand(1,3))
 						to_chat(owner, "<span class='warning'>You feel extremely [pick("dizzy","woozy","faint")]...</span>")
@@ -183,7 +187,7 @@
 					owner.eye_blurry = max(owner.eye_blurry,6)
 					damprob = owner.chem_effects[CE_STABLE] ? 60 : 100
 					if(!past_damage_threshold(6) && prob(damprob))
-						take_damage(1)
+						take_damage(0.5)
 					if(!owner.paralysis && prob(15))
 						owner.Paralyse(3,5)
 						to_chat(owner, "<span class='warning'>You feel extremely [pick("dizzy","woozy","faint")]...</span>")
@@ -191,7 +195,7 @@
 					owner.eye_blurry = max(owner.eye_blurry,6)
 					damprob = owner.chem_effects[CE_STABLE] ? 80 : 100
 					if(prob(damprob))
-						take_damage(1)
+						take_damage(0.5)
 	..()
 
 /obj/item/organ/internal/brain/proc/handle_disabilities()

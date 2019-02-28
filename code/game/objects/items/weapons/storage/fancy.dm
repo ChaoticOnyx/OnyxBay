@@ -123,12 +123,12 @@
 	item_state = "cigpacket"
 	w_class = ITEM_SIZE_SMALL
 	max_w_class = ITEM_SIZE_TINY
-	max_storage_space = 6
+	max_storage_space = 10
 	throwforce = 2
 	slot_flags = SLOT_BELT
 
 	key_type = /obj/item/clothing/mask/smokable/cigarette
-	startswith = list(/obj/item/clothing/mask/smokable/cigarette = 6)
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette = 10)
 
 /obj/item/weapon/storage/fancy/cigarettes/New()
 	..()
@@ -177,13 +177,13 @@
 	name = "pack of Dromedary Co. cigarettes"
 	desc = "A packet of six imported Dromedary Company cancer sticks. A label on the packaging reads, \"Wouldn't a slow death make a change?\"."
 	icon_state = "Dpacket"
-	startswith = list(/obj/item/clothing/mask/smokable/cigarette/dromedaryco = 6)
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/dromedaryco = 10)
 
 /obj/item/weapon/storage/fancy/cigarettes/killthroat
 	name = "pack of Acme Co. cigarettes"
 	desc = "A packet of six Acme Company cigarettes. For those who somehow want to obtain the record for the most amount of cancerous tumors."
 	icon_state = "Bpacket"
-	startswith = list(/obj/item/clothing/mask/smokable/cigarette/killthroat = 6)
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/killthroat = 10)
 
 /obj/item/weapon/storage/fancy/cigarettes/killthroat/New()
 	..()
@@ -196,14 +196,14 @@
 	desc = "A mellow blend made from synthetic, pod-grown tobacco. The commercial jingle is guaranteed to get stuck in your head."
 	icon_state = "LSpacket"
 	item_state = "Dpacket" //I actually don't mind cig packs not showing up in the hand. whotf doesn't just keep them in their pockets/coats //
-	startswith = list(/obj/item/clothing/mask/smokable/cigarette/luckystars = 6)
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/luckystars = 10)
 
 /obj/item/weapon/storage/fancy/cigarettes/jerichos
 	name = "pack of Jerichos"
 	desc = "Typically seen dangling from the lips of Martian soldiers and border world hustlers. Tastes like hickory smoke, feels like warm liquid death down your lungs."
 	icon_state = "Jpacket"
 	item_state = "Dpacket"
-	startswith = list(/obj/item/clothing/mask/smokable/cigarette/jerichos = 6)
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/jerichos = 10)
 
 /obj/item/weapon/storage/fancy/cigarettes/menthols
 	name = "pack of Temperamento Menthols"
@@ -212,21 +212,21 @@
 	item_state = "Dpacket"
 
 	key_type = /obj/item/clothing/mask/smokable/cigarette/menthol
-	startswith = list(/obj/item/clothing/mask/smokable/cigarette/menthol = 6)
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/menthol = 10)
 
 /obj/item/weapon/storage/fancy/cigarettes/carcinomas
 	name = "pack of Carcinoma Angels"
 	desc = "This unknown brand was slated for the chopping block, until they were publicly endorsed by an old Earthling gonzo journalist. The rest is history. They sell a variety for cats, too. Yes, actual cats."
 	icon_state = "CApacket"
 	item_state = "Dpacket"
-	startswith = list(/obj/item/clothing/mask/smokable/cigarette/carcinomas = 6)
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/carcinomas = 10)
 
 /obj/item/weapon/storage/fancy/cigarettes/professionals
 	name = "pack of Professional 120s"
 	desc = "Let's face it - if you're smoking these, you're either trying to look upper-class or you're 80 years old. That's the only excuse. They taste disgusting, too."
 	icon_state = "P100packet"
 	item_state = "Dpacket"
-	startswith = list(/obj/item/clothing/mask/smokable/cigarette/professionals = 6)
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/professionals = 10)
 
 //cigarellos
 /obj/item/weapon/storage/fancy/cigarettes/cigarello
@@ -234,6 +234,7 @@
 	desc = "The Trident brand's wood tipped little cigar, favored by the Sol corps diplomatique for their pleasant aroma. Machine made on Mars for over 100 years."
 	icon_state = "CRpacket"
 	item_state = "Dpacket"
+	max_storage_space = 6
 	key_type = /obj/item/clothing/mask/smokable/cigarette/trident
 	startswith = list(/obj/item/clothing/mask/smokable/cigarette/trident = 5)
 
@@ -310,7 +311,7 @@
 	max_storage_space = null
 	storage_slots = 6
 	req_access = list(access_virology)
-	can_hold = list("/obj/item/weapon/reagent_containers/glass/beaker/vial")
+	can_hold = list(/obj/item/weapon/reagent_containers/glass/beaker/vial)
 
 /obj/item/weapon/storage/lockbox/vials/New()
 	..()

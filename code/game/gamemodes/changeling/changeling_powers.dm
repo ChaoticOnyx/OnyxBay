@@ -819,10 +819,30 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	feedback_add_details("changeling_powers","DS")
 	return 1
 
+/mob/proc/changeling_vomit_sting()
+	set category = "Changeling"
+	set name = "Vomit Sting (15)"
+	set desc = "Urges target to vomit."
+
+	var/mob/living/carbon/human/T = changeling_sting(15,/mob/proc/changeling_vomit_sting)
+	if(!T || T.stat == DEAD || !T.check_has_mouth())	return 0
+	sleep(10) //Небольшая задержка перед тем, как жертву стошнит
+	T.visible_message("<span class='warning'>[T] throws up!</span>","<span class='warning'>You throw up!</span>")
+	playsound(loc, 'sound/effects/splat.ogg', 50, 1)
+
+	var/turf/location = T.loc
+	if (istype(location, /turf/simulated))
+		location.add_vomit_floor(T, 1)
+	var/datum/reagents/ingested = T.get_ingested_reagents()
+	ingested.remove_any(5)
+	T.nutrition -= 30
+	feedback_add_details("changeling_powers","VS")
+	return 1
+
 /mob/proc/changeling_DEATHsting()
 	set category = "Changeling"
 	set name = "Death Sting (40)"
-	set desc = "Causes spasms onto death."
+	set desc = "Causes spasms to death."
 	var/loud = 1
 
 	var/mob/living/carbon/human/T = changeling_sting(40,/mob/proc/changeling_DEATHsting,loud)
@@ -1645,7 +1665,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		/datum/reagent/acid/hydrochloric,
 		/datum/reagent/toxin/phoron
 		)
-					
+
 //	var/obj/item/organ/internal/biostructure/BIO = T.internal_organs_by_name[BP_CHANG]
 	var/datum/reagent/target_chem = input(T, "Choose reagent:") as null|anything in chemistry
 //	T.mind.changeling.pick_chemistry.reagent_list += input(T, "Choose reagent:") as null|anything in chemistry
@@ -1685,7 +1705,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(src.status_flags & FAKEDEATH)	//Тупа проверка на лежание в стазисе
 		to_chat(src, "<span class='warning'>We can't sting until our stasis ends successfully.</span>")
 		return 0
-		
+
 	var/mob/living/carbon/human/T = changeling_sting(5, /mob/proc/chem_sting)
 	if(!T)	return 0
 	var/N = 10

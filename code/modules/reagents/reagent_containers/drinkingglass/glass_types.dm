@@ -84,8 +84,8 @@
 	center_of_mass = "x=16;y=7"
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/vodkaglass
-	name = "small glass"
-	base_name = "vodka"
+	name = "rumka"
+	base_name = "rumka"
 	base_icon = "vodka"
 	filling_states = "33;66;100"
 	volume = 5
@@ -95,7 +95,7 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/cognac
 	name = "cognac glass"
-	base_name = "cognac"
+	base_name = "glass"
 	base_icon = "cognac"
 	filling_states = "20;40;60;80;100"
 	volume = 25
@@ -104,7 +104,7 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/bigmug
 	name = "large mug"
-	base_name = "bigmug"
+	base_name = "big mug"
 	base_icon = "bigmug"
 	filling_states = "50;100"
 	volume = 80
@@ -113,7 +113,7 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/hurricane
 	name = "hurricane glass"
-	base_name = "hurricane"
+	base_name = "glass"
 	base_icon = "hurricane"
 	filling_states = "50;100"
 	volume = 30
@@ -122,7 +122,7 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/dshot
 	name = "double shot"
-	base_name = "dshot"
+	base_name = "double shot"
 	base_icon = "dshot"
 	filling_states = "33;66;100"
 	volume = 10

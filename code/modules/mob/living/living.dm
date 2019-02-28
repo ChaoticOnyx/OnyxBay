@@ -5,6 +5,8 @@
 	else
 		add_to_living_mob_list()
 		verbs -= /mob/living/proc/ghost
+	update_transform() // Some mobs may start bigger or smaller than normal.
+
 
 //mob verbs are faster than object verbs. See mob/verb/examine.
 /mob/living/verb/pulled(atom/movable/AM as mob|obj in oview(1))
@@ -62,7 +64,8 @@ default behaviour is:
 	spawn(0)
 		if ((!( yes ) || now_pushing) || !loc)
 			return
-		now_pushing = 1
+		if(!istype(AM, /mob/living/bot/mulebot))
+			now_pushing = 1
 		if (istype(AM, /mob/living))
 			var/mob/living/tmob = AM
 
@@ -297,7 +300,15 @@ default behaviour is:
 	return
 
 /mob/living/proc/getMaxHealth()
-	return maxHealth
+	var/result = maxHealth
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.max_health_flat))
+			result += M.max_health_flat
+	// Second loop is so we can get all the flat adjustments first before multiplying, otherwise the result will be different.
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.max_health_percent))
+			result *= M.max_health_percent
+	return result
 
 /mob/living/proc/setMaxHealth(var/newMaxHealth)
 	maxHealth = newMaxHealth
@@ -780,3 +791,42 @@ default behaviour is:
 	if(hud_used)
 		if (hud_used.move_intent)
 			hud_used.move_intent.icon_state = intent == "walk" ? "walking" : "running"
+
+/mob/living/proc/melee_accuracy_mods()
+	. = 0
+	if(eye_blind)
+		. += 75
+	if(eye_blurry)
+		. += 15
+	if(confused)
+		. += 30
+	if(CLUMSY in mutations)
+		. += 40
+
+/mob/living/proc/ranged_accuracy_mods()
+	. = 0
+	if(jitteriness)
+		. -= 2
+	if(confused)
+		. -= 2
+	if(eye_blind)
+		. -= 5
+	if(eye_blurry)
+		. -= 1
+	if(CLUMSY in mutations)
+		. -= 3
+
+/mob/living/proc/nervous_system_failure()
+	return FALSE
+
+/mob/living/proc/needs_wheelchair()
+	return FALSE
+
+/mob/living/proc/seizure()
+	set waitfor = 0
+	sleep(rand(5,10))
+	if(!paralysis && stat == CONSCIOUS)
+		visible_message("<span class='warning'>\The [src] starts having a seizure!")
+		Paralyse(rand(8,16))
+		make_jittery(rand(150,200))
+		adjustHalLoss(rand(50,60))

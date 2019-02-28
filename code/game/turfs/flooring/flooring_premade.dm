@@ -182,10 +182,11 @@
 	icon_state = "wood"
 	initial_flooring = /decl/flooring/wood
 
-/turf/simulated/floor/trim/wood/darkwood
-	name = "wooden floor"
-	icon_state = "wood_new_dark"
-	initial_flooring = /decl/flooring/wood/darkwood
+/turf/simulated/floor/trim/darkwood
+	name = "dark wooden floor"
+	icon_state = "darkwood"
+	icon = 'icons/turf/flooring/wood.dmi'
+	initial_flooring = /decl/flooring/darkwood
 
 /turf/simulated/floor/trim/wood/broken0
 	name = "wooden floor"

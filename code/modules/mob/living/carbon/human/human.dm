@@ -9,7 +9,13 @@
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/weapon/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
 
+	var/list/stance_limbs
+	var/list/grasp_limbs
+
 /mob/living/carbon/human/New(var/new_loc, var/new_species = null)
+
+	grasp_limbs = list()
+	stance_limbs = list()
 
 	if(!dna)
 		dna = new /datum/dna(null)
@@ -54,6 +60,21 @@
 	for(var/organ in organs)
 		qdel(organ)
 	return ..()
+
+/mob/living/carbon/human/get_ingested_reagents()
+	if(should_have_organ(BP_STOMACH))
+		var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
+		if(stomach)
+			return stomach.ingested
+	return touching // Kind of a shitty hack, but makes more sense to me than digesting them.
+
+/mob/living/carbon/human/get_fullness()
+	if(!should_have_organ(BP_STOMACH))
+		return ..()
+	var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
+	if(stomach)
+		return nutrition + (stomach.ingested.total_volume * 10)
+	return 0 //Always hungry, but you can't actually eat. :(
 
 /mob/living/carbon/human/Stat()
 	. = ..()
@@ -661,6 +682,7 @@
 			if(level > 2)
 				sleep(100 / timevomit)	//and you have 10 more for mad dash to the bucket
 				Stun(3)
+				var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
 				if(nutrition < 40)
 					custom_emote(1,"dry heaves.")
 				else
@@ -676,8 +698,7 @@
 
 					var/turf/location = loc
 					if (istype(location, /turf/simulated))
-						location.add_vomit_floor(src, toxvomit)
-					ingested.remove_any(5)
+						location.add_vomit_floor(src, toxvomit, stomach.ingested)
 					nutrition -= 30
 		sleep(350)	//wait 35 seconds before next volley
 		lastpuke = 0
@@ -1024,6 +1045,8 @@
 			return
 		if(species.language)
 			remove_language(species.language)
+		if(species.icon_scale != 1)
+			update_transform()
 		if(species.default_language)
 			remove_language(species.default_language)
 		for(var/datum/language/L in species.assisted_langs)
@@ -1559,5 +1582,5 @@
 	return "[Floor((120+rand(-5,5))*(blood_result/100))]/[Floor((80+rand(-5,5))*(blood_result/100))]"
 
 //Point at which you dun breathe no more. Separate from asystole crit, which is heart-related.
-/mob/living/carbon/human/proc/nervous_system_failure()
+/mob/living/carbon/human/nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.75

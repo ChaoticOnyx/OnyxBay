@@ -590,7 +590,7 @@
 	var/mob/living/L = .
 	if(src.health <= (src.maxHealth - 5))
 		src.health += 5
-	if(istype(L))
+	if(istype(L,/mob/living/carbon/human))
 		if(prob(15))
 			L.Weaken(3)
 			L.visible_message("<span class='danger'>\the [src] knocks down \the [L]!</span>")

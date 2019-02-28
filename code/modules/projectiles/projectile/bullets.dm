@@ -162,6 +162,20 @@
 	sharp = 0
 	armor_penetration = 2.5
 
+/obj/item/projectile/bullet/pistol/rubber/c44
+	name = "rubber bullet"
+	check_armour = "melee"
+	damage = 5
+	agony = 35
+	embed = 0
+	sharp = 0
+
+/obj/item/projectile/bullet/pistol/accelerated/c44
+	name = "accelerated bullet"
+	damage = 42.5 //.44 magnum + gauss
+	armor_penetration = 55
+
+
 /* shotgun projectiles */
 
 /obj/item/projectile/bullet/shotgun

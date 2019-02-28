@@ -374,6 +374,14 @@
 		jobs += "</tr>"
 
 		jobs += "</table>"
+		
+		// Machinery
+		jobs += "<tr>"
+		jobs += "<td><A href='?_src_=holder;jobban3=JUKEBOX;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "JUKEBOX"))?"red":"blue"]>Jukebox</font></A> | "
+
+		jobs += "</tr>"
+
+		jobs += "</table>"
 
 //
 //Regular jobs

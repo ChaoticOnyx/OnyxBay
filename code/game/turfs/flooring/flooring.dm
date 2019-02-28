@@ -160,6 +160,16 @@ var/list/flooring_types
 	flags = TURF_REMOVE_CROWBAR
 	build_type = /obj/item/stack/tile/floor_freezer
 
+/decl/flooring/darkwood
+	name = "dark wooden floor"
+	desc = "Polished darwood planks."
+	icon = 'icons/turf/flooring/wood.dmi'
+	icon_base = "darkwood"
+	damage_temperature = T0C+200
+	descriptor = "dark planks"
+	build_type = /obj/item/stack/tile/darkwood
+	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
+
 /decl/flooring/wood
 	name = "wooden floor"
 	desc = "Polished redwood planks."
@@ -170,10 +180,6 @@ var/list/flooring_types
 	descriptor = "planks"
 	build_type = /obj/item/stack/tile/wood
 	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
-
-/decl/flooring/wood/darkwood
-	name = "dark wooden floor"
-	icon_base = "wood_new_dark"
 
 /decl/flooring/wood/broken0
 	name = "broken wooden floor"

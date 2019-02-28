@@ -208,7 +208,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	attack_verb = list("burnt", "singed")
 	type_butt = /obj/item/weapon/cigbutt
 	chem_volume = 5
-	smoketime = 60
+	smoketime = 120
 	matchmes = "<span class='notice'>USER lights their NAME with their FLAME.</span>"
 	lightermes = "<span class='notice'>USER manages to light their NAME with FLAME.</span>"
 	zippomes = "<span class='rose'>With a flick of their wrist, USER lights their NAME with their FLAME.</span>"
@@ -405,13 +405,13 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	throw_speed = 0.5
 	item_state = "cigaroff"
 	smoketime = 1200
-	chem_volume = 15
+	chem_volume = 22.5
 	matchmes = "<span class='notice'>USER lights their NAME with their FLAME.</span>"
 	lightermes = "<span class='notice'>USER manages to offend their NAME by lighting it with FLAME.</span>"
 	zippomes = "<span class='rose'>With a flick of their wrist, USER lights their NAME with their FLAME.</span>"
 	weldermes = "<span class='notice'>USER insults NAME by lighting it with FLAME.</span>"
 	ignitermes = "<span class='notice'>USER fiddles with FLAME, and manages to light their NAME with the power of science.</span>"
-	filling = list(/datum/reagent/tobacco/fine = 12)
+	filling = list(/datum/reagent/tobacco/fine = 15)
 
 /obj/item/clothing/mask/smokable/cigarette/cigar/cohiba
 	name = "\improper Cohiba Robusto cigar"
@@ -425,8 +425,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_state = "cigar2off"
 	icon_on = "cigar2on"
 	smoketime = 3000
-	chem_volume = 20
-	filling = list(/datum/reagent/tobacco/fine = 17)
+	chem_volume = 30
+	filling = list(/datum/reagent/tobacco/fine = 20)
 
 /obj/item/weapon/cigbutt
 	name = "cigarette butt"
@@ -717,7 +717,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_on = "spliffon"
 	type_butt = /obj/item/weapon/cigbutt/spliffbutt
 	throw_speed = 0.5
-	smoketime = 75
+	smoketime = 120
 	chem_volume = 15
 	matchmes = "<span class='notice'>USER lights their NAME with their FLAME.</span>"
 	lightermes = "<span class='notice'>USER lights their NAME with their FLAME.</span>"

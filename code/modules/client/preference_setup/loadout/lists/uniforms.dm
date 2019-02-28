@@ -117,6 +117,7 @@
 // 	path = /obj/item/clothing/under/rank/psych/turtleneck/sweater
 // 	flags = GEAR_HAS_COLOR_SELECTION
 
+/* MissingNo. uniform. Causes logs wreckage. *shrug
 /datum/gear/uniform/corporate
 	display_name = "corporate uniform selection"
 	path = /obj/item/clothing/under
@@ -134,6 +135,7 @@
 	// corps += /obj/item/clothing/under/focal
 	// corps += /obj/item/clothing/under/rank/ntwork
 	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(corps)
+*/
 
 /datum/gear/uniform/sterile
 	display_name = "sterile jumpsuit"

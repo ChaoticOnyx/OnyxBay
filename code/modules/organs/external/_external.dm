@@ -25,6 +25,9 @@
 	var/pain = 0                       // How much the limb hurts.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
 
+	// A bitfield for a collection of limb behavior flags.
+	var/limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
+
 	// Appearance vars.
 	var/nonsolid                       // Snowflake warning, reee. Used for slime limbs.
 	var/icon_name = null               // Icon state base.
@@ -103,6 +106,7 @@
 
 	if(parent && parent.children)
 		parent.children -= src
+		parent = null
 
 	if(children)
 		for(var/obj/item/organ/external/C in children)
@@ -118,6 +122,8 @@
 	splinted = null
 
 	if(owner)
+		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
+		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
 		owner.organs -= src
 		owner.organs_by_name[organ_tag] = null
 		owner.organs_by_name -= organ_tag
@@ -181,6 +187,10 @@
 			if(istype(I, /obj/item/organ))
 				continue
 			to_chat(usr, "<span class='danger'>There is \a [I] sticking out of it.</span>")
+		var/ouchies = get_wounds_desc()
+		if(ouchies != "nothing")
+			to_chat(usr, "<span class='notice'>There is [ouchies] visible on it.</span>")
+
 	return
 
 /obj/item/organ/external/show_decay_status(mob/user)
@@ -287,6 +297,9 @@
 	..()
 
 	if(istype(owner))
+
+		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs[src] = TRUE
+		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs[src] = TRUE
 		owner.organs_by_name[organ_tag] = src
 		owner.organs |= src
 
@@ -358,6 +371,7 @@
 	switch(damage_type)
 		if(BRUTE) src.heal_damage(repair_amount, 0, 0, 1)
 		if(BURN)  src.heal_damage(0, repair_amount, 0, 1)
+	owner.regenerate_icons()
 	if(user == src.owner)
 		user.visible_message("<span class='notice'>\The [user] patches [damage_desc] on \his [src.name] with [tool].</span>")
 	else
@@ -422,7 +436,7 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/item/organ/external/proc/createwound(var/type = CUT, var/damage, var/surgical)
 
-	if(damage == 0)
+	if(damage <= 0)
 		return
 
 	//moved these before the open_wound check so that having many small wounds for example doesn't somehow protect you from taking internal damage (because of the return)
@@ -785,6 +799,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(parent_organ)
 		var/datum/wound/lost_limb/W = new (src, disintegrate, clean)
 		if(clean)
+			W.parent_organ = parent_organ
 			parent_organ.wounds |= W
 			parent_organ.update_damages()
 		else
@@ -926,12 +941,30 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(W.clamped)
 			return 1
 
+obj/item/organ/external/proc/remove_clamps()
+	var/rval = 0
+	for(var/datum/wound/W in wounds)
+		rval |= W.clamped
+		W.clamped = 0
+	return rval
+
+// open incisions and expose implants
+// this is the retract step of surgery
+/obj/item/organ/external/proc/open_incision()
+	var/datum/wound/W = get_incision()
+	if(!W)	return
+	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage))
+
+	if(!encased)
+		for(var/obj/item/weapon/implant/I in implants)
+			I.exposed()
+
 /obj/item/organ/external/proc/fracture()
 	if(!config.bones_can_break)
 		return
 	if(robotic >= ORGAN_ROBOT)
 		return	//ORGAN_BROKEN doesn't have the same meaning for robot limbs
-	if((status & ORGAN_BROKEN) || cannot_break)
+	if((status & ORGAN_BROKEN) || !(limb_flags & ORGAN_FLAG_CAN_BREAK))
 		return
 
 	if(owner)
@@ -945,6 +978,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	playsound(src.loc, "fracture", 100, 1, -2)
 	status |= ORGAN_BROKEN
+
+	//Kinda difficult to keep standing when your leg's gettin' wrecked, eh?
+	if(limb_flags & ORGAN_FLAG_CAN_STAND)
+		if(prob(67))
+			owner.Weaken(2)
+
 	broken_description = pick("broken","fracture","hairline fracture")
 
 	// Fractures have a chance of getting you out of restraints
@@ -1084,22 +1123,23 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	if(!owner)
 		return
-	var/is_robotic = robotic >= ORGAN_ROBOT
+
+	if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
+	if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
+
+	switch(body_part)
+		if(FOOT_LEFT, FOOT_RIGHT)
+			owner.drop_from_inventory(owner.shoes)
+		if(HAND_LEFT, HAND_RIGHT)
+			owner.drop_from_inventory(owner.gloves)
+		if(HEAD)
+			owner.drop_from_inventory(owner.glasses)
+			owner.drop_from_inventory(owner.head)
+			owner.drop_from_inventory(owner.l_ear)
+			owner.drop_from_inventory(owner.r_ear)
+			owner.drop_from_inventory(owner.wear_mask)
+
 	var/mob/living/carbon/human/victim = owner
-
-
-	//temparary plug before augmentation module is complete
-	if(src.organ_tag == BP_L_ARM || src.organ_tag == BP_R_ARM)
-		if(isProsthetic(owner.l_hand) || isProsthetic(owner.r_hand))
-			victim.bad_external_organs -= src
-			var/obj/item/weapon/melee/prosthetic/P = src.organ_tag == BP_L_ARM ? owner.l_hand : owner.r_hand
-			P.remove_prosthetic()
-			owner.drop_from_inventory(P,force = 1)
-			if(src.organ_tag == BP_L_ARM || src.organ_tag == BP_R_ARM)
-				for(var/obj/item/organ/external/O in children)
-					qdel(O)
-				qdel(src)
-			return
 
 	..()
 
@@ -1146,7 +1186,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	victim.organs_by_name[organ_tag] = null // Remove from owner's vars.
 
 	//Robotic limbs explode if sabotaged.
-	if(is_robotic && sabotaged)
+	if((robotic >= ORGAN_ROBOT) && sabotaged)
 		victim.visible_message(
 			"<span class='danger'>\The [victim]'s [src.name] explodes violently!</span>",\
 			"<span class='danger'>Your [src.name] explodes!</span>",\
@@ -1158,6 +1198,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 		spark_system.start()
 		spawn(10)
 			qdel(spark_system)
+		qdel(src)
+	else if(is_stump())
 		qdel(src)
 
 /obj/item/organ/external/proc/disfigure(var/type = "brute")
@@ -1410,6 +1452,17 @@ Note that amputating the affected organ does in fact remove the infection from t
 	W.damage += damage
 	W.time_inflicted = world.time
 
-
 /obj/item/organ/external/proc/has_genitals()
 	return !isrobotic() && species && species.sexybits_location == organ_tag
+
+// Added to the mob's move delay tally if this organ is being used to move with.
+obj/item/organ/external/proc/movement_delay(max_delay)
+	. = 0
+	if(is_stump())
+		. += max_delay
+	else if(splinted)
+		. += max_delay/8
+	else if(status & ORGAN_BROKEN)
+		. += max_delay * 3/8
+	else if(src.robotic >= ORGAN_ROBOT)
+		. += max_delay * CLAMP01(damage/max_damage)

@@ -72,7 +72,8 @@
 	chem_effects.Cut()
 
 	if(touching) touching.metabolize()
-	if(ingested) ingested.metabolize()
+	var/datum/reagents/metabolism/ingested = get_ingested_reagents()
+	if(istype(ingested)) ingested.metabolize()
 	if(bloodstr) bloodstr.metabolize()
 
 	confused = max(0, confused - 1)

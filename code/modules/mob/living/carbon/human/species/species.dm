@@ -161,6 +161,7 @@
 	                              // Determines the organs that the species spawns with and
 	var/list/has_organ = list(    // which required-organ checks are conducted.
 		BP_HEART =    /obj/item/organ/internal/heart,
+		BP_STOMACH =  /obj/item/organ/internal/stomach,
 		BP_LUNGS =    /obj/item/organ/internal/lungs,
 		BP_LIVER =    /obj/item/organ/internal/liver,
 		BP_KIDNEYS =  /obj/item/organ/internal/kidneys,
@@ -207,6 +208,7 @@
 	var/sexybits_location	//organ tag where they are located if they can be kicked for increased pain
 
 	var/list/prone_overlay_offset = list(0, 0) // amount to shift overlays when lying
+	var/icon_scale = 1
 /*
 These are all the things that can be adjusted for equipping stuff and
 each one can be in the NORTH, SOUTH, EAST, and WEST direction. Specify

@@ -21,6 +21,7 @@ var/global/datum/body_build/default_body_build = new
 	var/ties_icon	= 'icons/inv_slots/acessories/mob.dmi'
 	var/hidden_icon = 'icons/inv_slots/hidden/mob.dmi'
 	var/rig_back	= 'icons/inv_slots/rig/mob.dmi'
+	var/id_icon		= 'icons/mob/onmob/id.dmi'
 
 	//var/r_hand		= 'icons/inv_slots/items/items_r_default.dmi'
 	//var/l_hand		= 'icons/inv_slots/items/items_l_default.dmi'
@@ -75,8 +76,9 @@ var/global/datum/body_build/default_body_build = new
 			if (slot_tie_str)     		I = BB.ties_icon
 			if (slot_l_hand_str)		I = BB.l_hand
 			if (slot_r_hand_str)		I = BB.r_hand
-			if (slot_handcuffed_str)	I = BB.misk_icon 
-			if (slot_legcuffed_str)		I = BB.misk_icon 
+			if (slot_handcuffed_str)	I = BB.misk_icon
+			if (slot_legcuffed_str)		I = BB.misk_icon
+			if (slot_wear_id_str)		I = BB.id_icon
 			else
 				world.log << "##ERROR. Wrong sprite group for mob icon \"[slot]\""
 		if(icon_state in icon_states(I))
@@ -136,6 +138,13 @@ var/global/datum/body_build/default_body_build = new
 	ties_icon		= 'icons/inv_slots/acessories/mob_slim.dmi'
 	hidden_icon 	= 'icons/inv_slots/hidden/mob_slim.dmi'
 	rig_back		= 'icons/inv_slots/rig/mob_slim.dmi'
+
+/datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
+	name = "Slim Tajaran"
+
+	mask_icon	= 'icons/inv_slots/masks/mob_tajaran.dmi'
+	hat_icon	= 'icons/inv_slots/hats/mob_tajaran.dmi'
+	suit_icon	= 'icons/inv_slots/suits/mob_tajaran.dmi'
 
 /datum/body_build/tajaran
 	name		= "Tajaran"

@@ -197,6 +197,7 @@
 /mob/living/bot/mulebot/UnarmedAttack(var/turf/T)
 	if(T == src.loc)
 		unload(dir)
+	..()
 
 /mob/living/bot/mulebot/Bump(var/mob/living/carbon/human/M)
 	if(!safety && istype(M))

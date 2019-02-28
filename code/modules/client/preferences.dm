@@ -19,7 +19,7 @@ datum/preferences
 
 	//character preferences
 	var/species_preview                 //Used for the species selection window.
-
+	var/list/traits						//Traits which modifier characters for better or worse (mostly worse).
 		//Mob preview
 	var/icon/preview_icon = null
 

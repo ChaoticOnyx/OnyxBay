@@ -8,7 +8,7 @@
 	icon_state = "red"
 	item_state = "toolbox_red"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 5
+	force = 10
 	throwforce = 10
 	throw_speed = 1
 	throw_range = 7
@@ -71,7 +71,7 @@
 	icon_state = "syndicate"
 	item_state = "toolbox_syndi"
 	origin_tech = list(TECH_COMBAT = 1, TECH_ILLEGAL = 1)
-	force = 7.0
+	force = 12.5
 
 /obj/item/weapon/storage/toolbox/syndicate/New()
 	..()
