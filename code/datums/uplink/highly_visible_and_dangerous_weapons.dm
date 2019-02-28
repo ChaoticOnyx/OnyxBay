@@ -14,15 +14,15 @@
 	item_cost = 24
 	path = /obj/item/weapon/gun/energy/crossbow
 
-/datum/uplink_item/item/visible_weapons/energy_sword
-	name = "Energy Sword"
-	item_cost = 32
-	path = /obj/item/weapon/melee/energy/sword
-
 /datum/uplink_item/item/visible_weapons/g9mm
 	name = "Silenced Holdout Pistol"
 	item_cost = 32
 	path = /obj/item/weapon/storage/box/syndie_kit/g9mm
+
+/datum/uplink_item/item/visible_weapons/energy_sword
+	name = "Energy Sword"
+	item_cost = 45
+	path = /obj/item/weapon/melee/energy/sword
 
 /datum/uplink_item/item/badassery/money_cannon
 	name = "Modified Money Cannon"
@@ -113,9 +113,9 @@
 	item_cost = 70
 	antag_costs = list(MODE_MERCENARY = 20)
 	path = /obj/item/weapon/gun/magnetic/railgun/flechette
-	
+
 /datum/uplink_item/item/visible_weapons/ionrifle
 	name = "Ion pistol"
 	item_cost = 32
 	antag_costs = list(MODE_MERCENARY = 15)
-	path = /obj/item/weapon/gun/energy/ionrifle/small	
+	path = /obj/item/weapon/gun/energy/ionrifle/small
