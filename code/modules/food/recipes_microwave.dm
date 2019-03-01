@@ -1035,3 +1035,39 @@ I said no!
 /datum/recipe/cake/brain
 	items = list(/obj/item/organ/internal/brain)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/braincake
+
+/datum/recipe/smokedsausage
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/sausage)
+	reagents = list(/datum/reagent/sodiumchloride = 5, /datum/reagent/blackpepper = 5)
+	result = /obj/item/weapon/reagent_containers/food/snacks/smokedsausage
+
+/datum/recipe/julienne
+	fruit = list("mushroom" = 2, "onion" = 1)
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/cheesewedge, /obj/item/weapon/reagent_containers/food/snacks/meat)
+	result = /obj/item/weapon/reagent_containers/food/snacks/julienne
+
+/datum/recipe/ricewithmeat
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/boiledrice, /obj/item/weapon/reagent_containers/food/snacks/cutlet, /obj/item/weapon/reagent_containers/food/snacks/cutlet)
+	result = /obj/item/weapon/reagent_containers/food/snacks/ricewithmeat
+
+/datum/recipe/eggbowl
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/boiledrice, /obj/item/weapon/reagent_containers/food/snacks/boiledegg)
+	fruit = list("carrot" = 1, "corn" = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/eggbowl
+
+/datum/recipe/meatbun
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/bun, /obj/item/weapon/reagent_containers/food/snacks/meatball)
+	reagents = list(/datum/reagent/nutriment/soysauce = 5)
+	fruit = list("cabbage" = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/meatbun
+
+
+/datum/recipe/eggsbenedict
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/egg, /obj/item/weapon/reagent_containers/food/snacks/meatsteak, /obj/item/weapon/reagent_containers/food/snacks/slice/bread)
+	result = /obj/item/weapon/reagent_containers/food/snacks/eggsbenedict
+
+
+/datum/recipe/salami
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/smokedsausage)
+	reagents = list(/datum/reagent/nutriment/garlicsauce = 5)
+	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/salami

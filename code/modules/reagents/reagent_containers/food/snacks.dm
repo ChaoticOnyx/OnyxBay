@@ -3376,3 +3376,119 @@
 		reagents.add_reagent(/datum/reagent/sugar, 2)
 		reagents.add_reagent(/datum/reagent/albumin, 10)
 		bitesize = 5
+
+
+
+/obj/item/weapon/reagent_containers/food/snacks/smokedsausage
+	name = "Smoked sausage"
+	desc = "Piece of smoked sausage. Oh, really?"
+	icon_state = "smokedsausage"
+	center_of_mass = "x=16;y=9"
+
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 12)
+		bitesize = 3
+
+
+/obj/item/weapon/reagent_containers/food/snacks/julienne
+	name = "Julienne"
+	desc = "This is not the Julien, which you can think of, but also nice."
+	icon_state = "julienne"
+	center_of_mass = "x=15;y=15"
+	nutriment_amt = 5
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 5)
+		reagents.add_reagent(/datum/reagent/drink/juice/onion, 2)
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+		bitesize = 3
+
+
+/obj/item/weapon/reagent_containers/food/snacks/ricewithmeat
+	name = "Rice with meat"
+	desc = "This is rice and..'pork'."
+	icon_state = "ricewithmeat"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+	nutriment_amt = 5
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 5)
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+		bitesize = 3
+
+
+
+/obj/item/weapon/reagent_containers/food/snacks/eggbowl
+	name = "Eggbowl"
+	desc = "Bowl of eggs. Of course."
+	icon_state = "eggbowl"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 10)
+		bitesize = 3
+
+
+/obj/item/weapon/reagent_containers/food/snacks/meatbun
+	name = "Meatbun"
+	desc = "Has the potential to not be a dog."
+	icon_state = "meatbun"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 2)
+		reagents.add_reagent(/datum/reagent/nutriment, 6)
+		bitesize = 4
+
+
+/obj/item/weapon/reagent_containers/food/snacks/eggsbenedict
+	name = "Eggs Benedict"
+	desc = "It's has only one egg, how rough."
+	icon_state = "eggsbenedict"
+	trash = /obj/item/trash/plate
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 4)
+		reagents.add_reagent(/datum/reagent/nutriment, 6)
+		bitesize = 4
+
+
+
+
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/salami
+	name = "Salami"
+	desc = "Not the best for sandwiches."
+	icon_state = "salami"
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/slice/salami
+	slices_num = 6
+	center_of_mass = "x=15;y=15"
+	nutriment_amt = 2
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 12)
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/salami
+	name = "Salami's slice"
+	desc = "A slice of salami. The best for sandwiches"
+	icon_state = "salami_s"
+	bitesize = 2
+	center_of_mass = "x=15;y=15"
+	whole_path = /obj/item/weapon/reagent_containers/food/snacks/sliceable/salami
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/salami/filled
+	filled = TRUE
+
+
+
+
+
