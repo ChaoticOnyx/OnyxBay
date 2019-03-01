@@ -134,7 +134,7 @@
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/attackby(obj/item/weapon/W, mob/user as mob)
 	if(istype(W, /obj/item/weapon/reagent_containers/syringe))
-		to_chat(user, "<span class='notice'>Fucking braindead retard, how the fuck do you want to inject an autoinjector (with a tiny-as-fuck needle) with a syringe (with a huge-as needle)?</span>")
+		to_chat(user, "<span class='notice'>Fucking braindead retard, how the fuck do you want to inject an autoinjector (with a tiny-as-fuck needle) with a syringe (with a huge-ass needle)?</span>")
 		user.gib()
 		..()
 
