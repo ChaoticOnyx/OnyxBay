@@ -132,6 +132,12 @@
 	update_icon()
 	return
 
+/obj/item/weapon/reagent_containers/hypospray/autoinjector/attackby(obj/item/weapon/W, mob/user as mob)
+	if(istype(W, /obj/item/weapon/reagent_containers/syringe))
+		to_chat(user, "<span class='notice'>Fucking braindead retard, how the fuck do you want to inject an autoinjector (with a tiny-as-fuck needle) with a syringe (with a huge-as needle)?</span>")
+		user.gib()
+		..()
+
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/update_icon()
 	if(reagents.total_volume > 0)
 		icon_state = "[initial(icon_state)]1"
