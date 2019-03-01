@@ -68,7 +68,7 @@
 
 /obj/item/clothing/shoes/clown_shoes/New()
 	..()
-	slowdown_per_slot[slot_shoes]  = 1
+	slowdown_per_slot[slot_shoes]  = 0
 
 /obj/item/clothing/shoes/clown_shoes/handle_movement(var/turf/walking, var/running)
 	if(running)

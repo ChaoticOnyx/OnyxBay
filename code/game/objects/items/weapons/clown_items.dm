@@ -35,3 +35,21 @@
 		spawn(20)
 			spam_flag = 0
 	return
+
+//Oh no
+/obj/item/weapon/bikehorn/vuvuzela
+	name = "VUVUZELA"
+	desc = "RIPS YOUR EARS OFF!!!"
+	icon_state = "vuvuzela"
+	item_state = "vuvuzela"
+	w_class = ITEM_SIZE_NORMAL
+	attack_verb = list("HONKED","WORLD CUPPED","FOOTBALLED")
+
+/obj/item/weapon/bikehorn/vuvuzela/attack_self(mob/user as mob)
+	if (spam_flag == 0)
+		spam_flag = 1
+		playsound(src.loc, 'sound/items/AirHorn.ogg', 100, 1)
+		src.add_fingerprint(user)
+		spawn(20)
+			spam_flag = 0
+	return

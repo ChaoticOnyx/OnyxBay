@@ -14,7 +14,7 @@
 	active = 1
 	force = active_force
 	throwforce = active_throwforce
-	sharp = 1
+	sharp = 0
 	edge = 1
 	slot_flags |= SLOT_DENYPOCKET
 	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
@@ -96,7 +96,7 @@
 	name = "energy sword"
 	desc = "May the force be within you."
 	icon_state = "sword0"
-	active_force = 60
+	active_force = 45
 	active_throwforce = 45
 	force = 3
 	throwforce = 5
@@ -105,13 +105,14 @@
 	w_class = ITEM_SIZE_SMALL
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	origin_tech = list(TECH_MAGNET = 3, TECH_ILLEGAL = 4)
-	sharp = 1
+	sharp = 0
 	edge = 1
 	var/blade_color
 
 /obj/item/weapon/melee/energy/sword/dropped(var/mob/user)
 	..()
 	if(!istype(loc,/mob))
+		spawn(20)
 		deactivate(user)
 
 /obj/item/weapon/melee/energy/sword/New()
@@ -163,6 +164,24 @@
 		qdel(src)
 
 
+/obj/item/weapon/melee/energy/sword/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
+	if(istype(damage_source, /obj/item/projectile/energy) || istype(damage_source, /obj/item/projectile/beam))
+		var/obj/item/projectile/P = damage_source
+
+		var/reflectchance = 45 - round(damage/3)
+		if(P.starting && prob(reflectchance))
+			visible_message("<span class='danger'>\The [user]'s [src.name] reflects [attack_text]!</span>")
+
+			// Find a turf near or on the original location to bounce to
+			var/new_x = P.starting.x + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
+			var/new_y = P.starting.y + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
+			var/turf/curloc = get_turf(user)
+
+			// redirect the projectile
+			P.redirect(new_x, new_y, curloc, user)
+
+			return PROJECTILE_CONTINUE // complete projectile permutation
+
 /obj/item/weapon/melee/energy/sword/pirate
 	name = "energy cutlass"
 	desc = "Arrrr matey."
@@ -192,8 +211,8 @@
 	name = "dualsaber"
 	desc = "May the Dark side be within you."
 	icon_state = "dualsaber0"
-	active_force = 90
-	active_throwforce = 75
+	active_force = 70
+	active_throwforce = 70
 	force = 5
 	throwforce = 10
 	throw_speed = 1
@@ -201,7 +220,7 @@
 	w_class = ITEM_SIZE_SMALL
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
-	sharp = 1
+	sharp = 0
 	edge = 1
 	var/blade_color
 	var/base_block_chance = 50
@@ -209,6 +228,7 @@
 /obj/item/weapon/melee/energy/dualsaber/dropped(var/mob/user)
 	..()
 	if(!istype(loc,/mob))
+		spawn(20)
 		deactivate(user)
 
 /obj/item/weapon/melee/energy/dualsaber/New()
@@ -241,7 +261,7 @@
 	icon_state = initial(icon_state)
 
 /obj/item/weapon/melee/energy/dualsaber/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
-	if(active && default_parry_check(user, attacker, damage_source) && prob(80))
+	if(active && default_parry_check(user, attacker, damage_source) && prob(99))
 		user.visible_message("<span class='danger'>\The [user] parries [attack_text] with \the [src]!</span>")
 
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()

@@ -75,31 +75,31 @@
 
 	metabolism_percent = 0.5
 	incoming_healing_percent = 0.6
-/*
+
 /datum/modifier/trait/larger
-	name = "Larger"
-	desc = "Your body is larger than average."
+	name = "Giant"
+	desc = "Your body is noticeably larger than average."
 
 	icon_scale_percent = 1.1
 
 /datum/modifier/trait/large
-	name = "Large"
+	name = "Tall"
 	desc = "Your body is a bit larger than average."
 
 	icon_scale_percent = 1.05
 
 /datum/modifier/trait/small
-	name = "Small"
+	name = "Short"
 	desc = "Your body is a bit smaller than average."
 
 	icon_scale_percent = 0.95
 
 /datum/modifier/trait/smaller
-	name = "Smaller"
-	desc = "Your body is smaller than average."
+	name = "Midget"
+	desc = "Your body is noticeably smaller than average."
 
 	icon_scale_percent = 0.9
-*/ //Решили пока не добавлять трейты, меняющие размер спрайта
+
 /datum/modifier/trait/colorblind_protanopia
 	name = "Protanopia"
 	desc = "You have a form of red-green colorblindness. You cannot see reds, and have trouble distinguishing them from yellows and greens."
