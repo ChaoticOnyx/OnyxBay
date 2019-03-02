@@ -14,7 +14,7 @@
 	active = 1
 	force = active_force
 	throwforce = active_throwforce
-	sharp = 1
+	sharp = 0
 	edge = 1
 	slot_flags |= SLOT_DENYPOCKET
 	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
@@ -96,22 +96,23 @@
 	name = "energy sword"
 	desc = "May the force be within you."
 	icon_state = "sword0"
-	active_force = 30
-	active_throwforce = 20
+	active_force = 45
+	active_throwforce = 45
 	force = 3
 	throwforce = 5
 	throw_speed = 1
-	throw_range = 5
+	throw_range = 10
 	w_class = ITEM_SIZE_SMALL
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	origin_tech = list(TECH_MAGNET = 3, TECH_ILLEGAL = 4)
-	sharp = 1
+	sharp = 0
 	edge = 1
 	var/blade_color
 
 /obj/item/weapon/melee/energy/sword/dropped(var/mob/user)
 	..()
 	if(!istype(loc,/mob))
+		spawn(20)
 		deactivate(user)
 
 /obj/item/weapon/melee/energy/sword/New()
@@ -154,6 +155,33 @@
 		return 1
 	return 0
 
+/obj/item/weapon/melee/energy/sword/attackby(var/obj/item/W as obj, var/mob/user as mob)
+	if (istype(W,/obj/item/weapon/melee/energy/sword))
+		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon!</span>")
+		var/obj/item/weapon/melee/energy/dualsaber = new /obj/item/weapon/melee/energy/dualsaber(user.loc)
+		qdel(W)
+		W = null
+		qdel(src)
+
+
+/obj/item/weapon/melee/energy/sword/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
+	if(istype(damage_source, /obj/item/projectile/energy) || istype(damage_source, /obj/item/projectile/beam))
+		var/obj/item/projectile/P = damage_source
+
+		var/reflectchance = 45 - round(damage/3)
+		if(P.starting && prob(reflectchance))
+			visible_message("<span class='danger'>\The [user]'s [src.name] reflects [attack_text]!</span>")
+
+			// Find a turf near or on the original location to bounce to
+			var/new_x = P.starting.x + rand(-2,2)
+			var/new_y = P.starting.y + rand(-2,2)
+			var/turf/curloc = get_turf(user)
+
+			// redirect the projectile
+			P.redirect(new_x, new_y, curloc, user)
+
+			return PROJECTILE_CONTINUE // complete projectile permutation
+
 /obj/item/weapon/melee/energy/sword/pirate
 	name = "energy cutlass"
 	desc = "Arrrr matey."
@@ -173,6 +201,93 @@
 	..()
 	icon_state = "bog_sword"
 
+/*
+ *DualSaber
+ */
+
+
+/obj/item/weapon/melee/energy/dualsaber
+	color
+	name = "dualsaber"
+	desc = "May the Dark side be within you."
+	icon_state = "dualsaber0"
+	active_force = 70
+	active_throwforce = 70
+	force = 5
+	throwforce = 10
+	throw_speed = 1
+	throw_range = 10
+	w_class = ITEM_SIZE_SMALL
+	atom_flags = ATOM_FLAG_NO_BLOOD
+	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
+	sharp = 0
+	edge = 1
+	var/blade_color
+	var/base_block_chance = 50
+
+/obj/item/weapon/melee/energy/dualsaber/dropped(var/mob/user)
+	..()
+	if(!istype(loc,/mob))
+		spawn(20)
+		deactivate(user)
+
+/obj/item/weapon/melee/energy/dualsaber/New()
+	blade_color = pick("red","blue","green","purple")
+
+/obj/item/weapon/melee/energy/dualsaber/green/New()
+	blade_color = "green"
+
+/obj/item/weapon/melee/energy/dualsaber/red/New()
+	blade_color = "red"
+
+/obj/item/weapon/melee/energy/dualsaber/blue/New()
+	blade_color = "blue"
+
+/obj/item/weapon/melee/energy/dualsaber/purple/New()
+	blade_color = "purple"
+
+/obj/item/weapon/melee/energy/dualsaber/activate(mob/living/user)
+	if(!active)
+		to_chat(user, "<span class='notice'>\The [src] is now energised.</span>")
+	..()
+	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	icon_state = "dualsaber[blade_color]"
+
+/obj/item/weapon/melee/energy/dualsaber/deactivate(mob/living/user)
+	if(active)
+		to_chat(user, "<span class='notice'>\The [src] deactivates!</span>")
+	..()
+	attack_verb = list()
+	icon_state = initial(icon_state)
+
+/obj/item/weapon/melee/energy/dualsaber/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
+	if(active && default_parry_check(user, attacker, damage_source) && prob(99))
+		user.visible_message("<span class='danger'>\The [user] parries [attack_text] with \the [src]!</span>")
+
+		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+		spark_system.set_up(5, 0, user.loc)
+		spark_system.start()
+		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
+		return 1
+	return 0
+
+/obj/item/weapon/melee/energy/dualsaber/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
+	if(istype(damage_source, /obj/item/projectile/energy) || istype(damage_source, /obj/item/projectile/beam))
+		var/obj/item/projectile/P = damage_source
+
+		var/reflectchance = 100 - round(damage/3)
+		if(P.starting && prob(reflectchance))
+			visible_message("<span class='danger'>\The [user]'s [src.name] reflects [attack_text]!</span>")
+
+			// Find a turf near or on the original location to bounce to
+			var/new_x = P.starting.x + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
+			var/new_y = P.starting.y + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
+			var/turf/curloc = get_turf(user)
+
+			// redirect the projectile
+			P.redirect(new_x, new_y, curloc, user)
+
+			return PROJECTILE_CONTINUE // complete projectile permutation
 
 /*
  *Energy Blade
