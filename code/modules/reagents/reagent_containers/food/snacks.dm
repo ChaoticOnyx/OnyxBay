@@ -3619,6 +3619,7 @@
 	name = "Nachos"
 	desc = "Hola!"
 	icon_state = "nachos"
+	trash = /obj/item/trash/plate
 	center_of_mass = "x=15;y=15"
 
 	New()
@@ -3631,6 +3632,7 @@
 	name = "Cheese nachos"
 	desc = "Cheese hola!"
 	icon_state = "cheesenachos"
+	trash = /obj/item/trash/plate
 	center_of_mass = "x=15;y=15"
 
 	New()
@@ -3643,6 +3645,7 @@
 	name = "Cuban nachos"
 	desc = "Very hot hola!"
 	icon_state = "cubannachos"
+	trash = /obj/item/trash/plate
 	center_of_mass = "x=15;y=15"
 
 	New()
@@ -3651,6 +3654,45 @@
 		reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
 		reagents.add_reagent(/datum/reagent/capsaicin, 3)
 		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/eggwrap
+	name = "Egg Wrap"
+	desc = "Eggs, cabbage, and soy. Interesting."
+	icon_state = "eggwrap"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+		reagents.add_reagent(/datum/reagent/nutriment/soysauce, 10)
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/cheeseburrito
+	name = "Cheese burrito"
+	desc = "Is it really necessary to say something here?"
+	icon_state = "cheeseburrito"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 10)
+		reagents.add_reagent(/datum/reagent/nutriment/soysauce, 2)
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/sundae
+	name = "Sundae"
+	desc = "Creamy satisfaction"
+	icon_state = "sundae"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+		reagents.add_reagent(/datum/reagent/drink/juice/banana, 5)
+		reagents.add_reagent(/datum/reagent/drink/milk/cream, 3)
+
+		bitesize = 4
+
 
 
 

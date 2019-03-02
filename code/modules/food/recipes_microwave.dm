@@ -583,9 +583,7 @@ I said no!
 /datum/recipe/monkeysdelight
 	fruit = list(/datum/reagent/drink/juice/banana = 1)
 	reagents = list(/datum/reagent/sodiumchloride = 1, /datum/reagent/blackpepper = 1, /datum/reagent/nutriment/flour = 10)
-	items = list(
-		/obj/item/weapon/reagent_containers/food/snacks/monkeycube
-	)
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/monkeycube)
 	result = /obj/item/weapon/reagent_containers/food/snacks/monkeysdelight
 
 /datum/recipe/baguette
@@ -1122,3 +1120,23 @@ I said no!
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/tortilla)
 	fruit = list("chili" = 2)
 	result = /obj/item/weapon/reagent_containers/food/snacks/cubannachos
+
+/datum/recipe/eggwrap //Need to check this, and next items on local game
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/boiledegg)
+	fruit = list("cabbage" = 1)
+	reagents = list(/datum/reagent/nutriment/soysauce = 10)
+	result = /obj/item/weapon/reagent_containers/food/snacks/eggwrap
+
+/datum/recipe/cheeseburrito
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/tortilla,/obj/item/weapon/reagent_containers/food/snacks/cheesewedge, /obj/item/weapon/reagent_containers/food/snacks/cheesewedge)
+	fruit = list("soybeans" = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/cheeseburrito
+
+/datum/recipe/sundae
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/doughslice)
+	fruit = list("banana" = 1, "cherries" = 1)
+	reagents = list(/datum/reagent/drink/milk/cream = 10)
+	result = /obj/item/weapon/reagent_containers/food/snacks/sundae
+
+
+
