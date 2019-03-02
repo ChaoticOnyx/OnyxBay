@@ -3615,8 +3615,42 @@
 		reagents.add_reagent(/datum/reagent/nutriment, 4)
 		bitesize = 2
 
+/obj/item/weapon/reagent_containers/food/snacks/nachos
+	name = "Nachos"
+	desc = "Hola!"
+	icon_state = "nachos"
+	center_of_mass = "x=15;y=15"
 
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+		reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
+		bitesize = 3
 
+/obj/item/weapon/reagent_containers/food/snacks/cheesenachos
+	name = "Cheese nachos"
+	desc = "Cheese hola!"
+	icon_state = "cheesenachos"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 7)
+		reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/cubannachos
+	name = "Cuban nachos"
+	desc = "Very hot hola!"
+	icon_state = "cubannachos"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 7)
+		reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
+		reagents.add_reagent(/datum/reagent/capsaicin, 3)
+		bitesize = 4
 
 
 

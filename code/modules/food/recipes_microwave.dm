@@ -1107,3 +1107,18 @@ I said no!
 	fruit = list("corn" = 1)
 	reagents = list(/datum/reagent/nutriment/flour = 10)
 	result = /obj/item/weapon/reagent_containers/food/snacks/tortilla
+
+/datum/recipe/nachos
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/tortilla)
+	reagents = list(/datum/reagent/sodiumchloride = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/nachos
+
+/datum/recipe/cheesenachos
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/tortilla,/obj/item/weapon/reagent_containers/food/snacks/cheesewedge)
+	reagents = list(/datum/reagent/sodiumchloride = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/cheesenachos
+
+/datum/recipe/cubannachos
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/tortilla)
+	fruit = list("chili" = 2)
+	result = /obj/item/weapon/reagent_containers/food/snacks/cubannachos
