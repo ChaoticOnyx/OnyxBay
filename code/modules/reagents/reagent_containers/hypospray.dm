@@ -132,13 +132,6 @@
 	update_icon()
 	return
 
-/obj/item/weapon/reagent_containers/hypospray/autoinjector/attackby(obj/item/weapon/W, mob/living/carbon/user as mob)
-	if(istype(W, /obj/item/weapon/reagent_containers/syringe))
-		if(reagents.total_volume < 5)
-			to_chat(user, "<span class='warning'>You feel a bit dumber after trying to inject \the [src] with a syringe.</span>")
-			user.adjustBrainLoss(rand(1,5))
-	..()
-
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/update_icon()
 	if(reagents.total_volume > 0)
 		icon_state = "[initial(icon_state)]1"
