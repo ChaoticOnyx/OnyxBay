@@ -157,7 +157,7 @@
 
 /obj/item/weapon/melee/energy/sword/attackby(var/obj/item/W as obj, var/mob/user as mob)
 	if (istype(W,/obj/item/weapon/melee/energy/sword))
-		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon! May the Dark Side be with you.</span>")
+		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon!</span>")
 		var/obj/item/weapon/melee/energy/dualsaber = new /obj/item/weapon/melee/energy/dualsaber(user.loc)
 		qdel(W)
 		W = null
@@ -173,8 +173,8 @@
 			visible_message("<span class='danger'>\The [user]'s [src.name] reflects [attack_text]!</span>")
 
 			// Find a turf near or on the original location to bounce to
-			var/new_x = P.starting.x + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
-			var/new_y = P.starting.y + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
+			var/new_x = P.starting.x + rand(-2,2)
+			var/new_y = P.starting.y + rand(-2,2)
 			var/turf/curloc = get_turf(user)
 
 			// redirect the projectile
