@@ -3491,4 +3491,51 @@
 
 
 
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/sushi
+	name = "Sushi"
+	desc = "Konnichiwa!"
+	icon_state = "sushi"
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/slice/sushi
+	slices_num = 5
+	center_of_mass = "x=15;y=15"
+	nutriment_amt = 5
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 5)
+		reagents.add_reagent(/datum/reagent/toxin/carpotoxin, 3)
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/sushi
+	name = "Sushi's slice"
+	desc = "A slice of sushi. Smaller konnichiwa."
+	icon_state = "sushi_s"
+	bitesize = 1
+	center_of_mass = "x=15;y=15"
+	whole_path = /obj/item/weapon/reagent_containers/food/snacks/sliceable/sushi
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/salami/filled
+	filled = TRUE
+
+
+
+
+/obj/item/weapon/reagent_containers/food/snacks/fruitcup
+	name = "Dina's fruit cup"
+	desc = "Single salad with edible plate"
+	icon_state = "fruitcup"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/drink/juice/watermelon, 5)
+		reagents.add_reagent(/datum/reagent/drink/juice/orange, 5)
+		reagents.add_reagent(/datum/reagent/nutriment, 3)
+		bitesize = 4
+
+
+
+
+
+
+
 

@@ -1071,3 +1071,13 @@ I said no!
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/smokedsausage)
 	reagents = list(/datum/reagent/nutriment/garlicsauce = 5)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/salami
+
+
+/datum/recipe/sushi
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/tofu, /obj/item/weapon/reagent_containers/food/snacks/boiledrice, /obj/item/weapon/reagent_containers/food/snacks/carpmeat)
+	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/sushi
+
+/datum/recipe/fruitcup
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/watermelonslice, /obj/item/weapon/reagent_containers/food/snacks/watermelonslice)
+	fruit = list("apple" = 1, "orange" = 1,)
+	result = /obj/item/weapon/reagent_containers/food/snacks/fruitcup
