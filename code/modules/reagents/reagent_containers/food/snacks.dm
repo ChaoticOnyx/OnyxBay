@@ -3498,18 +3498,19 @@
 	slice_path = /obj/item/weapon/reagent_containers/food/snacks/slice/sushi
 	slices_num = 5
 	center_of_mass = "x=15;y=15"
-	nutriment_amt = 5
+
 
 	New()
 		..()
-		reagents.add_reagent(/datum/reagent/nutriment/protein, 5)
-		reagents.add_reagent(/datum/reagent/toxin/carpotoxin, 3)
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 3)
+		reagents.add_reagent(/datum/reagent/toxin/carpotoxin, 2)
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
 
 /obj/item/weapon/reagent_containers/food/snacks/slice/sushi
 	name = "Sushi's slice"
 	desc = "A slice of sushi. Smaller konnichiwa."
 	icon_state = "sushi_s"
-	bitesize = 1
+	bitesize = 2
 	center_of_mass = "x=15;y=15"
 	whole_path = /obj/item/weapon/reagent_containers/food/snacks/sliceable/sushi
 
@@ -3531,6 +3532,117 @@
 		reagents.add_reagent(/datum/reagent/drink/juice/orange, 5)
 		reagents.add_reagent(/datum/reagent/nutriment, 3)
 		bitesize = 4
+
+
+/obj/item/weapon/reagent_containers/food/snacks/fruitsalad
+	name = "Fruit salad"
+	desc = "So sweety!"
+	icon_state = "fruitsalad"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/drink/juice/watermelon, 3)
+		reagents.add_reagent(/datum/reagent/drink/juice/orange, 3)
+		reagents.add_reagent(/datum/reagent/nutriment, 6)
+		bitesize = 3
+
+/obj/item/weapon/reagent_containers/food/snacks/junglesalad
+	name = "Jungle salad"
+	desc = "From the depths of the jungle."
+	icon_state = "junglesalad"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/drink/juice/watermelon, 3)
+		reagents.add_reagent(/datum/reagent/nutriment, 6)
+		bitesize = 3
+
+/obj/item/weapon/reagent_containers/food/snacks/delightsalad
+	name = "Delight salad"
+	desc = "Truly citrus delight."
+	icon_state = "delightsalad"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/drink/juice/lime, 4)
+		reagents.add_reagent(/datum/reagent/drink/juice/lemon, 4)
+		reagents.add_reagent(/datum/reagent/drink/juice/orange, 4)
+		reagents.add_reagent(/datum/reagent/nutriment, 3)
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/chowmein
+	name = "Chowmein"
+	desc = "Nihao!"
+	icon_state = "chowmein"
+	trash = /obj/item/trash/plate
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 6)
+		reagents.add_reagent(/datum/reagent/nutriment, 6)
+		bitesize = 3
+
+
+/obj/item/weapon/reagent_containers/food/snacks/beefnoodles
+	name = "Beef noodles"
+	desc = "So simple, but so yummy!"
+	icon_state = "beefnoodles"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 7)
+		reagents.add_reagent(/datum/reagent/nutriment, 4)
+		bitesize = 2
+
+
+/obj/item/weapon/reagent_containers/food/snacks/tortilla
+	name = "Tortilla"
+	desc = "Hasta la vista, baby"
+	icon_state = "tortilla"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 4)
+		bitesize = 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1061,23 +1061,49 @@ I said no!
 	fruit = list("cabbage" = 1)
 	result = /obj/item/weapon/reagent_containers/food/snacks/meatbun
 
-
 /datum/recipe/eggsbenedict
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/egg, /obj/item/weapon/reagent_containers/food/snacks/meatsteak, /obj/item/weapon/reagent_containers/food/snacks/slice/bread)
 	result = /obj/item/weapon/reagent_containers/food/snacks/eggsbenedict
-
 
 /datum/recipe/salami
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/smokedsausage)
 	reagents = list(/datum/reagent/nutriment/garlicsauce = 5)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/salami
 
-
 /datum/recipe/sushi
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/tofu, /obj/item/weapon/reagent_containers/food/snacks/boiledrice, /obj/item/weapon/reagent_containers/food/snacks/carpmeat)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/sushi
 
 /datum/recipe/fruitcup
-	items = list(/obj/item/weapon/reagent_containers/food/snacks/watermelonslice, /obj/item/weapon/reagent_containers/food/snacks/watermelonslice)
-	fruit = list("apple" = 1, "orange" = 1,)
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/watermelonslice)
+	fruit = list("apple" = 1, "orange" = 1,"ambrosia" = 1, "banana" = 1, "lemon" = 1)
 	result = /obj/item/weapon/reagent_containers/food/snacks/fruitcup
+
+/datum/recipe/fruitsalad
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/watermelonslice, /obj/item/weapon/reagent_containers/food/snacks/watermelonslice)
+	fruit = list("apple" = 1, "orange" = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/fruitsalad
+
+/datum/recipe/delightsalad
+	fruit = list("lemon" = 1, "orange" = 1, "lime" = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/delightsalad
+
+/datum/recipe/junglesalad
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/watermelonslice, /obj/item/weapon/reagent_containers/food/snacks/watermelonslice)
+	fruit = list("apple" = 1, "banana" = 2,)
+	result = /obj/item/weapon/reagent_containers/food/snacks/junglesalad
+
+/datum/recipe/chowmein
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/boiledspagetti, /obj/item/weapon/reagent_containers/food/snacks/cutlet)
+	fruit = list("cabbage" = 2, "carrot" = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/chowmein
+
+/datum/recipe/beefnoodles
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/boiledspagetti,/obj/item/weapon/reagent_containers/food/snacks/cutlet, /obj/item/weapon/reagent_containers/food/snacks/cutlet)
+	fruit = list("cabbage" = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/beefnoodles
+
+/datum/recipe/tortilla
+	fruit = list("corn" = 1)
+	reagents = list(/datum/reagent/nutriment/flour = 10)
+	result = /obj/item/weapon/reagent_containers/food/snacks/tortilla
