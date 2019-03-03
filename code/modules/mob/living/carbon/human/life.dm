@@ -1157,12 +1157,11 @@
 		set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
 
 /mob/living/carbon/human/proc/handle_tase(var/amount)
-	..()
 	if(status_flags & GODMODE)
 		return 0	//godmode
 
 	if((getHalLoss()+amount) > 100)
-		if(prob(90))
+		if(prob(95))
 			Stun(amount/10)
 			Weaken(amount/10)
 			to_chat(src,"<span class='warning'>Your legs let you down!</span>")
