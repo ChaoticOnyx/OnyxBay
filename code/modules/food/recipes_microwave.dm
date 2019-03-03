@@ -1121,7 +1121,7 @@ I said no!
 	fruit = list("chili" = 2)
 	result = /obj/item/weapon/reagent_containers/food/snacks/cubannachos
 
-/datum/recipe/eggwrap //Need to check this, and next items on local game
+/datum/recipe/eggwrap
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/boiledegg)
 	fruit = list("cabbage" = 1)
 	reagents = list(/datum/reagent/nutriment/soysauce = 10)
@@ -1137,6 +1137,85 @@ I said no!
 	fruit = list("banana" = 1, "cherries" = 1)
 	reagents = list(/datum/reagent/drink/milk/cream = 10)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sundae
+
+/datum/recipe/burrito
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/tortilla)
+	fruit = list("soybeans" = 2)
+	result = /obj/item/weapon/reagent_containers/food/snacks/burrito
+
+/datum/recipe/carnaburrito
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/tortilla,/obj/item/weapon/reagent_containers/food/snacks/cutlet, /obj/item/weapon/reagent_containers/food/snacks/cutlet)
+	fruit = list("soybeans" = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/carnaburrito
+
+/datum/recipe/plasmaburrito
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/tortilla)
+	fruit = list("soybeans" = 1, "chili" = 2)
+	result = /obj/item/weapon/reagent_containers/food/snacks/plasmaburrito
+
+/datum/recipe/risotto
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/cheesewedge)
+	reagents = list(/datum/reagent/nutriment/rice = 10, /datum/reagent/ethanol/wine = 5)
+	result = /obj/item/weapon/reagent_containers/food/snacks/risotto
+
+
+/datum/recipe/bruschetta
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/cheesewedge)
+	fruit = list("tomato" = 1, "garlic" = 1)
+	reagents = list(/datum/reagent/nutriment/flour = 10, /datum/reagent/sodiumchloride = 2)
+	result = /obj/item/weapon/reagent_containers/food/snacks/bruschetta
+
+/datum/recipe/quiche
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/cheesewedge, /obj/item/weapon/reagent_containers/food/snacks/egg)
+	fruit = list("tomato" = 1, "garlic" = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/bruschetta
+
+/datum/recipe/lasagna
+	items = list(
+	/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+	/obj/item/weapon/reagent_containers/food/snacks/sliceable/flatdough,
+	/obj/item/weapon/reagent_containers/food/snacks/sliceable/flatdough,
+	/obj/item/weapon/reagent_containers/food/snacks/meat,
+	/obj/item/weapon/reagent_containers/food/snacks/meat
+	)
+	fruit = list("tomato" = 3, "eggplant" = 1)
+	result = /obj/item/weapon/reagent_containers/food/snacks/lasagna
+
+/datum/recipe/noel
+	items = list(
+	/obj/item/weapon/reagent_containers/food/snacks/egg,
+	/obj/item/weapon/reagent_containers/food/snacks/egg,
+	/obj/item/weapon/reagent_containers/food/snacks/chocolatebar,
+	/obj/item/weapon/reagent_containers/food/snacks/chocolatebar
+	)
+	fruit = list("berries" = 2)
+	reagents = list(
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/drink/milk/cream = 10
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/noel
+
+/datum/recipe/choccherrycake
+	items = list(
+	/obj/item/weapon/reagent_containers/food/snacks/egg,
+	/obj/item/weapon/reagent_containers/food/snacks/egg,
+	/obj/item/weapon/reagent_containers/food/snacks/egg,
+	/obj/item/weapon/reagent_containers/food/snacks/chocolatebar,
+	/obj/item/weapon/reagent_containers/food/snacks/chocolatebar
+	)
+	fruit = list("cherries" = 2)
+	reagents = list(
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/drink/milk = 5,
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/choccherrycake
+
+
+
+
+
+
 
 
 
