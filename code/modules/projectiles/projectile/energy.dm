@@ -4,6 +4,7 @@
 	damage = 0
 	damage_type = BURN
 	check_armour = "energy"
+	tasing = 1
 
 
 //releases a burst of light on impact or after travelling a distance
@@ -85,7 +86,7 @@
 	armor_penetration = 10
 
 /obj/item/projectile/energy/electrode/stunsphere
-	damage_type = STUN
+	damage_type = PAIN
 	agony = 70
 	stutter = 10
 	armor_penetration = 10
