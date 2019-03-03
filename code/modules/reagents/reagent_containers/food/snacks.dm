@@ -3376,3 +3376,509 @@
 		reagents.add_reagent(/datum/reagent/sugar, 2)
 		reagents.add_reagent(/datum/reagent/albumin, 10)
 		bitesize = 5
+
+
+
+/obj/item/weapon/reagent_containers/food/snacks/smokedsausage
+	name = "Smoked sausage"
+	desc = "Piece of smoked sausage. Oh, really?"
+	icon_state = "smokedsausage"
+	center_of_mass = "x=16;y=9"
+
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 12)
+		bitesize = 3
+
+
+/obj/item/weapon/reagent_containers/food/snacks/julienne
+	name = "Julienne"
+	desc = "This is not the Julien, which you can think of, but also nice."
+	icon_state = "julienne"
+	center_of_mass = "x=15;y=15"
+	nutriment_amt = 5
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 5)
+		reagents.add_reagent(/datum/reagent/drink/juice/onion, 2)
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+		bitesize = 3
+
+
+/obj/item/weapon/reagent_containers/food/snacks/ricewithmeat
+	name = "Rice with meat"
+	desc = "This is rice and..'pork'."
+	icon_state = "ricewithmeat"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+	nutriment_amt = 5
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 5)
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+		bitesize = 3
+
+
+
+/obj/item/weapon/reagent_containers/food/snacks/eggbowl
+	name = "Eggbowl"
+	desc = "Bowl of eggs. Of course."
+	icon_state = "eggbowl"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 10)
+		bitesize = 3
+
+
+/obj/item/weapon/reagent_containers/food/snacks/meatbun
+	name = "Meatbun"
+	desc = "Has the potential to not be a dog."
+	icon_state = "meatbun"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 2)
+		reagents.add_reagent(/datum/reagent/nutriment, 6)
+		bitesize = 4
+
+
+/obj/item/weapon/reagent_containers/food/snacks/eggsbenedict
+	name = "Eggs Benedict"
+	desc = "It's has only one egg, how rough."
+	icon_state = "eggsbenedict"
+	trash = /obj/item/trash/plate
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 4)
+		reagents.add_reagent(/datum/reagent/nutriment, 6)
+		bitesize = 4
+
+
+
+
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/salami
+	name = "Salami"
+	desc = "Not the best for sandwiches."
+	icon_state = "salami"
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/slice/salami
+	slices_num = 6
+	center_of_mass = "x=15;y=15"
+	nutriment_amt = 2
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 12)
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/salami
+	name = "Salami's slice"
+	desc = "A slice of salami. The best for sandwiches"
+	icon_state = "salami_s"
+	bitesize = 2
+	center_of_mass = "x=15;y=15"
+	whole_path = /obj/item/weapon/reagent_containers/food/snacks/sliceable/salami
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/salami/filled
+	filled = TRUE
+
+
+
+
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/sushi
+	name = "Sushi"
+	desc = "Konnichiwa!"
+	icon_state = "sushi"
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/slice/sushi
+	slices_num = 5
+	center_of_mass = "x=15;y=15"
+
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 3)
+		reagents.add_reagent(/datum/reagent/toxin/carpotoxin, 2)
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/sushi
+	name = "Sushi's slice"
+	desc = "A slice of sushi. Smaller konnichiwa."
+	icon_state = "sushi_s"
+	bitesize = 2
+	center_of_mass = "x=15;y=15"
+	whole_path = /obj/item/weapon/reagent_containers/food/snacks/sliceable/sushi
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/sushi/filled
+	filled = TRUE
+
+
+
+
+/obj/item/weapon/reagent_containers/food/snacks/fruitcup
+	name = "Dina's fruit cup"
+	desc = "Single salad with edible plate"
+	icon_state = "fruitcup"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/drink/juice/watermelon, 5)
+		reagents.add_reagent(/datum/reagent/drink/juice/orange, 5)
+		reagents.add_reagent(/datum/reagent/nutriment, 3)
+		bitesize = 4
+
+
+/obj/item/weapon/reagent_containers/food/snacks/fruitsalad
+	name = "Fruit salad"
+	desc = "So sweety!"
+	icon_state = "fruitsalad"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/drink/juice/watermelon, 3)
+		reagents.add_reagent(/datum/reagent/drink/juice/orange, 3)
+		reagents.add_reagent(/datum/reagent/nutriment, 6)
+		bitesize = 3
+
+/obj/item/weapon/reagent_containers/food/snacks/junglesalad
+	name = "Jungle salad"
+	desc = "From the depths of the jungle."
+	icon_state = "junglesalad"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/drink/juice/watermelon, 3)
+		reagents.add_reagent(/datum/reagent/nutriment, 6)
+		bitesize = 3
+
+/obj/item/weapon/reagent_containers/food/snacks/delightsalad
+	name = "Delight salad"
+	desc = "Truly citrus delight."
+	icon_state = "delightsalad"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/drink/juice/lime, 4)
+		reagents.add_reagent(/datum/reagent/drink/juice/lemon, 4)
+		reagents.add_reagent(/datum/reagent/drink/juice/orange, 4)
+		reagents.add_reagent(/datum/reagent/nutriment, 3)
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/chowmein
+	name = "Chowmein"
+	desc = "Nihao!"
+	icon_state = "chowmein"
+	trash = /obj/item/trash/plate
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 6)
+		reagents.add_reagent(/datum/reagent/nutriment, 6)
+		bitesize = 3
+
+
+/obj/item/weapon/reagent_containers/food/snacks/beefnoodles
+	name = "Beef noodles"
+	desc = "So simple, but so yummy!"
+	icon_state = "beefnoodles"
+	trash = /obj/item/trash/snack_bowl
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 7)
+		reagents.add_reagent(/datum/reagent/nutriment, 4)
+		bitesize = 2
+
+
+/obj/item/weapon/reagent_containers/food/snacks/tortilla
+	name = "Tortilla"
+	desc = "Hasta la vista, baby"
+	icon_state = "tortilla"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 4)
+		bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/nachos
+	name = "Nachos"
+	desc = "Hola!"
+	icon_state = "nachos"
+	trash = /obj/item/trash/plate
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+		reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
+		bitesize = 3
+
+/obj/item/weapon/reagent_containers/food/snacks/cheesenachos
+	name = "Cheese nachos"
+	desc = "Cheese hola!"
+	icon_state = "cheesenachos"
+	trash = /obj/item/trash/plate
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 7)
+		reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/cubannachos
+	name = "Cuban nachos"
+	desc = "Very hot hola!"
+	icon_state = "cubannachos"
+	trash = /obj/item/trash/plate
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 7)
+		reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
+		reagents.add_reagent(/datum/reagent/capsaicin, 3)
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/eggwrap
+	name = "Egg Wrap"
+	desc = "Eggs, cabbage, and soy. Interesting."
+	icon_state = "eggwrap"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+		reagents.add_reagent(/datum/reagent/nutriment/soysauce, 10)
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/cheeseburrito
+	name = "Cheese burrito"
+	desc = "Is it really necessary to say something here?"
+	icon_state = "cheeseburrito"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 10)
+		reagents.add_reagent(/datum/reagent/nutriment/soysauce, 2)
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/sundae
+	name = "Sundae"
+	desc = "Creamy satisfaction"
+	icon_state = "sundae"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 4)
+		reagents.add_reagent(/datum/reagent/drink/juice/banana, 4)
+		reagents.add_reagent(/datum/reagent/drink/milk/cream, 3)
+
+		bitesize = 5
+
+/obj/item/weapon/reagent_containers/food/snacks/burrito
+	name = "Burrito"
+	desc = "Some really tasty."
+	icon_state = "burrito"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 8)
+		reagents.add_reagent(/datum/reagent/nutriment/soysauce, 2)
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/carnaburrito
+	name = "Carna de Asada burrito"
+	desc = "Like a classical burrito, but with some meat."
+	icon_state = "carnaburrito"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 8)
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 3)
+		reagents.add_reagent(/datum/reagent/nutriment/soysauce, 1)
+
+		bitesize = 4
+
+obj/item/weapon/reagent_containers/food/snacks/plasmaburrito
+	name = "Fuego Plasma Burrito"
+	desc = "Very hot, amigos."
+	icon_state = "plasmaburrito"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 8)
+		reagents.add_reagent(/datum/reagent/capsaicin, 4)
+		bitesize = 4
+
+obj/item/weapon/reagent_containers/food/snacks/risotto
+	name = "Risotto"
+	desc = "An offer you daga kotowaru."
+	icon_state = "risotto"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 5)
+		reagents.add_reagent(/datum/reagent/ethanol/wine, 5)
+		bitesize = 3
+
+/obj/item/weapon/reagent_containers/food/snacks/bruschetta
+	name = "Bruschetta"
+	desc = "..."
+	icon_state = "bruschetta"
+	trash = /obj/item/trash/plate
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 7)
+		reagents.add_reagent(/datum/reagent/sodiumchloride, 2)
+		reagents.add_reagent(/datum/reagent/drink/juice/tomato, 2)
+		reagents.add_reagent(/datum/reagent/drink/juice/garlic, 1)
+
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/quiche
+	name = "Quiche"
+	desc = "Makes you feel more intelligent. Give to lower lifeforms!"
+	icon_state = "quiche"
+	trash = /obj/item/trash/plate
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 9)
+		reagents.add_reagent(/datum/reagent/drink/juice/tomato, 2)
+		reagents.add_reagent(/datum/reagent/drink/juice/garlic, 1)
+
+		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/lasagna
+	name = "Lasagna"
+	desc = "You can hide a bomb in the lasagna"
+	icon_state = "lasagna"
+	center_of_mass = "x=15;y=15"
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 10)
+		reagents.add_reagent(/datum/reagent/drink/juice/tomato, 5)
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 4)
+
+		bitesize = 4
+
+
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/noel
+	name = "Buche de Noel"
+	desc = "What?"
+	icon_state = "noel"
+	trash = /obj/item/trash/tray
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/slice/noel
+	slices_num = 5
+	center_of_mass = "x=15;y=15"
+
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/drink/milk/cream, 3)
+		reagents.add_reagent(/datum/reagent/nutriment, 8)
+		reagents.add_reagent(/datum/reagent/sugar, 3)
+		reagents.add_reagent(/datum/reagent/drink/juice/berry, 3)
+		reagents.add_reagent(/datum/reagent/nutriment/coco, 2)
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/noel
+	name = "Noel's slice"
+	desc = "Slice of what?"
+	icon_state = "noel_s"
+	trash = /obj/item/trash/plate
+	bitesize = 2
+	center_of_mass = "x=15;y=15"
+	whole_path = /obj/item/weapon/reagent_containers/food/snacks/sliceable/noel
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/noel/filled
+	filled = TRUE
+
+
+
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/choccherrycake
+	name = "Chocolate - cherry cake"
+	desc = "Another cake. However."
+	icon_state = "choccherrycake"
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/slice/choccherrycake
+	slices_num = 6
+	center_of_mass = "x=15;y=15"
+
+
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment, 10)
+		reagents.add_reagent(/datum/reagent/sugar, 3)
+		reagents.add_reagent(/datum/reagent/nutriment/coco, 4)
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/choccherrycake
+	name = "Chocolate - cherry cake's slice"
+	desc = "Slice of another cake. Wait, what?"
+	icon_state = "choccherrycake_s"
+	trash = /obj/item/trash/plate
+	bitesize = 2
+	center_of_mass = "x=15;y=15"
+	whole_path = /obj/item/weapon/reagent_containers/food/snacks/sliceable/choccherrycake
+
+/obj/item/weapon/reagent_containers/food/snacks/slice/choccherrycake/filled
+	filled = TRUE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
