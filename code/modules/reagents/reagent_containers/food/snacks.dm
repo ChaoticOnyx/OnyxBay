@@ -3802,7 +3802,7 @@ obj/item/weapon/reagent_containers/food/snacks/risotto
 	New()
 		..()
 		reagents.add_reagent(/datum/reagent/drink/milk/cream, 3)
-		reagents.add_reagent(/datum/reagent/nutriment, 10)
+		reagents.add_reagent(/datum/reagent/nutriment, 8)
 		reagents.add_reagent(/datum/reagent/sugar, 3)
 		reagents.add_reagent(/datum/reagent/drink/juice/berry, 3)
 		reagents.add_reagent(/datum/reagent/nutriment/coco, 2)

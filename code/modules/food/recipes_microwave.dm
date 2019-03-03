@@ -1088,7 +1088,7 @@ I said no!
 
 /datum/recipe/junglesalad
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/watermelonslice, /obj/item/weapon/reagent_containers/food/snacks/watermelonslice)
-	fruit = list("apple" = 1, "banana" = 2,)
+	fruit = list("apple" = 1, "banana" = 2)
 	result = /obj/item/weapon/reagent_containers/food/snacks/junglesalad
 
 /datum/recipe/chowmein
@@ -1168,7 +1168,7 @@ I said no!
 /datum/recipe/quiche
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/cheesewedge, /obj/item/weapon/reagent_containers/food/snacks/egg)
 	fruit = list("tomato" = 1, "garlic" = 1)
-	result = /obj/item/weapon/reagent_containers/food/snacks/bruschetta
+	result = /obj/item/weapon/reagent_containers/food/snacks/quiche
 
 /datum/recipe/lasagna
 	items = list(
