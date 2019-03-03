@@ -80,7 +80,6 @@ var/list/_client_preferences_by_type
 /*********************
 * Player Preferences *
 *********************/
-
 /datum/client_preference/play_admin_midis
 	description ="Play admin midis"
 	key = "SOUND_MIDI"
@@ -98,6 +97,11 @@ var/list/_client_preferences_by_type
 /datum/client_preference/play_ambiance
 	description ="Play ambience"
 	key = "SOUND_AMBIENCE"
+
+/datum/client_preference/play_jukeboxes
+	description ="Play jukeboxes"
+	key = "SOUND_JUKEBOXES"
+
 
 /datum/client_preference/play_ambiance/changed(var/mob/preference_mob, var/new_value)
 	if(new_value == GLOB.PREF_NO)
