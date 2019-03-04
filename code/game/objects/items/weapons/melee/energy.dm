@@ -158,9 +158,12 @@
 /obj/item/weapon/melee/energy/sword/attackby(var/obj/item/W as obj, var/mob/user as mob)
 	if (istype(W,/obj/item/weapon/melee/energy/sword))
 <<<<<<< HEAD
+<<<<<<< HEAD
 		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon! May the Dark Side be with you.</span>")
 		new /obj/item/weapon/melee/energy/dualsaber(user.loc)
 =======
+=======
+>>>>>>> 6ebeca24200f7be851349fe4fde2e6d6d889c441
 		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon!</span>")
 		var/obj/item/weapon/melee/energy/dualsaber = new /obj/item/weapon/melee/energy/dualsaber(user.loc)
 >>>>>>> 5ba68fef9494f6922c049e9e422d3a51cd766363
@@ -180,10 +183,14 @@
 			// Find a turf near or on the original location to bounce to
 			var/new_x = P.starting.x + rand(-2,2)
 <<<<<<< HEAD
+<<<<<<< HEAD
 			var/new_y = P.starting.y + rand(-2.2)
 =======
 			var/new_y = P.starting.y + rand(-2,2)
 >>>>>>> 5ba68fef9494f6922c049e9e422d3a51cd766363
+=======
+			var/new_y = P.starting.y + rand(-2,2)
+>>>>>>> 6ebeca24200f7be851349fe4fde2e6d6d889c441
 			var/turf/curloc = get_turf(user)
 
 			// redirect the projectile
