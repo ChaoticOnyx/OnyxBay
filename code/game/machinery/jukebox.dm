@@ -193,11 +193,11 @@ datum/track/New(var/title_name, var/audio)
 			paid = 0
 			handled = 1
 			return
-			
+
 		if(jobban_isbanned(user, "JUKEBOX"))
 			to_chat(user, "<span class='notice'>Oopsie! Seems like you are blacklisted from NT Music Premium for bad taste. You can't download new tracks from NTNet.</span>")
 			return
-			
+
 		visible_message("<span class='info'>\The [usr] inserts some cash into \the [src].</span>")
 		cashmoney.worth -= 300
 
@@ -254,7 +254,7 @@ datum/track/New(var/title_name, var/audio)
 		return
 
 	// Jukeboxes cheat massively and actually don't share id. This is only done because it's music rather than ambient noise.
-	sound_token = sound_player.PlayLoopingSound(src, sound_id, current_track.sound, volume = volume, range = 7, falloff = 3, prefer_mute = TRUE, stream = 1)
+	sound_token = GLOB.sound_player.PlayLoopingSound(src, sound_id, current_track.sound, volume = volume, range = 7, falloff = 3, prefer_mute = TRUE, preference = /datum/client_preference/play_jukeboxes)
 
 	playing = 1
 	update_use_power(2)

@@ -87,8 +87,8 @@
 	isoverlaying = 1
 
 /obj/item/weapon/glass_extra/glassholder
-	name = "glass-holder"
-	desc = "Also known as 'podstakannik'."
+	name = "podstakannik"
+	desc = "Should've been named 'a glass holder'. Or not. Oh, these space russians!"
 	glass_addition = "holder"
 	glass_desc = "It's in a holder."
 	icon_state = "glassholder"
