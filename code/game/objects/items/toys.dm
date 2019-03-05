@@ -27,6 +27,14 @@
 	throw_range = 20
 	force = 0
 
+/obj/item/toy/proc/speak(var/message)
+	if (!message)
+		return
+
+	for(var/mob/O in hearers(src, null))
+		O.show_message("<span class='game say'><span class='name'>\The [src]</span> says, \"[message]\"</span>",2)
+	return
+
 /*
  * Balloons
  */
@@ -843,3 +851,86 @@
 	else if (user.a_intent == I_HURT)
 		user.visible_message("<span class='warning'>[user] rings \the [src] repeatedly, signalling a disqualification!</span>")
 		playsound(user.loc, 'sound/items/manydings.ogg', 60)
+
+/obj/item/toy/chubbyskeleton
+	name = "Sans"
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "heya"
+	anchored = 1
+	density = 1
+	var/dodgecount = 0
+	var/spam_flag = 0
+
+/obj/item/toy/chubbyskeleton/New()
+	..()
+	pixel_x = 0
+	pixel_y = 0
+
+/obj/item/toy/chubbyskeleton/examine(mob/user)
+	to_chat(user, "<span class='notice'>*---------*<BR>This is [src], a Skeleton!<BR>He is wearing some black shorts.<BR>He is wearing a blue hoodie.<BR>He is wearing some slippers on his feet.<BR>*---------*</span>")
+	return
+
+/obj/item/toy/chubbyskeleton/attack_hand(mob/user as mob)
+	if(spam_flag == 0)
+		spam_flag = 1
+		if(user.a_intent == I_HELP)
+			speak(pick( "why are skeletons so calm? because nothing gets under their skin!",
+						"why can't skeletons play church music? because they have no organs!",
+						"what does a skeleton order at a restaurant? SPARERIBS",
+						"my favorite instrument? the tromBONE, of course.",
+						"what do skeletons hate the most about wind? nothing, it goes right through them.",
+						"why don't skeletons fight each other? they don't have the guts!",
+						"why are graveyards so noisy? because of all the COFFIN!",
+						"i'm not fat. i'm just big boned!",
+						"what do skeletons say before they begin dining? bone-appetit!",
+						"what do you call a skeleton snake? a rattler!",
+						"what did the skeleton say while riding his Harley Davidson motorcycle? i’m bone to be wild!",
+						"my brother always works himself down to the bone!",
+						"why did the skeleton want a friend? because she was feeling BONELY",
+						"what do you do if you see a skeleton running across a road? jump out of your skin and join him!",
+						"everytime I hear a skeleton joke I feel it in my bones",
+						"skulls are always single because they have NO BODY",
+						"these jokes are very bare bones",
+						"why do skeletons makes bad miners? because they only go 6 FOOT UNDER GROUND",
+						"you wanna know why skeletons are terrible liars? everyone can see right through them!",
+						"why does skeletons never go to swimming pools? because they hate being SOAKED TO THE BONE",
+						"a dog stole a skeleton's left leg and left arm the other day. but it's cool he's ALL RIGHT now!", //lmfao this one cracked me up ~Toby
+						"what d'ye call a monkey with no skin? a babBONE!",
+						"what band do skeletons like listening to? Boney M!",
+						"what is a skeleton's favorite music band? BONE JOVI!",
+						"what do you call a skeleton who presses the door bell? a dead ringer!",
+						"why did the ghost took the elevator? to lift his SPIRIT up"))
+			playsound(user.loc, pick('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg','sound/effects/bonerattle.ogg'), 60)
+		else
+			badtime(user)
+		spawn(10)
+			spam_flag = 0
+	return
+
+/obj/item/toy/chubbyskeleton/attackby(obj/item/I as obj, mob/user as mob)
+	if(spam_flag == 0)
+		spam_flag = 1
+		badtime(user)
+		spawn(5)
+			spam_flag = 0
+	return
+
+/obj/item/toy/chubbyskeleton/proc/badtime(mob/user as mob)
+	dodgecount++
+	if(dodgecount < 4)
+		user.visible_message("<span class='warning'>[src] dodges [user]'s attack!</span>")
+		speak(pick("welp.","what? you think i'm just gonna stand there and take it? ","all right.","our reports showed a massive bluespace anomaly.","that sent chills down my SPINE."))
+	else if(dodgecount == 4)
+		icon_state = "badtime"
+		user.visible_message("<span class='warning'>[src] dodges [user]'s attack!</span>")
+		speak(pick("do you wanna have a bad time?","you are REALLY not going to like what happens next."))
+	else
+		icon_state = "heya"
+		dodgecount = 0
+		speak(pick("geeettttttt dunked on!!!","told ya."))
+		if(istype(user, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = user
+			H.ChangeToSkeleton()
+			for(var/obj/item/W in H)
+				H.drop_from_inventory(W)
+		playsound(user.loc, pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg'), 60)

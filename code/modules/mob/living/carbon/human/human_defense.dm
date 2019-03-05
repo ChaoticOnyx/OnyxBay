@@ -49,6 +49,10 @@ meteor_act
 		SP.loc = organ
 		organ.embed(SP)
 
+	//Tase effect
+	if(P.tasing)
+		handle_tase(P.agony)
+
 	var/blocked = ..(P, def_zone)
 
 	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
