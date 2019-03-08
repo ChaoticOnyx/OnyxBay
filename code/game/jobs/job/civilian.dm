@@ -166,6 +166,8 @@
 
 /datum/job/mime/equip(var/mob/living/carbon/human/H)
 	. = ..()
+	if(H.mind.changeling)
+		return
 	if(.)
 		H.silent += 86400
 
