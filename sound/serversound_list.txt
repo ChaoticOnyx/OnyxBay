@@ -11,3 +11,4 @@ sound/music/title2.ogg
 sound/music/traitor.ogg
 sound/items/bikehorn.ogg
 sound/effects/siren.ogg
+sound/music/IsSomebodySinging.ogg
