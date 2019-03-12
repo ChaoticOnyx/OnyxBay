@@ -1,4 +1,4 @@
-#define WHITELISTFILE "data/whitelist.txt"
+#define WHITELISTFILE "config/whitelist.txt"
 
 var/list/whitelist = list()
 
