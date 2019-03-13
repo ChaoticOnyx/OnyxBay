@@ -36,10 +36,10 @@ GLOBAL_LIST_EMPTY(exploration_positions)
 
 GLOBAL_LIST_EMPTY(unsorted_positions) // for nano manifest
 
-var/list/whitelisted_jobs = new/list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director", "AI")
+GLOBAL_LIST_INIT(whitejobs, list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director", "AI"))
 
 /proc/guest_jobbans(var/job)
-	return (job in whitelisted_jobs) //rot beycev ebal
+	return (job in GLOB.whitejobs) //rot beycev ebal
 
 /proc/get_job_datums()
 	var/list/occupations = list()
