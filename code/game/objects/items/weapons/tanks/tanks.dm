@@ -191,10 +191,24 @@ var/list/global/tank_gauge_cache = list()
 						to_chat(user, "<span class='danger'>You accidentally rake \the [W] across \the [src]!</span>")
 						maxintegrity -= rand(2,6)
 						integrity = min(integrity,maxintegrity)
-						air_contents.add_thermal_energy(rand(2000,50000))
 				WT.eyecheck(user)
 			else
 				to_chat(user, "<span class='notice'>The emergency pressure relief valve has already been welded.</span>")
+			
+			if (src.air_contents)
+				var/const/welder_temperature = 700
+				
+				var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
+				var/target_energy = src.air_contents.heat_capacity() * welder_temperature
+				
+				var/delta = target_energy - current_energy
+				var/heat_transfer_coefficient = 1 - min(src.air_contents.temperature, welder_temperature) /  max(src.air_contents.temperature, welder_temperature)
+				var/heat_transfer = delta * heat_transfer_coefficient
+				
+				var/new_temperature = (current_energy + heat_transfer) / src.air_contents.heat_capacity()
+				
+				src.air_contents.temperature = new_temperature
+				
 		add_fingerprint(user)
 
 
