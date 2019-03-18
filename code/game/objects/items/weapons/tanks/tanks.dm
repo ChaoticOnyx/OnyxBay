@@ -198,14 +198,13 @@ var/list/global/tank_gauge_cache = list()
 			if (src.air_contents)
 				var/const/welder_temperature = 700
 				var/const/welder_mean_energy = 26000
+				var/const/welder_heat_capacity = welder_mean_energy / welder_temperature
 				
 				var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
-				var/target_energy = src.air_contents.heat_capacity() * welder_temperature
+				var/total_capacity = src.air_contents.heat_capacity() + welder_heat_capacity
+				var/total_energy = current_energy + welder_mean_energy
 				
-				var/delta = min(target_energy - current_energy, welder_mean_energy)
-				var/heat_transfer = 0.8 * delta // a = 0.8, pulling something out of my ass
-				
-				var/new_temperature = (current_energy + heat_transfer) / src.air_contents.heat_capacity()
+				var/new_temperature = total_energy / total_capacity
 				
 				src.air_contents.temperature = new_temperature
 				
