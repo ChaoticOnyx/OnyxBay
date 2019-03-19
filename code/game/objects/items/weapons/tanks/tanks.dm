@@ -196,7 +196,7 @@ var/list/global/tank_gauge_cache = list()
 				to_chat(user, "<span class='notice'>The emergency pressure relief valve has already been welded.</span>")
 			
 			if (src.air_contents)
-				var/const/welder_temperature = 700
+				var/const/welder_temperature = 1600 + 293.15
 				var/const/welder_mean_energy = 26000
 				var/const/welder_heat_capacity = welder_mean_energy / welder_temperature
 				
