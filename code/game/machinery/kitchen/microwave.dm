@@ -6,7 +6,6 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	use_power = 1
 	idle_power_usage = 5
 	active_power_usage = 100
 	atom_flags = ATOM_FLAG_NO_REACT
@@ -113,7 +112,7 @@
 				user.drop_item(src)
 			user.visible_message( \
 					"<span class='notice'>\The [user] has added one of [O] to \the [src].</span>", \
-					"<span class='notice'>You add one of [O] to \the [src].</span>")	
+					"<span class='notice'>You add one of [O] to \the [src].</span>")
 			return
 		else
 			user.drop_item(src)
@@ -293,7 +292,7 @@
 	for (var/i=1 to seconds)
 		if (stat & (NOPOWER|BROKEN))
 			return 0
-		use_power(500)
+		use_power_oneoff(500)
 		sleep(10)
 	return 1
 

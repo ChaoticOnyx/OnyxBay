@@ -175,7 +175,6 @@
 	desc = "It's the hub of a teleporting machine."
 	icon_state = "tele0"
 	dir = 4
-	use_power = 1
 	idle_power_usage = 10
 	active_power_usage = 2000
 	var/obj/machinery/computer/teleporter/com
@@ -190,7 +189,7 @@
 	spawn()
 		if (src.icon_state == "tele1")
 			teleport(M)
-			use_power(5000)
+			use_power_oneoff(5000)
 	return
 
 /obj/machinery/teleport/hub/proc/teleport(atom/movable/M as mob|obj)
@@ -299,7 +298,6 @@
 	dir = 4
 	var/active = 0
 	var/engaged = 0
-	use_power = 1
 	idle_power_usage = 10
 	active_power_usage = 2000
 	var/obj/machinery/teleport/hub/com
@@ -327,9 +325,9 @@
 
 	if (com)
 		com.icon_state = "tele1"
-		use_power(5000)
-		update_use_power(2)
-		com.update_use_power(2)
+		use_power_oneoff(5000)
+		update_use_power(POWER_USE_ACTIVE)
+		com.update_use_power(POWER_USE_ACTIVE)
 		for(var/mob/O in hearers(src, null))
 			O.show_message("<span class='notice'>Teleporter engaged!</span>", 2)
 	src.add_fingerprint(usr)
@@ -342,8 +340,8 @@
 
 	if (com)
 		com.icon_state = "tele0"
-		com.update_use_power(1)
-		update_use_power(1)
+		com.update_use_power(POWER_USE_IDLE)
+		update_use_power(POWER_USE_IDLE)
 		for(var/mob/O in hearers(src, null))
 			O.show_message("<span class='notice'>Teleporter disengaged!</span>", 2)
 	src.add_fingerprint(usr)

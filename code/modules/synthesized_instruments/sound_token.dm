@@ -47,19 +47,19 @@
 
 
 datum/sound_token/instrument/PrivAddListener(var/atom/listener)
-	var/mob/m = listener
+	/*var/mob/m = listener //Well maybe later
 	if(istype(m))
-		//if(m.get_preference_value(/datum/client_preference/play_instruments) != GLOB.PREF_YES)
-		//	return
+		if(m.get_preference_value(/datum/client_preference/play_instruments) != GLOB.PREF_YES)
+			return */
 	return ..()
 
 
 /datum/sound_token/instrument/PrivUpdateListener(var/listener)
-	var/mob/m = listener
+	/*var/mob/m = listener
 	if(istype(m))
-		//if(m.get_preference_value(/datum/client_preference/play_instruments) != GLOB.PREF_YES)
-		//	PrivRemoveListener(listener)
-		//	return
+		if(m.get_preference_value(/datum/client_preference/play_instruments) != GLOB.PREF_YES)
+			PrivRemoveListener(listener)
+			return */
 	return ..()
 
 /datum/sound_token/instrument/Stop()

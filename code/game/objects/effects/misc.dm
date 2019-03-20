@@ -12,3 +12,8 @@
 	icon_state = "empty"
 	name = "Geas"
 	desc = "You can't resist."
+
+/obj/effect/stop/Uncrossed(atom/movable/O)
+	if(victim == O)
+		return 0
+	return 1

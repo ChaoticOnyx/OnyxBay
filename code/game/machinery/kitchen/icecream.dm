@@ -16,7 +16,6 @@
 	icon_state = "icecream_vat"
 	density = 1
 	anchored = 0
-	use_power = 0
 	atom_flags = ATOM_FLAG_NO_REACT
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 

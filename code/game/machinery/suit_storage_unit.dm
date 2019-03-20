@@ -11,7 +11,6 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
-	use_power = 1
 	idle_power_usage = 50
 	active_power_usage = 200
 	interact_offline = 1

@@ -9,7 +9,6 @@
 	anchored = 1
 	idle_power_usage = 200	// Some electronics, passive drain.
 	active_power_usage = 60 KILOWATTS // When charging
-	use_power = 1
 
 	var/obj/mecha/charging = null
 	var/base_charge_rate = 60 KILOWATTS
@@ -56,15 +55,15 @@
 		if(istype(P, /obj/item/weapon/stock_parts/manipulator))
 			repair += P.rating * 2
 	if(chargerate_multiplier)
-		active_power_usage = base_charge_rate * (chargerate_multiplier / chargerate_divisor)
+		change_power_consumption(base_charge_rate * (chargerate_multiplier / chargerate_divisor), POWER_USE_ACTIVE)
 	else
-		active_power_usage = base_charge_rate
+		change_power_consumption(base_charge_rate, POWER_USE_ACTIVE)
 
 
 /obj/machinery/mech_recharger/Process()
 	..()
 	if(!charging)
-		use_power = 1
+		update_use_power(POWER_USE_IDLE)
 		return
 	if(charging.loc != loc)
 		stop_charging()
@@ -116,8 +115,8 @@
 	if(M.cell)
 		M.occupant_message("<span class='notice'>Now charging...</span>")
 		charging = M
-		use_power = 2
+		update_use_power(POWER_USE_ACTIVE)
 
 /obj/machinery/mech_recharger/proc/stop_charging()
-	use_power = 1
+	update_use_power(POWER_USE_IDLE)
 	charging = null

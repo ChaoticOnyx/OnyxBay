@@ -5,7 +5,6 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	use_power = 1
 	idle_power_usage = 10
 	active_power_usage = 2000
 	clicksound = "keyboard"
@@ -239,7 +238,7 @@
 			return TOPIC_HANDLED
 
 		busy = 1
-		update_use_power(2)
+		update_use_power(POWER_USE_ACTIVE)
 
 		//Check if we still have the materials.
 		for(var/material in making.resources)
@@ -258,7 +257,7 @@
 		sleep(build_time)
 
 		busy = 0
-		update_use_power(1)
+		update_use_power(POWER_USE_IDLE)
 
 		//Sanity check.
 		if(!making || QDELETED(src)) return TOPIC_HANDLED

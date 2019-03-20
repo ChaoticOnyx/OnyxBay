@@ -4,7 +4,6 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	layer = BELOW_OBJ_LAYER
 
-	use_power = 1
 	idle_power_usage = 30
 	active_power_usage = 5000
 
@@ -123,7 +122,7 @@
 		overlays -= "protolathe_[t]"
 
 	busy = 1
-	use_power(max(1000, (SHEET_MATERIAL_AMOUNT * amount / 10)))
+	use_power_oneoff(max(1000, (SHEET_MATERIAL_AMOUNT * amount / 10)))
 	if(t)
 		if(do_after(user, 16,src))
 			if(stack.use(amount))
@@ -155,7 +154,7 @@
 	for(var/M in D.materials)
 		power += round(D.materials[M] / 5)
 	power = max(active_power_usage, power)
-	use_power(power)
+	use_power_oneoff(power)
 	for(var/M in D.materials)
 		materials[M] = max(0, materials[M] - D.materials[M] * mat_efficiency)
 	for(var/C in D.chemicals)

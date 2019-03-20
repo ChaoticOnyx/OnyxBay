@@ -183,8 +183,8 @@
 	if(!use_power && health == 0)
 		return
 	if(!use_power) //need some juice to kickstart
-		use_power(idle_power_usage*5)
-	use_power = !use_power
+		use_power_oneoff(idle_power_usage*5)
+	update_use_power(!use_power)
 	update_icon()
 
 /obj/machinery/shipsensors/Process()
@@ -211,7 +211,7 @@
 
 /obj/machinery/shipsensors/proc/set_range(nrange)
 	range = nrange
-	idle_power_usage = 1500 * (range**2) // Exponential increase, also affects speed of overheating
+	change_power_consumption(1500 * (range**2), POWER_USE_IDLE) //Exponential increase, also affects speed of overheating
 
 /obj/machinery/shipsensors/emp_act(severity)
 	if(!use_power)
