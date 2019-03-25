@@ -191,10 +191,23 @@ var/list/global/tank_gauge_cache = list()
 						to_chat(user, "<span class='danger'>You accidentally rake \the [W] across \the [src]!</span>")
 						maxintegrity -= rand(2,6)
 						integrity = min(integrity,maxintegrity)
-						air_contents.add_thermal_energy(rand(2000,50000))
 				WT.eyecheck(user)
 			else
 				to_chat(user, "<span class='notice'>The emergency pressure relief valve has already been welded.</span>")
+			
+			if (src.air_contents)
+				var/const/welder_temperature = 1893.15
+				var/const/welder_mean_energy = 26000
+				var/const/welder_heat_capacity = welder_mean_energy / welder_temperature
+				
+				var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
+				var/total_capacity = src.air_contents.heat_capacity() + welder_heat_capacity
+				var/total_energy = current_energy + welder_mean_energy
+				
+				var/new_temperature = total_energy / total_capacity
+				
+				src.air_contents.temperature = new_temperature
+				
 		add_fingerprint(user)
 
 
@@ -561,7 +574,18 @@ var/list/global/tank_gauge_cache = list()
 	update_icon()
 
 /obj/item/weapon/tank/proc/ignite()	//This happens when a bomb is told to explode
-	air_contents.add_thermal_energy(15000)
+	if (src.air_contents)
+		var/const/igniter_temperature = 6000
+		var/const/igniter_mean_energy = 15000
+		var/const/igniter_heat_capacity = igniter_mean_energy / igniter_temperature
+
+		var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
+		var/total_capacity = src.air_contents.heat_capacity() + igniter_heat_capacity
+		var/total_energy = current_energy + igniter_mean_energy
+
+		var/new_temperature = total_energy / total_capacity
+
+		src.air_contents.temperature = new_temperature
 
 /obj/item/device/tankassemblyproxy/update_icon()
 	tank.update_icon()
