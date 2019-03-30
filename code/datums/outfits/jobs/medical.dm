@@ -71,7 +71,7 @@
 
 /decl/hierarchy/outfit/job/medical/chemist/New()
 	..()
-	BACKPACK_OVERRIDE_VIROLOGY
+	BACKPACK_OVERRIDE_CHEMISTRY
 
 /decl/hierarchy/outfit/job/medical/geneticist
 	name = OUTFIT_JOB_NAME("Geneticist")
