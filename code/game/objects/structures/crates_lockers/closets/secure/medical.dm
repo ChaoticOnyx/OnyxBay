@@ -168,6 +168,7 @@
 	wall_mounted = 1
 	storage_types = CLOSET_STORAGE_ITEMS
 	req_access = list(access_medical_equip)
+	dremovable = 0
 
 /obj/structure/closet/secure_closet/counselor
 	name = "counselor's locker"

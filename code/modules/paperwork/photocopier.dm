@@ -124,6 +124,8 @@
 		else
 			to_chat(user, "<span class='notice'>This cartridge is not yet ready for replacement! Use up the rest of the toner.</span>")
 	..()
+	if(O.mod_weight >= 0.75)
+		shake_animation(stime = 4)
 	return
 
 /obj/machinery/photocopier/ex_act(severity)

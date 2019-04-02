@@ -124,10 +124,13 @@
 				attack_generic(H,rand(1,3),"punched")
 				return
 
-			var/rand_damage = rand(1, 5)
-			var/block = 0
+			var/rand_damage = rand(3, 7)
+			//var/block = 0
 			var/accurate = 0
+			var/specmod = 1
 			var/hit_zone = H.zone_sel.selecting
+			var/miss_type = 0
+			var/attack_message
 			var/obj/item/organ/external/affecting = get_organ(hit_zone)
 
 			// See what attack they use
@@ -147,24 +150,53 @@
 			switch(src.a_intent)
 				if(I_HELP)
 					// We didn't see this coming, so we get the full blow
-					rand_damage = 5
+					rand_damage = 7
 					accurate = 1
-				if(I_HURT, I_GRAB)
+				//if(I_HURT, I_GRAB)
 					// We're in a fighting stance, there's a chance we block
-					if(src.canmove && src!=H && prob(20))
-						block = 1
+					//if(src.canmove && src!=H && prob(20))
+					//	block = 1
 
 			if (M.grabbed_by.len)
 				// Someone got a good grip on them, they won't be able to do much damage
-				rand_damage = max(1, rand_damage - 2)
+				rand_damage = max(2, rand_damage - 2)
 
 			if(src.grabbed_by.len || src.buckled || !src.canmove || src==H || H.species.species_flags & SPECIES_FLAG_NO_BLOCK)
 				accurate = 1 // certain circumstances make it impossible for us to evade punches
 				rand_damage = 5
 
+				if(src.grabbed_by.len)
+					for(var/obj/item/grab/G in src.grabbed_by)
+						if(G.assailant == H)
+							var/obj/item/organ/external/O = G.get_targeted_organ()
+							switch(hit_zone)
+								if(BP_MOUTH)
+									attack_message = "[H] lands a jab against [src]'s jaw!"
+									specmod = 2
+								if(BP_CHEST)
+									if(G.target_zone == BP_CHEST && O.damage > O.max_damage && src.should_have_organ(BP_HEART))
+										H.visible_message("<span class='danger'>[H] shoves \his hand into [src]'s chest!</span>")
+										src.custom_pain("You can feel a hand ripping your inwards!", 50, affecting = O)
+										H.next_move = world.time + 40 //also should prevent user from triggering this repeatedly
+										if(!do_after(H, 40))
+											return 0
+										if(!(G && G.affecting == src)) //check that we still have a grab
+											return 0
+
+										for(var/obj/item/organ/internal/heart/I in src.internal_organs)
+											if(I && istype(I))
+												I.cut_away(src)
+												O.implants -= I
+												H.put_in_active_hand(I)
+												H.visible_message("<span class='danger'>[H] rips [src]'s [I.name] out!</span>")
+												playsound(src.loc, 'sound/effects/squelch1.ogg', 50, 1)
+												admin_attack_log(H, src, "Ripped their victim's heart out", "Got their heart ripped out", "ripped out")
+												return 0
+										H.visible_message("<span class='danger'>[H] did not find anything useful in [src]'s chest!</span>")
+										return 0
+
 			// Process evasion and blocking
-			var/miss_type = 0
-			var/attack_message
+
 			if(!accurate)
 				/* ~Hubblenaut
 					This place is kind of convoluted and will need some explaining.
@@ -200,15 +232,26 @@
 						src.set_dir(pick(GLOB.cardinal))
 					miss_type = 1
 
-			if(!miss_type && block)
-				attack_message = "[H] went for [src]'s [affecting.name] but was blocked!"
-				miss_type = 2
+			if(!miss_type && src.parrying)
+				if(H.get_parried_w(src,null))
+					//attack_message = "[H] went for [src]'s [affecting.name] but was parried!"
+					miss_type = 2
+			if(!miss_type && src.blocking)
+				if(H.get_blocked_h(src))
+					//attack_message = "[H] went for [src]'s [affecting.name] but was blocked!"
+					miss_type = 2
+
+			//if(!miss_type && block)
+			//	attack_message = "[H] went for [src]'s [affecting.name] but was blocked!"
+			//	miss_type = 2
 
 			H.do_attack_animation(src)
-			if(!attack_message)
-				attack.show_attack(H, src, hit_zone, rand_damage)
-			else
-				H.visible_message("<span class='danger'>[attack_message]</span>")
+
+			if(miss_type < 2)
+				if(!attack_message)
+					attack.show_attack(H, src, hit_zone, rand_damage)
+				else
+					H.visible_message("<span class='danger'>[attack_message]</span>")
 
 			playsound(loc, ((miss_type) ? (miss_type == 1 ? attack.miss_sound : 'sound/weapons/thudswoosh.ogg') : attack.attack_sound), 25, 1, -1)
 			admin_attack_log(H, src, "[miss_type ? (miss_type == 1 ? "Has missed" : "Was blocked by") : "Has [pick(attack.attack_verb)]"] their victim.", "[miss_type ? (miss_type == 1 ? "Missed" : "Blocked") : "[pick(attack.attack_verb)]"] their attacker", "[miss_type ? (miss_type == 1 ? "has missed" : "was blocked by") : "has [pick(attack.attack_verb)]"]")
@@ -227,7 +270,7 @@
 
 			var/armour = run_armor_check(hit_zone, "melee")
 			// Apply additional unarmed effects.
-			attack.apply_effects(H, src, armour, rand_damage, hit_zone)
+			attack.apply_effects(H, src, armour, rand_damage, hit_zone, specmod)
 
 			// Finally, apply damage to target
 			apply_damage(real_damage, (attack.deal_halloss ? PAIN : BRUTE), hit_zone, armour, damage_flags=attack.damage_flags())
@@ -258,24 +301,24 @@
 	return 1
 
 //Breaks all grips and pulls that the mob currently has.
-/mob/living/carbon/human/proc/break_all_grabs(mob/living/carbon/user)
+/mob/living/carbon/human/proc/break_all_grabs(mob/living/carbon/user,var/silent = 0)
 	var/success = 0
 	if(pulling)
-		visible_message("<span class='danger'>[user] has broken [src]'s grip on [pulling]!</span>")
+		if(!silent) visible_message("<span class='danger'>[user] has broken [src]'s grip on [pulling]!</span>")
 		success = 1
 		stop_pulling()
 
 	if(istype(l_hand, /obj/item/grab))
 		var/obj/item/grab/lgrab = l_hand
 		if(lgrab.affecting)
-			visible_message("<span class='danger'>[user] has broken [src]'s grip on [lgrab.affecting]!</span>")
+			if(!silent) visible_message("<span class='danger'>[user] has broken [src]'s grip on [lgrab.affecting]!</span>")
 			success = 1
 		spawn(1)
 			qdel(lgrab)
 	if(istype(r_hand, /obj/item/grab))
 		var/obj/item/grab/rgrab = r_hand
 		if(rgrab.affecting)
-			visible_message("<span class='danger'>[user] has broken [src]'s grip on [rgrab.affecting]!</span>")
+			if(!silent) visible_message("<span class='danger'>[user] has broken [src]'s grip on [rgrab.affecting]!</span>")
 			success = 1
 		spawn(1)
 			qdel(rgrab)

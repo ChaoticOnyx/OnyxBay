@@ -265,26 +265,46 @@
 	if(affecting.incapacitated(INCAPACITATION_KNOCKOUT | INCAPACITATION_STUNNED))
 		to_chat(G.assailant, "<span class='warning'>You can't resist in your current state!</span>")
 
-	var/break_strength = breakability + size_difference(affecting, assailant)
+	//var/break_strength = breakability + size_difference(affecting, assailant)
+
+	var/p_mult = 1.5
+	for(var/obj/item/grab/AF in affecting.grabbed_by)
+		p_mult -= 0.5
 
 	if(affecting.incapacitated(INCAPACITATION_ALL))
-		break_strength--
+		p_mult -= 0.1
 	if(affecting.confused)
-		break_strength--
+		p_mult -= 0.1
+	if(!affecting.lying)
+		p_mult += 0.1
 
-	if(break_strength < 1)
-		to_chat(G.assailant, "<span class='warning'>You try to break free but feel that unless something changes, you'll never escape!</span>")
-		return
+	//if(break_strength < 1)
+	//	to_chat(G.assailant, "<span class='warning'>You try to break free but feel that unless something changes, you'll never escape!</span>")
+	//	return
 
-	var/break_chance = break_chance_table[Clamp(break_strength, 1, break_chance_table.len)]
-	if(prob(break_chance))
-		if(can_downgrade_on_resist && !prob((break_chance+100)/2))
+	var/p_lost = (5.5 + affecting.poise/10 - assailant.poise/20) * p_mult
+	assailant.poise -= p_lost
+	affecting.poise -= 2.0
+
+	//assailant.visible_message("Debug: [assailant] lost [p_lost] poise | now: [assailant.poise]/[assailant.poise_pool]") //Debug message
+
+	var/p_diff = 20.0 // If difference is less than equal 5.0 then the break chance is at minimum (10/6,6 for normal and agressive grabs respectively).
+	if((affecting.poise - assailant.poise) > 5.0)
+		p_diff = (affecting.poise - assailant.poise) * 4
+	p_diff /= breakability // 2 for a normal grab, 3 for agressive and kill grabs
+
+	//assailant.visible_message("Debug: p_diff = [p_diff] | breakability = [breakability]") //Debug message
+
+	if(p_diff > assailant.poise || prob(p_diff))
+		if(can_downgrade_on_resist && !prob(p_diff))
 			affecting.visible_message("<span class='warning'>[affecting] has loosened [assailant]'s grip!</span>")
 			G.downgrade()
+			assailant.setClickCooldown(10)
 			return
 		else
 			affecting.visible_message("<span class='warning'>[affecting] has broken free of [assailant]'s grip!</span>")
 			let_go(G)
+			assailant.setClickCooldown(15)
 
 /datum/grab/proc/size_difference(mob/A, mob/B)
 	return mob_size_difference(A.mob_size, B.mob_size)

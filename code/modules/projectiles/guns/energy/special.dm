@@ -5,7 +5,10 @@
 	item_state = "ionrifle"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MAGNET = 4)
 	w_class = ITEM_SIZE_HUGE
-	force = 10
+	force = 12.5
+	mod_weight = 1.0
+	mod_reach = 0.8
+	mod_handy = 1.0
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BACK
 	one_hand_penalty = 4
@@ -25,7 +28,7 @@
 	item_state = "ionpistolonyx"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MAGNET = 4)
 	w_class = ITEM_SIZE_NORMAL
-	force = 5
+	force = 8.5
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	one_hand_penalty = 0
 	charge_cost = 20

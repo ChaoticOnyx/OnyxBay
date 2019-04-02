@@ -12,7 +12,13 @@
 	siemens_coefficient = 0.9
 	var/gas_filter_strength = 1			//For gas mask filters
 	var/list/filtered_gases = list("phoron", "sleeping_agent")
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 75, rad = 0)
+	var/istinted = 1
+	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 75, rad = 0)
+
+/obj/item/clothing/mask/gas/Initialize()
+	. = ..()
+	if(istinted)
+		overlay = GLOB.global_hud.gasmask
 
 /obj/item/clothing/mask/gas/filter_air(datum/gas_mixture/air)
 	var/datum/gas_mixture/filtered = new
@@ -33,7 +39,7 @@
 	icon_state = "gas_mask"
 	item_state = "gas_mask"
 
-	armor = list(melee = 10, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 55, rad = 0)
+	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 55, rad = 0)
 
 //Plague Dr suit can be found in clothing/suits/bio.dm
 /obj/item/clothing/mask/gas/plaguedoctor
@@ -41,7 +47,7 @@
 	desc = "A modernised version of the classic design, this mask will not only filter out phoron but it can also be connected to an air supply."
 	icon_state = "plaguedoctor"
 	item_state = "plaguedoctor"
-	armor = list(melee = 0, bullet = 0, laser = 2,energy = 2, bomb = 0, bio = 90, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 2, bomb = 0, bio = 90, rad = 0)
 	body_parts_covered = HEAD|FACE|EYES
 
 /obj/item/clothing/mask/gas/swat
@@ -49,6 +55,7 @@
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
 	icon_state = "swat"
 	item_state = "swat"
+	istinted = 0
 	siemens_coefficient = 0.7
 	body_parts_covered = FACE|EYES
 	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75, rad = 0)
@@ -64,6 +71,7 @@
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
 	icon_state = "swat"
 	item_state = "swat"
+	istinted = 0
 	siemens_coefficient = 0.7
 	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75, rad = 0)
 
@@ -72,18 +80,21 @@
 	desc = "A true prankster's facial attire. A clown is incomplete without their wig and mask."
 	icon_state = "clown"
 	item_state = "clown"
+	istinted = 0
 
 /obj/item/clothing/mask/gas/sexyclown
 	name = "sexy-clown wig and mask"
 	desc = "A feminine clown mask for the dabbling crossdressers or female entertainers."
 	icon_state = "sexyclown"
 	item_state = "sexyclown"
+	istinted = 0
 
 /obj/item/clothing/mask/gas/mime
 	name = "mime mask"
 	desc = "The traditional mime's mask. It has an eerie facial posture."
 	icon_state = "mime"
 	item_state = "mime"
+	istinted = 0
 
 /obj/item/clothing/mask/gas/monkeymask
 	name = "monkey mask"
@@ -91,12 +102,14 @@
 	icon_state = "monkeymask"
 	item_state = "monkeymask"
 	body_parts_covered = HEAD|FACE|EYES
+	istinted = 0
 
 /obj/item/clothing/mask/gas/sexymime
 	name = "sexy mime mask"
 	desc = "A traditional female mime's mask."
 	icon_state = "sexymime"
 	item_state = "sexymime"
+	istinted = 0
 
 /obj/item/clothing/mask/gas/death_commando
 	name = "Death Commando Mask"
@@ -116,11 +129,13 @@
 	icon_state = "owl"
 	item_state = "owl"
 	body_parts_covered = HEAD|FACE|EYES
+	istinted = 0
 
 /obj/item/clothing/mask/gas/vox
 	name = "vox breathing mask"
 	desc = "A small oxygen filter for use by Vox"
 	icon_state = "respirator"
+	istinted = 0
 	flags_inv = 0
 	body_parts_covered = 0
 	species_restricted = list(SPECIES_VOX)

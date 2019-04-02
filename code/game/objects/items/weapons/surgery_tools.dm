@@ -67,7 +67,11 @@
 	matter = list(DEFAULT_WALL_MATERIAL = 15000, "glass" = 10000)
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 15.0
+	sharp = 1
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 1.0
+	mod_reach = 0.6
+	mod_handy = 1.0
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	attack_verb = list("drilled")
 
@@ -80,10 +84,13 @@
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "scalpel"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 10.0
+	force = 7.5
 	sharp = 1
 	edge = 1
 	w_class = ITEM_SIZE_TINY
+	mod_weight = 0.5
+	mod_reach = 0.5
+	mod_handy = 1.0
 	slot_flags = SLOT_EARS
 	throwforce = 5.0
 	throw_speed = 3
@@ -137,6 +144,9 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 15.0
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 1.2
+	mod_reach = 0.65
+	mod_handy = 1.0
 	throwforce = 9.0
 	throw_speed = 3
 	throw_range = 5
@@ -145,6 +155,34 @@
 	attack_verb = list("attacked", "slashed", "sawed", "cut")
 	sharp = 1
 	edge = 1
+	var/improved = 0
+
+/obj/item/weapon/circular_saw/attackby(obj/item/weapon/W, mob/user)
+	if(istype(W,/obj/item/weapon/material/wirerod) && improved == 0)
+		user.drop_from_inventory(W)
+		qdel(W)
+		name = "circular spear"
+		desc = "For heavy duty cutting in glory of The Emperor and The Imperium."
+		icon_state = "chainspear"
+		item_state = "chainspear"
+		mod_weight = 1.3
+		mod_reach = 1.5
+		w_class = ITEM_SIZE_LARGE
+		improved = 1
+		surgery_speed = 1.2 // Well, it's bigger and heavier now
+	if(istype(W,/obj/item/weapon/wirecutters) && improved == 1)
+		new /obj/item/weapon/material/wirerod(get_turf(src)) //give back the wired rod
+		name = "circular saw"
+		desc = "For heavy duty cutting. It remembers its past glory..."
+		icon_state = "saw3"
+		item_state = "saw3"
+		mod_weight = 1.2
+		mod_reach = 0.75
+		w_class = ITEM_SIZE_NORMAL
+		improved = 0
+		surgery_speed = 1.0
+	..()
+
 
 /obj/item/weapon/circular_saw/plasmasaw //Orange transparent chainsaw!
 	name = "plasma saw"
@@ -152,6 +190,7 @@
 	icon_state = "plasmasaw"
 	force = 25.0
 	surgery_speed = 0.5
+	improved = 2 // Jeez I'm waaay to lazy to draw sprites for plasma chainspear
 
 //misc, formerly from code/defines/weapons.dm
 /obj/item/weapon/bonegel
@@ -187,6 +226,9 @@
 	throw_speed = 3
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.75
+	mod_reach = 0.5
+	mod_handy = 0.75
 	attack_verb = list("attacked", "hit", "bludgeoned")
 
 /obj/item/weapon/bonesetter/bone_mender

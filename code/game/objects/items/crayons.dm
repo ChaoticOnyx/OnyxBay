@@ -40,6 +40,18 @@
 	colourName = "purple"
 	color_description = "purple crayon"
 
+/obj/item/weapon/pen/crayon/chalk
+	icon_state = "chalk"
+	colour = "#ffffff"
+	shadeColour = "#f2f2f2"
+	colourName = "white"
+	color_description = "white chalk"
+
+	New()
+	..()
+	name = "white chalk"
+	desc = "A piece of regular white chalk. What else did you expect to see?"
+
 /obj/item/weapon/pen/crayon/random/Initialize()
 	..()
 	var/crayon_type = pick(subtypesof(/obj/item/weapon/pen/crayon) - /obj/item/weapon/pen/crayon/random)
@@ -81,13 +93,19 @@
 
 /obj/item/weapon/pen/crayon/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity) return
-	if(istype(target,/turf/simulated/floor))
+	if(istype(target,/turf/simulated/floor) || istype(target,/turf/simulated/wall))
 		var/drawtype = input("Choose what you'd like to draw.", "Crayon scribbles") in list("graffiti","rune","letter","arrow")
 		switch(drawtype)
 			if("letter")
 				drawtype = input("Choose the letter.", "Crayon scribbles") in list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
 				to_chat(user, "You start drawing a letter on the [target.name].")
 			if("graffiti")
+				drawtype = input("Choose the graffiti.", "Crayon scribbles") in list("amyjon","face","matt",
+																					"revolution","engie","guy",
+																					"end","dwarf","uboa", "xyu",
+																					"stayhigh","fuckxenos","help",
+																					"cheesy", "ghost", "godleft",
+																					)
 				to_chat(user, "You start drawing graffiti on the [target.name].")
 			if("rune")
 				to_chat(user, "You start drawing a rune on the [target.name].")
@@ -110,13 +128,23 @@
 
 /obj/item/weapon/pen/crayon/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(istype(M) && M == user)
-		to_chat(M, "You take a bite of the crayon and swallow it.")
+		to_chat(M, "You take a bite of the [src.name] and swallow it.")
 		M.nutrition += 1
 		M.reagents.add_reagent(/datum/reagent/crayon_dust,min(5,uses)/3)
 		if(uses)
 			uses -= 5
 			if(uses <= 0)
-				to_chat(M, "<span class='warning'>You ate your crayon!</span>")
+				to_chat(M, "<span class='warning'>You ate your [src.name]!</span>")
 				qdel(src)
+	else if(istype(M,/mob/living/carbon/human) && M.lying)
+		to_chat(user, "You start outlining [M.name].")
+		if(do_after(user, 50))
+			to_chat(user, "You finish outlining [M.name].")
+			new /obj/effect/decal/cleanable/crayon(M.loc,colour,shadeColour,"body outline")
+			if(uses)
+				uses--
+				if(!uses)
+					to_chat(user, "<span class='warning'>You used up your [src.name]!</span>")
+					qdel(src)
 	else
 		..()

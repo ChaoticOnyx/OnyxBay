@@ -19,7 +19,16 @@
 	var/list/origin_tech = null	//Used by R&D to determine what research bonuses it grants.
 	var/list/attack_verb = list("hit") //Used in attackby() to say how something was attacked "[x] has been [z.attack_verb] by [y] with [z]"
 	var/lock_picking_level = 0 //used to determine whether something can pick a lock, and how well.
+
+	//Totally Realistic Onyx Fighting System stuff
 	var/force = 0
+	var/attack_cooldown = DEFAULT_WEAPON_COOLDOWN // 0.5 second
+	var/attack_cooldown_real //Debug variable
+	var/mod_handy = 0.25 //Handiness modifier. i.e. 0.5 - pain in the ass to use, 1.0 - decent weapon, 1.5 - specialized for melee combat.
+	var/mod_reach = 0.25 //Length modifier. i.e. 0.35 - knives, 0.75 - toolboxes, 1.0 - crowbars, 1.25 - batons, 1.5 - spears and mops.
+	var/mod_weight = 0.25 //Weight modifier. i.e. 0.33 - knives, 0.67 - hatchets, 1.0 - crowbars and batons, 1.33 - tanks, 1.66 - toolboxes, 2.0 - axes.
+	var/mod_speed = 1.0 //An artificial attack cooldown multiplier for certain weapons. Applied after the initial processing.
+	var/mod_shield = 1.0 //Higher values reduce blocks' poise consumption. Values >= 1.5 allow to absorb bullets. Values >= 2.5 allow to reflect bullets.
 
 	var/heat_protection = 0 //flags which determine which body parts are protected from heat. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
 	var/cold_protection = 0 //flags which determine which body parts are protected from cold. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
@@ -164,6 +173,30 @@
 	var/desc_comp = "" //For "description composite"
 	desc_comp += "It is a [size] item."
 
+	if(force)
+		var/desc_weight
+		var/desc_reach
+		var/desc_handy
+
+		if(src.mod_weight < 0.4) desc_weight = "a really light"
+		else if(src.mod_weight < 0.8) desc_weight = "quite light"
+		else if(src.mod_weight < 1.25) desc_weight = "a normal-weight"
+		else if(src.mod_weight < 1.65) desc_weight = "quite heavy"
+		else desc_weight = "a really heavy"
+
+		if(src.mod_reach < 0.4) desc_reach = "extremely short"
+		else if(src.mod_reach < 0.8) desc_reach = "quite short"
+		else if(src.mod_reach < 1.25) desc_reach = "average sized"
+		else if(src.mod_reach < 1.65) desc_reach = "long"
+		else desc_reach = "extremely long"
+
+		if(src.mod_handy < 0.4) desc_handy = "unhandy"
+		else if(src.mod_handy < 0.8) desc_handy = "not so handy"
+		else if(src.mod_handy < 1.25) desc_handy = "handy"
+		else if(src.mod_handy < 1.65) desc_handy = "really handy"
+		else desc_handy = "outstandingly handy"
+		desc_comp += "<BR>It makes [desc_weight], [desc_reach], and [desc_handy] weapon."
+
 	if(hasHUD(user, HUD_SCIENCE)) //Mob has a research scanner active.
 		desc_comp += "<BR>*--------* <BR>"
 
@@ -182,6 +215,9 @@
 		else
 			desc_comp += "<span class='danger'>No extractable materials detected.</span><BR>"
 		desc_comp += "*--------*"
+
+	//if(weapon_desc)
+	//	desc_comp += handle_weapon_desc()
 
 	return ..(user, distance, "", desc_comp)
 
@@ -470,6 +506,44 @@ var/list/global/slot_flags_enumeration = list(
 //For non-projectile attacks this usually means the attack is blocked.
 //Otherwise should return 0 to indicate that the attack is not affected in any way.
 /obj/item/proc/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
+
+	if(!user.blocking) return 0 // We weren't ready bruh
+	if(istype(damage_source,/obj/item/projectile))
+		var/obj/item/projectile/P = damage_source
+		if(src.mod_shield >= 2.5)
+			if(istype(user,/mob/living/carbon/human))
+				var/mob/living/carbon/human/H = user
+				H.useblock_off()
+			if(P.starting)
+				visible_message("<span class='warning'>\The [user] reflects [P] with their [src.name]!</span>")
+
+				// Find a turf near or on the original location to bounce to
+				var/new_x = P.starting.x + rand(-2,2)
+				var/new_y = P.starting.y + rand(-2,2)
+				var/turf/curloc = get_turf(user)
+
+				// redirect the projectile
+				P.redirect(new_x, new_y, curloc, user)
+
+			 	// some effects here
+				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+				spark_system.set_up(3, 0, user.loc)
+				spark_system.start()
+
+				return PROJECTILE_CONTINUE // complete projectile permutation
+		else if(src.mod_shield >= 1.5)
+			if(P.armor_penetration >= 75)
+				visible_message("<span class='warning'>\The [user] tries to block [P] with their [src.name]. <b>Not the best idea.</b></span>")
+				return 0
+			visible_message("<span class='warning'>\The [user] blocks [P] with their [src.name]!</span>")
+			if(istype(user,/mob/living/carbon/human))
+				var/mob/living/carbon/human/H = user
+				H.poise -= P.damage/src.mod_shield
+				if(H.poise < P.damage/src.mod_shield)
+					visible_message("<span class='warning'>[H] falls down, unable to keep balance !</span>")
+					H.apply_effect(3, WEAKEN, 0)
+				H.useblock_off()
+			return PROJECTILE_FORCE_BLOCK
 	return 0
 
 /obj/item/proc/get_loc_turf()
@@ -750,3 +824,13 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		. = "<span class='warning'>\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [src]</span>"
 	else
 		. = "\icon[src] \a [src]"
+
+//Some explanation here.
+/obj/item/proc/update_attack_cooldown()
+	var/res_cd
+	res_cd = (attack_cooldown + DEFAULT_WEAPON_COOLDOWN * (mod_weight / mod_handy)) * mod_speed // i.e. Default attack speed for the-most-generic-item is 1 hit/s
+	attack_cooldown_real = res_cd //Debug
+	return res_cd
+
+/obj/item/proc/update_weapon_desc()
+	return

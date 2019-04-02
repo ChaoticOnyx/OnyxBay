@@ -5,11 +5,14 @@
 	icon_state = "flamethrowerbase"
 	item_state = "flamethrower_0"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 3.0
+	force = 7.5
 	throwforce = 10.0
 	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_LARGE
+	mod_weight = 1.25
+	mod_reach = 1.0
+	mod_handy = 0.75
 	origin_tech = list(TECH_COMBAT = 1)
 	matter = list(DEFAULT_WALL_MATERIAL = 500)
 	var/status = 0

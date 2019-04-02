@@ -2,6 +2,9 @@
 	var/active = 0
 	var/active_force
 	var/active_throwforce
+	var/mod_handy_a
+	var/mod_weight_a
+	var/mod_reach_a
 	sharp = 0
 	edge = 0
 	armor_penetration = 50
@@ -17,6 +20,9 @@
 	sharp = 0
 	edge = 1
 	slot_flags |= SLOT_DENYPOCKET
+	mod_handy = mod_handy_a
+	mod_weight = mod_weight_a
+	mod_reach = mod_reach_a
 	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 
 /obj/item/weapon/melee/energy/proc/deactivate(mob/living/user)
@@ -30,6 +36,9 @@
 	sharp = initial(sharp)
 	edge = initial(edge)
 	slot_flags = initial(slot_flags)
+	mod_handy = initial(mod_handy)
+	mod_weight = initial(mod_weight)
+	mod_reach = initial(mod_reach)
 
 /obj/item/weapon/melee/energy/attack_self(mob/living/user as mob)
 	if (active)
@@ -63,7 +72,7 @@
 	icon_state = "axe0"
 	//active_force = 150 //holy...
 	active_force = 60
-	active_throwforce = 35
+	active_throwforce = 45
 	//force = 40
 	//throwforce = 25
 	force = 20
@@ -71,6 +80,12 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 1.5
+	mod_reach = 1.25
+	mod_handy = 1.5
+	mod_weight_a = 1.5
+	mod_reach_a = 1.25
+	mod_handy_a = 1.5
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	origin_tech = list(TECH_MAGNET = 3, TECH_COMBAT = 4)
@@ -103,6 +118,12 @@
 	throw_speed = 1
 	throw_range = 10
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.5
+	mod_reach = 0.3
+	mod_handy = 1.0
+	mod_weight_a = 1.25
+	mod_reach_a = 1.5
+	mod_handy_a = 1.5
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	origin_tech = list(TECH_MAGNET = 3, TECH_ILLEGAL = 4)
 	sharp = 0
@@ -133,6 +154,7 @@
 /obj/item/weapon/melee/energy/sword/activate(mob/living/user)
 	if(!active)
 		to_chat(user, "<span class='notice'>\The [src] is now energised.</span>")
+		mod_shield = 2.5
 	..()
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	icon_state = "sword[blade_color]"
@@ -140,47 +162,24 @@
 /obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
 	if(active)
 		to_chat(user, "<span class='notice'>\The [src] deactivates!</span>")
+		mod_shield = 1.0
 	..()
 	attack_verb = list()
 	icon_state = initial(icon_state)
 
-/obj/item/weapon/melee/energy/sword/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
-	if(active && default_parry_check(user, attacker, damage_source) && prob(50))
-		user.visible_message("<span class='danger'>\The [user] parries [attack_text] with \the [src]!</span>")
-
-		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-		spark_system.set_up(5, 0, user.loc)
-		spark_system.start()
-		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
-		return 1
-	return 0
-
 /obj/item/weapon/melee/energy/sword/attackby(var/obj/item/W as obj, var/mob/user as mob)
 	if (istype(W,/obj/item/weapon/melee/energy/sword))
 		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon!</span>")
-		var/obj/item/weapon/melee/energy/dualsaber = new /obj/item/weapon/melee/energy/dualsaber(user.loc)
+		new /obj/item/weapon/melee/energy/dualsaber(user.loc)
 		qdel(W)
 		W = null
 		qdel(src)
 
+/obj/item/weapon/melee/energy/sword/handle_shield(mob/user)
+	. = ..()
 
-/obj/item/weapon/melee/energy/sword/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
-	if(istype(damage_source, /obj/item/projectile/energy) || istype(damage_source, /obj/item/projectile/beam))
-		var/obj/item/projectile/P = damage_source
-
-		var/reflectchance = 45 - round(damage/3)
-		if(P.starting && prob(reflectchance))
-			visible_message("<span class='danger'>\The [user]'s [src.name] reflects [attack_text]!</span>")
-
-			// Find a turf near or on the original location to bounce to
-			var/new_x = P.starting.x + rand(-2,2)
-			var/new_y = P.starting.y + rand(-2,2)
-			var/turf/curloc = get_turf(user)
-
-			// redirect the projectile
-			P.redirect(new_x, new_y, curloc, user)
-
-			return PROJECTILE_CONTINUE // complete projectile permutation
+	if(.)
+		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
 
 /obj/item/weapon/melee/energy/sword/pirate
 	name = "energy cutlass"
@@ -218,6 +217,12 @@
 	throw_speed = 1
 	throw_range = 10
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.5
+	mod_reach = 0.4
+	mod_handy = 1.0
+	mod_weight_a = 1.5
+	mod_reach_a = 1.5
+	mod_handy_a = 1.75
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
 	sharp = 0
@@ -249,6 +254,7 @@
 /obj/item/weapon/melee/energy/dualsaber/activate(mob/living/user)
 	if(!active)
 		to_chat(user, "<span class='notice'>\The [src] is now energised.</span>")
+		mod_shield = 2.5
 	..()
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	icon_state = "dualsaber[blade_color]"
@@ -256,38 +262,16 @@
 /obj/item/weapon/melee/energy/dualsaber/deactivate(mob/living/user)
 	if(active)
 		to_chat(user, "<span class='notice'>\The [src] deactivates!</span>")
+		mod_shield = 1.0
 	..()
 	attack_verb = list()
 	icon_state = initial(icon_state)
 
-/obj/item/weapon/melee/energy/dualsaber/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
-	if(active && default_parry_check(user, attacker, damage_source) && prob(99))
-		user.visible_message("<span class='danger'>\The [user] parries [attack_text] with \the [src]!</span>")
+/obj/item/weapon/melee/energy/dualsaber/handle_shield(mob/user)
+	. = ..()
 
-		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-		spark_system.set_up(5, 0, user.loc)
-		spark_system.start()
+	if(.)
 		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
-		return 1
-	return 0
-
-/obj/item/weapon/melee/energy/dualsaber/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
-	if(istype(damage_source, /obj/item/projectile/energy) || istype(damage_source, /obj/item/projectile/beam))
-		var/obj/item/projectile/P = damage_source
-
-		var/reflectchance = 100 - round(damage/3)
-		if(P.starting && prob(reflectchance))
-			visible_message("<span class='danger'>\The [user]'s [src.name] reflects [attack_text]!</span>")
-
-			// Find a turf near or on the original location to bounce to
-			var/new_x = P.starting.x + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
-			var/new_y = P.starting.y + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
-			var/turf/curloc = get_turf(user)
-
-			// redirect the projectile
-			P.redirect(new_x, new_y, curloc, user)
-
-			return PROJECTILE_CONTINUE // complete projectile permutation
 
 /*
  *Energy Blade
@@ -307,6 +291,12 @@
 	throw_speed = 1
 	throw_range = 1
 	w_class = ITEM_SIZE_TINY //technically it's just energy or something, I dunno
+	mod_weight = 1.0
+	mod_reach = 1.5
+	mod_handy = 1.75
+	mod_weight_a = 1.25
+	mod_reach_a = 1.5
+	mod_handy_a = 1.75
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	var/mob/living/creator
@@ -351,3 +341,9 @@
 			host.embedded -= src
 			host.drop_from_inventory(src)
 		spawn(1) if(src) qdel(src)
+
+/obj/item/weapon/melee/energy/blade/handle_shield(mob/user) // C'mon it's an esword on crack why would it be unable to reflect projectiles?
+	. = ..()
+
+	if(.)
+		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)

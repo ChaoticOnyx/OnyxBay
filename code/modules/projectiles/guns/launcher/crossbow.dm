@@ -10,6 +10,9 @@
 	w_class = ITEM_SIZE_NORMAL
 	sharp = 1
 	edge = 0
+	mod_weight = 0.5
+	mod_reach = 0.8
+	mod_handy = 0.75
 	lock_picking_level = 3
 
 /obj/item/weapon/arrow/proc/removed() //Helper for metal rods falling apart.
@@ -21,6 +24,9 @@
 	sharp = 1
 	edge = 0
 	throwforce = 5
+	mod_weight = 0.5
+	mod_reach = 0.8
+	mod_handy = 0.75
 	w_class = ITEM_SIZE_SMALL
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "metal-rod"
@@ -55,6 +61,9 @@
 	fire_sound = 'sound/weapons/punchmiss.ogg' // TODO: Decent THWOK noise.
 	fire_sound_text = "a solid thunk"
 	fire_delay = 25
+	mod_weight = 1.0
+	mod_reach = 0.8
+	mod_handy = 1.0
 	slot_flags = SLOT_BACK
 
 	var/obj/item/bolt
@@ -201,6 +210,10 @@
 	desc = "A half-finished crossbow."
 	icon_state = "crossbowframe0"
 	item_state = "crossbow-solid"
+	force = 8.5
+	mod_weight = 0.7
+	mod_reach = 0.7
+	mod_handy = 0.85
 
 	var/buildstate = 0
 

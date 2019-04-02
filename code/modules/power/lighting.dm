@@ -141,7 +141,7 @@
 	anchored = 1
 	plane = ABOVE_HUMAN_PLANE
 	layer = ABOVE_HUMAN_LAYER  					// They were appearing under mobs which is a little weird - Ostaf
-	use_power = 2
+	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = LIGHT //Lights are calc'd via area so they dont need to be in the machine list
@@ -215,7 +215,7 @@
 			on = 0
 
 	if(on)
-		use_power = 2
+		update_use_power(POWER_USE_ACTIVE)
 
 		var/changed = 0
 		if(current_mode && (current_mode in lightbulb.lighting_modes))
@@ -226,10 +226,10 @@
 		if(trigger && changed && get_status() == LIGHT_OK)
 			switch_check()
 	else
-		use_power = 0
+		update_use_power(POWER_USE_OFF)
 		set_light(0)
 
-	active_power_usage = ((light_range * light_power) * LIGHTING_POWER_FACTOR)
+	change_power_consumption((light_range * light_power) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 
 /obj/machinery/light/proc/get_status()
 	if(!lightbulb)
@@ -265,11 +265,11 @@
 	if(enable)
 		if(LIGHTMODE_EMERGENCY in lightbulb.lighting_modes)
 			set_mode(LIGHTMODE_EMERGENCY)
-			power_channel = ENVIRON
+			update_power_channel(ENVIRON)
 	else
 		if(current_mode == LIGHTMODE_EMERGENCY)
 			set_mode(null)
-			power_channel = initial(power_channel)
+			update_power_channel(initial(power_channel))
 
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
@@ -350,6 +350,8 @@
 
 		else
 			to_chat(user, "You hit the light!")
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
 
 	// attempt to stick weapon into light socket
 	else if(!lightbulb)

@@ -11,6 +11,8 @@ GLOBAL_DATUM_INIT(global_hud, /datum/global_hud, new())
 	var/obj/screen/meson
 	var/obj/screen/science
 	var/obj/screen/material
+	var/obj/screen/gasmask
+	var/obj/screen/darktint
 
 /datum/global_hud/proc/setup_overlay(var/icon_state)
 	var/obj/screen/screen = new /obj/screen()
@@ -27,3 +29,5 @@ GLOBAL_DATUM_INIT(global_hud, /datum/global_hud, new())
 	meson = setup_overlay("meson_hud")
 	science = setup_overlay("science_hud")
 	material = setup_overlay("material_hud")
+	gasmask = setup_overlay("gasmask_hud")
+	darktint = setup_overlay("darktint_hud")

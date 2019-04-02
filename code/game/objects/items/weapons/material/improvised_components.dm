@@ -46,17 +46,23 @@
 	icon_state = "wiredrod"
 	item_state = "rods"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 8
+	force = 8.5
 	throwforce = 10
+	force_const = 8.5
+	thrown_force_const = 10.0
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 1.0
+	mod_reach = 1.25
+	mod_handy = 1.0
 	attack_verb = list("hit", "bludgeoned", "whacked", "bonked")
-	force_divisor = 0.1
-	thrown_force_divisor = 0.1
+	force_divisor = 0
+	thrown_force_divisor = 0
+	applies_material_colour = 0
 
 /obj/item/weapon/material/wirerod/attackby(var/obj/item/I, mob/user as mob)
 	..()
 	var/obj/item/finished
-	if(istype(I, /obj/item/weapon/material/shard) || istype(I, /obj/item/weapon/material/butterflyblade))
+	if(istype(I, /obj/item/weapon/material/shard) || istype(I, /obj/item/weapon/material/knife/shiv))
 		var/obj/item/weapon/material/tmp_shard = I
 		finished = new /obj/item/weapon/material/twohanded/spear(get_turf(user), tmp_shard.material.name)
 		to_chat(user, "<span class='notice'>You fasten \the [I] to the top of the rod with the cable.</span>")

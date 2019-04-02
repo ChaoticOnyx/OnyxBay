@@ -5,7 +5,10 @@
 	item_state = "riotgun"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 3)
 	w_class = ITEM_SIZE_HUGE
-	force = 10
+	force = 14.5
+	mod_weight = 1.35
+	mod_reach = 0.8
+	mod_handy = 1.0
 
 	fire_sound = 'sound/weapons/empty.ogg'
 	fire_sound_text = "a metallic thunk"

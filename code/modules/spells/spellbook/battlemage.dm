@@ -14,6 +14,7 @@
 				/spell/targeted/equip_item/dyrnwyn = 				1,
 				/spell/targeted/equip_item/shield = 				1,
 				/spell/targeted/projectile/dumbfire/fireball = 		1,
+				/spell/targeted/disintegrate =						2,
 				/spell/targeted/torment = 							1,
 				/spell/targeted/heal_target = 						2,
 				/spell/targeted/genetic/mutate = 					1,

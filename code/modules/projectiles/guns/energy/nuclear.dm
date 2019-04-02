@@ -77,7 +77,10 @@
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 5, TECH_POWER = 3)
 	slot_flags = SLOT_BELT
 	w_class = ITEM_SIZE_LARGE
-	force = 8 //looks heavier than a pistol
+	force = 12.5
+	mod_weight = 1.0
+	mod_reach = 0.8
+	mod_handy = 1.0
 	self_recharge = 1
 	modifystate = null
 	one_hand_penalty = 1 //bulkier than an e-gun, but not quite the size of a carbine
@@ -142,6 +145,10 @@
 	item_state = null	//so the human update icon uses the icon_state instead.
 	max_shots = 10
 	fire_delay = 10 // To balance for the fact that it is a pistol and can be used one-handed without penalty
+	force = 10.0
+	mod_weight = 0.8
+	mod_reach = 0.55
+	mod_handy = 1.0
 
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 4, TECH_POWER = 3)

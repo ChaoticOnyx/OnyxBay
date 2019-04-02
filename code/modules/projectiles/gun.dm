@@ -36,7 +36,7 @@
 		slot_l_hand_str = 'icons/mob/onmob/items/lefthand_guns.dmi',
 		slot_r_hand_str = 'icons/mob/onmob/items/righthand_guns.dmi',
 		)
-	icon_state = "detective"
+	icon_state = ""
 	item_state = "gun"
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
@@ -45,7 +45,10 @@
 	throwforce = 5
 	throw_speed = 4
 	throw_range = 5
-	force = 5
+	force = 7.5
+	mod_weight = 0.75
+	mod_reach = 0.65
+	mod_handy = 0.85
 	origin_tech = list(TECH_COMBAT = 1)
 	attack_verb = list("struck", "hit", "bashed")
 	zoomdevicename = "scope"

@@ -3,11 +3,14 @@
 	name = "mop"
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "mop"
-	force = 5
+	force = 7.5
 	throwforce = 10.0
 	throw_speed = 5
 	throw_range = 10
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 1.0
+	mod_reach = 1.5
+	mod_handy = 1.0
 	attack_verb = list("mopped", "bashed", "bludgeoned", "whacked")
 	var/mopping = 0
 	var/mopcount = 0

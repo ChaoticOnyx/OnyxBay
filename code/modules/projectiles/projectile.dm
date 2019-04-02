@@ -209,11 +209,28 @@
 			target_mob.visible_message("<span class='notice'>\The [src] misses [target_mob] narrowly!</span>")
 		return 0
 
+	//sometimes bullet_act() will want the projectile to continue flying
+	if (result == PROJECTILE_CONTINUE)
+		return 0
+
+	if (result == PROJECTILE_FORCE_BLOCK)
+		if(!no_attack_log)
+			if(istype(firer, /mob))
+				var/attacker_message = "shot with \a [src.type] (blocked)"
+				var/victim_message = "shot with \a [src.type] (blocked)"
+				var/admin_message = "shot (\a [src.type], blocked)"
+				admin_attack_log(firer, target_mob, attacker_message, victim_message, admin_message)
+			else
+				admin_victim_log(target_mob, "was shot by an <b>UNKNOWN SUBJECT (No longer exists)</b> using \a [src] (blocked)")
+		return 1
+
 	//hit messages
 	if(silenced)
 		to_chat(target_mob, "<span class='danger'>You've been hit in the [parse_zone(def_zone)] by \the [src]!</span>")
 	else
 		target_mob.visible_message("<span class='danger'>\The [target_mob] is hit by \the [src] in the [parse_zone(def_zone)]!</span>")//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
+		playsound(target_mob.loc, 'sound/weapons/hitmarker.ogg', 75, 1)
+		new /obj/effect/effect/hitmarker(target_mob.loc)
 
 	//admin logs
 	if(!no_attack_log)
@@ -226,10 +243,6 @@
 			admin_attack_log(firer, target_mob, attacker_message, victim_message, admin_message)
 		else
 			admin_victim_log(target_mob, "was shot by an <b>UNKNOWN SUBJECT (No longer exists)</b> using \a [src]")
-
-	//sometimes bullet_act() will want the projectile to continue flying
-	if (result == PROJECTILE_CONTINUE)
-		return 0
 
 	return 1
 

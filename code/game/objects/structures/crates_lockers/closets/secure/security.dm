@@ -140,6 +140,7 @@
 		/obj/item/weapon/storage/box/flashbangs,
 		/obj/item/weapon/storage/box/teargas,
 		/obj/item/weapon/storage/belt/security,
+		/obj/item/weapon/storage/box/chalk,
 		/obj/item/weapon/reagent_containers/spray/pepper,
 		/obj/item/weapon/melee/baton/loaded,
 		/obj/item/weapon/gun/energy/classictaser,
@@ -209,6 +210,7 @@
 	icon_opened = "cabinetdetective_open"
 	icon_broken = "cabinetdetective_sparks"
 	icon_off = "cabinetdetective_broken"
+	dremovable = 0
 
 /obj/structure/closet/secure_closet/detective/WillContain()
 	return list(
@@ -225,6 +227,7 @@
 		/obj/item/clothing/head/det/grey,
 		/obj/item/clothing/shoes/laceup,
 		/obj/item/weapon/storage/box/evidence,
+		/obj/item/weapon/storage/box/chalk,
 		/obj/item/device/radio/headset/headset_sec,
 		/obj/item/clothing/suit/armor/vest/detective,
 		/obj/item/taperoll/police,
@@ -278,6 +281,7 @@
 	icon_opened = "wall-lockeropen"
 	icon_broken = "wall-lockerbroken"
 	icon_off = "wall-lockeroff"
+	dremovable = 0
 
 	//too small to put a man in
 	large = 0

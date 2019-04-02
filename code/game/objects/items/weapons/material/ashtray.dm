@@ -6,6 +6,9 @@
 	force_divisor = 0.1
 	thrown_force_divisor = 0.1
 	randpixel = 5
+	mod_weight = 0.3
+	mod_reach = 0.3
+	mod_handy = 0.5
 	var/max_butts = 10
 
 /obj/item/weapon/material/ashtray/examine(mob/user)

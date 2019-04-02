@@ -7,6 +7,8 @@
 	can_hold_knife = 1
 	species_restricted = null
 
+	armor = list(melee = 35, bullet = 30, laser = 30,energy = 35, bomb = 25, bio = 35, rad = 25)
+
 /obj/item/clothing/shoes/galoshes/Initialize()
 	. = ..()
 	slowdown_per_slot[slot_shoes] = 1
@@ -16,7 +18,7 @@
 	desc = "Tall synthleather boots with an artificial shine."
 	icon_state = "jackboots"
 	force = 3
-	armor = list(melee = 30, bullet = 10, laser = 10, energy = 15, bomb = 20, bio = 0, rad = 0)
+	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 20, bio = 10, rad = 0)
 	siemens_coefficient = 0.7
 	can_hold_knife = 1
 	cold_protection = FEET
@@ -32,7 +34,7 @@
 	name = "workboots"
 	desc = "A pair of steel-toed work boots designed for use in industrial settings. Safety first."
 	icon_state = "workboots"
-	armor = list(melee = 40, bullet = 0, laser = 0, energy = 15, bomb = 20, bio = 0, rad = 20)
+	armor = list(melee = 45, bullet = 30, laser = 30, energy = 25, bomb = 20, bio = 0, rad = 20)
 	siemens_coefficient = 0.7
 	can_hold_knife = 1
 

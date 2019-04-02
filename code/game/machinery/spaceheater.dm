@@ -82,6 +82,8 @@
 			user.unset_machine()
 	else
 		..()
+		if(I.mod_weight >= 0.75)
+			shake_animation(stime = 4)
 	return
 
 /obj/machinery/space_heater/attack_hand(mob/user as mob)

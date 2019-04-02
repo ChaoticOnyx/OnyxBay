@@ -14,6 +14,7 @@
 
 	spells = list(/spell/targeted/projectile/magic_missile = 			1,
 							/spell/targeted/projectile/dumbfire/fireball = 		1,
+							/spell/targeted/disintegrate =						2,
 							/spell/aoe_turf/disable_tech = 						1,
 							/spell/aoe_turf/smoke = 							1,
 							/spell/targeted/genetic/blind = 					1,

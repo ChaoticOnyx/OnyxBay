@@ -82,14 +82,16 @@
 
 /obj/item/organ/external/head/removed()
 	if(owner)
-		SetName("[owner.real_name]'s head")
-		owner.drop_from_inventory(owner.glasses)
-		owner.drop_from_inventory(owner.head)
-		owner.drop_from_inventory(owner.l_ear)
-		owner.drop_from_inventory(owner.r_ear)
-		owner.drop_from_inventory(owner.wear_mask)
+		var/mob/living/carbon/human/victim = owner
+		SetName("[victim.real_name]'s head")
+		victim.drop_from_inventory(owner.glasses)
+		victim.drop_from_inventory(owner.head)
+		victim.drop_from_inventory(owner.l_ear)
+		victim.drop_from_inventory(owner.r_ear)
+		victim.drop_from_inventory(owner.wear_mask)
+		update_icon_drop(victim)
 		spawn(1)
-			owner.update_hair()
+			victim.update_hair()
 	..()
 
 /obj/item/organ/external/head/take_damage(brute, burn, damage_flags, used_weapon = null)
@@ -114,6 +116,9 @@
 			var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[owner.species.vision_organ ? owner.species.vision_organ : BP_EYES]
 			if(eyes)
 				eyes_icon.Blend(rgb(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3]), ICON_ADD)
+			else if(owner.should_have_organ(BP_EYES))
+				eyes_icon = new/icon('icons/mob/human_face.dmi', "eyeless")
+				eyes_icon.Blend(rgb(128,0,0), ICON_ADD)
 			else
 				eyes_icon.Blend(rgb(128,0,0), ICON_ADD)
 			mob_icon.Blend(eyes_icon, ICON_OVERLAY)
@@ -150,3 +155,69 @@
 				hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), hair_style.blend)
 			res.overlays |= hair_s
 	return res
+
+/obj/item/organ/external/head/update_icon_drop(var/mob/living/carbon/human/powner)
+	overlays.Cut()
+	if(powner.f_style)
+		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[powner.f_style]
+		if(facial_hair_style && facial_hair_style.species_allowed && (species.name in facial_hair_style.species_allowed))
+			var/icon/facial_s = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
+			if(facial_hair_style.do_colouration)
+				facial_s.Blend(rgb(powner.r_facial, powner.g_facial, powner.b_facial), facial_hair_style.blend)
+			src.overlays += facial_s
+
+	if(powner.h_style)
+		var/style = powner.h_style
+		var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_list[style]
+		if(hair_style && (species.name in hair_style.species_allowed))
+			var/icon/hair_s = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
+			if(hair_style.do_colouration && islist(h_col) && h_col.len >= 3)
+				hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), hair_style.blend)
+			src.overlays += hair_s
+	return
+
+/obj/item/weapon/skull
+	name = "skull"
+	desc = "Supposed to be inside someone's head."
+	icon = 'icons/obj/items.dmi'
+	icon_state = "skull_human"
+	item_state = "skullmask"
+	force = 5.0
+	throwforce = 7.0
+	mod_reach = 0.3
+	mod_weight = 0.5
+	mod_handy = 0.5
+	w_class = ITEM_SIZE_NORMAL
+	attack_verb = list("bludgeoned", "skulled", "buttheaded", "spooked")
+	var/iscut = 0
+
+/obj/item/weapon/skull/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(W.sharp && !iscut)
+		user.visible_message("<span class='warning'><b>[user]</b> cuts [src] open with [W]!</span>")
+		icon_state = "skull_human_cut"
+		iscut = 1
+		name = "facial bones"
+		desc = "Used to be someone's face."
+		return
+	if((istype(W,/obj/item/weapon/handcuffs/cable)) && iscut)
+		user.visible_message("<span class='notice'>[user] attaches [W] to [src].</span>")
+		new/obj/item/clothing/mask/skullmask(user.loc)
+		qdel(src)
+		qdel(W)
+		return
+	if(istype(W, /obj/item/stack/material) && iscut)
+		var/obj/item/stack/M = W
+		if(M.get_material_name() == "steel")
+			if(do_after(usr, 10, src))
+				new/obj/item/weapon/reagent_containers/food/drinks/skullgoblet(user.loc)
+				user.visible_message("<span class='notice'>[user] makes a goblet out of [src].</span>")
+				M.use(1)
+				qdel(src)
+		else if(M.get_material_name() == "gold")
+			if(do_after(usr, 10, src))
+				new/obj/item/weapon/reagent_containers/food/drinks/skullgoblet/gold(user.loc)
+				user.visible_message("<span class='notice'>[user] makes a <b>golden</b> goblet out of [src].</span>")
+				M.use(1)
+				qdel(src)
+		return
+	..()

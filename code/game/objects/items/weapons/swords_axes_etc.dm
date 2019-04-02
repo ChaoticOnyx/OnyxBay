@@ -15,6 +15,9 @@
 	item_state = "classic_baton"
 	slot_flags = SLOT_BELT
 	force = 10
+	mod_weight = 1.25
+	mod_reach = 1.25
+	mod_handy = 1.5
 
 /obj/item/weapon/melee/classic_baton/attack(mob/M as mob, mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))
@@ -37,7 +40,10 @@
 	item_state = "telebaton_0"
 	slot_flags = SLOT_BELT
 	w_class = ITEM_SIZE_SMALL
-	force = 3
+	force = 5.0
+	mod_weight = 1.0
+	mod_reach = 0.5
+	mod_handy = 1.0
 	var/on = 0
 
 
@@ -51,6 +57,9 @@
 		item_state = "telebaton_1"
 		w_class = ITEM_SIZE_NORMAL
 		force = 15//quite robust
+		mod_weight = 1.0
+		mod_reach = 1.0
+		mod_handy = 1.25
 		attack_verb = list("smacked", "struck", "slapped")
 	else
 		user.visible_message("<span class='notice'>\The [user] collapses their telescopic baton.</span>",\
@@ -60,6 +69,9 @@
 		item_state = "telebaton_0"
 		w_class = ITEM_SIZE_SMALL
 		force = 3//not so robust now
+		mod_weight = 0.5
+		mod_reach = 0.5
+		mod_handy = 1.0
 		attack_verb = list("hit", "punched")
 
 	update_held_icon()

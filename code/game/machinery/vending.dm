@@ -208,6 +208,8 @@
 	else if(attempt_to_stock(W, user))
 		return
 	..()
+	if(W.mod_weight >= 0.75)
+		shake_animation(stime = 4)
 	return
 
 /obj/machinery/vending/MouseDrop_T(var/obj/item/I as obj, var/mob/user as mob)

@@ -111,6 +111,8 @@
 		user.visible_message("<span class='warning'>\The [user] cuts down the [src]!</span>")
 		death()
 		return 1
+	if(W.mod_weight >= 0.75)
+		shake_animation(stime = 4)
 	return ..()
 
 /obj/structure/flora/pottedplant/bullet_act(var/obj/item/projectile/Proj)

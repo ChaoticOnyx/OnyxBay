@@ -67,9 +67,9 @@
 	singular_name = "steel floor tile"
 	desc = "Those could work as a pretty decent throwing weapon." //why?
 	icon_state = "tile"
-	force = 6
+	force = 6.0
 	matter = list(DEFAULT_WALL_MATERIAL = 937.5)
-	throwforce = 15
+	throwforce = 10.5
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
 /obj/item/stack/tile/floor_white

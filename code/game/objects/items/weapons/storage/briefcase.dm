@@ -8,5 +8,8 @@
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
+	mod_weight = 1.5
+	mod_reach = 0.75
+	mod_handy = 1.0
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE

@@ -417,3 +417,18 @@
 	filling_states = "50;70;90;100"
 	base_name = "tall cup"
 	base_icon = "coffeecup_tall"
+
+/obj/item/weapon/reagent_containers/food/drinks/skullgoblet
+	name = "skull goblet"
+	desc = "Great for dancing on the barrows of your enemies."
+	icon_state = "skullcup"
+	item_state = "skullmask"
+	w_class = ITEM_SIZE_NORMAL
+	volume = 50
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
+
+/obj/item/weapon/reagent_containers/food/drinks/skullgoblet/gold
+	name = "golden skull goblet"
+	desc = "<b>Perfect</b> for dancing on the barrows of your enemies."
+	icon_state = "skullcup_gold"

@@ -6,11 +6,14 @@
 	item_state = "fire_extinguisher"
 	hitsound = 'sound/weapons/smash.ogg'
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	force = 15.0
 	throwforce = 10
+	mod_handy = 0.65
+	mod_weight = 1.5
+	mod_reach = 1.0
 	w_class = ITEM_SIZE_NORMAL
 	throw_speed = 2
 	throw_range = 10
-	force = 10.0
 	matter = list(DEFAULT_WALL_MATERIAL = 90)
 	attack_verb = list("slammed", "whacked", "bashed", "thunked", "battered", "bludgeoned", "thrashed")
 
@@ -27,9 +30,12 @@
 	icon_state = "miniFE0"
 	item_state = "miniFE"
 	hitsound = null	//it is much lighter, after all.
+	force = 6.5
 	throwforce = 2
+	mod_handy = 0.7
+	mod_weight = 0.65
+	mod_reach = 0.6
 	w_class = ITEM_SIZE_SMALL
-	force = 3.0
 	spray_amount = 80
 	max_water = 1000
 	sprite_name = "miniFE"
@@ -61,10 +67,10 @@
 
 		src.last_use = world.time
 		reagents.splash(M, min(reagents.total_volume, spray_amount))
-		
+
 		user.visible_message("<span class='notice'>\The [user] sprays \the [M] with \the [src].</span>")
 		playsound(src.loc, 'sound/effects/extinguish.ogg', 75, 1, -3)
-		
+
 		return 1 // No afterattack
 	return ..()
 

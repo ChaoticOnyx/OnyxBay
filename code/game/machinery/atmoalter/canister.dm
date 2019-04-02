@@ -16,7 +16,6 @@
 	start_pressure = 45 * ONE_ATMOSPHERE
 	var/temperature_resistance = 1000 + T0C
 	volume = 1000
-	use_power = 0
 	interact_offline = 1 // Allows this to be used when not in powered area.
 	var/release_log = ""
 	var/update_flag = 0
@@ -256,6 +255,9 @@ update_flag
 		visible_message("<span class='warning'>\The [user] hits \the [src] with \a [W]!</span>")
 		src.health -= W.force
 		healthcheck()
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
+		shake_animation(stime = 4)
 
 	if(istype(user, /mob/living/silicon/robot) && istype(W, /obj/item/weapon/tank/jetpack))
 		var/datum/gas_mixture/thejetpack = W:air_contents

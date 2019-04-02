@@ -42,19 +42,34 @@ var/global/list/sparring_attack_cache = list()
 /datum/unarmed_attack/proc/get_unarmed_damage()
 	return damage
 
-/datum/unarmed_attack/proc/apply_effects(var/mob/living/carbon/human/user,var/mob/living/carbon/human/target,var/armour,var/attack_damage,var/zone)
+/datum/unarmed_attack/proc/apply_effects(var/mob/living/carbon/human/user,var/mob/living/carbon/human/target,var/armor,var/attack_damage,var/zone,var/specmod = 1)
 
 	if(target.stat == DEAD)
 		return
 
-	var/stun_chance = rand(0, 100)
+	var/effective_armor = target.getarmor(zone, "melee")
+	attack_damage *= specmod
+	target.poise -= round(attack_damage*0.5 + attack_damage*0.5*((100-effective_armor)/100),0.1)
 
-	if(attack_damage >= 5 && armour < 100 && !(target == user) && stun_chance <= attack_damage * 5) // 25% standard chance
+	//target.visible_message("Debug \[UNARMED\]: [target] lost [round(attack_damage*0.5 + attack_damage*0.5*((100-effective_armor)/100),0.1)] poise ([target.poise]/[target.poise_pool])") // Debug Message
+
+	if(attack_damage >= 5 && armor < 100 && !(target == user) && target.poise <= attack_damage*3)
 		switch(zone) // strong punches can have effects depending on where they hit
 			if(BP_HEAD, BP_EYES, BP_MOUTH)
 				// Induce blurriness
 				target.visible_message("<span class='danger'>[target] looks momentarily disoriented.</span>", "<span class='danger'>You see stars.</span>")
-				target.apply_effect(attack_damage*2, EYE_BLUR, armour)
+				target.apply_effect(attack_damage*2, EYE_BLUR, armor)
+				if(specmod == 2 && target.poise <= attack_damage) // INCREDIBILIS!
+					var/turf/T = get_step(get_turf(target), get_dir(get_turf(user), get_turf(target)))
+					target.set_dir(GLOB.reverse_dir[target.dir])
+					user.break_all_grabs(target,1)
+					if(!T.density)
+						step(target, get_dir(get_turf(user), get_turf(target)))
+						target.visible_message("<span class='danger'>[target] was sent flying backward!</span>")
+						target.apply_effect(attack_damage * 0.4, WEAKEN, armor)
+					else
+						target.visible_message("<span class='danger'>[target] was slammed into \the [T]!</span>")
+						target.apply_effect(attack_damage * 0.8, WEAKEN, armor)
 			if(BP_L_ARM, BP_L_HAND)
 				if (target.l_hand)
 					// Disarm left hand
@@ -72,22 +87,25 @@ var/global/list/sparring_attack_cache = list()
 					if(!T.density)
 						step(target, get_dir(get_turf(user), get_turf(target)))
 						target.visible_message("<span class='danger'>[pick("[target] was sent flying backward!", "[target] staggers back from the impact!")]</span>")
+						target.apply_effect(attack_damage * 0.4, WEAKEN, armor)
+					else
+						target.visible_message("<span class='danger'>[target] was sent flying backward, bumping into \the [T]!</span>")
+						target.apply_effect(attack_damage * 0.8, WEAKEN, armor)
 					if(prob(50))
 						target.set_dir(GLOB.reverse_dir[target.dir])
-					target.apply_effect(attack_damage * 0.4, WEAKEN, armour)
 			if(BP_GROIN)
 				target.visible_message("<span class='warning'>[target] looks like \he is in pain!</span>", "<span class='warning'>[(target.gender=="female") ? "Oh god that hurt!" : "Oh no, not your[pick("testicles", "crown jewels", "clockweights", "family jewels", "marbles", "bean bags", "teabags", "sweetmeats", "goolies")]!"]</span>")
-				target.apply_effects(stutter = attack_damage * 2, agony = attack_damage* 3, blocked = armour)
+				target.apply_effects(stutter = attack_damage * 2, agony = attack_damage* 3, blocked = armor)
 			if(BP_L_LEG, BP_L_FOOT, BP_R_LEG, BP_R_FOOT)
 				if(!target.lying)
 					target.visible_message("<span class='warning'>[target] gives way slightly.</span>")
-					target.apply_effect(attack_damage*3, PAIN, armour)
-	else if(attack_damage >= 5 && !(target == user) && (stun_chance + attack_damage * 5 >= 100) && armour < 100) // Chance to get the usual throwdown as well (25% standard chance)
+					target.apply_effect(attack_damage*2, PAIN, armor)
+	else if(attack_damage >= 5 && !(target == user) && (target.poise - attack_damage <= 1) && armor < 100)
 		if(!target.lying)
 			target.visible_message("<span class='danger'>[target] [pick("slumps", "falls", "drops")] down to the ground!</span>")
 		else
 			target.visible_message("<span class='danger'>[target] has been weakened!</span>")
-		target.apply_effect(3, WEAKEN, armour)
+		target.apply_effect(3, WEAKEN, armor)
 
 /datum/unarmed_attack/proc/show_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone, var/attack_damage)
 	var/obj/item/organ/external/affecting = target.get_organ(zone)

@@ -8,7 +8,7 @@
 		)
 	var/flipped = 0
 	siemens_coefficient = 0.9
-	body_parts_covered = 0
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/head/soft/New()
 	..()
@@ -83,12 +83,13 @@
 
 /obj/item/clothing/head/soft/sec
 	name = "security cap"
-	desc = "It's a field cap in tasteful red color."
+	desc = "It's a field cap in tasteful red color. This one seems to be extra durable."
 	icon_state = "secsoft"
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/head/soft/sec/corp
 	name = "corporate security cap"
-	desc = "It's field cap in corporate colors."
+	desc = "It's field cap in corporate colors. This one seems to be extra durable."
 	icon_state = "corpsoft"
 
 /obj/item/clothing/head/soft/mbill
@@ -103,5 +104,5 @@
 
 /obj/item/clothing/head/soft/sec/corp/guard
 	name = "\improper NanoTrasen security cap"
-	desc = "It's field cap in NanoTrasen colors."
+	desc = "It's field cap in NanoTrasen colors. This one seems to be extra durable."
 	icon_state = "ntwhitesoft"

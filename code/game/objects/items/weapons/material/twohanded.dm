@@ -2,7 +2,8 @@
  * Contains:
  * 		Twohanded
  *		Fireaxe
- *		Double-Bladed Energy Swords
+ *		Spears
+ *		Baseball bats
  */
 
 /*##################################################################
@@ -26,15 +27,27 @@
 	var/base_icon
 	var/base_name
 	var/unwielded_force_divisor = 0.25
+	var/mod_handy_w
+	var/mod_weight_w
+	var/mod_reach_w
+	var/mod_handy_u
+	var/mod_weight_u
+	var/mod_reach_u
 
 /obj/item/weapon/material/twohanded/update_twohanding()
 	var/mob/living/M = loc
 	if(istype(M) && M.can_wield_item(src) && is_held_twohanded(M))
 		wielded = 1
 		force = force_wielded
+		mod_handy = mod_handy_w
+		mod_weight = mod_weight_w
+		mod_reach = mod_reach_w
 	else
 		wielded = 0
 		force = force_unwielded
+		mod_handy = mod_handy_u
+		mod_weight = mod_weight_u
+		mod_reach = mod_reach_u
 	update_icon()
 	..()
 
@@ -44,8 +57,8 @@
 		force_wielded = material.get_edge_damage()
 	else
 		force_wielded = material.get_blunt_damage()
-	force_wielded = round(force_wielded*force_divisor)
-	force_unwielded = round(force_wielded*unwielded_force_divisor)
+	force_wielded = force_const + round(force_wielded*force_divisor, 0.1)
+	force_unwielded = force_const + round(force_wielded*unwielded_force_divisor, 0.1)
 	force = force_unwielded
 	throwforce = round(force*thrown_force_divisor)
 //	log_debug("[src] has unwielded force [force_unwielded], wielded force [force_wielded] and throwforce [throwforce] when made from default material [material.name]")
@@ -54,14 +67,6 @@
 /obj/item/weapon/material/twohanded/New()
 	..()
 	update_icon()
-
-//Allow a small chance of parrying melee attacks when wielded - maybe generalize this to other weapons someday
-/obj/item/weapon/material/twohanded/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
-	if(wielded && default_parry_check(user, attacker, damage_source) && prob(15))
-		user.visible_message("<span class='danger'>\The [user] parries [attack_text] with \the [src]!</span>")
-		playsound(user.loc, 'sound/weapons/punchmiss.ogg', 50, 1)
-		return 1
-	return 0
 
 /obj/item/weapon/material/twohanded/update_icon()
 	icon_state = "[base_icon][wielded]"
@@ -77,12 +82,18 @@
 	name = "fire axe"
 	desc = "Truly, the weapon of a madman. Who would think to fight fire with an axe?"
 
-	// 15/32 with hardness 60 (steel) and 20/42 with hardness 80 (plasteel)
-	force_divisor = 0.525
-	unwielded_force_divisor = 0.25
+	// 12/30 with hardness 60 (steel) and 16/40 with hardness 80 (plasteel)
+	force_divisor = 0.5
+	unwielded_force_divisor = 0.2
 	sharp = 1
 	edge = 1
 	w_class = ITEM_SIZE_HUGE
+	mod_handy_w = 1.2
+	mod_weight_w = 2.0
+	mod_reach_w = 1.5
+	mod_handy_u = 0.4
+	mod_weight_u = 1.5
+	mod_reach_u = 1.0
 	slot_flags = SLOT_BACK
 	force_wielded = 30
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
@@ -108,16 +119,23 @@
 	name = "spear"
 	desc = "A haphazardly-constructed yet still deadly weapon of ancient design."
 	force = 10
+	force_const = 5.5
+	sharp = 1
+	edge = 1
 	w_class = ITEM_SIZE_HUGE
+	mod_handy_w = 1.25
+	mod_weight_w = 1.25
+	mod_reach_w = 2.0
+	mod_handy_u = 0.75
+	mod_weight_u = 1.0
+	mod_reach_u = 1.5
 	slot_flags = SLOT_BACK
 
-	// 12/19 with hardness 60 (steel) or 10/16 with hardness 50 (glass)
-	force_divisor = 0.33
-	unwielded_force_divisor = 0.20
-	thrown_force_divisor = 1.5 // 20 when thrown with weight 15 (glass)
+	// 6/12 with hardness 60 (steel) or 5/10 with hardness 50 (glass)
+	force_divisor = 0.2
+	unwielded_force_divisor = 0.1
+	thrown_force_divisor = 1.2 // 120% of force
 	throw_speed = 3
-	edge = 0
-	sharp = 1
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb = list("attacked", "poked", "jabbed", "torn", "gored")
 	default_material = "glass"
@@ -126,3 +144,45 @@
 	if(!consumed)
 		new /obj/item/weapon/material/wirerod(get_turf(src)) //give back the wired rod
 	..()
+
+/obj/item/weapon/material/twohanded/baseballbat
+	name = "bat"
+	desc = "HOME RUN!"
+	icon_state = "metalbat0"
+	base_icon = "metalbat"
+	item_state = "metalbat"
+	w_class = ITEM_SIZE_LARGE
+	mod_weight = 1.5
+	mod_reach = 1.0
+	mod_handy = 1.0
+
+	mod_handy_w = 1.0
+	mod_weight_w = 1.5
+	mod_reach_w = 1.0
+	mod_handy_u = 0.8
+	mod_weight_u = 1.35
+	mod_reach_u = 1.0
+
+	throwforce = 7
+	attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck", "battered", "bonked")
+	hitsound = 'sound/weapons/genhit3.ogg'
+	default_material = "wood"
+	force_divisor = 1.0           // 20 when wielded with weight 20 (steel)
+	unwielded_force_divisor = 0.7 // 15 when unwielded based on above.
+	slot_flags = SLOT_BACK
+
+//Predefined materials go here.
+/obj/item/weapon/material/twohanded/baseballbat/metal/New(var/newloc)
+	..(newloc,"steel")
+
+/obj/item/weapon/material/twohanded/baseballbat/uranium/New(var/newloc)
+	..(newloc,"uranium")
+
+/obj/item/weapon/material/twohanded/baseballbat/gold/New(var/newloc)
+	..(newloc,"gold")
+
+/obj/item/weapon/material/twohanded/baseballbat/platinum/New(var/newloc)
+	..(newloc,"platinum")
+
+/obj/item/weapon/material/twohanded/baseballbat/diamond/New(var/newloc)
+	..(newloc,"diamond")

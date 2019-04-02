@@ -3,6 +3,9 @@
 	desc = "A protoype lightweight, fast firing gun. Uses 9mm rounds."
 	icon_state = "saber"	//ugly
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 0.75
+	mod_reach = 0.6
+	mod_handy = 1.0
 	load_method = SPEEDLOADER //yup. until someone sprites a magazine for it.
 	max_shells = 22
 	caliber = "9mm"
@@ -53,6 +56,9 @@
 	item_state = "c20r"
 	w_class = ITEM_SIZE_LARGE
 	force = 10
+	mod_weight = 0.9
+	mod_reach = 0.75
+	mod_handy = 1.0
 	caliber = "10mm"
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 8)
 	slot_flags = SLOT_BELT|SLOT_BACK
@@ -84,7 +90,10 @@
 	icon_state = "arifle"
 	item_state = null
 	w_class = ITEM_SIZE_HUGE
-	force = 10
+	force = 12.5
+	mod_weight = 1.0
+	mod_reach = 0.8
+	mod_handy = 1.0
 	caliber = "a556"
 	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 1, TECH_ILLEGAL = 5)
 	slot_flags = SLOT_BACK
@@ -141,7 +150,10 @@
 	icon_state = "carbine"
 	item_state = "z8carbine"
 	w_class = ITEM_SIZE_HUGE
-	force = 10
+	force = 12.5
+	mod_weight = 1.0
+	mod_reach = 0.8
+	mod_handy = 1.0
 	caliber = "a762"
 	origin_tech = list(TECH_COMBAT = 8, TECH_MATERIAL = 3)
 	ammo_type = /obj/item/ammo_casing/a762
@@ -212,7 +224,10 @@
 	icon_state = "l6closed100"
 	item_state = "l6closedmag"
 	w_class = ITEM_SIZE_HUGE
-	force = 10
+	force = 14.0
+	mod_weight = 1.2
+	mod_reach = 0.8
+	mod_handy = 1.0
 	slot_flags = 0
 	max_shells = 50
 	caliber = "a556"

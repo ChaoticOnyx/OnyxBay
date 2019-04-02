@@ -726,19 +726,21 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			var/obj/item/weapon/W = I
 			if(W.force <15)
 				for (var/mob/O in hearers(5, src.loc))
-					O.show_message("[user.name] hits the [src.name] with the [W.name] with no visible effect." )
+					O.show_message("<span class='warning'>[user.name] hits the [src.name] with the [W.name] with no visible effect.</span>" )
 					playsound(src.loc, 'sound/effects/Glasshit.ogg', 100, 1)
 			else
 				src.hitstaken++
 				if(hitstaken==3)
 					for (var/mob/O in hearers(5, src.loc))
-						O.show_message("[user.name] smashes the [src.name]!" )
+						O.show_message("<span class='warning'>[user.name] smashes the [src.name]!</span>" )
 					stat |= BROKEN
 					playsound(src.loc, 'sound/effects/Glassbr3.ogg', 100, 1)
 				else
 					for (var/mob/O in hearers(5, src.loc))
-						O.show_message("[user.name] forcefully slams the [src.name] with the [I.name]!" )
+						O.show_message("<span class='warning'>[user.name] forcefully slams the [src.name] with the [I.name]!</span>" )
 					playsound(src.loc, 'sound/effects/Glasshit.ogg', 100, 1)
+			user.setClickCooldown(I.update_attack_cooldown())
+			user.do_attack_animation(src)
 		else
 			to_chat(user, "<span class='notice'>This does nothing.</span>")
 	update_icon()

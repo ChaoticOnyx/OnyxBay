@@ -9,6 +9,9 @@
 	icon = 'icons/obj/device.dmi'
 	item_state = "device"
 	icon_state = "combotool"
+	mod_weight = 0.5
+	mod_reach = 0.5
+	mod_handy = 0.5
 
 	var/tool_c = null
 	var/tool_u = null

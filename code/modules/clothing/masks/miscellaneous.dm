@@ -117,6 +117,7 @@
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.9
 	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/mask/horsehead
 	name = "horse head mask"
@@ -127,6 +128,7 @@
 	body_parts_covered = HEAD|FACE|EYES
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.9
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/mask/horsehead/New()
 	..()
@@ -144,6 +146,7 @@
 	body_parts_covered = FACE|EYES
 	action_button_name = "Toggle MUI"
 	origin_tech = list(TECH_DATA = 5, TECH_ENGINEERING = 5)
+	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0, rad = 0) //Well it's made of some sort of plastic.
 	var/active = FALSE
 	var/mob/observer/eye/cameranet/eye
 
@@ -200,6 +203,7 @@
 	flags_inv = HIDEFACE|BLOCKHAIR
 	siemens_coefficient = 0.9
 	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/mask/rubber/trasen
 	name = "Jack Trasen mask"
@@ -275,6 +279,7 @@
 	item_state = "bandblack"
 	item_flags = ITEM_FLAG_FLEXIBLEMATERIAL
 	w_class = ITEM_SIZE_SMALL
+	armor = list(melee = 5, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 15, rad = 0)
 
 /obj/item/clothing/mask/bandana/equipped(var/mob/user, var/slot)
 	switch(slot)
@@ -342,3 +347,12 @@
 	icon_state = "custom_bandwhite"
 	item_state = "custom_bandwhite"
 
+/obj/item/clothing/mask/skullmask
+	name = "skull"
+	desc = "Jeez, is it a real skull?.."
+	flags_inv = HIDEFACE
+	body_parts_covered = FACE
+	icon_state = "skullmask"
+	item_state = "skullmask"
+	w_class = ITEM_SIZE_NORMAL
+	armor = list(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0, rad = 0)

@@ -6,6 +6,10 @@
 	icon_state = "jetpack"
 	gauge_icon = null
 	w_class = ITEM_SIZE_HUGE
+	force = 17.5
+	mod_weight = 1.75
+	mod_reach = 1.0
+	mod_handy = 0.5
 	item_state = "jetpack"
 	distribute_pressure = ONE_ATMOSPHERE*O2STANDARD
 	var/datum/effect/effect/system/trail/ion/ion_trail

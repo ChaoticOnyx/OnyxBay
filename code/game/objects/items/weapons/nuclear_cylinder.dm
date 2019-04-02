@@ -7,6 +7,9 @@ obj/item/weapon/nuclear_cylinder
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 10.0
 	w_class = ITEM_SIZE_HUGE
+	mod_weight = 2.0
+	mod_reach = 0.75
+	mod_handy = 0.5
 	throwforce = 15.0
 	throw_speed = 2
 	throw_range = 4

@@ -307,6 +307,7 @@ datum/preferences
 	character.update_body(0)
 	character.update_underwear(0)
 	character.update_hair(0)
+	character.update_deformities(0)
 	character.update_icons()
 
 	character.char_branch = mil_branches.get_branch(char_branch)

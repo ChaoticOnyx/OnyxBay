@@ -46,6 +46,8 @@
 			update_icon()
 			return
 	..()
+	if(W.mod_weight >= 0.75)
+		shake_animation(stime = 4)
 	return
 
 /obj/machinery/papershredder/verb/empty_contents()

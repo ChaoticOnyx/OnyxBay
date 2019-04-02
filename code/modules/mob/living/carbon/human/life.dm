@@ -30,6 +30,10 @@
 
 #define RADIATION_SPEED_COEFFICIENT 0.025
 
+#define HUMAN_MAX_POISE 75 //100% healthy, non-druged human being with magboots and heavy armor.
+#define HUMAN_DEFAULT_POISE 50 //100% healthy, non-drugged human being.
+#define HUMAN_MIN_POISE 25 //Some balancing stuff here. Even drunk pirates should be able to fight.
+
 /mob/living/carbon/human
 	var/oxygen_alert = 0
 	var/phoron_alert = 0
@@ -38,6 +42,9 @@
 	var/pressure_alert = 0
 	var/temperature_alert = 0
 	var/heartbeat = 0
+	var/poise_pool = HUMAN_DEFAULT_POISE
+	var/poise = HUMAN_DEFAULT_POISE
+	var/blocking_hand = 0 //0 for main hand, 1 for offhand
 
 /mob/living/carbon/human/Life()
 	set invisibility = 0
@@ -77,6 +84,8 @@
 		handle_pain()
 
 		handle_medical_side_effects()
+
+		handle_poise()
 
 		if(!client && !mind)
 			species.handle_npc(src)
@@ -943,6 +952,26 @@
 	if(shock_stage >= 150)
 		Weaken(20)
 
+// Stance is being used in the Onyx fighting system. I wanted to call it stamina, but screw it.
+/mob/living/carbon/human/proc/handle_poise()
+	if(status_flags & GODMODE)	return 0 // I'm sorry, Kratos. No divine homicide up here.
+	if(poise >= poise_pool) return 0 // Saving every single msecond. Fuck our mob controller *sigh
+	var/pregen = poise_pool/10
+
+	for(var/obj/item/grab/G in list(get_active_hand(), get_inactive_hand()))
+		pregen -= 1.25
+
+	if(poise+pregen > poise_pool)
+		poise = poise_pool
+		return
+	else if(poise < 0)
+		poise = 0
+		return
+	if(poise < poise_pool)
+		poise += pregen
+
+		//visible_message("Debug: [src]'s stance is now: [poise]/[poise_pool]") //Debug message
+
 /*
 	Called by life(), instead of having the individual hud items update icons each tick and check for status changes
 	we only set those statuses and icons upon changes.  Then those HUD items will simply add those pre-made images.
@@ -1110,7 +1139,7 @@
 		return
 
 	for(var/obj/item/organ/external/E in organs)
-		if(!(E.body_part & protected_limbs) && prob(20))
+		if(!(E.body_part & protected_limbs) && prob(40))
 			E.take_damage(burn = round(species_heat_mod * log(10, (burn_temperature + 10)), 0.1), used_weapon = fire)
 
 /mob/living/carbon/human/rejuvenate()
@@ -1126,7 +1155,7 @@
 
 /mob/living/carbon/human/handle_vision()
 	if(client)
-		client.screen.Remove(GLOB.global_hud.nvg, GLOB.global_hud.thermal, GLOB.global_hud.meson, GLOB.global_hud.science, GLOB.global_hud.material)
+		client.screen.Remove(GLOB.global_hud.nvg, GLOB.global_hud.thermal, GLOB.global_hud.meson, GLOB.global_hud.science, GLOB.global_hud.material, GLOB.global_hud.gasmask, GLOB.global_hud.darktint)
 	if(machine)
 		var/viewflags = machine.check_eye(src)
 		machine.apply_visual(src)

@@ -59,6 +59,8 @@
 		updateUsrDialog()
 	else
 		..()
+		if(P.mod_weight >= 0.75)
+			shake_animation(stime = 4)
 	return
 
 

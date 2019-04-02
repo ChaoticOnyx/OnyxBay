@@ -478,3 +478,15 @@ steam.start() -- spawns the effect
 			to_chat(M, "<span class='warning'>The solution violently explodes.</span>")
 
 	explosion(location, explosion_radius_devst, explosion_radius_heavy, explosion_radius_light, 0)
+
+/obj/effect/effect/hitmarker
+	name = "hitmarker"
+	icon_state = "hitmarker"
+	density = 0
+	anchored = 1
+	plane = ABOVE_HUMAN_PLANE
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/effect/effect/hitmarker/Initialize()
+	. = ..()
+	QDEL_IN(src, 0.1 SECONDS)

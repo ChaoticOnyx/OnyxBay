@@ -3,11 +3,14 @@
 	desc = "Apparently a staff used by the wizard."
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "staff"
-	force = 3.0
+	force = 7.5
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 1.25
+	mod_reach = 1.5
+	mod_handy = 1.25
 	attack_verb = list("bludgeoned", "whacked", "disciplined")
 
 /obj/item/weapon/staff/broom

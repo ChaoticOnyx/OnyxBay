@@ -13,6 +13,8 @@
 	storage_types = CLOSET_STORAGE_ITEMS
 	setup = 0
 
+	dremovable = 0
+
 //spawns endless (3 sets) amounts of breathmask, emergency oxy tank and crowbar
 
 /obj/structure/closet/walllocker/emerglocker

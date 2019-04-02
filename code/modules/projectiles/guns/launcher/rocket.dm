@@ -6,7 +6,10 @@
 	w_class = ITEM_SIZE_HUGE
 	throw_speed = 2
 	throw_range = 10
-	force = 5.0
+	force = 17.5
+	mod_weight = 1.6
+	mod_reach = 1.25
+	mod_handy = 1.0
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
 	slot_flags = 0
 	origin_tech = list(TECH_COMBAT = 8, TECH_MATERIAL = 5)

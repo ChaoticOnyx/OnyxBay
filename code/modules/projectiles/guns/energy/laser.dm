@@ -5,7 +5,10 @@
 	item_state = "laser"
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
-	force = 10
+	force = 12.5
+	mod_weight = 1.0
+	mod_reach = 0.8
+	mod_handy = 1.0
 	one_hand_penalty = 2
 	accuracy = 2
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
@@ -74,13 +77,20 @@ obj/item/weapon/gun/energy/retro
 	w_class = ITEM_SIZE_NORMAL
 	projectile_type = /obj/item/projectile/beam
 	fire_delay = 15 //old technology, and a pistol
+	force = 9.0
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
 
 /obj/item/weapon/gun/energy/captain
 	name = "antique laser gun"
 	icon_state = "caplaser"
 	item_state = "caplaser"
 	desc = "A rare weapon, handcrafted by a now defunct specialty manufacturer on Luna for a small fortune. It's certainly aged well."
-	force = 5
+	force = 10.0
+	mod_weight = 0.8
+	mod_reach = 0.5
+	mod_handy = 1.1
 	slot_flags = SLOT_BELT //too unusually shaped to fit in a holster
 	w_class = ITEM_SIZE_NORMAL
 	projectile_type = /obj/item/projectile/beam
@@ -104,6 +114,10 @@ obj/item/weapon/gun/energy/retro
 	accuracy = 2
 	fire_delay = 20
 	wielded_item_state = "gun_wielded"
+	force = 14.0
+	mod_weight = 1.25
+	mod_reach = 1.0
+	mod_handy = 1.0
 
 /obj/item/weapon/gun/energy/lasercannon/mounted
 	name = "mounted laser cannon"
@@ -127,6 +141,10 @@ obj/item/weapon/gun/energy/retro
 	max_shots = 10
 	wielded_item_state = "gun_wielded"
 	combustion = 0
+	force = 12.5
+	mod_weight = 1.0
+	mod_reach = 0.8
+	mod_handy = 1.0
 
 /obj/item/weapon/gun/energy/xray/pistol
 	name = "x-ray laser gun"
@@ -138,6 +156,10 @@ obj/item/weapon/gun/energy/retro
 	one_hand_penalty = 1
 	w_class = ITEM_SIZE_NORMAL
 	fire_delay = 10
+	force = 8.5
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
 
 /obj/item/weapon/gun/energy/sniperrifle
 	name = "marksman energy rifle"
@@ -151,7 +173,10 @@ obj/item/weapon/gun/energy/retro
 	charge_cost = 40
 	max_shots = 4
 	fire_delay = 35
-	force = 10
+	force = 13.5
+	mod_weight = 1.1
+	mod_reach = 1.0
+	mod_handy = 1.0
 	w_class = ITEM_SIZE_HUGE
 	accuracy = -2 //shooting at the hip
 	scoped_accuracy = 0
@@ -176,6 +201,10 @@ obj/item/weapon/gun/energy/retro
 	desc = "Standard issue weapon of the Imperial Guard."
 	origin_tech = list(TECH_COMBAT = 1, TECH_MAGNET = 2)
 	self_recharge = 1
+	force = 5.0
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
 	matter = list(DEFAULT_WALL_MATERIAL = 2000)
 	projectile_type = /obj/item/projectile/beam/lastertag/blue
 	var/required_vest

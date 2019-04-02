@@ -8,6 +8,7 @@
 	icon_locked ="base"
 	icon_closed ="base"
 	icon_opened = "base"
+	dremovable = 0
 
 /obj/structure/closet/secure_closet/guncabinet/Initialize()
 	. = ..()

@@ -6,8 +6,12 @@
 	icon_state = "handcuff"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
+	force = 5.0
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.5
+	mod_reach = 0.5
+	mod_handy = 0.5
 	throw_speed = 2
 	throw_range = 5
 	origin_tech = list(TECH_MATERIAL = 1)
@@ -175,7 +179,7 @@ var/last_chew = 0
 /obj/item/weapon/handcuffs/cyborg/afterattack(atom/A, mob/user as mob, proximity)
 	if (istype(A,/obj/item/weapon/handcuffs))
 		qdel(A)
-		
+
 /obj/item/weapon/handcuffs/cable/tape
 	name = "tape restraints"
 	desc = "DIY!"

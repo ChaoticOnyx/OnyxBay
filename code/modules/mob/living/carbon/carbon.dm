@@ -295,6 +295,7 @@
 			var/mob/M = item
 
 			//limit throw range by relative mob size
+			src.next_move = world.time + 15
 			throw_range = round(M.throw_range * min(src.mob_size/M.mob_size, 1))
 			itemsize = round(M.mob_size/4)
 			var/turf/start_T = get_turf(loc) //Get the start and target tile for the descriptors
@@ -384,7 +385,7 @@
 	stop_pulling()
 	to_chat(src, "<span class='warning'>You slipped on [slipped_on]!</span>")
 	playsound(src.loc, 'sound/misc/slip.ogg', 50, 1, -3)
-	Weaken(Floor(stun_duration/2))
+	Weaken(Floor(stun_duration/3))
 	return 1
 
 /mob/living/carbon/proc/add_chemical_effect(var/effect, var/magnitude = 1)

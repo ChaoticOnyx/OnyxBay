@@ -89,9 +89,16 @@
 				return
 
 			if(G.force_danger())
+				G.assailant.next_move = world.time + 13 //also should prevent user from triggering this repeatedly
+				visible_message("<span class='warning'>[G.assailant] starts putting [G.affecting] on \the [src].</span>")
+				if(!do_after(G.assailant, 13))
+					return 0
+				if(!G) //check that we still have a grab
+					return 0
 				G.affecting.forceMove(src.loc)
-				G.affecting.Weaken(rand(2,5))
-				visible_message("<span class='danger'>[G.assailant] puts [G.affecting] on \the [src].</span>")
+				G.affecting.Weaken(rand(1,4))
+				visible_message("<span class='warning'>[G.assailant] puts [G.affecting] on \the [src].</span>")
+				G.affecting.break_all_grabs(G.assailant)
 				qdel(W)
 			else
 				to_chat(user, "<span class='danger'>You need a better grip to do that!</span>")

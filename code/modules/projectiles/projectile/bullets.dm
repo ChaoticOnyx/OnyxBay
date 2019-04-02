@@ -173,7 +173,7 @@
 /obj/item/projectile/bullet/pistol/accelerated/c44
 	name = "accelerated bullet"
 	damage = 42.5 //.44 magnum + gauss
-	armor_penetration = 55
+	armor_penetration = 45
 
 
 /* shotgun projectiles */

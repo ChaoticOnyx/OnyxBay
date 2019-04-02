@@ -149,6 +149,9 @@
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
+	mod_weight = 1.5
+	mod_reach = 0.75
+	mod_handy = 1.0
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 
@@ -176,7 +179,7 @@
 	icon_opened = "safe0"
 	icon_locking = "safeb"
 	icon_sparking = "safespark"
-	force = 8.0
+	force = 0
 	w_class = ITEM_SIZE_NO_CONTAINER
 	max_w_class = ITEM_SIZE_HUGE
 	max_storage_space = 56
@@ -216,6 +219,9 @@
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_LARGE
+	mod_weight = 1.4
+	mod_reach = 0.7
+	mod_handy = 1.0
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 	var/guntype = "M1911"

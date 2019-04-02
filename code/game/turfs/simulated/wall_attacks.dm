@@ -367,4 +367,6 @@
 				visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W]!</span>")
 		else
 			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W], but it bounces off!</span>")
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
 		return

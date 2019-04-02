@@ -216,6 +216,12 @@
 	item_state = "sunglasses"
 	darkness_view = -1
 	flash_protection = FLASH_PROTECTION_MODERATE
+	var/darktinted = 1
+
+/obj/item/clothing/glasses/sunglasses/Initialize()
+	. = ..()
+	if(darktinted)
+		overlay = GLOB.global_hud.darktint
 
 /obj/item/clothing/glasses/sunglasses/redglasses
 	name = "Crimson glasses"
@@ -302,6 +308,7 @@
 	icon_state = "sunhud"
 	hud = /obj/item/clothing/glasses/hud/security
 	electric = TRUE
+	darktinted = 0
 
 /obj/item/clothing/glasses/sunglasses/sechud/goggles //now just a more "military" set of HUDglasses for the Torch
 	name = "HUD goggles"
@@ -374,8 +381,8 @@
 	desc = "Used for seeing walls, floors, and stuff through anything."
 	icon_state = "meson"
 	origin_tech = list(TECH_MAGNET = 3, TECH_ILLEGAL = 4)
-	
-/obj/item/clothing/glasses/thermal/syndi/chameleon	
+
+/obj/item/clothing/glasses/thermal/syndi/chameleon
 	var/list/global/clothing_choices
 
 /obj/item/clothing/glasses/thermal/syndi/chameleon/New()

@@ -8,6 +8,8 @@ obj/structure/closet/crate
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	setup = 0
 
+	dremovable = 0
+
 	storage_types = CLOSET_STORAGE_ITEMS
 
 	var/points_per_crate = 5

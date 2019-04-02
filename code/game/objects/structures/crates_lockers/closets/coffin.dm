@@ -5,6 +5,7 @@
 	icon_closed = "coffin"
 	icon_opened = "coffin_open"
 	setup = 0
+	dremovable = 0
 
 /obj/structure/closet/coffin/update_icon()
 	if(!opened)
