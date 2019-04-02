@@ -42,6 +42,15 @@ a img {border:none;}
 	font-size:1em;
 	font-weight:bold;
 }
+.date_huge {
+	margin:10px 0;
+	color:red;
+	border-bottom:2px solid #00f;
+	width:80%;
+	padding:2px 0;
+	font-size:1.2em;
+	font-weight:bold;
+}
 .merge {
 	padding: 10px;
 	background-color: #EEEEEE;
