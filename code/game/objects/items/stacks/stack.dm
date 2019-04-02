@@ -12,6 +12,9 @@
 /obj/item/stack
 	gender = PLURAL
 	origin_tech = list(TECH_MATERIAL = 1)
+	mod_weight = 0.75
+	mod_reach = 0.5
+	mod_handy = 0.5
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
 	var/amount = 1
@@ -50,7 +53,9 @@
 			to_chat(user, "It's has painted decals on it.")
 
 /obj/item/stack/attack_self(mob/user as mob)
-	list_recipes(user)
+	if(uses_charge)
+		list_recipes(user)
+	return
 
 /obj/item/stack/proc/list_recipes(mob/user as mob, recipes_sublist)
 	if (!recipes)
@@ -111,46 +116,70 @@
 	var/required = quantity*recipe.req_amount
 	var/produced = min(quantity*recipe.res_amount, recipe.max_res_amount)
 
-	if (!can_use(required))
-		if (produced>1)
-			to_chat(user, "<span class='warning'>You haven't got enough [src] to build \the [produced] [recipe.title]\s!</span>")
-		else
-			to_chat(user, "<span class='warning'>You haven't got enough [src] to build \the [recipe.title]!</span>")
+	if (!isWelder(user.get_active_hand()) && !uses_charge)
+		to_chat(user, "<span class='warning'>You need a welding tool to construct \the [recipe.title]!</span>")
 		return
+	else
+		var/obj/item/weapon/weldingtool/WT
+		if(!uses_charge)
+			WT = user.get_active_hand()
 
-	if (recipe.one_per_turf && (locate(recipe.result_type) in user.loc))
-		to_chat(user, "<span class='warning'>There is another [recipe.title] here!</span>")
-		return
-
-	if (recipe.on_floor && !isfloor(user.loc))
-		to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
-		return
-
-	if (recipe.time)
-		to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
-		if (!do_after(user, recipe.time))
+		if (!can_use(required))
+			if (produced>1)
+				to_chat(user, "<span class='warning'>You haven't got enough [src] to build \the [produced] [recipe.title]\s!</span>")
+			else
+				to_chat(user, "<span class='warning'>You haven't got enough [src] to build \the [recipe.title]!</span>")
 			return
 
-	if (use(required))
-		var/atom/O
-		if(recipe.use_material)
-			O = new recipe.result_type(user.loc, recipe.use_material)
-		else
-			O = new recipe.result_type(user.loc)
-		O.set_dir(user.dir)
-		O.add_fingerprint(user)
+		if (recipe.one_per_turf)
+			if (istype(src.loc,/turf) && locate(recipe.result_type) in src.loc)
+				to_chat(user, "<span class='warning'>There is another [recipe.title] here!</span>")
+				return
+			else if (locate(recipe.result_type) in user.loc)
+				to_chat(user, "<span class='warning'>There is another [recipe.title] here!</span>")
+				return
 
-		if (recipe.goes_in_hands)
-			user.put_in_hands(O)
+		if (recipe.on_floor && !isfloor(user.loc))
+			if (istype(src.loc,/turf) && !isfloor(src.loc))
+				to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
+				return
+			else if (!isfloor(user.loc))
+				to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
+				return
 
-		if (istype(O, /obj/item/stack))
-			var/obj/item/stack/S = O
-			S.amount = produced
-			S.add_to_stacks(user, recipe.goes_in_hands)
+		if((WT && WT.remove_fuel(0, user)) || uses_charge)
+
+			if (recipe.time)
+				to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
+				if (!do_after(user, recipe.time))
+					return
+
+			if (use(required))
+				var/atom/O
+				if(recipe.use_material)
+					if(istype(src.loc,/turf))
+						O = new recipe.result_type(src.loc, recipe.use_material)
+					else
+						O = new recipe.result_type(user.loc, recipe.use_material)
+				else
+					if(istype(src.loc,/turf))
+						O = new recipe.result_type(src.loc)
+					else
+						O = new recipe.result_type(user.loc)
+				O.set_dir(user.dir)
+				O.add_fingerprint(user)
+
+				if (recipe.goes_in_hands && !recipe.on_floor)
+					user.put_in_hands(O)
+
+				if (istype(O, /obj/item/stack))
+					var/obj/item/stack/S = O
+					S.amount = produced
+					S.add_to_stacks(user, recipe.goes_in_hands)
 
 /obj/item/stack/Topic(href, href_list)
 	..()
-	if ((usr.restrained() || usr.stat || usr.get_active_hand() != src))
+	if (usr.restrained() || usr.stat || !in_range(usr, src))
 		return
 
 	if (href_list["sublist"] && !href_list["make"])
@@ -349,6 +378,8 @@
 				S.interact(usr)
 			if (src && usr.machine==src)
 				src.interact(usr)
+	else if(!uses_charge && isWelder(W))
+		list_recipes(user)
 	else
 		return ..()
 
@@ -361,13 +392,13 @@
 	var/req_amount = 1 //amount of material needed for this recipe
 	var/res_amount = 1 //amount of stuff that is produced in one batch (e.g. 4 for floor tiles)
 	var/max_res_amount = 1
-	var/time = 0
+	var/time = 10
 	var/one_per_turf = 0
 	var/on_floor = 0
 	var/use_material
 	var/goes_in_hands = 1
 
-	New(title, result_type, req_amount = 1, res_amount = 1, max_res_amount = 1, time = 0, one_per_turf = 0, on_floor = 0, supplied_material = null, goes_in_hands = 1)
+	New(title, result_type, req_amount = 1, res_amount = 1, max_res_amount = 1, time = 10, one_per_turf = 0, on_floor = 0, supplied_material = null, goes_in_hands = 1)
 		src.title = title
 		src.result_type = result_type
 		src.req_amount = req_amount

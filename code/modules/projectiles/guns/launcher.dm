@@ -4,6 +4,9 @@
 	w_class = ITEM_SIZE_HUGE
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BACK
+	mod_weight = 0.6
+	mod_reach = 0.5
+	mod_handy = 1.0
 
 	var/release_force = 0
 	var/throw_distance = 10

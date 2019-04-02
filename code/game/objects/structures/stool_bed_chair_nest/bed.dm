@@ -136,6 +136,8 @@
 			if(user_buckle_mob(affecting, user))
 				qdel(W)
 	else
+		if(W.mod_weight >= 0.75)
+			shake_animation(stime = 4)
 		..()
 /obj/structure/bed/attack_robot(var/mob/user)
 	if(Adjacent(user)) // Robots can open/close it, but not the AI.

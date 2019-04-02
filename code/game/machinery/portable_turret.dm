@@ -14,7 +14,6 @@
 	anchored = 1
 
 	density = 0
-	use_power = 1				//this turret uses and requires power
 	idle_power_usage = 50		//when inactive, this turret takes up constant 50 Equipment power
 	active_power_usage = 300	//when active, this turret takes up constant 300 Equipment power
 	power_channel = EQUIP	//drains power from the EQUIPMENT channel
@@ -83,7 +82,7 @@
 	maxhealth = round(initial(maxhealth) * 1.5)
 	shot_delay = round(initial(shot_delay) / 2)
 	auto_repair = 1
-	active_power_usage = round(initial(active_power_usage) * 5)
+	change_power_consumption(round(initial(active_power_usage) * 5), POWER_USE_ACTIVE)
 	return 1
 
 /obj/machinery/porta_turret/New()
@@ -464,7 +463,7 @@ var/list/turret_icons
 				popDown() // no valid targets, close the cover
 
 	if(auto_repair && (health < maxhealth))
-		use_power(20000)
+		use_power_oneoff(20000)
 		health = min(health+1, maxhealth) // 1HP for 20kJ
 
 /obj/machinery/porta_turret/proc/assess_and_assign(var/mob/living/L, var/list/targets, var/list/secondarytargets)
@@ -631,7 +630,7 @@ var/list/turret_icons
 
 	// Lethal/emagged turrets use twice the power due to higher energy beams
 	// Emagged turrets again use twice as much power due to higher firing rates
-	use_power(reqpower * (2 * (emagged || lethal)) * (2 * emagged))
+	use_power_oneoff(reqpower * (2 * (emagged || lethal)) * (2 * emagged))
 
 	//Turrets aim for the center of mass by default.
 	//If the target is grabbing someone then the turret smartly aims for extremities

@@ -5,8 +5,11 @@
 	icon_state = "cane"
 	item_state = "stick"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 5.0
+	force = 7.5
 	throwforce = 7.0
+	mod_reach = 1.5
+	mod_weight = 1.0
+	mod_handy = 1.15
 	w_class = ITEM_SIZE_SMALL
 	matter = list(DEFAULT_WALL_MATERIAL = 50)
 	attack_verb = list("bludgeoned", "whacked", "disciplined", "thrashed")

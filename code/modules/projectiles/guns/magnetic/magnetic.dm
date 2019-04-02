@@ -8,6 +8,9 @@
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 4, TECH_ILLEGAL = 2, TECH_MAGNET = 4)
 	w_class = ITEM_SIZE_LARGE
 	combustion = 1
+	mod_weight = 1.0
+	mod_reach = 0.8
+	mod_handy = 1.0
 
 	var/obj/item/weapon/cell/cell                              // Currently installed powercell.
 	var/obj/item/weapon/stock_parts/capacitor/capacitor        // Installed capacitor. Higher rating == faster charge between shots.

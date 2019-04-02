@@ -9,6 +9,8 @@
 	siemens_coefficient = 0.8
 	species_restricted = null
 
+	armor = list(melee = 40, bullet = 40, laser = 40, energy = 35, bomb = 20, bio = 30, rad = 0)
+
 /obj/item/clothing/shoes/mime
 	name = "mime shoes"
 	icon_state = "mime"
@@ -52,6 +54,8 @@
 
 	wizard_garb = 1
 
+	armor = list(melee = 10, bullet = 10, laser = 10,energy = 5, bomb = 10, bio = 3, rad = 0)
+
 /obj/item/clothing/shoes/sandal/marisa
 	desc = "A pair of magic, black shoes."
 	name = "magic shoes"
@@ -65,6 +69,8 @@
 	force = 0
 	var/footstep = 1	//used for squeeks whilst walking
 	species_restricted = null
+
+	armor = list(melee = 35, bullet = 35, laser = 35,energy = 15, bomb = 25, bio = 15, rad = 0)
 
 /obj/item/clothing/shoes/clown_shoes/New()
 	..()
@@ -86,6 +92,8 @@
 	icon_state = "cult"
 	force = 2
 	siemens_coefficient = 0.7
+
+	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 20, bio = 10, rad = 0)
 
 	cold_protection = FEET
 	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE

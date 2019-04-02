@@ -16,6 +16,9 @@
 	desc = "Does card things."
 	icon = 'icons/obj/card.dmi'
 	w_class = ITEM_SIZE_TINY
+	mod_weight = 0.1
+	mod_reach = 0.25
+	mod_handy = 0.25
 	slot_flags = SLOT_EARS
 	var/associated_account_number = 0
 

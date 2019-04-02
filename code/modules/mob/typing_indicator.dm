@@ -49,11 +49,24 @@ I IS TYPIN'!'
 	set name = ".Say"
 	set hidden = 1
 
+
 	create_typing_indicator()
 	var/message = input("","say (text)") as text
 	remove_typing_indicator()
 	if(message)
 		say_verb(message)
+
+	/* Well maybe some day. Later.
+	var/dat = ""
+	dat += "<form name='Say' action='?src=\ref[src]' method='get'>"
+	dat += "<input type='hidden' name='src' value='\ref[src]'>"
+	dat += "<input type='hidden' name='choice' value='Say'>"
+	dat += "<input type='submit' value='Say'><input type='text' id='mobsay' name='mobsay' value='' style='width:350px; background-color:white;'>"
+	dat += "</form>"
+	var/datum/browser/popup = new(src, "Say", ntitle = "Say (text)", nwidth = 440, nheight = 90)
+	visible_message("<span class='danger'>[src] uses chat.</span>")
+	popup.set_content(jointext(dat,null))
+	popup.open()*/
 
 /mob/verb/me_wrapper()
 	set name = ".Me"
@@ -64,3 +77,14 @@ I IS TYPIN'!'
 	remove_typing_indicator()
 	if(message)
 		me_verb(message)
+
+/*
+/mob/Topic(href, href_list)
+	if(href_list["choice"])
+		switch(href_list["choice"])
+			if("Say")
+				var/msg = href_list["mobsay"]
+				say_verb(msg)
+	else
+		return ..()
+*/

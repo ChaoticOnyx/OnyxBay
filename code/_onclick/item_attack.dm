@@ -19,6 +19,11 @@ item/apply_hit_effect() can be overriden to do whatever you want. However "stand
 avoid code duplication. This includes items that may sometimes act as a standard weapon in addition to having other effects (e.g. stunbatons on harm intent).
 */
 
+
+////////////////////
+//Item procs below//
+////////////////////
+
 // Called when the item is in the active hand, and clicked; alternately, there is an 'activate held object' verb or you can hit pagedown.
 /obj/item/proc/attack_self(mob/user)
 	return
@@ -29,13 +34,80 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		add_fingerprint(user)
 	return A.attackby(src, user, click_params)
 
-// No comment
+// Proximity_flag is 1 if this afterattack was called on something adjacent, in your square, or on your person.
+// Click parameters is the params string from byond Click() code, see that documentation.
+/obj/item/proc/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+	return
+
+//I would prefer to rename this attack_as_weapon(), but that would involve touching hundreds of files.
+/obj/item/proc/attack(mob/living/M, mob/living/user, var/target_zone)
+	if(!force || (item_flags & ITEM_FLAG_NO_BLUDGEON))
+		return 0
+	if(M == user && user.a_intent != I_HURT)
+		return 0
+
+	//////////Logging////////
+	if(!no_attack_log)
+		admin_attack_log(user, M, "Attacked using \a [src] (DAMTYE: [uppertext(damtype)])", "Was attacked with \a [src] (DAMTYE: [uppertext(damtype)])", "used \a [src] (DAMTYE: [uppertext(damtype)]) to attack")
+	//////////Logging////////
+
+	user.setClickCooldown(update_attack_cooldown())
+	user.do_attack_animation(M)
+	if(!user.aura_check(AURA_TYPE_WEAPON, src, user))
+		return 0
+
+	var/hit_zone = M.resolve_item_attack(src, user, target_zone)
+	if(user.a_intent != I_GRAB)
+		if(hit_zone)
+			apply_hit_effect(M, user, hit_zone)
+	else
+		apply_hit_effect(M, user, target_zone)
+
+	return 1
+
+//Called when a weapon is used to make a successful melee attack on a mob. Returns the blocked result
+/obj/item/proc/apply_hit_effect(mob/living/target, mob/living/user, var/hit_zone)
+
+	var/power = force
+	for(var/datum/modifier/M in user.modifiers)
+		if(!isnull(M.outgoing_melee_damage_percent))
+			power *= M.outgoing_melee_damage_percent
+	//if(HULK in user.mutations)
+	//	power *= 2
+	if(istype(user,/mob/living/carbon/human))
+		var/mob/living/carbon/human/A = user
+		A.useblock_off()
+		switch(A.a_intent)
+			if(I_HELP)
+				return target.touch_with_weapon(src, user, power, hit_zone)
+			if(I_GRAB)
+				return target.parry_with_weapon(src, user, power, hit_zone)
+			if(I_DISARM)
+				playsound(loc, 'sound/effects/woodhit.ogg', 50, 1, -1)
+				return target.hit_with_weapon(src, user, power, hit_zone, 1)
+			if(I_HURT)
+				if(hitsound) playsound(loc, hitsound, 50, 1, -1)
+				return target.hit_with_weapon(src, user, power, hit_zone)
+	else
+		if(hitsound) playsound(loc, hitsound, 50, 1, -1)
+		return target.hit_with_weapon(src, user, power, hit_zone)
+
+////////////////////
+//Atom procs below//
+////////////////////
+
 /atom/proc/attackby(obj/item/W, mob/user, var/click_params)
 	return
 
 /atom/movable/attackby(obj/item/W, mob/user)
 	if(!(W.item_flags & ITEM_FLAG_NO_BLUDGEON))
 		visible_message("<span class='danger'>[src] has been hit by [user] with [W].</span>")
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
+
+////////////////////
+//Mobs procs below//
+////////////////////
 
 /mob/living/attackby(obj/item/I, mob/user)
 	if(!ismob(user))
@@ -53,46 +125,3 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		else if(devour(I))
 			return 1
 	return ..()
-
-// Proximity_flag is 1 if this afterattack was called on something adjacent, in your square, or on your person.
-// Click parameters is the params string from byond Click() code, see that documentation.
-/obj/item/proc/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	return
-
-//I would prefer to rename this attack_as_weapon(), but that would involve touching hundreds of files.
-/obj/item/proc/attack(mob/living/M, mob/living/user, var/target_zone)
-	if(!force || (item_flags & ITEM_FLAG_NO_BLUDGEON))
-		return 0
-	if(M == user && user.a_intent != I_HURT)
-		return 0
-
-	/////////////////////////
-
-	if(!no_attack_log)
-		admin_attack_log(user, M, "Attacked using \a [src] (DAMTYE: [uppertext(damtype)])", "Was attacked with \a [src] (DAMTYE: [uppertext(damtype)])", "used \a [src] (DAMTYE: [uppertext(damtype)]) to attack")
-	/////////////////////////
-
-	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	user.do_attack_animation(M)
-	if(!user.aura_check(AURA_TYPE_WEAPON, src, user))
-		return 0
-
-	var/hit_zone = M.resolve_item_attack(src, user, target_zone)
-	if(hit_zone)
-		apply_hit_effect(M, user, hit_zone)
-
-	return 1
-
-//Called when a weapon is used to make a successful melee attack on a mob. Returns the blocked result
-/obj/item/proc/apply_hit_effect(mob/living/target, mob/living/user, var/hit_zone)
-	if(hitsound)
-		playsound(loc, hitsound, 50, 1, -1)
-
-	var/power = force
-	for(var/datum/modifier/M in user.modifiers)
-		if(!isnull(M.outgoing_melee_damage_percent))
-			power *= M.outgoing_melee_damage_percent
-	if(HULK in user.mutations)
-		power *= 2
-	return target.hit_with_weapon(src, user, power, hit_zone)
-

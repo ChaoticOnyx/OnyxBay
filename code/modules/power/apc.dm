@@ -72,7 +72,7 @@
 
 	icon_state = "apc0"
 	anchored = 1
-	use_power = 0
+	use_power = POWER_USE_OFF
 	req_access = list(access_engine_equip)
 	clicksound = "switch"
 	var/needs_powerdown_sound
@@ -665,6 +665,8 @@
 			user.visible_message("<span class='danger'>The [src.name] has been hit with the [W.name] by [user.name]!</span>", \
 				"<span class='danger'>You hit the [src.name] with your [W.name]!</span>", \
 				"You hear a bang")
+			user.setClickCooldown(W.update_attack_cooldown())
+			user.do_attack_animation(src)
 
 // attack with hand - remove cell (if cover open) or interact with the APC
 
@@ -702,6 +704,8 @@
 		if(H.species.can_shred(H))
 			user.visible_message("<span class='warning'>\The [user] slashes at \the [src]!</span>", "<span class='notice'>You slash at \the [src]!</span>")
 			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
+			user.setClickCooldown(DEFAULT_WEAPON_COOLDOWN)
+			user.do_attack_animation(src)
 
 			var/allcut = wires.IsAllCut()
 

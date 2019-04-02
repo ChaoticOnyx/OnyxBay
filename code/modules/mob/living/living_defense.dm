@@ -137,7 +137,7 @@
 	return target_zone
 
 //Called when the mob is hit with an item in combat. Returns the blocked result
-/mob/living/proc/hit_with_weapon(obj/item/I, mob/living/user, var/effective_force, var/hit_zone)
+/mob/living/proc/hit_with_weapon(obj/item/I, mob/living/user, var/effective_force, var/hit_zone, var/atype = 0)
 	visible_message("<span class='danger'>[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] with [I.name] by [user]!</span>")
 
 	var/blocked = run_armor_check(hit_zone, "melee")
@@ -148,6 +148,12 @@
 		if(istype(location)) location.add_blood_floor(src)
 
 	return blocked
+
+/mob/living/proc/parry_with_weapon(obj/item/I, mob/living/user, var/effective_force, var/hit_zone)
+	return hit_with_weapon(I, user, effective_force, hit_zone)
+
+/mob/living/proc/touch_with_weapon(obj/item/I, mob/living/user, var/effective_force, var/hit_zone)
+	visible_message("<span class='notice'>[user] touches [src] with [I.name].</span>")
 
 //returns 0 if the effects failed to apply for some reason, 1 otherwise.
 /mob/living/proc/standard_weapon_hit_effects(obj/item/I, mob/living/user, var/effective_force, var/blocked, var/hit_zone)
@@ -237,7 +243,7 @@
 /mob/living/proc/turf_collision(var/turf/T, var/speed)
 	visible_message("<span class='danger'>[src] slams into \the [T]!</span>")
 	playsound(loc, 'sound/effects/bangtaper.ogg', 50, 1, -1)
-	src.take_organ_damage(speed*5)
+	src.take_organ_damage(speed*2.5)
 
 /mob/living/proc/near_wall(var/direction,var/distance=1)
 	var/turf/T = get_step(get_turf(src),direction)
@@ -297,7 +303,7 @@
 		ExtinguishMob() //Fire's been put out.
 		return 1
 
-	fire_stacks = max(0, fire_stacks - 0.2) //I guess the fire runs out of fuel eventually
+	fire_stacks = max(0, fire_stacks - 0.1) //I guess the fire runs out of fuel eventually
 
 	var/datum/gas_mixture/G = loc.return_air() // Check if we're standing in an oxygenless environment
 	if(G.get_by_flag(XGM_GAS_OXIDIZER) < 1)

@@ -21,7 +21,7 @@ Class Variables:
    power_channel (num)
 	  What channel to draw from when drawing power for power mode
 	  Possible Values:
-		 EQUIP:0 -- Equipment Channel
+		 EQUIP:1 -- Equipment Channel
 		 LIGHT:2 -- Lighting Channel
 		 ENVIRON:3 -- Environment Channel
 
@@ -63,16 +63,16 @@ Class Procs:
 	  Default definition uses 'use_power', 'power_channel', 'active_power_usage',
 	  'idle_power_usage', 'powered()', and 'use_power()' implement behavior.
 
-   powered(chan = EQUIP)		 'modules/power/power.dm'
+   powered(chan = EQUIP)		 'modules/power/power_usage.dm'
 	  Checks to see if area that contains the object has power available for power
 	  channel given in 'chan'.
 
-   use_power(amount, chan=EQUIP, autocalled)   'modules/power/power.dm'
+   use_power_oneoff(amount, chan=power_channel)   'modules/power/power_usage.dm'
 	  Deducts 'amount' from the power channel 'chan' of the area that contains the object.
 	  If it's autocalled then everything is normal, if something else calls use_power we are going to
 	  need to recalculate the power two ticks in a row.
 
-   power_change()			   'modules/power/power.dm'
+   power_change()			   'modules/power/power_usage.dm'
 	  Called by the area that contains the object when ever that area under goes a
 	  power state change (area runs out of power, or area channel is turned off).
 
@@ -93,6 +93,8 @@ Class Procs:
 	Compiled by Aygar
 */
 
+#define POWER_USE_DELAY 2
+
 /obj/machinery
 	name = "machinery"
 	icon = 'icons/obj/stationobjs.dmi'
@@ -101,7 +103,7 @@ Class Procs:
 	var/stat = 0
 	var/emagged = 0
 	var/malf_upgraded = 0
-	var/use_power = 1
+	var/use_power = POWER_USE_IDLE
 		//0 = dont run the auto
 		//1 = run auto, use idle
 		//2 = run auto, use active
@@ -128,6 +130,7 @@ Class Procs:
 	var/interact_offline = 0 // Can the machine be interacted with while de-powered.
 	var/clicksound			// sound played on succesful interface use by a carbon lifeform
 	var/clickvol = 40		// sound played on succesful interface use
+	var/life_tick = 0		// O P T I M I Z A T I O N
 
 /obj/machinery/Initialize(mapload, d=0, populate_components = TRUE)
 	. = ..()
@@ -165,7 +168,7 @@ Class Procs:
 
 /obj/machinery/emp_act(severity)
 	if(use_power && stat == 0)
-		use_power(7500/severity)
+		use_power_oneoff(7500/severity)
 
 		var/obj/effect/overlay/pulse2 = new /obj/effect/overlay(loc)
 		pulse2.icon = 'icons/effects/effects.dmi'
@@ -194,18 +197,23 @@ Class Procs:
 		else
 	return
 
+/*
 //sets the use_power var and then forces an area power update
 /obj/machinery/proc/update_use_power(var/new_use_power)
 	use_power = new_use_power
 
+
 /obj/machinery/proc/auto_use_power()
-	if(!powered(power_channel))
-		return 0
-	if(src.use_power == 1)
-		use_power(idle_power_usage,power_channel, 1)
-	else if(src.use_power >= 2)
-		use_power(active_power_usage,power_channel, 1)
-	return 1
+	life_tick++
+	if((life_tick % POWER_USE_DELAY) == 0)
+		if(!powered(power_channel))
+			return 0
+
+		if(src.use_power == 1)
+			use_power(idle_power_usage,power_channel, 1)
+		else if(src.use_power >= 2)
+			use_power(active_power_usage,power_channel, 1)
+		return 1*/
 
 /proc/is_operable(var/obj/machinery/M, var/mob/user)
 	return istype(M) && M.operable()

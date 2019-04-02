@@ -38,9 +38,12 @@
 		to_chat(user, "<span class='notice'>\The [src] is empty!</span>")
 		return
 
+	if(!user.canClick()) // yeah there we go year 2019...
+		return
+
 	Spray_at(A, user, proximity)
 
-	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 	if(reagents.has_reagent(/datum/reagent/acid))
 		message_admins("[key_name_admin(user)] fired sulphuric acid from \a [src].")

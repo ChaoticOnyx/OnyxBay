@@ -4,6 +4,9 @@
 	icon = 'icons/obj/dice.dmi'
 	icon_state = "d66"
 	w_class = ITEM_SIZE_TINY
+	mod_weight = 0.1
+	mod_reach = 0.1
+	mod_handy = 0.1
 	var/sides = 6
 	attack_verb = list("diced")
 

@@ -14,8 +14,8 @@
 		switch(type)
 			if("rune")
 				type = "rune[rand(1,6)]"
-			if("graffiti")
-				type = pick("amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa")
+			if("body outline")
+				type = "outline"
 
 		var/icon/mainOverlay = new/icon('icons/effects/crayondecal.dmi',"[type]",2.1)
 		var/icon/shadeOverlay = new/icon('icons/effects/crayondecal.dmi',"[type]s",2.1)

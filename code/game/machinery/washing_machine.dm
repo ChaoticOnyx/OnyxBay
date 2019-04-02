@@ -43,6 +43,7 @@
 		state = 8
 	else
 		state = 5
+	update_use_power(POWER_USE_ACTIVE)
 	update_icon()
 	sleep(200)
 	for(var/atom/A in contents)
@@ -59,6 +60,8 @@
 		var/obj/item/stack/material/wetleather/WL = new(src)
 		WL.amount = HH.amount
 		qdel(HH)
+
+	update_use_power(POWER_USE_IDLE)
 
 	if( locate(/mob,contents) )
 		state = 7

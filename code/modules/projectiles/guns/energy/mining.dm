@@ -11,6 +11,10 @@
 	item_state = "kineticgun"
 	charge_meter = 0
 	fire_delay = 16
+	force = 11.5
+	mod_weight = 1.15
+	mod_reach = 0.9
+	mod_handy = 1.0
 	slot_flags = SLOT_BELT|SLOT_BACK
 	origin_tech = list(TECH_COMBAT = 2, TECH_MAGNET = 4, TECH_POWER = 4)
 	projectile_type = /obj/item/projectile/kinetic

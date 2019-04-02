@@ -4,7 +4,10 @@
 	icon_state = "pulse"
 	item_state = "pulse"
 	slot_flags = SLOT_BACK
-	force = 12
+	force = 14.0
+	mod_weight = 1.25
+	mod_reach = 1.0
+	mod_handy = 1.0
 	projectile_type = /obj/item/projectile/beam/pulse/heavy
 	max_shots = 36
 	w_class = ITEM_SIZE_HUGE
@@ -21,7 +24,7 @@
 	desc = "A weapon that uses advanced pulse-based beam generation technology to emit powerful laser blasts. Less bulky than the full-sized rifle."
 	icon_state = "pulse_carbine"
 	slot_flags = SLOT_BACK|SLOT_BELT
-	force = 8
+	force = 14.0
 	projectile_type = /obj/item/projectile/beam/pulse/mid
 	max_shots = 24
 	w_class = ITEM_SIZE_LARGE
@@ -34,7 +37,7 @@
 	desc = "A weapon that uses advanced pulse-based beam generation technology to emit powerful laser blasts. Even smaller than the carbine."
 	icon_state = "pulse_pistol"
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
-	force = 6
+	force = 8.5
 	projectile_type = /obj/item/projectile/beam/pulse
 	max_shots = 21
 	w_class = ITEM_SIZE_NORMAL

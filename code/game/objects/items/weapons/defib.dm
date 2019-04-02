@@ -12,6 +12,9 @@
 	force = 5
 	throwforce = 6
 	w_class = ITEM_SIZE_LARGE
+	mod_weight = 1.25
+	mod_reach = 0.75
+	mod_handy = 0.5
 	origin_tech = list(TECH_BIO = 4, TECH_POWER = 2)
 	action_button_name = "Remove/Replace Paddles"
 
@@ -167,6 +170,9 @@
 	icon_state = "defibcompact"
 	item_state = "defibcompact"
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 1.0
+	mod_reach = 0.75
+	mod_handy = 0.5
 	slot_flags = SLOT_BELT
 	origin_tech = list(TECH_BIO = 5, TECH_POWER = 3)
 
@@ -200,6 +206,9 @@
 	force = 2
 	throwforce = 6
 	w_class = ITEM_SIZE_LARGE
+	mod_weight = 0.75
+	mod_reach = 0.75
+	mod_handy = 1.0
 
 	var/safety = 1 //if you can zap people with the paddles on harm mode
 	var/combat = 0 //If it can be used to revive people wearing thick clothing (e.g. spacesuits)

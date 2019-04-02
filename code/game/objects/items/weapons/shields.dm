@@ -31,8 +31,8 @@
 
 /obj/item/weapon/shield
 	name = "shield"
-	var/base_block_chance = 50
 
+/* This shit ain't working, guys. Fix it, please. ~Toby
 /obj/item/weapon/shield/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
 	if(user.incapacitated())
 		return 0
@@ -40,13 +40,8 @@
 	//block as long as they are not directly behind us
 	var/bad_arc = reverse_direction(user.dir) //arc of directions from which we cannot block
 	if(check_shield_arc(user, bad_arc, damage_source, attacker))
-		if(prob(get_block_chance(user, damage, damage_source, attacker)))
-			user.visible_message("<span class='danger'>\The [user] blocks [attack_text] with \the [src]!</span>")
-			return 1
-	return 0
-
-/obj/item/weapon/shield/proc/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
-	return base_block_chance
+		..()
+	return 0*/
 
 /obj/item/weapon/shield/riot
 	name = "riot shield"
@@ -55,11 +50,15 @@
 	icon_state = "riot"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BACK
-	force = 5.0
+	force = 15.0
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
+	mod_weight = 2.0
+	mod_reach = 1.5
+	mod_handy = 1.5
+	mod_shield = 2.0
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list("glass" = 7500, DEFAULT_WALL_MATERIAL = 1000)
 	attack_verb = list("shoved", "bashed")
@@ -69,13 +68,6 @@
 	. = ..()
 	if(.) playsound(user.loc, 'sound/weapons/Genhit.ogg', 50, 1)
 
-/obj/item/weapon/shield/riot/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
-	if(istype(damage_source, /obj/item/projectile))
-		var/obj/item/projectile/P = damage_source
-		//plastic shields do not stop bullets or lasers, even in space. Will block beanbags, rubber bullets, and stunshots just fine though.
-		if((is_sharp(P) && damage > 10) || istype(P, /obj/item/projectile/beam))
-			return 0
-	return base_block_chance
 
 /obj/item/weapon/shield/riot/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/melee/baton))
@@ -94,7 +86,6 @@
 	slot_flags = SLOT_BACK
 	force = 8
 	throwforce = 8
-	base_block_chance = 60
 	throw_speed = 10
 	throw_range = 20
 	w_class = ITEM_SIZE_HUGE
@@ -106,11 +97,6 @@
 	. = ..()
 	if(.) playsound(user.loc, 'sound/weapons/Genhit.ogg', 50, 1)
 
-/obj/item/weapon/shield/buckler/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
-	if(istype(damage_source, /obj/item/projectile))
-		return 0 //No blocking bullets, I'm afraid.
-	return base_block_chance
-
 /*
  * Energy Shield
  */
@@ -121,11 +107,15 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "eshield0" // eshield1 for expanded
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 3.0
+	force = 5.0
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.5
+	mod_reach = 0.5
+	mod_handy = 1.25
+	mod_shield = 2.5
 	origin_tech = list(TECH_MATERIAL = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 4)
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
@@ -136,17 +126,7 @@
 	. = ..()
 
 	if(.)
-		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-		spark_system.set_up(5, 0, user.loc)
-		spark_system.start()
 		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
-
-/obj/item/weapon/shield/energy/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
-	if(istype(damage_source, /obj/item/projectile))
-		var/obj/item/projectile/P = damage_source
-		if((is_sharp(P) && damage > 10) || istype(P, /obj/item/projectile/beam))
-			return (base_block_chance - round(damage / 3)) //block bullets and beams using the old block chance
-	return base_block_chance
 
 /obj/item/weapon/shield/energy/attack_self(mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))
@@ -154,16 +134,22 @@
 		user.take_organ_damage(5)
 	active = !active
 	if (active)
-		force = 10
+		force = 15
 		update_icon()
 		w_class = ITEM_SIZE_HUGE
+		mod_weight = 1.5
+		mod_reach = 1.0
+		mod_handy = 1.5
 		playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>\The [src] is now active.</span>")
 
 	else
-		force = 3
+		force = 5
 		update_icon()
 		w_class = ITEM_SIZE_TINY
+		mod_weight = 0.35
+		mod_reach = 0.3
+		mod_handy = 1.0
 		playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>\The [src] can now be concealed.</span>")
 

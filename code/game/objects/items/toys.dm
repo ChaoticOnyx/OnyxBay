@@ -26,6 +26,9 @@
 	throw_speed = 4
 	throw_range = 20
 	force = 0
+	mod_weight = 0.25
+	mod_reach = 0.25
+	mod_handy = 0.25
 
 /obj/item/toy/proc/speak(var/message)
 	if (!message)

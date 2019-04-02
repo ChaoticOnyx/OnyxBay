@@ -206,6 +206,7 @@
 	wall_mounted = 1
 	storage_types = CLOSET_STORAGE_ITEMS
 	setup = 0
+	dremovable = 0
 
 /obj/structure/closet/hydrant/New()
 	..()
@@ -232,6 +233,7 @@
 	wall_mounted = 1
 	storage_types = CLOSET_STORAGE_ITEMS
 	setup = 0
+	dremovable = 0
 
 /obj/structure/closet/medical_wall/update_icon()
 	if(!opened)
@@ -257,6 +259,7 @@
 	wall_mounted = 1
 	storage_types = CLOSET_STORAGE_ITEMS
 	setup = 0
+	dremovable = 0
 
 /obj/structure/closet/shipping_wall/update_icon()
 	if(!opened)

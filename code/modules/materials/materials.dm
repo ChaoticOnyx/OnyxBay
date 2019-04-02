@@ -244,8 +244,8 @@ var/list/name_to_material
 	door_icon_base = "stone"
 	table_icon_base = "stone"
 	icon_reinf = "reinf_stone"
-	icon_colour = "#007a00"
-	weight = 22
+	icon_colour = "#557755"
+	weight = 40
 	resilience = 16
 	reflectance = 15
 	stack_origin_tech = list(TECH_MATERIAL = 5)
@@ -256,11 +256,12 @@ var/list/name_to_material
 	flags = MATERIAL_UNMELTABLE
 	integrity = 250
 	cut_delay = 60
-	icon_colour = "#00ffe1"
+	icon_colour = "#cefff6"
 	opacity = 0.4
 	shard_type = SHARD_SHARD
 	tableslam_noise = 'sound/effects/Glasshit.ogg'
 	hardness = 100
+	weight = 10
 	brute_armor = 10
 	burn_armor = 50		// Diamond walls are immune to fire, therefore it makes sense for them to be almost undamageable by burn damage type.
 	resilience = 25
@@ -271,8 +272,8 @@ var/list/name_to_material
 /material/gold
 	name = "gold"
 	stack_type = /obj/item/stack/material/gold
-	icon_colour = "#edd12f"
-	weight = 25
+	icon_colour = "#edb52f"
+	weight = 40
 	hardness = 25
 	integrity = 100
 	resilience = 4
@@ -283,7 +284,9 @@ var/list/name_to_material
 
 /material/gold/bronze //placeholder for ashtrays
 	name = "bronze"
-	icon_colour = "#edd12f"
+	icon_colour = "#dd8639"
+	hardness = 55
+	weight = 30
 
 /material/silver
 	name = "silver"
@@ -370,11 +373,12 @@ var/list/name_to_material
 /material/steel
 	name = DEFAULT_WALL_MATERIAL
 	stack_type = /obj/item/stack/material/steel
+	hardness = 60
 	integrity = 200
 	brute_armor = 5
 	icon_base = "solid"
 	icon_reinf = "reinf_over"
-	icon_colour = "#666666"
+	icon_colour = "#888888"
 	hitsound = 'sound/weapons/Genhit.ogg'
 	resilience = 36
 	reflectance = 13
@@ -455,7 +459,7 @@ var/list/name_to_material
 	name = "glass"
 	stack_type = /obj/item/stack/material/glass
 	flags = MATERIAL_BRITTLE
-	icon_colour = "#00e1ff"
+	icon_colour = "#b5edff"
 	opacity = 0.3
 	integrity = 50
 	shard_type = SHARD_SHARD
@@ -555,7 +559,7 @@ var/list/name_to_material
 	display_name = "reinforced glass"
 	stack_type = /obj/item/stack/material/glass/reinforced
 	flags = MATERIAL_BRITTLE
-	icon_colour = "#00e1ff"
+	icon_colour = "#97d3e5"
 	opacity = 0.3
 	integrity = 100
 	melting_point = T0C + 750
@@ -582,7 +586,7 @@ var/list/name_to_material
 	brute_armor = 2
 	burn_armor = 5
 	melting_point = T0C + 2000
-	icon_colour = "#fc2bc5"
+	icon_colour = "#d67ac8"
 	resilience = 0
 	reflectance = 40
 	stack_origin_tech = list(TECH_MATERIAL = 4)
@@ -666,7 +670,7 @@ var/list/name_to_material
 /material/platinum
 	name = "platinum"
 	stack_type = /obj/item/stack/material/platinum
-	icon_colour = "#9999ff"
+	icon_colour = "#bbd0e8"
 	weight = 27
 	resilience = 16
 	reflectance = 20
@@ -736,7 +740,7 @@ var/list/name_to_material
 	name = "wood"
 	adjective_name = "wooden"
 	stack_type = /obj/item/stack/material/wood
-	icon_colour = "#824b28"
+	icon_colour = "#936041"
 	integrity = 50
 	icon_base = "solid"
 	table_icon_base = "solid"

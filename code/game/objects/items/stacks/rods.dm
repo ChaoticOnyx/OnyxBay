@@ -5,10 +5,13 @@
 	icon_state = "rods"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	w_class = ITEM_SIZE_LARGE
-	force = 9.0
-	throwforce = 15.0
+	force = 8.5
+	throwforce = 10.0
 	throw_speed = 5
 	throw_range = 20
+	mod_weight = 0.8
+	mod_reach = 1.0
+	mod_handy = 0.8
 	matter = list(DEFAULT_WALL_MATERIAL = 1875)
 	max_amount = 100
 	center_of_mass = null

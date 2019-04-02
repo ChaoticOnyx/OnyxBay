@@ -8,6 +8,7 @@
 	w_class = ITEM_SIZE_SMALL
 	gas_transfer_coefficient = 0.10
 	permeability_coefficient = 0.50
+	armor = list(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 25, rad = 0)
 	down_gas_transfer_coefficient = 1
 	down_body_parts_covered = null
 	down_item_flags = ITEM_FLAG_THICKMATERIAL
@@ -20,6 +21,7 @@
 	icon_state = "medical"
 	item_state = "medical"
 	permeability_coefficient = 0.01
+	armor = list(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 35, rad = 0)
 
 /obj/item/clothing/mask/breath/anesthetic
 	desc = "A close-fitting sterile mask that is used by the anesthetic wallmounted pump."

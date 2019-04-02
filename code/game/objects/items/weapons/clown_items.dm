@@ -10,7 +10,7 @@
 /obj/item/weapon/bananapeel/Crossed(AM as mob|obj)
 	if (istype(AM, /mob/living))
 		var/mob/living/M = AM
-		M.slip("the [src.name]",4)
+		M.slip("the [src.name]",3)
 /*
  * Bike Horns
  */
@@ -22,6 +22,9 @@
 	item_state = "bike_horn"
 	throwforce = 3
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.25
+	mod_reach = 0.5
+	mod_handy = 0.5
 	throw_speed = 3
 	throw_range = 15
 	attack_verb = list("HONKED")
@@ -43,6 +46,9 @@
 	icon_state = "vuvuzela"
 	item_state = "vuvuzela"
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 0.5
+	mod_reach = 1.0
+	mod_handy = 0.5
 	attack_verb = list("HONKED","WORLD CUPPED","FOOTBALLED")
 
 /obj/item/weapon/bikehorn/vuvuzela/attack_self(mob/user as mob)

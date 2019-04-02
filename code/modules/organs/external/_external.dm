@@ -10,6 +10,7 @@
 	organ_tag = "limb"
 	appearance_flags = PIXEL_SCALE
 
+	throwforce = 2.5
 	// Strings
 	var/broken_description             // fracture string if any.
 	var/damage_state = "00"            // Modifier used for generating the on-mob damage overlay for this limb.
@@ -47,7 +48,7 @@
 	var/list/markings = list()         // Markings (body_markings) to apply to the icon
 
 	// Wound and structural data.
-	var/wound_update_accuracy = 1      // how often wounds should be updated, a higher number means less often
+	var/wound_update_accuracy = 2      // how often wounds should be updated, a higher number means less often
 	var/list/wounds = list()           // wound datum list.
 	var/number_wounds = 0              // number of wounds, which is NOT wounds.len!
 	var/obj/item/organ/external/parent // Master-limb.
@@ -76,6 +77,7 @@
 	var/arterial_bleed_severity = 1    // Multiplier for bleeding in a limb.
 	var/tendon_name = "tendon"         // Flavour text for Achilles tendon, etc.
 	var/cavity_name = "cavity"
+	var/deformities = 0				   // Currently used for glasgow smiles. Gonna add chopped-off fingers and torn-off nipples later.
 
 	// Surgery vars.
 	var/cavity_max_w_class = 0
@@ -231,7 +233,13 @@
 						user.put_in_hands(removing)
 					user.visible_message("<span class='danger'><b>[user]</b> extracts [removing] from [src] with [W]!</span>")
 				else
-					user.visible_message("<span class='danger'><b>[user]</b> fishes around fruitlessly in [src] with [W].</span>")
+					if(organ_tag == BP_HEAD && W.sharp)
+						user.visible_message("<span class='danger'><b>[user]</b> rips the skin off [src] with [W], revealing a skull.</span>")
+						new/obj/item/weapon/skull(src.loc)
+						gibs(src.loc)
+						qdel(src)
+					else
+						user.visible_message("<span class='danger'><b>[user]</b> fishes around fruitlessly in [src] with [W].</span>")
 				return
 	..()
 
@@ -826,8 +834,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 			compile_icon()
 			add_blood(victim)
 			var/matrix/M = matrix()
-			M.Turn(rand(180))
+			if(organ_tag == BP_HEAD)
+				M.Turn(90)
+			else
+				M.Turn(rand(180))
 			src.transform = M
+			update_icon_drop(victim)
 			forceMove(get_turf(src))
 			if(!clean)
 				// Throw limb around.
@@ -1090,6 +1102,8 @@ obj/item/organ/external/proc/remove_clamps()
 /obj/item/organ/external/proc/embed(var/obj/item/weapon/W, var/silent = 0, var/supplied_message, var/datum/wound/supplied_wound)
 	if(!owner || loc != owner)
 		return
+	if(W.w_class > ITEM_SIZE_NORMAL)
+		return
 	if(species.species_flags & SPECIES_FLAG_NO_EMBED)
 		return
 	if(!silent)
@@ -1287,6 +1301,9 @@ obj/item/organ/external/proc/remove_clamps()
 	var/list/flavor_text = list()
 	if((status & ORGAN_CUT_AWAY) && !is_stump() && !(parent && parent.status & ORGAN_CUT_AWAY))
 		flavor_text += "a tear at the [amputation_point] so severe that it hangs by a scrap of flesh"
+
+	if(organ_tag == BP_HEAD && deformities == 1)
+		flavor_text += "terrible scars on cheeks forming a horrifying smile"
 
 	var/list/wound_descriptors = list()
 	for(var/datum/wound/W in wounds)

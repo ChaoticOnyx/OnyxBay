@@ -18,7 +18,6 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 
 	var/list/item_type = list("Machine Boards", "Console Boards", "Mecha Boards", "Module Boards", "Engineering Boards", "Device")
 
-	use_power = 1
 	idle_power_usage = 30
 	active_power_usage = 2500
 
@@ -120,7 +119,7 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 	var/amount = min(stack.get_amount(), round((max_material_storage - TotalMaterials()) / SHEET_MATERIAL_AMOUNT))
 
 	busy = 1
-	use_power(max(1000, (SHEET_MATERIAL_AMOUNT * amount / 10)))
+	use_power_oneoff(max(1000, (SHEET_MATERIAL_AMOUNT * amount / 10)))
 
 	var/t = stack.material.name
 	if(t)
@@ -153,7 +152,7 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 	for(var/M in D.materials)
 		power += round(D.materials[M] / 5)
 	power = max(active_power_usage, power)
-	use_power(power)
+	use_power_oneoff(power)
 	for(var/M in D.materials)
 		materials[M] = max(0, materials[M] - D.materials[M] * mat_efficiency)
 	for(var/C in D.chemicals)

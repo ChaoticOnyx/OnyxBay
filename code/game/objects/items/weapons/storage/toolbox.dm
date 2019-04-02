@@ -8,11 +8,14 @@
 	icon_state = "red"
 	item_state = "toolbox_red"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 10
+	force = 15
 	throwforce = 10
 	throw_speed = 1
 	throw_range = 7
 	w_class = ITEM_SIZE_LARGE
+	mod_weight = 1.6
+	mod_reach = 0.75
+	mod_handy = 0.75
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_LARGEBOX_STORAGE //enough to hold all starting contents
 	origin_tech = list(TECH_COMBAT = 1)
@@ -70,8 +73,11 @@
 	desc = "A toolbox in black, with stylish red trim. This one feels particularly heavy."
 	icon_state = "syndicate"
 	item_state = "toolbox_syndi"
-	origin_tech = list(TECH_COMBAT = 1, TECH_ILLEGAL = 1)
-	force = 12.5
+	origin_tech = list(TECH_COMBAT = 2, TECH_ILLEGAL = 1)
+	force = 17.5 //Thatsa robusto toolboxo
+	mod_weight = 1.75
+	mod_reach = 0.75
+	mod_handy = 1.0
 
 /obj/item/weapon/storage/toolbox/syndicate/New()
 	..()

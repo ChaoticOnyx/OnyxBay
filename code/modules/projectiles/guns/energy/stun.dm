@@ -6,6 +6,10 @@
 	max_shots = 5
 	projectile_type = /obj/item/projectile/beam/stun
 	combustion = 0
+	force = 8.5
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
 
 	firemodes = list(
 		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun),
@@ -20,7 +24,10 @@
 	slot_flags = SLOT_BELT|SLOT_BACK
 	one_hand_penalty = 3
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 3, TECH_POWER = 3)
-	force = 8
+	force = 12.5
+	mod_weight = 1.0
+	mod_reach = 0.8
+	mod_handy = 1.0
 	max_shots = 12
 	accuracy = 1
 	projectile_type = /obj/item/projectile/beam/stun/heavy
@@ -119,3 +126,7 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	max_shots = 5
 	combustion = 0
+	force = 8.5
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0

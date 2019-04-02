@@ -25,9 +25,12 @@
 	item_state = "wrench"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	force = 5.0
+	force = 8.0
 	throwforce = 7.0
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.8
+	mod_reach = 0.75
+	mod_handy = 1.0
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
 	matter = list(DEFAULT_WALL_MATERIAL = 150)
 	center_of_mass = "x=17;y=16"
@@ -50,8 +53,12 @@
 	icon_state = "screwdriver"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT | SLOT_EARS
-	force = 4.0
+	sharp = 1
+	force = 7.5
 	w_class = ITEM_SIZE_TINY
+	mod_weight = 0.35
+	mod_reach = 0.3
+	mod_handy = 1.0
 	throwforce = 5.0
 	throw_speed = 3
 	throw_range = 5
@@ -91,7 +98,9 @@
 /obj/item/weapon/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M) || user.a_intent == "help")
 		return ..()
-	if(user.zone_sel.selecting != BP_EYES && user.zone_sel.selecting != BP_HEAD)
+	if(user.zone_sel.selecting != BP_EYES)
+		return ..()
+	if(istype(user.l_hand,/obj/item/grab) || istype(user.r_hand,/obj/item/grab))
 		return ..()
 	if((CLUMSY in user.mutations) && prob(50))
 		M = user
@@ -110,10 +119,14 @@
 	icon_state = "cutters"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	force = 3.0
+	sharp = 1
+	force = 5.5
 	throw_speed = 2
 	throw_range = 9
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.45
+	mod_reach = 0.3
+	mod_handy = 0.75
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
 	matter = list(DEFAULT_WALL_MATERIAL = 80)
 	center_of_mass = "x=18;y=10"
@@ -157,11 +170,14 @@
 	center_of_mass = "x=14;y=15"
 
 	//Amount of OUCH when it's thrown
-	force = 3.0
+	force = 6.5
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 1.0
+	mod_reach = 0.75
+	mod_handy = 0.75
 
 	//Cost to make in the autolathe
 	matter = list(DEFAULT_WALL_MATERIAL = 70, "glass" = 30)
@@ -251,6 +267,22 @@
 		src.add_fingerprint(user)
 		return
 
+	if((!status) && (istype(W,/obj/item/pipe)))
+		if(tank)
+			to_chat(user, "<span class='notice'>You should detach \the [tank] first.</span>")
+			return
+		user.drop_from_inventory(W)
+		qdel(W)
+
+		if(istype(src.loc,/turf))
+			qdel(src)
+		else
+			QDEL_NULL(src)
+		user.visible_message("<span class='notice'>\The [user] fits \the [W] to \the [src] as a crude barrel.</span>")
+		var/obj/item/weapon/boomstickframe/F = new/obj/item/weapon/boomstickframe(user.loc)
+		F.add_fingerprint(user)
+		return
+
 	if(istype(W, /obj/item/weapon/welder_tank))
 		if(tank)
 			to_chat(user, "Remove the current tank first.")
@@ -329,6 +361,7 @@
 		burn_fuel(amount)
 		if(M)
 			eyecheck(M)
+			playsound(M.loc, 'sound/items/Welder.ogg', 20, 1)
 		return 1
 	else
 		if(M)
@@ -489,6 +522,10 @@
 	origin_tech = list(TECH_ENGINEERING = 2)
 	matter = list(DEFAULT_WALL_MATERIAL = 15, "glass" = 5)
 	w_class = ITEM_SIZE_SMALL
+	force = 5.5
+	mod_weight = 0.55
+	mod_reach = 0.6
+	mod_handy = 0.75
 	tank = /obj/item/weapon/welder_tank/mini
 
 /obj/item/weapon/welder_tank/mini
@@ -506,6 +543,9 @@
 	origin_tech = list(TECH_ENGINEERING = 2)
 	matter = list(DEFAULT_WALL_MATERIAL = 70, "glass" = 60)
 	w_class = ITEM_SIZE_LARGE
+	mod_weight = 1.2
+	mod_reach = 0.75
+	mod_handy = 0.75
 	tank = /obj/item/weapon/welder_tank/large
 
 /obj/item/weapon/welder_tank/large
@@ -520,6 +560,9 @@
 	item_state = "welder"
 	desc = "A sizable welding tool with room to accomodate the largest of fuel tanks."
 	w_class = ITEM_SIZE_HUGE
+	mod_weight = 1.45
+	mod_reach = 1.0
+	mod_handy = 0.75
 	origin_tech = list(TECH_ENGINEERING = 3)
 	matter = list(DEFAULT_WALL_MATERIAL = 70, "glass" = 120)
 	tank = /obj/item/weapon/welder_tank/huge
@@ -595,11 +638,14 @@
 	icon_state = "crowbar"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	force = 7.0
+	force = 9.5
 	throwforce = 7.0
 	throw_range = 3
 	item_state = "crowbar"
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 1.0
+	mod_reach = 1.0
+	mod_handy = 1.0
 	origin_tech = list(TECH_ENGINEERING = 1)
 	matter = list(DEFAULT_WALL_MATERIAL = 140)
 	center_of_mass = "x=16;y=20"
@@ -614,10 +660,13 @@
 	desc = "A steel bar with a wedge. It comes in a variety of configurations - collect them all."
 	icon_state = "prybar"
 	item_state = "crowbar"
-	force = 4.0
+	force = 6.5
 	throwforce = 6.0
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.75
+	mod_reach = 0.75
+	mod_handy = 1.0
 	matter = list(DEFAULT_WALL_MATERIAL = 80)
 
 /obj/item/weapon/crowbar/prybar/Initialize()

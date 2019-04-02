@@ -5,6 +5,9 @@
 	icon = 'icons/mob/human.dmi'
 	icon_state = "body_m_s"
 
+	throw_range = 4
+	var/candrop = 1
+
 	var/list/hud_list[10]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/weapon/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
@@ -81,6 +84,7 @@
 	if(statpanel("Status"))
 		stat("Intent:", "[a_intent]")
 		stat("Move Mode:", "[m_intent]")
+		stat("Poise:", "[round(100/poise_pool*poise)]%")
 
 		if(evacuation_controller)
 			var/eta_status = evacuation_controller.get_status_panel_eta()
@@ -1288,6 +1292,7 @@
 /mob/living/carbon/human/slip(var/slipped_on, stun_duration=8)
 	if((species.species_flags & SPECIES_FLAG_NO_SLIP) || (shoes && (shoes.item_flags & ITEM_FLAG_NOSLIP)))
 		return 0
+	poise -= stun_duration*5
 	return !!(..(slipped_on,stun_duration))
 
 /mob/living/carbon/human/check_slipmove()
@@ -1453,6 +1458,8 @@
 		affecting = organs_by_name[BP_CHEST]
 	else if(organ_check in list(BP_LIVER, BP_KIDNEYS))
 		affecting = organs_by_name[BP_GROIN]
+	else if(organ_check in list(BP_EYES))
+		affecting = organs_by_name[BP_HEAD]
 
 	if(affecting && (affecting.robotic >= ORGAN_ROBOT))
 		return 0
@@ -1583,4 +1590,46 @@
 
 //Point at which you dun breathe no more. Separate from asystole crit, which is heart-related.
 /mob/living/carbon/human/nervous_system_failure()
-	return getBrainLoss() >= maxHealth * 0.75
+	return getBrainLoss() >= maxHealth * 0.4 // > than 80 brain dmg - ur rekt
+
+/mob/living/carbon/human/verb/useblock()
+	set name = "Block"
+	set desc = "Get into a defensive stance, effectively blocking the next attack."
+	set category = "IC"
+
+	if(!incapacitated(INCAPACITATION_KNOCKOUT) && canClick())
+		setClickCooldown(5)
+		if(!weakened && !stunned)
+			if(!blocking)
+				src.useblock_on()
+				to_chat(src, "<span class='notice'>You prepare for blocking!</span>")
+			else
+				src.useblock_off()
+				to_chat(src, "<span class='notice'>You lower your defence.</span>")
+
+/mob/living/carbon/human/proc/useblock_off()
+	src.blocking = 0
+	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
+		src.block_icon.icon_state = "act_block0"
+
+/mob/living/carbon/human/proc/useblock_on()
+	src.blocking = 1
+	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
+		src.block_icon.icon_state = "act_block1"
+
+
+/mob/living/carbon/human/verb/blockswitch()
+	set name = "Block Hand Toggle"
+	set desc = "Choose whether to use your main hand or your off hand to block incoming attacks."
+	set category = "IC"
+
+	if(!blocking_hand)
+		blocking_hand = 1
+		to_chat(src, "<span class='notice'>You will use your off hand to block.</span>")
+		if(src.blockswitch_icon)
+			src.blockswitch_icon.icon_state = "act_blockswitch1"
+	else
+		blocking_hand = 0
+		to_chat(src, "<span class='notice'>You will use your main hand to block.</span>")
+		if(src.blockswitch_icon)
+			src.blockswitch_icon.icon_state = "act_blockswitch0"

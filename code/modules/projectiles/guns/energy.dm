@@ -22,6 +22,10 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	var/charge_tick = 0
 	var/icon_rounder = 25
 	combustion = 1
+	force = 8.5
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
 
 /obj/item/weapon/gun/energy/switch_firemodes()
 	. = ..()

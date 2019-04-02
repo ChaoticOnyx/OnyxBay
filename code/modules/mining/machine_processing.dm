@@ -255,7 +255,7 @@
 							if(console)
 								var/ore/Ore = ore_data[needs_metal]
 								console.points += Ore.worth
-							use_power(100)
+							use_power_oneoff(100)
 							ores_stored[needs_metal] -= A.requires[needs_metal]
 							total += A.requires[needs_metal]
 							total = max(1,round(total*A.product_mod)) //Always get at least one sheet.
@@ -277,7 +277,7 @@
 				for(var/i=0,i<can_make,i+=2)
 					if(console)
 						console.points += O.worth*2
-					use_power(100)
+					use_power_oneoff(100)
 					ores_stored[metal]-=2
 					sheets+=2
 					new M.stack_type(output.loc)
@@ -293,14 +293,14 @@
 				for(var/i=0,i<can_make,i++)
 					if(console)
 						console.points += O.worth
-					use_power(100)
+					use_power_oneoff(100)
 					ores_stored[metal]--
 					sheets++
 					new M.stack_type(output.loc)
 			else
 				if(console)
 					console.points -= O.worth*3 //reee wasting our materials!
-				use_power(500)
+				use_power_oneoff(500)
 				ores_stored[metal]--
 				sheets++
 				new /obj/item/weapon/ore/slag(output.loc)

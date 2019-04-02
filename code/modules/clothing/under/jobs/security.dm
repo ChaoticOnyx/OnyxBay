@@ -104,28 +104,6 @@
 	desc = "An immaculate white dress shirt, paired with a pair of dark grey dress pants, a red tie, and a charcoal vest."
 	starting_accessories = list(/obj/item/clothing/accessory/red_long, /obj/item/clothing/accessory/toggleable/vest)
 
-/obj/item/clothing/head/det
-	name = "fedora"
-	desc = "A brown fedora - either the cornerstone of a detective's style or a poor attempt at looking cool, depending on the person wearing it."
-	icon_state = "detective"
-	item_state_slots = list(
-		slot_l_hand_str = "det_hat",
-		slot_r_hand_str = "det_hat",
-		)
-	armor = list(melee = 50, bullet = 5, laser = 25,energy = 10, bomb = 0, bio = 0, rad = 0)
-	siemens_coefficient = 0.9
-	flags_inv = BLOCKHEADHAIR
-
-/obj/item/clothing/head/det/attack_self(mob/user)
-	flags_inv ^= BLOCKHEADHAIR
-	to_chat(user, "<span class='notice'>[src] will now [flags_inv & BLOCKHEADHAIR ? "hide" : "show"] hair.</span>")
-	..()
-
-/obj/item/clothing/head/det/grey
-	icon_state = "detective2"
-	desc = "A grey fedora - either the cornerstone of a detective's style or a poor attempt at looking cool, depending on the person wearing it."
-
-
 /*
  * Head of Security
  */

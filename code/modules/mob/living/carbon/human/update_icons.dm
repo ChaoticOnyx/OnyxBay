@@ -79,6 +79,7 @@ There are several things that need to be remembered:
 		update_body()	//Handles updating your mob's icon to reflect their gender/race/complexion etc
 		update_hair()	//Handles updating your hair overlay (used to be update_face, but mouth and
 																			...eyes were merged into update_body)
+		update_deformities() //handles updating your mob's deformities overlay.		e.g missing eyes, glasgow smile
 		update_targeted() // Updates the target overlay when someone points a gun at you
 
 >	All of these procs update our overlays_lying and overlays_standing, and then call update_icons() by default.
@@ -129,18 +130,19 @@ Please contact me on #coderbus IRC. ~Carn x
 #define SUIT_STORE_LAYER		15
 #define BACK_LAYER				16
 #define HAIR_LAYER				17		//TODO: make part of head layer?
-#define GOGGLES_LAYER			18
-#define EARS_LAYER				19
-#define FACEMASK_LAYER			20
-#define HEAD_LAYER				21
-#define COLLAR_LAYER			22
-#define HANDCUFF_LAYER			23
-#define L_HAND_LAYER			24
-#define R_HAND_LAYER			25
-#define FIRE_LAYER				26		//If you're on fire
-#define MODIFIER_EFFECTS_LAYER	27
-#define TARGETED_LAYER			28		//BS12: Layer for the target overlay from weapon targeting system
-#define TOTAL_LAYERS			28
+#define DEFORM_LAYER			18
+#define GOGGLES_LAYER			19
+#define EARS_LAYER				20
+#define FACEMASK_LAYER			21
+#define HEAD_LAYER				22
+#define COLLAR_LAYER			23
+#define HANDCUFF_LAYER			24
+#define L_HAND_LAYER			25
+#define R_HAND_LAYER			26
+#define FIRE_LAYER				27		//If you're on fire
+#define MODIFIER_EFFECTS_LAYER	28
+#define TARGETED_LAYER			29		//BS12: Layer for the target overlay from weapon targeting system
+#define TOTAL_LAYERS			29
 //////////////////////////////////
 
 /mob/living/carbon/human
@@ -245,7 +247,9 @@ var/global/list/damage_icon_parts = list()
 
 	overlays_standing[DAMAGE_LAYER]	= standing_image
 
-	if(update_icons)   update_icons()
+	if(update_icons)
+		update_deformities()
+		update_icons()
 
 //BASE MOB SPRITE
 /mob/living/carbon/human/proc/update_body(var/update_icons=1)
@@ -385,6 +389,9 @@ var/global/list/damage_icon_parts = list()
 
 //HAIR OVERLAY
 /mob/living/carbon/human/proc/update_hair(var/update_icons=1)
+
+	if(!src)
+		return
 	//Reset our hair
 	overlays_standing[HAIR_LAYER]	= null
 
@@ -405,6 +412,38 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/proc/update_skin(var/update_icons=1)
 	overlays_standing[SKIN_LAYER] = species.update_skin(src)
 	if(update_icons)   update_icons()
+
+/mob/living/carbon/human/proc/update_deformities(var/update_icons=1)
+
+	overlays_standing[DEFORM_LAYER] = null
+
+	var/obj/item/organ/external/head/head_organ = get_organ(BP_HEAD)
+	if(!head_organ || head_organ.is_stump() )
+		if(update_icons)   update_icons()
+		return
+
+	//masks and helmets can obscure our hair.
+	if( (head && (head.flags_inv & HIDEFACE)) || (wear_mask && (wear_mask.flags_inv & HIDEFACE)))
+		if(update_icons)   update_icons()
+		return
+
+	var/image/standing	= overlay_image('icons/mob/deformities.dmi')
+	var/add_image = 0
+
+	if(head_organ.deformities == 1)
+		standing.overlays += "bloodysmile"
+		add_image = 1
+
+	var/obj/item/organ/internal/eyes/E = src.internal_organs_by_name[BP_EYES]
+	if(!E && should_have_organ(BP_EYES))
+		standing.overlays += "eyeloss"
+		add_image = 1
+
+	if(add_image)
+		overlays_standing[DEFORM_LAYER]	= standing
+
+	if(update_icons)   update_icons()
+
 
 /mob/living/carbon/human/update_mutations(var/update_icons=1)
 	var/fat
@@ -446,6 +485,7 @@ var/global/list/damage_icon_parts = list()
 	update_skin(0)
 	update_underwear(0)
 	update_hair(0)
+	update_deformities(0)
 	update_inv_w_uniform(0)
 	update_inv_wear_id(0)
 	update_inv_gloves(0)
@@ -786,6 +826,7 @@ var/global/list/damage_icon_parts = list()
 #undef SUIT_STORE_LAYER
 #undef BACK_LAYER
 #undef HAIR_LAYER
+#undef DEFORM_LAYER
 #undef HEAD_LAYER
 #undef COLLAR_LAYER
 #undef HANDCUFF_LAYER

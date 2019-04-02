@@ -19,7 +19,6 @@
 	var/diona_spawn_chance = 0.1
 
 	// Power
-	use_power = 1
 	idle_power_usage = 10
 	var/vend_power_usage = 150 //actuators and stuff
 
@@ -209,6 +208,8 @@
 	else if(attempt_to_stock(W, user))
 		return
 	..()
+	if(W.mod_weight >= 0.75)
+		shake_animation(stime = 4)
 	return
 
 /obj/machinery/vending/MouseDrop_T(var/obj/item/I as obj, var/mob/user as mob)
@@ -472,7 +473,7 @@
 			src.speak(src.vend_reply)
 			src.last_reply = world.time
 
-	use_power(vend_power_usage)	//actuators and stuff
+	use_power_oneoff(vend_power_usage)	//actuators and stuff
 	if (src.icon_vend) //Show the vending animation if needed
 		flick(src.icon_vend,src)
 	spawn(src.vend_delay) //Time to vend

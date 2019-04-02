@@ -16,10 +16,13 @@ var/list/global/tank_gauge_cache = list()
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 
-	force = 10.0
+	force = 14.5
 	throwforce = 10.0
 	throw_speed = 1
 	throw_range = 4
+	mod_weight = 1.5
+	mod_reach = 0.75
+	mod_handy = 0.5
 
 	var/datum/gas_mixture/air_contents = null
 	var/distribute_pressure = ONE_ATMOSPHERE

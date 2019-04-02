@@ -5,7 +5,6 @@
 	var/insert_anim = "bigscanner1"
 	anchored = 1
 	density = 1
-	use_power = 1
 	idle_power_usage = 30
 	active_power_usage = 200
 	power_channel = EQUIP
@@ -63,7 +62,7 @@
 				to_chat(usr, "<span class='warning'>\The [copyitem] can't be copied by \the [src].</span>")
 				break
 
-			use_power(active_power_usage)
+			use_power_oneoff(active_power_usage)
 		updateUsrDialog()
 	else if(href_list["remove"])
 		if(copyitem)
@@ -125,6 +124,8 @@
 		else
 			to_chat(user, "<span class='notice'>This cartridge is not yet ready for replacement! Use up the rest of the toner.</span>")
 	..()
+	if(O.mod_weight >= 0.75)
+		shake_animation(stime = 4)
 	return
 
 /obj/machinery/photocopier/ex_act(severity)

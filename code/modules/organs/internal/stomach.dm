@@ -43,5 +43,5 @@
 		if(alcohol_threshold_met && (owner.disabilities & EPILEPSY) && prob(20))
 			owner.seizure()
 
-		if(ingested.total_volume > 60 || ((alcohol_threshold_met || ingested.total_volume > 35) && prob(15)))
+		if(ingested.total_volume > 90 || ((alcohol_threshold_met || ingested.total_volume > 35) && prob(15)))
 			owner.vomit()

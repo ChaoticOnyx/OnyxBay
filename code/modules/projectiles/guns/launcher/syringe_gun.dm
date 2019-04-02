@@ -67,7 +67,10 @@
 	icon_state = "syringegun"
 	item_state = "syringegun"
 	w_class = ITEM_SIZE_LARGE
-	force = 7
+	force = 8.0
+	mod_weight = 0.8
+	mod_reach = 0.6
+	mod_handy = 1.0
 	matter = list(DEFAULT_WALL_MATERIAL = 2000)
 	slot_flags = SLOT_BELT
 
@@ -136,6 +139,10 @@
 	icon_state = "rapidsyringegun"
 	item_state = "rapidsyringegun"
 	max_darts = 5
+	force = 10.0
+	mod_weight = 1.0
+	mod_reach = 0.6
+	mod_handy = 1.0
 
 /obj/item/weapon/gun/launcher/syringe/disguised
 	name = "deluxe electronic cigarette"

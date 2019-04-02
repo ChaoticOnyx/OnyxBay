@@ -124,7 +124,7 @@
 	w_class = ITEM_SIZE_SMALL
 	max_w_class = ITEM_SIZE_TINY
 	max_storage_space = 10
-	throwforce = 2
+	throwforce = 0 //Smoking kills, but packs'o'smokables don't
 	slot_flags = SLOT_BELT
 
 	key_type = /obj/item/clothing/mask/smokable/cigarette
@@ -263,7 +263,7 @@
 	w_class = ITEM_SIZE_SMALL
 	max_w_class = ITEM_SIZE_TINY
 	max_storage_space = 6
-	throwforce = 2
+	throwforce = 2 //Well this thing is slightly larger and heavier.
 	slot_flags = SLOT_BELT
 	storage_slots = 7
 

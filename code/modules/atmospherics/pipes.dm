@@ -4,7 +4,7 @@
 	var/datum/pipeline/parent
 	var/volume = 0
 	var/leaking = 0		// Do not set directly, use set_leaking(TRUE/FALSE)
-	use_power = 0
+	use_power = POWER_USE_OFF
 
 	var/alert_pressure = 170*ONE_ATMOSPHERE
 	var/in_stasis = 0

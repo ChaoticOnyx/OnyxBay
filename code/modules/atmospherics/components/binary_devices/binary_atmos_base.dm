@@ -1,7 +1,6 @@
 obj/machinery/atmospherics/binary
 	dir = SOUTH
 	initialize_directions = SOUTH|NORTH
-	use_power = 1
 
 	var/datum/gas_mixture/air1
 	var/datum/gas_mixture/air2
@@ -117,7 +116,7 @@ obj/machinery/atmospherics/binary
 		update_underlays()
 
 		return null
-		
+
 obj/machinery/atmospherics/binary/Destroy()
 	loc = null
 

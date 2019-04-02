@@ -4,11 +4,14 @@
 	icon_state = "nullrod"
 	item_state = "nullrod"
 	slot_flags = SLOT_BELT
-	force = 15
+	force = 11.5
 	throw_speed = 1
 	throw_range = 4
 	throwforce = 10
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 1.2
+	mod_reach = 0.75
+	mod_handy = 1.0
 
 /obj/item/weapon/nullrod/attack(mob/M as mob, mob/living/user as mob) //Paste from old-code to decult with a null rod.
 	admin_attack_log(user, M, "Attacked using \a [src]", "Was attacked with \a [src]", "used \a [src] to attack")

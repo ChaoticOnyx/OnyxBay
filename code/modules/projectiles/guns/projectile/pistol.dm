@@ -64,6 +64,9 @@
 	w_class = ITEM_SIZE_NORMAL
 	caliber = ".45"
 	silenced = 1
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ILLEGAL = 8)
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/c45m
@@ -74,7 +77,10 @@
 	desc = "The HelTek Magnus, a robust terran handgun that uses .50 AE ammo."
 	icon_state = "magnum"
 	item_state = "revolver"
-	force = 14.0
+	force = 12.0
+	mod_weight = 0.9
+	mod_reach = 0.65
+	mod_handy = 1.0
 	caliber = ".50"
 	fire_delay = 12
 	screen_shake = 2
@@ -95,6 +101,9 @@
 	icon_state = "gyropistol"
 	max_shells = 8
 	caliber = "75"
+	mod_weight = 0.9
+	mod_reach = 0.65
+	mod_handy = 1.0
 	origin_tech = list(TECH_COMBAT = 3)
 	ammo_type = /obj/item/ammo_casing/a75
 	load_method = MAGAZINE
@@ -119,6 +128,9 @@
 	caliber = "9mm"
 	silenced = 0
 	fire_delay = 1
+	mod_weight = 0.65
+	mod_reach = 0.5
+	mod_handy = 1.0
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ILLEGAL = 2)
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/mc9mm
@@ -179,18 +191,13 @@
 	item_state = "sawnshotgun"
 	handle_casings = CYCLE_CASINGS //player has to take the old casing out manually before reloading
 	load_method = SINGLE_CASING
+	mod_weight = 1.1
+	mod_reach = 1.0
+	mod_handy = 1.0
 	max_shells = 1 //literally just a barrel
 
 	var/global/list/ammo_types = list(
 		/obj/item/ammo_casing/a357              = ".357",
-		/obj/item/ammo_casing/shotgun           = "12 gauge",
-		/obj/item/ammo_casing/shotgun           = "12 gauge",
-		/obj/item/ammo_casing/shotgun/pellet    = "12 gauge",
-		/obj/item/ammo_casing/shotgun/pellet    = "12 gauge",
-		/obj/item/ammo_casing/shotgun/pellet    = "12 gauge",
-		/obj/item/ammo_casing/shotgun/beanbag   = "12 gauge",
-		/obj/item/ammo_casing/shotgun/stunshell = "12 gauge",
-		/obj/item/ammo_casing/shotgun/flash     = "12 gauge",
 		/obj/item/ammo_casing/a762              = "7.62mm",
 		/obj/item/ammo_casing/a556              = "5.56mm"
 		)
@@ -209,6 +216,10 @@
 	desc = "A half-finished zip gun."
 	icon_state = "zipgun0"
 	item_state = "zipgun-solid"
+	force = 8.0
+	mod_weight = 1.0
+	mod_reach = 1.0
+	mod_handy = 0.75
 	var/buildstate = 0
 
 /obj/item/weapon/zipgunframe/update_icon()

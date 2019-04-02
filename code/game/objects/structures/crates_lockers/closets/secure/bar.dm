@@ -7,6 +7,7 @@
 	icon_opened = "cabinetdetective_open"
 	icon_broken = "cabinetdetective_sparks"
 	icon_off = "cabinetdetective_broken"
+	dremovable = 0
 
 /obj/structure/closet/secure_closet/bar/WillContain()
 	return list(/obj/item/weapon/reagent_containers/food/drinks/bottle/small/beer = 10)

@@ -47,3 +47,19 @@
 
 /obj/item/weapon/storage/box/donut/empty
 	startswith = null
+
+/*
+ * Chalk Box
+ */
+
+/obj/item/weapon/storage/box/chalk
+	name = "box of chalk"
+	desc = "A box of chalk. Outlining corpses? Mixing coke with it? Decorating your gun and convincing people to subscribe to SpacePewCake? Whatever pleases you."
+	icon = 'icons/obj/crayons.dmi'
+	icon_state = "chalkbox"
+	w_class = ITEM_SIZE_SMALL
+	max_w_class = ITEM_SIZE_TINY
+	max_storage_space = 6
+	foldable = /obj/item/stack/material/cardboard
+
+	startswith = list(/obj/item/weapon/pen/crayon/chalk = 6)

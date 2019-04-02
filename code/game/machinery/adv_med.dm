@@ -55,7 +55,7 @@
 	usr.client.eye = src
 	usr.forceMove(src)
 	src.occupant = usr
-	update_use_power(2)
+	update_use_power(POWER_USE_ACTIVE)
 	src.icon_state = "body_scanner_1"
 	for(var/obj/O in src)
 		//O = null
@@ -75,7 +75,7 @@
 		src.occupant.client.perspective = MOB_PERSPECTIVE
 	src.occupant.dropInto(loc)
 	src.occupant = null
-	update_use_power(1)
+	update_use_power(POWER_USE_IDLE)
 	src.icon_state = "body_scanner_0"
 	return
 

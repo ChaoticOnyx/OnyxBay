@@ -7,6 +7,9 @@
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	handle_casings = CYCLE_CASINGS
 	max_shells = 6
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
 	fire_delay = 6.75 //Revolvers are naturally slower-firing
 	ammo_type = /obj/item/ammo_casing/a357
 	var/chamber_offset = 0 //how many empty chambers in the cylinder until you hit a round

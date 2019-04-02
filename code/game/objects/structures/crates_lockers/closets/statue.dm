@@ -12,6 +12,7 @@
 	var/intialBrute = 0
 	var/intialOxy = 0
 	var/timer = 240 //eventually the person will be freed
+	dremovable = 0
 
 /obj/structure/closet/statue/New(loc, var/mob/living/L)
 	if(L && (ishuman(L) || iscorgi(L)))

@@ -11,7 +11,6 @@
 	layer = ABOVE_HUMAN_LAYER
 
 	var/on = 0
-	use_power = 1
 	idle_power_usage = 20
 	active_power_usage = 200
 	clicksound = 'sound/machines/buttonbeep.ogg'
@@ -122,7 +121,7 @@
 		scan = replacetext(scan,"'notice'","'white'")
 		scan = replacetext(scan,"'warning'","'average'")
 		scan = replacetext(scan,"'danger'","'bad'")
-		if (occupant.bodytemperature >= 170)	
+		if (occupant.bodytemperature >= 170)
 			scan += "<br><span class='average'>Warning: Patient's body temperature is not suitable.</span>"
 		scan += "<br>Cryostasis factor: [occupant.stasis_value]x"
 		data["occupant"] = scan
@@ -159,7 +158,7 @@
 	if(user == occupant)
 		return STATUS_CLOSE
 	return ..()
-	    
+
 /obj/machinery/atmospherics/unary/cryo_cell/OnTopic(user, href_list)
 	if(href_list["switchOn"])
 		on = 1
@@ -285,7 +284,7 @@
 /obj/machinery/atmospherics/unary/cryo_cell/proc/expel_gas()
 	if(air_contents.total_moles < 1)
 		return
-	air_contents.remove(air_contents.total_moles/50)	
+	air_contents.remove(air_contents.total_moles/50)
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/go_out()
 	if(!( occupant ))
@@ -300,7 +299,7 @@
 		occupant.bodytemperature = 261									  // Changed to 70 from 140 by Zuhayr due to reoccurance of bug.
 	occupant = null
 	current_heat_capacity = initial(current_heat_capacity)
-	update_use_power(1)
+	update_use_power(POWER_USE_IDLE)
 	update_icon()
 	return
 /obj/machinery/atmospherics/unary/cryo_cell/proc/put_mob(mob/living/carbon/M as mob)
@@ -329,7 +328,7 @@
 		to_chat(M, "<span class='notice'><b>You feel a cold liquid surround you. Your skin starts to freeze up.</b></span>")
 	occupant = M
 	current_heat_capacity = HEAT_CAPACITY_HUMAN
-	update_use_power(2)
+	update_use_power(POWER_USE_ACTIVE)
 //	M.metabslow = 1
 	add_fingerprint(usr)
 	update_icon()

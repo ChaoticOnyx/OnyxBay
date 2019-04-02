@@ -6,6 +6,9 @@
 	icon = 'icons/obj/trash.dmi'
 	w_class = ITEM_SIZE_SMALL
 	desc = "This is rubbish."
+	mod_reach = 0.25
+	mod_weight = 0.25
+	mod_handy = 0.25
 
 /obj/item/trash/raisins
 	name = "\improper 4no raisins"

@@ -31,6 +31,49 @@
 	var/opened = FALSE
 	var/locked = FALSE
 
+	var/obj/item/weapon/shield/closet/cdoor
+	var/dremovable = 1	//	some closets' doors cannot be removed
+	var/nodoor = 0	// for crafting
+
+/obj/structure/closet/nodoor
+	nodoor = 1
+	opened = TRUE
+	density = 0
+
+/obj/item/weapon/shield/closet
+	name = "closet door"
+	desc = "An essential part of a closet. Could it be used as a tower shield?.."
+	icon = 'icons/obj/closet_doors.dmi'
+	icon_state = "steel"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/onmob/items/lefthand_shields.dmi',
+		slot_r_hand_str = 'icons/mob/onmob/items/righthand_shields.dmi',
+		)
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	force = 10.0
+	throwforce = 10.0
+	throw_speed = 1
+	throw_range = 4
+	w_class = ITEM_SIZE_HUGE
+	mod_weight = 1.75
+	mod_reach = 1.5
+	mod_handy = 1.0
+	mod_shield = 1.5
+	origin_tech = list(TECH_MATERIAL = 2)
+	matter = list(DEFAULT_WALL_MATERIAL = 1000)
+	attack_verb = list("shoved", "bashed")
+
+	req_access = list()
+	req_one_access = list()
+
+	var/icon_closed = "closed"
+	var/icon_opened = "open"
+
+	var/icon_locked
+	var/icon_off
+
+	var/lockable = 0
+
 /obj/structure/closet/Initialize()
 	..()
 
@@ -46,6 +89,29 @@
 
 	if(!opened && mapload) // if closed and it's the map loading phase, relevant items at the crate's loc are put in the contents
 		store_contents()
+
+	if(dremovable && !nodoor)
+		var/obj/item/weapon/shield/closet/ndoor = new/obj/item/weapon/shield/closet(src.loc)
+		ndoor.icon_closed = icon_closed
+		ndoor.icon_opened = icon_opened
+
+		ndoor.icon_locked = icon_locked
+		ndoor.icon_off = icon_off
+
+		ndoor.name = "[name] door"
+		ndoor.icon_state = icon_closed
+		ndoor.item_state = icon_closed
+
+		ndoor.req_access = req_access
+		ndoor.req_one_access = req_one_access
+
+		if((setup & CLOSET_HAS_LOCK))
+			ndoor.lockable = 1
+
+		ndoor.loc = src
+		cdoor = ndoor
+
+	update_icon()
 
 /obj/structure/closet/proc/WillContain()
 	return null
@@ -76,12 +142,16 @@
 		return 0
 	if((setup & CLOSET_CAN_BE_WELDED) && welded)
 		return 0
+	if(dremovable && !cdoor)
+		return 0
 	return 1
 
 /obj/structure/closet/proc/can_close()
 	for(var/obj/structure/closet/closet in get_turf(src))
 		if(closet != src)
 			return 0
+	if(dremovable && !cdoor) // there's nothing to close
+		return 0
 	return 1
 
 /obj/structure/closet/proc/dump_contents()
@@ -92,7 +162,8 @@
 			M.client.perspective = MOB_PERSPECTIVE
 
 	for(var/atom/movable/AM in src)
-		AM.dropInto(loc)
+		if(!istype(AM,/obj/item/weapon/shield/closet))
+			AM.dropInto(loc)
 
 /obj/structure/closet/proc/store_contents()
 	var/stored_units = 0
@@ -146,6 +217,8 @@
 		AD.forceMove(src)
 
 	for(var/obj/item/I in loc)
+		if(istype(I,/obj/item/weapon/shield/closet))
+			break
 		if(I.anchored)
 			continue
 		var/item_size = content_size(I)
@@ -212,7 +285,10 @@
 	if(locked)
 		togglelock(user)
 	else if(!(src.opened ? src.close() : src.open()))
-		to_chat(user, "<span class='notice'>It won't budge!</span>")
+		if(dremovable && !cdoor)
+			to_chat(user, "<span class='notice'>There's no door to close!</span>")
+		else
+			to_chat(user, "<span class='notice'>It won't budge!</span>")
 		update_icon()
 
 // this should probably use dump_contents()
@@ -278,6 +354,30 @@
 			user.visible_message("<span class='notice'>[user] empties \the [LB] into \the [src].</span>", \
 								 "<span class='notice'>You empty \the [LB] into \the [src].</span>", \
 								 "<span class='notice'>You hear rustling of clothes.</span>")
+			return
+
+		if(istype(W, /obj/item/weapon/screwdriver) && dremovable && cdoor)
+			user.visible_message("<span class='notice'>[user] starts unscrewing [cdoor] from [src].</span>")
+			user.next_move = world.time + 10
+			if(!do_after(user, 30))
+				return 0
+			if(!cdoor)
+				return 0
+			user.visible_message("<span class='notice'>[user] unscrewed [cdoor] from [src].</span>")
+			remove_door()
+			return
+
+		if(istype(W, /obj/item/weapon/shield/closet) && dremovable && !cdoor)
+			var/obj/item/weapon/shield/closet/C = W
+			user.visible_message("<span class='notice'>[user] starts connecting [C] to [src].</span>")
+			user.next_move = world.time + 10
+			if(!do_after(user, 20))
+				return 0
+			if(cdoor)
+				return 0
+			user.visible_message("<span class='notice'>[user] connected [C] to [src].</span>")
+			user.drop_item()
+			attach_door(C)
 			return
 
 		if(usr.drop_item())
@@ -410,18 +510,38 @@
 /obj/structure/closet/update_icon()//Putting the welded stuff in update_icon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
 	overlays.Cut()
 
-	if(!opened)
-		if(broken && icon_off)
-			icon_state = icon_off
-			overlays += icon_broken
-		else if((setup & CLOSET_HAS_LOCK) && locked && icon_locked)
-			icon_state = icon_locked
-		else
-			icon_state = icon_closed
-		if(welded)
-			overlays += "welded"
+	if(dremovable)
+		icon_state = "[icon_closed]nodoor"
+		if(cdoor)
+			if(!opened)
+				if(broken && icon_off)
+					var/icon/cdoor_icon = new/icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_off]")
+					src.overlays += cdoor_icon
+					src.overlays += icon_broken
+				else if((setup & CLOSET_HAS_LOCK) && locked && cdoor.icon_locked)
+					var/icon/cdoor_icon = new/icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_locked]")
+					src.overlays += cdoor_icon
+				else
+					var/icon/cdoor_icon = new/icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_closed]")
+					src.overlays += cdoor_icon
+				if(welded)
+					overlays += "welded"
+			else
+				var/icon/cdoor_icon = new/icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_opened]")
+				src.overlays += cdoor_icon
 	else
-		icon_state = icon_opened
+		if(!opened)
+			if(broken && icon_off)
+				icon_state = icon_off
+				overlays += icon_broken
+			else if((setup & CLOSET_HAS_LOCK) && locked && icon_locked)
+				icon_state = icon_locked
+			else
+				icon_state = icon_closed
+			if(welded)
+				overlays += "welded"
+		else
+			icon_state = icon_opened
 
 /obj/structure/closet/attack_generic(var/mob/user, var/damage, var/attack_message = "destroys", var/wallbreaker)
 	if(!damage || !wallbreaker)
@@ -437,6 +557,8 @@
 		return 0 //Door's open... wait, why are you in it's contents then?
 	if((setup & CLOSET_HAS_LOCK) && locked)
 		return 1 // Closed and locked
+	if(welded)
+		return 1 // Welded
 	return (!welded) //closed but not welded...
 
 /obj/structure/closet/proc/mob_breakout(var/mob/living/escapee)
@@ -444,6 +566,9 @@
 
 	if(breakout || !req_breakout())
 		return
+
+	if(locked && welded)
+		breakout_time = 3 //3 minutes for welded+locked closets
 
 	escapee.setClickCooldown(100)
 
@@ -485,6 +610,7 @@
 		var/obj/structure/bigDelivery/BD = loc
 		BD.unwrap()
 	open()
+	remove_door()
 
 /obj/structure/closet/onDropInto(var/atom/movable/AM)
 	return
@@ -576,3 +702,38 @@
 	locked = FALSE
 	desc += " It appears to be broken."
 	return TRUE
+
+/obj/structure/closet/proc/remove_door()
+	if(!cdoor)
+		return 0
+	broken = FALSE
+	locked = FALSE
+	var/matrix/M = matrix()
+	M.Turn(90)
+	cdoor.transform = M
+	cdoor.pixel_y = -8
+	cdoor.loc = get_turf(src)
+	cdoor = null
+
+	setup = CLOSET_CAN_BE_WELDED
+
+	update_icon()
+
+	return 1
+
+/obj/structure/closet/proc/attach_door(var/obj/item/weapon/shield/closet/C)
+	if(cdoor)
+		return 0
+	broken = FALSE
+	locked = FALSE
+	C.loc = src
+	cdoor = C
+
+	req_access = cdoor.req_access
+	req_one_access = cdoor.req_one_access
+
+	if(cdoor.lockable) setup = CLOSET_HAS_LOCK
+
+	update_icon()
+
+	return 1

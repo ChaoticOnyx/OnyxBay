@@ -13,6 +13,9 @@
 	fire_sound_text = "a whoosh and a crisp, papery rustle"
 	fire_delay = 1
 	fire_sound = 'sound/weapons/gunshot/money_launcher.ogg'
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
 	var/emagged = 0
 
 	var/receptacle_value = 0

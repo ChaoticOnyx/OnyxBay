@@ -19,6 +19,7 @@
 	var/target_zone
 
 	w_class = ITEM_SIZE_NO_CONTAINER
+	throw_range = 3
 /*
 	This section is for overrides of existing procs.
 */

@@ -9,7 +9,12 @@
 	sharp = 1
 	edge = 1
 	w_class = ITEM_SIZE_SMALL
-	force_divisor = 0.2 // 6 with hardness 30 (glass)
+	mod_weight = 0.4
+	mod_reach = 0.3
+	mod_handy = 0.5
+	force_const = 2.0
+	thrown_force_const = 2.5
+	force_divisor = 0.1 // 5 with hardness 50 (glass)
 	thrown_force_divisor = 0.4 // 4 with weight 15 (glass)
 	item_state = "shard-glass"
 	attack_verb = list("stabbed", "slashed", "sliced", "cut")

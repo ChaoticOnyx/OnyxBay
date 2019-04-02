@@ -921,10 +921,10 @@
 	reagent_state = LIQUID
 	color = "#803835"
 	scannable = 1
-	overdose = 15
+	overdose = 25
 	metabolism = 0.1
 
 /datum/reagent/albumin/affect_blood(var/mob/living/carbon/human/M, var/alien, var/removed)
 	if(!M.should_have_organ(BP_HEART)) //We want the var for safety but we can do without the actual blood.
 		return
-	M.regenerate_blood(2 * removed)
+	M.regenerate_blood(1.5 * removed)

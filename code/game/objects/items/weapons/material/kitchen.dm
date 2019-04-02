@@ -6,12 +6,17 @@
  */
 /obj/item/weapon/material/kitchen/utensil
 	w_class = ITEM_SIZE_TINY
+	mod_weight = 0.25
+	mod_reach = 0.3
+	mod_handy = 0.7
 	thrown_force_divisor = 1
 	origin_tech = list(TECH_MATERIAL = 1)
 	attack_verb = list("attacked", "stabbed", "poked")
 	sharp = 0
 	edge = 0
-	force_divisor = 0.1 // 6 when wielded with hardness 60 (steel)
+	force_const = 3
+	thrown_force_const = 3
+	force_divisor = 0.05 // 3 when wielded with hardness 60 (steel)
 	thrown_force_divisor = 0.25 // 5 when thrown with weight 20 (steel)
 	var/loaded      //Descriptive string for currently loaded food object.
 	var/scoop_food = 1
@@ -28,7 +33,9 @@
 		return ..()
 
 	if(user.a_intent != I_HELP)
-		if(user.zone_sel.selecting == BP_HEAD || user.zone_sel.selecting == BP_EYES)
+		if(user.zone_sel.selecting == BP_EYES)
+			if(istype(user.l_hand,/obj/item/grab) || istype(user.r_hand,/obj/item/grab))
+				return ..()
 			if((CLUMSY in user.mutations) && prob(50))
 				M = user
 			return eyestab(M,user)
@@ -57,16 +64,19 @@
 	name = "fork"
 	desc = "It's a fork. Sure is pointy."
 	icon_state = "fork"
+	sharp = 1
 
 /obj/item/weapon/material/kitchen/utensil/fork/plastic
 	default_material = "plastic"
 
 /obj/item/weapon/material/kitchen/utensil/spoon
 	name = "spoon"
-	desc = "It's a spoon. You can see your own upside-down face in it."
+	desc = "It's a spoon. You can see your own upside-down face in it. Looks like an extremely inefficient weapon"
 	icon_state = "spoon"
 	attack_verb = list("attacked", "poked")
+	sharp = 0
 	force_divisor = 0.1 //2 when wielded with weight 20 (steel)
+	mod_weight = 0.3
 
 /obj/item/weapon/material/kitchen/utensil/spoon/plastic
 	default_material = "plastic"
@@ -78,7 +88,8 @@
 	name = "knife"
 	desc = "A knife for eating with. Can cut through any food."
 	icon_state = "knife"
-	force_divisor = 0.1 // 6 when wielded with hardness 60 (steel)
+	force_const = 3.0
+	force_divisor = 0.05 // 3 when wielded with hardness 60 (steel)
 	scoop_food = 0
 	sharp = 1
 	edge = 1
@@ -94,6 +105,10 @@
 	item_state = "knife"
 	applies_material_colour = 0
 	unbreakable = 1
+	force_const = 4.5
+	mod_weight = 0.3
+	mod_reach = 0.33
+	mod_handy = 0.75
 
 /obj/item/weapon/material/kitchen/utensil/knife/attack(target as mob, mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))
@@ -111,6 +126,10 @@
 	attack_verb = list("ripped", "torn", "cut")
 	applies_material_colour = 0
 	unbreakable = 1
+	force_const = 6.0
+	mod_weight = 0.4
+	mod_reach = 0.5
+	mod_handy = 1.0
 
 /obj/item/weapon/material/kitchen/utensil/knife/plastic
 	default_material = "plastic"
@@ -128,6 +147,9 @@
 	force_divisor = 0.7 // 10 when wielded with weight 15 (wood)
 	thrown_force_divisor = 1 // as above
 	hitsound = 'sound/weapons/genhit3.ogg'
+	mod_weight = 1.2
+	mod_reach = 0.85
+	mod_handy = 0.85
 
 /obj/item/weapon/material/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))

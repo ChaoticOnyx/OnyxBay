@@ -13,6 +13,9 @@
 	density = 0
 	anchored = 0
 	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.5
+	mod_reach = 0.5
+	mod_handy = 0.5
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 5.0
 	throwforce = 5.0

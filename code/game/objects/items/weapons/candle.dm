@@ -5,6 +5,9 @@
 	icon_state = "candle1"
 	item_state = "candle1"
 	w_class = ITEM_SIZE_TINY
+	mod_weight = 0.25
+	mod_reach = 0.25
+	mod_handy = 0.25
 	light_color = "#e09d37"
 	var/wax = 2000
 

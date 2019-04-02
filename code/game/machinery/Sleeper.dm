@@ -26,7 +26,6 @@
 
 	var/locked = 0
 
-	use_power = 1
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
 
@@ -249,7 +248,7 @@
 				I:affecting.client.perspective = EYE_PERSPECTIVE
 				I:affecting.client.eye = src
 			I:affecting.forceMove(src)
-			update_use_power(2)
+			update_use_power(POWER_USE_IDLE)
 			occupant = I:affecting
 			update_icon()
 			qdel(I)
@@ -413,7 +412,7 @@
 	var/chemical_type = available_chemicals[chemical_name]
 	if(occupant && occupant.reagents)
 		if(occupant.reagents.get_reagent_amount(chemical_type) + amount <= 20)
-			use_power(amount * CHEM_SYNTH_ENERGY)
+			use_power_oneoff(amount * CHEM_SYNTH_ENERGY)
 			occupant.reagents.add_reagent(chemical_type, amount)
 			to_chat(user, "Occupant now has [occupant.reagents.get_reagent_amount(chemical_type)] unit\s of [chemical_name] in their bloodstream.")
 		else

@@ -49,6 +49,7 @@ var/list/limb_icon_cache = list()
 	var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[BP_EYES]
 	if(eyes) eyes.update_colour()
 
+
 /obj/item/organ/external/head/removed()
 	update_icon(1)
 	if(owner)
@@ -126,6 +127,9 @@ var/list/limb_icon_cache = list()
 			icon_cache_key += "_model_[model]"
 		dir = EAST
 		icon = mob_icon
+
+/obj/item/organ/external/proc/update_icon_drop(var/mob/living/carbon/human/powner)
+	return
 
 /obj/item/organ/external/proc/get_icon()
 	update_icon()

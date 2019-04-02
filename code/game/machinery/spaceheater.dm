@@ -1,5 +1,5 @@
 /obj/machinery/space_heater
-	use_power = 0
+	use_power = POWER_USE_OFF
 	anchored = 0
 	density = 1
 	icon = 'icons/obj/atmos.dmi'
@@ -82,6 +82,8 @@
 			user.unset_machine()
 	else
 		..()
+		if(I.mod_weight >= 0.75)
+			shake_animation(stime = 4)
 	return
 
 /obj/machinery/space_heater/attack_hand(mob/user as mob)
@@ -186,7 +188,7 @@
 					if(!powered())
 						cell.use(power_draw*CELLRATE)
 					else
-						use_power(power_draw)
+						use_power_oneoff(power_draw)
 					active = heat_transfer
 
 				env.merge(removed)

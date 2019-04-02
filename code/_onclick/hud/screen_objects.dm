@@ -334,6 +334,16 @@
 			if(usr.client)
 				usr.client.drop_item()
 
+		if("block")
+			if(istype(usr,/mob/living/carbon/human))
+				var/mob/living/carbon/human/H = usr
+				H:useblock()
+
+		if("blockswitch")
+			if(istype(usr,/mob/living/carbon/human))
+				var/mob/living/carbon/human/H = usr
+				H:blockswitch()
+
 		if("module")
 			if(isrobot(usr))
 				var/mob/living/silicon/robot/R = usr

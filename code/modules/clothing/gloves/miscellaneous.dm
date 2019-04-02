@@ -2,6 +2,7 @@
 	desc = "Regal blue gloves, with a nice gold trim. Swanky."
 	name = "captain's gloves"
 	icon_state = "captain"
+	armor = list(melee = 20, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/gloves/insulated
 	desc = "These gloves will protect the wearer from electric shocks."
@@ -10,6 +11,7 @@
 	icon_state = "white"
 	siemens_coefficient = 0
 	permeability_coefficient = 0.05
+	armor = list(melee = 10, bullet = 5, laser = 10, energy = 10, bomb = 0, bio = 30, rad = 30)
 
 /obj/item/clothing/gloves/insulated/cheap                             //Cheap Chinese Crap
 	desc = "These gloves are cheap copies of the coveted gloves, no way this can end badly."
@@ -28,6 +30,7 @@
 	item_state = "black"
 	siemens_coefficient = 0.50
 	permeability_coefficient = 0.05
+	armor = list(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0, rad = 0)
 
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
@@ -40,6 +43,7 @@
 	icon_state = "black"
 	siemens_coefficient = 0.50
 	permeability_coefficient = 0.05
+	armor = list(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0, rad = 0)
 
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
@@ -53,7 +57,7 @@
 	desc = "These tactical gloves are somewhat fire and impact-resistant."
 	name = "\improper SWAT Gloves"
 	force = 5
-	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10, rad = 0)
+	armor = list(melee = 45, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10, rad = 0)
 
 /obj/item/clothing/gloves/thick/security
 	name = "\improper Security Gloves"
@@ -65,7 +69,7 @@
 	siemens_coefficient = 0
 	permeability_coefficient = 0.05
 	force = 5
-	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10, rad = 0)
+	armor = list(melee = 45, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10, rad = 30)
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = HANDS
@@ -86,6 +90,7 @@
 	siemens_coefficient = 1.1 //thin latex gloves, much more conductive than fabric gloves (basically a capacitor for AC)
 	permeability_coefficient = 0.01
 	germ_level = 0
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 70, rad = 0)
 
 /obj/item/clothing/gloves/latex/modified
 	item_flags = ITEM_FLAG_PREMODIFIED
@@ -103,7 +108,7 @@
 	name = "work gloves"
 	icon_state = "work"
 	siemens_coefficient = 0.50
-	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/gloves/duty/modified
 	item_flags = ITEM_FLAG_PREMODIFIED

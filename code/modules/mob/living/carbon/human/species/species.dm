@@ -481,7 +481,15 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	return
 
 /datum/species/proc/disarm_attackhand(var/mob/living/carbon/human/attacker, var/mob/living/carbon/human/target)
+
 	attacker.do_attack_animation(target)
+
+	if(target.parrying)
+		if(attacker.get_parried_w(target,w_atk=null))
+			return
+	if(target.blocking)
+		if(attacker.get_blocked_h(target))
+			return
 
 	if(target.w_uniform)
 		target.w_uniform.add_fingerprint(attacker)
@@ -500,18 +508,23 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				target.visible_message("<span class='danger'>[target]'s [W] goes off during the struggle!</span>")
 				return W.afterattack(shoot_to,target)
 
-	var/randn = rand(1, 100)
-	if(!(species_flags & SPECIES_FLAG_NO_SLIP) && randn <= 25)
+	var/effective_armor = target.getarmor(attacker.zone_sel.selecting, "melee")
+	target.poise -= round(4.0+4.0*((100-effective_armor)/100),0.1)
+
+	//target.visible_message("Debug \[DISARM\]: [target] lost [round(4.0+4.0*((100-effective_armor)/100),0.1)] poise ([target.poise]/[target.poise_pool])") // Debug Message
+
+	//var/randn = rand(1, 100)
+	if(!(species_flags & SPECIES_FLAG_NO_SLIP) && target.poise <= 15 && prob(100-target.poise*5.0) && !target.lying)
 		var/armor_check = target.run_armor_check(affecting, "melee")
-		target.apply_effect(3, WEAKEN, armor_check)
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-		if(armor_check < 100)
+		if(prob(100-target.poise*6.5))
 			target.visible_message("<span class='danger'>[attacker] has pushed [target]!</span>")
+			target.apply_effect(3, WEAKEN, armor_check)
 		else
 			target.visible_message("<span class='warning'>[attacker] attempted to push [target]!</span>")
 		return
 
-	if(randn <= 60)
+	if(target.poise <= 35 && prob(100-target.poise*2)) //30 poise = 40% disarm, 20 poise = 60% disarm, 10 poise = 80% disarm, 0 poise = 100% disarm
 		//See about breaking grips or pulls
 		if(target.break_all_grabs(attacker))
 			playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
@@ -526,7 +539,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				return
 
 	playsound(target.loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
-	target.visible_message("<span class='danger'>[attacker] attempted to disarm \the [target]!</span>")
+	target.visible_message("<span class='warning'>[attacker] attempted to disarm \the [target]!</span>")
 
 /datum/species/proc/disfigure_msg(var/mob/living/carbon/human/H) //Used for determining the message a disfigured face has on examine. To add a unique message, just add this onto a specific species and change the "return" message.
 	var/datum/gender/T = gender_datums[H.get_gender()]

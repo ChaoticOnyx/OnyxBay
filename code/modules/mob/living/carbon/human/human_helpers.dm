@@ -57,6 +57,8 @@
 		process_glasses(glasses)
 	if(istype(src.wear_mask, /obj/item/clothing/mask))
 		add_clothing_protection(wear_mask)
+		if(wear_mask.overlay)
+			equipment_overlays |= wear_mask.overlay
 	if(istype(back,/obj/item/weapon/rig))
 		process_rig(back)
 
@@ -135,7 +137,7 @@
 		return 0
 	if(!species)
 		return 0
-	
+
 	if(bodytemperature > species.cold_level_1)
 		return 0
 	else if(bodytemperature > species.cold_level_2)
@@ -232,6 +234,9 @@
 
 	if(G.can_grab())
 		G.init()
+		victim.m_intent = "walk"
+		if(victim.hud_used)
+			victim.hud_used.move_intent.icon_state = "walking"
 		return 1
 	else
 		qdel(G)

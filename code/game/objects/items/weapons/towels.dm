@@ -6,6 +6,9 @@
 	slot_flags = SLOT_HEAD | SLOT_BELT | SLOT_OCLOTHING
 	force = 0.5
 	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 0.5
+	mod_reach = 0.75
+	mod_handy = 0.25
 	attack_verb = list("whipped")
 	hitsound = 'sound/weapons/towelwhip.ogg'
 	desc = "A soft cotton towel."

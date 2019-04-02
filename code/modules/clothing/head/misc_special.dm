@@ -21,7 +21,7 @@
 		)
 	matter = list(DEFAULT_WALL_MATERIAL = 3000, "glass" = 1000)
 	var/up = 0
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 40, bullet = 45, laser = 55,energy = 20, bomb = 20, bio = 0, rad = 0)
 	flags_inv = (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
 	body_parts_covered = HEAD|FACE|EYES
 	action_button_name = "Flip Welding Mask"
@@ -52,6 +52,7 @@
 			icon_state = base_state
 			item_state = base_state
 			to_chat(usr, "You flip the [src] down to protect your eyes.")
+			armor = list(melee = 45, bullet = 45, laser = 55,energy = 20, bomb = 20, bio = 0, rad = 0)
 		else
 			src.up = !src.up
 			body_parts_covered &= ~(EYES|FACE)
@@ -61,6 +62,7 @@
 			icon_state = "[base_state]up"
 			item_state = "[base_state]up"
 			to_chat(usr, "You push the [src] up out of your face.")
+			armor = list(melee = 25, bullet = 25, laser = 30,energy = 10, bomb = 10, bio = 0, rad = 0)
 		update_clothing_icon()	//so our mob-overlays
 		update_vision()
 		usr.update_action_buttons()
@@ -116,6 +118,7 @@
 	item_state = "cake0"
 	var/onfire = 0
 	body_parts_covered = HEAD
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/head/cakehat/Process()
 	if(!onfire)
@@ -158,6 +161,7 @@
 	flags_inv = HIDEEARS|BLOCKHEADHAIR
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/head/ushanka/attack_self(mob/user as mob)
 	if(icon_state == initial(icon_state))
@@ -185,6 +189,7 @@
 	brightness_on = 2
 	light_overlay = "helmet_light"
 	w_class = ITEM_SIZE_NORMAL
+	armor = list(melee = 15, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /*
  * Kitty ears
@@ -205,9 +210,19 @@
 		var/icon/earbit = new/icon("icon" = 'icons/mob/onmob/head.dmi', "icon_state" = "kittyinner")
 		ears.Blend(earbit, ICON_OVERLAY)
 
+/obj/item/clothing/head/kitty/verb/nekomagic()
+	set category = "Object"
+	set name = "Neko Magic"
+	set desc = "Adjust your kitty ears to match your hair color."
+	set src in usr
+
+	if(usr.canmove && !usr.stat && !usr.restrained())
+		src.update_icon(usr)
+
 /obj/item/clothing/head/richard
 	name = "chicken mask"
 	desc = "You can hear the distant sounds of rhythmic electronica."
 	icon_state = "richard"
 	body_parts_covered = HEAD|FACE
 	flags_inv = BLOCKHAIR
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
