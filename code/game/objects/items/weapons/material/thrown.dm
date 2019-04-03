@@ -5,7 +5,7 @@
 	randpixel = 12
 	w_class = ITEM_SIZE_SMALL
 	force_const = 3.0
-	thrown_force_const = 5.0
+	thrown_force_const = 3.0
 	mod_weight = 0.5
 	mod_reach = 0.35
 	mod_handy = 0.75
