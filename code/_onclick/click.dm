@@ -45,6 +45,9 @@
 	next_click = world.time + 1
 
 	var/list/modifiers = params2list(params)
+	var/dragged = modifiers["drag"]
+	if(dragged && !modifiers[dragged])
+		return
 	if(modifiers["shift"] && modifiers["ctrl"])
 		CtrlShiftClickOn(A)
 		return 1
