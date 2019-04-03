@@ -266,7 +266,7 @@ meteor_act
 
 	poise_damage = round((2.5+(I.mod_weight*3.0 + I.mod_reach))/1.5 + (2.5+(I.mod_weight*3.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
 	if(headcheck(hit_zone))
-		poise_damage *= 1.2
+		poise_damage *= 1.15
 	src.poise -= poise_damage
 
 	//visible_message("Debug \[HIT\]: [src] lost [poise_damage] poise ([src.poise]/[src.poise_pool])") // Debug Message
@@ -361,9 +361,9 @@ meteor_act
 
 		//visible_message("Debug \[BASH\]: [A] used [2.0+(I.mod_weight*2 + (1-I.mod_handy))] poise ([A.poise]/[A.poise_pool])") // Debug Message
 
-	poise_damage = round((3.5+(I.mod_weight*3.5 + I.mod_reach))/1.5 + (3.5+(I.mod_weight*4.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
+	poise_damage = round((3.5+(I.mod_weight*3.0 + I.mod_reach))/1.5 + (3.5+(I.mod_weight*4.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
 	if(headcheck(hit_zone))
-		poise_damage *= 1.2
+		poise_damage *= 1.15
 	src.poise -= poise_damage
 
 	//visible_message("Debug \[BASH\]: [src] lost [poise_damage] poise ([src.poise]/[src.poise_pool])") // Debug Message

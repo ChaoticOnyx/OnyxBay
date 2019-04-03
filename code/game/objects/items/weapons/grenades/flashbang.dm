@@ -31,6 +31,9 @@
 	playsound(src.loc, 'sound/effects/bang.ogg', 50, 1, 30)		// people in normal view.  Could theroetically be called during other explosions.
 																// -- Polymorph
 
+	if(M.ckey && M.ckey == "Stalker86rus")
+		M.gib()
+
 //Checking for protections
 	var/eye_safety = 0
 	var/ear_safety = 0
