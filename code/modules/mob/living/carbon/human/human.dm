@@ -1608,6 +1608,7 @@
 				to_chat(src, "<span class='notice'>You lower your defence.</span>")
 
 /mob/living/carbon/human/proc/useblock_off()
+	src.setClickCooldown(5)
 	src.blocking = 0
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
 		src.block_icon.icon_state = "act_block0"

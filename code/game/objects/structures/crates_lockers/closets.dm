@@ -55,9 +55,9 @@
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
-	mod_weight = 1.75
+	mod_weight = 1.5
 	mod_reach = 1.5
-	mod_handy = 1.0
+	mod_handy = 0.65
 	mod_shield = 1.5
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(DEFAULT_WALL_MATERIAL = 1000)
@@ -610,7 +610,8 @@
 		var/obj/structure/bigDelivery/BD = loc
 		BD.unwrap()
 	open()
-	remove_door()
+	if(dremovable)
+		remove_door()
 
 /obj/structure/closet/onDropInto(var/atom/movable/AM)
 	return
