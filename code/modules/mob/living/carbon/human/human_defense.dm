@@ -597,7 +597,12 @@ meteor_act
 		else
 			defender.poise -= 2.5+(w_atk.mod_weight*10 + w_atk.mod_reach*5)
 			attacker.poise -= (w_atk.mod_weight*2 + (1-w_atk.mod_handy)*2)
-			visible_message("<span class='warning'>[defender] blocks [attacker]'s [w_atk.name] with their bare hands!</span>")
+			if((w_atk.sharp || w_atk.edge) && w_atk.force >= 10)
+				visible_message("<span class='warning'>[defender] blocks [attacker]'s [w_atk.name] with their bare hands! Ouch.</span>")
+				defender.apply_damage((w_atk.force*0.2), w_atk.damtype, BP_R_HAND, 0, 0, used_weapon=w_atk)
+				defender.apply_damage((w_atk.force*0.2), w_atk.damtype, BP_L_HAND, 0, 0, used_weapon=w_atk)
+			else
+				visible_message("<span class='warning'>[defender] blocks [attacker]'s [w_atk.name] with their bare hands!</span>")
 			defender.useblock_off()
 			if(defender.poise <= 10)
 				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")

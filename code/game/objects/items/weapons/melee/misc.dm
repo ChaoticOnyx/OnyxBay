@@ -8,9 +8,9 @@
 	force = 10
 	throwforce = 7
 	w_class = ITEM_SIZE_NORMAL
-	mod_weight = 1.25
-	mod_reach = 1.25
-	mod_handy = 1.25
+	mod_weight = 0.8
+	mod_reach = 1.5
+	mod_handy = 1.15
 	origin_tech = list(TECH_COMBAT = 4)
 	attack_verb = list("flicked", "whipped", "lashed")
 

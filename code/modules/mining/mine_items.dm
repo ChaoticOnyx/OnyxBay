@@ -45,8 +45,11 @@
 	icon = 'icons/obj/tools.dmi'
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	force = 15.0
-	throwforce = 4.0
+	force = 14.5
+	throwforce = 10.0
+	mod_weight = 1.35
+	mod_reach = 1.25
+	mod_handy = 0.9
 	icon_state = "pickaxe"
 	item_state = "jackhammer"
 	w_class = ITEM_SIZE_HUGE
@@ -77,6 +80,7 @@
 	name = "advanced mining drill" // Can dig sand as well!
 	icon_state = "handdrill"
 	item_state = "jackhammer"
+	force = 15.5
 	digspeed = 30
 	origin_tech = list(TECH_MATERIAL = 2, TECH_POWER = 3, TECH_ENGINEERING = 2)
 	desc = "Yours is the drill that will pierce through the rock walls."
@@ -86,6 +90,10 @@
 	name = "sonic jackhammer"
 	icon_state = "jackhammer"
 	item_state = "jackhammer"
+	force = 17.5
+	mod_weight = 1.5
+	mod_reach = 1.35
+	mod_handy = 0.9
 	digspeed = 20 //faster than drill, but cannot dig
 	origin_tech = list(TECH_MATERIAL = 3, TECH_POWER = 2, TECH_ENGINEERING = 2)
 	desc = "Cracks rocks with sonic blasts, perfect for killing cave lizards."
@@ -113,6 +121,7 @@
 	name = "diamond mining drill"
 	icon_state = "diamonddrill"
 	item_state = "jackhammer"
+	force = 19.0
 	digspeed = 5 //Digs through walls, girders, and can dig up sand
 	origin_tech = list(TECH_MATERIAL = 6, TECH_POWER = 4, TECH_ENGINEERING = 5)
 	desc = "Yours is the drill that will pierce the heavens!"
@@ -122,7 +131,7 @@
 	name = "cyborg mining drill"
 	icon_state = "pickaxe"
 	item_state = "jackhammer"
-	digspeed = 15
+	digspeed = 10
 	desc = ""
 	drill_verb = "drilling"
 
@@ -135,8 +144,11 @@
 	icon_state = "shovel"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	force = 8.0
-	throwforce = 4.0
+	force = 12.5
+	throwforce = 8.5
+	mod_weight = 1.25
+	mod_reach = 1.5
+	mod_handy = 0.9
 	item_state = "shovel"
 	w_class = ITEM_SIZE_HUGE
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
@@ -150,8 +162,11 @@
 	desc = "A small tool for digging and moving dirt."
 	icon_state = "spade"
 	item_state = "spade"
-	force = 5.0
+	force = 7.5
 	throwforce = 7.0
+	mod_weight = 0.7
+	mod_reach = 0.7
+	mod_handy = 0.9
 	w_class = ITEM_SIZE_SMALL
 
 /**********************Flags**************************/
@@ -410,8 +425,11 @@
 	icon_state = "resonator"
 	item_state = "resonator"
 	desc = "A handheld device that creates small fields of energy that resonate until they detonate, crushing rock. It can also be activated without a target to create a field at the user's location, to act as a delayed time trap. It's more effective in a vacuum."
-	w_class = 3
-	force = 15
+	w_class = ITEM_SIZE_HUGE
+	force = 20.0
+	mod_weight = 1.5
+	mod_reach = 1.25
+	mod_handy = 0.9
 	throwforce = 10
 	var/burst_time = 50
 	var/fieldlimit = 4

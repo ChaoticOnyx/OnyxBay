@@ -10,7 +10,7 @@
 	mod_reach = 1.5
 	mod_weight = 1.0
 	mod_handy = 1.15
-	w_class = ITEM_SIZE_SMALL
+	w_class = ITEM_SIZE_NORMAL
 	matter = list(DEFAULT_WALL_MATERIAL = 50)
 	attack_verb = list("bludgeoned", "whacked", "disciplined", "thrashed")
 

@@ -8,6 +8,10 @@
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "welderpack"
 	w_class = ITEM_SIZE_HUGE
+	force = 17.5
+	mod_weight = 1.75
+	mod_reach = 1.0
+	mod_handy = 0.5
 	var/max_fuel = 350
 	var/obj/item/weapon/weldingtool/welder
 

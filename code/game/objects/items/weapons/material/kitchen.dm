@@ -145,7 +145,7 @@
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked")
 	default_material = "wood"
 	force_divisor = 0.7 // 10 when wielded with weight 15 (wood)
-	thrown_force_divisor = 1 // as above
+	thrown_force_divisor = 0.85 // ~13 dmg (wood)
 	hitsound = 'sound/weapons/genhit3.ogg'
 	mod_weight = 1.2
 	mod_reach = 0.85
