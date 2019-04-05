@@ -181,9 +181,9 @@ datum/track/New(var/title_name, var/audio)
 	new /obj/effect/decal/cleanable/blood/oil(src.loc)
 	qdel(src)
 
-//#/obj/machinery/media/jukebox/attackby(obj/item/W as obj, mob/user as mob)
-//#	var/paid = 0
-//#	var/handled = 0
+/obj/machinery/media/jukebox/attackby(obj/item/W as obj, mob/user as mob)
+//	var/paid = 0
+//	var/handled = 0
 //#	if (istype(W, /obj/item/weapon/spacecash/bundle))
 //#		if(300> cashmoney.worth)
 //#			// This is not a status display message, since it's something the character themselves is meant to see BEFORE putting the money in
@@ -220,16 +220,15 @@ datum/track/New(var/title_name, var/audio)
 //#	if (istype(W, /obj/item/weapon/spacecash))
 //#		attack_hand(user)
 //#		return
-//#	else if(isWrench(W))
-//#		add_fingerprint(user)
-//#		wrench_floor_bolts(user, 0)
-//#		power_change()
-//#		return
+ if(isWrench(W))
+		add_fingerprint(user)
+		wrench_floor_bolts(user, 0)
+		power_change()
+		return
 //#	else if(istype(W, /obj/item/weapon/coin))
 //#		to_chat(user, "<span class='notice'>You need some modern cash to use \the [src]. No coins, tallers only.</span>")
 //#		return
 //#	return ..()
-//Takie dela
 /obj/machinery/media/jukebox/emag_act(var/remaining_charges, var/mob/user)
 	if(!emagged)
 		emagged = 1
