@@ -71,7 +71,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.0
 	mod_reach = 0.6
-	mod_handy = 1.0
+	mod_handy = 0.9
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	attack_verb = list("drilled")
 
@@ -146,7 +146,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.2
 	mod_reach = 0.65
-	mod_handy = 1.0
+	mod_handy = 0.9
 	throwforce = 9.0
 	throw_speed = 3
 	throw_range = 5
@@ -166,7 +166,7 @@
 		icon_state = "chainspear"
 		item_state = "chainspear"
 		mod_weight = 1.3
-		mod_reach = 1.5
+		mod_reach = 1.55
 		w_class = ITEM_SIZE_LARGE
 		improved = 1
 		surgery_speed = 1.2 // Well, it's bigger and heavier now
@@ -177,7 +177,7 @@
 		icon_state = "saw3"
 		item_state = "saw3"
 		mod_weight = 1.2
-		mod_reach = 0.75
+		mod_reach = 0.65
 		w_class = ITEM_SIZE_NORMAL
 		improved = 0
 		surgery_speed = 1.0
@@ -188,9 +188,35 @@
 	name = "plasma saw"
 	desc = "Perfect for cutting through ice."
 	icon_state = "plasmasaw"
-	force = 25.0
+	force = 22.5
 	surgery_speed = 0.5
-	improved = 2 // Jeez I'm waaay to lazy to draw sprites for plasma chainspear
+	//improved = 2 // Jeez I'm waaay to lazy to draw sprites for plasma chainspear
+
+/obj/item/weapon/circular_saw/plasmasaw/attackby(obj/item/weapon/W, mob/user)
+	if(istype(W,/obj/item/weapon/material/wirerod) && improved == 0)
+		user.drop_from_inventory(W)
+		qdel(W)
+		name = "plasma spear"
+		desc = "For The Heaviest-Dutiest cutting in glory of The Emperor and The Imperium."
+		icon_state = "chainspearp"
+		item_state = "chainspearp"
+		mod_weight = 1.3
+		mod_reach = 1.55
+		w_class = ITEM_SIZE_LARGE
+		improved = 1
+		surgery_speed = 1.2 // Well, it's bigger and heavier now
+	if(istype(W,/obj/item/weapon/wirecutters) && improved == 1)
+		new /obj/item/weapon/material/wirerod(get_turf(src)) //give back the wired rod
+		name = "circular saw"
+		desc = "Perfect for cutting through ice. And bodies."
+		icon_state = "plasmasaw"
+		item_state = "plasmasaw"
+		mod_weight = 1.2
+		mod_reach = 0.65
+		w_class = ITEM_SIZE_NORMAL
+		improved = 0
+		surgery_speed = 1.0
+	..()
 
 //misc, formerly from code/defines/weapons.dm
 /obj/item/weapon/bonegel
