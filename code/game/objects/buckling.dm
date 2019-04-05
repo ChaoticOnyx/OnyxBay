@@ -65,7 +65,7 @@
 	if(!ticker) //why do we need to check this?
 		to_chat(user, "<span class='warning'>You can't buckle anyone in before the game starts.</span>")
 		return 0
-	if(!user.Adjacent(M) || user.restrained() || user.stat || istype(user, /mob/living/silicon/pai))
+	if(!user.Adjacent(M) || istype(user, /mob/living/silicon/pai) || (M != user && user.incapacitated())) // Shoud work better now | 5/04/19
 		return 0
 	if(M == buckled_mob)
 		return 0

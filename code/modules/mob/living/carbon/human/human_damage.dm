@@ -431,7 +431,6 @@ This function restores all organs.
 	return organs_by_name[check_zone(zone)]
 
 /mob/living/carbon/human/apply_damage(var/damage = 0, var/damagetype = BRUTE, var/def_zone = null, var/blocked = 0, var/damage_flags = 0, var/obj/used_weapon = null, var/obj/item/organ/external/given_organ = null)
-
 	var/obj/item/organ/external/organ = given_organ
 	if(!organ)
 		if(isorgan(def_zone))
@@ -445,19 +444,20 @@ This function restores all organs.
 		..(damage, damagetype, def_zone, blocked)
 		return 1
 
+	if(!istype(organ))
+		return 0
+
 	handle_suit_punctures(damagetype, damage, def_zone)
 
 	if(blocked >= 100)	return 0
-
-	if(!organ)	return 0
-
-	if(blocked)
-		damage *= blocked_mult(blocked)
+	if(blocked) damage *= blocked_mult(blocked)
 
 	if(damage > 15 && prob(damage*4))
 		make_adrenaline(round(damage/10))
+
 	var/datum/wound/created_wound
 	damageoverlaytemp = 20
+
 	switch(damagetype)
 		if(BRUTE)
 			damage = damage*species.brute_mod
@@ -492,7 +492,6 @@ This function restores all organs.
 
 // Find out in how much pain the mob is at the moment.
 /mob/living/carbon/human/proc/get_shock()
-
 	if (!can_feel_pain())
 		return 0
 
