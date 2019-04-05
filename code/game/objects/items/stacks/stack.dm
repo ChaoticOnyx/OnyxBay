@@ -24,6 +24,7 @@
 	var/uses_charge = 0
 	var/list/charge_costs = null
 	var/list/datum/matter_synth/synths = null
+	var/craft_tool //determines what kind of tools should be used for crafting
 
 /obj/item/stack/New(var/loc, var/amount=null)
 	..()
@@ -116,66 +117,73 @@
 	var/required = quantity*recipe.req_amount
 	var/produced = min(quantity*recipe.res_amount, recipe.max_res_amount)
 
-	if (!isWelder(user.get_active_hand()) && !uses_charge)
-		to_chat(user, "<span class='warning'>You need a welding tool to construct \the [recipe.title]!</span>")
-		return
-	else
-		var/obj/item/weapon/weldingtool/WT
-		if(!uses_charge)
-			WT = user.get_active_hand()
-
-		if (!can_use(required))
-			if (produced>1)
-				to_chat(user, "<span class='warning'>You haven't got enough [src] to build \the [produced] [recipe.title]\s!</span>")
-			else
-				to_chat(user, "<span class='warning'>You haven't got enough [src] to build \the [recipe.title]!</span>")
-			return
-
-		if (recipe.one_per_turf)
-			if (istype(src.loc,/turf) && locate(recipe.result_type) in src.loc)
-				to_chat(user, "<span class='warning'>There is another [recipe.title] here!</span>")
-				return
-			else if (locate(recipe.result_type) in user.loc)
-				to_chat(user, "<span class='warning'>There is another [recipe.title] here!</span>")
-				return
-
-		if (recipe.on_floor && !isfloor(user.loc))
-			if (istype(src.loc,/turf) && !isfloor(src.loc))
-				to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
-				return
-			else if (!isfloor(user.loc))
-				to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
-				return
-
-		if((WT && WT.remove_fuel(0, user)) || uses_charge)
-
-			if (recipe.time)
-				to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
-				if (!do_after(user, recipe.time))
+	if(!uses_charge)
+		switch(craft_tool)
+			if(1)
+				if(!user.get_active_hand() || ((!user:get_active_hand().sharp) && (!user:get_active_hand().edge)))
+					to_chat(user, "<span class='warning'>You need something sharp to construct \the [recipe.title]!</span>")
+					return
+			if(2)
+				if(!isWelder(user.get_active_hand()))
+					to_chat(user, "<span class='warning'>You need a welding tool to construct \the [recipe.title]!</span>")
 					return
 
-			if (use(required))
-				var/atom/O
-				if(recipe.use_material)
-					if(istype(src.loc,/turf))
-						O = new recipe.result_type(src.loc, recipe.use_material)
-					else
-						O = new recipe.result_type(user.loc, recipe.use_material)
+	var/obj/item/weapon/weldingtool/WT
+	if(!uses_charge && craft_tool == 2)
+		WT = user.get_active_hand()
+
+	if (!can_use(required))
+		if (produced>1)
+			to_chat(user, "<span class='warning'>You haven't got enough [src] to build \the [produced] [recipe.title]\s!</span>")
+		else
+			to_chat(user, "<span class='warning'>You haven't got enough [src] to build \the [recipe.title]!</span>")
+		return
+
+	if (recipe.one_per_turf)
+		if (istype(src.loc,/turf) && locate(recipe.result_type) in src.loc)
+			to_chat(user, "<span class='warning'>There is another [recipe.title] here!</span>")
+			return
+		else if (locate(recipe.result_type) in user.loc)
+			to_chat(user, "<span class='warning'>There is another [recipe.title] here!</span>")
+			return
+
+	if (recipe.on_floor && !isfloor(user.loc))
+		if (istype(src.loc,/turf) && !isfloor(src.loc))
+			to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
+			return
+		else if (!isfloor(user.loc))
+			to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
+			return
+
+	if((WT && WT.remove_fuel(0, user)) || uses_charge || craft_tool == 1)
+
+		if (recipe.time)
+			to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
+			if (!do_after(user, recipe.time))
+				return
+
+		if (use(required))
+			var/atom/O
+			if(recipe.use_material)
+				if(istype(src.loc,/turf))
+					O = new recipe.result_type(src.loc, recipe.use_material)
 				else
-					if(istype(src.loc,/turf))
-						O = new recipe.result_type(src.loc)
-					else
-						O = new recipe.result_type(user.loc)
-				O.set_dir(user.dir)
-				O.add_fingerprint(user)
+					O = new recipe.result_type(user.loc, recipe.use_material)
+			else
+				if(istype(src.loc,/turf))
+					O = new recipe.result_type(src.loc)
+				else
+					O = new recipe.result_type(user.loc)
+			O.set_dir(user.dir)
+			O.add_fingerprint(user)
 
-				if (recipe.goes_in_hands && !recipe.on_floor)
-					user.put_in_hands(O)
+			if (recipe.goes_in_hands && !recipe.on_floor)
+				user.put_in_hands(O)
 
-				if (istype(O, /obj/item/stack))
-					var/obj/item/stack/S = O
-					S.amount = produced
-					S.add_to_stacks(user, recipe.goes_in_hands)
+			if (istype(O, /obj/item/stack))
+				var/obj/item/stack/S = O
+				S.amount = produced
+				S.add_to_stacks(user, recipe.goes_in_hands)
 
 /obj/item/stack/Topic(href, href_list)
 	..()
@@ -378,8 +386,15 @@
 				S.interact(usr)
 			if (src && usr.machine==src)
 				src.interact(usr)
-	else if(!uses_charge && isWelder(W))
-		list_recipes(user)
+	//else if(!uses_charge)
+	//	if(isWelder(W))
+	//	list_recipes(user)
+	else if(!uses_charge)
+		switch(craft_tool)
+			if(1)
+				if(W.sharp || W.edge) list_recipes(user)
+			if(2)
+				if(isWelder(W)) list_recipes(user)
 	else
 		return ..()
 
