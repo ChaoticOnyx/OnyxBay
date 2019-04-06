@@ -256,7 +256,6 @@
 		if(isturf(old_loc) && (src.w_class >= ITEM_SIZE_NORMAL))
 			var/obj/effect/temporary/item_pickup_ghost/ghost = new /obj/effect/temporary/item_pickup_ghost(old_loc, src)
 			ghost.animate_towards(user)
-			to_chat(user, "<span class='notice'>Animatio!</span>")
 		if(randpixel)
 			pixel_x = rand(-randpixel, randpixel)
 			pixel_y = rand(-randpixel/2, randpixel/2)
