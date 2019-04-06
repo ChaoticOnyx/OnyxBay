@@ -3,14 +3,15 @@
 // SS_BACKGROUND handles high server load differently than Normal and SS_TICKER do.
 // Higher priority also means a larger share of a given tick before sleep checks.
 
-// SS_TICKER
-// < none >
-
 #define SS_PRIORITY_DEFAULT 50          // Default priority for both normal and background processes
 
+// SS_TICKER
+#define SS_PRIORITY_ICON_UPDATE    20	// Queued icon updates. Mostly used by APCs and tables.
+
 // Normal
-#define SS_PRIORITY_MOB            100	// Mob Life().
-#define SS_PRIORITY_MACHINERY      100	// Machinery + powernet ticks.
+#define SS_PRIORITY_TICKER         100  // Gameticker.
+#define SS_PRIORITY_MOB            95	// Mob Life().
+#define SS_PRIORITY_MACHINERY      95	// Machinery + powernet ticks.
 #define SS_PRIORITY_AIR            80	// ZAS processing.
 #define SS_PRIORITY_AIRFLOW        15	// Object movement from ZAS airflow.
 

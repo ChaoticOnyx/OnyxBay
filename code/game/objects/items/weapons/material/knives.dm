@@ -67,6 +67,7 @@
 	force_const = 5.5
 	thrown_force_const = 3
 	force_divisor = 0.05 // 6 when wielded with hardness 60 (steel)
+	thrown_force_divisor = 0.25 // 5 when thrown with weight 20 (steel)
 	matter = list(DEFAULT_WALL_MATERIAL = 12000)
 	origin_tech = list(TECH_MATERIAL = 1)
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")

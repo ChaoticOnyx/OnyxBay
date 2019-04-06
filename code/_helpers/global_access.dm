@@ -51,6 +51,8 @@
 			return global.SSfastprocess;
 		if("SSgarbage")
 			return global.SSgarbage;
+		if("SSicon_update")
+			return global.SSicon_update;
 		if("SSlegacy")
 			return global.SSlegacy;
 		if("SSmachines")
@@ -1090,6 +1092,8 @@
 			global.SSfastprocess=newval;
 		if("SSgarbage")
 			global.SSgarbage=newval;
+		if("SSicon_update")
+			global.SSicon_update=newval;;
 		if("SSlegacy")
 			global.SSlegacy=newval;
 		if("SSmachines")
@@ -2103,6 +2107,7 @@
 	"SSatoms",
 	"SSfastprocess",
 	"SSgarbage",
+	"SSicon_update",
 	"SSlegacy",
 	"SSmachines",
 	"SSmapping",

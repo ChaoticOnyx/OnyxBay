@@ -264,7 +264,7 @@
 		return
 
 	var/tforce = AM:throwforce * (speed/THROWFORCE_SPEED_DIVISOR)
-	if (tforce < 15)
+	if (tforce < 17.5)
 		return
 
 	take_damage(tforce)

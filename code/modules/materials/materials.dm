@@ -117,6 +117,8 @@ var/list/name_to_material
 	var/hardness = 60            // Prob of wall destruction by hulk, used for edge damage in weapons.
 	var/weight = 20              // Determines blunt damage/throwforce for weapons.
 
+	var/craft_tool = 2			// Tools required for crafting. 1 for sharp/edge items, 2 for welders.
+
 	// Noise when someone is faceplanted onto a table made of this material.
 	var/tableslam_noise = 'sound/weapons/tablehit1.ogg'
 	// Noise made when a simple door made of this material opens or closes.
@@ -358,6 +360,7 @@ var/list/name_to_material
 	sheet_plural_name = "bricks"
 	conductive = 0
 	resilience = 9
+	craft_tool = 1
 
 /material/stone/marble
 	name = "marble"
@@ -369,6 +372,7 @@ var/list/name_to_material
 	resilience = 9
 	reflectance = 5
 	stack_type = /obj/item/stack/material/marble
+	craft_tool = 1
 
 /material/steel
 	name = DEFAULT_WALL_MATERIAL
@@ -378,7 +382,7 @@ var/list/name_to_material
 	brute_armor = 5
 	icon_base = "solid"
 	icon_reinf = "reinf_over"
-	icon_colour = "#888888"
+	icon_colour = "#666666"
 	hitsound = 'sound/weapons/Genhit.ogg'
 	resilience = 36
 	reflectance = 13
@@ -392,6 +396,7 @@ var/list/name_to_material
 	icon_reinf = "noreinf"
 	hitsound = 'sound/effects/attackblob.ogg'
 	conductive = 0
+	craft_tool = 1
 
 /material/diona/place_dismantled_product()
 	return
@@ -735,6 +740,7 @@ var/list/name_to_material
 	sheet_plural_name = "planks"
 	hitsound = 'sound/effects/woodhit.ogg'
 	conductive = 0
+	craft_tool = 1
 
 /material/wood
 	name = "wood"
@@ -760,6 +766,7 @@ var/list/name_to_material
 	sheet_plural_name = "planks"
 	hitsound = 'sound/effects/woodhit.ogg'
 	conductive = 0
+	craft_tool = 1
 
 /material/wood/holographic
 	name = "holowood"
@@ -784,6 +791,7 @@ var/list/name_to_material
 	door_icon_base = "wood"
 	destruction_desc = "crumples"
 	conductive = 0
+	craft_tool = 1
 
 /material/cloth //todo
 	name = "cloth"
@@ -794,6 +802,7 @@ var/list/name_to_material
 	flags = MATERIAL_PADDING
 	brute_armor = 1
 	conductive = 0
+	craft_tool = 1
 
 /material/cult
 	name = "cult"
@@ -864,6 +873,7 @@ var/list/name_to_material
 	ignition_point = T0C+300
 	melting_point = T0C+300
 	conductive = 0
+	craft_tool = 1
 
 /material/carpet
 	name = "carpet"
@@ -876,6 +886,7 @@ var/list/name_to_material
 	sheet_singular_name = "tile"
 	sheet_plural_name = "tiles"
 	conductive = 0
+	craft_tool = 1
 
 /material/cotton
 	name = "cotton"
@@ -885,6 +896,7 @@ var/list/name_to_material
 	ignition_point = T0C+232
 	melting_point = T0C+300
 	conductive = 0
+	craft_tool = 1
 
 /material/cloth_teal
 	name = "teal"

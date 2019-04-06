@@ -967,7 +967,7 @@
 	return 0
 
 /mob/update_icon()
-	return
+	return update_icons()
 
 // /mob/verb/face_direction()
 // 	set name = "Face Direction"

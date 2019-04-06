@@ -36,6 +36,7 @@
 		obj_flags &= (~OBJ_FLAG_CONDUCTIBLE)
 
 	matter = material.get_matter()
+	craft_tool = material.craft_tool
 	update_strings()
 
 /obj/item/stack/material/get_material()

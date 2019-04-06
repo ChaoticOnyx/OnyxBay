@@ -11,7 +11,10 @@
 	description_antag = "This handy little tool can get you through doors, turn off power, and anything else you might need."
 	icon_state = "multitool"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 5.0
+	force = 6.0
+	mod_weight = 0.6
+	mod_reach = 0.5
+	mod_handy = 0.85
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 5.0
 	throw_range = 15

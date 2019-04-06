@@ -28,7 +28,7 @@
 	var/mod_reach = 0.25 //Length modifier. i.e. 0.35 - knives, 0.75 - toolboxes, 1.0 - crowbars, 1.25 - batons, 1.5 - spears and mops.
 	var/mod_weight = 0.25 //Weight modifier. i.e. 0.33 - knives, 0.67 - hatchets, 1.0 - crowbars and batons, 1.33 - tanks, 1.66 - toolboxes, 2.0 - axes.
 	var/mod_speed = 1.0 //An artificial attack cooldown multiplier for certain weapons. Applied after the initial processing.
-	var/mod_shield = 1.0 //Higher values reduce blocks' poise consumption. Values >= 1.5 allow to absorb bullets. Values >= 2.5 allow to reflect bullets.
+	var/mod_shield = 1.0 //Higher values reduce blocks' poise consumption. Values >= 1.3 allow to absorb bullets. Values >= 2.5 allow to reflect bullets.
 
 	var/heat_protection = 0 //flags which determine which body parts are protected from heat. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
 	var/cold_protection = 0 //flags which determine which body parts are protected from cold. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
@@ -236,6 +236,9 @@
 		if(!temp)
 			to_chat(user, "<span class='notice'>You try to use your hand, but realize it is no longer attached!</span>")
 			return
+
+	var/old_loc = src.loc
+
 	src.pickup(user)
 	if (istype(src.loc, /obj/item/weapon/storage))
 		var/obj/item/weapon/storage/S = src.loc
@@ -248,7 +251,11 @@
 	else
 		if(isliving(src.loc))
 			return
+
 	if(user.put_in_active_hand(src))
+		if(isturf(old_loc) && (src.w_class >= ITEM_SIZE_NORMAL))
+			var/obj/effect/temporary/item_pickup_ghost/ghost = new /obj/effect/temporary/item_pickup_ghost(old_loc, src)
+			ghost.animate_towards(user)
 		if(randpixel)
 			pixel_x = rand(-randpixel, randpixel)
 			pixel_y = rand(-randpixel/2, randpixel/2)
@@ -531,8 +538,8 @@ var/list/global/slot_flags_enumeration = list(
 				spark_system.start()
 
 				return PROJECTILE_CONTINUE // complete projectile permutation
-		else if(src.mod_shield >= 1.5)
-			if(P.armor_penetration >= 75)
+		else if(src.mod_shield >= 1.3)
+			if(P.armor_penetration > (25*src.mod_shield)-5)
 				visible_message("<span class='warning'>\The [user] tries to block [P] with their [src.name]. <b>Not the best idea.</b></span>")
 				return 0
 			visible_message("<span class='warning'>\The [user] blocks [P] with their [src.name]!</span>")

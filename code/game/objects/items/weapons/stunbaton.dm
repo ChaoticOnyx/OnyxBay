@@ -136,6 +136,16 @@
 		var/mob/living/carbon/human/H = target
 		affecting = H.get_organ(hit_zone)
 
+	if(ishuman(target) && ishuman(user))
+		var/mob/living/carbon/human/H = target
+		var/mob/living/carbon/human/U = user
+		if(H.parrying)
+			if(U.get_parried_w(H,src))
+				return 0
+		if(H.blocking)
+			if(U.get_blocked_w(H,src))
+				return 0
+
 	if(user.a_intent != I_HELP)
 		. = ..()
 		if (!.)	//item/attack() does it's own messaging and logs
@@ -148,14 +158,7 @@
 		else
 			agony = 0	//Shouldn't really stun if it's off, should it?
 		//we can't really extract the actual hit zone from ..(), unfortunately. Just act like they attacked the area they intended to.
-	/*if(ishuman(target))
-		var/mob/living/carbon/human/H = target
-		if(H.parrying)
-			if(A.get_parried_w(H,src))
-				return 0
-		if(H.blocking)
-			if(A.get_blocked_w(H,src))
-				return 0*/
+
 	else if(!status)
 		if(affecting)
 			target.visible_message("<span class='warning'>[target] has been prodded in the [affecting.name] with [src] by [user]. Luckily it was off.</span>")

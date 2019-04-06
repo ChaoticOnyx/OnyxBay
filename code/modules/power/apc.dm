@@ -423,7 +423,7 @@
 	return results
 
 // Used in process so it doesn't update the icon too much
-/obj/machinery/power/apc/proc/queue_icon_update()
+/obj/machinery/power/apc/queue_icon_update()
 
 	if(!updating_icon)
 		updating_icon = 1
