@@ -293,3 +293,8 @@
 	icon_state="bsposter59"
 	name = "poster - Miss Science 2558"
 	desc = "A large piece of space-resistant printed paper. This pin-up poster depicts a woman wearing a NanoTrasen labcoat, a bikini, and a sheepish grin. She's shyly posing atop some highly specialized research equipment."
+
+/datum/poster/bay_60
+	icon_state="bsposter60"
+	name = "RblRware Ltd. logo"
+	desc = "This particular one is of a logo of one of the most famous arcade game studios that made Syndietoads & Zhirozavr."
