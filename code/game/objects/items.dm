@@ -236,6 +236,9 @@
 		if(!temp)
 			to_chat(user, "<span class='notice'>You try to use your hand, but realize it is no longer attached!</span>")
 			return
+
+	var/old_loc = src.loc
+
 	src.pickup(user)
 	if (istype(src.loc, /obj/item/weapon/storage))
 		var/obj/item/weapon/storage/S = src.loc
@@ -248,7 +251,12 @@
 	else
 		if(isliving(src.loc))
 			return
+
 	if(user.put_in_active_hand(src))
+		if(isturf(old_loc) && (src.w_class >= ITEM_SIZE_NORMAL))
+			var/obj/effect/temporary/item_pickup_ghost/ghost = new /obj/effect/temporary/item_pickup_ghost(old_loc, src)
+			ghost.animate_towards(user)
+			to_chat(user, "<span class='notice'>Animatio!</span>")
 		if(randpixel)
 			pixel_x = rand(-randpixel, randpixel)
 			pixel_y = rand(-randpixel/2, randpixel/2)

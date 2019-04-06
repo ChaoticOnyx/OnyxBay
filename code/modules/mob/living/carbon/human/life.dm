@@ -727,13 +727,12 @@
 			clear_fullscreen("brute")
 
 		if(healths)
+			healths.overlays.Cut()
 			if (chem_effects[CE_PAINKILLER] > 100)
-				healths.overlays.Cut()
 				healths.icon_state = "health_numb"
 			else
 				// Generate a by-limb health display.
 				healths.icon_state = "blank"
-				healths.overlays = null
 
 				var/no_damage = 1
 				var/trauma_val = 0 // Used in calculating softcrit/hardcrit indicators.
@@ -913,7 +912,7 @@
 			recovery++
 		shock_stage = max(shock_stage - recovery, 0)
 		return
-	if(stat) return 0
+	if(stat || (shock_stage < 10)) return 0
 
 	if(shock_stage == 10)
 		// Please be very careful when calling custom_pain() from within code that relies on pain/trauma values. There's the
@@ -1146,6 +1145,7 @@
 	restore_blood()
 	full_prosthetic = null
 	shock_stage = 0
+	poise = poise_pool
 	..()
 
 /mob/living/carbon/human/reset_view(atom/A)
