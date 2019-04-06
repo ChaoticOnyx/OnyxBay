@@ -126,7 +126,7 @@ var/global/datum/body_build/default_body_build = new
 
 	index			= "_slim_alt"
 	genders			= list(FEMALE)
-	uniform_icon	= 'icons/inv_slots/uniforms/mob_slim.dmi'
+	uniform_icon	= 'icons/inv_slots/uniforms/mob_slimalt.dmi'
 	suit_icon		= 'icons/inv_slots/suits/mob_slimalt.dmi'
 	gloves_icon		= 'icons/inv_slots/gloves/mob_slim.dmi'
 	glasses_icon	= 'icons/inv_slots/glasses/mob_slim.dmi'
@@ -136,7 +136,7 @@ var/global/datum/body_build/default_body_build = new
 	belt_icon		= 'icons/inv_slots/belts/mob_slim.dmi'
 	back_icon		= 'icons/inv_slots/back/mob_slim.dmi'
 	ties_icon		= 'icons/inv_slots/acessories/mob_slim.dmi'
-	hidden_icon 	= 'icons/inv_slots/hidden/mob_slim.dmi'
+	hidden_icon 	= 'icons/inv_slots/hidden/mob_slimalt.dmi'
 	rig_back		= 'icons/inv_slots/rig/mob_slim.dmi'
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
