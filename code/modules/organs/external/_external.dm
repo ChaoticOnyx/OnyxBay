@@ -440,10 +440,10 @@ This function completely restores a damaged organ to perfect condition.
 		while(null in owner.organs) owner.organs -= null
 	if(children && children.len)
 		for(var/obj/item/organ/external/E in children)
-			E.remove_rejuv()
+			if(E) E.remove_rejuv()
 	children.Cut()
 	for(var/obj/item/organ/internal/I in internal_organs)
-		I.remove_rejuv()
+		if(I) I.remove_rejuv()
 	..()
 
 /obj/item/organ/external/proc/createwound(var/type = CUT, var/damage, var/surgical)
