@@ -37,11 +37,13 @@
 				next_cramp = world.time + rand(200,800)
 				owner.custom_pain("Your stomach cramps agonizingly!",1)
 		else
-			ingested.metabolize()
+			if(ingested) ingested.metabolize()
 
-		var/alcohol_threshold_met = (ingested.get_reagent_amount(/datum/reagent/ethanol) > 60)
-		if(alcohol_threshold_met && (owner.disabilities & EPILEPSY) && prob(20))
-			owner.seizure()
+		var/alcohol_threshold_met
+		if(ingested)
+			alcohol_threshold_met = (ingested.get_reagent_amount(/datum/reagent/ethanol) > 60)
+		//if(alcohol_threshold_met && (owner.disabilities & EPILEPSY) && prob(20))
+		//	owner.seizure()
 
 		if(ingested.total_volume > 90 || ((alcohol_threshold_met || ingested.total_volume > 35) && prob(15)))
 			owner.vomit()
