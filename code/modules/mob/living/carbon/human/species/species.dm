@@ -335,8 +335,8 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		if(BP_L_HAND, BP_R_HAND)
 			H.visible_message("<span class='notice'>[H] reaches out to shake [target]'s hand!</span>", \
 							"<span class='notice'>You reach out to shake [target]'s hand!</span>")
-			H.next_move = world.time + 30 // Trying to shake one's hands during a fight is kinda risky, y'know.
-			if(!do_after(H,30,target))
+			H.next_move = world.time + 25 // Trying to shake one's hands during a fight is kinda risky, y'know.
+			if(!do_after(H,25,target))
 				return
 			if(target.a_intent == I_HELP)
 				H.visible_message("<span class='notice'>[H] and [target] shake hands!</span>", \
@@ -352,19 +352,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				return
 			H.visible_message("<span class='notice'>[H] kisses [target]!</span>", \
 							"<span class='notice'>You kiss [target]!</span>")
-		if(BP_GROIN) // ERP features :uoba:
-			H.visible_message("<span class='notice'>[H] touches [target]'s groin!</span>", \
-							"<span class='notice'>You touch [target]'s groin!</span>")
-			H.next_move = world.time + 30 // Patting their groin is risky, too.
-			if(!do_after(H,30,target))
-				return
-			if(V)
-				//var/obj/item/underwear/bottom/pantsu = locate(/obj/item/underwear/bottom) in V.worn_underwear
-				var/list/covering_items = V.get_covering_equipped_items(LOWER_TORSO)
-				if(!covering_items.len)
-					to_chat(V, "<span class='notice'>You feel dirty~</span>")
-					V.custom_emote(2,pick("moans.","breathes heavily.","blushes."))
-					log_admin("ERP-ALERT - [H] ([H.ckey]) used groin touch on [V] ([V.ckey])")
+
 		else // Well I can't figure out what exactly we should do w/ ppl's feet and eyes
 			H.visible_message("<span class='notice'>[H] hugs [target]!</span>", \
 							"<span class='notice'>You hug [target]!</span>")
