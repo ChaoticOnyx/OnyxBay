@@ -60,8 +60,10 @@
 var/turf/old_loc = loc;\
 . = ..();\
 if(loc != old_loc) {\
-	for(var/datum/light_source/L in light_sources) {\
-		L.source_atom.update_light();\
+	if(light_sources) {\
+		for(var/datum/light_source/L in light_sources) {\
+			L.source_atom.update_light();\
+		}\
 	}\
 }
 

@@ -377,8 +377,7 @@ var/global/list/damage_icon_parts = list()
 
 /mob/living/carbon/human/proc/update_underwear(var/update_icons=1)
 	overlays_standing[UNDERWEAR_LAYER] = list()
-	for(var/entry in worn_underwear)
-		var/obj/item/underwear/UW = entry
+	for(var/obj/item/underwear/UW in worn_underwear)
 		var/image/I = image(body_build.get_mob_icon("hidden", UW.icon_state), UW.icon_state)
 		I.appearance_flags = RESET_COLOR
 		I.color = UW.color

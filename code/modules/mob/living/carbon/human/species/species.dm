@@ -308,15 +308,70 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 /datum/species/proc/hug(var/mob/living/carbon/human/H,var/mob/living/target)
 
-	var/t_him = "them"
-	switch(target.gender)
-		if(MALE)
-			t_him = "him"
-		if(FEMALE)
-			t_him = "her"
+	var/mob/living/carbon/human/V
+	if(istype(target,/mob/living/carbon/human))
+		V = target
+	var/zone
+	if(H.zone_sel)
+		zone = H.zone_sel.selecting
+	else
+		zone = BP_CHEST	//When something terrible happens, we just hug 'em
 
-	H.visible_message("<span class='notice'>[H] hugs [target] to make [t_him] feel better!</span>", \
-					"<span class='notice'>You hug [target] to make [t_him] feel better!</span>")
+	if(V && !V.get_organ(zone) && zone != BP_MOUTH)
+		zone = BP_CHEST //And again to make sure we are not shaking nonexistent hands nor sexually harassing phantom groins. Is there a probability of a spessman existing w/ no chest tho? :thinking:
+
+	switch(zone)
+		if(BP_HEAD)
+			H.visible_message("<span class='notice'>[H] pats [target] on the head!</span>", \
+							"<span class='notice'>You pat [target] on the head!</span>")
+		if(BP_L_ARM, BP_R_ARM)
+			H.visible_message("<span class='notice'>[H] pats [target] on the shoulder!</span>", \
+							"<span class='notice'>You pat [target] on the shoulder!</span>")
+			if(prob(50))
+				to_chat(target, "<span class='notice'>You feel a bit more encouraged!</span>")
+		if(BP_L_LEG, BP_R_LEG)
+			H.visible_message("<span class='notice'>[H] touches [target]'s hip!</span>", \
+							"<span class='notice'>You touch [target]'s hip!</span>")
+		if(BP_L_HAND, BP_R_HAND)
+			H.visible_message("<span class='notice'>[H] reaches out to shake [target]'s hand!</span>", \
+							"<span class='notice'>You reach out to shake [target]'s hand!</span>")
+			H.next_move = world.time + 30 // Trying to shake one's hands during a fight is kinda risky, y'know.
+			if(!do_after(H,30,target))
+				return
+			if(target.a_intent == I_HELP)
+				H.visible_message("<span class='notice'>[H] and [target] shake hands!</span>", \
+								"<span class='notice'>You shake [target]'s hand!</span>")
+			else
+				H.visible_message("<span class='warning'>[target] refuses to shake [H]'s hand!</span>", \
+								"<span class='warning'>[target] refuses to shake your hand!</span>")
+		if(BP_MOUTH)
+			H.visible_message("<span class='notice'>[H] reaches out for [target]'s face...</span>", \
+							"<span class='notice'>You reach out for [target]'s face...</span>")
+			H.next_move = world.time + 15 // In a matter of a second we get subpoenaed for sexual harassment
+			if(!do_after(H,15,target) || target.a_intent != I_HELP)
+				return
+			H.visible_message("<span class='notice'>[H] kisses [target]!</span>", \
+							"<span class='notice'>You kiss [target]!</span>")
+		if(BP_GROIN) // ERP features :uoba:
+			H.visible_message("<span class='notice'>[H] touches [target]'s groin!</span>", \
+							"<span class='notice'>You touch [target]'s groin!</span>")
+			H.next_move = world.time + 30 // Patting their groin is risky, too.
+			if(!do_after(H,30,target))
+				return
+			if(V)
+				//var/obj/item/underwear/bottom/pantsu = locate(/obj/item/underwear/bottom) in V.worn_underwear
+				var/list/covering_items = V.get_covering_equipped_items(LOWER_TORSO)
+				if(!covering_items.len)
+					to_chat(V, "<span class='notice'>You feel dirty~</span>")
+					V.custom_emote(2,pick("moans.","breathes heavily.","blushes."))
+					log_admin("ERP-ALERT - [H] ([H.ckey]) used groin touch on [V] ([V.ckey])")
+		else // Well I can't figure out what exactly we should do w/ ppl's feet and eyes
+			H.visible_message("<span class='notice'>[H] hugs [target]!</span>", \
+							"<span class='notice'>You hug [target]!</span>")
+
+	// Legacy for sum raisin
+	//H.visible_message("<span class='notice'>[H] hugs [target] to make [t_him] feel better!</span>", \
+	//				"<span class='notice'>You hug [target] to make [t_him] feel better!</span>")
 
 /datum/species/proc/remove_inherent_verbs(var/mob/living/carbon/human/H)
 	if(inherent_verbs)
