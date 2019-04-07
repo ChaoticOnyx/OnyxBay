@@ -53,7 +53,8 @@
 			cell_use_power(50)
 		if(src.module_state_3)
 			cell_use_power(50)
-		hud_used.update_robot_modules_display()
+		if(hud_used)
+			hud_used.update_robot_modules_display()
 		if(lights_on)
 			if(intenselight)
 				cell_use_power(100)	// Upgraded light. Double intensity, much larger power usage.
