@@ -31,7 +31,8 @@
 			if(spillover > 0)
 				burn -= spillover
 
-	owner.updatehealth() //droplimb will call updatehealth() again if it does end up being called
+	if(owner)
+		owner.updatehealth() //droplimb will call updatehealth() again if it does end up being called
 	//If limb took enough damage, try to cut or tear it off
 	if(owner && loc == owner && !is_stump())
 		if(!cannot_amputate && config.limbs_can_break)
