@@ -80,14 +80,14 @@
 	if(storage_ui)
 		storage_ui.hide_from(user)
 
-
 /obj/item/weapon/storage/proc/open(mob/user as mob)
 	if (src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
 
 	prepare_ui()
-	storage_ui.on_open(user)
-	storage_ui.show_to(user)
+	if(storage_ui) // I guess we can afford performing double checks for such procs. Better this than hundreds of runtimes.
+		storage_ui.on_open(user)
+		storage_ui.show_to(user)
 
 /obj/item/weapon/storage/proc/prepare_ui()
 	if(storage_ui)
