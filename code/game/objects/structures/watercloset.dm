@@ -344,7 +344,9 @@
 	to_chat(usr, "<span class='notice'>You start washing your hands.</span>")
 
 	busy = 1
-	sleep(40)
+	if(!do_after(user, 40,src))
+		busy = 0
+		return
 	busy = 0
 
 	if(!Adjacent(user)) return		//Person has moved away from the sink
@@ -399,7 +401,9 @@
 	to_chat(usr, "<span class='notice'>You start washing \the [I].</span>")
 
 	busy = 1
-	sleep(40)
+	if(!do_after(user, 40,src))
+		busy = 0
+		return
 	busy = 0
 
 	if(user.loc != location) return				//User has moved
