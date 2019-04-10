@@ -25,6 +25,7 @@
 	var/list/charge_costs = null
 	var/list/datum/matter_synth/synths = null
 	var/craft_tool //determines what kind of tools should be used for crafting
+	var/splittable = 1 //can we split/combine the stacks?
 
 /obj/item/stack/New(var/loc, var/amount=null)
 	..()
@@ -361,7 +362,7 @@
 		. = ceil(. * amount / max_amount)
 
 /obj/item/stack/attack_hand(mob/user as mob)
-	if (user.get_inactive_hand() == src)
+	if((user.get_inactive_hand() == src) && splittable)
 		var/N = input("How many stacks of [src] would you like to split off?", "Split stacks", 1) as num|null
 		if(N)
 			var/obj/item/stack/F = src.split(N)
@@ -377,7 +378,7 @@
 	return
 
 /obj/item/stack/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/stack))
+	if(istype(W, /obj/item/stack) && splittable)
 		var/obj/item/stack/S = W
 		src.transfer_to(S)
 

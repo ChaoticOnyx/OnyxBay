@@ -11,7 +11,44 @@
 	var/heal_burn = 0
 	var/animal_heal = 3
 
+	var/icon_state_default = ""
+	var/stack_full = 0 // 1 - stack looks different if it's never been used
+	var/stack_empty = 0 // 0 - stack disappears, 1 - stack can be empty, 2 - stack is already empty
+
+/obj/item/stack/medical/New()
+	..()
+	icon_state_default = icon_state
+	if(stack_full)
+		icon_state = "[icon_state_default]_full"
+
+/obj/item/stack/medical/use(var/used)
+	if(stack_empty == 2)
+		return 0
+
+	if(!can_use(used))
+		return 0
+
+	amount -= used
+	if(amount <= 0)
+		if(!stack_empty)
+			if(usr)
+				usr.remove_from_mob(src)
+			qdel(src) //should be safe to qdel immediately since if someone is still using this stack it will persist for a little while longer
+			return 1
+		else
+			stack_empty = 2
+			icon_state = "[icon_state_default]_empty"
+			name = "empty [name]"
+			return 1
+	if(icon_state != icon_state_default)
+		icon_state = icon_state_default
+	return 1
+
 /obj/item/stack/medical/attack(mob/living/carbon/M as mob, mob/user as mob)
+	if (stack_empty == 2)
+		to_chat(user, "<span class='warning'>\The [src] is empty!</span>")
+		return 1
+
 	if (!istype(M))
 		to_chat(user, "<span class='warning'>\The [src] cannot be applied to [M]!</span>")
 		return 1
@@ -55,12 +92,15 @@
 
 	M.updatehealth()
 /obj/item/stack/medical/bruise_pack
-	name = "roll of gauze"
-	singular_name = "gauze length"
-	desc = "Some sterile gauze to wrap around bloody stumps."
-	icon_state = "brutepack"
+	name = "roll of bandage"
+	singular_name = "bandage length"
+	desc = "Name brand NanoTrasen dissolvable bandage product."
+	icon_state = "bandage"
 	origin_tech = list(TECH_BIO = 1)
+	slot_flags = SLOT_GLOVES
+	heal_brute = 1
 	animal_heal = 5
+	stack_full = 1
 
 /obj/item/stack/medical/bruise_pack/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(..())
@@ -97,6 +137,7 @@
 					user.visible_message("<span class='notice'>\The [user] places a bandaid over \a [W.desc] on [M]'s [affecting.name].</span>", \
 					                              "<span class='notice'>You place a bandaid over \a [W.desc] on [M]'s [affecting.name].</span>" )
 				W.bandage()
+				W.heal_damage(heal_brute)
 				used++
 			affecting.update_damages()
 			if(used == amount)
@@ -108,13 +149,15 @@
 
 /obj/item/stack/medical/ointment
 	name = "ointment"
-	desc = "Used to treat those nasty burns."
+	desc = "Used to treat those nasty burns. Also works as an antiseptic. Smells like aloe and welding fuel. "
 	gender = PLURAL
-	singular_name = "ointment"
-	icon_state = "ointment"
+	singular_name = "ointment dose"
+	icon_state = "salve"
 	heal_burn = 1
 	origin_tech = list(TECH_BIO = 1)
 	animal_heal = 4
+	stack_empty = 1
+	splittable = 0
 
 /obj/item/stack/medical/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(..())
@@ -140,13 +183,15 @@
 			affecting.disinfect()
 
 /obj/item/stack/medical/advanced/bruise_pack
-	name = "advanced trauma kit"
-	singular_name = "advanced trauma kit"
-	desc = "An advanced trauma kit for severe injuries."
-	icon_state = "traumakit"
-	heal_brute = 0
-	origin_tech = list(TECH_BIO = 1)
+	name = "somatic gel"
+	singular_name = "somatic gel dose"
+	desc = "A container of somatic gel, manufactured by Vey-Med. A bendable nozzle makes it easy to apply. Effectively seals up even severe wounds."
+	icon_state = "brutegel"
+	heal_brute = 3
+	origin_tech = list(TECH_BIO = 2)
 	animal_heal = 12
+	stack_empty = 1
+	splittable = 0
 
 /obj/item/stack/medical/advanced/bruise_pack/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(..())
@@ -168,17 +213,14 @@
 				if(used == amount)
 					break
 				if(!do_mob(user, M, W.damage/5))
-					to_chat(user, "<span class='notice'>You must stand still to bandage wounds.</span>")
+					to_chat(user, "<span class='notice'>You must stand still to apply \the [src].</span>")
 					break
 				if (W.current_stage <= W.max_bleeding_stage)
-					user.visible_message("<span class='notice'>\The [user] cleans \a [W.desc] on [M]'s [affecting.name] and seals the edges with bioglue.</span>", \
+					user.visible_message("<span class='notice'>\The [user] cleans \a [W.desc] on [M]'s [affecting.name] and seals the edges with somatic gel.</span>", \
 					                     "<span class='notice'>You clean and seal \a [W.desc] on [M]'s [affecting.name].</span>" )
-				else if (W.damage_type == BRUISE)
-					user.visible_message("<span class='notice'>\The [user] places a medical patch over \a [W.desc] on [M]'s [affecting.name].</span>", \
-					                              "<span class='notice'>You place a medical patch over \a [W.desc] on [M]'s [affecting.name].</span>" )
 				else
-					user.visible_message("<span class='notice'>\The [user] smears some bioglue over \a [W.desc] on [M]'s [affecting.name].</span>", \
-					                              "<span class='notice'>You smear some bioglue over \a [W.desc] on [M]'s [affecting.name].</span>" )
+					user.visible_message("<span class='notice'>\The [user] smears some somatic gel over \a [W.desc] on [M]'s [affecting.name].</span>", \
+					                              "<span class='notice'>You smear some somatic gel over \a [W.desc] on [M]'s [affecting.name].</span>" )
 				W.bandage()
 				W.disinfect()
 				W.heal_damage(heal_brute)
@@ -192,14 +234,15 @@
 			use(used)
 
 /obj/item/stack/medical/advanced/ointment
-	name = "advanced burn kit"
-	singular_name = "advanced burn kit"
-	desc = "An advanced treatment kit for severe burns."
-	icon_state = "burnkit"
+	name = "burn gel"
+	singular_name = "burn gel dose"
+	desc = "A container of protein-renaturating gel, manufactured by Vey-Med. A bendable nozzle makes it easy to apply. It's said to renaturate proteins, effectively treating severe burns. Doesn't cause skin cancer. Probably."
+	icon_state = "burngel"
 	heal_burn = 5
-	origin_tech = list(TECH_BIO = 1)
+	origin_tech = list(TECH_BIO = 3)
 	animal_heal = 7
-
+	stack_empty = 1
+	splittable = 0
 
 /obj/item/stack/medical/advanced/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(..())
@@ -218,8 +261,8 @@
 			if(!do_mob(user, M, 10))
 				to_chat(user, "<span class='notice'>You must stand still to salve wounds.</span>")
 				return 1
-			user.visible_message( 	"<span class='notice'>[user] covers wounds on [M]'s [affecting.name] with regenerative membrane.</span>", \
-									"<span class='notice'>You cover wounds on [M]'s [affecting.name] with regenerative membrane.</span>" )
+			user.visible_message( 	"<span class='notice'>[user] covers wounds on [M]'s [affecting.name] with protein-renaturating gel.</span>", \
+									"<span class='notice'>You cover wounds on [M]'s [affecting.name] with protein-renaturating gel.</span>" )
 			affecting.heal_damage(0,heal_burn)
 			use(1)
 			affecting.salve()
@@ -283,3 +326,52 @@
 	icon_state = "tape-splint"
 	amount = 1
 	splintable_organs = list(BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG)
+
+/obj/item/stack/medical/patches
+	name = "pack of patches"
+	singular_name = "patch"
+	desc = "Name brand NanoTrasen patches. These can save you from various ouchies and boo boos."
+	icon_state = "bandaid"
+	origin_tech = list(TECH_BIO = 1)
+	amount = 6
+	max_amount = 6
+	heal_brute = 0
+	animal_heal = 3
+	stack_full = 1
+	stack_empty = 1
+
+/obj/item/stack/medical/patches/attack(mob/living/carbon/M as mob, mob/user as mob)
+	if(..())
+		return 1
+
+	if (istype(M, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = M
+		var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting) //nullchecked by ..()
+
+		if(affecting.is_bandaged())
+			to_chat(user, "<span class='warning'>The wounds on [M]'s [affecting.name] have already been treated.</span>")
+			return 1
+		else
+			user.visible_message("<span class='notice'>\The [user] starts treating [M]'s [affecting.name].</span>", \
+					             "<span class='notice'>You start treating [M]'s [affecting.name].</span>" )
+			var/used = 0
+			for (var/datum/wound/W in affecting.wounds)
+				if(W.bandaged)
+					continue
+				if(used == amount)
+					break
+				if(!do_mob(user, M, W.damage/5))
+					to_chat(user, "<span class='notice'>You must stand still to place a bandaid.</span>")
+					break
+
+				user.visible_message("<span class='notice'>\The [user] places a bandaid over \a [W.desc] on [M]'s [affecting.name].</span>", \
+									"<span class='notice'>You place a bandaid over \a [W.desc] on [M]'s [affecting.name].</span>" )
+				W.bandage()
+				used++
+			affecting.update_damages()
+			if(used == amount)
+				if(affecting.is_bandaged())
+					to_chat(user, "<span class='warning'>\The [src] is used up.</span>")
+				else
+					to_chat(user, "<span class='warning'>\The [src] is used up, but there are more wounds to treat on \the [affecting.name].</span>")
+			use(used)
