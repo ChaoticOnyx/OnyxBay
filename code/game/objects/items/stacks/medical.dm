@@ -96,6 +96,7 @@
 	singular_name = "bandage length"
 	desc = "Name brand NanoTrasen dissolvable bandage product."
 	icon_state = "bandage"
+	item_state = "bandage"
 	origin_tech = list(TECH_BIO = 1)
 	slot_flags = SLOT_GLOVES
 	heal_brute = 1
@@ -332,6 +333,7 @@
 	singular_name = "patch"
 	desc = "Name brand NanoTrasen patches. These can save you from various ouchies and boo boos."
 	icon_state = "bandaid"
+	item_state = "cigpacket"
 	origin_tech = list(TECH_BIO = 1)
 	amount = 6
 	max_amount = 6
