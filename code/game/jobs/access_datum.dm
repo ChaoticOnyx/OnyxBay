@@ -470,3 +470,38 @@
 	id = access_merchant
 	desc = "Merchant"
 	access_type = ACCESS_TYPE_NONE
+
+
+/******************
+* Onyx 2019 EVENT *
+******************/
+
+/var/const/access_casino = 201
+/datum/access/casino
+	id = access_merchant
+	desc = "Ñazino"
+	access_type = ACCESS_TYPE_NONE
+
+/var/const/access_nav = 201
+/datum/access/nav
+	id = access_merchant
+	desc = "Nav' Incorporated"
+	access_type = ACCESS_TYPE_NONE
+
+/var/const/access_redhat = 201
+/datum/access/redhat
+	id = access_merchant
+	desc = "Red Hats"
+	access_type = ACCESS_TYPE_NONE
+
+/var/const/access_chud = 201
+/datum/access/chud
+	id = access_merchant
+	desc = "Chud"
+	access_type = ACCESS_TYPE_NONE
+
+/var/const/access_kitchentwo = 201
+/datum/access/kitchentwo
+	id = access_merchant
+	desc = "Kitchen 2"
+	access_type = ACCESS_TYPE_NONE

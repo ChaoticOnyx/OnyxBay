@@ -1070,6 +1070,39 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/weapon/rig/unathi,
 				/obj/item/weapon/rig/unathi/fancy)
 
+/obj/random/book
+	name = "Random Book"
+	desc = "This is a random book."
+	icon = 'icons/obj/rig_modules.dmi'
+	icon_state = "generic"
+
+/obj/random/book/spawn_choices()
+	return list(/obj/item/weapon/book/manual/chef_recipes,
+				/obj/item/weapon/book/manual/barman_recipes,
+				/obj/item/weapon/book/manual/detective,
+				/obj/item/weapon/book/manual/nuclear,
+				/obj/item/weapon/book/manual/nt_regs,
+				/obj/item/weapon/book/manual/hydroponics_pod_people,
+				/obj/item/weapon/book/manual/research_and_development,
+				/obj/item/weapon/book/manual/excavation,
+				/obj/item/weapon/book/manual/mass_spectrometry,
+				/obj/item/weapon/book/manual/anomaly_spectroscopy,
+				/obj/item/weapon/book/manual/materials_chemistry_analysis,
+				/obj/item/weapon/book/manual/anomaly_testing,
+				/obj/item/weapon/book/manual/stasis,
+				/obj/item/weapon/book/manual/engineering_guide,
+				/obj/item/weapon/book/manual/robotics_cyborgs,
+				/obj/item/weapon/book/manual/engineering_construction,
+				/obj/item/weapon/book/manual/engineering_particle_accelerator,
+				/obj/item/weapon/book/manual/supermatter_engine,
+				/obj/item/weapon/book/manual/rust_engine,
+				/obj/item/weapon/book/manual/engineering_hacking,
+				/obj/item/weapon/book/manual/ripley_build_and_repair,
+				/obj/item/weapon/book/manual/atmospipes,
+				/obj/item/weapon/book/manual/evaguide,
+				/obj/item/weapon/book/manual/medical_cloning,
+				/obj/item/weapon/book/manual/medical_diagnostics_manual)
+
 /obj/random/hostile
 	name = "Random Hostile Mob"
 	desc = "This is a random hostile mob."
@@ -1082,6 +1115,17 @@ obj/random/hostile/spawn_choices()
 				/mob/living/simple_animal/hostile/carp,
 				/mob/living/simple_animal/hostile/carp/pike,
 				/mob/living/simple_animal/hostile/vagrant/swarm)
+
+/obj/random/chem_dispenser_ghetto
+	name = "Random ghetto chemical dispenser"
+	desc = "This is random ghetto chemical dispenser"
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "dispenser"
+
+/obj/random/chem_dispenser_ghetto/spawn_choices()
+	return list(/obj/machinery/chemical_dispenser/ghetto_alpha,
+				/obj/machinery/chemical_dispenser/ghetto_beta,
+				/obj/machinery/chemical_dispenser/ghetto_gamma)
 
 /obj/random/jackolantern
 	name = "Random Jack o'lantern"

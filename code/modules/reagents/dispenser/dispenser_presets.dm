@@ -56,24 +56,25 @@
 			/obj/item/weapon/reagent_containers/chem_disp_cartridge/clonexadone
 		)
 
-/obj/machinery/chemical_dispenser/ghetto
+/obj/machinery/chemical_dispenser/ghetto_alpha
 	spawn_cartridges = list(
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/hydrazine,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/lithium,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/carbon,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/ammonia,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/sodium,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/aluminum,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/silicon,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/phosphorus,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/iron,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/copper,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/mercury,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/radium,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/water,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/ethanol,
 			/obj/item/weapon/reagent_containers/chem_disp_cartridge/sugar,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/tungsten
+			/obj/item/weapon/reagent_containers/chem_disp_cartridge/potassium,
+			/obj/item/weapon/reagent_containers/chem_disp_cartridge/ethanol,
+		)
+
+/obj/machinery/chemical_dispenser/ghetto_beta
+	spawn_cartridges = list(
+			/obj/item/weapon/reagent_containers/chem_disp_cartridge/water,
+			/obj/item/weapon/reagent_containers/chem_disp_cartridge/acetone,
+			/obj/item/weapon/reagent_containers/chem_disp_cartridge/hclacid,
+		)
+
+/obj/machinery/chemical_dispenser/ghetto_gamma
+	spawn_cartridges = list(
+			/obj/item/weapon/reagent_containers/chem_disp_cartridge/silicon,
+			/obj/item/weapon/reagent_containers/chem_disp_cartridge/acetone,
+			/obj/item/weapon/reagent_containers/chem_disp_cartridge/aluminum,
 		)
 
 /obj/machinery/chemical_dispenser/bar_soft

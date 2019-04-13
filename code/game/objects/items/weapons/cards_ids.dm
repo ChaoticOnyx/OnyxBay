@@ -473,3 +473,11 @@ var/const/NO_EMAG_ACT = -50
 	desc = "A card issued to Merchants, indicating their right to sell and buy goods."
 	icon_state = "trader"
 	access = list(access_merchant)
+
+//eventOnyx2019
+
+/obj/item/weapon/card/id/casino
+	name = "identification card"
+	desc = "A card issued to casino staff."
+	icon_state = "civ"
+	job_access_type = /datum/job/casino
