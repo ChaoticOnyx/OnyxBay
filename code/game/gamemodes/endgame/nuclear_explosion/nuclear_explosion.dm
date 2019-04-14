@@ -68,7 +68,8 @@
 
 /datum/universal_state/nuclear_explosion/proc/start_cinematic_intro()
 	for(var/mob/M in GLOB.player_list) //I guess so that people in the lobby only hear the explosion
-		sound_to(M, sound('sound/machines/Alarm.ogg'))
+		if(M.client && !(M.client.holder && M.client.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO))
+			sound_to(M, sound('sound/machines/Alarm.ogg'))
 
 	sleep(100)
 
@@ -86,7 +87,9 @@
 /datum/universal_state/nuclear_explosion/proc/play_cinematic_station_unaffected()
 	cinematic.icon_state = "station_intact"
 	sleep(5)
-	sound_to(world, sound('sound/effects/explosionfar.ogg'))//makes no sense if you are on the station but whatever
+	for(var/mob/M in GLOB.player_list)
+		if(M.client && !(M.client.holder && M.client.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO))
+			to_chat(M, sound('sound/effects/explosionfar.ogg'))//makes no sense if you are on the station but whatever
 
 
 	sleep(75)
@@ -95,7 +98,8 @@
 //MALF
 /datum/universal_state/nuclear_explosion/malf/start_cinematic_intro()
 	for(var/mob/M in GLOB.player_list) //I guess so that people in the lobby only hear the explosion
-		to_chat(M, sound('sound/machines/Alarm.ogg'))
+		if(M.client && !(M.client.holder && M.client.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO))
+			to_chat(M, sound('sound/machines/Alarm.ogg'))
 
 	sleep(28)
 
