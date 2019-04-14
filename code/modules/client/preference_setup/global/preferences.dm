@@ -256,6 +256,6 @@ var/list/_client_preferences_by_type
 ********************/
 
 /datum/client_preference/staff/govnozvuki
-	description = "Parasha Sound"
+	description = "Admin Misc Sounds"
 	key = "SOUND_PARASHA"
 	flags = R_PERMISSIONS
