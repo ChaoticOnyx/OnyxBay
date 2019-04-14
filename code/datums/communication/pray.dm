@@ -18,4 +18,5 @@
 
 /decl/communication_channel/pray/receive_communication(var/mob/communicator, var/mob/receiver, var/message)
 	..()
-	sound_to(receiver, 'sound/effects/ding.ogg')
+	if(receiver.client.holder && !receiver.client.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO)
+		sound_to(receiver, 'sound/effects/ding.ogg')
