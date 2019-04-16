@@ -354,15 +354,15 @@
 		icon_state = "[bis.base_icon_state]_idle"
 
 /obj/item/device/tape
-	name = "tape"
-	desc = "A magnetic tape that can hold up to ten minutes of content."
+	name = "bluespace tape"
+	desc = "A tape that can hold an infinite amount of correspondence."
 	icon_state = "tape_white"
 	item_state = "analyzer"
 	w_class = ITEM_SIZE_TINY
 	matter = list(DEFAULT_WALL_MATERIAL=20, "glass"=5)
 	force = 1
 	throwforce = 0
-	var/max_capacity = 600
+	var/max_capacity = 9e40 // Literal infinite storage
 	var/used_capacity = 0
 	var/list/storedinfo = new/list()
 	var/list/timestamp = new/list()
