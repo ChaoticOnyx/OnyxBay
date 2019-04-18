@@ -1,13 +1,13 @@
 /proc/rhtml_encode(var/msg)
 	msg = replacetext(msg, "<", "&lt;")
 	msg = replacetext(msg, ">", "&gt;")
-	msg = replacetext(msg, "ÿ", "&#255;")
+	msg = replacetext(msg, "ÿ", "&#1103;")
 	return msg
 
 /proc/rhtml_decode(var/msg)
 	msg = replacetext(msg, "&gt;", ">")
 	msg = replacetext(msg, "&lt;", "<")
-	msg = replacetext(msg, "&#255;", "ÿ")
+	msg = replacetext(msg, "&#1103;", "ÿ")
 	return msg
 
 

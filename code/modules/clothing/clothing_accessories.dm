@@ -62,7 +62,7 @@
 /obj/item/clothing/examine(var/mob/user)
 	. = ..(user)
 	for(var/obj/item/clothing/accessory/A in accessories)
-		to_chat(user, "\icon[A] \A [A] is attached to it.")
+		to_chat(user, "[GUNCHAT_ICON(A)] \A [A] is attached to it.")
 
 /obj/item/clothing/proc/update_accessory_slowdown()
 	slowdown_accessory = 0
