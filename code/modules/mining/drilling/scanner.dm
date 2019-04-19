@@ -56,7 +56,7 @@
 
 		T.surveyed = 1
 
-	to_chat(user, "[GUNCHAT_ICON(src)] <span class='notice'>The scanner beeps and displays a readout.</span>")
+	to_chat(user, "\icon[src] <span class='notice'>The scanner beeps and displays a readout.</span>")
 
 	for(var/ore_type in metals)
 		var/result = "no sign"

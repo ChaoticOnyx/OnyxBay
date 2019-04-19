@@ -211,7 +211,7 @@
 /obj/item/weapon/weldingtool/examine(mob/user)
 	if(..(user, 0))
 		if(tank)
-			to_chat(user, "[GUNCHAT_ICON(tank)] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!")
+			to_chat(user, "\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!")
 		else
 			to_chat(user, "There is no tank attached.")
 
@@ -701,7 +701,7 @@
 	if(loc == usr && tools.len)
 		to_chat(usr, "It has the following fittings:")
 		for(var/obj/item/tool in tools)
-			to_chat(usr, "[GUNCHAT_ICON(tool)] - [tool.name][tools[current_tool]==tool?" (selected)":""]")
+			to_chat(usr, "\icon[tool] - [tool.name][tools[current_tool]==tool?" (selected)":""]")
 
 /obj/item/weapon/combitool/New()
 	..()
