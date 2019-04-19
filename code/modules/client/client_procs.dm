@@ -49,10 +49,6 @@
 		//qdel(usr)
 		return
 
-	//open link from chat
-	if(href_list["open_link"])
-		src << link(href_list["open_link"])
-
 	//Admin PM
 	if(href_list["priv_msg"])
 		var/client/C = locate(href_list["priv_msg"])

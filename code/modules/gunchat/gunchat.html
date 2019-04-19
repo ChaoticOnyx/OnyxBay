@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html onmouseup="setTimeout(function(){window.location='byond://winset?mapwindow.map.focus=true'},1)">
+<html onmouseup="window.location='byond://winset?mapwindow.map.focus=true'">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=8">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
 		<style>
 			html, body              {padding: 0;margin: 0;}
 
@@ -137,16 +137,13 @@
 				var messages = document.getElementById('messages');
 				if(combin && message == lastmessage){
 					var lm = messages.children;
-					var chi = lm.item(lm.length-2);
+					var chi = lm.item(lm.length-2)
 					if(chi && chi.className == 'chi'){
 						chi.innerHTML = parseInt(chi.innerHTML)+1;
 					}else{
 						lm.item(lm.length-1).insertAdjacentHTML('beforebegin', '<span class="chi">2</span>');
 					}
 				}else{
-					message = message.replace(/(https?:\/\/[-A-ZÀ-ß0-9+&@#\/%?=~_|$!:,.;()]*[-A-ZÀ-ß0-9+&@#\/%=~_|$(])/ig, function (match) {
-						return '<a href="byond://?open_link='+encodeURIComponent(match)+'">'+match+'</a>';
-					});
 					messages.insertAdjacentHTML('beforeend', message+'<br>');
 					lastmessage = message;
 				}
