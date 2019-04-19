@@ -153,11 +153,10 @@ Please contact me on #coderbus IRC. ~Carn x
 /mob/living/carbon/human/update_icons()
 	lying_prev = lying	//so we don't update overlays for lying/standing unless our stance changes again
 	update_hud()		//TODO: remove the need for this
-	overlays.Cut()
 
 	var/list/overlays_to_apply = list()
 	if (icon_update)
-
+		overlays.Cut()
 		var/list/visible_overlays
 		if(is_cloaked())
 			icon = 'icons/mob/human.dmi'
@@ -189,19 +188,7 @@ Please contact me on #coderbus IRC. ~Carn x
 
 	overlays = overlays_to_apply
 
-/*
-	var/matrix/M = matrix()
-	if(lying && !species.prone_icon) //Only rotate them if we're not drawing a specific icon for being prone.
-		M.Turn(90)
-		M.Scale(size_multiplier)
-		M.Translate(1,-6)
-	else
-		M.Scale(size_multiplier)
-		M.Translate(0, 16*(size_multiplier-1))
-	transform = M
-*/
 	update_transform()
-
 
 var/global/list/damage_icon_parts = list()
 
