@@ -49,10 +49,6 @@
 		//qdel(usr)
 		return
 
-	//open link from chat
-	if(href_list["open_link"])
-		src << link(href_list["open_link"])
-
 	//Admin PM
 	if(href_list["priv_msg"])
 		var/client/C = locate(href_list["priv_msg"])
@@ -140,8 +136,6 @@
 	if(config.resource_urls && config.resource_urls.len)
 		src.preload_rsc = pick(config.resource_urls)
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
-
-	gunchat_init() //should be before to_chat calls
 
 	if(byond_version < DM_VERSION)
 		to_chat(src, "<span class='warning'>You are running an older version of BYOND than the server and may experience issues.</span>")
