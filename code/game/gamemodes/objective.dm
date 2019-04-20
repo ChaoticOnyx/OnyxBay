@@ -22,12 +22,12 @@ datum/objective/Destroy()
 	. = ..()
 
 datum/objective/proc/check_before_completion()
-	if(!completed)
+	while(!completed)
 		if(check_completion())
 			completed = 1
-		else
-			spawn(100)
-				check_before_completion()
+			break
+
+		sleep(100)
 
 datum/objective/proc/check_completion()
 	return completed
