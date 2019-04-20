@@ -438,7 +438,6 @@
 	if(H)
 		qdel(H)
 
-
 // check whether this mind's mob has been brigged for the given duration
 // have to call this periodically for the duration to work properly
 /datum/mind/proc/is_brigged(duration)
@@ -447,7 +446,7 @@
 		brigged_since = -1
 		return 0
 	var/is_currently_brigged = 0
-	if(istype(T.loc,/area/security/brig))
+	if(is_type_in_list(T.loc, list(/area/security/brig, /area/security/prison, /area/prison/solitary)))
 		is_currently_brigged = 1
 		for(var/obj/item/weapon/card/id/card in current)
 			is_currently_brigged = 0

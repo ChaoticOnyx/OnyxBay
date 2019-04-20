@@ -31,15 +31,15 @@ var/list/nuke_disks = list()
 	if(config.objectives_disabled == CONFIG_OBJECTIVE_NONE || (merc && !merc.global_objectives.len))
 		..()
 		return
-	var/disk_rescued = 1
+	var/disk_rescued = 0
 	for(var/obj/item/weapon/disk/nuclear/D in world)
 		var/disk_area = get_area(D)
-		if(!is_type_in_list(disk_area, GLOB.using_map.post_round_safe_areas))
-			disk_rescued = 0
+		if(is_type_in_list(disk_area, GLOB.using_map.post_round_safe_areas))
+			disk_rescued = 1
 			break
 	var/crew_evacuated = (evacuation_controller.has_evacuated())
 
-	if(!disk_rescued &&  station_was_nuked && !syndies_didnt_escape)
+	if(!disk_rescued && station_was_nuked && !syndies_didnt_escape)
 		feedback_set_details("round_end_result","win - syndicate nuke")
 		to_world("<FONT size = 3><B>Mercenary Major Victory!</B></FONT>")
 		to_world("<B>[syndicate_name()] operatives have destroyed [station_name()]!</B>")
@@ -64,7 +64,7 @@ var/list/nuke_disks = list()
 		to_world("<FONT size = 3><B>Crew Major Victory!</B></FONT>")
 		to_world("<B>The Research Staff has saved the disc and killed the [syndicate_name()] Operatives</B>")
 
-	else if ( disk_rescued                                        )
+	else if (disk_rescued)
 		feedback_set_details("round_end_result","loss - evacuation - disk secured")
 		to_world("<FONT size = 3><B>Crew Major Victory</B></FONT>")
 		to_world("<B>The Research Staff has saved the disc and stopped the [syndicate_name()] Operatives!</B>")

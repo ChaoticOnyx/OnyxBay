@@ -384,7 +384,8 @@ var/bomb_set
 		GLOB.moved_event.unregister(src, src, /obj/item/weapon/disk/nuclear/proc/check_z_level) // However, when we are certain unregister if necessary
 		return
 	var/turf/T = get_turf(src)
-	if(!T || isNotStationLevel(T.z))
+	var/area/A = get_area(src)
+	if(!is_type_in_list(A, GLOB.using_map.post_round_safe_areas) && (!T || isNotStationLevel(T.z)))
 		qdel(src)
 
 /obj/item/weapon/disk/nuclear/Destroy()
