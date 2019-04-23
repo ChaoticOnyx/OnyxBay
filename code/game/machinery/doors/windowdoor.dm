@@ -4,6 +4,7 @@
 	icon = 'icons/obj/doors/windoor.dmi'
 	icon_state = "left"
 	var/base_state = "left"
+	dir = EAST
 	var/id = null  // for blast door button that can work with windoors now
 	min_force = 4
 	hitsound = 'sound/effects/Glasshit.ogg'
