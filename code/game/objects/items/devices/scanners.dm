@@ -559,7 +559,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 				break
 		var/dat = "Trace Chemicals Found: "
 		for(var/T in blood_traces)
-			var/datum/reagent/R = T
+			var/datum/reagent/R = text2path(T)
 			if(details)
 				dat += "[initial(R.name)] ([blood_traces[T]] units) "
 			else
@@ -567,7 +567,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 		if(details)
 			dat += "\nMetabolism Products of Chemicals Found:"
 			for(var/T in blood_doses)
-				var/datum/reagent/R = T
+				var/datum/reagent/R = text2path(T)
 				dat += "[initial(R.name)] ([blood_doses[T]] units) "
 		to_chat(user, "[dat]")
 		reagents.clear_reagents()
