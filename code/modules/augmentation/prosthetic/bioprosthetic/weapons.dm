@@ -2,7 +2,7 @@
 	name = "arm blade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people as a hot knife through butter."
 	icon_state = "arm_blade"
-	force = 1
+	force = 5
 	sharp = 0
 	edge = 0
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
