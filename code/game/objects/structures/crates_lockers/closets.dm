@@ -272,8 +272,10 @@
 // If you adjust any of the values below, please also update /proc/unit_test_weight_of_path(var/path)
 /obj/structure/closet/proc/content_size(atom/movable/AM)
 	if(ismob(AM))
+		if(ishuman(AM))
+			return 0
 		var/mob/M = AM
-		return 0
+		return M.mob_size
 	if(istype(AM, /obj/item))
 		var/obj/item/I = AM
 		return (I.w_class / 2)
