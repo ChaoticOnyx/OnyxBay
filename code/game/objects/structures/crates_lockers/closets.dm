@@ -273,7 +273,7 @@
 /obj/structure/closet/proc/content_size(atom/movable/AM)
 	if(ismob(AM))
 		var/mob/M = AM
-		return M.mob_size
+		return 0
 	if(istype(AM, /obj/item))
 		var/obj/item/I = AM
 		return (I.w_class / 2)
