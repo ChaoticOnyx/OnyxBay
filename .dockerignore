@@ -1,3 +1,4 @@
+.vscode
 .git
 !.git/HEAD
 !.git/logs/HEAD

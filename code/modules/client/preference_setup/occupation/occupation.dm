@@ -1,9 +1,3 @@
-//used for pref.alternate_option
-#define JOB_LEVEL_NEVER  4
-#define JOB_LEVEL_LOW    3
-#define JOB_LEVEL_MEDIUM 2
-#define JOB_LEVEL_HIGH   1
-
 /datum/preferences
 	//Since there can only be 1 high job.
 	var/job_high = null
@@ -359,8 +353,3 @@ datum/category_item/player_setup_item/proc/prune_occupation_prefs()
 
 /datum/preferences/proc/GetPlayerAltTitle(datum/job/job)
 	return (job.title in player_alt_titles) ? player_alt_titles[job.title] : job.title
-
-#undef JOB_LEVEL_NEVER
-#undef JOB_LEVEL_LOW
-#undef JOB_LEVEL_MEDIUM
-#undef JOB_LEVEL_HIGH
