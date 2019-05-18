@@ -72,8 +72,9 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	for(var/datum/modifier/M in user.modifiers)
 		if(!isnull(M.outgoing_melee_damage_percent))
 			power *= M.outgoing_melee_damage_percent
-	//if(HULK in user.mutations)
-	//	power *= 2
+	// if(MUTATION_HULK in user.mutations)
+		// power *= 2
+		// TODO [V] Check if hulk mutation adding modifier somewhere else
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		A.useblock_off()

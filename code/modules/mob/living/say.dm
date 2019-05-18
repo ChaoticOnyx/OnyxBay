@@ -1,40 +1,40 @@
 var/list/department_radio_keys = list(
-	  ":r" = "right ear",	":ê" = "right ear",
-	  ":l" = "left ear",	":ä" = "left ear",
-	  ":i" = "intercom",	":ø" = "intercom",
-	  ":h" = "department",	":ğ" = "department",
+	  ":r" = "right ear",	":ï¿½" = "right ear",
+	  ":l" = "left ear",	":ï¿½" = "left ear",
+	  ":i" = "intercom",	":ï¿½" = "intercom",
+	  ":h" = "department",	":ï¿½" = "department",
 	  ":+" = "special",		".+" = "special", //activate radio-specific special functions
-	  ":c" = "Command",		":ñ" = "Command",
-	  ":n" = "Science",		":ò" = "Science",
-	  ":m" = "Medical",		":ü" = "Medical",
-	  ":e" = "Engineering", ":ó" = "Engineering",
-	  ":s" = "Security",	":û" = "Security",
-	  ":w" = "whisper",		":ö" = "whisper",
-	  ":t" = "Mercenary",	":å" = "Mercenary",
-	  ":x" = "Raider",		":÷" = "Raider",
-	  ":u" = "Supply",		":ã" = "Supply",
-	  ":v" = "Service",		":ì" = "Service",
-	  ":p" = "AI Private",	":ç" = "AI Private",
-	  ":z" = "Entertainment",":ÿ" = "Entertainment",
-	  ":y" = "Exploration",		":í" = "Exploration",
+	  ":c" = "Command",		":ï¿½" = "Command",
+	  ":n" = "Science",		":ï¿½" = "Science",
+	  ":m" = "Medical",		":ï¿½" = "Medical",
+	  ":e" = "Engineering", ":ï¿½" = "Engineering",
+	  ":s" = "Security",	":ï¿½" = "Security",
+	  ":w" = "whisper",		":ï¿½" = "whisper",
+	  ":t" = "Mercenary",	":ï¿½" = "Mercenary",
+	  ":x" = "Raider",		":ï¿½" = "Raider",
+	  ":u" = "Supply",		":ï¿½" = "Supply",
+	  ":v" = "Service",		":ï¿½" = "Service",
+	  ":p" = "AI Private",	":ï¿½" = "AI Private",
+	  ":z" = "Entertainment",":ï¿½" = "Entertainment",
+	  ":y" = "Exploration",		":ï¿½" = "Exploration",
 
-	  ":R" = "right ear",	":Ê" = "right ear",
-	  ":L" = "left ear",	":Ä" = "left ear",
-	  ":I" = "intercom",	":Ø" = "intercom",
-	  ":H" = "department",	":Ğ" = "department",
-	  ":C" = "Command",		":Ñ" = "Command",
-	  ":N" = "Science",		":Ò" = "Science",
-	  ":M" = "Medical",		":Ü" = "Medical",
-	  ":E" = "Engineering",	":Ó" = "Engineering",
-	  ":S" = "Security",	":Û" = "Security",
-	  ":W" = "whisper",		":Ö" = "whisper",
-	  ":T" = "Mercenary",	":Å" = "Mercenary",
-	  ":X" = "Raider",		":×" = "Raider",
-	  ":U" = "Supply",		":Ã" = "Supply",
-	  ":V" = "Service",		":Ì" = "Service",
-	  ":P" = "AI Private",	":Ç" = "AI Private",
-	  ":Z" = "Entertainment",":ß" = "Entertainment",
-	  ":Y" = "Exploration",		":Í" = "Exploration",
+	  ":R" = "right ear",	":ï¿½" = "right ear",
+	  ":L" = "left ear",	":ï¿½" = "left ear",
+	  ":I" = "intercom",	":ï¿½" = "intercom",
+	  ":H" = "department",	":ï¿½" = "department",
+	  ":C" = "Command",		":ï¿½" = "Command",
+	  ":N" = "Science",		":ï¿½" = "Science",
+	  ":M" = "Medical",		":ï¿½" = "Medical",
+	  ":E" = "Engineering",	":ï¿½" = "Engineering",
+	  ":S" = "Security",	":ï¿½" = "Security",
+	  ":W" = "whisper",		":ï¿½" = "whisper",
+	  ":T" = "Mercenary",	":ï¿½" = "Mercenary",
+	  ":X" = "Raider",		":ï¿½" = "Raider",
+	  ":U" = "Supply",		":ï¿½" = "Supply",
+	  ":V" = "Service",		":ï¿½" = "Service",
+	  ":P" = "AI Private",	":ï¿½" = "AI Private",
+	  ":Z" = "Entertainment",":ï¿½" = "Entertainment",
+	  ":Y" = "Exploration",		":ï¿½" = "Exploration",
 
 	  //kinda localization -- rastaf0 uebalo ruslan
 	  //same keys as above, but on russian keyboard layout. This file uses cp1251 as encoding.
@@ -99,8 +99,8 @@ proc/get_radio_key_from_channel(var/channel)
 
 	. = 0
 
-	if((HULK in mutations) && health >= 25 && length(message))
-		message = "[ruppertext(message)]!!!"
+	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
+		message = "[uppertext(message)]!!!"
 		verb = pick("yells","roars","hollers")
 		message_data[3] = 0
 		. = 1

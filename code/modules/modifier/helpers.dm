@@ -1,3 +1,6 @@
+#define MODIFIER_EFFECTS_LAYER 28
+// TODO [V] Get rid of this temporary define. Equals HO_MODIFIER_EFFECTS_LAYER
+
 // Converts a hexadecimal color (e.g. #FF0050) to a list of numbers for red, green, and blue (e.g. list(255,0,80) ).
 /proc/hex2rgb(hex)
 	// Strips the starting #, in case this is ever supplied without one, so everything doesn't break.

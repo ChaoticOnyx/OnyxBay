@@ -175,8 +175,6 @@ What is the naming convention for planes or layers?
 	#define LIGHTBULB_LAYER        0
 	#define LIGHTING_LAYER         1
 	#define ABOVE_LIGHTING_LAYER   2
-	#define SUPER_PORTAL_LAYER     3
-	#define NARSIE_GLOW            4
 
 #define EFFECTS_ABOVE_LIGHTING_PLANE   -1 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
 	#define EYE_GLOW_LAYER         1
@@ -195,7 +193,6 @@ What is the naming convention for planes or layers?
 	#define IMPAIRED_LAYER      2
 	#define BLIND_LAYER         3
 	#define CRIT_LAYER          4
-	#define HALLUCINATION_LAYER 5
 
 #define HUD_PLANE                       4 // For the Head-Up Display
 

@@ -105,8 +105,8 @@ default behaviour is:
 				now_pushing = 0
 				return
 			if(tmob.a_intent != I_HELP)
-				if(istype(tmob, /mob/living/carbon/human) && (FAT in tmob.mutations))
-					if(prob(40) && !(FAT in src.mutations))
+				if(istype(tmob, /mob/living/carbon/human) && (MUTATION_FAT in tmob.mutations))
+					if(prob(40) && !(MUTATION_FAT in src.mutations))
 						to_chat(src, "<span class='danger'>You fail to push [tmob]'s fat ass out of the way.</span>")
 						now_pushing = 0
 						return
@@ -800,7 +800,7 @@ default behaviour is:
 		. += 15
 	if(confused)
 		. += 30
-	if(CLUMSY in mutations)
+	if(MUTATION_CLUMSY in mutations)
 		. += 40
 
 /mob/living/proc/ranged_accuracy_mods()
@@ -813,7 +813,7 @@ default behaviour is:
 		. -= 5
 	if(eye_blurry)
 		. -= 1
-	if(CLUMSY in mutations)
+	if(MUTATION_CLUMSY in mutations)
 		. -= 3
 
 /mob/living/proc/nervous_system_failure()

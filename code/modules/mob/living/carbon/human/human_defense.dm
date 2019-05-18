@@ -276,7 +276,7 @@ meteor_act
 	effective_force -= blocked*0.05 // Flat armor (i.e. reduces damage by 2.5 if armor=50)
 
 	//Hulk modifier
-	if(HULK in user.mutations)
+	if(MUTATION_HULK in user.mutations)
 		effective_force *= 2
 
 	if(src.lying)
@@ -373,7 +373,7 @@ meteor_act
 	effective_force = round(sqrt(effective_force), 0.1)*2 + I.mod_weight*4
 
 	//Hulk modifier
-	if(HULK in user.mutations)
+	if(MUTATION_HULK in user.mutations)
 		effective_force *= 2
 
 	if(src.lying)
