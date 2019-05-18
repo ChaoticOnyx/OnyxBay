@@ -832,7 +832,6 @@ var/global/list/damage_icon_parts = list()
 #undef HO_HEAD_LAYER
 #undef HO_COLLAR_LAYER
 #undef HO_HANDCUFF_LAYER
-#undef HO_LEGCUFF_LAYER
 #undef HO_L_HAND_LAYER
 #undef HO_R_HAND_LAYER
 #undef HO_TARGETED_LAYER
