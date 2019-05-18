@@ -18,8 +18,8 @@
 //place to another. Look at escape shuttle for example.
 //All shuttles should now be under shuttle since we have smooth-wall code.
 /area/shuttle/administration/station
-  name = "\improper Administration Shuttle"
-  icon_state = "shuttlered2"
+	name = "\improper Administration Shuttle"
+	icon_state = "shuttlered2"
 
 /area/shuttle/merchant
 	icon_state = "shuttlegrn"
@@ -392,77 +392,75 @@
 /area/maintenance/substation/emergency
 	name = "Emergency Substation"
 
-
-
 // Maintenance
 
 /area/maintenance/ghetto_medbay
-    name = "\improper Ghetto Medbay"
-    icon_state = "ghettomedbay"
+	name = "\improper Ghetto Medbay"
+	icon_state = "ghettomedbay"
 
 /area/maintenance/ghetto_minicasino
-    name = "\improper Ghetto Mini Casino"
-    icon_state = "ghettominicasino"
+	name = "\improper Ghetto Mini Casino"
+	icon_state = "ghettominicasino"
 
 /area/maintenance/ghetto_rnd
-    name = "\improper Ghetto RnD"
-    icon_state = "ghettornd"
+	name = "\improper Ghetto RnD"
+	icon_state = "ghettornd"
 
 /area/maintenance/ghetto_janitor
-    name = "\improper Ghetto Janitor Room"
-    icon_state = "ghettojanitor"
+	name = "\improper Ghetto Janitor Room"
+	icon_state = "ghettojanitor"
 
 /area/maintenance/ghetto_virology
-    name = "\improper Ghetto Virology"
-    icon_state = "ghettovirology"
+	name = "\improper Ghetto Virology"
+	icon_state = "ghettovirology"
 
 /area/maintenance/ghetto_shop
-    name = "\improper Ghetto Shop"
-    icon_state = "ghettoshop"
+	name = "\improper Ghetto Shop"
+	icon_state = "ghettoshop"
 
 /area/maintenance/ghetto_bar
-    name = "\improper Ghetto Bar"
-    icon_state = "ghettobar"
+	name = "\improper Ghetto Bar"
+	icon_state = "ghettobar"
 
 /area/maintenance/ghetto_library
-    name = "\improper Ghetto Library"
-    icon_state = "ghettolibrary"
+	name = "\improper Ghetto Library"
+	icon_state = "ghettolibrary"
 
 /area/maintenance/ghetto_toilet
-    name = "\improper Ghetto Toilets"
-    icon_state = "ghettotoilets"
+	name = "\improper Ghetto Toilets"
+	icon_state = "ghettotoilets"
 
 /area/maintenance/ghetto_dorm
-    name = "\improper Ghetto Dorm"
-    icon_state = "ghettodorm"
+	name = "\improper Ghetto Dorm"
+	icon_state = "ghettodorm"
 
 /area/maintenance/ghetto_main
-    name = "\improper Ghetto Main"
-    icon_state = "ghettomain"
+	name = "\improper Ghetto Main"
+	icon_state = "ghettomain"
 
 /area/maintenance/ghetto_casino
-    name = "\improper Ghetto Casino"
-    icon_state = "ghettocasino"
+	name = "\improper Ghetto Casino"
+	icon_state = "ghettocasino"
 
 /area/maintenance/ghetto_syndie
-    name = "\improper Ghetto Syndie"
-    icon_state = "ghettosyndie"
+	name = "\improper Ghetto Syndie"
+	icon_state = "ghettosyndie"
 
 /area/maintenance/ghetto_dockhall
-    name = "\improper Ghetto Dock Hall"
-    icon_state = "ghettodockhall"
+	name = "\improper Ghetto Dock Hall"
+	icon_state = "ghettodockhall"
 
 /area/maintenance/ghetto_cafe
-    name = "\improper Ghetto Cafe"
-    icon_state = "ghettocafe"
+	name = "\improper Ghetto Cafe"
+	icon_state = "ghettocafe"
 
 /area/maintenance/ghetto_strangeplace
-    name = "\improper Ghetto Strange Place"
-    icon_state = "ghettostrangeplace"
+	name = "\improper Ghetto Strange Place"
+	icon_state = "ghettostrangeplace"
 
 /area/maintenance/ghetto_detective
-    name = "\improper Ghetto Detective"
-    icon_state = "ghettodetective"
+	name = "\improper Ghetto Detective"
+	icon_state = "ghettodetective"
 
 /area/maintenance/underground/central_one
 	name = "\improper Underground Central Primary Hallway SE"
@@ -984,7 +982,7 @@
 	name = "\improper Bar Backroom"
 	icon_state = "barBR"
 
-/area/crew_quarters/ubarbackroom           ////////////// new room for bartender
+/area/crew_quarters/ubarbackroom		   ////////////// new room for bartender
 	name = "\improper Underground Bar Backroom"
 	icon_state = "ubarBR"
 

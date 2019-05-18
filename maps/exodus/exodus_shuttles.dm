@@ -558,9 +558,9 @@
 	docking_controller = "skipjack_base"
 
 /obj/effect/shuttle_landmark/skipjack/internim
-    name = "In transit"
-    landmark_tag = "nav_skipjack_transition"
-    autoset = 1
+	name = "In transit"
+	landmark_tag = "nav_skipjack_transition"
+	autoset = 1
 
 /obj/effect/shuttle_landmark/skipjack/northwest
 	name = "North West"

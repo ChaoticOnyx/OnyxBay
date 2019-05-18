@@ -117,7 +117,7 @@
 		Goto(target_mob, move_to_delay, minimum_distance)
 
 /mob/living/simple_animal/hostile/proc/Goto(target_mob, delay, minimum_distance)
-        walk_to(src, target_mob, minimum_distance, delay)
+		walk_to(src, target_mob, minimum_distance, delay)
 
 /mob/living/simple_animal/hostile/proc/AttackTarget()
 	stop_automated_movement = 1
