@@ -2,6 +2,8 @@
 	set name = "OOC"
 	set category = "OOC"
 
+	// TODO [V] Make log sanitized
+	mob.log_message("[key]: [message]", INDIVIDUAL_OOC_LOG)
 	sanitize_and_communicate(/decl/communication_channel/ooc, src, message)
 
 	if(src.mob)

@@ -302,6 +302,16 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		p=p+n_mod
 	return sanitize(t)
 
+/mob/proc/log_message(message, message_type)
+	if(!LAZYLEN(message) || !message_type)
+		return
+
+	if(!islist(logging[message_type]))
+		logging[message_type] = list()
+
+	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [key_name(src)]" = message)
+
+	logging[message_type] += timestamped_message
 
 /proc/shake_camera(mob/M, duration, strength=1)
 	if(!M || !M.client || M.shakecamera || M.stat || isEye(M) || isAI(M))

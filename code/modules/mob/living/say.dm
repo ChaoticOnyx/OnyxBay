@@ -242,6 +242,7 @@ proc/get_radio_key_from_channel(var/channel)
 
 		if (speaking.flags & SIGNLANG)
 			log_say("[name]/[key] : SIGN: [message]")
+			log_message(message, INDIVIDUAL_SAY_LOG)
 			return say_signlang(message, pick(speaking.signlang_verb), speaking)
 
 	if(T)
@@ -308,8 +309,10 @@ proc/get_radio_key_from_channel(var/channel)
 
 	if(whispering)
 		log_whisper("[name]/[key] : [message]")
+		log_message(message, INDIVIDUAL_SAY_LOG)
 	else
 		log_say("[name]/[key] : [message]")
+		log_message(message, INDIVIDUAL_SAY_LOG)
 	return 1
 
 /mob/living/proc/say_signlang(var/message, var/verb="gestures", var/datum/language/language)

@@ -103,6 +103,12 @@
 #define APPEARANCE_ALL_HAIR (APPEARANCE_HAIR|APPEARANCE_HAIR_COLOR|APPEARANCE_FACIAL_HAIR|APPEARANCE_FACIAL_HAIR_COLOR)
 #define APPEARANCE_ALL       0xFFFF
 
+//Individual logging defines
+#define INDIVIDUAL_ATTACK_LOG "Attack log"
+#define INDIVIDUAL_SAY_LOG "Say log"
+#define INDIVIDUAL_OOC_LOG "OOC log"
+#define INDIVIDUAL_SHOW_ALL_LOG "All logs"
+
 // Click cooldown
 #define DEFAULT_ATTACK_COOLDOWN 8 //Default timeout for aggressive actions
 #define DEFAULT_QUICK_COOLDOWN  4
