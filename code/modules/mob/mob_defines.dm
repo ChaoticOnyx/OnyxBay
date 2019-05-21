@@ -42,7 +42,7 @@
 	var/obj/screen/movable/ability_master/ability_master = null
 
 	// Logging
-	var/list/logging = list(INDIVIDUAL_ATTACK_LOG, INDIVIDUAL_SAY_LOG, INDIVIDUAL_OOC_LOG)
+	var/list/logging = list(INDIVIDUAL_SAY_LOG, INDIVIDUAL_OOC_LOG)
 
 	/*A bunch of this stuff really needs to go under their own defines instead of being globally attached to mob.
 	A variable should only be globally attached to turfs/objects/whatever, when it is in fact needed as such.
