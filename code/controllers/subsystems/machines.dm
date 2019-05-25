@@ -5,9 +5,9 @@
 
 #define START_PROCESSING_IN_LIST(Datum, List) \
 if (Datum.is_processing) {\
-	if(Datum.is_processing != #Processor)\
+	if(Datum.is_processing != "SSmachines.[#List]")\
 	{\
-		crash_with("Failed to start processing. [log_info_line(Datum)] is already being processed by [Datum.is_processing] but queue attempt occured on [#Processor]."); \
+		crash_with("Failed to start processing. [log_info_line(Datum)] is already being processed by [Datum.is_processing] but queue attempt occured on SSmachines.[#List]."); \
 	}\
 } else {\
 	Datum.is_processing = "SSmachines.[#List]";\
@@ -219,5 +219,5 @@ datum/controller/subsystem/machines/proc/setup_atmos_machinery(list/machines)
 
 #undef SSMACHINES_PIPENETS
 #undef SSMACHINES_MACHINERY
-#undef SSMACHINES_POWER
-#undef SSMACHINES_power_objects
+#undef SSMACHINES_POWERNETS
+#undef SSMACHINES_POWER_OBJECTS

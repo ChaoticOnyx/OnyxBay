@@ -143,8 +143,8 @@
 	layer = 4
 	
 /obj/item/asteroid/beholder_eye/attack_self(mob/user as mob)
-	if (!(XRAY in user.mutations))
-		user.mutations.Add(XRAY)
+	if (!(MUTATION_XRAY in user.mutations))
+		user.mutations.Add(MUTATION_XRAY)
 		user.set_sight(user.sight|SEE_MOBS|SEE_OBJS|SEE_TURFS)
 		user.set_see_in_dark(8)
 		user.set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)

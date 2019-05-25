@@ -48,9 +48,9 @@
 	color_description = "white chalk"
 
 	New()
-	..()
-	name = "white chalk"
-	desc = "A piece of regular white chalk. What else did you expect to see?"
+		..()
+		name = "white chalk"
+		desc = "A piece of regular white chalk. What else did you expect to see?"
 
 /obj/item/weapon/pen/crayon/random/Initialize()
 	..()

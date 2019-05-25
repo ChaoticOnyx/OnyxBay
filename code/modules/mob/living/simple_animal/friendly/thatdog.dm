@@ -26,8 +26,3 @@
 	can_escape = 1
 	pixel_x = -128
 	pixel_y = -64
-
-/mob/living/simple_animal/smallgay
-	..()
-	pixel_x = -128
-	pixel_y = -64

@@ -141,7 +141,7 @@
 /datum/job/clown/equip(var/mob/living/carbon/human/H)
 	. = ..()
 	if(.)
-		H.mutations.Add(CLUMSY)
+		H.mutations.Add(MUTATION_CLUMSY)
 		var/new_name = sanitizeSafe(input(src, "Enter new name, clown. Leave blank or as is to cancel and stay boring.", "[H.real_name] - Enter new HONKy name", H.real_name))
 		if(new_name && new_name != H.real_name)
 			log_and_message_admins("has renamed the clown '[H.real_name]' to '[new_name]'")

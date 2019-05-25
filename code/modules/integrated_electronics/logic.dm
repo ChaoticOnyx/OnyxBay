@@ -224,7 +224,7 @@
 			var/accesses_by_region = list()
 			for(var/i in available_accesses)
 				var/datum/access/A = get_access_by_id(i)
-				group_by(accesses_by_region, num2text(A.region), A.)
+				group_by(accesses_by_region, num2text(A.region), A)
 			regions = sortAssoc(regions)
 
 			for(var/region_key in accesses_by_region)

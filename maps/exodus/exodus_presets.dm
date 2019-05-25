@@ -1,12 +1,3 @@
-var/const/NETWORK_CIVILIAN_EAST       = "Civilian East"
-var/const/NETWORK_CIVILIAN_WEST       = "Civilian West"
-var/const/NETWORK_MAINTENANCE         = "Maintenance Deck"
-var/const/NETWORK_PRISON              = "Prison"
-var/const/NETWORK_RESEARCH_OUTPOST    = "Research Outpost"
-var/const/NETWORK_TELECOM             = "Tcomsat"
-var/const/NETWORK_MASTER              = "Master"
-
-
 /datum/map/exodus/get_network_access(var/network)
 	switch(network)
 		if(NETWORK_CIVILIAN_WEST)
@@ -92,4 +83,3 @@ var/const/NETWORK_MASTER              = "Master"
 
 /obj/machinery/camera/xray/security
 	network = list(NETWORK_SECURITY, NETWORK_MASTER)
-

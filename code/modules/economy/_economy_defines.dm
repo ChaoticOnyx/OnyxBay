@@ -1,4 +1,3 @@
-
 #define RIOTS 1
 #define WILD_ANIMAL_ATTACK 2
 #define INDUSTRIAL_ACCIDENT 3
@@ -38,7 +37,7 @@
 #define MINERALS 8
 
 #define EMERGENCY 9
-#define GAS 10
+#define ECONOMY_GAS 10
 #define MAINTENANCE 11
 #define ELECTRICAL 12
 #define ROBOTICS 13

@@ -61,7 +61,7 @@
 
 /obj/item/organ/internal/phoron/Process()
 	if(owner)
-		var amount = 0.1
+		var/amount = 0.1
 		if(is_broken())
 			amount *= 0.5
 		else if(is_bruised())
@@ -81,7 +81,7 @@
 
 /obj/item/organ/internal/liver/nabber/Process()
 	if(owner)
-		var amount = 0.8
+		var/amount = 0.8
 		if(is_broken())
 			amount *= 0.5
 		else if(is_bruised())
@@ -129,8 +129,8 @@
 	open = 1
 
 /obj/item/organ/internal/brain/nabber
-	var lowblood_tally = 0
-	var lowblood_mult = 2
+	var/lowblood_tally = 0
+	var/lowblood_mult = 2
 	name = "distributed nervous system"
 	parent_organ = BP_CHEST
 
