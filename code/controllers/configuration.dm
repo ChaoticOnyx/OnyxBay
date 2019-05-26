@@ -105,6 +105,9 @@ var/list/gamemode_cache = list()
 	var/discordurl
 	var/githuburl
 
+	var/minutetopiclimit
+	var/secondtopiclimit
+
 	var/forbid_singulo_possession = 0
 
 	//game_options.txt configs
@@ -271,6 +274,12 @@ var/list/gamemode_cache = list()
 
 		if(type == "config")
 			switch (name)
+				if("minute_topic_limit")
+					config.minutetopiclimit = text2num(value)
+
+				if("second_topic_limit")
+					config.secondtopiclimit = text2num(value)
+
 				if ("resource_urls")
 					config.resource_urls = splittext(value, " ")
 
