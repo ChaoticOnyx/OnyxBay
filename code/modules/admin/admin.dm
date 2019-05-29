@@ -100,7 +100,8 @@ var/global/floorIsLava = 0
 		<br><br>
 		[check_rights(R_ADMIN|R_MOD,0) ? "<A href='?src=\ref[src];traitor=\ref[M]'>Traitor panel</A> | " : "" ]
 		<A href='?src=\ref[src];narrateto=\ref[M]'>Narrate to</A> |
-		<A href='?src=\ref[src];subtlemessage=\ref[M]'>Subtle message</A>
+		<A href='?src=\ref[src];subtlemessage=\ref[M]'>Subtle message</A> |
+		<A href='?_src_=holder;individuallog=\ref[M]'>Individual Round Logs</A>
 	"}
 
 	if (M.client)

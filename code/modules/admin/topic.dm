@@ -374,7 +374,7 @@
 		jobs += "</tr>"
 
 		jobs += "</table>"
-		
+
 		// Machinery
 		jobs += "<tr>"
 		jobs += "<td><A href='?_src_=holder;jobban3=JUKEBOX;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "JUKEBOX"))?"red":"blue"]>Jukebox</font></A> | "
@@ -1580,6 +1580,17 @@
 
 		var/mob/M = locate(href_list["subtlemessage"])
 		usr.client.cmd_admin_subtle_message(M)
+
+	else if(href_list["individuallog"])
+		if(!check_rights(R_ADMIN))
+			return
+
+		var/mob/M = locate(href_list["individuallog"]) in SSmobs.mob_list
+		if(!ismob(M))
+			usr << "This can only be used on instances of type /mob."
+			return
+
+		show_individual_logging_panel(M, href_list["log_type"])
 
 	else if(href_list["traitor"])
 		if(!check_rights(R_ADMIN|R_MOD))	return

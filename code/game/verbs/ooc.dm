@@ -2,7 +2,9 @@
 	set name = "OOC"
 	set category = "OOC"
 
-	sanitize_and_communicate(/decl/communication_channel/ooc, src, message)
+	var/sanitizedMessage = sanitize(message)
+	mob.log_message("[key]: [sanitizedMessage]", INDIVIDUAL_OOC_LOG)
+	communicate(/decl/communication_channel/ooc, src, sanitizedMessage)
 
 	if(src.mob)
 		if(jobban_isbanned(src.mob, "OOC"))
