@@ -40,7 +40,7 @@
 
 /obj/item/organ/internal/cancer/proc/infect()
 	var/l = list()
-	for(var/mob/living/carbon/M in range(1,owner))
+	for(var/mob/living/carbon/M in orange(1,owner))
 		var/obj/item/organ/internal/cancer/CAN = locate() in M.contents
 		if(!CAN)
 			l += M
