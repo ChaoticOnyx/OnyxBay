@@ -24,7 +24,10 @@
 /obj/item/organ/internal/cancer/Process()
 
 	..()
-	if((!infectious) && prob(chance))
+	var/C = 0
+	for (var/obj/item/organ/internal/cancer/CAN in owner.contents)
+		C++
+	if((!infectious) && prob(chance) && (C < 6))
 		new /obj/item/organ/internal/cancer(owner)
 
 	if(infectious)
