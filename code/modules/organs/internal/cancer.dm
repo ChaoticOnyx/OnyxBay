@@ -4,6 +4,7 @@
 	name = "strange biostructure"
 	desc = "Strange abhorrent biostructure of unknown origins. Is that an alien organ, a xenoparasite or some sort of space cancer? Is that normal to bear things like that inside you?"
 	icon_state = "Strange_biostructure"
+	dead_icon = "Strange_biostructure_dead"
 	w_class = ITEM_SIZE_SMALL
 	organ_tag = BP_CANCER
 	parent_organ = BP_CHEST
@@ -13,6 +14,7 @@
 	relative_size = 60
 	var/chance = 0
 	var/infectious = 0
+
 
 /obj/item/organ/internal/cancer/New(var/mob/living/carbon/holder)
 	..()
@@ -33,10 +35,6 @@
 			infectious = 1
 	owner.adjustToxLoss(0.01)
 
-/obj/item/organ/internal/cancer/die()
-	src.dead_icon = "Strange_biostructure_dead"
-	..()
-
 
 /obj/item/organ/internal/cancer/proc/infect()
 	var/l = list()
@@ -46,8 +44,6 @@
 			l += M
 	var/k = pick(l)
 	if(infection_chance(k) == 0)
-		return
-	if(k == owner)
 		return
 	if(prob(50))
 		new /obj/item/organ/internal/cancer(k)
