@@ -35,7 +35,6 @@
 			infectious = 1
 	owner.adjustToxLoss(0.01)
 
-
 /obj/item/organ/internal/cancer/proc/infect()
 	var/l = list()
 	for(var/mob/living/carbon/M in orange(1,owner))
