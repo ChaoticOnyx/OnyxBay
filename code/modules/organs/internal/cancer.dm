@@ -47,5 +47,5 @@
 	var/k = pick(l)
 	if((infection_chance(k, "Airborne") == 0) && (infection_chance(k, "Contact") == 0))
 		return
-	if(prob(50))
+	if(prob(50) && (Adjacent(k)))
 		new /obj/item/organ/internal/cancer(k)
