@@ -387,7 +387,7 @@
 	if(!sting_can_reach(target, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
-	
+
 	var/head_not_exposed_to_changeling = 0
 	var/face_not_exposed_to_changeling = 0
 	var/eyes_not_exposed_to_changeling = 0
@@ -422,7 +422,7 @@
 	if(body_not_exposed_to_changeling == 1)
 		to_chat(src, "<span class='warning'>[target]'s armor has protected them from our stinger.</span>")
 		return
-	
+
 	if(!target)	return 0
 
 	if(target.isSynthetic())
@@ -448,7 +448,7 @@
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
 		return
-		
+
 	if(src.cloaked == 1)
 		to_chat(src, "<span class='warning'>We can't infest while mimicking enviroment.</span>")
 		return
@@ -491,7 +491,7 @@
 	if(body_not_exposed_to_changeling == 1)
 		to_chat(src, "<span class='warning'>We can't merge with [T] because they are coated with something impenetrable for us!</span>")
 		return
-		
+
 	if(!istype(T))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
@@ -507,11 +507,11 @@
 	if(src.mind.changeling.isabsorbing)
 		to_chat(src, "<span class='warning'>We are already infesting!</span>")
 		return
-	
+
 	if(T.stat != DEAD && !T.is_asystole() && !T.incapacitated() && !T.sleeping && !T.weakened && !T.stunned && !T.paralysis && !T.restrained())
 		to_chat(src, "<span class='warning'>We need our victim to be paralysed, dead or somehow else incapable of defending themself for us to latch on!</span>")
 		return //Проверка на трупность/критность/спящесть/парализованность/связанность/всетакоепрочее
-	
+
 	src.forceMove(T.loc)
 	src.visible_message("<span class='danger'>[src] has latched onto \the [T].</span>", \
 						"<span class='warning'>We have latched onto \the [T].</span>")
@@ -565,7 +565,7 @@
 	T.sync_organ_dna()
 	T.regenerate_icons()
 
-	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages)
+	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.modifiers)
 	absorbDNA(newDNA)
 
 	T.ghostize()
@@ -635,7 +635,7 @@
 	set category = "Changeling"
 	set name = "Freeze and vanish"
 	set desc = "We smooth and contract our chromatophores, almost vanishing in the air."
-	
+
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We can't use this ability. We are dead.</span>")
 		return
@@ -654,18 +654,18 @@
 		update_icon()
 		speed = 4
 		apply_effect(2, STUN, 0)
-		
+
 /mob/living/simple_animal/hostile/little_changeling/headcrab/update_icon()
 	if(cloaked == 1)
 		alpha = 25
 		set_light(0)
-		move_to_delay = initial(move_to_delay)	
+		move_to_delay = initial(move_to_delay)
 	else
 		alpha = 255
 		set_light(4)
 		move_to_delay = 2
 	return
-		
+
 /mob/living/simple_animal/hostile/little_changeling/headcrab/death(gibbed, deathmessage = "went limp and collapsed!", show_dead_message)
 	cloaked = 0
 	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
