@@ -31,7 +31,7 @@
 	real_name = "Ian"	//Intended to hold the name without altering it.
 	gender = MALE
 	desc = "It's a corgi."
-	var/turns_since_scan = 0
+	turns_since_scan = 0
 	var/obj/movement_target
 	response_help  = "pets"
 	response_disarm = "bops"
@@ -156,7 +156,7 @@
 	response_help  = "pets"
 	response_disarm = "bops"
 	response_harm   = "kicks"
-	var/turns_since_scan = 0
+	turns_since_scan = 0
 	var/puppies = 0
 
 //Lisa already has a cute bow!

@@ -123,6 +123,10 @@ var/list/holder_mob_icon_cache = list()
 /obj/item/weapon/holder/corgi
 	origin_tech = list(TECH_BIO = 4)
 
+/obj/item/weapon/holder/lizard
+	w_class = ITEM_SIZE_TINY
+	origin_tech = list(TECH_BIO = 2)
+
 /obj/item/weapon/holder/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	for(var/mob/M in src.contents)
 		M.attackby(W,user)
@@ -158,6 +162,11 @@ var/list/holder_mob_icon_cache = list()
 		to_chat(src, "<span class='notice'>\The [grabber] scoops you up!</span>")
 
 	src.forceMove(H)
+	if(istype(src,/mob/living/simple_animal))
+		var/mob/living/simple_animal/SA = src
+		SA.panic_target = null
+		SA.stop_automated_movement = 0
+		SA.turns_since_scan = 5
 
 	grabber.status_flags |= PASSEMOTES
 	H.sync(src)
@@ -180,6 +189,7 @@ var/list/holder_mob_icon_cache = list()
 	icon = 'icons/mob/holder_complex.dmi'
 	var/list/generate_for_slots = list(slot_l_hand_str, slot_r_hand_str, slot_back_str)
 	slot_flags = SLOT_BACK
+	w_class = ITEM_SIZE_LARGE
 
 /obj/item/weapon/holder/human/sync(var/mob/living/M)
 	// Generate appropriate on-mob icons.
