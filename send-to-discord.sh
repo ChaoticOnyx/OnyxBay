@@ -9,19 +9,19 @@ echo -e "[Webhook]: Sending webhook to Discord...\\n";
 case $1 in
   "success" )
     EMBED_COLOR=3066993
-    STATUS_MESSAGE="Passed"
+    STATUS_MESSAGE="Build passed"
     AVATAR="https://travis-ci.org/images/logos/TravisCI-Mascot-blue.png"
     ;;
 
   "failure" )
     EMBED_COLOR=15158332
-    STATUS_MESSAGE="Failed"
+    STATUS_MESSAGE="Build failed"
     AVATAR="https://travis-ci.org/images/logos/TravisCI-Mascot-red.png"
     ;;
 
   * )
     EMBED_COLOR=0
-    STATUS_MESSAGE="Status Unknown"
+    STATUS_MESSAGE="Status unknown"
     AVATAR="https://travis-ci.org/images/logos/TravisCI-Mascot-1.png"
     ;;
 esac
