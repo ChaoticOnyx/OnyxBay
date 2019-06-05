@@ -129,14 +129,14 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 4
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_extract_dna_sting
-
+/*
 /datum/power/changeling/LSDSting
 	name = "Hallucination Sting"
 	desc = "We evolve the ability to sting a target with a powerful hallunicationary chemical."
 	helptext = "The target does not notice they have been stung.  The effect occurs after 30 to 60 seconds."
 	genomecost = 3
 	verbpath = /mob/proc/changeling_lsdsting
-/*
+
 /datum/power/changeling/DeathSting
 	name = "Death Sting"
 	desc = "We sting a human, filling them with potent chemicals. Their rapid death is all but assured, but our crime will be obvious."
@@ -204,7 +204,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	We are undetectable, as long as we move slowly."
 	helptext = "Toggleable. Running, and performing most acts will reveal us.  Our chemical regeneration is halted while we are hidden."
 	enhancedtext = "Can run while hidden."
-	genomecost = 10
+	genomecost = 8
 	verbpath = /mob/proc/changeling_visible_camouflage
 
 /datum/power/changeling/electric_lockpick
@@ -212,7 +212,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We discreetly evolve a finger to be able to send a small electric charge.  \
 	We can open most electrical locks, but it will be obvious when we do so."
 	helptext = "Use the ability, then touch something that utilizes an electrical locking system, to open it.  Each use costs 10 chemicals."
-	genomecost = 10
+	genomecost = 8
 	verbpath = /mob/proc/changeling_electric_lockpick
 
 /datum/power/changeling/arm_blade
@@ -238,7 +238,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Recursive Enhancement"
 	desc = "We cause some of our abilities to have increased or additional effects."
 	helptext = "To check the effects for each ability, check the blue text underneath the ability in the evolution menu."
-	genomecost = 8
+	genomecost = 6
 	verbpath = /mob/proc/changeling_recursive_enhancement
 /*
 /datum/power/changeling/fake_blade
@@ -260,7 +260,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Painless"
 	desc = "We choose whether or not to fell pain."
 	helptext = "Toggleable ability, high chemical cost."
-	genomecost = 8
+	genomecost = 7
 	verbpath = /mob/proc/changeling_no_pain
 
 /datum/power/changeling/gib_self
