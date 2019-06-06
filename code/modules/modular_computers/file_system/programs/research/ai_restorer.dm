@@ -6,6 +6,7 @@
 	program_menu_icon = "person"
 	extended_desc = "This program is capable of reconstructing damaged AI systems. It can also be used to upload basic laws to the AI. Requires direct AI connection via inteliCard slot."
 	size = 12
+	category = PROG_COMMAND
 	requires_ntnet = 0
 	required_access = access_heads
 	requires_access_to_run = 0

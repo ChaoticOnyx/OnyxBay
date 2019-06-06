@@ -6,6 +6,7 @@
 	program_key_state = "generic_key"
 	program_menu_icon = "mail-closed"
 	size = 7
+	category = PROG_OFFICE
 	requires_ntnet = 1
 	available_on_ntnet = 1
 	var/stored_login = ""

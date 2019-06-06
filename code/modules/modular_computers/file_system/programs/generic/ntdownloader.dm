@@ -8,6 +8,7 @@
 	unsendable = 1
 	undeletable = 1
 	size = 4
+	category = PROG_UTIL
 	requires_ntnet = 1
 	requires_ntnet_feature = NTNET_SOFTWAREDOWNLOAD
 	available_on_ntnet = 0
@@ -19,6 +20,9 @@
 	var/download_netspeed = 0
 	var/downloaderror = ""
 	var/list/downloads_queue[0]
+	var/file_info //For logging, can be faked by antags.
+	var/server
+	usage_flags = PROGRAM_ALL
 
 /datum/computer_file/program/ntnetdownload/kill_program()
 	..()
@@ -40,16 +44,9 @@
 
 	ui_header = "downloader_running.gif"
 
-	if(PRG in ntnet_global.available_station_software)
-		generate_network_log("Began downloading file [PRG.filename].[PRG.filetype] from NTNet Software Repository.")
-		hacked_download = 0
-	else if(PRG in ntnet_global.available_antag_software)
-		generate_network_log("Began downloading file **ENCRYPTED**.[PRG.filetype] from unspecified server.")
-		hacked_download = 1
-	else
-		generate_network_log("Began downloading file [PRG.filename].[PRG.filetype] from unspecified server.")
-		hacked_download = 0
-
+	hacked_download = (PRG in ntnet_global.available_antag_software)
+	file_info = hide_file_info(PRG)
+	generate_network_log("Began downloading file [file_info] from [server].")
 	downloaded_file = PRG.clone()
 
 /datum/computer_file/program/ntnetdownload/proc/check_file_download(var/filename)
@@ -68,10 +65,20 @@
 
 	return 1
 
+/datum/computer_file/program/ntnetdownload/proc/hide_file_info(datum/computer_file/file)
+	server = (file in ntnet_global.available_station_software) ? "NTNet Software Repository" : "unspecified server"
+	if(!hacked_download)
+		return "[file.filename].[file.filetype]"
+	if(!prob(50))
+		return "**ENCRYPTED**.[file.filetype]"
+	var/datum/computer_file/fake_file = pick(ntnet_global.available_station_software)
+	server = "NTNet Software Repository"
+	return "[fake_file.filename].[fake_file.filetype]"
+
 /datum/computer_file/program/ntnetdownload/proc/abort_file_download()
 	if(!downloaded_file)
 		return
-	generate_network_log("Aborted download of file [hacked_download ? "**ENCRYPTED**" : downloaded_file.filename].[downloaded_file.filetype].")
+	generate_network_log("Aborted download of file [file_info].")
 	downloaded_file = null
 	download_completion = 0
 	ui_header = "downloader_finished.gif"
@@ -79,7 +86,7 @@
 /datum/computer_file/program/ntnetdownload/proc/complete_file_download()
 	if(!downloaded_file)
 		return
-	generate_network_log("Completed download of file [hacked_download ? "**ENCRYPTED**" : downloaded_file.filename].[downloaded_file.filetype].")
+	generate_network_log("Completed download of file [file_info].")
 	if(!computer || !computer.hard_drive || !computer.hard_drive.store_file(downloaded_file))
 		// The download failed
 		downloaderror = "I/O ERROR - Unable to save file. Check whether you have enough free space on your hard drive and whether your hard drive is properly connected. If the issue persists contact your system administrator for assistance."
@@ -93,7 +100,7 @@
 	if(download_completion >= downloaded_file.size)
 		complete_file_download()
 		if(downloads_queue.len > 0)
-			begin_file_download(downloads_queue[1])
+			begin_file_download(downloads_queue[1], downloads_queue[downloads_queue[1]])
 			downloads_queue.Remove(downloads_queue[1])
 
 	// Download speed according to connectivity state. NTNet server is assumed to be on unlimited speed so we're limited by our local connectivity
@@ -161,17 +168,24 @@
 	data["disk_size"] = my_computer.hard_drive.max_capacity
 	data["disk_used"] = my_computer.hard_drive.used_capacity
 	var/list/all_entries[0]
-	for(var/datum/computer_file/program/P in ntnet_global.available_station_software)
-		// Only those programs our user can run will show in the list
-		if(!P.can_run(user) && P.requires_access_to_download)
-			continue
-		all_entries.Add(list(list(
-		"filename" = P.filename,
-		"filedesc" = P.filedesc,
-		"fileinfo" = P.extended_desc,
-		"size" = P.size,
-		"icon" = P.program_menu_icon
-		)))
+	for(var/category in ntnet_global.available_software_by_category)
+		var/list/category_list[0]
+		for(var/datum/computer_file/program/P in ntnet_global.available_software_by_category[category])
+			// Only those programs our user can run will show in the list
+			if(!P.can_run(user) && P.requires_access_to_download)
+				continue
+			//if(!P.is_supported_by_hardware(my_computer.hardware_flag, 1, user))
+			//	continue
+			category_list.Add(list(list(
+			"filename" = P.filename,
+			"filedesc" = P.filedesc,
+			"fileinfo" = P.extended_desc,
+			"size" = P.size,
+			"icon" = P.program_menu_icon
+			)))
+		if(category_list.len)
+			all_entries.Add(list(list("category"=category, "programs"=category_list)))
+
 	data["hackedavailable"] = 0
 	if(prog.computer_emagged) // If we are running on emagged computer we have access to some "bonus" software
 		var/list/hacked_programs[0]
@@ -189,7 +203,10 @@
 	data["downloadable_programs"] = all_entries
 
 	if(prog.downloads_queue.len > 0)
-		data["downloads_queue"] = prog.downloads_queue
+		var/list/queue = list() // Nanoui can't iterate through assotiative lists, so we have to do this
+		for(var/item in prog.downloads_queue)
+			queue += item
+		data["downloads_queue"] = queue
 
 	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)

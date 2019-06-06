@@ -31,6 +31,7 @@
 	program_menu_icon = "search"
 	extended_desc = "This program allows remote access to the camera system. Some camera networks may have additional access requirements."
 	size = 12
+	category = PROG_MONITOR
 	available_on_ntnet = 1
 	requires_ntnet = 1
 

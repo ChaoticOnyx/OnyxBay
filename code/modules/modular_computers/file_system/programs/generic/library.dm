@@ -14,6 +14,7 @@ The answer was five and a half years -ZeroBits
 	program_key_state = "atmos_key"
 	program_menu_icon = "note"
 	size = 6
+	category = PROG_OFFICE
 	requires_ntnet = 1
 	available_on_ntnet = 1
 

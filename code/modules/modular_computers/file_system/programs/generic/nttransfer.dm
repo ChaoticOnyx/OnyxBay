@@ -8,6 +8,7 @@ var/global/nttransfer_uid = 0
 	program_key_state = "generic_key"
 	program_menu_icon = "transferthick-e-w"
 	size = 7
+	category = PROG_UTIL
 	requires_ntnet = 1
 	requires_ntnet_feature = NTNET_PEERTOPEER
 	network_destination = "other device via P2P tunnel"
