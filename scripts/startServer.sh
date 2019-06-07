@@ -6,5 +6,5 @@ npm install
 gulp --min
 cd /home/ubuntu/onyxbay
 
-nohup DreamDaemon baystation12.dmb 2507 -trusted -logself  > /dev/null 2> /dev/null < /dev/null &
+nohup DreamDaemon baystation12.dmb 2507 -trusted -invisible -logself  > /dev/null 2> /dev/null < /dev/null &
 echo "Started Stage server"
