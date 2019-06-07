@@ -394,7 +394,6 @@
 		stop_automated_movement = 0
 
 	if(panic_target)
-		if(prob(25)) say("HSSSSS")
 		stop_automated_movement = 1
 		walk_away(src, panic_target, 7, 2)
 

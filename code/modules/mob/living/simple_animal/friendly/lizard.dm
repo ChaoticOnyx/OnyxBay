@@ -34,8 +34,8 @@
 	can_pull_mobs = MOB_PULL_SAME
 
 /mob/living/simple_animal/lizard/Crossed(AM as mob|obj)
-	if(ishuman(AM))
-		if(!stat)
-			var/mob/M = AM
-			set_panic_target(M)
+	if(ishuman(AM) && !stat)
+		var/mob/M = AM
+		set_panic_target(M)
+		if(prob(25)) say("HSSSSS")
 	..()
