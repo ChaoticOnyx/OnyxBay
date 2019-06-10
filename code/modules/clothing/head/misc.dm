@@ -350,3 +350,8 @@
 	body_parts_covered = HEAD|FACE|EYES
 	flash_protection = FLASH_PROTECTION_MAJOR
 	armor = list(melee = 20, bullet = 10, laser = 10,energy = 5, bomb = 5, bio = 0, rad = 0)
+
+/obj/item/clothing/head/beret/rasta
+	name = "rasta hat"
+	desc = "U good bruh?"
+	icon_state = "rastacap"

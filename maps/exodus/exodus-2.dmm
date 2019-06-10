@@ -1083,7 +1083,7 @@
 "avL" = (/turf/simulated/wall,/area/maintenance/evahallway)
 "avM" = (/turf/simulated/floor/plating,/area/maintenance/evahallway)
 "avN" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/maintenance/evahallway)
-"avO" = (/obj/item/weapon/reagent_containers/food/drinks/cans/dopecola,/turf/simulated/floor/plating,/area/maintenance/security_port)
+"avO" = (/turf/simulated/floor/plating,/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall{icon_state = "swall_c"; dir = 8},/area/shuttle/escape_pod2/station)
 "avP" = (/obj/effect/floor_decal/corner/red{dir = 5},/obj/effect/floor_decal/corner/red{dir = 9},/obj/structure/bed/chair,/turf/simulated/floor/tiled,/area/hallway/primary/fore)
 "avQ" = (/obj/effect/floor_decal/corner/red{dir = 5},/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/obj/machinery/power/apc{dir = 1; name = "north bump"; pixel_x = 0; pixel_y = 24},/turf/simulated/floor/tiled,/area/hallway/primary/fore)
 "avR" = (/obj/effect/floor_decal/corner/red{dir = 5},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled,/area/hallway/primary/fore)
