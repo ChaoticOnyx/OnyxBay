@@ -84,7 +84,7 @@
 /obj/item/clothing/head/helmet/swat
 	name = "\improper SWAT helmet"
 	desc = "They're often used by highly trained Swat Members."
-	icon_state = "helmet_merc"
+	icon_state = "swat"
 	armor = list(melee = 65, bullet = 75, laser = 75,energy = 25, bomb = 50, bio = 10, rad = 0)
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
