@@ -260,7 +260,6 @@
 	name = "bear pelt hat"
 	desc = "Fuzzy."
 	icon_state = "bearpelt"
-	flags_inv = BLOCKHAIR
 	siemens_coefficient = 0.7
 	armor = list(melee = 15, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
@@ -355,3 +354,10 @@
 	name = "rasta hat"
 	desc = "U good bruh?"
 	icon_state = "rastacap"
+
+/obj/item/clothing/head/sombrero
+	name = "sombrero"
+	icon_state = "sombrero"
+	item_state = "sombrero"
+	desc = "You can practically taste the fiesta."
+	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 30, bio = 0, rad = 0)
