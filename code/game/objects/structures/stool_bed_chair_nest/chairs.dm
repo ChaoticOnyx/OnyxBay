@@ -1,12 +1,13 @@
 /obj/structure/bed/chair	//YES, chairs are a type of bed, which are a type of stool. This works, believe me.	-Pete
 	name = "chair"
-	desc = "You sit in this, either by will or force."
+	desc = "A four-legged metal chair, rigid and slightly uncomfortable. Helpful when you don't want to use your legs at the moment."
 	icon_state = "chair_preview"
 	color = "#666666"
 	base_icon = "chair"
 	buckle_dir = 0
 	buckle_lying = 0 //force people to sit up in chairs when buckled
 	var/propelled = 0 // Check for fire-extinguisher-driven chairs
+	var/foldable = 1
 
 /obj/structure/bed/chair/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
@@ -100,6 +101,8 @@
 /obj/structure/bed/chair/comfy
 	desc = "It's a chair. It looks comfy."
 	icon_state = "comfychair_preview"
+	base_icon = "comfychair"
+	foldable = 0
 
 /obj/structure/bed/chair/comfy/brown/New(var/newloc,var/newmaterial)
 	..(newloc,"steel","leather")
@@ -142,6 +145,7 @@
 	anchored = 0
 	buckle_movable = 1
 	material_alteration = MATERIAL_ALTERATION_NONE
+	foldable = 0
 
 /obj/structure/bed/chair/office/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack) || isWirecutter(W))
@@ -199,6 +203,7 @@
 	base_icon = "wooden_chair"
 	icon_state = "wooden_chair_preview"
 	material_alteration = MATERIAL_ALTERATION_NAME
+	foldable = 0
 
 /obj/structure/bed/chair/wood/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack) || istype(W, /obj/item/weapon/wirecutters))
@@ -216,3 +221,64 @@
 	desc = "A strange chair, not from around here."
 	base_icon = "bogchair"
 	icon_state = "bogchair_preview"
+
+/obj/structure/bed/chair/shuttle
+	name = "shuttle chair"
+	desc = "It looks *almost* comfortable."
+	base_icon = "shuttle_chair"
+	icon_state = "shuttle_chair_preview"
+	material_alteration = MATERIAL_ALTERATION_NONE
+	foldable = 0
+
+/obj/structure/bed/chair/shuttle/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/stack) || istype(W, /obj/item/weapon/wirecutters))
+		return
+	..()
+
+/obj/structure/bed/chair/shuttle/blue/New(var/newloc,var/newmaterial)
+	..(newloc,"plastic","blue")
+
+/obj/structure/bed/chair/shuttle/red
+	base_icon = "shuttle_chaired"
+	icon_state = "shuttle_chaired_preview"
+
+/obj/structure/bed/chair/shuttle/red/New(var/newloc,var/newmaterial)
+	..(newloc,"plastic","carpet")
+
+/* ======================================================= */
+/* -------------------- Folded Chairs -------------------- */
+/* ======================================================= */
+
+/obj/item/weapon/foldchair
+	name = "chair"
+	desc = "A folded chair. Good for smashing noggin-shaped things."
+	icon = 'icons/obj/furniture.dmi'
+	icon_state = "folded_chair"
+	item_state = "gassembly"
+	w_class = ITEM_SIZE_NO_CONTAINER // Jesus no
+
+/obj/item/roller/attack_self(mob/user)
+	var/obj/structure/bed/chair/O = new/obj/structure/bed/chair(user.loc)
+	O.add_fingerprint(user)
+	qdel(src)
+
+/obj/structure/bed/chair/MouseDrop(over_object, src_location, over_location)
+	..()
+	if(foldable && (over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
+		if(!ishuman(usr))	return
+		if(buckled_mob)
+			visible_message(SPAN_WARN("[buckled_mob] falls down as [usr] collapses \the [src.name]!"))
+			var/mob/living/occupant = unbuckle_mob()
+			var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
+
+			occupant.apply_effect(4, STUN, blocked)
+			occupant.apply_effect(4, WEAKEN, blocked)
+			occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
+			playsound(src.loc, 'sound/weapons/punch1.ogg', 50, 1, -1)
+		else
+			visible_message("[usr] collapses \the [src.name].")
+		var/obj/item/weapon/foldchair/O = new/obj/item/weapon/foldchair(get_turf(src))
+		O.add_fingerprint(usr)
+		QDEL_IN(src, 0)
+		return
+
