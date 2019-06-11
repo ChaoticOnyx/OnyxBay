@@ -1122,3 +1122,13 @@
 
 /mob/proc/get_sex()
 	return gender
+
+
+/mob/proc/check_CH(CH_name as text, var/CH_type)
+	if(!src.client.CH || !istype(src.client.CH, CH_type))
+		src.client.CH = new CH_type(src.client)
+		src << "<span class='warning'>You prepare [CH_name].</span>"
+	else
+		qdel(src.client.CH)
+		src << "<span class='notice'>You unprepare [CH_name].</span>"
+	return

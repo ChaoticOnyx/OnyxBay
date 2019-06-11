@@ -1184,6 +1184,17 @@
 	..()
 	if(MUTATION_XRAY in mutations)
 		set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
+	if(!seedarkness)
+		sight = species.get_vision_flags(src)
+		see_in_dark = 8
+		see_invisible = SEE_INVISIBLE_NOLIGHTING
+
+	else
+		sight = species.get_vision_flags(src)
+		see_in_dark = species.darksight
+		see_invisible = see_in_dark>2 ? SEE_INVISIBLE_LEVEL_ONE : SEE_INVISIBLE_LIVING
+
+
 
 /mob/living/carbon/human/proc/handle_tase(var/amount)
 	if(status_flags & GODMODE)

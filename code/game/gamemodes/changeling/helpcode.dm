@@ -326,12 +326,12 @@
 	response_disarm = "pushes aside the"
 	response_harm = "hits the"
 	speed = 0
-	maxHealth = 35
-	health = 35
+	maxHealth = 50
+	health = 50
 	pass_flags = PASS_FLAG_TABLE
-	harm_intent_damage = 15
-	melee_damage_lower = 10
-	melee_damage_upper = 20
+	harm_intent_damage = 25
+	melee_damage_lower = 20
+	melee_damage_upper = 30
 	attacktext = "bitten"
 	attack_sound = 'sound/weapons/bite.ogg'
 	var/cloaked = 0
@@ -345,7 +345,7 @@
 	minbodytemp = 0
 	maxbodytemp = 350
 	break_stuff_probability = 15
-
+	var/DivasionCaunter = 0
 	faction = "biomass"
 
 /mob/living/simple_animal/hostile/little_changeling/New()
@@ -387,7 +387,7 @@
 	if(!sting_can_reach(target, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
-	
+
 	var/head_not_exposed_to_changeling = 0
 	var/face_not_exposed_to_changeling = 0
 	var/eyes_not_exposed_to_changeling = 0
@@ -422,7 +422,7 @@
 	if(body_not_exposed_to_changeling == 1)
 		to_chat(src, "<span class='warning'>[target]'s armor has protected them from our stinger.</span>")
 		return
-	
+
 	if(!target)	return 0
 
 	if(target.isSynthetic())
@@ -438,17 +438,31 @@
 	last_special = world.time + 10 SECOND
 	return
 
+
 /mob/living/simple_animal/hostile/little_changeling/verb/Infest(mob/living/carbon/human/target as mob in oview(1))
 	set category = "Changeling"
 	set name = "Infest"
 	set desc = "We latch onto potential host and merge with their body, taking control over it."
 
-	var/mob/living/carbon/human/T = target
+	var/k = 0
+
+	if(k == 0)
+		k = 1
+		src.PushClickHandler(/datum/click_handler/changeling/Infest)
+	else
+		k = 0
+		src.PopClickHandler()
+	return
+
+
+/mob/living/simple_animal/hostile/little_changeling/proc/afterInfest(atom/A)
+
+	var/mob/living/carbon/human/T = A
 
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
 		return
-		
+
 	if(src.cloaked == 1)
 		to_chat(src, "<span class='warning'>We can't infest while mimicking enviroment.</span>")
 		return
@@ -491,7 +505,7 @@
 	if(body_not_exposed_to_changeling == 1)
 		to_chat(src, "<span class='warning'>We can't merge with [T] because they are coated with something impenetrable for us!</span>")
 		return
-		
+
 	if(!istype(T))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
@@ -507,11 +521,11 @@
 	if(src.mind.changeling.isabsorbing)
 		to_chat(src, "<span class='warning'>We are already infesting!</span>")
 		return
-	
+
 	if(T.stat != DEAD && !T.is_asystole() && !T.incapacitated() && !T.sleeping && !T.weakened && !T.stunned && !T.paralysis && !T.restrained())
 		to_chat(src, "<span class='warning'>We need our victim to be paralysed, dead or somehow else incapable of defending themself for us to latch on!</span>")
 		return //Проверка на трупность/критность/спящесть/парализованность/связанность/всетакоепрочее
-	
+
 	src.forceMove(T.loc)
 	src.visible_message("<span class='danger'>[src] has latched onto \the [T].</span>", \
 						"<span class='warning'>We have latched onto \the [T].</span>")
@@ -520,22 +534,22 @@
 	for(var/stage = 1, stage<=3, stage++)
 		switch(stage)
 			if(2)
-				src.visible_message("<span class='warning'>[src] merged their tegument with [target]</span>", \
+				src.visible_message("<span class='warning'>[src] merged their tegument with [A]</span>", \
 						"<span class='notice'>We bind our tegument to our prey.</span>")
 				T.getBruteLoss(10)
 			if(3)
-				src.visible_message("<span class='warning'>[src] grown their appendages into [target]</span>", \
+				src.visible_message("<span class='warning'>[src] grown their appendages into [A]</span>", \
 						"<span class='notice'>We grow inwards.</span>")
 				T.getBruteLoss(15)
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, T, 150))
-			to_chat(src, "<span class='warning'>Our infestation of [target] has been interrupted!</span>")
+			to_chat(src, "<span class='warning'>Our infestation of [A] has been interrupted!</span>")
 			src.mind.changeling.isabsorbing = 0
 			T.getBruteLoss(39)
 			return
 
-	src.visible_message("<span class='danger'>[src] dissolved in [target] and merged with them completely!</span>", \
+	src.visible_message("<span class='danger'>[src] dissolved in [A] and merged with them completely!</span>", \
 						"<span class='notice'>We merged with our prey.</span>")
 
 	to_chat(T, "<span class='danger'><h3>Your neural network has been overtaken by \the [src]!</h3></span>")
@@ -565,7 +579,7 @@
 	T.sync_organ_dna()
 	T.regenerate_icons()
 
-	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages)
+	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.modifiers)
 	absorbDNA(newDNA)
 
 	T.ghostize()
@@ -590,6 +604,13 @@
 	var/mob/living/L = .
 	if(src.health <= (src.maxHealth - 5))
 		src.health += 5
+
+	if(DivasionCaunter < 8)
+		DivasionCaunter += 1
+	else
+		new/mob/living/simple_animal/hostile/little_changeling/arm_chan(src.loc)
+		DivasionCaunter = 0
+
 	if(istype(L,/mob/living/carbon/human))
 		if(prob(15))
 			L.Weaken(3)
@@ -597,33 +618,33 @@
 
 
 /mob/living/simple_animal/hostile/little_changeling/arm_chan
-	maxHealth = 40
-	health = 40
+	maxHealth = 50
+	health = 50
 	name = "disfigured arm"
 	icon_state = "gib_arm"
 	icon_living = "gib_arm"
 /mob/living/simple_animal/hostile/little_changeling/head_chan
-	maxHealth = 50
-	health = 50
+	maxHealth = 70
+	health = 70
 	name = "disfigured head"
 	icon_state = "gib_head"
 	icon_living = "gib_head"
 /mob/living/simple_animal/hostile/little_changeling/chest_chan
-	maxHealth = 80
-	health = 80
+	maxHealth = 150
+	health = 150
 	name = "disfigured chest"
 	icon_state = "gib_torso"
 	icon_living = "gib_torso"
 /mob/living/simple_animal/hostile/little_changeling/leg_chan
-	maxHealth = 40
-	health = 40
+	maxHealth = 60
+	health = 60
 	name = "disfigured leg"
 	icon_state = "gib_leg"
 	icon_living = "gib_leg"
 
 /mob/living/simple_animal/hostile/little_changeling/headcrab
-	maxHealth = 15
-	health = 15
+	maxHealth = 50
+	health = 50
 	harm_intent_damage = 15
 	speed = 0
 	name = "headcrab"
@@ -635,7 +656,7 @@
 	set category = "Changeling"
 	set name = "Freeze and vanish"
 	set desc = "We smooth and contract our chromatophores, almost vanishing in the air."
-	
+
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We can't use this ability. We are dead.</span>")
 		return
@@ -654,18 +675,18 @@
 		update_icon()
 		speed = 4
 		apply_effect(2, STUN, 0)
-		
+
 /mob/living/simple_animal/hostile/little_changeling/headcrab/update_icon()
 	if(cloaked == 1)
 		alpha = 25
 		set_light(0)
-		move_to_delay = initial(move_to_delay)	
+		move_to_delay = initial(move_to_delay)
 	else
 		alpha = 255
 		set_light(4)
 		move_to_delay = 2
 	return
-		
+
 /mob/living/simple_animal/hostile/little_changeling/headcrab/death(gibbed, deathmessage = "went limp and collapsed!", show_dead_message)
 	cloaked = 0
 	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents

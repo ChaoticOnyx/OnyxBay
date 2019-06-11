@@ -49,7 +49,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "Allows you to absorb a single DNA and use it. Does not count towards your absorb objective."
 	genomecost = 0
 	verbpath = /mob/proc/changeling_hivedownload
-	
+
 //Biostructure and limb management
 
 /datum/power/changeling/move_biostructure
@@ -75,7 +75,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "We will no longer require internals, and we cannot inhale any gas, including harmful ones."
 	genomecost = 0
 	verbpath = /mob/proc/changeling_self_respiration
-	
+
 /*
 /datum/power/changeling/lesser_form
 	name = "Lesser Form"
@@ -89,14 +89,14 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We silently sting a human, completely deafening them for a short time."
 	genomecost = 1
 	allowduringlesserform = 1
-	verbpath = /mob/proc/changeling_deaf_sting
+	verbpath = /mob/proc/pre_changeling_deaf_sting
 
 /datum/power/changeling/blind_sting
 	name = "Blind Sting"
 	desc = "We silently sting a human, completely blinding them for a short time."
 	genomecost = 2
 	allowduringlesserform = 1
-	verbpath = /mob/proc/changeling_blind_sting
+	verbpath = /mob/proc/pre_changeling_blind_sting
 
 /datum/power/changeling/silence_sting
 	name = "Silence Sting"
@@ -104,14 +104,14 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "Does not provide a warning to a victim that they have been stung, until they try to speak and cannot."
 	genomecost = 3
 	allowduringlesserform = 1
-	verbpath = /mob/proc/changeling_silence_sting
-	
+	verbpath = /mob/proc/pre_changeling_silence_sting
+
 /datum/power/changeling/vomit_sting
 	name = "Vomit Sting"
 	desc = "We silently sting a human, urging them to throw up in one second."
 	genomecost = 1
 	allowduringlesserform = 1
-	verbpath = /mob/proc/changeling_vomit_sting
+	verbpath = /mob/proc/pre_changeling_vomit_sting
 
 
 /datum/power/changeling/mimicvoice
@@ -128,14 +128,14 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "Will give you the DNA of your target, allowing you to transform into them. Does not count towards absorb objectives."
 	genomecost = 4
 	allowduringlesserform = 1
-	verbpath = /mob/proc/changeling_extract_dna_sting
+	verbpath = /mob/proc/pre_changeling_extract_dna_sting
 
 /datum/power/changeling/LSDSting
 	name = "Hallucination Sting"
 	desc = "We evolve the ability to sting a target with a powerful hallunicationary chemical."
 	helptext = "The target does not notice they have been stung.  The effect occurs after 30 to 60 seconds."
 	genomecost = 3
-	verbpath = /mob/proc/changeling_lsdsting
+	verbpath = /mob/proc/pre_changeling_lsdsting
 /*
 /datum/power/changeling/DeathSting
 	name = "Death Sting"
@@ -254,7 +254,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We reform victims arm into a fake armblade."
 	helptext = "The effect is irrevertable."
 	genomecost = 5
-	verbpath = /mob/proc/changeling_fake_arm_blade
+	verbpath = /mob/proc/pre_changeling_fake_arm_blade
 
 /datum/power/changeling/no_pain
 	name = "Painless"
@@ -267,16 +267,16 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Body Disjunction"
 	desc = "Tear apart your human disguise and become a hunting pack of lesser critters."
 	helptext = "Takes time."
-	genomecost = 4
+	genomecost = 8
 	verbpath = /mob/proc/changeling_gib_self
 
 /datum/power/changeling/division
 	name = "Division"
 	desc = "We infest humanoid body with the clone of our core organ, making them like us."
 	helptext = "Dead bodies cannot be successfully infested."
-	genomecost = 8
+	genomecost = 6
 	verbpath = /mob/proc/changeling_division
-	
+
 /datum/power/changeling/chem_disp_sting
 	name = "Biochemical Cauldron"
 	desc = "We evolve our stinger glands to be able to synthesize a variety of chemicals."
@@ -298,6 +298,20 @@ var/list/datum/power/changeling/powerinstances = list()
 	helptext = "Spends chemicals."
 	genomecost = 6
 	verbpath = /mob/proc/changeling_rapid_heal
+
+/datum/power/changeling/Bioelectrogenesis
+	name = "Bioelectrogenesis"
+	desc = "We create an electromagnetic pulse against synthetics."
+	helptext = "Small affected area."
+	genomecost = 6
+	verbpath = /mob/proc/pre_Bioelectrogenesis
+
+/datum/power/changeling/darksight
+	name = "Dark Sight"
+	desc = "We change the composition of our eyes, banishing the shadows from our vision."
+	helptext = "We will be able to see in the dark."
+	genomecost = 0
+	verbpath = /mob/proc/changeling_darksight
 
 // Modularchangling, totally stolen from the new player panel.  YAYY
 /datum/changeling/proc/EvolutionMenu()//The new one
