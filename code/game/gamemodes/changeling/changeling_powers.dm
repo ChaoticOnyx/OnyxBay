@@ -732,25 +732,26 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 //Handles the general sting code to reduce on copypasta (seeming as somebody decided to make SO MANY dumb abilities)
 /mob/proc/changeling_sting(required_chems = 0 as num, verb_path, mob/living/carbon/human/T, loud = FALSE as num)
-	var/datum/changeling/changeling = changeling_power(required_chems)
+
+	if(!T)
+		return
 	if (!ishuman(T) || (T==src))
 		T.Click()
 		return
 	if(!changeling)
 		return
-
+	var/datum/changeling/changeling = changeling_power(required_chems)
 //	var/list/victims = list()
 //	for(var/mob/living/carbon/human/C in oview(changeling.sting_range))
 //		victims += C
 //	var/mob/living/carbon/human/T = input(src, "Who will we sting?") as null|anything in victims
 
-	if(!T)
-		return
-	if(!(T in view(changeling.sting_range)))
-		src << "<span class='warning'>Too Far</span>"
-		return
+
+//	if(!(T in view(changeling.sting_range)))
+//		src << "<span class='warning'>Too Far</span>"
+//		return
 	if(!sting_can_reach(T, changeling.sting_range)) return
-	if(!changeling_power(required_chems)) return
+//	if(!changeling_power(required_chems)) return
 	var/obj/item/organ/external/target_limb = T.get_organ(src.zone_sel.selecting)
 	if (!target_limb)
 		to_chat(src, "<span class='warning'>[T] is missing that limb.</span>")
