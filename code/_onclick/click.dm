@@ -610,6 +610,18 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	user.PopClickHandler()
 	return
 
+/datum/click_handler/changeling/little_paralyse
+	handler_name = "Paralyse"
+
+
+/datum/click_handler/changeling/little_paralyse/OnClick(atom/target)
+	if(ishuman(target))
+		var/mob/living/simple_animal/hostile/little_changeling/L = user
+		L.afterparalyse(target)
+	user.PopClickHandler()
+	return
+
+
 //WIZARD CH
 /datum/click_handler/wizard/mob_check(mob/living/carbon/human/user)
 	return 1
