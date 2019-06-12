@@ -762,25 +762,6 @@
 // Dank Maintenance
 /area/maintenance/sub
 	turf_initializer = /decl/turf_initializer/maintenance/heavy
-	ambience = list(
-		'sound/ambience/ambiatm1.ogg',
-		'sound/ambience/ambigen3.ogg',
-		'sound/ambience/ambigen4.ogg',
-		'sound/ambience/ambigen5.ogg',
-		'sound/ambience/ambigen6.ogg',
-		'sound/ambience/ambigen7.ogg',
-		'sound/ambience/ambigen8.ogg',
-		'sound/ambience/ambigen9.ogg',
-		'sound/ambience/ambigen10.ogg',
-		'sound/ambience/ambigen11.ogg',
-		'sound/ambience/ambigen12.ogg',
-		'sound/ambience/ambimine.ogg',
-		'sound/ambience/ambimo2.ogg',
-		'sound/ambience/ambisin4.ogg',
-		'sound/effects/wind/wind_2_1.ogg',
-		'sound/effects/wind/wind_2_2.ogg',
-		'sound/effects/wind/wind_3_1.ogg',
-	)
 
 /area/maintenance/sub/relay_station
 	name = "\improper Sublevel Maintenance - Relay Station"
@@ -982,7 +963,7 @@
 	name = "\improper Bar Backroom"
 	icon_state = "barBR"
 
-/area/crew_quarters/ubarbackroom		   ////////////// new room for bartender
+/area/crew_quarters/ubarbackroom //new room for bartender
 	name = "\improper Underground Bar Backroom"
 	icon_state = "ubarBR"
 
@@ -1009,7 +990,7 @@
 /area/engineering/
 	name = "\improper Engineering"
 	icon_state = "engineering"
-	ambience = list('sound/ambience/ambisin1.ogg','sound/ambience/ambisin2.ogg','sound/ambience/ambisin3.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/engineering/ambieng1.ogg')
 
 /area/engineering/engine_airlock
 	name = "\improper Engine Room Airlock"
@@ -1034,6 +1015,7 @@
 /area/engineering/atmos
 	name = "\improper Atmospherics"
 	icon_state = "atmos"
+	ambience = list('sound/ambience/atmospherics/ambiatm1.ogg')
 
 /area/engineering/atmos/storage
 	name = "\improper Atmospherics Storage"
@@ -1351,12 +1333,12 @@ area/rnd/test_area
 /area/turret_protected/tcomsat
 	name = "\improper Telecoms Satellite"
 	icon_state = "tcomsatlob"
-	ambience = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen10.ogg')
+	ambience = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg')
 
 /area/turret_protected/tcomfoyer
 	name = "\improper Telecoms Foyer"
 	icon_state = "tcomsatentrance"
-	ambience = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen10.ogg')
+	ambience = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg')
 
 /area/tcommsat/powercontrol
 	name = "\improper Telecommunications Power Control"
