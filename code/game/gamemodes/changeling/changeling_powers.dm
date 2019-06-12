@@ -731,7 +731,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	return 1
 
 //Handles the general sting code to reduce on copypasta (seeming as somebody decided to make SO MANY dumb abilities)
-/mob/proc/changeling_sting(var/required_chems=0, var/verb_path, var/mob/living/carbon/human/T, var/loud = 0)
+/mob/proc/changeling_sting(required_chems = 0 as num, verb_path, mob/living/carbon/human/T, loud = FALSE as num)
 	var/datum/changeling/changeling = changeling_power(required_chems)
 	if (!ishuman(T) || (T==src))
 		T.Click()
