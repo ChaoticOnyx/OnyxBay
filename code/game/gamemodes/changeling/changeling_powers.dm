@@ -11,7 +11,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/changelingID = "Changeling"
 	var/geneticdamage = 0
 	var/isabsorbing = 0
-	var/geneticpoints = 13
+	var/geneticpoints = 15
 	var/purchasedpowers = list()
 	var/mimicing = ""
 	var/lingabsorbedcount = 1
@@ -745,7 +745,6 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 //	var/mob/living/carbon/human/T = input(src, "Who will we sting?") as null|anything in victims
 
 	if(!T)
-		to_chat(src, "<span class='warning'>Bug in !victim into basical sting proc.</span>")
 		return
 	if(!(T in view(changeling.sting_range)))
 		src << "<span class='warning'>Too Far</span>"
@@ -1220,7 +1219,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	name = "arm blade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people as a hot knife through butter."
 	icon_state = "arm_blade"
-	force = 30
+	force = 25
 	armor_penetration = 15
 	sharp = 1
 	edge = 1
@@ -1232,13 +1231,14 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	name = "arm greatblade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people and armor as a hot knife through butter."
 	force = 35
-	armor_penetration = 30
+	armor_penetration = 20
 
 /obj/item/weapon/melee/changeling/claw
 	name = "hand claw"
 	desc = "A grotesque claw made out of bone and flesh that cleaves through people as a hot knife through butter."
 	icon_state = "ling_claw"
-	force = 20
+	armor_penetration = 20
+	force = 15
 	sharp = 1
 	edge = 1
 	canremove = 0
@@ -1246,7 +1246,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /obj/item/weapon/melee/changeling/claw/greater
 	name = "hand greatclaw"
-	force = 25
+	force = 20
 	armor_penetration = 50
 	anchored = 1
 
