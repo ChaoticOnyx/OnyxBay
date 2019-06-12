@@ -345,7 +345,7 @@
 	minbodytemp = 0
 	maxbodytemp = 350
 	break_stuff_probability = 15
-	var/DivasionCaunter = 0
+	var/DivisionCounter = 0
 	faction = "biomass"
 
 /mob/living/simple_animal/hostile/little_changeling/New()
@@ -370,11 +370,18 @@
 		return
 	..()
 
-/mob/living/simple_animal/hostile/little_changeling/verb/paralyse(mob/living/carbon/human/target as mob in oview(1))
+
+
+
+/mob/living/simple_animal/hostile/little_changeling/verb/paralyse()
 	set category = "Changeling"
 	set name = "Paralyzis sting"
 	set desc = "We sting our prey and inject paralyzing toxin into them, making them harmless to us for relatively long period of time."
+	
+	change_ctate(/datum/click_handler/changeling/Infest)
+	return
 
+/mob/living/simple_animal/hostile/little_changeling/proc/afterparalyse(atom/target)
 
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
@@ -435,7 +442,7 @@
 	feedback_add_details("changeling_powers","PB")
 
 
-	last_special = world.time + 10 SECOND
+	last_special = world.time + 15 SECOND
 	return
 
 
@@ -444,14 +451,7 @@
 	set name = "Infest"
 	set desc = "We latch onto potential host and merge with their body, taking control over it."
 
-	var/k = 0
-
-	if(k == 0)
-		k = 1
-		src.PushClickHandler(/datum/click_handler/changeling/Infest)
-	else
-		k = 0
-		src.PopClickHandler()
+	change_ctate(/datum/click_handler/changeling/Infest)
 	return
 
 
@@ -605,14 +605,14 @@
 	if(src.health <= (src.maxHealth - 5))
 		src.health += 5
 
-	if(DivasionCaunter < 8)
-		DivasionCaunter += 1
+	if(DivisionCounter < 8)
+		DivisionCounter += 1
 	else
 		new/mob/living/simple_animal/hostile/little_changeling/arm_chan(src.loc)
-		DivasionCaunter = 0
+		DivisionCounter = 0
 
 	if(istype(L,/mob/living/carbon/human))
-		if(prob(15))
+		if(prob(3))
 			L.Weaken(3)
 			L.visible_message("<span class='danger'>\the [src] knocks down \the [L]!</span>")
 
