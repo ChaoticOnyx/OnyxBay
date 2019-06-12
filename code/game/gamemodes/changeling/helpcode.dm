@@ -611,7 +611,7 @@
 		new/mob/living/simple_animal/hostile/little_changeling/arm_chan(src.loc)
 		DivisionCounter = 0
 
-	if(istype(L,/mob/living/carbon/human))
+	if(ishuman(L))
 		if(prob(3))
 			L.Weaken(3)
 			L.visible_message("<span class='danger'>\the [src] knocks down \the [L]!</span>")
