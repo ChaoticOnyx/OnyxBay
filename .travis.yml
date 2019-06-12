@@ -1,19 +1,11 @@
 language: generic
 sudo: false
 
-# notifications:
-#   webhooks:
-#     urls:
-#       - https://discordapp.com/api/webhooks/475124635164213248/HnIVHWdsJqGjNZdyKynaFy1oDEoxoMb50gGDubBsffiHmkMp_mjQXFyrYL0wUgdxOErY
-#     on_success: always  # options: [always|never|change] default: always
-#     on_failure: always  # options: [always|never|change] default: always
-#     on_start: never     # options: [always|never|change] default: always
-
 env:
-    global:
-    - BYOND_MAJOR="512"
-    - BYOND_MINOR="1452"
-    - DM_BUILDFILE="baystation12.dme"
+  global:
+    BYOND_MAJOR="512"
+    BYOND_MINOR="1463"
+    DM_BUILDFILE="baystation12.dme"
 
 cache:
   directories:
@@ -27,7 +19,7 @@ addons:
       - libstdc++6:i386
 
 before_script:
-  - chmod +x ./install-byond.sh 
+  - chmod +x ./install-byond.sh
   - ./install-byond.sh
 
 after_success:
@@ -40,7 +32,34 @@ after_failure:
 
 script:
   - (! grep 'step_[xy]' maps/**/*.dmm)
-#  - (! grep -E "(/obj/machinery/door/firedoor).*\1" maps/*.dmm)
   - source $HOME/BYOND-${BYOND_MAJOR}.${BYOND_MINOR}/byond/bin/byondsetup
-#  - bash dm.sh -M${DM_MAPFILE} ${DM_BUILDFILE}
   - bash dm.sh ${DM_BUILDFILE}
+
+before_deploy:
+  if ! [[ $TRAVIS_ZIPPED_ARCHIVE ]]; then
+    export TRAVIS_ZIPPED_ARCHIVE="TRUE" &&
+    zip -rq latest * &&
+    mkdir -p dpl_cd_upload &&
+    mv latest.zip dpl_cd_upload/latest.zip;
+  fi
+
+deploy:
+- provider: s3
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  local_dir: dpl_cd_upload
+  skip_cleanup: true
+  on: &2
+    branch: dev
+  bucket: onyxbay.stage
+  region: eu-west-3
+- provider: codedeploy
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: onyxbay.stage
+  key: latest.zip
+  bundle_type: zip
+  application: OnyxBayStage
+  deployment_group: OnyxBayDeploymentGroup
+  region: eu-west-3
+  on: *2

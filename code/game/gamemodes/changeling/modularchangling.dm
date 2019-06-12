@@ -129,6 +129,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 4
 	allowduringlesserform = 1
 	verbpath = /mob/proc/pre_changeling_extract_dna_sting
+  
 /*
 /datum/power/changeling/LSDSting
 	name = "Hallucination Sting"

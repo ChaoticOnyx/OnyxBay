@@ -82,7 +82,8 @@
 	return 50000
 
 /obj/item/projectile/beam/emitter/singularity_pull()
-	return
+	if(anchored)
+		return
 
 /obj/item/weapon/storage/backpack/holding/singularity_act(S, current_size)
 	var/dist = max((current_size - 2), 1)
