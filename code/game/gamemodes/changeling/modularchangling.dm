@@ -204,7 +204,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	We are undetectable, as long as we move slowly."
 	helptext = "Toggleable. Running, and performing most acts will reveal us.  Our chemical regeneration is halted while we are hidden."
 	enhancedtext = "Can run while hidden."
-	genomecost = 6
+	genomecost = 8
 	verbpath = /mob/proc/changeling_visible_camouflage
 
 /datum/power/changeling/electric_lockpick
@@ -212,7 +212,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We discreetly evolve a finger to be able to send a small electric charge.  \
 	We can open most electrical locks, but it will be obvious when we do so."
 	helptext = "Use the ability, then touch something that utilizes an electrical locking system, to open it.  Each use costs 10 chemicals."
-	genomecost = 6
+	genomecost = 8
 	verbpath = /mob/proc/changeling_electric_lockpick
 
 /datum/power/changeling/arm_blade
@@ -238,7 +238,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Recursive Enhancement"
 	desc = "We cause some of our abilities to have increased or additional effects."
 	helptext = "To check the effects for each ability, check the blue text underneath the ability in the evolution menu."
-	genomecost = 5
+	genomecost = 6
 	verbpath = /mob/proc/changeling_recursive_enhancement
 /*
 /datum/power/changeling/fake_blade
