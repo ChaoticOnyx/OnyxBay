@@ -381,7 +381,7 @@
 	change_ctate(/datum/click_handler/changeling/Infest)
 	return
 
-/mob/living/simple_animal/hostile/little_changeling/proc/afterparalyse(atom/target)
+/mob/living/simple_animal/hostile/little_changeling/proc/afterparalyse(atom/A)
 
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
@@ -394,7 +394,7 @@
 	if(!sting_can_reach(target, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
-
+	var/mob/living/carbon/human/target = A
 	var/head_not_exposed_to_changeling = 0
 	var/face_not_exposed_to_changeling = 0
 	var/eyes_not_exposed_to_changeling = 0
