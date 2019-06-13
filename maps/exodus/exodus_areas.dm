@@ -1576,12 +1576,12 @@ area/rnd/test_area
 /area/mine/explored
 	name = "Mine"
 	icon_state = "explored"
-	ambience = list('sound/ambience/ambimine.ogg', 'sound/ambience/song_game.ogg')
+	ambience = list('sound/ambience/mine/ambimine.ogg', 'sound/ambience/song_game.ogg')
 
 /area/mine/unexplored
 	name = "Mine"
 	icon_state = "unexplored"
-	ambience = list('sound/ambience/ambimine.ogg', 'sound/ambience/song_game.ogg')
+	ambience = list('sound/ambience/mine/ambimine.ogg', 'sound/ambience/song_game.ogg')
 
 
 /area/constructionsite/maintenance
@@ -1642,7 +1642,7 @@ area/rnd/test_area
 /area/AIsattele
 	name = "\improper AI Satellite Teleporter Room"
 	icon_state = "teleporter"
-	ambience = list('sound/ambience/ambimalf.ogg')
+	ambience = list('sound/ambience/ai/ambiai.ogg')
 
 /area/constructionsite/atmospherics
 	name = "\improper Construction Site Atmospherics"
