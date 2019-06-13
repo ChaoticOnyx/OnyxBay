@@ -738,9 +738,10 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if (!ishuman(T) || (T==src))
 		T.Click()
 		return
+	var/datum/changeling/changeling = changeling_power(required_chems)
 	if(!changeling)
 		return
-	var/datum/changeling/changeling = changeling_power(required_chems)
+
 //	var/list/victims = list()
 //	for(var/mob/living/carbon/human/C in oview(changeling.sting_range))
 //		victims += C
