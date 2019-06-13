@@ -445,6 +445,18 @@
 			src.visible_message("<span class='warning'>\The [src] regurgitates \the [AM]!</span>")
 			return loc
 	return ..()
+
+/mob/living/carbon/update_living_sight()
+	..()
+	if(seeDarkness)
+		set_see_in_dark(7)
+		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+		sight = species.get_vision_flags(src)
+	else
+		set_see_in_dark(species.darksight)
+		set_see_invisible(see_in_dark > 2 ? SEE_INVISIBLE_LEVEL_ONE : SEE_INVISIBLE_LIVING)
+		sight = species.get_vision_flags(src)
+
 /mob/living/carbon/proc/should_have_organ(var/organ_check)
 	return 0
 

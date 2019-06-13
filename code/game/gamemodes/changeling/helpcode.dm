@@ -312,7 +312,6 @@
 		"<span class='alert'><font size='2'><b>We have just transformed into mobile but vulnerable form! We have to find a new host quickly!</b></font></span>")
 	qdel(limb_to_del)
 
-
 /mob/living/simple_animal/hostile/little_changeling
 	name = "biomass"
 	desc = "A terrible biomass"
@@ -345,7 +344,7 @@
 	minbodytemp = 0
 	maxbodytemp = 350
 	break_stuff_probability = 15
-	var/DivisionCounter = 0
+	var/divisionCounter = 0
 	faction = "biomass"
 
 /mob/living/simple_animal/hostile/little_changeling/New()
@@ -370,20 +369,15 @@
 		return
 	..()
 
-
-
-
-/mob/living/simple_animal/hostile/little_changeling/verb/paralyse()
+/mob/living/simple_animal/hostile/little_changeling/verb/prepare_paralyse_sting()
 	set category = "Changeling"
 	set name = "Paralyzis sting"
 	set desc = "We sting our prey and inject paralyzing toxin into them, making them harmless to us for relatively long period of time."
-	
-	change_ctate(/datum/click_handler/changeling/Infest)
+
+	change_ctate(/datum/click_handler/changeling/little_paralyse) // Check if this is ok?
 	return
 
-/mob/living/simple_animal/hostile/little_changeling/proc/afterparalyse(atom/A)
-
-	var/mob/living/carbon/human/target = A
+/mob/living/simple_animal/hostile/little_changeling/proc/paralyse_sting(mob/living/carbon/human/target as mob in oview(1))
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
 		return
@@ -392,49 +386,55 @@
 		to_chat(src, "<span class='warning'>We must wait a little while before we can use this ability again!</span>")
 		return
 
+	if(!target)
+		return FALSE
+
+	if(!istype(target))
+		to_chat(src, "<span class='warning'>[target] is not human. How should we sting that thing?!</span>")
+		return
+
+	if(target.isSynthetic())
+		to_chat(src, "<span class='warning'>[target] is not an biological organism, we can't paralyse them.</span>")
+		return
+
 	if(!sting_can_reach(target, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
 
-	var/head_not_exposed_to_changeling = 0
-	var/face_not_exposed_to_changeling = 0
-	var/eyes_not_exposed_to_changeling = 0
-	var/chest_not_exposed_to_changeling = 0
-	var/groin_not_exposed_to_changeling = 0
-	var/arms_not_exposed_to_changeling = 0
-	var/hands_not_exposed_to_changeling = 0
-	var/legs_not_exposed_to_changeling = 0
-	var/feet_not_exposed_to_changeling = 0
+	// Part not exposed for sting flags
+	var/head = FALSE
+	var/face = FALSE
+	var/eyes = FALSE
+	var/chest = FALSE
+	var/groin = FALSE
+	var/arms = FALSE
+	var/hands = FALSE
+	var/legs = FALSE
+	var/feet = FALSE
 
+	// TODO[V] Refactor this one
 	for(var/obj/item/clothing/C in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
 		if(C && (C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			head_not_exposed_to_changeling = 1
+			head = TRUE
 		if(C && (C.body_parts_covered & FACE) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			face_not_exposed_to_changeling = 1
+			face = TRUE
 		if(C && (C.body_parts_covered & EYES) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			eyes_not_exposed_to_changeling = 1
+			eyes = TRUE
 		if(C && (C.body_parts_covered & UPPER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			chest_not_exposed_to_changeling = 1
+			chest = TRUE
 		if(C && (C.body_parts_covered & LOWER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			groin_not_exposed_to_changeling = 1
+			groin = TRUE
 		if(C && (C.body_parts_covered & ARMS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			arms_not_exposed_to_changeling = 1
+			arms = TRUE
 		if(C && (C.body_parts_covered & HANDS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			hands_not_exposed_to_changeling = 1
+			hands = TRUE
 		if(C && (C.body_parts_covered & LEGS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			legs_not_exposed_to_changeling = 1
+			legs = TRUE
 		if(C && (C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			feet_not_exposed_to_changeling = 1
+			feet = TRUE
 
-	var/body_not_exposed_to_changeling = head_not_exposed_to_changeling*face_not_exposed_to_changeling*eyes_not_exposed_to_changeling*chest_not_exposed_to_changeling*groin_not_exposed_to_changeling*arms_not_exposed_to_changeling*hands_not_exposed_to_changeling*legs_not_exposed_to_changeling*feet_not_exposed_to_changeling
-	if(body_not_exposed_to_changeling == 1)
+	if(head && face && eyes && chest && groin && arms && hands && legs && feet)
 		to_chat(src, "<span class='warning'>[target]'s armor has protected them from our stinger.</span>")
-		return
-
-	if(!target)	return 0
-
-	if(target.isSynthetic())
-		to_chat(src, "<span class='warning'>[target] is not an biological organism, we can't paralyse them.</span>")
 		return
 
 	to_chat(target,"<span class='danger'>Your muscles begin to painfully tighten.</span>")
@@ -442,24 +442,18 @@
 	src.visible_message("<span class='warning'>[src] has grown out a huge abominable stinger and pierced \the [target] with it!</span>")
 	feedback_add_details("changeling_powers","PB")
 
-
-	last_special = world.time + 15 SECOND
+	last_special = world.time + 15 SECONDS
 	return
 
-
-/mob/living/simple_animal/hostile/little_changeling/verb/Infest(mob/living/carbon/human/target as mob in oview(1))
+/mob/living/simple_animal/hostile/little_changeling/verb/prepare_infest()
 	set category = "Changeling"
 	set name = "Infest"
 	set desc = "We latch onto potential host and merge with their body, taking control over it."
 
-	change_ctate(/datum/click_handler/changeling/Infest)
+	change_ctate(/datum/click_handler/changeling/infest)
 	return
 
-
-/mob/living/simple_animal/hostile/little_changeling/proc/afterInfest(atom/A)
-
-	var/mob/living/carbon/human/T = A
-
+/mob/living/simple_animal/hostile/little_changeling/proc/infest(mob/living/carbon/human/target as mob in oview(1))
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
 		return
@@ -468,54 +462,19 @@
 		to_chat(src, "<span class='warning'>We can't infest while mimicking enviroment.</span>")
 		return
 
-	if(!sting_can_reach(T, 1))
+	if(!sting_can_reach(target, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
 
-	var/head_not_exposed_to_changeling = 0
-	var/face_not_exposed_to_changeling = 0
-	var/eyes_not_exposed_to_changeling = 0
-	var/chest_not_exposed_to_changeling = 0
-	var/groin_not_exposed_to_changeling = 0
-	var/arms_not_exposed_to_changeling = 0
-	var/hands_not_exposed_to_changeling = 0
-	var/legs_not_exposed_to_changeling = 0
-	var/feet_not_exposed_to_changeling = 0
-
-	for(var/obj/item/clothing/C in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
-		if(C && (C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			head_not_exposed_to_changeling = 1
-		if(C && (C.body_parts_covered & FACE) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			face_not_exposed_to_changeling = 1
-		if(C && (C.body_parts_covered & EYES) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			eyes_not_exposed_to_changeling = 1
-		if(C && (C.body_parts_covered & UPPER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			chest_not_exposed_to_changeling = 1
-		if(C && (C.body_parts_covered & LOWER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			groin_not_exposed_to_changeling = 1
-		if(C && (C.body_parts_covered & ARMS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			arms_not_exposed_to_changeling = 1
-		if(C && (C.body_parts_covered & HANDS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			hands_not_exposed_to_changeling = 1
-		if(C && (C.body_parts_covered & LEGS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			legs_not_exposed_to_changeling = 1
-		if(C && (C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			feet_not_exposed_to_changeling = 1
-
-	var/body_not_exposed_to_changeling = head_not_exposed_to_changeling*face_not_exposed_to_changeling*eyes_not_exposed_to_changeling*chest_not_exposed_to_changeling*groin_not_exposed_to_changeling*arms_not_exposed_to_changeling*hands_not_exposed_to_changeling*legs_not_exposed_to_changeling*feet_not_exposed_to_changeling
-	if(body_not_exposed_to_changeling == 1)
-		to_chat(src, "<span class='warning'>We can't merge with [T] because they are coated with something impenetrable for us!</span>")
+	if(!istype(target))
+		to_chat(src, "<span class='warning'>[target] is not compatible with our biology.</span>")
 		return
 
-	if(!istype(T))
-		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
+	if(target.species.species_flags & SPECIES_FLAG_NO_SCAN)
+		to_chat(src, "<span class='warning'>[target] is not compatible with our biology.</span>")
 		return
 
-	if(T.species.species_flags & SPECIES_FLAG_NO_SCAN)
-		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
-		return
-
-	if(MUTATION_HUSK in T.mutations)
+	if(MUTATION_HUSK in target.mutations)
 		to_chat(src, "<span class='warning'>This creature's DNA is ruined beyond useability!</span>")
 		return
 
@@ -523,68 +482,104 @@
 		to_chat(src, "<span class='warning'>We are already infesting!</span>")
 		return
 
-	if(T.stat != DEAD && !T.is_asystole() && !T.incapacitated() && !T.sleeping && !T.weakened && !T.stunned && !T.paralysis && !T.restrained())
+	if(target.stat != DEAD && !target.is_asystole() && !target.incapacitated() && !target.sleeping && !target.weakened && !target.stunned && !target.paralysis && !target.restrained())
 		to_chat(src, "<span class='warning'>We need our victim to be paralysed, dead or somehow else incapable of defending themself for us to latch on!</span>")
-		return //Проверка на трупность/критность/спящесть/парализованность/связанность/всетакоепрочее
+		return
 
-	src.forceMove(T.loc)
-	src.visible_message("<span class='danger'>[src] has latched onto \the [T].</span>", \
-						"<span class='warning'>We have latched onto \the [T].</span>")
+	// Part not exposed for merge flags
+	var/head = FALSE
+	var/face = FALSE
+	var/eyes = FALSE
+	var/chest = FALSE
+	var/groin = FALSE
+	var/arms = FALSE
+	var/hands = FALSE
+	var/legs = FALSE
+	var/feet = FALSE
+
+	// TODO[V] Refactor this one later
+	for(var/obj/item/clothing/C in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
+		if(C && (C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			head = TRUE
+		if(C && (C.body_parts_covered & FACE) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			face = TRUE
+		if(C && (C.body_parts_covered & EYES) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			eyes = TRUE
+		if(C && (C.body_parts_covered & UPPER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			chest = TRUE
+		if(C && (C.body_parts_covered & LOWER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			groin = TRUE
+		if(C && (C.body_parts_covered & ARMS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			arms = TRUE
+		if(C && (C.body_parts_covered & HANDS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			hands = TRUE
+		if(C && (C.body_parts_covered & LEGS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			legs = TRUE
+		if(C && (C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			feet = TRUE
+
+	if(head && face && eyes && chest && groin && arms && hands && legs && feet)
+		to_chat(src, "<span class='warning'>We can't merge with [target] because they are coated with something impenetrable for us!</span>")
+		return
+
+	src.forceMove(target.loc)
+	src.visible_message("<span class='danger'>[src] has latched onto \the [target].</span>", \
+						"<span class='warning'>We have latched onto \the [target].</span>")
 
 	src.mind.changeling.isabsorbing = 1
 	for(var/stage = 1, stage<=3, stage++)
 		switch(stage)
 			if(2)
-				src.visible_message("<span class='warning'>[src] merged their tegument with [A]</span>", \
+				src.visible_message("<span class='warning'>[src] merged their tegument with [target]</span>", \
 						"<span class='notice'>We bind our tegument to our prey.</span>")
-				T.getBruteLoss(10)
+				target.getBruteLoss(10)
 			if(3)
-				src.visible_message("<span class='warning'>[src] grown their appendages into [A]</span>", \
+				src.visible_message("<span class='warning'>[src] grown their appendages into [target]</span>", \
 						"<span class='notice'>We grow inwards.</span>")
-				T.getBruteLoss(15)
+				target.getBruteLoss(15)
 
 		feedback_add_details("changeling_powers","A[stage]")
-		if(!do_mob(src, T, 150))
-			to_chat(src, "<span class='warning'>Our infestation of [A] has been interrupted!</span>")
+		if(!do_mob(src, target, 150))
+			to_chat(src, "<span class='warning'>Our infestation of [target] has been interrupted!</span>")
 			src.mind.changeling.isabsorbing = 0
-			T.getBruteLoss(39)
+			target.getBruteLoss(39)
 			return
 
-	src.visible_message("<span class='danger'>[src] dissolved in [A] and merged with them completely!</span>", \
+	src.visible_message("<span class='danger'>[src] dissolved in [target] and merged with them completely!</span>", \
 						"<span class='notice'>We merged with our prey.</span>")
 
-	to_chat(T, "<span class='danger'><h3>Your neural network has been overtaken by \the [src]!</h3></span>")
-	to_chat(T,"<span class='deadsay'>You have died.</span>")
+	to_chat(target, "<span class='danger'><h3>Your neural network has been overtaken by \the [src]!</h3></span>")
+	to_chat(target,"<span class='deadsay'>You have died.</span>")
 	src.mind.changeling.isabsorbing = 0
 
 	if(istype(src,/mob/living/simple_animal/hostile/little_changeling/arm_chan))
-		if(!T.has_limb(BP_L_ARM))
-			T.restore_limb(BP_L_ARM)
-			T.restore_limb(BP_L_HAND)
-		else if (!T.has_limb(BP_R_ARM))
-			T.restore_limb(BP_R_ARM)
-			T.restore_limb(BP_R_HAND)
+		if(!target.has_limb(BP_L_ARM))
+			target.restore_limb(BP_L_ARM)
+			target.restore_limb(BP_L_HAND)
+		else if (!target.has_limb(BP_R_ARM))
+			target.restore_limb(BP_R_ARM)
+			target.restore_limb(BP_R_HAND)
 	else if(istype(src,/mob/living/simple_animal/hostile/little_changeling/leg_chan))
-		if(!T.has_limb(BP_L_LEG))
-			T.restore_limb(BP_L_LEG)
-			T.restore_limb(BP_L_FOOT)
-		else if (!T.has_limb(BP_R_LEG))
-			T.restore_limb(BP_R_LEG)
-			T.restore_limb(BP_R_FOOT)
+		if(!target.has_limb(BP_L_LEG))
+			target.restore_limb(BP_L_LEG)
+			target.restore_limb(BP_L_FOOT)
+		else if (!target.has_limb(BP_R_LEG))
+			target.restore_limb(BP_R_LEG)
+			target.restore_limb(BP_R_FOOT)
 	else if(istype(src,/mob/living/simple_animal/hostile/little_changeling/head_chan))
-		if(!T.has_limb(BP_HEAD))
-			T.restore_limb(BP_HEAD)
-			T.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/brain(T)
-			T.internal_organs_by_name[BP_EYES] = new/obj/item/organ/internal/eyes(T)
+		if(!target.has_limb(BP_HEAD))
+			target.restore_limb(BP_HEAD)
+			target.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/brain(target)
+			target.internal_organs_by_name[BP_EYES] = new/obj/item/organ/internal/eyes(target)
 
-	T.sync_organ_dna()
-	T.regenerate_icons()
+	target.sync_organ_dna()
+	target.regenerate_icons()
 
-	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.modifiers)
+	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers)
 	absorbDNA(newDNA)
 
-	T.ghostize()
-	changeling_transfer_mind(T)
+	target.ghostize()
+	changeling_transfer_mind(target)
 
 	qdel(src)
 
@@ -606,17 +601,15 @@
 	if(src.health <= (src.maxHealth - 5))
 		src.health += 5
 
-	if(DivisionCounter < 8)
-		DivisionCounter += 1
+	if(divisionCounter < 8)
+		divisionCounter += 1
 	else
 		new/mob/living/simple_animal/hostile/little_changeling/arm_chan(src.loc)
-		DivisionCounter = 0
+		divisionCounter = 0
 
-	if(ishuman(L))
-		if(prob(3))
-			L.Weaken(3)
-			L.visible_message("<span class='danger'>\the [src] knocks down \the [L]!</span>")
-
+	if(ishuman(L) && prob(3))
+		L.Weaken(3)
+		L.visible_message("<span class='danger'>\the [src] knocks down \the [L]!</span>")
 
 /mob/living/simple_animal/hostile/little_changeling/arm_chan
 	maxHealth = 50
@@ -624,18 +617,21 @@
 	name = "disfigured arm"
 	icon_state = "gib_arm"
 	icon_living = "gib_arm"
+
 /mob/living/simple_animal/hostile/little_changeling/head_chan
 	maxHealth = 70
 	health = 70
 	name = "disfigured head"
 	icon_state = "gib_head"
 	icon_living = "gib_head"
+
 /mob/living/simple_animal/hostile/little_changeling/chest_chan
 	maxHealth = 150
 	health = 150
 	name = "disfigured chest"
 	icon_state = "gib_torso"
 	icon_living = "gib_torso"
+
 /mob/living/simple_animal/hostile/little_changeling/leg_chan
 	maxHealth = 60
 	health = 60

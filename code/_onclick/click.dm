@@ -494,8 +494,7 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	handler_name = "Hallucination Sting"
 
 /datum/click_handler/changeling/changeling_lsdsting/OnClick(atom/target)
-	if(ishuman(target))
-		user.changeling_lsdsting(target)
+	user.changeling_lsdsting(target)
 	user.PopClickHandler()
 	return
 
@@ -503,18 +502,15 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	handler_name = "Silence Sting"
 
 /datum/click_handler/changeling/changeling_silence_sting/OnClick(atom/target)
-	if(ishuman(target))
-		user.changeling_silence_sting(target)
+	user.changeling_silence_sting(target)
 	user.PopClickHandler()
 	return
 
-/datum/click_handler/changeling/chem_sting
+/datum/click_handler/changeling/changeling_chemical_sting
 	handler_name = "Chem Sting"
 
-/datum/click_handler/changeling/chem_sting/OnClick(atom/target)
-
-	if(ishuman(target))
-		user.chem_sting(target)
+/datum/click_handler/changeling/changeling_chemical_sting/OnClick(atom/target)
+	user.changeling_chemical_sting(target)
 	user.PopClickHandler()
 	return
 
@@ -522,8 +518,7 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	handler_name = "Blind Sting"
 
 /datum/click_handler/changeling/changeling_blind_sting/OnClick(atom/target)
-	if(ishuman(target))
-		user.changeling_blind_sting(target)
+	user.changeling_blind_sting(target)
 	user.PopClickHandler()
 	return
 
@@ -531,8 +526,7 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	handler_name = "Deaf Sting"
 
 /datum/click_handler/changeling/changeling_deaf_sting/OnClick(atom/target)
-	if(ishuman(target))
-		user.changeling_deaf_sting(target)
+	user.changeling_deaf_sting(target)
 	user.PopClickHandler()
 	return
 
@@ -542,33 +536,34 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 
 /datum/click_handler/changeling/changeling_paralysis_sting/OnClick(atom/target)
 	return user.changeling_paralysis_sting(target)
-*/
-/*/datum/click_handler/changeling/changeling_paralysis_sting
+
+/datum/click_handler/changeling/changeling_paralysis_sting
 	handler_name = "Transformation Sting"
+
 /datum/click_handler/changeling/changeling_paralysis_sting/OnClick(atom/target)
-	return user.changeling_paralysis_sting(target)*/
+	return user.changeling_paralysis_sting(target)
 
-/*/datum/click_handler/changeling/changeling_unfat_sting
+/datum/click_handler/changeling/changeling_unfat_sting
 	handler_name = "Unfat Sting"
-/datum/click_handler/changeling/changeling_unfat_sting/OnClick(atom/target)
-	return user.changeling_unfat_sting(target)*/
 
-/datum/click_handler/changeling/Infest
+/datum/click_handler/changeling/changeling_unfat_sting/OnClick(atom/target)
+	return user.changeling_unfat_sting(target)
+*/
+
+/datum/click_handler/changeling/infest
 	handler_name = "Infest"
 
-/datum/click_handler/changeling/changeling_DEATHsting/OnClick(atom/target)
-	if(ishuman(target))
-		var/mob/living/simple_animal/hostile/little_changeling/L = user
-		L.afterInfest(target)
+/datum/click_handler/changeling/infest/OnClick(atom/target)
+	var/mob/living/simple_animal/hostile/little_changeling/L = user
+	L.infest(target)
 	user.PopClickHandler()
 	return
 
-/datum/click_handler/changeling/changeling_DEATHsting
+/datum/click_handler/changeling/changeling_death_sting
 	handler_name = "Death Sting"
 
-/datum/click_handler/changeling/changeling_DEATHsting/OnClick(atom/target)
-	if(ishuman(target))
-		user.changeling_DEATHsting(target)
+/datum/click_handler/changeling/changeling_death_sting/OnClick(atom/target)
+	user.changeling_death_sting(target)
 	user.PopClickHandler()
 	return
 
@@ -576,48 +571,40 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	handler_name = "Extract DNA Sting"
 
 /datum/click_handler/changeling/changeling_extract_dna_sting/OnClick(atom/target)
-	if(ishuman(target))
-		user.changeling_extract_dna_sting(target)
+	user.changeling_extract_dna_sting(target)
 	user.PopClickHandler()
 	return
 
-/datum/click_handler/changeling/changeling_fake_arm_blade
+/datum/click_handler/changeling/changeling_fake_arm_blade_sting
 	handler_name = "Fake arm Blade"
 
-/datum/click_handler/changeling/changeling_fake_arm_blade/OnClick(atom/target)
-	if(ishuman(target))
-		user.changeling_fake_arm_blade(target)
+/datum/click_handler/changeling/changeling_fake_arm_blade_sting/OnClick(atom/target)
+	user.changeling_fake_arm_blade_sting(target)
 	user.PopClickHandler()
 	return
 
-
-/datum/click_handler/changeling/Bioelectrogenesis
+/datum/click_handler/changeling/changeling_bioelectrogenesis
 	handler_name = "Bioelectrogenesis"
 
-
-/datum/click_handler/changeling/Bioelectrogenesis/OnClick(atom/target)
-	user.Bioelectrogenesis(target)
+/datum/click_handler/changeling/changeling_bioelectrogenesis/OnClick(atom/target)
+	user.changeling_bioelectrogenesis(target)
 	user.PopClickHandler()
 	return
 
 /datum/click_handler/changeling/changeling_vomit_sting
 	handler_name = "Vomit Sting"
 
-
 /datum/click_handler/changeling/changeling_vomit_sting/OnClick(atom/target)
-	if(ishuman(target))
-		user.changeling_vomit_sting(target)
+	user.changeling_vomit_sting(target)
 	user.PopClickHandler()
 	return
 
 /datum/click_handler/changeling/little_paralyse
 	handler_name = "Paralyse"
 
-
 /datum/click_handler/changeling/little_paralyse/OnClick(atom/target)
-	if(ishuman(target))
-		var/mob/living/simple_animal/hostile/little_changeling/L = user
-		L.afterparalyse(target)
+	var/mob/living/simple_animal/hostile/little_changeling/L = user
+	L.paralyse_sting(target)
 	user.PopClickHandler()
 	return
 
