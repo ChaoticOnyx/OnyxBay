@@ -186,10 +186,6 @@
 		reset_view(null)
 
 /mob/living/proc/update_sight()
-	if(!seedarkness)
-		see_invisible = SEE_INVISIBLE_NOLIGHTING
-	else
-		see_invisible = initial(see_invisible)
 	if(stat == DEAD || eyeobj)
 		update_dead_sight()
 	else
