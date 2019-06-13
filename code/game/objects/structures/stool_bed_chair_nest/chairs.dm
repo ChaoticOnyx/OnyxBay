@@ -138,6 +138,27 @@
 /obj/structure/bed/chair/comfy/captain/New(var/newloc,var/newmaterial)
 	..(newloc,"steel","black")
 
+/obj/structure/bed/chair/sofa
+	name = "comfy sofa"
+	desc = "So lovely, uh."
+	icon_state = "sofa_middle_preview"
+	base_icon = "sofa_middle"
+	material_alteration = MATERIAL_ALTERATION_NONE
+
+/obj/structure/bed/chair/sofa/sofa_left
+	name = "comfy sofa"
+	desc = "So lovely, uh."
+	icon_state = "sofa_left_preview"
+	base_icon = "sofa_left"
+	material_alteration = MATERIAL_ALTERATION_NONE
+
+/obj/structure/bed/chair/sofa/sofa_right
+	name = "comfy sofa"
+	desc = "So lovely, uh."
+	icon_state = "sofa_right_preview"
+	base_icon = "sofa_right"
+	material_alteration = MATERIAL_ALTERATION_NONE
+
 /obj/structure/bed/chair/office
 	anchored = 0
 	buckle_movable = 1
