@@ -383,6 +383,7 @@
 
 /mob/living/simple_animal/hostile/little_changeling/proc/afterparalyse(atom/A)
 
+	var/mob/living/carbon/human/target = A
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
 		return
@@ -394,7 +395,7 @@
 	if(!sting_can_reach(target, 1))
 		to_chat(src, "<span class='warning'>We are too far away.</span>")
 		return
-	var/mob/living/carbon/human/target = A
+
 	var/head_not_exposed_to_changeling = 0
 	var/face_not_exposed_to_changeling = 0
 	var/eyes_not_exposed_to_changeling = 0
