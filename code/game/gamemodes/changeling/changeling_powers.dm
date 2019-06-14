@@ -1638,7 +1638,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Toggle feel pain"
 	set desc = "We choose whether or not to fell pain."
 
-	var/datum/changeling/changeling = changeling_power()
+	var/datum/changeling/changeling = changeling_power(10, 0, 0, DEAD)
 	if(!changeling)
 		return FALSE
 
@@ -1670,7 +1670,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			to_chat(H, "<span class='notice'>We inactivate our stemocyte pool and stop intensive fleshmending.</span>")
 			return
 
-		var/datum/changeling/changeling = changeling_power(10)
+		var/datum/changeling/changeling = changeling_power(10, 0, 0, DEAD)
 		if(!changeling)
 			return
 
