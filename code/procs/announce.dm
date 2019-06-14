@@ -115,7 +115,6 @@ datum/announcement/proc/NewsCast(message as text, message_title as text)
 		AnnounceArrivalSimple(character.real_name, rank, join_message, "Common")
 	AnnounceArrivalSimple(character.real_name, rank, join_message, get_announcement_frequency(job))
 
-
 /proc/AnnounceArrivalSimple(var/name, var/rank = "visitor", var/join_message = "has arrived on the [station_name()]", var/frequency)
 	GLOB.global_announcer.autosay("[name], [rank], [join_message].", "Arrivals Announcement Computer", frequency)
 
