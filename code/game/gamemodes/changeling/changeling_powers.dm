@@ -841,7 +841,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	return
 
 /mob/proc/changeling_deaf_sting(mob/living/carbon/human/T)
-	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/changeling_deaf_sting, T, 5)
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_deaf_sting, T, 5)
 	if(!target)
 		return FALSE
 	to_chat(target, "<span class='danger'>Your ears pop and begin ringing loudly!</span>")
@@ -973,7 +973,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		return 0
 
 	var/datum/changeling/changeling = src.mind.changeling
-	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/changeling_chemical_sting, T, 5)
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_chemical_sting, T, 5)
 
 	if(!target)
 		return FALSE
@@ -1799,8 +1799,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(C, "<span class='notice'>We allow the shadows to return.</span>")
 	return TRUE
 
-/mob/proc/change_ctate(var/path)
+/mob/proc/change_ctate(path)
 	var/datum/click_handler/handler = src.GetClickHandler()
+	if (!ispath(path))
+		src << "<span class='warning'>This is awkward. 1-800-CALL-CODERS to fix this.</span>"
+		return
 	if(handler.type == path)
 		src << "<span class='notice'>You unprepare [handler.handler_name].</span>"
 		usr.PopClickHandler()

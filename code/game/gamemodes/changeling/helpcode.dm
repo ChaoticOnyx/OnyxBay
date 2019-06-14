@@ -374,7 +374,7 @@
 	set name = "Paralyzis sting"
 	set desc = "We sting our prey and inject paralyzing toxin into them, making them harmless to us for relatively long period of time."
 
-	change_ctate(/datum/click_handler/changeling/little_paralyse) // Check if this is ok?
+	change_ctate(/datum/click_handler/changeling/little_paralyse)
 	return
 
 /mob/living/simple_animal/hostile/little_changeling/proc/paralyse_sting(mob/living/carbon/human/target as mob in oview(1))

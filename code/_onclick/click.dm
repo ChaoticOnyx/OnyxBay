@@ -464,28 +464,26 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	click_handler.Enter()
 	click_handlers.Push(click_handler)
 
-
-
 /datum/click_handler/proc/mob_check(mob/living/carbon/human/user) //Check can mob use a ability
 	return
-
 
 /datum/click_handler/human/mob_check(mob/living/carbon/human/user)
 	if(ishuman(user))
 		if(user.species.name == src.species)
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 /datum/click_handler/human/OnClick(atom/target)
 	return
 
-
-//Changeling CH
+/////////////////
+//Changeling CH//
+/////////////////
 
 /datum/click_handler/changeling/mob_check(mob/living/carbon/human/user)
 	if(ishuman(user) && user.mind && user.mind.changeling)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /datum/click_handler/changeling/OnClick(atom/target) //Check can mob use a ability
 	return
@@ -608,8 +606,10 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	user.PopClickHandler()
 	return
 
+/////////////////
+//  WIZARD CH  //
+/////////////////
 
-//WIZARD CH
 /datum/click_handler/wizard/mob_check(mob/living/carbon/human/user)
 	return 1
 /datum/click_handler/wizard/OnClick(atom/target)
