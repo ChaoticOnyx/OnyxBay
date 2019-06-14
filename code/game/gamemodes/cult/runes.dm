@@ -14,7 +14,6 @@
 	var/cultname = ""
 	var/animated = 0 //Whether the rune is pulsating
 
-
 /obj/effect/rune/New(var/loc, var/blcolor = "#c80000", var/nblood = "blood")
 	..()
 	bcolor = blcolor
