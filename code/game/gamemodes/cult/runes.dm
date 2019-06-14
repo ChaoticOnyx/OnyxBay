@@ -12,6 +12,8 @@
 	var/bcolor
 	var/strokes = 2 // IF YOU EVER SET THIS TO MORE THAN TEN, EVERYTHING WILL BREAK
 	var/cultname = ""
+	var/animated = 0 //Whether the rune is pulsating
+
 
 /obj/effect/rune/New(var/loc, var/blcolor = "#c80000", var/nblood = "blood")
 	..()
@@ -24,8 +26,7 @@
 	if(cult.rune_strokes[type])
 		var/list/f = cult.rune_strokes[type]
 		for(var/i in f)
-			var/image/t = image('icons/effects/uristrunes.dmi', "rune-[i]")
-			overlays += t
+			overlays += image(make_uristword(i, animated))
 	else
 		var/list/q = list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 		var/list/f = list()
@@ -33,11 +34,97 @@
 			var/j = pick(q)
 			f += j
 			q -= f
-			var/image/t = image('icons/effects/uristrunes.dmi', "rune-[j]")
-			overlays += t
+			overlays += image(make_uristword(j, animated))
 		cult.rune_strokes[type] = f.Copy()
-	color = bcolor
+
+	if(animated)
+		idle_pulse()
+	else
+		animate(src)
+
 	desc = "A strange collection of symbols drawn in [blood]."
+
+/obj/effect/rune/proc/make_uristword(var/word, var/animated)
+	var/icon/I = icon('icons/effects/uristrunes.dmi', "blank")
+	I.Blend(icon('icons/effects/uristrunes.dmi', "rune-[word]"), ICON_OVERLAY)
+	var/finalblood = bcolor
+	var/list/blood_hsl = rgb2hsl(GetRedPart(finalblood),GetGreenPart(finalblood),GetBluePart(finalblood))
+	if(blood_hsl.len)
+		var/list/blood_rgb = hsl2rgb(blood_hsl[1],blood_hsl[2],50)//producing a color that is neither too bright nor too dark
+		if(blood_rgb.len)
+			finalblood = rgb(blood_rgb[1],blood_rgb[2],blood_rgb[3])
+
+	var/bc1 = finalblood
+	var/bc2 = finalblood
+	bc1 += "C8"
+	bc2 += "64"
+
+	I.SwapColor(rgb(0, 0, 0, 100), bc1)
+	I.SwapColor(rgb(0, 0, 0, 50), bc1)
+
+	for(var/x = 1, x <= WORLD_ICON_SIZE, x++)
+		for(var/y = 1, y <= WORLD_ICON_SIZE, y++)
+			var/p = I.GetPixel(x, y)
+
+			if(p == null)
+				var/n = I.GetPixel(x, y + 1)
+				var/s = I.GetPixel(x, y - 1)
+				var/e = I.GetPixel(x + 1, y)
+				var/w = I.GetPixel(x - 1, y)
+
+				if(n == "#000000" || s == "#000000" || e == "#000000" || w == "#000000")
+					I.DrawBox(bc1, x, y)
+
+				else
+					var/ne = I.GetPixel(x + 1, y + 1)
+					var/se = I.GetPixel(x + 1, y - 1)
+					var/nw = I.GetPixel(x - 1, y + 1)
+					var/sw = I.GetPixel(x - 1, y - 1)
+
+					if(ne == "#000000" || se == "#000000" || nw == "#000000" || sw == "#000000")
+						I.DrawBox(bc2, x, y)
+
+	I.MapColors(0.5,0,0,0,0.5,0,0,0,0.5)//we'll darken that color a bit
+	world << I
+	return I
+
+/obj/effect/rune/proc/idle_pulse()
+	//This masterpiece of a color matrix stack produces a nice animation no matter which color was the blood used for the rune.
+	animate(src, color = list(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0), time = 10, loop = -1)//1
+	animate(color = list(1.125,0.06,0,0,0,1.125,0.06,0,0.06,0,1.125,0,0,0,0,1,0,0,0,0), time = 2)//2
+	animate(color = list(1.25,0.12,0,0,0,1.25,0.12,0,0.12,0,1.25,0,0,0,0,1,0,0,0,0), time = 2)//3
+	animate(color = list(1.375,0.19,0,0,0,1.375,0.19,0,0.19,0,1.375,0,0,0,0,1,0,0,0,0), time = 1.5)//4
+	animate(color = list(1.5,0.27,0,0,0,1.5,0.27,0,0.27,0,1.5,0,0,0,0,1,0,0,0,0), time = 1.5)//5
+	animate(color = list(1.625,0.35,0.06,0,0.06,1.625,0.35,0,0.35,0.06,1.625,0,0,0,0,1,0,0,0,0), time = 1)//6
+	animate(color = list(1.75,0.45,0.12,0,0.12,1.75,0.45,0,0.45,0.12,1.75,0,0,0,0,1,0,0,0,0), time = 1)//7
+	animate(color = list(1.875,0.56,0.19,0,0.19,1.875,0.56,0,0.56,0.19,1.875,0,0,0,0,1,0,0,0,0), time = 1)//8
+	animate(color = list(2,0.67,0.27,0,0.27,2,0.67,0,0.67,0.27,2,0,0,0,0,1,0,0,0,0), time = 5)//9
+	animate(color = list(1.875,0.56,0.19,0,0.19,1.875,0.56,0,0.56,0.19,1.875,0,0,0,0,1,0,0,0,0), time = 1)//8
+	animate(color = list(1.75,0.45,0.12,0,0.12,1.75,0.45,0,0.45,0.12,1.75,0,0,0,0,1,0,0,0,0), time = 1)//7
+	animate(color = list(1.625,0.35,0.06,0,0.06,1.625,0.35,0,0.35,0.06,1.625,0,0,0,0,1,0,0,0,0), time = 1)//6
+	animate(color = list(1.5,0.27,0,0,0,1.5,0.27,0,0.27,0,1.5,0,0,0,0,1,0,0,0,0), time = 1)//5
+	animate(color = list(1.375,0.19,0,0,0,1.375,0.19,0,0.19,0,1.375,0,0,0,0,1,0,0,0,0), time = 1)//4
+	animate(color = list(1.25,0.12,0,0,0,1.25,0.12,0,0.12,0,1.25,0,0,0,0,1,0,0,0,0), time = 1)//3
+	animate(color = list(1.125,0.06,0,0,0,1.125,0.06,0,0.06,0,1.125,0,0,0,0,1,0,0,0,0), time = 1)//2
+
+
+/obj/effect/rune/proc/one_pulse()
+	animate(src, color = list(1.625,0.35,0.06,0,0.06,1.625,0.35,0,0.35,0.06,1.625,0,0,0,0,1,0,0,0,0), time = 1)
+	animate(color = list(2,0.67,0.27,0,0.27,2,0.67,0,0.67,0.27,2,0,0,0,0,1,0,0,0,0), time = 2)
+	animate(color = list(1.875,0.56,0.19,0,0.19,1.875,0.56,0,0.56,0.19,1.875,0,0,0,0,1,0,0,0,0), time = 1)
+	animate(color = list(1.75,0.45,0.12,0,0.12,1.75,0.45,0,0.45,0.12,1.75,0,0,0,0,1,0,0,0,0), time = 1)
+	animate(color = list(1.625,0.35,0.06,0,0.06,1.625,0.35,0,0.35,0.06,1.625,0,0,0,0,1,0,0,0,0), time = 0.75)
+	animate(color = list(1.5,0.27,0,0,0,1.5,0.27,0,0.27,0,1.5,0,0,0,0,1,0,0,0,0), time = 0.75)
+	animate(color = list(1.375,0.19,0,0,0,1.375,0.19,0,0.19,0,1.375,0,0,0,0,1,0,0,0,0), time = 0.5)
+	animate(color = list(1.25,0.12,0,0,0,1.25,0.12,0,0.12,0,1.25,0,0,0,0,1,0,0,0,0), time = 0.5)
+	animate(color = list(1.125,0.06,0,0,0,1.125,0.06,0,0.06,0,1.125,0,0,0,0,1,0,0,0,0), time = 0.25)
+	animate(color = list(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0), time = 1)
+
+	spawn (10)
+		if(animated)
+			idle_pulse()
+		else
+			animate(src)
 
 /obj/effect/rune/examine(var/mob/user)
 	. = ..()
@@ -142,6 +229,152 @@
 	if(href_list["join"])
 		if(usr.loc == loc && !iscultist(usr))
 			cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
+
+
+
+
+/obj/effect/rune/raisestructure
+	cultname = "raise Structure"
+	var/accumulated_blood = 0
+	var/turf/loc_memory = null
+	var/spawntype = /obj/structure/cult/altar
+
+/datum/rune_spell/raisestructure/proc/proximity_check()
+	var/obj/effect/rune/R = spell_holder
+	if (locate(/obj/structure/cult) in range(R.loc,1))
+		return FALSE
+
+//	if (locate(/obj/machinery/door/mineral/cult) in range(R.loc,1))
+//		return FALSE
+
+	else return TRUE
+
+/datum/rune_spell/raisestructure/cast()
+	var/obj/effect/rune/R = spell_holder
+	R.one_pulse()
+
+	if (!proximity_check())
+		return
+
+	var/mob/living/user = activator
+
+	var/structure = input("Select the structure you want to invoke.", "Structures") in cultist.allowed_structures
+	if (!R.Adjacent(user) || !structure )
+		abort()
+		return
+
+	switch(structure)
+		if("Altar")
+//			spawntype = /obj/structure/cult/altar
+		if("Spire")
+//			spawntype = /obj/structure/cult/spire
+		if("Forge")
+//			spawntype = /obj/structure/cult/forge
+		if("Spire (locked)")
+			to_chat(user,"Reach Act 1 to unlock the Spire. It allows human cultists to acquire Arcane Tattoos, providing various buffs.")
+			abort()
+			return
+		if("Forge (locked)")
+			to_chat(user,"Reach Act 2 to unlock the Forge. It enables the forging of cult blades and armor, as well as new construct shells.")
+			abort()
+			return
+
+	loc_memory = spell_holder.loc
+	contributors.Add(user)
+	do_after(user, 30)
+	if (user.client)
+		user.client.images |= progbar
+	spell_holder.overlays += image('icons/obj/cult.dmi',"runetrigger-build")
+	to_chat(activator, "<span class='rose'>This ritual's blood toll can be substantially reduced by having multiple cultists partake in it, or wearing cult attire.</span>")
+	spawn()
+		payment()
+
+/datum/rune_spell/raisestructure/midcast(var/mob/add_cultist)
+	if (add_cultist in contributors)
+		return
+	invoke(add_cultist, invocation)
+	contributors.Add(add_cultist)
+	if (add_cultist.client)
+		add_cultist.client.images |= progbar
+
+/datum/rune_spell/raisestructure/abort(var/cause)
+	spell_holder.overlays -= image('icons/obj/cult.dmi',"runetrigger-build")
+	..()
+
+/datum/rune_spell/raisestructure/proc/payment()
+	var/failsafe = 0
+	while(failsafe < 1000)
+		failsafe++
+		//are our payers still here and about?
+		var/summoners = 0
+		for(var/mob/living/L in contributors)
+			if (iscultist(L) && (L in range(spell_holder,1)) && (L.stat == CONSCIOUS))
+				summoners++
+				summoners += round(L.get_cult_power()/30)//for every 30 cult power, you count as one additional cultist. So with Robes and Shoes, you already count as 3 cultists.
+			else										//This makes using the rune alone hard at roundstart, but fairly easy later on.
+				if (L.client)
+					L.client.images -= progbar
+				contributors.Remove(L)
+		//alright then, time to pay in blood
+		var/amount_paid = 0
+		for(var/mob/living/L in contributors)
+			var/data = use_available_blood(L, cost_upkeep,contributors[L])
+			if (data[BLOODCOST_RESULT] == BLOODCOST_FAILURE)//out of blood are we?
+				contributors.Remove(L)
+			else
+				amount_paid += data[BLOODCOST_TOTAL]
+				contributors[L] = data[BLOODCOST_RESULT]
+				make_tracker_effects(L.loc,spell_holder, 1, "soul", 3, /obj/effect/tracker/drain, 1)//visual feedback
+
+		accumulated_blood += amount_paid
+
+		//if there's no blood for over 3 seconds, the channeling fails
+		if (amount_paid)
+			cancelling = 3
+		else
+			cancelling--
+			if (cancelling <= 0)
+				if(accumulated_blood && !(locate(/obj/effect/decal/cleanable/blood/splatter) in loc_memory))
+					var/obj/effect/decal/cleanable/blood/splatter/S = new (loc_memory)//splash
+					S.amount = 2
+				abort(RITUALABORT_BLOOD)
+				return
+
+		//do we have multiple cultists? let's reward their cooperation
+		switch(summoners)
+			if (1)
+				remaining_cost = 300
+			if (2)
+				remaining_cost = 120
+			if (3)
+				remaining_cost = 18
+			if (4 to INFINITY)
+				remaining_cost = 0
+
+
+		if (accumulated_blood >= remaining_cost )
+			if (!proximity_check())
+				return
+			success()
+			return
+
+		update_progbar()
+
+		sleep(10)
+	message_admins("A rune ritual has iterated for over 1000 blood payment procs. Something's wrong there.")
+
+/datum/rune_spell/raisestructure/proc/success()
+	new spawntype(spell_holder.loc)
+	if (spawntype == /obj/structure/cult/altar)
+		var/datum/faction/bloodcult/cult = find_active_faction_by_type(/datum/faction/bloodcult)
+		if (cult)
+			cult.stage(CULT_ACT_I)
+		else
+			message_admins("Blood Cult: An altar was raised...but we cannot find the cult faction...")//failsafe in case of admin varedit fuckery
+	qdel(spell_holder)//this will cause this datum to del as well
+
+
+
 
 /obj/effect/rune/teleport
 	cultname = "teleport"
