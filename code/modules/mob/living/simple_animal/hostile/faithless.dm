@@ -13,16 +13,16 @@
 	maxHealth = 80
 	health = 80
 
-	harm_intent_damage = 10
-	melee_damage_lower = 15
-	melee_damage_upper = 15
+	harm_intent_damage = 25
+	melee_damage_lower = 30
+	melee_damage_upper = 30
 	attacktext = "gripped"
 	attack_sound = 'sound/hallucinations/growl1.ogg'
 
 	min_gas = null
 	max_gas = null
 	minbodytemp = 0
-	speed = 4
+	speed = 12
 
 	faction = "faithless"
 	supernatural = 1
