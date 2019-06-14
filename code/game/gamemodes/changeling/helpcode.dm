@@ -328,13 +328,13 @@
 	maxHealth = 50
 	health = 50
 	pass_flags = PASS_FLAG_TABLE
-	harm_intent_damage = 25
-	melee_damage_lower = 20
-	melee_damage_upper = 30
+	harm_intent_damage = 20
+	melee_damage_lower = 15
+	melee_damage_upper = 20
 	attacktext = "bitten"
 	attack_sound = 'sound/weapons/bite.ogg'
 	var/cloaked = 0
-
+	universal_understand = 1
 	//Space carp aren't affected by atmos.
 	min_gas = null
 	max_gas = null

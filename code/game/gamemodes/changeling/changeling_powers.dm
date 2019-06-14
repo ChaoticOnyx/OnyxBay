@@ -1053,7 +1053,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/mob/living/carbon/human/C = src
 
-	for(var/datum/reagent/r in changeling.pick_chemistry)
+	for(var/datum/reagent/r in C.changeling.pick_chemistry)
 		changeling.pick_chemistry -= r
 	C.adjustToxLoss(10)
 	src.verbs -= /mob/proc/prepare_changeling_chemical_sting
@@ -1450,6 +1450,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/obj/item/organ/external/affecting = T.get_organ(src.zone_sel.selecting)
 	if(!affecting)
 		to_chat(src, "<span class='warning'>They are missing that body part!</span>")
+	if(changeling.geneticpoints <= 2)
+		to_chat(src, "<span class='notice'>Not enough DNA.</span>")
+		return
+	if(changeling.chem_charges <= 20)
+		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
+		return
 
 	changeling.isabsorbing = 1
 	for(var/stage = 1, stage<=3, stage++)
@@ -1474,12 +1480,6 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	to_chat(src, "<span class='notice'>We successfully transfused new core into [T]!</span>")
 	src.visible_message("<span class='danger'>[src] transfused something into [T] through their proboscis!</span>")
 	to_chat(T, "<span class='danger'>You feel like you're dying...</span>")
-	if(changeling.geneticpoints <= 2)
-		to_chat(src, "<span class='notice'>Not enough DNA.</span>")
-		return
-	if(changeling.chem_charges <= 20)
-		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
-		return
 
 	changeling.chem_charges -= 20
 	changeling.geneticpoints -= 2
@@ -1686,7 +1686,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 					H.adjustFireLoss(-10 * config.organ_regeneration_multiplier)
 				if(H.getToxLoss())
 					H.adjustToxLoss(-15 * config.organ_regeneration_multiplier)
-				if(prob(5) && !H.getBruteLoss() && !H.getFireLoss())
+				if(prob(15) && !H.getBruteLoss() && !H.getFireLoss())
 					var/obj/item/organ/external/head/D = H.organs_by_name[BP_HEAD]
 					if (D.disfigured)
 						D.disfigured = 0
@@ -1701,7 +1701,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 								to_chat(H, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
 						if(regen_organ.status & ORGAN_DEAD)
 							regen_organ.status &= ~ORGAN_DEAD
-				if(prob(2))
+				if(prob(15))
 					for(var/limb_type in H.species.has_limbs)
 						if (H.restore_limb(limb_type,1))
 							break
