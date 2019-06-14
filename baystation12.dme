@@ -2382,6 +2382,7 @@
 #include "code\modules\spells\spellbook\spatial.dm"
 #include "code\modules\spells\spellbook\standard.dm"
 #include "code\modules\spells\spellbook\student.dm"
+#include "code\modules\spells\spellbook\warlock.dm"
 #include "code\modules\spells\targeted\cleric_spells.dm"
 #include "code\modules\spells\targeted\disintegrate.dm"
 #include "code\modules\spells\targeted\ethereal_jaunt.dm"
