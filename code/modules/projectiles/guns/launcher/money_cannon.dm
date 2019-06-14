@@ -106,9 +106,12 @@
 	return bling
 
 /obj/item/weapon/gun/launcher/money/attack_self(mob/user as mob)
-	src.dispensing = min(input(user, "How many thaler do you want to dispense at a time? (0 to [src.receptacle_value])", "Money Cannon Settings", 20) as num, receptacle_value)
-
-	to_chat(user, "<span class='notice'>You set [src] to dispense [dispensing] thaler at a time.</span>")
+	src.dispensing = min(input(user, "How many thaler do you want to dispense at a time? (1 to [src.receptacle_value])", "Money Cannon Settings", 20) as num, receptacle_value)
+	if(dispensing <= 0 || dispensing > src.receptacle_value)
+		dispensing = 1
+		to_chat(user, "<span class='notice'>Your value is not in range (1 to [src.receptacle_value]). Setting to dispense 1 thaler at a time.</span>")
+	else
+		to_chat(user, "<span class='notice'>You set [src] to dispense [dispensing] thaler at a time.</span>")
 
 /obj/item/weapon/gun/launcher/money/attack_hand(mob/user as mob)
 	if(user.get_inactive_hand() == src)

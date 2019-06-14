@@ -28,7 +28,7 @@ datum/track/New(var/title_name, var/audio)
 
 	var/datum/track/current_track
 	var/list/datum/track/tracks = list(
-		new/datum/track("Beyond", 'sound/ambience/ambispace.ogg'),
+		new/datum/track("Beyond", 'sound/ambience/space/ambispace.ogg'),
 		new/datum/track("Clouds of Fire", 'sound/music/clouds.s3m'),
 		new/datum/track("D`Bert", 'sound/music/title2.ogg'),
 		new/datum/track("D`Fort", 'sound/ambience/song_game.ogg'),
