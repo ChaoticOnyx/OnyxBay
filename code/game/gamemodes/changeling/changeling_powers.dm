@@ -1053,7 +1053,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/mob/living/carbon/human/C = src
 
-	for(var/datum/reagent/r in C.changeling.pick_chemistry)
+	for(var/datum/reagent/r in C.mind.changeling.pick_chemistry)
 		changeling.pick_chemistry -= r
 	C.adjustToxLoss(10)
 	src.verbs -= /mob/proc/prepare_changeling_chemical_sting
@@ -1704,6 +1704,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 				if(prob(15))
 					for(var/limb_type in H.species.has_limbs)
 						if (H.restore_limb(limb_type,1))
+							break
+					for(var/organ_type in H.species.has_organ)
+						if (H.restore_organ(organ_type))
 							break
 				if(H.mind.changeling.chem_charges == 0)
 					H.mind.changeling.heal = !H.mind.changeling.heal
