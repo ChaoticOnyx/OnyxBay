@@ -111,9 +111,7 @@
 		dispensing = 1
 		to_chat(user, "<span class='notice'>Your value is not in range (1 to [src.receptacle_value]). Setting to dispense 1 thaler at a time.</span>")
 	else
-		...
-		dispensing = 1
-	to_chat(user, "<span class='notice'>You set [src] to dispense [dispensing] thaler at a time.</span>")
+		to_chat(user, "<span class='notice'>You set [src] to dispense [dispensing] thaler at a time.</span>")
 
 /obj/item/weapon/gun/launcher/money/attack_hand(mob/user as mob)
 	if(user.get_inactive_hand() == src)
