@@ -43,9 +43,6 @@
 		A.reagents.del_reagent(/datum/reagent/water/holywater)
 		A.reagents.add_reagent(/datum/reagent/water, holy2water)
 
-
-
-
 /mob/proc/make_rune(var/rune, var/cost = 5, var/tome_required = 0)
 	var/has_tome = 0
 	var/has_robes = 0
