@@ -261,8 +261,8 @@
 		current_mode = new_mode
 		update_icon(0)
 
-/obj/machinery/light/proc/set_emergency_lighting(var/enable)
-	if(enable)
+/obj/machinery/light/proc/set_emergency_lighting(state as num)
+	if(state)
 		if(LIGHTMODE_EMERGENCY in lightbulb.lighting_modes)
 			set_mode(LIGHTMODE_EMERGENCY)
 			update_power_channel(ENVIRON)
@@ -271,8 +271,8 @@
 			set_mode(null)
 			update_power_channel(initial(power_channel))
 
-/obj/machinery/light/proc/set_alert_lighting(var/enable)
-	if(enable)
+/obj/machinery/light/proc/set_alert_lighting(state as num)
+	if(state)
 		if(LIGHTMODE_ALARM in lightbulb.lighting_modes)
 			set_mode(LIGHTMODE_ALARM)
 	else

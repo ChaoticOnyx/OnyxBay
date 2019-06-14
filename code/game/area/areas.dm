@@ -99,7 +99,7 @@
 
 /area/proc/fire_alert()
 	if(!fire)
-		fire = 1	//used for firedoor checks
+		fire = TRUE	//used for firedoor checks
 		update_icon()
 		mouse_opacity = 0
 		if(!all_doors)
@@ -111,11 +111,11 @@
 				else if(!D.density)
 					spawn()
 						D.close()
-		set_alert_lighting(1)
+		set_alert_lighting(TRUE)
 
 /area/proc/fire_reset()
 	if (fire)
-		fire = 0	//used for firedoor checks
+		fire = FALSE	//used for firedoor checks
 		update_icon()
 		mouse_opacity = 0
 		if(!all_doors)
@@ -127,7 +127,7 @@
 				else if(D.density)
 					spawn(0)
 					D.open()
-		set_alert_lighting(0)
+		set_alert_lighting(FALSE)
 
 /area/proc/readyalert()
 	if(!eject)
@@ -241,13 +241,13 @@
 		update_icon()
 		power_change()
 
-/area/proc/set_emergency_lighting(var/enable)
+/area/proc/set_emergency_lighting(state as num)
 	for(var/obj/machinery/light/M in src)
-		M.set_emergency_lighting(enable)
+		M.set_emergency_lighting(state)
 
-/area/proc/set_alert_lighting(var/enable)
+/area/proc/set_alert_lighting(state as num)
 	for(var/obj/machinery/light/M in src)
-		M.set_alert_lighting(enable)
+		M.set_alert_lighting(state)
 
 var/list/mob/living/forced_ambiance_list = new
 
