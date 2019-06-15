@@ -169,7 +169,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 
 	else if(href_list["temp"])
 		temp = null
-		. = TOPIC_REFRESH        
+		. = TOPIC_REFRESH
 
 	else if(href_list["book"])
 		if(initial(spellbook.max_uses) != spellbook.max_uses || uses != spellbook.max_uses)
@@ -301,7 +301,8 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 				/datum/spellbook/cleric = 1,
 				/datum/spellbook/battlemage = 1,
 				/datum/spellbook/spatial = 1,
-				/datum/spellbook/druid = 1
+				/datum/spellbook/druid = 1,
+				/datum/spellbook/warlock = 1
 				) //spell's path = cost of spell
 
 	var/list/sacrifice_reagents

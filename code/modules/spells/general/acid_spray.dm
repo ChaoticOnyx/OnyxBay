@@ -5,7 +5,7 @@
 	feedback = "as"
 	spell_flags = 0
 	charge_max  = 600
-
+	level_max = list(Sp_TOTAL = 0, Sp_SPEED = 0, Sp_POWER = 0)
 	invocation = "Tagopar lethodar!"
 	invocation_type = SpI_SHOUT
 	var/reagent_type = /datum/reagent/acid/hydrochloric

@@ -10,6 +10,7 @@
 	spell_delay = 50
 	hud_state = "wiz_burn"
 	compatible_targets = list(/mob/living/carbon/human)
+	level_max = list(Sp_TOTAL = 0, Sp_SPEED = 0, Sp_POWER = 0)
 
 /spell/hand/burning_grip/valid_target(var/mob/living/L, var/mob/user)
 	if(!..())

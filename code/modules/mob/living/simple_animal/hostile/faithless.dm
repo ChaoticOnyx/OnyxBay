@@ -5,7 +5,7 @@
 	icon_living = "faithless"
 	icon_dead = "faithless_dead"
 	speak_chance = 0
-	turns_per_move = 5
+	turns_per_move = 1
 	response_help = "passes through"
 	response_disarm = "shoves"
 	response_harm = "hits"
