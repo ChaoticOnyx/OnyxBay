@@ -1053,7 +1053,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/mob/living/carbon/human/C = src
 
-	for(var/datum/reagent/r in C.mind.changeling.pick_chemistry)
+	for(var/datum/reagent/r in changeling.pick_chemistry)
 		changeling.pick_chemistry -= r
 	C.adjustToxLoss(10)
 	src.verbs -= /mob/proc/prepare_changeling_chemical_sting
@@ -1635,10 +1635,10 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/changeling_no_pain()
 	set category = "Changeling"
-	set name = "Toggle feel pain"
+	set name = "Toggle feel pain (10)"
 	set desc = "We choose whether or not to fell pain."
 
-	var/datum/changeling/changeling = changeling_power(10, 0, 0, DEAD)
+	var/datum/changeling/changeling = changeling_power(10, 0, 0, UNCONSCIOUS)
 	if(!changeling)
 		return FALSE
 
@@ -1660,7 +1660,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/changeling_rapid_heal()
 	set category = "Changeling"
-	set name = "Passive Regeneration(10)"
+	set name = "Passive Regeneration (10)"
 	set desc = "Allows you to passively regenerate when activated."
 
 	if(istype(src,/mob/living/carbon/human))
