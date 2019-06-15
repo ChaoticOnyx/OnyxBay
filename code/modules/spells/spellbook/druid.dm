@@ -31,7 +31,8 @@
 				/obj/item/weapon/magic_rock = 						1,
 				/obj/item/weapon/monster_manual = 					1,
 				/obj/item/weapon/contract/wizard/telepathy = 		1,
-				/obj/item/weapon/contract/apprentice = 				1
+				/obj/item/weapon/contract/apprentice = 				1,
+				/spell/aoe_turf/conjure/faithful_hound=             1
 				)
 	sacrifice_objects = list(/obj/item/seeds/ambrosiavulgarisseed,
 							/obj/item/seeds/ambrosiadeusseed)

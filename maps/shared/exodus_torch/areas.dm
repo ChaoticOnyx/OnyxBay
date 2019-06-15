@@ -283,7 +283,7 @@
 /area/medical/morgue
 	name = "\improper Morgue"
 	icon_state = "morgue"
-	ambience = list('sound/ambience/ambimo1.ogg','sound/ambience/ambimo2.ogg','sound/music/main.ogg')
+	ambience = list('sound/ambience/morgue/ambimo1.ogg','sound/ambience/morgue/ambimo2.ogg')
 
 /area/medical/sleeper
 	name = "\improper Emergency Treatment Centre"
@@ -348,7 +348,7 @@
 /area/AIsattele
 	name = "\improper AI Satellite Teleporter Room"
 	icon_state = "teleporter"
-	ambience = list('sound/ambience/ambimalf.ogg')
+	ambience = list('sound/ambience/ai/ambiai.ogg')
 
 /area/alien
 	name = "\improper Alien base"
@@ -463,7 +463,7 @@
 
 // Tcomm
 /area/tcommsat/
-	ambience = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen10.ogg')
+	ambience = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg')
 
 /area/tcommsat/chamber
 	name = "\improper Telecoms Central Compartment"
@@ -485,7 +485,7 @@
 /area/turret_protected/ai
 	name = "\improper AI Chamber"
 	icon_state = "ai_chamber"
-	ambience = list('sound/ambience/ambimalf.ogg')
+	ambience = list('sound/ambience/ai/ambiai.ogg')
 
 /area/turret_protected/ai_cyborg_station
 	name = "\improper Cyborg Station"
@@ -495,12 +495,12 @@
 /area/turret_protected/ai_upload
 	name = "\improper AI Upload Chamber"
 	icon_state = "ai_upload"
-	ambience = list('sound/ambience/ambimalf.ogg')
+	ambience = list('sound/ambience/ai/ambiai.ogg')
 
 /area/turret_protected/ai_upload_foyer
 	name = "\improper  AI Upload Access"
 	icon_state = "ai_foyer"
-	ambience = list('sound/ambience/ambimalf.ogg')
+	ambience = list('sound/ambience/ai/ambiai.ogg')
 	sound_env = SMALL_ENCLOSED
 
 // Chapel
@@ -508,7 +508,7 @@
 /area/chapel/main
 	name = "\improper Chapel"
 	icon_state = "chapel"
-	ambience = list('sound/ambience/ambicha1.ogg','sound/ambience/ambicha2.ogg','sound/ambience/ambicha3.ogg','sound/ambience/ambicha4.ogg','sound/music/traitor.ogg')
+	ambience = list('sound/ambience/chapel/ambicha1.ogg','sound/ambience/chapel/ambicha2.ogg','sound/ambience/chapel/ambicha3.ogg','sound/ambience/chapel/ambicha4.ogg')
 	sound_env = LARGE_ENCLOSED
 
 // Merchant
@@ -566,7 +566,7 @@
 
 /area/mine
 	icon_state = "mining"
-	ambience = list('sound/ambience/ambimine.ogg', 'sound/ambience/song_game.ogg')
+	ambience = list('sound/ambience/mine/ambimine.ogg', 'sound/ambience/song_game.ogg')
 	sound_env = ASTEROID
 
 /area/mine/explored

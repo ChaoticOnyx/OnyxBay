@@ -13,6 +13,8 @@
 	max_uses = 6
 
 	spells = list(/spell/targeted/projectile/magic_missile = 			1,
+							/spell/acid_spray=                                  0,
+							/spell/hand/slippery_surface=                       0,
 							/spell/targeted/projectile/dumbfire/fireball = 		1,
 							/spell/targeted/disintegrate =						2,
 							/spell/aoe_turf/disable_tech = 						1,
@@ -34,7 +36,8 @@
 							/obj/item/weapon/monster_manual = 					2,
 							/obj/item/weapon/magic_rock = 						1,
 							/obj/item/weapon/contract/wizard/telepathy = 		1,
-							/obj/item/weapon/contract/apprentice = 				1
+							/obj/item/weapon/contract/apprentice = 				1,
+							/spell/aoe_turf/conjure/faithful_hound=             1
 							)
 
 	sacrifice_objects = list(/obj/item/stack/material/gold,

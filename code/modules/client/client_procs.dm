@@ -5,6 +5,13 @@
 #define MIN_CLIENT_VERSION	512		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
 									//I would just like the code ready should it ever need to be used.
 
+#define LIMITER_SIZE	5
+#define CURRENT_SECOND	1
+#define SECOND_COUNT	2
+#define CURRENT_MINUTE	3
+#define MINUTE_COUNT	4
+#define ADMINSWARNED_AT	5
+
 //#define TOPIC_DEBUGGING 1
 
 	/*
@@ -39,8 +46,41 @@
 	if(href_list["asset_cache_confirm_arrival"])
 //		to_chat(src, "ASSET JOB [href_list["asset_cache_confirm_arrival"]] ARRIVED.")
 		var/job = text2num(href_list["asset_cache_confirm_arrival"])
-		completed_asset_jobs += job
-		return
+				//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
+		//	into letting append to a list without limit.
+		if (job && job <= last_asset_job && !(job in completed_asset_jobs))
+			completed_asset_jobs += job
+			return
+
+	if (!holder && config.minutetopiclimit)
+		var/minute = round(world.time, 600)
+		if (!topiclimiter)
+			topiclimiter = new(LIMITER_SIZE)
+		if (minute != topiclimiter[CURRENT_MINUTE])
+			topiclimiter[CURRENT_MINUTE] = minute
+			topiclimiter[MINUTE_COUNT] = 0
+		topiclimiter[MINUTE_COUNT] += 1
+		if (topiclimiter[MINUTE_COUNT] > config.minutetopiclimit)
+			var/msg = "Your previous action was ignored because you've done too many in a minute."
+			if (minute != topiclimiter[ADMINSWARNED_AT]) //only one admin message per-minute. (if they spam the admins can just boot/ban them)
+				topiclimiter[ADMINSWARNED_AT] = minute
+				msg += " Administrators have been informed."
+				log_game("[key_name(src)] Has hit the per-minute topic limit of [config.minutetopiclimit] topic calls in a given game minute")
+				message_admins("[key_name_admin(src)] Has hit the per-minute topic limit of [config.minutetopiclimit] topic calls in a given game minute")
+			src << "<span class='danger'>[msg]</span>"
+			return
+
+	if (!holder && config.secondtopiclimit)
+		var/second = round(world.time, 10)
+		if (!topiclimiter)
+			topiclimiter = new(LIMITER_SIZE)
+		if (second != topiclimiter[CURRENT_SECOND])
+			topiclimiter[CURRENT_SECOND] = second
+			topiclimiter[SECOND_COUNT] = 0
+		topiclimiter[SECOND_COUNT] += 1
+		if (topiclimiter[SECOND_COUNT] > config.secondtopiclimit)
+			src << "<span class='danger'>Your previous action was ignored because you've done too many in a second</span>"
+			return
 
 	//search the href for script injection
 	if( findtext(href,"<script",1,0) )
@@ -77,8 +117,6 @@
 			return
 
 		ticket.close(client_repository.get_lite_client(usr.client))
-
-
 
 	//Logs all hrefs
 	if(config && config.log_hrefs && href_logfile)

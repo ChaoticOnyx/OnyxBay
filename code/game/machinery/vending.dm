@@ -747,6 +747,34 @@
 				  /obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers = 1,
 				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 3)
 
+/obj/machinery/vending/snack/wallsnack
+	name = "Getmore Chocolate Corp"
+	desc = "A snack machine courtesy of the Getmore Chocolate Corporation, based out of Mars."
+	product_slogans = "Try our new nougat bar!;Twice the calories for half the price!"
+	product_ads = "The healthiest!;Award-winning chocolate bars!;Mmm! So good!;Oh my god it's so juicy!;Have a snack.;Snacks are good for you!;Have some more Getmore!;Best quality snacks straight from mars.;We love chocolate!;Try our new jerky!"
+	icon_state = "snack_wall"
+	icon_vend = "snack_wall"
+	vend_delay = 25
+	products = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 6,
+					/obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 6,
+					/obj/item/weapon/reagent_containers/food/drinks/chickensoup = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/chips =6,
+					/obj/item/weapon/reagent_containers/food/snacks/sosjerky = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/no_raisin = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/tastybread = 6)
+	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/syndicake = 6,
+					  /obj/item/weapon/reagent_containers/food/snacks/skrellsnacks = 3)
+	prices = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 1,
+				  /obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 5,
+				  /obj/item/weapon/reagent_containers/food/drinks/chickensoup = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/chips = 1,
+				  /obj/item/weapon/reagent_containers/food/snacks/sosjerky = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/no_raisin = 1,
+				  /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 2,
+				  /obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers = 1,
+				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 3)
 
 /obj/machinery/vending/snack/medbay
 	name = "Getmore Healthy Snacks"

@@ -52,7 +52,13 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 //	var/list/lights				// list of all lights on this area
 	var/list/all_doors = null		//Added by Strumpetplaya - Alarm Change - Contains a list of doors adjacent to this area
 	var/air_doors_activated = 0
-	var/list/ambience = list('sound/ambience/ambigen1.ogg','sound/ambience/ambigen3.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambigen5.ogg','sound/ambience/ambigen6.ogg','sound/ambience/ambigen7.ogg','sound/ambience/ambigen8.ogg','sound/ambience/ambigen9.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen11.ogg','sound/ambience/ambigen12.ogg','sound/ambience/ambigen14.ogg')
+	var/list/ambience = list('sound/ambience/general/ambigen1.ogg','sound/ambience/general/ambigen3.ogg',
+		'sound/ambience/general/ambigen4.ogg','sound/ambience/general/ambigen5.ogg',
+		'sound/ambience/general/ambigen6.ogg','sound/ambience/general/ambigen7.ogg',
+		'sound/ambience/general/ambigen8.ogg','sound/ambience/general/ambigen9.ogg',
+		'sound/ambience/general/ambigen10.ogg','sound/ambience/general/ambigen11.ogg',
+		'sound/ambience/general/ambigen12.ogg','sound/ambience/general/ambigen14.ogg'
+		)
 	var/list/forced_ambience = null
 	var/sound_env = STANDARD_STATION
 	var/turf/base_turf //The base turf type of the area, which can be used to override the z-level's base turf
@@ -74,7 +80,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_environ = 0
 	has_gravity = 0
 	area_flags = AREA_FLAG_EXTERNAL
-	ambience = list('sound/ambience/ambispace.ogg','sound/music/title2.ogg','sound/music/space.ogg','sound/music/main.ogg','sound/music/traitor.ogg')
+	ambience = list('sound/ambience/space/ambispace.ogg')
 
 /area/space/update_icon()
 	return
@@ -139,7 +145,7 @@ area/space/atmosalert()
 	area_flags = AREA_FLAG_RAD_SHIELDED
 	sound_env = TUNNEL_ENCLOSED
 	turf_initializer = /decl/turf_initializer/maintenance
-	forced_ambience = list('sound/ambience/maintambience.ogg')
+	forced_ambience = list('sound/ambience/maintenance/maintambience.ogg')
 
 /area/rnd/xenobiology
 	name = "\improper Xenobiology Lab"

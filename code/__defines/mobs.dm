@@ -209,6 +209,7 @@
 #define BP_ANCHOR   "anchoring ligament"
 #define BP_PHORON   "phoron filter"
 #define BP_CHANG    "biostructure"
+#define BP_CANCER    "cancer"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
