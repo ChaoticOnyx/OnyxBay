@@ -29,10 +29,8 @@
 		 												),
 		"space"            = new/datum/holodeck_program(/area/holodeck/source_space,
 														list(
-															'sound/ambience/ambispace.ogg',
-															'sound/music/main.ogg',
-															'sound/music/space.ogg',
-															'sound/music/traitor.ogg',
+															'sound/ambience/space/ambispace.ogg',
+
 															)
 														),
 		"picnicarea"       = new/datum/holodeck_program(/area/holodeck/source_picnicarea, list('sound/music/title2.ogg')),

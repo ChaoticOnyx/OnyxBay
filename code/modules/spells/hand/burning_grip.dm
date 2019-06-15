@@ -7,9 +7,10 @@
 	spell_flags = 0
 	invocation_type = SpI_NONE
 	show_message = " throws sparks from their hands"
-	spell_delay = 120
+	spell_delay = 50
 	hud_state = "wiz_burn"
 	compatible_targets = list(/mob/living/carbon/human)
+	level_max = list(Sp_TOTAL = 0, Sp_SPEED = 0, Sp_POWER = 0)
 
 /spell/hand/burning_grip/valid_target(var/mob/living/L, var/mob/user)
 	if(!..())

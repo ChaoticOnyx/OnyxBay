@@ -99,7 +99,7 @@
 
 /area/proc/fire_alert()
 	if(!fire)
-		fire = 1	//used for firedoor checks
+		fire = TRUE	//used for firedoor checks
 		update_icon()
 		mouse_opacity = 0
 		if(!all_doors)
@@ -111,10 +111,11 @@
 				else if(!D.density)
 					spawn()
 						D.close()
+		set_alert_lighting(TRUE)
 
 /area/proc/fire_reset()
 	if (fire)
-		fire = 0	//used for firedoor checks
+		fire = FALSE	//used for firedoor checks
 		update_icon()
 		mouse_opacity = 0
 		if(!all_doors)
@@ -126,6 +127,7 @@
 				else if(D.density)
 					spawn(0)
 					D.open()
+		set_alert_lighting(FALSE)
 
 /area/proc/readyalert()
 	if(!eject)
@@ -161,14 +163,12 @@
 	return
 
 /area/update_icon()
-	if ((fire || eject || party) && (!requires_power||power_environ))//If it doesn't require power, can still activate this proc.
-		if(fire && !eject && !party)
-			icon_state = "blue"
+	if ((eject || party) && (!requires_power||power_environ))//If it doesn't require power, can still activate this proc.
 		/*else if(atmosalm && !fire && !eject && !party)
 			icon_state = "bluenew"*/
-		else if(!fire && eject && !party)
+		if(eject && !party)
 			icon_state = "red"
-		else if(party && !fire && !eject)
+		else if(party && !eject)
 			icon_state = "party"
 		else
 			icon_state = "blue-red"
@@ -241,10 +241,13 @@
 		update_icon()
 		power_change()
 
-/area/proc/set_emergency_lighting(var/enable)
+/area/proc/set_emergency_lighting(state as num)
 	for(var/obj/machinery/light/M in src)
-		M.set_emergency_lighting(enable)
+		M.set_emergency_lighting(state)
 
+/area/proc/set_alert_lighting(state as num)
+	for(var/obj/machinery/light/M in src)
+		M.set_alert_lighting(state)
 
 var/list/mob/living/forced_ambiance_list = new
 

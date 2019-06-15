@@ -8,6 +8,7 @@
 	invocation_type = SpI_EMOTE
 	range = 3
 	inner_radius = 0
+	level_max = list(Sp_TOTAL = 0, Sp_SPEED = 0, Sp_POWER = 0)
 
 	time_between_channels = 100
 	number_of_channels = 3

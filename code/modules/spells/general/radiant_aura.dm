@@ -10,7 +10,7 @@
 	cooldown_min = 100
 	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 0)
 	cast_sound = 'sound/effects/snap.ogg'
-	duration = 40
+	duration = 150
 	hud_state = "gen_immolate"
 
 /spell/radiant_aura/choose_targets()

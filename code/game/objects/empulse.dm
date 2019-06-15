@@ -38,6 +38,7 @@ proc/empulse(turf/epicenter, heavy_range, light_range, log=0)
 			distance = 0
 		if(distance < heavy_range)
 			T.emp_act(1)
+		// TODO[V] Remove out redundant logic here
 		else if(distance == heavy_range)
 			if(prob(50))
 				T.emp_act(1)
