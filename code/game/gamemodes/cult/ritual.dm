@@ -27,7 +27,7 @@
 		else
 			to_chat(user, "\The [src] seems full of illegible scribbles. Is this a joke?")
 
-/obj/item/weapon/book/tome/examine(var/mob/user)
+/obj/item/weapon/book/tome/examine(mob/user as mob)
 	. = ..()
 	if(!iscultist(user))
 		to_chat(user, "An old, dusty tome with frayed edges and a sinister looking cover.")
