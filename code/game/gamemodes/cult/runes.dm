@@ -43,7 +43,7 @@
 
 	desc = "A strange collection of symbols drawn in [blood]."
 
-/obj/effect/rune/proc/make_uristword(var/word, var/animated)
+/obj/effect/rune/proc/make_uristword(word as text, animated = FALSE as num)
 	var/icon/I = icon('icons/effects/uristrunes.dmi', "blank")
 	I.Blend(icon('icons/effects/uristrunes.dmi', "rune-[word]"), ICON_OVERLAY)
 	var/finalblood = bcolor
