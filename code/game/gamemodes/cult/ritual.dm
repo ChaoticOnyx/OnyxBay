@@ -13,7 +13,7 @@
 	flick("tome_spawn", src)
 	..()
 
-/obj/item/weapon/book/tome/attack_self(var/mob/user)
+/obj/item/weapon/book/tome/attack_self(mob/user as mob)
 	if(open)
 		open = FALSE
 		icon_state = "tome"
