@@ -23,7 +23,7 @@
 		icon_state = "tome-open"
 		flick("tome-flickopen", src)
 		if(iscultist(user))
-			to_chat(user, "\The [src] seems full of illegible scribbles. Is this a joke?")
+			to_chat(user, "Hold \the [src] in your hand open while drawing a rune to use it.")
 		else
 			to_chat(user, "Hold \the [src] in your hand open while drawing a rune to use it.")
 
