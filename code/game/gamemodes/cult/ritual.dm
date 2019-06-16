@@ -55,7 +55,7 @@
 			to_chat(src, "<span class='warning'>You need to open the tome before drawing the rune.</span>")
 	else if(istype(get_inactive_hand(), /obj/item/weapon/book/tome))
 		var/obj/item/weapon/book/tome/B = get_inactive_hand()
-		if(B.open == 1)
+		if(B.open)
 			has_tome = 1
 		else
 			to_chat(src, "<span class='warning'>You need to open the tome before drawing the rune.</span>")
