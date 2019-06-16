@@ -15,7 +15,7 @@
 
 /obj/item/weapon/book/tome/attack_self(var/mob/user)
 	if(open)
-		open = 0
+		open = FALSE
 		icon_state = "tome"
 		flick("tome-flickclose", src)
 	else
