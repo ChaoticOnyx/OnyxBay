@@ -19,7 +19,7 @@
 		icon_state = "tome"
 		flick("tome-flickclose", src)
 	else
-		open = 1
+		open = TRUE
 		icon_state = "tome-open"
 		flick("tome-flickopen", src)
 		if(!iscultist(user))
