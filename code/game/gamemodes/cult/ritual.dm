@@ -11,7 +11,7 @@
 
 /obj/item/weapon/book/tome/New()
 	flick("tome_spawn", src)
-	...()
+	..()
 
 /obj/item/weapon/book/tome/attack_self(var/mob/user)
 	if(open)
