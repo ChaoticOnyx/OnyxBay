@@ -25,7 +25,7 @@
 		if(iscultist(user))
 			to_chat(user, "Hold \the [src] in your hand open while drawing a rune to use it.")
 		else
-			to_chat(user, "Hold \the [src] in your hand open while drawing a rune to use it.")
+			to_chat(user, "\The [src] seems full of illegible scribbles. Is this a joke?")
 
 /obj/item/weapon/book/tome/examine(var/mob/user)
 	. = ..()
