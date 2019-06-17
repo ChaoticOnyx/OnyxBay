@@ -31,7 +31,7 @@
 /obj/structure/onyxawards2018/disappointment
 	name = "statue of IGRALO"
 	icon_state = "cheburek2018"
-	info = "Statue of IGRALO, the biggest desappoiment and the worst traitor of Chaotic Onyx at 2018. <cr> Each voter  will recieve a E-ball!"
+	info = "Statue of IGRALO, the biggest Chaotic Onyx disappointment and the worst traitor of 2018. <cr> Each voter will recieve a E-ball!"
 	desc = "Is it taco?.."
 
 /obj/structure/onyxawards2018/roll_and_play
