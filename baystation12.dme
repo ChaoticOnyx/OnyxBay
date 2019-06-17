@@ -963,6 +963,7 @@
 #include "code\game\objects\structures\morgue.dm"
 #include "code\game\objects\structures\musician.dm"
 #include "code\game\objects\structures\noticeboard.dm"
+#include "code\game\objects\structures\onyxawards2018.dm"
 #include "code\game\objects\structures\pit.dm"
 #include "code\game\objects\structures\railing.dm"
 #include "code\game\objects\structures\rock.dm"

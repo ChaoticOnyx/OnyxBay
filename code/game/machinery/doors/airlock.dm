@@ -134,6 +134,9 @@
 	opacity = 0
 	glass = 1
 
+/obj/machinery/door/airlock/glass/museum
+	name = "Museum Airlock"
+
 /obj/machinery/door/airlock/centcom
 	name = "Airlock"
 	icon = 'icons/obj/doors/Doorele.dmi'

@@ -1489,6 +1489,10 @@ area/rnd/test_area
 	dynamic_lighting = 0
 	sound_env = ARENA
 
+/area/centcom/museum
+	name = "\improper Museum"
+	icon_state = "museum"
+
 //Thunderdr
 /area/tdome/tdome1
 	name = "\improper Thunderdome (Team 1)"
