@@ -140,7 +140,7 @@
 	name = "statue of Rodial"
 	icon_state = "rodial2018"
 	info = "Statue of Rodial, most decomposed corpse of Chaotic Onyx for 2018. <cr> Don`t wake me up."
-	desc = "A coffin. What if open it?"
+	desc = "A coffin. What if I open it?"
 
 /obj/structure/onyxawards2018/dead/opened
 	icon_state = "rodialopen2018"
