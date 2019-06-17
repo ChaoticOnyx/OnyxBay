@@ -47,36 +47,29 @@
 		return 0
 
 
-/mob/living/carbon/human/proc/restore_organ(var/organ_type)	//only for changling for now
+/mob/living/carbon/human/proc/restore_organ(organ_type)	//only for changling for now
 	var/obj/item/organ/internal/E = internal_organs_by_name[organ_type]
 	if(E && !E.vital && !E.is_usable())	//Skips heads and vital bits...
 		E.removed()//...because no one wants their head to explode to make way for a new one.
 		qdel(E)
-		E= null
+		E = null
 	if(!E)
 		var/list/organ_data = species.has_organ[organ_type]
 		var/organ_path = organ_data["path"]
 		var/obj/item/organ/internal/O = new organ_path(src)
 		organ_data["descriptor"] = O.name
-//		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in vessel.reagent_list
-//		blood_splatter(src,B,1)
 		O.set_dna(dna)
 		update_body()
 		if(O.organ_tag == BP_BRAIN)
 			O.vital = 0
-//		if (show_message)
-//			to_chat(src, "<span class='danger'>With a shower of fresh blood, a new [O.name] forms.</span>")
-//			visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [src]'s [O.amputation_point], forming a new [O.name]!</span>")
-		return 1
+		return TRUE
 	else if (E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
 		E.status &= ~ORGAN_BROKEN
 		E.status &= ~ORGAN_ARTERY_CUT
-//		for(var/datum/wound/W in E.wounds)
-//			if(W.wound_damage() == 0 && prob(50))
-//				E.wounds -= W
-		return 1
+		return TRUE
 	else
-		return 0
+		return FALSE
+
 // Takes care of organ related updates, such as broken and missing limbs
 /mob/living/carbon/human/proc/handle_organs()
 

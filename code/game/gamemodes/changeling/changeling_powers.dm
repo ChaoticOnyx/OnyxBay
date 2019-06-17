@@ -1413,25 +1413,34 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set desc = "You will be like us."
 
 	var/datum/changeling/changeling = changeling_power()
-	if(!changeling)	return
+	if(!changeling)
+		return
+
+	if(changeling.isabsorbing)
+		to_chat(src, "<span class='warning'>We are already transforming!</span>")
+		return
+
+	if(changeling.geneticpoints < 2)
+		to_chat(src, "<span class='notice'>Not enough DNA.</span>")
+		return
+
+	if(changeling.chem_charges < 20)
+		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
+		return
 
 	var/obj/item/grab/G = src.get_active_hand()
+
 	if(!istype(G))
 		to_chat(src, "<span class='warning'>We must be grabbing a creature in our active hand to absorb them.</span>")
 		return
 
+	if(!G.can_absorb())
+		to_chat(src, "<span class='warning'>We must have a tighter grip to create a new changelling.</span>")
+		return
+
 	var/mob/living/carbon/human/T = G.affecting
 
-	if(!istype(T))
-		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
-		return
-
-	var/obj/item/organ/internal/brain/B = T.internal_organs_by_name[BP_BRAIN]
-	if(B && B.status == DEAD)
-		to_chat(src, "<span class='warning'>[T] is dead. We can not create a new life.</span>")
-		return
-
-	if(T.species.species_flags & SPECIES_FLAG_NO_SCAN)
+	if(!istype(T) || (T.species.species_flags & SPECIES_FLAG_NO_SCAN))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
 
@@ -1439,23 +1448,14 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(src, "<span class='warning'>This creature's DNA is ruined!</span>")
 		return
 
-	if(!G.can_absorb())
-		to_chat(src, "<span class='warning'>We must have a tighter grip to create a new changelling.</span>")
-		return
-
-	if(changeling.isabsorbing)
-		to_chat(src, "<span class='warning'>We are already transforming!</span>")
+	var/obj/item/organ/internal/brain/B = T.internal_organs_by_name[BP_BRAIN]
+	if(!B || B.status == DEAD)
+		to_chat(src, "<span class='warning'>[T] is dead. We can not create a new life.</span>")
 		return
 
 	var/obj/item/organ/external/affecting = T.get_organ(src.zone_sel.selecting)
 	if(!affecting)
 		to_chat(src, "<span class='warning'>They are missing that body part!</span>")
-	if(changeling.geneticpoints <= 2)
-		to_chat(src, "<span class='notice'>Not enough DNA.</span>")
-		return
-	if(changeling.chem_charges <= 20)
-		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
-		return
 
 	changeling.isabsorbing = 1
 	for(var/stage = 1, stage<=3, stage++)
@@ -1473,7 +1473,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, T, 150))
-			to_chat(src, "<span class='warning'>Our transfused new core into [T] has been interrupted!</span>")
+			to_chat(src, "<span class='warning'>Transfusion of new core into [T] has been interrupted!</span>")
 			changeling.isabsorbing = 0
 			return
 

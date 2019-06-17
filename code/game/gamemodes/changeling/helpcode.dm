@@ -335,7 +335,6 @@
 	attack_sound = 'sound/weapons/bite.ogg'
 	var/cloaked = 0
 	universal_understand = 1
-	//Space carp aren't affected by atmos.
 	min_gas = null
 	max_gas = null
 	see_in_dark = 8
