@@ -25,7 +25,7 @@
 /obj/structure/onyxawards2018/buguser
 	name = "statue of NanoAnon"
 	icon_state = "nanoanon2018"
-	info = "Statue of Nanoanon,the best buguser of Chaotic Onyx at 2018. <cr> Enjoy your infinity pressure!"
+	info = "Statue of Nanoanon, the best Chaotic Onyx buguser of 2018. <cr> Enjoy your infinity pressure!"
 	desc = "What a nice hairstyle."
 
 /obj/structure/onyxawards2018/disappointment
