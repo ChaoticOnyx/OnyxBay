@@ -116,7 +116,7 @@
 	name = "statue of unknown tayara"
 	icon_state = "tayara2018"
 	info = "Statue of unknown tayara, the best xenos of Chaotic Onyx for 2018. <cr> Please, pokin`te a room, I here rabotau."
-	desc = "Big cat in cook clothes.  "
+	desc = "Big cat in cook clothes."
 
 /obj/structure/onyxawards2018/trap
 	name = "statue of TobyThorne"
