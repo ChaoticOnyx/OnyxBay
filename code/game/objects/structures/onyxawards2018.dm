@@ -149,7 +149,7 @@
 /obj/structure/onyxawards2018/dead/attack_hand(mob/user as mob)
 	if(user.a_intent != I_HELP)
 		visible_message("<span class='danger'>[user] open [src]!</span>")
-		to_chat(user, "<span class='danger'>You open the coffin. </span>")
+		to_chat(user, "<span class='danger'>You open the coffin.</span>")
 		new /obj/structure/onyxawards2018/dead/opened(get_turf(src))
 		qdel(src)
 	else
