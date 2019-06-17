@@ -49,7 +49,7 @@
 /obj/structure/onyxawards2018/pedal
 	name = "statue of LegatePritcher."
 	icon_state = "legate2018"
-	info = "Statue of LegatePritcher, best admin of Chaotic Onyx for 2018. <cr> U my bro, or not my bro, bro?"
+	info = "Statue of LegatePritcher, best Chaotic Onyx admin of 2018. <cr> R u my bro, or not my bro, bro?"
 	desc = "That guy have an axe. What if I just..."
 
 /obj/structure/onyxawards2018/traitor
