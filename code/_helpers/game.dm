@@ -460,45 +460,40 @@ datum/projectile_data
 			GetBluePart(hexa)
 		)
 
-/proc/rgb2hsl(var/red, var/grn, var/blu)
-
+/proc/rgb2hsl(red as num, grn as num, blu as num)
 	red /= 255
 	grn /= 255
 	blu /= 255
 
 	var/lo = min(red, grn, blu)
 	var/hi = max(red, grn, blu)
+	var/range = hi-lo
 	var/hue = 0
 	var/sat = 0
-	var/lgh = (lo + hi)/2
+	var/lgh = 0
 
-	if(lo != hi)
+	if(range != 0)
+		lgh = range/2
 		if(lgh < 0.5)
-			sat = (hi - lo) / (hi + lo)
+			sat = range / (hi + lo)
 		else
-			sat = (hi - lo) / (2 - hi - lo)
+			sat = range / (2 - hi - lo)
 		if(red == hi)
-			hue = (grn - blu) / (hi - lo)
+			hue = (grn - blu) / range
 		else if(grn == hi)
-			hue = 2 + (blu - red) / (hi - lo)
+			hue = 2 + (blu - red) / range
 		else
-			hue = 4 + (red - grn) / (hi - lo)
+			hue = 4 + (red - grn) / range
 		if(hue<0)
 			hue += 6
 
 	lgh = round(lgh * 100, 1)
 	sat = round(sat * 100, 1)
-
 	hue = round((hue / 6) * 360, 1)
 
-	return list(
-		hue,
-		sat,
-		lgh,
-		)
+	return list(hue, sat, lgh)
 
-/proc/hsl2rgb(var/hue, var/sat, var/lgh)
-
+/proc/hsl2rgb(hue as num, sat as num, lgh as num)
 	hue /= 360
 	sat /= 100
 	lgh /= 100
@@ -559,11 +554,7 @@ datum/projectile_data
 	grn = round(grn*255, 1)
 	blu = round(blu*255, 1)
 
-	return list(
-		red,
-		grn,
-		blu,
-		)
+	return list(red, grn, blu)
 
 /proc/MixColors(const/list/colors)
 	var/list/reds = list()

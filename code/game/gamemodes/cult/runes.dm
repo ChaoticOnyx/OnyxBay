@@ -47,16 +47,13 @@
 	var/icon/I = icon('icons/effects/uristrunes.dmi', "blank")
 	I.Blend(icon('icons/effects/uristrunes.dmi', "rune-[word]"), ICON_OVERLAY)
 	var/finalblood = bcolor
-	var/list/blood_hsl = rgb2hsl(GetRedPart(finalblood),GetGreenPart(finalblood),GetBluePart(finalblood))
-	if(blood_hsl.len)
+	if (finalblood)
+		var/list/blood_hsl = rgb2hsl(GetRedPart(finalblood),GetGreenPart(finalblood),GetBluePart(finalblood))
 		var/list/blood_rgb = hsl2rgb(blood_hsl[1],blood_hsl[2],50)//producing a color that is neither too bright nor too dark
-		if(blood_rgb.len)
-			finalblood = rgb(blood_rgb[1],blood_rgb[2],blood_rgb[3])
+		finalblood = rgb(blood_rgb[1],blood_rgb[2],blood_rgb[3])
 
-	var/bc1 = finalblood
-	var/bc2 = finalblood
-	bc1 += "C8"
-	bc2 += "64"
+	var/bc1 = finalblood + "C8"
+	var/bc2 = finalblood + "64"
 
 	I.SwapColor(rgb(0, 0, 0, 100), bc1)
 	I.SwapColor(rgb(0, 0, 0, 50), bc1)
@@ -73,7 +70,6 @@
 
 				if(n == "#000000" || s == "#000000" || e == "#000000" || w == "#000000")
 					I.DrawBox(bc1, x, y)
-
 				else
 					var/ne = I.GetPixel(x + 1, y + 1)
 					var/se = I.GetPixel(x + 1, y - 1)
