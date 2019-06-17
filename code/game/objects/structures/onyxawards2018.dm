@@ -43,7 +43,7 @@
 /obj/structure/onyxawards2018/developer
 	name = "statue of Plin"
 	icon_state = "plin2018"
-	info = "Statue of Plin,the shadow lead of Chaotic Onyx and a best developer for 2018. <cr> Remember - no one pushes to release toward snail."
+	info = "Statue of Plin, the shadow lead of Chaotic Onyx and a best developer of 2018. <cr> Remember - no one pushes to release toward snail."
 	desc = "A big... Snail?.."
 
 /obj/structure/onyxawards2018/pedal
