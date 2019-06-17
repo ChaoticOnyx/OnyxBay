@@ -133,7 +133,7 @@
 /obj/structure/onyxawards2018/toxic
 	name = "statue of Gremy4uu"
 	icon_state = "gre4a2018"
-	info = "Statue of Gremu4uu, the biggest toxic of Chaotic Onyx for 2018. <cr> Bastard, your mother, and come here shit dog, decided to climb me?.."
+	info = "Statue of Gremu4uu, the biggest toxic of Chaotic Onyx for 2018. <cr> You motherfucker, come on you little ass… fuck with me, eh? You fucking little asshole, dickhead cocksucker…"
 	desc = "Looking at this guy, you want to breathe some fresh air."
 
 /obj/structure/onyxawards2018/dead
