@@ -1413,25 +1413,34 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set desc = "You will be like us."
 
 	var/datum/changeling/changeling = changeling_power()
-	if(!changeling)	return
+	if(!changeling)
+		return
+
+	if(changeling.isabsorbing)
+		to_chat(src, "<span class='warning'>We are already transforming!</span>")
+		return
+
+	if(changeling.geneticpoints < 2)
+		to_chat(src, "<span class='notice'>Not enough DNA.</span>")
+		return
+
+	if(changeling.chem_charges < 20)
+		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
+		return
 
 	var/obj/item/grab/G = src.get_active_hand()
+
 	if(!istype(G))
 		to_chat(src, "<span class='warning'>We must be grabbing a creature in our active hand to absorb them.</span>")
 		return
 
+	if(!G.can_absorb())
+		to_chat(src, "<span class='warning'>We must have a tighter grip to create a new changelling.</span>")
+		return
+
 	var/mob/living/carbon/human/T = G.affecting
 
-	if(!istype(T))
-		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
-		return
-
-	var/obj/item/organ/internal/brain/B = T.internal_organs_by_name[BP_BRAIN]
-	if(B && B.status == DEAD)
-		to_chat(src, "<span class='warning'>[T] is dead. We can not create a new life.</span>")
-		return
-
-	if(T.species.species_flags & SPECIES_FLAG_NO_SCAN)
+	if(!istype(T) || (T.species.species_flags & SPECIES_FLAG_NO_SCAN))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
 
@@ -1439,12 +1448,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(src, "<span class='warning'>This creature's DNA is ruined!</span>")
 		return
 
-	if(!G.can_absorb())
-		to_chat(src, "<span class='warning'>We must have a tighter grip to create a new changelling.</span>")
-		return
-
-	if(changeling.isabsorbing)
-		to_chat(src, "<span class='warning'>We are already transforming!</span>")
+	var/obj/item/organ/internal/brain/B = T.internal_organs_by_name[BP_BRAIN]
+	if(!B || B.status == DEAD)
+		to_chat(src, "<span class='warning'>[T] is dead. We can not create a new life.</span>")
 		return
 
 	var/obj/item/organ/external/affecting = T.get_organ(src.zone_sel.selecting)
@@ -1467,19 +1473,13 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, T, 150))
-			to_chat(src, "<span class='warning'>Our transfused new core into [T] has been interrupted!</span>")
+			to_chat(src, "<span class='warning'>Transfusion of new core into [T] has been interrupted!</span>")
 			changeling.isabsorbing = 0
 			return
 
 	to_chat(src, "<span class='notice'>We successfully transfused new core into [T]!</span>")
 	src.visible_message("<span class='danger'>[src] transfused something into [T] through their proboscis!</span>")
 	to_chat(T, "<span class='danger'>You feel like you're dying...</span>")
-	if(changeling.geneticpoints <= 2)
-		to_chat(src, "<span class='notice'>Not enough DNA.</span>")
-		return
-	if(changeling.chem_charges <= 20)
-		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
-		return
 
 	changeling.chem_charges -= 20
 	changeling.geneticpoints -= 2
@@ -1635,10 +1635,10 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/changeling_no_pain()
 	set category = "Changeling"
-	set name = "Toggle feel pain"
+	set name = "Toggle feel pain (10)"
 	set desc = "We choose whether or not to fell pain."
 
-	var/datum/changeling/changeling = changeling_power()
+	var/datum/changeling/changeling = changeling_power(10, 0, 0, UNCONSCIOUS)
 	if(!changeling)
 		return FALSE
 
@@ -1660,7 +1660,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/changeling_rapid_heal()
 	set category = "Changeling"
-	set name = "Passive Regeneration(10)"
+	set name = "Passive Regeneration (10)"
 	set desc = "Allows you to passively regenerate when activated."
 
 	if(istype(src,/mob/living/carbon/human))
@@ -1670,7 +1670,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			to_chat(H, "<span class='notice'>We inactivate our stemocyte pool and stop intensive fleshmending.</span>")
 			return
 
-		var/datum/changeling/changeling = changeling_power(10)
+		var/datum/changeling/changeling = changeling_power(10, 0, 0, DEAD)
 		if(!changeling)
 			return
 
@@ -1686,7 +1686,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 					H.adjustFireLoss(-10 * config.organ_regeneration_multiplier)
 				if(H.getToxLoss())
 					H.adjustToxLoss(-15 * config.organ_regeneration_multiplier)
-				if(prob(5) && !H.getBruteLoss() && !H.getFireLoss())
+				if(prob(15) && !H.getBruteLoss() && !H.getFireLoss())
 					var/obj/item/organ/external/head/D = H.organs_by_name[BP_HEAD]
 					if (D.disfigured)
 						D.disfigured = 0
@@ -1701,9 +1701,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 								to_chat(H, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
 						if(regen_organ.status & ORGAN_DEAD)
 							regen_organ.status &= ~ORGAN_DEAD
-				if(prob(2))
+				if(prob(15))
 					for(var/limb_type in H.species.has_limbs)
 						if (H.restore_limb(limb_type,1))
+							break
+					for(var/organ_type in H.species.has_organ)
+						if (H.restore_organ(organ_type))
 							break
 				if(H.mind.changeling.chem_charges == 0)
 					H.mind.changeling.heal = !H.mind.changeling.heal
