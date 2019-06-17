@@ -184,7 +184,7 @@
 	density = 0
 	name = "information plate"
 	icon_state = "tablichka"
-	desc = "Welcome to the Museum of Chaotic Onyx Awards. All that you want to know you can get by tactile sensation. Just touch them, don`t shame!"
+	desc = "Welcome to the Museum of Chaotic Onyx Awards. Everything you've ever wanted to know about here, within arm's reach. Go ahead, feel free to touch the statues."
 
 /obj/structure/onyxawards2018/plate/ooc
 	name = "information plate"
