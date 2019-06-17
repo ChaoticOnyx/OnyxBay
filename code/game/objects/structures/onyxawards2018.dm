@@ -68,7 +68,7 @@
 	name = "statue of Schutze88"
 	icon_state = "schutze2018"
 	info = "Statue of Schutze88, best shitcurity of Chaotic Onyx for 2018. <cr> ZATIRANENO."
-	desc = "He make wrong choice."
+	desc = "He make wrong choices."
 
 /obj/structure/onyxawards2018/medic
 	name = "statue of SolarEclipse84"
