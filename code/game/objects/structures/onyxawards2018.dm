@@ -104,7 +104,7 @@
 	name = "statue of AnotherAssistant"
 	icon_state = "walruser2018"
 	info = "Statue of AnotherAssistant, the best Chaotic Onyx assistant and cooper of 2018. <cr> It was better the way it was."
-	desc = "He a totally not bad guy."
+	desc = "He's totally not a bad guy."
 
 /obj/structure/onyxawards2018/fail
 	name = "statue of REBOLUTION228"
