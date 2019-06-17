@@ -109,7 +109,7 @@
 /obj/structure/onyxawards2018/fail
 	name = "statue of REBOLUTION228"
 	icon_state = "reba2018"
-	info = "Statue of REBOLUTION228, the best fail of Chaotic Onyx for 2018. <cr> Choose me, please!"
+	info = "Statue of REBOLUTION228, the best Chaotic Onyx fail of 2018. <cr> Pick me, please!"
 	desc = "Just a big clown. Nothing to see here."
 
 /obj/structure/onyxawards2018/xeno
