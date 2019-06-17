@@ -11,7 +11,7 @@
 /obj/structure/onyxawards2018/attack_hand(mob/user as mob)
 	if(user.a_intent == I_HELP)
 		visible_message("<span class='notice'>[user] touches [src].</span>")
-		to_chat(user, "<span class='notice'>This is [info] </span>")
+		to_chat(user, "<span class='notice'>This is [info]</span>")
 	else
 		return ..()
 	sleep(30)
