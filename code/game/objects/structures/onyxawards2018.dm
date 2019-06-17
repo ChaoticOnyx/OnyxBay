@@ -73,7 +73,7 @@
 /obj/structure/onyxawards2018/medic
 	name = "statue of SolarEclipse84"
 	icon_state = "solare2018"
-	info = "Statue of SolarEclipse84, best medic of Chaotic Onyx for 2018. <cr> Get out from me, and my medbay."
+	info = "Statue of SolarEclipse84, best Chaotic Onyx medic of 2018. <cr> Get off me, and my medbay."
 	desc = "That guy too have an axe. What if I just... "
 
 /obj/structure/onyxawards2018/assistant
