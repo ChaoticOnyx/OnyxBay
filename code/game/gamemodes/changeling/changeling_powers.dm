@@ -1701,7 +1701,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 								to_chat(H, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
 						if(regen_organ.status & ORGAN_DEAD)
 							regen_organ.status &= ~ORGAN_DEAD
-				if(prob(15))
+				if(prob(50))
 					for(var/limb_type in H.species.has_limbs)
 						if (H.restore_limb(limb_type,1))
 							break
