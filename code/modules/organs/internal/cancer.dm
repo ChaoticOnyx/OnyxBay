@@ -14,7 +14,7 @@
 	relative_size = 60
 	var/chance = 0
 	var/infectious = 0
-
+	detectability = FALSE
 
 /obj/item/organ/internal/cancer/New(var/mob/living/carbon/holder)
 	..()

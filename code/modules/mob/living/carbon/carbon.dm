@@ -449,7 +449,7 @@
 /mob/living/carbon/update_living_sight()
 	..()
 	if(seeDarkness)
-		set_see_in_dark(7)
+		set_see_in_dark(8)
 		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
 		sight = species.get_vision_flags(src)
 	else

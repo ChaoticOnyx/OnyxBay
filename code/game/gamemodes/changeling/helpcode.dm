@@ -100,6 +100,7 @@
 	var/damage_threshold_value
 	var/healing_threshold = 1
 	var/moving = 0
+	detectability = FALSE
 
 /obj/item/organ/internal/biostructure/New(var/mob/living/holder)
 	..()
