@@ -14,5 +14,10 @@ Dockerfile
 .gitattributes
 .gitignore
 .travis.yml
+COPYING
+dm.sh
+docker-compose.yml
+flyway.conf
 .github
 sql
+test

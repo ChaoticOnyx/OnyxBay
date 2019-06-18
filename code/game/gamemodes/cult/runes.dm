@@ -12,6 +12,7 @@
 	var/bcolor
 	var/strokes = 2 // IF YOU EVER SET THIS TO MORE THAN TEN, EVERYTHING WILL BREAK
 	var/cultname = ""
+	var/animated = 0 //Whether the rune is pulsating
 
 /obj/effect/rune/New(var/loc, var/blcolor = "#c80000", var/nblood = "blood")
 	..()
@@ -24,8 +25,7 @@
 	if(cult.rune_strokes[type])
 		var/list/f = cult.rune_strokes[type]
 		for(var/i in f)
-			var/image/t = image('icons/effects/uristrunes.dmi', "rune-[i]")
-			overlays += t
+			overlays += image(make_uristword(i, animated))
 	else
 		var/list/q = list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 		var/list/f = list()
@@ -33,11 +33,93 @@
 			var/j = pick(q)
 			f += j
 			q -= f
-			var/image/t = image('icons/effects/uristrunes.dmi', "rune-[j]")
-			overlays += t
+			overlays += image(make_uristword(j, animated))
 		cult.rune_strokes[type] = f.Copy()
-	color = bcolor
+
+	if(animated)
+		idle_pulse()
+	else
+		animate(src)
+
 	desc = "A strange collection of symbols drawn in [blood]."
+
+/obj/effect/rune/proc/make_uristword(word as text, animated = FALSE as num)
+	var/icon/I = icon('icons/effects/uristrunes.dmi', "blank")
+	I.Blend(icon('icons/effects/uristrunes.dmi', "rune-[word]"), ICON_OVERLAY)
+	var/finalblood = bcolor
+	if (finalblood)
+		var/list/blood_hsl = rgb2hsl(GetRedPart(finalblood),GetGreenPart(finalblood),GetBluePart(finalblood))
+		var/list/blood_rgb = hsl2rgb(blood_hsl[1],blood_hsl[2],50)//producing a color that is neither too bright nor too dark
+		finalblood = rgb(blood_rgb[1],blood_rgb[2],blood_rgb[3])
+
+	var/bc1 = finalblood + "C8"
+	var/bc2 = finalblood + "64"
+
+	I.SwapColor(rgb(0, 0, 0, 100), bc1)
+	I.SwapColor(rgb(0, 0, 0, 50), bc1)
+
+	for(var/x = 1, x <= WORLD_ICON_SIZE, x++)
+		for(var/y = 1, y <= WORLD_ICON_SIZE, y++)
+			var/p = I.GetPixel(x, y)
+
+			if(p == null)
+				var/n = I.GetPixel(x, y + 1)
+				var/s = I.GetPixel(x, y - 1)
+				var/e = I.GetPixel(x + 1, y)
+				var/w = I.GetPixel(x - 1, y)
+
+				if(n == "#000000" || s == "#000000" || e == "#000000" || w == "#000000")
+					I.DrawBox(bc1, x, y)
+				else
+					var/ne = I.GetPixel(x + 1, y + 1)
+					var/se = I.GetPixel(x + 1, y - 1)
+					var/nw = I.GetPixel(x - 1, y + 1)
+					var/sw = I.GetPixel(x - 1, y - 1)
+
+					if(ne == "#000000" || se == "#000000" || nw == "#000000" || sw == "#000000")
+						I.DrawBox(bc2, x, y)
+
+	I.MapColors(0.5,0,0,0,0.5,0,0,0,0.5)//we'll darken that color a bit
+	world << I
+	return I
+
+/obj/effect/rune/proc/idle_pulse()
+	//This masterpiece of a color matrix stack produces a nice animation no matter which color was the blood used for the rune.
+	animate(src, color = list(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0), time = 10, loop = -1)//1
+	animate(color = list(1.125,0.06,0,0,0,1.125,0.06,0,0.06,0,1.125,0,0,0,0,1,0,0,0,0), time = 2)//2
+	animate(color = list(1.25,0.12,0,0,0,1.25,0.12,0,0.12,0,1.25,0,0,0,0,1,0,0,0,0), time = 2)//3
+	animate(color = list(1.375,0.19,0,0,0,1.375,0.19,0,0.19,0,1.375,0,0,0,0,1,0,0,0,0), time = 1.5)//4
+	animate(color = list(1.5,0.27,0,0,0,1.5,0.27,0,0.27,0,1.5,0,0,0,0,1,0,0,0,0), time = 1.5)//5
+	animate(color = list(1.625,0.35,0.06,0,0.06,1.625,0.35,0,0.35,0.06,1.625,0,0,0,0,1,0,0,0,0), time = 1)//6
+	animate(color = list(1.75,0.45,0.12,0,0.12,1.75,0.45,0,0.45,0.12,1.75,0,0,0,0,1,0,0,0,0), time = 1)//7
+	animate(color = list(1.875,0.56,0.19,0,0.19,1.875,0.56,0,0.56,0.19,1.875,0,0,0,0,1,0,0,0,0), time = 1)//8
+	animate(color = list(2,0.67,0.27,0,0.27,2,0.67,0,0.67,0.27,2,0,0,0,0,1,0,0,0,0), time = 5)//9
+	animate(color = list(1.875,0.56,0.19,0,0.19,1.875,0.56,0,0.56,0.19,1.875,0,0,0,0,1,0,0,0,0), time = 1)//8
+	animate(color = list(1.75,0.45,0.12,0,0.12,1.75,0.45,0,0.45,0.12,1.75,0,0,0,0,1,0,0,0,0), time = 1)//7
+	animate(color = list(1.625,0.35,0.06,0,0.06,1.625,0.35,0,0.35,0.06,1.625,0,0,0,0,1,0,0,0,0), time = 1)//6
+	animate(color = list(1.5,0.27,0,0,0,1.5,0.27,0,0.27,0,1.5,0,0,0,0,1,0,0,0,0), time = 1)//5
+	animate(color = list(1.375,0.19,0,0,0,1.375,0.19,0,0.19,0,1.375,0,0,0,0,1,0,0,0,0), time = 1)//4
+	animate(color = list(1.25,0.12,0,0,0,1.25,0.12,0,0.12,0,1.25,0,0,0,0,1,0,0,0,0), time = 1)//3
+	animate(color = list(1.125,0.06,0,0,0,1.125,0.06,0,0.06,0,1.125,0,0,0,0,1,0,0,0,0), time = 1)//2
+
+
+/obj/effect/rune/proc/one_pulse()
+	animate(src, color = list(1.625,0.35,0.06,0,0.06,1.625,0.35,0,0.35,0.06,1.625,0,0,0,0,1,0,0,0,0), time = 1)
+	animate(color = list(2,0.67,0.27,0,0.27,2,0.67,0,0.67,0.27,2,0,0,0,0,1,0,0,0,0), time = 2)
+	animate(color = list(1.875,0.56,0.19,0,0.19,1.875,0.56,0,0.56,0.19,1.875,0,0,0,0,1,0,0,0,0), time = 1)
+	animate(color = list(1.75,0.45,0.12,0,0.12,1.75,0.45,0,0.45,0.12,1.75,0,0,0,0,1,0,0,0,0), time = 1)
+	animate(color = list(1.625,0.35,0.06,0,0.06,1.625,0.35,0,0.35,0.06,1.625,0,0,0,0,1,0,0,0,0), time = 0.75)
+	animate(color = list(1.5,0.27,0,0,0,1.5,0.27,0,0.27,0,1.5,0,0,0,0,1,0,0,0,0), time = 0.75)
+	animate(color = list(1.375,0.19,0,0,0,1.375,0.19,0,0.19,0,1.375,0,0,0,0,1,0,0,0,0), time = 0.5)
+	animate(color = list(1.25,0.12,0,0,0,1.25,0.12,0,0.12,0,1.25,0,0,0,0,1,0,0,0,0), time = 0.5)
+	animate(color = list(1.125,0.06,0,0,0,1.125,0.06,0,0.06,0,1.125,0,0,0,0,1,0,0,0,0), time = 0.25)
+	animate(color = list(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0), time = 1)
+
+	spawn (10)
+		if(animated)
+			idle_pulse()
+		else
+			animate(src)
 
 /obj/effect/rune/examine(var/mob/user)
 	. = ..()

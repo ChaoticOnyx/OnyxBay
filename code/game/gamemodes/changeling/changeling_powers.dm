@@ -11,7 +11,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/changelingID = "Changeling"
 	var/geneticdamage = 0
 	var/isabsorbing = 0
-	var/geneticpoints = 13
+	var/geneticpoints = 15
 	var/purchasedpowers = list()
 	var/mimicing = ""
 	var/lingabsorbedcount = 1
@@ -117,14 +117,13 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 
 //Helper proc. Does all the checks and stuff for us to avoid copypasta
-/mob/proc/changeling_power(var/required_chems=0, var/required_dna=0, var/max_genetic_damage=100, var/max_stat=0)
-
+/mob/proc/changeling_power(required_chems = 0 as num, required_dna = 0 as num, max_genetic_damage = 100 as num, max_stat = CONSCIOUS as num)
 	if(!src.mind)		return
 	if(!iscarbon(src))	return
 
 	var/datum/changeling/changeling = src.mind.changeling
 	if(!changeling)
-		world.log << "[src] has the changeling_transform() verb but is not a changeling."
+		world.log << "[src] has the changeling verb but is not a changeling."
 		return
 
 	if(src.stat > max_stat)
@@ -164,8 +163,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set category = "Changeling"
 	set name = "Absorb DNA"
 
-	var/datum/changeling/changeling = changeling_power(0,0,100)
-	if(!changeling)	return
+	var/datum/changeling/changeling = changeling_power()
+	if(!changeling)
+		return
 
 	var/obj/item/grab/G = src.get_active_hand()
 	if(!istype(G))
@@ -173,7 +173,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if(!istype(T) || isMonkey(T))
+	if(!istype(T) || isMonkey(T) || (T.isSynthetic()))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
 
@@ -510,7 +510,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set name = "Ranged Sting (10)"
 	set desc="Your next sting ability can be used against targets 2 squares away."
 
-	var/datum/changeling/changeling = changeling_power(10,0,100)
+	var/datum/changeling/changeling = changeling_power(10)
 	if(!changeling)	return 0
 	changeling.chem_charges -= 10
 	to_chat(src, "<span class='notice'>Your throat adjusts to launch the sting.</span>")
@@ -714,178 +714,353 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			sleep(40)
 		if(src && src.mind && src.mind.changeling)
 			src.mind.changeling.mimicing = ""
-	//////////
-	//STINGS//	//They get a pretty header because there's just so fucking many of them ;_;
-	//////////
 
-/mob/proc/sting_can_reach(mob/M as mob, sting_range = 1)
+//////////
+//STINGS//
+//////////
+
+/mob/proc/sting_can_reach(mob/M as mob, sting_range = 1 as num)
 	if(M.loc == src.loc)
-		return 1 //target and source are in the same thing
+		return TRUE //target and source are in the same thing
 	if(!isturf(src.loc) || !isturf(M.loc))
 		to_chat(src, "<span class='warning'>We cannot reach \the [M] with a sting!</span>")
-		return 0 //One is inside, the other is outside something.
+		return FALSE //One is inside, the other is outside something.
 	// Maximum queued turfs set to 25; I don't *think* anything raises sting_range above 2, but if it does the 25 may need raising
 	if(!AStar(src.loc, M.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, max_nodes=25, max_node_depth=sting_range)) //If we can't find a path, fail
 		to_chat(src, "<span class='warning'>We cannot find a path to sting \the [M] by!</span>")
-		return 0
-	return 1
+		return FALSE
+	return TRUE
 
 //Handles the general sting code to reduce on copypasta (seeming as somebody decided to make SO MANY dumb abilities)
-/mob/proc/changeling_sting(var/required_chems=0, var/verb_path, var/loud)
+/mob/proc/changeling_sting(verb_path, mob/living/carbon/human/T, required_chems = 0 as num, loud = FALSE as num)
+	if(!T)
+		return
+	if (!ishuman(T) || (T==src))
+		T.Click()
+		return
+
 	var/datum/changeling/changeling = changeling_power(required_chems)
-	if(!changeling)								return
+	if(!changeling)
+		return
 
-	var/list/victims = list()
-	for(var/mob/living/carbon/human/C in oview(changeling.sting_range))
-		victims += C
-	var/mob/living/carbon/human/T = input(src, "Who will we sting?") as null|anything in victims
+	if(!sting_can_reach(T, changeling.sting_range))
+		return
 
-	if(!T) return
-	if(!(T in view(changeling.sting_range))) return
-	if(!sting_can_reach(T, changeling.sting_range)) return
-	if(!changeling_power(required_chems)) return
 	var/obj/item/organ/external/target_limb = T.get_organ(src.zone_sel.selecting)
 	if (!target_limb)
-		to_chat(src, "<span class='warning'>[T] is missing that limb.</span>")
+		to_chat(src, "<span class='warning'>[T] is missing the limb we are targeting.</span>")
 		return
+
 	changeling.chem_charges -= required_chems
 	changeling.sting_range = 1
+
 	src.verbs -= verb_path
-	spawn(10)	src.verbs += verb_path
-	if(!loud)
-		to_chat(src, "<span class='notice'>We stealthily sting [T].</span>")
-	else
+	spawn(1 SECOND)
+		src.verbs += verb_path
+
+	if(loud)
 		visible_message("<span class='danger'>[src] fires an organic shard into [T]!</span>")
+	else
+		to_chat(src, "<span class='notice'>We stealthily sting [T].</span>")
 
 	for(var/obj/item/clothing/clothes in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
 		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
 			to_chat(src, "<span class='warning'>[T]'s armor has protected them.</span>")
 			return //thick clothes will protect from the sting
 
-	if(T.isSynthetic() || target_limb.isrobotic()) return
-	if(!T.mind || !T.mind.changeling) return T	//T will be affected by the sting
-	T.flash_pain(75)
-	to_chat(T, "<span class='danger'>Your [target_limb.name] hurts.</span>")
+	if(T.isSynthetic() || target_limb.isrobotic())
+		return
+	if(!T.mind || !T.mind.changeling)	//T will be affected by the sting
+		if (target_limb.can_feel_pain())
+			T.flash_pain(75)
+			to_chat(T, "<span class='danger'>Your [target_limb.name] hurts.</span>")
+		return T
 	return
 
-
-/mob/proc/changeling_lsdsting()
+/mob/proc/prepare_changeling_lsdsting()
 	set category = "Changeling"
 	set name = "Hallucination Sting (15)"
-	set desc = "Causes terror in the target."
+	set desc = "Causes terror in the target"
 
-	var/mob/living/carbon/human/T = changeling_sting(15,/mob/proc/changeling_lsdsting)
-	if(!T)	return 0
+	change_ctate(/datum/click_handler/changeling/changeling_lsdsting)
+	return
+
+/mob/proc/changeling_lsdsting(mob/living/carbon/human/T)
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_lsdsting, T, 15)
+	if(!target)
+		return FALSE
 	spawn(rand(300,600))
-		if(T)	T.hallucination(400, 80)
+		if(target)
+			target.hallucination(400, 80)
 	feedback_add_details("changeling_powers","HS")
-	return 1
+	return TRUE
 
-/mob/proc/changeling_silence_sting()
+/mob/proc/prepare_changeling_silence_sting()
 	set category = "Changeling"
 	set name = "Silence sting (10)"
-	set desc="Sting target"
+	set desc = "Sting target"
 
-	var/mob/living/carbon/human/T = changeling_sting(10,/mob/proc/changeling_silence_sting)
-	if(!T)	return 0
-	T.silent += 30
+	change_ctate(/datum/click_handler/changeling/changeling_silence_sting)
+	return
+
+/mob/proc/changeling_silence_sting(mob/living/carbon/human/T)
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_silence_sting, T, 10)
+	if(!target)
+		return FALSE
+	target.silent += 30
 	feedback_add_details("changeling_powers","SS")
-	return 1
+	return TRUE
 
-/mob/proc/changeling_blind_sting()
+/mob/proc/prepare_changeling_blind_sting()
 	set category = "Changeling"
 	set name = "Blind sting (20)"
-	set desc="Sting target"
+	set desc = "Sting target"
 
-	var/mob/living/carbon/human/T = changeling_sting(20,/mob/proc/changeling_blind_sting)
-	if(!T)	return 0
-	to_chat(T, "<span class='danger'>Your eyes burn horrificly!</span>")
-	T.disabilities |= NEARSIGHTED
-	spawn(300)	T.disabilities &= ~NEARSIGHTED
-	T.eye_blind = 10
-	T.eye_blurry = 20
+	change_ctate(/datum/click_handler/changeling/changeling_blind_sting)
+	return
+
+/mob/proc/changeling_blind_sting(mob/living/carbon/human/T)
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_blind_sting, T, 20)
+	if(!target)
+		return FALSE
+	to_chat(target, "<span class='danger'>Your eyes burn horrificly!</span>")
+	target.disabilities |= NEARSIGHTED
+	spawn(300)
+		target.disabilities &= ~NEARSIGHTED
+	target.eye_blind = 10
+	target.eye_blurry = 20
 	feedback_add_details("changeling_powers","BS")
-	return 1
+	return TRUE
 
-/mob/proc/changeling_deaf_sting()
+/mob/proc/prepare_changeling_deaf_sting()
 	set category = "Changeling"
 	set name = "Deaf sting (5)"
-	set desc="Sting target:"
+	set desc = "Sting target"
 
-	var/mob/living/carbon/human/T = changeling_sting(5,/mob/proc/changeling_deaf_sting)
-	if(!T)	return 0
-	to_chat(T, "<span class='danger'>Your ears pop and begin ringing loudly!</span>")
-	T.sdisabilities |= DEAF
-	spawn(300)	T.sdisabilities &= ~DEAF
+	change_ctate(/datum/click_handler/changeling/changeling_deaf_sting)
+	return
+
+/mob/proc/changeling_deaf_sting(mob/living/carbon/human/T)
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_deaf_sting, T, 5)
+	if(!target)
+		return FALSE
+	to_chat(target, "<span class='danger'>Your ears pop and begin ringing loudly!</span>")
+	target.sdisabilities |= DEAF
+	spawn(30 SECONDS)
+		target.sdisabilities &= ~DEAF
 	feedback_add_details("changeling_powers","DS")
-	return 1
+	return TRUE
 
-/mob/proc/changeling_vomit_sting()
+/mob/proc/prepare_changeling_vomit_sting()
 	set category = "Changeling"
 	set name = "Vomit Sting (15)"
 	set desc = "Urges target to vomit."
 
-	var/mob/living/carbon/human/T = changeling_sting(15,/mob/proc/changeling_vomit_sting)
-	if(!T || T.stat == DEAD || !T.check_has_mouth())	return 0
-	sleep(10) //Небольшая задержка перед тем, как жертву стошнит
-	T.visible_message("<span class='warning'>[T] throws up!</span>","<span class='warning'>You throw up!</span>")
-	playsound(loc, 'sound/effects/splat.ogg', 50, 1)
+	change_ctate(/datum/click_handler/changeling/changeling_vomit_sting)
+	return
 
-	var/turf/location = T.loc
-	if (istype(location, /turf/simulated))
-		location.add_vomit_floor(T, 1)
-	var/datum/reagents/ingested = T.get_ingested_reagents()
-	ingested.remove_any(5)
-	T.nutrition -= 30
+/mob/proc/changeling_vomit_sting(mob/living/carbon/human/T)
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_vomit_sting, T, 15)
+	if(!target)
+		return FALSE
+	spawn(1 SECOND)
+		target.vomit()
 	feedback_add_details("changeling_powers","VS")
-	return 1
+	return TRUE
 
-/mob/proc/changeling_DEATHsting()
+/mob/proc/prepare_changeling_death_sting()
 	set category = "Changeling"
 	set name = "Death Sting (40)"
 	set desc = "Causes spasms to death."
-	var/loud = 1
 
-	var/mob/living/carbon/human/T = changeling_sting(40,/mob/proc/changeling_DEATHsting,loud)
-	if(!T)	return 0
-	to_chat(T, "<span class='danger'>You feel a small prick and your chest becomes tight.</span>")
-	T.make_jittery(400)
-	if(T.reagents)
+	change_ctate(/datum/click_handler/changeling/changeling_death_sting)
+	return
+
+/mob/proc/changeling_death_sting(mob/living/carbon/human/T)
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_death_sting, T, 40, TRUE)
+	if(!target)
+		return FALSE
+	to_chat(target, "<span class='danger'>You feel a small prick and your chest becomes tight.</span>")
+	target.make_jittery(400)
+	if(target.reagents)
 		spawn(10 SECONDS)
-			T.reagents.add_reagent(/datum/reagent/toxin/cyanide, 1)
+			target.reagents.add_reagent(/datum/reagent/toxin/cyanide, 1)
 		spawn(20 SECONDS)
-			T.reagents.add_reagent(/datum/reagent/toxin/cyanide, 1)
+			target.reagents.add_reagent(/datum/reagent/toxin/cyanide, 1)
 		spawn(30 SECONDS)
-			T.reagents.add_reagent(/datum/reagent/toxin/cyanide, 3)
+			target.reagents.add_reagent(/datum/reagent/toxin/cyanide, 3)
 	feedback_add_details("changeling_powers","DTHS")
-	return 1
+	return TRUE
 
-/mob/proc/changeling_extract_dna_sting()
+/mob/proc/prepare_changeling_extract_dna_sting()
 	set category = "Changeling"
 	set name = "Extract DNA Sting (40)"
 	set desc="Stealthily sting a target to extract their DNA."
 
-	var/datum/changeling/changeling = null
-	if(src.mind && src.mind.changeling)
-		changeling = src.mind.changeling
-	if(!changeling)
-		return 0
+	change_ctate(/datum/click_handler/changeling/changeling_extract_dna_sting)
+	return
 
-	var/mob/living/carbon/human/T = changeling_sting(40, /mob/proc/changeling_extract_dna_sting)
-	if(!T)	return 0
-	if((MUTATION_HUSK in T.mutations) || (T.species.species_flags & SPECIES_FLAG_NO_SCAN))
+/mob/proc/changeling_extract_dna_sting(mob/living/carbon/human/T)
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_extract_dna_sting, T, 40)
+	if(!target)
+		return FALSE
+	if((MUTATION_HUSK in target.mutations) || (target.species.species_flags & SPECIES_FLAG_NO_SCAN))
 		to_chat(src, "<span class='warning'>We cannot extract DNA from this creature!</span>")
-		return 0
-
-	if(T.species.species_flags & SPECIES_FLAG_NEED_DIRECT_ABSORB)
+		return FALSE
+	if(target.species.species_flags & SPECIES_FLAG_NEED_DIRECT_ABSORB)
 		to_chat(src, "<span class='notice'>That species must be absorbed directly.</span>")
 		return
 
-	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.modifiers)
+	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers)
 	absorbDNA(newDNA)
 
 	feedback_add_details("changeling_powers","ED")
-	return 1
+	return TRUE
+
+/mob/proc/prepare_changeling_fake_arm_blade_sting()
+	set category = "Changeling"
+	set name = "Fake arm Blade (30)"
+	set desc = "We reform victims arm into a fake armblade."
+
+	change_ctate(/datum/click_handler/changeling/changeling_fake_arm_blade_sting)
+	return
+
+/mob/proc/changeling_fake_arm_blade_sting(mob/living/carbon/human/T)
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_fake_arm_blade_sting, T, 30)
+	if(!target)
+		return FALSE
+	spawn(10 SECONDS)
+		to_chat(target, "<span class='danger'>You feel strange spasms in your hand.</span>")
+	spawn(15 SECONDS)
+		playsound(target.loc, 'sound/effects/blobattack.ogg', 30, 1)
+		var/hand = pick(list(BP_R_HAND,BP_L_HAND))
+		var/failed
+		switch(hand)
+			if(BP_R_HAND)
+				if(!isProsthetic(target.r_hand))
+					target.drop_r_hand()
+				else if(!isProsthetic(target.l_hand))
+					target.drop_l_hand()
+					hand = BP_L_HAND
+				else
+					failed = TRUE
+
+			if(BP_L_HAND)
+				if(!isProsthetic(target.l_hand))
+					target.drop_l_hand()
+				else if(!isProsthetic(target.r_hand))
+					target.drop_r_hand()
+					hand = BP_R_HAND
+				else
+					failed = TRUE
+		if (!failed)
+			target.visible_message("<span class='warning'>The flesh is torn around the [target.name]\'s arm!</span>",
+								"<span class='warning'>We are transforming [target.name]\'s arm into fake armblade.</span>",
+								"<span class='italics'>You hear organic matter ripping and tearing!</span>")
+			new /obj/item/weapon/melee/prosthetic/bio/fake_arm_blade(target,target.organs_by_name[hand])
+
+/mob/proc/prepare_changeling_chemical_sting()
+	set category = "Changeling"
+	set name = "Chemical Sting (5)"
+	set desc = "We inject synthesized chemicals into the victim."
+
+	change_ctate(/datum/click_handler/changeling/changeling_chemical_sting)
+	return
+
+/mob/proc/changeling_chemical_sting(mob/living/carbon/human/T)
+	if(src.status_flags & FAKEDEATH)	//Check for stasis
+		to_chat(src, "<span class='warning'>We can't sting until our stasis ends successfully.</span>")
+		return 0
+
+	var/datum/changeling/changeling = src.mind.changeling
+	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_chemical_sting, T, 5)
+
+	if(!target)
+		return FALSE
+	var/N = 10
+	if(changeling.recursive_enhancement == TRUE)
+		N = 20
+	changeling.pick_chemistry.trans_to_mob(target, N)
+	feedback_add_details("changeling_powers","CS")
+	return TRUE
+
+/mob/proc/chem_disp_sting()
+	set category = "Changeling"
+	set name = "Biochemical Cauldron"
+	set desc = "Our stinger glands are able to synthesize a variety of chemicals."
+
+	var/datum/changeling/changeling = changeling_power(10)
+	if(!changeling)
+		return
+
+	var/list/chemistry = list(
+	/datum/reagent/hydrazine,
+	/datum/reagent/lithium,
+	/datum/reagent/carbon,
+	/datum/reagent/ammonia,
+	/datum/reagent/acetone,
+	/datum/reagent/sodium,
+	/datum/reagent/aluminum,
+	/datum/reagent/silicon,
+	/datum/reagent/phosphorus,
+	/datum/reagent/sulfur,
+	/datum/reagent/potassium,
+	/datum/reagent/iron,
+	/datum/reagent/copper,
+	/datum/reagent/ethanol,
+	/datum/reagent/acid,
+	/datum/reagent/tungsten,
+	/datum/reagent/water
+	)
+
+	if(changeling.recursive_enhancement == TRUE)
+		chemistry += list(
+		/datum/reagent/mercury,
+		/datum/reagent/radium,
+		/datum/reagent/acid/hydrochloric,
+		/datum/reagent/toxin/phoron
+		)
+
+	var/datum/reagent/target_chem = input(src, "Choose reagent:") as null|anything in chemistry
+	var/amount = input(src, "How much reagent do we want to synthesize?", "Amount", 1) as num|null
+	if(changeling.chem_charges <= amount)
+		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
+		return
+	if(target_chem == /datum/reagent/toxin/phoron)
+		if(changeling.chem_charges <= 2*amount)
+			to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
+			return
+	changeling.pick_chemistry.add_reagent(target_chem, amount)
+	if(target_chem == /datum/reagent/toxin/phoron)
+		amount *= 2
+	changeling.chem_charges -= amount
+	if(!(/mob/proc/changeling_chemical_sting in src.verbs))
+		src.verbs += /mob/proc/prepare_changeling_chemical_sting
+		src.verbs += /mob/proc/empty_cauldron
+
+/mob/proc/empty_cauldron()
+	set category = "Changeling"
+	set name = "Empty Cauldron"
+	set desc = "We empty our Cauldron."
+
+	var/datum/changeling/changeling = changeling_power()
+	if(!changeling)
+		return FALSE
+
+	if(src.status_flags & FAKEDEATH)	//Check for stasis
+		to_chat(src, "<span class='warning'>We can't sting until our stasis ends successfully.</span>")
+		return FALSE
+
+	var/mob/living/carbon/human/C = src
+
+	for(var/datum/reagent/r in changeling.pick_chemistry)
+		changeling.pick_chemistry -= r
+	C.adjustToxLoss(10)
+	src.verbs -= /mob/proc/prepare_changeling_chemical_sting
+	src.verbs -= /mob/proc/empty_cauldron
+
+
+
 
 //No breathing required
 /mob/proc/changeling_self_respiration()
@@ -893,30 +1068,26 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Toggle Breathing"
 	set desc = "We choose whether or not to breathe."
 
-	var/datum/changeling/changeling = changeling_power(0,0,100,UNCONSCIOUS)
+	var/datum/changeling/changeling = changeling_power(max_stat = UNCONSCIOUS)
 	if(!changeling)
-		return 0
+		return FALSE
 
-	if(istype(src,/mob/living/carbon))
-		var/mob/living/carbon/C = src
-		if(C.does_not_breathe == 0)
-			C.does_not_breathe = 1
-			to_chat(src, "<span class='notice'>We stop breathing, as we no longer need to.</span>")
-			return 1
-		else
-			C.does_not_breathe = 0
-			to_chat(src, "<span class='notice'>We resume breathing, as we now need to again.</span>")
-	return 0
+	var/mob/living/carbon/C = src
+	if(C.does_not_breathe == FALSE)
+		C.does_not_breathe = TRUE
+		to_chat(src, "<span class='notice'>We stop breathing, as we no longer need to.</span>")
+	else
+		C.does_not_breathe = FALSE
+		to_chat(src, "<span class='notice'>We resume breathing, as we now need to again.</span>")
+	return TRUE
 
-
-
-/mob/proc/changeling_generic_weapon(var/weapon_type, var/make_sound = 1, var/cost = 20)
-	var/datum/changeling/changeling = changeling_power(cost,1,100,CONSCIOUS)
+/mob/proc/changeling_generic_weapon(weapon_type, loud = TRUE as num, required_chems = 20 as num)
+	var/datum/changeling/changeling = changeling_power(required_chems, 1)
 	if(!changeling)
 		return
 
 	if(!ishuman(src))
-		return 0
+		return FALSE
 
 	..()
 
@@ -926,15 +1097,13 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(M, "<span class='danger'>Your hands are full.</span>")
 		return
 
-
 	var/obj/item/weapon/W = new weapon_type(src)
 	src.put_in_hands(W)
 
-	src.mind.changeling.chem_charges -= cost
-	if(make_sound)
+	changeling.chem_charges -= required_chems
+	if(loud)
 		playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
-	return 1
-
+	return TRUE
 
 //Hide us from anyone who would do us harm.
 /mob/proc/changeling_visible_camouflage()
@@ -951,7 +1120,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			return 1
 
 		//We delay the check, so that people can uncloak without needing 10 chemicals to do so.
-		var/datum/changeling/changeling = changeling_power(10,0,100,CONSCIOUS)
+		var/datum/changeling/changeling = changeling_power(10)
 
 		if(!changeling)
 			return 0
@@ -1007,17 +1176,16 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Electric Lockpick (5 + 10/use)"
 	set desc = "Bruteforces open most electrical locking systems, at 10 chemicals per use."
 
-	var/datum/changeling/changeling = changeling_power(5,0,100,CONSCIOUS)
+	var/datum/changeling/changeling = changeling_power(5)
+	if(!changeling)
+		return FALSE
 
 	var/obj/held_item = get_active_hand()
 
-	if(!changeling)
-		return 0
-
 	if(held_item == null)
-		if(changeling_generic_weapon(/obj/item/weapon/finger_lockpick,0,5))  //Chemical cost is handled in the equip proc.
-			return 1
-		return 0
+		if(changeling_generic_weapon(/obj/item/weapon/finger_lockpick,FALSE,5))  //Chemical cost is handled in the equip proc.
+			return TRUE
+		return FALSE
 
 /obj/item/weapon/finger_lockpick
 	name = "finger lockpick"
@@ -1180,13 +1348,14 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /obj/item/weapon/melee/changeling/arm_blade/greater
 	name = "arm greatblade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people and armor as a hot knife through butter."
-	force = 30
-	armor_penetration = 30
+	force = 35
+	armor_penetration = 20
 
 /obj/item/weapon/melee/changeling/claw
 	name = "hand claw"
 	desc = "A grotesque claw made out of bone and flesh that cleaves through people as a hot knife through butter."
 	icon_state = "ling_claw"
+	armor_penetration = 20
 	force = 15
 	sharp = 1
 	edge = 1
@@ -1196,7 +1365,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /obj/item/weapon/melee/changeling/claw/greater
 	name = "hand greatclaw"
 	force = 20
-	armor_penetration = 20
+	armor_penetration = 50
 	anchored = 1
 
 /mob/proc/changeling_arm_blade()
@@ -1223,7 +1392,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Recursive Enhancement"
 	set desc = "Empowers our abilities."
-	var/datum/changeling/changeling = changeling_power(0,0,100,UNCONSCIOUS)
+	var/datum/changeling/changeling = changeling_power()
 	if(!changeling)
 		return 0
 	if(src.mind.changeling.recursive_enhancement)
@@ -1236,35 +1405,42 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	feedback_add_details("changeling_powers","RE")
 	return 1
 
-/////////////////////////New Ability////////////////////////////////////////////////
-
-
+/////////////////////////OTHER ABILITIES////////////////////////////////////////////////
 
 /mob/proc/changeling_division()
 	set category = "Changeling"
 	set name = "Division (20)"
 	set desc = "You will be like us."
 
-	var/datum/changeling/changeling = changeling_power(0,0,100)
-	if(!changeling)	return
+	var/datum/changeling/changeling = changeling_power()
+	if(!changeling)
+		return
+
+	if(changeling.isabsorbing)
+		to_chat(src, "<span class='warning'>We are already transforming!</span>")
+		return
+
+	if(changeling.geneticpoints < 2)
+		to_chat(src, "<span class='notice'>Not enough DNA.</span>")
+		return
+
+	if(changeling.chem_charges < 20)
+		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
+		return
 
 	var/obj/item/grab/G = src.get_active_hand()
+
 	if(!istype(G))
 		to_chat(src, "<span class='warning'>We must be grabbing a creature in our active hand to absorb them.</span>")
 		return
 
+	if(!G.can_absorb())
+		to_chat(src, "<span class='warning'>We must have a tighter grip to create a new changelling.</span>")
+		return
+
 	var/mob/living/carbon/human/T = G.affecting
 
-	if(!istype(T))
-		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
-		return
-
-	var/obj/item/organ/internal/brain/B = T.internal_organs_by_name[BP_BRAIN]
-	if(B && B.status == DEAD)
-		to_chat(src, "<span class='warning'>[T] is dead. We can not create a new life.</span>")
-		return
-
-	if(T.species.species_flags & SPECIES_FLAG_NO_SCAN)
+	if(!istype(T) || (T.species.species_flags & SPECIES_FLAG_NO_SCAN))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
 
@@ -1272,12 +1448,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(src, "<span class='warning'>This creature's DNA is ruined!</span>")
 		return
 
-	if(!G.can_absorb())
-		to_chat(src, "<span class='warning'>We must have a tighter grip to create a new changelling.</span>")
-		return
-
-	if(changeling.isabsorbing)
-		to_chat(src, "<span class='warning'>We are already transforming!</span>")
+	var/obj/item/organ/internal/brain/B = T.internal_organs_by_name[BP_BRAIN]
+	if(!B || B.status == DEAD)
+		to_chat(src, "<span class='warning'>[T] is dead. We can not create a new life.</span>")
 		return
 
 	var/obj/item/organ/external/affecting = T.get_organ(src.zone_sel.selecting)
@@ -1300,19 +1473,13 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, T, 150))
-			to_chat(src, "<span class='warning'>Our transfused new core into [T] has been interrupted!</span>")
+			to_chat(src, "<span class='warning'>Transfusion of new core into [T] has been interrupted!</span>")
 			changeling.isabsorbing = 0
 			return
 
 	to_chat(src, "<span class='notice'>We successfully transfused new core into [T]!</span>")
 	src.visible_message("<span class='danger'>[src] transfused something into [T] through their proboscis!</span>")
 	to_chat(T, "<span class='danger'>You feel like you're dying...</span>")
-	if(changeling.geneticpoints <= 2)
-		to_chat(src, "<span class='notice'>Not enough DNA.</span>")
-		return
-	if(changeling.chem_charges <= 20)
-		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
-		return
 
 	changeling.chem_charges -= 20
 	changeling.geneticpoints -= 2
@@ -1320,8 +1487,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	changeling.isabsorbing = 0
 	var/datum/antagonist/changeling/a = new
 	a.add_antagonist(T.mind, ignore_role = 1, do_not_equip = 1)
-//	T.make_changeling()
-	to_chat(T, "<span class='danger'>We have become!</span>") //Фраза довольно уебская, но пафосная
+
+	to_chat(T, "<span class='danger'>We have become!</span>") //So pretentious!
 	T.mind.changeling.geneticpoints = 7
 	T.mind.changeling.chem_charges = 40
 
@@ -1333,8 +1500,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Detach Limb (10)"
 	set desc = "We tear off our limb, turning it into an aggressive biomass."
 
-
-	var/datum/changeling/changeling = changeling_power(10,0,100,DEAD)
+	var/datum/changeling/changeling = changeling_power(10, max_stat = DEAD)
 	if(!changeling)	return
 	var/mob/living/carbon/T = src
 	T.faction = "biomass"
@@ -1467,52 +1633,14 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	HC.visible_message("<span class='warning'>[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!</span>",
 		"<span class='danger'><font size='2'><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></font></span>")
 
-
-/mob/proc/changeling_fake_arm_blade()
-	set category = "Changeling"
-	set name = "Fake arm Blade (30)"
-	set desc = "We reform victims arm into a fake armblade."
-
-	var/mob/living/carbon/human/T = changeling_sting(30,/mob/proc/changeling_fake_arm_blade)
-	if(!T)	return 0
-	spawn(10 SECONDS)
-		to_chat(T, "<span class='danger'>You feel strange spasms in your hand.</span>")
-		spawn(15 SECONDS)
-			playsound(T.loc, 'sound/effects/blobattack.ogg', 30, 1)
-			var/hand = pick(list(BP_R_HAND,BP_L_HAND))
-			var/failed
-			switch(hand)
-				if(BP_R_HAND)
-					if(!isProsthetic(T.r_hand))
-						T.drop_r_hand()
-					else if(!isProsthetic(T.l_hand))
-						T.drop_l_hand()
-						hand = BP_L_HAND
-					else
-						failed = TRUE
-
-				if(BP_L_HAND)
-					if(!isProsthetic(T.l_hand))
-						T.drop_l_hand()
-					else if(!isProsthetic(T.r_hand))
-						T.drop_r_hand()
-						hand = BP_R_HAND
-					else
-						failed = TRUE
-			if (!failed)
-				T.visible_message("<span class='warning'>The flesh is torn around the [T.name]\'s arm!</span>",
-									"<span class='warning'>We are transforming [T.name]\'s arm into fake armblade.</span>",
-									"<span class='italics'>You hear organic matter ripping and tearing!</span>")
-				new /obj/item/weapon/melee/prosthetic/bio/fake_arm_blade(T,T.organs_by_name[hand])
-
-//No breathing required
 /mob/proc/changeling_no_pain()
 	set category = "Changeling"
-	set name = "Toggle feel pain"
+	set name = "Toggle feel pain (10)"
 	set desc = "We choose whether or not to fell pain."
 
-	var/datum/changeling/changeling = changeling_power()
-	if(!changeling)	return 0
+	var/datum/changeling/changeling = changeling_power(10, 0, 0, UNCONSCIOUS)
+	if(!changeling)
+		return FALSE
 
 	var/mob/living/carbon/human/C = src
 	C.no_pain = !C.no_pain
@@ -1528,11 +1656,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			if (C.mind.changeling.chem_charges == 0)
 				C.no_pain = !C.no_pain
 			sleep(40)
-	return 1
+	return TRUE
 
 /mob/proc/changeling_rapid_heal()
 	set category = "Changeling"
-	set name = "Passive Regeneration(10)"
+	set name = "Passive Regeneration (10)"
 	set desc = "Allows you to passively regenerate when activated."
 
 	if(istype(src,/mob/living/carbon/human))
@@ -1542,7 +1670,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			to_chat(H, "<span class='notice'>We inactivate our stemocyte pool and stop intensive fleshmending.</span>")
 			return
 
-		var/datum/changeling/changeling = changeling_power(10,0,100,CONSCIOUS)
+		var/datum/changeling/changeling = changeling_power(10, 0, 0, DEAD)
 		if(!changeling)
 			return
 
@@ -1558,7 +1686,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 					H.adjustFireLoss(-10 * config.organ_regeneration_multiplier)
 				if(H.getToxLoss())
 					H.adjustToxLoss(-15 * config.organ_regeneration_multiplier)
-				if(prob(5) && !H.getBruteLoss() && !H.getFireLoss())
+				if(prob(15) && !H.getBruteLoss() && !H.getFireLoss())
 					var/obj/item/organ/external/head/D = H.organs_by_name[BP_HEAD]
 					if (D.disfigured)
 						D.disfigured = 0
@@ -1573,9 +1701,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 								to_chat(H, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
 						if(regen_organ.status & ORGAN_DEAD)
 							regen_organ.status &= ~ORGAN_DEAD
-				if(prob(2))
+				if(prob(15))
 					for(var/limb_type in H.species.has_limbs)
 						if (H.restore_limb(limb_type,1))
+							break
+					for(var/organ_type in H.species.has_organ)
+						if (H.restore_organ(organ_type))
 							break
 				if(H.mind.changeling.chem_charges == 0)
 					H.mind.changeling.heal = !H.mind.changeling.heal
@@ -1632,90 +1763,53 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			H.reload_fullscreen()
 
 
-/mob/proc/chem_disp_sting()
+
+
+
+/mob/proc/prepare_changeling_bioelectrogenesis()
 	set category = "Changeling"
-	set name = "Biochemical Cauldron"
-	set desc = "Our stinger glands are able to synthesize a variety of chemicals."
+	set name = "Bioelectrogenesis (20)"
+	set desc = "We create an electromagnetic pulse against synthetics."
 
+	change_ctate(/datum/click_handler/changeling/changeling_bioelectrogenesis)
+	return
 
-
-	var/datum/changeling/changeling = changeling_power(10,0,100)
-	if(!changeling)	return
-
-	var/list/chemistry = list(
-	/datum/reagent/hydrazine,
-	/datum/reagent/lithium,
-	/datum/reagent/carbon,
-	/datum/reagent/ammonia,
-	/datum/reagent/acetone,
-	/datum/reagent/sodium,
-	/datum/reagent/aluminum,
-	/datum/reagent/silicon,
-	/datum/reagent/phosphorus,
-	/datum/reagent/sulfur,
-	/datum/reagent/potassium,
-	/datum/reagent/iron,
-	/datum/reagent/copper,
-	/datum/reagent/ethanol,
-	/datum/reagent/acid,
-	/datum/reagent/tungsten,
-	/datum/reagent/water
-	)
-	var/mob/living/carbon/human/T = src
-	if(src.mind.changeling.recursive_enhancement == TRUE)
-		chemistry += list(
-		/datum/reagent/mercury,
-		/datum/reagent/radium,
-		/datum/reagent/acid/hydrochloric,
-		/datum/reagent/toxin/phoron
-		)
-
-//	var/obj/item/organ/internal/biostructure/BIO = T.internal_organs_by_name[BP_CHANG]
-	var/datum/reagent/target_chem = input(T, "Choose reagent:") as null|anything in chemistry
-//	T.mind.changeling.pick_chemistry.reagent_list += input(T, "Choose reagent:") as null|anything in chemistry
-	var/amount = input(T,"How much reagent do we want to synthesize?", "Amount", 1) as num|null
-	if(src.mind.changeling.chem_charges < amount)
-		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
-		return
-	if(target_chem == /datum/reagent/toxin/phoron)
-		if(src.mind.changeling.chem_charges < 2*amount)
-			to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
-			return
-	T.mind.changeling.pick_chemistry.add_reagent(target_chem, amount)
-//	pick_chemistry.trans_to_obj(BIO, amount/*, var/multiplier = 1*/, 1)
-	if(target_chem == /datum/reagent/toxin/phoron)
-		amount *= 2
-	src.mind.changeling.chem_charges -= amount
-	if(!(/mob/proc/chem_sting in src.verbs))
-		src.verbs += /mob/proc/chem_sting
-
-/mob/proc/chem_sting()
-	set category = "Changeling"
-	set name = "Chemical Sting (5)"
-	set desc = "We inject synthesized chemicals into the victim."
-
-
-//	var/datum/changeling/changeling = changeling_power(10,0,100)
-	var/mob/living/carbon/human/C = src
-//	var/obj/item/organ/internal/biostructure/BIO = C.internal_organs_by_name[BP_CHANG]
-
-
-	var/datum/changeling/changeling = null
-	if(src.mind && src.mind.changeling)
-		changeling = src.mind.changeling
+/mob/proc/changeling_bioelectrogenesis(mob/living/T)
+	var/datum/changeling/changeling = changeling_power(20)
 	if(!changeling)
-		return 0
+		return
+	if(T in orange(1,src))
+		empulse(T.loc, 1, 1)
+		changeling.chem_charges -= 20
+	else
+		src << "<span class='warning'>Too Far</span>"
+	return
 
-	if(src.status_flags & FAKEDEATH)	//Тупа проверка на лежание в стазисе
-		to_chat(src, "<span class='warning'>We can't sting until our stasis ends successfully.</span>")
-		return 0
+/mob/proc/changeling_toggle_darksight()
+	set category = "Changeling"
+	set name = "Toggle Darkvision"
+	set desc = "We are able to see in the dark."
 
-	var/mob/living/carbon/human/T = changeling_sting(5, /mob/proc/chem_sting)
-	if(!T)	return 0
-	var/N = 10
-	if(src.mind.changeling.recursive_enhancement == TRUE)
-		N = 20
-	C.mind.changeling.pick_chemistry.trans_to_mob(T, N)
-	feedback_add_details("changeling_powers","CS")
-	src.verbs -= /mob/proc/chem_sting
-	return 1
+	var/datum/changeling/changeling = changeling_power()
+	if(!changeling)
+		return FALSE
+
+	var/mob/living/carbon/C = src
+	C.seeDarkness = !C.seeDarkness
+	if(C.seeDarkness)
+		to_chat(C, "<span class='notice'>We no longer need light to see.</span>")
+	else
+		to_chat(C, "<span class='notice'>We allow the shadows to return.</span>")
+	return TRUE
+
+/mob/proc/change_ctate(path)
+	var/datum/click_handler/handler = src.GetClickHandler()
+	if (!ispath(path))
+		src << "<span class='warning'>This is awkward. 1-800-CALL-CODERS to fix this.</span>"
+		return
+	if(handler.type == path)
+		src << "<span class='notice'>You unprepare [handler.handler_name].</span>"
+		usr.PopClickHandler()
+	else
+		src << "<span class='warning'>You prepare your ability.</span>"
+		src.PushClickHandler(path)

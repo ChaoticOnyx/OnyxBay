@@ -19,7 +19,7 @@
 	proj_step_delay = 1
 
 	amt_dam_brute = 20
-	amt_dam_fire = 25
+	amt_dam_fire = 30
 
 	var/ex_severe = -1
 	var/ex_heavy = 1
@@ -36,6 +36,9 @@
 /spell/targeted/projectile/dumbfire/fireball/empower_spell()
 	if(!..())
 		return 0
+
+	amt_dam_brute += 10
+	amt_dam_fire += 25
 
 	if(spell_levels[Sp_POWER]%2 == 1)
 		ex_severe++

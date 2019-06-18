@@ -8,7 +8,7 @@
 	mod_weight = 1.75
 	mod_reach = 1.65
 	mod_handy = 1.25
-	force_const = 7.5
+	force_const = 12
 	thrown_force_const = 5
 	force_divisor = 0.4 // 24 when wielded with hardnes 60 (steel)
 	thrown_force_divisor = 0.3 // 6 when thrown with weight 20 (steel)

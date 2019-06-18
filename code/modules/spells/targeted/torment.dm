@@ -8,7 +8,7 @@
 	invocation = "Rai Di-Kaal!"
 	invocation_type = SpI_SHOUT
 	range = 5
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 0, Sp_POWER = 1)
+	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 0, Sp_POWER = 3)
 	cooldown_min = 50
 	message = "<span class='danger'>So much pain! All you can hear is screaming!</span>"
 

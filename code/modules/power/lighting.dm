@@ -13,6 +13,7 @@
 #define LIGHTING_POWER_FACTOR 5		//5W per luminosity * range
 
 #define LIGHTMODE_EMERGENCY "emergency_lighting"
+#define LIGHTMODE_ALARM "alarm"
 #define LIGHTMODE_READY "ready"
 
 /obj/machinery/light_construct
@@ -260,8 +261,8 @@
 		current_mode = new_mode
 		update_icon(0)
 
-/obj/machinery/light/proc/set_emergency_lighting(var/enable)
-	if(enable)
+/obj/machinery/light/proc/set_emergency_lighting(state as num)
+	if(state)
 		if(LIGHTMODE_EMERGENCY in lightbulb.lighting_modes)
 			set_mode(LIGHTMODE_EMERGENCY)
 			update_power_channel(ENVIRON)
@@ -269,6 +270,14 @@
 		if(current_mode == LIGHTMODE_EMERGENCY)
 			set_mode(null)
 			update_power_channel(initial(power_channel))
+
+/obj/machinery/light/proc/set_alert_lighting(state as num)
+	if(state)
+		if(LIGHTMODE_ALARM in lightbulb.lighting_modes)
+			set_mode(LIGHTMODE_ALARM)
+	else
+		if(current_mode == LIGHTMODE_ALARM)
+			set_mode(null)
 
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
@@ -552,6 +561,7 @@
 	brightness_color = "#fffee0"
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 4, l_power = 1, l_color = "#da0205"),
+		LIGHTMODE_ALARM = list(l_color = "#ff3333")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
 
@@ -575,6 +585,7 @@
 	brightness_color = "#a0a080"
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 3, l_power = 1, l_color = "#da0205"),
+		LIGHTMODE_ALARM = list(l_color = "#ff3333")
 		)
 
 /obj/item/weapon/light/bulb/red

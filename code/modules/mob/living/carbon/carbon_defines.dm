@@ -40,4 +40,5 @@
 
 	var/list/stasis_sources = list()
 	var/stasis_value
-	var/does_not_breathe = 0
+	var/does_not_breathe = FALSE
+	var/seeDarkness = FALSE

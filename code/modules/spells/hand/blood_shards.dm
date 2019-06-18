@@ -1,12 +1,12 @@
 /spell/hand/charges/blood_shard
 	name = "Blood Shards"
-	desc = "Invoke a corrupted projectile forward that causes an enemy's blood to fly out in painful shards."
+	desc = "Invoke a corrupted projectile forward that causes an enemy's blood to fly out in painful shards. Be sure to upgrade it, as it is free."
 
 	spell_flags = 0
 	charge_max = 600
 	invocation = "opens their hand, which bursts into vicious red light."
 	invocation_type = SpI_EMOTE
-
+	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 0)
 	range = 7
 	max_casts = 2
 	compatible_targets = list(/atom)

@@ -1,20 +1,33 @@
 /obj/item/weapon/book/tome
 	name = "arcane tome"
-	icon = 'icons/obj/weapons.dmi'
+	icon = 'icons/obj/cult.dmi'
 	icon_state = "tome"
 	throw_speed = 1
 	throw_range = 5
 	w_class = 2
 	unique = 1
 	carved = 2 // Don't carve it
+	var/open = 0
 
-/obj/item/weapon/book/tome/attack_self(var/mob/user)
-	if(!iscultist(user))
-		to_chat(user, "\The [src] seems full of illegible scribbles. Is this a joke?")
+/obj/item/weapon/book/tome/New()
+	flick("tome_spawn", src)
+	..()
+
+/obj/item/weapon/book/tome/attack_self(mob/user as mob)
+	if(open)
+		open = FALSE
+		icon_state = "tome"
+		flick("tome-flickclose", src)
 	else
-		to_chat(user, "Hold \the [src] in your hand while drawing a rune to use it.")
+		open = TRUE
+		icon_state = "tome-open"
+		flick("tome-flickopen", src)
+		if(iscultist(user))
+			to_chat(user, "Hold \the [src] in your hand open while drawing a rune to use it.")
+		else
+			to_chat(user, "\The [src] seems full of illegible scribbles. Is this a joke?")
 
-/obj/item/weapon/book/tome/examine(var/mob/user)
+/obj/item/weapon/book/tome/examine(mob/user as mob)
 	. = ..()
 	if(!iscultist(user))
 		to_chat(user, "An old, dusty tome with frayed edges and a sinister looking cover.")
@@ -34,8 +47,18 @@
 	var/has_tome = 0
 	var/has_robes = 0
 	var/cult_ground = 0
-	if(istype(get_active_hand(), /obj/item/weapon/book/tome) || istype(get_inactive_hand(), /obj/item/weapon/book/tome))
-		has_tome = 1
+	if(istype(get_active_hand(), /obj/item/weapon/book/tome))
+		var/obj/item/weapon/book/tome/B = get_active_hand()
+		if(B.open)
+			has_tome = 1
+		else
+			to_chat(src, "<span class='warning'>You need to open the tome before drawing the rune.</span>")
+	else if(istype(get_inactive_hand(), /obj/item/weapon/book/tome))
+		var/obj/item/weapon/book/tome/B = get_inactive_hand()
+		if(B.open)
+			has_tome = 1
+		else
+			to_chat(src, "<span class='warning'>You need to open the tome before drawing the rune.</span>")
 	else if(tome_required && mob_needs_tome())
 		to_chat(src, "<span class='warning'>This rune is too complex to draw by memory, you need to have a tome in your hand to draw it.</span>")
 		return
@@ -57,6 +80,12 @@
 	var/timer
 	var/damage = 1
 	if(has_tome)
+		if(istype(get_active_hand(), /obj/item/weapon/book/tome))
+			var/obj/item/weapon/book/tome/B = get_active_hand()
+			flick("tome-flick", B)
+		else if(istype(get_inactive_hand(), /obj/item/weapon/book/tome))
+			var/obj/item/weapon/book/tome/B = get_inactive_hand()
+			flick("tome-flick", B)
 		if(has_robes && cult_ground)
 			self = "Feeling greatly empowered, you slice open your finger and make a rune on the engraved floor. It shifts when your blood touches it, and starts vibrating as you begin to chant the ritual that binds your life essence with the dark arcane energies flowing through the surrounding world."
 			timer = 10

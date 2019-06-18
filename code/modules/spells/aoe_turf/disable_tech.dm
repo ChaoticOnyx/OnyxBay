@@ -11,14 +11,12 @@
 	inner_radius = -1
 	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 2)
 	cooldown_min = 200 //50 deciseconds reduction per rank
-
-	var/emp_heavy = 3
-	var/emp_light = 5
-
 	hud_state = "wiz_tech"
 
-/spell/aoe_turf/disable_tech/cast(list/targets)
+	var/emp_heavy = 4
+	var/emp_light = 6
 
+/spell/aoe_turf/disable_tech/cast(list/targets)
 	for(var/turf/target in targets)
 		empulse(get_turf(target), emp_heavy, emp_light)
 	return

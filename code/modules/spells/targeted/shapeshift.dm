@@ -119,7 +119,7 @@
 	if(!..())
 		return 0
 
-	duration += 50
+	duration += 100
 
 	return "Your target will now stay in their polymorphed form for [duration/10] seconds."
 
@@ -173,9 +173,9 @@
 			return "You will now stay corrupted for [duration/10] seconds."
 		if(2)
 			newVars = list("name" = "\proper corruption incarnate",
-						"melee_damage_upper" = 25,
-						"resistance" = 6,
-						"health" = 125,
-						"maxHealth" = 125)
+						"melee_damage_upper" = 80,
+						"resistance" = 15,
+						"health" = 200,
+						"maxHealth" = 200)
 			duration = 0
 			return "You revel in the corruption. There is no turning back."

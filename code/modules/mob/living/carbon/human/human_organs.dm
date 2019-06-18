@@ -46,6 +46,30 @@
 	else
 		return 0
 
+
+/mob/living/carbon/human/proc/restore_organ(organ_type)	//only for changling for now
+	var/obj/item/organ/internal/E = internal_organs_by_name[organ_type]
+	if(E && !E.vital && !E.is_usable())	//Skips heads and vital bits...
+		E.removed()//...because no one wants their head to explode to make way for a new one.
+		qdel(E)
+		E = null
+	if(!E)
+		var/list/organ_data = species.has_organ[organ_type]
+		var/organ_path = organ_data["path"]
+		var/obj/item/organ/internal/O = new organ_path(src)
+		organ_data["descriptor"] = O.name
+		O.set_dna(dna)
+		update_body()
+		if(O.organ_tag == BP_BRAIN)
+			O.vital = 0
+		return TRUE
+	else if (E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
+		E.status &= ~ORGAN_BROKEN
+		E.status &= ~ORGAN_ARTERY_CUT
+		return TRUE
+	else
+		return FALSE
+
 // Takes care of organ related updates, such as broken and missing limbs
 /mob/living/carbon/human/proc/handle_organs()
 

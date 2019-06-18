@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+  - source: ./
+    destination: /home/ubuntu/onyxbay
+hooks:
+  BeforeInstall:
+    - location: /scripts/stopPrevious.sh
+      runas: ubuntu
+  AfterInstall:
+    - location: /scripts/updateConfig.sh
+      runas: ubuntu
+  ApplicationStart:
+    - location: /scripts/startServer.sh
+      runas: ubuntu
+  ValidateService:
+    - location: /scripts/sendDeploymentStatus.sh
+      runas: ubuntu

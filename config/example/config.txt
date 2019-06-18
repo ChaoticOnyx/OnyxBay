@@ -121,7 +121,7 @@ PROBABILITY conflux 2
 PROBABILITY intrigue 2
 ## Changelings & wizards
 PROBABILITY lizard 2
-	
+
 ## Changeling, malf & renegade
 PROBABILITY paranoia 2
 ## Changeling & traitor
@@ -437,3 +437,12 @@ RADIATION_MATERIAL_RESISTANCE_DIVISOR 2
 
 ## Below this point, radiation is ignored
 RADIATION_LOWER_LIMIT 0.15
+
+## TOPIC RATE LIMITING
+## This allows you to limit how many topic calls (clicking on a interface window) the client can do in any given game second and/or game minute.
+## Admins are exempt from these limits.
+## Hitting the minute limit notifies admins.
+## Set to 0 or comment out to disable.
+SECOND_TOPIC_LIMIT 10
+
+MINUTE_TOPIC_LIMIT 100
