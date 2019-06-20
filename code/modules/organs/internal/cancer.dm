@@ -18,7 +18,7 @@
 /datum/reagent/metastases/overdose(var/mob/living/carbon/M, var/alien)
 	..()
 	if(ishuman(M))
-		M.adjustToxLoss(0.5)
+		M.adjustToxLoss(0.1)
 		var/C = 0
 		for (var/obj/item/organ/internal/cancer/CAN in M.contents)
 			C++
@@ -26,6 +26,24 @@
 			if(C < 6)
 				new /obj/item/organ/internal/cancer(M)
 			infect(M)
+
+
+/datum/reagent/decomposition_products
+	name = "Decomposition products"
+	description = "The fluid resulting from the active decay of mutated biological tissues."
+	taste_description = "bitterness"
+	taste_mult = 3
+	reagent_state = LIQUID
+	color = "#bf0000"
+	scannable = 0.1
+	flags = IGNORE_MOB_SIZE
+	metabolism = REM * 0.05
+
+/datum/reagent/decomposition_products/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	if(alien != IS_DIONA)
+		for(var/obj/item/organ/internal/cancer/OW in M.contents)
+			OW.chance -= 2
+			M.adjustToxLoss(0.01)
 
 /datum/reagent/metastases/proc/infect(var/mob/living/carbon/A)
 	var/l = list()
@@ -56,6 +74,7 @@
 	var/infectious = 0
 	detectability = FALSE
 	var/weakness = /datum/reagent/paracetamol
+	var/next_time = 0
 
 /obj/item/organ/internal/cancer/New(var/mob/living/carbon/holder)
 	var/obj/item/organ/internal/cancer/CAN = locate() in (holder.contents - src)
@@ -75,18 +94,15 @@
 
 
 /obj/item/organ/internal/cancer/Process()
-
 	..()
-/*
-	var/C = 0
-	for (var/obj/item/organ/internal/cancer/CAN in owner.contents)
-		C++
-	if((!infectious) && prob(chance) && (C < 6))
-		new /obj/item/organ/internal/cancer(owner)
-*/
 	var/datum/reagent/R = weakness
 	if(owner.reagents.get_reagent_amount(weakness) > R.overdose)
 		src.take_damage(5)
+		owner.reagents.add_reagent(/datum/reagent/decomposition_products, 0.2)
+		if(world.time >= next_time)
+			next_time = world.time + rand(200,800)
+			to_chat(owner, "<span class='warning'>You feel sick.</span>")
+
 	if(infectious)
 		owner.reagents.add_reagent(/datum/reagent/metastases, 0.5)
 	else
@@ -94,18 +110,3 @@
 		if(chance > 50)
 			infectious = 1
 		owner.reagents.add_reagent(/datum/reagent/metastases, 0.1)
-/*
-	owner.adjustToxLoss(0.01)
-
-/obj/item/organ/internal/cancer/proc/infect()
-	var/l = list()
-	for(var/mob/living/carbon/M in orange(1,owner))
-		var/obj/item/organ/internal/cancer/CAN = locate() in M.contents
-		if(!CAN)
-			l += M
-	var/k = pick(l)
-	if((infection_chance(k, "Airborne") == 0) && (infection_chance(k, "Contact") == 0))
-		return
-	if(prob(50) && (Adjacent(k)))
-		new /obj/item/organ/internal/cancer(k)
-		*/
