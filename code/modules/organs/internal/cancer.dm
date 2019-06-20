@@ -43,7 +43,7 @@
 	if(alien != IS_DIONA)
 		for(var/obj/item/organ/internal/cancer/OW in M.contents)
 			OW.chance -= 2
-			M.adjustToxLoss(0.01)
+		M.adjustToxLoss(0.06)
 
 /datum/reagent/metastases/proc/infect(var/mob/living/carbon/A)
 	var/l = list()
