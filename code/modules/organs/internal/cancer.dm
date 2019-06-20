@@ -7,7 +7,7 @@
 	reagent_state = LIQUID
 	color = "#bf0000"
 	overdose = REAGENTS_OVERDOSE * 0.5
-	scannable = 5
+	scannable = TRUE
 	flags = IGNORE_MOB_SIZE
 	metabolism = REM * 0.25
 
@@ -35,7 +35,7 @@
 	taste_mult = 3
 	reagent_state = LIQUID
 	color = "#bf0000"
-	scannable = 0.1
+	scannable = TRUE
 	flags = IGNORE_MOB_SIZE
 	metabolism = REM * 0.05
 
