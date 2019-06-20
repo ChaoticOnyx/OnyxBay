@@ -93,6 +93,12 @@
 	sharp = 1
 	edge = 1
 
+/obj/item/weapon/melee/energy/axe/dropped(var/mob/user)
+	..()
+	if(!istype(loc,/mob))
+		spawn(35)
+		deactivate(user)
+
 /obj/item/weapon/melee/energy/axe/activate(mob/living/user)
 	..()
 	icon_state = "axe1"
