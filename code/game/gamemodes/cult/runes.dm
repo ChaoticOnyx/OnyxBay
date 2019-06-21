@@ -80,7 +80,6 @@
 						I.DrawBox(bc2, x, y)
 
 	I.MapColors(0.5,0,0,0,0.5,0,0,0,0.5)//we'll darken that color a bit
-	world << I
 	return I
 
 /obj/effect/rune/proc/idle_pulse()
