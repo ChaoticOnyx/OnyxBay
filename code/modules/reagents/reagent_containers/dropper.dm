@@ -28,7 +28,7 @@
 			var/trans = 0
 
 			if(ismob(target))
-				//if(user.a_intent == I_HELP) - Who the hell made this lol? ~Toby
+				//if(user.a_intent == I_HELP) - Who the hell made this lol? ~Toby // FUCK YOUR TILDES YOU DIDN'T EVEN FIX WHAT YOU WERE ASKED TO FIX AND NOW I HAVE TO DO YOUR MOTHERFUCKING JOB YOU CUNT
 				//	return
 
 				var/time = 20 //2/3rds the time of a syringe
@@ -74,7 +74,7 @@
 
 		else // Taking from something
 
-			if(!target.is_open_container() && !istype(target,/obj/structure/reagent_dispensers))
+			if((!target.is_open_container() && !istype(target,/obj/structure/reagent_dispensers)) || istype(target, /obj/item/weapon/reagent_containers/hypospray/autoinjector))
 				to_chat(user, "<span class='notice'>You cannot directly remove reagents from [target].</span>")
 				return
 
