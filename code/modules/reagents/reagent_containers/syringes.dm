@@ -51,7 +51,7 @@
 /obj/item/weapon/reagent_containers/dna_sampler/attackby(obj/item/I as obj, mob/user as mob)
 	return
 
-/obj/item/weapon/reagent_containers/dna_sampler/(obj/target, mob/user, proximity)
+/obj/item/weapon/reagent_containers/dna_sampler/afterattack(obj/target, mob/user, proximity)
 	if(!proximity)
 		return
 	if(ismob(target))//Blood!
@@ -125,8 +125,7 @@
 		return 0
 	if(user.a_intent != I_HELP) //in case it is ever used as a surgery tool
 		return ..()
-	
-	(M, user, 1)
+	afterattack(M, user, 1)
 	return 1
 
 /obj/item/weapon/reagent_containers/syringe/afterattack(obj/target, mob/user, proximity)
@@ -140,11 +139,11 @@
 	if(istype(target, /obj/structure/closet/body_bag))
 		handleBodyBag(target, user)
 		return
-		
+
 	if(istype(target, /obj/item/weapon/reagent_containers/hypospray/autoinjector))
 		to_chat(user, "<span class='notice'>You cannot directly remove reagents from [target].</span>")
 		return
-			
+
 	if(user.a_intent == I_HURT)
 		if(ismob(target))
 			syringestab(target, user)
