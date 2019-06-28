@@ -177,7 +177,9 @@
 	if(!target.reagents.get_free_space())
 		to_chat(user, "<span class='notice'>[target] is full.</span>")
 		return 1
-
+	if(istype(target, /obj/item/weapon/reagent_containers/hypospray/autoinjector)) // FUCK YOUR TILDES TOBY  AND FUCK YOUR TILDES AND FUCK YOUR TILDES AND FUCK YOU AND FUCK YOUR TILDES
+		to_chat(user, "<span class='warning'>You can't fill that.</span>")
+		return 0
 	var/trans = reagents.trans_to(target, amount_per_transfer_from_this)
 	to_chat(user, "<span class='notice'>You transfer [trans] unit\s of the solution to \the [target].</span>")
 	return 1
