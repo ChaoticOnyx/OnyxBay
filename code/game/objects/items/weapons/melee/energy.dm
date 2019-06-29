@@ -93,7 +93,7 @@
 	sharp = 1
 	edge = 1
 
-/obj/item/weapon/melee/energy/axe/dropped(var/mob/user)
+/obj/item/weapon/melee/energy/axe/dropped(mob/user)
 	..()
 	if(!istype(loc,/mob))
 		spawn(35)
