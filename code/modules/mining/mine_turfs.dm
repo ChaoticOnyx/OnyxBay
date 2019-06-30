@@ -38,6 +38,7 @@ var/list/mining_floors = list()
 	has_resources = 1
 
 /turf/simulated/mineral/Initialize()
+	. = ..()
 	if (!mining_walls["[src.z]"])
 		mining_walls["[src.z]"] = list()
 	mining_walls["[src.z]"] += src
@@ -415,6 +416,7 @@ var/list/mining_floors = list()
 	var/mineralChance = 100 //10 //means 10% chance of this plot changing to a mineral deposit
 
 /turf/simulated/mineral/random/Initialize()
+	. = ..()
 	if (prob(mineralChance) && !mineral)
 		var/mineral_name = pickweight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
@@ -422,7 +424,6 @@ var/list/mining_floors = list()
 			mineral = ore_data[mineral_name]
 			UpdateMineral()
 	MineralSpread()
-	. = ..()
 
 /turf/simulated/mineral/random/high_chance
 	mineralChance = 100 //25
@@ -450,6 +451,7 @@ var/list/mining_floors = list()
 	has_resources = 1
 
 /turf/simulated/floor/asteroid/Initialize()
+	. = ..()
 	if (!mining_floors["[src.z]"])
 		mining_floors["[src.z]"] = list()
 	mining_floors["[src.z]"] += src
