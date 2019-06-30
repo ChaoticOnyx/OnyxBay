@@ -817,5 +817,4 @@
 		I.color = leaves
 		I.appearance_flags = RESET_COLOR
 		res.overlays += I
-
 	return res
