@@ -3,8 +3,7 @@
 	mouse_opacity = 0
 	blend_mode = BLEND_MULTIPLY
 	plane = SKYBOX_PLANE
-//	invisibility = 101
-	anchored = 1
+	anchored = TRUE
 	var/mob/owner
 	var/image/image
 	var/image/stars
@@ -15,8 +14,6 @@
 	SSskybox.skyboxes += src
 	owner = M
 	loc = null
-	SSskybox.skyboxes += src
-	//color = SSskybox.BGcolor
 	image = image('icons/turf/skybox.dmi', src, "background_[SSskybox.BGstate]")
 	overlays += image
 
@@ -40,7 +37,13 @@
 	appearance = rotation
 
 /obj/skybox/Destroy()
-	owner = null
+	overlays.Cut()
+	if(owner)
+		if(owner.skybox == src)
+			owner.skybox = null
+		owner = null
+	image = null
+	stars = null
 	SSskybox.skyboxes -= src
 	return ..()
 
