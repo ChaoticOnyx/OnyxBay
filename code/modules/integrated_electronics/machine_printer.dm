@@ -38,6 +38,9 @@ var/list/integrated_circuit_blacklist = list(/obj/item/integrated_circuit, /obj/
 		var/obj/item/stack/material/stack = O
 		if(stack.material.name == DEFAULT_WALL_MATERIAL)
 			var/num = min(maxMetal - metal, stack.amount)
+			if(num == 0)
+				to_chat(user, "<span class='notice'>\The [src] is already full.</span>")
+				return 1
 			if(do_after(usr, 16, src))
 				if(stack.use(num))
 					to_chat(user, "<span class='notice'>You add [num] sheet\s to \the [src].</span>")
@@ -82,6 +85,9 @@ var/list/integrated_circuit_blacklist = list(/obj/item/integrated_circuit, /obj/
 		var/build_type = text2path(href_list["build"])
 		if(!build_type || !ispath(build_type))
 			return 1
+		if(!(build_type in recipe_list[mode]))
+			log_and_message_admins("[usr] ([usr.key]) tried to use known bug to create \the '[build_type]' at \the [src]")
+			return 1
 		var/cost = 1
 		if(ispath(build_type, /obj/item/device/electronic_assembly))
 			var/obj/item/device/electronic_assembly/E = build_type
@@ -90,7 +96,9 @@ var/list/integrated_circuit_blacklist = list(/obj/item/integrated_circuit, /obj/
 			to_chat(usr, "<span class='warning'>You need [cost] metal to build that!.</span>")
 			return 1
 		metal -= cost
-		new build_type(get_turf(loc))
+		playsound(loc, 'sound/machines/circiut_printer.ogg', 75, FALSE, -3)
+		spawn(12)
+			new build_type(get_turf(loc))
 	updateUsrDialog()
 
 /obj/machinery/integrated_circuit_printer/RefreshParts()
