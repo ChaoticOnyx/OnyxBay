@@ -1,5 +1,5 @@
 /obj/item/weapon/melee/energy
-	var/active = 0
+	var/active = FALSE
 	var/active_force
 	var/active_throwforce
 	var/mod_handy_a
@@ -11,10 +11,10 @@
 	atom_flags = ATOM_FLAG_NO_BLOOD
 
 /obj/item/weapon/melee/energy/proc/activate(mob/living/user)
-	anchored = 1
+	anchored = TRUE
 	if(active)
 		return
-	active = 1
+	active = TRUE
 	force = active_force
 	throwforce = active_throwforce
 	sharp = 0
@@ -26,11 +26,11 @@
 	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 
 /obj/item/weapon/melee/energy/proc/deactivate(mob/living/user)
-	anchored = 0
+	anchored = FALSE
 	if(!active)
 		return
 	playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
-	active = 0
+	active = FALSE
 	force = initial(force)
 	throwforce = initial(throwforce)
 	sharp = initial(sharp)
@@ -41,16 +41,16 @@
 	mod_reach = initial(mod_reach)
 
 /obj/item/weapon/melee/energy/attack_self(mob/living/user as mob)
-	if (active)
-		if ((MUTATION_CLUMSY in user.mutations) && prob(50))
-			user.visible_message("<span class='danger'>\The [user] accidentally cuts \himself with \the [src].</span>",\
+	if(active)
+		if((MUTATION_CLUMSY in user.mutations) && prob(50))
+			user.visible_message("<span class='danger'>\The [user] accidentally cuts \himself with \the [src].</span>", \
 			"<span class='danger'>You accidentally cut yourself with \the [src].</span>")
-			user.take_organ_damage(5,5)
+			user.take_organ_damage(5, 5)
 		deactivate(user)
 	else
 		activate(user)
 
-	if(istype(user,/mob/living/carbon/human))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		H.update_inv_l_hand()
 		H.update_inv_r_hand()
@@ -93,6 +93,12 @@
 	sharp = 1
 	edge = 1
 
+/obj/item/weapon/melee/energy/axe/dropped(mob/user)
+	..()
+	if(!ismob(loc))
+		spawn(20)
+			deactivate(user)
+
 /obj/item/weapon/melee/energy/axe/activate(mob/living/user)
 	..()
 	icon_state = "axe1"
@@ -130,14 +136,14 @@
 	edge = 1
 	var/blade_color
 
-/obj/item/weapon/melee/energy/sword/dropped(var/mob/user)
+/obj/item/weapon/melee/energy/sword/dropped(mob/user)
 	..()
-	if(!istype(loc,/mob))
+	if(!ismob(loc))
 		spawn(20)
-		deactivate(user)
+			deactivate(user)
 
 /obj/item/weapon/melee/energy/sword/New()
-	blade_color = pick("red","blue","green","purple")
+	blade_color = pick("red", "blue", "green", "purple")
 
 /obj/item/weapon/melee/energy/sword/green/New()
 	blade_color = "green"
@@ -167,12 +173,12 @@
 	attack_verb = list()
 	icon_state = initial(icon_state)
 
-/obj/item/weapon/melee/energy/sword/attackby(var/obj/item/W as obj, var/mob/user as mob)
-	if (istype(W,/obj/item/weapon/melee/energy/sword))
+/obj/item/weapon/melee/energy/sword/attackby(obj/item/sword as obj, mob/user as mob)
+	if(istype(sword, /obj/item/weapon/melee/energy/sword))
 		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon!</span>")
-		new /obj/item/weapon/melee/energy/dualsaber(user.loc)
-		qdel(W)
-		W = null
+		new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
+		qdel(sword)
+		sword = null
 		qdel(src)
 
 /obj/item/weapon/melee/energy/sword/handle_shield(mob/user)
@@ -190,23 +196,19 @@
 	..()
 	icon_state = "cutlass1"
 
-
 /obj/item/weapon/melee/energy/sword/bogsword
 	name = "alien sword"
 	desc = "A strange, strange energy sword."
 	icon_state = "sword0"
 
-/obj/item/weapon/melee/energy/sword/bogswrd/activate(mob/living/user)
+/obj/item/weapon/melee/energy/sword/bogsword/activate(mob/living/user)
 	..()
 	icon_state = "bog_sword"
 
 /*
  *DualSaber
  */
-
-
-/obj/item/weapon/melee/energy/dualsaber
-	color
+/obj/item/weapon/melee/energy/sword/dualsaber
 	name = "dualsaber"
 	desc = "May the Dark side be within you."
 	icon_state = "dualsaber0"
@@ -216,67 +218,34 @@
 	throwforce = 10
 	throw_speed = 1
 	throw_range = 10
-	w_class = ITEM_SIZE_SMALL
-	mod_weight = 0.5
 	mod_reach = 0.4
-	mod_handy = 1.0
 	mod_weight_a = 1.5
-	mod_reach_a = 1.5
 	mod_handy_a = 1.75
-	atom_flags = ATOM_FLAG_NO_BLOOD
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
-	sharp = 0
-	edge = 1
-	var/blade_color
 	var/base_block_chance = 50
 
-/obj/item/weapon/melee/energy/dualsaber/dropped(var/mob/user)
-	..()
-	if(!istype(loc,/mob))
-		spawn(20)
-		deactivate(user)
+/obj/item/weapon/melee/energy/sword/dualsaber/New()
+	blade_color = pick("red", "blue", "green", "purple")
 
-/obj/item/weapon/melee/energy/dualsaber/New()
-	blade_color = pick("red","blue","green","purple")
-
-/obj/item/weapon/melee/energy/dualsaber/green/New()
+/obj/item/weapon/melee/energy/sword/dualsaber/green/New()
 	blade_color = "green"
 
-/obj/item/weapon/melee/energy/dualsaber/red/New()
+/obj/item/weapon/melee/energy/sword/dualsaber/red/New()
 	blade_color = "red"
 
-/obj/item/weapon/melee/energy/dualsaber/blue/New()
+/obj/item/weapon/melee/energy/sword/dualsaber/blue/New()
 	blade_color = "blue"
 
-/obj/item/weapon/melee/energy/dualsaber/purple/New()
+/obj/item/weapon/melee/energy/sword/dualsaber/purple/New()
 	blade_color = "purple"
 
-/obj/item/weapon/melee/energy/dualsaber/activate(mob/living/user)
-	if(!active)
-		to_chat(user, "<span class='notice'>\The [src] is now energised.</span>")
-		mod_shield = 2.5
+/obj/item/weapon/melee/energy/sword/dualsaber/activate(mob/living/user)
 	..()
-	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	icon_state = "dualsaber[blade_color]"
-
-/obj/item/weapon/melee/energy/dualsaber/deactivate(mob/living/user)
-	if(active)
-		to_chat(user, "<span class='notice'>\The [src] deactivates!</span>")
-		mod_shield = 1.0
-	..()
-	attack_verb = list()
-	icon_state = initial(icon_state)
-
-/obj/item/weapon/melee/energy/dualsaber/handle_shield(mob/user)
-	. = ..()
-
-	if(.)
-		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
 
 /*
  *Energy Blade
  */
-
 //Can't be activated or deactivated, so no reason to be a subtype of energy
 /obj/item/weapon/melee/energy/blade
 	name = "energy blade"
@@ -286,7 +255,7 @@
 	armor_penetration = 100
 	sharp = 1
 	edge = 1
-	anchored = 1    // Never spawned outside of inventory, should be fine.
+	anchored = TRUE    // Never spawned outside of inventory, should be fine.
 	throwforce = 1  //Throwing or dropping the item deletes it.
 	throw_speed = 1
 	throw_range = 1
@@ -330,7 +299,7 @@
 /obj/item/weapon/melee/energy/blade/Process()
 	if(!creator || loc != creator || (creator.l_hand != src && creator.r_hand != src))
 		// Tidy up a bit.
-		if(istype(loc,/mob/living))
+		if(isliving(loc))
 			var/mob/living/carbon/human/host = loc
 			if(istype(host))
 				for(var/obj/item/organ/external/organ in host.organs)
