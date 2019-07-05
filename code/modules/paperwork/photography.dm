@@ -86,10 +86,10 @@ var/global/photo_count = 0
 	set category = "Object"
 	set src in usr
 
-	var/n_name = sanitizeSafe(input(usr, "What would you like to label the photo?", "Photo Labelling", null)  as text, MAX_NAME_LEN)
+	var/new_name = sanitizeSafe(input(usr, "What would you like to label the photo?", "Photo Labelling", null) as text, MAX_NAME_LEN)
 	//loc.loc check is for making possible renaming photos in clipboards
-	if(( (loc == usr || (loc.loc && loc.loc == usr)) && usr.stat == 0))
-		SetName("[(n_name ? text("[n_name]") : "photo")]")
+	if((loc == usr || (loc.loc && loc.loc == usr)) && usr.stat == 0)
+		SetName("[(new_name ? text("[new_name]") : "photo")]")
 	add_fingerprint(usr)
 	return
 
@@ -107,13 +107,12 @@ var/global/photo_count = 0
 	can_hold = list(/obj/item/weapon/photo)
 
 /obj/item/weapon/storage/photo_album/MouseDrop(obj/over_object as obj)
-
-	if((istype(usr, /mob/living/carbon/human)))
+	if((ishuman(usr)))
 		var/mob/M = usr
-		if(!( istype(over_object, /obj/screen) ))
+		if(!istype(over_object, /obj/screen))
 			return ..()
 		playsound(loc, "rustle", 50, 1, -5)
-		if((!( M.restrained() ) && !( M.stat ) && M.back == src))
+		if((!M.restrained() && !M.stat && M.back == src))
 			switch(over_object.name)
 				if("r_hand")
 					if(M.unEquip(src))
@@ -130,6 +129,7 @@ var/global/photo_count = 0
 			return
 	return
 
+
 /*********
 * camera *
 *********/
@@ -145,16 +145,19 @@ var/global/photo_count = 0
 	matter = list(DEFAULT_WALL_MATERIAL = 2000)
 	var/pictures_max = 10
 	var/pictures_left = 10
-	var/on = 1
+	var/is_on = TRUE
+	var/is_on_cooldown = FALSE
 	var/icon_on = "camera"
 	var/icon_off = "camera_off"
 	var/size = 3
+
 /obj/item/device/camera/update_icon()
 	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
-	if(on)
+	if(is_on)
 		icon_state = "[bis.base_icon_state]"
 	else
 		icon_state = "[bis.base_icon_state]_off"
+
 /obj/item/device/camera/Initialize()
 	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
 	update_icon()
@@ -163,18 +166,18 @@ var/global/photo_count = 0
 /obj/item/device/camera/verb/change_size()
 	set name = "Set Photo Focus"
 	set category = "Object"
-	var/nsize = input("Photo Size","Pick a size of resulting photo.") as null|anything in list(1,3)
-	if(nsize)
-		size = nsize
+	var/new_size = input("Photo Size", "Pick a size of resulting photo.") as null|anything in list(1,3)
+	if(new_size)
+		size = new_size
 		to_chat(usr, "<span class='notice'>Camera will now take [size]x[size] photos.</span>")
 
 /obj/item/device/camera/attack(mob/living/carbon/human/M as mob, mob/user as mob)
 	return
 
 /obj/item/device/camera/attack_self(mob/user as mob)
-	on = !on
+	is_on = !is_on
 	update_icon()
-	to_chat(user, "You switch the camera [on ? "on" : "off"].")
+	to_chat(user, "You switch the camera [is_on ? "on" : "off"].")
 	return
 
 /obj/item/device/camera/attackby(obj/item/I as obj, mob/user as mob)
@@ -185,6 +188,7 @@ var/global/photo_count = 0
 		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
 		user.drop_item()
 		qdel(I)
+		// TODO [V] That's kinda strange: pictures_left should be stored in film rather than in camera
 		pictures_left = pictures_max
 		return
 	..()
@@ -210,18 +214,22 @@ var/global/photo_count = 0
 	return mob_detail
 
 /obj/item/device/camera/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
-	if(!on || !pictures_left || ismob(target.loc)) return
-	captureimage(target, user, flag)
+	if(!is_on || !pictures_left || ismob(target.loc))
+		return
+	if(is_on_cooldown)
+		to_chat(user, "<span class='notice'>Camera is still charging.</span>")
+		return
 
-	playsound(loc, pick('sound/items/polaroid1.ogg', 'sound/items/polaroid2.ogg'), 75, 1, -3)
-
+	is_on_cooldown = TRUE
 	pictures_left--
+
+	captureimage(target, user, flag)
+	playsound(loc, pick('sound/items/polaroid1.ogg', 'sound/items/polaroid2.ogg'), 75, 1, -3)
 	to_chat(user, "<span class='notice'>[pictures_left] photos left.</span>")
 
-	on = 0
 	update_icon()
 	spawn(64)
-		on = 1
+		is_on_cooldown = FALSE
 		update_icon()
 
 /obj/item/device/camera/examine(mob/user)
@@ -230,13 +238,8 @@ var/global/photo_count = 0
 
 	to_chat(user, "It has [pictures_left] photo\s left.")
 
-//Proc for capturing check
 /mob/living/proc/can_capture_turf(turf/T)
-	var/viewer = src
-	//if(src.client)		//To make shooting through security cameras possible
-		//viewer = src.client.eye
-	var/can_see = (T in view(viewer))
-	return can_see
+	return (T in view(src))
 
 /obj/item/device/camera/proc/captureimage(atom/target, mob/living/user, flag)
 	var/x_c = target.x - (size-1)/2
