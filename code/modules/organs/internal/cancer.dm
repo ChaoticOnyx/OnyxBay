@@ -9,16 +9,16 @@
 	overdose = REAGENTS_OVERDOSE * 0.5
 	scannable = TRUE
 	flags = IGNORE_MOB_SIZE
-	metabolism = REM * 0.25
+	metabolism = REM
 
 /datum/reagent/metastases/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
 	if(alien != IS_DIONA)
-		M.adjustToxLoss(0.05)
+		M.adjustToxLoss(0.5)
 
 /datum/reagent/metastases/overdose(var/mob/living/carbon/M, var/alien)
 	..()
 	if(ishuman(M))
-		M.adjustToxLoss(0.1)
+		M.adjustToxLoss(1)
 		var/C = 0
 		for (var/obj/item/organ/internal/cancer/CAN in M.contents)
 			C++
@@ -37,21 +37,23 @@
 	color = "#bf0000"
 	scannable = TRUE
 	flags = IGNORE_MOB_SIZE
-	metabolism = REM * 0.05
+	metabolism = REM * 0.5
 
 /datum/reagent/decomposition_products/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
 	if(alien != IS_DIONA)
 		for(var/obj/item/organ/internal/cancer/OW in M.contents)
 			OW.chance -= 2
-		M.adjustToxLoss(0.06)
+		M.adjustToxLoss(0.6)
 
 /datum/reagent/metastases/proc/infect(var/mob/living/carbon/A)
-	var/l = list()
-	for(var/mob/living/carbon/M in orange(1,A))
+	var/list/l = list()
+	for(var/mob/living/carbon/human/M in orange(1,A))
 		var/obj/item/organ/internal/cancer/CAN = locate() in M.contents
 		if(!CAN)
 			l += M
-	var/k = pick(l)
+	if(l.len == 0)
+		return
+	var/mob/living/carbon/human/k = pick(l)
 	if((infection_chance(k, "Airborne") == 0) && (infection_chance(k, "Contact") == 0))
 		return
 	var/obj/item/organ/internal/cancer/OW = locate() in A.contents
@@ -76,7 +78,7 @@
 	var/weakness = /datum/reagent/paracetamol
 	var/next_time = 0
 
-/obj/item/organ/internal/cancer/New(var/mob/living/carbon/holder)
+/obj/item/organ/internal/cancer/New(var/mob/living/carbon/human/holder)
 	var/obj/item/organ/internal/cancer/CAN = locate() in (holder.contents - src)
 	if(CAN)
 		src.weakness = CAN.weakness
@@ -95,13 +97,15 @@
 
 /obj/item/organ/internal/cancer/Process()
 	..()
-	var/datum/reagent/R = weakness
-	if(owner.reagents.get_reagent_amount(weakness) > R.overdose)
-		src.take_damage(5)
-		owner.reagents.add_reagent(/datum/reagent/decomposition_products, 0.2)
-		if(world.time >= next_time)
-			next_time = world.time + rand(200,800)
-			to_chat(owner, "<span class='warning'>You feel sick.</span>")
+	if(!owner)
+		return
+	for(var/datum/reagent/R in owner.reagents)
+		if(istype(R, weakness) && (R.overdose < owner.reagents.get_reagent_amount(R)))
+			src.take_damage(5)
+			owner.reagents.add_reagent(/datum/reagent/decomposition_products, 0.2)
+			if(world.time >= next_time)
+				next_time = world.time + rand(200,800)
+				to_chat(owner, "<span class='warning'>You feel sick.</span>")
 
 	if(infectious)
 		owner.reagents.add_reagent(/datum/reagent/metastases, 0.5)
@@ -110,3 +114,9 @@
 		if(chance > 50)
 			infectious = 1
 		owner.reagents.add_reagent(/datum/reagent/metastases, 0.1)
+
+
+/obj/item/organ/internal/proc/list_of_identify_organs(dict_key,var/mob/living/carbon/ow)
+	var/R = ow.internal_organs_by_name[dict_key]
+	ow.internal_organs_by_name[dict_key] = list()
+	return ow.internal_organs_by_name[dict_key] += R + src

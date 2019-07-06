@@ -10,5 +10,6 @@ datum/event/cancer/start()
 
 	var/victims = min(rand(1,3), candidates.len)
 	while(victims)
-		new /obj/item/organ/internal/cancer(pick_n_take(candidates))
+		var/mob/living/carbon/human/k = pick_n_take(candidates)
+		new /obj/item/organ/internal/cancer(k)
 		victims--
