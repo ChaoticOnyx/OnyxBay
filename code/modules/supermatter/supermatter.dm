@@ -377,7 +377,7 @@
 		var/obj/item/organ/internal/eyes/E = l.internal_organs_by_name[BP_EYES]
 		var/obj/item/weapon/rig/r = l.back
 		if(E && !E.isrobotic() && !istype(l.glasses, /obj/item/clothing/glasses/meson)) //Synthetics eyes stop evil hallucination rays
-			if(isnull(r) || !istype(r.visor, /obj/item/rig_module/vision/meson) || !r.visor.active)
+			if(!r || !istype(r) || !istype(r.visor, /obj/item/rig_module/vision/meson) || !r.visor.active)
 				var/effect = max(0, min(200, power * config_hallucination_power * sqrt( 1 / max(1,get_dist(l, src)))) )
 				l.adjust_hallucination(effect, 0.25*effect)
 
