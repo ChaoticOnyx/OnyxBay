@@ -244,6 +244,11 @@
 #define MOB_PULL_SAME 2
 #define MOB_PULL_LARGER 3
 
+
+// Prosthetic helpers.
+#define BP_IS_ROBOTIC(org)  (org.status & ORGAN_ROBOTIC)
+#define BP_IS_ASSISTED(org) (org.status & ORGAN_ASSISTED)
+
 //carbon taste sensitivity defines, used in mob/living/carbon/proc/ingest
 #define TASTE_HYPERSENSITIVE 3 //anything below 5%
 #define TASTE_SENSITIVE 2 //anything below 7%
