@@ -135,11 +135,12 @@
 	spawn(1)
 		initialize_unit_tests()
 #endif
-	
+
 	webhook_send_roundstatus("lobby")
 
 #undef RECOMMENDED_VERSION
 
+var/world_topic_spam_protect_ip = "0.0.0.0"
 var/world_topic_spam_protect_time = world.timeofday
 
 /world/Topic(T, addr, master, key)
@@ -234,12 +235,14 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	else if(copytext(T,1,5) == "laws")
 		if(input["key"] != config.comms_password)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
+			if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
+
+				spawn(50)
 				world_topic_spam_protect_time = world.time
 				return "Bad Key (Throttled)"
 
 			world_topic_spam_protect_time = world.time
+			world_topic_spam_protect_ip = addr
 
 			return "Bad Key"
 
@@ -281,12 +284,14 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	else if(copytext(T,1,5) == "info")
 		if(input["key"] != config.comms_password)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
+			if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
+
+				spawn(50)
 				world_topic_spam_protect_time = world.time
 				return "Bad Key (Throttled)"
 
 			world_topic_spam_protect_time = world.time
+			world_topic_spam_protect_ip = addr
 
 			return "Bad Key"
 
@@ -356,11 +361,14 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	else if ("ooc" in input)
 		if(!key_valid)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
+			if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
+
+				spawn(50)
 				world_topic_spam_protect_time = world.time
 				return "Bad Key (Throttled)"
+
 			world_topic_spam_protect_time = world.time
+			world_topic_spam_protect_ip = addr
 			return "Bad Key"
 		var/ckey = input["ckey"]
 		var/message = input["ooc"]
@@ -381,11 +389,14 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	else if("adminhelp" in input)
 		if(!key_valid)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
+			if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
+
+				spawn(50)
 				world_topic_spam_protect_time = world.time
 				return "Bad Key (Throttled)"
+
 			world_topic_spam_protect_time = world.time
+			world_topic_spam_protect_ip = addr
 			return "Bad Key"
 
 		var/client/C
@@ -414,11 +425,14 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	else if("OOC" in input)
 		if(!key_valid)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
+			if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
+
+				spawn(50)
 				world_topic_spam_protect_time = world.time
 				return "Bad Key (Throttled)"
+
 			world_topic_spam_protect_time = world.time
+			world_topic_spam_protect_ip = addr
 			return "Bad Key"
 		config.ooc_allowed = !(config.ooc_allowed)
 		if (config.ooc_allowed)
@@ -436,24 +450,28 @@ var/world_topic_spam_protect_time = world.timeofday
 				2. validationkey = the key the bot has, it should match the gameservers commspassword in it's configuration.
 		*/
 		if(input["key"] != config.comms_password)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
+			if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
+
+				spawn(50)
 				world_topic_spam_protect_time = world.time
 				return "Bad Key (Throttled)"
 
 			world_topic_spam_protect_time = world.time
+			world_topic_spam_protect_ip = addr
 			return "Bad Key"
 
 		return show_player_info_irc(ckey(input["notes"]))
 
 	else if(copytext(T,1,4) == "age")
 		if(input["key"] != config.comms_password)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
+			if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
+
+				spawn(50)
 				world_topic_spam_protect_time = world.time
 				return "Bad Key (Throttled)"
 
 			world_topic_spam_protect_time = world.time
+			world_topic_spam_protect_ip = addr
 			return "Bad Key"
 
 		var/age = get_player_age(input["age"])
@@ -469,12 +487,13 @@ var/world_topic_spam_protect_time = world.timeofday
 		if(!config.ban_comms_password)
 			return "Not enabled"
 		if(input["bankey"] != config.ban_comms_password)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
+			if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
+				spawn(50)
 				world_topic_spam_protect_time = world.time
 				return "Bad Key (Throttled)"
 
 			world_topic_spam_protect_time = world.time
+			world_topic_spam_protect_ip = addr
 			return "Bad Key"
 
 		var/target = ckey(input["target"])
@@ -497,12 +516,13 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	else if(copytext(T,1,19) == "prometheus_metrics")
 		if(input["key"] != config.comms_password)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
+			if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
+				spawn(50)
 				world_topic_spam_protect_time = world.time
 				return "Bad Key (Throttled)"
 
 			world_topic_spam_protect_time = world.time
+			world_topic_spam_protect_ip = addr
 			return "Bad Key"
 
 		if(!GLOB || !GLOB.prometheus_metrics)
@@ -521,7 +541,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 		for(var/client/C in GLOB.clients)
-			C << link("byond://[config.server]")
+			to_chat(C, link("byond://[config.server]"))
 
 	if(config.wait_for_sigusr1_reboot && reason != 3)
 		text2file("foo", "reboot_called")

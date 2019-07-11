@@ -46,7 +46,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 
 /obj/item/weapon/spellbook/attack_self(mob/user as mob)
 	if(user.mind)
-		if(!wizards.is_antagonist(user.mind))
+		if(!GLOB.wizards.is_antagonist(user.mind))
 			to_chat(user, "You can't make heads or tails of this book.")
 			return
 		if(spellbook.book_flags & LOCKED)
