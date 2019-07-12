@@ -849,7 +849,7 @@
 "aqq" = (/obj/machinery/door/window{dir = 4; name = "Brig"; req_access = list(150)},/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
 "aqr" = (/obj/machinery/door/window{base_state = "right"; dir = 8; icon_state = "right"; name = "Preparation"; req_access = list(150)},/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
 "aqs" = (/obj/structure/closet/syndicate/suit{name = "suit closet"},/obj/machinery/light{dir = 4},/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
-"aqt" = (/obj/structure/table/rack,/obj/item/clothing/mask/gas/syndicate,/obj/item/clothing/suit/space/void/merc/prepared,/turf/unsimulated/floor{icon_state = "dark"},/area/syndicate_mothership)
+"aqt" = (/obj/structure/table/rack,/obj/item/clothing/mask/gas/syndicate,/obj/item/clothing/suit/space/void/merc/prepared,/obj/item/clothing/head/helmet/space/void/merc,/obj/item/clothing/shoes/magboots,/turf/unsimulated/floor{icon_state = "dark"},/area/syndicate_mothership)
 "aqu" = (/obj/effect/floor_decal/industrial/warning{dir = 9},/turf/unsimulated/floor{icon_state = "asteroidfloor"},/area/rescue_base/base)
 "aqv" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/turf/unsimulated/floor{icon_state = "asteroidfloor"},/area/rescue_base/base)
 "aqw" = (/obj/effect/floor_decal/industrial/outline/yellow,/obj/effect/floor_decal/industrial/outline/yellow,/turf/unsimulated/floor{icon_state = "asteroidfloor"},/area/rescue_base/base)
