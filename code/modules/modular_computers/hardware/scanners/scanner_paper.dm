@@ -17,8 +17,9 @@
 	var/data = html2pencode(target.info)
 	if(!data)
 		return
+	to_chat(user, "You scan \the [target] with [src].")
 	driver.data_buffer = data
-	GLOB.nanomanager.update_uis(driver.NM)
+	SSnano.update_uis(driver.NM)
 
 /obj/item/weapon/computer_hardware/scanner/paper/do_on_attackby(mob/user, atom/target)
 	do_on_afterattack(user, target, TRUE)

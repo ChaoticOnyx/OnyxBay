@@ -69,7 +69,7 @@ REAGENT SCANNER
 		data["reagent"] = scan_data[7]
 		data["virus"] = scan_data[8]
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "healthanalyzer.tmpl", " ", 640, 370)
 		ui.set_initial_data(data)

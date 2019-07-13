@@ -213,10 +213,10 @@ datum/track/New(var/title_name, var/audio)
 			var/newtitle = input("Type a title of the new track", "Track title", "Track") as text
 			var/sound/S = input("Select a sound", "Sound", 'sound/effects/ghost.ogg') as sound
 			tracks += new/datum/track(newtitle, S)
-			GLOB.nanomanager.update_uis(src)
+			SSnano.update_uis(src)
 			return
 		else if(handled)
-			GLOB.nanomanager.update_uis(src)
+			SSnano.update_uis(src)
 			return // don't smack that machine with your 2 thalers
 
 	if (istype(W, /obj/item/weapon/spacecash))

@@ -30,7 +30,7 @@
 	. = ..()
 	if(. && mob_uplink.uses < power_min)
 		mob_uplink.uses += 1 + (!feats[DEITY_POWER_BONUS] ? 0 : feats[DEITY_POWER_BONUS])
-		GLOB.nanomanager.update_uis(mob_uplink)
+		SSnano.update_uis(mob_uplink)
 
 /mob/living/deity/death()
 	. = ..()

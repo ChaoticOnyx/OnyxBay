@@ -80,7 +80,7 @@
 	else
 		data["info"] = "No dish loaded."
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "disease_splicer.tmpl", src.name, 400, 600)
 		ui.set_initial_data(data)
@@ -94,12 +94,12 @@
 		scanning -= 1
 		if(!scanning)
 			ping("\The [src] pings, \"Analysis complete.\"")
-			GLOB.nanomanager.update_uis(src)
+			SSnano.update_uis(src)
 	if(splicing)
 		splicing -= 1
 		if(!splicing)
 			ping("\The [src] pings, \"Splicing operation complete.\"")
-			GLOB.nanomanager.update_uis(src)
+			SSnano.update_uis(src)
 	if(burning)
 		burning -= 1
 		if(!burning)
@@ -121,11 +121,11 @@
 					d.species = species_buffer
 
 			ping("\The [src] pings, \"Backup disk saved.\"")
-			GLOB.nanomanager.update_uis(src)
+			SSnano.update_uis(src)
 
 /obj/machinery/computer/diseasesplicer/OnTopic(user, href_list)
 	if (href_list["close"])
-		GLOB.nanomanager.close_user_uis(user, src, "main")
+		SSnano.close_user_uis(user, src, "main")
 		return TOPIC_HANDLED
 
 	if (href_list["grab"])

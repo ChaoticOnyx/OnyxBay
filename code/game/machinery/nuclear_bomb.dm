@@ -41,9 +41,8 @@ var/bomb_set
 	if(timing)
 		timeleft = max(timeleft - (wait / 10), 0)
 		if(timeleft <= 0)
-			spawn
-				explode()
-		GLOB.nanomanager.update_uis(src)
+			addtimer(CALLBACK(src, .proc/explode), 0)
+		SSnano.update_uis(src)
 
 /obj/machinery/nuclearbomb/attackby(obj/item/weapon/O as obj, mob/user as mob, params)
 	if(isScrewdriver(O))
@@ -193,7 +192,7 @@ var/bomb_set
 		if(yes_code)
 			data["message"] = "*****"
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "nuclear_bomb.tmpl", "Nuke Control Panel", 300, 510)
 		ui.set_initial_data(data)
