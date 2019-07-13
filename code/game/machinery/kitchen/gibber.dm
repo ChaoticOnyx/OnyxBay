@@ -218,7 +218,7 @@
 
 		src.operating = 0
 		src.occupant.gib()
-		qdel(src.occupant)
+		QDEL_NULL(src.occupant)
 
 		playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
 		operating = 0
