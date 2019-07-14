@@ -45,6 +45,8 @@
 			return global.SSair;
 		if("SSairflow")
 			return global.SSairflow;
+		if("SSalarm")
+			return global.SSalarm;
 		if("SSantags")
 			return global.SSantags;
 		if("SSatoms")
@@ -75,6 +77,8 @@
 			return global.SSsun;
 		if("SStimer")
 			return global.SStimer;
+		if("SSturf")
+			return global.SSturf;
 		if("SSvines")
 			return global.SSvines;
 		if("SSwireless")
@@ -157,8 +161,6 @@
 			return global.air_blocked;
 		if("air_processing_killed")
 			return global.air_processing_killed;
-		if("alarm_manager")
-			return global.alarm_manager;
 		if("alien_whitelist")
 			return global.alien_whitelist;
 		if("allCasters")
@@ -723,8 +725,6 @@
 			return global.priv_syndicate_access;
 		if("processScheduler")
 			return global.processScheduler;
-		if("processing_turfs")
-			return global.processing_turfs;
 		if("prometheans")
 			return global.prometheans;
 		if("protected_objects")
@@ -1050,6 +1050,8 @@
 			global.SSair=newval;
 		if("SSairflow")
 			global.SSairflow=newval;
+		if("SSalarm")
+			global.SSalarm=newval;
 		if("SSantags")
 			global.SSantags=newval;
 		if("SSatoms")
@@ -1080,6 +1082,8 @@
 			global.SSsun=newval;
 		if("SStimer")
 			global.SStimer=newval;
+		if("SSturf")
+			global.SSturf=newval;
 		if("SSvines")
 			global.SSvines=newval;
 		if("SSwireless")
@@ -1162,8 +1166,6 @@
 			global.air_blocked=newval;
 		if("air_processing_killed")
 			global.air_processing_killed=newval;
-		if("alarm_manager")
-			global.alarm_manager=newval;
 		if("alien_whitelist")
 			global.alien_whitelist=newval;
 		if("allCasters")
@@ -1728,8 +1730,6 @@
 			global.priv_syndicate_access=newval;
 		if("processScheduler")
 			global.processScheduler=newval;
-		if("processing_turfs")
-			global.processing_turfs=newval;
 		if("prometheans")
 			global.prometheans=newval;
 		if("protected_objects")
@@ -2032,6 +2032,7 @@
 	"SKILLS",
 	"SSair",
 	"SSairflow",
+	"SSalarm",
 	"SSantags",
 	"SSatoms",
 	"SSfastprocess",
@@ -2047,6 +2048,7 @@
 	"SSskybox",
 	"SSsun",
 	"SStimer",
+	"SSturf",
 	"SSvines",
 	"SSwireless",
 	"SSxenoarch",
@@ -2088,7 +2090,6 @@
 	"air_alarm_topic",
 	"air_blocked",
 	"air_processing_killed",
-	"alarm_manager",
 	"alien_whitelist",
 	"allCasters",
 	"allConsoles",
@@ -2371,7 +2372,6 @@
 	"priv_station_access",
 	"priv_syndicate_access",
 	"processScheduler",
-	"processing_turfs",
 	"prometheans",
 	"protected_objects",
 	"rad_collectors",
