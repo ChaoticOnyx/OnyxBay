@@ -195,20 +195,20 @@ var/list/global/tank_gauge_cache = list()
 				WT.eyecheck(user)
 			else
 				to_chat(user, "<span class='notice'>The emergency pressure relief valve has already been welded.</span>")
-			
+
 			if (src.air_contents)
 				var/const/welder_temperature = 1893.15
 				var/const/welder_mean_energy = 26000
 				var/const/welder_heat_capacity = welder_mean_energy / welder_temperature
-				
+
 				var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
 				var/total_capacity = src.air_contents.heat_capacity() + welder_heat_capacity
 				var/total_energy = current_energy + welder_mean_energy
-				
+
 				var/new_temperature = total_energy / total_capacity
-				
+
 				src.air_contents.temperature = new_temperature
-				
+
 		add_fingerprint(user)
 
 
@@ -358,7 +358,7 @@ var/list/global/tank_gauge_cache = list()
 /obj/item/weapon/tank/update_icon(var/override)
 	var/needs_updating = override
 
-	if(istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/) && !override) //So we don't eat up our tick. Every tick, when we're not actually in play.
+	if((atom_flags & ATOM_FLAG_INITIALIZED) && istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/) && !override) //So we don't eat up our tick. Every tick, when we're not actually in play.
 		return
 
 	var/gauge_pressure = 0

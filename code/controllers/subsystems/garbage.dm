@@ -4,7 +4,7 @@ SUBSYSTEM_DEF(garbage)
 	wait = 2 SECONDS
 	flags = SS_POST_FIRE_TIMING|SS_BACKGROUND|SS_NO_INIT
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
-	//init_order = SS_INIT_GARBAGE
+	init_order = SS_INIT_GARBAGE
 
 	var/list/collection_timeout = list(0, 2 MINUTES, 10 SECONDS)	// deciseconds to wait before moving something up in the queue to the next level
 
@@ -24,6 +24,10 @@ SUBSYSTEM_DEF(garbage)
 
 	//Queue
 	var/list/queues
+
+	#ifdef TESTING
+	var/list/reference_find_on_fail = list()
+	#endif
 
 
 /datum/controller/subsystem/garbage/PreInit()
@@ -273,13 +277,13 @@ SUBSYSTEM_DEF(garbage)
 
 #ifdef TESTING
 /proc/qdel_and_find_ref_if_fail(datum/D, force = FALSE)
-	SSgarbage.reference_find_on_fail["\ref[D]"] = TRUE
+	SSgarbage.reference_find_on_fail[REF(D)] = TRUE
 	qdel(D, force)
 #endif
 
 // Should be treated as a replacement for the 'del' keyword.
 // Datums passed to this will be given a chance to clean up references to allow the GC to collect them.
-/proc/qdel(datum/D, force=FALSE)
+/proc/qdel(datum/D, force=FALSE, ...)
 	if(!D)
 		return
 	if(!istype(D))
@@ -296,7 +300,7 @@ SUBSYSTEM_DEF(garbage)
 		D.gc_destroyed = GC_CURRENTLY_BEING_QDELETED
 		var/start_time = world.time
 		var/start_tick = world.tick_usage
-		var/hint = D.Destroy(force) // Let our friend know they're about to get fucked up.
+		var/hint = D.Destroy(arglist(args.Copy(2))) // Let our friend know they're about to get fucked up.
 		if(world.time != start_time)
 			I.slept_destroy++
 		else
@@ -338,7 +342,7 @@ SUBSYSTEM_DEF(garbage)
 			if (QDEL_HINT_IFFAIL_FINDREFERENCE)
 				SSgarbage.PreQueue(D)
 				#ifdef TESTING
-				SSgarbage.reference_find_on_fail["\ref[D]"] = TRUE
+				SSgarbage.reference_find_on_fail[REF(D)] = TRUE
 				#endif
 			else
 				#ifdef TESTING
@@ -355,7 +359,6 @@ SUBSYSTEM_DEF(garbage)
 /datum/verb/find_refs()
 	set category = "Debug"
 	set name = "Find References"
-	set background = 1
 	set src in world
 
 	find_references(FALSE)
@@ -386,9 +389,9 @@ SUBSYSTEM_DEF(garbage)
 	testing("Beginning search for references to a [type].")
 	last_find_references = world.time
 
-	DoSearchVar(GLOB)
-	for(var/datum/thing in world)
-		DoSearchVar(thing, "WorldRef: [thing]")
+	DoSearchVar(GLOB) //globals
+	for(var/datum/thing in world) //atoms (don't believe its lies)
+		DoSearchVar(thing, "World -> [thing]")
 
 	for (var/datum/thing) //datums
 		DoSearchVar(thing, "World -> [thing]")
@@ -408,10 +411,9 @@ SUBSYSTEM_DEF(garbage)
 /datum/verb/qdel_then_find_references()
 	set category = "Debug"
 	set name = "qdel() then Find References"
-	set background = 1
 	set src in world
 
-	qdel(src)
+	qdel(src, TRUE)		//Force.
 	if(!running_find_references)
 		find_references(TRUE)
 
