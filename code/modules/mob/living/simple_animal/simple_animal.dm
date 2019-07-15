@@ -174,8 +174,7 @@
 		if(turns_since_scan > 5)
 			walk_to(src,0)
 			turns_since_scan = 0
-			if(panic_target)
-				handle_panic_target()
+			handle_panic_target()
 
 	return 1
 
@@ -389,15 +388,15 @@
 
 /mob/living/simple_animal/proc/handle_panic_target()
 	//see if we should stop panicing
-	if(panic_target && !(panic_target.loc in view(src)))
-		panic_target = null
-		stop_automated_movement = 0
-
 	if(panic_target)
-		stop_automated_movement = 1
-		walk_away(src, panic_target, 7, 2)
+		if (!(panic_target.loc in view(src)))
+			panic_target = null
+			stop_automated_movement = 0
+		else
+			stop_automated_movement = 1
+			walk_away(src, panic_target, 7, 2)
 
-/mob/living/simple_animal/proc/set_panic_target(atom/A)
-	if(A && !ckey)
-		panic_target = A
+/mob/living/simple_animal/proc/set_panic_target(mob/M)
+	if(M && !ckey)
+		panic_target = M
 		turns_since_scan = 5

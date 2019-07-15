@@ -310,8 +310,12 @@
 
 /obj/machinery/readybutton/attack_hand(mob/user as mob)
 
-	if(user.stat || stat & BROKEN)
-		to_chat(user, "This device is not powered.")
+	if(user.stat)
+		to_chat(src, "You are incapacitated.")
+		return
+
+	if(stat & BROKEN)
+		to_chat(user, "This device is broken.")
 		return
 
 	if(!user.IsAdvancedToolUser())

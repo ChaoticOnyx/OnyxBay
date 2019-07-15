@@ -59,7 +59,7 @@
 		return
 	return F
 
-/datum/computer_file/program/proc/create_file(var/newname, var/data = "", var/file_type = /datum/computer_file/data, var/list/metadata = null)
+/datum/computer_file/program/proc/create_file(newname, data = "", file_type = /datum/computer_file/data)
 	if(!newname)
 		return
 	var/obj/item/weapon/computer_hardware/hard_drive/HDD = computer.hard_drive
@@ -68,7 +68,7 @@
 	if(get_file(newname))
 		return
 
-	var/datum/computer_file/data/F = new file_type(md = metadata)
+	var/datum/computer_file/data/F = new file_type
 	F.filename = newname
 	F.stored_data = data
 	F.calculate_size()

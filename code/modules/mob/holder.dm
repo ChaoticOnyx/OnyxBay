@@ -162,7 +162,7 @@ var/list/holder_mob_icon_cache = list()
 		to_chat(src, "<span class='notice'>\The [grabber] scoops you up!</span>")
 
 	src.forceMove(H)
-	if(istype(src,/mob/living/simple_animal))
+	if(isanimal(src))
 		var/mob/living/simple_animal/SA = src
 		SA.panic_target = null
 		SA.stop_automated_movement = 0

@@ -69,7 +69,7 @@
 	server = (file in ntnet_global.available_station_software) ? "NTNet Software Repository" : "unspecified server"
 	if(!hacked_download)
 		return "[file.filename].[file.filetype]"
-	if(!prob(50))
+	if(prob(50))
 		return "**ENCRYPTED**.[file.filetype]"
 	var/datum/computer_file/fake_file = pick(ntnet_global.available_station_software)
 	server = "NTNet Software Repository"
