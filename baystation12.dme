@@ -2337,6 +2337,7 @@
 #include "code\modules\shuttles\shuttle_console.dm"
 #include "code\modules\shuttles\shuttle_console_multi.dm"
 #include "code\modules\shuttles\shuttle_emergency.dm"
+#include "code\modules\shuttles\shuttle_ferry.dm"
 #include "code\modules\shuttles\shuttle_specops.dm"
 #include "code\modules\shuttles\shuttle_supply.dm"
 #include "code\modules\shuttles\shuttles_multi.dm"

@@ -24,6 +24,9 @@
 
 /obj/effect/shuttle_landmark/Initialize()
 	. = ..()
+	if(docking_controller)
+		. = INITIALIZE_HINT_LATELOAD
+
 	if(autoset)
 		base_area = get_area(src)
 		var/turf/T = get_turf(src)
@@ -33,16 +36,20 @@
 		base_area = locate(base_area || world.area)
 
 	SetName(name + " ([x],[y])")
+	if(!docking_controller)
+		SSshuttle.register_landmark(landmark_tag, src)
 
-	if(docking_controller)
-		var/docking_tag = docking_controller
-		docking_controller = locate(docking_tag)
-		if(!istype(docking_controller))
-			log_error("Could not find docking controller for shuttle waypoint '[name]', docking tag was '[docking_tag]'.")
-		if(GLOB.using_map.use_overmap)
-			var/obj/effect/overmap/location = map_sectors["[z]"]
-			if(location && location.docking_codes)
-				docking_controller.docking_codes = location.docking_codes
+/obj/effect/shuttle_landmark/LateInitialize()
+	if(!docking_controller)
+		return
+	var/docking_tag = docking_controller
+	docking_controller = locate(docking_tag)
+	if(!istype(docking_controller))
+		log_error("Could not find docking controller for shuttle waypoint '[name]', docking tag was '[docking_tag]'.")
+	if(GLOB.using_map.use_overmap)
+		var/obj/effect/overmap/location = map_sectors["[z]"]
+		if(location && location.docking_codes)
+			docking_controller.docking_codes = location.docking_codes
 
 	SSshuttle.register_landmark(landmark_tag, src)
 
@@ -113,14 +120,16 @@
 /obj/item/device/spaceflare/proc/activate()
 	if(active)
 		return
-	active = 1
 	var/turf/T = get_turf(src)
+	var/mob/M = loc
+	if(istype(M) && !M.unEquip(src, T))
+		return
+
+	active = 1
+	anchored = 1
+
 	var/obj/effect/shuttle_landmark/automatic/mark = new(T)
 	mark.SetName("Beacon signal ([T.x],[T.y])")
-	if(ismob(loc))
-		var/mob/M = loc
-		M.drop_from_inventory(src,T)
-	anchored = 1
 	T.hotspot_expose(1500, 5)
 	update_icon()
 
