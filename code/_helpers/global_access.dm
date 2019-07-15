@@ -89,6 +89,8 @@
 			return global.SSsun;
 		if("SSsupply")
 			return global.SSsupply;
+		if("SStgui")
+			return global.SStgui;
 		if("SStimer")
 			return global.SStimer;
 		if("SStrade")
@@ -689,8 +691,6 @@
 			return global.plant_seed_sprites;
 		if("playable_species")
 			return global.playable_species;
-		if("point_source_descriptions")
-			return global.point_source_descriptions;
 		if("possible_cable_coil_colours")
 			return global.possible_cable_coil_colours;
 		if("possible_changeling_IDs")
@@ -919,8 +919,6 @@
 			return global.tg_self_state;
 		if("tg_z_state")
 			return global.tg_z_state;
-		if("tgui_process")
-			return global.tgui_process;
 		if("ticker")
 			return global.ticker;
 		if("tickerProcess")
@@ -1090,6 +1088,8 @@
 			global.SSsun=newval;
 		if("SSsupply")
 			global.SSsupply=newval;
+		if("SStgui")
+			global.SStgui=newval;
 		if("SStimer")
 			global.SStimer=newval;
 		if("SStrade")
@@ -1690,8 +1690,6 @@
 			global.plant_seed_sprites=newval;
 		if("playable_species")
 			global.playable_species=newval;
-		if("point_source_descriptions")
-			global.point_source_descriptions=newval;
 		if("possible_cable_coil_colours")
 			global.possible_cable_coil_colours=newval;
 		if("possible_changeling_IDs")
@@ -1920,8 +1918,6 @@
 			global.tg_self_state=newval;
 		if("tg_z_state")
 			global.tg_z_state=newval;
-		if("tgui_process")
-			global.tgui_process=newval;
 		if("ticker")
 			global.ticker=newval;
 		if("tickerProcess")
@@ -2046,6 +2042,7 @@
 	"SSskybox",
 	"SSsun",
 	"SSsupply",
+	"SStgui",
 	"SStimer",
 	"SStrade",
 	"SSturf",
@@ -2346,7 +2343,6 @@
 	"plant_controller",
 	"plant_seed_sprites",
 	"playable_species",
-	"point_source_descriptions",
 	"possible_cable_coil_colours",
 	"possible_changeling_IDs",
 	"poster_designs",
@@ -2463,7 +2459,6 @@
 	"tg_physical_state",
 	"tg_self_state",
 	"tg_z_state",
-	"tgui_process",
 	"ticker",
 	"tickerProcess",
 	"ticket_panels",
