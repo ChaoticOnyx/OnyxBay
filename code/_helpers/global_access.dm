@@ -59,6 +59,8 @@
 			return global.SSicon_update;
 		if("SSlegacy")
 			return global.SSlegacy;
+		if("SSlighting")
+			return global.SSlighting;
 		if("SSmachines")
 			return global.SSmachines;
 		if("SSmapping")
@@ -511,18 +513,6 @@
 			return global.light_overlay_cache;
 		if("lighting_overlays_initialised")
 			return global.lighting_overlays_initialised;
-		if("lighting_update_corners")
-			return global.lighting_update_corners;
-		if("lighting_update_corners_old")
-			return global.lighting_update_corners_old;
-		if("lighting_update_lights")
-			return global.lighting_update_lights;
-		if("lighting_update_lights_old")
-			return global.lighting_update_lights_old;
-		if("lighting_update_overlays")
-			return global.lighting_update_overlays;
-		if("lighting_update_overlays_old")
-			return global.lighting_update_overlays_old;
 		if("limb_icon_cache")
 			return global.limb_icon_cache;
 		if("loadout_categories")
@@ -1064,6 +1054,8 @@
 			global.SSicon_update=newval;
 		if("SSlegacy")
 			global.SSlegacy=newval;
+		if("SSlighting")
+			global.SSlighting=newval;
 		if("SSmachines")
 			global.SSmachines=newval;
 		if("SSmapping")
@@ -1516,18 +1508,6 @@
 			global.light_overlay_cache=newval;
 		if("lighting_overlays_initialised")
 			global.lighting_overlays_initialised=newval;
-		if("lighting_update_corners")
-			global.lighting_update_corners=newval;
-		if("lighting_update_corners_old")
-			global.lighting_update_corners_old=newval;
-		if("lighting_update_lights")
-			global.lighting_update_lights=newval;
-		if("lighting_update_lights_old")
-			global.lighting_update_lights_old=newval;
-		if("lighting_update_overlays")
-			global.lighting_update_overlays=newval;
-		if("lighting_update_overlays_old")
-			global.lighting_update_overlays_old=newval;
 		if("limb_icon_cache")
 			global.limb_icon_cache=newval;
 		if("loadout_categories")
@@ -2039,6 +2019,7 @@
 	"SSgarbage",
 	"SSicon_update",
 	"SSlegacy",
+	"SSlighting",
 	"SSmachines",
 	"SSmapping",
 	"SSmobs",
@@ -2265,12 +2246,6 @@
 	"license_to_url",
 	"light_overlay_cache",
 	"lighting_overlays_initialised",
-	"lighting_update_corners",
-	"lighting_update_corners_old",
-	"lighting_update_lights",
-	"lighting_update_lights_old",
-	"lighting_update_overlays",
-	"lighting_update_overlays_old",
 	"limb_icon_cache",
 	"loadout_categories",
 	"lobby_image",
