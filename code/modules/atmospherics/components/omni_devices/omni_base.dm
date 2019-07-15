@@ -233,7 +233,7 @@
 			qdel(P.network)
 			P.node = null
 
-	..()
+	return ..()
 
 /obj/machinery/atmospherics/omni/atmos_init()
 	..()
