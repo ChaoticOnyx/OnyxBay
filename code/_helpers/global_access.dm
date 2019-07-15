@@ -51,6 +51,8 @@
 			return global.SSantags;
 		if("SSatoms")
 			return global.SSatoms;
+		if("SSchemistry")
+			return global.SSchemistry;
 		if("SSevac")
 			return global.SSevac;
 		if("SSevent")
@@ -285,8 +287,6 @@
 			return global.checked_for_inactives;
 		if("chemical_reaction_logs")
 			return global.chemical_reaction_logs;
-		if("chemical_reactions_list")
-			return global.chemical_reactions_list;
 		if("chicken_count")
 			return global.chicken_count;
 		if("church_name")
@@ -1050,6 +1050,8 @@
 			global.SSantags=newval;
 		if("SSatoms")
 			global.SSatoms=newval;
+		if("SSchemistry")
+			global.SSchemistry=newval;
 		if("SSevac")
 			global.SSevac=newval;
 		if("SSevent")
@@ -1284,8 +1286,6 @@
 			global.checked_for_inactives=newval;
 		if("chemical_reaction_logs")
 			global.chemical_reaction_logs=newval;
-		if("chemical_reactions_list")
-			global.chemical_reactions_list=newval;
 		if("chicken_count")
 			global.chicken_count=newval;
 		if("church_name")
@@ -2023,6 +2023,7 @@
 	"SSalarm",
 	"SSantags",
 	"SSatoms",
+	"SSchemistry",
 	"SSevac",
 	"SSevent",
 	"SSfastprocess",
@@ -2140,7 +2141,6 @@
 	"chargen_robolimbs",
 	"checked_for_inactives",
 	"chemical_reaction_logs",
-	"chemical_reactions_list",
 	"chicken_count",
 	"church_name",
 	"client_preference_stats_",

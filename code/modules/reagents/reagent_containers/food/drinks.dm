@@ -169,6 +169,7 @@
 	desc = "Careful, the beverage you're about to enjoy is extremely hot."
 	icon_state = "coffee"
 	center_of_mass = "x=15;y=10"
+
 /obj/item/weapon/reagent_containers/food/drinks/coffee/New()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/drink/coffee, 30)
@@ -254,6 +255,20 @@
 	possible_transfer_amounts = "5;10;15;25;30;60" //Professional bartender should be able to transfer as much as needed
 	volume = 120
 	center_of_mass = "x=17;y=10"
+
+/obj/item/weapon/reagent_containers/food/drinks/shaker/attack_self(mob/user as mob)
+	user.visible_message("<span class='notice'>\The [user] shakes \the [src] gingerly.</span>", \
+						 "<span class='notice'>You shake \the [src] gingerly.</span>")
+	mix()
+
+/obj/item/weapon/reagent_containers/food/drinks/shaker/proc/mix()
+	if(reagents && reagents.total_volume)
+		atom_flags &= ~ATOM_FLAG_NO_REACT
+		reagents.handle_reactions()
+		addtimer(CALLBACK(src, .proc/stop_react), 0)
+
+/obj/item/weapon/reagent_containers/food/drinks/shaker/proc/stop_react()
+	atom_flags |= ATOM_FLAG_NO_REACT
 
 /obj/item/weapon/reagent_containers/food/drinks/teapot
 	name = "teapot"
