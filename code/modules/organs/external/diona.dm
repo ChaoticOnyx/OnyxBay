@@ -1,22 +1,3 @@
-/proc/spawn_diona_nymph(var/turf/target)
-	if(!istype(target))
-		return 0
-
-	//This is a terrible hack and I should be ashamed.
-	var/datum/seed/diona = plant_controller.seeds["diona"]
-	if(!diona)
-		return 0
-
-	spawn(1) // So it has time to be thrown about by the gib() proc.
-		var/mob/living/carbon/alien/diona/D = new(target)
-		var/datum/ghosttrap/plant/P = get_ghost_trap("living plant")
-		P.request_player(D, "A diona nymph has split off from its gestalt. ")
-		spawn(60)
-			if(D)
-				if(!D.ckey || !D.client)
-					D.death()
-		return 1
-
 /obj/item/organ/external/diona
 	name = "tendril"
 	cannot_break = 1
