@@ -30,9 +30,10 @@
 	mob_size = MOB_MINISCULE
 	possession_candidate = 1
 	can_escape = 1
+	shy_animal = 1
 
 	can_pull_size = ITEM_SIZE_TINY
-	can_pull_mobs = MOB_PULL_NONE
+	can_pull_mobs = MOB_PULL_SAME
 
 /mob/living/simple_animal/mouse/Life()
 	..()
@@ -82,11 +83,13 @@
 	src.death()
 
 /mob/living/simple_animal/mouse/Crossed(AM as mob|obj)
-	if( ishuman(AM) )
-		if(!stat)
-			var/mob/M = AM
-			to_chat(M, "<span class='warning'>\icon[src] Squeek!</span>")
-			sound_to(M, 'sound/effects/mousesqueek.ogg')
+	if(ishuman(AM) && !stat)
+		var/mob/M = AM
+		to_chat(M, "<span class='warning'>\icon[src] Squeek!</span>")
+		sound_to(M, 'sound/effects/mousesqueek.ogg')
+		resting = 0
+		icon_state = "mouse_[body_color]"
+		set_panic_target(M)
 	..()
 
 /*

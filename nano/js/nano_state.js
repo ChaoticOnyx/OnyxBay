@@ -6,9 +6,9 @@ function NanoStateClass() {
 		alert('ERROR: Tried to create a state with an invalid state key: ' + this.key);
 		return;
 	}
-	
+
     this.key = this.key.toLowerCase();
-	
+
 	NanoStateManager.addState(this);*/
 }
 
@@ -115,5 +115,3 @@ NanoStateClass.prototype.alertText = function (text) {
 
     alert(text);
 };
-
-

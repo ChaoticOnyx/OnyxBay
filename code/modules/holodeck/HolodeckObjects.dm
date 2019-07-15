@@ -295,8 +295,6 @@
 	var/eventstarted = 0
 
 	anchored = 1.0
-	idle_power_usage = 2
-	active_power_usage = 6
 	power_channel = ENVIRON
 
 /obj/machinery/readybutton/attack_ai(mob/user as mob)
@@ -308,12 +306,16 @@
 
 
 /obj/machinery/readybutton/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	to_chat(user, "The device is a solid button, there's nothing you can do with it!")
+	to_chat(user, "The device is a holographic button, there's nothing you can do with it!")
 
 /obj/machinery/readybutton/attack_hand(mob/user as mob)
 
-	if(user.stat || stat & (NOPOWER|BROKEN))
-		to_chat(user, "This device is not powered.")
+	if(user.stat)
+		to_chat(src, "You are incapacitated.")
+		return
+
+	if(stat & BROKEN)
+		to_chat(user, "This device is broken.")
 		return
 
 	if(!user.IsAdvancedToolUser())

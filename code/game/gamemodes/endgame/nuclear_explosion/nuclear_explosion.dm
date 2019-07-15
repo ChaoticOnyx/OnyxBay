@@ -23,7 +23,7 @@
 
 	var/turf/T = get_turf(explosion_source)
 	if(isStationLevel(T.z))
-		to_world("<span class='danger'>The [station_name()] was destoyed by the nuclear blast!</span>")
+		to_world("<span class='danger'>The [station_name()] was destroyed by the nuclear blast!</span>")
 
 		dust_mobs(GLOB.using_map.station_levels)
 		play_cinematic_station_destroyed()

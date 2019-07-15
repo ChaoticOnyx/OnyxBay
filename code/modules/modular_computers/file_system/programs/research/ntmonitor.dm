@@ -6,6 +6,7 @@
 	program_menu_icon = "wrench"
 	extended_desc = "This program monitors the local NTNet network, provides access to logging systems, and allows for configuration changes"
 	size = 12
+	category = PROG_ADMIN
 	requires_ntnet = 1
 	required_access = access_network
 	available_on_ntnet = 1

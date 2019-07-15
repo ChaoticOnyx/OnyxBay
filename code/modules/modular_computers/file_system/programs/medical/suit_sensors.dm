@@ -10,9 +10,7 @@
 	requires_ntnet = 1
 	network_destination = "crew lifesigns monitoring system"
 	size = 11
-
-
-
+	category = PROG_MONITOR
 
 
 /datum/nano_module/crew_monitor

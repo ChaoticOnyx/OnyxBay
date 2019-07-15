@@ -11,6 +11,7 @@
 	var/obj/item/modular_computer/computer	// Device that runs this program.
 	var/filedesc = "Unknown Program"		// User-friendly name of this program.
 	var/extended_desc = "N/A"				// Short description of this program's function.
+	var/category = PROG_MISC				// This program's category.
 	var/program_icon_state = null			// Program-specific screen icon state
 	var/program_key_state = "standby_key"	// Program-specific keyboard icon state
 	var/program_menu_icon = "newwin"		// Icon to use for program's link in main menu
@@ -47,6 +48,32 @@
 	temp.requires_ntnet_feature = requires_ntnet_feature
 	temp.usage_flags = usage_flags
 	return temp
+
+// Used by programs that manipulate files.
+/datum/computer_file/program/proc/get_file(var/filename)
+	var/obj/item/weapon/computer_hardware/hard_drive/HDD = computer.hard_drive
+	if(!HDD)
+		return
+	var/datum/computer_file/data/F = HDD.find_file_by_name(filename)
+	if(!istype(F))
+		return
+	return F
+
+/datum/computer_file/program/proc/create_file(newname, data = "", file_type = /datum/computer_file/data)
+	if(!newname)
+		return
+	var/obj/item/weapon/computer_hardware/hard_drive/HDD = computer.hard_drive
+	if(!HDD)
+		return
+	if(get_file(newname))
+		return
+
+	var/datum/computer_file/data/F = new file_type
+	F.filename = newname
+	F.stored_data = data
+	F.calculate_size()
+	if(HDD.store_file(F))
+		return F
 
 // Relays icon update to the computer.
 /datum/computer_file/program/proc/update_computer_icon()

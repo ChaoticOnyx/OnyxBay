@@ -8,6 +8,7 @@
 	program_menu_icon = "triangle-2-e-w"
 	extended_desc = "A management tool that lets you see the status of the docking ports."
 	size = 10
+	category = PROG_SUPPLY
 	available_on_ntnet = 1
 	requires_ntnet = 1
 

@@ -5,6 +5,7 @@
 	program_icon_state = "word"
 	program_key_state = "atmos_key"
 	size = 4
+	category = PROG_OFFICE
 	requires_ntnet = 0
 	available_on_ntnet = 1
 	nanomodule_path = /datum/nano_module/program/computer_wordprocessor/
@@ -13,15 +14,6 @@
 	var/loaded_data
 	var/error
 	var/is_edited
-
-/datum/computer_file/program/wordprocessor/proc/get_file(var/filename)
-	var/obj/item/weapon/computer_hardware/hard_drive/HDD = computer.hard_drive
-	if(!HDD)
-		return
-	var/datum/computer_file/data/F = HDD.find_file_by_name(filename)
-	if(!istype(F))
-		return
-	return F
 
 /datum/computer_file/program/wordprocessor/proc/open_file(var/filename)
 	var/datum/computer_file/data/F = get_file(filename)
@@ -47,22 +39,6 @@
 		return 0
 	is_edited = 0
 	return 1
-
-/datum/computer_file/program/wordprocessor/proc/create_file(var/newname, var/data = "")
-	if(!newname)
-		return
-	var/obj/item/weapon/computer_hardware/hard_drive/HDD = computer.hard_drive
-	if(!HDD)
-		return
-	if(get_file(newname))
-		return
-	var/datum/computer_file/data/F = new/datum/computer_file/data()
-	F.filename = newname
-	F.filetype = "TXT"
-	F.stored_data = data
-	F.calculate_size()
-	if(HDD.store_file(F))
-		return F
 
 /datum/computer_file/program/wordprocessor/Topic(href, href_list)
 	if(..())

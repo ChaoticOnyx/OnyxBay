@@ -12,6 +12,7 @@
 	unsendable = 1
 	undeletable = 1
 	size = 4
+	category = PROG_UTIL
 	available_on_ntnet = 0
 	requires_ntnet = 0
 	nanomodule_path = /datum/nano_module/program/computer_configurator/
