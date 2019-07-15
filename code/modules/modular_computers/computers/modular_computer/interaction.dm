@@ -169,9 +169,11 @@
 		to_chat(user, "You insert \the [I] into \the [src].")
 		return
 	if(istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/weapon/paper_bundle))
-		if(!nano_printer)
-			return
-		nano_printer.attackby(W, user)
+		var/obj/item/weapon/paper/paper = W
+		if(scanner && paper.info)
+			scanner.do_on_attackby(user, W)
+		else if(nano_printer)
+			nano_printer.attackby(W, user)
 	if(istype(W, /obj/item/weapon/aicard))
 		if(!ai_slot)
 			return
@@ -234,3 +236,19 @@
 		return
 
 	..()
+
+/obj/item/modular_computer/examine(var/mob/user)
+	. = ..()
+
+	if(enabled && .)
+		to_chat(user, "The time [stationtime2text()] is displayed in the corner of the screen.")
+
+/obj/item/modular_computer/MouseDrop(var/atom/over_object)
+	var/mob/M = usr
+	if(!istype(over_object, /obj/screen) && CanMouseDrop(M))
+		return attack_self(M)
+
+/obj/item/modular_computer/afterattack(atom/target, mob/user, proximity)
+	. = ..()
+	if(scanner)
+		scanner.do_on_afterattack(user, target, proximity)
