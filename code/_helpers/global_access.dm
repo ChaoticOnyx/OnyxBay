@@ -77,6 +77,8 @@
 			return global.SSopen_space;
 		if("SSprocessing")
 			return global.SSprocessing;
+		if("SSradiation")
+			return global.SSradiation;
 		if("SSshuttle")
 			return global.SSshuttle;
 		if("SSskybox")
@@ -727,8 +729,6 @@
 			return global.protected_objects;
 		if("rad_collectors")
 			return global.rad_collectors;
-		if("radiation_repository")
-			return global.radiation_repository;
 		if("radio_controller")
 			return global.radio_controller;
 		if("radiochannels")
@@ -1076,6 +1076,8 @@
 			global.SSopen_space=newval;
 		if("SSprocessing")
 			global.SSprocessing=newval;
+		if("SSradiation")
+			global.SSradiation=newval;
 		if("SSshuttle")
 			global.SSshuttle=newval;
 		if("SSskybox")
@@ -1726,8 +1728,6 @@
 			global.protected_objects=newval;
 		if("rad_collectors")
 			global.rad_collectors=newval;
-		if("radiation_repository")
-			global.radiation_repository=newval;
 		if("radio_controller")
 			global.radio_controller=newval;
 		if("radiochannels")
@@ -2036,6 +2036,7 @@
 	"SSobj",
 	"SSopen_space",
 	"SSprocessing",
+	"SSradiation",
 	"SSshuttle",
 	"SSskybox",
 	"SSsun",
@@ -2361,7 +2362,6 @@
 	"prometheans",
 	"protected_objects",
 	"rad_collectors",
-	"radiation_repository",
 	"radio_controller",
 	"radiochannels",
 	"random_junk_",

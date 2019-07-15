@@ -439,7 +439,7 @@
 	if(!total_radiation)
 		return
 
-	radiation_repository.radiate(src, total_radiation)
+	SSradiation.radiate(src, total_radiation)
 	return total_radiation
 
 /turf/simulated/wall/proc/CheckPenetration(var/base_chance, var/damage)
