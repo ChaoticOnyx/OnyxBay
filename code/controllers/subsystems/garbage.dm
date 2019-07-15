@@ -277,7 +277,7 @@ SUBSYSTEM_DEF(garbage)
 
 #ifdef TESTING
 /proc/qdel_and_find_ref_if_fail(datum/D, force = FALSE)
-	SSgarbage.reference_find_on_fail[REF(D)] = TRUE
+	SSgarbage.reference_find_on_fail["\ref[D]"] = TRUE
 	qdel(D, force)
 #endif
 
@@ -342,7 +342,7 @@ SUBSYSTEM_DEF(garbage)
 			if (QDEL_HINT_IFFAIL_FINDREFERENCE)
 				SSgarbage.PreQueue(D)
 				#ifdef TESTING
-				SSgarbage.reference_find_on_fail[REF(D)] = TRUE
+				SSgarbage.reference_find_on_fail["\ref[D]"] = TRUE
 				#endif
 			else
 				#ifdef TESTING
