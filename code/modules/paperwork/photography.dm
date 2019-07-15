@@ -146,7 +146,7 @@ var/global/photo_count = 0
 	var/pictures_max = 10
 	var/pictures_left = 10
 	var/is_on = TRUE
-	var/is_on_cooldown = FALSE
+	var/last_shot_time
 	var/icon_on = "camera"
 	var/icon_off = "camera_off"
 	var/size = 3
@@ -216,11 +216,11 @@ var/global/photo_count = 0
 /obj/item/device/camera/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
 	if(!is_on || !pictures_left || ismob(target.loc))
 		return
-	if(is_on_cooldown)
+	if((world.time - last_shot_time) < 6 SECONDS)
 		to_chat(user, "<span class='notice'>Camera is still charging.</span>")
 		return
 
-	is_on_cooldown = TRUE
+	last_shot_time = world.time
 	pictures_left--
 
 	captureimage(target, user, flag)
@@ -228,9 +228,6 @@ var/global/photo_count = 0
 	to_chat(user, "<span class='notice'>[pictures_left] photos left.</span>")
 
 	update_icon()
-	spawn(64)
-		is_on_cooldown = FALSE
-		update_icon()
 
 /obj/item/device/camera/examine(mob/user)
 	if(!..(user))
