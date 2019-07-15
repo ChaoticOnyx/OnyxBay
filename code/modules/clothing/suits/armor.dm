@@ -28,6 +28,11 @@
 	icon_state = "armorsec"
 	//item_state = "armor"
 
+/obj/item/clothing/suit/armor/vest/old/detective
+	name = "detective armor"
+	desc = "An synthetic armor vest colored in a vintage brown."
+	icon_state = "detective-armor"
+
 /obj/item/clothing/suit/armor/vest/warden
 	name = "warden's jacket"
 	desc = "An armoured jacket with silver rank pips and livery."

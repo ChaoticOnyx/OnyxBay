@@ -256,7 +256,7 @@
 
 	name = "hardsuit voice synthesiser"
 	desc = "A speaker box and sound processor."
-	icon_state = "megaphone"
+	icon_state = "voicechanger"
 	usable = 1
 	selectable = 0
 	toggleable = 0
