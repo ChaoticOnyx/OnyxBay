@@ -5,7 +5,7 @@ var/list/trait_categories = list() // The categories available for the trait men
 /hook/startup/proc/populate_trait_list()
 
 	//create a list of trait datums
-	for(var/trait_type in typesof(/datum/trait) - list(/datum/trait, /datum/trait/modifier))
+	for(var/trait_type in typesof(/datum/trait) - list(/datum/trait, /datum/trait/modifier, /datum/trait/modifier/physical, /datum/trait/modifier/mental))
 		var/datum/trait/T = new trait_type
 
 		if(!T.name)
