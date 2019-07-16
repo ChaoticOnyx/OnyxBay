@@ -662,7 +662,7 @@
 
 /datum/reagent/toxin/zombie/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
 	..()
-	if (istype(M, /mob/living/carbon/human))
+	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/true_dose = H.chem_doses[type] + volume
 		if (true_dose >= amount_to_zombify)
