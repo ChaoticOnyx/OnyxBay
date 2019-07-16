@@ -169,7 +169,6 @@
 	user.visible_message("<span class='notice'>[user] has separated [target]'s [target.op_stage.current_organ] with \the [tool].</span>" , \
 	"<span class='notice'>You have separated [target]'s [target.op_stage.current_organ] with \the [tool].</span>")
 
-//	var/obj/item/organ/I = target.internal_organs_by_name[target.op_stage.current_organ]
 	var/obj/item/organ/I = target.op_stage.current_organ
 	if(I && istype(I))
 		I.cut_away(I.owner)
