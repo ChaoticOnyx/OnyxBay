@@ -80,21 +80,7 @@
 	. = ..(company, skip_prosthetics, 1)
 	has_lips = null
 
-/obj/item/organ/external/head/removed()
-	if(owner)
-		var/mob/living/carbon/human/victim = owner
-		SetName("[victim.real_name]'s head")
-		victim.drop_from_inventory(owner.glasses)
-		victim.drop_from_inventory(owner.head)
-		victim.drop_from_inventory(owner.l_ear)
-		victim.drop_from_inventory(owner.r_ear)
-		victim.drop_from_inventory(owner.wear_mask)
-		update_icon_drop(victim)
-		spawn(1)
-			victim.update_hair()
-	..()
-
-/obj/item/organ/external/head/take_damage(brute, burn, damage_flags, used_weapon = null)
+/obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags, used_weapon = null)
 	. = ..()
 	if (!disfigured)
 		if (brute_dam > 40)

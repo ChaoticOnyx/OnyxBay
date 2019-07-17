@@ -18,10 +18,3 @@
 
 /obj/item/organ/external/stump/is_stump()
 	return 1
-
-/obj/item/organ/external/stump/removed()
-	..()
-	//qdel(src) src's been qdel'ed in /obj/item/organ/external/removed, who the hell decided to stick another qdel down here?
-
-/obj/item/organ/external/stump/is_usable()
-	return 0
