@@ -135,7 +135,7 @@
 	for(var/limb_tag in list(BP_L_LEG, BP_L_FOOT))	// Left leg processing
 		var/obj/item/organ/external/E = organs_by_name[limb_tag]
 
-		if(!E || (E.disfigured) || istype(E,/obj/item/organ/external/stump))
+		if(!E || (E.status & ORGAN_DISFIGURED) || istype(E,/obj/item/organ/external/stump))
 			stance_d_l += 5
 
 		else if(E.is_malfunctioning())
@@ -163,7 +163,7 @@
 	for(var/limb_tag in list(BP_R_LEG, BP_R_FOOT))	// Right leg processing
 		var/obj/item/organ/external/E = organs_by_name[limb_tag]
 
-		if(!E || (E.disfigured) || istype(E,/obj/item/organ/external/stump))
+		if(!E || (E.status & ORGAN_DISFIGURED) || istype(E,/obj/item/organ/external/stump))
 			stance_d_l += 5
 
 		else if(E.is_malfunctioning())
@@ -288,7 +288,7 @@
 		return
 
 	for (var/obj/item/organ/external/E in organs)
-		if(!E || !E.can_grasp)
+		if(!E || !(E.limb_flags & ORGAN_FLAG_CAN_GRASP))
 			continue
 		if(((E.is_broken() || E.is_dislocated()) && !E.splinted) || E.is_malfunctioning())
 			grasp_damage_disarm(E)
@@ -323,7 +323,7 @@
 
 	drop_from_inventory(thing)
 
-	if(affected.robotic >= ORGAN_ROBOT)
+	if(BP_IS_ROBOTIC(affected))
 		visible_message("<B>\The [src]</B> drops what they were holding, \his [affected.name] malfunctioning!")
 
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()

@@ -16,7 +16,7 @@
 		return 0
 	if (affected.status & ORGAN_CUT_AWAY)
 		return 0
-	if (affected.robotic < ORGAN_ROBOT)
+	if (!BP_IS_ROBOTIC(affected))
 		return 0
 	return 1
 
@@ -180,7 +180,7 @@
 			var/obj/item/weapon/weldingtool/welder = tool
 			if(!welder.isOn() || !welder.remove_fuel(1,user))
 				return 0
-		return affected && affected.hatch_state == HATCH_OPENED && (affected.disfigured || affected.brute_dam > 0) && target_zone != BP_MOUTH
+		return affected && affected.hatch_state == HATCH_OPENED && ((affected.status & ORGAN_DISFIGURED) || affected.brute_dam > 0) && target_zone != BP_MOUTH
 
 /datum/surgery_step/robotics/repair_brute/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -193,7 +193,7 @@
 	user.visible_message("<span class='notice'>[user] finishes patching damage to [target]'s [affected.name] with \the [tool].</span>", \
 	"<span class='notice'>You finish patching damage to [target]'s [affected.name] with \the [tool].</span>")
 	affected.heal_damage(rand(30,50),0,1,1)
-	affected.disfigured = 0
+	affected.status &= ~ORGAN_DISFIGURED
 
 /datum/surgery_step/robotics/repair_brute/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -217,7 +217,7 @@
 	if(..())
 		var/obj/item/stack/cable_coil/C = tool
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
-		var/limb_can_operate = ((affected && affected.hatch_state == HATCH_OPENED) && (affected.disfigured || affected.burn_dam > 0) && target_zone != BP_MOUTH)
+		var/limb_can_operate = ((affected && affected.hatch_state == HATCH_OPENED) && ((affected.status & ORGAN_DISFIGURED) || affected.burn_dam > 0) && target_zone != BP_MOUTH)
 		if(limb_can_operate)
 			if(istype(C))
 				if(!C.get_amount() >= 3)
@@ -249,7 +249,7 @@
 	user.visible_message("<span class='notice'>[user] finishes splicing cable into [target]'s [affected.name].</span>", \
 	"<span class='notice'>You finishes splicing new cable into [target]'s [affected.name].</span>")
 	affected.heal_damage(0,rand(30,50),1,1)
-	affected.disfigured = 0
+	affected.status &= ~ORGAN_DISFIGURED
 
 /datum/surgery_step/robotics/repair_burn/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -277,7 +277,7 @@
 	if(!affected) return
 
 	for(var/obj/item/organ/internal/I in affected.internal_organs)
-		if(I.isrobotic() && I.damage > 0)
+		if(BP_IS_ROBOTIC(I) && I.damage > 0)
 			if(I.surface_accessible)
 				return TRUE
 			if(affected.open() >= (affected.encased ? SURGERY_ENCASED : SURGERY_RETRACTED) || affected.hatch_state == HATCH_OPENED)
@@ -290,7 +290,7 @@
 
 	for(var/obj/item/organ/I in affected.internal_organs)
 		if(I && I.damage > 0)
-			if(I.robotic >= ORGAN_ROBOT)
+			if(BP_IS_ROBOTIC(I))
 				user.visible_message("[user] starts mending the damage to [target]'s [I.name]'s mechanisms.", \
 				"You start mending the damage to [target]'s [I.name]'s mechanisms." )
 	..()
@@ -303,7 +303,7 @@
 	for(var/obj/item/organ/I in affected.internal_organs)
 
 		if(I && I.damage > 0)
-			if(I.robotic >= ORGAN_ROBOT)
+			if(BP_IS_ROBOTIC(I))
 				user.visible_message("<span class='notice'>[user] repairs [target]'s [I.name] with [tool].</span>", \
 				"<span class='notice'>You repair [target]'s [I.name] with [tool].</span>" )
 				I.damage = 0
@@ -390,7 +390,7 @@
 
 /datum/surgery_step/robotics/attach_organ_robotic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	if(!(affected && (affected.robotic >= ORGAN_ROBOT)))
+	if(!(affected && (BP_IS_ROBOTIC(affected))))
 		return 0
 	if(affected.hatch_state != HATCH_OPENED)
 		return 0
@@ -399,7 +399,7 @@
 
 	var/list/removable_organs = list()
 	for(var/obj/item/organ/I in affected.implants)
-		if ((I.status & ORGAN_CUT_AWAY) && (I.robotic >= ORGAN_ROBOT) && (I.parent_organ == target_zone))
+		if ((I.status & ORGAN_CUT_AWAY) && (BP_IS_ROBOTIC(I)) && (I.parent_organ == target_zone))
 			removable_organs |= I.organ_tag
 
 	var/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in removable_organs
@@ -458,7 +458,7 @@
 		to_chat(user, "<span class='danger'>That brain is not usable.</span>")
 		return SURGERY_FAILURE
 
-	if(!(affected.robotic >= ORGAN_ROBOT))
+	if(!BP_IS_ROBOTIC(affected))
 		to_chat(user, "<span class='danger'>You cannot install a computer brain into a meat body.</span>")
 		return SURGERY_FAILURE
 

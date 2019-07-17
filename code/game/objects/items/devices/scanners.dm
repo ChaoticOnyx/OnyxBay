@@ -197,7 +197,7 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separa
 
 		for(var/obj/item/organ/external/E in H.organs)
 			var/limb_damaged	//in some cases we dont need apply this flag cause it already will be applied
-			var/limb_result = "<b>[capitalize(E.name)][(E.robotic >= ORGAN_ROBOT) ? " (Cybernetic)" : ""]:</b>"
+			var/limb_result = "<b>[capitalize(E.name)][(BP_IS_ROBOTIC(E)) ? " (Cybernetic)" : ""]:</b>"
 			if(E.is_stump())
 				limb_damaged = TRUE
 				limb_result = "<span class='danger'><b>[capitalize(E.name)]</b></span>"
@@ -205,10 +205,10 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separa
 				continue
 			if(E.brute_dam > 0)
 				limb_damaged = TRUE
-				limb_result = "[limb_result] \[<span class='scanner_red'>[get_wound_severity(E.brute_ratio, E.vital)] physical trauma</span>\]"
+				limb_result = "[limb_result] \[<span class='scanner_red'><b>[get_wound_severity(E.brute_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL))] physical trauma</b></span>\]"
 			if(E.burn_dam > 0)
 				limb_damaged = TRUE
-				limb_result = "[limb_result] \[<span class='scanner_yellow'>[get_wound_severity(E.burn_ratio, E.vital)] burns</span>\]"
+				limb_result = "[limb_result] \[<span class='scanner_yellow'><b>[get_wound_severity(E.burn_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL))] burns</b></span>\]"
 			if(E.status & ORGAN_BLEEDING)
 				limb_damaged = TRUE
 				limb_result = "[limb_result] \[<span class='scanner_red'>bleeding</span>\]"

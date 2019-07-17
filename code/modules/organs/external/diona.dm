@@ -19,10 +19,10 @@
 
 /obj/item/organ/external/diona
 	name = "tendril"
-	cannot_break = 1
 	amputation_point = "branch"
 	joint = "structural ligament"
 	dislocated = -1
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE
 
 /obj/item/organ/external/diona/chest
 	name = "core trunk"
@@ -33,9 +33,8 @@
 	w_class = ITEM_SIZE_HUGE
 	body_part = UPPER_TORSO
 	vital = 1
-	cannot_amputate = 1
 	parent_organ = null
-	gendered_icon = 1
+	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
 
 /obj/item/organ/external/diona/groin
 	name = "fork"
@@ -46,7 +45,6 @@
 	w_class = ITEM_SIZE_LARGE
 	body_part = LOWER_TORSO
 	parent_organ = BP_CHEST
-	gendered_icon = 1
 
 /obj/item/organ/external/diona/arm
 	name = "left upper tendril"
@@ -57,7 +55,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	body_part = ARM_LEFT
 	parent_organ = BP_CHEST
-	can_grasp = 1
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
 
 /obj/item/organ/external/diona/arm/right
 	name = "right upper tendril"
@@ -75,7 +73,7 @@
 	body_part = LEG_LEFT
 	icon_position = LEFT
 	parent_organ = BP_GROIN
-	can_stand = 1
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
 
 /obj/item/organ/external/diona/leg/right
 	name = "right lower tendril"
@@ -94,7 +92,7 @@
 	body_part = FOOT_LEFT
 	icon_position = LEFT
 	parent_organ = BP_L_LEG
-	can_stand = 1
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
 
 /obj/item/organ/external/diona/foot/right
 	name = "right foot"
@@ -115,7 +113,7 @@
 	w_class = ITEM_SIZE_SMALL
 	body_part = HAND_LEFT
 	parent_organ = BP_L_ARM
-	can_grasp = 1
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
 
 /obj/item/organ/external/diona/hand/right
 	name = "right grasper"
@@ -126,7 +124,7 @@
 
 //DIONA ORGANS.
 /obj/item/organ/external/diona/removed()
-	if(robotic >= ORGAN_ROBOT)
+	if(BP_IS_ROBOTIC(src))
 		return ..()
 	var/mob/living/carbon/human/H = owner
 	..()
@@ -138,12 +136,12 @@
 // Copypaste due to eye code, RIP.
 /obj/item/organ/external/head/no_eyes/diona
 	can_intake_reagents = 0
-	cannot_break = 1
 	max_damage = 50
 	min_broken_damage = 25
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
 
 /obj/item/organ/external/head/no_eyes/diona/removed()
-	if(robotic >= ORGAN_ROBOT)
+	if(BP_IS_ROBOTIC(src))
 		return ..()
 	var/mob/living/carbon/human/H = owner
 	..()
@@ -159,7 +157,7 @@
 	organ_tag = "special" // Turns into a nymph instantly, no transplanting possible.
 
 /obj/item/organ/internal/diona/removed(var/mob/living/user, var/skip_nymph)
-	if(robotic >= ORGAN_ROBOT)
+	if(BP_IS_ROBOTIC(src))
 		return ..()
 	var/mob/living/carbon/human/H = owner
 	..()
