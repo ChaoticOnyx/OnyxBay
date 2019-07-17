@@ -109,7 +109,8 @@
 /obj/item/organ/internal/lungs/proc/handle_breath(datum/gas_mixture/breath, var/forced)
 	if(!owner)
 		return 1
-	if(!breath)
+
+	if(!breath || (max_damage <= 0))
 		breath_fail_ratio = 1
 		handle_failed_breath()
 		return 1
@@ -119,7 +120,7 @@
 	if(breath_pressure < species.hazard_low_pressure || breath_pressure > species.hazard_high_pressure)
 		var/datum/gas_mixture/environment = loc.return_air_for_internal_lifeform()
 		var/env_pressure = environment.return_pressure()
-		var/lung_rupture_prob =  robotic >= ORGAN_ROBOT ? prob(2.5) : prob(5) //Robotic lungs are less likely to rupture.
+		var/lung_rupture_prob =  BP_IS_ROBOTIC(src) ? prob(2.5) : prob(5) //Robotic lungs are less likely to rupture.
 		if(env_pressure < species.hazard_low_pressure || env_pressure > species.hazard_high_pressure)
 			if(!is_bruised() && lung_rupture_prob) //only rupture if NOT already ruptured
 				rupture()
@@ -198,7 +199,7 @@
 	// Too much poison in the air.
 	if(toxins_pp > safe_toxins_max)
 		var/ratio = (poison/safe_toxins_max) * 10
-		if(robotic >= ORGAN_ROBOT)
+		if(BP_IS_ROBOTIC(src))
 			ratio /= 2 //Robolungs filter out some of the inhaled toxic air.
 		owner.reagents.add_reagent(/datum/reagent/toxin, Clamp(ratio, MIN_TOXIN_DAMAGE, MAX_TOXIN_DAMAGE))
 		breath.adjust_gas(poison_type, -poison/6, update = 0) //update after
@@ -227,7 +228,7 @@
 	else
 		last_failed_breath = null
 		owner.adjustOxyLoss(-5 * inhale_efficiency)
-		if(robotic < ORGAN_ROBOT && species.breathing_sound && is_below_sound_pressure(get_turf(owner)))
+		if(!BP_IS_ROBOTIC(src) && species.breathing_sound && is_below_sound_pressure(get_turf(owner)))
 			if(breathing || owner.shock_stage >= 10)
 				sound_to(owner, sound(species.breathing_sound,0,0,0,5))
 				breathing = 0
@@ -318,7 +319,7 @@
 	if(owner.failed_last_breath || !active_breathing)
 		return "no respiration"
 
-	if(robotic == ORGAN_ROBOT)
+	if(BP_IS_ROBOTIC(src))
 		if(is_bruised())
 			return "malfunctioning fans"
 		else

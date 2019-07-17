@@ -769,7 +769,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			to_chat(src, "<span class='warning'>[T]'s armor has protected them.</span>")
 			return //thick clothes will protect from the sting
 
-	if(T.isSynthetic() || target_limb.isrobotic())
+	if(T.isSynthetic() || BP_IS_ROBOTIC(target_limb))
 		return
 	if(!T.mind || !T.mind.changeling)	//T will be affected by the sting
 		if (target_limb.can_feel_pain())
@@ -1689,11 +1689,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 					H.adjustToxLoss(-15 * config.organ_regeneration_multiplier)
 				if(prob(15) && !H.getBruteLoss() && !H.getFireLoss())
 					var/obj/item/organ/external/head/D = H.organs_by_name[BP_HEAD]
-					if (D.disfigured)
-						D.disfigured = 0
+					if (D.status & ORGAN_DISFIGURED)
+						D.status &= ~ORGAN_DISFIGURED
 				for(var/bpart in shuffle(H.internal_organs_by_name))
 					var/obj/item/organ/internal/regen_organ = H.internal_organs_by_name[bpart]
-					if(regen_organ.robotic >= ORGAN_ROBOT)
+					if(BP_IS_ROBOTIC(regen_organ))
 						continue
 					if(istype(regen_organ))
 						if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
