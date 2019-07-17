@@ -1484,6 +1484,9 @@
 		return 0
 	if(isSynthetic())
 		return 0
+	if(check_organ)
+		if(!istype(check_organ))
+			return 0
 		return check_organ.can_feel_pain()
 	return !(species.species_flags & SPECIES_FLAG_NO_PAIN)
 
