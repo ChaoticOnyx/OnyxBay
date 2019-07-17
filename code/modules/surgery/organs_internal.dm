@@ -147,9 +147,9 @@
 	target.op_stage.current_organ = null
 
 	var/list/attached_organs = list()
-	for(var/obj/item/organ/I in target.internal_organs)
-		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == target_zone)
-			attached_organs |= I
+	for(var/obj/item/organ/organ in target.internal_organs)
+		if(organ && !(organ.status & ORGAN_CUT_AWAY) && organ.parent_organ == target_zone)
+			attached_organs |= organ
 
 	var/organ_to_remove = input(user, "Which organ do you want to separate?") as null|anything in attached_organs
 	if(!organ_to_remove)
