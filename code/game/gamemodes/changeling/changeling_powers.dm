@@ -26,10 +26,11 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/true_dead = FALSE
 	var/damaged = FALSE
 	var/heal = 0
-	var/datum/reagents/pick_chemistry = new
+	var/datum/reagents/pick_chemistry
 
 /datum/changeling/New()
 	..()
+	pick_chemistry = new/datum/reagents(120, src)
 	if(possible_changeling_IDs.len)
 		changelingID = pick(possible_changeling_IDs)
 		possible_changeling_IDs -= changelingID

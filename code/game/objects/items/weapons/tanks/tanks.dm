@@ -82,23 +82,26 @@ var/list/global/tank_gauge_cache = list()
 /obj/item/weapon/tank/examine(mob/user)
 	. = ..(user, 0)
 	if(.)
-		var/celsius_temperature = air_contents.temperature - T0C
 		var/descriptive
-		switch(celsius_temperature)
-			if(300 to INFINITY)
-				descriptive = "furiously hot"
-			if(100 to 300)
-				descriptive = "hot"
-			if(80 to 100)
-				descriptive = "warm"
-			if(40 to 80)
-				descriptive = "lukewarm"
-			if(20 to 40)
-				descriptive = "room temperature"
-			if(-20 to 20)
-				descriptive = "cold"
-			else
-				descriptive = "bitterly cold"
+		if(!air_contents)
+			descriptive = "empty"
+		else
+			var/celsius_temperature = air_contents.temperature - T0C
+			switch(celsius_temperature)
+				if(300 to INFINITY)
+					descriptive = "furiously hot"
+				if(100 to 300)
+					descriptive = "hot"
+				if(80 to 100)
+					descriptive = "warm"
+				if(40 to 80)
+					descriptive = "lukewarm"
+				if(20 to 40)
+					descriptive = "room temperature"
+				if(-20 to 20)
+					descriptive = "cold"
+				else
+					descriptive = "bitterly cold"
 		to_chat(user, "<span class='notice'>\The [src] feels [descriptive].</span>")
 
 	if(proxyassembly.assembly || wired)
@@ -195,20 +198,20 @@ var/list/global/tank_gauge_cache = list()
 				WT.eyecheck(user)
 			else
 				to_chat(user, "<span class='notice'>The emergency pressure relief valve has already been welded.</span>")
-			
+
 			if (src.air_contents)
 				var/const/welder_temperature = 1893.15
 				var/const/welder_mean_energy = 26000
 				var/const/welder_heat_capacity = welder_mean_energy / welder_temperature
-				
+
 				var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
 				var/total_capacity = src.air_contents.heat_capacity() + welder_heat_capacity
 				var/total_energy = current_energy + welder_mean_energy
-				
+
 				var/new_temperature = total_energy / total_capacity
-				
+
 				src.air_contents.temperature = new_temperature
-				
+
 		add_fingerprint(user)
 
 
@@ -240,7 +243,7 @@ var/list/global/tank_gauge_cache = list()
 
 	// this is the data which will be sent to the ui
 	var/data[0]
-	data["tankPressure"] = round(air_contents.return_pressure() ? air_contents.return_pressure() : 0)
+	data["tankPressure"] = round(air_contents?.return_pressure() ? air_contents.return_pressure() : 0)
 	data["releasePressure"] = round(distribute_pressure ? distribute_pressure : 0)
 	data["defaultReleasePressure"] = round(TANK_DEFAULT_RELEASE_PRESSURE)
 	data["maxReleasePressure"] = round(TANK_MAX_RELEASE_PRESSURE)
@@ -345,9 +348,10 @@ var/list/global/tank_gauge_cache = list()
 	if(tank_pressure < distribute_pressure)
 		distribute_pressure = tank_pressure
 
-	var/moles_needed = distribute_pressure*volume_to_return/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
-
-	return remove_air(moles_needed)
+	var/datum/gas_mixture/removed = remove_air(distribute_pressure*volume_to_return/(R_IDEAL_GAS_EQUATION*air_contents.temperature))
+	if(removed)
+		removed.volume = volume_to_return
+	return removed
 
 /obj/item/weapon/tank/Process()
 	//Allow for reactions
@@ -472,16 +476,15 @@ var/list/global/tank_gauge_cache = list()
 			qdel(src)
 		else
 			integrity-= 5
-	else if(pressure > TANK_LEAK_PRESSURE || air_contents.temperature - T0C > failure_temp)
+	else if(pressure && (pressure > TANK_LEAK_PRESSURE || air_contents.temperature - T0C > failure_temp))
 		if((integrity <= 19 || leaking) && !valve_welded)
 			var/turf/simulated/T = get_turf(src)
 			if(!T)
 				return
 			var/datum/gas_mixture/environment = loc.return_air()
 			var/env_pressure = environment.return_pressure()
-			var/tank_pressure = air_contents.return_pressure()
 
-			var/release_ratio = Clamp(0.002, sqrt(max(tank_pressure-env_pressure,0)/tank_pressure),1)
+			var/release_ratio = Clamp(0.002, sqrt(max(pressure-env_pressure,0)/pressure),1)
 			var/datum/gas_mixture/leaked_gas = air_contents.remove_ratio(release_ratio)
 			//dynamic air release based on ambient pressure
 
@@ -572,7 +575,7 @@ var/list/global/tank_gauge_cache = list()
 	S.master = proxyassembly	//Tell the assembly about its new owner
 	S.forceMove(src)			//Move the assembly
 
-	update_icon()
+	update_icon(TRUE)
 
 /obj/item/weapon/tank/proc/ignite()	//This happens when a bomb is told to explode
 	if (src.air_contents)
