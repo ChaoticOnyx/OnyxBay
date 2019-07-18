@@ -126,3 +126,35 @@
 	dir = SOUTH|EAST
 /turf/simulated/shuttle/wall/corner/alien/sw
 	dir = SOUTH|WEST
+
+/turf/simulated/shuttle/wall/cockpit
+	icon = 'icons/turf/shuttle_cock.dmi'
+	icon_state = "shuttlecock"
+	plane = OBJ_PLANE
+	layer = TABLE_LAYER
+	pixel_x = -64
+	pixel_y = -64
+	opacity = 0
+	light_range = 4
+	light_power = 5
+	luminosity = 1
+
+/turf/simulated/shuttle/wall/cockpit/pod
+	icon = 'icons/turf/pod_cock.dmi'
+	icon_state = "podcock"
+	pixel_x = -32
+	pixel_y = -32
+
+/turf/simulated/shuttle/wall/cockpit/mining
+	icon_state = "shuttlecock_mining"
+
+/turf/simulated/shuttle/wall/cockpit/syndie
+	icon_state = "shuttlecock_syndie"
+
+/turf/simulated/shuttle/wall/cockpit/window
+	name = "wall"
+	icon_state = "wall1"
+	icon = 'icons/turf/shuttle.dmi'
+	opacity = 0
+	pixel_x = 0
+	pixel_y = 0

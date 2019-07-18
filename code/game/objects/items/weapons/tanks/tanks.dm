@@ -197,20 +197,20 @@ var/list/global/tank_gauge_cache = list()
 				WT.eyecheck(user)
 			else
 				to_chat(user, "<span class='notice'>The emergency pressure relief valve has already been welded.</span>")
-			
+
 			if (src.air_contents)
 				var/const/welder_temperature = 1893.15
 				var/const/welder_mean_energy = 26000
 				var/const/welder_heat_capacity = welder_mean_energy / welder_temperature
-				
+
 				var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
 				var/total_capacity = src.air_contents.heat_capacity() + welder_heat_capacity
 				var/total_energy = current_energy + welder_mean_energy
-				
+
 				var/new_temperature = total_energy / total_capacity
-				
+
 				src.air_contents.temperature = new_temperature
-				
+
 		add_fingerprint(user)
 
 
