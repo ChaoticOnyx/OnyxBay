@@ -169,7 +169,6 @@
 	icon_state = "pussywagon"
 	anchored = 1
 	density = 1
-	foldable = 0
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	//copypaste sorry
 	var/amount_per_transfer_from_this = 5 //shit I dunno, adding this so syringes stop runtime erroring. --NeoFite

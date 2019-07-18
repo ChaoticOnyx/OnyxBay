@@ -4,7 +4,6 @@
 	icon_state = "wheelchair"
 	anchored = 0
 	buckle_movable = 1
-	foldable = 0
 
 	var/driving = 0
 	var/mob/living/pulling = null

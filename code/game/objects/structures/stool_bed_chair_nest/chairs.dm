@@ -1,12 +1,11 @@
 /obj/structure/bed/chair	//YES, chairs are a type of bed, which are a type of stool. This works, believe me.	-Pete
 	name = "chair"
-	desc = "A four-legged chair, rigid and slightly uncomfortable. Helpful when you don't want to use your legs at the moment."
+	desc = "A four-legged metal chair, rigid and slightly uncomfortable. Helpful when you don't want to use your legs at the moment."
 	icon_state = "chair_preview"
-	color = "#999999"
+	color = "#666666"
 	base_icon = "chair"
 	buckle_dir = 0
 	buckle_lying = 0 //force people to sit up in chairs when buckled
-	buckle_pixel_shift = "x=0;y=0"
 	var/propelled = 0 // Check for fire-extinguisher-driven chairs
 	var/foldable = 1
 
@@ -98,79 +97,6 @@
 	src.set_dir(turn(src.dir, 90))
 	return
 
-/* ======================================================= */
-/* -------------------- Folded Chairs -------------------- */
-/* ======================================================= */
-
-/obj/item/weapon/foldchair
-	name = "chair"
-	desc = "A folded chair. Good for smashing noggin-shaped things."
-	icon = 'icons/obj/furniture.dmi'
-	icon_state = "folded_chair"
-	item_state = "table_parts"
-	w_class = ITEM_SIZE_NO_CONTAINER // Jesus no
-	force = 12.5
-	throwforce = 10.0
-	throw_speed = 1
-	throw_range = 4
-	mod_weight = 1.25
-	mod_reach = 1.15
-	mod_handy = 0.3
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	matter = list(DEFAULT_WALL_MATERIAL = 1000)
-	var/material/padding_material
-	var/material/material
-
-/obj/item/weapon/foldchair/New()
-	..()
-	if(!material)
-		material = get_material_by_name(DEFAULT_WALL_MATERIAL)
-
-/obj/item/weapon/foldchair/attack_self(mob/user)
-	var/obj/structure/bed/chair/O = new/obj/structure/bed/chair(user.loc)
-	O.add_fingerprint(user)
-	O.dir = user.dir
-	O.material = material
-	O.padding_material = padding_material
-	O.update_icon()
-	visible_message("[user] unfolds \the [O.name].")
-	qdel(src)
-
-/obj/item/weapon/foldchair/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(isWrench(W))
-		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-		material.place_sheet(get_turf(src))
-		if(padding_material)
-			padding_material.place_sheet(get_turf(src))
-		qdel(src)
-	..()
-
-/obj/structure/bed/chair/MouseDrop(over_object, src_location, over_location)
-	..()
-	if(foldable && (over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-		if(!ishuman(usr))	return
-		if(buckled_mob)
-			visible_message(SPAN_WARN("[buckled_mob] falls down as [usr] collapses \the [src.name]!"))
-			var/mob/living/occupant = unbuckle_mob()
-			var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
-
-			occupant.apply_effect(4, STUN, blocked)
-			occupant.apply_effect(4, WEAKEN, blocked)
-			occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
-			playsound(src.loc, 'sound/weapons/punch1.ogg', 50, 1, -1)
-		else
-			visible_message("[usr] collapses \the [src.name].")
-		var/obj/item/weapon/foldchair/O = new/obj/item/weapon/foldchair(get_turf(src))
-		O.add_fingerprint(usr)
-		O.material = material
-		O.padding_material = padding_material
-		QDEL_IN(src, 0)
-		return
-
-/* ====================================================== */
-/* -------------------- Comfy Chairs -------------------- */
-/* ====================================================== */
-
 // Leaving this in for the sake of compilation.
 /obj/structure/bed/chair/comfy
 	desc = "It's a chair. It looks comfy."
@@ -214,10 +140,6 @@
 
 /obj/structure/bed/chair/comfy/captain/New(var/newloc,var/newmaterial)
 	..(newloc,"steel","black")
-
-/* ======================================================= */
-/* -------------------- Office Chairs -------------------- */
-/* ======================================================= */
 
 /obj/structure/bed/chair/office
 	anchored = 0
@@ -275,10 +197,7 @@
 	base_icon = "officechair_dark"
 	icon_state = "officechair_dark_preview"
 
-/* ===================================================== */
-/* -------------------- Misc Chairs -------------------- */
-/* ===================================================== */
-
+// Chair types
 /obj/structure/bed/chair/wood
 	desc = "Old is never too old to not be in fashion."
 	base_icon = "wooden_chair"
@@ -302,7 +221,6 @@
 	desc = "A strange chair, not from around here."
 	base_icon = "bogchair"
 	icon_state = "bogchair_preview"
-	foldable = 0
 
 /obj/structure/bed/chair/shuttle
 	name = "shuttle chair"
@@ -327,36 +245,40 @@
 /obj/structure/bed/chair/shuttle/red/New(var/newloc,var/newmaterial)
 	..(newloc,"plastic","carpet")
 
-// Colorful chairs
-/obj/structure/bed/chair/comfy
-	desc = "It's a chair. It looks comfy."
-	icon_state = "comfychair_preview"
-	base_icon = "comfychair"
-	foldable = 0
+/* ======================================================= */
+/* -------------------- Folded Chairs -------------------- */
+/* ======================================================= */
 
-/obj/structure/bed/chair/brown/New(var/newloc,var/newmaterial)
-	..(newloc,"steel","leather")
+/obj/item/weapon/foldchair
+	name = "chair"
+	desc = "A folded chair. Good for smashing noggin-shaped things."
+	icon = 'icons/obj/furniture.dmi'
+	icon_state = "folded_chair"
+	item_state = "gassembly"
+	w_class = ITEM_SIZE_NO_CONTAINER // Jesus no
 
-/obj/structure/bed/chair/red/New(var/newloc,var/newmaterial)
-	..(newloc,"steel","carpet")
+/obj/item/roller/attack_self(mob/user)
+	var/obj/structure/bed/chair/O = new/obj/structure/bed/chair(user.loc)
+	O.add_fingerprint(user)
+	qdel(src)
 
-/obj/structure/bed/chair/teal/New(var/newloc,var/newmaterial)
-	..(newloc,"steel","teal")
+/obj/structure/bed/chair/MouseDrop(over_object, src_location, over_location)
+	..()
+	if(foldable && (over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
+		if(!ishuman(usr))	return
+		if(buckled_mob)
+			visible_message(SPAN_WARN("[buckled_mob] falls down as [usr] collapses \the [src.name]!"))
+			var/mob/living/occupant = unbuckle_mob()
+			var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
 
-/obj/structure/bed/chair/black/New(var/newloc,var/newmaterial)
-	..(newloc,"steel","black")
+			occupant.apply_effect(4, STUN, blocked)
+			occupant.apply_effect(4, WEAKEN, blocked)
+			occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
+			playsound(src.loc, 'sound/weapons/punch1.ogg', 50, 1, -1)
+		else
+			visible_message("[usr] collapses \the [src.name].")
+		var/obj/item/weapon/foldchair/O = new/obj/item/weapon/foldchair(get_turf(src))
+		O.add_fingerprint(usr)
+		QDEL_IN(src, 0)
+		return
 
-/obj/structure/bed/chair/green/New(var/newloc,var/newmaterial)
-	..(newloc,"steel","green")
-
-/obj/structure/bed/chair/purp/New(var/newloc,var/newmaterial)
-	..(newloc,"steel","purple")
-
-/obj/structure/bed/chair/blue/New(var/newloc,var/newmaterial)
-	..(newloc,"steel","blue")
-
-/obj/structure/bed/chair/beige/New(var/newloc,var/newmaterial)
-	..(newloc,"steel","beige")
-
-/obj/structure/bed/chair/lime/New(var/newloc,var/newmaterial)
-	..(newloc,"steel","lime")
