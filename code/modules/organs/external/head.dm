@@ -80,6 +80,13 @@
 	. = ..(company, skip_prosthetics, 1)
 	has_lips = null
 
+/obj/item/organ/external/head/take_damage(brute, burn, damage_flags, used_weapon = null)
+	. = ..()
+	if ((brute_dam > 40) && prob(50))
+		disfigure("brute")
+	if (burn_dam > 40)
+		disfigure("burn")
+
 /obj/item/organ/external/head/no_eyes
 	eye_icon = "blank_eyes"
 

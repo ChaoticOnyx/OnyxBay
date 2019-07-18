@@ -1155,8 +1155,7 @@ obj/item/organ/external/proc/remove_clamps()
 		H.drop_from_inventory(W)
 	W.loc = owner
 
-/obj/item/organ/external/removed(var/mob/living/user, var/ignore_children = 0)
-
+/obj/item/organ/external/removed(mob/living/user, ignore_children = 0)
 	if(!owner)
 		return
 
@@ -1176,7 +1175,6 @@ obj/item/organ/external/proc/remove_clamps()
 			owner.drop_from_inventory(owner.wear_mask)
 
 	var/mob/living/carbon/human/victim = owner
-	var/is_robotic = BP_IS_ROBOTIC(src)
 
 	..()
 
@@ -1223,7 +1221,7 @@ obj/item/organ/external/proc/remove_clamps()
 	victim.organs_by_name[organ_tag] = null // Remove from owner's vars.
 
 	//Robotic limbs explode if sabotaged.
-	if(is_robotic && (status & ORGAN_SABOTAGED))
+	if(BP_IS_ROBOTIC(src) && (status & ORGAN_SABOTAGED))
 		victim.visible_message(
 			"<span class='danger'>\The [victim]'s [src.name] explodes violently!</span>",\
 			"<span class='danger'>Your [src.name] explodes!</span>",\
