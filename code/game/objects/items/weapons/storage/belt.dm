@@ -186,6 +186,13 @@
 	item_state = "swatbelt"
 	storage_slots = 9
 
+/obj/item/weapon/storage/belt/security/tactical/combat
+	name = "combat vest"
+	desc = "Robust tan chest rig with lots of pockets to hold whatever you need, but cannot hold in hands."
+	icon_state = "explorer"
+	item_state = "explorer"
+	storage_slots = 9
+
 /obj/item/weapon/storage/belt/waistpack
 	name = "waist pack"
 	desc = "A small bag designed to be worn on the waist. May make your butt look big."

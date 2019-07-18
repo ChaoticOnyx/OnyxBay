@@ -24,6 +24,17 @@
 	cold_protection = FEET
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 
+/obj/item/clothing/shoes/jackboots/tactical
+	name = "tactical jackboots"
+	desc = "Tall synthleather boots with an artificial shine. These ones seem to be reinforced with some sort of plating."
+	icon_state = "jackboots"
+	force = 3
+	armor = list(melee = 80, bullet = 60, laser = 60, energy = 25, bomb = 50, bio = 10, rad = 0)
+	siemens_coefficient = 0.7
+	can_hold_knife = 1
+	cold_protection = FEET
+	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+
 /obj/item/clothing/shoes/jackboots/unathi
 	name = "toe-less jackboots"
 	desc = "Modified pair of jackboots, particularly comfortable for those species whose toes hold claws."
