@@ -665,7 +665,7 @@ var/list/global/slot_flags_enumeration = list(
 	return 1 //we applied blood to the item
 
 /obj/item/proc/generate_blood_overlay(force = FALSE)
-	var/static/blood_overlay_cache
+	var/static/list/blood_overlay_cache
 
 	if(blood_overlay && !force)
 		return
@@ -676,6 +676,7 @@ var/list/global/slot_flags_enumeration = list(
 	I.Blend(new /icon('icons/effects/blood.dmi', rgb(255,255,255)), ICON_ADD) //fills the icon_state with white (except where it's transparent)
 	I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"), ICON_MULTIPLY) //adds blood and the remaining white areas become transparant
 	blood_overlay = image(I)
+	LAZYINITLIST(blood_overlay_cache)
 	blood_overlay_cache["[icon]" + icon_state] = blood_overlay
 
 /obj/item/proc/showoff(mob/user)

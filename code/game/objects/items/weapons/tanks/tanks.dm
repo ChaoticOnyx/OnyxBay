@@ -67,9 +67,9 @@ var/list/global/tank_gauge_cache = list()
 	update_icon()
 
 /obj/item/weapon/tank/Destroy()
-	QDEL_NULL(air_contents)
-
 	STOP_PROCESSING(SSobj, src)
+
+	QDEL_NULL(air_contents)
 	QDEL_NULL(proxyassembly)
 
 	if(istype(loc, /obj/item/device/transfer_valve))
@@ -83,7 +83,7 @@ var/list/global/tank_gauge_cache = list()
 	. = ..(user, 0)
 	if(.)
 		var/descriptive
-		if(!air_contents)
+		if(air_contents.total_moles == 0)
 			descriptive = "empty"
 		else
 			var/celsius_temperature = air_contents.temperature - T0C
@@ -341,8 +341,6 @@ var/list/global/tank_gauge_cache = list()
 	return 1
 
 /obj/item/weapon/tank/proc/remove_air_volume(volume_to_return)
-	if(!air_contents)
-		return null
 
 	var/tank_pressure = air_contents.return_pressure()
 	if(tank_pressure < distribute_pressure)
@@ -400,9 +398,6 @@ var/list/global/tank_gauge_cache = list()
 
 //Handle exploding, leaking, and rupturing of the tank
 /obj/item/weapon/tank/proc/check_status()
-	if(!air_contents)
-		return 0
-
 	var/pressure = air_contents.return_pressure()
 
 	if(pressure > TANK_FRAGMENT_PRESSURE)
