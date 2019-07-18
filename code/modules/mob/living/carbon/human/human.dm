@@ -1482,6 +1482,7 @@
 /mob/living/carbon/human/can_feel_pain(var/obj/item/organ/check_organ)
 	if(no_pain)
 		return 0
+		// TODO [V] Remove this dirty hack
 	if(isSynthetic())
 		return 0
 	if(check_organ)

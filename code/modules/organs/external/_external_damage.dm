@@ -223,7 +223,7 @@
 
 // Pain/halloss
 /obj/item/organ/external/proc/get_pain()
-	if(!can_feel_pain() || BP_IS_ROBOTIC(src))
+	if(!can_feel_pain())
 		return 0
 	var/lasting_pain = 0
 	if(is_broken())
