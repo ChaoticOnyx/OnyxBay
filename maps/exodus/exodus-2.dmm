@@ -2682,7 +2682,7 @@
 "aZD" = (/obj/effect/floor_decal/corner/blue,/obj/effect/floor_decal/corner/white{dir = 8},/obj/machinery/alarm{dir = 1; pixel_y = -22},/turf/simulated/floor/tiled,/area/hallway/secondary/entry/port)
 "aZE" = (/obj/machinery/light,/obj/effect/floor_decal/corner/blue,/obj/effect/floor_decal/corner/white{dir = 8},/turf/simulated/floor/tiled,/area/hallway/secondary/entry/port)
 "aZF" = (/obj/effect/floor_decal/corner/blue,/obj/effect/floor_decal/corner/white{dir = 8},/turf/simulated/floor/tiled,/area/hallway/secondary/entry/port)
-"aZG" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6},/obj/item/weapon/gun/projectile/pirate,/turf/simulated/floor/tiled,/area/hallway/secondary/entry/port)
+"aZG" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6},/turf/simulated/floor/tiled,/area/hallway/secondary/entry/port)
 "aZH" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/obj/effect/floor_decal/corner/blue,/obj/effect/floor_decal/corner/white{dir = 8},/turf/simulated/floor/tiled,/area/hallway/secondary/entry/port)
 "aZI" = (/obj/effect/floor_decal/corner/white{dir = 8},/turf/simulated/floor/tiled,/area/hallway/secondary/entry/port)
 "aZJ" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled,/area/hallway/secondary/entry/port)

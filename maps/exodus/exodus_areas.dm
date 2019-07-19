@@ -1011,6 +1011,23 @@
 	icon_state = "engineering"
 	ambience = list('sound/ambience/engineering/ambieng1.ogg')
 
+/area/engineering/lower
+	name = "\improper Engineering Lower Deck"
+	icon_state = "lower_engi"
+	ambience = list('sound/ambience/engineering/ambieng1.ogg')
+
+/area/engineering/lower/rust
+	name = "\improper R-UST Engine"
+	icon_state = "rust"
+
+/area/engineering/lower/rust/core
+	name = "\improper R-UST Core"
+	icon_state = "rust"
+
+/area/engineering/lower/rust/control
+	name = "\improper R-UST Control Room"
+	icon_state = "rust"
+
 /area/engineering/engine_airlock
 	name = "\improper Engine Room Airlock"
 	icon_state = "engine"
