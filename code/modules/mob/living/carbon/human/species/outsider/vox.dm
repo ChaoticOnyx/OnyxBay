@@ -22,6 +22,9 @@
 
 	warning_low_pressure = 50
 	hazard_low_pressure = 0
+	body_builds = list(
+		new/datum/body_build/vox
+	)
 
 	cold_level_1 = 80
 	cold_level_2 = 50
