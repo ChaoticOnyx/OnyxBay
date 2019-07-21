@@ -54,7 +54,7 @@
 /obj/item/weapon/airlock_brace/New()
 	..()
 	cur_health = max_health
-	electronics = new/obj/item/weapon/airlock_electronics/brace(src)
+	electronics = new /obj/item/weapon/airlock_electronics/brace(src)
 	update_access()
 
 /obj/item/weapon/airlock_brace/Destroy()

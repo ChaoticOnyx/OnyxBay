@@ -11,7 +11,7 @@ var/repository/mob/mob_repository = new()
 /repository/mob/proc/get_lite_mob(var/mob/M)
 	. = mobs_[mob2unique(M)]
 	if(!.)
-		. = new/datum/mob_lite(M)
+		. = new /datum/mob_lite(M)
 		mobs_[mob2unique(M)] = .
 
 /datum/mob_lite

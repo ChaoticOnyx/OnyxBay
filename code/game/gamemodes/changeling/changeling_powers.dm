@@ -30,7 +30,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 /datum/changeling/New()
 	..()
-	pick_chemistry = new/datum/reagents(120, src)
+	pick_chemistry = new /datum/reagents(120, src)
 	if(possible_changeling_IDs.len)
 		changelingID = pick(possible_changeling_IDs)
 		possible_changeling_IDs -= changelingID

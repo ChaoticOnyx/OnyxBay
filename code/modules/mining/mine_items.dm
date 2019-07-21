@@ -576,7 +576,7 @@
 	for(var/obj/item/weapon/ore/O in orange(7,user))
 		if(limit <= 0)
 			break
-		new/obj/effect/sparks(O.loc)
+		new /obj/effect/sparks(O.loc)
 		do_teleport(O, user, 0)
 		limit -= 1
 		CHECK_TICK

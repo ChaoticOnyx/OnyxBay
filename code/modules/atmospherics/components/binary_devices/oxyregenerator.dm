@@ -133,7 +133,7 @@
 			carbon_stored += co2_intake * carbon_efficiency
 			while (carbon_stored >= carbon_moles_per_piece)
 				carbon_stored -= carbon_moles_per_piece
-				var/atom/movable/product = new/obj/item/weapon/ore/coal
+				var/atom/movable/product = new /obj/item/weapon/ore/coal
 				product.dropInto(loc)
 			power_draw = power_rating * co2_intake
 			last_power_draw = power_draw

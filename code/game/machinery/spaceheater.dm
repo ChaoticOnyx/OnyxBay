@@ -17,7 +17,7 @@
 
 /obj/machinery/space_heater/New()
 	..()
-	cell = new/obj/item/weapon/cell/high(src)
+	cell = new /obj/item/weapon/cell/high(src)
 	update_icon()
 
 /obj/machinery/space_heater/update_icon(var/rebuild_overlay = 0)

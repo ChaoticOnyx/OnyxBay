@@ -45,7 +45,7 @@
 	if(v > 6)
 		T.icon_state = "desert[v-1]"
 		if(prob(10))
-			new/obj/structure/quicksand(T)
+			new /obj/structure/quicksand(T)
 
 /datum/random_map/noise/ore/rich
 	deep_val = 0.7

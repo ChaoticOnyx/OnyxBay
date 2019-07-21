@@ -130,7 +130,7 @@
 
 		for(var/atom/movable/A in component_parts)
 			A.forceMove(src.loc)
-		new/obj/machinery/constructable_frame/machine_frame(src.loc)
+		new /obj/machinery/constructable_frame/machine_frame(src.loc)
 		qdel(src)
 		return
 	..()

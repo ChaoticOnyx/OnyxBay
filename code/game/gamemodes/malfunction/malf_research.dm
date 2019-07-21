@@ -20,10 +20,10 @@
 	available_abilities = list()
 	unlocked_abilities = list()
 
-	available_abilities += new/datum/malf_research_ability/networking/basic_hack()
-	available_abilities += new/datum/malf_research_ability/interdiction/recall_shuttle()
-	available_abilities += new/datum/malf_research_ability/manipulation/electrical_pulse()
-	available_abilities += new/datum/malf_research_ability/passive/intellicard_interception
+	available_abilities += new /datum/malf_research_ability/networking/basic_hack()
+	available_abilities += new /datum/malf_research_ability/interdiction/recall_shuttle()
+	available_abilities += new /datum/malf_research_ability/manipulation/electrical_pulse()
+	available_abilities += new /datum/malf_research_ability/passive/intellicard_interception
 
 // Proc:		finish_research()
 // Parameters: 	None

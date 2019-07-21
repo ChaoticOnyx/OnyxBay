@@ -1293,7 +1293,7 @@ Buildable meters
 	if(!locate(/obj/machinery/atmospherics/pipe, src.loc))
 		to_chat(user, "<span class='warning'>You need to fasten it to a pipe</span>")
 		return 1
-	new/obj/machinery/meter( src.loc )
+	new /obj/machinery/meter( src.loc )
 	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 	to_chat(user, "<span class='notice'>You have fastened the meter to the pipe</span>")
 	qdel(src)

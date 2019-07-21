@@ -405,7 +405,7 @@
 		return
 	var/number_rots = rand(2,3)
 	for(var/i=0, i<number_rots, i++)
-		new/obj/effect/overlay/wallrot(src)
+		new /obj/effect/overlay/wallrot(src)
 
 /turf/simulated/wall/proc/can_melt()
 	if(material.flags & MATERIAL_UNMELTABLE)
@@ -415,7 +415,7 @@
 /turf/simulated/wall/proc/thermitemelt(mob/user as mob)
 	if(!can_melt())
 		return
-	var/obj/effect/overlay/O = new/obj/effect/overlay( src )
+	var/obj/effect/overlay/O = new /obj/effect/overlay( src )
 	O.SetName("Thermite")
 	O.desc = "Looks hot."
 	O.icon = 'icons/effects/fire.dmi'

@@ -31,7 +31,7 @@
 	their native tongue is a heavy hissing laungage called Sinta'Unathi."
 
 	body_builds = list(
-		new/datum/body_build/unathi
+		new /datum/body_build/unathi
 	)
 
 	cold_level_1 = 280 //Default 260 - Lower is better

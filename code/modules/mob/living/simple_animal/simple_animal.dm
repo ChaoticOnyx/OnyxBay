@@ -378,7 +378,7 @@
 			meat.SetName("[src.name] [meat.name]")
 		if(issmall(src))
 			user.visible_message("<span class='danger'>[user] chops up \the [src]!</span>")
-			new/obj/effect/decal/cleanable/blood/splatter(get_turf(src))
+			new /obj/effect/decal/cleanable/blood/splatter(get_turf(src))
 			qdel(src)
 		else
 			user.visible_message("<span class='danger'>[user] butchers \the [src] messily!</span>")

@@ -181,7 +181,7 @@
 /mob/living/silicon/ai/proc/create_powersupply()
 	if(psupply)
 		qdel(psupply)
-	psupply = new/obj/machinery/ai_powersupply(src)
+	psupply = new /obj/machinery/ai_powersupply(src)
 
 
 /*

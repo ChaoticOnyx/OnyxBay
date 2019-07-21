@@ -16,9 +16,9 @@
 	gluttonous = GLUT_TINY
 
 	body_builds = list(
-		new/datum/body_build,
-		new/datum/body_build/slim,
-		new/datum/body_build/slim/alt
+		new /datum/body_build,
+		new /datum/body_build/slim,
+		new /datum/body_build/slim/alt
 	)
 
 	spawn_flags = SPECIES_CAN_JOIN
@@ -106,8 +106,8 @@
 	of highly advanced cybernetic technology, causing a culture shock within Tajaran society."
 
 	body_builds = list(
-		new/datum/body_build/tajaran,
-		new/datum/body_build/slim/alt/tajaran
+		new /datum/body_build/tajaran,
+		new /datum/body_build/slim/alt/tajaran
 	)
 
 	cold_level_1 = 200 //Default 260
@@ -168,9 +168,9 @@
 	max_age = 90
 
 	body_builds = list(
-		new/datum/body_build,
-		new/datum/body_build/slim,
-		new/datum/body_build/slim/alt
+		new /datum/body_build,
+		new /datum/body_build/slim,
+		new /datum/body_build/slim/alt
 	)
 
 	burn_mod = 0.9
@@ -252,7 +252,7 @@
 	water and other radiation."
 
 	body_builds = list(
-		new/datum/body_build
+		new /datum/body_build
 	)
 
 	has_organ = list(

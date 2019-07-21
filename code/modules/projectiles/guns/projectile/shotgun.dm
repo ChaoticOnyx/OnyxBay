@@ -141,7 +141,7 @@
 		user.visible_message("<span class='notice'>\The [user] secures \the [src] with \the [W].</span>")
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		var/obj/item/weapon/gun/projectile/shotgun/pump/boomstick/herewego
-		herewego = new/obj/item/weapon/gun/projectile/shotgun/pump/boomstick { starts_loaded = 0 } (loc)
+		herewego = new /obj/item/weapon/gun/projectile/shotgun/pump/boomstick { starts_loaded = 0 } (loc)
 		if(ismob(loc))
 			var/mob/M = loc
 			M.drop_from_inventory(src)

@@ -249,7 +249,7 @@
 	if((!status) && (istype(W,/obj/item/stack/rods)))
 		var/obj/item/stack/rods/R = W
 		R.use(1)
-		var/obj/item/weapon/flamethrower/F = new/obj/item/weapon/flamethrower(user.loc)
+		var/obj/item/weapon/flamethrower/F = new /obj/item/weapon/flamethrower(user.loc)
 		src.loc = F
 		F.weldtool = src
 		if (user.client)
@@ -279,7 +279,7 @@
 		else
 			QDEL_NULL(src)
 		user.visible_message("<span class='notice'>\The [user] fits \the [W] to \the [src] as a crude barrel.</span>")
-		var/obj/item/weapon/boomstickframe/F = new/obj/item/weapon/boomstickframe(user.loc)
+		var/obj/item/weapon/boomstickframe/F = new /obj/item/weapon/boomstickframe(user.loc)
 		F.add_fingerprint(user)
 		return
 

@@ -61,7 +61,7 @@
 
 /datum/random_map/noise/exoplanet/grass/spawn_fauna(var/turf/T, value)
 	if(prob(5))
-		new/mob/living/simple_animal/hostile/giant_spider/nurse(T)
+		new /mob/living/simple_animal/hostile/giant_spider/nurse(T)
 	else
 		..()
 

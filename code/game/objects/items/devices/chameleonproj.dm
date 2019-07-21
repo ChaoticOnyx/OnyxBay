@@ -58,7 +58,7 @@
 		C.activate(O, usr, saved_icon, saved_icon_state, saved_overlays, src)
 		qdel(O)
 		to_chat(usr, "<span class='notice'>You activate the [src].</span>")
-		var/obj/effect/overlay/T = new/obj/effect/overlay(get_turf(src))
+		var/obj/effect/overlay/T = new /obj/effect/overlay(get_turf(src))
 		T.icon = 'icons/effects/effects.dmi'
 		flick("emppulse",T)
 		QDEL_IN(T, 8)

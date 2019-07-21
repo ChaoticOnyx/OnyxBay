@@ -28,7 +28,7 @@ var/bomb_set
 /obj/machinery/nuclearbomb/New()
 	..()
 	r_code = "[rand(10000, 99999.0)]"//Creates a random code upon object spawn.
-	wires = new/datum/wires/nuclearbomb(src)
+	wires = new /datum/wires/nuclearbomb(src)
 
 /obj/machinery/nuclearbomb/Destroy()
 	qdel(wires)

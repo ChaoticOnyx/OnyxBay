@@ -19,12 +19,12 @@ var/repository/admin_pm/admin_pm_repository = new()
 			CRASH("Invalid receiver: [log_info_line(receiver)]")
 
 	// Newest messages first
-	admin_pms_.Insert(1, new/datum/admin_privat_message(client_repository.get_lite_client(sender), receiver, message))
+	admin_pms_.Insert(1, new /datum/admin_privat_message(client_repository.get_lite_client(sender), receiver, message))
 
 /repository/admin_pm/proc/get_irc_client(key)
 	var/datum/client_lite/cl = irc_clients_by_name[key]
 	if(!cl)
-		cl = new/datum/client_lite()
+		cl = new /datum/client_lite()
 		cl.name = "IRC"
 		cl.key = key
 		irc_clients_by_name[key] = cl

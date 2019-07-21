@@ -7,15 +7,15 @@ var/global/datum/repository/crew/crew_repository = new()
 
 /datum/repository/crew/New()
 	cache_data = list()
-	var/PriorityQueue/general_modifiers = new/PriorityQueue(/proc/cmp_crew_sensor_modifier)
-	var/PriorityQueue/binary_modifiers = new/PriorityQueue(/proc/cmp_crew_sensor_modifier)
-	var/PriorityQueue/vital_modifiers = new/PriorityQueue(/proc/cmp_crew_sensor_modifier)
-	var/PriorityQueue/tracking_modifiers = new/PriorityQueue(/proc/cmp_crew_sensor_modifier)
+	var/PriorityQueue/general_modifiers = new /PriorityQueue(/proc/cmp_crew_sensor_modifier)
+	var/PriorityQueue/binary_modifiers = new /PriorityQueue(/proc/cmp_crew_sensor_modifier)
+	var/PriorityQueue/vital_modifiers = new /PriorityQueue(/proc/cmp_crew_sensor_modifier)
+	var/PriorityQueue/tracking_modifiers = new /PriorityQueue(/proc/cmp_crew_sensor_modifier)
 
-	general_modifiers.Enqueue(new/crew_sensor_modifier/general())
-	binary_modifiers.Enqueue(new/crew_sensor_modifier/binary())
-	vital_modifiers.Enqueue(new/crew_sensor_modifier/vital())
-	tracking_modifiers.Enqueue(new/crew_sensor_modifier/tracking())
+	general_modifiers.Enqueue(new /crew_sensor_modifier/general())
+	binary_modifiers.Enqueue(new /crew_sensor_modifier/binary())
+	vital_modifiers.Enqueue(new /crew_sensor_modifier/vital())
+	tracking_modifiers.Enqueue(new /crew_sensor_modifier/tracking())
 
 	modifier_queues = list()
 	modifier_queues[general_modifiers] = 0
@@ -38,7 +38,7 @@ var/global/datum/repository/crew/crew_repository = new()
 
 	var/datum/cache_entry/cache_entry = cache_data[num2text(z_level)]
 	if(!cache_entry)
-		cache_entry = new/datum/cache_entry
+		cache_entry = new /datum/cache_entry
 		cache_data[num2text(z_level)] = cache_entry
 
 	if(world.time < cache_entry.timestamp)

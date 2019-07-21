@@ -247,10 +247,10 @@
 					if(organ_tag == BP_HEAD && W.sharp)
 						user.visible_message("<span class='danger'><b>[user]</b> rips the skin off [src] with [W], revealing a skull.</span>")
 						if(istype(src.loc,/turf))
-							new/obj/item/weapon/skull(src.loc)
+							new /obj/item/weapon/skull(src.loc)
 							gibs(src.loc)
 						else
-							new/obj/item/weapon/skull(user.loc)
+							new /obj/item/weapon/skull(user.loc)
 							gibs(user.loc)
 						qdel(src)
 					else

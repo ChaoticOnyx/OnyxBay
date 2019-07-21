@@ -138,7 +138,7 @@
 			error = "Error creating account: An account with same address already exists."
 			return 1
 
-		var/datum/computer_file/data/email_account/new_account = new/datum/computer_file/data/email_account()
+		var/datum/computer_file/data/email_account/new_account = new /datum/computer_file/data/email_account()
 		new_account.login = complete_login
 		new_account.password = GenerateKey()
 		error = "Email [new_account.login] has been created, with generated password [new_account.password]"

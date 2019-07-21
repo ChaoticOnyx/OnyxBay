@@ -53,7 +53,7 @@
 		to_chat(M,"<span class='notice'>You feel oddly light, and somewhat disoriented as everything around you shimmers and warps ever so slightly.</span>")
 		M.overlay_fullscreen("bluespace", /obj/screen/fullscreen/bluespace_overlay)
 	M.confused = 20
-	bluegoasts += new/obj/effect/bluegoast/(get_turf(M),M)
+	bluegoasts += new /obj/effect/bluegoast/(get_turf(M),M)
 
 /datum/universal_state/bluespace_jump/proc/clear_bluespaced(var/mob/living/M)
 	if(M.client)

@@ -24,7 +24,7 @@
 	name = "OVERRIDE - /datum/atom_creator/simple shall always spawn"
 
 /datum/unit_test/override/atom_creator_simple_shall_always_spawn/start_test()
-	var/datum/atom_creator/simple/S = new/datum/atom_creator/simple(/obj/unit_test_light, 1)
+	var/datum/atom_creator/simple/S = new /datum/atom_creator/simple(/obj/unit_test_light, 1)
 	S.probability = 0
 
 	var/safe_turf = get_safe_turf()
@@ -42,7 +42,7 @@
 	name = "OVERRIDE - /datum/atom_creator/weighted shall spawn heaviest"
 
 /datum/unit_test/override/atom_creator_weighted_shall_spawn_heaviest/start_test()
-	var/datum/atom_creator/weighted/W = new/datum/atom_creator/weighted(list(/obj/unit_test_light = 9001, /obj/unit_test_heavy = 1))
+	var/datum/atom_creator/weighted/W = new /datum/atom_creator/weighted(list(/obj/unit_test_light = 9001, /obj/unit_test_heavy = 1))
 
 	var/safe_turf = get_safe_turf()
 	W.create(safe_turf)
@@ -59,10 +59,10 @@
 	name = "OVERRIDE - /datum/atom_creator/weighted shall spawn heaviest - Recursive"
 
 /datum/unit_test/override/atom_creator_weighted_shall_spawn_heaviest_recursive/start_test()
-	var/datum/atom_creator/weighted/W = new/datum/atom_creator/weighted(
+	var/datum/atom_creator/weighted/W = new /datum/atom_creator/weighted(
 		list(
-			new/datum/atom_creator/weighted(list(/obj/unit_test_light = 9001, /obj/unit_test_heavy = 1)),
-			new/datum/atom_creator/simple(/obj/unit_test_medium, 50)
+			new /datum/atom_creator/weighted(list(/obj/unit_test_light = 9001, /obj/unit_test_heavy = 1)),
+			new /datum/atom_creator/simple(/obj/unit_test_medium, 50)
 		)
 	)
 

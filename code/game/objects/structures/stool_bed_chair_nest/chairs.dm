@@ -124,7 +124,7 @@
 		material = get_material_by_name(MATERIAL_STEEL)
 
 /obj/item/weapon/foldchair/attack_self(mob/user)
-	var/obj/structure/bed/chair/O = new/obj/structure/bed/chair(user.loc)
+	var/obj/structure/bed/chair/O = new /obj/structure/bed/chair(user.loc)
 	O.add_fingerprint(user)
 	O.dir = user.dir
 	O.material = material
@@ -157,7 +157,7 @@
 			playsound(src.loc, 'sound/effects/fighting/punch1.ogg', 50, 1, -1)
 		else
 			visible_message("[usr] collapses \the [src.name].")
-		var/obj/item/weapon/foldchair/O = new/obj/item/weapon/foldchair(get_turf(src))
+		var/obj/item/weapon/foldchair/O = new /obj/item/weapon/foldchair(get_turf(src))
 		O.add_fingerprint(usr)
 		O.material = material
 		O.padding_material = padding_material

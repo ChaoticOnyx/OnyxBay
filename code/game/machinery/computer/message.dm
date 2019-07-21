@@ -53,7 +53,7 @@
 			screen = 2
 			spark_system.set_up(5, 0, src)
 			src.spark_system.start()
-			var/obj/item/weapon/paper/monitorkey/MK = new/obj/item/weapon/paper/monitorkey
+			var/obj/item/weapon/paper/monitorkey/MK = new /obj/item/weapon/paper/monitorkey
 			MK.dropInto(loc)
 			// Will help make emagging the console not so easy to get away with.
 			MK.info += "<br><br><font color='red'>£%@%(*$%&(£&?*(%&£/{}</font>"

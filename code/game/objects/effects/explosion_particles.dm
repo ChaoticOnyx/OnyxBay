@@ -52,13 +52,13 @@
 	else location = get_turf(loca)
 
 /datum/effect/system/explosion/proc/start()
-	new/obj/effect/explosion( location )
-	var/datum/effect/system/expl_particles/P = new/datum/effect/system/expl_particles()
+	new /obj/effect/explosion( location )
+	var/datum/effect/system/expl_particles/P = new /datum/effect/system/expl_particles()
 	P.set_up(10,location)
 	P.start()
 	addtimer(CALLBACK(src, .proc/make_smoke), 5)
 
 /datum/effect/system/explosion/proc/make_smoke()
-	var/datum/effect/effect/system/smoke_spread/S = new/datum/effect/effect/system/smoke_spread()
+	var/datum/effect/effect/system/smoke_spread/S = new /datum/effect/effect/system/smoke_spread()
 	S.set_up(5,0,location,null)
 	S.start()

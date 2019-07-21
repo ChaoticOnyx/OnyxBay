@@ -105,7 +105,7 @@
 		var/category = current_list[2]
 
 		for(var/entry in current_list[1])
-			var/datum/stored_items/vending_products/product = new/datum/stored_items/vending_products(src, entry)
+			var/datum/stored_items/vending_products/product = new /datum/stored_items/vending_products(src, entry)
 
 			product.price = (entry in prices) ? prices[entry] : 0
 			product.category = category
@@ -1209,7 +1209,7 @@
 		for(var/entry in current_list[1])
 			var/obj/item/seeds/S = new entry(src)
 			var/name = S.name
-			var/datum/stored_items/vending_products/product = new/datum/stored_items/vending_products(src, entry, name)
+			var/datum/stored_items/vending_products/product = new /datum/stored_items/vending_products(src, entry, name)
 
 			product.price = (entry in src.prices) ? src.prices[entry] : 0
 			product.amount = (current_list[1][entry]) ? current_list[1][entry] : 1

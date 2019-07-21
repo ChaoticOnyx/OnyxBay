@@ -112,7 +112,7 @@ proc/trigger_armed_response_team(var/force = 0)
 		return
 
 	command_announcement.Announce("It would appear that an emergency response team was requested for [station_name()]. We will prepare and send one as soon as possible.", "[GLOB.using_map.boss_name]")
-	evacuation_controller.add_can_call_predicate(new/datum/evacuation_predicate/ert())
+	evacuation_controller.add_can_call_predicate(new /datum/evacuation_predicate/ert())
 
 	can_call_ert = 0 // Only one call per round, gentleman.
 	send_emergency_team = 1

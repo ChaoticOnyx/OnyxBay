@@ -308,9 +308,9 @@ var/list/gear_datums = list()
 	if(flags & GEAR_HAS_COLOR_SELECTION)
 		gear_tweaks += gear_tweak_free_color_choice()
 	if(flags & GEAR_HAS_TYPE_SELECTION)
-		gear_tweaks += new/datum/gear_tweak/path/type(path)
+		gear_tweaks += new /datum/gear_tweak/path/type(path)
 	if(flags & GEAR_HAS_SUBTYPE_SELECTION)
-		gear_tweaks += new/datum/gear_tweak/path/subtype(path)
+		gear_tweaks += new /datum/gear_tweak/path/subtype(path)
 		
 /datum/gear/proc/get_description(var/metadata)
 	. = description

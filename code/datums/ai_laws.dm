@@ -123,7 +123,7 @@
 		if(AL.law == law)
 			return
 
-	var/new_law = new/datum/ai_law/ion(law)
+	var/new_law = new /datum/ai_law/ion(law)
 	ion_laws += new_law
 	if(state_ion.len < ion_laws.len)
 		state_ion += 1
@@ -138,7 +138,7 @@
 		if(AL.law == law)
 			return
 
-	var/new_law = new/datum/ai_law/inherent(law)
+	var/new_law = new /datum/ai_law/inherent(law)
 	inherent_laws += new_law
 	if(state_inherent.len < inherent_laws.len)
 		state_inherent += 1
@@ -162,7 +162,7 @@
 		if(state_supplied.len < supplied_laws.len)
 			state_supplied += 1
 
-	var/new_law = new/datum/ai_law/supplied(law, number)
+	var/new_law = new /datum/ai_law/supplied(law, number)
 	supplied_laws[number] = new_law
 	if(state_supplied.len < supplied_laws.len)
 		state_supplied += 1

@@ -26,7 +26,7 @@
 	if(existing)
 		existing.set_source_data(source, duration, severity)
 	else
-		existing = new/datum/alarm(origin, source, duration, severity)
+		existing = new /datum/alarm(origin, source, duration, severity)
 		new_alarm = 1
 
 	alarms |= existing

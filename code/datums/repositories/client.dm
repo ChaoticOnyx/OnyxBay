@@ -16,7 +16,7 @@ var/repository/client/client_repository = new()
 		M = C.mob
 	. = clients_[mob2unique(M)]
 	if(!.)
-		. = new/datum/client_lite(M)
+		. = new /datum/client_lite(M)
 		clients_[mob2unique(M)] = .
 
 /datum/client_lite

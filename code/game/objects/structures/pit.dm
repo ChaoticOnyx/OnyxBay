@@ -29,7 +29,7 @@
 				visible_message("<span class='notice'>\The [user] finishes the grave marker</span>")
 				var/obj/item/stack/material/wood/plank = W
 				plank.use(1)
-				new/obj/structure/gravemarker(src.loc)
+				new /obj/structure/gravemarker(src.loc)
 			else
 				to_chat(user, "<span class='notice'>You stop making a grave marker.</span>")
 		return

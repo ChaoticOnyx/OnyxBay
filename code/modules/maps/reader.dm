@@ -12,11 +12,11 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 
 /dmm_suite
 		// /"([a-zA-Z]+)" = \(((?:.|\n)*?)\)\n(?!\t)|\((\d+),(\d+),(\d+)\) = \{"([a-zA-Z\n]*)"\}/g
-	var/static/regex/dmmRegex = new/regex({""(\[a-zA-Z]+)" = \\(((?:.|\n)*?)\\)\n(?!\t)|\\((\\d+),(\\d+),(\\d+)\\) = \\{"(\[a-zA-Z\n]*)"\\}"}, "g")
+	var/static/regex/dmmRegex = new /regex({""(\[a-zA-Z]+)" = \\(((?:.|\n)*?)\\)\n(?!\t)|\\((\\d+),(\\d+),(\\d+)\\) = \\{"(\[a-zA-Z\n]*)"\\}"}, "g")
 		// /^[\s\n]+"?|"?[\s\n]+$|^"|"$/g
-	var/static/regex/trimQuotesRegex = new/regex({"^\[\\s\n]+"?|"?\[\\s\n]+$|^"|"$"}, "g")
+	var/static/regex/trimQuotesRegex = new /regex({"^\[\\s\n]+"?|"?\[\\s\n]+$|^"|"$"}, "g")
 		// /^[\s\n]+|[\s\n]+$/
-	var/static/regex/trimRegex = new/regex("^\[\\s\n]+|\[\\s\n]+$", "g")
+	var/static/regex/trimRegex = new /regex("^\[\\s\n]+|\[\\s\n]+$", "g")
 	var/static/list/modelCache = list()
 	var/static/space_key
 	#ifdef TESTING
