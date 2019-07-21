@@ -59,7 +59,7 @@ var/intercom_range_display_status = 0
 
 	if(camera_range_display_status)
 		for(var/obj/machinery/camera/C in cameranet.cameras)
-			new/obj/effect/debugging/camera_range(C.loc)
+			new /obj/effect/debugging/camera_range(C.loc)
 	feedback_add_details("admin_verb","mCRD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
@@ -115,7 +115,7 @@ var/intercom_range_display_status = 0
 	if(intercom_range_display_status)
 		for(var/obj/item/device/radio/intercom/I in world)
 			for(var/turf/T in orange(7,I))
-				var/obj/effect/debugging/marker/F = new/obj/effect/debugging/marker(T)
+				var/obj/effect/debugging/marker/F = new /obj/effect/debugging/marker(T)
 				if (!(F in view(7,I.loc)))
 					qdel(F)
 	feedback_add_details("admin_verb","mIRD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

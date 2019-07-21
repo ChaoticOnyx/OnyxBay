@@ -24,7 +24,7 @@
 	// Damaged printer causes the resulting paper to be somewhat harder to read.
 	if(damage > damage_malfunction)
 		text_to_print = stars(text_to_print, 100-malfunction_probability)
-	new/obj/item/weapon/paper(get_turf(holder2),text_to_print, paper_title)
+	new /obj/item/weapon/paper(get_turf(holder2),text_to_print, paper_title)
 
 	stored_paper--
 	return 1

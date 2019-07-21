@@ -171,8 +171,8 @@
 								else				//Unknown escaped text
 									buf+=char
 					if("\n")
-						. = new/token/string(buf, line, COL)
-						errors+=new/scriptError("Unterminated string. Newline reached.", .)
+						. = new /token/string(buf, line, COL)
+						errors+=new /scriptError("Unterminated string. Newline reached.", .)
 						line++
 						linepos=codepos
 						break
@@ -181,7 +181,7 @@
 							break
 						else
 							buf+=char     //Just a normal character in a string
-			if(!.) return new/token/string(buf, line, COL)
+			if(!.) return new /token/string(buf, line, COL)
 
 /*
 	Proc: ReadWord
@@ -231,7 +231,7 @@
 				char=copytext(code, codepos, codepos+1)
 			var/token/number/T=new(buf, line, COL)
 			if(isnull(text2num(buf)))
-				errors+=new/scriptError("Bad number: ", T)
+				errors+=new /scriptError("Bad number: ", T)
 				T.value=0
 			codepos-- //allow main Scan() proc to read the next character
 			return T
@@ -278,5 +278,5 @@
 					if(expectedend) expectedend = 0
 
 				if(comm == 2)
-					errors+=new/scriptError/UnterminatedComment()
+					errors+=new /scriptError/UnterminatedComment()
 

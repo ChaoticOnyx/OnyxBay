@@ -23,7 +23,7 @@
 
 /decl/backpack_outfit/satchel/New()
 	..()
-	tweaks += new/datum/backpack_tweak/selection/specified_types_as_list(typesof(/obj/item/weapon/storage/backpack/satchel/leather) + /obj/item/weapon/storage/backpack/satchel/grey)
+	tweaks += new /datum/backpack_tweak/selection/specified_types_as_list(typesof(/obj/item/weapon/storage/backpack/satchel/leather) + /obj/item/weapon/storage/backpack/satchel/grey)
 
 /decl/backpack_outfit/messenger_bag
 	name = "Messenger bag"
@@ -49,9 +49,9 @@
 		CRASH("May not have both type and subtype selection tweaks")
 
 	if(flags & BACKPACK_HAS_TYPE_SELECTION)
-		tweaks += new/datum/backpack_tweak/selection/types(path)
+		tweaks += new /datum/backpack_tweak/selection/types(path)
 	if(flags & BACKPACK_HAS_SUBTYPE_SELECTION)
-		tweaks += new/datum/backpack_tweak/selection/subtypes(path)
+		tweaks += new /datum/backpack_tweak/selection/subtypes(path)
 
 /decl/backpack_outfit/proc/spawn_backpack(var/location, var/metadata, var/desired_type)
 	metadata = metadata || list()

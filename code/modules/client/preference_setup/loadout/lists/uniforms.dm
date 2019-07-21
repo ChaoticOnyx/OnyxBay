@@ -45,7 +45,7 @@
 	suits += /obj/item/clothing/under/det
 	suits += /obj/item/clothing/under/det/black
 	suits += /obj/item/clothing/under/det/grey
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(suits)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(suits)
 
 /datum/gear/uniform/scrubs
 	display_name = "standard medical scrubs"
@@ -70,7 +70,7 @@
 	dresses += /obj/item/clothing/under/dress/dress_pink
 	dresses += /obj/item/clothing/under/dress/dress_purple
 	dresses += /obj/item/clothing/under/sundress
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(dresses)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(dresses)
 
 /datum/gear/uniform/skirt
 	display_name = "skirt selection"
@@ -134,7 +134,7 @@
 	// corps += /obj/item/clothing/under/grayson
 	// corps += /obj/item/clothing/under/focal
 	// corps += /obj/item/clothing/under/rank/ntwork
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(corps)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(corps)
 */
 
 /datum/gear/uniform/sterile

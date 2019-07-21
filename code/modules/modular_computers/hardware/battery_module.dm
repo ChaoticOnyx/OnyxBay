@@ -58,7 +58,7 @@
 
 /obj/item/weapon/computer_hardware/battery_module/lambda/New()
 	..()
-	battery = new/obj/item/weapon/cell/infinite(src)
+	battery = new /obj/item/weapon/cell/infinite(src)
 
 
 /obj/item/weapon/computer_hardware/battery_module/diagnostics(var/mob/user)
@@ -66,7 +66,7 @@
 	to_chat(user, "Internal battery charge: [battery.charge]/[battery.maxcharge] CU")
 
 /obj/item/weapon/computer_hardware/battery_module/New()
-	battery = new/obj/item/weapon/cell(src)
+	battery = new /obj/item/weapon/cell(src)
 	battery.maxcharge = battery_rating
 	battery.charge = 0
 	..()

@@ -130,7 +130,7 @@
 			switch(chosen)
 				if(MATERIAL_IRON)
 					while(amt_iron > 0 && coinsToProduce > 0)
-						new/obj/item/weapon/coin/iron(M)
+						new /obj/item/weapon/coin/iron(M)
 						amt_iron -= 20
 						coinsToProduce--
 						newCoins++

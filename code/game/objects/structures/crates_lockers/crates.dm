@@ -173,7 +173,7 @@ obj/structure/closet/crate
 	return_air()
 		var/datum/gas_mixture/gas = (..())
 		if(!gas)	return null
-		var/datum/gas_mixture/newgas = new/datum/gas_mixture()
+		var/datum/gas_mixture/newgas = new /datum/gas_mixture()
 		newgas.copy_from(gas)
 		if(newgas.temperature <= target_temp)	return
 

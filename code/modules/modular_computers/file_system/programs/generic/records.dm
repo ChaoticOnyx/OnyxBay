@@ -122,7 +122,7 @@
 		if(!check_access(usr, access_heads))
 			to_chat(usr, "Access Denied.")
 			return
-		active_record = new/datum/computer_file/crew_record()
+		active_record = new /datum/computer_file/crew_record()
 		GLOB.all_crew_records.Add(active_record)
 		return 1
 	if(href_list["print_active"])

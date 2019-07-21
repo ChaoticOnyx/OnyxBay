@@ -245,7 +245,7 @@
 
 /obj/item/weapon/archaeological_find/tank/spawn_item()
 	item_type = "[pick("cylinder","tank","chamber")]"
-	var/obj/item/weapon/tank/new_item = new/obj/item/weapon/tank(loc)
+	var/obj/item/weapon/tank/new_item = new /obj/item/weapon/tank(loc)
 	new_item.air_contents.gas.Cut()
 	new_item.air_contents.adjust_gas(pick(gas_data.gases),15)
 	additional_desc = "It [pick("gloops","sloshes")] slightly when you shake it."

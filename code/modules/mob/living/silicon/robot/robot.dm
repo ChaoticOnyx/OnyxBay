@@ -209,7 +209,7 @@
 // setup the PDA and its name
 /mob/living/silicon/robot/proc/setup_PDA()
 	if (!rbPDA)
-		rbPDA = new/obj/item/device/pda/ai(src)
+		rbPDA = new /obj/item/device/pda/ai(src)
 	rbPDA.set_name_and_job(custom_name,"[modtype] [braintype]")
 
 //If there's an MMI in the robot, have it ejected when the mob goes away. --NEO
@@ -558,14 +558,14 @@
 				user.visible_message("<span class='notice'>\The [user] begins ripping [mmi] from [src].</span>", "<span class='notice'>You jam the crowbar into the robot and begin levering [mmi].</span>")
 				if(do_after(user, 50, src))
 					to_chat(user, "<span class='notice'>You damage some parts of the chassis, but eventually manage to rip out [mmi]!</span>")
-					var/obj/item/robot_parts/robot_suit/C = new/obj/item/robot_parts/robot_suit(loc)
-					C.parts[BP_L_LEG] = new/obj/item/robot_parts/l_leg(C)
-					C.parts[BP_R_LEG] = new/obj/item/robot_parts/r_leg(C)
-					C.parts[BP_L_ARM] = new/obj/item/robot_parts/l_arm(C)
-					C.parts[BP_R_ARM] = new/obj/item/robot_parts/r_arm(C)
+					var/obj/item/robot_parts/robot_suit/C = new /obj/item/robot_parts/robot_suit(loc)
+					C.parts[BP_L_LEG] = new /obj/item/robot_parts/l_leg(C)
+					C.parts[BP_R_LEG] = new /obj/item/robot_parts/r_leg(C)
+					C.parts[BP_L_ARM] = new /obj/item/robot_parts/l_arm(C)
+					C.parts[BP_R_ARM] = new /obj/item/robot_parts/r_arm(C)
 					C.update_icon()
 					drop_all_upgrades()
-					new/obj/item/robot_parts/chest(loc)
+					new /obj/item/robot_parts/chest(loc)
 					qdel(src)
 
 			else

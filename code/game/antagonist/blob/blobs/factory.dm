@@ -31,7 +31,7 @@
 	anim(target = loc, a_icon = icon, flick_anim = "sporepulse", sleeptime = 150)
 
 	spawn(10)
-		new/mob/living/simple_animal/hostile/blobspore(src.loc, src)
+		new /mob/living/simple_animal/hostile/blobspore(src.loc, src)
 
 	return 1
 

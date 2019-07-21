@@ -475,7 +475,7 @@
 		W.burn((temperature/4))//Added so that you can't set off a massive chain reaction with a small flame
 	for(var/obj/machinery/door/airlock/phoron/D in range(3,src))
 		D.ignite(temperature/4)
-	new/obj/structure/door_assembly( src.loc )
+	new /obj/structure/door_assembly( src.loc )
 	qdel(src)
 
 /obj/machinery/door/airlock/sandstone
@@ -1306,9 +1306,9 @@ About the new airlock wires panel:
 	if(T && (T.z in GLOB.using_map.admin_levels))
 		secured_wires = 1
 	if (secured_wires)
-		wires = new/datum/wires/airlock/secure(src)
+		wires = new /datum/wires/airlock/secure(src)
 	else
-		wires = new/datum/wires/airlock(src)
+		wires = new /datum/wires/airlock(src)
 
 /obj/machinery/door/airlock/Initialize()
 	if(src.closeOtherId != null)
@@ -1340,9 +1340,9 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/proc/create_electronics()
 	//create new electronics
 	if (secured_wires)
-		src.electronics = new/obj/item/weapon/airlock_electronics/secure( src.loc )
+		src.electronics = new /obj/item/weapon/airlock_electronics/secure( src.loc )
 	else
-		src.electronics = new/obj/item/weapon/airlock_electronics( src.loc )
+		src.electronics = new /obj/item/weapon/airlock_electronics( src.loc )
 
 	//update the electronics to match the door's access
 	if(!src.req_access)

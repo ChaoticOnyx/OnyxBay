@@ -197,7 +197,7 @@
 	var/obj/item/weapon/reagent_containers/container = tool
 
 	var/amount = container.amount_per_transfer_from_this
-	var/temp_holder = new/obj()
+	var/temp_holder = new /obj()
 	var/datum/reagents/temp_reagents = new(amount, temp_holder)
 	container.reagents.trans_to_holder(temp_reagents, amount)
 

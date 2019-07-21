@@ -547,7 +547,7 @@ var/global/datum/controller/occupations/job_master
 			to_chat(H, "You were not assigned an email address.")
 			H.mind.store_memory("You were not assigned an email address.")
 		else
-			var/datum/computer_file/data/email_account/EA = new/datum/computer_file/data/email_account()
+			var/datum/computer_file/data/email_account/EA = new /datum/computer_file/data/email_account()
 			EA.password = GenerateKey()
 			EA.login = 	complete_login
 			to_chat(H, "Your email account address is <b>[EA.login]</b> and the password is <b>[EA.password]</b>. This information has also been placed into your notes.")

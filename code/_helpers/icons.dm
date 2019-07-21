@@ -769,9 +769,9 @@ proc // Creates a single icon from a given /atom or /image.  Only the first argu
 			else // 'I' is an appearance object.
 				if(istype(A,/obj/machinery/atmospherics) && I in A.underlays)
 					var/image/Im = I
-					add = getFlatIcon(new/image(I), Im.dir, curicon, curstate, curblend, 1)
+					add = getFlatIcon(new /image(I), Im.dir, curicon, curstate, curblend, 1)
 				else
-					add = getFlatIcon(new/image(I), curdir, curicon, curstate, curblend, always_use_defdir)
+					add = getFlatIcon(new /image(I), curdir, curicon, curstate, curblend, always_use_defdir)
 
 			// Find the new dimensions of the flat icon to fit the added overlay
 			addX1 = min(flatX1, I:pixel_x+1)

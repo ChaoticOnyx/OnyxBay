@@ -48,7 +48,7 @@
 	CC.amount = 2
 	var/obj/item/weapon/airlock_electronics/ae
 	if(!electronics)
-		ae = new/obj/item/weapon/airlock_electronics( src.loc )
+		ae = new /obj/item/weapon/airlock_electronics( src.loc )
 		if(!src.req_access)
 			src.check_access()
 		if(src.req_access.len)
@@ -214,7 +214,7 @@
 		if (do_after(user,40,src))
 			to_chat(user, "<span class='notice'>You removed the windoor electronics!</span>")
 
-			var/obj/structure/windoor_assembly/wa = new/obj/structure/windoor_assembly(src.loc)
+			var/obj/structure/windoor_assembly/wa = new /obj/structure/windoor_assembly(src.loc)
 			if (istype(src, /obj/machinery/door/window/brigdoor))
 				wa.secure = "secure_"
 				wa.SetName("Secure Wired Windoor Assembly")
@@ -228,7 +228,7 @@
 
 			var/obj/item/weapon/airlock_electronics/ae
 			if(!electronics)
-				ae = new/obj/item/weapon/airlock_electronics( src.loc )
+				ae = new /obj/item/weapon/airlock_electronics( src.loc )
 				if(!src.req_access)
 					src.check_access()
 				if(src.req_access.len)

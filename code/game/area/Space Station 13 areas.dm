@@ -212,7 +212,7 @@ area/space/atmosalert()
 
 /area/beach/New()
 	..()
-	var/sound/S = new/sound()
+	var/sound/S = new /sound()
 	mysound = S
 	S.file = 'sound/ambience/shore.ogg'
 	S.repeat = 1

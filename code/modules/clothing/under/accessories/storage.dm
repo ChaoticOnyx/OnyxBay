@@ -14,7 +14,7 @@
 	create_storage()
 
 /obj/item/clothing/accessory/storage/proc/create_storage()
-	hold = new/obj/item/weapon/storage/internal/pockets(src, slots, max_w_class)
+	hold = new /obj/item/weapon/storage/internal/pockets(src, slots, max_w_class)
 
 /obj/item/clothing/accessory/storage/attack_hand(mob/user as mob)
 	if (has_suit && hold)	//if we are part of a suit
@@ -82,7 +82,7 @@
 	slots = 4 //to accomodate it being slotless
 
 /obj/item/clothing/accessory/storage/drop_pouches/create_storage()
-	hold = new/obj/item/weapon/storage/internal/pouch(src, slots*base_storage_cost(max_w_class))
+	hold = new /obj/item/weapon/storage/internal/pouch(src, slots*base_storage_cost(max_w_class))
 
 /obj/item/clothing/accessory/storage/drop_pouches/black
 	name = "black drop pouches"

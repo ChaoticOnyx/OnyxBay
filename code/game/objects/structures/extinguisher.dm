@@ -10,7 +10,7 @@
 
 /obj/structure/extinguisher_cabinet/New()
 	..()
-	has_extinguisher = new/obj/item/weapon/extinguisher(src)
+	has_extinguisher = new /obj/item/weapon/extinguisher(src)
 
 /obj/structure/extinguisher_cabinet/attackby(obj/item/O, mob/user)
 	if(isrobot(user))

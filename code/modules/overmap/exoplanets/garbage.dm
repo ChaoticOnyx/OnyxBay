@@ -49,10 +49,10 @@
 	..()
 	var/v = noise2value(value)
 	if(v > 5)
-		new/obj/structure/rubble/house(T)
+		new /obj/structure/rubble/house(T)
 	else
 		if(prob(2))
-			new/obj/structure/rubble/war(T)
+			new /obj/structure/rubble/war(T)
 		if(prob(0.02))
 			var/datum/artifact_find/A = new()
 			new A.artifact_find_type(T)

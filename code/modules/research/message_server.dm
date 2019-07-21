@@ -97,11 +97,11 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 		if (findtextEx(message,token))
 			message = "<font color=\"red\">[message]</font>"	//Rejected messages will be indicated by red color.
 			result = token										//Token caused rejection (if there are multiple, last will be chosen>.
-	pda_msgs += new/datum/data_pda_msg(recipient,sender,message)
+	pda_msgs += new /datum/data_pda_msg(recipient,sender,message)
 	return result
 
 /obj/machinery/message_server/proc/send_rc_message(var/recipient = "",var/sender = "",var/message = "",var/stamp = "", var/id_auth = "", var/priority = 1)
-	rc_msgs += new/datum/data_rc_msg(recipient,sender,message,stamp,id_auth)
+	rc_msgs += new /datum/data_rc_msg(recipient,sender,message,stamp,id_auth)
 	var/authmsg = "[message]<br>"
 	if (id_auth)
 		authmsg += "[id_auth]<br>"
@@ -263,7 +263,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 	var/turf/T = locate(1,1,2)
 	if(T)
 		blackbox = null
-		var/obj/machinery/blackbox_recorder/BR = new/obj/machinery/blackbox_recorder(T)
+		var/obj/machinery/blackbox_recorder/BR = new /obj/machinery/blackbox_recorder(T)
 		BR.msg_common = msg_common
 		BR.msg_science = msg_science
 		BR.msg_command = msg_command

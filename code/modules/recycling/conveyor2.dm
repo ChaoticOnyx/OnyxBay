@@ -82,7 +82,7 @@
 /obj/machinery/conveyor/attackby(var/obj/item/I, mob/user)
 	if(isCrowbar(I))
 		if(!(stat & BROKEN))
-			var/obj/item/conveyor_construct/C = new/obj/item/conveyor_construct(src.loc)
+			var/obj/item/conveyor_construct/C = new /obj/item/conveyor_construct(src.loc)
 			C.id = id
 			transfer_fingerprints_to(C)
 		to_chat(user, "<span class='notice'>You remove the conveyor belt.</span>")
@@ -222,7 +222,7 @@
 
 /obj/machinery/conveyor_switch/attackby(obj/item/I, mob/user, params)
 	if(isCrowbar(I))
-		var/obj/item/conveyor_switch_construct/C = new/obj/item/conveyor_switch_construct(src.loc)
+		var/obj/item/conveyor_switch_construct/C = new /obj/item/conveyor_switch_construct(src.loc)
 		C.id = id
 		transfer_fingerprints_to(C)
 		to_chat(user, "<span class='notice'>You deattach the conveyor switch.</span>")
@@ -280,7 +280,7 @@
 			return
 		cdir |= CB.dir
 		qdel(CB)
-	var/obj/machinery/conveyor/C = new/obj/machinery/conveyor(A,cdir)
+	var/obj/machinery/conveyor/C = new /obj/machinery/conveyor(A,cdir)
 	C.id = id
 	transfer_fingerprints_to(C)
 	qdel(src)
@@ -308,6 +308,6 @@
 	if(!found)
 		to_chat(user, "\icon[src]<span class=notice>The conveyor switch did not detect any linked conveyor belts in range.</span>")
 		return
-	var/obj/machinery/conveyor_switch/NC = new/obj/machinery/conveyor_switch(A, id)
+	var/obj/machinery/conveyor_switch/NC = new /obj/machinery/conveyor_switch(A, id)
 	transfer_fingerprints_to(NC)
 	qdel(src)

@@ -42,7 +42,7 @@
 		to_chat(user, "<span class='notice'>You begin dismantling \the [src].</span>")
 		if(do_after(user,25,src))
 			to_chat(user, "<span class='notice'>You dismantle \the [src].</span>")
-			new/obj/item/stack/material/wood(get_turf(src), 5)
+			new /obj/item/stack/material/wood(get_turf(src), 5)
 			for(var/obj/item/weapon/book/b in contents)
 				b.loc = (get_turf(src))
 			qdel(src)

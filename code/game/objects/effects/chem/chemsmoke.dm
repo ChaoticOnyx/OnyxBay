@@ -98,7 +98,7 @@
 
 /datum/effect/effect/system/smoke_spread/chem/New()
 	..()
-	chemholder = new/obj()
+	chemholder = new /obj()
 	chemholder.create_reagents(500)
 
 //Sets up the chem smoke effect

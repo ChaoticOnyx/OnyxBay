@@ -50,7 +50,7 @@
 		qdel(F)
 		spawn( 300 )
 			injecting = 0
-			new/obj/item/weapon/fuel(src.loc)
+			new /obj/item/weapon/fuel(src.loc)
 			connected.H_fuel += fuel
 
 	if(istype(F, /obj/item/weapon/fuel/antiH))

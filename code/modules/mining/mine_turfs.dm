@@ -533,7 +533,7 @@ var/list/mining_floors = list()
 		return
 
 	for(var/i=0;i<(rand(3)+2);i++)
-		new/obj/item/weapon/ore/glass(src)
+		new /obj/item/weapon/ore/glass(src)
 
 	dug = 1
 	icon_state = "asteroid_dug"

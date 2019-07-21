@@ -236,7 +236,7 @@
 	if(do_after(user, 50, src))
 		if(check_terminal_exists(tempLoc, user, tempDir))
 			return 1
-		var/obj/machinery/power/terminal/term = new/obj/machinery/power/terminal(tempLoc)
+		var/obj/machinery/power/terminal/term = new /obj/machinery/power/terminal(tempLoc)
 		term.set_dir(tempDir)
 		term.master = src
 		term.connect_to_network()

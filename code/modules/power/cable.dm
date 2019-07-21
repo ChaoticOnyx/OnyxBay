@@ -167,9 +167,9 @@ var/list/possible_cable_coil_colours
 			return
 
 		if(src.d1)	// 0-X cables are 1 unit, X-X cables are 2 units long
-			new/obj/item/stack/cable_coil(T, 2, color)
+			new /obj/item/stack/cable_coil(T, 2, color)
 		else
-			new/obj/item/stack/cable_coil(T, 1, color)
+			new /obj/item/stack/cable_coil(T, 1, color)
 
 		for(var/mob/O in viewers(src, null))
 			O.show_message("<span class='warning'>[user] cuts the cable.</span>", 1)
@@ -229,12 +229,12 @@ var/list/possible_cable_coil_colours
 			qdel(src)
 		if(2.0)
 			if (prob(50))
-				new/obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, color)
+				new /obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, color)
 				qdel(src)
 
 		if(3.0)
 			if (prob(25))
-				new/obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, color)
+				new /obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, color)
 				qdel(src)
 
 obj/structure/cable/proc/cableColor(var/colorC)
@@ -751,7 +751,7 @@ obj/structure/cable/proc/cableColor(var/colorC)
 
 		if (C.shock(user, 50))
 			if (prob(50)) //fail
-				new/obj/item/stack/cable_coil(C.loc, 2, C.color)
+				new /obj/item/stack/cable_coil(C.loc, 2, C.color)
 				qdel(C)
 				return
 
@@ -786,7 +786,7 @@ obj/structure/cable/proc/cableColor(var/colorC)
 	use(1)
 	if (C.shock(user, 50))
 		if (prob(50)) //fail
-			new/obj/item/stack/cable_coil(C.loc, 1, C.color)
+			new /obj/item/stack/cable_coil(C.loc, 1, C.color)
 			qdel(C)
 
 //////////////////////////////

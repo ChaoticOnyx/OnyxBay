@@ -12,7 +12,7 @@
 
 	..()
 
-	reagents = new/datum/reagents(50, src)
+	reagents = new /datum/reagents(50, src)
 
 	//Handle some post-spawn var stuff.
 	if(planttype)

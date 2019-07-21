@@ -21,7 +21,7 @@
 	release_force = 20
 	throw_distance = 30
 	var/max_rockets = 1
-	var/list/rockets = new/list()
+	var/list/rockets = new /list()
 
 /obj/item/weapon/gun/launcher/rocket/examine(mob/user)
 	if(!..(user, 2))

@@ -130,7 +130,7 @@ var/list/ai_verbs_default = list(
 				possibleNames -= pickedName
 				pickedName = null
 
-	aiPDA = new/obj/item/device/pda/ai(src)
+	aiPDA = new /obj/item/device/pda/ai(src)
 	fully_replace_character_name(pickedName)
 	anchored = 1
 	canmove = 0
@@ -165,7 +165,7 @@ var/list/ai_verbs_default = list(
 
 	if(!safety)//Only used by AIize() to successfully spawn an AI.
 		if (!B)//If there is no player/brain inside.
-			empty_playable_ai_cores += new/obj/structure/AIcore/deactivated(loc)//New empty terminal.
+			empty_playable_ai_cores += new /obj/structure/AIcore/deactivated(loc)//New empty terminal.
 			qdel(src)//Delete AI.
 			return
 		else
@@ -267,7 +267,7 @@ var/list/ai_verbs_default = list(
 				if(!(dead_icon_state in custom_icon_states))
 					dead_icon_state = ""
 
-				selected_sprite = new/datum/ai_icon("Custom Icon [custom_index++]", alive_icon_state, dead_icon_state, COLOR_WHITE, CUSTOM_ITEM_SYNTH)
+				selected_sprite = new /datum/ai_icon("Custom Icon [custom_index++]", alive_icon_state, dead_icon_state, COLOR_WHITE, CUSTOM_ITEM_SYNTH)
 				custom_icons += selected_sprite
 	update_icon()
 

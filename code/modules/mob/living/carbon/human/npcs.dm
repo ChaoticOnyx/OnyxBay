@@ -8,10 +8,10 @@
 		equip_to_appropriate_slot(C)
 	else
 		C = new /obj/item/clothing/under/punpants(src)
-		C.attach_accessory(null, new/obj/item/clothing/accessory/toggleable/hawaii/random(src))
+		C.attach_accessory(null, new /obj/item/clothing/accessory/toggleable/hawaii/random(src))
 		equip_to_appropriate_slot(C)
 		if(prob(10))
-			C = new/obj/item/clothing/head/collectable/petehat(src)
+			C = new /obj/item/clothing/head/collectable/petehat(src)
 			equip_to_appropriate_slot(C)
 
 /decl/hierarchy/outfit/blank_subject

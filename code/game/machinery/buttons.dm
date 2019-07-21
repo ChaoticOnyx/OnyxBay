@@ -16,7 +16,7 @@
 	. = ..()
 	update_icon()
 	if(_wifi_id && !wifi_sender)
-		wifi_sender = new/datum/wifi/sender/button(_wifi_id, src)
+		wifi_sender = new /datum/wifi/sender/button(_wifi_id, src)
 
 /obj/machinery/button/Destroy()
 	qdel(wifi_sender)
@@ -119,7 +119,7 @@
 
 /obj/machinery/button/mass_driver/Initialize()
 	if(_wifi_id)
-		wifi_sender = new/datum/wifi/sender/mass_driver(_wifi_id, src)
+		wifi_sender = new /datum/wifi/sender/mass_driver(_wifi_id, src)
 	. = ..()
 
 /obj/machinery/button/mass_driver/activate(mob/living/user)
@@ -164,7 +164,7 @@
 
 /obj/machinery/button/toggle/door/Initialize()
 	if(_wifi_id)
-		wifi_sender = new/datum/wifi/sender/door(_wifi_id, src)
+		wifi_sender = new /datum/wifi/sender/door(_wifi_id, src)
 	. = ..()
 
 /obj/machinery/button/toggle/door/activate(mob/living/user)

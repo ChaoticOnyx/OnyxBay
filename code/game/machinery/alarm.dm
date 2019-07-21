@@ -777,7 +777,7 @@
 			if (wiresexposed && isWirecutter(W))
 				user.visible_message("<span class='warning'>[user] has cut the wires inside \the [src]!</span>", "You have cut the wires inside \the [src].")
 				playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
-				new/obj/item/stack/cable_coil(get_turf(src), 5)
+				new /obj/item/stack/cable_coil(get_turf(src), 5)
 				buildstage = 1
 				update_icon()
 				return

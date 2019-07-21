@@ -122,7 +122,7 @@
 		to_chat(usr, "<span class='notice'>You begin to remove \the [src]...</span>")
 		if (do_after(usr, 30, src))
 			to_chat(usr, "<span class='notice'>You have removed \the [src].</span>")
-			var/obj/item/clamp/C = new/obj/item/clamp(src.loc)
+			var/obj/item/clamp/C = new /obj/item/clamp(src.loc)
 			C.forceMove(usr.loc)
 			if(ishuman(usr))
 				usr.put_in_hands(C)
@@ -146,7 +146,7 @@
 		to_chat(user, "<span class='notice'>You begin to attach \the [src] to \the [A]...</span>")
 		if (do_after(user, 30, src))
 			to_chat(user, "<span class='notice'>You have attached \the [src] to \the [A].</span>")
-			new/obj/machinery/clamp(A.loc, A)
+			new /obj/machinery/clamp(A.loc, A)
 			user.drop_from_inventory(src)
 			qdel(src)
 

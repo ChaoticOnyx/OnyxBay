@@ -501,7 +501,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/throw_impact(atom/hit_atom)
 	..()
-	new/obj/effect/decal/cleanable/egg_smudge(src.loc)
+	new /obj/effect/decal/cleanable/egg_smudge(src.loc)
 	src.reagents.splash(hit_atom, src.reagents.total_volume)
 	src.visible_message("<span class='warning'>\The [src] has been squashed!</span>","<span class='warning'>You hear a smack.</span>")
 	qdel(src)
@@ -962,7 +962,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/pie/throw_impact(atom/hit_atom)
 	..()
-	new/obj/effect/decal/cleanable/pie_smudge(src.loc)
+	new /obj/effect/decal/cleanable/pie_smudge(src.loc)
 	src.visible_message("<span class='danger'>\The [src.name] splats.</span>","<span class='danger'>You hear a splat.</span>")
 	qdel(src)
 

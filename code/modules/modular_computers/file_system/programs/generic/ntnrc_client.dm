@@ -71,7 +71,7 @@
 		var/channel_title = sanitizeSafe(input(user,"Enter channel name or leave blank to cancel:"), 64)
 		if(!channel_title)
 			return
-		var/datum/ntnet_conversation/C = new/datum/ntnet_conversation()
+		var/datum/ntnet_conversation/C = new /datum/ntnet_conversation()
 		C.add_client(src)
 		C.operator = src
 		channel = C
@@ -113,7 +113,7 @@
 		var/logname = input(user,"Enter desired logfile name (.log) or leave blank to cancel:")
 		if(!logname || !channel)
 			return 1
-		var/datum/computer_file/data/logfile = new/datum/computer_file/data/logfile()
+		var/datum/computer_file/data/logfile = new /datum/computer_file/data/logfile()
 		// Now we will generate HTML-compliant file that can actually be viewed/printed.
 		logfile.filename = logname
 		logfile.stored_data = "\[b\]Logfile dump from NTNRC channel [channel.title]\[/b\]\[BR\]"

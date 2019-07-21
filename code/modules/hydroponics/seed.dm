@@ -89,7 +89,7 @@
 	if(!T)
 		return
 
-	var/datum/reagents/R = new/datum/reagents(100, GLOB.temp_reagents_holder)
+	var/datum/reagents/R = new /datum/reagents(100, GLOB.temp_reagents_holder)
 	if(chems.len)
 		for(var/rid in chems)
 			var/injecting = min(5,max(1,get_trait(TRAIT_POTENCY)/3))
@@ -337,7 +337,7 @@
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(3, 1, get_turf(target))
 			s.start()
-			new/obj/effect/decal/cleanable/molten_item(get_turf(target)) // Leave a pile of goo behind for dramatic effect...
+			new /obj/effect/decal/cleanable/molten_item(get_turf(target)) // Leave a pile of goo behind for dramatic effect...
 			target.forceMove(T)                                     // And teleport them to the chosen location.
 			impact = 1
 

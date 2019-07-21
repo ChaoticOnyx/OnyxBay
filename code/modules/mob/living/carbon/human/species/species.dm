@@ -10,7 +10,7 @@
 	var/blurb = "A completely nondescript species."      // A brief lore summary for use in the chargen screen.
 
 	var/list/body_builds = list(
-		new/datum/body_build
+		new /datum/body_build
 	)
 
 	// Icon/appearance vars.

@@ -36,7 +36,7 @@
 /mob/living/simple_animal/hostile/vagrant/Initialize()
 	. = ..()
 	if(prob(40))
-		carried = new/datum/disease2/disease()
+		carried = new /datum/disease2/disease()
 		carried.makerandom(rand(2, 4))
 
 /mob/living/simple_animal/hostile/vagrant/Allow_Spacemove(var/check_drift = 0)
@@ -73,8 +73,8 @@
 		cloaked = 1
 		update_icon()
 	if(health == maxHealth)
-		new/mob/living/simple_animal/hostile/vagrant(src.loc)
-		new/mob/living/simple_animal/hostile/vagrant(src.loc)
+		new /mob/living/simple_animal/hostile/vagrant(src.loc)
+		new /mob/living/simple_animal/hostile/vagrant(src.loc)
 		gib()
 		return
 	if(health < 1)
@@ -115,5 +115,5 @@
 
 /mob/living/simple_animal/hostile/vagrant/swarm/Initialize()
 	. = ..()
-	if(prob(75)) new/mob/living/simple_animal/hostile/vagrant(loc)
-	if(prob(50)) new/mob/living/simple_animal/hostile/vagrant(loc)
+	if(prob(75)) new /mob/living/simple_animal/hostile/vagrant(loc)
+	if(prob(50)) new /mob/living/simple_animal/hostile/vagrant(loc)

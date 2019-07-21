@@ -127,7 +127,7 @@
 
 	damage = round(damage)
 
-	new/obj/effect/shield_impact(get_turf(src))
+	new /obj/effect/shield_impact(get_turf(src))
 
 	var/list/field_segments = gen.field_segments
 	switch(gen.take_damage(damage, damtype))

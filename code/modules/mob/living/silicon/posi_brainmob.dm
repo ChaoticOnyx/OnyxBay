@@ -13,7 +13,7 @@
 	)
 
 /mob/living/silicon/sil_brainmob/New()
-	reagents = new/datum/reagents(1000, src)
+	reagents = new /datum/reagents(1000, src)
 	if(istype(loc, /obj/item/organ/internal/posibrain))
 		container = loc
 	..()

@@ -9,7 +9,7 @@ var/repository/attack_logs/attack_log_repository = new()
 
 /repository/attack_logs/proc/store_attack_log(var/mob/attacker, var/mob/victim, var/action_message)
 	// Newest logs first
-	attack_logs_.Insert(1, new/datum/attack_log(attacker, victim, action_message))
+	attack_logs_.Insert(1, new /datum/attack_log(attacker, victim, action_message))
 
 /datum/attack_log
 	var/station_time

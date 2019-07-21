@@ -21,7 +21,7 @@
 
 /obj/machinery/portable_atmospherics/powered/scrubber/New()
 	..()
-	cell = new/obj/item/weapon/cell/apc(src)
+	cell = new /obj/item/weapon/cell/apc(src)
 
 /obj/machinery/portable_atmospherics/powered/scrubber/Initialize()
 	. = ..()

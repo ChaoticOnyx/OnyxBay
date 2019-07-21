@@ -429,7 +429,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		screen = 0.5
 		. = TOPIC_HANDLED
 		spawn(20)
-			var/obj/item/weapon/paper/PR = new/obj/item/weapon/paper
+			var/obj/item/weapon/paper/PR = new /obj/item/weapon/paper
 			PR.name = "fabricator report"
 			PR.info = "<center><b>[station_name()] Fabricator Laboratory</b>"
 			PR.info += "<h2>[ (text2num(href_list["print"]) == 2) ? "Detailed" : null ] Fabricator Status Report</h2>"
