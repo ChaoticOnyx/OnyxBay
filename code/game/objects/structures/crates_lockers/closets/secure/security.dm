@@ -222,6 +222,7 @@
 		/obj/item/clothing/glasses/thermal,
 		/obj/item/clothing/suit/storage/toggle/forensics/blue,
 		/obj/item/clothing/suit/storage/toggle/forensics/red,
+		/obj/item/clothing/suit/armor/vest/csivest,
 		/obj/item/clothing/gloves/thick,
 		/obj/item/clothing/head/det,
 		/obj/item/clothing/head/det/grey,

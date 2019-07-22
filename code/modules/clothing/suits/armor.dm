@@ -209,6 +209,11 @@
 	desc = "An synthetic armor vest colored in a vintage brown."
 	icon_state = "detvest"
 
+/obj/item/clothing/suit/armor/vest/csivest
+	name = "armored vest"
+	desc = "An armor vest made of synthetic fibers."
+	icon_state = "csivest"
+
 /obj/item/clothing/suit/armor/vest/pcrc
 	name = "contractor armored vest"
 	desc = "A synthetic armor vest. This one is marked with the crest of Proxima Centauri Risk Control, a private security firm."
