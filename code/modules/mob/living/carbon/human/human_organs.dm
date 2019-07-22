@@ -135,7 +135,7 @@
 	for(var/limb_tag in list(BP_L_LEG, BP_L_FOOT))	// Left leg processing
 		var/obj/item/organ/external/E = organs_by_name[limb_tag]
 
-		if(!E || (E.disfigured) || istype(E,/obj/item/organ/external/stump))
+		if(!E || (E.status & ORGAN_DISFIGURED) || istype(E,/obj/item/organ/external/stump))
 			stance_d_l += 5
 
 		else if(E.is_malfunctioning())
@@ -163,7 +163,7 @@
 	for(var/limb_tag in list(BP_R_LEG, BP_R_FOOT))	// Right leg processing
 		var/obj/item/organ/external/E = organs_by_name[limb_tag]
 
-		if(!E || (E.disfigured) || istype(E,/obj/item/organ/external/stump))
+		if(!E || (E.status & ORGAN_DISFIGURED) || istype(E,/obj/item/organ/external/stump))
 			stance_d_l += 5
 
 		else if(E.is_malfunctioning())
@@ -288,11 +288,22 @@
 		return
 
 	for (var/obj/item/organ/external/E in organs)
-		if(!E || !E.can_grasp)
+		if(!E || !(E.limb_flags & ORGAN_FLAG_CAN_GRASP))
 			continue
 		if(((E.is_broken() || E.is_dislocated()) && !E.splinted) || E.is_malfunctioning())
 			grasp_damage_disarm(E)
 
+/mob/living/carbon/human/proc/stance_damage_prone(var/obj/item/organ/external/affected)
+
+	if(affected)
+		switch(affected.body_part)
+			if(FOOT_LEFT, FOOT_RIGHT)
+				to_chat(src, "<span class='warning'>You lose your footing as your [affected.name] spasms!</span>")
+			if(LEG_LEFT, LEG_RIGHT)
+				to_chat(src, "<span class='warning'>Your [affected.name] buckles from the shock!</span>")
+			else
+				return
+	Weaken(5)
 
 /mob/living/carbon/human/proc/grasp_damage_disarm(var/obj/item/organ/external/affected)
 	var/disarm_slot
@@ -312,7 +323,7 @@
 
 	drop_from_inventory(thing)
 
-	if(affected.robotic >= ORGAN_ROBOT)
+	if(BP_IS_ROBOTIC(affected))
 		visible_message("<B>\The [src]</B> drops what they were holding, \his [affected.name] malfunctioning!")
 
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
@@ -351,9 +362,8 @@
 /mob/living/carbon/human/is_asystole()
 	if(isSynthetic())
 		var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]
-		if(istype(C))
-			if(!C.is_usable())
-				return TRUE
+		if(istype(C) && !C.is_usable())
+			return TRUE
 	else if(should_have_organ(BP_HEART))
 		var/obj/item/organ/internal/heart/heart = internal_organs_by_name[BP_HEART]
 		if(!istype(heart) || !heart.is_working())

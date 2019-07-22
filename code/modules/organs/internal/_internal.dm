@@ -71,7 +71,7 @@
 		return 0 //organs don't work very well in the body when they aren't properly attached
 
 	// robotic organs emulate behavior of the equivalent flesh organ of the species
-	if(robotic >= ORGAN_ROBOT || !species)
+	if(BP_IS_ROBOTIC(src) || !species)
 		species = target.species
 
 	..()
@@ -107,7 +107,7 @@
 	min_broken_damage += 10
 
 /obj/item/organ/internal/proc/getToxLoss()
-	if(isrobotic())
+	if(BP_IS_ROBOTIC(src))
 		return damage * 0.5
 	return damage
 
@@ -121,7 +121,7 @@
 	return damage >= min_bruised_damage
 
 /obj/item/organ/internal/take_damage(amount, var/silent=0)
-	if(isrobotic())
+	if(BP_IS_ROBOTIC(src))
 		damage = between(0, src.damage + (amount * 0.8), max_damage)
 	else
 		damage = between(0, src.damage + amount, max_damage)
@@ -138,7 +138,7 @@
 				owner.custom_pain("Something inside your [parent.name] hurts[degree].", amount, affecting = parent)
 
 /obj/item/organ/internal/emp_act(severity)
-	if(!isrobotic())
+	if(!BP_IS_ROBOTIC(src))
 		return
 	switch (severity)
 		if (1)

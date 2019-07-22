@@ -327,8 +327,9 @@
 	for(var/o in organs)
 		var/obj/item/organ/organ = o
 		organ.vital = 0
-		organ.rejuvenate(1)
-		organ.max_damage *= 5
-		organ.min_broken_damage *= 5
+		if (!BP_IS_ROBOTIC(organ))
+			organ.rejuvenate(1)
+			organ.max_damage *= 3
+			organ.min_broken_damage = Floor(organ.max_damage * 0.75)
 	verbs += /mob/living/proc/breath_death
 	verbs += /mob/living/proc/consume

@@ -259,7 +259,7 @@ datum/wound/puncture/massive
 	switch(losstype)
 		if(DROPLIMB_EDGE, DROPLIMB_BLUNT)
 			damage_type = CUT
-			if(lost_limb.robotic >= ORGAN_ROBOT)
+			if(BP_IS_ROBOTIC(lost_limb))
 				max_bleeding_stage = -1
 				bleed_threshold = INFINITY
 				stages = list("mangled robotic socket" = 0)
