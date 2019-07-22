@@ -797,7 +797,7 @@
 /datum/chemical_reaction/potato_juice_paint
 	name = "Potato juice paint"
 	result = /datum/reagent/paint
-	required_reagents = list(/datum/reagent/toxin/plasticide = 1, /datum/reagent/water = 3, "potatojuice" = 5)
+	required_reagents = list(/datum/reagent/toxin/plasticide = 1, /datum/reagent/water = 3, /datum/reagent/drink/juice/potato = 5)
 	result_amount = 5
 
 /datum/chemical_reaction/potato_juice_paint/send_data()
@@ -1283,7 +1283,7 @@
 /datum/chemical_reaction/barbecue
 	name = "Barbecue Sauce"
 	result = /datum/reagent/nutriment/barbecue
-	required_reagents = list(/datum/reagent/nutriment/ketchup = 2, "pepper" = 1, "salt" = 1)
+	required_reagents = list(/datum/reagent/nutriment/ketchup = 2, /datum/reagent/blackpepper = 1, /datum/reagent/sodiumchloride = 1)
 	result_amount = 4
 
 /datum/chemical_reaction/garlicsauce
@@ -1366,7 +1366,7 @@
 /datum/chemical_reaction/patron
 	name = "Patron"
 	result = /datum/reagent/ethanol/patron
-	required_reagents = list(/datum/reagent/ethanol/tequilla = 10, "silver" = 1)
+	required_reagents = list(/datum/reagent/ethanol/tequilla = 10, /datum/reagent/silver = 1)
 	result_amount = 10
 
 /datum/chemical_reaction/bilk
@@ -1775,7 +1775,7 @@
 /datum/chemical_reaction/changelingsting
 	name = "Changeling Sting"
 	result = /datum/reagent/ethanol/changelingsting
-	required_reagents = list("screwdrivercocktail" = 1, /datum/reagent/drink/juice/lime = 1, /datum/reagent/drink/juice/lemon = 1)
+	required_reagents = list(/datum/reagent/ethanol/screwdrivercocktail = 1, /datum/reagent/drink/juice/lime = 1, /datum/reagent/drink/juice/lemon = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/aloe
