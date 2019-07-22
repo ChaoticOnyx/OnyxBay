@@ -109,7 +109,7 @@
 	icon_state = "detective2"
 
 //Forensics
-/obj/item/clothing/suit/storage/forensics
+/obj/item/clothing/suit/storage/toggle/forensics
 	name = "jacket"
 	desc = "A forensics technician jacket."
 	item_state = "det_suit"
@@ -117,22 +117,27 @@
 	allowed = list(/obj/item/weapon/tank/emergency,/obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/device/taperecorder)
 	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0, rad = 0)
 
-/obj/item/clothing/suit/storage/forensics/red
+/obj/item/clothing/suit/storage/toggle/forensics/red
 	name = "red jacket"
 	desc = "A red forensics technician jacket."
 	icon_state = "forensics_red"
+	item_state = "forensics_red"
+	icon_open = "forensics_red"
+	icon_closed = "forensics_red2"
 
-
-/obj/item/clothing/suit/storage/forensics/customred //Custom item
+/obj/item/clothing/suit/storage/toggle/forensics/customred //Custom item
 	name = "red jacket"
 	desc = "A nice red forensics technician jacket."
 	icon_state = "custom_forensics_red_long"
 	item_state = "custom_forensics_red_long"
 
-/obj/item/clothing/suit/storage/forensics/blue
+/obj/item/clothing/suit/storage/toggle/forensics/blue
 	name = "blue jacket"
 	desc = "A blue forensics technician jacket."
 	icon_state = "forensics_blue"
+	item_state = "forensics_blue"
+	icon_open = "forensics_blue"
+	icon_closed = "forensics_blue2"
 
 //Engineering
 /obj/item/clothing/suit/storage/hazardvest
