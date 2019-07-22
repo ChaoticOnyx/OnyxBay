@@ -453,7 +453,10 @@
 		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
 		sight = species.get_vision_flags(src)
 	else
-		set_see_in_dark(species.darksight)
+		if(!species)
+			set_see_in_dark(SEE_IN_DARK_DEFAULT)
+		else
+			set_see_in_dark(species.darksight)
 		set_see_invisible(see_in_dark > 2 ? SEE_INVISIBLE_LEVEL_ONE : SEE_INVISIBLE_LIVING)
 		sight = species.get_vision_flags(src)
 

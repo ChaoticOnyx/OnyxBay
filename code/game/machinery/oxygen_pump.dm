@@ -89,7 +89,7 @@
 			tank.forceMove(C)
 		breather = C
 		spawn(1)
-		if(!breather.internal && tank)
+		if(breather && !breather.internal && tank)
 			breather.internal = tank
 			if(breather.internals)
 				breather.internals.icon_state = "internal1"
