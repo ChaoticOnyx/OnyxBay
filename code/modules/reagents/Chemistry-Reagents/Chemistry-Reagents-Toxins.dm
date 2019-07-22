@@ -665,9 +665,7 @@
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/true_dose = H.chem_doses[type] + volume
-		if (true_dose >= amount_to_zombify)
-			H.zombify()
-		else if (true_dose > 1 && prob(20))
+		if ((true_dose >= amount_to_zombify) || (true_dose > 1 && prob(20)))
 			H.zombify()
 		else if (prob(10))
 			to_chat(H, "<span class='warning'>You feel terribly ill!</span>")
