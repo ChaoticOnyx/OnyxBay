@@ -114,16 +114,16 @@
 	desc = "A forensics technician jacket."
 	item_state = "det_suit"
 	body_parts_covered = UPPER_TORSO|ARMS
+	blood_overlay_type = "armor"
 	allowed = list(/obj/item/weapon/tank/emergency,/obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/device/taperecorder)
 	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/suit/storage/toggle/forensics/red
 	name = "red jacket"
 	desc = "A red forensics technician jacket."
-	icon_state = "forensics_red"
-	item_state = "forensics_red"
-	icon_open = "forensics_red"
-	icon_closed = "forensics_red2"
+	icon_state = "forensics_red_open"
+	icon_open = "forensics_red_open"
+	icon_closed = "forensics_red"
 
 /obj/item/clothing/suit/storage/toggle/forensics/customred //Custom item
 	name = "red jacket"
@@ -134,10 +134,9 @@
 /obj/item/clothing/suit/storage/toggle/forensics/blue
 	name = "blue jacket"
 	desc = "A blue forensics technician jacket."
-	icon_state = "forensics_blue"
-	item_state = "forensics_blue"
-	icon_open = "forensics_blue"
-	icon_closed = "forensics_blue2"
+	icon_state = "forensics_blue_open"
+	icon_open = "forensics_blue_open"
+	icon_closed = "forensics_blue"
 
 //Engineering
 /obj/item/clothing/suit/storage/hazardvest
