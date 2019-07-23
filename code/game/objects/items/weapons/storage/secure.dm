@@ -264,6 +264,7 @@
 			dat += text("<p>\n<A href='?src=\ref[];type=legacy'>S&W Legacy</A>", src)
 			dat += text("<p>\n<A href='?src=\ref[];type=saw620'>S&W 620</A>", src)
 			dat += text("<p>\n<A href='?src=\ref[];type=m2019'>M2019 Detective Special</A>", src)
+			dat += text("<p>\n<A href='?src=\ref[];type=det_m9'>T9 Patrol</A>", src)
 		dat += text("<HR>")
 		if (src.guntype)
 			if (src.guntype == "M1911")
@@ -286,6 +287,10 @@
 					dat += text("<p>\n - With a powercell installed, M2019 can be used in two modes: non-lethal and lethal.")
 					dat += text("<p>\n - .44 SPEC no cell - works like a rubber bullet. <p>\n - .44 SPEC non-lethal - stuns the target. <p>\n - .44 CHEM lethal - accelerates the bullet, deals great damage and pierces medium armor.")
 					dat += text("<p>\n - .44 CHEM no cell - works like a flash bullet. <p>\n - .44 CHEM non-lethal - emmits a weak electromagnetic impulse. <p>\n - .44 CHEM lethal - not supposed to be used like this. The cartride reaches extremely high temperature and melts.")
+			else if (src.guntype == "T9 Patrol")
+				dat += text("<p>\n A relatively cheap and reliable knock-off of a Beretta M9. Uses 9mm rounds. Used to be a standart-issue gun in almost every security company.")
+				if (src.gunspawned == 0)
+					dat += text("<p>\n Comes with three ten round 9mm magazines and two 9mm flash ten round magazines.")
 
 		user << browse(dat, "window=caselock;size=300x280")
 
@@ -301,6 +306,8 @@
 				src.guntype = "S&W 620"
 			else if (href_list["type"] == "m2019")
 				src.guntype = "M2019"
+			else if (href_list["type"] == "det_m9")
+				src.guntype = "T9 Patrol"
 			else if (href_list["type"] == "E")
 				if ((src.l_set == 0) && (length(src.code) == 5) && (!src.l_setshort) && (src.code != "ERROR"))
 					src.l_code = src.code
@@ -338,6 +345,13 @@
 							new /obj/item/ammo_magazine/c44/chem(src)
 							new /obj/item/ammo_magazine/c44/chem(src)
 							new /obj/item/weapon/cell/device/high(src)
+						else if (src.guntype == "T9 Patrol")
+							src.gun = new /obj/item/weapon/gun/projectile/det_m9(src)
+							new /obj/item/ammo_magazine/mc9mm(src)
+							new /obj/item/ammo_magazine/mc9mm(src)
+							new /obj/item/ammo_magazine/mc9mm(src)
+							new /obj/item/ammo_magazine/mc9mm/flash(src)
+							new /obj/item/ammo_magazine/mc9mm/flash(src)
 				else
 					src.code = "ERROR"
 			else
