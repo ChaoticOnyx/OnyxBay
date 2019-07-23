@@ -170,7 +170,7 @@
 	"<span class='notice'>You have separated [target]'s [target.op_stage.current_organ] with \the [tool].</span>")
 
 	var/obj/item/organ/I = target.op_stage.current_organ
-	if(I && istype(I))
+	if(istype(I))
 		I.cut_away(I.owner)
 
 /datum/surgery_step/internal/detatch_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
