@@ -86,9 +86,46 @@
 ////////////RCD
 
 
+/obj/item/weapon/alien_device
+	name = "Strange device"
+	var/charge = 3
+	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.
+	icon = 'icons/obj/gun.dmi'
+	icon_state = "floramut100"
+	desc = "A small device filled with nanorobots."
+	var/mode = 1 //We have 3 types of mode, 1 - deconstruct, 2 - construct, 3 - fuck you mother
+
+/obj/item/weapon/alien_device/attack_self(mob/user)
+	playsound(src, 'sound/voice/alien_roar_larva2.ogg', 30, 1)
+	switch(mode)
+		if(1)
+			mode = 2
+			to_chat(user, "<span class='notice'>Changed mode to construct</span>")
+		if(2)
+			mode = 3
+			to_chat(user, "<span class='notice'>Changed mode to fuck you mother</span>")
+		if(3)
+			mode = 1
+			to_chat(user, "<span class='notice'>Changed mode to deconstruct</span>")
+
+/obj/item/weapon/alien_device/afterattack(var/atom/A, var/mob/user, var/proximity)
+	if(!proximity)
+		return
+
+	if(istype(A, /turf/simulated/wall/))
+		var/turf/simulated/wall/cult/W = A
+		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
+		W.ChangeTurf(/turf/simulated/wall)
+
+	if(istype(A, /turf/simulated/floor/misc/cult))
+		var/turf/simulated/floor/misc/cult/F = A
+		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
+		F.ChangeTurf(/turf/simulated/floor)
+
+
 /obj/item/weapon/rcd/alien
-	max_stored_matter = 50
-	stored_matter = 50
+	max_stored_matter = 30
+	stored_matter = 30
 	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "floramut100"
@@ -182,12 +219,12 @@
 		icon_state = "vox-carapace"
 	else
 		to_chat(H, "<span class='notice'>We activate the protection mode.</span>")
-		armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 30, rad = 30)
+		armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 60, rad = 60)
 		siemens_coefficient = 2
 		if(istype(H.head, /obj/item/clothing/head/helmet/space/vox/carapace))
-			H.head.armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 30, rad = 30)
+			H.head.armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 60, rad = 60)
 			H.head.siemens_coefficient = 2
-		slowdown_per_slot[slot_wear_suit] = 8
+		slowdown_per_slot[slot_wear_suit] = 20
 		icon_state = "vox-carapace-active"
 	protection = !protection
 
@@ -228,7 +265,7 @@
 
 	to_chat(H, "<span class='notice'>We vanish from sight, and will remain hidden, so long as we move carefully.</span>")
 	cloak = TRUE
-	animate(H,alpha = 255, alpha = 10, time = 10)
+	animate(H,alpha = 255, alpha = 20, time = 10)
 
 	var/remain_cloaked = TRUE
 	while(remain_cloaked) //This loop will keep going until the player uncloaks.
@@ -246,7 +283,7 @@
 	"<span class='notice'>We revert our camouflage, revealing ourselves.</span>")
 	cloak = FALSE
 
-	animate(H,alpha = 10, alpha = 255, time = 10)
+	animate(H,alpha = 20, alpha = 255, time = 10)
 
 /obj/item/clothing/head/helmet/space/vox/medic
 	name = "alien goggled helmet"
@@ -288,6 +325,7 @@
 	animate(src,alpha = 255, alpha = 10, time = 10)
 	icon_state = "vox-medic-active"
 	var/remain_nanobots = TRUE
+	slowdown_per_slot[slot_wear_suit] = 100
 	while(remain_nanobots) //This loop will keep going until the player uncloaks.
 		anim(get_turf(H), H, 'icons/effects/effects.dmi', "electricity",null,20,null)
 		sleep(1 SECOND) // Sleep at the start so that if something invalidates a cloak, it will drop immediately after the check and not in one second.
@@ -300,19 +338,38 @@
 		if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
 			remain_nanobots = 0
 		spawn(0.5 SECONDS)
-			for(var/mob/living/carbon/human/vox/V in range(H, 1))
+			for(var/mob/living/carbon/human/vox/V in range(H, 2))
 				for(var/obj/item/organ/regen_organ in V.organs)
-					regen_organ.damage = max(regen_organ.damage - 1, 0)
+					regen_organ.damage = max(regen_organ.damage - 5, 0)
 				if(V.getBruteLoss())
-					V.adjustBruteLoss(-2 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+					V.adjustBruteLoss(-10 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 				if(V.getFireLoss())
-					V.adjustFireLoss(-2 * config.organ_regeneration_multiplier)
+					V.adjustFireLoss(-10 * config.organ_regeneration_multiplier)
 				if(V.getToxLoss())
-					V.adjustToxLoss(-2 * config.organ_regeneration_multiplier)
+					V.adjustToxLoss(-10 * config.organ_regeneration_multiplier)
 	to_chat(H, "<span class='notice'>Nanobots deactivated.</span>")
 	nanobots = FALSE
 	icon_state = "vox-medic"
+	slowdown_per_slot[slot_wear_suit] = 1
+/*
+/obj/item/clothing/suit/space/vox/medic/Initialize()
+	. = ..()
+	START_PROCESSING(SSobj, src)
 
+/obj/item/clothing/suit/space/vox/medic/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	. = ..()
+
+/obj/item/clothing/suit/space/vox/medic/Process()
+	for(var/mob/living/carbon/human/vox/V in range(H, 1))
+		if(V.getBruteLoss())
+			V.adjustBruteLoss(-2 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+		if(V.getFireLoss())
+			V.adjustFireLoss(-2 * config.organ_regeneration_multiplier)
+		if(V.getToxLoss())
+			V.adjustToxLoss(-2 * config.organ_regeneration_multiplier)
+
+*/
 /obj/item/clothing/under/vox
 	has_sensor = 0
 	species_restricted = list(SPECIES_VOX)
