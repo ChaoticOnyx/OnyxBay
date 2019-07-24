@@ -94,6 +94,8 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 	var/list/datum/donator_prize/prizes = list() // Prize list to display (NanoUI)
 	var/list/datum/donator/donators = null // null until DB connection established
 
+	var/spawn_period = 3000 // 5 minutes to acquire things, in 1/10th
+
 
 /datum/donations/proc/meta_init()
 	var/list/collectable_hats = typesof(/obj/item/clothing/head/collectable) - list(/obj/item/clothing/head/collectable) // 19 types

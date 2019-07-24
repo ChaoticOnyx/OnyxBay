@@ -60,17 +60,17 @@
 	world << prize
 	if (!prize || !(prize in GLOB.donations.prizes))
 		to_chat(usr, "This is not a real prize")
-		return 1
+		return 0
 
 	switch (href_list["action"])
 		if ("buy")
 			if (prize in src.available)
 				to_chat(user, "<span class='danger'>You've already bought this item!</span>")
-				return 1
+				return 0
 
 			if (prize.cost > src.money)
 				to_chat(user, "<span class='danger'>You don't have enough money to buy this!</span>")
-				return 1
+				return 0
 
 			var/response = input(user, "Are you sure you want to buy [prize.object.name]?", "Order confirmation", "No") in list("No", "Yes")
 			if (response == "Yes")
@@ -82,19 +82,23 @@
 		if ("acquire")
 			if(!user)
 				to_chat(usr, "<span class='warning'>You must be a human to use this.</span>")
-				return 1
+				return 0
 
 			if(user.stat)
 				to_chat(usr, "<span class='danger'>You must be conscious to use this.</span>")
-				return 1
+				return 0
+
+			if (world.time > GLOB.donations.spawn_period)
+				to_chat(usr, "<span class='danger'>You can only acquire during acquisition period which lasts [GLOB.donations.spawn_period / 10] seconds</span>")
+				return 0
 
 			if (!(prize in src.available))
 				to_chat(usr, "<span class='danger'>You haven't bought this item.</span>")
-				return 1
+				return 0
 
 			if (!(prize in src.unacquired))
 				to_chat(usr, "<span class='danger'>You cannot acquire this item more than once per round.</span>")
-				return 1
+				return 0
 
 			var/list/slots = list(
 				"backpack" = slot_in_backpack,
