@@ -186,7 +186,7 @@
 	item_state = "swatbelt"
 	storage_slots = 9
 
-/obj/item/weapon/storage/belt/security/tactical/combat
+/obj/item/weapon/storage/belt/security/combat
 	name = "combat vest"
 	desc = "Robust tan chest rig with lots of pockets to hold whatever you need, but cannot hold in hands."
 	icon_state = "explorer"

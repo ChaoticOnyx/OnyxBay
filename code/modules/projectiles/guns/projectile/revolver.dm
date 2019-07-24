@@ -14,10 +14,10 @@
 	ammo_type = /obj/item/ammo_casing/a357
 	var/chamber_offset = 0 //how many empty chambers in the cylinder until you hit a round
 
-/obj/item/weapon/gun/projectile/revolver/hos
+/obj/item/weapon/gun/projectile/revolver/coltpython
 	name = "Colt Python"
 	desc = "The Lumoco Arms Colt Python is a choice revolver for when you absolutely, positively need to put a hole in a criminal. Uses .357 ammo."
-	icon_state = "mateba-hos"
+	icon_state = "colt-python"
 	item_state = "revolver"
 	caliber = "357"
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 3)

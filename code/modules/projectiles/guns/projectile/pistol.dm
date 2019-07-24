@@ -51,18 +51,16 @@
 	auto_eject = 1
 	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
 	caliber = ".45"
-	accuracy = -0.35
 	fire_delay = 6.5
 	fire_sound = 'sound/weapons/gun_colt.ogg'
-	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	load_method = MAGAZINE
 
 /obj/item/weapon/gun/projectile/sec/VP78tactical/update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
-		icon_state = "colttactic"
+		icon_state = "VP78tactic"
 	else
-		icon_state = "colttactic-e"
+		icon_state = "VP78tactic-e"
 
 /obj/item/weapon/gun/projectile/sec/vp78
 	name = "VP78 .45"
@@ -74,7 +72,6 @@
 	accuracy = -0.35
 	fire_delay = 5.5
 	fire_sound = 'sound/weapons/gun_colt.ogg'
-	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	load_method = MAGAZINE
 
 /obj/item/weapon/gun/projectile/sec/vp78/update_icon()
@@ -94,7 +91,6 @@
 	accuracy = 0
 	fire_delay = 5.5
 	fire_sound = 'sound/weapons/gun_colt.ogg'
-	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	load_method = MAGAZINE
 
 /obj/item/weapon/gun/projectile/sec/vp78wood/update_icon()
