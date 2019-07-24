@@ -31,7 +31,7 @@
 		. &= q.Execute(GLOB.donations.db)
 
 
-/datum/donator/proc/partial_refund(type_as_text, new_cost, old_cost)
+/datum/donator/proc/partial_refund(type_as_text, old_cost, new_cost)
 	set background = 1
 
 	. = src.refund(old_cost - new_cost)
