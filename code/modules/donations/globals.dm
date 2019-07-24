@@ -192,7 +192,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 						var/still_available = 1
 						if (price_delta > 0)
 							world.log << "Donator rebalance for [type_as_text] which will refund [bought_for - price_delta]"
-							donator.partial_refund(type_as_text, bought_for, bought_for - price_delta)
+							donator.partial_refund(type_as_text, bought_for, prize.cost)
 						else if (price_delta < 0)
 							world.log << "Donator rollback for [type_as_text] which was bought for [bought_for]"
 							donator.full_refund(type_as_text, bought_for)
