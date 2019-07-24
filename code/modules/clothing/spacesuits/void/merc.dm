@@ -30,5 +30,7 @@
 
 /obj/item/clothing/suit/space/void/merc/prepared/New()
 	..()
-	helmet = new /obj/item/clothing/head/helmet/space/void/merc
-	boots = new /obj/item/clothing/shoes/magboots
+
+/obj/item/clothing/suit/space/void/merc/prepared/Initialize()
+	helmet = /obj/item/clothing/head/helmet/space/void/merc
+	. = ..()
