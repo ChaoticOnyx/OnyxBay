@@ -114,7 +114,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 	for (var/type in plushies)
 		src.items["Plushies"][type] = 60
 
-	var/list/crayons = typesof(/obj/item/weapon/pen/crayon) - list(/obj/item/weapon/pen/crayon, /obj/item/weapon/pen/crayon/random)
+	var/list/crayons = typesof(/obj/item/weapon/pen/crayon) - list(/obj/item/weapon/pen/crayon)
 	src.items["Crayons"] = list()
 	for (var/type in crayons)
 		src.items["Crayons"][type] = 30
