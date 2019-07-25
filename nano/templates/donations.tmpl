@@ -1,5 +1,5 @@
 <style>
-	.prize_icon {
+	.product_icon {
 		position: relative;
 		width: 64px;
 		height: 64px;
@@ -32,25 +32,25 @@
 <h2>Balance: {{:data.money}} / {{:data.total}}</h2>
 
 <table class='fixed' border="1px">
-	{{props data.categories :prizes :category}}
+	{{props data.categories :products :category}}
 		<tr bgcolor="gray">
 			<th colspan="4">{{:category}}</td>
 		</tr>
-		{{for prizes}}
+		{{for products}}
 			<tr>
 				<td align="center">{{:value.icon}}</td>
 				<td align="center">{{:helper.capitalizeFirstLetter(value.name)}}</td>
 				<td align="center">{{:helper.capitalizeFirstLetter(value.desc)}}</td>
 				<td>
-					{{if value.is_available}}
+					{{if value.is_owned}}
 						{{:helper.link(
-							"Acquire",
+							"Receive",
 							"check",
 							{
-								"action": "acquire",
-								"target": value.prize
+								"action": "receive",
+								"target": value.product
 							},
-							value.is_acquired ? 'disabled' : null
+							value.is_received ? 'disabled' : null
 						)}}
 					{{else}}
 						{{:helper.link(
@@ -58,7 +58,7 @@
 							"cart",
 							{
 								"action": "buy",
-								"target": value.prize
+								"target": value.product
 							}
 						)}}
 					{{/if}}

@@ -1,4 +1,4 @@
-/datum/donator_prize
+/datum/donator_product
 	var/obj/object
 	var/cost
 	var/category
@@ -9,8 +9,8 @@
 	var/money
 	var/total
 
-	var/list/datum/donator_prize/available = list() // Items bought by this player
-	var/list/datum/donator_prize/unacquired = list() // Items available for acquisition
+	var/list/datum/donator_product/owned = list() // Items bought by this player
+	var/list/datum/donator_product/received = list() // Received items
 
 
 /datum/donator/proc/refund(amount)
@@ -40,83 +40,79 @@
 		. &= q.Execute(GLOB.donations.db)
 
 
-/datum/donator/proc/buy_prize(datum/donator_prize/prize)
+/datum/donator/proc/buy_product(datum/donator_product/product)
 	set background = 1
 
-	. = src.refund(-prize.cost)
-	if (.)
-		var/database/query/q = new("INSERT INTO donators (ckey, bought_for, type) VALUES ( ? , ? , ? )", src.ckey, prize.cost, "[prize.object.type]")
+	. = src.refund(-product.cost)
+	if (. > 0)
+		var/database/query/q = new("INSERT INTO donators (ckey, bought_for, type) VALUES ( ? , ? , ? )", src.ckey, product.cost, "[product.object.type]")
 		. &= q.Execute(GLOB.donations.db)
 
 		if (.)
-			src.available.Add(prize)
-			src.unacquired.Add(prize)
+			src.owned.Add(product)
 
 
 /datum/donator/Topic(href, href_list)
 	var/mob/living/carbon/human/user = usr
 
-	var/datum/donator_prize/prize = locate(href_list["target"])
-	world << prize
-	if (!prize || !(prize in GLOB.donations.prizes))
-		to_chat(usr, "This is not a real prize")
+	var/datum/donator_product/product = locate(href_list["target"])
+	if (!product || !(product in GLOB.donations.products))
+		to_chat(usr, "Href exploits do not work here.")
 		return 0
 
 	switch (href_list["action"])
 		if ("buy")
-			if (prize in src.available)
-				to_chat(user, "<span class='danger'>You've already bought this item!</span>")
+			if (product in src.owned)
+				to_chat(user, "<span class='warning'>You already own this item.</span>")
 				return 0
 
-			if (prize.cost > src.money)
-				to_chat(user, "<span class='danger'>You don't have enough money to buy this!</span>")
+			if (product.cost > src.money)
+				to_chat(user, "<span class='danger'>You don't have enough money to buy this.</span>")
 				return 0
 
-			var/response = input(user, "Are you sure you want to buy [prize.object.name]?", "Order confirmation", "No") in list("No", "Yes")
+			var/response = input(user, "Are you sure you want to buy [product.object.name]? THIS CANNOT BE UNDONE UNLESS THE PRICE GOES UP OR THIS ITEM GOES OFF THE MARKET!", "Order confirmation", "No") in list("No", "Yes")
 			if (response == "Yes")
-				if (src.buy_prize(prize))
-					to_chat(user, "<span class='info'>You have bought [prize.object.name] for [prize.cost]</span>.")
+				if (src.buy_product(product))
+					to_chat(user, "<span class='info'>You now own \icon[product.object] [product.object.name].</span>")
 				else
 					to_chat(user, "Something went wrong: report this: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
 
-		if ("acquire")
+		if ("receive")
 			if(!user)
-				to_chat(usr, "<span class='warning'>You must be a human to use this.</span>")
+				to_chat(usr, "<span class='warning'>You must be a human to acquire items.</span>")
 				return 0
 
 			if(user.stat)
-				to_chat(usr, "<span class='danger'>You must be conscious to use this.</span>")
+				to_chat(usr, "<span class='danger'>You must be conscious to acquire items.</span>")
+				return 0
+
+			if (product in src.received)
+				to_chat(usr, "<span class='danger'>You've already received this item.</span>")
 				return 0
 
 			if (world.time > GLOB.donations.spawn_period)
-				to_chat(usr, "<span class='danger'>You can only acquire during acquisition period which lasts [GLOB.donations.spawn_period / 10] seconds</span>")
+				to_chat(usr, "<span class='danger'>It's too late into the round to acquire items now.</span>")
 				return 0
 
-			if (!(prize in src.available))
-				to_chat(usr, "<span class='danger'>You haven't bought this item.</span>")
-				return 0
-
-			if (!(prize in src.unacquired))
-				to_chat(usr, "<span class='danger'>You cannot acquire this item more than once per round.</span>")
+			if (!(product in src.owned))
+				to_chat(usr, "<span class='danger'>You don't own this item.</span>")
 				return 0
 
 			var/list/slots = list(
 				"backpack" = slot_in_backpack,
 				"left pocket" = slot_l_store,
-				"right pocket" = slot_r_store,
-				"left hand" = slot_l_hand,
-				"right hand" = slot_r_hand,
+				"right pocket" = slot_r_store
 			)
 
-			var/obj/spawned = new prize.object.type(get_turf(user))
+			var/obj/spawned = new product.object.type(get_turf(user))
 			var/where = user.equip_in_one_of_slots(spawned, slots, del_on_fail=0)
 
 			if (!where)
-				to_chat(user, "<span class='info'>Your [prize.object.name] has been spawned!</span>")
+				to_chat(user, "<span class='info'>\icon[product.object] [product.object.name] has been delivered.</span>")
 			else
-				to_chat(user, "<span class='info'>Your [prize.object.name] has been spawned in your [where]!</span>")
+				to_chat(user, "<span class='info'>\icon[product.object] [product.object.name] has been delivered to your [where].</span>")
 
-			src.unacquired.Remove(prize)
+			src.received.Add(product)
 
 	src.ui_interact(user)
 	return 1
@@ -125,20 +121,20 @@
 /datum/donator/ui_interact(mob/user, ui_key = "donation", var/datum/nanoui/ui = null, var/force_open = 0)
 	var/list/list/categories = list()
 
-	for (var/datum/donator_prize/prize in GLOB.donations.prizes)
-		if (!categories[prize.category])
-			categories[prize.category] = list()
+	for (var/datum/donator_product/product in GLOB.donations.products)
+		if (!categories[product.category])
+			categories[product.category] = list()
 
-		var/hashed = md5("[prize.object.type]")
-		user << browse_rsc(icon(prize.object.icon, prize.object.icon_state), "prize_[hashed].dmi")
-		categories[prize.category][++categories[prize.category].len] = list(
-			"name" = prize.object.name,
-			"desc" = prize.object.desc,
-			"prize" = "\ref[prize]",
-			"icon" = "<img class='icon prize_icon' src='prize_[hashed].dmi'></img>",
-			"is_available" = (prize in src.available),
-			"is_acquired" = !(prize in src.unacquired),
-			"cost" = prize.cost
+		var/hashed = md5("[product.object.type]")
+		user << browse_rsc(icon(product.object.icon, product.object.icon_state), "product_[hashed].dmi")
+		categories[product.category][++categories[product.category].len] = list(
+			"name" = product.object.name,
+			"desc" = product.object.desc,
+			"product" = "\ref[product]",
+			"icon" = "<img class='icon product_icon' src='product_[hashed].dmi'></img>",
+			"is_owned" = (product in src.owned),
+			"is_received" = (product in src.received),
+			"cost" = product.cost
 		)
 
 	var/list/data = list(
@@ -149,7 +145,7 @@
 
 	ui = GLOB.nanomanager.try_update_ui(user, user, ui_key, ui, data, force_open)
 	if (!ui)
-		ui = new (user, src, ui_key, "donations.tmpl", "Donator Panel", 400, 800, state=GLOB.interactive_state)
+		ui = new (user, src, ui_key, "donations.tmpl", "Donator Store", 400, 800, state=GLOB.interactive_state)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(0)

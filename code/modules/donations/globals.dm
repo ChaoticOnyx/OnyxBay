@@ -91,7 +91,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 
 	var/database/db = new("donators.db")
 
-	var/list/datum/donator_prize/prizes = list() // Prize list to display (NanoUI)
+	var/list/datum/donator_product/products = list() // Product list to display (NanoUI)
 	var/list/datum/donator/donators = null // null until DB connection established
 
 	var/spawn_period = 3000 // 5 minutes to acquire things, in 1/10th
@@ -132,7 +132,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 
 /datum/donations/proc/ensure_init()
 	var/static/already_run = 0
-	var/static/list/datum/donator_prize/type_list_prizes = list() // type -> prize
+	var/static/list/datum/donator_product/type_list_products = list() // type -> product
 
 	src.meta_init()
 
@@ -142,16 +142,16 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 	for (var/category in src.items)
 		for (var/type in src.items[category])
 			var/cost = src.items[category][type]
-			var/datum/donator_prize/prize = new
+			var/datum/donator_product/product = new
 
 			var/obj/virtual_object = new type
 
-			prize.object = virtual_object
-			prize.category = category
-			prize.cost = cost
+			product.object = virtual_object
+			product.category = category
+			product.cost = cost
 
-			src.prizes.Add(prize)
-			type_list_prizes[type] = prize
+			src.products.Add(product)
+			type_list_products[type] = product
 
 	var/database/query/q = new({"
 		CREATE TABLE IF NOT EXISTS donators (
@@ -182,24 +182,23 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 					var/bought_for = q2.GetColumn(2)
 
 					var/type = text2path(type_as_text)
-					if (!type || !type_list_prizes[type])
+					if (!type || !type_list_products[type])
 						world.log << "Donator rollback for [type_as_text] which was bought for [bought_for]"
 						donator.full_refund(type_as_text, bought_for)
 					else
-						var/datum/donator_prize/prize = type_list_prizes[type]
+						var/datum/donator_product/product = type_list_products[type]
 
-						var/price_delta = bought_for - prize.cost
+						var/price_delta = bought_for - product.cost
 						var/still_available = 1
 						if (price_delta > 0)
-							world.log << "Donator rebalance for [type_as_text] which will refund [bought_for - price_delta]"
-							donator.partial_refund(type_as_text, bought_for, prize.cost)
+							world.log << "Donator rebalance for [type_as_text] which will be refunded for [bought_for - price_delta]"
+							donator.partial_refund(type_as_text, bought_for, product.cost)
 						else if (price_delta < 0)
 							world.log << "Donator rollback for [type_as_text] which was bought for [bought_for]"
 							donator.full_refund(type_as_text, bought_for)
 							still_available = 0
 						if (still_available)
-							donator.available.Add(type_list_prizes[type])
-							donator.unacquired.Add(type_list_prizes[type])
+							donator.owned.Add(type_list_products[type])
 			donators[donator.ckey] = donator
 
 	already_run = 1
