@@ -70,12 +70,13 @@
 				to_chat(user, "<span class='danger'>You don't have enough money to buy this.</span>")
 				return 0
 
-			var/response = input(user, "Are you sure you want to buy [product.object.name]? THIS CANNOT BE UNDONE UNLESS THE PRICE GOES UP OR THIS ITEM GOES OFF THE MARKET!", "Order confirmation", "No") in list("No", "Yes")
+			var/response = input(user, "Are you sure you want to buy [product.object.name]? THIS CANNOT BE UNDONE UNLESS THE PRICE GOES UP OR THIS ITEM GETS REMOVED FROM THE STORE!", "Order confirmation", "No") in list("No", "Yes")
 			if (response == "Yes")
 				if (src.buy_product(product))
 					to_chat(user, "<span class='info'>You now own \icon[product.object] [product.object.name].</span>")
 				else
 					to_chat(user, "Something went wrong: report this: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
+					to_world_log("Donator Store DB error: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
 
 		if ("receive")
 			if(!user)
@@ -105,6 +106,9 @@
 			)
 
 			var/obj/spawned = new product.object.type(get_turf(user))
+
+			spawned.donator_owner = user.real_name
+
 			var/where = user.equip_in_one_of_slots(spawned, slots, del_on_fail=0)
 
 			if (!where)
