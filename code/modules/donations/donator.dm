@@ -16,7 +16,7 @@
 /datum/donator/proc/refund(amount)
 	set background = 1
 
-	var/DBQuery/q = dbcon.NewQuery("UPDATE donators SET current = [src.money] WHERE ckey='[src.ckey]'")
+	var/DBQuery/q = dbcon.NewQuery("UPDATE donators SET current = [src.money + amount] WHERE ckey='[src.ckey]'")
 	. = q.Execute()
 	if (.)
 		src.money += amount
