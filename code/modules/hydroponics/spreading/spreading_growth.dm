@@ -79,9 +79,8 @@
 			health -= seed.handle_environment(T,T.return_air(),null,1)
 		if(health < max_health)
 			health += 1
-			if(growth_threshold >= 1)
-				if(!(health % growth_threshold))
-					update_icon()
+			if((growth_threshold >= 1) && (!(health % growth_threshold)))
+				update_icon()
 		if(health > max_health)
 			health = max_health
 		if(parent == src && health == max_health && !plant && istype(T) && !T.CanZPass(src, DOWN))
