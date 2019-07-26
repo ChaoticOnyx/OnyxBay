@@ -56,7 +56,8 @@
 	var/mob/living/carbon/human/user = usr
 
 	var/datum/donator_product/product = locate(href_list["target"])
-	if (!product || !(product in GLOB.donations.products))
+	if (!product || src.ckey != user.ckey || !(product in GLOB.donations.products))
+		message_admins("[key_name_admin(user, include_name = 1)] has attempted to use an href exploit in Donator Store.")
 		to_chat(usr, "Href exploits do not work here.")
 		return 0
 
@@ -76,7 +77,7 @@
 					to_chat(user, "<span class='info'>You now own \icon[product.object] [product.object.name].</span>")
 				else
 					to_chat(user, "Something went wrong: report this: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
-					to_world_log("Donator Store DB error: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
+					message_admins("Donator Store DB error: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
 
 		if ("receive")
 			if(!user)
