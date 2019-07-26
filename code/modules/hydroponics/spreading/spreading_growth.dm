@@ -80,7 +80,7 @@
 		if(health < max_health)
 			health += 1
 			if(growth_threshold >= 1)
-				if(growth_threshold && !(health % growth_threshold))
+				if(!(health % growth_threshold))
 					update_icon()
 		if(health > max_health)
 			health = max_health
