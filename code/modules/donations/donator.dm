@@ -93,7 +93,7 @@
 				return 0
 
 			if (round_duration_in_ticks > GLOB.donations.spawn_period)
-				to_chat(usr, "<span class='danger'>It's too late into the round to acquire items now.</span>")
+				to_chat(usr, "<span class='danger'>It's too late into the round to receive items now.</span>")
 				return 0
 
 			if (!(product in src.owned))
