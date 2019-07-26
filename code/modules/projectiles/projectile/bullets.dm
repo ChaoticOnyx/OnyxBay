@@ -139,8 +139,8 @@
 	armor_penetration = 18
 
 /obj/item/projectile/bullet/pistol/medium/revolver
-	damage = 30 //.44 magnum or something
 	fire_sound = 'sound/weapons/gun_revolver44.ogg'
+	damage = 30 //.44 magnum or something
 
 /obj/item/projectile/bullet/pistol/strong //matebas
 	fire_sound = 'sound/weapons/gun_mateba.ogg'
