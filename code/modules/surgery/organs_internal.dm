@@ -147,9 +147,8 @@
 	target.op_stage.current_organ = null
 
 	var/list/attached_organs = list()
-	for(var/organ in target.internal_organs_by_name)
-		var/obj/item/organ/I = target.internal_organs_by_name[organ]
-		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == target_zone)
+	for(var/obj/item/organ/organ in target.internal_organs)
+		if(organ && !(organ.status & ORGAN_CUT_AWAY) && organ.parent_organ == target_zone)
 			attached_organs |= organ
 
 	var/organ_to_remove = input(user, "Which organ do you want to separate?") as null|anything in attached_organs
@@ -170,9 +169,9 @@
 	user.visible_message("<span class='notice'>[user] has separated [target]'s [target.op_stage.current_organ] with \the [tool].</span>" , \
 	"<span class='notice'>You have separated [target]'s [target.op_stage.current_organ] with \the [tool].</span>")
 
-	var/obj/item/organ/I = target.internal_organs_by_name[target.op_stage.current_organ]
-	if(I && istype(I))
-		I.cut_away(user)
+	var/obj/item/organ/I = target.op_stage.current_organ
+	if(istype(I))
+		I.cut_away(I.owner)
 
 /datum/surgery_step/internal/detatch_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
