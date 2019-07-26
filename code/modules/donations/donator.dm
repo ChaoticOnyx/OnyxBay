@@ -90,7 +90,7 @@
 				to_chat(usr, "<span class='danger'>You've already received this item.</span>")
 				return 0
 
-			if (world.time > GLOB.donations.spawn_period)
+			if (round_duration_in_ticks > GLOB.donations.spawn_period)
 				to_chat(usr, "<span class='danger'>It's too late into the round to acquire items now.</span>")
 				return 0
 
