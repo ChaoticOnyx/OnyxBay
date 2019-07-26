@@ -133,11 +133,11 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 /datum/donations/proc/ensure_init()
 	var/static/already_run = 0
 	var/static/list/datum/donator_product/type_list_products = list() // type -> product
-
-	src.meta_init()
-
+	
 	if (already_run)
 		return
+		
+	src.meta_init()
 
 	for (var/category in src.items)
 		for (var/type in src.items[category])
