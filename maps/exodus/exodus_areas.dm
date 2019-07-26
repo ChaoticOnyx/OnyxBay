@@ -931,6 +931,21 @@
 	name = "\improper Dormitories"
 	icon_state = "Sleep"
 
+/area/crew_quarters/sleep/cabin1
+	name = "\improper Private Cabin One"
+	icon_state = "PrivDormOne"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin2
+	name = "\improper Private Cabin Two"
+	icon_state = "PrivDormTwo"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin3
+	name = "\improper Private Cabin Three"
+	icon_state = "PrivDormThree"
+	sound_env = SMALL_SOFTFLOOR
+
 /area/crew_quarters/sleep/engi_wash
 	name = "\improper Engineering Washroom"
 	icon_state = "toilet"
@@ -948,6 +963,10 @@
 
 /area/crew_quarters/fitness
 	name = "\improper Fitness Room"
+	icon_state = "fitness"
+
+/area/crew_quarters/fitness/pool
+	name = "\improper Pool"
 	icon_state = "fitness"
 
 /area/crew_quarters/kitchen
@@ -991,6 +1010,23 @@
 	name = "\improper Engineering"
 	icon_state = "engineering"
 	ambience = list('sound/ambience/engineering/ambieng1.ogg')
+
+/area/engineering/lower
+	name = "\improper Engineering Lower Deck"
+	icon_state = "lower_engi"
+	ambience = list('sound/ambience/engineering/ambieng1.ogg')
+
+/area/engineering/lower/rust
+	name = "\improper R-UST Engine"
+	icon_state = "rust"
+
+/area/engineering/lower/rust/core
+	name = "\improper R-UST Core"
+	icon_state = "rust"
+
+/area/engineering/lower/rust/control
+	name = "\improper R-UST Control Room"
+	icon_state = "rust"
 
 /area/engineering/engine_airlock
 	name = "\improper Engine Room Airlock"
