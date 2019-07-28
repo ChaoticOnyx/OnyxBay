@@ -75,7 +75,7 @@ var/list/limb_icon_cache = list()
 		icon = null
 	else
 		var/gender = "_m"
-		if(!gendered_icon)
+		if(!(limb_flags & ORGAN_FLAG_GENDERED_ICON))
 			gender = null
 		else if (dna && dna.GetUIState(DNA_UI_GENDER))
 			gender = "_f"
