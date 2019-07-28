@@ -61,7 +61,7 @@
 	desc = "A huge, armoured, pressurized suit, designed for distinctly nonhuman proportions."
 	action_button_name = "Enable Tool"
 	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 90, bio = 30, rad = 100)
-	var/tool_delay = 10 SECONDS
+	var/tool_delay = 120 SECONDS
 	var/tool_use = 0
 
 /obj/item/clothing/suit/space/vox/pressure/attack_self(mob/user)
@@ -81,7 +81,7 @@
 		to_chat(H, "<span class='danger'>Your hands are full.</span>")
 		return
 
-	var/obj/item/weapon/W = new /obj/item/weapon/rcd/alien(H)
+	var/obj/item/weapon/W = new /obj/item/weapon/alien_device(H)
 	H.put_in_hands(W)
 ////////////RCD
 
@@ -93,7 +93,7 @@
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "floramut100"
 	desc = "A small device filled with nanorobots."
-	var/mode = 1 //We have 3 types of mode, 1 - deconstruct, 2 - construct, 3 - fuck you mother
+	var/mode = 1 //We have 3 types of mode, 1 - deconstruct, 2 - construct, 3 - construct doors
 
 /obj/item/weapon/alien_device/attack_self(mob/user)
 	playsound(src, 'sound/voice/alien_roar_larva2.ogg', 30, 1)
@@ -103,7 +103,7 @@
 			to_chat(user, "<span class='notice'>Changed mode to construct</span>")
 		if(2)
 			mode = 3
-			to_chat(user, "<span class='notice'>Changed mode to fuck you mother</span>")
+			to_chat(user, "<span class='notice'>Changed mode to construct doors</span>")
 		if(3)
 			mode = 1
 			to_chat(user, "<span class='notice'>Changed mode to deconstruct</span>")
@@ -111,46 +111,49 @@
 /obj/item/weapon/alien_device/afterattack(var/atom/A, var/mob/user, var/proximity)
 	if(!proximity)
 		return
-
-	if(istype(A, /turf/simulated/wall/))
-		var/turf/simulated/wall/cult/W = A
-		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
-		W.ChangeTurf(/turf/simulated/wall)
-
-	if(istype(A, /turf/simulated/floor/misc/cult))
-		var/turf/simulated/floor/misc/cult/F = A
-		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
-		F.ChangeTurf(/turf/simulated/floor)
-
-
-/obj/item/weapon/rcd/alien
-	max_stored_matter = 30
-	stored_matter = 30
-	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "floramut100"
-	desc = "A small device filled with nanorobots."
-
-/obj/item/weapon/rcd/alien/attack_self(mob/user)
-	//Change the mode
-	work_id++
-	work_mode = next_in_list(work_mode, work_modes)
-	to_chat(user, "<span class='notice'>Changed mode to '[work_mode]'</span>")
-	playsound(src.loc, 'sound/effects/ding.ogg', 50, 0)
-
-/obj/item/weapon/rcd/alien/Initialize()
-	. = ..()
-	START_PROCESSING(SSobj, src)
-
-/obj/item/weapon/rcd/alien/New(location)
-	..()
-	if(ismob(loc))
-		visible_message("<span class='warning'>A grotesque device forms around [loc.name]\'s arm.</span>",
-		"<span class='warning'>With a quiet hiss, nanorobots form a [src] around our hands.</span>",
+	if(charge == 0)
+		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
+		"<span class='notice'>We turn off our device.</span>",
 		"<span class='italics'>You hear a faint hiss.</span>")
-		src.creator = loc
+		playsound(src, 'sound/effects/flare.ogg', 30, 1)
+		spawn(1)
+			if(src)
+				qdel(src)
+		return
 
-/obj/item/weapon/rcd/alien/dropped(mob/user)
+	switch(mode)
+		if(1)
+			new /obj/effect/acid(get_turf(A), A)
+			charge--
+		if(2)
+			if(!istype(A, /turf/simulated/floor))
+				var/turf/T = A
+				T.ChangeTurf(/turf/simulated/floor/misc/diona)
+				charge--
+			else
+				if(istype(A.loc, /turf/simulated/wall) && istype(A.loc, /obj/machinery/door))
+					return
+				var/turf/T = A
+				new /obj/structure/alien/resin/wall(get_turf(T), T)
+				charge--
+		if(3)
+			if(istype(A, /turf/simulated/floor))
+				if(istype(A.loc, /turf/simulated/wall) && istype(A.loc, /obj/machinery/door))
+					return
+				new /obj/machinery/door/unpowered/simple/resin(get_turf(A), A)
+				charge--
+	playsound(src, 'sound/effects/flare.ogg', 30, 1)
+	if(charge == 0)
+		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
+		"<span class='notice'>We turn off our device.</span>",
+		"<span class='italics'>You hear a faint hiss.</span>")
+		playsound(src, 'sound/effects/flare.ogg', 30, 1)
+		spawn(1)
+			if(src)
+				qdel(src)
+		return
+
+/obj/item/weapon/alien_device/dropped(mob/user)
 	visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 	"<span class='notice'>We turn off our device.</span>",
 	"<span class='italics'>You hear a faint hiss.</span>")
@@ -158,30 +161,6 @@
 	spawn(1)
 		if(src)
 			qdel(src)
-
-/obj/item/weapon/rcd/alien/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/item/weapon/rcd/alien/Process()  //Stolen from ninja swords.
-	if(!creator || loc != creator ||(creator.l_hand != src && creator.r_hand != src) || (stored_matter <= 0))
-		// Tidy up a bit.
-		if(istype(loc,/mob/living))
-			var/mob/living/carbon/human/host = loc
-			if(istype(host))
-				for(var/obj/item/organ/external/organ in host.organs)
-					for(var/obj/item/O in organ.implants)
-						if(O == src)
-							organ.implants -= src
-			host.pinned -= src
-			host.embedded -= src
-			host.drop_from_inventory(src)
-		spawn(1)
-			if(src)
-				qdel(src)
-
-/obj/item/weapon/rcd/alien/attackby(obj/item/weapon/W, mob/user)
-	return
 //RCD/////////////////////
 
 
@@ -351,7 +330,7 @@
 	nanobots = FALSE
 	icon_state = "vox-medic"
 	slowdown_per_slot[slot_wear_suit] = 1
-/*
+
 /obj/item/clothing/suit/space/vox/medic/Initialize()
 	. = ..()
 	START_PROCESSING(SSobj, src)
@@ -361,7 +340,7 @@
 	. = ..()
 
 /obj/item/clothing/suit/space/vox/medic/Process()
-	for(var/mob/living/carbon/human/vox/V in range(H, 1))
+	for(var/mob/living/carbon/human/vox/V in range(src.loc, 1))
 		if(V.getBruteLoss())
 			V.adjustBruteLoss(-2 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 		if(V.getFireLoss())
@@ -369,7 +348,7 @@
 		if(V.getToxLoss())
 			V.adjustToxLoss(-2 * config.organ_regeneration_multiplier)
 
-*/
+
 /obj/item/clothing/under/vox
 	has_sensor = 0
 	species_restricted = list(SPECIES_VOX)
