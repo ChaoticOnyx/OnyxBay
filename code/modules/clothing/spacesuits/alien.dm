@@ -32,7 +32,7 @@
 /obj/item/clothing/suit/space/vox
 	w_class = ITEM_SIZE_NORMAL
 	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/melee/energy/sword,/obj/item/weapon/handcuffs,/obj/item/weapon/tank)
-	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 100, rad = 30)
 	siemens_coefficient = 0.6
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
@@ -46,7 +46,7 @@
 	slowdown_per_slot[slot_wear_suit] = 2
 
 /obj/item/clothing/head/helmet/space/vox
-	armor = list(melee = 60, bullet = 50, laser = 40, energy = 15, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 60, bullet = 50, laser = 40, energy = 15, bomb = 30, bio = 100, rad = 30)
 	siemens_coefficient = 0.6
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE
 	flags_inv = 0
@@ -56,14 +56,14 @@
 	name = "alien helmet"
 	icon_state = "vox-pressure"
 	desc = "Hey, wasn't this a prop in \'The Abyss\'?"
-	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 90, bio = 30, rad = 100)
+	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 90, bio = 100, rad = 100)
 
 /obj/item/clothing/suit/space/vox/pressure
 	name = "alien pressure suit"
 	icon_state = "vox-pressure"
 	desc = "A huge, armoured, pressurized suit, designed for distinctly nonhuman proportions."
 	action_button_name = "Enable Tool"
-	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 90, bio = 30, rad = 100)
+	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 90, bio = 100, rad = 100)
 	var/tool_delay = 120 SECONDS
 	var/tool_use = 0
 
@@ -90,7 +90,7 @@
 
 
 /obj/item/weapon/alien_device
-	name = "Strange device"
+	name = "Deconstruction device"
 	var/charge = 3
 	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.
 	icon = 'icons/obj/gun.dmi'
@@ -116,7 +116,7 @@
 		return
 	if(charge == 0)
 		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
-		"<span class='notice'>We turn off our device.</span>",
+		"<span class='notice'>You turn off your device.</span>",
 		"<span class='italics'>You hear a faint hiss.</span>")
 		playsound(src, 'sound/effects/flare.ogg', 30, 1)
 		spawn(1)
@@ -148,7 +148,7 @@
 	playsound(src, 'sound/effects/flare.ogg', 30, 1)
 	if(charge == 0)
 		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
-		"<span class='notice'>We turn off our device.</span>",
+		"<span class='notice'>You turn off your device.</span>",
 		"<span class='italics'>You hear a faint hiss.</span>")
 		playsound(src, 'sound/effects/flare.ogg', 30, 1)
 		spawn(1)
@@ -158,7 +158,7 @@
 
 /obj/item/weapon/alien_device/dropped(mob/user)
 	visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
-	"<span class='notice'>We turn off our device.</span>",
+	"<span class='notice'>You turn off our device.</span>",
 	"<span class='italics'>You hear a faint hiss.</span>")
 	playsound(src, 'sound/effects/flare.ogg', 30, 1)
 	spawn(1)
@@ -166,6 +166,49 @@
 			qdel(src)
 //RCD/////////////////////
 
+/obj/item/weapon/alien_med_device
+	name = "Med-device"
+	var/charge = 3
+	icon = 'icons/obj/gun.dmi'
+	icon_state = "voxrcd"
+	desc = "A small bio-device with teeth."
+	var/recharge_time = 120 SECONDS
+	var/max_ammo = 3
+	var/ammo = 3
+	var/last_regen = 0
+
+/obj/item/weapon/alien_med_device/afterattack(var/atom/A, var/mob/user, var/proximity)
+	if(!ishuman(A))
+		return
+	var/mob/living/carbon/human/V = A
+	if(ammo >= 1)
+		if(istype(V, /mob/living/carbon/human/vox))
+			playsound(V.loc, 'sound/effects/flare.ogg', 30, 1)
+			V.reagents.add_reagent(/datum/reagent/peridaxon, 5)
+			to_chat(V, "<span class='notice'>You feel a tiny prick!</span>")
+			ammo--
+		else
+			playsound(V.loc, 'sound/weapons/bite.ogg', 30, 1)
+			V.reagents.add_reagent(/datum/reagent/toxin/amatoxin, 5)
+			to_chat(V, "<span class='notice'>You were bitten!</span>")
+			ammo--
+	else
+		playsound(src, 'sound/voice/alien_roar_larva2.ogg', 30, 1)
+		to_chat(user, "<span class='notice'>[src] is discharged.</span>")
+
+/obj/item/weapon/alien_med_device/Initialize()
+	. = ..()
+	START_PROCESSING(SSobj, src)
+	last_regen = world.time
+
+/obj/item/weapon/alien_med_device/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
+/obj/item/weapon/alien_med_device/Process()
+	if((ammo < max_ammo) && (world.time > (last_regen + recharge_time)))
+		ammo++
+		last_regen = world.time
 
 /obj/item/clothing/head/helmet/space/vox/carapace
 	name = "alien visor"
@@ -177,7 +220,7 @@
 	icon_state = "vox-carapace"
 	desc = "An armoured, segmented carapace with glowing purple lights. It looks pretty run-down."
 	action_button_name = "Enable Protection"
-	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 40, bio = 30, rad = 30)
+	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 40, bio = 100, rad = 30)
 	var/protection = FALSE
 
 /obj/item/clothing/suit/space/vox/carapace/attack_self(mob/user)
@@ -191,25 +234,25 @@
 /obj/item/clothing/suit/space/vox/carapace/proc/protection(mob/user)
 	var/mob/living/carbon/human/H = user
 	if(protection)
-		to_chat(H, "<span class='notice'>We deactivate the protection mode.</span>")
-		armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 60, bio = 30, rad = 30)
+		to_chat(H, "<span class='notice'>You deactivate the protection mode.</span>")
+		armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 60, bio = 100, rad = 30)
 		siemens_coefficient = 0.6
 		if(istype(H.head, /obj/item/clothing/head/helmet/space/vox/carapace))
-			H.head.armor = list(melee = 60, bullet = 50, laser = 40, energy = 40, bomb = 60, bio = 30, rad = 30)
+			H.head.armor = list(melee = 60, bullet = 50, laser = 40, energy = 40, bomb = 60, bio = 100, rad = 30)
 			H.head.siemens_coefficient = 0.6
-			H.head.icon_state = "vox-carapace"
+			H.head.item_state = "vox-carapace"
 		slowdown_per_slot[slot_wear_suit] = 3
-		icon_state = "vox-carapace"
+		item_state = "vox-carapace"
 	else
-		to_chat(H, "<span class='notice'>We activate the protection mode.</span>")
-		armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 60, rad = 60)
-		siemens_coefficient = 2
+		to_chat(H, "<span class='notice'>You activate the protection mode.</span>")
+		armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 100, rad = 60)
+		siemens_coefficient = 0.2
 		if(istype(H.head, /obj/item/clothing/head/helmet/space/vox/carapace))
-			H.head.armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 60, rad = 60)
-			H.head.siemens_coefficient = 2
-			H.head.icon_state = "vox-carapace-active"
+			H.head.armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 100, rad = 60)
+			H.head.siemens_coefficient = 0.2
+			H.head.item_state = "vox-carapace-active"
 		slowdown_per_slot[slot_wear_suit] = 20
-		icon_state = "vox-carapace-active"
+		item_state = "vox-carapace-active"
 	protection = !protection
 
 /obj/item/clothing/head/helmet/space/vox/stealth
@@ -217,7 +260,7 @@
 	icon_state = "vox-stealth"
 	desc = "A smoothly contoured, matte-black alien helmet."
 	siemens_coefficient = 0
-	armor = list(melee = 25, bullet = 40, laser = 65, energy = 40, bomb = 20, bio = 30, rad = 30)
+	armor = list(melee = 25, bullet = 40, laser = 65, energy = 40, bomb = 20, bio = 100, rad = 60)
 
 /obj/item/clothing/suit/space/vox/stealth
 	name = "alien stealth suit"
@@ -225,7 +268,7 @@
 	desc = "A sleek black suit. It seems to have a tail, and is very light."
 	action_button_name = "Enable Cloak"
 	siemens_coefficient = 0
-	armor = list(melee = 25, bullet = 30, laser = 65, energy = 30, bomb = 20, bio = 30, rad = 30)
+	armor = list(melee = 25, bullet = 30, laser = 65, energy = 30, bomb = 20, bio = 100, rad = 60)
 	var/cloak = FALSE
 
 /obj/item/clothing/suit/space/vox/stealth/New()
@@ -247,7 +290,7 @@
 		cloak = FALSE
 		return 1
 
-	to_chat(H, "<span class='notice'>We vanish from sight, and will remain hidden, so long as we move carefully.</span>")
+	to_chat(H, "<span class='notice'>You vanish from sight, and will remain hidden, so long as you move carefully.</span>")
 	cloak = TRUE
 	animate(H,alpha = 255, alpha = 20, time = 10)
 
@@ -264,7 +307,7 @@
 			remain_cloaked = 0
 	H.invisibility = initial(H.invisibility)
 	H.visible_message("<span class='warning'>[H] suddenly fades in, seemingly from nowhere!</span>",
-	"<span class='notice'>We revert our camouflage, revealing ourselves.</span>")
+	"<span class='notice'>You revert our camouflage, revealing ourselves.</span>")
 	cloak = FALSE
 
 	animate(H,alpha = 20, alpha = 255, time = 10)
@@ -306,12 +349,11 @@
 
 	to_chat(H, "<span class='notice'>Nanobots activated.</span>")
 	nanobots = TRUE
-	animate(src,alpha = 255, alpha = 10, time = 10)
-	icon_state = "vox-medic-active"
+	item_state = "vox-medic-active"
 	var/remain_nanobots = TRUE
-	slowdown_per_slot[slot_wear_suit] = 100
+	slowdown_per_slot[slot_wear_suit] = 10
 	while(remain_nanobots) //This loop will keep going until the player uncloaks.
-		anim(get_turf(H), H, 'icons/effects/effects.dmi', "electricity",null,20,null)
+		anim(get_turf(H), H, 'icons/effects/effects.dmi', "fire_goon",null,20,null)
 		sleep(1 SECOND) // Sleep at the start so that if something invalidates a cloak, it will drop immediately after the check and not in one second.
 		if(!nanobots)
 			remain_nanobots = 0
@@ -323,17 +365,19 @@
 			remain_nanobots = 0
 		spawn(0.5 SECONDS)
 			for(var/mob/living/carbon/human/vox/V in range(H, 2))
-				for(var/obj/item/organ/regen_organ in V.organs)
-					regen_organ.damage = max(regen_organ.damage - 5, 0)
+				for(var/obj/item/organ/external/regen_organ in V.organs)
+					regen_organ.damage = max(regen_organ.damage - 2, 0)
 				if(V.getBruteLoss())
-					V.adjustBruteLoss(-10 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+					V.adjustBruteLoss(-5 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 				if(V.getFireLoss())
-					V.adjustFireLoss(-10 * config.organ_regeneration_multiplier)
+					V.adjustFireLoss(-5 * config.organ_regeneration_multiplier)
 				if(V.getToxLoss())
-					V.adjustToxLoss(-10 * config.organ_regeneration_multiplier)
+					V.adjustToxLoss(-5 * config.organ_regeneration_multiplier)
+				if(V.reagents.get_reagent_amount(/datum/reagent/paracetamol) + 5 <= 20)
+					V.reagents.add_reagent(/datum/reagent/paracetamol, 5)
 	to_chat(H, "<span class='notice'>Nanobots deactivated.</span>")
 	nanobots = FALSE
-	icon_state = "vox-medic"
+	item_state = "vox-medic"
 	slowdown_per_slot[slot_wear_suit] = 1
 
 /obj/item/clothing/suit/space/vox/medic/Initialize()
@@ -352,6 +396,8 @@
 			V.adjustFireLoss(-2 * config.organ_regeneration_multiplier)
 		if(V.getToxLoss())
 			V.adjustToxLoss(-2 * config.organ_regeneration_multiplier)
+		if(V.reagents.get_reagent_amount(/datum/reagent/paracetamol) + 5 <= 20)
+			V.reagents.add_reagent(/datum/reagent/paracetamol, 5)
 
 /obj/item/weapon/storage/belt/vox
 	name = "Vox belt"
@@ -359,61 +405,7 @@
 	icon_state = "voxbelt"
 	storage_slots = 9
 	item_state = "voxbelt"
-	can_hold = list(
-		/obj/item/weapon/crowbar,
-		/obj/item/weapon/screwdriver,
-		/obj/item/weapon/weldingtool,
-		/obj/item/weapon/wirecutters,
-		/obj/item/weapon/wrench,
-		/obj/item/device/multitool,
-		/obj/item/device/flashlight,
-		/obj/item/stack/cable_coil,
-		/obj/item/device/t_scanner,
-		/obj/item/device/analyzer,
-		/obj/item/taperoll,
-		/obj/item/device/robotanalyzer,
-		/obj/item/weapon/material/minihoe,
-		/obj/item/weapon/material/hatchet,
-		/obj/item/device/analyzer/plant_analyzer,
-		/obj/item/taperoll,
-		/obj/item/weapon/extinguisher/mini,
-		/obj/item/weapon/marshalling_wand,
-		/obj/item/weapon/combotool/advtool,
-		/obj/item/weapon/grenade,
-		/obj/item/weapon/handcuffs,
-		/obj/item/device/flash,
-		/obj/item/clothing/glasses,
-		/obj/item/ammo_casing/shotgun,
-		/obj/item/ammo_magazine,
-		/obj/item/weapon/melee/baton,
-		/obj/item/device/pda,
-		/obj/item/device/radio/headset,
-		/obj/item/weapon/melee,
-		/obj/item/weapon/shield/energy,
-		/obj/item/weapon/pinpointer,
-		/obj/item/weapon/plastique,
-		/obj/item/weapon/gun/projectile/pistol,
-		/obj/item/weapon/gun/energy/crossbow,
-		/obj/item/ammo_casing/a145,
-		/obj/item/device/radio/uplink,
-		/obj/item/weapon/card/emag,
-		/obj/item/device/multitool/hacktool,
-		/obj/item/stack/telecrystal,
-		/obj/item/weapon/reagent_containers/spray,
-		/obj/item/weapon/soap,
-		/obj/item/weapon/storage/bag/trash,
-		/obj/item/weapon/resonator,
-		/obj/item/weapon/oreportal,
-		/obj/item/weapon/oremagnet,
-		/obj/item/weapon/ore_radar,
-		/obj/item/weapon/magnetic_ammo,
-		/obj/item/weapon/gun/energy/taser,
-		/obj/item/weapon/gun/energy/stunrevolver,
-		/obj/item/clothing/glasses,
-		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/reagent_containers
-		)
-
+	max_storage_space = DEFAULT_BACKPACK_STORAGE + 5
 
 /obj/item/clothing/under/vox
 	has_sensor = 0
