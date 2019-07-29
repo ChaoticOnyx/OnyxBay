@@ -94,7 +94,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 	var/list/datum/donator_product/products = list() // Product list to display (NanoUI)
 	var/list/datum/donator/donators = null // null until DB connection established
 
-	var/spawn_period = 3000 // 5 minutes to acquire things, in 1/10th
+	var/spawn_period = 5 MINUTES // 5 minutes to acquire things, in 1/10th
 
 
 /datum/donations/proc/meta_init()
@@ -183,7 +183,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 
 					var/type = text2path(type_as_text)
 					if (!type || !type_list_products[type])
-						world.log << "Donator rollback for [type_as_text] which was bought for [bought_for]"
+						to_world_log("Donator rollback for [type_as_text] which was bought for [bought_for]")
 						donator.full_refund(type_as_text, bought_for)
 					else
 						var/datum/donator_product/product = type_list_products[type]
@@ -191,10 +191,10 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 						var/price_delta = bought_for - product.cost
 						var/still_available = 1
 						if (price_delta > 0)
-							world.log << "Donator rebalance for [type_as_text] which will be refunded for [bought_for - price_delta]"
+							to_world_log("Donator rebalance for [type_as_text] which will be refunded for [bought_for - price_delta]")
 							donator.partial_refund(type_as_text, bought_for, product.cost)
 						else if (price_delta < 0)
-							world.log << "Donator rollback for [type_as_text] which was bought for [bought_for]"
+							to_world_log("Donator rollback for [type_as_text] which was bought for [bought_for]")
 							donator.full_refund(type_as_text, bought_for)
 							still_available = 0
 						if (still_available)

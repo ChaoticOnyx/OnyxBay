@@ -23,7 +23,7 @@
 
 
 /datum/donator/proc/full_refund(type_as_text, refund_amount)
-	set background = 1
+	set background = TRUE
 
 	. = src.refund(refund_amount)
 	if (.)
@@ -32,7 +32,7 @@
 
 
 /datum/donator/proc/partial_refund(type_as_text, old_cost, new_cost)
-	set background = 1
+	set background = TRUE
 
 	. = src.refund(old_cost - new_cost)
 	if (.)
@@ -41,7 +41,7 @@
 
 
 /datum/donator/proc/buy_product(datum/donator_product/product)
-	set background = 1
+	set background = TRUE
 
 	. = src.refund(-product.cost)
 	if (. > 0)
@@ -77,7 +77,7 @@
 					to_chat(user, "<span class='info'>You now own \icon[product.object] [product.object.name].</span>")
 				else
 					to_chat(user, "Something went wrong: report this: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
-					message_admins("Donator Store DB error: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
+					log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
 
 		if ("receive")
 			if(!user)
