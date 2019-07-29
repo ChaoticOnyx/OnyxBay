@@ -91,8 +91,8 @@
 	var/charge = 3
 	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.
 	icon = 'icons/obj/gun.dmi'
-	icon_state = "floramut100"
-	desc = "A small device filled with nanorobots."
+	icon_state = "voxrcd"
+	desc = "A small device filled with biorobots."
 	var/mode = 1 //We have 3 types of mode, 1 - deconstruct, 2 - construct, 3 - construct doors
 
 /obj/item/weapon/alien_device/attack_self(mob/user)
@@ -194,6 +194,7 @@
 		if(istype(H.head, /obj/item/clothing/head/helmet/space/vox/carapace))
 			H.head.armor = list(melee = 60, bullet = 50, laser = 40, energy = 40, bomb = 60, bio = 30, rad = 30)
 			H.head.siemens_coefficient = 0.6
+			H.head.icon_state = "vox-carapace"
 		slowdown_per_slot[slot_wear_suit] = 3
 		icon_state = "vox-carapace"
 	else
@@ -203,6 +204,7 @@
 		if(istype(H.head, /obj/item/clothing/head/helmet/space/vox/carapace))
 			H.head.armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 60, rad = 60)
 			H.head.siemens_coefficient = 2
+			H.head.icon_state = "vox-carapace-active"
 		slowdown_per_slot[slot_wear_suit] = 20
 		icon_state = "vox-carapace-active"
 	protection = !protection
@@ -347,6 +349,67 @@
 			V.adjustFireLoss(-2 * config.organ_regeneration_multiplier)
 		if(V.getToxLoss())
 			V.adjustToxLoss(-2 * config.organ_regeneration_multiplier)
+
+/obj/item/weapon/storage/belt/vox
+	name = "Vox belt"
+	desc = "High-tech belt with mounts for any objects."
+	icon_state = "voxbelt"
+	storage_slots = 9
+	item_state = "voxbelt"
+	can_hold = list(
+		/obj/item/weapon/crowbar,
+		/obj/item/weapon/screwdriver,
+		/obj/item/weapon/weldingtool,
+		/obj/item/weapon/wirecutters,
+		/obj/item/weapon/wrench,
+		/obj/item/device/multitool,
+		/obj/item/device/flashlight,
+		/obj/item/stack/cable_coil,
+		/obj/item/device/t_scanner,
+		/obj/item/device/analyzer,
+		/obj/item/taperoll,
+		/obj/item/device/robotanalyzer,
+		/obj/item/weapon/material/minihoe,
+		/obj/item/weapon/material/hatchet,
+		/obj/item/device/analyzer/plant_analyzer,
+		/obj/item/taperoll,
+		/obj/item/weapon/extinguisher/mini,
+		/obj/item/weapon/marshalling_wand,
+		/obj/item/weapon/combotool/advtool,
+		/obj/item/weapon/grenade,
+		/obj/item/weapon/handcuffs,
+		/obj/item/device/flash,
+		/obj/item/clothing/glasses,
+		/obj/item/ammo_casing/shotgun,
+		/obj/item/ammo_magazine,
+		/obj/item/weapon/melee/baton,
+		/obj/item/device/pda,
+		/obj/item/device/radio/headset,
+		/obj/item/weapon/melee,
+		/obj/item/weapon/shield/energy,
+		/obj/item/weapon/pinpointer,
+		/obj/item/weapon/plastique,
+		/obj/item/weapon/gun/projectile/pistol,
+		/obj/item/weapon/gun/energy/crossbow,
+		/obj/item/ammo_casing/a145,
+		/obj/item/device/radio/uplink,
+		/obj/item/weapon/card/emag,
+		/obj/item/device/multitool/hacktool,
+		/obj/item/stack/telecrystal,
+		/obj/item/weapon/reagent_containers/spray,
+		/obj/item/weapon/soap,
+		/obj/item/weapon/storage/bag/trash,
+		/obj/item/weapon/resonator,
+		/obj/item/weapon/oreportal,
+		/obj/item/weapon/oremagnet,
+		/obj/item/weapon/ore_radar,
+		/obj/item/weapon/magnetic_ammo,
+		/obj/item/weapon/gun/energy/taser,
+		/obj/item/weapon/gun/energy/stunrevolver,
+		/obj/item/clothing/glasses,
+		/obj/item/device/healthanalyzer,
+		/obj/item/weapon/reagent_containers
+		)
 
 
 /obj/item/clothing/under/vox
