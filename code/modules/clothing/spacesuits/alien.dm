@@ -37,6 +37,9 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SPECIES_VOX)
+	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+
 
 /obj/item/clothing/suit/space/vox/New()
 	..()
