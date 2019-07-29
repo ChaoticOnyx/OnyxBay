@@ -80,7 +80,7 @@
 					log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
 
 		if ("receive")
-			if(!user)
+			if(!istype(user))
 				to_chat(usr, "<span class='warning'>You must be a human to acquire items.</span>")
 				return 0
 
