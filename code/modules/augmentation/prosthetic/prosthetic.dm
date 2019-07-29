@@ -24,8 +24,7 @@
 					return 0
 				O.owner.put_in_r_hand(P)
 
-		O.cannot_amputate = 1
-		O.no_pain = 1
+		O.status = ORGAN_ROBOTIC
 		P.parent_hand = organ
 	return 1
 

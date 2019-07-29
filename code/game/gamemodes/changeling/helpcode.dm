@@ -327,6 +327,7 @@
 	speed = 0
 	maxHealth = 50
 	health = 50
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
 	pass_flags = PASS_FLAG_TABLE
 	harm_intent_damage = 20
 	melee_damage_lower = 15
@@ -338,6 +339,7 @@
 	min_gas = null
 	max_gas = null
 	see_in_dark = 8
+	meat_amount = 1
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
 
 	minbodytemp = 0
@@ -623,6 +625,7 @@
 	name = "disfigured head"
 	icon_state = "gib_head"
 	icon_living = "gib_head"
+	meat_amount = 2
 
 /mob/living/simple_animal/hostile/little_changeling/chest_chan
 	maxHealth = 150
@@ -630,6 +633,7 @@
 	name = "disfigured chest"
 	icon_state = "gib_torso"
 	icon_living = "gib_torso"
+	meat_amount = 3
 
 /mob/living/simple_animal/hostile/little_changeling/leg_chan
 	maxHealth = 60

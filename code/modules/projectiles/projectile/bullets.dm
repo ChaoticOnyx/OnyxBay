@@ -1,7 +1,6 @@
 /obj/item/projectile/bullet
 	name = "bullet"
 	icon_state = "bullet"
-	fire_sound = 'sound/weapons/gunshot/gunshot_strong.ogg'
 	damage = 50
 	damage_type = BRUTE
 	nodamage = 0
@@ -127,7 +126,6 @@
 /* short-casing projectiles, like the kind used in pistols or SMGs */
 
 /obj/item/projectile/bullet/pistol
-	fire_sound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
 	damage = 25 //9mm, .38, etc
 	armor_penetration = 13.5
 
@@ -141,11 +139,11 @@
 	armor_penetration = 18
 
 /obj/item/projectile/bullet/pistol/medium/revolver
-	fire_sound = 'sound/weapons/gunshot/gunshot_strong.ogg'
+	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 	damage = 30 //.44 magnum or something
 
 /obj/item/projectile/bullet/pistol/strong //matebas
-	fire_sound = 'sound/weapons/gunshot/gunshot_strong.ogg'
+	fire_sound = 'sound/weapons/gun_mateba.ogg'
 	damage = 60 //.50AE
 	armor_penetration = 30
 

@@ -1,6 +1,4 @@
 /mob/living/carbon/human/proc/create_stack()
-	set waitfor=0
-	sleep(10)
 	internal_organs_by_name[BP_STACK] = new /obj/item/organ/internal/stack(src,1)
 	to_chat(src, "<span class='notice'>You feel a faint sense of vertigo as your neural lace boots.</span>")
 
@@ -9,7 +7,7 @@
 	parent_organ = BP_HEAD
 	icon_state = "cortical-stack"
 	organ_tag = BP_STACK
-	robotic = ORGAN_ROBOT
+	status = ORGAN_ROBOTIC
 	vital = 1
 	origin_tech = list(TECH_BIO = 4, TECH_MATERIAL = 4, TECH_MAGNET = 2, TECH_DATA = 3)
 	relative_size = 10
