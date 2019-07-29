@@ -4,7 +4,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 /datum/donations
 	var/list/items = list(
 		"Free stuff" = list(
-			/obj/item/weapon/reagent_containers/food/drinks/bottle/premiumvodka = 0,
+			/obj/item/weapon/reagent_containers/food/drinks/bottle/vodka = 0,
 			/obj/item/clothing/head/ushanka = 0,
 		),
 		"Very not free stuff" = list(
