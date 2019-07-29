@@ -37,9 +37,6 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SPECIES_VOX)
-	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-
 
 /obj/item/clothing/suit/space/vox/New()
 	..()
@@ -48,7 +45,6 @@
 /obj/item/clothing/head/helmet/space/vox
 	armor = list(melee = 60, bullet = 50, laser = 40, energy = 15, bomb = 30, bio = 100, rad = 30)
 	siemens_coefficient = 0.6
-	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE
 	flags_inv = 0
 	species_restricted = list(SPECIES_VOX)
 
@@ -62,7 +58,7 @@
 	name = "alien pressure suit"
 	icon_state = "vox-pressure"
 	desc = "A huge, armoured, pressurized suit, designed for distinctly nonhuman proportions."
-	action_button_name = "Enable Tool"
+	action_button_name = "Toggle Bio-RCD"
 	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 90, bio = 100, rad = 100)
 	var/tool_delay = 120 SECONDS
 	var/tool_use = 0
@@ -73,9 +69,9 @@
 		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/pressure))
 		return
-	if(!(world.time > (tool_use + tool_delay)))
+	if(!(world.time > tool_use))
 		return
-	tool_use = world.time
+	tool_use = world.time + tool_delay
 	tool(user)
 
 /obj/item/clothing/suit/space/vox/pressure/proc/tool(mob/user)
@@ -290,7 +286,7 @@
 		cloak = FALSE
 		return 1
 
-	to_chat(H, "<span class='notice'>You vanish from sight, and will remain hidden, so long as you move carefully.</span>")
+	to_chat(H, "<span class='notice'>Stealth mode enabled.</span>")
 	cloak = TRUE
 	animate(H,alpha = 255, alpha = 20, time = 10)
 
@@ -307,7 +303,7 @@
 			remain_cloaked = 0
 	H.invisibility = initial(H.invisibility)
 	H.visible_message("<span class='warning'>[H] suddenly fades in, seemingly from nowhere!</span>",
-	"<span class='notice'>You revert our camouflage, revealing ourselves.</span>")
+	"<span class='notice'>Stealth mode disabled.</span>")
 	cloak = FALSE
 
 	animate(H,alpha = 20, alpha = 255, time = 10)
@@ -327,6 +323,7 @@
 	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 100, rad = 100)
 	action_button_name = "Enable Nanobots"
 	var/nanobots = FALSE
+	var/mob/client //user
 
 /obj/item/clothing/suit/space/vox/medic/New()
 	..()
@@ -334,6 +331,7 @@
 
 /obj/item/clothing/suit/space/vox/medic/attack_self(mob/user)
 	var/mob/living/carbon/human/H = user
+	client = H
 	if(!istype(H))
 		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
@@ -341,44 +339,16 @@
 	nanobots(user)
 
 /obj/item/clothing/suit/space/vox/medic/proc/nanobots(mob/user)
-	var/mob/living/carbon/human/H = user
-
 	if(nanobots)
 		nanobots = FALSE
-		return 1
-
-	to_chat(H, "<span class='notice'>Nanobots activated.</span>")
-	nanobots = TRUE
-	item_state = "vox-medic-active"
-	var/remain_nanobots = TRUE
-	slowdown_per_slot[slot_wear_suit] = 10
-	while(remain_nanobots) //This loop will keep going until the player uncloaks.
-		anim(get_turf(H), H, 'icons/effects/effects.dmi', "fire_goon",null,20,null)
-		sleep(1 SECOND) // Sleep at the start so that if something invalidates a cloak, it will drop immediately after the check and not in one second.
-		if(!nanobots)
-			remain_nanobots = 0
-		if(H.stat) // Dead or unconscious lings can't stay cloaked.
-			remain_nanobots = 0
-		if(H.stat) // Dead or unconscious lings can't stay cloaked.
-			remain_nanobots = 0
-		if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
-			remain_nanobots = 0
-		spawn(0.5 SECONDS)
-			for(var/mob/living/carbon/human/vox/V in range(H, 2))
-				for(var/obj/item/organ/external/regen_organ in V.organs)
-					regen_organ.damage = max(regen_organ.damage - 2, 0)
-				if(V.getBruteLoss())
-					V.adjustBruteLoss(-5 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
-				if(V.getFireLoss())
-					V.adjustFireLoss(-5 * config.organ_regeneration_multiplier)
-				if(V.getToxLoss())
-					V.adjustToxLoss(-5 * config.organ_regeneration_multiplier)
-				if(V.reagents.get_reagent_amount(/datum/reagent/paracetamol) + 5 <= 20)
-					V.reagents.add_reagent(/datum/reagent/paracetamol, 5)
-	to_chat(H, "<span class='notice'>Nanobots deactivated.</span>")
-	nanobots = FALSE
-	item_state = "vox-medic"
-	slowdown_per_slot[slot_wear_suit] = 1
+		to_chat(user, "<span class='notice'>Nanobots deactivated.</span>")
+		item_state = "vox-medic"
+		slowdown_per_slot[slot_wear_suit] = 1
+	else
+		nanobots = TRUE
+		item_state = "vox-medic-active"
+		to_chat(user, "<span class='notice'>Nanobots activated.</span>")
+		slowdown_per_slot[slot_wear_suit] = 10
 
 /obj/item/clothing/suit/space/vox/medic/Initialize()
 	. = ..()
@@ -389,15 +359,36 @@
 	. = ..()
 
 /obj/item/clothing/suit/space/vox/medic/Process()
-	for(var/mob/living/carbon/human/vox/V in range(src.loc, 1))
-		if(V.getBruteLoss())
-			V.adjustBruteLoss(-2 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
-		if(V.getFireLoss())
-			V.adjustFireLoss(-2 * config.organ_regeneration_multiplier)
-		if(V.getToxLoss())
-			V.adjustToxLoss(-2 * config.organ_regeneration_multiplier)
-		if(V.reagents.get_reagent_amount(/datum/reagent/paracetamol) + 5 <= 20)
-			V.reagents.add_reagent(/datum/reagent/paracetamol, 5)
+	if(!client)
+		return
+	var/mob/living/carbon/human/H = client
+	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
+		return
+	if(H.stat)
+		return
+	if(nanobots)
+		anim(get_turf(H), H, 'icons/effects/effects.dmi', "fire_goon",null,20,null)
+		for(var/mob/living/carbon/human/vox/V in range(H, 2))
+			for(var/obj/item/organ/external/regen_organ in V.organs)
+				regen_organ.damage = max(regen_organ.damage - 2, 0)
+			if(V.getBruteLoss())
+				V.adjustBruteLoss(-5 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+			if(V.getFireLoss())
+				V.adjustFireLoss(-5 * config.organ_regeneration_multiplier)
+			if(V.getToxLoss())
+				V.adjustToxLoss(-5 * config.organ_regeneration_multiplier)
+			if(V.reagents.get_reagent_amount(/datum/reagent/paracetamol) + 5 <= 20)
+				V.reagents.add_reagent(/datum/reagent/paracetamol, 5)
+	else
+		for(var/mob/living/carbon/human/vox/V in range(H, 1))
+			if(V.getBruteLoss())
+				V.adjustBruteLoss(-2 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+			if(V.getFireLoss())
+				V.adjustFireLoss(-2 * config.organ_regeneration_multiplier)
+			if(V.getToxLoss())
+				V.adjustToxLoss(-2 * config.organ_regeneration_multiplier)
+			if(V.reagents.get_reagent_amount(/datum/reagent/paracetamol) + 5 <= 20)
+				V.reagents.add_reagent(/datum/reagent/paracetamol, 5)
 
 /obj/item/weapon/storage/belt/vox
 	name = "Vox belt"
