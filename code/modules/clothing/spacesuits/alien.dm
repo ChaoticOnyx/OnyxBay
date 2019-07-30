@@ -73,10 +73,9 @@
 		to_chat(H, "<span class='danger'>[src] is recharging.</span>")
 		return
 	last_used = world.time + tool_delay
-	tool(user)
+	spawn_vox_rcd(H)
 
-/obj/item/clothing/suit/space/vox/pressure/proc/spawn_vox_rcd(mob/user)
-	var/mob/living/carbon/human/H = user
+/obj/item/clothing/suit/space/vox/pressure/proc/spawn_vox_rcd(var/mob/living/carbon/human/H)
 	if(H.l_hand && H.r_hand)
 		to_chat(H, "<span class='danger'>Your hands are full.</span>")
 		return
