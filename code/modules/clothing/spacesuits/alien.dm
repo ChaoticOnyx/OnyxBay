@@ -61,7 +61,7 @@
 	action_button_name = "Toggle Bio-RCD"
 	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 90, bio = 100, rad = 100)
 	var/tool_delay = 120 SECONDS
-	var/tool_use = 0
+	var/last_used = 0
 
 /obj/item/clothing/suit/space/vox/pressure/attack_self(mob/user)
 	var/mob/living/carbon/human/H = user
