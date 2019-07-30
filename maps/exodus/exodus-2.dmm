@@ -927,7 +927,7 @@
 "arQ" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled,/area/security/brig)
 "arR" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/obj/effect/wingrille_spawn/reinforced,/obj/machinery/door/firedoor/border_only,/obj/machinery/door/blast/regular{density = 0; icon_state = "pdoor0"; id = "Prison Gate"; name = "Security Blast Door"; opacity = 0},/turf/simulated/floor/plating,/area/security/brig)
 "arS" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/obj/structure/cable,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/effect/wingrille_spawn/reinforced,/obj/machinery/door/firedoor/border_only,/obj/machinery/door/blast/regular{density = 0; icon_state = "pdoor0"; id = "Prison Gate"; name = "Security Blast Door"; opacity = 0},/turf/simulated/floor/plating,/area/security/brig)
-"arT" = (/obj/item/weapon/reagent_containers/food/drinks/cans/dopecola,/obj/item/clothing/head/beret/rasta,/turf/simulated/floor/plating,/area/maintenance/security_port)
+"arT" = (/obj/item/weapon/reagent_containers/food/drinks/cans/dopecola,/obj/item/clothing/head/rasta,/turf/simulated/floor/plating,/area/maintenance/security_port)
 "arU" = (/turf/simulated/floor/natural/beach/water/ocean,/area/crew_quarters/fitness/pool)
 "arV" = (/turf/simulated/floor/tiled/white,/area/crew_quarters/fitness/pool)
 "arW" = (/obj/structure/cable{icon_state = "0-4"; d2 = 4},/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/obj/effect/wingrille_spawn/reinforced,/obj/machinery/door/blast/regular{density = 0; icon_state = "pdoor0"; id = "Prison Gate"; name = "Security Blast Door"; opacity = 0},/turf/simulated/floor/plating,/area/security/brig)
