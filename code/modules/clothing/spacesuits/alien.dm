@@ -69,9 +69,10 @@
 		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/pressure))
 		return
-	if(!(world.time > tool_use))
+	if(!(world.time > last_used))
+		to_chat(H, "<span class='danger'>[src] is recharging.</span>")
 		return
-	tool_use = world.time + tool_delay
+	last_used = world.time + tool_delay
 	tool(user)
 
 /obj/item/clothing/suit/space/vox/pressure/proc/spawn_vox_rcd(mob/user)
@@ -80,12 +81,12 @@
 		to_chat(H, "<span class='danger'>Your hands are full.</span>")
 		return
 
-	var/obj/item/weapon/W = new /obj/item/weapon/alien_device(H)
+	var/obj/item/weapon/W = new /obj/item/weapon/vox_rcd(H)
 	H.put_in_hands(W)
 ////////////RCD
 
 
-/obj/item/weapon/alien_device
+/obj/item/weapon/vox_rcd
 	name = "Deconstruction device"
 	var/charge = 3
 	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.
@@ -94,7 +95,7 @@
 	desc = "A small device filled with biorobots."
 	var/mode = 1 //We have 3 types of mode, 1 - deconstruct, 2 - construct, 3 - construct doors
 
-/obj/item/weapon/alien_device/attack_self(mob/user)
+/obj/item/weapon/vox_rcd/attack_self(mob/user)
 	playsound(src, 'sound/voice/alien_roar_larva2.ogg', 30, 1)
 	switch(mode)
 		if(1)
@@ -107,7 +108,7 @@
 			mode = 1
 			to_chat(user, "<span class='notice'>Changed mode to deconstruct</span>")
 
-/obj/item/weapon/alien_device/afterattack(var/atom/A, var/mob/user, var/proximity)
+/obj/item/weapon/vox_rcd/afterattack(var/atom/A, var/mob/user, var/proximity)
 	if(!proximity)
 		return
 	if(charge == 0)
@@ -130,14 +131,14 @@
 				T.ChangeTurf(/turf/simulated/floor/misc/diona)
 				charge--
 			else
-				if(istype(A.loc, /turf/simulated/wall) && istype(A.loc, /obj/machinery/door))
+				if(istype(A.loc, /turf/simulated/wall) || istype(A.loc, /obj/machinery/door))
 					return
 				var/turf/T = A
 				new /obj/structure/alien/resin/wall(get_turf(T), T)
 				charge--
 		if(3)
 			if(istype(A, /turf/simulated/floor))
-				if(istype(A.loc, /turf/simulated/wall) && istype(A.loc, /obj/machinery/door))
+				if(istype(A.loc, /turf/simulated/wall) || istype(A.loc, /obj/machinery/door))
 					return
 				new /obj/machinery/door/unpowered/simple/resin(get_turf(A), A)
 				charge--
@@ -146,13 +147,12 @@
 		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 		"<span class='notice'>You turn off your device.</span>",
 		"<span class='italics'>You hear a faint hiss.</span>")
-		playsound(src, 'sound/effects/flare.ogg', 30, 1)
 		spawn(1)
 			if(src)
 				qdel(src)
 		return
 
-/obj/item/weapon/alien_device/dropped(mob/user)
+/obj/item/weapon/vox_rcd/dropped(mob/user)
 	visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 	"<span class='notice'>You turn off our device.</span>",
 	"<span class='italics'>You hear a faint hiss.</span>")
@@ -215,7 +215,7 @@
 	name = "alien carapace armour"
 	icon_state = "vox-carapace"
 	desc = "An armoured, segmented carapace with glowing purple lights. It looks pretty run-down."
-	action_button_name = "Enable Protection"
+	action_button_name = "Toggle Protection"
 	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 40, bio = 100, rad = 30)
 	var/protection = FALSE
 
@@ -225,10 +225,9 @@
 		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/carapace))
 		return
-	protection(user)
+	protection(H)
 
-/obj/item/clothing/suit/space/vox/carapace/proc/protection(mob/user)
-	var/mob/living/carbon/human/H = user
+/obj/item/clothing/suit/space/vox/carapace/proc/protection(var/mob/living/carbon/human/H)
 	if(protection)
 		to_chat(H, "<span class='notice'>You deactivate the protection mode.</span>")
 		armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 60, bio = 100, rad = 30)
@@ -262,7 +261,7 @@
 	name = "alien stealth suit"
 	icon_state = "vox-stealth"
 	desc = "A sleek black suit. It seems to have a tail, and is very light."
-	action_button_name = "Enable Cloak"
+	action_button_name = "Toggle Cloak"
 	siemens_coefficient = 0
 	armor = list(melee = 25, bullet = 30, laser = 65, energy = 30, bomb = 20, bio = 100, rad = 60)
 	var/cloak = FALSE
@@ -277,11 +276,9 @@
 		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/stealth))
 		return
-	cloak(user)
+	cloak(H)
 
-/obj/item/clothing/suit/space/vox/stealth/proc/cloak(mob/user)
-	var/mob/living/carbon/human/H = user
-
+/obj/item/clothing/suit/space/vox/stealth/proc/cloak(var/mob/living/carbon/human/H)
 	if(cloak)
 		cloak = FALSE
 		return 1
@@ -295,9 +292,7 @@
 		sleep(1 SECOND) // Sleep at the start so that if something invalidates a cloak, it will drop immediately after the check and not in one second.
 		if(!cloak)
 			remain_cloaked = 0
-		if(H.stat) // Dead or unconscious lings can't stay cloaked.
-			remain_cloaked = 0
-		if(H.stat) // Dead or unconscious lings can't stay cloaked.
+		if(H.stat) // I love lings so much
 			remain_cloaked = 0
 		if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/stealth))
 			remain_cloaked = 0
@@ -321,7 +316,7 @@
 	desc = "An almost organic looking nonhuman pressure suit."
 	siemens_coefficient = 0.3
 	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 100, rad = 100)
-	action_button_name = "Enable Nanobots"
+	action_button_name = "Toggle Nanobots"
 	var/nanobots = FALSE
 	var/mob/client //user
 
@@ -336,18 +331,18 @@
 		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
 		return
-	nanobots(user)
+	nanobots(H)
 
-/obj/item/clothing/suit/space/vox/medic/proc/nanobots(mob/user)
+/obj/item/clothing/suit/space/vox/medic/proc/nanobots(var/mob/living/carbon/human/H)
 	if(nanobots)
 		nanobots = FALSE
-		to_chat(user, "<span class='notice'>Nanobots deactivated.</span>")
+		to_chat(H, "<span class='notice'>Nanobots deactivated.</span>")
 		item_state = "vox-medic"
 		slowdown_per_slot[slot_wear_suit] = 1
 	else
 		nanobots = TRUE
 		item_state = "vox-medic-active"
-		to_chat(user, "<span class='notice'>Nanobots activated.</span>")
+		to_chat(H, "<span class='notice'>Nanobots activated.</span>")
 		slowdown_per_slot[slot_wear_suit] = 10
 
 /obj/item/clothing/suit/space/vox/medic/Initialize()
