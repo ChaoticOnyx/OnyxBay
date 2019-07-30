@@ -74,7 +74,7 @@
 	tool_use = world.time + tool_delay
 	tool(user)
 
-/obj/item/clothing/suit/space/vox/pressure/proc/tool(mob/user)
+/obj/item/clothing/suit/space/vox/pressure/proc/spawn_vox_rcd(mob/user)
 	var/mob/living/carbon/human/H = user
 	if(H.l_hand && H.r_hand)
 		to_chat(H, "<span class='danger'>Your hands are full.</span>")
