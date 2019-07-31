@@ -118,25 +118,44 @@
 	allowed = list(/obj/item/weapon/tank/emergency,/obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/device/taperecorder)
 	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0, rad = 0)
 
+/obj/item/clothing/suit/storage/toggle/forensics/toggle()
+	if(!usr.canmove || usr.stat || usr.restrained())
+		return 0
+
+	if(icon_state == icon_open) //Will check whether icon state is currently set to the "open" or "closed" state and switch it around with a message to the user
+		icon_state = icon_closed
+		item_state = icon_closed
+		to_chat(usr, "You button up the jacket.")
+	else if(icon_state == icon_closed)
+		icon_state = icon_open
+		item_state = icon_open
+		to_chat(usr, "You unbutton the jacket.")
+	else
+		to_chat(usr, "You attempt to button-up the velcro on your [src], before promptly realising how silly you are.")
+		return
+	update_clothing_icon()
+
 /obj/item/clothing/suit/storage/toggle/forensics/red
 	name = "red jacket"
 	desc = "A red forensics technician jacket."
+	item_state = "forensics_red_open"
 	icon_state = "forensics_red_open"
 	icon_open = "forensics_red_open"
 	icon_closed = "forensics_red"
+
+/obj/item/clothing/suit/storage/toggle/forensics/blue
+	name = "blue jacket"
+	desc = "A blue forensics technician jacket."
+	item_state = "forensics_blue_open"
+	icon_state = "forensics_blue_open"
+	icon_open = "forensics_blue_open"
+	icon_closed = "forensics_blue"
 
 /obj/item/clothing/suit/storage/toggle/forensics/customred //Custom item
 	name = "red jacket"
 	desc = "A nice red forensics technician jacket."
 	icon_state = "custom_forensics_red_long"
 	item_state = "custom_forensics_red_long"
-
-/obj/item/clothing/suit/storage/toggle/forensics/blue
-	name = "blue jacket"
-	desc = "A blue forensics technician jacket."
-	icon_state = "forensics_blue_open"
-	icon_open = "forensics_blue_open"
-	icon_closed = "forensics_blue"
 
 //Engineering
 /obj/item/clothing/suit/storage/hazardvest
