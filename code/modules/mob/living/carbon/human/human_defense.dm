@@ -735,8 +735,8 @@ meteor_act
 			pd_mult = 0.75
 
 	poise -= poisedamage*pd_mult
-	if(poise <= 30 && prob(100-poise*2))
-		apply_effect(max(3,(poisedamage/4)), WEAKEN)
+	if(poise <= 30 && !prob(poise*2))
+		apply_effect(max(3,(poisedamage*pd_mult/4)), WEAKEN)
 		if(!lying)
 			visible_message("<span class='danger'>[src] goes down under the impact of \the [P]!</span>")
 

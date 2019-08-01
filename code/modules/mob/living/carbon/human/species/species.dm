@@ -568,7 +568,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			target.visible_message("<span class='warning'>[attacker] attempted to push [target]!</span>")
 		return
 
-	if(prob(100-target.poise*2)) //30 poise = 40% disarm, 20 poise = 60% disarm, 10 poise = 80% disarm, 0 poise = 100% disarm
+	if(!prob(target.poise*2)) //30 poise = 40% disarm, 20 poise = 60% disarm, 10 poise = 80% disarm, 0 poise = 100% disarm
 		//See about breaking grips or pulls
 		if(target.break_all_grabs(attacker))
 			playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
