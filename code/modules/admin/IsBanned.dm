@@ -9,11 +9,6 @@ world/IsBanned(key,address,computer_id)
 		message_admins("<span class='notice'>Failed Login: [key] - Guests not allowed</span>")
 		return list("reason"="guest", "desc"="\nReason: Guests not allowed. Please sign in with a byond account.")
 
-	if(config.panic_bunker && get_player_age(key) < 0)
-		log_access("Failed Login: [key] - Server is full")
-		message_admins("<span class='adminnotice'>Failed Login: [key] - New account attempting to connect during panic bunker</span>")
-		return list("reason"="Server is full", "desc"="\nReason: Sorry! Our server is overwhelmed by players right now. Please, proceed to byond://15.188.4.47:2507 \n We welcome new players! Feel free to join our Discord https://discord.gg/gXeNVy3.")
-
 	if(config.ban_legacy_system)
 
 		//Ban Checking
