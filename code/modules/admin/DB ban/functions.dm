@@ -288,7 +288,7 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 	output += "<tr><td width='50%' align='right'><b>Duration:</b> <input type='text' name='dbbaddduration'></td>"
 	output += "<td width='50%' align='right'><b>Job:</b><select name='dbbanaddjob'>"
 	output += "<option value=''>--</option>"
-	for(var/j in list("OOC", "LOOC", "AHelp", "Species", "Male", "Female", "Appearance", "Name")) // new bans
+	for(var/j in list("OOC", "LOOC", "AHelp", "Species", "Male", "Female", "Appearance", "Name", "Jukebox")) // new bans
 		output += "<option value='[j]'>[j]</option>"
 	for(var/j in get_all_jobs())
 		output += "<option value='[j]'>[j]</option>"
