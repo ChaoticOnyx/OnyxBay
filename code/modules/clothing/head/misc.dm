@@ -361,10 +361,3 @@
 	item_state = "sombrero"
 	desc = "You can practically taste the fiesta."
 	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 30, bio = 0, rad = 0)
-
-/obj/item/clothing/head/buckhelm
-	name = "bucket helmet"
-	icon_state = "buckhelm"
-	item_state = "buckhelm"
-	desc = "You really don't want to grow up, do you?"
-	armor = list(melee = 35, bullet = 25, laser = 25,energy = 10, bomb = 5, bio = 0, rad = 0)

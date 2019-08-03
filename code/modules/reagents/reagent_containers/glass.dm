@@ -242,17 +242,6 @@
 			to_chat(user, "<span class='notice'>You wet \the [D] in \the [src].</span>")
 			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 		return
-	else if(D.sharp || D.edge)
-		if(reagents.total_volume < 1)
-			if(alert("Art thou worthy to become a knight?",,"Aye!","Nay.") == "Aye!")
-				to_chat(user, "<span class='notice'>So be it, knight!</span>")
-				user.drop_from_inventory(src)
-				qdel(src)
-				user.put_in_hands(new /obj/item/clothing/head/buckhelm)
-				return
-			else to_chat(user, "<span class='warning'>So be it... peasant.</span>")
-		else
-			to_chat(user, "<span class='notice'>\The [src] is not empty!</span>")
 	else
 		return ..()
 
