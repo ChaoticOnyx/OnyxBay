@@ -567,7 +567,7 @@ meteor_act
 			w_def = defender.get_active_hand()
 		if(w_def)
 			if(!w_def.force)
-				defender.useblock_off()
+				//defender.useblock_off()
 				visible_message("<span class='warning'>[defender] pointlessly attempts to block [attacker]'s [w_atk.name] with [w_def].</span>")
 				return 0 //For the case of candles and dices lmao
 
@@ -590,25 +590,28 @@ meteor_act
 			if(defender.poise <= 5)
 				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
 				defender.apply_effect(3, WEAKEN, 0)
+				defender.useblock_off()
 			else if(defender.poise <= 15)
 				visible_message("<span class='warning'>[defender]'s [w_def.name] flies off!</span>")
 				defender.drop_from_inventory(w_def)
+				defender.useblock_off()
 
 			playsound(loc, 'sound/weapons/Genhit.ogg', 50, 1, -1)
-			defender.useblock_off()
+			//defender.useblock_off()
 		else
 			defender.poise -= 2.5+(w_atk.mod_weight*10 + w_atk.mod_reach*5)
 			attacker.poise -= (w_atk.mod_weight*2 + (1-w_atk.mod_handy)*2)
 			if((w_atk.sharp || w_atk.edge) && w_atk.force >= 10)
 				visible_message("<span class='warning'>[defender] blocks [attacker]'s [w_atk.name] with their bare hands! Ouch.</span>")
-				defender.apply_damage((w_atk.force*0.2), w_atk.damtype, BP_R_HAND, 0, 0, used_weapon=w_atk)
-				defender.apply_damage((w_atk.force*0.2), w_atk.damtype, BP_L_HAND, 0, 0, used_weapon=w_atk)
+				defender.apply_damage((w_atk.force*0.3), w_atk.damtype, BP_R_HAND, 0, 0, used_weapon=w_atk)
+				defender.apply_damage((w_atk.force*0.3), w_atk.damtype, BP_L_HAND, 0, 0, used_weapon=w_atk)
 			else
 				visible_message("<span class='warning'>[defender] blocks [attacker]'s [w_atk.name] with their bare hands!</span>")
-			defender.useblock_off()
+			//defender.useblock_off()
 			if(defender.poise <= 10)
 				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
 				defender.apply_effect(3, WEAKEN, 0)
+				defender.useblock_off()
 	return 1
 
 /mob/living/carbon/human/proc/get_blocked_h(mob/living/user)
@@ -616,7 +619,7 @@ meteor_act
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/defender = user
 		var/obj/item/w_def
-		defender.useblock_off()
+		//defender.useblock_off()
 
 		if(defender.blocking_hand && defender.get_inactive_hand())
 			w_def = defender.get_inactive_hand()
@@ -625,7 +628,7 @@ meteor_act
 
 		if(w_def)
 			if(!w_def.force)
-				defender.useblock_off()
+				//defender.useblock_off()
 				visible_message("<span class='warning'>[defender] pointlessly attempts to block [attacker]'s attack with [w_def].</span>")
 				return 0 //For the case of candles and dices lmao
 
@@ -637,9 +640,11 @@ meteor_act
 			if(defender.poise < 5)
 				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
 				defender.apply_effect(3, WEAKEN, 0)
+				defender.useblock_off()
 			else if(defender.poise < 15)
 				visible_message("<span class='warning'>[defender]'s [w_def.name] flies off!</span>")
 				defender.drop_from_inventory(w_def)
+				defender.useblock_off()
 
 			//visible_message("Debug \[block\]: [attacker] lost [5.0+w_def.mod_weight*2+w_def.mod_handy*3] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
 
@@ -649,10 +654,11 @@ meteor_act
 
 			visible_message("<span class='warning'>[defender] blocks [attacker]'s attack!</span>")
 
-			defender.useblock_off()
+			//defender.useblock_off()
 			if(defender.poise <= 5)
 				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
 				defender.apply_effect(3, WEAKEN, 0)
+				defender.useblock_off()
 	return 1
 
 
