@@ -57,8 +57,8 @@
 	title = "Cargo Technician"
 	department = "Supply"
 	department_flag = SUP
-	total_positions = 2
-	spawn_positions = 2
+	total_positions = 5
+	spawn_positions = 5
 	supervisors = "the quartermaster and the head of personnel"
 	selection_color = "#515151"
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
@@ -69,8 +69,8 @@
 	title = "Shaft Miner"
 	department = "Supply"
 	department_flag = SUP
-	total_positions = 3
-	spawn_positions = 3
+	total_positions = 5
+	spawn_positions = 5
 	supervisors = "the quartermaster and the head of personnel"
 	selection_color = "#515151"
 	economic_modifier = 5
@@ -83,8 +83,8 @@
 	title = "Janitor"
 	department = "Service"
 	department_flag = SRV
-	total_positions = 1
-	spawn_positions = 1
+	total_positions = 3
+	spawn_positions = 3
 	supervisors = "the head of personnel"
 	selection_color = "#515151"
 	access = list(access_janitor, access_maint_tunnels, access_engine, access_research, access_sec_doors, access_medical)
@@ -185,5 +185,5 @@
 	create_record = 0
 	outfit_type = /decl/hierarchy/outfit/job/merchant
 	latejoin_at_spawnpoints = 1
-	access = list(access_merchant)
+	access = list(access_merchant, access_maint_tunnels)
 	announced = FALSE
