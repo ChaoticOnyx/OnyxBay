@@ -103,7 +103,7 @@
 					icon_state = "ed209_legs"
 
 		if(2)
-			if(istype(W, /obj/item/clothing/suit/storage/vest) || istype(W, /obj/item/clothing/suit/armor/pcarrier) || istype(W, /obj/item/clothing/accessory/armorplate))
+			if(istype(W, /obj/item/clothing/suit/storage/vest) || istype(W, /obj/item/clothing/suit/armor/pcarrier) || istype(W, /obj/item/clothing/accessory/armorplate) || istype(W, /obj/item/clothing/suit/armor/vest/old))
 				if(istype(W, /obj/item/clothing/suit/armor/pcarrier))
 					if(!locate(/obj/item/clothing/accessory/armorplate) in W.contents)
 						to_chat(user, "There's no armor plates on this [W].")
@@ -158,7 +158,7 @@
 				return
 
 		if(7)
-			if(istype(W, /obj/item/weapon/gun/energy/taser))
+			if(istype(W, /obj/item/weapon/gun/energy/taser) || istype(W, /obj/item/weapon/gun/energy/classictaser))
 				SetName("taser ED-209 assembly")
 				build_step++
 				to_chat(user, "<span class='notice'>You add [W] to [src].</span>")
