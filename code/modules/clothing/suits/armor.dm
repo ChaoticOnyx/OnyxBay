@@ -14,7 +14,7 @@
 /obj/item/clothing/suit/armor/vest/old //just realized these had never been removed
 	name = "armor"
 	desc = "An armored vest that protects against some damage."
-	icon_state = "armor"
+	icon_state = "onyxvest"
 	//item_state = "armor"
 	blood_overlay_type = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
