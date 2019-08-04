@@ -15,6 +15,10 @@
 	name = "alien wall"
 	icon_state = "bog0"
 
+/turf/simulated/shuttle/wall/mining
+	name = "shuttle wall"
+	icon_state = "mwall0"
+
 /turf/simulated/shuttle/wall/corner
 	var/corner_overlay_state = "diagonalWall"
 	var/image/corner_overlay
@@ -88,6 +92,18 @@
 /turf/simulated/shuttle/wall/corner/smoothwhite/se
 	dir = SOUTH|EAST
 /turf/simulated/shuttle/wall/corner/smoothwhite/sw
+	dir = SOUTH|WEST
+
+/turf/simulated/shuttle/wall/corner/mining
+	icon_state = "corner_mine"
+	corner_overlay_state = "corner_mine"
+/turf/simulated/shuttle/wall/corner/mining/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/mining/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/mining/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/mining/sw
 	dir = SOUTH|WEST
 
 /turf/simulated/shuttle/wall/corner/blockwhite

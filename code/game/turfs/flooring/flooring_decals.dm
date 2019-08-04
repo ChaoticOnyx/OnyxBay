@@ -289,6 +289,11 @@ var/list/floor_decals = list()
 	icon_state = "rust"
 	alpha = 120
 
+/obj/effect/floor_decal/oldflood
+	name = "oldfloor"
+	icon_state = "oldfloor"
+	alpha = 120
+
 /obj/effect/floor_decal/spline/plain/black
 	color = "#333333"
 
