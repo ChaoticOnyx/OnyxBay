@@ -1,8 +1,8 @@
 /obj/item/weapon/gun/launcher/alien
 	var/last_regen = 0
 	var/ammo_gen_time = 100
-	var/max_ammo = 3
-	var/ammo = 3
+	var/max_ammo = 5
+	var/ammo = 5
 	var/ammo_type
 	var/ammo_name
 
@@ -16,7 +16,7 @@
 	return ..()
 
 /obj/item/weapon/gun/launcher/alien/Process()
-	if(ammo < max_ammo && world.time > last_regen + ammo_gen_time)
+	if((ammo < max_ammo) && (world.time > (last_regen + ammo_gen_time)))
 		ammo++
 		last_regen = world.time
 		update_icon()

@@ -49,8 +49,8 @@
 	release_force = 6
 	ammo_name = "slug"
 	ammo_type = /obj/item/weapon/slugegg
-	max_ammo = 2
-	ammo = 2
+	max_ammo = 3
+	ammo = 3
 	ammo_gen_time = 200
 	var/mode = "Impact"
 
