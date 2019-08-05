@@ -336,3 +336,22 @@
 /obj/item/clothing/suit/space/void/pilot/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/pilot
 	boots = /obj/item/clothing/shoes/magboots
+
+//Non-standard
+/obj/item/clothing/head/helmet/space/void/knight
+	name = "strange voidsuit helmet"
+	desc = "A bulky helmet with some heavy armor plating."
+	icon_state = "hardsuit-helm-knight"
+	item_state = "hardsuit-helm-knight"
+	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100, rad = 10)
+	siemens_coefficient = 0.7
+	light_overlay = "helmet_light_dual"
+
+/obj/item/clothing/suit/space/void/knight
+	icon_state = "hardsuit-knight"
+	item_state = "hardsuit-knight"
+	name = "strange voidsuit"
+	desc = "A bulky set of space-proof armor, that looks kinda ancient. 'Lancelot X-40' is written on the front plate."
+	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100, rad = 10)
+	allowed = list(/obj/item/weapon/gun,/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/weapon/melee/baton)
+	siemens_coefficient = 0.7

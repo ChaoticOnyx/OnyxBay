@@ -2616,6 +2616,7 @@
 #include "maps\cache_ref.dm"
 #include "maps\away\away_sites.dm"
 #include "maps\exodus\exodus.dm"
+#include "maps\exodus\exodus_areas.dm"
 #include "maps\exodus\exodus_define.dm"
 #include "maps\exodus\prison\prison_define.dm"
 #include "maps\random_ruins\exoplanet_ruins\exoplanet_ruins.dm"
