@@ -108,10 +108,34 @@ proc/get_radio_key_from_channel(var/channel)
 		message = slur(message)
 		verb = pick("slobbers","slurs")
 		. = 1
+
 	if(stuttering)
 		message = stutter(message)
 		verb = pick("stammers","stutters")
 		. = 1
+		
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.stammering))
+			message = NewStutter(message)
+			verb = pick("stammers","stutters")
+			. = 1
+
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.burrieng))
+			message = burr(message)
+			verb = pick("burrs","croups")
+			. = 1
+
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.lisping))
+			message = lisp(message)
+			verb = pick("lisps","croups")
+			. = 1
+
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.chingchong))
+			message = chong(message)
+			. = 1			
 
 	message_data[1] = russian_to_cp1251(message)
 	message_data[2] = verb

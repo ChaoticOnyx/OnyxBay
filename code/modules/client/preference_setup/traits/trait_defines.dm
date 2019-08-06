@@ -268,4 +268,20 @@
 	name = "Promethean-phobic"
 	desc = "Boilerplate racism for jellos goes here."
 	mutually_exclusive = list(/datum/trait/modifier/mental/xenophobe)
+	
+/datum/trait/modifier/physical/stammering
+	name = "Stutterer"
+	modifier_type = /datum/modifier/trait/stammering
+	
+/datum/trait/modifier/physical/burrieng
+	name = "Burry"
+	modifier_type = /datum/modifier/trait/burrieng
+
+/datum/trait/modifier/physical/lisping
+	name = "Lisp"
+	modifier_type = /datum/modifier/trait/lisping
+
+/datum/trait/modifier/physical/chingchong
+	name = "Ching Chong"
+	modifier_type = /datum/modifier/trait/chingchong	
 */
