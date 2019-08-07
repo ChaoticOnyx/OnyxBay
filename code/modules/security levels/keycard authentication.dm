@@ -179,13 +179,13 @@ var/global/maint_all_access = 0
 
 /proc/make_maint_all_access()
 	maint_all_access = 1
-	to_world("<font size=4 color='red'>Р’РЅРёРјР°РЅРёРµ!</font>")
-	to_world("<font color='red'>Р’СЂРµРјРµРЅРЅРѕ СЃРЅСЏС‚С‹ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ РЅР° РґРѕСЃС‚СѓРї РІ С‚СѓРЅРЅРµР»Рё С‚РµС…РЅРёС‡РµСЃРєРѕРіРѕ РѕР±СЃР»СѓР¶РёРІР°РЅРёСЏ!</font>")
+	to_world("<font size=4 color='red'>Внимание!</font>")
+	to_world("<font color='red'>Временно сняты ограничения на доступ в туннели технического обслуживания!</font>")
 
 /proc/revoke_maint_all_access()
 	maint_all_access = 0
-	to_world("<font size=4 color='red'>Р’РЅРёРјР°РЅРёРµ!</font>")
-	to_world("<font color='red'>Р”РѕСЃС‚СѓРї Рє С€Р»СЋР·Р°Рј С‚РµС…РЅРёС‡РµСЃРєРёС… С‚СѓРЅРЅРµР»РµР№ СЃРЅРѕРІР° РѕРіСЂР°РЅРёС‡РµРЅ!</font>")
+	to_world("<font size=4 color='red'>Внимание!</font>")
+	to_world("<font color='red'>Доступ к шлюзам технических туннелей снова ограничен!</font>")
 
 /obj/machinery/door/airlock/allowed(mob/M)
 	if(maint_all_access && src.check_access_list(list(access_maint_tunnels)))

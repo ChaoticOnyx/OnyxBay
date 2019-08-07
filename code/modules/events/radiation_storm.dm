@@ -9,14 +9,14 @@
 	var/postStartTicks 		= 0
 
 /datum/event/radiation_storm/announce()
-	command_announcement.Announce("Ð’Ñ‹ÑÐ¾ÐºÐ¸Ð¹ ÑƒÑ€Ð¾Ð²ÐµÐ½ÑŒ Ñ€Ð°Ð´Ð¸Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð¾Ð³Ð¾ Ð¸Ð·Ð»ÑƒÑ‡ÐµÐ½Ð¸Ñ Ð¾Ð±Ð½Ð°Ñ€ÑƒÐ¶ÐµÐ½ Ð² Ð½ÐµÐ¿Ð¾ÑÑ€ÐµÐ´ÑÑ‚Ð²ÐµÐ½Ð½Ð¾Ð¹ Ð±Ð»Ð¸Ð·Ð¾ÑÑ‚Ð¸ Ð¾Ñ‚ [location_name ()]. ÐŸÐ¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, ÑÐ²Ð°ÐºÑƒÐ¸Ñ€ÑƒÐ¹Ñ‚ÐµÑÑŒ Ð² Ð¾Ð´Ð¸Ð½ Ð¸Ð· ÑÐºÑ€Ð°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ñ… Ñ‚ÐµÑ…Ð½Ð¸Ñ‡ÐµÑÐºÐ¸Ñ… Ñ‚ÑƒÐ½Ð½ÐµÐ»ÐµÐ¹ Ð²Ð¾ Ð¸Ð·Ð±ÐµÐ¶Ð°Ð½Ð¸Ðµ Ñ€Ð°Ð´Ð¸Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð¾Ð³Ð¾ Ð¾Ð±Ð»ÑƒÑ‡ÐµÐ½Ð¸Ñ.", "[location_name()] Sensor Array", new_sound = GLOB.using_map.radiation_detected_sound, zlevels = affecting_z)
+	command_announcement.Announce("Âûñîêèé óðîâåíü ðàäèàöèîííîãî èçëó÷åíèÿ îáíàðóæåí â íåïîñðåäñòâåííîé áëèçîñòè îò [location_name ()]. Ïîæàëóéñòà, ýâàêóèðóéòåñü â îäèí èç ýêðàíèðîâàííûõ òåõíè÷åñêèõ òóííåëåé âî èçáåæàíèå ðàäèàöèîííîãî îáëó÷åíèÿ.", "[location_name()] Sensor Array", new_sound = GLOB.using_map.radiation_detected_sound, zlevels = affecting_z)
 
 /datum/event/radiation_storm/start()
 	make_maint_all_access()
 
 /datum/event/radiation_storm/tick()
 	if(activeFor == enterBelt)
-		command_announcement.Announce("[location_name ()] Ð²Ð¾ÑˆÐµÐ» Ð² Ñ€Ð°Ð´Ð¸Ð°Ñ†Ð¸Ð¾Ð½Ð½Ñ‹Ð¹ Ð¿Ð¾ÑÑ. ÐŸÐ¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, Ð¾ÑÑ‚Ð°Ð²Ð°Ð¹Ñ‚ÐµÑÑŒ Ð² Ð·Ð°Ñ‰Ð¸Ñ‰ÐµÐ½Ð½Ð¾Ð¼ Ð¼ÐµÑÑ‚Ðµ, Ð¿Ð¾ÐºÐ° Ð¼Ñ‹ Ð¿Ð¾Ð»Ð½Ð¾ÑÑ‚ÑŒÑŽ Ð½Ðµ Ð¿Ñ€Ð¾Ð¹Ð´ÐµÐ¼ Ñ‡ÐµÑ€ÐµÐ· Ñ€Ð°Ð´Ð¸Ð°Ñ†Ð¸Ð¾Ð½Ð½Ñ‹Ð¹ Ð¿Ð¾ÑÑ.", "[location_name()] Sensor Array", zlevels = affecting_z)
+		command_announcement.Announce("[location_name ()] âîøåë â ðàäèàöèîííûé ïîÿñ. Ïîæàëóéñòà, îñòàâàéòåñü â çàùèùåííîì ìåñòå, ïîêà ìû ïîëíîñòüþ íå ïðîéäåì ÷åðåç ðàäèàöèîííûé ïîÿñ.", "[location_name()] Sensor Array", zlevels = affecting_z)
 		radiate()
 
 	if(activeFor >= enterBelt && activeFor <= leaveBelt)
@@ -27,7 +27,7 @@
 		radiate()
 
 	else if(activeFor == leaveBelt)
-		command_announcement.Announce("[location_name ()] Ð¿Ñ€Ð¾ÑˆÐµÐ» Ñ€Ð°Ð´Ð¸Ð°Ñ†Ð¸Ð¾Ð½Ð½Ñ‹Ð¹ Ð¿Ð¾ÑÑ. ÐŸÐ¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, Ð¾ÑÑ‚Ð°Ð²Ð°Ð¹Ñ‚ÐµÑÑŒ Ð² Ð·Ð°Ñ‰Ð¸Ñ‰ÐµÐ½Ð½Ð¾Ð¼ Ð¼ÐµÑÑ‚Ðµ Ð¾ÐºÐ¾Ð»Ð¾ Ð¾Ð´Ð½Ð¾Ð¹ Ð¼Ð¸Ð½ÑƒÑ‚Ñ‹, Ð¿Ð¾ÐºÐ° ÑƒÑ€Ð¾Ð²ÐµÐ½ÑŒ Ñ€Ð°Ð´Ð¸Ð°Ñ†Ð¸Ð¸ ÑÐ¿Ð°Ð´Ñ‘Ñ‚, Ð¸ ÑÐ¾Ð¾Ð±Ñ‰Ð¸Ñ‚Ðµ Ð² Ð»Ð°Ð·Ð°Ñ€ÐµÑ‚, ÐµÑÐ»Ð¸ Ñƒ Ð²Ð°Ñ Ð²Ð¾Ð·Ð½Ð¸ÐºÐ½ÑƒÑ‚ ÑÐ¸Ð¼Ð¿Ñ‚Ð¾Ð¼Ñ‹ Ð»ÑƒÑ‡ÐµÐ²Ð¾Ð¹ Ð±Ð¾Ð»ÐµÐ·Ð½Ð¸. ÐžÐ±Ñ‰Ð¸Ð¹ Ð´Ð¾ÑÑ‚ÑƒÐ¿ Ð² Ñ‚ÑƒÐ½Ð½ÐµÐ»Ð¸ Ñ‚ÐµÑ…Ð½Ð¸Ñ‡ÐµÑÐºÐ¾Ð³Ð¾ Ð¾Ð±ÑÐ»ÑƒÐ¶Ð¸Ð²Ð°Ð½Ð¸Ñ Ð²ÑÐºÐ¾Ñ€Ðµ Ð±ÑƒÐ´ÐµÑ‚ Ð¾Ñ‚Ð¾Ð·Ð²Ð°Ð½.", "[location_name()] Sensor Array", zlevels = affecting_z)
+		command_announcement.Announce("[location_name ()] ïðîøåë ðàäèàöèîííûé ïîÿñ. Ïîæàëóéñòà, îñòàâàéòåñü â çàùèùåííîì ìåñòå îêîëî îäíîé ìèíóòû, ïîêà óðîâåíü ðàäèàöèè ñïàä¸ò, è ñîîáùèòå â ëàçàðåò, åñëè ó âàñ âîçíèêíóò ñèìïòîìû ëó÷åâîé áîëåçíè. Îáùèé äîñòóï â òóííåëè òåõíè÷åñêîãî îáñëóæèâàíèÿ âñêîðå áóäåò îòîçâàí.", "[location_name()] Sensor Array", zlevels = affecting_z)
 
 /datum/event/radiation_storm/proc/radiate()
 	var/radiation_level = rand(15, 35)
