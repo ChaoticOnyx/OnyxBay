@@ -16,7 +16,7 @@
 
 /datum/event/radiation_storm/tick()
 	if(activeFor == enterBelt)
-		command_announcement.Announce("[Location_name ()] вошел в радиационный пояс. Пожалуйста, оставайтесь в защищенном месте, пока мы полностью не пройдем через радиационный пояс.", "[location_name()] Sensor Array", zlevels = affecting_z)
+		command_announcement.Announce("[location_name ()] вошел в радиационный пояс. Пожалуйста, оставайтесь в защищенном месте, пока мы полностью не пройдем через радиационный пояс.", "[location_name()] Sensor Array", zlevels = affecting_z)
 		radiate()
 
 	if(activeFor >= enterBelt && activeFor <= leaveBelt)
@@ -27,7 +27,7 @@
 		radiate()
 
 	else if(activeFor == leaveBelt)
-		command_announcement.Announce("[Location_name ()] прошел радиационный пояс. Пожалуйста, оставайтесь в защищенном месте около одной минуты, пока уровень радиации спадёт, и сообщите в лазарет, если у вас возникнут симптомы лучевой болезни. Общий доступ в туннели технического обслуживания вскоре будет отозван.", "[location_name()] Sensor Array", zlevels = affecting_z)
+		command_announcement.Announce("[location_name ()] прошел радиационный пояс. Пожалуйста, оставайтесь в защищенном месте около одной минуты, пока уровень радиации спадёт, и сообщите в лазарет, если у вас возникнут симптомы лучевой болезни. Общий доступ в туннели технического обслуживания вскоре будет отозван.", "[location_name()] Sensor Array", zlevels = affecting_z)
 
 /datum/event/radiation_storm/proc/radiate()
 	var/radiation_level = rand(15, 35)
