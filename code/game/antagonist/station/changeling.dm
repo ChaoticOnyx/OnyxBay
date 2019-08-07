@@ -1,5 +1,3 @@
-GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
-
 /datum/antagonist/changeling
 	id = MODE_CHANGELING
 	role_text = "Changeling"

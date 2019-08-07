@@ -38,12 +38,6 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	else
 		changelingID = "[rand(1,999)]"
 
-/datum/changeling/Destroy()
-	purchasedpowers = null
-	absorbed_languages.Cut()
-	absorbed_dna.Cut()
-	. = ..()
-
 /datum/changeling/proc/regenerate()
 	chem_charges = min(max(0, chem_charges+chem_recharge_rate), chem_storage)
 	geneticdamage = max(0, geneticdamage-1)
