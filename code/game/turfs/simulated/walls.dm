@@ -33,10 +33,13 @@
 		reinf_material = get_material_by_name(rmaterialtype)
 	update_material()
 	hitsound = material.hitsound
-	processing_turfs |= src
+
+/turf/simulated/wall/Initialize()
+	START_PROCESSING(SSturf, src) //Used for radiation.
+	. = ..()
 
 /turf/simulated/wall/Destroy()
-	processing_turfs -= src
+	STOP_PROCESSING(SSturf, src)
 	dismantle_wall(null,null,1)
 	. = ..()
 
@@ -49,8 +52,10 @@
 	var/obj/O = A
 	return (istype(O) && O.hides_under_flooring()) || ..()
 
-/turf/simulated/wall/process()
-	// Calling parent will kill processing
+/turf/simulated/wall/Process(wait, times_fired)
+	var/how_often = max(round(2 SECONDS/wait), 1)
+	if(times_fired % how_often)
+		return //We only work about every 2 seconds
 	if(!radiate())
 		return PROCESS_KILL
 
@@ -435,6 +440,9 @@
 
 	radiation_repository.radiate(src, total_radiation)
 	return total_radiation
+
+/turf/simulated/wall/proc/CheckPenetration(var/base_chance, var/damage)
+	return round(damage/material.integrity*180)
 
 /turf/simulated/wall/proc/burn(temperature)
 	if(material.combustion_effect(src, temperature, 0.7))
