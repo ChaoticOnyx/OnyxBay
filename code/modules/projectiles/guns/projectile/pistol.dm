@@ -179,6 +179,28 @@
 	else
 		icon_state = "gyropistol"
 
+/obj/item/weapon/gun/projectile/det_m9
+	name = "holdout pistol"
+	desc = "The Lumoco Arms P3 Whisper. A small, easily concealable gun. Uses 9mm rounds."
+	icon_state = "det-m9"
+	w_class = ITEM_SIZE_NORMAL
+	caliber = "9mm"
+	fire_delay = 1
+	mod_weight = 0.65
+	mod_reach = 0.5
+	mod_handy = 1.0
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2,)
+	load_method = MAGAZINE
+	magazine_type = /obj/item/ammo_magazine/mc9mm
+	allowed_magazines = /obj/item/ammo_magazine/mc9mm
+
+/obj/item/weapon/gun/projectile/det_m9/update_icon()
+	..()
+	if(ammo_magazine && ammo_magazine.stored_ammo.len)
+		icon_state = "det-m9"
+	else
+		icon_state = "det-m9_e"
+
 /obj/item/weapon/gun/projectile/pistol
 	name = "holdout pistol"
 	desc = "The Lumoco Arms P3 Whisper. A small, easily concealable gun. Uses 9mm rounds."
