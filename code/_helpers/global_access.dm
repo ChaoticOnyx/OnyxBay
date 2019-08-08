@@ -1047,7 +1047,7 @@
 		if("SSgarbage")
 			global.SSgarbage=newval;
 		if("SSicon_update")
-			global.SSicon_update=newval;;
+			global.SSicon_update=newval;
 		if("SSlegacy")
 			global.SSlegacy=newval;
 		if("SSlighting")
