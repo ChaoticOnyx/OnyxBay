@@ -1599,7 +1599,7 @@
 	set category = "IC"
 
 	if(!incapacitated(INCAPACITATION_KNOCKOUT) && canClick())
-		setClickCooldown(5)
+		setClickCooldown(3)
 		if(!weakened && !stunned)
 			if(!blocking)
 				src.useblock_on()
@@ -1609,7 +1609,7 @@
 				to_chat(src, "<span class='notice'>You lower your defence.</span>")
 
 /mob/living/carbon/human/proc/useblock_off()
-	src.setClickCooldown(5)
+	src.setClickCooldown(3)
 	src.blocking = 0
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
 		src.block_icon.icon_state = "act_block0"

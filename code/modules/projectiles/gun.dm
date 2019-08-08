@@ -299,6 +299,8 @@
 		for(var/obj/item/grab/G in H.grabbed_by)
 			if(G.point_blank_mult() > max_mult)
 				max_mult = G.point_blank_mult()
+		if(H.lying)
+			max_mult *= 2.5
 	P.damage *= max_mult
 	P.accuracy += 4
 

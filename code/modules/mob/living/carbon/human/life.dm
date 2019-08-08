@@ -957,15 +957,19 @@
 	if(poise >= poise_pool) return 0 // Saving every single msecond. Fuck our mob controller *sigh
 	var/pregen = poise_pool/10
 
-	for(var/obj/item/grab/G in list(get_active_hand(), get_inactive_hand()))
-		pregen -= 1.25
-
 	if(poise+pregen > poise_pool)
 		poise = poise_pool
 		return
 	else if(poise < 0)
 		poise = 0
 		return
+
+	for(var/obj/item/grab/G in list(get_active_hand(), get_inactive_hand()))
+		pregen -= 1.25
+
+	if(blocking)
+		pregen -= 2.0
+
 	if(poise < poise_pool)
 		poise += pregen
 
