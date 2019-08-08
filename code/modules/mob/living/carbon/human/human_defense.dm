@@ -55,9 +55,9 @@ meteor_act
 
 	var/blocked = ..(P, def_zone)
 
-	projectile_affect_poise(P, P.poisedamage*blocked_mult(blocked), def_zone)
+	projectile_affect_poise(P, P.poisedamage * blocked_mult(blocked), def_zone)
 
-	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
+	projectile_hit_bloody(P, P.damage * blocked_mult(blocked), def_zone)
 
 	return blocked
 
@@ -722,7 +722,7 @@ meteor_act
 			if(BP_CHEST)
 				bloody_body(src)
 
-/mob/living/carbon/human/proc/projectile_affect_poise(obj/item/projectile/P, var/poisedamage, var/hit_zone)
+/mob/living/carbon/human/proc/projectile_affect_poise(obj/item/projectile/P, poisedamage, hit_zone)
 	if(!poisedamage)
 		return 0	//save a couple of nanoseconds
 
@@ -740,9 +740,9 @@ meteor_act
 		else
 			pd_mult = 0.75
 
-	poise -= poisedamage*pd_mult
-	if(poise <= 30 && !prob(poise*2))
-		apply_effect(max(3,(poisedamage*pd_mult/4)), WEAKEN)
+	poise -= poisedamage * pd_mult
+	if(poise <= 30 && !prob(poise * 2))
+		apply_effect(max(3, (poisedamage * pd_mult / 4)), WEAKEN)
 		if(!lying)
 			visible_message("<span class='danger'>[src] goes down under the impact of \the [P]!</span>")
 

@@ -558,7 +558,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	//target.visible_message("Debug \[DISARM\]: [target] lost [round(4.0+4.0*((100-effective_armor)/100),0.1)] poise ([target.poise]/[target.poise_pool])") // Debug Message
 
 	//var/randn = rand(1, 100)
-	if(!(species_flags & SPECIES_FLAG_NO_SLIP) && target.poise <= 20 && prob(100-target.poise*4.5) && !target.lying)
+	if(!(species_flags & SPECIES_FLAG_NO_SLIP) && target.poise <= 20 && !prob(target.poise*4.5) && !target.lying)
 		var/armor_check = target.run_armor_check(affecting, "melee")
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		if(prob(100-target.poise*6.5))
