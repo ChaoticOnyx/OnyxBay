@@ -45,8 +45,8 @@
 /obj/item/weapon/gun/projectile/sec/VP78tactical
 	name = "VP78 .45 Tactical"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one is heavily modified and painted in green camo. Uses .45 rounds."
-	icon_state = "colttactic"
-	magazine_type = /obj/item/ammo_magazine/c45m
+	icon_state = "VP78-tactic"
+	magazine_type = /obj/item/ammo_magazine/c45m/rubber
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	auto_eject = 1
 	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
@@ -66,7 +66,7 @@
 	name = "VP78 .45"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. Uses .45 rounds."
 	icon_state = "VP78"
-	magazine_type = /obj/item/ammo_magazine/c45m
+	magazine_type = /obj/item/ammo_magazine/c45m/rubber
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
 	accuracy = -0.35
@@ -85,7 +85,7 @@
 	name = "VP78 .45"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
 	icon_state = "VP78wood"
-	magazine_type = /obj/item/ammo_magazine/c45m
+	magazine_type = /obj/item/ammo_magazine/c45m/rubber
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
 	accuracy = 0
