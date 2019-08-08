@@ -261,10 +261,11 @@
 		/obj/item/rig_module/cooling_unit
 		)
 
-/obj/item/weapon/rig/hazard
+/obj/item/weapon/rig/security
 	name = "security hardsuit control module"
 	suit_type = "security hardsuit"
 	desc = "A NanoTrasen security hardsuit designed for prolonged EVA in dangerous environments."
+	// TODO[V] Make icon_state resembling new naming
 	icon_state = "hazard_rig"
 	armor = list(melee = 50, bullet = 30, laser = 30, energy = 15, bomb = 65, bio = 100, rad = 30)
 	online_slowdown = 1
@@ -295,7 +296,7 @@
 /obj/item/clothing/gloves/rig/hazard
 	species_restricted = list(SPECIES_HUMAN,SPECIES_SKRELL,SPECIES_TAJARA,SPECIES_UNATHI)
 
-/obj/item/weapon/rig/hazard/equipped
+/obj/item/weapon/rig/security/equipped
 
 	initial_modules = list(
 		/obj/item/rig_module/vision/sechud,
