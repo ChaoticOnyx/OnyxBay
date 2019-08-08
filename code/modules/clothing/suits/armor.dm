@@ -213,6 +213,7 @@
 	name = "armored vest"
 	desc = "An armor vest made of synthetic fibers."
 	icon_state = "csivest"
+	item_state = "csivest"
 
 /obj/item/clothing/suit/armor/vest/pcrc
 	name = "contractor armored vest"

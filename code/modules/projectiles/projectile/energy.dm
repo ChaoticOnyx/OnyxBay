@@ -76,6 +76,7 @@
 	nodamage = 1
 	agony = 50
 	damage_type = PAIN
+	poisedamage = 25.0
 	//Damage will be handled on the MOB side, to prevent window shattering.
 
 /obj/item/projectile/energy/electrode/stunshot
@@ -84,12 +85,14 @@
 	agony = 70
 	damage_type = BURN
 	armor_penetration = 10
+	poisedamage = 30.0
 
 /obj/item/projectile/energy/electrode/stunsphere
 	damage_type = PAIN
 	agony = 70
 	stutter = 10
 	armor_penetration = 10
+	poisedamage = 25.0
 
 /obj/item/projectile/energy/electrode/c44
 	name = "shock bullet"
@@ -98,6 +101,7 @@
 	agony = 60
 	damage = 5 //It's still a bullet
 	armor_penetration = 10
+	poisedamage = 25.0
 
 /obj/item/projectile/energy/c44
 	name = "overheated bullet"
@@ -166,6 +170,7 @@
 	agony = 70
 	damage_type = BURN
 	vacuum_traversal = 0
+	poisedamage = 35.0
 
 /obj/item/projectile/energy/plasmastun/proc/bang(var/mob/living/carbon/M)
 

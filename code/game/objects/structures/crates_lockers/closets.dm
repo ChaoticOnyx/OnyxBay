@@ -480,6 +480,7 @@
 /obj/structure/closet/attack_hand(mob/user as mob)
 	src.add_fingerprint(user)
 	src.toggle(user)
+	user.setClickCooldown(2)
 
 // tk grab then use on self
 /obj/structure/closet/attack_self_tk(mob/user as mob)

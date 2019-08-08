@@ -45,8 +45,8 @@
 /obj/item/weapon/gun/projectile/sec/VP78tactical
 	name = "VP78 .45 Tactical"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one is heavily modified and painted in green camo. Uses .45 rounds."
-	icon_state = "colttactic"
-	magazine_type = /obj/item/ammo_magazine/c45m
+	icon_state = "VP78-tactic"
+	magazine_type = /obj/item/ammo_magazine/c45m/rubber
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	auto_eject = 1
 	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
@@ -66,7 +66,7 @@
 	name = "VP78 .45"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. Uses .45 rounds."
 	icon_state = "VP78"
-	magazine_type = /obj/item/ammo_magazine/c45m
+	magazine_type = /obj/item/ammo_magazine/c45m/rubber
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
 	accuracy = -0.35
@@ -85,7 +85,7 @@
 	name = "VP78 .45"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
 	icon_state = "VP78wood"
-	magazine_type = /obj/item/ammo_magazine/c45m
+	magazine_type = /obj/item/ammo_magazine/c45m/rubber
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
 	accuracy = 0
@@ -178,6 +178,28 @@
 		icon_state = "gyropistolloaded"
 	else
 		icon_state = "gyropistol"
+
+/obj/item/weapon/gun/projectile/det_m9
+	name = "holdout pistol"
+	desc = "The Lumoco Arms P3 Whisper. A small, easily concealable gun. Uses 9mm rounds."
+	icon_state = "det-m9"
+	w_class = ITEM_SIZE_NORMAL
+	caliber = "9mm"
+	fire_delay = 1
+	mod_weight = 0.65
+	mod_reach = 0.5
+	mod_handy = 1.0
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2,)
+	load_method = MAGAZINE
+	magazine_type = /obj/item/ammo_magazine/mc9mm
+	allowed_magazines = /obj/item/ammo_magazine/mc9mm
+
+/obj/item/weapon/gun/projectile/det_m9/update_icon()
+	..()
+	if(ammo_magazine && ammo_magazine.stored_ammo.len)
+		icon_state = "det-m9"
+	else
+		icon_state = "det-m9_e"
 
 /obj/item/weapon/gun/projectile/pistol
 	name = "holdout pistol"

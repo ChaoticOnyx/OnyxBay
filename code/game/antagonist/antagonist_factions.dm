@@ -8,7 +8,7 @@
 	if (!(src in able_mobs_in_oview(M)))
 		to_chat(src, "<span class='warning'>\The [M] can't see you.</span>")
 		return
-	convert_to_faction(M.mind, revs)
+	convert_to_faction(M.mind, GLOB.revs)
 
 /mob/living/proc/convert_to_faction(var/datum/mind/player, var/datum/antagonist/faction)
 
@@ -51,4 +51,4 @@
 	set category = "Abilities"
 	if(!M.mind || !M.client)
 		return
-	convert_to_faction(M.mind, loyalists)
+	convert_to_faction(M.mind, GLOB.loyalists)

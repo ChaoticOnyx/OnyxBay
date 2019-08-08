@@ -55,7 +55,9 @@ meteor_act
 
 	var/blocked = ..(P, def_zone)
 
-	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
+	projectile_affect_poise(P, P.poisedamage * blocked_mult(blocked), def_zone)
+
+	projectile_hit_bloody(P, P.damage * blocked_mult(blocked), def_zone)
 
 	return blocked
 
@@ -565,7 +567,7 @@ meteor_act
 			w_def = defender.get_active_hand()
 		if(w_def)
 			if(!w_def.force)
-				defender.useblock_off()
+				//defender.useblock_off()
 				visible_message("<span class='warning'>[defender] pointlessly attempts to block [attacker]'s [w_atk.name] with [w_def].</span>")
 				return 0 //For the case of candles and dices lmao
 
@@ -588,25 +590,28 @@ meteor_act
 			if(defender.poise <= 5)
 				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
 				defender.apply_effect(3, WEAKEN, 0)
+				defender.useblock_off()
 			else if(defender.poise <= 15)
 				visible_message("<span class='warning'>[defender]'s [w_def.name] flies off!</span>")
 				defender.drop_from_inventory(w_def)
+				defender.useblock_off()
 
 			playsound(loc, 'sound/weapons/Genhit.ogg', 50, 1, -1)
-			defender.useblock_off()
+			//defender.useblock_off()
 		else
 			defender.poise -= 2.5+(w_atk.mod_weight*10 + w_atk.mod_reach*5)
 			attacker.poise -= (w_atk.mod_weight*2 + (1-w_atk.mod_handy)*2)
 			if((w_atk.sharp || w_atk.edge) && w_atk.force >= 10)
 				visible_message("<span class='warning'>[defender] blocks [attacker]'s [w_atk.name] with their bare hands! Ouch.</span>")
-				defender.apply_damage((w_atk.force*0.2), w_atk.damtype, BP_R_HAND, 0, 0, used_weapon=w_atk)
-				defender.apply_damage((w_atk.force*0.2), w_atk.damtype, BP_L_HAND, 0, 0, used_weapon=w_atk)
+				defender.apply_damage((w_atk.force*0.3), w_atk.damtype, BP_R_HAND, 0, 0, used_weapon=w_atk)
+				defender.apply_damage((w_atk.force*0.3), w_atk.damtype, BP_L_HAND, 0, 0, used_weapon=w_atk)
 			else
 				visible_message("<span class='warning'>[defender] blocks [attacker]'s [w_atk.name] with their bare hands!</span>")
-			defender.useblock_off()
+			//defender.useblock_off()
 			if(defender.poise <= 10)
 				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
 				defender.apply_effect(3, WEAKEN, 0)
+				defender.useblock_off()
 	return 1
 
 /mob/living/carbon/human/proc/get_blocked_h(mob/living/user)
@@ -614,7 +619,7 @@ meteor_act
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/defender = user
 		var/obj/item/w_def
-		defender.useblock_off()
+		//defender.useblock_off()
 
 		if(defender.blocking_hand && defender.get_inactive_hand())
 			w_def = defender.get_inactive_hand()
@@ -623,7 +628,7 @@ meteor_act
 
 		if(w_def)
 			if(!w_def.force)
-				defender.useblock_off()
+				//defender.useblock_off()
 				visible_message("<span class='warning'>[defender] pointlessly attempts to block [attacker]'s attack with [w_def].</span>")
 				return 0 //For the case of candles and dices lmao
 
@@ -635,9 +640,11 @@ meteor_act
 			if(defender.poise < 5)
 				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
 				defender.apply_effect(3, WEAKEN, 0)
+				defender.useblock_off()
 			else if(defender.poise < 15)
 				visible_message("<span class='warning'>[defender]'s [w_def.name] flies off!</span>")
 				defender.drop_from_inventory(w_def)
+				defender.useblock_off()
 
 			//visible_message("Debug \[block\]: [attacker] lost [5.0+w_def.mod_weight*2+w_def.mod_handy*3] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
 
@@ -647,10 +654,11 @@ meteor_act
 
 			visible_message("<span class='warning'>[defender] blocks [attacker]'s attack!</span>")
 
-			defender.useblock_off()
+			//defender.useblock_off()
 			if(defender.poise <= 5)
 				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
 				defender.apply_effect(3, WEAKEN, 0)
+				defender.useblock_off()
 	return 1
 
 
@@ -713,6 +721,30 @@ meteor_act
 					update_inv_glasses(0)
 			if(BP_CHEST)
 				bloody_body(src)
+
+/mob/living/carbon/human/proc/projectile_affect_poise(obj/item/projectile/P, poisedamage, hit_zone)
+	if(!poisedamage)
+		return 0	//save a couple of nanoseconds
+
+	if(status_flags & GODMODE)
+		return 0	//godmode
+
+	var/pd_mult = 1.0
+	switch(hit_zone)
+		if(BP_HEAD)
+			pd_mult = 1.35
+		if(BP_CHEST)
+			pd_mult = 1.0
+		if(BP_GROIN)
+			pd_mult = 1.15
+		else
+			pd_mult = 0.75
+
+	poise -= poisedamage * pd_mult
+	if(poise <= 30 && !prob(poise * 2))
+		apply_effect(max(3, (poisedamage * pd_mult / 4)), WEAKEN)
+		if(!lying)
+			visible_message("<span class='danger'>[src] goes down under the impact of \the [P]!</span>")
 
 /mob/living/carbon/human/proc/attack_joint(var/obj/item/organ/external/organ, var/obj/item/W, var/effective_force, var/dislocate_mult, var/blocked)
 	if(!organ || (organ.dislocated == 2) || (organ.dislocated == -1) || blocked >= 100)
