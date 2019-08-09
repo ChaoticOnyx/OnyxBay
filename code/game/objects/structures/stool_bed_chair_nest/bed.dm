@@ -16,6 +16,7 @@
 	can_buckle = 1
 	buckle_dir = SOUTH
 	buckle_lying = 1
+	buckle_pixel_shift = "x=0;y=3"
 	var/material/material
 	var/material/padding_material
 	var/base_icon = "bed"
@@ -176,6 +177,7 @@
 	desc = "For prime comfort during psychiatric evaluations."
 	icon_state = "psychbed"
 	base_icon = "psychbed"
+	buckle_pixel_shift = "x=0;y=1"
 
 /obj/structure/bed/psych/New(var/newloc)
 	..(newloc,"wood","leather")
@@ -308,3 +310,21 @@
 		new rollertype(get_turf(src))
 		QDEL_IN(src, 0)
 		return
+
+///
+/// BETTER rolling bed huh
+///
+
+/obj/structure/bed/wheel
+	name = "roller bed"
+	desc = "Truly a racing bed."
+	anchored = 0
+	icon_state = "wheelbed"
+	base_icon = "wheelbed"
+	buckle_pixel_shift = "x=0;y=3"
+
+/obj/structure/bed/wheel/padded/New(var/newloc)
+	..(newloc,"plastic","cotton")
+
+/obj/structure/bed/wheel/luxury/New(var/newloc)
+	..(newloc,"gold","carpet")
