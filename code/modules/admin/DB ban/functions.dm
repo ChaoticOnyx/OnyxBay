@@ -1,10 +1,10 @@
-datum/admins/proc/DB_ban_record(var/bantype, var/mob/banned_mob, var/duration = -1, var/reason, var/job = "", var/rounds = 0, var/banckey = null, var/banip = null, var/bancid = null)
+datum/admins/proc/DB_ban_record(var/bantype, var/mob/banned_mob, var/duration = -1, var/reason, var/job = "", var/rounds = 0, var/banckey = null, var/banip = null, var/bancid = null, var/ban_everywhere = FALSE)
 	if(!src || !src.owner)
 		return
-	_DB_ban_record(src.owner.ckey, src.owner.computer_id, src.owner.address, bantype, banned_mob, duration, reason, job, rounds, banckey, banip, bancid)
+	_DB_ban_record(src.owner.ckey, src.owner.computer_id, src.owner.address, bantype, banned_mob, duration, reason, job, rounds, banckey, banip, bancid, ban_everywhere)
 
 //Either pass the mob you wish to ban in the 'banned_mob' attribute, or the banckey, banip and bancid variables. If both are passed, the mob takes priority! If a mob is not passed, banckey is the minimum that needs to be passed! banip and bancid are optional.
-/proc/_DB_ban_record(var/a_ckey, var/a_computerid, var/a_ip, var/bantype, var/mob/banned_mob, var/duration = -1, var/reason, var/job = "", var/rounds = 0, var/banckey = null, var/banip = null, var/bancid = null)
+/proc/_DB_ban_record(var/a_ckey, var/a_computerid, var/a_ip, var/bantype, var/mob/banned_mob, var/duration = -1, var/reason, var/job = "", var/rounds = 0, var/banckey = null, var/banip = null, var/bancid = null, var/ban_everywhere = FALSE)
 
 	if(usr)
 		if(!check_rights(R_MOD,0) && !check_rights(R_BAN))	return
@@ -65,17 +65,23 @@ datum/admins/proc/DB_ban_record(var/bantype, var/mob/banned_mob, var/duration = 
 
 	reason = sql_sanitize_text(reason)
 
-	var/sql = "INSERT INTO erro_ban (`id`,`bantime`,`serverip`,`bantype`,`reason`,`job`,`duration`,`rounds`,`expiration_time`,`ckey`,`computerid`,`ip`,`a_ckey`,`a_computerid`,`a_ip`,`who`,`adminwho`,`edits`,`unbanned`,`unbanned_datetime`,`unbanned_ckey`,`unbanned_computerid`,`unbanned_ip`) VALUES (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null)"
+	var/sql
+	if(isnull(config.server_id))
+		sql = "INSERT INTO erro_ban (`id`,`bantime`,`serverip`,`bantype`,`reason`,`job`,`duration`,`rounds`,`expiration_time`,`ckey`,`computerid`,`ip`,`a_ckey`,`a_computerid`,`a_ip`,`who`,`adminwho`,`edits`,`unbanned`,`unbanned_datetime`,`unbanned_ckey`,`unbanned_computerid`,`unbanned_ip`,`server_id`) VALUES (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null, null)"
+	else
+		if(ban_everywhere)
+			sql = "INSERT INTO erro_ban (`id`,`bantime`,`serverip`,`bantype`,`reason`,`job`,`duration`,`rounds`,`expiration_time`,`ckey`,`computerid`,`ip`,`a_ckey`,`a_computerid`,`a_ip`,`who`,`adminwho`,`edits`,`unbanned`,`unbanned_datetime`,`unbanned_ckey`,`unbanned_computerid`,`unbanned_ip`,`server_id`) VALUES (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null, 'main'), (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null, 'beginners'), (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null, 'light')"
+		else
+			sql = "INSERT INTO erro_ban (`id`,`bantime`,`serverip`,`bantype`,`reason`,`job`,`duration`,`rounds`,`expiration_time`,`ckey`,`computerid`,`ip`,`a_ckey`,`a_computerid`,`a_ip`,`who`,`adminwho`,`edits`,`unbanned`,`unbanned_datetime`,`unbanned_ckey`,`unbanned_computerid`,`unbanned_ip`,`server_id`) VALUES (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null, '[config.server_id]')"
+
 	var/DBQuery/query_insert = dbcon.NewQuery(sql)
 	query_insert.Execute()
 	var/setter = a_ckey
 	if(usr)
 		to_chat(usr, "<span class='notice'>Ban saved to database.</span>")
 		setter = key_name_admin(usr)
-	message_admins("[setter] has added a [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[russian_to_cp1251(reason)]\" to the ban database.",1)
+	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[russian_to_cp1251(reason)]\" to the ban database.",1)
 	return 1
-
-
 
 datum/admins/proc/DB_ban_unban(var/ckey, var/bantype, var/job = "")
 
@@ -108,7 +114,12 @@ datum/admins/proc/DB_ban_unban(var/ckey, var/bantype, var/job = "")
 	else
 		bantype_sql = "bantype = '[bantype_str]'"
 
-	var/sql = "SELECT id FROM erro_ban WHERE ckey = '[ckey]' AND [bantype_sql] AND (unbanned is null OR unbanned = false)"
+	var/sql
+	if(isnull(config.server_id))
+		sql = "SELECT id FROM erro_ban WHERE ckey = '[ckey]' AND [bantype_sql] AND (unbanned is null OR unbanned = false)"
+	else
+		sql = "SELECT id FROM erro_ban WHERE ckey = '[ckey]' AND [bantype_sql] AND (unbanned is null OR unbanned = false) AND server_id = '[config.server_id]'"
+
 	if(job)
 		sql += " AND job = '[job]'"
 
@@ -149,18 +160,26 @@ datum/admins/proc/DB_ban_edit(var/banid = null, var/param = null)
 		to_chat(usr, "Cancelled")
 		return
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT ckey, duration, reason FROM erro_ban WHERE id = [banid]")
+	var/DBQuery/query
+	if(isnull(config.server_id))
+		query = dbcon.NewQuery("SELECT ckey, duration, reason FROM erro_ban WHERE id = [banid]")
+	else
+		query = dbcon.NewQuery("SELECT ckey, duration, reason, server_id FROM erro_ban WHERE id = [banid]")
+
 	query.Execute()
 
 	var/eckey = usr.ckey	//Editing admin ckey
 	var/pckey				//(banned) Player ckey
 	var/duration			//Old duration
 	var/reason				//Old reason
+	var/serverid			//Server where ckey was banned
 
 	if(query.NextRow())
 		pckey = query.item[1]
 		duration = query.item[2]
 		reason = query.item[3]
+		if(!isnull(config.server_id))
+			serverid = query.item[4]
 	else
 		to_chat(usr, "Invalid ban id. Contact the database admin")
 		return
@@ -177,9 +196,13 @@ datum/admins/proc/DB_ban_edit(var/banid = null, var/param = null)
 					to_chat(usr, "Cancelled")
 					return
 
-			var/DBQuery/update_query = dbcon.NewQuery("UPDATE erro_ban SET reason = '[value]', edits = CONCAT(edits,'- [eckey] changed ban reason from <cite><b>\\\"[reason]\\\"</b></cite> to <cite><b>\\\"[value]\\\"</b></cite><BR>') WHERE id = [banid]")
+			var/sql = "UPDATE erro_ban SET reason = '[value]', edits = CONCAT(edits,'- [eckey] changed ban reason from <cite><b>\\\"[reason]\\\"</b></cite> to <cite><b>\\\"[value]\\\"</b></cite><BR>') WHERE id = [banid]"
+			var/DBQuery/update_query = dbcon.NewQuery(sql)
 			update_query.Execute()
-			message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s reason from [reason] to [value]",1)
+			if(serverid)
+				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s on [serverid] server. Reason set from [reason] to [value]",1)
+			else
+				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s reason from [reason] to [value]",1)
 		if("duration")
 			if(!value)
 				value = input("Insert the new duration (in minutes) for [pckey]'s ban", "New Duration", "[duration]", null) as null|num
@@ -187,8 +210,12 @@ datum/admins/proc/DB_ban_edit(var/banid = null, var/param = null)
 					to_chat(usr, "Cancelled")
 					return
 
-			var/DBQuery/update_query = dbcon.NewQuery("UPDATE erro_ban SET duration = [value], edits = CONCAT(edits,'- [eckey] changed ban duration from [duration] to [value]<br>'), expiration_time = DATE_ADD(bantime, INTERVAL [value] MINUTE) WHERE id = [banid]")
-			message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s duration from [duration] to [value]",1)
+			var/sql = "UPDATE erro_ban SET duration = [value], edits = CONCAT(edits,'- [eckey] changed ban duration from [duration] to [value]<br>'), expiration_time = DATE_ADD(bantime, INTERVAL [value] MINUTE) WHERE id = [banid]"
+			var/DBQuery/update_query = dbcon.NewQuery(sql)
+			if(serverid)
+				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s duration from [duration] to [value]",1)
+			else
+				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s on [serverid] server. Duration set from [duration] to [value]",1)
 			update_query.Execute()
 		if("unban")
 			if(alert("Unban [pckey]?", "Unban?", "Yes", "No") == "Yes")
@@ -205,7 +232,11 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 
 	if(!check_rights(R_BAN))	return
 
-	var/sql = "SELECT ckey FROM erro_ban WHERE id = [id]"
+	var/sql
+	if(isnull(config.server_id))
+		sql = "SELECT ckey FROM erro_ban WHERE id = [id]"
+	else
+		sql = "SELECT ckey, server_id FROM erro_ban WHERE id = [id]"
 
 	establish_db_connection()
 	if(!dbcon.IsConnected())
@@ -214,10 +245,13 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 	var/ban_number = 0 //failsafe
 
 	var/pckey
+	var/serverid
 	var/DBQuery/query = dbcon.NewQuery(sql)
 	query.Execute()
 	while(query.NextRow())
 		pckey = query.item[1]
+		if(!isnull(config.server_id))
+			serverid = query.item[2]
 		ban_number++;
 
 	if(ban_number == 0)
@@ -236,7 +270,11 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 	var/unban_ip = src.owner:address
 
 	var/sql_update = "UPDATE erro_ban SET unbanned = 1, unbanned_datetime = Now(), unbanned_ckey = '[unban_ckey]', unbanned_computerid = '[unban_computerid]', unbanned_ip = '[unban_ip]' WHERE id = [id]"
-	message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban.",1)
+
+	if(serverid)
+		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban of [serverid] server.",1)
+	else
+		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban.",1)
 
 	var/DBQuery/query_update = dbcon.NewQuery(sql_update)
 	query_update.Execute()
@@ -264,30 +302,12 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 		to_chat(usr, "<span class='warning'>Failed to establish database connection</span>")
 		return
 
-	var/output = "<div align='center'><table width='90%'><tr>"
+	var/output = "<!doctype html><html lang=\"ru\"><head><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><title>Ban panel</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"><link href=\"css/bootstrap-ie8.css\" rel=\"stylesheet\"><script src=\"https://cdn.jsdelivr.net/g/html5shiv@3.7.3\"></script><style>label{font-size: 16px;}h3{font-size: 20px;}</style></head><div class=\"container\"><h3>Add custom ban<small class=\"text-muted\"> use only when you can't ban through any other method</small></h3>"
 
-	output += "<td width='35%' align='center'>"
-	output += "<h1>Banning panel</h1>"
-	output += "</td>"
+	output += "<form method='GET' action='?src=\ref[src]'><input type='hidden' name='src' value='\ref[src]'>"
 
-	output += "<td width='65%' align='center' bgcolor='#f9f9f9'>"
+	output += "<table width='100%'><tr><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddtype\">Ban type</label><select name='dbbanaddtype' class=\"form-control form-control-sm\" id=\"dbbanaddtype\"><option value=''>--</option><option value='1'>PERMABAN</option><option value='2'>TEMPBAN</option><option value='3'>JOB PERMABAN</option><option value='4'>JOB TEMPBAN</option></select></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddckey\">Ckey</label><input type='text' name='dbbanaddckey'class=\"form-control form-control-sm\" id=\"dbbanaddckey\"></div></td></tr><tr><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddip\">IP</label><input type='text' name='dbbanaddip'class=\"form-control form-control-sm\" id=\"dbbanaddip\"></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddcid\">CID</label><input type='text' name='dbbanaddcid'class=\"form-control form-control-sm\" id=\"dbbanaddcid\"></div></td></tr><tr><td width='50%'><div class=\"form-group\"><label for=\"dbbaddduration\">Duration</label><input type='text'name='dbbaddduration' class=\"form-control form-control-sm\" id=\"dbbaddduration\"></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddjob\">Ban job</label><select name='dbbanaddjob'class=\"form-control form-control-sm\" id=\"dbbanaddjob\"><option value=''>--</option>"
 
-	output += "<form method='GET' action='?src=\ref[src]'><b>Add custom ban:</b> (ONLY use this if you can't ban through any other method)"
-	output += "<input type='hidden' name='src' value='\ref[src]'>"
-	output += "<table width='100%'><tr>"
-	output += "<td width='50%' align='right'><b>Ban type:</b><select name='dbbanaddtype'>"
-	output += "<option value=''>--</option>"
-	output += "<option value='[BANTYPE_PERMA]'>PERMABAN</option>"
-	output += "<option value='[BANTYPE_TEMP]'>TEMPBAN</option>"
-	output += "<option value='[BANTYPE_JOB_PERMA]'>JOB PERMABAN</option>"
-	output += "<option value='[BANTYPE_JOB_TEMP]'>JOB TEMPBAN</option>"
-	output += "</select></td>"
-	output += "<td width='50%' align='right'><b>Ckey:</b> <input type='text' name='dbbanaddckey'></td></tr>"
-	output += "<tr><td width='50%' align='right'><b>IP:</b> <input type='text' name='dbbanaddip'></td>"
-	output += "<td width='50%' align='right'><b>CID:</b> <input type='text' name='dbbanaddcid'></td></tr>"
-	output += "<tr><td width='50%' align='right'><b>Duration:</b> <input type='text' name='dbbaddduration'></td>"
-	output += "<td width='50%' align='right'><b>Job:</b><select name='dbbanaddjob'>"
-	output += "<option value=''>--</option>"
 	for(var/j in list("OOC", "LOOC", "AHelp", "Species", "Male", "Female", "Appearance", "Name", "Jukebox")) // new bans
 		output += "<option value='[j]'>[j]</option>"
 	for(var/j in get_all_jobs())
@@ -301,33 +321,13 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 		bantypes |= antag.id
 	for(var/j in bantypes)
 		output += "<option value='[j]'>[j]</option>"
-	output += "</select></td></tr></table>"
-	output += "<b>Reason:<br></b><textarea name='dbbanreason' cols='50'></textarea><br>"
-	output += "<input type='submit' value='Add ban'>"
-	output += "</form>"
-
-	output += "</td>"
-	output += "</tr>"
-	output += "</table>"
-
-	output += "<form method='GET' action='?src=\ref[src]'><table width='60%'><tr><td colspan='2' align='left'><b>Search:</b>"
-	output += "<input type='hidden' name='src' value='\ref[src]'></td></tr>"
-	output += "<tr><td width='50%' align='right'><b>Ckey:</b> <input type='text' name='dbsearchckey' value='[playerckey]'></td>"
-	output += "<td width='50%' align='right'><b>Admin ckey:</b> <input type='text' name='dbsearchadmin' value='[adminckey]'></td></tr>"
-	output += "<tr><td width='50%' align='right'><b>IP:</b> <input type='text' name='dbsearchip' value='[playerip]'></td>"
-	output += "<td width='50%' align='right'><b>CID:</b> <input type='text' name='dbsearchcid' value='[playercid]'></td></tr>"
-	output += "<tr><td width='50%' align='right' colspan='2'><b>Ban type:</b><select name='dbsearchbantype'>"
-	output += "<option value=''>--</option>"
-	output += "<option value='[BANTYPE_PERMA]'>PERMABAN</option>"
-	output += "<option value='[BANTYPE_TEMP]'>TEMPBAN</option>"
-	output += "<option value='[BANTYPE_JOB_PERMA]'>JOB PERMABAN</option>"
-	output += "<option value='[BANTYPE_JOB_TEMP]'>JOB TEMPBAN</option>"
-	output += "</select></td></tr></table>"
-	output += "<br><input type='submit' value='search'><br>"
-	output += "<input type='checkbox' value='[match]' name='dbmatch' [match? "checked=\"1\"" : null]> Match(min. 3 characters to search by key or ip, and 7 to search by cid)<br>"
-	output += "</form>"
-	output += "Please note that all jobban bans or unbans are in-effect the following round.<br>"
-	output += "This search shows only last 100 bans."
+	output += "</select></div></td></tr></table><div class=\"form-group\"><label for=\"dbbanreason\">Reason</label><textarea name='dbbanreason' cols='50' class=\"form-control\" id=\"dbbanreason\" rows=\"3\"></textarea><br><div class=\"row\"><div class=\"col-lg-3\" style=\"padding-top: 0.45rem;\"><div class=\"custom-control custom-switch\"><input type=\"checkbox\" class=\"custom-control-input\" value='0' name=\"dbbaneverywhere\" id=\"dbbaneverywhere\"><label class=\"custom-control-label\" for=\"dbbaneverywhere\">Ban everywhere</label></div></div><div class=\"col-lg-3\"><input type='submit' class=\"btn btn-danger\" value='Add ban'></div></div></div></form>"
+	output += "<form method='GET' action='?src=\ref[src]'>"
+	output += "<table width='90%'><tr><td colspan='2' align='left'><h3>Search<small class=\"text-muted\"> this search shows only last 100 bans</small>"
+	output += "<input type='hidden' name='src' value='\ref[src]'>"
+	output += "</h3></td></tr><tr><td width='50%'><div class=\"form-group\"><label for=\"dbsearchbantype\">Ban type</label><select name='dbsearchbantype' class=\"form-control form-control-sm\" id=\"dbsearchbantype\"><option value=''>--</option><option value='1'>PERMABAN</option><option value='2'>TEMPBAN</option><option value='3'>JOB PERMABAN</option><option value='4'>JOB TEMPBAN</option></select></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbsearchckey\">Ckey</label><input type='text' name='dbsearchckey'class=\"form-control form-control-sm\" id=\"dbsearchckey\"></div></td></tr><tr><td width='50%'><div class=\"form-group\"><label for=\"dbsearchip\">IP</label><input type='text' name='dbsearchip'class=\"form-control form-control-sm\" id=\"dbsearchip\"></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbsearchcid\">CID</label><input type='text' name='dbsearchcid'class=\"form-control form-control-sm\" id=\"dbsearchcid\"></div></td></tr><tr><td width='50%'><div class=\"form-group\"><label for=\"dbsearchadmin\">Admin ckey</label><input type='text'name='dbsearchadmin' class=\"form-control form-control-sm\" id=\"dbsearchadmin\"></div></td><td class=\"col-lg-6\"><div class=\"custom-control custom-switch\" style=\"padding-top: 0.7rem;\">"
+	output += "<input type=\"checkbox\" id=\"dbmatch\" value='0' name='dbmatch'>"
+	output += "<labelclass=\"custom-control-label\" for=\"dbmatch\">Match (min. 3 characters for key or ip. 7 for cid)</label></div></td></tr></table><div class=\"form-group\"><input type='submit' class=\"btn btn-primary\" value='Search'></div></table></form><p><small>Please note that all jobban bans or unbans are in-effect the following round</small></p></div>"
 
 	if(adminckey || playerckey || playerip || playercid || dbbantype)
 
@@ -345,7 +345,7 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 			var/alcolor = "#eeeeff" // auto-unbanned light
 			var/adcolor = "#ddddff" // auto-unbanned dark
 
-			output += "<table width='90%' bgcolor='#e3e3e3' cellpadding='5' cellspacing='0' align='center'>"
+			output += "<div class=\"container\"><table class=\"table table-hover\" cellpadding='5' cellspacing='0' align='center'>"
 			output += "<tr>"
 			output += "<th width='25%'><b>TYPE</b></th>"
 			output += "<th width='20%'><b>CKEY</b></th>"
@@ -392,7 +392,12 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 					else
 						bantypesearch += "'PERMABAN' "
 
-			var/DBQuery/select_query = dbcon.NewQuery("SELECT id, bantime, bantype, reason, job, duration, expiration_time, ckey, a_ckey, unbanned, unbanned_ckey, unbanned_datetime, edits, ip, computerid FROM erro_ban WHERE 1 [playersearch] [adminsearch] [ipsearch] [cidsearch] [bantypesearch] ORDER BY bantime DESC LIMIT 100")
+			var/DBQuery/select_query
+			if(isnull(config.server_id))
+				select_query = dbcon.NewQuery("SELECT id, bantime, bantype, reason, job, duration, expiration_time, ckey, a_ckey, unbanned, unbanned_ckey, unbanned_datetime, edits, ip, computerid FROM erro_ban WHERE 1 [playersearch] [adminsearch] [ipsearch] [cidsearch] [bantypesearch] ORDER BY bantime DESC LIMIT 100")
+			else
+				select_query = dbcon.NewQuery("SELECT id, bantime, bantype, reason, job, duration, expiration_time, ckey, a_ckey, unbanned, unbanned_ckey, unbanned_datetime, edits, ip, computerid, server_id FROM erro_ban WHERE 1 [playersearch] [adminsearch] [ipsearch] [cidsearch] [bantypesearch] ORDER BY bantime DESC LIMIT 100")
+
 			select_query.Execute()
 
 			var/now = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss") // MUST BE the same format as SQL gives us the dates in, and MUST be least to most specific (i.e. year, month, day not day, month, year)
@@ -413,6 +418,9 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 				var/edits = select_query.item[13]
 				var/ip = select_query.item[14]
 				var/cid = select_query.item[15]
+				var/server_id
+				if(!isnull(config.server_id))
+					server_id = select_query.item[16]
 
 				// true if this ban has expired
 				var/auto = (bantype in list("TEMPBAN", "JOB_TEMPBAN")) && now > expiration // oh how I love ISO 8601 (ish) date strings
@@ -446,10 +454,16 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 				output += "</tr>"
 				output += "<tr bgcolor='[dcolor]'>"
 				output += "<td align='center' colspan='2' bgcolor=''><b>IP:</b> [ip]</td>"
-				output += "<td align='center' colspan='3' bgcolor=''><b>CIP:</b> [cid]</td>"
+				output += "<td align='center' colspan='2' bgcolor=''><b>CIP:</b> [cid]</td>"
+				if(!isnull(server_id))
+					output += "<td align='center' colspan='1' bgcolor=''><b>SERVER:</b> [server_id]</td>"
 				output += "</tr>"
 				output += "<tr bgcolor='[lcolor]'>"
-				output += "<td align='center' colspan='5'><b>Reason: [(unbanned || auto) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
+				if(!isnull(server_id))
+					output += "<td align='center' colspan='5'><b>Reason: [(unbanned || auto) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid];dbserverid=[server_id]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
+				else
+					output += "<td align='center' colspan='5'><b>Reason: [(unbanned || auto) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
+
 				output += "</tr>"
 				if(edits)
 					output += "<tr bgcolor='[dcolor]'>"

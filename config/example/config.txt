@@ -24,9 +24,6 @@ JOBS_HAVE_MINIMAL_ACCESS
 ## Unhash this to use recursive explosions, keep it hashed to use circle explosions. Recursive explosions react to walls, airlocks and blast doors, making them look a lot cooler than the boring old circular explosions. They require more CPU and are (as of january 2013) experimental
 #USE_RECURSIVE_EXPLOSIONS
 
-## Radiation weakens with distance from the source; stop calculating when the strength falls below this value.   Lower values mean radiation reaches smaller (with increasingly trivial damage) at the cost of more CPU usage.  Max range =  DISTANCE^2 * POWER / RADIATION_LOWER_LIMIT
-# RADIATION_LOWER_LIMIT	0.35
-
 ## log OOC channel
 LOG_OOC
 
@@ -90,8 +87,15 @@ MOD_TEMPBAN_MAX 1440
 ## Maximum mod job tempban duration (in minutes)
 MOD_JOB_TEMPBAN_MAX 1440
 
-## Panic Bunker
-# PANIC_BUNKER
+## Uncomment to protect against multi-accounts
+#PANIC_BUNKER
+
+## If panic bunker is on and a player is rejected (see above),
+## server will attempt to send them to this connected server (see below) instead.
+#PANIC_SERVER_ADDRESS byond://address:port
+
+## Name of the place to send people rejected by the bunker
+#PANIC_SERVER_NAME [Put the name here]
 
 ## Epic Anti-Multiacc System
 EAMS
@@ -221,7 +225,7 @@ GUEST_JOBBAN
 GUEST_BAN
 ## Set to jobban everyone who's key is not listed in data/whitelist.txt from Captain, HoS, HoP, CE, RD, CMO, Warden, Security, Detective, and AI positions.
 ## Uncomment to 1 to jobban, leave commented out to allow these positions for everyone (but see GUEST_JOBBAN above and regular jobbans)
-# USEWHITELIST
+# USEWHITELIST 1
 
 ## set a server location for world reboot. Don't include the byond://, just give the address and port.
 #SERVER server.net:port
@@ -230,40 +234,54 @@ GUEST_BAN
 ## Unlike SERVER, this one shouldn't break auto-reconnect
 #SERVERURL server.net:port
 
-## forum address
-# FORUMURL http://example.com
-
-## Wiki address
+## Wiki URL
 # WIKIURL http://example.com
 
-## GitHub address
+## Rules URL
+# RULESURL http://example.com
+
+## Backstory URL
+# BACKSTORYURL http://example.com
+
+## Discord URL
+# DISCORDURL http://example.com
+
+## GitHub URL
 # GITHUBURL https://github.com/example-user/example-repository
+
+## Forum URL
+# FORUMURL http://example.com
 
 ## Ban appeals URL - usually for a forum or wherever people should go to contact your admins.
 # BANAPPEALS http://example.com
+
+## Server id. This is used, when you have more than one server connected to single DB.
+## NOTE! You should migrate your DB to schema with server_id applied to each ban record
+## to actually support this option. Leave this commented, if you have just one server.
+# SERVERID id
 
 ## In-game features
 ## spawns a spellbook which gives object-type spells instead of verb-type spells for the wizard
 # FEATURE_OBJECT_SPELL_SYSTEM
 
-##Toggle for having jobs load up from the .txt
+## Toggle for having jobs load up from the .txt
 # LOAD_JOBS_FROM_TXT
 
-##Remove the # mark infront of this to forbid admins from posssessing the singularity.
-#FORBID_SINGULO_POSSESSION
+## Remove the # mark infront of this to forbid admins from posssessing the singularity.
+# FORBID_SINGULO_POSSESSION
 
 ## Remove the # to show a popup 'reply to' window to every non-admin that recieves an adminPM.
 ## The intention is to make adminPMs more visible. (although I fnd popups annoying so this defaults to off)
-#POPUP_ADMIN_PM
+# POPUP_ADMIN_PM
 
 ## Remove the # to allow special 'Easter-egg' events on special holidays such as seasonal holidays and stuff like 'Talk Like a Pirate Day' :3 YAARRR
 ALLOW_HOLIDAYS
 
-##Defines the ticklag for the world.  0.9 is the normal one, 0.5 is smoother.
-TICKLAG 0.7
+## Defines the ticklag for the world. 0.9 is the normal one, 0.5 is smoother.
+TICKLAG 0.625
 
-##Defines world FPS. Defaults to 20.
-FPS 60
+## Defines world FPS. Defaults to 20. Should be 10 / TICKLAG = FPS
+FPS 16
 
 ## Whether the server will talk to other processes through socket_talk
 SOCKET_TALK 0
@@ -283,34 +301,36 @@ GATEWAY_DELAY 18000
 
 ## Uncomment to restrict non-admins from using humanoid alien races
 USEALIENWHITELIST
+
 ## Uncomment to use the alien whitelist system with SQL instead. (requires the above uncommented aswell)
 #USEALIENWHITELIST_SQL
 
 ## Comment this to unrestrict the number of alien players allowed in the round. The number represents the number of alien players for every human player.
 #ALIEN_PLAYER_RATIO 0.2
+
 ##Remove the # to let ghosts spin chairs
-#GHOST_INTERACTION
+# GHOST_INTERACTION
 
 ## Password used for authorizing ircbot and other external tools.
-#COMMS_PASSWORD
+# COMMS_PASSWORD
 
 ## Password used for authorizing external tools that can apply bans
-#BAN_COMMS_PASSWORD
+# BAN_COMMS_PASSWORD
 
 ## Export address where external tools that monitor logins are located
-#LOGIN_EXPORT_ADDR
+# LOGIN_EXPORT_ADDR
 
 ## Uncomment to enable sending data to the IRC bot.
-#USE_IRC_BOT
+# USE_IRC_BOT
 
 ## Host where the IRC bot is hosted.  Port 45678 needs to be open.
-#IRC_BOT_HOST localhost
+# IRC_BOT_HOST localhost
 
 ## IRC channel to send information to.  Leave blank to disable.
-#MAIN_IRC #main
+# MAIN_IRC #main
 
 ## IRC channel to send adminhelps to.  Leave blank to disable adminhelps-to-irc.
-#ADMIN_IRC #admin
+# ADMIN_IRC #admin
 
 ## Uncommen to allow ghosts to write in blood during Cult rounds.
 ALLOW_CULT_GHOSTWRITER
@@ -396,8 +416,6 @@ STARLIGHT 0
 ## Enable asteroid tunnel/cave generation. Will behave strangely if turned off with a map that expects it on.
 # GENERATE_ASTEROID
 
-
-
 ## Uncomment to enable organ decay outside of a body or storage item.
 #ORGANS_CAN_DECAY
 
@@ -436,7 +454,8 @@ RADIATION_RESISTANCE_MULTIPLIER 1.25
 RADIATION_MATERIAL_RESISTANCE_DIVISOR 2
 
 ## Below this point, radiation is ignored
-RADIATION_LOWER_LIMIT 0.15
+## Radiation weakens with distance from the source; stop calculating when the strength falls below this value.   Lower values mean radiation reaches smaller (with increasingly trivial damage) at the cost of more CPU usage.  Max range =  DISTANCE^2 * POWER / RADIATION_LOWER_LIMIT
+RADIATION_LOWER_LIMIT 0.35
 
 ## TOPIC RATE LIMITING
 ## This allows you to limit how many topic calls (clicking on a interface window) the client can do in any given game second and/or game minute.
