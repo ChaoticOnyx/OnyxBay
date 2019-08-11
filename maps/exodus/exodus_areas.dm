@@ -941,6 +941,26 @@
 	icon_state = "Sleep"
 	sound_env = SMALL_SOFTFLOOR
 
+/area/crew_quarters/sleep/quartes1
+	name = "\improper Dormitory Quartes One"
+	icon_state = "Sleep"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/quartes2
+	name = "\improper Dormitory Quartes Two"
+	icon_state = "Sleep"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/quartes3
+	name = "\improper Dormitory Quartes Three"
+	icon_state = "Sleep"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/quartes4
+	name = "\improper Dormitory Quartes Four"
+	icon_state = "Sleep"
+	sound_env = SMALL_SOFTFLOOR
+
 /area/crew_quarters/locker/locker_toilet
 	name = "\improper Locker Toilets"
 	icon_state = "toilet"

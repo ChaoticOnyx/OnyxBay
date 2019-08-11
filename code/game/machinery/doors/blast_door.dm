@@ -197,6 +197,10 @@
 /obj/machinery/door/blast/regular/open
 	begins_closed = FALSE
 
+/obj/machinery/door/blast/regular/singulo
+	emp_act()
+		return
+
 // SUBTYPE: Shutters
 // Nicer looking, and also weaker, shutters. Found in kitchen and similar areas.
 /obj/machinery/door/blast/shutters
