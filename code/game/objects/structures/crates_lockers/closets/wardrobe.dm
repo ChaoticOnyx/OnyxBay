@@ -63,6 +63,9 @@
 	new /obj/item/clothing/head/that(src)
 	new /obj/item/clothing/head/that(src)
 	new /obj/item/clothing/head/that(src)
+	new /obj/item/clothing/head/beanie/black(src)
+	new /obj/item/clothing/head/beanie/black(src)
+	new /obj/item/clothing/head/beanie/black(src)
 	new /obj/item/clothing/head/soft/black(src)
 	new /obj/item/clothing/head/soft/black(src)
 	new /obj/item/clothing/head/soft/black(src)
@@ -105,6 +108,9 @@
 	new /obj/item/clothing/shoes/black(src)
 	new /obj/item/clothing/shoes/black(src)
 	new /obj/item/clothing/shoes/black(src)
+	new /obj/item/clothing/head/beanie/green(src)
+	new /obj/item/clothing/head/beanie/green(src)
+	new /obj/item/clothing/head/beanie/green(src)
 	return
 
 /obj/structure/closet/wardrobe/xenos
@@ -155,6 +161,9 @@
 	new /obj/item/clothing/shoes/orange(src)
 	new /obj/item/clothing/shoes/orange(src)
 	new /obj/item/clothing/shoes/orange(src)
+	new /obj/item/clothing/head/beanie/yellow(src)
+	new /obj/item/clothing/head/beanie/yellow(src)
+	new /obj/item/clothing/head/beanie/yellow(src)
 	return
 
 
@@ -216,6 +225,9 @@
 	new /obj/item/clothing/shoes/white(src)
 	new /obj/item/clothing/shoes/white(src)
 	new /obj/item/clothing/shoes/white(src)
+	new /obj/item/clothing/head/beanie/white(src)
+	new /obj/item/clothing/head/beanie/white(src)
+	new /obj/item/clothing/head/beanie/white(src)
 	return
 
 
@@ -391,6 +403,10 @@
 	new /obj/item/clothing/shoes/purple(src)
 	new /obj/item/clothing/shoes/red(src)
 	new /obj/item/clothing/shoes/leather(src)
+	new /obj/item/clothing/head/beanie/red(src)
+	new /obj/item/clothing/head/beanie/green(src)
+	new /obj/item/clothing/head/beanie/yellow(src)
+	new /obj/item/clothing/head/beanie/blue(src)
 	new /obj/item/clothing/accessory/toggleable/hawaii/random(src)
 	return
 

@@ -167,7 +167,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		for(var/level in dynamic_z_levels)
 			maploader.load_map(dynamic_z_levels[level], 1, 1, text2num(level), FALSE, FALSE, TRUE, FALSE)
 	world.update_status()
-	var/list/antags = all_antag_types()
+	var/list/antags = GLOB.all_antag_types_
 	for(var/id in antags)
 		var/datum/antagonist/A = antags[id]
 		A.get_starting_locations()

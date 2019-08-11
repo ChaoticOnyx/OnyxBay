@@ -1,4 +1,4 @@
-var/datum/antagonist/xenos/borer/borers
+GLOBAL_DATUM_INIT(borers, /datum/antagonist/xenos/borer, new)
 
 /datum/antagonist/xenos/borer
 	id = MODE_BORER
@@ -17,10 +17,6 @@ var/datum/antagonist/xenos/borer/borers
 	initial_spawn_req = 3
 	initial_spawn_target = 5
 
-/datum/antagonist/xenos/borer/New()
-	..(1)
-	borers = src
-
 /datum/antagonist/xenos/borer/get_extra_panel_options(var/datum/mind/player)
 	return "<a href='?src=\ref[src];move_to_spawn=\ref[player.current]'>\[put in host\]</a>"
 
@@ -38,7 +34,7 @@ var/datum/antagonist/xenos/borer/borers
 		for(var/mob/living/carbon/human/H in SSmobs.mob_list)
 			if(H.stat != DEAD && !H.has_brain_worms())
 				var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
-				if(head && !(head.robotic >= ORGAN_ROBOT))
+				if(head && !BP_IS_ROBOTIC(head))
 					host = H
 					break
 		if(istype(host))

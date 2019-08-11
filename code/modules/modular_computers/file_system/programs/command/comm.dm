@@ -14,6 +14,7 @@
 	required_access = access_heads
 	requires_ntnet = 1
 	size = 12
+	category = PROG_COMMAND
 	usage_flags = PROGRAM_CONSOLE | PROGRAM_LAPTOP
 	network_destination = "long-range communication array"
 	var/datum/comm_message_listener/message_core = new
@@ -337,7 +338,7 @@ var/last_message_id = 0
 		to_chat(user, "<span class='notice'>Cannot establish a bluespace connection.</span>")
 		return
 
-	if(deathsquad.deployed)
+	if(GLOB.deathsquad.deployed)
 		to_chat(user, "[GLOB.using_map.boss_short] will not allow an evacuation to take place. Consider all contracts terminated.")
 		return
 

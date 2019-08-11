@@ -26,16 +26,23 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/true_dead = FALSE
 	var/damaged = FALSE
 	var/heal = 0
-	var/datum/reagents/pick_chemistry = new
+	var/datum/reagents/pick_chemistry
 
 /datum/changeling/New()
 	..()
+	pick_chemistry = new/datum/reagents(120, src)
 	if(possible_changeling_IDs.len)
 		changelingID = pick(possible_changeling_IDs)
 		possible_changeling_IDs -= changelingID
 		changelingID = "[changelingID]"
 	else
 		changelingID = "[rand(1,999)]"
+
+/datum/changeling/Destroy()
+	purchasedpowers = null
+	absorbed_languages.Cut()
+	absorbed_dna.Cut()
+	. = ..()
 
 /datum/changeling/proc/regenerate()
 	chem_charges = min(max(0, chem_charges+chem_recharge_rate), chem_storage)
@@ -768,7 +775,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			to_chat(src, "<span class='warning'>[T]'s armor has protected them.</span>")
 			return //thick clothes will protect from the sting
 
-	if(T.isSynthetic() || target_limb.isrobotic())
+	if(T.isSynthetic() || BP_IS_ROBOTIC(target_limb))
 		return
 	if(!T.mind || !T.mind.changeling)	//T will be affected by the sting
 		if (target_limb.can_feel_pain())
@@ -1688,11 +1695,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 					H.adjustToxLoss(-15 * config.organ_regeneration_multiplier)
 				if(prob(15) && !H.getBruteLoss() && !H.getFireLoss())
 					var/obj/item/organ/external/head/D = H.organs_by_name[BP_HEAD]
-					if (D.disfigured)
-						D.disfigured = 0
+					if (D.status & ORGAN_DISFIGURED)
+						D.status &= ~ORGAN_DISFIGURED
 				for(var/bpart in shuffle(H.internal_organs_by_name))
 					var/obj/item/organ/internal/regen_organ = H.internal_organs_by_name[bpart]
-					if(regen_organ.robotic >= ORGAN_ROBOT)
+					if(BP_IS_ROBOTIC(regen_organ))
 						continue
 					if(istype(regen_organ))
 						if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
@@ -1701,7 +1708,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 								to_chat(H, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
 						if(regen_organ.status & ORGAN_DEAD)
 							regen_organ.status &= ~ORGAN_DEAD
-				if(prob(15))
+				if(prob(50))
 					for(var/limb_type in H.species.has_limbs)
 						if (H.restore_limb(limb_type,1))
 							break

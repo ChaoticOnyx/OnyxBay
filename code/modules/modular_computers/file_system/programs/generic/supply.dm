@@ -7,6 +7,7 @@
 	program_menu_icon = "cart"
 	extended_desc = "A management tool that allows for ordering of various supplies through the facility's cargo system. Some features may require additional access."
 	size = 21
+	category = PROG_SUPPLY
 	available_on_ntnet = 1
 	requires_ntnet = 1
 

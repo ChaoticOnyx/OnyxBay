@@ -5,6 +5,7 @@
 	program_icon_state = "generic"
 	program_key_state = "generic_key"
 	size = 14
+	category = PROG_OFFICE
 	requires_ntnet = 1
 	available_on_ntnet = 1
 	nanomodule_path = /datum/nano_module/records

@@ -41,7 +41,6 @@
 					harvest_overlay.color = seed.get_trait(TRAIT_PRODUCT_COLOUR)
 					plant_controller.plant_icon_cache["product-[ikey]-[harvest_overlay.color]"] = harvest_overlay
 				new_overlays |= harvest_overlay
-
 	//Updated the various alert icons.
 	if(mechanical)
 		//Draw the cover.
@@ -68,7 +67,14 @@
 		set_opacity(0)
 
 	overlays |= new_overlays
-
+	//shift that shit pls god
+	if(istype(src, /obj/machinery/portable_atmospherics/hydroponics/soil) && length(overlays) == 1)
+		var/icon/fockenplant = overlays[1]
+		var/image/shitseed = image(fockenplant)
+		shitseed.pixel_y = 8
+		overlays.Cut()
+		overlays.Add(shitseed)
+	//shift that shit pls god
 	// Update bioluminescence.
 	if(seed && seed.get_trait(TRAIT_BIOLUM))
 		set_light(round(seed.get_trait(TRAIT_POTENCY)/10), l_color = seed.get_trait(TRAIT_BIOLUM_COLOUR))

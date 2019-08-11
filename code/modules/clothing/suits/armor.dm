@@ -14,7 +14,7 @@
 /obj/item/clothing/suit/armor/vest/old //just realized these had never been removed
 	name = "armor"
 	desc = "An armored vest that protects against some damage."
-	icon_state = "armor"
+	icon_state = "onyxvest"
 	//item_state = "armor"
 	blood_overlay_type = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
@@ -27,6 +27,11 @@
 	desc = "An armored vest that protects against some damage. This one has a corporate badge."
 	icon_state = "armorsec"
 	//item_state = "armor"
+
+/obj/item/clothing/suit/armor/vest/old/detective
+	name = "detective armor"
+	desc = "An synthetic armor vest colored in a vintage brown."
+	icon_state = "detective-armor"
 
 /obj/item/clothing/suit/armor/vest/warden
 	name = "warden's jacket"
@@ -204,6 +209,12 @@
 	desc = "An synthetic armor vest colored in a vintage brown."
 	icon_state = "detvest"
 
+/obj/item/clothing/suit/armor/vest/csivest
+	name = "armored vest"
+	desc = "An armor vest made of synthetic fibers."
+	icon_state = "csivest"
+	item_state = "csivest"
+
 /obj/item/clothing/suit/armor/vest/pcrc
 	name = "contractor armored vest"
 	desc = "A synthetic armor vest. This one is marked with the crest of Proxima Centauri Risk Control, a private security firm."
@@ -324,8 +335,12 @@
 	name = "riot vest"
 	desc = "An armored vest with heavy padding to protect against melee attacks."
 	icon = 'icons/obj/clothing/modular_armor.dmi'
-	item_icons = list(slot_wear_suit_str = 'icons/mob/onmob/modular_armor.dmi')
-	icon_state = "riot"
+	item_icons = list(
+		slot_wear_suit_str = 'icons/mob/onmob/modular_armor.dmi',
+		slot_l_hand_str = 'icons/mob/onmob/items/lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/onmob/items/righthand.dmi'
+		)
+	icon_state = "riot_vest"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO

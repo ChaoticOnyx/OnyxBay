@@ -11,10 +11,10 @@
 	parent_organ = BP_CHEST
 	joint = "jaw"
 	amputation_point = "neck"
-	gendered_icon = 1
 	encased = "skull"
 	artery_name = "cartoid artery"
 	cavity_name = "cranial"
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
 
 	var/can_intake_reagents = 1
 	var/eye_icon = "eyes_s"
@@ -80,28 +80,12 @@
 	. = ..(company, skip_prosthetics, 1)
 	has_lips = null
 
-/obj/item/organ/external/head/removed()
-	if(owner)
-		var/mob/living/carbon/human/victim = owner
-		SetName("[victim.real_name]'s head")
-		victim.drop_from_inventory(owner.glasses)
-		victim.drop_from_inventory(owner.head)
-		victim.drop_from_inventory(owner.l_ear)
-		victim.drop_from_inventory(owner.r_ear)
-		victim.drop_from_inventory(owner.wear_mask)
-		update_icon_drop(victim)
-		spawn(1)
-			victim.update_hair()
-	..()
-
 /obj/item/organ/external/head/take_damage(brute, burn, damage_flags, used_weapon = null)
 	. = ..()
-	if (!disfigured)
-		if (brute_dam > 40)
-			if (prob(50))
-				disfigure("brute")
-		if (burn_dam > 40)
-			disfigure("burn")
+	if ((brute_dam > 40) && prob(50))
+		disfigure("brute")
+	if (burn_dam > 40)
+		disfigure("burn")
 
 /obj/item/organ/external/head/no_eyes
 	eye_icon = "blank_eyes"
@@ -124,7 +108,7 @@
 			mob_icon.Blend(eyes_icon, ICON_OVERLAY)
 			overlays |= eyes_icon
 
-		if(owner.lip_style && robotic < ORGAN_ROBOT && (species && (species.appearance_flags & HAS_LIPS)))
+		if(owner.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
 			var/icon/lip_icon = new/icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")
 			overlays |= lip_icon
 			mob_icon.Blend(lip_icon, ICON_OVERLAY)

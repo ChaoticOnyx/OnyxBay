@@ -4,7 +4,7 @@
 
 /obj/item/organ/external/proc/is_damageable(var/additional_damage = 0)
 	//Continued damage to vital organs can kill you, and robot organs don't count towards total damage so no need to cap them.
-	return ((robotic >= ORGAN_ROBOT) || brute_dam + burn_dam + additional_damage < max_damage * 4)
+	return (BP_IS_ROBOTIC(src) || brute_dam + burn_dam + additional_damage < max_damage * 4)
 
 /obj/item/organ/external/take_damage(brute, burn, damage_flags, used_weapon = null)
 	brute = round(brute * brute_mod, 0.1)
@@ -19,7 +19,7 @@
 
 	if(used_weapon)
 		add_autopsy_data("[used_weapon]", brute + burn)
-	var/can_cut = (prob(brute*2) || sharp) && (robotic < ORGAN_ROBOT)
+	var/can_cut = (!BP_IS_ROBOTIC(src) && (sharp || prob(brute*2)))
 	var/spillover = 0
 	var/pure_brute = brute
 	if(!is_damageable(brute + burn))
@@ -35,7 +35,7 @@
 		owner.updatehealth() //droplimb will call updatehealth() again if it does end up being called
 	//If limb took enough damage, try to cut or tear it off
 	if(owner && loc == owner && !is_stump())
-		if(!cannot_amputate && config.limbs_can_break)
+		if((limb_flags & ORGAN_FLAG_CAN_AMPUTATE) && config.limbs_can_break)
 			if((brute_dam + burn_dam + brute + burn + spillover) >= (max_damage * config.organ_health_multiplier))
 				var/force_droplimb = 0
 				if((brute_dam + burn_dam + brute + burn + spillover) >= (max_damage * config.organ_health_multiplier * 4))
@@ -151,7 +151,7 @@
 	return created_wound
 
 /obj/item/organ/external/heal_damage(brute, burn, internal = 0, robo_repair = 0)
-	if(robotic >= ORGAN_ROBOT && !robo_repair)
+	if(BP_IS_ROBOTIC(src) && !robo_repair)
 		return
 
 	//Heal damage on the individual wounds
@@ -183,10 +183,10 @@
 
 // Geneloss/cloneloss.
 /obj/item/organ/external/proc/get_genetic_damage()
-	return ((species && (species.species_flags & SPECIES_FLAG_NO_SCAN)) || robotic >= ORGAN_ROBOT) ? 0 : genetic_degradation
+	return ((species && (species.species_flags & SPECIES_FLAG_NO_SCAN)) || BP_IS_ROBOTIC(src)) ? 0 : genetic_degradation
 
 /obj/item/organ/external/proc/remove_genetic_damage(var/amount)
-	if((species.species_flags & SPECIES_FLAG_NO_SCAN) || robotic >= ORGAN_ROBOT)
+	if((species.species_flags & SPECIES_FLAG_NO_SCAN) || BP_IS_ROBOTIC(src))
 		genetic_degradation = 0
 		status &= ~ORGAN_MUTATED
 		return
@@ -199,7 +199,7 @@
 	return -(genetic_degradation - last_gene_dam)
 
 /obj/item/organ/external/proc/add_genetic_damage(var/amount)
-	if((species.species_flags & SPECIES_FLAG_NO_SCAN) || robotic >= ORGAN_ROBOT)
+	if((species.species_flags & SPECIES_FLAG_NO_SCAN) || BP_IS_ROBOTIC(src))
 		genetic_degradation = 0
 		status &= ~ORGAN_MUTATED
 		return
@@ -212,7 +212,7 @@
 	return (genetic_degradation - last_gene_dam)
 
 /obj/item/organ/external/proc/mutate()
-	if(src.robotic >= ORGAN_ROBOT)
+	if(BP_IS_ROBOTIC(src))
 		return
 	src.status |= ORGAN_MUTATED
 	if(owner) owner.update_body()
@@ -223,7 +223,7 @@
 
 // Pain/halloss
 /obj/item/organ/external/proc/get_pain()
-	if(!can_feel_pain() || robotic >= ORGAN_ROBOT)
+	if(!can_feel_pain())
 		return 0
 	var/lasting_pain = 0
 	if(is_broken())
@@ -236,7 +236,7 @@
 	return pain + lasting_pain + 0.7 * brute_dam + 0.8 * burn_dam + 0.3 * tox_dam + 0.5 * get_genetic_damage()
 
 /obj/item/organ/external/proc/remove_pain(var/amount)
-	if(!can_feel_pain() || robotic >= ORGAN_ROBOT)
+	if(!can_feel_pain())
 		pain = 0
 		return
 	var/last_pain = pain
@@ -244,7 +244,7 @@
 	return -(pain-last_pain)
 
 /obj/item/organ/external/proc/add_pain(var/amount)
-	if(!can_feel_pain() || robotic >= ORGAN_ROBOT)
+	if(!can_feel_pain())
 		pain = 0
 		return
 	var/last_pain = pain
@@ -254,15 +254,23 @@
 	return pain-last_pain
 
 /obj/item/organ/external/proc/stun_act(var/stun_amount, var/agony_amount)
-	if(agony_amount > 5 && owner && vital && get_pain() > 0.5 * max_damage)
-		owner.visible_message("<span class='warning'>[owner] reels in pain!</span>")
-		if(has_genitals() || get_pain() + agony_amount > max_damage)
-			owner.Weaken(6)
-		else
-			owner.Stun(6)
-			owner.drop_l_hand()
-			owner.drop_r_hand()
-		return 1
+	if(agony_amount > 5 && owner)
+
+		if((limb_flags & ORGAN_FLAG_CAN_GRASP) && prob(25))
+			owner.grasp_damage_disarm(src)
+
+		if((limb_flags & ORGAN_FLAG_CAN_STAND) && prob(min(agony_amount * ((body_part == LEG_LEFT || body_part == LEG_RIGHT)? 2 : 4),70)))
+			owner.stance_damage_prone(src)
+
+		if(vital && get_pain() > 0.5 * max_damage)
+			owner.visible_message("<span class='warning'>[owner] reels in pain!</span>")
+			if(has_genitals() || get_pain() + agony_amount > max_damage)
+				owner.Weaken(6)
+			else
+				owner.Stun(6)
+				owner.drop_l_hand()
+				owner.drop_r_hand()
+			return 1
 
 /obj/item/organ/external/proc/get_agony_multiplier()
 	return has_genitals() ? 2 : 1
@@ -270,13 +278,13 @@
 /obj/item/organ/external/proc/sever_artery()
 	if(species && species.has_organ[BP_HEART])
 		var/obj/item/organ/internal/heart/O = species.has_organ[BP_HEART]
-		if(robotic < ORGAN_ROBOT && !(status & ORGAN_ARTERY_CUT) && !initial(O.open))
+		if(!BP_IS_ROBOTIC(src) && !(status & ORGAN_ARTERY_CUT) && !initial(O.open))
 			status |= ORGAN_ARTERY_CUT
 			return TRUE
 	return FALSE
 
 /obj/item/organ/external/proc/sever_tendon()
-	if(has_tendon && robotic < ORGAN_ROBOT && !(status & ORGAN_TENDON_CUT))
+	if((limb_flags & ORGAN_FLAG_HAS_TENDON) && !BP_IS_ROBOTIC(src) && !(status & ORGAN_TENDON_CUT))
 		status |= ORGAN_TENDON_CUT
 		return TRUE
 	return FALSE

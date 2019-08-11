@@ -555,7 +555,7 @@
 	var/list/meatchunks = list()
 	for(var/limb_tag in list(BP_R_ARM, BP_L_ARM, BP_R_LEG,BP_L_LEG))
 		var/obj/item/organ/external/E = H.get_organ(limb_tag)
-		if(!E.is_stump() && E.robotic < ORGAN_ROBOT && E.species.name != SPECIES_PROMETHEAN)
+		if(!E.is_stump() && !BP_IS_ROBOTIC(E) && E.species.name != SPECIES_PROMETHEAN)
 			meatchunks += E
 	if(!meatchunks.len)
 		if(prob(15))
@@ -576,14 +576,13 @@
 		E.s_col_blend = ICON_ADD
 		E.status &= ~ORGAN_BROKEN
 		E.status |= ORGAN_MUTATED
-		E.cannot_break = 1
+		E.limb_flags &= ~ORGAN_FLAG_CAN_BREAK
 		E.dislocated = -1
-		E.nonsolid = 1
 		E.max_damage = 5
 		E.update_icon(1)
 	O.max_damage = 15
 	if(prob(10))
-		to_chat(H, "<span class='danger'>Your slimy [O.name]'s plops off!</span>")
+		to_chat(H, "<span class='danger'>Your slimy [O.name] plops off!</span>")
 		O.droplimb()
 	H.update_body()
 
@@ -647,29 +646,26 @@
 	to_chat(M, "<span class='warning'>Your feel a chill, your skin feels lighter..</span>")
 	remove_self(volume)
 
-/datum/reagent/toxin/corrupting
-	name = "Corruption"
-	description = "a loyalty changing liquid."
-	taste_description = "blood"
-	color = "#ffffff"
+/datum/reagent/toxin/zombie
+	name = "Liquid Corruption"
+	description = "A filthy, oily substance which slowly churns of its own accord."
+	taste_description = "decaying blood"
+	color = "#800000"
 	taste_mult = 5
 	strength = 10
-	metabolism = REM * 2
+	metabolism = REM * 5
 	overdose = 30
+	var/amount_to_zombify = 5
 
-/datum/reagent/toxin/corrupting/affect_touch(var/mob/living/carbon/M, var/alien, var/removed)
-	affect_blood(M,alien,removed*0.5)
+/datum/reagent/toxin/zombie/affect_touch(var/mob/living/carbon/M, var/alien, var/removed)
+	affect_blood(M, alien, removed * 0.5)
 
-/datum/reagent/toxin/corrupting/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/zombie/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
 	..()
-	if(prob(5))
-		if(M.chem_doses[type] < 15)
-			to_chat(M, "<span class='warning'>You feel funny...</span>")
-		else
-			to_chat(M, "<span class='danger'>You feel like you could die at any moment!</span>")
-
-/datum/reagent/toxin/corrupting/overdose(var/mob/living/carbon/M, var/alien)
-	if(istype(M, /mob/living/carbon/human))
+	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
-		H.zombieze()
-	remove_self(volume)
+		var/true_dose = H.chem_doses[type] + volume
+		if ((true_dose >= amount_to_zombify) || (true_dose > 1 && prob(20)))
+			H.zombify()
+		else if (prob(10))
+			to_chat(H, "<span class='warning'>You feel terribly ill!</span>")

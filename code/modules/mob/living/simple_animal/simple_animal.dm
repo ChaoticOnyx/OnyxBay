@@ -34,6 +34,9 @@
 	var/response_harm   = "tries to hurt"
 	var/harm_intent_damage = 3
 	var/can_escape = 0 // 'smart' simple animals such as human enemies, or things small, big, sharp or strong enough to power out of a net
+	var/mob/panic_target = null // shy simple animals run away from humans
+	var/turns_since_scan = 0
+	var/shy_animal = 0
 
 	//Temperature effect
 	var/minbodytemp = 250
@@ -165,6 +168,14 @@
 
 	if(!atmos_suitable)
 		adjustBruteLoss(unsuitable_atoms_damage)
+
+	if(shy_animal)
+		turns_since_scan++
+		if(turns_since_scan > 5)
+			walk_to(src,0)
+			turns_since_scan = 0
+			handle_panic_target()
+
 	return 1
 
 /mob/living/simple_animal/proc/escape(mob/living/M, obj/O)
@@ -374,3 +385,18 @@
 	return
 /mob/living/simple_animal/ExtinguishMob()
 	return
+
+/mob/living/simple_animal/proc/handle_panic_target()
+	//see if we should stop panicing
+	if(panic_target)
+		if (!(panic_target.loc in view(src)))
+			panic_target = null
+			stop_automated_movement = 0
+		else
+			stop_automated_movement = 1
+			walk_away(src, panic_target, 7, 2)
+
+/mob/living/simple_animal/proc/set_panic_target(mob/M)
+	if(M && !ckey)
+		panic_target = M
+		turns_since_scan = 5

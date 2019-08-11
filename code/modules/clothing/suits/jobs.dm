@@ -109,30 +109,61 @@
 	icon_state = "detective2"
 
 //Forensics
-/obj/item/clothing/suit/storage/forensics
+/obj/item/clothing/suit/storage/toggle/forensics
 	name = "jacket"
 	desc = "A forensics technician jacket."
 	item_state = "det_suit"
 	body_parts_covered = UPPER_TORSO|ARMS
+	blood_overlay_type = "armor"
 	allowed = list(/obj/item/weapon/tank/emergency,/obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/device/taperecorder)
 	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0, rad = 0)
 
-/obj/item/clothing/suit/storage/forensics/red
+/obj/item/clothing/suit/storage/toggle/forensics/toggle()
+	if(!usr.canmove || usr.stat || usr.restrained())
+		return 0
+
+	if(icon_state == icon_open) //Will check whether icon state is currently set to the "open" or "closed" state and switch it around with a message to the user
+		icon_state = icon_closed
+		item_state = icon_closed
+		to_chat(usr, "You button up the jacket.")
+	else if(icon_state == icon_closed)
+		icon_state = icon_open
+		item_state = icon_open
+		to_chat(usr, "You unbutton the jacket.")
+	else
+		to_chat(usr, "You attempt to button-up the velcro on your [src], before promptly realising how silly you are.")
+		return
+	update_clothing_icon()
+
+/obj/item/clothing/suit/storage/toggle/forensics/red
 	name = "red jacket"
 	desc = "A red forensics technician jacket."
-	icon_state = "forensics_red"
+	item_state = "forensics_red_open"
+	icon_state = "forensics_red_open"
+	icon_open = "forensics_red_open"
+	icon_closed = "forensics_red"
 
+/obj/item/clothing/suit/storage/toggle/forensics/blue
+	name = "blue jacket"
+	desc = "A blue forensics technician jacket."
+	item_state = "forensics_blue_open"
+	icon_state = "forensics_blue_open"
+	icon_open = "forensics_blue_open"
+	icon_closed = "forensics_blue"
 
-/obj/item/clothing/suit/storage/forensics/customred //Custom item
+/obj/item/clothing/suit/storage/toggle/forensics/customred //Custom item
 	name = "red jacket"
 	desc = "A nice red forensics technician jacket."
 	icon_state = "custom_forensics_red_long"
 	item_state = "custom_forensics_red_long"
 
-/obj/item/clothing/suit/storage/forensics/blue
-	name = "blue jacket"
-	desc = "A blue forensics technician jacket."
-	icon_state = "forensics_blue"
+/obj/item/clothing/suit/storage/toggle/forensics/labcoat
+	name = "forensic labcoat"
+	desc = "A white forensics technician labcoat."
+	item_state = "forensictech_open"
+	icon_state = "forensictech_open"
+	icon_open = "forensictech_open"
+	icon_closed = "forensictech"
 
 //Engineering
 /obj/item/clothing/suit/storage/hazardvest
@@ -141,7 +172,7 @@
 	icon_state = "hazard"
 	item_state = "hazard"
 	blood_overlay_type = "armor"
-	allowed = list (/obj/item/device/analyzer, /obj/item/device/flashlight, /obj/item/device/multitool, /obj/item/device/pipe_painter, /obj/item/device/radio, /obj/item/device/t_scanner, \
+	allowed = list (/obj/item/device/analyzer, /obj/item/device/geiger, /obj/item/device/flashlight, /obj/item/device/multitool, /obj/item/device/pipe_painter, /obj/item/device/radio, /obj/item/device/t_scanner, \
 	/obj/item/weapon/crowbar, /obj/item/weapon/screwdriver, /obj/item/weapon/weldingtool, /obj/item/weapon/wirecutters, /obj/item/weapon/wrench, /obj/item/weapon/tank/emergency, \
 	/obj/item/clothing/mask/gas, /obj/item/taperoll/engineering)
 	body_parts_covered = UPPER_TORSO

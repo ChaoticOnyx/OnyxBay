@@ -14,6 +14,7 @@
 	desc = "A portable anti-armour rifle fitted with a scope, the HI PTR-7 Rifle was originally designed to used against armoured exosuits. It is capable of punching through windows and non-reinforced walls with ease. Fires armor piercing 14.5mm shells. This replica however fires 9mm rounds."
 	ammo_type = /obj/item/ammo_casing/c9mm
 	caliber = "9mm"
+	fire_sound = 'sound/weapons/gun_colt.ogg'
 
 /obj/item/weapon/gun/energy/laser/dogan
 	desc = "This carbine works just as well as a normal carbine. Most of the time." //removed reference to Dogan, since only the merchant is likely to know who that is.
@@ -25,3 +26,4 @@
 /obj/item/weapon/gun/projectile/automatic/mini_uzi/usi
 	desc = "An uncommon machine pistol, sometimes refered to as an 'uzi' by the backwater spacers it is often associated with. This one looks especially run-down. Uses .45 rounds."
 	jam_chance = 20
+	fire_sound = 'sound/weapons/gun_colt2.ogg'

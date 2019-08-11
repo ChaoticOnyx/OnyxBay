@@ -10,6 +10,7 @@
 	requires_ntnet = 1
 	network_destination = "alarm monitoring network"
 	size = 5
+	category = PROG_ENG
 	var/has_alert = 0
 
 /datum/computer_file/program/alarm_monitor/process_tick()
@@ -44,7 +45,7 @@
 
 /datum/nano_module/alarm_monitor/all/New()
 	..()
-	alarm_handlers = alarm_manager.all_handlers
+	alarm_handlers = SSalarm.all_handlers
 
 /datum/nano_module/alarm_monitor/engineering/New()
 	..()

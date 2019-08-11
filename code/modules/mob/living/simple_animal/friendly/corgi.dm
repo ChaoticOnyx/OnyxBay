@@ -6,6 +6,7 @@
 	icon_state = "corgi"
 	icon_living = "corgi"
 	icon_dead = "corgi_dead"
+	item_state = "corgi"
 	speak = list("YAP", "Woof!", "Bark!", "AUUUUUU")
 	speak_emote = list("barks", "woofs")
 	emote_hear = list("barks", "woofs", "yaps","pants")
@@ -30,7 +31,7 @@
 	real_name = "Ian"	//Intended to hold the name without altering it.
 	gender = MALE
 	desc = "It's a corgi."
-	var/turns_since_scan = 0
+	turns_since_scan = 0
 	var/obj/movement_target
 	response_help  = "pets"
 	response_disarm = "bops"
@@ -133,6 +134,7 @@
 	icon_state = "puppy"
 	icon_living = "puppy"
 	icon_dead = "puppy_dead"
+	item_state = "puppy"
 
 //pupplies cannot wear anything.
 /mob/living/simple_animal/corgi/puppy/Topic(href, href_list)
@@ -150,10 +152,11 @@
 	icon_state = "lisa"
 	icon_living = "lisa"
 	icon_dead = "lisa_dead"
+	item_state = "lisa"
 	response_help  = "pets"
 	response_disarm = "bops"
 	response_harm   = "kicks"
-	var/turns_since_scan = 0
+	turns_since_scan = 0
 	var/puppies = 0
 
 //Lisa already has a cute bow!

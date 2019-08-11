@@ -7,6 +7,7 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 	filedesc = "Warrant Assistant"
 	extended_desc = "Official NTsec program for creation and handling of warrants."
 	size = 8
+	category = PROG_SEC
 	program_icon_state = "warrant"
 	program_key_state = "security_key"
 	program_menu_icon = "star"
@@ -120,7 +121,7 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 		. = 1
 		broadcast_security_hud_message("\A [activewarrant.fields["arrestsearch"]] warrant for <b>[activewarrant.fields["namewarrant"]]</b> has been [(activewarrant in GLOB.all_warrants) ? "edited" : "uploaded"].", nano_host())
 		GLOB.all_warrants |= activewarrant
-		
+
 		for(var/datum/computer_file/crew_record/person in GLOB.all_crew_records)
 			if(person.get_name() == activewarrant.fields["namewarrant"])
 				person.set_criminalStatus("Arrest")

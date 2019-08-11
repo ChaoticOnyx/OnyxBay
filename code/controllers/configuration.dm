@@ -149,6 +149,8 @@ var/list/gamemode_cache = list()
 	var/animal_delay = 0
 	var/maximum_mushrooms = 15 //After this amount alive, mushrooms will not boom boom
 
+	var/panic_server_name = "Chaotic Onyx: Nightly"
+	var/panic_address = "byond://15.188.4.47:2507" //Reconnect a player this linked server if this server isn't accepting new players
 
 	var/admin_legacy_system = 0	//Defines whether the server uses the legacy admin system with admins.txt or the SQL system. Config option in config.txt
 	var/ban_legacy_system = 0	//Defines whether the server uses the legacy banning system with the files in /data or the SQL system. Config option in config.txt
@@ -724,6 +726,14 @@ var/list/gamemode_cache = list()
 
 				if("panic_bunker")
 					config.panic_bunker = 1
+
+				if("panic_server_name")
+					if (value != "\[Put the name here\]")
+						panic_server_name = value
+
+				if("panic_server_address")
+					if(value != "byond://address:port")
+						panic_address = value
 
 				if("eams")
 					config.eams = 1

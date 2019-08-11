@@ -106,7 +106,7 @@
 				to_chat(user, "<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>")
 		else
 			to_chat(user, "<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>")
-	
+
 	//This is used to unlock other borg covers.
 /obj/item/weapon/card/robot //This is not a child of id cards, as to avoid dumb typechecks on computers.
 	name = "access code transmission device"
@@ -676,7 +676,7 @@
 	var/inuse = 0
 	var/list/datum/item_types = list()
 	var/datum/dispense_type/selected = null
-	var/activate_sound = 'sound/items/palaroid3.ogg'
+	var/activate_sound = 'sound/items/polaroid3.ogg'
 	var/recycling_time = 30
 
 	/datum/dispense_type
@@ -771,15 +771,15 @@
 					pipe_dir = 5
 				var/obj/item/pipe/O = new (get_turf(A), PD.pipe_type, pipe_dir) //apparently you need to call New() if you want icon and name change
 				O.update()
-				product = O 
+				product = O
 			else
 				var/type = selected.item_type
 				product = new type()
 				if (istype(product,/obj/item/organ))
 					var/obj/item/organ/O = product
 					O.robotize()
-					O.status |= ORGAN_CUT_AWAY 
-				else if (istype(product,/obj/structure/disposalconstruct)) 
+					O.status |= ORGAN_CUT_AWAY
+				else if (istype(product,/obj/structure/disposalconstruct))
 					var/datum/dispense_type/pipe/PD = selected
 					var/obj/structure/disposalconstruct/O = product
 					O.ptype = PD.pipe_type
@@ -917,7 +917,7 @@
 	item_types += new /datum/dispense_type/pipe("manifold", /obj/item/pipe, 34, 70, 150)
 	item_types += new /datum/dispense_type/pipe("4-way manifold", /obj/item/pipe, 36, 70, 150)
 	item_types += new /datum/dispense_type/pipe("pipe cap", /obj/item/pipe, 42, 50, 100)
-	
+
 	item_types += new /datum/dispense_type("pipe pressure meter", /obj/item/pipe_meter, 80, 250)
 	item_types += new /datum/dispense_type/pipe("vent pump", /obj/item/pipe, 7, 50, 100)
 	item_types += new /datum/dispense_type/pipe("scrubber pump", /obj/item/pipe, 11, 50, 100)

@@ -87,7 +87,7 @@
 
 	mutations.Add(MUTATION_HUSK)
 	for(var/obj/item/organ/external/E in organs)
-		E.disfigured = 1
+		E.status |= ORGAN_DISFIGURED
 	update_body(1)
 	return
 
@@ -107,6 +107,6 @@
 
 	mutations.Add(MUTATION_SKELETON)
 	for(var/obj/item/organ/external/E in organs)
-		E.disfigured = 1
+		E.status |= ORGAN_DISFIGURED
 	update_body(1)
 	return

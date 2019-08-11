@@ -6,6 +6,7 @@
 	program_key_state = "generic_key"
 	program_menu_icon = "mail-open"
 	size = 12
+	category = PROG_ADMIN
 	requires_ntnet = 1
 	available_on_ntnet = 1
 	nanomodule_path = /datum/nano_module/email_administration
