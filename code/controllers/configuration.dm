@@ -2,6 +2,7 @@ var/list/gamemode_cache = list()
 
 /datum/configuration
 	var/server_name = null				// server name (for world name / status)
+	var/server_id = null				// server name (for world name / status)
 	var/server_suffix = 0				// generate numeric suffix based on server port
 
 	var/log_ooc = 0						// log OOC channel
@@ -310,7 +311,7 @@ var/list/gamemode_cache = list()
 					config.log_access = 1
 
 				if ("sql_enabled")
-					config.sql_enabled = text2num(value)
+					config.sql_enabled = TRUE
 
 				if ("log_say")
 					config.log_say = 1
@@ -424,6 +425,9 @@ var/list/gamemode_cache = list()
 
 				if ("servername")
 					config.server_name = value
+
+				if ("serverid")
+					config.server_id = value
 
 				if ("serversuffix")
 					config.server_suffix = 1
@@ -884,7 +888,7 @@ var/list/gamemode_cache = list()
 			if ("feedback_password")
 				sqlfdbkpass = value
 			if ("enable_stat_tracking")
-				sqllogging = 1
+				sqllogging = TRUE
 			else
 				log_misc("Unknown setting in configuration: '[name]'")
 
