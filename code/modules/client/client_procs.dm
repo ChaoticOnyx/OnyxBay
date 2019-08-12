@@ -165,8 +165,14 @@
 
 	if(config.player_limit != 0)
 		if((GLOB.clients.len >= config.player_limit) && !(ckey in admin_datums))
-			alert(src,"This server is currently full and not accepting new connections.","Server Full","OK")
-			log_admin("[ckey] tried to join and was turned away due to the server being full (player_limit=[config.player_limit])")
+			if(config.panic_address && TopicData != "redirect")
+				alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
+				winset(src, null, "command=.options")
+				src << link("[config.panic_address]?redirect")
+			else
+				alert(src,"This server is currently full and not accepting new connections.","Server Full","OK")
+
+			log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
 			qdel(src)
 			return
 
@@ -188,14 +194,17 @@
 		GLOB.admins += src
 		holder.owner = src
 
-	else if(config.panic_bunker && get_player_age(ckey) < 0) //first connection
-		log_access("Failed Login: [key] - New account attempting to connect during panic bunker")
-		message_admins("<span class='adminnotice'>Failed Login: [key] - New account attempting to connect during panic bunker</span>")
-		to_chat(src, "Sorry but the server is currently not accepting connections from never before seen players.")
+	else if((config.panic_bunker != 0) && (get_player_age(ckey) < config.panic_bunker))
+		var/player_age = get_player_age(ckey)
 		if(config.panic_address && TopicData != "redirect")
-			to_chat(src, "<span class='notice'>Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].</span>")
+			log_access("Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]")
+			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]</span>")
+			to_chat(src, "<span class='notice'>Server is already full. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].</span>")
 			winset(src, null, "command=.options")
 			src << link("[config.panic_address]?redirect")
+		else
+			log_access("Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirecting is not configured.")
+			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - Redirecting is not configured.</span>")
 		qdel(src)
 		return
 
