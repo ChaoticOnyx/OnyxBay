@@ -1,10 +1,6 @@
 // THIS FILE IS AUTOMATICALLY CREATED BY tools/gen_globals.py
 /proc/readglobal(which)
 	switch(which)
-		if("all_warrants")
-			return GLOB.all_warrants;
-		if("all_crew_records")
-			return GLOB.all_crew_records;
 		if("ALL_ANTIGENS")
 			return global.ALL_ANTIGENS;
 		if("ANTAG_FREQS")
@@ -23,6 +19,8 @@
 			return global.DEPT_FREQS;
 		if("Debug2")
 			return global.Debug2;
+		if("EAMS_errorsCounter")
+			return global.EAMS_errorsCounter;
 		if("Failsafe")
 			return global.Failsafe;
 		if("GLOB")
@@ -333,6 +331,8 @@
 			return global.debug_verbs;
 		if("decls_repository")
 			return global.decls_repository;
+		if("default_body_build")
+			return global.default_body_build;
 		if("default_material_composition")
 			return global.default_material_composition;
 		if("default_mobloc")
@@ -357,6 +357,8 @@
 			return global.dna_activity_bounds;
 		if("dna_genes")
 			return global.dna_genes;
+		if("donators")
+			return global.donators;
 		if("doppler_arrays")
 			return global.doppler_arrays;
 		if("dreams")
@@ -507,6 +509,8 @@
 			return global.joblist;
 		if("join_motd")
 			return global.join_motd;
+		if("join_regular_announcement")
+			return global.join_regular_announcement;
 		if("landmarks_list")
 			return global.landmarks_list;
 		if("language_keys")
@@ -597,6 +601,8 @@
 			return global.meteors_threatening;
 		if("mil_branches")
 			return global.mil_branches;
+		if("minevendor_list")
+			return global.minevendor_list;
 		if("mining_floors")
 			return global.mining_floors;
 		if("mining_walls")
@@ -687,8 +693,6 @@
 			return global.plant_seed_sprites;
 		if("playable_species")
 			return global.playable_species;
-		if("point_source_descriptions")
-			return global.point_source_descriptions;
 		if("possible_cable_coil_colours")
 			return global.possible_cable_coil_colours;
 		if("possible_changeling_IDs")
@@ -723,6 +727,8 @@
 			return global.priv_station_access;
 		if("priv_syndicate_access")
 			return global.priv_syndicate_access;
+		if("prizes")
+			return global.prizes;
 		if("processScheduler")
 			return global.processScheduler;
 		if("prometheans")
@@ -809,8 +815,6 @@
 			return global.solars_list;
 		if("sortInstance")
 			return global.sortInstance;
-		//if("sound_player")
-		//	return global.sound_player;
 		if("sounds_cache")
 			return global.sounds_cache;
 		if("spacevines_spawned")
@@ -937,6 +941,12 @@
 			return global.total_lighting_sources;
 		if("total_unit_tests")
 			return global.total_unit_tests;
+		if("trait_categories")
+			return global.trait_categories;
+		if("trait_datums")
+			return global.trait_datums;
+		if("trait_type_to_ref")
+			return global.trait_type_to_ref;
 		if("transfer_controller")
 			return global.transfer_controller;
 		if("turbolift_controller")
@@ -973,6 +983,8 @@
 			return global.vote;
 		if("vsc")
 			return global.vsc;
+		if("watchlist")
+			return global.watchlist;
 		if("wax_recipes")
 			return global.wax_recipes;
 		if("weighted_mundaneevent_locations")
@@ -997,13 +1009,9 @@
 			return global.z_levels;
 		if("zone_blocked")
 			return global.zone_blocked;
-
+		
 /proc/writeglobal(which, newval)
 	switch(which)
-		if("all_warrants")
-			GLOB.all_warrants=newval;
-		if("all_crew_records")
-			GLOB.all_crew_records=newval;
 		if("ALL_ANTIGENS")
 			global.ALL_ANTIGENS=newval;
 		if("ANTAG_FREQS")
@@ -1022,6 +1030,8 @@
 			global.DEPT_FREQS=newval;
 		if("Debug2")
 			global.Debug2=newval;
+		if("EAMS_errorsCounter")
+			global.EAMS_errorsCounter=newval;
 		if("Failsafe")
 			global.Failsafe=newval;
 		if("GLOB")
@@ -1332,6 +1342,8 @@
 			global.debug_verbs=newval;
 		if("decls_repository")
 			global.decls_repository=newval;
+		if("default_body_build")
+			global.default_body_build=newval;
 		if("default_material_composition")
 			global.default_material_composition=newval;
 		if("default_mobloc")
@@ -1356,6 +1368,8 @@
 			global.dna_activity_bounds=newval;
 		if("dna_genes")
 			global.dna_genes=newval;
+		if("donators")
+			global.donators=newval;
 		if("doppler_arrays")
 			global.doppler_arrays=newval;
 		if("dreams")
@@ -1506,6 +1520,8 @@
 			global.joblist=newval;
 		if("join_motd")
 			global.join_motd=newval;
+		if("join_regular_announcement")
+			global.join_regular_announcement=newval;
 		if("landmarks_list")
 			global.landmarks_list=newval;
 		if("language_keys")
@@ -1596,6 +1612,8 @@
 			global.meteors_threatening=newval;
 		if("mil_branches")
 			global.mil_branches=newval;
+		if("minevendor_list")
+			global.minevendor_list=newval;
 		if("mining_floors")
 			global.mining_floors=newval;
 		if("mining_walls")
@@ -1686,8 +1704,6 @@
 			global.plant_seed_sprites=newval;
 		if("playable_species")
 			global.playable_species=newval;
-		if("point_source_descriptions")
-			global.point_source_descriptions=newval;
 		if("possible_cable_coil_colours")
 			global.possible_cable_coil_colours=newval;
 		if("possible_changeling_IDs")
@@ -1722,6 +1738,8 @@
 			global.priv_station_access=newval;
 		if("priv_syndicate_access")
 			global.priv_syndicate_access=newval;
+		if("prizes")
+			global.prizes=newval;
 		if("processScheduler")
 			global.processScheduler=newval;
 		if("prometheans")
@@ -1808,8 +1826,6 @@
 			global.solars_list=newval;
 		if("sortInstance")
 			global.sortInstance=newval;
-		//if("sound_player")
-		//	global.sound_player=newval;
 		if("sounds_cache")
 			global.sounds_cache=newval;
 		if("spacevines_spawned")
@@ -1936,6 +1952,12 @@
 			global.total_lighting_sources=newval;
 		if("total_unit_tests")
 			global.total_unit_tests=newval;
+		if("trait_categories")
+			global.trait_categories=newval;
+		if("trait_datums")
+			global.trait_datums=newval;
+		if("trait_type_to_ref")
+			global.trait_type_to_ref=newval;
 		if("transfer_controller")
 			global.transfer_controller=newval;
 		if("turbolift_controller")
@@ -1972,6 +1994,8 @@
 			global.vote=newval;
 		if("vsc")
 			global.vsc=newval;
+		if("watchlist")
+			global.watchlist=newval;
 		if("wax_recipes")
 			global.wax_recipes=newval;
 		if("weighted_mundaneevent_locations")
@@ -1996,10 +2020,8 @@
 			global.z_levels=newval;
 		if("zone_blocked")
 			global.zone_blocked=newval;
-
+		
 /var/list/_all_globals=list(
-	"all_warrants",
-	"all_crew_records",
 	"ALL_ANTIGENS",
 	"ANTAG_FREQS",
 	"BSACooldown",
@@ -2009,6 +2031,7 @@
 	"CMinutes",
 	"DEPT_FREQS",
 	"Debug2",
+	"EAMS_errorsCounter",
 	"Failsafe",
 	"GLOB",
 	"Holiday",
@@ -2037,8 +2060,8 @@
 	"SSobj",
 	"SSopen_space",
 	"SSprocessing",
-	"SSskybox",
 	"SSradiation",
+	"SSskybox",
 	"SSsun",
 	"SSsupply",
 	"SStimer",
@@ -2164,6 +2187,7 @@
 	"dbcon_old",
 	"debug_verbs",
 	"decls_repository",
+	"default_body_build",
 	"default_material_composition",
 	"default_mobloc",
 	"default_onmob_icons",
@@ -2176,6 +2200,7 @@
 	"diary",
 	"dna_activity_bounds",
 	"dna_genes",
+	"donators",
 	"doppler_arrays",
 	"dreams",
 	"dummy_lighting_corner",
@@ -2251,6 +2276,7 @@
 	"jobban_runonce",
 	"joblist",
 	"join_motd",
+	"join_regular_announcement",
 	"landmarks_list",
 	"language_keys",
 	"last_chew",
@@ -2296,6 +2322,7 @@
 	"meteors_normal",
 	"meteors_threatening",
 	"mil_branches",
+	"minevendor_list",
 	"mining_floors",
 	"mining_walls",
 	"minor_air_alarms",
@@ -2341,7 +2368,6 @@
 	"plant_controller",
 	"plant_seed_sprites",
 	"playable_species",
-	"point_source_descriptions",
 	"possible_cable_coil_colours",
 	"possible_changeling_IDs",
 	"poster_designs",
@@ -2359,6 +2385,7 @@
 	"priv_region_access",
 	"priv_station_access",
 	"priv_syndicate_access",
+	"prizes",
 	"processScheduler",
 	"prometheans",
 	"protected_objects",
@@ -2387,7 +2414,6 @@
 	"rune_list",
 	"runtime_diary",
 	"same_wires",
-	"secondary_mode",
 	"secret_force_mode",
 	"send_emergency_team",
 	"sent_spiders_to_station",
@@ -2403,7 +2429,6 @@
 	"solar_gen_rate",
 	"solars_list",
 	"sortInstance",
-	"sound_player",
 	"sounds_cache",
 	"spacevines_spawned",
 	"sparring_attack_cache",
@@ -2443,7 +2468,6 @@
 	"tank_gauge_cache",
 	"tape_roll_applications",
 	"telecomms_list",
-	"tertiary_mode",
 	"text_tag_icons",
 	"tg_admin_state",
 	"tg_always_state",
@@ -2468,6 +2492,9 @@
 	"total_lighting_overlays",
 	"total_lighting_sources",
 	"total_unit_tests",
+	"trait_categories",
+	"trait_datums",
+	"trait_type_to_ref",
 	"transfer_controller",
 	"turbolift_controller",
 	"turbolifts",
@@ -2486,13 +2513,13 @@
 	"visual_nets",
 	"vote",
 	"vsc",
+	"watchlist",
 	"wax_recipes",
 	"weighted_mundaneevent_locations",
 	"weighted_randomevent_locations",
 	"whitelist",
 	"whitelisted_species",
 	"wireColours",
-	"wizards",
 	"world_topic_spam_protect_time",
 	"world_uplinks",
 	"worths",
