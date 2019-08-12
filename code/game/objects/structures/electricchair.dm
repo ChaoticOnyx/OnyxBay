@@ -2,7 +2,7 @@
 	name = "electric chair"
 	desc = "Looks absolutely SHOCKING!"
 	icon_state = "echair0"
-	foldable = 0
+	foldable = FALSE
 	var/on = 0
 	var/obj/item/assembly/shock_kit/part = null
 	var/last_time = 1.0

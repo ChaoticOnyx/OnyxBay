@@ -8,7 +8,7 @@
 	buckle_lying = 0 //force people to sit up in chairs when buckled
 	buckle_pixel_shift = "x=0;y=0"
 	var/propelled = 0 // Check for fire-extinguisher-driven chairs
-	var/foldable = 1
+	var/foldable = TRUE
 
 /obj/structure/bed/chair/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
@@ -154,7 +154,7 @@
 			var/mob/living/occupant = unbuckle_mob()
 			var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
 
- 			occupant.apply_effect(4, STUN, blocked)
+			occupant.apply_effect(4, STUN, blocked)
 			occupant.apply_effect(4, WEAKEN, blocked)
 			occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
 			playsound(src.loc, 'sound/weapons/punch1.ogg', 50, 1, -1)
@@ -176,7 +176,7 @@
 	desc = "It's a chair. It looks comfy."
 	icon_state = "comfychair_preview"
 	base_icon = "comfychair"
-	foldable = 0
+	foldable = FALSE
 
 /obj/structure/bed/chair/comfy/brown/New(var/newloc,var/newmaterial)
 	..(newloc,"steel","leather")
@@ -244,7 +244,7 @@
 	anchored = 0
 	buckle_movable = 1
 	material_alteration = MATERIAL_ALTERATION_NONE
-	foldable = 0
+	foldable = FALSE
 
 /obj/structure/bed/chair/office/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack) || isWirecutter(W))
@@ -305,7 +305,7 @@
 	base_icon = "wooden_chair"
 	icon_state = "wooden_chair_preview"
 	material_alteration = MATERIAL_ALTERATION_NAME
-	foldable = 0
+	foldable = FALSE
 
 /obj/structure/bed/chair/wood/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack) || istype(W, /obj/item/weapon/wirecutters))
@@ -323,7 +323,7 @@
 	desc = "A strange chair, not from around here."
 	base_icon = "bogchair"
 	icon_state = "bogchair_preview"
-	foldable = 0
+	foldable = FALSE
 
 /obj/structure/bed/chair/shuttle
 	name = "shuttle chair"
@@ -331,7 +331,7 @@
 	base_icon = "shuttle_chair"
 	icon_state = "shuttle_chair_preview"
 	material_alteration = MATERIAL_ALTERATION_NONE
-	foldable = 0
+	foldable = FALSE
 
 /obj/structure/bed/chair/shuttle/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack) || istype(W, /obj/item/weapon/wirecutters))
@@ -348,12 +348,12 @@
 /obj/structure/bed/chair/shuttle/red/New(var/newloc,var/newmaterial)
 	..(newloc,"plastic","carpet")
 
- // Colorful chairs
+// Colorful chairs
 /obj/structure/bed/chair/comfy
 	desc = "It's a chair. It looks comfy."
 	icon_state = "comfychair_preview"
 	base_icon = "comfychair"
-	foldable = 0
+	foldable = FALSE
 
 /obj/structure/bed/chair/brown/New(var/newloc,var/newmaterial)
 	..(newloc,"steel","leather")
