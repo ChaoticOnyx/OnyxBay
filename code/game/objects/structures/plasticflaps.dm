@@ -1,4 +1,4 @@
-/obj/structure/plasticflaps //HOW DO YOU CALL THOSE THINGS ANYWAY
+/obj/structure/plasticflaps
 	name = "\improper plastic flaps"
 	desc = "Completely impassable - or are they?"
 	icon = 'icons/obj/stationobjs.dmi' //Change this.
@@ -20,7 +20,7 @@
 		return prob(60)
 
 	var/obj/structure/bed/B = A
-	if (istype(A, /obj/structure/bed) && B.buckled_mob)//if it's a bed/chair and someone is buckled, it will not pass
+	if (istype(A, /obj/structure/bed) && B.buckled_mob) //if it's a bed/chair and someone is buckled, it will not pass
 		return 0
 
 	if(istype(A, /obj/vehicle))	//no vehicles
