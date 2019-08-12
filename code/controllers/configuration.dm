@@ -722,10 +722,10 @@ var/list/gamemode_cache = list()
 					law_zero = value
 
 				if("aggressive_changelog")
-					config.aggressive_changelog = 1
+					config.aggressive_changelog = TRUE
 
 				if("panic_bunker")
-					config.panic_bunker = 1
+					config.panic_bunker = text2num(value)
 
 				if("panic_server_name")
 					if (value != "\[Put the name here\]")
