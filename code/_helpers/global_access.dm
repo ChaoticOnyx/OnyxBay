@@ -83,6 +83,8 @@
 			return global.SSsupply;
 		if("SStimer")
 			return global.SStimer;
+		if("SStrade")
+			return global.SStrade;
 		if("SSturf")
 			return global.SSturf;
 		if("SSvines")
@@ -1074,6 +1076,8 @@
 			global.SSsupply=newval;
 		if("SStimer")
 			global.SStimer=newval;
+		if("SStrade")
+			global.SStrade=newval;
 		if("SSturf")
 			global.SSturf=newval;
 		if("SSvines")
@@ -2023,6 +2027,7 @@
 	"SSsun",
 	"SSsupply",
 	"SStimer",
+	"SStrade",
 	"SSturf",
 	"SSvines",
 	"SSwireless",
