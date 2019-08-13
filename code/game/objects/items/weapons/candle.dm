@@ -9,11 +9,10 @@
 	mod_reach = 0.25
 	mod_handy = 0.25
 	light_color = "#e09d37"
-	var/wax = 2000
+	var/wax
 
 /obj/item/weapon/flame/candle/New()
 	wax = rand(27 MINUTES, 33 MINUTES) / SSobj.wait // Enough for 27-33 minutes. 30 minutes on average, adjusted for subsystem tickrate.
-
 	..()
 
 /obj/item/weapon/flame/candle/update_icon()
@@ -24,7 +23,6 @@
 		i = 2
 	else i = 3
 	icon_state = "candle[i][lit ? "_lit" : ""]"
-
 
 /obj/item/weapon/flame/candle/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
@@ -37,15 +35,12 @@
 		var/obj/item/weapon/flame/candle/other_candle = A
 		other_candle.light()
 
-/obj/item/weapon/flame/candle/proc/light(var/flavor_text = "<span class='notice'>\The [usr] lights the [name].</span>")
+/obj/item/weapon/flame/candle/proc/light(mob/user)
 	if(!src.lit)
-		src.lit = 1
-		//src.damtype = "fire"
-		for(var/mob/O in viewers(usr, null))
-			O.show_message(flavor_text, 1)
+		src.lit = TRUE
+		src.visible_message("<span class='notice'>\The [user] lights the [name].</span>")
 		set_light(CANDLE_LUM)
 		START_PROCESSING(SSobj, src)
-
 
 /obj/item/weapon/flame/candle/Process()
 	if(!lit)
