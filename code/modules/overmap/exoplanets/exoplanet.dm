@@ -39,18 +39,16 @@
 	possible_features.Cut()
 	for(var/T in feature_types)
 		var/datum/map_template/ruin/exoplanet/ruin = new T
-		possible_features[ruin.id] = ruin
+		possible_features += ruin
 	..()
 
 /obj/effect/overmap/sector/exoplanet/proc/build_level()
-	spawn()
-		generate_atmosphere()
-		generate_map()
-		generate_features()
-		for(var/i = 0 to 3)
-			generate_landing()
-		update_biome()
-		START_PROCESSING(SSobj, src)
+	generate_atmosphere()
+	generate_map()
+	generate_features()
+	generate_landing(4)		//try making 4 landmarks
+	update_biome()
+	START_PROCESSING(SSobj, src)
 
 //attempt at more consistent history generation for xenoarch finds.
 /obj/effect/overmap/sector/exoplanet/proc/get_engravings()

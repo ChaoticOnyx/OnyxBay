@@ -52,9 +52,10 @@
 		"precise" = 0
 		)
 
-/obj/item/device/floor_painter/afterattack(var/atom/A, var/mob/user, proximity, params)
+/obj/item/device/floor_painter/resolve_attackby(var/atom/A, var/mob/user, proximity, params)
 	if(!proximity)
 		return
+	add_fingerprint(user)
 
 	var/turf/simulated/floor/F = A
 	if(!istype(F))
@@ -111,6 +112,7 @@
 	if(decal_data["coloured"] && paint_colour)
 		painting_colour = paint_colour
 
+	playsound(get_turf(src), 'sound/effects/spray3.ogg', 30, 1, -6)
 	new painting_decal(F, painting_dir, painting_colour)
 
 /obj/item/device/floor_painter/attack_self(var/mob/user)
