@@ -348,7 +348,7 @@ be able to influence the host through various commands.
 		host.druggy = max(host.druggy, 50)
 		host.slurring = max(host.slurring, 10)
 
-		to_chat(usr, "<b>You stimulate [host.name]'s brain, injecting waves of endorphines and dopamine into the tissue. They should now forget all their worries, particularly relating to you, for around a minute.")
+		to_chat(usr, "<b>You stimulate [host.name]'s brain, injecting waves of endorphines and dopamine into the tissue. They should now forget all their worries, particularly relating to you, for around a minute.</b>")
 
 		to_chat(host, "\red You are feeling wonderful! Your head is numb and drowsy, and you can't help forgetting all the worries in the world.")
 
@@ -406,7 +406,7 @@ be able to influence the host through various commands.
 
 	src.switch_host(target)
 
-	to_chat(usr, "<b>You successfully jumped to [target].")
+	to_chat(usr, "<b>You successfully jumped to [target].</b>")
 	log_and_message_admins("[src.key] has jumped (meme) to [target]", target)
 
 // Jump to a distant target through a shout
@@ -443,7 +443,7 @@ be able to influence the host through various commands.
 
 	src.switch_host(target)
 
-	to_chat(usr, "<b>You successfully jumped to [target].")
+	to_chat(usr, "<b>You successfully jumped to [target].</b>")
 	log_and_message_admins("[src.key] has jumped (meme) to [target]", target)
 
 // Jump to an attuned mob for free
@@ -468,7 +468,7 @@ be able to influence the host through various commands.
 
 	src.switch_host(target)
 
-	to_chat(usr, "<b>You successfully jumped to [target].")
+	to_chat(usr, "<b>You successfully jumped to [target].</b>")
 
 	log_and_message_admins("[src.key] has jumped (meme) to [target]", target)
 
@@ -487,7 +487,7 @@ be able to influence the host through various commands.
 
 	src.indoctrinated.Add(host)
 
-	to_chat(usr, "<b>You successfully indoctrinated [host].")
+	to_chat(usr, "<b>You successfully indoctrinated [host].</b>")
 	to_chat(host, "\red Your head feels a bit roomier..")
 
 	log_and_message_admins("[src.key] has attuned [host]", host)
@@ -505,7 +505,7 @@ be able to influence the host through various commands.
 		return
 	if(!use_points(500)) return
 
-	to_chat(usr, "<b>You inject drugs into [host].")
+	to_chat(usr, "<b>You inject drugs into [host].</b>")
 	to_chat(host, "\red You feel your body strengthen and your pain subside..")
 	host.analgesic = 60
 	while(host.analgesic > 0)
