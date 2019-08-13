@@ -317,8 +317,6 @@
 			return global.crew_repository;
 		if("csrfz_check")
 			return global.csrfz_check;
-		if("currently_running_tests")
-			return global.currently_running_tests;
 		if("custom_event_msg")
 			return global.custom_event_msg;
 		if("custom_items")
@@ -767,6 +765,8 @@
 			return global.restricted_camera_networks;
 		if("revdata")
 			return global.revdata;
+		if("rkeys")
+			return global.rkeys;
 		if("robot_custom_icons")
 			return global.robot_custom_icons;
 		if("robot_hud_colours")
@@ -1328,8 +1328,6 @@
 			global.crew_repository=newval;
 		if("csrfz_check")
 			global.csrfz_check=newval;
-		if("currently_running_tests")
-			global.currently_running_tests=newval;
 		if("custom_event_msg")
 			global.custom_event_msg=newval;
 		if("custom_items")
@@ -1778,6 +1776,8 @@
 			global.restricted_camera_networks=newval;
 		if("revdata")
 			global.revdata=newval;
+		if("rkeys")
+			global.rkeys=newval;
 		if("robot_custom_icons")
 			global.robot_custom_icons=newval;
 		if("robot_hud_colours")
@@ -2180,7 +2180,6 @@
 	"created",
 	"crew_repository",
 	"csrfz_check",
-	"currently_running_tests",
 	"custom_event_msg",
 	"custom_items",
 	"damage_icon_parts",
@@ -2405,6 +2404,7 @@
 	"responsive_carriers",
 	"restricted_camera_networks",
 	"revdata",
+	"rkeys",
 	"robot_custom_icons",
 	"robot_hud_colours",
 	"robot_inventory",
