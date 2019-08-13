@@ -169,4 +169,28 @@ proc/RadioChat(mob/living/user, message, distortion_chance = 60, distortion_spee
 		new_message += newletter
 		lentext += 1
 	return new_message
+	
+proc/burr(phrase)	
+	phrase = rhtml_decode(phrase)
+	var/index = findtext(phrase,"ð")
+	while(index)
+		phrase = copytext(phrase,1,index) + pick("ë", "pë", "'ë", "p'ë") + copytext(phrase,index+1)
+		index = findtext(phrase, "ð")
+	index = findtext(phrase,"Ð")
+	while(index)
+		phrase = copytext(phrase,1,index) + pick("Ë", "Pë", "'Ë", "P'ë") + copytext(phrase,index+1)
+		index = findtext(phrase, "Ð")	
+	return phrase	
+
+proc/lisp(phrase)
+	phrase = rhtml_decode(phrase)
+	var/index = findtext(phrase,"ø")
+	while(index)
+		phrase = copytext(phrase,1,index) + "ô" + copytext(phrase,index+1)
+		index = findtext(phrase, "ø")
+	index = findtext(phrase,"Ø")
+	while(index)
+		phrase = copytext(phrase,1,index) + "Ô" + copytext(phrase,index+1)
+		index = findtext(phrase, "Ø")	
+	return phrase	
 
