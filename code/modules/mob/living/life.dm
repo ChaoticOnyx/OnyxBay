@@ -136,11 +136,11 @@
 	return burrieng
 
 /mob/living/proc/handle_lisping()
-	if(!burrieng)
-		for(var/datum/modifier/trait/burrieng/M)
-			if(!isnull(M.burrieng))
-				burrieng = TRUE
-	return burrieng
+	if(!lisping)
+		for(var/datum/modifier/trait/lisping/M)
+			if(!isnull(M.lisping))
+				lisping = TRUE
+	return lisping
 
 /mob/living/proc/handle_paralysed()
 	if(paralysis)
