@@ -69,6 +69,8 @@
 			return global.SSmachines;
 		if("SSmapping")
 			return global.SSmapping;
+		if("SSmisc_late")
+			return global.SSmisc_late;
 		if("SSmobs")
 			return global.SSmobs;
 		if("SSobj")
@@ -1080,6 +1082,8 @@
 			global.SSmachines=newval;
 		if("SSmapping")
 			global.SSmapping=newval;
+		if("SSmisc_late")
+			global.SSmisc_late=newval;
 		if("SSmobs")
 			global.SSmobs=newval;
 		if("SSobj")
@@ -2056,6 +2060,7 @@
 	"SSlighting",
 	"SSmachines",
 	"SSmapping",
+	"SSmisc_late",
 	"SSmobs",
 	"SSobj",
 	"SSopen_space",
