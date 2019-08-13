@@ -194,4 +194,24 @@ var/list/trait_categories = list() // The categories available for the trait men
 	for(var/trait in mind.traits)
 		var/datum/trait/T = trait_datums[trait]
 		if(istype(T))
-			T.apply_trait_post_spawn(src)					
+			T.apply_trait_post_spawn(src)
+			
+/datum/modifier/trait/stammering
+	name = "Stutterer"
+	desc = "Its a speech disorder in which the flow of speech is disrupted by involuntary repetitions and prolongations of sounds, syllables, words or phrases as well as involuntary silent pauses or blocks in which the person who stutters is unable to produce sounds."
+	stammering = 1
+	
+/datum/modifier/trait/burrieng
+	name = "Burry"
+	desc = "You have a speech impediment - you do not pronounce some sounds."
+	burrieng = 1
+
+/datum/modifier/trait/lisping
+	name = "Lisp"
+	desc = "A lisp is a speech impediment in which a person misarticulates sibilants."
+	lisping = 1
+
+/datum/modifier/trait/chingchong
+	name = "Ching chong"
+	desc = "You have a strong Asian accent, it is more difficult for others to understand you."
+	chingchong = 1					

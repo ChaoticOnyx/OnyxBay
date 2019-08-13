@@ -83,10 +83,6 @@
 	handle_silent()
 	handle_drugged()
 	handle_slurring()
-	handle_stammering()
-	handle_burrieng()
-	handle_lisping()
-	handle_chingchong()
 
 /mob/living/proc/handle_stunned()
 	if(stunned)
@@ -121,34 +117,6 @@
 	if(slurring)
 		slurring = max(slurring-1, 0)
 	return slurring
-
-/mob/living/proc/handle_stammering()
-	if(!stammering)
-		for(var/datum/modifier/trait/stammering/M in modifiers)
-			if(!isnull(M.stammering))
-				stammering = TRUE
-	return stammering
-
-/mob/living/proc/handle_burrieng()
-	if(!burrieng)
-		for(var/datum/modifier/trait/burrieng/M in modifiers)
-			if(!isnull(M.burrieng))
-				burrieng = TRUE
-	return burrieng
-
-/mob/living/proc/handle_lisping()
-	if(!lisping)
-		for(var/datum/modifier/trait/lisping/M in modifiers)
-			if(!isnull(M.lisping))
-				lisping = TRUE
-	return lisping
-
-/mob/living/proc/handle_chingchong()
-	if(!chingchong)
-		for(var/datum/modifier/trait/chingchong/M in modifiers)
-			if(!isnull(M.chingchong))
-				chingchong = TRUE
-	return chingchong
 
 /mob/living/proc/handle_paralysed()
 	if(paralysis)

@@ -267,8 +267,7 @@
 /datum/trait/modifier/mental/prometheanphobe
 	name = "Promethean-phobic"
 	desc = "Boilerplate racism for jellos goes here."
-	mutually_exclusive = list(/datum/trait/modifier/mental/xenophobe)	
-*/	
+	mutually_exclusive = list(/datum/trait/modifier/mental/xenophobe)
 	
 /datum/trait/modifier/physical/stammering
 	name = "Stutterer"
@@ -285,3 +284,4 @@
 /datum/trait/modifier/physical/chingchong
 	name = "Ching Chong"
 	modifier_type = /datum/modifier/trait/chingchong	
+*/
