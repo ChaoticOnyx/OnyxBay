@@ -97,45 +97,42 @@ proc/get_radio_key_from_channel(var/channel)
 	var/message = rhtml_decode(message_data[1])
 	var/verb = message_data[2]
 
-	. = 0
+	. = FALSE
 
 	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
 		message = "[ruppertext(message)]!!!"
 		verb = pick("yells","roars","hollers")
 		message_data[3] = 0
-		. = 1
+		. = TRUE
+		
 	if(slurring)
 		message = slur(message)
 		verb = pick("slobbers","slurs")
-		. = 1
+		. = TRUE
 
 	if(stuttering)
 		message = stutter(message)
 		verb = pick("stammers","stutters")
-		. = 1
+		. = TRUE
 		
-	for(var/datum/modifier/M in modifiers)
-		if(!isnull(M.stammering))
-			message = NewStutter(message)
-			verb = pick("stammers","stutters")
-			. = 1
+	if(stammering)
+		message = NewStutter(message)
+		verb = pick("stammers","stutters")
+		. = TRUE
 
-	for(var/datum/modifier/M in modifiers)
-		if(!isnull(M.burrieng))
-			message = burr(message)
-			verb = pick("burrs","croups")
-			. = 1
+	if(burrieng)
+		message = burr(message)
+		verb = pick("burrs","croups")
+		. = TRUE
 
-	for(var/datum/modifier/M in modifiers)
-		if(!isnull(M.lisping))
-			message = lisp(message)
-			verb = pick("lisps","croups")
-			. = 1
+	if(lisping)
+		message = lisp(message)
+		verb = pick("lisps","croups")
+		. = TRUE
 
-	for(var/datum/modifier/M in modifiers)
-		if(!isnull(M.chingchong))
-			message = chong(message)
-			. = 1			
+	if(chingchong)
+		message = chong(message)
+		. = TRUE			
 
 	message_data[1] = russian_to_cp1251(message)
 	message_data[2] = verb
