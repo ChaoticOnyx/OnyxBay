@@ -9,7 +9,7 @@
 	name = OUTFIT_JOB_NAME("Bartender")
 	uniform = /obj/item/clothing/under/rank/bartender
 	id_type = /obj/item/weapon/card/id/civilian/bartender
-	pda_type = /obj/item/device/pda/bar
+	pda_type = /obj/item/modular_computer/pda
 	r_pocket = /obj/item/weapon/reagent_containers/food/snacks/monkeycube/punpuncube
 
 /decl/hierarchy/outfit/job/service/chef
@@ -18,7 +18,7 @@
 	suit = /obj/item/clothing/suit/chef
 	head = /obj/item/clothing/head/chefhat
 	id_type = /obj/item/weapon/card/id/civilian/chef
-	pda_type = /obj/item/device/pda/chef
+	pda_type = /obj/item/modular_computer/pda
 
 /decl/hierarchy/outfit/job/service/gardener
 	name = OUTFIT_JOB_NAME("Gardener")
@@ -27,7 +27,7 @@
 	gloves = /obj/item/clothing/gloves/thick/botany
 	r_pocket = /obj/item/device/analyzer/plant_analyzer
 	id_type = /obj/item/weapon/card/id/civilian/botanist
-	pda_type = /obj/item/device/pda/botanist
+	pda_type = /obj/item/modular_computer/pda
 
 /decl/hierarchy/outfit/job/service/gardener/New()
 	..()
@@ -39,13 +39,13 @@
 	name = OUTFIT_JOB_NAME("Janitor")
 	uniform = /obj/item/clothing/under/rank/janitor
 	id_type = /obj/item/weapon/card/id/civilian/janitor
-	pda_type = /obj/item/device/pda/janitor
+	pda_type = /obj/item/modular_computer/pda
 
 /decl/hierarchy/outfit/job/librarian
 	name = OUTFIT_JOB_NAME("Librarian")
 	uniform = /obj/item/clothing/under/suit_jacket/red
 	id_type = /obj/item/weapon/card/id/civilian/librarian
-	pda_type = /obj/item/device/pda/librarian
+	pda_type = /obj/item/modular_computer/pda
 
 /decl/hierarchy/outfit/job/internal_affairs_agent
 	name = OUTFIT_JOB_NAME("Internal affairs agent")
@@ -56,28 +56,28 @@
 	glasses = /obj/item/clothing/glasses/sunglasses/big
 	l_hand = /obj/item/weapon/storage/briefcase
 	id_type = /obj/item/weapon/card/id/civilian/internal_affairs_agent
-	pda_type = /obj/item/device/pda/lawyer
+	pda_type = /obj/item/modular_computer/pda/heads/paperpusher
 
 /decl/hierarchy/outfit/job/chaplain
 	name = OUTFIT_JOB_NAME("Chaplain")
 	uniform = /obj/item/clothing/under/rank/chaplain
 	l_hand = /obj/item/weapon/storage/bible
 	id_type = /obj/item/weapon/card/id/civilian/chaplain
-	pda_type = /obj/item/device/pda/chaplain
+	pda_type = /obj/item/modular_computer/pda/medical
 
 /decl/hierarchy/outfit/job/merchant
 	name = OUTFIT_JOB_NAME("Merchant")
 	uniform = /obj/item/clothing/under/color/black
 	l_ear = null
 	shoes = /obj/item/clothing/shoes/black
-	pda_type = /obj/item/device/pda
+	pda_type = /obj/item/modular_computer/pda
 	id_type = /obj/item/weapon/card/id/merchant
 
 /decl/hierarchy/outfit/job/clown
 	name = OUTFIT_JOB_NAME("Clown")
 	uniform = /obj/item/clothing/under/rank/clown
 	id_type = /obj/item/weapon/card/id/civilian/clown
-	pda_type = /obj/item/device/pda/clown
+	pda_type = /obj/item/modular_computer/pda/clown
 	shoes = /obj/item/clothing/shoes/clown_shoes
 	mask = /obj/item/clothing/mask/gas/clown_hat
 	r_pocket = /obj/item/weapon/pen/crayon/rainbow
@@ -95,7 +95,7 @@
 	head = /obj/item/clothing/head/beret
 	uniform = /obj/item/clothing/under/mime
 	id_type = /obj/item/weapon/card/id/civilian/mime
-	pda_type = /obj/item/device/pda/mime
+	pda_type = /obj/item/modular_computer/pda/mime
 	shoes = /obj/item/clothing/shoes/mime
 	mask = /obj/item/clothing/mask/gas/mime
 	r_pocket = /obj/item/weapon/pen/crayon/mime

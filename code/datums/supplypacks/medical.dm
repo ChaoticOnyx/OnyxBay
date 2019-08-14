@@ -99,7 +99,6 @@
 					/obj/item/clothing/suit/storage/toggle/labcoat/cmoalt,
 					/obj/item/clothing/mask/surgical,
 					/obj/item/clothing/shoes/white,
-					/obj/item/weapon/cartridge/cmo,
 					/obj/item/clothing/gloves/latex,
 					/obj/item/device/healthanalyzer,
 					/obj/item/device/flashlight/pen,
@@ -120,7 +119,6 @@
 					/obj/item/clothing/mask/surgical,
 					/obj/item/weapon/storage/firstaid/adv,
 					/obj/item/clothing/shoes/white,
-					/obj/item/weapon/cartridge/medical,
 					/obj/item/clothing/gloves/latex,
 					/obj/item/device/healthanalyzer,
 					/obj/item/device/flashlight/pen,
@@ -140,7 +138,6 @@
 					/obj/item/clothing/suit/storage/toggle/labcoat/chemist,
 					/obj/item/clothing/mask/surgical,
 					/obj/item/clothing/shoes/white,
-					/obj/item/weapon/cartridge/chemistry,
 					/obj/item/clothing/gloves/latex,
 					/obj/item/weapon/reagent_containers/dropper,
 					/obj/item/device/healthanalyzer,
@@ -168,7 +165,6 @@
 					/obj/item/clothing/shoes/jackboots,
 					/obj/item/clothing/gloves/latex,
 					/obj/item/device/healthanalyzer,
-					/obj/item/weapon/cartridge/medical,
 					/obj/item/device/flashlight/pen,
 					/obj/item/weapon/reagent_containers/syringe,
 					/obj/item/clothing/accessory/storage/white_vest)
@@ -187,8 +183,7 @@
 					/obj/item/clothing/shoes/white,
 					/obj/item/weapon/clipboard,
 					/obj/item/weapon/folder/white,
-					/obj/item/weapon/pen,
-					/obj/item/weapon/cartridge/medical)
+					/obj/item/weapon/pen)
 	cost = 15
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Psychiatrist equipment"

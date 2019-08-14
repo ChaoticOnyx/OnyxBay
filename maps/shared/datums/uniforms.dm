@@ -4,7 +4,7 @@
 	uniform = /obj/item/clothing/under/rank/magistrate
 	shoes = /obj/item/clothing/shoes/dress
 	id_type = /obj/item/weapon/card/id/dreyfus/gold
-	pda_type = /obj/item/device/pda/captain
+	pda_type = /obj/item/modular_computer/pda/captain
 	gloves = /obj/item/clothing/gloves/white
 	head = /obj/item/clothing/head/crown//FIT FOR A FUCKING KING
 	suit = /obj/item/clothing/suit/robes
@@ -17,7 +17,7 @@
 	shoes = /obj/item/clothing/shoes/dress
 	l_hand = /obj/item/weapon/storage/briefcase
 	id_type = /obj/item/weapon/card/id/dreyfus/hop
-	pda_type = /obj/item/device/pda/heads/hop
+	pda_type = /obj/item/modular_computer/pda/heads/hop
 
 /decl/hierarchy/outfit/job/dreyfus/employe
 	name = OUTFIT_JOB_NAME("Employe Administratif")
@@ -26,7 +26,7 @@
 	shoes = /obj/item/clothing/shoes/black
 	l_hand = /obj/item/weapon/storage/briefcase
 	id_type = /obj/item/weapon/card/id/dreyfus/civilian/employe
-	pda_type = /obj/item/device/pda/lawyer
+	pda_type = /obj/item/modular_computer/pda/lawyer
 
 /decl/hierarchy/outfit/job/dreyfus/inge
 	hierarchy_type = /decl/hierarchy/outfit/job/engineering
@@ -46,13 +46,13 @@
 	uniform = /obj/item/clothing/under/hazard
 	r_pocket = /obj/item/device/t_scanner
 	id_type = /obj/item/weapon/card/id/engineering
-	pda_type = /obj/item/device/pda/engineering
+	pda_type = /obj/item/modular_computer/pda/engineering
 
 /decl/hierarchy/outfit/job/dreyfus/ouvrier
 	name = OUTFIT_JOB_NAME("Ouvrier")
 	uniform = /obj/item/clothing/under/overalls
 	id_type = /obj/item/weapon/card/id/dreyfus/cargo/ouvrier
-	pda_type = /obj/item/device/pda/cargo
+	pda_type = /obj/item/modular_computer/pda/cargo
 	l_ear = /obj/item/device/radio/headset/headset_cargo
 
 /decl/hierarchy/outfit/job/science/superviseur
@@ -63,7 +63,7 @@
 	shoes = /obj/item/clothing/shoes/brown
 	l_hand = /obj/item/weapon/clipboard
 	id_type = /obj/item/weapon/card/id/science/head
-	pda_type = /obj/item/device/pda/heads/rd
+	pda_type = /obj/item/modular_computer/pda/heads/rd
 
 /decl/hierarchy/outfit/job/security/peacekeeper
 	name = OUTFIT_JOB_NAME("Peacekeeper")
@@ -74,7 +74,7 @@
 	belt = /obj/item/weapon/melee/classic_baton//So they at least start off with some kind of weapon to defend themselves.
 	r_pocket = /obj/item/weapon/handcuffs
 	id_type = /obj/item/weapon/card/id/dreyfus/sec
-	pda_type = /obj/item/device/pda/security
+	pda_type = /obj/item/modular_computer/pda/security
 	pda_slot = slot_l_store //So they don't lose their PDA.
 
 /decl/hierarchy/outfit/job/security/head_peacekeeper
@@ -84,7 +84,7 @@
 	shoes = /obj/item/clothing/shoes/jackboots
 	suit = /obj/item/clothing/suit/armor/hos//He doesn't have a locker anymore.
 	id_type = /obj/item/weapon/card/id/dreyfus/hos
-	pda_type = /obj/item/device/pda/heads/hos
+	pda_type = /obj/item/modular_computer/pda/heads/hos
 
 /decl/hierarchy/outfit/job/cargo_kid
 	name = OUTFIT_JOB_NAME("Cargo Kid")
@@ -121,7 +121,7 @@
 	suit = /obj/item/clothing/suit/storage/vest/arbiter
 	gloves = /obj/item/clothing/gloves/arbiter
 	id_type = /obj/item/weapon/card/id/arbiter
-	pda_type = /obj/item/device/pda/lawyer
+	pda_type = /obj/item/modular_computer/pda/lawyer
 	belt = /obj/item/weapon/melee/baton/loaded//So they at least start off with some kind of weapon to defend themselves.
 	pda_slot = slot_l_store //So they don't lose their PDA.
 
@@ -136,7 +136,7 @@
 	suit = /obj/item/clothing/suit/storage/vest/cowl
 	gloves = /obj/item/clothing/gloves/arbiter
 	id_type = /obj/item/weapon/card/id/arbiter
-	pda_type = /obj/item/device/pda/lawyer
+	pda_type = /obj/item/modular_computer/pda/lawyer
 
 /decl/hierarchy/outfit/job/medical/doctor/undertaker
 	name = OUTFIT_JOB_NAME("Undertaker")

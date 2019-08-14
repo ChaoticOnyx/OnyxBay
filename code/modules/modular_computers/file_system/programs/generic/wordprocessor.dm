@@ -14,6 +14,7 @@
 	var/loaded_data
 	var/error
 	var/is_edited
+	usage_flags = PROGRAM_ALL
 
 /datum/computer_file/program/wordprocessor/proc/open_file(var/filename)
 	var/datum/computer_file/data/F = get_file(filename)

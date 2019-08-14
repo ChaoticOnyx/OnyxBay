@@ -486,7 +486,7 @@
 "jz" = (/obj/machinery/atmospherics/pipe/simple/hidden/black{icon_state = "intact"; dir = 4},/turf/simulated/wall,/area/ship/scrap/maintenance/power)
 "jA" = (/obj/machinery/atmospherics/pipe/simple/hidden/black{icon_state = "intact"; dir = 10},/turf/simulated/wall,/area/ship/scrap/maintenance/power)
 "jB" = (/obj/item/stack/rods,/turf/space,/area/space)
-"jC" = (/obj/structure/table/standard,/obj/item/device/multitool{pixel_x = 5},/obj/item/weapon/cartridge/atmos,/obj/item/weapon/cartridge/atmos,/obj/item/device/pipe_painter,/obj/item/clamp,/turf/simulated/floor/usedup,/area/ship/scrap/maintenance/atmos)
+"jC" = (/obj/structure/table/standard,/obj/item/device/multitool{pixel_x = 5},/obj/item/device/pipe_painter,/obj/item/clamp,/turf/simulated/floor/usedup,/area/ship/scrap/maintenance/atmos)
 "jD" = (/obj/effect/floor_decal/corner/blue,/obj/effect/floor_decal/corner/yellow{dir = 8},/obj/machinery/space_heater,/turf/simulated/floor/tiled/airless,/area/ship/scrap/maintenance/atmos)
 "jE" = (/obj/machinery/pipedispenser,/obj/effect/floor_decal/corner/yellow{icon_state = "corner_white"; dir = 4},/obj/effect/floor_decal/corner/blue,/obj/effect/floor_decal/corner/blue,/obj/effect/floor_decal/corner/yellow{dir = 8},/turf/simulated/floor/tiled/airless,/area/ship/scrap/maintenance/atmos)
 "jF" = (/turf/simulated/floor/airless,/area/ship/scrap/maintenance/engine/aft)

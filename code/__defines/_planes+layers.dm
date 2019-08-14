@@ -230,7 +230,7 @@ What is the naming convention for planes or layers?
 /obj/screen/plane_master
 	appearance_flags = PLANE_MASTER
 	screen_loc = "CENTER,CENTER"
-	globalscreen = 1
+	globalscreen = TRUE
 
 /obj/screen/plane_master/ghost_master
 	plane = OBSERVER_PLANE

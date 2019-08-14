@@ -60,8 +60,6 @@
 
 	var/obj/item/device/mmi/mmi = null
 
-	var/obj/item/device/pda/ai/rbPDA = null
-
 	var/obj/item/weapon/stock_parts/matter_bin/storage = null
 
 	var/opened = 0
@@ -206,12 +204,6 @@
 		return amount
 	return 0
 
-// setup the PDA and its name
-/mob/living/silicon/robot/proc/setup_PDA()
-	if (!rbPDA)
-		rbPDA = new/obj/item/device/pda/ai(src)
-	rbPDA.set_name_and_job(custom_name,"[modtype] [braintype]")
-
 //If there's an MMI in the robot, have it ejected when the mob goes away. --NEO
 //Improved /N
 /mob/living/silicon/robot/Destroy()
@@ -270,7 +262,7 @@
 		return
 	if(!(modtype in GLOB.robot_module_types))
 		return
-		
+
 	var/module_type = robot_modules[modtype]
 	new module_type(src)
 	GLOB.robot_module_types.Remove(modtype)
@@ -281,7 +273,7 @@
 
 	if(module)
 		notify_ai(ROBOT_NOTIFICATION_NEW_MODULE, module.name)
-	
+
 
 /mob/living/silicon/robot/proc/updatename(var/prefix as text)
 	if(prefix)
@@ -306,9 +298,6 @@
 	name = real_name
 	if(mind)
 		mind.name = changed_name
-
-	// if we've changed our name, we also need to update the display name for our PDA
-	setup_PDA()
 
 	//We also need to update name of internal camera.
 	if (camera)
@@ -659,7 +648,7 @@
 			silicon_radio.attackby(W,user)//GTFO, you have your own procs
 		else
 			to_chat(user, "Unable to locate a radio.")
-	else if (istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda) || istype(W, /obj/item/weapon/card/robot))			// trying to unlock the interface with an ID card
+	else if (istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/modular_computer) || istype(W, /obj/item/weapon/card/robot))			// trying to unlock the interface with an ID card
 		if(emagged)//still allow them to open the cover
 			to_chat(user, "The interface seems slightly damaged")
 		if(opened)

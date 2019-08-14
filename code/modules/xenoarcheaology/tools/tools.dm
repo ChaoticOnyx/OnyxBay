@@ -110,7 +110,7 @@
 	name = "depth analysis scanner"
 	desc = "Used to check spatial depth and density of rock outcroppings."
 	icon = 'icons/obj/pda.dmi'
-	icon_state = "crap"
+	icon_state = "depthscanner"
 	item_state = "analyzer"
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2, TECH_BLUESPACE = 2)
 	matter = list(DEFAULT_WALL_MATERIAL = 1000,"glass" = 1000)

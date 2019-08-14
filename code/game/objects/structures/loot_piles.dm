@@ -177,7 +177,7 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/weapon/caution/cone,
 		/obj/item/weapon/card/emag_broken,
 		/obj/item/device/camera,
-		/obj/item/device/pda,
+		/obj/item/modular_computer/pda,
 		/obj/item/device/radio/headset,
 		/obj/item/device/paicard
 	)
@@ -269,7 +269,6 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/weapon/storage/box/blanks,
 		/obj/item/weapon/storage/box/smokes,
 		/obj/item/weapon/storage/box/handcuffs,
-		/obj/item/weapon/storage/box/seccarts
 	)
 
 	rare_loot = list(
@@ -318,7 +317,6 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/weapon/circuitboard/message_monitor,
 		/obj/item/weapon/circuitboard/rcon_console,
 		/obj/item/weapon/smes_coil,
-		/obj/item/weapon/cartridge/engineering,
 		/obj/item/device/analyzer,
 		/obj/item/device/healthanalyzer,
 		/obj/item/device/robotanalyzer,
@@ -353,7 +351,6 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/weapon/aiModule/reset,
 		/obj/item/weapon/smes_coil/super_capacity,
 		/obj/item/weapon/smes_coil/super_io,
-		/obj/item/weapon/cartridge/captain,
 		/obj/item/device/tvcamera,
 		/obj/item/borg/upgrade/jetpack,
 		/obj/item/borg/upgrade/vtec,
