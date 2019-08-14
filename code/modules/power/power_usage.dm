@@ -15,13 +15,18 @@ This is /obj/machinery level code to properly manage power usage from the area.
 	if(!src.loc)
 		return 0
 
-	if(!check_area) // make sure it's in an area
-		check_area = src.loc.loc
-	if(!check_area || !isarea(check_area)) // if not, then not powered
-		return 0
+	//Don't do this. It allows machines that set use_power to 0 when off (many machines) to
+	//be turned on again and used after a power failure because they never gain the NOPOWER flag.
+	//if(!use_power)
+	//	return 1
+
+	if(!check_area)
+		check_area = src.loc.loc		// make sure it's in an area
+	if(!check_area || !isarea(check_area))
+		return 0					// if not, then not powered
 	if(chan == -1)
 		chan = power_channel
-	return check_area.powered(chan)	// return power status of the area
+	return check_area.powered(chan)			// return power status of the area
 
 // called whenever the power settings of the containing area change
 // by default, check equipment channel & set flag can override if needed
@@ -36,7 +41,7 @@ This is /obj/machinery level code to properly manage power usage from the area.
 
 	. = (stat != oldstat)
 	if(.)
-		update_icon()
+		queue_icon_update()
 
 /obj/machinery/proc/get_power_usage()
 	switch(use_power)
@@ -60,6 +65,7 @@ This is /obj/machinery level code to properly manage power usage from the area.
 /obj/machinery/Initialize()
 	REPORT_POWER_CONSUMPTION_CHANGE(0, get_power_usage())
 	GLOB.moved_event.register(src, src, .proc/update_power_on_move)
+	power_init_complete = TRUE
 	. = ..()
 
 // Or in Destroy at all, but especially after the ..().
@@ -82,6 +88,9 @@ This is /obj/machinery level code to properly manage power usage from the area.
 
 // The three procs below are the only allowed ways of modifying the corresponding variables.
 /obj/machinery/proc/update_use_power(new_use_power)
+	if(!power_init_complete)
+		use_power = new_use_power
+		return // We'll be retallying anyway.
 	if(use_power == new_use_power)
 		return
 	var/old_power = get_power_usage()
@@ -90,6 +99,9 @@ This is /obj/machinery level code to properly manage power usage from the area.
 	REPORT_POWER_CONSUMPTION_CHANGE(old_power, new_power)
 
 /obj/machinery/proc/update_power_channel(new_channel)
+	if(!power_init_complete)
+		power_channel = new_channel
+		return
 	var/old_channel = power_channel
 	if(old_channel == old_channel)
 		return
@@ -109,7 +121,7 @@ This is /obj/machinery level code to properly manage power usage from the area.
 			active_power_usage = new_power_consumption
 		else
 			return
-	if(use_power_mode == use_power)
+	if(power_init_complete && (use_power_mode == use_power))
 		REPORT_POWER_CONSUMPTION_CHANGE(old_power, new_power_consumption)
 
 #undef REPORT_POWER_CONSUMPTION_CHANGE

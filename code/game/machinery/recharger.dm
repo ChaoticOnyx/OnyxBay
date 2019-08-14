@@ -133,7 +133,6 @@ obj/machinery/recharger/Process()
 			else
 				icon_state = icon_state_charged
 				update_use_power(POWER_USE_IDLE)
-			return
 
 obj/machinery/recharger/emp_act(severity)
 	if(stat & (NOPOWER|BROKEN) || !anchored)

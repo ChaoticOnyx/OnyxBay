@@ -88,9 +88,10 @@
 	playsound(src.loc, material.dooropen_noise, 100, 1)
 	..()
 
-/obj/machinery/door/unpowered/simple/set_broken()
+/obj/machinery/door/unpowered/simple/set_broken(new_state)
 	..()
-	deconstruct(null)
+	if(new_state)
+		deconstruct(null)
 
 /obj/machinery/door/unpowered/simple/deconstruct(mob/user, moved = FALSE)
 	material.place_dismantled_product(get_turf(src))
@@ -106,10 +107,10 @@
 /obj/machinery/door/unpowered/simple/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			set_broken()
+			set_broken(TRUE)
 		if(2.0)
 			if(prob(25))
-				set_broken()
+				set_broken(TRUE)
 			else
 				take_damage(300)
 		if(3.0)

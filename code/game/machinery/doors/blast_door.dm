@@ -173,9 +173,7 @@
 // Description: Fully repairs the blast door.
 /obj/machinery/door/blast/proc/repair()
 	health = maxhealth
-	if(stat & BROKEN)
-		stat &= ~BROKEN
-
+	set_broken(FALSE)
 
 /obj/machinery/door/blast/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(air_group) return 1
