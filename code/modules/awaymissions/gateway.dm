@@ -127,8 +127,6 @@ obj/machinery/gateway/centerstation/Process()
 			M.loc = dest.loc
 			M.set_dir(SOUTH)
 			use_power_oneoff(5000)
-		return
-
 
 /obj/machinery/gateway/centerstation/attackby(obj/item/device/W as obj, mob/user as mob)
 	if(isMultitool(W))

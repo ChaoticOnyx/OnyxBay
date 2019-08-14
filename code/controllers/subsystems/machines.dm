@@ -167,16 +167,6 @@ datum/controller/subsystem/machines/proc/setup_atmos_machinery(list/machines)
 		if(MC_TICK_CHECK)
 			return
 
-	/*while(current_run.len)
-		var/obj/machinery/M = current_run[current_run.len]
-		current_run.len--
-		if(istype(M) && !QDELETED(M) && !(M.Process(wait) == PROCESS_KILL))
-			if(M.use_power)
-				M.auto_use_power()
-		else
-			machinery.Remove(M)
-			M.is_processing = null*/
-
 /datum/controller/subsystem/machines/proc/process_powernets(resumed = 0)
 	if (!resumed)
 		src.current_run = powernets.Copy()

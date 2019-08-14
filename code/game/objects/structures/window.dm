@@ -563,7 +563,7 @@
 	use_power_oneoff(5)
 
 	active = !active
-	update_icon()
+	queue_icon_update()
 
 	for(var/obj/structure/window/reinforced/polarized/W in range(src,range))
 		if (W.id == src.id || !W.id)

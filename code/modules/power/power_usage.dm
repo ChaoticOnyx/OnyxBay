@@ -15,13 +15,18 @@ This is /obj/machinery level code to properly manage power usage from the area.
 	if(!src.loc)
 		return 0
 
-	if(!check_area) // make sure it's in an area
-		check_area = src.loc.loc
-	if(!check_area || !isarea(check_area)) // if not, then not powered
-		return 0
+	//Don't do this. It allows machines that set use_power to 0 when off (many machines) to
+	//be turned on again and used after a power failure because they never gain the NOPOWER flag.
+	//if(!use_power)
+	//	return 1
+
+	if(!check_area)
+		check_area = src.loc.loc		// make sure it's in an area
+	if(!check_area || !isarea(check_area))
+		return 0					// if not, then not powered
 	if(chan == -1)
 		chan = power_channel
-	return check_area.powered(chan)	// return power status of the area
+	return check_area.powered(chan)			// return power status of the area
 
 // called whenever the power settings of the containing area change
 // by default, check equipment channel & set flag can override if needed
@@ -36,7 +41,7 @@ This is /obj/machinery level code to properly manage power usage from the area.
 
 	. = (stat != oldstat)
 	if(.)
-		update_icon()
+		queue_icon_update()
 
 /obj/machinery/proc/get_power_usage()
 	switch(use_power)

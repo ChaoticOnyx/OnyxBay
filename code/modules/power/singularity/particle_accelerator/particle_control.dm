@@ -20,10 +20,10 @@
 	var/parts = null
 	var/datum/wires/particle_acc/control_box/wires = null
 
-/obj/machinery/particle_accelerator/control_box/New()
+/obj/machinery/particle_accelerator/control_box/Initialize()
+	. = ..()
 	wires = new(src)
 	connected_parts = list()
-	..()
 	change_power_consumption(initial(active_power_usage) * (strength + 1), POWER_USE_ACTIVE)
 
 /obj/machinery/particle_accelerator/control_box/Destroy()

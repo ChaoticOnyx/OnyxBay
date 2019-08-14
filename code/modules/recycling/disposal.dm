@@ -440,7 +440,7 @@
 // called when area power changes
 /obj/machinery/disposal/power_change()
 	..()	// do default setting/reset of stat NOPOWER bit
-	update_icon()	// update icon
+	queue_icon_update()	// update icon
 	return
 
 

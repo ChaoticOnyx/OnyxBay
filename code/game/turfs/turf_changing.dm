@@ -54,6 +54,8 @@
 		A.forceMove(null)
 
 	var/turf/simulated/W = new N( locate(src.x, src.y, src.z) )
+	for(var/atom/movable/A in old_contents)
+		A.forceMove(W)
 
 	for(var/atom/movable/A in old_contents)
 		A.forceMove(W)

@@ -281,7 +281,6 @@
 		pump_direction = 1
 
 	if(signal.data["power"] != null)
-		//use_power = text2num(signal.data["power"])
 		update_use_power(sanitize_integer(text2num(signal.data["power"]), POWER_USE_OFF, POWER_USE_ACTIVE, use_power))
 
 	if(signal.data["power_toggle"] != null)

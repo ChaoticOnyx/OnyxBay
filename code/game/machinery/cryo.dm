@@ -329,7 +329,6 @@
 	occupant = M
 	current_heat_capacity = HEAT_CAPACITY_HUMAN
 	update_use_power(POWER_USE_ACTIVE)
-//	M.metabslow = 1
 	add_fingerprint(usr)
 	update_icon()
 	return 1
