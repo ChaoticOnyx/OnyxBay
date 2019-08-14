@@ -78,13 +78,10 @@ var/list/solars_list = list()
 		src.healthcheck()
 	..()
 
-
 /obj/machinery/power/solar/proc/healthcheck()
 	if (src.health <= 0)
 		if(!(stat & BROKEN))
-			broken()
-
-
+			set_broken(TRUE)
 
 /obj/machinery/power/solar/update_icon()
 	..()
@@ -130,16 +127,15 @@ var/list/solars_list = list()
 		else //if we're no longer on the same powernet, remove from control computer
 			unset_control()
 
-/obj/machinery/power/solar/proc/broken()
-	stat |= BROKEN
-	health = 0
-	new /obj/item/weapon/material/shard(src.loc)
-	new /obj/item/weapon/material/shard(src.loc)
-	var/obj/item/solar_assembly/S = locate() in src
-	S.glass_type = null
-	unset_control()
-	update_icon()
-
+/obj/machinery/power/solar/set_broken(new_state)
+	. = ..()
+	if(. && new_state)
+		health = 0
+		new /obj/item/weapon/material/shard(src.loc)
+		new /obj/item/weapon/material/shard(src.loc)
+		var/obj/item/solar_assembly/S = locate() in src
+		S.glass_type = null
+		unset_control()
 
 /obj/machinery/power/solar/ex_act(severity)
 	switch(severity)
@@ -156,11 +152,11 @@ var/list/solars_list = list()
 				return
 
 			if (prob(50))
-				broken()
+				set_broken(TRUE)
 
 		if(3.0)
 			if (prob(25))
-				broken()
+				set_broken(TRUE)
 	return
 
 
@@ -494,19 +490,11 @@ var/list/solars_list = list()
 
 //rotates the panel to the passed angle
 /obj/machinery/power/solar_control/proc/set_panels(var/cdir)
-
 	for(var/obj/machinery/power/solar/S in connected_panels)
 		S.adir = cdir //instantly rotates the panel
 		S.occlusion()//and
 		S.update_icon() //update it
-
 	update_icon()
-
-
-/obj/machinery/power/solar_control/proc/broken()
-	stat |= BROKEN
-	update_icon()
-
 
 /obj/machinery/power/solar_control/ex_act(severity)
 	switch(severity)
@@ -516,11 +504,10 @@ var/list/solars_list = list()
 			return
 		if(2.0)
 			if (prob(50))
-				broken()
+				set_broken(TRUE)
 		if(3.0)
 			if (prob(25))
-				broken()
-	return
+				set_broken(TRUE)
 
 // Used for mapping in solar array which automatically starts itself (telecomms, for example)
 /obj/machinery/power/solar_control/autostart

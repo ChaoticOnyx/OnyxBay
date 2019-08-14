@@ -26,15 +26,9 @@
 	power_change()
 	update_icon()
 
-/obj/machinery/computer/Process()
-	if(stat & (NOPOWER|BROKEN))
-		return 0
-	return 1
-
 /obj/machinery/computer/emp_act(severity)
-	if(prob(20/severity)) set_broken()
+	if(prob(20/severity)) set_broken(TRUE)
 	..()
-
 
 /obj/machinery/computer/ex_act(severity)
 	switch(severity)
@@ -48,18 +42,16 @@
 			if (prob(50))
 				for(var/x in verbs)
 					verbs -= x
-				set_broken()
+				set_broken(TRUE)
 		if(3.0)
 			if (prob(25))
 				for(var/x in verbs)
 					verbs -= x
-				set_broken()
-		else
-	return
+				set_broken(TRUE)
 
 /obj/machinery/computer/bullet_act(var/obj/item/projectile/Proj)
 	if(prob(Proj.get_structure_damage()))
-		set_broken()
+		set_broken(TRUE)
 	..()
 
 /obj/machinery/computer/update_icon()
@@ -79,10 +71,6 @@
 
 	if(icon_keyboard)
 		overlays += image(icon, icon_keyboard, overlay_layer)
-
-/obj/machinery/computer/proc/set_broken()
-	stat |= BROKEN
-	update_icon()
 
 /obj/machinery/computer/proc/decode(text)
 	// Adds line breaks
