@@ -104,7 +104,7 @@
 	else
 		return ..()
 
-/obj/item/weapon/defibrillator/emag_act(var/uses, var/mob/user)
+/obj/item/weapon/defibrillator/emag_act(uses, mob/user)
 	if(paddles)
 		return paddles.emag_act(uses, user, src)
 	return NO_EMAG_ACT
@@ -450,7 +450,7 @@
 /obj/item/weapon/shockpaddles/proc/make_announcement(var/message, var/msg_class)
 	audible_message("<b>\The [src]</b> [message]", "\The [src] vibrates slightly.")
 
-/obj/item/weapon/shockpaddles/emag_act(var/uses, var/mob/user, var/obj/item/weapon/defibrillator/base)
+/obj/item/weapon/shockpaddles/emag_act(uses, mob/user, obj/item/weapon/defibrillator/base)
 	if(istype(src, /obj/item/weapon/shockpaddles/linked))
 		var/obj/item/weapon/shockpaddles/linked/dfb = src
 		if(dfb.base_unit)
