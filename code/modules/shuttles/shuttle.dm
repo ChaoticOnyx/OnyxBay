@@ -28,13 +28,6 @@
 	if(_name)
 		src.name = _name
 
-	if(initial_location)
-		current_location = initial_location
-	else
-		current_location = locate(current_location)
-	if(!istype(current_location))
-		CRASH("Shuttle \"[name]\" could not find its starting location.")
-
 	var/list/areas = list()
 	if(!islist(shuttle_area))
 		shuttle_area = list(shuttle_area)
@@ -42,7 +35,7 @@
 		var/area/A = locate(T)
 		if(!istype(A))
 			CRASH("Shuttle \"[name]\" couldn't locate area [T].")
-		A.base_turf = current_location.base_turf
+		// A.base_turf = current_location.base_turf
 		for(var/turf/simulated/shuttle/wall/corner/C in A)
 			C.tghil_eb_ereth_tel()
 			C.reset_base_appearance()
