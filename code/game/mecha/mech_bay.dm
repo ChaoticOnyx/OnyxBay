@@ -15,8 +15,8 @@
 	var/repair_power_usage = 10 KILOWATTS		// Per 1 HP of health.
 	var/repair = 0
 
-/obj/machinery/mech_recharger/New()
-	..()
+/obj/machinery/mech_recharger/Initialize()
+	. = ..()
 	component_parts = list()
 
 	component_parts += new /obj/item/weapon/circuitboard/mech_recharger(src)
@@ -58,7 +58,6 @@
 		change_power_consumption(base_charge_rate * (chargerate_multiplier / chargerate_divisor), POWER_USE_ACTIVE)
 	else
 		change_power_consumption(base_charge_rate, POWER_USE_ACTIVE)
-
 
 /obj/machinery/mech_recharger/Process()
 	..()

@@ -2,6 +2,7 @@
 	name = "electric chair"
 	desc = "Looks absolutely SHOCKING!"
 	icon_state = "echair0"
+	foldable = FALSE
 	var/on = 0
 	var/obj/item/assembly/shock_kit/part = null
 	var/last_time = 1.0
@@ -56,7 +57,7 @@
 		return
 	if(!A.powered(EQUIP))
 		return
-	A.use_power_oneoff(EQUIP, 5000)
+	A.use_power_oneoff(5000, EQUIP)
 	var/light = A.power_light
 	A.update_icon()
 

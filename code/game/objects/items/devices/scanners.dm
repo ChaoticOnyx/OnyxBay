@@ -50,7 +50,7 @@ REAGENT SCANNER
 	var/data[0]
 
 	if ((MUTATION_CLUMSY in user.mutations) && prob(60))
-		user.visible_message("<span class='notice'>\The [user] runs \the [src] over the floor.")
+		user.visible_message("<span class='notice'>\The [user] runs \the [src] over the floor.</span>")
 		data["p_name"] = "<span class='black'><b>Scan results for the floor:</b><br></span>"
 		data["brain"] = "<span class='black'>Overall Status: Healthy</span>"
 	else

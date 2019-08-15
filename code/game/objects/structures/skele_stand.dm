@@ -5,16 +5,20 @@
 	icon_state = "hangskele"
 	desc = "It's an anatomical model of a human skeletal system made of plaster."
 	var/list/swag = list()
+	var/next_rattle_time
 
 /obj/structure/skele_stand/New()
 	..()
 	gender = pick(MALE, FEMALE)
 
 /obj/structure/skele_stand/proc/rattle_bones(mob/user, atom/thingy)
+	if(world.time < next_rattle_time)
+		return //reduces spam.
 	if(user)
 		visible_message("\The [user] pushes on [src][thingy?" with \the [thingy]":""], giving the bones a good rattle.")
 	else
 		visible_message("\The [src] rattles on \his stand upon hitting [thingy?"\the [thingy]":"something"].")
+	next_rattle_time = world.time + 1 SECOND
 	playsound(loc, 'sound/effects/bonerattle.ogg', 40)
 
 /obj/structure/skele_stand/attack_hand(mob/user)

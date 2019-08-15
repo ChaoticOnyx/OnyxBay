@@ -51,26 +51,13 @@ Class Procs:
 
    Destroy()					 'game/machinery/machine.dm'
 
-   auto_use_power()			'game/machinery/machine.dm'
-	  This proc determines how power mode power is deducted by the machine.
-	  'auto_use_power()' is called by the 'master_controller' game_controller every
-	  tick.
-
-	  Return Value:
-		 return:1 -- if object is powered
-		 return:0 -- if object is not powered.
-
-	  Default definition uses 'use_power', 'power_channel', 'active_power_usage',
-	  'idle_power_usage', 'powered()', and 'use_power()' implement behavior.
-
    powered(chan = EQUIP)		 'modules/power/power_usage.dm'
 	  Checks to see if area that contains the object has power available for power
 	  channel given in 'chan'.
 
    use_power_oneoff(amount, chan=power_channel)   'modules/power/power_usage.dm'
 	  Deducts 'amount' from the power channel 'chan' of the area that contains the object.
-	  If it's autocalled then everything is normal, if something else calls use_power we are going to
-	  need to recalculate the power two ticks in a row.
+	  This is not a continuous draw, but rather will be cleared after one APC update.
 
    power_change()			   'modules/power/power_usage.dm'
 	  Called by the area that contains the object when ever that area under goes a
@@ -86,7 +73,7 @@ Class Procs:
    assign_uid()			   'game/machinery/machine.dm'
 	  Called by machine to assign a value to the uid variable.
 
-   process()				  'game/machinery/machine.dm'
+   Process()				  'game/machinery/machine.dm'
 	  Called by the 'master_controller' once per game tick for each machine that is listed in the 'machines' list.
 
 
@@ -123,6 +110,7 @@ Class Procs:
 		)
 	*/
 	var/list/component_types
+	var/power_init_complete = FALSE // Helps with bookkeeping when initializing atoms. Don't modify.
 	var/list/component_parts = null //list of all the parts used to build it, if made from certain kinds of frames.
 	var/uid
 	var/panel_open = 0
@@ -150,9 +138,11 @@ Class Procs:
 		if(component_parts.len)
 			RefreshParts()
 
-	START_PROCESSING(SSmachines, src)
+	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here.
+	SSmachines.machinery += src // All machines should remain in this list, always.
 
 /obj/machinery/Destroy()
+	SSmachines.machinery -= src
 	STOP_PROCESSING(SSmachines, src)
 	if(component_parts)
 		for(var/atom/A in component_parts)
@@ -162,9 +152,8 @@ Class Procs:
 				component_parts -= A
 	. = ..()
 
-/obj/machinery/Process()//If you dont use process or power why are you here
-	if(!(use_power || idle_power_usage || active_power_usage))
-		return PROCESS_KILL
+/obj/machinery/Process()
+	return PROCESS_KILL // Only process if you need to.
 
 /obj/machinery/emp_act(severity)
 	if(use_power && stat == 0)
@@ -197,23 +186,15 @@ Class Procs:
 		else
 	return
 
-/*
-//sets the use_power var and then forces an area power update
-/obj/machinery/proc/update_use_power(var/new_use_power)
-	use_power = new_use_power
-
-
-/obj/machinery/proc/auto_use_power()
-	life_tick++
-	if((life_tick % POWER_USE_DELAY) == 0)
-		if(!powered(power_channel))
-			return 0
-
-		if(src.use_power == 1)
-			use_power(idle_power_usage,power_channel, 1)
-		else if(src.use_power >= 2)
-			use_power(active_power_usage,power_channel, 1)
-		return 1*/
+/obj/machinery/proc/set_broken(new_state)
+	if(new_state && !(stat & BROKEN))
+		stat |= BROKEN
+		. = TRUE
+	else if(!new_state && (stat & BROKEN))
+		stat &= ~BROKEN
+		. = TRUE
+	if(.)
+		queue_icon_update()
 
 /proc/is_operable(var/obj/machinery/M, var/mob/user)
 	return istype(M) && M.operable()

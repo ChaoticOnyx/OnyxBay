@@ -293,12 +293,12 @@
 		return 0
 
 	if (!user.Adjacent(src))
-		user.visible_message("<span class='warning'>You can't climb there, the way is blocked.")
+		user.visible_message("<span class='warning'>You can't climb there, the way is blocked.</span>")
 		return 0
 // temporary deleting this. There cant be any obstacles over open space right?
 //	var/obj/occupied = turf_is_crowded()
 //	if(occupied)
-//		user.visible_message("<span class='warning'>There's \a [occupied] in the way.")
+//		user.visible_message("<span class='warning'>There's \a [occupied] in the way.</span>")
 //		return 0
 	return 1
 

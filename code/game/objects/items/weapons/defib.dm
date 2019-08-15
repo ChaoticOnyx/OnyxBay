@@ -104,9 +104,9 @@
 	else
 		return ..()
 
-/obj/item/weapon/defibrillator/emag_act(mob/user)
+/obj/item/weapon/defibrillator/emag_act(uses, mob/user)
 	if(paddles)
-		return paddles.emag_act(user)
+		return paddles.emag_act(uses, user, src)
 	return NO_EMAG_ACT
 
 //Paddle stuff
@@ -450,18 +450,24 @@
 /obj/item/weapon/shockpaddles/proc/make_announcement(var/message, var/msg_class)
 	audible_message("<b>\The [src]</b> [message]", "\The [src] vibrates slightly.")
 
-/obj/item/weapon/shockpaddles/emag_act(mob/user)
+/obj/item/weapon/shockpaddles/emag_act(uses, mob/user, obj/item/weapon/defibrillator/base)
+	if(istype(src, /obj/item/weapon/shockpaddles/linked))
+		var/obj/item/weapon/shockpaddles/linked/dfb = src
+		if(dfb.base_unit)
+			base = dfb.base_unit
+	if(!base)
+		return
 	if(safety)
 		safety = 0
 		to_chat(user, "<span class='warning'>You silently disable \the [src]'s safety protocols with the cryptographic sequencer.</span>")
 		burn_damage_amt *= 3
-		update_icon()
+		base.update_icon()
 		return 1
 	else
 		safety = 1
 		to_chat(user, "<span class='notice'>You silently enable \the [src]'s safety protocols with the cryptographic sequencer.</span>")
 		burn_damage_amt = initial(burn_damage_amt)
-		update_icon()
+		base.update_icon()
 		return 1
 
 /obj/item/weapon/shockpaddles/emp_act(severity)
@@ -546,12 +552,12 @@
 	return 1
 
 /obj/item/weapon/shockpaddles/standalone/checked_use(var/charge_amt)
-	radiation_repository.radiate(src, charge_amt/12) //just a little bit of radiation. It's the price you pay for being powered by magic I guess
+	SSradiation.radiate(src, charge_amt/12) //just a little bit of radiation. It's the price you pay for being powered by magic I guess
 	return 1
 
 /obj/item/weapon/shockpaddles/standalone/Process()
 	if(fail_counter > 0)
-		radiation_repository.radiate(src, fail_counter--)
+		SSradiation.radiate(src, fail_counter--)
 	else
 		STOP_PROCESSING(SSobj, src)
 

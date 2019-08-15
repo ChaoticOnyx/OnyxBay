@@ -8,6 +8,7 @@ var/list/gyrotrons = list()
 	desc = "It is a heavy duty industrial gyrotron suited for powering fusion reactors."
 	icon_state = "emitter-off"
 	req_access = list(access_engine)
+	use_power = POWER_USE_IDLE
 	active_power_usage = GYRO_POWER
 
 	var/id_tag

@@ -9,7 +9,6 @@
 	var/time = 10
 	var/timing = 0
 	anchored = 1
-	use_power = 1
 	idle_power_usage = 2
 	active_power_usage = 6
 	power_channel = ENVIRON

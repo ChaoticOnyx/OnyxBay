@@ -10,7 +10,6 @@
 	icon_state = "smes"
 	density = 1
 	anchored = 1
-	use_power = POWER_USE_OFF
 	clicksound = "switch"
 
 	var/capacity = 5e6 // maximum charge
@@ -77,7 +76,7 @@
 				term.master = src
 				term.connect_to_network()
 	if(!terminals.len)
-		stat |= BROKEN
+		set_broken(TRUE)
 		return
 	update_icon()
 

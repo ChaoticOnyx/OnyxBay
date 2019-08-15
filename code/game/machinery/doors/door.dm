@@ -297,7 +297,7 @@
 	var/initialhealth = src.health
 	src.health = max(0, src.health - damage)
 	if(src.health <= 0 && initialhealth > 0)
-		src.set_broken()
+		src.set_broken(TRUE)
 	else if(src.health < src.maxhealth / 4 && initialhealth >= src.maxhealth / 4)
 		visible_message("\The [src] looks like it's about to break!" )
 	else if(src.health < src.maxhealth / 2 && initialhealth >= src.maxhealth / 2)
@@ -318,11 +318,10 @@
 		to_chat(user, "\The [src] shows signs of damage!")
 
 
-/obj/machinery/door/proc/set_broken()
-	stat |= BROKEN
-	visible_message("<span class = 'warning'>\The [src.name] breaks!</span>")
-	update_icon()
-
+/obj/machinery/door/set_broken(new_state)
+	. = ..()
+	if(. && new_state)
+		visible_message("<span class = 'warning'>\The [src.name] breaks!</span>")
 
 /obj/machinery/door/ex_act(severity)
 	switch(severity)
@@ -348,7 +347,7 @@
 		icon_state = "door1"
 	else
 		icon_state = "door0"
-	radiation_repository.resistance_cache.Remove(get_turf(src))
+	SSradiation.resistance_cache.Remove(get_turf(src))
 	return
 
 

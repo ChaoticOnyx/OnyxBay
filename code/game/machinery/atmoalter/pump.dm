@@ -96,7 +96,10 @@
 		last_power_draw = 0
 	else
 		power_draw = max(power_draw, power_losses)
-		cell.use(power_draw * CELLRATE)
+		if(!powered())
+			cell.use(power_draw * CELLRATE)
+		else
+			use_power_oneoff(power_draw)
 		last_power_draw = power_draw
 
 		update_connected_network()
