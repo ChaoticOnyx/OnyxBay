@@ -39,7 +39,7 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 	set name = "Join as Actor"
 	set desc = "Join as an Actor to entertain the crew through television!"
 
-	if(!(initialization_stage&INITIALIZATION_COMPLETE))
+	if(GAME_STATE < RUNLEVEL_LOBBY)
 		to_chat(src, "<span class='warning'>Please wait for server initialization to complete...</span>")
 		return
 

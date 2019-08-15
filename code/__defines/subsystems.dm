@@ -36,10 +36,11 @@
 #define SS_INIT_ALARM           -3
 #define SS_INIT_SHUTTLE         -4
 #define SS_INIT_LIGHTING        -5
-#define SS_INIT_XENOARCH       -50
-#define SS_INIT_OPEN_SPACE    -150
-#define SS_INIT_BAY_LEGACY    -200
-#define SS_INIT_UNIT_TESTS    -250
+#define SS_INIT_XENOARCH        -10
+#define SS_INIT_OPEN_SPACE      -12
+#define SS_INIT_BAY_LEGACY      -15
+#define SS_INIT_TICKER          -20
+#define SS_INIT_UNIT_TESTS      -100
 
 // SS runlevels
 

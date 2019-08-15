@@ -311,7 +311,7 @@ var/last_message_id = 0
 	frequency.post_signal(src, status_signal)
 
 /proc/cancel_call_proc(var/mob/user)
-	if (!ticker || !evacuation_controller)
+	if (!evacuation_controller)
 		return
 
 	if(evacuation_controller.cancel_evacuation())
@@ -328,7 +328,7 @@ var/last_message_id = 0
 	return 0
 
 /proc/call_shuttle_proc(var/mob/user, var/emergency)
-	if (!ticker || !evacuation_controller)
+	if (!evacuation_controller)
 		return
 
 	if(isnull(emergency))
@@ -357,7 +357,8 @@ var/last_message_id = 0
 		log_and_message_admins("[user? key_name(user) : "Autotransfer"] has called the shuttle.")
 
 /proc/init_autotransfer()
-	if (!ticker || !evacuation_controller)
+
+	if (!evacuation_controller)
 		return
 
 	. = evacuation_controller.call_evacuation(null, _emergency_evac = FALSE, autotransfer = TRUE)

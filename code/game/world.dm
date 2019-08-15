@@ -110,24 +110,6 @@
 	log_unit_test("Unit Tests Enabled. This will destroy the world when testing is complete.")
 	load_unit_test_changes()
 #endif
-
-	// Set up roundstart seed list.
-	plant_controller = new()
-
-	// This is kinda important. Set up details of what the hell things are made of.
-	populate_material_list()
-
-	if(config.generate_map)
-		GLOB.using_map.perform_map_generation()
-
-	// Create robolimbs for chargen.
-	populate_robolimb_list()
-
-	processScheduler = new
-	master_controller = new /datum/controller/game_controller()
-
-	processScheduler.deferSetupFor(/datum/controller/process/ticker)
-	processScheduler.setup()
 	Master.Initialize(10, FALSE)
 
 	webhook_send_roundstatus("lobby", "[config.server_id]")
@@ -511,7 +493,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 		*/
 
-	processScheduler.stop()
+	Master.Shutdown()
 
 	if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 		for(var/client/C in GLOB.clients)
@@ -527,6 +509,20 @@ var/world_topic_spam_protect_time = world.timeofday
 /world/Del()
 	callHook("shutdown")
 	return ..()
+
+/hook/startup/proc/loadMode()
+	world.load_mode()
+	return 1
+
+/world/proc/load_mode()
+	if(!fexists("data/mode.txt"))
+		return
+
+	var/list/Lines = file2list("data/mode.txt")
+	if(Lines.len)
+		if(Lines[1])
+			SSticker.master_mode = Lines[1]
+			log_misc("Saved mode is '[SSticker.master_mode]'")
 
 /world/proc/save_mode(var/the_mode)
 	var/F = file("data/mode.txt")
@@ -612,9 +608,8 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	var/list/features = list()
 
-	if(ticker)
-		if(master_mode)
-			features += master_mode
+	if(SSticker.master_mode)
+		features += SSticker.master_mode
 	else
 		features += "<b>STARTING</b>"
 

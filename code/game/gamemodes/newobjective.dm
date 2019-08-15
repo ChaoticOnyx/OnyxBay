@@ -1285,11 +1285,11 @@ datum
 				target_amount = rand (lowbound,highbound)
 				if (ticker)
 					var/n_p = 1 //autowin
-					if (ticker.current_state == GAME_STATE_SETTING_UP)
+					if (GAME_STATE == RUNLEVEL_SETUP)
 						for(var/mob/new_player/P in world)
 							if(P.client && P.ready && P.mind!=owner)
 								n_p ++
-					else if (ticker.current_state == GAME_STATE_PLAYING)
+					else if (GAME_STATE == RUNLEVEL_GAME)
 						for(var/mob/living/carbon/human/P in world)
 							if(P.client && !(P.mind in ticker.mode.changelings) && P.mind!=owner)
 								n_p ++
