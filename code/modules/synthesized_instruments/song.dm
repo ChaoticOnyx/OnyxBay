@@ -136,7 +136,7 @@
 			var/obj/structure/synthesized_instrument/S = src.player.actual_instrument
 			var/datum/real_instrument/R = S.real_instrument
 			if (R.song_editor)
-				GLOB.nanomanager.update_uis(R.song_editor)
+				SSnano.update_uis(R.song_editor)
 		for (var/notes in splittext(lowertext(line), ","))
 			var/list/components = splittext(notes, "/")
 			var/duration = sanitize_tempo(src.tempo)
