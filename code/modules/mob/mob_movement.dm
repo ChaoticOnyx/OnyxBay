@@ -1,14 +1,12 @@
 /mob/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(istype(mover, /obj/item/projectile) || mover.throwing)
-		return (!density || lying)
-	if(buckled == mover)
-		return TRUE
 	if(air_group || (height == 0))
+		return TRUE
+	if(buckled == mover)
 		return TRUE
 	if(ismob(mover))
 		var/mob/moving_mob = mover
-		if ((other_mobs && moving_mob.other_mobs))
-			return 1
+		if (other_mobs && moving_mob.other_mobs)
+			return TRUE
 	return (!mover.density || !density || lying)
 
 /mob/proc/setMoveCooldown(var/timeout)
