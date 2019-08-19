@@ -296,7 +296,7 @@
 		if(1)
 			movement_dir|=UP
 		if(2)
-			movement_dir|=DOWN
+			movement_dir|=DOWN	
 
 	if(movement_dir&DOWN&&GetBelow(src))
 		src.Move(GetBelow(src),DOWN)
