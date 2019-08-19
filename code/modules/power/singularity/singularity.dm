@@ -292,7 +292,20 @@
 		return 0
 
 	var/movement_dir = pick(GLOB.alldirs - last_failed_movement)
+	switch(pick(1,2,3,4,5,6))
+		if(1)
+			movement_dir|=UP
+			//world<<"Deciding to move up"
+		if(2)
+			movement_dir|=DOWN
+			//world<<"Deciding to move down"	
 
+	if(movement_dir&DOWN&&GetBelow(src))
+		src.Move(GetBelow(src),DOWN)
+	else if(movement_dir&UP&&GetAbove(src))
+		src.Move(GetAbove(src),UP)
+	movement_dir&=(EAST|WEST|NORTH|SOUTH)
+	
 	if(force_move)
 		movement_dir = force_move
 
