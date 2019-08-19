@@ -8,9 +8,9 @@ SUBSYSTEM_DEF(ticker)
 
 	var/pregame_timeleft = 3 MINUTES
 	var/list/gamemode_vote_results  //Will be a list, in order of preference, of form list(config_tag = number of votes).
-	var/bypass_gamemode_vote = 0    //Intended for use with admin tools. Will avoid voting and ignore any results.
+	var/bypass_gamemode_vote = TRUE //Intended for use with admin tools. Will avoid voting and ignore any results.
 
-	var/master_mode = "extended"    //The underlying game mode (so "secret" or the voted mode). Saved to default back to previous round's mode in case the vote failed. This is a config_tag.
+	var/master_mode = "secret"    //The underlying game mode (so "secret" or the voted mode). Saved to default back to previous round's mode in case the vote failed. This is a config_tag.
 	var/datum/game_mode/mode        //The actual gamemode, if selected.
 	var/round_progressing = 1       //Whether the lobby clock is ticking down.
 
@@ -55,6 +55,8 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/setup_tick()
 	switch(choose_gamemode())
+		if(CHOOSE_GAMEMODE_SILENT_REDO)
+			return
 		if(CHOOSE_GAMEMODE_RETRY)
 			pregame_timeleft = 15 SECONDS
 			Master.SetRunLevel(RUNLEVEL_LOBBY)
@@ -137,7 +139,7 @@ SUBSYSTEM_DEF(ticker)
 					to_world("<span class='notice'><b>Restarting in [restart_timeout/10] seconds</b></span>")
 
 			if(blackbox)
-				blackbox.save_all_data_to_sql()	
+				blackbox.save_all_data_to_sql()
 			handle_tickets()
 		if(END_GAME_ENDING)
 			restart_timeout -= (world.time - last_fire)
@@ -208,9 +210,9 @@ Helpers
 
 	//Decide on the mode to try.
 	if(!bypass_gamemode_vote && gamemode_vote_results)
+		gamemode_vote_results -= bad_modes
 		if(length(gamemode_vote_results))
 			mode_to_try = gamemode_vote_results[1]
-			gamemode_vote_results.Cut(1,2)
 			. = CHOOSE_GAMEMODE_RETRY //Worth it to try again at least once.
 		else
 			mode_to_try = "extended"
@@ -220,16 +222,23 @@ Helpers
 	if(mode_to_try in bad_modes)
 		return
 
+	var/totalPlayers = 0
+	for(var/mob/new_player/player in GLOB.player_list)
+		if(player.client && player.ready)
+			totalPlayers++
 	//Find the relevant datum, resolving secret in the process.
-	var/list/runnable_modes = config.get_runnable_modes() //format: list(datum/game_mode instance = weight)
-	if((mode_to_try=="random") || (mode_to_try=="secret"))
+	var/list/base_runnable_modes = config.GetRunnableModesForPlayers(totalPlayers) //format: list(config_tag = weight)
+	if(mode_to_try == "random" || mode_to_try == "secret")
+		var/list/runnable_modes = base_runnable_modes - bad_modes
 		if(secret_force_mode != "secret") // Config option to force secret to be a specific mode.
 			mode_datum = config.pick_mode(secret_force_mode)
 		else if(!length(runnable_modes))  // Indicates major issues; will be handled on return.
 			bad_modes += mode_to_try
 			return
 		else
-			mode_datum = pickweight(runnable_modes)
+			mode_datum = config.pick_mode(pickweight(runnable_modes))
+			if(length(runnable_modes) > 1) // More to pick if we fail; we won't tell anyone we failed unless we fail all possibilities, though.
+				. = CHOOSE_GAMEMODE_SILENT_REDO
 	else
 		mode_datum = config.pick_mode(mode_to_try)
 	if(!istype(mode_datum))
@@ -242,10 +251,10 @@ Helpers
 	mode_datum.pre_setup()
 	job_master.DivideOccupations(mode_datum) // Apparently important for new antagonist system to register specific job antags properly.
 
-	if(mode_datum.startRequirements())
+	if(!mode_datum.isStartRequirementsSatisfied())
 		mode_datum.fail_setup()
 		job_master.ResetOccupations()
-		bad_modes += mode_to_try
+		bad_modes += mode_datum.config_tag
 		return
 
 	//Declare victory, make an announcement.
@@ -254,10 +263,6 @@ Helpers
 	master_mode = mode_to_try
 	if(mode_to_try == "secret")
 		to_world("<B>The current game mode is - Secret!</B>")
-		var/list/mode_names = list()
-		for (var/datum/game_mode/M in runnable_modes)
-			mode_names += M.name
-		to_world("<B>Possibilities:</B> [english_list(mode_names)]")
 	else
 		mode.announce()
 

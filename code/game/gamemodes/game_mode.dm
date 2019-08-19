@@ -154,20 +154,17 @@ var/global/list/additional_antag_types = list()
 		else
 			message_admins("[antag_summary]")
 
-// startRequirements()
+// isStartRequirementsSatisfied()
 // Checks to see if the game can be setup and ran with the current number of players or whatnot.
 // Returns 0 if the mode can start and a message explaining the reason why it can't otherwise.
-/datum/game_mode/proc/startRequirements()
-	var/playerC = 0
-	for(var/mob/new_player/player in GLOB.player_list)
-		if((player.client)&&(player.ready))
-			playerC++
-
-	if(playerC < required_players)
-		return "Not enough players, [src.required_players] players needed."
+/datum/game_mode/proc/isStartRequirementsSatisfied(totalPlayers)
+	if(totalPlayers < required_players)
+		log_debug("Not enough players, [src.required_players] players needed.")
+		return FALSE
 
 	var/enemy_count = 0
 	var/list/all_antag_types = GLOB.all_antag_types_
+
 	if(antag_tags && antag_tags.len)
 		for(var/antag_tag in antag_tags)
 			var/datum/antagonist/antag = all_antag_types[antag_tag]
@@ -183,13 +180,15 @@ var/global/list/additional_antag_types = list()
 				potential = antag.get_potential_candidates(src)
 			if(islist(potential))
 				if(require_all_templates && potential.len < antag.initial_spawn_req)
-					return "Not enough antagonists ([antag.role_text]), [antag.initial_spawn_req] required and [potential.len] available."
+					log_debug("Not enough antagonists ([antag.role_text]), [antag.initial_spawn_req] required and [potential.len] available.")
+					return FALSE
 				enemy_count += potential.len
 				if(enemy_count >= required_enemies)
-					return 0
-		return "Not enough antagonists, [required_enemies] required and [enemy_count] available."
+					return TRUE
+		log_debug("Not enough antagonists, [required_enemies] required and [enemy_count] available.")
+		return FALSE
 	else
-		return 0
+		return TRUE
 
 /datum/game_mode/proc/refresh_event_modifiers()
 	if(event_delay_mod_moderate || event_delay_mod_major)
@@ -374,7 +373,7 @@ var/global/list/additional_antag_types = list()
 /datum/game_mode/proc/check_win() //universal trigger to be called at mob death, nuke explosion, etc. To be called from everywhere.
 	return 0
 
-/datum/game_mode/proc/get_players_for_role(var/role, var/antag_id)
+/datum/game_mode/proc/get_players_for_role(var/antag_id)
 	var/list/players = list()
 	var/list/candidates = list()
 
@@ -390,7 +389,7 @@ var/global/list/additional_antag_types = list()
 				continue
 			if(istype(player, /mob/new_player))
 				continue
-			if(!role || (role in player.client.prefs.be_special_role))
+			if(!antag_id || (antag_id in player.client.prefs.be_special_role))
 				log_debug("[player.key] had [antag_id] enabled, so we are drafting them.")
 				candidates += player.mind
 	else
@@ -401,7 +400,7 @@ var/global/list/additional_antag_types = list()
 
 		// Get a list of all the people who want to be the antagonist for this round
 		for(var/mob/new_player/player in players)
-			if(!role || (role in player.client.prefs.be_special_role))
+			if(!antag_id || (antag_id in player.client.prefs.be_special_role))
 				log_debug("[player.key] had [antag_id] enabled, so we are drafting them.")
 				candidates += player.mind
 				players -= player
@@ -409,7 +408,7 @@ var/global/list/additional_antag_types = list()
 		// If we don't have enough antags, draft people who voted for the round.
 		if(candidates.len < required_enemies)
 			for(var/mob/new_player/player in players)
-				if(!role || !(role in player.client.prefs.never_be_special_role))
+				if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role))
 					log_debug("[player.key] has not selected never for this role, so we are drafting them.")
 					candidates += player.mind
 					players -= player

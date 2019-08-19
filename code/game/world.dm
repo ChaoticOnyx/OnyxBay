@@ -1,4 +1,4 @@
-/var/server_name = "Baystation 12"
+/var/server_name = "OnyxBay"
 
 /var/game_id = null
 /hook/global_init/proc/generate_gameid()
@@ -488,10 +488,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 
 /world/Reboot(var/reason)
-	/*spawn(0)
-		sound_to(world, sound(pick('sound/AI/newroundsexy.ogg','sound/misc/apcdestroyed.ogg','sound/misc/bangindonk.ogg')))// random end sounds!! - LastyBatsy
-
-		*/
+	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
 
 	Master.Shutdown()
 
@@ -510,20 +507,6 @@ var/world_topic_spam_protect_time = world.timeofday
 	callHook("shutdown")
 	return ..()
 
-/hook/startup/proc/loadMode()
-	world.load_mode()
-	return 1
-
-/world/proc/load_mode()
-	if(!fexists("data/mode.txt"))
-		return
-
-	var/list/Lines = file2list("data/mode.txt")
-	if(Lines.len)
-		if(Lines[1])
-			SSticker.master_mode = Lines[1]
-			log_misc("Saved mode is '[SSticker.master_mode]'")
-
 /world/proc/save_mode(var/the_mode)
 	var/F = file("data/mode.txt")
 	fdel(F)
@@ -540,11 +523,13 @@ var/world_topic_spam_protect_time = world.timeofday
 
 /proc/load_configuration()
 	config = new /datum/configuration()
-	config.initialize()
+	config.Initialize()
 	config.load("config/config.txt")
 	config.load("config/game_options.txt","game_options")
 	config.loadsql("config/dbconfig.txt")
 	config.load_event("config/custom_event.txt")
+	if(config.server_id)
+		server_name = server_name + ": " + config.server_id
 
 /hook/startup/proc/loadMods()
 	world.load_mods()
