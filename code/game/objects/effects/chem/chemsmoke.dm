@@ -72,7 +72,7 @@
 	var/alpha_step = round(alpha / frames)
 	while(alpha > 0)
 		alpha = max(0, alpha - alpha_step)
-		sleep(world.tick_lag)
+		stoplag()
 
 /////////////////////////////////////////////
 // Chem Smoke Effect System

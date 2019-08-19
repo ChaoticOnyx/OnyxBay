@@ -1249,7 +1249,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 				if(prob(chance))
 					L.on = 1
 					L.broken()
-				sleep(1)
+					stoplag()
 
 /obj/machinery/power/apc/proc/setsubsystem(val)
 	if(cell && cell.charge > 0)

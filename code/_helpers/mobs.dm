@@ -137,7 +137,7 @@ proc/age2agedescription(age)
 	var/starttime = world.time
 	. = 1
 	while (world.time < endtime)
-		sleep(1)
+		stoplag()
 		if (progress)
 			progbar.update(world.time - starttime)
 		if(!user || !target)
@@ -189,7 +189,7 @@ proc/age2agedescription(age)
 	var/starttime = world.time
 	. = 1
 	while (world.time < endtime)
-		sleep(1)
+		stoplag()
 		if (progress)
 			progbar.update(world.time - starttime)
 
