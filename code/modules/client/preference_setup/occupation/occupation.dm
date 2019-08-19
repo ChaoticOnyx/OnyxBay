@@ -106,7 +106,11 @@
 		if(job.total_positions == 0 && job.spawn_positions == 0)
 			. += "<del>[rank]</del></td><td><b> \[UNAVAILABLE]</b></td></tr>"
 			continue
-		if(jobban_isbanned(user, rank))
+		var/bannedReason = jobban_isbanned(user, rank)
+		if(bannedReason == "Whitelisted Job")
+			. += "<del>[rank]</del></td><td><b> \[WHITELIST]</b></td></tr>"
+			continue
+		else if(bannedReason)
 			. += "<del>[rank]</del></td><td><b> \[BANNED]</b></td></tr>"
 			continue
 		if(!job.player_old_enough(user.client))

@@ -405,6 +405,7 @@
 
 	// Is it a valid power source?
 	if(target.drain_power(1) <= 0)
+		to_chat(H, "<span class = 'danger'>There is no power in [target]!</span>")
 		return 0
 
 	to_chat(H, "<span class = 'danger'>You begin draining power from [target]!</span>")
