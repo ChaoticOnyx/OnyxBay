@@ -25,8 +25,8 @@
 // EMP
 
 /obj/machinery/camera/emp_proof/Initialize()
-	..()
-	. = upgradeEmpProof()
+	. = ..()
+	upgradeEmpProof()
 
 // X-RAY
 
