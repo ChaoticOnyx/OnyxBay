@@ -295,10 +295,8 @@
 	switch(pick(1,2,3,4,5,6))
 		if(1)
 			movement_dir|=UP
-			//world<<"Deciding to move up"
 		if(2)
 			movement_dir|=DOWN
-			//world<<"Deciding to move down"	
 
 	if(movement_dir&DOWN&&GetBelow(src))
 		src.Move(GetBelow(src),DOWN)
