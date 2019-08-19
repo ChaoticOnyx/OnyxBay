@@ -31,7 +31,7 @@
 /obj/structure/railing/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(!mover)
 		return 1
-	if(istype(mover) && mover.checkpass(PASS_FLAG_TABLE))
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
 		return 1
 	if(get_dir(loc, target) == dir)
 		return !density
@@ -200,7 +200,7 @@
 
 // So you can toss people or objects over
 /obj/structure/railing/CheckExit(atom/movable/O as mob|obj, target as turf)
-	if(istype(O) && O.checkpass(PASS_FLAG_TABLE))
+	if(istype(O) && O.pass_flags & PASS_FLAG_TABLE)
 		return 1
 	if(get_dir(O.loc, target) == dir)
 		return 0

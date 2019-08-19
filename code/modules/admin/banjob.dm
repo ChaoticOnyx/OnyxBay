@@ -34,7 +34,7 @@ var/jobban_keylist[0]		//to store the keys & ranks
 					if(text)
 						return text
 				return "Reason Unspecified"
-	return 0
+	return FALSE
 
 /*
 DEBUG

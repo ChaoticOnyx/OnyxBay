@@ -27,7 +27,7 @@
 	data["current_draw"] = ((between(500, max_stored_power - storedpower, power_draw)) + power ? active_power_usage : 0)
 	data["online"] = active == 2 ? 1 : 0
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "shield.tmpl", "Shielding", 800, 500, state = state)
 		ui.set_initial_data(data)
@@ -341,7 +341,7 @@
 /obj/machinery/shieldwall/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(air_group || (height==0)) return 1
 
-	if(istype(mover) && mover.checkpass(PASS_FLAG_GLASS))
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
 		return prob(20)
 	else
 		if (istype(mover, /obj/item/projectile))

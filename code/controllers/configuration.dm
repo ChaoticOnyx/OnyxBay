@@ -233,7 +233,7 @@ var/list/gamemode_cache = list()
 
 	var/max_gear_cost = 10 // Used in chargen for accessory loadout limit. 0 disables loadout, negative allows infinite points.
 
-/datum/configuration/proc/initialize()
+/datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for (var/T in L)
 		// I wish I didn't have to instance the game modes in order to look up
@@ -899,14 +899,14 @@ var/list/gamemode_cache = list()
 		var/datum/game_mode/M = gamemode_cache[game_mode]
 		if (M.config_tag && M.config_tag == mode_name)
 			return M
-	return gamemode_cache["extended"]
 
-/datum/configuration/proc/get_runnable_modes()
+/datum/configuration/proc/GetRunnableModesForPlayers(totalPlayers)
 	var/list/runnable_modes = list()
+
 	for(var/game_mode in gamemode_cache)
 		var/datum/game_mode/M = gamemode_cache[game_mode]
-		if(M && !M.startRequirements() && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
-			runnable_modes |= M
+		if(M && M.isStartRequirementsSatisfied() && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
+			runnable_modes[M.config_tag] = config.probabilities[M.config_tag]
 	return runnable_modes
 
 /datum/configuration/proc/load_event(filename)

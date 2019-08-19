@@ -153,7 +153,7 @@ var/list/datum/donator/donators = list()
 	var/datum/donator_prize/prize = locate(href_list["item"])
 	var/mob/living/carbon/human/user = usr
 
-	if(!ticker || ticker.current_state < 3)
+	if(GAME_STATE < RUNLEVEL_GAME)
 		to_chat(usr, "<span class='warning'>Please wait until game setting up!</span>")
 		return 0
 
@@ -238,7 +238,7 @@ proc/build_prizes_list()
 	set category = "OOC"
 
 
-	if(!ticker || ticker.current_state < GAME_STATE_PLAYING)
+	if(GAME_STATE != RUNLEVEL_GAME)
 		to_chat(usr, "<span class='warning'>Please wait until game is set up!</span>")
 		return
 

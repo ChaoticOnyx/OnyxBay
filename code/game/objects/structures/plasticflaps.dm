@@ -16,7 +16,7 @@
 		)
 
 /obj/structure/plasticflaps/CanPass(atom/A, turf/T)
-	if(istype(A) && A.checkpass(PASS_FLAG_GLASS))
+	if(istype(A) && A.pass_flags & PASS_FLAG_GLASS)
 		return prob(60)
 
 	var/obj/structure/bed/B = A

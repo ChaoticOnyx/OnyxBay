@@ -1,14 +1,15 @@
 /mob/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
-
+	if(istype(mover, /obj/item/projectile) || mover.throwing)
+		return (!density || lying)
+	if(buckled == mover)
+		return TRUE
+	if(air_group || (height == 0))
+		return TRUE
 	if(ismob(mover))
 		var/mob/moving_mob = mover
 		if ((other_mobs && moving_mob.other_mobs))
 			return 1
-		return (!mover.density || !density || lying)
-	else
-		return (!mover.density || !density || lying)
-	return
+	return (!mover.density || !density || lying)
 
 /mob/proc/setMoveCooldown(var/timeout)
 	if(client)
@@ -182,65 +183,46 @@
 
 
 /client/Move(n, direct)
-	if(!mob)
-		return // Moved here to avoid nullrefs below
+	if(world.time < move_delay)
+		return FALSE
 
-	if(mob.control_object)	Move_object(direct)
+	if(!mob || !mob.loc)
+		return FALSE
 
-	if(mob.incorporeal_move && isobserver(mob))
-		Process_Incorpmove(direct)
-		return
+	if(mob.transforming)
+		return FALSE	//This is sota the goto stop mobs from moving var
 
-	if(moving)	return 0
+	if(mob.control_object)
+		return Move_object(direct)
 
-	if(world.time < move_delay)	return
+	if(!isliving(mob))
+		return mob.Move(n, direct)
 
-	/*if(locate(/obj/effect/stop/, mob.loc))
-		for(var/obj/effect/stop/S in mob.loc)
-			if(S.victim == mob)
-				return*/
-
-	if(mob.stat==DEAD && isliving(mob))
+	if(mob.stat == DEAD)
 		mob.ghostize()
-		return
+		return FALSE
 
 	// handle possible Eye movement
 	if(mob.eyeobj)
 		return mob.EyeMove(n,direct)
 
-	if(mob.transforming)	return//This is sota the goto stop mobs from moving var
-
-	if(Process_Grab())	return
+	if(Process_Grab())
+		return FALSE
 
 	if(!mob.canmove)
-		return
+		return FALSE
 
-	if(isliving(mob))
-		var/mob/living/L = mob
-		if(L.incorporeal_move)//Move though walls
-			Process_Incorpmove(direct)
-			return
-		if(mob.client)
-			if(mob.client.view != world.view) // If mob moves while zoomed in with device, unzoom them.
-				for(var/obj/item/item in mob.contents)
-					if(item.zoom)
-						item.zoom(mob)
-						break
-				/*
-				if(locate(/obj/item/weapon/gun/energy/sniperrifle, mob.contents))		// If mob moves while zoomed in with sniper rifle, unzoom them.
-					var/obj/item/weapon/gun/energy/sniperrifle/s = locate() in mob
-					if(s.zoom)
-						s.zoom()
-				if(locate(/obj/item/device/binoculars, mob.contents))		// If mob moves while zoomed in with binoculars, unzoom them.
-					var/obj/item/device/binoculars/b = locate() in mob
-					if(b.zoom)
-						b.zoom()
-				*/
+	var/mob/living/living = mob
+	if(living.incorporeal_move)//Move though walls
+		Process_Incorpmove(direct)
+		return FALSE
 
-
-
-	//if(istype(mob.loc, /turf/space) || (mob.flags & NOGRAV))
-	//	if(!mob.Allow_Spacemove(0))	return 0
+	if(mob.client)
+		if(mob.client.view != world.view) // If mob moves while zoomed in with device, unzoom them.
+			for(var/obj/item/item in mob.contents)
+				if(item.zoom)
+					item.zoom(mob)
+					break
 
 	if(!mob.lastarea)
 		mob.lastarea = get_area(mob.loc)

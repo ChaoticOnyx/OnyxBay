@@ -85,12 +85,12 @@
 			close_door_at = 0
 
 /obj/machinery/door/proc/can_open()
-	if(!density || operating || !ticker)
+	if(!density || operating)
 		return 0
 	return 1
 
 /obj/machinery/door/proc/can_close()
-	if(density || operating || !ticker)
+	if(density || operating)
 		return 0
 	return 1
 
@@ -132,7 +132,7 @@
 
 /obj/machinery/door/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(air_group) return !block_air_zones
-	if(istype(mover) && mover.checkpass(PASS_FLAG_GLASS))
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
 		return !opacity
 	return !density
 

@@ -126,7 +126,7 @@
 	return (dir == SOUTHWEST || dir == SOUTHEAST || dir == NORTHWEST || dir == NORTHEAST)
 
 /obj/structure/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(istype(mover) && mover.checkpass(PASS_FLAG_GLASS))
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
 		return 1
 	if(is_full_window())
 		return 0	//full tile window, you can't move into it!
@@ -137,7 +137,7 @@
 
 
 /obj/structure/window/CheckExit(atom/movable/O as mob|obj, target as turf)
-	if(istype(O) && O.checkpass(PASS_FLAG_GLASS))
+	if(istype(O) && O.pass_flags & PASS_FLAG_GLASS)
 		return 1
 	if(get_dir(O.loc, target) == dir)
 		return 0

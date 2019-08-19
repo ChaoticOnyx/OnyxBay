@@ -174,7 +174,7 @@
 			src.vend(currently_vending, usr)
 			return
 		else if(handled)
-			GLOB.nanomanager.update_uis(src)
+			SSnano.update_uis(src)
 			return // don't smack that machine with your 2 thalers
 
 	if (I || istype(W, /obj/item/weapon/spacecash))
@@ -187,7 +187,7 @@
 		if(src.panel_open)
 			src.overlays += image(src.icon, "[initial(icon_state)]-panel")
 
-		GLOB.nanomanager.update_uis(src)  // Speaker switch is on the main UI, not wires UI
+		SSnano.update_uis(src)  // Speaker switch is on the main UI, not wires UI
 		return
 	else if(isMultitool(W) || isWirecutter(W))
 		if(src.panel_open)
@@ -203,7 +203,7 @@
 		coin = W
 		categories |= CAT_COIN
 		to_chat(user, "<span class='notice'>You insert \the [W] into \the [src].</span>")
-		GLOB.nanomanager.update_uis(src)
+		SSnano.update_uis(src)
 		return
 	else if(attempt_to_stock(W, user))
 		return
@@ -381,7 +381,7 @@
 	else
 		data["panel"] = 0
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "vending_machine.tmpl", src.name, 440, 600)
 		ui.set_initial_data(data)
@@ -439,7 +439,7 @@
 		else if ((href_list["togglevoice"]) && (src.panel_open))
 			src.shut_up = !src.shut_up
 
-		GLOB.nanomanager.update_uis(src)
+		SSnano.update_uis(src)
 
 /obj/machinery/vending/proc/vend(var/datum/stored_items/vending_products/R, mob/user)
 	if((!allowed(usr)) && !emagged && scan_id)	//For SECURE VENDING MACHINES YEAH
@@ -449,7 +449,7 @@
 	src.vend_ready = 0 //One thing at a time!!
 	src.status_message = "Vending..."
 	src.status_error = 0
-	GLOB.nanomanager.update_uis(src)
+	SSnano.update_uis(src)
 
 	if (R.category & CAT_COIN)
 		if(!coin)
@@ -493,7 +493,7 @@
 		src.status_error = 0
 		src.vend_ready = 1
 		currently_vending = null
-		GLOB.nanomanager.update_uis(src)
+		SSnano.update_uis(src)
 
 /**
  * Add item to the machine
@@ -507,10 +507,10 @@
 
 	if(R.add_product(W))
 		to_chat(user, "<span class='notice'>You insert \the [W] in the product receptor.</span>")
-		GLOB.nanomanager.update_uis(src)
+		SSnano.update_uis(src)
 		return 1
 
-	GLOB.nanomanager.update_uis(src)
+	SSnano.update_uis(src)
 
 /obj/machinery/vending/Process()
 	if(stat & (BROKEN|NOPOWER))
