@@ -67,6 +67,8 @@
 			return global.SSmachines;
 		if("SSmapping")
 			return global.SSmapping;
+		if("SSmisc")
+			return global.SSmisc;
 		if("SSmisc_late")
 			return global.SSmisc_late;
 		if("SSmobs")
@@ -77,6 +79,8 @@
 			return global.SSobj;
 		if("SSopen_space")
 			return global.SSopen_space;
+		if("SSplants")
+			return global.SSplants;
 		if("SSprocessing")
 			return global.SSprocessing;
 		if("SSradiation")
@@ -989,7 +993,7 @@
 			return global.z_levels;
 		if("zone_blocked")
 			return global.zone_blocked;
-
+		
 /proc/writeglobal(which, newval)
 	switch(which)
 		if("ALL_ANTIGENS")
@@ -1058,6 +1062,8 @@
 			global.SSmachines=newval;
 		if("SSmapping")
 			global.SSmapping=newval;
+		if("SSmisc")
+			global.SSmisc=newval;
 		if("SSmisc_late")
 			global.SSmisc_late=newval;
 		if("SSmobs")
@@ -1068,6 +1074,8 @@
 			global.SSobj=newval;
 		if("SSopen_space")
 			global.SSopen_space=newval;
+		if("SSplants")
+			global.SSplants=newval;
 		if("SSprocessing")
 			global.SSprocessing=newval;
 		if("SSradiation")
@@ -1980,7 +1988,7 @@
 			global.z_levels=newval;
 		if("zone_blocked")
 			global.zone_blocked=newval;
-
+		
 /var/list/_all_globals=list(
 	"ALL_ANTIGENS",
 	"ANTAG_FREQS",
@@ -2015,11 +2023,13 @@
 	"SSlighting",
 	"SSmachines",
 	"SSmapping",
+	"SSmisc",
 	"SSmisc_late",
 	"SSmobs",
 	"SSnano",
 	"SSobj",
 	"SSopen_space",
+	"SSplants",
 	"SSprocessing",
 	"SSradiation",
 	"SSshuttle",
