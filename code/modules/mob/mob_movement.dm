@@ -1,8 +1,6 @@
 /mob/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(air_group || (height == 0))
 		return TRUE
-	if(buckled == mover)
-		return TRUE
 	if(ismob(mover))
 		var/mob/moving_mob = mover
 		if (other_mobs && moving_mob.other_mobs)
@@ -181,46 +179,50 @@
 
 
 /client/Move(n, direct)
-	if(world.time < move_delay)
-		return FALSE
-
-	if(!mob || !mob.loc)
-		return FALSE
-
-	if(mob.transforming)
-		return FALSE	//This is sota the goto stop mobs from moving var
+	if(!mob)
+		return // Moved here to avoid nullrefs below
 
 	if(mob.control_object)
-		return Move_object(direct)
+		Move_object(direct)
 
-	if(!isliving(mob))
-		return mob.Move(n, direct)
+	if(mob.incorporeal_move && isobserver(mob))
+		Process_Incorpmove(direct)
+		return
 
-	if(mob.stat == DEAD)
-		mob.ghostize()
-		return FALSE
+	if(moving)	return 0
+
+	if(world.time < move_delay)	return
+
+	/*if(locate(/obj/effect/stop/, mob.loc))
+		for(var/obj/effect/stop/S in mob.loc)
+			if(S.victim == mob)
+				return*/
 
 	// handle possible Eye movement
 	if(mob.eyeobj)
 		return mob.EyeMove(n,direct)
 
-	if(Process_Grab())
-		return FALSE
+	if(mob.transforming)	return//This is sota the goto stop mobs from moving var
+
+	if(Process_Grab())	return
 
 	if(!mob.canmove)
-		return FALSE
+		return
 
-	var/mob/living/living = mob
-	if(living.incorporeal_move)//Move though walls
-		Process_Incorpmove(direct)
-		return FALSE
-
-	if(mob.client)
-		if(mob.client.view != world.view) // If mob moves while zoomed in with device, unzoom them.
-			for(var/obj/item/item in mob.contents)
-				if(item.zoom)
-					item.zoom(mob)
-					break
+	if(isliving(mob))
+		if(mob.stat==DEAD)
+			mob.ghostize()
+			return
+		var/mob/living/L = mob
+		if(L.incorporeal_move)//Move though walls
+			Process_Incorpmove(direct)
+			return
+		if(mob.client)
+			if(mob.client.view != world.view) // If mob moves while zoomed in with device, unzoom them.
+				for(var/obj/item/item in mob.contents)
+					if(item.zoom)
+						item.zoom(mob)
+						break
 
 	if(!mob.lastarea)
 		mob.lastarea = get_area(mob.loc)

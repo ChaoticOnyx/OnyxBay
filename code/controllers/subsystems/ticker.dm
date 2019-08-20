@@ -60,6 +60,7 @@ SUBSYSTEM_DEF(ticker)
 		if(CHOOSE_GAMEMODE_RETRY)
 			pregame_timeleft = 15 SECONDS
 			Master.SetRunLevel(RUNLEVEL_LOBBY)
+			bad_modes = list()
 			to_world("<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby to try again.")
 			return
 		if(CHOOSE_GAMEMODE_REVOTE)
@@ -203,7 +204,7 @@ Helpers
 */
 
 /datum/controller/subsystem/ticker/proc/choose_gamemode()
-	. = (revotes_allowed && !bypass_gamemode_vote) ? CHOOSE_GAMEMODE_REVOTE : CHOOSE_GAMEMODE_RESTART
+	. = (revotes_allowed && !bypass_gamemode_vote) ? CHOOSE_GAMEMODE_REVOTE : CHOOSE_GAMEMODE_RETRY
 
 	var/mode_to_try = master_mode //This is the config tag
 	var/datum/game_mode/mode_datum
