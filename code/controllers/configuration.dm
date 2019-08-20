@@ -905,7 +905,7 @@ var/list/gamemode_cache = list()
 
 	for(var/game_mode in gamemode_cache)
 		var/datum/game_mode/M = gamemode_cache[game_mode]
-		if(M && M.isStartRequirementsSatisfied() && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
+		if(M && M.isStartRequirementsSatisfied(totalPlayers) && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
 			runnable_modes[M.config_tag] = config.probabilities[M.config_tag]
 	return runnable_modes
 

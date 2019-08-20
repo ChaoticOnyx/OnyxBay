@@ -251,7 +251,7 @@ Helpers
 	mode_datum.pre_setup()
 	job_master.DivideOccupations(mode_datum) // Apparently important for new antagonist system to register specific job antags properly.
 
-	if(!mode_datum.isStartRequirementsSatisfied())
+	if(!mode_datum.isStartRequirementsSatisfied(totalPlayers))
 		mode_datum.fail_setup()
 		job_master.ResetOccupations()
 		bad_modes += mode_datum.config_tag

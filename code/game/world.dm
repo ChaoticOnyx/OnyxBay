@@ -66,9 +66,6 @@
 
 #define RECOMMENDED_VERSION 511
 /world/New()
-	//set window title
-	name = "[server_name] - [GLOB.using_map.full_name]"
-
 	//logs
 	SetupLogs()
 	var/date_string = time2text(world.realtime, "YYYY/MM-Month/DD-Day")
@@ -81,6 +78,13 @@
 		world.log << "Your server's byond version does not meet the recommended requirements for this server. Please update BYOND"
 
 	load_configuration()
+
+	//set window title
+	if(config.server_id)
+		var/serverId = uppertext(copytext(config.server_id, 1, 2)) + copytext(config.server_id, 2)
+		name = "[server_name]: [serverId] - [GLOB.using_map.full_name]"
+	else
+		name = "[server_name] - [GLOB.using_map.full_name]"
 
 	if(config && config.server_name != null && config.server_suffix && world.port > 0)
 		// dumb and hardcoded but I don't care~
@@ -528,8 +532,6 @@ var/world_topic_spam_protect_time = world.timeofday
 	config.load("config/game_options.txt","game_options")
 	config.loadsql("config/dbconfig.txt")
 	config.load_event("config/custom_event.txt")
-	if(config.server_id)
-		server_name = server_name + ": " + config.server_id
 
 /hook/startup/proc/loadMods()
 	world.load_mods()

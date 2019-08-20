@@ -218,7 +218,7 @@ var/global/datum/controller/occupations/job_master
 
 	proc/ResetOccupations()
 		for(var/mob/new_player/player in GLOB.player_list)
-			if((player) && (player.mind))
+			if(player && player.mind)
 				player.mind.assigned_role = null
 				player.mind.special_role = null
 		SetupOccupations()
