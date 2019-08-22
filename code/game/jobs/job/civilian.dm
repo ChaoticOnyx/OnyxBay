@@ -170,6 +170,9 @@
 		return
 	if(.)
 		H.silent += 86400
+		
+		// Mime can cast invisible wall now
+  	H.add_spell(new /spell/aoe_turf/conjure/forcewall/mime, "grey_spell_ready")
 
 /datum/job/merchant
 	title = "Merchant"
@@ -187,3 +190,4 @@
 	latejoin_at_spawnpoints = 1
 	access = list(access_merchant)
 	announced = FALSE
+
