@@ -80,9 +80,9 @@ SUBSYSTEM_DEF(ticker)
 	GLOB.using_map.setup_economy()
 	Master.SetRunLevel(RUNLEVEL_GAME)
 
-	create_event_of_round() //eof system
 	create_characters() //Create player characters and transfer them
 	collect_minds()
+	choose_event_of_round()
 	equip_characters()
 	for(var/mob/living/carbon/human/H in GLOB.player_list)
 		if(!H.mind || player_is_antag(H.mind, only_offstation_roles = 1) || !job_master.ShouldCreateRecords(H.mind.assigned_role))
@@ -93,7 +93,7 @@ SUBSYSTEM_DEF(ticker)
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup()
-		
+		create_event_of_round()
 		to_world("<FONT color='blue'><B>Enjoy the game!</B></FONT>")
 		sound_to(world, sound(GLOB.using_map.welcome_sound))
 

@@ -399,6 +399,15 @@ var/global/datum/controller/occupations/job_master
 			if(H.mind.assigned_role == "Assistant")
 				rank = "Clown"
 
+		if(SSticker.eof.id == "clumpsydumbasses")
+			if(prob(69))
+				H.mutations.Add(MUTATION_CLUMSY)
+
+		if(SSticker.eof.id == "randomnames")
+			H.real_name = random_name(H.gender)
+			H.f_style = random_facial_hair_style(H.gender)
+			H.h_style = random_hair_style(H.gender)
+
 		var/datum/job/job = GetJob(rank)
 		var/list/spawn_in_storage = list()
 

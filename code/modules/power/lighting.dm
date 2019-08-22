@@ -14,6 +14,7 @@
 
 #define LIGHTMODE_EMERGENCY "emergency_lighting"
 #define LIGHTMODE_ALARM "alarm"
+#define LIGHTMODE_PARTYHARD "partyhard"
 #define LIGHTMODE_READY "ready"
 
 /obj/machinery/light_construct
@@ -690,3 +691,12 @@
 	else if(sound_on)
 		playsound(src, sound_on, 75)
 	return status
+
+// /obj/machinery/light/proc/set_partyhard_lighting(state as num)
+
+// 	if(state)
+// 		if(LIGHTMODE_PARTYHARD in lightbulb.lighting_modes)
+// 			set_mode(LIGHTMODE_PARTYHARD)
+// 	else
+// 		if(current_mode == LIGHTMODE_PARTYHARD)
+// 			set_mode(null)

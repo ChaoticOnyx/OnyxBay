@@ -1,6 +1,8 @@
-/datum/controller/subsystem/ticker/proc/create_event_of_round()
+/datum/controller/subsystem/ticker/proc/choose_event_of_round()
     var/event = pick(typesof(/datum/event_of_round) - /datum/event_of_round)
     eof = new event
+
+/datum/controller/subsystem/ticker/proc/create_event_of_round()
     eof.apply_event()
     eof.announce_event()
 
@@ -147,3 +149,37 @@
             SD.name = "Space Cleaner Soap Deluxe"
             SD.desc = "In 2563 someone need space cleaners?"
             qdel(SC)
+
+/datum/event_of_round/clumpsy_dumbasses
+    id = "clumpsydumbasses"
+    event_message = "You feel so dumb."
+
+/datum/event_of_round/clumpsy_dumbasses/apply_event()
+    for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
+        if(prob(69))
+            H.mutations.Add(MUTATION_CLUMSY)
+
+/datum/event_of_round/can_you_hear_me_major_tom
+    id = "CANYOUHEARMEMAJTOM"
+    event_message = "Headset's too easy."
+
+/datum/event_of_round/can_you_hear_me_major_tom/apply_event()
+    for(var/obj/item/device/radio/headset/RH in world)
+        qdel(RH)
+
+/datum/event_of_round/partyhard
+    id = "partyhard"
+    event_message = "Why."
+
+/datum/event_of_round/partyhard/apply_event()
+    for(var/obj/machinery/light/L in world)
+        L.lightbulb.brightness_color = pick(COLOR_DEEP_SKY_BLUE, COLOR_PINK, COLOR_RED_LIGHT, COLOR_LIME, COLOR_RED, COLOR_PAKISTAN_GREEN, COLOR_VIOLET, COLOR_BLUE, COLOR_PALE_GREEN_GRAY, COLOR_LUMINOL, COLOR_GUNMETAL, COLOR_LIGHT_CYAN)
+        L.on = L.powered()
+        L.update_icon()
+
+/datum/event_of_round/randomnames
+    id = "randomnames"
+    event_message = "You can't remember with whom you came to the station."
+
+/datum/event_of_round/randomnames/apply_event()
+    . = ..()
