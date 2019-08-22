@@ -83,45 +83,33 @@ other types of metals and chemistry for reagents).
 /datum/design/item/tool
 	category_items = "Misc"
 
-/datum/design/prefab
-	name = "Device"
-	desc = "A blueprint made from a design built here."
-	materials = list(DEFAULT_WALL_MATERIAL = 200)
-	id = "prefab"
-	build_type = PROTOLATHE
-	sort_string = "ZAAAA"
-	var/decl/prefab/ic_assembly/fabrication
-	var/global/count = 0
-	category_items = "Misc"
 
-/datum/design/prefab/New(var/research, var/fab)
-	if(fab)
-		fabrication = fab
-		materials = list(DEFAULT_WALL_MATERIAL = fabrication.metal_amount)
-		build_path = /obj/item/device/electronic_assembly //put this here so that the default made one doesn't show up in protolathe list
-		id = "prefab[++count]"
-	sort_string = "Z"
-	var/cur_count = count
-	while(cur_count > 25)
-		sort_string += ascii2text(cur_count % 25 + 65)
-		cur_count = (cur_count - cur_count % 25) / 25
-	sort_string += ascii2text(cur_count + 65)
-	while(length(sort_string) < 5)
-		sort_string += "A"
-	..()
+/datum/design/item/integrated_printer
+	name = "Integrated Circuit Printer"
+	desc = "This machine provides all the necessary things for circuitry."
+	id = "icprinter"
+	req_tech = list(TECH_MATERIAL = 2, TECH_ENGINEERING = 1)
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 5000)
+	build_path = /obj/item/device/integrated_circuit_printer
+	sort_string = "WCLAC"
 
-/datum/design/prefab/AssembleDesignName()
-	..()
-	if(fabrication)
-		name = "Device [fabrication.assembly_name]"
+/datum/design/item/integrated_printer_upgrade_advanced
+	name = "Integrated Circuit Printer Upgrade Disk"
+	desc = "This disk allows for integrated circuit printers to print advanced circuitry designs."
+	id = "icupgradv"
+	req_tech = list(TECH_MATERIAL = 3, TECH_ENGINEERING = 3)
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 10000)
+	build_path = /obj/item/disk/integrated_circuit/upgrade/advanced
+	sort_string = "WCLAD"
 
-/datum/design/prefab/Fabricate(var/newloc)
-	if(!fabrication)
-		return
-	var/obj/O = fabrication.create(newloc)
-	for(var/obj/item/integrated_circuit/circ in O.contents)
-		circ.removable = 0
-	return O
+/datum/design/item/integrated_printer_upgrade_clone
+	name = "Integrated Circuit Printer Clone Disk"
+	desc = "This disk allows for integrated circuit printers to copy and clone designs instantaneously."
+	id = "icupclo"
+	req_tech = list(TECH_DATA = 3, TECH_MATERIAL = 5)
+	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 10000)
+	build_path = /obj/item/disk/integrated_circuit/upgrade/clone
+	sort_string = "WCLAE"
 
 /*
 CIRCUITS BELOW

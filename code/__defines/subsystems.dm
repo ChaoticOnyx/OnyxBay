@@ -23,13 +23,14 @@
 // Subsystems shutdown in the reverse of the order they initialize in
 // The numbers just define the ordering, they are meaningless otherwise.
 
-#define SS_INIT_GARBAGE          10
-#define SS_INIT_PLANTS           9
-#define SS_INIT_ANTAGS           8
-#define SS_INIT_MISC             7
-#define SS_INIT_SKYBOX           6
-#define SS_INIT_MAPPING          5
-#define SS_INIT_OPEN_SPACE       4
+#define SS_INIT_GARBAGE          11
+#define SS_INIT_PLANTS           10
+#define SS_INIT_ANTAGS           9
+#define SS_INIT_MISC             8
+#define SS_INIT_SKYBOX           7
+#define SS_INIT_MAPPING          6
+#define SS_INIT_OPEN_SPACE       5
+#define SS_INIT_CIRCUIT          4
 #define SS_INIT_ATOMS            3
 #define SS_INIT_ICON_UPDATE      2
 #define SS_INIT_MACHINES         1

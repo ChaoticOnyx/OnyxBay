@@ -628,3 +628,22 @@ proc/is_blind(A)
 			to_chat(src, "<span class='danger'>The jitters are killing you! You feel your heart beating out of your chest.</span>")
 			admin_victim_log(src, "has taken <i>minor heart damage</i> at jitteriness level [src.jitteriness].")
 	return 1
+
+//This gets an input while also checking a mob for whether it is incapacitated or not.
+/mob/proc/get_input(var/message, var/title, var/default, var/choice_type, var/obj/required_item)
+	if(src.incapacitated() || (required_item && required_item.CanUseTopic(src)))
+		return null
+	var/choice
+	if(islist(choice_type))
+		choice = input(src, message, title, default) as null|anything in choice_type
+	else
+		switch(choice_type)
+			if(MOB_INPUT_TEXT)
+				choice = input(src, message, title, default) as null|text
+			if(MOB_INPUT_NUM)
+				choice = input(src, message, title, default) as null|num
+			if(MOB_INPUT_MESSAGE)
+				choice = input(src, message, title, default) as null|message
+	if(!choice || src.incapacitated() || (required_item && required_item.CanUseTopic(src)))
+		return null
+	return choice
