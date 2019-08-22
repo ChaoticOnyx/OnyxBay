@@ -26,6 +26,8 @@ SUBSYSTEM_DEF(ticker)
 	var/list/antag_pool = list()
 	var/looking_for_antags = 0
 
+	var/datum/event_of_round/eof = null
+
 /datum/controller/subsystem/ticker/Initialize()
 	to_world("<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>")
 	to_world("Please, setup your character and select ready. Game will start in [round(pregame_timeleft/10)] seconds")
@@ -78,6 +80,7 @@ SUBSYSTEM_DEF(ticker)
 	GLOB.using_map.setup_economy()
 	Master.SetRunLevel(RUNLEVEL_GAME)
 
+	create_event_of_round() //eof system
 	create_characters() //Create player characters and transfer them
 	collect_minds()
 	equip_characters()
@@ -90,6 +93,7 @@ SUBSYSTEM_DEF(ticker)
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup()
+		
 		to_world("<FONT color='blue'><B>Enjoy the game!</B></FONT>")
 		sound_to(world, sound(GLOB.using_map.welcome_sound))
 
@@ -285,17 +289,17 @@ Helpers
 			minds += player.mind
 
 /datum/controller/subsystem/ticker/proc/equip_characters()
-	var/captainless=1
+	var/captainless = 1 // what kind of motherfucker doesn't put blanks in?
 	for(var/mob/living/carbon/human/player in GLOB.player_list)
 		if(player && player.mind && player.mind.assigned_role)
 			if(player.mind.assigned_role == "Captain")
-				captainless=0
+				captainless = 0 // and here
 			if(!player_is_antag(player.mind, only_offstation_roles = 1))
 				job_master.EquipRank(player, player.mind.assigned_role, 0)
 				equip_custom_items(player)
 	if(captainless)
 		for(var/mob/M in GLOB.player_list)
-			if(!istype(M,/mob/new_player))
+			if(!istype(M, /mob/new_player)) // cyka blyat
 				to_chat(M, "Captainship not forced on anyone.")
 
 /datum/controller/subsystem/ticker/proc/attempt_late_antag_spawn(var/list/antag_choices)

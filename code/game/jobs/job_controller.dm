@@ -394,6 +394,10 @@ var/global/datum/controller/occupations/job_master
 
 	proc/EquipRank(var/mob/living/carbon/human/H, var/rank, var/joined_late = 0)
 		if(!H)	return null
+		
+		if(SSticker.eof.id == "assclowns")
+			if(H.mind.assigned_role == "Assistant")
+				rank = "Clown"
 
 		var/datum/job/job = GetJob(rank)
 		var/list/spawn_in_storage = list()
