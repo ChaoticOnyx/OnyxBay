@@ -20,33 +20,33 @@
 /datum/event_of_round/proc/apply_event()
     return
 
-// /datum/event_of_round/without_light
-//     id = "withoutlight"
-//     event_message = "Because of anomalies in the ionosphere, the station is left without light."
+/datum/event_of_round/without_light
+    id = "withoutlight"
+    event_message = "Because of anomalies in the ionosphere, the station is left without light."
 
-// /datum/event_of_round/without_light/apply_event()
-//     lightsout(0,0)
-//     for(var/obj/item/device/flashlight/F)
-//         F.on = 0
-//         F.update_icon()
+/datum/event_of_round/without_light/apply_event()
+    lightsout(0,0)
+    for(var/obj/item/device/flashlight/F)
+        F.on = 0
+        F.update_icon()
 
-// /datum/event_of_round/lack_of_energy
-//     id = "lackofenergy"
-//     event_message = "Supermattery has not been budgeted by NanoTrasen for this station. Good luck."
+/datum/event_of_round/lack_of_energy
+    id = "lackofenergy"
+    event_message = "Supermattery has not been budgeted by NanoTrasen for this station. Good luck."
 
-// /datum/event_of_round/lack_of_energy/apply_event()
-//     for(var/obj/machinery/power/supermatter/SM in world)
-//         qdel(SM)
+/datum/event_of_round/lack_of_energy/apply_event()
+    for(var/obj/machinery/power/supermatter/SM in world)
+        qdel(SM)
 
-// /datum/event_of_round/old_times
-//     id = "oldtimes"
-//     event_message = "You feel old."
+/datum/event_of_round/old_times
+    id = "oldtimes"
+    event_message = "You feel old."
 
-// /datum/event_of_round/old_times/apply_event()
-//     for(var/atom/movable/lighting_overlay/LO in world)
-//         LO.icon = 'icons/effects/lighting_overlay_tile.dmi'
-//         LO.update_overlay()
-//         CHECK_TICK
+/datum/event_of_round/old_times/apply_event()
+    for(var/atom/movable/lighting_overlay/LO in world)
+        LO.icon = 'icons/effects/lighting_overlay_tile.dmi'
+        LO.update_overlay()
+        CHECK_TICK
 
 /datum/event_of_round/assclowns
     id = "assclowns"
