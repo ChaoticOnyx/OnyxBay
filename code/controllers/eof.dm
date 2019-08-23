@@ -16,7 +16,7 @@
 
 /datum/event_of_round/proc/announce_event()
     to_world("<h1 class='alert'>Event of round:</h1>")
-    to_world("<br>[event_message]<br>")
+    to_world("<br><b>[event_message]</b><br>")
     return
 
 /datum/event_of_round/proc/apply_event()
@@ -24,7 +24,7 @@
 
 /datum/event_of_round/without_light
     id = "withoutlight"
-    event_message = "Because of anomalies in the ionosphere, the station is left without light."
+    event_message = "The station did not receive the heroes of this shift very favourably: the complete darkness accompanied them to their workplaces, and only the dim PDA flashlights lit the way. The staff has yet to return the station to a more or less working condition, as long as they do not have a problem with their determination."
 
 /datum/event_of_round/without_light/apply_event()
     lightsout(0,0)
@@ -34,15 +34,17 @@
 
 /datum/event_of_round/lack_of_energy
     id = "lackofenergy"
-    event_message = "Supermattery has not been budgeted by NanoTrasen for this station. Good luck."
+    event_message = "The absence of such a precious element as a supermattery crystal at the station on the outskirts is not such a big surprise. The corporation has raised another challenge to the engineers, who in turn tighten the wires with a heavy breath..."
 
 /datum/event_of_round/lack_of_energy/apply_event()
     for(var/obj/machinery/power/supermatter/SM in world)
         qdel(SM)
+    for(var/obj/machinery/the_singularitygen/LORDSINGULO in world)
+        qdel(LORDSINGULO)
 
 /datum/event_of_round/old_times
     id = "oldtimes"
-    event_message = "Everyone at the station has visual hallucinations. Everything has aged in your eyes."
+    event_message = "The ghosts of the past drag the staff down, showing them what was unheard of. The station's waste in the person of the \"olds\" has decided to open the curtain of darkness to those who still have to find out and understand everything.."
 
 /datum/event_of_round/old_times/apply_event()
     for(var/atom/movable/lighting_overlay/LO in world)
@@ -52,14 +54,14 @@
 
 /datum/event_of_round/assclowns
     id = "assclowns"
-    event_message = "The assistants got a job."
+    event_message = "Life is bananas. Time is pie. The essence is the HONK. On this wild shift, the members of the grey brotherhood decided to fold their clothes to raise the banner of absurdity and demonstrate the real meaning of \"Space Station\" to the plebians!"
 
 /datum/event_of_round/assclowns/apply_event()
     . = ..()
 
 /datum/event_of_round/ghetto_medbay
     id = "ghettomedbay"
-    event_message = "NanoTrasen had to lower the budget of the medical department for your station. Doctors have to improvise."
+    event_message = "NanoTrasen back on the line! Nothing will stop brave doctors from showing their competence again and proving that they are the best of their kind!.. Even despite the low budget."
 
 /datum/event_of_round/apply_event()
     for(var/area/medical/M in world)
@@ -123,6 +125,7 @@
         for(var/obj/item/bodybag/cryobag/CB in M)
             var/obj/item/bodybag/B = new(CB.loc)
             B.name = "Cryobag Replacement"
+            B.desc = "You wouldn't have saved him anyway."
             qdel(CB)
         for(var/obj/item/weapon/scalpel/SC in M)
             var/obj/item/weapon/material/knife/K = new(SC.loc)
@@ -152,7 +155,7 @@
 
 /datum/event_of_round/clumpsy_dumbasses
     id = "clumpsydumbasses"
-    event_message = "You feel so dumb."
+    event_message = "By a really wild coincidence, most of the staff makes a lot of effort to concentrate the flow of their thoughts, and even the targeting of those spend a huge amount of effort. As long as their heels are safe!"
 
 /datum/event_of_round/clumpsy_dumbasses/apply_event()
     for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
@@ -161,7 +164,7 @@
 
 /datum/event_of_round/can_you_hear_me_major_tom
     id = "CANYOUHEARMEMAJTOM"
-    event_message = "Headset's too easy."
+    event_message = "Absence of a specialized headset will never prevent the brave employee of NanoTrasen from working. At least they still have walkie-talkies..."
 
 /datum/event_of_round/can_you_hear_me_major_tom/apply_event()
     for(var/obj/item/device/radio/headset/RH in world)
@@ -169,7 +172,7 @@
 
 /datum/event_of_round/partyhard
     id = "partyhard"
-    event_message = "Why."
+    event_message = "The future is long overdue. Unfortunately, the desire to burn the \"city\" with neon candles appeared only recently, as well as the opportunity for this."
 
 /datum/event_of_round/partyhard/apply_event()
     for(var/obj/machinery/light/L in world)
@@ -179,7 +182,34 @@
 
 /datum/event_of_round/randomnames
     id = "randomnames"
-    event_message = "You can't remember with whom you came to the station."
+    event_message = "Who would have thought that the people you had tea with just before you arrived at the station were completely unfamiliar to you. Just like you for them."
 
 /datum/event_of_round/randomnames/apply_event()
     . = ..()
+
+/datum/event_of_round/pussy_riot
+    id = "pussyriot"
+    event_message = "Today the Security Department is acting especially gently. This tenderness is expressed by the general attitude of the department...  As well as its equipment."
+
+/datum/event_of_round/pussy_riot/apply_event()
+    for(var/obj/item/weapon/melee/baton/B in world)
+        B.color = COLOR_LIGHT_PINK
+    for(var/obj/item/weapon/handcuffs/H in world)
+        H.icon = 'icons/obj/pinkcuffs.dmi'
+        H.icon_state = "pinkcuffs"
+        H.update_icon()
+    for(var/area/security/S in world)
+        for(var/obj/machinery/light/L in S)
+            L.lightbulb.brightness_color = COLOR_PINK
+            L.on = L.powered()
+            L.update_icon()
+        for(var/obj/structure/table/T in S)
+            T.color = COLOR_LIGHT_PINK
+        for(var/obj/structure/bed/chair/C in S)
+            C.color = COLOR_LIGHT_PINK
+        for(var/obj/structure/window/W in S)
+            W.color = COLOR_LIGHT_PINK
+        for(var/obj/machinery/door/window/W in S)
+            W.color = COLOR_LIGHT_PINK
+        for(var/obj/machinery/door/airlock/A in S)
+            A.color = COLOR_LIGHT_PINK
