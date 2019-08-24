@@ -85,7 +85,7 @@
 			/obj/item/weapon/reagent_containers/chem_disp_cartridge/acetone,
 			/obj/item/weapon/reagent_containers/chem_disp_cartridge/radium,
 			/obj/item/weapon/reagent_containers/chem_disp_cartridge/carbon,
-			/obj/item/weapon/reagent_containers/chem_disp_cartridge/sugar,
+			/obj/item/weapon/reagent_containers/chem_disp_cartridge/sugar
 		)
 
 /obj/machinery/chemical_dispenser/bar_soft
