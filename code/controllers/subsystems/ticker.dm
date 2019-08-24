@@ -99,9 +99,6 @@ SUBSYSTEM_DEF(ticker)
 	if(!length(GLOB.admins))
 		send2adminirc("Round has started with no admins online.")
 
-	if(config.sql_enabled)
-		statistic_cycle() // Polls population totals regularly and stores them in an SQL DB -- TLE
-
 /datum/controller/subsystem/ticker/proc/playing_tick()
 	mode.process()
 	var/mode_finished = mode_finished()
@@ -373,9 +370,11 @@ Helpers
 
 /datum/controller/subsystem/ticker/proc/declare_completion()
 	to_world("<br><br><br><H1>A round of [mode.name] has ended!</H1>")
-	for(var/client/C)
-		if(!C.credits)
-			C.RollCredits()
+	// for(var/client/C)
+		// if(!C.credits)
+			// C.RollCredits()
+	// TODO [V] Make these credits more like represing real state of things
+	// This is not a movie afterall
 	for(var/mob/Player in GLOB.player_list)
 		if(Player.mind && !isnewplayer(Player))
 			if(Player.stat != DEAD)

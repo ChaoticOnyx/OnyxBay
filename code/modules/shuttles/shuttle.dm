@@ -143,10 +143,7 @@
 //A note to anyone overriding move in a subtype. shuttle_moved() must absolutely not, under any circumstances, fail to move the shuttle.
 //If you want to conditionally cancel shuttle launches, that logic must go in short_jump(), long_jump() or attempt_move()
 /datum/shuttle/proc/shuttle_moved(var/obj/effect/shuttle_landmark/destination, var/list/turf_translation)
-
-//	log_debug("move_shuttle() called for [shuttle_tag] leaving [origin] en route to [destination].")
-//	log_degug("area_coming_from: [origin]")
-//	log_debug("destination: [destination]")
+	// testing("shuttle_moved() called for [src] moving to [destination].")
 	for(var/turf/src_turf in turf_translation)
 		var/turf/dst_turf = turf_translation[src_turf]
 		if(src_turf.is_solid_structure()) //in case someone put a hole in the shuttle and you were lucky enough to be under it
