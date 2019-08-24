@@ -1,4 +1,4 @@
-/datum/trader/pizzaria
+/datum/trader/ship/pizzaria
 	name = "Pizza Shop Employee"
 	name_language = TRADER_DEFAULT_NAME
 	origin = "Pizzeria"
@@ -24,7 +24,7 @@
 				"bribe_refusal"     = "Uh... thanks for the cash, sir. As long as you're in the area, we'll be here...",
 				)
 
-/datum/trader/pizzaria/trade(var/list/offers, var/num, var/turf/location)
+/datum/trader/ship/pizzaria/trade(var/list/offers, var/num, var/turf/location)
 	. = ..()
 	if(.)
 		var/atom/movable/M = .
@@ -89,7 +89,7 @@
 		paper.SetName("Fortune")
 		paper.info = pick(fortunes)
 
-/datum/trader/grocery
+/datum/trader/ship/grocery
 	name = "Grocer"
 	name_language = TRADER_DEFAULT_NAME
 	possible_origins = list("HyTee", "Kreugars", "Spaceway", "Privaxs", "FutureValue", "Phyvendyme", "Skreller's Market")
@@ -127,7 +127,7 @@
 				"bribe_refusal"      = "Of course sir! ORIGIN is always here for you!",
 				)
 
-/datum/trader/bakery
+/datum/trader/ship/bakery
 	name = "Pastry Chef"
 	name_language = TRADER_DEFAULT_NAME
 	origin = "Bakery"

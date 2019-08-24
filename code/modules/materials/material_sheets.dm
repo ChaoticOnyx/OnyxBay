@@ -93,6 +93,9 @@
 	icon_state = "sheet-sandstone"
 	default_type = "sandstone"
 
+/obj/item/stack/material/sandstone/fifty
+	amount = 50
+
 /obj/item/stack/material/marble
 	name = "marble brick"
 	icon_state = "sheet-marble"

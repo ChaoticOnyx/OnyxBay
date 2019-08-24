@@ -2,7 +2,8 @@
 	name = "Pet Shop Owner"
 	name_language = LANGUAGE_SKRELLIAN
 	origin = "Pet Shop"
-	trade_flags = TRADER_GOODS|TRADER_MONEY|TRADER_WANTED_ONLY
+	trade_flags = TRADER_GOODS|TRADER_MONEY|TRADER_WANTED_ONLY|TRADER_WANTED_ALL
+	want_multiplier = 15
 	possible_origins = list("Paws-Out", "Pets-R-Smart", "Tentacle Companions", "Xeno-Pets and Assorted Goods", "Barks and Drools")
 	speech = list("hail_generic"    = "Welcome to my xeno-pet shop! Here you will find many wonderful companions. Some a bit more... aggressive than others. But companions none the less. I also buy pets, or trade them.",
 				"hail_Skrell"       = "Ah! A fellow Skrell. How wonderful, I may have a few pets imported from back home. Take a look.",
@@ -13,7 +14,7 @@
 				"trade_found_unwanted" = "I want only slime extracts. I don't need food or shiny things. I'm looking for specific ones at that. Ones I already have the lab and reagents for.",
 				"trade_not_enough"   = "I'd give you the animal for free, but I need the money to feed the others. So you must pay in full.",
 				"how_much"          = "This is a fine specimen. I believe it will cost you VALUE thalers.",
-				"what_want"         = "I currently need those slime extracts:",
+				"what_want"         = "I currently need those slime extracts and seeds:",
 
 				"compliment_deny"   = "That was almost charming.",
 				"compliment_accept" = "Thank you. I needed that.",
@@ -24,7 +25,8 @@
 				"bribe_accept"      = "Hm. It'll be good for the animals, so sure.",
 				)
 
-	possible_wanted_items = list(/obj/item/slime_extract			  = TRADER_SUBTYPES_ONLY)
+	possible_wanted_items = list(/obj/item/slime_extract			  = TRADER_SUBTYPES_ONLY,
+						   		/obj/item/seeds 					  = TRADER_SUBTYPES_ONLY)
 
 	possible_trading_items = list(/mob/living/simple_animal/corgi     = TRADER_THIS_TYPE,
 								/mob/living/simple_animal/cat         = TRADER_THIS_TYPE,
@@ -46,7 +48,8 @@
 								/mob/living/simple_animal/hostile/retaliate/goat = TRADER_THIS_TYPE,
 								/mob/living/simple_animal/hostile/carp= TRADER_THIS_TYPE,
 								/obj/item/device/dociler              = TRADER_THIS_TYPE,
-								/obj/structure/dogbed                 = TRADER_THIS_TYPE)
+								/obj/structure/dogbed                 = TRADER_THIS_TYPE,
+								/obj/item/device/slime_scanner		  =	TRADER_THIS_TYPE)
 
 /datum/trader/ship/prank_shop
 	name = "Prank Shop Owner"
@@ -84,12 +87,18 @@
 								/obj/item/weapon/bananapeel             = TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/launcher/money     = TRADER_THIS_TYPE,
 								/obj/item/weapon/reagent_containers/food/snacks/pie = TRADER_THIS_TYPE,
-								/obj/item/weapon/bikehorn               = TRADER_THIS_TYPE,
+								/obj/item/weapon/bikehorn               = TRADER_ALL,
 								/obj/item/weapon/reagent_containers/spray/waterflower = TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/launcher/pneumatic/small = TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/projectile/revolver/capgun = TRADER_THIS_TYPE,
 								/obj/item/clothing/mask/fakemoustache   = TRADER_THIS_TYPE,
-								/obj/item/weapon/grenade/spawnergrenade/fake_carp = TRADER_THIS_TYPE)
+								/obj/item/weapon/grenade/spawnergrenade/fake_carp = TRADER_THIS_TYPE,
+								/obj/item/weapon/clothingbag = TRADER_SUBTYPES_ONLY,
+								/obj/item/weapon/reagent_containers/glass/paint/random = TRADER_THIS_TYPE,
+								/obj/item/weapon/reagent_containers/glass/paint/white = TRADER_THIS_TYPE,
+								/obj/item/weapon/reagent_containers/food/drinks/bottle/bottleofnothing = TRADER_THIS_TYPE,
+								/obj/item/weapon/reagent_containers/spray/hair_remover = TRADER_THIS_TYPE
+								)
 
 /datum/trader/ship/replica_shop
 	name = "Replica Store Owner"
@@ -137,4 +146,6 @@
 								/obj/item/weapon/material/sword        = TRADER_ALL,
 								/obj/item/weapon/material/scythe       = TRADER_THIS_TYPE,
 								/obj/item/weapon/material/star         = TRADER_THIS_TYPE,
-								/obj/item/weapon/material/twohanded/baseballbat = TRADER_THIS_TYPE)
+								/obj/item/weapon/material/twohanded/baseballbat = TRADER_THIS_TYPE,
+								/obj/item/weapon/material/hatchet = TRADER_ALL,
+								/obj/item/weapon/material/twohanded/fireaxe = TRADER_THIS_TYPE)

@@ -156,6 +156,7 @@ obj/item/weapon/gun/energy/retro
 	one_hand_penalty = 1
 	w_class = ITEM_SIZE_NORMAL
 	fire_delay = 10
+	wielded_item_state = null
 	force = 8.5
 	mod_weight = 0.7
 	mod_reach = 0.5
