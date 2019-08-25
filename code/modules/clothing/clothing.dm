@@ -605,7 +605,7 @@ BLIND     // can't see anything
 		overlays += image(icon, "[icon_state]_knife")
 	return ..()
 
-/obj/item/clothing/shoes/proc/handle_movement(var/turf/walking, var/running)
+/obj/item/clothing/shoes/proc/handle_movement(var/turf/walking, var/running, var/mob/living/carbon/human/humanMob)
 	return
 
 /obj/item/clothing/shoes/update_clothing_icon()

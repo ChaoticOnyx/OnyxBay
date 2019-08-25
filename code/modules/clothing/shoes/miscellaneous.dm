@@ -76,7 +76,7 @@
 	..()
 	slowdown_per_slot[slot_shoes]  = 0
 
-/obj/item/clothing/shoes/clown_shoes/handle_movement(var/turf/walking, var/running)
+/obj/item/clothing/shoes/clown_shoes/handle_movement(var/turf/walking, var/running, var/mob/living/carbon/human/humanMob)
 	if(running)
 		if(footstep >= 2)
 			footstep = 0
@@ -85,6 +85,12 @@
 			footstep++
 	else
 		playsound(src, "clownstep", 20, 1)
+	
+	// Animate clown 'waddle' if he moves around.
+	// Not the best place to put this code from /tg/ but right now it is the best place for it. Due to architecture differences.
+	animate(humanMob, pixel_z = 4, time = 0)
+	animate(pixel_z = 0, transform = turn(matrix(), pick(-12, 0, 12)), time=2)
+	animate(pixel_z = 0, transform = matrix(), time = 0)
 
 /obj/item/clothing/shoes/cult
 	name = "boots"
