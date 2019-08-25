@@ -498,6 +498,8 @@
 	icon_state = "window-mine"
 	basestate = "window-mine"
 	reinf = 1
+	maxhealth = 40
+	dir = 5
 
 /obj/structure/window/reinforced/polarized
 	name = "electrochromic window"
