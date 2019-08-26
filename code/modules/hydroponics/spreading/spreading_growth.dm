@@ -144,41 +144,45 @@
 //spreading vines aren't created on their final turf.
 //Instead, they are created at their parent and then move to their destination.
 /obj/effect/vine/proc/spread_to(turf/target_turf)
+	set waitfor = FALSE // This should do a little bit of animation.
 	var/obj/effect/vine/child = new(get_turf(src),seed,parent)
 
-	spawn(1) // This should do a little bit of animation.
-		if(QDELETED(child))
+	if(QDELETED(child))
+		return
+
+	// This should do a little bit of animation.
+	addtimer(CALLBACK(src, .proc/do_move, target_turf, child), 1)
+
+	//see if anything is there
+	for(var/thing in child.loc)
+		if(thing != child && istype(thing, /obj/effect/vine))
+			var/obj/effect/vine/other = thing
+			if(other.seed != child.seed)
+				other.vine_overrun(child.seed, src) //vine fight
+			qdel(child)
+			return
+		if(istype(thing, /obj/effect/dead_plant))
+			qdel(thing)
+			qdel(child)
+			return
+		if(isliving(thing) && (seed.get_trait(TRAIT_CARNIVOROUS) || (seed.get_trait(TRAIT_SPREAD) >= 2 && prob(round(seed.get_trait(TRAIT_POTENCY))))))
+			entangle(thing)
+			qdel(child)
 			return
 
-		//move out to the destination
-		child.anchored = 0
-		child.Move(target_turf)
-		child.anchored = 1
-		child.update_icon()
+	// Update neighboring squares.
+	for(var/obj/effect/vine/neighbor in range(1, child.loc)) //can use the actual final child loc now
+		if(child.seed == neighbor.seed) //neighbors of different seeds will continue to try to overrun each other
+			neighbor.neighbors -= target_turf
 
-		//see if anything is there
-		for(var/thing in child.loc)
-			if(thing != child && istype(thing, /obj/effect/vine))
-				var/obj/effect/vine/other = thing
-				if(other.seed != child.seed)
-					other.vine_overrun(child.seed, src) //vine fight
-				qdel(child)
-				return
-			if(istype(thing, /obj/effect/dead_plant))
-				qdel(thing)
-				qdel(child)
-				return
-			if(isliving(thing) && (seed.get_trait(TRAIT_CARNIVOROUS) || (seed.get_trait(TRAIT_SPREAD) >= 2 && prob(round(seed.get_trait(TRAIT_POTENCY))))))
-				entangle(thing)
-				qdel(child)
-				return
+	child.finish_spreading()
 
-		// Update neighboring squares.
-		for(var/obj/effect/vine/neighbor in range(1, child.loc)) //can use the actual final child loc now
-			if(child.seed == neighbor.seed) //neighbors of different seeds will continue to try to overrun each other
-				neighbor.neighbors -= target_turf
-
-		child.finish_spreading()
+/obj/effect/vine/proc/do_move(turf/target, obj/effect/vine/child)
+	//move out to the destination
+	child.anchored = 0
+	child.Move(target)
+	child.anchored = 1
+	queue_icon_update()
 
 /obj/effect/vine/proc/wake_neighbors()
 	// This turf is clear now, let our buddies know.

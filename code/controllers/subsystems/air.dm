@@ -143,8 +143,7 @@ SUBSYSTEM_DEF(air)
 Total Zones: [zones.len]
 Total Edges: [edges.len]
 Total Active Edges: [active_edges.len ? "<span class='danger'>[active_edges.len]</span>" : "None"]
-Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_count]
-"})
+Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_count]"})
 
 	report_progress("Geometry processing completed in [(REALTIMEOFDAY - starttime)/10] seconds!")
 

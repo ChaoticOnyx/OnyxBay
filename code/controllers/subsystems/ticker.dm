@@ -26,6 +26,8 @@ SUBSYSTEM_DEF(ticker)
 	var/list/antag_pool = list()
 	var/looking_for_antags = 0
 
+	var/datum/round_event/eof
+
 /datum/controller/subsystem/ticker/Initialize()
 	to_world("<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>")
 	to_world("Please, setup your character and select ready. Game will start in [round(pregame_timeleft/10)] seconds")
@@ -80,6 +82,8 @@ SUBSYSTEM_DEF(ticker)
 
 	create_characters() //Create player characters and transfer them
 	collect_minds()
+	if (config.roundstart_events)
+		eof = pick_round_event()
 	equip_characters()
 	for(var/mob/living/carbon/human/H in GLOB.player_list)
 		if(!H.mind || player_is_antag(H.mind, only_offstation_roles = 1) || !job_master.ShouldCreateRecords(H.mind.assigned_role))
@@ -90,6 +94,9 @@ SUBSYSTEM_DEF(ticker)
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup()
+		if (eof)
+			eof.apply_event()
+			eof.announce_event()
 		to_world("<FONT color='blue'><B>Enjoy the game!</B></FONT>")
 		sound_to(world, sound(GLOB.using_map.welcome_sound))
 
@@ -98,9 +105,6 @@ SUBSYSTEM_DEF(ticker)
 
 	if(!length(GLOB.admins))
 		send2adminirc("Round has started with no admins online.")
-
-	if(config.sql_enabled)
-		statistic_cycle() // Polls population totals regularly and stores them in an SQL DB -- TLE
 
 /datum/controller/subsystem/ticker/proc/playing_tick()
 	mode.process()
@@ -285,17 +289,17 @@ Helpers
 			minds += player.mind
 
 /datum/controller/subsystem/ticker/proc/equip_characters()
-	var/captainless=1
+	var/captainless = 1 // what kind of motherfucker doesn't put blanks in?
 	for(var/mob/living/carbon/human/player in GLOB.player_list)
 		if(player && player.mind && player.mind.assigned_role)
 			if(player.mind.assigned_role == "Captain")
-				captainless=0
+				captainless = 0 // and here
 			if(!player_is_antag(player.mind, only_offstation_roles = 1))
 				job_master.EquipRank(player, player.mind.assigned_role, 0)
 				equip_custom_items(player)
 	if(captainless)
 		for(var/mob/M in GLOB.player_list)
-			if(!istype(M,/mob/new_player))
+			if(!istype(M, /mob/new_player)) // cyka blyat
 				to_chat(M, "Captainship not forced on anyone.")
 
 /datum/controller/subsystem/ticker/proc/attempt_late_antag_spawn(var/list/antag_choices)
@@ -373,9 +377,11 @@ Helpers
 
 /datum/controller/subsystem/ticker/proc/declare_completion()
 	to_world("<br><br><br><H1>A round of [mode.name] has ended!</H1>")
-	for(var/client/C)
-		if(!C.credits)
-			C.RollCredits()
+	// for(var/client/C)
+		// if(!C.credits)
+			// C.RollCredits()
+	// TODO [V] Make these credits more like represing real state of things
+	// This is not a movie afterall
 	for(var/mob/Player in GLOB.player_list)
 		if(Player.mind && !isnewplayer(Player))
 			if(Player.stat != DEAD)

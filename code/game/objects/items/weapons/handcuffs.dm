@@ -22,8 +22,6 @@
 	var/cuff_sound = 'sound/weapons/handcuffs.ogg'
 	var/cuff_type = "handcuffs"
 
-
-
 /obj/item/weapon/handcuffs/get_icon_state(slot)
 	if(slot == slot_handcuffed_str)
 		return "handcuff1"
