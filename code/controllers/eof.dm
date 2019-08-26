@@ -203,3 +203,23 @@
 			W.color = COLOR_LIGHT_PINK
 		for(var/obj/machinery/door/airlock/A in S)
 			A.color = COLOR_LIGHT_PINK
+
+/datum/round_event/wherecams
+    id = "wherecams"
+    event_message = "idk"
+
+/datum/round_event/wherecams/apply_event()
+    for(var/obj/machinery/camera/C in world)
+        qdel(C)
+
+/datum/round_event/whereaccess
+    id = "whereaccess"
+    event_message = "idk"
+
+/datum/round_event/whereaccess/apply_event()
+    for(var/obj/machinery/door/airlock/A in world)
+        A.req_access = list()
+        A.req_one_access = list()
+    for(var/obj/machinery/door/window/W in world)
+        W.req_access = list()
+        W.req_one_access = list()
