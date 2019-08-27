@@ -287,32 +287,44 @@
 	src.energy += A.singularity_act(src, current_size)
 	return
 
-/obj/singularity/proc/move(var/force_move = 0)
+/obj/singularity/proc/move(force_move_direction = 0)
 	if(!move_self)
-		return 0
+		return FALSE
 
 	var/movement_dir = pick(GLOB.alldirs - last_failed_movement)
 
-	if(force_move)
-		movement_dir = force_move
+	if(force_move_direction)
+		movement_dir = force_move_direction
 
 	if(target && prob(60))
-		movement_dir = get_dir(src,target) //moves to a singulo beacon, if there is one
+		movement_dir = get_dir(src, target) //moves to a singulo beacon, if there is one
+	else
+		var/location
+		if(prob(16))
+			location = GetAbove(src)
+			if (location)
+				src.Move(location, UP)
+				return TRUE
+		else if(prob(16))
+			location = GetBelow(src)
+			if (location)
+				src.Move(location, DOWN)
+				return TRUE
 
-	if(current_size >= 9)//The superlarge one does not care about things in its way
+	if(current_size >= 9) //The superlarge one does not care about things in its way
 		spawn(0)
 			step(src, movement_dir)
 		spawn(1)
 			step(src, movement_dir)
-		return 1
+		return TRUE
 	else if(check_turfs_in(movement_dir))
 		last_failed_movement = 0 // Reset this because we moved
 		spawn(0)
 			step(src, movement_dir)
-		return 1
+		return TRUE
 	else
 		last_failed_movement = movement_dir
-	return 0
+	return FALSE
 
 /obj/singularity/proc/check_turfs_in(var/direction = 0, var/step = 0)
 	if(!direction)
