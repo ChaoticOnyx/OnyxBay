@@ -4,7 +4,6 @@
 	icon_state = "ice_1"
 	damage = 20
 	check_armour = "energy"
-	poisedamage = 40.0 // well, itsa FORCE bolt right?
 
 /obj/item/projectile/forcebolt/strong
 	name = "force bolt"

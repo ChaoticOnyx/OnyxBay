@@ -59,18 +59,3 @@
 	desc = "A polished cutlass issued to chief petty officers of the fleet."
 	icon_state = "pettyofficersword"
 	item_state = "pettyofficersword"
-
-/obj/item/weapon/melee/sord
-	name = "\improper UNREAL SORD"
-	desc = "This thing is so unspeakably UNREAL you are having a hard time even holding it."
-	icon_state = "sord"
-	item_state = "sord"
-	hitsound = 'sound/weapons/bladeslice.ogg'
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	slot_flags = SLOT_BELT
-	force = 4.13
-	throwforce = 3.14
-	w_class = ITEM_SIZE_NORMAL
-	mod_weight = 0.5
-	mod_reach = 1.0
-	mod_handy = 0.05 // hard  time  holding  it

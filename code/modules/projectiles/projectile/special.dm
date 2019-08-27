@@ -63,7 +63,6 @@
 	damage_type = BRUTE
 	nodamage = 1
 	check_armour = "bullet"
-	poisedamage = 50.0 // slammy jammy
 
 	Bump(atom/A as mob|obj|turf|area)
 		if(A == firer)
