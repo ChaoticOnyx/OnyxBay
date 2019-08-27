@@ -1452,6 +1452,10 @@ area/rnd/test_area
 	name = "Abandoned Outpost"
 	icon_state = "dark"
 
+/area/outpost/abandonedpost
+	name = "Abandoned Post"
+	icon_state = "dark"
+
 // Engineering outpost
 
 /area/outpost/engineering

@@ -39,7 +39,8 @@ var/global/list/minevendor_list = list( //keep in order of price
 	new /datum/data/mining_equipment("First-Aid Kit",				/obj/item/weapon/storage/firstaid/regular,					30,					600),
 	new /datum/data/mining_equipment("Ore Magnet",					/obj/item/weapon/oremagnet,									10,					600),
 	new /datum/data/mining_equipment("Minecart",					/obj/structure/closet/crate/miningcar,						-1,					600,	1),
-	new /datum/data/mining_equipment("Resonator",					/obj/item/weapon/resonator,									10,					700),
+	new /datum/data/mining_equipment("Resonator",					/obj/item/weapon/resonator,	                                5,					700),
+	new /datum/data/mining_equipment("Sonic Jackhammer",		    /obj/item/weapon/pickaxe/jackhammer,	                    2,					700),
 	new /datum/data/mining_equipment("RIG Module: Maneuvering Jets",/obj/item/rig_module/maneuvering_jets,						5,					700),
 	new /datum/data/mining_equipment("Mining RIG",					/obj/item/weapon/rig/industrial,							5,					750),
 	new /datum/data/mining_equipment("KA Range Increase",			/obj/item/borg/upgrade/modkit/range,						10,					750),
@@ -50,6 +51,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 	new /datum/data/mining_equipment("Industrial Drill Head",		/obj/machinery/mining/drill,								-1,					1000,	1),
 	new /datum/data/mining_equipment("Super Resonator",				/obj/item/weapon/resonator/upgraded,						10,					1250),
 	new /datum/data/mining_equipment("KA AoE Damage",				/obj/item/borg/upgrade/modkit/aoe/turfs,					15,					1500),
+	new /datum/data/mining_equipment("Reinforced Voidsuit",			/obj/item/clothing/suit/space/void/mining/reinforced/prepared,					2,					1500),
 	new /datum/data/mining_equipment("Diamond Pickaxe",				/obj/item/weapon/pickaxe/diamond,							10,					1500),
 	new /datum/data/mining_equipment("Plasmacutter",				/obj/item/weapon/gun/energy/plasmacutter,					1,					3750),
 	new /datum/data/mining_equipment("RIG Module: Plasmacutter",	/obj/item/rig_module/mounted/plasmacutter,					1,					4050)

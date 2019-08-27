@@ -187,6 +187,22 @@
 /obj/item/clothing/suit/space/void/mining/alt/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/mining/alt
 
+/obj/item/clothing/head/helmet/space/void/mining/reinforced
+	name = "reinforced mining voidsuit helmet"
+	desc = "An armored voidsuit helmet. Someone must have through they were pretty cool when they painted a mohawk on it."
+	icon_state = "rig0-miningref"
+	item_state = "miningref_helm"
+	armor = list(melee = 70, bullet = 5, laser = 30,energy = 5, bomb = 55, bio = 100, rad = 80)
+
+/obj/item/clothing/suit/space/void/mining/reinforced
+	icon_state = "rig-miningref"
+	name = "reinforced mining voidsuit"
+	desc = "A heavy-duty prospecting voidsuit. What it lacks in comfort it makes up for in armor plating and street cred."
+	armor = list(melee = 70, bullet = 5, laser = 30,energy = 5, bomb = 55, bio = 100, rad = 80)
+
+/obj/item/clothing/suit/space/void/mining/reinforced/prepared
+	helmet = /obj/item/clothing/head/helmet/space/void/mining/reinforced
+
 //Medical
 /obj/item/clothing/head/helmet/space/void/medical/alt
 	name = "streamlined medical voidsuit helmet"
@@ -320,3 +336,22 @@
 /obj/item/clothing/suit/space/void/pilot/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/pilot
 	boots = /obj/item/clothing/shoes/magboots
+
+//Non-standard
+/obj/item/clothing/head/helmet/space/void/knight
+	name = "strange voidsuit helmet"
+	desc = "A bulky helmet with some heavy armor plating."
+	icon_state = "hardsuit-helm-knight"
+	item_state = "hardsuit-helm-knight"
+	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100, rad = 10)
+	siemens_coefficient = 0.7
+	light_overlay = "helmet_light_dual"
+
+/obj/item/clothing/suit/space/void/knight
+	icon_state = "hardsuit-knight"
+	item_state = "hardsuit-knight"
+	name = "strange voidsuit"
+	desc = "A bulky set of space-proof armor, that looks kinda ancient. 'Lancelot X-40' is written on the front plate."
+	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100, rad = 10)
+	allowed = list(/obj/item/weapon/gun,/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/weapon/melee/baton)
+	siemens_coefficient = 0.7
