@@ -49,22 +49,16 @@
 	max_w_class = ITEM_SIZE_GARGANTUAN
 	max_storage_space = 56
 
-	New()
-		..()
+/obj/item/weapon/storage/backpack/holding/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/weapon/storage/backpack/holding))
+		investigate_log("has become a singularity. Caused by [user.key]", "singulo")
+		to_chat(usr, "\red The Bluespace interfaces of the two devices catastrophically malfunction!")
+		qdel(W)
+		new /obj/singularity(src.loc, 300)
+		log_and_message_admins("detonated a bag of holding", user, src.loc)
+		qdel(src)
 		return
-
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/storage/backpack/holding))
-			investigate_log("has become a singularity. Caused by [user.key]","singulo")
-			user << "\red The Bluespace interfaces of the two devices catastrophically malfunction!"
-			del(W)
-			var/obj/singularity/singulo = new /obj/singularity/ (get_turf(src))
-			singulo.energy = 300 //should make it a bit bigger~
-			message_admins("[key_name_admin(user)] detonated a bag of holding")
-			log_game("[key_name(user)] detonated a bag of holding")
-			del(src)
-			return
-		..()
+	..()
 
 /obj/item/weapon/storage/backpack/santabag
 	name = "\improper Santa's gift bag"
