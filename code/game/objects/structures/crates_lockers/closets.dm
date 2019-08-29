@@ -574,7 +574,10 @@
 	escapee.setClickCooldown(100)
 
 	//okay, so the closet is either welded or locked... resist!!!
-	to_chat(escapee, "<span class='warning'>You lean on the back of \the [src] and start pushing the door open. (this will take about [breakout_time] minutes)</span>")
+	if(istype(src, /obj/structure/closet/body_bag))
+		to_chat(escapee, "<span class='warning'>You're trying to open \the [src] from the inside. (this will take about [breakout_time] minutes)</span>")
+	else
+		to_chat(escapee, "<span class='warning'>You lean on the back of \the [src] and start pushing the door open. (this will take about [breakout_time] minutes)</span>")
 
 	visible_message("<span class='danger'>\The [src] begins to shake violently!</span>")
 
