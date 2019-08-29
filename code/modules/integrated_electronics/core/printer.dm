@@ -14,7 +14,7 @@
 	var/cloning = FALSE			// If the printer is currently creating a circuit
 	var/recycling = FALSE		// If an assembly is being emptied into this printer
 	var/list/program			// Currently loaded save, in form of list
-	var/materials = list()
+	var/materials = list(MATERIAL_STEEL = 0)
 	var/metal_max = 25 * SHEET_MATERIAL_AMOUNT
 
 /obj/item/device/integrated_circuit_printer/proc/check_interactivity(mob/user)
@@ -48,6 +48,7 @@
 		return
 	for(var/material in O.matter)
 		if(materials[material] + O.matter[material] > metal_max)
+			// TODO[V] change that after port of materials subsystem
 			var/material/material_datum = capitalize(material)
 			if(material_datum)
 				to_chat(user, "<span class='notice'>[src] can't hold any more [material_datum]!</span>")
@@ -148,6 +149,7 @@
 		HTML += "Materials: "
 		var/list/dat = list()
 		for(var/material in materials)
+			// TODO[V] change that after port of materials subsystem
 			var/material/material_datum = capitalize(material)
 			dat += "[materials[material]]/[metal_max] [material_datum]"
 		HTML += jointext(dat, "; ")
@@ -222,7 +224,7 @@
 		else if(ispath(build_type, /obj/item/integrated_circuit))
 			var/obj/item/integrated_circuit/IC = SScircuit.cached_components[build_type]
 			cost = IC.matter
-		else if(!build_type in SScircuit.circuit_fabricator_recipe_list["Tools"])
+		else if(!(build_type in SScircuit.circuit_fabricator_recipe_list["Tools"]))
 			return
 
 		if(!debug && !subtract_material_costs(cost, usr))
@@ -322,6 +324,7 @@
 /obj/item/device/integrated_circuit_printer/proc/subtract_material_costs(var/list/cost, var/mob/user)
 	for(var/material in cost)
 		if(materials[material] < cost[material])
+			// TODO[V] change that after port of materials subsystem
 			var/material/material_datum = capitalize(material)
 			to_chat(user, "<span class='warning'>You need [cost[material]] [material_datum] to build that!</span>")
 			return FALSE

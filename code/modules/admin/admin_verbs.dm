@@ -13,6 +13,7 @@ var/list/admin_verbs_default = list(
 	/client/proc/checkAccount
 //	/client/proc/deadchat				//toggles deadchat on/off,
 	)
+
 var/list/admin_verbs_admin = list(
 	/client/proc/player_panel_new,		//shows an interface for all players, with links to various panels,
 	/client/proc/invisimin,				//allows our mob to go invisible/visible,
@@ -102,12 +103,14 @@ var/list/admin_verbs_admin = list(
 	/client/proc/remove_trader,
 	/datum/admins/proc/sendFax,
 	/client/proc/change_regular_announcement
-)
+	)
+
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,
 	/client/proc/jobbans,
 	/client/proc/DB_ban_panel
 	)
+
 var/list/admin_verbs_sounds = list(
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
@@ -145,6 +148,7 @@ var/list/admin_verbs_spawn = list(
 	/client/proc/virus2_editor,
 	/client/proc/spawn_chemdisp_cartridge
 	)
+
 var/list/admin_verbs_server = list(
 	/datum/admins/proc/capture_map_part,
 	/client/proc/Set_Holiday,
@@ -169,6 +173,7 @@ var/list/admin_verbs_server = list(
 	/client/proc/check_customitem_activity,
 	/client/proc/nanomapgen_DumpImage
 	)
+
 var/list/admin_verbs_debug = list(
 	/client/proc/getruntimelog,                     // allows us to access runtime logs to somebody,
 	/client/proc/cmd_admin_list_open_jobs,
@@ -223,9 +228,11 @@ var/list/admin_verbs_possess = list(
 	/proc/possess,
 	/proc/release
 	)
+
 var/list/admin_verbs_permissions = list(
 	/client/proc/edit_admin_permissions
 	)
+
 var/list/admin_verbs_rejuv = list(
 	/client/proc/respawn_character
 	)
@@ -300,6 +307,7 @@ var/list/admin_verbs_hideable = list(
 	/proc/possess,
 	/proc/release
 	)
+
 var/list/admin_verbs_mod = list(
 	/client/proc/cmd_admin_pm_context,	// right-click adminPM interface,
 	/client/proc/cmd_admin_pm_panel,	// admin-pm list,
@@ -317,8 +325,7 @@ var/list/admin_verbs_mod = list(
 	/client/proc/cmd_admin_subtle_message, // send an message to somebody as a 'voice in their head',
 	/client/proc/aooc,
 	/datum/admins/proc/sendFax
-
-)
+	)
 
 var/list/admin_verbs_mentor = list(
 	/client/proc/cmd_admin_pm_context,
@@ -329,7 +336,7 @@ var/list/admin_verbs_mentor = list(
 	/datum/admins/proc/show_player_info,
 //	/client/proc/dsay,
 	/client/proc/cmd_admin_subtle_message
-)
+	)
 
 /client/proc/add_admin_verbs()
 	if(holder)

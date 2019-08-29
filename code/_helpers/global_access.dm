@@ -49,6 +49,10 @@
 			return global.SSantags;
 		if("SSatoms")
 			return global.SSatoms;
+		if("SScircuit")
+			return global.SScircuit;
+		if("SScircuit_components")
+			return global.SScircuit_components;
 		if("SSevac")
 			return global.SSevac;
 		if("SSevent")
@@ -991,7 +995,7 @@
 			return global.z_levels;
 		if("zone_blocked")
 			return global.zone_blocked;
-
+		
 /proc/writeglobal(which, newval)
 	switch(which)
 		if("ALL_ANTIGENS")
@@ -1042,6 +1046,10 @@
 			global.SSantags=newval;
 		if("SSatoms")
 			global.SSatoms=newval;
+		if("SScircuit")
+			global.SScircuit=newval;
+		if("SScircuit_components")
+			global.SScircuit_components=newval;
 		if("SSevac")
 			global.SSevac=newval;
 		if("SSevent")
@@ -1984,7 +1992,7 @@
 			global.z_levels=newval;
 		if("zone_blocked")
 			global.zone_blocked=newval;
-
+		
 /var/list/_all_globals=list(
 	"ALL_ANTIGENS",
 	"ANTAG_FREQS",
@@ -2010,6 +2018,8 @@
 	"SSalarm",
 	"SSantags",
 	"SSatoms",
+	"SScircuit",
+	"SScircuit_components",
 	"SSevac",
 	"SSevent",
 	"SSfastprocess",
@@ -2233,7 +2243,6 @@
 	"image_repository",
 	"inactive_keys",
 	"init",
-	"integrated_circuit_blacklist",
 	"intents",
 	"intercom_range_display_status",
 	"invalid_zone",

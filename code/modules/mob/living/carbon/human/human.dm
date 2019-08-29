@@ -1386,6 +1386,7 @@
 	return
 
 // Similar to get_pulse, but returns only integer numbers instead of text.
+// TODO[V] Please adjust get_pulse() proc to be used here
 /mob/living/carbon/human/proc/get_pulse_as_number()
 	var/obj/item/organ/internal/heart/heart_organ = internal_organs_by_name[BP_HEART]
 	if(!heart_organ)

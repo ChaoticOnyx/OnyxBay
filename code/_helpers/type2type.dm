@@ -34,6 +34,7 @@
 		place *= 16
 
 // Returns the hex value of a number given a value assumed to be a base-ten value
+// TODO[V] if you ever find yourself out of work, please refactor this one
 /proc/num2hex(num, len=2)
 	if(!isnum(num))
 		num = 0
@@ -159,6 +160,7 @@
 	if (rights & R_SOUNDS)      . += "[seperator]+SOUND"
 	if (rights & R_SPAWN)       . += "[seperator]+SPAWN"
 	if (rights & R_MOD)         . += "[seperator]+MODERATOR"
+	if (rights & R_MENTOR)      . += "[seperator]+MENTOR"
 	return .
 
 // heat2color functions. Adapted from: http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
