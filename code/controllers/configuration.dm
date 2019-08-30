@@ -23,7 +23,7 @@ var/list/gamemode_cache = list()
 	var/log_runtime = 0						// Log world.log to a file
 	var/log_world_output = 0				// Log world.log << messages
 
-	var/sql_enabled = 1						// SQL storage
+	var/sql_enabled = FALSE					// SQL storage. If you want to enable it, use sql_enabled var in config file
 
 	var/allow_admin_ooccolor = 0			// Allows admins with relevant permissions to have their own ooc colour
 	var/allow_vote_restart = 0 				// Allow votes to restart
