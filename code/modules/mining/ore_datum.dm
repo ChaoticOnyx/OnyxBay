@@ -124,9 +124,9 @@ var/global/list/ores_by_type = list()
 	worth = 10
 
 /ore/gold
-	smelts_to = MATERIAL_GOLD
 	name = "gold"
 	display_name = "native gold"
+	smelts_to = MATERIAL_GOLD
 	result_amount = 5
 	spread_chance = 10
 	ore = /obj/item/weapon/ore/gold
@@ -168,7 +168,7 @@ var/global/list/ores_by_type = list()
 	name = "mhydrogen"
 	display_name = "metallic hydrogen"
 	smelts_to = MATERIAL_TRITIUM
-	compresses_to = "mhydrogen"
+	compresses_to = MATERIAL_HYDROGEN
 	ore = /obj/item/weapon/ore/hydrogen //Technically not needed since there's no hydrogen ore vein, but consistency is nice
 	scan_icon = "mineral_rare"
 	worth = 15
