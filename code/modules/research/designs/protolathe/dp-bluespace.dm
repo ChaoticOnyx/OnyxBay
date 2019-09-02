@@ -24,7 +24,7 @@
 	desc = "Used to scan and locate signals on a particular frequency."
 	id = "beacon_locator"
 	req_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 2, TECH_BLUESPACE = 3)
-	materials = list(MATERIAL_STEEL = 1000,MATERIAL_GLASS = 500)
+	materials = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 500)
 	build_path = /obj/item/weapon/pinpointer/radio
 	sort_string = "VADAC"
 

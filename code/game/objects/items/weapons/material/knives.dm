@@ -181,13 +181,13 @@
 	applies_material_colour = 0
 
 /obj/item/weapon/material/shivgrip/wood/New(var/newloc)
-	..(newloc,MATERIAL_WOOD)
+	..(newloc, MATERIAL_WOOD)
 	name = "wooden small knife grip"
 	icon_state = "shiv_wood"
 	color = null
 
 /obj/item/weapon/material/shivgrip/plastic/New(var/newloc)
-	..(newloc,MATERIAL_PLASTIC)
+	..(newloc, MATERIAL_PLASTIC)
 	name = "plastic small knife grip"
 	icon_state = "shiv_plastic"
 	color = null

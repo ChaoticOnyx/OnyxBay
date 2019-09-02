@@ -576,7 +576,7 @@ var/list/name_to_material
 	resilience = 9
 	reflectance = 25
 	stack_origin_tech = list(TECH_MATERIAL = 2)
-	composite_material = list(MATERIAL_STEEL = 1875,MATERIAL_GLASS = 3750)
+	composite_material = list(MATERIAL_STEEL = 1875, MATERIAL_GLASS = 3750)
 	window_options = list("One Direction" = 1, "Full Window" = 4, "Windoor" = 5)
 	created_window = /obj/structure/window/reinforced
 	wire_product = null

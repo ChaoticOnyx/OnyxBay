@@ -111,7 +111,7 @@
 	item_state = "rcdammo"
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_MATERIAL = 2)
-	matter = list(MATERIAL_STEEL = 15000,MATERIAL_GLASS = 7500)
+	matter = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 7500)
 	var/remaining = 10
 
 /obj/item/weapon/rcd_ammo/examine(var/mob/user)
@@ -122,7 +122,7 @@
 /obj/item/weapon/rcd_ammo/large
 	name = "high-capacity matter cartridge"
 	desc = "Do not ingest."
-	matter = list(MATERIAL_STEEL = 45000,MATERIAL_GLASS = 22500)
+	matter = list(MATERIAL_STEEL = 45000, MATERIAL_GLASS = 22500)
 	remaining = 30
 	origin_tech = list(TECH_MATERIAL = 4)
 

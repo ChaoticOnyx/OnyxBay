@@ -89,7 +89,7 @@
 	desc = "A Rapid Construction Device, mountable on a RIG."
 	id = "rig_rcd"
 	req_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 5, TECH_ENGINEERING = 7)
-	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 1000, MATERIAL_PLASTIC = 1000,MATERIAL_GOLD = 700, MATERIAL_SILVER = 700)
+	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 1000, MATERIAL_PLASTIC = 1000, MATERIAL_GOLD = 700, MATERIAL_SILVER = 700)
 	build_path = /obj/item/rig_module/device/rcd
 	sort_string = "WCEAA"
 

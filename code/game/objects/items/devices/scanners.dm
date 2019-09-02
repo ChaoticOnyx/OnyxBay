@@ -474,7 +474,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 	throw_speed = 4
 	throw_range = 20
 
-	matter = list(MATERIAL_STEEL = 30,MATERIAL_GLASS = 20)
+	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
 	origin_tech = list(TECH_MAGNET = 1, TECH_ENGINEERING = 1)
 	var/advanced_mode = 0
@@ -521,7 +521,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 	throw_speed = 4
 	throw_range = 20
 
-	matter = list(MATERIAL_STEEL = 30,MATERIAL_GLASS = 20)
+	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
 	origin_tech = list(TECH_MAGNET = 2, TECH_BIO = 2)
 	var/details = 0
@@ -589,7 +589,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 	throwforce = 5
 	throw_speed = 4
 	throw_range = 20
-	matter = list(MATERIAL_STEEL = 30,MATERIAL_GLASS = 20)
+	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
 	origin_tech = list(TECH_MAGNET = 2, TECH_BIO = 2)
 	var/details = 0
@@ -655,7 +655,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_MAGNET = 1, TECH_BIO = 1)
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	matter = list(MATERIAL_STEEL = 30,MATERIAL_GLASS = 20)
+	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
 /obj/item/device/slime_scanner/proc/list_gases(var/gases)
 	. = list()

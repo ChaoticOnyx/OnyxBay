@@ -775,7 +775,7 @@
 	name = "Advanced surgeon cyborg model"
 	id = "remodel_surgeon_advanced"
 	build_path = /obj/item/borg/upgrade/remodel/advanced/surgeon
-	materials = list(MATERIAL_STEEL = 15000,MATERIAL_GLASS = 5000, MATERIAL_GOLD = 5000, MATERIAL_DIAMOND = 500)
+	materials = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 5000, MATERIAL_GOLD = 5000, MATERIAL_DIAMOND = 500)
 	req_tech = list(TECH_ENGINEERING = 4,TECH_POWER = 2,TECH_BIO = 5,TECH_BLUESPACE = 3)
 
 /datum/design/item/robot_upgrade/remodel/security
@@ -792,7 +792,7 @@
 	name = "Advanced engineering cyborg model"
 	id = "remodel_engineering_advanced"
 	build_path = /obj/item/borg/upgrade/remodel/advanced/engineering
-	materials = list(MATERIAL_STEEL = 20000,MATERIAL_GLASS = 10000, MATERIAL_PHORON = 2000, MATERIAL_DIAMOND = 1000)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 10000, MATERIAL_PHORON = 2000, MATERIAL_DIAMOND = 1000)
 	req_tech = list(TECH_ENGINEERING = 6, TECH_MATERIAL = 4,TECH_POWER = 4,TECH_MAGNET = 2)
 
 /datum/design/item/robot_upgrade/remodel/miner

@@ -40,7 +40,7 @@
 	desc = "Used to check spatial depth and density of rock outcroppings."
 	id = "depth_scanner"
 	req_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2, TECH_BLUESPACE = 2)
-	materials = list(MATERIAL_STEEL = 1000,MATERIAL_GLASS = 1000)
+	materials = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 1000)
 	build_path = /obj/item/device/depth_scanner
 	sort_string = "KAAAF"
 
@@ -49,6 +49,6 @@
 	id = "ano_scanner"
 	desc = "Aids in triangulation of exotic particles."
 	req_tech = list(TECH_BLUESPACE = 3, TECH_MAGNET = 3)
-	materials = list(MATERIAL_STEEL = 10000,MATERIAL_GLASS = 5000)
+	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000)
 	build_path = /obj/item/device/ano_scanner
 	sort_string = "VAEAA"

@@ -173,16 +173,16 @@
 
 //Predefined materials go here.
 /obj/item/weapon/material/twohanded/baseballbat/metal/New(var/newloc)
-	..(newloc,MATERIAL_STEEL)
+	..(newloc, MATERIAL_STEEL)
 
 /obj/item/weapon/material/twohanded/baseballbat/uranium/New(var/newloc)
-	..(newloc,MATERIAL_URANIUM)
+	..(newloc, MATERIAL_URANIUM)
 
 /obj/item/weapon/material/twohanded/baseballbat/gold/New(var/newloc)
-	..(newloc,MATERIAL_GOLD)
+	..(newloc, MATERIAL_GOLD)
 
 /obj/item/weapon/material/twohanded/baseballbat/platinum/New(var/newloc)
-	..(newloc,MATERIAL_PLATINUM)
+	..(newloc, MATERIAL_PLATINUM)
 
 /obj/item/weapon/material/twohanded/baseballbat/diamond/New(var/newloc)
-	..(newloc,MATERIAL_DIAMOND)
+	..(newloc, MATERIAL_DIAMOND)

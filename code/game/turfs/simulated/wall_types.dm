@@ -28,37 +28,37 @@
 	icon_state = "cult"
 
 /turf/simulated/wall/iron/New(var/newloc)
-	..(newloc,MATERIAL_IRON)
+	..(newloc, MATERIAL_IRON)
 
 /turf/simulated/wall/uranium/New(var/newloc)
-	..(newloc,MATERIAL_URANIUM)
+	..(newloc, MATERIAL_URANIUM)
 
 /turf/simulated/wall/diamond/New(var/newloc)
-	..(newloc,MATERIAL_DIAMOND)
+	..(newloc, MATERIAL_DIAMOND)
 
 /turf/simulated/wall/gold/New(var/newloc)
-	..(newloc,MATERIAL_GOLD)
+	..(newloc, MATERIAL_GOLD)
 
 /turf/simulated/wall/silver/New(var/newloc)
-	..(newloc,MATERIAL_SILVER)
+	..(newloc, MATERIAL_SILVER)
 
 /turf/simulated/wall/phoron/New(var/newloc)
-	..(newloc,MATERIAL_PHORON)
+	..(newloc, MATERIAL_PHORON)
 
 /turf/simulated/wall/sandstone/New(var/newloc)
-	..(newloc,MATERIAL_SANDSTONE)
+	..(newloc, MATERIAL_SANDSTONE)
 
 /turf/simulated/wall/wood/New(var/newloc)
-	..(newloc,MATERIAL_WOOD)
+	..(newloc, MATERIAL_WOOD)
 
 /turf/simulated/wall/ironphoron/New(var/newloc)
-	..(newloc,MATERIAL_IRON, MATERIAL_PHORON)
+	..(newloc, MATERIAL_IRON, MATERIAL_PHORON)
 
 /turf/simulated/wall/golddiamond/New(var/newloc)
-	..(newloc,MATERIAL_GOLD, MATERIAL_DIAMOND)
+	..(newloc, MATERIAL_GOLD, MATERIAL_DIAMOND)
 
 /turf/simulated/wall/silvergold/New(var/newloc)
-	..(newloc,MATERIAL_SILVER, MATERIAL_GOLD)
+	..(newloc, MATERIAL_SILVER, MATERIAL_GOLD)
 
 /turf/simulated/wall/sandstonediamond/New(var/newloc)
 	..(newloc, MATERIAL_SANDSTONE, MATERIAL_DIAMOND)

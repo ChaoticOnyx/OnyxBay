@@ -56,7 +56,7 @@
 	throw_range = 15
 	throw_speed = 3
 
-	matter = list(MATERIAL_STEEL = 500,MATERIAL_GLASS = 200)
+	matter = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 200)
 
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 4)
 
@@ -172,7 +172,7 @@
 	throw_range = 15
 	throw_speed = 3
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 4)
-	matter = list(MATERIAL_STEEL = 25,MATERIAL_GLASS = 20)
+	matter = list(MATERIAL_STEEL = 25, MATERIAL_GLASS = 20)
 
 /obj/item/weapon/screwdriver/advpart
 	name = "compact screwdriver"

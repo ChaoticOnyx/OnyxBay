@@ -35,11 +35,11 @@
 		if(prob(30))
 			descriptors.Add("is encrusted with [pick("","synthetic ","multi-faceted ","uncut ","sparkling ") + pick("rubies","emeralds","diamonds","opals","lapiz lazuli")]")
 		if(prob(30))
-			descriptors.Add("is studded with [pick(MATERIAL_GOLD,MATERIAL_SILVER,"aluminium",MATERIAL_TITANIUM)]")
+			descriptors.Add("is studded with [pick(MATERIAL_GOLD, MATERIAL_SILVER,"aluminium", MATERIAL_TITANIUM)]")
 		if(prob(30))
 			descriptors.Add("is encircled with bands of [pick("quadrinium","cordite","ferritic-alloy","plasteel","duranium")]")
 		if(prob(30))
-			descriptors.Add("menaces with spikes of [pick("solid phoron",MATERIAL_URANIUM,"white pearl","black steel")]")
+			descriptors.Add("menaces with spikes of [pick("solid phoron", MATERIAL_URANIUM,"white pearl","black steel")]")
 		if(descriptors.len > 0)
 			decorations = "It "
 			for(var/index=1, index <= descriptors.len, index++)

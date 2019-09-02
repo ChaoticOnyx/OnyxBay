@@ -180,17 +180,17 @@
 	buckle_pixel_shift = "x=0;y=1"
 
 /obj/structure/bed/psych/New(var/newloc)
-	..(newloc,MATERIAL_WOOD, MATERIAL_LEATHER)
+	..(newloc, MATERIAL_WOOD, MATERIAL_LEATHER)
 
 /obj/structure/bed/padded/New(var/newloc)
-	..(newloc,MATERIAL_PLASTIC,MATERIAL_COTTON)
+	..(newloc, MATERIAL_PLASTIC, MATERIAL_COTTON)
 
 /obj/structure/bed/alien
 	name = "resting contraption"
 	desc = "This looks similar to contraptions from earth. Could aliens be stealing our technology?"
 
 /obj/structure/bed/alien/New(var/newloc)
-	..(newloc,MATERIAL_RESIN)
+	..(newloc, MATERIAL_RESIN)
 
 /obj/structure/bed/bogani
 	name = "alien bed"
@@ -324,7 +324,7 @@
 	buckle_pixel_shift = "x=0;y=3"
 
 /obj/structure/bed/wheel/padded/New(var/newloc)
-	..(newloc,MATERIAL_PLASTIC,MATERIAL_COTTON)
+	..(newloc, MATERIAL_PLASTIC, MATERIAL_COTTON)
 
 /obj/structure/bed/wheel/luxury/New(var/newloc)
-	..(newloc,MATERIAL_GOLD,MATERIAL_CARPET)
+	..(newloc, MATERIAL_GOLD, MATERIAL_CARPET)
