@@ -49,6 +49,11 @@ datum/admins/proc/DB_ban_record(var/bantype, var/mob/banned_mob, var/duration = 
 		computerid = bancid
 		ip = banip
 
+	if(!ckey)
+		if(usr)
+			to_chat(usr, "<span class='notice'>Ban has not been saved: empty ckey!.</span>")
+			return FALSE
+
 	var/who
 	for(var/client/C in GLOB.clients)
 		if(!who)
