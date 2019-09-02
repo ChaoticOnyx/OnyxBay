@@ -277,7 +277,7 @@ update_flag
 	SSnano.update_uis(src) // Update all NanoUIs attached to src
 
 /obj/machinery/portable_atmospherics/canister/attack_ai(var/mob/user as mob)
-	ui_interact(user)
+	return
 
 /obj/machinery/portable_atmospherics/canister/attack_hand(var/mob/user as mob)
 	ui_interact(user)
