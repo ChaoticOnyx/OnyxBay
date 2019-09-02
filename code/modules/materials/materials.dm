@@ -239,7 +239,7 @@ var/list/name_to_material
 
 // Datum definitions follow.
 /material/uranium
-	name = "uranium"
+	name = MATERIAL_URANIUM
 	stack_type = /obj/item/stack/material/uranium
 	radioactivity = 12
 	icon_base = "stone"
@@ -375,7 +375,7 @@ var/list/name_to_material
 	craft_tool = 1
 
 /material/steel
-	name = DEFAULT_WALL_MATERIAL
+	name = MATERIAL_STEEL
 	stack_type = /obj/item/stack/material/steel
 	hardness = 60
 	integrity = 200
@@ -405,8 +405,8 @@ var/list/name_to_material
 	spawn_diona_nymph(target)
 
 /material/steel/holographic
-	name = "holo" + DEFAULT_WALL_MATERIAL
-	display_name = DEFAULT_WALL_MATERIAL
+	name = "holo" + MATERIAL_STEEL
+	display_name = MATERIAL_STEEL
 	stack_type = null
 	shard_type = SHARD_NONE
 	conductive = 0
@@ -427,7 +427,7 @@ var/list/name_to_material
 	resilience = 49
 	reflectance = 20
 	stack_origin_tech = list(TECH_MATERIAL = 2)
-	composite_material = list(DEFAULT_WALL_MATERIAL = 3750, "platinum" = 3750) //todo
+	composite_material = list(MATERIAL_STEEL = 3750, MATERIAL_PLATINUM = 3750) //todo
 
 /material/plasteel/titanium
 	name = "titanium"
@@ -457,7 +457,7 @@ var/list/name_to_material
 	resilience = 49
 	reflectance = 25
 	stack_origin_tech = list(TECH_MATERIAL = 3)
-	composite_material = list("plasteel" = 7500, "osmium" = 3750)
+	composite_material = list(MATERIAL_PLASTEEL = 7500, MATERIAL_OSMIUM = 3750)
 
 
 /material/glass
@@ -576,7 +576,7 @@ var/list/name_to_material
 	resilience = 9
 	reflectance = 25
 	stack_origin_tech = list(TECH_MATERIAL = 2)
-	composite_material = list(DEFAULT_WALL_MATERIAL = 1875,"glass" = 3750)
+	composite_material = list(MATERIAL_STEEL = 1875,MATERIAL_GLASS = 3750)
 	window_options = list("One Direction" = 1, "Full Window" = 4, "Windoor" = 5)
 	created_window = /obj/structure/window/reinforced
 	wire_product = null
@@ -673,7 +673,7 @@ var/list/name_to_material
 	is_fusion_fuel = 1
 
 /material/platinum
-	name = "platinum"
+	name = MATERIAL_PLATINUM
 	stack_type = /obj/item/stack/material/platinum
 	icon_colour = "#bbd0e8"
 	weight = 27

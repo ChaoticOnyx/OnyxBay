@@ -35,7 +35,7 @@
 
 /turf/simulated/floor/misc/fixed/alium/New()
 	..()
-	var/material/A = get_material_by_name("alien alloy")
+	var/material/A = get_material_by_name(MATERIAL_ALIUMIUM)
 	if(!A)
 		return
 	color = A.icon_colour
@@ -46,7 +46,7 @@
 	temperature = TCMB
 
 /turf/simulated/floor/misc/fixed/alium/ex_act(severity)
-	var/material/A = get_material_by_name("alien alloy")
+	var/material/A = get_material_by_name(MATERIAL_ALIUMIUM)
 	if(prob(A.explosion_resistance))
 		return
 	if(severity == 1)

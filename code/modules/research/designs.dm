@@ -68,7 +68,7 @@ other types of metals and chemistry for reagents).
 	build_type = PROTOLATHE
 
 /datum/design/item/hud
-	materials = list(DEFAULT_WALL_MATERIAL = 50, "glass" = 50)
+	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 	category_items = "Misc"
 
 /datum/design/item/hud/AssembleDesignDesc()
@@ -89,7 +89,7 @@ other types of metals and chemistry for reagents).
 	desc = "This machine provides all the necessary things for circuitry."
 	id = "icprinter"
 	req_tech = list(TECH_MATERIAL = 2, TECH_ENGINEERING = 1)
-	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 5000)
+	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000)
 	build_path = /obj/item/device/integrated_circuit_printer
 	sort_string = "WCLAC"
 
@@ -98,7 +98,7 @@ other types of metals and chemistry for reagents).
 	desc = "This disk allows for integrated circuit printers to print advanced circuitry designs."
 	id = "icupgradv"
 	req_tech = list(TECH_MATERIAL = 3, TECH_ENGINEERING = 3)
-	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 10000)
+	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 10000)
 	build_path = /obj/item/disk/integrated_circuit/upgrade/advanced
 	sort_string = "WCLAD"
 
@@ -107,7 +107,7 @@ other types of metals and chemistry for reagents).
 	desc = "This disk allows for integrated circuit printers to copy and clone designs instantaneously."
 	id = "icupclo"
 	req_tech = list(TECH_DATA = 3, TECH_MATERIAL = 5)
-	materials = list(DEFAULT_WALL_MATERIAL = 10000, "glass" = 10000)
+	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 10000)
 	build_path = /obj/item/disk/integrated_circuit/upgrade/clone
 	sort_string = "WCLAE"
 
@@ -118,7 +118,7 @@ CIRCUITS BELOW
 /datum/design/circuit
 	build_type = IMPRINTER
 	req_tech = list(TECH_DATA = 2)
-	materials = list("glass" = 2000)
+	materials = list(MATERIAL_GLASS = 2000)
 	chemicals = list(/datum/reagent/acid = 20)
 	time = 5
 	category_items = "Machine Boards"

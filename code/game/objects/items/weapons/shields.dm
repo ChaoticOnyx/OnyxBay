@@ -60,7 +60,7 @@
 	mod_handy = 1.5
 	mod_shield = 2.0
 	origin_tech = list(TECH_MATERIAL = 2)
-	matter = list("glass" = 7500, DEFAULT_WALL_MATERIAL = 1000)
+	matter = list(MATERIAL_GLASS = 7500, MATERIAL_STEEL = 1000)
 	attack_verb = list("shoved", "bashed")
 	var/cooldown = 0 //shield bash cooldown. based on world.time
 
@@ -90,7 +90,7 @@
 	throw_range = 20
 	w_class = ITEM_SIZE_HUGE
 	origin_tech = list(TECH_MATERIAL = 1)
-	matter = list(DEFAULT_WALL_MATERIAL = 1000, "Wood" = 1000)
+	matter = list(MATERIAL_STEEL = 1000, MATERIAL_WOOD = 1000)
 	attack_verb = list("shoved", "bashed")
 
 /obj/item/weapon/shield/buckler/handle_shield(mob/user)

@@ -14,7 +14,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	throw_speed = 2
 	throw_range = 10
-	matter = list(DEFAULT_WALL_MATERIAL = 90)
+	matter = list(MATERIAL_STEEL = 90)
 	attack_verb = list("slammed", "whacked", "bashed", "thunked", "battered", "bludgeoned", "thrashed")
 
 	var/spray_particles = 3

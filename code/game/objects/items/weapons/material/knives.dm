@@ -68,7 +68,7 @@
 	thrown_force_const = 3
 	force_divisor = 0.05 // 6 when wielded with hardness 60 (steel)
 	thrown_force_divisor = 0.25 // 5 when thrown with weight 20 (steel)
-	matter = list(DEFAULT_WALL_MATERIAL = 12000)
+	matter = list(MATERIAL_STEEL = 12000)
 	origin_tech = list(TECH_MATERIAL = 1)
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	unbreakable = 1
@@ -119,7 +119,7 @@
 	force_const = 5.0
 	thrown_force_const = 3
 	force_divisor = 0.05 // 3 when wielded with hardness 60 (steel)
-	matter = list(DEFAULT_WALL_MATERIAL = 12000)
+	matter = list(MATERIAL_STEEL = 12000)
 	origin_tech = list(TECH_MATERIAL = 1)
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	unbreakable = 0
@@ -176,18 +176,18 @@
 	force_const = 5.0
 	thrown_force_const = 3
 	force_divisor = 0
-	matter = list(DEFAULT_WALL_MATERIAL = 6000)
+	matter = list(MATERIAL_STEEL = 6000)
 	randpixel = 0
 	applies_material_colour = 0
 
 /obj/item/weapon/material/shivgrip/wood/New(var/newloc)
-	..(newloc,"wood")
+	..(newloc,MATERIAL_WOOD)
 	name = "wooden small knife grip"
 	icon_state = "shiv_wood"
 	color = null
 
 /obj/item/weapon/material/shivgrip/plastic/New(var/newloc)
-	..(newloc,"plastic")
+	..(newloc,MATERIAL_PLASTIC)
 	name = "plastic small knife grip"
 	icon_state = "shiv_plastic"
 	color = null

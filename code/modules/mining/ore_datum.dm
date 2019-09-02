@@ -31,7 +31,7 @@ var/global/list/ores_by_type = list()
 		"thousand" = 999,
 		"million" = 999
 		)
-	var/xarch_source_mineral = "iron"
+	var/xarch_source_mineral = MATERIAL_IRON
 	var/list/origin_tech = list(TECH_MATERIAL = 1)
 	var/worth = 0			  // Arbitrary point value for the ore redemption console
 
@@ -47,7 +47,7 @@ var/global/list/ores_by_type = list()
 /ore/uranium
 	name = "uranium"
 	display_name = "pitchblende"
-	smelts_to = "uranium"
+	smelts_to = MATERIAL_URANIUM
 	result_amount = 5
 	spread_chance = 10
 	ore = /obj/item/weapon/ore/uranium
@@ -63,7 +63,7 @@ var/global/list/ores_by_type = list()
 /ore/hematite
 	name = "iron"
 	display_name = "hematite"
-	smelts_to = "iron"
+	smelts_to = MATERIAL_IRON
 	alloy = 1
 	result_amount = 5
 	spread_chance = 25
@@ -75,7 +75,7 @@ var/global/list/ores_by_type = list()
 	name = "carbon"
 	display_name = "raw carbon"
 	icon_tag = "coal"
-	smelts_to = "plastic"
+	smelts_to = MATERIAL_PLASTIC
 	alloy = 1
 	result_amount = 5
 	spread_chance = 25
@@ -87,16 +87,16 @@ var/global/list/ores_by_type = list()
 	name = "sand"
 	display_name = "sand"
 	icon_tag = "glass"
-	smelts_to = "glass"
+	smelts_to = MATERIAL_GLASS
 	alloy = 1
-	compresses_to = "sandstone"
+	compresses_to = MATERIAL_SANDSTONE
 	ore = /obj/item/weapon/ore/glass //Technically not needed since there's no glass ore vein, but consistency is nice
 	worth = 1
 
 /ore/phoron
 	name = "phoron"
 	display_name = "phoron crystals"
-	compresses_to = "phoron"
+	compresses_to = MATERIAL_PHORON
 	//smelts_to = something that explodes violently on the conveyor, huhuhuhu
 	result_amount = 5
 	spread_chance = 25
@@ -108,14 +108,14 @@ var/global/list/ores_by_type = list()
 		"billion" = 13,
 		"billion_lower" = 10
 		)
-	xarch_source_mineral = "phoron"
+	xarch_source_mineral = MATERIAL_PHORON
 	origin_tech = list(TECH_MATERIAL = 2)
 	worth = 4
 
 /ore/silver
 	name = "silver"
 	display_name = "native silver"
-	smelts_to = "silver"
+	smelts_to = MATERIAL_SILVER
 	result_amount = 5
 	spread_chance = 10
 	ore = /obj/item/weapon/ore/silver
@@ -124,7 +124,7 @@ var/global/list/ores_by_type = list()
 	worth = 10
 
 /ore/gold
-	smelts_to = "gold"
+	smelts_to = MATERIAL_GOLD
 	name = "gold"
 	display_name = "native gold"
 	result_amount = 5
@@ -143,7 +143,7 @@ var/global/list/ores_by_type = list()
 /ore/diamond
 	name = "diamond"
 	display_name = "diamond"
-	compresses_to = "diamond"
+	compresses_to = MATERIAL_DIAMOND
 	result_amount = 5
 	spread_chance = 10
 	ore = /obj/item/weapon/ore/diamond
@@ -155,8 +155,8 @@ var/global/list/ores_by_type = list()
 /ore/platinum
 	name = "platinum"
 	display_name = "raw platinum"
-	smelts_to = "platinum"
-	compresses_to = "osmium"
+	smelts_to = MATERIAL_PLATINUM
+	compresses_to = MATERIAL_OSMIUM
 	alloy = 1
 	result_amount = 5
 	spread_chance = 10
@@ -167,7 +167,7 @@ var/global/list/ores_by_type = list()
 /ore/hydrogen
 	name = "mhydrogen"
 	display_name = "metallic hydrogen"
-	smelts_to = "tritium"
+	smelts_to = MATERIAL_TRITIUM
 	compresses_to = "mhydrogen"
 	ore = /obj/item/weapon/ore/hydrogen //Technically not needed since there's no hydrogen ore vein, but consistency is nice
 	scan_icon = "mineral_rare"

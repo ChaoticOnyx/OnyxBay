@@ -1020,17 +1020,17 @@
 		"target" = IC_PINTYPE_REF
 		)
 	outputs = list(
-		"Steel"				 	= IC_PINTYPE_NUMBER,
-		"Glass"					= IC_PINTYPE_NUMBER,
-		"Silver"				= IC_PINTYPE_NUMBER,
-		"Gold"					= IC_PINTYPE_NUMBER,
-		"Diamond"				= IC_PINTYPE_NUMBER,
+		MATERIAL_STEEL				 	= IC_PINTYPE_NUMBER,
+		MATERIAL_GLASS					= IC_PINTYPE_NUMBER,
+		MATERIAL_SILVER				= IC_PINTYPE_NUMBER,
+		MATERIAL_GOLD					= IC_PINTYPE_NUMBER,
+		MATERIAL_DIAMOND				= IC_PINTYPE_NUMBER,
 		"Solid Phoron"			= IC_PINTYPE_NUMBER,
-		"Uranium"				= IC_PINTYPE_NUMBER,
-		"Plasteel"				= IC_PINTYPE_NUMBER,
-		"Titanium"				= IC_PINTYPE_NUMBER,
-		"Glass"					= IC_PINTYPE_NUMBER,
-		"Plastic"				= IC_PINTYPE_NUMBER,
+		MATERIAL_URANIUM				= IC_PINTYPE_NUMBER,
+		MATERIAL_PLASTEEL				= IC_PINTYPE_NUMBER,
+		MATERIAL_TITANIUM				= IC_PINTYPE_NUMBER,
+		MATERIAL_GLASS					= IC_PINTYPE_NUMBER,
+		MATERIAL_PLASTIC				= IC_PINTYPE_NUMBER,
 		)
 	activators = list(
 		"scan" = IC_PINTYPE_PULSE_IN,
@@ -1039,7 +1039,7 @@
 		)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 40
-	var/list/mtypes = list("steel", "glass", "silver", "gold", "diamond", "phoron", "uranium", "plasteel", "titanium", "glass", "plastic")
+	var/list/mtypes = list(MATERIAL_STEEL, MATERIAL_GLASS, MATERIAL_SILVER, MATERIAL_GOLD, MATERIAL_DIAMOND, MATERIAL_PHORON, MATERIAL_URANIUM, MATERIAL_PLASTEEL, MATERIAL_TITANIUM, MATERIAL_GLASS, MATERIAL_PLASTIC)
 
 /obj/item/integrated_circuit/input/matscan/do_work()
 	var/obj/O = get_pin_data_as_type(IC_INPUT, 1, /obj)

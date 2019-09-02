@@ -11,7 +11,7 @@
 	icon = 'icons/obj/syringe.dmi'
 	item_state = "syringe_0"
 	icon_state = "0"
-	matter = list("glass" = 150)
+	matter = list(MATERIAL_GLASS = 150)
 	amount_per_transfer_from_this = 5
 	possible_transfer_amounts = null
 	volume = 15
@@ -29,7 +29,7 @@
 	desc = "It is device with little needle that can be used to take dna sample for bioprinter."
 	icon = 'icons/obj/syringe.dmi'
 	icon_state = "dna_sampler"
-	matter = list("glass" = 50)
+	matter = list(MATERIAL_GLASS = 50)
 	amount_per_transfer_from_this = 1
 	possible_transfer_amounts = null
 	volume = 1
