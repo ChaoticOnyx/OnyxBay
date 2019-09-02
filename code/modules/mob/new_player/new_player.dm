@@ -472,6 +472,13 @@
 
 	new_character.lastarea = get_area(spawn_turf)
 
+	for(var/lang in client.prefs.alternate_languages)
+		var/datum/language/chosen_language = all_languages[lang]
+		if(chosen_language)
+			var/is_species_lang = (chosen_language.name in new_character.species.secondary_langs)
+			if(is_species_lang || ((!(chosen_language.flags & RESTRICTED) || has_admin_rights()) && is_alien_whitelisted(src, chosen_language)))
+				new_character.add_language(lang)
+
 	if(GLOB.random_players)
 		new_character.gender = pick(MALE, FEMALE)
 		client.prefs.real_name = random_name(new_character.gender)
