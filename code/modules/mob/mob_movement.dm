@@ -193,10 +193,9 @@
 
 	if(world.time < move_delay)	return
 
-	/*if(locate(/obj/effect/stop/, mob.loc))
-		for(var/obj/effect/stop/S in mob.loc)
-			if(S.victim == mob)
-				return*/
+	if(mob.stat==DEAD && isliving(mob))
+		mob.ghostize()
+		return
 
 	// handle possible Eye movement
 	if(mob.eyeobj)
@@ -210,9 +209,6 @@
 		return
 
 	if(isliving(mob))
-		if(mob.stat==DEAD)
-			mob.ghostize()
-			return
 		var/mob/living/L = mob
 		if(L.incorporeal_move)//Move though walls
 			Process_Incorpmove(direct)
