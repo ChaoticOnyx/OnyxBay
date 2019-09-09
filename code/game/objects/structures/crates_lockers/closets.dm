@@ -60,7 +60,7 @@
 	mod_handy = 0.65
 	mod_shield = 1.3
 	origin_tech = list(TECH_MATERIAL = 2)
-	matter = list(DEFAULT_WALL_MATERIAL = 1000)
+	matter = list(MATERIAL_STEEL = 1000)
 	attack_verb = list("shoved", "bashed")
 
 	req_access = list()

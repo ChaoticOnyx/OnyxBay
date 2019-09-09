@@ -126,7 +126,7 @@
 	icon_state = "roboprinter"
 
 	var/matter_amount_per_sheet = 10
-	var/matter_type = DEFAULT_WALL_MATERIAL
+	var/matter_type = MATERIAL_STEEL
 
 /obj/machinery/organ_printer/robot/mapped/Initialize()
 	. = ..()

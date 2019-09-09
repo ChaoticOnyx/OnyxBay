@@ -9,38 +9,38 @@
 	var/metaltag
 
 /datum/alloy/plasteel
-	metaltag = "plasteel"
+	metaltag = MATERIAL_PLASTEEL
 	requires = list(
-		"platinum" = 1,
-		"carbon" = 2,
-		"iron" = 2
+		MATERIAL_PLATINUM = 1,
+		MATERIAL_CARBON = 2,
+		MATERIAL_IRON = 2
 		)
 	product_mod = 0.3
 	product = /obj/item/stack/material/plasteel
 
 /datum/alloy/ocp
-	metaltag = "osmium-carbide plasteel"
+	metaltag = MATERIAL_OSMIUM_CARBIDE_PLASTEEL
 	requires = list(
-		"platinum" = 1,
-		"carbon" = 3,
-		"iron" = 2,
-		"osmium" = 2
+		MATERIAL_PLATINUM = 1,
+		MATERIAL_CARBON = 3,
+		MATERIAL_IRON = 2,
+		MATERIAL_OSMIUM = 2
 		)
 	product_mod = 0.3
 	product = /obj/item/stack/material/ocp
 
 /datum/alloy/steel
-	metaltag = DEFAULT_WALL_MATERIAL
+	metaltag = MATERIAL_STEEL
 	requires = list(
-		"carbon" = 1,
-		"iron" = 1
+		MATERIAL_CARBON = 1,
+		MATERIAL_IRON = 1
 		)
 	product = /obj/item/stack/material/steel
 
 /datum/alloy/borosilicate
-	metaltag = "phglass"
+	metaltag = MATERIAL_PHORON_GLASS
 	requires = list(
-		"platinum" = 1,
-		"sand" = 2
+		MATERIAL_PLATINUM = 1,
+		MATERIAL_SAND = 2
 		)
 	product = /obj/item/stack/material/glass/phoronglass

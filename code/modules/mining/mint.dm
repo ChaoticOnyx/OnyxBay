@@ -37,17 +37,17 @@
 		if(O)
 			var/processed = 1
 			switch(O.get_material_name())
-				if("gold")
+				if(MATERIAL_GOLD)
 					amt_gold += 100 * O.get_amount()
-				if("silver")
+				if(MATERIAL_SILVER)
 					amt_silver += 100 * O.get_amount()
-				if("diamond")
+				if(MATERIAL_DIAMOND)
 					amt_diamond += 100 * O.get_amount()
-				if("phoron")
+				if(MATERIAL_PHORON)
 					amt_phoron += 100 * O.get_amount()
-				if("uranium")
+				if(MATERIAL_URANIUM)
 					amt_uranium += 100 * O.get_amount()
-				if("iron")
+				if(MATERIAL_IRON)
 					amt_iron += 100 * O.get_amount()
 				else
 					processed = 0
@@ -66,32 +66,32 @@
 		dat += text("<b><font color='red'>NOT CONNECTED</font></b><br>")
 
 	dat += text("<br><font color='#ffcc00'><b>Gold inserted: </b>[amt_gold]</font> ")
-	if (chosen == "gold")
+	if (chosen == MATERIAL_GOLD)
 		dat += text("chosen")
 	else
 		dat += text("<A href='?src=\ref[src];choose=gold'>Choose</A>")
 	dat += text("<br><font color='#888888'><b>Silver inserted: </b>[amt_silver]</font> ")
-	if (chosen == "silver")
+	if (chosen == MATERIAL_SILVER)
 		dat += text("chosen")
 	else
 		dat += text("<A href='?src=\ref[src];choose=silver'>Choose</A>")
 	dat += text("<br><font color='#555555'><b>Iron inserted: </b>[amt_iron]</font> ")
-	if (chosen == "iron")
+	if (chosen == MATERIAL_IRON)
 		dat += text("chosen")
 	else
 		dat += text("<A href='?src=\ref[src];choose=iron'>Choose</A>")
 	dat += text("<br><font color='#8888ff'><b>Diamond inserted: </b>[amt_diamond]</font> ")
-	if (chosen == "diamond")
+	if (chosen == MATERIAL_DIAMOND)
 		dat += text("chosen")
 	else
 		dat += text("<A href='?src=\ref[src];choose=diamond'>Choose</A>")
 	dat += text("<br><font color='#ff8800'><b>Phoron inserted: </b>[amt_phoron]</font> ")
-	if (chosen == "phoron")
+	if (chosen == MATERIAL_PHORON)
 		dat += text("chosen")
 	else
 		dat += text("<A href='?src=\ref[src];choose=phoron'>Choose</A>")
 	dat += text("<br><font color='#008800'><b>Uranium inserted: </b>[amt_uranium]</font> ")
-	if (chosen == "uranium")
+	if (chosen == MATERIAL_URANIUM)
 		dat += text("chosen")
 	else
 		dat += text("<A href='?src=\ref[src];choose=uranium'>Choose</A>")
@@ -128,7 +128,7 @@
 			icon_state = "coinpress1"
 			var/M = output.loc
 			switch(chosen)
-				if("iron")
+				if(MATERIAL_IRON)
 					while(amt_iron > 0 && coinsToProduce > 0)
 						new/obj/item/weapon/coin/iron(M)
 						amt_iron -= 20
@@ -136,7 +136,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("gold")
+				if(MATERIAL_GOLD)
 					while(amt_gold > 0 && coinsToProduce > 0)
 						new /obj/item/weapon/coin/gold(M)
 						amt_gold -= 20
@@ -144,7 +144,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("silver")
+				if(MATERIAL_SILVER)
 					while(amt_silver > 0 && coinsToProduce > 0)
 						new /obj/item/weapon/coin/silver(M)
 						amt_silver -= 20
@@ -152,7 +152,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("diamond")
+				if(MATERIAL_DIAMOND)
 					while(amt_diamond > 0 && coinsToProduce > 0)
 						new /obj/item/weapon/coin/diamond(M)
 						amt_diamond -= 20
@@ -160,7 +160,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("phoron")
+				if(MATERIAL_PHORON)
 					while(amt_phoron > 0 && coinsToProduce > 0)
 						new /obj/item/weapon/coin/phoron(M)
 						amt_phoron -= 20
@@ -168,7 +168,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("uranium")
+				if(MATERIAL_URANIUM)
 					while(amt_uranium > 0 && coinsToProduce > 0)
 						new /obj/item/weapon/coin/uranium(M)
 						amt_uranium -= 20

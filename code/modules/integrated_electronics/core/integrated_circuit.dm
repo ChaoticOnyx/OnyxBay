@@ -73,8 +73,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	setup_io(outputs, /datum/integrated_io, outputs_default, IC_OUTPUT)
 	outputs_default = null
 	setup_io(activators, /datum/integrated_io/activate, null, IC_ACTIVATOR)
-	if(!matter[DEFAULT_WALL_MATERIAL])
-		matter[DEFAULT_WALL_MATERIAL] = w_class * SScircuit.cost_multiplier // Default cost.
+	if(!matter[MATERIAL_STEEL])
+		matter[MATERIAL_STEEL] = w_class * SScircuit.cost_multiplier // Default cost.
 	. = ..()
 
 /obj/item/integrated_circuit/proc/on_data_written() //Override this for special behaviour when new data gets pushed to the circuit.

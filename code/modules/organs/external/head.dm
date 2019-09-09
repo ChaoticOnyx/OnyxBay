@@ -191,13 +191,13 @@
 		return
 	if(istype(W, /obj/item/stack/material) && iscut)
 		var/obj/item/stack/M = W
-		if(M.get_material_name() == "steel")
+		if(M.get_material_name() == MATERIAL_STEEL)
 			if(do_after(usr, 10, src))
 				new/obj/item/weapon/reagent_containers/food/drinks/skullgoblet(user.loc)
 				user.visible_message("<span class='notice'>[user] makes a goblet out of [src].</span>")
 				M.use(1)
 				qdel(src)
-		else if(M.get_material_name() == "gold")
+		else if(M.get_material_name() == MATERIAL_GOLD)
 			if(do_after(usr, 10, src))
 				new/obj/item/weapon/reagent_containers/food/drinks/skullgoblet/gold(user.loc)
 				user.visible_message("<span class='notice'>[user] makes a <b>golden</b> goblet out of [src].</span>")

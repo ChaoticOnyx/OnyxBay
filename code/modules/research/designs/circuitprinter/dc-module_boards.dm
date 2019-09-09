@@ -8,7 +8,7 @@
 
 /datum/design/aimodule
 	build_type = IMPRINTER
-	materials = list("glass" = 2000, "gold" = 100)
+	materials = list(MATERIAL_GLASS = 2000, MATERIAL_GOLD = 100)
 	category_items = "Module Boards"
 
 /datum/design/aimodule/AssembleDesignName()

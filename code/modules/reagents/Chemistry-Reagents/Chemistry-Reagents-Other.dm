@@ -148,7 +148,7 @@
 	color = "#d0d0d0"
 
 /datum/reagent/uranium
-	name ="Uranium"
+	name = MATERIAL_URANIUM
 	description = "A silvery-white metallic chemical element in the actinide series, weakly radioactive."
 	taste_description = "the inside of a reactor"
 	reagent_state = SOLID

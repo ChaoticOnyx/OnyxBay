@@ -352,7 +352,7 @@
 		var/dam_threshhold = material.integrity
 		if(reinf_material)
 			dam_threshhold = ceil(max(dam_threshhold,reinf_material.integrity)/2)
-		var/dam_prob = min(100,material.hardness*1.5)
+		var/dam_prob = min(100, material.hardness*1.5)
 		if(dam_prob < 100 && W.force > (dam_threshhold/10))
 			playsound(src, 'sound/effects/metalhit.ogg', 50, 1)
 			if(!prob(dam_prob))
