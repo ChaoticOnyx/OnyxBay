@@ -255,7 +255,7 @@
 			to_chat(src, "<span class='notice'>Thermal vision overlay enabled.</span>")
 		if ("X-Ray")
 			sensor_mode = XRAY_VISION
-			to_chat(src, "<span class='notice'>X-Ray vision overlay enabled.</span>")	
+			to_chat(src, "<span class='notice'>X-Ray vision overlay enabled.</span>")
 		if ("Flash Screen")
 			sensor_mode = FLASH_PROTECTION_VISION
 		if ("Disable")
@@ -369,7 +369,7 @@
 	return mind && (mind in GLOB.traitors.current_antagonists)
 
 /mob/living/silicon/proc/is_malf()
-	return mind && (mind in malf.current_antagonists)
+	return mind && (mind in GLOB.malf.current_antagonists)
 
 /mob/living/silicon/proc/is_malf_or_traitor()
 	return is_traitor() || is_malf()

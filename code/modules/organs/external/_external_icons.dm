@@ -89,6 +89,7 @@ var/list/limb_icon_cache = list()
 				body_build = owner.body_build.roboindex
 
 		icon_state = "[icon_name][gender][body_build]"
+
 		if (species)
 			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
 				icon_state += species.base_skin_colours[s_base]
@@ -128,7 +129,11 @@ var/list/limb_icon_cache = list()
 
 		if(model)
 			icon_cache_key += "_model_[model]"
-		dir = EAST
+
+		if(force_icon && (status & ORGAN_CUT_AWAY))
+			dir = NORTH
+		else
+			dir = EAST
 		icon = mob_icon
 
 /obj/item/organ/external/proc/update_icon_drop(var/mob/living/carbon/human/powner)
@@ -177,10 +182,9 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 	return hud_damage_image
 
 /obj/item/organ/external/proc/apply_colouration(var/icon/applying)
-
-	if(species.limbs_are_nonsolid)
+	if(species && species.limbs_are_nonsolid)
 		applying.MapColors("#4d4d4d","#969696","#1c1c1c", "#000000")
-		if(species && species.name != SPECIES_HUMAN)
+		if(species.name != SPECIES_HUMAN)
 			applying.SetIntensity(1.5)
 		else
 			applying.SetIntensity(0.7)

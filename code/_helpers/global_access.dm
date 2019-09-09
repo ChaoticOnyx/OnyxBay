@@ -559,8 +559,6 @@
 			return global.magazine_icondata_states;
 		if("maint_all_access")
 			return global.maint_all_access;
-		if("malf")
-			return global.malf;
 		if("mannequins_")
 			return global.mannequins_;
 		if("map_count")
@@ -995,7 +993,7 @@
 			return global.z_levels;
 		if("zone_blocked")
 			return global.zone_blocked;
-		
+
 /proc/writeglobal(which, newval)
 	switch(which)
 		if("ALL_ANTIGENS")
@@ -1556,8 +1554,6 @@
 			global.magazine_icondata_states=newval;
 		if("maint_all_access")
 			global.maint_all_access=newval;
-		if("malf")
-			global.malf=newval;
 		if("mannequins_")
 			global.mannequins_=newval;
 		if("map_count")
@@ -1992,7 +1988,7 @@
 			global.z_levels=newval;
 		if("zone_blocked")
 			global.zone_blocked=newval;
-		
+
 /var/list/_all_globals=list(
 	"ALL_ANTIGENS",
 	"ANTAG_FREQS",
@@ -2273,7 +2269,6 @@
 	"magazine_icondata_keys",
 	"magazine_icondata_states",
 	"maint_all_access",
-	"malf",
 	"mannequins_",
 	"map_count",
 	"map_sectors",

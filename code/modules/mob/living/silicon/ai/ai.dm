@@ -206,7 +206,7 @@ var/list/ai_verbs_default = list(
 
 	to_chat(src, radio_text)
 
-	if (malf && !(mind in malf.current_antagonists))
+	if (GLOB.malf && !(mind in GLOB.malf.current_antagonists))
 		show_laws()
 		to_chat(src, "<b>These laws may be changed by other players, or by you being the traitor.</b>")
 
