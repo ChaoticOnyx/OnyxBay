@@ -150,6 +150,7 @@
 
 	req_access = list(access_syndicate)
 
+/obj/item/weapon/rig/light/stealth/equipped
 	initial_modules = list(
 		/obj/item/rig_module/stealth_field,
 		/obj/item/rig_module/vision
