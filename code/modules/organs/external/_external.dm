@@ -1058,16 +1058,17 @@ obj/item/organ/external/proc/remove_clamps()
 		return 1
 	return 0
 
-/obj/item/organ/external/robotize(var/company, var/skip_prosthetics = FALSE, var/keep_organs = FALSE, var/keep_statuses = FALSE)
+/obj/item/organ/external/robotize(var/company, var/skip_prosthetics = FALSE, var/keep_organs = FALSE, var/just_printed = FALSE)
 
 	if(BP_IS_ROBOTIC(src))
 		return
 
-	if (keep_statuses)
-		..()
-	else
-		status &= ORGAN_ROBOTIC
+	..()
 	// TODO[V] Investigate why BEEDAUNS made robotize() obliterate all existing flags instead of just adding one
+
+	if (just_printed)
+		status |= ORGAN_CUT_AWAY
+
 	if(company)
 		var/datum/robolimb/R = all_robolimbs[company]
 		if(!R || (species && (species.name in R.species_cannot_use)) || \

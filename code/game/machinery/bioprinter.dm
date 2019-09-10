@@ -145,7 +145,7 @@
 	var/obj/item/organ/O = ..()
 	var/obj/item/organ/external/externalOrgan = O
 	if(istype(externalOrgan))
-		externalOrgan.robotize("Hephaestus Industries", keep_statuses = TRUE)
+		externalOrgan.robotize("Hephaestus Industries", just_printed = TRUE)
 		// TODO [V] Add other companies and ability to choose from input
 	else
 		O.robotize()
