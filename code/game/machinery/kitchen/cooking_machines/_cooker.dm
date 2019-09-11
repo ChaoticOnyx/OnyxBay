@@ -99,7 +99,8 @@
 	sleep(cook_time)
 
 	// Sanity checks.
-	check_cooking_obj()
+	if(!check_cooking_obj())
+		return // Cooking failed/was terminated.
 
 	// RIP slow-moving held mobs.
 	if(istype(cooking_obj, /obj/item/weapon/holder))
@@ -172,7 +173,7 @@
 		cooking_obj = null
 		icon_state = off_icon
 		cooking = 0
-		return
+		return FALSE
 
 /obj/machinery/cooker/attack_hand(var/mob/user)
 
