@@ -143,7 +143,7 @@
 		var/oldtext = html_decode(loaded_data)
 		oldtext = replacetext(oldtext, "\[br\]", "\n")
 
-		var/newtext = sanitize(replacetext(input(usr, "Editing file '[open_file]'. You may use most tags used in paper formatting:", "Text Editor", oldtext) as message|null, "\n", "\[br\]"), MAX_TEXTFILE_LENGTH)
+		var/newtext = sanitize(replacetext(input_utf8(usr, "Editing file '[open_file]'. You may use most tags used in paper formatting:", "Text Editor", oldtext), "\n", "\[br\]"), MAX_TEXTFILE_LENGTH)
 		if(!newtext)
 			return
 		loaded_data = newtext
@@ -179,7 +179,7 @@
 			HDD = PRG.computer.hard_drive
 			var/list/files[0]
 			for(var/datum/computer_file/F in HDD.stored_files)
-				if(F.filetype == "TXT")
+				if(F.filetype == "DAT")
 					files.Add(list(list(
 						"name" = F.filename,
 						"size" = F.size
@@ -191,7 +191,7 @@
 				data["usbconnected"] = 1
 				var/list/usbfiles[0]
 				for(var/datum/computer_file/F in RHDD.stored_files)
-					if(F.filetype == "TXT")
+					if(F.filetype == "DAT")
 						usbfiles.Add(list(list(
 							"name" = F.filename,
 							"size" = F.size,

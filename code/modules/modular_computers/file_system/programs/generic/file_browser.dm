@@ -31,7 +31,7 @@
 			return 1
 		var/datum/computer_file/data/F = new/datum/computer_file/data()
 		F.filename = newname
-		F.filetype = "TXT"
+		F.filetype = "DAT"
 		HDD.store_file(F)
 	if(href_list["PRG_deletefile"])
 		. = 1
@@ -92,7 +92,7 @@
 		var/oldtext = html_decode(F.stored_data)
 		oldtext = replacetext(oldtext, "\[br\]", "\n")
 
-		var/newtext = sanitize(replacetext(input(usr, "Editing file [open_file]. You may use most tags used in paper formatting:", "Text Editor", oldtext) as message|null, "\n", "\[br\]"), MAX_TEXTFILE_LENGTH)
+		var/newtext = sanitize(replacetext(input_utf8(usr, "Editing file [open_file]. You may use most tags used in paper formatting:", "Text Editor", oldtext), "\n", "\[br\]"), MAX_TEXTFILE_LENGTH)
 		if(!newtext)
 			return
 
