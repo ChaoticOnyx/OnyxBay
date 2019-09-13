@@ -36,7 +36,7 @@
 	return TRUE
 
 /datum/map_template/proc/init_atoms(var/list/atoms)
-	if (SSatoms.initialized == INITIALIZATION_INSSATOMS)
+	if (SSatoms.init_state == INITIALIZATION_INSSATOMS)
 		return // let proper initialisation handle it later
 
 	var/list/turf/turfs = list()
