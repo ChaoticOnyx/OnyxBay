@@ -109,7 +109,7 @@
 		var/newname = sanitize(input(usr, "Enter file name:", "New File") as text|null)
 		if(!newname)
 			return 1
-		var/datum/computer_file/data/F = create_file(newname)
+		var/datum/computer_file/data/F = create_file(newname, "", /datum/computer_file/data/text)
 		if(F)
 			open_file = F.filename
 			loaded_data = ""
@@ -122,7 +122,7 @@
 		var/newname = sanitize(input(usr, "Enter file name:", "Save As") as text|null)
 		if(!newname)
 			return 1
-		var/datum/computer_file/data/F = create_file(newname, loaded_data)
+		var/datum/computer_file/data/F = create_file(newname, loaded_data, /datum/computer_file/data/text)
 		if(F)
 			open_file = F.filename
 		else
@@ -179,7 +179,7 @@
 			HDD = PRG.computer.hard_drive
 			var/list/files[0]
 			for(var/datum/computer_file/F in HDD.stored_files)
-				if(F.filetype == "DAT")
+				if(F.filetype == "TXT")
 					files.Add(list(list(
 						"name" = F.filename,
 						"size" = F.size
@@ -191,7 +191,7 @@
 				data["usbconnected"] = 1
 				var/list/usbfiles[0]
 				for(var/datum/computer_file/F in RHDD.stored_files)
-					if(F.filetype == "DAT")
+					if(F.filetype == "TXT")
 						usbfiles.Add(list(list(
 							"name" = F.filename,
 							"size" = F.size,

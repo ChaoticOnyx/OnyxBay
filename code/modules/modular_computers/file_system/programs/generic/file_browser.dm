@@ -31,7 +31,6 @@
 			return 1
 		var/datum/computer_file/data/F = new/datum/computer_file/data()
 		F.filename = newname
-		F.filetype = "DAT"
 		HDD.store_file(F)
 	if(href_list["PRG_deletefile"])
 		. = 1
