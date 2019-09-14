@@ -238,6 +238,8 @@ var/list/gamemode_cache = list()
 
 	var/allow_ic_printing = TRUE //Whether players should be allowed to print IC circuits from scripts.
 
+	var/server_port
+
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for (var/T in L)
@@ -794,6 +796,9 @@ var/list/gamemode_cache = list()
 					radiation_lower_limit = text2num(value)
 				if("player_limit")
 					player_limit = text2num(value)
+
+				if("server_port")
+					server_port = text2num(value)
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")
