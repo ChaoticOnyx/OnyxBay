@@ -79,6 +79,10 @@
 
 	load_configuration()
 
+	if(config.server_port)
+		var/port = OpenPort(config.server_port)
+		world.log << (port ? "Changed port to [port]" : "Failed to change port")
+
 	//set window title
 	if(config.server_id)
 		var/serverId = uppertext(copytext(config.server_id, 1, 2)) + copytext(config.server_id, 2)
