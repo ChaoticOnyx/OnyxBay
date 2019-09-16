@@ -13,6 +13,29 @@
 /obj/item/clothing/glasses/hud/process_hud(var/mob/M)
 	return
 
+/obj/item/clothing/glasses/hud/psychoscope
+	name = "Psychoscope"
+	desc = "Displays information about lifeforms. Target must be alive."
+	icon_state = "psychoscope_off"
+	hud_type = HUD_PSYCHOSCOPE
+	action_button_name = "Toggle Psychoscope"
+	body_parts_covered = 0
+	var/on = FALSE
+
+/obj/item/clothing/glasses/hud/psychoscope/attack_self(mob/user)
+	on = !on
+
+	if (!on)
+		icon_state = "psychoscope_off"
+		to_chat(user, "You disable psychoscope.")
+	else
+		icon_state = "psychoscope_on"
+		to_chat(user, "You enable psychoscope")
+
+/obj/item/clothing/glasses/hud/psychoscope/process_hud(mob/M)
+	if (on)
+		process_psychoscope_hud(M, 1)
+
 /obj/item/clothing/glasses/hud/health
 	name = "health scanner HUD"
 	desc = "A heads-up display that scans the humans in view and provides accurate data about their health status."

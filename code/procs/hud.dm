@@ -6,6 +6,16 @@ the HUD updates properly! */
 /image/hud_overlay
 	appearance_flags = RESET_COLOR|RESET_TRANSFORM|KEEP_APART
 
+proc/process_psychoscope_hud(var/mob/M, var/local_scanner, var/mob/Alt)
+	if (!can_process_hud(M))
+		return
+
+	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, GLOB.med_hud_users)
+
+	for(var/mob/living/carbon/human/target in P.Mob.in_view(P.Turf))
+		if (ishuman(target))
+			P.Client.images += target.hud_list[PSYCHOSCOPE_HUD]
+
 //Medical HUD outputs. Called by the Life() proc of the mob using it, usually.
 proc/process_med_hud(var/mob/M, var/local_scanner, var/mob/Alt)
 	if(!can_process_hud(M))
@@ -71,8 +81,10 @@ mob/proc/handle_hud_glasses() //Used in the life.dm of mobs that can use HUDs.
 	if(client)
 		for(var/image/hud_overlay/hud in client.images)
 			client.images -= hud
+
 	GLOB.med_hud_users -= src
 	GLOB.sec_hud_users -= src
+	GLOB.psychoscope_hud_users -= src
 
 mob/proc/in_view(var/turf/T)
 	return view(T)

@@ -8,7 +8,7 @@
 	throw_range = 4
 	var/candrop = 1
 
-	var/list/hud_list[10]
+	var/list/hud_list[11]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/weapon/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
 
@@ -36,16 +36,17 @@
 		if(mind)
 			mind.name = real_name
 
-	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/hud_med.dmi', src, "100")
-	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
-	hud_list[LIFE_HUD]	      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
-	hud_list[ID_HUD]          = new /image/hud_overlay(GLOB.using_map.id_hud_icons, src, "hudunknown")
-	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[STATUS_HUD_OOC]  = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
+	hud_list[HEALTH_HUD]       = new /image/hud_overlay('icons/mob/hud_med.dmi', src, "100")
+	hud_list[STATUS_HUD]       = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
+	hud_list[LIFE_HUD]	       = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
+	hud_list[ID_HUD]           = new /image/hud_overlay(GLOB.using_map.id_hud_icons, src, "hudunknown")
+	hud_list[WANTED_HUD]       = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[IMPLOYAL_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[IMPCHEM_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[IMPTRACK_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[SPECIALROLE_HUD]  = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[STATUS_HUD_OOC]   = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
+	hud_list[PSYCHOSCOPE_HUD]  = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 
 	GLOB.human_mob_list |= src
 	..()
