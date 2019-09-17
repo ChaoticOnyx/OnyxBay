@@ -447,6 +447,13 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	hidden = 1
 	category = "Arms and Ammunition"
 
+/datum/autolathe/recipe/machete
+	name = "machete"
+	path = /obj/item/weapon/material/hatchet/machete
+	hidden = 1
+	category = "Arms and Ammunition"
+	resources = list(MATERIAL_STEEL = SHEET_MATERIAL_AMOUNT)
+
 /datum/autolathe/recipe/magazine_revolver_1
 	name = "ammunition (.357)"
 	path = /obj/item/ammo_magazine/a357

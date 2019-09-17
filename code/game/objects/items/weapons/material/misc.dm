@@ -48,6 +48,8 @@
 	item_state = "machete"
 	w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT
+	force_const = 7.5
+	thrown_force_const = 4
 
 /obj/item/weapon/material/hatchet/machete/Initialize()
 	icon_state = "machete[pick("","_red","_blue", "_black", "_olive")]"
