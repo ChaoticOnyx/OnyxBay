@@ -1,4 +1,4 @@
-/* PROTHOLATHE */
+/* PROTOLATHE */
 
 /datum/design/item/optical/psychoscope
 	name = "psychoscope"
