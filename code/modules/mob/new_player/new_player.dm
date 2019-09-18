@@ -185,6 +185,9 @@
 			to_chat(usr, "<span class='danger'>The job '[href_list["SelectedJob"]]' doesn't exist!</span>")
 			return
 
+		if (!client.EAMS_CheckForAccess())
+			return
+
 		if(!config.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 			return
