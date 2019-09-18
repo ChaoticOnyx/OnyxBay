@@ -1199,6 +1199,10 @@
 	name = "\improper Operating Theatre 2"
 	icon_state = "surgery"
 
+/area/medical/surgery_storage
+	name = "\improper Surgery Storage"
+	icon_state = "surgery"
+
 /area/medical/surgeryobs
 	name = "\improper Operation Observation Room"
 	icon_state = "surgery"
