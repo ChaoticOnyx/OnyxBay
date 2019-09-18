@@ -110,6 +110,7 @@
 	icon = 'icons/obj/psychotronics.dmi'
 	icon_state = "psychoscope_on"
 	off_state = "psychoscope_off"
+	activation_sound = null // DAT SOUND LOUD AS FUCK
 	active = FALSE
 	hud_type = HUD_PSYCHOSCOPE
 	electric = TRUE
@@ -241,6 +242,7 @@
 		if (!active)
 			set_light(0)
 		else
+			playsound(src, 'sound/effects/psychoscope/psychoscope_on.ogg', 10, 0)
 			set_light(2, 5, rgb(105, 180, 255))
 
 	/* HotKeys */
@@ -254,6 +256,8 @@
 
 	Topic(href, list/href_list)
 		. = ..()
+
+		playsound(src, 'sound/machines/console_click.ogg', 10, 1)
 
 		switch(href_list["option"])
 			if ("togglePsychoscope")
