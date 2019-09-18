@@ -5,6 +5,9 @@
 			set desc = "Drain life from a lifeform and produce 3 mimcs."
 			set category = "Abilities"
 
+			if (!istype(target, /mob/living/carbon/human))
+				return
+
 			playsound(src, pick(src.sounds["ondrain"]), 20, 1)
 			to_chat(src, "You trying to drain life from [target].")
 			to_chat(target, "[src] trying to drain your life!")
@@ -28,6 +31,9 @@
 					organ.rejuvenate(1)
 					organ.max_damage *= 3
 					organ.min_broken_damage = Floor(organ.max_damage * 0.75)
+
+			target.stat = DEAD
+			target.switch_from_living_to_dead_mob_list()
 
 			for (var/i = 0, i < 3, i++)
 				new /mob/living/typhon/mimic(src.loc)

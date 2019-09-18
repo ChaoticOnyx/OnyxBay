@@ -9,8 +9,6 @@
 #define SPAN_WARN(text) "<span class='warning'>[text]</span>"
 #define SPAN_DANG(text) "<span class='danger'>[text]</span>"
 
-#define isTyphon(A) istype(A, /mob/living/typhon)
-
 #define isAI(A) istype(A, /mob/living/silicon/ai)
 
 #define isalien(A) istype(A, /mob/living/carbon/alien)
