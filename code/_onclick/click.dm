@@ -235,15 +235,6 @@
 	if(user.client && user.client.eye == user)
 		user.examinate(src)
 
-		if (src != user && istype(src, /mob))
-			var/mob/M = src
-
-			var/atom/equip = user.get_equipped_item(slot_glasses)
-
-			if (equip && equip.type == /obj/item/clothing/glasses/hud/psychoscope)
-				var/obj/item/clothing/glasses/hud/psychoscope/pscope = equip
-
-				pscope.ScanLifeform(M)
 	return
 
 /*

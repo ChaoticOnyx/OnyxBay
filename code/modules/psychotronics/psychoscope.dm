@@ -9,8 +9,21 @@
 		psychoscope_icons[PSYCHOSCOPE_ICON_SCAN] = new /image('icons/mob/hud.dmi', src, "psychoscope_scan")
 		psychoscope_icons[PSYCHOSCOPE_ICON_SCAN].appearance_flags = RESET_COLOR|RESET_TRANSFORM|KEEP_APART
 
+/mob/ShiftClick(mob/user)
+	. = ..()
+
+	if (src != user && istype(src, /mob))
+		var/mob/M = src
+
+		var/atom/equip = user.get_equipped_item(slot_glasses)
+
+		if (equip && equip.type == /obj/item/clothing/glasses/hud/psychoscope)
+			var/obj/item/clothing/glasses/hud/psychoscope/pscope = equip
+
+			pscope.ScanLifeform(M)
+
 /proc/GetLifeformDataByType(var/lifeformType)
-	return GLOB.psychoscope_life_data[lifeformType]
+	return GLOB.psychoscope_lifeform_data[lifeformType]
 
 /datum/PsychoscopeScanData
 	var
@@ -41,16 +54,40 @@
 		species = ""
 		desc = ""
 		scan_count = 0
+		max_scans = 0
+		scanned_list = list()
+		tech_rewards = list()
 
-	New(kingdom, order, genus, species, desc)
+	New(kingdom, order, genus, species, desc, list/tech_rewards)
 		src.kingdom = kingdom
 		src.order = order
 		src.genus = genus
 		src.species = species
 		src.desc = desc
 		src.scan_count = 0
+		src.tech_rewards = tech_rewards
+
+		for (var/tech_level in tech_rewards)
+			if (text2num(tech_level) > max_scans)
+				max_scans = text2num(tech_level)
 
 	proc
+		GetUnlockedTechs()
+			var/list/tech_list = list()
+
+			for (var/scan = scan_count, scan > 0, scan--)
+				var/list/reward = tech_rewards[num2text(scan)]
+
+				if (!reward || reward.len == 0)
+					continue
+
+				for (var/I in reward)
+					tech_list.Add(list(
+						list("tech_name" = CallTechName(I), "tech_level" = reward[I], "tech_id" = I)
+					))
+
+				return tech_list
+
 		ToList()
 			var/list/L = list()
 
@@ -60,6 +97,8 @@
 			L["species"] = species
 			L["desc"] = desc
 			L["scan_count"] = scan_count
+			L["max_scans"] = max_scans
+			L["opened_techs"] = GetUnlockedTechs()
 
 			return L
 
@@ -68,6 +107,7 @@
 /obj/item/clothing/glasses/hud/psychoscope
 	name = "psychoscope"
 	desc = "Displays information about lifeforms. Scan target must be alive."
+	icon = 'icons/obj/psychotronics.dmi'
 	icon_state = "psychoscope_on"
 	off_state = "psychoscope_off"
 	active = FALSE
@@ -83,6 +123,11 @@
 		list/scans_journal = list()
 		datum/PsychoscopeLifeformData/selected_lifeform = null
 		list/total_lifeforms = list()
+		is_scanning = FALSE
+		list/last_techs = list()
+
+		list/stored_material =  list(MATERIAL_STEEL = 0, MATERIAL_GLASS = 0)
+		list/storage_capacity = list(MATERIAL_STEEL = 100, MATERIAL_GLASS = 100)
 
 		/* UI MODES */
 		//
@@ -93,35 +138,72 @@
 		//
 
 		ui_mode = 0
+		old_mode = 0
 
 	proc
-		ScanLifeform(var/mob/M)
-			if (src.active)
-				usr.client.images += M.psychoscope_icons[PSYCHOSCOPE_ICON_SCAN]
+		ScanLifeform(mob/M)
+			if (!src.active || is_scanning)
+				return
+
+			is_scanning = TRUE
+			usr.client.images += M.psychoscope_icons[PSYCHOSCOPE_ICON_SCAN]
+			playsound(src, 'sound/effects/psychoscope/psychoscope_scan.ogg', 10, 0)
 
 			if (!do_after(usr, 40, M, 0, 0, INCAPACITATION_DEFAULT, 1, 1))
 				usr.client.images.Remove(M.psychoscope_icons[PSYCHOSCOPE_ICON_SCAN])
+				playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
+				is_scanning = FALSE
 				return
+
+			is_scanning = FALSE
 
 			usr.client.images.Remove(M.psychoscope_icons[PSYCHOSCOPE_ICON_SCAN])
 
 			var/datum/PsychoscopeLifeformData/lData = src.GetLifeformData(M)
-			to_chat(usr, "New scan data added to your Psychoscope.")
+
+			if (!lData)
+				playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
+				to_chat(usr, "Unknown lifeform.")
+				return
+
+			if (lData.scan_count > lData.max_scans)
+				playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
+				to_chat(usr, "No new data detected.")
+				lData.scan_count = lData.max_scans
+			else
+				playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
+				to_chat(usr, "New data added to your Psychoscope.")
 
 			var/datum/PsychoscopeScanData/sData = new(lData, M.name)
 			scans_journal.Add(sData)
 
-		GetLifeformData(var/mob/M, var/count_scan=TRUE)
-			if (M.type in GLOB.psychoscope_life_data)
+		GetLifeformData(mob/M, count_scan=TRUE)
+			if (M.type in GLOB.psychoscope_lifeform_data)
+				if ("\ref[M]" in GLOB.psychoscope_lifeform_data[M.type]["scanned_list"])
+					return null
 				if (count_scan)
-					GLOB.psychoscope_life_data[M.type].scan_count++
+					GLOB.psychoscope_lifeform_data[M.type].scan_count++
+					GLOB.psychoscope_lifeform_data[M.type].scanned_list.Add("\ref[M]")
 
-				return GLOB.psychoscope_life_data[M.type]
+				return GLOB.psychoscope_lifeform_data[M.type]
 			else
-				return GLOB.psychoscope_life_data[/mob]
+				return null
+
+		PrintTechs(datum/PsychoscopeLifeformData/lData)
+			var/list/techs_list = lData.GetUnlockedTechs()
+			var/obj/item/lifeform_scan_disk/disk = new(usr.loc)
+			disk.origin_tech = list()
+			disk.desc += "\nLoaded Technologies:"
+
+			for (var/tech in techs_list)
+				disk.origin_tech.Add(list(tech["tech_id"] = tech["tech_level"]))
+				disk.desc += "\n[tech["tech_name"]] - [tech["tech_level"]]"
+
+			if (!usr.put_in_any_hand_if_possible(disk, FALSE, FALSE))
+				disk.Move(usr.loc)
 
 		/* NOT USED */
-		PrintData(var/datum/PsychoscopeLifeformData/lData)
+		PrintData(datum/PsychoscopeLifeformData/lData)
 			to_chat(usr, "Scan Data:")
 			to_chat(usr, "Kingdom: [lData.kingdom]")
 			to_chat(usr, "Order: [lData.order]")
@@ -130,6 +212,14 @@
 			to_chat(usr, "Description: [lData.desc]")
 
 	verb
+		TogglePsychoscope()
+			set name = "Toggle Psychoscope"
+			set desc = "Enables or disables your psychoscope"
+			set popup_menu = 1
+			set category = "Psychoscope"
+
+			attack_self(usr)
+
 		ShowPsychoscopeUI()
 			set name = "Show Psychoscope UI"
 			set desc = "Opens psychoscope's menu."
@@ -162,41 +252,50 @@
 
 	/* UI */
 
-	Topic(var/href, var/list/href_list)
+	Topic(href, list/href_list)
 		. = ..()
 
 		switch(href_list["option"])
 			if ("togglePsychoscope")
 				attack_self(usr)
 			if ("showScansJournal")
+				old_mode = ui_mode
 				ui_mode = 1
-			if ("showMainMenu")
-				ui_mode = 0
+			if ("back")
+				ui_mode = old_mode
+				old_mode = ui_mode
 			if ("deleteScan")
 				scans_journal.Remove(locate(href_list["scan_reference"]))
 			if ("showLifeformsList")
+				old_mode = ui_mode
 				ui_mode = 2
 			if ("showLifeform")
+				old_mode = ui_mode
 				ui_mode = 3
 				selected_lifeform = (locate(href_list["lifeform_reference"]) in total_lifeforms)
+			if ("printTechs")
+				PrintTechs((locate(href_list["lifeform_reference"]) in total_lifeforms))
+			if ("showMainMenu")
+				ui_mode = 0
+				old_mode = 0
 
 		return 1
 
-	ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+	ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 		var/list/data = list()
 		total_lifeforms = list()
 
-		for (var/T in GLOB.psychoscope_life_data)
-			total_lifeforms.Add(GLOB.psychoscope_life_data[T])
+		for (var/T in GLOB.psychoscope_lifeform_data)
+			total_lifeforms.Add(GLOB.psychoscope_lifeform_data[T])
 
 		data["status"] = active
 		data["mode"] = ui_mode
 		data["scans_journal"] = list()
 		data["lifeforms_list"] = list()
-		data["lifeforms"] = null
 
 		if (selected_lifeform)
 			data["lifeform"] = selected_lifeform.ToList()
+			data["lifeform_reference"] = "\ref[selected_lifeform]"
 
 		switch(ui_mode)
 			if (1)
@@ -209,7 +308,7 @@
 						)
 					))
 			if (2)
-				for (var/I in GLOB.psychoscope_life_data)
+				for (var/I in GLOB.psychoscope_lifeform_data)
 					var/datum/PsychoscopeLifeformData/D = GetLifeformDataByType(I)
 
 					if (!D || D.species == "Unknown")
