@@ -15,7 +15,7 @@
 		{{:helper.link('Species List', 'dna', { 'option': 'showLifeformsList' }, null)}}
 	</div>
 {{else data.mode == 1}}
-    <h2>Psychoscope Scans Journal</h2>
+	<h2>Psychoscope Scans Journal</h2>
         <!-- List of scans -->
 	{{for data.scans_journal}}
 		<h3>Scan of "{{:value.scan.object_name}}"</h3>
@@ -29,31 +29,23 @@
 		<br>
 		<b>Species:</b> {{:value.scan.lifeform.species}}
 		<br>
-		<b>Description:</b> {{:value.scan.lifeform.desc}}
-		<br>
 		<div class="itemContent">
-			{{if value.scan.lifeform.species != 'Unknown'}}
-				{{:helper.link('Show Details', 'dna', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference}, null)}}
-			{{else}}
-				{{:helper.link('Show Details', 'dna', null, null, 'disabled')}}
-			{{/if}}
+			{{:helper.link('Show Details', 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference}, null)}}
 		</div>
 		<div class="itemContent">
 			{{:helper.link('Delete Scan', 'trash', {'option': 'deleteScan', 'scan_reference': value.scan_reference}, null, 'redButton')}}
 		</div>
-		<br><br>
+		<br>
     {{empty}}
         <b>No scans detected.</b>
     {{/for}}
-    <!-- Return to Main Menu -->
-    <div class="itemContent">
-        {{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
-	</div>
+	<!-- Return to Main Menu -->
+	<br>
+	{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
 
 <!-- Species List -->
 {{else data.mode == 2}}
 	<h2>Species List</h2>
-
 	{{for data.lifeforms_list}}
 		<div class="itemContent">
 			{{:helper.link(value.lifeform.genus, 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference}, null)}}
@@ -61,9 +53,9 @@
 	{{empty}}
 		<b>No known lifeforms.</b>
 	{{/for}}
-	<div class="itemContent">
-		{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
-	</div>
+	<br>
+	<hr>
+	{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
 <!-- Lifeform Details -->
 {{else data.mode == 3}}
 	{{if data.lifeform}}
@@ -79,14 +71,28 @@
 		<br>
 		<b>Description:</b> {{:data.lifeform.desc}}
 		<br>
-		<b>Scans: </b> {{:data.lifeform.scan_count}}
+		<b>Scans: </b> {{:data.lifeform.scan_count}} / {{:data.lifeform.max_scans}}
+		<br>
+		<h3>New Technologies:</h3>
+		{{for data.lifeform.opened_techs}}
+		<b>{{:value.tech_name}}</b> - {{:value.tech_level}}
+		<br>
+		{{empty}}
+		<b>No new technologies.</b>
+		{{/for}}
 		<br>
 	{{else}}
 		<b>Error! Lifeform not found!</b>
 		<br>
 	{{/if}}
 
+	{{if data.lifeform.opened_techs}}
 	<div class="itemContent">
-			{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
-		</div>
+		{{:helper.link('Print Technology Data', 'print', { 'option': 'printTechs', 'lifeform_reference': data.lifeform_reference })}}
+	</div>
+	{{/if}}
+
+	<div class="itemContent">
+		{{:helper.link('Close', 'arrow-left', { 'option': 'back' }, null)}}
+	</div>
 {{/if}}

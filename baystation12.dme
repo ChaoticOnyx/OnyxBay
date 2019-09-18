@@ -2212,6 +2212,7 @@
 #include "code\modules\psychotronics\_defines.dm"
 #include "code\modules\psychotronics\_macros.dm"
 #include "code\modules\psychotronics\designs.dm"
+#include "code\modules\psychotronics\items.dm"
 #include "code\modules\psychotronics\psychoscope.dm"
 #include "code\modules\psychotronics\typhon\abilities.dm"
 #include "code\modules\psychotronics\typhon\typhon.dm"
