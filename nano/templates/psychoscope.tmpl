@@ -1,0 +1,92 @@
+{{if data.mode == 0}} <!-- Main Menu -->
+    <div class="item" style="text-align: center;">
+		<h2>Main Menu</h2>
+    </div>
+    <!-- Toggle Psychoscope -->
+    <div class="itemContent">
+        {{:helper.link('Toggle Psychoscope', 'lightbulb', { 'option': 'togglePsychoscope' }, null)}}
+    </div>
+    <!-- Show Scans Journal -->
+    <div class="itemContent">
+        {{:helper.link('Scans Journal', 'clipboard', { 'option': 'showScansJournal' }, null)}}
+	</div>
+	<!-- Show Lifeforms List -->
+	<div class="itemContent">
+		{{:helper.link('Species List', 'dna', { 'option': 'showLifeformsList' }, null)}}
+	</div>
+{{else data.mode == 1}}
+    <h2>Psychoscope Scans Journal</h2>
+        <!-- List of scans -->
+	{{for data.scans_journal}}
+		<h3>Scan of "{{:value.scan.object_name}}"</h3>
+		<b>Date: </b> {{:value.scan.date}}
+		<br>
+		<b>Kingdom:</b> {{:value.scan.lifeform.kingdom}}
+		<br>
+		<b>Order:</b> {{:value.scan.lifeform.order}}
+		<br>
+		<b>Genus:</b> {{:value.scan.lifeform.genus}}
+		<br>
+		<b>Species:</b> {{:value.scan.lifeform.species}}
+		<br>
+		<b>Description:</b> {{:value.scan.lifeform.desc}}
+		<br>
+		<div class="itemContent">
+			{{if value.scan.lifeform.species != 'Unknown'}}
+				{{:helper.link('Show Details', 'dna', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference}, null)}}
+			{{else}}
+				{{:helper.link('Show Details', 'dna', null, null, 'disabled')}}
+			{{/if}}
+		</div>
+		<div class="itemContent">
+			{{:helper.link('Delete Scan', 'trash', {'option': 'deleteScan', 'scan_reference': value.scan_reference}, null, 'redButton')}}
+		</div>
+		<br><br>
+    {{empty}}
+        <b>No scans detected.</b>
+    {{/for}}
+    <!-- Return to Main Menu -->
+    <div class="itemContent">
+        {{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
+	</div>
+
+<!-- Species List -->
+{{else data.mode == 2}}
+	<h2>Species List</h2>
+
+	{{for data.lifeforms_list}}
+		<div class="itemContent">
+			{{:helper.link(value.lifeform.genus, 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference}, null)}}
+		</div>
+	{{empty}}
+		<b>No known lifeforms.</b>
+	{{/for}}
+	<div class="itemContent">
+		{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
+	</div>
+<!-- Lifeform Details -->
+{{else data.mode == 3}}
+	{{if data.lifeform}}
+		<h2>Details of "{{:data.lifeform.species}}"</h2>
+
+		<b>Kingdom:</b> {{:data.lifeform.kingdom}}
+		<br>
+		<b>Order:</b> {{:data.lifeform.order}}
+		<br>
+		<b>Genus:</b> {{:data.lifeform.genus}}
+		<br>
+		<b>Species:</b> {{:data.lifeform.species}}
+		<br>
+		<b>Description:</b> {{:data.lifeform.desc}}
+		<br>
+		<b>Scans: </b> {{:data.lifeform.scan_count}}
+		<br>
+	{{else}}
+		<b>Error! Lifeform not found!</b>
+		<br>
+	{{/if}}
+
+	<div class="itemContent">
+			{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
+		</div>
+{{/if}}

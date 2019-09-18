@@ -196,7 +196,6 @@
 #define HUD_SCIENCE 0x1
 #define HUD_SECURITY 0x2
 #define HUD_MEDICAL 0x4
-#define HUD_PSYCHOSCOPE	0x6
 
 // Storage
 
