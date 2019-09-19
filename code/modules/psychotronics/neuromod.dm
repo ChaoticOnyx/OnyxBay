@@ -15,7 +15,9 @@
 	var
 		name = "name"
 		desc = "Description"
+		chance = 0
 
 /datum/NeuromodData/LightRegeneration
 	name = "neuromod: Light Regeneration"
 	desc = "The neuromod changes skin structure and makes possible cure wounds just by light."
+	chance = 25
