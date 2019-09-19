@@ -23,7 +23,7 @@
 		<br>
 		<b>Kingdom:</b> {{:value.scan.lifeform.kingdom}}
 		<br>
-		<b>Order:</b> {{:value.scan.lifeform.order}}
+		<b>Class:</b> {{:value.scan.lifeform.class}}
 		<br>
 		<b>Genus:</b> {{:value.scan.lifeform.genus}}
 		<br>
@@ -47,14 +47,15 @@
 {{else data.mode == 2}}
 	<h2>Species List</h2>
 	{{for data.lifeforms_list}}
+		<br>
 		<div class="itemContent">
 			{{:helper.link(value.lifeform.genus, 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference}, null)}}
 		</div>
+		<br>
 	{{empty}}
 		<b>No known lifeforms.</b>
 	{{/for}}
 	<br>
-	<hr>
 	{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
 <!-- Lifeform Details -->
 {{else data.mode == 3}}
@@ -63,7 +64,7 @@
 
 		<b>Kingdom:</b> {{:data.lifeform.kingdom}}
 		<br>
-		<b>Order:</b> {{:data.lifeform.order}}
+		<b>Class:</b> {{:data.lifeform.class}}
 		<br>
 		<b>Genus:</b> {{:data.lifeform.genus}}
 		<br>
@@ -73,23 +74,35 @@
 		<br>
 		<b>Scans: </b> {{:data.lifeform.scan_count}} / {{:data.lifeform.max_scans}}
 		<br>
+		<!-- TECHNOLOGIES LIST -->
 		<h3>New Technologies:</h3>
 		{{for data.lifeform.opened_techs}}
-		<b>{{:value.tech_name}}</b> - {{:value.tech_level}}
-		<br>
+			<b>{{:value.tech_name}}</b> - {{:value.tech_level}}
+			<br>
 		{{empty}}
-		<b>No new technologies.</b>
+			<b>No new technologies.</b>
+		{{/for}}
+		<br>
+		{{if data.lifeform.opened_techs}}
+			<div class="itemContent">
+				{{:helper.link('Print Technology Data', 'print', { 'option': 'printTechs', 'lifeform_reference': data.lifeform_reference }, null)}}
+			</div>
+			<br>
+		{{/if}}
+		<!-- NEUROMODS LIST -->
+		<h3>New Neuromods:</h3>
+		{{for data.lifeform.opened_neuromods}}
+			<b>{{:value.neuromod_name}}</b> - {{:value.neuromod_desc}}
+			<br>
+			{{:helper.link('Print Neuromod Disk Data', 'print', { 'option': 'printNeuromodData', 'neuromod_type': value.neuromod_type }, null)}}
+			<br>
+		{{empty}}
+			<b>No new neuromods.</b>
 		{{/for}}
 		<br>
 	{{else}}
 		<b>Error! Lifeform not found!</b>
 		<br>
-	{{/if}}
-
-	{{if data.lifeform.opened_techs}}
-	<div class="itemContent">
-		{{:helper.link('Print Technology Data', 'print', { 'option': 'printTechs', 'lifeform_reference': data.lifeform_reference })}}
-	</div>
 	{{/if}}
 
 	<div class="itemContent">
