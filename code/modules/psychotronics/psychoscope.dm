@@ -55,10 +55,10 @@
 		species = ""
 		desc = ""
 		scan_count = 0
-		max_scans = 0
 		list/scanned_list = list()
 		list/tech_rewards = list()
 		list/neuromod_rewards = list()
+		list/opened_neuromods = list()
 
 	New(kingdom, class, genus, species, desc, list/tech_rewards, list/neuromod_rewards)
 		src.kingdom = kingdom
@@ -66,19 +66,32 @@
 		src.genus = genus
 		src.species = species
 		src.desc = desc
-		src.scan_count = 0
 		src.tech_rewards = tech_rewards
 		src.neuromod_rewards = neuromod_rewards
 
-		for (var/tech_level in tech_rewards)
-			if (text2num(tech_level) > max_scans)
-				max_scans = text2num(tech_level)
-
-		for (var/neuromod_level in neuromod_rewards)
-			if (text2num(neuromod_level) > max_scans)
-				max_scans = text2num(neuromod_level)
-
 	proc
+		ProbNeuromods()
+			for (var/scan = scan_count, scan > 0, scan--)
+				var/list/neuromods = neuromod_rewards[num2text(scan)]
+
+				if (!neuromods || neuromods.len == 0)
+					continue
+
+				for (var/N in neuromods)
+					if (!N in subtypesof(/datum/NeuromodData))
+						continue
+
+					var/datum/NeuromodData/nData = N
+
+					if (nData in opened_neuromods)
+						continue
+
+					var/unlocked = prob(initial(nData.chance))
+
+					if (unlocked && !isnull(nData) && nData in subtypesof(/datum/NeuromodData))
+						opened_neuromods.Add(nData)
+						to_chat(usr, "New neuromod available!")
+
 		GetUnlockedTechs()
 			var/list/tech_list = list()
 
@@ -98,21 +111,16 @@
 		GetUnlockedNeuromods()
 			var/list/neuromods_list = list()
 
-			for (var/scan = scan_count, scan > 0, scan--)
-				var/list/neuromods = neuromod_rewards[num2text(scan)]
+			for (var/N in opened_neuromods)
+				to_world("N")
+				var/datum/NeuromodData/nData = N
 
-				if (!neuromods || neuromods.len == 0)
+				if (isnull(nData))
 					continue
 
-				for (var/N in neuromods)
-					if (!N in subtypesof(/datum/NeuromodData))
-						continue
-
-					var/datum/NeuromodData/nData = N
-
-					neuromods_list.Add(list(
-						list("neuromod_name" = initial(nData.name), "neuromod_type" = nData, "neuromod_desc" = initial(nData.desc))
-					))
+				neuromods_list.Add(list(
+					list("neuromod_name" = initial(nData.name), "neuromod_type" = nData, "neuromod_desc" = initial(nData.desc))
+				))
 
 			return neuromods_list
 
@@ -125,7 +133,6 @@
 			L["species"] = species
 			L["desc"] = desc
 			L["scan_count"] = scan_count
-			L["max_scans"] = max_scans
 			L["opened_techs"] = GetUnlockedTechs()
 			L["opened_neuromods"] = GetUnlockedNeuromods()
 
@@ -155,9 +162,6 @@
 		list/total_lifeforms = list()
 		is_scanning = FALSE
 		list/last_techs = list()
-
-		list/stored_material =  list(MATERIAL_STEEL = 0, MATERIAL_GLASS = 0)
-		list/storage_capacity = list(MATERIAL_STEEL = 100, MATERIAL_GLASS = 100)
 
 		/* UI MODES */
 		//
@@ -195,11 +199,6 @@
 				playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
 				to_chat(usr, "Unknown lifeform.")
 				return
-
-			if (lData == 0)
-				playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
-				to_chat(usr, "No new data detected.")
-				lData.scan_count = lData.max_scans
 			else
 				playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
 				to_chat(usr, "New data added to your Psychoscope.")
@@ -211,12 +210,12 @@
 			if (M.type in GLOB.psychoscope_lifeform_data)
 				var/datum/PsychoscopeLifeformData/lData = GLOB.psychoscope_lifeform_data[M.type]
 
-				if ("\ref[M]" in lData["scanned_list"] || lData.scan_count == lData.max_scans)
-
+				if ("\ref[M]" in lData["scanned_list"])
 					return 0
 				if (count_scan)
 					lData.scan_count++
 					lData.scanned_list.Add("\ref[M]")
+					lData.ProbNeuromods()
 
 				return lData
 			else
@@ -240,12 +239,11 @@
 			if (!ispath(neuromod_type))
 				return
 
-			var/datum/NeuromodData/D = new(text2path(neuromod_type))
+			var/datum/NeuromodData/D = new neuromod_type
 			var/obj/item/NeuromodDataDisk/disk = new(usr.loc)
 
 			disk.neuromod_data = D
 			disk.name = D.name
-			disk.desc += "\nContains Neuromod:"
 			disk.desc += "\n[D.name] - [D.desc]"
 
 			if (!usr.put_in_any_hand_if_possible(disk, FALSE, FALSE))
