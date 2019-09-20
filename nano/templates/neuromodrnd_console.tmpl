@@ -1,0 +1,94 @@
+<!-- Main Menu -->
+{{if data.mode == 0}}
+    <div class="item" >
+        <h2>Main Menu</h2>
+    </div>
+
+    <div class="itemContent">
+        {{:helper.link('Neuromod Researching', 'search', { 'option': 'showNeuromodResearching' })}}
+	</div>
+	<div class="itemContent">
+        {{:helper.link('Neuromod Production', 'search', { 'option': 'showNeuromodProduction' })}}
+    </div>
+    <div class="itemContent">
+        {{:helper.link('Neuromods List', 'search', { 'option': 'showNeuromodsList' })}}
+    </div>
+
+    <br><br>
+
+    <div class="itemContent">
+        {{if data.inserted_neuromod}}
+            {{:helper.link('Eject Neuromod', 'save', { 'option': 'ejectNeuromod' })}}
+        {{else}}
+            {{:helper.link('Insert Neuromod', 'save', { 'option': 'insertNeuromod' })}}
+        {{/if}}
+    </div>
+
+    <div class="itemContent">
+        {{if data.inserted_neuromod_data}}
+            {{:helper.link('Eject Neuromod Data', 'save', { 'option': 'ejectNeuromodData' })}}
+        {{else}}
+            {{:helper.link('Insert Neuromod Data', 'save', { 'option': 'insertNeuromodData' })}}
+        {{/if}}
+    </div>
+
+<!-- Neuromod Researching -->
+{{else data.mode == 1}}
+    <div class="item">
+        <h2>Neuromod Researching</h2>
+    </div>
+
+    {{if data.inserted_neuromod_data}}
+        <h3>Neuromod Data</h3><br>
+        <b>Name:</b> {{:data.inserted_neuromod_data.name}}<br>
+        <b>Description:</b> {{:data.inserted_neuromod_data.desc}}<br>
+
+        {{if data.is_researched}}
+            <h3>The neuromod is already researched.</h3>
+        {{else}}
+            {{if data.is_researching}}
+                <div class="itemContent">
+                    {{:helper.displayBar(data.research_progress, 0, data.inserted_neuromod_data.neuromod_data.research_time, 'good')}}
+                </div>
+
+                <div class="itemContent">
+                    {{:helper.link('Stop Researching', 'search', { 'option': 'stopResearching' })}}
+                </div>
+            {{else}}
+                <div class="itemContent">
+                    {{:helper.link('Start Researching', 'search', { 'option': 'startResearching' })}}
+                </div>
+            {{/if}}
+        {{/if}}
+    {{else}}
+        <h3>Insert neuromod data!</h3>
+    {{/if}}
+
+    <div class="itemContent">
+        {{:helper.link('Close', 'arrow-left', { 'option': 'back' })}}
+    </div>
+
+<!-- Neuromods Production -->
+{{else data.mode == 2}}
+
+<!-- Researched Neuromods List -->
+{{else data.mode == 3}}
+    <div class="itemContent">
+        <h2>Researched Neuromods</h2>
+    </div>
+
+    {{for data.researched_neuromods}}
+    <div class="itemContent">
+        <b>Name:</b> {{:value.neuromod_name}}<br>
+        <b>Description:</b> {{:value.neuromod_desc}}<br>
+    </div>
+    {{empty}}
+        <div class="itemContent">
+            <h3>No researched neuromods!</h3>
+        </div>
+    {{/for}}
+
+    <div class="itemContent">
+        {{:helper.link("Close", 'arrow-left', { 'option': 'back' })}}
+    </div>
+{{/if}}

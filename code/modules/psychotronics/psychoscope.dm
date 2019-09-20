@@ -18,129 +18,17 @@
 
 		var/atom/equip = user.get_equipped_item(slot_glasses)
 
-		if (equip && equip.type == /obj/item/clothing/glasses/hud/Psychoscope)
-			var/obj/item/clothing/glasses/hud/Psychoscope/pscope = equip
+		if (equip && equip.type == /obj/item/clothing/glasses/hud/psychoscope)
+			var/obj/item/clothing/glasses/hud/psychoscope/pscope = equip
 
 			pscope.ScanLifeform(M)
 
 /proc/GetLifeformDataByType(var/lifeformType)
 	return GLOB.psychoscope_lifeform_data[lifeformType]
 
-/datum/PsychoscopeScanData
-	var
-		datum/PsychoscopeLifeformData/lifeform
-		date = 0
-		object_name = ""
-
-	New(lifeform_data, object_name)
-		src.date = "[stationdate2text()] - [stationtime2text()]"
-		src.lifeform = lifeform_data
-		src.object_name = object_name
-
-	proc
-		ToList()
-			var/list/L = list()
-
-			L["date"] = date
-			L["lifeform"] = lifeform.ToList()
-			L["object_name"] = object_name
-
-			return L
-
-/datum/PsychoscopeLifeformData
-	var
-		kingdom = ""
-		class = ""
-		genus = ""
-		species = ""
-		desc = ""
-		scan_count = 0
-		list/scanned_list = list()
-		list/tech_rewards = list()
-		list/neuromod_rewards = list()
-		list/opened_neuromods = list()
-
-	New(kingdom, class, genus, species, desc, list/tech_rewards, list/neuromod_rewards)
-		src.kingdom = kingdom
-		src.class = class
-		src.genus = genus
-		src.species = species
-		src.desc = desc
-		src.tech_rewards = tech_rewards
-		src.neuromod_rewards = neuromod_rewards
-
-	proc
-		ProbNeuromods()
-			for (var/scan = scan_count, scan > 0, scan--)
-				var/list/neuromods = neuromod_rewards[num2text(scan)]
-
-				if (!neuromods || neuromods.len == 0)
-					continue
-
-				for (var/N in neuromods)
-					if (!N in subtypesof(/datum/NeuromodData))
-						continue
-
-					var/datum/NeuromodData/nData = N
-
-					if (nData in opened_neuromods)
-						continue
-
-					var/unlocked = prob(initial(nData.chance))
-
-					if (unlocked && !isnull(nData) && nData in subtypesof(/datum/NeuromodData))
-						opened_neuromods.Add(nData)
-						to_chat(usr, "New neuromod available!")
-
-		GetUnlockedTechs()
-			var/list/tech_list = list()
-
-			for (var/scan = scan_count, scan > 0, scan--)
-				var/list/reward = tech_rewards[num2text(scan)]
-
-				if (!reward || reward.len == 0)
-					continue
-
-				for (var/I in reward)
-					tech_list.Add(list(
-						list("tech_name" = CallTechName(I), "tech_level" = reward[I], "tech_id" = I)
-					))
-
-				return tech_list
-
-		GetUnlockedNeuromods()
-			var/list/neuromods_list = list()
-
-			for (var/N in opened_neuromods)
-				to_world("N")
-				var/datum/NeuromodData/nData = N
-
-				if (isnull(nData))
-					continue
-
-				neuromods_list.Add(list(
-					list("neuromod_name" = initial(nData.name), "neuromod_type" = nData, "neuromod_desc" = initial(nData.desc))
-				))
-
-			return neuromods_list
-
-		ToList()
-			var/list/L = list()
-
-			L["kingdom"] = kingdom
-			L["class"] = class
-			L["genus"] = genus
-			L["species"] = species
-			L["desc"] = desc
-			L["scan_count"] = scan_count
-			L["opened_techs"] = GetUnlockedTechs()
-			L["opened_neuromods"] = GetUnlockedNeuromods()
-
-			return L
-
 /* PSYCHOSCOPE */
 
-/obj/item/clothing/glasses/hud/Psychoscope
+/obj/item/clothing/glasses/hud/psychoscope
 	name = "psychoscope"
 	desc = "Displays information about lifeforms. Scan target must be alive."
 	icon = 'icons/obj/psychotronics.dmi'
@@ -158,7 +46,7 @@
 
 	var
 		list/scans_journal = list()
-		datum/PsychoscopeLifeformData/selected_lifeform = null
+		datum/psychoscopeLifeformData/selected_lifeform = null
 		list/total_lifeforms = list()
 		is_scanning = FALSE
 		list/last_techs = list()
@@ -193,7 +81,7 @@
 
 			usr.client.images.Remove(M.psychoscope_icons[PSYCHOSCOPE_ICON_SCAN])
 
-			var/datum/PsychoscopeLifeformData/lData = src.GetLifeformData(M)
+			var/datum/psychoscopeLifeformData/lData = src.GetLifeformData(M)
 
 			if (lData == null)
 				playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
@@ -203,12 +91,12 @@
 				playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
 				to_chat(usr, "New data added to your Psychoscope.")
 
-			var/datum/PsychoscopeScanData/sData = new(lData, M.name)
+			var/datum/psychoscopeScanData/sData = new(lData, M.name)
 			scans_journal.Add(sData)
 
 		GetLifeformData(mob/M, count_scan=TRUE)
 			if (M.type in GLOB.psychoscope_lifeform_data)
-				var/datum/PsychoscopeLifeformData/lData = GLOB.psychoscope_lifeform_data[M.type]
+				var/datum/psychoscopeLifeformData/lData = GLOB.psychoscope_lifeform_data[M.type]
 
 				if ("\ref[M]" in lData["scanned_list"])
 					return 0
@@ -221,7 +109,7 @@
 			else
 				return null
 
-		PrintTechs(datum/PsychoscopeLifeformData/lData)
+		PrintTechs(datum/psychoscopeLifeformData/lData)
 			var/list/techs_list = lData.GetUnlockedTechs()
 			var/obj/item/LifeformScanDisk/disk = new(usr.loc)
 			disk.origin_tech = list()
@@ -231,26 +119,24 @@
 				disk.origin_tech.Add(list(tech["tech_id"] = tech["tech_level"]))
 				disk.desc += "\n[tech["tech_name"]] - [tech["tech_level"]]"
 
-			if (!usr.put_in_any_hand_if_possible(disk, FALSE, FALSE))
-				disk.Move(usr.loc)
+			usr.put_in_hands(disk)
 
 		PrintNeuromodData(neuromod_type)
 			neuromod_type = text2path(neuromod_type)
 			if (!ispath(neuromod_type))
 				return
 
-			var/datum/NeuromodData/D = new neuromod_type
-			var/obj/item/NeuromodDataDisk/disk = new(usr.loc)
+			var/datum/neuromodData/D = new neuromod_type
+			var/obj/item/neuromodDataDisk/disk = new(usr.loc)
 
 			disk.neuromod_data = D
 			disk.name = D.name
 			disk.desc += "\n[D.name] - [D.desc]"
 
-			if (!usr.put_in_any_hand_if_possible(disk, FALSE, FALSE))
-				disk.Move(usr.loc)
+			usr.put_in_hands(disk)
 
 		/* NOT USED */
-		PrintData(datum/PsychoscopeLifeformData/lData)
+		PrintData(datum/psychoscopeLifeformData/lData)
 			to_chat(usr, "Scan Data:")
 			to_chat(usr, "Kingdom: [lData.kingdom]")
 			to_chat(usr, "class: [lData.class]")
@@ -282,10 +168,17 @@
 		overlay = GLOB.global_hud.material
 		icon_state = "psychoscope_off"
 
+	Destroy()
+		qdel(selected_lifeform)
+		selected_lifeform = null
+
+		..()
+
 	attack_self(mob/user)
 		. = ..(user)
 
 		if (!active)
+			is_scanning = FALSE
 			set_light(0)
 		else
 			playsound(src, 'sound/effects/psychoscope/psychoscope_on.ogg', 10, 0)
@@ -301,7 +194,7 @@
 	/* UI */
 
 	Topic(href, list/href_list)
-		. = ..()
+		if (..()) return 1
 
 		playsound(src, 'sound/machines/console_click2.ogg', 10, 1)
 
@@ -351,7 +244,7 @@
 
 		switch(ui_mode)
 			if (1)
-				for (var/datum/PsychoscopeScanData/sData in scans_journal)
+				for (var/datum/psychoscopeScanData/sData in scans_journal)
 					data["scans_journal"].Add(list(
 						list(
 							"scan" = sData.ToList(),
@@ -361,7 +254,7 @@
 					))
 			if (2)
 				for (var/I in GLOB.psychoscope_lifeform_data)
-					var/datum/PsychoscopeLifeformData/D = GetLifeformDataByType(I)
+					var/datum/psychoscopeLifeformData/D = GetLifeformDataByType(I)
 
 					if (!D || D.species == "Unknown")
 						continue
@@ -380,7 +273,6 @@
 
 			ui.set_initial_data(data)
 			ui.open()
-
 		ui.set_auto_update(TRUE)
 
 	/* HUD */
@@ -395,3 +287,123 @@
 			for(var/mob/living/target in P.Mob.in_view(P.Turf) - M)
 				if (!target.is_dead())
 					P.Client.images += target.psychoscope_icons[PSYCHOSCOPE_ICON_DOT]
+
+/* DATUMS */
+
+/datum/psychoscopeScanData
+	var
+		datum/psychoscopeLifeformData/lifeform
+		date = 0
+		object_name = ""
+
+	New(lifeform_data, object_name)
+		src.date = "[stationdate2text()] - [stationtime2text()]"
+		src.lifeform = lifeform_data
+		src.object_name = object_name
+
+	Destroy()
+		qdel(lifeform)
+		lifeform = null
+
+		..()
+
+	proc
+		ToList()
+			var/list/L = list()
+
+			L["date"] = date
+			L["lifeform"] = lifeform.ToList()
+			L["object_name"] = object_name
+
+			return L
+
+/datum/psychoscopeLifeformData
+	var
+		kingdom = ""
+		class = ""
+		genus = ""
+		species = ""
+		desc = ""
+		scan_count = 0
+		list/scanned_list = list()
+		list/tech_rewards = list()
+		list/neuromod_rewards = list()
+		list/opened_neuromods = list()
+
+	New(kingdom, class, genus, species, desc, list/tech_rewards, list/neuromod_rewards)
+		src.kingdom = kingdom
+		src.class = class
+		src.genus = genus
+		src.species = species
+		src.desc = desc
+		src.tech_rewards = tech_rewards
+		src.neuromod_rewards = neuromod_rewards
+
+	proc
+		ProbNeuromods()
+			for (var/scan = scan_count, scan > 0, scan--)
+				var/list/neuromods = neuromod_rewards[num2text(scan)]
+
+				if (!neuromods || neuromods.len == 0)
+					continue
+
+				for (var/N in neuromods)
+					if (!N in subtypesof(/datum/neuromodData))
+						continue
+
+					var/datum/neuromodData/nData = N
+
+					if (nData in opened_neuromods)
+						continue
+
+					var/unlocked = prob(initial(nData.chance))
+
+					if (unlocked && !isnull(nData) && nData in subtypesof(/datum/neuromodData))
+						opened_neuromods.Add(nData)
+						to_chat(usr, "New neuromod available!")
+
+		GetUnlockedTechs()
+			var/list/tech_list = list()
+
+			for (var/scan = scan_count, scan > 0, scan--)
+				var/list/reward = tech_rewards[num2text(scan)]
+
+				if (!reward || reward.len == 0)
+					continue
+
+				for (var/I in reward)
+					tech_list.Add(list(
+						list("tech_name" = CallTechName(I), "tech_level" = reward[I], "tech_id" = I)
+					))
+
+				return tech_list
+
+		GetUnlockedNeuromods()
+			var/list/neuromods_list = list()
+
+			for (var/N in opened_neuromods)
+				to_world("N")
+				var/datum/neuromodData/nData = N
+
+				if (isnull(nData))
+					continue
+
+				neuromods_list.Add(list(
+					list("neuromod_name" = initial(nData.name), "neuromod_type" = nData, "neuromod_desc" = initial(nData.desc))
+				))
+
+			return neuromods_list
+
+		ToList()
+			var/list/L = list()
+
+			L["kingdom"] = kingdom
+			L["class"] = class
+			L["genus"] = genus
+			L["species"] = species
+			L["desc"] = desc
+			L["scan_count"] = scan_count
+			L["opened_techs"] = GetUnlockedTechs()
+			L["opened_neuromods"] = GetUnlockedNeuromods()
+
+			return L

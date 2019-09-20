@@ -7,7 +7,7 @@
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = null
 
-/obj/item/NeuromodDataDisk
+/obj/item/neuromodDataDisk
 	name = "neuromod data disk"
 	desc = "Contains neuro data for production neuromods."
 	icon = 'icons/obj/psychotronics.dmi'
@@ -17,4 +17,25 @@
 	origin_tech = null
 
 	var
-		datum/NeuromodData/neuromod_data = null
+		datum/neuromodData/neuromod_data = null
+
+	proc
+		ToList()
+			var/list/N = list()
+
+			N["reference"] = "\ref[src]"
+			N["name"] = name
+			N["desc"] = desc
+
+			if (neuromod_data)
+				N["neuromod_data"] = neuromod_data.ToList()
+			else
+				N["neuromod_data"] = null
+
+			return N
+
+/obj/item/neuromodDataDisk/LightRegenerationDisk
+	New(loc, ...)
+		..()
+
+		neuromod_data = new /datum/neuromodData/LightRegeneration

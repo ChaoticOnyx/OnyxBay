@@ -1,18 +1,18 @@
 {{if data.mode == 0}} <!-- Main Menu -->
-    <div class="item" style="text-align: center;">
+    <div class="item">
 		<h2>Main Menu</h2>
     </div>
     <!-- Toggle Psychoscope -->
     <div class="itemContent">
-        {{:helper.link('Toggle Psychoscope', 'lightbulb', { 'option': 'togglePsychoscope' }, null)}}
+        {{:helper.link('Toggle Psychoscope', 'lightbulb', { 'option': 'togglePsychoscope' })}}
     </div>
     <!-- Show Scans Journal -->
     <div class="itemContent">
-        {{:helper.link('Scans Journal', 'clipboard', { 'option': 'showScansJournal' }, null)}}
+        {{:helper.link('Scans Journal', 'clipboard', { 'option': 'showScansJournal' })}}
 	</div>
 	<!-- Show Lifeforms List -->
 	<div class="itemContent">
-		{{:helper.link('Species List', 'dna', { 'option': 'showLifeformsList' }, null)}}
+		{{:helper.link('Species List', 'dna', { 'option': 'showLifeformsList' })}}
 	</div>
 {{else data.mode == 1}}
 	<h2>Psychoscope Scans Journal</h2>
@@ -30,7 +30,7 @@
 		<b>Species:</b> {{:value.scan.lifeform.species}}
 		<br>
 		<div class="itemContent">
-			{{:helper.link('Show Details', 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference}, null)}}
+			{{:helper.link('Show Details', 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference})}}
 		</div>
 		<div class="itemContent">
 			{{:helper.link('Delete Scan', 'trash', {'option': 'deleteScan', 'scan_reference': value.scan_reference}, null, 'redButton')}}
@@ -41,22 +41,22 @@
     {{/for}}
 	<!-- Return to Main Menu -->
 	<br>
-	{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
+	{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' })}}
 
 <!-- Species List -->
 {{else data.mode == 2}}
 	<h2>Species List</h2>
+	<br>
 	{{for data.lifeforms_list}}
-		<br>
 		<div class="itemContent">
-			{{:helper.link(value.lifeform.genus, 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference}, null)}}
+			{{:helper.link(value.lifeform.genus, 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference})}}
 		</div>
-		<br>
 	{{empty}}
 		<b>No known lifeforms.</b>
 	{{/for}}
 	<br>
-	{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' }, null)}}
+	<br>
+	{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' })}}
 <!-- Lifeform Details -->
 {{else data.mode == 3}}
 	{{if data.lifeform}}
@@ -85,7 +85,7 @@
 		<br>
 		{{if data.lifeform.opened_techs}}
 			<div class="itemContent">
-				{{:helper.link('Print Technology Data', 'print', { 'option': 'printTechs', 'lifeform_reference': data.lifeform_reference }, null)}}
+				{{:helper.link('Print Technology Data', 'print', { 'option': 'printTechs', 'lifeform_reference': data.lifeform_reference })}}
 			</div>
 			<br>
 		{{/if}}
@@ -94,7 +94,7 @@
 		{{for data.lifeform.opened_neuromods}}
 			<b>{{:value.neuromod_name}}</b> - {{:value.neuromod_desc}}
 			<br>
-			{{:helper.link('Print Neuromod Disk Data', 'print', { 'option': 'printNeuromodData', 'neuromod_type': value.neuromod_type }, null)}}
+			{{:helper.link('Print Neuromod Disk Data', 'print', { 'option': 'printNeuromodData', 'neuromod_type': value.neuromod_type })}}
 			<br>
 		{{empty}}
 			<b>No new neuromods.</b>
@@ -106,6 +106,6 @@
 	{{/if}}
 
 	<div class="itemContent">
-		{{:helper.link('Close', 'arrow-left', { 'option': 'back' }, null)}}
+		{{:helper.link('Close', 'arrow-left', { 'option': 'back' })}}
 	</div>
 {{/if}}
