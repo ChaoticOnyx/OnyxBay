@@ -53,7 +53,7 @@
 	desc = base_desc
 	icon = base_icon
 	icon_state = base_icon_state
-	plane = PLATING_PLANE
+
 
 	if(flooring)
 		flooring.on_remove()
@@ -61,7 +61,7 @@
 			var/obj/F =  new flooring.build_type(src)
 			if (color)
 				F.color = color
-			var/obj/item/stack/tile/T = null	
+			var/obj/item/stack/tile/T = null
 			if (istype(F,/obj/item/stack/tile))	//checking if stack is a tile cause only tiles can store decals
 				T = F
 				T.stored_decals = src.decals
@@ -72,7 +72,7 @@
 
 	if (base_color)
 		color = base_color
-	
+
 	set_light(0)
 	broken = null
 	burnt = null
@@ -87,6 +87,6 @@
 		O.hide(O.hides_under_flooring() && src.flooring)
 
 	if(flooring)
-		plane = TURF_PLANE
+		layer = TURF_LAYER
 	else
-		plane = PLATING_PLANE
+		layer = PLATING_LAYER

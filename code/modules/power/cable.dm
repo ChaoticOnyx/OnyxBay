@@ -35,7 +35,6 @@ var/list/possible_cable_coil_colours
 	var/d1 = 0
 	var/d2 = 1
 
-	plane = ABOVE_TURF_PLANE
 	layer = EXPOSED_WIRE_LAYER
 
 	color = COLOR_RED

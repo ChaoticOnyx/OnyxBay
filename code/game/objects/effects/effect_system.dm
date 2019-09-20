@@ -490,7 +490,7 @@ steam.start() -- spawns the effect
 	icon_state = "hitmarker"
 	density = 0
 	anchored = 1
-	plane = ABOVE_HUMAN_PLANE
+
 	layer = ABOVE_HUMAN_LAYER
 
 /obj/effect/effect/hitmarker/Initialize()

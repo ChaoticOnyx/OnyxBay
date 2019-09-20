@@ -16,6 +16,14 @@
 	else
 		hud_used = new /datum/hud
 
+	var/obj/screen/plane_master/ambient_occlusion/ao = (locate(/obj/screen/plane_master/ambient_occlusion) in client.screen)
+
+	if (!ao)
+		ao = new()
+		client.screen += ao
+
+	ao.backdrop(src)
+
 /datum/hud
 	var/mob/mymob
 
@@ -100,7 +108,6 @@
 						if(H.wear_suit) H.wear_suit.screen_loc = null
 					if(slot_wear_mask)
 						if(H.wear_mask) H.wear_mask.screen_loc = null
-
 
 /datum/hud/proc/persistant_inventory_update()
 	if(!mymob)

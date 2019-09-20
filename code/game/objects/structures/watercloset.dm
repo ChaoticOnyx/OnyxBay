@@ -100,7 +100,7 @@
 	name = "mist"
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "mist"
-	plane = ABOVE_HUMAN_PLANE
+
 	layer = ABOVE_HUMAN_LAYER
 	anchored = 1
 	mouse_opacity = 0

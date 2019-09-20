@@ -6,7 +6,7 @@
 	anchored = 1
 	density = 0
 	opacity = 0
-	plane = ABOVE_HUMAN_PLANE
+
 	layer = ABOVE_HUMAN_LAYER
 	simulated = 0
 	mouse_opacity = 0
@@ -165,7 +165,7 @@ obj/aiming_overlay/proc/update_aiming_deferred()
 	update_icon()
 	forceMove(get_turf(target))
 	START_PROCESSING(SSobj, src)
-	
+
 	if(do_after(owner,12,target,progress = 0))
 		to_chat(target, "<span class='danger'>You now have a gun pointed at you. No sudden moves!</span>")
 		aiming_with = thing
@@ -186,7 +186,7 @@ obj/aiming_overlay/proc/update_aiming_deferred()
 		return
 
 
-	
+
 
 /obj/aiming_overlay/update_icon()
 	if(locked)

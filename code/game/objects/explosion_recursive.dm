@@ -118,4 +118,5 @@ proc/explosion_rec(turf/epicenter, power, shaped)
 	explosion_resistance = 10
 
 /turf/simulated/wall
+	plane = DEFAULT_PLANE
 	explosion_resistance = 10
