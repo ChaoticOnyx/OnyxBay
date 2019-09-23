@@ -698,7 +698,8 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_SERVER)) return
 	var/datum/map/M = GLOB.all_maps[input("Select map:","Change map",GLOB.using_map) as null|anything in GLOB.all_maps]
 	if(M)
-		log_admin("[key_name(usr)] changed map to [M.name]")
+		to_world("<span class='notice'>Map has been changed to: <b>[M.name]</b></span>")
+		log_and_message_admins("[key_name(usr)] changed map to [M.name]")
 		fdel("data/use_map")
 		text2file("[M.type]", "data/use_map")
 
