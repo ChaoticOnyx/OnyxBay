@@ -304,6 +304,13 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	path = /obj/item/weapon/syringe_cartridge
 	category = "Arms and Ammunition"
 
+/datum/autolathe/recipe/machete
+	name = "machete"
+	path = /obj/item/weapon/material/hatchet/machete
+	hidden = 1
+	category = "Arms and Ammunition"
+	resources = list(MATERIAL_STEEL = 1000)
+
 /datum/autolathe/recipe/shotgun_blanks
 	name = "ammunition (shotgun, blank)"
 	path = /obj/item/ammo_casing/shotgun/blank
