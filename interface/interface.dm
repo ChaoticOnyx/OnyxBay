@@ -73,10 +73,13 @@
 
 	var/admin = {"<font color='purple'>
 Admin:
-\tF5 = Aghost (admin-ghost)
-\tF6 = player-panel-new
-\tF7 = admin-pm
-\tF8 = Invisimin
+\tF5 = Msay (mod-say)
+\tF6 = Player-Panel-New
+\tF7 = View-Tickets
+\tF8 = Banning-Panel
+\tF9 = Asay (admin-say)
+\tF10 = Aghost
+\tF11 = Toggle-Build-Mode-Self
 </font>"}
 
 	var/hotkey_mode = {"<font color='purple'>
