@@ -186,7 +186,7 @@
 
 	/* HotKeys */
 
-	CtrlClick(mob/user)
+	AltClick(mob/user)
 		. = ..()
 
 		ui_interact(user)
