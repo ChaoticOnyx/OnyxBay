@@ -239,7 +239,7 @@
 		data["lifeforms_list"] = list()
 
 		if (selected_lifeform)
-			data["lifeform"] = selected_lifeform.ToList()
+			data["lifeform"] = selected_lifeform.ToList(user)
 			data["lifeform_reference"] = "\ref[selected_lifeform]"
 
 		switch(ui_mode)
@@ -261,7 +261,7 @@
 
 					data["lifeforms_list"].Add(list(
 						list(
-							"lifeform" = D.ToList(),
+							"lifeform" = D.ToList(user),
 							"lifeform_reference" = "\ref[D]"
 						)
 					))
@@ -318,19 +318,20 @@
 			return L
 
 /datum/psychoscopeLifeformData
-	var
-		kingdom = ""
-		class = ""
-		genus = ""
-		species = ""
-		desc = ""
-		scan_count = 0
-		list/scanned_list = list()
-		list/tech_rewards = list()
-		list/neuromod_rewards = list()
-		list/opened_neuromods = list()
+	var/mob/mob_type = null
+	var/kingdom = ""
+	var/class = ""
+	var/genus = ""
+	var/species = ""
+	var/desc = ""
+	var/scan_count = 0
+	var/list/scanned_list = list()
+	var/list/tech_rewards = list()
+	var/list/neuromod_rewards = list()
+	var/list/opened_neuromods = list()
 
-	New(kingdom, class, genus, species, desc, list/tech_rewards, list/neuromod_rewards)
+	New(mob_type, kingdom, class, genus, species, desc, list/tech_rewards, list/neuromod_rewards)
+		src.mob_type = mob_type
 		src.kingdom = kingdom
 		src.class = class
 		src.genus = genus
@@ -341,6 +342,9 @@
 
 	proc
 		ProbNeuromods()
+			if (!neuromod_rewards)
+				return
+
 			for (var/scan = scan_count, scan > 0, scan--)
 				var/list/neuromods = neuromod_rewards[num2text(scan)]
 
@@ -382,7 +386,6 @@
 			var/list/neuromods_list = list()
 
 			for (var/N in opened_neuromods)
-				to_world("N")
 				var/datum/neuromodData/nData = N
 
 				if (isnull(nData))
@@ -394,8 +397,13 @@
 
 			return neuromods_list
 
-		ToList()
+		ToList(mob/user)
 			var/list/L = list()
+
+			L["img"] = null
+
+			if (user && mob_type)
+				L["img"] = icon2html(initial(mob_type.icon), user, initial(mob_type.icon_state), SOUTH, 1, FALSE, "icon", "height:64px;width:64px;")
 
 			L["kingdom"] = kingdom
 			L["class"] = class
