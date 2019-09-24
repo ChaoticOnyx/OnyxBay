@@ -927,3 +927,64 @@ proc/generate_image(var/tx as num, var/ty as num, var/tz as num, var/range as nu
 
 	return cap
 
+/proc/icon2html(thing, target, icon_state, dir, frame = 1, moving = FALSE, class="icon", style="")
+	if (!thing)
+		return
+
+	var/key
+	var/icon/I = thing
+	if (!target)
+		return
+	if (target == world)
+		target = GLOB.clients
+
+	var/list/targets
+	if (!islist(target))
+		targets = list(target)
+	else
+		targets = target
+		if (!targets.len)
+			return
+	if (!isicon(I))
+		if (isfile(thing)) //special snowflake
+			var/name = sanitize_filename("[generate_asset_name(thing)].png")
+			register_asset(name, thing)
+			for (var/thing2 in targets)
+				send_asset(thing2, key, FALSE)
+			return "<img class='[class]' src=\"[url_encode(name)]\" style='[style]'>"
+		var/atom/A = thing
+		if (isnull(dir))
+			dir = A.dir
+		if (isnull(icon_state))
+			icon_state = A.icon_state
+		I = A.icon
+		if (ishuman(thing)) // Shitty workaround for a BYOND issue.
+			var/icon/temp = I
+			I = icon()
+			I.Insert(temp, dir = SOUTH)
+			dir = SOUTH
+	else
+		if (isnull(dir))
+			dir = SOUTH
+		if (isnull(icon_state))
+			icon_state = ""
+
+	I = icon(I, icon_state, dir, frame, moving)
+
+	key = "[generate_asset_name(I)].png"
+	register_asset(key, I)
+	for (var/thing2 in targets)
+		send_asset(thing2, key, FALSE)
+
+	return "<img class='[class]' src=\"[url_encode(key)]\" style='[style]'>"
+
+//Costlier version of icon2html() that uses getFlatIcon() to account for overlays, underlays, etc. Use with extreme moderation, ESPECIALLY on mobs.
+/proc/costly_icon2html(thing, target)
+	if (!thing)
+		return
+
+	if (isicon(thing))
+		return icon2html(thing, target)
+
+	var/icon/I = getFlatIcon(thing)
+	return icon2html(I, target)

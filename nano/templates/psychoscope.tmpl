@@ -20,22 +20,16 @@
 	</div>
         <!-- List of scans -->
 	{{for data.scans_journal}}
-		<div class="itemContent">
-			<h3>Scan of "{{:value.scan.object_name}}"</h3>
-			<b>Date: </b> {{:value.scan.date}}
-			<br>
-			<b>Kingdom:</b> {{:value.scan.lifeform.kingdom}}
-			<br>
-			<b>Class:</b> {{:value.scan.lifeform.class}}
-			<br>
-			<b>Genus:</b> {{:value.scan.lifeform.genus}}
-			<br>
-			<b>Species:</b> {{:value.scan.lifeform.species}}
-			<br>
-			<div class="itemContent">
+		<div class="item">
+			<div class="itemContent"></div>
+				<h3>Scan of "{{:value.scan.object_name}}"</h3>
+				<b>Date: </b> {{:value.scan.date}}<br>
+				<b>Kingdom:</b> {{:value.scan.lifeform.kingdom}}<br>
+				<b>Class:</b> {{:value.scan.lifeform.class}}<br>
+				<b>Genus:</b> {{:value.scan.lifeform.genus}}<br>
+				<b>Species:</b> {{:value.scan.lifeform.species}}<br>
+
 				{{:helper.link('Show Details', 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference})}}
-			</div>
-			<div class="itemContent">
 				{{:helper.link('Delete Scan', 'trash', {'option': 'deleteScan', 'scan_reference': value.scan_reference}, null, 'redButton')}}
 			</div>
 		</div>
@@ -72,7 +66,8 @@
 	{{if data.lifeform}}
 		<div class="item">
 			<div class="itemLabel">
-				<h2>{{:data.lifeform.species}}</h2>
+				<center><h2>{{:data.lifeform.species}}</h2></center>
+				<center>{{:data.lifeform.img}}</center>
 			</div>
 
 			<div class="itemContent">
@@ -112,10 +107,13 @@
 
 		{{for data.lifeform.opened_neuromods}}
 			<div class="item">
-				<b>{{:value.neuromod_name}}</b> - {{:value.neuromod_desc}}
-			</div>
-			<div class="itemContent">
-				{{:helper.link('Print Neuromod Disk Data', 'print', { 'option': 'printNeuromodData', 'neuromod_type': value.neuromod_type })}}
+				<div class="imteLabel">
+					<b>{{:value.neuromod_name}}</b> - {{:value.neuromod_desc}}
+				</div>
+
+				<div class="itemContent">
+					{{:helper.link('Print Neuromod Disk Data', 'print', { 'option': 'printNeuromodData', 'neuromod_type': value.neuromod_type })}}
+				</div>
 			</div>
 		{{empty}}
 			<div class="notice">
