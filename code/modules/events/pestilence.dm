@@ -78,7 +78,8 @@
 		E.data["UI"] = candidate.dna.UI.Copy()
 		E.data["SE"] = candidate.dna.SE.Copy()
 
-	infect_virus2(candidate,D)
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)
 
 /datum/disease2/effect/dnaspread
 	name = "Space Retrovirus Syndrome"
@@ -170,7 +171,8 @@
 	var/datum/disease2/disease/gbs/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
-	infect_virus2(candidate,D)
+	if(candidate.species.name in D.affected_species)	
+		infect_virus2(candidate,D,1)
 
 /datum/disease2/effect/gbs
 	name = "Gravitokinetic Bipotential SADS+"
@@ -226,8 +228,9 @@
 
 	var/datum/disease2/disease/fake_gbs/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
-
-	infect_virus2(candidate,D)
+	
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)
 
 /datum/disease2/effect/fake_gbs
 	name = "Gravitokinetic Bipotential SADS+"
@@ -277,7 +280,8 @@
 	var/datum/disease2/disease/cold9/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
-	infect_virus2(candidate,D)
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)
 
 /datum/disease2/effect/cold9
 	name = "The Cold"
@@ -336,7 +340,8 @@
 	var/datum/disease2/disease/nuclear/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
-	infect_virus2(candidate,D)
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)
 
 /datum/disease2/effect/nuclear
 	name = "Atomic Fever"
@@ -494,7 +499,7 @@
 
 	var/victims = min(rand(1,3), candidates.len)
 	while(victims)
-		infect_virus2(pick_n_take(candidates),D)
+		infect_virus2(pick_n_take(candidates),D,1)
 		victims--
 
 /datum/disease2/effect/flu
@@ -555,7 +560,8 @@
 	var/datum/disease2/disease/nuclear/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
-	infect_virus2(candidate,D)
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)
 
 /datum/disease2/effect/fluspanish
 	name = "Spanish Flu Virion"
@@ -634,7 +640,8 @@
 	var/datum/disease2/disease/vulnerability/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
-	infect_virus2(candidate,D)
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)
 
 /datum/disease2/effect/vulnerability
 	name = "Arteriviridae"
@@ -704,7 +711,8 @@
 	var/datum/disease2/disease/emp/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
-	infect_virus2(candidate,D)	
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)
 
 /datum/disease2/effect/emp
 	name = "Electromagnetic Mismatch Syndrome"
@@ -764,7 +772,8 @@
 	var/datum/disease2/disease/xeno/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
-	infect_virus2(candidate,D)
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)
 
 // ####################################################################
 // #############################HISSVIRUS##############################
@@ -805,7 +814,8 @@
 	var/datum/disease2/disease/hisstarvation/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
-	infect_virus2(candidate,D)
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)
 	
 /datum/disease2/effect/hisstarvation
 	name = "Hisstarvation Effect"
@@ -857,7 +867,8 @@
 	var/datum/disease2/disease/musclerace/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
-	infect_virus2(candidate,D)	
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)	
 
 /datum/disease2/effect/musclerace
 	name = "Reverse Muscle Overstrain Effect"
