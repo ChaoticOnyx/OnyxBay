@@ -71,7 +71,7 @@
 	if(announcement_message)
 		newChannel.announcement = announcement_message
 	else
-		newChannel.announcement = "Breaking news from [channel_name]!"
+		newChannel.announcement = "Breaking news from [utf8_to_cp1251(channel_name)]!"
 
 	newChannel.channel_id = length(network_channels) + 1
 	network_channels += newChannel
