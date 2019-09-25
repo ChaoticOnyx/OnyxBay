@@ -146,7 +146,8 @@ var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/spawn_atom,		// allows us to spawn instances,
 	/client/proc/respawn_character,
 	/client/proc/virus2_editor,
-	/client/proc/spawn_chemdisp_cartridge
+	/client/proc/spawn_chemdisp_cartridge,
+	/datum/admins/proc/ictus
 	)
 
 var/list/admin_verbs_server = list(
@@ -305,7 +306,8 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/enable_debug_verbs,
 	/client/proc/roll_dices,
 	/proc/possess,
-	/proc/release
+	/proc/release,
+	/datum/admins/proc/ictus
 	)
 
 var/list/admin_verbs_mod = list(
