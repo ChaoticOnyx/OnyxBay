@@ -133,7 +133,10 @@
 	var/tag_x
 
 /obj/item/smallDelivery/proc/unwrap(var/mob/user)
-	if (!wrapped || !Adjacent(user))
+	if (!wrapped)
+		qdel(src)
+
+	if (!Adjacent(user))
 		return
 	wrapped.forceMove(user.loc)
 	user.drop_item()

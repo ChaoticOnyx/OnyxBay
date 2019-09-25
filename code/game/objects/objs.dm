@@ -17,6 +17,11 @@
 	var/anchor_fall = FALSE
 
 /obj/Destroy()
+	var/obj/item/smallDelivery/delivery = loc
+
+	if (istype(delivery))
+		delivery.wrapped = null
+
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
