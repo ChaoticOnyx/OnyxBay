@@ -10,6 +10,7 @@
 /obj/machinery/atmospherics/unary/vent_pump
 	icon = 'icons/atmos/vent_pump.dmi'
 	icon_state = "map_vent"
+	plane = FLOOR_PLANE
 
 	name = "Air Vent"
 	desc = "Has a valve and pump attached to it."

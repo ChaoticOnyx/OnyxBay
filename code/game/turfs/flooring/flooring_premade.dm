@@ -3,7 +3,7 @@
 	name = "plating"
 	icon = 'icons/turf/flooring/plating.dmi'
 	icon_state = "plating"
-	plane = PLATING_PLANE
+
 
 
 //GRID FLOORING
@@ -168,6 +168,7 @@
 	icon = 'icons/turf/flooring/linoleum.dmi'
 	icon_state = "lino"
 	initial_flooring = null
+	plane = DEFAULT_PLANE
 
 /turf/simulated/floor/trim/lino
 	name = "lino"

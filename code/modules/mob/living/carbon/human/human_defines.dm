@@ -1,5 +1,5 @@
 /mob/living/carbon/human
-	plane = HUMAN_PLANE
+	layer = BASE_HUMAN_LAYER
 
 	//Hair colour and style
 	var/r_hair = 0

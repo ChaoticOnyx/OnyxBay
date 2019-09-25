@@ -143,7 +143,7 @@ obj/structure/net/Initialize(var/mapload)
 /obj/structure/net/net_wall
 	icon_state = "net_w"
 	density = 1
-	plane = ABOVE_HUMAN_PLANE
+
 	layer = ABOVE_HUMAN_LAYER
 
 /obj/structure/net/net_wall/Initialize(var/mapload)

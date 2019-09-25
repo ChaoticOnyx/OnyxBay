@@ -45,7 +45,6 @@
 	density = 0
 	icon = 'icons/obj/hydroponics_growing.dmi'
 	icon_state = ""
-	plane = OBJ_PLANE
 	layer = OBJ_LAYER
 	pass_flags = PASS_FLAG_TABLE
 	mouse_opacity = 1

@@ -5,7 +5,6 @@
 	icon_state = "catwalk"
 	density = 0
 	anchored = 1.0
-	plane = ABOVE_TURF_PLANE
 	layer = CATWALK_LAYER
 
 /obj/structure/catwalk/Initialize()
