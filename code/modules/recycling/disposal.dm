@@ -651,6 +651,7 @@
 	icon = 'icons/obj/pipes/disposal.dmi'
 	name = "disposal pipe"
 	desc = "An underfloor disposal pipe."
+	plane = FLOOR_PLANE
 	anchored = 1
 	density = 0
 
