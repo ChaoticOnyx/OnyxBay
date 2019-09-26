@@ -852,7 +852,6 @@ obj/random/obstruction/spawn_choices()
 				/obj/item/clothing/suit/bio_suit/general = 1,
 				/obj/item/clothing/suit/storage/toggle/hoodie/black = 3,
 				/obj/item/clothing/suit/storage/toggle/brown_jacket = 3,
-				/obj/item/clothing/suit/storage/leather_jacket = 3,
 				/obj/item/clothing/suit/apron = 4)
 
 /obj/random/clothing
