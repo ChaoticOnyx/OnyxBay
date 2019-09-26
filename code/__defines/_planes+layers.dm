@@ -161,33 +161,34 @@ What is the naming convention for planes or layers?
 
 	#define BASE_AREA_LAYER             999
 
-#define OBSERVER_PLANE             1
+#define MOUSE_INVISIBLE_PLANE			1
+#define OBSERVER_PLANE             		2
 
-#define LIGHTING_PLANE             2 // For Lighting. - The highest plane (ignoring all other even higher planes)
-	#define LIGHTBULB_LAYER        0
-	#define LIGHTING_LAYER         1
-	#define ABOVE_LIGHTING_LAYER   2
+#define LIGHTING_PLANE             		3 // For Lighting. - The highest plane (ignoring all other even higher planes)
+	#define LIGHTBULB_LAYER        		0
+	#define LIGHTING_LAYER         		1
+	#define ABOVE_LIGHTING_LAYER   		2
 
-#define EFFECTS_ABOVE_LIGHTING_PLANE   3 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
-	#define EYE_GLOW_LAYER         1
-	#define BEAM_PROJECTILE_LAYER  2
-	#define SUPERMATTER_WALL_LAYER 3
+#define EFFECTS_ABOVE_LIGHTING_PLANE   	4 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
+	#define EYE_GLOW_LAYER         		1
+	#define BEAM_PROJECTILE_LAYER  		2
+	#define SUPERMATTER_WALL_LAYER 		3
 
-#define OBFUSCATION_PLANE				4 // AI
+#define OBFUSCATION_PLANE				5 // AI
 
-#define FULLSCREEN_PLANE                5 // for fullscreen overlays that do not cover the hud.
+#define FULLSCREEN_PLANE                6 // for fullscreen overlays that do not cover the hud.
 
-	#define FULLSCREEN_LAYER    0
-	#define DAMAGE_LAYER        1
-	#define IMPAIRED_LAYER      2
-	#define BLIND_LAYER         3
-	#define CRIT_LAYER          4
+	#define FULLSCREEN_LAYER    		0
+	#define DAMAGE_LAYER        		1
+	#define IMPAIRED_LAYER      		2
+	#define BLIND_LAYER         		3
+	#define CRIT_LAYER          		4
 
-#define HUD_PLANE                    6
-	#define UNDER_HUD_LAYER              0
-	#define HUD_BASE_LAYER               2
-	#define HUD_ITEM_LAYER               3
-	#define HUD_ABOVE_ITEM_LAYER         4
+#define HUD_PLANE                   	7
+	#define UNDER_HUD_LAYER             0
+	#define HUD_BASE_LAYER              2
+	#define HUD_ITEM_LAYER              3
+	#define HUD_ABOVE_ITEM_LAYER        4
 
 
 //This is difference between planes used for atoms and effects
@@ -234,6 +235,12 @@ What is the naming convention for planes or layers?
 
 		if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
 			filters += filter(type="drop_shadow", x=0, y=-2, size=4, border=4, color="#04080FAA")
+
+/obj/screen/plane_master/mouse_invisible
+	appearance_flags = PLANE_MASTER
+	blend_mode = BLEND_DEFAULT
+	plane = MOUSE_INVISIBLE_PLANE
+	mouse_opacity = 0
 
 /obj/screen/plane_master/ghost_master
 	plane = OBSERVER_PLANE

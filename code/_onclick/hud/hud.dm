@@ -7,6 +7,7 @@
 /mob
 	var/hud_type = null
 	var/datum/hud/hud_used = null
+	var/list/master_planes = null
 
 /mob/proc/InitializeHud()
 	if(hud_used)
@@ -16,13 +17,31 @@
 	else
 		hud_used = new /datum/hud
 
-	var/obj/screen/plane_master/ambient_occlusion/ao = (locate(/obj/screen/plane_master/ambient_occlusion) in client.screen)
+	InitializePlanes()
+	UpdatePlanes()
 
-	if (!ao)
-		ao = new()
-		client.screen += ao
+/mob/proc/InitializePlanes()
+	if (!master_planes)
+		master_planes = list()
 
-	ao.backdrop(src)
+	var/list/planes = list(
+		/obj/screen/plane_master/ambient_occlusion,
+		/obj/screen/plane_master/mouse_invisible
+	)
+
+	for (var/plane_type in planes)
+		var/obj/screen/plane_master/plane = new plane_type()
+
+		master_planes["[plane.plane]"] = plane
+		client.screen += plane
+
+/mob/proc/UpdatePlanes()
+	if (!master_planes)
+		return
+
+	for (var/plane_num in master_planes)
+		var/obj/screen/plane_master/plane = master_planes[plane_num]
+		plane.backdrop(src)
 
 /datum/hud
 	var/mob/mymob

@@ -208,13 +208,7 @@ var/list/_client_preferences_by_type
 
 /datum/client_preference/ambient_occlusion/changed(mob/preference_mob, new_value)
 	if (preference_mob.client)
-		var/obj/screen/plane_master/ambient_occlusion/ao = (locate(/obj/screen/plane_master/ambient_occlusion) in preference_mob.client.screen)
-
-		if (!ao)
-			ao = new()
-			preference_mob.client.screen += ao
-
-		ao.backdrop(preference_mob)
+		preference_mob.UpdatePlanes()
 
 /********************
 * General Staff Preferences *
