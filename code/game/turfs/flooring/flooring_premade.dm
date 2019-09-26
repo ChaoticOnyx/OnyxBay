@@ -168,7 +168,6 @@
 	icon = 'icons/turf/flooring/linoleum.dmi'
 	icon_state = "lino"
 	initial_flooring = null
-	plane = DEFAULT_PLANE
 
 /turf/simulated/floor/trim/lino
 	name = "lino"
@@ -182,7 +181,6 @@
 	icon = 'icons/turf/flooring/wood.dmi'
 	icon_state = "wood"
 	initial_flooring = /decl/flooring/wood
-	plane = FLOOR_PLANE
 
 /turf/simulated/floor/trim/darkwood
 	name = "dark wooden floor"
