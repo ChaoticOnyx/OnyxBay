@@ -48,8 +48,8 @@
 	item_state = "machete"
 	w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT
-	force_const = 8
-	thrown_force_const = 4
+	force_const = 20
+	thrown_force_const = 5
 
 /obj/item/weapon/material/hatchet/machete/Initialize()
 	icon_state = "machete[pick("","_red","_blue", "_black", "_olive")]"
@@ -58,7 +58,7 @@
 /obj/item/weapon/material/hatchet/machete/deluxe
 	name = "deluxe machete"
 	desc = "A fine example of a machete, with a polished blade, wooden handle and a leather cord loop."
-	force_const = 8.5
+	force_const = 25
 
 /obj/item/weapon/material/hatchet/machete/deluxe/Initialize()
 	. = ..()
