@@ -197,11 +197,11 @@ What is the naming convention for planes or layers?
 	plane = DEFAULT_PLANE
 
 /image/proc/plating_decal_layerise()
-	plane = DEFAULT_PLANE
+	plane = FLOOR_PLANE
 	layer = DECAL_PLATING_LAYER
 
 /image/proc/turf_decal_layerise()
-	plane = DEFAULT_PLANE
+	plane = FLOOR_PLANE
 	layer = DECAL_LAYER
 
 /atom/proc/hud_layerise()
