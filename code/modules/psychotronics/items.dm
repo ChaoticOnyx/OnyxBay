@@ -16,26 +16,23 @@
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = null
 
-	var
-		datum/neuromodData/neuromod_data = null
+	var/datum/neuromodData/neuromod_data = null
 
-	proc
-		ToList()
-			var/list/N = list()
+/obj/item/neuromodDataDisk/proc/ToList()
+	var/list/N = list()
 
-			N["reference"] = "\ref[src]"
-			N["name"] = name
-			N["desc"] = desc
+	N["reference"] = "\ref[src]"
+	N["name"] = name
+	N["desc"] = desc
 
-			if (neuromod_data)
-				N["neuromod_data"] = neuromod_data.ToList()
-			else
-				N["neuromod_data"] = null
+	if (neuromod_data)
+		N["neuromod_data"] = neuromod_data.ToList()
+	else
+		N["neuromod_data"] = null
 
-			return N
+	return N
 
-/obj/item/neuromodDataDisk/LightRegenerationDisk
-	New(loc, ...)
-		..()
+/obj/item/neuromodDataDisk/LightRegenerationDisk/New(loc, ...)
+	..()
 
-		neuromod_data = new /datum/neuromodData/LightRegeneration
+	neuromod_data = new /datum/neuromodData/LightRegeneration
