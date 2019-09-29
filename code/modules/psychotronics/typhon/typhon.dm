@@ -1,3 +1,7 @@
+/*
+	W	I	P
+*/
+
 /mob/living/typhon
 	name = "Typhon"
 	real_name = "Typhon"

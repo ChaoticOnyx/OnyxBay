@@ -2217,6 +2217,7 @@
 #include "code\modules\psychotronics\items.dm"
 #include "code\modules\psychotronics\neuromod.dm"
 #include "code\modules\psychotronics\psychoscope.dm"
+#include "code\modules\psychotronics\signs.dm"
 #include "code\modules\radiation\radiation.dm"
 #include "code\modules\random_map\_random_map_setup.dm"
 #include "code\modules\random_map\random_map.dm"

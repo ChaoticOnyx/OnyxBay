@@ -1,3 +1,7 @@
+/*
+	W	I	P
+*/
+
 /mob/living/typhon/
 	proc
 		Drain(var/mob/living/carbon/human/target in view(1) - src)
