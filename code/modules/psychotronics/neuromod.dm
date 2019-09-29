@@ -8,51 +8,45 @@
 	sharp = 0
 	unacidable = 0
 
-	var
-		datum/neuromodData/neuromod_data = null
+	var/datum/neuromodData/neuromod_data = null
 
-	proc
-		ToList()
-			var/list/N = list()
+/obj/item/weapon/reagent_containers/neuromod/proc/ToList()
+	var/list/N = list()
 
-			N["reference"] = "\ref[src]"
+	N["reference"] = "\ref[src]"
 
-			if (neuromod_data)
-				N["neuromod_data"] = neuromod_data.ToList()
-			else
-				N["neuromod_data"] = 0
+	if (neuromod_data)
+		N["neuromod_data"] = neuromod_data.ToList()
+	else
+		N["neuromod_data"] = 0
 
-			return N
+	return N
 
-	New(loc, neuromod_data, ...)
-		src.neuromod_data = neuromod_data
+/obj/item/weapon/reagent_containers/neuromod/New(loc, neuromod_data, ...)
+	src.neuromod_data = neuromod_data
 
-		..()
+	..()
 
-	Destroy()
-		qdel(neuromod_data)
-		neuromod_data = null
-
-		..()
+/obj/item/weapon/reagent_containers/neuromod/Destroy()
+	QDEL_NULL(neuromod_data)
+	..()
 
 /datum/neuromodData
-	var
-		name = "Name"
-		desc = "Description"
-		chance = 0
-		research_time = 100
+	var/name = "Name"
+	var/desc = "Description"
+	var/chance = 0
+	var/research_time = 100
 
-	proc
-		ToList()
-			var/list/N = list()
+/datum/neuromodData/proc/ToList()
+	var/list/N = list()
 
-			N["reference"] = "\ref[src]"
-			N["name"] = name
-			N["desc"] = desc
-			N["type"] = type
-			N["research_time"] = research_time
+	N["reference"] = "\ref[src]"
+	N["name"] = name
+	N["desc"] = desc
+	N["type"] = type
+	N["research_time"] = research_time
 
-			return N
+	return N
 
 /datum/neuromodData/LightRegeneration
 	name = "Light Regeneration"
