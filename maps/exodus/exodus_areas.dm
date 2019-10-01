@@ -1057,6 +1057,18 @@
 	name = "\improper Engine Room Airlock"
 	icon_state = "engine"
 
+/area/engineering/singularity_engine
+	name = "\improper Singularity Engine"
+	icon_state = "engine"
+
+/area/engineering/singularity_control
+	name = "\improper Singularity Engine Control Room"
+	icon_state = "engine_monitoring"
+
+/area/engineering/singularity_storage
+	name = "\improper Singularity Engine Storage"
+	icon_state = "engineering_storage"
+
 /area/engineering/engine_waste
 	name = "\improper Engine Waste Handling"
 	icon_state = "engine_waste"
