@@ -652,6 +652,7 @@
 	name = "disposal pipe"
 	desc = "An underfloor disposal pipe."
 	plane = DEFAULT_PLANE
+	layer = TURF_DETAIL_LAYER
 	anchored = 1
 	density = 0
 
@@ -660,7 +661,6 @@
 	dir = 0				// dir will contain dominant direction for junction pipes
 	var/health = 10 	// health points 0-10
 	alpha = 192 // Plane and alpha modified for mapping, reset to normal on spawn.
-	layer = DISPOSALS_PIPE_LAYER
 	var/base_icon_state	// initial icon state on map
 	var/sortType = ""
 	var/subtype = 0
@@ -669,6 +669,7 @@
 		..()
 		alpha = 255
 		base_icon_state = icon_state
+		layer = DISPOSALS_PIPE_LAYER
 		plane = FLOOR_PLANE
 		return
 

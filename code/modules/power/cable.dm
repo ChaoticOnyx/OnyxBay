@@ -35,7 +35,8 @@ var/list/possible_cable_coil_colours
 	var/d1 = 0
 	var/d2 = 1
 
-	layer = EXPOSED_WIRE_LAYER
+	layer = TURF_DETAIL_LAYER
+	plane = FLOOR_PLANE
 
 	color = COLOR_RED
 	var/obj/machinery/power/breakerbox/breaker_box
@@ -74,6 +75,9 @@ var/list/possible_cable_coil_colours
 
 /obj/structure/cable/New()
 	..()
+
+	layer = EXPOSED_WIRE_LAYER
+	plane = FLOOR_PLANE
 
 	// ensure d1 & d2 reflect the icon_state for entering and exiting cable
 
