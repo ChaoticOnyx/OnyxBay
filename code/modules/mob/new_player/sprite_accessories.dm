@@ -328,12 +328,12 @@
 	gender = MALE
 
 /datum/sprite_accessory/hair/undercut_2
-	name = "Undercut 2"
+	name = "Undercut Swept Right"
 	icon_state = "hair_undercut2_s"
 	gender = MALE
 
 /datum/sprite_accessory/hair/undercut_3
-	name = "Undercut 3"
+	name = "Undercut Swept Left"
 	icon_state = "hair_undercut3_s"
 	gender = MALE
 

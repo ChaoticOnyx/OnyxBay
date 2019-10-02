@@ -383,7 +383,7 @@
 	icon_closed = "varsity_brown"
 
 /obj/item/clothing/suit/storage/leather_jacket
-	name = "leather jacket"
+	name = "black leather jacket"
 	desc = "A black leather coat."
 	icon_state = "leather_jacket"
 	item_state = "leather_jacket"
@@ -397,7 +397,7 @@
 
 //This one has buttons for some reason
 /obj/item/clothing/suit/storage/toggle/brown_jacket
-	name = "leather jacket"
+	name = "brown jacket"
 	desc = "A brown leather coat."
 	icon_state = "brown_jacket"
 	item_state = "brown_jacket"
