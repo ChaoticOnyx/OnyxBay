@@ -94,7 +94,7 @@
 	name = "Transport"
 	warmup_time = 10
 	location = 1
-	shuttle_area = /area/shuttle/transport/centcom
+	shuttle_area = /area/shuttle/transport1/centcom
 	dock_target = "centcom_transport_shuttle"
 	landmark_transition = "nav_transport_transition"
 	waypoint_offsite = "nav_transport_start"
