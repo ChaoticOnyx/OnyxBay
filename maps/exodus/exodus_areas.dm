@@ -6,10 +6,11 @@
 		/area/shuttle/escape_pod2,
 		/area/shuttle/escape_pod3,
 		/area/shuttle/escape_pod5,
-		/area/shuttle/transport1/centcom,
+		/area/shuttle/transport/centcom,
 		/area/shuttle/administration/,
 		/area/shuttle/specops/centcom,
 	)
+
 
 ////////////
 //SHUTTLES//
@@ -28,7 +29,7 @@
 	name = "\improper Merchant Van - Home"
 
 /area/shuttle/merchant/transit
-	icon_state = "shuttle"
+	icon_state = "shuttlegrn"
 	base_turf = /turf/space/transit/south
 
 /area/shuttle/merchant/away
@@ -95,11 +96,15 @@
 	name = "\improper Merc Elite Shuttle"
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
-/area/shuttle/transport1/centcom
+/area/shuttle/transport/centcom
 	icon_state = "shuttle"
 	name = "\improper Transport Shuttle Centcom"
 
-/area/shuttle/transport1/station
+/area/shuttle/transport/transit
+	icon_state = "shuttle"
+	name = "\improper Transport Shuttle Transit"
+
+/area/shuttle/transport/station
 	icon_state = "shuttle"
 	name = "\improper Transport Shuttle"
 
@@ -350,7 +355,7 @@
 	icon_state = "shuttlered"
 
 /area/skipjack_station/transit
-	name = "In transit"
+	name = "Skipjack Transit"
 	icon_state = "shuttle"
 	base_turf = /turf/space/transit/north
 
@@ -1052,6 +1057,18 @@
 	name = "\improper Engine Room Airlock"
 	icon_state = "engine"
 
+/area/engineering/singularity_engine
+	name = "\improper Singularity Engine"
+	icon_state = "engine"
+
+/area/engineering/singularity_control
+	name = "\improper Singularity Engine Control Room"
+	icon_state = "engine_monitoring"
+
+/area/engineering/singularity_storage
+	name = "\improper Singularity Engine Storage"
+	icon_state = "engineering_storage"
+
 /area/engineering/engine_waste
 	name = "\improper Engine Waste Handling"
 	icon_state = "engine_waste"
@@ -1197,6 +1214,10 @@
 
 /area/medical/surgery2
 	name = "\improper Operating Theatre 2"
+	icon_state = "surgery"
+
+/area/medical/surgery_storage
+	name = "\improper Surgery Storage"
 	icon_state = "surgery"
 
 /area/medical/surgeryobs
