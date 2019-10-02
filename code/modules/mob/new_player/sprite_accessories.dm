@@ -322,6 +322,21 @@
 	icon_state = "hair_gelled"
 	gender = FEMALE
 
+/datum/sprite_accessory/hair/undercut_1
+	name = "Undercut 1"
+	icon_state = "hair_undercut1_s"
+	gender = MALE
+
+/datum/sprite_accessory/hair/undercut_2
+	name = "Undercut 2"
+	icon_state = "hair_undercut2_s"
+	gender = MALE
+
+/datum/sprite_accessory/hair/undercut_3
+	name = "Undercut 3"
+	icon_state = "hair_undercut3_s"
+	gender = MALE
+
 /datum/sprite_accessory/hair/gentle
 	name = "Gentle"
 	icon_state = "hair_gentle"
