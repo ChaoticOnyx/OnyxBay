@@ -6,11 +6,10 @@
 		/area/shuttle/escape_pod2,
 		/area/shuttle/escape_pod3,
 		/area/shuttle/escape_pod5,
-		/area/shuttle/transport/centcom,
+		/area/shuttle/transport1/centcom,
 		/area/shuttle/administration/,
 		/area/shuttle/specops/centcom,
 	)
-
 
 ////////////
 //SHUTTLES//
@@ -29,7 +28,7 @@
 	name = "\improper Merchant Van - Home"
 
 /area/shuttle/merchant/transit
-	icon_state = "shuttlegrn"
+	icon_state = "shuttle"
 	base_turf = /turf/space/transit/south
 
 /area/shuttle/merchant/away
@@ -96,15 +95,11 @@
 	name = "\improper Merc Elite Shuttle"
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
-/area/shuttle/transport/centcom
+/area/shuttle/transport1/centcom
 	icon_state = "shuttle"
 	name = "\improper Transport Shuttle Centcom"
 
-/area/shuttle/transport/transit
-	icon_state = "shuttle"
-	name = "\improper Transport Shuttle Transit"
-
-/area/shuttle/transport/station
+/area/shuttle/transport1/station
 	icon_state = "shuttle"
 	name = "\improper Transport Shuttle"
 
@@ -355,7 +350,7 @@
 	icon_state = "shuttlered"
 
 /area/skipjack_station/transit
-	name = "Skipjack Transit"
+	name = "In transit"
 	icon_state = "shuttle"
 	base_turf = /turf/space/transit/north
 
@@ -1057,18 +1052,6 @@
 	name = "\improper Engine Room Airlock"
 	icon_state = "engine"
 
-/area/engineering/singularity_engine
-	name = "\improper Singularity Engine"
-	icon_state = "engine"
-
-/area/engineering/singularity_control
-	name = "\improper Singularity Engine Control Room"
-	icon_state = "engine_monitoring"
-
-/area/engineering/singularity_storage
-	name = "\improper Singularity Engine Storage"
-	icon_state = "engineering_storage"
-
 /area/engineering/engine_waste
 	name = "\improper Engine Waste Handling"
 	icon_state = "engine_waste"
@@ -1214,10 +1197,6 @@
 
 /area/medical/surgery2
 	name = "\improper Operating Theatre 2"
-	icon_state = "surgery"
-
-/area/medical/surgery_storage
-	name = "\improper Surgery Storage"
 	icon_state = "surgery"
 
 /area/medical/surgeryobs
@@ -1456,9 +1435,59 @@ area/rnd/test_area
 /area/outpost/mining_main/west_hall
 	name = "Mining Outpost West Hallway"
 
+/area/outpost/mining_main/mechbay
+	name = "Mining Outpost Mech Bay"
+
 // Mining outpost
 /area/outpost/mining_main/maintenance
 	name = "Mining Outpost Maintenance"
+
+// Main Outpost
+/area/outpost/main_outpost
+	icon_state = "green"
+
+/area/outpost/main_outpost/shallway
+	name = "Outpost Southern Hallway"
+
+/area/outpost/main_outpost/challway
+	name = "Outpost Central Hallway"
+
+/area/outpost/main_outpost/nhallway
+	name = "Outpost Northern Hallway"
+
+/area/outpost/main_outpost/dock
+	name = "Outpost Dock"
+	icon_state = "bluenew"
+
+/area/outpost/main_outpost/infirmary
+	name = "Outpost Infirmary"
+
+/area/outpost/main_outpost/canteen
+	name = "Outpost Canteen"
+	icon_state = "kitchen"
+
+/area/outpost/main_outpost/bar
+	name = "Outpost Bar"
+	icon_state = "bar"
+
+/area/outpost/main_outpost/dorms
+	name = "Outpost Living Quarters"
+	icon_state = "blue2"
+
+/area/outpost/main_outpost/dorms/substation
+	name = "Outpost Living Quarters Substation"
+
+/area/outpost/main_outpost/dorms/proom1
+	name = "Outpost Private Room One"
+
+/area/outpost/main_outpost/dorms/proom2
+	name = "Outpost Private Room Two"
+
+/area/outpost/main_outpost/dorms/proom3
+	name = "Outpost Private Room Three"
+
+/area/outpost/main_outpost/dorms/proom4
+	name = "Outpost Private Room Four"
 
 // Small outposts
 /area/outpost/mining_north
@@ -1476,6 +1505,10 @@ area/rnd/test_area
 /area/outpost/abandonedpost
 	name = "Abandoned Post"
 	icon_state = "dark"
+
+/area/outpost/prydwen
+	name = "NSC Prydwen"
+	icon_state = "green"
 
 // Engineering outpost
 
@@ -1554,6 +1587,9 @@ area/rnd/test_area
 
 /area/outpost/research/disposal
 	name = "Research Outpost Waste Disposal"
+
+/area/outpost/research/brainstorm
+	name = "Research Outpost Brainstorm Room"
 
 /area/construction
 	name = "\improper Engineering Construction Area"
