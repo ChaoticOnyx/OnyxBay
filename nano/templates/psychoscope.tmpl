@@ -6,52 +6,53 @@
     <div class="itemContent">
         {{:helper.link('Toggle Psychoscope', 'lightbulb', { 'option': 'togglePsychoscope' })}}
     </div>
-    <!-- Show Scans Journal -->
-    <div class="itemContent">
-        {{:helper.link('Scans Journal', 'clipboard', { 'option': 'showScansJournal' })}}
-	</div>
 	<!-- Show Lifeforms List -->
 	<div class="itemContent">
 		{{:helper.link('Species List', 'dna', { 'option': 'showLifeformsList' })}}
 	</div>
+
+	<!-- Technology Data Disk -->
+	{{if data.inserted_disk}}
+		<div class="itemContent">
+			{{:helper.link('Eject Data Disk', 'save', { 'option': 'ejectDisk' })}}
+		</div>
+	{{else}}
+		<div class="itemContent">
+			{{:helper.link('Insert Data Disk', 'save', { 'option': 'insertDisk' })}}
+		</div>
+	{{/if}}
+
+<!-- Scans Journal -->
 {{else data.mode == 1}}
 	<div class="item">
-		<h2>Psychoscope Scans Journal</h2>
+		<h2>{{:data.selected_lifeform.content.lifeform.genus}} Scans Journal</h2>
 	</div>
-        <!-- List of scans -->
-	{{for data.scans_journal}}
-		<div class="item">
-			<div class="itemContent"></div>
-				<h3>Scan of "{{:value.scan.object_name}}"</h3>
-				<b>Date: </b> {{:value.scan.date}}<br>
-				<b>Kingdom:</b> {{:value.scan.lifeform.kingdom}}<br>
-				<b>Class:</b> {{:value.scan.lifeform.class}}<br>
-				<b>Genus:</b> {{:value.scan.lifeform.genus}}<br>
-				<b>Species:</b> {{:value.scan.lifeform.species}}<br>
 
-				{{:helper.link('Show Details', 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference})}}
-				{{:helper.link('Delete Scan', 'trash', {'option': 'deleteScan', 'scan_reference': value.scan_reference}, null, 'redButton')}}
-			</div>
+    <!-- List of scans -->
+	{{for data.selected_lifeform.content.scans_journal}}
+		<div class="item">
+			<b>Scan Object:</b> {{:value.name}}<br>
+			<b>Date:</b> {{:value.date}}<br>
 		</div>
 	{{empty}}
 		<div class="notice">
 			<b>No scans detected.</b>
 		</div>
-    {{/for}}
-	<!-- Return to Main Menu -->
+	{{/for}}
+
 	<div class="item">
-		{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' })}}
+		{{:helper.link('Close', 'arrow-left', { 'option': 'showLifeform', 'lifeform_type': data.selected_lifeform.lifeform_type })}}
 	</div>
 
-<!-- Species List -->
+<!-- Lifeforms List -->
 {{else data.mode == 2}}
 	<div class="item">
-		<h2>Species List</h2>
+		<h2>Species List ({{:data.opened_lifeforms}}/{{:data.total_lifeforms}})</h2>
 	</div>
 
-	{{for data.lifeforms_list}}
+	{{for data.scanned}}
 		<div class="itemContent">
-			{{:helper.link(value.lifeform.genus, 'search', {'option': 'showLifeform', 'lifeform_reference': value.lifeform_reference})}}
+			{{:helper.link(value.content.lifeform.genus, 'search', {'option': 'showLifeform', 'lifeform_type': value.lifeform_type})}}
 		</div>
 	{{empty}}
 		<div class="notice">
@@ -61,66 +62,83 @@
 	<div class="item">
 		{{:helper.link('Close', 'arrow-left', { 'option': 'showMainMenu' })}}
 	</div>
+
 <!-- Lifeform Details -->
 {{else data.mode == 3}}
-	{{if data.lifeform}}
+	{{if data.selected_lifeform}}
 		<div class="item">
 			<div class="itemLabel">
-				<center><h2>{{:data.lifeform.species}}</h2></center>
-				<center>{{:data.lifeform.img}}</center>
+				<center><h2>{{:data.selected_lifeform.content.lifeform.species}}</h2></center>
+				<center>{{:data.selected_lifeform.content.lifeform.img}}</center>
 			</div>
 
 			<div class="itemContent">
-				<b>Kingdom:</b> {{:data.lifeform.kingdom}}<br>
-				<b>Class:</b> {{:data.lifeform.class}}<br>
-				<b>Genus:</b> {{:data.lifeform.genus}}<br>
-				<b>Species:</b> {{:data.lifeform.species}}<br>
-				<b>Description:</b> {{:data.lifeform.desc}}<br>
-				<b>Scans: </b> {{:data.lifeform.scan_count}}<br>
+				<b>Kingdom:</b> {{:data.selected_lifeform.content.lifeform.kingdom}}<br>
+				<b>Class:</b> {{:data.selected_lifeform.content.lifeform.class}}<br>
+				<b>Genus:</b> {{:data.selected_lifeform.content.lifeform.genus}}<br>
+				<b>Species:</b> {{:data.selected_lifeform.content.lifeform.species}}<br>
+				<b>Description:</b> {{:data.selected_lifeform.content.lifeform.desc}}<br>
+				<b>Scans: </b> {{:data.selected_lifeform.content.scan_count}}<br>
 			</div>
 		</div>
 
-		<!-- TECHNOLOGIES LIST -->
+		<!-- Show Scans Journal -->
+		<div class="itemContent">
+			{{:helper.link('Scans Journal', 'clipboard', { 'option': 'showScansJournal', 'lifeform_type': data.selected_lifeform.lifeform_type })}}
+
+			{{if data.inserted_disk == 'lifeform'}}
+				{{:helper.link('Save Lifeform to Disk', 'save', { 'option': 'saveLifeformToDisk', 'lifeform_type': data.selected_lifeform.lifeform_type })}}
+			{{else}}
+				{{:helper.link('Save Lifeform to Disk', 'save', null, 'linkOff')}}
+			{{/if}}
+		</div>
+
 		<div class="item">
-			<h3>New Technologies:</h3>
+			<h3>Technologies:</h3>
+			{{for data.selected_lifeform.content.opened_techs}}
+				<div class="item">
+					<div class="itemContent">
+						<b>{{:value.tech_name}}</b> - <b>{{:value.tech_level}}</b>
+					</div>
+
+					<div class="itemContent">
+						{{if data.inserted_disk == 'tech'}}
+							{{:helper.link('Save Technology to Disk', 'save', { 'option': 'saveTechToDisk', 'lifeform_type': data.selected_lifeform.lifeform_type, 'tech_id': value.tech_id, 'tech_level': value.tech_level })}}
+						{{else}}
+							{{:helper.link('Save Technology to Disk', 'save', null, 'linkOff')}}
+						{{/if}}
+					</div>
+				</div>
+			{{empty}}
+				<div class="notice">
+					No unlocked technologies.
+				</div>
+			{{/for}}
 		</div>
 
-		{{for data.lifeform.opened_techs}}
-			<div class="itemContent">
-				<b>{{:value.tech_name}}</b> - {{:value.tech_level}}
-			</div>
-		{{empty}}
-			<div class="notice">
-				<b>No new technologies.</b>
-			</div>
-		{{/for}}
-
-		{{if data.lifeform.opened_techs}}
-			<div class="itemContent">
-				{{:helper.link('Print Technology Data', 'print', { 'option': 'printTechs', 'lifeform_reference': data.lifeform_reference })}}
-			</div>
-		{{/if}}
-		<!-- NEUROMODS LIST -->
 		<div class="item">
-			<h3>New Neuromods:</h3>
+			<h3>Neuromods:</h3>
+			{{for data.selected_lifeform.content.opened_neuromods}}
+				<div class="item">
+					<div class="itemContent">
+						<b>Name:</b> {{:value.neuromod_name}} <br>
+						<b>Description:</b> {{:value.neuromod_desc}} <br>
+					</div>
+
+					<div class="itemContent">
+						{{if data.inserted_disk == 'neuromod'}}
+							{{:helper.link('Save Neuromod to Disk', 'save', { 'option': 'saveNeuromodToDisk', 'lifeform_type': data.selected_lifeform.lifeform_type, 'neuromod_type': value.neuromod_type })}}
+						{{else}}
+							{{:helper.link('Save Neuromod to Disk', 'save', null, 'linkOff')}}
+						{{/if}}
+					</div>
+				</div>
+			{{empty}}
+				<div class="notice">
+					No unlocked neuromods.
+				</div>
+			{{/for}}
 		</div>
-
-		{{for data.lifeform.opened_neuromods}}
-			<div class="item">
-				<div class="imteLabel">
-					<b>{{:value.neuromod_name}}</b> - {{:value.neuromod_desc}}
-				</div>
-
-				<div class="itemContent">
-					{{:helper.link('Print Neuromod Disk Data', 'print', { 'option': 'printNeuromodData', 'neuromod_type': value.neuromod_type })}}
-				</div>
-			</div>
-		{{empty}}
-			<div class="notice">
-				<b>No new neuromods.</b>
-			</div>
-		{{/for}}
-
 	{{else}}
 		<div class="notice">
 			<b>Error! Lifeform not found!</b>
@@ -128,6 +146,6 @@
 	{{/if}}
 
 	<div class="item">
-		{{:helper.link('Close', 'arrow-left', { 'option': 'back' })}}
+		{{:helper.link('Close', 'arrow-left', { 'option': 'showLifeformsList' })}}
 	</div>
 {{/if}}

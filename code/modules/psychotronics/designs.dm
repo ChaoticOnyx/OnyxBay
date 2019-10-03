@@ -22,4 +22,20 @@
 	desc = "Fill this shell in a 'Neuromod RnD Console'."
 	materials = list(MATERIAL_STEEL = 500, MATERIAL_GOLD = 50)
 	req_tech = list(TECH_DATA = 3, TECH_BIO = 3)
-	build_path = /obj/item/weapon/reagent_containers/neuromod
+	build_path = /obj/item/weapon/reagent_containers/neuromod_shell
+
+/datum/design/item/disk/neuromod
+	name = "neuromod data disk"
+	desc = "A disk for storing neuromod data."
+	id = "neuromod_disk"
+	req_tech = list(TECH_DATA = 3)
+	build_path = /obj/item/weapon/disk/neuromod_disk
+	sort_string = "AAAAB"
+
+/datum/design/item/disk/lifeform
+	name = "lifeform data disk"
+	desc = "A disk for storing lifeform data."
+	id = "lifeform_disk"
+	req_tech = list(TECH_DATA = 3)
+	build_path = /obj/item/weapon/disk/lifeform_disk
+	sort_string = "AAAAB"
