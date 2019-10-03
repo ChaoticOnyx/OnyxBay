@@ -337,11 +337,13 @@
 		nanobots = FALSE
 		to_chat(H, "<span class='notice'>Nanobots deactivated.</span>")
 		item_state = "vox-medic"
+		set_light(0)
 		slowdown_per_slot[slot_wear_suit] = 1
 	else
 		nanobots = TRUE
 		item_state = "vox-medic-active"
 		to_chat(H, "<span class='notice'>Nanobots activated.</span>")
+		set_light(6,6, "#e09d37")
 		slowdown_per_slot[slot_wear_suit] = 10
 
 /obj/item/clothing/suit/space/vox/medic/Initialize()
@@ -361,7 +363,6 @@
 	if(H.stat)
 		return
 	if(nanobots)
-		anim(get_turf(H), H, 'icons/effects/effects.dmi', "fire_goon",null,20,null)
 		for(var/mob/living/carbon/human/vox/V in range(H, 2))
 			for(var/obj/item/organ/external/regen_organ in V.organs)
 				regen_organ.damage = max(regen_organ.damage - 2, 0)
