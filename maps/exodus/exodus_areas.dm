@@ -1456,9 +1456,59 @@ area/rnd/test_area
 /area/outpost/mining_main/west_hall
 	name = "Mining Outpost West Hallway"
 
+/area/outpost/mining_main/mechbay
+	name = "Mining Outpost Mech Bay"
+
 // Mining outpost
 /area/outpost/mining_main/maintenance
 	name = "Mining Outpost Maintenance"
+
+// Main Outpost
+/area/outpost/main_outpost
+	icon_state = "green"
+
+/area/outpost/main_outpost/shallway
+	name = "Outpost Southern Hallway"
+
+/area/outpost/main_outpost/challway
+	name = "Outpost Central Hallway"
+
+/area/outpost/main_outpost/nhallway
+	name = "Outpost Northern Hallway"
+
+/area/outpost/main_outpost/dock
+	name = "Outpost Dock"
+	icon_state = "bluenew"
+
+/area/outpost/main_outpost/infirmary
+	name = "Outpost Infirmary"
+
+/area/outpost/main_outpost/canteen
+	name = "Outpost Canteen"
+	icon_state = "kitchen"
+
+/area/outpost/main_outpost/bar
+	name = "Outpost Bar"
+	icon_state = "bar"
+
+/area/outpost/main_outpost/dorms
+	name = "Outpost Living Quarters"
+	icon_state = "blue2"
+
+/area/outpost/main_outpost/dorms/substation
+	name = "Outpost Living Quarters Substation"
+
+/area/outpost/main_outpost/dorms/proom1
+	name = "Outpost Private Room One"
+
+/area/outpost/main_outpost/dorms/proom2
+	name = "Outpost Private Room Two"
+
+/area/outpost/main_outpost/dorms/proom3
+	name = "Outpost Private Room Three"
+
+/area/outpost/main_outpost/dorms/proom4
+	name = "Outpost Private Room Four"
 
 // Small outposts
 /area/outpost/mining_north
@@ -1476,6 +1526,10 @@ area/rnd/test_area
 /area/outpost/abandonedpost
 	name = "Abandoned Post"
 	icon_state = "dark"
+
+/area/outpost/prydwen
+	name = "NSC Prydwen"
+	icon_state = "green"
 
 // Engineering outpost
 
@@ -1554,6 +1608,9 @@ area/rnd/test_area
 
 /area/outpost/research/disposal
 	name = "Research Outpost Waste Disposal"
+
+/area/outpost/research/brainstorm
+	name = "Research Outpost Brainstorm Room"
 
 /area/construction
 	name = "\improper Engineering Construction Area"

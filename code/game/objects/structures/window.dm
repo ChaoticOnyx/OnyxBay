@@ -501,6 +501,16 @@
 	maxhealth = 40
 	dir = 5
 
+/obj/structure/window/research
+	name = "shuttle window"
+	desc = "It looks rather strong. Might take a few good hits to shatter it."
+	icon = 'icons/obj/podwindows.dmi'
+	icon_state = "window-res"
+	basestate = "window-res"
+	reinf = 1
+	maxhealth = 40
+	dir = 5
+
 /obj/structure/window/reinforced/polarized
 	name = "electrochromic window"
 	desc = "Adjusts its tint with voltage. Might take a few good hits to shatter it."

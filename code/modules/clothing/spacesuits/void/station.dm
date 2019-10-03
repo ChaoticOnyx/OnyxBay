@@ -355,3 +355,56 @@
 	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100, rad = 10)
 	allowed = list(/obj/item/weapon/gun,/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/weapon/melee/baton)
 	siemens_coefficient = 0.7
+
+/obj/item/clothing/head/helmet/space/void/optical
+	name = "experimental helmet"
+	icon_state = "hardsuit-optical"
+	desc = "Strange looking, smoothly contoured helmet. It looks a bit blurry."
+	siemens_coefficient = 0
+	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100, rad = 60)
+
+/obj/item/clothing/suit/space/void/optical
+	name = "experimental voidsuit"
+	icon_state = "hardsuit-optical"
+	desc = "Strange black voidsuit, with some devices attached to it. It looks a bit blurry."
+	action_button_name = "Toggle Optical Disruptor"
+	siemens_coefficient = 0
+	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100, rad = 60)
+	var/cloak = FALSE
+
+/obj/item/clothing/suit/space/void/optical/New()
+	..()
+	slowdown_per_slot[slot_wear_suit] = 0
+
+/obj/item/clothing/suit/space/void/optical/attack_self(mob/user)
+	var/mob/living/carbon/human/H = user
+	if(!istype(H))
+		return
+	if(!istype(H.head, /obj/item/clothing/head/helmet/space/void/optical))
+		return
+	cloak(H)
+
+/obj/item/clothing/suit/space/void/optical/proc/cloak(var/mob/living/carbon/human/H)
+	if(cloak)
+		cloak = FALSE
+		return 1
+
+	to_chat(H, "<span class='notice'>Optical disruptor activated.</span>")
+	cloak = TRUE
+	animate(H,alpha = 255, alpha = 85, time = 10)
+
+	var/remain_cloaked = TRUE
+	while(remain_cloaked)
+		sleep(1 SECOND)
+		if(!cloak)
+			remain_cloaked = 0
+		if(H.stat)
+			remain_cloaked = 0
+		if(!istype(H.head, /obj/item/clothing/head/helmet/space/void/optical))
+			remain_cloaked = 0
+	H.invisibility = initial(H.invisibility)
+	H.visible_message("<span class='warning'>[H] suddenly fades in.</span>",
+	"<span class='notice'>Optical disruptor deactivated.</span>")
+	cloak = FALSE
+
+	animate(H,alpha = 85, alpha = 255, time = 10)
