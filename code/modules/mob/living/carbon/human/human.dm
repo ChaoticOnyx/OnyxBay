@@ -1385,6 +1385,28 @@
 	to_chat(src, "<span class='notice'>You are now [pulling_punches ? "pulling your punches" : "not pulling your punches"].</span>")
 	return
 
+// Similar to get_pulse, but returns only integer numbers instead of text.
+// TODO[V] Please adjust get_pulse() proc to be used here
+/mob/living/carbon/human/proc/get_pulse_as_number()
+	var/obj/item/organ/internal/heart/heart_organ = internal_organs_by_name[BP_HEART]
+	if(!heart_organ)
+		return 0
+
+	switch(pulse())
+		if(PULSE_NONE)
+			return 0
+		if(PULSE_SLOW)
+			return rand(40, 60)
+		if(PULSE_NORM)
+			return rand(60, 90)
+		if(PULSE_FAST)
+			return rand(90, 120)
+		if(PULSE_2FAST)
+			return rand(120, 160)
+		if(PULSE_THREADY)
+			return 250
+	return 0
+
 //generates realistic-ish pulse output based on preset levels
 /mob/living/carbon/human/proc/get_pulse(var/method)	//method 0 is for hands, 1 is for machines, more accurate
 	var/obj/item/organ/internal/heart/H = internal_organs_by_name[BP_HEART]
@@ -1599,7 +1621,7 @@
 	set category = "IC"
 
 	if(!incapacitated(INCAPACITATION_KNOCKOUT) && canClick())
-		setClickCooldown(5)
+		setClickCooldown(3)
 		if(!weakened && !stunned)
 			if(!blocking)
 				src.useblock_on()
@@ -1609,7 +1631,7 @@
 				to_chat(src, "<span class='notice'>You lower your defence.</span>")
 
 /mob/living/carbon/human/proc/useblock_off()
-	src.setClickCooldown(5)
+	src.setClickCooldown(3)
 	src.blocking = 0
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
 		src.block_icon.icon_state = "act_block0"

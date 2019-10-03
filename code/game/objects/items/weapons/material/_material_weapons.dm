@@ -20,7 +20,7 @@
 	var/thrown_force_const = 0 //Throw flat damage
 	var/force_divisor = 0.5 //Depends on hardness
 	var/thrown_force_divisor = 0.5 //Depends on weight
-	var/default_material = DEFAULT_WALL_MATERIAL
+	var/default_material = MATERIAL_STEEL
 	var/material/material
 	var/drops_debris = 1
 	var/m_overlay = 0

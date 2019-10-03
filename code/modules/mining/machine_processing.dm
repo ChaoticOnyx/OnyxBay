@@ -11,7 +11,7 @@
 	active_power_usage = 50
 
 	var/obj/machinery/mineral/processing_unit/machine = null
-	var/machinedir = EAST
+	var/machinedir = NORTHEAST
 	var/show_all_ores = 0
 	var/points = 0
 	var/obj/item/weapon/card/id/inserted_id

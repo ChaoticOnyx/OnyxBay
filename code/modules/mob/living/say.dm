@@ -261,6 +261,8 @@ proc/get_radio_key_from_channel(var/channel)
 
 	var/speech_bubble_test = say_test(message)
 	var/image/speech_bubble = image('icons/mob/talk.dmi',src,"h[speech_bubble_test]")
+	speech_bubble.plane = MOUSE_INVISIBLE_PLANE
+	speech_bubble.layer = FLOAT_LAYER
 
 	// VOREStation Port - Attempt Multi-Z Talking
 	var/mob/above = src.shadow

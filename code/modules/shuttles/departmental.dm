@@ -30,6 +30,13 @@
 	req_access = list(access_cent_general)
 	shuttle_tag = "Administration"
 
+/obj/machinery/computer/shuttle_control/transport
+	name = "transport shuttle control console"
+	icon_keyboard = "power_key"
+	icon_screen = "shuttle"
+	req_access = list(access_cent_general)
+	shuttle_tag = "Transport"
+
 /*
 /obj/machinery/computer/shuttle_control/multi/turbolift
 	name = "turbolift control console"

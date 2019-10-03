@@ -81,7 +81,7 @@ proc/get_fusion_reaction(var/p_react, var/s_react, var/m_energy)
 	energy_consumption = 2
 	energy_production = 0
 	radiation = 3
-	products = list("tritium"= 1)
+	products = list(MATERIAL_TRITIUM= 1)
 	instability = 1
 
 // Unideal/material production reactions
@@ -97,7 +97,7 @@ proc/get_fusion_reaction(var/p_react, var/s_react, var/m_energy)
 /decl/fusion_reaction/iron_iron
 	p_react = "iron"
 	s_react = "iron"
-	products = list("silver" = 1, "gold" = 1, "platinum" = 1) // Not realistic but w/e
+	products = list(MATERIAL_SILVER = 1, MATERIAL_GOLD = 1, MATERIAL_PLATINUM = 1) // Not realistic but w/e
 	energy_consumption = 10
 	energy_production = 0
 	instability = 2
@@ -131,7 +131,7 @@ proc/get_fusion_reaction(var/p_react, var/s_react, var/m_energy)
 	var/radiation_level = rand(100, 200)
 
 	// Copied from the SM for proof of concept. //Not any more --Cirra //Use the whole z proc --Leshana
-	radiation_repository.z_radiate(locate(1, 1, holder.z), radiation_level, 1)
+	SSradiation.z_radiate(locate(1, 1, holder.z), radiation_level, 1)
 
 	for(var/mob/living/mob in GLOB.living_mob_list_)
 		var/turf/T = get_turf(mob)
@@ -141,7 +141,7 @@ proc/get_fusion_reaction(var/p_react, var/s_react, var/m_energy)
 				H.hallucination(rand(100,150), 51)
 
 	for(var/obj/machinery/fusion_fuel_injector/I in range(world.view, origin))
-		if(I.cur_assembly && I.cur_assembly.fuel_type == "supermatter")
+		if(I.cur_assembly && I.cur_assembly.fuel_type == MATERIAL_SUPERMATTER)
 			explosion(get_turf(I), 1, 2, 3)
 			spawn(5)
 				if(I && I.loc)

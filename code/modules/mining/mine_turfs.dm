@@ -151,8 +151,7 @@ var/list/mining_floors = list()
 
 //Not even going to touch this pile of spaghetti
 /turf/simulated/mineral/attackby(obj/item/weapon/W as obj, mob/user as mob)
-
-	if (isMonkey(user))
+	if (!user.IsAdvancedToolUser())
 		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
 
@@ -336,7 +335,7 @@ var/list/mining_floors = list()
 				M.flash_eyes()
 				if(prob(50))
 					M.Stun(5)
-		radiation_repository.flat_radiate(src, 25, 200)
+		SSradiation.flat_radiate(src, 25, 200)
 	//Add some rubble,  you did just clear out a big chunk of rock.
 
 	var/turf/simulated/floor/asteroid/N = ChangeTurf(mined_turf)
@@ -412,7 +411,7 @@ var/list/mining_floors = list()
 
 /turf/simulated/mineral/random
 	name = "Mineral deposit"
-	var/mineralSpawnChanceList = list("Uranium" = 5, "Platinum" = 5, "Iron" = 35, "Carbon" = 35, "Diamond" = 1, "Gold" = 5, "Silver" = 5, "Phoron" = 10)
+	var/mineralSpawnChanceList = list(MATERIAL_URANIUM = 5, MATERIAL_PLATINUM = 5, MATERIAL_IRON = 35, MATERIAL_CARBON = 35, MATERIAL_DIAMOND = 1, MATERIAL_GOLD = 5, MATERIAL_SILVER = 5, MATERIAL_PHORON = 10)
 	var/mineralChance = 100 //10 //means 10% chance of this plot changing to a mineral deposit
 
 /turf/simulated/mineral/random/Initialize()
@@ -427,7 +426,7 @@ var/list/mining_floors = list()
 
 /turf/simulated/mineral/random/high_chance
 	mineralChance = 100 //25
-	mineralSpawnChanceList = list("Uranium" = 10, "Platinum" = 10, "Iron" = 20, "Carbon" = 20, "Diamond" = 2, "Gold" = 10, "Silver" = 10, "Phoron" = 20)
+	mineralSpawnChanceList = list(MATERIAL_URANIUM = 10, MATERIAL_PLATINUM = 10, MATERIAL_IRON = 20, MATERIAL_CARBON = 20, MATERIAL_DIAMOND = 2, MATERIAL_GOLD = 10, MATERIAL_SILVER = 10, MATERIAL_PHORON = 20)
 
 
 /**********************Asteroid**************************/

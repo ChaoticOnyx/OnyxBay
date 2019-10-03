@@ -5,7 +5,7 @@
 	name = "asteroid cluster"
 	desc = "Large group of asteroids. Mineral content detected."
 	icon_state = "sector"
-	generic_waypoints = list(
+	initial_generic_waypoints = list(
 		"nav_cluster_1",
 		"nav_cluster_2",
 		"nav_cluster_3",
@@ -25,6 +25,7 @@
 	suffixes = list("mining/mining-asteroid.dmm")
 	cost = 1
 	accessibility_weight = 10
+	template_flags = TEMPLATE_FLAG_SPAWN_GUARANTEED
 
 /datum/map_template/ruin/away_site/mining_signal
 	name = "Mining - Planetoid"
@@ -69,7 +70,7 @@
 	name = "faint signal from an asteroid"
 	desc = "Faint signal detected, originating from the human-made structures on the site's surface."
 	icon_state = "sector"
-	generic_waypoints = list(
+	initial_generic_waypoints = list(
 		"nav_away_1",
 		"nav_away_2",
 		"nav_away_3",

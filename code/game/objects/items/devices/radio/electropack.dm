@@ -8,7 +8,7 @@
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_HUGE
 
-	matter = list(DEFAULT_WALL_MATERIAL = 10000,"glass" = 2500)
+	matter = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 2500)
 
 	var/code = 2
 
@@ -43,7 +43,7 @@
 	//..()
 	if(usr.stat || usr.restrained())
 		return
-	if(((istype(usr, /mob/living/carbon/human) && ((!( ticker ) || (ticker && ticker.mode != "monkey")) && usr.contents.Find(src))) || (usr.contents.Find(master) || (in_range(src, usr) && istype(loc, /turf)))))
+	if(((istype(usr, /mob/living/carbon/human) && (usr.IsAdvancedToolUser() && usr.contents.Find(src))) || (usr.contents.Find(master) || (in_range(src, usr) && istype(loc, /turf)))))
 		usr.set_machine(src)
 		if(href_list["freq"])
 			var/new_frequency = sanitize_frequency(frequency + text2num(href_list["freq"]))

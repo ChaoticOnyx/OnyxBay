@@ -126,7 +126,7 @@
 	return (dir == SOUTHWEST || dir == SOUTHEAST || dir == NORTHWEST || dir == NORTHEAST)
 
 /obj/structure/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(istype(mover) && mover.checkpass(PASS_FLAG_GLASS))
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
 		return 1
 	if(is_full_window())
 		return 0	//full tile window, you can't move into it!
@@ -137,7 +137,7 @@
 
 
 /obj/structure/window/CheckExit(atom/movable/O as mob|obj, target as turf)
-	if(istype(O) && O.checkpass(PASS_FLAG_GLASS))
+	if(istype(O) && O.pass_flags & PASS_FLAG_GLASS)
 		return 1
 	if(get_dir(O.loc, target) == dir)
 		return 0
@@ -491,6 +491,26 @@
 	basestate = "w"
 	dir = 5
 
+/obj/structure/window/miningpod
+	name = "shuttle window"
+	desc = "It looks rather strong. Might take a few good hits to shatter it."
+	icon = 'icons/obj/podwindows.dmi'
+	icon_state = "window-mine"
+	basestate = "window-mine"
+	reinf = 1
+	maxhealth = 40
+	dir = 5
+
+/obj/structure/window/research
+	name = "shuttle window"
+	desc = "It looks rather strong. Might take a few good hits to shatter it."
+	icon = 'icons/obj/podwindows.dmi'
+	icon_state = "window-res"
+	basestate = "window-res"
+	reinf = 1
+	maxhealth = 40
+	dir = 5
+
 /obj/structure/window/reinforced/polarized
 	name = "electrochromic window"
 	desc = "Adjusts its tint with voltage. Might take a few good hits to shatter it."
@@ -563,7 +583,7 @@
 	use_power_oneoff(5)
 
 	active = !active
-	update_icon()
+	queue_icon_update()
 
 	for(var/obj/structure/window/reinforced/polarized/W in range(src,range))
 		if (W.id == src.id || !W.id)

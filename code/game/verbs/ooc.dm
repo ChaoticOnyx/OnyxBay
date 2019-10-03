@@ -2,14 +2,13 @@
 	set name = "OOC"
 	set category = "OOC"
 
+	if(src.mob && jobban_isbanned(src.mob, "OOC"))
+		to_chat(src, "<span class='danger'>You have been banned from OOC.</span>")
+		return
+
 	var/sanitizedMessage = sanitize(message)
 	mob.log_message("[key]: [sanitizedMessage]", INDIVIDUAL_OOC_LOG)
 	communicate(/decl/communication_channel/ooc, src, sanitizedMessage)
-
-	if(src.mob)
-		if(jobban_isbanned(src.mob, "OOC"))
-			to_chat(src, "<span class='danger'>You have been banned from OOC.</span>")
-			return
 
 /client/verb/looc(message as text)
 	set name = "LOOC"

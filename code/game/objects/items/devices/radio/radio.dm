@@ -24,7 +24,7 @@
 	throw_range = 9
 	w_class = ITEM_SIZE_SMALL
 
-	matter = list("glass" = 25,DEFAULT_WALL_MATERIAL = 75)
+	matter = list(MATERIAL_GLASS = 25, MATERIAL_STEEL = 75)
 	var/const/FREQ_LISTENING = 1
 	var/list/internal_channels
 
@@ -91,7 +91,7 @@
 	if(syndie)
 		data["useSyndMode"] = 1
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "radio_basic.tmpl", "[name]", 400, 430)
 		ui.set_initial_data(data)
@@ -202,7 +202,7 @@
 		return 1
 
 	if(.)
-		GLOB.nanomanager.update_uis(src)
+		SSnano.update_uis(src)
 
 /obj/item/device/radio/proc/autosay(var/message, var/from, var/channel) //BS12 EDIT
 	var/datum/radio_frequency/connection = null
@@ -481,7 +481,7 @@
 		if (!accept)
 			for (var/ch_name in channels)
 				var/datum/radio_frequency/RF = secure_radio_connections[ch_name]
-				if (RF.frequency==freq && (channels[ch_name]&FREQ_LISTENING))
+				if (RF && RF.frequency == freq && (channels[ch_name] & FREQ_LISTENING))
 					accept = 1
 					break
 		if (!accept)
@@ -672,7 +672,7 @@
 		. = 1
 
 	if(.)
-		GLOB.nanomanager.update_uis(src)
+		SSnano.update_uis(src)
 
 /obj/item/device/radio/borg/interact(mob/user as mob)
 	if(!on)
@@ -701,7 +701,7 @@
 	data["has_subspace"] = 1
 	data["subspace"] = subspace_transmission
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "radio_basic.tmpl", "[name]", 400, 430)
 		ui.set_initial_data(data)

@@ -375,6 +375,11 @@
 				A.cell = null
 
 				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
+	
+	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
+		var/obj/machinery/portable_atmospherics/canister/A = target
+		A.ui_interact(user)
+	
 	else
 		to_chat(user, "<span class='notice'>[src] can't interact with \the [target].</span>")
 

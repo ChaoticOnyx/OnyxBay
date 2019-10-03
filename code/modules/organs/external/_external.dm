@@ -882,7 +882,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 				gore = new /obj/effect/decal/cleanable/blood/gibs(get_turf(victim))
 				if(species)
 					gore.fleshcolor = use_flesh_colour
-					gore.basecolor =  use_blood_colour
+					gore.basecolor = use_blood_colour
 					gore.update_icon()
 
 			gore.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
@@ -1058,12 +1058,16 @@ obj/item/organ/external/proc/remove_clamps()
 		return 1
 	return 0
 
-/obj/item/organ/external/robotize(var/company, var/skip_prosthetics = 0, var/keep_organs = 0)
+/obj/item/organ/external/robotize(var/company, var/skip_prosthetics = FALSE, var/keep_organs = FALSE, var/just_printed = FALSE)
 
 	if(BP_IS_ROBOTIC(src))
 		return
 
 	..()
+	// TODO[V] Investigate why BEEDAUNS made robotize() obliterate all existing flags instead of just adding one
+
+	if (just_printed)
+		status |= ORGAN_CUT_AWAY
 
 	if(company)
 		var/datum/robolimb/R = all_robolimbs[company]

@@ -5,11 +5,11 @@
 
 SUBSYSTEM_DEF(atoms)
 	name = "Atoms"
-	init_order = INIT_ORDER_ATOMS
+	init_order = SS_INIT_ATOMS
 	flags = SS_NO_FIRE
 
-	initialized = INITIALIZATION_INSSATOMS
-	var/old_initialized
+	var/init_state = INITIALIZATION_INSSATOMS
+	var/old_init_state
 
 	var/list/late_loaders
 	var/list/created_atoms
@@ -17,15 +17,15 @@ SUBSYSTEM_DEF(atoms)
 	var/list/BadInitializeCalls = list()
 
 /datum/controller/subsystem/atoms/Initialize(timeofday)
-	initialized = INITIALIZATION_INNEW_MAPLOAD
+	init_state = INITIALIZATION_INNEW_MAPLOAD
 	InitializeAtoms()
 	return ..()
 
 /datum/controller/subsystem/atoms/proc/InitializeAtoms(list/atoms)
-	if(initialized == INITIALIZATION_INSSATOMS)
+	if(init_state == INITIALIZATION_INSSATOMS)
 		return
 
-	initialized = INITIALIZATION_INNEW_MAPLOAD
+	init_state = INITIALIZATION_INNEW_MAPLOAD
 
 	LAZYINITLIST(late_loaders)
 
@@ -36,21 +36,22 @@ SUBSYSTEM_DEF(atoms)
 		count = atoms.len
 		for(var/I in atoms)
 			var/atom/A = I
-			if(!A.initialized)
+			if(!(A.atom_flags & ATOM_FLAG_INITIALIZED))
 				if(InitAtom(I, mapload_arg))
 					atoms -= I
 				CHECK_TICK
 	else
 		count = 0
 		for(var/atom/A in world)
-			if(!A.initialized)
+			if(!(A.atom_flags & ATOM_FLAG_INITIALIZED))
 				InitAtom(A, mapload_arg)
 				++count
 				CHECK_TICK
 
 	report_progress("Initialized [count] atom\s")
+	pass(count)
 
-	initialized = INITIALIZATION_INNEW_REGULAR
+	init_state = INITIALIZATION_INNEW_REGULAR
 
 	if(late_loaders.len)
 		for(var/I in late_loaders)
@@ -93,7 +94,7 @@ SUBSYSTEM_DEF(atoms)
 
 	if(!A)	//possible harddel
 		qdeleted = TRUE
-	else if(!A.initialized)
+	else if(!(A.atom_flags & ATOM_FLAG_INITIALIZED))
 		BadInitializeCalls[the_type] |= BAD_INIT_DIDNT_INIT
 
 	return qdeleted || QDELING(A)
@@ -102,17 +103,17 @@ SUBSYSTEM_DEF(atoms)
 	..("Bad Initialize Calls:[BadInitializeCalls.len]")
 
 /datum/controller/subsystem/atoms/proc/map_loader_begin()
-	old_initialized = initialized
-	initialized = INITIALIZATION_INSSATOMS
+	old_init_state = init_state
+	init_state = INITIALIZATION_INSSATOMS
 
 /datum/controller/subsystem/atoms/proc/map_loader_stop()
-	initialized = old_initialized
+	init_state = old_init_state
 
 /datum/controller/subsystem/atoms/Recover()
-	initialized = SSatoms.initialized
-	if(initialized == INITIALIZATION_INNEW_MAPLOAD)
+	init_state = SSatoms.init_state
+	if(init_state == INITIALIZATION_INNEW_MAPLOAD)
 		InitializeAtoms()
-	old_initialized = SSatoms.old_initialized
+	old_init_state = SSatoms.old_init_state
 	BadInitializeCalls = SSatoms.BadInitializeCalls
 
 /datum/controller/subsystem/atoms/proc/InitLog()

@@ -69,7 +69,7 @@ for reference:
 /obj/structure/barricade/New(var/newloc, var/material_name)
 	..(newloc)
 	if(!material_name)
-		material_name = "wood"
+		material_name = MATERIAL_WOOD
 	material = get_material_by_name("[material_name]")
 	if(!material)
 		qdel(src)
@@ -135,7 +135,7 @@ for reference:
 /obj/structure/barricade/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
 	if(air_group || (height==0))
 		return 1
-	if(istype(mover) && mover.checkpass(PASS_FLAG_TABLE))
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
 		return 1
 	else
 		return 0
@@ -229,7 +229,7 @@ for reference:
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
 		if(air_group || (height==0))
 			return 1
-		if(istype(mover) && mover.checkpass(PASS_FLAG_TABLE))
+		if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
 			return 1
 		else
 			return 0

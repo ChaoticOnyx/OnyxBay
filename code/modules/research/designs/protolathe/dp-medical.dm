@@ -7,14 +7,14 @@
 	category_items = "Medical"
 
 /datum/design/item/medical
-	materials = list(DEFAULT_WALL_MATERIAL = 30, "glass" = 20)
+	materials = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 	category_items = "Medical"
 
 /datum/design/item/medical/slime_scanner
 	desc = "Multipurpose organic life scanner."
 	id = "slime_scanner"
 	req_tech = list(TECH_MAGNET = 2, TECH_BIO = 2)
-	materials = list(DEFAULT_WALL_MATERIAL = 200, "glass" = 100)
+	materials = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 100)
 	build_path = /obj/item/device/slime_scanner
 	sort_string = "MACFA"
 
@@ -50,7 +50,7 @@
 	desc = "A tube of paste containing swarms of repair nanites. Very effective in repairing robotic machinery."
 	id = "nanopaste"
 	req_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3)
-	materials = list(DEFAULT_WALL_MATERIAL = 7000, "glass" = 7000)
+	materials = list(MATERIAL_STEEL = 7000, MATERIAL_GLASS = 7000)
 	build_path = /obj/item/stack/nanopaste
 	sort_string = "MADAA"
 
@@ -58,7 +58,7 @@
 	desc = "A sterile, air-needle autoinjector for rapid administration of drugs"
 	id = "hypospray"
 	req_tech = list(TECH_MATERIAL = 4, TECH_BIO = 5)
-	materials = list(DEFAULT_WALL_MATERIAL = 8000, "glass" = 8000, "silver" = 2000)
+	materials = list(MATERIAL_STEEL = 8000, MATERIAL_GLASS = 8000, MATERIAL_SILVER = 2000)
 	build_path = /obj/item/weapon/reagent_containers/hypospray/vial
 	sort_string = "MAEAA"
 
@@ -69,7 +69,7 @@
 	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 50 units."
 	id = "splitbeaker"
 	req_tech = list(TECH_MATERIAL = 2)
-	materials = list(DEFAULT_WALL_MATERIAL = 3000)
+	materials = list(MATERIAL_STEEL = 3000)
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/noreact
 	sort_string = "MCAAA"
 
@@ -77,12 +77,12 @@
 	desc = "A bluespace beaker, powered by experimental bluespace technology and Element Cuban combined with the Compound Pete. Can hold up to 300 units."
 	id = "bluespacebeaker"
 	req_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6)
-	materials = list(DEFAULT_WALL_MATERIAL = 3000, "phoron" = 3000, "diamond" = 500)
+	materials = list(MATERIAL_STEEL = 3000, MATERIAL_PHORON = 3000, MATERIAL_DIAMOND = 500)
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/bluespace
 	sort_string = "MCAAB"
 
 /datum/design/item/implant
-	materials = list(DEFAULT_WALL_MATERIAL = 50, "glass" = 50)
+	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 	category_items = "Medical"
 
 /datum/design/item/implant/chemical

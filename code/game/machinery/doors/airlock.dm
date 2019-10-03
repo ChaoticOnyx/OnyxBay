@@ -67,9 +67,9 @@
 	..()
 
 /obj/machinery/door/airlock/get_material()
-	if(mineral)
-		return get_material_by_name(mineral)
-	return get_material_by_name(DEFAULT_WALL_MATERIAL)
+	return get_material_by_name(mineral ? mineral : MATERIAL_STEEL)
+
+//regular airlock presets
 
 /obj/machinery/door/airlock/command
 	name = "Airlock"
@@ -310,23 +310,23 @@
 /obj/machinery/door/airlock/gold
 	name = "Gold Airlock"
 	icon = 'icons/obj/doors/Doorgold.dmi'
-	mineral = "gold"
+	mineral = MATERIAL_GOLD
 
 /obj/machinery/door/airlock/silver
 	name = "Silver Airlock"
 	icon = 'icons/obj/doors/Doorsilver.dmi'
-	mineral = "silver"
+	mineral = MATERIAL_SILVER
 
 /obj/machinery/door/airlock/diamond
 	name = "Diamond Airlock"
 	icon = 'icons/obj/doors/Doordiamond.dmi'
-	mineral = "diamond"
+	mineral = MATERIAL_DIAMOND
 
 /obj/machinery/door/airlock/uranium
 	name = "Uranium Airlock"
 	desc = "And they said I was crazy."
 	icon = 'icons/obj/doors/Dooruranium.dmi'
-	mineral = "uranium"
+	mineral = MATERIAL_URANIUM
 	var/last_event = 0
 	var/rad_power = 7.5
 
@@ -345,7 +345,7 @@
 /obj/machinery/door/airlock/uranium/Process()
 	if(world.time > last_event+20)
 		if(prob(50))
-			radiation_repository.radiate(src, rad_power)
+			SSradiation.radiate(src, rad_power)
 		last_event = world.time
 	..()
 
@@ -353,7 +353,7 @@
 	name = "Phoron Airlock"
 	desc = "No way this can end badly."
 	icon = 'icons/obj/doors/Doorphoron.dmi'
-	mineral = "phoron"
+	mineral = MATERIAL_PHORON
 
 /obj/machinery/door/airlock/phoron/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 300)
@@ -377,7 +377,7 @@
 /obj/machinery/door/airlock/sandstone
 	name = "Sandstone Airlock"
 	icon = 'icons/obj/doors/Doorsand.dmi'
-	mineral = "sandstone"
+	mineral = MATERIAL_SANDSTONE
 
 /obj/machinery/door/airlock/science
 	name = "Airlock"
@@ -669,7 +669,7 @@ About the new airlock wires panel:
 
 	data["commands"] = commands
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "door_control.tmpl", "Door Controls", 450, 350, state = state)
 		ui.set_initial_data(data)
@@ -728,7 +728,7 @@ About the new airlock wires panel:
 	if (src.isElectrified())
 		if (istype(mover, /obj/item))
 			var/obj/item/i = mover
-			if (i.matter && (DEFAULT_WALL_MATERIAL in i.matter) && i.matter[DEFAULT_WALL_MATERIAL] > 0)
+			if (i.matter && (MATERIAL_STEEL in i.matter) && i.matter[MATERIAL_STEEL] > 0)
 				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 				s.set_up(5, 1, src)
 				s.start()
@@ -989,8 +989,8 @@ About the new airlock wires panel:
 		if (F.wielded)
 			playsound(src, 'sound/weapons/smash.ogg', 100, 1)
 			user.visible_message("<span class='danger'>[user] smashes \the [C] into the airlock's control panel! It explodes in a shower of sparks!</span>", "<span class='danger'>You smash \the [C] into the airlock's control panel! It explodes in a shower of sparks!</span>")
-			src.health = 0
-			src.set_broken()
+			health = 0
+			set_broken(TRUE)
 		else
 			..()
 			return
@@ -1053,21 +1053,16 @@ About the new airlock wires panel:
 		ignite(is_hot(C))
 	..()
 
-/obj/machinery/door/airlock/set_broken()
-	src.p_open = 1
-	stat |= BROKEN
-	if (secured_wires)
-		lock()
-	for (var/mob/O in viewers(src, null))
-		if ((O.client && !( O.blinded )))
-			O.show_message("[src.name]'s control panel bursts open, sparks spewing out!")
-
-	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-	s.set_up(5, 1, src)
-	s.start()
-
-	update_icon()
-	return
+/obj/machinery/door/airlock/set_broken(new_state)
+	. = ..()
+	if(. && new_state)
+		p_open = 1
+		if (secured_wires)
+			lock()
+		visible_message("\The [src]'s control panel bursts open, sparks spewing out!")
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+		s.set_up(5, 1, src)
+		s.start()
 
 /obj/machinery/door/airlock/open(var/forced=0)
 	if(!can_open(forced))

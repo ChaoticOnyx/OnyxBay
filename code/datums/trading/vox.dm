@@ -3,7 +3,7 @@
 	origin = "UNREGISTERED VESSEL"
 	name_language = "Vox-pidgin"
 	compliment_increase = 0
-	trade_flags = TRADER_GOODS
+	trade_flags = TRADER_WANTED_ONLY|TRADER_GOODS
 	var/hailed_vox = 0 //Whether we have been hailed by a vox. negatives mean pariah, positives mean regular.
 	blacklisted_trade_items = null
 

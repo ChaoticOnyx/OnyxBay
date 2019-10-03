@@ -22,7 +22,7 @@
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "tube-construct-stage1"
 	anchored = 1
-	plane = ABOVE_HUMAN_PLANE
+
 	layer = ABOVE_HUMAN_LAYER
 
 	var/stage = 1
@@ -119,7 +119,7 @@
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "bulb-construct-stage1"
 	anchored = 1
-	plane = ABOVE_HUMAN_PLANE
+
 	layer = ABOVE_HUMAN_LAYER
 	stage = 1
 	fixture_type = /obj/machinery/light/small
@@ -139,7 +139,7 @@
 	icon_state = "tube1"
 	desc = "A lighting fixture."
 	anchored = 1
-	plane = ABOVE_HUMAN_PLANE
+
 	layer = ABOVE_HUMAN_LAYER  					// They were appearing under mobs which is a little weird - Ostaf
 	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
@@ -185,8 +185,8 @@
 	light_type = /obj/item/weapon/light/tube/large
 
 // create a new lighting fixture
-/obj/machinery/light/New(atom/newloc, obj/machinery/light_construct/construct = null)
-	..(newloc)
+/obj/machinery/light/Initialize(mapload, obj/machinery/light_construct/construct = null)
+	. = ..(mapload)
 
 	s.set_up(1, 1, src)
 
@@ -291,7 +291,7 @@
 // will not switch on if broken/burned/empty
 /obj/machinery/light/proc/seton(var/state)
 	on = (state && get_status() == LIGHT_OK)
-	update_icon()
+	queue_icon_update()
 
 // examine verb
 /obj/machinery/light/examine(mob/user)
@@ -546,7 +546,7 @@
 	var/status = 0		// LIGHT_OK, LIGHT_BURNED or LIGHT_BROKEN
 	var/base_state
 	var/switchcount = 0	// number of times switched
-	matter = list(DEFAULT_WALL_MATERIAL = 60)
+	matter = list(MATERIAL_STEEL = 60)
 	var/rigged = 0		// true if rigged to explode
 	var/broken_chance = 2
 
@@ -562,7 +562,7 @@
 	icon_state = "ltube"
 	base_state = "ltube"
 	item_state = "c_tube"
-	matter = list("glass" = 100)
+	matter = list(MATERIAL_GLASS = 100)
 
 	brightness_range = 7	// luminosity when on, also used in power calculation
 	brightness_power = 6
@@ -586,7 +586,7 @@
 	base_state = "lbulb"
 	item_state = "contvapour"
 	broken_chance = 5
-	matter = list("glass" = 100)
+	matter = list(MATERIAL_GLASS = 100)
 
 	brightness_range = 4
 	brightness_power = 4
@@ -617,7 +617,7 @@
 	icon_state = "fbulb"
 	base_state = "fbulb"
 	item_state = "egg4"
-	matter = list("glass" = 100)
+	matter = list(MATERIAL_GLASS = 100)
 	brightness_range = 4
 	brightness_power = 4
 

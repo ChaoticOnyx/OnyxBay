@@ -348,7 +348,7 @@
 	set src in usr
 	if(usr != src)
 		to_chat(usr, "No.")
-	var/msg = sanitize(input(usr,"Set the flavor text in your 'examine' verb. Can also be used for OOC notes about your character.","Flavor Text",rhtml_decode(flavor_text)) as message|null, extra = 0)
+	var/msg = russian_to_cp1251(sanitize(input(usr,"Set the flavor text in your 'examine' verb. Can also be used for OOC notes about your character.","Flavor Text",rhtml_decode(flavor_text)) as message|null, extra = 0))
 
 	if(msg != null)
 		flavor_text = msg
@@ -360,7 +360,7 @@
 
 /mob/proc/print_flavor_text()
 	if (flavor_text && flavor_text != "")
-		var/msg = replacetext(flavor_text, "\n", " ")
+		var/msg = russian_to_cp1251(replacetext(flavor_text, "\n", " "))
 		if(lentext(msg) <= 40)
 			return "<span class='notice'>[msg]</span>"
 		else
@@ -406,7 +406,7 @@
 	set name = "Observe"
 	set category = "OOC"
 
-	if(!(initialization_stage&INITIALIZATION_COMPLETE))
+	if(GAME_STATE < RUNLEVEL_LOBBY)
 		to_chat(src, "<span class='warning'>Please wait for server initialization to complete...</span>")
 		return
 
@@ -631,7 +631,7 @@
 		return
 
 	if(statpanel("Status"))
-		if(ticker && ticker.current_state != GAME_STATE_PREGAME)
+		if(GAME_STATE >= RUNLEVEL_LOBBY)
 			stat("Local Time", stationtime2text())
 			stat("Local Date", stationdate2text())
 			stat("Round Duration", roundduration2text())
@@ -639,8 +639,6 @@
 			stat("Location:", "([x], [y], [z]) [loc]")
 
 	if(client.holder)
-		if(statpanel("Processes") && processScheduler)
-			processScheduler.statProcesses()
 		if(statpanel("MC"))
 			stat("CPU:","[world.cpu]")
 			stat("Instances:","[world.contents.len]")
@@ -734,7 +732,6 @@
 
 /mob/proc/reset_layer()
 	if(lying)
-		plane = LYING_MOB_PLANE
 		layer = LYING_MOB_LAYER
 	else
 		reset_plane_and_layer()
@@ -1050,12 +1047,12 @@
 	set desc = "Toggles whether or not you will be considered a candidate by an add-antag vote."
 	set category = "OOC"
 	if(isghostmind(src.mind) || isnewplayer(src))
-		if(ticker && ticker.looking_for_antags)
-			if(src.mind in ticker.antag_pool)
-				ticker.antag_pool -= src.mind
+		if(SSticker.looking_for_antags)
+			if(src.mind in SSticker.antag_pool)
+				SSticker.antag_pool -= src.mind
 				to_chat(usr, "You have left the antag pool.")
 			else
-				ticker.antag_pool += src.mind
+				SSticker.antag_pool += src.mind
 				to_chat(usr, "You have joined the antag pool. Make sure you have the needed role set to high!")
 		else
 			to_chat(usr, "The game is not currently looking for antags.")

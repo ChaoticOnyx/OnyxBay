@@ -10,7 +10,7 @@
 	mod_weight = 1.0
 	mod_reach = 1.0
 	mod_handy = 1.0
-	default_material = "wood"
+	default_material = MATERIAL_WOOD
 	attack_verb = list("poked", "jabbed")
 
 

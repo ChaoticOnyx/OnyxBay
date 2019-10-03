@@ -46,25 +46,19 @@
 	desc = "A backpack that opens into a localized pocket of Blue Space."
 	origin_tech = list(TECH_BLUESPACE = 4)
 	icon_state = "holdingpack"
-	max_w_class = ITEM_SIZE_LARGE
+	max_w_class = ITEM_SIZE_GARGANTUAN
 	max_storage_space = 56
 
-	New()
-		..()
+/obj/item/weapon/storage/backpack/holding/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/weapon/storage/backpack/holding))
+		investigate_log("has become a singularity. Caused by [user.key]", "singulo")
+		to_chat(usr, "\red The Bluespace interfaces of the two devices catastrophically malfunction!")
+		qdel(W)
+		new /obj/singularity(src.loc, 300)
+		log_and_message_admins("detonated a bag of holding", user, src.loc)
+		qdel(src)
 		return
-
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/storage/backpack/holding))
-			to_chat(user, "<span class='warning'>The Bluespace interfaces of the two devices conflict and malfunction.</span>")
-			qdel(W)
-			return 1
-		return ..()
-
-	//Please don't clutter the parent storage item with stupid hacks.
-	can_be_inserted(obj/item/W as obj, stop_messages = 0)
-		if(istype(W, /obj/item/weapon/storage/backpack/holding))
-			return 1
-		return ..()
+	..()
 
 /obj/item/weapon/storage/backpack/santabag
 	name = "\improper Santa's gift bag"

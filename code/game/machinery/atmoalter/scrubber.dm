@@ -80,7 +80,10 @@
 		last_power_draw = 0
 	else
 		power_draw = max(power_draw, power_losses)
-		cell.use(power_draw * CELLRATE)
+		if(!powered())
+			cell.use(power_draw * CELLRATE)
+		else
+			use_power_oneoff(power_draw)
 		last_power_draw = power_draw
 
 		update_connected_network()
@@ -120,7 +123,7 @@
 	if (holding)
 		data["holdingTank"] = list("name" = holding.name, "tankPressure" = round(holding.air_contents.return_pressure() > 0 ? holding.air_contents.return_pressure() : 0))
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "portscrubber.tmpl", "Portable Scrubber", 480, 400, state = GLOB.physical_state)
 		ui.set_initial_data(data)
@@ -185,7 +188,7 @@
 	var/old_stat = stat
 	..()
 	if (old_stat != stat)
-		update_icon()
+		queue_icon_update()
 
 /obj/machinery/portable_atmospherics/powered/scrubber/huge/Process()
 	if(!on || (stat & (NOPOWER|BROKEN)))

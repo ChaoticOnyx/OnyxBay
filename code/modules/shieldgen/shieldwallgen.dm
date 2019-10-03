@@ -16,7 +16,7 @@
 	//There have to be at least two posts, so these are effectively doubled
 	var/power_draw = 30 KILOWATTS //30 kW. How much power is drawn from powernet. Increase this to allow the generator to sustain longer shields, at the cost of more power draw.
 	var/max_stored_power = 50 KILOWATTS //50 kW
-	use_power = POWER_USE_OFF		//Draws directly from power net. Does not use APC power.
+	use_power = POWER_USE_OFF	//Draws directly from power net. Does not use APC power.
 	active_power_usage = 1200
 
 /obj/machinery/shieldwallgen/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
@@ -27,7 +27,7 @@
 	data["current_draw"] = ((between(500, max_stored_power - storedpower, power_draw)) + power ? active_power_usage : 0)
 	data["online"] = active == 2 ? 1 : 0
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "shield.tmpl", "Shielding", 800, 500, state = state)
 		ui.set_initial_data(data)
@@ -341,7 +341,7 @@
 /obj/machinery/shieldwall/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(air_group || (height==0)) return 1
 
-	if(istype(mover) && mover.checkpass(PASS_FLAG_GLASS))
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
 		return prob(20)
 	else
 		if (istype(mover, /obj/item/projectile))

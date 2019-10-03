@@ -679,24 +679,24 @@
 	var/activate_sound = 'sound/items/polaroid3.ogg'
 	var/recycling_time = 30
 
-	/datum/dispense_type
-		var/name = ""
-		var/item_type = null
-		var/delay = 30
-		var/energy = 200
+/datum/dispense_type
+	var/name = ""
+	var/item_type = null
+	var/delay = 30
+	var/energy = 200
 
-	/datum/dispense_type/pipe
-		var/pipe_type = null
+/datum/dispense_type/pipe
+	var/pipe_type = null
 
-	/datum/dispense_type/New(var/name, var/type, var/delay = 30, var/energy = 200)
-		src.name = name
-		src.item_type = type
-		src.delay = delay
-		src.energy = energy
+/datum/dispense_type/New(var/name, var/type, var/delay = 30, var/energy = 200)
+	src.name = name
+	src.item_type = type
+	src.delay = delay
+	src.energy = energy
 
-	/datum/dispense_type/pipe/New(var/name, var/type, var/p_type, var/delay = 30, var/energy = 200)
-		..(name,type,delay,energy)
-		pipe_type = p_type
+/datum/dispense_type/pipe/New(var/name, var/type, var/p_type, var/delay = 30, var/energy = 200)
+	..(name,type,delay,energy)
+	pipe_type = p_type
 
 /obj/item/weapon/robot_item_dispenser/examine(mob/user)
 	. = ..()

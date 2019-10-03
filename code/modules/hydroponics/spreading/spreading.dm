@@ -2,25 +2,26 @@
 #define VINE_GROWTH_STAGES 5
 
 /proc/spacevine_infestation(var/potency_min=70, var/potency_max=100, var/maturation_min=5, var/maturation_max=15)
-	spawn() //to stop the secrets panel hanging
-		var/turf/T = pick_subarea_turf(/area/hallway , list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))
-		if(T)
-			var/datum/seed/seed = plant_controller.create_random_seed(1)
-			seed.set_trait(TRAIT_SPREAD,2)             // So it will function properly as vines.
-			seed.set_trait(TRAIT_POTENCY,rand(potency_min, potency_max)) // 70-100 potency will help guarantee a wide spread and powerful effects.
-			seed.set_trait(TRAIT_MATURATION,rand(maturation_min, maturation_max))
-			seed.set_trait(TRAIT_HARVEST_REPEAT, 1)
-			seed.set_trait(TRAIT_STINGS, 1)
-			seed.set_trait(TRAIT_CARNIVOROUS,2)
+	set waitfor = FALSE //to stop the secrets panel hanging
 
-			seed.display_name = "strange plants" //more thematic for the vine infestation event
+	var/turf/T = pick_subarea_turf(/area/hallway , list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))
+	if(T)
+		var/datum/seed/seed = SSplants.create_random_seed(1)
+		seed.set_trait(TRAIT_SPREAD,2)             // So it will function properly as vines.
+		seed.set_trait(TRAIT_POTENCY,rand(potency_min, potency_max)) // 70-100 potency will help guarantee a wide spread and powerful effects.
+		seed.set_trait(TRAIT_MATURATION,rand(maturation_min, maturation_max))
+		seed.set_trait(TRAIT_HARVEST_REPEAT, 1)
+		seed.set_trait(TRAIT_STINGS, 1)
+		seed.set_trait(TRAIT_CARNIVOROUS,2)
 
-			//make vine zero start off fully matured
-			new /obj/effect/vine(T,seed, start_matured = 1)
+		seed.display_name = "strange plants" //more thematic for the vine infestation event
 
-			log_and_message_admins("Spacevines spawned in \the [get_area(T)]", location = T)
-			return
-		log_and_message_admins("<span class='notice'>Event: Spacevines failed to find a viable turf.</span>")
+		//make vine zero start off fully matured
+		new /obj/effect/vine(T,seed, start_matured = 1)
+
+		log_and_message_admins("Spacevines spawned in \the [get_area(T)]", location = T)
+		return
+	log_and_message_admins("<span class='notice'>Event: Spacevines failed to find a viable turf.</span>")
 
 /obj/effect/dead_plant
 	anchored = 1
@@ -44,7 +45,6 @@
 	density = 0
 	icon = 'icons/obj/hydroponics_growing.dmi'
 	icon_state = ""
-	plane = OBJ_PLANE
 	layer = OBJ_LAYER
 	pass_flags = PASS_FLAG_TABLE
 	mouse_opacity = 1
@@ -85,11 +85,11 @@
 /obj/effect/vine/Initialize()
 	. = ..()
 
-	if(!plant_controller)
+	if(!SSplants)
 		log_error("<span class='danger'>Plant controller does not exist and [src] requires it. Aborting.</span>")
 		return INITIALIZE_HINT_QDEL
 	if(!istype(seed))
-		seed = plant_controller.seeds[DEFAULT_SEED]
+		seed = SSplants.seeds[DEFAULT_SEED]
 	if(!seed)
 		return INITIALIZE_HINT_QDEL
 	name = seed.display_name
@@ -108,10 +108,15 @@
 
 	mature_time = world.time + seed.get_trait(TRAIT_MATURATION) + 15 //prevent vines from maturing until at least a few seconds after they've been created.
 	spread_chance = seed.get_trait(TRAIT_POTENCY)
-	spread_distance = (growth_type ? round(spread_chance*0.6) : round(spread_chance*0.3))
+	spread_distance = (growth_type ? round(spread_chance * 0.6) : round(spread_chance * 0.3))
 	possible_children = seed.get_trait(TRAIT_POTENCY)
 	update_icon()
+	addtimer(CALLBACK(src, .proc/post_initialize), 1)
 
+// Plants will sometimes be spawned in the turf adjacent to the one they need to end up in, for the sake of correct dir/etc being set.
+/obj/effect/vine/proc/post_initialize()
+	set_dir(calc_dir())
+	update_icon()
 	START_PROCESSING(SSvines, src)
 
 /obj/effect/vine/Destroy()
@@ -131,7 +136,7 @@
 
 /obj/effect/vine/update_icon()
 	overlays.Cut()
-	var/growth = growth_threshold ? min(max_growth, round(health/growth_threshold)) : 1
+	var/growth = growth_threshold ? min(max_growth, round(max(0, health/growth_threshold))) : 1
 	var/at_fringe = get_dist(src,parent)
 	if(spread_distance > 5)
 		if(at_fringe >= spread_distance-3)
@@ -142,9 +147,9 @@
 	growth = max(1,max_growth)
 
 	var/ikey = "\ref[seed]-plant-[growth]"
-	if(!plant_controller.plant_icon_cache[ikey])
-		plant_controller.plant_icon_cache[ikey] = seed.get_icon(growth)
-	overlays += plant_controller.plant_icon_cache[ikey]
+	if(!SSplants.plant_icon_cache[ikey])
+		SSplants.plant_icon_cache[ikey] = seed.get_icon(growth)
+	overlays += SSplants.plant_icon_cache[ikey]
 
 	if(growth > 2 && growth == max_growth)
 		layer = (seed && seed.force_layer) ? seed.force_layer : ABOVE_OBJ_LAYER

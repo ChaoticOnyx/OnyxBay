@@ -9,6 +9,7 @@
 	var/obj/machinery/atmospherics/node
 
 	var/datum/pipe_network/network
+	plane = DEFAULT_PLANE
 
 	New()
 		..()

@@ -6,7 +6,7 @@
 	sort_string = "GAAAB"
 
 /datum/design/item/optical
-	materials = list(DEFAULT_WALL_MATERIAL = 50, "glass" = 50)
+	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 	category_items = "Misc"
 
 /datum/design/item/optical/mesons
@@ -28,7 +28,7 @@
 	name = "optical tactical scanner"
 	id = "tactical_goggles"
 	req_tech = list(TECH_MAGNET = 3, TECH_COMBAT = 5)
-	materials = list(DEFAULT_WALL_MATERIAL = 50, "glass" = 50, "silver" = 50, "gold" = 50)
+	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50, MATERIAL_SILVER = 50, MATERIAL_GOLD = 50)
 	build_path = /obj/item/clothing/glasses/tacgoggles
 	sort_string = "GBAAC"
 
@@ -37,7 +37,7 @@
 	desc = "Personal Artificial Intelligence device."
 	id = "paicard"
 	req_tech = list(TECH_DATA = 2)
-	materials = list("glass" = 500, DEFAULT_WALL_MATERIAL = 500)
+	materials = list(MATERIAL_GLASS = 500, MATERIAL_STEEL = 500)
 	build_path = /obj/item/device/paicard
 	sort_string = "VABAI"
 	category_items = "Misc"
@@ -47,7 +47,7 @@
 	desc = "A device to automatically replace lights. Refill with working lightbulbs."
 	id = "light_replacer"
 	req_tech = list(TECH_MAGNET = 3, TECH_MATERIAL = 4)
-	materials = list(DEFAULT_WALL_MATERIAL = 1500, "silver" = 150, "glass" = 3000)
+	materials = list(MATERIAL_STEEL = 1500, MATERIAL_SILVER = 150, MATERIAL_GLASS = 3000)
 	build_path = /obj/item/device/lightreplacer
 	sort_string = "VAGAB"
 
@@ -56,7 +56,7 @@
 	desc = "A specialised light replacer which stores more lights and refills faster from boxes."
 	id = "advanced_light_replacer"
 	req_tech = list(TECH_MAGNET = 4, TECH_MATERIAL = 5)
-	materials = list(DEFAULT_WALL_MATERIAL = 1500, "silver" = 300, "glass" = 3000, "gold" = 100, "uranium" = 250)
+	materials = list(MATERIAL_STEEL = 1500, MATERIAL_SILVER = 300, MATERIAL_GLASS = 3000, MATERIAL_GOLD = 100, MATERIAL_URANIUM = 250)
 	build_path =/obj/item/device/lightreplacer/advanced
 	sort_string = "VAGAC"
 
@@ -65,7 +65,7 @@
 	desc = "Using an up-to-date database of various costs and prices, this device estimates the market price of an item up to 0.001% accuracy."
 	id = "price_scanner"
 	req_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 4)
-	materials = list(DEFAULT_WALL_MATERIAL = 3000, "glass" = 3000, "silver" = 250)
+	materials = list(MATERIAL_STEEL = 3000, MATERIAL_GLASS = 3000, MATERIAL_SILVER = 250)
 	build_path = /obj/item/device/price_scanner
 	sort_string = "VAGAG"
 
@@ -78,7 +78,7 @@
 	desc = "Allows for deciphering the binary channel on-the-fly."
 	id = "binaryencrypt"
 	req_tech = list(TECH_ILLEGAL = 2)
-	materials = list(DEFAULT_WALL_MATERIAL = 300, "glass" = 300)
+	materials = list(MATERIAL_STEEL = 300, MATERIAL_GLASS = 300)
 	build_path = /obj/item/device/encryptionkey/binary
 	sort_string = "VASAA"
 	category_items = "Misc"
@@ -88,7 +88,7 @@
 	desc = "A kit of dangerous, high-tech equipment with changeable looks."
 	id = "chameleon"
 	req_tech = list(TECH_ILLEGAL = 2)
-	materials = list(DEFAULT_WALL_MATERIAL = 500)
+	materials = list(MATERIAL_STEEL = 500)
 	build_path = /obj/item/weapon/storage/backpack/chameleon/sydie_kit
 	sort_string = "VASBA"
 	category_items = "Misc"

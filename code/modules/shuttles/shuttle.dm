@@ -6,10 +6,11 @@
 	var/moving_status = SHUTTLE_IDLE
 
 	var/area/shuttle_area //can be both single area type or a list of areas
-	var/obj/effect/shuttle_landmark/current_location
+	var/obj/effect/shuttle_landmark/current_location //This variable is type-abused initially: specify the landmark_tag, not the actual landmark.
 
 	var/arrive_time = 0	//the time at which the shuttle arrives when long jumping
-	var/flags = SHUTTLE_FLAGS_PROCESS
+	var/flags = 0
+	var/process_state = IDLE_STATE //Used with SHUTTLE_FLAGS_PROCESS, as well as to store current state.
 	var/category = /datum/shuttle
 
 	var/ceiling_type = /turf/unsimulated/floor/shuttle_ceiling
@@ -19,19 +20,13 @@
 
 	var/knockdown = 1 //whether shuttle downs non-buckled people when it moves
 
-	var/defer_initialisation = FALSE //this shuttle will/won't be initialised by something after roundstart
+	var/defer_initialisation = FALSE //this shuttle will/won't be initialised automatically. If set to true, you are responsible for initialzing the shuttle manually.
+	                                 //Useful for shuttles that are initialed by map_template loading, or shuttles that are created in-game or not used.
 
 /datum/shuttle/New(_name, var/obj/effect/shuttle_landmark/initial_location)
 	..()
 	if(_name)
 		src.name = _name
-
-	if(initial_location)
-		current_location = initial_location
-	else
-		current_location = locate(current_location)
-	if(!istype(current_location))
-		CRASH("Shuttle \"[name]\" could not find its starting location.")
 
 	var/list/areas = list()
 	if(!islist(shuttle_area))
@@ -40,30 +35,37 @@
 		var/area/A = locate(T)
 		if(!istype(A))
 			CRASH("Shuttle \"[name]\" couldn't locate area [T].")
-		A.base_turf = current_location.base_turf
+		// A.base_turf = current_location.base_turf
 		for(var/turf/simulated/shuttle/wall/corner/C in A)
 			C.tghil_eb_ereth_tel()
 			C.reset_base_appearance()
 		areas += A
 	shuttle_area = areas
 
-	if(src.name in shuttle_controller.shuttles)
+	if(initial_location)
+		current_location = initial_location
+	else
+		current_location = SSshuttle.get_landmark(current_location)
+	if(!istype(current_location))
+		CRASH("Shuttle \"[name]\" could not find its starting location.")
+
+	if(src.name in SSshuttle.shuttles)
 		CRASH("A shuttle with the name '[name]' is already defined.")
-	shuttle_controller.shuttles[src.name] = src
+	SSshuttle.shuttles[src.name] = src
 	if(flags & SHUTTLE_FLAGS_PROCESS)
-		shuttle_controller.process_shuttles += src
+		SSshuttle.process_shuttles += src
 	if(flags & SHUTTLE_FLAGS_SUPPLY)
-		if(supply_controller.shuttle)
+		if(SSsupply.shuttle)
 			CRASH("A supply shuttle is already defined.")
-		supply_controller.shuttle = src
+		SSsupply.shuttle = src
 
 /datum/shuttle/Destroy()
 	current_location = null
 
-	shuttle_controller.shuttles -= src.name
-	shuttle_controller.process_shuttles -= src
-	if(supply_controller.shuttle == src)
-		supply_controller.shuttle = null
+	SSshuttle.shuttles -= src.name
+	SSshuttle.process_shuttles -= src
+	if(SSsupply.shuttle == src)
+		SSsupply.shuttle = null
 
 	. = ..()
 
@@ -141,10 +143,7 @@
 //A note to anyone overriding move in a subtype. shuttle_moved() must absolutely not, under any circumstances, fail to move the shuttle.
 //If you want to conditionally cancel shuttle launches, that logic must go in short_jump(), long_jump() or attempt_move()
 /datum/shuttle/proc/shuttle_moved(var/obj/effect/shuttle_landmark/destination, var/list/turf_translation)
-
-//	log_debug("move_shuttle() called for [shuttle_tag] leaving [origin] en route to [destination].")
-//	log_degug("area_coming_from: [origin]")
-//	log_debug("destination: [destination]")
+	// testing("shuttle_moved() called for [src] moving to [destination].")
 	for(var/turf/src_turf in turf_translation)
 		var/turf/dst_turf = turf_translation[src_turf]
 		if(src_turf.is_solid_structure()) //in case someone put a hole in the shuttle and you were lucky enough to be under it

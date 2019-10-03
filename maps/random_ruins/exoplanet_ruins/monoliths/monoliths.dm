@@ -4,13 +4,14 @@
 	description = "Bunch of monoliths surrounding an artifact."
 	suffixes = list("monoliths/monoliths.dmm")
 	cost = 1
+	template_flags = TEMPLATE_FLAG_NO_RUINS
 
 /obj/structure/monolith
 	name = "monolith"
 	desc = "An obviously artifical structure of unknown origin. The symbols '<font face='Shage'>DWNbTX</font>' are engraved on the base."
 	icon = 'icons/obj/monolith.dmi'
 	icon_state = "jaggy1"
-	plane = ABOVE_HUMAN_PLANE
+
 	layer = ABOVE_HUMAN_LAYER
 	density = 1
 	anchored = 1
@@ -19,7 +20,7 @@
 /obj/structure/monolith/Initialize()
 	. = ..()
 	icon_state = "jaggy[rand(1,4)]"
-	var/material/A = get_material_by_name("alien alloy")
+	var/material/A = get_material_by_name(MATERIAL_ALIUMIUM)
 	if(A)
 		color = A.icon_colour
 	if(GLOB.using_map.use_overmap)

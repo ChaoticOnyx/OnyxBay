@@ -135,6 +135,7 @@
 
 	// breathable air according to human/Life()
 	TLV["oxygen"] =			list(16, 19, 135, 140) // Partial pressure, kpa
+	TLV["phoron"] =			list(-1.0, -1.0, 5, 10) // Partial pressure, kpa
 	TLV["carbon dioxide"] = list(-1.0, -1.0, 5, 10) // Partial pressure, kpa
 	TLV["other"] =			list(-1.0, -1.0, 0.2, 0.5) // Partial pressure, kpa
 	TLV["pressure"] =		list(ONE_ATMOSPHERE*0.80,ONE_ATMOSPHERE*0.90,ONE_ATMOSPHERE*1.10,ONE_ATMOSPHERE*1.20) /* kpa */
@@ -497,7 +498,7 @@
 	if(!(locked && !remote_connection) || remote_access || issilicon(user))
 		populate_controls(data)
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "air_alarm.tmpl", src.name, 325, 625, master_ui = master_ui, state = state)
 		ui.set_initial_data(data)
@@ -847,4 +848,4 @@ Just a object used in constructing air alarms
 	icon_state = "door_electronics"
 	desc = "Looks like a circuit. Probably is."
 	w_class = ITEM_SIZE_SMALL
-	matter = list(DEFAULT_WALL_MATERIAL = 50, "glass" = 50)
+	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)

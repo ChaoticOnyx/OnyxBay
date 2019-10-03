@@ -1,6 +1,6 @@
 /datum/design/item/disk
 	req_tech = list(TECH_DATA = 1)
-	materials = list(DEFAULT_WALL_MATERIAL = 30, "glass" = 10)
+	materials = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 10)
 	category_items = "Data"
 
 /datum/design/item/disk/design

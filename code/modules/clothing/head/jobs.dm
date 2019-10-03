@@ -160,7 +160,7 @@
 /obj/item/clothing/head/beret/deathsquad
 	name = "heavy asset protection beret"
 	desc = "An armored red beret adorned with the crest of corporate asset protection. Doesn't sacrifice style or safety."
-	icon_state = "beret_red"
+	icon_state = "beret_corporate_red"
 	armor = list(melee = 55, bullet = 55, laser = 35,energy = 20, bomb = 30, bio = 30, rad = 30)
 	siemens_coefficient = 0.9
 

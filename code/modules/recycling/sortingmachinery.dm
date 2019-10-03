@@ -133,7 +133,10 @@
 	var/tag_x
 
 /obj/item/smallDelivery/proc/unwrap(var/mob/user)
-	if (!wrapped || !Adjacent(user))
+	if (!wrapped)
+		qdel(src)
+
+	if (!Adjacent(user))
 		return
 	wrapped.forceMove(user.loc)
 	user.drop_item()
@@ -341,7 +344,7 @@
 	item_state = "electronic"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	matter = list(DEFAULT_WALL_MATERIAL = 100, "glass" = 34)
+	matter = list(MATERIAL_STEEL = 100, MATERIAL_GLASS = 34)
 
 /obj/item/device/destTagger/proc/openwindow(mob/user as mob)
 	var/dat = "<tt><center><h1><b>TagMaster 2.3</b></h1></center>"

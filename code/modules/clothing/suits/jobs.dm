@@ -157,6 +157,14 @@
 	icon_state = "custom_forensics_red_long"
 	item_state = "custom_forensics_red_long"
 
+/obj/item/clothing/suit/storage/toggle/forensics/labcoat
+	name = "forensic labcoat"
+	desc = "A white forensics technician labcoat."
+	item_state = "forensictech_open"
+	icon_state = "forensictech_open"
+	icon_open = "forensictech_open"
+	icon_closed = "forensictech"
+
 //Engineering
 /obj/item/clothing/suit/storage/hazardvest
 	name = "hazard vest"

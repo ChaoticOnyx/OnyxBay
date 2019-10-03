@@ -1,4 +1,4 @@
-/var/server_name = "Baystation 12"
+/var/server_name = "OnyxBay"
 
 /var/game_id = null
 /hook/global_init/proc/generate_gameid()
@@ -66,9 +66,6 @@
 
 #define RECOMMENDED_VERSION 511
 /world/New()
-	//set window title
-	name = "[server_name] - [GLOB.using_map.full_name]"
-
 	//logs
 	SetupLogs()
 	var/date_string = time2text(world.realtime, "YYYY/MM-Month/DD-Day")
@@ -81,6 +78,17 @@
 		world.log << "Your server's byond version does not meet the recommended requirements for this server. Please update BYOND"
 
 	load_configuration()
+
+	if(config.server_port)
+		var/port = OpenPort(config.server_port)
+		world.log << (port ? "Changed port to [port]" : "Failed to change port")
+
+	//set window title
+	if(config.server_id)
+		var/serverId = uppertext(copytext(config.server_id, 1, 2)) + copytext(config.server_id, 2)
+		name = "[server_name]: [serverId] - [GLOB.using_map.full_name]"
+	else
+		name = "[server_name] - [GLOB.using_map.full_name]"
 
 	if(config && config.server_name != null && config.server_suffix && world.port > 0)
 		// dumb and hardcoded but I don't care~
@@ -110,33 +118,9 @@
 	log_unit_test("Unit Tests Enabled. This will destroy the world when testing is complete.")
 	load_unit_test_changes()
 #endif
-
-	// Set up roundstart seed list.
-	plant_controller = new()
-
-	// This is kinda important. Set up details of what the hell things are made of.
-	populate_material_list()
-
-	if(config.generate_map)
-		GLOB.using_map.perform_map_generation()
-	GLOB.using_map.build_exoplanets()
-
-	// Create robolimbs for chargen.
-	populate_robolimb_list()
-
-	processScheduler = new
-	master_controller = new /datum/controller/game_controller()
-
-	processScheduler.deferSetupFor(/datum/controller/process/ticker)
-	processScheduler.setup()
 	Master.Initialize(10, FALSE)
 
-#ifdef UNIT_TEST
-	spawn(1)
-		initialize_unit_tests()
-#endif
-	
-	webhook_send_roundstatus("lobby")
+	webhook_send_roundstatus("lobby", "[config.server_id]")
 
 #undef RECOMMENDED_VERSION
 
@@ -512,12 +496,9 @@ var/world_topic_spam_protect_time = world.timeofday
 
 
 /world/Reboot(var/reason)
-	/*spawn(0)
-		sound_to(world, sound(pick('sound/AI/newroundsexy.ogg','sound/misc/apcdestroyed.ogg','sound/misc/bangindonk.ogg')))// random end sounds!! - LastyBatsy
+	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
 
-		*/
-
-	processScheduler.stop()
+	Master.Shutdown()
 
 	if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 		for(var/client/C in GLOB.clients)
@@ -550,7 +531,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 /proc/load_configuration()
 	config = new /datum/configuration()
-	config.initialize()
+	config.Initialize()
 	config.load("config/config.txt")
 	config.load("config/game_options.txt","game_options")
 	config.loadsql("config/dbconfig.txt")
@@ -618,9 +599,8 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	var/list/features = list()
 
-	if(ticker)
-		if(master_mode)
-			features += master_mode
+	if(SSticker.master_mode)
+		features += SSticker.master_mode
 	else
 		features += "<b>STARTING</b>"
 
@@ -676,11 +656,13 @@ var/failed_db_connections = 0
 var/failed_old_db_connections = 0
 
 /hook/startup/proc/connectDB()
-	if(!setup_database_connection())
+	if(!config.sql_enabled)
+		world.log << "SQL disabled. Your server will not use feedback database."
+	else if(!setup_database_connection())
 		world.log << "Your server failed to establish a connection with the feedback database."
 	else
 		world.log << "Feedback database connection established."
-	return 1
+	return TRUE
 
 proc/setup_database_connection()
 
@@ -718,11 +700,13 @@ proc/establish_db_connection()
 
 
 /hook/startup/proc/connectOldDB()
-	if(!setup_old_database_connection())
+	if(!config.sql_enabled)
+		world.log << "SQL disabled. Your server configured to use legacy admin and ban system."
+	else if(!setup_old_database_connection())
 		world.log << "Your server failed to establish a connection with the SQL database."
 	else
 		world.log << "SQL database connection established."
-	return 1
+	return TRUE
 
 //These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
 proc/setup_old_database_connection()

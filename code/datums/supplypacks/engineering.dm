@@ -182,7 +182,7 @@
 /decl/hierarchy/supply_pack/engineering/smbig
 	name = "Supermatter Core"
 	contains = list(/obj/machinery/power/supermatter)
-	cost = 150
+	cost = 200
 	containertype = /obj/structure/closet/crate/secure/large/phoron
 	containername = "\improper Supermatter crate (CAUTION)"
 	access = access_ce

@@ -224,7 +224,7 @@ var/list/turret_icons
 		settings[++settings.len] = list("category" = "Check misc. Lifeforms", "setting" = "check_anomalies", "value" = check_anomalies)
 		data["settings"] = settings
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "turret_control.tmpl", "Turret Controls", 500, 300)
 		ui.set_initial_data(data)
@@ -278,11 +278,11 @@ var/list/turret_icons
 /obj/machinery/porta_turret/power_change()
 	if(powered())
 		stat &= ~NOPOWER
-		update_icon()
+		queue_icon_update()
 	else
 		spawn(rand(0, 15))
 			stat |= NOPOWER
-			update_icon()
+			queue_icon_update()
 
 
 /obj/machinery/porta_turret/attackby(obj/item/I, mob/user)
@@ -434,9 +434,9 @@ var/list/turret_icons
 
 /obj/machinery/porta_turret/proc/die()	//called when the turret dies, ie, health <= 0
 	health = 0
-	stat |= BROKEN	//enables the BROKEN bit
+	set_broken(TRUE)
 	spark_system.start()	//creates some sparks because they look cool
-	update_icon()
+	atom_flags |= ATOM_FLAG_CLIMBABLE // they're now climbable
 
 /obj/machinery/porta_turret/Process()
 	//the main machinery process
@@ -702,7 +702,7 @@ var/list/turret_icons
 				return
 
 		if(1)
-			if(istype(I, /obj/item/stack/material) && I.get_material_name() == DEFAULT_WALL_MATERIAL)
+			if(istype(I, /obj/item/stack/material) && I.get_material_name() == MATERIAL_STEEL)
 				var/obj/item/stack/M = I
 				if(M.use(2))
 					to_chat(user, "<span class='notice'>You add some metal armor to the interior frame.</span>")
@@ -790,7 +790,7 @@ var/list/turret_icons
 			//attack_hand() removes the prox sensor
 
 		if(6)
-			if(istype(I, /obj/item/stack/material) && I.get_material_name() == DEFAULT_WALL_MATERIAL)
+			if(istype(I, /obj/item/stack/material) && I.get_material_name() == MATERIAL_STEEL)
 				var/obj/item/stack/M = I
 				if(M.use(2))
 					to_chat(user, "<span class='notice'>You add some metal armor to the exterior frame.</span>")

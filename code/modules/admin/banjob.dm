@@ -34,7 +34,7 @@ var/jobban_keylist[0]		//to store the keys & ranks
 					if(text)
 						return text
 				return "Reason Unspecified"
-	return 0
+	return FALSE
 
 /*
 DEBUG
@@ -73,7 +73,11 @@ DEBUG
 			return
 
 		//Job permabans
-		var/DBQuery/query = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_PERMABAN' AND isnull(unbanned)")
+		var/DBQuery/query
+		if(isnull(config.server_id))
+			query = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_PERMABAN' AND isnull(unbanned)")
+		else
+			query = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_PERMABAN' AND isnull(unbanned) AND server_id = '[config.server_id]'")
 		query.Execute()
 
 		while(query.NextRow())
@@ -83,7 +87,11 @@ DEBUG
 			jobban_keylist.Add("[ckey] - [job]")
 
 		//Job tempbans
-		var/DBQuery/query1 = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND expiration_time > Now()")
+		var/DBQuery/query1
+		if(isnull(config.server_id))
+			query1 = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND expiration_time > Now()")
+		else
+			query1 = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND server_id = '[config.server_id]' AND expiration_time > Now()")
 		query1.Execute()
 
 		while(query1.NextRow())

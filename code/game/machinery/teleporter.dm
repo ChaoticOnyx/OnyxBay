@@ -190,7 +190,6 @@
 		if (src.icon_state == "tele1")
 			teleport(M)
 			use_power_oneoff(5000)
-	return
 
 /obj/machinery/teleport/hub/proc/teleport(atom/movable/M as mob|obj)
 	if (!com)
@@ -342,8 +341,7 @@
 		com.icon_state = "tele0"
 		com.update_use_power(POWER_USE_IDLE)
 		update_use_power(POWER_USE_IDLE)
-		for(var/mob/O in hearers(src, null))
-			O.show_message("<span class='notice'>Teleporter disengaged!</span>", 2)
+		audible_message("<span class='notice'>Teleporter disengaged!</span>")
 	src.add_fingerprint(usr)
 	src.engaged = 0
 	return

@@ -59,7 +59,6 @@
 
 		recharge_amount = cell.give(recharge_amount)
 		use_power_oneoff(recharge_amount / CELLRATE)
-
 	else
 		cell.use(get_power_usage() * CELLRATE) //since the recharge station can still be on even with NOPOWER. Instead it draws from the internal cell.
 

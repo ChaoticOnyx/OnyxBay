@@ -26,7 +26,7 @@
 	var/multiplier_max = 1
 	var/stage = 4		//minimal stage
 	var/badness = VIRUS_MILD	//Used in random generation to limit how bad result should come out.
-	var/data = null 	//For semi-procedural effects; this should be generated in generate() if used
+	var/list/data = list()	//For semi-procedural effects; this should be generated in generate() if used
 	var/oneshot
 	var/delay = 5 SECONDS	//minimal time between activations
 	var/hold_until		//can only fire after this worldtime

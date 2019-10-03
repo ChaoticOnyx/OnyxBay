@@ -189,7 +189,7 @@ default behaviour is:
 
 /mob/living/verb/succumb()
 	set hidden = 1
-	if ((src.health < src.maxHealth/1.5)) // Health below 133.
+	if ((src.health < src.maxHealth/1.33)) // Health below 150.
 		src.adjustBrainLoss(src.health + src.maxHealth * 2) // Deal 2x health in BrainLoss damage, as before but variable.
 		updatehealth()
 		to_chat(src, "<span class='notice'>You have given up life and succumbed to death.</span>")
@@ -759,7 +759,6 @@ default behaviour is:
 
 /mob/living/reset_layer()
 	if(hiding)
-		plane = HIDING_MOB_PLANE
 		layer = HIDING_MOB_LAYER
 	else
 		..()
@@ -826,7 +825,7 @@ default behaviour is:
 	set waitfor = 0
 	sleep(rand(5,10))
 	if(!paralysis && stat == CONSCIOUS)
-		visible_message("<span class='warning'>\The [src] starts having a seizure!")
+		visible_message("<span class='warning'>\The [src] starts having a seizure!</span>")
 		Paralyse(rand(8,16))
 		make_jittery(rand(150,200))
 		adjustHalLoss(rand(50,60))

@@ -15,6 +15,18 @@
 	name = "alien wall"
 	icon_state = "bog0"
 
+/turf/simulated/shuttle/wall/mining
+	name = "shuttle wall"
+	icon_state = "mwall0"
+
+/turf/simulated/shuttle/wall/research
+	name = "shuttle wall"
+	icon_state = "rwall_straight"
+
+/turf/simulated/shuttle/wall/engie
+	name = "shuttle wall"
+	icon_state = "ewall_straight"
+
 /turf/simulated/shuttle/wall/corner
 	var/corner_overlay_state = "diagonalWall"
 	var/image/corner_overlay
@@ -88,6 +100,42 @@
 /turf/simulated/shuttle/wall/corner/smoothwhite/se
 	dir = SOUTH|EAST
 /turf/simulated/shuttle/wall/corner/smoothwhite/sw
+	dir = SOUTH|WEST
+
+/turf/simulated/shuttle/wall/corner/mining
+	icon_state = "corner_mine"
+	corner_overlay_state = "corner_mine"
+/turf/simulated/shuttle/wall/corner/mining/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/mining/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/mining/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/mining/sw
+	dir = SOUTH|WEST
+
+/turf/simulated/shuttle/wall/corner/research
+	icon_state = "corner_res"
+	corner_overlay_state = "corner_res"
+/turf/simulated/shuttle/wall/corner/research/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/research/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/research/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/research/sw
+	dir = SOUTH|WEST
+
+/turf/simulated/shuttle/wall/corner/engie
+	icon_state = "corner_eng"
+	corner_overlay_state = "corner_eng"
+/turf/simulated/shuttle/wall/corner/engie/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/engie/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/engie/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/engie/sw
 	dir = SOUTH|WEST
 
 /turf/simulated/shuttle/wall/corner/blockwhite

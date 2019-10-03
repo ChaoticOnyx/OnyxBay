@@ -62,11 +62,9 @@
 	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.25)         // Plant eats this much per tick.
 	set_trait(TRAIT_PLANT_COLOUR,         "#46b543")    // Colour of the plant icon.
 
-	spawn(5)
-		sleep(-1)
-		update_growth_stages()
+	update_growth_stages()
 
-	uid = plant_controller.seeds.len + 1
+	uid = sequential_id(/datum/seed/)
 
 /datum/seed/proc/get_trait(var/trait)
 	return traits["[trait]"]
@@ -79,6 +77,9 @@
 	if(!isnull(ubound))  nval = min(nval,ubound)
 	if(!isnull(lbound))  nval = max(nval,lbound)
 	traits["[trait]"] =  nval
+
+	if(trait == TRAIT_PLANT_ICON)
+		update_growth_stages()
 
 /datum/seed/proc/create_spores(var/turf/T)
 	if(!T)
@@ -154,7 +155,7 @@
 		var/obj/item/organ/external/affecting = pick(target.organs)
 
 		for(var/obj/item/clothing/C in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
-			if(C && (C.body_parts_covered & affecting) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			if(C && (C.body_parts_covered & affecting.body_part) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
 				affecting = null
 
 		if(!(target.species && target.species.species_flags & (SPECIES_FLAG_NO_EMBED|SPECIES_FLAG_NO_MINOR_CUT)))	affecting = null
@@ -390,8 +391,8 @@
 	seed_noun = pick(SEED_NOUN_SEEDS, SEED_NOUN_PITS, SEED_NOUN_NODES, SEED_NOUN_CUTTINGS)
 
 	set_trait(TRAIT_POTENCY,rand(5,30),200,0)
-	set_trait(TRAIT_PRODUCT_ICON,pick(plant_controller.plant_product_sprites))
-	set_trait(TRAIT_PLANT_ICON,pick(plant_controller.plant_sprites))
+	set_trait(TRAIT_PRODUCT_ICON,pick(SSplants.plant_product_sprites))
+	set_trait(TRAIT_PLANT_ICON,pick(SSplants.plant_sprites))
 	set_trait(TRAIT_PLANT_COLOUR,get_random_colour(0,75,190))
 	set_trait(TRAIT_PRODUCT_COLOUR,get_random_colour(0,75,190))
 	update_growth_stages()
@@ -688,10 +689,10 @@
 	else
 		if(istype(user)) to_chat(user, "You [harvest_sample ? "take a sample" : "harvest"] from the [display_name].")
 		//This may be a new line. Update the global if it is.
-		if(name == "new line" || !(name in plant_controller.seeds))
-			uid = plant_controller.seeds.len + 1
+		if(name == "new line" || !(name in SSplants.seeds))
+			uid = SSplants.seeds.len + 1
 			name = "[uid]"
-			plant_controller.seeds[name] = src
+			SSplants.seeds[name] = src
 
 		if(harvest_sample)
 			var/obj/item/seeds/seeds = new(get_turf(user))
@@ -776,7 +777,7 @@
 
 /datum/seed/proc/update_growth_stages()
 	if(get_trait(TRAIT_PLANT_ICON))
-		growth_stages = plant_controller.plant_sprites[get_trait(TRAIT_PLANT_ICON)]
+		growth_stages = SSplants.plant_sprites[get_trait(TRAIT_PLANT_ICON)]
 	else
 		growth_stages = 0
 

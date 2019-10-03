@@ -17,7 +17,7 @@
 	name = "basic cell"
 	id = "basic_cell"
 	req_tech = list(TECH_POWER = 1)
-	materials = list(DEFAULT_WALL_MATERIAL = 700, "glass" = 50)
+	materials = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 50)
 	build_path = /obj/item/weapon/cell
 	sort_string = "DAAAA"
 
@@ -25,7 +25,7 @@
 	name = "high-capacity cell"
 	id = "high_cell"
 	req_tech = list(TECH_POWER = 2)
-	materials = list(DEFAULT_WALL_MATERIAL = 700, "glass" = 60)
+	materials = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 60)
 	build_path = /obj/item/weapon/cell/high
 	sort_string = "DAAAB"
 
@@ -33,7 +33,7 @@
 	name = "super-capacity cell"
 	id = "super_cell"
 	req_tech = list(TECH_POWER = 3, TECH_MATERIAL = 2)
-	materials = list(DEFAULT_WALL_MATERIAL = 700, "glass" = 70)
+	materials = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 70)
 	build_path = /obj/item/weapon/cell/super
 	sort_string = "DAAAC"
 
@@ -41,7 +41,7 @@
 	name = "hyper-capacity cell"
 	id = "hyper_cell"
 	req_tech = list(TECH_POWER = 5, TECH_MATERIAL = 4)
-	materials = list(DEFAULT_WALL_MATERIAL = 400, "gold" = 150, "silver" = 150, "glass" = 70)
+	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 150, MATERIAL_SILVER = 150, MATERIAL_GLASS = 70)
 	build_path = /obj/item/weapon/cell/hyper
 	sort_string = "DAAAD"
 
@@ -50,7 +50,7 @@
 	name = "bluespace cell"
 	id = "bluespace_cell"
 	req_tech = list(TECH_POWER = 6, TECH_MATERIAL = 6, TECH_BLUESPACE = 3, TECH_MAGNET = 5)
-	materials = list(DEFAULT_WALL_MATERIAL = 400, "gold" = 150, "silver" = 150, "glass" = 70, "diamond" = 100)
+	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 150, MATERIAL_SILVER = 150, MATERIAL_GLASS = 70, MATERIAL_DIAMOND = 100)
 	build_path = /obj/item/weapon/cell/quantum
 	sort_string = "DAAAE"
 
@@ -59,7 +59,7 @@
 	desc = "Special door attachment that can be used to provide extra security."
 	id = "brace"
 	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 2)
-	materials = list(DEFAULT_WALL_MATERIAL = 2000, "glass" = 50)
+	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 50)
 	build_path = /obj/item/weapon/airlock_brace
 	sort_string = "VAGAD"
 	category_items = "Engineering"
@@ -69,7 +69,7 @@
 	desc = "A special maintenance tool that can be used to remove airlock braces."
 	id = "bracejack"
 	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 2)
-	materials = list(DEFAULT_WALL_MATERIAL = 120)
+	materials = list(MATERIAL_STEEL = 120)
 	build_path = /obj/item/weapon/crowbar/brace_jack
 	sort_string = "VAGAE"
 	category_items = "Engineering"
@@ -79,7 +79,7 @@
 	desc = "A magnetic clamp which can halt the flow of gas in a pipe, via a localised stasis field."
 	id = "stasis_clamp"
 	req_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 4)
-	materials = list(DEFAULT_WALL_MATERIAL = 500, "glass" = 500)
+	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 500)
 	build_path = /obj/item/clamp
 	sort_string = "VAGAF"
 	category_items = "Engineering"
@@ -89,7 +89,7 @@
 	desc = "This welding tool feels heavier in your possession than is normal. There appears to be no external fuel port."
 	id = "experimental_welder"
 	req_tech = list(TECH_ENGINEERING = 5, TECH_PHORON = 4)
-	materials = list(DEFAULT_WALL_MATERIAL = 120, "glass" = 50)
+	materials = list(MATERIAL_STEEL = 120, MATERIAL_GLASS = 50)
 	build_path = /obj/item/weapon/weldingtool/experimental
 	sort_string = "VAGAH"
 	category_items = "Engineering"
@@ -99,7 +99,7 @@
 	desc = "A small handheld device designed to disrupt energy barriers."
 	id = "portable_shield_diffuser"
 	req_tech = list(TECH_MAGNET = 5, TECH_POWER = 5, TECH_ILLEGAL = 2)
-	materials = list(DEFAULT_WALL_MATERIAL = 5000, "glass" = 5000, "gold" = 2000, "silver" = 2000)
+	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 5000, MATERIAL_GOLD = 2000, MATERIAL_SILVER = 2000)
 	build_path = /obj/item/weapon/shield_diffuser
 	sort_string = "VAGAI"
 	category_items = "Engineering"
@@ -110,7 +110,7 @@
 	id = "tray_scanner"
 	req_tech = list(TECH_ENGINEERING = 1, TECH_MAGNET = 1)
 	build_type = PROTOLATHE
-	materials = list(DEFAULT_WALL_MATERIAL = 500, "glass" = 100)
+	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 100)
 	build_path = /obj/item/device/t_scanner
 	sort_string = "VAGBA"
 	category_items = "Engineering"
@@ -121,7 +121,7 @@
 	id = "pray_scanner"
 	req_tech = list(TECH_ENGINEERING = 3, TECH_MAGNET = 3)
 	build_type = PROTOLATHE
-	materials = list(DEFAULT_WALL_MATERIAL = 5000, "glass" = 1000)
+	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 1000)
 	build_path = /obj/item/device/t_scanner/advanced
 	sort_string = "VAGBB"
 	category_items = "Engineering"
@@ -132,7 +132,7 @@
 
 /datum/design/item/smes_coil
 	desc = "A superconductive magnetic coil used to store power in magnetic fields."
-	materials = list(DEFAULT_WALL_MATERIAL = 2000, "glass" = 2000, "gold" = 1000, "silver" = 1000)
+	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 2000, MATERIAL_GOLD = 1000, MATERIAL_SILVER = 1000)
 
 /datum/design/item/smes_coil/standard
 	id = "smes_coil_standard"

@@ -2,8 +2,8 @@
 	icon = 'icons/turf/floors.dmi'
 	level = 1
 
-	plane = TURF_PLANE
-	layer = BASE_TURF_LAYER
+	layer = TURF_LAYER
+	plane = FLOOR_PLANE
 
 	var/turf_flags
 
@@ -31,11 +31,6 @@
 
 /turf/New()
 	..()
-	/*for(var/atom/movable/AM as mob|obj in src)
-		spawn( 0 )
-			src.Entered(AM)
-			return*/
-
 	if(dynamic_lighting)
 		luminosity = 0
 	else
@@ -230,9 +225,6 @@ var/const/enterloopsanity = 100
 			if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 				L.Add(t)
 	return L
-
-/turf/proc/process()
-	return PROCESS_KILL
 
 /turf/proc/contains_dense_objects()
 	if(density)

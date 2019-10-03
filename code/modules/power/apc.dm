@@ -114,7 +114,6 @@
 	var/list/update_overlay_chan		// Used to determine if there is a change in channels
 	var/is_critical = 0
 	var/global/status_overlays = 0
-	var/updating_icon = 0
 	var/failure_timer = 0
 	var/force_update = 0
 	var/emp_hardened = 0
@@ -422,20 +421,8 @@
 		results += 2
 	return results
 
-// Used in process so it doesn't update the icon too much
-/obj/machinery/power/apc/queue_icon_update()
-
-	if(!updating_icon)
-		updating_icon = 1
-		// Start the update
-		spawn(APC_UPDATE_ICON_COOLDOWN)
-			update_icon()
-			updating_icon = 0
-
 //attack with an item - open/close cover, insert cell, or (un)lock interface
-
 /obj/machinery/power/apc/attackby(obj/item/W, mob/user)
-
 	if (istype(user, /mob/living/silicon) && get_dist(src,user)>1)
 		return src.attack_hand(user)
 	src.add_fingerprint(user)
@@ -455,7 +442,6 @@
 							"<span class='warning'>[user.name] has broken the power control board inside [src.name]!</span>",\
 							"<span class='notice'>You broke the charred power control board and remove the remains.</span>",
 							"You hear a crack!")
-						//ticker.mode:apcs-- //XSI said no and I agreed. -rastaf0
 					else
 						user.visible_message(\
 							"<span class='warning'>[user.name] has removed the power control board from [src.name]!</span>",\
@@ -638,14 +624,14 @@
 				"<span class='notice'>[user.name] has replaced the damaged APC frame with new one.</span>",\
 				"You replace the damaged APC frame with new one.")
 			qdel(W)
-			stat &= ~BROKEN
+			set_broken(FALSE)
 			// Malf AI, removes the APC from AI's hacked APCs list.
 			if(hacker && hacker.hacked_apcs && (src in hacker.hacked_apcs))
 				hacker.hacked_apcs -= src
 				hacker = null
 			if (opened==2)
 				opened = 1
-			update_icon()
+			queue_icon_update()
 	else
 		if (((stat & BROKEN) || (hacker && !hacker.hacked_apcs_hidden)) \
 				&& !opened \
@@ -667,6 +653,20 @@
 				"You hear a bang")
 			user.setClickCooldown(W.update_attack_cooldown())
 			user.do_attack_animation(src)
+			if(W.force >= 5 && W.w_class >= ITEM_SIZE_NORMAL && prob(W.force))
+				var/roulette = rand(1,100)
+				switch(roulette)
+					if(1 to 10)
+						locked = FALSE
+						to_chat(user, "<span class='notice'>You manage to disable the lock on \the [src]!</span>")
+					if(50 to 70)
+						to_chat(user, "<span class='notice'>You manage to bash the lid open!</span>")
+						opened = 1
+					if(90 to 100)
+						to_chat(user, "<span class='warning'>There's a nasty sound and \the [src] goes cold...</span>")
+						set_broken(TRUE)
+				queue_icon_update()
+		playsound(get_turf(src), 'sound/weapons/smash.ogg', 75, 1)
 
 // attack with hand - remove cell (if cover open) or interact with the APC
 
@@ -806,7 +806,7 @@
 	)
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		// the ui does not exist, so we'll create a new() one
 		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
@@ -1191,12 +1191,12 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 			return
 		if(2.0)
 			if (prob(50))
-				set_broken()
+				set_broken(TRUE)
 				if (cell && prob(50))
 					cell.ex_act(2.0)
 		if(3.0)
 			if (prob(25))
-				set_broken()
+				set_broken(TRUE)
 				if (cell && prob(25))
 					cell.ex_act(3.0)
 	return
@@ -1206,16 +1206,17 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 		terminal.master = null
 		terminal = null
 
-/obj/machinery/power/apc/proc/set_broken()
-	// Aesthetically much better!
-	src.visible_message("<span class='notice'>[src]'s screen flickers with warnings briefly!</span>")
+/obj/machinery/power/apc/set_broken(new_state)
+	if(!new_state || (stat & BROKEN))
+		return ..()
+	visible_message("<span class='notice'>[src]'s screen flickers with warnings briefly!</span>")
 	power_alarm.triggerAlarm(loc, src)
 	spawn(rand(2,5))
-		src.visible_message("<span class='notice'>[src]'s screen suddenly explodes in rain of sparks and small debris!</span>")
-		stat |= BROKEN
+		..()
+		visible_message("<span class='notice'>[src]'s screen suddenly explodes in rain of sparks and small debris!</span>")
 		operating = 0
-		update_icon()
 		update()
+	return TRUE
 
 /obj/machinery/power/apc/proc/reboot()
 	//reset various counters so that process() will start fresh
@@ -1248,7 +1249,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 				if(prob(chance))
 					L.on = 1
 					L.broken()
-				sleep(1)
+					stoplag()
 
 /obj/machinery/power/apc/proc/setsubsystem(val)
 	if(cell && cell.charge > 0)
@@ -1280,7 +1281,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 	icon = 'icons/obj/module.dmi'
 	icon_state = "power_mod"
 	item_state = "electronic"
-	matter = list(DEFAULT_WALL_MATERIAL = 50, "glass" = 50)
+	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 	w_class = ITEM_SIZE_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 

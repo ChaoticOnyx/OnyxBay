@@ -10,7 +10,6 @@
 	icon_state = "smes"
 	density = 1
 	anchored = 1
-	use_power = POWER_USE_OFF
 	clicksound = "switch"
 
 	var/capacity = 5e6 // maximum charge
@@ -77,7 +76,7 @@
 				term.master = src
 				term.connect_to_network()
 	if(!terminals.len)
-		stat |= BROKEN
+		set_broken(TRUE)
 		return
 	update_icon()
 
@@ -372,7 +371,7 @@
 
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		// the ui does not exist, so we'll create a new() one
 		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm

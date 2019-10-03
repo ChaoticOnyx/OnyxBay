@@ -142,11 +142,11 @@ var/global/photo_count = 0
 	w_class = ITEM_SIZE_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	matter = list(DEFAULT_WALL_MATERIAL = 2000)
+	matter = list(MATERIAL_STEEL = 2000)
 	var/pictures_max = 10
 	var/pictures_left = 10
 	var/is_on = TRUE
-	var/is_on_cooldown = FALSE
+	var/next_shot_time
 	var/icon_on = "camera"
 	var/icon_off = "camera_off"
 	var/size = 3
@@ -216,11 +216,11 @@ var/global/photo_count = 0
 /obj/item/device/camera/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
 	if(!is_on || !pictures_left || ismob(target.loc))
 		return
-	if(is_on_cooldown)
+	if(world.time < next_shot_time)
 		to_chat(user, "<span class='notice'>Camera is still charging.</span>")
 		return
 
-	is_on_cooldown = TRUE
+	next_shot_time = world.time + 6 SECONDS
 	pictures_left--
 
 	captureimage(target, user, flag)
@@ -228,9 +228,6 @@ var/global/photo_count = 0
 	to_chat(user, "<span class='notice'>[pictures_left] photos left.</span>")
 
 	update_icon()
-	spawn(64)
-		is_on_cooldown = FALSE
-		update_icon()
 
 /obj/item/device/camera/examine(mob/user)
 	if(!..(user))

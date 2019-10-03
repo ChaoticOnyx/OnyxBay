@@ -201,6 +201,15 @@ var/list/_client_preferences_by_type
 	key = "HARDSUIT_ACTIVATION"
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
 
+/datum/client_preference/ambient_occlusion
+	description = "Toggle Ambient Occlusion"
+	key = "AMBIENT_OCCLUSION"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/ambient_occlusion/changed(mob/preference_mob, new_value)
+	if (preference_mob.client)
+		preference_mob.UpdatePlanes()
+
 /********************
 * General Staff Preferences *
 ********************/

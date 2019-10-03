@@ -337,7 +337,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	var/turf/t = get_turf(src)
 	if(t)
-		var/rads = radiation_repository.get_rads_at_turf(t)
+		var/rads = SSradiation.get_rads_at_turf(t)
 		to_chat(src, "<span class='notice'>Radiation level: [rads ? rads : "0"] Bq.</span>")
 
 /mob/observer/ghost/verb/become_mouse()
@@ -544,10 +544,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if (!(config.abandon_allowed))
 		to_chat(usr, "<span class='notice'>Respawn is disabled.</span>")
 		return
-	if (!(ticker && ticker.mode))
+	if (!SSticker.mode)
 		to_chat(usr, "<span class='notice'><B>You may not attempt to respawn yet.</B></span>")
 		return
-	if (ticker.mode && ticker.mode.deny_respawn)
+	if (SSticker.mode.deny_respawn)
 		to_chat(usr, "<span class='notice'>Respawn is disabled for this roundtype.</span>")
 		return
 	else if(!MayRespawn(1, config.respawn_delay))

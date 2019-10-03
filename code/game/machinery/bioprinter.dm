@@ -126,7 +126,7 @@
 	icon_state = "roboprinter"
 
 	var/matter_amount_per_sheet = 10
-	var/matter_type = DEFAULT_WALL_MATERIAL
+	var/matter_type = MATERIAL_STEEL
 
 /obj/machinery/organ_printer/robot/mapped/Initialize()
 	. = ..()
@@ -143,8 +143,14 @@
 
 /obj/machinery/organ_printer/robot/print_organ(var/choice)
 	var/obj/item/organ/O = ..()
-	O.robotize()
-	O.status |= ORGAN_CUT_AWAY  // robotize() resets status to 0
+	var/obj/item/organ/external/externalOrgan = O
+	if(istype(externalOrgan))
+		externalOrgan.robotize("Hephaestus Industries", just_printed = TRUE)
+		// TODO [V] Add other companies and ability to choose from input
+	else
+		O.robotize()
+		O.status |= ORGAN_CUT_AWAY // Default robotize() resets status to ORGAN_ROBOTIC only
+
 	visible_message("<span class='info'>\The [src] churns for a moment, then spits out \a [O].</span>")
 	return O
 

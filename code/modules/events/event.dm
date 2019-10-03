@@ -43,7 +43,7 @@
 	var/penalty = 100 // A simple penalty gives admins the ability to increase the weight to again be part of the random event selection
 
 /datum/event_meta/extended_penalty/get_weight()
-	return ..() - (ticker && istype(ticker.mode, /datum/game_mode/extended) ? penalty : 0)
+	return ..() - (istype(SSticker.mode, /datum/game_mode/extended) ? penalty : 0)
 
 /datum/event_meta/no_overmap/get_weight() //these events have overmap equivalents, and shouldn't fire randomly if overmap is used
 	return GLOB.using_map.use_overmap ? 0 : ..()
@@ -133,12 +133,11 @@
 		end()
 
 	endedAt = world.time
-	GLOB.event_manager.active_events -= src
-	GLOB.event_manager.event_complete(src)
+	SSevent.event_complete(src)
 
 /datum/event/New(var/datum/event_meta/EM)
 	// event needs to be responsible for this, as stuff like APLUs currently make their own events for curious reasons
-	GLOB.event_manager.active_events += src
+	SSevent.active_events += src
 
 	event_meta = EM
 	severity = event_meta.severity

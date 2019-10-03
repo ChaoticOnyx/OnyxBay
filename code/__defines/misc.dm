@@ -77,27 +77,19 @@
 #define AREA_FLAG_RAD_SHIELDED 1 // shielded from radiation, clearly
 #define AREA_FLAG_EXTERNAL     2 // External as in exposed to space, not outside in a nice, green, forest
 
+//Map template flags
+#define TEMPLATE_FLAG_ALLOW_DUPLICATES 1 // Lets multiple copies of the template to be spawned
+#define TEMPLATE_FLAG_SPAWN_GUARANTEED 2 // Makes it ignore away site budget and just spawn (only for away sites)
+#define TEMPLATE_FLAG_CLEAR_CONTENTS   4 // if it should destroy objects it spawns on top of
+#define TEMPLATE_FLAG_NO_RUINS         8 // if it should forbid ruins from spawning on top of it
+#define TEMPLATE_FLAG_NO_RADS          16// Removes all radiation from the template after spawning.
+
 #define CUSTOM_ITEM_OBJ 'icons/obj/custom_items_obj.dmi'
 #define CUSTOM_ITEM_MOB null
 #define CUSTOM_ITEM_SYNTH null
 
 #define WALL_CAN_OPEN 1
 #define WALL_OPENING 2
-
-#define DEFAULT_TABLE_MATERIAL "plastic"
-#define DEFAULT_WALL_MATERIAL "steel"
-
-#define SHARD_SHARD "shard"
-#define SHARD_SHRAPNEL "shrapnel"
-#define SHARD_STONE_PIECE "piece"
-#define SHARD_SPLINTER "splinters"
-#define SHARD_NONE ""
-
-#define MATERIAL_UNMELTABLE 0x1
-#define MATERIAL_BRITTLE    0x2
-#define MATERIAL_PADDING    0x4
-
-#define TABLE_BRITTLE_MATERIAL_MULTIPLIER 4 // Amount table damage is multiplied by if it is made of a brittle material (e.g. glass)
 
 #define BOMBCAP_DVSTN_RADIUS (GLOB.max_explosion_range/4)
 #define BOMBCAP_HEAVY_RADIUS (GLOB.max_explosion_range/2)

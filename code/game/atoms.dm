@@ -20,16 +20,13 @@
 
 	var/list/climbers = list()
 
-	var/initialized = FALSE
-
 /atom/New(loc, ...)
-	//. = ..() //uncomment if you are dumb enough to add a /datum/New() proc
-
+	//atom creation method that preloads variables at creation
 	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
 		GLOB._preloader.load(src)
 
-	var/do_initialize = SSatoms.initialized
-	if(do_initialize > INITIALIZATION_INSSATOMS)
+	var/do_initialize = SSatoms.init_state
+	if(do_initialize != INITIALIZATION_INSSATOMS)
 		args[1] = do_initialize == INITIALIZATION_INNEW_MAPLOAD
 		if(SSatoms.InitAtom(src, args))
 			//we were deleted
@@ -53,9 +50,9 @@
 //Must return an Initialize hint. Defined in __DEFINES/subsystems.dm
 
 /atom/proc/Initialize(mapload, ...)
-	if(initialized)
+	if(atom_flags & ATOM_FLAG_INITIALIZED)
 		crash_with("Warning: [src]([type]) initialized multiple times!")
-	initialized = TRUE
+	atom_flags |= ATOM_FLAG_INITIALIZED
 
 	if(light_power && light_range)
 		update_light()
@@ -353,15 +350,17 @@ its easier to just keep the beam vertical.
 	else
 		return 0
 
-/atom/proc/checkpass(passflag)
-	return pass_flags&passflag
-
 /atom/proc/isinspace()
-	if(istype(get_turf(src), /turf/space))
-		return 1
-	else
-		return 0
+	return istype(get_turf(src), /turf/space)
 
+// Byond seemingly calls stat, each tick.
+// Calling things each tick can get expensive real quick.
+// So we slow this down a little.
+// See: http://www.byond.com/docs/ref/info.html#/client/proc/Stat
+/atom/Stat()
+	. = ..()
+	sleep(1)
+	stoplag()
 
 // Show a message to all mobs and objects in sight of this atom
 // Use for objects performing visible actions

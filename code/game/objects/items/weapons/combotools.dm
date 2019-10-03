@@ -56,7 +56,7 @@
 	throw_range = 15
 	throw_speed = 3
 
-	matter = list(DEFAULT_WALL_MATERIAL = 500,"glass" = 200)
+	matter = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 200)
 
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 4)
 
@@ -172,7 +172,7 @@
 	throw_range = 15
 	throw_speed = 3
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 4)
-	matter = list(DEFAULT_WALL_MATERIAL = 25,"glass" = 20)
+	matter = list(MATERIAL_STEEL = 25, MATERIAL_GLASS = 20)
 
 /obj/item/weapon/screwdriver/advpart
 	name = "compact screwdriver"
@@ -186,7 +186,7 @@
 	slot_flags = SLOT_BELT | SLOT_EARS
 	force = 5.0
 	origin_tech = list(TECH_ENGINEERING = 4)
-	matter = list(DEFAULT_WALL_MATERIAL = 45)
+	matter = list(MATERIAL_STEEL = 45)
 	lock_picking_level = 6
 
 /obj/item/weapon/screwdriver/advpart/Initialize()
@@ -206,7 +206,7 @@
 	slot_flags = SLOT_BELT | SLOT_EARS
 	w_class = ITEM_SIZE_TINY
 	origin_tech = list(TECH_ENGINEERING = 4)
-	matter = list(DEFAULT_WALL_MATERIAL = 80)
+	matter = list(MATERIAL_STEEL = 80)
 
 /obj/item/weapon/wirecutters/advpart/Initialize()
 	. = ..()

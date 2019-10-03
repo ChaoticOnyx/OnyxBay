@@ -5,14 +5,13 @@ var/list/floor_light_cache = list()
 	icon = 'icons/obj/machines/floor_light.dmi'
 	icon_state = "base"
 	desc = "A backlit floor panel."
-	plane = ABOVE_TURF_PLANE
 	layer = ABOVE_TILE_LAYER
 	anchored = 0
 	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = LIGHT
-	matter = list(DEFAULT_WALL_MATERIAL = 250, "glass" = 250)
+	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
 	var/on
 	var/damaged
@@ -38,7 +37,7 @@ var/list/floor_light_cache = list()
 		if(!src || !WT.isOn())
 			return
 		visible_message("<span class='notice'>\The [user] has repaired \the [src].</span>")
-		stat &= ~BROKEN
+		set_broken(FALSE)
 		damaged = null
 		update_brightness()
 	else if(W.force && user.a_intent == "hurt")
@@ -51,7 +50,7 @@ var/list/floor_light_cache = list()
 		if(!isnull(damaged) && !(stat & BROKEN))
 			visible_message("<span class='danger'>\The [user] smashes \the [src]!</span>")
 			playsound(src, "shatter", 70, 1)
-			stat |= BROKEN
+			set_broken(TRUE)
 		else
 			visible_message("<span class='danger'>\The [user] attacks \the [src]!</span>")
 			playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
@@ -73,7 +72,8 @@ var/list/floor_light_cache = list()
 			return
 
 		on = !on
-		if(on) update_use_power(POWER_USE_ACTIVE)
+		if(on)
+			update_use_power(POWER_USE_ACTIVE)
 		visible_message("<span class='notice'>\The [user] turns \the [src] [on ? "on" : "off"].</span>")
 		update_brightness()
 		return
@@ -139,7 +139,7 @@ var/list/floor_light_cache = list()
 			if (prob(50))
 				qdel(src)
 			else if(prob(20))
-				stat |= BROKEN
+				set_broken(TRUE)
 			else
 				if(isnull(damaged))
 					damaged = 0

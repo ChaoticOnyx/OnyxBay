@@ -6,7 +6,7 @@
 		message_admins("[usr.key] has attempted to override the admin panel!")
 		return
 
-	if(ticker.mode && ticker.mode.check_antagonists_topic(href, href_list))
+	if(SSticker.mode && SSticker.mode.check_antagonists_topic(href, href_list))
 		check_antagonists()
 		return
 
@@ -44,6 +44,10 @@
 		var/banjob = href_list["dbbanaddjob"]
 		var/banreason = href_list["dbbanreason"]
 
+		var/baneverywhere
+		if("dbbaneverywhere" in href_list)
+			baneverywhere = TRUE
+
 		banckey = ckey(banckey)
 
 		switch(bantype)
@@ -75,8 +79,7 @@
 				playermob = M
 				break
 
-
-		banreason = "(MANUAL BAN) "+banreason
+		banreason = "(MANUAL BAN) " + banreason
 
 		if(!playermob)
 			if(banip)
@@ -87,7 +90,7 @@
 			message_admins("Ban process: A mob matching [playermob.ckey] was found at location [playermob.x], [playermob.y], [playermob.z]. Custom ip and computer id fields replaced with the ip and computer id from the located mob")
 		notes_add(banckey,banreason,usr)
 
-		DB_ban_record(bantype, playermob, banduration, banreason, banjob, null, banckey, banip, bancid )
+		DB_ban_record(bantype, playermob, banduration, banreason, banjob, null, banckey, banip, bancid, baneverywhere)
 
 	else if(href_list["editrights"])
 		if(!check_rights(R_PERMISSIONS))
@@ -190,10 +193,10 @@
 
 		if(!check_rights(R_ADMIN))	return
 
-		if (!ticker || !evacuation_controller)
+		if(!SSticker.mode || !evacuation_controller)
 			return
 
-		if( ticker.mode.name == "blob" )
+		if(SSticker.mode.name == "blob")
 			alert("You can't call the shuttle during blob!")
 			return
 
@@ -210,8 +213,8 @@
 	else if(href_list["delay_round_end"])
 		if(!check_rights(R_SERVER))	return
 
-		ticker.delay_end = !ticker.delay_end
-		log_and_message_admins("[ticker.delay_end ? "delayed the round end" : "has made the round end normally"].")
+		SSticker.delay_end = !SSticker.delay_end
+		log_and_message_admins("[SSticker.delay_end ? "delayed the round end" : "has made the round end normally"].")
 		href_list["secretsadmin"] = "check_antagonist"
 
 	else if(href_list["simplemake"])
@@ -792,12 +795,19 @@
 					if(!reason)
 						return
 
+					var/ban_everywhere = FALSE
+					if(!isnull(config.server_id))
+						switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
+							if("Cancel")	return
+							if("Everywhere")
+								ban_everywhere = TRUE
+
 					var/msg
 					for(var/job in notbannedlist)
 						ban_unban_log_save("[key_name(usr)] temp-jobbanned [key_name(M)] from [job] for [mins] minutes. reason: [reason]")
 						log_admin("[key_name(usr)] temp-jobbanned [key_name(M)] from [job] for [mins] minutes")
 						feedback_inc("ban_job_tmp",1)
-						DB_ban_record(BANTYPE_JOB_TEMP, M, mins, reason, job)
+						DB_ban_record(BANTYPE_JOB_TEMP, M, mins, reason, job, ban_everywhere = ban_everywhere)
 						feedback_add_details("ban_job_tmp","- [job]")
 						jobban_fullban(M, job, "[reason]; By [usr.ckey] on [time2text(world.realtime)]") //Legacy banning does not support temporary jobbans.
 						if(!msg)
@@ -815,12 +825,18 @@
 					if(!check_rights(R_BAN))  return
 					var/reason = sanitize(input(usr,"Reason?","Please State Reason","") as text|null)
 					if(reason)
+						var/ban_everywhere = FALSE
+						if(!isnull(config.server_id))
+							switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
+								if("Cancel")	return
+								if("Everywhere")
+									ban_everywhere = TRUE
 						var/msg
 						for(var/job in notbannedlist)
 							ban_unban_log_save("[key_name(usr)] perma-jobbanned [key_name(M)] from [job]. reason: [reason]")
 							log_admin("[key_name(usr)] perma-banned [key_name(M)] from [job]")
 							feedback_inc("ban_job",1)
-							DB_ban_record(BANTYPE_JOB_PERMA, M, -1, reason, job)
+							DB_ban_record(BANTYPE_JOB_PERMA, M, -1, reason, job, ban_everywhere = ban_everywhere)
 							feedback_add_details("ban_job","- [job]")
 							jobban_fullban(M, job, "[reason]; By [usr.ckey] on [time2text(world.realtime)]")
 							if(!msg)	msg = job
@@ -919,13 +935,19 @@
 				var/reason = sanitize(input(usr,"Reason?","reason","Griefer") as text|null)
 				if(!reason)
 					return
+				var/ban_everywhere = FALSE
+				if(!isnull(config.server_id))
+					switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
+						if("Cancel")	return
+						if("Everywhere")
+							ban_everywhere = TRUE
 				AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 				ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
 				notes_add(M.ckey,"[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.",usr)
 				to_chat(M, "<span class='danger'>You have been banned by [usr.client.ckey].\nReason: [reason].</span>")
 				to_chat(M, "<span class='warning'>This is a temporary ban, it will be removed in [mins] minutes.</span>")
 				feedback_inc("ban_tmp",1)
-				DB_ban_record(BANTYPE_TEMP, M, mins, reason)
+				DB_ban_record(BANTYPE_TEMP, M, mins, reason, ban_everywhere = ban_everywhere)
 				feedback_inc("ban_tmp_mins",mins)
 				if(config.banappeals)
 					to_chat(M, "<span class='warning'>To try to resolve this matter head to [config.banappeals]</span>")
@@ -940,6 +962,12 @@
 				var/reason = sanitize(input(usr,"Reason?","reason","Griefer") as text|null)
 				if(!reason)
 					return
+				var/ban_everywhere = FALSE
+				if(!isnull(config.server_id))
+					switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
+						if("Cancel")	return
+						if("Everywhere")
+							ban_everywhere = TRUE
 				switch(alert(usr,"IP ban?",,"Yes","No","Cancel"))
 					if("Cancel")	return
 					if("Yes")
@@ -956,7 +984,7 @@
 				notes_add(M.ckey,"[usr.client.ckey] has permabanned [M.ckey]. - Reason: [reason] - This is a ban until appeal.",usr)
 				log_and_message_admins("has banned [M.ckey].\nReason: [reason]\nThis is a ban until appeal.")
 				feedback_inc("ban_perma",1)
-				DB_ban_record(BANTYPE_PERMA, M, -1, reason)
+				DB_ban_record(BANTYPE_PERMA, M, -1, reason, ban_everywhere = ban_everywhere)
 
 				qdel(M.client)
 				//qdel(M)
@@ -979,22 +1007,22 @@
 	else if(href_list["c_mode"])
 		if(!check_rights(R_ADMIN))	return
 
-		if(ticker && ticker.mode)
+		if(SSticker.mode)
 			return alert(usr, "The game has already started.", null, null, null, null)
 		var/dat = {"<B>What mode do you wish to play?</B><HR>"}
 		for(var/mode in config.modes)
 			dat += {"<A href='?src=\ref[src];c_mode2=[mode]'>[config.mode_names[mode]]</A><br>"}
 		dat += {"<A href='?src=\ref[src];c_mode2=secret'>Secret</A><br>"}
 		dat += {"<A href='?src=\ref[src];c_mode2=random'>Random</A><br>"}
-		dat += {"Now: [master_mode]"}
+		dat += {"Now: [SSticker.master_mode]"}
 		usr << browse(dat, "window=c_mode")
 
 	else if(href_list["f_secret"])
 		if(!check_rights(R_ADMIN))	return
 
-		if(ticker && ticker.mode)
+		if(SSticker.mode)
 			return alert(usr, "The game has already started.", null, null, null, null)
-		if(master_mode != "secret")
+		if(SSticker.master_mode != "secret")
 			return alert(usr, "The game mode has to be secret!", null, null, null, null)
 		var/dat = {"<B>What game mode do you want to force secret to be? Use this if you want to change the game mode, but want the players to believe it's secret. This will only work if the current game mode is secret.</B><HR>"}
 		for(var/mode in config.modes)
@@ -1006,21 +1034,22 @@
 	else if(href_list["c_mode2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
 
-		if (ticker && ticker.mode)
+		if (SSticker.mode)
 			return alert(usr, "The game has already started.", null, null, null, null)
-		master_mode = href_list["c_mode2"]
-		log_and_message_admins("set the mode as [master_mode].")
-		to_world("<span class='notice'><b>The mode is now: [master_mode]</b></span>")
+		SSticker.master_mode = href_list["c_mode2"]
+		SSticker.bypass_gamemode_vote = 1
+		log_and_message_admins("set the mode as [SSticker.master_mode].")
+		to_world("<span class='notice'><b>The mode is now: [SSticker.master_mode]</b></span>")
 		Game() // updates the main game menu
-		world.save_mode(master_mode)
+		world.save_mode(SSticker.master_mode)
 		.(href, list("c_mode"=1))
 
 	else if(href_list["f_secret2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
 
-		if(ticker && ticker.mode)
+		if(SSticker.mode)
 			return alert(usr, "The game has already started.", null, null, null, null)
-		if(master_mode != "secret")
+		if(SSticker.master_mode != "secret")
 			return alert(usr, "The game mode has to be secret!", null, null, null, null)
 		secret_force_mode = href_list["f_secret2"]
 		log_and_message_admins("set the forced secret mode as [secret_force_mode].")
@@ -1595,7 +1624,7 @@
 	else if(href_list["traitor"])
 		if(!check_rights(R_ADMIN|R_MOD))	return
 
-		if(!ticker || !ticker.mode)
+		if(GAME_STATE < RUNLEVEL_GAME)
 			alert("The game hasn't started yet!")
 			return
 
@@ -1604,6 +1633,17 @@
 			to_chat(usr, "This can only be used on instances of type /mob.")
 			return
 		show_traitor_panel(M)
+
+	else if(href_list["skillpanel"])
+		if(!check_rights(R_INVESTIGATE))
+			return
+
+		if(GAME_STATE < RUNLEVEL_GAME)
+			alert("The game hasn't started yet!")
+			return
+
+		var/mob/M = locate(href_list["skillpanel"])
+		show_skills(M)
 
 	else if(href_list["create_object"])
 		if(!check_rights(R_SPAWN))	return

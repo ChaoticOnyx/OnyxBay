@@ -30,8 +30,8 @@ exactly 2 "/mob text paths" '"/mob'
 exactly 12 "/obj text paths" '"/obj'
 exactly 8 "/turf text paths" '"/turf'
 exactly 1 "world<< uses" 'world<<|world[[:space:]]<<'
-exactly 46 "world.log<< uses" 'world.log<<|world.log[[:space:]]<<'
-exactly 660 "<< uses" '(?<!<)<<(?!<)' -P
+exactly 44 "world.log<< uses" 'world.log<<|world.log[[:space:]]<<'
+exactly 618 "<< uses" '(?<!<)<<(?!<)' -P
 exactly 0 "incorrect indentations" '^( {4,})' -P
 exactly 34 "text2path uses" 'text2path'
 # With the potential exception of << if you increase any of these numbers you're probably doing it wrong

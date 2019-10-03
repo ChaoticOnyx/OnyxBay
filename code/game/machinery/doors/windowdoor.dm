@@ -85,8 +85,6 @@
 					close()
 		return
 	var/mob/M = AM // we've returned by here if M is not a mob
-	if (!( ticker ))
-		return
 	if (src.operating)
 		return
 	if (src.density && (!issmall(M) || ishuman(M)) && src.allowed(AM))
@@ -99,7 +97,7 @@
 	return
 
 /obj/machinery/door/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(istype(mover) && mover.checkpass(PASS_FLAG_GLASS))
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
 		return 1
 	if(get_dir(loc, target) == dir) //Make sure looking at appropriate border
 		if(air_group) return 0
@@ -108,7 +106,7 @@
 		return 1
 
 /obj/machinery/door/window/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
-	if(istype(mover) && mover.checkpass(PASS_FLAG_GLASS))
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
 		return 1
 	if(get_dir(loc, target) == dir)
 		return !density
@@ -117,8 +115,6 @@
 
 /obj/machinery/door/window/open()
 	if (operating == 1) //doors can still open when emag-disabled
-		return 0
-	if (!ticker)
 		return 0
 	if (!src.operating) //in case of emag
 		src.operating = 1

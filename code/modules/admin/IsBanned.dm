@@ -42,7 +42,11 @@ world/IsBanned(key,address,computer_id)
 			failedcid = 0
 			cidquery = " OR computerid = '[computer_id]' "
 
-		var/DBQuery/query = dbcon.NewQuery("SELECT ckey, ip, computerid, a_ckey, reason, expiration_time, duration, bantime, bantype FROM erro_ban WHERE (ckey = '[ckeytext]' [ipquery] [cidquery]) AND (bantype = 'PERMABAN'  OR (bantype = 'TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned)")
+		var/DBQuery/query
+		if (isnull(config.server_id))
+			query = dbcon.NewQuery("SELECT ckey, ip, computerid, a_ckey, reason, expiration_time, duration, bantime, bantype FROM erro_ban WHERE (ckey = '[ckeytext]' [ipquery] [cidquery]) AND (bantype = 'PERMABAN' OR (bantype = 'TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned)")
+		else
+			query = dbcon.NewQuery("SELECT ckey, ip, computerid, a_ckey, reason, expiration_time, duration, bantime, bantype FROM erro_ban WHERE (ckey = '[ckeytext]' [ipquery] [cidquery]) AND (bantype = 'PERMABAN' OR (bantype = 'TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned) AND server_id = '[config.server_id]'")
 
 		query.Execute()
 

@@ -29,3 +29,11 @@
 /turf/simulated/floor/shuttle/black
 	icon_state = "floor7"
 	initial_flooring = /decl/flooring/reinforced/shuttle/black
+
+/turf/simulated/floor/shuttle/pod
+	icon_state = "podfloor"
+	initial_flooring = /decl/flooring/reinforced/shuttle/pod
+
+/turf/simulated/floor/shuttle/research
+	icon_state = "podfloor_res"
+	initial_flooring = /decl/flooring/reinforced/shuttle/research

@@ -187,6 +187,22 @@
 /obj/item/clothing/suit/space/void/mining/alt/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/mining/alt
 
+/obj/item/clothing/head/helmet/space/void/mining/reinforced
+	name = "reinforced mining voidsuit helmet"
+	desc = "An armored voidsuit helmet. Someone must have through they were pretty cool when they painted a mohawk on it."
+	icon_state = "rig0-miningref"
+	item_state = "miningref_helm"
+	armor = list(melee = 70, bullet = 5, laser = 30,energy = 5, bomb = 55, bio = 100, rad = 80)
+
+/obj/item/clothing/suit/space/void/mining/reinforced
+	icon_state = "rig-miningref"
+	name = "reinforced mining voidsuit"
+	desc = "A heavy-duty prospecting voidsuit. What it lacks in comfort it makes up for in armor plating and street cred."
+	armor = list(melee = 70, bullet = 5, laser = 30,energy = 5, bomb = 55, bio = 100, rad = 80)
+
+/obj/item/clothing/suit/space/void/mining/reinforced/prepared
+	helmet = /obj/item/clothing/head/helmet/space/void/mining/reinforced
+
 //Medical
 /obj/item/clothing/head/helmet/space/void/medical/alt
 	name = "streamlined medical voidsuit helmet"
@@ -320,3 +336,75 @@
 /obj/item/clothing/suit/space/void/pilot/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/pilot
 	boots = /obj/item/clothing/shoes/magboots
+
+//Non-standard
+/obj/item/clothing/head/helmet/space/void/knight
+	name = "strange voidsuit helmet"
+	desc = "A bulky helmet with some heavy armor plating."
+	icon_state = "hardsuit-helm-knight"
+	item_state = "hardsuit-helm-knight"
+	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100, rad = 10)
+	siemens_coefficient = 0.7
+	light_overlay = "helmet_light_dual"
+
+/obj/item/clothing/suit/space/void/knight
+	icon_state = "hardsuit-knight"
+	item_state = "hardsuit-knight"
+	name = "strange voidsuit"
+	desc = "A bulky set of space-proof armor, that looks kinda ancient. 'Lancelot X-40' is written on the front plate."
+	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100, rad = 10)
+	allowed = list(/obj/item/weapon/gun,/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/weapon/melee/baton)
+	siemens_coefficient = 0.7
+
+/obj/item/clothing/head/helmet/space/void/optical
+	name = "experimental helmet"
+	icon_state = "hardsuit-optical"
+	desc = "Strange looking, smoothly contoured helmet. It looks a bit blurry."
+	siemens_coefficient = 0
+	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100, rad = 60)
+
+/obj/item/clothing/suit/space/void/optical
+	name = "experimental voidsuit"
+	icon_state = "hardsuit-optical"
+	desc = "Strange black voidsuit, with some devices attached to it. It looks a bit blurry."
+	action_button_name = "Toggle Optical Disruptor"
+	siemens_coefficient = 0
+	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100, rad = 60)
+	var/cloak = FALSE
+
+/obj/item/clothing/suit/space/void/optical/New()
+	..()
+	slowdown_per_slot[slot_wear_suit] = 0
+
+/obj/item/clothing/suit/space/void/optical/attack_self(mob/user)
+	var/mob/living/carbon/human/H = user
+	if(!istype(H))
+		return
+	if(!istype(H.head, /obj/item/clothing/head/helmet/space/void/optical))
+		return
+	cloak(H)
+
+/obj/item/clothing/suit/space/void/optical/proc/cloak(var/mob/living/carbon/human/H)
+	if(cloak)
+		cloak = FALSE
+		return 1
+
+	to_chat(H, "<span class='notice'>Optical disruptor activated.</span>")
+	cloak = TRUE
+	animate(H,alpha = 255, alpha = 85, time = 10)
+
+	var/remain_cloaked = TRUE
+	while(remain_cloaked)
+		sleep(1 SECOND)
+		if(!cloak)
+			remain_cloaked = 0
+		if(H.stat)
+			remain_cloaked = 0
+		if(!istype(H.head, /obj/item/clothing/head/helmet/space/void/optical))
+			remain_cloaked = 0
+	H.invisibility = initial(H.invisibility)
+	H.visible_message("<span class='warning'>[H] suddenly fades in.</span>",
+	"<span class='notice'>Optical disruptor deactivated.</span>")
+	cloak = FALSE
+
+	animate(H,alpha = 85, alpha = 255, time = 10)

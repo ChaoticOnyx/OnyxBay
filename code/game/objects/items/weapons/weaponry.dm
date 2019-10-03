@@ -24,7 +24,7 @@
 		to_chat(M, "<span class='danger'>You've been silenced!</span>")
 		return
 
-	if (!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='danger'>You don't have the dexterity to do this!</span>")
 		return
 
@@ -173,7 +173,7 @@
 
 /obj/effect/energy_net/post_buckle_mob(mob/living/M)
 	if(buckled_mob)
-		plane = ABOVE_HUMAN_PLANE
+
 		layer = ABOVE_HUMAN_LAYER
 		visible_message("\The [M] was caught in [src]!")
 	else

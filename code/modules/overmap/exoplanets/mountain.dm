@@ -1,7 +1,6 @@
 /obj/effect/overmap/sector/exoplanet/rocks
 	name = "rocky exoplanet"
 	desc = "A planet with rocky formations on the surface, exposing minerals. Rest of terrain varies."
-	landmark_type = /obj/effect/shuttle_landmark/automatic/clearing
 	color = "#7c7670"
 
 /obj/effect/overmap/sector/exoplanet/rocks/generate_map()

@@ -440,7 +440,7 @@
 // called when area power changes
 /obj/machinery/disposal/power_change()
 	..()	// do default setting/reset of stat NOPOWER bit
-	update_icon()	// update icon
+	queue_icon_update()	// update icon
 	return
 
 
@@ -651,6 +651,8 @@
 	icon = 'icons/obj/pipes/disposal.dmi'
 	name = "disposal pipe"
 	desc = "An underfloor disposal pipe."
+	plane = DEFAULT_PLANE
+	layer = TURF_DETAIL_LAYER
 	anchored = 1
 	density = 0
 
@@ -659,8 +661,6 @@
 	dir = 0				// dir will contain dominant direction for junction pipes
 	var/health = 10 	// health points 0-10
 	alpha = 192 // Plane and alpha modified for mapping, reset to normal on spawn.
-	plane = ABOVE_TURF_PLANE
-	layer = DISPOSALS_PIPE_LAYER
 	var/base_icon_state	// initial icon state on map
 	var/sortType = ""
 	var/subtype = 0
@@ -668,8 +668,9 @@
 	New()
 		..()
 		alpha = 255
-		plane = ABOVE_PLATING_PLANE
 		base_icon_state = icon_state
+		layer = DISPOSALS_PIPE_LAYER
+		plane = FLOOR_PLANE
 		return
 
 	// pipe is deleted

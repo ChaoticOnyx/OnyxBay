@@ -164,6 +164,7 @@
 	var/pipe_icon = "" //what kind of pipe it is and from which dmi is the icon manager getting its icons, "" for simple pipes, "hepipe" for HE pipes, "hejunction" for HE junctions
 	name = "pipe"
 	desc = "A one meter section of regular pipe."
+	plane = DEFAULT_PLANE
 
 	volume = ATMOS_DEFAULT_VOLUME_PIPE
 
@@ -186,6 +187,7 @@
 	//  be null. For mapping purposes color is defined in the object definitions.
 	icon = null
 	alpha = 255
+	plane = FLOOR_PLANE
 
 	switch(dir)
 		if(SOUTH || NORTH)
@@ -255,8 +257,7 @@
 		node1 = null
 	if(node2)
 		node2.disconnect(src)
-		node1 = null
-
+		node2 = null
 	. = ..()
 
 /obj/machinery/atmospherics/pipe/simple/pipeline_expansion()
@@ -441,6 +442,7 @@
 	icon_state = ""
 	name = "pipe manifold"
 	desc = "A manifold composed of regular pipes."
+	plane = DEFAULT_PLANE
 
 	volume = ATMOS_DEFAULT_VOLUME_PIPE * 1.5
 
@@ -455,6 +457,7 @@
 	..()
 	alpha = 255
 	icon = null
+	plane = FLOOR_PLANE
 
 	switch(dir)
 		if(NORTH)

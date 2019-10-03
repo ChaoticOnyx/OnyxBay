@@ -1,6 +1,7 @@
 /obj/machinery/atmospherics/unary/vent_scrubber
 	icon = 'icons/atmos/vent_scrubber.dmi'
 	icon_state = "map_scrubber_off"
+	plane = FLOOR_PLANE
 
 	name = "Air Scrubber"
 	desc = "Has a valve and pump attached to it."
@@ -40,7 +41,10 @@
 
 /obj/machinery/atmospherics/unary/vent_scrubber/Destroy()
 	unregister_radio(src, frequency)
-	..()
+	if(initial_loc)
+		initial_loc.air_scrub_info -= id_tag
+		initial_loc.air_scrub_names -= id_tag
+	return ..()
 
 /obj/machinery/atmospherics/unary/vent_scrubber/update_icon(var/safety = 0)
 	if(!check_icon_cache())
@@ -184,7 +188,6 @@
 		return 0
 
 	if(signal.data["power"] != null)
-		//use_power = text2num(signal.data["power"])
 		use_power = update_use_power(sanitize_integer(text2num(signal.data["power"]), POWER_USE_OFF, POWER_USE_ACTIVE, use_power))
 	if(signal.data["power_toggle"] != null)
 		update_use_power(!use_power)
@@ -325,10 +328,3 @@
 		to_chat(user, "You are too far away to read the gauge.")
 	if(welded)
 		to_chat(user, "It seems welded shut.")
-
-/obj/machinery/atmospherics/unary/vent_scrubber/Destroy()
-	if(initial_loc)
-		initial_loc.air_scrub_info -= id_tag
-		initial_loc.air_scrub_names -= id_tag
-	..()
-	return

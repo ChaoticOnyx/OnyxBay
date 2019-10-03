@@ -68,10 +68,6 @@ var/intercom_range_display_status = 0
 	set category = "Mapping"
 	set name = "Camera Report"
 
-	if(!master_controller)
-		alert(usr,"Master_controller not found.","Sec Camera Report")
-		return 0
-
 	var/list/obj/machinery/camera/CL = list()
 
 	for(var/obj/machinery/camera/C in cameranet.cameras)
@@ -332,4 +328,4 @@ var/list/debug_verbs = list (
 	feedback_add_details("admin_verb","mOBJ") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /proc/get_zas_image(var/turf/T, var/icon_state)
-	return image_repository.atom_image(T, 'icons/misc/debug_group.dmi', icon_state, plane = ABOVE_TURF_PLANE, layer = ABOVE_TILE_LAYER)
+	return image_repository.atom_image(T, 'icons/misc/debug_group.dmi', icon_state, plane = DEFAULT_PLANE, layer = ABOVE_TILE_LAYER)

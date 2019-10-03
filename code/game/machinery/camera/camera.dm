@@ -6,7 +6,7 @@
 	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 5
 	active_power_usage = 10
-	plane = ABOVE_HUMAN_PLANE
+
 	layer = CAMERA_LAYER
 
 	var/list/network = list(NETWORK_EXODUS)
@@ -279,11 +279,10 @@
 
 //Used when someone breaks a camera
 /obj/machinery/camera/proc/destroy()
-	stat |= BROKEN
+	set_broken(TRUE)
 	wires.RandomCutAll()
 
 	triggerCameraAlarm()
-	update_icon()
 	update_coverage()
 
 	//sparks
@@ -467,9 +466,7 @@
 /obj/machinery/camera/proc/reset_wires()
 	if(!wires)
 		return
-	if (stat & BROKEN) // Fix the camera
-		stat &= ~BROKEN
+	set_broken(FALSE) // Fixes the camera and updates the icon.
 	wires.CutAll()
 	wires.MendAll()
-	update_icon()
 	update_coverage()

@@ -6,9 +6,8 @@
 	icon_state = "pod_preview"
 	density = 1
 	anchored = 1.0
-	plane = ABOVE_HUMAN_PLANE // this needs to be fairly high so it displays over most things, but it needs to be under lighting
 	interact_offline = 1
-	layer = ABOVE_HUMAN_LAYER
+	layer = ABOVE_HUMAN_LAYER // this needs to be fairly high so it displays over most things, but it needs to be under lighting
 
 	var/on = 0
 	idle_power_usage = 20
@@ -142,7 +141,7 @@
 		data["beakerVolume"] = beaker.reagents.total_volume
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		// the ui does not exist, so we'll create a new() one
 		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
@@ -329,7 +328,6 @@
 	occupant = M
 	current_heat_capacity = HEAT_CAPACITY_HUMAN
 	update_use_power(POWER_USE_ACTIVE)
-//	M.metabslow = 1
 	add_fingerprint(usr)
 	update_icon()
 	return 1

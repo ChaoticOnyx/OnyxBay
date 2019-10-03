@@ -302,3 +302,11 @@
 #define AURA_TYPE_WEAPON "Weapon"
 #define AURA_TYPE_THROWN "Thrown"
 #define AURA_TYPE_LIFE   "Life"
+
+#define SLIME_EVOLUTION_THRESHOLD 10
+
+//Used in mob/proc/get_input
+
+#define MOB_INPUT_TEXT "text"
+#define MOB_INPUT_MESSAGE "message"
+#define MOB_INPUT_NUM "num"

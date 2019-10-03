@@ -7,7 +7,6 @@
 	icon_state = "singularity_s1"
 	anchored = 1
 	density = 1
-	plane = EFFECTS_BELOW_LIGHTING_PLANE
 	layer = SINGULARITY_LAYER
 	light_range = 6
 	unacidable = 1 //Don't comment this out.
@@ -287,32 +286,44 @@
 	src.energy += A.singularity_act(src, current_size)
 	return
 
-/obj/singularity/proc/move(var/force_move = 0)
+/obj/singularity/proc/move(force_move_direction = 0)
 	if(!move_self)
-		return 0
+		return FALSE
 
 	var/movement_dir = pick(GLOB.alldirs - last_failed_movement)
 
-	if(force_move)
-		movement_dir = force_move
+	if(force_move_direction)
+		movement_dir = force_move_direction
 
 	if(target && prob(60))
-		movement_dir = get_dir(src,target) //moves to a singulo beacon, if there is one
+		movement_dir = get_dir(src, target) //moves to a singulo beacon, if there is one
+	else
+		var/location
+		if(prob(16))
+			location = GetAbove(src)
+			if (location)
+				src.Move(location, UP)
+				return TRUE
+		else if(prob(16))
+			location = GetBelow(src)
+			if (location)
+				src.Move(location, DOWN)
+				return TRUE
 
-	if(current_size >= 9)//The superlarge one does not care about things in its way
+	if(current_size >= 9) //The superlarge one does not care about things in its way
 		spawn(0)
 			step(src, movement_dir)
 		spawn(1)
 			step(src, movement_dir)
-		return 1
+		return TRUE
 	else if(check_turfs_in(movement_dir))
 		last_failed_movement = 0 // Reset this because we moved
 		spawn(0)
 			step(src, movement_dir)
-		return 1
+		return TRUE
 	else
 		last_failed_movement = movement_dir
-	return 0
+	return FALSE
 
 /obj/singularity/proc/check_turfs_in(var/direction = 0, var/step = 0)
 	if(!direction)
@@ -410,7 +421,7 @@
 	if (src.energy>200)
 		toxdamage = round(((src.energy-150)/50)*4,1)
 		radiation = round(((src.energy-150)/50)*5,1)
-	radiation_repository.radiate(src, radiation) //Always radiate at max, so a decent dose of radiation is applied
+	SSradiation.radiate(src, radiation) //Always radiate at max, so a decent dose of radiation is applied
 	for(var/mob/living/M in view(toxrange, src.loc))
 		if(M.status_flags & GODMODE)
 			continue
@@ -453,7 +464,7 @@
 			to_chat(M, "<span class=\"danger\">You hear an uneartly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat.</span>")
 			to_chat(M, "<span class=\"danger\">You don't even have a moment to react as you are reduced to ashes by the intense radiation.</span>")
 			M.dust()
-	radiation_repository.radiate(src, rand(energy))
+	SSradiation.radiate(src, rand(energy))
 	return
 
 /obj/singularity/proc/pulse()

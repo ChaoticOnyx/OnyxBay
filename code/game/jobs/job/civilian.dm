@@ -171,6 +171,9 @@
 	if(.)
 		H.silent += 86400
 
+	// Add "Invisible wall" spell
+	H.add_spell(new /spell/aoe_turf/conjure/forcewall/mime, "grey_spell_ready")
+
 /datum/job/merchant
 	title = "Merchant"
 	department = "Civilian"

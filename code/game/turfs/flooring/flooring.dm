@@ -279,6 +279,12 @@ var/list/flooring_types
 /decl/flooring/reinforced/shuttle/black
 	icon_base = "floor7"
 
+/decl/flooring/reinforced/shuttle/pod
+	icon_base = "podfloor"
+
+/decl/flooring/reinforced/shuttle/research
+	icon_base = "podfloor_res"
+
 /decl/flooring/diona
 	name = "biomass"
 	desc = "a mass of small intertwined aliens forming a floor... Creepy."

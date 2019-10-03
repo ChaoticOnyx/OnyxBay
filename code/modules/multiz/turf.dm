@@ -129,7 +129,6 @@
 		var/overlays_post = overlays.len
 		if(overlays_post != (overlays_pre + o_img.len)) //Here we go!
 			//log_world("Corrupted openspace turf at [x],[y],[z] being replaced. Pre: [overlays_pre], Post: [overlays_post]")
-			//new /turf/simulated/open(src)
 			ChangeTurf(/turf/simulated/open)
 			return //Let's get out of here.
 
@@ -183,7 +182,7 @@
 
 /turf/simulated/open/proc/handle_move(var/atom/current_loc, var/atom/movable/am, var/atom/changed_loc)
 	//First handle objs and such
-	if(GLOB.open_space_initialised && !am.invisibility && isobj(am))
+	if(!am.invisibility && isobj(am))
 	//Update icons
 		SSopen_space.add_turf(src, 1)
 	//Check for mobs and create/destroy their shadows
@@ -202,9 +201,8 @@
 
 //When turf changes, a bunch of things can take place
 /turf/simulated/open/proc/turf_change(var/turf/affected)
-	if(GLOB.open_space_initialised)
-		if(!isopenspace(affected))//If affected is openspace it will add itself
-			SSopen_space.add_turf(src, 1)
+	if(!isopenspace(affected))//If affected is openspace it will add itself
+		SSopen_space.add_turf(src, 1)
 
 
 //The two situations which require unregistering

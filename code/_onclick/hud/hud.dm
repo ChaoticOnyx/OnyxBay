@@ -7,6 +7,7 @@
 /mob
 	var/hud_type = null
 	var/datum/hud/hud_used = null
+	var/list/master_planes = null
 
 /mob/proc/InitializeHud()
 	if(hud_used)
@@ -15,6 +16,32 @@
 		hud_used = new hud_type(src)
 	else
 		hud_used = new /datum/hud
+
+	InitializePlanes()
+	UpdatePlanes()
+
+/mob/proc/InitializePlanes()
+	if (!master_planes)
+		master_planes = list()
+
+	var/list/planes = list(
+		/obj/screen/plane_master/ambient_occlusion,
+		/obj/screen/plane_master/mouse_invisible
+	)
+
+	for (var/plane_type in planes)
+		var/obj/screen/plane_master/plane = new plane_type()
+
+		master_planes["[plane.plane]"] = plane
+		client.screen += plane
+
+/mob/proc/UpdatePlanes()
+	if (!master_planes)
+		return
+
+	for (var/plane_num in master_planes)
+		var/obj/screen/plane_master/plane = master_planes[plane_num]
+		plane.backdrop(src)
 
 /datum/hud
 	var/mob/mymob
@@ -100,7 +127,6 @@
 						if(H.wear_suit) H.wear_suit.screen_loc = null
 					if(slot_wear_mask)
 						if(H.wear_mask) H.wear_mask.screen_loc = null
-
 
 /datum/hud/proc/persistant_inventory_update()
 	if(!mymob)

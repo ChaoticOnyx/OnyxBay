@@ -67,7 +67,7 @@
 	sharp = 1
 
 /obj/item/weapon/material/kitchen/utensil/fork/plastic
-	default_material = "plastic"
+	default_material = MATERIAL_PLASTIC
 
 /obj/item/weapon/material/kitchen/utensil/spoon
 	name = "spoon"
@@ -79,7 +79,7 @@
 	mod_weight = 0.3
 
 /obj/item/weapon/material/kitchen/utensil/spoon/plastic
-	default_material = "plastic"
+	default_material = MATERIAL_PLASTIC
 
 /*
  * Knives
@@ -132,7 +132,7 @@
 	mod_handy = 1.0
 
 /obj/item/weapon/material/kitchen/utensil/knife/plastic
-	default_material = "plastic"
+	default_material = MATERIAL_PLASTIC
 
 /*
  * Rolling Pins
@@ -143,7 +143,7 @@
 	desc = "Used to knock out the Bartender."
 	icon_state = "rolling_pin"
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked")
-	default_material = "wood"
+	default_material = MATERIAL_WOOD
 	force_divisor = 0.7 // 10 when wielded with weight 15 (wood)
 	thrown_force_divisor = 0.8 // 12 dmg (wood)
 	hitsound = 'sound/weapons/genhit3.ogg'

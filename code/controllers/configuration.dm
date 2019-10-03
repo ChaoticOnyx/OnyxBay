@@ -1,51 +1,55 @@
 var/list/gamemode_cache = list()
 
 /datum/configuration
-	var/server_name = null				// server name (for world name / status)
-	var/server_suffix = 0				// generate numeric suffix based on server port
+	var/server_name = null					// server name (for world name / status)
+	var/server_id = null					// server id (used for separate bans storing)
+	var/server_suffix = 0					// generate numeric suffix based on server port
 
-	var/log_ooc = 0						// log OOC channel
-	var/log_access = 0					// log login/logout
-	var/log_say = 0						// log client say
-	var/log_admin = 0					// log admin actions
-	var/log_asay = 0					// log admin/mod say
-	var/log_debug = 1					// log debug output
-	var/log_game = 0					// log game events
-	var/log_vote = 0					// log voting
-	var/log_whisper = 0					// log client whisper
-	var/log_emote = 0					// log emotes
-	var/log_attack = 0					// log attack messages
-	var/log_adminchat = 0				// log admin chat messages
-	var/log_adminwarn = 0				// log warnings admins get about bomb construction and such
-	var/log_pda = 0						// log pda messages
-	var/log_hrefs = 0					// logs all links clicked in-game. Could be used for debugging and tracking down exploits
-	var/log_runtime = 0					// logs world.log to a file
-	var/log_world_output = 0			// log world.log << messages
-	var/sql_enabled = 1					// for sql switching
-	var/allow_admin_ooccolor = 0		// Allows admins with relevant permissions to have their own ooc colour
-	var/allow_vote_restart = 0 			// allow votes to restart
+	var/log_ooc = 0							// Log OOC channel
+	var/log_access = 0						// Log login/logout
+	var/log_say = 0							// Log client say
+	var/log_admin = 0						// Log admin actions
+	var/log_asay = 0						// Log admin/mod say
+	var/log_debug = 1						// Log debug output
+	var/log_game = 0						// Log game events
+	var/log_vote = 0						// Log voting
+	var/log_whisper = 0						// Log client whisper
+	var/log_emote = 0						// Log emotes
+	var/log_attack = 0						// Log attack messages
+	var/log_adminchat = 0					// Log admin chat messages
+	var/log_adminwarn = 0					// Log warnings admins get about bomb construction and such
+	var/log_pda = 0							// Log pda messages
+	var/log_hrefs = 0						// Log all links clicked in-game. Could be used for debugging and tracking down exploits
+	var/log_runtime = 0						// Log world.log to a file
+	var/log_world_output = 0				// Log world.log << messages
+
+	var/sql_enabled = FALSE					// SQL storage. If you want to enable it, use sql_enabled var in config file
+
+	var/allow_admin_ooccolor = 0			// Allows admins with relevant permissions to have their own ooc colour
+	var/allow_vote_restart = 0 				// Allow votes to restart
 	var/ert_admin_call_only = 0
-	var/panic_DB_log = TRUE //Logging Panic Bunker
-	var/allow_vote_mode = 0				// allow votes to change mode
-	var/allow_admin_jump = 1			// allows admin jumping
-	var/allow_admin_spawning = 1		// allows admin item spawning
-	var/allow_admin_rev = 1				// allows admin revives
-	var/vote_delay = 6000				// minimum time between voting sessions (deciseconds, 10 minute default)
-	var/vote_period = 600				// length of voting period (deciseconds, default 1 minute)
-	var/vote_autotransfer_initial = 108000 // Length of time before the first autotransfer vote is called
-	var/vote_autotransfer_interval = 36000 // length of time before next sequential autotransfer vote
-	var/vote_autogamemode_timeleft = 100 //Length of time before round start when autogamemode vote is called (in seconds, default 100).
-	var/vote_no_default = 0				// vote does not default to nochange/norestart (tbi)
-	var/vote_no_dead = 0				// dead people can't vote (tbi)
-//	var/enable_authentication = 0		// goon authentication
-	var/del_new_on_log = 1				// del's new players if they log before they spawn in
-	var/feature_object_spell_system = 0 //spawns a spellbook which gives object-type spells instead of verb-type spells for the wizard
-	var/traitor_scaling = 0 			//if amount of traitors scales based on amount of players
-	var/objectives_disabled = 0 			//if objectives are disabled or not
-	var/protect_roles_from_antagonist = 0// If security and such can be traitor/cult/other
-	var/continous_rounds = 0			// Gamemodes which end instantly will instead keep on going until the round ends by escape shuttle or nuke.
-	var/allow_Metadata = 0				// Metadata is supported.
-	var/popup_admin_pm = 0				//adminPMs to non-admins show in a pop-up 'reply' window when set to 1.
+	var/panic_DB_log = TRUE 				// Logging Panic Bunker
+	var/allow_vote_mode = 0					// allow votes to change mode
+	var/allow_admin_jump = 1				// allows admin jumping
+	var/allow_admin_spawning = 1			// allows admin item spawning
+	var/allow_admin_rev = 1					// allows admin revives
+	var/vote_delay = 6000					// minimum time between voting sessions (deciseconds, 10 minute default)
+	var/vote_period = 600					// length of voting period (deciseconds, default 1 minute)
+	var/vote_autotransfer_initial = 108000	// Length of time before the first autotransfer vote is called
+	var/vote_autotransfer_interval = 36000	// length of time before next sequential autotransfer vote
+	var/vote_autogamemode_timeleft = 100	// Length of time before round start when autogamemode vote is called (in seconds, default 100).
+	var/vote_no_default = 0					// vote does not default to nochange/norestart (tbi)
+	var/vote_no_dead = 0					// dead people can't vote (tbi)
+//	var/enable_authentication = 0			// goon authentication
+	var/del_new_on_log = 1					// del's new players if they log before they spawn in
+	var/feature_object_spell_system = 0 	// spawns a spellbook which gives object-type spells instead of verb-type spells for the wizard
+	var/traitor_scaling = 0 				// if amount of traitors scales based on amount of players
+	var/objectives_disabled = 0 			// if objectives are disabled or not
+	var/protect_roles_from_antagonist = 0	// If security and such can be traitor/cult/other
+	var/continous_rounds = 0				// Gamemodes which end instantly will instead keep on going until the round ends by escape shuttle or nuke.
+	var/allow_Metadata = 0					// Metadata is supported.
+	var/popup_admin_pm = 0					// adminPMs to non-admins show in a pop-up 'reply' window when set to 1.
+
 	var/fps = 20
 	var/tick_limit_mc_init = TICK_LIMIT_MC_INIT_DEFAULT	//SSinitialization throttling
 	var/list/resource_urls = null
@@ -232,7 +236,11 @@ var/list/gamemode_cache = list()
 
 	var/max_gear_cost = 10 // Used in chargen for accessory loadout limit. 0 disables loadout, negative allows infinite points.
 
-/datum/configuration/proc/initialize()
+	var/allow_ic_printing = TRUE //Whether players should be allowed to print IC circuits from scripts.
+
+	var/server_port
+
+/datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for (var/T in L)
 		// I wish I didn't have to instance the game modes in order to look up
@@ -310,7 +318,7 @@ var/list/gamemode_cache = list()
 					config.log_access = 1
 
 				if ("sql_enabled")
-					config.sql_enabled = text2num(value)
+					config.sql_enabled = TRUE
 
 				if ("log_say")
 					config.log_say = 1
@@ -424,6 +432,9 @@ var/list/gamemode_cache = list()
 
 				if ("servername")
 					config.server_name = value
+
+				if ("serverid")
+					config.server_id = value
 
 				if ("serversuffix")
 					config.server_suffix = 1
@@ -592,14 +603,16 @@ var/list/gamemode_cache = list()
 
 				if("allow_antag_hud")
 					config.antag_hud_allowed = 1
+
 				if("antag_hud_restricted")
 					config.antag_hud_restricted = 1
 
 				if("humans_need_surnames")
 					humans_need_surnames = 1
 
-				//if("usealienwhitelist")
-				//	usealienwhitelist = 1
+				// if("usealienwhitelist")
+					// usealienwhitelist = TRUE
+
 				if("useingamealienwhitelist")
 					usealienwhitelist = 1
 					useingamealienwhitelist = 1
@@ -682,6 +695,9 @@ var/list/gamemode_cache = list()
 				if("disable_welder_vision")
 					config.welder_vision = 0
 
+				if("disable_circuit_printing")
+					config.allow_ic_printing = FALSE
+
 				if("allow_extra_antags")
 					config.allow_extra_antags = 1
 
@@ -722,10 +738,10 @@ var/list/gamemode_cache = list()
 					law_zero = value
 
 				if("aggressive_changelog")
-					config.aggressive_changelog = 1
+					config.aggressive_changelog = TRUE
 
 				if("panic_bunker")
-					config.panic_bunker = 1
+					config.panic_bunker = text2num(value)
 
 				if("panic_server_name")
 					if (value != "\[Put the name here\]")
@@ -780,6 +796,9 @@ var/list/gamemode_cache = list()
 					radiation_lower_limit = text2num(value)
 				if("player_limit")
 					player_limit = text2num(value)
+
+				if("server_port")
+					server_port = text2num(value)
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")
@@ -884,7 +903,7 @@ var/list/gamemode_cache = list()
 			if ("feedback_password")
 				sqlfdbkpass = value
 			if ("enable_stat_tracking")
-				sqllogging = 1
+				sqllogging = TRUE
 			else
 				log_misc("Unknown setting in configuration: '[name]'")
 
@@ -895,14 +914,14 @@ var/list/gamemode_cache = list()
 		var/datum/game_mode/M = gamemode_cache[game_mode]
 		if (M.config_tag && M.config_tag == mode_name)
 			return M
-	return gamemode_cache["extended"]
 
-/datum/configuration/proc/get_runnable_modes()
+/datum/configuration/proc/GetRunnableModesForPlayers(totalPlayers)
 	var/list/runnable_modes = list()
+
 	for(var/game_mode in gamemode_cache)
 		var/datum/game_mode/M = gamemode_cache[game_mode]
-		if(M && !M.startRequirements() && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
-			runnable_modes |= M
+		if(M && M.isStartRequirementsSatisfied(totalPlayers) && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
+			runnable_modes[M.config_tag] = config.probabilities[M.config_tag]
 	return runnable_modes
 
 /datum/configuration/proc/load_event(filename)

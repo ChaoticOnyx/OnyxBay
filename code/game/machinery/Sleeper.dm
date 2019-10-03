@@ -160,7 +160,7 @@
 	data["stasis"] = stasis
 	data["freeze"] = freeze
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "sleeper.tmpl", "Sleeper UI", 600, 600, state = state)
 		ui.set_initial_data(data)
@@ -374,7 +374,7 @@
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src
 		M.forceMove(src)
-		update_use_power(2)
+		update_use_power(POWER_USE_ACTIVE)
 		occupant = M
 		update_icon()
 
@@ -392,7 +392,7 @@
 		if(locate(A) in component_parts)
 			continue
 		A.dropInto(loc)
-	update_use_power(1)
+	update_use_power(POWER_USE_IDLE)
 	update_icon()
 	toggle_filter()
 

@@ -60,7 +60,7 @@
 	mod_handy = 0.65
 	mod_shield = 1.3
 	origin_tech = list(TECH_MATERIAL = 2)
-	matter = list(DEFAULT_WALL_MATERIAL = 1000)
+	matter = list(MATERIAL_STEEL = 1000)
 	attack_verb = list("shoved", "bashed")
 
 	req_access = list()
@@ -480,6 +480,7 @@
 /obj/structure/closet/attack_hand(mob/user as mob)
 	src.add_fingerprint(user)
 	src.toggle(user)
+	user.setClickCooldown(2)
 
 // tk grab then use on self
 /obj/structure/closet/attack_self_tk(mob/user as mob)
@@ -573,7 +574,10 @@
 	escapee.setClickCooldown(100)
 
 	//okay, so the closet is either welded or locked... resist!!!
-	to_chat(escapee, "<span class='warning'>You lean on the back of \the [src] and start pushing the door open. (this will take about [breakout_time] minutes)</span>")
+	if(istype(src, /obj/structure/closet/body_bag))
+		to_chat(escapee, "<span class='warning'>You're trying to open \the [src] from the inside. (this will take about [breakout_time] minutes)</span>")
+	else
+		to_chat(escapee, "<span class='warning'>You lean on the back of \the [src] and start pushing the door open. (this will take about [breakout_time] minutes)</span>")
 
 	visible_message("<span class='danger'>\The [src] begins to shake violently!</span>")
 

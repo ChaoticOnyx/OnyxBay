@@ -72,19 +72,19 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 /obj/machinery/computer/rdconsole/proc/CallMaterialName(var/ID)
 	var/return_name = ID
 	switch(return_name)
-		if("metal")
-			return_name = "Metal"
-		if("glass")
+		if(MATERIAL_STEEL)
+			return_name = "Steel"
+		if(MATERIAL_GLASS)
 			return_name = "Glass"
-		if("gold")
+		if(MATERIAL_GOLD)
 			return_name = "Gold"
-		if("silver")
+		if(MATERIAL_SILVER)
 			return_name = "Silver"
-		if("phoron")
+		if(MATERIAL_PHORON)
 			return_name = "Solid Phoron"
-		if("uranium")
+		if(MATERIAL_URANIUM)
 			return_name = "Uranium"
-		if("diamond")
+		if(MATERIAL_DIAMOND)
 			return_name = "Diamond"
 	return return_name
 
@@ -109,9 +109,6 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 				linked_imprinter = D
 				D.linked_console = src
 	return
-
-/obj/machinery/computer/rdconsole/proc/add_ic_design(var/obj/item/device/electronic_assembly/assembly)
-	files.AddDesign2Known(new /datum/design/prefab(files,create_prefab_from_assembly(assembly)))
 
 /obj/machinery/computer/rdconsole/proc/griefProtection() //Have it automatically push research to the centcomm server so wild griffins can't fuck up R&D's work
 	for(var/obj/machinery/r_n_d/server/centcom/C in SSmachines.machinery)
@@ -690,19 +687,15 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
 			dat += "Deconstruction Menu<HR>"
 			dat += "Name: [linked_destroy.loaded_item.name]<BR>"
-			if(istype(linked_destroy.loaded_item, /obj/item/device/electronic_assembly))
-				dat += "Assembly Detected. Prepared for blueprint download."
-				dat += "Warning: Assemblies manafactured this way will not have removable circuits."
-			else
-				dat += "Origin Tech:"
-				dat += "<UL>"
-				for(var/T in linked_destroy.loaded_item.origin_tech)
-					dat += "<LI>[CallTechName(T)] [linked_destroy.loaded_item.origin_tech[T]]"
-					for(var/datum/tech/F in files.known_tech)
-						if(F.name == CallTechName(T))
-							dat += " (Current: [F.level])"
-							break
-				dat += "</UL>"
+			dat += "Origin Tech:"
+			dat += "<UL>"
+			for(var/T in linked_destroy.loaded_item.origin_tech)
+				dat += "<LI>[CallTechName(T)] [linked_destroy.loaded_item.origin_tech[T]]"
+				for(var/datum/tech/F in files.known_tech)
+					if(F.name == CallTechName(T))
+						dat += " (Current: [F.level])"
+						break
+			dat += "</UL>"
 			dat += "<HR><A href='?src=\ref[src];deconstruct=1'>Deconstruct Item</A> || "
 			dat += "<A href='?src=\ref[src];eject_item=1'>Eject Item</A> || "
 

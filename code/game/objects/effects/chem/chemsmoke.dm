@@ -4,7 +4,6 @@
 /obj/effect/effect/smoke/chem
 	icon = 'icons/effects/chemsmoke.dmi'
 	opacity = 0
-	plane = EFFECTS_BELOW_LIGHTING_PLANE
 	layer = ABOVE_PROJECTILE_LAYER
 	time_to_live = 300
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE | PASS_FLAG_GLASS //PASS_FLAG_GLASS is fine here, it's just so the visual effect can "flow" around glass
@@ -72,7 +71,7 @@
 	var/alpha_step = round(alpha / frames)
 	while(alpha > 0)
 		alpha = max(0, alpha - alpha_step)
-		sleep(world.tick_lag)
+		stoplag()
 
 /////////////////////////////////////////////
 // Chem Smoke Effect System
@@ -91,8 +90,8 @@
 	var/datum/seed/seed
 
 /datum/effect/effect/system/smoke_spread/chem/spores/New(seed_name)
-	if(seed_name && plant_controller)
-		seed = plant_controller.seeds[seed_name]
+	if(seed_name)
+		seed = SSplants.seeds[seed_name]
 	if(!seed)
 		qdel(src)
 	..()

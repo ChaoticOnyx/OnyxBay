@@ -89,17 +89,17 @@
 	number = 5
 
 //Transport shuttle
-//Uncomment if you'll ever want to add a transport shuttle. But why would you?..
-/*
+
 /datum/shuttle/autodock/ferry/transport
 	name = "Transport"
-	warmup_time = 0
+	warmup_time = 10
+	location = 1
+	shuttle_area = /area/shuttle/transport/centcom
 	dock_target = "centcom_transport_shuttle"
-	shuttle_area = /area/shuttle/transport1/centcom
+	landmark_transition = "nav_transport_transition"
 	waypoint_offsite = "nav_transport_start"
 	waypoint_station = "nav_transport_station"
-	location = 1
-
+	move_time = 30
 
 /obj/effect/shuttle_landmark/transport/start
 	name = "Centcomm"
@@ -107,13 +107,16 @@
 	docking_controller = "transport_centcom_dock"
 	autoset = 0
 
+/obj/effect/shuttle_landmark/transport/internim
+	name = "In transit"
+	landmark_tag = "nav_transport_transition"
+	autoset = 1
 
 /obj/effect/shuttle_landmark/transport/station
 	name = "To station"
 	landmark_tag = "nav_transport_station"
 	docking_controller = "transport_shuttle_dock_airlock"
 	autoset = 1
-*/
 
 //Cargo shuttle
 

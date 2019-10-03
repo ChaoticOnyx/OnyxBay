@@ -57,5 +57,5 @@
 
 /datum/gear/tactical/tacticool
 	display_name = "tacticool turtleneck"
-	path = /obj/item/clothing/under/syndicate/tacticool
+	path = /obj/item/clothing/under/syndicate
 	slot = slot_w_uniform

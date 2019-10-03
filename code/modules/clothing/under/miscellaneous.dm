@@ -283,6 +283,15 @@
 		slot_hand_str = "red"
 		)
 
+/obj/item/clothing/under/phantom
+	name = "stylish red vest"
+	desc = "Looks stylish."
+	icon_state = "phantom"
+	item_state = "phantom"
+	item_state_slots = list(
+		slot_hand_str = "red"
+		)
+
 /obj/item/clothing/under/kilt
 	name = "kilt"
 	desc = "Includes shoes and plaid."

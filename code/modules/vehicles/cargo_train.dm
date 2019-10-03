@@ -16,6 +16,12 @@
 	active_engines = 1
 	var/obj/item/weapon/key/cargo_train/key
 
+/obj/vehicle/train/cargo/engine/asteroid
+	name = "asteroid base maintenance vehicle"
+	desc = "A ridable electric car designed to transport engineers around the asteroid base."
+	icon = 'icons/obj/vehicles.dmi'
+	icon_state = "asteroid_engine"
+
 /obj/item/weapon/key/cargo_train
 	name = "key"
 	desc = "A keyring with a small steel key, and a yellow fob reading \"Choo Choo!\"."
@@ -44,6 +50,16 @@
 	cell = new /obj/item/weapon/cell/high(src)
 	key = new(src)
 	var/image/I = new(icon = 'icons/obj/vehicles.dmi', icon_state = "cargo_engine_overlay")
+	I.plane = plane
+	I.layer = layer
+	overlays += I
+	turn_off()	//so engine verbs are correctly set
+
+/obj/vehicle/train/cargo/engine/asteroid/New()
+	..()
+	cell = new /obj/item/weapon/cell/super(src)
+	key = new(src)
+	var/image/I = new(icon = 'icons/obj/vehicles.dmi', icon_state = "asteroid_engine_overlay")
 	I.plane = plane
 	I.layer = layer
 	overlays += I

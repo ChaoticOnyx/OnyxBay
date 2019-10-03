@@ -1,14 +1,11 @@
 /mob/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
-
+	if(air_group || (height == 0))
+		return TRUE
 	if(ismob(mover))
 		var/mob/moving_mob = mover
-		if ((other_mobs && moving_mob.other_mobs))
-			return 1
-		return (!mover.density || !density || lying)
-	else
-		return (!mover.density || !density || lying)
-	return
+		if (other_mobs && moving_mob.other_mobs)
+			return TRUE
+	return (!mover.density || !density || lying)
 
 /mob/proc/setMoveCooldown(var/timeout)
 	if(client)
@@ -185,7 +182,8 @@
 	if(!mob)
 		return // Moved here to avoid nullrefs below
 
-	if(mob.control_object)	Move_object(direct)
+	if(mob.control_object)
+		Move_object(direct)
 
 	if(mob.incorporeal_move && isobserver(mob))
 		Process_Incorpmove(direct)
@@ -194,11 +192,6 @@
 	if(moving)	return 0
 
 	if(world.time < move_delay)	return
-
-	/*if(locate(/obj/effect/stop/, mob.loc))
-		for(var/obj/effect/stop/S in mob.loc)
-			if(S.victim == mob)
-				return*/
 
 	if(mob.stat==DEAD && isliving(mob))
 		mob.ghostize()
@@ -226,21 +219,6 @@
 					if(item.zoom)
 						item.zoom(mob)
 						break
-				/*
-				if(locate(/obj/item/weapon/gun/energy/sniperrifle, mob.contents))		// If mob moves while zoomed in with sniper rifle, unzoom them.
-					var/obj/item/weapon/gun/energy/sniperrifle/s = locate() in mob
-					if(s.zoom)
-						s.zoom()
-				if(locate(/obj/item/device/binoculars, mob.contents))		// If mob moves while zoomed in with binoculars, unzoom them.
-					var/obj/item/device/binoculars/b = locate() in mob
-					if(b.zoom)
-						b.zoom()
-				*/
-
-
-
-	//if(istype(mob.loc, /turf/space) || (mob.flags & NOGRAV))
-	//	if(!mob.Allow_Spacemove(0))	return 0
 
 	if(!mob.lastarea)
 		mob.lastarea = get_area(mob.loc)

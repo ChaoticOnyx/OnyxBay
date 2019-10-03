@@ -50,7 +50,7 @@
 /obj/machinery/optable/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(air_group || (height==0)) return 1
 
-	if(istype(mover) && mover.checkpass(PASS_FLAG_TABLE))
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
 		return 1
 	else
 		return 0

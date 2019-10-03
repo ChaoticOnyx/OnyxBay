@@ -10,6 +10,7 @@
 /obj/machinery/atmospherics/unary/vent_pump
 	icon = 'icons/atmos/vent_pump.dmi'
 	icon_state = "map_vent"
+	plane = FLOOR_PLANE
 
 	name = "Air Vent"
 	desc = "Has a valve and pump attached to it."
@@ -281,7 +282,6 @@
 		pump_direction = 1
 
 	if(signal.data["power"] != null)
-		//use_power = text2num(signal.data["power"])
 		update_use_power(sanitize_integer(text2num(signal.data["power"]), POWER_USE_OFF, POWER_USE_ACTIVE, use_power))
 
 	if(signal.data["power_toggle"] != null)

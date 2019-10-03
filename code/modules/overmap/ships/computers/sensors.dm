@@ -51,7 +51,7 @@
 		data["range"] = "N/A"
 		data["on"] = 0
 
-	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "shipsensors.tmpl", "[linked.name] Sensors Control", 420, 530)
 		ui.set_initial_data(data)
@@ -185,7 +185,7 @@
 	if(!use_power) //need some juice to kickstart
 		use_power_oneoff(idle_power_usage*5)
 	update_use_power(!use_power)
-	update_icon()
+	queue_icon_update()
 
 /obj/machinery/shipsensors/Process()
 	..()

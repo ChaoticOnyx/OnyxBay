@@ -178,18 +178,21 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	path = /obj/item/stack/material/steel
 	category = "General"
 	is_stack = 1
+	resources = list(MATERIAL_STEEL = SHEET_MATERIAL_AMOUNT * EXTRA_COST_FACTOR)
 
 /datum/autolathe/recipe/glass
 	name = "glass sheets"
 	path = /obj/item/stack/material/glass
 	category = "General"
 	is_stack = 1
+	resources = list(MATERIAL_GLASS = SHEET_MATERIAL_AMOUNT * EXTRA_COST_FACTOR)
 
 /datum/autolathe/recipe/rglass
 	name = "reinforced glass sheets"
 	path = /obj/item/stack/material/glass/reinforced
 	category = "General"
 	is_stack = 1
+	resources = list(MATERIAL_GLASS = (SHEET_MATERIAL_AMOUNT/2) * EXTRA_COST_FACTOR, MATERIAL_STEEL = (SHEET_MATERIAL_AMOUNT/2) * EXTRA_COST_FACTOR)
 
 /datum/autolathe/recipe/rods
 	name = "metal rods"
@@ -300,6 +303,13 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "syringe gun cartridge"
 	path = /obj/item/weapon/syringe_cartridge
 	category = "Arms and Ammunition"
+
+/datum/autolathe/recipe/machete
+	name = "machete"
+	path = /obj/item/weapon/material/hatchet/machete
+	hidden = 1
+	category = "Arms and Ammunition"
+	resources = list(MATERIAL_STEEL = 74000)
 
 /datum/autolathe/recipe/shotgun_blanks
 	name = "ammunition (shotgun, blank)"

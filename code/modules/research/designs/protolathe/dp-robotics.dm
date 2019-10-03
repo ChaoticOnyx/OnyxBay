@@ -2,7 +2,7 @@
 	desc = "A hand-held scanner able to diagnose robotic injuries."
 	id = "robot_scanner"
 	req_tech = list(TECH_MAGNET = 3, TECH_BIO = 2, TECH_ENGINEERING = 3)
-	materials = list(DEFAULT_WALL_MATERIAL = 500, "glass" = 200)
+	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 200)
 	build_path = /obj/item/device/robotanalyzer
 	sort_string = "MACFB"
 	category_items = "Robotics"
@@ -12,7 +12,7 @@
 	desc = "AI preservation and transportation system."
 	id = "intelicard"
 	req_tech = list(TECH_DATA = 4, TECH_MATERIAL = 4)
-	materials = list("glass" = 1000, "gold" = 200)
+	materials = list(MATERIAL_GLASS = 1000, MATERIAL_GOLD = 200)
 	build_path = /obj/item/weapon/aicard
 	sort_string = "VACAA"
 
@@ -21,7 +21,7 @@
 	id = "posibrain"
 	req_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 6, TECH_BLUESPACE = 2, TECH_DATA = 4)
 	build_type = PROTOLATHE | MECHFAB
-	materials = list(DEFAULT_WALL_MATERIAL = 2000, "glass" = 1000, "silver" = 1000, "gold" = 500, "phoron" = 500, "diamond" = 100)
+	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 1000, MATERIAL_SILVER = 1000, MATERIAL_GOLD = 500, MATERIAL_PHORON = 500, MATERIAL_DIAMOND = 100)
 	build_path = /obj/item/organ/internal/posibrain
 	category = "Misc"
 	sort_string = "VACAB"
@@ -31,7 +31,7 @@
 	id = "mmi"
 	req_tech = list(TECH_DATA = 2, TECH_BIO = 3)
 	build_type = PROTOLATHE | MECHFAB
-	materials = list(DEFAULT_WALL_MATERIAL = 1000, "glass" = 500)
+	materials = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 500)
 	build_path = /obj/item/device/mmi
 	category = "Misc"
 	sort_string = "VACCA"
@@ -41,7 +41,7 @@
 	id = "mmi_radio"
 	req_tech = list(TECH_DATA = 2, TECH_BIO = 4)
 	build_type = PROTOLATHE | MECHFAB
-	materials = list(DEFAULT_WALL_MATERIAL = 1200, "glass" = 500)
+	materials = list(MATERIAL_STEEL = 1200, MATERIAL_GLASS = 500)
 	build_path = /obj/item/device/mmi/radio_enabled
 	category = "Misc"
 	sort_string = "VACCB"

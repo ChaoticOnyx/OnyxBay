@@ -35,8 +35,8 @@ var/list/possible_cable_coil_colours
 	var/d1 = 0
 	var/d2 = 1
 
-	plane = ABOVE_TURF_PLANE
-	layer = EXPOSED_WIRE_LAYER
+	layer = TURF_DETAIL_LAYER
+	plane = FLOOR_PLANE
 
 	color = COLOR_RED
 	var/obj/machinery/power/breakerbox/breaker_box
@@ -75,6 +75,9 @@ var/list/possible_cable_coil_colours
 
 /obj/structure/cable/New()
 	..()
+
+	layer = EXPOSED_WIRE_LAYER
+	plane = FLOOR_PLANE
 
 	// ensure d1 & d2 reflect the icon_state for entering and exiting cable
 
@@ -476,7 +479,7 @@ obj/structure/cable/proc/cableColor(var/colorC)
 	w_class = ITEM_SIZE_NORMAL
 	throw_speed = 2
 	throw_range = 5
-	matter = list(DEFAULT_WALL_MATERIAL = 50, "glass" = 20)
+	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 20)
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	item_state = "coil"

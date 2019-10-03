@@ -18,25 +18,37 @@
 				"insult_bad"        = "If I had my gun I'd shoot you!"
 				)
 
-	possible_trading_items = list(/obj/item/weapon/gun/projectile/pistol    = TRADER_ALL,
-								/obj/item/weapon/gun/projectile/colt        = TRADER_ALL,
-								/obj/item/weapon/gun/projectile/magnum_pistol= TRADER_ALL,
-								/obj/item/weapon/gun/projectile/sec         = TRADER_ALL,
-								/obj/item/weapon/gun/projectile/sec/MK      = TRADER_BLACKLIST,
-								/obj/item/weapon/gun/projectile/shotgun/pump= TRADER_SUBTYPES_ONLY,
-								/obj/item/ammo_magazine                     = TRADER_SUBTYPES_ONLY,
-								/obj/item/ammo_magazine/a10mm/empty         = TRADER_BLACKLIST,
-								/obj/item/ammo_magazine/a762/empty          = TRADER_BLACKLIST,
-								/obj/item/ammo_magazine/a75/empty           = TRADER_BLACKLIST,
-								/obj/item/ammo_magazine/c45m/empty          = TRADER_BLACKLIST,
-								/obj/item/ammo_magazine/mc9mm/empty         = TRADER_BLACKLIST,
-								/obj/item/ammo_magazine/box/c9mm/empty      = TRADER_BLACKLIST,
-								/obj/item/ammo_magazine/box/c45/empty       = TRADER_BLACKLIST,
-								/obj/item/ammo_magazine/box/a556/empty      = TRADER_BLACKLIST,
-								/obj/item/ammo_magazine/c45uzi/empty        = TRADER_BLACKLIST,
-								/obj/item/ammo_magazine/mc9mmt/empty        = TRADER_BLACKLIST,
-								/obj/item/ammo_magazine/a50/empty           = TRADER_BLACKLIST,
-								/obj/item/clothing/accessory/holster        = TRADER_ALL)
+	possible_trading_items = list(/obj/item/weapon/gun/projectile/pistol				= TRADER_ALL,
+								/obj/item/weapon/gun/projectile/colt					= TRADER_ALL,
+								/obj/item/weapon/gun/projectile/magnum_pistol			= TRADER_ALL,
+								/obj/item/weapon/gun/projectile/revolver				= TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/projectile/revolver/detective		= TRADER_ALL,
+								/obj/item/weapon/gun/projectile/sec						= TRADER_ALL,
+								/obj/item/weapon/gun/projectile/sec/MK					= TRADER_BLACKLIST,
+								/obj/item/weapon/gun/projectile/shotgun					= TRADER_ALL,
+								/obj/item/weapon/gun/projectile/shotgun/pump/boomstick	= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine									= TRADER_SUBTYPES_ONLY,
+								/obj/item/weapon/storage/box/blanks						= TRADER_THIS_TYPE,
+								/obj/item/weapon/storage/box/beanbags					= TRADER_THIS_TYPE,
+								/obj/item/weapon/storage/box/shotgunammo				= TRADER_THIS_TYPE,
+								/obj/item/weapon/storage/box/shotgunshells				= TRADER_THIS_TYPE,
+								/obj/item/weapon/storage/box/flashshells				= TRADER_THIS_TYPE,
+								/obj/item/weapon/storage/box/stunshells					= TRADER_THIS_TYPE,
+								/obj/item/weapon/storage/box/practiceshells				= TRADER_THIS_TYPE,
+								/obj/item/weapon/storage/box/sniperammo					= TRADER_ALL,
+								/obj/item/ammo_magazine/a10mm/empty						= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine/a762/empty						= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine/a75/empty						= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine/c45m/empty						= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine/mc9mm/empty						= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine/box/c9mm/empty					= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine/box/c45/empty					= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine/box/a556/empty					= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine/c45uzi/empty					= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine/mc9mmt/empty					= TRADER_BLACKLIST,
+								/obj/item/ammo_magazine/a50/empty						= TRADER_BLACKLIST,
+								/obj/item/clothing/accessory/holster					= TRADER_ALL
+								)
 
 /datum/trader/ship/egunshop
 	name = "Energy Gun Shop Employee"
@@ -58,19 +70,25 @@
 				"insult_bad"        = "That's... very mean. I won't think twice about blacklisting your channel, so stop."
 				)
 
-	possible_trading_items = list(/obj/item/weapon/gun/energy/taser                      = TRADER_THIS_TYPE,
-								/obj/item/weapon/gun/energy/stunrevolver                 = TRADER_THIS_TYPE,
-								/obj/item/weapon/gun/energy/xray                         = TRADER_THIS_TYPE,
-								/obj/item/weapon/gun/energy/laser                        = TRADER_THIS_TYPE,
-								/obj/item/weapon/gun/energy/gun                          = TRADER_THIS_TYPE,
-								/obj/item/weapon/cell                                    = TRADER_THIS_TYPE,
-								/obj/item/weapon/cell/crap                               = TRADER_THIS_TYPE,
-								/obj/item/weapon/cell/high                               = TRADER_THIS_TYPE,
-								/obj/item/weapon/cell/super                              = TRADER_THIS_TYPE,
-								/obj/item/weapon/cell/hyper                              = TRADER_THIS_TYPE,
-								/obj/item/clothing/accessory/holster                     = TRADER_ALL)
+	possible_trading_items = list(/obj/item/weapon/gun/energy/taser							= TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/energy/stunrevolver					= TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/energy/xray							= TRADER_ALL,
+								/obj/item/weapon/gun/energy/laser							= TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/energy/gun								= TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/energy/egun							= TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/energy/ionrifle						= TRADER_ALL,
+								/obj/item/weapon/gun/energy/pulse_rifle/pistol				= TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/energy/pulse_rifle/carbine				= TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/energy/retro							= TRADER_THIS_TYPE,
+								/obj/item/weapon/cell										= TRADER_THIS_TYPE,
+								/obj/item/weapon/cell/crap									= TRADER_THIS_TYPE,
+								/obj/item/weapon/cell/high									= TRADER_THIS_TYPE,
+								/obj/item/weapon/cell/super									= TRADER_THIS_TYPE,
+								/obj/item/weapon/cell/hyper									= TRADER_THIS_TYPE,
+								/obj/item/clothing/accessory/holster						= TRADER_ALL
+								)
 
-/datum/trader/dogan
+/datum/trader/ship/dogan
 	name = "Dogan"
 	origin = "Dogan's Gun Beacon"
 	speech = list("hail_generic"    = "Hello! This is an automatic recording of me, Mr. Dogan! I hope you like the... GUNS... I've got in store for you today.",

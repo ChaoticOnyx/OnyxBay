@@ -98,7 +98,7 @@ datum/track/New(var/title_name, var/audio)
 	return ..()
 
 /obj/machinery/media/jukebox/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = tg_default_state)
-	ui = tgui_process.try_update_ui(user, src, ui_key, ui, force_open)
+	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "jukebox", "RetroBox - Space Style", 340, 440, master_ui, state)
 		ui.open()
@@ -213,10 +213,10 @@ datum/track/New(var/title_name, var/audio)
 			var/newtitle = input("Type a title of the new track", "Track title", "Track") as text
 			var/sound/S = input("Select a sound", "Sound", 'sound/effects/ghost.ogg') as sound
 			tracks += new/datum/track(newtitle, S)
-			GLOB.nanomanager.update_uis(src)
+			SSnano.update_uis(src)
 			return
 		else if(handled)
-			GLOB.nanomanager.update_uis(src)
+			SSnano.update_uis(src)
 			return // don't smack that machine with your 2 thalers
 
 	if (istype(W, /obj/item/weapon/spacecash))

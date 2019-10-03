@@ -5,10 +5,10 @@
 	var/tallness = 0
 	var/list/mappaths = null
 	var/loaded = 0 // Times loaded this round
-	var/allow_duplicates = TRUE
 	var/list/shuttles_to_initialise = list()
 	var/base_turf_for_zs = null
 	var/accessibility_weight = 0
+	var/template_flags = TEMPLATE_FLAG_ALLOW_DUPLICATES
 
 /datum/map_template/New(var/list/paths = null, var/rename = null)
 	if(paths && !islist(paths))
@@ -24,7 +24,7 @@
 	var/list/bounds = list(1.#INF, 1.#INF, 1.#INF, -1.#INF, -1.#INF, -1.#INF)
 	var/z_offset = 1 // needed to calculate z-bounds correctly
 	for (var/mappath in mappaths)
-		var/datum/map_load_metadata/M = maploader.load_map(file(mappath), 1, 1, z_offset, cropMap=FALSE, measureOnly=TRUE, no_changeturf=TRUE)
+		var/datum/map_load_metadata/M = maploader.load_map(file(mappath), 1, 1, z_offset, cropMap = FALSE, measureOnly = TRUE, no_changeturf = TRUE, clear_contents = template_flags & TEMPLATE_FLAG_CLEAR_CONTENTS)
 		if(M)
 			bounds = extend_bounds_if_needed(bounds, M.bounds)
 			z_offset++
@@ -36,8 +36,7 @@
 	return TRUE
 
 /datum/map_template/proc/init_atoms(var/list/atoms)
-
-	if (SSatoms.initialized == INITIALIZATION_INSSATOMS)
+	if (SSatoms.init_state == INITIALIZATION_INSSATOMS)
 		return // let proper initialisation handle it later
 
 	var/list/turf/turfs = list()
@@ -60,15 +59,21 @@
 	SSmachines.setup_powernets_for_cables(cables)
 	SSmachines.setup_atmos_machinery(atmos_machines)
 
-	for (var/obj/machinery/machine in machines)
+	for (var/i in machines)
+		var/obj/machinery/machine = i
 		machine.power_change()
 
-	for (var/turf/T in turfs)
+	for (var/i in turfs)
+		var/turf/T = i
 		T.post_change()
+		if(template_flags & TEMPLATE_FLAG_NO_RUINS)
+			T.turf_flags |= TURF_FLAG_NORUINS
+		if(template_flags & TEMPLATE_FLAG_NO_RADS)
+			qdel(SSradiation.sources_assoc[i])
 
 /datum/map_template/proc/init_shuttles()
 	for (var/shuttle_type in shuttles_to_initialise)
-		shuttle_controller.initialise_shuttle(shuttle_type)
+		SSshuttle.initialise_shuttle(shuttle_type)
 
 /datum/map_template/proc/load_new_z()
 
@@ -117,7 +122,7 @@
 	var/list/atoms_to_initialise = list()
 
 	for (var/mappath in mappaths)
-		var/datum/map_load_metadata/M = maploader.load_map(file(mappath), T.x, T.y, T.z, cropMap=TRUE, clear_contents=clear_contents)
+		var/datum/map_load_metadata/M = maploader.load_map(file(mappath), T.x, T.y, T.z, cropMap=TRUE, clear_contents= template_flags & TEMPLATE_FLAG_CLEAR_CONTENTS)
 		if (M)
 			atoms_to_initialise += M.atoms_to_initialise
 		else

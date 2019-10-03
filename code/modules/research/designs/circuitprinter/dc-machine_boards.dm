@@ -160,11 +160,3 @@
 	req_tech = list(TECH_BIO = 3, TECH_DATA = 3)
 	build_path = /obj/item/weapon/circuitboard/replicator
 	sort_string = "WAAAR"
-
-/datum/design/circuit/integrated
-	name = "integrated circuit"
-	id = "integrated"
-	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
-	build_path = /obj/item/weapon/circuitboard/integrated_printer
-	sort_string = "WAAAS"
-

@@ -6,7 +6,7 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal
 	name = "floor decal"
 	icon = 'icons/turf/flooring/decals.dmi'
-	plane = ABOVE_TURF_PLANE
+	plane = FLOOR_PLANE
 	layer = DECAL_LAYER
 	appearance_flags = RESET_COLOR
 	var/supplied_dir
@@ -20,7 +20,7 @@ var/list/floor_decals = list()
 	if(supplied_dir) set_dir(supplied_dir)
 	var/turf/T = get_turf(src)
 	if(istype(T, /turf/simulated/floor) || istype(T, /turf/unsimulated/floor))
-		plane = T.is_plating() ? ABOVE_PLATING_PLANE : ABOVE_TURF_PLANE
+		layer = T.is_plating() ? DECAL_PLATING_LAYER : DECAL_LAYER
 		var/cache_key = "[alpha]-[color]-[dir]-[icon_state]-[plane]-[layer]"
 		if(!floor_decals[cache_key])
 			var/image/I = image(icon = src.icon, icon_state = src.icon_state, dir = src.dir)
@@ -33,7 +33,7 @@ var/list/floor_decals = list()
 		if(!T.decals) T.decals = list()
 		T.decals |= floor_decals[cache_key]
 		T.overlays |= floor_decals[cache_key]
-	initialized = TRUE
+	atom_flags |= ATOM_FLAG_INITIALIZED
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/floor_decal/reset
@@ -43,7 +43,7 @@ var/list/floor_decals = list()
 	var/turf/T = get_turf(src)
 	T.remove_decals()
 	T.update_icon()
-	initialized = TRUE
+	atom_flags |= ATOM_FLAG_INITIALIZED
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/floor_decal/carpet
@@ -297,6 +297,11 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/rust
 	name = "rust"
 	icon_state = "rust"
+	alpha = 120
+
+/obj/effect/floor_decal/oldflood
+	name = "oldfloor"
+	icon_state = "oldfloor"
 	alpha = 120
 
 /obj/effect/floor_decal/spline/plain/black
@@ -555,7 +560,6 @@ var/list/floor_decals = list()
 	icon_state = "snowfloor"
 
 /obj/effect/floor_decal/floordetail
-	plane = TURF_PLANE
 	layer = TURF_DETAIL_LAYER
 	color = COLOR_GUNMETAL
 	icon_state = "manydot"

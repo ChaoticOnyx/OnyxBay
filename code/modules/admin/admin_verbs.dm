@@ -13,6 +13,7 @@ var/list/admin_verbs_default = list(
 	/client/proc/checkAccount
 //	/client/proc/deadchat				//toggles deadchat on/off,
 	)
+
 var/list/admin_verbs_admin = list(
 	/client/proc/player_panel_new,		//shows an interface for all players, with links to various panels,
 	/client/proc/invisimin,				//allows our mob to go invisible/visible,
@@ -102,12 +103,14 @@ var/list/admin_verbs_admin = list(
 	/client/proc/remove_trader,
 	/datum/admins/proc/sendFax,
 	/client/proc/change_regular_announcement
-)
+	)
+
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,
 	/client/proc/jobbans,
 	/client/proc/DB_ban_panel
 	)
+
 var/list/admin_verbs_sounds = list(
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
@@ -143,8 +146,10 @@ var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/spawn_atom,		// allows us to spawn instances,
 	/client/proc/respawn_character,
 	/client/proc/virus2_editor,
-	/client/proc/spawn_chemdisp_cartridge
+	/client/proc/spawn_chemdisp_cartridge,
+	/datum/admins/proc/ictus
 	)
+
 var/list/admin_verbs_server = list(
 	/datum/admins/proc/capture_map_part,
 	/client/proc/Set_Holiday,
@@ -169,11 +174,11 @@ var/list/admin_verbs_server = list(
 	/client/proc/check_customitem_activity,
 	/client/proc/nanomapgen_DumpImage
 	)
+
 var/list/admin_verbs_debug = list(
 	/client/proc/getruntimelog,                     // allows us to access runtime logs to somebody,
 	/client/proc/cmd_admin_list_open_jobs,
 	/client/proc/Debug2,
-	/client/proc/kill_air,
 	/client/proc/ZASSettings,
 	/client/proc/cmd_debug_make_powernets,
 	/client/proc/debug_controller,
@@ -194,7 +199,6 @@ var/list/admin_verbs_debug = list(
 	/datum/admins/proc/map_template_load,
 	/datum/admins/proc/map_template_load_new_z,
 	/datum/admins/proc/map_template_upload,
-	/client/proc/show_plant_genes,
 	/client/proc/enable_debug_verbs,
 	/client/proc/callproc,
 	/client/proc/callproc_target,
@@ -225,9 +229,11 @@ var/list/admin_verbs_possess = list(
 	/proc/possess,
 	/proc/release
 	)
+
 var/list/admin_verbs_permissions = list(
 	/client/proc/edit_admin_permissions
 	)
+
 var/list/admin_verbs_rejuv = list(
 	/client/proc/respawn_character
 	)
@@ -290,7 +296,6 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/callproc_target,
 	/client/proc/Debug2,
 	/client/proc/reload_admins,
-	/client/proc/kill_air,
 	/client/proc/cmd_debug_make_powernets,
 	/client/proc/debug_controller,
 	/client/proc/startSinglo,
@@ -301,8 +306,10 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/enable_debug_verbs,
 	/client/proc/roll_dices,
 	/proc/possess,
-	/proc/release
+	/proc/release,
+	/datum/admins/proc/ictus
 	)
+
 var/list/admin_verbs_mod = list(
 	/client/proc/cmd_admin_pm_context,	// right-click adminPM interface,
 	/client/proc/cmd_admin_pm_panel,	// admin-pm list,
@@ -320,8 +327,7 @@ var/list/admin_verbs_mod = list(
 	/client/proc/cmd_admin_subtle_message, // send an message to somebody as a 'voice in their head',
 	/client/proc/aooc,
 	/datum/admins/proc/sendFax
-
-)
+	)
 
 var/list/admin_verbs_mentor = list(
 	/client/proc/cmd_admin_pm_context,
@@ -332,7 +338,7 @@ var/list/admin_verbs_mentor = list(
 	/datum/admins/proc/show_player_info,
 //	/client/proc/dsay,
 	/client/proc/cmd_admin_subtle_message
-)
+	)
 
 /client/proc/add_admin_verbs()
 	if(holder)
@@ -654,19 +660,6 @@ var/list/admin_verbs_mentor = list(
 		for (var/mob/V in hearers(mob.control_object))
 			V.show_message("<b>[mob.control_object.name]</b> says: \"" + msg + "\"", 2)
 	feedback_add_details("admin_verb","OT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/client/proc/kill_air() // -- TLE
-	set category = "Debug"
-	set name = "Kill Air"
-	set desc = "Toggle Air Processing"
-	if(air_processing_killed)
-		air_processing_killed = 0
-		to_chat(usr, "<b>Enabled air processing.</b>")
-	else
-		air_processing_killed = 1
-		to_chat(usr, "<b>Disabled air processing.</b>")
-	feedback_add_details("admin_verb","KA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-	log_and_message_admins("used 'kill air'.")
 
 /client/proc/readmin_self()
 	set name = "Re-Admin self"
