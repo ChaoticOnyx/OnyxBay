@@ -46,9 +46,6 @@
 	var/ear_damage = null	//Carbon
 	var/stuttering = null	//Carbon
 	var/slurring = null		//Carbon
-	var/stammering = null
-	var/burrieng = null
-	var/lisping = null
 
 	var/job = null//Living
 	var/list/obj/aura/auras = null //Basically a catch-all aura/force-field thing.
