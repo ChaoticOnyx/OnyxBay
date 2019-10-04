@@ -52,6 +52,9 @@
 	var/icon_scale_percent              // Makes the holder's icon get scaled up or down.
 	var/attack_speed_percent            // Makes the holder's 'attack speed' (click delay) shorter or longer.
 	var/pain_immunity                   // Makes the holder not care about pain while this is on. Only really useful to human mobs.
+	var/stammering
+	var/burrieng
+	var/lisping
 
 /datum/modifier/New(var/new_holder, var/new_origin)
 	holder = new_holder
