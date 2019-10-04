@@ -97,33 +97,21 @@ proc/get_radio_key_from_channel(var/channel)
 	var/message = rhtml_decode(message_data[1])
 	var/verb = message_data[2]
 
-		. = FALSE
-	
+	. = 0
+
 	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
 		message = "[ruppertext(message)]!!!"
 		verb = pick("yells","roars","hollers")
 		message_data[3] = 0
-		. = TRUE
+		. = 1
 	if(slurring)
 		message = slur(message)
 		verb = pick("slobbers","slurs")
-		. = TRUE
+		. = 1
 	if(stuttering)
 		message = stutter(message)
 		verb = pick("stammers","stutters")
-		. = TRUE
-	if(stammering)
-		message = NewStutter(message)
-		verb = pick("stammers","stutters")
-		. = TRUE
-	if(burrieng)
-		message = burr(message)
-		verb = pick("burrs","croups")
-		. = TRUE
-	if(lisping)
-		message = lisp(message)
-		verb = pick("lisps","croups")
-		. = TRUE
+		. = 1
 
 	message_data[1] = russian_to_cp1251(message)
 	message_data[2] = verb

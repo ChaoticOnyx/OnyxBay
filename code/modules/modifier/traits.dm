@@ -135,21 +135,3 @@
 	desc = "You are fully colorblind. Your condition is rare, but you can see no colors at all."
 
 	client_color = MATRIX_Monochromia
-
-/datum/modifier/trait/stammering
-	name = "Stutterer"
-	desc = "Its a speech disorder in which the flow of speech is disrupted by involuntary repetitions and prolongations of sounds, syllables, words or phrases as well as involuntary silent pauses or blocks in which the person who stutters is unable to produce sounds."
-
-	stammering = TRUE
-	
-/datum/modifier/trait/burrieng
-	name = "Burry"
-	desc = "You have a speech impediment - you do not pronounce some sounds."
-
-	burrieng = TRUE
-
-/datum/modifier/trait/lisping
-	name = "Lisp"
-	desc = "A lisp is a speech impediment in which a person misarticulates sibilants."
-
-	lisping = TRUE	
