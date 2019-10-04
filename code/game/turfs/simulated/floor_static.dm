@@ -27,6 +27,31 @@
 	icon = 'icons/turf/flooring/alium.dmi'
 	icon_state = "jaggy"
 
+/turf/simulated/floor/misc/fixed/vox
+	name = "alien plating"
+	desc = "This obviously wasn't made for your feet."
+	icon = 'icons/turf/flooring/alium.dmi'
+	icon_state = "voxbase"
+	initial_gas = list("nitrogen" = MOLES_N2STANDARD * 1.2)
+
+/turf/simulated/floor/misc/fixed/vox/vox2
+	name = "alien plating"
+	desc = "This obviously wasn't made for your feet."
+	icon = 'icons/turf/flooring/alium.dmi'
+	icon_state = "voxbase2"
+
+/turf/simulated/floor/misc/fixed/vox/vox3
+	name = "alien plating"
+	desc = "This obviously wasn't made for your feet."
+	icon = 'icons/turf/flooring/alium.dmi'
+	icon_state = "voxplating1"
+
+/turf/simulated/floor/misc/fixed/vox/vox4
+	name = "alien plating"
+	desc = "This obviously wasn't made for your feet."
+	icon = 'icons/turf/flooring/alium.dmi'
+	icon_state = "voxplating2"
+
 /turf/simulated/floor/misc/fixed/alium/attackby(var/obj/item/C, var/mob/user)
 	if(isCrowbar(C))
 		to_chat(user, "<span class='notice'>There aren't any openings big enough to pry it away...</span>")

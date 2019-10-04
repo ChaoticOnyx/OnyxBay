@@ -284,6 +284,16 @@ var/list/floor_decals = list()
 	icon_state = "spline_plain"
 	alpha = 229
 
+/obj/effect/floor_decal/spline/vox
+	name = "spline - vox"
+	icon_state = "spline_vox"
+	alpha = 229
+
+/obj/effect/floor_decal/spline/vox/vox2
+	name = "spline - vox2"
+	icon_state = "spline_vox2"
+	alpha = 229
+
 /obj/effect/floor_decal/rust
 	name = "rust"
 	icon_state = "rust"
