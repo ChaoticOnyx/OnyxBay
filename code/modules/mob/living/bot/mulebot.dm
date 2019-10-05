@@ -147,7 +147,7 @@
 	locked = !locked
 	to_chat(user, "<span class='notice'>You [locked ? "lock" : "unlock"] the mulebot's controls.</span>")
 	flick("mulebot-emagged", src)
-	playsound(loc, 'sound/effects/sparks1.ogg', 100, 0)
+	playsound(loc, get_sfx("sparks"), 100, 0)
 	return 1
 
 /mob/living/bot/mulebot/update_icons()

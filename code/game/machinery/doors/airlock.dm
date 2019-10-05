@@ -35,13 +35,13 @@
 	var/secured_wires = 0
 	var/datum/wires/airlock/wires = null
 
-	var/open_sound_powered = 'sound/machines/airlock_open.ogg'
-	var/open_sound_unpowered = 'sound/machines/airlock_open_force.ogg'
-	var/open_failure_access_denied = 'sound/machines/buzz-two.ogg'
+	var/open_sound_powered = list('sound/machines/airlock/open3.ogg', 'sound/machines/airlock/open4.ogg', 'sound/machines/airlock/open5.ogg', )
+	var/open_sound_unpowered = 'sound/machines/airlock/open2.ogg'
+	var/open_failure_access_denied = 'sound/machines/airlock/error3.ogg'
 
-	var/close_sound_powered = 'sound/machines/airlock_close.ogg'
-	var/close_sound_unpowered = 'sound/machines/airlock_close_force.ogg'
-	var/close_failure_blocked = 'sound/machines/triple_beep.ogg'
+	var/close_sound_powered = 'sound/machines/airlock/close1.ogg'
+	var/close_sound_unpowered = 'sound/machines/airlock/close2.ogg'
+	var/close_failure_blocked = 'sound/machines/airlock/error1.ogg'
 
 	var/bolts_rising = 'sound/machines/bolts_up.ogg'
 	var/bolts_dropping = 'sound/machines/bolts_down.ogg'
@@ -106,6 +106,8 @@
 	icon = 'icons/obj/doors/Doorext.dmi'
 	opacity = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_ext
+	open_sound_powered = list('sound/machines/airlock/open_exterior1.ogg', 'sound/machines/airlock/open_exterior2.ogg', 'sound/machines/airlock/open_exterior3.ogg', 'sound/machines/airlock/open_exterior4.ogg')
+	open_sound_unpowered = list('sound/machines/airlock/open_exterior1.ogg', 'sound/machines/airlock/open_exterior2.ogg', 'sound/machines/airlock/open_exterior3.ogg', 'sound/machines/airlock/open_exterior4.ogg')
 
 /obj/machinery/door/airlock/external/bolted
 	icon_state = "door_locked"
@@ -128,11 +130,20 @@
 /obj/machinery/door/airlock/glass
 	name = "Glass Airlock"
 	icon = 'icons/obj/doors/Doorglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
 	glass = 1
+
+/obj/machinery/door/airlock/glass/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
 
 /obj/machinery/door/airlock/glass/museum
 	name = "Museum Airlock"
@@ -181,22 +192,40 @@
 /obj/machinery/door/airlock/glass_command
 	name = "Maintenance Hatch"
 	icon = 'icons/obj/doors/Doorcomglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_com
 	glass = 1
 
+/obj/machinery/door/airlock/glass_command/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
+
 /obj/machinery/door/airlock/glass_external
 	name = "External Airlock"
 	icon = 'icons/obj/doors/Doorextglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_ext
 	glass = 1
+
+/obj/machinery/door/airlock/glass_external/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
 
 /obj/machinery/door/airlock/glass_external/bolted
 	icon_state = "door_locked"
@@ -214,52 +243,98 @@
 /obj/machinery/door/airlock/glass_engineering
 	name = "Maintenance Hatch"
 	icon = 'icons/obj/doors/Doorengglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_eng
 	glass = 1
 
+/obj/machinery/door/airlock/glass_engineering/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
+
 /obj/machinery/door/airlock/glass_security
 	name = "Maintenance Hatch"
 	icon = 'icons/obj/doors/Doorsecglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_sec
 	glass = 1
 
+/obj/machinery/door/airlock/glass_security/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
+
 /obj/machinery/door/airlock/glass_medical
 	name = "Maintenance Hatch"
 	icon = 'icons/obj/doors/Doormedglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_med
 	glass = 1
 
+/obj/machinery/door/airlock/glass_medical/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
+
 /obj/machinery/door/airlock/glass_virology
 	name = "Maintenance Hatch"
 	icon = 'icons/obj/doors/Doorviroglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_viro
 	glass = 1
 
+/obj/machinery/door/airlock/glass_virology/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
+
 /obj/machinery/door/airlock/glass_sol
 	name = "Maintenance Hatch"
 	icon = 'icons/obj/doors/Doorsolglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_sol
 	glass = 1
+
+/obj/machinery/door/airlock/glass_sol/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
+
 
 /obj/machinery/door/airlock/mining
 	name = "Mining Airlock"
@@ -279,7 +354,7 @@
 /obj/machinery/door/airlock/glass_research
 	name = "Maintenance Hatch"
 	icon = 'icons/obj/doors/Doorresearchglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
@@ -287,25 +362,52 @@
 	glass = 1
 	heat_proof = 1
 
+/obj/machinery/door/airlock/glass_research/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
+
 /obj/machinery/door/airlock/glass_mining
 	name = "Maintenance Hatch"
 	icon = 'icons/obj/doors/Doorminingglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_min
 	glass = 1
 
+/obj/machinery/door/airlock/glass_mining/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
+
 /obj/machinery/door/airlock/glass_atmos
 	name = "Maintenance Hatch"
 	icon = 'icons/obj/doors/Dooratmoglass.dmi'
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_atmo
 	glass = 1
+
+/obj/machinery/door/airlock/glass_atmos/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
 
 /obj/machinery/door/airlock/gold
 	name = "Gold Airlock"
@@ -539,7 +641,7 @@ About the new airlock wires panel:
 	if(feedback && message)
 		to_chat(usr, message)
 	if(.)
-		playsound(src, 'sound/effects/sparks3.ogg', 30, 0, -6)
+		playsound(src, get_sfx("sparks"), 30, 0, -6)
 
 /obj/machinery/door/airlock/proc/set_idscan(var/activate, var/feedback = 0)
 	var/message = ""
@@ -1071,9 +1173,15 @@ About the new airlock wires panel:
 
 	//if the door is unpowered then it doesn't make sense to hear the woosh of a pneumatic actuator
 	if(arePowerSystemsOn())
-		playsound(src.loc, open_sound_powered, 100, 1)
+		if (islist(open_sound_powered))
+			playsound(src.loc, pick(open_sound_powered), 70, 1)
+		else
+			playsound(src.loc, open_sound_powered, 70, 1)
 	else
-		playsound(src.loc, open_sound_unpowered, 100, 1)
+		if (islist(open_sound_unpowered))
+			playsound(src.loc, pick(open_sound_unpowered), 70, 1)
+		else
+			playsound(src.loc, open_sound_unpowered, 70, 1)
 
 	if(src.closeOther != null && istype(src.closeOther, /obj/machinery/door/airlock/) && !src.closeOther.density)
 		src.closeOther.close()

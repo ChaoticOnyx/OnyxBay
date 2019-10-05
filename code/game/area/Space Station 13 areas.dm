@@ -79,7 +79,23 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_environ = 0
 	has_gravity = 0
 	area_flags = AREA_FLAG_EXTERNAL
-	ambience = list('sound/ambience/space/ambispace.ogg')
+	ambience = list(
+		'sound/ambience/space/exterior1.ogg',
+		'sound/ambience/space/exterior2.ogg',
+		'sound/ambience/space/exterior3.ogg',
+		'sound/ambience/space/exterior4.ogg',
+		'sound/ambience/space/exterior5.ogg',
+		'sound/ambience/space/exterior6.ogg',
+		'sound/ambience/space/exterior7.ogg',
+		'sound/ambience/space/exterior8.ogg',
+		'sound/ambience/space/exterior9.ogg',
+		'sound/ambience/space/exterior10.ogg',
+		'sound/ambience/space/exterior11.ogg',
+		'sound/ambience/space/exterior12.ogg',
+		'sound/ambience/space/exterior13.ogg',
+		'sound/ambience/space/exterior14.ogg',
+		'sound/ambience/space/exterior15.ogg',
+		'sound/ambience/space/exterior16.ogg')
 
 /area/space/update_icon()
 	return

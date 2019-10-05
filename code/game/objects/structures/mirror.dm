@@ -52,7 +52,7 @@
 		shatter()
 	else
 		visible_message("<span class='warning'>[user] hits [src] with [I]!</span>")
-		playsound(src.loc, 'sound/effects/Glasshit.ogg', 70, 1)
+		playsound(src.loc, get_sfx("glass_hit"), 70, 1)
 	user.setClickCooldown(I.update_attack_cooldown())
 	user.do_attack_animation(src)
 

@@ -58,7 +58,7 @@
 		shatter()
 	else
 		if(sound_effect)
-			playsound(loc, 'sound/effects/Glasshit.ogg', 100, 1)
+			playsound(loc, get_sfx("glass_hit"), 100, 1)
 		if(health < maxhealth / 4 && initialhealth >= maxhealth / 4)
 			visible_message("[src] looks like it's about to shatter!" )
 		else if(health < maxhealth / 2 && initialhealth >= maxhealth / 2)
@@ -162,7 +162,7 @@
 
 /obj/structure/window/attack_tk(mob/user as mob)
 	user.visible_message("<span class='notice'>Something knocks on [src].</span>")
-	playsound(loc, 'sound/effects/Glasshit.ogg', 50, 1)
+	playsound(loc, get_sfx("glass_hit"), 50, 1)
 
 /obj/structure/window/attack_hand(mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -180,13 +180,13 @@
 				attack_generic(H,25)
 				return
 
-		playsound(src.loc, 'sound/effects/glassknock.ogg', 80, 1)
+		playsound(src.loc, get_sfx("glass_hit"), 80, 1)
 		user.do_attack_animation(src)
 		usr.visible_message("<span class='danger'>\The [usr] bangs against \the [src]!</span>",
 							"<span class='danger'>You bang against \the [src]!</span>",
 							"You hear a banging sound.")
 	else
-		playsound(src.loc, 'sound/effects/glassknock.ogg', 80, 1)
+		playsound(src.loc, get_sfx("glass_hit"), 80, 1)
 		usr.visible_message("[usr.name] knocks on the [src.name].",
 							"You knock on the [src.name].",
 							"You hear a knocking sound.")
@@ -243,7 +243,7 @@
 	else if(isCoil(W) && reinf && !polarized)
 		var/obj/item/stack/cable_coil/C = W
 		if (C.use(1))
-			playsound(src.loc, 'sound/effects/sparks1.ogg', 75, 1)
+			playsound(src.loc, get_sfx("sparks"), 75, 1)
 			var/obj/structure/window/reinforced/polarized/P = new(loc)
 			P.set_dir(dir)
 			P.health = health
@@ -259,7 +259,7 @@
 				step(src, get_dir(user, src))
 				update_verbs()
 		else
-			playsound(loc, 'sound/effects/Glasshit.ogg', 75, 1)
+			playsound(loc, get_sfx("glass_hit"), 75, 1)
 		..()
 	return
 

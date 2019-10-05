@@ -249,8 +249,10 @@
 	embed = 0
 	edge = 1
 
-/obj/item/projectile/bullet/gyro
-	fire_sound = 'sound/effects/Explosion1.ogg'
+/obj/item/projectile/bullet/gyro/Initialize()
+	. = ..()
+
+	fire_sound = get_sfx("explosion")
 
 /obj/item/projectile/bullet/gyro/on_hit(var/atom/target, var/blocked = 0)
 	if(isturf(target))
