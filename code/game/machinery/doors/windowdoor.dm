@@ -7,7 +7,7 @@
 	dir = EAST
 	var/id = null  // for blast door button that can work with windoors now
 	min_force = 4
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = null
 	maxhealth = 150 //If you change this, consiter changing ../door/window/brigdoor/ health at the bottom of this .dm file
 	health = 150
 	visible = 0.0
@@ -17,6 +17,15 @@
 	var/obj/item/weapon/airlock_electronics/electronics = null
 	explosion_resistance = 5
 	air_properties_vary_with_direction = 1
+
+/obj/machinery/door/window/Initialize()
+	. = ..()
+
+	hitsound = pick(
+		'sound/effects/materials/glass/knock1.ogg',
+		'sound/effects/materials/glass/knock2.ogg',
+		'sound/effects/materials/glass/knock3.ogg',
+	)
 
 /obj/machinery/door/window/New()
 	..()
@@ -161,7 +170,7 @@
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(H))
-			playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
+			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
 			visible_message("<span class='danger'>[user] smashes against the [src.name].</span>", 1)
 			take_damage(25)
 			return
@@ -240,7 +249,7 @@
 	//If it's a weapon, smash windoor. Unless it's an id card, agent card, ect.. then ignore it (Cards really shouldnt damage a door anyway)
 	if(src.density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
 		var/aforce = I.force
-		playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
+		playsound(src.loc, get_sfx("glass_hit"), 75, 1)
 		visible_message("<span class='danger'>[src] was hit by [I].</span>")
 		user.setClickCooldown(I.update_attack_cooldown())
 		user.do_attack_animation(src)

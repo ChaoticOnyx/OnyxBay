@@ -96,7 +96,7 @@
 
 //Playing a random sound
 /datum/hallucination/sound
-	var/list/sounds = list('sound/machines/airlock.ogg','sound/effects/explosionfar.ogg','sound/machines/windowdoor.ogg','sound/machines/twobeep.ogg')
+	var/list/sounds = list('sound/machines/airlock.ogg','sound/machines/windowdoor.ogg','sound/machines/twobeep.ogg')
 
 /datum/hallucination/sound/start()
 	var/turf/T = locate(holder.x + rand(6,11), holder.y + rand(6,11), holder.z)
@@ -107,7 +107,7 @@
 
 /datum/hallucination/sound/danger
 	min_power = 30
-	sounds = list('sound/effects/Explosion1.ogg','sound/effects/Explosion2.ogg','sound/effects/Glassbr1.ogg','sound/effects/Glassbr2.ogg','sound/effects/Glassbr3.ogg','sound/weapons/smash.ogg')
+	//sounds = list('sound/effects/Explosion1.ogg','sound/effects/Explosion2.ogg','sound/effects/Glassbr1.ogg','sound/effects/Glassbr2.ogg','sound/effects/Glassbr3.ogg','sound/weapons/smash.ogg')
 
 /datum/hallucination/sound/spooky
 	min_power = 50
