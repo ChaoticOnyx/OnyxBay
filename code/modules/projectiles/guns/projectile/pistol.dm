@@ -52,7 +52,7 @@
 	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
 	caliber = ".45"
 	fire_delay = 6.5
-	fire_sound = 'sound/weapons/gun_colt.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
 	load_method = MAGAZINE
 
 /obj/item/weapon/gun/projectile/sec/VP78tactical/update_icon()
@@ -71,7 +71,7 @@
 	caliber = ".45"
 	accuracy = -0.35
 	fire_delay = 5.5
-	fire_sound = 'sound/weapons/gun_colt.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire5.ogg'
 	load_method = MAGAZINE
 
 /obj/item/weapon/gun/projectile/sec/vp78/update_icon()
@@ -90,7 +90,7 @@
 	caliber = ".45"
 	accuracy = 0
 	fire_delay = 5.5
-	fire_sound = 'sound/weapons/gun_colt.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire6.ogg'
 	load_method = MAGAZINE
 
 /obj/item/weapon/gun/projectile/sec/vp78wood/update_icon()
