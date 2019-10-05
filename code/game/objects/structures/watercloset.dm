@@ -341,6 +341,7 @@
 		to_chat(user, "<span class='warning'>Someone's already washing here.</span>")
 		return
 
+	playsound(loc, "sink", 75)
 	to_chat(usr, "<span class='notice'>You start washing your hands.</span>")
 
 	busy = 1
@@ -362,6 +363,8 @@
 	if(busy)
 		to_chat(user, "<span class='warning'>Someone's already washing here.</span>")
 		return
+
+	playsound(loc, "sink", 75)
 
 	var/obj/item/weapon/reagent_containers/RG = O
 	if (istype(RG) && RG.is_open_container())

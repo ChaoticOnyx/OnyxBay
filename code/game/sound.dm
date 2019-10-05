@@ -36,9 +36,11 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
-GLOBAL_LIST_INIT(shatter_sound,list('sound/effects/materials/glass/break1.ogg', 'sound/effects/materials/glass/break2.ogg', 'sound/effects/materials/glass/break3.ogg'))
+GLOBAL_LIST_INIT(shatter_sound,list('sound/effects/materials/glass/break1.ogg', 'sound/effects/materials/glass/break2.ogg', 'sound/effects/materials/glass/break3.ogg', 'sound/effects/materials/glass/break4.ogg'))
 GLOBAL_LIST_INIT(glass_hit_sound,list('sound/effects/materials/glass/knock1.ogg', 'sound/effects/materials/glass/knock2.ogg', 'sound/effects/materials/glass/knock3.ogg',
 										'sound/effects/materials/glass/knock4.ogg', 'sound/effects/materials/glass/knock5.ogg', 'sound/effects/materials/glass/knock6.ogg'))
+
+GLOBAL_LIST_INIT(sink_sound,list('sound/effects/using/sink/use1.ogg','sound/effects/using/sink/use2.ogg','sound/effects/using/sink/use3.ogg'))
 
 GLOBAL_LIST_INIT(explosion_sound,list('sound/effects/explosions/explosion1.ogg', 'sound/effects/explosions/explosion2.ogg', 'sound/effects/explosions/explosion3.ogg',
 										'sound/effects/explosions/explosion4.ogg', 'sound/effects/explosions/explosion5.ogg', 'sound/effects/explosions/explosion6.ogg',
@@ -217,6 +219,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
+			if ("sink") soundin = pick(GLOB.sink_sound)
 			if ("shatter") soundin = pick(GLOB.shatter_sound)
 			if ("glass_hit") soundin = pick(GLOB.glass_hit_sound)
 			if ("explosion") soundin = pick(GLOB.explosion_sound)
