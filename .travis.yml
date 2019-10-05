@@ -4,7 +4,7 @@ sudo: false
 env:
   global:
     BYOND_MAJOR="512"
-    BYOND_MINOR="1463"
+    BYOND_MINOR="1488"
     DM_BUILDFILE="baystation12.dme"
 
 cache:
@@ -34,32 +34,3 @@ script:
   - (! grep 'step_[xy]' maps/**/*.dmm)
   - source $HOME/BYOND-${BYOND_MAJOR}.${BYOND_MINOR}/byond/bin/byondsetup
   - bash dm.sh ${DM_BUILDFILE}
-
-before_deploy:
-  if ! [[ $TRAVIS_ZIPPED_ARCHIVE ]]; then
-    export TRAVIS_ZIPPED_ARCHIVE="TRUE" &&
-    zip -rq latest * &&
-    mkdir -p dpl_cd_upload &&
-    mv latest.zip dpl_cd_upload/latest.zip;
-  fi
-
-deploy:
-- provider: s3
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  local_dir: dpl_cd_upload
-  skip_cleanup: true
-  on: &2
-    branch: dev
-  bucket: onyxbay.stage
-  region: eu-west-3
-- provider: codedeploy
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  bucket: onyxbay.stage
-  key: latest.zip
-  bundle_type: zip
-  application: OnyxBayStage
-  deployment_group: OnyxBayDeploymentGroup
-  region: eu-west-3
-  on: *2

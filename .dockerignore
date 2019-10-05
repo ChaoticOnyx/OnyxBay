@@ -17,7 +17,6 @@ Dockerfile
 COPYING
 dm.sh
 docker-compose.yml
-flyway.conf
 .github
 sql
 test
