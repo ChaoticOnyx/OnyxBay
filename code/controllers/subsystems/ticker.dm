@@ -91,7 +91,9 @@ SUBSYSTEM_DEF(ticker)
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup()
 		to_world("<FONT color='blue'><B>Enjoy the game!</B></FONT>")
-		sound_to(world, sound(GLOB.using_map.welcome_sound))
+
+		for (var/mob/M in GLOB.player_list)
+			M.playsound_local(M.loc, GLOB.using_map.welcome_sound, 75)
 
 		//Holiday Round-start stuff	~Carn
 		Holiday_Game_Start()

@@ -60,6 +60,13 @@ GLOBAL_LIST_INIT(spark_heavy_sound,list('sound/effects/electric/heavy_spark1.ogg
 GLOBAL_LIST_INIT(searching_clothes_sound,list('sound/effects/using/clothing/use1.ogg','sound/effects/using/clothing/use2.ogg','sound/effects/using/clothing/use3.ogg',
 												'sound/effects/using/clothing/use4.ogg','sound/effects/using/clothing/use5.ogg','sound/effects/using/clothing/use6.ogg'))
 
+GLOBAL_LIST_INIT(searching_cabinet_sound,list('sound/effects/using/cabinet/slide1.ogg','sound/effects/using/cabinet/slide2.ogg','sound/effects/using/cabinet/slide3.ogg',
+												'sound/effects/using/cabinet/slide4.ogg'))
+
+GLOBAL_LIST_INIT(searching_case_sound,list('sound/effects/using/case/use1.ogg','sound/effects/using/case/use2.ogg','sound/effects/using/case/use3.ogg',
+											'sound/effects/using/case/use4.ogg','sound/effects/using/case/use5.ogg','sound/effects/using/case/use6.ogg',
+											'sound/effects/using/case/use7.ogg','sound/effects/using/case/use8.ogg'))
+
 GLOBAL_LIST_INIT(punch_sound,list('sound/weapons/punch1.ogg','sound/weapons/punch2.ogg','sound/weapons/punch3.ogg','sound/weapons/punch4.ogg'))
 GLOBAL_LIST_INIT(clown_sound,list('sound/effects/clownstep1.ogg','sound/effects/clownstep2.ogg'))
 GLOBAL_LIST_INIT(swing_hit_sound,list('sound/weapons/genhit1.ogg', 'sound/weapons/genhit2.ogg', 'sound/weapons/genhit3.ogg'))
@@ -69,8 +76,12 @@ GLOBAL_LIST_INIT(fracture_sound,list('sound/effects/bonebreak1.ogg','sound/effec
 GLOBAL_LIST_INIT(lighter_sound,list('sound/items/lighter1.ogg','sound/items/lighter2.ogg','sound/items/lighter3.ogg'))
 GLOBAL_LIST_INIT(keyboard_sound,list('sound/machines/keyboard/keypress1.ogg','sound/machines/keyboard/keypress2.ogg','sound/machines/keyboard/keypress3.ogg','sound/machines/keyboard/keypress4.ogg'))
 GLOBAL_LIST_INIT(keystroke_sound,list('sound/machines/keyboard/keystroke1.ogg','sound/machines/keyboard/keystroke2.ogg','sound/machines/keyboard/keystroke3.ogg','sound/machines/keyboard/keystroke4.ogg'))
-GLOBAL_LIST_INIT(switch_sound,list('sound/effects/using/switch/use1.ogg','sound/effects/using/switch/use2.ogg','sound/effects/using/switch/use3.ogg',
-									'sound/effects/using/switch/use4.ogg'))
+
+GLOBAL_LIST_INIT(switch_small_sound,list('sound/effects/using/switch/small1.ogg','sound/effects/using/switch/small2.ogg'))
+
+GLOBAL_LIST_INIT(switch_large_sound,list('sound/effects/using/switch/large1.ogg','sound/effects/using/switch/large2.ogg','sound/effects/using/switch/large3.ogg',
+									'sound/effects/using/switch/large4.ogg'))
+
 GLOBAL_LIST_INIT(button_sound,list('sound/machines/button1.ogg','sound/machines/button2.ogg','sound/machines/button3.ogg','sound/machines/button4.ogg'))
 GLOBAL_LIST_INIT(chop_sound,list('sound/weapons/chop1.ogg','sound/weapons/chop2.ogg','sound/weapons/chop3.ogg'))
 
@@ -213,6 +224,8 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("sparks_medium") soundin = pick(GLOB.spark_medium_sound)
 			if ("sparks_heavy") soundin = pick(GLOB.spark_heavy_sound)
 			if ("searching_clothes") soundin = pick(GLOB.searching_clothes_sound)
+			if ("searching_cabinet") soundin = pick(GLOB.searching_cabinet_sound)
+			if ("searching_case") soundin = pick(GLOB.searching_case_sound)
 			if ("punch") soundin = pick(GLOB.punch_sound)
 			if ("clownstep") soundin = pick(GLOB.clown_sound)
 			if ("swing_hit") soundin = pick(GLOB.swing_hit_sound)
@@ -222,7 +235,8 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("light_bic") soundin = pick(GLOB.lighter_sound)
 			if ("keyboard") soundin = pick(GLOB.keyboard_sound)
 			if ("keystroke") soundin = pick(GLOB.keystroke_sound)
-			if ("switch") soundin = pick(GLOB.switch_sound)
+			if ("switch_small") soundin = pick(GLOB.switch_small_sound)
+			if ("switch_large") soundin = pick(GLOB.switch_large_sound)
 			if ("button") soundin = pick(GLOB.button_sound)
 			if ("chop") soundin = pick(GLOB.chop_sound)
 			if ("far_explosion") soundin = pick(GLOB.far_explosion_sound)

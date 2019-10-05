@@ -74,7 +74,7 @@
 	anchored = 1
 	use_power = POWER_USE_OFF
 	req_access = list(access_engine_equip)
-	clicksound = "switch"
+	clicksound = "switch_small"
 	var/needs_powerdown_sound
 	var/area/area
 	var/areastring = null
