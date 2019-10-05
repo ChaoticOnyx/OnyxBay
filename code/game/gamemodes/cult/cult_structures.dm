@@ -43,21 +43,21 @@
 				"You hear a tinkle of crystal shards"
 				)
 			user.do_attack_animation(src)
-			playsound(get_turf(src), 'sound/effects/Glassbr3.ogg', 75, 1)
+			playsound(get_turf(src),get_sfx("shatter"), 75, 1)
 			isbroken = 1
 			set_density(0)
 			icon_state = "pylon-broken"
 			set_light(0)
 		else
 			to_chat(user, "You hit the pylon!")
-			playsound(get_turf(src), 'sound/effects/Glasshit.ogg', 75, 1)
+			playsound(get_turf(src), get_sfx("glass_hit"), 75, 1)
 	else
 		if(prob(damage * 2))
 			to_chat(user, "You pulverize what was left of the pylon!")
 			qdel(src)
 		else
 			to_chat(user, "You hit the pylon!")
-		playsound(get_turf(src), 'sound/effects/Glasshit.ogg', 75, 1)
+		playsound(get_turf(src), get_sfx("glass_hit"), 75, 1)
 
 
 /obj/structure/cult/pylon/proc/repair(mob/user as mob)

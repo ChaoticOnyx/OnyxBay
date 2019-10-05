@@ -261,7 +261,7 @@ var/list/name_to_material
 	icon_colour = "#cefff6"
 	opacity = 0.4
 	shard_type = SHARD_SHARD
-	tableslam_noise = 'sound/effects/Glasshit.ogg'
+	tableslam_noise = 'sound/effects/materials/glass/break1.ogg'
 	hardness = 100
 	weight = 10
 	brute_armor = 10
@@ -468,7 +468,7 @@ var/list/name_to_material
 	opacity = 0.3
 	integrity = 50
 	shard_type = SHARD_SHARD
-	tableslam_noise = 'sound/effects/Glasshit.ogg'
+	tableslam_noise = 'sound/effects/materials/glass/break1.ogg'
 	hardness = 50
 	melting_point = T0C + 100
 	weight = 14
@@ -482,7 +482,7 @@ var/list/name_to_material
 	window_options = list("One Direction" = 1, "Full Window" = 4)
 	created_window = /obj/structure/window/basic
 	rod_product = /obj/item/stack/material/glass/reinforced
-	hitsound = 'sound/effects/Glasshit.ogg'
+	hitsound = 'sound/effects/materials/glass/break1.ogg'
 	conductive = 0
 
 /material/glass/build_windows(var/mob/living/user, var/obj/item/stack/used_stack)
@@ -569,7 +569,7 @@ var/list/name_to_material
 	integrity = 100
 	melting_point = T0C + 750
 	shard_type = SHARD_SHARD
-	tableslam_noise = 'sound/effects/Glasshit.ogg'
+	tableslam_noise = 'sound/effects/materials/glass/break1.ogg'
 	weight = 17
 	brute_armor = 2
 	burn_armor = 3

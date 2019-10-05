@@ -78,7 +78,7 @@
 	sleep(30)
 
 /datum/universal_state/nuclear_explosion/proc/play_cinematic_station_destroyed()
-	sound_to(world, sound('sound/effects/explosionfar.ogg'))//makes no sense if you're not on the station but whatever
+	sound_to(world, sound(get_sfx("far_explosion")))//makes no sense if you're not on the station but whatever
 
 	flick("station_explode_fade_red",cinematic)
 	cinematic.icon_state = "summary_selfdes"
@@ -89,7 +89,7 @@
 	sleep(5)
 	for(var/mob/M in GLOB.player_list)
 		if(M.client && !(M.client.holder && M.client.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO))
-			to_chat(M, sound('sound/effects/explosionfar.ogg'))//makes no sense if you are on the station but whatever
+			to_chat(M, sound(get_sfx("far_explosion")))//makes no sense if you are on the station but whatever
 
 
 	sleep(75)

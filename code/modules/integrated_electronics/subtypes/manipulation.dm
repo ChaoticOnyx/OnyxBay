@@ -566,7 +566,7 @@
 
 	var/turf/rift_location = get_turf(src)
 	if(!rift_location || !isPlayerLevel(rift_location.z))
-		playsound(src, 'sound/effects/sparks2.ogg', 50, 1)
+		playsound(src, get_sfx("sparks"), 50, 1)
 		return
 
 	if(isnum(step_dir) && (!step_dir || (step_dir in GLOB.cardinal)))
@@ -583,7 +583,7 @@
 		if(destination)
 			new /obj/effect/portal(rift_location, destination, 30 SECONDS, 33)
 		else
-			playsound(src, 'sound/effects/sparks2.ogg', 50, 1)
+			playsound(src, get_sfx("sparks"), 50, 1)
 
 
 /obj/item/integrated_circuit/manipulation/ai
