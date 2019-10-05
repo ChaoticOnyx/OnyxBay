@@ -31,7 +31,7 @@ LINEN BINS
 	..()
 
 /obj/item/weapon/bedsheet/AltClick()
-	playsound(get_turf(loc), "rustle", 15, 1, -5)
+	playsound(get_turf(loc), "searching_clothes", 15, 1, -5)
 	if(!folded)
 		folded = 1
 		icon_state = "sheet-folded"

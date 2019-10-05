@@ -20,7 +20,7 @@
 		..(P, def_zone)
 
 /obj/structure/curtain/attack_hand(mob/user)
-	playsound(get_turf(loc), "rustle", 15, 1, -5)
+	playsound(get_turf(loc), "searching_clothes", 15, 1, -5)
 	toggle()
 	..()
 

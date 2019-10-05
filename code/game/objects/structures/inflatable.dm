@@ -95,7 +95,7 @@
 /obj/structure/inflatable/proc/hit(var/damage, var/sound_effect = 1)
 	health = max(0, health - damage)
 	if(sound_effect)
-		playsound(loc, 'sound/effects/Glasshit.ogg', 75, 1)
+		playsound(loc, get_sfx("glass_hit"), 75, 1)
 	if(health <= 0)
 		deflate(1)
 		return 1
