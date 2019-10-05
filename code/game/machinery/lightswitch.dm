@@ -60,7 +60,7 @@
 		return 1
 
 /obj/machinery/light_switch/attack_hand(mob/user)
-	playsound(src, "switch", 30)
+	playsound(src, "switch_small", 75)
 	set_state(!on)
 
 /obj/machinery/light_switch/powered()
