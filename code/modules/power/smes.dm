@@ -392,6 +392,8 @@
 	if(..())
 		return 1
 
+	playsound(loc, "switch_large", 75)
+
 	if( href_list["cmode"] )
 		inputting(!input_attempt)
 		update_icon()

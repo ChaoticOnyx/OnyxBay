@@ -397,6 +397,10 @@
 			AnnounceArrival(character, job, spawnpoint.msg)
 		else
 			AnnounceCyborg(character, job, spawnpoint.msg)
+
+		for (var/mob/M in GLOB.player_list)
+			M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', 75)
+
 		matchmaker.do_matchmaking()
 	log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 	qdel(src)

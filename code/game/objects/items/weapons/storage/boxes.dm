@@ -26,6 +26,7 @@
 	item_state = "syringe_kit"
 	max_storage_space = DEFAULT_BOX_STORAGE
 	var/foldable = /obj/item/stack/material/cardboard	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
+	use_sound = "searching_clothes"
 
 /obj/item/weapon/storage/box/large
 	name = "large box"
