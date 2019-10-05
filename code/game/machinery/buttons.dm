@@ -32,7 +32,7 @@
 /obj/machinery/button/attack_hand(mob/living/user)
 	if(..()) return 1
 	if(istype(user, /mob/living/carbon))
-		playsound(src, "button", 60)
+		playsound(src, "switch_large", 60)
 	activate(user)
 
 /obj/machinery/button/proc/activate(mob/living/user)

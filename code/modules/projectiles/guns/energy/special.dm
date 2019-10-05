@@ -17,6 +17,7 @@
 	projectile_type = /obj/item/projectile/ion
 	wielded_item_state = "ionrifle-wielded"
 	combustion = 0
+	fire_sound = 'sound/effects/weapons/energy/fire2.ogg'
 
 /obj/item/weapon/gun/energy/ionrifle/emp_act(severity)
 	..(max(severity, 2)) //so it doesn't EMP itself, I guess
@@ -34,6 +35,7 @@
 	charge_cost = 20
 	max_shots = 6
 	projectile_type = /obj/item/projectile/ion/small
+	fire_sound = 'sound/effects/weapons/energy/fire1.ogg'
 
 /obj/item/weapon/gun/energy/decloner
 	name = "biological demolecularisor"
