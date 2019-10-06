@@ -55,18 +55,34 @@
 /obj/machinery/camera/apply_visual(mob/living/carbon/human/M)
 	if(!M.client)
 		return
-	M.overlay_fullscreen("fishbed",/obj/screen/fullscreen/fishbed)
-	M.overlay_fullscreen("scanlines",/obj/screen/fullscreen/scanline)
-	M.overlay_fullscreen("whitenoise",/obj/screen/fullscreen/noise)
+
+	M.hud_used.hud_shown = 1
+	M.button_pressed_F12(1)
+
+	M.overlay_fullscreen("scanlines", /obj/screen/fullscreen/scanline)
+	M.overlay_fullscreen("cam_corners", /obj/screen/fullscreen/cam_corners)
+	M.overlay_fullscreen("fishbed", /obj/screen/fullscreen/fishbed)
+
+	var/obj/screen/rec/R = new()
+	M.client.screen += R
+
 	M.machine_visual = src
 	return 1
 
 /obj/machinery/camera/remove_visual(mob/living/carbon/human/M)
 	if(!M.client)
 		return
-	M.clear_fullscreen("fishbed",0)
+
+	M.hud_used.hud_shown = 0
+	M.button_pressed_F12(0)
+
+	var/obj/screen/rec/R = (locate(/obj/screen/rec) in M.client.screen)
+	if (R)
+		M.client.screen -= R
+
 	M.clear_fullscreen("scanlines")
-	M.clear_fullscreen("whitenoise")
+	M.clear_fullscreen("cam_corners", 0)
+	M.clear_fullscreen("fishbed", 0)
 	M.machine_visual = null
 	return 1
 
