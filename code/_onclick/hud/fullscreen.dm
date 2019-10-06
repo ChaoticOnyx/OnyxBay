@@ -146,6 +146,20 @@
 	screen_loc = ui_entire_screen
 	alpha = 50
 	layer = FULLSCREEN_LAYER
+	blend_mode = BLEND_DEFAULT
+
+/obj/screen/fullscreen/cam_corners
+	icon = 'icons/mob/screen_full.dmi'
+	icon_state = "cam_corners"
+	allstate = 1
+	layer = FULLSCREEN_LAYER
+	blend_mode = BLEND_OVERLAY
+
+/obj/screen/rec
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "rec"
+	screen_loc = "TOP-2,WEST+2"
+	layer = FULLSCREEN_LAYER
 
 /obj/screen/fullscreen/fishbed
 	icon_state = "fishbed"

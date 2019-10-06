@@ -88,11 +88,13 @@
 	if(href_list["switch_camera"])
 		var/obj/machinery/camera/C = locate(href_list["switch_camera"]) in cameranet.cameras
 		if(!C)
+			remove_visual(usr)
 			return
 		if(!(current_network in C.network))
 			return
 
 		switch_to_camera(usr, C)
+		apply_visual(usr)
 		return 1
 
 	else if(href_list["switch_network"])
