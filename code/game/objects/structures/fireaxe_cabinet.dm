@@ -23,7 +23,7 @@
 	shattered = 1
 	unlocked = 1
 	open = 1
-	playsound(user, get_sfx("shatter"), 100, 1)
+	playsound(user, get_sfx("window_breaking"), 100, 1)
 	update_icon()
 
 /obj/structure/fireaxecabinet/update_icon()

@@ -101,7 +101,7 @@
 	if(istype(loc, /mob/living))
 		var/mob/living/M = loc
 		M.drop_from_inventory(src)
-	playsound(src, "shatter", 70, 1)
+	playsound(src, "window_breaking", 70, 1)
 	if(!consumed && drops_debris) material.place_shard(T)
 	qdel(src)
 /*

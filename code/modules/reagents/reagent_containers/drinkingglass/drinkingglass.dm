@@ -165,7 +165,7 @@
 	if(istype(W, /obj/item/weapon/material/kitchen/utensil/spoon))
 		if(user.a_intent == I_HURT)
 			user.visible_message("<span class='warning'>[user] bashes \the [src] with a spoon, shattering it to pieces! What a rube.</span>")
-			playsound(src, "shatter", 30, 1)
+			playsound(src, "window_breaking", 30, 1)
 			if(reagents)
 				user.visible_message("<span class='notice'>The contents of \the [src] splash all over [user]!</span>")
 				reagents.splash(user, reagents.total_volume)

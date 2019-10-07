@@ -49,7 +49,7 @@ var/list/floor_light_cache = list()
 	if(user.a_intent == I_HURT && !issmall(user))
 		if(!isnull(damaged) && !(stat & BROKEN))
 			visible_message("<span class='danger'>\The [user] smashes \the [src]!</span>")
-			playsound(src, "shatter", 70, 1)
+			playsound(src, "window_breaking", 70, 1)
 			set_broken(TRUE)
 		else
 			visible_message("<span class='danger'>\The [user] attacks \the [src]!</span>")

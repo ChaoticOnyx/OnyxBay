@@ -36,11 +36,17 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
-GLOBAL_LIST_INIT(shatter_sound,list('sound/effects/materials/glass/break1.ogg', 'sound/effects/materials/glass/break2.ogg', 'sound/effects/materials/glass/break3.ogg', 'sound/effects/materials/glass/break4.ogg'))
+GLOBAL_LIST_INIT(window_breaking_sound,list('sound/effects/breaking/window/break1.ogg', 'sound/effects/breaking/window/break2.ogg', 'sound/effects/breaking/window/break3.ogg',
+											'sound/effects/breaking/window/break4.ogg','sound/effects/breaking/window/break5.ogg','sound/effects/breaking/window/break6.ogg',
+											'sound/effects/breaking/window/break7.ogg','sound/effects/breaking/window/break8.ogg','sound/effects/breaking/window/break9.ogg',
+											'sound/effects/breaking/window/break10.ogg','sound/effects/breaking/window/break11.ogg','sound/effects/breaking/window/break12.ogg',
+											'sound/effects/breaking/window/break13.ogg','sound/effects/breaking/window/break14.ogg','sound/effects/breaking/window/break15.ogg',
+											'sound/effects/breaking/window/break16.ogg','sound/effects/breaking/window/break17.ogg','sound/effects/breaking/window/break18.ogg',
+											'sound/effects/breaking/window/break19.ogg','sound/effects/breaking/window/break20.ogg','sound/effects/breaking/window/break21.ogg',
+											'sound/effects/breaking/window/break22.ogg','sound/effects/breaking/window/break23.ogg'))
+
 GLOBAL_LIST_INIT(glass_hit_sound,list('sound/effects/materials/glass/knock1.ogg', 'sound/effects/materials/glass/knock2.ogg', 'sound/effects/materials/glass/knock3.ogg',
 										'sound/effects/materials/glass/knock4.ogg', 'sound/effects/materials/glass/knock5.ogg', 'sound/effects/materials/glass/knock6.ogg'))
-
-GLOBAL_LIST_INIT(sink_sound,list('sound/effects/using/sink/use1.ogg','sound/effects/using/sink/use2.ogg','sound/effects/using/sink/use3.ogg'))
 
 GLOBAL_LIST_INIT(explosion_sound,list('sound/effects/explosions/explosion1.ogg', 'sound/effects/explosions/explosion2.ogg', 'sound/effects/explosions/explosion3.ogg',
 										'sound/effects/explosions/explosion4.ogg', 'sound/effects/explosions/explosion5.ogg', 'sound/effects/explosions/explosion6.ogg',
@@ -51,8 +57,10 @@ GLOBAL_LIST_INIT(explosion_sound,list('sound/effects/explosions/explosion1.ogg',
 										'sound/effects/explosions/explosion19.ogg', 'sound/effects/explosions/explosion20.ogg', 'sound/effects/explosions/explosion21.ogg',
 										'sound/effects/explosions/explosion22.ogg', 'sound/effects/explosions/explosion23.ogg', 'sound/effects/explosions/explosion24.ogg'))
 
+GLOBAL_LIST_INIT(spark_small_sound,list('sound/effects/electric/spark_small1.ogg'))
+
 GLOBAL_LIST_INIT(spark_sound,list('sound/effects/electric/spark1.ogg','sound/effects/electric/spark2.ogg','sound/effects/electric/spark3.ogg',
-									'sound/effects/electric/spark4.ogg', 'sound/effects/electric/spark5.ogg'))
+									'sound/effects/electric/spark4.ogg'))
 
 GLOBAL_LIST_INIT(spark_medium_sound,list('sound/effects/electric/medium_spark1.ogg','sound/effects/electric/medium_spark2.ogg'))
 
@@ -62,8 +70,11 @@ GLOBAL_LIST_INIT(spark_heavy_sound,list('sound/effects/electric/heavy_spark1.ogg
 GLOBAL_LIST_INIT(searching_clothes_sound,list('sound/effects/using/clothing/use1.ogg','sound/effects/using/clothing/use2.ogg','sound/effects/using/clothing/use3.ogg',
 												'sound/effects/using/clothing/use4.ogg','sound/effects/using/clothing/use5.ogg','sound/effects/using/clothing/use6.ogg'))
 
-GLOBAL_LIST_INIT(searching_cabinet_sound,list('sound/effects/using/cabinet/slide1.ogg','sound/effects/using/cabinet/slide2.ogg','sound/effects/using/cabinet/slide3.ogg',
-												'sound/effects/using/cabinet/slide4.ogg'))
+GLOBAL_LIST_INIT(searching_cabinet_sound,list('sound/effects/using/cabinet/use1.ogg','sound/effects/using/cabinet/use2.ogg','sound/effects/using/cabinet/use3.ogg',
+												'sound/effects/using/cabinet/use4.ogg','sound/effects/using/cabinet/use5.ogg','sound/effects/using/cabinet/use6.ogg',
+												'sound/effects/using/cabinet/use7.ogg','sound/effects/using/cabinet/use8.ogg','sound/effects/using/cabinet/use9.ogg',
+												'sound/effects/using/cabinet/use10.ogg','sound/effects/using/cabinet/use11.ogg','sound/effects/using/cabinet/use12.ogg',
+												'sound/effects/using/cabinet/use13.ogg'))
 
 GLOBAL_LIST_INIT(searching_case_sound,list('sound/effects/using/case/use1.ogg','sound/effects/using/case/use2.ogg','sound/effects/using/case/use3.ogg',
 											'sound/effects/using/case/use4.ogg','sound/effects/using/case/use5.ogg','sound/effects/using/case/use6.ogg',
@@ -219,8 +230,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
-			if ("sink") soundin = pick(GLOB.sink_sound)
-			if ("shatter") soundin = pick(GLOB.shatter_sound)
+			if ("window_breaking") soundin = pick(GLOB.window_breaking_sound)
 			if ("glass_hit") soundin = pick(GLOB.glass_hit_sound)
 			if ("explosion") soundin = pick(GLOB.explosion_sound)
 			if ("sparks") soundin = pick(GLOB.spark_sound)

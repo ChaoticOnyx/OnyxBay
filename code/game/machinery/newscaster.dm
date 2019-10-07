@@ -734,7 +734,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 					for (var/mob/O in hearers(5, src.loc))
 						O.show_message("<span class='warning'>[user.name] smashes the [src.name]!</span>" )
 					set_broken(TRUE)
-					playsound(src.loc, get_sfx("shatter"), 75, 1)
+					playsound(src.loc, get_sfx("window_breaking"), 75, 1)
 				else
 					for (var/mob/O in hearers(5, src.loc))
 						O.show_message("<span class='warning'>[user.name] forcefully slams the [src.name] with the [I.name]!</span>" )
