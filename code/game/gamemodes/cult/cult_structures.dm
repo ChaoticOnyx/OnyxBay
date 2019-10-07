@@ -43,7 +43,7 @@
 				"You hear a tinkle of crystal shards"
 				)
 			user.do_attack_animation(src)
-			playsound(get_turf(src),get_sfx("shatter"), 75, 1)
+			playsound(get_turf(src),get_sfx("window_breaking"), 75, 1)
 			isbroken = 1
 			set_density(0)
 			icon_state = "pylon-broken"
