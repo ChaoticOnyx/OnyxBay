@@ -79,7 +79,7 @@
 		var/mob/living/L = against
 		L.IgniteMob()
 
-	playsound(src, "shatter", 70, 1)
+	playsound(src, "window_breaking", 70, 1)
 	src.transfer_fingerprints_to(B)
 
 	qdel(src)

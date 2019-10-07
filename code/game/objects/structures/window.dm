@@ -86,7 +86,7 @@
 	overlays += img
 
 /obj/structure/window/proc/shatter(var/display_message = 1)
-	playsound(src, "shatter", 70, 1)
+	playsound(src, "window_breaking", 70, 1)
 	if(display_message)
 		visible_message("[src] shatters!")
 

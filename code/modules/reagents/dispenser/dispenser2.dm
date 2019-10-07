@@ -146,6 +146,7 @@
 	if(href_list["dispense"])
 		var/label = href_list["dispense"]
 		if(cartridges[label] && container && container.is_open_container())
+			playsound(loc, 'sound/effects/using/sink/fast_filling1.ogg', 75)
 			var/obj/item/weapon/reagent_containers/chem_disp_cartridge/C = cartridges[label]
 			C.reagents.trans_to(container, amount)
 			return TOPIC_REFRESH
