@@ -905,12 +905,8 @@
 	vend_delay = 23
 	products = list(/obj/item/weapon/cartridge/medical = 10,
 					/obj/item/weapon/cartridge/engineering = 10,
-					/obj/item/weapon/cartridge/security = 10,
 					/obj/item/weapon/cartridge/janitor = 10,
-					/obj/item/weapon/cartridge/signal/science = 10,
-					/obj/item/device/pda/heads = 10,
-					/obj/item/weapon/cartridge/captain = 3,
-					/obj/item/weapon/cartridge/quartermaster = 10)
+					/obj/item/weapon/cartridge/signal/science = 10)
 
 
 /obj/machinery/vending/cigarette
