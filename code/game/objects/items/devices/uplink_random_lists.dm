@@ -97,7 +97,6 @@ var/list/uplink_random_selections_
 	items += new/datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/thermal, reselect_propbability = 15)
 	items += new/datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/thermal, reselect_propbability = 15)
 
-	items += new/datum/uplink_random_item(/datum/uplink_item/item/tools/suit_sensor_mobile)
 	items += new/datum/uplink_random_item(/datum/uplink_item/item/services/suit_sensor_shutdown, 75, 0)
 	items += new/datum/uplink_random_item(/datum/uplink_item/item/services/suit_sensor_garble, 75, 0)
 
