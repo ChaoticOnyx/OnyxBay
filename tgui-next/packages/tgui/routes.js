@@ -1,4 +1,11 @@
-const ROUTES = {};
+import { AirlockElectronics } from './interfaces/AirlockElectronics';
+
+const ROUTES = {
+  airlock_electronics: {
+    component: () => AirlockElectronics,
+    scrollable: true,
+  },
+};
 
 export const getRoute = state => {
   // Show a kitchen sink
