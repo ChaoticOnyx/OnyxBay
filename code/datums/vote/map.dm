@@ -17,17 +17,20 @@
 	if(..())
 		return 1
 	var/datum/map/M = GLOB.all_maps[result[1]]
-	fdel("use_map")
-	text2file(M.path, "use_map")
+	
+	if (M)	
+		to_world("<span class='notice'>Map has been changed to: <b>[M.name]</b></span>")
+		fdel("data/use_map")
+		text2file("[M.type]", "data/use_map")
 
 //Used by the ticker.
 /datum/vote/map/end_game
 	manual_allowed = 0
 
 /datum/vote/map/end_game/report_result()
-	SSticker.end_game_state = END_GAME_AWAITING_MAP
+	SSticker.end_game_state = END_GAME_READY_TO_END
 	. = ..()
 
 /datum/vote/map/end_game/start_vote()
-	SSticker.end_game_state = END_GAME_READY_TO_END
+	SSticker.end_game_state = END_GAME_AWAITING_MAP
 	..()
