@@ -123,21 +123,21 @@
 	
 /mob/living/proc/handle_stammering()
 	if(!stammering)
-		for(var/datum/modifier/trait/stammering/M)
+		for(var/datum/modifier/trait/stammering/M in modifiers)
 			if(!isnull(M.stammering))
 				stammering = TRUE
 	return stammering
 	
 /mob/living/proc/handle_burrieng()
 	if(!burrieng)
-		for(var/datum/modifier/trait/burrieng/M)
+		for(var/datum/modifier/trait/burrieng/M in modifiers)
 			if(!isnull(M.burrieng))
 				burrieng = TRUE
 	return burrieng
 
 /mob/living/proc/handle_lisping()
 	if(!lisping)
-		for(var/datum/modifier/trait/lisping/M)
+		for(var/datum/modifier/trait/lisping/M in modifiers)
 			if(!isnull(M.lisping))
 				lisping = TRUE
 	return lisping
