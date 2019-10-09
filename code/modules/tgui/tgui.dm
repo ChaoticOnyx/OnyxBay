@@ -292,6 +292,11 @@
 			if(params["screen"])
 				src_object.ui_screen = params["screen"]
 			SStgui.update_uis(src_object)
+		if("tgui:log")
+			if(params["error"])
+				log_error(params["log"])
+			//else if(CONFIG_GET(flag/log_tgui_debug)) // Possible premature optimization; prevent the calls from happening if tgui logging isn't enabled
+			//	log_debug(params["log"])
 		if("tgui:link")
 			user << link(params["url"])
 		if("tgui:fancy")
@@ -385,6 +390,14 @@
 			src.status = status
 			if(status == UI_DISABLED || push) // Update if the UI just because disabled, or a push is requested.
 				push_data(null, force = 1)
+
+/datum/tgui/proc/log_error(message)
+	var/out_message = {"ERROR: [user] ([user.ckey]) using "[title]":\n[message]\n"}
+	log_tgui_error(out_message)
+
+/datum/tgui/proc/log_debug(message)
+	var/out_message = {"DEBUG: [user] ([user.ckey]) using "[title]":\n[message]\n"}
+	log_tgui_debug(out_message)
 
 /datum/tgui/proc/set_titlebar(value)
 	titlebar = value

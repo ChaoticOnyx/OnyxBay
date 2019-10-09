@@ -25,6 +25,7 @@ var/list/gamemode_cache = list()
 
 	var/sql_enabled = FALSE					// SQL storage. If you want to enable it, use sql_enabled var in config file
 
+	var/log_tgui_debug // Log debug info about tgui
 	var/allow_admin_ooccolor = 0			// Allows admins with relevant permissions to have their own ooc colour
 	var/allow_vote_restart = 0 				// Allow votes to restart
 	var/ert_admin_call_only = 0
@@ -371,6 +372,9 @@ var/list/gamemode_cache = list()
 					if(runtime_diary != newlog)
 						to_world_log("Now logging runtimes to data/logs/runtimes/runtime-[time2text(world.realtime, "YYYY-MM-DD")].log")
 						runtime_diary = newlog
+
+				if ("log_tgui_debug")
+					config.log_tgui_debug = 1
 
 				if ("generate_asteroid")
 					config.generate_map = 1

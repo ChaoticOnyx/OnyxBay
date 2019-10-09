@@ -1,0 +1,3 @@
+node_modules
+*.log
+/packages/tgui/public/bundles/*.hot-update.*
