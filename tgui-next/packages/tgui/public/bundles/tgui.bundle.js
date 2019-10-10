@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "151b208a2fed5546587b";
+/******/ 	var hotCurrentHash = "81ebd83000cbb1ec90a5";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -27233,41 +27233,7 @@ var renderLayout = function renderLayout() {
     var state = store.getState(); // Initial render setup
 
     if (initialRender) {
-      initialRender = false; // ----- Old TGUI chain-loader: begin -----
-
-      var route = (0, _routes.getRoute)(state); // Route was not found, load old TGUI
-
-      if (!route) {
-        logger.warn('loading old tgui'); // Short-circuit the renderer
-
-        handedOverToOldTgui = true; // Unsubscribe from updates
-
-        window.update = window.initialize = function () {}; // Load old TGUI using redirection method for IE8
-
-
-        if (_byond.tridentVersion <= 4) {
-          setTimeout(function () {
-            location.href = 'tgui-fallback.html?ref=' + ref;
-          }, 10);
-          return;
-        } // Inject current state into the data holder
-
-
-        var holder = document.getElementById('data');
-        holder.textContent = JSON.stringify(state); // Load old TGUI by injecting new scripts
-
-        (0, _fgLoadcss.loadCSS)('v4shim.css');
-        (0, _fgLoadcss.loadCSS)('tgui.css');
-        var head = document.getElementsByTagName('head')[0];
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'tgui.js';
-        head.appendChild(script); // Bail
-
-        return;
-      } // ----- Old TGUI chain-loader: end -----
-
-
+      initialRender = false;
       logger.log('initial render', state); // Setup dragging
 
       (0, _drag.setupDrag)(state);
@@ -27460,6 +27426,151 @@ var AirlockElectronics = function AirlockElectronics(props) {
 };
 
 exports.AirlockElectronics = AirlockElectronics;
+
+/***/ }),
+
+/***/ "./interfaces/BrigTimer.js":
+/*!*********************************!*\
+  !*** ./interfaces/BrigTimer.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.BrigTimer = void 0;
+
+var _inferno = __webpack_require__(/*! inferno */ "../inferno/index.js");
+
+var _byond = __webpack_require__(/*! ../byond */ "./byond.js");
+
+var _components = __webpack_require__(/*! ../components */ "./components/index.js");
+
+var _logging = __webpack_require__(/*! ../logging */ "./logging.js");
+
+var logger = (0, _logging.createLogger)('BrigTimer');
+
+var BrigTimer = function BrigTimer(props) {
+  var state = props.state;
+  var config = state.config,
+      data = state.data;
+  var ref = config.ref;
+  return (0, _inferno.createFragment)([(0, _inferno.createComponentVNode)(2, _components.Section, {
+    "title": "Cell Timer",
+    "buttons": (0, _inferno.createFragment)([(0, _inferno.createComponentVNode)(2, _components.Button, {
+      "icon": "clock-o",
+      "content": data.timing ? 'Stop' : 'Start',
+      "selected": data.timing,
+      "onClick": function () {
+        function onClick() {
+          return (0, _byond.act)(ref, data.timing ? 'stop' : 'start');
+        }
+
+        return onClick;
+      }()
+    }), (0, _inferno.createComponentVNode)(2, _components.Button, {
+      "icon": "lightbulb-o",
+      "content": data.flash_charging ? 'Recharging' : 'Flash',
+      "disabled": data.flash_charging,
+      "onClick": function () {
+        function onClick() {
+          return (0, _byond.act)(ref, 'flash');
+        }
+
+        return onClick;
+      }()
+    })], 4),
+    children: [(0, _inferno.createComponentVNode)(2, _components.Button, {
+      "icon": "fast-backward",
+      "content": "--",
+      "onClick": function () {
+        function onClick() {
+          return (0, _byond.act)(ref, 'time', {
+            adjust: -600
+          });
+        }
+
+        return onClick;
+      }()
+    }), (0, _inferno.createComponentVNode)(2, _components.Button, {
+      "icon": "backward",
+      "content": "-",
+      "onClick": function () {
+        function onClick() {
+          return (0, _byond.act)(ref, 'time', {
+            adjust: -100
+          });
+        }
+
+        return onClick;
+      }()
+    }), ' ', String(Math.ceil(data.timetoset / 10)).padStart(2, '0'), ' ', (0, _inferno.createComponentVNode)(2, _components.Button, {
+      "icon": "forward",
+      "content": "+",
+      "onClick": function () {
+        function onClick() {
+          return (0, _byond.act)(ref, 'time', {
+            adjust: 100
+          });
+        }
+
+        return onClick;
+      }()
+    }), (0, _inferno.createComponentVNode)(2, _components.Button, {
+      "icon": "fast-forward",
+      "content": "++",
+      "onClick": function () {
+        function onClick() {
+          return (0, _byond.act)(ref, 'time', {
+            adjust: 600
+          });
+        }
+
+        return onClick;
+      }()
+    }), (0, _inferno.createVNode)(1, "br"), (0, _inferno.createComponentVNode)(2, _components.Button, {
+      "icon": "hourglass-start",
+      "content": "Short",
+      "onClick": function () {
+        function onClick() {
+          return (0, _byond.act)(ref, 'time', {
+            preset: 'short'
+          });
+        }
+
+        return onClick;
+      }()
+    }), (0, _inferno.createComponentVNode)(2, _components.Button, {
+      "icon": "hourglass-start",
+      "content": "Medium",
+      "onClick": function () {
+        function onClick() {
+          return (0, _byond.act)(ref, 'time', {
+            preset: 'medium'
+          });
+        }
+
+        return onClick;
+      }()
+    }), (0, _inferno.createComponentVNode)(2, _components.Button, {
+      "icon": "hourglass-start",
+      "content": "Long",
+      "onClick": function () {
+        function onClick() {
+          return (0, _byond.act)(ref, 'time', {
+            preset: 'long'
+          });
+        }
+
+        return onClick;
+      }()
+    })]
+  })], 4);
+};
+
+exports.BrigTimer = BrigTimer;
 
 /***/ }),
 
@@ -27766,11 +27877,23 @@ exports.getRoute = void 0;
 
 var _AirlockElectronics = __webpack_require__(/*! ./interfaces/AirlockElectronics */ "./interfaces/AirlockElectronics.js");
 
+var _BrigTimer = __webpack_require__(/*! ./interfaces/BrigTimer */ "./interfaces/BrigTimer.js");
+
 var ROUTES = {
   airlock_electronics: {
     component: function () {
       function component() {
         return _AirlockElectronics.AirlockElectronics;
+      }
+
+      return component;
+    }(),
+    scrollable: true
+  },
+  brig_timer: {
+    component: function () {
+      function component() {
+        return _BrigTimer.BrigTimer;
       }
 
       return component;
@@ -27861,7 +27984,7 @@ exports.createStore = createStore;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1570714283990
+      // 1570717036811
       var cssReload = __webpack_require__(/*! C:/Users/Igor/Desktop/OnyxBay/tgui-next/node_modules/extract-css-chunks-webpack-plugin/dist/hmr/hotModuleReplacement.js */ "../../node_modules/extract-css-chunks-webpack-plugin/dist/hmr/hotModuleReplacement.js")(module.i, {"hot":true,"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);

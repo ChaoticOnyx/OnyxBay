@@ -122,7 +122,7 @@
 "cr" = (/turf/simulated/wall/r_wall,/area/ship/scrap/crew/toilets)
 "cs" = (/obj/structure/grille,/obj/machinery/door/blast/regular{density = 0; dir = 4; icon_state = "pdoor0"; id = "scraplock"; name = "External Blast Doors"; opacity = 0},/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced{dir = 8},/obj/structure/window/reinforced,/obj/machinery/door/firedoor,/turf/simulated/floor/usedup,/area/ship/scrap/crew/toilets)
 "ct" = (/obj/machinery/light/small{icon_state = "bulb1"; dir = 4},/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/hallway/port)
-"cu" = (/obj/effect/floor_decal/corner/beige{icon_state = "corner_white"; dir = 9},/obj/machinery/newscaster{pixel_x = -32},/obj/machinery/media/jukebox,/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/saloon)
+"cu" = (/obj/effect/floor_decal/corner/beige{icon_state = "corner_white"; dir = 9},/obj/machinery/newscaster{pixel_x = -32},/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/saloon)
 "cv" = (/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/saloon)
 "cw" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/item/weapon/stool/padded,/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 8},/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/saloon)
 "cx" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/saloon)

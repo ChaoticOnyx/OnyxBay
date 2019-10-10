@@ -203,9 +203,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 /datum/asset/simple/tgui
 	assets = list(
-		// tgui
-		"tgui.css" = 'tgui/assets/tgui.css',
-		"tgui.js" = 'tgui/assets/tgui.js',
 		// tgui-next
 		"tgui-main.html" = 'tgui-next/packages/tgui/public/tgui-main.html',
 		"tgui-fallback.html" = 'tgui-next/packages/tgui/public/tgui-fallback.html',

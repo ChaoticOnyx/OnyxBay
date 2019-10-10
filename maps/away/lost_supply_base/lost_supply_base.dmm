@@ -240,7 +240,7 @@
 "eG" = (/obj/machinery/light,/obj/structure/reagent_dispensers/water_cooler,/turf/simulated/floor/tiled/airless,/area/lost_supply_base/common)
 "eH" = (/obj/machinery/computer/arcade,/turf/simulated/floor/tiled/airless,/area/lost_supply_base/common)
 "eI" = (/obj/machinery/light,/obj/machinery/computer/arcade,/turf/simulated/floor/tiled/airless,/area/lost_supply_base/common)
-"eJ" = (/obj/machinery/media/jukebox,/turf/simulated/floor/tiled/airless,/area/lost_supply_base/common)
+"eJ" = (/turf/simulated/floor/tiled/airless,/area/lost_supply_base/common)
 "eK" = (/obj/machinery/portable_atmospherics/canister/oxygen,/turf/simulated/floor/shuttle/blue,/area/space)
 "eL" = (/obj/structure/table/rack,/obj/item/weapon/tank/air,/obj/random/tech_supply,/obj/item/clothing/mask/breath,/turf/simulated/floor/shuttle/blue,/area/space)
 "eM" = (/obj/structure/bed/chair{dir = 1},/turf/simulated/floor/shuttle/blue,/area/space)
