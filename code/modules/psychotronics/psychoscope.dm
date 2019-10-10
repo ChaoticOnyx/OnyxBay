@@ -161,7 +161,7 @@
 	if (!scanned || !scanned.len || !user)
 		return list()
 
-	var/list/nan;o_list = list()
+	var/list/nano_list = list()
 
 	for (var/lifeform_type in scanned)
 		var/list/L = list(
