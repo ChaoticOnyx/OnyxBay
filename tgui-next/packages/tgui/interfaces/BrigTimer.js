@@ -29,22 +29,18 @@ export const BrigTimer = props => {
         )}>
         <Button
           icon="fast-backward"
-          content="--"
           onClick={() => act(ref, 'time', { adjust: -600 })} />
         <Button
           icon="backward"
-          content="-"
           onClick={() => act(ref, 'time', { adjust: -100 })} />
         {' '}
         {String(Math.ceil(data.timetoset / 10)).padStart(2, '0')}
         {' '}
         <Button
           icon="forward"
-          content="+"
           onClick={() => act(ref, 'time', { adjust: 100 })} />
         <Button
           icon="fast-forward"
-          content="++"
           onClick={() => act(ref, 'time', { adjust: 600 })} />
         <br />
         <Button
