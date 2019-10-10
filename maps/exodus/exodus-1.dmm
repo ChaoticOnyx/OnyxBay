@@ -90,7 +90,7 @@
 "bL" = (/turf/simulated/wall,/area/maintenance/underground/security_lobby)
 "bM" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/plating,/area/maintenance/underground/security_lobby)
 "bN" = (/obj/machinery/vending/cigarette,/turf/simulated/floor/trim/darkwood,/area/maintenance/underground/security_firefighting)
-"bO" = (/turf/simulated/floor/trim/darkwood,/area/maintenance/underground/security_firefighting)
+"bO" = (/obj/machinery/media/jukebox,/turf/simulated/floor/trim/darkwood,/area/maintenance/underground/security_firefighting)
 "bP" = (/obj/machinery/vending/sovietsoda,/turf/simulated/floor/trim/darkwood,/area/maintenance/underground/security_firefighting)
 "bQ" = (/obj/machinery/vending/snack,/turf/simulated/floor/trim/darkwood,/area/maintenance/underground/security_firefighting)
 "bR" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/turf/simulated/floor/plating,/area/maintenance/underground/security)

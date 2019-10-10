@@ -330,7 +330,7 @@
 "gr" = (/obj/item/modular_computer/console,/turf/simulated/floor/wood,/area/errant_pisces/rooms)
 "gs" = (/obj/structure/bed/padded,/obj/item/weapon/bedsheet/orange,/turf/simulated/floor/wood,/area/errant_pisces/rooms)
 "gt" = (/obj/structure/bed/chair/comfy/brown{dir = 1},/turf/simulated/floor/wood,/area/errant_pisces/rooms)
-"gu" = (/obj/machinery/light{icon_state = "tube1"; dir = 1},/turf/simulated/floor/wood,/area/errant_pisces/rooms)
+"gu" = (/obj/machinery/light{icon_state = "tube1"; dir = 1},/obj/machinery/media/jukebox,/turf/simulated/floor/wood,/area/errant_pisces/rooms)
 "gv" = (/obj/structure/bed/chair/comfy/brown{dir = 4},/turf/simulated/floor/wood,/area/errant_pisces/rooms)
 "gw" = (/obj/structure/table/woodentable,/obj/machinery/atmospherics/unary/vent_pump/on{dir = 2; layer = 2.4; level = 2},/turf/simulated/floor/wood,/area/errant_pisces/rooms)
 "gx" = (/obj/effect/wingrille_spawn/reinforced/full,/obj/machinery/door/firedoor,/turf/simulated/floor/plating,/area/errant_pisces/rooms)
