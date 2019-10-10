@@ -1,5 +1,6 @@
 import { AirlockElectronics } from './interfaces/AirlockElectronics';
 import { BrigTimer } from './interfaces/BrigTimer';
+import { Resleever } from './interfaces/Resleever';
 
 const ROUTES = {
   airlock_electronics: {
@@ -9,7 +10,11 @@ const ROUTES = {
   brig_timer: {
     component: () => BrigTimer,
     scrollable: false,
-  }
+  },
+  resleever: {
+    component: () => Resleever,
+    scrollable: false,
+  },
 };
 
 export const getRoute = state => {
