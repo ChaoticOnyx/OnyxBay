@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "6dac354ec4e5c8101af7";
+/******/ 	var hotCurrentHash = "151b208a2fed5546587b";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -21098,7 +21098,7 @@ module.exports = function (module) {
 
 
 exports.__esModule = true;
-exports.compose = exports.flow = void 0;
+exports.map = exports.compose = exports.flow = void 0;
 
 /**
  * @file
@@ -21108,8 +21108,8 @@ exports.compose = exports.flow = void 0;
 
 /**
  * Creates a function that returns the result of invoking the given
- * functions with the this binding of the created function, where each
- * successive invocation is supplied the return value of the previous.
+ * functions, where each successive invocation is supplied the return
+ * value of the previous.
  */
 var flow = function flow() {
   for (var _len = arguments.length, funcs = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -21189,8 +21189,46 @@ var compose = function compose() {
     };
   });
 };
+/**
+ * Creates an array of values by running each element in collection
+ * thru an iteratee function. The iteratee is invoked with three
+ * arguments: (value, index|key, collection).
+ *
+ * If collection is 'null' or 'undefined', it will be returned "as is"
+ * without emitting any errors (which can be useful in some cases).
+ */
+
 
 exports.compose = compose;
+
+var map = function map(iteratorFn) {
+  return function (collection) {
+    if (collection === null && collection === undefined) {
+      return collection;
+    }
+
+    if (Array.isArray(collection)) {
+      return collection.map(iteratorFn);
+    }
+
+    if (typeof collection === 'object') {
+      var _hasOwnProperty = Object.prototype.hasOwnProperty;
+      var result = [];
+
+      for (var i in collection) {
+        if (_hasOwnProperty.call(collection, i)) {
+          result.push(iteratorFn(collection[i], i, collection));
+        }
+      }
+
+      return result;
+    }
+
+    throw new Error("map() can't iterate on type " + typeof collection);
+  };
+};
+
+exports.map = map;
 
 /***/ }),
 
@@ -27823,7 +27861,7 @@ exports.createStore = createStore;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1570711480684
+      // 1570714283990
       var cssReload = __webpack_require__(/*! C:/Users/Igor/Desktop/OnyxBay/tgui-next/node_modules/extract-css-chunks-webpack-plugin/dist/hmr/hotModuleReplacement.js */ "../../node_modules/extract-css-chunks-webpack-plugin/dist/hmr/hotModuleReplacement.js")(module.i, {"hot":true,"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
