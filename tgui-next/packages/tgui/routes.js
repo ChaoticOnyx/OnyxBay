@@ -8,7 +8,7 @@ const ROUTES = {
   },
   brig_timer: {
     component: () => BrigTimer,
-    scrollable: true,
+    scrollable: false,
   }
 };
 
