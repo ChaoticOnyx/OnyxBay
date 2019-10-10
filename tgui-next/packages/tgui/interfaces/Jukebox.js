@@ -1,6 +1,6 @@
 import { Fragment } from 'inferno';
 import { act } from '../byond';
-import { Icon, Button, Section, ProgressBar } from '../components';
+import { Button, Section, ProgressBar } from '../components';
 
 export const Jukebox = props => {
   const { state } = props;

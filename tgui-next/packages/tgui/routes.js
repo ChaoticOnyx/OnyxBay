@@ -2,6 +2,7 @@ import { AirlockElectronics } from './interfaces/AirlockElectronics';
 import { BrigTimer } from './interfaces/BrigTimer';
 import { Resleever } from './interfaces/Resleever';
 import { Jukebox } from './interfaces/Jukebox';
+import { SuitJammer } from './interfaces/SuitJammer';
 
 const ROUTES = {
   airlock_electronics: {
@@ -18,6 +19,10 @@ const ROUTES = {
   },
   jukebox: {
     component: () => Jukebox,
+    scrollable: true,
+  },
+  suit_sensor_jammer: {
+    component: () => SuitJammer,
     scrollable: true,
   },
 };

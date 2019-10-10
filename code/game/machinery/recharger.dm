@@ -9,7 +9,7 @@ obj/machinery/recharger
 	idle_power_usage = 4
 	active_power_usage = 30 KILOWATTS
 	var/obj/item/charging = null
-	var/list/allowed_devices = list(/obj/item/weapon/gun/energy, /obj/item/weapon/gun/magnetic/railgun, /obj/item/weapon/melee/baton, /obj/item/weapon/cell, /obj/item/modular_computer/, /obj/item/weapon/computer_hardware/battery_module, /obj/item/weapon/shield_diffuser, /obj/item/clothing/mask/smokable/ecig)
+	var/list/allowed_devices = list(/obj/item/weapon/gun/energy, /obj/item/weapon/gun/magnetic/railgun, /obj/item/weapon/melee/baton, /obj/item/weapon/cell, /obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/weapon/computer_hardware/battery_module, /obj/item/weapon/shield_diffuser, /obj/item/clothing/mask/smokable/ecig)
 	var/icon_state_charged = "recharger2"
 	var/icon_state_charging = "recharger1"
 	var/icon_state_idle = "recharger0" //also when unpowered
@@ -44,6 +44,11 @@ obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 		if(istype(G, /obj/item/modular_computer))
 			var/obj/item/modular_computer/C = G
 			if(!C.battery_module)
+				to_chat(user, "This device does not have a battery installed.")
+				return
+		if(istype(G, /obj/item/device/suit_sensor_jammer))
+			var/obj/item/device/suit_sensor_jammer/J = G
+			if(!J.bcell)
 				to_chat(user, "This device does not have a battery installed.")
 				return
 		if(istype(G, /obj/item/weapon/gun/magnetic/railgun))
@@ -94,7 +99,10 @@ obj/machinery/recharger/Process()
 		icon_state = icon_state_idle
 	else
 		var/cell = charging
-		if(istype(charging, /obj/item/weapon/melee/baton))
+		if(istype(charging, /obj/item/device/suit_sensor_jammer))
+			var/obj/item/device/suit_sensor_jammer/J = charging
+			charging = J.bcell
+		else if(istype(charging, /obj/item/weapon/melee/baton))
 			var/obj/item/weapon/melee/baton/B = charging
 			cell = B.bcell
 		else if(istype(charging, /obj/item/modular_computer))
