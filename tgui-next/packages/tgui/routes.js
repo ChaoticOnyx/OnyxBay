@@ -1,6 +1,7 @@
 import { AirlockElectronics } from './interfaces/AirlockElectronics';
 import { BrigTimer } from './interfaces/BrigTimer';
 import { Resleever } from './interfaces/Resleever';
+import { Jukebox } from './interfaces/Jukebox';
 
 const ROUTES = {
   airlock_electronics: {
@@ -14,6 +15,10 @@ const ROUTES = {
   resleever: {
     component: () => Resleever,
     scrollable: false,
+  },
+  jukebox: {
+    component: () => Jukebox,
+    scrollable: true,
   },
 };
 
