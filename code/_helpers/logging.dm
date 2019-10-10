@@ -123,6 +123,14 @@
 /proc/log_warning(text)
 	warning(text)
 
+/* ui logging */
+
+/proc/log_tgui_error(text)
+	log_error(text)
+
+/proc/log_tgui_debug(text)
+	log_debug(text)
+
 //pretty print a direction bitflag, can be useful for debugging.
 /proc/dir_text(var/dir)
 	var/list/comps = list()

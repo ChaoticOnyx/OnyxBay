@@ -12,7 +12,7 @@ SUBSYSTEM_DEF(tgui)
 
 /datum/controller/subsystem/tgui/Initialize()
 	. = ..()
-	basehtml = file2text('tgui/tgui.html')
+	basehtml = file2text('tgui-next/packages/tgui/public/tgui-main.html')
 
 /datum/controller/subsystem/tgui/fire(resumed = 0)
 	if (!resumed)

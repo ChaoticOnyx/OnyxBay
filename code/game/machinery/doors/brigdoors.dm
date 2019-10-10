@@ -195,7 +195,17 @@
 			for(var/obj/machinery/flasher/F in targets)
 				F.flash()
 		if("time")
-			timetoset += text2num(params["adjust"])
+			if (params["preset"])
+				switch (params["preset"])
+					if ("short")
+						timetoset = 600
+					if ("medium")
+						timetoset = 600 * 5
+					if ("long")
+						timetoset = 600 * 10
+			else if (params["adjust"])
+				timetoset += text2num(params["adjust"])
+
 			timetoset = Clamp(timetoset, 0, 36000)
 
 	src.update_icon()
