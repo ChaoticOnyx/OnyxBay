@@ -3,6 +3,7 @@ import { BrigTimer } from './interfaces/BrigTimer';
 import { Resleever } from './interfaces/Resleever';
 import { Jukebox } from './interfaces/Jukebox';
 import { SuitJammer } from './interfaces/SuitJammer';
+import { Psychoscope } from './interfaces/Psychoscope';
 
 const ROUTES = {
   airlock_electronics: {
@@ -23,6 +24,10 @@ const ROUTES = {
   },
   suit_sensor_jammer: {
     component: () => SuitJammer,
+    scrollable: true,
+  },
+  psychoscope: {
+    component: () => Psychoscope,
     scrollable: true,
   },
 };

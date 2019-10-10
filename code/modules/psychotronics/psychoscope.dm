@@ -161,7 +161,7 @@
 	if (!scanned || !scanned.len || !user)
 		return list()
 
-	var/list/nano_list = list()
+	var/list/nan;o_list = list()
 
 	for (var/lifeform_type in scanned)
 		var/list/L = list(
@@ -381,7 +381,7 @@
 	set popup_menu = 1
 	set category = "Psychoscope"
 
-	ui_interact(usr)
+	tg_ui_interact(usr)
 
 /obj/item/clothing/glasses/hud/psychoscope/verb/RemoveDisk()
 	set name = "Remove Disk"
@@ -423,67 +423,18 @@
 /obj/item/clothing/glasses/hud/psychoscope/AltClick(mob/user)
 	. = ..()
 
-	ui_interact(user)
+	tg_ui_interact(user)
 
 /* UI */
 
-/obj/item/clothing/glasses/hud/psychoscope/Topic(href, list/href_list)
-	if (..()) return 1
+/obj/item/clothing/glasses/hud/psychoscope/tg_ui_interact(mob/user, ui_key, datum/tgui/ui, force_open, datum/tgui/master_ui, datum/ui_state/state)
+	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 
-	playsound(src, 'sound/machines/console_click2.ogg', 10, 1)
+	if(!ui)
+		ui = new(user, src, ui_key, "psychoscope", "Psychoscope", 500, 600, master_ui, state)
+		ui.open()
 
-	switch(href_list["option"])
-		if ("togglePsychoscope")
-			attack_self(usr)
-		if ("showScansJournal")
-			if (!href_list["lifeform_type"] || !istext(href_list["lifeform_type"]) || !scanned[href_list["lifeform_type"]])
-				return
-
-			selected_lifeform = href_list["lifeform_type"]
-
-			ui_mode = 1
-		if ("close")
-			ui_mode = old_mode
-			old_mode = ui_mode
-		if ("showLifeformsList")
-			old_mode = ui_mode
-			ui_mode = 2
-		if ("showLifeform")
-			if (!href_list["lifeform_type"] || !scanned[href_list["lifeform_type"]])
-				return
-
-			old_mode = ui_mode
-			ui_mode = 3
-			selected_lifeform = href_list["lifeform_type"]
-		if ("showMainMenu")
-			ui_mode = 0
-			old_mode = 0
-		if ("ejectDisk")
-			EjectDisk(usr)
-		if ("insertDisk")
-			InsertDisk(usr)
-		if ("saveTechToDisk")
-			if (!href_list["lifeform_type"] || !href_list["tech_id"] || !href_list["tech_level"])
-				return
-
-			if (!scanned[href_list["lifeform_type"]]["opened_techs"][href_list["tech_id"]] || scanned[href_list["lifeform_type"]]["opened_techs"][href_list["tech_id"]] < text2num(href_list["tech_level"]))
-				return
-
-			SaveTechToDisk(href_list["tech_id"], text2num(href_list["tech_level"]))
-		if ("saveNeuromodToDisk")
-			if (!href_list["neuromod_type"] || !href_list["lifeform_type"] || !(href_list["neuromod_type"] in scanned[href_list["lifeform_type"]]["opened_neuromods"]))
-				return
-
-			SaveNeuromodToDisk(href_list["neuromod_type"])
-		if ("saveLifeformToDisk")
-			if (!href_list["lifeform_type"] || !scanned[href_list["lifeform_type"]])
-				return
-
-			SaveLifeformToDisk(href_list["lifeform_type"])
-
-	return 1
-
-/obj/item/clothing/glasses/hud/psychoscope/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/item/clothing/glasses/hud/psychoscope/ui_data(mob/user, ui_key)
 	var/list/data = list()
 
 	data["status"] = active
@@ -507,14 +458,74 @@
 	if (selected_lifeform)
 		data["selected_lifeform"] = LifeformScanToList(selected_lifeform, user)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	return data
 
-	if (!ui)
-		ui = new(user, src, ui_key, "psychoscope.tmpl", "Psychoscope UI", 400, 400)
+/obj/item/clothing/glasses/hud/psychoscope/ui_act(action, params)
+	if (..()) return
 
-		ui.set_initial_data(data)
-		ui.open()
-	ui.set_auto_update(TRUE)
+	. = FALSE
+
+	playsound(src, 'sound/machines/console_click2.ogg', 10, 1)
+
+	switch(action)
+		if ("togglePsychoscope")
+			attack_self(usr)
+			return TRUE
+		if ("showScansJournal")
+			if (!params["lifeform_type"] || !istext(params["lifeform_type"]) || !scanned[params["lifeform_type"]])
+				return
+
+			selected_lifeform = params["lifeform_type"]
+
+			ui_mode = 1
+			return TRUE
+		if ("close")
+			ui_mode = old_mode
+			old_mode = ui_mode
+			return TRUE
+		if ("showLifeformsList")
+			old_mode = ui_mode
+			ui_mode = 2
+			return TRUE
+		if ("showLifeform")
+			if (!params["lifeform_type"] || !scanned[params["lifeform_type"]])
+				return
+
+			old_mode = ui_mode
+			ui_mode = 3
+			selected_lifeform = params["lifeform_type"]
+			return TRUE
+		if ("showMainMenu")
+			ui_mode = 0
+			old_mode = 0
+			return TRUE
+		if ("ejectDisk")
+			EjectDisk(usr)
+			return TRUE
+		if ("insertDisk")
+			InsertDisk(usr)
+			return TRUE
+		if ("saveTechToDisk")
+			if (!params["lifeform_type"] || !params["tech_id"] || !params["tech_level"])
+				return
+
+			if (!scanned[params["lifeform_type"]]["opened_techs"][params["tech_id"]] || scanned[params["lifeform_type"]]["opened_techs"][params["tech_id"]] < text2num(params["tech_level"]))
+				return
+
+			SaveTechToDisk(params["tech_id"], text2num(params["tech_level"]))
+			return TRUE
+		if ("saveNeuromodToDisk")
+			if (!params["neuromod_type"] || !params["lifeform_type"] || !(params["neuromod_type"] in scanned[params["lifeform_type"]]["opened_neuromods"]))
+				return
+
+			SaveNeuromodToDisk(params["neuromod_type"])
+			return TRUE
+		if ("saveLifeformToDisk")
+			if (!params["lifeform_type"] || !scanned[params["lifeform_type"]])
+				return
+
+			SaveLifeformToDisk(params["lifeform_type"])
+			return TRUE
 
 /* HUD */
 
