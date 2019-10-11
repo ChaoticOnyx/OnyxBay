@@ -95,6 +95,8 @@
 	return 1
 
 /obj/item/clothing/equipped(var/mob/user)
+	playsound(src, "outfit", 75, 1)
+
 	if(needs_vision_update())
 		update_vision()
 	return ..()
