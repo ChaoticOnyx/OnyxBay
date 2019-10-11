@@ -159,7 +159,7 @@
 
 /obj/item/clothing/glasses/hud/psychoscope/proc/ScannedToList(mob/user)
 	if (!scanned || !scanned.len || !user)
-		return list()
+		return null
 
 	var/list/nano_list = list()
 
@@ -175,7 +175,7 @@
 		var/datum/lifeform/LF = GLOB.lifeforms.Get(lifeform_type)
 
 		if (!LF)
-			return list()
+			return null
 
 		L["content"]["lifeform"] = LF.ToList(user)
 
@@ -185,7 +185,7 @@
 
 /obj/item/clothing/glasses/hud/psychoscope/proc/LifeformScanToList(lifeform_type, mob/user)
 	if (!lifeform_type || !istext(lifeform_type) || !scanned[lifeform_type] || !user)
-		return list()
+		return null
 
 	var/list/lifeform_list = list(
 		"lifeform_type" = lifeform_type,
@@ -197,7 +197,7 @@
 	lifeform_list["content"]["opened_neuromods"] = NeuromodsToList(lifeform_type)
 
 	if (!L)
-		return list()
+		return null
 
 	lifeform_list["content"]["lifeform"] = L.ToList(user)
 
@@ -442,7 +442,7 @@
 	data["scanned"] = ScannedToList(user)
 	data["total_lifeforms"] = GLOB.lifeforms.list_of_lifeforms.len
 	data["opened_lifeforms"] = scanned.len
-	data["selected_lifeform"] = list()
+	data["selected_lifeform"] = null
 	data["inserted_disk"] = null
 
 	var/obj/item/weapon/disk/inserted_disk = null
