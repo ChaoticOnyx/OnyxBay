@@ -21,6 +21,7 @@
 
 /obj/structure/bigDelivery/proc/unwrap(var/mob/user)
 	if(Adjacent(user))
+		playsound(src, 'sound/effects/using/wrapper/unwrap1.ogg', rand(50, 75), TRUE)
 		// Destroy will drop our wrapped object on the turf, so let it.
 		qdel(src)
 
@@ -144,6 +145,8 @@
 		user.put_in_hands(wrapped)
 	else
 		wrapped.forceMove(get_turf(src))
+
+	playsound(src, 'sound/effects/using/wrapper/unwrap1.ogg', rand(50, 75), TRUE)
 	qdel(src)
 
 /obj/item/smallDelivery/attack_robot(mob/user as mob)

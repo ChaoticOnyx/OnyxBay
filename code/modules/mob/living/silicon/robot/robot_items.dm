@@ -436,7 +436,6 @@
 	var/icon_state_active = null
 	var/pickup_time = 20
 	var/deploy_time = 10
-	var/pickup_sound = null
 	var/deploy_sound = null
 	var/inuse = 0
 

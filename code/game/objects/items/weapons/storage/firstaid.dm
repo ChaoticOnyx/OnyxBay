@@ -160,7 +160,7 @@
 	can_hold = list(/obj/item/weapon/reagent_containers/pill,/obj/item/weapon/dice,/obj/item/weapon/paper)
 	allow_quick_gather = 1
 	use_to_pickup = 1
-	use_sound = null
+	use_sound = 'sound/effects/using/bottles/use1.ogg'
 
 /obj/item/weapon/storage/pill_bottle/antitox
 	name = "bottle of Dylovene pills"

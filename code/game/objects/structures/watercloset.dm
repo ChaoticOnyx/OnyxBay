@@ -341,7 +341,7 @@
 		to_chat(user, "<span class='warning'>Someone's already washing here.</span>")
 		return
 
-	playsound(loc, "sink", 75)
+	playsound(loc, 'sound/effects/using/sink/washing1.ogg', 75)
 	to_chat(usr, "<span class='notice'>You start washing your hands.</span>")
 
 	busy = 1

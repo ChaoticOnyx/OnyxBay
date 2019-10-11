@@ -90,7 +90,7 @@
 			user.visible_message("<span class='danger'>[user] feeds [M] [src].</span>")
 
 		if(reagents)								//Handle ingestion of the reagent.
-			playsound(M.loc,'sound/items/eatfood.ogg', rand(10,50), 1)
+			playsound(M.loc, "eat", rand(45, 60), FALSE)
 			if(reagents.total_volume)
 				if(reagents.total_volume > bitesize)
 					reagents.trans_to_mob(M, bitesize, CHEM_INGEST)
@@ -1645,6 +1645,7 @@
 	icon_state = "monkeycube"
 	desc = "Just add water!"
 	to_chat(user, "You unwrap the cube.")
+	playsound(src, 'sound/effects/using/wrapper/unwrap1.ogg', rand(50, 75), TRUE)
 	wrapped = 0
 	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 

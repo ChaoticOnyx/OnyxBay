@@ -80,6 +80,8 @@
 	// Species-specific sprite sheets for inventory sprites. Used in clothing/refit_for_species() proc.
 	var/list/sprite_sheets_obj = list()
 
+	var/pickup_sound = null
+
 /obj/item/New()
 	..()
 	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y

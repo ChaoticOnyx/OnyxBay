@@ -38,7 +38,7 @@
 		return 0
 	on = !on
 	if(on && activation_sound)
-		playsound(src.loc, activation_sound, 75, 1)
+		playsound(src.loc, 'sound/effects/using/flashlight/use1.ogg', 75, 1)
 	update_icon()
 	user.update_action_buttons()
 	return 1
