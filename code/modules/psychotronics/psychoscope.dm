@@ -1,6 +1,5 @@
 /mob
 	var/list/psychoscope_icons[2]
-	var/list/neuromods
 
 /mob/Initialize()
 	. = ..()

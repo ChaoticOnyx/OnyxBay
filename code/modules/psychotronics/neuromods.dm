@@ -1,3 +1,6 @@
+/mob
+	var/list/datum/neuromod/neuromods	// Contains paths
+
 /* BASE DATUM */
 
 /datum/neuromod

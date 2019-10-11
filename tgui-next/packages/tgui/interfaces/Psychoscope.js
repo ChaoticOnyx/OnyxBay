@@ -139,7 +139,7 @@ export const Lifeform = props => {
 
   if (lifeform) {
     return (
-      <LabeledList>
+      <Fragment>
 
         <LabeledList.Item label="Kingdom">
           {lifeform.kingdom}
@@ -165,7 +165,7 @@ export const Lifeform = props => {
           {scan_count || lifeform.scan_count}
         </LabeledList.Item>
 
-      </LabeledList>
+      </Fragment>
     );
   }
   else {
@@ -253,8 +253,10 @@ export const Psychoscope = props => {
                     lifeform_type: selected_lifeform.lifeform_type,
                   })} />
               }>
-                <Lifeform lifeform={selected_lifeform.content.lifeform}
-                  scan_count={data.selected_lifeform.content.scan_count} />
+                <LabeledList>
+                  <Lifeform lifeform={selected_lifeform.content.lifeform}
+                    scan_count={data.selected_lifeform.content.scan_count} />
+                </LabeledList>
               </Section>
               <Toast>
                 {(selected_lifeform.content.scan_count >= selected_lifeform.content.lifeform.neuromod_prod_scans

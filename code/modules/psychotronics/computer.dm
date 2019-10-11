@@ -1,139 +1,5 @@
-/* CONSOLE NANOUI MODULE */
 
-#define NEUROMODRND_OPTION_SHOW_NEUROMODS 1
-#define NEUROMODRND_OPTION_SHOW_LIFEFORMS 2
 #define NEUROMODRND_MUTAGEN_VOLUME 25
-
-/datum/nano_module/neuromodRnD
-	name = "Neuromod RnD"
-
-	/* UI Modes */
-	//
-	// 0 - Main Menu
-	// 1 - Neuromod Researching
-	// 2 - Neuromod Production
-	// 3 - Data Management
-	//
-
-	var/ui_mode = 0
-	var/old_mode = 0
-	var/show_options = (NEUROMODRND_OPTION_SHOW_NEUROMODS | NEUROMODRND_OPTION_SHOW_LIFEFORMS)
-	var/datum/neuromod/selected_neuromod = null
-	var/list/nanoui_beaker = null
-	var/list/nanoui_shell = null
-	var/datum/lifeform/selected_lifeform = null
-	var/list/nanoui_lifeform = null
-	var/list/nanoui_lifeforms = null
-
-/datum/nano_module/neuromodRnD/proc/GetHost()
-	var/obj/machinery/computer/neuromodRnD/computer_host = host
-	return computer_host
-
-/datum/nano_module/neuromodRnD/Topic(href, list/href_list)
-	if (..()) return 1
-
-	playsound(GetHost(), 'sound/machines/console_click.ogg', 15, 1)
-
-	switch (href_list["option"])
-		if ("showNeuromodResearching")
-			old_mode = ui_mode
-			ui_mode = 1
-		if ("showNeuromodProduction")
-			old_mode = ui_mode
-			ui_mode = 2
-		if ("showDataManagement")
-			old_mode = ui_mode
-			ui_mode = 3
-		if ("back")
-			ui_mode = old_mode
-			old_mode = ui_mode
-		if ("ejectBeaker")
-			GetHost().EjectBeaker()
-		if ("insertBeaker")
-			GetHost().InsertBeaker()
-		if ("ejectDisk")
-			GetHost().EjectDisk()
-		if ("insertDisk")
-			GetHost().InsertDisk()
-		if ("ejectNeuromodShell")
-			GetHost().EjectNeuromodShell()
-		if ("insertNeuromodShell")
-			GetHost().InsertNeuromodShell()
-		if ("startResearching")
-			GetHost().is_researching = TRUE
-			GetHost().research_progress = 0
-			GetHost().researching_neuromod = text2path(selected_neuromod)
-		if ("stopResearching")
-			GetHost().is_researching = FALSE
-			GetHost().research_progress = 0
-		if ("loadNeuromodFromDisk")
-			GetHost().LoadNeuromodFromDisk()
-		if ("loadLifeformFromDisk")
-			GetHost().LoadLifeformFromDisk()
-		if ("selectNeuromod")
-			if (!href_list["neuromod_type"]) return 1
-
-			var/list/neuromods = GetHost().neuromods
-
-			if (!neuromods[href_list["neuromod_type"]]) return
-
-			selected_neuromod = href_list["neuromod_type"]
-		if ("toggleNeuromodsList")
-			show_options ^= NEUROMODRND_OPTION_SHOW_NEUROMODS
-		if ("toggleLifeformsList")
-			show_options ^= NEUROMODRND_OPTION_SHOW_LIFEFORMS
-		if ("flushBeaker")
-			GetHost().FlushBeaker()
-		if ("clearNeuromodShell")
-			GetHost().ClearNeuromodShell()
-		if ("selectLifeform")
-			if (!href_list["lifeform_type"] || !GetHost().lifeforms[href_list["lifeform_type"]])
-				return
-
-			selected_lifeform = href_list["lifeform_type"]
-
-	return 1
-
-/datum/nano_module/neuromodRnD/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nano_ui/master_ui, datum/topic_state/state)
-	var/list/data = host.initial_data()
-	var/obj/machinery/computer/neuromodRnD/console = GetHost()
-
-	data["mode"] = ui_mode
-
-	data["disk"] = null
-	data["beaker"] = console.BeakerToList()
-	data["show_options"] = show_options
-	data["neuromod_shell"] = console.NeuromodShellToList()
-	data["neuromods"] = console.NeuromodsToList()
-	data["lifeforms"] = console.LifeformsToList(user)
-	data["selected_neuromod"] = console.NeuromodToList(selected_neuromod)
-	data["selected_lifeform"] = console.LifeformToList(user, selected_lifeform)
-	data["is_researching"] = console.is_researching
-	data["research_progress"] = console.research_progress
-	data["production_ready"] = FALSE
-	data["production_status"] = FALSE
-
-	nanoui_shell = data["neuromod_shell"]
-	nanoui_beaker = data["beaker"]
-	nanoui_lifeform = data["selected_lifeform"]
-	nanoui_lifeforms = data["lifeforms"]
-
-	var/obj/item/weapon/disk/disk = console.GetDisk()
-
-	if (disk)
-		if (istype(disk, /obj/item/weapon/disk/neuromod_disk))
-			data["disk"] = "neuromod"
-		else if (istype(disk, /obj/item/weapon/disk/lifeform_disk))
-			data["disk"] = "lifeform"
-
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-
-	if (!ui)
-		ui = new(user, src, ui_key, "neuromodRnD_console.tmpl", "Neuromod RnD Console", 900, 800, state = state)
-
-		ui.set_initial_data(data)
-		ui.open()
-		ui.set_auto_update(TRUE)
 
 /* CONSOLE */
 
@@ -146,13 +12,131 @@
 	clicksound = null
 	circuit = /obj/item/weapon/circuitboard/neuromodRnD
 
-	var/datum/nano_module/neuromodRnD/nmod_rnd = null
 	var/research_progress = 0
+	var/development_progress = 0
+	var/max_development_progress = 100
 	var/is_researching = FALSE
+	var/is_develop = FALSE
 	var/datum/neuromod/researching_neuromod = null
 	var/list/neuromods = null
 	var/list/lifeforms = null
 	var/list/accepts_disks = null
+	var/datum/lifeform/selected_lifeform = null
+	var/datum/neuromod/selected_neuromod = null
+
+/* UI */
+
+/obj/machinery/computer/neuromodRnD/ui_act(action, params)
+	if (..()) return
+
+	. = FALSE
+
+	playsound(src, 'sound/machines/console_click.ogg', 15, 1)
+
+	switch (action)
+		if ("ejectBeaker")
+			EjectBeaker()
+			return TRUE
+		if ("insertBeaker")
+			InsertBeaker()
+			return TRUE
+		if ("ejectDisk")
+			EjectDisk()
+			return TRUE
+		if ("insertDisk")
+			InsertDisk()
+			return TRUE
+		if ("ejectNeuromodShell")
+			EjectNeuromodShell()
+			return TRUE
+		if ("insertNeuromodShell")
+			InsertNeuromodShell()
+			return TRUE
+		if ("startResearching")
+			is_researching = TRUE
+			research_progress = 0
+			researching_neuromod = text2path(selected_neuromod)
+			return TRUE
+		if ("stopResearching")
+			is_researching = FALSE
+			research_progress = 0
+			return TRUE
+		if ("loadNeuromodFromDisk")
+			LoadNeuromodFromDisk()
+			return TRUE
+		if ("loadLifeformFromDisk")
+			LoadLifeformFromDisk()
+			return TRUE
+		if ("selectNeuromod")
+			if (!params["neuromod_type"]) return
+			if (!neuromods[params["neuromod_type"]]) return
+
+			selected_neuromod = params["neuromod_type"]
+			return TRUE
+		if ("clearNeuromodShell")
+			ClearNeuromodShell()
+			return TRUE
+		if ("selectLifeform")
+			if (!params["lifeform_type"] || !lifeforms[params["lifeform_type"]])
+				return
+
+			selected_lifeform = params["lifeform_type"]
+			return TRUE
+		if ("startDevelopment")
+			if (DevelopmentReady(usr))
+				FlushBeaker()
+				is_develop = TRUE
+				return TRUE
+		if ("stopDevelopment")
+			is_develop = FALSE
+			development_progress = 0
+			return TRUE
+
+/obj/machinery/computer/neuromodRnD/ui_data(mob/user, ui_key)
+	var/list/data = list()
+
+	data["disk"] = null
+	data["beaker"] = BeakerToList()
+	data["neuromod_shell"] = NeuromodShellToList()
+	data["neuromods"] = NeuromodsToList()
+	data["lifeforms"] = LifeformsToList(user)
+	data["selected_neuromod"] = NeuromodToList(selected_neuromod)
+	data["selected_lifeform"] = LifeformToList(user, selected_lifeform)
+	data["is_researching"] = is_researching
+	data["research_progress"] = research_progress
+	data["development_ready"] = DevelopmentReady(user)
+	data["development_progress"] = development_progress
+
+	var/obj/item/weapon/disk/disk = GetDisk()
+
+	if (disk)
+		if (istype(disk, /obj/item/weapon/disk/neuromod_disk))
+			data["disk"] = "neuromod"
+		else if (istype(disk, /obj/item/weapon/disk/lifeform_disk))
+			data["disk"] = "lifeform"
+
+	return data
+
+/obj/machinery/computer/neuromodRnD/tg_ui_interact(mob/user, ui_key, datum/tgui/ui, force_open, datum/tgui/master_ui, datum/ui_state/state)
+	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+
+	if(!ui)
+		ui = new(user, src, ui_key, "neuromod_rnd", "Neuromod RnD", 500, 600, master_ui, state)
+		ui.open()
+
+/* DEVELOPMENT PROCS */
+
+/obj/machinery/computer/neuromodRnD/proc/DevelopmentReady(mob/user)
+	. = FALSE
+
+	if (selected_neuromod && selected_lifeform && GetNeuromodShell())
+		var/list/neuromod_data = NeuromodToList(selected_neuromod)
+		var/list/lifeform_data = LifeformToList(user, selected_lifeform)
+
+		if (CheckBeakerContent() &&\
+			lifeform_data["scan_count"] >= lifeform_data["neuromod_prod_scans"] &&\
+			neuromod_data["researched"])
+			return TRUE
 
 /* NEUROMODS LIST PROCS */
 
@@ -221,13 +205,9 @@
 	if (!user || !lifeform_type || !lifeforms[lifeform_type])
 		return null
 
-	to_world("Ok")
-
 	var/list/lifeform = GLOB.lifeforms.ToList(user, lifeform_type)
 
 	if (!lifeform) return null
-
-	to_world("Lifeform not null")
 
 	lifeform_data = (list(
 		"scan_count" = lifeforms[lifeform_type]["scan_count"]
@@ -451,17 +431,10 @@
 /obj/machinery/computer/neuromodRnD/Initialize()
 	. = ..()
 
-	nmod_rnd = new(src)
 	neuromods = list()
 	lifeforms = list()
 
 	accepts_disks = typesof(/obj/item/weapon/disk/neuromod_disk, /obj/item/weapon/disk/lifeform_disk)
-
-/obj/machinery/computer/neuromodRnD/Destroy()
-	qdel(nmod_rnd)
-	nmod_rnd = null
-
-	..()
 
 /obj/machinery/computer/neuromodRnD/Process()
 	if (is_researching)
@@ -473,15 +446,26 @@
 		else
 			research_progress += 10
 
-			to_world("Before progress: [research_progress]")
-
 			if (research_progress > initial(researching_neuromod.research_time))
-				to_world("Progress: [research_progress]")
-				to_world("Time: [initial(researching_neuromod.research_time)]")
 				is_researching = FALSE
 				neuromods["[researching_neuromod]"]["researched"] = TRUE
 				research_progress = 0
 				playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
+
+	if (is_develop)
+		development_progress += 10
+
+		if (development_progress > max_development_progress)
+			development_progress = 0
+			is_develop = FALSE
+
+			var/obj/item/weapon/reagent_containers/neuromod_shell/N = GetNeuromodShell()
+
+			if (!N)
+				crash_with("Development over with no neuromod shell in the console!")
+
+			N.neuromod = selected_neuromod
+			playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
 
 /obj/machinery/computer/neuromodRnD/attackby(atom/I, user)
 	if (istype(I, /obj/item/weapon/reagent_containers/neuromod_shell))
@@ -497,24 +481,16 @@
 	. = ..()
 
 /obj/machinery/computer/neuromodRnD/attack_ai(mob/user)
-	ui_interact(user)
+	tg_ui_interact(user)
 
 /obj/machinery/computer/neuromodRnD/attack_hand(mob/user)
 	..()
 
 	if(stat & (BROKEN|NOPOWER))
 		return
-	ui_interact(user)
-
-/obj/machinery/computer/neuromodRnD/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
-	nmod_rnd.ui_interact(user, ui_key, ui, force_open, state)
-
-/obj/machinery/computer/neuromodRnD/nano_container()
-	return nmod_rnd
+	tg_ui_interact(user)
 
 /obj/machinery/computer/neuromodRnD/interact(mob/user)
-	nmod_rnd.ui_interact(user)
+	tg_ui_interact(user)
 
-#undef NEUROMODRND_OPTION_SHOW_NEUROMODS
-#undef NEUROMODRND_OPTION_SHOW_LIFEFORMS
 #undef NEUROMODRND_MUTAGEN_VOLUME
