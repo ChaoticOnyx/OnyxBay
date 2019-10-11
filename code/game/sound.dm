@@ -36,11 +36,18 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
-GLOBAL_LIST_INIT(closet_close,list('sound/effects/using/closets/close1.ogg','sound/effects/using/closets/close2.ogg','sound/effects/using/closets/close3.ogg',
+GLOBAL_LIST_INIT(drink_pickup_sound,list('sound/effects/using/bottles/pickup1.ogg','sound/effects/using/bottles/pickup2.ogg'))
+
+GLOBAL_LIST_INIT(drink_sound,list('sound/effects/eating/drink1.ogg'))
+
+GLOBAL_LIST_INIT(eat_sound,list('sound/effects/eating/eat1.ogg','sound/effects/eating/eat2.ogg','sound/effects/eating/eat3.ogg',
+								'sound/effects/eating/eat4.ogg','sound/effects/eating/eat5.ogg'))
+
+GLOBAL_LIST_INIT(closet_close_sound,list('sound/effects/using/closets/close1.ogg','sound/effects/using/closets/close2.ogg','sound/effects/using/closets/close3.ogg',
 								'sound/effects/using/closets/close4.ogg','sound/effects/using/closets/close5.ogg','sound/effects/using/closets/close6.ogg',
 								'sound/effects/using/closets/close7.ogg'))
 
-GLOBAL_LIST_INIT(closet_open,list('sound/effects/using/closets/open1.ogg','sound/effects/using/closets/open2.ogg','sound/effects/using/closets/open3.ogg',
+GLOBAL_LIST_INIT(closet_open_sound,list('sound/effects/using/closets/open1.ogg','sound/effects/using/closets/open2.ogg','sound/effects/using/closets/open3.ogg',
 				'sound/effects/using/closets/open4.ogg','sound/effects/using/closets/open5.ogg','sound/effects/using/closets/open6.ogg',
 				'sound/effects/using/closets/open7.ogg'))
 
@@ -277,8 +284,11 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
-			if ("closet_close")			soundin = pick(GLOB.closet_close)
-			if ("closet_open")			soundin = pick(GLOB.closet_open)
+			if ("drink_pickup")			soundin = pick(GLOB.drink_pickup_sound)
+			if ("eat")					soundin = pick(GLOB.eat_sound)
+			if ("drink")				soundin = pick(GLOB.drink_sound)
+			if ("closet_close")			soundin = pick(GLOB.closet_close_sound)
+			if ("closet_open")			soundin = pick(GLOB.closet_open_sound)
 			if ("disposal")				soundin = pick(GLOB.disposal_sound)
 			if ("vent") 				soundin = pick(GLOB.vent_sound)
 			if ("outfit")				soundin = pick(GLOB.outfit_sound)

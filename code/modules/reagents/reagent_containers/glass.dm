@@ -15,6 +15,7 @@
 	w_class = ITEM_SIZE_SMALL
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = 1 //glass doesn't dissolve in acid
+	pickup_sound = 'sound/effects/using/bottles/pickup3.ogg'
 
 
 	var/list/can_be_placed_into = list(

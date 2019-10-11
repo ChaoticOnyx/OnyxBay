@@ -65,6 +65,7 @@
 		return 1
 
 	var/trans = target.reagents.trans_to_obj(src, target:amount_per_transfer_from_this)
+	playsound(target, 'sound/effects/using/sink/fast_filling1.ogg', 75, TRUE)
 	to_chat(user, "<span class='notice'>You fill [src] with [trans] units of the contents of [target].</span>")
 	return 1
 
@@ -101,7 +102,7 @@
 	user.visible_message("<span class='warning'>[user] has fed [target] \the [src]!</span>")
 
 /obj/item/weapon/reagent_containers/proc/feed_sound(var/mob/user)
-	return
+	playsound(user, "drink", rand(45, 60), FALSE)
 
 /obj/item/weapon/reagent_containers/proc/standard_feed_mob(var/mob/user, var/mob/target) // This goes into attack
 	if(!istype(target))
@@ -179,6 +180,7 @@
 		return 1
 
 	var/trans = reagents.trans_to(target, amount_per_transfer_from_this)
+	playsound(target, 'sound/effects/using/bottles/transfer1.ogg')
 	to_chat(user, "<span class='notice'>You transfer [trans] unit\s of the solution to \the [target].</span>")
 	return 1
 

@@ -12,6 +12,7 @@
 	var/filling_states   // List of percentages full that have icons
 	var/base_name = null // Name to put in front of drinks, i.e. "[base_name] of [contents]"
 	var/base_icon = null // Base icon name for fill states
+	pickup_sound = "drink_pickup"
 
 /obj/item/weapon/reagent_containers/food/drinks/on_reagent_change()
 	update_icon()
@@ -64,9 +65,6 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/self_feed_message(var/mob/user)
 	to_chat(user, "<span class='notice'>You swallow a gulp from \the [src].</span>")
-
-/obj/item/weapon/reagent_containers/food/drinks/feed_sound(var/mob/user)
-	playsound(user.loc, 'sound/items/drink.ogg', rand(10, 50), 1)
 
 /obj/item/weapon/reagent_containers/food/drinks/examine(mob/user)
 	if(!..(user, 1))

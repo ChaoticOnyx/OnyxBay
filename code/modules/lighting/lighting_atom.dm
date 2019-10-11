@@ -81,6 +81,10 @@ if(loc != old_loc) {\
 
 /obj/item/pickup()
 	. = ..()
+
+	if (pickup_sound)
+		playsound(src, pickup_sound, rand(50, 75), TRUE)
+
 	update_light()
 
 /obj/item/dropped()
