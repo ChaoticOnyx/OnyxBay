@@ -31,6 +31,8 @@
 	..()
 
 /obj/machinery/computer/ex_act(severity)
+	playsound(src, "console_breaking", 100, 1)
+
 	switch(severity)
 		if(1.0)
 			qdel(src)

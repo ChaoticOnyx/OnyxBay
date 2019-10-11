@@ -68,6 +68,8 @@ GLOBAL_LIST_INIT(vent_sound,list('sound/effects/vent/vent1.ogg','sound/effects/v
 								'sound/effects/vent/vent16.ogg','sound/effects/vent/vent17.ogg','sound/effects/vent/vent18.ogg',
 								'sound/effects/vent/vent19.ogg'))
 
+GLOBAL_LIST_INIT(console_breaking_sound,list('sound/effects/breaking/console/break1.ogg','sound/effects/breaking/console/break2.ogg','sound/effects/breaking/console/break3.ogg'))
+
 GLOBAL_LIST_INIT(window_breaking_sound,list('sound/effects/breaking/window/break1.ogg', 'sound/effects/breaking/window/break2.ogg', 'sound/effects/breaking/window/break3.ogg',
 											'sound/effects/breaking/window/break4.ogg','sound/effects/breaking/window/break5.ogg','sound/effects/breaking/window/break6.ogg',
 											'sound/effects/breaking/window/break7.ogg','sound/effects/breaking/window/break8.ogg','sound/effects/breaking/window/break9.ogg',
@@ -280,6 +282,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("disposal")				soundin = pick(GLOB.disposal_sound)
 			if ("vent") 				soundin = pick(GLOB.vent_sound)
 			if ("outfit")				soundin = pick(GLOB.outfit_sound)
+			if ("console_breaking")		soundin = pick(GLOB.console_breaking_sound)
 			if ("window_breaking") 		soundin = pick(GLOB.window_breaking_sound)
 			if ("glass_hit") 			soundin = pick(GLOB.glass_hit_sound)
 			if ("explosion") 			soundin = pick(GLOB.explosion_sound)
