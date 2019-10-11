@@ -148,6 +148,7 @@
 	density = 1
 	anchored = 1
 	dir = WEST
+	req_one_access = list(access_security)
 
 	var/base_icon_state = "body_scanner_0"
 	var/occupied_icon_state = "body_scanner_1"
@@ -196,6 +197,7 @@
 	allow_occupant_types = list(/mob/living/silicon/robot)
 	disallow_occupant_types = list(/mob/living/silicon/robot/drone)
 	applies_stasis = 0
+	req_one_access = list(access_robotics, access_security)
 
 /obj/machinery/cryopod/lifepod
 	name = "life pod"
@@ -250,19 +252,29 @@
 			launch()
 		..()
 
-/obj/machinery/cryopod/New()
-	announce = new /obj/item/device/radio/intercom(src)
-	..()
-
 /obj/machinery/cryopod/Destroy()
 	if(occupant)
 		occupant.forceMove(loc)
 		occupant.resting = 1
-	return ..()
+	. = ..()
 
 /obj/machinery/cryopod/Initialize()
 	. = ..()
 	find_control_computer()
+	announce = new /obj/item/device/radio/intercom(src)
+
+/obj/machinery/cryopod/examine(mob/user)
+	. = ..()
+	if (. && user.Adjacent(src))
+		if(occupant)
+			occupant.examine(user)
+
+/obj/machinery/cryopod/emag_act(var/remaining_charges, var/mob/user)
+	if(req_one_access.len)
+		to_chat(user, "<span class='notice'The locking mechanism has been disabled.</span>")
+		req_access = list()
+		req_one_access = list()
+		return 1
 
 /obj/machinery/cryopod/proc/find_control_computer(urgent=0)
 	// Workaround for http://www.byond.com/forum/?post=2007448
@@ -425,14 +437,7 @@
 
 	if(istype(G, /obj/item/grab))
 		var/obj/item/grab/grab = G
-		if(occupant)
-			to_chat(user, "<span class='notice'>\The [src] is in use.</span>")
-			return
-
-		if(!ismob(grab.affecting))
-			return
-
-		if(!check_occupant_allowed(grab.affecting))
+		if(!check_compatibility(grab.affecting, user))
 			return
 
 		var/willing = null //We don't want to allow people to be forced into despawning.
@@ -440,34 +445,29 @@
 
 		if(M.client)
 			if(alert(M,"Would you like to enter long-term storage?",,"Yes","No") == "Yes")
-				if(!M || !grab || !grab.affecting) return
+				if(!M || !grab || !grab.affecting)
+					return
 				willing = 1
 		else
 			willing = 1
 
-		if(willing)
-
-			visible_message("[user] starts putting [grab.affecting:name] into \the [src].", 3)
-
-			if(do_after(user, 20, src))
-				if(!M || !grab || !grab.affecting) return
-
+		if(willing && go_in(grab.affecting, user))
+			if(!check_compatibility(grab.affecting, user))
+				return
+			log_and_message_admins("put [key_name_admin(grab.affecting)] into the cryopod.")
+			add_fingerprint(M)
 			qdel(grab)
-			set_occupant(M)
-
-			// Book keeping!
-			var/turf/location = get_turf(src)
-			log_admin("[key_name_admin(M)] has entered a stasis pod. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>JMP</a>)")
-			message_admins("<span class='notice'>[key_name_admin(M)] has entered a stasis pod.</span>")
-
-			//Despawning occurs when process() is called with an occupant without a client.
-			src.add_fingerprint(M)
 
 /obj/machinery/cryopod/verb/eject()
 	set name = "Eject Pod"
 	set category = "Object"
 	set src in oview(1)
+
 	if(usr.stat != 0)
+		return
+
+	if(usr != occupant && !allowed(usr) && !emagged)
+		to_chat(usr, "<span class='warning'>Access Denied.</span>")
 		return
 
 	icon_state = base_icon_state
@@ -480,48 +480,12 @@
 	for(var/obj/item/W in items)
 		W.forceMove(get_turf(src))
 
-	src.go_out()
+	go_out()
 	add_fingerprint(usr)
 
 	SetName(initial(name))
-	return
-
-/obj/machinery/cryopod/verb/move_inside()
-	set name = "Enter Pod"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.stat != 0 || !check_occupant_allowed(usr))
-		return
-
-	if(src.occupant)
-		to_chat(usr, "<span class='notice'><B>\The [src] is in use.</B></span>")
-		return
-
-	for(var/mob/living/carbon/slime/M in range(1,usr))
-		if(M.Victim == usr)
-			to_chat(usr, "You're too busy getting your life sucked out of you.")
-			return
-
-	visible_message("[usr] starts climbing into \the [src].", 3)
-
-	if(do_after(usr, 20, src))
-
-		if(!usr || !usr.client)
-			return
-
-		if(src.occupant)
-			to_chat(usr, "<span class='notice'><B>\The [src] is in use.</B></span>")
-			return
-
-		set_occupant(usr)
-
-		src.add_fingerprint(usr)
-
-	return
 
 /obj/machinery/cryopod/proc/go_out()
-
 	if(!occupant)
 		return
 
@@ -533,10 +497,38 @@
 	occupant.forceMove(get_turf(src))
 	set_occupant(null)
 
-
 	icon_state = base_icon_state
 
-	return
+/obj/machinery/cryopod/proc/go_in(mob/M, mob/user)
+	if(!M)
+		return
+	if(stat & (BROKEN|NOPOWER))
+		return
+	if(occupant)
+		to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
+		return
+	if(M == user)
+		visible_message("\The [user] starts climbing into \the [src].")
+	else
+		visible_message("\The [user] starts putting [M] into \the [src].")
+
+	var/turf/old_loc = get_turf(M)
+	if(do_after(user, 20, src))
+		if(old_loc != get_turf(M))
+			return
+		if(occupant)
+			to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
+			return
+		if(M.buckled)
+			to_chat(user, "<span class='warning'>Unbuckle [M == user ? "yourself" : M] first.</span>")
+			return FALSE
+
+		M.stop_pulling()
+		if(M.client)
+			M.client.perspective = EYE_PERSPECTIVE
+			M.client.eye = src
+		set_occupant(M)
+		return TRUE
 
 /obj/machinery/cryopod/proc/set_occupant(var/mob/living/carbon/occupant)
 	src.occupant = occupant
@@ -556,3 +548,40 @@
 
 	SetName("[name] ([occupant])")
 	icon_state = occupied_icon_state
+
+/obj/machinery/cryopod/MouseDrop_T(mob/target, mob/user)
+	if(!CanMouseDrop(target, user))
+		return
+	if(!check_compatibility(target, user))
+		return
+
+	if(go_in(target, user))
+		if(target == user)
+			log_and_message_admins("entered a cryopod.")
+		else
+			log_and_message_admins("put [key_name_admin(target)] into the cryopod.")
+
+/obj/machinery/cryopod/proc/check_compatibility(mob/target, mob/user)
+	if(!istype(user) || !istype(target))
+		return
+	if(!check_occupant_allowed(target))
+		to_chat(user, "<span class='warning'>[target] will not fit into the [src].</span>")
+		return
+	if(occupant)
+		to_chat(user, "<span class='warning'>The [src] is already occupied!</span>")
+		return
+	if(target.buckled)
+		to_chat(user, "<span class='warning'>Unbuckle [target == user ? "yourself" : target] first.</span>")
+		return
+	for(var/mob/living/carbon/slime/M in range(1,target))
+		if(M.Victim == target)
+			to_chat(user, "[target.name] will not fit into the [src] because they have a slime latched onto their head.")
+			return
+	return TRUE
+
+/obj/machinery/cryopod/relaymove(mob/user)
+	if(user.stat != 0)
+		return
+
+	go_out()
+	. = ..()
