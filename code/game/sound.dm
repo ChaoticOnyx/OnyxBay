@@ -36,6 +36,14 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
+GLOBAL_LIST_INIT(closet_close,list('sound/effects/using/closets/close1.ogg','sound/effects/using/closets/close2.ogg','sound/effects/using/closets/close3.ogg',
+								'sound/effects/using/closets/close4.ogg','sound/effects/using/closets/close5.ogg','sound/effects/using/closets/close6.ogg',
+								'sound/effects/using/closets/close7.ogg'))
+
+GLOBAL_LIST_INIT(closet_open,list('sound/effects/using/closets/open1.ogg','sound/effects/using/closets/open2.ogg','sound/effects/using/closets/open3.ogg',
+				'sound/effects/using/closets/open4.ogg','sound/effects/using/closets/open5.ogg','sound/effects/using/closets/open6.ogg',
+				'sound/effects/using/closets/open7.ogg'))
+
 GLOBAL_LIST_INIT(disposal_sound,list('sound/effects/using/disposal/drop1.ogg','sound/effects/using/disposal/drop2.ogg','sound/effects/using/disposal/drop3.ogg',
 									'sound/effects/using/disposal/drop4.ogg'))
 
@@ -267,6 +275,8 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
+			if ("closet_close")			soundin = pick(GLOB.closet_close)
+			if ("closet_open")			soundin = pick(GLOB.closet_open)
 			if ("disposal")				soundin = pick(GLOB.disposal_sound)
 			if ("vent") 				soundin = pick(GLOB.vent_sound)
 			if ("outfit")				soundin = pick(GLOB.outfit_sound)
