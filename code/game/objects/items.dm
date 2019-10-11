@@ -253,7 +253,7 @@
 			return
 
 	if(user.put_in_active_hand(src))
-		if(isturf(old_loc) && (src.w_class >= ITEM_SIZE_NORMAL))
+		if(isturf(old_loc))
 			var/obj/effect/temporary/item_pickup_ghost/ghost = new /obj/effect/temporary/item_pickup_ghost(old_loc, src)
 			ghost.animate_towards(user)
 		if(randpixel)
