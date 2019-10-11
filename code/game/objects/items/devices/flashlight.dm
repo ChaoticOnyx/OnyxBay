@@ -146,7 +146,7 @@
 	force = 10
 	attack_verb = list ("smacked", "thwacked", "thunked")
 	matter = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 50)
-	hitsound = "swing_hit"
+	hitsound = "punch"
 
 /obj/item/device/flashlight/drone
 	name = "low-power flashlight"

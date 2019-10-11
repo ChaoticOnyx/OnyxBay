@@ -91,9 +91,24 @@ GLOBAL_LIST_INIT(searching_case_sound,list('sound/effects/using/case/use1.ogg','
 											'sound/effects/using/case/use4.ogg','sound/effects/using/case/use5.ogg','sound/effects/using/case/use6.ogg',
 											'sound/effects/using/case/use7.ogg','sound/effects/using/case/use8.ogg'))
 
-GLOBAL_LIST_INIT(punch_sound,list('sound/weapons/punch1.ogg','sound/weapons/punch2.ogg','sound/weapons/punch3.ogg','sound/weapons/punch4.ogg'))
+GLOBAL_LIST_INIT(crunch_sound,list('sound/effects/figthing/crunch1.ogg','sound/effects/figthing/crunch2.ogg','sound/effects/figthing/crunch3.ogg',
+									'sound/effects/figthing/crunch4.ogg','sound/effects/figthing/crunch5.ogg','sound/effects/figthing/crunch6.ogg',
+									'sound/effects/figthing/crunch7.ogg','sound/effects/figthing/crunch8.ogg','sound/effects/figthing/crunch9.ogg',
+									'sound/effects/figthing/crunch10.ogg'))
+
+GLOBAL_LIST_INIT(gib_sound,list('sound/effects/figthing/gib1.ogg','sound/effects/figthing/gib2.ogg','sound/effects/figthing/gib3.ogg',
+								'sound/effects/figthing/gib4.ogg','sound/effects/figthing/gib5.ogg','sound/effects/figthing/gib6.ogg',
+								'sound/effects/figthing/gib7.ogg'))
+
+GLOBAL_LIST_INIT(punch_sound,list('sound/effects/figthing/punch1.ogg','sound/effects/figthing/punch2.ogg','sound/effects/figthing/punch3.ogg',
+								'sound/effects/figthing/punch4.ogg'))
+
 GLOBAL_LIST_INIT(clown_sound,list('sound/effects/clownstep1.ogg','sound/effects/clownstep2.ogg'))
-GLOBAL_LIST_INIT(swing_hit_sound,list('sound/weapons/genhit1.ogg', 'sound/weapons/genhit2.ogg', 'sound/weapons/genhit3.ogg'))
+
+GLOBAL_LIST_INIT(swing_sound,list('sound/effects/figthing/swing1.ogg','sound/effects/figthing/swing2.ogg','sound/effects/figthing/swing3.ogg',
+									'sound/effects/figthing/swing4.ogg','sound/effects/figthing/swing5.ogg','sound/effects/figthing/swing6.ogg',
+									'sound/effects/figthing/swing7.ogg'))
+
 GLOBAL_LIST_INIT(hiss_sound,list('sound/voice/hiss1.ogg','sound/voice/hiss2.ogg','sound/voice/hiss3.ogg','sound/voice/hiss4.ogg'))
 GLOBAL_LIST_INIT(page_sound,list('sound/effects/pageturn1.ogg', 'sound/effects/pageturn2.ogg','sound/effects/pageturn3.ogg'))
 GLOBAL_LIST_INIT(fracture_sound,list('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg'))
@@ -250,9 +265,11 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("searching_clothes") 	soundin = pick(GLOB.searching_clothes_sound)
 			if ("searching_cabinet") 	soundin = pick(GLOB.searching_cabinet_sound)
 			if ("searching_case") 		soundin = pick(GLOB.searching_case_sound)
+			if ("crunch")				soundin = pick(GLOB.crunch_sound)
+			if ("gib")					soundin = pick(GLOB.gib_sound)
 			if ("punch") 				soundin = pick(GLOB.punch_sound)
 			if ("clownstep") 			soundin = pick(GLOB.clown_sound)
-			if ("swing_hit") 			soundin = pick(GLOB.swing_hit_sound)
+			if ("swing") 				soundin = pick(GLOB.swing_sound)
 			if ("hiss") 				soundin = pick(GLOB.hiss_sound)
 			if ("pageturn") 			soundin = pick(GLOB.page_sound)
 			if ("fracture") 			soundin = pick(GLOB.fracture_sound)
