@@ -270,10 +270,9 @@
 			occupant.examine(user)
 
 /obj/machinery/cryopod/emag_act(var/remaining_charges, var/mob/user)
-	if(req_one_access.len)
+	if(!emagged)
 		to_chat(user, "<span class='notice'The locking mechanism has been disabled.</span>")
-		req_access = list()
-		req_one_access = list()
+		emagged = 1
 		return 1
 
 /obj/machinery/cryopod/proc/find_control_computer(urgent=0)
