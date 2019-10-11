@@ -9,6 +9,8 @@
 	Otherwise pretty standard.
 */
 /mob/living/carbon/human/UnarmedAttack(var/atom/A, var/proximity)
+	if (machine_visual)
+		return
 
 	if(!..())
 		return
