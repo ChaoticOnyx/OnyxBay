@@ -36,6 +36,17 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
+GLOBAL_LIST_INIT(disposal_sound,list('sound/effects/using/disposal/drop1.ogg','sound/effects/using/disposal/drop2.ogg','sound/effects/using/disposal/drop3.ogg',
+									'sound/effects/using/disposal/drop4.ogg'))
+
+GLOBAL_LIST_INIT(vent_sound,list('sound/effects/vent/vent1.ogg','sound/effects/vent/vent2.ogg','sound/effects/vent/vent3.ogg',
+								'sound/effects/vent/vent4.ogg','sound/effects/vent/vent5.ogg','sound/effects/vent/vent6.ogg',
+								'sound/effects/vent/vent7.ogg','sound/effects/vent/vent8.ogg','sound/effects/vent/vent9.ogg',
+								'sound/effects/vent/vent10.ogg','sound/effects/vent/vent11.ogg','sound/effects/vent/vent12.ogg',
+								'sound/effects/vent/vent13.ogg','sound/effects/vent/vent14.ogg','sound/effects/vent/vent15.ogg',
+								'sound/effects/vent/vent16.ogg','sound/effects/vent/vent17.ogg','sound/effects/vent/vent18.ogg',
+								'sound/effects/vent/vent19.ogg'))
+
 GLOBAL_LIST_INIT(window_breaking_sound,list('sound/effects/breaking/window/break1.ogg', 'sound/effects/breaking/window/break2.ogg', 'sound/effects/breaking/window/break3.ogg',
 											'sound/effects/breaking/window/break4.ogg','sound/effects/breaking/window/break5.ogg','sound/effects/breaking/window/break6.ogg',
 											'sound/effects/breaking/window/break7.ogg','sound/effects/breaking/window/break8.ogg','sound/effects/breaking/window/break9.ogg',
@@ -230,27 +241,29 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
-			if ("window_breaking") soundin = pick(GLOB.window_breaking_sound)
-			if ("glass_hit") soundin = pick(GLOB.glass_hit_sound)
-			if ("explosion") soundin = pick(GLOB.explosion_sound)
-			if ("sparks") soundin = pick(GLOB.spark_sound)
-			if ("sparks_medium") soundin = pick(GLOB.spark_medium_sound)
-			if ("sparks_heavy") soundin = pick(GLOB.spark_heavy_sound)
-			if ("searching_clothes") soundin = pick(GLOB.searching_clothes_sound)
-			if ("searching_cabinet") soundin = pick(GLOB.searching_cabinet_sound)
-			if ("searching_case") soundin = pick(GLOB.searching_case_sound)
-			if ("punch") soundin = pick(GLOB.punch_sound)
-			if ("clownstep") soundin = pick(GLOB.clown_sound)
-			if ("swing_hit") soundin = pick(GLOB.swing_hit_sound)
-			if ("hiss") soundin = pick(GLOB.hiss_sound)
-			if ("pageturn") soundin = pick(GLOB.page_sound)
-			if ("fracture") soundin = pick(GLOB.fracture_sound)
-			if ("light_bic") soundin = pick(GLOB.lighter_sound)
-			if ("keyboard") soundin = pick(GLOB.keyboard_sound)
-			if ("keystroke") soundin = pick(GLOB.keystroke_sound)
-			if ("switch_small") soundin = pick(GLOB.switch_small_sound)
-			if ("switch_large") soundin = pick(GLOB.switch_large_sound)
-			if ("button") soundin = pick(GLOB.button_sound)
-			if ("chop") soundin = pick(GLOB.chop_sound)
-			if ("far_explosion") soundin = pick(GLOB.far_explosion_sound)
+			if ("disposal")				soundin = pick(GLOB.disposal_sound)
+			if ("vent") 				soundin = pick(GLOB.vent_sound)
+			if ("window_breaking") 		soundin = pick(GLOB.window_breaking_sound)
+			if ("glass_hit") 			soundin = pick(GLOB.glass_hit_sound)
+			if ("explosion") 			soundin = pick(GLOB.explosion_sound)
+			if ("sparks") 				soundin = pick(GLOB.spark_sound)
+			if ("sparks_medium") 		soundin = pick(GLOB.spark_medium_sound)
+			if ("sparks_heavy") 		soundin = pick(GLOB.spark_heavy_sound)
+			if ("searching_clothes") 	soundin = pick(GLOB.searching_clothes_sound)
+			if ("searching_cabinet") 	soundin = pick(GLOB.searching_cabinet_sound)
+			if ("searching_case") 		soundin = pick(GLOB.searching_case_sound)
+			if ("punch") 				soundin = pick(GLOB.punch_sound)
+			if ("clownstep") 			soundin = pick(GLOB.clown_sound)
+			if ("swing_hit") 			soundin = pick(GLOB.swing_hit_sound)
+			if ("hiss") 				soundin = pick(GLOB.hiss_sound)
+			if ("pageturn") 			soundin = pick(GLOB.page_sound)
+			if ("fracture") 			soundin = pick(GLOB.fracture_sound)
+			if ("light_bic") 			soundin = pick(GLOB.lighter_sound)
+			if ("keyboard") 			soundin = pick(GLOB.keyboard_sound)
+			if ("keystroke") 			soundin = pick(GLOB.keystroke_sound)
+			if ("switch_small") 		soundin = pick(GLOB.switch_small_sound)
+			if ("switch_large") 		soundin = pick(GLOB.switch_large_sound)
+			if ("button") 				soundin = pick(GLOB.button_sound)
+			if ("chop") 				soundin = pick(GLOB.chop_sound)
+			if ("far_explosion") 		soundin = pick(GLOB.far_explosion_sound)
 	return soundin
