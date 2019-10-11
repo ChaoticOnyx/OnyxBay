@@ -265,7 +265,7 @@
 						sleep(3)
 						step_away(src,M,15)
 
-				playsound(loc, "punch", 25, 1, -1)
+				playsound(loc, "punch", 75, 1, -1)
 				visible_message("<span class='danger'>[M] has punched [src]!</span>", \
 						"<span class='danger'>[M] has punched [src]!</span>")
 

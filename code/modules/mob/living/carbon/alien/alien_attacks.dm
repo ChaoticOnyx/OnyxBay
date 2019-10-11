@@ -22,7 +22,7 @@
 						step_away(src,M,15)
 						sleep(3)
 						step_away(src,M,15)
-				playsound(loc, "punch", 25, 1, -1)
+				playsound(loc, "punch", 75, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message("<span class='danger'>\The [M] has punched \the [src]!</span>", 1)
