@@ -1167,7 +1167,7 @@
 
 			if(O.currTag)// Tag set
 				sort_tag = O.currTag
-				playsound(src.loc, 'sound/machines/twobeep.ogg', 100, 1)
+				playsound(src.loc, 'sound/signals/ping1.ogg', 75, 0)
 				to_chat(user, "<span class='notice'>Changed tag to '[sort_tag]'.</span>")
 				updatename()
 				updatedesc()
@@ -1312,7 +1312,7 @@
 		var/obj/item/disposal_switch_construct/C = I
 		if(C.id_tag)
 			id_tag = C.id_tag
-			playsound(src.loc, 'sound/machines/twobeep.ogg', 100, 1)
+			playsound(src.loc, 'sound/signals/ping1.ogg', 75, 0)
 			user.visible_message("<span class='notice'>\The [user] changes \the [src]'s tag.</span>")
 
 
@@ -1396,7 +1396,7 @@
 
 			if(O.currTag)// Tag set
 				sortType = O.currTag
-				playsound(src.loc, 'sound/machines/twobeep.ogg', 100, 1)
+				playsound(src.loc, 'sound/signals/ping1.ogg', 75, 0)
 				to_chat(user, "<span class='notice'>Changed filter to '[sortType]'.</span>")
 				updatename()
 				updatedesc()

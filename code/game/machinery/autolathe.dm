@@ -7,7 +7,7 @@
 	anchored = 1
 	idle_power_usage = 10
 	active_power_usage = 2000
-	clicksound = "keyboard"
+	clicksound = 'sound/effects/using/console/press2.ogg'
 	clickvol = 30
 
 	var/list/machine_recipes

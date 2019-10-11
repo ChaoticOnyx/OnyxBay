@@ -35,7 +35,7 @@
 					update_icon()
 				else
 					src.sortTag = O.currTag
-				playsound(src.loc, 'sound/machines/twobeep.ogg', 50, 1)
+				playsound(src.loc, 'sound/signals/ping1.ogg', 50, 0)
 			else
 				to_chat(user, "<span class='warning'>The package is already labeled for [O.currTag].</span>")
 		else
@@ -163,7 +163,7 @@
 					update_icon()
 				else
 					src.sortTag = O.currTag
-				playsound(src.loc, 'sound/machines/twobeep.ogg', 50, 1)
+				playsound(src.loc, 'sound/signals/ping1.ogg', 50, 0)
 			else
 				to_chat(user, "<span class='warning'>The package is already labeled for [O.currTag].</span>")
 		else

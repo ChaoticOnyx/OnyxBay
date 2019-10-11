@@ -52,7 +52,7 @@
 	ammo.remaining--
 	if(ammo.remaining <= 0)
 		spawn(3)
-			playsound(src.loc, 'sound/machines/twobeep.ogg', 50, 1)
+			playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		out_of_ammo()
 
 /obj/item/weapon/gun/magnetic/railgun/proc/out_of_ammo()

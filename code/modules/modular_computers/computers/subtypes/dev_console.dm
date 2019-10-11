@@ -21,7 +21,4 @@
 /obj/item/modular_computer/console/CouldUseTopic(var/mob/user)
 	..()
 	if(istype(user, /mob/living/carbon))
-		if(prob(50))
-			playsound(src, "keyboard", 40)
-		else
-			playsound(src, "keystroke", 40)
+		playsound(src, 'sound/effects/using/console/press7.ogg', 50, 1)
