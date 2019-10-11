@@ -63,8 +63,10 @@
 	M.overlay_fullscreen("cam_corners", /obj/screen/fullscreen/cam_corners)
 	M.overlay_fullscreen("fishbed", /obj/screen/fullscreen/fishbed)
 
-	var/obj/screen/rec/R = new()
-	M.client.screen += R
+	var/obj/screen/rec/R = (locate(/obj/screen/rec) in M.client.screen)
+	if (!R)
+		R = new()
+		M.client.screen += R
 
 	M.machine_visual = src
 	return 1
