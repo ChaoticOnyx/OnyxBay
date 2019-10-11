@@ -39,6 +39,19 @@
 GLOBAL_LIST_INIT(disposal_sound,list('sound/effects/using/disposal/drop1.ogg','sound/effects/using/disposal/drop2.ogg','sound/effects/using/disposal/drop3.ogg',
 									'sound/effects/using/disposal/drop4.ogg'))
 
+GLOBAL_LIST_INIT(outfit_sound,list('sound/effects/using/outfit/use1.ogg','sound/effects/using/outfit/use2.ogg','sound/effects/using/outfit/use3.ogg',
+								'sound/effects/using/outfit/use4.ogg','sound/effects/using/outfit/use5.ogg','sound/effects/using/outfit/use6.ogg',
+								'sound/effects/using/outfit/use7.ogg','sound/effects/using/outfit/use8.ogg','sound/effects/using/outfit/use9.ogg',
+								'sound/effects/using/outfit/use10.ogg','sound/effects/using/outfit/use11.ogg','sound/effects/using/outfit/use12.ogg',
+								'sound/effects/using/outfit/use13.ogg','sound/effects/using/outfit/use14.ogg','sound/effects/using/outfit/use15.ogg',
+								'sound/effects/using/outfit/use16.ogg','sound/effects/using/outfit/use17.ogg','sound/effects/using/outfit/use18.ogg',
+								'sound/effects/using/outfit/use19.ogg','sound/effects/using/outfit/use20.ogg','sound/effects/using/outfit/use21.ogg',
+								'sound/effects/using/outfit/use22.ogg','sound/effects/using/outfit/use23.ogg','sound/effects/using/outfit/use24.ogg',
+								'sound/effects/using/outfit/use25.ogg','sound/effects/using/outfit/use26.ogg','sound/effects/using/outfit/use27.ogg',
+								'sound/effects/using/outfit/use28.ogg','sound/effects/using/outfit/use29.ogg','sound/effects/using/outfit/use30.ogg',
+								'sound/effects/using/outfit/use31.ogg','sound/effects/using/outfit/use32.ogg','sound/effects/using/outfit/use33.ogg',
+								'sound/effects/using/outfit/use34.ogg','sound/effects/using/outfit/use35.ogg'))
+
 GLOBAL_LIST_INIT(vent_sound,list('sound/effects/vent/vent1.ogg','sound/effects/vent/vent2.ogg','sound/effects/vent/vent3.ogg',
 								'sound/effects/vent/vent4.ogg','sound/effects/vent/vent5.ogg','sound/effects/vent/vent6.ogg',
 								'sound/effects/vent/vent7.ogg','sound/effects/vent/vent8.ogg','sound/effects/vent/vent9.ogg',
@@ -256,6 +269,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 		switch(soundin)
 			if ("disposal")				soundin = pick(GLOB.disposal_sound)
 			if ("vent") 				soundin = pick(GLOB.vent_sound)
+			if ("outfit")				soundin = pick(GLOB.outfit_sound)
 			if ("window_breaking") 		soundin = pick(GLOB.window_breaking_sound)
 			if ("glass_hit") 			soundin = pick(GLOB.glass_hit_sound)
 			if ("explosion") 			soundin = pick(GLOB.explosion_sound)
