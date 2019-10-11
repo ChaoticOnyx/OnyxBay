@@ -42,7 +42,7 @@
 	//This flag is used to determine when items in someone's inventory cover others. IE helmets making it so you can't see glasses, etc.
 	//It should be used purely for appearance. For gameplay effects caused by items covering body parts, use body_parts_covered.
 	var/flags_inv = 0
-	var/body_parts_covered = 0 //see setup.dm for appropriate bit flags
+	var/body_parts_covered = 0 //see code/__defines/items_clothing.dm for appropriate bit flags
 
 	var/item_flags = 0 //Miscellaneous flags pertaining to equippable objects.
 
