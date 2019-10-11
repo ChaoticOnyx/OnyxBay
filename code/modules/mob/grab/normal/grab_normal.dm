@@ -193,7 +193,7 @@
 		target.apply_effect(20, PARALYZE)
 		target.visible_message("<span class='danger'>[target] [target.species.get_knockout_message(target)]</span>")
 
-	playsound(attacker.loc, "swing_hit", 25, 1, -1)
+	playsound(attacker.loc, "punch", 25, 1, -1)
 
 	admin_attack_log(attacker, target, "Headbutted their victim.", "Was headbutted.", "headbutted")
 	return 1
