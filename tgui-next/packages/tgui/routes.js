@@ -4,6 +4,7 @@ import { Resleever } from './interfaces/Resleever';
 import { Jukebox } from './interfaces/Jukebox';
 import { SuitJammer } from './interfaces/SuitJammer';
 import { Psychoscope } from './interfaces/Psychoscope';
+import { NeuromodRnD } from './interfaces/NeuromodRnD';
 
 const ROUTES = {
   airlock_electronics: {
@@ -28,6 +29,10 @@ const ROUTES = {
   },
   psychoscope: {
     component: () => Psychoscope,
+    scrollable: true,
+  },
+  neuromod_rnd: {
+    component: () => NeuromodRnD,
     scrollable: true,
   },
 };
