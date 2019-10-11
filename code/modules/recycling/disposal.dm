@@ -103,6 +103,7 @@
 		var/obj/item/weapon/storage/bag/trash/T = I
 		to_chat(user, "<span class='notice'>You empty the bag.</span>")
 		for(var/obj/item/O in T.contents)
+			playsound(src, "disposal", 75, 0)
 			T.remove_from_storage(O,src)
 		T.update_icon()
 		update_icon()
@@ -115,6 +116,7 @@
 			for (var/mob/V in viewers(usr))
 				V.show_message("[usr] starts putting [GM.name] into the disposal.", 3)
 			if(do_after(usr, 20, src))
+				playsound(src, "disposal", 75, 0)
 				if (GM.client)
 					GM.client.perspective = EYE_PERSPECTIVE
 					GM.client.eye = src
@@ -134,6 +136,7 @@
 	if(I)
 		I.forceMove(src)
 
+	playsound(src, "disposal", 75, 0)
 	to_chat(user, "You place \the [I] into the [src].")
 	for(var/mob/M in viewers(src))
 		if(M == user)
