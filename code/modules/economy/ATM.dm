@@ -303,7 +303,7 @@
 							to_chat(usr, "\icon[src] <span class='warning'>Unable to log in to account, additional information may be required.</span>")
 							number_incorrect_tries = 0
 					else
-						playsound(src, 'sound/machines/twobeep.ogg', 50, 1)
+						playsound(src, 'sound/signals/ping6.ogg', 50, 0)
 						ticks_left_timeout = 120
 						view_screen = NO_SCREEN
 

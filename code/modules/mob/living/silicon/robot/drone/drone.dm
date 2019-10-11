@@ -147,7 +147,7 @@ var/list/mob_hat_cache = list()
 	if(!module) module = new module_type(src)
 
 	flavor_text = "It's a tiny little repair drone. The casing is stamped with an corporate logo and the subscript: '[GLOB.using_map.company_name] Recursive Repair Systems: Fixing Tomorrow's Problem, Today!'"
-	playsound(src.loc, 'sound/machines/twobeep.ogg', 50, 0)
+	playsound(src.loc, 'sound/signals/ping7.ogg', 50, 0)
 
 //Redefining some robot procs...
 /mob/living/silicon/robot/drone/fully_replace_character_name(pickedName as text)

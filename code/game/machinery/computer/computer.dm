@@ -15,7 +15,7 @@
 	var/light_power_on = 1
 	var/overlay_layer
 	atom_flags = ATOM_FLAG_CLIMBABLE
-	clicksound = "keyboard"
+	clicksound = 'sound/effects/using/console/press10.ogg'
 
 /obj/machinery/computer/New()
 	overlay_layer = layer

@@ -1,7 +1,7 @@
 /decl/emote/audible/synth
 	key = "beep"
 	emote_message_3p = "USER beeps."
-	emote_sound = 'sound/machines/twobeep.ogg'
+	emote_sound = 'sound/signals/ping7.ogg'
 
 /decl/emote/audible/synth/check_user(var/mob/living/user)
 	if(istype(user) && user.isSynthetic())
@@ -11,22 +11,22 @@
 /decl/emote/audible/synth/ping
 	key = "ping"
 	emote_message_3p = "USER pings."
-	emote_sound = 'sound/machines/ping.ogg'
+	emote_sound = 'sound/signals/ping1.ogg'
 
 /decl/emote/audible/synth/buzz
 	key = "buzz"
 	emote_message_3p = "USER buzzes."
-	emote_sound = 'sound/machines/buzz-sigh.ogg'
+	emote_sound = 'sound/signals/warning2.ogg'
 
 /decl/emote/audible/synth/confirm
 	key = "confirm"
 	emote_message_3p = "USER emits an affirmative blip."
-	emote_sound = 'sound/machines/synth_yes.ogg'
+	emote_sound = 'sound/signals/ping5.ogg'
 
 /decl/emote/audible/synth/deny
 	key = "deny"
 	emote_message_3p = "USER emits a negative blip."
-	emote_sound = 'sound/machines/synth_no.ogg'
+	emote_sound = 'sound/signals/warning7.ogg'
 
 /decl/emote/audible/synth/security
 	key = "law"

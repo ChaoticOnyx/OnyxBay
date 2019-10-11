@@ -59,7 +59,7 @@
 					message = pick("Luxury watches for Blowout sale prices!",\
 					"Watches, Jewelry & Accessories, Bags & Wallets !",\
 					"Deposit T100 and get T300 totally free!",\
-					" 100K NT.|WOWGOLD õnly T89            <HOT>",\
+					" 100K NT.|WOWGOLD ï¿½nly T89            <HOT>",\
 					"We have been filed with a complaint from one of your customers in respect of their business relations with you.",\
 					"We kindly ask you to open the COMPLAINT REPORT (attached) to reply on this complaint..")
 				if(4)
@@ -105,7 +105,7 @@
 			//P.tnote += "<i><b>&larr; From [sender] (Unknown / spam?):</b></i><br>[message]<br>"
 
 			if (!P.message_silent)
-				playsound(P.loc, 'sound/machines/twobeep.ogg', 50, 1)
+				playsound(P.loc, 'sound/signals/ping5.ogg', 50, 0)
 			for (var/mob/O in hearers(3, P.loc))
 				if(!P.message_silent) O.show_message(text("\icon[P] *[P.ttone]*"))
 			//Search for holder of the PDA.

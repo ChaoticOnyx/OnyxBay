@@ -98,8 +98,6 @@ GLOBAL_LIST_INIT(hiss_sound,list('sound/voice/hiss1.ogg','sound/voice/hiss2.ogg'
 GLOBAL_LIST_INIT(page_sound,list('sound/effects/pageturn1.ogg', 'sound/effects/pageturn2.ogg','sound/effects/pageturn3.ogg'))
 GLOBAL_LIST_INIT(fracture_sound,list('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg'))
 GLOBAL_LIST_INIT(lighter_sound,list('sound/items/lighter1.ogg','sound/items/lighter2.ogg','sound/items/lighter3.ogg'))
-GLOBAL_LIST_INIT(keyboard_sound,list('sound/machines/keyboard/keypress1.ogg','sound/machines/keyboard/keypress2.ogg','sound/machines/keyboard/keypress3.ogg','sound/machines/keyboard/keypress4.ogg'))
-GLOBAL_LIST_INIT(keystroke_sound,list('sound/machines/keyboard/keystroke1.ogg','sound/machines/keyboard/keystroke2.ogg','sound/machines/keyboard/keystroke3.ogg','sound/machines/keyboard/keystroke4.ogg'))
 
 GLOBAL_LIST_INIT(switch_small_sound,list('sound/effects/using/switch/small1.ogg','sound/effects/using/switch/small2.ogg'))
 
@@ -259,11 +257,11 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("pageturn") 			soundin = pick(GLOB.page_sound)
 			if ("fracture") 			soundin = pick(GLOB.fracture_sound)
 			if ("light_bic") 			soundin = pick(GLOB.lighter_sound)
-			if ("keyboard") 			soundin = pick(GLOB.keyboard_sound)
-			if ("keystroke") 			soundin = pick(GLOB.keystroke_sound)
 			if ("switch_small") 		soundin = pick(GLOB.switch_small_sound)
 			if ("switch_large") 		soundin = pick(GLOB.switch_large_sound)
 			if ("button") 				soundin = pick(GLOB.button_sound)
 			if ("chop") 				soundin = pick(GLOB.chop_sound)
 			if ("far_explosion") 		soundin = pick(GLOB.far_explosion_sound)
+			else crash_with("Unknown sound: [soundin]")
+
 	return soundin
