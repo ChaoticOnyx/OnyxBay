@@ -62,7 +62,19 @@
 	if(istype(back,/obj/item/weapon/rig))
 		process_rig(back)
 
+	// Removes zoom effect
+	if (client && machine_visual)
+		if (client.view != world.view)
+			client.view = world.view
+
+		if (client.pixel_x != 0 || client.pixel_y != 0)
+			client.pixel_y = 0
+			client.pixel_x = 0
+
 /mob/living/carbon/human/proc/process_glasses(var/obj/item/clothing/glasses/G)
+	if (machine_visual)
+		return
+
 	if(G && G.active)
 		equipment_darkness_modifier += G.darkness_view
 		equipment_vision_flags |= G.vision_flags
