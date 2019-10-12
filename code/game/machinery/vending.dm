@@ -44,6 +44,7 @@
 	// List of vending_product items available.
 	var/list/product_records = list()
 
+	var/rand_amount = FALSE
 
 	// Variables used to initialize advertising
 	var/product_slogans = "" //String of slogans spoken out loud, separated by semicolons
@@ -69,27 +70,23 @@
 	var/obj/item/weapon/coin/coin
 	var/datum/wires/vending/wires = null
 
-/obj/machinery/vending/New()
-	..()
+/obj/machinery/vending/Initialize()
+	. = ..()
 	wires = new(src)
-	spawn(4)
-		if(src.product_slogans)
-			src.slogan_list += splittext(src.product_slogans, ";")
 
-			// So not all machines speak at the exact same time.
-			// The first time this machine says something will be at slogantime + this random value,
-			// so if slogantime is 10 minutes, it will say it at somewhere between 10 and 20 minutes after the machine is crated.
-			src.last_slogan = world.time + rand(0, slogan_delay)
+	if(product_slogans)
+		slogan_list += splittext(product_slogans, ";")
 
-		if(src.product_ads)
-			src.ads_list += splittext(src.product_ads, ";")
+		// So not all machines speak at the exact same time.
+		// The first time this machine says something will be at slogantime + this random value,
+		// so if slogantime is 10 minutes, it will say it at somewhere between 10 and 20 minutes after the machine is crated.
+		last_slogan = world.time + rand(0, slogan_delay)
 
-		src.build_inventory()
-		power_change()
+	if(product_ads)
+		ads_list += splittext(product_ads, ";")
 
-		return
-
-	return
+	build_inventory()
+	power_change()
 
 /**
  *  Build src.produdct_records from the products lists
@@ -100,9 +97,9 @@
  */
 /obj/machinery/vending/proc/build_inventory()
 	var/list/all_products = list(
-		list(src.products, CAT_NORMAL),
-		list(src.contraband, CAT_HIDDEN),
-		list(src.premium, CAT_COIN))
+		list(products, CAT_NORMAL),
+		list(contraband, CAT_HIDDEN),
+		list(premium, CAT_COIN))
 
 	for(var/current_list in all_products)
 		var/category = current_list[2]
@@ -110,11 +107,15 @@
 		for(var/entry in current_list[1])
 			var/datum/stored_items/vending_products/product = new/datum/stored_items/vending_products(src, entry)
 
-			product.price = (entry in src.prices) ? src.prices[entry] : 0
-			product.amount = (current_list[1][entry]) ? current_list[1][entry] : 1
+			product.price = (entry in prices) ? prices[entry] : 0
 			product.category = category
+			if(rand_amount)
+				var/sum = current_list[1][entry]
+				product.amount = sum ? max(0, sum - rand(0, round(sum * 1.5))) : 1
+			else
+				product.amount = (current_list[1][entry]) ? current_list[1][entry] : 1
 
-			src.product_records.Add(product)
+			product_records.Add(product)
 
 /obj/machinery/vending/Destroy()
 	qdel(wires)
@@ -124,7 +125,7 @@
 	for(var/datum/stored_items/vending_products/R in product_records)
 		qdel(R)
 	product_records = null
-	return ..()
+	. = ..()
 
 /obj/machinery/vending/ex_act(severity)
 	switch(severity)
@@ -704,6 +705,7 @@
 	vend_delay = 34
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	vend_power_usage = 85000 //85 kJ to heat a 250 mL cup of coffee
+	rand_amount = TRUE
 	products = list(/obj/item/weapon/reagent_containers/food/drinks/coffee = 25,
 					/obj/item/weapon/reagent_containers/food/drinks/tea = 25,
 					/obj/item/weapon/reagent_containers/food/drinks/h_chocolate = 25)
@@ -711,9 +713,6 @@
 	prices = list(/obj/item/weapon/reagent_containers/food/drinks/coffee = 3,
 			   	  /obj/item/weapon/reagent_containers/food/drinks/tea = 3,
 			   	  /obj/item/weapon/reagent_containers/food/drinks/h_chocolate = 3)
-
-
-
 
 /obj/machinery/vending/snack
 	name = "Getmore Chocolate Corp"
@@ -723,6 +722,7 @@
 	icon_state = "snack"
 	icon_vend = "snack-vend"
 	vend_delay = 25
+	rand_amount = TRUE
 	products = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 6,
 					/obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 6,
 					/obj/item/weapon/reagent_containers/food/drinks/chickensoup = 6,
@@ -808,6 +808,7 @@
 	vend_delay = 11
 	product_slogans = "Robust Softdrinks: More robust than a toolbox to the head!"
 	product_ads = "Refreshing!;Hope you're thirsty!;Over 1 million drinks sold!;Thirsty? Why not cola?;Please, have a drink!;Drink up!;The best drinks in space."
+	rand_amount = TRUE
 	products = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/cans/colacherry = 10,
@@ -841,6 +842,7 @@
 	vend_delay = 11
 	product_slogans = "Robust Softdrinks: More robust than a toolbox to the head!"
 	product_ads = "Refreshing!;Hope you're thirsty!;Over 1 million drinks sold!;Thirsty? Why not cola?;Please, have a drink!;Drink up!;The best drinks in space."
+	rand_amount = TRUE
 	products = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/cans/colacherry = 10,
@@ -874,6 +876,7 @@
 	icon_state = "fitness"
 	icon_vend = "fitness-vend"
 	vend_delay = 6
+	rand_amount = TRUE
 	products = list(/obj/item/weapon/reagent_containers/food/drinks/milk/smallcarton = 8,
 					/obj/item/weapon/reagent_containers/food/drinks/milk/smallcarton/chocolate = 8,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/fitnessflask/proteinshake = 8,
@@ -932,6 +935,7 @@
 	vend_delay = 21
 	icon_state = "cigs"
 	icon_vend = "cigs-vend"
+	rand_amount = TRUE
 	products = list(/obj/item/weapon/storage/fancy/cigarettes = 5,
 					/obj/item/weapon/storage/fancy/cigarettes/luckystars = 2,
 					/obj/item/weapon/storage/fancy/cigarettes/jerichos = 2,
@@ -1259,6 +1263,7 @@
 	icon_state = "sovietsoda"
 	icon_vend = "sovietsoda-vend"
 	product_ads = "For Tsar and Country.;Have you fulfilled your nutrition quota today?;Very nice!;We are simple people, for this is all we eat.;If there is a person, there is a problem. If there is no person, then there is no problem."
+	rand_amount = TRUE
 	products = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/space_up = 30) // TODO Russian soda can
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/cola = 20) // TODO Russian cola can
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.

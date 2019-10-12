@@ -661,6 +661,14 @@
 					nutrition_reduction *= mod.metabolism_percent
 			nutrition = max (0, nutrition - nutrition_reduction)
 
+		// malnutrition \ obesity
+		if(prob(1) && stat == CONSCIOUS && !isSynthetic(src))
+			switch(nutrition)
+				if(0 to 150)
+					to_chat(src, "<span class='warning'>[pick("You feel hungry","You really want to eat something","It becomes hard to stand on your legs")]...<span>")
+				if(450 to INFINITY)
+					to_chat(src, "<span class='warning'>[pick("It seems you overeat", "Your own weight pulls you to the floor", "It would be nice to lose some weight")]...<span>")
+
 		if(stasis_value > 1 && drowsyness < stasis_value * 4)
 			drowsyness += min(stasis_value, 3)
 			if(!stat && prob(1))
