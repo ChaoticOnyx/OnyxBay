@@ -30,12 +30,12 @@
 	if(!.)
 		return
 
-	if(src.nutrition && src.stat != 2)
-		src.nutrition -= DEFAULT_HUNGER_FACTOR/10
-		if(src.m_intent == "run")
-			src.nutrition -= DEFAULT_HUNGER_FACTOR/10
-	if((MUTATION_FAT in src.mutations) && src.m_intent == "run" && src.bodytemperature <= 360)
-		src.bodytemperature += 2
+	if(nutrition && stat != 2)
+		nutrition -= min(nutrition, DEFAULT_HUNGER_FACTOR/10)
+		if(m_intent == "run")
+			nutrition -= min(nutrition, DEFAULT_HUNGER_FACTOR/10)
+	if((MUTATION_FAT in mutations) && m_intent == "run" && bodytemperature <= 360)
+		bodytemperature += 2
 
 	// Moving around increases germ_level faster
 	if(germ_level < GERM_LEVEL_MOVE_CAP && prob(8))

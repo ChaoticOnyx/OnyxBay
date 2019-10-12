@@ -27,7 +27,8 @@
 	if(health_deficiency >= 40) tally += (health_deficiency / 25)
 
 	if(can_feel_pain())
-		if(get_shock() >= 10) tally += (get_shock() / 10) //pain shouldn't slow you down if you can't even feel it
+		if(get_shock() >= 10)
+			tally += (get_shock() / 10) //pain shouldn't slow you down if you can't even feel it
 
 	if(istype(buckled, /obj/structure/bed/chair/wheelchair))
 		for(var/organ_name in list(BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM))
@@ -68,18 +69,25 @@
 			else if(E.status & ORGAN_BROKEN)
 				tally += 1.5
 
-	//if(shock_stage >= 10) tally += 3 // There's another pain-slowdown processing literally 20 strings above. C'mon.
+	if(aiming && aiming.aiming_at)
+		tally += 5 // Iron sights make you slower, it's a well-known fact.
 
-	if(aiming && aiming.aiming_at) tally += 5 // Iron sights make you slower, it's a well-known fact.
-
-	if(MUTATION_FAT in src.mutations)
+	if(MUTATION_FAT in mutations)
 		tally += 1.5
 	if (bodytemperature < 283.222)
 		tally += (283.222 - bodytemperature) / 10 * 1.75
 
-	tally += blocking*1.5
+	tally += blocking * 1.5
 
 	tally += max(2 * stance_damage, 0) //damaged/missing feet or legs is slow
+
+	if(!isSynthetic(src))	// are you hungry? I think yes
+		var/nut_level = nutrition / 100
+		switch(nutrition)
+			if(0 to 150)
+				tally += 1.5 - nut_level
+			if(450 to INFINITY)
+				tally += nut_level - 4.5
 
 	if(mRun in mutations)
 		tally = 0
