@@ -68,6 +68,10 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	if(GLOB.cult)
 		GLOB.cult.add_ghost_magic(src)
 
+	if(SSticker.end_game_state >= END_GAME_ENDING)
+		invisibility = 0
+		mouse_opacity = 0
+
 	ghost_multitool = new(src)
 
 	GLOB.ghost_mob_list += src
@@ -118,6 +122,10 @@ Works together with spawning an observer, noted above.
 	if(medHUD)
 		process_medHUD(src)
 
+/hook/roundend/proc/reveal_ghosts()
+	for(var/mob/observer/ghost/G in GLOB.ghost_mob_list)
+		G.invisibility = 0
+		G.mouse_opacity = 0
 
 /mob/observer/ghost/proc/process_medHUD(var/mob/M)
 	var/client/C = M.client
