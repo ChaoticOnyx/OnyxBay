@@ -180,8 +180,8 @@
 		icon_state = "gyropistol"
 
 /obj/item/weapon/gun/projectile/det_m9
-	name = "holdout pistol"
-	desc = "The Lumoco Arms P3 Whisper. A small, easily concealable gun. Uses 9mm rounds."
+	name = "T9 Patrol"
+	desc = "A relatively cheap and reliable knock-off of a Beretta M9. Uses 9mm rounds. Used to be a standart-issue gun in almost every security company."
 	icon_state = "det-m9"
 	w_class = ITEM_SIZE_NORMAL
 	caliber = "9mm"
