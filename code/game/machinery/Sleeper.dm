@@ -65,6 +65,9 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 
+	if (!(occupant in src))
+		go_out()
+
 	if(filtering > 0)
 		if(beaker)
 			if(beaker.reagents.total_volume < beaker.reagents.maximum_volume)
@@ -386,7 +389,8 @@
 	if(occupant.client)
 		occupant.client.eye = occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
-	occupant.dropInto(loc)
+	if (occupant in src)
+		occupant.dropInto(loc)
 	occupant = null
 	for(var/atom/movable/A in src) // In case an object was dropped inside or something
 		if(locate(A) in component_parts)

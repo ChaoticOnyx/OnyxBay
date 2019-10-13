@@ -72,7 +72,8 @@
 	if (src.occupant.client)
 		src.occupant.client.eye = src.occupant.client.mob
 		src.occupant.client.perspective = MOB_PERSPECTIVE
-	src.occupant.dropInto(loc)
+	if (src.occupant in src)
+		src.occupant.dropInto(loc)
 	src.occupant = null
 	update_use_power(POWER_USE_IDLE)
 	src.icon_state = "body_scanner_0"
@@ -103,6 +104,10 @@
 /obj/machinery/bodyscanner/proc/check_compatibility(var/mob/target, var/mob/user)
 	if(!istype(user) || !istype(target))
 		return FALSE
+
+	if (!(occupant in src))
+		go_out()
+
 	if(!CanMouseDrop(target, user))
 		return FALSE
 	if(occupant)
@@ -246,6 +251,8 @@
 	if(!connected || (connected.stat & (NOPOWER|BROKEN)))
 		to_chat(user, "<span class='warning'>This console is not connected to a functioning body scanner.</span>")
 		return
+	if (!(connected.occupant in connected))
+		connected.go_out()
 	if(!ishuman(connected.occupant))
 		to_chat(user, "<span class='warning'>This device can only scan compatible lifeforms.</span>")
 		return
