@@ -78,19 +78,24 @@
 		if(screwdriver)
 			tool_c = "screwdriver"
 			tool_u = screwdriver
+			sharp = 1
 		else
 			tool_c = "wirecutters"
 			tool_u = wirecutters
+			sharp = 0
 	else if(tool_c == "screwdriver")
 		if(wirecutters)
 			tool_c = "wirecutters"
 			tool_u = wirecutters
+			sharp = 0
 		else
 			tool_c = "multitool"
 			tool_u = multitool
+			sharp = 0
 	else if(tool_c == "wirecutters")
 		tool_c = "multitool"
 		tool_u = multitool
+		sharp = 0
 	update_icon()
 	return
 
