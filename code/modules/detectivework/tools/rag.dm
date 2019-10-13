@@ -113,19 +113,14 @@
 			M.IgniteMob()
 		else if(reagents.total_volume)
 			if(user.zone_sel.selecting == BP_MOUTH)
-				if (M.get_covered_body_parts() & FACE)
-					return ..()
-
-				user.do_attack_animation(src)
-				user.visible_message(
-					"<span class='danger'>\The [user] smothers [target] with [src]!</span>",
-					"<span class='warning'>You smother [target] with [src]!</span>",
-					"You hear some struggling and muffled cries of surprise"
-					)
-
-				//it's inhaled, so... maybe CHEM_BLOOD doesn't make a whole lot of sense but it's the best we can do for now
-				reagents.trans_to_mob(target, amount_per_transfer_from_this, CHEM_BLOOD)
-				update_name()
+				if (standard_feed_mob(user, target))
+					user.do_attack_animation(src)
+					user.visible_message(
+						"<span class='danger'>\The [user] smothers [target] with [src]!</span>",
+						"<span class='warning'>You smother [target] with [src]!</span>",
+						"You hear some struggling and muffled cries of surprise"
+						)
+					update_name()
 			else
 				wipe_down(target, user)
 		return
