@@ -246,6 +246,12 @@
 	if(occupant)
 		if(occupant.stat == DEAD)
 			return
+
+		// Just empty a cryo if occupant isn't here
+		if (!(occupant in src))
+			go_out(force_move=FALSE)
+			return
+
 		occupant.set_stat(UNCONSCIOUS)
 		var/has_cryo_medicine = occupant.reagents.has_any_reagent(list(/datum/reagent/cryoxadone, /datum/reagent/clonexadone)) >= REM
 		if(beaker && !has_cryo_medicine && !emagged)
@@ -285,7 +291,7 @@
 		return
 	air_contents.remove(air_contents.total_moles/50)
 
-/obj/machinery/atmospherics/unary/cryo_cell/proc/go_out()
+/obj/machinery/atmospherics/unary/cryo_cell/proc/go_out(force_move=TRUE)
 	if(!( occupant ))
 		return
 	//for(var/obj/O in src)
@@ -293,7 +299,10 @@
 	if (occupant.client)
 		occupant.client.eye = occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
-	occupant.forceMove(get_step(loc, SOUTH))	//this doesn't account for walls or anything, but i don't forsee that being a problem.
+
+	if (force_move)
+		occupant.forceMove(get_step(loc, SOUTH))	//this doesn't account for walls or anything, but i don't forsee that being a problem.
+
 	if (occupant.bodytemperature < 261 && occupant.bodytemperature >= 70) //Patch by Aranclanos to stop people from taking burn damage after being ejected
 		occupant.bodytemperature = 261									  // Changed to 70 from 140 by Zuhayr due to reoccurance of bug.
 	occupant = null
