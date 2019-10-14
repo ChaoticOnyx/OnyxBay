@@ -419,3 +419,9 @@
 				usr.update_inv_l_hand(0)
 				usr.update_inv_r_hand(0)
 	return 1
+
+/obj/screen/rec
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "rec"
+	screen_loc = "TOP-2,WEST+2"
+	layer = FULLSCREEN_LAYER
