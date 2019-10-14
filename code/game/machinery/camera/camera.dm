@@ -56,6 +56,9 @@
 	if(!M.client)
 		return
 
+	if (!istype(M))
+		return 1
+
 	M.hud_used.hud_shown = 1
 	M.button_pressed_F12(1)
 
@@ -74,6 +77,9 @@
 /obj/machinery/camera/remove_visual(mob/living/carbon/human/M)
 	if(!M.client)
 		return
+
+	if (!istype(M))
+		return 1
 
 	M.hud_used.hud_shown = 0
 	M.button_pressed_F12(0)
