@@ -155,12 +155,6 @@
 	layer = FULLSCREEN_LAYER
 	blend_mode = BLEND_OVERLAY
 
-/obj/screen/rec
-	icon = 'icons/effects/effects.dmi'
-	icon_state = "rec"
-	screen_loc = "TOP-2,WEST+2"
-	layer = FULLSCREEN_LAYER
-
 /obj/screen/fullscreen/fishbed
 	icon_state = "fishbed"
 	allstate = 1
