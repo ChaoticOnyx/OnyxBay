@@ -79,7 +79,7 @@
 
 
 /obj/item/device/electronic_assembly/proc/check_interactivity(mob/user)
-	return (!user.incapacitated() && CanUseTopic(user))
+	return (Adjacent(user) && !user.incapacitated() && CanUseTopic(user))
 
 /obj/item/device/electronic_assembly/GetAccess()
 	. = list()
