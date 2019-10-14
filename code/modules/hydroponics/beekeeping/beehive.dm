@@ -10,7 +10,11 @@
 	var/smoked = 0 // Timer
 	var/honeycombs = 0 // Percent
 	var/frames = 0
+	var/mut////Placeholder until I find out how to make it more compatible with our plants and make it inject reagents of plants growing near hive
+	var/toxic//
+	var/swarming //Amount of bees that can spawn from the hive
 	var/maxFrames = 5
+	var/list/owned_bee_swarms = list()//all bees that spawned from the hive
 
 /obj/machinery/beehive/update_icon()
 	overlays.Cut()
@@ -124,7 +128,8 @@
 			to_chat(user, "<span class='notice'>There are no filled honeycombs.</span>")
 			return
 		if(!smoked && bee_count)
-			to_chat(user, "<span class='notice'>The bees won't let you take the honeycombs out like this, smoke them first.</span>")
+			angry_swarm(user)
+			to_chat(user, "<span class='notice'>The bees are angry, smoke them first.</span>")
 			return
 		user.visible_message("<span class='notice'>\The [user] starts taking the honeycombs out of \the [src].</span>", "<span class='notice'>You start taking the honeycombs out of \the [src]...</span>")
 		while(honeycombs >= 100 && do_after(user, 30, src))
@@ -140,6 +145,7 @@
 	if(closed && !smoked && bee_count)
 		pollinate_flowers()
 		update_icon()
+		breed()
 	smoked = max(0, smoked - 1)
 	if(!smoked && bee_count)
 		bee_count = min(bee_count * 1.005, 100)
@@ -153,6 +159,34 @@
 			H.health += 0.05 * coef
 			++trays
 	honeycombs = min(honeycombs + 0.1 * coef * min(trays, 5), frames * 100)
+
+/obj/machinery/beehive/proc/angry_swarm(var/mob/M)
+	for(var/mob/living/simple_animal/bee/B in owned_bee_swarms)
+		B.feral = 25
+		B.target_mob = M
+
+	swarming = 25
+
+	while(bee_count > 0)
+		var/spawn_strength = bee_count
+		if(bee_count >= 5)
+			spawn_strength = 6
+
+		var/mob/living/simple_animal/bee/B = new(get_turf(src), src)
+		B.target_mob = M
+		B.strength = spawn_strength
+		B.feral = 25
+		B.mut = mut
+		B.toxic = toxic
+		bee_count -= spawn_strength
+
+/obj/machinery/beehive/proc/breed()
+	if(bee_count >= 80 && prob(bee_count * 10))
+		var/mob/living/simple_animal/bee/B = new(get_turf(src), src)
+		owned_bee_swarms.Add(B)
+		B.mut = mut
+		B.toxic = toxic
+		bee_count -= 30
 
 /obj/item/bee_smoker
 	name = "bee smoker"
