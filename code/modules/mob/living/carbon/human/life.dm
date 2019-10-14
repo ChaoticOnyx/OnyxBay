@@ -1189,6 +1189,10 @@
 			remoteview_target = null
 			reset_view(null, 0)
 
+	// When a mob does not use a machine but visuals still here.
+	if (!machine && machine_visual)
+		reset_view(null, 0)
+
 	update_equipment_vision()
 	species.handle_vision(src)
 

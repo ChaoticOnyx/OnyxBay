@@ -85,7 +85,16 @@
 	M.clear_fullscreen("scanlines")
 	M.clear_fullscreen("cam_corners", 0)
 	M.clear_fullscreen("fishbed", 0)
-	M.machine_visual = null
+
+	if (\
+		!(/obj/screen/rec in M.client.screen) &&\
+		!(/obj/screen/fullscreen/scanline in M.client.screen) &&\
+		!(/obj/screen/fullscreen/fishbed in M.client.screen)\
+		)
+		M.machine_visual = null
+	else
+		crash_with("Not all overlays has removed!")
+
 	return 1
 
 /obj/machinery/camera/New()
