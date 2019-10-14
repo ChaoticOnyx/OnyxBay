@@ -19,6 +19,11 @@
 	return 1
 
 /obj/item/device/transfer_valve/attackby(obj/item/item, mob/user)
+	// Interdict assembly in storages
+	if (!isturf(loc) && !ismob(loc))
+		to_chat(user, "<span class='warning'>There is no enough space to do assembly.</span>")
+		return
+
 	var/turf/location = get_turf(src) // For admin logs
 	if(istype(item, /obj/item/weapon/tank))
 
