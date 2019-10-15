@@ -107,7 +107,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 	if(cast_delay && !spell_do_after(user, cast_delay))
 		return
 	var/list/targets = choose_targets(user)
-	if(!check_valid_targets(targets))
+	if(!check_valid_targets(targets) || !cast_check(skipcharge, user))
 		return
 	var/time = 0
 	admin_attacker_log(user, "attempted to cast the spell [name]")
