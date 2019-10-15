@@ -14,10 +14,10 @@ export const Resleever = props => {
       <Section title="Content"
         buttons={(
           <Fragment>
-            <Button icon='eject' content="Eject Occupant" disabled={data.isOccupiedEjectable ? null : '1'}
+            <Button icon="eject" content="Eject Occupant" disabled={data.isOccupiedEjectable ? null : '1'}
               onclick={() => act(ref, 'eject')} />
             {' '}
-            <Button icon='eject' content="Eject Lace" disabled={data.isLaceEjectable ? null : '1'}
+            <Button icon="eject" content="Eject Lace" disabled={data.isLaceEjectable ? null : '1'}
               onclick={() => act(ref, 'ejectlace')}/>
           </Fragment>
         )}>
@@ -36,14 +36,14 @@ export const Resleever = props => {
       <Section title="Procedure"
         buttons={(
           <Fragment>
-            <Button icon='play' content="Start Procedure" disabled={data.ready ? null : '0'}
+            <Button icon="play" content="Start Procedure" disabled={data.ready ? null : '0'}
               onclick={() => act(ref, 'begin')}/>
           </Fragment>
         )}>
         <LabeledList>
           <LabeledList.Item label="Status">
-            {(progress > 0 && 'In Progress') ||
-              (data.ready ? 'Ready' : 'Not Ready')}
+            {(progress > 0 && 'In Progress')
+              || (data.ready ? 'Ready' : 'Not Ready')}
           </LabeledList.Item>
           <LabeledList.Item label="Progress">
             <ProgressBar value={progress} />
