@@ -62,13 +62,13 @@
 	if (holo)
 		//check if AI using radio while in hologramm
 		if(length(message) >= 1 && copytext(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
-			..()
+			. = ..()
 		else if(length(message) >= 2 && (copytext(message, 1 ,3) in department_radio_keys))
-			..()
+			. = ..()
 		else
-			..(":H[message]")
+			. = ..(":H[message]")
 	else
-		..()
+		. = ..()
 //For holopads only. Usable by AI.
 /mob/living/silicon/ai/proc/holopad_talk(var/message, verb, datum/language/speaking)
 
