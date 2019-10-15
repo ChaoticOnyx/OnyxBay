@@ -12,40 +12,40 @@ export const SuitJammer = props => {
 
   return (
     <Fragment>
-      <Section title='Status' buttons={(
-        <Button content='Toggle Jammer' icon='wifi'
-        onclick={() => act(ref, (data.active ? 'disable_jammer' : 'enable_jammer'))}/>
+      <Section title="Status" buttons={(
+        <Button content="Toggle Jammer" icon="wifi"
+          onclick={() => act(ref, (data.active ? 'disable_jammer' : 'enable_jammer'))}/>
       )}>
         <LabeledList>
-          <LabeledList.Item label='State'>
+          <LabeledList.Item label="State">
             {data.active ? 'Active' : 'Disabled'}
           </LabeledList.Item>
-          <LabeledList.Item label='Charge'>
+          <LabeledList.Item label="Charge">
             <ProgressBar value={String(charge)} />
           </LabeledList.Item>
         </LabeledList>
       </Section>
-      <Section title='Settings'>
+      <Section title="Settings">
         <LabeledList>
-          <LabeledList.Item label='Range'>
+          <LabeledList.Item label="Range">
             {data.range}
             {' '}
-            <Button disabled={data.range <= 0 ? '1' : null}  icon='minus'
+            <Button disabled={data.range <= 0 ? '1' : null} icon="minus"
               onclick={() => act(ref, 'decrease_range')} />
-            <Button disabled={data.range >= data.max_range ? '1' : null} icon='plus'
+            <Button disabled={data.range >= data.max_range ? '1' : null} icon="plus"
               onclick={() => act(ref, 'increase_range')} />
           </LabeledList.Item>
         </LabeledList>
       </Section>
-      <Section title='Methods'>
+      <Section title="Methods">
         {methods.map(method => {
           return (
             <Fragment>
-              <Button content={method.name} disabled={data.current_method == method.ref ? '1' : null}
-                onclick={() => act(ref, 'select_method', {method:method.ref})} />
+              <Button content={method.name} disabled={data.current_method === method.ref ? '1' : null}
+                onclick={() => act(ref, 'select_method', {method: method.ref})} />
               <br></br>
             </Fragment>
-          )
+          );
         })}
       </Section>
 
@@ -53,4 +53,6 @@ export const SuitJammer = props => {
         Energy Consumption: ~{data.total_cost}W
       </Toast>
     </Fragment>
-)};
+  );
+
+};
