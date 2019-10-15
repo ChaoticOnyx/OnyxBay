@@ -125,10 +125,7 @@
 
 /* ui logging */
 
-/proc/log_tgui_error(text)
-	log_error(text)
-
-/proc/log_tgui_debug(text)
+/proc/log_tgui(text)
 	log_debug(text)
 
 //pretty print a direction bitflag, can be useful for debugging.
