@@ -80,7 +80,7 @@ datum/admins/proc/DB_ban_record(var/bantype, var/mob/banned_mob, var/duration = 
 	if(usr)
 		to_chat(usr, "<span class='notice'>Ban saved to database.</span>")
 		setter = key_name_admin(usr)
-	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[russian_to_cp1251(reason)]\" to the ban database.",1)
+	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
 	return 1
 
 datum/admins/proc/DB_ban_unban(var/ckey, var/bantype, var/job = "")
@@ -370,13 +370,13 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 				if(playercid)
 					cidsearch  = "AND computerid = '[playercid]' "
 			else
-				if(adminckey && lentext(adminckey) >= 3)
+				if(adminckey && length(adminckey) >= 3)
 					adminsearch = "AND a_ckey LIKE '[adminckey]%' "
-				if(playerckey && lentext(playerckey) >= 3)
+				if(playerckey && length(playerckey) >= 3)
 					playersearch = "AND ckey LIKE '[playerckey]%' "
-				if(playerip && lentext(playerip) >= 3)
+				if(playerip && length(playerip) >= 3)
 					ipsearch  = "AND ip LIKE '[playerip]%' "
-				if(playercid && lentext(playercid) >= 7)
+				if(playercid && length(playercid) >= 7)
 					cidsearch  = "AND computerid LIKE '[playercid]%' "
 
 			if(dbbantype)

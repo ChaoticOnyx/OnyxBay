@@ -552,15 +552,15 @@
 					if(!playing || !isliving(loc))//If the instrument is playing, or isn't held by a person
 						playing = 0
 						return
-					if(lentext(note) == 0)
+					if(length(note) == 0)
 						continue
-//					log_debug("Parse: [copytext(note,1,2)]")
+//					log_debug("Parse: [copytext_char(note,1,2)]")
 
 					var/cur_note = text2ascii(note) - 96
 					if(cur_note < 1 || cur_note > 7)
 						continue
-					for(var/i=2 to lentext(note))
-						var/ni = copytext(note,i,i+1)
+					for(var/i=2 to length(note))
+						var/ni = copytext_char(note,i,i+1)
 						if(!text2num(ni))
 							if(ni == "#" || ni == "b" || ni == "n")
 								cur_acc[cur_note] = ni
@@ -568,7 +568,7 @@
 								cur_acc[cur_note] = "#" // so shift is never required
 						else
 							cur_oct[cur_note] = ni
-					playnote(uppertext(copytext(note,1,2)) + cur_acc[cur_note] + cur_oct[cur_note])
+					playnote(uppertext(copytext_char(note,1,2)) + cur_acc[cur_note] + cur_oct[cur_note])
 				if(notes.len >= 2 && text2num(notes[2]))
 					sleep(song.tempo / text2num(notes[2]))
 				else
@@ -666,8 +666,8 @@
 				return
 			if(song.lines.len > 50)
 				return
-			if(lentext(newline) > 50)
-				newline = copytext(newline, 1, 50)
+			if(length(newline) > 50)
+				newline = copytext_char(newline, 1, 50)
 			song.lines.Add(newline)
 
 		else if(href_list["deleteline"])
@@ -681,8 +681,8 @@
 			var/content = html_encode(input("Enter your line: ", "instrument", song.lines[num]) as text|null)
 			if(!content)
 				return
-			if(lentext(content) > 50)
-				content = copytext(content, 1, 50)
+			if(length(content) > 50)
+				content = copytext_char(content, 1, 50)
 			if(num > song.lines.len || num < 1)
 				return
 			song.lines[num] = content
@@ -703,25 +703,25 @@
 				if(!in_range(src, usr))
 					return
 
-				if(lentext(t) >= 3072)
+				if(length(t) >= 3072)
 					var/cont = input(usr, "Your message is too long! Would you like to continue editing it?", "", "yes") in list("yes", "no")
 					if(cont == "no")
 						break
-			while(lentext(t) > 3072)
+			while(length(t) > 3072)
 
 			//split into lines
 			spawn()
 				var/list/lines = splittext(t, "\n")
 				var/tempo = 5
-				if(copytext(lines[1],1,6) == "BPM: ")
-					tempo = 600 / text2num(copytext(lines[1],6))
+				if(copytext_char(lines[1],1,6) == "BPM: ")
+					tempo = 600 / text2num(copytext_char(lines[1],6))
 					lines.Cut(1,2)
 				if(lines.len > 50)
 					to_chat(usr, "Too many lines!")
 					lines.Cut(51)
 				var/linenum = 1
 				for(var/l in lines)
-					if(lentext(l) > 50)
+					if(length(l) > 50)
 						to_chat(usr, "Line [linenum] too long!")
 						lines.Remove(l)
 					else
