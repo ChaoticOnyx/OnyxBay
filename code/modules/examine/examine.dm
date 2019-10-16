@@ -14,27 +14,27 @@
 //Override these if you need special behaviour for a specific type.
 /atom/proc/get_description_info()
 	if(description_info)
-		return russian_to_cp1251(description_info)
+		return description_info
 	return
 
 /atom/proc/get_description_fluff()
 	if(description_fluff)
-		return russian_to_cp1251(description_fluff)
+		return description_fluff
 	return
 
 /atom/proc/get_description_antag()
 	if(description_antag)
-		return russian_to_cp1251(description_antag)
+		return description_antag
 	return
 
 /mob/living/get_description_fluff()
 	if(flavor_text) //Get flavor text for the green text.
-		return russian_to_cp1251(flavor_text)
+		return flavor_text
 	else //No flavor text?  Try for hardcoded fluff instead.
 		return ..()
 
 /mob/living/carbon/human/get_description_fluff()
-	return russian_to_cp1251(print_flavor_text(0))
+	return print_flavor_text(0)
 
 /* The examine panel itself */
 

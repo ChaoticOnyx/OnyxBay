@@ -157,8 +157,8 @@
 		var/split = findtext(line,":")
 		if(!split)
 			continue
-		var/field = trim(copytext(line,1,split))
-		var/field_data = trim(copytext(line,(split+1)))
+		var/field = trim(copytext_char(line,1,split))
+		var/field_data = trim(copytext_char(line,(split+1)))
 		if(!field || !field_data)
 			continue
 

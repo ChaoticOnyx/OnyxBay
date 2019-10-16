@@ -201,7 +201,7 @@ var/global/list/virusDB = list()
 	var/t = ""
 	for(var/datum/disease2/effect/E in effects)
 		t += ", [E.name]"
-	return "[name()] ([copytext(t,3)])"
+	return "[name()] ([copytext_char(t,3)])"
 
 /datum/disease2/disease/proc/get_info()
 	var/r = {"

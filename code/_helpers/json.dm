@@ -100,12 +100,12 @@ json_writer
 			var/static/list/json_escape = list("\\" = "\\\\", "\"" = "\\\"", "\n" = "\\n")+rus_unicode_conversion
 			for(var/targ in json_escape)
 				var/start = 1
-				while(start <= lentext(txt))
+				while(start <= length(txt))
 					var/i = findtext(txt, targ, start)
 					if(!i)
 						break
 					var/lrep = length(json_escape[targ])
-					txt = copytext(txt, 1, i) + json_escape[targ] + copytext(txt, i + length(targ))
+					txt = copytext_char(txt, 1, i) + json_escape[targ] + copytext_char(txt, i + length(targ))
 					start = i + lrep
 
 			return {""[txt]""}

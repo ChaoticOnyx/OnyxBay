@@ -344,8 +344,8 @@
 	else if(isnum(expression[i]))
 		val = expression[i]
 
-	else if(copytext(expression[i], 1, 2) in list("'", "\""))
-		val = copytext(expression[i], 2, length(expression[i]))
+	else if(copytext_char(expression[i], 1, 2) in list("'", "\""))
+		val = copytext_char(expression[i], 2, length(expression[i]))
 
 	else if(expression[i] == "\[")
 		var/list/expressions_list = expression[++i]
@@ -379,7 +379,7 @@
 		v = readglobal(expression[start])
 
 	else if (expression [start] == "{" && long)
-		if (lowertext(copytext(expression[start + 1], 1, 3)) != "0x")
+		if (lowertext(copytext_char(expression[start + 1], 1, 3)) != "0x")
 			to_chat(usr, "<span class='danger'>Invalid pointer syntax: [expression[start + 1]]</span>")
 			return null
 		v = locate("\[[expression[start + 1]]]")
@@ -462,7 +462,7 @@
 	var/len = length(query_text)
 
 	for(var/i = 1, i <= len, i++)
-		var/char = copytext(query_text, i, i + 1)
+		var/char = copytext_char(query_text, i, i + 1)
 
 		if(char in whitespace)
 			if(word != "")
@@ -481,7 +481,7 @@
 				query_list += word
 				word = ""
 
-			var/char2 = copytext(query_text, i + 1, i + 2)
+			var/char2 = copytext_char(query_text, i + 1, i + 2)
 
 			if(char2 in multi[char])
 				query_list += "[char][char2]"
@@ -498,10 +498,10 @@
 			word = "'"
 
 			for(i++, i <= len, i++)
-				char = copytext(query_text, i, i + 1)
+				char = copytext_char(query_text, i, i + 1)
 
 				if(char == "'")
-					if(copytext(query_text, i + 1, i + 2) == "'")
+					if(copytext_char(query_text, i + 1, i + 2) == "'")
 						word += "'"
 						i++
 
@@ -526,10 +526,10 @@
 			word = "\""
 
 			for(i++, i <= len, i++)
-				char = copytext(query_text, i, i + 1)
+				char = copytext_char(query_text, i, i + 1)
 
 				if(char == "\"")
-					if(copytext(query_text, i + 1, i + 2) == "'")
+					if(copytext_char(query_text, i + 1, i + 2) == "'")
 						word += "\""
 						i++
 

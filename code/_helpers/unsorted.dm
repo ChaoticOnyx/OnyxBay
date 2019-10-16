@@ -30,9 +30,9 @@
 		if (length(HTMLstring) != 7)
 			CRASH("Given non-HTML argument!")
 			return
-	var/textr = copytext(HTMLstring, 2, 4)
-	var/textg = copytext(HTMLstring, 4, 6)
-	var/textb = copytext(HTMLstring, 6, 8)
+	var/textr = copytext_char(HTMLstring, 2, 4)
+	var/textg = copytext_char(HTMLstring, 4, 6)
+	var/textb = copytext_char(HTMLstring, 6, 8)
 	var/r = hex2num(textr)
 	var/g = hex2num(textg)
 	var/b = hex2num(textb)
@@ -273,7 +273,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	var/i = 7, ch, len = length(key)
 
-	if(copytext(key, 7, 8) == "W") //webclient
+	if(copytext_char(key, 7, 8) == "W") //webclient
 		i++
 
 	for (, i <= len, ++i)
@@ -523,10 +523,6 @@ Turf and target are seperate in case you want to teleport some distance from a t
 //Makes sure MIDDLE is between LOW and HIGH. If not, it adjusts it. Returns the adjusted value. Lower bound takes priority.
 /proc/between(var/low, var/middle, var/high)
 	return max(min(middle, high), low)
-
-proc/arctan(x)
-	var/y=arcsin(x/sqrt(1+x*x))
-	return y
 
 //returns random gauss number
 proc/GaussRand(var/sigma)

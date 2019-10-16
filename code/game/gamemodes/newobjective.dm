@@ -72,7 +72,7 @@
 //HANDLE ASSIGNING OBJECTIVES BASED OFF OF PREVIOUS SUCCESS//
 /////////////////////////////////////////////////////////////
 
-	var/savefile/info = new("data/player_saves/[copytext(traitor.key, 1, 2)]/[traitor.key]/traitor.sav")
+	var/savefile/info = new("data/player_saves/[copytext_char(traitor.key, 1, 2)]/[traitor.key]/traitor.sav")
 	var/list/infos
 	info >> infos
 	if(istype(infos))

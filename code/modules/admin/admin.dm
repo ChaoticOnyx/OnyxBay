@@ -270,7 +270,7 @@ var/global/floorIsLava = 0
 
 
 /datum/admins/proc/player_has_info(var/key as text)
-	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
+	var/savefile/info = new("data/player_saves/[copytext_char(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
 	info >> infos
 	if(!infos || !infos.len) return 0
@@ -296,7 +296,7 @@ var/global/floorIsLava = 0
 			break
 	dat += "<b>Player age: [p_age]</b><br><ul id='notes'>"
 
-	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
+	var/savefile/info = new("data/player_saves/[copytext_char(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
 	info >> infos
 	if(!infos)
@@ -607,7 +607,7 @@ var/global/floorIsLava = 0
 	for(var/t in jobban_keylist)
 		var/r = t
 		if( findtext(r,"##") )
-			r = copytext( r, 1, findtext(r,"##") )//removes the description
+			r = copytext_char( r, 1, findtext(r,"##") )//removes the description
 		dat += text("<tr><td>[t] (<A href='?src=\ref[src];removejobban=[r]'>unban</A>)</td></tr>")
 	dat += "</table>"
 	usr << browse(dat, "window=ban;size=400x400")
@@ -657,7 +657,7 @@ var/global/floorIsLava = 0
 		for(var/datum/admin_secret_item/item in active_category.items)
 			if(!item.can_view(usr))
 				continue
-			dat += "<A href='?src=\ref[src];admin_secrets=\ref[item]'>[rustoutf(item.name())]</A><BR>"
+			dat += "<A href='?src=\ref[src];admin_secrets=\ref[item]'>[item.name()]</A><BR>"
 		dat += "<BR>"
 
 	var/datum/browser/popup = new(usr, "secrets", "Secrets", 550, 500)
