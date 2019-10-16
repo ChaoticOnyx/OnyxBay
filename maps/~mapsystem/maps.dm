@@ -1,4 +1,4 @@
-GLOBAL_DATUM_INIT(using_map, /datum/map, text2path(copytext(file2text("data/use_map"),1,-1)) || USING_MAP_DATUM; using_map = new using_map)
+GLOBAL_DATUM_INIT(using_map, /datum/map, text2path(copytext_char(file2text("data/use_map"),1,-1)) || USING_MAP_DATUM; using_map = new using_map)
 GLOBAL_LIST_EMPTY(all_maps)
 
 var/const/MAP_HAS_BRANCH = 1	//Branch system for occupations, togglable
