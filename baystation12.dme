@@ -1850,6 +1850,7 @@
 #include "code\modules\mob\living\silicon\robot\drone\drone_manufacturer.dm"
 #include "code\modules\mob\living\silicon\robot\drone\drone_remote_control.dm"
 #include "code\modules\mob\living\silicon\robot\drone\drone_say.dm"
+#include "code\modules\mob\living\simple_animal\bees.dm"
 #include "code\modules\mob\living\simple_animal\parrot.dm"
 #include "code\modules\mob\living\simple_animal\shade.dm"
 #include "code\modules\mob\living\simple_animal\shafra.dm"

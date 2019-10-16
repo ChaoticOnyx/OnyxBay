@@ -29,7 +29,8 @@ obj/item/weapon/spellbook/warlock
 				/obj/item/weapon/gun/energy/staff/focus =			1,
 				/obj/structure/closet/wizard/souls =				1,
 				/obj/structure/closet/wizard/scrying =				1,
-				/obj/item/weapon/monster_manual =					1
+				/obj/item/weapon/monster_manual =					1,
+				/obj/item/clothing/ring/magic = 					2
 				)
 
 	sacrifice_objects = list(/obj/item/organ/internal/heart,

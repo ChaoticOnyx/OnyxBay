@@ -30,7 +30,8 @@
 				/obj/item/weapon/magic_rock = 						1,
 				/obj/structure/closet/wizard/scrying = 				2,
 				/obj/item/weapon/contract/wizard/telepathy = 		1,
-				/obj/item/weapon/contract/apprentice = 				1
+				/obj/item/weapon/contract/apprentice = 				1,
+				/obj/item/clothing/ring/magic = 					1
 				)
 
 	sacrifice_reagents = list(/datum/reagent/peridaxon,

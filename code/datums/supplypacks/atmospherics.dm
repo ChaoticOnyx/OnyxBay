@@ -4,8 +4,8 @@
 
 /decl/hierarchy/supply_pack/atmospherics/internals
 	name = "Internals crate"
-	contains = list(/obj/item/clothing/mask/gas = 3,
-					/obj/item/weapon/tank/air = 3)
+	contains = list(/obj/item/clothing/mask/gas = 5,
+					/obj/item/weapon/tank/air = 5)
 	cost = 10
 	containername = "\improper Internals crate"
 
@@ -13,19 +13,18 @@
 	name = "Emergency equipment"
 	contains = list(/obj/item/weapon/storage/toolbox/emergency = 2,
 					/obj/item/clothing/suit/storage/hazardvest = 2,
-					/obj/item/clothing/suit/armor/vest = 2,
 					/obj/item/weapon/tank/emergency/oxygen/engi = 4,
 			 		/obj/item/clothing/suit/space/emergency = 4,
 					/obj/item/clothing/head/helmet/space/emergency = 4,
 					/obj/item/clothing/mask/gas = 4,
 					/obj/item/device/flashlight/glowstick = 5)
-	cost = 45
+	cost = 30
 
 	containername = "\improper Emergency crate"
 
 /decl/hierarchy/supply_pack/atmospherics/inflatable
 	name = "Inflatable barriers"
-	contains = list(/obj/item/weapon/storage/briefcase/inflatable = 3)
+	contains = list(/obj/item/weapon/storage/briefcase/inflatable = 5)
 	cost = 20
 	containertype = /obj/structure/closet/crate
 	containername = "\improper Inflatable Barrier Crate"
@@ -33,7 +32,7 @@
 /decl/hierarchy/supply_pack/atmospherics/canister_empty
 	name = "Empty gas canister"
 	contains = list(/obj/machinery/portable_atmospherics/canister)
-	cost = 7
+	cost = 5
 	containername = "\improper Empty gas canister crate"
 	containertype = /obj/structure/largecrate
 
@@ -107,7 +106,7 @@
 	contains = list(/obj/item/clothing/suit/space/void/atmos/alt,
 					/obj/item/clothing/head/helmet/space/void/atmos/alt,
 					/obj/item/clothing/shoes/magboots)
-	cost = 120
+	cost = 60
 	containername = "\improper Atmospherics voidsuit crate"
 	containertype = /obj/structure/closet/crate/secure/large
 	access = access_atmospherics
