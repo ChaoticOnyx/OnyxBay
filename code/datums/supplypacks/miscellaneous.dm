@@ -4,9 +4,9 @@
 /decl/hierarchy/supply_pack/miscellaneous/wizard
 	name = "Wizard costume"
 	contains = list(/obj/item/weapon/staff,
-					/obj/item/clothing/suit/wizrobe/fake,
+					/obj/item/clothing/suit/wizrobe,
 					/obj/item/clothing/shoes/sandal,
-					/obj/item/clothing/head/wizard/fake)
+					/obj/item/clothing/head/wizard)
 	cost = 20
 	containername = "\improper Wizard costume crate"
 
@@ -162,7 +162,7 @@
 	containername = "\improper EFTPOS crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/hats
-	num_contained = 4
+	num_contained = 5
 	contains = list(/obj/item/clothing/head/collectable/chef,
 					/obj/item/clothing/head/collectable/paper,
 					/obj/item/clothing/head/collectable/tophat,
@@ -184,7 +184,7 @@
 					/obj/item/clothing/head/collectable/xenom,
 					/obj/item/clothing/head/collectable/petehat)
 	name = "Collectable hat crate!"
-	cost = 200
+	cost = 50
 	containername = "\improper Collectable hats crate! Brought to you by Bass.inc!"
 	supply_method = /decl/supply_method/randomized
 
@@ -196,12 +196,25 @@
 
 /decl/hierarchy/supply_pack/miscellaneous/witch
 	name = "Witch costume"
-	contains = list(/obj/item/clothing/suit/wizrobe/marisa/fake,
+	contains = list(/obj/item/clothing/suit/wizrobe/marisa,
 					/obj/item/clothing/shoes/sandal,
-					/obj/item/clothing/head/wizard/marisa/fake,
+					/obj/item/clothing/head/wizard/marisa,
 					/obj/item/weapon/staff/broom)
 	cost = 20
 	containername = "\improper Witch costume"
+	containertype = /obj/structure/closet
+
+/decl/hierarchy/supply_pack/miscellaneous/soviet_pack
+	name = "Kosmicheskaya Stancia 13 uniform"
+	contains = list(/obj/item/clothing/under/soviet,
+					/obj/item/clothing/head/ushanka,
+					/obj/item/clothing/under/captain_fly,
+					/obj/item/clothing/suit/storage/toggle/marshal_jacket,
+					/obj/item/clothing/suit/storage/black_jacket_NT,
+					/obj/item/clothing/shoes/workboots,
+					)
+	cost = 50
+	containername = "\improper Soviet crate"
 	containertype = /obj/structure/closet
 
 /decl/hierarchy/supply_pack/miscellaneous/costume_hats

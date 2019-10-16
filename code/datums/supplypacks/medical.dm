@@ -68,13 +68,13 @@
 
 /decl/hierarchy/supply_pack/medical/bodybag
 	name = "Body bag crate"
-	contains = list(/obj/item/weapon/storage/box/bodybags = 3)
+	contains = list(/obj/item/weapon/storage/box/bodybags = 10)
 	cost = 10
 	containername = "\improper Body bag crate"
 
 /decl/hierarchy/supply_pack/medical/cryobag
 	name = "Stasis bag crate"
-	contains = list(/obj/item/bodybag/cryobag = 3)
+	contains = list(/obj/item/bodybag/cryobag = 5)
 	cost = 50
 	containername = "\improper Stasis bag crate"
 

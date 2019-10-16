@@ -24,8 +24,8 @@
 // TODO; Add more premium drinks at a later date. Could be useful for diplomatic events or fancy parties.
 /decl/hierarchy/supply_pack/hospitality/premiumalcohol
 	name = "Premium drinks crate"
-	contains = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/premiumwine = 1,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/premiumvodka = 1)
+	contains = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/premiumwine = 3,
+					/obj/item/weapon/reagent_containers/food/drinks/bottle/premiumvodka = 3)
 	cost = 60
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Premium drinks"
@@ -76,32 +76,32 @@
 	contains = list(/obj/item/weapon/reagent_containers/food/snacks/meat/beef = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Beef crate"
-	cost = 20
+	cost = 10
 
 /decl/hierarchy/supply_pack/hospitality/goat
 	name = "Goat meat crate"
 	contains = list(/obj/item/weapon/reagent_containers/food/snacks/meat/goat = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Goat meat crate"
-	cost = 20
+	cost = 10
 
 /decl/hierarchy/supply_pack/hospitality/chicken
 	name = "Chicken meat crate"
 	contains = list(/obj/item/weapon/reagent_containers/food/snacks/meat/chicken = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Chicken meat crate"
-	cost = 20
+	cost = 10
 
 /decl/hierarchy/supply_pack/hospitality/eggs
 	name = "Eggs crate"
-	contains = list(/obj/item/weapon/storage/fancy/egg_box = 2)
+	contains = list(/obj/item/weapon/storage/fancy/egg_box = 4)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Egg crate"
 	cost = 15
 
 /decl/hierarchy/supply_pack/hospitality/milk
 	name = "Milk crate"
-	contains = list(/obj/item/weapon/reagent_containers/food/drinks/milk = 3)
+	contains = list(/obj/item/weapon/reagent_containers/food/drinks/milk = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Milk crate"
 	cost = 15

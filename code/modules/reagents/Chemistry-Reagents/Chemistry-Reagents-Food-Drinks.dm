@@ -92,7 +92,8 @@
 
 /datum/reagent/honey/affect_ingest(var/mob/living/carbon/M, var/alien, var/removed)
 	..()
-
+	M.heal_organ_damage(0.5 * removed, 0)
+	M.add_chemical_effect(CE_PAINKILLER, 1)
 	if(alien == IS_UNATHI)
 		if(M.chem_doses[type] < 2)
 			if(M.chem_doses[type] == metabolism * 2 || prob(5))

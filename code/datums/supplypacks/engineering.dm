@@ -3,7 +3,7 @@
 
 /decl/hierarchy/supply_pack/engineering/lightbulbs
 	name = "Replacement lights"
-	contains = list(/obj/item/weapon/storage/box/lights/mixed = 3)
+	contains = list(/obj/item/weapon/storage/box/lights/mixed = 5)
 	cost = 10
 	containername = "\improper Replacement lights"
 
@@ -249,7 +249,7 @@
 	contains = list(/obj/item/clothing/suit/space/void/engineering/alt,
 					/obj/item/clothing/head/helmet/space/void/engineering/alt,
 					/obj/item/clothing/shoes/magboots)
-	cost = 120
+	cost = 60
 	containername = "\improper Engineering voidsuit crate"
 	containertype = /obj/structure/closet/crate/secure/large
 	access = access_engine
