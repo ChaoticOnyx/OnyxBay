@@ -1781,6 +1781,22 @@ area/rnd/test_area
 	name = "\improper Abandoned Ship"
 	icon_state = "yellow"
 
+/area/derelict/snowasteroid
+	name = "\improper Hidden Outpost"
+	icon_state = "yellow"
+
+/area/derelict/snowasteroid/bunker
+	name = "\improper Hidden Outpost Bunker"
+	icon_state = "red"
+
+/area/derelict/snowasteroid/shuttle
+	name = "\improper Hidden Outpost Shuttle"
+	icon_state = "blue"
+
+/area/derelict/djstation
+	name = "\improper DJ Station"
+	icon_state = "yellow"
+
 /area/AIsattele
 	name = "\improper AI Satellite Teleporter Room"
 	icon_state = "teleporter"
