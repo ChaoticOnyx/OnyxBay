@@ -21,6 +21,9 @@
 	#include "exodus-5.dmm"
 	#include "dynamic/null-6.dmm"
 	#include "exodus-7.dmm"
+	#include "derelicts/snowasteroid.dmm"
+	#include "derelicts/djstation.dmm"
+
 
 	#define USING_MAP_DATUM /datum/map/exodus
 
