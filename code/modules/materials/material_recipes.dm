@@ -91,7 +91,7 @@
 	recipes += new/datum/stack_recipe("fire alarm frame", /obj/item/frame/fire_alarm, 3)
 
 	recipes += new/datum/stack_recipe_list("modular computer frames", list( \
-		new/datum/stack_recipe("modular console frame", /obj/item/modular_computer/console, 20),\
+		new/datum/stack_recipe("modular console frame", /obj/item/modular_computer/console, 20, one_per_turf = 1, on_floor = 1),\
 		new/datum/stack_recipe("modular telescreen frame", /obj/item/modular_computer/telescreen, 10),\
 		new/datum/stack_recipe("modular laptop frame", /obj/item/modular_computer/laptop, 10),\
 		new/datum/stack_recipe("modular tablet frame", /obj/item/modular_computer/tablet, 5),\
