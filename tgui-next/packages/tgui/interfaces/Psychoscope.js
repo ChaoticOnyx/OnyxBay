@@ -1,6 +1,6 @@
 import { Fragment } from 'inferno';
 import { act } from '../byond';
-import { Button, Section, LabeledList, Toast, Tabs, NoticeBox } from '../components';
+import { Button, Section, LabeledList, Toast, Tabs, NoticeBox, ProgressBar } from '../components';
 
 import { createLogger } from '../logging';
 
@@ -209,6 +209,14 @@ export const Psychoscope = props => {
             || (data.inserted_disk === 'neuromod' && 'Neuromod Disk')
             || (data.inserted_disk === 'lifeform' && 'Lifeform Disk')
             || 'Empty'
+            }
+          </LabeledList.Item>
+          <LabeledList.Item label="Charge">
+            {data.charge === null
+              ?
+              <span style="color:red;">No battery cell</span>
+              :
+              <ProgressBar value={data.charge / data.max_charge} />
             }
           </LabeledList.Item>
         </LabeledList>

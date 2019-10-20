@@ -36,7 +36,7 @@
 /* PSYCHOSCOPE */
 
 /obj/item/clothing/glasses/hud/psychoscope
-	name = "psychoscope"
+	name = "\improper psychoscope"
 	desc = "Displays information about lifeforms. Scan target must be alive."
 	icon = 'icons/obj/psychotronics.dmi'
 	icon_state = "psychoscope_on"
@@ -51,12 +51,22 @@
 	origin_tech = list(TECH_MAGNET = 4, TECH_BIO = 4)
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_REINFORCED_GLASS = 500, MATERIAL_GOLD = 200)
 
-	var/selected_lifeform = null	// For UI
-	var/list/scanned = list()		// List of all scanned data, every scanned mob, opened neuromods/techs and etc.
-	var/is_scanning = FALSE			// Must be TRUE while a psychoscope does scan.
+	/* ENERGY MANAGEMENT */
+	var/obj/item/weapon/cell/bcell = null
+	var/cell_panel_opened = FALSE
+
+	/* DATA MANAGEMENT */
+	var/selected_lifeform = null			// For UI
+	var/list/scanned = list()				// List of all scanned data, every scanned mob, opened neuromods/techs and etc.
+	var/is_scanning = FALSE					// Must be TRUE while a psychoscope does scan.
 	var/list/accepts_disks = list(/obj/item/weapon/disk/tech_disk,		// Disks which can be inserted into a psychoscope.
 									/obj/item/weapon/disk/neuromod_disk,
 									/obj/item/weapon/disk/lifeform_disk)
+
+/obj/item/clothing/glasses/hud/psychoscope/with_battery/Initialize()
+	. = ..()
+
+	bcell = new()
 
 /* OPENING PROCS */
 
@@ -159,10 +169,10 @@
 		lifeform_type = "[lifeform_type]"
 
 	if (!scanned[lifeform_type])
-		return null
+		return
 
 	if (!scanned[lifeform_type]["opened_neuromods"].len)
-		return null
+		return
 
 	var/list/neuromods_list = list()
 
@@ -199,10 +209,10 @@
 		lifeform_type = "[lifeform_type]"
 
 	if (!scanned[lifeform_type])
-		return null
+		return
 
 	if (!scanned[lifeform_type]["opened_techs"].len)
-		return null
+		return
 
 	var/list/techs_list = list()
 
@@ -236,7 +246,7 @@
 */
 /obj/item/clothing/glasses/hud/psychoscope/proc/ScannedToList(mob/user)
 	if (!scanned.len)
-		return null
+		return
 
 	var/list/scanned_list = list()
 
@@ -268,23 +278,23 @@
 /obj/item/clothing/glasses/hud/psychoscope/proc/LifeformScanToList(lifeform_type, mob/user)
 	if (!lifeform_type)
 		crash_with("lifeform_type must be not null")
-		return null
+		return
 
 	if (!user)
 		crash_with("user must be not null")
-		return null
+		return
 
 	if (!istext(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
 	if (!scanned[lifeform_type])
 		crash_with("trying to get [lifeform_type] but it is not exists")
-		return null
+		return
 
 	var/datum/lifeform/L = GLOB.lifeforms.Get(lifeform_type)
 
 	if (!L)
-		return null
+		return
 
 	var/list/lifeform_list = scanned[lifeform_type].Copy()
 
@@ -308,7 +318,7 @@
 /obj/item/clothing/glasses/hud/psychoscope/proc/IsAlreadyScanned(mob/target)
 	if (!target)
 		crash_with("target must be not null")
-		return null
+		return
 
 	if (!scanned || !scanned.len)
 		return FALSE
@@ -334,15 +344,15 @@
 /obj/item/clothing/glasses/hud/psychoscope/proc/AddScan(datum/lifeform/lifeform, mob/scan_object, mob/user)
 	if (!lifeform)
 		crash_with("lifeform must be not null")
-		return null
+		return
 
 	if (!scan_object)
 		crash_with("scan_object must be not null")
-		return null
+		return
 
 	if (!user)
 		crash_with("user must be not null")
-		return null
+		return
 
 	var/res = IsAlreadyScanned(scan_object)
 
@@ -568,6 +578,33 @@
 
 			return
 
+/* TOGGLING PROCS */
+
+/obj/item/clothing/glasses/hud/psychoscope/proc/Enable(mob/user)
+	if (bcell && bcell.charge <= 0)
+		Disable()
+		return
+
+	if (!bcell)
+		Disable()
+		return
+
+	if (!active)
+		to_chat(usr, "You activate the optical matrix on \the [src.name].")
+		active = TRUE
+		icon_state = initial(icon_state)
+		is_scanning = FALSE
+		playsound(src, 'sound/effects/psychoscope/psychoscope_on.ogg', 10, 0)
+		set_light(2, 5, rgb(105, 180, 255))
+
+/obj/item/clothing/glasses/hud/psychoscope/proc/Disable(mob/user)
+	if (active)
+		to_chat(usr, "You deactivate the optical matrix on \the [src.name].")
+		active = FALSE
+		is_scanning = FALSE
+		icon_state = off_state
+		set_light(0)
+
 /* VERBS */
 
 /*
@@ -582,7 +619,10 @@
 	set popup_menu = 1
 	set category = "Psychoscope"
 
-	attack_self(usr)
+	if (active)
+		Disable(usr)
+	else
+		Enable(usr)
 
 /*
 	Shows a psychoscope's UI.
@@ -614,25 +654,71 @@
 
 /* OVERRIDES */
 
+/obj/item/clothing/glasses/hud/psychoscope/examine(mob/user)
+	. = ..()
+
+	to_chat(user, "The battery panel is [cell_panel_opened ? "opened" : "closed"].")
+
+/obj/item/clothing/glasses/hud/psychoscope/attack_hand(mob/user)
+	if (cell_panel_opened && bcell)
+		user.put_in_hands(bcell)
+		bcell = null
+
+		return
+
+	. = ..()
+
+/obj/item/clothing/glasses/hud/psychoscope/attackby(obj/item/weapon/I, mob/user)
+	if (isScrewdriver(I))
+		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
+		cell_panel_opened = !cell_panel_opened
+		to_chat(user, SPAN_NOTE("You [cell_panel_opened ? "open" : "close"] the battery panel of \the [src]."))
+
+		return
+
+	if (istype(I, /obj/item/weapon/cell))
+		if (cell_panel_opened)
+			user.unEquip(I)
+			I.forceMove(src)
+			bcell = I
+		else
+			to_chat(user, SPAN_NOTE("Open the battery panel before."))
+
+		return
+
+	. = ..()
+
+/obj/item/clothing/glasses/hud/psychoscope/attack_self(mob/user)
+	if (active)
+		Disable()
+	else
+		Enable()
+
+/obj/item/clothing/glasses/hud/psychoscope/Process()
+	if (active)
+		if (!bcell.use(50))
+			Disable()
+
+/obj/item/clothing/glasses/hud/psychoscope/Destroy()
+	STOP_PROCESSING(SSprocessing, src)
+
+	. = ..()
+
 /obj/item/clothing/glasses/hud/psychoscope/Initialize()
 	. = ..()
 
 	overlay = GLOB.global_hud.material
 	icon_state = "psychoscope_off"
+	START_PROCESSING(SSprocessing, src)
 
 /*
 	Toggles a psychoscope.
 */
-/obj/item/clothing/glasses/hud/psychoscope/attack_self(mob/user)
-	. = ..(user)
-
-	if (!active)
-		is_scanning = FALSE
-		set_light(0)
+/obj/item/clothing/glasses/hud/psychoscope/proc/Toggle(mob/user)
+	if (active)
+		Disable(user)
 	else
-		playsound(src, 'sound/effects/psychoscope/psychoscope_on.ogg', 10, 0)
-		set_light(2, 5, rgb(105, 180, 255))
-
+		Enable(user)
 /*
 	Inserting a disk.
 */
@@ -649,8 +735,6 @@
 	Shows up a psychoscope's UI.
 */
 /obj/item/clothing/glasses/hud/psychoscope/AltClick(mob/user)
-	. = ..()
-
 	tg_ui_interact(user)
 
 /* UI */
@@ -671,6 +755,12 @@
 	data["opened_lifeforms"] = scanned.len
 	data["selected_lifeform"] = null
 	data["inserted_disk"] = null
+	data["charge"] = null
+	data["max_charge"] = null
+
+	if (bcell)
+		data["charge"] = bcell.charge
+		data["max_charge"] = bcell.maxcharge
 
 	var/obj/item/weapon/disk/inserted_disk = null
 	inserted_disk = (locate(/obj/item/weapon/disk) in contents)
@@ -692,11 +782,17 @@
 
 	. = FALSE
 
+	if (!bcell)
+		return
+
+	if (!bcell.charge)
+		return
+
 	playsound(src, 'sound/machines/console_click2.ogg', 10, 1)
 
 	switch(action)
 		if ("togglePsychoscope")
-			attack_self(usr)
+			TogglePsychoscope()
 			return TRUE
 		if ("showLifeform")
 			if (!params["lifeform_type"] || !scanned[params["lifeform_type"]])
