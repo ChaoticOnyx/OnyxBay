@@ -178,6 +178,7 @@
 		var/list/items_counts = new
 		var/list/items_measures = new
 		var/list/items_measures_p = new
+		dat += "<h3><b>Ingredients:</b></h3>"
 		for (var/obj/O in InsertedContents())
 			var/display_name = O.name
 			if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/egg))
@@ -217,8 +218,6 @@
 
 		if (items_counts.len==0 && reagents.reagent_list.len==0)
 			dat += "<B>The microwave is empty</B>"
-		else
-			dat += "<b>Ingredients:</b><br>[dat]"
 		dat += "<HR><BR><A href='?src=\ref[src];action=cook'>Turn on!<BR><A href='?src=\ref[src];action=dispose'>Eject ingredients!"
 
 	show_browser(user, "<HEAD><TITLE>Microwave Controls</TITLE></HEAD><TT>[jointext(dat,"<br>")]</TT>", "window=microwave")
