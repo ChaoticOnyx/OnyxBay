@@ -6,9 +6,8 @@
 /datum/neuromod
 	var/name = "Name"
 	var/desc = "Description"
-	var/chance = 0
-	var/research_time = 100
-	var/mob_origin = /mob
+	var/chance = 0				// Chance to be unlocked after scan
+	var/research_time = 100		// How long this neuromod takes to research
 
 /datum/neuromod/proc/ToList()
 	var/list/N = list()
@@ -27,4 +26,3 @@
 	name = "Light Regeneration"
 	desc = "The neuromod changes skin structure and makes possible cure wounds just by light."
 	chance = 25
-	mob_origin = /mob/living/carbon/alien/diona

@@ -40,19 +40,20 @@ export const NeuromodRnD = props => {
             {data.neuromod_shell
               ?
               <Button icon="eject" content="Eject Neuromod Shell"
-                onClick={() => act(ref, 'ejectNeuromodShell')}/>
+                onClick={() => act(ref, 'ejectNeuromodShell')}
+                disabled={data.development_progress > 0}  />
               :
               <Button icon="eject" content="Insert Neuromod Shell"
-                onClick={() => act(ref, 'insertNeuromodShell')}/>
+                onClick={() => act(ref, 'insertNeuromodShell')} />
             }
 
             {data.beaker
               ?
               <Button icon="eject" content="Eject Beaker"
-                onClick={() => act(ref, 'ejectBeaker')}/>
+                onClick={() => act(ref, 'ejectBeaker')} />
               :
               <Button icon="eject" content="Insert Beaker"
-                onClick={() => act(ref, 'insertBeaker')}/>
+                onClick={() => act(ref, 'insertBeaker')} />
             }
           </Fragment>
         )}>
@@ -252,10 +253,10 @@ export const NeuromodRnD = props => {
 
               <LabeledList.Item label="Action">
                 {data.development_progress > 0
-                ?
+                  ?
                   <Button icon="stop" color="red" content="Stop Development"
                     onClick={() => act(ref, 'stopDevelopment')} />
-                :
+                  :
                   <Button icon="forward" color="green" content="Start Development"
                     onClick={() => act(ref, 'startDevelopment')}
                     disabled={data.development_ready ? null : '1'} />
@@ -378,10 +379,20 @@ export const NeuromodRnD = props => {
                           data.disk === 'neuromod' ? 'loadNeuromodFromDisk' : 'loadLifeformFromDisk'
                         ))}/>
                       {' '}
-                      <Button icon="save" content="Save to Disk"
-                        disabled={(data.disk === 'lifeform' && data.selected_lifeform ? null : '1')
-                              || (data.disk === 'neuromod' && data.selected_neuromod ? null : '1')}
-                        onClick={() => act(ref, (data.disk === 'neuromod' ? 'saveNeuromodToDisk' : 'saveLifeformToDisk'))} />
+                      {data.disk === 'lifeform'
+                        ?
+                        <Button icon="save" content="Save to Disk"
+                          disabled={data.selected_lifeform ? false : true}
+                          onClick={() => act(ref, 'saveLifeformToDisk', {
+                            lifeform_type: data.selected_lifeform.type,
+                          })} />
+                        :
+                        <Button icon="save" content="Save to Disk"
+                          disabled={data.selected_neuromod ? false : true}
+                          onClick={() => act(ref, 'saveNeuromodToDisk', {
+                            neuromod_type: data.selected_neuromod.type,
+                          })} />
+                      }
                     </LabeledList.Item>
 
                   </LabeledList>

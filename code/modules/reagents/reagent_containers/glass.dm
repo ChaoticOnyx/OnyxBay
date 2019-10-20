@@ -40,7 +40,7 @@
 		/obj/machinery/biogenerator,
 		/obj/machinery/constructable_frame,
 		/obj/machinery/radiocarbon_spectrometer,
-		/obj/machinery/computer/neuromodRnD
+		/obj/machinery/computer/neuromod_rnd
 	)
 
 /obj/item/weapon/reagent_containers/glass/New()

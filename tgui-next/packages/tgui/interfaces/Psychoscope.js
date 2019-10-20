@@ -219,14 +219,14 @@ export const Psychoscope = props => {
             ?
             <Section title="Researched Lifeforms">
               {scanned.map(scan => {
-                const lifeform = scan.content.lifeform;
-                const button_content = (selected_lifeform && selected_lifeform.content.lifeform.type === scan.lifeform_type) ? lifeform.species + ' (Selected)' : lifeform.species;
+                const lifeform = scan.lifeform;
+                const button_content = (selected_lifeform && selected_lifeform.lifeform.type === lifeform.type) ? lifeform.species + ' (Selected)' : lifeform.species;
 
                 return (
                   <Fragment>
-                    <Button disabled={selected_lifeform && selected_lifeform.content.lifeform.type === scan.lifeform_type ? '1' : null}
+                    <Button disabled={selected_lifeform && selected_lifeform.lifeform.type === lifeform.type ? '1' : null}
                       content={button_content}
-                      onClick={() => act(ref, 'showLifeform', {lifeform_type: scan.lifeform_type})}></Button>
+                      onClick={() => act(ref, 'showLifeform', {lifeform_type: lifeform.type})}></Button>
                     <br></br>
                   </Fragment>
                 );
@@ -250,16 +250,16 @@ export const Psychoscope = props => {
                 <Button disabled={data.inserted_disk === 'lifeform' ? null : '1'}
                   content="Save to Disk" icon="save"
                   onClick={() => act(ref, 'saveLifeformToDisk', {
-                    lifeform_type: selected_lifeform.lifeform_type,
+                    lifeform_type: selected_lifeform.lifeform.type,
                   })} />
               }>
                 <LabeledList>
-                  <Lifeform lifeform={selected_lifeform.content.lifeform}
-                    scan_count={data.selected_lifeform.content.scan_count} />
+                  <Lifeform lifeform={selected_lifeform.lifeform}
+                    scan_count={data.selected_lifeform.scan_count} />
                 </LabeledList>
               </Section>
               <Toast>
-                {(selected_lifeform.content.scan_count >= selected_lifeform.content.lifeform.neuromod_prod_scans
+                {(selected_lifeform.scan_count >= selected_lifeform.lifeform.neuromod_prod_scans
                 && 'You can produce the neuromods for this lifeform.')
                 || 'You can not produce the neuromods for this lifeform.'
                 }
@@ -276,11 +276,11 @@ export const Psychoscope = props => {
             ?
             <Fragment>
               <Section title="Opened Techonologies">
-                <OpenedTechnologies scan={selected_lifeform.content} disk={data.inserted_disk} />
+                <OpenedTechnologies scan={selected_lifeform} disk={data.inserted_disk} />
               </Section>
 
               <Section title="Opened Neuromods">
-                <OpenedNeuromods scan={selected_lifeform.content} disk={data.inserted_disk} />
+                <OpenedNeuromods scan={selected_lifeform} disk={data.inserted_disk} />
               </Section>
             </Fragment>
             :
@@ -292,7 +292,7 @@ export const Psychoscope = props => {
         <Tabs.Tab label="Scans Journal" icon="book">
           {selected_lifeform
             ?
-            <ScansJournal scans={selected_lifeform.content.scans_journal}/>
+            <ScansJournal scans={selected_lifeform.scans_journal}/>
             :
             <NoticeBox>
                 No Selected Lifeform.
