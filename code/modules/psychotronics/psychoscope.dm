@@ -26,12 +26,10 @@
 	if (src != user && istype(src, /mob))
 		var/mob/M = src
 
-		var/atom/equip = user.get_equipped_item(slot_glasses)
+		var/obj/item/clothing/glasses/hud/psychoscope/psychoscope = user.get_equipped_item(slot_glasses)
 
-		if (equip && equip.type == /obj/item/clothing/glasses/hud/psychoscope)
-			var/obj/item/clothing/glasses/hud/psychoscope/pscope = equip
-
-			pscope.ScanLifeform(M, user)
+		if (psychoscope && istype(psychoscope))
+			psychoscope.ScanLifeform(M, user)
 
 /* PSYCHOSCOPE */
 
@@ -101,7 +99,7 @@
 				continue
 
 			to_chat(usr, "A new neuromod available.")
-			scanned[lifeform_type]["opened_neuromods"] += "[N]"
+			scanned[lifeform_type]["opened_neuromods"] += N
 			return
 
 /*
@@ -165,10 +163,15 @@
 	null
 */
 /obj/item/clothing/glasses/hud/psychoscope/proc/NeuromodsToList(lifeform_type)
+	if (!lifeform_type)
+		crash_with("lifeform_type is null")
+		return
+
 	if (!istext(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
 	if (!scanned[lifeform_type])
+		crash_with("trying to get [lifeform_type] but it is not exists")
 		return
 
 	if (!scanned[lifeform_type]["opened_neuromods"].len)
@@ -177,7 +180,7 @@
 	var/list/neuromods_list = list()
 
 	for (var/neuromod in scanned[lifeform_type]["opened_neuromods"])
-		var/datum/neuromod/N = text2path(neuromod)
+		var/datum/neuromod/N = neuromod
 
 		if (!N)
 			continue
@@ -816,7 +819,7 @@
 			SaveTechToDisk(params["tech_id"], text2num(params["tech_level"]))
 			return TRUE
 		if ("saveNeuromodToDisk")
-			if (!params["neuromod_type"] || !params["lifeform_type"] || !(params["neuromod_type"] in scanned[params["lifeform_type"]]["opened_neuromods"]))
+			if (!params["neuromod_type"] || !params["lifeform_type"] || !(text2path(params["neuromod_type"]) in scanned[params["lifeform_type"]]["opened_neuromods"]))
 				return
 
 			SaveNeuromodToDisk(params["neuromod_type"])

@@ -9,20 +9,29 @@
 	icon_keyboard = "telesci_key"
 	icon_screen = "dna"
 	active_power_usage = 800
-	clicksound = null
+	clicksound = 'sound/machines/console_click.ogg'
 	circuit = /obj/item/weapon/circuitboard/neuromod_rnd
 
+	/* RESEARCHING AND DEVELOPMENT */
 	var/research_progress = 0
 	var/development_progress = 0
 	var/max_development_progress = 100
 	var/is_researching = FALSE
 	var/is_develop = FALSE
 	var/datum/neuromod/researching_neuromod = null
-	var/list/neuromods = list()
-	var/list/lifeforms = list()
+
+	/* DATA MANAGEMENT */
+	var/list/neuromods = list()					// List of all saved neuromods
+	var/list/lifeforms = list()					// List of all saved lifeforms
+	var/datum/lifeform/selected_lifeform = null	// Contains path to a lifeform
+	var/datum/neuromod/selected_neuromod = null	// Contains path to a neuromod
+
+	/* ENERGY CONSUMPTION */
+	active_power_usage = 10000
+	idle_power_usage = 40
+
+	// Disks which this console accepts
 	var/list/accepts_disks = list(/obj/item/weapon/disk/neuromod_disk, /obj/item/weapon/disk/lifeform_disk)
-	var/datum/lifeform/selected_lifeform = null
-	var/datum/neuromod/selected_neuromod = null
 
 /* UI */
 
@@ -31,7 +40,7 @@
 
 	. = FALSE
 
-	playsound(src, 'sound/machines/console_click.ogg', 15, 1)
+	playsound(src, clicksound, 15, 1)
 
 	switch (action)
 		if ("ejectBeaker")
@@ -114,12 +123,27 @@
 	var/list/data = list()
 
 	data["disk"] = null
-	data["beaker"] = BeakerToList()
-	data["neuromod_shell"] = NeuromodShellToList()
-	data["neuromods"] = NeuromodsToList()
-	data["lifeforms"] = LifeformsToList(user)
-	data["selected_neuromod"] = NeuromodToList(selected_neuromod)
+	data["beaker"] = null
+	data["neuromod_shell"] = null
+	data["neuromods"] = null
+	data["lifeforms"] = null
+	data["selected_neuromod"] = null
 	data["selected_lifeform"] = null
+
+	if (GetBeaker())
+		data["beaker"] = BeakerToList()
+
+	if (GetNeuromodShell())
+		data["neuromod_shell"] = NeuromodShellToList()
+
+	if (neuromods.len)
+		data["neuromods"] = NeuromodsToList()
+
+	if (lifeforms.len)
+		data["lifeforms"] = LifeformsToList(user)
+
+	if (selected_neuromod)
+		data["selected_neuromod"] = NeuromodToList(selected_neuromod)
 
 	if (selected_lifeform)
 		data["selected_lifeform"] = LifeformToList(user, selected_lifeform)
@@ -148,6 +172,19 @@
 
 /* DEVELOPMENT PROCS */
 
+/*
+	Checks all requirements for development a neuromod:
+	There is must be a beaker with `NEUROMODRND_MUTAGEN_NEEDED` unstable mutagen
+	There is must be a researched and selected lifeform with `scan_count` > `neuromod_prod_scans`
+	There is must be a inserted neuromod shell
+	There is must be a researched and selected neuromod
+
+	Inputs:
+	user - required for icon2html proc
+
+	Returns:
+	TRUE or FALSE
+*/
 /obj/machinery/computer/neuromod_rnd/proc/DevelopmentReady(mob/user)
 	. = FALSE
 
@@ -164,16 +201,41 @@
 
 /* NEUROMODS LIST PROCS */
 
+/*
+	Returns an ui-compatible list with a neuromod data
+
+	Inputs:
+	neuromod_type - `path` or `string` of a neuromod
+
+	Returns:
+	list(...) - See /datum/neuromod/ToList() proc
+	OR
+	null
+*/
 /obj/machinery/computer/neuromod_rnd/proc/NeuromodToList(neuromod_type)
-	if (!neuromod_type) return
+	if (!neuromod_type)
+		crash_with("neuromod_type is null")
+		return
 
 	if (ispath(neuromod_type))
 		neuromod_type = "[neuromod_type]"
 
-	if (!neuromods[neuromod_type]) return
+	if (!neuromods[neuromod_type])
+		crash_with("trying to get [neuromod_type] but it is not exists")
+		return
 
 	return (list("researched" = neuromods[neuromod_type]["researched"]) + GLOB.neuromods.ToList(neuromod_type))
 
+/*
+	Returns an ui-compatible list with data of all saved neuromods in this console
+
+	Returns:
+	list(
+		list(...) - See /datum/neuromod/ToList() proc
+	)
+	OR
+	null
+*/
 /obj/machinery/computer/neuromod_rnd/proc/NeuromodsToList()
 	var/list/neuromods_list = list()
 
@@ -188,6 +250,17 @@
 
 	return list(neuromods_list)
 
+/*
+	Returns a neuromod's research state
+
+	Inputs:
+	neuromod_type - `path` or `string` of a neuromod
+
+	Returns:
+	TRUE
+	OR
+	FALSE
+*/
 /obj/machinery/computer/neuromod_rnd/proc/IsNeuromodResearched(neuromod_type)
 	if (!neuromod_type)
 		crash_with("neuromod_type is null")
@@ -202,17 +275,26 @@
 
 	return neuromods[neuromod_type]["researched"]
 
+/*
+	Loads a neuromod data from an inserted disk
+
+	Returns:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/LoadNeuromodFromDisk()
 	var/obj/item/weapon/disk/neuromod_disk/neuromod_disk = GetDisk()
 
 	if (!neuromod_disk || !neuromod_disk.neuromod)
 		return
 
-	if (neuromods["[neuromod_disk.neuromod]"])
-		return
-
 	AddNeuromod(neuromod_disk.neuromod, neuromod_disk.researched)
 
+/*
+	Saves selected neuromod's data to an inserted disk
+
+	Returns:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/SaveNeuromodToDisk(neuromod_type)
 	if (!neuromod_type)
 		crash_with("neuromod_type is null")
@@ -228,20 +310,44 @@
 	neuromod_disk.neuromod = neuromod_type
 	neuromod_disk.researched = IsNeuromodResearched(neuromod_type)
 
-/obj/machinery/computer/neuromod_rnd/proc/AddNeuromod(neuromod_type, is_researched=FALSE)
-	if (!neuromod_type) return
+/*
+	Adds (or replaces) a neuromod to `neuromods` list
+
+	Inputs:
+	neuromod_type - `path` or `string` to a neuromod
+	researched - is it researched neuromod or not
+
+	Returns:
+	Nothing
+*/
+/obj/machinery/computer/neuromod_rnd/proc/AddNeuromod(neuromod_type, researched)
+	if (!neuromod_type)
+		crash_with("neuromod_type is null")
+
+	if (researched == null)
+		crash_with("researched is null")
 
 	if (ispath(neuromod_type))
 		neuromod_type = "[neuromod_type]"
 
-	if (neuromods[neuromod_type]) return
-
 	neuromods[neuromod_type] = list(
-		"researched" = FALSE
+		"researched" = researched
 	)
 
 /* LIFEFORMS LIST PROCS */
 
+/*
+	Returns an ui-compatible list with a lifeform data
+
+	Inputs:
+	user - required for icon2html
+	lifeform_type - `path` or `string` to a neuromod
+
+	Returns:
+	list(...) - See /datum/lifeform/ToList() proc
+	OR
+	null
+*/
 /obj/machinery/computer/neuromod_rnd/proc/LifeformToList(mob/user, lifeform_type)
 	var/list/lifeform_data = list()
 
@@ -270,6 +376,19 @@
 
 	return lifeform_data
 
+/*
+	Returns an ui-compatible list with data of all saved lifeforms in this console
+
+	Inputs:
+	user - required for icon2html
+
+	Returns:
+	list(
+		list(...) - See /datum/lifeform/ToList() proc
+	)
+	OR
+	null
+*/
 /obj/machinery/computer/neuromod_rnd/proc/LifeformsToList(mob/user)
 	var/list/lifeforms_list = list()
 
@@ -287,38 +406,52 @@
 
 	return lifeforms_list
 
-/obj/machinery/computer/neuromod_rnd/proc/AddLifeform(lifeform_type, custom_data=null, update=FALSE)
+/*
+	Adds (or replaces) a lifeform data to `lifeforms` list
+
+	Inputs:
+	lifeform_type - `path` or `string` of a lifeform
+	lifeform_data - a lifeform data
+
+	Returns:
+	Nothing
+*/
+/obj/machinery/computer/neuromod_rnd/proc/AddLifeform(lifeform_type, lifeform_data)
+	if (!lifeform_type)
+		crash_with("lifeform_type is null")
+		return
+
+	if (!lifeform_data)
+		crash_with("lifeform_data is null")
+		return
+
 	if (ispath(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
-	if (update == FALSE && lifeforms[lifeform_type])
-		return
+	lifeforms[lifeform_type] = lifeform_data
 
-	if (update && !lifeforms[lifeform_type])
-		return
+/*
+	Loads a lifeform data from an inserted disk
 
-	if (custom_data)
-		lifeforms[lifeform_type] = custom_data
-	else
-		lifeforms[lifeform_type] = list(
-			"scan_count" = 0
-		)
-
+	Returns:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/LoadLifeformFromDisk()
 	var/obj/item/weapon/disk/lifeform_disk/lifeform_disk = GetDisk()
 
 	if (!lifeform_disk || !lifeform_disk.lifeform_data)
 		return
 
-	var/list/lifeform_data = list(
-		"scan_count" = lifeform_disk.lifeform_data["scan_count"]
-	)
+	var/list/lifeform_data = lifeform_disk.lifeform_data.Copy()
 
-	if (lifeforms["[lifeform_disk.lifeform]"])
-		AddLifeform(lifeform_disk.lifeform, lifeform_data, TRUE)
-	else
-		AddLifeform(lifeform_disk.lifeform, lifeform_data, FALSE)
+	AddLifeform(lifeform_disk.lifeform, lifeform_data)
 
+/*
+	Saves selected lifeform's data to an inserted disk
+
+	Returns:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/SaveLifeformToDisk(lifeform_type)
 	if (!lifeform_type)
 		crash_with("lifeform_type is null")
@@ -333,10 +466,18 @@
 		lifeform_type = text2path(lifeform_type)
 
 	lifeform_disk.lifeform = lifeform_type
-	lifeform_disk.lifeform_data = LifeformsToList(usr, lifeform_type)
+	lifeform_disk.lifeform_data = (LifeformsToList(usr, lifeform_type) + list("scan_count" = lifeforms["[lifeform_type]"]["scan_count"]))
 
 /* DISK PROCS */
 
+/*
+	Returns an inserted disk
+
+	Returns:
+	/obj/item/weapon/disk/
+	OR
+	null
+*/
 /obj/machinery/computer/neuromod_rnd/proc/GetDisk()
 	for (var/disk_type in accepts_disks)
 		var/obj/item/weapon/disk/disk = null
@@ -346,18 +487,40 @@
 
 	return null
 
+/*
+	Get an inserted lifeform data disk
+
+	Returns:
+	/obj/item/weapon/disk/lifeform_disk/
+	OR
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/GetLifeformDisk()
 	var/obj/item/weapon/disk/lifeform_disk/lifeform_disk = null
 	lifeform_disk = (locate(/obj/item/weapon/disk) in contents)
 
 	return lifeform_disk
 
+/*
+	Get an inserted neuromod data disk
+
+	Returns:
+	/obj/item/weapon/disk/neuromod_disk/
+	OR
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/GetNeuromodDisk()
 	var/obj/item/weapon/disk/neuromod_disk/neuromod_disk = null
 	neuromod_disk = (locate(/obj/item/weapon/disk) in contents)
 
 	return neuromod_disk
 
+/*
+	Ejects an inserted disk
+
+	Return:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/EjectDisk()
 	var/obj/item/weapon/disk/disk = GetDisk()
 
@@ -366,6 +529,12 @@
 	contents -= disk
 	usr.put_in_hands(disk)
 
+/*
+	Insert a disk which is in user's hands
+
+	Returns:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/InsertDisk()
 	if (GetDisk())
 		to_chat(usr, "Console's disk slot is already occupied.")
@@ -380,13 +549,31 @@
 
 /* NEUROMOD SHELL PROCS */
 
+/*
+	Clears neuromod shell from any neuromod in there
+
+	Return:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/ClearNeuromodShell()
 	var/obj/item/weapon/reagent_containers/neuromod_shell/shell = GetNeuromodShell()
 
 	if (!shell || !shell.neuromod) return
 
 	shell.neuromod = null
+	shell.created_for = null
 
+/*
+	Returns an ui-compatible list with a neuromod shell data
+
+	Returns:
+	list(
+		"neuromod" = list(...), - See /datum/neuromod/ToList()
+		"created_for" = /mob/...
+	)
+	OR
+	null
+*/
 /obj/machinery/computer/neuromod_rnd/proc/NeuromodShellToList()
 	var/obj/item/weapon/reagent_containers/neuromod_shell/shell = GetNeuromodShell()
 
@@ -396,16 +583,32 @@
 		"neuromod" = null
 	)
 
-	var/list/neuromod_data = GLOB.neuromods.ToList(shell.neuromod)
+	shell_data["neuromod"] = null
 
-	if (neuromod_data)
-		shell_data["neuromod"] = neuromod_data
+	if (shell.neuromod)
+		shell_data["neuromod"] = GLOB.neuromods.ToList(shell.neuromod)
+
+	shell_data["created_for"] = shell.created_for
 
 	return shell_data
 
+/*
+	Returns an inserted neuromod shell
+
+	Returns:
+	/obj/item/weapon/reagent_conainers/neuromod_shell/
+	OR
+	null
+*/
 /obj/machinery/computer/neuromod_rnd/proc/GetNeuromodShell()
 	return (locate(/obj/item/weapon/reagent_containers/neuromod_shell/) in contents)
 
+/*
+	Ejects an inserted neuromod shell
+
+	Returns:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/EjectNeuromodShell()
 	var/obj/item/weapon/reagent_containers/neuromod_shell/neuromod_shell = GetNeuromodShell()
 
@@ -413,6 +616,12 @@
 		contents -= neuromod_shell
 		usr.put_in_hands(neuromod_shell)
 
+/*
+	Insert a neuromod which is in user's hands
+
+	Returns:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/InsertNeuromodShell()
 	var/obj/item/weapon/reagent_containers/neuromod_shell/neuromod_shell = usr.get_active_hand()
 
@@ -427,13 +636,32 @@
 
 /* BEAKER PROCS */
 
+/*
+	Removes `NEUROMODRND_MUTAGEN_NEEDED` of mutagen from a beaker
+
+	Returns:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/TakeReagents()
 	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = GetBeaker()
 
-	if (!beaker) return
+	if (!beaker)
+		crash_with("beaker is null")
 
 	beaker.reagents.remove_reagent(/datum/reagent/mutagen, NEUROMODRND_MUTAGEN_NEEDED, TRUE)
 
+/*
+	Returns an ui-compatible list with a beaker data
+
+	Returns:
+	list(
+		"check_status" = TRUE or FALSE,
+		"volume_max" = `number`,
+		"volume" = `number`
+	)
+	OR
+	null
+*/
 /obj/machinery/computer/neuromod_rnd/proc/BeakerToList()
 	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = GetBeaker()
 
@@ -447,6 +675,14 @@
 
 	return beaker_data
 
+/*
+	Returns a reference to a mutagen in an inserted beaker
+
+	Returns:
+	/datum/reagent/
+	OR
+	null
+*/
 /obj/machinery/computer/neuromod_rnd/proc/GetMutagen()
 	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = GetBeaker()
 
@@ -456,6 +692,14 @@
 
 	return beaker.reagents.reagent_list[1]
 
+/*
+	Checks an inserted beaker content:
+	Beaker must be with only unstable mutagen
+	Mutagen's volume must be >= `NEUROMODRND_MUTAGEN_NEEDED`
+
+	Returns:
+	TRUE OR FALSE
+*/
 /obj/machinery/computer/neuromod_rnd/proc/CheckBeakerContent()
 	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = GetBeaker()
 
@@ -473,12 +717,26 @@
 
 	return TRUE
 
+/*
+	Returns an inserted beaker
+
+	Returns:
+	/obj/item/weapon/reagent_containers/glass/beaker/
+	OR
+	null
+*/
 /obj/machinery/computer/neuromod_rnd/proc/GetBeaker()
 	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = null
 	beaker = (locate(/obj/item/weapon/reagent_containers/glass/beaker) in contents)
 
 	return beaker
 
+/*
+	Ejects an inserted beaker
+
+	Returns:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/EjectBeaker()
 	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = GetBeaker()
 
@@ -486,6 +744,12 @@
 		contents -= beaker
 		usr.put_in_hands(beaker)
 
+/*
+	Insert a beaker which is in user's hands
+
+	Returns:
+	Nothing
+*/
 /obj/machinery/computer/neuromod_rnd/proc/InsertBeaker()
 	if (GetBeaker())
 		to_chat(usr, "Console's beaker slot is already occupied.")
@@ -500,12 +764,21 @@
 /* OVERRIDES */
 
 /obj/machinery/computer/neuromod_rnd/Process()
+	if (!is_researching && !is_develop)
+		update_use_power(POWER_USE_IDLE)
+
+	// Process researching
 	if (is_researching)
-		if (!researching_neuromod || IsNeuromodResearched(researching_neuromod))
+		update_use_power(POWER_USE_ACTIVE)
+
+		// Stops researching
+		if (!researching_neuromod || IsNeuromodResearched(researching_neuromod) || (stat & (BROKEN | NOPOWER)))
 			research_progress = 0
 			is_researching = FALSE
 
 			playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
+
+		// Finishing the researching
 		else
 			research_progress += 10
 
@@ -516,9 +789,18 @@
 				researching_neuromod = null
 				playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
 
+	// Process development
 	if (is_develop)
+		update_use_power(POWER_USE_ACTIVE)
+
+		if (stat & (BROKEN | NOPOWER))
+			is_develop = FALSE
+			development_progress = 0
+			playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
+
 		development_progress += 10
 
+		// Finishing the development
 		if (development_progress > max_development_progress)
 			development_progress = 0
 			is_develop = FALSE
@@ -533,15 +815,19 @@
 			playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
 
 /obj/machinery/computer/neuromod_rnd/attackby(atom/I, user)
+
+	// Handling inserting of items
 	if (istype(I, /obj/item/weapon/reagent_containers/neuromod_shell))
 		InsertNeuromodShell()
-		return
-	else if (I.type in accepts_disks)
-		InsertDisk()
 		return
 	else if (istype(I, /obj/item/weapon/reagent_containers/glass/beaker))
 		InsertBeaker()
 		return
+	else
+		for (var/disk_type in accepts_disks)
+			if (istype(I, disk_type))
+				InsertDisk()
+				return
 
 	. = ..()
 
