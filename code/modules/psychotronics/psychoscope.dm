@@ -66,7 +66,7 @@
 /obj/item/clothing/glasses/hud/psychoscope/with_battery/Initialize()
 	. = ..()
 
-	bcell = new()
+	bcell = new /obj/item/weapon/cell/standard/(src.contents)
 
 /* OPENING PROCS */
 
@@ -696,7 +696,7 @@
 
 /obj/item/clothing/glasses/hud/psychoscope/Process()
 	if (active)
-		if (!bcell.use(50))
+		if (!bcell.use(25))
 			Disable()
 
 /obj/item/clothing/glasses/hud/psychoscope/Destroy()
