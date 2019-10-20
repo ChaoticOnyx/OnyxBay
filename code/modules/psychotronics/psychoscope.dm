@@ -51,84 +51,14 @@
 	origin_tech = list(TECH_MAGNET = 4, TECH_BIO = 4)
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_REINFORCED_GLASS = 500, MATERIAL_GOLD = 200)
 
-	var/list/scanned = null			// List of all scanned data, every scanned mob, opened neuromods/techs and etc.
+	var/selected_lifeform = null	// For UI
+	var/list/scanned = list()		// List of all scanned data, every scanned mob, opened neuromods/techs and etc.
 	var/is_scanning = FALSE			// Must be TRUE while a psychoscope does scan.
-	var/list/accepts_disks = null	// Disks which can be inserted into a psychoscope.
+	var/list/accepts_disks = list(/obj/item/weapon/disk/tech_disk,		// Disks which can be inserted into a psychoscope.
+									/obj/item/weapon/disk/neuromod_disk,
+									/obj/item/weapon/disk/lifeform_disk)
 
-/*
-	Creates list which contains a data about all opened techs.
-
-	Inputs:
-	lifeform_type - `text` or `path` to a lifeform (/datum/lifeform/)
-
-	Returns:
-	list(
-		list("tech_id", "tech_name", "tech_level"),
-		...
-	)
-	OR
-	null
-*/
-/obj/item/clothing/glasses/hud/psychoscope/proc/TechsToList(lifeform_type)
-	if (!istext(lifeform_type))
-		lifeform_type = "[lifeform_type]"
-
-	if (!scanned[lifeform_type])
-		return null
-
-	if (!scanned[lifeform_type]["opened_techs"].len)
-		return null
-
-	var/list/techs_list = list()
-
-	for (var/tech in scanned[lifeform_type]["opened_techs"])
-		techs_list += list(list(
-			"tech_id" = tech,
-			"tech_name" = CallTechName(tech),
-			"tech_level" = scanned[lifeform_type]["opened_techs"][tech]
-		))
-
-	return techs_list
-
-/*
-	Creates list which contains a data about all opened neuromods.
-
-	Inputs:
-	lifeform_type - `text` or `path` to a lifeform (/datum/lifeform/)
-
-	Returns:
-	list(
-		list(neuromod_name, neuromod_desc, neuromod_type),
-		...
-	)
-	OR
-	null
-*/
-/obj/item/clothing/glasses/hud/psychoscope/proc/NeuromodsToList(lifeform_type)
-	if (!istext(lifeform_type))
-		lifeform_type = "[lifeform_type]"
-
-	if (!scanned[lifeform_type])
-		return null
-
-	if (!scanned[lifeform_type]["opened_neuromods"].len)
-		return null
-
-	var/list/neuromods_list = list()
-
-	for (var/neuromod in scanned[lifeform_type]["opened_neuromods"])
-		var/datum/neuromod/N = text2path(neuromod)
-
-		if (!N)
-			continue
-
-		neuromods_list += list(list(
-			"neuromod_name" = initial(N.name),
-			"neuromod_desc" = initial(N.desc),
-			"neuromod_type" = neuromod
-		))
-
-	return neuromods_list
+/* OPENING PROCS */
 
 /*
 	Opens one neuromod with a some chance (/datum/neuromod/chance).
@@ -175,6 +105,7 @@
 /obj/item/clothing/glasses/hud/psychoscope/proc/ProbTechs(lifeform_type)
 	if (!lifeform_type)
 		crash_with("lifeform_type must be no null")
+		return
 
 	if (!istext(lifeform_type))
 		lifeform_type = "[lifeform_type]"
@@ -186,6 +117,7 @@
 
 	if (!L)
 		crash_with("L must be not null")
+		return
 
 	for (var/scan = 1, scan <= scanned[lifeform_type]["scan_count"], scan++)
 		var/list/techs = L.tech_rewards[num2text(scan)]
@@ -205,6 +137,83 @@
 			to_chat(usr, "A new technology available.")
 			scanned[lifeform_type]["opened_techs"][tech] = techs[tech]
 			return
+
+/* TO LIST PROCS */
+
+/*
+	Creates list which contains a data about all opened neuromods.
+
+	Inputs:
+	lifeform_type - `text` or `path` to a lifeform (/datum/lifeform/)
+
+	Returns:
+	list(
+		list(neuromod_name, neuromod_desc, neuromod_type),
+		...
+	)
+	OR
+	null
+*/
+/obj/item/clothing/glasses/hud/psychoscope/proc/NeuromodsToList(lifeform_type)
+	if (!istext(lifeform_type))
+		lifeform_type = "[lifeform_type]"
+
+	if (!scanned[lifeform_type])
+		return null
+
+	if (!scanned[lifeform_type]["opened_neuromods"].len)
+		return null
+
+	var/list/neuromods_list = list()
+
+	for (var/neuromod in scanned[lifeform_type]["opened_neuromods"])
+		var/datum/neuromod/N = text2path(neuromod)
+
+		if (!N)
+			continue
+
+		neuromods_list += list(list(
+			"neuromod_name" = initial(N.name),
+			"neuromod_desc" = initial(N.desc),
+			"neuromod_type" = neuromod
+		))
+
+	return neuromods_list
+
+/*
+	Creates list which contains a data about all opened techs.
+
+	Inputs:
+	lifeform_type - `text` or `path` to a lifeform (/datum/lifeform/)
+
+	Returns:
+	list(
+		list("tech_id", "tech_name", "tech_level"),
+		...
+	)
+	OR
+	null
+*/
+/obj/item/clothing/glasses/hud/psychoscope/proc/TechsToList(lifeform_type)
+	if (!istext(lifeform_type))
+		lifeform_type = "[lifeform_type]"
+
+	if (!scanned[lifeform_type])
+		return null
+
+	if (!scanned[lifeform_type]["opened_techs"].len)
+		return null
+
+	var/list/techs_list = list()
+
+	for (var/tech in scanned[lifeform_type]["opened_techs"])
+		techs_list += list(list(
+			"tech_id" = tech,
+			"tech_name" = CallTechName(tech),
+			"tech_level" = scanned[lifeform_type]["opened_techs"][tech]
+		))
+
+	return techs_list
 
 /*
 	Converts list `scanned` into a ui-compatible list.
@@ -259,14 +268,17 @@
 /obj/item/clothing/glasses/hud/psychoscope/proc/LifeformScanToList(lifeform_type, mob/user)
 	if (!lifeform_type)
 		crash_with("lifeform_type must be not null")
+		return null
 
 	if (!user)
 		crash_with("user must be not null")
+		return null
 
 	if (!istext(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
-	if (scanned[lifeform_type])
+	if (!scanned[lifeform_type])
+		crash_with("trying to get [lifeform_type] but it is not exists")
 		return null
 
 	var/datum/lifeform/L = GLOB.lifeforms.Get(lifeform_type)
@@ -282,6 +294,8 @@
 
 	return lifeform_list
 
+/* SCAN PROCS */
+
 /*
 	Checks if a mob is already scanned (in `scanned["scanned_mobs"]`).
 
@@ -294,6 +308,7 @@
 /obj/item/clothing/glasses/hud/psychoscope/proc/IsAlreadyScanned(mob/target)
 	if (!target)
 		crash_with("target must be not null")
+		return null
 
 	if (!scanned || !scanned.len)
 		return FALSE
@@ -319,12 +334,15 @@
 /obj/item/clothing/glasses/hud/psychoscope/proc/AddScan(datum/lifeform/lifeform, mob/scan_object, mob/user)
 	if (!lifeform)
 		crash_with("lifeform must be not null")
+		return null
 
 	if (!scan_object)
 		crash_with("scan_object must be not null")
+		return null
 
 	if (!user)
 		crash_with("user must be not null")
+		return null
 
 	var/res = IsAlreadyScanned(scan_object)
 
@@ -375,6 +393,7 @@
 /obj/item/clothing/glasses/hud/psychoscope/proc/ScanLifeform(mob/target, mob/user)
 	if (!user)
 		crash_with("user msut be not null")
+		return
 
 	if (!src.active || is_scanning)
 		return
@@ -383,6 +402,7 @@
 
 	if (!icon_scan)
 		crash_with("icon_scan msut be not null")
+		return
 
 	is_scanning = TRUE
 	usr.client.images += icon_scan
@@ -398,7 +418,7 @@
 
 	usr.client.images -= icon_scan
 
-	var/datum/lifeform/lifeform_data = GLOB.lifeforms.GetByMob(M)
+	var/datum/lifeform/lifeform_data = GLOB.lifeforms.GetByMob(target)
 
 	if (!lifeform_data)
 		playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
@@ -409,7 +429,6 @@
 
 	if (res)
 		playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
-		to_chat(usr, "A new data added to your Psychoscope.")
 	else
 		playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
 		to_chat(usr, "The object has already scanned.")
@@ -464,14 +483,22 @@
 	Nothing
 */
 /obj/item/clothing/glasses/hud/psychoscope/proc/SaveLifeformToDisk(lifeform_type)
-	if (!lifeform_type || !scanned[lifeform_type])
+	if (!lifeform_type)
+		crash_with("lifeform_type is null")
+		return
+
+	if (ispath(lifeform_type))
+		lifeform_type = "[lifeform_type]"
+
+	if (!scanned[lifeform_type])
+		crash_with("trying to get [lifeform_type] but it is not exists")
 		return
 
 	var/obj/item/weapon/disk/lifeform_disk/lifeform_disk = null
-	lifeform_disk = (locate(/obj/item/weapon/disk/) in contents)
+	lifeform_disk = (locate(/obj/item/weapon/disk/lifeform_disk) in contents)
 
-	if (!lifeform_disk || !istype(lifeform_disk))
-		return null
+	if (!lifeform_disk)
+		return
 
 	lifeform_disk.lifeform = lifeform_type
 	lifeform_disk.lifeform_data = scanned[lifeform_type].Copy()
@@ -488,15 +515,19 @@
 */
 /obj/item/clothing/glasses/hud/psychoscope/proc/SaveNeuromodToDisk(neuromod_type)
 	if (!neuromod_type)
+		crash_with("neuromod_type is null")
 		return
+
+	if (istext(neuromod_type))
+		neuromod_type = text2path(neuromod_type)
 
 	var/obj/item/weapon/disk/neuromod_disk/neuromod_disk = null
-	neuromod_disk = (locate(/obj/item/weapon/disk/) in contents)
+	neuromod_disk = (locate(/obj/item/weapon/disk/neuromod_disk/) in contents)
 
-	if (!neuromod_disk || !istype(neuromod_disk))
+	if (!neuromod_disk)
 		return
 
-	neuromod_disk.neuromod = text2path(neuromod_type)
+	neuromod_disk.neuromod = neuromod_type
 	playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
 
 /*
@@ -510,13 +541,18 @@
 	Nothing
 */
 /obj/item/clothing/glasses/hud/psychoscope/proc/SaveTechToDisk(tech_id, tech_level)
-	if (!tech_id || !tech_level)
+	if (!tech_id)
+		crash_with("tech_id is null")
+		return
+
+	if (!tech_level)
+		crash_with("tech_level is null")
 		return
 
 	var/obj/item/weapon/disk/tech_disk/tech_disk = null
-	tech_disk = (locate(/obj/item/weapon/disk/) in contents)
+	tech_disk = (locate(/obj/item/weapon/disk/tech_disk/) in contents)
 
-	if (!tech_disk || !istype(tech_disk))
+	if (!tech_disk)
 		return
 
 	if (tech_disk.stored)
@@ -531,6 +567,8 @@
 			playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
 
 			return
+
+/* VERBS */
 
 /*
 	Just toggles a psychoscope.
@@ -579,10 +617,8 @@
 /obj/item/clothing/glasses/hud/psychoscope/Initialize()
 	. = ..()
 
-	scanned = list()
 	overlay = GLOB.global_hud.material
 	icon_state = "psychoscope_off"
-	accepts_disks = typesof(/obj/item/weapon/disk/tech_disk, /obj/item/weapon/disk/neuromod_disk, /obj/item/weapon/disk/lifeform_disk)
 
 /*
 	Toggles a psychoscope.
@@ -630,7 +666,6 @@
 	var/list/data = list()
 
 	data["status"] = active
-	data["mode"] = ui_mode
 	data["scanned"] = ScannedToList(user)
 	data["total_lifeforms"] = GLOB.lifeforms.list_of_lifeforms.len
 	data["opened_lifeforms"] = scanned.len
@@ -662,6 +697,12 @@
 	switch(action)
 		if ("togglePsychoscope")
 			attack_self(usr)
+			return TRUE
+		if ("showLifeform")
+			if (!params["lifeform_type"] || !scanned[params["lifeform_type"]])
+				return
+
+			selected_lifeform = params["lifeform_type"]
 			return TRUE
 		if ("ejectDisk")
 			EjectDisk(usr)

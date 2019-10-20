@@ -7,21 +7,53 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 /datum/neuromods
 	var/list/datum/neuromod/list_of_neuromods = null
 
-/datum/neuromods/proc/ToList(var/neuromod_path)
+/*
+	Returns an ui-compatible list with a neuromod data.
+
+	Inputs:
+	neuromod_path - `path` or `string` of a neuromod
+
+	Returns:
+	list(...) - see /datum/neuromod/ToList() proc
+	OR
+	null
+*/
+/datum/neuromods/proc/ToList(neuromod_path)
+	if (!neuromod_path)
+		crash_with("neuromod_path is null")
+		return null
+
 	var/datum/neuromod/N = Get(neuromod_path)
 
-	if (!N) return null
+	if (!N)
+		crash_with("trying to get [neuromod_path] but it is not exists")
+		return null
 
 	return (N.ToList())
 
-/datum/neuromods/proc/Get(var/neuromod_path)
+/*
+	Get a reference of a neuromod by a path
+
+	Inputs:
+	neuromod_path - `path` or `string` of a neuromod
+
+	Returns:
+	/datum/neuromod/
+	OR
+	null
+*/
+/datum/neuromods/proc/Get(neuromod_path)
 	if (!neuromod_path)
+		crash_with("neuromod_path is null")
 		return null
 
 	if (!ispath(neuromod_path))
 		neuromod_path = text2path(neuromod_path)
 
 	var/datum/neuromod/N = (locate(neuromod_path) in list_of_neuromods)
+
+	if (!N)
+		crash_with("trying to get [neuromod_path] but is is not exists")
 
 	return N
 
@@ -36,37 +68,101 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 /datum/lifeforms
 	var/list/datum/lifeform/list_of_lifeforms = null
 
-/datum/lifeforms/proc/ToList(mob/user, var/lifeform_path)
-	if (!user) return null
+/*
+	Returns an ui-compatible list with a lifeform data
+
+	Inputs:
+	user - required for icon2html proc
+	lifeform_path - `path` or `string` of a lifeform
+
+	Returns:
+	list(...) - see /datum/lifeform/ToList() proc
+	OR
+	null
+*/
+/datum/lifeforms/proc/ToList(mob/user, lifeform_path)
+	if (!user)
+		crash_with("user is null")
+		return null
+
+	if (!lifeform_path)
+		crash_with("lifeform_path is null")
+		return null
 
 	var/datum/lifeform/lifeform = Get(lifeform_path)
 
-	if (!lifeform) return null
+	if (!lifeform)
+		crash_with("trying to get [lifeform_path] but it is not exists")
+		return null
 
 	return (lifeform.ToList(user))
 
-/datum/lifeforms/proc/Get(var/lifeform_path)
+/*
+	Get a reference for a lifeform
+
+	Inputs:
+	lifeform_path - `path` or `string` for a lifeform
+
+	Returns:
+	/datum/lifeform/
+	OR
+	null
+*/
+/datum/lifeforms/proc/Get(lifeform_path)
 	if (!lifeform_path)
-		return
+		crash_with("lifeform_path is null")
 
 	if (istext(lifeform_path))
-		return (locate(text2path(lifeform_path)) in list_of_lifeforms)
-	else if (ispath(lifeform_path))
-		return (locate(lifeform_path) in list_of_lifeforms)
+		lifeform_path = text2path(lifeform_path)
 
-	return null
+	var/datum/lifeform/L = (locate(lifeform_path) in list_of_lifeforms)
 
-/datum/lifeforms/proc/GetByMob(var/mob/M)
-	if (!M)
+	if (!L)
+		crash_with("trying to get [lifeform_path] but it is not exists")
 		return null
 
-	return (GetByMobType(M.type))
+	return L
 
-/datum/lifeforms/proc/GetByMobType(var/mob_type)
+/*
+	Get a reference of a lifeform by a mob reference
+
+	Inputs:
+	target - mob reference
+
+	Returns
+	/datum/lifeform/
+	OR
+	null
+*/
+/datum/lifeforms/proc/GetByMob(mob/target)
+	if (!target)
+		crash_with("target is null")
+
+	return (GetByMobType(target.type))
+
+/*
+	Get a reference of a lifeform by a mob type
+
+	Inputs:
+	mob_type - `path` or `string` of a mob
+
+	Returns
+	/datum/lifeform/
+	OR
+	null
+*/
+/datum/lifeforms/proc/GetByMobType(mob_type)
+	if (!mob_type)
+		crash_with("mob_type is null")
+
+	if (istext(mob_type))
+		mob_type = text2path(mob_type)
+
 	for (var/datum/lifeform/L in list_of_lifeforms)
 		if (L.mob_type == mob_type)
 			return L
 
+	crash_with("trying to get [mob_type] but it is not exists")
 	return null
 
 /datum/lifeforms/New()

@@ -1,20 +1,16 @@
 /* BASE DATUM */
 
 /datum/lifeform
-	var/mob/mob_type = null
+	var/mob/mob_type = null				// A mob which this lifeorm is
 	var/kingdom = ""
 	var/class = ""
 	var/genus = ""
 	var/species = ""
 	var/desc = ""
-	var/neuromod_prod_scans = -1
-	var/list/tech_rewards = null
-	var/list/neuromod_rewards = null
-	var/tech_chance = 50
-
-/datum/lifeform/New()
-	if (!tech_rewards) 		tech_rewards = list()
-	if (!neuromod_rewards) 	neuromod_rewards = list()
+	var/neuromod_prod_scans = -1		// Minimum scan count for creating a neuromod for this lifeform
+	var/list/tech_rewards = list()		// Techs which you can possible open
+	var/list/neuromod_rewards = list()	// Neuromods which you can possible open
+	var/tech_chance = 50				// Chance to open a technology
 
 /datum/lifeform/proc/ToList(mob/user)
 
@@ -45,7 +41,10 @@
 	desc = "The Dionaea (or Diona for singular) are a group of slow organisms that are in fact clusters of individual, smaller organisms. They exhibit a high degree of structural flexibility, and can form themselves into multiple humanoid shapes in an attempt to blend in to humanoid societies."
 
 /datum/lifeform/diona/New()
+	. = ..()
+
 	tech_rewards = list(
+		// A number in quotes - minimal scan count.
 		"2" = list(
 			TECH_BIO = 2
 		),
@@ -60,8 +59,6 @@
 		)
 	)
 
-	..()
-
 /* -- HUMAN -- */
 
 /datum/lifeform/human
@@ -74,6 +71,8 @@
 	neuromod_prod_scans = 2
 
 /datum/lifeform/human/New()
+	. = ..()
+
 	tech_rewards = list(
 		"2" = list(
 			TECH_BIO = 1
@@ -89,5 +88,3 @@
 			NEUROMOD_LIGHT_REGENERATION
 		)
 	)
-
-	..()
