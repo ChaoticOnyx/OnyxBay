@@ -72,7 +72,6 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 	Returns an ui-compatible list with a lifeform data
 
 	Inputs:
-	user - required for icon2html proc
 	lifeform_path - `path` or `string` of a lifeform
 
 	Returns:
@@ -80,11 +79,7 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 	OR
 	null
 */
-/datum/lifeforms/proc/ToList(mob/user, lifeform_path)
-	if (!user)
-		crash_with("user is null")
-		return null
-
+/datum/lifeforms/proc/ToList(lifeform_path)
 	if (!lifeform_path)
 		crash_with("lifeform_path is null")
 		return null
@@ -95,7 +90,7 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 		crash_with("trying to get [lifeform_path] but it is not exists")
 		return null
 
-	return (lifeform.ToList(user))
+	return (lifeform.ToList())
 
 /*
 	Get a reference for a lifeform
