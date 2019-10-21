@@ -21,11 +21,15 @@
 		return
 
 	var/datum/lifeform/L = GLOB.lifeforms.GetByMobType(created_for)
+	var/datum/neuromod/N = GLOB.neuromods.Get(neuromod)
 
 	if (!L)
 		crash_with("trying to get [created_for] but it is not exists")
 
-	desc = initial(desc) + "<br>Created for [L.genus]"
+	if (!N)
+		crash_with("trying to get [neuromod] but it is not exists")
+
+	desc = initial(desc) + "<br>Contains: [N.name]" + "<br>Created for [L.species]"
 
 /obj/item/weapon/reagent_containers/neuromod_shell/Initialize()
 	. = ..()
@@ -35,6 +39,7 @@
 /obj/item/weapon/reagent_containers/neuromod_shell/Destroy()
 	neuromod = null
 	created_for = null
+
 	..()
 
 /obj/item/weapon/reagent_containers/neuromod_shell/do_surgery(mob/living/carbon/M, mob/living/user)
