@@ -25,7 +25,7 @@
 	if (!L)
 		crash_with("trying to get [created_for] but it is not exists")
 
-	desc = initial(desc) + "<b>Created for [L.genus]"
+	desc = initial(desc) + "<br>Created for [L.genus]"
 
 /obj/item/weapon/reagent_containers/neuromod_shell/Initialize()
 	. = ..()
@@ -94,16 +94,22 @@
 
 	var/neuromod = null 	// Contains neuromd path
 	var/researched = FALSE
+	var/researched_chance = 35
 
+/* A Disk with 100% chance to have a researched neuromod */
+/obj/item/weapon/disk/neuromod_disk/researched/Initialize()
+	. = ..()
+
+	if (neuromod)
+		researched = TRUE
+
+/* If a disk has a neuromod on spawn - it may be researched */
 /obj/item/weapon/disk/neuromod_disk/Initialize()
 	. = ..()
 
 	if (neuromod)
-		if (prob(20))
+		if (prob(researched_chance))
 			researched = TRUE
-
-/obj/item/weapon/disk/neuromod_disk/lightRegeneration
-	neuromod = /datum/neuromod/light_regeneration
 
 /* LIFEFORM DATA DISK */
 

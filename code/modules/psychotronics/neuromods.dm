@@ -23,6 +23,7 @@
 
 	return N
 
+/* - SUPER POWERS - */
 /* -- LIGHT REGENERATION -- */
 
 /datum/neuromod/light_regeneration
@@ -41,3 +42,18 @@
 	if (light_amount > 2) //if there's enough light, heal
 		user.adjustBruteLoss(-(rand(1, 4) / 10))
 		user.adjustFireLoss(-(rand(1, 4) / 10))
+
+/* - LANGUAGES - */
+
+/datum/neuromod/language_siik_maas
+	name = "Language: Siik'maas"
+	desc = "The neuromod makes possible to speak on 'Siik'maas'"
+	chance = 40
+
+/datum/neuromod/language_siik_maas/Handle(mob/living/user)
+	var/datum/language/L = all_languages[LANGUAGE_SIIK_MAAS]
+
+	if (L in user.languages)
+		return
+
+	user.add_language(LANGUAGE_SIIK_MAAS)
