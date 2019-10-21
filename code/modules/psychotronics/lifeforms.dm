@@ -162,7 +162,6 @@
 	genus = "Dionaea"
 	species = "Diona"
 	desc = "The Dionaea (or Diona for singular) are a group of slow organisms that are in fact clusters of individual, smaller organisms. They exhibit a high degree of structural flexibility, and can form themselves into multiple humanoid shapes in an attempt to blend in to humanoid societies."
-	neuromod_prod_scans = 2
 	tech_rewards = list(
 		"2" = list(
 			TECH_BIO = 2
@@ -186,7 +185,6 @@
 	genus = "Mus"
 	species = "Mus Musculus"
 	desc = "The Muridae, or murids, are the largest family of rodents and of mammals. Murids generally have excellent senses of hearing and smell."
-	neuromod_prod_scans = -1
 
 /* AI */
 /datum/lifeform/ai
@@ -194,9 +192,8 @@
 	kingdom = "UNKNOWN"
 	class = "UNKNOWN"
 	genus = "UNKNOWN"
-	species = "UNKNOWN"
+	species = "AI"
 	desc = "A silicon lifeform. Living and intelligence machine, has the most fastest analytical thinking."
-	neuromod_prod_scans = -1
 	tech_rewards = list(
 		"1" = list(
 			TECH_DATA = 4,
@@ -210,9 +207,8 @@
 	kingdom = "UNKNOWN"
 	class = "UNKNOWN"
 	genus = "UNKNOWN"
-	species = "UNKNOWN"
+	species = "Robot"
 	desc = "A silicon lifeform. Helps crew in work."
-	neuromod_prod_scans = -1
 	tech_rewards = list(
 		"2" = list(
 			TECH_DATA = 3
@@ -228,14 +224,49 @@
 	kingdom = "UNKNOWN"
 	class = "UNKNOWN"
 	genus = "UNKNOWN"
-	species = "UNKNOWN"
+	species = "Combat Drone"
 	desc = "A silicon lifeform. Contains a weapon system."
-	neuromod_prod_scans = -1
 	tech_rewards = list(
 		"2" = list(
 			TECH_COMBAT = 2
 		),
 		"4" = list(
 			TECH_COMBAT = 4
+		)
+	)
+
+/* Slime */
+/datum/lifeform/slime
+	mob_type = /mob/living/carbon/slime
+	kingdom = "UNKNOWN"
+	class = "UNKNOWN"
+	genus = "UNKNOWN"
+	species = "Slime"
+	desc = "Slimes have vulnerability to water. When an adult slime dies - it splits in to a pair of small slimes."
+	tech_chance = 10
+	tech_rewards = list(
+		"2" = list(
+			TECH_BIO = 2
+		),
+		"4" = list(
+			TECH_BIO = 3
+		),
+		"6" = list(
+			TECH_BIO = 5
+		),
+		"8" = list(
+			TECH_BIO = 6
+		),
+		"10" = list(
+			TECH_BIO = 8
+		)
+	)
+
+	neuromod_rewards = list(
+		"4" = list(
+			/datum/neuromod/remoteview,
+			/datum/neuromod/increase_speed,
+			/datum/neuromod/morph,
+			/datum/neuromod/telepathy
 		)
 	)

@@ -136,7 +136,7 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 */
 /datum/lifeforms/proc/GetByMob(mob/target)
 	if (!target)
-		crash_with("target is null")
+		return null
 
 	return (GetByMobType(target.type))
 
