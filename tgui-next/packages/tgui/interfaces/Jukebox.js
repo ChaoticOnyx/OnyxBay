@@ -26,11 +26,11 @@ export const Jukebox = props => {
       <Section title="Tracks List">
         {songs.map(song => {
           return (
-            <Fragment>
-              <Button content={song} onclick={() => act(ref, 'change_track', {
+            <Fragment key={song}>
+              <Button content={song} onClick={() => act(ref, 'change_track', {
                 title: song,
-              })}/>
-              <br></br>
+              })} />
+              <br />
             </Fragment>
           );
         })}
