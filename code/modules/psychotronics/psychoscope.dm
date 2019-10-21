@@ -16,9 +16,6 @@
 	psychoscope_icons[PSYCHOSCOPE_ICON_DOT] = psychoscope_dot
 	psychoscope_icons[PSYCHOSCOPE_ICON_SCAN] = psychoscope_scan
 
-	// List with the injected neuromods in to the mob.
-	neuromods = list()
-
 // Psychoscope scanning on Shift + LMB.
 /mob/ShiftClick(mob/user)
 	. = ..()
@@ -60,11 +57,6 @@
 	var/list/accepts_disks = list(/obj/item/weapon/disk/tech_disk,		// Disks which can be inserted into a psychoscope.
 									/obj/item/weapon/disk/neuromod_disk,
 									/obj/item/weapon/disk/lifeform_disk)
-
-/obj/item/clothing/glasses/hud/psychoscope/with_battery/Initialize()
-	. = ..()
-
-	bcell = new /obj/item/weapon/cell/standard/(src.contents)
 
 /* OPENING PROCS */
 
@@ -680,7 +672,7 @@
 		return
 
 	if (istype(I, /obj/item/weapon/cell))
-		if (cell_panel_opened)
+		if (cell_panel_opened && !bcell)
 			user.unEquip(I)
 			I.forceMove(src)
 			bcell = I

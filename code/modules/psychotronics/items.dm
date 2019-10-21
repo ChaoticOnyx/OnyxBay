@@ -11,18 +11,30 @@
 	unacidable = 0
 
 	var/datum/neuromod/neuromod = null 	// Contains neuromod path
-	var/mob/created_for = null				// Contains path of mob which this neuromod is for
+	var/mob/living/created_for = null	// Contains path of mob which this neuromod is for
 
 /obj/item/weapon/reagent_containers/neuromod_shell/proc/ToList()
 	return null
 
-/obj/item/weapon/reagent_containers/neuromod_shell/New(loc, neuromod_data, ...)
-	src.neuromod = neuromod
+/obj/item/weapon/reagent_containers/neuromod_shell/proc/UpdateDesc()
+	if (!created_for || !neuromod)
+		return
 
-	..()
+	var/datum/lifeform/L = GLOB.lifeforms.GetByMobType(created_for)
+
+	if (!L)
+		crash_with("trying to get [created_for] but it is not exists")
+
+	desc = initial(desc) + "<b>Created for [L.genus]"
+
+/obj/item/weapon/reagent_containers/neuromod_shell/Initialize()
+	. = ..()
+
+	UpdateDesc()
 
 /obj/item/weapon/reagent_containers/neuromod_shell/Destroy()
-	QDEL_NULL(neuromod)
+	neuromod = null
+	created_for = null
 	..()
 
 /obj/item/weapon/reagent_containers/neuromod_shell/do_surgery(mob/living/carbon/M, mob/living/user)
@@ -91,7 +103,7 @@
 			researched = TRUE
 
 /obj/item/weapon/disk/neuromod_disk/lightRegeneration
-	neuromod = /datum/neuromod/lightRegeneration
+	neuromod = /datum/neuromod/light_regeneration
 
 /* LIFEFORM DATA DISK */
 
