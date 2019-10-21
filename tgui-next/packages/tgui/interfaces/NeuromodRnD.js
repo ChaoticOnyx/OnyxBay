@@ -96,6 +96,24 @@ export const NeuromodRnD = props => {
             }
           </LabeledList.Item>
 
+          <LabeledList.Item label="Selected Lifeform">
+            {data.selected_lifeform
+              ?
+              data.selected_lifeform.species
+              :
+              "No selected Lifeform"
+            }
+          </LabeledList.Item>
+
+          <LabeledList.Item label="Selected Neuromod">
+            {data.selected_neuromod
+              ?
+              data.selected_neuromod.name
+              :
+              "No selected Neuromod"
+            }
+          </LabeledList.Item>
+
         </LabeledList>
 
       </Section>
