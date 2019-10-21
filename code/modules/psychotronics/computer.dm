@@ -190,6 +190,9 @@
 
 	var/datum/reagent/M = GetMutagen()
 
+	if (!M)
+		return FALSE
+
 	if (selected_neuromod && selected_lifeform && GetNeuromodShell() && M.volume >= NEUROMODRND_MUTAGEN_NEEDED)
 		var/list/neuromod_data = NeuromodToList(selected_neuromod)
 		var/list/lifeform_data = LifeformToList(user, selected_lifeform)
@@ -679,7 +682,7 @@
 	Returns a reference to a mutagen in an inserted beaker
 
 	Returns:
-	/datum/reagent/
+	/datum/reagent/mutagen/
 	OR
 	null
 */
@@ -690,7 +693,12 @@
 
 	if (!CheckBeakerContent()) return null
 
-	return beaker.reagents.reagent_list[1]
+	var/datum/reagent/mutagen/M = beaker.reagents.reagent_list[1]
+
+	if (istype(M))
+		return M
+
+	return null
 
 /*
 	Checks an inserted beaker content:
@@ -812,6 +820,7 @@
 				return
 
 			N.neuromod = selected_neuromod
+			N.UpdateDesc()
 			playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
 
 /obj/machinery/computer/neuromod_rnd/attackby(atom/I, user)
