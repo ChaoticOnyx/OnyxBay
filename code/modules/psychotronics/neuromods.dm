@@ -45,15 +45,31 @@
 
 /* - LANGUAGES - */
 
-/datum/neuromod/language_siik_maas
-	name = "Language: Siik'maas"
-	desc = "The neuromod makes possible to speak on 'Siik'maas'"
-	chance = 40
+/datum/neuromod/language
+	var/language = null
 
-/datum/neuromod/language_siik_maas/Handle(mob/living/user)
-	var/datum/language/L = all_languages[LANGUAGE_SIIK_MAAS]
+/datum/neuromod/language/Handle(mob/living/user)
+	if (!language)
+		crash_with("empty language neuromod")
+		return
+
+	var/datum/language/L = all_languages[language]
 
 	if (L in user.languages)
 		return
 
-	user.add_language(LANGUAGE_SIIK_MAAS)
+	user.add_language(language)
+
+/* -- SIIK'MAAS -- */
+/datum/neuromod/language/siik_maas
+	name = "Language: Siik'maas"
+	desc = "The neuromod makes possible to speak on 'Siik'maas'"
+	chance = 40
+	language = LANGUAGE_SIIK_MAAS
+
+/* -- SOGHUN -- */
+/datum/neuromod/language/soghun
+	name = "Language: Soghun"
+	desc = "The neuromod makes possible to speak on 'Soghun'"
+	chance = 40
+	language = LANGUAGE_UNATHI
