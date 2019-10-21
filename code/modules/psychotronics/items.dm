@@ -13,6 +13,11 @@
 	var/datum/neuromod/neuromod = null 	// Contains neuromod path
 	var/mob/living/created_for = null	// Contains path of mob which this neuromod is for
 
+/* DEBUG */
+/obj/item/weapon/reagent_containers/neuromod_shell/proc/SetNeuromod(neuromod_path, mob_path)
+	neuromod = text2path(neuromod_path)
+	created_for = text2path(mob_path)
+
 /obj/item/weapon/reagent_containers/neuromod_shell/proc/ToList()
 	return null
 

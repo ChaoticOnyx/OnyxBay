@@ -675,7 +675,7 @@
 			return
 
 		cell_panel_opened = !cell_panel_opened
-		visible_message("[user] [cell_panel_opened ? "open" : "close"] the battery panel of \the [src]")
+		visible_message("[user] [cell_panel_opened ? "opens" : "closes"] the battery panel of \the [src]")
 
 		return
 
