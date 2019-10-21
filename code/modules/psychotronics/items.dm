@@ -61,6 +61,24 @@
 	if (!ismob(target) || !ismob(user))
 		return
 
+	if(istype(target, /mob/living/carbon/human))
+		var/mob/living/carbon/human/victim = target
+
+		var/obj/item/safe_thing = null
+		if(victim.wear_mask)
+			if (victim.wear_mask.body_parts_covered & EYES)
+				safe_thing = victim.wear_mask
+		if(victim.head)
+			if (victim.head.body_parts_covered & EYES)
+				safe_thing = victim.head
+		if(victim.glasses)
+			if (victim.glasses.body_parts_covered & EYES)
+				safe_thing = victim.glasses
+
+		if(safe_thing)
+			to_chat(user, SPAN_WARN("\the [safe_thing] on the way!"))
+			return
+
 	if (!neuromod)
 		to_chat(user, "\the [src.name] is empty.")
 		return

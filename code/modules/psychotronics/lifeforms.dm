@@ -263,7 +263,7 @@
 	)
 
 	neuromod_rewards = list(
-		"4" = list(
+		"6" = list(
 			/datum/neuromod/remoteview,
 			/datum/neuromod/increase_speed,
 			/datum/neuromod/morph,
