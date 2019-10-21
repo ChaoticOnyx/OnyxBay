@@ -656,6 +656,10 @@
 
 /obj/item/clothing/glasses/hud/psychoscope/attack_hand(mob/user)
 	if (cell_panel_opened && bcell)
+		if (!do_after(user, 10, user, FALSE, TRUE, INCAPACITATION_DEFAULT, FALSE, FALSE))
+			return
+
+		visible_message("[user] ejects \the [bcell] from \the [src]")
 		user.put_in_hands(bcell)
 		bcell = null
 
@@ -666,13 +670,21 @@
 /obj/item/clothing/glasses/hud/psychoscope/attackby(obj/item/weapon/I, mob/user)
 	if (isScrewdriver(I))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
+
+		if (!do_after(user, 10, user, FALSE, TRUE, INCAPACITATION_DEFAULT, FALSE, FALSE))
+			return
+
 		cell_panel_opened = !cell_panel_opened
-		to_chat(user, SPAN_NOTE("You [cell_panel_opened ? "open" : "close"] the battery panel of \the [src]."))
+		visible_message("[user] [cell_panel_opened ? "open" : "close"] the battery panel of \the [src]")
 
 		return
 
 	if (istype(I, /obj/item/weapon/cell))
 		if (cell_panel_opened && !bcell)
+			if (!do_after(user, 10, user, FALSE, TRUE, INCAPACITATION_DEFAULT, FALSE, FALSE))
+				return
+
+			visible_message("[user] inserts \the [I] in \the [src]")
 			user.unEquip(I)
 			I.forceMove(src)
 			bcell = I

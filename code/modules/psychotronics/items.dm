@@ -18,6 +18,7 @@
 
 /obj/item/weapon/reagent_containers/neuromod_shell/proc/UpdateDesc()
 	if (!created_for || !neuromod)
+		desc = initial(desc) + "<br>Empty Shell"
 		return
 
 	var/datum/lifeform/L = GLOB.lifeforms.GetByMobType(created_for)
@@ -63,7 +64,7 @@
 		crash_with("neuromod's type must be `path`")
 
 	if (target == user)
-		to_chat(user, SPAN_WARN("You're trying to inject content of \the [src.name] to self."))
+		visible_message(SPAN_WARN("[user] trying to inject content of \the [src.name] to self."))
 	else
 		visible_message(SPAN_WARN("[user] trying to inject content of \the [src.name] to [target]!"))
 
@@ -85,6 +86,7 @@
 			target.adjustToxLoss(25)
 
 		neuromod = null
+		UpdateDesc()
 
 /* NEUROMOD DATA DISK */
 
