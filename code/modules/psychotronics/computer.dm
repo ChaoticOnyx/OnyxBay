@@ -27,7 +27,7 @@
 	var/datum/neuromod/selected_neuromod = null	// Contains path to a neuromod
 
 	/* ENERGY CONSUMPTION */
-	active_power_usage = 10000
+	active_power_usage = 15 KILOWATTS
 	idle_power_usage = 40
 
 	// Disks which this console accepts
@@ -788,7 +788,7 @@
 
 		// Finishing the researching
 		else
-			research_progress += 10
+			research_progress += 1
 
 			if (research_progress > initial(researching_neuromod.research_time))
 				is_researching = FALSE
@@ -806,7 +806,7 @@
 			development_progress = 0
 			playsound(src, 'sound/effects/psychoscope/scan_failed.ogg', 10, 0)
 
-		development_progress += 10
+		development_progress += 1
 
 		// Finishing the development
 		if (development_progress > max_development_progress)

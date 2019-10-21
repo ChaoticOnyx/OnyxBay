@@ -703,7 +703,14 @@
 
 /obj/item/clothing/glasses/hud/psychoscope/Process()
 	if (active)
-		if (!bcell.use(25))
+		if (!bcell)
+			Disable()
+
+		var/en_consumption = 3
+		if (is_scanning)
+			en_consumption += 15
+
+		if (!bcell.use(en_consumption))
 			Disable()
 
 /obj/item/clothing/glasses/hud/psychoscope/Destroy()
