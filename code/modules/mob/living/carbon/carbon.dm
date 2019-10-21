@@ -130,12 +130,17 @@
 	return shock_damage
 
 /mob/living/carbon/proc/apply_shock(var/shock_damage, var/def_zone, var/siemens_coeff = 1.0)
+	var/neuromods_modifier = max(1, (neuromods.len)**2 * 2)
 	shock_damage *= siemens_coeff
 	if(shock_damage < 0.5)
 		return 0
 	if(shock_damage < 1)
 		shock_damage = 1
 	apply_damage(shock_damage, BURN, def_zone, used_weapon="Electrocution")
+
+	if (neuromods_modifier > 1)
+		adjustBrainLoss(neuromods_modifier)
+
 	return(shock_damage)
 
 /mob/proc/swap_hand()
