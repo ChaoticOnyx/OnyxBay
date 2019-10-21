@@ -41,8 +41,6 @@
 	desc = "The Dionaea (or Diona for singular) are a group of slow organisms that are in fact clusters of individual, smaller organisms. They exhibit a high degree of structural flexibility, and can form themselves into multiple humanoid shapes in an attempt to blend in to humanoid societies."
 
 /datum/lifeform/diona/New()
-	. = ..()
-
 	tech_rewards = list(
 		// A number in quotes - minimal scan count.
 		"2" = list(
@@ -55,7 +53,7 @@
 
 	neuromod_rewards = list(
 		"4" = list(
-			NEUROMOD_LIGHT_REGENERATION
+			/datum/neuromod/light_regeneration
 		)
 	)
 
@@ -67,24 +65,38 @@
 	class = "Mammalia"
 	genus = "Homo"
 	species = "Homo Sapiens"
-	desc = "Homo sapiens is the only extant human species.\nExtinct species of the genus Homo include Homo erectus, extant from roughly 1.9 to 0.4 million years ago, and a number of other species (by some authors considered subspecies of either H. sapiens or H. erectus). The age of speciation of H. sapiens out of ancestral H. erectus (or an intermediate species such as Homo antecessor) is estimated to have been roughly 350,000 years ago. Sustained archaic admixture is known to have taken place both in Africa and (following the recent Out-Of-Africa expansion) in Eurasia, between about 100,000 and 30,000 years ago."
+	desc = "Homo sapiens is the only extant human species.\nExtinct species of the genus Homo include Homo erectus, extant from roughly 1.9 to 0.4 million years ago, and a number of other species (by some authors considered subspecies of either H. sapiens or H. erectus). The age of speciation of H. sapiens out of ancestral H. erectus (or an intermediate species such as Homo antecessor) is estimated to have been roughly 350,000 years ago."
 	neuromod_prod_scans = 2
 
 /datum/lifeform/human/New()
-	. = ..()
-
 	tech_rewards = list(
-		"2" = list(
-			TECH_BIO = 1
-		),
 		"3" = list(
-			TECH_BIO = 3,
-			TECH_MAGNET = 2
+			TECH_BIO = 2
+		),
+		"6" = list(
+			TECH_BIO = 3
+		)
+	)
+
+/* Tajaran */
+/datum/lifeform/tajaran
+	mob_type = /mob/living/carbon/human/tajaran
+	kingdom = "Animalia"
+	class = "Mammalia"
+	genus = "Tajaran"
+	species = "Tajaran Sapiens"
+	desc = "The “Tajara” (plural Tajara “Ta-jaw-rah”, singular Tajaran “Ta-jaw-run”) are a species of furred mammalian bipeds hailing from the chilly planet of Ahdomai, in the Zamsiin-lr system. They are superstitious species, which led them to the technological advancement of their society throughout history. Their pride for the struggles they went through is heavily tied to their spiritual beliefs."
+	neuromod_prod_scans = 2
+
+/datum/lifeform/tajaran/New()
+	tech_rewards = list(
+		"3" = list(
+			TECH_BIO = 3
 		)
 	)
 
 	neuromod_rewards = list(
-		"4" = list(
-			NEUROMOD_LIGHT_REGENERATION
+		"2" = list(
+
 		)
 	)

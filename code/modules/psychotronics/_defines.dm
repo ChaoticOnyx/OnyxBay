@@ -1,6 +1,3 @@
-/* NEUROMODS */
-#define NEUROMOD_LIGHT_REGENERATION /datum/neuromod/light_regeneration
-
 /* ICONS */
 
 // Indexes for /mob/var/list/psychoscope_icons
