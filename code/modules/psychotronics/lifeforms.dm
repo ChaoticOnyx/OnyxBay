@@ -30,13 +30,13 @@
 
 	return D
 
-/* Diona */
-/datum/lifeform/diona
+/* Diona Nymph */
+/datum/lifeform/diona_hymph
 	mob_type = /mob/living/carbon/alien/diona
 	kingdom = "Animalia"
-	class = "Reptilia"
+	class = "Plantia"
 	genus = "Dionaea"
-	species = "Diona"
+	species = "Diona Nymph"
 	desc = "The Dionaea (or Diona for singular) are a group of slow organisms that are in fact clusters of individual, smaller organisms. They exhibit a high degree of structural flexibility, and can form themselves into multiple humanoid shapes in an attempt to blend in to humanoid societies."
 	tech_rewards = list(
 		// A number in quotes - minimal scan count.
@@ -80,7 +80,7 @@
 	class = "Mammalia"
 	genus = "Tajaran"
 	species = "Tajaran Sapiens"
-	desc = "The “Tajara” (plural Tajara “Ta-jaw-rah”, singular Tajaran “Ta-jaw-run”) are a species of furred mammalian bipeds hailing from the chilly planet of Ahdomai, in the Zamsiin-lr system. They are superstitious species, which led them to the technological advancement of their society throughout history. Their pride for the struggles they went through is heavily tied to their spiritual beliefs."
+	desc = "The 'Tajara' (plural Tajara 'Ta-jaw-rah', singular Tajaran 'Ta-jaw-run') are a species of furred mammalian bipeds hailing from the chilly planet of Ahdomai, in the Zamsiin-lr system. They are superstitious species, which led them to the technological advancement of their society throughout history. Their pride for the struggles they went through is heavily tied to their spiritual beliefs."
 	neuromod_prod_scans = 2
 	tech_rewards = list(
 		"3" = list(
@@ -112,5 +112,130 @@
 	neuromod_rewards = list(
 		"2" = list(
 			/datum/neuromod/language/soghun
+		)
+	)
+
+/* Skrell */
+/datum/lifeform/skrell
+	mob_type = /mob/living/carbon/human/skrell
+	kingdom = "Animalia"
+	class = "Amphibia"
+	genus = "Skrell"
+	species = "Skrell Sapiens"
+	desc = "The Skrell are a species of amphibious humanoids hailing from the world of Qerrbalak, a hot, humid planet with numerous swamps and jungles."
+	neuromod_prod_scans = 2
+	tech_rewards = list(
+		"3" = list(
+			TECH_BIO = 3
+		)
+	)
+
+	neuromod_rewards = list(
+		"2" = list(
+			/datum/neuromod/language/skrellian
+		)
+	)
+
+/* Vox */
+/datum/lifeform/vox
+	mob_type = /mob/living/carbon/human/vox
+	kingdom = "Animalia"
+	class = "Aves"
+	genus = "Vox"
+	species = "Vox Sapiens"
+	desc = "The Vox (voks) are nomadic, bio-engineered alien creatures that operate in and around human space at the behest of crazed and dreaming gods."
+	neuromod_prod_scans = 2
+	tech_rewards = list(
+		"2" = list(
+			TECH_BIO = 4
+		),
+		"4" = list(
+			TECH_BIO = 5
+		)
+	)
+
+/* Diona */
+/datum/lifeform/diona
+	mob_type = /mob/living/carbon/alien/diona
+	kingdom = "Animalia"
+	class = "Plantia"
+	genus = "Dionaea"
+	species = "Diona"
+	desc = "The Dionaea (or Diona for singular) are a group of slow organisms that are in fact clusters of individual, smaller organisms. They exhibit a high degree of structural flexibility, and can form themselves into multiple humanoid shapes in an attempt to blend in to humanoid societies."
+	neuromod_prod_scans = 2
+	tech_rewards = list(
+		"2" = list(
+			TECH_BIO = 2
+		),
+		"3" = list(
+			TECH_BIO = 3
+		)
+	)
+
+	neuromod_rewards = list(
+		"4" = list(
+			/datum/neuromod/light_regeneration
+		)
+	)
+
+/* Mouse */
+/datum/lifeform/mouse
+	mob_type = /mob/living/simple_animal/mouse
+	kingdom = "Animalia"
+	class = "Mammalia"
+	genus = "Mus"
+	species = "Mus Musculus"
+	desc = "The Muridae, or murids, are the largest family of rodents and of mammals. Murids generally have excellent senses of hearing and smell."
+	neuromod_prod_scans = -1
+
+/* AI */
+/datum/lifeform/ai
+	mob_type = /mob/living/silicon/ai
+	kingdom = "UNKNOWN"
+	class = "UNKNOWN"
+	genus = "UNKNOWN"
+	species = "UNKNOWN"
+	desc = "A silicon lifeform. Living and intelligence machine, has the most fastest analytical thinking."
+	neuromod_prod_scans = -1
+	tech_rewards = list(
+		"1" = list(
+			TECH_DATA = 4,
+			TECH_ENGINEERING = 4,
+		)
+	)
+
+/* Robot */
+/datum/lifeform/robot
+	mob_type = /mob/living/silicon/robot
+	kingdom = "UNKNOWN"
+	class = "UNKNOWN"
+	genus = "UNKNOWN"
+	species = "UNKNOWN"
+	desc = "A silicon lifeform. Helps crew in work."
+	neuromod_prod_scans = -1
+	tech_rewards = list(
+		"2" = list(
+			TECH_DATA = 3
+		),
+		"4" = list(
+			TECH_ENGINEERING = 3
+		)
+	)
+
+/* Combat Drone */
+/datum/lifeform/combat_drone
+	mob_type = /mob/living/silicon/robot/combat
+	kingdom = "UNKNOWN"
+	class = "UNKNOWN"
+	genus = "UNKNOWN"
+	species = "UNKNOWN"
+	desc = "A silicon lifeform. Contains a weapon system."
+	neuromod_prod_scans = -1
+	tech_rewards = list(
+		"2" = list(
+			TECH_COMBAT = 2
+		),
+		"4" = list(
+			TECH_COMBAT = 4
 		)
 	)

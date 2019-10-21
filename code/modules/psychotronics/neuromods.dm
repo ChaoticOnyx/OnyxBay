@@ -47,6 +47,7 @@
 
 /datum/neuromod/language
 	var/language = null
+	chance = 50
 
 /datum/neuromod/language/Handle(mob/living/user)
 	if (!language)
@@ -64,12 +65,16 @@
 /datum/neuromod/language/siik_maas
 	name = "Language: Siik'maas"
 	desc = "The neuromod makes possible to speak on 'Siik'maas'"
-	chance = 40
 	language = LANGUAGE_SIIK_MAAS
 
 /* -- SOGHUN -- */
 /datum/neuromod/language/soghun
 	name = "Language: Soghun"
 	desc = "The neuromod makes possible to speak on 'Soghun'"
-	chance = 40
 	language = LANGUAGE_UNATHI
+
+/* -- SKRELLIAN -- */
+/datum/neuromod/language/skrellian
+	name = "Language: Skrellian"
+	dsec = "The neuromod makes possible to speak on 'Skrellian'"
+	language = LANGUAGE_SKRELLIAN
