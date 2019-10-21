@@ -1,5 +1,6 @@
 /mob/living
 	var/list/datum/neuromod/neuromods = list()	// Contains paths of all injected neuromods
+	var/additional_speed = 0
 
 /* BASE DATUM */
 
@@ -24,8 +25,8 @@
 	return N
 
 /* - SUPER POWERS - */
-/* -- LIGHT REGENERATION -- */
 
+/* -- LIGHT REGENERATION -- */
 /datum/neuromod/light_regeneration
 	name = "Light Regeneration"
 	desc = "The neuromod changes skin structure and makes possible cure wounds just by light."
@@ -42,6 +43,51 @@
 	if (light_amount > 2) //if there's enough light, heal
 		user.adjustBruteLoss(-(rand(1, 4) / 10))
 		user.adjustFireLoss(-(rand(1, 4) / 10))
+
+/* -- REMOVE VIEW -- */
+/datum/neuromod/remoteview
+	name = "Remote View"
+	desc = "The neuromod expands mind's possibilities in sight."
+	chance = 1
+
+/datum/neuromod/remoteview/Handle(mob/living/user)
+	if (/mob/living/carbon/human/proc/remoteobserve in user.verbs)
+		return
+
+	user.verbs += /mob/living/carbon/human/proc/remoteobserve
+
+/* -- INCREASE SPEED -- */
+/datum/neuromod/increase_speed
+	name = "Powerful Legs"
+	desc = "The neuromod strengths a legs and increases moving speed."
+	chance = 5
+
+/datum/neuromod/increase_speed/Handle(mob/living/user)
+	if (!user.additional_speed)
+		user.additional_speed = 1
+
+/* Morph */
+/datum/neuromod/morph
+	name = "Morph"
+	desc = "The neuromod makes possible to change appearance."
+
+/datum/neuromod/morph/Handle(mob/living/user)
+	if (/mob/living/carbon/human/proc/morph in user.verbs)
+		return
+
+	user.verbs += /mob/living/carbon/human/proc/morph
+
+/* -- TELEPATHY -- */
+/datum/neuromod/telepathy
+	name = "Telepathy"
+	desc = "The neuromod makes possible to talk on large distances."
+	chance = 5
+
+/datum/neuromod/telepathy/Handle(mob/living/user)
+	if (/mob/living/carbon/human/proc/remotesay in user.verbs)
+		return
+
+	user.verbs += /mob/living/carbon/human/proc/remotesay
 
 /* - LANGUAGES - */
 
@@ -76,5 +122,5 @@
 /* -- SKRELLIAN -- */
 /datum/neuromod/language/skrellian
 	name = "Language: Skrellian"
-	dsec = "The neuromod makes possible to speak on 'Skrellian'"
+	desc = "The neuromod makes possible to speak on 'Skrellian'"
 	language = LANGUAGE_SKRELLIAN
