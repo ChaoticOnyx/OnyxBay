@@ -15,7 +15,10 @@
 /* Fully random ready to use neuromod shells */
 /obj/item/weapon/reagent_containers/neuromod_shell/random/Initialize()
 	neuromod = pick(subtypesof(/datum/neuromod) - list(/datum/neuromod/language))
-	created_for = pick(typesof(/mob/living/carbon/human))
+	created_for = pick(list(/mob/living/carbon/human,
+							/mob/living/carbon/human/tajaran,
+							/mob/living/carbon/human/skrell,
+							/mob/living/carbon/human/unathi))
 
 	. = ..()
 

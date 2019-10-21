@@ -12,7 +12,7 @@
 	var/list/neuromod_rewards = list()	// Neuromods which you can possible open
 	var/tech_chance = 50				// Chance to open a technology
 
-/datum/lifeform/proc/ToList(mob/user)
+/datum/lifeform/proc/ToList()
 
 	var/list/D = list(
 		"mob_type" 				= "[mob_type]",
@@ -24,7 +24,6 @@
 		"tech_rewards"			= tech_rewards,
 		"neuromod_rewards"		= neuromod_rewards,
 		"type"					= "[type]",
-		"img"					= icon2html(initial(mob_type.icon), user, initial(mob_type.icon_state), style="height:64px;width:64px;"),
 		"neuromod_prod_scans" 	= neuromod_prod_scans
 	)
 

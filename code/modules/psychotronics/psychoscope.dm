@@ -16,7 +16,7 @@
 	psychoscope_icons[PSYCHOSCOPE_ICON_DOT] = psychoscope_dot
 	psychoscope_icons[PSYCHOSCOPE_ICON_SCAN] = psychoscope_scan
 
-// Psychoscope scanning on Shift + LMB.
+// Psychoscope scanning on Shift + LMB
 /mob/ShiftClick(mob/user)
 	. = ..()
 
@@ -26,7 +26,7 @@
 		var/obj/item/clothing/glasses/hud/psychoscope/psychoscope = user.get_equipped_item(slot_glasses)
 
 		if (psychoscope && istype(psychoscope))
-			psychoscope.ScanLifeform(M, user)
+			psychoscope.ScanLifeform(M)
 
 /* PSYCHOSCOPE */
 
@@ -223,9 +223,6 @@
 /*
 	Converts list `scanned` into a ui-compatible list.
 
-	Inputs:
-	user - a mob who will get this list (required for html2icon proc)
-
 	Returns:
 	list(
 		list(
@@ -239,14 +236,14 @@
 		...
 	)
 */
-/obj/item/clothing/glasses/hud/psychoscope/proc/ScannedToList(mob/user)
+/obj/item/clothing/glasses/hud/psychoscope/proc/ScannedToList()
 	if (!scanned.len)
 		return
 
 	var/list/scanned_list = list()
 
 	for (var/lifeform_type in scanned)
-		var/list/L = LifeformScanToList(lifeform_type, user)
+		var/list/L = LifeformScanToList(lifeform_type)
 
 		if (L)
 			scanned_list += list(L)
@@ -258,7 +255,6 @@
 
 	Inputs:
 	lifeform_type - `string` or `path` of /datum/lifeform
-	user - a mob who will get this list (required for html2icon proc)
 
 	Returns:
 	list(
@@ -270,13 +266,9 @@
 		"scans_journal" = list(...)		<-- Just date (when scanned) and name (who scanned)
 	)
 */
-/obj/item/clothing/glasses/hud/psychoscope/proc/LifeformScanToList(lifeform_type, mob/user)
+/obj/item/clothing/glasses/hud/psychoscope/proc/LifeformScanToList(lifeform_type)
 	if (!lifeform_type)
 		crash_with("lifeform_type must be not null")
-		return
-
-	if (!user)
-		crash_with("user must be not null")
 		return
 
 	if (!istext(lifeform_type))
@@ -295,7 +287,7 @@
 
 	lifeform_list["opened_techs"] = TechsToList(lifeform_type)
 	lifeform_list["opened_neuromods"] = NeuromodsToList(lifeform_type)
-	lifeform_list["lifeform"] = L.ToList(user)
+	lifeform_list["lifeform"] = L.ToList()
 
 	return lifeform_list
 
@@ -330,23 +322,18 @@
 	Inputs:
 	lifeform - instance of lifeform of the target mob.
 	scan_object - the target mob
-	user - a mob who scanned the target mob.
 
 	Returns:
 	TRUE if a scan entry added.
 	FALSE if something is wrong.
 */
-/obj/item/clothing/glasses/hud/psychoscope/proc/AddScan(datum/lifeform/lifeform, mob/scan_object, mob/user)
+/obj/item/clothing/glasses/hud/psychoscope/proc/AddScan(datum/lifeform/lifeform, mob/scan_object)
 	if (!lifeform)
 		crash_with("lifeform must be not null")
 		return
 
 	if (!scan_object)
 		crash_with("scan_object must be not null")
-		return
-
-	if (!user)
-		crash_with("user must be not null")
 		return
 
 	var/res = IsAlreadyScanned(scan_object)
@@ -358,7 +345,7 @@
 
 	if (!scanned[lifeform_type])
 		scanned[lifeform_type] = list(
-			"lifeform" = (lifeform.ToList(user)),
+			"lifeform" = (lifeform.ToList()),
 			"scan_count" = 1,
 			"scans_journal" = list(list(
 				"date" = "[stationdate2text()] - [stationtime2text()]",
@@ -390,16 +377,11 @@
 
 	Inputs:
 	target - the target mob for a procedure
-	user - who started a procedure
 
 	Returns:
 	Nothing
 */
-/obj/item/clothing/glasses/hud/psychoscope/proc/ScanLifeform(mob/target, mob/user)
-	if (!user)
-		crash_with("user msut be not null")
-		return
-
+/obj/item/clothing/glasses/hud/psychoscope/proc/ScanLifeform(mob/target)
 	if (!src.active || is_scanning)
 		return
 
@@ -430,7 +412,7 @@
 		to_chat(usr, "Unknown lifeform.")
 		return
 
-	var/res = AddScan(lifeform_data, target, user)
+	var/res = AddScan(lifeform_data, target)
 
 	if (res)
 		playsound(src, 'sound/effects/psychoscope/scan_success.ogg', 10, 0)
@@ -764,7 +746,7 @@
 	var/list/data = list()
 
 	data["status"] = active
-	data["scanned"] = ScannedToList(user)
+	data["scanned"] = ScannedToList()
 	data["total_lifeforms"] = GLOB.lifeforms.list_of_lifeforms.len
 	data["opened_lifeforms"] = scanned.len
 	data["selected_lifeform"] = null
@@ -787,7 +769,7 @@
 		data["inserted_disk"] = "lifeform"
 
 	if (selected_lifeform)
-		data["selected_lifeform"] = LifeformScanToList(selected_lifeform, user)
+		data["selected_lifeform"] = LifeformScanToList(selected_lifeform)
 
 	return data
 

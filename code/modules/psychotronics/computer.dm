@@ -179,13 +179,10 @@
 	There is must be a inserted neuromod shell
 	There is must be a researched and selected neuromod
 
-	Inputs:
-	user - required for icon2html proc
-
 	Returns:
 	TRUE or FALSE
 */
-/obj/machinery/computer/neuromod_rnd/proc/DevelopmentReady(mob/user)
+/obj/machinery/computer/neuromod_rnd/proc/DevelopmentReady()
 	. = FALSE
 
 	var/datum/reagent/M = GetMutagen()
@@ -195,7 +192,7 @@
 
 	if (selected_neuromod && selected_lifeform && GetNeuromodShell() && M.volume >= NEUROMODRND_MUTAGEN_NEEDED)
 		var/list/neuromod_data = NeuromodToList(selected_neuromod)
-		var/list/lifeform_data = LifeformToList(user, selected_lifeform)
+		var/list/lifeform_data = LifeformToList(selected_lifeform)
 
 		if (CheckBeakerContent() &&\
 			lifeform_data["scan_count"] >= lifeform_data["neuromod_prod_scans"] &&\
@@ -343,7 +340,6 @@
 	Returns an ui-compatible list with a lifeform data
 
 	Inputs:
-	user - required for icon2html
 	lifeform_type - `path` or `string` to a neuromod
 
 	Returns:
@@ -351,12 +347,8 @@
 	OR
 	null
 */
-/obj/machinery/computer/neuromod_rnd/proc/LifeformToList(mob/user, lifeform_type)
+/obj/machinery/computer/neuromod_rnd/proc/LifeformToList(lifeform_type)
 	var/list/lifeform_data = list()
-
-	if (!user)
-		crash_with("user is null")
-		return null
 
 	if (!lifeform_type)
 		crash_with("lifeform_type is null")
@@ -369,7 +361,7 @@
 		crash_with("trying to get [lifeform_type] but it is not exists")
 		return null
 
-	var/list/lifeform = GLOB.lifeforms.ToList(user, lifeform_type)
+	var/list/lifeform = GLOB.lifeforms.ToList(lifeform_type)
 
 	if (!lifeform) return null
 
@@ -382,9 +374,6 @@
 /*
 	Returns an ui-compatible list with data of all saved lifeforms in this console
 
-	Inputs:
-	user - required for icon2html
-
 	Returns:
 	list(
 		list(...) - See /datum/lifeform/ToList() proc
@@ -392,7 +381,7 @@
 	OR
 	null
 */
-/obj/machinery/computer/neuromod_rnd/proc/LifeformsToList(mob/user)
+/obj/machinery/computer/neuromod_rnd/proc/LifeformsToList()
 	var/list/lifeforms_list = list()
 
 	if (!lifeforms || lifeforms.len == 0) return null
@@ -403,7 +392,7 @@
 		if (!lifeform) continue
 
 		lifeforms_list += list(
-			lifeform.ToList(user) + list(
+			lifeform.ToList() + list(
 			"scan_count" = lifeforms[lifeform_type]["scan_count"]
 		))
 
