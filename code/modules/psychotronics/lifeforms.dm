@@ -1,7 +1,7 @@
 /* Base Datum */
 
 /datum/lifeform
-	var/mob/mob_type = null				// A mob which this lifeorm is
+	var/mob/mob_type = null				// A mob which this lifeform is
 	var/kingdom = ""
 	var/class = ""
 	var/genus = ""
