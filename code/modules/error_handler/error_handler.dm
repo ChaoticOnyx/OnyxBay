@@ -93,6 +93,7 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 		GLOB.error_cache.log_error(E, desclines)
 
 	to_world_log("\[[time_stamp()]] Runtime in [E.file],[E.line]: [E]")
+	webhook_send_runtime("\[[time_stamp()]] Runtime in [E.file],[E.line]: [E]")
 	for(var/line in desclines)
 		to_world_log(line)
 
