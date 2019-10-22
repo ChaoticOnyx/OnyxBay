@@ -107,8 +107,20 @@ SUBSYSTEM_DEF(ticker)
 		Master.SetRunLevel(RUNLEVEL_POSTGAME)
 		end_game_state = END_GAME_READY_TO_END
 		INVOKE_ASYNC(src, .proc/declare_completion)
-		if(config.allow_map_switching && config.auto_map_vote && GLOB.all_maps.len > 1)
-			SSvote.initiate_vote(/datum/vote/map/end_game, automatic = 1)
+		if(config.allow_map_switching && GLOB.all_maps.len > 1)
+			if (config.auto_map_vote)
+				SSvote.initiate_vote(/datum/vote/map/end_game, automatic = 1)
+			else if (config.auto_map_switching)
+				// Select random map exclude the current
+				var/datum/map/current_map = GLOB.using_map
+				var/datum/map/next_map = current_map
+
+				while (next_map.type == current_map.type)
+					next_map = GLOB.all_maps[pick(GLOB.all_maps)]
+
+				to_world("<span class='notice'>Map has been changed to: <b>[next_map.name]</b></span>")
+				fdel("data/use_map")
+				text2file("[next_map.type]", "data/use_map")
 
 	else if(mode_finished && (end_game_state <= END_GAME_NOT_OVER))
 		end_game_state = END_GAME_MODE_FINISH_DONE
