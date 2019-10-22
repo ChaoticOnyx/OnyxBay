@@ -123,7 +123,7 @@ SUBSYSTEM_DEF(supply)
 						if (NS.neuromod)
 							add_points_from_source(150, "science")
 						else
-							add_points_from_source(25, "scince")
+							add_points_from_source(25, "science")
 			qdel(AM)
 
 	if(material_count.len)
