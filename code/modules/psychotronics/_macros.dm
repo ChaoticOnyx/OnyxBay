@@ -1,1 +1,0 @@
-#define isTyphon(A) istype(A, /mob/living/typhon)
