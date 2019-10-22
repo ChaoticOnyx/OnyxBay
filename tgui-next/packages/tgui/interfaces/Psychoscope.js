@@ -17,36 +17,31 @@ const OpenedNeuromods = props => {
   }
 
   return (
-    <Fragment>
-      {opened_neuromods
-        ?
-        <LabeledList>
-          {opened_neuromods.map(neuromod => {
-            return (
-              <Fragment>
-                <LabeledList.Item label={neuromod.neuromod_name}>
-                  {neuromod.neuromod_desc}
-                </LabeledList.Item>
+    opened_neuromods
+      ? <LabeledList>
+        {opened_neuromods.map(neuromod => {
+          return (
+            <Fragment>
+              <LabeledList.Item label={neuromod.neuromod_name}>
+                {neuromod.neuromod_desc}
+              </LabeledList.Item>
 
-                <LabeledList.Item label="Action">
-                  <Button disabled={inserted_disk === 'neuromod' ? null : '1'}
-                    icon="save" content="Save to Disk"
-                    onClick={() => act(ref, 'saveNeuromodToDisk', {
-                      lifeform_type: scan.lifeform.type,
-                      neuromod_type: neuromod.neuromod_type,
-                    })}/>
-                </LabeledList.Item>
-                <LabeledList.Divider size={1} />
-              </Fragment>
-            );
-          })}
-        </LabeledList>
-        :
-        <NoticeBox>
+              <LabeledList.Item label="Action">
+                <Button disabled={inserted_disk === 'neuromod' ? null : '1'}
+                  icon="save" content="Save to Disk"
+                  onClick={() => act(ref, 'saveNeuromodToDisk', {
+                    lifeform_type: scan.lifeform.type,
+                    neuromod_type: neuromod.neuromod_type,
+                  })}/>
+              </LabeledList.Item>
+              <LabeledList.Divider size={1} />
+            </Fragment>
+          );
+        })}
+      </LabeledList>
+      : <NoticeBox>
             No opened neuromods.
-        </NoticeBox>
-      }
-    </Fragment>
+      </NoticeBox>
   );
 };
 
@@ -64,8 +59,7 @@ const OpenedTechnologies = props => {
   if (scan) {
     return (
       opened_techs
-        ?
-        <LabeledList>
+        ? <LabeledList>
           {opened_techs.map(tech => {
             return (
               <Fragment>
@@ -90,8 +84,7 @@ const OpenedTechnologies = props => {
             );
           })}
         </LabeledList>
-        :
-        <NoticeBox>
+        : <NoticeBox>
             No opened technologies.
         </NoticeBox>
     );
@@ -191,11 +184,9 @@ export const Psychoscope = props => {
             onClick={() => act(ref, 'togglePsychoscope')}/>
           {' '}
           {data.inserted_disk
-            ?
-            <Button icon="eject" content="Eject Disk"
+            ? <Button icon="eject" content="Eject Disk"
               onClick={() => act(ref, 'ejectDisk')}/>
-            :
-            <Button icon="eject" content="Insert Disk"
+            : <Button icon="eject" content="Insert Disk"
               onClick={() => act(ref, 'insertDisk')}/>
           }
         </Fragment>
@@ -213,10 +204,8 @@ export const Psychoscope = props => {
           </LabeledList.Item>
           <LabeledList.Item label="Charge">
             {data.charge === null
-              ?
-              <span style="color:red;">No battery cell</span>
-              :
-              <ProgressBar value={data.charge / data.max_charge} />
+              ? <span style="color:red;">No battery cell</span>
+              : <ProgressBar value={data.charge / data.max_charge} />
             }
           </LabeledList.Item>
         </LabeledList>
@@ -224,24 +213,27 @@ export const Psychoscope = props => {
       <Tabs>
         <Tabs.Tab label="Lifeforms List" icon="list">
           {scanned
-            ?
-            <Section title="Researched Lifeforms">
+            ? <Section title="Researched Lifeforms">
               {scanned.map(scan => {
                 const lifeform = scan.lifeform;
-                const button_content = (selected_lifeform && selected_lifeform.lifeform.type === lifeform.type) ? lifeform.species + ' (Selected)' : lifeform.species;
+                const button_content = (selected_lifeform && selected_lifeform.lifeform.type === lifeform.type)
+                  ? lifeform.species + ' (Selected)'
+                  : lifeform.species;
 
                 return (
                   <Fragment>
-                    <Button disabled={selected_lifeform && selected_lifeform.lifeform.type === lifeform.type ? '1' : null}
-                      content={button_content}
-                      onClick={() => act(ref, 'showLifeform', {lifeform_type: lifeform.type})}></Button>
+                    <Button disabled={selected_lifeform && selected_lifeform.lifeform.type === lifeform.type
+                      ? '1'
+                      : null
+                    }
+                    content={button_content}
+                    onClick={() => act(ref, 'showLifeform', {lifeform_type: lifeform.type})}></Button>
                     <br></br>
                   </Fragment>
                 );
               })}
             </Section>
-            :
-            <NoticeBox>
+            : <NoticeBox>
                 No Lifeforms!
             </NoticeBox>
           }
@@ -252,8 +244,7 @@ export const Psychoscope = props => {
         </Tabs.Tab>
         <Tabs.Tab label="Lifeform Details" icon="info">
           {selected_lifeform
-            ?
-            <Fragment>
+            ? <Fragment>
               <Section title="Lifeform Data" buttons={
                 <Button disabled={data.inserted_disk === 'lifeform' ? null : '1'}
                   content="Save to Disk" icon="save"
@@ -273,16 +264,14 @@ export const Psychoscope = props => {
                 }
               </Toast>
             </Fragment>
-            :
-            <NoticeBox>
+            : <NoticeBox>
               No Selected Lifeform.
             </NoticeBox>
           }
         </Tabs.Tab>
         <Tabs.Tab label="Discoveries" icon="microscope">
           {selected_lifeform
-            ?
-            <Fragment>
+            ? <Fragment>
               <Section title="Opened Techonologies">
                 <OpenedTechnologies scan={selected_lifeform} disk={data.inserted_disk} />
               </Section>
@@ -291,23 +280,20 @@ export const Psychoscope = props => {
                 <OpenedNeuromods scan={selected_lifeform} disk={data.inserted_disk} />
               </Section>
             </Fragment>
-            :
-            <NoticeBox>
+            : <NoticeBox>
               No Selected Lifeform.
             </NoticeBox>
           }
         </Tabs.Tab>
         <Tabs.Tab label="Scans Journal" icon="book">
           {selected_lifeform
-            ?
-            <ScansJournal scans={selected_lifeform.scans_journal}/>
-            :
-            <NoticeBox>
+            ? <ScansJournal scans={selected_lifeform.scans_journal}/>
+            : <NoticeBox>
                 No Selected Lifeform.
             </NoticeBox>
           }
         </Tabs.Tab>
       </Tabs>
     </Fragment>
-  ) ;
+  );
 };

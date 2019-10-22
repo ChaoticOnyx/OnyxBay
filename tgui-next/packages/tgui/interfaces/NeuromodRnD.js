@@ -16,7 +16,7 @@ export const BadText = props => {
       <Icon name={good ? 'check' : 'times'}/>
     </Fragment>
   );
-}
+};
 
 export const NeuromodRnD = props => {
   const { state } = props;
@@ -29,30 +29,24 @@ export const NeuromodRnD = props => {
         buttons={(
           <Fragment>
             {data.disk
-              ?
-              <Button icon="eject" content="Eject Disk"
+              ? <Button icon="eject" content="Eject Disk"
                 onClick={() => act(ref, 'ejectDisk')}/>
-              :
-              <Button icon="eject" content="Insert Disk"
+              : <Button icon="eject" content="Insert Disk"
                 onClick={() => act(ref, 'insertDisk')}/>
             }
 
             {data.neuromod_shell
-              ?
-              <Button icon="eject" content="Eject Neuromod Shell"
+              ? <Button icon="eject" content="Eject Neuromod Shell"
                 onClick={() => act(ref, 'ejectNeuromodShell')}
-                disabled={data.development_progress > 0}  />
-              :
-              <Button icon="eject" content="Insert Neuromod Shell"
+                disabled={data.development_progress > 0} />
+              : <Button icon="eject" content="Insert Neuromod Shell"
                 onClick={() => act(ref, 'insertNeuromodShell')} />
             }
 
             {data.beaker
-              ?
-              <Button icon="eject" content="Eject Beaker"
+              ? <Button icon="eject" content="Eject Beaker"
                 onClick={() => act(ref, 'ejectBeaker')} />
-              :
-              <Button icon="eject" content="Insert Beaker"
+              : <Button icon="eject" content="Insert Beaker"
                 onClick={() => act(ref, 'insertBeaker')} />
             }
           </Fragment>
@@ -61,56 +55,42 @@ export const NeuromodRnD = props => {
 
           <LabeledList.Item label="Neuromod Disk Slot">
             {data.disk === null
-              ?
-              'Empty'
-              :
-              (data.disk === 'neuromod'
-                ?
-                'Neuromod Data'
-                :
-                'Lifeform Data'
+              ? 'Empty'
+              : (data.disk === 'neuromod'
+                ? 'Neuromod Data'
+                : 'Lifeform Data'
               )
             }
           </LabeledList.Item>
 
           <LabeledList.Item label="Neuromod Shell Slot">
             {data.neuromod_shell
-              ?
-              (data.neuromod_shell.neuromod
-                ?
-                'Data'
-                :
-                'Empty Shell'
+              ? (data.neuromod_shell.neuromod
+                ? 'Data'
+                : 'Empty Shell'
               )
-              :
-              'Empty'
+              : 'Empty'
             }
           </LabeledList.Item>
 
           <LabeledList.Item label="Beaker Slot">
             {data.beaker
-              ?
-              'Occuped'
-              :
-              'Empty'
+              ? 'Occuped'
+              : 'Empty'
             }
           </LabeledList.Item>
 
           <LabeledList.Item label="Selected Lifeform">
             {data.selected_lifeform
-              ?
-              data.selected_lifeform.species
-              :
-              "No selected Lifeform"
+              ? data.selected_lifeform.species
+              : "No selected Lifeform"
             }
           </LabeledList.Item>
 
           <LabeledList.Item label="Selected Neuromod">
             {data.selected_neuromod
-              ?
-              data.selected_neuromod.name
-              :
-              "No selected Neuromod"
+              ? data.selected_neuromod.name
+              : "No selected Neuromod"
             }
           </LabeledList.Item>
 
@@ -121,8 +101,7 @@ export const NeuromodRnD = props => {
         <Tabs.Tab icon="microscope" label="Neuromod Researching">
 
           {data.selected_neuromod
-            ?
-            <Fragment>
+            ? <Fragment>
               <Section title="Selected Neuromod">
                 <LabeledList>
 
@@ -139,20 +118,16 @@ export const NeuromodRnD = props => {
 
               <Section title="Researching">
                 {data.selected_neuromod.researched
-                  ?
-                  <NoticeBox>
+                  ? <NoticeBox>
                     The Neuromod is already researched.
                   </NoticeBox>
-                  :
-                  <Fragment>
+                  : <Fragment>
                     <LabeledList>
 
                       <LabeledList.Item label="Status">
                         {data.is_researching
-                          ?
-                          'In Progress'
-                          :
-                          'Ready'
+                          ? 'In Progress'
+                          : 'Ready'
                         }
                       </LabeledList.Item>
 
@@ -162,12 +137,10 @@ export const NeuromodRnD = props => {
 
                       <LabeledList.Item label="Action">
                         {data.is_researching
-                          ?
-                          <Button icon="stop" content="Stop Researching"
+                          ? <Button icon="stop" content="Stop Researching"
                             onClick={() => act(ref, 'stopResearching')}
                             color="red" />
-                          :
-                          <Button icon="atom" content="Start Researching"
+                          : <Button icon="atom" content="Start Researching"
                             onClick={() => act(ref, 'startResearching')}
                             color="green" />
                         }
@@ -178,8 +151,7 @@ export const NeuromodRnD = props => {
                 }
               </Section>
             </Fragment>
-            :
-            <NoticeBox>
+            : <NoticeBox>
                 No selected neuromod.
             </NoticeBox>
           }
@@ -192,90 +164,68 @@ export const NeuromodRnD = props => {
 
               <LabeledList.Item label="Neuromod Shell">
                 {data.neuromod_shell
-                  ?
-                  (data.neuromod_shell.neuromod
-                    ?
-                    <Fragment>
+                  ? (data.neuromod_shell.neuromod
+                    ? <Fragment>
                       <span style="color:red;">Not Empty</span>
                       {' '}
                       <Icon name="times" />
                     </Fragment>
-                    :
-                    <Fragment>
+                    : <Fragment>
                       <span style="color:green;">Ok</span>
                       {' '}
                       <Icon name="check" />
                     </Fragment>
                   )
-                  :
-                  <BadText text="Empty" bad={true} />
+                  : <BadText text="Empty" bad={true} />
                 }
               </LabeledList.Item>
 
               <LabeledList.Item label="Beaker">
                 {data.beaker
-                  ?
-                  (data.beaker.volume < 25
-                    ?
-                    <BadText text={data.beaker.volume + '/' + data.beaker.volume_max} />
-                    :
-                    <BadText text={data.beaker.volume + '/' + data.beaker.volume_max} good={true} />
+                  ? (data.beaker.volume < 25
+                    ? <BadText text={data.beaker.volume + '/' + data.beaker.volume_max} />
+                    : <BadText text={data.beaker.volume + '/' + data.beaker.volume_max} good={true} />
                   )
 
-                  :
-                  <BadText text="Empty" />
+                  : <BadText text="Empty" />
                 }
               </LabeledList.Item>
 
               <LabeledList.Item label="Reagents">
                 {data.beaker
-                  ?
-                  (data.beaker.check_status
-                    ?
-                    <BadText text="Ok" good={true} />
-                    :
-                    <BadText text="Bad Reagents" />
+                  ? (data.beaker.check_status
+                    ? <BadText text="Ok" good={true} />
+                    : <BadText text="Bad Reagents" />
                   )
-                  :
-                  <BadText text="Empty"/>
+                  : <BadText text="Empty"/>
                 }
               </LabeledList.Item>
 
               <LabeledList.Item label="Neuromod">
                 {data.selected_neuromod
-                  ?
-                  (data.selected_neuromod.researched
-                    ?
-                    <BadText text="Researched" good={true} />
-                    :
-                    <BadText text="Not Researched" />
+                  ? (data.selected_neuromod.researched
+                    ? <BadText text="Researched" good={true} />
+                    : <BadText text="Not Researched" />
                   )
-                  :
-                  <BadText text="Not Selected" />
+                  : <BadText text="Not Selected" />
                 }
               </LabeledList.Item>
 
               <LabeledList.Item label="Lifeform">
                 {data.selected_lifeform
-                  ?
-                  (data.selected_lifeform.scan_count >= data.selected_lifeform.neuromod_prod_scans
-                    ?
-                    <BadText text="Ok" good={true} />
-                    :
-                    <BadText text="Scans count not enough" />
+                  ? (data.selected_lifeform.scan_count >= data.selected_lifeform.neuromod_prod_scans
+                    ? <BadText text="Ok" good={true} />
+                    : <BadText text="Scans count not enough" />
                   )
-                  :
-                  <BadText text="Not Selected" />
+                  : <BadText text="Not Selected" />
                 }
               </LabeledList.Item>
 
               <LabeledList.Item label="Action">
                 {data.development_progress > 0
-                  ?
-                  <Button icon="stop" color="red" content="Stop Development"
+                  ? <Button icon="stop" color="red" content="Stop Development"
                     onClick={() => act(ref, 'stopDevelopment')} />
-                  :
-                  <Button icon="forward" color="green" content="Start Development"
+                  : <Button icon="forward" color="green" content="Start Development"
                     onClick={() => act(ref, 'startDevelopment')}
                     disabled={data.development_ready ? null : '1'} />
                 }
@@ -301,8 +251,7 @@ export const NeuromodRnD = props => {
 
               <Tabs.Tab label="Neuromods List" icon="list">
                 {data.neuromods
-                  ?
-                  <LabeledList>
+                  ? <LabeledList>
                     {data.neuromods.map(neuromod => {
                       return (
                         <Fragment>
@@ -317,17 +266,19 @@ export const NeuromodRnD = props => {
 
                           <LabeledList.Item label="Researched">
                             {neuromod.researched
-                              ?
-                              'Researched'
-                              :
-                              'Not Researched'
+                              ? 'Researched'
+                              : 'Not Researched'
                             }
                           </LabeledList.Item>
 
                           <LabeledList.Item label="Action">
                             <Button
-                              content={data.selected_neuromod && data.selected_neuromod.type === neuromod.type ? 'Selected' : 'Select'}
-                              disabled={data.selected_neuromod && data.selected_neuromod.type === neuromod.type ? '1' : null}
+                              content={data.selected_neuromod && data.selected_neuromod.type === neuromod.type
+                                ? 'Selected'
+                                : 'Select'}
+                              disabled={data.selected_neuromod && data.selected_neuromod.type === neuromod.type
+                                ? '1'
+                                : null}
                               onClick={() => act(ref, 'selectNeuromod', {
                                 neuromod_type: neuromod.type,
                               })}/>
@@ -339,8 +290,7 @@ export const NeuromodRnD = props => {
                       );
                     })}
                   </LabeledList>
-                  :
-                  <NoticeBox>
+                  : <NoticeBox>
                     No Neuromods.
                   </NoticeBox>
                 }
@@ -348,8 +298,7 @@ export const NeuromodRnD = props => {
 
               <Tabs.Tab label="Lifeforms List" icon="list">
                 {data.lifeforms
-                  ?
-                  <LabeledList>
+                  ? <LabeledList>
                     {data.lifeforms.map(lifeform => {
                       return (
                         <Fragment>
@@ -357,8 +306,12 @@ export const NeuromodRnD = props => {
 
                           <LabeledList.Item label="Action">
                             <Button
-                              content={data.selected_lifeform && data.selected_lifeform.type === lifeform.type ? 'Selected' : 'Select'}
-                              disabled={data.selected_lifeform && data.selected_lifeform.type === lifeform.type ? '1' : null}
+                              content={data.selected_lifeform && data.selected_lifeform.type === lifeform.type
+                                ? 'Selected'
+                                : 'Select'}
+                              disabled={data.selected_lifeform && data.selected_lifeform.type === lifeform.type
+                                ? '1'
+                                : null}
                               onClick={() => act(ref, 'selectLifeform', {
                                 lifeform_type: lifeform.type,
                               })} />
@@ -367,11 +320,10 @@ export const NeuromodRnD = props => {
                           <LabeledList.Divider size={2} />
 
                         </Fragment>
-                      )
+                      );
                     })}
                   </LabeledList>
-                  :
-                  <NoticeBox>
+                  : <NoticeBox>
                     No Lifeforms.
                   </NoticeBox>
                 }
@@ -379,15 +331,12 @@ export const NeuromodRnD = props => {
 
               <Tabs.Tab label="Disk Contents" icon="hdd">
                 {data.disk
-                  ?
-                  <LabeledList>
+                  ? <LabeledList>
 
                     <LabeledList.Item label="Disk Type">
                       {data.disk === 'lifeform'
-                        ?
-                        'Lifeform Data'
-                        :
-                        'Neuromod Data'
+                        ? 'Lifeform Data'
+                        : 'Neuromod Data'
                       }
                     </LabeledList.Item>
 
@@ -398,14 +347,12 @@ export const NeuromodRnD = props => {
                         ))}/>
                       {' '}
                       {data.disk === 'lifeform'
-                        ?
-                        <Button icon="save" content="Save to Disk"
+                        ? <Button icon="save" content="Save to Disk"
                           disabled={data.selected_lifeform ? false : true}
                           onClick={() => act(ref, 'saveLifeformToDisk', {
                             lifeform_type: data.selected_lifeform.type,
                           })} />
-                        :
-                        <Button icon="save" content="Save to Disk"
+                        : <Button icon="save" content="Save to Disk"
                           disabled={data.selected_neuromod ? false : true}
                           onClick={() => act(ref, 'saveNeuromodToDisk', {
                             neuromod_type: data.selected_neuromod.type,
@@ -414,8 +361,7 @@ export const NeuromodRnD = props => {
                     </LabeledList.Item>
 
                   </LabeledList>
-                  :
-                  <NoticeBox>
+                  : <NoticeBox>
                     No disk.
                   </NoticeBox>
                 }
