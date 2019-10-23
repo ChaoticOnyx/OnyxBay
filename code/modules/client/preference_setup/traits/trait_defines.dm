@@ -273,11 +273,14 @@
 /datum/trait/modifier/physical/stammering
 	name = "Stutterer"
 	modifier_type = /datum/modifier/trait/stammering
+	mutually_exclusive = list(/datum/trait/modifier/physical/burrieng, /datum/trait/modifier/physical/lisping)	
 	
 /datum/trait/modifier/physical/burrieng
 	name = "Burry"
 	modifier_type = /datum/modifier/trait/burrieng
+	mutually_exclusive = list(/datum/trait/modifier/physical/stammering, /datum/trait/modifier/physical/lisping)		
 
 /datum/trait/modifier/physical/lisping
 	name = "Lisp"
 	modifier_type = /datum/modifier/trait/lisping
+	mutually_exclusive = list(/datum/trait/modifier/physical/stammering, /datum/trait/modifier/physical/burrieng)
