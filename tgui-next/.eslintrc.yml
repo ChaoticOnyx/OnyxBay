@@ -7,6 +7,9 @@ parserOptions:
 env:
   browser: true
   node: true
+settings:
+  react:
+    version: '16.10'
 rules:
 
   ## Possible Errors

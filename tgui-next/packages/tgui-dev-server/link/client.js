@@ -36,27 +36,18 @@ const subscribe = fn => subscribers.push(fn);
  * A json serializer which handles circular references and other junk.
  */
 const serializeObject = obj => {
-  let refs = [];
+  let cache = [];
   const json = JSON.stringify(obj, (key, value) => {
     if (typeof value === 'object' && value !== null) {
-      // Circular reference
-      if (refs.includes(value)) {
+      if (cache.indexOf(value) !== -1) {
         return '[circular ref]';
       }
-      refs.push(value);
-      // Error object
-      if (value instanceof Error) {
-        return {
-          __type__: 'error',
-          string: String(value),
-          stack: value.stack,
-        };
-      }
+      cache.push(value);
       return value;
     }
     return value;
   });
-  refs = null;
+  cache = null;
   return json;
 };
 
