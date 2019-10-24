@@ -33,6 +33,8 @@ const renderLayout = () => {
     const state = store.getState();
     // Initial render setup
     if (initialRender) {
+      initialRender = false;
+
       // ----- Old TGUI chain-loader: begin -----
       const route = getRoute(state);
       // Route was not found, load old TGUI
@@ -66,7 +68,6 @@ const renderLayout = () => {
       // ----- Old TGUI chain-loader: end -----
 
       logger.log('initial render', state);
-
       // Setup dragging
       setupDrag(state);
     }
@@ -76,7 +77,7 @@ const renderLayout = () => {
     render(element, reactRoot);
   }
   catch (err) {
-    logger.error('rendering error', err);
+    logger.error('rendering error', err.stack || String(err));
   }
   // Report rendering time
   if (process.env.NODE_ENV !== 'production') {
@@ -84,14 +85,12 @@ const renderLayout = () => {
     const diff = finishedAt - startedAt;
     const diffFrames = (diff / 16.6667).toFixed(2);
     logger.debug(`rendered in ${diff}ms (${diffFrames} frames)`);
-    if (initialRender) {
+    if (window.__inception__) {
       const diff = finishedAt - window.__inception__;
       const diffFrames = (diff / 16.6667).toFixed(2);
       logger.log(`fully loaded in ${diff}ms (${diffFrames} frames)`);
+      window.__inception__ = null;
     }
-  }
-  if (initialRender) {
-    initialRender = false;
   }
 };
 

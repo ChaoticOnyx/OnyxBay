@@ -22,7 +22,9 @@ if [[ ${1} == "--clean" ]]; then
 fi
 
 ## Install dependencies
-yarn install
+if [[ ! -e node_modules ]]; then
+  npm install
+fi
 
 ## Run a development server
 if [[ ${1} == "--dev" ]]; then

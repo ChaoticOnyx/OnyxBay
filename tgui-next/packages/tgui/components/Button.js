@@ -4,7 +4,6 @@ import { createLogger } from '../logging';
 import { Box } from './Box';
 import { Icon } from './Icon';
 import { Tooltip } from './Tooltip';
-import { refocusLayout } from '../refocus';
 
 const logger = createLogger('Button');
 
@@ -58,20 +57,14 @@ export const Button = props => {
         if (disabled || !onClick) {
           return;
         }
-        refocusLayout();
         onClick(e);
       }}
       onKeyPress={e => {
         const keyCode = window.event ? e.which : e.keyCode;
-        if (!BUTTON_ACTIVATION_KEYCODES.includes(keyCode)) {
-          return;
+        if (BUTTON_ACTIVATION_KEYCODES.includes(keyCode)) {
+          e.preventDefault();
+          onClick(e);
         }
-        if (disabled || !onClick) {
-          return;
-        }
-        e.preventDefault();
-        refocusLayout();
-        onClick(e);
       }}
       {...rest}>
       {icon && (

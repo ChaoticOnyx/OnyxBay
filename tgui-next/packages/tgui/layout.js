@@ -1,20 +1,21 @@
 import { classes } from 'common/react';
 import { decodeHtmlEntities } from 'common/string';
-import { Component, Fragment } from 'inferno';
-import { runCommand, winset } from './byond';
+import { Component, createRef, Fragment } from 'inferno';
+import { runCommand, tridentVersion, winset } from './byond';
 import { Box, TitleBar } from './components';
+import { BUTTON_ACTIVATION_KEYCODES } from './components/Button';
 import { Toast } from './components/Toast';
 import { UI_INTERACTIVE } from './constants';
 import { dragStartHandler, resizeStartHandler } from './drag';
 import { createLogger } from './logging';
-import { refocusLayout } from './refocus';
 import { getRoute } from './routes';
 
 const logger = createLogger('Layout');
 
 export class Layout extends Component {
-  componentDidMount() {
-    refocusLayout();
+  constructor() {
+    super();
+    this.contentRef = createRef();
   }
 
   render() {
@@ -41,11 +42,30 @@ export class Layout extends Component {
             runCommand(`uiclose ${config.ref}`);
           }} />
         <div
-          id="Layout__content"
+          ref={this.contentRef}
           className={classes([
             'Layout__content',
             scrollable && 'Layout__content--scrollable',
-          ])}>
+          ])}
+          onClick={() => {
+            // Abort this code path on IE8
+            if (tridentVersion <= 4) {
+              return;
+            }
+            // Bring focus back to the window on every click
+            this.contentRef.current.focus();
+          }}
+          onKeyPress={e => {
+            // Abort this code path on IE8
+            if (tridentVersion <= 4) {
+              return;
+            }
+            // Bring focus back to the window on every keypress
+            const keyCode = window.event ? e.which : e.keyCode;
+            if (BUTTON_ACTIVATION_KEYCODES.includes(keyCode)) {
+              this.contentRef.current.focus();
+            }
+          }}>
           <Box m={1}>
             <Component state={state} dispatch={dispatch} />
           </Box>
