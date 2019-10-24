@@ -74,13 +74,8 @@
 		master_ui.children += src
 	src.state = state
 
-	if (user.client)
-		var/datum/asset/assets = get_asset_datum(/datum/asset/directories/tgui)
-
-		if (!assets.check_sent(user.client))
-			to_chat(user, "Resources are still loading. Please wait.")
-			assets.send(user.client)
-			close()
+	var/datum/asset/assets = get_asset_datum(/datum/asset/simple/tgui)
+	assets.send(user)
 
  /**
   * private
@@ -99,7 +94,7 @@
   * Open this UI (and initialize it with data).
  **/
 /datum/tgui/proc/open()
-	if(!user || !user.client)
+	if(!user.client)
 		return // Bail if there is no client.
 
 	update_status(push = 0) // Update the window status.
