@@ -14,7 +14,7 @@ export const SuitJammer = props => {
     <Fragment>
       <Section title="Status" buttons={(
         <Button content="Toggle Jammer" icon="wifi"
-          onclick={() => act(ref, (data.active ? 'disable_jammer' : 'enable_jammer'))} />
+          onclick={() => act(ref, (data.active ? 'disable_jammer' : 'enable_jammer'))}/>
       )}>
         <LabeledList>
           <LabeledList.Item label="State">
@@ -40,10 +40,10 @@ export const SuitJammer = props => {
       <Section title="Methods">
         {methods.map(method => {
           return (
-            <Fragment key={method.name}>
+            <Fragment>
               <Button content={method.name} disabled={data.current_method === method.ref ? '1' : null}
                 onclick={() => act(ref, 'select_method', {method: method.ref})} />
-              <br />
+              <br></br>
             </Fragment>
           );
         })}

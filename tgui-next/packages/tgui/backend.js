@@ -25,29 +25,17 @@ export const backendReducer = (state, action) => {
   const { type, payload } = action;
 
   if (type === 'backendUpdate') {
-    // Merge config
-    const config = {
-      ...state.config,
-      ...payload.config,
-    };
-    // Merge data
-    const data = {
-      ...state.data,
-      ...payload.static_data,
-      ...payload.data,
-    };
     // Calculate our own fields
-    const visible = config.status !== UI_DISABLED;
-    const interactive = config.status === UI_INTERACTIVE;
+    const visible = payload.config.status !== UI_DISABLED;
+    const interactive = payload.config.status === UI_INTERACTIVE;
     // Override fancy setting for IE8
     if (tridentVersion <= 4) {
-      config.fancy = 0;
+      payload.config.fancy = 0;
     }
-    // Return new state
+    // Merge new payload
     return {
       ...state,
-      config,
-      data,
+      ...payload,
       visible,
       interactive,
     };

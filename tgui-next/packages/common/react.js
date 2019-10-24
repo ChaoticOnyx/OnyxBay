@@ -1,6 +1,9 @@
 /**
  * Helper for conditionally adding/removing classes in React
  *
+ * @copyright 2018 Aleksej Komarov
+ * @license GPL-2.0-or-later
+ *
  * @return {string}
  */
 export const classes = (...args) => {

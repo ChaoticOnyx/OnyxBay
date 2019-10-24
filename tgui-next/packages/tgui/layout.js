@@ -1,8 +1,8 @@
 import { classes } from 'common/react';
 import { decodeHtmlEntities } from 'common/string';
-import { Component, createRef, Fragment } from 'inferno';
+import { Component, createRef } from 'inferno';
 import { runCommand, tridentVersion, winset } from './byond';
-import { Box, TitleBar } from './components';
+import { TitleBar, Box } from './components';
 import { BUTTON_ACTIVATION_KEYCODES } from './components/Button';
 import { Toast } from './components/Toast';
 import { UI_INTERACTIVE } from './constants';
