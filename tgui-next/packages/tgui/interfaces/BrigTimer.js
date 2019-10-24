@@ -16,12 +16,12 @@ export const BrigTimer = props => {
         <Fragment>
           <Button
             icon="clock-o"
-            content={data.timing ? 'Stop' : 'Start' }
+            content={data.timing ? 'Stop' : 'Start'}
             selected={data.timing}
             onClick={() => act(ref, data.timing ? 'stop' : 'start')} />
           <Button
             icon="lightbulb-o"
-            content={data.flash_charging ? 'Recharging' : 'Flash' }
+            content={data.flash_charging ? 'Recharging' : 'Flash'}
             disabled={data.flash_charging}
             onClick={() => act(ref, 'flash')} />
         </Fragment>
