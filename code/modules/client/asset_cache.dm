@@ -261,6 +261,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	dirs = list(
 		// tgui-next
 		"tgui-next/packages/tgui/public/",
+		"tgui-next/packages/tgui/public/bundles/",
 		"tgui-next/packages/tgui/public/images/",
 
 		// font-awesome

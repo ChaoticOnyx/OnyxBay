@@ -7,10 +7,11 @@ parserOptions:
 env:
   browser: true
   node: true
+settings:
+  react:
+    version: '16.10'
 rules:
-
   ## Possible Errors
-  ## ----------------------------------------
   # for-direction: error
   # getter-return: error
   no-async-promise-executor: error
@@ -50,7 +51,6 @@ rules:
   valid-typeof: error
 
   ## Best practices
-  ## ----------------------------------------
   complexity: [error, { max: 50 }] ## That is a VERY generous limit
   curly: [error, all]
   eqeqeq: [error, always]
@@ -68,11 +68,10 @@ rules:
   radix: error
 
   ## Code style
-  ## ----------------------------------------
   array-bracket-newline: [error, consistent]
   array-bracket-spacing: [error, never]
   block-spacing: [error, always]
-  # brace-style: [error, stroustrup, { allowSingleLine: false }]
+  brace-style: [error, stroustrup, { allowSingleLine: false }]
   comma-dangle: [error, always-multiline]
   comma-spacing: [error, { before: false, after: true }]
   comma-style: [error, last]
@@ -109,7 +108,6 @@ rules:
   # unicode-bom: [error, never]
 
   ## ES6
-  ## ----------------------------------------
   arrow-parens: [error, as-needed]
   arrow-spacing: [error, { before: true, after: true }]
   generator-star-spacing: [error, { before: false, after: true }]

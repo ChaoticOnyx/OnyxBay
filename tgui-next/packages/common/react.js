@@ -1,6 +1,9 @@
 /**
  * Helper for conditionally adding/removing classes in React
  *
+ * @copyright 2018 Aleksej Komarov
+ * @license GPL-2.0-or-later
+ *
  * @return {string}
  */
 export const classes = (...args) => {
@@ -71,13 +74,4 @@ export const pureComponentHooks = {
   onComponentShouldUpdate: (lastProps, nextProps) => {
     return shallowDiffers(lastProps, nextProps);
   },
-};
-
-/**
- * A helper to determine whether to render an item.
- */
-export const isFalsy = value => {
-  return value === undefined
-    || value === null
-    || value === false;
 };

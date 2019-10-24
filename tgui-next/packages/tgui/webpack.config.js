@@ -14,9 +14,7 @@ module.exports = (env = {}, argv) => {
       ],
     },
     output: {
-      path: argv.mode === 'production'
-        ? path.resolve(__dirname, './public')
-        : path.resolve(__dirname, './public/.tmp'),
+      path: path.resolve(__dirname, './public/bundles'),
       filename: '[name].bundle.js',
       chunkFilename: '[name].chunk.js',
     },
@@ -28,6 +26,7 @@ module.exports = (env = {}, argv) => {
       rules: [
         {
           test: /\.m?jsx?$/,
+          // exclude: /node_modules/,
           use: [
             {
               loader: 'babel-loader',
@@ -63,7 +62,9 @@ module.exports = (env = {}, argv) => {
             },
             {
               loader: 'css-loader',
-              options: {},
+              options: {
+                url: false,
+              },
             },
             {
               loader: 'sass-loader',
@@ -82,16 +83,31 @@ module.exports = (env = {}, argv) => {
             },
             {
               loader: 'css-loader',
-              options: {},
+              options: {
+                url: false,
+              },
             },
           ],
         },
         {
-          test: /\.(png|jpg|svg)$/,
+          test: /\.(png|jpg|gif|ico)$/,
           use: [
             {
-              loader: 'url-loader',
-              options: {},
+              loader: 'file-loader',
+              options: {
+                name: 'images/[name].[ext]',
+              },
+            },
+          ],
+        },
+        {
+          test: /\.(ttf|woff|woff2|eot|svg)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: 'fonts/[name].[ext]',
+              },
             },
           ],
         },
@@ -99,10 +115,20 @@ module.exports = (env = {}, argv) => {
     },
     optimization: {
       noEmitOnErrors: true,
+      // splitChunks: {
+      //   cacheGroups: {
+      //     commons: {
+      //       test: /[\\/]node_modules[\\/]/,
+      //       name: 'vendor',
+      //       chunks: 'all',
+      //     },
+      //   },
+      // },
     },
     performance: {
       hints: false,
     },
+    // Unfortunately, source maps don't work with BYOND's IE.
     devtool: false,
     plugins: [
       new webpack.EnvironmentPlugin({
@@ -170,7 +196,6 @@ module.exports = (env = {}, argv) => {
     if (argv.hot) {
       config.plugins.push(new webpack.HotModuleReplacementPlugin());
     }
-    config.devtool = 'cheap-module-source-map';
     config.devServer = {
       // Informational flags
       progress: false,
