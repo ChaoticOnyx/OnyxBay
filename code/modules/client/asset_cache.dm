@@ -307,7 +307,7 @@ var/decl/asset_cache/asset_cache = new()
 
 /proc/send_assets()
 	// Creates and registers every asset datum
-	for(var/type in subtypesof(/datum/asset) - list(/datum/asset/group, /datum/asset/directories))
+	for(var/type in subtypesof(/datum/asset))
 		get_asset_datum(type)
 
 	for(var/client/C in GLOB.clients)
