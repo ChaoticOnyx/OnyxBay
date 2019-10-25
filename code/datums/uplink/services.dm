@@ -33,7 +33,7 @@
 	desc = "Completely disables all suit sensors for 10 minutes."
 	item_cost = 33
 	path = /obj/item/device/uplink_service/jamming
-	
+
 /datum/uplink_item/item/services/fake_update_announcement
 	name = "Central Command Announcement"
 	desc = "Causes a falsified central command announcement. Think carefully about the consequences!"
@@ -95,7 +95,7 @@
 	disable()
 	state = HAS_BEEN_ACTIVATED
 	update_icon()
-	playsound(loc, "sparks", 50, 1)
+	playsound(loc, "spark", 50, 1)
 	visible_message("<span class='warning'>\The [src] shuts down with a spark.</span>")
 
 /obj/item/device/uplink_service/update_icon()
@@ -167,12 +167,12 @@
 ***************************/
 /obj/item/device/uplink_service/fake_update_announcement
 	service_label = "Fake Update Announcement"
-	
+
 /obj/item/device/uplink_service/fake_update_announcement/Destroy()
 	if(state == CURRENTLY_ACTIVE)
 		deactivate()
 		update_icon()
-	. = ..()	
+	. = ..()
 
 /obj/item/device/uplink_service/fake_update_announcement/enable(var/mob/user = usr)
 	if(state != AWAITING_ACTIVATION)
@@ -198,7 +198,7 @@
 		if("No")
 			minor_announcement.Announce(message = "New [GLOB.using_map.company_name] Update available at all communication consoles.")
 			deactivate()
-			
+
 /obj/item/device/uplink_service/fake_update_announcement/update_icon()
 	switch(state)
 		if(AWAITING_ACTIVATION)
@@ -206,8 +206,8 @@
 		if(CURRENTLY_ACTIVE)
 			icon_state = "sflash2"
 		if(HAS_BEEN_ACTIVATED)
-			icon_state = "flashburnt"		
-			
+			icon_state = "flashburnt"
+
 /*********************************
 * Fake Crew Records/Announcement *
 *********************************/

@@ -322,13 +322,13 @@
 		emagged = 1
 		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)
 		spark_system.start()
-		playsound(src.loc, "sparks", 50, 1)
+		playsound(src.loc, "spark", 50, 1)
 		return 1
 	if(locked)
 		to_chat(user, "<span class='danger'>You short out locking system.</span>")
 		toggle_lock()
 		spark_system.start()
-		playsound(src.loc, "sparks", 50, 1)
+		playsound(src.loc, "spark", 50, 1)
 		return 1
 
 /obj/machinery/sleeper/proc/toggle_filter()

@@ -11,7 +11,7 @@
 	var/icon_opened = "open"
 
 	var/icon_locked
-	var/icon_broken = "sparks"
+	var/icon_broken = "spark"
 	var/icon_off
 
 	var/welded = 0
@@ -394,7 +394,7 @@
 			spark_system.set_up(5, 0, src.loc)
 			spark_system.start()
 			playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
-			playsound(src.loc, "sparks", 50, 1)
+			playsound(src.loc, "spark", 50, 1)
 			open()
 	else if(istype(W, /obj/item/weapon/packageWrap))
 		return

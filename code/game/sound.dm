@@ -89,6 +89,11 @@ GLOBAL_LIST_INIT(window_breaking_sound,list('sound/effects/breaking/window/break
 GLOBAL_LIST_INIT(glass_hit_sound,list('sound/effects/materials/glass/knock1.ogg', 'sound/effects/materials/glass/knock2.ogg', 'sound/effects/materials/glass/knock3.ogg',
 										'sound/effects/materials/glass/knock4.ogg', 'sound/effects/materials/glass/knock5.ogg', 'sound/effects/materials/glass/knock6.ogg'))
 
+GLOBAL_LIST_INIT(electric_explosion_sound,list('sound/effetcs/explosions/electric1.ogg','sound/effetcs/explosions/electric2.ogg','sound/effetcs/explosions/electric3.ogg',
+												'sound/effetcs/explosions/electric4.ogg','sound/effetcs/explosions/electric5.ogg','sound/effetcs/explosions/electric6.ogg',
+												'sound/effetcs/explosions/electric7.ogg','sound/effetcs/explosions/electric8.ogg','sound/effetcs/explosions/electric9.ogg',
+												'sound/effetcs/explosions/electric10.ogg','sound/effetcs/explosions/electric11.ogg'))
+
 GLOBAL_LIST_INIT(explosion_sound,list('sound/effects/explosions/explosion1.ogg', 'sound/effects/explosions/explosion2.ogg', 'sound/effects/explosions/explosion3.ogg',
 										'sound/effects/explosions/explosion4.ogg', 'sound/effects/explosions/explosion5.ogg', 'sound/effects/explosions/explosion6.ogg',
 										'sound/effects/explosions/explosion7.ogg', 'sound/effects/explosions/explosion8.ogg', 'sound/effects/explosions/explosion9.ogg',
@@ -98,10 +103,13 @@ GLOBAL_LIST_INIT(explosion_sound,list('sound/effects/explosions/explosion1.ogg',
 										'sound/effects/explosions/explosion19.ogg', 'sound/effects/explosions/explosion20.ogg', 'sound/effects/explosions/explosion21.ogg',
 										'sound/effects/explosions/explosion22.ogg', 'sound/effects/explosions/explosion23.ogg', 'sound/effects/explosions/explosion24.ogg'))
 
-GLOBAL_LIST_INIT(spark_small_sound,list('sound/effects/electric/spark_small1.ogg'))
+GLOBAL_LIST_INIT(spark_small_sound,list('sound/effects/electric/small_spark1.ogg','sound/effects/electric/small_spark2.ogg','sound/effects/electric/small_spark3.ogg',
+										'sound/effects/electric/small_spark4.ogg','sound/effects/electric/small_spark5.ogg','sound/effects/electric/small_spark6.ogg',
+										'sound/effects/electric/small_spark7.ogg','sound/effects/electric/small_spark8.ogg'))
 
 GLOBAL_LIST_INIT(spark_sound,list('sound/effects/electric/spark1.ogg','sound/effects/electric/spark2.ogg','sound/effects/electric/spark3.ogg',
-									'sound/effects/electric/spark4.ogg'))
+									'sound/effects/electric/spark4.ogg','sound/effects/electric/spark5.ogg','sound/effects/electric/spark6.ogg',
+									'sound/effects/electric/spark7.ogg'))
 
 GLOBAL_LIST_INIT(spark_medium_sound,list('sound/effects/electric/medium_spark1.ogg','sound/effects/electric/medium_spark2.ogg'))
 
@@ -296,10 +304,11 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("console_breaking")		soundin = pick(GLOB.console_breaking_sound)
 			if ("window_breaking") 		soundin = pick(GLOB.window_breaking_sound)
 			if ("glass_hit") 			soundin = pick(GLOB.glass_hit_sound)
+			if ("electric_explosion")	soundin = pick(GLOB.electric_explosion_sound)
 			if ("explosion") 			soundin = pick(GLOB.explosion_sound)
-			if ("sparks") 				soundin = pick(GLOB.spark_sound)
-			if ("sparks_medium") 		soundin = pick(GLOB.spark_medium_sound)
-			if ("sparks_heavy") 		soundin = pick(GLOB.spark_heavy_sound)
+			if ("spark") 				soundin = pick(GLOB.spark_sound)
+			if ("spark_medium") 		soundin = pick(GLOB.spark_medium_sound)
+			if ("spark_heavy") 			soundin = pick(GLOB.spark_heavy_sound)
 			if ("searching_clothes") 	soundin = pick(GLOB.searching_clothes_sound)
 			if ("searching_cabinet") 	soundin = pick(GLOB.searching_cabinet_sound)
 			if ("searching_case") 		soundin = pick(GLOB.searching_case_sound)

@@ -27,7 +27,7 @@ proc/empulse(turf/epicenter, heavy_range, light_range, log=0)
 		light_range = heavy_range
 
 	for(var/mob/M in range(heavy_range, epicenter))
-		sound_to(M, 'sound/effects/EMPulse.ogg')
+		M.playsound_local(epicenter, "electric_explosion", rand(80, 100))
 
 		var/mob/living/carbon/human/H = M
 		// Take brain damage if the mob has neuromods

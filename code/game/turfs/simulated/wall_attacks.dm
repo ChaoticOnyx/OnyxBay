@@ -169,7 +169,7 @@
 
 			EB.spark_system.start()
 			to_chat(user, "<span class='notice'>You slash \the [src] with \the [EB]; the thermite ignites!</span>")
-			playsound(src, "sparks", 50, 1)
+			playsound(src, "spark", 50, 1)
 			playsound(src, 'sound/weapons/blade1.ogg', 50, 1)
 
 			thermitemelt(user)
@@ -213,7 +213,7 @@
 			dismantle_sound = 'sound/items/Welder.ogg'
 			cut_delay *= 0.7
 		else if(istype(W,/obj/item/weapon/melee/energy/blade))
-			dismantle_sound = "sparks"
+			dismantle_sound = "spark"
 			dismantle_verb = "slicing"
 			cut_delay *= 0.5
 		else if(istype(W,/obj/item/weapon/pickaxe))

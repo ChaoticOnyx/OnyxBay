@@ -641,7 +641,7 @@ About the new airlock wires panel:
 	if(feedback && message)
 		to_chat(usr, message)
 	if(.)
-		playsound(src, get_sfx("sparks"), 30, 0, -6)
+		playsound(src, get_sfx("spark"), 30, 0, -6)
 
 /obj/machinery/door/airlock/proc/set_idscan(var/activate, var/feedback = 0)
 	var/message = ""
@@ -944,7 +944,7 @@ About the new airlock wires panel:
 		cut_delay *= 0.66
 	else if(istype(item,/obj/item/weapon/melee/energy/blade) || istype(item,/obj/item/weapon/melee/energy/sword))
 		cut_verb = "slicing"
-		cut_sound = "sparks"
+		cut_sound = "spark"
 		cut_delay *= 0.66
 	else if(istype(item,/obj/item/weapon/circular_saw))
 		cut_verb = "sawing"
