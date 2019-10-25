@@ -15,10 +15,10 @@ export const Resleever = props => {
         buttons={(
           <Fragment>
             <Button icon="eject" content="Eject Occupant" disabled={data.isOccupiedEjectable ? null : '1'}
-              onclick={() => act(ref, 'eject')} />
+              onClick={() => act(ref, 'eject')} />
             {' '}
             <Button icon="eject" content="Eject Lace" disabled={data.isLaceEjectable ? null : '1'}
-              onclick={() => act(ref, 'ejectlace')} />
+              onClick={() => act(ref, 'ejectlace')} />
           </Fragment>
         )}>
         <LabeledList>
@@ -36,7 +36,7 @@ export const Resleever = props => {
       <Section title="Procedure"
         buttons={(
           <Button icon="play" content="Start Procedure" disabled={data.ready ? null : '0'}
-            onclick={() => act(ref, 'begin')} />
+            onClick={() => act(ref, 'begin')} />
         )}>
         <LabeledList>
           <LabeledList.Item label="Status">
