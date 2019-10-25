@@ -292,13 +292,12 @@
 		holo_obj.alpha *= 0.8 //give holodeck objs a slight transparency
 
 	if(HP.ambience)
-		linkedholodeck.forced_ambience = HP.ambience
-	else
-		linkedholodeck.forced_ambience = list()
+		linkedholodeck.ambience = HP.ambience
 
 	for(var/mob/living/M in mobs_in_area(linkedholodeck))
 		if(M.mind)
-			linkedholodeck.play_ambience(M)
+			to_world("Play ambient")
+			linkedholodeck.play_ambience(M, custom_period=30 SECONDS)
 
 	linkedholodeck.sound_env = A.sound_env
 

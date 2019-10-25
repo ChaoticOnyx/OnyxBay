@@ -89,10 +89,10 @@ GLOBAL_LIST_INIT(window_breaking_sound,list('sound/effects/breaking/window/break
 GLOBAL_LIST_INIT(glass_hit_sound,list('sound/effects/materials/glass/knock1.ogg', 'sound/effects/materials/glass/knock2.ogg', 'sound/effects/materials/glass/knock3.ogg',
 										'sound/effects/materials/glass/knock4.ogg', 'sound/effects/materials/glass/knock5.ogg', 'sound/effects/materials/glass/knock6.ogg'))
 
-GLOBAL_LIST_INIT(electric_explosion_sound,list('sound/effetcs/explosions/electric1.ogg','sound/effetcs/explosions/electric2.ogg','sound/effetcs/explosions/electric3.ogg',
-												'sound/effetcs/explosions/electric4.ogg','sound/effetcs/explosions/electric5.ogg','sound/effetcs/explosions/electric6.ogg',
-												'sound/effetcs/explosions/electric7.ogg','sound/effetcs/explosions/electric8.ogg','sound/effetcs/explosions/electric9.ogg',
-												'sound/effetcs/explosions/electric10.ogg','sound/effetcs/explosions/electric11.ogg'))
+GLOBAL_LIST_INIT(electric_explosion_sound,list('sound/effects/explosions/electric1.ogg','sound/effects/explosions/electric2.ogg','sound/effects/explosions/electric3.ogg',
+												'sound/effects/explosions/electric4.ogg','sound/effects/explosions/electric5.ogg','sound/effects/explosions/electric6.ogg',
+												'sound/effects/explosions/electric7.ogg','sound/effects/explosions/electric8.ogg','sound/effects/explosions/electric9.ogg',
+												'sound/effects/explosions/electric10.ogg','sound/effects/explosions/electric11.ogg'))
 
 GLOBAL_LIST_INIT(explosion_sound,list('sound/effects/explosions/explosion1.ogg', 'sound/effects/explosions/explosion2.ogg', 'sound/effects/explosions/explosion3.ogg',
 										'sound/effects/explosions/explosion4.ogg', 'sound/effects/explosions/explosion5.ogg', 'sound/effects/explosions/explosion6.ogg',

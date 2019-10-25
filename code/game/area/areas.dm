@@ -212,7 +212,7 @@ var/list/mob/living/forced_ambiance_list = new
 	L.lastarea = newarea
 	play_ambience(L)
 
-/area/proc/play_ambience(var/mob/living/L)
+/area/proc/play_ambience(var/mob/living/L, custom_period=1 MINUTES)
 	// Ambience goes down here -- make sure to list each area seperately for ease of adding things in later, thanks! Note: areas adjacent to each other should have the same sounds to prevent cutoff when possible.- LastyScratch
 	if(!(L && L.get_preference_value(/datum/client_preference/play_ambiance) == GLOB.PREF_YES))	return
 
@@ -246,9 +246,9 @@ var/list/mob/living/forced_ambiance_list = new
 		else
 			sound_to(L, sound(null, channel = 1))
 	else if(src.ambience.len && prob(35))
-		if((world.time >= L.client.played + 3 MINUTES))
+		if((world.time >= L.client.played + custom_period))
 			var/sound = pick(ambience)
-			L.playsound_local(T, sound(sound, repeat = 0, wait = 0, volume = 15, channel = 1))
+			L.playsound_local(T, sound(sound, repeat = 0, wait = 0, volume = 60, channel = 1))
 			L.client.played = world.time
 
 /area/proc/gravitychange(var/gravitystate = 0)
