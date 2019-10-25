@@ -58,6 +58,7 @@
 	var/sdisabilities = 0	//Carbon
 	var/disabilities = 0	//Carbon
 
+	var/last_pull_sound = 0
 	var/atom/movable/pulling = null
 	var/other_mobs = null
 	var/next_move = null

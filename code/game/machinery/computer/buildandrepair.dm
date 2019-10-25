@@ -9,6 +9,7 @@
 	var/state = 0
 	var/obj/item/weapon/circuitboard/circuit = null
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	pull_sound = "pull_machine"
 //	weight = 1.0E8
 
 /obj/structure/computerframe/attackby(obj/item/P as obj, mob/user as mob)

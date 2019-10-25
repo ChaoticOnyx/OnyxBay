@@ -6,6 +6,7 @@
 	icon_state = "watertank"
 	density = 1
 	anchored = 0
+	pull_sound = "pull_machine"
 
 	var/initial_capacity = 1000
 	var/initial_reagent_types  // A list of reagents and their ratio relative the initial capacity. list(/datum/reagent/water = 0.5) would fill the dispenser halfway to capacity.
