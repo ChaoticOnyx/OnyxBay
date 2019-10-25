@@ -579,10 +579,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			if(I)
 				target.drop_from_inventory(I)
 				target.visible_message("<span class='danger'>[attacker] has disarmed [target]!</span>")
-				playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
+				playsound(target.loc, "swing", rand(60, 80), 1, -1)
 				return
 
-	playsound(target.loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
+	playsound(target.loc, "swing", rand(60, 80), 1, -1)
 	target.visible_message("<span class='warning'>[attacker] attempted to disarm \the [target]!</span>")
 
 /datum/species/proc/disfigure_msg(var/mob/living/carbon/human/H) //Used for determining the message a disfigured face has on examine. To add a unique message, just add this onto a specific species and change the "return" message.

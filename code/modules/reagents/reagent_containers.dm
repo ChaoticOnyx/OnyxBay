@@ -102,7 +102,7 @@
 	user.visible_message("<span class='warning'>[user] has fed [target] \the [src]!</span>")
 
 /obj/item/weapon/reagent_containers/proc/feed_sound(var/mob/user)
-	playsound(user, "drink", rand(45, 60), FALSE)
+	playsound(user, "drink", rand(45, 60), TRUE)
 
 /obj/item/weapon/reagent_containers/proc/standard_feed_mob(var/mob/user, var/mob/target) // This goes into attack
 	if(!istype(target))

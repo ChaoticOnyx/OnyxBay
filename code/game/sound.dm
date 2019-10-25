@@ -124,11 +124,12 @@ GLOBAL_LIST_INIT(searching_case_sound,list('sound/effects/using/case/use1.ogg','
 GLOBAL_LIST_INIT(crunch_sound,list('sound/effects/figthing/crunch1.ogg','sound/effects/figthing/crunch2.ogg','sound/effects/figthing/crunch3.ogg',
 									'sound/effects/figthing/crunch4.ogg','sound/effects/figthing/crunch5.ogg','sound/effects/figthing/crunch6.ogg',
 									'sound/effects/figthing/crunch7.ogg','sound/effects/figthing/crunch8.ogg','sound/effects/figthing/crunch9.ogg',
-									'sound/effects/figthing/crunch10.ogg'))
+									'sound/effects/figthing/crunch10.ogg','sound/effects/figthing/crunch11.ogg','sound/effects/figthing/crunch12.ogg'))
 
 GLOBAL_LIST_INIT(gib_sound,list('sound/effects/figthing/gib1.ogg','sound/effects/figthing/gib2.ogg','sound/effects/figthing/gib3.ogg',
 								'sound/effects/figthing/gib4.ogg','sound/effects/figthing/gib5.ogg','sound/effects/figthing/gib6.ogg',
-								'sound/effects/figthing/gib7.ogg'))
+								'sound/effects/figthing/gib7.ogg','sound/effects/figthing/gib8.ogg','sound/effects/figthing/gib9.ogg',
+								'sound/effects/figthing/gib10.ogg'))
 
 GLOBAL_LIST_INIT(punch_sound,list('sound/effects/figthing/punch1.ogg','sound/effects/figthing/punch2.ogg','sound/effects/figthing/punch3.ogg',
 								'sound/effects/figthing/punch4.ogg'))

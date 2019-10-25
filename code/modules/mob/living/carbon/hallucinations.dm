@@ -294,7 +294,7 @@
 /datum/hallucination/fakeattack/start()
 	for(var/mob/living/M in oview(holder,1))
 		to_chat(holder, "<span class='danger'>[M] has punched [holder]!</span>")
-		holder.playsound_local(get_turf(holder),"punch",75)
+		holder.playsound_local(get_turf(holder),"punch",rand(80, 100))
 
 //Fake injection
 /datum/hallucination/fakeattack/hypo

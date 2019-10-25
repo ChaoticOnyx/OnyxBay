@@ -135,7 +135,7 @@ default behaviour is:
 			if (!istype(AM, /atom/movable) || AM.anchored)
 				if(confused && prob(50) && m_intent=="run")
 					Weaken(2)
-					playsound(loc, "punch", 75, 1, -1)
+					playsound(loc, "punch", rand(80, 100), 1, -1)
 					visible_message("<span class='warning'>[src] [pick("ran", "slammed")] into \the [AM]!</span>")
 					src.apply_damage(5, BRUTE)
 				return

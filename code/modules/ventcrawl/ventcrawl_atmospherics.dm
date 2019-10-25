@@ -35,8 +35,8 @@
 			user.forceMove(target_move)
 			user.client.eye = target_move //if we don't do this, Byond only updates the eye every tick - required for smooth movement
 			if(world.time > user.next_play_vent)
-				user.next_play_vent = world.time+30
-				playsound(src, "vent", 45, 0, -3)
+				user.next_play_vent = world.time+15
+				playsound(src, "vent", rand(20, 45), FALSE)
 	else
 		if((direction & initialize_directions) || is_type_in_list(src, ventcrawl_machinery) && src.can_crawl_through()) //if we move in a way the pipe can connect, but doesn't - or we're in a vent
 			user.remove_ventcrawl()
