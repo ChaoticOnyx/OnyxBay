@@ -584,7 +584,6 @@
 		is_scanning = FALSE
 		icon_state = off_state
 		set_light(0)
-		update_icon()
 
 /* VERBS */
 
@@ -600,10 +599,7 @@
 	set popup_menu = 1
 	set category = "Psychoscope"
 
-	if (active)
-		Disable(usr)
-	else
-		Enable(usr)
+	attack_self()
 
 /*
 	Shows a psychoscope's UI.
@@ -686,6 +682,10 @@
 		Disable()
 	else
 		Enable()
+
+	user.update_inv_glasses()
+	update_icon()
+	user.update_action_buttons()
 
 /obj/item/clothing/glasses/hud/psychoscope/Process()
 	if (active)
