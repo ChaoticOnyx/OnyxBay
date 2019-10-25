@@ -45,6 +45,7 @@
 	body_parts_covered = EYES
 	origin_tech = list(TECH_MAGNET = 4, TECH_BIO = 4)
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_REINFORCED_GLASS = 500, MATERIAL_GOLD = 200)
+	w_class = ITEM_SIZE_NORMAL
 
 	/* ENERGY MANAGEMENT */
 	var/obj/item/weapon/cell/bcell = null
@@ -560,6 +561,7 @@
 /obj/item/clothing/glasses/hud/psychoscope/proc/Enable(mob/user)
 	if (bcell && bcell.charge <= 0)
 		Disable()
+		to_chat(user, SPAN_WARN("No power!"))
 		return
 
 	if (!bcell)
@@ -573,6 +575,7 @@
 		is_scanning = FALSE
 		playsound(src, 'sound/effects/psychoscope/psychoscope_on.ogg', 10, 0)
 		set_light(2, 5, rgb(105, 180, 255))
+		update_icon()
 
 /obj/item/clothing/glasses/hud/psychoscope/proc/Disable(mob/user)
 	if (active)
@@ -596,10 +599,7 @@
 	set popup_menu = 1
 	set category = "Psychoscope"
 
-	if (active)
-		Disable(usr)
-	else
-		Enable(usr)
+	attack_self()
 
 /*
 	Shows a psychoscope's UI.
@@ -682,6 +682,10 @@
 		Disable()
 	else
 		Enable()
+
+	user.update_inv_glasses()
+	update_icon()
+	user.update_action_buttons()
 
 /obj/item/clothing/glasses/hud/psychoscope/Process()
 	if (active)
