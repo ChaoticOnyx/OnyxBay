@@ -89,7 +89,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 			if(I_GRAB)
 				return target.parry_with_weapon(src, user, power, hit_zone)
 			if(I_DISARM)
-				playsound(loc, 'sound/effects/woodhit.ogg', 50, 1, -1)
+				playsound(loc, "punch", rand(80, 100), 1, -1)
 				return target.hit_with_weapon(src, user, power, hit_zone, 1)
 			if(I_HURT)
 				if(hitsound) playsound(loc, hitsound, 50, 1, -1)

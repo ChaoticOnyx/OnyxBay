@@ -9,7 +9,7 @@
 	icon_aggro = "Goliath_alert"
 	icon_dead = "Goliath_dead"
 	icon_gib = "syndicate_gib"
-	attack_sound = 'sound/weapons/punch4.ogg'
+	attack_sound = "punch"
 	mouse_opacity = 2
 	move_to_delay = 40
 	ranged = 1
@@ -48,7 +48,7 @@
 	var/sturf = get_turf(src)
 	var/tturf = get_turf(target_mob)
 	if(get_dist(src, target_mob) <= 7)//Screen range check, so you can't get tentacle'd offscreen
-		if(istype(sturf, /turf/simulated/floor/asteroid))//Goliath turf check. No floor-breaking tentacles! 
+		if(istype(sturf, /turf/simulated/floor/asteroid))//Goliath turf check. No floor-breaking tentacles!
 			visible_message("<span class='warning'>The [src.name] tries to dig its huge tentacles under [target_mob.name]!</span>")
 			if(istype(tturf, /turf/simulated/floor/asteroid))//Victim turf check. Again, no floor-breaking tentacles
 				visible_message("<span class='warning'>The [src.name] successfully digs its tentacles under [target_mob.name]!</span>")
