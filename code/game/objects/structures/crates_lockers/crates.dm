@@ -6,6 +6,7 @@ obj/structure/closet/crate
 	icon_opened = "crateopen"
 	icon_closed = "crate"
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	pull_sound = "pull_box"
 	setup = 0
 
 	dremovable = 0

@@ -13,6 +13,7 @@
 	var/base_name = null // Name to put in front of drinks, i.e. "[base_name] of [contents]"
 	var/base_icon = null // Base icon name for fill states
 	pickup_sound = "drink_pickup"
+	pull_sound = "pull_glass"
 
 /obj/item/weapon/reagent_containers/food/drinks/on_reagent_change()
 	update_icon()

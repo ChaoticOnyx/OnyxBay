@@ -499,6 +499,11 @@ default behaviour is:
 		stop_pulling()
 
 
+	if (lying)
+		pull_sound = "pull_body"
+	else
+		pull_sound = null
+
 	var/t7 = 1
 	if (restrained())
 		for(var/mob/living/M in range(src, 1))
@@ -581,6 +586,10 @@ default behaviour is:
 									stop_pulling()
 					if (pulling)
 						step(pulling, get_dir(pulling.loc, T))
+
+			if (pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
+				last_pull_sound = world.time
+				playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
 	else
 		stop_pulling()
 		. = ..()

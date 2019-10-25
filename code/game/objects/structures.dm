@@ -1,6 +1,7 @@
 /obj/structure
 	icon = 'icons/obj/structures.dmi'
 	w_class = ITEM_SIZE_NO_CONTAINER
+	pull_sound = "pull_wood"
 
 	var/breakable
 	var/parts
