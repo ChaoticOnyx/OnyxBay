@@ -7,6 +7,19 @@
 //Checks if all high bits in req_mask are set in bitfield
 #define BIT_TEST_ALL(bitfield, req_mask) ((~(bitfield) & (req_mask)) == 0)
 
+/proc/CycleArray(list/A = null, index_step = 1, start_element = null)
+	if (!A || !start_element)
+		return null
+
+	var/start_index = A.Find(start_element)
+
+	if (!start_index)
+		return null
+
+	start_index = start_index + index_step
+
+	return A[ Wrap(start_index, 1, A.len + 1) ]
+
 //Inverts the colour of an HTML string
 /proc/invertHTML(HTMLstring)
 
