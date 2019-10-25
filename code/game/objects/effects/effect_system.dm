@@ -93,8 +93,8 @@ steam.start() -- spawns the effect
 /////////////////////////////////////////////
 
 /obj/effect/sparks
-	name = "sparks"
-	icon_state = "sparks"
+	name = "spark"
+	icon_state = "spark"
 	icon = 'icons/effects/effects.dmi'
 	var/amount = 6.0
 	anchored = 1.0
@@ -102,7 +102,7 @@ steam.start() -- spawns the effect
 
 /obj/effect/sparks/New()
 	..()
-	playsound(src.loc, "sparks", 100, 1)
+	playsound(src.loc, "spark", 100, 1)
 	var/turf/T = src.loc
 	if (istype(T, /turf))
 		T.hotspot_expose(1000,100)
@@ -204,7 +204,7 @@ steam.start() -- spawns the effect
 	name = "illumination"
 	opacity = 0
 	icon = 'icons/effects/effects.dmi'
-	icon_state = "sparks"
+	icon_state = "spark"
 
 /obj/effect/effect/smoke/illumination/New(var/newloc, var/lifetime=10, var/range=null, var/power=null, var/color=null)
 	time_to_live=lifetime

@@ -99,7 +99,7 @@
 
 	stun_effect_act(agony_amount=shock_damage, def_zone=def_zone)
 
-	playsound(loc, "sparks", 50, 1, -1)
+	playsound(loc, "spark", 50, 1, -1)
 	if (shock_damage > 15)
 		src.visible_message(
 			"<span class='warning'>[src] was electrocuted[source ? " by the [source]" : ""]!</span>", \

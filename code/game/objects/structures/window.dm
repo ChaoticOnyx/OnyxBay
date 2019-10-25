@@ -243,7 +243,7 @@
 	else if(isCoil(W) && reinf && !polarized)
 		var/obj/item/stack/cable_coil/C = W
 		if (C.use(1))
-			playsound(src.loc, get_sfx("sparks"), 75, 1)
+			playsound(src.loc, get_sfx("spark"), 75, 1)
 			var/obj/structure/window/reinforced/polarized/P = new(loc)
 			P.set_dir(dir)
 			P.health = health
