@@ -599,7 +599,7 @@
 	set popup_menu = 1
 	set category = "Psychoscope"
 
-	attack_self()
+	attack_self(usr)
 
 /*
 	Shows a psychoscope's UI.

@@ -7,7 +7,9 @@ import { createLogger } from '../logging';
 const logger = createLogger('Psychoscope');
 
 const OpenedNeuromods = props => {
-  const { scan, disk } = props;
+  const { state, scan, disk } = props;
+  const { config, data } = state;
+  const { ref } = config;
 
   const opened_neuromods = scan.opened_neuromods || null;
   let inserted_disk = disk;
@@ -46,7 +48,9 @@ const OpenedNeuromods = props => {
 };
 
 const OpenedTechnologies = props => {
-  const { scan, disk } = props;
+  const { state, scan, disk } = props;
+  const { config, data } = state;
+  const { ref } = config;
 
   const opened_techs = scan.opened_techs || null;
 
@@ -273,11 +277,11 @@ export const Psychoscope = props => {
           {selected_lifeform
             ? <Fragment>
               <Section title="Opened Techonologies">
-                <OpenedTechnologies scan={selected_lifeform} disk={data.inserted_disk} />
+                <OpenedTechnologies scan={selected_lifeform} disk={data.inserted_disk} state={state} />
               </Section>
 
               <Section title="Opened Neuromods">
-                <OpenedNeuromods scan={selected_lifeform} disk={data.inserted_disk} />
+                <OpenedNeuromods scan={selected_lifeform} disk={data.inserted_disk} state={state} />
               </Section>
             </Fragment>
             : <NoticeBox>
