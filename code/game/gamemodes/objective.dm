@@ -412,7 +412,6 @@ datum/objective/steal
 
 	var/global/possible_items[] = list(
 		"a psychoscope's prototype" = /obj/item/clothing/glasses/hud/psychoscope,
-		"a functional neuromod" = /obj/item/weapon/reagent_containers/neuromod_shell,
 		"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
 		"a bluespace rift generator" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
 		"an RCD" = /obj/item/weapon/rcd,
@@ -499,10 +498,6 @@ datum/objective/steal
 						continue
 					var/turf/T = get_turf(ai)
 					if(owner.current.contains(ai) || (T && is_type_in_list(T.loc, GLOB.using_map.post_round_safe_areas)))
-						return 1
-			if ("a functional neuromod")
-				for (var/obj/item/weapon/reagent_containers/neuromod_shell/N in all_items)
-					if (N && N.neuromod)
 						return 1
 			else
 

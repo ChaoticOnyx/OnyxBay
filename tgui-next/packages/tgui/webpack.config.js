@@ -40,7 +40,7 @@ module.exports = (env = {}, argv) => {
                     spec: false,
                     loose: true,
                     targets: {
-                      ie: '7',
+                      ie: '8',
                     },
                   }],
                 ],
