@@ -560,16 +560,21 @@
 
 /obj/item/clothing/glasses/hud/psychoscope/proc/Enable(mob/user)
 	if (bcell && bcell.charge <= 0)
-		Disable()
-		to_chat(user, SPAN_WARN("No power!"))
+		Disable(user)
+
+		if (user)
+			to_chat(user, SPAN_WARN("No power!"))
+
 		return
 
 	if (!bcell)
-		Disable()
+		Disable(user)
 		return
 
 	if (!active)
-		to_chat(usr, "You activate the optical matrix on \the [src.name].")
+		if (user)
+			to_chat(user, "You activate the optical matrix on \the [src.name].")
+
 		active = TRUE
 		icon_state = initial(icon_state)
 		is_scanning = FALSE
@@ -579,7 +584,9 @@
 
 /obj/item/clothing/glasses/hud/psychoscope/proc/Disable(mob/user)
 	if (active)
-		to_chat(usr, "You deactivate the optical matrix on \the [src.name].")
+		if (user)
+			to_chat(user, "You deactivate the optical matrix on \the [src.name].")
+
 		active = FALSE
 		is_scanning = FALSE
 		icon_state = off_state
@@ -679,9 +686,9 @@
 
 /obj/item/clothing/glasses/hud/psychoscope/attack_self(mob/user)
 	if (active)
-		Disable()
+		Disable(user)
 	else
-		Enable()
+		Enable(user)
 
 	user.update_inv_glasses()
 	update_icon()
