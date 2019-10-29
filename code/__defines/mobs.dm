@@ -285,7 +285,14 @@
 #define SPECIES_PROMETHEAN  "Promethean"
 #define SPECIES_BOGANI      "Bogani"
 #define SPECIES_EGYNO       "Egyno"
-#define SPECIES_XENO        "Xenophage"
+#define SPECIES_XENO        "Xenomorph"
+
+// Ayyy IDs.
+#define SPECIES_XENO			"Xenomorph"
+#define SPECIES_XENO_DRONE		"Xenomorph Drone"
+#define SPECIES_XENO_HUNTER		"Xenomorph Hunter"
+#define SPECIES_XENO_SENTINEL	"Xenomorph Sentinel"
+#define SPECIES_XENO_QUEEN		"Xenomorph Queen"
 
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
