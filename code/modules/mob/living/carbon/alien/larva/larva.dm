@@ -7,9 +7,9 @@
 	language = "Hivemind"
 	maxHealth = 25
 	health = 25
+	faction = "xeno"
 
-/mob/living/carbon/alien/larva/New()
-	..()
-	add_language("Xenophage") //Bonus language.
+/mob/living/carbon/alien/larva/Initialize()
+	. = ..()
+	add_language("Xenomorph") //Bonus language.
 	internal_organs |= new /obj/item/organ/internal/xenos/hivenode(src)
-	create_reagents(100)
