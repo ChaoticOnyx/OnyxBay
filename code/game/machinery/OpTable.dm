@@ -102,7 +102,7 @@
 /obj/machinery/optable/MouseDrop_T(mob/target, mob/user)
 
 	var/mob/living/M = user
-	if(user.stat || user.restrained() || !check_table(user) || !iscarbon(target))
+	if(user.stat || user.restrained() || user.incapacitated(INCAPACITATION_ALL) || !check_table(user) || !iscarbon(target))
 		return
 	if(istype(M))
 		take_victim(target,user)
