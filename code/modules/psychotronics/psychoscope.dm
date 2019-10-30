@@ -795,7 +795,7 @@
 	if (!bcell.charge)
 		return
 
-	playsound(src, 'sound/machines/console_click2.ogg', 10, 1)
+	playsound(src, 'sound/effects/using/console/press15.ogg', rand(5, 20), TRUE)
 
 	switch(action)
 		if ("togglePsychoscope")
