@@ -71,6 +71,7 @@
 /obj/item/weapon/gun/projectile/handle_post_fire()
 	..()
 	if(chambered)
+		playsound(chambered, "shell_drop", rand(60, 80), TRUE)
 		chambered.expend()
 		process_chambered()
 

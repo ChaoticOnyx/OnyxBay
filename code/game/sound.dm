@@ -36,6 +36,8 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
+GLOBAL_LIST_INIT(shell_drop_sound,list('sound/effects/weapons/gun/shell_drop1.ogg','sound/effects/weapons/gun/shell_drop2.ogg','sound/effects/weapons/gun/shell_drop3.ogg'))
+
 GLOBAL_LIST_INIT(pull_body_sound,list('sound/effects/pulling/pull_body1.ogg','sound/effects/pulling/pull_body2.ogg','sound/effects/pulling/pull_body3.ogg',
 									'sound/effects/pulling/pull_body4.ogg','sound/effects/pulling/pull_body5.ogg','sound/effects/pulling/pull_body6.ogg',
 									'sound/effects/pulling/pull_body7.ogg','sound/effects/pulling/pull_body8.ogg','sound/effects/pulling/pull_body9.ogg'))
@@ -343,6 +345,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
+			if ("shell_drop")			soundin = pick(GLOB.shell_drop_sound)
 			if ("pull_body")			soundin = pick(GLOB.pull_body_sound)
 			if ("pull_box")				soundin = pick(GLOB.pull_box_sound)
 			if ("pull_closet")			soundin = pick(GLOB.pull_closet_sound)
