@@ -53,7 +53,7 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 	var/datum/neuromod/N = (locate(neuromod_path) in list_of_neuromods)
 
 	if (!N)
-		crash_with("trying to get [neuromod_path] but is is not exists")
+		return null
 
 	return N
 
@@ -113,7 +113,6 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 	var/datum/lifeform/L = (locate(lifeform_path) in list_of_lifeforms)
 
 	if (!L)
-		crash_with("trying to get [lifeform_path] but it is not exists")
 		return null
 
 	return L
@@ -157,7 +156,6 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 		if (L.mob_type == mob_type)
 			return L
 
-	crash_with("trying to get [mob_type] but it is not exists")
 	return null
 
 /datum/lifeforms/New()
