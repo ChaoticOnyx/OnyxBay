@@ -134,6 +134,9 @@
 		user.remove_from_mob(C)
 		C.forceMove(src)
 		stored_ammo.Add(C)
+
+		playsound(user, "bullet_insert", rand(45, 60), FALSE)
+
 		update_icon()
 	else ..()
 
@@ -158,6 +161,7 @@
 			stored_ammo-=C
 			user.put_in_hands(C)
 			user.visible_message("\The [user] removes \a [C] from [src].", "<span class='notice'>You remove \a [C] from [src].</span>")
+			playsound(user, "bullet_insert", rand(45, 60), FALSE)
 			update_icon()
 	else
 		..()

@@ -19,6 +19,7 @@
 	one_hand_penalty = 2
 	var/recentpump = 0 // to prevent spammage
 	wielded_item_state = "gun_wielded"
+	fire_sound = 'sound/effects/weapons/gun/fire7.ogg'
 
 /obj/item/weapon/gun/projectile/shotgun/pump/consume_next_projectile()
 	if(chambered)
@@ -26,16 +27,19 @@
 	return null
 
 /obj/item/weapon/gun/projectile/shotgun/pump/attack_self(mob/living/user as mob)
-	if(world.time >= recentpump + 10)
-		pump(user)
+	if(world.time >= recentpump + 50)
 		recentpump = world.time
+		pump(user)
 
 /obj/item/weapon/gun/projectile/shotgun/pump/proc/pump(mob/M as mob)
-	playsound(M, 'sound/weapons/shotgunpump.ogg', 60, 1)
+	playsound(M, "shotgun_pump_in", rand(45, 60), FALSE)
 
 	if(chambered)//We have a shell in the chamber
 		chambered.loc = get_turf(src)//Eject casing
 		chambered = null
+
+	sleep(5)
+	playsound(M, "shotgun_pump_out", rand(45, 60), FALSE)
 
 	if(loaded.len)
 		var/obj/item/ammo_casing/AC = loaded[1] //load next casing.
@@ -177,6 +181,8 @@
 		list(mode_name="fire one barrel at a time", burst=1),
 		list(mode_name="fire both barrels at once", burst=2),
 		)
+
+	fire_sound = 'sound/effects/weapons/gun/fire4.ogg'
 
 /obj/item/weapon/gun/projectile/shotgun/doublebarrel/pellet
 	ammo_type = /obj/item/ammo_casing/shotgun/pellet

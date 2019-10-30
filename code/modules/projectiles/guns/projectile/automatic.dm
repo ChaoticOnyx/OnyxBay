@@ -2,7 +2,7 @@
 	name = "prototype SMG"
 	desc = "A protoype lightweight, fast firing gun. Uses 9mm rounds."
 	icon_state = "saber"	//ugly
-	fire_sound = 'sound/weapons/gun_colt2.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 0.75
 	mod_reach = 0.6
@@ -31,7 +31,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	load_method = MAGAZINE
 	caliber = ".45"
-	fire_sound = 'sound/weapons/gun_colt2.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
 	slot_flags = SLOT_BELT
 	ammo_type = /obj/item/ammo_casing/c45
@@ -124,7 +124,7 @@
 	item_state = "wt550"
 	w_class = ITEM_SIZE_NORMAL
 	caliber = "9mm"
-	fire_sound = 'sound/weapons/gun_9mm.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire10.ogg'
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2)
 	slot_flags = SLOT_BELT
 	ammo_type = /obj/item/ammo_casing/c9mm/rubber

@@ -19,7 +19,7 @@
 	var/elastic
 	var/dispenser = 0
 	var/breakouttime = 1200 //Deciseconds = 120s = 2 minutes
-	var/cuff_sound = 'sound/weapons/handcuffs.ogg'
+	var/cuff_sound = "handcuffs"
 	var/cuff_type = "handcuffs"
 
 /obj/item/weapon/handcuffs/get_icon_state(slot)
@@ -132,7 +132,7 @@ var/last_chew = 0
 	desc = "Looks like some cables tied together. Could be used to tie something up."
 	icon_state = "cuff_white"
 	breakouttime = 300 //Deciseconds = 30s
-	cuff_sound = 'sound/weapons/cablecuff.ogg'
+	cuff_sound = "cable_handcuffs"
 	cuff_type = "cable restraints"
 	elastic = 1
 

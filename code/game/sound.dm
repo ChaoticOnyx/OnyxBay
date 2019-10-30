@@ -36,7 +36,30 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
-GLOBAL_LIST_INIT(shell_drop_sound,list('sound/effects/weapons/gun/shell_drop1.ogg','sound/effects/weapons/gun/shell_drop2.ogg','sound/effects/weapons/gun/shell_drop3.ogg'))
+GLOBAL_LIST_INIT(handcuffs_sound,list('sound/effects/using/cuffs/use1.ogg','sound/effects/using/cuffs/use2.ogg'))
+
+GLOBAL_LIST_INIT(cable_hcuffs_sound,list('sound/effects/using/cuffs/cable_use1.ogg'))
+
+GLOBAL_LIST_INIT(far_fire_sound,list('sound/effects/weapons/gun/far_fire1.ogg','sound/effects/weapons/gun/far_fire2.ogg','sound/effects/weapons/gun/far_fire3.ogg'))
+
+GLOBAL_LIST_INIT(magazine_insert_sound,list('sound/effects/weapons/gun/magazine_insert1.ogg','sound/effects/weapons/gun/magazine_insert2.ogg','sound/effects/weapons/gun/magazine_insert3.ogg'))
+
+GLOBAL_LIST_INIT(shell_insert_sound,list('sound/effects/weapons/gun/shell_insert1.ogg','sound/effects/weapons/gun/shell_insert2.ogg'))
+
+GLOBAL_LIST_INIT(bullet_insert_sound,list('sound/effects/weapons/gun/bullet_insert1.ogg','sound/effects/weapons/gun/bullet_insert2.ogg','sound/effects/weapons/gun/bullet_insert3.ogg',
+										'sound/effects/weapons/gun/bullet_insert4.ogg','sound/effects/weapons/gun/bullet_insert5.ogg','sound/effects/weapons/gun/bullet_insert6.ogg',
+										'sound/effects/weapons/gun/bullet_insert7.ogg','sound/effects/weapons/gun/bullet_insert8.ogg','sound/effects/weapons/gun/bullet_insert9.ogg',
+										'sound/effects/weapons/gun/bullet_insert10.ogg','sound/effects/weapons/gun/bullet_insert11.ogg'))
+
+GLOBAL_LIST_INIT(shotgun_pump_in_sound,list('sound/effects/weapons/gun/shotgun_pump_in1.ogg','sound/effects/weapons/gun/shotgun_pump_in2.ogg'))
+GLOBAL_LIST_INIT(shotgun_pump_out_sound,list('sound/effects/weapons/gun/shotgun_pump_out1.ogg','sound/effects/weapons/gun/shotgun_pump_out2.ogg','sound/effects/weapons/gun/shotgun_pump_out3.ogg'))
+
+GLOBAL_LIST_INIT(fire_silent_sound,list('sound/effects/weapons/gun/fire_silent1.ogg','sound/effects/weapons/gun/fire_silent2.ogg','sound/effects/weapons/gun/fire_silent3.ogg',
+										'sound/effects/weapons/gun/fire_silent4.ogg','sound/effects/weapons/gun/fire_silent5.ogg','sound/effects/weapons/gun/fire_silent6.ogg',
+										'sound/effects/weapons/gun/fire_silent7.ogg'))
+
+GLOBAL_LIST_INIT(casing_drop_sound,list('sound/effects/weapons/gun/casing_drop1.ogg','sound/effects/weapons/gun/casing_drop2.ogg','sound/effects/weapons/gun/casing_drop3.ogg',
+										'sound/effects/weapons/gun/casing_drop4.ogg'))
 
 GLOBAL_LIST_INIT(pull_body_sound,list('sound/effects/pulling/pull_body1.ogg','sound/effects/pulling/pull_body2.ogg','sound/effects/pulling/pull_body3.ogg',
 									'sound/effects/pulling/pull_body4.ogg','sound/effects/pulling/pull_body5.ogg','sound/effects/pulling/pull_body6.ogg',
@@ -345,7 +368,16 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
-			if ("shell_drop")			soundin = pick(GLOB.shell_drop_sound)
+			if ("handcuffs")			soundin = pick(GLOB.handcuffs_sound)
+			if ("cable_handcuffs")		soundin = pick(GLOB.cable_hcuffs_sound)
+			if ("far_fire")				soundin = pick(GLOB.far_fire_sound)
+			if ("magazine_insert")		soundin = pick(GLOB.magazine_insert_sound)
+			if ("shell_insert")			soundin = pick(GLOB.shell_insert_sound)
+			if ("bullet_insert")		soundin = pick(GLOB.bullet_insert_sound)
+			if ("shotgun_pump_in")		soundin = pick(GLOB.shotgun_pump_in_sound)
+			if ("shotgun_pump_out")		soundin = pick(GLOB.shotgun_pump_out_sound)
+			if ("fire_silent")			soundin = pick(GLOB.fire_silent_sound)
+			if ("casing_drop")			soundin = pick(GLOB.casing_drop_sound)
 			if ("pull_body")			soundin = pick(GLOB.pull_body_sound)
 			if ("pull_box")				soundin = pick(GLOB.pull_box_sound)
 			if ("pull_closet")			soundin = pick(GLOB.pull_closet_sound)

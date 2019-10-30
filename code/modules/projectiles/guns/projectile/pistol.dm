@@ -34,6 +34,7 @@
 	fire_delay = 5.5
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	load_method = MAGAZINE
+	fire_sound = 'sound/effects/weapons/gun/fire8.ogg'
 
 /obj/item/weapon/gun/projectile/sec/update_icon()
 	..()
@@ -52,7 +53,6 @@
 	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
 	caliber = ".45"
 	fire_delay = 6.5
-	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
 	load_method = MAGAZINE
 
 /obj/item/weapon/gun/projectile/sec/VP78tactical/update_icon()
@@ -71,7 +71,6 @@
 	caliber = ".45"
 	accuracy = -0.35
 	fire_delay = 5.5
-	fire_sound = 'sound/effects/weapons/gun/fire5.ogg'
 	load_method = MAGAZINE
 
 /obj/item/weapon/gun/projectile/sec/vp78/update_icon()
@@ -90,7 +89,6 @@
 	caliber = ".45"
 	accuracy = 0
 	fire_delay = 5.5
-	fire_sound = 'sound/effects/weapons/gun/fire6.ogg'
 	load_method = MAGAZINE
 
 /obj/item/weapon/gun/projectile/sec/vp78wood/update_icon()
@@ -131,6 +129,7 @@
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/c45m
 	allowed_magazines = /obj/item/ammo_magazine/c45m
+	fire_sound = "fire_silent"
 
 /obj/item/weapon/gun/projectile/magnum_pistol
 	name = ".50 magnum pistol"
@@ -147,6 +146,7 @@
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/a50
 	allowed_magazines = /obj/item/ammo_magazine/a50
+	fire_sound = 'sound/effects/weapons/gun/fire2.ogg'
 
 /obj/item/weapon/gun/projectile/magnum_pistol/update_icon()
 	..()
@@ -171,6 +171,7 @@
 	fire_delay = 25
 	auto_eject = 1
 	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire3.ogg'
 
 /obj/item/weapon/gun/projectile/gyropistol/update_icon()
 	..()
@@ -193,6 +194,7 @@
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/mc9mm
 	allowed_magazines = /obj/item/ammo_magazine/mc9mm
+	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
 
 /obj/item/weapon/gun/projectile/det_m9/update_icon()
 	..()
@@ -218,6 +220,7 @@
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/mc9mm
 	allowed_magazines = /obj/item/ammo_magazine/mc9mm
+	fire_sound = 'sound/effects/weapons/gun/fire6.ogg'
 
 /obj/item/weapon/gun/projectile/pistol/flash
 	name = "holdout signal pistol"
@@ -278,6 +281,7 @@
 	mod_reach = 1.0
 	mod_handy = 1.0
 	max_shells = 1 //literally just a barrel
+	fire_sound = 'sound/effects/weapons/gun/fire6.ogg'
 
 	var/global/list/ammo_types = list(
 		/obj/item/ammo_casing/a357              = ".357",

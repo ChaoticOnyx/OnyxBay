@@ -85,7 +85,7 @@
 	matter = list(MATERIAL_STEEL = 2000)
 	slot_flags = SLOT_BELT
 	silenced = 1
-	fire_sound = 'sound/weapons/Genhit.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_dart1.ogg'
 	projectile_type = /obj/item/projectile/energy/bolt
 	max_shots = 8
 	self_recharge = 1

@@ -15,7 +15,6 @@
 	matter = list(MATERIAL_STEEL = 2000)
 	projectile_type = /obj/item/projectile/beam/midlaser
 	wielded_item_state = "laser-wielded"
-	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
 
 /obj/item/weapon/gun/energy/laser/mounted
 	self_recharge = 1
