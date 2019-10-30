@@ -242,6 +242,7 @@
 
 	// Clumsy folks can only flush it.
 	if(user.IsAdvancedToolUser(1))
+		playsound(user, 'sound/effects/using/disposal/open1.ogg', rand(60, 80), TRUE)
 		interact(user, 0)
 	else
 		flush = !flush
@@ -250,7 +251,6 @@
 
 // user interaction
 /obj/machinery/disposal/interact(mob/user, var/ai=0)
-
 	src.add_fingerprint(user)
 	if(stat & BROKEN)
 		user.unset_machine()

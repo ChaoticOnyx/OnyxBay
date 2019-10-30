@@ -4,7 +4,6 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	name = "energy gun"
 	desc = "A basic energy-based gun."
 	icon_state = "energy"
-	fire_sound = 'sound/weapons/Taser.ogg'
 	fire_sound_text = "laser blast"
 
 	var/obj/item/weapon/cell/power_supply //What type of power cell this uses
@@ -31,6 +30,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	. = ..()
 	if(.)
 		update_icon()
+		playsound(src, 'sound/effects/weapons/energy/toggle_mode1.ogg', rand(50, 75), FALSE)
 
 /obj/item/weapon/gun/energy/emp_act(severity)
 	..()
@@ -181,7 +181,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 /obj/item/weapon/gun/energy/secure/special_check()
 	if(!emagged && (!authorized_modes[sel_mode] || !registered_owner))
 		audible_message("<span class='warning'>\The [src] buzzes, refusing to fire.</span>")
-		playsound(loc, 'sound/machines/buzz-sigh.ogg', 50, 0)
+		playsound(loc, 'sound/signals/error1.ogg', 50, 0)
 		return 0
 
 	. = ..()
@@ -195,6 +195,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	var/datum/firemode/new_mode = firemodes[sel_mode]
 	new_mode.apply_to(src)
 	update_icon()
+	playsound(src, 'sound/effects/weapons/energy/toggle_mode1.ogg', rand(50, 75), FALSE)
 
 	return new_mode
 

@@ -71,7 +71,7 @@
 /obj/item/weapon/gun/projectile/handle_post_fire()
 	..()
 	if(chambered)
-		playsound(chambered, "shell_drop", rand(60, 80), TRUE)
+		playsound(chambered, "casing_drop", rand(45, 60), TRUE)
 		chambered.expend()
 		process_chambered()
 
@@ -116,7 +116,7 @@
 				AM.loc = src
 				ammo_magazine = AM
 				user.visible_message("[user] inserts [AM] into [src].", "<span class='notice'>You insert [AM] into [src].</span>")
-				playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+				playsound(src.loc, "magazine_insert", rand(45, 60), FALSE)
 			if(SPEEDLOADER)
 				if(loaded.len >= max_shells)
 					to_chat(user, "<span class='warning'>[src] is full!</span>")
@@ -132,7 +132,7 @@
 						count++
 				if(count)
 					user.visible_message("[user] reloads [src].", "<span class='notice'>You load [count] round\s into [src].</span>")
-					playsound(src.loc, 'sound/weapons/empty.ogg', 50, 1)
+					playsound(src, 'sound/effects/weapons/gun/spin_cylinder1.ogg', rand(45, 60), FALSE)
 		AM.update_icon()
 	else if(istype(A, /obj/item/ammo_casing))
 		var/obj/item/ammo_casing/C = A
@@ -146,7 +146,11 @@
 		C.loc = src
 		loaded.Insert(1, C) //add to the head of the list
 		user.visible_message("[user] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
-		playsound(src.loc, 'sound/weapons/empty.ogg', 50, 1)
+
+		if (istype(C, /obj/item/ammo_casing/shotgun))
+			playsound(user, "shell_insert", rand(45, 60), FALSE)
+		else
+			playsound(user, "bullet_insert", rand(45, 60), FALSE)
 
 	update_icon()
 
