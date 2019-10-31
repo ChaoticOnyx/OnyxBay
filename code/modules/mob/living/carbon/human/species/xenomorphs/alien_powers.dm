@@ -283,3 +283,15 @@
 		M.apply_damage(50,BRUTE)
 		if(M.stat == 2)
 			M.gib()
+
+/mob/living/carbon/human/proc/toggle_darksight()
+	set category = "Abilities"
+	set name = "Toggle Darkvision"
+
+	var/mob/living/carbon/C = src
+	C.seeDarkness = !C.seeDarkness
+	if(C.seeDarkness)
+		to_chat(C, "<span class='notice'>Now I'm ready to hunt.</span>")
+	else
+		to_chat(C, "<span class='notice'>Now I see what the victim sees.</span>")
+	return TRUE

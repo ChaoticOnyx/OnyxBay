@@ -222,9 +222,13 @@
 	return ..(user, distance, "", desc_comp)
 
 /obj/item/attack_hand(mob/user as mob)
-	if (!user) return
+	if (!user)
+		return
 	if (anchored)
 		return ..()
+	if(istype(user, /mob/living/carbon/human/xenos))
+		to_chat(user, "<span class='notice'>You're not smart enough to do that!</span>")
+		return
 	if (hasorgans(user))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
