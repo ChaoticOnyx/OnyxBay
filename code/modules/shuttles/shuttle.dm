@@ -74,7 +74,7 @@
 
 	moving_status = SHUTTLE_WARMUP
 	if(sound_takeoff)
-		playsound(current_location, sound_takeoff, 100, 20, 0.2)
+		playsound(current_location, sound_takeoff, 30, 20, 0.2)
 	spawn(warmup_time*10)
 		if (moving_status == SHUTTLE_IDLE)
 			return FALSE	//someone cancelled the launch
@@ -96,7 +96,7 @@
 
 	moving_status = SHUTTLE_WARMUP
 	if(sound_takeoff)
-		playsound(current_location, sound_takeoff, 100, 20, 0.2)
+		playsound(current_location, sound_takeoff, 30, 20, 0.2)
 	spawn(warmup_time*10)
 		if(moving_status == SHUTTLE_IDLE)
 			return	//someone cancelled the launch
@@ -114,7 +114,7 @@
 			while (world.time < arrive_time)
 				if(!fwooshed && (arrive_time - world.time) < 100)
 					fwooshed = 1
-					playsound(destination, sound_landing, 100, 0, 7)
+					playsound(destination, sound_landing, 30, 0, 7)
 				sleep(5)
 			if(!attempt_move(destination))
 				attempt_move(start_location) //try to go back to where we started. If that fails, I guess we're stuck in the interim location
