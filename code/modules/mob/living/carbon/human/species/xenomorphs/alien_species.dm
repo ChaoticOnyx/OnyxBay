@@ -284,7 +284,7 @@
 		BP_ACID =     /obj/item/organ/internal/xenos/acidgland,
 		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
 		BP_RESIN =    /obj/item/organ/internal/xenos/resinspinner,
-		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
+		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients
 		)
 
 	inherent_verbs = list(
