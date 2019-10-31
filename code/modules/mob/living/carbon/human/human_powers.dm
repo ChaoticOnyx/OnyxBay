@@ -35,7 +35,6 @@
 
 	last_special = world.time + 50
 
-	playsound(loc, 'sound/weapons/pierce.ogg', 25, 1, -1)
 	T.Weaken(rand(1,3))
 	if(prob(75))
 		visible_message("<span class='danger'>\The [src] has tackled down [T]!</span>")

@@ -1,4 +1,3 @@
-//Stand-in until this is made more lore-friendly.
 /datum/species/xenos
 	name = SPECIES_XENO
 	name_plural = "Xenomorphs"
@@ -189,7 +188,8 @@
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/evolve,
 		/mob/living/carbon/human/proc/resin,
-		/mob/living/carbon/human/proc/corrosive_acid
+		/mob/living/carbon/human/proc/corrosive_acid,
+		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
 /datum/species/xenos/drone/handle_post_spawn(var/mob/living/carbon/human/H)
@@ -203,7 +203,7 @@
 	name = SPECIES_XENO_HUNTER
 	weeds_plasma_rate = 5
 	caste_name = "hunter"
-	slowdown = -2
+	slowdown = -1
 	total_health = 150
 	tail = "xenos_hunter_tail"
 
@@ -224,7 +224,8 @@
 		/mob/living/carbon/human/proc/gut,
 		/mob/living/carbon/human/proc/leap,
 		/mob/living/carbon/human/proc/psychic_whisper,
-		/mob/living/carbon/human/proc/regurgitate
+		/mob/living/carbon/human/proc/regurgitate,
+		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
 /datum/species/xenos/sentinel
@@ -255,7 +256,8 @@
 		/mob/living/carbon/human/proc/corrosive_acid,
 		/mob/living/carbon/human/proc/neurotoxin,
 		/mob/living/carbon/human/proc/acidspit,
-		/mob/living/carbon/human/proc/Spit
+		/mob/living/carbon/human/proc/Spit,
+		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
 /datum/species/xenos/queen
@@ -296,7 +298,8 @@
 		/mob/living/carbon/human/proc/neurotoxin,
 		/mob/living/carbon/human/proc/acidspit,
 		/mob/living/carbon/human/proc/resin,
-		/mob/living/carbon/human/proc/Spit
+		/mob/living/carbon/human/proc/Spit,
+		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
 /datum/species/xenos/queen/handle_login_special(var/mob/living/carbon/human/H)
@@ -314,7 +317,8 @@
 	icon = 'icons/mob/screen1_alien.dmi'
 	has_a_intent =  1
 	has_m_intent =  1
-	has_warnings =  1
+	has_warnings =  0
+	has_health =    1
 	has_hands =     1
 	has_drop =      1
 	has_throw =     1

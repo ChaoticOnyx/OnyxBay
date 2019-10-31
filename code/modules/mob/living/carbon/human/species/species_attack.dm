@@ -69,7 +69,7 @@
 
 /datum/unarmed_attack/claws/strong/xeno/queen
 	attack_verb = list("slashed", "gouged", "stabbed", "gored")
-	damage = 15
+	damage = 20
 
 /datum/unarmed_attack/bite/strong
 	attack_verb = list("mauled")
@@ -106,20 +106,17 @@
 /datum/unarmed_attack/tail/is_usable(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone) //ensures that you can't tail someone in the skull
 
 	if(!(zone in list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT, BP_GROIN)))
-
 		return 0
 
 	var/obj/item/organ/external/E = user.organs_by_name[BP_L_FOOT]
 
 	if(E && !E.is_stump())
-
 		return 1
 
 
 	E = user.organs_by_name[BP_R_FOOT]
 
 	if(E && !E.is_stump())
-
 		return 1
 
 	return 0
