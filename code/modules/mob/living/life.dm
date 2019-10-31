@@ -24,6 +24,7 @@
 
 	if(stat != DEAD)
 		aura_check(AURA_TYPE_LIFE)
+		handle_neuromods()
 
 	//Check if we're on fire
 	handle_fire()
@@ -39,6 +40,19 @@
 	handle_regular_hud_updates()
 
 	return 1
+
+/mob/living/proc/handle_neuromods()
+	if (!neuromods.len)
+		return
+
+	for (var/neuromod_type in neuromods)
+		var/datum/neuromod/N = GLOB.neuromods.Get(neuromod_type)
+
+		if (!N)
+			crash_with("trying to get [neuromod_type] but it is not exists")
+			return
+
+		N.Handle(src)
 
 /mob/living/proc/handle_breathing()
 	return
@@ -120,14 +134,14 @@
 	if(slurring)
 		slurring = max(slurring-1, 0)
 	return slurring
-	
+
 /mob/living/proc/handle_stammering()
 	if(!stammering)
 		for(var/datum/modifier/trait/stammering/M in modifiers)
 			if(!isnull(M.stammering))
 				stammering = TRUE
 	return stammering
-	
+
 /mob/living/proc/handle_burrieng()
 	if(!burrieng)
 		for(var/datum/modifier/trait/burrieng/M in modifiers)

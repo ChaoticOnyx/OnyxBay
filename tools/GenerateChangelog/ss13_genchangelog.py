@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 '''
 Usage:
     $ python ss13_genchangelog.py [--dry-run] html/changelog.html html/changelogs/
@@ -26,15 +28,10 @@ THE SOFTWARE.
 '''
 
 from __future__ import print_function
-import yaml
-import os
-import glob
-import sys
-import re
-import time
-import argparse
+import yaml, os, glob, sys, re, time, argparse
 from datetime import datetime, date, timedelta
 from time import time
+import io
 
 today = date.today()
 
@@ -63,7 +60,8 @@ validPrefixes = [
     'maptweak',
     'spellcheck',
     'experiment',
-    'balance'
+    'balance',
+    'admin'
 ]
 
 
@@ -75,8 +73,8 @@ changelog_cache = os.path.join(args.ymlDir, '.all_changelog.yml')
 failed_cache_read = True
 if os.path.isfile(changelog_cache):
     try:
-        with open(changelog_cache) as f:
-            (_, all_changelog_entries) = yaml.load_all(f)
+        with io.open(changelog_cache, encoding='utf-8') as f:
+            (_, all_changelog_entries) = yaml.load_all(f, Loader=yaml.SafeLoader)
             failed_cache_read = False
 
             # Convert old timestamps to newer format.
@@ -102,38 +100,69 @@ if failed_cache_read and os.path.isfile(args.targetFile):
     from bs4 import BeautifulSoup
     from bs4.element import NavigableString
     print(' Generating cache...')
-    with open(args.targetFile, 'r') as f:
-        soup = BeautifulSoup(f)
+    with io.open(args.targetFile, 'r', encoding='utf-8') as f:
+        soup = BeautifulSoup(f, 'html.parser')
         for e in soup.find_all('div', {'class': 'commit'}):
-            entry = {}
-            date = datetime.strptime(e.h2.string.strip(), dateformat).date()  # key
-            for authorT in e.find_all('h3', {'class': 'author'}):
-                author = authorT.string
-                # Strip suffix
-                if author.endswith('updated:'):
-                    author = author[:-8]
-                author = author.strip()
-
-                # Find <ul>
-                ulT = authorT.next_sibling
-                while(ulT.name != 'ul'):
-                    ulT = ulT.next_sibling
+            for date in e.find_all('h2', {'class': 'date'}):
+                entry = {}
+                author = None
                 changes = []
 
-                for changeT in ulT.children:
-                    if changeT.name != 'li':
-                        continue
-                    val = changeT.decode_contents(formatter="html")
-                    newdat = {changeT['class'][0] + '': val + ''}
-                    if newdat not in changes:
-                        changes += [newdat]
+                # Parse all what below date until the next date
+                for content in date.next_siblings:
 
-                if len(changes) > 0:
-                    entry[author] = changes
-            if date in all_changelog_entries:
-                all_changelog_entries[date].update(entry)
-            else:
-                all_changelog_entries[date] = entry
+                    if (not content.name):
+                        continue
+
+                    # Until we got next 'date' h2
+                    if (content['class'][0] == 'date'):
+                        if (author and len(changes) > 0):
+                            entry[str(author)] = changes
+                        break
+
+                    # Get author name
+                    if (content['class'][0] == 'author'):
+                        if (author != None and len(changes) > 0):
+                            entry[str(author)] = changes
+                            changes = []
+                            author = None
+
+                        author = content.string
+
+                        if (author.endswith('updated:')):
+                            author = author[:-9]
+
+                        author.strip()
+
+                    # Get changes
+                    if ('changes' in content['class']):
+                        for changeT in content.children:
+                            if (changeT.name != 'li'):
+                                continue
+
+                            val = changeT.decode_contents(formatter="html")
+                            newdat = {changeT['class'][0] + '': val + ''}
+
+                            if newdat not in changes:
+                                changes += [newdat]
+
+                if (len(entry.keys()) == 0):
+                    continue
+
+                _date = date.string.strip()
+                _date = datetime.strptime(_date, dateformat).date()
+
+                #print(str(_date))
+
+                #for key in entry.keys():
+                #    print('Author: ' + key)
+                #    for change in entry[key]:
+                #        print(change)
+
+                if (date in all_changelog_entries.keys()):
+                    all_changelog_entries[_date].update(entry)
+                else:
+                    all_changelog_entries[_date] = entry
 
 del_after = []
 errors = False
@@ -147,8 +176,8 @@ for fileName in glob.glob(os.path.join(args.ymlDir, "*.yml")):
     fileName = os.path.abspath(fileName)
     print(' Reading {}...'.format(fileName))
     cl = {}
-    with open(fileName, 'r') as f:
-        cl = yaml.load(f)
+    with io.open(fileName, 'r', encoding='utf-8') as f:
+        cl = yaml.load(f, Loader=yaml.SafeLoader)
         f.close()
     if today not in all_changelog_entries:
         all_changelog_entries[today] = {}
@@ -174,24 +203,26 @@ for fileName in glob.glob(os.path.join(args.ymlDir, "*.yml")):
             else:
                 del_after += [fileName]
 
+    if 'date' in cl.keys():
+        _date = datetime.strptime(cl['date'], '%Y %m %d').date()
+        all_changelog_entries[_date] = all_changelog_entries[today]
+        del all_changelog_entries[today]
+
     if args.dryRun:
         continue
 
     cl['changes'] = []
-    with open(fileName, 'w') as f:
-        yaml.dump(cl, f, default_flow_style=False)
+    with io.open(fileName, 'w', encoding='utf-8') as f:
+        yaml.dump(cl, f, default_flow_style=False, encoding='utf-8', allow_unicode=True)
 
 targetDir = os.path.dirname(args.targetFile)
 
-with open(args.targetFile.replace('.htm', '.dry.htm') if args.dryRun else args.targetFile, 'w') as changelog:
-    with open(os.path.join(targetDir, 'templates', 'header.html'), 'r') as h:
+with io.open(args.targetFile.replace('.htm', '.dry.htm') if args.dryRun else args.targetFile, 'w', encoding='utf-8') as changelog:
+    with io.open(os.path.join(targetDir, 'templates', 'header.html'), 'r', encoding='utf-8') as h:
         for line in h:
             changelog.write(line)
 
-    weekstoshow = timedelta(weeks=args.timePeriod)
     for _date in reversed(sorted(all_changelog_entries.keys())):
-        if not (today - _date < weekstoshow):
-            continue
         entry_htm = '\n'
         entry_htm += '\t\t\t<h2 class="date">{date}</h2>\n'.format(date=_date.strftime(dateformat))
         write_entry = False
@@ -213,14 +244,13 @@ with open(args.targetFile.replace('.htm', '.dry.htm') if args.dryRun else args.t
         if write_entry:
             changelog.write(entry_htm)
 
-    with open(os.path.join(targetDir, 'templates', 'footer.html'), 'r') as h:
+    with io.open(os.path.join(targetDir, 'templates', 'footer.html'), 'r', encoding='utf-8') as h:
         for line in h:
             changelog.write(line)
 
-
-with open(changelog_cache, 'w') as f:
+with io.open(changelog_cache, 'w', encoding='utf-8') as f:
     cache_head = 'DO NOT EDIT THIS FILE BY HAND!  AUTOMATICALLY GENERATED BY ss13_genchangelog.py.'
-    yaml.safe_dump_all([cache_head, all_changelog_entries], f, default_flow_style=False)
+    yaml.safe_dump_all([cache_head, all_changelog_entries], f, default_flow_style=False, encoding='utf-8', allow_unicode=True)
 
 if len(del_after):
     print('Cleaning up...')

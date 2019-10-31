@@ -221,6 +221,7 @@
 		mymob.fire.screen_loc = ui_fire
 		hud_elements |= mymob.fire
 
+	if(hud_data.has_health)
 		mymob.healths = new /obj/screen()
 		mymob.healths.icon = ui_style
 		mymob.healths.icon_state = "health0"

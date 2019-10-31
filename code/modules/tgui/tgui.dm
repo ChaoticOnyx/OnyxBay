@@ -75,7 +75,7 @@
 	src.state = state
 
 	if (user.client)
-		var/datum/asset/assets = get_asset_datum(/datum/asset/directories/tgui)
+		var/datum/asset/assets = get_asset_datum(/datum/asset/simple/tgui)
 
 		if (!assets.check_sent(user.client))
 			to_chat(user, "Resources are still loading. Please wait.")
@@ -114,6 +114,14 @@
 		window_size = "size=[width]x[height];"
 
 	var/debugable = check_rights(R_DEBUG, 0, user)
+	var/list/config_data = get_config_data();
+	if (config_data["fancy"])
+		window_options["titlebar"] = FALSE
+		window_options["can_resize"] = FALSE
+	else
+		window_options["titlebar"] = TRUE
+		window_options["can_resize"] = TRUE
+
 	user << browse(get_html(debugable), "window=[window_id];[window_size][list2params(window_options)]") // Open the window.
 	if (!custom_browser_id)
 		spawn(2)

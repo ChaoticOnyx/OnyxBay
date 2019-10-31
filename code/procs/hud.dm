@@ -71,8 +71,10 @@ mob/proc/handle_hud_glasses() //Used in the life.dm of mobs that can use HUDs.
 	if(client)
 		for(var/image/hud_overlay/hud in client.images)
 			client.images -= hud
+
 	GLOB.med_hud_users -= src
 	GLOB.sec_hud_users -= src
+	GLOB.psychoscope_hud_users -= src
 
 mob/proc/in_view(var/turf/T)
 	return view(T)

@@ -14,7 +14,7 @@ export const SuitJammer = props => {
     <Fragment>
       <Section title="Status" buttons={(
         <Button content="Toggle Jammer" icon="wifi"
-          onclick={() => act(ref, (data.active ? 'disable_jammer' : 'enable_jammer'))}/>
+          onClick={() => act(ref, (data.active ? 'disable_jammer' : 'enable_jammer'))} />
       )}>
         <LabeledList>
           <LabeledList.Item label="State">
@@ -31,19 +31,19 @@ export const SuitJammer = props => {
             {data.range}
             {' '}
             <Button disabled={data.range <= 0 ? '1' : null} icon="minus"
-              onclick={() => act(ref, 'decrease_range')} />
+              onClick={() => act(ref, 'decrease_range')} />
             <Button disabled={data.range >= data.max_range ? '1' : null} icon="plus"
-              onclick={() => act(ref, 'increase_range')} />
+              onClick={() => act(ref, 'increase_range')} />
           </LabeledList.Item>
         </LabeledList>
       </Section>
       <Section title="Methods">
         {methods.map(method => {
           return (
-            <Fragment>
+            <Fragment key={method.name}>
               <Button content={method.name} disabled={data.current_method === method.ref ? '1' : null}
-                onclick={() => act(ref, 'select_method', {method: method.ref})} />
-              <br></br>
+                onClick={() => act(ref, 'select_method', {method: method.ref})} />
+              <br />
             </Fragment>
           );
         })}

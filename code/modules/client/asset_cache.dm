@@ -256,17 +256,26 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"icons/pda_icons/",
 	)
 
-/datum/asset/directories/tgui
-	isTrivial = FALSE
-	dirs = list(
+/datum/asset/simple/tgui
+	assets = list(
 		// tgui-next
-		"tgui-next/packages/tgui/public/",
-		"tgui-next/packages/tgui/public/bundles/",
-		"tgui-next/packages/tgui/public/images/",
+		"tgui-main.html" = 'tgui-next/packages/tgui/public/tgui-main.html',
+		"tgui-fallback.html" = 'tgui-next/packages/tgui/public/tgui-fallback.html',
+		"tgui.bundle.js" = 'tgui-next/packages/tgui/public/tgui.bundle.js',
+		"tgui.bundle.css" = 'tgui-next/packages/tgui/public/tgui.bundle.css',
+		"shim-console.js" = 'tgui-next/packages/tgui/public/shim-console.js',
+		"shim-html5shiv.js" = 'tgui-next/packages/tgui/public/shim-html5shiv.js',
+		"shim-ie8.js" = 'tgui-next/packages/tgui/public/shim-ie8.js',
+		"shim-dom4.js" = 'tgui-next/packages/tgui/public/shim-dom4.js',
+		"shim-css-om.js" = 'tgui-next/packages/tgui/public/shim-css-om.js',
 
-		// font-awesome
-		"html/font-awesome/webfonts/",
-		"html/font-awesome/css/"
+		// font awesome
+		"fa-regular-400.eot"  = 'html/font-awesome/webfonts/fa-regular-400.eot',
+		"fa-regular-400.woff" = 'html/font-awesome/webfonts/fa-regular-400.woff',
+		"fa-solid-900.eot"    = 'html/font-awesome/webfonts/fa-solid-900.eot',
+		"fa-solid-900.woff"   = 'html/font-awesome/webfonts/fa-solid-900.woff',
+		"font-awesome.css"    = 'html/font-awesome/css/all.min.css',
+		"v4shim.css"          = 'html/font-awesome/css/v4-shims.min.css'
 	)
 
 /datum/asset/directories/nanoui
@@ -298,7 +307,7 @@ var/decl/asset_cache/asset_cache = new()
 
 /proc/send_assets()
 	// Creates and registers every asset datum
-	for(var/type in subtypesof(/datum/asset) - list(/datum/asset/group, /datum/asset/directories))
+	for(var/type in subtypesof(/datum/asset))
 		get_asset_datum(type)
 
 	for(var/client/C in GLOB.clients)

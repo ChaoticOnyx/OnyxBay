@@ -435,6 +435,9 @@ STARLIGHT 0
 ## You'll also likely need to enable WAIT_FOR_SIGUSR1 below
 # MAP_SWITCHING
 
+## Uncomment to enable random map switching (exclude the current map) at the end of a round
+# AUTO_MAP_SWITCHING
+
 ## Uncomment to enable an automatic map vote and switch at end of round. MAP_SWITCHING must also be enabled.
 # AUTO_MAP_VOTE
 

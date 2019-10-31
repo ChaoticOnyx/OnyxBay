@@ -148,6 +148,15 @@
 	damage_type = TOX
 	weaken = 5
 
+/obj/item/projectile/energy/acid //Slightly up-gunned (Read: The thing does agony and checks bio resist) variant of the simple alien mob's projectile, for queens and sentinels.
+	name = "acidic spit"
+	icon_state = "neurotoxin"
+	damage = 30
+	damage_type = BURN
+	agony = 10
+	check_armour = "bio"
+	armor_penetration = 25	// It's acid
+
 /obj/item/projectile/energy/phoron
 	name = "phoron bolt"
 	icon_state = "energy"
