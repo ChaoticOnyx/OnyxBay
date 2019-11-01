@@ -241,14 +241,15 @@ var/list/mob/living/forced_ambiance_list = new
 
 	if(forced_ambience)
 		if(forced_ambience.len)
+			var/S = get_sfx(pick(forced_ambience))
 			forced_ambiance_list |= L
-			L.playsound_local(T,sound(pick(forced_ambience), repeat = 1, wait = 0, volume = 25, channel = 1))
+			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 60, channel = 1))
 		else
 			sound_to(L, sound(null, channel = 1))
 	else if(src.ambience.len && prob(35))
 		if((world.time >= L.client.played + custom_period))
-			var/sound = pick(ambience)
-			L.playsound_local(T, sound(sound, repeat = 0, wait = 0, volume = 60, channel = 1))
+			var/S = get_sfx(pick(ambience))
+			L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 60, channel = 1))
 			L.client.played = world.time
 
 /area/proc/gravitychange(var/gravitystate = 0)

@@ -28,23 +28,7 @@
 												 			)
 		 												),
 		"space"            = new/datum/holodeck_program(/area/holodeck/source_space,
-														list(
-															'sound/ambience/space/exterior1.ogg',
-															'sound/ambience/space/exterior2.ogg',
-															'sound/ambience/space/exterior3.ogg',
-															'sound/ambience/space/exterior4.ogg',
-															'sound/ambience/space/exterior5.ogg',
-															'sound/ambience/space/exterior6.ogg',
-															'sound/ambience/space/exterior7.ogg',
-															'sound/ambience/space/exterior8.ogg',
-															'sound/ambience/space/exterior9.ogg',
-															'sound/ambience/space/exterior10.ogg',
-															'sound/ambience/space/exterior11.ogg',
-															'sound/ambience/space/exterior12.ogg',
-															'sound/ambience/space/exterior13.ogg',
-															'sound/ambience/space/exterior14.ogg',
-															'sound/ambience/space/exterior15.ogg',
-															'sound/ambience/space/exterior16.ogg')
+														list("space_ambient")
 														),
 		"picnicarea"       = new/datum/holodeck_program(/area/holodeck/source_picnicarea, list('sound/music/title2.ogg')),
 		"theatre"          = new/datum/holodeck_program(/area/holodeck/source_theatre),

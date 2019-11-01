@@ -353,7 +353,7 @@
 /area/AIsattele
 	name = "\improper AI Satellite Teleporter Room"
 	icon_state = "teleporter"
-	ambience = list('sound/ambience/ai/ambiai.ogg')
+	ambience = list("ai_ambient")
 
 /area/alien
 	name = "\improper Alien base"
@@ -468,7 +468,7 @@
 
 // Tcomm
 /area/tcommsat/
-	ambience = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg')
+	ambience = list("ai_ambient")
 
 /area/tcommsat/chamber
 	name = "\improper Telecoms Central Compartment"
@@ -482,6 +482,7 @@
 
 /area/ai_monitored
 	name = "AI Monitored Area"
+	ambience = list("ai_ambient")
 
 /area/ai_monitored/storage/eva
 	name = "\improper EVA Storage"
@@ -490,22 +491,23 @@
 /area/turret_protected/ai
 	name = "\improper AI Chamber"
 	icon_state = "ai_chamber"
-	ambience = list('sound/ambience/ai/ambiai.ogg')
+	ambience = list("ai_ambient")
 
 /area/turret_protected/ai_cyborg_station
 	name = "\improper Cyborg Station"
 	icon_state = "ai_cyborg"
 	sound_env = SMALL_ENCLOSED
+	ambience = list("ai_ambient")
 
 /area/turret_protected/ai_upload
 	name = "\improper AI Upload Chamber"
 	icon_state = "ai_upload"
-	ambience = list('sound/ambience/ai/ambiai.ogg')
+	ambience = list("ai_ambient")
 
 /area/turret_protected/ai_upload_foyer
 	name = "\improper  AI Upload Access"
 	icon_state = "ai_foyer"
-	ambience = list('sound/ambience/ai/ambiai.ogg')
+	ambience = list("ai_ambient")
 	sound_env = SMALL_ENCLOSED
 
 // Chapel

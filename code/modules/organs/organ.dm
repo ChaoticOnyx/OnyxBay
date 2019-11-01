@@ -247,6 +247,7 @@ var/list/organ_cache = list()
 	if(drop_organ)
 		dropInto(owner.loc)
 
+	playsound(src, "crunch", rand(65, 80), FALSE)
 	START_PROCESSING(SSobj, src)
 	rejecting = null
 	if(!BP_IS_ROBOTIC(src))

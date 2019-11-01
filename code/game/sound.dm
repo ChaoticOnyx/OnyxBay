@@ -36,6 +36,46 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
+GLOBAL_LIST_INIT(ai_ambient_sound,list('sound/ambience/ai/amb1.ogg','sound/ambience/ai/amb2.ogg','sound/ambience/ai/amb3.ogg',
+										'sound/ambience/ai/amb4.ogg','sound/ambience/ai/amb5.ogg','sound/ambience/ai/amb6.ogg',
+										'sound/ambience/ai/amb7.ogg','sound/ambience/ai/amb8.ogg','sound/ambience/ai/amb9.ogg',
+										'sound/ambience/ai/amb10.ogg','sound/ambience/ai/amb12.ogg','sound/ambience/ai/amb13.ogg',
+										'sound/ambience/ai/amb14.ogg','sound/ambience/ai/amb15.ogg','sound/ambience/ai/amb16.ogg',
+										'sound/ambience/ai/amb17.ogg','sound/ambience/ai/amb18.ogg','sound/ambience/ai/amb19.ogg',
+										'sound/ambience/ai/amb20.ogg','sound/ambience/ai/amb21.ogg','sound/ambience/ai/amb22.ogg'))
+
+GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1.ogg','sound/ambience/maintenance/amb2.ogg','sound/ambience/maintenance/amb3.ogg',
+												'sound/ambience/maintenance/amb4.ogg','sound/ambience/maintenance/amb5.ogg','sound/ambience/maintenance/amb6.ogg',
+												'sound/ambience/maintenance/amb7.ogg','sound/ambience/maintenance/amb8.ogg','sound/ambience/maintenance/amb9.ogg',
+												'sound/ambience/maintenance/amb10.ogg','sound/ambience/maintenance/amb12.ogg','sound/ambience/maintenance/amb13.ogg',
+												'sound/ambience/maintenance/amb14.ogg','sound/ambience/maintenance/amb15.ogg','sound/ambience/maintenance/amb16.ogg',
+												'sound/ambience/maintenance/amb17.ogg','sound/ambience/maintenance/amb18.ogg','sound/ambience/maintenance/amb19.ogg',
+												'sound/ambience/maintenance/amb20.ogg','sound/ambience/maintenance/amb21.ogg','sound/ambience/maintenance/amb22.ogg',
+												'sound/ambience/maintenance/amb23.ogg','sound/ambience/maintenance/amb24.ogg','sound/ambience/maintenance/amb25.ogg',
+												'sound/ambience/maintenance/amb26.ogg','sound/ambience/maintenance/amb27.ogg','sound/ambience/maintenance/amb28.ogg',
+												'sound/ambience/maintenance/amb29.ogg','sound/ambience/maintenance/amb30.ogg','sound/ambience/maintenance/amb31.ogg',
+												'sound/ambience/maintenance/amb32.ogg','sound/ambience/maintenance/amb33.ogg','sound/ambience/maintenance/amb34.ogg',
+												'sound/ambience/maintenance/amb35.ogg','sound/ambience/maintenance/amb36.ogg','sound/ambience/maintenance/amb37.ogg'))
+
+GLOBAL_LIST_INIT(engineering_ambient_sound,list('sound/ambience/engineering/amb1.ogg','sound/ambience/engineering/amb2.ogg','sound/ambience/engineering/amb3.ogg',
+												'sound/ambience/engineering/amb4.ogg','sound/ambience/engineering/amb5.ogg','sound/ambience/engineering/amb6.ogg',
+												'sound/ambience/engineering/amb7.ogg','sound/ambience/engineering/amb8.ogg','sound/ambience/engineering/amb9.ogg',
+												'sound/ambience/engineering/amb10.ogg','sound/ambience/engineering/amb12.ogg','sound/ambience/engineering/amb13.ogg',
+												'sound/ambience/engineering/amb14.ogg','sound/ambience/engineering/amb15.ogg','sound/ambience/engineering/amb16.ogg',
+												'sound/ambience/engineering/amb17.ogg','sound/ambience/engineering/amb18.ogg','sound/ambience/engineering/amb19.ogg',
+												'sound/ambience/engineering/amb20.ogg','sound/ambience/engineering/amb21.ogg','sound/ambience/engineering/amb22.ogg',
+												'sound/ambience/engineering/amb23.ogg','sound/ambience/engineering/amb24.ogg','sound/ambience/engineering/amb25.ogg',
+												'sound/ambience/engineering/amb26.ogg','sound/ambience/engineering/amb27.ogg','sound/ambience/engineering/amb28.ogg',
+												'sound/ambience/engineering/amb29.ogg','sound/ambience/engineering/amb30.ogg','sound/ambience/engineering/amb31.ogg'))
+
+GLOBAL_LIST_INIT(space_ambient_sound,list('sound/ambience/space/exterior1.ogg','sound/ambience/space/exterior2.ogg','sound/ambience/space/exterior3.ogg',
+										'sound/ambience/space/exterior4.ogg','sound/ambience/space/exterior5.ogg','sound/ambience/space/exterior6.ogg',
+										'sound/ambience/space/exterior7.ogg','sound/ambience/space/exterior8.ogg','sound/ambience/space/exterior9.ogg',
+										'sound/ambience/space/exterior10.ogg','sound/ambience/space/exterior11.ogg','sound/ambience/space/exterior12.ogg',
+										'sound/ambience/space/exterior13.ogg','sound/ambience/space/exterior14.ogg','sound/ambience/space/exterior15.ogg',
+										'sound/ambience/space/exterior16.ogg','sound/ambience/space/exterior17.ogg','sound/ambience/space/exterior18.ogg',
+										'sound/ambience/space/exterior19.ogg','sound/ambience/space/exterior20.ogg','sound/ambience/space/exterior21.ogg'))
+
 GLOBAL_LIST_INIT(handcuffs_sound,list('sound/effects/using/cuffs/use1.ogg','sound/effects/using/cuffs/use2.ogg'))
 
 GLOBAL_LIST_INIT(cable_hcuffs_sound,list('sound/effects/using/cuffs/cable_use1.ogg'))
@@ -368,6 +408,10 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
+			if ("ai_ambient")			soundin = pick(GLOB.ai_ambient_sound)
+			if ("maintenance_ambient")	soundin = pick(GLOB.maintenance_ambient_sound)
+			if ("engineering_ambient")	soundin = pick(GLOB.engineering_ambient_sound)
+			if ("space_ambient")		soundin = pick(GLOB.space_ambient_sound)
 			if ("handcuffs")			soundin = pick(GLOB.handcuffs_sound)
 			if ("cable_handcuffs")		soundin = pick(GLOB.cable_hcuffs_sound)
 			if ("far_fire")				soundin = pick(GLOB.far_fire_sound)
