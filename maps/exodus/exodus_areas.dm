@@ -1034,12 +1034,12 @@
 /area/engineering/
 	name = "\improper Engineering"
 	icon_state = "engineering"
-	ambience = list('sound/ambience/engineering/ambieng1.ogg')
+	ambience = list("engineering_ambient")
 
 /area/engineering/lower
 	name = "\improper Engineering Lower Deck"
 	icon_state = "lower_engi"
-	ambience = list('sound/ambience/engineering/ambieng1.ogg')
+	ambience = list("engineering_ambient")
 
 /area/engineering/lower/rust
 	name = "\improper R-UST Engine"
@@ -1389,12 +1389,15 @@ area/rnd/test_area
 	name = "Messaging Server Room"
 	icon_state = "ai_server"
 	sound_env = SMALL_ENCLOSED
+	ambience = list("ai_ambient")
 
 /area/turret_protected/tcomsat/port
 	name = "\improper Telecoms Satellite - Port"
+	ambience = list("ai_ambient")
 
 /area/turret_protected/tcomsat/starboard
 	name = "\improper Telecoms Satellite - Starboard"
+	ambience = list("ai_ambient")
 
 //Misc
 
@@ -1402,6 +1405,7 @@ area/rnd/test_area
 
 /area/tcommsat
 	requires_power = 0
+	ambience = "ai_ambient"
 
 /area/tcommsat/entrance
 	name = "\improper Telecoms Teleporter"
@@ -1410,12 +1414,10 @@ area/rnd/test_area
 /area/turret_protected/tcomsat
 	name = "\improper Telecoms Satellite"
 	icon_state = "tcomsatlob"
-	ambience = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg')
 
 /area/turret_protected/tcomfoyer
 	name = "\improper Telecoms Foyer"
 	icon_state = "tcomsatentrance"
-	ambience = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg')
 
 /area/tcommsat/powercontrol
 	name = "\improper Telecommunications Power Control"
@@ -1800,7 +1802,7 @@ area/rnd/test_area
 /area/AIsattele
 	name = "\improper AI Satellite Teleporter Room"
 	icon_state = "teleporter"
-	ambience = list('sound/ambience/ai/ambiai.ogg')
+	ambience = list("ai_ambient")
 
 /area/constructionsite/atmospherics
 	name = "\improper Construction Site Atmospherics"
