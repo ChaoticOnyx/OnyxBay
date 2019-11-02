@@ -1169,6 +1169,7 @@
 #include "code\modules\admin\verbs\ticklag.dm"
 #include "code\modules\admin\verbs\trading_verbs.dm"
 #include "code\modules\admin\verbs\tripAI.dm"
+#include "code\modules\admin\verbs\visualize.dm"
 #include "code\modules\admin\verbs\SDQL_2\SDQL_2.dm"
 #include "code\modules\admin\verbs\SDQL_2\SDQL_2_parser.dm"
 #include "code\modules\admin\verbs\SDQL_2\SDQL_2_std.dm"

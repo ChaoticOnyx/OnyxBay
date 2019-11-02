@@ -356,6 +356,9 @@
 	if(ability_master)
 		ability_master.update_spells(0)
 
+	if (client && client.visuals)
+		client.visuals.ApplyVisual()
+
 /obj/screen/movable/ability_master/proc/update_spells(var/forced = 0)
 	for(var/obj/screen/ability/spell/spell in spell_objects)
 		spell.update_charge(forced)
