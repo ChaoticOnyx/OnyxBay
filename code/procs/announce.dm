@@ -33,7 +33,6 @@
 	if(!message)
 		return
 	var/message_title = new_title ? new_title : title
-	var/message_sound = new_sound ? new_sound : sound
 
 	if(!msg_sanitized)
 		message = sanitize(message, extra = 0)
@@ -44,8 +43,6 @@
 		if((M.z in (zlevels | GLOB.using_map.admin_levels)) && !istype(M,/mob/new_player) && !isdeaf(M))
 			M.playsound_local(M.loc, pick('sound/signals/anounce1.ogg', 'sound/signals/anounce2.ogg', 'sound/signals/anounce3.ogg'), 75)
 			to_chat(M, msg)
-			if(message_sound)
-				M.playsound_local(M.loc, message_sound, 75)
 
 	if(do_newscast)
 		NewsCast(message, message_title)

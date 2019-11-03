@@ -30,6 +30,11 @@
 	return emote_message_3p
 
 /decl/emote/proc/play_emote_sound(mob/user, key, datum/gender/user_gender)
+	if (world.time > user.lastemote + 5 SECONDS)
+		user.lastemote = world.time
+	else
+		return
+
 	var/gender_prefix = ""
 
 	if (istype(user_gender, /datum/gender/male))
