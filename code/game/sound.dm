@@ -277,24 +277,23 @@ GLOBAL_LIST_INIT(searching_case_sound,list('sound/effects/using/case/use1.ogg','
 											'sound/effects/using/case/use4.ogg','sound/effects/using/case/use5.ogg','sound/effects/using/case/use6.ogg',
 											'sound/effects/using/case/use7.ogg','sound/effects/using/case/use8.ogg'))
 
-GLOBAL_LIST_INIT(crunch_sound,list('sound/effects/figthing/crunch1.ogg','sound/effects/figthing/crunch2.ogg','sound/effects/figthing/crunch3.ogg',
-									'sound/effects/figthing/crunch4.ogg','sound/effects/figthing/crunch5.ogg','sound/effects/figthing/crunch6.ogg',
-									'sound/effects/figthing/crunch7.ogg','sound/effects/figthing/crunch8.ogg','sound/effects/figthing/crunch9.ogg',
-									'sound/effects/figthing/crunch10.ogg','sound/effects/figthing/crunch11.ogg','sound/effects/figthing/crunch12.ogg'))
+GLOBAL_LIST_INIT(crunch_sound,list('sound/effects/fighting/crunch1.ogg','sound/effects/fighting/crunch2.ogg','sound/effects/fighting/crunch3.ogg',
+									'sound/effects/fighting/crunch4.ogg','sound/effects/fighting/crunch5.ogg','sound/effects/fighting/crunch6.ogg',
+									'sound/effects/fighting/crunch7.ogg','sound/effects/fighting/crunch8.ogg','sound/effects/fighting/crunch9.ogg',
+									'sound/effects/fighting/crunch10.ogg','sound/effects/fighting/crunch11.ogg','sound/effects/fighting/crunch12.ogg'))
 
-GLOBAL_LIST_INIT(gib_sound,list('sound/effects/figthing/gib1.ogg','sound/effects/figthing/gib2.ogg','sound/effects/figthing/gib3.ogg',
-								'sound/effects/figthing/gib4.ogg','sound/effects/figthing/gib5.ogg','sound/effects/figthing/gib6.ogg',
-								'sound/effects/figthing/gib7.ogg','sound/effects/figthing/gib8.ogg','sound/effects/figthing/gib9.ogg',
-								'sound/effects/figthing/gib10.ogg'))
+GLOBAL_LIST_INIT(gib_sound,list('sound/effects/fighting/gib1.ogg','sound/effects/fighting/gib2.ogg','sound/effects/fighting/gib3.ogg',
+								'sound/effects/fighting/gib4.ogg','sound/effects/fighting/gib5.ogg','sound/effects/fighting/gib6.ogg',
+								'sound/effects/fighting/gib7.ogg','sound/effects/fighting/gib8.ogg','sound/effects/fighting/gib9.ogg',
+								'sound/effects/fighting/gib10.ogg'))
 
-GLOBAL_LIST_INIT(punch_sound,list('sound/effects/figthing/punch1.ogg','sound/effects/figthing/punch2.ogg','sound/effects/figthing/punch3.ogg',
-								'sound/effects/figthing/punch4.ogg'))
+GLOBAL_LIST_INIT(punch_sound,list('sound/effects/fighting/punch1.ogg','sound/effects/fighting/punch2.ogg','sound/effects/fighting/punch3.ogg','sound/effects/fighting/punch4.ogg'))
 
 GLOBAL_LIST_INIT(clown_sound,list('sound/effects/clownstep1.ogg','sound/effects/clownstep2.ogg'))
 
-GLOBAL_LIST_INIT(swing_sound,list('sound/effects/figthing/swing1.ogg','sound/effects/figthing/swing2.ogg','sound/effects/figthing/swing3.ogg',
-									'sound/effects/figthing/swing4.ogg','sound/effects/figthing/swing5.ogg','sound/effects/figthing/swing6.ogg',
-									'sound/effects/figthing/swing7.ogg'))
+GLOBAL_LIST_INIT(swing_sound,list('sound/effects/fighting/swing1.ogg','sound/effects/fighting/swing2.ogg','sound/effects/fighting/swing3.ogg',
+									'sound/effects/fighting/swing4.ogg','sound/effects/fighting/swing5.ogg','sound/effects/fighting/swing6.ogg',
+									'sound/effects/fighting/swing7.ogg'))
 
 GLOBAL_LIST_INIT(hiss_sound,list('sound/voice/hiss1.ogg','sound/voice/hiss2.ogg','sound/voice/hiss3.ogg','sound/voice/hiss4.ogg'))
 GLOBAL_LIST_INIT(page_sound,list('sound/effects/pageturn1.ogg', 'sound/effects/pageturn2.ogg','sound/effects/pageturn3.ogg'))
