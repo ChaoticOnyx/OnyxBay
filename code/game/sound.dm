@@ -36,6 +36,39 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
+GLOBAL_LIST_INIT(f_cheavyb_sound,list('sound/effects/emotes/f_cheavyb1.ogg'))
+
+GLOBAL_LIST_INIT(f_cough_sound,list('sound/effects/emotes/f_cough1.ogg','sound/effects/emotes/f_cough2.ogg'))
+
+GLOBAL_LIST_INIT(f_heavyb_sound,list('sound/effects/emotes/f_heavyb1.ogg','sound/effects/emotes/f_heavyb2.ogg','sound/effects/emotes/f_heavyb3.ogg',
+									'sound/effects/emotes/f_heavyb4.ogg','sound/effects/emotes/f_heavyb5.ogg','sound/effects/emotes/f_heavyb6.ogg',
+									'sound/effects/emotes/f_heavyb7.ogg','sound/effects/emotes/f_heavyb8.ogg','sound/effects/emotes/f_heavyb9.ogg'))
+
+GLOBAL_LIST_INIT(f_pain_sound,list('sound/effects/emotes/f_pain1.ogg','sound/effects/emotes/f_pain2.ogg','sound/effects/emotes/f_pain3.ogg',
+									'sound/effects/emotes/f_pain4.ogg','sound/effects/emotes/f_pain5.ogg','sound/effects/emotes/f_pain6.ogg',
+									'sound/effects/emotes/f_pain7.ogg','sound/effects/emotes/f_pain8.ogg','sound/effects/emotes/f_pain9.ogg',
+									'sound/effects/emotes/f_pain10.ogg','sound/effects/emotes/f_pain11.ogg','sound/effects/emotes/f_pain12.ogg',
+									'sound/effects/emotes/f_pain13.ogg','sound/effects/emotes/f_pain14.ogg','sound/effects/emotes/f_pain15.ogg',
+									'sound/effects/emotes/f_pain16.ogg','sound/effects/emotes/f_pain17.ogg','sound/effects/emotes/f_pain18.ogg'))
+
+GLOBAL_LIST_INIT(m_cheavyb_sound,list('sound/effects/emotes/m_cheavyb1.ogg','sound/effects/emotes/m_cheavyb2.ogg'))
+
+GLOBAL_LIST_INIT(m_cough_sound,list('sound/effects/emotes/m_cough1.ogg','sound/effects/emotes/m_cough2.ogg'))
+
+GLOBAL_LIST_INIT(m_heavyb_sound,list('sound/effects/emotes/m_heavyb1.ogg','sound/effects/emotes/m_heavyb2.ogg','sound/effects/emotes/m_heavyb3.ogg',
+									'sound/effects/emotes/m_heavyb4.ogg','sound/effects/emotes/m_heavyb5.ogg','sound/effects/emotes/m_heavyb6.ogg',
+									'sound/effects/emotes/m_heavyb7.ogg','sound/effects/emotes/m_heavyb8.ogg','sound/effects/emotes/m_heavyb9.ogg',
+									'sound/effects/emotes/m_heavyb10.ogg','sound/effects/emotes/m_heavyb11.ogg','sound/effects/emotes/m_heavyb12.ogg',
+									'sound/effects/emotes/m_heavyb13.ogg','sound/effects/emotes/m_heavyb14.ogg'))
+
+GLOBAL_LIST_INIT(m_pain_sound,list('sound/effects/emotes/m_pain1.ogg','sound/effects/emotes/m_pain2.ogg','sound/effects/emotes/m_pain3.ogg',
+									'sound/effects/emotes/m_pain4.ogg','sound/effects/emotes/m_pain5.ogg','sound/effects/emotes/m_pain6.ogg',
+									'sound/effects/emotes/m_pain7.ogg','sound/effects/emotes/m_pain8.ogg','sound/effects/emotes/m_pain9.ogg',
+									'sound/effects/emotes/m_pain10.ogg','sound/effects/emotes/m_pain11.ogg','sound/effects/emotes/m_pain12.ogg',
+									'sound/effects/emotes/m_pain13.ogg','sound/effects/emotes/m_pain14.ogg','sound/effects/emotes/m_pain15.ogg',
+									'sound/effects/emotes/m_pain16.ogg','sound/effects/emotes/m_pain17.ogg','sound/effects/emotes/m_pain18.ogg',
+									'sound/effects/emotes/m_pain19.ogg','sound/effects/emotes/m_pain20.ogg','sound/effects/emotes/m_pain21.ogg'))
+
 GLOBAL_LIST_INIT(ai_ambient_sound,list('sound/ambience/ai/amb1.ogg','sound/ambience/ai/amb2.ogg','sound/ambience/ai/amb3.ogg',
 										'sound/ambience/ai/amb4.ogg','sound/ambience/ai/amb5.ogg','sound/ambience/ai/amb6.ogg',
 										'sound/ambience/ai/amb7.ogg','sound/ambience/ai/amb8.ogg','sound/ambience/ai/amb9.ogg',
@@ -408,6 +441,14 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
+			if ("female_closed_breath")	soundin = pick(GLOB.f_cheavyb_sound)
+			if ("female_cough")			soundin = pick(GLOB.f_cough_sound)
+			if ("female_breath")		soundin = pick(GLOB.f_heavyb_sound)
+			if ("female_pain")			soundin = pick(GLOB.f_pain_sound)
+			if ("male_closed_breath")	soundin = pick(GLOB.m_cheavyb_sound)
+			if ("male_cough")			soundin = pick(GLOB.m_cough_sound)
+			if ("male_breath")			soundin = pick(GLOB.m_heavyb_sound)
+			if ("male_pain")			soundin = pick(GLOB.m_pain_sound)
 			if ("ai_ambient")			soundin = pick(GLOB.ai_ambient_sound)
 			if ("maintenance_ambient")	soundin = pick(GLOB.maintenance_ambient_sound)
 			if ("engineering_ambient")	soundin = pick(GLOB.engineering_ambient_sound)
