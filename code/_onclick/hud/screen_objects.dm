@@ -313,7 +313,13 @@
 
 							if(best)
 								to_chat(C, "<span class='notice'>You are now running on internals from [tankcheck[best]] [from] your [nicename[best]].</span>")
-								playsound(usr, 'sound/effects/internals.ogg', 50, 0)
+								var/datum/gender/user_gender = gender_datums[usr.get_visible_gender()]
+
+								if (istype(user_gender, /datum/gender/male))
+									playsound(usr, "male_closed_breath", rand(10, 30), FALSE)
+								else
+									playsound(usr, "female_closed_breath", rand(10, 30), FALSE)
+
 								C.internal = tankcheck[best]
 
 

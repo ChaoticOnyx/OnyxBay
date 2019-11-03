@@ -29,6 +29,22 @@
 		return emote_message_3p_target
 	return emote_message_3p
 
+/decl/emote/proc/play_emote_sound(mob/user, key, datum/gender/user_gender)
+	var/gender_prefix = ""
+
+	if (istype(user_gender, /datum/gender/male))
+		gender_prefix = "male"
+	else
+		gender_prefix = "female"
+
+	switch (key)
+		if ("cough")
+			playsound(user, "[gender_prefix]_cough", rand(25, 40), FALSE)
+		if ("scream")
+			playsound(user, "[gender_prefix]_pain", rand(25, 40), FALSE)
+		if ("gasp","choke")
+			playsound(user, "[gender_prefix]_breath", rand(25, 40), FALSE)
+
 /decl/emote/proc/do_emote(var/atom/user, var/extra_params)
 
 	if(ismob(user) && check_restraints)
@@ -76,6 +92,8 @@
 		use_3p = capitalize(use_3p)
 
 	if(message_type == AUDIBLE_MESSAGE)
+		play_emote_sound(user, key, user_gender)
+
 		user.audible_message(message = use_3p, self_message = use_1p, deaf_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
 	else
 		user.visible_message(message = use_3p, self_message = use_1p, blind_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
