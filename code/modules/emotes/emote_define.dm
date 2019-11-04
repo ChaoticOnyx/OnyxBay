@@ -30,6 +30,9 @@
 	return emote_message_3p
 
 /decl/emote/proc/play_emote_sound(mob/user, key, datum/gender/user_gender)
+	if (user.type != /mob/living/carbon/human)
+		return
+
 	if (world.time > user.lastemote + 5 SECONDS)
 		user.lastemote = world.time
 	else
