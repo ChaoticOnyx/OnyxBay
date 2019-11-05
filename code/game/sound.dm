@@ -288,12 +288,8 @@ GLOBAL_LIST_INIT(gib_sound,list('sound/effects/fighting/gib1.ogg','sound/effects
 								'sound/effects/fighting/gib10.ogg'))
 
 GLOBAL_LIST_INIT(punch_sound,list('sound/effects/fighting/punch1.ogg','sound/effects/fighting/punch2.ogg','sound/effects/fighting/punch3.ogg','sound/effects/fighting/punch4.ogg'))
-
 GLOBAL_LIST_INIT(clown_sound,list('sound/effects/clownstep1.ogg','sound/effects/clownstep2.ogg'))
-
-GLOBAL_LIST_INIT(swing_sound,list('sound/effects/fighting/swing1.ogg','sound/effects/fighting/swing2.ogg','sound/effects/fighting/swing3.ogg',
-									'sound/effects/fighting/swing4.ogg','sound/effects/fighting/swing5.ogg','sound/effects/fighting/swing6.ogg',
-									'sound/effects/fighting/swing7.ogg'))
+GLOBAL_LIST_INIT(swing_hit_sound,list('sound/effects/fighting/genhit1.ogg', 'sound/effects/fighting/genhit2.ogg', 'sound/effects/fighting/genhit3.ogg'))
 
 GLOBAL_LIST_INIT(hiss_sound,list('sound/voice/hiss1.ogg','sound/voice/hiss2.ogg','sound/voice/hiss3.ogg','sound/voice/hiss4.ogg'))
 GLOBAL_LIST_INIT(page_sound,list('sound/effects/pageturn1.ogg', 'sound/effects/pageturn2.ogg','sound/effects/pageturn3.ogg'))
@@ -306,7 +302,7 @@ GLOBAL_LIST_INIT(switch_large_sound,list('sound/effects/using/switch/large1.ogg'
 									'sound/effects/using/switch/large4.ogg'))
 
 GLOBAL_LIST_INIT(button_sound,list('sound/machines/button1.ogg','sound/machines/button2.ogg','sound/machines/button3.ogg','sound/machines/button4.ogg'))
-GLOBAL_LIST_INIT(chop_sound,list('sound/weapons/chop1.ogg','sound/weapons/chop2.ogg','sound/weapons/chop3.ogg'))
+GLOBAL_LIST_INIT(chop_sound,list('sound/effects/fighting/chop1.ogg','sound/effects/fighting/chop2.ogg','sound/effects/fighting/chop3.ogg'))
 
 GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosion1.ogg', 'sound/effects/explosions/far_explosion2.ogg', 'sound/effects/explosions/far_explosion3.ogg',
 										'sound/effects/explosions/far_explosion4.ogg', 'sound/effects/explosions/far_explosion5.ogg', 'sound/effects/explosions/far_explosion6.ogg',
@@ -492,7 +488,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("gib")					soundin = pick(GLOB.gib_sound)
 			if ("punch") 				soundin = pick(GLOB.punch_sound)
 			if ("clownstep") 			soundin = pick(GLOB.clown_sound)
-			if ("swing") 				soundin = pick(GLOB.swing_sound)
+			if ("swing_hit") 			soundin = pick(GLOB.swing_hit_sound)
 			if ("hiss") 				soundin = pick(GLOB.hiss_sound)
 			if ("pageturn") 			soundin = pick(GLOB.page_sound)
 			if ("fracture") 			soundin = pick(GLOB.fracture_sound)

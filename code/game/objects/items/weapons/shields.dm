@@ -66,7 +66,7 @@
 
 /obj/item/weapon/shield/riot/handle_shield(mob/user)
 	. = ..()
-	if(.) playsound(user.loc, 'sound/weapons/Genhit.ogg', 50, 1)
+	if(.) playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 
 
 /obj/item/weapon/shield/riot/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -95,7 +95,7 @@
 
 /obj/item/weapon/shield/buckler/handle_shield(mob/user)
 	. = ..()
-	if(.) playsound(user.loc, 'sound/weapons/Genhit.ogg', 50, 1)
+	if(.) playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 
 /*
  * Energy Shield

@@ -299,7 +299,7 @@
 	user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [I]!</span>")
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	user.do_attack_animation(src)
-	playsound(loc, 'sound/weapons/smash.ogg', 75, 1)
+	playsound(loc, 'sound/effects/fighting/smash.ogg', 75, 1)
 
 /obj/machinery/shieldwall/Process()
 	if(needs_power)

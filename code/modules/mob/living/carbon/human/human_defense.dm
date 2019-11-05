@@ -592,7 +592,7 @@ meteor_act
 				visible_message("<span class='warning'>[defender]'s [w_def.name] flies off!</span>")
 				defender.drop_from_inventory(w_def)
 
-			playsound(loc, 'sound/weapons/Genhit.ogg', 50, 1, -1)
+			playsound(loc, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
 			defender.useblock_off()
 		else
 			defender.poise -= 2.5+(w_atk.mod_weight*10 + w_atk.mod_reach*5)

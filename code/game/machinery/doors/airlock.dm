@@ -948,7 +948,7 @@ About the new airlock wires panel:
 		cut_delay *= 0.66
 	else if(istype(item,/obj/item/weapon/circular_saw))
 		cut_verb = "sawing"
-		cut_sound = 'sound/weapons/circsawhit.ogg'
+		cut_sound = 'sound/effects/fighting/circsawhit.ogg'
 		cut_delay *= 1.5
 
 	else if(istype(item,/obj/item/weapon/material/twohanded/fireaxe))
@@ -962,7 +962,7 @@ About the new airlock wires panel:
 			"<span class='danger'>\The [user] smashes the bolt cover open!</span>",
 			"<span class='warning'>You smash the bolt cover open!</span>"
 			)
-		playsound(src, 'sound/weapons/smash.ogg', 100, 1)
+		playsound(src, 'sound/effects/fighting/smash.ogg', 100, 1)
 		src.lock_cut_state = BOLTS_EXPOSED
 		return 0
 
@@ -1089,7 +1089,7 @@ About the new airlock wires panel:
 	else if (istype(C, /obj/item/weapon/material/twohanded/fireaxe) && !(stat & BROKEN) && (src.health <= src.maxhealth / 2) && user.a_intent == I_HURT)
 		var/obj/item/weapon/material/twohanded/fireaxe/F = C
 		if (F.wielded)
-			playsound(src, 'sound/weapons/smash.ogg', 100, 1)
+			playsound(src, 'sound/effects/fighting/smash.ogg', 100, 1)
 			user.visible_message("<span class='danger'>[user] smashes \the [C] into the airlock's control panel! It explodes in a shower of sparks!</span>", "<span class='danger'>You smash \the [C] into the airlock's control panel! It explodes in a shower of sparks!</span>")
 			health = 0
 			set_broken(TRUE)

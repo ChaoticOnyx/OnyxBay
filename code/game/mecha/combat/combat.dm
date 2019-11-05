@@ -26,7 +26,7 @@
 	if(istype(target, /mob/living))
 		var/mob/living/M = target
 		if(src.occupant.a_intent == I_HURT)
-			playsound(src, "punch", rand(80, 100), 1)
+			playsound(src, 'sound/effects/fighting/punch4.ogg', 50, 1)
 			if(damtype == "brute")
 				step_away(M,src,15)
 			/*
@@ -78,7 +78,7 @@
 						target:dismantle_wall(1)
 						src.occupant_message("<span class='notice'>You smash through the wall.</span>")
 						src.visible_message("<b>[src.name] smashes through the wall</b>")
-						playsound(src, 'sound/weapons/smash.ogg', 50, 1)
+						playsound(src, 'sound/effects/fighting/smash.ogg', 50, 1)
 					melee_can_hit = 0
 					if(do_after(melee_cooldown))
 						melee_can_hit = 1

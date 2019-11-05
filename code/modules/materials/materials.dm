@@ -124,7 +124,7 @@ var/list/name_to_material
 	// Noise made when a simple door made of this material opens or closes.
 	var/dooropen_noise = 'sound/effects/stonedoor_openclose.ogg'
 	// Noise made when you hit structure made of this material.
-	var/hitsound = 'sound/weapons/genhit.ogg'
+	var/hitsound = 'sound/effects/fighting/Genhit.ogg'
 	// Path to resulting stacktype. Todo remove need for this.
 	var/stack_type
 	// Wallrot crumble message.
@@ -383,7 +383,7 @@ var/list/name_to_material
 	icon_base = "solid"
 	icon_reinf = "reinf_over"
 	icon_colour = "#666666"
-	hitsound = 'sound/weapons/Genhit.ogg'
+	hitsound = 'sound/effects/fighting/Genhit.ogg'
 	resilience = 36
 	reflectance = 13
 
@@ -692,7 +692,7 @@ var/list/name_to_material
 	reflectance = 10
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
-	hitsound = 'sound/weapons/smash.ogg'
+	hitsound = 'sound/effects/fighting/smash.ogg'
 
 // Adminspawn only, do not let anyone get this.
 /material/voxalloy
@@ -846,7 +846,7 @@ var/list/name_to_material
 	icon_base = "jaggy"
 	door_icon_base = "metal"
 	icon_reinf = "reinf_metal"
-	hitsound = 'sound/weapons/smash.ogg'
+	hitsound = 'sound/effects/fighting/smash.ogg'
 	sheet_singular_name = "chunk"
 	sheet_plural_name = "chunks"
 

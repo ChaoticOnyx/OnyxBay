@@ -63,7 +63,7 @@
 	desc = "You can drill using this item. You dig?"
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "drill"
-	hitsound = 'sound/weapons/circsawhit.ogg'
+	hitsound = 'sound/effects/fighting/circsawhit.ogg'
 	matter = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 10000)
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 15.0
@@ -140,7 +140,7 @@
 	desc = "For heavy duty cutting."
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "saw3"
-	hitsound = 'sound/weapons/circsawhit.ogg'
+	hitsound = 'sound/effects/fighting/circsawhit.ogg'
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 15.0
 	w_class = ITEM_SIZE_NORMAL

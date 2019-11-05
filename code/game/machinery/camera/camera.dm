@@ -202,7 +202,7 @@
 		set_status(0)
 		user.do_attack_animation(src)
 		visible_message("<span class='warning'>\The [user] slashes at [src]!</span>")
-		playsound(src.loc, 'sound/weapons/smash.ogg', 100, 1)
+		playsound(src.loc, 'sound/effects/fighting/smash.ogg', 100, 1)
 		add_hiddenprint(user)
 		destroy()
 
@@ -273,7 +273,7 @@
 			if (istype(W, /obj/item)) //is it even possible to get into attackby() with non-items?
 				var/obj/item/I = W
 				if (I.hitsound)
-					playsound(src.loc, 'sound/weapons/smash.ogg', 50, 1, -1)
+					playsound(src.loc, 'sound/effects/fighting/smash.ogg', 50, 1, -1)
 		take_damage(W.force)
 
 	else

@@ -107,7 +107,7 @@
 
 /datum/hallucination/sound/danger
 	min_power = 30
-	//sounds = list('sound/effects/Explosion1.ogg','sound/effects/Explosion2.ogg','sound/effects/Glassbr1.ogg','sound/effects/Glassbr2.ogg','sound/effects/Glassbr3.ogg','sound/weapons/smash.ogg')
+	//sounds = list('sound/effects/Explosion1.ogg','sound/effects/Explosion2.ogg','sound/effects/Glassbr1.ogg','sound/effects/Glassbr2.ogg','sound/effects/Glassbr3.ogg','sound/effects/fighting/smash.ogg')
 
 /datum/hallucination/sound/spooky
 	min_power = 50
