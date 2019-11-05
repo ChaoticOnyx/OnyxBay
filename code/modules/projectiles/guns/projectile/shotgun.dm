@@ -27,9 +27,11 @@
 	return null
 
 /obj/item/weapon/gun/projectile/shotgun/pump/attack_self(mob/living/user as mob)
-	if(world.time >= recentpump + 50)
+	if(world.time > recentpump + 10)
 		recentpump = world.time
 		pump(user)
+	else
+		to_world("Wait")
 
 /obj/item/weapon/gun/projectile/shotgun/pump/proc/pump(mob/M as mob)
 	playsound(M, "shotgun_pump_in", rand(45, 60), FALSE)

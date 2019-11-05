@@ -154,7 +154,7 @@
 			occupant.apply_effect(4, STUN, blocked)
 			occupant.apply_effect(4, WEAKEN, blocked)
 			occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
-			playsound(src.loc, "punch", rand(80, 100), 1, -1)
+			playsound(src.loc, 'sound/effects/fighting/punch1.ogg', 50, 1, -1)
 		else
 			visible_message("[usr] collapses \the [src.name].")
 		var/obj/item/weapon/foldchair/O = new/obj/item/weapon/foldchair(get_turf(src))

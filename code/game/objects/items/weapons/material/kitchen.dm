@@ -146,7 +146,7 @@
 	default_material = MATERIAL_WOOD
 	force_divisor = 0.7 // 10 when wielded with weight 15 (wood)
 	thrown_force_divisor = 0.8 // 12 dmg (wood)
-	hitsound = 'sound/weapons/genhit3.ogg'
+	hitsound = 'sound/effects/fighting/genhit3.ogg'
 	mod_weight = 1.2
 	mod_reach = 0.85
 	mod_handy = 0.85

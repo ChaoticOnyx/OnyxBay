@@ -9,7 +9,7 @@
 	icon_aggro = "Goliath_alert"
 	icon_dead = "Goliath_dead"
 	icon_gib = "syndicate_gib"
-	attack_sound = "punch"
+	attack_sound = 'sound/effects/fighting/punch4.ogg'
 	mouse_opacity = 2
 	move_to_delay = 40
 	ranged = 1

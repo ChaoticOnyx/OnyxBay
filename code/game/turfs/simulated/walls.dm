@@ -19,7 +19,7 @@
 	var/last_state
 	var/construction_stage
 	var/ricochet_id = 0
-	var/hitsound = 'sound/weapons/Genhit.ogg'
+	var/hitsound = 'sound/effects/fighting/Genhit.ogg'
 	var/list/wall_connections = list("0", "0", "0", "0")
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
 

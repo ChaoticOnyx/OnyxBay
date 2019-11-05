@@ -4,7 +4,7 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "fire_extinguisher0"
 	item_state = "fire_extinguisher"
-	hitsound = 'sound/weapons/smash.ogg'
+	hitsound = 'sound/effects/fighting/smash.ogg'
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 15.0
 	throwforce = 10

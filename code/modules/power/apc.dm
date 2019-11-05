@@ -666,7 +666,7 @@
 						to_chat(user, "<span class='warning'>There's a nasty sound and \the [src] goes cold...</span>")
 						set_broken(TRUE)
 				queue_icon_update()
-		playsound(get_turf(src), 'sound/weapons/smash.ogg', 75, 1)
+		playsound(get_turf(src), 'sound/effects/fighting/smash.ogg', 75, 1)
 
 // attack with hand - remove cell (if cover open) or interact with the APC
 

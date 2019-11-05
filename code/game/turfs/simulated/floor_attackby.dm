@@ -57,7 +57,7 @@
 			if (istype(C, /obj/item/stack/rods))
 				var/obj/item/stack/rods/R = C
 				if (R.use(2))
-					playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
+					playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 					new /obj/structure/catwalk(src)
 				return
 			var/obj/item/stack/S = C

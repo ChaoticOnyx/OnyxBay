@@ -191,7 +191,7 @@ var/global/list/sparring_attack_cache = list()
 /datum/unarmed_attack/kick
 	attack_verb = list("kicked", "kicked", "kicked", "kneed")
 	attack_noun = list("kick", "kick", "kick", "knee strike")
-	attack_sound = "punch"
+	attack_sound = "swing_hit"
 	damage = 0
 
 /datum/unarmed_attack/kick/is_usable(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone)
@@ -228,7 +228,7 @@ var/global/list/sparring_attack_cache = list()
 /datum/unarmed_attack/stomp
 	attack_verb = list("stomped on")
 	attack_noun = list("stomp")
-	attack_sound = "punch"
+	attack_sound = "swing_hit"
 	damage = 0
 
 /datum/unarmed_attack/stomp/is_usable(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone)
