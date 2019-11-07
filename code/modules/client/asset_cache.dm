@@ -263,7 +263,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"tgui-fallback.html" = 'tgui-next/packages/tgui/public/tgui-fallback.html',
 		"tgui.bundle.js" = 'tgui-next/packages/tgui/public/tgui.bundle.js',
 		"tgui.bundle.css" = 'tgui-next/packages/tgui/public/tgui.bundle.css',
-		"shim-console.js" = 'tgui-next/packages/tgui/public/shim-console.js',
 		"shim-html5shiv.js" = 'tgui-next/packages/tgui/public/shim-html5shiv.js',
 		"shim-ie8.js" = 'tgui-next/packages/tgui/public/shim-ie8.js',
 		"shim-dom4.js" = 'tgui-next/packages/tgui/public/shim-dom4.js',
