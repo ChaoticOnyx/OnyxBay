@@ -163,6 +163,13 @@
 	flags_inv = 0
 	siemens_coefficient = 0.6
 
+/obj/item/clothing/suit/armor/hos/jensen/custom
+	name = "stylish trenchcoat"
+	desc = "An expensive leather trenchcoat."
+	icon_state = "jensencoat"
+	item_state = "jensencoat"
+	armor = list(melee = 15, bullet = 10, laser = 10, energy = 10, bomb = 10, bio = 0, rad = 0)
+
 /*
  * Navy uniforms
  */
