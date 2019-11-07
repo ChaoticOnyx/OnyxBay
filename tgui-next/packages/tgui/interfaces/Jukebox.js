@@ -23,7 +23,12 @@ export const Jukebox = props => {
       )}>
         <ProgressBar value={String(data.volume / 50)} content={'Volume: ' + data.volume} />
       </Section>
-      <Section title="Tracks List">
+      <Section title="Tracks List" buttons={(
+        <Fragment>
+          <Button content="Play" icon="forward" onClick={() => act(ref, 'play', null)} />
+          <Button content="Stop" icon="stop" onClick={() => act(ref, 'stop', null)} />
+        </Fragment>
+      )}>
         {songs.map(song => {
           return (
             <Fragment key={song}>
