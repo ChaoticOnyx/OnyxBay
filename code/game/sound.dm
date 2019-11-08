@@ -99,7 +99,7 @@ GLOBAL_LIST_INIT(engineering_ambient_sound,list('sound/ambience/engineering/amb1
 												'sound/ambience/engineering/amb20.ogg','sound/ambience/engineering/amb21.ogg','sound/ambience/engineering/amb22.ogg',
 												'sound/ambience/engineering/amb23.ogg','sound/ambience/engineering/amb24.ogg','sound/ambience/engineering/amb25.ogg',
 												'sound/ambience/engineering/amb26.ogg','sound/ambience/engineering/amb27.ogg','sound/ambience/engineering/amb28.ogg',
-												'sound/ambience/engineering/amb29.ogg','sound/ambience/engineering/amb30.ogg','sound/ambience/engineering/amb31.ogg'))
+												'sound/ambience/engineering/amb29.ogg','sound/ambience/engineering/amb30.ogg'))
 
 GLOBAL_LIST_INIT(space_ambient_sound,list('sound/ambience/space/exterior1.ogg','sound/ambience/space/exterior2.ogg','sound/ambience/space/exterior3.ogg',
 										'sound/ambience/space/exterior4.ogg','sound/ambience/space/exterior5.ogg','sound/ambience/space/exterior6.ogg',
