@@ -802,7 +802,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 obj/item/weapon/newspaper/attack_self(mob/user as mob)
 	if(ishuman(user))
 		var/mob/living/carbon/human/human_user = user
-		var/dat
+		var/dat = "<meta charset=\"utf-8\">"
 		src.pages = 0
 		switch(screen)
 			if(0) //Cover

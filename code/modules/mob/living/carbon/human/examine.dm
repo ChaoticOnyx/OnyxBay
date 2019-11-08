@@ -340,7 +340,7 @@
 	set desc = "Sets an extended description of your character's features."
 	set category = "IC"
 
-	var/list/HTML = list()
+	var/list/HTML = "<meta charset=\"utf-8\">"
 	HTML += "<body>"
 	HTML += "<tt><center>"
 	HTML += "<b>Update Flavour Text</b> <hr />"

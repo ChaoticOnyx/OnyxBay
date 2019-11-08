@@ -338,7 +338,7 @@
 			return
 
 		var/dat = ""
-		var/header = "<head><title>Job-Ban Panel: [M.name]</title></head>"
+		var/header = "<meta charset=\"utf-8\"><head><title>Job-Ban Panel: [M.name]</title></head>"
 		var/body
 		var/jobs = ""
 
@@ -1009,7 +1009,7 @@
 
 		if(SSticker.mode)
 			return alert(usr, "The game has already started.", null, null, null, null)
-		var/dat = {"<B>What mode do you wish to play?</B><HR>"}
+		var/dat = {"<meta charset=\"utf-8\"><B>What mode do you wish to play?</B><HR>"}
 		for(var/mode in config.modes)
 			dat += {"<A href='?src=\ref[src];c_mode2=[mode]'>[config.mode_names[mode]]</A><br>"}
 		dat += {"<A href='?src=\ref[src];c_mode2=secret'>Secret</A><br>"}
@@ -1024,7 +1024,7 @@
 			return alert(usr, "The game has already started.", null, null, null, null)
 		if(SSticker.master_mode != "secret")
 			return alert(usr, "The game mode has to be secret!", null, null, null, null)
-		var/dat = {"<B>What game mode do you want to force secret to be? Use this if you want to change the game mode, but want the players to believe it's secret. This will only work if the current game mode is secret.</B><HR>"}
+		var/dat = {"<meta charset=\"utf-8\"><B>What game mode do you want to force secret to be? Use this if you want to change the game mode, but want the players to believe it's secret. This will only work if the current game mode is secret.</B><HR>"}
 		for(var/mode in config.modes)
 			dat += {"<A href='?src=\ref[src];f_secret2=[mode]'>[config.mode_names[mode]]</A><br>"}
 		dat += {"<A href='?src=\ref[src];f_secret2=secret'>Random (default)</A><br>"}
@@ -1539,7 +1539,7 @@
 		else if (istype(fax, /obj/item/weapon/paper_bundle))
 			//having multiple people turning pages on a paper_bundle can cause issues
 			//open a browse window listing the contents instead
-			var/data = ""
+			var/data = "<meta charset=\"utf-8\">"
 			var/obj/item/weapon/paper_bundle/B = fax
 
 			for (var/page = 1, page <= B.pages.len, page++)

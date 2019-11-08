@@ -33,11 +33,11 @@
 		/obj/item/clamp,
 		/obj/item/frame
 		)
-		
+
 	var/list/cant_hold = list(
 		/obj/item/weapon/reagent_containers/food/snacks/grown,
 		)
-	
+
 
 	var/obj/item/wrapped = null // Item currently being held.
 
@@ -308,19 +308,19 @@
 							var/turf/T = get_turf(src)
 							S.remove_from_storage(I,T)
 							visible_message("<span class='notice'>\The [I] drops on \the [T].</span>")
-						else 
+						else
 							inuse = 0
 							to_chat(user, "<span class='notice'>\The [target] is empty.</span>")
 					else
 						inuse = 0
 						to_chat(user, "<span class='danger'>The process was interrupted!</span>")
 			return
-			
+
 	for(var/atypepath in cant_hold)
 		if(istype(target,atypepath))
-			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")		
-			return		
-			
+			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")
+			return
+
 	if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
 
 		//...and that the item is not in a container.
@@ -332,7 +332,7 @@
 		//Check if the item is blacklisted.
 		var/grab = 0
 		for(var/typepath in can_hold)
-			if(istype(I,typepath))			
+			if(istype(I,typepath))
 				grab = 1
 				break
 
@@ -375,11 +375,11 @@
 				A.cell = null
 
 				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
-	
+
 	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
 		var/obj/machinery/portable_atmospherics/canister/A = target
 		A.ui_interact(user)
-	
+
 	else
 		to_chat(user, "<span class='notice'>[src] can't interact with \the [target].</span>")
 
@@ -542,7 +542,7 @@
 	if(!module)
 		module = new /obj/item/weapon/robot_module/drone(src)
 
-	var/dat = "<HEAD><TITLE>Drone modules</TITLE></HEAD><BODY>\n"
+	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Drone modules</TITLE></HEAD><BODY>\n"
 	dat += {"
 	<B>Activated Modules</B>
 	<BR>

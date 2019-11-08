@@ -5,7 +5,7 @@
 	. = ..()
 	if(!.)
 		return
-	var/dat = "<B>Showing Fingerprints.</B><HR>"
+	var/dat = "<meta charset=\"utf-8\"><B>Showing Fingerprints.</B><HR>"
 	dat += "<table cellspacing=5><tr><th>Name</th><th>Fingerprints</th></tr>"
 	for(var/mob/living/carbon/human/H in SSmobs.mob_list)
 		if(H.ckey)

@@ -56,7 +56,7 @@
 	if(shocked)
 		shock(user, 50)
 
-	var/dat = "<center><h1>Autolathe Control Panel</h1><hr/>"
+	var/dat = "<meta charset=\"utf-8\"><center><h1>Autolathe Control Panel</h1><hr/>"
 
 	if(!disabled)
 		dat += "<table width = '100%'>"

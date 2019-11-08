@@ -115,7 +115,7 @@
 	if(..())
 		return
 
-	var/dat = "<HTML><BODY><TT><B>[title]</B>"
+	var/dat = "<HTML><meta charset=\"utf-8\"><BODY><TT><B>[title]</B>"
 	user.set_machine(src)
 	if(connected)
 		var/d2

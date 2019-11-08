@@ -43,17 +43,17 @@
 	if(..())
 		return
 	user.machine = src
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 	if(curing)
-		dat = "Antibody production in progress"
+		dat += "Antibody production in progress"
 	else if(virusing)
-		dat = "Virus production in progress"
+		dat += "Virus production in progress"
 	else if(container)
 		// see if there's any blood in the container
 		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in container.reagents.reagent_list
 
 		if(B)
-			dat = "Blood sample inserted."
+			dat += "Blood sample inserted."
 			dat += "<BR>Antibodies: [antigens2string(B.data["antibodies"])]"
 			dat += "<BR><A href='?src=\ref[src];antibody=1'>Begin antibody production</a>"
 		else

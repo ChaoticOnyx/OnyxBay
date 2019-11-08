@@ -40,7 +40,7 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	user.set_machine(src)
-	var/dat = "<B>Artifact Power Harvester</B><BR>"
+	var/dat = "<meta charset=\"utf-8\"><B>Artifact Power Harvester</B><BR>"
 	dat += "<HR><BR>"
 	//
 	if(owned_scanner)

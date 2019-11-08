@@ -165,7 +165,7 @@
 
 // this function displays the stations manifest in a separate window
 /mob/living/silicon/proc/show_station_manifest()
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 	dat += "<h4>Crew Manifest</h4>"
 	dat += html_crew_manifest(1) // make it monochrome
 	dat += "<br>"
@@ -206,7 +206,7 @@
 	set category = "IC"
 	set src = usr
 
-	var/dat = "<b><font size = 5>Known Languages</font></b><br/><br/>"
+	var/dat = "<meta charset=\"utf-8\"><b><font size = 5>Known Languages</font></b><br/><br/>"
 
 	if(default_language)
 		dat += "Current default language: [default_language] - <a href='byond://?src=\ref[src];default_lang=reset'>reset</a><br/><br/>"

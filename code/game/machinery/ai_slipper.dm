@@ -71,7 +71,7 @@
 		to_chat(user, text("Turret badly positioned - loc.loc is [].", loc))
 		return
 	var/area/area = loc
-	var/t = "<TT><B>AI Liquid Dispenser</B> ([area.name])<HR>"
+	var/t = "<meta charset=\"utf-8\"><TT><B>AI Liquid Dispenser</B> ([area.name])<HR>"
 
 	if(src.locked && (!istype(user, /mob/living/silicon)))
 		t += "<I>(Swipe ID card to unlock control panel.)</I><BR>"

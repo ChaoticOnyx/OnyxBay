@@ -115,7 +115,7 @@
 	interact(user)
 
 /obj/machinery/replicator/interact(mob/user)
-	var/dat = "The control panel displays an incomprehensible selection of controls, many with unusual markings or text around them.<br>"
+	var/dat = "<meta charset=\"utf-8\">The control panel displays an incomprehensible selection of controls, many with unusual markings or text around them.<br>"
 	dat += "<br>"
 	for(var/index=1, index<=construction.len, index++)
 		dat += "<A href='?src=\ref[src];activate=[index]'>\[[construction[index]]\]</a><br>"

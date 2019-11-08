@@ -87,14 +87,14 @@
 /obj/machinery/computer/arcade/orion_trail/attack_hand(mob/user)
 	if(..())
 		return
-	var/dat = ""
+	var/dat = "<meta charset=\"utf-8\">"
 	if(event == null)
 		newgame()
 	user.set_machine(src)
 	switch(view)
 		if(ORION_VIEW_MAIN)
 			if(event == ORION_TRAIL_START) //new game? New game.
-				dat = "<center><h1>Orion Trail[emagged ? ": Realism Edition" : ""]</h1><br>Learn how our ancestors got to Orion, and have fun in the process!</center><br><P ALIGN=Right><a href='?src=\ref[src];continue=1'>Start New Game</a></P>"
+				dat += "<center><h1>Orion Trail[emagged ? ": Realism Edition" : ""]</h1><br>Learn how our ancestors got to Orion, and have fun in the process!</center><br><P ALIGN=Right><a href='?src=\ref[src];continue=1'>Start New Game</a></P>"
 				user << browse(dat, "window=arcade")
 				return
 			else
@@ -155,9 +155,9 @@
 				if(ORION_TRAIL_MUTINY_ATTACK)
 					event_desc = "Oh no, some of your crew are attempting to mutiny!!"
 
-			dat = "<center><h1>[event_title]</h1>[event_desc]<br><br>Distance to next port: [distance]<br><b>[event_info]</b><br></center><br>[event_actions]"
+			dat += "<center><h1>[event_title]</h1>[event_desc]<br><br>Distance to next port: [distance]<br><b>[event_info]</b><br></center><br>[event_actions]"
 		if(ORION_VIEW_SUPPLIES)
-			dat  = "<center><h1>Supplies</h1>View your supplies or buy more when at a spaceport.</center><BR>"
+			dat += "<center><h1>Supplies</h1>View your supplies or buy more when at a spaceport.</center><BR>"
 			dat += "<center>You have [supplies["6"]] thalers.</center>"
 			for(var/i=1; i<6; i++)
 				var/amm = (i>3?10:1)
@@ -165,7 +165,7 @@
 				if(supplies["[i]"] >= amm && event == ORION_TRAIL_SPACEPORT)
 					dat += "<a href='?src=\ref[src];sell=[i]'>sell [amm] for [supply_cost["[i]"]]T</a><br>"
 		if(ORION_VIEW_CREW)
-			dat = "<center><h1>Crew</h1>View the status of your crew.</center>"
+			dat += "<center><h1>Crew</h1>View the status of your crew.</center>"
 			for(var/i=1;i<=settlers.len;i++)
 				dat += "[settlers[i]] <a href='?src=\ref[src];kill=[i]'>Kill</a><br>"
 

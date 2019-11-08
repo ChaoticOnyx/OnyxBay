@@ -582,7 +582,7 @@
 	if(!isliving(user) || user.stat || user.restrained() || user.lying)	return
 	user.set_machine(src)
 
-	var/dat = "<HEAD><TITLE>instrument</TITLE></HEAD><BODY>"
+	var/dat = "<HEAD><meta charset=\"utf-8\"><TITLE>instrument</TITLE></HEAD><BODY>"
 
 	if(song)
 		if(song.lines.len > 0 && !(playing))

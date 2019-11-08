@@ -350,7 +350,7 @@
 	matter = list(MATERIAL_STEEL = 100, MATERIAL_GLASS = 34)
 
 /obj/item/device/destTagger/proc/openwindow(mob/user as mob)
-	var/dat = "<tt><center><h1><b>TagMaster 2.3</b></h1></center>"
+	var/dat = "<meta charset=\"utf-8\"><tt><center><h1><b>TagMaster 2.3</b></h1></center>"
 
 	dat += "<table style='width:100%; padding:4px;'><tr>"
 	for(var/i = 1, i <= GLOB.tagger_locations.len, i++)

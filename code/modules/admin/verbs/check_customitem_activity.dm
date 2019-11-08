@@ -5,7 +5,7 @@ var/inactive_keys = "None<br>"
 	set category = "Admin"
 	set name = "Check activity of players with custom items"
 
-	var/dat = "<b>Inactive players with custom items</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Inactive players with custom items</b><br>"
 	dat += "<br>"
 	dat += "The list below contains players with custom items that have not logged\
 	 in for the past two months, or have not logged in since this system was implemented.\

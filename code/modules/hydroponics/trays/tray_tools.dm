@@ -79,7 +79,7 @@
 		return
 
 	form_title = "[grown_seed.seed_name] (#[grown_seed.uid])"
-	var/dat = "<h3>Plant data for [form_title]</h3>"
+	var/dat = "<meta charset=\"utf-8\"><h3>Plant data for [form_title]</h3>"
 	user.visible_message("<span class='notice'>[user] runs the scanner over \the [target].</span>")
 
 	dat += "<h2>General Data</h2>"

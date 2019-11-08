@@ -265,7 +265,7 @@
 		return
 
 	usr.machine = src
-	var/dat = "<HEAD><TITLE>Piano</TITLE></HEAD><BODY>"
+	var/dat = "<HEAD><meta charset=\"utf-8\"><TITLE>Piano</TITLE></HEAD><BODY>"
 
 	if(song)
 		if(song.lines.len > 0 && !(playing))

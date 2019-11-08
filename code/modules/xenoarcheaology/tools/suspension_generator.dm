@@ -37,7 +37,7 @@
 			deactivate()
 
 /obj/machinery/suspension_gen/interact(var/mob/user)
-	var/dat = "<b>Multi-phase mobile suspension field generator MK II \"Steadfast\"</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Multi-phase mobile suspension field generator MK II \"Steadfast\"</b><br>"
 	if(cell)
 		var/colour = "red"
 		var/percent = cell.percent()

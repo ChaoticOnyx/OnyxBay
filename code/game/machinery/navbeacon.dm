@@ -83,7 +83,7 @@ var/global/list/navbeacons = list()
 	var/t
 
 	if(locked && !ai)
-		t = {"<TT><B>Navigation Beacon</B><HR><BR>
+		t = {"<meta charset=\"utf-8\"><TT><B>Navigation Beacon</B><HR><BR>
 <i>(swipe card to unlock controls)</i><BR><HR>
 Location: [location ? location : "(none)"]</A><BR>
 Transponder Codes:<UL>"}
@@ -94,7 +94,7 @@ Transponder Codes:<UL>"}
 
 	else
 
-		t = {"<TT><B>Navigation Beacon</B><HR><BR>
+		t = {"<meta charset=\"utf-8\"><TT><B>Navigation Beacon</B><HR><BR>
 <i>(swipe card to lock controls)</i><BR><HR>
 Location: <A href='byond://?src=\ref[src];locedit=1'>[location ? location : "(none)"]</A><BR>
 Transponder Codes:<UL>"}

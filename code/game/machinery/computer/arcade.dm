@@ -114,7 +114,7 @@
 	if(..())
 		return
 	user.set_machine(src)
-	var/dat = "<a href='byond://?src=\ref[src];close=1'>Close</a>"
+	var/dat = "<meta charset=\"utf-8\"><a href='byond://?src=\ref[src];close=1'>Close</a>"
 	dat += "<center><h4>[src.enemy_name]</h4></center>"
 
 	dat += "<br><center><h3>[src.temp]</h3></center>"

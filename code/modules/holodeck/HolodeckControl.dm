@@ -42,7 +42,7 @@
 		return 1
 
 	user.set_machine(src)
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 
 	dat += "<B>Holodeck Control System</B><BR>"
 	if(!islocked)

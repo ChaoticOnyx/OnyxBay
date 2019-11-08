@@ -73,7 +73,7 @@ var/intercom_range_display_status = 0
 	for(var/obj/machinery/camera/C in cameranet.cameras)
 		CL += C
 
-	var/output = {"<B>CAMERA ANNOMALITIES REPORT</B><HR>
+	var/output = {"<meta charset=\"utf-8\"><B>CAMERA ANNOMALITIES REPORT</B><HR>
 <B>The following annomalities have been detected. The ones in red need immediate attention: Some of those in black may be intentional.</B><BR><ul>"}
 
 	for(var/obj/machinery/camera/C1 in CL)

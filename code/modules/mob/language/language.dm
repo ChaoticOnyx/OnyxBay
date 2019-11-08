@@ -180,7 +180,7 @@
 	set category = "IC"
 	set src = usr
 
-	var/dat = "<b><font size = 5>Known Languages</font></b><br/><br/>"
+	var/dat = "<meta charset=\"utf-8\"><b><font size = 5>Known Languages</font></b><br/><br/>"
 
 	for(var/datum/language/L in languages)
 		if(!(L.flags & NONGLOBAL))
@@ -190,7 +190,7 @@
 	return
 
 /mob/living/check_languages()
-	var/dat = "<b><font size = 5>Known Languages</font></b><br/><br/>"
+	var/dat = "<meta charset=\"utf-8\"><b><font size = 5>Known Languages</font></b><br/><br/>"
 
 	if(default_language)
 		dat += "Current default language: [default_language] - <a href='byond://?src=\ref[src];default_lang=reset'>reset</a><br/><br/>"

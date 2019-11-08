@@ -24,7 +24,7 @@
 		return
 
 	user.set_machine(src)
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 	dat += "<B>Maintenance Units</B><BR>"
 
 	for(var/mob/living/silicon/robot/drone/D in world)

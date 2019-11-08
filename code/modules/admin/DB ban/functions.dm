@@ -302,7 +302,7 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 		to_chat(usr, "<span class='warning'>Failed to establish database connection</span>")
 		return
 
-	var/output = "<!doctype html><html lang=\"ru\"><head><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><title>Ban panel</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"><link href=\"css/bootstrap-ie8.css\" rel=\"stylesheet\"><script src=\"https://cdn.jsdelivr.net/g/html5shiv@3.7.3\"></script><style>label{font-size: 16px;}h3{font-size: 20px;}</style></head><div class=\"container\"><h3>Add custom ban<small class=\"text-muted\"> use only when you can't ban through any other method</small></h3>"
+	var/output = "<!doctype html><html lang=\"ru\"><head><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta charset=\"utf-8\"><title>Ban panel</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"><link href=\"css/bootstrap-ie8.css\" rel=\"stylesheet\"><script src=\"https://cdn.jsdelivr.net/g/html5shiv@3.7.3\"></script><style>label{font-size: 16px;}h3{font-size: 20px;}</style></head><div class=\"container\"><h3>Add custom ban<small class=\"text-muted\"> use only when you can't ban through any other method</small></h3>"
 
 	output += "<form method='GET' action='?src=\ref[src]'><input type='hidden' name='src' value='\ref[src]'>"
 

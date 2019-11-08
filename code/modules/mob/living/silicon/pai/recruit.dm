@@ -107,7 +107,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		candidate.key = M.key
 		pai_candidates.Add(candidate)
 
-	var/dat = ""
+	var/dat = "<meta charset=\"utf-8\">"
 	dat += {"
 			<style type="text/css">
 				body {
@@ -243,6 +243,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	dat += {"
 		<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
 		<html>
+			<meta charset=\"utf-8\">
 			<head>
 				<style>
 					body {

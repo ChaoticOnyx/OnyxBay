@@ -302,7 +302,7 @@
 					t.vars[v] = objs[t][v]
 
 		if("select")
-			var/text = ""
+			var/text = "<meta charset=\"utf-8\">"
 			for(var/datum/t in objs)
 				if(istype(t, /atom))
 					var/atom/a = t

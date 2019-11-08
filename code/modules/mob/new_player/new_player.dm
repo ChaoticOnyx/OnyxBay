@@ -421,7 +421,7 @@
 /mob/new_player/proc/LateChoices()
 	var/name = client.prefs.be_random_name ? "friend" : client.prefs.real_name
 
-	var/list/dat = list("<html><body><center>")
+	var/list/dat = list("<html><meta charset=\"utf-8\"><body><center>")
 	dat += "<b>Welcome, [name].<br></b>"
 	dat += "Round Duration: [roundduration2text()]<br>"
 

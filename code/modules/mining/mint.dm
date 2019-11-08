@@ -56,7 +56,7 @@
 
 /obj/machinery/mineral/mint/attack_hand(user as mob)
 
-	var/dat = "<b>Coin Press</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Coin Press</b><br>"
 
 	if (!input)
 		dat += text("input connection status: ")

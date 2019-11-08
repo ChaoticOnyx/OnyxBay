@@ -69,6 +69,7 @@
 
 	proc/show_ui(mob/user)
 		var/H = {"
+		<meta charset=\"utf-8\">
 		<center><h3>Virus2 Virus Editor</h3></center><br />
 		<b>Effects:</b><br />
 		"}

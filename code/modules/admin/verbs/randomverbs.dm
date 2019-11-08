@@ -76,7 +76,7 @@
 		age = text2num(age)
 
 	var/missing_ages = 0
-	var/msg = ""
+	var/msg = "<meta charset=\"utf-8\">"
 
 	var/highlight_special_characters = 1
 	if(is_mentor(usr.client))

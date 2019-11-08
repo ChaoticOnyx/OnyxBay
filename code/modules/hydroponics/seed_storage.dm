@@ -208,7 +208,7 @@
 				add(O)
 		seeds_initialized = 1
 
-	var/dat = "<center><h1>Seed storage contents</h1></center>"
+	var/dat = "<meta charset=\"utf-8\"><center><h1>Seed storage contents</h1></center>"
 	if (piles.len == 0)
 		dat += "<font color='red'>No seeds</font>"
 	else

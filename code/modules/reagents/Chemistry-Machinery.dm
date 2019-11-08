@@ -84,7 +84,7 @@
 	if(beaker)
 		var/datum/reagents/R = beaker:reagents
 		if (href_list["analyze"])
-			var/dat = ""
+			var/dat = "<meta charset=\"utf-8\">"
 			if(!condi)
 				if(href_list["name"] == "Blood")
 					var/datum/reagent/blood/G
@@ -196,14 +196,14 @@
 				reagents.trans_to_obj(P,50)
 		else if(href_list["change_pill"])
 			#define MAX_PILL_SPRITE 25 //max icon state of the pill sprites
-			var/dat = "<table>"
+			var/dat = "<meta charset=\"utf-8\"><table>"
 			for(var/i = 1 to MAX_PILL_SPRITE)
 				dat += "<tr><td><a href=\"?src=\ref[src]&pill_sprite=[i]\"><img src=\"pill[i].png\" /></a></td></tr>"
 			dat += "</table>"
 			usr << browse(dat, "window=chem_master")
 			return
 		else if(href_list["change_bottle"])
-			var/dat = "<table>"
+			var/dat = "<meta charset=\"utf-8\"><table>"
 			for(var/sprite in BOTTLE_SPRITES)
 				dat += "<tr><td><a href=\"?src=\ref[src]&bottle_sprite=[sprite]\"><img src=\"[sprite].png\" /></a></td></tr>"
 			dat += "</table>"
@@ -278,9 +278,9 @@
 		else
 			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle (50 units max)</A>"
 	if(!condi)
-		user << browse("<TITLE>Chemmaster 3000</TITLE>Chemmaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")
+		user << browse("<meta charset=\"utf-8\"><TITLE>Chemmaster 3000</TITLE>Chemmaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")
 	else
-		user << browse("<TITLE>Condimaster 3000</TITLE>Condimaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")
+		user << browse("<meta charset=\"utf-8\"><TITLE>Condimaster 3000</TITLE>Condimaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")
 	onclose(user, "chem_master")
 	return
 
@@ -436,7 +436,7 @@
 			dat += "<A href='?src=\ref[src];action=detach'>Detach the beaker</a><BR>"
 	else
 		dat += "Please wait..."
-	user << browse("<HEAD><TITLE>All-In-One Grinder</TITLE></HEAD><TT>[dat]</TT>", "window=reagentgrinder")
+	user << browse("<meta charset=\"utf-8\"><HEAD><TITLE>All-In-One Grinder</TITLE></HEAD><TT>[dat]</TT>", "window=reagentgrinder")
 	onclose(user, "reagentgrinder")
 	return
 

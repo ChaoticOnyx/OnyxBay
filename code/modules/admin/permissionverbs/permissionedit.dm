@@ -10,6 +10,7 @@
 
 	var/output = {"<!DOCTYPE html>
 <html>
+<meta charset=\"utf-8\">
 <head>
 <title>Permissions Panel</title>
 <script type='text/javascript' src='search.js'></script>

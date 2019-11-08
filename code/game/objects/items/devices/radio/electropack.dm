@@ -107,7 +107,7 @@
 	if(!istype(user, /mob/living/carbon/human))
 		return
 	user.set_machine(src)
-	var/dat = {"<TT>
+	var/dat = {"<meta charset=\"utf-8\"><TT>
 <A href='?src=\ref[src];power=1'>Turn [on ? "Off" : "On"]</A><BR>
 <B>Frequency/Code</B> for electropack:<BR>
 Frequency:

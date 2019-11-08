@@ -175,7 +175,7 @@
 	interact(user)
 
 /obj/item/device/depth_scanner/interact(var/mob/user as mob)
-	var/dat = "<b>Coordinates with positive matches</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Coordinates with positive matches</b><br>"
 
 	dat += "<A href='?src=\ref[src];clear=0'>== Clear all ==</a><br>"
 
@@ -251,7 +251,7 @@
 	interact(user)
 
 /obj/item/weapon/pinpointer/radio/interact(var/mob/user)
-	var/dat = "<b>Radio frequency tracker</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Radio frequency tracker</b><br>"
 	dat += {"
 				Tracking: <A href='byond://?src=\ref[src];toggle=1'>[active ? "Enabled" : "Disabled"]</A><BR>
 				<A href='byond://?src=\ref[src];reset_tracking=1'>Reset tracker</A><BR>

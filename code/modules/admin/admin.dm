@@ -53,7 +53,7 @@ var/global/floorIsLava = 0
 		to_chat(usr, "Error: you are not an admin!")
 		return
 
-	var/body = "<html><head><title>Options for [M.key]</title></head>"
+	var/body = "<html><meta charset=\"utf-8\"><head><title>Options for [M.key]</title></head>"
 	body += "<body>Options panel for <b>[M]</b>"
 	if(M.client)
 		body += " played by <b>[M.client]</b> "
@@ -373,7 +373,7 @@ var/global/floorIsLava = 0
 		to_chat(usr, "Error: you are not an admin!")
 		return
 	var/dat
-	dat = text("<HEAD><TITLE>Admin Newscaster</TITLE></HEAD><H3>Admin Newscaster Unit</H3>")
+	dat = text("<meta charset=\"utf-8\"><HEAD><TITLE>Admin Newscaster</TITLE></HEAD><H3>Admin Newscaster Unit</H3>")
 
 	switch(admincaster_screen)
 		if(0)
@@ -612,7 +612,7 @@ var/global/floorIsLava = 0
 /datum/admins/proc/Jobbans()
 	if(!check_rights(R_BAN))	return
 
-	var/dat = "<B>Job Bans!</B><HR><table>"
+	var/dat = "<meta charset=\"utf-8\"><B>Job Bans!</B><HR><table>"
 	for(var/t in jobban_keylist)
 		var/r = t
 		if( findtext(r,"##") )
@@ -625,6 +625,7 @@ var/global/floorIsLava = 0
 	if(!check_rights(0))	return
 
 	var/dat = {"
+		<meta charset=\"utf-8\">
 		<center><B>Game Panel</B></center><hr>\n
 		<A href='?src=\ref[src];c_mode=1'>Change Game Mode</A><br>
 		"}
@@ -1145,7 +1146,7 @@ var/global/floorIsLava = 0
 		alert("Not before roundstart!", "Alert")
 		return
 
-	var/out = "<font size=3><b>Current mode: [SSticker.mode.name] (<a href='?src=\ref[SSticker.mode];debug_antag=self'>[SSticker.mode.config_tag]</a>)</b></font><br/>"
+	var/out = "<meta charset=\"utf-8\"><font size=3><b>Current mode: [SSticker.mode.name] (<a href='?src=\ref[SSticker.mode];debug_antag=self'>[SSticker.mode.config_tag]</a>)</b></font><br/>"
 	out += "<hr>"
 
 	if(SSticker.mode.ert_disabled)

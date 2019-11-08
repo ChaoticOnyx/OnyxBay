@@ -96,7 +96,7 @@ client/proc/display_admin_reports()
 
 	var/list/reports = load_reports()
 
-	var/output = ""
+	var/output = "<meta charset=\"utf-8\">"
 	if(unhandled_reports())
 		// load the list of unhandled reports
 		for(var/datum/admin_report/N in reports)

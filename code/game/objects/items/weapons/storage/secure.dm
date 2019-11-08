@@ -79,7 +79,7 @@
 
 	attack_self(mob/user as mob)
 		user.set_machine(src)
-		var/dat = text("<TT><B>[]</B><BR>\n\nLock Status: []",src, (src.locked ? "LOCKED" : "UNLOCKED"))
+		var/dat = text("<meta charset=\"utf-8\"><TT><B>[]</B><BR>\n\nLock Status: []",src, (src.locked ? "LOCKED" : "UNLOCKED"))
 		var/message = "Code"
 		if ((src.l_set == 0) && (!src.emagged) && (!src.l_setshort))
 			dat += text("<p>\n<b>5-DIGIT PASSCODE NOT SET.<br>ENTER NEW PASSCODE.</b>")
@@ -243,7 +243,7 @@
 
 	attack_self(mob/user as mob)
 		user.set_machine(src)
-		var/dat = text("<TT><B>[]</B><BR>\n\nLock Status: []",src, (src.locked ? "LOCKED" : "UNLOCKED"))
+		var/dat = text("<meta charset=\"utf-8\"><TT><B>[]</B><BR>\n\nLock Status: []",src, (src.locked ? "LOCKED" : "UNLOCKED"))
 		var/message = "Code"
 
 		if ((src.l_set == 0) && (!src.emagged) && (!src.l_setshort))

@@ -52,7 +52,7 @@
 /datum/category_item/player_setup_item/skills/OnTopic(href, href_list, user)
 	if(href_list["skillinfo"])
 		var/datum/skill/S = locate(href_list["skillinfo"])
-		var/HTML = "<h2>[S.name][S.secondary ? "(secondary)" : ""]</h2>"
+		var/HTML = "<meta charset=\"utf-8\"><h2>[S.name][S.secondary ? "(secondary)" : ""]</h2>"
 		HTML += "<b>Generic Description</b>: [S.desc]<br><br><b>Unskilled</b>: [S.desc_unskilled]<br>"
 		if(!S.secondary)
 			HTML += "<b>Amateur</b>: [S.desc_amateur]<br>"

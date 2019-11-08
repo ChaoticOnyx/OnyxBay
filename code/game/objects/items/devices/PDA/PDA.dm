@@ -291,7 +291,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(usr.stat == 2)
 		to_chat(usr, "You can't do that because you are dead!")
 		return
-	var/HTML = "<html><head><title>AI PDA Message Log</title></head><body>"
+	var/HTML = "<html><meta charset=\"utf-8\"><head><title>AI PDA Message Log</title></head><body>"
 	for(var/index in tnote)
 		if(index["sent"])
 			HTML += addtext("<i><b>&rarr; To <a href='byond://?src=\ref[src];choice=Message;notap=1;target=",index["src"],"'>", index["owner"],"</a>:</b></i><br>", index["message"], "<br>")
