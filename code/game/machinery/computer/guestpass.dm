@@ -79,7 +79,7 @@
 		return
 
 	user.set_machine(src)
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 
 	if (mode == 1) //Logs
 		dat += "<h3>Activity log</h3><br>"
