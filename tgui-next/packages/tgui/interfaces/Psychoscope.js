@@ -1,6 +1,6 @@
 import { Fragment } from 'inferno';
 import { act } from '../byond';
-import { Button, Section, LabeledList, Toast, Tabs, NoticeBox, ProgressBar } from '../components';
+import { Button, Section, LabeledList, Tabs, NoticeBox, ProgressBar } from '../components';
 
 import { createLogger } from '../logging';
 
@@ -185,7 +185,8 @@ export const Psychoscope = props => {
       <Section title="Status" buttons={(
         <Fragment>
           <Button icon="lightbulb" content="Toggle Psychoscope"
-            onClick={() => act(ref, 'togglePsychoscope')}/>
+            onClick={() => act(ref, 'togglePsychoscope')}
+            selected={data.status ? true : false} />
           {' '}
           {data.inserted_disk
             ? <Button icon="eject" content="Eject Disk"
@@ -242,9 +243,9 @@ export const Psychoscope = props => {
             </NoticeBox>
           }
 
-          <Toast>
+          <NoticeBox>
             Opened Lifeforms: {data.opened_lifeforms + '/' + data.total_lifeforms}
-          </Toast>
+          </NoticeBox>
         </Tabs.Tab>
         <Tabs.Tab label="Lifeform Details" icon="info">
           {selected_lifeform
@@ -261,12 +262,12 @@ export const Psychoscope = props => {
                     scan_count={data.selected_lifeform.scan_count} />
                 </LabeledList>
               </Section>
-              <Toast>
+              <NoticeBox>
                 {(selected_lifeform.scan_count >= selected_lifeform.lifeform.neuromod_prod_scans
                 && 'You can produce the neuromods for this lifeform.')
                 || 'You can not produce the neuromods for this lifeform.'
                 }
-              </Toast>
+              </NoticeBox>
             </Fragment>
             : <NoticeBox>
               No Selected Lifeform.
