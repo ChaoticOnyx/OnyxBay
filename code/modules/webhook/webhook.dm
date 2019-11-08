@@ -7,23 +7,23 @@
 	webhook_send("roundstatus", query)
 
 /proc/webhook_send_asay(var/ckey, var/message)
-	var/list/query = list("ckey" = ckey, "message" = message)
+	var/list/query = list("ckey" = ckey, "message" = rustoutf(message))
 	webhook_send("asaymessage", query)
 
 /proc/webhook_send_ooc(var/ckey, var/message)
-	var/list/query = list("ckey" = ckey, "message" = message)
+	var/list/query = list("ckey" = ckey, "message" = rustoutf(message))
 	webhook_send("oocmessage", query)
 
 /proc/webhook_send_me(var/ckey, var/message)
-	var/list/query = list("ckey" = ckey, "message" = message)
+	var/list/query = list("ckey" = ckey, "message" = rustoutf(message))
 	webhook_send("memessage", query)
 
 /proc/webhook_send_ahelp(var/ckey, var/message)
-	var/list/query = list("ckey" = ckey, "message" = message)
+	var/list/query = list("ckey" = ckey, "message" = rustoutf(message))
 	webhook_send("ahelpmessage", query)
 
 /proc/webhook_send_garbage(var/ckey, var/message)
-	var/list/query = list("ckey" = ckey, "message" = message)
+	var/list/query = list("ckey" = ckey, "message" = rustoutf(message))
 	webhook_send("garbage", query)
 
 /proc/webhook_send_token(var/ckey, var/token)

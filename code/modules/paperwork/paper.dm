@@ -43,7 +43,7 @@
 /obj/item/weapon/paper/proc/set_content(text,title)
 	if(title)
 		SetName(title)
-	info = html_encode(text)
+	info = rhtml_encode(text)
 	info = parsepencode(text)
 	update_icon()
 	update_space(info)
@@ -163,12 +163,12 @@
 			break
 
 	if(links)
-		var/before = copytext_char(info_links, 1, textindex)
-		var/after = copytext_char(info_links, textindex)
+		var/before = copytext(info_links, 1, textindex)
+		var/after = copytext(info_links, textindex)
 		info_links = before + text + after
 	else
-		var/before = copytext_char(info, 1, textindex)
-		var/after = copytext_char(info, textindex)
+		var/before = copytext(info, 1, textindex)
+		var/after = copytext(info, textindex)
 		info = before + text + after
 		updateinfolinks()
 
@@ -195,6 +195,7 @@
 	return (user && user.real_name) ? user.real_name : "Anonymous"
 
 /obj/item/weapon/paper/proc/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy)
+	t = cp1251_to_utf8(t)
 	if(length(t) == 0)
 		return ""
 

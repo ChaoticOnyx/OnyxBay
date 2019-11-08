@@ -129,7 +129,7 @@
 		O.ordernum = SSsupply.ordernum
 		O.object = P
 		O.orderedby = idname
-		O.reason = reason
+		O.reason = rustoutf(reason)
 		O.orderedrank = idrank
 		O.comment = "#[O.ordernum]"
 		SSsupply.requestlist += O

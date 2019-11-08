@@ -85,7 +85,7 @@ var/religion_name = null
 		else
 			//get the first word of the Holiday and use that
 			var/i = findtext(Holiday," ",1,0)
-			name = copytext_char(Holiday,1,i)
+			name = copytext(Holiday,1,i)
 			GLOB.using_map.station_name += name + " "
 
 	// Suffix

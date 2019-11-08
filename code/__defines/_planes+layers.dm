@@ -234,7 +234,7 @@ What is the naming convention for planes or layers?
 		filters = list()
 
 		if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
-			filters += filter(type="drop_shadow", x=0, y=-2, size=4, color="#04080FAA")
+			filters += filter(type="drop_shadow", x=0, y=-2, size=4, border=4, color="#04080FAA")
 
 /obj/screen/plane_master/mouse_invisible
 	appearance_flags = PLANE_MASTER
