@@ -51,7 +51,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 //	var/list/lights				// list of all lights on this area
 	var/list/all_doors = null		//Added by Strumpetplaya - Alarm Change - Contains a list of doors adjacent to this area
 	var/air_doors_activated = 0
-	var/list/ambience = list("maintenance_ambient")
+	var/list/ambience = list("global_ambient")
 	var/list/forced_ambience = null
 	var/sound_env = STANDARD_STATION
 	var/turf/base_turf //The base turf type of the area, which can be used to override the z-level's base turf
@@ -115,6 +115,9 @@ area/space/atmosalert()
 /area/hallway
 	name = "hallway"
 
+/area/medical
+	ambience = list("global_ambient", "science_ambient")
+
 /area/medical/virology
 	name = "\improper Virology"
 	icon_state = "virology"
@@ -138,7 +141,10 @@ area/space/atmosalert()
 	area_flags = AREA_FLAG_RAD_SHIELDED
 	sound_env = TUNNEL_ENCLOSED
 	turf_initializer = /decl/turf_initializer/maintenance
-	ambience = list("maintenance_ambient")
+	ambience = list("global_ambient", "maintenance_ambient")
+
+/area/rnd
+	ambience = list("global_ambient", "science_ambient")
 
 /area/rnd/xenobiology
 	name = "\improper Xenobiology Lab"
