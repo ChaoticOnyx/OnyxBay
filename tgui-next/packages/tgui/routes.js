@@ -5,6 +5,7 @@ import { Jukebox } from './interfaces/Jukebox';
 import { SuitJammer } from './interfaces/SuitJammer';
 import { Psychoscope } from './interfaces/Psychoscope';
 import { NeuromodRnD } from './interfaces/NeuromodRnD';
+import { BodyScanner } from './interfaces/BodyScanner';
 
 const ROUTES = {
   airlock_electronics: {
@@ -33,6 +34,10 @@ const ROUTES = {
   },
   neuromod_rnd: {
     component: () => NeuromodRnD,
+    scrollable: true,
+  },
+  body_scanner: {
+    component: () => BodyScanner,
     scrollable: true,
   },
 };
