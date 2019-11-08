@@ -7,8 +7,6 @@ parserOptions:
 env:
   browser: true
   node: true
-plugins:
-  - react
 rules:
 
   ## Possible Errors
