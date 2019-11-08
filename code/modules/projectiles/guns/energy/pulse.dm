@@ -4,21 +4,20 @@
 	icon_state = "pulse"
 	item_state = "pulse"
 	slot_flags = SLOT_BACK
-	force = 14.0
+	force = 15.0
 	mod_weight = 1.25
 	mod_reach = 1.0
 	mod_handy = 1.0
 	projectile_type = /obj/item/projectile/beam/pulse/heavy
 	max_shots = 36
 	w_class = ITEM_SIZE_HUGE
-	one_hand_penalty= 6
-	multi_aim = 1
-	burst_delay = 3
-	burst = 3
-	move_delay = 4
+	burst_delay = 2
 	accuracy = -1
 	wielded_item_state = "gun_wielded"
-
+	firemodes = list(
+		list(mode_name="semiauto",       burst=1,    fire_delay=0,    move_delay=null,    one_hand_penalty=5, burst_accuracy=null, dispersion=null),
+		list(mode_name="2-beam bursts", burst=2,    fire_delay=null, move_delay=3,    one_hand_penalty=6, burst_accuracy=list(0,-1,-1), dispersion=list(0.0, 0.6, 1.0))
+		)
 /obj/item/weapon/gun/energy/pulse_rifle/carbine
 	name = "pulse carbine"
 	desc = "A weapon that uses advanced pulse-based beam generation technology to emit powerful laser blasts. Less bulky than the full-sized rifle."
@@ -29,8 +28,7 @@
 	max_shots = 24
 	w_class = ITEM_SIZE_LARGE
 	one_hand_penalty= 3
-	burst_delay = 2
-	move_delay = 2
+	burst_delay = 1.5
 
 /obj/item/weapon/gun/energy/pulse_rifle/pistol
 	name = "pulse pistol"

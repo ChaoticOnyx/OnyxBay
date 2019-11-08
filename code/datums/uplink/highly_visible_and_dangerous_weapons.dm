@@ -104,11 +104,20 @@
 	item_cost = 38
 	path = /obj/item/weapon/gun/projectile/revolver/detective
 
-/datum/uplink_item/item/visible_weapons/pulserifle
-	name = "Pulse Rifle"
+/datum/uplink_item/item/visible_weapons/pulsecarbine
+	name = "Pulse Carbine"
 	item_cost = 78
 	antag_costs = list(MODE_MERCENARY = 30)
+	path = /obj/item/weapon/gun/energy/pulse_rifle/carbine
+
+/datum/uplink_item/item/visible_weapons/pulserifle
+	name = "Pulse Rifle"
+	item_cost = 45
 	path = /obj/item/weapon/gun/energy/pulse_rifle
+
+/datum/uplink_item/item/visible_weapons/pulserifle/New()
+	..()
+	antag_roles = list(MODE_MERCENARY)
 
 /datum/uplink_item/item/visible_weapons/flechetterifle
 	name = "Flechette Rifle"
