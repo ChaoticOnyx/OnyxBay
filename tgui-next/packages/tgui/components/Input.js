@@ -2,7 +2,6 @@ import { classes, pureComponentHooks } from 'common/react';
 import { Component, createRef } from 'inferno';
 import { Box } from './Box';
 
-/* eslint-disable react/destructuring-assignment */
 export class Input extends Component {
   constructor() {
     super();
