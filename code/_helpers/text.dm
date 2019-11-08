@@ -30,8 +30,8 @@
 
 	if(max_length)
 		//testing shows that just looking for > max_length alone will actually cut off the final character if message is precisely max_length, so >= instead
-		if(length(input) >= max_length)
-			var/overflow = ((length(input)+1) - max_length)
+		if(length_char(input) >= max_length)
+			var/overflow = ((length_char(input)+1) - max_length)
 			to_chat(usr, "<span class='warning'>Your message is too long by [overflow] character\s.</span>")
 			return
 		input = copytext(input,1,max_length)
@@ -149,10 +149,10 @@
 
 //Returns null if there is any bad text in the string
 /proc/reject_bad_text(var/text, var/max_length=512)
-	if(length(text) > max_length)	return			//message too long
+	if(length_char(text) > max_length)	return			//message too long
 	var/non_whitespace = 0
-	for(var/i=1, i<=length(text), i++)
-		switch(text2ascii(text,i))
+	for(var/i=1, i<=length_char(text), i++)
+		switch(text2ascii_char(text,i))
 			if(62,60,92,47)	return			//rejects the text if it contains these bad characters: <, >, \ or /
 			if(127 to 255)	return			//rejects weird letters like �
 			if(0 to 31)		return			//more weird stuff
@@ -173,8 +173,8 @@
 //Returns the position of the substring or 0 if it was not found
 /proc/dd_hasprefix(text, prefix)
 	var/start = 1
-	var/end = length(prefix) + 1
-	return findtext(text, prefix, start, end)
+	var/end = length_char(prefix) + 1
+	return findtext_char(text, prefix, start, end)
 
 //Checks the beginning of a string for a specified sub-string. This proc is case sensitive
 //Returns the position of the substring or 0 if it was not found
@@ -209,34 +209,34 @@
 
 //Adds 'u' number of zeros ahead of the text 't'
 /proc/add_zero(t, u)
-	while (length(t) < u)
+	while (length_char(t) < u)
 		t = "0[t]"
 	return t
 
 //Adds 'u' number of spaces ahead of the text 't'
 /proc/add_lspace(t, u)
-	while(length(t) < u)
+	while(length_char(t) < u)
 		t = " [t]"
 	return t
 
 //Adds 'u' number of spaces behind the text 't'
 /proc/add_tspace(t, u)
-	while(length(t) < u)
+	while(length_char(t) < u)
 		t = "[t] "
 	return t
 
 //Returns a string with reserved characters and spaces before the first letter removed
 /proc/trim_left(text)
 	for (var/i = 1 to length(text))
-		if (text2ascii(text, i) > 32)
-			return copytext(text, i)
+		if (text2ascii_char(text, i) > 32)
+			return copytext_char(text, i)
 	return ""
 
 //Returns a string with reserved characters and spaces after the last letter removed
 /proc/trim_right(text)
-	for (var/i = length(text), i > 0, i--)
-		if (text2ascii(text, i) > 32)
-			return copytext(text, 1, i + 1)
+	for (var/i = length_char(text), i > 0, i--)
+		if (text2ascii_char(text, i) > 32)
+			return copytext_char(text, 1, i + 1)
 	return ""
 
 //Returns a string with reserved characters and spaces before the first word and after the last word removed.
@@ -277,11 +277,11 @@
 //This is used for fingerprints
 /proc/stringmerge(var/text,var/compare,replace = "*")
 	var/newtext = text
-	if(lentext(text) != lentext(compare))
+	if(length_char(text) != length_char(compare))
 		return 0
-	for(var/i = 1, i < lentext(text), i++)
-		var/a = copytext(text,i,i+1)
-		var/b = copytext(compare,i,i+1)
+	for(var/i = 1, i < length_char(text), i++)
+		var/a = copytext_char(text,i,i+1)
+		var/b = copytext_char(compare,i,i+1)
 		//if it isn't both the same letter, or if they are both the replacement character
 		//(no way to know what it was supposed to be)
 		if(a != b)
@@ -299,23 +299,23 @@
 	if(!text || !character)
 		return 0
 	var/count = 0
-	for(var/i = 1, i <= lentext(text), i++)
-		var/a = copytext(text,i,i+1)
+	for(var/i = 1, i <= length_char(text), i++)
+		var/a = copytext_char(text,i,i+1)
 		if(a == character)
 			count++
 	return count
 
 /proc/reverse_text(var/text = "")
 	var/new_text = ""
-	for(var/i = length(text); i > 0; i--)
-		new_text += copytext(text, i, i+1)
+	for(var/i = length_char(text); i > 0; i--)
+		new_text += copytext_char(text, i, i+1)
 	return new_text
 
 //Used in preferences' SetFlavorText and human's set_flavor verb
 //Previews a string of len or less length
 proc/TextPreview(var/string,var/len=40)
-	if(lentext(string) <= len)
-		if(!lentext(string))
+	if(length_char(string) <= len)
+		if(!length(string))
 			return "\[...\]"
 		else
 			return string
@@ -336,7 +336,7 @@ proc/TextPreview(var/string,var/len=40)
 	return icon2html(icon(text_tag_icons, tagname), world, realsize=TRUE, class="text_tag")
 
 /proc/contains_az09(var/input)
-	for(var/i=1, i<=length(input), i++)
+	for(var/i=1, i<=length_char(input), i++)
 		var/ascii_char = text2ascii(input,i)
 		switch(ascii_char)
 			// A  .. Z
@@ -426,7 +426,7 @@ proc/TextPreview(var/string,var/len=40)
 
 	var/leng = length(string)
 
-	var/next_space = findtext(string, " ", next_backslash + 1)
+	var/next_space = findtext_char(string, " ", next_backslash + 1)
 	if(!next_space)
 		next_space = leng - next_backslash
 
