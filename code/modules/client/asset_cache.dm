@@ -205,7 +205,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	for (var/path in dirs)
 		var/list/filenames = flist(path)
 		for(var/filename in filenames)
-			if(copytext(filename, length(filename)) != "/") // Ignore directories.
+			if(copytext_char(filename, length(filename)) != "/") // Ignore directories.
 				if(fexists(path + filename))
 					assets[filename] = fcopy_rsc(path + filename)
 	..()

@@ -26,7 +26,7 @@
 		to_chat(usr, "<span class='redtext'>[target_ckey] is already on the watchlist.</span>")
 		return
 
-	var/reason = sanitize(input_utf8(usr, "Please State Reason", "Reason"))
+	var/reason = sanitize(input(usr, "Please State Reason", "Reason"))
 	reason = sanitizeSQL(reason)
 	if (!reason)
 		return
@@ -42,7 +42,7 @@
 		log_DB("Watchlist error during adding new watch entry \[[err]\].", notify_admin = TRUE)
 		return
 
-	reason = utf8_to_cp1251(rhtml_decode(reason))
+	reason = html_decode(reason)
 	log_admin("[key_name(usr)] has added [target_ckey] to the watchlist - Reason: [reason]", notify_admin = TRUE)
 
 	for(var/client/player in GLOB.clients)
@@ -64,7 +64,7 @@
 		return
 
 	if (query_watch.NextRow())
-		return utf8_to_cp1251(rhtml_decode(query_watch.item[1]))
+		return html_decode(query_watch.item[1])
 	else
 		return null
 
@@ -101,7 +101,7 @@
 	if (query_watchreason.NextRow())
 		var/watch_reason = query_watchreason.item[1]
 
-		var/new_reason = sanitize(input_utf8(usr, "Input new reason", "New Reason", rhtml_decode(watch_reason)))
+		var/new_reason = sanitize(input(usr, "Input new reason", "New Reason", html_decode(watch_reason)))
 		new_reason = sanitizeSQL(new_reason)
 		if (!new_reason)
 			return
@@ -116,8 +116,8 @@
 			log_DB("Watchlist error: reason can't be updated \[[err]\].", notify_admin = TRUE)
 			return
 
-		watch_reason = utf8_to_cp1251(rhtml_decode(watch_reason))
-		new_reason = utf8_to_cp1251(rhtml_decode(new_reason))
+		watch_reason = html_decode(watch_reason)
+		new_reason = html_decode(new_reason)
 		log_admin("[key_name(usr)] has edited [target_ckey]'s watchlist reason from [watch_reason] to [new_reason]", notify_admin = TRUE)
 
 		for(var/client/player in GLOB.clients)

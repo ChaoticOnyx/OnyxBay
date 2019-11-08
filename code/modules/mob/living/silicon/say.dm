@@ -34,7 +34,7 @@
 		return silicon_radio.talk_into(src,message,message_mode,verb,speaking)
 
 /mob/living/silicon/say_quote(var/text)
-	var/ending = copytext(text, length(text))
+	var/ending = copytext_char(text, length(text))
 
 	if (ending == "?")
 		return speak_query
@@ -61,9 +61,9 @@
 /mob/living/silicon/ai/say(var/message, var/sanitize = 1)
 	if (holo)
 		//check if AI using radio while in hologramm
-		if(length(message) >= 1 && copytext(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
+		if(length(message) >= 1 && copytext_char(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
 			. = ..()
-		else if(length(message) >= 2 && (copytext(message, 1 ,3) in department_radio_keys))
+		else if(length(message) >= 2 && (copytext_char(message, 1 ,3) in department_radio_keys))
 			. = ..()
 		else
 			. = ..(":H[message]")

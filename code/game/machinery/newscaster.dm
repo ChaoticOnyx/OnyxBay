@@ -71,7 +71,7 @@
 	if(announcement_message)
 		newChannel.announcement = announcement_message
 	else
-		newChannel.announcement = "Breaking news from [utf8_to_cp1251(channel_name)]!"
+		newChannel.announcement = "Breaking news from [channel_name]!"
 
 	newChannel.channel_id = length(network_channels) + 1
 	network_channels += newChannel
@@ -469,7 +469,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.set_machine(src)
 		if(href_list["set_channel_name"])
-			src.channel_name = cp1251_to_utf8(sanitizeSafe(input(usr, "Provide a Feed Channel Name", "Network Channel Handler", ""), MAX_LNAME_LEN))
+			src.channel_name = sanitizeSafe(input(usr, "Provide a Feed Channel Name", "Network Channel Handler", ""), MAX_LNAME_LEN)
 			src.updateUsrDialog()
 			//src.update_icon()
 
@@ -512,7 +512,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			src.updateUsrDialog()
 
 		else if(href_list["set_new_message"])
-			src.msg = sanitize(input_utf8(usr, "Write your Feed story", "Network Channel Handler", ""))
+			src.msg = sanitize(input(usr, "Write your Feed story", "Network Channel Handler", ""))
 			src.updateUsrDialog()
 
 		else if(href_list["set_attachment"])
@@ -575,7 +575,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			src.updateUsrDialog()
 
 		else if(href_list["set_wanted_desc"])
-			src.msg = sanitize(input_utf8(usr, "Provide the a description of the Wanted person and any other details you deem important", "Network Security Handler", ""))
+			src.msg = sanitize(input(usr, "Provide the a description of the Wanted person and any other details you deem important", "Network Security Handler", ""))
 			src.updateUsrDialog()
 
 		else if(href_list["submit_wanted"])
@@ -917,7 +917,7 @@ obj/item/weapon/newspaper/attackby(obj/item/weapon/W as obj, mob/user as mob)
 		if(src.scribble_page == src.curr_page)
 			to_chat(user, "<span class='info'>There's already a scribble in this page... You wouldn't want to make things too cluttered, would you?</span>")
 		else
-			var/s = cp1251_to_utf8(sanitize(input(user, "Write something", "Newspaper", "")))
+			var/s = sanitize(input(user, "Write something", "Newspaper", ""))
 			s = sanitize(s)
 			if (!s)
 				return

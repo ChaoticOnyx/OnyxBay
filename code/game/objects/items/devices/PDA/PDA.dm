@@ -678,11 +678,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 //MESSENGER/NOTE FUNCTIONS===================================
 
 		if ("Edit")
-			var/n = input_cp1251(U, "Please enter message", html_decode(name), notehtml)
+			var/n = input(U, "Please enter message", html_decode(name), notehtml)
 			if (in_range(src, U) && loc == U)
 				if (mode == 1)
 					n = sanitize(n)
-					note = rustoutf(rhtml_decode(n))
+					note = html_decode(n)
 					note = replacetext(note, "\n", "<br>")
 					notehtml = n
 			else
@@ -1012,7 +1012,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			tempmessage[P] = message
 			return
 
-		var/utf_message = rustoutf(html_decode(message))
+		var/utf_message = html_decode(message)
 		tnote.Add(list(list("sent" = 1, "owner" = "[P.owner]", "job" = "[P.ownjob]", "message" = "[utf_message]", "timestamp" = stationtime2text(), "target" = "\ref[P]")))
 		P.tnote.Add(list(list("sent" = 0, "owner" = "[owner]", "job" = "[ownjob]", "message" = "[utf_message]", "timestamp" = stationtime2text(), "target" = "\ref[src]")))
 
@@ -1312,8 +1312,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 		// Until we run out of complete tags...
 		while(tag_start&&tag_stop)
-			var/pre = copytext(raw_scan,1,tag_start) // Get the stuff that comes before the tag
-			var/tag = lowertext(copytext(raw_scan,tag_start+1,tag_stop)) // Get the tag so we can do intellegent replacement
+			var/pre = copytext_char(raw_scan,1,tag_start) // Get the stuff that comes before the tag
+			var/tag = lowertext(copytext_char(raw_scan,tag_start+1,tag_stop)) // Get the tag so we can do intellegent replacement
 			var/tagend = findtext(tag," ") // Find the first space in the tag if there is one.
 
 			// Anything that's before the tag can just be added as is.
@@ -1321,12 +1321,12 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 			// If we have a space after the tag (and presumably attributes) just crop that off.
 			if (tagend)
-				tag=copytext(tag,1,tagend)
+				tag=copytext_char(tag,1,tagend)
 
 			if (tag=="p"||tag=="/p"||tag=="br") // Check if it's I vertical space tag.
 				formatted_scan=formatted_scan+"<br>" // If so, add some padding in.
 
-			raw_scan = copytext(raw_scan,tag_stop+1) // continue on with the stuff after the tag
+			raw_scan = copytext_char(raw_scan,tag_stop+1) // continue on with the stuff after the tag
 
 			// Look for the next tag in what's left
 			tag_start = findtext(raw_scan,"<")
