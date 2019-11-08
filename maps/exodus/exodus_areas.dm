@@ -1385,19 +1385,19 @@ area/rnd/test_area
 
 //AI
 
+/area/turret_protected
+	ambience = list("ai_ambient", "science_ambient")
+
 /area/turret_protected/ai_server_room
 	name = "Messaging Server Room"
 	icon_state = "ai_server"
 	sound_env = SMALL_ENCLOSED
-	ambience = list("ai_ambient")
 
 /area/turret_protected/tcomsat/port
 	name = "\improper Telecoms Satellite - Port"
-	ambience = list("ai_ambient")
 
 /area/turret_protected/tcomsat/starboard
 	name = "\improper Telecoms Satellite - Starboard"
-	ambience = list("ai_ambient")
 
 //Misc
 
@@ -1405,7 +1405,7 @@ area/rnd/test_area
 
 /area/tcommsat
 	requires_power = 0
-	ambience = "ai_ambient"
+	ambience = list("ai_ambient", "science_ambient")
 
 /area/tcommsat/entrance
 	name = "\improper Telecoms Teleporter"

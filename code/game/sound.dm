@@ -69,13 +69,19 @@ GLOBAL_LIST_INIT(m_pain_sound,list('sound/effects/emotes/m_pain1.ogg','sound/eff
 									'sound/effects/emotes/m_pain16.ogg','sound/effects/emotes/m_pain17.ogg','sound/effects/emotes/m_pain18.ogg',
 									'sound/effects/emotes/m_pain19.ogg','sound/effects/emotes/m_pain20.ogg','sound/effects/emotes/m_pain21.ogg'))
 
+GLOBAL_LIST_INIT(global_ambient_sound,list('sound/ambience/global/amb1.ogg','sound/ambience/global/amb2.ogg','sound/ambience/global/amb3.ogg',
+										'sound/ambience/global/amb4.ogg','sound/ambience/global/amb5.ogg','sound/ambience/global/amb6.ogg',
+										'sound/ambience/global/amb7.ogg','sound/ambience/global/amb8.ogg','sound/ambience/global/amb9.ogg',
+										'sound/ambience/global/amb10.ogg'))
+
+GLOBAL_LIST_INIT(science_ambient_sound,list('sound/ambience/science/amb1.ogg','sound/ambience/science/amb2.ogg','sound/ambience/science/amb3.ogg',
+										'sound/ambience/science/amb4.ogg','sound/ambience/science/amb5.ogg','sound/ambience/science/amb6.ogg',
+										'sound/ambience/science/amb7.ogg','sound/ambience/science/amb8.ogg'))
+
 GLOBAL_LIST_INIT(ai_ambient_sound,list('sound/ambience/ai/amb1.ogg','sound/ambience/ai/amb2.ogg','sound/ambience/ai/amb3.ogg',
 										'sound/ambience/ai/amb4.ogg','sound/ambience/ai/amb5.ogg','sound/ambience/ai/amb6.ogg',
 										'sound/ambience/ai/amb7.ogg','sound/ambience/ai/amb8.ogg','sound/ambience/ai/amb9.ogg',
-										'sound/ambience/ai/amb10.ogg','sound/ambience/ai/amb12.ogg','sound/ambience/ai/amb13.ogg',
-										'sound/ambience/ai/amb14.ogg','sound/ambience/ai/amb15.ogg','sound/ambience/ai/amb16.ogg',
-										'sound/ambience/ai/amb17.ogg','sound/ambience/ai/amb18.ogg','sound/ambience/ai/amb19.ogg',
-										'sound/ambience/ai/amb20.ogg','sound/ambience/ai/amb21.ogg','sound/ambience/ai/amb22.ogg'))
+										'sound/ambience/ai/amb10.ogg','sound/ambience/ai/amb12.ogg'))
 
 GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1.ogg','sound/ambience/maintenance/amb2.ogg','sound/ambience/maintenance/amb3.ogg',
 												'sound/ambience/maintenance/amb4.ogg','sound/ambience/maintenance/amb5.ogg','sound/ambience/maintenance/amb6.ogg',
@@ -86,9 +92,7 @@ GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1
 												'sound/ambience/maintenance/amb20.ogg','sound/ambience/maintenance/amb21.ogg','sound/ambience/maintenance/amb22.ogg',
 												'sound/ambience/maintenance/amb23.ogg','sound/ambience/maintenance/amb24.ogg','sound/ambience/maintenance/amb25.ogg',
 												'sound/ambience/maintenance/amb26.ogg','sound/ambience/maintenance/amb27.ogg','sound/ambience/maintenance/amb28.ogg',
-												'sound/ambience/maintenance/amb29.ogg','sound/ambience/maintenance/amb30.ogg','sound/ambience/maintenance/amb31.ogg',
-												'sound/ambience/maintenance/amb32.ogg','sound/ambience/maintenance/amb33.ogg','sound/ambience/maintenance/amb34.ogg',
-												'sound/ambience/maintenance/amb35.ogg','sound/ambience/maintenance/amb36.ogg','sound/ambience/maintenance/amb37.ogg'))
+												'sound/ambience/maintenance/amb29.ogg'))
 
 GLOBAL_LIST_INIT(engineering_ambient_sound,list('sound/ambience/engineering/amb1.ogg','sound/ambience/engineering/amb2.ogg','sound/ambience/engineering/amb3.ogg',
 												'sound/ambience/engineering/amb4.ogg','sound/ambience/engineering/amb5.ogg','sound/ambience/engineering/amb6.ogg',
@@ -445,8 +449,10 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("male_breath")			soundin = pick(GLOB.m_heavyb_sound)
 			if ("male_pain")			soundin = pick(GLOB.m_pain_sound)
 			if ("ai_ambient")			soundin = pick(GLOB.ai_ambient_sound)
+			if ("science_ambient")		soundin = pick(GLOB.science_ambient_sound)
 			if ("maintenance_ambient")	soundin = pick(GLOB.maintenance_ambient_sound)
 			if ("engineering_ambient")	soundin = pick(GLOB.engineering_ambient_sound)
+			if ("global_ambient")		soundin = pick(GLOB.global_ambient_sound)
 			if ("space_ambient")		soundin = pick(GLOB.space_ambient_sound)
 			if ("handcuffs")			soundin = pick(GLOB.handcuffs_sound)
 			if ("cable_handcuffs")		soundin = pick(GLOB.cable_hcuffs_sound)
