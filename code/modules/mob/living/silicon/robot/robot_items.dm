@@ -265,7 +265,7 @@
 	if ( !user || !paper )
 		return
 
-	//n_name = copytext_char(n_name, 1, 32)
+	//n_name = copytext(n_name, 1, 32)
 	if(( get_dist(user,paper) <= 1  && user.stat == 0))
 		paper.SetName("paper[(n_name ? text("- '[n_name]'") : null)]")
 	add_fingerprint(user)

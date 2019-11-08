@@ -85,7 +85,7 @@
 
 	//set window title
 	if(config.server_id)
-		var/serverId = uppertext(copytext_char(config.server_id, 1, 2)) + copytext_char(config.server_id, 2)
+		var/serverId = uppertext(copytext(config.server_id, 1, 2)) + copytext(config.server_id, 2)
 		name = "[server_name]: [serverId] - [GLOB.using_map.full_name]"
 	else
 		name = "[server_name] - [GLOB.using_map.full_name]"
@@ -145,7 +145,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				n++
 		return n
 
-	else if (copytext_char(T,1,7) == "status")
+	else if (copytext(T,1,7) == "status")
 		var/list/s = list()
 		s["version"] = game_version
 		s["mode"] = PUBLIC_GAME_MODE
@@ -216,7 +216,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 		return list2params(L)
 
-	else if(copytext_char(T,1,5) == "laws")
+	else if(copytext(T,1,5) == "laws")
 		if(input["key"] != config.comms_password)
 			if(abs(world_topic_spam_protect_time - world.time) < 50)
 				sleep(50)
@@ -263,7 +263,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				ret[M.key] = M.name
 			return list2params(ret)
 
-	else if(copytext_char(T,1,5) == "info")
+	else if(copytext(T,1,5) == "info")
 		if(input["key"] != config.comms_password)
 			if(abs(world_topic_spam_protect_time - world.time) < 50)
 				sleep(50)
@@ -358,7 +358,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				continue //sanity
 			if(target.is_key_ignored(ckey) || target.get_preference_value(/datum/client_preference/show_ooc) == GLOB.PREF_HIDE || target.get_preference_value(/datum/client_preference/show_discord_ooc) == GLOB.PREF_HIDE  && !input["isadmin"]) // If we're ignored by this person, then do nothing.
 				continue //if it shouldn't see then it doesn't
-			to_chat(target, "<span class='ooc'><span class='everyone'>[sent_message]</span></span>")
+			to_chat(target, "<span class='ooc'><span class='everyone'>[russian_to_cp1251(sent_message)]</span></span>")
 
 	else if ("asay" in input)
 		return "not supported" //simply no asay on bay
@@ -384,9 +384,9 @@ var/world_topic_spam_protect_time = world.timeofday
 
 		var/rank = "Discord Admin"
 
-		var/message =	"<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [input["response"]]</font>"
-		var/amessage =  "<font color='blue'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [input["response"]]</font>"
-		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", input["response"])
+		var/message =	"<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [russian_to_cp1251(input["response"])]</font>"
+		var/amessage =  "<font color='blue'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [russian_to_cp1251(input["response"])]</font>"
+		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", russian_to_cp1251(input["response"]))
 
 		sound_to(C, 'sound/effects/adminhelp.ogg')
 		to_chat(C, message)
@@ -412,7 +412,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		log_and_message_admins("discord toggled OOC.")
 		return config.ooc_allowed ? "ON" : "OFF"
 
-	else if(copytext_char(T,1,6) == "notes")
+	else if(copytext(T,1,6) == "notes")
 		/*
 			We got a request for notes from the IRC Bot
 			expected output:
@@ -430,7 +430,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 		return show_player_info_irc(ckey(input["notes"]))
 
-	else if(copytext_char(T,1,4) == "age")
+	else if(copytext(T,1,4) == "age")
 		if(input["key"] != config.comms_password)
 			if(abs(world_topic_spam_protect_time - world.time) < 50)
 				sleep(50)
@@ -449,7 +449,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		else
 			return "Database connection failed or not set up"
 
-	else if(copytext_char(T,1,14) == "placepermaban")
+	else if(copytext(T,1,14) == "placepermaban")
 		if(!config.ban_comms_password)
 			return "Not enabled"
 		if(input["bankey"] != config.ban_comms_password)
@@ -479,7 +479,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		notes_add(target,"[input["id"]] has permabanned [C.ckey]. - Reason: [input["reason"]] - This is a ban until appeal.",input["id"])
 		qdel(C)
 
-	else if(copytext_char(T,1,19) == "prometheus_metrics")
+	else if(copytext(T,1,19) == "prometheus_metrics")
 		if(input["key"] != config.comms_password)
 			if(abs(world_topic_spam_protect_time - world.time) < 50)
 				sleep(50)
@@ -525,7 +525,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	return 1
 
 /world/proc/load_motd()
-	join_motd = file2text("config/motd.txt")
+	join_motd = russian_to_cp1251(file2text("config/motd.txt"))
 	load_regular_announcement()
 
 
@@ -553,13 +553,13 @@ var/world_topic_spam_protect_time = world.timeofday
 				if (!line)
 					continue
 
-				if (copytext_char(line, 1, 2) == ";")
+				if (copytext(line, 1, 2) == ";")
 					continue
 
 				var/title = "Moderator"
 				var/rights = admin_ranks[title]
 
-				var/ckey = copytext_char(line, 1, length(line)+1)
+				var/ckey = copytext(line, 1, length(line)+1)
 				var/datum/admins/D = new /datum/admins(title, rights, ckey)
 				D.associate(GLOB.ckey_directory[ckey])
 
@@ -573,13 +573,13 @@ var/world_topic_spam_protect_time = world.timeofday
 			for(var/line in lines)
 				if (!line)
 					continue
-				if (copytext_char(line, 1, 2) == ";")
+				if (copytext(line, 1, 2) == ";")
 					continue
 
 				var/title = "Mentor"
 				var/rights = admin_ranks[title]
 
-				var/ckey = copytext_char(line, 1, length(line)+1)
+				var/ckey = copytext(line, 1, length(line)+1)
 				var/datum/admins/D = new /datum/admins(title, rights, ckey)
 				D.associate(GLOB.ckey_directory[ckey])
 

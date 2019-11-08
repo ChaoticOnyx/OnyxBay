@@ -53,7 +53,7 @@
 		return TOPIC_REFRESH
 	if(href_list["relation_info"])
 		var/R = href_list["relation_info"]
-		var/info = sanitize(input("Character info", "What would you like the other party for this connection to know about your character?",pref.relations_info[R]))
+		var/info = sanitize(input_utf8("Character info", "What would you like the other party for this connection to know about your character?",pref.relations_info[R]))
 		if(info)
 			pref.relations_info[R] = info
 		return TOPIC_REFRESH

@@ -10,9 +10,9 @@
 	else
 		var/datum/language/speaking = parse_language(message)
 		if(speaking)
-			message = copytext_char(message, 2+length(speaking.key))
+			message = copytext(message, 2+length(speaking.key))
 		var/verb = "says"
-		var/ending = copytext_char(message, length(message))
+		var/ending = copytext(message, length(message))
 		if (speaking)
 			verb = speaking.get_spoken_verb(ending)
 		else

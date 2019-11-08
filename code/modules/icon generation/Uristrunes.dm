@@ -59,7 +59,7 @@
 				var/a = 255
 
 				if(length(p) == 9) // "#rrggbbaa", we want the aa
-					a = hex2num(copytext_char(p, 8))
+					a = hex2num(copytext(p, 8))
 
 				I.DrawBox(rgb(255 - a, a, 255 - a, a), x, y)
 
@@ -116,22 +116,22 @@
 
 
 /proc/animate_rune(icon/input, rune_color = "#00000000", border_color = "#c8000000", rune_color2 = "#00000000", border_color2 = "#d8380000", alpha = 255, alpha2 = 255, frames = rune_animation)
-	var/rr1 = hex2num(copytext_char(rune_color, 2, 4))
-	var/rg1 = hex2num(copytext_char(rune_color, 4, 6))
-	var/rb1 = hex2num(copytext_char(rune_color, 6, 8))
-	var/ra1 = hex2num(copytext_char(rune_color, 8, 10))
-	var/rr2 = hex2num(copytext_char(rune_color2, 2, 4))
-	var/rg2 = hex2num(copytext_char(rune_color2, 4, 6))
-	var/rb2 = hex2num(copytext_char(rune_color2, 6, 8))
-	var/ra2 = hex2num(copytext_char(rune_color2, 8, 10))
-	var/br1 = hex2num(copytext_char(border_color, 2, 4))
-	var/bg1 = hex2num(copytext_char(border_color, 4, 6))
-	var/bb1 = hex2num(copytext_char(border_color, 6, 8))
-	var/ba1 = hex2num(copytext_char(border_color, 8, 10))
-	var/br2 = hex2num(copytext_char(border_color2, 2, 4))
-	var/bg2 = hex2num(copytext_char(border_color2, 4, 6))
-	var/bb2 = hex2num(copytext_char(border_color2, 6, 8))
-	var/ba2 = hex2num(copytext_char(border_color2, 8, 10))
+	var/rr1 = hex2num(copytext(rune_color, 2, 4))
+	var/rg1 = hex2num(copytext(rune_color, 4, 6))
+	var/rb1 = hex2num(copytext(rune_color, 6, 8))
+	var/ra1 = hex2num(copytext(rune_color, 8, 10))
+	var/rr2 = hex2num(copytext(rune_color2, 2, 4))
+	var/rg2 = hex2num(copytext(rune_color2, 4, 6))
+	var/rb2 = hex2num(copytext(rune_color2, 6, 8))
+	var/ra2 = hex2num(copytext(rune_color2, 8, 10))
+	var/br1 = hex2num(copytext(border_color, 2, 4))
+	var/bg1 = hex2num(copytext(border_color, 4, 6))
+	var/bb1 = hex2num(copytext(border_color, 6, 8))
+	var/ba1 = hex2num(copytext(border_color, 8, 10))
+	var/br2 = hex2num(copytext(border_color2, 2, 4))
+	var/bg2 = hex2num(copytext(border_color2, 4, 6))
+	var/bb2 = hex2num(copytext(border_color2, 6, 8))
+	var/ba2 = hex2num(copytext(border_color2, 8, 10))
 
 	return animate_rune_full(input, rr1, rg1, rb1, ra1, rr2, rg2, rb2, ra2, br1, bg1, bb1, ba1, br2, bg2, bb2, ba2, 0, 0, 0, alpha, 0, 0, 0, alpha2, 0, 0, 0, 0, 0, 0, 0, 0, frames)
 

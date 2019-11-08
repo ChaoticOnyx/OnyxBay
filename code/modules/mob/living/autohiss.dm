@@ -15,16 +15,16 @@
 
 /datum/species/unathi
 	autohiss_map = list(
-			"ï¿½" = list("ï¿½ï¿½", "ï¿½-ï¿½", "ï¿½ï¿½ï¿½"),
+			"ñ" = list("ññ", "ñ-ñ", "ñññ"),
 			"s" = list("ss", "s-s", "sss"),
-			"ï¿½" = list("ï¿½", "ï¿½-ï¿½", "ï¿½ï¿½ï¿½"),
-			"ï¿½" = list("ï¿½", "ï¿½-ï¿½", "ï¿½ï¿½ï¿½")
+			"ø" = list("ø", "ø-ø", "øøø"),
+			"ù" = list("ù", "ù-ù", "ùùù")
 		)
 	autohiss_exempt = list(LANGUAGE_UNATHI)
 
 /datum/species/tajaran
 	autohiss_map = list(
-			"ï¿½" = list("ï¿½ï¿½", "ï¿½-ï¿½", "ï¿½ï¿½ï¿½")
+			"ð" = list("ðð", "ð-ð", "ððð")
 		)
 	autohiss_exempt = list(LANGUAGE_SIIK_MAAS)
 
@@ -54,15 +54,15 @@
 		if(!min_char) // we didn't find any of the mapping characters
 			. += message
 			break
-		. += copytext_char(message, 1, min_index)
-		if(copytext_char(message, min_index, min_index+1) == uppertext(min_char))
+		. += copytext(message, 1, min_index)
+		if(copytext(message, min_index, min_index+1) == ruppertext(min_char))
 			switch(text2ascii(message, min_index+1))
 				if(65 to 90) // A-Z, uppercase; uppercase R/S followed by another uppercase letter, uppercase the entire replacement string
-					. += uppertext(pick(map[min_char]))
+					. += ruppertext(pick(map[min_char]))
 				else
-					. += capitalize(pick(map[min_char]))
+					. += capitalize_cp1251(pick(map[min_char]))
 		else
 			. += pick(map[min_char])
-		message = copytext_char(message, min_index + 1)
+		message = copytext(message, min_index + 1)
 
 	return jointext(., null)

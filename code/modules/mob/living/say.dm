@@ -1,40 +1,55 @@
 var/list/department_radio_keys = list(
-	  ":r" = "right ear",	":Ðº" = "right ear",
-	  ":l" = "left ear",	":Ð´" = "left ear",
-	  ":i" = "intercom",	":Ñˆ" = "intercom",
-	  ":h" = "department",	":Ñ€" = "department",
+	  ":r" = "right ear",	":ê" = "right ear",
+	  ":l" = "left ear",	":ä" = "left ear",
+	  ":i" = "intercom",	":ø" = "intercom",
+	  ":h" = "department",	":ð" = "department",
 	  ":+" = "special",		".+" = "special", //activate radio-specific special functions
-	  ":c" = "Command",		":Ñ" = "Command",
-	  ":n" = "Science",		":Ñ‚" = "Science",
-	  ":m" = "Medical",		":ÑŒ" = "Medical",
-	  ":e" = "Engineering", ":Ñƒ" = "Engineering",
-	  ":s" = "Security",	":Ñ‹" = "Security",
-	  ":w" = "whisper",		":Ñ†" = "whisper",
-	  ":t" = "Mercenary",	":Ðµ" = "Mercenary",
-	  ":x" = "Raider",		":Ñ‡" = "Raider",
-	  ":u" = "Supply",		":Ð³" = "Supply",
-	  ":v" = "Service",		":Ð¼" = "Service",
-	  ":p" = "AI Private",	":Ð·" = "AI Private",
-	  ":z" = "Entertainment",":Ñ" = "Entertainment",
-	  ":y" = "Exploration",		":Ð½" = "Exploration",
+	  ":c" = "Command",		":ñ" = "Command",
+	  ":n" = "Science",		":ò" = "Science",
+	  ":m" = "Medical",		":ü" = "Medical",
+	  ":e" = "Engineering", ":ó" = "Engineering",
+	  ":s" = "Security",	":û" = "Security",
+	  ":w" = "whisper",		":ö" = "whisper",
+	  ":t" = "Mercenary",	":å" = "Mercenary",
+	  ":x" = "Raider",		":÷" = "Raider",
+	  ":u" = "Supply",		":ã" = "Supply",
+	  ":v" = "Service",		":ì" = "Service",
+	  ":p" = "AI Private",	":ç" = "AI Private",
+	  ":z" = "Entertainment",":ÿ" = "Entertainment",
+	  ":y" = "Exploration",		":í" = "Exploration",
 
-	  ":R" = "right ear",	":Ðš" = "right ear",
-	  ":L" = "left ear",	":Ð”" = "left ear",
-	  ":I" = "intercom",	":Ð¨" = "intercom",
-	  ":H" = "department",	":Ð " = "department",
-	  ":C" = "Command",		":Ð¡" = "Command",
-	  ":N" = "Science",		":Ð¢" = "Science",
-	  ":M" = "Medical",		":Ð¬" = "Medical",
-	  ":E" = "Engineering",	":Ð£" = "Engineering",
-	  ":S" = "Security",	":Ð«" = "Security",
-	  ":W" = "whisper",		":Ð¦" = "whisper",
-	  ":T" = "Mercenary",	":Ð•" = "Mercenary",
-	  ":X" = "Raider",		":Ð§" = "Raider",
-	  ":U" = "Supply",		":Ð“" = "Supply",
-	  ":V" = "Service",		":Ðœ" = "Service",
-	  ":P" = "AI Private",	":Ð—" = "AI Private",
-	  ":Z" = "Entertainment",":Ð¯" = "Entertainment",
-	  ":Y" = "Exploration",		":Ð" = "Exploration",
+	  ":R" = "right ear",	":Ê" = "right ear",
+	  ":L" = "left ear",	":Ä" = "left ear",
+	  ":I" = "intercom",	":Ø" = "intercom",
+	  ":H" = "department",	":Ð" = "department",
+	  ":C" = "Command",		":Ñ" = "Command",
+	  ":N" = "Science",		":Ò" = "Science",
+	  ":M" = "Medical",		":Ü" = "Medical",
+	  ":E" = "Engineering",	":Ó" = "Engineering",
+	  ":S" = "Security",	":Û" = "Security",
+	  ":W" = "whisper",		":Ö" = "whisper",
+	  ":T" = "Mercenary",	":Å" = "Mercenary",
+	  ":X" = "Raider",		":×" = "Raider",
+	  ":U" = "Supply",		":Ã" = "Supply",
+	  ":V" = "Service",		":Ì" = "Service",
+	  ":P" = "AI Private",	":Ç" = "AI Private",
+	  ":Z" = "Entertainment",":ß" = "Entertainment",
+	  ":Y" = "Exploration",		":Í" = "Exploration",
+
+	  //kinda localization -- rastaf0 uebalo ruslan
+	  //same keys as above, but on russian keyboard layout. This file uses cp1251 as encoding.
+	  ":Ãª" = "right ear",	".Ãª" = "right ear",
+	  ":Ã¤" = "left ear",	".Ã¤" = "left ear",
+	  ":Ã¸" = "intercom",	".Ã¸" = "intercom",
+	  ":Ã°" = "department",	".Ã°" = "department",
+	  ":Ã±" = "Command",		".Ã±" = "Command",
+	  ":Ã²" = "Science",		".Ã²" = "Science",
+	  ":Ã¼" = "Medical",		".Ã¼" = "Medical",
+	  ":Ã³" = "Engineering",	".Ã³" = "Engineering",
+	  ":Ã»" = "Security",	".Ã»" = "Security",
+	  ":Ã¶" = "whisper",		".Ã¶" = "whisper",
+	  ":Ã¥" = "Mercenary",	".Ã¥" = "Mercenary",
+	  ":Ã©" = "Supply",		".Ã©" = "Supply",
 )
 
 
@@ -79,13 +94,13 @@ proc/get_radio_key_from_channel(var/channel)
 //Takes a list of the form list(message, verb, whispering) and modifies it as needed
 //Returns 1 if a speech problem was applied, 0 otherwise
 /mob/living/proc/handle_speech_problems(var/list/message_data)
-	var/message = html_decode(message_data[1])
+	var/message = rhtml_decode(message_data[1])
 	var/verb = message_data[2]
 
 		. = FALSE
-
+	
 	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
-		message = "[uppertext(message)]!!!"
+		message = "[ruppertext(message)]!!!"
 		verb = pick("yells","roars","hollers")
 		message_data[3] = 0
 		. = TRUE
@@ -110,7 +125,7 @@ proc/get_radio_key_from_channel(var/channel)
 		verb = pick("lisps","croups")
 		. = TRUE
 
-	message_data[1] = message
+	message_data[1] = russian_to_cp1251(message)
 	message_data[2] = verb
 
 /mob/living/proc/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
@@ -144,19 +159,19 @@ proc/get_radio_key_from_channel(var/channel)
 			return say_dead(message)
 		return
 
-	var/prefix = copytext_char(message,1,2)
+	var/prefix = copytext(message,1,2)
 	if(prefix == get_prefix_key(/decl/prefix/custom_emote))
-		return emote(copytext_char(message,2))
+		return emote(copytext(message,2))
 	if(prefix == get_prefix_key(/decl/prefix/visible_emote))
-		return custom_emote(1, copytext_char(message,2))
+		return custom_emote(1, copytext(message,2))
 
 	//parse the radio code and consume it
 	var/message_mode = parse_message_mode(message, "headset")
 	if (message_mode)
 		if (message_mode == "headset")
-			message = copytext_char(message,2)	//it would be really nice if the parse procs could do this for us.
+			message = copytext(message,2)	//it would be really nice if the parse procs could do this for us.
 		else
-			message = copytext_char(message,3)
+			message = copytext(message,3)
 
 	message = trim_left(message)
 
@@ -164,7 +179,7 @@ proc/get_radio_key_from_channel(var/channel)
 	if(!speaking)
 		speaking = parse_language(message)
 		if(speaking)
-			message = copytext_char(message,2+length(speaking.key))
+			message = copytext(message,2+length(speaking.key))
 		else
 			speaking = get_default_language()
 
