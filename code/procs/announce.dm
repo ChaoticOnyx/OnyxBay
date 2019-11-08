@@ -42,6 +42,11 @@
 	for(var/mob/M in GLOB.player_list)
 		if((M.z in (zlevels | GLOB.using_map.admin_levels)) && !istype(M,/mob/new_player) && !isdeaf(M))
 			M.playsound_local(M.loc, pick('sound/signals/anounce1.ogg', 'sound/signals/anounce2.ogg', 'sound/signals/anounce3.ogg'), 75)
+
+			spawn (2)
+				if(new_sound)
+					M.playsound_local(M.loc, new_sound, 75)
+
 			to_chat(M, msg)
 
 	if(do_newscast)
