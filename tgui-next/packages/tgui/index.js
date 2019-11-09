@@ -1,4 +1,7 @@
-import 'core-js/stable';
+import 'core-js/es';
+import 'core-js/web/immediate';
+import 'core-js/web/queue-microtask';
+import 'core-js/web/timers';
 import 'regenerator-runtime/runtime';
 import './polyfills';
 
@@ -34,39 +37,6 @@ const renderLayout = () => {
     // Initial render setup
     if (initialRender) {
       logger.log('initial render', state);
-
-      // ----- Old TGUI chain-loader: begin -----
-      const route = getRoute(state);
-      // Route was not found, load old TGUI
-      if (!route) {
-        logger.info('loading old tgui');
-        // Short-circuit the renderer
-        handedOverToOldTgui = true;
-        // Unsubscribe from updates
-        window.update = window.initialize = () => {};
-        // Load old TGUI using redirection method for IE8
-        if (tridentVersion <= 4) {
-          setTimeout(() => {
-            location.href = 'tgui-fallback.html?ref=' + window.__ref__;
-          }, 10);
-          return;
-        }
-        // Inject current state into the data holder
-        const holder = document.getElementById('data');
-        holder.textContent = JSON.stringify(state);
-        // Load old TGUI by injecting new scripts
-        loadCSS('v4shim.css');
-        loadCSS('tgui.css');
-        const head = document.getElementsByTagName('head')[0];
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'tgui.js';
-        head.appendChild(script);
-        // Bail
-        return;
-      }
-      // ----- Old TGUI chain-loader: end -----
-
       // Setup dragging
       setupDrag(state);
     }

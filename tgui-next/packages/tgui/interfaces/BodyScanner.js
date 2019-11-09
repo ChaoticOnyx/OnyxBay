@@ -2,9 +2,6 @@ import { Fragment } from "inferno";
 import { NoticeBox, Section, Tabs, ProgressBar, Button, Table } from '../components';
 import { LabeledList } from "../components/LabeledList";
 import { act } from "../byond";
-import { createLogger } from "../logging";
-
-const logger = createLogger('BodyScanner');
 
 export const BodyScanner = props => {
   const { state } = props;
@@ -26,7 +23,7 @@ export const BodyScanner = props => {
             </LabeledList.Item>
 
             <LabeledList.Item label="Actions">
-              <Button onClick={() => act(ref, 'print', null)} content="Print Scan" />
+              <Button icon="print" onClick={() => act(ref, 'print', null)} content="Print Scan" />
             </LabeledList.Item>
 
           </LabeledList>
