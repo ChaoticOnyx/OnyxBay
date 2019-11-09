@@ -335,10 +335,13 @@
 
 	if(H.should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
+		if (!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
 			data["brain_activity"] = 0
-		else if(H.stat != DEAD)
-			data["brain_activity"] = round(max(0,(1 - brain.damage/brain.max_damage)))
+		else if (H.stat != DEAD)
+			if (!brain.damage)
+				data["brain_activity"] = 1
+			else
+				data["brain_activity"] = 1 - (brain.damage / brain.max_damage)
 	else
 		data["brain_activity"] = null
 
