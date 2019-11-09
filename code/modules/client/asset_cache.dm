@@ -257,6 +257,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/tgui
+	verify = TRUE
 	assets = list(
 		// tgui-next
 		"tgui-main.html" = 'tgui-next/packages/tgui/public/tgui-main.html',
