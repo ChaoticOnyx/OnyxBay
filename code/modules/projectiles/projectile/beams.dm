@@ -57,7 +57,7 @@
 
 /obj/item/projectile/beam/xray/midlaser
 	damage = 30
-	armor_penetration = 50
+	armor_penetration = 65
 
 /obj/item/projectile/beam/pulse
 	name = "pulse"
@@ -71,11 +71,11 @@
 
 /obj/item/projectile/beam/pulse/mid
 	damage = 35
-	armor_penetration = 35
+	armor_penetration = 25
 
 /obj/item/projectile/beam/pulse/heavy
 	damage = 45
-	armor_penetration = 50
+	armor_penetration = 40
 
 /obj/item/projectile/beam/pulse/destroy
 	name = "destroyer pulse"
