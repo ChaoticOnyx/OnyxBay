@@ -574,6 +574,10 @@ default behaviour is:
 													H.vessel.remove_reagent(/datum/reagent/blood, 1)
 
 
+						if (pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
+							last_pull_sound = world.time
+							playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
+
 						step(pulling, get_dir(pulling.loc, T))
 						if(t)
 							M.start_pulling(t)
@@ -587,9 +591,10 @@ default behaviour is:
 					if (pulling)
 						step(pulling, get_dir(pulling.loc, T))
 
-			if (pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
-				last_pull_sound = world.time
-				playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
+						if (pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
+							last_pull_sound = world.time
+							playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
+
 	else
 		stop_pulling()
 		. = ..()
