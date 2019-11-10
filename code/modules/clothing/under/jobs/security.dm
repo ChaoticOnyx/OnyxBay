@@ -130,6 +130,14 @@
 	body_parts_covered = 0
 	siemens_coefficient = 0.8
 
+/obj/item/clothing/head/HoS/german
+	name = "ancient cap"
+	desc = "An ancient cap, how did it survived to these days?"
+	icon_state = "capger"
+	body_parts_covered = HEAD
+	armor = list(melee = 25, bullet = 10, laser = 10,energy = 10, bomb = 10, bio = 0, rad = 0)
+	siemens_coefficient = 0.6
+
 /obj/item/clothing/head/HoS/dermal
 	name = "Dermal Armour Patch"
 	desc = "You're not quite sure how you manage to take it on and off, but it implants nicely in your head."
@@ -147,6 +155,19 @@
 	armor = list(melee = 65, bullet = 30, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
 	flags_inv = HIDEJUMPSUIT
 	siemens_coefficient = 0.6
+
+/obj/item/clothing/suit/armor/hos/german
+	name = "ancient trenchcoat"
+	desc = "An ancient trenchcoat, how did it survived to these days? There's a label on the neck that reads 'Hergestellt von Hugo Boss'"
+	icon_state = "trenchcoatger"
+	item_state = "trenchcoatger"
+	armor = list(melee = 35, bullet = 15, laser = 15, energy = 10, bomb = 10, bio = 0, rad = 0)
+
+/obj/item/clothing/suit/armor/hos/german/mob_can_equip(mob/user)
+	.=..()
+	if(user.gender == FEMALE)
+		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this men's cloth..</span>")
+		return 0
 
 //Jensen cosplay gear
 /obj/item/clothing/under/rank/head_of_security/jensen
