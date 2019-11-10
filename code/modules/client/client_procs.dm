@@ -432,6 +432,9 @@
 		var/list/priority_assets = list()
 		var/list/other_assets = list()
 
+		for(var/type in subtypesof(/datum/asset))
+			get_asset_datum(type)
+
 		for(var/asset_type in asset_datums)
 			var/datum/asset/D = asset_datums[asset_type]
 			if(D.isTrivial)
