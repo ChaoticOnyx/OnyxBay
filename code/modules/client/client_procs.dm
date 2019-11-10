@@ -261,6 +261,25 @@
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
 		to_chat(src, "<span class='warning'>Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you.</span>")
 
+	// Maptext tooltip
+	tooltip = new()
+	tooltip.icon = 'icons/misc/static.dmi'
+	tooltip.icon_state = "transparent"
+	tooltip.screen_loc = "NORTH,WEST+25%"
+	tooltip.maptext_width = 256
+	tooltip.maptext_x = 0
+	tooltip.plane = FULLSCREEN_PLANE
+
+	if (mob && mob.get_preference_value("TOOLTIP") == GLOB.PREF_NO)
+		tooltip.alpha = 0
+
+	screen += tooltip
+
+/client/MouseEntered(atom/object, location, control, params)
+	if (tooltip)
+		screen |= tooltip
+		tooltip.maptext = "<center style=\"text-shadow: 1px 1px 2px black;\">[object.name]</center>"
+
 /*	if(holder)
 		src.control_freak = 0 //Devs need 0 for profiler access
 */

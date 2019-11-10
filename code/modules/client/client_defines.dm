@@ -53,3 +53,6 @@
 	var/static/obj/screen/click_catcher/void
 
 	var/datum/click_handler/click_handler
+
+	// Transparent image for maptext tooltip
+	var/obj/screen/tooltip = null
