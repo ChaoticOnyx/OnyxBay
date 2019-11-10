@@ -58,6 +58,7 @@
 	var/burst_delay = 2	//delay between shots, if firing in bursts
 	var/move_delay = 1
 	var/fire_sound = 'sound/weapons/gunshot/gunshot.ogg'
+	var/far_fire_sound = null
 	var/fire_sound_text = "gunshot"
 	var/fire_anim = null
 	var/screen_shake = 0 //shouldn't be greater than 2 unless zoomed
@@ -356,10 +357,24 @@
 
 /obj/item/weapon/gun/proc/play_fire_sound(var/mob/user, var/obj/item/projectile/P)
 	var/shot_sound = (istype(P) && P.fire_sound)? P.fire_sound : fire_sound
-	if(silenced)
-		playsound(user, shot_sound, 10, 1)
+
+	if (!silenced)
+		if (!far_fire_sound)
+			playsound(user, shot_sound, rand(50, 70))
+			return
+
+		var/list/mob/mobs = view(world.view, user)
+
+		for (var/mob/M in mobs)
+			M.playsound_local(user, shot_sound, rand(50, 70))
+
+		var/list/mob/far_mobs = (orange(world.view * 3, user) - mobs)
+
+		for (var/mob/M in far_mobs)
+			M.playsound_local(M, far_fire_sound, rand(20, 50))
 	else
-		playsound(user, shot_sound, 50, 1)
+		for (var/mob/M in view(world.view, user))
+			M.playsound_local(user, shot_sound, rand(10, 30), FALSE)
 
 //Suicide handling.
 /obj/item/weapon/gun/var/mouthshoot = 0 //To stop people from suiciding twice... >.>
