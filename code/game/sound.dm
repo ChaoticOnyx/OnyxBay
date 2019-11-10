@@ -36,6 +36,8 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
+GLOBAL_LIST_INIT(far_shot_sound,list('sound/effects/weapons/gun/far_fire1.ogg','sound/effects/weapons/gun/far_fire2.ogg','sound/effects/weapons/gun/far_fire3.ogg'))
+
 GLOBAL_LIST_INIT(f_cheavyb_sound,list('sound/effects/emotes/f_cheavyb1.ogg'))
 
 GLOBAL_LIST_INIT(f_cough_sound,list('sound/effects/emotes/f_cough1.ogg','sound/effects/emotes/f_cough2.ogg'))
@@ -440,6 +442,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
+			if ("far_fire")				soundin = pick(GLOB.far_fire_sound)
 			if ("female_closed_breath")	soundin = pick(GLOB.f_cheavyb_sound)
 			if ("female_cough")			soundin = pick(GLOB.f_cough_sound)
 			if ("female_breath")		soundin = pick(GLOB.f_heavyb_sound)
