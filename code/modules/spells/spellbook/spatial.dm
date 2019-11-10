@@ -32,8 +32,7 @@
 				/obj/item/weapon/teleportation_scroll = 		1,
 				/obj/item/weapon/magic_rock = 					1,
 				/obj/item/weapon/contract/wizard/telepathy = 	1,
-				/obj/item/weapon/contract/apprentice = 			1,
-				/obj/item/clothing/ring/magic = 				2
+				/obj/item/weapon/contract/apprentice = 			1
 				)
 
 	sacrifice_reagents = list(/datum/reagent/hyperzine)
