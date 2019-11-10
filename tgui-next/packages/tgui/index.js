@@ -37,6 +37,39 @@ const renderLayout = () => {
     // Initial render setup
     if (initialRender) {
       logger.log('initial render', state);
+
+      // ----- Old TGUI chain-loader: begin -----
+      const route = getRoute(state);
+      // Route was not found, load old TGUI
+      if (!route) {
+        logger.info('loading old tgui');
+        // Short-circuit the renderer
+        handedOverToOldTgui = true;
+        // Unsubscribe from updates
+        window.update = window.initialize = () => {};
+        // IE8: Use a redirection method
+        if (tridentVersion <= 4) {
+          setTimeout(() => {
+            location.href = 'tgui-fallback.html?ref=' + window.__ref__;
+          }, 10);
+          return;
+        }
+        // Inject current state into the data holder
+        const holder = document.getElementById('data');
+        holder.textContent = JSON.stringify(state);
+        // Load old TGUI by injecting new scripts
+        loadCSS('v4shim.css');
+        loadCSS('tgui.css');
+        const head = document.getElementsByTagName('head')[0];
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'tgui.js';
+        head.appendChild(script);
+        // Bail
+        return;
+      }
+      // ----- Old TGUI chain-loader: end -----
+
       // Setup dragging
       setupDrag(state);
     }
@@ -67,15 +100,21 @@ const renderLayout = () => {
 
 // Parse JSON and report all abnormal JSON strings coming from BYOND
 const parseStateJson = json => {
-  try {
-    return JSON.parse(json, (key, value) => {
-      if (typeof value === 'object' && value !== null) {
-        if (value.__number__) {
-          return parseFloat(value.__number__);
-        }
+  let reviver = (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (value.__number__) {
+        return parseFloat(value.__number__);
       }
-      return value;
-    });
+    }
+    return value;
+  };
+  // IE8: No reviver for you!
+  // See: https://stackoverflow.com/questions/1288962
+  if (tridentVersion <= 4) {
+    reviver = undefined;
+  }
+  try {
+    return JSON.parse(json, reviver);
   }
   catch (err) {
     logger.error('JSON parsing error: ' + err.message + '\n' + json);
@@ -117,16 +156,10 @@ const setupApp = () => {
   loadCSS('font-awesome.css');
 };
 
-// Wait for DOM to properly load on IE8
-if (tridentVersion <= 4) {
-  if (document.readyState !== 'loading') {
-    setupApp();
-  }
-  else {
-    document.addEventListener('DOMContentLoaded', setupApp);
-  }
+// IE8: Wait for DOM to properly load
+if (tridentVersion <= 4 && document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupApp);
 }
-// Load right away on all other browsers
 else {
   setupApp();
 }
