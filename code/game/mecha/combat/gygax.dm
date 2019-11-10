@@ -56,7 +56,7 @@
 		overload = 0
 		step_in = initial(step_in)
 		step_energy_drain = initial(step_energy_drain)
-		src.occupant_message("<font color='blue'>You disable leg actuators overload.</font>")
+		src.occupant_message("<span class='info'>You disable leg actuators overload.</span>")
 	else
 		overload = 1
 		step_in = min(1, round(step_in/2))

@@ -628,5 +628,5 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	for(var/spell/spell_storage in user.mind.learned_spells)
 		if (src.handler_name == spell_storage.name)
 			return spell_storage.perform(user,0,target)
-	user << "We cannot find it's power... call admins"
+	to_chat(user, "We cannot find it's power... call admins")
 	return 0

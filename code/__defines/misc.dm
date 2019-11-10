@@ -217,3 +217,7 @@
 #define UNAUTHORIZED      0
 #define AUTHORIZED        1
 #define ALWAYS_AUTHORIZED 2
+
+//Misc text define. Does 4 spaces. Used as a makeshift tabulator.
+#define FOURSPACES "&nbsp;&nbsp;&nbsp;&nbsp;"
+#define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))

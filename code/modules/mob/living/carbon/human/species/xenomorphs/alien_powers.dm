@@ -59,12 +59,12 @@
 	set category = "Abilities"
 
 	if (get_dist(src,M) <= 1)
-		src << "<span class='alium'>You need to be closer.</span>"
+		to_chat(src, "<span class='alium'>You need to be closer.</span>")
 		return
 
 	var/obj/item/organ/internal/xenos/plasmavessel/I = M.internal_organs_by_name[BP_PLASMA]
 	if(!istype(I))
-		src << "<span class='alium'>Their plasma vessel is missing.</span>"
+		to_chat(src, "<span class='alium'>Their plasma vessel is missing.</span>")
 		return
 
 	var/amount = input("Amount:", "Transfer Plasma to [M]") as num
@@ -89,7 +89,7 @@
 		return
 
 	if(locate(/obj/structure/alien/egg) in get_turf(src))
-		src << "There's already an egg here."
+		to_chat(src, "There's already an egg here.")
 		return
 
 	if(check_alien_ability(75, 1, BP_EGG))
@@ -263,7 +263,7 @@
 		return
 
 	if(G.type_name < NAB_AGGRESSIVE)
-		src << "<span class='danger'>You must have an aggressive grab to gut your prey!</span>"
+		to_chat(src, "<span class='danger'>You must have an aggressive grab to gut your prey!</span>")
 		return
 
 	last_special = world.time + 50

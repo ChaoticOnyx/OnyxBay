@@ -7,7 +7,7 @@
 		new_ckey = sanitizeSQL(new_ckey)
 		if (!new_ckey)
 			return
-		
+
 		var/DBQuery/query_watchfind = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE ckey = '[new_ckey]'")
 		if (!query_watchfind.Execute())
 			var/err = query_watchfind.ErrorMsg()
@@ -169,12 +169,12 @@
 
 	C.watchlist_warn = watchlist.Check(C.ckey)
 	if (C.watchlist_warn)
-		message_admins("<font color='red'><B>WATCHLIST: </B></font><font color='blue'>[key_name_admin(C)] has just connected - Reason: [C.watchlist_warn]</font>")
+		message_admins("<font color='red'><B>WATCHLIST: </B></font><span class='info'>[key_name_admin(C)] has just connected - Reason: [C.watchlist_warn]</span>")
 
 	if (check_rights((R_ADMIN|R_MOD), 0, C))
 		for(var/client/player in GLOB.clients)
 			if (player.watchlist_warn)
-				to_chat(C, "<span class=\"log_message\"><font color='red'><B>WATCHLIST: </B></font><font color='blue'>[key_name_admin(player)] is playing - Reason: [player.watchlist_warn]</font></span>")
+				to_chat(C, "<span class=\"log_message\"><font color='red'><B>WATCHLIST: </B></font><span class='info'>[key_name_admin(player)] is playing - Reason: [player.watchlist_warn]</span></span>")
 
 /datum/watchlist/proc/AdminTopicProcess(var/datum/admins/source, var/list/href_list)
 	if(href_list["watchadd"])
