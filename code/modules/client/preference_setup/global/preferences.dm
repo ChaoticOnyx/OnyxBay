@@ -210,18 +210,6 @@ var/list/_client_preferences_by_type
 	if (preference_mob.client)
 		preference_mob.UpdatePlanes()
 
-/datum/client_preference/tooltip
-	description = "Toggle Tooltip"
-	key = "TOOLTIP"
-	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
-
-/datum/client_preference/tooltip/changed(mob/preference_mob, new_value)
-	if (preference_mob.client)
-		if (new_value == GLOB.PREF_YES)
-			preference_mob.client.tooltip.alpha = 255
-		else
-			preference_mob.client.tooltip.alpha = 0
-
 /********************
 * General Staff Preferences *
 ********************/
