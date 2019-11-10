@@ -209,6 +209,9 @@
 	density = 0
 	anchored = 1
 
+	// UI variables
+	var/hide_status = FALSE
+	var/hide_organs = FALSE
 
 /obj/machinery/body_scanconsole/Initialize()
 	for(var/D in GLOB.cardinal)
@@ -271,12 +274,20 @@
 			if (connected)
 				connected.eject()
 				return TRUE
+		if ("toggle_status")
+			hide_status = !hide_status
+			return TRUE
+		if ("toggle_organs")
+			hide_organs = !hide_organs
+			return TRUE
 
 /obj/machinery/body_scanconsole/ui_data(mob/user)
 	var/list/data = list()
 
 	data["connected"] = connected
 	data["medical_data"] = null
+	data["hide_status"] = hide_status
+	data["hide_organs"] = hide_organs
 
 	if (connected && connected.occupant)
 		data["medical_data"] = connected.occupant.get_medical_data_ui()
@@ -346,6 +357,8 @@
 		data["pulse"] = null
 
 	data["blood_volume"] = H.get_blood_volume()
+	data["blood_volume_abs"] = H.vessel.get_reagent_amount(/datum/reagent/blood)
+	data["blood_volume_max"] = H.species.blood_volume
 
 	data["blood_type"] = null
 
