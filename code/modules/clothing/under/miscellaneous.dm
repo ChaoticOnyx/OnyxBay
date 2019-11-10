@@ -29,18 +29,6 @@
 		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this men's cloth..</span>")
 		return 0
 
-/obj/item/clothing/under/german
-	name = "ancient uniform"
-	desc = "A uniform of an ancient officer. How did it survived to there days?"
-	icon_state = "uniformger"
-	armor = list(melee = 10, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0, rad = 0)
-
-/obj/item/clothing/under/german/mob_can_equip(mob/user)
-	.=..()
-	if(user.gender == FEMALE)
-		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this men's cloth..</span>")
-		return 0
-
 /obj/item/clothing/under/dress/maid
 	name = "maid uniform"
 	desc = "Traditional French maid uniform."
