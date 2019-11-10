@@ -57,12 +57,12 @@
 
 /obj/item/projectile/beam/xray/midlaser
 	damage = 30
-	armor_penetration = 50
+	armor_penetration = 65
 
 /obj/item/projectile/beam/pulse
 	name = "pulse"
 	icon_state = "u_laser"
-	fire_sound='sound/effects/weapons/energy/fire14.ogg'
+	fire_sound='sound/effects/weapons/energy/fire26.ogg'
 	damage = 15 //lower damage, but fires in bursts
 
 	muzzle_type = /obj/effect/projectile/laser/pulse/muzzle
@@ -70,10 +70,12 @@
 	impact_type = /obj/effect/projectile/laser/pulse/impact
 
 /obj/item/projectile/beam/pulse/mid
-	damage = 20
+	damage = 35
+	armor_penetration = 25
 
 /obj/item/projectile/beam/pulse/heavy
-	damage = 25
+	damage = 45
+	armor_penetration = 40
 
 /obj/item/projectile/beam/pulse/destroy
 	name = "destroyer pulse"
