@@ -267,19 +267,26 @@
 
 			new/obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
 			return TRUE
+		if ("eject")
+			if (connected)
+				connected.eject()
+				return TRUE
 
 /obj/machinery/body_scanconsole/ui_data(mob/user)
 	var/list/data = list()
 
 	data["connected"] = connected
-	data["medical_data"] = connected.occupant.get_medical_data_ui()
+	data["medical_data"] = null
+
+	if (connected && connected.occupant)
+		data["medical_data"] = connected.occupant.get_medical_data_ui()
 
 	return data
 
 /obj/machinery/body_scanconsole/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "body_scanner", name , 700, 400, master_ui, state)
+		ui = new(user, src, ui_key, "body_scanner", name , 500, 700, master_ui, state)
 		ui.open()
 
 /obj/machinery/body_scanconsole/attack_hand(mob/user)
@@ -297,21 +304,6 @@
 		return
 
 	tg_ui_interact(user)
-
-/obj/machinery/body_scanconsole/OnTopic(user, href_list)
-	if (href_list["print"])
-		if (!src.connected)
-			to_chat(user, "\icon[src]<span class='warning'>Error: No body scanner connected.</span>")
-			return TOPIC_REFRESH
-		var/mob/living/carbon/human/occupant = src.connected.occupant
-		if (!src.connected.occupant)
-			to_chat(user, "\icon[src]<span class='warning'>The body scanner is empty.</span>")
-			return TOPIC_REFRESH
-		if (!istype(occupant,/mob/living/carbon/human))
-			to_chat(user, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
-			return TOPIC_REFRESH
-		new/obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
-		return TOPIC_REFRESH
 
 /proc/get_severity(amount)
 	if(!amount)
