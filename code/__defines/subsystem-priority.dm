@@ -37,6 +37,7 @@
 #define SS_PRIORITY_TURF          20	// Radioactive walls/blob.
 #define SS_PRIORITY_EVAC          20	// Processes the evac controller.
 #define SS_PRIORITY_WIRELESS      10	// Wireless connection setup.
+#define SS_PRIORITY_PING          10	// Client ping.
 
 
 // Subsystem fire priority, from lowest to highest priority

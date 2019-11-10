@@ -61,7 +61,8 @@ var/const/CAMERA_WIRE_NOTHING2 = 32
 			C.light_disabled = !C.light_disabled
 
 		if(CAMERA_WIRE_ALARM)
-			C.visible_message("\icon[C] *beep*", "\icon[C] *beep*")
+			var/img = icon2html(C, world, realsize=TRUE)
+			C.visible_message("[img] *beep*", "[img] *beep*")
 	return
 
 /datum/wires/camera/proc/CanDeconstruct()

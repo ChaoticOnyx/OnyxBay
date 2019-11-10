@@ -156,7 +156,7 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separa
 
 	// Other general warnings.
 	if(H.getOxyLoss() > 50)
-		status_data += "<font color='blue'><b>Severe oxygen deprivation detected.</b></font>"
+		status_data += "<span class='info'><b>Severe oxygen deprivation detected.</b></span>"
 	if(H.getToxLoss() > 50)
 		status_data += "<font color='green'><b>Major systemic organ failure detected.</b></font>"
 	if(H.getFireLoss() > 50)

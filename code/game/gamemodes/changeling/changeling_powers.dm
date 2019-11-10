@@ -1789,7 +1789,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		empulse(T.loc, 1, 1)
 		changeling.chem_charges -= 20
 	else
-		src << "<span class='warning'>Too Far</span>"
+		to_chat(src, "<span class='warning'>Too Far</span>")
 	return
 
 /mob/proc/changeling_toggle_darksight()
@@ -1812,11 +1812,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /mob/proc/change_ctate(path)
 	var/datum/click_handler/handler = src.GetClickHandler()
 	if (!ispath(path))
-		src << "<span class='warning'>This is awkward. 1-800-CALL-CODERS to fix this.</span>"
+		to_chat(src, "<span class='warning'>This is awkward. 1-800-CALL-CODERS to fix this.</span>")
 		return
 	if(handler.type == path)
-		src << "<span class='notice'>You unprepare [handler.handler_name].</span>"
+		to_chat(src, "<span class='notice'>You unprepare [handler.handler_name].</span>")
 		usr.PopClickHandler()
 	else
-		src << "<span class='warning'>You prepare your ability.</span>"
+		to_chat(src, "<span class='warning'>You prepare your ability.</span>")
 		src.PushClickHandler(path)

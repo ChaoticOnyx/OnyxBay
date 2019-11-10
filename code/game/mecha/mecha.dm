@@ -237,7 +237,7 @@
 	if(equipment && equipment.len)
 		to_chat(user, "It's equipped with:")
 		for(var/obj/item/mecha_parts/mecha_equipment/ME in equipment)
-			to_chat(user, "\icon[ME] [ME]")
+			to_chat(user, "[icon2html(ME, world, realsize=TRUE)] [ME]")
 	return
 
 
@@ -462,12 +462,12 @@
 	internal_damage &= ~int_dam_flag
 	switch(int_dam_flag)
 		if(MECHA_INT_TEMP_CONTROL)
-			occupant_message("<font color='blue'><b>Life support system reactivated.</b></font>")
+			occupant_message("<span class='info'><b>Life support system reactivated.</b></span>")
 			pr_int_temp_processor.start()
 		if(MECHA_INT_FIRE)
-			occupant_message("<font color='blue'><b>Internal fire extinquished.</b></font>")
+			occupant_message("<span class='info'><b>Internal fire extinquished.</b></span>")
 		if(MECHA_INT_TANK_BREACH)
-			occupant_message("<font color='blue'><b>Damaged internal tank has been sealed.</b></font>")
+			occupant_message("<span class='info'><b>Damaged internal tank has been sealed.</b></span>")
 	return
 
 
@@ -1413,7 +1413,7 @@
 /obj/mecha/proc/occupant_message(message as text)
 	if(message)
 		if(src.occupant && src.occupant.client)
-			to_chat(src.occupant, "\icon[src] [message]")
+			to_chat(src.occupant, "[icon2html(src, world, realsize=TRUE)] [message]")
 	return
 
 /obj/mecha/proc/log_message(message as text,red=null)
@@ -1602,7 +1602,7 @@
 		if(do_after(100))
 			if(T == src.loc)
 				src.clearInternalDamage(MECHA_INT_CONTROL_LOST)
-				src.occupant_message("<font color='blue'>Recalibration successful.</font>")
+				src.occupant_message("<span class='info'>Recalibration successful.</span>")
 				src.log_message("Recalibration of coordination system finished with 0 errors.")
 			else
 				src.occupant_message("<font color='red'>Recalibration failed.</font>")
