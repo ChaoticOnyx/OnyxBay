@@ -240,6 +240,13 @@
 	max_heat_protection_temperature = ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.6
 
+/obj/item/clothing/suit/storage/vest/police
+	name = "armored vest"
+	desc = "A synthetic armor vest. This one has added webbing and ballistic plates."
+	icon_state = "policevest"
+	item_state = "policevest"
+	armor = list(melee = 35, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0, rad = 0)
+
 /obj/item/clothing/suit/storage/vest/nt
 	name = "corporate security heavy armored vest"
 	desc = "A synthetic armor vest with CORPORATE SECURITY printed in red lettering on the chest. This one has added webbing and ballistic plates."
