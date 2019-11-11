@@ -16,7 +16,7 @@
 
 	src.money -= product.cost
 
-	var/DBQuery/q = dbcon.NewQuery("INSERT INTO `buys` (`ckey`, `type`) VALUES ('[src.ckey]', '[product.object.type]');")
+	var/DBQuery/q = dbcon.NewQuery("INSERT INTO `Z_buys` (`byond`, `type`) VALUES ('[src.ckey]', '[product.object.type]');")
 	. = q.Execute()
 
 	if (.)

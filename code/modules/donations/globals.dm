@@ -152,13 +152,12 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 
 	var/res = 0
 	var/DBQuery/q = dbcon.NewQuery({"
-	CREATE TABLE IF NOT EXISTS `buys` (
+	CREATE TABLE IF NOT EXISTS `Z_buys` (
   		`_id` int(11) NOT NULL AUTO_INCREMENT,
-  		`ckey` varchar(100) NOT NULL,
+  		`byond` varchar(32) NOT NULL,
   		`type` varchar(100) NOT NULL,
-  		PRIMARY KEY (`_id`),
-  		UNIQUE KEY `_id_UNIQUE` (`_id`)
-	) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"})
+  		PRIMARY KEY (`_id`)
+	) ENGINE=Aria  DEFAULT CHARSET=utf8 PAGE_CHECKSUM=0"})
 	res = q.Execute()
 
 	if (!res)
@@ -166,13 +165,12 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 		return
 
 	q = dbcon.NewQuery({"
-	CREATE TABLE IF NOT EXISTS `donators` (
-		`ckey` varchar(100) NOT NULL,
-		`current` int(11) NOT NULL,
-		`total` int(11) NOT NULL,
-		PRIMARY KEY (`ckey`),
-		UNIQUE KEY `ckey_UNIQUE` (`ckey`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"})
+	CREATE TABLE IF NOT EXISTS `Z_donators` (
+		`byond` varchar(32) NOT NULL,
+		`current` float(7,2) NOT NULL DEFAULT 0.00,
+		`sum` float(7,2) NOT NULL DEFAULT 0.00,
+		PRIMARY KEY (`byond`)
+	) ENGINE=Aria  DEFAULT CHARSET=utf8 PAGE_CHECKSUM=0"})
 	res = q.Execute()
 
 	if (!res)
@@ -183,7 +181,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 	if (dbcon && dbcon.IsConnected())
 		src.donators = list()
 
-		var/DBQuery/q1 = dbcon.NewQuery("SELECT ckey, current, total FROM donators")
+		var/DBQuery/q1 = dbcon.NewQuery("SELECT byond, current, sum FROM `Z_donators`")
 		res = q1.Execute()
 
 		if (!res)
@@ -199,7 +197,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 			// We will count the rest of money by bought items
 			donator.money = donator.total
 
-			var/DBQuery/q2 = dbcon.NewQuery("SELECT ckey, type FROM `buys` WHERE ckey='[donator.ckey]';")
+			var/DBQuery/q2 = dbcon.NewQuery("SELECT byond, type FROM `Z_buys` WHERE byond='[donator.ckey]';")
 			res = q2.Execute()
 
 			if (!res)
@@ -213,7 +211,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 					log_and_message_admins("Donator Store DB error: type [object_path] is invalid;")
 
 					// Remove invalid item
-					var/DBQuery/rq = dbcon.NewQuery("DELETE FROM `buys` WHERE (`type` = '[q2.item[2]]');")
+					var/DBQuery/rq = dbcon.NewQuery("DELETE FROM `Z_buys` WHERE (`type` = '[q2.item[2]]');")
 					rq.Execute()
 					continue
 
@@ -221,7 +219,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 				donator.money -= type_list_products[object_path].cost
 
 			// Update money
-			var/DBQuery/q3 = dbcon.NewQuery("UPDATE `donators` SET `current` = '[donator.money]' WHERE (`ckey` = '[donator.ckey]');")
+			var/DBQuery/q3 = dbcon.NewQuery("UPDATE `Z_donators` SET `current` = '[donator.money]' WHERE (`byond` = '[donator.ckey]');")
 			res = q3.Execute()
 
 			if (!res)
