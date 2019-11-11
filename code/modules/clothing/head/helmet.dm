@@ -65,6 +65,25 @@
 		to_chat(user, "You lower the visor on the [src].")
 	update_clothing_icon()
 
+/obj/item/clothing/head/helmet/police
+	name = "police helmet"
+	desc = "It's a helmet specifically designed for police use. Comfortable and robust."
+	icon_state = "helmet_police"
+	valid_accessory_slots = null
+	body_parts_covered = HEAD|FACE|EYES //face shield
+	armor = list(melee = 55, bullet = 55, laser = 55, energy = 25, bomb = 35, bio = 5, rad = 0)
+	siemens_coefficient = 0.7
+	action_button_name = "Toggle Visor"
+
+/obj/item/clothing/head/helmet/police/attack_self(mob/user as mob)
+	if(src.icon_state == initial(icon_state))
+		src.icon_state = "[icon_state]_up"
+		to_chat(user, "You raise the visor on the [src].")
+	else
+		src.icon_state = initial(icon_state)
+		to_chat(user, "You lower the visor on the [src].")
+	update_clothing_icon()
+
 /obj/item/clothing/head/helmet/ablative
 	name = "ablative helmet"
 	desc = "A helmet made from advanced materials which protects against concentrated energy weapons."

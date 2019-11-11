@@ -66,6 +66,13 @@
 	icon_state = "fullgas"
 	item_state = "fullgas"
 
+/obj/item/clothing/mask/gas/police
+	name = "police gas mask"
+	desc = "A close-fitting tactical mask that can be connected to an air supply."
+	icon_state = "policegas"
+	item_state = "policegas"
+	istinted = 0
+
 /obj/item/clothing/mask/gas/swat/vox
 	name = "alien mask"
 	desc = "Clearly not designed for a human face."
