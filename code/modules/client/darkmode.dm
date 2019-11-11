@@ -50,8 +50,6 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	winset(src, "backstoryb", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
 	winset(src, "bugreportb", "background-color = #494949;background-color = none")
 	winset(src, "bugreportb", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
-	winset(src, "hotkey_toggle", "background-color = #494949;background-color = none")
-	winset(src, "hotkey_toggle", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
 	//Status and verb tabs
 	winset(src, "output", "background-color = [COLOR_DARKMODE_BACKGROUND];background-color = none")
 	winset(src, "output", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
@@ -66,12 +64,21 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	winset(src, "info", "prefix-color = [COLOR_DARKMODE_TEXT];prefix-color = #000000")
 	winset(src, "info", "suffix-color = [COLOR_DARKMODE_TEXT];suffix-color = #000000")
 	//Say, OOC, me Buttons etc.
+	winset(src, "hotkey_toggle", "background-color = #494949;background-color = none")
+	winset(src, "hotkey_toggle", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
 	winset(src, "saybutton", "background-color = [COLOR_DARKMODE_BACKGROUND];background-color = none")
 	winset(src, "saybutton", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
 	winset(src, "asset_cache_browser", "background-color = [COLOR_DARKMODE_BACKGROUND];background-color = none")
 	winset(src, "asset_cache_browser", "background-color = [COLOR_DARKMODE_BACKGROUND];background-color = none")
 	winset(src, "input", "background-color = [COLOR_DARKMODE_BACKGROUND];background-color = none")
 	winset(src, "input", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
+
+	winset(src, "hotkey_toggle_alt", "background-color = #494949;background-color = none")
+	winset(src, "hotkey_toggle_alt", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
+	winset(src, "saybutton_alt", "background-color = [COLOR_DARKMODE_BACKGROUND];background-color = none")
+	winset(src, "saybutton_alt", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
+	winset(src, "input_alt", "background-color = [COLOR_DARKMODE_BACKGROUND];background-color = none")
+	winset(src, "input_alt", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
 
 /client/proc/force_dark_theme() //Inversely, if theyre using white theme and want to swap to the superior dark theme, let's get WINSET() ing
 	//Main windows
@@ -107,8 +114,6 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	winset(src, "backstoryb", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
 	winset(src, "bugreportb", "background-color = none;background-color = #494949")
 	winset(src, "bugreportb", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
-	winset(src, "hotkey_toggle", "background-color = none;background-color = #494949")
-	winset(src, "hotkey_toggle", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
 	//Status and verb tabs
 	winset(src, "output", "background-color = none;background-color = [COLOR_DARKMODE_DARKBACKGROUND]")
 	winset(src, "output", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
@@ -127,6 +132,14 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	winset(src, "saybutton", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
 	winset(src, "asset_cache_browser", "background-color = none;background-color = [COLOR_DARKMODE_BACKGROUND]")
 	winset(src, "asset_cache_browser", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
-
+	winset(src, "hotkey_toggle", "background-color = none;background-color = #494949")
+	winset(src, "hotkey_toggle", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
 	winset(src, "input", "background-color = none;background-color = [COLOR_DARKMODE_BACKGROUND]")
 	winset(src, "input", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
+
+	winset(src, "saybutton_alt", "background-color = none;background-color = #494949")
+	winset(src, "saybutton_alt", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
+	winset(src, "hotkey_toggle_alt", "background-color = none;background-color = #494949")
+	winset(src, "hotkey_toggle_alt", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
+	winset(src, "input_alt", "background-color = none;background-color = [COLOR_DARKMODE_BACKGROUND]")
+	winset(src, "input_alt", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
