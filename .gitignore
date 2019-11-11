@@ -7,6 +7,8 @@ Thumbs.db
 *.lk
 *.backup
 *.before
+*.db
+*.db-*
 data/
 cfg/
 build_log.txt

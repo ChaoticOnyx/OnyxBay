@@ -148,7 +148,7 @@
 		"categories" = categories
 	)
 
-	ui = GLOB.nanomanager.try_update_ui(user, user, ui_key, ui, data, force_open)
+	ui = SSnano.try_update_ui(user, user, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new (user, src, ui_key, "donations.tmpl", "Donator Store", 400, 800, state=GLOB.interactive_state)
 		ui.set_initial_data(data)
