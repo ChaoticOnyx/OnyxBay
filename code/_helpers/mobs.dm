@@ -279,4 +279,6 @@ proc/age2agedescription(age)
 			if(M.ckey == find_key)
 				selected = M
 				break
+
+	to_world("Selected: [selected]")
 	return selected
