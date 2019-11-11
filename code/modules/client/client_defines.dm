@@ -59,3 +59,5 @@
 
 	///goonchat chatoutput of the client
 	var/datum/chatOutput/chatOutput
+
+	var/fullscreen = FALSE
