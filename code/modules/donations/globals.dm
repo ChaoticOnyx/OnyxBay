@@ -1,6 +1,5 @@
 GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 
-
 /datum/donations
 	var/list/items = list(
 		"Free stuff" = list(
@@ -89,8 +88,6 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 		)
 	)
 
-	var/database/db = new("donators.db")
-
 	var/list/datum/donator_product/products = list() // Product list to display (NanoUI)
 	var/list/datum/donator/donators = null // null until DB connection established
 
@@ -133,10 +130,10 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 /datum/donations/proc/ensure_init()
 	var/static/already_run = 0
 	var/static/list/datum/donator_product/type_list_products = list() // type -> product
-	
+
 	if (already_run)
 		return
-		
+
 	src.meta_init()
 
 	for (var/category in src.items)
@@ -153,52 +150,84 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 			src.products.Add(product)
 			type_list_products[type] = product
 
-	var/database/query/q = new({"
-		CREATE TABLE IF NOT EXISTS donators (
-			ckey TEXT NOT NULL,
-			bought_for INT NOT NULL,
-			type TEXT NOT NULL
-	);"})
-	q.Execute(GLOB.donations.db)
+	var/res = 0
+	var/DBQuery/q = dbcon.NewQuery({"
+	CREATE TABLE IF NOT EXISTS `buys` (
+  		`_id` int(11) NOT NULL AUTO_INCREMENT,
+  		`ckey` varchar(100) NOT NULL,
+  		`type` varchar(100) NOT NULL,
+  		PRIMARY KEY (`_id`),
+  		UNIQUE KEY `_id_UNIQUE` (`_id`)
+	) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"})
+	res = q.Execute()
+
+	if (!res)
+		log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()];")
+		return
+
+	q = dbcon.NewQuery({"
+	CREATE TABLE IF NOT EXISTS `donators` (
+		`ckey` varchar(100) NOT NULL,
+		`current` int(11) NOT NULL,
+		`total` int(11) NOT NULL,
+		PRIMARY KEY (`ckey`),
+		UNIQUE KEY `ckey_UNIQUE` (`ckey`)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"})
+	res = q.Execute()
+
+	if (!res)
+		log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()];")
+		return
 
 	establish_db_connection()
 	if (dbcon && dbcon.IsConnected())
 		src.donators = list()
 
 		var/DBQuery/q1 = dbcon.NewQuery("SELECT ckey, current, total FROM donators")
-		q1.Execute()
+		res = q1.Execute()
+
+		if (!res)
+			log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()];")
+			return
 
 		while (q1.NextRow())
 			var/datum/donator/donator = new
 
 			donator.ckey = q1.item[1]
-			donator.money = text2num(q1.item[2])
 			donator.total = text2num(q1.item[3])
 
-			var/database/query/q2 = new("SELECT type, bought_for FROM donators WHERE ckey=?", donator.ckey)
-			if (q2.Execute(GLOB.donations.db))
-				while (q2.NextRow())
-					var/type_as_text = q2.GetColumn(1)
-					var/bought_for = q2.GetColumn(2)
+			// We will count the rest of money by bought items
+			donator.money = donator.total
 
-					var/type = text2path(type_as_text)
-					if (!type || !type_list_products[type])
-						to_world_log("Donator rollback for [type_as_text] which was bought for [bought_for]")
-						donator.full_refund(type_as_text, bought_for)
-					else
-						var/datum/donator_product/product = type_list_products[type]
+			var/DBQuery/q2 = dbcon.NewQuery("SELECT ckey, type FROM `buys` WHERE ckey='[donator.ckey]';")
+			res = q2.Execute()
 
-						var/price_delta = bought_for - product.cost
-						var/still_available = 1
-						if (price_delta > 0)
-							to_world_log("Donator rebalance for [type_as_text] which will be refunded for [bought_for - price_delta]")
-							donator.partial_refund(type_as_text, bought_for, product.cost)
-						else if (price_delta < 0)
-							to_world_log("Donator rollback for [type_as_text] which was bought for [bought_for]")
-							donator.full_refund(type_as_text, bought_for)
-							still_available = 0
-						if (still_available)
-							donator.owned.Add(type_list_products[type])
+			if (!res)
+				log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()];")
+				return
+
+			while (q2.NextRow())
+				var/object_path = text2path(q2.item[2])
+
+				if (!object_path || !type_list_products[object_path])
+					log_and_message_admins("Donator Store DB error: type [object_path] is invalid;")
+
+					// Remove invalid item
+					var/DBQuery/rq = dbcon.NewQuery("DELETE FROM `buys` WHERE (`type` = '[q2.item[2]]');")
+					rq.Execute()
+					continue
+
+				donator.owned += type_list_products[object_path]
+				donator.money -= type_list_products[object_path].cost
+
+			// Update money
+			var/DBQuery/q3 = dbcon.NewQuery("UPDATE `donators` SET `current` = '[donator.money]' WHERE (`ckey` = '[donator.ckey]');")
+			res = q3.Execute()
+
+			if (!res)
+				log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()];")
+				return
+
 			donators[donator.ckey] = donator
 
 	already_run = 1

@@ -3,7 +3,6 @@
 	var/cost
 	var/category
 
-
 /datum/donator
 	var/ckey
 	var/money
@@ -12,44 +11,16 @@
 	var/list/datum/donator_product/owned = list() // Items bought by this player
 	var/list/datum/donator_product/received = list() // Received items
 
-
-/datum/donator/proc/refund(amount)
-	set background = TRUE
-
-	var/DBQuery/q = dbcon.NewQuery("UPDATE donators SET current = [src.money + amount] WHERE ckey='[src.ckey]'")
-	. = q.Execute()
-	if (.)
-		src.money += amount
-
-
-/datum/donator/proc/full_refund(type_as_text, refund_amount)
-	set background = TRUE
-
-	. = src.refund(refund_amount)
-	if (.)
-		var/database/query/q = new("DELETE FROM donators WHERE ckey=? AND type=?", src.ckey, type_as_text)
-		. &= q.Execute(GLOB.donations.db)
-
-
-/datum/donator/proc/partial_refund(type_as_text, old_cost, new_cost)
-	set background = TRUE
-
-	. = src.refund(old_cost - new_cost)
-	if (.)
-		var/database/query/q = new("UPDATE donators SET bought_for=? WHERE ckey=? AND type=?", new_cost, src.ckey, type_as_text)
-		. &= q.Execute(GLOB.donations.db)
-
-
 /datum/donator/proc/buy_product(datum/donator_product/product)
 	set background = TRUE
 
-	. = src.refund(-product.cost)
-	if (. > 0)
-		var/database/query/q = new("INSERT INTO donators (ckey, bought_for, type) VALUES ( ? , ? , ? )", src.ckey, product.cost, "[product.object.type]")
-		. &= q.Execute(GLOB.donations.db)
+	src.money -= product.cost
 
-		if (.)
-			src.owned.Add(product)
+	var/DBQuery/q = dbcon.NewQuery("INSERT INTO `buys` (`ckey`, `type`) VALUES ('[src.ckey]', '[product.object.type]');")
+	. = q.Execute()
+
+	if (.)
+		src.owned.Add(product)
 
 
 /datum/donator/Topic(href, href_list)
@@ -74,10 +45,10 @@
 			var/response = input(user, "Are you sure you want to buy [product.object.name]? THIS CANNOT BE UNDONE UNLESS THE PRICE GOES UP OR THIS ITEM GETS REMOVED FROM THE STORE!", "Order confirmation", "No") in list("No", "Yes")
 			if (response == "Yes")
 				if (src.buy_product(product))
-					to_chat(user, "<span class='info'>You now own \icon[product.object] [product.object.name].</span>")
+					to_chat(user, "<span class='info'>You now own [icon2html(product.object, world, realsize=FALSE)] [product.object.name].</span>")
 				else
-					to_chat(user, "Something went wrong: report this: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
-					log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()]; [GLOB.donations.db.ErrorMsg()]")
+					to_chat(user, "Something went wrong: report this: [dbcon.ErrorMsg()];")
+					log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()];")
 
 		if ("receive")
 			if(!istype(user))
@@ -113,9 +84,9 @@
 			var/where = user.equip_in_one_of_slots(spawned, slots, del_on_fail=0)
 
 			if (!where)
-				to_chat(user, "<span class='info'>\icon[product.object] [product.object.name] has been delivered.</span>")
+				to_chat(user, "<span class='info'>[icon2html(product.object, world, realsize=FALSE)] [product.object.name] has been delivered.</span>")
 			else
-				to_chat(user, "<span class='info'>\icon[product.object] [product.object.name] has been delivered to your [where].</span>")
+				to_chat(user, "<span class='info'>[icon2html(product.object, world, realsize=FALSE)] [product.object.name] has been delivered to your [where].</span>")
 
 			src.received.Add(product)
 
