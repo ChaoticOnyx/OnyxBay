@@ -2166,7 +2166,6 @@
 	"diary",
 	"dna_activity_bounds",
 	"dna_genes",
-	"donators",
 	"doppler_arrays",
 	"dreams",
 	"dummy_lighting_corner",
