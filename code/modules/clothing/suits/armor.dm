@@ -241,11 +241,11 @@
 	siemens_coefficient = 0.6
 
 /obj/item/clothing/suit/storage/vest/police
-	name = "armored vest"
-	desc = "A synthetic armor vest. This one has added webbing and ballistic plates."
+	name = " police armored vest"
+	desc = "A synthetic armor vest with a large webbing and additional ballistic plates. Has a name badge on the frontal plate, that reads 'Sgt. Bauer'"
 	icon_state = "policevest"
 	item_state = "policevest"
-	armor = list(melee = 35, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0, rad = 0)
+	armor = list(melee = 40, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0, rad = 0)
 
 /obj/item/clothing/suit/storage/vest/nt
 	name = "corporate security heavy armored vest"
