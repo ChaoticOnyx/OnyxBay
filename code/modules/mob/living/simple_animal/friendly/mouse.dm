@@ -85,7 +85,7 @@
 /mob/living/simple_animal/mouse/Crossed(AM as mob|obj)
 	if(ishuman(AM) && !stat)
 		var/mob/M = AM
-		to_chat(M, "<span class='warning'>[icon2html(src, world, realsize=TRUE)] Squeek!</span>")
+		to_chat(M, "<span class='warning'>[icon2html(src, world, realsize=FALSE)] Squeek!</span>")
 		sound_to(M, 'sound/effects/mousesqueek.ogg')
 		resting = 0
 		icon_state = "mouse_[body_color]"

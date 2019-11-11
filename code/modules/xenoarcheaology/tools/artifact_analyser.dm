@@ -74,7 +74,7 @@
 		P.SetName("[src] report #[++report_num]")
 		P.info = "<b>[src] analysis report #[report_num]</b><br>"
 		P.info += "<br>"
-		P.info += "[icon2html(scanned_object, world, realsize=TRUE)] [results]"
+		P.info += "[icon2html(scanned_object, world, realsize=FALSE)] [results]"
 		P.stamped = list(/obj/item/weapon/stamp)
 		P.overlays = list("paper_stamped")
 

@@ -401,7 +401,7 @@
 		if(href_list["send"])
 			P.sradio.send_signal("ACTIVATE")
 			for(var/mob/O in hearers(1, P.loc))
-				O.show_message("[icon2html(P, world, realsize=TRUE)] *beep* *beep*", 3, "*beep* *beep*", 2)
+				O.show_message("[icon2html(P, world, realsize=FALSE)] *beep* *beep*", 3, "*beep* *beep*", 2)
 			return 1
 
 		else if(href_list["freq"])

@@ -248,7 +248,7 @@ its easier to just keep the beam vertical.
 		else
 			f_name += "oil-stained [name][infix]."
 
-	var/img = icon2html(src, world, realsize=TRUE)
+	var/img = icon2html(src, world, realsize=FALSE)
 	to_chat(user, "[img] That's [f_name] [suffix]")
 	to_chat(user, desc)
 

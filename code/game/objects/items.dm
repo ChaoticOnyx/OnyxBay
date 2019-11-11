@@ -837,7 +837,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	return ret_overlay
 
 /obj/item/proc/get_examine_line()
-	var/img = icon2html(src, world, realsize=TRUE)
+	var/img = icon2html(src, world, realsize=FALSE)
 
 	if(blood_DNA)
 		. = "<span class='warning'>[img] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [src]</span>"
