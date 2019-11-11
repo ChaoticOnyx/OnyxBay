@@ -3,7 +3,7 @@
 	set desc = "Buy and receive items by donating."
 	set category = "OOC"
 
-	if(!ticker || ticker.current_state < GAME_STATE_PLAYING)
+	if(!GAME_STATE < RUNLEVEL_GAME)
 		to_chat(usr, "<span class='warning'>Please wait until the game is set up!</span>")
 		return
 

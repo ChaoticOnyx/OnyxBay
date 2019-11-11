@@ -369,8 +369,6 @@
 			return global.dna_activity_bounds;
 		if("dna_genes")
 			return global.dna_genes;
-		if("donators")
-			return global.donators;
 		if("doppler_arrays")
 			return global.doppler_arrays;
 		if("dreams")
@@ -723,8 +721,6 @@
 			return global.priv_station_access;
 		if("priv_syndicate_access")
 			return global.priv_syndicate_access;
-		if("prizes")
-			return global.prizes;
 		if("prometheans")
 			return global.prometheans;
 		if("protected_objects")
@@ -1364,8 +1360,6 @@
 			global.dna_activity_bounds=newval;
 		if("dna_genes")
 			global.dna_genes=newval;
-		if("donators")
-			global.donators=newval;
 		if("doppler_arrays")
 			global.doppler_arrays=newval;
 		if("dreams")
@@ -1718,8 +1712,6 @@
 			global.priv_station_access=newval;
 		if("priv_syndicate_access")
 			global.priv_syndicate_access=newval;
-		if("prizes")
-			global.prizes=newval;
 		if("prometheans")
 			global.prometheans=newval;
 		if("protected_objects")
