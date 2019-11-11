@@ -280,5 +280,4 @@ proc/age2agedescription(age)
 				selected = M
 				break
 
-	to_world("Selected: [selected]")
 	return selected
