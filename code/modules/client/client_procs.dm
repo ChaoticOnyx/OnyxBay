@@ -288,7 +288,10 @@
 /client/MouseEntered(atom/object, location, control, params)
 	if (tooltip)
 		screen |= tooltip
-		tooltip.maptext = "<center style=\"text-shadow: 1px 1px 2px black;\">[object.name]</center>"
+		tooltip.maptext = ""
+
+		if (GAME_STATE > RUNLEVEL_SETUP)
+			tooltip.maptext = "<center style=\"text-shadow: 1px 1px 2px black;\">[object.name]</center>"
 
 /*	if(holder)
 		src.control_freak = 0 //Devs need 0 for profiler access
