@@ -21,7 +21,7 @@
 
 /obj/structure/janitorialcart/examine(mob/user)
 	if(..(user, 1))
-		to_chat(user, "[src] [icon2html(src, world, realsize=TRUE)] contains [reagents.total_volume] unit\s of liquid!")
+		to_chat(user, "[src] [icon2html(src, world, realsize=FALSE)] contains [reagents.total_volume] unit\s of liquid!")
 	//everything else is visible, so doesn't need to be mentioned
 
 
@@ -185,7 +185,7 @@
 	if(!..(user, 1))
 		return
 
-	to_chat(user, "[icon2html(src, world, realsize=TRUE)] This [callme] contains [reagents.total_volume] unit\s of water!")
+	to_chat(user, "[icon2html(src, world, realsize=FALSE)] This [callme] contains [reagents.total_volume] unit\s of water!")
 	if(mybag)
 		to_chat(user, "\A [mybag] is hanging on the [callme].")
 

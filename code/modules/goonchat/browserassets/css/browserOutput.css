@@ -35,9 +35,10 @@ img {
 	-ms-interpolation-mode: nearest-neighbor;
 	image-rendering: pixelated;
 }
+
 img.icon {
 	height: 1em;
-	min-height: 16px;
+	min-height: 2em;
 	width: auto;
 	vertical-align: bottom;
 }

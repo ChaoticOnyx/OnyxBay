@@ -46,7 +46,7 @@
 	description_holders["antag"] = (update_antag_info)? A.get_description_antag() : ""
 
 	description_holders["name"] = "[A.name]"
-	description_holders["icon"] = "[icon2html(A, world, realsize=TRUE)]"
+	description_holders["icon"] = "[icon2html(A, world, realsize=FALSE)]"
 	description_holders["desc"] = A.desc
 
 /mob/Stat()

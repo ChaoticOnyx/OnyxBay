@@ -28,9 +28,9 @@
 /mob/living/carbon/alien/diona/examine(mob/user)
 	. = ..()
 	if(holding_item)
-		to_chat(user, "<span class='notice'>It is holding [icon2html(holding_item, world, realsize=TRUE)] \a [holding_item].</span>")
+		to_chat(user, "<span class='notice'>It is holding [icon2html(holding_item, world, realsize=FALSE)] \a [holding_item].</span>")
 	if(hat)
-		to_chat(user, "<span class='notice'>It is wearing [icon2html(hat, world, realsize=TRUE)] \a [hat].</span>")
+		to_chat(user, "<span class='notice'>It is wearing [icon2html(hat, world, realsize=FALSE)] \a [hat].</span>")
 
 /mob/living/carbon/alien/diona/drop_from_inventory(var/obj/item/W, var/atom/Target = null, var/force = null)
 	. = ..()

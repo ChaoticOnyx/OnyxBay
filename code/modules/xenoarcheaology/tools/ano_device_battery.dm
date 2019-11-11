@@ -102,9 +102,9 @@
 					if(interval > 0)
 						//apply the touch effect to the holder
 						if(holder)
-							to_chat(holder, "The [icon2html(src, world, realsize=TRUE)] [src] held by [holder] shudders in your grasp.")
+							to_chat(holder, "The [icon2html(src, world, realsize=FALSE)] [src] held by [holder] shudders in your grasp.")
 						else
-							src.loc.visible_message("The [icon2html(src, world, realsize=TRUE)] [src] shudders.")
+							src.loc.visible_message("The [icon2html(src, world, realsize=FALSE)] [src] shudders.")
 						inserted_battery.battery_effect.DoEffectTouch(holder)
 
 						//consume power
@@ -130,13 +130,13 @@
 
 			//work out if we need to shutdown
 			if(inserted_battery.stored_charge <= 0)
-				src.loc.visible_message("<span class='notice'>[icon2html(src, world, realsize=TRUE)] [src] buzzes.</span>", "<span class='notice'>[icon2html(src, world, realsize=TRUE)] You hear something buzz.</span>")
+				src.loc.visible_message("<span class='notice'>[icon2html(src, world, realsize=FALSE)] [src] buzzes.</span>", "<span class='notice'>[icon2html(src, world, realsize=FALSE)] You hear something buzz.</span>")
 				shutdown_emission()
 			else if(world.time > time_end)
-				src.loc.visible_message("<span class='notice'>[icon2html(src, world, realsize=TRUE)] [src] chimes.</span>", "<span class='notice'>[icon2html(src, world, realsize=TRUE)] You hear something chime.</span>")
+				src.loc.visible_message("<span class='notice'>[icon2html(src, world, realsize=FALSE)] [src] chimes.</span>", "<span class='notice'>[icon2html(src, world, realsize=FALSE)] You hear something chime.</span>")
 				shutdown_emission()
 		else
-			src.visible_message("<span class='notice'>[icon2html(src, world, realsize=TRUE)] [src] buzzes.</span>", "<span class='notice'>[icon2html(src, world, realsize=TRUE)] You hear something buzz.</span>")
+			src.visible_message("<span class='notice'>[icon2html(src, world, realsize=FALSE)] [src] buzzes.</span>", "<span class='notice'>[icon2html(src, world, realsize=FALSE)] You hear something buzz.</span>")
 			shutdown_emission()
 		last_process = world.time
 
@@ -166,7 +166,7 @@
 	else if(href_list["startup"])
 		if(inserted_battery && inserted_battery.battery_effect && (inserted_battery.stored_charge > 0) )
 			activated = 1
-			src.visible_message("<span class='notice'>[icon2html(src, world, realsize=TRUE)] [src] whirrs.</span>", "<span class='notice'>[icon2html(src, world, realsize=TRUE)] You hear something whirr.</span>")
+			src.visible_message("<span class='notice'>[icon2html(src, world, realsize=FALSE)] [src] whirrs.</span>", "<span class='notice'>[icon2html(src, world, realsize=FALSE)] You hear something whirr.</span>")
 			if(!inserted_battery.battery_effect.activated)
 				inserted_battery.battery_effect.ToggleActivate(1)
 			time_end = world.time + duration
