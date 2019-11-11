@@ -186,7 +186,7 @@
 
 /obj/item/clothing/suit/armor/hos/jensen/custom
 	name = "stylish trenchcoat"
-	desc = "A loose, unbelted military style trenchcoat. Has a \"MILITIA\" writen on chest."
+	desc = "A loose, unbelted trenchcoat of military style. Has a \"MILITA\" writen on chest."
 	icon_state = "hostrench"
 	item_state = "hostrench"
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 10, bomb = 10, bio = 0, rad = 0)
