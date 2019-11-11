@@ -285,6 +285,11 @@
 
 	screen += tooltip
 
+	// Change position only if it not default
+	if (mob.get_preference_value("CHAT_ALT") == GLOB.PREF_YES)
+		update_chat_position(TRUE)
+		fit_viewport()
+
 /client/MouseEntered(atom/object, location, control, params)
 	if (tooltip)
 		screen |= tooltip
@@ -480,7 +485,7 @@ client/verb/character_setup()
 
 /client/verb/toggle_fullscreen()
 	set name = "Toggle Fullscreen"
-	set category = "OOC"
+	set category = "Interface"
 
 	fullscreen = !fullscreen
 
@@ -501,9 +506,51 @@ client/verb/character_setup()
 
 	fit_viewport()
 
+/client/proc/update_chat_position(use_alternative)
+	var/input_height = 0
+	input_height = winget(src, "input", "size")
+	input_height = text2num(splittext(input_height, "x")[2])
+
+	// Hell
+
+	if (use_alternative == TRUE)
+		winset(src, "input_alt", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "saybutton_alt", "is-visible=true;is-disabled=false;is-default=true")
+
+		winset(src, "input", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "hotkey_toggle", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "saybutton", "is-visible=false;is-disabled=true;is-default=false")
+
+		var/current_size = splittext(winget(src, "outputwindow.output", "size"), "x")
+		var/new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
+		winset(src, "outputwindow.output", "size=[new_size]")
+		winset(src, "outputwindow.browseroutput", "size=[new_size]")
+
+		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
+		new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
+		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
+	else
+		winset(src, "input_alt", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "saybutton_alt", "is-visible=false;is-disabled=true;is-default=false")
+
+		winset(src, "input", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "hotkey_toggle", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "saybutton", "is-visible=true;is-disabled=false;is-default=true")
+
+		var/current_size = splittext(winget(src, "outputwindow.output", "size"), "x")
+		var/new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
+		winset(src, "outputwindow.output", "size=[new_size]")
+		winset(src, "outputwindow.browseroutput", "size=[new_size]")
+
+		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
+		new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
+		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
+
 /client/verb/fit_viewport()
 	set name = "Fit Viewport"
-	set category = "OOC"
+	set category = "Interface"
 	set desc = "Fit the width of the map window to match the viewport"
 
 	// Fetch aspect ratio

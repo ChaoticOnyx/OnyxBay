@@ -216,11 +216,25 @@ var/list/_client_preferences_by_type
 	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 
 /datum/client_preference/tooltip/changed(mob/preference_mob, new_value)
-	if (preference_mob.client)
-		if (new_value == GLOB.PREF_YES)
-			preference_mob.client.tooltip.alpha = 255
-		else
-			preference_mob.client.tooltip.alpha = 0
+	if (!preference_mob.client)
+		return
+
+	if (new_value == GLOB.PREF_YES)
+		preference_mob.client.tooltip.alpha = 255
+	else
+		preference_mob.client.tooltip.alpha = 0
+
+/datum/client_preference/chat_position
+	description = "Use Alternative Chat Position"
+	key = "CHAT_ALT"
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+
+/datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
+	if (!preference_mob.client)
+		return
+
+	preference_mob.client.update_chat_position(new_value == GLOB.PREF_YES)
+	preference_mob.client.fit_viewport()
 
 /********************
 * General Staff Preferences *
