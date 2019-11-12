@@ -256,42 +256,62 @@ a.popt {text-decoration: none;}
 .highlight {background: yellow;}
 
 h1, h2, h3, h4, h5, h6	{color: #0000ff;font-family: Georgia, Verdana, sans-serif;}
-h1.alert, h2.alert		{color: #000000;}
 
 em						{font-style: normal;	font-weight: bold;}
 
-.ooc					{color: #002eb8;	font-weight: bold;}
-.adminobserverooc		{color: #0099cc;	font-weight: bold;}
-.adminooc				{color: #700038;	font-weight: bold;}
+/* LOG */
+.log_message			{color: #386aff;	font-weight: bold;}
+
+/* OOC */
+.ooc					{font-weight: bold;}
+.ooc img.text_tag		{width: 32px; height: 10px;}
+.ooc .everyone			{color: #002eb8;}
+.ooc .looc				{color: #3a9696;}
+.ooc .elevated			{color: #2e78d9;}
+.ooc .moderator			{color: #184880;}
+.ooc .developer			{color: #1b521f;}
+.ooc .admin				{color: #b82e00;}
+.ooc .aooc				{color: #960018;}
+
+/* Admin: Private Messages */
+.pm  .howto				{color: #ff0000;	font-weight: bold;		font-size: 200%;}
+.pm  .in				{color: #ff0000;}
+.pm  .out				{color: #ff0000;}
+.pm  .other				{color: #0000ff;}
 
 .adminsay				{color: #ff4500;	font-weight: bold;}
 .admin					{color: #4473ff;	font-weight: bold;}
 
 .name					{					font-weight: bold;}
 
+/* Miscellaneous */
+.name					{font-weight: bold;}
 .say					{}
-.deadsay				{color: #5c00e6;}
-.binarysay				{color: #20c20e;	background-color: #000000;	display: block;}
-.binarysay a			{color: #00ff00;}
-.binarysay a:active, .binarysay a:visited {color: #88ff88;}
+.alert					{color: #ff0000;}
+h1.alert, h2.alert		{color: #000080;}
+
+/* Radio: Misc */
+.deadsay				{color: #530fad;}
 .radio					{color: #008000;}
-.sciradio				{color: #993399;}
-.comradio				{color: #948f02;}
-.secradio				{color: #a30000;}
-.medradio				{color: #337296;}
-.engradio				{color: #fb5613;}
-.suppradio				{color: #a8732b;}
-.servradio				{color: #6eaa2c;}
+.deptradio				{color: #ff00ff;}	/* when all other department colors fail */
+.newscaster				{color: #750000;}
+
+/* Radio Channels */
+.comradio				{color: #193a7a;}
 .syndradio				{color: #6d3f40;}
-.centcomradio			{color: #686868;}
-.aiprivradio			{color: #ff00ff;}
-.redteamradio			{color: #ff0000;}
-.blueteamradio			{color: #0000ff;}
+.centradio				{color: #5c5c8a;}
+.airadio				{color: #ff00ff;}
+.entradio				{color: #339966;}
+
+.secradio				{color: #a30000;}
+.engradio				{color: #a66300;}
+.medradio				{color: #008160;}
+.sciradio				{color: #993399;}
+.supradio				{color: #5f4519;}
+.srvradio				{color: #6eaa2c;}
+.expradio				{color: #a3a332;}
 
 .yell					{					font-weight: bold;}
-
-.alert					{color: #ff0000;}
-h1.alert, h2.alert		{color: #000000;}
 
 .emote					{					font-style: italic;}
 
