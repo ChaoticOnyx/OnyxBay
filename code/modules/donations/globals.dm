@@ -141,9 +141,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 			var/cost = src.items[category][type]
 			var/datum/donator_product/product = new
 
-			var/obj/virtual_object = new type
-
-			product.object = virtual_object
+			product.object = type
 			product.category = category
 			product.cost = cost
 
@@ -157,7 +155,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
   		`byond` varchar(32) NOT NULL,
   		`type` varchar(100) NOT NULL,
   		PRIMARY KEY (`_id`)
-	) ENGINE=Aria  DEFAULT CHARSET=utf8 PAGE_CHECKSUM=0"})
+	) DEFAULT CHARSET=utf8"})
 	res = q.Execute()
 
 	if (!res)
@@ -170,7 +168,7 @@ GLOBAL_DATUM_INIT(donations, /datum/donations, new)
 		`current` float(7,2) NOT NULL DEFAULT 0.00,
 		`sum` float(7,2) NOT NULL DEFAULT 0.00,
 		PRIMARY KEY (`byond`)
-	) ENGINE=Aria  DEFAULT CHARSET=utf8 PAGE_CHECKSUM=0"})
+	) DEFAULT CHARSET=utf8"})
 	res = q.Execute()
 
 	if (!res)
