@@ -45,7 +45,7 @@
 			var/response = input(user, "Are you sure you want to buy [initial(product.object.name)]? THIS CANNOT BE UNDONE UNLESS THE PRICE GOES UP OR THIS ITEM GETS REMOVED FROM THE STORE!", "Order confirmation", "No") in list("No", "Yes")
 			if (response == "Yes")
 				if (src.buy_product(product))
-					to_chat(user, "<span class='info'>You now own [icon2html(initial(product.object.icon), user, realsize=FALSE)] [initial(product.object.name)].</span>")
+					to_chat(user, "<span class='info'>You now own [icon2html(icon(initial(product.object.icon), initial(product.object.icon_state)), user, realsize=FALSE)] [initial(product.object.name)].</span>")
 				else
 					to_chat(user, "Something went wrong: report this: [dbcon.ErrorMsg()];")
 					log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()];")
@@ -84,9 +84,9 @@
 			var/where = user.equip_in_one_of_slots(spawned, slots, del_on_fail=0)
 
 			if (!where)
-				to_chat(user, "<span class='info'>[icon2html(initial(product.object.icon), user, realsize=FALSE)] [initial(product.object.name)] has been delivered.</span>")
+				to_chat(user, "<span class='info'>[icon2html(spawned, user, realsize=FALSE)] [initial(product.object.name)] has been delivered.</span>")
 			else
-				to_chat(user, "<span class='info'>[icon2html(initial(product.object.icon), user, realsize=FALSE)] [initial(product.object.name)] has been delivered to your [where].</span>")
+				to_chat(user, "<span class='info'>[icon2html(spawned, user, realsize=FALSE)] [initial(product.object.name)] has been delivered to your [where].</span>")
 
 			src.received.Add(product)
 
@@ -105,7 +105,7 @@
 			"name" = initial(product.object.name),
 			"desc" = initial(product.object.desc),
 			"product" = "\ref[product]",
-			"icon" = "[icon2html(initial(product.object.icon), user, realsize=FALSE)]",
+			"icon" = "[icon2html(icon(initial(product.object.icon), initial(product.object.icon_state)), user, realsize=TRUE)]",
 			"is_owned" = (product in src.owned),
 			"is_received" = (product in src.received),
 			"cost" = product.cost
