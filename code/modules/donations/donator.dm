@@ -1,5 +1,5 @@
 /datum/donator_product
-	var/obj/object
+	var/atom/object // type
 	var/cost
 	var/category
 
@@ -16,7 +16,7 @@
 
 	src.money -= product.cost
 
-	var/DBQuery/q = dbcon.NewQuery("INSERT INTO `Z_buys` (`byond`, `type`) VALUES ('[src.ckey]', '[product.object.type]');")
+	var/DBQuery/q = dbcon.NewQuery("INSERT INTO `Z_buys` (`byond`, `type`) VALUES ('[src.ckey]', '[product.object]');")
 	. = q.Execute()
 
 	if (.)
@@ -42,10 +42,10 @@
 				to_chat(user, "<span class='danger'>You don't have enough money to buy this.</span>")
 				return 0
 
-			var/response = input(user, "Are you sure you want to buy [product.object.name]? THIS CANNOT BE UNDONE UNLESS THE PRICE GOES UP OR THIS ITEM GETS REMOVED FROM THE STORE!", "Order confirmation", "No") in list("No", "Yes")
+			var/response = input(user, "Are you sure you want to buy [initial(product.object.name)]? THIS CANNOT BE UNDONE UNLESS THE PRICE GOES UP OR THIS ITEM GETS REMOVED FROM THE STORE!", "Order confirmation", "No") in list("No", "Yes")
 			if (response == "Yes")
 				if (src.buy_product(product))
-					to_chat(user, "<span class='info'>You now own [icon2html(product.object, world, realsize=FALSE)] [product.object.name].</span>")
+					to_chat(user, "<span class='info'>You now own [icon2html(initial(product.object.icon), user, realsize=FALSE)] [initial(product.object.name)].</span>")
 				else
 					to_chat(user, "Something went wrong: report this: [dbcon.ErrorMsg()];")
 					log_and_message_admins("Donator Store DB error: [dbcon.ErrorMsg()];")
@@ -77,16 +77,16 @@
 				"right pocket" = slot_r_store
 			)
 
-			var/obj/spawned = new product.object.type(get_turf(user))
+			var/obj/spawned = new product.object(get_turf(user))
 
 			spawned.donator_owner = user.real_name
 
 			var/where = user.equip_in_one_of_slots(spawned, slots, del_on_fail=0)
 
 			if (!where)
-				to_chat(user, "<span class='info'>[icon2html(product.object, world, realsize=FALSE)] [product.object.name] has been delivered.</span>")
+				to_chat(user, "<span class='info'>[icon2html(initial(product.object.icon), user, realsize=FALSE)] [initial(product.object.name)] has been delivered.</span>")
 			else
-				to_chat(user, "<span class='info'>[icon2html(product.object, world, realsize=FALSE)] [product.object.name] has been delivered to your [where].</span>")
+				to_chat(user, "<span class='info'>[icon2html(initial(product.object.icon), user, realsize=FALSE)] [initial(product.object.name)] has been delivered to your [where].</span>")
 
 			src.received.Add(product)
 
@@ -102,9 +102,10 @@
 			categories[product.category] = list()
 
 		categories[product.category][++categories[product.category].len] = list(
-			"name" = product.object.name,
-			"desc" = product.object.desc,
+			"name" = initial(product.object.name),
+			"desc" = initial(product.object.desc),
 			"product" = "\ref[product]",
+			"icon" = "[icon2html(initial(product.object.icon), user, realsize=FALSE)]",
 			"is_owned" = (product in src.owned),
 			"is_received" = (product in src.received),
 			"cost" = product.cost
