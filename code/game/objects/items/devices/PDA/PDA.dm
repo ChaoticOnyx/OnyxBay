@@ -1044,7 +1044,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if (!beep_silent)
 		playsound(loc, 'sound/signals/ping5.ogg', 50, 0)
 		for (var/mob/O in hearers(2, loc))
-			O.show_message(text("[icon2html(src, world, realsize=FALSE)] *[message_tone]*"))
+			O.show_message(text("[icon2html(src, O, realsize=FALSE)] *[message_tone]*"))
 	//Search for holder of the PDA.
 	var/mob/living/L = null
 	if(loc && isliving(loc))

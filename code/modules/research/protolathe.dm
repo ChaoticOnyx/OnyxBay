@@ -53,7 +53,7 @@
 		update_icon()
 	else
 		if(busy)
-			visible_message("<span class='notice'>[icon2html(src, world, realsize=FALSE)] flashes: insufficient materials: [getLackingMaterials(D)].</span>")
+			visible_message("<span class='notice'>[icon2html(src, viewers(src), realsize=FALSE)] flashes: insufficient materials: [getLackingMaterials(D)].</span>")
 			busy = 0
 			update_icon()
 

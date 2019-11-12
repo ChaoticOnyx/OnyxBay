@@ -61,7 +61,7 @@ var/const/CAMERA_WIRE_NOTHING2 = 32
 			C.light_disabled = !C.light_disabled
 
 		if(CAMERA_WIRE_ALARM)
-			var/img = icon2html(C, world, realsize=FALSE)
+			var/img = icon2html(C, viewers(C), realsize=FALSE)
 			C.visible_message("[img] *beep*", "[img] *beep*")
 	return
 

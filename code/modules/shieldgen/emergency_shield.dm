@@ -250,14 +250,14 @@
 		return
 
 	if (src.active)
-		user.visible_message("<span class='notice'>[icon2html(src, world, realsize=FALSE)] [user] deactivated the shield generator.</span>", \
-			"<span class='notice'>[icon2html(src, world, realsize=FALSE)] You deactivate the shield generator.</span>", \
+		user.visible_message("<span class='notice'>[icon2html(src, viewers(user), realsize=FALSE)] [user] deactivated the shield generator.</span>", \
+			"<span class='notice'>[icon2html(src, viewers(user), realsize=FALSE)] You deactivate the shield generator.</span>", \
 			"You hear heavy droning fade out.")
 		src.shields_down()
 	else
 		if(anchored)
-			user.visible_message("<span class='notice'>[icon2html(src, world, realsize=FALSE)] [user] activated the shield generator.</span>", \
-				"<span class='notice'>[icon2html(src, world, realsize=FALSE)] You activate the shield generator.</span>", \
+			user.visible_message("<span class='notice'>[icon2html(src, viewers(user), realsize=FALSE)] [user] activated the shield generator.</span>", \
+				"<span class='notice'>[icon2html(src, viewers(user), realsize=FALSE)] You activate the shield generator.</span>", \
 				"You hear heavy droning.")
 			src.shields_up()
 		else
