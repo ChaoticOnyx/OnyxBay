@@ -101,13 +101,10 @@
 		if (!categories[product.category])
 			categories[product.category] = list()
 
-		var/hashed = md5("[product.object.type]")
-		user << browse_rsc(icon(product.object.icon, product.object.icon_state), "product_[hashed].dmi")
 		categories[product.category][++categories[product.category].len] = list(
 			"name" = product.object.name,
 			"desc" = product.object.desc,
 			"product" = "\ref[product]",
-			"icon" = "<img class='icon product_icon' src='product_[hashed].dmi'></img>",
 			"is_owned" = (product in src.owned),
 			"is_received" = (product in src.received),
 			"cost" = product.cost

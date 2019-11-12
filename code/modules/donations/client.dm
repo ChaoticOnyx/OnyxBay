@@ -20,4 +20,5 @@
 		D.total = 0
 		D.ckey = src.ckey
 		GLOB.donations.donators[src.ckey] = D
+
 	GLOB.donations.donators[src.ckey].ui_interact(usr)
