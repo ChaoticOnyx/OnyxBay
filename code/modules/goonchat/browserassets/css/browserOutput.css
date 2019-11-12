@@ -264,9 +264,25 @@ h1.alert, h2.alert		{color: #a4bad6;}
 
 em						{font-style: normal;	font-weight: bold;}
 
-.ooc					{color: #cca300;	font-weight: bold;}
-.adminobserverooc		{color: #0099cc;	font-weight: bold;}
-.adminooc				{color: #3d5bc3;	font-weight: bold;}
+/* LOG */
+.log_message			{color: #386aff;	font-weight: bold;}
+
+/* OOC */
+.ooc					{font-weight: bold;}
+.ooc img.text_tag		{width: 32px; height: 10px;}
+.ooc .everyone			{color: #002eb8;}
+.ooc .looc				{color: #3a9696;}
+.ooc .elevated			{color: #2e78d9;}
+.ooc .moderator			{color: #184880;}
+.ooc .developer			{color: #1b521f;}
+.ooc .admin				{color: #b82e00;}
+.ooc .aooc				{color: #960018;}
+
+/* Admin: Private Messages */
+.pm  .howto				{color: #ff0000;	font-weight: bold;		font-size: 200%;}
+.pm  .in				{color: #ff0000;}
+.pm  .out				{color: #ff0000;}
+.pm  .other				{color: #0000ff;}
 
 .adminsay				{color: #ff4500;	font-weight: bold;}
 .admin					{color: #5975da;	font-weight: bold;}
