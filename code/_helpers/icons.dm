@@ -927,7 +927,7 @@ proc/generate_image(var/tx as num, var/ty as num, var/tz as num, var/range as nu
 
 	return cap
 
-/proc/icon2html(thing, target, icon_state, dir, frame = 1, moving = FALSE, realsize = FALSE)
+/proc/icon2html(thing, target, icon_state, dir, frame = 1, moving = FALSE, realsize = FALSE, class=null)
 	if (!thing)
 		return
 
@@ -951,7 +951,7 @@ proc/generate_image(var/tx as num, var/ty as num, var/tz as num, var/range as nu
 			register_asset(name, thing)
 			for (var/thing2 in targets)
 				send_asset(thing2, key, FALSE)
-			return "<img class='icon icon-misc' src=\"[url_encode(name)]\">"
+			return "<img class='icon icon-misc [class]' src=\"[url_encode(name)]\">"
 		var/atom/A = thing
 		if (isnull(dir))
 			dir = A.dir
@@ -977,6 +977,6 @@ proc/generate_image(var/tx as num, var/ty as num, var/tz as num, var/range as nu
 		send_asset(thing2, key, FALSE)
 
 	if(realsize)
-		return "<img class='icon icon-[icon_state]' style='width:[I.Width()]px;height:[I.Height()]px;min-height:[I.Height()]px' src=\"[url_encode(key)]\">"
+		return "<img class='icon icon-[icon_state] [class]' style='width:[I.Width()]px;height:[I.Height()]px;min-height:[I.Height()]px' src=\"[url_encode(key)]\">"
 
-	return "<img class='icon icon-[icon_state]' src=\"[url_encode(key)]\">"
+	return "<img class='icon icon-[icon_state] [class]' src=\"[url_encode(key)]\">"
