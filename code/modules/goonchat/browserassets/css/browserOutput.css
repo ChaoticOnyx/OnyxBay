@@ -284,8 +284,10 @@ em						{font-style: normal;	font-weight: bold;}
 .pm  .out				{color: #ff0000;}
 .pm  .other				{color: #0000ff;}
 
-.adminsay				{color: #ff4500;	font-weight: bold;}
-.admin					{color: #5975da;	font-weight: bold;}
+/* Admin: Channels */
+.mod_channel			{color: #735638;	font-weight: bold;}
+.mod_channel .admin		{color: #b82e00;	font-weight: bold;}
+.admin_channel			{color: #9611d4;	font-weight: bold;}
 
 .name					{					font-weight: bold;}
 
@@ -295,23 +297,25 @@ em						{font-style: normal;	font-weight: bold;}
 .binarysay a			{color: #00ff00;}
 .binarysay a:active, .binarysay a:visited {color: #88ff88;}
 .radio					{color: #1ecc43;}
-.sciradio				{color: #c68cfa;}
-.comradio				{color: #5177ff;}
-.secradio				{color: #dd3535;}
-.medradio				{color: #57b8f0;}
-.engradio				{color: #f37746;}
-.suppradio				{color: #b88646;}
-.servradio				{color: #6ca729;}
-.syndradio				{color: #8f4a4b;}
-.centcomradio			{color: #2681a5;}
-.aiprivradio			{color: #d65d95;}
-.redteamradio			{color: #ff4444;}
-.blueteamradio			{color: #3434fd;}
+
+/* Radio Channels */
+.comradio				{color: #193a7a;}
+.syndradio				{color: #6d3f40;}
+.centradio				{color: #5c5c8a;}
+.airadio				{color: #ff00ff;}
+.entradio				{color: #339966;}
+
+.secradio				{color: #a30000;}
+.engradio				{color: #a66300;}
+.medradio				{color: #008160;}
+.sciradio				{color: #993399;}
+.supradio				{color: #5f4519;}
+.srvradio				{color: #6eaa2c;}
+.expradio				{color: #a3a332;}
 
 .yell					{					font-weight: bold;}
 
 .alert					{color: #d82020;}
-h1.alert, h2.alert		{color: #000000;}
 
 .emote					{					font-style: italic;}
 

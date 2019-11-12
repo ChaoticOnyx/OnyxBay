@@ -105,7 +105,7 @@
 			"name" = initial(product.object.name),
 			"desc" = initial(product.object.desc),
 			"product" = "\ref[product]",
-			"icon" = "[icon2html(icon(initial(product.object.icon), initial(product.object.icon_state)), user, realsize=TRUE)]",
+			"icon" = "[icon2html(icon(initial(product.object.icon), initial(product.object.icon_state)), user, realsize=FALSE)]",
 			"is_owned" = (product in src.owned),
 			"is_received" = (product in src.received),
 			"cost" = product.cost

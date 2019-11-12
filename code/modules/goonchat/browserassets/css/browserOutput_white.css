@@ -279,8 +279,10 @@ em						{font-style: normal;	font-weight: bold;}
 .pm  .out				{color: #ff0000;}
 .pm  .other				{color: #0000ff;}
 
-.adminsay				{color: #ff4500;	font-weight: bold;}
-.admin					{color: #4473ff;	font-weight: bold;}
+/* Admin: Channels */
+.mod_channel			{color: #735638;	font-weight: bold;}
+.mod_channel .admin		{color: #b82e00;	font-weight: bold;}
+.admin_channel			{color: #9611d4;	font-weight: bold;}
 
 .name					{					font-weight: bold;}
 

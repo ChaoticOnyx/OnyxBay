@@ -1099,6 +1099,7 @@ window "mainwindow"
 		background-color = none
 		is-default = true
 		saved-params = "pos;size;is-minimized;is-maximized"
+		icon = 'icons\\onyxlogo132x32.png'
 		macro = "macro"
 		menu = "menu"
 	elem "asset_cache_browser"
@@ -1187,7 +1188,6 @@ window "outputwindow"
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
-		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		is-pane = true
 	elem "browseroutput"
@@ -1214,7 +1214,6 @@ window "outputwindow"
 		size = 40x20
 		anchor1 = 100,100
 		anchor2 = none
-		background-color = none
 		is-visible = false
 		is-disabled = true
 		saved-params = "is-checked"
@@ -1238,7 +1237,6 @@ window "outputwindow"
 		size = 80x20
 		anchor1 = 100,100
 		anchor2 = none
-		background-color = none
 		is-visible = false
 		is-disabled = true
 		saved-params = ""
