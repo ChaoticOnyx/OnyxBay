@@ -74,8 +74,11 @@
 	return get_material_by_name(MATERIAL_STEEL)
 
 /obj/machinery/door/firedoor/examine(mob/user)
-	. = ..(user, 1)
-	if(!. || !density)
+	. = ..(user)
+	if(!density)
+		return
+
+	if (get_dist(src, user) > 1)
 		return
 
 	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
