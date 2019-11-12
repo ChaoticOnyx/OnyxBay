@@ -35,6 +35,7 @@ var opts = {
 	'priorChatHeight': 0, //Thing for height-resizing detection
 	'restarting': false, //Is the round restarting?
 	'darkmode':false, //Are we using darkmode? If not WHY ARE YOU LIVING IN 2009???
+	'iconsize': 12,
 
 	//Options menu
 	'selectedSubLoop': null, //Contains the interval loop for closing the selected sub menu
@@ -324,6 +325,10 @@ function iconError(E) {
 	}, opts.imageRetryDelay);
 }
 
+function updateIconsSize(html) {
+	$(html).find(".icon").not('.text_tag').css({'height': opts.iconsize, 'width': opts.iconsize});
+}
+
 //Send a message to the client
 function output(message, flag) {
 	if (typeof message === 'undefined') {
@@ -476,6 +481,9 @@ function output(message, flag) {
 
 		$last_message = trimmed_message;
 		$messages[0].appendChild(entry);
+
+		updateIconsSize(entry);
+
 		$(entry).find("img.icon").error(iconError);
 
 		var to_linkify = $(entry).find(".linkify");
@@ -801,6 +809,7 @@ $(function() {
 	******************************************/
 	var savedConfig = {
 		fontsize: getCookie('fontsize'),
+		iconsize: getCookie('iconsize'),
 		lineheight: getCookie('lineheight'),
 		'spingDisabled': getCookie('pingdisabled'),
 		'shighlightTerms': getCookie('highlightterms'),
@@ -813,6 +822,11 @@ $(function() {
 	if (savedConfig.fontsize) {
 		$messages.css('font-size', savedConfig.fontsize);
 		internalOutput('<span class="internal boldnshit">Loaded font size setting of: '+savedConfig.fontsize+'</span>', 'internal');
+	}
+	if (savedConfig.iconsize) {
+		opts.iconsize = savedConfig.iconsize;
+		updateIconsSize($messages);
+		internalOutput('<span class="internal boldnshit">Loaded icon size setting of: '+savedConfig.iconsize+'</span>', 'internal');
 	}
 	if (savedConfig.lineheight) {
 		$("body").css('line-height', savedConfig.lineheight);
@@ -1054,11 +1068,27 @@ $(function() {
 	});
 
 	$('#increaseFont').click(function(e) {
-		savedConfig.fontsize = (parseInt(savedConfig.fontsize || 13) + 1) + 'px';
+		savedConfig.fontsize = (parseInt(savedConfig.fontsize || 12) + 1) + 'px';
 		$messages.css({'font-size': savedConfig.fontsize});
 		setCookie('fontsize', savedConfig.fontsize, 365);
 		internalOutput('<span class="internal boldnshit">Font size set to '+savedConfig.fontsize+'</span>', 'internal');
 	});
+
+	$('#decreaseIcon').click(function(e) {
+		savedConfig.iconsize = Math.max((parseInt(savedConfig.iconsize) || 12) - 1, 1);
+		updateIconsSize($messages);
+		setCookie('iconsize', savedConfig.iconsize, 365);
+		opts.iconsize = savedConfig.iconsize;
+		internalOutput('<span class="internal boldnshit">Icon size set to '+savedConfig.iconsize+'</span>', 'internal');
+	})
+
+	$('#increaseIcon').click(function(e) {
+		savedConfig.iconsize = (parseInt(savedConfig.iconsize || 12) + 1);
+		updateIconsSize($messages);
+		setCookie('iconsize', savedConfig.iconsize, 365);
+		opts.iconsize = savedConfig.iconsize;
+		internalOutput('<span class="internal boldnshit">Icon size set to '+savedConfig.iconsize+'</span>', 'internal');
+	})
 
 	$('#decreaseLineHeight').click(function(e) {
 		savedConfig.lineheight = Math.max(parseFloat(savedConfig.lineheight || 1.2) - 0.1, 0.1).toFixed(1);
