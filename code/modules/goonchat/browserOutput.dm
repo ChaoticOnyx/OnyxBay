@@ -196,6 +196,15 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 		message = replacetext(message, "\n", "<br>")
 		message = replacetext(message, "\t", "[FOURSPACES][FOURSPACES]")
 
+	//Replace expanded \icon macro with icon2html
+	//regex/Replace with a proc won't work here because icon2html takes target as an argument and there is no way to pass it to the replacement proc
+	//not even hacks with reassigning usr work
+	var/regex/i = new(@/<IMG CLASS=icon SRC=(\[[^]]+])(?: ICONSTATE='([^']+)')?>/, "g")
+	while(i.Find(message))
+		message = copytext(message,1,i.index)+icon2html(locate(i.group[1]), target, icon_state=i.group[2])+copytext(message,i.next)
+
+	//'
+
 	if(islist(target))
 		// Do the double-encoding outside the loop to save nanoseconds
 		var/twiceEncoded = url_encode(url_encode(message))
