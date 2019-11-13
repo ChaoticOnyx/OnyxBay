@@ -50,6 +50,8 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	winset(src, "backstoryb", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
 	winset(src, "bugreportb", "background-color = #494949;background-color = none")
 	winset(src, "bugreportb", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
+	winset(src, "storeb", "background-color = #494949;background-color = none")
+	winset(src, "storeb", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
 	//Status and verb tabs
 	winset(src, "output", "background-color = [COLOR_DARKMODE_BACKGROUND];background-color = none")
 	winset(src, "output", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
@@ -114,6 +116,8 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	winset(src, "backstoryb", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
 	winset(src, "bugreportb", "background-color = none;background-color = #494949")
 	winset(src, "bugreportb", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
+	winset(src, "storeb", "background-color = none;background-color = #494949")
+	winset(src, "storeb", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
 	//Status and verb tabs
 	winset(src, "output", "background-color = none;background-color = [COLOR_DARKMODE_DARKBACKGROUND]")
 	winset(src, "output", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
