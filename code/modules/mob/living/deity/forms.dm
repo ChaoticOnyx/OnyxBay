@@ -44,8 +44,8 @@ Each plays slightly different and has different challenges/benefits
 	name = "Nar-Sie"
 	info = {"The Geometer of Blood, you crave blood and destruction.<br>
 	<b>Benefits:</b><br>
-		<font color='blue'>+Can gain power from blood sacrifices.<br>
-		+Ability to forge weapons and armor.</font>
+		<span class='info'>+Can gain power from blood sacrifices.<br>
+		+Ability to forge weapons and armor.</span>
 	<b>Drawbacks:</b><br>
 		<font color='red'>-Servant abilities require copious amounts of their blood.</font>
 	"}
@@ -77,8 +77,8 @@ Each plays slightly different and has different challenges/benefits
 	name = "The Tower"
 	info = {"Only from destruction does the Tower grow. Its bricks smelted from crumbled ignorance and the fires of ambition.<br>
 	<b>Benefits:</b><br>
-		<font color='blue'>+Learn spells from two different schools.<br>
-		+Deity gains power through each spell use.</font><br>
+		<span class='info'>+Learn spells from two different schools.<br>
+		+Deity gains power through each spell use.</span><br>
 	<b>Drawbacks:</b><br>
 		<font color='red'>-Abilities hold a single charge and must be charged at a fountain of power.</font>
 	"}

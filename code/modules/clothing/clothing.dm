@@ -140,7 +140,7 @@
 	var/list/ties = list()
 	for(var/obj/item/clothing/accessory/accessory in accessories)
 		if(accessory.high_visibility)
-			ties += "[icon2html(accessory, world, realsize=FALSE)] \a [accessory]"
+			ties += "\icon[accessory] \a [accessory]"
 	if(ties.len)
 		.+= " with [english_list(ties)] attached"
 	if(accessories.len > ties.len)
@@ -155,7 +155,7 @@
 		if(accessories.len)
 			var/list/ties = list()
 			for(var/accessory in accessories)
-				ties += "[icon2html(accessory, world, realsize=FALSE)] \a [accessory]"
+				ties += "\icon[accessory] \a [accessory]"
 			to_chat(user, "Attached to \the [src] are [english_list(ties)].")
 		return TOPIC_HANDLED
 

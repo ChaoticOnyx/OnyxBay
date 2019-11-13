@@ -248,8 +248,7 @@ its easier to just keep the beam vertical.
 		else
 			f_name += "oil-stained [name][infix]."
 
-	var/img = icon2html(src, user, realsize=FALSE)
-	to_chat(user, "[img] That's [f_name] [suffix]")
+	to_chat(user, "\icon[src] That's [f_name] [suffix]")
 	to_chat(user, desc)
 
 	return distance == -1 || (get_dist(src, user) <= distance)

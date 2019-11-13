@@ -86,7 +86,7 @@
 	if(!..(user))
 		return
 
-	var/msg = "<span class='info'>*---------*</span>\nThis is [icon2html(src, user, realsize=FALSE)] \a <EM>[src]</EM>!\n[desc]\n"
+	var/msg = "<span class='info'>*---------*</span>\nThis is \icon[src] \a <EM>[src]</EM>!\n[desc]\n"
 
 	if(shackle)	msg += "<span class='warning'>It is clamped in a set of metal straps with a complex digital lock.</span>\n"
 
