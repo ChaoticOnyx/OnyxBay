@@ -21,7 +21,7 @@ window.onerror = function(msg, url, line, col, error) {
 
 //Globals
 window.status = 'Output';
-var $messages, $subOptions, $subAudio, $selectedSub, $contextMenu, $filterMessages, $last_message;
+var $messages, $subOptions, $subFont, $selectedSub, $contextMenu, $filterMessages, $last_message;
 var opts = {
 	//General
 	'messageCount': 0, //A count...of messages...
@@ -62,15 +62,7 @@ var opts = {
 	'clientDataLimit': 5,
 	'clientData': [],
 
-	//Admin music volume update
-	'volumeUpdateDelay': 5000, //Time from when the volume updates to data being sent to the server
-	'volumeUpdating': false, //True if volume update function set to fire
-	'updatedVolume': 0, //The volume level that is sent to the server
-	'musicStartAt': 0, //The position the music starts playing
-	'musicEndAt': 0, //The position the music... stops playing... if null, doesn't apply (so the music runs through)
-
-	'defaultMusicVolume': 25,
-
+	'font': 'Arial',
 	'messageCombining': true,
 
 };
@@ -614,8 +606,6 @@ function ehjaxCallback(data) {
 	} else if (data == 'roundrestart') {
 		opts.restarting = true;
 		internalOutput('<div class="connectionClosed internal restarting">The connection has been closed because the server is restarting. Please wait while you automatically reconnect.</div>', 'internal');
-	} else if (data == 'stopMusic') {
-		$('#adminMusic').prop('src', '');
 	} else {
 		//Oh we're actually being sent data instead of an instruction
 		var dataJ;
@@ -638,36 +628,6 @@ function ehjaxCallback(data) {
 				return;
 			} else {
 				handleClientData(data.clientData.ckey, data.clientData.ip, data.clientData.compid);
-			}
-			sendVolumeUpdate();
-		} else if (data.adminMusic) {
-			if (typeof data.adminMusic === 'string') {
-				var adminMusic = byondDecode(data.adminMusic);
-				var bindLoadedData = false;
-				adminMusic = adminMusic.match(/https?:\/\/\S+/) || '';
-				if (data.musicRate) {
-					var newRate = Number(data.musicRate);
-					if(newRate) {
-						$('#adminMusic').prop('defaultPlaybackRate', newRate);
-					}
-				} else {
-					$('#adminMusic').prop('defaultPlaybackRate', 1.0);
-				}
-				if (data.musicSeek) {
-					opts.musicStartAt = Number(data.musicSeek) || 0;
-					bindLoadedData = true;
-				} else {
-					opts.musicStartAt = 0;
-				}
-				if (data.musicHalt) {
-					opts.musicEndAt = Number(data.musicHalt) || null;
-					bindLoadedData = true;
-				}
-				if (bindLoadedData) {
-					$('#adminMusic').one('loadeddata', adminMusicLoadedData);
-				}
-				$('#adminMusic').prop('src', adminMusic);
-				$('#adminMusic').trigger("play");
 			}
 		} else if (data.syncRegex) {
 			for (var i in data.syncRegex) {
@@ -700,34 +660,6 @@ function createPopup(contents, width) {
 
 function toggleWasd(state) {
 	opts.wasd = (state == 'on' ? true : false);
-}
-
-function sendVolumeUpdate() {
-	opts.volumeUpdating = false;
-	if(opts.updatedVolume) {
-		runByond('?_src_=chat&proc=setMusicVolume&param[volume]='+opts.updatedVolume);
-	}
-}
-
-function adminMusicEndCheck(event) {
-	if (opts.musicEndAt) {
-		if ($('#adminMusic').prop('currentTime') >= opts.musicEndAt) {
-			$('#adminMusic').off(event);
-			$('#adminMusic').trigger('pause');
-			$('#adminMusic').prop('src', '');
-		}
-	} else {
-		$('#adminMusic').off(event);
-	}
-}
-
-function adminMusicLoadedData(event) {
-	if (opts.musicStartAt && ($('#adminMusic').prop('duration') === Infinity || (opts.musicStartAt <= $('#adminMusic').prop('duration'))) ) {
-		$('#adminMusic').prop('currentTime', opts.musicStartAt);
-	}
-	if (opts.musicEndAt) {
-		$('#adminMusic').on('timeupdate', adminMusicEndCheck);
-	}
 }
 
 function subSlideUp() {
@@ -784,7 +716,7 @@ if (typeof $ === 'undefined') {
 $(function() {
 	$messages = $('#messages');
 	$subOptions = $('#subOptions');
-	$subAudio = $('#subAudio');
+	$subFont = $('#subFont');
 	$selectedSub = $subOptions;
 
 	//Hey look it's a controller loop!
@@ -814,7 +746,7 @@ $(function() {
 		'spingDisabled': getCookie('pingdisabled'),
 		'shighlightTerms': getCookie('highlightterms'),
 		'shighlightColor': getCookie('highlightcolor'),
-		'smusicVolume': getCookie('musicVolume'),
+		'sfont': getCookie('font'),
 		'smessagecombining': getCookie('messagecombining'),
 		'sdarkmode': getCookie('darkmode'),
 	};
@@ -860,16 +792,9 @@ $(function() {
 		opts.highlightColor = savedConfig.shighlightColor;
 		internalOutput('<span class="internal boldnshit">Loaded highlight color of: '+savedConfig.shighlightColor+'</span>', 'internal');
 	}
-	if (savedConfig.smusicVolume) {
-		var newVolume = clamp(savedConfig.smusicVolume, 0, 100);
-		$('#adminMusic').prop('volume', newVolume / 100);
-		$('#musicVolume').val(newVolume);
-		opts.updatedVolume = newVolume;
-		sendVolumeUpdate();
-		internalOutput('<span class="internal boldnshit">Loaded music volume of: '+savedConfig.smusicVolume+'</span>', 'internal');
-	}
-	else{
-		$('#adminMusic').prop('volume', opts.defaultMusicVolume / 100);
+	if (savedConfig.sfont) {
+		$('body').css({'font-family': savedConfig.sfont});
+		internalOutput('<span class="internal boldnshit">Loaded font: '+savedConfig.sfont+'</span>', 'internal');
 	}
 
 	if (savedConfig.smessagecombining) {
@@ -1048,8 +973,8 @@ $(function() {
 	$('#darkmodetoggle').click(function(e) {
 		swap();
 	});
-	$('#toggleAudio').click(function(e) {
-		handleToggleClick($subAudio, $(this));
+	$('#toggleFont').click(function(e) {
+		handleToggleClick($subFont, $(this));
 	});
 
 	$('.sub, .toggle').mouseenter(function() {
@@ -1204,24 +1129,18 @@ $(function() {
 		opts.messageCount = 0;
 	});
 
-	$('#musicVolumeSpan').hover(function() {
-		$('#musicVolumeText').addClass('hidden');
-		$('#musicVolume').removeClass('hidden');
+	$('#fontInputSpan').hover(function() {
+		$('#fontInput').removeClass('hidden');
 	}, function() {
-		$('#musicVolume').addClass('hidden');
-		$('#musicVolumeText').removeClass('hidden');
+		$('#fontInput').addClass('hidden');
 	});
 
-	$('#musicVolume').change(function() {
-		var newVolume = $('#musicVolume').val();
-		newVolume = clamp(newVolume, 0, 100);
-		$('#adminMusic').prop('volume', newVolume / 100);
-		setCookie('musicVolume', newVolume, 365);
-		opts.updatedVolume = newVolume;
-		if(!opts.volumeUpdating) {
-			setTimeout(sendVolumeUpdate, opts.volumeUpdateDelay);
-			opts.volumeUpdating = true;
-		}
+	$('#fontInput').change(function() {
+		var newFont = $('#fontInput').val() || 'Verdana, sans-serif';
+		$('body').css({'font-family': newFont});
+		setCookie('font', newFont, 365);
+		opts.font = newFont;
+		internalOutput('<span class="internal boldnshit">Font set to: '+newFont+'</span>', 'internal');
 	});
 
 	$('#toggleCombine').click(function(e) {

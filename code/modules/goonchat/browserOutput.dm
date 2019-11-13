@@ -14,7 +14,6 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 	var/cookieSent   = FALSE // Has the client sent a cookie for analysis
 	var/broken       = FALSE
 	var/list/connectionHistory //Contains the connection history passed from chat cookie
-	var/adminMusicVolume = 25 //This is for the Play Global Sound verb
 
 /datum/chatOutput/New(client/C)
 	owner = C
@@ -80,8 +79,6 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 		if("analyzeClientData")
 			data = analyzeClientData(arglist(params))
 
-		if("setMusicVolume")
-			data = setMusicVolume(arglist(params))
 		if("swaptodarkmode")
 			swaptodarkmode()
 		if("swaptolightmode")
@@ -119,25 +116,6 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 	if(islist(data))
 		data = json_encode(data)
 	C << output("[data]", "[window]:ehjaxCallback")
-
-/datum/chatOutput/proc/sendMusic(music, list/extra_data)
-	if(!findtext(music, GLOB.is_http_protocol))
-		return
-	var/list/music_data = list("adminMusic" = url_encode(url_encode(music)))
-
-	if(extra_data?.len)
-		music_data["musicRate"] = extra_data["pitch"]
-		music_data["musicSeek"] = extra_data["start"]
-		music_data["musicHalt"] = extra_data["end"]
-
-	ehjax_send(data = music_data)
-
-/datum/chatOutput/proc/stopMusic()
-	ehjax_send(data = "stopMusic")
-
-/datum/chatOutput/proc/setMusicVolume(volume = "")
-	if(volume)
-		adminMusicVolume = Clamp(text2num(volume), 0, 100)
 
 //Sends client connection details to the chat to handle and save
 /datum/chatOutput/proc/sendClientData()
