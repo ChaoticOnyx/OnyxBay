@@ -3,8 +3,11 @@
 	set desc = "Buy and receive items by donating."
 	set category = "OOC"
 
-	if(GAME_STATE < RUNLEVEL_GAME)
+	if (GAME_STATE < RUNLEVEL_GAME)
 		to_chat(usr, "<span class='warning'>Please wait until the game is set up!</span>")
+		return
+
+	if (!istype(mob, /mob/living/))
 		return
 
 	GLOB.donations.ensure_init()
