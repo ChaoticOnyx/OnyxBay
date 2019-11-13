@@ -188,7 +188,7 @@ datum/track/New(var/title_name, var/audio)
 		var/obj/item/weapon/spacecash/bundle/cashmoney = W
 		if(300> cashmoney.worth)
 			// This is not a status display message, since it's something the character themselves is meant to see BEFORE putting the money in
-			to_chat(usr, "[icon2html(cashmoney, usr, realsize=FALSE)] <span class='warning'>That is not enough money. You need T300.</span>")
+			to_chat(usr, "\icon[cashmoney] <span class='warning'>That is not enough money. You need T300.</span>")
 			paid = 0
 			handled = 1
 			return

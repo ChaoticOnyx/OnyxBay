@@ -88,7 +88,7 @@
 		message = rebootmsg
 	var/dat = "<head><title>Message Monitor Console</title></head><body>"
 	dat += "<center><h2>Message Monitor Console</h2></center><hr>"
-	dat += "<center><h4><font color='blue'[message]</h5></center>"
+	dat += "<center><h4><span class='info'>[message]</span></h4></center>"
 
 	if(auth)
 		dat += "<h4><dd><A href='?src=\ref[src];auth=1'>&#09;<font color='green'>\[Authenticated\]</font></a>&#09;/"
@@ -122,7 +122,7 @@
 					dat += "<dd><A href='?src=\ref[src];spam=1'>&#09;[++i]. Modify Spam Filter</a><br></dd>"
 			else
 				for(var/n = ++i; n <= optioncount; n++)
-					dat += "<dd><font color='blue'>&#09;[n]. ---------------</font><br></dd>"
+					dat += "<dd><span class='info'>&#09;[n]. ---------------</span><br></dd>"
 			if((istype(user, /mob/living/silicon/ai) || istype(user, /mob/living/silicon/robot)) && (user.mind.special_role && user.mind.original == user))
 				//Malf/Traitor AIs can bruteforce into the system to gain the Key.
 				dat += "<dd><A href='?src=\ref[src];hack=1'><i><font color='Red'>*&@#. Bruteforce Key</font></i></font></a><br></dd>"

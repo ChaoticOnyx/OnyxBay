@@ -168,7 +168,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 			screen = RCS_SENTPASS
 			message_log += "<B>Message sent to [recipient]</B><BR>[message]"
 		else
-			audible_message(text("[icon2html(src, viewers(src), realsize=FALSE)] *The Requests Console beeps: 'NOTICE: No server detected!'"),,4)
+			audible_message(text("\icon[src] *The Requests Console beeps: 'NOTICE: No server detected!'"),,4)
 
 	//Handle screen switching
 	if(href_list["setScreen"])
@@ -234,7 +234,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 		if(inoperable(MAINT)) return
 		if(screen == RCS_MESSAUTH)
 			var/obj/item/weapon/stamp/T = O
-			msgStamped = text("<font color='blue'><b>Stamped with the [T.name]</b></font>")
+			msgStamped = text("<span class='info'><b>Stamped with the [T.name]</b></span>")
 			updateUsrDialog()
 	return
 
