@@ -1096,6 +1096,7 @@ window "mainwindow"
 		size = 1001x739
 		anchor1 = none
 		anchor2 = none
+		background-color = none
 		is-default = true
 		saved-params = "pos;size;is-minimized;is-maximized"
 		icon = 'icons\\onyxlogo132x32.png'
@@ -1107,6 +1108,7 @@ window "mainwindow"
 		size = 1x1
 		anchor1 = none
 		anchor2 = none
+		background-color = none
 		is-visible = false
 		saved-params = ""
 	elem "mainvsplit"
@@ -1115,8 +1117,9 @@ window "mainwindow"
 		size = 1001x720
 		anchor1 = 0,0
 		anchor2 = 100,100
+		background-color = none
 		saved-params = "splitter"
-		right = "rpane"
+		right = "infowindow"
 		is-vert = true
 	elem "input"
 		type = INPUT
@@ -1134,6 +1137,7 @@ window "mainwindow"
 		size = 40x20
 		anchor1 = 100,100
 		anchor2 = none
+		background-color = none
 		saved-params = "is-checked"
 		text = "Chat"
 		command = ".winset \"saybutton.is-checked=true?input.command=\"!say \\\"\" macrobutton.is-checked=false:input.command=\""
@@ -1144,6 +1148,7 @@ window "mainwindow"
 		size = 80x20
 		anchor1 = 100,100
 		anchor2 = none
+		background-color = none
 		saved-params = ""
 		text = "Hotkey Toggle"
 		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
@@ -1183,6 +1188,7 @@ window "outputwindow"
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
+		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		titlebar = false
 		statusbar = false
@@ -1214,6 +1220,7 @@ window "outputwindow"
 		size = 40x20
 		anchor1 = 100,100
 		anchor2 = none
+		background-color = none
 		is-visible = false
 		is-disabled = true
 		saved-params = "is-checked"
@@ -1237,149 +1244,12 @@ window "outputwindow"
 		size = 80x20
 		anchor1 = 100,100
 		anchor2 = none
+		background-color = none
 		is-visible = false
 		is-disabled = true
 		saved-params = ""
 		text = "Hotkey Toggle"
 		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
-		button-type = pushbox
-
-window "rpane"
-	elem "rpane"
-		type = MAIN
-		pos = 372,0
-		size = 709x480
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		saved-params = "pos;size;is-minimized;is-maximized"
-		is-pane = true
-	elem "rpanewindow"
-		type = CHILD
-		pos = 0,0
-		size = 709x499
-		anchor1 = 0,0
-		anchor2 = 100,100
-		background-color = none
-		saved-params = "splitter"
-		right = "outputwindow"
-		is-vert = false
-	elem "textb"
-		type = BUTTON
-		pos = 0,0
-		size = 60x16
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		is-visible = false
-		saved-params = "is-checked"
-		text = "Text"
-		command = ".winset \"rpanewindow.left=;\""
-		is-checked = true
-		group = "rpanemode"
-		button-type = pushbox
-	elem "infob"
-		type = BUTTON
-		pos = 64,0
-		size = 60x16
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		is-visible = false
-		saved-params = "is-checked"
-		text = "Info"
-		command = ".winset \"rpanewindow.left=infowindow\""
-		group = "rpanemode"
-		button-type = pushbox
-	elem "wikib"
-		type = BUTTON
-		pos = 152,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		saved-params = "is-checked"
-		text = "Wiki"
-		command = "wiki"
-		group = "rpanemode"
-	elem "storeb"
-		type = BUTTON
-		pos = 573,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		saved-params = "is-checked"
-		text = "Store"
-		command = "Donator-Store"
-		group = "rpanemode"
-	elem "rulesb"
-		type = BUTTON
-		pos = 222,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		saved-params = "is-checked"
-		text = "Rules"
-		command = "rules"
-		group = "rpanemode"
-	elem "backstoryb"
-		type = BUTTON
-		pos = 292,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		saved-params = "is-checked"
-		text = "Backstory"
-		command = "backstory"
-		group = "rpanemode"
-	elem "discordb"
-		type = BUTTON
-		pos = 362,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		saved-params = "is-checked"
-		text = "Discord"
-		command = "discord"
-		group = "rpanemode"
-	elem "bugreportb"
-		type = BUTTON
-		pos = 432,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		saved-params = "is-checked"
-		text = "Bug Report"
-		command = "bug-report"
-		group = "rpanemode"
-	elem "changelog"
-		type = BUTTON
-		pos = 502,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		saved-params = "is-checked"
-		text = "Changelog"
-		command = "Changelog"
-		group = "rpanemode"
-	elem "browseb"
-		type = BUTTON
-		pos = 464,0
-		size = 60x16
-		anchor1 = none
-		anchor2 = none
-		background-color = none
-		is-visible = false
-		saved-params = "is-checked"
-		text = "Browser"
-		command = ".winset \"rpanewindow.left=browserwindow\""
-		group = "rpanemode"
 		button-type = pushbox
 
 window "browserwindow"
@@ -1407,24 +1277,107 @@ window "browserwindow"
 window "infowindow"
 	elem "infowindow"
 		type = MAIN
-		pos = 281,0
+		pos = 372,0
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
+		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		title = "Info"
+		titlebar = false
+		statusbar = false
+		can-close = false
+		can-minimize = false
+		can-resize = false
 		is-pane = true
 	elem "info"
-		type = INFO
-		pos = 0,0
-		size = 638x477
+		type = CHILD
+		pos = 0,24
+		size = 640x456
 		anchor1 = 0,0
 		anchor2 = 100,100
-		is-default = true
-		saved-params = ""
-		highlight-color = #00aa00
-		on-show = ".winset\"rpane.infob.is-visible=true;rpane.browseb.is-visible=true?rpane.infob.pos=130,0:rpane.infob.pos=65,0 rpane.textb.is-visible=true rpane.infob.is-checked=true rpane.rpanewindow.pos=0,30 rpane.rpanewindow.size=0x0 rpane.rpanewindow.left=infowindow\""
-		on-hide = ".winset\"rpane.infob.is-visible=false;rpane.browseb.is-visible=true?rpane.browseb.is-checked=true rpane.rpanewindow.left=browserwindow:rpane.textb.is-visible=true rpane.rpanewindow.pos=0,30 rpane.rpanewindow.size=0x0 rpane.rpanewindow.left=\""
+		background-color = none
+		saved-params = "splitter"
+		left = "statwindow"
+		right = "outputwindow"
+		is-vert = false
+	elem "wikib"
+		type = BUTTON
+		pos = 74,2
+		size = 66x20
+		anchor1 = 12,0
+		anchor2 = 23,0
+		background-color = none
+		saved-params = "is-checked"
+		text = "Wiki"
+		command = "wiki"
+		group = "rpanemode"
+	elem "storeb"
+		type = BUTTON
+		pos = 468,2
+		size = 66x20
+		anchor1 = 78,0
+		anchor2 = 88,0
+		background-color = none
+		saved-params = "is-checked"
+		text = "Store"
+		command = "Donator-Store"
+		group = "rpanemode"
+	elem "rulesb"
+		type = BUTTON
+		pos = 140,2
+		size = 64x20
+		anchor1 = 23,0
+		anchor2 = 34,0
+		background-color = none
+		saved-params = "is-checked"
+		text = "Rules"
+		command = "rules"
+		group = "rpanemode"
+	elem "backstoryb"
+		type = BUTTON
+		pos = 204,2
+		size = 67x20
+		anchor1 = 34,0
+		anchor2 = 45,0
+		background-color = none
+		saved-params = "is-checked"
+		text = "Backstory"
+		command = "backstory"
+		group = "rpanemode"
+	elem "discordb"
+		type = BUTTON
+		pos = 271,2
+		size = 65x20
+		anchor1 = 45,0
+		anchor2 = 56,0
+		background-color = none
+		saved-params = "is-checked"
+		text = "Discord"
+		command = "discord"
+		group = "rpanemode"
+	elem "bugreportb"
+		type = BUTTON
+		pos = 336,2
+		size = 65x20
+		anchor1 = 56,0
+		anchor2 = 67,0
+		background-color = none
+		saved-params = "is-checked"
+		text = "Bug Report"
+		command = "bug-report"
+		group = "rpanemode"
+	elem "changelog"
+		type = BUTTON
+		pos = 401,2
+		size = 67x20
+		anchor1 = 67,0
+		anchor2 = 78,0
+		background-color = none
+		saved-params = "is-checked"
+		text = "Changelog"
+		command = "Changelog"
+		group = "rpanemode"
 
 window "text_editor"
 	elem "text_editor"
@@ -1475,4 +1428,24 @@ window "text_editor"
 		border = line
 		saved-params = ""
 		multi-line = true
+
+window "statwindow"
+	elem "statwindow"
+		type = MAIN
+		pos = 372,0
+		size = 640x480
+		anchor1 = none
+		anchor2 = none
+		background-color = none
+		saved-params = "pos;size;is-minimized;is-maximized"
+		is-pane = true
+	elem "stat"
+		type = INFO
+		pos = 0,0
+		size = 640x480
+		anchor1 = 0,0
+		anchor2 = 100,100
+		is-default = true
+		saved-params = ""
+		tab-background-color = none
 

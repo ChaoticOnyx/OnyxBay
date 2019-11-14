@@ -156,7 +156,7 @@
 /client/New(TopicData)
 	TopicData = null							//Prevent calls to client.Topic from connect
 
-	// Load goonchat
+	// Load onyxchat
 	chatOutput = new(src)
 
 	if(!(connection in list("seeker", "web")))					//Invalid connection type.

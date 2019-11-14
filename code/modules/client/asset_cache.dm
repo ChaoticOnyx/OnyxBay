@@ -243,26 +243,26 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"icons/pda_icons/",
 	)
 
-/datum/asset/group/goonchat
+/datum/asset/group/onyxchat
 	children = list(
 		/datum/asset/simple/jquery,
-		/datum/asset/simple/goonchat,
+		/datum/asset/simple/onyxchat,
 		/datum/asset/simple/fontawesome
 	)
 
 /datum/asset/simple/jquery
 	verify = FALSE
 	assets = list(
-		"jquery.min.js"            = 'code/modules/goonchat/browserassets/js/jquery.min.js',
+		"jquery.min.js"            = 'code/modules/onyxchat/browserassets/js/jquery.min.js',
 	)
 
-/datum/asset/simple/goonchat
+/datum/asset/simple/onyxchat
 	verify = TRUE
 	assets = list(
-		"json2.min.js"             = 'code/modules/goonchat/browserassets/js/json2.min.js',
-		"browserOutput.js"         = 'code/modules/goonchat/browserassets/js/browserOutput.js',
-		"browserOutput.css"	       = 'code/modules/goonchat/browserassets/css/browserOutput.css',
-		"browserOutput_white.css"  = 'code/modules/goonchat/browserassets/css/browserOutput_white.css'
+		"json2.min.js"             = 'code/modules/onyxchat/browserassets/js/json2.min.js',
+		"browserOutput.js"         = 'code/modules/onyxchat/browserassets/js/browserOutput.js',
+		"browserOutput.css"	       = 'code/modules/onyxchat/browserassets/css/browserOutput.css',
+		"browserOutput_white.css"  = 'code/modules/onyxchat/browserassets/css/browserOutput_white.css'
 	)
 
 /datum/asset/simple/fontawesome

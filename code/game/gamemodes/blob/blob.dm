@@ -4,8 +4,8 @@
 	extended_round_description = "Destroy or neutralize the blob outbreak."
 	config_tag = "blob"
 
-#warn Set players
-	required_players = 0
+//#warn Set players
+	required_players = 20
 	required_enemies = 1
 	antag_tags = list(MODE_BLOB)
 	antag_templates = list(/datum/antagonist/blob)

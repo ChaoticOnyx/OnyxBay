@@ -20,8 +20,8 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 
 	flags = ANTAG_RANDSPAWN
 
-#warn Set countdown
-	var/countdown = 10
+//#warn Set countdown
+	var/countdown = 300
 
 /datum/antagonist/blob/Process()
 	if (countdown > 0)
