@@ -18,6 +18,7 @@
 			access_keycard_auth, access_sec_doors, access_psychiatrist, access_eva, access_maint_tunnels, access_external_airlocks)
 
 	minimal_player_age = 14
+	minimum_character_age = 25	
 	ideal_character_age = 50
 	outfit_type = /decl/hierarchy/outfit/job/medical/cmo
 
