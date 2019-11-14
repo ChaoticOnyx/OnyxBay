@@ -277,6 +277,9 @@ its easier to just keep the beam vertical.
 /atom/proc/update_icon()
 	return
 
+/atom/proc/blob_act(destroy = 0, obj/effect/blob/source = null)
+	return
+
 /atom/proc/ex_act()
 	return
 

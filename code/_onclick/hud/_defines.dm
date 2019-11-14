@@ -126,3 +126,18 @@
 //Blocking and dashing
 #define ui_block "EAST-4:24,SOUTH:5"
 #define ui_blockswitch "EAST-4:24,SOUTH:5"
+
+//Blob HUD
+#define ui_blob_bgLEFT "WEST,CENTER-7"
+#define ui_blob_bgRIGHT "EAST-14,CENTER-7"
+#define ui_blob_powerbar "WEST,CENTER-3"
+#define ui_blob_healthbar "EAST:[14*PIXEL_MULTIPLIER],CENTER-3"
+#define ui_blob_spawnblob "WEST:[18*PIXEL_MULTIPLIER],CENTER-3:[5*PIXEL_MULTIPLIER]"
+#define ui_blob_spawnstrong "WEST:[18*PIXEL_MULTIPLIER],CENTER-2:[9*PIXEL_MULTIPLIER]"
+#define ui_blob_spawnresource "WEST:[18*PIXEL_MULTIPLIER],CENTER-1:[13*PIXEL_MULTIPLIER]"
+#define ui_blob_spawnfactory "WEST:[18*PIXEL_MULTIPLIER],CENTER:[17*PIXEL_MULTIPLIER]"
+#define ui_blob_spawnnode "WEST:[18*PIXEL_MULTIPLIER],CENTER+1:[21*PIXEL_MULTIPLIER]"
+#define ui_blob_spawncore "WEST:[18*PIXEL_MULTIPLIER],CENTER+2:[25*PIXEL_MULTIPLIER]"
+#define ui_blob_ping "EAST-1:[24*PIXEL_MULTIPLIER],CENTER+3:[21*PIXEL_MULTIPLIER]"
+#define ui_blob_rally "EAST-1:[24*PIXEL_MULTIPLIER],CENTER+4:[25*PIXEL_MULTIPLIER]"
+#define ui_blob_taunt "EAST-1:[24*PIXEL_MULTIPLIER],CENTER+5:[29*PIXEL_MULTIPLIER]"

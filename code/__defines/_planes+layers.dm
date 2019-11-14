@@ -143,17 +143,21 @@ What is the naming convention for planes or layers?
 	#define VEHICLE_LOAD_LAYER          4.09
 	#define CAMERA_LAYER                4.10
 	//BLOB
-	#define BLOB_SHIELD_LAYER           4.11
-	#define BLOB_NODE_LAYER             4.12
-	#define BLOB_CORE_LAYER	            4.13
+	#define BLOB_BASE_LAYER				4.11
+	#define BLOB_SHIELD_LAYER			4.12
+	#define BLOB_RESOURCE_LAYER			4.13
+	#define BLOB_FACTORY_LAYER			4.14
+	#define BLOB_NODE_LAYER				4.15
+	#define BLOB_CORE_LAYER				5.16
+	#define BLOB_SPORE_LAYER			6.17
 	//EFFECTS BELOW LIGHTING
-	#define BELOW_PROJECTILE_LAYER      4.14
-	#define DEEP_FLUID_LAYER            4.15
-	#define FIRE_LAYER                  4.16
-	#define PROJECTILE_LAYER            4.17
-	#define ABOVE_PROJECTILE_LAYER      4.18
-	#define SINGULARITY_LAYER           4.19
-	#define POINTER_LAYER               4.20
+	#define BELOW_PROJECTILE_LAYER      4.18
+	#define DEEP_FLUID_LAYER            4.19
+	#define FIRE_LAYER                  4.20
+	#define PROJECTILE_LAYER            4.21
+	#define ABOVE_PROJECTILE_LAYER      4.22
+	#define SINGULARITY_LAYER           4.23
+	#define POINTER_LAYER               4.24
 
 	//OBSERVER
 	#define OBSERVER_LAYER              5.1

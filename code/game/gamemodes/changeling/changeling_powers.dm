@@ -939,7 +939,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	spawn(10 SECONDS)
 		to_chat(target, "<span class='danger'>You feel strange spasms in your hand.</span>")
 	spawn(15 SECONDS)
-		playsound(target.loc, 'sound/effects/blobattack.ogg', 30, 1)
+		playsound(target.loc, 'sound/effects/blob/blobattack.ogg', 30, 1)
 		var/hand = pick(list(BP_R_HAND,BP_L_HAND))
 		var/failed
 		switch(hand)
@@ -1109,7 +1109,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	changeling.chem_charges -= required_chems
 	if(loud)
-		playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
+		playsound(src, 'sound/effects/blob/blobattack.ogg', 30, 1)
 	return TRUE
 
 //Hide us from anyone who would do us harm.
@@ -1313,7 +1313,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	visible_message("<span class='warning'>With a sickening crunch, [creator] reforms their arm!</span>",
 	"<span class='notice'>We assimilate the weapon back into our body.</span>",
 	"<span class='italics'>You hear organic matter ripping and tearing!</span>")
-	playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
+	playsound(src, 'sound/effects/blob/blobattack.ogg', 30, 1)
 	spawn(1)
 		if(src)
 			qdel(src)
@@ -1382,7 +1382,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		"<span class='warning'>The flesh of our hand is transforming.</span>",
 		"<span class='italics'>You hear organic matter ripping and tearing!</span>")
 	spawn(4 SECONDS)
-		playsound(src, 'sound/effects/blobattack.ogg', 30, 1)
+		playsound(src, 'sound/effects/blob/blobattack.ogg', 30, 1)
 		if(src.mind.changeling.recursive_enhancement)
 			if(changeling_generic_weapon(/obj/item/weapon/melee/changeling/arm_blade/greater))
 				to_chat(src, "<span class='notice'>We prepare an extra sharp blade.</span>")

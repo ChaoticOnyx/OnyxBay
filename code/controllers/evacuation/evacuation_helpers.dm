@@ -26,7 +26,6 @@
 	return state != EVAC_IDLE
 
 /datum/evacuation_controller/proc/can_evacuate(var/mob/user, var/forced)
-
 	if(!isnull(evac_called_at))
 		return 0
 
