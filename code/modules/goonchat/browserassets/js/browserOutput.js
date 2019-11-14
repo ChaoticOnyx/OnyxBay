@@ -217,6 +217,7 @@ function rustoutf(str)
 	str = str.replace(/Ý/g, "&#x42D;")
 	str = str.replace(/Þ/g, "&#x42E;")
 	str = str.replace(/ß/g, "&#x42F;")
+	str = str.replace(/׸/g, "Чё")
 
 	return str;
 }
