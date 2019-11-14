@@ -14,7 +14,7 @@ const ROUTES = {
   },
   brig_timer: {
     component: () => BrigTimer,
-    scrollable: false,
+    scrollable: true,
   },
   resleever: {
     component: () => Resleever,
