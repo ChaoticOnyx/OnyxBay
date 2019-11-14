@@ -166,6 +166,10 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 	if(!target)
 		return
 
+	if (isfile(target))
+		target << message
+		return
+
 	if(target == world)
 		target = GLOB.clients
 
