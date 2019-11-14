@@ -57,7 +57,7 @@
 	// Transparent image for maptext tooltip
 	var/obj/screen/tooltip = null
 
-	///goonchat chatoutput of the client
+	///onyxchat chatoutput of the client
 	var/datum/chatOutput/chatOutput
 
 	var/fullscreen = FALSE

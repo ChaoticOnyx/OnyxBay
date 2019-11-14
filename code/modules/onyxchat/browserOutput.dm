@@ -46,10 +46,10 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 	if(!owner)
 		return
 
-	var/datum/asset/stuff = get_asset_datum(/datum/asset/group/goonchat)
+	var/datum/asset/stuff = get_asset_datum(/datum/asset/group/onyxchat)
 	stuff.send(owner)
 
-	owner << browse(file('code/modules/goonchat/browserassets/html/browserOutput.html'), "window=browseroutput")
+	owner << browse(file('code/modules/onyxchat/browserassets/html/browserOutput.html'), "window=browseroutput")
 
 /datum/chatOutput/Topic(href, list/href_list)
 	if(usr.client != owner)
