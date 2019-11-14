@@ -154,6 +154,11 @@
 				return abs((check_y0 - check_y1) / (check_x0 - check_x1))
 		return
 
+/turf/simulated/wall/blob_act(destroy, obj/effect/blob/source)
+	if (destroy)
+		dismantle_wall(TRUE)
+	else
+		take_damage(25)
 
 /turf/simulated/wall/bullet_act(var/obj/item/projectile/Proj)
 	var/proj_damage = Proj.get_structure_damage()

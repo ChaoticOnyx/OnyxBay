@@ -378,3 +378,13 @@ Class Procs:
 	. = ..(user)
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
 		display_parts(user)
+
+/obj/machinery/blob_act(destroy, obj/effect/blob/source)
+	if (stat & BROKEN)
+		qdel(src)
+
+	if (destroy)
+		set_broken(TRUE)
+	else
+		if (prob(5))
+			set_broken(TRUE)

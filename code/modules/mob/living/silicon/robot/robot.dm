@@ -270,7 +270,7 @@
 		return
 	if(!(modtype in GLOB.robot_module_types))
 		return
-		
+
 	var/module_type = robot_modules[modtype]
 	new module_type(src)
 	GLOB.robot_module_types.Remove(modtype)
@@ -281,7 +281,7 @@
 
 	if(module)
 		notify_ai(ROBOT_NOTIFICATION_NEW_MODULE, module.name)
-	
+
 
 /mob/living/silicon/robot/proc/updatename(var/prefix as text)
 	if(prefix)
@@ -1187,6 +1187,14 @@
 				to_chat(src, "Hack attempt detected.")
 			return 1
 		return
+
+/mob/living/silicon/robot/blob_act(destroy, obj/effect/blob/source)
+	if (is_dead())
+		gib()
+
+	. = ..()
+
+	spark_system.start()
 
 /mob/living/silicon/robot/incapacitated(var/incapacitation_flags = INCAPACITATION_DEFAULT)
 	..()

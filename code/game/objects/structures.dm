@@ -38,6 +38,12 @@
 		if(3.0)
 			return
 
+obj/structure/blob_act(destroy = 0)
+	..()
+
+	if(destroy || (prob(50)))
+		qdel(src)
+
 /obj/structure/attack_generic(var/mob/user, var/damage, var/attack_verb, var/wallbreaker)
 	if(!breakable || !damage || !wallbreaker)
 		return 0

@@ -31,7 +31,7 @@
 	..()
 
 /obj/machinery/computer/ex_act(severity)
-	playsound(src, "console_breaking", 100, 1)
+	playsound(src, "console_breaking", 75, FALSE)
 
 	switch(severity)
 		if(1.0)
@@ -50,6 +50,13 @@
 				for(var/x in verbs)
 					verbs -= x
 				set_broken(TRUE)
+
+/obj/machinery/computer/blob_act(destroy, obj/effect/blob/source)
+	if (stat & BROKEN)
+		return
+
+	playsound(src, "console_breaking", 100, FALSE)
+	set_broken(TRUE)
 
 /obj/machinery/computer/bullet_act(var/obj/item/projectile/Proj)
 	if(prob(Proj.get_structure_damage()))
