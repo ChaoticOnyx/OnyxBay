@@ -386,5 +386,5 @@ Class Procs:
 	if (destroy)
 		set_broken(TRUE)
 	else
-		if (prob(5))
+		if (prob(10))
 			set_broken(TRUE)

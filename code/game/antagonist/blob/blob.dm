@@ -20,8 +20,8 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 
 	flags = ANTAG_RANDSPAWN
 
-//#warn Set countdown
-	var/countdown = 300
+#warn Set countdown
+	var/countdown = 10
 
 /datum/antagonist/blob/Process()
 	if (countdown > 0)
@@ -40,6 +40,9 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 
 	var/datum/objective/O = global_objectives[1]
 	var/datum/game_mode/blob/B = SSticker.mode
+
+	if (!B)
+		return
 
 	if (blob_tiles_grown_total >= O.target_amount)
 		O.completed = TRUE
@@ -84,7 +87,7 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 	if (!..())
 		return
 
-	global_objectives = list(new /datum/objective/blob/infest, new /datum/objective/blob/kill_crew)
+	global_objectives = list(new /datum/objective/blob/infest)
 
 /datum/antagonist/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance)
 	. = ..()
