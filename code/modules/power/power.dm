@@ -330,5 +330,4 @@
 	if (stat & BROKEN)
 		return
 
-	explosion(src, 0, 0, 3)
 	set_broken(TRUE)

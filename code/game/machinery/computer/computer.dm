@@ -55,7 +55,7 @@
 	if (stat & BROKEN)
 		return
 
-	playsound(src, "console_breaking", 100, FALSE)
+	playsound(src, "console_breaking", 75, FALSE)
 	set_broken(TRUE)
 
 /obj/machinery/computer/bullet_act(var/obj/item/projectile/Proj)

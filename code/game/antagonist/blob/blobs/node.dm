@@ -13,8 +13,6 @@
 /obj/effect/blob/node/New(loc, no_morph = 0)
 	blob_nodes += src
 
-	START_PROCESSING(SSprocessing, src)
-
 	..(loc)
 
 /obj/effect/blob/node/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
@@ -34,6 +32,8 @@
 	..()
 
 /obj/effect/blob/node/Life()
+	..()
+
 	for(var/i = 1; i < 8; i += i)
 		Pulse(5, i, overmind)
 

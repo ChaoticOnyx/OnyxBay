@@ -19,7 +19,7 @@ var/list/blob_overminds = list()
 	var/health = 20
 	var/maxhealth = 20
 	var/healt_timestamp = 0
-	var/brute_resist = 2
+	var/brute_resist = 1
 	var/fire_resist = 1
 
 	layer = BLOB_BASE_LAYER
@@ -37,7 +37,7 @@ var/list/blob_overminds = list()
 
 /obj/effect/blob/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	..()
-	var/damage = Clamp(0.01 * exposed_temperature / fire_resist, 0, 4 - fire_resist)
+	var/damage = min(0.01 * exposed_temperature / fire_resist, 0)
 
 	if (damage)
 		health -= damage
@@ -82,7 +82,10 @@ var/list/blob_overminds = list()
 		A.blob_act(0,src)
 
 	blob_tiles_grown_total++
-	START_PROCESSING(SSobj, src)
+
+	if (!(src in SSobj.processing))
+		START_PROCESSING(SSobj, src)
+
 	return
 
 /obj/effect/blob/Destroy()
@@ -122,7 +125,8 @@ var/list/blob_overminds = list()
 		var/turf/T = get_step(src, dirn)
 		var/obj/effect/blob/B = locate() in T
 		if (!B)
-			expand(T, TRUE, source)//No blob here so try and expand
+			if (prob(70))
+				expand(T, TRUE, source)//No blob here so try and expand
 			return
 		spawn(2)
 			B.Pulse((pulse+1), get_dir(src.loc, T), source)
