@@ -46,6 +46,9 @@
 		else
 			H.gunshot_residue = caliber
 
+	pixel_x = rand(-randpixel, randpixel)
+	pixel_y = rand(-randpixel, randpixel)
+
 /obj/item/ammo_casing/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(isScrewdriver(W))
 		if(!BB)
