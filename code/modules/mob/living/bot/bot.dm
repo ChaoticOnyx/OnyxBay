@@ -67,6 +67,9 @@
 	if(on && !client && !busy)
 		spawn(0)
 			handleAI()
+			
+	if(!on && client)
+		ghostize()
 
 /mob/living/bot/updatehealth()
 	if(status_flags & GODMODE)

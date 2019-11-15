@@ -7,8 +7,8 @@
 	desc = "A little security robot.  He looks less than thrilled."
 	icon_state = "secbot0"
 	var/attack_state = "secbot-c"
-	maxHealth = 50
-	health = 50
+	maxHealth = 75
+	health = 75
 	req_one_access = list(access_security, access_forensics_lockers)
 	botcard_access = list(access_security, access_sec_doors, access_forensics_lockers, access_morgue, access_maint_tunnels)
 
@@ -31,11 +31,71 @@
 
 	var/list/threat_found_sounds = list('sound/voice/bcriminal.ogg', 'sound/voice/bjustice.ogg', 'sound/voice/bfreeze.ogg')
 	var/list/preparing_arrest_sounds = list('sound/voice/bfreeze.ogg')
+	
+	var/list/secbot_verbs_default = list(
+		/mob/living/bot/secbot/proc/downonthefloor,
+		/mob/living/bot/secbot/proc/threatdetected,
+	)
+	
+	var/list/hud_list[10]
+		
+	var/list/secbot_dreams = list(
+		"beep-boop",
+		"beep",	
+		"11100001000100100",
+		"00000101111000111",
+		"11110000100011000",
+		"00010011101101011",
+		"10100011101101001",
+		"01100001000110011",
+		"11111100010101000",
+		"00101001010100100",
+		"10111111101101001",
+		"01100001000110011",
+		"11111100011111100",		
+	)		
+	
+	var/arrest_message = list(
+		"Remember, crime doesn't pay!",
+		"Use your words, not your fists!",
+		"When in doubt, talk it out.",
+		"The weed of crime bears bitter fruit.",
+		"Just say \"No!\" to space drugs!",
+		"Violence is never the answer.",
+		"I'm not an officer, I'm a Security <em>monitor</em>.",
+		"I am the law.",
+		"Solve your problems with your head.",
+		"Keep your words to yourself, thug.",
+		"Hail!, mine Head of Security!",
+		"Shut up, I didnt contact you!",
+		"You're lucky that I only have a stunbaton.",
+		"You can’t even offer a bribe, scum.",
+		"I'm too lazy to list your violations.",
+	)	
 
 /mob/living/bot/secbot/beepsky
 	name = "Officer Beepsky"
 	desc = "It's Officer Beep O'sky! Powered by a potato and a shot of whiskey. There is text engraved on its case &quot;I'm back, scumbags&quot;."
 	will_patrol = 1
+	
+	secbot_dreams = list(
+		"beep-boop",
+		"beep",	
+		"meat scumbags",
+		"eau-de-vie",
+		"whiskey",
+		"usquebaugh",
+		"im the law",
+		"whiskey sour",
+		"cuba libre",
+		"cyborgs are bigger than me",	
+		"crewmans are bigger than me",
+		"binge",
+		"booze",
+		"libation",
+		"bouse",
+		"souse",		
+	)	
 
 /mob/living/bot/secbot/New()
 	..()
@@ -44,6 +104,14 @@
 	stun_baton.set_status(1, null)
 
 	handcuffs = new(src)
+	
+	src.verbs |= secbot_verbs_default
+	
+	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")	
 
 /mob/living/bot/secbot/Destroy()
 	qdel(stun_baton)
@@ -188,6 +256,8 @@
 
 /mob/living/bot/secbot/proc/cuff_target(var/mob/living/carbon/C)
 	if(istype(C) && !C.handcuffed)
+		say(pick(arrest_message))
+		playsound(src.loc, pick(preparing_arrest_sounds), 50)	
 		handcuffs.place_handcuffs(C, src)
 	resetTarget() //we're done, failed or not. Don't want to get stuck if C is not
 
@@ -316,3 +386,96 @@
 		if(!in_range(src, usr) && loc != usr)
 			return
 		created_name = t
+		
+/mob/living/bot/secbot/say_verb(message as text)
+	set name = "Say"
+	set category = "IC"
+	set hidden = 1
+	
+	to_chat(usr,"<span class='danger'>An arbitrary speech module is not installed in the [src]!</span>")
+
+/mob/living/bot/secbot/say_wrapper()
+	set name = ".Say"
+	set hidden = 1
+
+	to_chat(usr,"<span class='danger'>An arbitrary speech module is not installed in the [src]!</span>")
+	
+/mob/living/bot/secbot/proc/downonthefloor()
+	set category = "Communication"
+	set name = "Arrest"
+	
+	var/list/mobs_in_secbot_range = mobs_in_view(src)
+	mobs_in_secbot_range -= src
+	
+	if(length(mobs_in_secbot_range) > 0)
+		var/mob/custom_target = input("Who is subject to arrest?", "Nearby subjects:") as null|anything in mobs_in_secbot_range
+		playsound(src.loc, pick(preparing_arrest_sounds), 50)
+		say("Down on the floor, [target_name(custom_target)]! You have [SECBOT_WAIT_TIME] seconds to comply.")
+		if(declare_arrests)
+			broadcast_security_hud_message("[src] is arresting a level [check_threat(custom_target)] suspect <b>[target_name(custom_target)]</b> in <b>[get_area(src)]</b>.", src)
+			to_chat(usr,"<span class='notice'>Security service notified.</span>")
+	else
+		to_chat(usr,"<span class='danger'>There are no suitable targets for arrest!</span>")
+		
+/mob/living/bot/secbot/proc/threatdetected()
+	set category = "Communication"
+	set name = "Threat Detected"
+	
+	var/list/mobs_in_secbot_range = mobs_in_view(src)
+	mobs_in_secbot_range -= src
+	
+	if(length(mobs_in_secbot_range) > 0)
+		var/mob/custom_target = input("Which subject is dangerous?", "Nearby subjects:") as null|anything in mobs_in_secbot_range
+		if(check_threat(custom_target) > 0)
+			say("Level [check_threat(custom_target)] infraction alert!")
+			custom_emote(1, "points at [custom_target.name]!")
+			playsound(src.loc, pick(threat_found_sounds), 50)
+		else
+			to_chat(usr,"<span class='warning'>This target is safe.</span>")		
+	else
+		to_chat(usr,"<span class='danger'>There are no suitable targets for arrest!</span>")		
+	
+/mob/living/bot/secbot/Life()
+	..()
+	if(client)
+		process_sec_hud(src,1)
+	if(prob(10))
+		to_chat(src,"<span class='notice'>...[pick(secbot_dreams)]...</span>")
+		
+/mob/living/bot/secbot/Stat()
+	..()
+	if(statpanel("Status"))
+		stat(null,"-------------")
+		switch(emagged)
+			if(0)
+				stat(null,"Threat identifier status: Normal")
+			if(1)
+				stat(null,"Threat identifier status: Scrambled (DANGER)")
+			if(2)
+				stat(null,"Threat identifier status: ERROROROROROR-----")				
+		if(idcheck)
+			stat(null,"Check for weapon authorization: Yes")
+		else
+			stat(null,"Check for weapon authorization: No")
+			
+		if(check_records)
+			stat(null,"Check security records:: Yes")		
+		else
+			stat(null,"Check security records:: No")
+			
+		if(check_arrest)
+			stat(null,"Check arrest status: Yes")		
+		else
+			stat(null,"Check arrest status: No")
+			
+		if(declare_arrests)
+			stat(null,"Report arrests: Yes")		
+		else
+			stat(null,"Report arrests: No")
+			
+		if(will_patrol)
+			stat(null,"Auto patrol: On")		
+		else
+			stat(null,"Auto patrol: Off")
+			
+		stat(null,"-------------")		
