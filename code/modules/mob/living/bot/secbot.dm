@@ -89,7 +89,7 @@
 		"whiskey sour",
 		"cuba libre",
 		"cyborgs are bigger than me",	
-		"crewmans are bigger than me",
+		"crewmens are bigger than me",
 		"binge",
 		"booze",
 		"libation",
@@ -257,7 +257,6 @@
 /mob/living/bot/secbot/proc/cuff_target(var/mob/living/carbon/C)
 	if(istype(C) && !C.handcuffed)
 		say(pick(arrest_message))
-		playsound(src.loc, pick(preparing_arrest_sounds), 50)	
 		handcuffs.place_handcuffs(C, src)
 	resetTarget() //we're done, failed or not. Don't want to get stuck if C is not
 
