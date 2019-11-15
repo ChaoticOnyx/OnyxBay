@@ -19,7 +19,7 @@ var/list/blob_overminds = list()
 	var/health = 20
 	var/maxhealth = 20
 	var/healt_timestamp = 0
-	var/brute_resist = 4
+	var/brute_resist = 2
 	var/fire_resist = 1
 
 	layer = BLOB_BASE_LAYER
@@ -133,9 +133,9 @@ var/list/blob_overminds = list()
 	return
 
 /obj/effect/blob/proc/expand(turf/T = null, prob = 1, mob/blob/source)
-	if (prob && !prob(health))
+	if (istype(T, /turf/space))
 		return
-	if (istype(T, /turf/space) && prob(75))
+	if (prob && !prob(health))
 		return
 	if (!T)
 		var/list/dirs = list(NORTH, SOUTH, EAST, WEST)

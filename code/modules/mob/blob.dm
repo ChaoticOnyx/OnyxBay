@@ -71,6 +71,18 @@ mob/blob/DblClickOn(var/atom/A) //Teleport view to another blob
 	else
 		usr.forceMove(T)
 
+/mob/blob/Weaken(amount)
+	return FALSE
+
+/mob/blob/airflow_stun()
+	return FALSE
+
+/mob/blob/CanPass(atom/movable/mover, turf/target, height, air_group)
+	return TRUE
+
+/mob/blob/check_airflow_movable(n)
+	return FALSE
+
 /mob/blob/ex_act()
 	return
 
@@ -190,6 +202,8 @@ mob/blob/DblClickOn(var/atom/A) //Teleport view to another blob
 /mob/blob/proc/add_points(var/points)
 	if(points != 0)
 		blob_points = Clamp(blob_points + points, 0, max_blob_points)
+
+	update_hud()
 
 /mob/blob/proc/update_specialblobs()
 	var/datum/hud/blob/blob_hud = hud_used

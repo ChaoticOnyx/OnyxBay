@@ -190,7 +190,6 @@
 
 // Hair Flags
 #define VERY_SHORT 0x1
-#define HAIR_TRIPPABLE 0x2
 
 //flags to determine if an eyepiece is a hud.
 #define HUD_SCIENCE 0x1

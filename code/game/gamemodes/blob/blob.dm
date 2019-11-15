@@ -4,8 +4,8 @@
 	extended_round_description = "Destroy or neutralize the blob outbreak."
 	config_tag = "blob"
 
-//#warn Set players
-	required_players = 20
+#warn Set players
+	required_players = 0
 	required_enemies = 1
 	antag_tags = list(MODE_BLOB)
 	antag_templates = list(/datum/antagonist/blob)
@@ -27,16 +27,6 @@
 	if (station_was_nuked)
 		return TRUE
 
-	var/alive_crew = 0
-
-	for (var/mob/living/L in GLOB.living_mob_list_)
-		if (L.mind)
-			alive_crew++
-
-	if (alive_crew == 0)
-//#warn Set to TRUE
-		return TRUE
-
 	return FALSE
 
 /datum/objective/blob/infest
@@ -56,17 +46,3 @@
 
 	target_amount = round(0.7 * total_turfs)
 	explanation_text = "OR: Infest [target_amount] tiles of [station_name()]."
-
-/datum/objective/blob/kill_crew
-	explanation_text = "OR: Kill every crewmember on the station"
-
-/datum/objective/blob/kill_crew/check_completion()
-//#warn FIX THIS
-	var/alive_crew = 0
-
-	for (var/mob/living/carbon/L in GLOB.living_mob_list_)
-		if (L.mind && (L.loc.z in GLOB.using_map.station_levels))
-			alive_crew++
-
-	if (alive_crew == 0)
-		return TRUE

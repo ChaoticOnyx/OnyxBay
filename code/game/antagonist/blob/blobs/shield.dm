@@ -4,6 +4,7 @@
 	desc = "A dense part of a blob."
 	health = 75
 	maxhealth = 75
+	brute_resist = 4
 	fire_resist = 2
 	layer = BLOB_SHIELD_LAYER
 	spawning = 0
