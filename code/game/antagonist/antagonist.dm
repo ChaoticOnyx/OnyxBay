@@ -256,3 +256,8 @@
 		player.special_role = null
 	pending_antagonists.Cut()
 	candidates.Cut()
+
+/datum/antagonist/Topic(href, href_list)
+	if (!check_rights(R_ADMIN))
+		href_exploit(usr.ckey, href)
+		return TRUE

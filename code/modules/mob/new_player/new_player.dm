@@ -79,6 +79,10 @@
 /mob/new_player/Topic(href, href_list[])
 	if(!client)	return 0
 
+	if (usr != src)
+		href_exploit(usr.ckey, href)
+		return 0
+
 	if(href_list["show_preferences"])
 		client.prefs.ShowChoices(src)
 		return 1

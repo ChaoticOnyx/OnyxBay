@@ -582,6 +582,10 @@
 			src.examinate(M)
 
 	if (href_list["flavor_change"])
+		if (usr != src)
+			href_exploit(usr.ckey, href)
+			return
+
 		switch(href_list["flavor_change"])
 			if("done")
 				src << browse(null, "window=flavor_changes")
