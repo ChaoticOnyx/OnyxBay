@@ -24,6 +24,15 @@ var/global/floorIsLava = 0
 			if(C.get_preference_value(/datum/client_preference/staff/show_attack_logs) == GLOB.PREF_SHOW)
 				var/msg = rendered
 				to_chat(C, msg)
+/proc/href_exploit(suspect_ckey, href)
+	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">HREF EXPLOIT POSSIBLE:</span> <span class=\"message\">Suspect: '[suspect_ckey]' || Href: '[href]'</span></span><br>"
+	if (config && config.log_hrefs && href_logfile)
+		to_chat(href_logfile, rendered)
+	for(var/client/C in GLOB.admins)
+		if(check_rights(R_INVESTIGATE, 0, C))
+			var/msg = rendered
+			to_chat(C, msg)
+
 /proc/admin_notice(var/message, var/rights)
 	for(var/mob/M in SSmobs.mob_list)
 		if(check_rights(rights, 0, M))
