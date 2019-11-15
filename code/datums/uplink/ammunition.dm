@@ -31,6 +31,11 @@
 	item_cost = 8
 	path = /obj/item/ammo_magazine/c556
 
+/datum/uplink_item/item/ammo/rocket
+	name = "rocket"
+	item_cost = 4
+	path = /obj/item/missile
+
 /datum/uplink_item/item/ammo/sniperammo
 	name = "14.5mm"
 	item_cost = 8

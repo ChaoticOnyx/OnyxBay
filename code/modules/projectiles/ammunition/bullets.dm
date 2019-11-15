@@ -204,6 +204,7 @@
 	name = "rocket shell"
 	desc = "A high explosive designed to be fired from a launcher."
 	icon_state = "rocketshell"
+	w_class = ITEM_SIZE_NORMAL
 	projectile_type = /obj/item/missile
 	caliber = "rocket"
 
