@@ -119,6 +119,12 @@
 	..()
 	antag_roles = list(MODE_MERCENARY)
 
+/datum/uplink_item/item/visible_weapons/rocketlauncher
+	name = "Rocket Launcher"
+	item_cost = 70
+	antag_costs = list(MODE_MERCENARY = 40)
+	path = /obj/item/weapon/gun/launcher/rocket
+
 /datum/uplink_item/item/visible_weapons/flechetterifle
 	name = "Flechette Rifle"
 	item_cost = 70

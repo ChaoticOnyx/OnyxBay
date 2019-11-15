@@ -1,8 +1,8 @@
 /obj/item/weapon/gun/launcher/rocket
 	name = "rocket launcher"
-	desc = "MAGGOT."
-	icon_state = "rocket"
-	item_state = "rocket"
+	desc = "M12 rocket launcher, an old, but reliable tool for dealing with enemy infantry and light exosuits."
+	icon_state = "rpg"
+	item_state = "rpg"
 	w_class = ITEM_SIZE_HUGE
 	throw_speed = 2
 	throw_range = 10
@@ -11,12 +11,14 @@
 	mod_reach = 1.25
 	mod_handy = 1.0
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
-	slot_flags = 0
+	one_hand_penalty = 5
+	slot_flags = SLOT_BACK
+	wielded_item_state = "rpg-wielded"
 	origin_tech = list(TECH_COMBAT = 8, TECH_MATERIAL = 5)
-	fire_sound = 'sound/effects/bang.ogg'
+	fire_sound = 'sound/weapons/rpg_fire.ogg'
 	combustion = 1
 
-	release_force = 15
+	release_force = 20
 	throw_distance = 30
 	var/max_rockets = 1
 	var/list/rockets = new/list()
@@ -33,6 +35,7 @@
 			I.loc = src
 			rockets += I
 			to_chat(user, "<span class='notice'>You put the rocket in [src].</span>")
+			playsound(usr.loc, 'sound/weapons/rpg_reload.ogg', 25, 1)
 			to_chat(user, "<span class='notice'>[rockets.len] / [max_rockets] rockets.</span>")
 		else
 			to_chat(usr, "<span class='warning'>\The [src] cannot hold more rockets.</span>")
