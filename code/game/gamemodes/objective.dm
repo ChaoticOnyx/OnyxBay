@@ -413,7 +413,7 @@ datum/objective/steal
 	var/global/possible_items[] = list(
 		"a psychoscope's prototype" = /obj/item/clothing/glasses/hud/psychoscope,
 		"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
-		"a bluespace rift generator" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
+		"a bluespace rift generator in hand teleporter" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
 		"an RCD" = /obj/item/weapon/rcd,
 		"a jetpack" = /obj/item/weapon/tank/jetpack,
 		"a captain's jumpsuit" = /obj/item/clothing/under/rank/captain,
@@ -446,65 +446,72 @@ datum/objective/steal
 	)
 
 
-	proc/set_target(item_name)
-		target_name = item_name
-		steal_target = possible_items[target_name]
-		if (!steal_target )
-			steal_target = possible_items_special[target_name]
+datum/objective/steal/proc/set_target(item_name)
+	target_name = item_name
+	steal_target = possible_items[target_name]
+	if (!steal_target)
+		steal_target = possible_items_special[target_name]
+	explanation_text = "Steal [target_name]."
+	return steal_target
+
+
+datum/objective/steal/find_target()
+	return set_target(pick(possible_items))
+
+
+datum/objective/steal/proc/select_target()
+	var/list/possible_items_all = possible_items+possible_items_special+"custom"
+	if(!(/mob/living/silicon/ai in SSmobs.mob_list))
+		possible_items_all -= "a functional AI"
+	var/new_target = input("Select target:", "Objective target", steal_target) as null|anything in possible_items_all
+	if(!new_target)
+		return
+	if(new_target == "custom")
+		var/obj/item/custom_target = input("Select type:","Type") as null|anything in typesof(/obj/item)
+		if (!custom_target)
+			return
+		var/tmp_obj = new custom_target
+		var/custom_name = tmp_obj:name
+		qdel(tmp_obj)
+		custom_name = sanitize(input("Enter target name:", "Objective target", custom_name) as text|null)
+		if(!custom_name)
+			return
+		target_name = custom_name
+		steal_target = custom_target
 		explanation_text = "Steal [target_name]."
-		return steal_target
+	else
+		set_target(new_target)
+	return steal_target
 
-
-	find_target()
-		return set_target(pick(possible_items))
-
-
-	proc/select_target()
-		var/list/possible_items_all = possible_items+possible_items_special+"custom"
-		var/new_target = input("Select target:", "Objective target", steal_target) as null|anything in possible_items_all
-		if (!new_target) return
-		if (new_target == "custom")
-			var/obj/item/custom_target = input("Select type:","Type") as null|anything in typesof(/obj/item)
-			if (!custom_target) return
-			var/tmp_obj = new custom_target
-			var/custom_name = tmp_obj:name
-			qdel(tmp_obj)
-			custom_name = sanitize(input("Enter target name:", "Objective target", custom_name) as text|null)
-			if (!custom_name) return
-			target_name = custom_name
-			steal_target = custom_target
-			explanation_text = "Steal [target_name]."
-		else
-			set_target(new_target)
-		return steal_target
-
-	check_completion()
-		if(!steal_target || !owner.current)	return 0
-		if(!isliving(owner.current))	return 0
-		var/list/all_items = owner.current.get_contents()
-		switch (target_name)
-			if("28 moles of phoron (full tank)","10 diamonds","50 gold bars","25 refined uranium bars")
-				var/target_amount = text2num(target_name)//Non-numbers are ignored.
-				var/found_amount = 0.0//Always starts as zero.
-
-				for(var/obj/item/I in all_items) //Check for phoron tanks
-					if(istype(I, steal_target))
-						found_amount += (target_name=="28 moles of phoron (full tank)" ? (I:air_contents:gas["phoron"]) : (I:amount))
-				return found_amount>=target_amount
-
-			if("a functional AI")
-				for(var/mob/living/silicon/ai/ai in SSmobs.mob_list)
-					if(ai.stat == DEAD)
-						continue
-					var/turf/T = get_turf(ai)
-					if(owner.current.contains(ai) || (T && is_type_in_list(T.loc, GLOB.using_map.post_round_safe_areas)))
-						return 1
-			else
-
-				for(var/obj/I in all_items) //Check for items
-					if(istype(I, steal_target))
-						return 1
+datum/objective/steal/check_completion()
+	if(!steal_target || !owner.current)
 		return 0
+	if(!isliving(owner.current))
+		return 0
+	var/list/all_items = owner.current.get_contents()
+	switch (target_name)
+		if("28 moles of phoron (full tank)","10 diamonds","50 gold bars","25 refined uranium bars")
+			var/target_amount = text2num(target_name)//Non-numbers are ignored.
+			var/found_amount = 0.0//Always starts as zero.
+
+			for(var/obj/item/I in all_items) //Check for phoron tanks
+				if(istype(I, steal_target))
+					found_amount += (target_name=="28 moles of phoron (full tank)" ? (I:air_contents:gas["phoron"]) : (I:amount))
+			return found_amount>=target_amount
+
+		if("a functional AI")
+			for(var/mob/living/silicon/ai/ai in SSmobs.mob_list)
+				if(ai.stat == DEAD)
+					continue
+				var/turf/T = get_turf(ai)
+				if(owner.current.contains(ai) || (T && is_type_in_list(T.loc, GLOB.using_map.post_round_safe_areas)))
+					return 1
+		else
+
+			for(var/obj/I in all_items) //Check for items
+				if(istype(I, steal_target))
+					return 1
+	return 0
 
 
 

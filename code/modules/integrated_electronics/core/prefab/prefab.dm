@@ -8,6 +8,8 @@
 	var/assembly_name
 	var/data
 	var/power_cell_type
+	var/assembly_icon
+	var/assembly_icon_state
 
 /decl/prefab/ic_assembly/create(var/atom/location)
 	if(..())
@@ -17,7 +19,12 @@
 		else
 			var/obj/item/device/electronic_assembly/assembly = SScircuit.load_electronic_assembly(location, result)
 			assembly.opened = FALSE
-			assembly.update_icon()
+			if(assembly_icon)
+				assembly.overlays.Cut()
+				assembly.icon = assembly_icon
+				assembly.icon_state = assembly_icon_state
+			else
+				assembly.update_icon()
 			if(power_cell_type)
 				var/obj/item/weapon/cell/cell = new power_cell_type(assembly)
 				assembly.battery = cell
