@@ -84,6 +84,15 @@
 		to_chat(user, "You lower the visor on the [src].")
 	update_clothing_icon()
 
+/obj/item/clothing/head/helmet/german
+	name = "stahlhelm"
+	desc = "A simple yet menacing looking steel helmet. Protects the head from bullets."
+	icon_state = "wehrhelm"
+	valid_accessory_slots = null
+	body_parts_covered = HEAD
+	armor = list(melee = 45, bullet = 60, laser = 45,energy = 10, bomb = 40, bio = 2, rad = 10)
+	siemens_coefficient = 1
+
 /obj/item/clothing/head/helmet/ablative
 	name = "ablative helmet"
 	desc = "A helmet made from advanced materials which protects against concentrated energy weapons."

@@ -73,6 +73,17 @@
 	item_state = "policegas"
 	istinted = 0
 
+/obj/item/clothing/mask/gas/german
+	name = "tactical gas mask"
+	desc = "A close-fitting tactical mask that can be connected to an air supply."
+	icon_state = "wehrgas"
+	item_state = "wehrgas"
+	istinted = 0
+
+/obj/item/clothing/mask/gas/german/Initialize()
+	. = ..()
+	overlay = GLOB.global_hud.thermal
+
 /obj/item/clothing/mask/gas/swat/vox
 	name = "alien mask"
 	desc = "Clearly not designed for a human face."
