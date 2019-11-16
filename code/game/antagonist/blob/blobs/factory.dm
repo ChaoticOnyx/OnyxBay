@@ -48,8 +48,8 @@
 	pass_flags = PASS_FLAG_BLOB
 	health = 30
 	maxHealth = 30
-	melee_damage_lower = 4
-	melee_damage_upper = 8
+	melee_damage_lower = 6
+	melee_damage_upper = 10
 	attacktext = "hits"
 	attack_sound = 'sound/weapons/rapidslice.ogg'
 	var/obj/effect/blob/factory/factory = null
