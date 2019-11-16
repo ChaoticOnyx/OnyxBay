@@ -98,7 +98,7 @@ proc/get_radio_key_from_channel(var/channel)
 	var/verb = message_data[2]
 
 		. = FALSE
-	
+
 	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
 		message = "[ruppertext(message)]!!!"
 		verb = pick("yells","roars","hollers")
@@ -273,6 +273,7 @@ proc/get_radio_key_from_channel(var/channel)
 
 	var/speech_bubble_test = say_test(message)
 	var/image/speech_bubble = image('icons/mob/talk.dmi',src,"h[speech_bubble_test]")
+	speech_bubble.alpha = 0
 	speech_bubble.plane = MOUSE_INVISIBLE_PLANE
 	speech_bubble.layer = FLOAT_LAYER
 
@@ -296,7 +297,7 @@ proc/get_radio_key_from_channel(var/channel)
 			if(M.client)
 				speech_bubble_recipients += M.client
 
-	flick_overlay(speech_bubble, speech_bubble_recipients, 30)
+	INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speech_bubble, speech_bubble, speech_bubble_recipients, 3 SECONDS)
 
 	for(var/obj/O in listening_obj)
 		spawn(0)
