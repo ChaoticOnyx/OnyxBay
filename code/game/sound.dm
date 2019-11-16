@@ -351,7 +351,8 @@ GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosio
 var/const/FALLOFF_SOUNDS = 0.5
 
 /mob/proc/playsound_local(var/turf/turf_source, soundin, vol as num, vary, frequency, falloff, is_global, extrarange)
-	if(!src.client || ear_deaf > 0)	return
+	if(!src.client || ear_deaf > 0)
+		return
 	var/sound/S = soundin
 	if(!istype(S))
 		soundin = get_sfx(soundin)
@@ -426,7 +427,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 
 		else if (pressure_factor < 0.5)
 			S.environment = SPACE
-		else
+		else if(!get_area(src) == null)
 			var/area/A = get_area(src)
 			S.environment = A.sound_env
 

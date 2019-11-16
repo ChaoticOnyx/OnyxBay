@@ -559,12 +559,11 @@
 	matter = list(MATERIAL_STEEL = 10000, MATERIAL_SILVER = 2000, MATERIAL_GOLD = 200)
 
 /obj/item/integrated_circuit/manipulation/bluespace_rift/do_work()
+
 	var/obj/machinery/computer/teleporter/tporter = get_pin_data_as_type(IC_INPUT, 1, /obj/machinery/computer/teleporter)
 	var/step_dir = get_pin_data(IC_INPUT, 2)
-	if(!(get(z) in GetConnectedZlevels(get_z(tporter))))
-		tporter = null
-
 	var/turf/rift_location = get_turf(src)
+
 	if(!rift_location || !isPlayerLevel(rift_location.z))
 		playsound(src, get_sfx("spark"), 50, 1)
 		return
@@ -572,7 +571,7 @@
 	if(isnum(step_dir) && (!step_dir || (step_dir in GLOB.cardinal)))
 		rift_location = get_step(rift_location, step_dir) || rift_location
 	else
-		var/obj/item/device/electronic_assembly/assembly = get_object()
+		var/obj/item/device/electronic_assembly/assembly = get_object(src)
 		if(assembly)
 			rift_location = get_step(rift_location, assembly.dir) || rift_location
 
