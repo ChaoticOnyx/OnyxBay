@@ -46,7 +46,7 @@ SUBSYSTEM_DEF(trade)
 		var/type = pick(possible)
 		var/bad = 0
 		for(var/trader in traders)
-			if(istype(trader,type))
+			if(istype(trader, type))
 				bad = 1
 				break
 		if(bad)

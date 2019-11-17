@@ -260,15 +260,16 @@
 	resource_field = list()
 	need_update_field = 0
 
-	var/turf/T = get_turf(src)
-	if(!istype(T)) return
+	var/turf/simulated/S = get_turf(src)
+	if(!istype(S))
+		return
 
-	var/tx = T.x - 2
-	var/ty = T.y - 2
+	var/sx = S.x - 2
+	var/sy = S.y - 2
 	var/turf/simulated/mine_turf
-	for(var/iy = 0,iy < 5, iy++)
+	for(var/iy = 0, iy < 5, iy++)
 		for(var/ix = 0, ix < 5, ix++)
-			mine_turf = locate(tx + ix, ty + iy, T.z)
+			mine_turf = locate(sx + ix, sy + iy, S.z)
 			if(mine_turf && mine_turf.has_resources)
 				resource_field += mine_turf
 
