@@ -99,6 +99,10 @@ mob/blob/DblClickOn(var/atom/A) //Teleport view to another blob
 	return
 
 /mob/blob/Life()
+	if (is_dead())
+		ghostize(FALSE)
+		qdel(src)
+
 	update_hud()
 
 /mob/blob/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, glide_size_override = 0)
@@ -143,6 +147,9 @@ mob/blob/DblClickOn(var/atom/A) //Teleport view to another blob
 			S.show_message(rendered, 2)
 
 /mob/blob/update_hud()
+	if (is_dead())
+		return
+
 	var/datum/hud/blob/H = hud_used
 
 	if (!H)
@@ -244,6 +251,7 @@ mob/blob/DblClickOn(var/atom/A) //Teleport view to another blob
 
 /mob/blob/is_dead()
 	if (blob_core && blob_core.health <= 0)
+		stat = DEAD
 		return TRUE
 
 	return FALSE

@@ -26,6 +26,7 @@ var/list/organ_cache = list()
 	var/rejecting                     // Is this organ already being rejected?
 	var/owner_die_time = null
 
+	var/die_time = 1 MINUTE
 	var/death_time
 
 /obj/item/organ/Destroy()
@@ -103,15 +104,11 @@ var/list/organ_cache = list()
 		owner_die_time = world.time
 
 	if (owner_die_time)
-		if (istype(src, /obj/item/organ/internal))
-			if (world.time > owner_die_time + 1 MINUTE)
-				die()
-		else
-			if (world.time > owner_die_time + 5 MINUTES)
-				die()
+		if (world.time > owner_die_time + die_time)
+			die()
 
-				if (owner)
-					owner.update_body()
+			if (istype(src, /obj/item/organ/external) && owner)
+				owner.update_body()
 
 	//Process infections
 	if (BP_IS_ROBOTIC(src) || (owner && owner.species && (owner.species.species_flags & SPECIES_FLAG_IS_PLANT)))
@@ -146,7 +143,7 @@ var/list/organ_cache = list()
 		var/obj/item/organ/O = loc
 		return O.is_preserved()
 	else
-		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/weapon/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
+		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/weapon/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling) || istype(loc, /obj/structure/morgue))
 
 /obj/item/organ/examine(mob/user)
 	. = ..(user)
