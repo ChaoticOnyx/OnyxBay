@@ -10,6 +10,7 @@
 	var/power_cell_type
 	var/assembly_icon
 	var/assembly_icon_state
+	var/assembly_w_class
 
 /decl/prefab/ic_assembly/create(var/atom/location)
 	if(..())
@@ -25,6 +26,8 @@
 				assembly.icon_state = assembly_icon_state
 			else
 				assembly.update_icon()
+			if(assembly_w_class)
+				assembly.w_class = assembly_w_class
 			if(power_cell_type)
 				var/obj/item/weapon/cell/cell = new power_cell_type(assembly)
 				assembly.battery = cell
