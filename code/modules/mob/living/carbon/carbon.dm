@@ -513,3 +513,10 @@
 
 /mob/living/carbon/proc/get_ingested_reagents()
 	return reagents
+
+/mob/living/carbon/rejuvenate()
+	. = ..()
+
+	// And restore all organs...
+	for (var/obj/item/organ/O in organs)
+		O.rejuvenate()
