@@ -312,3 +312,10 @@
 	else
 		client.screen -= hud_used.hotkeybuttons
 		hud_used.hotkey_ui_hidden = 1
+
+/mob/living/carbon/human/rejuvenate()
+	. = ..()
+
+	// And restore all internal organs...
+	for (var/obj/item/organ/internal/I in internal_organs)
+		I.rejuvenate()
