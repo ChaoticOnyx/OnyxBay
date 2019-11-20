@@ -150,9 +150,10 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 
 			//Uh oh this fucker has a history of playing on a banned account!!
 			if (found.len > 0)
+				var/msg = "[key_name(src.owner)] has a cookie from a banned account! (Matched: [found["ckey"]], [found["ip"]], [found["compid"]])"
 				//TODO: add a new evasion ban for the CURRENT client details, using the matched row details
-				message_admins("[key_name(src.owner)] has a cookie from a banned account! (Matched: [found["ckey"]], [found["ip"]], [found["compid"]])")
-				//log_admin_private("[key_name(owner)] has a cookie from a banned account! (Matched: [found["ckey"]], [found["ip"]], [found["compid"]])")
+				message_admins(msg)
+				log_admin(msg)
 
 	cookieSent = TRUE
 
