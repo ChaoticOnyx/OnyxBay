@@ -267,7 +267,6 @@ em						{font-style: normal;	font-weight: bold;}
 .log_message			{color: #386aff;	font-weight: bold;}
 
 /* OOC */
-.ooc					{font-weight: bold;}
 .ooc img.text_tag		{width: 32px; height: 10px;}
 
 .ooc .everyone			{color: #002eb8;}
@@ -290,8 +289,8 @@ em						{font-style: normal;	font-weight: bold;}
 .admin_channel			{color: #9611d4;	font-weight: bold;}
 
 /* Radio: Misc */
-.deadsay				{color: #e2c1ff}
-.radio					{color: #1ecc43;}
+.deadsay				{color: #530fad;}
+.radio					{color: #008000;}
 .deptradio				{color: #ff00ff;}	/* when all other department colors fail */
 .newscaster				{color: #750000;}
 
@@ -302,7 +301,7 @@ em						{font-style: normal;	font-weight: bold;}
 .airadio				{color: #ff00ff;}
 .entradio				{color: #339966;}
 
-.secradio				{color: #b41c1c;}
+.secradio				{color: #a30000;}
 .engradio				{color: #a66300;}
 .medradio				{color: #008160;}
 .sciradio				{color: #993399;}
@@ -312,8 +311,8 @@ em						{font-style: normal;	font-weight: bold;}
 
 /* Miscellaneous */
 .name					{font-weight: bold;}
-.alert					{color: #d82020;}
-h1.alert, h2.alert		{color: #a4bad6;}
+.alert					{color: #ff0000;}
+h1.alert, h2.alert		{color: #000080;}
 
 .emote					{font-style: italic;}
 
@@ -323,14 +322,15 @@ h1.alert, h2.alert		{color: #a4bad6;}
 .disarm					{color: #990000;}
 .passive				{color: #660000;}
 
-.danger					{color: #c51e1e;}
-.warning				{color: #c51e1e;	font-style: italic;}
-.boldannounce			{color: #c51e1e;	font-weight: bold;}
+.danger					{color: #ff0000; font-weight: bold;}
+.warning				{color: #ff0000; font-style: italic;}
+.boldannounce			{color: #ff0000; font-weight: bold;}
 .rose					{color: #ff5050;}
-.info					{color: #6685f5;}
-.notice					{color: #6685f5;}
+.info					{color: #0000cc;}
+.notice					{color: #000099;}
 .alium					{color: #00ff00;}
-.cult					{color: #aa1c1c;}
+.cult					{color: #800080; font-weight: bold; font-style: italic;}
+
 
 /* Languages */
 .alien					{color: #855d85;}
