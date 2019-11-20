@@ -106,7 +106,7 @@ a.popt {text-decoration: none;}
 	top: 0;
 	right: 135px;
 	width: 45px;
-	background: #202020;
+	background: #626f5b;
 	height: 30px;
 	padding: 8px 0 2px 0;
 }
@@ -123,7 +123,7 @@ a.popt {text-decoration: none;}
 	right: 0;
 }
 #userBar .subCell {
-	background: #202020;
+	background: #626f5b;
 	height: 30px;
 	padding: 5px 0;
 	display: block;
@@ -132,10 +132,10 @@ a.popt {text-decoration: none;}
 	line-height: 28px;
 	border-top: 1px solid #171717;
 }
-#userBar .subCell:hover {background: #202020;}
+#userBar .subCell:hover {background: #626f5b;}
 #userBar .toggle {
 	width: 45px;
-	background: #202020;
+	background: #626f5b;
 	border-top: 0;
 	float: right;
 	text-align: center;
