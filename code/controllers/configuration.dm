@@ -240,8 +240,12 @@ var/list/gamemode_cache = list()
 	var/allow_ic_printing = TRUE //Whether players should be allowed to print IC circuits from scripts.
 
 	var/server_port
-	
+
 	var/projectile_basketball
+
+	// Splash screen options
+	var/list/lobby_images = list('icons/splashes/onyx_old.png', 'icons/splashes/onyx_new.png')
+	var/current_lobbyscreen = null
 
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
@@ -259,6 +263,8 @@ var/list/gamemode_cache = list()
 				if (M.votable)
 					src.votable_modes += M.config_tag
 	src.votable_modes += "secret"
+
+	config.current_lobbyscreen = pick(lobby_images)
 
 /datum/configuration/proc/load(filename, type = "config") //the type can also be game_options, in which case it uses a different switch. not making it separate to not copypaste code - Urist
 	var/list/Lines = file2list(filename)
@@ -287,6 +293,12 @@ var/list/gamemode_cache = list()
 
 		if(type == "config")
 			switch (name)
+				if ("override_splash")
+					var/lobbyscreen_file = file(value)
+
+					if (lobbyscreen_file && isfile(lobbyscreen_file))
+						config.current_lobbyscreen = lobbyscreen_file
+
 				if("minute_topic_limit")
 					config.minutetopiclimit = text2num(value)
 
@@ -777,9 +789,9 @@ var/list/gamemode_cache = list()
 
 				if("radiation_lower_limit")
 					radiation_lower_limit = text2num(value)
-					
-				if("projectile_basketball")	
-					config.projectile_basketball = 1					
+
+				if("projectile_basketball")
+					config.projectile_basketball = 1
 
 				if("error_cooldown")
 					error_cooldown = text2num(value)
