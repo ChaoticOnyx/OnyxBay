@@ -27,6 +27,7 @@
 		/obj/item/clothing/under/dress/dress_cap,
 		/obj/item/clothing/head/caphat/formal,
 		/obj/item/clothing/under/captainformal,
+		/obj/item/clothing/glasses/thermal/plain/monocle,
 	)
 
 /obj/structure/closet/secure_closet/hop
