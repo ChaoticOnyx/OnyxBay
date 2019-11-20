@@ -236,11 +236,6 @@ var/list/_client_preferences_by_type
 	preference_mob.client.update_chat_position(new_value == GLOB.PREF_YES)
 	preference_mob.client.fit_viewport()
 
-/datum/client_preference/onyxchat
-	description = "\[LEGACY\] Use Old Chat (requires re-connect)"
-	key = "USE_OLD_CHAT"
-	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
-
 /********************
 * General Staff Preferences *
 ********************/
