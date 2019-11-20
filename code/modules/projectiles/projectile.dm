@@ -72,6 +72,9 @@
 	damtype = damage_type //TODO unify these vars properly
 	if(!hitscan)
 		animate_movement = SLIDE_STEPS
+	if(config.projectile_basketball)
+		anchored = 0
+		mouse_opacity = 1		
 	else animate_movement = NO_STEPS
 	. = ..()
 

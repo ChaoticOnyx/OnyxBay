@@ -135,7 +135,8 @@ var/list/admin_verbs_fun = list(
 	/datum/admins/proc/call_supply_drop,
 	/datum/admins/proc/call_drop_pod,
 	/client/proc/create_dungeon,
-	/datum/admins/proc/ai_hologram_set
+	/datum/admins/proc/ai_hologram_set,
+	/client/proc/projectile_basketball
 	)
 
 var/list/admin_verbs_spawn = list(
@@ -307,7 +308,8 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/roll_dices,
 	/proc/possess,
 	/proc/release,
-	/datum/admins/proc/ictus
+	/datum/admins/proc/ictus,
+	/client/proc/projectile_basketball	
 	)
 
 var/list/admin_verbs_mod = list(
@@ -946,3 +948,15 @@ var/list/admin_verbs_mentor = list(
 	T.add_spell(new S)
 	feedback_add_details("admin_verb","GS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_and_message_admins("gave [key_name(T)] the spell [S].")
+	
+/client/proc/projectile_basketball()
+	set category = "Fun"
+	set desc="Globally Toggles the ability to catch bullets with your hands"
+	set name="Projectile Basketball"
+
+	if(!check_rights(R_ADMIN))
+		return
+
+	config.projectile_basketball = !(config.projectile_basketball)
+	log_and_message_admins("toggled projectile basketball mode.")
+	feedback_add_details("admin_verb","PROBAS")	

@@ -240,6 +240,8 @@ var/list/gamemode_cache = list()
 	var/allow_ic_printing = TRUE //Whether players should be allowed to print IC circuits from scripts.
 
 	var/server_port
+	
+	var/projectile_basketball
 
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
@@ -775,7 +777,9 @@ var/list/gamemode_cache = list()
 
 				if("radiation_lower_limit")
 					radiation_lower_limit = text2num(value)
-
+					
+				if("projectile_basketball")	
+					config.projectile_basketball = 1					
 
 				if("error_cooldown")
 					error_cooldown = text2num(value)
