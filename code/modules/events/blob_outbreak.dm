@@ -23,7 +23,7 @@
 	for (var/mob/living/carbon/M in GLOB.player_list)
 		if(!M.client)
 			continue
-		if (!M.is_dead() && "blob" in M.client.prefs.be_special_role && blob_antag.can_become_antag(M.mind, FALSE))
+		if (!M.is_dead() && ("blob" in M.client.prefs.be_special_role) && blob_antag.can_become_antag(M.mind, FALSE))
 			antag_mob = M
 			break
 
@@ -31,6 +31,7 @@
 		kill()
 		return
 
+	log_and_message_admins("[key_name(antag_mob)] now a blobe.", null)
 	blob_antag.add_antagonist(antag_mob.mind, FALSE, TRUE, FALSE, TRUE, TRUE)
 
 /datum/event/blob/process()
