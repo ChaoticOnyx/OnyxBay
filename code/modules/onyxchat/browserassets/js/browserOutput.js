@@ -21,7 +21,7 @@ window.onerror = function(msg, url, line, col, error) {
 
 //Globals
 window.status = 'Output';
-var $messages, $subOptions, $subFont, $selectedSub, $contextMenu, $filterMessages, $last_message;
+var $messages, $subTheme, $subOptions, $subFont, $selectedSub, $contextMenu, $filterMessages, $last_message;
 var opts = {
 	//General
 	'messageCount': 0, //A count...of messages...
@@ -34,7 +34,6 @@ var opts = {
 	'wasd': false, //Is the user in wasd mode?
 	'priorChatHeight': 0, //Thing for height-resizing detection
 	'restarting': false, //Is the round restarting?
-	'darkmode':false, //Are we using darkmode? If not WHY ARE YOU LIVING IN 2009???
 	'iconsize': 12,
 
 	//Options menu
@@ -543,17 +542,20 @@ function toHex(n) {
 	return "0123456789ABCDEF".charAt((n-n%16)/16) + "0123456789ABCDEF".charAt(n%16);
 }
 
-function swap() { //Swap to darkmode
-	if (opts.darkmode){
+function setTheme(theme) {
+	if (theme === 'white') {
 		document.getElementById("sheetofstyles").href = "browserOutput_white.css";
-		opts.darkmode = false;
 		runByond('?_src_=chat&proc=swaptolightmode');
-	} else {
+	} else if (theme === 'dark') {
 		document.getElementById("sheetofstyles").href = "browserOutput.css";
-		opts.darkmode = true;
 		runByond('?_src_=chat&proc=swaptodarkmode');
+	} else if (theme === 'marines') {
+		document.getElementById("sheetofstyles").href = "browserOutput_marines.css";
+		runByond('?_src_=chat&proc=swaptomarinesmode');
 	}
-	setCookie('darkmode', (opts.darkmode ? 'true' : 'false'), 365);
+
+	setCookie('theme', theme, 365);
+	internalOutput('<span class="internal boldnshit">Set theme: '+theme+'</span>', 'internal');
 }
 
 function handleClientData(ckey, ip, compid) {
@@ -716,6 +718,7 @@ if (typeof $ === 'undefined') {
 
 $(function() {
 	$messages = $('#messages');
+	$subTheme = $('#subTheme');
 	$subOptions = $('#subOptions');
 	$subFont = $('#subFont');
 	$selectedSub = $subOptions;
@@ -749,7 +752,7 @@ $(function() {
 		'shighlightColor': getCookie('highlightcolor'),
 		'sfont': getCookie('font'),
 		'smessagecombining': getCookie('messagecombining'),
-		'sdarkmode': getCookie('darkmode'),
+		'stheme': getCookie('theme'),
 	};
 
 	if (savedConfig.fontsize) {
@@ -765,8 +768,8 @@ $(function() {
 		$("body").css('line-height', savedConfig.lineheight);
 		internalOutput('<span class="internal boldnshit">Loaded line height setting of: '+savedConfig.lineheight+'</span>', 'internal');
 	}
-	if(savedConfig.sdarkmode == 'true'){
-		swap();
+	if(savedConfig.stheme){
+		setTheme(savedConfig.stheme);
 	}
 	if (savedConfig.spingDisabled) {
 		if (savedConfig.spingDisabled == 'true') {
@@ -971,9 +974,11 @@ $(function() {
 	$('#toggleOptions').click(function(e) {
 		handleToggleClick($subOptions, $(this));
 	});
-	$('#darkmodetoggle').click(function(e) {
-		swap();
+
+	$('#toggleTheme').click(function(e) {
+		handleToggleClick($subTheme, $(this));
 	});
+
 	$('#toggleFont').click(function(e) {
 		handleToggleClick($subFont, $(this));
 	});
@@ -985,6 +990,21 @@ $(function() {
 	$('.sub, .toggle').mouseleave(function() {
 		opts.suppressSubClose = false;
 	});
+
+	$('#setWhiteTheme').click(function() {
+		setTheme('white');
+		savedConfig.stheme = 'white';
+	})
+
+	$('#setDarkTheme').click(function() {
+		setTheme('dark');
+		savedConfig.stheme = 'dark';
+	})
+
+	$('#setDarkMarineTheme').click(function() {
+		setTheme('marines');
+		savedConfig.stheme = 'marines';
+	})
 
 	$('#decreaseFont').click(function(e) {
 		savedConfig.fontsize = Math.max(parseInt(savedConfig.fontsize || 13) - 1, 1) + 'px';

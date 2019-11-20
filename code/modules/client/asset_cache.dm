@@ -262,7 +262,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"json2.min.js"             = 'code/modules/onyxchat/browserassets/js/json2.min.js',
 		"browserOutput.js"         = 'code/modules/onyxchat/browserassets/js/browserOutput.js',
 		"browserOutput.css"	       = 'code/modules/onyxchat/browserassets/css/browserOutput.css',
-		"browserOutput_white.css"  = 'code/modules/onyxchat/browserassets/css/browserOutput_white.css'
+		"browserOutput_white.css"  = 'code/modules/onyxchat/browserassets/css/browserOutput_white.css',
+		"browserOutput_marines.css"  = 'code/modules/onyxchat/browserassets/css/browserOutput_marines.css'
 	)
 
 /datum/asset/simple/fontawesome

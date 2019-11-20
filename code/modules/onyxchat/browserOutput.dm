@@ -67,22 +67,25 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 
 	var/data // Data to be sent back to the chat.
 	switch(href_list["proc"])
-		if("doneLoading")
+		if ("doneLoading")
 			data = doneLoading(arglist(params))
 
-		if("debug")
+		if ("debug")
 			data = debug(arglist(params))
 
-		if("ping")
+		if ("ping")
 			data = ping(arglist(params))
 
-		if("analyzeClientData")
+		if ("analyzeClientData")
 			data = analyzeClientData(arglist(params))
 
-		if("swaptodarkmode")
+		if ("swaptodarkmode")
 			swaptodarkmode()
-		if("swaptolightmode")
+		if ("swaptolightmode")
 			swaptolightmode()
+		if ("swaptomarinesmode")
+			swaptomarinesmode()
+
 
 	if(data)
 		ehjax_send(data = data)
@@ -233,3 +236,6 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 
 /datum/chatOutput/proc/swaptodarkmode()
 	owner.force_dark_theme()
+
+/datum/chatOutput/proc/swaptomarinesmode()
+	owner.force_marines_mode()
