@@ -58,6 +58,7 @@
 	if(hud_data.has_a_intent)
 
 		using = new /obj/screen/intent()
+		using.icon = ui_style
 		src.adding += using
 		action_intent = using
 
