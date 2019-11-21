@@ -198,6 +198,12 @@
 	item_state = "dalek_coat"
 	armor = list(melee = 45, bullet = 35, laser = 35, energy = 10, bomb = 10, bio = 0, rad = 0)
 
+/obj/item/clothing/suit/armor/hos/jensen/custom_m/mob_can_equip(mob/user)
+	.=..()
+	if(user.gender == FEMALE)
+		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this fascist cloth..</span>")
+		return 0
+
 /*
  * Navy uniforms
  */
