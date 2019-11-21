@@ -928,3 +928,19 @@
 	if(!M.should_have_organ(BP_HEART)) //We want the var for safety but we can do without the actual blood.
 		return
 	M.regenerate_blood(1.5 * removed)
+	
+/datum/reagent/immunobooster // Immunity-restoring reagent
+	name = "Immunobooster"
+	description = "A drug that helps restore the immune system. Will not replace a normal immunity."
+	taste_description = "chalky"
+	reagent_state = LIQUID
+	color = "#ffc0cb"
+	metabolism = REM
+	overdose = REAGENTS_OVERDOSE * 2
+	value = 1.5
+	scannable = 1
+
+/datum/reagent/immunobooster/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	if(alien == IS_DIONA)
+		return
+	M.immunity = min(M.immunity_norm * 0.5, removed + M.immunity)

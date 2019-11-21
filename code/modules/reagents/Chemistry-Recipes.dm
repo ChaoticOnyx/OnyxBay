@@ -2067,3 +2067,9 @@
 	result = /datum/reagent/ethanol/witcher/griffin
 	required_reagents = list(/datum/reagent/ethanol/witcher = 3,/datum/reagent/ethanol/bluecuracao = 1,/datum/reagent/ethanol/wine/sparkling = 1)
 	result_amount = 5
+	
+/datum/chemical_reaction/immunobooster
+	name = "Immunobooster"
+	result = /datum/reagent/immunobooster
+	required_reagents = list(/datum/reagent/cryptobiolin = 3, /datum/reagent/dylovene = 1)
+	result_amount = 2	
