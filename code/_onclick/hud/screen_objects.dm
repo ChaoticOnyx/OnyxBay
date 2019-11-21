@@ -171,13 +171,23 @@
 	var/icon_x = text2num(P["icon-x"])
 	var/icon_y = text2num(P["icon-y"])
 	intent = I_DISARM
-	if(icon_x <= world.icon_size/2)
-		if(icon_y <= world.icon_size/2)
+
+	if (icon == 'icons/mob/screen/new.dmi')
+		if(icon_x <= world.icon_size/2)
+			if(icon_y <= world.icon_size/2)
+				intent = I_GRAB
+			else
+				intent = I_HELP
+		else if(icon_y <= world.icon_size/2)
 			intent = I_HURT
-		else
-			intent = I_HELP
-	else if(icon_y <= world.icon_size/2)
-		intent = I_GRAB
+	else
+		if(icon_x <= world.icon_size/2)
+			if(icon_y <= world.icon_size/2)
+				intent = I_HURT
+			else
+				intent = I_HELP
+		else if(icon_y <= world.icon_size/2)
+			intent = I_GRAB
 	update_icon()
 	usr.a_intent = intent
 
