@@ -377,30 +377,20 @@
 	set name = "Changelog"
 	set category = "OOC"
 	getFiles(
-		'html/88x31.png',
-		'html/bug-minus.png',
-		'html/burn-exclamation.png',
-		'html/chevron.png',
-		'html/chevron-expand.png',
-		'html/cross-circle.png',
-		'html/hard-hat-exclamation.png',
-		'html/image-minus.png',
-		'html/image-plus.png',
-		'html/map-pencil.png',
-		'html/music-minus.png',
-		'html/music-plus.png',
-		'html/tick-circle.png',
-		'html/scales.png',
-		'html/spell-check.png',
-		'html/wrench-screwdriver.png',
-		'html/changelog.css',
-		'html/changelog.html'
+		'html/changelog.html',
+		'html/onyxlogo.png'
 		)
-	src << browse('html/changelog.html', "window=changes;size=675x650")
-	if(prefs.lastchangelog != changelog_hash)
+
+	var/mob/M = mob
+	var/html = file2text('html/changelog.html')
+	M.panel = new(M, "Changelog","Changelog", 500, 650, M)
+	M.panel.set_window_options("titlebar=0;can_close=0;can_resize=0;can_scroll=0;border=0;")
+	M.panel.set_content(html)
+	M.panel.open()
+
+	if (prefs.lastchangelog != changelog_hash)
 		prefs.lastchangelog = changelog_hash
 		prefs.save_preferences()
-		winset(src, "rpane.changelog", "background-color=none;font-style=;")
 
 /mob/new_player/verb/observe()
 	set name = "Observe"

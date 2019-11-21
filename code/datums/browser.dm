@@ -31,7 +31,8 @@
 	// If a client exists, but they have disabled fancy windowing, disable it!
 	if(user && user.client && user.client.get_preference_value(/datum/client_preference/browser_style) == GLOB.PREF_PLAIN)
 		return
-	add_stylesheet("common", 'html/browser/common.css') // this CSS sheet is common to all UIs
+
+	add_stylesheet("common", 'html/chui/chui.css') // this CSS sheet is common to all UIs
 
 /datum/browser/proc/set_title(ntitle)
 	title = format_text(ntitle)
@@ -60,13 +61,18 @@
 /datum/browser/proc/add_content(ncontent)
 	content += ncontent
 
-/datum/browser/proc/get_header()
+/datum/browser/proc/get_header(var/content)
 	var/key
 	var/filename
 	for (key in stylesheets)
 		filename = "[ckey(key)].css"
 		user << browse_rsc(stylesheets[key], filename)
 		head_content += "<link rel='stylesheet' type='text/css' href='[filename]'>"
+
+	head_content += "<script src='jquery.min.js'></script>"
+	head_content += "<script src='jquery.nanoscroller.min.js'></script>"
+	head_content += "<script src='chui.js'></script>"
+	head_content += "<link rel='stylesheet' type='text/css' href='font-awesome.css'>"
 
 	for (key in scripts)
 		filename = "[ckey(key)].js"
@@ -77,30 +83,50 @@
 	if (title_image)
 		title_attributes = "class='uiTitle icon' style='background-image: url([title_image]);'"
 
+	var/ref = html_encode("\ref[src]")
+
 	return {"<!DOCTYPE html>
 <html>
-	<meta charset=ISO-8859-1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="ref" value="[ref]">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		[head_content]
 	</head>
-	<body scroll=auto>
-		<div class='uiWrapper'>
-			[title ? "<div class='uiTitleWrapper'><div [title_attributes]><tt>[title]</tt></div><div class='uiTitleButtons'>[title_buttons]</div></div>" : ""]
-			<div class='uiContent'>
+	<body>
+		[title ? {"<div id='titlebar'>
+			<div class='corner tl'></div>
+			<div class='corner tr'></div>
+			<h1>[title]</h1>
+			<a href='byond://winset?[ref].is-minimized=true' class='min'><strong><i class='fas fa-window-minimize'></i></strong></a>
+			<a href='#' class='close'><i class="fas fa-times"></i></a>
+		</div>"} : ""]
+		<div class='resizeArea top'   rx='0' ry='-1'></div>
+		<div class='resizeArea tr'    rx='1' ry='-1'></div>
+		<div class='resizeArea right' rx='1' ry='0'></div>
+		<div class='resizeArea br'    rx='1' ry='1'></div>
+		<div class='resizeArea bottom'rx='0' ry='1'></div>
+		<div class='resizeArea bl'    rx='-1' ry='1'></div>
+		<div class='resizeArea left'  rx='-1' ry='0'></div>
+		<div class='resizeArea tl'    rx='-1' ry='-1'></div>
+		<div id="cornerWrap">
+			<div class='borderSlants'></div>
+			<div class='corner bl'></div>
+			<div class='corner br'></div>
+			<div id='content' class='nano'>
+				<div class='nano-content innerContent'>
+					[content]
+				</div>
+			</div>
+		</div>
 	"}
 
 /datum/browser/proc/get_footer()
-	return {"
-			</div>
-		</div>
-	</body>
-</html>"}
+	return {"</body></html>"}
 
 /datum/browser/proc/get_content()
 	return {"
-	[get_header()]
-	[content]
+	[get_header(content)]
 	[get_footer()]
 	"}
 

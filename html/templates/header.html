@@ -1,40 +1,29 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-  <title>Список изменений сервера Chaotic Onyx</title>
-  <link rel="stylesheet" type="text/css" href="changelog.css">
-  <base target="_blank" />
-  <script type='text/javascript'>
+<style type="text/css">
+	.postcard {display: block; margin: 10px auto; width: 300px;}
+	h1 {font-size: 2.5em; padding: 0 10px; margin: 0; color: #115FD5;}
+	h1 a {display: block; float: right;}
+	.links {list-style-type: none; margin: 15px 5px; padding: 0; border: 1px solid #ccc; color: #333;}
+	.links li {float: left; width: 50%; text-align: center; background: #f9f9f9; padding: 10px 0; position: relative;}
+	.links li span {position: absolute; top: 0; right: 0; bottom: 0; width: 1px; background: #ccc;}
 
-	function changeText(tagID, newText, linkTagID){
-		var tag = document.getElementById(tagID);
-		tag.innerHTML = newText;
-		var linkTag = document.getElementById(linkTagID);
-		linkTag.removeAttribute("href");
-		linkTag.removeAttribute("onclick");
-	}
+	.log {list-style-type: none; padding: 0; background: #f9f9f9; margin: 20px 5px; border: 1px solid #ccc; font-size: 1em; color: #333;}
+	.log li {padding: 5px 5px 5px 20px; border-top: 1px solid #ccc; line-height: 1.4}
+	.log li.title {background: #efefef; font-size: 1.7em; color: #115FD5; padding: 10px 10px; border-top: 0;}
+	.log li.date {background: #f1f1f1; font-size: 1.1em; font-weight: bold; padding: 8px 5px; border-bottom: 2px solid #bbb;}
+	.log li.admin {font-size: 1.2em; padding: 5px 5px 5px 10px;}
+	.log li.admin span {color: #2A76E7;}
 
-  </script>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-</head>
+	h3 {padding: 0 10px; margin: 0; color: #115FD5;}
+	.team, .lic {padding: 10px; margin: 0; line-height: 1.4;}
+	.lic {font-size: 0.9em;}
 
-<body>
-<table align='center' width='650'><tr><td>
-<table align='center' class="top">
-	<tr>
-		<td valign='top'>
-		<div align='center'><font size='3'><b>Список изменений сервера Chaotic Onyx</b></font></div>
+	img {max-height: 32px; max-width: 32px;}
+</style>
 
-		<p><div align='center'><font size='3'><a href="https://wiki.ss13.ru/index.php?title=Main_Page">Вики</a> | <a href="https://github.com/ChaoticOnyx/OnyxBay">Репозиторий</a></font></div></p>
-		</td>
-	</tr>
-</table>
+<h1>OnyxBay <a href="#license"><img alt="OnyxBay" src="onyxlogo.png" /></a></h1>
+<ul class="links cf">
+    <li>Наш сайт<br><strong>https://ss13.ru</strong></li>
+    <li>Наш дискорд сервер<br><strong>https://discord.gg/ZPw3t45</strong></li>
+</ul>
 
-		<!--
-
-		TO ADD AN ENTRY, ADD AND MAINTAIN YOUR OWN changelog/USERNAME.yml FILE.
-
-		*** DO NOT MODIFY THIS FILE OR YOU WILL CAUSE MERGE CONFLICTS. ***
-
-		-->
-		<div class="commit sansserif">
+<ul class="log"><li class="title"><i class="icon-bookmark"></i></li>

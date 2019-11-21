@@ -48,20 +48,11 @@ args = opt.parse_args()
 all_changelog_entries = {}
 
 validPrefixes = [
-    'bugfix',
-    'wip',
-    'tweak',
-    'soundadd',
-    'sounddel',
-    'rscdel',
-    'rscadd',
-    'imageadd',
-    'imagedel',
-    'maptweak',
-    'spellcheck',
-    'experiment',
-    'balance',
-    'admin'
+    'fa-bug',
+    'fa-tools',
+    'fa-image',
+    'fa-pencil-ruler',
+    'fa-music'
 ]
 
 
@@ -224,21 +215,19 @@ with io.open(args.targetFile.replace('.htm', '.dry.htm') if args.dryRun else arg
 
     for _date in reversed(sorted(all_changelog_entries.keys())):
         entry_htm = '\n'
-        entry_htm += '\t\t\t<h2 class="date">{date}</h2>\n'.format(date=_date.strftime(dateformat))
+        entry_htm += '\t<li class="date">{date}</li>\n'.format(date=_date.strftime(dateformat))
         write_entry = False
         for author in sorted(all_changelog_entries[_date].keys()):
             if len(all_changelog_entries[_date]) == 0:
                 continue
-            author_htm = '\t\t\t<h3 class="author">{author} updated:</h3>\n'.format(author=author)
-            author_htm += '\t\t\t<ul class="changes bgimages16">\n'
+            author_htm = '\t<li class="admin"><span>{author}</span> updated:</li>\n'.format(author=author)
             changes_added = []
             for (css_class, change) in (dictToTuples(e)[0] for e in all_changelog_entries[_date][author]):
                 if change in changes_added:
                     continue
                 write_entry = True
                 changes_added += [change]
-                author_htm += '\t\t\t\t<li class="{css_class}">{change}</li>\n'.format(css_class=css_class, change=change.strip())
-            author_htm += '\t\t\t</ul>\n'
+                author_htm += '\t<li><i class="fas {css_class}"></i> {change}</li>\n'.format(css_class=css_class, change=change.strip())
             if len(changes_added) > 0:
                 entry_htm += author_htm
         if write_entry:

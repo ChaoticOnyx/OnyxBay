@@ -5,7 +5,6 @@
 	var/spawning = 0//Referenced when you want to delete the new_player later on in the code.
 	var/totalPlayers = 0		 //Player counts for the Lobby tab
 	var/totalPlayersReady = 0
-	var/datum/browser/panel
 	var/show_invalid_jobs = 0
 	universal_speak = 1
 
@@ -29,7 +28,6 @@
 
 /mob/new_player/proc/new_player_panel_proc()
 	var/output = "<div align='center'>"
-	output +="<hr>"
 	output += "<p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
 
 	if(GAME_STATE <= RUNLEVEL_LOBBY)
@@ -47,7 +45,7 @@
 	output += "</div>"
 
 	panel = new(src, "Welcome","Welcome", 210, 280, src)
-	panel.set_window_options("can_close=0")
+	panel.set_window_options("titlebar=0;can_close=0;can_resize=0;can_scroll=0;border=0;title=Welcome")
 	panel.set_content(output)
 	panel.open()
 	return

@@ -253,7 +253,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 /datum/asset/simple/jquery
 	verify = FALSE
 	assets = list(
-		"jquery.min.js"            = 'code/modules/onyxchat/browserassets/js/jquery.min.js',
+		"jquery.min.js"					= 'code/modules/onyxchat/browserassets/js/jquery.min.js',
+		"jquery.nanoscroller.min.js"	= 'code/modules/onyxchat/browserassets/js/jquery.nanoscroller.min.js'
 	)
 
 /datum/asset/simple/onyxchat
@@ -264,6 +265,15 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"browserOutput.css"	       = 'code/modules/onyxchat/browserassets/css/browserOutput.css',
 		"browserOutput_white.css"  = 'code/modules/onyxchat/browserassets/css/browserOutput_white.css',
 		"browserOutput_marines.css"  = 'code/modules/onyxchat/browserassets/css/browserOutput_marines.css'
+	)
+
+/datum/asset/directories/chui
+	isTrivial = FALSE
+	verify = TRUE
+	dirs = list(
+		"html/chui/",
+		"html/chui/images/",
+		"html/chui/images/buttons/"
 	)
 
 /datum/asset/simple/fontawesome
