@@ -250,7 +250,7 @@ mob/blob/DblClickOn(var/atom/A) //Teleport view to another blob
 			client.screen |= blob_hud.spec_blobs
 
 /mob/blob/is_dead()
-	if (blob_core && blob_core.health <= 0)
+	if (!blob_core || (blob_core && blob_core.health <= 0))
 		stat = DEAD
 		return TRUE
 

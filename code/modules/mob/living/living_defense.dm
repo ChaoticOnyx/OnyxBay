@@ -86,6 +86,18 @@
 
 	return absorb
 
+/mob/living/blob_act(destroy, obj/effect/blob/source)
+	. = ..()
+
+	if (!source)
+		return
+
+	if (destroy)
+		health -= health
+		return
+
+	apply_damage(20, BRUTE, BP_CHEST, 0, 0, source)
+
 /mob/living/proc/aura_check(var/type)
 	if(!auras)
 		return TRUE

@@ -400,7 +400,6 @@
 	if(prefs.lastchangelog != changelog_hash)
 		prefs.lastchangelog = changelog_hash
 		prefs.save_preferences()
-		winset(src, "rpane.changelog", "background-color=none;font-style=;")
 
 /mob/new_player/verb/observe()
 	set name = "Observe"
