@@ -1,6 +1,6 @@
 /obj/effect/blob/core
 	name = "blob core"
-	icon_state = "blob_core"
+	icon_state = "core"
 	desc = "A part of a blob. It is large and pulsating."
 	health = 200
 	maxhealth = 200
@@ -20,6 +20,12 @@
 	blob_cores += src
 
 	creator = C
+
+	if (!no_morph && new_overmind)
+		flick("core_spawn",src)
+	else
+		icon_state = "cerebrate"
+		flick("morph_core",src)
 
 	playsound(src, "gib", 75, 1)
 
@@ -74,6 +80,33 @@
 	else
 		spawning = 0
 
+/obj/effect/blob/core/proc/recruit_overmind()
+	var/list/possible_candidates = GLOB.player_list
+
+	for(var/mob/candidate in possible_candidates)
+		var/datum/mind/player = candidate.mind
+		if (!(isghostmind(player) || isnewplayer(player.current)))
+			to_chat(candidate, "\icon[src]<span class='recruit'>A blob core is looking for someone to become its overmind. (<a href='?src=\ref[src];blob_recruit=\ref[candidate.client]'>Apply now!</a>)</span>")
+
+/obj/effect/blob/core/Topic(href, href_list)
+	if(usr.stat != DEAD)
+		return
+
+	var/datum/mind/M = usr.mind
+	if (!(isghostmind(M) || isnewplayer(M.current)))
+		href_exploit(usr.key, href)
+		return
+
+	if(href_list["blob_recruit"])//We don't have time to wait for the recruiter, just grab whoever applied first!
+		if(!overmind)
+			create_overmind(usr.client)
+		else
+			to_chat(usr, "<span class='warning'>Looks like someone applied first. First arrived, first served. Better luck next time.</span>")
+
+/obj/effect/blob/core/attack_ghost(var/mob/user)
+	if (!overmind)
+		create_overmind(user.client)
+
 /obj/effect/blob/core/proc/create_overmind(client/new_overmind)
 	if(!new_overmind)
 		CRASH("new_overmind is null")
@@ -96,7 +129,8 @@
 	src.overmind = B
 
 	if (icon_state == "cerebrate")
-		icon_state = "blob_core"
+		icon_state = "core"
+		flick("morph_cerebrate",src)
 
 	B.special_blobs += src
 	B.update_specialblobs()
@@ -116,9 +150,27 @@
 		B.name = new_name
 		B.real_name = new_name
 		B.mind.name = new_name
+		var/datum/antagonist/blob/blob_antag = get_antag_data("blob")
+		blob_antag.add_antagonist_mind(B.mind)
 
 		for(var/mob/blob/O in blob_overminds)
 			if(O != B)
 				to_chat(O, "<span class='notice'>A new blob cerebrate has started thinking inside a blob core! [B] joins the blob! <a href='?src=\ref[O];blobjump=\ref[loc]'>(JUMP)</a></span>")
 
 	return 1
+
+/obj/effect/blob/core/update_icon(spawnend)
+	spawn(1)
+		overlays.len = 0
+		underlays.len = 0
+
+		underlays += image(icon,"roots")
+
+		if(!spawning)
+			for(var/obj/effect/blob/B in orange(src,1))
+				overlays += image(icon,"coreconnect",dir = get_dir(src,B))
+		if(spawnend)
+			spawn(10)
+				update_icon()
+
+	. = ..()

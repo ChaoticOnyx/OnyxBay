@@ -429,7 +429,6 @@
 #include "code\game\antagonist\blob\blobs\core.dm"
 #include "code\game\antagonist\blob\blobs\factory.dm"
 #include "code\game\antagonist\blob\blobs\node.dm"
-#include "code\game\antagonist\blob\blobs\normal.dm"
 #include "code\game\antagonist\blob\blobs\resource.dm"
 #include "code\game\antagonist\blob\blobs\shield.dm"
 #include "code\game\antagonist\outsider\actors.dm"

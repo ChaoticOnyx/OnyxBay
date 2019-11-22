@@ -8,8 +8,8 @@ var/list/blob_overminds = list()
 
 /obj/effect/blob
 	name = "blob"
-	icon = 'icons/mob/blob/blob.dmi'
-	icon_state = "blob"
+	icon = 'icons/mob/blob/blob_64x64.dmi'
+	icon_state = "center"
 	luminosity = 2
 	desc = "A part of a blob."
 	density = 0
@@ -22,6 +22,8 @@ var/list/blob_overminds = list()
 	var/brute_resist = 1
 	var/fire_resist = 1
 
+	pixel_x = -WORLD_ICON_SIZE/2
+	pixel_y = -WORLD_ICON_SIZE/2
 	layer = BLOB_BASE_LAYER
 
 	var/spawning = 2
@@ -115,6 +117,12 @@ var/list/blob_overminds = list()
 	blob_tiles_grown_total--
 	blobs -= src
 
+	for(var/obj/effect/blob/B in orange(loc,1))
+		B.update_icon()
+
+		if(!spawning)
+			anim(target = B.loc, a_icon = icon, flick_anim = "connect_die", sleeptime = 50, direction = get_dir(B,src), plane = src.plane)
+
 	..()
 
 /obj/effect/blob/proc/Life()
@@ -179,6 +187,11 @@ var/list/blob_overminds = list()
 	var/obj/effect/blob/normal/B = new(src.loc)
 	B.density = TRUE
 
+	if(istype(src,/obj/effect/blob/normal))
+		var/num = rand(1,100)
+		num /= 10000
+		B.layer = layer - num
+
 	if (T.Enter(B,src))//Attempt to move into the tile
 		B.density = (initial(B.density))
 		B.forceMove(T)
@@ -197,12 +210,26 @@ var/list/blob_overminds = list()
 	return 1
 
 /obj/effect/blob/update_icon(spawnend = 0)
-	return
+	if (health < maxhealth)
+		var/hurt_percentage = round((health * 100) / maxhealth)
+		var/hurt_icon
+
+		switch(hurt_percentage)
+			if (0 to 25)
+				hurt_icon = "hurt_100"
+			if (26 to 50)
+				hurt_icon = "hurt_75"
+			if (51 to 75)
+				hurt_icon = "hurt_50"
+			else
+				hurt_icon = "hurt_25"
+
+		overlays += image(icon,hurt_icon)
 
 /obj/effect/blob/proc/change_to(var/type, var/mob/blob/M = null, var/special = FALSE)
-	if(!ispath(type))
+	if (!ispath(type))
 		error("[type] is an invalid type for the blob.")
-	if(special) //Send additional information to the New()
+	if (special) //Send additional information to the New()
 		new type(src.loc, 200, null, 1, M)
 	else
 		var/obj/effect/blob/B = new type(src.loc)
@@ -211,3 +238,37 @@ var/list/blob_overminds = list()
 	manual_remove = 1
 	qdel(src)
 	return
+
+//////////////////NORMAL BLOBS/////////////////////////////////
+/obj/effect/blob/normal
+	luminosity = 2
+	health = 21
+	layer = BLOB_BASE_LAYER
+
+/obj/effect/blob/normal/update_icon(var/spawnend = 0)
+	spawn(1)
+		overlays.len = 0
+		underlays.len = 0
+
+		underlays += image(icon,"roots")
+
+		if(!spawning)
+			for(var/obj/effect/blob/B in orange(src,1))
+				if(B.spawning == 1)
+					anim(target = loc, a_icon = icon, flick_anim = "connect_spawn", sleeptime = 15, direction = get_dir(src,B))
+					spawn(8)
+						update_icon()
+				else if(!B.dying && !B.spawning)
+					if(spawnend)
+						anim(target = loc, a_icon = icon, flick_anim = "connect_spawn", sleeptime = 15, direction = get_dir(src,B))
+					else
+						if(istype(B,/obj/effect/blob/core))
+							overlays += image(icon,"connect",dir = get_dir(src,B))
+						else
+							overlays += image(icon,"connect",dir = get_dir(src,B))
+
+		if(spawnend)
+			spawn(10)
+				update_icon()
+
+		..()

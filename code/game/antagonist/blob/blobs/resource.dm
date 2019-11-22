@@ -1,6 +1,6 @@
 /obj/effect/blob/resource
 	name = "resource blob"
-	icon_state = "blob_resource"
+	icon_state = "resource"
 	desc = "A part of a blob. It makes a slow, deep breathing sound."
 	health = 30
 	maxhealth = 30
@@ -14,6 +14,7 @@
 	..()
 
 	blob_resources += src
+	flick("morph_resource",src)
 
 /obj/effect/blob/resource/Destroy()
 	blob_resources -= src
@@ -47,3 +48,24 @@
 		overmind.add_points(1)
 
 	return 1
+
+/obj/effect/blob/resource/update_icon(var/spawnend = 0)
+	spawn(1)
+		if(overmind)
+			color = null
+		else
+			color = "#888888"
+
+	spawn(1)
+		overlays.len = 0
+		underlays.len = 0
+		underlays += image(icon,"roots")
+
+		if(!spawning)
+			for(var/obj/effect/blob/B in orange(src,1))
+				overlays += image(icon,"resourceconnect",dir = get_dir(src,B))
+		if(spawnend)
+			spawn(10)
+				update_icon()
+
+		..()
