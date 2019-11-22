@@ -25,7 +25,7 @@
 	for(var/direction in GLOB.cardinal)
 		var/turf/simulated/shielded_tile = get_step(get_turf(src), direction)
 		for(var/obj/effect/shield/S in shielded_tile)
-			S.diffuse(5)
+			qdel(S)
 
 /obj/machinery/shield_diffuser/attackby(obj/item/O as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, O))

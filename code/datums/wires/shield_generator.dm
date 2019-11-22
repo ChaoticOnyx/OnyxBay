@@ -22,8 +22,6 @@ var/const/SHIELDGEN_WIRE_NOTHING = 16		// A blank wire that doesn't have any spe
 		if(SHIELDGEN_WIRE_HACK)
 			if(!mended)
 				S.hacked = 0
-				if(S.check_flag(MODEFLAG_BYPASS))
-					S.toggle_flag(MODEFLAG_BYPASS)
 				if(S.check_flag(MODEFLAG_OVERCHARGE))
 					S.toggle_flag(MODEFLAG_OVERCHARGE)
 		if(SHIELDGEN_WIRE_CONTROL)

@@ -95,21 +95,6 @@
 		update_explosion_resistance()
 		gen.damaged_segments -= src
 
-
-/obj/effect/shield/proc/diffuse(var/duration)
-	// The shield is trying to counter diffusers. Cause lasting stress on the shield.
-	if(gen.check_flag(MODEFLAG_BYPASS) && !disabled_for)
-		take_damage(duration * rand(3, 5), SHIELD_DAMTYPE_EM)
-		return
-
-	diffused_for = max(duration, 0)
-	gen.damaged_segments |= src
-	set_density(0)
-	set_invisibility(INVISIBILITY_MAXIMUM)
-	update_nearby_tiles()
-	update_icon()
-	update_explosion_resistance()
-
 /obj/effect/shield/attack_generic(var/source, var/damage, var/emote)
 	take_damage(damage, SHIELD_DAMTYPE_PHYSICAL)
 	if(gen.check_flag(MODEFLAG_OVERCHARGE) && istype(source, /mob/living/))
