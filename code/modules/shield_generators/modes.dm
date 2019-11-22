@@ -62,13 +62,6 @@
 	mode_flag = MODEFLAG_MODULATE
 	multiplier = 2
 
-/datum/shield_mode/bypass
-	mode_name = "Diffuser Bypass"
-	mode_desc = "This mode disables the built-in safeties which allows the generator to counter effect of various shield diffusers. This tends to create a very large strain on the generator. Does not work with enabled safety protocols."
-	mode_flag = MODEFLAG_BYPASS
-	multiplier = 3
-	hacked_only = 1
-
 /datum/shield_mode/overcharge
 	mode_name = "Field Overcharge"
 	mode_desc = "This mode polarises the field, causing damage on contact. Does not work with enabled safety protocols."

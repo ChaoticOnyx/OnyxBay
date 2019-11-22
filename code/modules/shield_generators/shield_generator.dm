@@ -301,7 +301,7 @@
 
 	if(href_list["toggle_mode"])
 		// Toggling hacked-only modes requires the hacked var to be set to 1
-		if((text2num(href_list["toggle_mode"]) & (MODEFLAG_BYPASS | MODEFLAG_OVERCHARGE)) && !hacked)
+		if((text2num(href_list["toggle_mode"]) & (MODEFLAG_OVERCHARGE)) && !hacked)
 			return TOPIC_HANDLED
 
 		toggle_flag(text2num(href_list["toggle_mode"]))

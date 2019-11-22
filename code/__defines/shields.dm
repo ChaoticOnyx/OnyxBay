@@ -37,11 +37,10 @@
 #define MODEFLAG_ANORGANIC 16
 #define MODEFLAG_ATMOSPHERIC 32
 #define MODEFLAG_HULL 64
-#define MODEFLAG_BYPASS 128
-#define MODEFLAG_OVERCHARGE 256
-#define MODEFLAG_MODULATE 512
-#define MODEFLAG_MULTIZ 1024
-#define MODEFLAG_EM 2048
+#define MODEFLAG_OVERCHARGE 128
+#define MODEFLAG_MODULATE 256
+#define MODEFLAG_MULTIZ 512
+#define MODEFLAG_EM 1024
 
 // Return codes for shield hits.
 #define SHIELD_ABSORBED 1			// The shield has completely absorbed the hit
