@@ -1,6 +1,6 @@
 /obj/effect/blob/factory
 	name = "factory blob"
-	icon_state = "blob_factory"
+	icon_state = "factory"
 	desc = "A part of a blob. It makes the sound of organic tissue being torn."
 	health = 100
 	maxhealth = 100
@@ -12,6 +12,12 @@
 	layer = BLOB_FACTORY_LAYER
 	destroy_sound = "sound/effects/blobsplatspecial.ogg"
 
+/obj/effect/blob/factory/New(loc,newlook = null)
+	..()
+
+	flick("morph_factory",src)
+	spore_delay = world.time + (2 SECONDS)
+
 /obj/effect/blob/factory/run_action()
 	if(spores.len >= max_spores)
 		return 0
@@ -21,7 +27,11 @@
 
 	spore_delay = world.time + (40 SECONDS) // 30 seconds
 
-	new /mob/living/simple_animal/hostile/blobspore(src.loc, src)
+	flick("factorypulse",src)
+	anim(target = loc, a_icon = icon, flick_anim = "sporepulse", sleeptime = 150)
+
+	spawn(10)
+		new/mob/living/simple_animal/hostile/blobspore(src.loc, src)
 
 	return 1
 
@@ -36,6 +46,22 @@
 		overmind.update_specialblobs()
 
 	..()
+
+/obj/effect/blob/factory/update_icon(spawnend)
+	spawn(1)
+		overlays.len = 0
+		underlays.len = 0
+
+		underlays += image(icon,"roots")
+
+		if(!spawning)
+			for(var/obj/effect/blob/B in orange(src,1))
+				overlays += image(icon,"factoryconnect",dir = get_dir(src,B))
+		if(spawnend)
+			spawn(10)
+				update_icon()
+
+		..()
 
 /////////////BLOB SPORE///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -88,7 +114,7 @@
 
 /mob/living/simple_animal/hostile/blobspore/Destroy()
 	//creating a pathogenic cloud upon death
-	anim(target = loc, a_icon = icon, flick_anim = "blob_act", sleeptime = 15, direction = SOUTH, lay = BLOB_SPORE_LAYER, plane = DEFAULT_PLANE)
+	anim(target = loc, a_icon = icon, flick_anim = "blob_act", sleeptime = 15, direction = SOUTH, plane = DEFAULT_PLANE)
 
 	if(factory)
 		factory.spores -= src

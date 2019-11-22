@@ -1,6 +1,6 @@
 /obj/effect/blob/node
 	name = "blob node"
-	icon_state = "blob_node"
+	icon_state = "node"
 	desc = "A part of a blob."
 	health = 100
 	maxhealth = 100
@@ -12,6 +12,7 @@
 
 /obj/effect/blob/node/New(loc, no_morph = 0)
 	blob_nodes += src
+	flick("morph_node",src)
 
 	..(loc)
 
@@ -42,3 +43,20 @@
 
 /obj/effect/blob/node/run_action()
 	return 0
+
+/obj/effect/blob/node/update_icon(var/spawnend = 0)
+	spawn(1)
+		overlays.len = 0
+		underlays.len = 0
+
+		underlays += image(icon,"roots")
+
+		if(!spawning)
+			for(var/obj/effect/blob/B in orange(src,1))
+				overlays += image(icon,"nodeconnect",dir = get_dir(src,B))
+		if(spawnend)
+			spawn(10)
+				update_icon()
+
+		..()
+

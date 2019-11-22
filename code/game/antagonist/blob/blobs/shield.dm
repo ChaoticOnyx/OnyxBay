@@ -1,6 +1,6 @@
 /obj/effect/blob/shield
 	name = "strong blob"
-	icon_state = "blob_idle"
+	icon_state = "strong"
 	desc = "A dense part of a blob."
 	health = 20
 	maxhealth = 20
@@ -9,6 +9,10 @@
 	layer = BLOB_SHIELD_LAYER
 	spawning = 0
 	destroy_sound = "sound/effects/blobsplat.ogg"
+
+/obj/effect/blob/shield/New(loc,newlook = null)
+	..()
+	flick("morph_strong",src)
 
 /obj/effect/blob/shield/Cross(atom/movable/mover, turf/target, height=1.5, air_group = 0)
 	if (istype(mover) && mover.pass_flags & PASS_FLAG_BLOB)
@@ -23,3 +27,19 @@
 
 	health += 10
 	return 1
+
+/obj/effect/blob/shield/update_icon(var/spawnend = 0)
+	spawn(1)
+		overlays.len = 0
+		underlays.len = 0
+
+		underlays += image(icon,"roots")
+
+		if(!spawning)
+			for(var/obj/effect/blob/B in orange(src,1))
+				overlays += image(icon,"strongconnect",dir = get_dir(src,B))
+		if(spawnend)
+			spawn(10)
+				update_icon()
+
+		..()
