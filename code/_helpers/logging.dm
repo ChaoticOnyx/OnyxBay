@@ -47,7 +47,7 @@
 	if(notify_admin)
 		for(var/client/C in GLOB.admins)
 			if(!req_pref || (C.get_preference_value(req_pref) == GLOB.PREF_SHOW))
-				C << rendered
+				to_chat(C, rendered)
 
 /proc/log_admin(text, location, notify_admin)
 	log_generic("ADMIN", text, location, config.log_admin, notify_admin)
