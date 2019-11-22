@@ -32,6 +32,29 @@ var/list/blob_overminds = list()
 	var/time_since_last_pulse
 	var/manual_remove = 0
 
+/obj/effect/blob/attackby(obj/item/I, mob/user)
+	. = ..()
+
+	var/damage = 0
+
+	if (istype(I, /obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/W = I
+
+		if (W.welding)
+			damage += (15 / fire_resist)
+			playsound(I, 'sound/items/welder.ogg', 60, TRUE)
+
+	if (I.sharp)
+		damage += (4 / brute_resist)
+
+	if (I.edge)
+		damage += (10 / brute_resist)
+
+	if (!I.sharp && !I.edge)
+		damage += (2 / brute_resist)
+
+	health -= damage
+
 /obj/effect/blob/blob_act()
 	return
 
