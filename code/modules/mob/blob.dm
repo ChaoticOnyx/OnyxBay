@@ -19,6 +19,7 @@
 	var/max_blob_points = 100
 	var/maxjumprange = 20 //how far you can go in terms of non-blob tiles in a jump attempt
 	var/restrain_blob = TRUE
+	var/last_power = 0
 
 	var/blob_warning = 0
 

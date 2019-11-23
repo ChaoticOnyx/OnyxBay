@@ -8,6 +8,15 @@
 	add_points(-cost)
 	return 1
 
+/mob/blob/proc/can_use_power(cooldown, silent=FALSE)
+	if (!last_power || world.time > last_power + cooldown)
+		return TRUE
+
+	if (!silent)
+		to_chat(src, "The power is on cooldown.")
+
+	return FALSE
+
 // Power verbs
 
 /mob/blob/verb/transport_core()
@@ -53,8 +62,10 @@
 		telepathy(text)
 
 /mob/blob/proc/telepathy(message as text)
-	if (!can_buy(BLOBTAUNTCOST))
+	if (!can_use_power(BLOBTAUNTCD) || !can_buy(BLOBTAUNTCOST))
 		return
+
+	last_power = world.time
 
 	for (var/mob/living/M in GLOB.living_mob_list_)
 		if (!M.client || M.loc.z != usr.loc.z)
@@ -82,8 +93,10 @@
 		to_chat(src, "Unable to use this blob, find a normal one.")
 		return
 
-	if (!can_buy(BLOBSHICOST))
+	if (!can_use_power(BLOBSHICD) || !can_buy(BLOBSHICOST))
 		return
+
+	last_power = world.time
 
 	B.change_to(/obj/effect/blob/shield)
 
@@ -112,9 +125,10 @@
 		to_chat(src, "There is a resource blob nearby, move more than 4 tiles away from it!")
 		return
 
-	if(!can_buy(BLOBRESCOST))
+	if(!can_use_power(BLOBRESCD) || !can_buy(BLOBRESCOST))
 		return
 
+	last_power = world.time
 
 	B.change_to(/obj/effect/blob/resource)
 	var/obj/effect/blob/resource/R = locate() in T
@@ -151,11 +165,14 @@
 	var/number_of_cores = blob_cores.len
 	var/cost = BLOBCOREBASECOST+(BLOBCORECOSTINC*(number_of_cores-1))
 
+	if (!can_use_power(BLOBCORECD))
+		return
+
 	if (!can_buy(cost))
 		to_chat(src, "Current cost of a blob core is [cost]!")
 		return
 
-
+	last_power = world.time
 	B.change_to(/obj/effect/blob/core, src, TRUE)
 
 /mob/blob/verb/create_node()
@@ -183,10 +200,10 @@
 		to_chat(src, "There is another node nearby, move more than 5 tiles away from it!")
 		return
 
-	if(!can_buy(BLOBNODCOST))
+	if(!can_use_power(BLOBNODCD) || !can_buy(BLOBNODCOST))
 		return
 
-
+	last_power = world.time
 	B.change_to(/obj/effect/blob/node)
 	var/obj/effect/blob/node/N = locate() in T
 
@@ -219,9 +236,10 @@
 		to_chat(src, "There is a factory blob nearby, move more than 7 tiles away from it!")
 		return
 
-	if (!can_buy(BLOBFACCOST))
+	if (!can_use_power(BLOBFACCOST) || !can_buy(BLOBFACCOST))
 		return
 
+	last_power = world.time
 	B.change_to(/obj/effect/blob/factory)
 	var/obj/effect/blob/factory/F = locate() in T
 
@@ -301,9 +319,14 @@
 		to_chat(src, "There is no blob adjacent to you.")
 		return
 
-	if (!can_buy(BLOBATTCOST))
+	if (!can_use_power(BLOBATTCD))
 		return
 
+	if (!can_buy(BLOBATTCOST))
+		to_chat(src, "Current cost of a blob is [BLOBATTCOST]!")
+		return
+
+	last_power = world.time
 	OB.expand(T, 0) //Doesn't give source because we don't care about passive restraint
 
 /mob/blob/verb/rally_spores_power()
@@ -318,6 +341,7 @@
 	if(!can_buy(BLOBRALCOST))
 		return
 
+	last_power = world.time
 	to_chat(src, "You rally your spores.")
 
 	var/list/surrounding_turfs = block(locate(T.x - 1, T.y - 1, T.z), locate(T.x + 1, T.y + 1, T.z))
