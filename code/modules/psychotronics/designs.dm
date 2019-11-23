@@ -13,9 +13,10 @@
 /datum/design/circuit/neuromod_rnd
 	name = "neuromod RnD console"
 	desc = "Use to research a neural data and produce working neuromods."
-	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GOLD = 2000)
+	id = "neuromod_rnd"
 	req_tech = list(TECH_DATA = 4, TECH_BIO = 6, TECH_MAGNET = 5)
 	build_path = /obj/item/weapon/circuitboard/neuromod_rnd
+	sort_string = "HACAC"
 
 /datum/design/item/implant/neuromod
 	name = "neuromod shell"
