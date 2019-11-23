@@ -2667,7 +2667,6 @@
 #include "maps\away\away_sites.dm"
 #include "maps\exodus\exodus.dm"
 #include "maps\exodus\exodus_define.dm"
-#include "maps\exodus\alpha\alpha_define.dm"
 #include "maps\exodus\derelicts\djstation.dmm"
 #include "maps\exodus\derelicts\snowasteroid.dmm"
 #include "maps\exodus\prison\prison_define.dm"
