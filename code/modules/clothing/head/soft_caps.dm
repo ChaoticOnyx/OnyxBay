@@ -87,7 +87,7 @@
 	icon_state = "secsoft"
 	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
-/obj/item/clothing/head/soft/sec/custom_m
+/obj/item/clothing/head/soft/sec/fieldcap
 	name = "military cap"
 	desc = "It's a military field cap with a silver emblem on it. This one seems to be extra durable."
 	icon_state = "dalek_cap"
