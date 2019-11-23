@@ -34,7 +34,7 @@
 /datum/uplink_item/item/ammo/rocket
 	name = "rocket"
 	item_cost = 4
-	path = /obj/item/missile
+	path = /obj/item/ammo_casing/rocket
 
 /datum/uplink_item/item/ammo/sniperammo
 	name = "14.5mm"
