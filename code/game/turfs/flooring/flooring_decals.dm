@@ -387,6 +387,22 @@ var/list/floor_decals = list()
 	name = "hazard stripes"
 	icon_state = "warningcorner_dust"
 
+/obj/effect/floor_decal/industrial/warning/red
+	name = "hazard stripes"
+	icon_state = "warning_red"
+
+/obj/effect/floor_decal/industrial/warning/red/corner
+	name = "hazard stripes"
+	icon_state = "warningcorner_red"
+
+/obj/effect/floor_decal/industrial/warning/red/full
+	name = "hazard stripes"
+	icon_state = "warningfull_red"
+
+/obj/effect/floor_decal/industrial/warning/red/cee
+	name = "hazard stripes"
+	icon_state = "warningcee_red"
+
 /obj/effect/floor_decal/industrial/hatch
 	name = "hatched marking"
 	icon_state = "delivery"
@@ -402,6 +418,86 @@ var/list/floor_decals = list()
 	color = COLOR_DARK_ORANGE
 
 /obj/effect/floor_decal/industrial/hatch/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/standclear
+	name = "industrial marking"
+	icon_state = "stand_clear"
+
+/obj/effect/floor_decal/industrial/standclear/yellow
+	color = "#cfcf55"
+
+/obj/effect/floor_decal/industrial/standclear/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/industrial/standclear/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/industrial/standclear/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/caution
+	name = "industrial marking"
+	icon_state = "caution"
+
+/obj/effect/floor_decal/industrial/caution/yellow
+	color = "#cfcf55"
+
+/obj/effect/floor_decal/industrial/caution/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/industrial/caution/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/industrial/caution/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/box
+	name = "industrial marking"
+	icon_state = "box"
+
+/obj/effect/floor_decal/industrial/box/yellow
+	color = "#cfcf55"
+
+/obj/effect/floor_decal/industrial/box/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/industrial/box/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/industrial/box/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/boxcorners
+	name = "industrial marking"
+	icon_state = "box_corners"
+
+/obj/effect/floor_decal/industrial/boxcorners/yellow
+	color = "#cfcf55"
+
+/obj/effect/floor_decal/industrial/boxcorners/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/industrial/boxcorners/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/industrial/boxcorners/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/arrows
+	name = "industrial marking"
+	icon_state = "arrows"
+
+/obj/effect/floor_decal/industrial/arrows/yellow
+	color = "#cfcf55"
+
+/obj/effect/floor_decal/industrial/arrows/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/industrial/arrows/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/industrial/arrows/blue
 	color = COLOR_BLUE_GRAY
 
 /obj/effect/floor_decal/industrial/shutoff
