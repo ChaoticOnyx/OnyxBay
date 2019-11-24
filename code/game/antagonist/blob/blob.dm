@@ -62,7 +62,7 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 	var/alive = 0
 
 	for (var/datum/mind/antag in current_antagonists)
-		if (!antag.current.is_dead())
+		if (antag.current && !antag.current.is_dead())
 			alive++
 
 	if (!alive)
