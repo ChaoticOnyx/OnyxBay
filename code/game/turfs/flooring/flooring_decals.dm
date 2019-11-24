@@ -648,6 +648,45 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/sign/p
 	icon_state = "white_p"
 
+/obj/effect/floor_decal/sign/cell1
+	icon_state = "cell_1"
+
+/obj/effect/floor_decal/sign/cell2
+	icon_state = "cell_2"
+
+/obj/effect/floor_decal/sign/cell3
+	icon_state = "cell_3"
+
+/obj/effect/floor_decal/sign/armory
+	icon_state = "rigdecal"
+
+/obj/effect/floor_decal/sign/armory/tactical
+	icon_state = "tacticaldecal"
+
+/obj/effect/floor_decal/sign/armory/riot1
+	icon_state = "riotdecal_1"
+
+/obj/effect/floor_decal/sign/armory/riot2
+	icon_state = "riotdecal_2"
+
+/obj/effect/floor_decal/sign/armory/ballistic1
+	icon_state = "ballisticdecal_1"
+
+/obj/effect/floor_decal/sign/armory/ballistic2
+	icon_state = "ballisticdecal_2"
+
+/obj/effect/floor_decal/sign/armory/ablative1
+	icon_state = "ablativedecal_1"
+
+/obj/effect/floor_decal/sign/armory/ablative2
+	icon_state = "ablativedecal_2"
+
+/obj/effect/floor_decal/sign/armory/energy
+	icon_state = "energydecal"
+
+/obj/effect/floor_decal/sign/armory/taser
+	icon_state = "taserdecal"
+
 /obj/effect/floor_decal/solarpanel
 	icon_state = "solarpanel"
 
