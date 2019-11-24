@@ -65,12 +65,13 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	wizard.store_memory("<B>Remember:</B> do not forget to prepare your spells.")
 	wizard.current.real_name = "[pick(GLOB.wizard_first)] [pick(GLOB.wizard_second)]"
 	wizard.current.SetName(wizard.current.real_name)
+	wizard.current.mutations.Add(MUTATION_CLUMSY)
 
 /datum/antagonist/wizard/equip(var/mob/living/carbon/human/wizard_mob)
 
 	if(!..())
 		return 0
-
+			
 	var/outfit_type = pick(subtypesof(/decl/hierarchy/outfit/wizard))
 	var/decl/hierarchy/outfit/wizard_outfit = outfit_by_type(outfit_type)
 	wizard_outfit.equip(wizard_mob)
