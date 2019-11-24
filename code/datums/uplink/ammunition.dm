@@ -49,12 +49,12 @@
 /datum/uplink_item/item/ammo/shotgun_shells
 	name = "Shotgun Shells box"
 	item_cost = 8
-	path = /obj/item/weapon/storage/box/shotgunshells
+	path = /obj/item/weapon/storage/box/shotgun/shells
 
 /datum/uplink_item/item/ammo/shotgun_slugs
 	name = "Shotgun Slugs box"
 	item_cost = 8
-	path = /obj/item/weapon/storage/box/shotgunammo
+	path = /obj/item/weapon/storage/box/shotgun/slugs
 
 /datum/uplink_item/item/ammo/c45uzi
 	name = ".45 SMG Magazine"
