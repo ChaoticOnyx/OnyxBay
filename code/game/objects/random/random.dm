@@ -304,9 +304,9 @@
 
 /obj/random/ammo/spawn_choices()
 	return list(/obj/item/weapon/storage/box/beanbags = 6,
-				/obj/item/weapon/storage/box/shotgunammo = 2,
-				/obj/item/weapon/storage/box/shotgunshells = 4,
-				/obj/item/weapon/storage/box/stunshells = 1,
+				/obj/item/weapon/storage/box/shotgun/slugs = 2,
+				/obj/item/weapon/storage/box/shotgun/shells = 4,
+				/obj/item/weapon/storage/box/shotgun/stunshells = 1,
 				/obj/item/ammo_magazine/c45m = 2,
 				/obj/item/ammo_magazine/c45m/rubber = 4,
 				/obj/item/ammo_magazine/c45m/flash = 4,
