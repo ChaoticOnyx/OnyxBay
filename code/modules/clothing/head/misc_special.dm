@@ -202,13 +202,16 @@
 	siemens_coefficient = 1.5
 	item_icons = list()
 
-	update_icon(var/mob/living/carbon/human/user)
-		if(!istype(user)) return
-		var/icon/ears = new/icon("icon" = 'icons/mob/onmob/head.dmi', "icon_state" = "kitty")
-		ears.Blend(rgb(user.r_hair, user.g_hair, user.b_hair), ICON_ADD)
-
-		var/icon/earbit = new/icon("icon" = 'icons/mob/onmob/head.dmi', "icon_state" = "kittyinner")
-		ears.Blend(earbit, ICON_OVERLAY)
+/obj/item/clothing/head/kitty/equipped(mob/living/carbon/human/user, slot)
+	. = ..()
+	if (slot == slot_head && istype(user))
+		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
+		var/icon/ears = icon('icons/mob/onmob/head.dmi', "kitty")
+		ears.Blend(hairgb, ICON_ADD)
+		ears.Blend(icon('icons/mob/onmob/head.dmi', "kittyinner"), ICON_OVERLAY)
+		icon_override = ears
+	else if (icon_override)
+		icon_override = null
 
 /obj/item/clothing/head/kitty/verb/nekomagic()
 	set category = "Object"
