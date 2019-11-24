@@ -332,3 +332,79 @@
 /obj/item/weapon/storage/lockbox/vials/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	. = ..()
 	update_icon()
+
+/obj/item/weapon/storage/fancy/shotgunshells
+	name = "box of shotgun shells"
+	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
+	icon = 'icons/obj/shotgunshells.dmi'
+	icon_state = "shotgunshells"
+	storage_slots = 21
+	max_w_class = ITEM_SIZE_TINY
+
+	startswith = list(/obj/item/ammo_casing/shotgun/pellet = 21)
+
+	key_type = /obj/item/ammo_casing/shotgun/pellet
+	can_hold = list(
+		/obj/item/ammo_casing/shotgun/pellet
+		)
+
+	/obj/item/weapon/storage/fancy/shotgunshells/update_icon()
+		var/key_count = count_by_type(contents, key_type)
+		src.icon_state = "[initial(icon_state)][key_count]"
+
+/obj/item/weapon/storage/fancy/shotgunslugs
+	name = "box of shotgun slugs"
+	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
+	icon = 'icons/obj/shotgunshells.dmi'
+	icon_state = "shotgunslugs"
+	storage_slots = 21
+	max_w_class = ITEM_SIZE_TINY
+
+	startswith = list(/obj/item/ammo_casing/shotgun = 21)
+
+	key_type = /obj/item/ammo_casing/shotgun
+	can_hold = list(
+		/obj/item/ammo_casing/shotgun
+		)
+
+	/obj/item/weapon/storage/fancy/shotgunslugs/update_icon()
+		var/key_count = count_by_type(contents, key_type)
+		src.icon_state = "[initial(icon_state)][key_count]"
+
+/obj/item/weapon/storage/fancy/beanbags
+	name = "box of beanbag shells"
+	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
+	icon = 'icons/obj/shotgunshells.dmi'
+	icon_state = "shotgunbags"
+	storage_slots = 21
+	max_w_class = ITEM_SIZE_TINY
+
+	startswith = list(/obj/item/ammo_casing/shotgun/beanbag = 21)
+
+	key_type = /obj/item/ammo_casing/shotgun/beanbag
+	can_hold = list(
+		/obj/item/ammo_casing/shotgun/beanbag
+		)
+
+	/obj/item/weapon/storage/fancy/beanbags/update_icon()
+		var/key_count = count_by_type(contents, key_type)
+		src.icon_state = "[initial(icon_state)][key_count]"
+
+/obj/item/weapon/storage/fancy/stunshells
+	name = "box of stun shells"
+	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
+	icon = 'icons/obj/shotgunshells.dmi'
+	icon_state = "shotgunstuns"
+	storage_slots = 21
+	max_w_class = ITEM_SIZE_TINY
+
+	startswith = list(/obj/item/ammo_casing/shotgun/stunshell = 21)
+
+	key_type = /obj/item/ammo_casing/shotgun/stunshell
+	can_hold = list(
+		/obj/item/ammo_casing/shotgun/stunshell
+		)
+
+	/obj/item/weapon/storage/fancy/stunshells/update_icon()
+		var/key_count = count_by_type(contents, key_type)
+		src.icon_state = "[initial(icon_state)][key_count]"
