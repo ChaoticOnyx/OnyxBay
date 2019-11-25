@@ -718,3 +718,7 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/ntlogo
 	icon_state = "ntlogo"
+
+/obj/effect/floor_decal/ntlogo/sec
+	icon_state = "ntlogo_sec"
+

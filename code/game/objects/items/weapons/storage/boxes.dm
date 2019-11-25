@@ -137,10 +137,10 @@
 	desc = "It has a picture of a gun and several warning symbols on the front."
 	startswith = list(/obj/item/ammo_casing/shotgun/blank = 7)
 
-/obj/item/weapon/storage/box/beanbags
-	name = "box of beanbag shells"
+/obj/item/weapon/storage/box/flash
+	name = "box of illumination shells"
 	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
-	startswith = list(/obj/item/ammo_casing/shotgun/beanbag = 7)
+	startswith = list(/obj/item/ammo_casing/shotgun/flash = 7)
 
 /obj/item/weapon/storage/box/shotgun
 	icon = 'icons/obj/shotgunshells.dmi'
@@ -173,11 +173,11 @@
 	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
 	startswith = list(/obj/item/ammo_casing/shotgun = 20)
 
-/obj/item/weapon/storage/box/shotgun/flash
-	icon_state = "shotgunflash"
-	name = "box of illumination shells"
+/obj/item/weapon/storage/box/shotgun/beanbags
+	icon_state = "shotgunbeanbag"
+	name = "box of beanbag shells"
 	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
-	startswith = list(/obj/item/ammo_casing/shotgun/flash = 20)
+	startswith = list(/obj/item/ammo_casing/shotgun/beanbag = 20)
 
 /obj/item/weapon/storage/box/shotgun/stunshells
 	icon_state = "shotgunstuns"
