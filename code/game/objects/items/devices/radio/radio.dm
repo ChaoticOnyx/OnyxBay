@@ -243,6 +243,11 @@
 	if(!M || !message) return 0
 
 	if(speaking && (speaking.flags & (NONVERBAL|SIGNLANG))) return 0
+	
+	var/mob/living/carbon/C = M
+	if((istype(C)) && (C.chem_effects[CE_SEDATE]))
+		to_chat(M, SPAN_WARNING("You're unable to reach \the [src]."))
+		return 0	
 
 	if(istype(M)) M.trigger_aiming(TARGET_CAN_RADIO)
 

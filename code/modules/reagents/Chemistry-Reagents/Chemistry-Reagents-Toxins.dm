@@ -669,3 +669,26 @@
 			H.zombify()
 		else if (prob(10))
 			to_chat(H, "<span class='warning'>You feel terribly ill!</span>")
+			
+/datum/reagent/vecuronium_bromide/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	if(alien == IS_DIONA)
+		return
+
+	var/threshold = 2
+	if(alien == IS_SKRELL)
+		threshold = 2.4
+
+	if(M.chem_doses[type] >= metabolism * threshold * 0.5)
+		M.confused = max(M.confused, 2)
+		M.add_chemical_effect(CE_VOICELOSS, 1)
+	if(M.chem_doses[type] > threshold * 0.5)
+		M.make_dizzy(3)
+		M.Weaken(2)
+	if(M.chem_doses[type] == round(threshold * 0.5, metabolism))
+		to_chat(M, SPAN_WARNING("Your muscles slacken and cease to obey you."))
+	if(M.chem_doses[type] >= threshold)
+		M.add_chemical_effect(CE_SEDATE, 1)
+		M.eye_blurry = max(M.eye_blurry, 10)
+
+	if(M.chem_doses[type] > 1 * threshold)
+		M.adjustToxLoss(removed)			

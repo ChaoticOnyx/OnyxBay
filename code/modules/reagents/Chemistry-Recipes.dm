@@ -2072,4 +2072,10 @@
 	name = "Immunobooster"
 	result = /datum/reagent/immunobooster
 	required_reagents = list(/datum/reagent/cryptobiolin = 3, /datum/reagent/dylovene = 1)
-	result_amount = 2	
+	result_amount = 2
+
+/datum/chemical_reaction/vecuronium_bromide
+	name = "Vecuronium Bromide"
+	result = /datum/reagent/vecuronium_bromide
+	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/mercury = 2, /datum/reagent/luminol = 2)
+	result_amount = 1	

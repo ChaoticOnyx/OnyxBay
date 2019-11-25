@@ -13,6 +13,9 @@
 			message = copytext(message,2+length(speaking.key))
 		else
 			speaking = get_default_language()
+			
+	if(has_chem_effect(CE_VOICELOSS, 1))
+		whispering = TRUE		
 
 	message = sanitize(message)
 	var/obj/item/organ/internal/voicebox/vox = locate() in internal_organs
