@@ -98,6 +98,26 @@
 	else
 		icon_state = "VP78wood-e"
 
+/obj/item/weapon/gun/projectile/sec/c45sec
+	name = "Colt .45"
+	desc = "Corvus C45 pistol is a well-made replica of a good old Colt M1911. Chambered in .45."
+	icon_state = "c45sec"
+	item_state = "c45sec"
+	magazine_type = /obj/item/ammo_magazine/c45m/rubber
+	allowed_magazines = /obj/item/ammo_magazine/c45m
+	auto_eject = 1
+	caliber = ".45"
+	accuracy = -0.35
+	fire_delay = 5.5
+	load_method = MAGAZINE
+
+/obj/item/weapon/gun/projectile/sec/c45sec/update_icon()
+	..()
+	if(ammo_magazine && ammo_magazine.stored_ammo.len)
+		icon_state = "c45sec"
+	else
+		icon_state = "c45sec-e"
+
 /obj/item/weapon/gun/projectile/sec/flash
 	name = ".45 signal pistol"
 

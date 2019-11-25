@@ -426,13 +426,33 @@
 	name = "\improper Security Hallway"
 	icon_state = "brig"
 
+/area/security/briefingroom
+	name = "\improper Security - Briefing Room"
+	icon_state = "briefroom"
+
+/area/security/brigmorgue
+	name = "\improper Security - Morgue"
+	icon_state = "brigmorgue"
+
+/area/security/evidence
+	name = "\improper Security - Evidence Storage"
+	icon_state = "evidence"
+
+/area/security/execution
+	name = "\improper Security - Execution Room"
+	icon_state = "execution"
+
+/area/security/brigoffice
+	name = "\improper Security - Brig Office"
+	icon_state = "brigoffice"
+
 /area/security/sec_toilet
 	name = "\improper Security Toilets"
 	icon_state = "brig"
 
 /area/security/storage
 	name = "\improper Security Storage"
-	icon_state = "brig"
+	icon_state = "brigstorage"
 
 /area/security/armory_lobby
 	name = "\improper Security Lobby"
