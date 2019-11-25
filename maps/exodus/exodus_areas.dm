@@ -1269,12 +1269,16 @@
 	icon_state = "security"
 
 /area/security/brig/processing
-	name = "\improper Security - Processing"
-	icon_state = "brig"
+	name = "\improper Security - Processing Room 1"
+	icon_state = "proc1"
+
+/area/security/brig/processing2
+	name = "\improper Security - Processing Room 2"
+	icon_state = "proc2"
 
 /area/security/brig/interrogation
 	name = "\improper Security - Interrogation"
-	icon_state = "brig"
+	icon_state = "interrogation"
 
 /area/security/brig/solitaryA
 	name = "\improper Security - Solitary 1"
@@ -1822,9 +1826,9 @@ area/rnd/test_area
 	icon_state = "shuttle3"
 	requires_power = 0
 
-/area/security/armoury
+/area/security/armory
 	name = "\improper Security - Armory"
-	icon_state = "Warden"
+	icon_state = "armory"
 
 /area/security/detectives_office
 	name = "\improper Security - Forensic Office"
