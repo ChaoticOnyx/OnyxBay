@@ -33,13 +33,18 @@
 
 /datum/uplink_item/item/ammo/rocket
 	name = "rocket"
-	item_cost = 4
+	item_cost = 8
 	path = /obj/item/ammo_casing/rocket
 
 /datum/uplink_item/item/ammo/sniperammo
 	name = "14.5mm"
 	item_cost = 8
 	path = /obj/item/weapon/storage/box/sniperammo
+	
+/datum/uplink_item/item/ammo/bullpup //for zipguns
+	name = "Bullpup Rifle Magazine"
+	item_cost = 8
+	path = /obj/item/ammo_magazine/a762
 
 /datum/uplink_item/item/ammo/sniperammo/apds
 	name = "14.5mm APDS"

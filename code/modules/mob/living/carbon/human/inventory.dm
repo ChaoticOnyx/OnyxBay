@@ -196,6 +196,8 @@ This saves us from having to call add_fingerprint() any time something is put in
 		back = null
 		update_inv_back()
 	else if (W == handcuffed)
+		if(handcuffed.on_restraint_removal(src)) //If this returns 1, then the unquipping action was interrupted
+			return 0	
 		handcuffed = null
 		if(buckled && buckled.buckle_require_restraints)
 			buckled.unbuckle_mob()

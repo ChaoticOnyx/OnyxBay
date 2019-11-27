@@ -701,3 +701,34 @@
 // 	desc = "For when you want to scuba dive your way into an enemy base but still want to show off a little skin."
 // 	icon_state = "wetsuit"
 // 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+
+/obj/item/clothing/under/contortionist
+	name = "contortionist's jumpsuit"
+	desc = "A light jumpsuit useful for squeezing through narrow vents."
+	icon_state = "darkholme"
+	item_state = "darkholme"
+
+/obj/item/clothing/under/contortionist/proc/check_clothing(mob/user as mob)
+	//Allowed to wear: glasses, shoes, gloves, pockets, mask, and jumpsuit (obviously)
+	var/list/slot_must_be_empty = list(slot_back,slot_handcuffed,slot_legcuffed,slot_belt,slot_head,slot_wear_suit)
+	for(var/slot_id in slot_must_be_empty)
+		if(user.get_equipped_item(slot_id))
+			to_chat(user, "<span class='warning'>You can't fit inside while wearing that \the [user.get_equipped_item(slot_id)].</span>")
+			return 0
+
+	if(user.r_hand != null && user.l_hand != null)
+		to_chat(user, "<span class='warning'>You can't fit inside while holding items.</span>")
+		return 0
+
+	return 1
+	
+/obj/item/clothing/under/contortionist/verb/crawl_through_vent()
+	set name = "Crawl Through Vent"
+	set category = "Object"
+	set src in usr
+
+	var/mob/living/carbon/human/user = usr
+	if(istype(user) && user.w_uniform == src && check_clothing(user))
+		var/pipe = user.start_ventcrawl()
+		if(pipe)
+			user.handle_ventcrawl(pipe)	

@@ -27,7 +27,7 @@
 
 /obj/item/weapon/implant/adrenalin/implanted(mob/source)
 	source.mind.store_memory("A implant can be activated by using the pale emote, <B>say *pale</B> to attempt to activate.", 0, 0)
-	to_chat(source, "The implanted freedom implant can be activated by using the pale emote, <B>say *pale</B> to attempt to activate.")
+	to_chat(source, "The implanted adrenalin implant can be activated by using the pale emote, <B>say *pale</B> to attempt to activate.")
 	return TRUE
 
 /obj/item/weapon/implanter/adrenalin
