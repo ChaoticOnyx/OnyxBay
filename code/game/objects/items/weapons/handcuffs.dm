@@ -1,3 +1,6 @@
+#define SYNDICUFFS_ON_APPLY 0
+#define SYNDICUFFS_ON_REMOVE 1
+
 /obj/item/weapon/handcuffs
 	name = "handcuffs"
 	desc = "Use this to keep prisoners in line."
@@ -103,6 +106,7 @@
 	else
 		user.drop_from_inventory(cuffs)
 	target.equip_to_slot(cuffs,slot_handcuffed)
+	on_restraint_apply(src)
 	return 1
 
 var/last_chew = 0
@@ -186,3 +190,72 @@ var/last_chew = 0
 	icon = 'icons/obj/bureaucracy.dmi'
 	breakouttime = 200
 	cuff_type = "duct tape"
+	
+//Syndicate Cuffs. Disguised as regular cuffs, they are pretty explosive
+/obj/item/weapon/handcuffs/syndicate
+	var/countdown_time   = 3 SECONDS
+	var/mode             = SYNDICUFFS_ON_APPLY //Handled at this level, Syndicate Cuffs code
+	var/charge_detonated = FALSE
+
+/obj/item/weapon/handcuffs/syndicate/attack_self(mob/user)
+
+	mode = !mode
+
+	switch(mode)
+		if(SYNDICUFFS_ON_APPLY)
+			to_chat(user, "<span class='notice'>You pull the rotating arm back until you hear two clicks. \The [src] will detonate a few seconds after being applied.</span>")
+		if(SYNDICUFFS_ON_REMOVE)
+			to_chat(user, "<span class='notice'>You pull the rotating arm back until you hear one click. \The [src] will detonate when removed.</span>")
+
+/obj/item/weapon/handcuffs/syndicate/on_restraint_apply(var/mob/user, var/slot)
+	if(mode == SYNDICUFFS_ON_APPLY && !charge_detonated)
+		detonate(1)
+		
+	..()
+
+/obj/item/weapon/handcuffs/syndicate/on_restraint_removal(mob/living/carbon/C)
+	if(mode == SYNDICUFFS_ON_REMOVE && !charge_detonated)
+		detonate(0) //This handles cleaning up the inventory already
+		return //Don't clean up twice, we don't want runtimes
+
+//C4 and EMPs don't mix, will always explode at severity 1, and likely to explode at severity 2
+/obj/item/weapon/handcuffs/syndicate/emp_act(severity)
+
+	switch(severity)
+		if(1)
+			if(prob(80))
+				detonate(1)
+			else
+				detonate(0)
+		if(2)
+			if(prob(50))
+				detonate(1)
+
+/obj/item/weapon/handcuffs/syndicate/ex_act(severity)
+
+	switch(severity)
+		if(1)
+			if(!charge_detonated)
+				detonate(0)
+		if(2)
+			if(!charge_detonated)
+				detonate(0)
+		if(3)
+			if(!charge_detonated && prob(50))
+				detonate(1)
+		else
+			return
+
+	qdel(src)
+
+/obj/item/weapon/handcuffs/syndicate/proc/detonate(countdown)
+	set waitfor = FALSE
+	if(charge_detonated)
+		return
+
+	charge_detonated = TRUE // Do it before countdown to prevent spam fuckery.
+	if(countdown)
+		sleep(countdown_time)
+
+	explosion(get_turf(src), 0, 1, 3, 0)
+	qdel(src)	

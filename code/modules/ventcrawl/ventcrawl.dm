@@ -41,6 +41,18 @@ var/list/ventcrawl_machinery = list(
 		to_chat(src, "<span class='warning'>You cannot ventcrawl while feeding.</span>")
 		return FALSE
 	. = ..()
+	
+/mob/living/carbon/human/can_ventcrawl()
+	if(handcuffed)
+		to_chat(src, "<span class='warning'>You can't vent crawl while you're restrained!</span>")
+		return FALSE
+	return istype(w_uniform,/obj/item/clothing/under/contortionist)
+
+/mob/living/carbon/human/ventcrawl_carry()
+	if(istype(w_uniform,/obj/item/clothing/under/contortionist))
+		var/obj/item/clothing/under/contortionist/C = w_uniform
+		return C.check_clothing(src)
+	return TRUE	
 
 /mob/living/proc/is_allowed_vent_crawl_item(var/obj/item/carried_item)
 	if(is_type_in_list(carried_item, can_enter_vent_with))

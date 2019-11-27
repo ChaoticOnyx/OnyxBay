@@ -8,6 +8,12 @@
 	name = "Fully Loaded Toolbox"
 	item_cost = 8
 	path = /obj/item/weapon/storage/toolbox/syndicate
+	
+/datum/uplink_item/item/tools/ductape
+	name = "Duct Tape"
+	desc = "A roll of duct tape. changes \"HELP\" in to sexy \"mmm\"."
+	item_cost = 8
+	path = /obj/item/weapon/tape_roll	
 
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"
@@ -39,6 +45,11 @@
 	name = "Handheld Shield Diffuser"
 	item_cost = 16
 	path = /obj/item/weapon/shield_diffuser
+	
+/datum/uplink_item/item/tools/sindicuffs
+	name = "Explosive Handcuffs"
+	item_cost = 16
+	path = /obj/item/weapon/handcuffs/syndicate
 
 /datum/uplink_item/item/tools/suit_sensor_mobile
 	name = "Suit Sensor Jamming Device"
@@ -88,9 +99,6 @@
 	name = "Teleporter Circuit Board"
 	item_cost = 40
 	path = /obj/item/weapon/circuitboard/teleporter
-
-/datum/uplink_item/item/tools/teleporter/New()
-	..()
 	antag_roles = list(MODE_MERCENARY)
 
 /datum/uplink_item/item/tools/ai_module
