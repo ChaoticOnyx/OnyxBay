@@ -22,14 +22,15 @@
 	..(_name, start_waypoint)
 
 	//Initial dock
-	active_docking_controller = current_location.docking_controller
-	update_docking_target(current_location)
-	if(active_docking_controller)
-		set_docking_codes(active_docking_controller.docking_codes)
-	else if(GLOB.using_map.use_overmap)
-		var/obj/effect/overmap/location = map_sectors["[current_location.z]"]
-		if(location && location.docking_codes)
-			set_docking_codes(location.docking_codes)
+	if(current_location)
+		active_docking_controller = current_location.docking_controller
+		update_docking_target(current_location)
+		if(active_docking_controller)
+			set_docking_codes(active_docking_controller.docking_codes)
+		else if(GLOB.using_map.use_overmap)
+			var/obj/effect/overmap/location = map_sectors["[current_location.z]"]
+			if(location && location.docking_codes)
+				set_docking_codes(location.docking_codes)
 	dock()
 
 	//Optional transition area
