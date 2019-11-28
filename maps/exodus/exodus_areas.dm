@@ -936,6 +936,14 @@
 	name = "\improper Dormitories"
 	icon_state = "Sleep"
 
+/area/crew_quarters/sleep2
+	name = "\improper Dormitories Hallway North"
+	icon_state = "Sleep"
+
+/area/crew_quarters/sleep3
+	name = "\improper Dormitories Hallway West"
+	icon_state = "Sleep"
+
 /area/crew_quarters/sleep/cabin1
 	name = "\improper Private Cabin One"
 	icon_state = "PrivDormOne"
@@ -949,6 +957,36 @@
 /area/crew_quarters/sleep/cabin3
 	name = "\improper Private Cabin Three"
 	icon_state = "PrivDormThree"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin4
+	name = "\improper Private Cabin Four"
+	icon_state = "PrivDormFour"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin5
+	name = "\improper Private Cabin Five"
+	icon_state = "PrivDormFive"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin6
+	name = "\improper Private Cabin Six"
+	icon_state = "PrivDormSix"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin7
+	name = "\improper Private Cabin Seven"
+	icon_state = "PrivDormSeven"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin8
+	name = "\improper Private Cabin Eight"
+	icon_state = "PrivDormEight"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin9
+	name = "\improper Private Cabin Nine"
+	icon_state = "PrivDormNine"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/engi_wash
@@ -992,7 +1030,7 @@
 
 /area/crew_quarters/fitness/pool
 	name = "\improper Pool"
-	icon_state = "fitness"
+	icon_state = "pool"
 
 /area/crew_quarters/kitchen
 	name = "\improper Kitchen"
