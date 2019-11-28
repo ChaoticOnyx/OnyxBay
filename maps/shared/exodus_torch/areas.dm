@@ -476,7 +476,7 @@
 
 /area/crew_quarters/sleep/cryo
 	name = "\improper Cryogenic Storage"
-	icon_state = "Sleep"
+	icon_state = "Cryopods"
 
 /area/hydroponics
 	name = "\improper Hydroponics"
