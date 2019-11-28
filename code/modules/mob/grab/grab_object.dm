@@ -175,6 +175,8 @@
 		update_icons()
 
 /obj/item/grab/proc/update_icons()
+	if(!current_grab)
+		return
 	if(current_grab.icon)
 		icon = current_grab.icon
 	if(current_grab.icon_state)
