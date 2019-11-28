@@ -42,6 +42,7 @@
 	jackets["black jacket"] = /obj/item/clothing/suit/storage/leather_jacket
 	jackets["brown jacket"] = /obj/item/clothing/suit/storage/toggle/brown_jacket
 	jackets["major bill's shipping jacket"] = /obj/item/clothing/suit/storage/mbill
+	jackets["long black jacket"] = /obj/item/clothing/suit/storage/black_jacket_long
 	gear_tweaks += new/datum/gear_tweak/path(jackets)
 
 /datum/gear/suit/poncho
