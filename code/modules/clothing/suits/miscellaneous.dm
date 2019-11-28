@@ -389,6 +389,13 @@
 	item_state = "leather_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
 
+/obj/item/clothing/suit/storage/black_jacket_long
+	name = "long black jacket"
+	desc = "A long black leather jacket."
+	icon_state = "black_jacket_long"
+	item_state = "black_jacket_long"
+	body_parts_covered = UPPER_TORSO|ARMS
+
 /obj/item/clothing/suit/storage/black_jacket_NT
 	name = "black leather jacket NT"
 	desc = "A black leather coat. A corporate logo is proudly displayed on the back."
