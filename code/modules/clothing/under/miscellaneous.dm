@@ -716,7 +716,7 @@
 			to_chat(user, "<span class='warning'>You can't fit inside while wearing that \the [user.get_equipped_item(slot_id)].</span>")
 			return 0
 
-	if(user.r_hand != null && user.l_hand != null)
+	if(user.r_hand != null || user.l_hand != null)
 		to_chat(user, "<span class='warning'>You can't fit inside while holding items.</span>")
 		return 0
 
