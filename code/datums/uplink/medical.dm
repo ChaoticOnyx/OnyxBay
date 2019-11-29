@@ -10,9 +10,9 @@
 	path = /obj/item/weapon/storage/box/sinpockets
 	
 /datum/uplink_item/item/medical/stasis
-	name = "Stasis Bag"
-	item_cost = 24
-	path = /obj/item/bodybag/cryobag
+	name = "Modified Stasis Bag"
+	item_cost = 20
+	path = /obj/item/bodybag/cryobag/syndi
 
 /datum/uplink_item/item/medical/defib
 	name = "Combat Defibrillator"
