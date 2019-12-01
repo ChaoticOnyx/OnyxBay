@@ -162,13 +162,14 @@ default behaviour is:
 
 /proc/swap_density_check(var/mob/swapper, var/mob/swapee)
 	var/turf/T = get_turf(swapper)
-	if(T.density)
-		return 1
-	for(var/atom/movable/A in T)
-		if(A == swapper)
-			continue
-		if(!A.CanPass(swapee, T, 1))
+	if(T)
+		if(T.density)
 			return 1
+		for(var/atom/movable/A in T)
+			if(A == swapper)
+				continue
+			if(!A.CanPass(swapee, T, 1))
+				return 1
 
 /mob/living/proc/can_swap_with(var/mob/living/tmob)
 	if(tmob.buckled || buckled)

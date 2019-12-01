@@ -161,7 +161,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		return 0	//You can't send faxes to "Unknown"
 
 	flick("faxreceive", src)
-	playsound(loc, "sound/machines/dotprinter.ogg", 50, 1)
+	playsound(loc, 'sound/machines/dotprinter.ogg', 50, 1)
 
 	// give the sprite some time to flick
 	sleep(20)

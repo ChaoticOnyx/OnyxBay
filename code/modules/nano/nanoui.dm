@@ -207,9 +207,10 @@ nanoui is used to open and update nano browser uis
 			"showMap" = show_map,
 			"mapName" = GLOB.using_map.path,
 			"mapZLevel" = map_z_level,
-			"mapZLevels" = GLOB.using_map.map_levels,
-			"user" = list("name" = user.name)
+			"mapZLevels" = GLOB.using_map.map_levels
 		)
+	if(user)
+		config_data.Add("user" = list("name" = user.name))
 	return config_data
 
  /**
