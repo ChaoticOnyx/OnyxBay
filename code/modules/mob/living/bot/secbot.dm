@@ -17,6 +17,8 @@
 	light_strength = 0 //stunbaton makes it's own light
 
 	RequiresAccessToToggle = 1 // Haha no
+	
+	var/with_nade = 0
 
 	var/idcheck = 0 // If true, arrests for having weapons without authorization.
 	var/check_records = 0 // If true, arrests people without a record.
@@ -94,7 +96,9 @@
 		"booze",
 		"libation",
 		"bouse",
-		"souse",		
+		"souse",
+		"medbot",
+		"well, at least not a lemon"		
 	)	
 
 /mob/living/bot/secbot/New()
@@ -257,13 +261,14 @@
 /mob/living/bot/secbot/proc/cuff_target(var/mob/living/carbon/C)
 	if(istype(C) && !C.handcuffed)
 		say(pick(arrest_message))
+		playsound(src.loc, pick(preparing_arrest_sounds), 50)	
 		handcuffs.place_handcuffs(C, src)
 	resetTarget() //we're done, failed or not. Don't want to get stuck if C is not
 
 /mob/living/bot/secbot/UnarmedAttack(var/mob/M, var/proximity)
 	if(!..())
 		return
-
+		
 	if(!istype(M))
 		return
 
@@ -292,6 +297,9 @@
 	new /obj/item/weapon/melee/baton(Tsec)
 	if(prob(50))
 		new /obj/item/robot_parts/l_arm(Tsec)
+	if(with_nade)
+		var/obj/item/weapon/grenade/frag/new_nade = new /obj/item/weapon/grenade/frag(Tsec)
+		new_nade.activate()
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(3, 1, src)
@@ -408,11 +416,12 @@
 	
 	if(length(mobs_in_secbot_range) > 0)
 		var/mob/custom_target = input("Who is subject to arrest?", "Nearby subjects:") as null|anything in mobs_in_secbot_range
-		playsound(src.loc, pick(preparing_arrest_sounds), 50)
-		say("Down on the floor, [target_name(custom_target)]! You have [SECBOT_WAIT_TIME] seconds to comply.")
-		if(declare_arrests)
-			broadcast_security_hud_message("[src] is arresting a level [check_threat(custom_target)] suspect <b>[target_name(custom_target)]</b> in <b>[get_area(src)]</b>.", src)
-			to_chat(usr,"<span class='notice'>Security service notified.</span>")
+		if(custom_target)
+			playsound(src.loc, pick(preparing_arrest_sounds), 50)
+			say("Down on the floor, [target_name(custom_target)]! You have [SECBOT_WAIT_TIME] seconds to comply.")
+			if(declare_arrests)
+				broadcast_security_hud_message("[src] is arresting a level [check_threat(custom_target)] suspect <b>[target_name(custom_target)]</b> in <b>[get_area(src)]</b>.", src)
+				to_chat(usr,"<span class='notice'>Security service notified.</span>")
 	else
 		to_chat(usr,"<span class='danger'>There are no suitable targets for arrest!</span>")
 		
@@ -478,3 +487,118 @@
 			stat(null,"Auto patrol: Off")
 			
 		stat(null,"-------------")		
+
+//**///////////////////////////////////////////////////////////**//	
+//**///////////////////////////BOOPSKY/////////////////////////**//
+//**///////////////////////////////////////////////////////////**//
+
+/mob/living/bot/secbot/boopsky
+	name = "Officer Boopsky"
+	desc = "It's Officer Boop O'sky! Powered by a potato and a shot of liquor. There is text engraved on its case &quot;I'm back, scumbags&quot;."
+	will_patrol = 1
+	
+	secbot_dreams = list(
+		"beep-boop",
+		"beep",	
+		"meat scumbags",
+		"brave bull",
+		"liquor",
+		"long island iced tea",
+		"im the law",
+		"ibn batutta",
+		"sui dream",
+		"cyborgs are bigger than me",	
+		"crewmens are bigger than me",
+		"binge",
+		"booze",
+		"libation",
+		"bouse",
+		"souse",
+		"beepsky",
+		"medbot",	
+		"well, at least not a lemon"			
+	)
+	
+//**///////////////////////////////////////////////////////////**//	
+//**///////////////////////////DOOMSKY/////////////////////////**//
+//**///////////////////////////////////////////////////////////**//	
+
+/mob/living/bot/secbot/doomsky
+	name = "Agent Doomsky"
+	desc = "It's Agent Doom O'sky! Powered by a propaganda and a shot of vodka. There is text engraved on its case &quot;Сorporation must die&quot;."
+	will_patrol = 1
+	emagged = 2
+	declare_arrests = 0	
+	maxHealth = 125
+	health = 125
+	with_nade = 1
+	
+	threat_found_sounds = list('sound/voice/doomsky1.ogg', 'sound/voice/doomsky2.ogg', 'sound/voice/doomsky3.ogg')
+	preparing_arrest_sounds = list('sound/voice/doomsky1.ogg', 'sound/voice/doomsky2.ogg', 'sound/voice/doomsky3.ogg')
+		
+	botcard_access = list()
+	
+	secbot_dreams = list(
+		"beep-boop",
+		"beep",	
+		"meat scumbags must die",
+		"bloody mary",
+		"vodka",
+		"armstrong",
+		"im not interested in law",
+		"screwdriver",
+		"vodka martini",
+		"cyborgs are bigger than me, they must die",	
+		"crewmens are bigger than me, they must die",
+		"binge",
+		"booze",
+		"libation",
+		"bouse",
+		"souse",
+		"beepsky must die",
+		"metal girls",	
+		"opiates",	
+		"hammer smashed face",
+		"angel of death",		
+		"hallowed be thy name",
+		"reign of darkness",		
+		"no pity for a coward",
+		"unanswered",		
+		"steel sluts",
+		"medbot is so hot",
+		"uranium generator"		
+	)
+
+	arrest_message = list(
+		"Remember, the syndicate has always sought its!",
+		"Use your fists, not your words!",
+		"Kill all meatbags.",
+		"Vodka keeps me afloat.",
+		"Just say \"Yes!\" to space drugs!",
+		"Violence is the answer.",
+		"I'm not an officer, I'm a Syndicate <em>Agent</em>.",
+		"Laws go to hell.",
+		"Solve your problems with your gun.",
+		"Keep your words to yourself, thug.",
+		"Hail Syndicate!",
+		"Kiss my metal ass, fag.",
+		"You're lucky that I only have a stunbaton.",
+		"You can bribe me, that’s not a problem.",
+		"Death to world capitalism and globalism!",
+	)
+	
+	secbot_verbs_default = list(
+		/mob/living/bot/secbot/proc/downonthefloor,
+		/mob/living/bot/secbot/proc/threatdetected,
+		/mob/living/bot/secbot/doomsky/proc/selfnade,
+	)	
+	
+/mob/living/bot/secbot/doomsky/proc/selfnade()
+	set category = "Communication"
+	set name = "Ascend(Self-blasting)"
+	
+	explode()
+	
+/mob/living/bot/secbot/doomsky/New()
+	..()
+	botcard_access = get_all_station_access()			
