@@ -226,3 +226,166 @@ obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
 
 /obj/item/weapon/reagent_containers/food/snacks/checker/king/red
 	piece_color ="red"
+	
+/*
+CONTAINS:
+THAT STUPID GAME KIT
+*/
+
+/obj/item/weapon/game_kit
+	name = "Gaming Kit"
+	icon = 'icons/obj/items.dmi'
+	icon_state = "game_kit"
+	var/selected = null
+	var/board_stat = null
+	var/data = ""
+	item_state = "sheet-metal"
+	
+/datum/asset/simple/chess
+	assets = list(
+		"board_BI.png"			= 'icons/chess/board_BI.png',
+		"board_BK.png"			= 'icons/chess/board_BK.png',
+		"board_BN.png"			= 'icons/chess/board_BN.png',
+		"board_BP.png"			= 'icons/chess/board_BP.png',
+		"board_BQ.png"			= 'icons/chess/board_BQ.png',
+		"board_BR.png"			= 'icons/chess/board_BR.png',
+		"board_WI.png"			= 'icons/chess/board_WI.png',
+		"board_WK.png"			= 'icons/chess/board_WK.png',
+		"board_WN.png"			= 'icons/chess/board_WN.png',
+		"board_WP.png"			= 'icons/chess/board_WP.png',
+		"board_WQ.png"			= 'icons/chess/board_WQ.png',
+		"board_WR.png"			= 'icons/chess/board_WR.png',	
+		"board_none.png"		= 'icons/chess/board_none.png',			
+	)	
+
+/obj/item/weapon/game_kit/New()
+	src.board_stat = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+	src.selected = "CR"
+
+/obj/item/weapon/game_kit/MouseDrop_T(mob/user as mob)
+	if (user == usr && !usr.incapacitated() && (usr.contents.Find(src) || in_range(src, usr)))
+		if (usr.hand)
+			if (!usr.l_hand)
+				spawn (0)
+					src.attack_hand(usr, 1, 1)
+		else
+			if (!usr.r_hand)
+				spawn (0)
+					src.attack_hand(usr, 0, 1)
+
+/obj/item/weapon/game_kit/proc/update()
+	var/datum/asset/assets = get_asset_datum(/datum/asset/simple/chess)
+	assets.send(usr)
+
+	var/dat = text("<CENTER><B>Game Board</B></CENTER><BR><a href='?src=\ref[];mode=hia'>[]</a> <a href='?src=\ref[];mode=remove'> Chess Removal</a><HR><table width=256  border= 0  height=256  cellspacing= 0  cellpadding= 0 >", src, (src.selected ? text("Selected: []", src.selected) : "Nothing Selected"), src)
+	for (var/y = 1 to 8)
+		dat += "<tr>"
+
+		for (var/x = 1 to 8)
+			var/color = (y + x) % 2 ? "#ffffff" : "#999999"
+			var/piece = copytext(src.board_stat, ((y - 1) * 8 + x) * 2 - 1, ((y - 1) * 8 + x) * 2 + 1)
+
+			dat += "<td>"
+			dat += "<td style='background-color:[color]' width=64 height=64>"
+			if (piece != "BB")
+				dat += "<a href='?src=\ref[src];s_board=[x] [y]'><img src='board_[piece].png' width=64 height=64 border=0>"
+			else
+				dat += "<a href='?src=\ref[src];s_board=[x] [y]'><img src='board_none.png' width=64 height=64 border=0>"
+			dat += "</td>"
+
+		dat += "</tr>"
+
+	dat += "</table><HR><B>Chess pieces:</B><BR>"
+	for (var/piece in list("WP", "WK", "WQ", "WI", "WN", "WR"))
+		dat += "<a href='?src=\ref[src];s_piece=[piece]'><img src='board_[piece].png' width=32 height=32 border=0></a>"
+	dat += "<br>"
+	for (var/piece in list("BP", "BK", "BQ", "BI", "BN", "BR"))
+		dat += "<a href='?src=\ref[src];s_piece=[piece]'><img src='board_[piece].png' width=32 height=32 border=0></a>"
+	src.data = dat
+
+/obj/item/weapon/game_kit/attack_ai(mob/user as mob, unused, flag)
+	src.add_hiddenprint(user)
+	return src.attack_hand(user, unused, flag)
+
+/obj/item/weapon/game_kit/attack_hand(mob/user as mob, unused, flag)
+
+	if (flag)
+		return ..()
+	else
+		user.machine = src
+		if (!( src.data ))
+			update()
+		user << browse(src.data, "window=game_kit;size=600x748")
+		onclose(user, "game_kit")
+		return
+	return
+
+/obj/item/weapon/game_kit/Topic(href, href_list)
+	..()
+	if ((usr.stat || usr.restrained()))
+		return
+
+	if (usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf)))
+		if (href_list["s_piece"])
+			src.selected = href_list["s_piece"]
+		else if (href_list["mode"])
+			if (href_list["mode"] == "remove")
+				src.selected = "remove"
+			else
+				src.selected = null
+		else if (href_list["s_board"])
+			if (!( src.selected ))
+				src.selected = href_list["s_board"]
+			else
+				var/tx = text2num(copytext(href_list["s_board"], 1, 2))
+				var/ty = text2num(copytext(href_list["s_board"], 3, 4))
+				if ((copytext(src.selected, 2, 3) == " " && length(src.selected) == 3))
+					var/sx = text2num(copytext(src.selected, 1, 2))
+					var/sy = text2num(copytext(src.selected, 3, 4))
+					var/place = ((sy - 1) * 8 + sx) * 2 - 1
+					src.selected = copytext(src.board_stat, place, place + 2)
+					if (place == 1)
+						src.board_stat = text("BB[]", copytext(src.board_stat, 3, 129))
+					else
+						if (place == 127)
+							src.board_stat = text("[]BB", copytext(src.board_stat, 1, 127))
+						else
+							if (place)
+								src.board_stat = text("[]BB[]", copytext(src.board_stat, 1, place), copytext(src.board_stat, place + 2, 129))
+					place = ((ty - 1) * 8 + tx) * 2 - 1
+					if (place == 1)
+						src.board_stat = text("[][]", src.selected, copytext(src.board_stat, 3, 129))
+					else
+						if (place == 127)
+							src.board_stat = text("[][]", copytext(src.board_stat, 1, 127), src.selected)
+						else
+							if (place)
+								src.board_stat = text("[][][]", copytext(src.board_stat, 1, place), src.selected, copytext(src.board_stat, place + 2, 129))
+					src.selected = null
+				else
+					if (src.selected == "remove")
+						var/place = ((ty - 1) * 8 + tx) * 2 - 1
+						if (place == 1)
+							src.board_stat = text("BB[]", copytext(src.board_stat, 3, 129))
+						else
+							if (place == 127)
+								src.board_stat = text("[]BB", copytext(src.board_stat, 1, 127))
+							else
+								if (place)
+									src.board_stat = text("[]BB[]", copytext(src.board_stat, 1, place), copytext(src.board_stat, place + 2, 129))
+					else
+						if (length(src.selected) == 2)
+							var/place = ((ty - 1) * 8 + tx) * 2 - 1
+							if (place == 1)
+								src.board_stat = text("[][]", src.selected, copytext(src.board_stat, 3, 129))
+							else
+								if (place == 127)
+									src.board_stat = text("[][]", copytext(src.board_stat, 1, 127), src.selected)
+								else
+									if (place)
+										src.board_stat = text("[][][]", copytext(src.board_stat, 1, place), src.selected, copytext(src.board_stat, place + 2, 129))
+		src.add_fingerprint(usr)
+		update()
+		for(var/mob/M in viewers(1, src))
+			if ((M.client && M.machine == src))
+				src.attack_hand(M)	
