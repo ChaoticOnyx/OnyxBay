@@ -123,6 +123,10 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 	return targets
 
 /spell/targeted/cast(var/list/targets, mob/user)
+
+	if(!src.cast_check())
+		return
+
 	for(var/mob/living/target in targets)
 		if(range >= 0)
 			if(!(target in view_or_range(range, holder, selection_type))) //filter at time of casting
