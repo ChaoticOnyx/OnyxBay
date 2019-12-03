@@ -160,11 +160,6 @@
 /***********
  diona verbs
 ***********/
-/mob/living/carbon/human/proc/diona_split_nymph()
-	set name = "Split"
-	set desc = "Split your humanoid form into its constituent nymphs."
-	set category = "Abilities"
-	diona_split_into_nymphs(5)	// Separate proc to void argments being supplied when used as a verb
 
 /mob/living/carbon/human/proc/diona_heal_toggle()
 	set name = "Toggle Heal"
@@ -198,7 +193,7 @@
 		transfer_languages(src, D, WHITELISTED|RESTRICTED)
 		D.set_dir(pick(NORTH, SOUTH, EAST, WEST))
 		L.set_next_nymph(D)
-		D.set_last_nymph(L)
+		D.set_previous_nymph(L)
 		L = D
 
 	if(nymphs < number_of_resulting_nymphs)
@@ -207,11 +202,11 @@
 			transfer_languages(src, M, WHITELISTED|RESTRICTED)
 			M.set_dir(pick(NORTH, SOUTH, EAST, WEST))
 			L.set_next_nymph(M)
-			M.set_last_nymph(L)
+			M.set_previous_nymph(L)
 			L = M
 
 	L.set_next_nymph(S)
-	S.set_last_nymph(L)
+	S.set_previous_nymph(L)
 
 	for(var/obj/item/W in src)
 		drop_from_inventory(W)

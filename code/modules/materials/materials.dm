@@ -387,23 +387,6 @@ var/list/name_to_material
 	resilience = 36
 	reflectance = 13
 
-/material/diona
-	name = "biomass"
-	icon_colour = null
-	stack_type = null
-	integrity = 600
-	icon_base = "diona"
-	icon_reinf = "noreinf"
-	hitsound = 'sound/effects/attackblob.ogg'
-	conductive = 0
-	craft_tool = 1
-
-/material/diona/place_dismantled_product()
-	return
-
-/material/diona/place_dismantled_girder(var/turf/target)
-	spawn_diona_nymph(target)
-
 /material/steel/holographic
 	name = "holo" + MATERIAL_STEEL
 	display_name = MATERIAL_STEEL
