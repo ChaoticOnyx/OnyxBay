@@ -222,8 +222,8 @@
 /datum/species/diona
 	name = SPECIES_DIONA
 	name_plural = "Dionaea"
-	icobase = 'icons/mob/human_races/r_diona.dmi'
-	deform = 'icons/mob/human_races/r_def_plant.dmi'
+	icobase = 'icons/mob/human_races/diona/body.dmi'
+	deform = 'icons/mob/human_races/diona/deformed_body.dmi'
 	language = LANGUAGE_ROOTLOCAL
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/diona)
 	//primitive_form = "Nymph"
@@ -267,7 +267,7 @@
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/diona/chest),
 		BP_GROIN =  list("path" = /obj/item/organ/external/diona/groin),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/no_eyes/diona),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head/diona),
 		BP_L_ARM =  list("path" = /obj/item/organ/external/diona/arm),
 		BP_R_ARM =  list("path" = /obj/item/organ/external/diona/arm/right),
 		BP_L_LEG =  list("path" = /obj/item/organ/external/diona/leg),
@@ -279,7 +279,6 @@
 		)
 
 	inherent_verbs = list(
-		/mob/living/carbon/human/proc/diona_split_nymph,
 		/mob/living/carbon/human/proc/diona_heal_toggle
 		)
 
@@ -325,6 +324,28 @@
 					D.death()
 		return 1
 
+// Dionaea spawned by hand or by joining will not have any
+// nymphs passed to them. This should take care of that.
+
+/datum/species/diona/handle_post_spawn(var/mob/living/carbon/human/H)
+	H.gender = NEUTER
+	. = ..()
+	addtimer(CALLBACK(src, .proc/fill_with_nymphs, H), 0)
+
+/datum/species/diona/proc/fill_with_nymphs(var/mob/living/carbon/human/H)
+	if(!H || H.species.name != name)
+		return
+
+	var/nymph_count = 0
+	for(var/mob/living/carbon/alien/diona/nymph in H)
+		nymph_count++
+		if(nymph_count >= 3)
+			return
+
+	while(nymph_count < 3)
+		new /mob/living/carbon/alien/diona/sterile(H)
+		nymph_count++
+
 #define DIONA_LIMB_DEATH_COUNT 9
 /datum/species/diona/handle_death_check(var/mob/living/carbon/human/H)
 	var/lost_limb_count = has_limbs.len - H.organs.len
@@ -363,7 +384,7 @@
 		H.visible_message("<span class='danger'>\The [H] collapses into parts, revealing a solitary diona nymph at the core.</span>")
 		return
 	else
-		H.diona_split_nymph()
+		split_into_nymphs(H)
 
 /datum/species/diona/get_blood_name()
 	return "sap"

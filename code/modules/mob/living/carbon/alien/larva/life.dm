@@ -11,3 +11,8 @@
 		adjustFireLoss(-1)
 		adjustToxLoss(-1)
 		adjustOxyLoss(-1)
+
+/mob/living/carbon/alien/larva/Life()
+	. = ..()
+	if (stat != DEAD)
+		update_progression()

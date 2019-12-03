@@ -127,7 +127,7 @@
 		if(2)
 			if(!istype(A, /turf/simulated/floor))
 				var/turf/T = A
-				T.ChangeTurf(/turf/simulated/floor/misc/diona)
+				T.ChangeTurf(/turf/simulated/floor/diona)
 				charge--
 			else
 				if(istype(A.loc, /turf/simulated/wall) || istype(A.loc, /obj/machinery/door))
