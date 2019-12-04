@@ -87,9 +87,9 @@
 			"<span class='notice'>You have unfastened \the [src].</span>", \
 			"You hear a ratchet.")
 		var/obj/item/pipe/P = new(loc, make_from=src)
-		if ((int_air.return_pressure()-env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
+		if ((int_pressure - env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
 			to_chat(user, "<span class='warning'>\the [src] flies off because of the overpressure in it!</span>")
-			P.throw_at_random(0, round((int_air.return_pressure()-env_air.return_pressure()) / 100), 30)
+			P.throw_at_random(0, round((int_pressure - env_air.return_pressure()) / 100), 30)
 		qdel(src)
 
 /obj/machinery/atmospherics/omni/attack_hand(user as mob)
