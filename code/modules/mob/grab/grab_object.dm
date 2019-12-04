@@ -44,6 +44,8 @@
 	current_grab.process(src)
 
 /obj/item/grab/attack_self(mob/user)
+	if(!assailant)
+		return
 	switch(assailant.a_intent)
 		if(I_HELP)
 			downgrade()
@@ -73,6 +75,8 @@
 	This section is for newly defined useful procs.
 */
 /obj/item/grab/proc/target_change()
+	if(!assailant)
+		return
 	var/hit_zone = assailant.zone_sel.selecting
 	if(src != assailant.get_active_hand())
 		return 0
@@ -138,6 +142,8 @@
 
 // Returns the organ of the grabbed person that the grabber is targeting
 /obj/item/grab/proc/get_targeted_organ()
+	if(!affecting)
+		return
 	return (affecting.get_organ(target_zone))
 
 /obj/item/grab/proc/resolve_item_attack(var/mob/living/M, var/obj/item/I, var/target_zone)

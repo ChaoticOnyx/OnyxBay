@@ -109,6 +109,8 @@
 	process_effect(G)
 
 /datum/grab/proc/throw_held(var/obj/item/grab/G)
+	if(!G.affecting)
+		return
 	var/mob/living/carbon/human/affecting = G.affecting
 
 	if(can_throw)
@@ -118,6 +120,9 @@
 	return null
 
 /datum/grab/proc/hit_with_grab(var/obj/item/grab/G)
+	if(!G.assailant)
+		return
+
 	if(downgrade_on_action)
 		G.downgrade()
 
@@ -149,10 +154,14 @@
 		to_chat(G.assailant, "<span class='warning'>You must wait before you can do that.</span>")
 
 /datum/grab/proc/make_log(var/obj/item/grab/G, var/action)
+	if(!G.affecting && !G.assailant)
+		return
 	admin_attack_log(G.assailant, G.affecting, "[action]s their victim", "was [action]ed", "used [action] on")
 
 
 /datum/grab/proc/adjust_position(var/obj/item/grab/G)
+	if(!G.affecting && !G.assailant)
+		return
 	var/mob/living/carbon/human/affecting = G.affecting
 	var/mob/living/carbon/human/assailant = G.assailant
 	var/adir = get_dir(assailant, affecting)
@@ -179,6 +188,8 @@
 	affecting.reset_plane_and_layer()
 
 /datum/grab/proc/reset_position(var/obj/item/grab/G)
+	if(!G.affecting)
+		return
 	var/mob/living/carbon/human/affecting = G.affecting
 
 	if(!affecting.buckled)
@@ -259,6 +270,8 @@
 	return 0
 
 /datum/grab/proc/handle_resist(var/obj/item/grab/G)
+	if(!G.affecting && !G.assailant)
+		return
 	var/mob/living/carbon/human/affecting = G.affecting
 	var/mob/living/carbon/human/assailant = G.assailant
 
