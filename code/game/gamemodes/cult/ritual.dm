@@ -183,6 +183,7 @@ var/list/Tier2Runes = list(
 	/mob/proc/offering_rune,
 	/mob/proc/drain_rune,
 	/mob/proc/emp_rune,
+	/mob/proc/stun_imbue,	
 	/mob/proc/massdefile_rune
 	)
 
@@ -307,6 +308,12 @@ var/list/Tier4Runes = list(
 	set name = "Imbue: EMP"
 
 	make_rune(/obj/effect/rune/imbue/emp)
+	
+/mob/proc/stun_imbue()
+	set category = "Cult Magic"
+	set name = "Imbue: Hypnosis"
+
+	make_rune(/obj/effect/rune/imbue/stun)	
 
 /mob/proc/cult_communicate()
 	set category = "Cult Magic"
