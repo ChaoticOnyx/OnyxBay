@@ -668,6 +668,10 @@
 	strokes = 4
 
 /obj/effect/rune/emp/cast(var/mob/living/user)
+	var/list/mob/living/cultists = get_cultists()
+	if(cultists.len < 2)
+		to_chat(user, "<span class='warning'>You need two cultists around this rune to make it work.</span>")
+		return fizzle(user)
 	empulse(get_turf(src), 4, 2, 1)
 	speak_incantation(user, "Ta'gh fara[pick("'","`")]qha fel d'amar det!")
 	qdel(src)
@@ -740,6 +744,10 @@
 	strokes = 4
 
 /obj/effect/rune/confuse/cast(var/mob/living/user)
+	var/list/mob/living/cultists = get_cultists()
+	if(cultists.len < 3)
+		to_chat(user, "<span class='warning'>You need three cultists around this rune to make it work.</span>")
+		return fizzle(user)
 	speak_incantation(user, "Fuu ma[pick("'","`")]jin!")
 	visible_message("<span class='danger'>\The [src] explodes in a bright flash.</span>")
 	var/list/mob/affected = list()
@@ -923,3 +931,7 @@
 /obj/effect/rune/imbue/emp
 	cultname = "destroy technology imbue"
 	papertype = /obj/item/weapon/paper/talisman/emp
+	
+/obj/effect/rune/imbue/stun
+	cultname = "consciousness freeze imbue"
+	papertype = /obj/item/weapon/paper/talisman/stun
