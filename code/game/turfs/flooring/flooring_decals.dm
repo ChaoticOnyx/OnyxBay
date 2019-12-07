@@ -353,6 +353,9 @@ var/list/floor_decals = list()
 	name = "spline - fancy"
 	icon_state = "spline_fancy"
 
+/obj/effect/floor_decal/spline/fancy/corner
+	icon_state = "spline_fancy_corner"
+
 /obj/effect/floor_decal/spline/fancy/wood
 	name = "spline - wood"
 	color = "#cb9e04"
