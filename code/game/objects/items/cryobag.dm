@@ -119,7 +119,7 @@
 	name = "modified stasis bag"
 	icon = 'icons/obj/syndi_cryobag.dmi'
 
-/obj/item/bodybag/cryobag/attack_self(mob/user)
+/obj/item/bodybag/cryobag/syndi/attack_self(mob/user)
 	var/obj/structure/closet/body_bag/cryobag/syndi/R = new /obj/structure/closet/body_bag/cryobag/syndi(user.loc)
 	if(stasis_power)
 		R.stasis_power = stasis_power
