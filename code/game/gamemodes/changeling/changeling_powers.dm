@@ -27,6 +27,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/damaged = FALSE
 	var/heal = 0
 	var/datum/reagents/pick_chemistry
+	var/isdetachingnow = FALSE
 
 /datum/changeling/New()
 	..()
@@ -1509,16 +1510,20 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/datum/changeling/changeling = changeling_power(10, max_stat = DEAD)
 	if(!changeling)	return
+	if(changeling.isdetachingnow)	return
 	var/mob/living/carbon/T = src
 	T.faction = "biomass"
 	var/list/detachable_limbs = T.organs.Copy()
 	for (var/obj/item/organ/external/E in detachable_limbs)
 		if (E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.is_stump())
 			detachable_limbs -= E
+	changeling.isdetachingnow = TRUE		
 	var/obj/item/organ/external/organ_to_remove = input(T, "Which organ do you want to detach?") as null|anything in detachable_limbs
 	if(!organ_to_remove)
+		changeling.isdetachingnow = FALSE
 		return 0
 	if(!T.organs.Find(organ_to_remove))
+		changeling.isdetachingnow = FALSE
 		to_chat(T,"<span class='notice'>We don't have this limb!</span>")
 		return 0
 
@@ -1527,6 +1532,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(!do_after(src,10,can_move = 1,needhand = 0,incapacitation_flags = INCAPACITATION_NONE))
 		src.visible_message("<span class='notice'>\the [organ_to_remove] connecting back to [src].</span>", \
 					"<span class='danger'>We were interrupted.</span>")
+		changeling.isdetachingnow = FALSE			
 		return 0
 	playsound(loc, 'sound/effects/bonebreak1.ogg', 100, 1)
 	T.mind.changeling.chem_charges -= 10
@@ -1549,6 +1555,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/mob/living/carbon/human/H = T
 	if(istype(H))
 		H.regenerate_icons()
+		
+	changeling.isdetachingnow = FALSE	
 
 
 /mob/proc/changeling_gib_self()
