@@ -27,7 +27,7 @@
 /obj/item/organ/internal/Destroy()
 	if(owner)
 		owner.internal_organs.Remove(src)
-		owner.internal_organs_by_name[organ_tag] = null
+		owner.internal_organs_by_name.Remove(organ_tag)
 		owner.internal_organs_by_name -= organ_tag
 		while(null in owner.internal_organs)
 			owner.internal_organs -= null
@@ -50,7 +50,7 @@
 
 /obj/item/organ/internal/removed(var/mob/living/user, var/drop_organ=1, var/detach=1)
 	if(owner)
-		owner.internal_organs_by_name[organ_tag] = null
+		owner.internal_organs_by_name.Remove(organ_tag)
 		owner.internal_organs_by_name -= organ_tag
 		owner.internal_organs_by_name -= null
 		owner.internal_organs -= src
@@ -90,7 +90,7 @@
 /obj/item/organ/internal/remove_rejuv()
 	if(owner)
 		owner.internal_organs -= src
-		owner.internal_organs_by_name[organ_tag] = null
+		owner.internal_organs_by_name.Remove(organ_tag)
 		owner.internal_organs_by_name -= organ_tag
 		while(null in owner.internal_organs)
 			owner.internal_organs -= null

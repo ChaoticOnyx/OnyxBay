@@ -200,7 +200,7 @@
 		var/obj/item/organ/external/E = H.get_organ(parent_organ)
 		if(E)
 			E.internal_organs -= src
-		H.internal_organs_by_name[BP_CHANG] = null
+		H.internal_organs_by_name.Remove(BP_CHANG)
 		H.internal_organs_by_name -= BP_CHANG
 		H.internal_organs_by_name -= null
 		H.internal_organs -= src
