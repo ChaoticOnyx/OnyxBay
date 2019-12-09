@@ -346,7 +346,6 @@
 	minbodytemp = 0
 	maxbodytemp = 350
 	break_stuff_probability = 15
-	var/divisionCounter = 0
 	faction = "biomass"
 
 /mob/living/simple_animal/hostile/little_changeling/New()
@@ -602,12 +601,6 @@
 	var/mob/living/L = .
 	if(src.health <= (src.maxHealth - 5))
 		src.health += 5
-
-	if(divisionCounter < 8)
-		divisionCounter += 1
-	else
-		new /mob/living/simple_animal/hostile/little_changeling/arm_chan(src.loc)
-		divisionCounter = 0
 
 	if(ishuman(L) && prob(3))
 		L.Weaken(3)
