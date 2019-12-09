@@ -47,7 +47,7 @@
 /datum/alarm/proc/set_source_data(var/atom/source, var/duration, var/severity)
 	var/datum/alarm_source/AS = sources_assoc[source]
 	if(!AS)
-		AS = new/datum/alarm_source(source)
+		AS = new /datum/alarm_source(source)
 		sources += AS
 		sources_assoc[source] = AS
 	// Currently only non-0 durations can be altered (normal alarms VS EMP blasts)

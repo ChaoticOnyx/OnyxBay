@@ -11,7 +11,7 @@
 	if(vessel)
 		return
 
-	vessel = new/datum/reagents(species.blood_volume, src)
+	vessel = new /datum/reagents(species.blood_volume, src)
 
 	if(!should_have_organ(BP_HEART)) //We want the var for safety but we can do without the actual blood.
 		return

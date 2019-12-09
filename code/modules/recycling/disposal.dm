@@ -41,7 +41,7 @@
 		else
 			trunk.linked = src	// link the pipe trunk to self
 
-		air_contents = new/datum/gas_mixture(PRESSURE_TANK_VOLUME)
+		air_contents = new /datum/gas_mixture(PRESSURE_TANK_VOLUME)
 		update_icon()
 
 /obj/machinery/disposal/Destroy()
@@ -1214,7 +1214,7 @@
 
 /obj/machinery/disposal_switch/attackby(obj/item/I, mob/user, params)
 	if(isCrowbar(I))
-		var/obj/item/disposal_switch_construct/C = new/obj/item/disposal_switch_construct(src.loc, id_tag)
+		var/obj/item/disposal_switch_construct/C = new /obj/item/disposal_switch_construct(src.loc, id_tag)
 		transfer_fingerprints_to(C)
 		user.visible_message("<span class='notice'>\The [user] deattaches \the [src]</span>")
 		qdel(src)
@@ -1260,7 +1260,7 @@
 	if(!found)
 		to_chat(user, "\icon[src]<span class=notice>\The [src] is not linked to any junctions!</span>")
 		return
-	var/obj/machinery/disposal_switch/NC = new/obj/machinery/disposal_switch(A, id_tag)
+	var/obj/machinery/disposal_switch/NC = new /obj/machinery/disposal_switch(A, id_tag)
 	transfer_fingerprints_to(NC)
 	qdel(src)
 

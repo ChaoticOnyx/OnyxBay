@@ -30,7 +30,7 @@
 	armbands["medical armband"] = /obj/item/clothing/accessory/armband/med
 	armbands["engineering armband"] = /obj/item/clothing/accessory/armband/engine
 	armbands["hydroponics armband"] = /obj/item/clothing/accessory/armband/hydro
-	gear_tweaks += new/datum/gear_tweak/path(armbands)
+	gear_tweaks += new /datum/gear_tweak/path(armbands)
 
 /datum/gear/accessory/wallet
 	display_name = "wallet"
@@ -48,7 +48,7 @@
 
 /datum/gear/accessory/holster/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path(/obj/item/clothing/accessory/holster)
+	gear_tweaks += new /datum/gear_tweak/path(/obj/item/clothing/accessory/holster)
 
 /datum/gear/accessory/tie
 	display_name = "tie selection"
@@ -65,7 +65,7 @@
 	ties["yellow tie"] = /obj/item/clothing/accessory/yellow
 	ties["navy tie"] = /obj/item/clothing/accessory/navy
 	ties["horrible tie"] = /obj/item/clothing/accessory/horrible
-	gear_tweaks += new/datum/gear_tweak/path(ties)
+	gear_tweaks += new /datum/gear_tweak/path(ties)
 
 /datum/gear/accessory/stethoscope
 	display_name = "stethoscope (medical)"
@@ -82,7 +82,7 @@
 	shirts["blue hawaii shirt"] = /obj/item/clothing/accessory/toggleable/hawaii
 	shirts["red hawaii shirt"] = /obj/item/clothing/accessory/toggleable/hawaii/red
 	shirts["random colored hawaii shirt"] = /obj/item/clothing/accessory/toggleable/hawaii/random
-	gear_tweaks += new/datum/gear_tweak/path(shirts)
+	gear_tweaks += new /datum/gear_tweak/path(shirts)
 
 /datum/gear/accessory/scarf
 	display_name = "scarf"

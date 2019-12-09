@@ -106,7 +106,7 @@
 					break
 
 		for(var/direction in connection_dirs)
-			var/obj/structure/cable/C = new/obj/structure/cable(src.loc)
+			var/obj/structure/cable/C = new /obj/structure/cable(src.loc)
 			C.d1 = 0
 			C.d2 = direction
 			C.icon_state = "[C.d1]-[C.d2]"

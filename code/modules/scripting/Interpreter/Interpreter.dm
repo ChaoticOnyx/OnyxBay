@@ -99,7 +99,7 @@
 
 					cur_statements++
 					if(cur_statements >= max_statements)
-						RaiseError(new/runtimeError/MaxCPU())
+						RaiseError(new /runtimeError/MaxCPU())
 
 						if(container && !alertadmins)
 							if(istype(container, /datum/TCS_Compiler))
@@ -144,7 +144,7 @@
 						RunIf(S)
 					else if(istype(S, /node/statement/ReturnStatement))
 						if(!curFunction)
-							RaiseError(new/runtimeError/UnexpectedReturn())
+							RaiseError(new /runtimeError/UnexpectedReturn())
 							continue
 						status |= RETURNING
 						returnVal=Eval(S:value)
@@ -156,7 +156,7 @@
 						status |= CONTINUING
 						break
 					else
-						RaiseError(new/runtimeError/UnknownInstruction())
+						RaiseError(new /runtimeError/UnknownInstruction())
 					if(status)
 						break
 
@@ -171,7 +171,7 @@
 
 			// If recursion gets too high (max 50 nested functions) throw an error
 			if(cur_recursion >= max_recursion)
-				RaiseError(new/runtimeError/RecursionLimitReached())
+				RaiseError(new /runtimeError/RecursionLimitReached())
 				return 0
 
 			var/node/statement/FunctionDefinition/def
@@ -194,7 +194,7 @@
 						val = stmt.parameters[i]
 					//else
 					//	unspecified param
-					AssignVariable(def.parameters[i], new/node/expression/value/literal(Eval(val)), S)
+					AssignVariable(def.parameters[i], new /node/expression/value/literal(Eval(val)), S)
 				curFunction=stmt
 				RunBlock(def.block, S)
 				//Handle return value
@@ -210,13 +210,13 @@
 					params+=list(Eval(P))
 				if(isobject(def))	//def is an object which is the target of a function call
 					if( !hascall(def, stmt.func_name) )
-						RaiseError(new/runtimeError/UndefinedFunction("[stmt.object.id_name].[stmt.func_name]"))
+						RaiseError(new /runtimeError/UndefinedFunction("[stmt.object.id_name].[stmt.func_name]"))
 						return
 					return call(def, stmt.func_name)(arglist(params))
 				else										//def is a path to a global proc
 					return call(def)(arglist(params))
 			//else
-			//	RaiseError(new/runtimeError/UnknownInstruction())
+			//	RaiseError(new /runtimeError/UnknownInstruction())
 
 /*
 	Proc: RunIf
@@ -245,7 +245,7 @@
 		Iterate(node/BlockDefinition/block, count)
 			RunBlock(block)
 			if(max_iterations > 0 && count >= max_iterations)
-				RaiseError(new/runtimeError/IterationLimitReached())
+				RaiseError(new /runtimeError/IterationLimitReached())
 				return 0
 			if(status & (BREAKING|RETURNING))
 				return 0
@@ -262,7 +262,7 @@
 				if(S.functions.Find(name))
 					return S.functions[name]
 				S = S.parent
-			RaiseError(new/runtimeError/UndefinedFunction(name))
+			RaiseError(new /runtimeError/UndefinedFunction(name))
 
 /*
 	Proc: GetVariable
@@ -274,7 +274,7 @@
 				if(S.variables.Find(name))
 					return S.variables[name]
 				S = S.parent
-			RaiseError(new/runtimeError/UndefinedVariable(name))
+			RaiseError(new /runtimeError/UndefinedVariable(name))
 
 		GetVariableScope(name) //needed for when you reassign a variable in a higher scope
 			var/scope/S = curScope
@@ -307,8 +307,8 @@
 			if(!S) S = curScope
 			if(!S) S = globalScope
 			ASSERT(istype(S))
-			if(istext(value) || isnum(value) || isnull(value))	value = new/node/expression/value/literal(value)
-			else if(!istype(value) && isobject(value))			value = new/node/expression/value/reference(value)
+			if(istext(value) || isnum(value) || isnull(value))	value = new /node/expression/value/literal(value)
+			else if(!istype(value) && isobject(value))			value = new /node/expression/value/reference(value)
 			//TODO: check for invalid name
 			S.variables["[name]"] = value
 

@@ -59,7 +59,7 @@
 	if(istype(W,/obj/item/weapon/fossil/bone))
 		if(!bstate)
 			bnum++
-			src.contents.Add(new/obj/item/weapon/fossil/bone)
+			src.contents.Add(new /obj/item/weapon/fossil/bone)
 			qdel(W)
 			if(bnum==breq)
 				usr = user

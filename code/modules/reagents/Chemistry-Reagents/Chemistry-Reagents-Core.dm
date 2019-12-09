@@ -1,5 +1,5 @@
 /datum/reagent/blood
-	data = new/list(
+	data = new /list(
 		"donor" = null,
 		"species" = SPECIES_HUMAN,
 		"blood_DNA" = null,

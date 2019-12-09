@@ -235,7 +235,7 @@ I said no!
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/xenomeatbread
 
 /datum/recipe/bananabread
-	fruit = list(/datum/reagent/drink/juice/banana = 1)
+	fruit = list("banana" = 1)
 	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/sugar = 15)
 	items = list(
 		/obj/item/weapon/reagent_containers/food/snacks/dough,
@@ -303,7 +303,7 @@ I said no!
 	result = /obj/item/weapon/reagent_containers/food/snacks/xemeatpie
 
 /datum/recipe/pie
-	fruit = list(/datum/reagent/drink/juice/banana = 1)
+	fruit = list("banana" = 1)
 	reagents = list(/datum/reagent/sugar = 5)
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/sliceable/flatdough)
 	result = /obj/item/weapon/reagent_containers/food/snacks/pie
@@ -581,7 +581,7 @@ I said no!
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/creamcheesebread
 
 /datum/recipe/monkeysdelight
-	fruit = list(/datum/reagent/drink/juice/banana = 1)
+	fruit = list("banana" = 1)
 	reagents = list(/datum/reagent/sodiumchloride = 1, /datum/reagent/blackpepper = 1, /datum/reagent/nutriment/flour = 10)
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/monkeycube)
 	result = /obj/item/weapon/reagent_containers/food/snacks/monkeysdelight
@@ -1073,13 +1073,11 @@ I said no!
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/sushi
 
 /datum/recipe/fruitcup
-	items = list(/obj/item/weapon/reagent_containers/food/snacks/watermelonslice)
-	fruit = list("apple" = 1, "orange" = 1,"ambrosia" = 1, "banana" = 1, "lemon" = 1)
+	fruit = list("apple" = 1, "orange" = 1,"ambrosia" = 1, "banana" = 1, "lemon" = 1, "watermelon" = 1)
 	result = /obj/item/weapon/reagent_containers/food/snacks/fruitcup
 
 /datum/recipe/fruitsalad
-	items = list(/obj/item/weapon/reagent_containers/food/snacks/watermelonslice, /obj/item/weapon/reagent_containers/food/snacks/watermelonslice)
-	fruit = list("apple" = 1, "orange" = 1)
+	fruit = list("apple" = 1, "orange" = 1, "watermelon" = 1)
 	result = /obj/item/weapon/reagent_containers/food/snacks/fruitsalad
 
 /datum/recipe/delightsalad
@@ -1087,8 +1085,7 @@ I said no!
 	result = /obj/item/weapon/reagent_containers/food/snacks/delightsalad
 
 /datum/recipe/junglesalad
-	items = list(/obj/item/weapon/reagent_containers/food/snacks/watermelonslice, /obj/item/weapon/reagent_containers/food/snacks/watermelonslice)
-	fruit = list("apple" = 1, "banana" = 2)
+	fruit = list("apple" = 1, "banana" = 2, "watermelon" = 1)
 	result = /obj/item/weapon/reagent_containers/food/snacks/junglesalad
 
 /datum/recipe/chowmein

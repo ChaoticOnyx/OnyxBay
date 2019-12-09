@@ -12,7 +12,7 @@
 			. += A
 
 /proc/get_area_turfs(var/area/A, var/list/predicates)
-	. = new/list()
+	. = new /list()
 	A = istype(A) ? A : locate(A)
 	if(!A)
 		return
@@ -21,7 +21,7 @@
 			. += T
 
 /proc/get_subarea_turfs(var/area/A, var/list/predicates)
-	. = new/list()
+	. = new /list()
 	A = istype(A) ? A.type : A
 	if(!A)
 		return

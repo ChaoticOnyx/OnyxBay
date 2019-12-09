@@ -167,7 +167,7 @@
 			id.icon_state = "gold"
 			id.access = get_all_accesses()
 		else
-			var/obj/item/weapon/card/id/id = new/obj/item/weapon/card/id(M);
+			var/obj/item/weapon/card/id/id = new /obj/item/weapon/card/id(M);
 			id.icon_state = "gold"
 			id.access = get_all_accesses()
 			id.registered_name = H.real_name
@@ -190,7 +190,7 @@
 		if(alert("This mob is being controlled by [M.ckey]. Are you sure you wish to assume control of it? [M.ckey] will be made a ghost.",,"Yes","No") != "Yes")
 			return
 		else
-			var/mob/observer/ghost/ghost = new/mob/observer/ghost(M,1)
+			var/mob/observer/ghost/ghost = new /mob/observer/ghost(M,1)
 			ghost.ckey = M.ckey
 	log_and_message_admins("assumed direct control of [M].")
 	var/mob/adminmob = src.mob
@@ -359,7 +359,7 @@
 	for(var/obj/machinery/power/rad_collector/Rad in world)
 		if(Rad.anchored)
 			if(!Rad.P)
-				var/obj/item/weapon/tank/phoron/Phoron = new/obj/item/weapon/tank/phoron(Rad)
+				var/obj/item/weapon/tank/phoron/Phoron = new /obj/item/weapon/tank/phoron(Rad)
 				Phoron.air_contents.gas["phoron"] = 70
 				Rad.drainratio = 0
 				Rad.P = Phoron

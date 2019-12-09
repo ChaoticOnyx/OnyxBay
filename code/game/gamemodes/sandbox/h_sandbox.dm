@@ -20,11 +20,11 @@ mob
 	proc
 		CanBuild()
 			if(SSticker.master_mode == "sandbox")
-				sandbox = new/datum/hSB
+				sandbox = new /datum/hSB
 				sandbox.owner = src.ckey
 				if(src.client.holder)
 					sandbox.admin = 1
-				verbs += new/mob/proc/sandbox_panel
+				verbs += new /mob/proc/sandbox_panel
 		sandbox_panel()
 			if(sandbox)
 				sandbox.update()
@@ -65,37 +65,37 @@ datum/hSB
 						P.wear_suit.forceMove(P.loc)
 						P.wear_suit.reset_plane_and_layer()
 						P.wear_suit = null
-					P.wear_suit = new/obj/item/clothing/suit/space(P)
+					P.wear_suit = new /obj/item/clothing/suit/space(P)
 					P.wear_suit.hud_layerise()
 					if(P.head)
 						P.head.forceMove(P.loc)
 						P.head.reset_plane_and_layer()
 						P.head = null
-					P.head = new/obj/item/clothing/head/helmet/space(P)
+					P.head = new /obj/item/clothing/head/helmet/space(P)
 					P.head.hud_layerise()
 					if(P.wear_mask)
 						P.wear_mask.forceMove(P.loc)
 						P.wear_mask.reset_plane_and_layer()
 						P.wear_mask = null
-					P.wear_mask = new/obj/item/clothing/mask/gas(P)
+					P.wear_mask = new /obj/item/clothing/mask/gas(P)
 					P.wear_mask.hud_layerise()
 					if(P.back)
 						P.back.forceMove(P.loc)
 						P.back.reset_plane_and_layer()
 						P.back = null
-					P.back = new/obj/item/weapon/tank/jetpack(P)
+					P.back = new /obj/item/weapon/tank/jetpack(P)
 					P.back.hud_layerise()
 					P.internal = P.back
 				if("hsbmetal")
-					var/obj/item/stack/sheet/hsb = new/obj/item/stack/sheet/metal
+					var/obj/item/stack/sheet/hsb = new /obj/item/stack/sheet/metal
 					hsb.amount = 50
 					hsb.loc = usr.loc
 				if("hsbglass")
-					var/obj/item/stack/sheet/hsb = new/obj/item/stack/sheet/glass
+					var/obj/item/stack/sheet/hsb = new /obj/item/stack/sheet/glass
 					hsb.amount = 50
 					hsb.loc = usr.loc
 				if("hsbairlock")
-					var/obj/machinery/door/hsb = new/obj/machinery/door/airlock
+					var/obj/machinery/door/hsb = new /obj/machinery/door/airlock
 
 					//TODO: DEFERRED make this better, with an HTML window or something instead of 15 popups
 					hsb.req_access = list()
@@ -112,19 +112,19 @@ datum/hSB
 					if(!(hsbcanister == "Cancel"))
 						new hsbcanister(usr.loc)
 				if("hsbfueltank")
-					//var/obj/hsb = new/obj/weldfueltank
+					//var/obj/hsb = new /obj/weldfueltank
 					//hsb.loc = usr.loc
 				if("hsbwatertank")
-					//var/obj/hsb = new/obj/watertank
+					//var/obj/hsb = new /obj/watertank
 					//hsb.loc = usr.loc
 				if("hsbtoolbox")
-					var/obj/item/weapon/storage/hsb = new/obj/item/weapon/storage/toolbox/mechanical
+					var/obj/item/weapon/storage/hsb = new /obj/item/weapon/storage/toolbox/mechanical
 					for(var/obj/item/device/radio/T in hsb)
 						qdel(T)
-					new/obj/item/weapon/crowbar (hsb)
+					new /obj/item/weapon/crowbar (hsb)
 					hsb.loc = usr.loc
 				if("hsbmedkit")
-					var/obj/item/weapon/storage/firstaid/hsb = new/obj/item/weapon/storage/firstaid/regular
+					var/obj/item/weapon/storage/firstaid/hsb = new /obj/item/weapon/storage/firstaid/regular
 					hsb.loc = usr.loc
 				if("hsbobj")
 					if(!hsboxspawn) return

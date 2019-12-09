@@ -71,7 +71,7 @@
 	var/obj/effect/decal/cleanable/dirt/dirtoverlay = locate(/obj/effect/decal/cleanable/dirt, src)
 	if (dirt > 50)
 		if (!dirtoverlay)
-			dirtoverlay = new/obj/effect/decal/cleanable/dirt(src)
+			dirtoverlay = new /obj/effect/decal/cleanable/dirt(src)
 		dirtoverlay.alpha = min((dirt - 50) * 5, 255)
 
 /turf/simulated/remove_cleanables()

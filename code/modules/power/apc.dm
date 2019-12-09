@@ -217,7 +217,7 @@
 /obj/machinery/power/apc/proc/make_terminal()
 	// create a terminal object at the same position as original turf loc
 	// wires will attach to this
-	terminal = new/obj/machinery/power/terminal(src.loc)
+	terminal = new /obj/machinery/power/terminal(src.loc)
 	terminal.set_dir(dir)
 	terminal.master = src
 
@@ -368,7 +368,7 @@
 
 /obj/machinery/power/apc/proc/check_updates()
 	if(!update_overlay_chan)
-		update_overlay_chan = new/list()
+		update_overlay_chan = new /list()
 	var/last_update_state = update_state
 	var/last_update_overlay = update_overlay
 	var/list/last_update_overlay_chan = update_overlay_chan.Copy()

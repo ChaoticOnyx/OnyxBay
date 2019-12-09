@@ -157,7 +157,7 @@ obj/structure/windoor_assembly/Destroy()
 					if(!src) return
 
 					to_chat(user, "<span class='notice'>You cut the windoor wires.!</span>")
-					new/obj/item/stack/cable_coil(get_turf(user), 1)
+					new /obj/item/stack/cable_coil(get_turf(user), 1)
 					src.state = "01"
 					if(src.secure)
 						src.SetName("Secure Anchored Windoor Assembly")

@@ -93,7 +93,7 @@
 		store_contents()
 
 	if(dremovable && !nodoor)
-		var/obj/item/weapon/shield/closet/ndoor = new/obj/item/weapon/shield/closet(src.loc)
+		var/obj/item/weapon/shield/closet/ndoor = new /obj/item/weapon/shield/closet(src.loc)
 		ndoor.icon_closed = icon_closed
 		ndoor.icon_opened = icon_opened
 
@@ -518,19 +518,19 @@
 		if(cdoor)
 			if(!opened)
 				if(broken && icon_off)
-					var/icon/cdoor_icon = new/icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_off]")
+					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_off]")
 					src.overlays += cdoor_icon
 					src.overlays += icon_broken
 				else if((setup & CLOSET_HAS_LOCK) && locked && cdoor.icon_locked)
-					var/icon/cdoor_icon = new/icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_locked]")
+					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_locked]")
 					src.overlays += cdoor_icon
 				else
-					var/icon/cdoor_icon = new/icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_closed]")
+					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_closed]")
 					src.overlays += cdoor_icon
 				if(welded)
 					overlays += "welded"
 			else
-				var/icon/cdoor_icon = new/icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_opened]")
+				var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_opened]")
 				src.overlays += cdoor_icon
 	else
 		if(!opened)

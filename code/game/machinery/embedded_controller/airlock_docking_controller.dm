@@ -8,8 +8,8 @@
 
 /obj/machinery/embedded_controller/radio/airlock/docking_port/New()
 	..()
-	airlock_program = new/datum/computer/file/embedded_program/airlock/docking(src)
-	docking_program = new/datum/computer/file/embedded_program/docking/airlock(src, airlock_program)
+	airlock_program = new /datum/computer/file/embedded_program/airlock/docking(src)
+	docking_program = new /datum/computer/file/embedded_program/docking/airlock(src, airlock_program)
 	program = docking_program
 	if(display_name)
 		docking_program.display_name = display_name

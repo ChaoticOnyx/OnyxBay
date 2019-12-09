@@ -41,7 +41,7 @@
 /repository/area/proc/get_cache_entry(var/list/cache_data, var/key)
 	var/datum/cache_entry/cache_entry = cache_data[key]
 	if(!cache_entry)
-		cache_entry = new/datum/cache_entry
+		cache_entry = new /datum/cache_entry
 		cache_data[key] = cache_entry
 
 	if(world.time < cache_entry.timestamp)

@@ -29,7 +29,7 @@
 		var/obj/item/weapon/computer_hardware/hard_drive/HDD = computer.hard_drive
 		if(!HDD)
 			return 1
-		var/datum/computer_file/data/F = new/datum/computer_file/data()
+		var/datum/computer_file/data/F = new /datum/computer_file/data()
 		F.filename = newname
 		HDD.store_file(F)
 	if(href_list["PRG_deletefile"])

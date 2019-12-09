@@ -21,7 +21,7 @@
 	tail = "chimptail"
 
 	body_builds = list(
-		new/datum/body_build/monkey
+		new /datum/body_build/monkey
 	)
 
 	unarmed_types = list(/datum/unarmed_attack/bite, /datum/unarmed_attack/claws)

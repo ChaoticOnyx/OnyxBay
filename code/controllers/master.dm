@@ -106,7 +106,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	Master.restart_clear = world.time + (delay * 2)
 	Master.processing = FALSE //stop ticking this one
 	try
-		new/datum/controller/master()
+		new /datum/controller/master()
 	catch
 		return -1
 	return 1
@@ -320,7 +320,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			SS.can_fire = 0
 
 		if (!Failsafe || (Failsafe.processing_interval > 0 && (Failsafe.lasttick+(Failsafe.processing_interval*5)) < world.time))
-			new/datum/controller/failsafe() // (re)Start the failsafe.
+			new /datum/controller/failsafe() // (re)Start the failsafe.
 
 		//now do the actual stuff
 		if (!queue_head || !(iteration % 3))
@@ -576,7 +576,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 /datum/controller/master/stat_entry()
 	if(!statclick)
-		statclick = new/obj/effect/statclick/debug(null, "Initializing...", src)
+		statclick = new /obj/effect/statclick/debug(null, "Initializing...", src)
 
 	stat("Byond:", "(FPS:[world.fps]) (TickCount:[world.time/world.tick_lag]) (TickDrift:[round(Master.tickdrift,1)]([round((Master.tickdrift/(world.time/world.tick_lag))*100,0.1)]%))")
 	stat("Master Controller:", statclick.update("(TickRate:[Master.processing]) (Iteration:[Master.iteration])"))

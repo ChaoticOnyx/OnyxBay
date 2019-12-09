@@ -55,7 +55,7 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 			defer_powernet_rebuild = 1
 
 		if(heavy_impact_range > 1)
-			var/datum/effect/system/explosion/E = new/datum/effect/system/explosion()
+			var/datum/effect/system/explosion/E = new /datum/effect/system/explosion()
 			E.set_up(epicenter)
 			E.start()
 

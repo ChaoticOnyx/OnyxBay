@@ -5,7 +5,7 @@
 	var/mob/living/silicon/ai/user = src
 	// Setup Variables
 	malfunctioning = 1
-	research = new/datum/malf_research()
+	research = new /datum/malf_research()
 	research.owner = src
 	hacked_apcs = list()
 	recalc_cpu()

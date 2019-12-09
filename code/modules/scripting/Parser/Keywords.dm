@@ -52,7 +52,7 @@ var/const/Represents a special statement in the code triggered by a keyword.
 			Parse(n_Parser/nS_Parser/parser)
 				.=KW_PASS
 				if(istype(parser.curBlock, /node/BlockDefinition/GlobalBlock))
-					parser.errors+=new/scriptError/BadReturn(parser.curToken)
+					parser.errors+=new /scriptError/BadReturn(parser.curToken)
 					. = KW_WARN
 				var/node/statement/ReturnStatement/stmt=new
 				parser.NextToken()   //skip 'return' token
@@ -80,7 +80,7 @@ var/const/Represents a special statement in the code triggered by a keyword.
 				var/node/statement/IfStatement/stmt
 				if(L&&L.len) stmt=L[L.len] //Get the last statement in the current block
 				if(!stmt || !istype(stmt) || stmt.else_block) //Ensure that it is an if statement
-					parser.errors+=new/scriptError/ExpectedToken("if statement",parser.curToken)
+					parser.errors+=new /scriptError/ExpectedToken("if statement",parser.curToken)
 					return KW_FAIL
 				parser.NextToken()         //skip 'else' token
 				if(!parser.CheckToken("{", /token/symbol, skip=0))
@@ -106,7 +106,7 @@ var/const/Represents a special statement in the code triggered by a keyword.
 			Parse(n_Parser/nS_Parser/parser)
 				.=KW_PASS
 				if(istype(parser.curBlock, /node/BlockDefinition/GlobalBlock))
-					parser.errors+=new/scriptError/BadToken(parser.curToken)
+					parser.errors+=new /scriptError/BadToken(parser.curToken)
 					. = KW_WARN
 				var/node/statement/BreakStatement/stmt=new
 				parser.NextToken()   //skip 'break' token
@@ -116,7 +116,7 @@ var/const/Represents a special statement in the code triggered by a keyword.
 			Parse(n_Parser/nS_Parser/parser)
 				.=KW_PASS
 				if(istype(parser.curBlock, /node/BlockDefinition/GlobalBlock))
-					parser.errors+=new/scriptError/BadToken(parser.curToken)
+					parser.errors+=new /scriptError/BadToken(parser.curToken)
 					. = KW_WARN
 				var/node/statement/ContinueStatement/stmt=new
 				parser.NextToken()   //skip 'break' token
@@ -128,7 +128,7 @@ var/const/Represents a special statement in the code triggered by a keyword.
 				var/node/statement/FunctionDefinition/def=new
 				parser.NextToken() //skip 'def' token
 				if(!parser.options.IsValidID(parser.curToken.value))
-					parser.errors+=new/scriptError/InvalidID(parser.curToken)
+					parser.errors+=new /scriptError/InvalidID(parser.curToken)
 					return KW_FAIL
 				def.func_name=parser.curToken.value
 				parser.NextToken()
@@ -142,14 +142,14 @@ var/const/Represents a special statement in the code triggered by a keyword.
 							if(")")
 								break
 							else
-								parser.errors+=new/scriptError/BadToken(parser.curToken)
+								parser.errors+=new /scriptError/BadToken(parser.curToken)
 								return KW_ERR
 
 					else if(istype(parser.curToken, /token/word))
 						def.parameters+=parser.curToken.value
 						parser.NextToken()
 					else
-						parser.errors+=new/scriptError/InvalidID(parser.curToken)
+						parser.errors+=new /scriptError/InvalidID(parser.curToken)
 						return KW_ERR
 				if(!parser.CheckToken(")", /token/symbol))
 					return KW_FAIL
@@ -162,5 +162,5 @@ var/const/Represents a special statement in the code triggered by a keyword.
 					parser.curBlock.functions[def.func_name]=def
 					parser.AddBlock(def.block)
 				else
-					parser.errors+=new/scriptError/BadToken(parser.curToken)
+					parser.errors+=new /scriptError/BadToken(parser.curToken)
 					return KW_FAIL

@@ -199,7 +199,7 @@ proc/cardinalrange(var/center)
 
 /obj/item/device/am_shielding_container/attackby(var/obj/item/I, var/mob/user)
 	if(isMultitool(I) && istype(src.loc,/turf))
-		new/obj/machinery/am_shielding(src.loc)
+		new /obj/machinery/am_shielding(src.loc)
 		qdel(src)
 		return
 	..()

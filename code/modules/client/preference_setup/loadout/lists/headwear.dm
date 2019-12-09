@@ -19,7 +19,7 @@
 
 /datum/gear/head/bandana/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(typesof(/obj/item/clothing/mask/bandana) + typesof(/obj/item/clothing/head/bandana))
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(typesof(/obj/item/clothing/mask/bandana) + typesof(/obj/item/clothing/head/bandana))
 
 /datum/gear/head/bow
 	display_name = "hair bow, colour select"
@@ -40,7 +40,7 @@
 	caps["rainbow cap"] = /obj/item/clothing/head/soft/rainbow
 	caps["white cap"] = /obj/item/clothing/head/soft/mime
 	caps["major bill's shipping cap"] = /obj/item/clothing/head/soft/mbill
-	gear_tweaks += new/datum/gear_tweak/path(caps)
+	gear_tweaks += new /datum/gear_tweak/path(caps)
 
 /datum/gear/head/hairflower
 	display_name = "hair flower pin"
@@ -53,7 +53,7 @@
 	pins["pink pin"] = /obj/item/clothing/head/hairflower/pink
 	pins["red pin"] = /obj/item/clothing/head/hairflower
 	pins["yellow pin"] = /obj/item/clothing/head/hairflower/yellow
-	gear_tweaks += new/datum/gear_tweak/path(pins)
+	gear_tweaks += new /datum/gear_tweak/path(pins)
 
 /datum/gear/head/hardhat
 	display_name = "hardhat selection"
@@ -67,7 +67,7 @@
 	hardhats["orange hardhat"] = /obj/item/clothing/head/hardhat/orange
 	hardhats["red hardhat"] = /obj/item/clothing/head/hardhat/red
 	hardhats["yellow hardhat"] = /obj/item/clothing/head/hardhat
-	gear_tweaks += new/datum/gear_tweak/path(hardhats)
+	gear_tweaks += new /datum/gear_tweak/path(hardhats)
 
 /datum/gear/head/formalhat
 	display_name = "formal hat selection"
@@ -84,7 +84,7 @@
 	formalhats["top hat"] = /obj/item/clothing/head/that
 	formalhats["fedora, brown"] = /obj/item/clothing/head/det
 	formalhats["fedora, grey"] = /obj/item/clothing/head/det/grey
-	gear_tweaks += new/datum/gear_tweak/path(formalhats)
+	gear_tweaks += new /datum/gear_tweak/path(formalhats)
 
 /datum/gear/head/informalhat
 	display_name = "informal hat selection"
@@ -96,7 +96,7 @@
 	informalhats["cowboy hat"] = /obj/item/clothing/head/cowboy_hat
 	informalhats["ushanka"] = /obj/item/clothing/head/ushanka
 	informalhats["TCC ushanka"] = /obj/item/clothing/head/ushanka/tcc
-	gear_tweaks += new/datum/gear_tweak/path(informalhats)
+	gear_tweaks += new /datum/gear_tweak/path(informalhats)
 
 /datum/gear/head/hijab
 	display_name = "hijab, colour select"
@@ -139,7 +139,7 @@
 	welding_masks += /obj/item/clothing/head/welding/fancy
 	welding_masks += /obj/item/clothing/head/welding/knight
 	welding_masks += /obj/item/clothing/head/welding/carp
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(welding_masks)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(welding_masks)
 
 /datum/gear/head/tankccap
 	display_name = "padded cap"

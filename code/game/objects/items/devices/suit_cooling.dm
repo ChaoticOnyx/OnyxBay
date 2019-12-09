@@ -36,7 +36,7 @@
 /obj/item/device/suit_cooling_unit/Initialize()
 	. = ..()
 	START_PROCESSING(SSobj, src)
-	cell = new/obj/item/weapon/cell/high()		// 10K rated cell.
+	cell = new /obj/item/weapon/cell/high()		// 10K rated cell.
 	cell.forceMove(src)
 
 /obj/item/device/suit_cooling_unit/Destroy()

@@ -153,7 +153,7 @@
 
 /obj/machinery/computer/centrifuge/proc/isolate()
 	if (!sample) return
-	var/obj/item/weapon/virusdish/dish = new/obj/item/weapon/virusdish(loc)
+	var/obj/item/weapon/virusdish/dish = new /obj/item/weapon/virusdish(loc)
 	dish.virus2 = virus2
 	virus2 = null
 

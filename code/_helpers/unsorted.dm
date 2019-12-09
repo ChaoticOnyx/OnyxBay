@@ -623,7 +623,7 @@ proc/GaussRandRound(var/sigma,var/roundto)
 		var/area/areatemp = areatype
 		areatype = areatemp.type
 
-	var/list/areas = new/list()
+	var/list/areas = new /list()
 	for(var/area/N in world)
 		if(istype(N, areatype)) areas += N
 	return areas
@@ -637,7 +637,7 @@ proc/GaussRandRound(var/sigma,var/roundto)
 		var/area/areatemp = areatype
 		areatype = areatemp.type
 
-	var/list/atoms = new/list()
+	var/list/atoms = new /list()
 	for(var/area/N in world)
 		if(istype(N, areatype))
 			for(var/atom/A in N)
@@ -716,23 +716,23 @@ proc/DuplicateObject(obj/original, var/perfectcopy = 0 , var/sameloc = 0)
 		if(T.x < trg_min_x || !trg_min_x) trg_min_x	= T.x
 		if(T.y < trg_min_y || !trg_min_y) trg_min_y	= T.y
 
-	var/list/refined_src = new/list()
+	var/list/refined_src = new /list()
 	for(var/turf/T in turfs_src)
 		refined_src += T
-		refined_src[T] = new/datum/coords
+		refined_src[T] = new /datum/coords
 		var/datum/coords/C = refined_src[T]
 		C.x_pos = (T.x - src_min_x)
 		C.y_pos = (T.y - src_min_y)
 
-	var/list/refined_trg = new/list()
+	var/list/refined_trg = new /list()
 	for(var/turf/T in turfs_trg)
 		refined_trg += T
-		refined_trg[T] = new/datum/coords
+		refined_trg[T] = new /datum/coords
 		var/datum/coords/C = refined_trg[T]
 		C.x_pos = (T.x - trg_min_x)
 		C.y_pos = (T.y - trg_min_y)
 
-	var/list/toupdate = new/list()
+	var/list/toupdate = new /list()
 
 	var/copiedobjs = list()
 
@@ -762,10 +762,10 @@ proc/DuplicateObject(obj/original, var/perfectcopy = 0 , var/sameloc = 0)
 					X.overlays = old_overlays
 					X.underlays = old_underlays
 
-					var/list/objs = new/list()
-					var/list/newobjs = new/list()
-					var/list/mobs = new/list()
-					var/list/newmobs = new/list()
+					var/list/objs = new /list()
+					var/list/newobjs = new /list()
+					var/list/mobs = new /list()
+					var/list/newmobs = new /list()
 
 					for(var/obj/O in T)
 

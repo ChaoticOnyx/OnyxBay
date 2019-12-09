@@ -571,7 +571,7 @@
 		if(!target.has_limb(BP_HEAD))
 			target.restore_limb(BP_HEAD)
 			target.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/brain(target)
-			target.internal_organs_by_name[BP_EYES] = new/obj/item/organ/internal/eyes(target)
+			target.internal_organs_by_name[BP_EYES] = new /obj/item/organ/internal/eyes(target)
 
 	target.sync_organ_dna()
 	target.regenerate_icons()

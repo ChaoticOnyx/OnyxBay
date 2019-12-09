@@ -13,7 +13,7 @@
 	var/brightness_on = 8		//can't remember what the maxed out value is
 
 /obj/machinery/floodlight/New()
-	cell = new/obj/item/weapon/cell/crap(src)
+	cell = new /obj/item/weapon/cell/crap(src)
 	..()
 
 /obj/machinery/floodlight/update_icon()

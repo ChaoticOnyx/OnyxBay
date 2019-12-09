@@ -47,7 +47,7 @@
 		return
 	wax--
 	if(!wax)
-		new/obj/item/trash/candle(src.loc)
+		new /obj/item/trash/candle(src.loc)
 		qdel(src)
 	update_icon()
 	if(istype(loc, /turf)) //start a fire if possible

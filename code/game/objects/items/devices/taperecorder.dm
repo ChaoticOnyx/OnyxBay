@@ -364,8 +364,8 @@
 	throwforce = 0
 	var/max_capacity = 9e40 // Literal infinite storage
 	var/used_capacity = 0
-	var/list/storedinfo = new/list()
-	var/list/timestamp = new/list()
+	var/list/storedinfo = new /list()
+	var/list/timestamp = new /list()
 	var/ruined = 0
 
 

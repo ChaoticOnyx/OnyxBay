@@ -979,7 +979,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/melee/energy/sword(src)
 	src.modules += new /obj/item/weapon/gun/energy/pulse_rifle/destroyer(src)
 	src.modules += new /obj/item/weapon/card/emag(src)
-	var/jetpack = new/obj/item/weapon/tank/jetpack/carbondioxide(src)
+	var/jetpack = new /obj/item/weapon/tank/jetpack/carbondioxide(src)
 	src.modules += jetpack
 	R.internals = jetpack
 
@@ -1033,7 +1033,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/reagent_containers/spray/cleaner/drone(src)
 	src.modules += new /obj/item/device/t_scanner(src)
 
-	robot.internals = new/obj/item/weapon/tank/jetpack/carbondioxide(src)
+	robot.internals = new /obj/item/weapon/tank/jetpack/carbondioxide(src)
 	src.modules += robot.internals
 
 	src.emag = new /obj/item/weapon/gun/energy/plasmacutter(src)

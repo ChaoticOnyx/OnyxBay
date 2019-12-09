@@ -275,7 +275,7 @@ var/global/photo_count = 0
 		user.put_in_inactive_hand(p)
 
 /obj/item/weapon/photo/proc/copy(copy_id = 0)
-	var/obj/item/weapon/photo/p = new/obj/item/weapon/photo()
+	var/obj/item/weapon/photo/p = new /obj/item/weapon/photo()
 
 	p.SetName(name)
 	p.appearance = appearance

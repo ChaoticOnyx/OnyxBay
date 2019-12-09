@@ -55,10 +55,10 @@ var/list/tape_roll_applications = list()
 	..()
 	if(!hazard_overlays)
 		hazard_overlays = list()
-		hazard_overlays["[NORTH]"]	= new/image('icons/effects/warning_stripes.dmi', icon_state = "N")
-		hazard_overlays["[EAST]"]	= new/image('icons/effects/warning_stripes.dmi', icon_state = "E")
-		hazard_overlays["[SOUTH]"]	= new/image('icons/effects/warning_stripes.dmi', icon_state = "S")
-		hazard_overlays["[WEST]"]	= new/image('icons/effects/warning_stripes.dmi', icon_state = "W")
+		hazard_overlays["[NORTH]"]	= new /image('icons/effects/warning_stripes.dmi', icon_state = "N")
+		hazard_overlays["[EAST]"]	= new /image('icons/effects/warning_stripes.dmi', icon_state = "E")
+		hazard_overlays["[SOUTH]"]	= new /image('icons/effects/warning_stripes.dmi', icon_state = "S")
+		hazard_overlays["[WEST]"]	= new /image('icons/effects/warning_stripes.dmi', icon_state = "W")
 
 /obj/item/taperoll/police
 	name = "police tape"

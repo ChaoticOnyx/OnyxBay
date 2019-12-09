@@ -16,7 +16,7 @@
 
 /obj/machinery/embedded_controller/radio/airlock/New()
 	..()
-	program = new/datum/computer/file/embedded_program/airlock(src)
+	program = new /datum/computer/file/embedded_program/airlock(src)
 
 /obj/machinery/embedded_controller/radio/airlock/Destroy()
 	for(var/thing in dummy_terminals)

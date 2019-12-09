@@ -260,9 +260,9 @@
 	if (stat & BROKEN)
 		new /obj/item/weapon/circuitboard/broken(src.loc)
 	else
-		new/obj/item/weapon/airalarm_electronics(src.loc)
+		new /obj/item/weapon/airalarm_electronics(src.loc)
 
-	var/obj/structure/firedoor_assembly/FA = new/obj/structure/firedoor_assembly(src.loc)
+	var/obj/structure/firedoor_assembly/FA = new /obj/structure/firedoor_assembly(src.loc)
 	FA.anchored = !moved
 	FA.set_density(1)
 	FA.wired = 1
@@ -398,7 +398,7 @@
 				var/cdir = GLOB.cardinal[d]
 				for(var/i=1;i<=ALERT_STATES.len;i++)
 					if(dir_alerts[d] & (1<<(i-1)))
-						overlays += new/icon(icon,"alert_[ALERT_STATES[i]]", dir=cdir)
+						overlays += new /icon(icon,"alert_[ALERT_STATES[i]]", dir=cdir)
 						do_set_light = TRUE
 	else
 		icon_state = "door_open"

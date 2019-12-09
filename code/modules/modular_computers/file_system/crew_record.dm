@@ -85,7 +85,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 // Global methods
 // Used by character creation to create a record for new arrivals.
 /proc/CreateModularRecord(var/mob/living/carbon/human/H)
-	var/datum/computer_file/crew_record/CR = new/datum/computer_file/crew_record()
+	var/datum/computer_file/crew_record/CR = new /datum/computer_file/crew_record()
 	GLOB.all_crew_records.Add(CR)
 	CR.load_from_mob(H)
 	return CR
