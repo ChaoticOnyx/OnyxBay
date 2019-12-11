@@ -777,7 +777,7 @@ meteor_act
 					return
 
 
-		var/zone
+		var/zone = BP_CHEST
 		if (istype(O.thrower, /mob/living))
 			var/mob/living/L = O.thrower
 			if(L.zone_sel)
