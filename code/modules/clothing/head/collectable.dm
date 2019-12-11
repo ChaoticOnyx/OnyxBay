@@ -102,7 +102,7 @@
 	icon_state = "kitty"
 	body_parts_covered = 0
 	
-/obj/item/clothing/head/collectable/equipped(mob/living/carbon/human/user, slot)
+/obj/item/clothing/head/collectable/kitty/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
 	if (slot == slot_head && istype(user))
 		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
