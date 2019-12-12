@@ -12,7 +12,7 @@
 	siemens_coefficient = 0.9
 	var/gas_filter_strength = 1			//For gas mask filters
 	var/list/filtered_gases = list("phoron", "sleeping_agent")
-	var/istinted = 1
+	var/istinted = 0
 	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 75, rad = 0)
 
 /obj/item/clothing/mask/gas/Initialize()
