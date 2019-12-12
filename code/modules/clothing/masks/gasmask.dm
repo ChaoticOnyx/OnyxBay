@@ -66,6 +66,13 @@
 	icon_state = "fullgas"
 	item_state = "fullgas"
 
+/obj/item/clothing/mask/gas/clear
+	name = "gas mask"
+	desc = "A close-fitting, panoramic gas mask that can be connected to an air supply."
+	icon_state = "gasmask-clear"
+	item_state = "gasmask-clear"
+	istinted = 0
+
 /obj/item/clothing/mask/gas/police
 	name = "police gas mask"
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
