@@ -170,6 +170,8 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 		if(EDIT_LONGTEXT)
 			newval = sanitize(replacetext(newval, "\n", "\[br\]"), MAX_PAPER_MESSAGE_LEN)
 	value = newval
+	if (usr)
+		announce()
 	return 1
 
 /record_field/proc/get_options()
@@ -190,6 +192,9 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	if(!used_access)
 		return FALSE
 	return islist(used_access) ? (acccess_edit in used_access) : acccess_edit == used_access
+
+/record_field/proc/announce()
+	return
 
 #define GETTER_SETTER(KEY) /datum/computer_file/crew_record/proc/get_##KEY(){var/record_field/F = locate(/record_field/##KEY) in fields; if(F) return F.get_value()} \
 /datum/computer_file/crew_record/proc/set_##KEY(value){var/record_field/F = locate(/record_field/##KEY) in fields; if(F) return F.set_value(value)}
@@ -228,7 +233,29 @@ FIELD_LONG_SECURE("Medical Record", medRecord, FALSE, access_medical)
 
 // SECURITY RECORDS
 FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_statuses, access_security)
+/record_field/criminalStatus/announce()
+	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
+		if(R.uid == record_id)
+			var/status = "<font color='black'><b>None</b></font>"
+
+			switch(value)
+				if("Arrest")
+					status = "<font color='red'><b>Arrest</b></font>"
+				if("Incarcerated")
+					status = "<font color='orange'><b>Incarcerated</b></font>"
+				if("Parolled")
+					status = "<font color='green'><b>Parolled</b></font>"
+				if("Released")
+					status = "<font color='blue'><b>Released</b></font>"
+
+			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security status is changed to [status]!</font>", "<b>Security Records Announcer</b>", "Security")
+
 FIELD_LONG_SECURE("Security Record", secRecord, FALSE, access_security)
+/record_field/secRecord/announce()
+	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
+		if(R.uid == record_id)
+			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security record was changed!</font>", "<b>Security Records Announcer</b>", "Security")
+
 FIELD_SHORT_SECURE("DNA", dna, FALSE, access_security)
 FIELD_SHORT_SECURE("Fingerprint", fingerprint, FALSE, access_security)
 
