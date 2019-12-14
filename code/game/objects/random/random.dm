@@ -214,6 +214,7 @@
 				/obj/item/weapon/storage/box/syndie_kit/cigarette = 1,
 				/obj/item/stack/telecrystal = 1,
 				/obj/item/clothing/under/syndicate = 2,
+				/obj/item/clothing/under/contortionist = 1,
 				/obj/item/weapon/reagent_containers/syringe = 3,
 				/obj/item/weapon/reagent_containers/syringe/steroid = 2,
 				/obj/item/weapon/reagent_containers/syringe/drugs = 1)
@@ -726,6 +727,7 @@ obj/random/obstruction/spawn_choices()
 				/obj/item/weapon/storage/briefcase/inflatable = 3,
 				/obj/item/weapon/storage/backpack = 5,
 				/obj/item/weapon/storage/backpack/satchel = 5,
+				/obj/item/weapon/storage/backpack/satchel/flat = 1,
 				/obj/item/weapon/storage/backpack/dufflebag = 2,
 				/obj/item/weapon/storage/box = 5,
 				/obj/item/weapon/storage/box/donkpockets = 3,
