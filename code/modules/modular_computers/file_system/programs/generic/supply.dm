@@ -20,7 +20,7 @@
 
 /datum/nano_module/supply
 	name = "Supply Management program"
-	var/screen = 1		// 0: Ordering menu, 1: Statistics 2: Shuttle control, 3: Orders menu
+	var/screen = 1		// 1: Ordering menu, 2: Statistics, 3: Shuttle control, 4: Orders menu, 5: Selling menu
 	var/selected_category
 	var/list/category_names
 	var/list/category_contents
@@ -81,6 +81,12 @@
 			data["cart"] = cart
 			data["requests"] = requests
 			data["done"] = done
+
+		if(5)// Selling menu
+			var/list/orders[0]
+			for(var/decl/hierarchy/sell_order/SO in SSsupply.sell_order_list)
+				orders.Add(sell_order_to_nanoui(SO))
+			data["orders"] = orders
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
@@ -209,6 +215,10 @@
 				break
 		return 1
 
+	//if(href_list["refresh_orders"])
+		//make new orders
+		//TODO - Make timer
+
 /datum/nano_module/supply/proc/generate_categories()
 	category_names = list()
 	category_contents = list()
@@ -246,6 +256,15 @@
 		"cost" = SO.object.cost,
 		"reason" = SO.reason
 		))
+
+/datum/nano_module/supply/proc/sell_order_to_nanoui(var/decl/hierarchy/sell_order/SO)
+	return list(list(
+		"order_name" = SO.name,
+		"order_desc" = SO.description,
+		"order_cost" = SO.cost,
+		"order_progress" = SO.progress,
+		"order_max_progress" = SO.max_progress
+	))
 
 /datum/nano_module/supply/proc/can_print()
 	var/obj/item/modular_computer/MC = nano_host()

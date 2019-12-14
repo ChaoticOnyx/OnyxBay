@@ -22,6 +22,8 @@ SUBSYSTEM_DEF(supply)
 	var/list/requestlist = list()
 	var/list/donelist = list()
 	var/list/master_supply_list = list()
+	var/list/sell_order_list = list()
+	var/list/list_aval_SO = list()
 	//shuttle movement
 	var/movetime = 1200
 	var/datum/shuttle/autodock/ferry/supply/shuttle
@@ -30,11 +32,14 @@ SUBSYSTEM_DEF(supply)
 		"time" = "Base station supply",
 		"manifest" = "From exported manifests",
 		"crate" = "From exported crates",
-		"virology" = "From uploaded antibody data",
+		"request" = "From exported CC requests",
 		"gep" = "From uploaded good explorer points",
-		"total" = "Total",
 		"science" = "From exported researched items" // If you're adding additional point sources, add it here in a new line. Don't forget to put a comma after the old last line.
 	)
+
+/*/datum/controller/subsystem/supply/respawn_order(var/type/order_path)
+	for(var/decl/hierarchy/sell_order/so in sell_order_list)
+		if(typeis())*/
 
 /datum/controller/subsystem/supply/Initialize()
 	. = ..()
@@ -50,6 +55,20 @@ SUBSYSTEM_DEF(supply)
 		var/material/material = material_type //False typing
 		var/material_name = initial(material.name)
 		point_source_descriptions[material_name] = "From exported [material_name]"
+	point_source_descriptions["total"] = "Total"
+
+	var/decl/hierarchy/sell_order/cargo_sell_order_root = new /decl/hierarchy/sell_order
+	list_aval_SO += cargo_sell_order_root.children
+
+	for(var/decl/hierarchy/sell_order/so in list_aval_SO)
+		sell_order_list += list(pick(so.children))
+
+/datum/controller/subsystem/supply/proc/respawn(var/sell_order_type)
+	sell_order_list -= list(new sell_order_type)
+	var/decl/hierarchy/sell_order/old_order = new sell_order_type
+	var/decl/hierarchy/sell_order/category_order = old_order.parent
+	var/decl/hierarchy/sell_order/new_order = list(pick(category_order.children))
+	sell_order_list += list(new_order)
 
 // Just add points over time.
 /datum/controller/subsystem/supply/fire()
@@ -103,7 +122,10 @@ SUBSYSTEM_DEF(supply)
 							add_points_from_source(points_per_slip, "manifest")
 							find_slip = 0
 						continue
-
+					// Sell Requests
+					for(var/decl/hierarchy/sell_order/so in sell_order_list)
+						if(so.add_item(A))
+							continue
 					// Sell materials
 					if(istype(A, /obj/item/stack))
 						var/obj/item/stack/P = A

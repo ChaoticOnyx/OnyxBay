@@ -10,6 +10,7 @@
 	{{:helper.link('View Statistics', 'calculator', {'set_screen' : 2}, data.screen == 2 ? 'selected' : null)}}
 	{{:helper.link('Shuttle Control', 'bullet', {'set_screen' : 3}, data.screen == 3 ? 'selected' : null)}}
 	{{:helper.link('Browse Orders', 'check', {'set_screen' : 4}, data.screen == 4 ? 'selected' : null)}}
+	{{:helper.link('Selling Menu', 'check', {'set_screen' : 5}, data.screen == 5 ? 'selected' : null)}}
 </div>
 <hr>
 <span>Current balance: {{:data.credits}} Credits</span>
@@ -123,4 +124,19 @@
 	{{else}}
 		<h3>Access denied: Missing identificaton or insufficient permissions.</h3>
 	{{/if}}
+{{else data.screen == 5}}
+	<div class="item">
+		<table style="width:100%">
+			<tr><th style="width:10%">Item<th style="width:70%">Description</th><th style="width:10%">Progress<th style="width:10%">Payment
+				<div style="text-align:center;">
+				{{for data.orders}}
+					<tr>
+					<td>{{:value.order_name}}
+					<td>{{:value.order_desc}}
+					<td>{{:value.order_progress}}/{{:value.order_max_progress}}
+					<td>{{:value.order_cost}}
+				{{/for}}
+				</div>
+		</table>
+	</div>
 {{/if}}
