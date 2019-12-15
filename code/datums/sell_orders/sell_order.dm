@@ -10,6 +10,7 @@ decl/hierarchy/sell_order
 		return 0
 
 	proc/add_item(var/atom/A)
+		check_progress()
 		return 0
 
 	proc/reward()

@@ -5,12 +5,13 @@ decl/hierarchy/sell_order/rnd/add_item(var/atom/A)
 	for(var/wanted_type in wanted)
 		if(istype(A, wanted_type))
 			wanted -= list(wanted_type)
+			check_progress()
 			return 1 //selling successful
 	..()
 
 decl/hierarchy/sell_order/rnd/check_progress()
 	progress = max_progress - length(wanted) //checking how many wanted items left and getting by that
-	if(progress == max_progress) //if request complete - get reward
+	if(progress >= max_progress) //if request complete - get reward
 		reward()
 
 decl/hierarchy/sell_order/rnd/New()

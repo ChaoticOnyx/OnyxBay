@@ -64,10 +64,12 @@ SUBSYSTEM_DEF(supply)
 		sell_order_list += list(pick(so.children))
 
 /datum/controller/subsystem/supply/proc/respawn(var/sell_order_type)
-	sell_order_list -= list(new sell_order_type)
+	for(var/decl/hierarchy/sell_order/so in sell_order_list)
+		if(istype(so, sell_order_type))
+			sell_order_list -= list(so)
 	var/decl/hierarchy/sell_order/old_order = new sell_order_type
-	var/decl/hierarchy/sell_order/category_order = old_order.parent
-	var/decl/hierarchy/sell_order/new_order = list(pick(category_order.children))
+	var/decl/hierarchy/sell_order/category_order = new old_order.parent_type
+	var/decl/hierarchy/sell_order/new_order = pick(category_order.children)
 	sell_order_list += list(new_order)
 
 // Just add points over time.
@@ -125,7 +127,8 @@ SUBSYSTEM_DEF(supply)
 					// Sell Requests
 					for(var/decl/hierarchy/sell_order/so in sell_order_list)
 						if(so.add_item(A))
-							continue
+							A = null
+							break
 					// Sell materials
 					if(istype(A, /obj/item/stack))
 						var/obj/item/stack/P = A
