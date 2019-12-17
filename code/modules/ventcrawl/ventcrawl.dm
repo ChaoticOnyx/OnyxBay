@@ -48,7 +48,9 @@ var/list/ventcrawl_machinery = list(
 		return FALSE
 	if(incapacitated())
 		to_chat(src, "<span class='warning'>You cannot ventcrawl in your current state!</span>")
-		return FALSE		
+		return FALSE
+	if(isMonkey(src))
+		return TRUE				
 	return ventcrawl_carry()
 
 /mob/living/carbon/human/ventcrawl_carry()
