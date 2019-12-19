@@ -23,6 +23,8 @@
 	#include "exodus-7.dmm"
 	#include "derelicts/snowasteroid.dmm"
 	#include "derelicts/djstation.dmm"
+	#include "derelicts/casino.dmm"
+
 
 
 	#define USING_MAP_DATUM /datum/map/exodus
