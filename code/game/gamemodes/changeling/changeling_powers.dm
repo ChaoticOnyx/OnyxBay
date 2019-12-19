@@ -1832,7 +1832,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /mob/proc/radar()
 	set category = "Changeling"
 	set name = "Short-range radar"
-	set desc = "We are able to smell to determine where the target."
+	set desc = "We are able to smell to determine where the target is."
 
 	var/datum/changeling/changeling = changeling_power()
 	if(!changeling)

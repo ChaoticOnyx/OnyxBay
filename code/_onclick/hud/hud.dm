@@ -413,9 +413,10 @@
 
 		if(istype(A, /mob/living))
 			var/mob/living/M = A
+			var/mob/living/carbon/human/H = A
 			if(ishuman(M))
-				if(M:wear_id)
-					var/job = M:wear_id:GetJobName()
+				if(H.wear_id)
+					var/job = H.wear_id.GetJobName()
 					if(job == "Security Officer")
 						blip.icon_state = "secblip"
 						blip.name = "Security Officer"
