@@ -639,3 +639,8 @@ var/list/datum/power/changeling/powerinstances = list()
 	else if(remake_verbs)
 		M.current.make_changeling()
 
+/datum/power/changeling/radar
+	name = "Radar"
+	desc = "We can determine by smell where the body is and who it is."
+	genomecost = 0
+	verbpath = /mob/proc/radar

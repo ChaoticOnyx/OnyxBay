@@ -317,3 +317,5 @@
 #define MOB_INPUT_TEXT "text"
 #define MOB_INPUT_MESSAGE "message"
 #define MOB_INPUT_NUM "num"
+
+#define RADAR "Radar"

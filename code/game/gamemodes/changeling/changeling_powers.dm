@@ -1517,7 +1517,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	for (var/obj/item/organ/external/E in detachable_limbs)
 		if (E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.is_stump())
 			detachable_limbs -= E
-	changeling.isdetachingnow = TRUE		
+	changeling.isdetachingnow = TRUE
 	var/obj/item/organ/external/organ_to_remove = input(T, "Which organ do you want to detach?") as null|anything in detachable_limbs
 	if(!organ_to_remove)
 		changeling.isdetachingnow = FALSE
@@ -1532,7 +1532,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(!do_after(src,10,can_move = 1,needhand = 0,incapacitation_flags = INCAPACITATION_NONE))
 		src.visible_message("<span class='notice'>\the [organ_to_remove] connecting back to [src].</span>", \
 					"<span class='danger'>We were interrupted.</span>")
-		changeling.isdetachingnow = FALSE			
+		changeling.isdetachingnow = FALSE
 		return 0
 	playsound(loc, 'sound/effects/bonebreak1.ogg', 100, 1)
 	T.mind.changeling.chem_charges -= 10
@@ -1555,8 +1555,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/mob/living/carbon/human/H = T
 	if(istype(H))
 		H.regenerate_icons()
-		
-	changeling.isdetachingnow = FALSE	
+
+	changeling.isdetachingnow = FALSE
 
 
 /mob/proc/changeling_gib_self()
@@ -1828,3 +1828,29 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	else
 		to_chat(src, "<span class='warning'>You prepare your ability.</span>")
 		src.PushClickHandler(path)
+
+/mob/proc/radar()
+	set category = "Changeling"
+	set name = "Short-range radar"
+	set desc = "We are able to smell to determine where the target."
+
+	var/datum/changeling/changeling = changeling_power()
+	if(!changeling)
+		return FALSE
+
+
+
+	var/mob/living/carbon/human/H = src
+	if(!H.radar_open)
+		H.augmentations.Add(RADAR) // give them the mutation
+		to_chat(H, "<font color='#FF0000'>Red</font color> blips on the map are Security.")
+		to_chat(H, "White blips are civlians.")
+		to_chat(H, "<font color='#3E710B'>Monochrome Green</font color> blips are cyborgs and AIs.")
+		to_chat(H, "<font color='#238989'>Light blue</font color> blips are heads of staff.")
+		to_chat(H, "<font color='#663366'>Purple</font color> blips are unidentified organisms.")
+		to_chat(H, "Dead biologicals will not display on the radar.")
+		H.start_radar()
+		return TRUE
+	else
+		H.close_radar()
+		return FALSE

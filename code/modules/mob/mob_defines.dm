@@ -171,3 +171,7 @@
 	var/flavor_text = ""
 
 	var/nabbing = 0  // Whether a creature with a CAN_NAB tag is grabbing normally or in nab mode.
+
+	var/radar_open = FALSE // nonzero is radar is open
+	var/tmp/list/radar_blips = list() // list of screen objects, radar blips
+	var/list/augmentations = list()
