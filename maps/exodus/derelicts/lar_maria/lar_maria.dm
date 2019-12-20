@@ -82,7 +82,7 @@
 /mob/living/simple_animal/hostile/lar_maria
 	name = "Lar Maria hostile mob"
 	desc = "You shouldn't see me!"
-	icon = 'maps/away/lar_maria/lar_maria_sprites.dmi'
+	icon = 'maps/exodus/derelicts/lar_maria/lar_maria_sprites.dmi'
 	unsuitable_atoms_damage = 15
 	environment_smash = 1
 	faction = "lar_maria"
@@ -160,7 +160,7 @@
 	name = "Dead ZHP guard"
 	uniform = /obj/item/clothing/under/rank/virologist
 	suit = /obj/item/clothing/suit/armor/pcarrier
-	head = /obj/item/clothing/head/soft/lar_maria/zhp_cap
+	head = /obj/item/clothing/head/soft/green
 	shoes = /obj/item/clothing/shoes/jackboots
 	l_ear = /obj/item/device/radio/headset
 
@@ -194,9 +194,9 @@
 
 /obj/item/clothing/head/soft/lar_maria/zhp_cap
 	name = "Zeng-Hu Pharmaceuticals cap"
-	icon = 'maps/away/lar_maria/lar_maria_sprites.dmi'
+	icon = 'maps/exodus/derelicts/lar_maria/lar_maria_sprites.dmi'
 	icon_state = "zhp_cap"
-	item_icons = list(slot_head_str = 'maps/away/lar_maria/lar_maria_sprites.dmi')
+	item_icons = list(slot_head_str = 'maps/exodus/derelicts/lar_maria/lar_maria_sprites.dmi')
 
 /mob/living/simple_animal/hostile/lar_maria/virologist
 	name = "\improper virologist"
