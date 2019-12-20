@@ -26,6 +26,8 @@
 	#include "derelicts/casino.dmm"
 	#include "derelicts/bearcat/bearcat-1.dmm"
 	#include "derelicts/bearcat/bearcat-2.dmm"
+	#include "derelicts/lar_maria/lar_maria-1.dmm"
+	#include "derelicts/lar_maria/lar_maria-2.dmm"
 
 
 

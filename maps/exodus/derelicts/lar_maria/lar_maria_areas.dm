@@ -1,5 +1,5 @@
 /area/lar_maria
-	icon = 'maps/away/lar_maria/lar_maria_sprites.dmi'
+	icon = 'maps/exodus/derelicts/lar_maria/lar_maria_sprites.dmi'
 
 /////////////////////////////Upper level areas
 /area/lar_maria/solar_control
