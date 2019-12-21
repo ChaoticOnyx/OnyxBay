@@ -37,6 +37,20 @@ datum/track/New(var/title_name, var/audio)
 		new /datum/track("Part A", 'sound/misc/TestLoop1.ogg'),
 		new /datum/track("Scratch", 'sound/music/title1.ogg'),
 		new /datum/track("Trai`Tor", 'sound/music/traitor.ogg'),
+		new /datum/track("All That I Can See", 'sound/music/all_that_i_can_see.ogg'),
+		new /datum/track("Delirium", 'sound/music/delirium.ogg'),
+		new /datum/track("End", 'sound/music/end.ogg'),
+		new /datum/track("Magicfly", 'sound/music/magicfly.ogg'),
+		new /datum/track("Self Justified Sacrifices", 'sound/music/self_justified_sacrifices.ogg'),
+		new /datum/track("Final Countdown", 'sound/music/newyear/christmasamb1.ogg'),
+		new /datum/track("Last Christmas", 'sound/music/newyear/christmasamb2.ogg'),
+		new /datum/track("We With You a Merry Christmas", 'sound/music/newyear/christmasamb3.ogg'),
+		new /datum/track("Jingle Bells", 'sound/music/newyear/christmasamb4.ogg'),
+		new /datum/track("Happy New Year", 'sound/music/newyear/happynewyear.ogg'),
+		new /datum/track("Mr. Sandman", 'sound/music/newyear/sandman.ogg'),
+		new /datum/track("Lone Digger", 'sound/music/lonedigger.ogg'),
+		new /datum/track("Reaper & Blues", 'sound/music/reapernblues.ogg'),
+		new /datum/track("Undead Man Walkin`", 'sound/music/undeadwalking.ogg'),
 	)
 
 
