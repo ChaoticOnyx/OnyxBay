@@ -39,7 +39,6 @@ datum/track/New(var/title_name, var/audio)
 		new /datum/track("Trai`Tor", 'sound/music/traitor.ogg'),
 		new /datum/track("Lone Digger", 'sound/music/lonedigger.ogg'),
 		new /datum/track("Undead Man Walkin`", 'sound/music/undeadwalking.ogg'),
-		new /datum/track("Space Asshole", 'sound/music/spaceasshole.ogg'),
 		new /datum/track("Reaper&Blues", 'sound/music/reapernblues.ogg'),
 	)
 
