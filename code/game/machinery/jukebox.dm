@@ -41,11 +41,6 @@ datum/track/New(var/title_name, var/audio)
 		new /datum/track("Undead Man Walkin`", 'sound/music/undeadwalking.ogg'),
 		new /datum/track("Space Asshole", 'sound/music/spaceasshole.ogg'),
 		new /datum/track("Reaper&Blues", 'sound/music/reapernblues.ogg'),
-		new /datum/track("Rum", 'sound/music/rum.ogg'),
-		new /datum/track("Don`t Remember", 'sound/music/dontremember.ogg'),
-		new /datum/track("Winter", 'sound/music/winter.ogg'),
-		new /datum/track("Winter`s Starfall", 'sound/music/starfall.ogg'),
-		new /datum/track("Avariya", 'sound/music/avariya.ogg'),
 	)
 
 
