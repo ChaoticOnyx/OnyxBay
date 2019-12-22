@@ -107,6 +107,10 @@ var/list/_client_preferences_by_type
 	description ="Play jukeboxes"
 	key = "SOUND_JUKEBOXES"
 
+/datum/client_preference/play_instruments
+	description ="Play instruments"
+	key = "SOUND_INSTRUMENTS"
+
 /datum/client_preference/play_hitmarker
 	description ="Hitmarker Sound"
 	key = "SOUND_HITMARKER"
