@@ -24,6 +24,8 @@
 	src.use_env = use_env
 	src.player = player
 
+	preference = /datum/client_preference/play_instruments
+
 	var/channel = GLOB.sound_player.PrivGetChannel(src) //Attempt to find a channel
 	if(!isnum(channel))
 		CRASH("All available sound channels are in active use.")
@@ -44,23 +46,6 @@
 	else
 		var/area/A = get_area(listener)
 		return A && PrivIsValidEnvironment(A.sound_env) ? A.sound_env : sound.environment
-
-
-datum/sound_token/instrument/PrivAddListener(var/atom/listener)
-	/*var/mob/m = listener //Well maybe later
-	if(istype(m))
-		if(m.get_preference_value(/datum/client_preference/play_instruments) != GLOB.PREF_YES)
-			return */
-	return ..()
-
-
-/datum/sound_token/instrument/PrivUpdateListener(var/listener)
-	/*var/mob/m = listener
-	if(istype(m))
-		if(m.get_preference_value(/datum/client_preference/play_instruments) != GLOB.PREF_YES)
-			PrivRemoveListener(listener)
-			return */
-	return ..()
 
 /datum/sound_token/instrument/Stop()
 	player.unsubscribe(src)
