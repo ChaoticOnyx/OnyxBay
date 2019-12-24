@@ -37,10 +37,6 @@ SUBSYSTEM_DEF(supply)
 		"science" = "From exported researched items" // If you're adding additional point sources, add it here in a new line. Don't forget to put a comma after the old last line.
 	)
 
-/*/datum/controller/subsystem/supply/respawn_order(var/type/order_path)
-	for(var/decl/hierarchy/sell_order/so in sell_order_list)
-		if(typeis())*/
-
 /datum/controller/subsystem/supply/Initialize()
 	. = ..()
 	ordernum = rand(1,9000)
@@ -59,7 +55,6 @@ SUBSYSTEM_DEF(supply)
 
 	var/decl/hierarchy/sell_order/cargo_sell_order_root = new /decl/hierarchy/sell_order
 	list_aval_SO += cargo_sell_order_root.children
-
 	for(var/decl/hierarchy/sell_order/so in list_aval_SO)
 		sell_order_list += list(pick(so.children))
 
@@ -102,60 +97,69 @@ SUBSYSTEM_DEF(supply)
 		if(.(B))
 			return 1
 
-/datum/controller/subsystem/supply/proc/sell()
+/datum/controller/subsystem/supply/proc/sell_item(var/atom) //returns 1 if sold and 0 if not
 	var/list/material_count = list()
 
-	for(var/area/subarea in shuttle.shuttle_area)
-		for(var/atom/movable/AM in subarea)
-			if(AM.anchored)
-				continue
-			if(istype(AM, /obj/structure/closet/crate/))
-				var/obj/structure/closet/crate/CR = AM
-				callHook("sell_crate", list(CR, subarea))
-				add_points_from_source(CR.points_per_crate, "crate")
-				var/find_slip = 1
+	// Sell manifests
+	var/atom/A = atom
+	if(istype(A,/obj/item/weapon/paper/manifest))
+		var/obj/item/weapon/paper/manifest/slip = A
+		if(!slip.is_copy && slip.stamped && slip.stamped.len) //Any stamp works.
+			add_points_from_source(points_per_slip, "manifest")
+			return 1
+	// Sell Requests
+	for(var/decl/hierarchy/sell_order/so in sell_order_list)
+		if(so.add_item(A))
+			return 1
 
-				for(var/atom in CR)
-					// Sell manifests
-					var/atom/A = atom
-					if(find_slip && istype(A,/obj/item/weapon/paper/manifest))
-						var/obj/item/weapon/paper/manifest/slip = A
-						if(!slip.is_copy && slip.stamped && slip.stamped.len) //Any stamp works.
-							add_points_from_source(points_per_slip, "manifest")
-							find_slip = 0
-						continue
-					// Sell Requests
-					for(var/decl/hierarchy/sell_order/so in sell_order_list)
-						if(so.add_item(A))
-							A = null
-							break
-					// Sell materials
-					if(istype(A, /obj/item/stack))
-						var/obj/item/stack/P = A
-						var/material/material = P.get_material()
-						if(material_buy_prices[material.type])
-							material_count[material.type] += P.get_amount()
-						continue
+	// Must sell ore detector disks
+	if(istype(A, /obj/item/weapon/disk/survey))
+		var/obj/item/weapon/disk/survey/D = A
+		add_points_from_source(round(D.Value() * 0.005), "gep")
+		return 1
 
-					// Must sell ore detector disks in crates
-					if(istype(A, /obj/item/weapon/disk/survey))
-						var/obj/item/weapon/disk/survey/D = A
-						add_points_from_source(round(D.Value() * 0.005), "gep")
-
-					// Sell neuromods
-					if (istype(A, /obj/item/weapon/reagent_containers/neuromod_shell))
-						var/obj/item/weapon/reagent_containers/neuromod_shell/NS = A
-						if (NS.neuromod)
-							add_points_from_source(150, "science")
-						else
-							add_points_from_source(25, "science")
-			qdel(AM)
+	// Sell neuromods
+	if (istype(A, /obj/item/weapon/reagent_containers/neuromod_shell))
+		var/obj/item/weapon/reagent_containers/neuromod_shell/NS = A
+		if (NS.neuromod)
+			add_points_from_source(150, "science")
+		else
+			add_points_from_source(25, "science")
+		return 1
+	// Sell materials
+	var/result = 0
+	if(istype(A, /obj/item/stack))
+		var/obj/item/stack/P = A
+		var/material/material = P.get_material()
+		if(material_buy_prices[material.type])
+			material_count[material.type] += P.get_amount()
+			result = 1
 
 	if(material_count.len)
 		for(var/material_type in material_count)
 			var/profit = material_count[material_type] * material_buy_prices[material_type]
 			var/material/material = material_type //False typing.
 			add_points_from_source(profit, initial(material.name))
+	return result
+
+/datum/controller/subsystem/supply/proc/sell()
+	for(var/area/subarea in shuttle.shuttle_area)
+		for(var/atom/movable/AM in subarea)
+			if(istype(AM, /obj/structure/closet/crate/)) //sell all shit what want CC
+				var/obj/structure/closet/crate/CR = AM
+				callHook("sell_crate", list(CR, subarea))
+				add_points_from_source(CR.points_per_crate, "crate")
+				for(var/atom in CR)
+					sell_item(atom)
+				qdel(AM)
+				continue
+			else
+				if(sell_item(AM))
+					qdel(AM)
+					continue
+			if(AM.anchored) //for not deleting shuttle
+				continue
+			qdel(AM)
 
 //Buyin
 /datum/controller/subsystem/supply/proc/buy()
