@@ -167,12 +167,12 @@
 
 /decl/security_level/default/switching_up_to()
 	if(up_description)
-		security_announcement_up.Announce(up_description, "Attention! Alert level elevated to [name]!")
+		security_announcement_up.Announce(up_description, "Attention! Alert level elevated to [name]!", new_sound = sound('sound/signals/alarm2.ogg'))
 	notify_station()
 
 /decl/security_level/default/switching_down_to()
 	if(down_description)
-		security_announcement_down.Announce(down_description, "Attention! Alert level changed to [name]!")
+		security_announcement_down.Announce(down_description, "Attention! Alert level changed to [name]!", new_sound = sound('sound/signals/start1.ogg'))
 	notify_station()
 
 /decl/security_level/default/proc/notify_station()
@@ -237,5 +237,5 @@
 	var/static/datum/announcement/priority/security/security_announcement_delta = new(do_log = 0, do_newscast = 1, new_sound = sound('sound/effects/siren.ogg'))
 
 /decl/security_level/default/code_delta/switching_up_to()
-	security_announcement_delta.Announce("The self-destruct mechanism has been engaged. All crew are instructed to obey all instructions given by heads of staff. Any violations of these orders can be punished by death. This is not a drill.", "Attention! Delta security level reached!")
+	security_announcement_delta.Announce("The self-destruct mechanism has been engaged. All crew are instructed to obey all instructions given by heads of staff. Any violations of these orders can be punished by death. This is not a drill.", "Attention! Delta security level reached!", new_sound = sound('sound/effects/siren.ogg'))
 	notify_station()
