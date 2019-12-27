@@ -7,8 +7,8 @@ var/list/organ_cache = list()
 	w_class = ITEM_SIZE_TINY
 
 	// Strings.
-	var/organ_tag = "organ"           	// Unique identifier.
-	var/parent_organ = BP_CHEST       	// Organ holding this object.
+	var/organ_tag = "organ"           // Unique identifier.
+	var/parent_organ = BP_CHEST       // Organ holding this object.
 
 	// Status tracking.
 	var/status = 0                    // Various status flags (such as robotic)
@@ -20,14 +20,14 @@ var/list/organ_cache = list()
 	var/datum/species/species         // Original species.
 
 	// Damage vars.
-	var/damage = 0                  // Current damage to the organ
-	var/min_broken_damage = 30     	// Damage before becoming broken
-	var/max_damage             	  	// Damage cap
-	var/rejecting                   // Is this organ already being rejected?
+	var/damage = 0                    // Current damage to the organ
+	var/min_broken_damage = 30     	  // Damage before becoming broken
+	var/max_damage             	  // Damage cap
+	var/rejecting                     // Is this organ already being rejected?
+	var/owner_die_time = null
 
-	var/owner_death_time = null 	// When the organ's owner died
-	var/die_time = 1 MINUTE		// How long the organ dies
-	var/death_time				// The organ's death time
+	var/die_time = 1 MINUTE
+	var/death_time
 
 /obj/item/organ/Destroy()
 	owner = null
@@ -81,16 +81,10 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/die()
 	damage = max_damage
 	status |= ORGAN_DEAD
-
 	STOP_PROCESSING(SSobj, src)
-
 	death_time = world.time
-
-	if (owner)
-		owner.update_body()
-
-		if (vital)
-			owner.death()
+	if(owner && vital)
+		owner.death()
 
 /obj/item/organ/Process()
 	if(loc != owner)
@@ -101,18 +95,20 @@ var/list/organ_cache = list()
 		return
 	// Don't process if we're in a freezer, an MMI or a stasis bag.or a freezer or something I dunno
 	if(is_preserved())
-		if (owner_death_time)
-			owner_death_time = null
+		if (owner_die_time)
+			owner_die_time = null
 		return
 
-	// Start countdown if the owner is dead or null
-	if (owner_death_time == null && (!owner || (owner && owner.is_dead())))
-		owner_death_time = world.time
+	// Start countdown if owner is dead or null
+	if (owner_die_time == null && (!owner || (owner && owner.is_dead())))
+		owner_die_time = world.time
 
-	// A robotic organ does not die
-	if (owner_death_time && !BP_IS_ROBOTIC(src))
-		if (world.time > owner_death_time + die_time)
+	if (owner_die_time)
+		if (world.time > owner_die_time + die_time)
 			die()
+
+			if (istype(src, /obj/item/organ/external) && owner)
+				owner.update_body()
 
 	//Process infections
 	if (BP_IS_ROBOTIC(src) || (owner && owner.species && (owner.species.species_flags & SPECIES_FLAG_IS_PLANT)))
@@ -228,9 +224,6 @@ var/list/organ_cache = list()
 			mechassist()
 		else if(status == "mechanical")
 			robotize()
-
-	if (owner)
-		owner.update_body()
 
 //Germs
 /obj/item/organ/proc/handle_antibiotics()
