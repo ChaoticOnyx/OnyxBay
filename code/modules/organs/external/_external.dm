@@ -548,7 +548,7 @@ This function completely restores a damaged organ to perfect condition.
 	return 0
 
 /obj/item/organ/external/Process()
-	if(owner && !owner.is_dead())
+	if(owner)
 
 		if(pain)
 			pain -= owner.lying ? 3 : 1
