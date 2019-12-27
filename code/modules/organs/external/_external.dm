@@ -10,8 +10,6 @@
 	organ_tag = "limb"
 	appearance_flags = PIXEL_SCALE
 
-	die_time = 20 MINUTES
-
 	throwforce = 2.5
 	// Strings
 	var/broken_description             // fracture string if any.
