@@ -168,7 +168,7 @@
 
 /obj/structure/window/attack_tk(mob/user as mob)
 	user.visible_message("<span class='notice'>Something knocks on [src].</span>")
-	playsound(loc, get_sfx("glass_hit"), 50, 1)
+	playsound(loc, get_sfx("glass_knock"), 50, 1)
 
 /obj/structure/window/attack_hand(mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -192,7 +192,7 @@
 							"<span class='danger'>You bang against \the [src]!</span>",
 							"You hear a banging sound.")
 	else
-		playsound(src.loc, get_sfx("glass_hit"), 80, 1)
+		playsound(src.loc, get_sfx("glass_knock"), 80, 1)
 		user.visible_message("[user.name] knocks on the [src.name].",
 							"You knock on the [src.name].",
 							"You hear a knocking sound.")
