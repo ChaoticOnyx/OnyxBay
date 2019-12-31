@@ -69,7 +69,7 @@
 		)
 	breathing_sound = 'sound/voice/lizard.ogg'
 
-	prone_overlay_offset = list(-4, -4)
+//	prone_overlay_offset = list(-4, -4)
 
 /datum/species/unathi/equip_survival_gear(var/mob/living/carbon/human/H)
 	..()
