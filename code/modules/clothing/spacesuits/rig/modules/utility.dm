@@ -97,8 +97,7 @@
 		device.attack_self(holder.wearer)
 		return 1
 
-	var/turf/T = get_turf(target)
-	if(istype(T) && !T.Adjacent(get_turf(src)))
+	if(!target.Adjacent(holder.wearer))
 		return 0
 
 	var/resolved = target.attackby(device,holder.wearer)
