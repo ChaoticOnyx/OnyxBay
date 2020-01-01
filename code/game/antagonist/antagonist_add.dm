@@ -44,6 +44,10 @@
 			and it otherwise has no bearing on your round.</span>")
 	player.current.verbs += /mob/living/proc/write_ambition
 
+	if(player.assigned_role == "Clown")
+		to_chat(player.current, "<span class='notice'>Your diligent training has helped overcome your clownish nature.</span>")
+		player.current.mutations = list()
+
 	// Handle only adding a mind and not bothering with gear etc.
 	if(nonstandard_role_type)
 		faction_members |= player
