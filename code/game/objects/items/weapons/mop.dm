@@ -12,15 +12,13 @@
 	mod_reach = 1.5
 	mod_handy = 1.0
 	attack_verb = list("mopped", "bashed", "bludgeoned", "whacked")
-	var/mopping = 0
-	var/mopcount = 0
-
 
 /obj/item/weapon/mop/New()
 	create_reagents(30)
 
 /obj/item/weapon/mop/afterattack(atom/A, mob/user, proximity)
-	if(!proximity) return
+	if(!proximity)
+		return
 	if(istype(A, /turf) || istype(A, /obj/effect/decal/cleanable) || istype(A, /obj/effect/overlay) || istype(A, /obj/effect/rune))
 		if(reagents.total_volume < 1)
 			to_chat(user, "<span class='notice'>Your mop is dry!</span>")
