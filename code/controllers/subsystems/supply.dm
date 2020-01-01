@@ -9,6 +9,10 @@ SUBSYSTEM_DEF(supply)
 	var/points = 50
 	var/points_per_process = 1
 	var/points_per_slip = 2
+	var/orders_in_category = 2
+	var/refresh_cost = 5
+	var/refresh_timer = 3000
+	var/current_refresh_timer = 0
 	var/material_buy_prices = list(
 		/material/platinum = 5,
 		/material/phoron = 5
@@ -22,8 +26,9 @@ SUBSYSTEM_DEF(supply)
 	var/list/requestlist = list()
 	var/list/donelist = list()
 	var/list/master_supply_list = list()
-	var/list/sell_order_list = list()
-	var/list/list_aval_SO = list()
+	//sell_orders vars
+	var/list/sell_order_list = list() //list of orders
+	var/list/list_avalable_categories = list() //list of categories
 	//shuttle movement
 	var/movetime = 1200
 	var/datum/shuttle/autodock/ferry/supply/shuttle
@@ -53,23 +58,54 @@ SUBSYSTEM_DEF(supply)
 		point_source_descriptions[material_name] = "From exported [material_name]"
 	point_source_descriptions["total"] = "Total"
 
-	var/decl/hierarchy/sell_order/cargo_sell_order_root = new /decl/hierarchy/sell_order
-	list_aval_SO += cargo_sell_order_root.children
-	for(var/decl/hierarchy/sell_order/so in list_aval_SO)
-		sell_order_list += list(pick(so.children))
+	//Build sell_order list
+	var/key = 1 //needed for building associative list
+	var/datum/sell_order/root = new
+	for(var/so_type in root.children_types()) //building categories list
+		list_avalable_categories += list(text("category[]", key) = new so_type)
+		key++
+	key = 1 //needed for building associative list
+	for(var/category_key in list_avalable_categories) //building order list
+		var/datum/sell_order/category = list_avalable_categories[category_key]
+		var/list/avalable_orders = category.children_types()
+		for(var/k=1 to orders_in_category) //generating orders_in_category orders
+			var/so_type = pick(avalable_orders) //picking one non-volumed order
+			var/datum/sell_order/order = new so_type
+			avalable_orders -= list(order.type) //deleting this order from avalable
+			so_type = pick(order.children_types()) //getting volume for it
+			var/datum/sell_order/order_v = new so_type
+			sell_order_list += list(text("order[]", key) = order_v) //adding it to list
+			key++
 
-/datum/controller/subsystem/supply/proc/respawn(var/sell_order_type)
-	for(var/decl/hierarchy/sell_order/so in sell_order_list)
-		if(istype(so, sell_order_type))
-			sell_order_list -= list(so)
-	var/decl/hierarchy/sell_order/old_order = new sell_order_type
-	var/decl/hierarchy/sell_order/category_order = new old_order.parent_type
-	var/decl/hierarchy/sell_order/new_order = pick(category_order.children)
-	sell_order_list += list(new_order)
+/datum/controller/subsystem/supply/proc/respawn(var/sell_order_type) //reroll order
+	var/list/avalable_orders = list()
+	var/found_key = null //key of given type of order in sell_order_list
+	var/so_type = null
+	for(var/key in sell_order_list)
+		if(istype(sell_order_list[key], sell_order_type)) //we found our order in list
+			found_key = key //setting found key
+			var/datum/sell_order/order_category = new sell_order_list[key].get_category_type() //making category
+			avalable_orders = order_category.children_types() //getting avalable orders in it
+			break
+	for(var/key in sell_order_list) //deleting already existing orders
+		var/datum/sell_order/so = sell_order_list[key]
+		avalable_orders -= list(so.parent_type)
+
+	so_type = pick(avalable_orders) //picking non-volumed order
+	var/datum/sell_order/new_order_wo_v = new so_type
+	so_type = pick(new_order_wo_v.children_types()) //picking volume
+	var/datum/sell_order/new_order = new so_type
+
+	sell_order_list[found_key] = new_order //changing old order to new
+
 
 // Just add points over time.
 /datum/controller/subsystem/supply/fire()
 	add_points_from_source(points_per_process, "time")
+	if(current_refresh_timer > 0) //decrease timer
+		current_refresh_timer -= wait
+		if(current_refresh_timer < 0)
+			current_refresh_timer = 0
 
 /datum/controller/subsystem/supply/stat_entry()
 	..("Points: [points]")
@@ -108,8 +144,8 @@ SUBSYSTEM_DEF(supply)
 			add_points_from_source(points_per_slip, "manifest")
 			return 1
 	// Sell Requests
-	for(var/decl/hierarchy/sell_order/so in sell_order_list)
-		if(so.add_item(A))
+	for(var/key in sell_order_list) //for every request
+		if(sell_order_list[key].add_item(A))
 			return 1
 
 	// Must sell ore detector disks
@@ -154,7 +190,7 @@ SUBSYSTEM_DEF(supply)
 				qdel(AM)
 				continue
 			else
-				if(sell_item(AM))
+				if(sell_item(AM)) //just sell it
 					qdel(AM)
 					continue
 			if(AM.anchored) //for not deleting shuttle

@@ -124,17 +124,36 @@
 	{{else}}
 		<h3>Access denied: Missing identificaton or insufficient permissions.</h3>
 	{{/if}}
+
 {{else data.screen == 5}}
-	<div class="item">
-		<table style="width:100%">
-			<tr><th style="width:20%">Item<th style="width:60%">Description</th><th style="width:10%">Progress<th style="width:10%">Payment
-				{{for data.orders}}
+	{{if data.is_admin}}
+		{{for data.categories}}
+			<h2>{{:value.category_name}}</h2>   {{:helper.link(helper.string("Refresh orders ({0} Cr.)", data.refresh_cost), 'redo', {'refresh_category' : value.category_key}, data.credits >= data.refresh_cost && data.refresh_timer == 0 ? null : 'disabled')}}
+			<table style="width:100%">
+				{{for value.category_orders :inner:innerKey}}
 					<tr>
-					<td>{{:value.order_name}}
-					<td>{{:value.order_desc}}
-					<td align="center">{{:value.order_progress}}/{{:value.order_max_progress}}
-					<td align="center">{{:value.order_cost}} Cr.
+					<td style="width:20%">{{:inner.order_name}}
+					<td style="width:50%">{{:inner.order_desc}}
+					<td style="width:10%">{{:inner.order_progress}}/{{:inner.order_max_progress}}
+					<td style="width:10%">{{:inner.order_cost}} Cr.
+					<td style="width:10%">{{:helper.link('Complete', 'check', {'complete_order' : inner.order_key}, inner.order_progress >= inner.order_max_progress ? null : 'disabled')}}
 				{{/for}}
-		</table>
-	</div>
+			</table>
+			<hr>
+		{{/for}}
+	{{else}}
+		{{for data.categories}}
+			<h2>{{:value.category_name}}</h2>
+			<table style="width:100%">
+				{{for value.category_orders :inner:inner}}
+					<tr>
+					<td style="width:20%">{{:inner.order_name}}
+					<td style="width:60%">{{:inner.order_desc}}
+					<td style="width:10%">{{:inner.order_progress}}/{{:inner.order_max_progress}}
+					<td style="width:10%">{{:inner.order_cost}} Cr.
+				{{/for}}
+			</table>
+		{{/for}}
+	{{/if}}
+	{{:helper.link('Print', 'print', {'print_requests' : 1}, data.can_print ? null : 'disabled')}}
 {{/if}}

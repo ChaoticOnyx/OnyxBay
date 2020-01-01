@@ -83,10 +83,10 @@
 			data["done"] = done
 
 		if(5)// Selling menu
-			var/list/orders[0]
-			for(var/decl/hierarchy/sell_order/SO in SSsupply.sell_order_list)
-				orders.Add(sell_order_to_nanoui(SO))
-			data["orders"] = orders
+			data["categories"] = categories_to_nanoui()
+			data["refresh_cost"] = SSsupply.refresh_cost
+			data["refresh_timer"] = SSsupply.current_refresh_timer
+			data["can_print"] = can_print()
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
@@ -148,6 +148,11 @@
 		if(!can_print())
 			return
 		print_summary(user)
+
+	if(href_list["print_requests"])
+		if(!can_print())
+			return
+		print_sell_orders(user)
 
 	// Items requiring cargo access go below this entry. Other items go above.
 	if(!check_access(access_cargo))
@@ -215,9 +220,21 @@
 				break
 		return 1
 
-	//if(href_list["refresh_orders"])
-		//make new orders
-		//TODO - Make timer
+	if(href_list["refresh_category"])
+		var/key = href_list["refresh_category"] //getting key of category
+		var/category_type = SSsupply.list_avalable_categories[key].type //and getting it type
+		for(var/so_key in SSsupply.sell_order_list) //searching orders with this category
+			var/datum/sell_order/so = SSsupply.sell_order_list[so_key]
+			var/so_category = so.get_category_type()
+			if(so_category == category_type) //respawning them
+				SSsupply.respawn(SSsupply.sell_order_list[so_key].type)
+		SSsupply.current_refresh_timer = SSsupply.refresh_timer //anti rerolling
+		SSsupply.points -= SSsupply.refresh_cost
+
+	if(href_list["complete_order"])
+		var/key = href_list["complete_order"]
+		SSsupply.sell_order_list[key].reward()
+
 
 /datum/nano_module/supply/proc/generate_categories()
 	category_names = list()
@@ -257,14 +274,31 @@
 		"reason" = SO.reason
 		))
 
-/datum/nano_module/supply/proc/sell_order_to_nanoui(var/decl/hierarchy/sell_order/SO)
-	return list(list(
-		"order_name" = SO.name,
-		"order_desc" = SO.description,
-		"order_cost" = SO.cost,
-		"order_progress" = SO.progress,
-		"order_max_progress" = SO.max_progress
-	))
+/datum/nano_module/supply/proc/categories_to_nanoui() //returns list of categories with list of orders in them
+	var/list/categories = list() //here will be ready categories
+
+	for(var/category_key in SSsupply.list_avalable_categories) //for every category
+		var/datum/sell_order/category = SSsupply.list_avalable_categories[category_key]
+		var/list/orders = list() //here will be orders
+		var/category_type_printing = category.type
+		for(var/key in SSsupply.sell_order_list) //searching orders in this category
+			var/datum/sell_order/so = SSsupply.sell_order_list[key]
+			var/order_category = so.get_category_type()
+			if(order_category == category_type_printing) //and adding them
+				orders += list(list(
+					"order_name" = so.name,
+					"order_desc" = so.description,
+					"order_progress" = so.progress,
+					"order_max_progress" = so.max_progress,
+					"order_cost" = so.cost,
+					"order_key" = key
+				))
+		categories += list(list( //add category to list
+			"category_name" = category.name,
+			"category_orders" = orders,
+			"category_key" = category_key
+		))
+	return categories
 
 /datum/nano_module/supply/proc/can_print()
 	var/obj/item/modular_computer/MC = nano_host()
@@ -288,6 +322,25 @@
 	t += O.object.manifest
 	t += "<hr>"
 	print_text(t, user)
+
+/datum/nano_module/supply/proc/print_sell_orders(var/mob/user)
+	var/t = ""
+	t += "<h1>CC Requests</h3><hr>"
+	for(var/category_key in SSsupply.list_avalable_categories)
+		var/datum/sell_order/category = SSsupply.list_avalable_categories[category_key]
+		var/category_type = category.type
+		t += "<h2>[category.name]</h2><br>"
+		for(var/order_key in SSsupply.sell_order_list)
+			var/datum/sell_order/order = SSsupply.sell_order_list[order_key]
+			var/order_category_type = order.get_category_type()
+			if(category_type == order_category_type)
+				t += "<b>Name:</b> [order.name]<br>"
+				t += "<b>Description:</b> [order.description]<br>"
+				t += "<b>Progress:</b> [order.progress]/[order.max_progress]<br>"
+				t += "<b>Reward:</b> [order.cost] Cr.<br><br>"
+		t += "<hr>"
+	print_text(t, user)
+
 
 /datum/nano_module/supply/proc/print_summary(var/mob/user)
 	var/t = ""
