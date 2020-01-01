@@ -58,22 +58,25 @@
 		
 	var/list/no_touchie = list(
 		/obj/item/weapon/mirror,
+		/obj/item/weapon/paper,
+		/obj/item/device/taperecorder,	
+		/obj/item/modular_computer,	
 	)	
 
 /datum/species/monkey/handle_npc(var/mob/living/carbon/human/H)
 	if(H.stat != CONSCIOUS)
 		return
 		
-	if(prob(66) && isturf(H.loc) && !H.pulledby && H.canmove) //won't move if being pulled
+	if(prob(25) && isturf(H.loc) && !H.pulledby && H.canmove) //won't move if being pulled
 		step(H, pick(GLOB.cardinal))
 		
-	if(prob(50))
+	if(prob(25))
 		H.hand = !(H.hand)
 
 	var/obj/held = H.get_active_hand()
-	if(held && prob(15))
+	if(prob(5) && held)
 		var/turf/T = get_random_turf_in_range(H, 7, 2)
-		if(T)
+		if(T && !is_type_in_list(T, no_touchie))
 			if(istype(held, /obj/item/weapon/gun) && prob(80))
 				var/obj/item/weapon/gun/G = held
 				G.Fire(T, H)
@@ -87,16 +90,16 @@
 				H.throw_item(T)
 		else
 			H.drop_item()
-	if(!held && !H.restrained() && prob(15))
+	if(prob(5) && !held && !H.restrained() && istype(H.loc, /turf/))
 		var/list/touchables = list()
-		for(var/obj/O in range(1,get_turf(H)))
-			if(O.simulated && O.Adjacent(H) && !is_type_in_list(O, no_touchie))
+		for(var/obj/item/O in range(1,get_turf(H)))
+			if(O.simulated && O.Adjacent(H) && !is_type_in_list(O, no_touchie) && istype(O.loc, /turf/))
 				touchables += O
 		if(touchables.len)
 			var/obj/touchy = pick(touchables)
 			touchy.attack_hand(H)
 			
-	if(H.buckled && prob(25))
+	if(H.buckled && prob(10))
 		H.resist()
 
 	if(prob(1))
