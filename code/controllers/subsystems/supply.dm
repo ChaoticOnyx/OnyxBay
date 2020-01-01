@@ -84,7 +84,8 @@ SUBSYSTEM_DEF(supply)
 	for(var/key in sell_order_list)
 		if(istype(sell_order_list[key], sell_order_type)) //we found our order in list
 			found_key = key //setting found key
-			var/datum/sell_order/order_category = new sell_order_list[key].get_category_type() //making category
+			var/category_type = sell_order_list[key].get_category_type()
+			var/datum/sell_order/order_category = new category_type //making category
 			avalable_orders = order_category.children_types() //getting avalable orders in it
 			break
 	for(var/key in sell_order_list) //deleting already existing orders
