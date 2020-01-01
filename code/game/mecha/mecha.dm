@@ -90,8 +90,8 @@
 
 	return cell.drain_power(drain_check)
 
-/obj/mecha/New()
-	..()
+/obj/mecha/Initialize()
+	. = .. ()
 	events = new
 
 	icon_state += "-open"
@@ -121,6 +121,7 @@
 
 	if(wreckage)
 		var/obj/effect/decal/mecha_wreckage/WR = new wreckage(loc)
+		WR.icon_state = "[src.reset_icon()]-broken"
 		for(var/obj/item/mecha_parts/mecha_equipment/E in equipment)
 			if(E.salvageable && prob(30))
 				WR.crowbar_salvage += E
