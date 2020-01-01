@@ -10,7 +10,7 @@
 	{{:helper.link('View Statistics', 'calculator', {'set_screen' : 2}, data.screen == 2 ? 'selected' : null)}}
 	{{:helper.link('Shuttle Control', 'bullet', {'set_screen' : 3}, data.screen == 3 ? 'selected' : null)}}
 	{{:helper.link('Browse Orders', 'check', {'set_screen' : 4}, data.screen == 4 ? 'selected' : null)}}
-	{{:helper.link('Selling Menu', 'check', {'set_screen' : 5}, data.screen == 5 ? 'selected' : null)}}
+	{{:helper.link('Selling Menu', 'calculator', {'set_screen' : 5}, data.screen == 5 ? 'selected' : null)}}
 </div>
 <hr>
 <span>Current balance: {{:data.credits}} Credits</span>
@@ -128,7 +128,7 @@
 {{else data.screen == 5}}
 	{{if data.is_admin}}
 		{{for data.categories}}
-			<h2>{{:value.category_name}}</h2>   {{:helper.link(helper.string("Refresh orders ({0} Cr.)", data.refresh_cost), 'redo', {'refresh_category' : value.category_key}, data.credits >= data.refresh_cost && data.refresh_timer == 0 ? null : 'disabled')}}
+			<h2>{{:value.category_name}}</h2>   {{:helper.link(helper.string("Refresh orders ({0} Cr.)", data.refresh_cost), 'refresh', {'refresh_category' : value.category_key}, data.credits >= data.refresh_cost && data.refresh_timer == 0 ? null : 'disabled')}}
 			<table style="width:100%">
 				{{for value.category_orders :inner:innerKey}}
 					<tr>
@@ -149,8 +149,8 @@
 					<tr>
 					<td style="width:20%">{{:inner.order_name}}
 					<td style="width:60%">{{:inner.order_desc}}
-					<td style="width:10%">{{:inner.order_progress}}/{{:inner.order_max_progress}}
-					<td style="width:10%">{{:inner.order_cost}} Cr.
+					<td style="width:10%" align="justify">{{:inner.order_progress}}/{{:inner.order_max_progress}}
+					<td style="width:10%" align="justify">{{:inner.order_cost}} Cr.
 				{{/for}}
 			</table>
 		{{/for}}
