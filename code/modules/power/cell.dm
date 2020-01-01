@@ -147,11 +147,15 @@
 
 /obj/item/weapon/cell/proc/get_electrocute_damage()
 	switch (charge)
-		if (1000000 to INFINITY)
+		if (5000000 to INFINITY) //Ave cells
+			return min(rand(300,650),rand(300,650))
+		if (3000000 to 5000000-1)
+			return min(rand(130,320),rand(130,320))
+		if (1000000 to 3000000-1)
 			return min(rand(50,160),rand(50,160))
 		if (200000 to 1000000-1)
 			return min(rand(25,80),rand(25,80))
-		if (100000 to 200000-1)//Ave powernet
+		if (100000 to 200000-1)
 			return min(rand(20,60),rand(20,60))
 		if (50000 to 100000-1)
 			return min(rand(15,40),rand(15,40))
