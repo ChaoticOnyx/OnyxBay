@@ -5,6 +5,7 @@
 	use_power = POWER_USE_OFF
 	mechanical = 0
 	tray_light = 0
+	layer = BELOW_DOOR_LAYER
 
 /obj/machinery/portable_atmospherics/hydroponics/soil/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if(istype(O,/obj/item/weapon/tank))
