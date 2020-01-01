@@ -1,16 +1,8 @@
 /* Clown Items
  * Contains:
- * 		Banana Peels
  *		Bike Horns
  */
 
-/*
- * Banana Peals
- */
-/obj/item/weapon/bananapeel/Crossed(AM as mob|obj)
-	if (istype(AM, /mob/living))
-		var/mob/living/M = AM
-		M.slip("the [src.name]",3)
 /*
  * Bike Horns
  */
