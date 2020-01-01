@@ -325,7 +325,7 @@
 
 /datum/nano_module/supply/proc/print_sell_orders(var/mob/user)
 	var/t = ""
-	t += "<h1>CC Requests</h3><hr>"
+	t += "<h1>CentCom Requests</h3><hr>"
 	for(var/category_key in SSsupply.list_avalable_categories)
 		var/datum/sell_order/category = SSsupply.list_avalable_categories[category_key]
 		var/category_type = category.type
