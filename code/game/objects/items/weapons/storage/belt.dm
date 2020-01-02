@@ -147,7 +147,8 @@
 		/obj/item/weapon/gun/projectile/sec,
 		/obj/item/taperoll,
 		/obj/item/device/holowarrant,
-		/obj/item/weapon/magnetic_ammo
+		/obj/item/weapon/magnetic_ammo,
+		/obj/item/device/radio
 		)
 
 /obj/item/weapon/storage/belt/soulstone
