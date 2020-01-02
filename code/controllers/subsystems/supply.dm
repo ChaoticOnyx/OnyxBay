@@ -91,7 +91,7 @@ SUBSYSTEM_DEF(supply)
 		if(istype(sell_order_list[key], sell_order_type)) //we found our order in list
 			found_key = key //setting found key
 
-		var/datum/sell_order/so = sell_order_list[key] //removing already existing from avalable to pick
+		so = sell_order_list[key] //removing already existing from avalable to pick
 		avalable_orders -= list(so.parent_type)
 
 	so_type = pick(avalable_orders) //picking non-volumed order

@@ -44,7 +44,7 @@ datum/sell_order/New()
 	max_progress = 0
 	for(var/i in wanted)
 		max_progress += wanted[i] //set max_progress to number of wanted items
-	. = ..()
+	..()
 
 //helper procs
 datum/sell_order/proc/children_types() //returns all childen types
@@ -59,6 +59,6 @@ datum/sell_order/proc/get_category_type() //returns type category of order
 	var/datum/so_parent = new parent_type //get order without volume
 	return so_parent.parent_type //get category and return it
 
-datum/sell_orderproc/reward() //proc for getting rewarded for order
+datum/sell_order/proc/reward() //proc for getting rewarded for order
 	SSsupply.add_points_from_source(cost, "request")
 	SSsupply.respawn(type) //respawns order
