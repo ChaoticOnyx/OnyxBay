@@ -81,15 +81,17 @@ SUBSYSTEM_DEF(supply)
 	var/list/avalable_orders = list()
 	var/found_key = null //key of given type of order in sell_order_list
 	var/so_type = null
+
+	var/datum/sell_order/so = new sell_order_type
+	var/category_type = so.get_category_type() //making category
+	var/datum/sell_order/order_category = new category_type
+	avalable_orders = order_category.children_types() //getting avalable orders in it
+
 	for(var/key in sell_order_list)
 		if(istype(sell_order_list[key], sell_order_type)) //we found our order in list
 			found_key = key //setting found key
-			var/category_type = sell_order_list[key].get_category_type()
-			var/datum/sell_order/order_category = new category_type //making category
-			avalable_orders = order_category.children_types() //getting avalable orders in it
-			break
-	for(var/key in sell_order_list) //deleting already existing orders
-		var/datum/sell_order/so = sell_order_list[key]
+
+		var/datum/sell_order/so = sell_order_list[key] //removing already existing from avalable to pick
 		avalable_orders -= list(so.parent_type)
 
 	so_type = pick(avalable_orders) //picking non-volumed order
@@ -182,7 +184,7 @@ SUBSYSTEM_DEF(supply)
 /datum/controller/subsystem/supply/proc/sell()
 	for(var/area/subarea in shuttle.shuttle_area)
 		for(var/atom/movable/AM in subarea)
-			if(istype(AM, /obj/structure/closet/crate/)) //sell all shit what want CC
+			if(istype(AM, /obj/structure/closet/crate)) //sell all shit what want CC
 				var/obj/structure/closet/crate/CR = AM
 				callHook("sell_crate", list(CR, subarea))
 				add_points_from_source(CR.points_per_crate, "crate")
