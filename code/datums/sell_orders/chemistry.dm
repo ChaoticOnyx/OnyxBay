@@ -67,7 +67,7 @@ datum/sell_order/chemistry/oxycodone/v60
 
 datum/sell_order/chemistry/hyronalin
 	name = "Hyronalin"
-	description = "Our xenoarchaeologists were a little irradiated during excavations. We will be glad to antiradiation drugs."
+	description = "Our xenoarchaeologists were a little irradiated during excavations. will be glad to have some antiradiation drugs."
 
 datum/sell_order/chemistry/hyronalin/v240
 	wanted = list(/datum/reagent/hyronalin = 240)
@@ -83,7 +83,7 @@ datum/sell_order/chemistry/hyronalin/v60
 
 datum/sell_order/chemistry/arithrazine
 	name = "Arithrazine"
-	description = "All station personnel forgot that when passing through the radiation belt they had to go into technical tunnels."
+	description = "Our crew forgot to go into technical tunnels when we were passing through radiation belt."
 
 datum/sell_order/chemistry/arithrazine/v240
 	wanted = list(/datum/reagent/arithrazine = 240)
@@ -147,7 +147,7 @@ datum/sell_order/chemistry/imidazoline/v60
 
 datum/sell_order/chemistry/clonexadone
 	name = "Clonexadone"
-	description = "Someone replaced the entire cryoxadone in cryochambers with vodka, it is necessary to replace it with something."
+	description = "Someone replaced cryoxadone in cryochambers with vodka, it is necessary to replace it with something."
 
 datum/sell_order/chemistry/clonexadone/v240
 	wanted = list(/datum/reagent/clonexadone = 240)
@@ -163,7 +163,7 @@ datum/sell_order/chemistry/clonexadone/v60
 
 datum/sell_order/chemistry/noexcutite
 	name = "Noexcutite"
-	description = "The officers released the entire supply of tasers into one restless assistant, because of which he now can not get up. Help."
+	description = "We had an accident with taser misuse, and now one restless assistant can't get up. Help."
 
 datum/sell_order/chemistry/noexcutite/v240
 	wanted = list(/datum/reagent/noexcutite = 240)
@@ -243,7 +243,7 @@ datum/sell_order/chemistry/leporazine/v60
 
 datum/sell_order/chemistry/thermite
 	name = "Thermite"
-	description = "Malf AI again bolts all the doors, we will be kind if you help melt several walls."
+	description = "Malfunctioning AI bolted all the doors again, we will be kind if you help us melt several walls."
 
 datum/sell_order/chemistry/thermite/v240
 	wanted = list(/datum/reagent/thermite = 240)
@@ -355,7 +355,7 @@ datum/sell_order/chemistry/impedrezene/v60
 
 datum/sell_order/chemistry/mindbreaker
 	name = "Mindbreaker Toxin"
-	description = "We continue to study the effect of various toxins on the human body and brain."
+	description = "We continue to study the effects of various toxins on the human body and brain."
 
 datum/sell_order/chemistry/mindbreaker/v240
 	wanted = list(/datum/reagent/mindbreaker = 240)
