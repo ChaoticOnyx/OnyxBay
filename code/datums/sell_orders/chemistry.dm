@@ -51,7 +51,7 @@ datum/sell_order/chemistry/dexalinp/v60
 
 datum/sell_order/chemistry/oxycodone
 	name = "Oxycodone"
-	description = "All the mining staff forgot to turn on the oxygen tanks when entering the asteroid. Nuff said."
+	description = "All the mining staff forgot to turn on the oxygen tanks when entering asteroid surface. Nuff said."
 
 datum/sell_order/chemistry/oxycodone/v240
 	wanted = list(/datum/reagent/tramadol/oxycodone = 240)
@@ -67,7 +67,7 @@ datum/sell_order/chemistry/oxycodone/v60
 
 datum/sell_order/chemistry/hyronalin
 	name = "Hyronalin"
-	description = "Our xenoarchaeologists were a little irradiated during excavations. will be glad to have some antiradiation drugs."
+	description = "Our xenoarchaeologists were a little irradiated during excavations. We will be glad to have some antiradiation drugs."
 
 datum/sell_order/chemistry/hyronalin/v240
 	wanted = list(/datum/reagent/hyronalin = 240)
@@ -259,7 +259,7 @@ datum/sell_order/chemistry/thermite/v60
 
 datum/sell_order/chemistry/lube
 	name = "Space Lube"
-	description = "The clown promised to cheer all the staff if he received this reagent. Of course, we don`t know why he needs it, but it sounds interesting."
+	description = "The clown promised to cheer up all the staff if he receives this reagent. Of course, we don`t know why he needs it, but it sounds interesting."
 
 datum/sell_order/chemistry/lube/v240
 	wanted = list(/datum/reagent/lube = 240)
