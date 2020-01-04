@@ -1,54 +1,6 @@
 datum/sell_order/chemistry
 	name = "Chemistry"
 
-datum/sell_order/chemistry/bicaridine
-	name = "Bicaridine"
-	description = "Our scientific staff was seriously injured in the incident with the hulk-monkey, therefore, we need medications for their treatment."
-
-datum/sell_order/chemistry/bicaridine/v240
-	wanted = list(/datum/reagent/bicaridine = 240)
-	cost = 50
-
-datum/sell_order/chemistry/bicaridine/v120
-	wanted = list(/datum/reagent/bicaridine = 120)
-	cost = 25
-
-datum/sell_order/chemistry/bicaridine/v60
-	wanted = list(/datum/reagent/bicaridine = 60)
-	cost = 12.5
-
-datum/sell_order/chemistry/dermaline
-	name = "Dermaline"
-	description = "Our janitor accidentally dropped a beaker with phoron at the Chief Medical Officer. We ask for some anti-burn medications."
-
-datum/sell_order/chemistry/dermaline/v240
-	wanted = list(/datum/reagent/dermaline = 240)
-	cost = 50
-
-datum/sell_order/chemistry/dermaline/v120
-	wanted = list(/datum/reagent/dermaline = 120)
-	cost = 25
-
-datum/sell_order/chemistry/dermaline/v60
-	wanted = list(/datum/reagent/dermaline = 60)
-	cost = 12.5
-
-datum/sell_order/chemistry/dexalinp
-	name = "Dexaline Plus"
-	description = "We were not able to train our doctors to heal the brain during surgery, because we need reagents to maintain oxygen in the blood of patients"
-
-datum/sell_order/chemistry/dexalinp/v240
-	wanted = list(/datum/reagent/dexalinp = 240)
-	cost = 50
-
-datum/sell_order/chemistry/dexalinp/v120
-	wanted = list(/datum/reagent/dexalinp = 120)
-	cost = 25
-
-datum/sell_order/chemistry/dexalinp/v60
-	wanted = list(/datum/reagent/dexalinp = 60)
-	cost = 12.5
-
 datum/sell_order/chemistry/oxycodone
 	name = "Oxycodone"
 	description = "All the mining staff forgot to turn on the oxygen tanks when entering the asteroid. Nuff said."
@@ -64,22 +16,6 @@ datum/sell_order/chemistry/oxycodone/v120
 datum/sell_order/chemistry/oxycodone/v60
 	wanted = list(/datum/reagent/tramadol/oxycodone = 60)
 	cost = 25
-
-datum/sell_order/chemistry/hyronalin
-	name = "Hyronalin"
-	description = "Our xenoarchaeologists were a little irradiated during excavations. will be glad to have some antiradiation drugs."
-
-datum/sell_order/chemistry/hyronalin/v240
-	wanted = list(/datum/reagent/hyronalin = 240)
-	cost = 50
-
-datum/sell_order/chemistry/hyronalin/v120
-	wanted = list(/datum/reagent/hyronalin = 120)
-	cost = 25
-
-datum/sell_order/chemistry/hyronalin/v60
-	wanted = list(/datum/reagent/hyronalin = 60)
-	cost = 12.5
 
 datum/sell_order/chemistry/arithrazine
 	name = "Arithrazine"
