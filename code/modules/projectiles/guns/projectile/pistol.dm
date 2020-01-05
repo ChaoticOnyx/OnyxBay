@@ -99,11 +99,11 @@
 		icon_state = "VP78wood-e"
 
 /obj/item/weapon/gun/projectile/sec/c45sec
-	name = "Colt .45"
+	name = "Salt .45"
 	desc = "Corvus C45 pistol is a well-made replica of a good old Colt M1911. Chambered in .45."
 	icon_state = "c45sec"
 	item_state = "c45sec"
-	magazine_type = /obj/item/ammo_magazine/c45m/rubber
+	magazine_type = /obj/item/ammo_magazine/c45m/stun
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	auto_eject = 1
 	caliber = ".45"

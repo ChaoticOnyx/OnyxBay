@@ -86,10 +86,12 @@
 
 /obj/item/clothing/head/bomb_hood/security
 	icon_state = "bombsuitsec"
+	armor = list(melee = 70, bullet = 50, laser = 50, energy = 50, bomb = 90, bio = 0, rad = 0)
 	body_parts_covered = HEAD
 
 /obj/item/clothing/suit/bomb_suit/security
 	icon_state = "bombsuitsec"
+	armor = list(melee = 70, bullet = 50, laser = 50, energy = 50, bomb = 90, bio = 0, rad = 0)
 	allowed = list(/obj/item/weapon/gun/energy,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 

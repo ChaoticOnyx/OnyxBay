@@ -96,8 +96,19 @@
 	icon_state = "shockbullet"
 	nodamage = 0
 	agony = 60
+	damage_type = BURN
 	damage = 5 //It's still a bullet
 	armor_penetration = 10
+
+/obj/item/projectile/energy/electrode/c45
+	name = "shock cartridge"
+	icon_state = "c45stun"
+	nodamage = 0
+	agony = 40 // Weaker than the stunsphere la'classique
+	damage_type = BURN
+	damage = 3 //A little ouchie.
+	armor_penetration = 10
+	fire_sound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
 
 /obj/item/projectile/energy/c44
 	name = "overheated bullet"
