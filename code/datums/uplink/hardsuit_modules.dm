@@ -6,12 +6,12 @@
 
 /datum/uplink_item/item/hardsuit_modules/thermal
 	name = "\improper Thermal Scanner"
-	item_cost = 16
+	item_cost = 24
 	path = /obj/item/rig_module/vision/thermal
 
 /datum/uplink_item/item/hardsuit_modules/energy_net
 	name = "\improper Net Projector"
-	item_cost = 20
+	item_cost = 32
 	path = /obj/item/rig_module/fabricator/energy_net
 
 /datum/uplink_item/item/hardsuit_modules/ewar_voice

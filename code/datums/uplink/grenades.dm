@@ -34,6 +34,12 @@
 	item_cost = 24
 	path = /obj/item/weapon/storage/box/emps
 
+/datum/uplink_item/item/grenades/manhack
+	name = "Manhack Delivery Grenade"
+	desc = "Releases five murderous manhacks. Be careful, they will be more than happy to chop YOU."
+	item_cost = 24
+	path = /obj/item/weapon/grenade/spawnergrenade/manhacks
+
 /datum/uplink_item/item/grenades/frag_high_yield
 	name = "Fragmentation Bomb"
 	item_cost = 24

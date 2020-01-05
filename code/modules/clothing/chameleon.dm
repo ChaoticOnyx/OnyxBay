@@ -257,6 +257,22 @@
 	disguise(clothing_choices[picked], usr)
 	update_clothing_icon()	//so our overlays update.
 
+/obj/item/clothing/gloves/chameleon/robust
+	desc = "It looks like a pair of EXTREMELY ROBUST gloves, and it seems to have some electronics inside."
+	origin_tech = list(TECH_ILLEGAL = 5)
+
+/obj/item/clothing/gloves/chameleon/robust/change(picked in clothing_choices)
+	set name = "Change Gloves Appearance"
+	set category = "Chameleon Items"
+	set src in usr
+
+	if(!ispath(clothing_choices[picked]))
+		return
+
+	disguise(clothing_choices[picked], usr)
+	update_clothing_icon()	//so our overlays update.
+	desc += " Looks EXTREMELY ROBUST."
+
 //******************
 //**Chameleon Mask**
 //******************

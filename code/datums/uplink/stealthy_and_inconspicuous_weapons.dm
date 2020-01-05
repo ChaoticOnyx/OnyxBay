@@ -16,7 +16,7 @@
 
 /datum/uplink_item/item/stealthy_weapons/concealed_cane
 	name = "Concealed Cane Sword"
-	item_cost = 8
+	item_cost = 12
 	path = /obj/item/weapon/cane/concealed
 
 /datum/uplink_item/item/stealthy_weapons/random_toxin
@@ -26,20 +26,25 @@
 
 /datum/uplink_item/item/stealthy_weapons/detomatix
 	name = "Detomatix PDA Cartridge"
-	item_cost = 16
+	item_cost = 24
 	path = /obj/item/weapon/cartridge/syndicate
-	
+
 /datum/uplink_item/item/stealthy_weapons/sleepy
 	name = "Sleepy Pen"
-	item_cost = 20
+	item_cost = 28
 	path = /obj/item/weapon/pen/reagent/sleepy
-	
+
 /datum/uplink_item/item/stealthy_weapons/paralytic
 	name = "Paralytic Pen"
-	item_cost = 20
+	item_cost = 28
 	path = /obj/item/weapon/pen/reagent/paralytic
 
 /datum/uplink_item/item/stealthy_weapons/syringegun
 	name = "Disguised Syringe Gun"
-	item_cost = 10
+	item_cost = 22
 	path = /obj/item/weapon/storage/box/syndie_kit/syringegun
+
+/datum/uplink_item/item/stealthy_weapons/robustgloves
+	name = "Robust Chameleon Gloves"
+	item_cost = 30
+	path = /obj/item/clothing/gloves/chameleon/robust

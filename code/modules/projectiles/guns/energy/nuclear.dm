@@ -50,21 +50,6 @@
 		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam/smalllaser, modifystate="smallgunkill"),
 		)
 
-/obj/item/weapon/gun/energy/secure/gun/small
-	name = "small energy gun"
-	desc = "Combining the two LAEP90 variants, the secure and compact LAEP90-CS is the next best thing to keeping your security forces on a literal leash."
-	icon_state = "smallgunstun"
-	max_shots = 5
-	w_class = ITEM_SIZE_SMALL
-	force = 2
-	modifystate = "smallgunstun"
-
-	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun, modifystate="smallgunstun"),
-		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock, modifystate="smallgunshock"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam/smalllaser, modifystate="smallgunkill"),
-		)
-
 /obj/item/weapon/gun/energy/gun/mounted
 	name = "mounted energy gun"
 	self_recharge = 1
@@ -157,4 +142,21 @@
 	firemodes = list(
 		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="egunstun"),
 		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="egunkill"),
+		)
+
+/obj/item/weapon/gun/energy/egun/small
+	name = "small energy gun"
+	desc = "Combining the two LAEP90 variants, the secure and compact LAEP90-CS is the next best thing to keeping your security forces on a literal leash."
+	icon_state = "smallgunstun"
+	max_shots = 5
+	w_class = ITEM_SIZE_SMALL
+	force = 6.0
+	mod_weight = 0.6
+	mod_reach = 0.45
+	mod_handy = 0.9
+	modifystate = "smallgunstun"
+
+	firemodes = list(
+		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="smallgunstun"),
+		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="smallgunkill"),
 		)

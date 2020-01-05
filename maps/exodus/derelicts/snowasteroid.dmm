@@ -19,7 +19,7 @@
 "as" = (/obj/structure/bed/chair/wood{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood{icon_state = "wood_broken5"},/area/derelict/snowasteroid)
 "at" = (/obj/effect/decal/cleanable/blood,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)
 "au" = (/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)
-"av" = (/obj/structure/table/woodentable,/obj/item/weapon/gun/energy/secure/gun/small,/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)
+"av" = (/obj/structure/table/woodentable,/obj/item/weapon/gun/energy/egun/small,/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)
 "aw" = (/obj/structure/table/woodentable,/obj/machinery/recharger,/obj/machinery/light/small,/obj/item/clothing/accessory/badge/holo/NT,/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)
 "ax" = (/obj/machinery/light/small,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)
 "ay" = (/obj/machinery/shipsensors{desc = "Long range gravity scanner with various other sensors, used to detect irregularities in surrounding space."},/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)

@@ -123,6 +123,12 @@
 	icon_state = "ntballoon"
 	item_state = "ntballoon"
 
+/obj/item/toy/balloon/snail
+	name = "\improper 'snail' balloon"
+	desc = "Ulitochka."
+	icon_state = "snailballoon"
+	item_state = "snailballoon"
+
 /*
  * Fake telebeacon
  */

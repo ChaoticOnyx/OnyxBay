@@ -268,3 +268,92 @@ for reference:
 		s.start()
 		visible_message("<span class='warning'>BZZzZZzZZzZT</span>")
 		return 1
+
+
+//Syndicate Barrier
+/obj/item/device/energybarrier
+	name = "energy barrier"
+	desc = "A simple yet effective one-use energy barrier generator. Quite effective as a battlefield cover, but explodes upon recieving too much damage."
+	icon_state = "ebarrier"
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	force = 6.0
+	mod_weight = 0.6
+	mod_reach = 0.5
+	mod_handy = 0.85
+	w_class = ITEM_SIZE_SMALL
+	throwforce = 5.0
+	throw_range = 15
+	throw_speed = 3
+
+	attack_self(mob/living/user as mob)
+		var/obj/structure/energybarrier/E = new /obj/structure/energybarrier(user.loc)
+		E.add_fingerprint(user)
+		qdel(src)
+
+//Syndicate Barrier
+/obj/structure/energybarrier
+	name = "energy barrier"
+	desc = "An energy barrier. It doesn't look like there's a way to disable it without destroying it with brute force."
+	icon = 'icons/obj/objects.dmi'
+	anchored = 1.0
+	density = 1
+	icon_state = "ebarrier"
+	var/health = 150.0
+	var/maxhealth = 150.0
+
+	proc/explode()
+
+		visible_message("<span class='danger'>[src] blows apart!</span>")
+		var/turf/Tsec = get_turf(src)
+		new /obj/item/stack/rods(Tsec)
+
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+		s.set_up(3, 1, src)
+		s.start()
+
+		explosion(src.loc,-1,-1,0)
+		if(src)
+			qdel(src)
+
+	attackby(obj/item/W as obj, mob/user as mob)
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		switch(W.damtype)
+			if("fire")
+				src.health -= W.force * 1
+			if("brute")
+				src.health -= W.force * 0.75
+		if (src.health <= 0)
+			src.explode()
+			return
+		..()
+
+	ex_act(severity)
+		switch(severity)
+			if(1.0)
+				src.explode()
+				return
+			if(2.0)
+				src.health -= 25
+				if (src.health <= 0)
+					src.explode()
+				return
+
+	bullet_act(var/obj/item/projectile/Proj)
+
+		var/proj_damage = Proj.get_structure_damage()
+		if(!proj_damage) return
+
+		..()
+		src.health -= 25
+		if (src.health <= 0)
+			src.explode()
+		return
+
+	emp_act(severity)
+		src.health -= 50/severity
+		if (src.health <= 0)
+			src.explode()
+		return
+
+	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+		return 0

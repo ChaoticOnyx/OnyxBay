@@ -3,6 +3,7 @@
 	desc = "A roll of sticky tape. Possibly for taping ducks... or was that ducts?"
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "taperoll"
+	var/fasttape = 0
 	w_class = ITEM_SIZE_SMALL
 
 /obj/item/weapon/tape_roll/attack(var/mob/living/carbon/human/H, var/mob/user)
@@ -23,8 +24,9 @@
 				return
 			user.visible_message("<span class='danger'>\The [user] begins taping over \the [H]'s eyes!</span>")
 
-			if(!do_mob(user, H, 30))
-				return
+			if(!fasttape)
+				if(!do_mob(user, H, 30))
+					return
 
 			// Repeat failure checks.
 			if(!H || !src || !H.organs_by_name[BP_HEAD] || !H.has_eyes() || H.glasses || (H.head && (H.head.body_parts_covered & FACE)))
@@ -48,8 +50,9 @@
 				return
 			user.visible_message("<span class='danger'>\The [user] begins taping up \the [H]'s mouth!</span>")
 
-			if(!do_mob(user, H, 30))
-				return
+			if(!fasttape)
+				if(!do_mob(user, H, 30))
+					return
 
 			// Repeat failure checks.
 			if(!H || !src || !H.organs_by_name[BP_HEAD] || !H.check_has_mouth() || H.wear_mask || (H.head && (H.head.body_parts_covered & FACE)))
@@ -82,6 +85,10 @@
 	var/obj/item/weapon/ducttape/tape = new(get_turf(src))
 	tape.attach(W)
 	user.put_in_hands(tape)
+
+/obj/item/weapon/tape_roll/syndicate
+	desc = "A roll of sticky tape. This one looks EXTRA sticky."
+	icon_state = "syndietape"
 
 /obj/item/weapon/ducttape
 	name = "piece of tape"

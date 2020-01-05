@@ -8,12 +8,12 @@
 	name = "Fully Loaded Toolbox"
 	item_cost = 8
 	path = /obj/item/weapon/storage/toolbox/syndicate
-	
+
 /datum/uplink_item/item/tools/ductape
-	name = "Duct Tape"
-	desc = "A roll of duct tape. changes \"HELP\" in to sexy \"mmm\"."
+	name = "Synduct Tape"
+	desc = "A roll of Syndicate duct tape. Changes \"HELP\" into sexy \"mmm\" in but a moment."
 	item_cost = 8
-	path = /obj/item/weapon/tape_roll	
+	path = /obj/item/weapon/tape_roll/syndicate
 
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"
@@ -31,10 +31,11 @@
 	item_cost = 16
 	path = /obj/item/weapon/plastique
 
-/datum/uplink_item/item/tools/heavy_armor
+/*datum/uplink_item/item/tools/heavy_armor // Why in the world. It doesn't even look syndicate-related. Make some bloody-red carriers and THEN add it back, you bayclown scum.
 	name = "Heavy Armor Vest and Helmet"
 	item_cost = 16
 	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/armor
+*/
 
 /datum/uplink_item/item/tools/encryptionkey_radio
 	name = "Encrypted Radio Channel Key"
@@ -45,7 +46,7 @@
 	name = "Handheld Shield Diffuser"
 	item_cost = 16
 	path = /obj/item/weapon/shield_diffuser
-	
+
 /datum/uplink_item/item/tools/sindicuffs
 	name = "Explosive Handcuffs"
 	item_cost = 16
@@ -82,7 +83,7 @@
 
 /datum/uplink_item/item/tools/thermal
 	name = "Thermal Imaging Glasses"
-	item_cost = 24
+	item_cost = 36
 	path = /obj/item/clothing/glasses/thermal
 
 /datum/uplink_item/item/tools/flashdark
@@ -122,3 +123,9 @@
 	item_cost = 30
 	path = /obj/item/device/radio/intercept
 	desc = "A radio that can intercept secure radio channels. Doesn't fit in pockets."
+
+/datum/uplink_item/item/tools/ebarrier
+	name = "Deployable Energy Barrier"
+	item_cost = 20
+	path = /obj/structure/energybarrier
+	desc = "Cannot be disabled after deployment. Makes a great escape tool."
