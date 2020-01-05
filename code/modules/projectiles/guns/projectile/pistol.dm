@@ -99,7 +99,7 @@
 		icon_state = "VP78wood-e"
 
 /obj/item/weapon/gun/projectile/sec/c45sec
-	name = "Salt .45"
+	name = "Space Colt"
 	desc = "Corvus C45 pistol is a well-made replica of a good old Colt M1911. Chambered in .45."
 	icon_state = "c45sec"
 	item_state = "c45sec"
