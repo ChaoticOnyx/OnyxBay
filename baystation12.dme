@@ -1421,6 +1421,8 @@
 #include "code\modules\donations\donator.dm"
 #include "code\modules\donations\examine.dm"
 #include "code\modules\donations\globals.dm"
+#include "code\modules\donations\new\donations.dm"
+#include "code\modules\donations\new\donator.dm"
 #include "code\modules\economy\_economy_defines.dm"
 #include "code\modules\economy\Accounts.dm"
 #include "code\modules\economy\Accounts_DB.dm"
