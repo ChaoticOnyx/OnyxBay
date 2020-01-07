@@ -23,7 +23,8 @@
 // Subsystems shutdown in the reverse of the order they initialize in
 // The numbers just define the ordering, they are meaningless otherwise.
 
-#define SS_INIT_GARBAGE          11
+#define SS_INIT_GARBAGE          12
+#define SS_INIT_DONATIONS        11
 #define SS_INIT_PLANTS           10
 #define SS_INIT_ANTAGS           9
 #define SS_INIT_MISC             8

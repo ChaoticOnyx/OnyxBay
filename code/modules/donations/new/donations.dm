@@ -1,12 +1,25 @@
 #define DONATIONS_DB_CREDENTIALS_SAVEFILE "data/donations_db_credentials.sav"
 
 
-/datum/donations
+SUBSYSTEM_DEF(donations)
+	name = "Donations"
+	init_order = SS_INIT_DONATIONS
+	flags = SS_NO_FIRE
 	var/DBConnection/dbconnection = new()
-	var/enabled = FALSE
+	var/connected = FALSE
 
 
-/datum/donations/proc/Initialize()
+/datum/controller/subsystem/donations/Initialize(timeofday)
+	if(!config.sql_enabled)
+		log_debug("Donations system is disabled with SQL!")
+		return
+
+	if(!config.donations)
+		log_debug("Donations system is disabled by configuration!")
+		return
+
+	..()
+
 	var/credentials = null
 
 	var/savefile/F = new(DONATIONS_DB_CREDENTIALS_SAVEFILE)
@@ -18,12 +31,17 @@
 
 	Reconnect(credentials)
 
+	if(connected)
+		log_debug("Donations system successfully connected!")
+	else
+		log_debug("Donations system failed to connect with DB!")
+	
 
-/datum/donations/proc/Reconnect(var/credentials)
+/datum/controller/subsystem/donations/proc/Reconnect(var/credentials)
 	var/list/items = splittext(credentials, ";")
 
 	if(items.len != 5)
-		error("Failed to connect with donations DB: bad credentials!")
+		log_debug("Failed to connect with donations DB: bad credentials!")
 		return FALSE
 
 	var/address = items[1]
@@ -37,12 +55,12 @@
 
 	newconnection.Connect("dbi:mysql:[db]:[address]:[port]","[user]","[pass]")
 	if(!newconnection.IsConnected())
-		error("Failed to connect with donations database!")
+		log_debug("Failed to connect with donations database!")
 		return FALSE
 
 	dbconnection.Disconnect()
 	dbconnection = newconnection
-	enabled = TRUE
+	connected = TRUE
 
 	UpdateAllClients()
 
@@ -51,9 +69,7 @@
 	return TRUE
 
 
-/datum/donations/proc/UpdateCredentials(var/credentials)
-	set waitfor = 0
-
+/datum/controller/subsystem/donations/proc/UpdateCredentials(var/credentials)
 	var/result = Reconnect(credentials)
 
 	if(result)
@@ -63,19 +79,15 @@
 		log_debug("Donations DB credentials were updated!")
 
 
-/datum/donations/proc/UpdateAllClients()
+/datum/controller/subsystem/donations/proc/UpdateAllClients()
+	set waitfor = 0
 	for(var/client/C in GLOB.clients)
 		LoadData(C)
-	log_debug("Donators info was updated!")
+	log_debug("Donators info were updated!")
 
 
-/datum/donations/proc/DBError(var/err)
-	enabled = FALSE
-	error("Donations System is disabled due DB error: [err]")
-
-
-/datum/donations/proc/LoadData(var/client/player)
-	if(!enabled)
+/datum/controller/subsystem/donations/proc/LoadData(var/client/player)
+	if(!connected)
 		return
 
 	var/DBQuery/query = dbconnection.NewQuery("SELECT players.points, patron_types.type FROM players JOIN patron_types ON players.patron_type = patron_types.id WHERE ckey = \"[player.ckey]\" LIMIT 0,1")
@@ -91,26 +103,6 @@
 	return TRUE
 
 
-/hook/startup/proc/connectDonationsDB()
-	if(!config.sql_enabled)
-		log_debug("SQL disabled. Donations system will be disabled.")
-		return TRUE
-
-	if(!config.donations)
-		log_debug("Donations system is disabled by configuration!")
-		return TRUE
-
-	donations.Initialize()
-
-	if(donations.enabled)
-		log_debug("Donations system successfully initialized!")
-	else
-		log_debug("Failed to initialize donations system!")
-		return FALSE
-
-	return TRUE
-
-
 /client/proc/update_donations_db_credentials()
 	set name = "Update Donations DB Credentials"
 	set hidden = TRUE
@@ -119,12 +111,12 @@
 		return
 
 	if(!config.sql_enabled)
-		to_chat(usr, "SQL disabled. Donations system cannot be used!")
-		return TRUE
+		to_chat(usr, "Donations system cannot be used, because SQL is disabled by configuration!")
+		return
 
 	if(!config.donations)
 		to_chat(usr, "Donations system is disabled by configuration!")
 		return
 
 	var/credentials = input("Enter Donations DB Credentials:", "Donations DB Credentials", "1.2.3.4;1234;user;password;db_name")
-	donations.UpdateCredentials(credentials)
+	SSdonations.UpdateCredentials(credentials)
