@@ -30,8 +30,7 @@
 			A.reagents.del_reagent(/datum/reagent/water)
 			A.reagents.add_reagent(/datum/reagent/water/holywater,water2holy)
 
-/obj/item/weapon/storage/bible/attackby(obj/item/weapon/W as obj, mob/user as mob, mob/living/carbon/human/M as mob)
-	if (src.use_sound)
+/obj/item/weapon/storage/bible/afterattack(obj/item/weapon/W as obj, mob/user as mob, mob/living/carbon/human/M as mob)
 	if(user.mind && (user.mind.assigned_role == "Chaplain"))
 		playsound(src.loc, src.use_sound, 50, 1, -5)
 	switch(rand(1,100))
