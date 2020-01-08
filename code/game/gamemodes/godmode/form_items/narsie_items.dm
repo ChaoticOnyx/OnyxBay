@@ -6,7 +6,7 @@
 	desc = "This knife is dull but well used."
 	default_material = MATERIAL_CULT
 
-/obj/item/weapon/material/knife/ritual/sacrifice/resolve_attackby(var/atom/a, var/mob/user, var/click_params)
+/obj/item/weapon/material/knife/ritual/sacrifice/resolve_attackby(atom/a, mob/user, click_params)
 	var/turf/T = get_turf(a)
 	var/obj/structure/deity/altar/altar = locate() in T
 	if(!altar)
@@ -42,12 +42,12 @@
 	base_icon = "bone_axe"
 	var/stored_power = 0
 
-/obj/item/weapon/material/twohanded/fireaxe/cult/examine(var/mob/user)
+/obj/item/weapon/material/twohanded/fireaxe/cult/examine(mob/user)
 	. = ..()
 	if(. && stored_power)
 		to_chat(user, "<span class='notice'>It exudes a death-like smell.</span>")
 
-/obj/item/weapon/material/twohanded/fireaxe/cult/resolve_attackby(var/atom/a, var/mob/user, var/click_params)
+/obj/item/weapon/material/twohanded/fireaxe/cult/resolve_attackby(atom/a, mob/user, click_params)
 	if(istype(a, /obj/structure/deity/altar))
 		var/obj/structure/deity/altar/altar = a
 		if(stored_power && altar.linked_god)

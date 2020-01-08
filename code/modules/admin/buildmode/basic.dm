@@ -14,7 +14,7 @@
 	to_chat(user, "<span class='notice'>change the direction of built objects.</span>")
 	to_chat(user, "<span class='notice'>***********************************************************</span>")
 
-/datum/build_mode/basic/OnClick(var/atom/object, var/list/pa)
+/datum/build_mode/basic/OnClick(atom/object, list/pa)
 	if(istype(object,/turf) && pa["left"] && !pa["alt"] && !pa["ctrl"] )
 		if(istype(object,/turf/space))
 			var/turf/T = object

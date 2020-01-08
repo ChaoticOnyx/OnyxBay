@@ -308,7 +308,7 @@
 	overlays.Cut()
 	overlays += image('icons/obj/stationobjs.dmi', icon_state = "controller-wires")
 
-/obj/machinery/teleport/station/attackby(var/obj/item/weapon/W)
+/obj/machinery/teleport/station/attackby(obj/item/weapon/W)
 	src.attack_hand()
 
 /obj/machinery/teleport/station/attack_ai()

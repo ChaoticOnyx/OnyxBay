@@ -122,7 +122,7 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 
 	return targets
 
-/spell/targeted/cast(var/list/targets, mob/user)
+/spell/targeted/cast(list/targets, mob/user)
 
 	if(!src.cast_check())
 		return

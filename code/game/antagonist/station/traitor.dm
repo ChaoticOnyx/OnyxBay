@@ -8,7 +8,7 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	protected_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE
 
-/datum/antagonist/traitor/get_extra_panel_options(var/datum/mind/player)
+/datum/antagonist/traitor/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[player];common=crystals'>\[set crystals\]</a><a href='?src=\ref[src];spawn_uplink=\ref[player.current]'>\[spawn uplink\]</a>"
 
 /datum/antagonist/traitor/Topic(href, href_list)
@@ -18,7 +18,7 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 		spawn_uplink(locate(href_list["spawn_uplink"]))
 		return 1
 
-/datum/antagonist/traitor/create_objectives(var/datum/mind/traitor)
+/datum/antagonist/traitor/create_objectives(datum/mind/traitor)
 	if(!..())
 		return
 
@@ -72,7 +72,7 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 					traitor.objectives += hijack_objective
 	return
 
-/datum/antagonist/traitor/equip(var/mob/living/carbon/human/traitor_mob)
+/datum/antagonist/traitor/equip(mob/living/carbon/human/traitor_mob)
 	if(istype(traitor_mob, /mob/living/silicon)) // this needs to be here because ..() returns false if the mob isn't human
 		add_law_zero(traitor_mob)
 		give_intel(traitor_mob)
@@ -105,7 +105,7 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	traitor_mob.mind.store_memory("<b>Code Response</b>: [syndicate_code_response]")
 	to_chat(traitor_mob, "Use the code words, preferably in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe.")
 
-/datum/antagonist/traitor/proc/spawn_uplink(var/mob/living/carbon/human/traitor_mob)
+/datum/antagonist/traitor/proc/spawn_uplink(mob/living/carbon/human/traitor_mob)
 	setup_uplink_source(traitor_mob, DEFAULT_TELECRYSTAL_AMOUNT)
 
 /datum/antagonist/traitor/proc/add_law_zero(mob/living/silicon/ai/killer)

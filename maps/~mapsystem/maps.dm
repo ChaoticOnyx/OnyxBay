@@ -217,7 +217,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		new_planet.build_level()
 
 // Used to apply various post-compile procedural effects to the map.
-/datum/map/proc/refresh_mining_turfs(var/zlevel)
+/datum/map/proc/refresh_mining_turfs(zlevel)
 
 	set background = 1
 	set waitfor = 0
@@ -230,11 +230,11 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		if(istype(M))
 			M.updateMineralOverlays()
 
-/datum/map/proc/get_network_access(var/network)
+/datum/map/proc/get_network_access(network)
 	return 0
 
 // By default transition randomly to another zlevel
-/datum/map/proc/get_transit_zlevel(var/current_z_level)
+/datum/map/proc/get_transit_zlevel(current_z_level)
 	var/list/candidates = GLOB.using_map.accessible_z_levels.Copy()
 	candidates.Remove(num2text(current_z_level))
 
@@ -271,7 +271,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	department_accounts["Vendor"] = create_account("Vendor Account", 0)
 	vendor_account = department_accounts["Vendor"]
 
-/datum/map/proc/map_info(var/client/victim)
+/datum/map/proc/map_info(client/victim)
 	return
 // Access check is of the type requires one. These have been carefully selected to avoid allowing the janitor to see channels he shouldn't
 // This list needs to be purged but people insist on adding more cruft to the radio.

@@ -24,7 +24,7 @@
 	wires = null
 	return ..()
 
-/obj/item/weapon/plastique/attackby(var/obj/item/I, var/mob/user)
+/obj/item/weapon/plastique/attackby(obj/item/I, mob/user)
 	if(isScrewdriver(I))
 		open_panel = !open_panel
 		to_chat(user, "<span class='notice'>You [open_panel ? "open" : "close"] the wire panel.</span>")
@@ -66,7 +66,7 @@
 		spawn(timer*10)
 			explode(get_turf(target))
 
-/obj/item/weapon/plastique/proc/explode(var/location)
+/obj/item/weapon/plastique/proc/explode(location)
 	if(!target)
 		target = get_atom_on_turf(src)
 	if(!target)

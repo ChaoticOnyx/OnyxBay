@@ -227,7 +227,7 @@ var/list/global/tank_gauge_cache = list()
 		proxyassembly.assembly.attack_self(user)
 
 
-/obj/item/weapon/tank/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+/obj/item/weapon/tank/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	var/mob/living/carbon/location = null
 
 	if(istype(loc, /obj/item/weapon/rig))		// check for tanks in rigs
@@ -302,7 +302,7 @@ var/list/global/tank_gauge_cache = list()
 		toggle_valve(usr)
 		return TOPIC_REFRESH
 
-/obj/item/weapon/tank/proc/toggle_valve(var/mob/user)
+/obj/item/weapon/tank/proc/toggle_valve(mob/user)
 	if(istype(loc,/mob/living/carbon))
 		var/mob/living/carbon/location = loc
 		if(location.internal == src)
@@ -357,7 +357,7 @@ var/list/global/tank_gauge_cache = list()
 	update_icon()
 	check_status()
 
-/obj/item/weapon/tank/update_icon(var/override)
+/obj/item/weapon/tank/update_icon(override)
 	var/needs_updating = override
 
 	if((atom_flags & ATOM_FLAG_INITIALIZED) && istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/) && !override) //So we don't eat up our tick. Every tick, when we're not actually in play.

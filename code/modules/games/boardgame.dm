@@ -9,7 +9,7 @@
 	var/board = list()
 	var/selected = -1
 
-/obj/item/weapon/board/examine(mob/user, var/distance = -1)
+/obj/item/weapon/board/examine(mob/user, distance = -1)
 	if(in_range(user,src))
 		user.set_machine(src)
 		interact(user)
@@ -26,7 +26,7 @@ obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
 	if(!addPiece(I,user))
 		..()
 
-/obj/item/weapon/board/proc/addPiece(obj/item/I as obj, mob/user as mob, var/tile = 0)
+/obj/item/weapon/board/proc/addPiece(obj/item/I as obj, mob/user as mob, tile = 0)
 	if(I.w_class != ITEM_SIZE_TINY) //only small stuff
 		user.show_message("<span class='warning'>\The [I] is too big to be used as a board piece.</span>")
 		return 0

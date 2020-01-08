@@ -57,10 +57,10 @@ datum/category_group/underwear/dd_SortValue()
 		return "~"+name
 	return name
 
-/datum/category_item/underwear/proc/is_default(var/gender)
+/datum/category_item/underwear/proc/is_default(gender)
 	return is_default
 
-/datum/category_item/underwear/proc/create_underwear(var/list/metadata)
+/datum/category_item/underwear/proc/create_underwear(list/metadata)
 	if(!underwear_type)
 		return
 

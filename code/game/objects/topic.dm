@@ -1,4 +1,4 @@
-/obj/Topic(var/href, var/href_list = list(), var/datum/topic_state/state = GLOB.default_state)
+/obj/Topic(href, href_list = list(), datum/topic_state/state = GLOB.default_state)
 	if((. = ..()))
 		return
 	if(CanUseTopic(usr, state, href_list) == STATUS_INTERACTIVE)
@@ -6,15 +6,15 @@
 		return OnTopic(usr, href_list, state)
 	CouldNotUseTopic(usr)
 
-/obj/proc/OnTopic(var/mob/user, var/href_list, var/datum/topic_state/state)
+/obj/proc/OnTopic(mob/user, href_list, datum/topic_state/state)
 	return TOPIC_NOACTION
 
-/obj/CanUseTopic(var/mob/user, var/datum/topic_state/state, var/href_list)
+/obj/CanUseTopic(mob/user, datum/topic_state/state, href_list)
 	if(user.CanUseObjTopic(src))
 		return ..()
 	return STATUS_CLOSE
 
-/mob/living/silicon/CanUseObjTopic(var/obj/O)
+/mob/living/silicon/CanUseObjTopic(obj/O)
 	var/id = src.GetIdCard()
 	if(id && O.check_access(id))
 		return TRUE
@@ -24,15 +24,15 @@
 /mob/proc/CanUseObjTopic()
 	return TRUE
 
-/obj/proc/CouldUseTopic(var/mob/user)
+/obj/proc/CouldUseTopic(mob/user)
 	user.AddTopicPrint(src)
 
-/mob/proc/AddTopicPrint(var/atom/target)
+/mob/proc/AddTopicPrint(atom/target)
 	if(!istype(target))
 		return
 	target.add_hiddenprint(src)
 
-/mob/living/AddTopicPrint(var/atom/target)
+/mob/living/AddTopicPrint(atom/target)
 	if(!istype(target))
 		return
 	if(Adjacent(target))
@@ -40,10 +40,10 @@
 	else
 		target.add_hiddenprint(src)
 
-/mob/living/silicon/ai/AddTopicPrint(var/atom/target)
+/mob/living/silicon/ai/AddTopicPrint(atom/target)
 	if(!istype(target))
 		return
 	target.add_hiddenprint(src)
 
-/obj/proc/CouldNotUseTopic(var/mob/user)
+/obj/proc/CouldNotUseTopic(mob/user)
 	return

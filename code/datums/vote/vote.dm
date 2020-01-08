@@ -98,7 +98,7 @@
 	return JOINTEXT(text)
 
 // False return means vote was not changed for whatever reason.
-/datum/vote/proc/submit_vote(var/mob/voter, var/vote, var/priority)
+/datum/vote/proc/submit_vote(mob/voter, vote, priority)
 	if(mob_not_participating(voter))
 		return
 	if(vote && (vote in 1 to length(choices)) && priority && (priority in 1 to length(weights)))

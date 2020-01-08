@@ -41,7 +41,7 @@
 	if(germ_level < GERM_LEVEL_MOVE_CAP && prob(8))
 		germ_level++
 
-/mob/living/carbon/relaymove(var/mob/living/user, direction)
+/mob/living/carbon/relaymove(mob/living/user, direction)
 	if((user in src.stomach_contents) && istype(user))
 		if(user.last_special <= world.time)
 			user.last_special = world.time + 50
@@ -89,7 +89,7 @@
 
 	return
 
-/mob/living/carbon/electrocute_act(var/shock_damage, var/obj/source, var/siemens_coeff = 1.0, var/def_zone = null)
+/mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1.0, def_zone = null)
 	if(status_flags & GODMODE)	return 0	//godmode
 
 	shock_damage = apply_shock(shock_damage, def_zone, siemens_coeff)
@@ -129,7 +129,7 @@
 
 	return shock_damage
 
-/mob/living/carbon/proc/apply_shock(var/shock_damage, var/def_zone, var/siemens_coeff = 1.0)
+/mob/living/carbon/proc/apply_shock(shock_damage, def_zone, siemens_coeff = 1.0)
 	var/neuromods_modifier = max(1, (neuromods.len)**2 * 2)
 	shock_damage *= siemens_coeff
 	if(shock_damage < 0.5)
@@ -157,7 +157,7 @@
 			hud_used.r_hand_hud_object.icon_state = "r_hand_active"
 	return
 
-/mob/living/carbon/proc/activate_hand(var/selhand) //0 or "r" or "right" for right hand; 1 or "l" or "left" for left hand.
+/mob/living/carbon/proc/activate_hand(selhand) //0 or "r" or "right" for right hand; 1 or "l" or "left" for left hand.
 
 	if(istext(selhand))
 		selhand = lowertext(selhand)
@@ -250,7 +250,7 @@
 /mob/living/carbon/proc/getDNA()
 	return dna
 
-/mob/living/carbon/proc/setDNA(var/datum/dna/newDNA)
+/mob/living/carbon/proc/setDNA(datum/dna/newDNA)
 	dna = newDNA
 
 // ++++ROCKDTBEN++++ MOB PROCS //END
@@ -377,7 +377,7 @@
 	if(alert(src,"You sure you want to sleep for a while?","Sleep","Yes","No") == "Yes")
 		usr.sleeping = 20 //Short nap
 
-/mob/living/carbon/Bump(var/atom/movable/AM, yes)
+/mob/living/carbon/Bump(atom/movable/AM, yes)
 	if(now_pushing || !yes)
 		return
 	..()
@@ -396,13 +396,13 @@
 	Weaken(Floor(stun_duration/3))
 	return 1
 
-/mob/living/carbon/proc/add_chemical_effect(var/effect, var/magnitude = 1)
+/mob/living/carbon/proc/add_chemical_effect(effect, magnitude = 1)
 	if(effect in chem_effects)
 		chem_effects[effect] += magnitude
 	else
 		chem_effects[effect] = magnitude
 
-/mob/living/carbon/proc/add_up_to_chemical_effect(var/effect, var/magnitude = 1)
+/mob/living/carbon/proc/add_up_to_chemical_effect(effect, magnitude = 1)
 	if(effect in chem_effects)
 		chem_effects[effect] = max(magnitude, chem_effects[effect])
 	else
@@ -443,7 +443,7 @@
 
 	return FALSE
 
-/mob/living/carbon/onDropInto(var/atom/movable/AM)
+/mob/living/carbon/onDropInto(atom/movable/AM)
 	for(var/e in stomach_contents)
 		var/atom/movable/stomach_content = e
 		if(stomach_content.contains(AM))
@@ -462,13 +462,13 @@
 		if(species)
 			sight = species.get_vision_flags(src)
 
-/mob/living/carbon/proc/should_have_organ(var/organ_check)
+/mob/living/carbon/proc/should_have_organ(organ_check)
 	return 0
 
-/mob/living/carbon/proc/has_limb(var/limb_check)
+/mob/living/carbon/proc/has_limb(limb_check)
 	return 0
 
-/mob/living/carbon/proc/can_feel_pain(var/check_organ)
+/mob/living/carbon/proc/can_feel_pain(check_organ)
 	if(isSynthetic())
 		return 0
 	return !(species && species.species_flags & SPECIES_FLAG_NO_PAIN)
@@ -489,7 +489,7 @@
 	// overridden in human_defense.dm
 	return null
 
-/mob/living/carbon/proc/SetStasis(var/factor, var/source = "misc")
+/mob/living/carbon/proc/SetStasis(factor, source = "misc")
 	if((species && (species.species_flags & SPECIES_FLAG_NO_SCAN)) || isSynthetic())
 		return
 	stasis_sources[source] = factor

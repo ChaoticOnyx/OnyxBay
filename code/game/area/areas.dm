@@ -44,7 +44,7 @@
 /area/proc/is_shuttle_locked()
 	return 0
 
-/area/proc/atmosalert(danger_level, var/alarm_source)
+/area/proc/atmosalert(danger_level, alarm_source)
 	if (danger_level == 0)
 		atmosphere_alarm.clearAlarm(src, alarm_source)
 	else
@@ -176,7 +176,7 @@
 	//	new lighting behaviour with obj lights
 		icon_state = null
 
-/area/proc/set_lightswitch(var/new_switch)
+/area/proc/set_lightswitch(new_switch)
 	if(lightswitch != new_switch)
 		lightswitch = new_switch
 		for(var/obj/machinery/light_switch/L in src)
@@ -212,7 +212,7 @@ var/list/mob/living/forced_ambiance_list = new
 	L.lastarea = newarea
 	play_ambience(L)
 
-/area/proc/play_ambience(var/mob/living/L, custom_period = 1 MINUTES)
+/area/proc/play_ambience(mob/living/L, custom_period = 1 MINUTES)
 	if(!L.client) //Why play the ambient without a client?
 		return
 	// Ambience goes down here -- make sure to list each area seperately for ease of adding things in later, thanks! Note: areas adjacent to each other should have the same sounds to prevent cutoff when possible.- LastyScratch
@@ -253,7 +253,7 @@ var/list/mob/living/forced_ambiance_list = new
 		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 60, channel = 1))
 		L.client.played = world.time
 
-/area/proc/gravitychange(var/gravitystate = 0)
+/area/proc/gravitychange(gravitystate = 0)
 	has_gravity = gravitystate
 
 	for(var/mob/M in src)

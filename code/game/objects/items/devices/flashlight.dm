@@ -237,7 +237,7 @@
 	if(turn_on(user))
 		user.visible_message("<span class='notice'>\The [user] activates \the [src].</span>", "<span class='notice'>You pull the cord on the flare, activating it!</span>")
 
-/obj/item/device/flashlight/flare/proc/turn_on(var/mob/user)
+/obj/item/device/flashlight/flare/proc/turn_on(mob/user)
 	if(on)
 		return FALSE
 	if(!fuel)

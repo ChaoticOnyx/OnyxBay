@@ -20,7 +20,7 @@
 	var/drop_items = 1 //do we want to drop all our items when we transform?
 	var/list/transformed_dudes = list() //Who we transformed. Transformed = Transformation. Both mobs.
 
-/spell/targeted/shapeshift/cast(var/list/targets, mob/user)
+/spell/targeted/shapeshift/cast(list/targets, mob/user)
 	for(var/mob/living/M in targets)
 		if(M.stat == DEAD)
 			to_chat(user, "[name] can only transform living targets.")
@@ -62,12 +62,12 @@
 			spawn(duration)
 				stop_transformation(trans)
 
-/spell/targeted/shapeshift/proc/destroyed_transformer(var/mob/target) //Juuuuust in case
+/spell/targeted/shapeshift/proc/destroyed_transformer(mob/target) //Juuuuust in case
 	var/mob/current = transformed_dudes[target]
 	to_chat(current, "<span class='danger'>You suddenly feel as if this transformation has become permanent...</span>")
 	remove_target(target)
 
-/spell/targeted/shapeshift/proc/stop_transformation(var/mob/living/target)
+/spell/targeted/shapeshift/proc/stop_transformation(mob/living/target)
 	var/mob/living/transformer = transformed_dudes[target]
 	if(!transformer)
 		return
@@ -86,7 +86,7 @@
 	remove_target(target)
 	qdel(target)
 
-/spell/targeted/shapeshift/proc/remove_target(var/mob/living/target)
+/spell/targeted/shapeshift/proc/remove_target(mob/living/target)
 	var/mob/current = transformed_dudes[target]
 	GLOB.destroyed_event.unregister(target,src)
 	GLOB.death_event.unregister(current,src)

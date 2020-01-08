@@ -7,11 +7,11 @@
 	on_icon = "cereal_on"
 	off_icon = "cereal_off"
 
-/obj/machinery/cooker/cereal/change_product_strings(var/obj/item/weapon/reagent_containers/food/snacks/product)
+/obj/machinery/cooker/cereal/change_product_strings(obj/item/weapon/reagent_containers/food/snacks/product)
 	. = ..()
 	product.SetName("box of [cooking_obj.name] cereal")
 
-/obj/machinery/cooker/cereal/change_product_appearance(var/obj/item/weapon/reagent_containers/food/snacks/product)
+/obj/machinery/cooker/cereal/change_product_appearance(obj/item/weapon/reagent_containers/food/snacks/product)
 	product.icon = 'icons/obj/food.dmi'
 	product.icon_state = "cereal_box"
 	product.filling_color = cooking_obj.color

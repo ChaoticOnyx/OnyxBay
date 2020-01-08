@@ -32,7 +32,7 @@
 		return "legcuff1"
 	return ..()
 
-/obj/item/weapon/handcuffs/attack(var/mob/living/carbon/C, var/mob/living/user)
+/obj/item/weapon/handcuffs/attack(mob/living/carbon/C, mob/living/user)
 
 	if(!user.IsAdvancedToolUser())
 		return
@@ -59,7 +59,7 @@
 	else
 		..()
 
-/obj/item/weapon/handcuffs/proc/can_place(var/mob/target, var/mob/user)
+/obj/item/weapon/handcuffs/proc/can_place(mob/target, mob/user)
 	if(user == target || istype(user, /mob/living/silicon/robot) || istype(user, /mob/living/bot))
 		return 1
 	else
@@ -68,7 +68,7 @@
 				return 1
 	return 0
 
-/obj/item/weapon/handcuffs/proc/place_handcuffs(var/mob/living/carbon/target, var/mob/user)
+/obj/item/weapon/handcuffs/proc/place_handcuffs(mob/living/carbon/target, mob/user)
 	playsound(src.loc, cuff_sound, 30, 1, -2)
 
 	var/mob/living/carbon/human/H = target
@@ -110,7 +110,7 @@
 	return 1
 
 var/last_chew = 0
-/mob/living/carbon/human/RestrainedClickOn(var/atom/A)
+/mob/living/carbon/human/RestrainedClickOn(atom/A)
 	if (A != src) return ..()
 	if (last_chew + 26 > world.time) return
 
@@ -164,7 +164,7 @@ var/last_chew = 0
 /obj/item/weapon/handcuffs/cable/white
 	color = "#ffffff"
 
-/obj/item/weapon/handcuffs/cable/attackby(var/obj/item/I, mob/user as mob)
+/obj/item/weapon/handcuffs/cable/attackby(obj/item/I, mob/user as mob)
 	..()
 	if(istype(I, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = I
@@ -207,7 +207,7 @@ var/last_chew = 0
 		if(SYNDICUFFS_ON_REMOVE)
 			to_chat(user, "<span class='notice'>You pull the rotating arm back until you hear one click. \The [src] will detonate when removed.</span>")
 
-/obj/item/weapon/handcuffs/syndicate/on_restraint_apply(var/mob/user, var/slot)
+/obj/item/weapon/handcuffs/syndicate/on_restraint_apply(mob/user, slot)
 	if(mode == SYNDICUFFS_ON_APPLY && !charge_detonated)
 		detonate(1)
 		

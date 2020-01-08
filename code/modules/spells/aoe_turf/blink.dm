@@ -14,7 +14,7 @@
 	cooldown_min = 5 //4 deciseconds reduction per rank
 	hud_state = "wiz_blink"
 
-/spell/aoe_turf/blink/cast(var/list/targets, mob/user)
+/spell/aoe_turf/blink/cast(list/targets, mob/user)
 	if(!targets.len)
 		return
 

@@ -164,7 +164,7 @@
 				usr << browse(null, "window=port_gen")
 				usr.machine = null
 
-/obj/machinery/power/port_gen/pacman2/emag_act(var/remaining_uses, var/mob/user)
+/obj/machinery/power/port_gen/pacman2/emag_act(remaining_uses, mob/user)
 	emagged = 1
 	emp_act(1)
 	return 1

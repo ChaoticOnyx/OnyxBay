@@ -175,7 +175,7 @@
 	else
 		ui_header = "ntnrc_idle.gif"
 
-/datum/computer_file/program/chatclient/kill_program(var/forced = 0)
+/datum/computer_file/program/chatclient/kill_program(forced = 0)
 	if(channel)
 		channel.remove_client(src)
 		channel = null
@@ -184,7 +184,7 @@
 /datum/nano_module/program/computer_chatclient
 	name = "NTNet Relay Chat Client"
 
-/datum/nano_module/program/computer_chatclient/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/program/computer_chatclient/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(!ntnet_global || !ntnet_global.chat_channels)
 		return
 

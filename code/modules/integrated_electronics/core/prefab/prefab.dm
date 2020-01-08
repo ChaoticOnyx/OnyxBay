@@ -1,4 +1,4 @@
-/decl/prefab/proc/create(var/atom/location)
+/decl/prefab/proc/create(atom/location)
 	if(!location)
 		CRASH("Invalid location supplied: [log_info_line(location)]")
 		return FALSE
@@ -12,7 +12,7 @@
 	var/assembly_icon_state
 	var/assembly_w_class
 
-/decl/prefab/ic_assembly/create(var/atom/location)
+/decl/prefab/ic_assembly/create(atom/location)
 	if(..())
 		var/result = SScircuit.validate_electronic_assembly(data)
 		if(istext(result))

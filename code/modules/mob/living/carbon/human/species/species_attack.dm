@@ -21,7 +21,7 @@
 	sharp = 1
 	edge = 1
 
-/datum/unarmed_attack/claws/show_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone, var/attack_damage)
+/datum/unarmed_attack/claws/show_attack(mob/living/carbon/human/user, mob/living/carbon/human/target, zone, attack_damage)
 	var/skill = user.skills["combat"]
 	var/obj/item/organ/external/affecting = target.get_organ(zone)
 
@@ -84,7 +84,7 @@
 	attack_noun = list("body")
 	damage = 2
 
-/datum/unarmed_attack/slime_glomp/apply_effects(var/mob/living/carbon/human/user,var/mob/living/carbon/human/target,var/armour,var/attack_damage,var/zone)
+/datum/unarmed_attack/slime_glomp/apply_effects(mob/living/carbon/human/user,mob/living/carbon/human/target,armour,attack_damage,zone)
 	..()
 	user.apply_stored_shock_to(target)
 
@@ -94,7 +94,7 @@
 /datum/unarmed_attack/stomp/weak/get_unarmed_damage()
 	return damage
 
-/datum/unarmed_attack/stomp/weak/show_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone, var/attack_damage)
+/datum/unarmed_attack/stomp/weak/show_attack(mob/living/carbon/human/user, mob/living/carbon/human/target, zone, attack_damage)
 	var/obj/item/organ/external/affecting = target.get_organ(zone)
 	user.visible_message("<span class='warning'>[user] jumped up and down on \the [target]'s [affecting.name]!</span>")
 	playsound(user.loc, attack_sound, 25, 1, -1)
@@ -103,7 +103,7 @@
 	attack_verb = list ("bludgeoned", "lashed", "smacked", "whapped")
 	attack_noun = list ("tail")
 
-/datum/unarmed_attack/tail/is_usable(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone) //ensures that you can't tail someone in the skull
+/datum/unarmed_attack/tail/is_usable(mob/living/carbon/human/user, mob/living/carbon/human/target, zone) //ensures that you can't tail someone in the skull
 
 	if(!(zone in list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT, BP_GROIN)))
 		return 0
@@ -121,7 +121,7 @@
 
 	return 0
 
-/datum/unarmed_attack/tail/show_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone, var/attack_damage)
+/datum/unarmed_attack/tail/show_attack(mob/living/carbon/human/user, mob/living/carbon/human/target, zone, attack_damage)
 
 	var/obj/item/organ/external/affecting = target.get_organ(zone)
 

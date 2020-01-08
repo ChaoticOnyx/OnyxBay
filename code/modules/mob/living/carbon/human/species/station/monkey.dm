@@ -63,7 +63,7 @@
 		/obj/item/modular_computer,	
 	)	
 
-/datum/species/monkey/handle_npc(var/mob/living/carbon/human/H)
+/datum/species/monkey/handle_npc(mob/living/carbon/human/H)
 	if(H.stat != CONSCIOUS)
 		return
 		
@@ -120,7 +120,7 @@
 /datum/species/monkey/get_random_name()
 	return "[lowertext(name)] ([rand(100,999)])"
 
-/datum/species/monkey/handle_post_spawn(var/mob/living/carbon/human/H)
+/datum/species/monkey/handle_post_spawn(mob/living/carbon/human/H)
 	..()
 	H.item_state = lowertext(name)
 

@@ -7,7 +7,7 @@
 	icon_state = "steel"
 	initial_flooring = null
 
-/turf/simulated/floor/misc/fixed/attackby(var/obj/item/C, var/mob/user)
+/turf/simulated/floor/misc/fixed/attackby(obj/item/C, mob/user)
 	if(istype(C, /obj/item/stack) && !isCoil(C))
 		return
 	return ..()
@@ -52,7 +52,7 @@
 	icon = 'icons/turf/flooring/alium.dmi'
 	icon_state = "voxplating2"
 
-/turf/simulated/floor/misc/fixed/alium/attackby(var/obj/item/C, var/mob/user)
+/turf/simulated/floor/misc/fixed/alium/attackby(obj/item/C, mob/user)
 	if(isCrowbar(C))
 		to_chat(user, "<span class='notice'>There aren't any openings big enough to pry it away...</span>")
 		return

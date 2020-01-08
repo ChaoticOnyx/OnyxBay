@@ -36,7 +36,7 @@
 	return ..()
 
 //when thrown on impact, bottles smash and spill their contents
-/obj/item/weapon/reagent_containers/food/drinks/bottle/throw_impact(atom/hit_atom, var/speed)
+/obj/item/weapon/reagent_containers/food/drinks/bottle/throw_impact(atom/hit_atom, speed)
 	..()
 
 	var/mob/M = thrower
@@ -48,7 +48,7 @@
 				reagents.splash(hit_atom, reagents.total_volume)
 			src.smash(loc, hit_atom)
 
-/obj/item/weapon/reagent_containers/food/drinks/bottle/proc/smash_check(var/distance)
+/obj/item/weapon/reagent_containers/food/drinks/bottle/proc/smash_check(distance)
 	if(!isGlass || !smash_duration)
 		return 0
 
@@ -58,7 +58,7 @@
 		return 0
 	return prob(chance_table[idx])
 
-/obj/item/weapon/reagent_containers/food/drinks/bottle/proc/smash(var/newloc, atom/against = null)
+/obj/item/weapon/reagent_containers/food/drinks/bottle/proc/smash(newloc, atom/against = null)
 	if(ismob(loc))
 		var/mob/M = loc
 		M.drop_from_inventory(src)
@@ -155,7 +155,7 @@
 	else
 		set_light(0)
 
-/obj/item/weapon/reagent_containers/food/drinks/bottle/apply_hit_effect(mob/living/target, mob/living/user, var/hit_zone)
+/obj/item/weapon/reagent_containers/food/drinks/bottle/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
 	var/blocked = ..()
 
 	if(user.a_intent != I_HURT)

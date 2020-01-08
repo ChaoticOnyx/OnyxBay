@@ -94,7 +94,7 @@
 	return 1
 
 
-/datum/donator/ui_interact(mob/user, ui_key = "donation", var/datum/nanoui/ui = null, var/force_open = 0)
+/datum/donator/ui_interact(mob/user, ui_key = "donation", datum/nanoui/ui = null, force_open = 0)
 	var/list/list/categories = list()
 
 	for (var/datum/donator_product/product in GLOB.donations.products)

@@ -213,7 +213,7 @@
 		onclose(occupant, "sam", src)
 	return
 */
-/obj/mecha/combat/moved_inside(var/mob/living/carbon/human/H as mob)
+/obj/mecha/combat/moved_inside(mob/living/carbon/human/H as mob)
 	if(..())
 		if(H.client)
 			H.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")

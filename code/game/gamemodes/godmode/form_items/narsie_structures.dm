@@ -13,7 +13,7 @@
 
 	power_adjustment = 2
 
-/obj/structure/deity/blood_forge/attack_hand(var/mob/user)
+/obj/structure/deity/blood_forge/attack_hand(mob/user)
 	if(!linked_god || !linked_god.is_follower(user, silent = 1) || !ishuman(user))
 		return
 
@@ -28,12 +28,12 @@
 		dat += "<A href='?src=\ref[src];make_recipe=\ref[type];'>[initial(a.name)]</a> - [cost]<br><i>[initial(a.desc)]</i><br><br>"
 	show_browser(user, dat, "window=forge")
 
-/obj/structure/deity/blood_forge/CanUseTopic(var/user)
+/obj/structure/deity/blood_forge/CanUseTopic(user)
 	if(!linked_god || !linked_god.is_follower(user, silent = 1) || !ishuman(user))
 		return STATUS_CLOSE
 	return ..()
 
-/obj/structure/deity/blood_forge/OnTopic(var/user, var/list/href_list)
+/obj/structure/deity/blood_forge/OnTopic(user, list/href_list)
 	if(href_list["make_recipe"])
 		var/list/recipes = linked_god.feats[recipe_feat_list]
 		var/type = locate(href_list["make_recipe"]) in recipes
@@ -42,7 +42,7 @@
 			craft_item(type, cost, user)
 		return TOPIC_REFRESH
 
-/obj/structure/deity/blood_forge/proc/craft_item(var/path, var/blood_cost, var/mob/user)
+/obj/structure/deity/blood_forge/proc/craft_item(path, blood_cost, mob/user)
 	if(busy)
 		to_chat(user, "<span class='warning'>Someone is already using \the [src]!</span>")
 		return
@@ -60,7 +60,7 @@
 	user.visible_message("\The [user] pull out \the [I] from the [text_modifications["Out"]].", "You pull out the completed [I] from the [text_modifications["Out"]].")
 	busy = 0
 
-/obj/structure/deity/blood_forge/proc/take_charge(var/mob/living/user, var/charge)
+/obj/structure/deity/blood_forge/proc/take_charge(mob/living/user, charge)
 	if(linked_god)
 		linked_god.take_charge(user, charge)
 
@@ -73,7 +73,7 @@
 	health = 100 //Its a piece of rock.
 	build_cost = 700
 
-/obj/structure/deity/blood_stone/attack_hand(var/mob/user)
+/obj/structure/deity/blood_stone/attack_hand(mob/user)
 	if(!linked_god || !linked_god.is_follower(user, silent = 1) || !ishuman(user))
 		return
 

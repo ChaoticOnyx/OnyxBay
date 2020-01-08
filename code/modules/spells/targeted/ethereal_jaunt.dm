@@ -65,14 +65,14 @@
 
 	return "[src] now lasts longer."
 
-/spell/targeted/ethereal_jaunt/proc/jaunt_disappear(var/atom/movable/overlay/animation, var/mob/living/target)
+/spell/targeted/ethereal_jaunt/proc/jaunt_disappear(atom/movable/overlay/animation, mob/living/target)
 	animation.icon_state = "liquify"
 	flick("liquify",animation)
 
-/spell/targeted/ethereal_jaunt/proc/jaunt_reappear(var/atom/movable/overlay/animation, var/mob/living/target)
+/spell/targeted/ethereal_jaunt/proc/jaunt_reappear(atom/movable/overlay/animation, mob/living/target)
 	flick("reappear",animation)
 
-/spell/targeted/ethereal_jaunt/proc/jaunt_steam(var/mobloc)
+/spell/targeted/ethereal_jaunt/proc/jaunt_steam(mobloc)
 	var/datum/effect/effect/system/steam_spread/steam = new /datum/effect/effect/system/steam_spread()
 	steam.set_up(10, 0, mobloc)
 	steam.start()
@@ -87,7 +87,7 @@
 	anchored = 1
 	var/turf/last_valid_turf
 
-/obj/effect/dummy/spell_jaunt/New(var/location)
+/obj/effect/dummy/spell_jaunt/New(location)
 	..()
 	last_valid_turf = get_turf(location)
 
@@ -97,7 +97,7 @@
 		AM.loc = get_turf(src)
 	return ..()
 
-/obj/effect/dummy/spell_jaunt/relaymove(var/mob/user, direction)
+/obj/effect/dummy/spell_jaunt/relaymove(mob/user, direction)
 	if (!src.canmove || reappearing) return
 	var/turf/newLoc = get_step(src,direction)
 	if(!(newLoc.turf_flags & TURF_FLAG_NOJAUNT))

@@ -11,14 +11,14 @@
 	var/list/whitelist
 	var/list/blacklist
 
-/datum/nano_module/appearance_changer/New(var/location, var/mob/living/carbon/human/H, var/check_species_whitelist = 1, var/list/species_whitelist = list(), var/list/species_blacklist = list())
+/datum/nano_module/appearance_changer/New(location, mob/living/carbon/human/H, check_species_whitelist = 1, list/species_whitelist = list(), list/species_blacklist = list())
 	..()
 	owner = H
 	src.check_whitelist = check_species_whitelist
 	src.whitelist = species_whitelist
 	src.blacklist = species_blacklist
 
-/datum/nano_module/appearance_changer/Topic(ref, href_list, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/appearance_changer/Topic(ref, href_list, datum/topic_state/state = GLOB.default_state)
 	if(..())
 		return 1
 
@@ -91,7 +91,7 @@
 
 	return 0
 
-/datum/nano_module/appearance_changer/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/appearance_changer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(!owner || !owner.species)
 		return
 
@@ -145,7 +145,7 @@
 	if(owner && (flags & APPEARANCE_UPDATE_DNA))
 		owner.update_dna()
 
-/datum/nano_module/appearance_changer/proc/can_change(var/flag)
+/datum/nano_module/appearance_changer/proc/can_change(flag)
 	return owner && (flags & flag)
 
 /datum/nano_module/appearance_changer/proc/can_change_skin_tone()

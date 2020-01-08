@@ -192,7 +192,7 @@
 //Attempting to spawn an antag role with ANTAG_OVERRIDE_JOB should be done before jobs are assigned,
 //so that they do not occupy regular job slots. All other antag roles should be spawned after jobs are
 //assigned, so that job restrictions can be respected.
-/datum/antagonist/proc/attempt_spawn(var/spawn_target = null)
+/datum/antagonist/proc/attempt_spawn(spawn_target = null)
 	if(spawn_target == null)
 		spawn_target = initial_spawn_target
 
@@ -208,7 +208,7 @@
 
 	return 1
 
-/datum/antagonist/proc/draft_antagonist(var/datum/mind/player)
+/datum/antagonist/proc/draft_antagonist(datum/mind/player)
 	//Check if the player can join in this antag role, or if the player has already been given an antag role.
 	if(!can_become_antag(player))
 		log_debug("[player.key] was selected for [role_text] by lottery, but is not allowed to be that role.")

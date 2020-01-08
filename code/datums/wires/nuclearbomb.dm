@@ -7,7 +7,7 @@ var/const/NUCLEARBOMB_WIRE_LIGHT		= 1
 var/const/NUCLEARBOMB_WIRE_TIMING		= 2
 var/const/NUCLEARBOMB_WIRE_SAFETY		= 4
 
-/datum/wires/nuclearbomb/CanUse(var/mob/living/L)
+/datum/wires/nuclearbomb/CanUse(mob/living/L)
 	var/obj/machinery/nuclearbomb/N = holder
 	return N.panel_open
 
@@ -18,7 +18,7 @@ var/const/NUCLEARBOMB_WIRE_SAFETY		= 4
 	. += "The device is is [N.safety ? "quiet" : "whirring"].<BR>"
 	. += "The lights are [N.lighthack ? "static" : "functional"].<BR>"
 
-/datum/wires/nuclearbomb/UpdatePulsed(var/index)
+/datum/wires/nuclearbomb/UpdatePulsed(index)
 	var/obj/machinery/nuclearbomb/N = holder
 	switch(index)
 		if(NUCLEARBOMB_WIRE_LIGHT)
@@ -42,7 +42,7 @@ var/const/NUCLEARBOMB_WIRE_SAFETY		= 4
 				else
 					N.visible_message("<span class='notice'>\The [N] emits a quiet whirling noise!</span>")
 
-/datum/wires/nuclearbomb/UpdateCut(var/index, var/mended)
+/datum/wires/nuclearbomb/UpdateCut(index, mended)
 	var/obj/machinery/nuclearbomb/N = holder
 	switch(index)
 		if(NUCLEARBOMB_WIRE_SAFETY)

@@ -384,7 +384,7 @@
 		return
 	cloak(H)
 
-/obj/item/clothing/suit/space/void/optical/proc/cloak(var/mob/living/carbon/human/H)
+/obj/item/clothing/suit/space/void/optical/proc/cloak(mob/living/carbon/human/H)
 	if(cloak)
 		cloak = FALSE
 		return 1

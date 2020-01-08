@@ -7,7 +7,7 @@
 	mute_setting = MUTE_AOOC
 	show_preference_setting = /datum/client_preference/show_aooc
 
-/decl/communication_channel/aooc/can_communicate(var/client/C, var/message)
+/decl/communication_channel/aooc/can_communicate(client/C, message)
 	. = ..()
 	if(!.)
 		return
@@ -20,7 +20,7 @@
 			to_chat(C, "<span class='danger'>You must be an antag to use [name].</span>")
 			return FALSE
 
-/decl/communication_channel/aooc/do_communicate(var/client/C, var/message)
+/decl/communication_channel/aooc/do_communicate(client/C, message)
 	var/datum/admins/holder = C.holder
 
 	for(var/client/target in GLOB.clients)

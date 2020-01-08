@@ -1,4 +1,4 @@
-/mob/living/silicon/say(var/message, var/sanitize = 1)
+/mob/living/silicon/say(message, sanitize = 1)
 	return ..(sanitize ? sanitize(message) : message)
 
 /mob/living/silicon/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
@@ -33,7 +33,7 @@
 			message_mode = null
 		return silicon_radio.talk_into(src,message,message_mode,verb,speaking)
 
-/mob/living/silicon/say_quote(var/text)
+/mob/living/silicon/say_quote(text)
 	var/ending = copytext(text, length(text))
 
 	if (ending == "?")
@@ -47,7 +47,7 @@
 #define IS_ROBOT 2
 #define IS_PAI 3
 
-/mob/living/silicon/say_understands(var/other,var/datum/language/speaking = null)
+/mob/living/silicon/say_understands(other,datum/language/speaking = null)
 	//These only pertain to common. Languages are handled by mob/say_understands()
 	if (!speaking)
 		if (istype(other, /mob/living/carbon))
@@ -58,7 +58,7 @@
 			return 1
 	return ..()
 
-/mob/living/silicon/ai/say(var/message, var/sanitize = 1)
+/mob/living/silicon/ai/say(message, sanitize = 1)
 	if (holo)
 		//check if AI using radio while in hologramm
 		if(length(message) >= 1 && copytext(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
@@ -70,7 +70,7 @@
 	else
 		. = ..()
 //For holopads only. Usable by AI.
-/mob/living/silicon/ai/proc/holopad_talk(var/message, verb, datum/language/speaking)
+/mob/living/silicon/ai/proc/holopad_talk(message, verb, datum/language/speaking)
 
 	log_say("[key_name(src)] : [message]")
 
@@ -124,7 +124,7 @@
 		return 0
 	return 1
 
-/mob/living/silicon/ai/proc/holopad_emote(var/message) //This is called when the AI uses the 'me' verb while using a holopad.
+/mob/living/silicon/ai/proc/holopad_emote(message) //This is called when the AI uses the 'me' verb while using a holopad.
 
 	log_emote("[key_name(src)] : [message]")
 

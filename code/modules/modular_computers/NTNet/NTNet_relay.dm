@@ -56,7 +56,7 @@
 		ntnet_global.add_log("Quantum relay switched from overload recovery mode to normal operation mode.")
 	..()
 
-/obj/machinery/ntnet_relay/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/obj/machinery/ntnet_relay/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = list()
 	data["enabled"] = enabled
 	data["dos_capacity"] = dos_capacity
@@ -70,7 +70,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/machinery/ntnet_relay/attack_hand(var/mob/living/user)
+/obj/machinery/ntnet_relay/attack_hand(mob/living/user)
 	ui_interact(user)
 
 /obj/machinery/ntnet_relay/Topic(href, href_list)
@@ -115,7 +115,7 @@
 		D.error = "Connection to quantum relay severed"
 	..()
 
-/obj/machinery/ntnet_relay/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+/obj/machinery/ntnet_relay/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(isScrewdriver(W))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		panel_open = !panel_open

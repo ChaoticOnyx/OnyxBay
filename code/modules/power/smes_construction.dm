@@ -77,7 +77,7 @@
 	charge = 0
 	should_be_mapped = 1
 
-/obj/machinery/power/smes/buildable/malf_upgrade(var/mob/living/silicon/ai/user)
+/obj/machinery/power/smes/buildable/malf_upgrade(mob/living/silicon/ai/user)
 	..()
 	malf_upgraded = 1
 	emp_proof = 1
@@ -178,7 +178,7 @@
 // Proc: total_system_failure()
 // Parameters: 2 (intensity - how strong the failure is, user - person which caused the failure)
 // Description: Checks the sensors for alerts. If change (alerts cleared or detected) occurs, calls for icon update.
-/obj/machinery/power/smes/buildable/proc/total_system_failure(var/intensity = 0, var/mob/user as mob)
+/obj/machinery/power/smes/buildable/proc/total_system_failure(intensity = 0, mob/user as mob)
 	// SMESs store very large amount of power. If someone screws up (ie: Disables safeties and attempts to modify the SMES) very bad things happen.
 	// Bad things are based on charge percentage.
 	// Possible effects:
@@ -299,7 +299,7 @@
 // Proc: apcs_overload()
 // Parameters: 3 (failure_chance - chance to actually break the APC, overload_chance - Chance of breaking lights, reboot_chance - Chance of temporarily disabling the APC)
 // Description: Damages output powernet by power surge. Destroys few APCs and lights, depending on parameters.
-/obj/machinery/power/smes/buildable/proc/apcs_overload(var/failure_chance, var/overload_chance, var/reboot_chance)
+/obj/machinery/power/smes/buildable/proc/apcs_overload(failure_chance, overload_chance, reboot_chance)
 	if (!src.powernet)
 		return
 
@@ -326,7 +326,7 @@
 // Proc: attackby()
 // Parameters: 2 (W - object that was used on this machine, user - person which used the object)
 // Description: Handles tool interaction. Allows deconstruction/upgrading/fixing.
-/obj/machinery/power/smes/buildable/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+/obj/machinery/power/smes/buildable/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	// No more disassembling of overloaded SMESs. You broke it, now enjoy the consequences.
 	if (failing)
 		to_chat(user, "<span class='warning'>The [src]'s screen is flashing with alerts. It seems to be overloaded! Touching it now is probably not a good idea.</span>")
@@ -416,18 +416,18 @@
 // Proc: set_input()
 // Parameters: 1 (new_input - New input value in Watts)
 // Description: Sets input setting on this SMES. Trims it if limits are exceeded.
-/obj/machinery/power/smes/buildable/proc/set_input(var/new_input = 0)
+/obj/machinery/power/smes/buildable/proc/set_input(new_input = 0)
 	input_level = between(0, new_input, input_level_max)
 	update_icon()
 
 // Proc: set_output()
 // Parameters: 1 (new_output - New output value in Watts)
 // Description: Sets output setting on this SMES. Trims it if limits are exceeded.
-/obj/machinery/power/smes/buildable/proc/set_output(var/new_output = 0)
+/obj/machinery/power/smes/buildable/proc/set_output(new_output = 0)
 	output_level = between(0, new_output, output_level_max)
 	update_icon()
 
-/obj/machinery/power/smes/buildable/emp_act(var/severity)
+/obj/machinery/power/smes/buildable/emp_act(severity)
 	if(emp_proof)
 		return
 	..(severity)

@@ -42,7 +42,7 @@
 	item_records = null
 	return ..()
 
-/obj/machinery/smartfridge/proc/accept_check(var/obj/item/O as obj)
+/obj/machinery/smartfridge/proc/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/grown/) || istype(O,/obj/item/seeds/))
 		return 1
 	return 0
@@ -55,7 +55,7 @@
 	icon_on = "seeds"
 	icon_off = "seeds-off"
 
-/obj/machinery/smartfridge/seeds/accept_check(var/obj/item/O as obj)
+/obj/machinery/smartfridge/seeds/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/seeds/))
 		return 1
 	return 0
@@ -65,7 +65,7 @@
 	desc = "A refrigerated storage unit for slime extracts."
 	req_access = list(access_research)
 
-/obj/machinery/smartfridge/secure/extract/accept_check(var/obj/item/O as obj)
+/obj/machinery/smartfridge/secure/extract/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/slime_extract))
 		return 1
 	return 0
@@ -77,7 +77,7 @@
 	icon_on = "smartfridge_chem"
 	req_one_access = list(access_medical,access_chemistry)
 
-/obj/machinery/smartfridge/secure/medbay/accept_check(var/obj/item/O as obj)
+/obj/machinery/smartfridge/secure/medbay/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/weapon/reagent_containers/glass/))
 		return 1
 	if(istype(O,/obj/item/weapon/storage/pill_bottle/))
@@ -94,7 +94,7 @@
 	icon_on = "smartfridge_virology"
 	icon_off = "smartfridge_virology-off"
 
-/obj/machinery/smartfridge/secure/virology/accept_check(var/obj/item/O as obj)
+/obj/machinery/smartfridge/secure/virology/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/weapon/reagent_containers/glass/beaker/vial/))
 		return 1
 	if(istype(O,/obj/item/weapon/virusdish/))
@@ -105,7 +105,7 @@
 	name = "\improper Smart Chemical Storage"
 	desc = "A refrigerated storage unit for medicine and chemical storage."
 
-/obj/machinery/smartfridge/chemistry/accept_check(var/obj/item/O as obj)
+/obj/machinery/smartfridge/chemistry/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/weapon/storage/pill_bottle) || istype(O,/obj/item/weapon/reagent_containers))
 		return 1
 	return 0
@@ -119,7 +119,7 @@
 	name = "\improper Drink Showcase"
 	desc = "A refrigerated storage unit for tasty tasty alcohol."
 
-/obj/machinery/smartfridge/drinks/accept_check(var/obj/item/O as obj)
+/obj/machinery/smartfridge/drinks/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/weapon/reagent_containers/glass) || istype(O,/obj/item/weapon/reagent_containers/food/drinks) || istype(O,/obj/item/weapon/reagent_containers/food/condiment))
 		return 1
 
@@ -130,7 +130,7 @@
 	icon_on = "drying_rack_on"
 	icon_off = "drying_rack"
 
-/obj/machinery/smartfridge/drying_rack/accept_check(var/obj/item/O as obj)
+/obj/machinery/smartfridge/drying_rack/accept_check(obj/item/O as obj)
 	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/))
 		var/obj/item/weapon/reagent_containers/food/snacks/S = O
 		if (S.dried_type)
@@ -189,7 +189,7 @@
 *   Item Adding
 ********************/
 
-/obj/machinery/smartfridge/attackby(var/obj/item/O as obj, var/mob/user as mob)
+/obj/machinery/smartfridge/attackby(obj/item/O as obj, mob/user as mob)
 	if(isScrewdriver(O))
 		panel_open = !panel_open
 		user.visible_message("[user] [panel_open ? "opens" : "closes"] the maintenance panel of \the [src].", "You [panel_open ? "open" : "close"] the maintenance panel of \the [src].")
@@ -231,14 +231,14 @@
 		to_chat(user, "<span class='notice'>\The [src] smartly refuses [O].</span>")
 	return 1
 
-/obj/machinery/smartfridge/secure/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/smartfridge/secure/emag_act(remaining_charges, mob/user)
 	if(!emagged)
 		emagged = 1
 		locked = -1
 		to_chat(user, "You short out the product lock on [src].")
 		return 1
 
-/obj/machinery/smartfridge/proc/stock_item(var/obj/item/O)
+/obj/machinery/smartfridge/proc/stock_item(obj/item/O)
 	for(var/datum/stored_items/I in item_records)
 		if(istype(O, I.item_path) && O.name == I.item_name)
 			stock(I, O)
@@ -248,7 +248,7 @@
 	dd_insertObjectList(item_records, I)
 	stock(I, O)
 
-/obj/machinery/smartfridge/proc/stock(var/datum/stored_items/I, var/obj/item/O)
+/obj/machinery/smartfridge/proc/stock(datum/stored_items/I, obj/item/O)
 	I.add_product(O)
 	SSnano.update_uis(src)
 
@@ -265,7 +265,7 @@
 *   SmartFridge Menu
 ********************/
 
-/obj/machinery/smartfridge/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+/obj/machinery/smartfridge/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	user.set_machine(src)
 
 	var/data[0]

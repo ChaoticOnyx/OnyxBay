@@ -30,7 +30,7 @@
 	mod_reach = 0.25
 	mod_handy = 0.25
 
-/obj/item/toy/proc/speak(var/message)
+/obj/item/toy/proc/speak(message)
 	if (!message)
 		return
 

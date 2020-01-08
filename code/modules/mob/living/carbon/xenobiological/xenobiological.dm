@@ -56,13 +56,13 @@
 /mob/living/carbon/slime/getToxLoss()
 	return toxloss
 
-/mob/living/carbon/slime/adjustToxLoss(var/amount)
+/mob/living/carbon/slime/adjustToxLoss(amount)
 	toxloss = Clamp(toxloss + amount, 0, maxHealth)
 
-/mob/living/carbon/slime/setToxLoss(var/amount)
+/mob/living/carbon/slime/setToxLoss(amount)
 	adjustToxLoss(amount-getToxLoss())
 
-/mob/living/carbon/slime/New(var/location, var/colour="grey")
+/mob/living/carbon/slime/New(location, colour="grey")
 
 	verbs += /mob/living/proc/ventcrawl
 
@@ -159,7 +159,7 @@
 	..(-abs(amount)) // Heals them
 	return
 
-/mob/living/carbon/slime/bullet_act(var/obj/item/projectile/Proj)
+/mob/living/carbon/slime/bullet_act(obj/item/projectile/Proj)
 	attacked += 10
 	..(Proj)
 	return 0
@@ -276,7 +276,7 @@
 				visible_message("<span class='danger'>[M] has attempted to punch [src]!</span>")
 	return
 
-/mob/living/carbon/slime/attackby(var/obj/item/W, var/mob/user)
+/mob/living/carbon/slime/attackby(obj/item/W, mob/user)
 	if(W.force > 0)
 		attacked += 10
 		if(!(stat) && prob(25)) //Only run this check if we're alive or otherwise motile, otherwise surgery will be agonizing for xenobiologists.
@@ -304,7 +304,7 @@
 /mob/living/carbon/slime/check_has_mouth()
 	return 0
 
-/mob/living/carbon/slime/proc/gain_nutrition(var/amount)
+/mob/living/carbon/slime/proc/gain_nutrition(amount)
 	nutrition += amount
 	if(prob(amount * 2)) // Gain around one level per 50 nutrition
 		powerlevel++

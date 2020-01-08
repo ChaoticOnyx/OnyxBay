@@ -9,7 +9,7 @@
 	var/list/datum/language/assists_languages = list()
 	var/min_bruised_damage = 10       // Damage before considered bruised
 
-/obj/item/organ/internal/New(var/mob/living/carbon/holder)
+/obj/item/organ/internal/New(mob/living/carbon/holder)
 	if(max_damage)
 		min_bruised_damage = Floor(max_damage / 4)
 	..()
@@ -35,20 +35,20 @@
 		if(istype(E)) E.internal_organs -= src
 	return ..()
 
-/obj/item/organ/internal/set_dna(var/datum/dna/new_dna)
+/obj/item/organ/internal/set_dna(datum/dna/new_dna)
 	..()
 	if(species && species.organs_icon)
 		icon = species.organs_icon
 
 //disconnected the organ from it's owner but does not remove it, instead it becomes an implant that can be removed with implant surgery
 //TODO move this to organ/internal once the FPB port comes through
-/obj/item/organ/proc/cut_away(var/mob/living/user)
+/obj/item/organ/proc/cut_away(mob/living/user)
 	var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
 	if(istype(parent)) //TODO ensure that we don't have to check this.
 		removed(user, 0)
 		parent.implants += src
 
-/obj/item/organ/internal/removed(var/mob/living/user, var/drop_organ=1, var/detach=1)
+/obj/item/organ/internal/removed(mob/living/user, drop_organ=1, detach=1)
 	if(owner)
 		owner.internal_organs_by_name.Remove(organ_tag)
 		owner.internal_organs_by_name -= organ_tag
@@ -62,7 +62,7 @@
 				status |= ORGAN_CUT_AWAY
 	..()
 
-/obj/item/organ/internal/replaced(var/mob/living/carbon/human/target, var/obj/item/organ/external/affected)
+/obj/item/organ/internal/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)
 
 	if(!istype(target))
 		return 0
@@ -120,7 +120,7 @@
 /obj/item/organ/internal/proc/is_bruised()
 	return damage >= min_bruised_damage
 
-/obj/item/organ/internal/take_damage(amount, var/silent=0)
+/obj/item/organ/internal/take_damage(amount, silent=0)
 	if(BP_IS_ROBOTIC(src))
 		damage = between(0, src.damage + (amount * 0.8), max_damage)
 	else

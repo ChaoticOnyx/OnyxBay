@@ -101,7 +101,7 @@
 			daddy.group_multiplier = Z.air.group_multiplier
 			Z.air.equalize(daddy)
 
-/obj/effect/overmap/sector/exoplanet/proc/remove_animal(var/mob/M)
+/obj/effect/overmap/sector/exoplanet/proc/remove_animal(mob/M)
 	animals -= M
 	GLOB.death_event.unregister(M, src)
 	GLOB.destroyed_event.unregister(M, src)
@@ -112,7 +112,7 @@
 /obj/effect/overmap/sector/exoplanet/proc/generate_features()
 	seedRuins(map_z, features_budget, /area/exoplanet, possible_features, maxx, maxy)
 
-/obj/effect/overmap/sector/exoplanet/proc/get_biostuff(var/datum/random_map/noise/exoplanet/random_map)
+/obj/effect/overmap/sector/exoplanet/proc/get_biostuff(datum/random_map/noise/exoplanet/random_map)
 	seeds += random_map.small_flora_types
 	if(random_map.big_flora_types)
 		seeds += random_map.big_flora_types
@@ -130,7 +130,7 @@
 	for(var/mob/living/simple_animal/A in animals)
 		adapt_animal(A)
 
-/obj/effect/overmap/sector/exoplanet/proc/adapt_seed(var/datum/seed/S)
+/obj/effect/overmap/sector/exoplanet/proc/adapt_seed(datum/seed/S)
 	S.set_trait(TRAIT_IDEAL_HEAT,          atmosphere.temperature + rand(-5,5),800,70)
 	S.set_trait(TRAIT_HEAT_TOLERANCE,      S.get_trait(TRAIT_HEAT_TOLERANCE) + rand(-5,5),800,70)
 	S.set_trait(TRAIT_LOWKPA_TOLERANCE,    atmosphere.return_pressure() + rand(-5,-50),80,0)
@@ -143,7 +143,7 @@
 		if(gas_data.flags[g] & XGM_GAS_CONTAMINANT)
 			S.set_trait(TRAIT_TOXINS_TOLERANCE, rand(10,15))
 
-/obj/effect/overmap/sector/exoplanet/proc/adapt_animal(var/mob/living/simple_animal/A)
+/obj/effect/overmap/sector/exoplanet/proc/adapt_animal(mob/living/simple_animal/A)
 	if(species[A.type])
 		A.SetName(species[A.type])
 		A.real_name = species[A.type]
@@ -163,7 +163,7 @@
 /obj/effect/overmap/sector/exoplanet/proc/get_random_species_name()
 	return pick("nol","shan","can","fel","xor")+pick("a","e","o","t","ar")+pick("ian","oid","ac","ese","inian","rd")
 
-/obj/effect/overmap/sector/exoplanet/proc/rename_species(var/species_type, var/newname, var/force = FALSE)
+/obj/effect/overmap/sector/exoplanet/proc/rename_species(species_type, newname, force = FALSE)
 	if(species[species_type] && !force)
 		return FALSE
 
@@ -304,7 +304,7 @@
 	var/list/big_flora_types = list()
 	var/list/plantcolors = list("RANDOM")
 
-/datum/random_map/noise/exoplanet/New(var/seed, var/tx, var/ty, var/tz, var/tlx, var/tly, var/do_not_apply, var/do_not_announce, var/never_be_priority = 0)
+/datum/random_map/noise/exoplanet/New(seed, tx, ty, tz, tlx, tly, do_not_apply, do_not_announce, never_be_priority = 0)
 	target_turf_type = world.turf
 	planetary_area = new planetary_area()
 	water_level = rand(water_level_min,water_level_max)
@@ -320,10 +320,10 @@
 
 	GLOB.using_map.base_turf_by_z[num2text(tz)] = land_type
 
-/datum/random_map/noise/exoplanet/proc/noise2value(var/value)
+/datum/random_map/noise/exoplanet/proc/noise2value(value)
 	return min(9,max(0,round((value/cell_range)*10)))
 
-/datum/random_map/noise/exoplanet/apply_to_turf(var/x,var/y)
+/datum/random_map/noise/exoplanet/apply_to_turf(x,y)
 	var/turf/T = ..()
 	if(T && limit_x < world.maxx && (T.y == limit_y || T.x == limit_x))
 		T.set_density(1)
@@ -333,18 +333,18 @@
 			S.blocks_air = 1
 
 
-/datum/random_map/noise/exoplanet/get_map_char(var/value)
+/datum/random_map/noise/exoplanet/get_map_char(value)
 	if(water_type && noise2value(value) < water_level)
 		return "~"
 	return "[noise2value(value)]"
 
-/datum/random_map/noise/exoplanet/get_appropriate_path(var/value)
+/datum/random_map/noise/exoplanet/get_appropriate_path(value)
 	if(water_type && noise2value(value) < water_level)
 		return water_type
 	else
 		return land_type
 
-/datum/random_map/noise/exoplanet/get_additional_spawns(var/value, var/turf/T)
+/datum/random_map/noise/exoplanet/get_additional_spawns(value, turf/T)
 	planetary_area.contents.Add(T)
 	switch(noise2value(value))
 		if(2 to 3)
@@ -361,7 +361,7 @@
 			else if(prob(large_flora_prob))
 				spawn_flora(T, 1)
 
-/datum/random_map/noise/exoplanet/proc/spawn_fauna(var/turf/T)
+/datum/random_map/noise/exoplanet/proc/spawn_fauna(turf/T)
 	var/beastie = pick(fauna_types)
 	new beastie(T)
 
@@ -399,7 +399,7 @@
 			S.chems["woodpulp"] = 1
 			big_flora_types += S
 
-/datum/random_map/noise/exoplanet/proc/spawn_flora(var/turf/T, var/big)
+/datum/random_map/noise/exoplanet/proc/spawn_flora(turf/T, big)
 	if(big)
 		new /obj/machinery/portable_atmospherics/hydroponics/soil/invisible(T, pick(big_flora_types), 1)
 	else

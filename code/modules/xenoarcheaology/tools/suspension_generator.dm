@@ -36,7 +36,7 @@
 		if(cell.charge <= 0)
 			deactivate()
 
-/obj/machinery/suspension_gen/interact(var/mob/user)
+/obj/machinery/suspension_gen/interact(mob/user)
 	var/dat = "<b>Multi-phase mobile suspension field generator MK II \"Steadfast\"</b><br>"
 	if(cell)
 		var/colour = "red"
@@ -73,7 +73,7 @@
 	user << browse(dat, "window=suspension;size=500x400")
 	onclose(user, "suspension")
 
-/obj/machinery/suspension_gen/OnTopic(var/mob/user, href_list)
+/obj/machinery/suspension_gen/OnTopic(mob/user, href_list)
 	if(href_list["toggle_field"])
 		if(!suspension_field)
 			if(cell.charge > 0)
@@ -116,7 +116,7 @@
 	if(. == TOPIC_REFRESH)
 		interact(user)
 
-/obj/machinery/suspension_gen/attack_hand(var/mob/user)
+/obj/machinery/suspension_gen/attack_hand(mob/user)
 	if(!panel_open)
 		interact(user)
 	else if(cell)
@@ -164,7 +164,7 @@
 		else
 			to_chat(user, "<span class='warning'>Remove [auth_card] first.</span>")
 
-/obj/machinery/suspension_gen/proc/attempt_unlock(var/obj/item/weapon/card/C, var/mob/user)
+/obj/machinery/suspension_gen/proc/attempt_unlock(obj/item/weapon/card/C, mob/user)
 	if(!panel_open)
 		if(istype(C, /obj/item/weapon/card/emag))
 			C.resolve_attackby(src, user)
@@ -173,7 +173,7 @@
 		if(!locked)
 			return 1
 
-/obj/machinery/suspension_gen/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/suspension_gen/emag_act(remaining_charges, mob/user)
 	if(cell.charge > 0 && locked)
 		locked = 0
 		return 1
