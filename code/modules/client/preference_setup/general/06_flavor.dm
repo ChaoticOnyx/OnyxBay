@@ -6,7 +6,7 @@
 	name = "Flavor"
 	sort_order = 6
 
-/datum/category_item/player_setup_item/general/flavor/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/general/flavor/load_character(savefile/S)
 	S["flavor_texts_general"]	>> pref.flavor_texts["general"]
 	S["flavor_texts_head"]		>> pref.flavor_texts["head"]
 	S["flavor_texts_face"]		>> pref.flavor_texts["face"]
@@ -22,7 +22,7 @@
 	for(var/module in GLOB.robot_module_types)
 		S["flavour_texts_robot_[module]"] >> pref.flavour_texts_robot[module]
 
-/datum/category_item/player_setup_item/general/flavor/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/general/flavor/save_character(savefile/S)
 	S["flavor_texts_general"]	<< pref.flavor_texts["general"]
 	S["flavor_texts_head"]		<< pref.flavor_texts["head"]
 	S["flavor_texts_face"]		<< pref.flavor_texts["face"]
@@ -41,12 +41,12 @@
 	if(!istype(pref.flavor_texts))        pref.flavor_texts = list()
 	if(!istype(pref.flavour_texts_robot)) pref.flavour_texts_robot = list()
 
-/datum/category_item/player_setup_item/general/flavor/content(var/mob/user)
+/datum/category_item/player_setup_item/general/flavor/content(mob/user)
 	. += "<b>Flavor:</b><br>"
 	. += "<a href='?src=\ref[src];flavor_text=open'>Set Flavor Text</a><br/>"
 	. += "<a href='?src=\ref[src];flavour_text_robot=open'>Set Robot Flavor Text</a><br/>"
 
-/datum/category_item/player_setup_item/general/flavor/OnTopic(var/href,var/list/href_list, var/mob/user)
+/datum/category_item/player_setup_item/general/flavor/OnTopic(href,list/href_list, mob/user)
 	if(href_list["flavor_text"])
 		switch(href_list["flavor_text"])
 			if("open")

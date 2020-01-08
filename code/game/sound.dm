@@ -329,7 +329,7 @@ GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosio
 										'sound/effects/explosions/far_explosion46.ogg', 'sound/effects/explosions/far_explosion47.ogg', 'sound/effects/explosions/far_explosion48.ogg',
 										'sound/effects/explosions/far_explosion49.ogg', 'sound/effects/explosions/far_explosion50.ogg'))
 
-/proc/playsound(var/atom/source, soundin, vol as num, vary, extrarange as num, falloff, var/is_global, var/frequency, var/is_ambiance = 0)
+/proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0)
 
 	soundin = get_sfx(soundin) // same sound for everyone
 
@@ -351,7 +351,7 @@ GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosio
 
 var/const/FALLOFF_SOUNDS = 0.5
 
-/mob/proc/playsound_local(var/turf/turf_source, soundin, vol as num, vary, frequency, falloff, is_global, extrarange)
+/mob/proc/playsound_local(turf/turf_source, soundin, vol as num, vary, frequency, falloff, is_global, extrarange)
 	if(!src.client || ear_deaf > 0)
 		return
 	var/sound/S = soundin

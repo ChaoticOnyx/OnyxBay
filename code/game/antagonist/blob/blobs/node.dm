@@ -44,7 +44,7 @@
 /obj/effect/blob/node/run_action()
 	return 0
 
-/obj/effect/blob/node/update_icon(var/spawnend = 0)
+/obj/effect/blob/node/update_icon(spawnend = 0)
 	spawn(1)
 		overlays.len = 0
 		underlays.len = 0

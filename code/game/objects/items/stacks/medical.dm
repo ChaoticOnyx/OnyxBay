@@ -21,7 +21,7 @@
 	if(stack_full)
 		icon_state = "[icon_state_default]_full"
 
-/obj/item/stack/medical/use(var/used)
+/obj/item/stack/medical/use(used)
 	if(uses_charge)
 		return ..()
 

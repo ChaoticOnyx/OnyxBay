@@ -32,7 +32,7 @@
 	var/hold_until		//can only fire after this worldtime
 	var/allow_multiple	//allow to have more than 1 effect of this type in the same virus
 
-/datum/disease2/effect/proc/fire(var/mob/living/carbon/human/mob,var/current_stage)
+/datum/disease2/effect/proc/fire(mob/living/carbon/human/mob,current_stage)
 	if(oneshot == -1)
 		return
 	if(hold_until > world.time)
@@ -52,8 +52,8 @@
 		if(2)
 			multiplier = rand(1,multiplier_max)
 
-/datum/disease2/effect/proc/activate(var/mob/living/carbon/human/mob)
-/datum/disease2/effect/proc/deactivate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/proc/activate(mob/living/carbon/human/mob)
+/datum/disease2/effect/proc/deactivate(mob/living/carbon/human/mob)
 /datum/disease2/effect/proc/generate(copy_data) // copy_data will be non-null if this is a copy; it should be used to initialise the data for this effect if present
 
 /datum/disease2/effect/invisible

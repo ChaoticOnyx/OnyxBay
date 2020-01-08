@@ -202,7 +202,7 @@
 	//location.hotspot_expose(1000,500,1)
 	return
 
-/obj/item/weapon/flamethrower/full/New(var/loc)
+/obj/item/weapon/flamethrower/full/New(loc)
 	..()
 	weldtool = new /obj/item/weapon/weldingtool(src)
 	weldtool.status = 0

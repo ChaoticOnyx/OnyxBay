@@ -14,7 +14,7 @@ GLOBAL_DATUM_INIT(global_hud, /datum/global_hud, new())
 	var/obj/screen/gasmask
 	var/obj/screen/darktint
 
-/datum/global_hud/proc/setup_overlay(var/icon_state)
+/datum/global_hud/proc/setup_overlay(icon_state)
 	var/obj/screen/screen = new /obj/screen()
 	screen.screen_loc = "1,1"
 	screen.icon = 'icons/obj/hud_full.dmi'

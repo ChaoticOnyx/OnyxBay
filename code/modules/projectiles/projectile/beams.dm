@@ -82,7 +82,7 @@
 	damage = 100 //badmins be badmins I don't give a fuck
 	armor_penetration = 100
 
-/obj/item/projectile/beam/pulse/destroy/on_hit(var/atom/target, var/blocked = 0)
+/obj/item/projectile/beam/pulse/destroy/on_hit(atom/target, blocked = 0)
 	if(isturf(target))
 		target.ex_act(2)
 	..()
@@ -110,7 +110,7 @@
 	tracer_type = /obj/effect/projectile/laser/blue/tracer
 	impact_type = /obj/effect/projectile/laser/blue/impact
 
-/obj/item/projectile/beam/lastertag/blue/on_hit(var/atom/target, var/blocked = 0)
+/obj/item/projectile/beam/lastertag/blue/on_hit(atom/target, blocked = 0)
 	if(istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit, /obj/item/clothing/suit/redtag))
@@ -126,7 +126,7 @@
 	damage_type = BURN
 	check_armour = "laser"
 
-/obj/item/projectile/beam/lastertag/red/on_hit(var/atom/target, var/blocked = 0)
+/obj/item/projectile/beam/lastertag/red/on_hit(atom/target, blocked = 0)
 	if(istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit, /obj/item/clothing/suit/bluetag))
@@ -145,7 +145,7 @@
 	tracer_type = /obj/effect/projectile/laser/omni/tracer
 	impact_type = /obj/effect/projectile/laser/omni/impact
 
-/obj/item/projectile/beam/lastertag/omni/on_hit(var/atom/target, var/blocked = 0)
+/obj/item/projectile/beam/lastertag/omni/on_hit(atom/target, blocked = 0)
 	if(istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/M = target
 		if((istype(M.wear_suit, /obj/item/clothing/suit/bluetag))||(istype(M.wear_suit, /obj/item/clothing/suit/redtag)))
@@ -212,7 +212,7 @@
 	tracer_type = /obj/effect/projectile/trilaser/tracer
 	impact_type = /obj/effect/projectile/trilaser/impact
 
-/obj/item/projectile/beam/plasmacutter/on_impact(var/atom/A)
+/obj/item/projectile/beam/plasmacutter/on_impact(atom/A)
 	if(istype(A, /turf/simulated/mineral))
 		var/turf/simulated/mineral/M = A
 		if(prob(33))

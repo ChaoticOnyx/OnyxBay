@@ -1,6 +1,6 @@
 // At minimum every mob has a hear_say proc.
 
-/mob/proc/hear_say(var/message, var/verb = "says", var/datum/language/language = null, var/alt_name = "",var/italics = 0, var/mob/speaker = null, var/sound/speech_sound, var/sound_vol)
+/mob/proc/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
 	if(!client)
 		return
 
@@ -87,14 +87,14 @@
 			var/turf/source = speaker? get_turf(speaker) : get_turf(src)
 			src.playsound_local(source, speech_sound, sound_vol, 1)
 
-/mob/proc/on_hear_say(var/message)
+/mob/proc/on_hear_say(message)
 	to_chat(src, message)
 
-/mob/living/silicon/on_hear_say(var/message)
+/mob/living/silicon/on_hear_say(message)
 	var/time = say_timestamp()
 	to_chat(src, "[time] [message]")
 
-/mob/proc/hear_radio(var/message, var/verb="says", var/datum/language/language=null, var/part_a, var/part_b, var/part_c, var/mob/speaker = null, var/hard_to_hear = 0, var/vname ="")
+/mob/proc/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0, vname ="")
 
 	if(!client)
 		return
@@ -235,7 +235,7 @@
 	var/time = say_timestamp()
 	to_chat(src, "[time][part_a][track][part_b][formatted][part_c]")
 
-/mob/proc/hear_signlang(var/message, var/verb = "gestures", var/datum/language/language, var/mob/speaker = null)
+/mob/proc/hear_signlang(message, verb = "gestures", datum/language/language, mob/speaker = null)
 	if(!client)
 		return
 
@@ -270,7 +270,7 @@
 			M.show_message(message)
 	src.show_message(message)
 
-/mob/proc/hear_sleep(var/message)
+/mob/proc/hear_sleep(message)
 	var/heard = ""
 	if(prob(15))
 		var/list/punctuation = list(",", "!", ".", ";", "?")

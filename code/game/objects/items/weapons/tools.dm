@@ -354,7 +354,7 @@
 
 
 //Removes fuel from the welding tool. If a mob is passed, it will perform an eyecheck on the mob. This should probably be renamed to use()
-/obj/item/weapon/weldingtool/proc/remove_fuel(var/amount = 1, var/mob/M = null)
+/obj/item/weapon/weldingtool/proc/remove_fuel(amount = 1, mob/M = null)
 	if(!welding)
 		return 0
 	if(get_fuel() >= amount)
@@ -368,7 +368,7 @@
 			to_chat(M, "<span class='notice'>You need more welding fuel to complete this task.</span>")
 		return 0
 
-/obj/item/weapon/weldingtool/proc/burn_fuel(var/amount)
+/obj/item/weapon/weldingtool/proc/burn_fuel(amount)
 	if(!tank)
 		return
 
@@ -420,7 +420,7 @@
 
 //Sets the welding state of the welding tool. If you see W.welding = 1 anywhere, please change it to W.setWelding(1)
 //so that the welding tool updates accordingly
-/obj/item/weapon/weldingtool/proc/setWelding(var/set_welding, var/mob/M)
+/obj/item/weapon/weldingtool/proc/setWelding(set_welding, mob/M)
 	if(!status)	return
 
 	var/turf/T = get_turf(src)
@@ -724,7 +724,7 @@
 	if(!tool) return 0
 	return (tool ? tool.attack(M,user) : 0)
 
-/obj/item/weapon/combitool/afterattack(var/atom/target, var/mob/living/user, proximity, params)
+/obj/item/weapon/combitool/afterattack(atom/target, mob/living/user, proximity, params)
 	if(!proximity)
 		return 0
 	var/obj/item/tool = tools[current_tool]

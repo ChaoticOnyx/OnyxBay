@@ -1,7 +1,7 @@
 #define DEFAULT_SEED "glowshroom"
 #define VINE_GROWTH_STAGES 5
 
-/proc/spacevine_infestation(var/potency_min=70, var/potency_max=100, var/maturation_min=5, var/maturation_max=15)
+/proc/spacevine_infestation(potency_min=70, potency_max=100, maturation_min=5, maturation_max=15)
 	set waitfor = FALSE //to stop the secrets panel hanging
 
 	var/turf/T = pick_subarea_turf(/area/hallway , list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))
@@ -70,7 +70,7 @@
 /obj/effect/vine/single
 	spread_chance = 0
 
-/obj/effect/vine/New(var/newloc, var/datum/seed/newseed, var/obj/effect/vine/newparent, var/start_matured = 0)
+/obj/effect/vine/New(newloc, datum/seed/newseed, obj/effect/vine/newparent, start_matured = 0)
 	if(!newparent)
 		parent = src
 	else
@@ -222,7 +222,7 @@
 	floor = 1
 	return 1
 
-/obj/effect/vine/attackby(var/obj/item/weapon/W, var/mob/user)
+/obj/effect/vine/attackby(obj/item/weapon/W, mob/user)
 
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	START_PROCESSING(SSvines, src)

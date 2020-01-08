@@ -46,7 +46,7 @@
 	. = ..()
 	icon_state = "brain-prosthetic"
 
-/obj/item/organ/internal/brain/New(var/mob/living/carbon/holder)
+/obj/item/organ/internal/brain/New(mob/living/carbon/holder)
 	..()
 	max_damage = 100
 	if(species)
@@ -63,7 +63,7 @@
 	QDEL_NULL(brainmob)
 	. = ..()
 
-/obj/item/organ/internal/brain/proc/transfer_identity(var/mob/living/carbon/H)
+/obj/item/organ/internal/brain/proc/transfer_identity(mob/living/carbon/H)
 
 	if(!brainmob)
 		brainmob = new(src)
@@ -89,7 +89,7 @@
 	else
 		to_chat(user, "This one seems particularly lifeless. Perhaps it will regain some of its luster later..")
 
-/obj/item/organ/internal/brain/removed(var/mob/living/user)
+/obj/item/organ/internal/brain/removed(mob/living/user)
 	if(!istype(owner))
 		return ..()
 
@@ -106,7 +106,7 @@
 
 	..()
 
-/obj/item/organ/internal/brain/replaced(var/mob/living/target)
+/obj/item/organ/internal/brain/replaced(mob/living/target)
 
 	if(!..()) return 0
 
@@ -137,7 +137,7 @@
 /obj/item/organ/internal/brain/proc/get_current_damage_threshold()
 	return round(damage / damage_threshold_value)
 
-/obj/item/organ/internal/brain/proc/past_damage_threshold(var/threshold)
+/obj/item/organ/internal/brain/proc/past_damage_threshold(threshold)
 	return (get_current_damage_threshold() > threshold)
 
 /obj/item/organ/internal/brain/Process()

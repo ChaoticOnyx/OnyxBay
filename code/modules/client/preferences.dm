@@ -45,13 +45,13 @@ datum/preferences
 			load_preferences()
 			load_and_update_character()
 
-/datum/preferences/proc/load_and_update_character(var/slot)
+/datum/preferences/proc/load_and_update_character(slot)
 	load_character(slot)
 	if(update_setup(loaded_preferences, loaded_character))
 		save_preferences()
 		save_character()
 
-/datum/preferences/proc/ZeroSkills(var/forced = 0)
+/datum/preferences/proc/ZeroSkills(forced = 0)
 	for(var/V in SKILLS) for(var/datum/skill/S in SKILLS[V])
 		if(!skills.Find(S.ID) || forced)
 			skills[S.ID] = SKILL_NONE

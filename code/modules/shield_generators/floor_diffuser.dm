@@ -55,13 +55,13 @@
 	update_icon()
 	to_chat(usr, "You turn \the [src] [enabled ? "on" : "off"].")
 
-/obj/machinery/shield_diffuser/proc/meteor_alarm(var/duration)
+/obj/machinery/shield_diffuser/proc/meteor_alarm(duration)
 	if(!duration)
 		return
 	alarm = round(max(alarm, duration))
 	update_icon()
 
-/obj/machinery/shield_diffuser/examine(var/mob/user)
+/obj/machinery/shield_diffuser/examine(mob/user)
 	. = ..()
 	to_chat(user, "It is [enabled ? "enabled" : "disabled"].")
 	if(alarm)

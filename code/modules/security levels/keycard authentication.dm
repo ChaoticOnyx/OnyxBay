@@ -82,7 +82,7 @@
 		user << browse(dat, "window=keycard_auth;size=500x250")
 	return
 
-/obj/machinery/keycard_auth/CanUseTopic(var/mob/user, href_list)
+/obj/machinery/keycard_auth/CanUseTopic(mob/user, href_list)
 	if(busy)
 		to_chat(user, "This device is busy.")
 		return STATUS_CLOSE
@@ -129,7 +129,7 @@
 		message_admins("[key_name(event_triggered_by)] triggered and [key_name(event_confirmed_by)] confirmed event [event]", 1)
 	reset()
 
-/obj/machinery/keycard_auth/proc/receive_request(var/obj/machinery/keycard_auth/source)
+/obj/machinery/keycard_auth/proc/receive_request(obj/machinery/keycard_auth/source)
 	if(stat & (BROKEN|NOPOWER))
 		return
 	event_source = source

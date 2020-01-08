@@ -229,7 +229,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	you use the _str version of the slot.
 */
 
-/datum/species/proc/get_eyes(var/mob/living/carbon/human/H)
+/datum/species/proc/get_eyes(mob/living/carbon/human/H)
 	return
 
 /datum/species/New()
@@ -255,10 +255,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		var/obj/item/organ/limb_path = organ_data["path"]
 		organ_data["descriptor"] = initial(limb_path.name)
 
-/datum/species/proc/sanitize_name(var/name)
+/datum/species/proc/sanitize_name(name)
 	return sanitizeName(name)
 
-/datum/species/proc/equip_survival_gear(var/mob/living/carbon/human/H,var/extendedtank = 1)
+/datum/species/proc/equip_survival_gear(mob/living/carbon/human/H,extendedtank = 1)
 	if(istype(H.get_equipped_item(slot_back), /obj/item/weapon/storage/backpack))
 		if (extendedtank)	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H.back), slot_in_backpack)
 		else	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
@@ -266,7 +266,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		if (extendedtank)	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H), slot_r_hand)
 		else	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 
-/datum/species/proc/create_organs(var/mob/living/carbon/human/H) //Handles creation of mob organs.
+/datum/species/proc/create_organs(mob/living/carbon/human/H) //Handles creation of mob organs.
 
 	H.mob_size = mob_size
 	for(var/obj/item/organ/organ in H.contents)
@@ -307,7 +307,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 	H.sync_organ_dna()
 
-/datum/species/proc/hug(var/mob/living/carbon/human/H,var/mob/living/target)
+/datum/species/proc/hug(mob/living/carbon/human/H,mob/living/target)
 
 	var/mob/living/carbon/human/V
 	if(istype(target,/mob/living/carbon/human))
@@ -362,70 +362,70 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	//H.visible_message("<span class='notice'>[H] hugs [target] to make [t_him] feel better!</span>", \
 	//				"<span class='notice'>You hug [target] to make [t_him] feel better!</span>")
 
-/datum/species/proc/remove_inherent_verbs(var/mob/living/carbon/human/H)
+/datum/species/proc/remove_inherent_verbs(mob/living/carbon/human/H)
 	if(inherent_verbs)
 		for(var/verb_path in inherent_verbs)
 			H.verbs -= verb_path
 	return
 
-/datum/species/proc/add_inherent_verbs(var/mob/living/carbon/human/H)
+/datum/species/proc/add_inherent_verbs(mob/living/carbon/human/H)
 	if(inherent_verbs)
 		for(var/verb_path in inherent_verbs)
 			H.verbs |= verb_path
 	return
 
-/datum/species/proc/handle_post_spawn(var/mob/living/carbon/human/H) //Handles anything not already covered by basic species assignment.
+/datum/species/proc/handle_post_spawn(mob/living/carbon/human/H) //Handles anything not already covered by basic species assignment.
 	add_inherent_verbs(H)
 	H.mob_bump_flag = bump_flag
 	H.mob_swap_flags = swap_flags
 	H.mob_push_flags = push_flags
 	H.pass_flags = pass_flags
 
-/datum/species/proc/handle_pre_spawn(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_pre_spawn(mob/living/carbon/human/H)
 	return
 
-/datum/species/proc/handle_death(var/mob/living/carbon/human/H) //Handles any species-specific death events (such as dionaea nymph spawns).
+/datum/species/proc/handle_death(mob/living/carbon/human/H) //Handles any species-specific death events (such as dionaea nymph spawns).
 	return
 
-/datum/species/proc/handle_new_grab(var/mob/living/carbon/human/H, var/obj/item/grab/G)
+/datum/species/proc/handle_new_grab(mob/living/carbon/human/H, obj/item/grab/G)
 	return
 
 // Only used for alien plasma weeds atm, but could be used for Dionaea later.
-/datum/species/proc/handle_environment_special(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_environment_special(mob/living/carbon/human/H)
 	return
 
-/datum/species/proc/handle_movement_delay_special(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_movement_delay_special(mob/living/carbon/human/H)
 	return 0
 
 // Used to update alien icons for aliens.
-/datum/species/proc/handle_login_special(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_login_special(mob/living/carbon/human/H)
 	return
 
 // As above.
-/datum/species/proc/handle_logout_special(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_logout_special(mob/living/carbon/human/H)
 	return
 
 // Builds the HUD using species-specific icons and usable slots.
-/datum/species/proc/build_hud(var/mob/living/carbon/human/H)
+/datum/species/proc/build_hud(mob/living/carbon/human/H)
 	return
 
 //Used by xenos understanding larvae and dionaea understanding nymphs.
-/datum/species/proc/can_understand(var/mob/other)
+/datum/species/proc/can_understand(mob/other)
 	return
 
-/datum/species/proc/can_overcome_gravity(var/mob/living/carbon/human/H)
+/datum/species/proc/can_overcome_gravity(mob/living/carbon/human/H)
 	return FALSE
 
 // Used for any extra behaviour when falling and to see if a species will fall at all.
-/datum/species/proc/can_fall(var/mob/living/carbon/human/H)
+/datum/species/proc/can_fall(mob/living/carbon/human/H)
 	return TRUE
 
 // Used to override normal fall behaviour. Use only when the species does fall down a level.
-/datum/species/proc/handle_fall_special(var/mob/living/carbon/human/H, var/turf/landing)
+/datum/species/proc/handle_fall_special(mob/living/carbon/human/H, turf/landing)
 	return FALSE
 
 // Called when using the shredding behavior.
-/datum/species/proc/can_shred(var/mob/living/carbon/human/H, var/ignore_intent)
+/datum/species/proc/can_shred(mob/living/carbon/human/H, ignore_intent)
 
 	if((!ignore_intent && H.a_intent != I_HURT) || H.pulling_punches)
 		return 0
@@ -439,10 +439,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	return 0
 
 // Called in life() when the mob has no client.
-/datum/species/proc/handle_npc(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_npc(mob/living/carbon/human/H)
 	return
 
-/datum/species/proc/handle_vision(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_vision(mob/living/carbon/human/H)
 	H.update_sight()
 	H.set_sight(H.sight|get_vision_flags(H)|H.equipment_vision_flags)
 
@@ -475,7 +475,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 	return 1
 
-/datum/species/proc/get_how_nearsighted(var/mob/living/carbon/human/H)
+/datum/species/proc/get_how_nearsighted(mob/living/carbon/human/H)
 	var/prescriptions = short_sighted
 	if(H.disabilities & NEARSIGHTED)
 		prescriptions += 7
@@ -499,7 +499,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 					light -= H.equipment_light_protection
 	return Clamp(max(prescriptions, light), 0, 7)
 
-/datum/species/proc/set_default_hair(var/mob/living/carbon/human/H)
+/datum/species/proc/set_default_hair(mob/living/carbon/human/H)
 	H.h_style = H.species.default_h_style
 	H.f_style = H.species.default_f_style
 	H.update_hair()
@@ -507,24 +507,24 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 /datum/species/proc/get_blood_name()
 	return "blood"
 
-/datum/species/proc/handle_death_check(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_death_check(mob/living/carbon/human/H)
 	return FALSE
 
 //Mostly for toasters
-/datum/species/proc/handle_limbs_setup(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_limbs_setup(mob/living/carbon/human/H)
 	return FALSE
 
 // Impliments different trails for species depending on if they're wearing shoes.
-/datum/species/proc/get_move_trail(var/mob/living/carbon/human/H)
+/datum/species/proc/get_move_trail(mob/living/carbon/human/H)
 	if( H.shoes || ( H.wear_suit && (H.wear_suit.body_parts_covered & FEET) ) )
 		return /obj/effect/decal/cleanable/blood/tracks/footprints
 	else
 		return move_trail
 
-/datum/species/proc/update_skin(var/mob/living/carbon/human/H)
+/datum/species/proc/update_skin(mob/living/carbon/human/H)
 	return
 
-/datum/species/proc/disarm_attackhand(var/mob/living/carbon/human/attacker, var/mob/living/carbon/human/target)
+/datum/species/proc/disarm_attackhand(mob/living/carbon/human/attacker, mob/living/carbon/human/target)
 
 	attacker.do_attack_animation(target)
 
@@ -585,7 +585,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	playsound(target.loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 	target.visible_message("<span class='warning'>[attacker] attempted to disarm \the [target]!</span>")
 
-/datum/species/proc/disfigure_msg(var/mob/living/carbon/human/H) //Used for determining the message a disfigured face has on examine. To add a unique message, just add this onto a specific species and change the "return" message.
+/datum/species/proc/disfigure_msg(mob/living/carbon/human/H) //Used for determining the message a disfigured face has on examine. To add a unique message, just add this onto a specific species and change the "return" message.
 	var/datum/gender/T = gender_datums[H.get_gender()]
 	return "<span class='danger'>[T.His] face is horribly mangled!</span>\n"
 
@@ -609,7 +609,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			L[hairstyle] = S
 	return L
 
-/datum/species/proc/get_facial_hair_styles(var/gender)
+/datum/species/proc/get_facial_hair_styles(gender)
 	var/list/facial_hair_styles_by_species = LAZYACCESS(facial_hair_styles, type)
 	if(!facial_hair_styles_by_species)
 		facial_hair_styles_by_species = list()

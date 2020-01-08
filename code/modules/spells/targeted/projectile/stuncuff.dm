@@ -21,7 +21,7 @@
 
 	hud_state = "wiz_cuff"
 
-/spell/targeted/projectile/dumbfire/stuncuff/prox_cast(var/list/targets, spell_holder)
+/spell/targeted/projectile/dumbfire/stuncuff/prox_cast(list/targets, spell_holder)
 	for(var/mob/living/M in targets)
 		if(istype(M,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
@@ -39,7 +39,7 @@
 
 	breakouttime = 300 //30 seconds
 
-/obj/item/weapon/handcuffs/wizard/dropped(var/mob/user)
+/obj/item/weapon/handcuffs/wizard/dropped(mob/user)
 	..()
 	qdel(src)
 

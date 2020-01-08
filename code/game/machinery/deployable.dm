@@ -66,7 +66,7 @@ for reference:
 	var/material/material
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
-/obj/structure/barricade/New(var/newloc, var/material_name)
+/obj/structure/barricade/New(newloc, material_name)
 	..(newloc)
 	if(!material_name)
 		material_name = MATERIAL_WOOD
@@ -249,7 +249,7 @@ for reference:
 			qdel(src)
 
 
-/obj/machinery/deployable/barrier/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/deployable/barrier/emag_act(remaining_charges, mob/user)
 	if (src.emagged == 0)
 		src.emagged = 1
 		src.req_access.Cut()

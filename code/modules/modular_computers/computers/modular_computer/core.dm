@@ -46,7 +46,7 @@
 /obj/item/modular_computer/proc/install_default_programs()
 	return 1
 
-/obj/item/modular_computer/proc/install_default_programs_by_job(var/mob/living/carbon/human/H)
+/obj/item/modular_computer/proc/install_default_programs_by_job(mob/living/carbon/human/H)
 	var/datum/job/jb = job_master.occupations_by_title[H.job]
 	if(!jb) return
 	for(var/prog_type in jb.software_on_spawn)
@@ -72,7 +72,7 @@
 		qdel(CH)
 	return ..()
 
-/obj/item/modular_computer/emag_act(var/remaining_charges, var/mob/user)
+/obj/item/modular_computer/emag_act(remaining_charges, mob/user)
 	if(computer_emagged)
 		to_chat(user, "\The [src] was already emagged.")
 		return NO_EMAG_ACT
@@ -101,7 +101,7 @@
 	else
 		overlays.Add(icon_state_menu)
 
-/obj/item/modular_computer/proc/turn_on(var/mob/user)
+/obj/item/modular_computer/proc/turn_on(mob/user)
 	if(bsod)
 		return
 	if(tesla_link)
@@ -127,7 +127,7 @@
 			to_chat(user, "You press the power button but \the [src] does not respond")
 
 // Relays kill program request to currently active program. Use this to quit current program.
-/obj/item/modular_computer/proc/kill_program(var/forced = 0)
+/obj/item/modular_computer/proc/kill_program(forced = 0)
 	if(active_program)
 		active_program.kill_program(forced)
 		active_program = null
@@ -137,18 +137,18 @@
 	update_icon()
 
 // Returns 0 for No Signal, 1 for Low Signal and 2 for Good Signal. 3 is for wired connection (always-on)
-/obj/item/modular_computer/proc/get_ntnet_status(var/specific_action = 0)
+/obj/item/modular_computer/proc/get_ntnet_status(specific_action = 0)
 	if(network_card)
 		return network_card.get_signal(specific_action)
 	else
 		return 0
 
-/obj/item/modular_computer/proc/add_log(var/text)
+/obj/item/modular_computer/proc/add_log(text)
 	if(!get_ntnet_status())
 		return 0
 	return ntnet_global.add_log(text, network_card)
 
-/obj/item/modular_computer/proc/shutdown_computer(var/loud = 1)
+/obj/item/modular_computer/proc/shutdown_computer(loud = 1)
 	kill_program(1)
 	for(var/datum/computer_file/program/P in idle_threads)
 		P.kill_program(1)
@@ -158,7 +158,7 @@
 	enabled = 0
 	update_icon()
 
-/obj/item/modular_computer/proc/enable_computer(var/mob/user = null)
+/obj/item/modular_computer/proc/enable_computer(mob/user = null)
 	enabled = 1
 	update_icon()
 
@@ -263,7 +263,7 @@
 		update_uis()
 
 // Used by camera monitor program
-/obj/item/modular_computer/check_eye(var/mob/user)
+/obj/item/modular_computer/check_eye(mob/user)
 	if(active_program)
 		return active_program.check_eye(user)
 	else

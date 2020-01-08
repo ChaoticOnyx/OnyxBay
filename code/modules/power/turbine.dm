@@ -173,7 +173,7 @@
 
 	return
 
-/obj/machinery/power/turbine/CanUseTopic(var/mob/user, href_list)
+/obj/machinery/power/turbine/CanUseTopic(mob/user, href_list)
 	if(!user.IsAdvancedToolUser())
 		to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
 		return min(..(), STATUS_UPDATE)
@@ -212,7 +212,7 @@
 	compressor = null
 	return ..()
 
-/obj/machinery/computer/turbine_computer/attack_hand(var/mob/user as mob)
+/obj/machinery/computer/turbine_computer/attack_hand(mob/user as mob)
 	user.machine = src
 	var/dat
 	if(src.compressor)

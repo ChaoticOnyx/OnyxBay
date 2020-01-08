@@ -14,7 +14,7 @@
 	var/fail_det_time = 5 // If you are clumsy and fail, you get this time.
 	var/arm_sound = 'sound/weapons/armbomb.ogg'
 
-/obj/item/weapon/grenade/proc/clown_check(var/mob/living/user)
+/obj/item/weapon/grenade/proc/clown_check(mob/living/user)
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, "<span class='warning'>Huh? How does this thing work?</span>")
 		det_time = fail_det_time

@@ -163,7 +163,7 @@
 
 	usr << browse(output, "window=watchwin;size=900x500")
 
-/datum/watchlist/proc/OnLogin(var/client/C)
+/datum/watchlist/proc/OnLogin(client/C)
 	if (!C)
 		return
 
@@ -176,7 +176,7 @@
 			if (player.watchlist_warn)
 				to_chat(C, "<span class=\"log_message\"><font color='red'><B>WATCHLIST: </B></font><span class='info'>[key_name_admin(player)] is playing - Reason: [player.watchlist_warn]</span></span>")
 
-/datum/watchlist/proc/AdminTopicProcess(var/datum/admins/source, var/list/href_list)
+/datum/watchlist/proc/AdminTopicProcess(datum/admins/source, list/href_list)
 	if(href_list["watchadd"])
 		var/target_ckey = locate(href_list["watchadd"])
 		Add(target_ckey)

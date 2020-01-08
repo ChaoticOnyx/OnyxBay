@@ -249,7 +249,7 @@
 	// Don't fall through and smack people with gripper, instead just no-op
 	return 0
 
-/obj/item/weapon/gripper/resolve_attackby(var/atom/target, var/mob/living/user, params)
+/obj/item/weapon/gripper/resolve_attackby(atom/target, mob/living/user, params)
 
 	//There's some weirdness with items being lost inside the arm. Trying to fix all cases. ~Z
 	if(!wrapped)
@@ -383,7 +383,7 @@
 	else
 		to_chat(user, "<span class='notice'>[src] can't interact with \the [target].</span>")
 
-/obj/item/weapon/gripper/proc/finish_using(var/atom/target, var/mob/living/user, params, force_holder, resolved)
+/obj/item/weapon/gripper/proc/finish_using(atom/target, mob/living/user, params, force_holder, resolved)
 	if(!resolved && wrapped && target)
 		wrapped.afterattack(target,user,1,params)
 

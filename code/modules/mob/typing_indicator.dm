@@ -12,7 +12,7 @@ I IS TYPIN'!'
 	plane = MOUSE_INVISIBLE_PLANE
 	layer = FLOAT_LAYER
 
-/atom/movable/overlay/typing_indicator/New(var/newloc, var/mob/master)
+/atom/movable/overlay/typing_indicator/New(newloc, mob/master)
 	..(newloc)
 	if(master.typing_indicator)
 		qdel(master.typing_indicator)

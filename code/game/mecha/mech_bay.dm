@@ -27,12 +27,12 @@
 
 	RefreshParts()
 
-/obj/machinery/mech_recharger/Crossed(var/obj/mecha/M)
+/obj/machinery/mech_recharger/Crossed(obj/mecha/M)
 	. = ..()
 	if(istype(M) && charging != M)
 		start_charging(M)
 
-/obj/machinery/mech_recharger/Uncrossed(var/obj/mecha/M)
+/obj/machinery/mech_recharger/Uncrossed(obj/mecha/M)
 	. = ..()
 	if(M == charging)
 		stop_charging()
@@ -97,7 +97,7 @@
 /obj/machinery/mech_recharger/proc/fully_repaired()
 	return charging && (charging.health == initial(charging.health))
 
-/obj/machinery/mech_recharger/attackby(var/obj/item/I, var/mob/user)
+/obj/machinery/mech_recharger/attackby(obj/item/I, mob/user)
 	if(default_deconstruction_screwdriver(user, I))
 		return
 	if(default_deconstruction_crowbar(user, I))
@@ -105,7 +105,7 @@
 	if(default_part_replacement(user, I))
 		return
 
-/obj/machinery/mech_recharger/proc/start_charging(var/obj/mecha/M)
+/obj/machinery/mech_recharger/proc/start_charging(obj/mecha/M)
 	if(stat & (NOPOWER | BROKEN))
 		M.occupant_message("<span class='warning'>Power port not responding. Terminating.</span>")
 		return

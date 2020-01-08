@@ -46,7 +46,7 @@
 		initial_loc.air_scrub_names -= id_tag
 	return ..()
 
-/obj/machinery/atmospherics/unary/vent_scrubber/update_icon(var/safety = 0)
+/obj/machinery/atmospherics/unary/vent_scrubber/update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 
@@ -177,7 +177,7 @@
 
 	return 1
 
-/obj/machinery/atmospherics/unary/vent_scrubber/hide(var/i) //to make the little pipe section invisible, the icon changes.
+/obj/machinery/atmospherics/unary/vent_scrubber/hide(i) //to make the little pipe section invisible, the icon changes.
 	update_icon()
 	update_underlays()
 
@@ -260,7 +260,7 @@
 	update_icon()
 	return
 
-/obj/machinery/atmospherics/unary/vent_scrubber/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+/obj/machinery/atmospherics/unary/vent_scrubber/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(isWrench(W))
 		if (!(stat & NOPOWER) && use_power)
 			to_chat(user, "<span class='warning'>You cannot unwrench \the [src], turn it off first.</span>")

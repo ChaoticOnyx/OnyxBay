@@ -47,7 +47,7 @@ var/global/nttransfer_uid = 0
 		if(!remote)
 			crash_download("Connection to remote server lost")
 
-/datum/computer_file/program/nttransfer/kill_program(var/forced = 0)
+/datum/computer_file/program/nttransfer/kill_program(forced = 0)
 	if(downloaded_file) // Client mode, clean up variables for next use
 		finalize_download()
 
@@ -64,7 +64,7 @@ var/global/nttransfer_uid = 0
 	finalize_download()
 
 //  Crashes the download and displays specific error message
-/datum/computer_file/program/nttransfer/proc/crash_download(var/message)
+/datum/computer_file/program/nttransfer/proc/crash_download(message)
 	error = message ? message : "An unknown error has occured during download"
 	finalize_download()
 
@@ -80,7 +80,7 @@ var/global/nttransfer_uid = 0
 /datum/nano_module/program/computer_nttransfer
 	name = "NTNet P2P Transfer Client"
 
-/datum/nano_module/program/computer_nttransfer/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/program/computer_nttransfer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(!program)
 		return
 	var/datum/computer_file/program/nttransfer/PRG = program

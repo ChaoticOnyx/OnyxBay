@@ -6,11 +6,11 @@
 	name = "Candidacy"
 	sort_order = 1
 
-/datum/category_item/player_setup_item/antagonism/candidacy/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/antagonism/candidacy/load_character(savefile/S)
 	from_file(S["be_special"],           pref.be_special_role)
 	from_file(S["never_be_special"],     pref.never_be_special_role)
 
-/datum/category_item/player_setup_item/antagonism/candidacy/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/antagonism/candidacy/save_character(savefile/S)
 	to_file(S["be_special"],             pref.be_special_role)
 	to_file(S["never_be_special"],       pref.never_be_special_role)
 
@@ -30,7 +30,7 @@
 		if(!(role in special_roles))
 			pref.never_be_special_role -= role
 
-/datum/category_item/player_setup_item/antagonism/candidacy/content(var/mob/user)
+/datum/category_item/player_setup_item/antagonism/candidacy/content(mob/user)
 	. = list()
 	. += "<b>Special Role Availability:</b><br>"
 	. += "<table>"
@@ -73,14 +73,14 @@
 	. += "</table>"
 	. = jointext(.,null)
 
-/datum/category_item/player_setup_item/proc/banned_from_ghost_role(var/mob, var/datum/ghosttrap/ghost_trap)
+/datum/category_item/player_setup_item/proc/banned_from_ghost_role(mob, datum/ghosttrap/ghost_trap)
 	for(var/ban_type in ghost_trap.ban_checks)
 		var/banned = jobban_isbanned(mob, ban_type)
 		if(banned)
 			return banned
 	return FALSE
 
-/datum/category_item/player_setup_item/antagonism/candidacy/OnTopic(var/href,var/list/href_list, var/mob/user)
+/datum/category_item/player_setup_item/antagonism/candidacy/OnTopic(href,list/href_list, mob/user)
 	if(href_list["add_special"])
 		if(!(href_list["add_special"] in valid_special_roles()))
 			return TOPIC_HANDLED
@@ -117,7 +117,7 @@
 
 	return private_valid_special_roles
 
-/client/proc/wishes_to_be_role(var/role)
+/client/proc/wishes_to_be_role(role)
 	if(!prefs)
 		return FALSE
 	if(role in prefs.be_special_role)

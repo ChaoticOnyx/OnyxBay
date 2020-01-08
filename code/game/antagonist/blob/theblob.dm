@@ -74,7 +74,7 @@ var/list/blob_overminds = list()
 	update_icon()
 	return
 
-/obj/effect/blob/bullet_act(var/obj/item/projectile/Proj)
+/obj/effect/blob/bullet_act(obj/item/projectile/Proj)
 	..()
 
 	switch(Proj.damage_type)
@@ -226,7 +226,7 @@ var/list/blob_overminds = list()
 
 		overlays += image(icon,hurt_icon)
 
-/obj/effect/blob/proc/change_to(var/type, var/mob/blob/M = null, var/special = FALSE)
+/obj/effect/blob/proc/change_to(type, mob/blob/M = null, special = FALSE)
 	if (!ispath(type))
 		error("[type] is an invalid type for the blob.")
 	if (special) //Send additional information to the New()
@@ -245,7 +245,7 @@ var/list/blob_overminds = list()
 	health = 21
 	layer = BLOB_BASE_LAYER
 
-/obj/effect/blob/normal/update_icon(var/spawnend = 0)
+/obj/effect/blob/normal/update_icon(spawnend = 0)
 	spawn(1)
 		overlays.len = 0
 		underlays.len = 0

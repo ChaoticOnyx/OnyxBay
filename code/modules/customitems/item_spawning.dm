@@ -33,7 +33,7 @@
 	var/kit_icon
 	var/additional_data
 
-/datum/custom_item/proc/is_valid(var/checker)
+/datum/custom_item/proc/is_valid(checker)
 	if(!item_path)
 		to_chat(checker, "<span class='warning'>The given item path, [item_path_as_string], is invalid and does not exist.</span>")
 		return FALSE
@@ -42,12 +42,12 @@
 		return FALSE
 	return TRUE
 
-/datum/custom_item/proc/spawn_item(var/newloc)
+/datum/custom_item/proc/spawn_item(newloc)
 	var/obj/item/citem = new item_path(newloc)
 	apply_to_item(citem)
 	return citem
 
-/datum/custom_item/proc/apply_to_item(var/obj/item/item)
+/datum/custom_item/proc/apply_to_item(obj/item/item)
 	if(!item)
 		return
 	if(name)
@@ -93,7 +93,7 @@
 
 	return item
 
-/datum/custom_item/proc/apply_inherit_inhands(var/obj/item/item)
+/datum/custom_item/proc/apply_inherit_inhands(obj/item/item)
 	var/list/new_item_icons = list()
 	var/list/new_item_state_slots = list()
 
@@ -113,7 +113,7 @@
 	item.item_icons = new_item_icons
 
 //this has to mirror the way update_inv_*_hand() selects the state
-/datum/custom_item/proc/get_state(var/obj/item/item, var/slot_str, var/hand_str)
+/datum/custom_item/proc/get_state(obj/item/item, slot_str, hand_str)
 	var/t_state
 	if(item.item_state_slots && item.item_state_slots[slot_str])
 		t_state = item.item_state_slots[slot_str]
@@ -126,7 +126,7 @@
 	return t_state
 
 //this has to mirror the way update_inv_*_hand() selects the icon
-/datum/custom_item/proc/get_icon(var/obj/item/item, var/slot_str, var/icon/hand_icon)
+/datum/custom_item/proc/get_icon(obj/item/item, slot_str, icon/hand_icon)
 	var/icon/t_icon
 	if(item.icon_override)
 		t_icon = item.icon_override
@@ -242,7 +242,7 @@
 			place_custom_item(M,citem)
 
 // Places the item on the target mob.
-/proc/place_custom_item(mob/living/carbon/human/M, var/datum/custom_item/citem)
+/proc/place_custom_item(mob/living/carbon/human/M, datum/custom_item/citem)
 
 	if(!citem) return
 	var/obj/item/newitem = citem.spawn_item(M.loc)

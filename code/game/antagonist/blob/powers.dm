@@ -1,6 +1,6 @@
 // Point controlling procs
 
-/mob/blob/proc/can_buy(var/cost = 15)
+/mob/blob/proc/can_buy(cost = 15)
 	if (blob_points < cost)
 		to_chat(src, "<span class='warning'>You cannot afford this.</span>")
 		return 0
@@ -77,7 +77,7 @@
 			to_chat(M, "<span class='blob'>[message]</span>") //Only sends messages to things on its own z level
 			log_say(src, "used blob telepathy to convey \"[message]\"")
 
-/mob/blob/proc/create_shield(var/turf/T)
+/mob/blob/proc/create_shield(turf/T)
 	var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)
 
 	if (!B)//We are on a blob
@@ -337,7 +337,7 @@
 	var/turf/T = get_turf(src)
 	rally_spores(T)
 
-/mob/blob/proc/rally_spores(var/turf/T)
+/mob/blob/proc/rally_spores(turf/T)
 	if(!can_buy(BLOBRALCOST))
 		return
 

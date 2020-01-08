@@ -80,7 +80,7 @@
 	var/max_equip = 3
 	var/datum/events/events
 
-/obj/mecha/drain_power(var/drain_check)
+/obj/mecha/drain_power(drain_check)
 
 	if(drain_check)
 		return 1
@@ -201,7 +201,7 @@
 		return 1
 	return 0
 
-/obj/mecha/proc/enter_after(delay as num, var/mob/user as mob, var/numticks = 5)
+/obj/mecha/proc/enter_after(delay as num, mob/user as mob, numticks = 5)
 	var/delayfraction = delay/numticks
 
 	var/turf/T = user.loc
@@ -319,7 +319,7 @@
 		return 1
 	return 0
 
-/obj/mecha/contents_nano_distance(var/src_object, var/mob/living/user)
+/obj/mecha/contents_nano_distance(src_object, mob/living/user)
 	. = user.shared_living_nano_distance(src_object) //allow them to interact with anything they can interact with normally.
 	if(. != STATUS_INTERACTIVE)
 		//Allow interaction with the mecha or anything that is part of the mecha
@@ -406,7 +406,7 @@
 		playsound(src,'sound/mecha/mechstep.ogg',40,1)
 	return result
 
-/obj/mecha/Bump(var/atom/obstacle)
+/obj/mecha/Bump(atom/obstacle)
 //	src.inertia_dir = null
 	if(istype(obstacle, /obj))
 		var/obj/O = obstacle
@@ -429,7 +429,7 @@
 ////////  Internal damage  ////////
 ///////////////////////////////////
 
-/obj/mecha/proc/check_for_internal_damage(var/list/possible_int_damage,var/ignore_threshold=null)
+/obj/mecha/proc/check_for_internal_damage(list/possible_int_damage,ignore_threshold=null)
 	if(!islist(possible_int_damage) || isemptylist(possible_int_damage)) return
 	if(prob(20))
 		if(ignore_threshold || src.health*100/initial(src.health)<src.internal_damage_threshold)
@@ -543,7 +543,7 @@
 			B.set_ready_state(0)
 			B.do_after_cooldown()
 
-/obj/mecha/airlock_crush(var/crush_damage)
+/obj/mecha/airlock_crush(crush_damage)
 	..()
 	hit_damage(crush_damage, is_melee=1)
 	check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST))
@@ -608,7 +608,7 @@
 			src.check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST))
 	return
 
-/obj/mecha/bullet_act(var/obj/item/projectile/Proj)
+/obj/mecha/bullet_act(obj/item/projectile/Proj)
 	if(Proj.damage_type == PAIN && !(src.r_deflect_coeff > 1))
 		use_power(Proj.agony * 5)
 
@@ -836,7 +836,7 @@
 	return
 
 /*
-/obj/mecha/attack_ai(var/mob/living/silicon/ai/user as mob)
+/obj/mecha/attack_ai(mob/living/silicon/ai/user as mob)
 	if(!istype(user, /mob/living/silicon/ai))
 		return
 	var/output = {"<b>Assume direct control over [src]?</b>
@@ -1049,7 +1049,7 @@
 		to_chat(usr, "You stop entering the exosuit.")
 	return
 
-/obj/mecha/proc/moved_inside(var/mob/living/carbon/human/H as mob)
+/obj/mecha/proc/moved_inside(mob/living/carbon/human/H as mob)
 	if(H && H.client && H in range(1))
 		H.reset_view(src)
 		/*
@@ -1700,7 +1700,7 @@
 		icon_state = initial(icon_state)
 	return icon_state
 
-/obj/mecha/attack_generic(var/mob/user, var/damage, var/attack_message)
+/obj/mecha/attack_generic(mob/user, damage, attack_message)
 
 	if(!damage)
 		return 0
@@ -1721,7 +1721,7 @@
 		admin_attacker_log(user, "attacked \the [src] but rebounded")
 	return 1
 
-/obj/mecha/onDropInto(var/atom/movable/AM)
+/obj/mecha/onDropInto(atom/movable/AM)
 	dropped_items |= AM
 
 //////////////////////////////////////////

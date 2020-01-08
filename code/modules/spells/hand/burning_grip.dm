@@ -12,14 +12,14 @@
 	compatible_targets = list(/mob/living/carbon/human)
 	level_max = list(Sp_TOTAL = 0, Sp_SPEED = 0, Sp_POWER = 0)
 
-/spell/hand/burning_grip/valid_target(var/mob/living/L, var/mob/user)
+/spell/hand/burning_grip/valid_target(mob/living/L, mob/user)
 	if(!..())
 		return 0
 	if(!L.l_hand && !L.r_hand)
 		return 0
 	return 1
 
-/spell/hand/burning_grip/cast_hand(var/mob/living/carbon/human/H, var/mob/user)
+/spell/hand/burning_grip/cast_hand(mob/living/carbon/human/H, mob/user)
 	var/list/targets = list()
 	if(H.l_hand)
 		targets += BP_L_HAND

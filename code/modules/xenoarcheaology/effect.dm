@@ -10,7 +10,7 @@
 	var/artifact_id = ""
 	var/effect_type = 0
 
-/datum/artifact_effect/New(var/atom/location)
+/datum/artifact_effect/New(atom/location)
 	..()
 	holder = location
 	effect = rand(0, MAX_EFFECT)
@@ -34,7 +34,7 @@
 			chargelevelmax = rand(20, 120)
 			effectrange = rand(20, 200)
 
-/datum/artifact_effect/proc/ToggleActivate(var/reveal_toggle = 1)
+/datum/artifact_effect/proc/ToggleActivate(reveal_toggle = 1)
 	//so that other stuff happens first
 	spawn(0)
 		if(activated)
@@ -55,9 +55,9 @@
 				toplevelholder = toplevelholder.loc
 			toplevelholder.visible_message("<span class='warning'>\icon[toplevelholder] [toplevelholder] [display_msg]</span>")
 
-/datum/artifact_effect/proc/DoEffectTouch(var/mob/user)
-/datum/artifact_effect/proc/DoEffectAura(var/atom/holder)
-/datum/artifact_effect/proc/DoEffectPulse(var/atom/holder)
+/datum/artifact_effect/proc/DoEffectTouch(mob/user)
+/datum/artifact_effect/proc/DoEffectAura(atom/holder)
+/datum/artifact_effect/proc/DoEffectPulse(atom/holder)
 /datum/artifact_effect/proc/UpdateMove()
 
 /datum/artifact_effect/proc/process()
@@ -116,7 +116,7 @@
 			. += " Unable to determine any data about activation trigger."
 
 //returns 0..1, with 1 being no protection and 0 being fully protected
-/proc/GetAnomalySusceptibility(var/mob/living/carbon/human/H)
+/proc/GetAnomalySusceptibility(mob/living/carbon/human/H)
 	if(!istype(H))
 		return 1
 

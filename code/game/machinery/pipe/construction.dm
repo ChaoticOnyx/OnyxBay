@@ -18,7 +18,7 @@ Buildable meters
 	w_class = ITEM_SIZE_NORMAL
 	level = 2
 
-/obj/item/pipe/New(var/loc, var/pipe_type as num, var/dir as num, var/obj/machinery/atmospherics/make_from = null)
+/obj/item/pipe/New(loc, pipe_type as num, dir as num, obj/machinery/atmospherics/make_from = null)
 	..()
 	if (make_from)
 		src.set_dir(make_from.dir)
@@ -422,7 +422,7 @@ Buildable meters
 /obj/item/pipe/attack_self(mob/user as mob)
 	return rotate()
 
-/obj/item/pipe/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+/obj/item/pipe/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
 	//*
 	if(!isWrench(W))
@@ -1285,7 +1285,7 @@ Buildable meters
 	item_state = "buildpipe"
 	w_class = ITEM_SIZE_LARGE
 
-/obj/item/pipe_meter/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+/obj/item/pipe_meter/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
 
 	if(!isWrench(W))

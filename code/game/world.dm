@@ -495,7 +495,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		return GLOB.prometheus_metrics.collect()
 
 
-/world/Reboot(var/reason)
+/world/Reboot(reason)
 	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
 
 	Master.Shutdown()
@@ -515,7 +515,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	callHook("shutdown")
 	return ..()
 
-/world/proc/save_mode(var/the_mode)
+/world/proc/save_mode(the_mode)
 	var/F = file("data/mode.txt")
 	fdel(F)
 	F << the_mode

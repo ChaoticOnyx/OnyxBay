@@ -17,7 +17,7 @@
 	phoron_guard = 1
 	var/eyes_shielded
 
-/obj/item/organ/internal/eyes/nabber/additional_flash_effects(var/intensity)
+/obj/item/organ/internal/eyes/nabber/additional_flash_effects(intensity)
 	if(is_usable())
 		take_damage(max(0, 6 * (intensity)))
 		return 1

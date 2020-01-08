@@ -14,7 +14,7 @@
  */
 
 // Run all strings to be used in an SQL query through this proc first to properly escape out injection attempts.
-/proc/sanitizeSQL(var/t as text)
+/proc/sanitizeSQL(t as text)
 	var/sqltext = dbcon.Quote(t);
 	return copytext(sqltext, 2, lentext(sqltext));//Quote() adds quotes around input, we already do that
 
@@ -24,7 +24,7 @@
 
 //Used for preprocessing entered text
 //Added in an additional check to alert players if input is too long
-/proc/sanitize(var/input, var/max_length = MAX_MESSAGE_LEN, var/encode = 1, var/trim = 1, var/extra = 1)
+/proc/sanitize(input, max_length = MAX_MESSAGE_LEN, encode = 1, trim = 1, extra = 1)
 	if(!input)
 		return
 
@@ -56,7 +56,7 @@
 
 	return input
 
-/proc/sanitizeFileName(var/input)
+/proc/sanitizeFileName(input)
 	input = replace_characters(input, list(" "="_", "\\" = "_", "\""="'", "/" = "_", ":" = "_", "*" = "_", "?" = "_", "|" = "_", "<" = "_", ">" = "_"))
 	if(findtext(input,"_") == 1)
 		input = copytext(input, 2)
@@ -66,7 +66,7 @@
 //Best used for sanitize object names, window titles.
 //If you have a problem with sanitize() in chat, when quotes and >, < are displayed as html entites -
 //this is a problem of double-encode(when & becomes &amp;), use sanitize() with encode=0, but not the sanitizeSafe()!
-/proc/sanitizeSafe(var/input, var/max_length = MAX_MESSAGE_LEN, var/encode = 1, var/trim = 1, var/extra = 1)
+/proc/sanitizeSafe(input, max_length = MAX_MESSAGE_LEN, encode = 1, trim = 1, extra = 1)
 	return sanitize(replace_characters(input, list(">"=" ","<"=" ", "\""="'")), max_length, encode, trim, extra)
 
 //Removes a few problematic characters
@@ -82,7 +82,7 @@
 	return sanitize_simple(t, list("\n"="", "\t"="", "/"="", "\\"="", "?"="", "%"="", "*"="", ":"="", "|"="", "\""="", "<"="", ">"=""))
 
 //Filters out undesirable characters from names
-/proc/sanitizeName(var/input, var/max_length = MAX_NAME_LEN, var/allow_numbers = 0, var/force_first_letter_uppercase = TRUE)
+/proc/sanitizeName(input, max_length = MAX_NAME_LEN, allow_numbers = 0, force_first_letter_uppercase = TRUE)
 	if(!input || length(input) > max_length)
 		return //Rejects the input if it is null or if it is longer then the max length allowed
 
@@ -148,7 +148,7 @@
 	return output
 
 //Returns null if there is any bad text in the string
-/proc/reject_bad_text(var/text, var/max_length=512)
+/proc/reject_bad_text(text, max_length=512)
 	if(length(text) > max_length)	return			//message too long
 	var/non_whitespace = 0
 	for(var/i=1, i<=length(text), i++)
@@ -162,7 +162,7 @@
 
 
 //Old variant. Haven't dared to replace in some places.
-/proc/sanitize_old(var/t,var/list/repl_chars = list("\n"="#","\t"="#"))
+/proc/sanitize_old(t,list/repl_chars = list("\n"="#","\t"="#"))
 	return rhtml_encode(replace_characters(t,repl_chars))
 
 /*
@@ -202,7 +202,7 @@
  * Text modification
  */
 
-/proc/replace_characters(var/t,var/list/repl_chars)
+/proc/replace_characters(t,list/repl_chars)
 	for(var/char in repl_chars)
 		t = replacetext(t, char, repl_chars[char])
 	return t
@@ -244,12 +244,12 @@
 	return trim_left(trim_right(text))
 
 //Returns a string with the first element of the string capitalized.
-/proc/capitalize(var/t as text)
+/proc/capitalize(t as text)
 	return ruppertext(copytext(t, 1, 2)) + copytext(t, 2)
 
 //This proc strips html properly, remove < > and all text between
 //for complete text sanitizing should be used sanitize()
-/proc/strip_html_properly(var/input)
+/proc/strip_html_properly(input)
 	if(!input)
 		return
 	var/opentag = 1 //These store the position of < and > respectively.
@@ -275,7 +275,7 @@
 //This proc fills in all spaces with the "replace" var (* by default) with whatever
 //is in the other string at the same spot (assuming it is not a replace char).
 //This is used for fingerprints
-/proc/stringmerge(var/text,var/compare,replace = "*")
+/proc/stringmerge(text,compare,replace = "*")
 	var/newtext = text
 	if(lentext(text) != lentext(compare))
 		return 0
@@ -295,7 +295,7 @@
 
 //This proc returns the number of chars of the string that is the character
 //This is used for detective work to determine fingerprint completion.
-/proc/stringpercent(var/text,character = "*")
+/proc/stringpercent(text,character = "*")
 	if(!text || !character)
 		return 0
 	var/count = 0
@@ -305,7 +305,7 @@
 			count++
 	return count
 
-/proc/reverse_text(var/text = "")
+/proc/reverse_text(text = "")
 	var/new_text = ""
 	for(var/i = length(text); i > 0; i--)
 		new_text += copytext(text, i, i+1)
@@ -313,7 +313,7 @@
 
 //Used in preferences' SetFlavorText and human's set_flavor verb
 //Previews a string of len or less length
-proc/TextPreview(var/string,var/len=40)
+proc/TextPreview(string,len=40)
 	if(lentext(string) <= len)
 		if(!lentext(string))
 			return "\[...\]"
@@ -323,19 +323,19 @@ proc/TextPreview(var/string,var/len=40)
 		return "[copytext_preserve_html(string, 1, 37)]..."
 
 //alternative copytext() for encoded text, doesn't break html entities (&#34; and other)
-/proc/copytext_preserve_html(var/text, var/first, var/last)
+/proc/copytext_preserve_html(text, first, last)
 	return rhtml_encode(copytext(html_decode(text), first, last))
 
 //For generating neat chat tag-images
 //The icon var could be local in the proc, but it's a waste of resources
 //	to always create it and then throw it out.
 /var/icon/text_tag_icons = new('./icons/chattags.dmi')
-/proc/create_text_tag(var/tagname, var/tagdesc = tagname, var/client/C = null)
+/proc/create_text_tag(tagname, tagdesc = tagname, client/C = null)
 	if(!(C && C.get_preference_value(/datum/client_preference/chat_tags) == GLOB.PREF_SHOW))
 		return tagdesc
 	return icon2html(icon(text_tag_icons, tagname), world, realsize=TRUE, class="text_tag")
 
-/proc/contains_az09(var/input)
+/proc/contains_az09(input)
 	for(var/i=1, i<=length(input), i++)
 		var/ascii_char = text2ascii(input,i)
 		switch(ascii_char)
@@ -351,7 +351,7 @@ proc/TextPreview(var/string,var/len=40)
 				return 1
 	return 0
 
-/proc/generateRandomString(var/length)
+/proc/generateRandomString(length)
 	. = list()
 	for(var/a in 1 to length)
 		var/letter = rand(33,126)
@@ -474,7 +474,7 @@ proc/TextPreview(var/string,var/len=40)
 	if(rest)
 		. += .(rest)
 
-/proc/deep_string_equals(var/A, var/B)
+/proc/deep_string_equals(A, B)
 	if (lentext(A) != lentext(B))
 		return FALSE
 	for (var/i = 1 to lentext(A))

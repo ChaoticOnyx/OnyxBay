@@ -52,7 +52,7 @@
 	var/datum/wifi/receiver/button/door/wifi_receiver
 	var/obj/item/weapon/airlock_brace/brace = null
 
-/obj/machinery/door/airlock/attack_generic(var/mob/user, var/damage)
+/obj/machinery/door/airlock/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
 		if(damage >= 10)
 			if(src.density)
@@ -549,7 +549,7 @@ About the new airlock wires panel:
 		return 1
 	return 0
 
-/obj/machinery/door/airlock/proc/isWireCut(var/wireIndex)
+/obj/machinery/door/airlock/proc/isWireCut(wireIndex)
 	// You can find the wires in the datum folder.
 	return wires.IsIndexCut(wireIndex)
 
@@ -618,7 +618,7 @@ About the new airlock wires panel:
 
 	update_icon()
 
-/obj/machinery/door/airlock/proc/electrify(var/duration, var/feedback = 0)
+/obj/machinery/door/airlock/proc/electrify(duration, feedback = 0)
 	var/message = ""
 	if(src.isWireCut(AIRLOCK_WIRE_ELECTRIFY) && arePowerSystemsOn())
 		message = text("The electrification wire is cut - Door permanently electrified.")
@@ -645,7 +645,7 @@ About the new airlock wires panel:
 	if(.)
 		playsound(src, get_sfx("spark"), 30, 0, -6)
 
-/obj/machinery/door/airlock/proc/set_idscan(var/activate, var/feedback = 0)
+/obj/machinery/door/airlock/proc/set_idscan(activate, feedback = 0)
 	var/message = ""
 	if(src.isWireCut(AIRLOCK_WIRE_IDSCAN))
 		message = "The IdScan wire is cut - IdScan feature permanently disabled."
@@ -659,7 +659,7 @@ About the new airlock wires panel:
 	if(feedback && message)
 		to_chat(usr, message)
 
-/obj/machinery/door/airlock/proc/set_safeties(var/activate, var/feedback = 0)
+/obj/machinery/door/airlock/proc/set_safeties(activate, feedback = 0)
 	var/message = ""
 	// Safeties!  We don't need no stinking safeties!
 	if (src.isWireCut(AIRLOCK_WIRE_SAFETY))
@@ -755,7 +755,7 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/attack_ai(mob/user as mob)
 	ui_interact(user)
 
-/obj/machinery/door/airlock/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/obj/machinery/door/airlock/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/data[0]
 
 	data["main_power_loss"]		= round(main_power_lost_until 	> 0 ? max(main_power_lost_until - world.time,	0) / 10 : main_power_lost_until,	1)
@@ -851,7 +851,7 @@ About the new airlock wires panel:
 		..(user)
 	return
 
-/obj/machinery/door/airlock/CanUseTopic(var/mob/user)
+/obj/machinery/door/airlock/CanUseTopic(mob/user)
 	if(operating < 0) //emagged
 		to_chat(user, "<span class='warning'>Unable to interface: Internal error.</span>")
 		return STATUS_CLOSE
@@ -926,7 +926,7 @@ About the new airlock wires panel:
 	return 1
 
 //returns 1 on success, 0 on failure
-/obj/machinery/door/airlock/proc/cut_bolts(item, var/mob/user)
+/obj/machinery/door/airlock/proc/cut_bolts(item, mob/user)
 	var/cut_delay = (15 SECONDS)
 	var/cut_verb
 	var/cut_sound
@@ -1002,7 +1002,7 @@ About the new airlock wires panel:
 			src.unlock(1) //force it
 		return 1
 
-/obj/machinery/door/airlock/attackby(var/obj/item/C, var/mob/user)
+/obj/machinery/door/airlock/attackby(obj/item/C, mob/user)
 	// Brace is considered installed on the airlock, so interacting with it is protected from electrification.
 	if(brace && (istype(C.GetIdCard(), /obj/item/weapon/card/id/) || istype(C, /obj/item/weapon/crowbar/brace_jack)))
 		return brace.attackby(C, user)
@@ -1120,7 +1120,7 @@ About the new airlock wires panel:
 		..()
 	return
 
-/obj/machinery/door/airlock/deconstruct(mob/user, var/moved = FALSE)
+/obj/machinery/door/airlock/deconstruct(mob/user, moved = FALSE)
 	var/obj/structure/door_assembly/da = new assembly_type(src.loc)
 	if (istype(da, /obj/structure/door_assembly/multi_tile))
 		da.set_dir(src.dir)
@@ -1168,7 +1168,7 @@ About the new airlock wires panel:
 		s.set_up(5, 1, src)
 		s.start()
 
-/obj/machinery/door/airlock/open(var/forced=0)
+/obj/machinery/door/airlock/open(forced=0)
 	if(!can_open(forced))
 		return 0
 	use_power_oneoff(360)	//360 W seems much more appropriate for an actuator moving an industrial door capable of crushing people
@@ -1189,7 +1189,7 @@ About the new airlock wires panel:
 		src.closeOther.close()
 	return ..()
 
-/obj/machinery/door/airlock/can_open(var/forced=0)
+/obj/machinery/door/airlock/can_open(forced=0)
 	if(brace)
 		return 0
 
@@ -1201,7 +1201,7 @@ About the new airlock wires panel:
 		return 0
 	return ..()
 
-/obj/machinery/door/airlock/can_close(var/forced=0)
+/obj/machinery/door/airlock/can_close(forced=0)
 	if(locked || welded)
 		return 0
 
@@ -1212,7 +1212,7 @@ About the new airlock wires panel:
 
 	return ..()
 
-/obj/machinery/door/airlock/close(var/forced=0)
+/obj/machinery/door/airlock/close(forced=0)
 	if(!can_close(forced))
 		return 0
 
@@ -1240,7 +1240,7 @@ About the new airlock wires panel:
 
 	..()
 
-/obj/machinery/door/airlock/proc/lock(var/forced=0)
+/obj/machinery/door/airlock/proc/lock(forced=0)
 	if(locked)
 		return 0
 
@@ -1254,7 +1254,7 @@ About the new airlock wires panel:
 	update_icon()
 	return 1
 
-/obj/machinery/door/airlock/proc/unlock(var/forced=0)
+/obj/machinery/door/airlock/proc/unlock(forced=0)
 	if(!src.locked)
 		return
 
@@ -1273,7 +1273,7 @@ About the new airlock wires panel:
 		return 0
 	return ..(M)
 
-/obj/machinery/door/airlock/New(var/newloc, var/obj/structure/door_assembly/assembly=null)
+/obj/machinery/door/airlock/New(newloc, obj/structure/door_assembly/assembly=null)
 	..()
 
 	//if assembly is given, create the new door from the assembly
@@ -1353,7 +1353,7 @@ About the new airlock wires panel:
 		electronics.conf_access = src.req_one_access
 		electronics.one_access = 1
 
-/obj/machinery/door/airlock/emp_act(var/severity)
+/obj/machinery/door/airlock/emp_act(severity)
 	if(prob(20/severity))
 		spawn(0)
 			open()
@@ -1377,7 +1377,7 @@ About the new airlock wires panel:
 	return
 
 // Braces can act as an extra layer of armor - they will take damage first.
-/obj/machinery/door/airlock/take_damage(var/amount)
+/obj/machinery/door/airlock/take_damage(amount)
 	if(brace)
 		brace.take_damage(amount)
 	else

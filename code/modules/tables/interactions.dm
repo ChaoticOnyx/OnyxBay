@@ -76,7 +76,7 @@
 	return
 
 
-/obj/structure/table/attackby(obj/item/W, mob/user, var/click_params)
+/obj/structure/table/attackby(obj/item/W, mob/user, click_params)
 	if (!W) return
 
 	// Handle harm intent grabbing/tabling.

@@ -41,7 +41,7 @@
 			qdel(src)
 			F:annihilation(F.fuel)
 
-/obj/item/weapon/fuel/antiH/proc/annihilation(var/mass)
+/obj/item/weapon/fuel/antiH/proc/annihilation(mass)
 
 	var/strength = convert2energy(mass)
 

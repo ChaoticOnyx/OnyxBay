@@ -145,7 +145,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	..()
 
 // Used in auto linking
-/obj/machinery/telecomms/proc/add_link(var/obj/machinery/telecomms/T)
+/obj/machinery/telecomms/proc/add_link(obj/machinery/telecomms/T)
 	var/turf/position = get_turf(src)
 	var/turf/T_position = get_turf(T)
 	if((position.z == T_position.z) || (src.long_range_link && T.long_range_link))
@@ -353,7 +353,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	var/broadcasting = 1
 	var/receiving = 1
 
-/obj/machinery/telecomms/relay/forceMove(var/newloc)
+/obj/machinery/telecomms/relay/forceMove(newloc)
 	. = ..(newloc)
 	listening_levels = GetConnectedZlevels(z)
 	update_power()
@@ -601,7 +601,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 				relay_information(signal, /obj/machinery/telecomms/broadcaster)
 
 
-/obj/machinery/telecomms/server/proc/setcode(var/t)
+/obj/machinery/telecomms/server/proc/setcode(t)
 	if(t)
 		if(istext(t))
 			rawcode = t
@@ -620,7 +620,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 				logs--
 				break
 
-/obj/machinery/telecomms/server/proc/add_entry(var/content, var/input)
+/obj/machinery/telecomms/server/proc/add_entry(content, input)
 	var/datum/comm_log_entry/log = new
 	var/identifier = num2text( rand(-1000,1000) + world.time )
 	log.name = "[input] ([md5(identifier)])"

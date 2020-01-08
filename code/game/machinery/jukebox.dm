@@ -4,7 +4,7 @@ datum/track
 	var/title
 	var/sound
 
-datum/track/New(var/title_name, var/audio)
+datum/track/New(title_name, audio)
 	title = title_name
 	sound = audio
 
@@ -170,7 +170,7 @@ datum/track/New(var/title_name, var/audio)
 /obj/machinery/media/jukebox/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
 
-/obj/machinery/media/jukebox/attack_hand(var/mob/user as mob)
+/obj/machinery/media/jukebox/attack_hand(mob/user as mob)
 	interact(user)
 
 /obj/machinery/media/jukebox/proc/explode()
@@ -194,7 +194,7 @@ datum/track/New(var/title_name, var/audio)
 		return
 	return ..()
 
-/obj/machinery/media/jukebox/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/media/jukebox/emag_act(remaining_charges, mob/user)
 	if(!emagged)
 		emagged = 1
 		StopPlaying()
@@ -221,7 +221,7 @@ datum/track/New(var/title_name, var/audio)
 	update_use_power(POWER_USE_ACTIVE)
 	update_icon()
 
-/obj/machinery/media/jukebox/proc/AdjustVolume(var/new_volume)
+/obj/machinery/media/jukebox/proc/AdjustVolume(new_volume)
 	volume = Clamp(new_volume, 0, 50)
 	if(sound_token)
 		sound_token.SetVolume(volume)

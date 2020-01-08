@@ -14,7 +14,7 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
-/obj/item/weapon/melee/cultblade/attack(mob/living/M, mob/living/user, var/target_zone)
+/obj/item/weapon/melee/cultblade/attack(mob/living/M, mob/living/user, target_zone)
 	if(iscultist(user) || (user.mind in GLOB.godcult.current_antagonists))
 		return ..()
 

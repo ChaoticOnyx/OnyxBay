@@ -10,7 +10,7 @@
 	idle_power_usage = 10
 	active_power_usage = 2000
 
-obj/machinery/seed_extractor/attackby(var/obj/item/O as obj, var/mob/user as mob)
+obj/machinery/seed_extractor/attackby(obj/item/O as obj, mob/user as mob)
 
 	// Fruits and vegetables.
 	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown) || istype(O, /obj/item/weapon/grown))

@@ -157,7 +157,7 @@
 	charge_meter = 0
 	clumsy_unaffected = 1
 
-/obj/item/weapon/gun/energy/staff/special_check(var/mob/user)
+/obj/item/weapon/gun/energy/staff/special_check(mob/user)
 	if((user.mind && !GLOB.wizards.is_antagonist(user.mind)))
 		to_chat(usr, "<span class='warning'>You focus your mind on \the [src], but nothing happens!</span>")
 		return 0

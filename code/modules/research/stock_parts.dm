@@ -74,12 +74,12 @@
 	. = ..()
 	max_charge *= rating
 
-/obj/item/weapon/stock_parts/capacitor/proc/charge(var/amount)
+/obj/item/weapon/stock_parts/capacitor/proc/charge(amount)
 	charge += amount
 	if(charge > max_charge)
 		charge = max_charge
 
-/obj/item/weapon/stock_parts/capacitor/proc/use(var/amount)
+/obj/item/weapon/stock_parts/capacitor/proc/use(amount)
 	if(charge)
 		charge -= amount
 		if(charge < 0)
