@@ -28,8 +28,8 @@
 		if (istype(target, /mob/living/carbon/human))
 			var/mob/living/carbon/human/human_target = target
 			switch(rand(1,100))
-				if (1,10)  human_target.adjustBrainLoss(5)
-				if (1,100) human_target.heal_overall_damage(20,20)
+				if (1 to 10)  human_target.adjustBrainLoss(5)
+				if (1 to 100) human_target.heal_overall_damage(20,20)
 		else
 			if(target.reagents && target.reagents.has_reagent(/datum/reagent/water)) //blesses all the water in the holder
 				to_chat(user, "<span class='notice'>You bless \the [target].</span>") // I wish it was this easy in nethack
