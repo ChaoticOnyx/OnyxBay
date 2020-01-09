@@ -65,7 +65,7 @@
 				if(4)
 					sender = pick("Buy Dr. Maxman","Having dysfuctional troubles?")
 					message = pick("DR MAXMAN: REAL Doctors, REAL Science, REAL Results!",\
-					"Dr. Maxman was created by George Acuilar, M.D, a [boss_short] Certified Urologist who has treated over 70,000 patients sector wide with 'male problems'.",\
+					"Dr. Maxman was created by George Acuilar, M.D, a Certified Urologist who has treated over 70,000 patients sector wide with 'male problems'.",\
 					"After seven years of research, Dr Acuilar and his team came up with this simple breakthrough male enhancement formula.",\
 					"Men of all species report AMAZING increases in length, width and stamina.")
 				if(5)
