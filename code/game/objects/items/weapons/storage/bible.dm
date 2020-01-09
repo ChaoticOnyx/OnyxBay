@@ -21,19 +21,23 @@
 		/obj/item/weapon/spacecash/bundle/c50,
 		)
 
-/obj/item/weapon/storage/bible/afterattack(atom/A, mob/user as mob, proximity)
-	if(!proximity) return
+/obj/item/weapon/storage/bible/afterattack(atom/target, mob/user as mob, proximity)
+	if(!proximity)
+		return
 	if(user.mind && (user.mind.assigned_role == "Chaplain"))
-		if(A.reagents && A.reagents.has_reagent(/datum/reagent/water)) //blesses all the water in the holder
-			to_chat(user, "<span class='notice'>You bless \the [A].</span>") // I wish it was this easy in nethack
-			var/water2holy = A.reagents.get_reagent_amount(/datum/reagent/water)
-			A.reagents.del_reagent(/datum/reagent/water)
-			A.reagents.add_reagent(/datum/reagent/water/holywater,water2holy)
+		if (istype(target, /mob/living/carbon/human))
+			var/mob/living/carbon/human/human_target = target
+			switch(rand(1,100))
+				if (1,10)  human_target.adjustBrainLoss(5)
+				if (1,100) human_target.heal_overall_damage(20,20)
+		else
+			if(target.reagents && target.reagents.has_reagent(/datum/reagent/water)) //blesses all the water in the holder
+				to_chat(user, "<span class='notice'>You bless \the [target].</span>") // I wish it was this easy in nethack
+				var/water2holy = target.reagents.get_reagent_amount(/datum/reagent/water)
+				target.reagents.del_reagent(/datum/reagent/water)
+				target.reagents.add_reagent(/datum/reagent/water/holywater,water2holy)
 
-/obj/item/weapon/storage/bible/afterattack(obj/item/weapon/W as obj, mob/user as mob, mob/living/carbon/human/M as mob)
-	if(user.mind && (user.mind.assigned_role == "Chaplain"))
+/obj/item/weapon/storage/bible/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if (src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
-	switch(rand(1,100))
-		if (1,10)  M.adjustBrainLoss(5)
-		if (1,100) M.heal_overall_damage(20,20)
 	return ..()
