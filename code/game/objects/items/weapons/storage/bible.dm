@@ -33,9 +33,9 @@
 				for(var/mob/O in viewers(human_target, null))
 					O.visible_message(SPAN_WARNING("[user] beats [human_target] over the head with [src]!"))
 			for(var/mob/O in viewers(human_target, null))
-				O.show_message(text("<span class='warning'><B>[user] heals [human_target] with the power of [src.deity_name]!</B></span>"), 1)
-				to_chat(human_target, "<span class='warning'>May the power of [src.deity_name] compel you to be healed!</span>")
-				playsound(src.loc, "punch", 25, 1, -1)
+				O.visible_message(SPAN_WARNING("[user] heals [human_target] with the power of [src.deity_name]!"))
+			to_chat(human_target, "<span class='warning'>May the power of [src.deity_name] compel you to be healed!</span>")
+			playsound(src.loc, "punch", 25, 1, -1)
 			human_target.heal_overall_damage(20,20)
 		else
 			if(target.reagents && target.reagents.has_reagent(/datum/reagent/water)) //blesses all the water in the holder
