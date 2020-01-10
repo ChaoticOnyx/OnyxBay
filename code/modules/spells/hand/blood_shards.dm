@@ -30,10 +30,10 @@
 	if(..())
 		if(istype(target, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = target
-			H.vessel.remove_reagent(/datum/reagent/blood, 30)
+			H.vessel.remove_reagent(/datum/reagent/blood, 120)
 			H.visible_message("<span class='danger'>Tiny red shards burst from \the [H]'s skin!</span>")
-			fragmentate(get_turf(src), 30, 5, list(/obj/item/projectile/bullet/pellet/blood))
+			fragmentate(get_turf(src), 120, 5, list(/obj/item/projectile/bullet/pellet/blood))
 
 /obj/item/projectile/bullet/pellet/blood
 	name = "blood fragment"
-	damage = 4
+	damage = 1

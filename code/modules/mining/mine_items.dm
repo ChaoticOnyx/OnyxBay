@@ -56,7 +56,7 @@
 	matter = list(MATERIAL_STEEL = 3750)
 	var/digspeed = 40 //moving the delay to an item var so R&D can make improved picks. --NEO
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
-	attack_verb = list("hit", "pierced", "sliced", "attacked")
+	attack_verb = list("hit", "pierced", "sliced", "attacked", "drilled")
 	var/drill_sound = 'sound/effects/fighting/Genhit.ogg'
 	var/drill_verb = "drilling"
 	sharp = 1
