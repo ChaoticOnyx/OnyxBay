@@ -218,6 +218,7 @@
 	icon_state = "sofa_middle_preview"
 	base_icon = "sofa_middle"
 	material_alteration = MATERIAL_ALTERATION_NONE
+	foldable = FALSE
 
 /obj/structure/bed/chair/sofa/sofa_left
 	name = "comfy sofa"
@@ -315,12 +316,6 @@
 /obj/structure/bed/chair/wood/wings
 	base_icon = "wooden_chair_wings"
 	icon_state = "wooden_chair_wings_preview"
-
-/obj/structure/bed/chair/bogani
-	desc = "A strange chair, not from around here."
-	base_icon = "bogchair"
-	icon_state = "bogchair_preview"
-	foldable = FALSE
 
 /obj/structure/bed/chair/shuttle
 	name = "shuttle chair"

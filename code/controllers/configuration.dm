@@ -243,6 +243,8 @@ var/list/gamemode_cache = list()
 
 	var/server_port
 
+	var/donations = FALSE
+
 	var/projectile_basketball
 
 	// Splash screen options
@@ -824,6 +826,9 @@ var/list/gamemode_cache = list()
 
 				if("server_port")
 					server_port = text2num(value)
+
+				if("donations")
+					donations = TRUE
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")

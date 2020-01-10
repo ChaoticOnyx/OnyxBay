@@ -24,6 +24,8 @@
 	var/datum/eams_info/eams_info = new
 	var/species_ingame_whitelisted = FALSE
 
+	var/datum/donator_info/donator_info = new
+
 		///////////////
 		//SOUND STUFF//
 		///////////////

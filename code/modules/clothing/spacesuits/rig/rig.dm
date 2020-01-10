@@ -213,7 +213,7 @@
 			piece.item_flags &= ~(ITEM_FLAG_STOPPRESSUREDAMAGE|ITEM_FLAG_AIRTIGHT)
 	update_icon(1)
 
-/obj/item/weapon/rig/proc/toggle_seals(var/mob/initiator,var/instant)
+/obj/item/weapon/rig/proc/toggle_seals(var/mob/initiator, var/instant)
 
 	if(sealing) return
 
@@ -230,8 +230,19 @@
 	var/seal_target = !canremove
 	var/failed_to_seal
 
-	canremove = 0 // No removing the suit while unsealing.
-	sealing = 1
+	var/obj/screen/rig_booting/booting_L = new
+	var/obj/screen/rig_booting/booting_R = new
+
+	if(!seal_target)
+		booting_L.icon_state = "boot_left"
+		booting_R.icon_state = "boot_load"
+		animate(booting_L, alpha=230, time=30, easing=SINE_EASING)
+		animate(booting_R, alpha=200, time=20, easing=SINE_EASING)
+		wearer.client.screen += booting_L
+		wearer.client.screen += booting_R
+
+	canremove = FALSE // No removing the suit while unsealing.
+	sealing = TRUE
 
 	if(!seal_target && !suit_is_deployed())
 		wearer.visible_message("<span class='danger'>[wearer]'s suit flashes an error light.</span>","<span class='danger'>Your suit flashes an error light. It can't function properly without being fully deployed.</span>")
@@ -300,6 +311,11 @@
 	sealing = null
 
 	if(failed_to_seal)
+		wearer.client.screen -= booting_L
+		wearer.client.screen -= booting_R
+		qdel(booting_L)
+		qdel(booting_R)
+
 		for(var/obj/item/piece in list(helmet,boots,gloves,chest))
 			if(!piece) continue
 			piece.icon_state = "[initial(icon_state)][!seal_target ? "" : "_sealed"]"
@@ -312,6 +328,10 @@
 	// Success!
 	canremove = seal_target
 	to_chat(wearer, "<span class='info'><b>Your entire suit [canremove ? "loosens as the components relax" : "tightens around you as the components lock into place"].</b></span>")
+	wearer.client.screen -= booting_L
+	qdel(booting_L)
+	booting_R.icon_state = "boot_done"
+	addtimer(CALLBACK(src, .proc/r_booting_done, wearer.client, booting_R), 80)
 
 	if(wearer != initiator)
 		to_chat(initiator, "<span class='info'>Suit adjustment complete. Suit is now [canremove ? "unsealed" : "sealed"].</span>")
@@ -323,6 +343,9 @@
 		update_component_sealed()
 	update_icon(1)
 
+/obj/item/weapon/rig/proc/r_booting_done(var/mob/initiator, var/obj/screen/rig_booting/booting_R)
+	wearer.client.screen -= booting_R
+	qdel(booting_R)
 
 /obj/item/weapon/rig/proc/update_component_sealed()
 	for(var/obj/item/piece in list(helmet,boots,gloves,chest))
@@ -953,6 +976,16 @@
 
 /obj/item/weapon/rig/get_rig()
 	return src
+
+//Boot animation screen objects
+/obj/screen/rig_booting
+	screen_loc = "1,1"
+	icon = 'icons/obj/rig_boot.dmi'
+	icon_state = ""
+	layer = HUD_ABOVE_ITEM_LAYER
+
+	mouse_opacity = 0
+	alpha = 20 //Animated up when loading
 
 /mob/living/carbon/human/get_rig()
 	return wearing_rig

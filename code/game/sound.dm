@@ -243,6 +243,7 @@ GLOBAL_LIST_INIT(window_breaking_sound,list('sound/effects/breaking/window/break
 GLOBAL_LIST_INIT(glass_hit_sound,list('sound/effects/materials/glass/knock1.ogg', 'sound/effects/materials/glass/knock2.ogg', 'sound/effects/materials/glass/knock3.ogg',
 										'sound/effects/materials/glass/knock4.ogg', 'sound/effects/materials/glass/knock5.ogg', 'sound/effects/materials/glass/knock6.ogg'))
 
+GLOBAL_LIST_INIT(glass_knock_sound,list('sound/effects/materials/glass/glassknock.ogg'))
 GLOBAL_LIST_INIT(electric_explosion_sound,list('sound/effects/explosions/electric1.ogg','sound/effects/explosions/electric2.ogg','sound/effects/explosions/electric3.ogg',
 												'sound/effects/explosions/electric4.ogg','sound/effects/explosions/electric5.ogg','sound/effects/explosions/electric6.ogg',
 												'sound/effects/explosions/electric7.ogg','sound/effects/explosions/electric8.ogg','sound/effects/explosions/electric9.ogg',
@@ -486,6 +487,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("console_breaking")		soundin = pick(GLOB.console_breaking_sound)
 			if ("window_breaking") 		soundin = pick(GLOB.window_breaking_sound)
 			if ("glass_hit") 			soundin = pick(GLOB.glass_hit_sound)
+			if ("glass_knock")			soundin = pick(GLOB.glass_knock_sound)
 			if ("electric_explosion")	soundin = pick(GLOB.electric_explosion_sound)
 			if ("explosion") 			soundin = pick(GLOB.explosion_sound)
 			if ("spark") 				soundin = pick(GLOB.spark_sound)

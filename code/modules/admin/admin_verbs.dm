@@ -114,7 +114,11 @@ var/list/admin_verbs_ban = list(
 var/list/admin_verbs_sounds = list(
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
-	/client/proc/play_server_sound
+	/client/proc/play_server_sound,
+	/client/proc/cuban_pete,
+	/client/proc/bananaphone,
+	/client/proc/space_asshole,
+	/client/proc/honk_theme,
 	)
 
 var/list/admin_verbs_fun = list(
@@ -173,7 +177,8 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/toggle_space_ninja,
 	/client/proc/toggle_random_events,
 	/client/proc/check_customitem_activity,
-	/client/proc/nanomapgen_DumpImage
+	/client/proc/nanomapgen_DumpImage,
+	/client/proc/update_donations_db_credentials
 	)
 
 var/list/admin_verbs_debug = list(

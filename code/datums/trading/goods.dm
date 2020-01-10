@@ -125,7 +125,6 @@
 
 	possible_trading_items = list(/obj/item/clothing/under					= TRADER_SUBTYPES_ONLY,
 								/obj/item/clothing/under/acj				= TRADER_BLACKLIST,
-								/obj/item/clothing/under/bogani				= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/under/chameleon			= TRADER_BLACKLIST,
 								/obj/item/clothing/under/color				= TRADER_BLACKLIST,
 								/obj/item/clothing/under/ert				= TRADER_BLACKLIST,

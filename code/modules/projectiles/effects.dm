@@ -106,22 +106,6 @@
 	icon_state = "impact_u_laser"
 
 //----------------------------
-// Bogani Pulsar beam
-//----------------------------
-/obj/effect/projectile/laser/bogani/
-	light_power = 2
-	light_color = COLOR_VIOLET
-
-/obj/effect/projectile/laser/bogani/tracer
-	icon_state = "bogb"
-
-/obj/effect/projectile/laser/bogani/muzzle
-	icon_state = "muzzle_bogb"
-
-/obj/effect/projectile/laser/bogani/impact
-	icon_state = "impact_bogb"
-
-//----------------------------
 // Pulse muzzle effect only
 //----------------------------
 /obj/effect/projectile/pulse/muzzle

@@ -51,7 +51,6 @@
 /datum/gear/storage/waistpack
 	display_name = "waist pack"
 	path = /obj/item/weapon/storage/belt/waistpack
-	slot = slot_belt
 	cost = 2
 	flags = GEAR_HAS_COLOR_SELECTION
 
