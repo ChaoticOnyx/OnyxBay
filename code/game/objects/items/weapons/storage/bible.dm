@@ -29,6 +29,13 @@
 			var/mob/living/carbon/human/human_target = target
 			if(prob(10))
 				human_target.adjustBrainLoss(5)
+				human_target << "<span class='warning'>You feel dumber.</span>"
+				for(var/mob/O in viewers(human_target, null))
+					O.show_message(text("<span class='warning'><B>[] beats [] over the head with []!</B></span>", user, human_target, src), 1)
+			for(var/mob/O in viewers(human_target, null))
+				O.show_message(text("<span class='warning'><B>[] heals [] with the power of [src.deity_name]!</B></span>", user, human_target), 1)
+				human_target << "<span class='warning'>May the power of [src.deity_name] compel you to be healed!</span>"
+				playsound(src.loc, "punch", 25, 1, -1)
 			human_target.heal_overall_damage(20,20)
 		else
 			if(target.reagents && target.reagents.has_reagent(/datum/reagent/water)) //blesses all the water in the holder
