@@ -169,7 +169,6 @@
 #include "code\controllers\subsystems\mapping.dm"
 #include "code\controllers\subsystems\misc_late.dm"
 #include "code\controllers\subsystems\open_space.dm"
-#include "code\controllers\subsystems\ping.dm"
 #include "code\controllers\subsystems\plants.dm"
 #include "code\controllers\subsystems\radiation.dm"
 #include "code\controllers\subsystems\shuttle.dm"
