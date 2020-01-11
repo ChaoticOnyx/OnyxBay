@@ -687,8 +687,8 @@
 	..()
 
 /obj/item/changeling_egg
-	name = "weird egg"
-	desc = "Some strange looking egg..."
+	name = "weird cyst"
+	desc = "Some strange looking cyst..."
 
 	w_class = ITEM_SIZE_TINY
 
@@ -716,7 +716,7 @@
 		return
 	if(owner)
 		if(owner.current)
-			to_chat(owner.current, SPAN_DANGER("You feel like your infection is disappears from your sense!"))
+			to_chat(owner.current, SPAN_DANGER("Your cyst has just disappeared from your senses! Something has happened to it!"))
 		owner.changeling.infected = null
 	if(holder.client)
 		holder.ghostize(can_reenter_corpse = FALSE)
@@ -741,7 +741,7 @@
 /obj/item/changeling_egg/examine(mob/user)
 	. = ..()
 	if(ishuman(user) && user.mind.changeling && owner_name)
-		to_chat(user, SPAN_NOTICE("We sensed the smell of [owner_name]."))
+		to_chat(user, SPAN_NOTICE("We can sense the smell of [owner_name]."))
 
 /obj/item/changeling_egg/on_surgical_removal()
 	die()
@@ -774,7 +774,7 @@
 
 			if(3)
 				to_chat(holder, SPAN_NOTICE("<font size='4'> Such a inevitability...</font>"))
-				to_chat(infected, SPAN_DANGER("Are I am... Dying?!"))
+				to_chat(infected, SPAN_DANGER("Am I... Dying?!"))
 
 				infected.emote("scream")
 				infected.paralysis += 10
@@ -808,8 +808,8 @@
 	return ..()
 
 /mob/changeling_holder/verb/infect()
-	set name = "Infect"
-	set desc = "Restructure our consciousness and corrupt the body"
+	set name = "Germinate"
+	set desc = "Restructure our consciousness and assume direct control over the host."
 	set category = "Changeling"
 
 	egg.infect()

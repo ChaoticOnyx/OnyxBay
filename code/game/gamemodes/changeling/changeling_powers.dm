@@ -1832,7 +1832,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/changeling_infect()
 	set category = "Changeling"
-	set name = "Infect (50)"
+	set name = "Proliferate (50)"
 
 	var/datum/changeling/changeling = changeling_power(50, 0, 50)
 	if(!changeling)
@@ -1860,7 +1860,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		return
 
 	if(mind.changeling.infected)
-		to_chat(src, SPAN_WARNING("We already have an infected!"))
+		to_chat(src, SPAN_WARNING("We already infected someone!"))
 		return
 
 	if(changeling.isabsorbing)
@@ -1878,10 +1878,10 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 				to_chat(src, SPAN_NOTICE("This creature is compatible for infection. We must hold still..."))
 			if(2)
 				visible_message(SPAN_DANGER("[src] extends a proboscis!"),
-								SPAN_NOTICE("We extend a proboscis."))
+								SPAN_NOTICE("We extend an ovipositor."))
 			if(3)
 				visible_message(SPAN_DANGER("[src] touch [T] with the proboscis!"),
-								SPAN_NOTICE("We started to infect [T] with the proboscis."))
+								SPAN_NOTICE("We started to infect [T] with the ovipositor."))
 				if(!T.stat)
 					T.emote("scream")
 					to_chat(T, SPAN_DANGER("You feel a strange movement in [affecting]!"))

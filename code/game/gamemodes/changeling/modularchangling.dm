@@ -316,8 +316,8 @@ var/list/datum/power/changeling/powerinstances = list()
 	verbpath = /mob/proc/changeling_toggle_darksight
 
 /datum/power/changeling/changeling_infect
-	name = "Second life"
-	desc = "We infect the victim, leaving a copy of ourselves and our knowledge in case we die."
+	name = "Psychocyst"
+	desc = "We infect a victim with Psychocyst that posses a copy of our knowledge and abilities. It will germinate and take over it's host if we die."
 	helptext = "A great sacrifice."
 	genomecost = 10
 	verbpath = /mob/proc/changeling_infect
