@@ -348,27 +348,25 @@
 	break_stuff_probability = 15
 	faction = "biomass"
 
-/mob/living/simple_animal/hostile/little_changeling/New()
+/mob/living/simple_animal/hostile/little_changeling/Initialize()
 	verbs += /mob/living/proc/ventcrawl
 	verbs += /mob/living/proc/hide
 	pixel_z = 6
-	..()
+	return ..()
 
 /mob/living/simple_animal/hostile/little_changeling/death(gibbed, deathmessage = "has been ripped open!", show_dead_message)
-	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
+	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	if (BIO)
 		BIO.removed()
 		BIO.forceMove(get_turf(src))
-		return
-	..()
+	return ..()
 
 /mob/living/simple_animal/hostile/little_changeling/Destroy()
-	var/obj/item/organ/internal/biostructure/BIO = locate() in src.contents
+	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	if (BIO)
 		BIO.removed()
 		BIO.forceMove(get_turf(src))
-		return
-	..()
+	return ..()
 
 /mob/living/simple_animal/hostile/little_changeling/verb/prepare_paralyse_sting()
 	set category = "Changeling"
@@ -687,3 +685,131 @@
 	if (BIO)
 		BIO.die()
 	..()
+
+/obj/item/changeling_egg
+	name = "weird egg"
+	desc = "Some strange looking egg..."
+
+	w_class = ITEM_SIZE_TINY
+
+	icon = 'icons/obj/changeling.dmi'
+	icon_state = "egg"
+
+	var/dead = FALSE
+	var/busy = FALSE
+	var/owner_name = ""
+	var/datum/mind/owner
+	var/mob/changeling_holder/holder
+	var/mob/living/carbon/human/infected
+
+/obj/item/changeling_egg/Initialize()
+	. = ..()
+	holder = new (src)
+	holder.egg = src
+
+/obj/item/changeling_egg/proc/setup_events()
+	GLOB.destroyed_event.register(loc, src, /obj/item/changeling_egg/proc/die)  // organ gibbed
+	GLOB.death_event.register(infected, src, /obj/item/changeling_egg/proc/die) // infected human died
+
+/obj/item/changeling_egg/proc/die()
+	if(dead)
+		return
+	if(owner)
+		if(owner.current)
+			to_chat(owner.current, SPAN_DANGER("You feel like your infection is disappears from your sense!"))
+		owner.changeling.infected = null
+	if(holder.client)
+		holder.ghostize(can_reenter_corpse = FALSE)
+	clear_events()
+	dead = TRUE
+
+/obj/item/changeling_egg/Destroy()
+	if(infected && istype(loc, /obj/item/organ/external))
+		var/obj/item/organ/external/L = loc
+		L.implants -= src
+	if(!dead)
+		die()
+	qdel(holder)
+	infected = null
+	owner = null
+	return ..()
+
+/obj/item/changeling_egg/proc/clear_events()
+	GLOB.destroyed_event.unregister(loc, src, /obj/item/changeling_egg/proc/die)
+	GLOB.death_event.unregister(infected, src, /obj/item/changeling_egg/proc/die)
+
+/obj/item/changeling_egg/examine(mob/user)
+	. = ..()
+	if(ishuman(user) && user.mind.changeling && owner_name)
+		to_chat(user, SPAN_NOTICE("We sensed the smell of [owner_name]."))
+
+/obj/item/changeling_egg/on_surgical_removal()
+	die()
+
+/obj/item/changeling_egg/on_limb_removed()
+	die()
+
+/obj/item/changeling_egg/proc/infect()
+	if(busy)
+		return
+	if(!infected)
+		return
+
+	busy = TRUE
+	for(var/stage = 1, stage <= 3, stage++)
+		if(dead)
+			return FALSE
+
+		switch(stage)
+			if(1)
+				to_chat(holder, SPAN_NOTICE("A foolish creature will be enslaved by our greatness and power..."))
+				to_chat(infected, SPAN_DANGER("You feel sick!"))
+
+			if(2)
+				to_chat(holder, SPAN_NOTICE("<font size='3'>By capturing limb by limb, we get a new body...</font>"))
+				to_chat(infected, SPAN_DANGER("You are losing control of your own body!"))
+
+				infected.confused += 10
+				infected.eye_blind += 10
+
+			if(3)
+				to_chat(holder, SPAN_NOTICE("<font size='4'> Such a inevitability...</font>"))
+				to_chat(infected, SPAN_DANGER("Are I am... Dying?!"))
+
+				infected.emote("scream")
+				infected.paralysis += 10
+
+		if(!do_after(holder, 10 SECONDS, infected, needhand = FALSE, can_move = TRUE, target_can_move = TRUE))
+			to_chat(holder, SPAN_WARNING("Our enslavement was interrupted somehow..."))
+			busy = FALSE
+			return FALSE
+
+	to_chat(infected, SPAN_WARNING("Your consciousness was enslaved and you forever lost your own will!"))
+	infected.ghostize(can_reenter_corpse = FALSE)
+
+	to_chat(holder, SPAN_NOTICE("<font size='5'>The time has come.\nRise!</font>"))
+	holder.mind.transfer_to(infected, FALSE)
+	clear_events()
+	dead = TRUE
+	qdel(src)
+
+/mob/changeling_holder
+	name = "changeling holder"
+	desc = "you must not see this in game."
+
+	canmove = FALSE
+	invisibility = INVISIBILITY_SYSTEM
+
+	var/obj/item/changeling_egg/egg
+
+/mob/changeling_holder/Destroy()
+	egg.holder = null
+	egg = null
+	return ..()
+
+/mob/changeling_holder/verb/infect()
+	set name = "Infect"
+	set desc = "Restructure our consciousness and corrupt the body"
+	set category = "Changeling"
+
+	egg.infect()

@@ -28,6 +28,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/heal = 0
 	var/datum/reagents/pick_chemistry
 	var/isdetachingnow = FALSE
+	var/infected
 
 /datum/changeling/New()
 	..()
@@ -1517,7 +1518,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	for (var/obj/item/organ/external/E in detachable_limbs)
 		if (E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.is_stump())
 			detachable_limbs -= E
-	changeling.isdetachingnow = TRUE		
+	changeling.isdetachingnow = TRUE
 	var/obj/item/organ/external/organ_to_remove = input(T, "Which organ do you want to detach?") as null|anything in detachable_limbs
 	if(!organ_to_remove)
 		changeling.isdetachingnow = FALSE
@@ -1532,7 +1533,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(!do_after(src,10,can_move = 1,needhand = 0,incapacitation_flags = INCAPACITATION_NONE))
 		src.visible_message("<span class='notice'>\the [organ_to_remove] connecting back to [src].</span>", \
 					"<span class='danger'>We were interrupted.</span>")
-		changeling.isdetachingnow = FALSE			
+		changeling.isdetachingnow = FALSE
 		return 0
 	playsound(loc, 'sound/effects/bonebreak1.ogg', 100, 1)
 	T.mind.changeling.chem_charges -= 10
@@ -1555,8 +1556,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/mob/living/carbon/human/H = T
 	if(istype(H))
 		H.regenerate_icons()
-		
-	changeling.isdetachingnow = FALSE	
+
+	changeling.isdetachingnow = FALSE
 
 
 /mob/proc/changeling_gib_self()
@@ -1828,3 +1829,78 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	else
 		to_chat(src, "<span class='warning'>You prepare your ability.</span>")
 		src.PushClickHandler(path)
+
+/mob/proc/changeling_infect()
+	set category = "Changeling"
+	set name = "Infect (50)"
+
+	var/datum/changeling/changeling = changeling_power(50, 0, 50)
+	if(!changeling)
+		return
+
+	var/obj/item/grab/G = get_active_hand()
+	if(!istype(G))
+		to_chat(src, SPAN_WARNING("We must be grabbing a creature in our active hand to infect them."))
+		return
+
+	var/mob/living/carbon/human/T = G.affecting
+	if(T.stat == DEAD)
+		to_chat(src, SPAN_WARNING("[T] is dead! We can't infect lifeless creatures..."))
+		return
+
+	if(!istype(T) || isMonkey(T) || (T.isSynthetic()))
+		to_chat(src, SPAN_WARNING("[T] is not compatible with our biology."))
+		return
+
+	if(T.species.species_flags & SPECIES_FLAG_NO_SCAN)
+		to_chat(src, SPAN_WARNING("We cannot infect this creature!"))
+
+	if(T == mind.changeling.infected)
+		to_chat(src, SPAN_WARNING("[T] is already infected by us!"))
+		return
+
+	if(mind.changeling.infected)
+		to_chat(src, SPAN_WARNING("We already have an infected!"))
+		return
+
+	if(changeling.isabsorbing)
+		to_chat(src, SPAN_WARNING("We are already infecting!"))
+		return
+
+	var/obj/item/organ/external/affecting = T.get_organ(src.zone_sel.selecting)
+	if(!affecting)
+		to_chat(src, SPAN_WARNING("They are missing that body part!"))
+
+	changeling.isabsorbing = 1
+	for(var/stage = 1, stage<=3, stage++)
+		switch(stage)
+			if(1)
+				to_chat(src, SPAN_NOTICE("This creature is compatible for infection. We must hold still..."))
+			if(2)
+				visible_message(SPAN_DANGER("[src] extends a proboscis!"),
+								SPAN_NOTICE("We extend a proboscis."))
+			if(3)
+				visible_message(SPAN_DANGER("[src] touch [T] with the proboscis!"),
+								SPAN_NOTICE("We started to infect [T] with the proboscis."))
+				if(!T.stat)
+					T.emote("scream")
+					to_chat(T, SPAN_DANGER("You feel a strange movement in [affecting]!"))
+
+		feedback_add_details("changeling_powers","A-I[stage]")
+		if(!do_mob(src, T, 150))
+			to_chat(src, SPAN_WARNING("Our infection of [T] has been interrupted!"))
+			changeling.isabsorbing = 0
+			return
+	var/obj/item/changeling_egg/egg = new(affecting)
+	egg.owner = mind
+	egg.owner_name = real_name
+	egg.infected = T
+	egg.setup_events()
+	affecting.implants += egg
+	mind.changeling.infected = egg
+
+	visible_message(SPAN_DANGER("[src] horribly inserts a strange looking and nasty egg into [T]'s [affecting]!"),
+					SPAN_NOTICE("We have infected [T]! Now we have a second chance to rise..."))
+
+	changeling.isabsorbing = 0
+	return 1

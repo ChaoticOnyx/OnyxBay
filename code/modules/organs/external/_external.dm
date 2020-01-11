@@ -1190,6 +1190,8 @@ obj/item/organ/external/proc/remove_clamps()
 	for(var/atom/movable/implant in implants)
 		//large items and non-item objs fall to the floor, everything else stays
 		var/obj/item/I = implant
+		if(istype(I))
+			I.on_limb_removed()  // activate trigger
 		if(istype(I) && I.w_class < ITEM_SIZE_NORMAL)
 			implant.forceMove(src)
 

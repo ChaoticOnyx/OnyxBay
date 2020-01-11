@@ -851,9 +851,17 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/proc/update_weapon_desc()
 	return
-	
+
 /obj/item/proc/on_restraint_removal(var/mob/living/carbon/C) //Needed for syndicuffs
 	return
 
 /obj/item/proc/on_restraint_apply(var/mob/living/carbon/C)
-	return	
+	return
+
+// Triggered when an item is removed surgically.
+/obj/item/proc/on_surgical_removal()
+	return
+
+// Triggered when a limb is detached.
+/obj/item/proc/on_limb_removed()
+	return

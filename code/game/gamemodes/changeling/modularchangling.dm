@@ -315,6 +315,13 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 0
 	verbpath = /mob/proc/changeling_toggle_darksight
 
+/datum/power/changeling/changeling_infect
+	name = "Second life"
+	desc = "We infect the victim, leaving a copy of ourselves and our knowledge in case we die."
+	helptext = "A great sacrifice."
+	genomecost = 10
+	verbpath = /mob/proc/changeling_infect
+
 // Modularchangling, totally stolen from the new player panel.  YAYY
 /datum/changeling/proc/EvolutionMenu()//The new one
 	set category = "Changeling"

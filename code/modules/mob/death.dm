@@ -49,9 +49,12 @@
 
 
 /mob/proc/death(gibbed,deathmessage="seizes up and falls limp...", show_dead_message = "You have died.")
-
 	if(stat == DEAD)
 		return 0
+	if(mind?.changeling?.infected)
+		to_chat(src, SPAN_NOTICE("<font size='3'>--- This is not the end! ---</font>"))
+		var/obj/item/changeling_egg/egg = mind.changeling.infected
+		mind.transfer_to(egg.holder)
 
 	facing_dir = null
 

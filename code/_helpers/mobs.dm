@@ -165,7 +165,7 @@ proc/age2agedescription(age)
 	if (progbar)
 		qdel(progbar)
 
-/proc/do_after(mob/user, delay, atom/target = null, needhand = 1, progress = 1, var/incapacitation_flags = INCAPACITATION_DEFAULT, var/same_direction = 0, var/can_move = 0)
+/proc/do_after(mob/user, delay, atom/target = null, needhand = 1, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = 0, can_move = 0, target_can_move = 0)
 	if(!user)
 		return 0
 	var/atom/target_loc = null
@@ -197,7 +197,7 @@ proc/age2agedescription(age)
 			. = 0
 			break
 
-		if(target_loc && (!target || QDELETED(target) || target_loc != target.loc || target_type != target.type))
+		if(target_loc && (!target || QDELETED(target) || (target_loc != target.loc && !target_can_move) || target_type != target.type))
 			. = 0
 			break
 

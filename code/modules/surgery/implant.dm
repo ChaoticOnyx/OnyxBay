@@ -227,6 +227,7 @@
 				obj.dropInto(target.loc)
 				obj.add_blood(target)
 				obj.update_icon()
+				obj.on_surgical_removal()
 				if(istype(obj,/obj/item/weapon/implant))
 					var/obj/item/weapon/implant/imp = obj
 					imp.removed()
