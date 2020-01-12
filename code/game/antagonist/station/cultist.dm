@@ -24,7 +24,9 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	id = MODE_CULTIST
 	role_text = "Cultist"
 	role_text_plural = "Cultists"
-	restricted_jobs = list(/datum/job/merchant, /datum/job/lawyer, /datum/job/captain, /datum/job/hos)
+	restricted_jobs = list(/datum/job/captain, /datum/job/hos, /datum/job/hop,
+							/datum/job/rd, /datum/job/chief_engineer, /datum/job/cmo,
+							/datum/job/merchant, /datum/job/lawyer)
 	protected_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain, /datum/job/psychiatrist)
 	feedback_tag = "cult_objective"
