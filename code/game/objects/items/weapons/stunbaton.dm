@@ -190,9 +190,9 @@
 	. = ..()
 	if(isliving(hit_atom) && status && prob(50))
 		var/mob/living/L = hit_atom
-		var/stun = rand(2,5)
-		L.stun_effect_act(stun_amount = stun, agony_amount = 0, def_zone = ran_zone(), used_weapon = src)
-		playsound(L, 'sound/weapons/Egloves.ogg', 50, 1, -1)
+		L.stun_effect_act(stun_amount = rand(2,5), agony_amount = rand(10, 90), def_zone = ran_zone(BP_CHEST, 75), used_weapon = src)
+		playsound(L.loc, 'sound/weapons/Egloves.ogg', 50, 1, -1)
+		deductcharge(hitcost)
 
 /obj/item/weapon/melee/baton/emp_act(severity)
 	if(bcell)
