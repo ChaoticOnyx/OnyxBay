@@ -186,6 +186,14 @@
 
 	return 0
 
+/obj/item/weapon/melee/baton/throw_impact(hit_atom, speed)
+	. = ..()
+	if(isliving(hit_atom) && status && prob(50))
+		var/mob/living/L = hit_atom
+		var/stun = rand(2,5)
+		L.stun_effect_act(stun_amount = stun, agony_amount = 0, def_zone = ran_zone(), used_weapon = src)
+		playsound(L, 'sound/weapons/Egloves.ogg', 50, 1, -1)
+
 /obj/item/weapon/melee/baton/emp_act(severity)
 	if(bcell)
 		bcell.emp_act(severity)	//let's not duplicate code everywhere if we don't have to please.
