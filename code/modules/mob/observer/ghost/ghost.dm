@@ -96,6 +96,41 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 			if(istype(target))
 				ManualFollow(target)
 
+	if(href_list["possess"])
+		if(!isliving(href_list["possess"]))
+			return
+		var/mob/living/target = locate(href_list["possess"]) in SSmobs.mob_list
+		try_to_occupy(target)
+
+/mob/observer/ghost/proc/try_to_occupy(mob/living/L)
+	if(jobban_isbanned(src, "Animal"))
+		to_chat(src, SPAN_WARNING("You're banned from occupying mobs!"))
+		return
+	if(!L.controllable)
+		to_chat(src, SPAN_WARNING("[L] can't be occupied!"))
+		return
+	if(!MayRespawn(FALSE, ANIMAL_SPAWN_DELAY))
+		return
+	if(L.client)
+		to_chat(src, SPAN_WARNING("[L] is already occupied!"))
+		return
+	if(mind?.current?.stat != DEAD && can_reenter_corpse == CORPSE_CAN_REENTER)
+		to_chat(src, SPAN_WARNING("Your non-dead body prevents you from respawning!"))
+		return
+
+	stop_following()
+	L.ckey = key
+	L.teleop = null
+	L.reload_fullscreen()
+	log_and_message_admins("occupied clientless mob - [L]. [get_admin_jump_link(L)]")
+
+/mob/observer/ghost/proc/ghost_possess(mob/living/M in GLOB.available_mobs_for_possess)
+	set name = "Ghost possess"
+	set desc = "Occupy the mob"
+
+	if(M)
+		try_to_occupy(M)
+
 /*
 Transfer_mind is there to check if mob is being deleted/not going to have a body.
 Works together with spawning an observer, noted above.

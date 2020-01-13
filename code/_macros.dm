@@ -191,6 +191,8 @@
 
 #define SPAN_OCCULT(X) "<span class='cult'>[X]</span>"
 
+#define SPAN_DEADSAY(X) "<span class='deadsay'>[X]</span>"
+
 #define FONT_SMALL(X) "<font size='1'>[X]</font>"
 
 #define FONT_NORMAL(X) "<font size='2'>[X]</font>"
