@@ -4,7 +4,6 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 /datum/antagonist/traitor
 	id = MODE_TRAITOR
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos, /datum/job/hop,
-							/datum/job/rd, /datum/job/chief_engineer, /datum/job/cmo,
 							/datum/job/merchant, /datum/job/lawyer)
 	protected_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE

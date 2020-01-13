@@ -10,7 +10,7 @@
 	selection_color = "#ad6bad"
 	req_admin_notify = 1
 	economic_modifier = 15
-	fraction_restricted = TRUE
+	faction_restricted = TRUE
 	access = list(access_rd, access_heads, access_tox, access_genetics, access_morgue,
 			            access_tox_storage, access_teleporter, access_sec_doors,
 			            access_research, access_robotics, access_xenobiology, access_ai_upload, access_tech_storage,

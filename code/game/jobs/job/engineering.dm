@@ -10,7 +10,7 @@
 	selection_color = "#7f6e2c"
 	req_admin_notify = 1
 	economic_modifier = 10
-	fraction_restricted = TRUE
+	faction_restricted = TRUE
 	ideal_character_age = 50
 	access = list(access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels,
 			            access_teleporter, access_external_airlocks, access_atmospherics, access_emergency_storage, access_eva,

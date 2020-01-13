@@ -114,12 +114,12 @@
 			. += "<del>[rank]</del></td><td><b> \[BANNED]</b></td></tr>"
 			continue
 
-		if(job.fraction_restricted)
+		if(job.faction_restricted)
 			if(user.client?.prefs.faction != GLOB.using_map.company_name)
 				. += "<del>[rank]</del></td><td><b> \[FOR [uppertext(GLOB.using_map.company_name)] EMPLOYESS ONLY]</b></td></tr>"
 				continue
-			if(user.client?.prefs.nanotrasen_relation != COMPANY_LOYAL)
-				. += "<del>[rank]</del></td><td><b> \[HIGH LOYALTY REQUIRED]</b></td></tr>"
+			if(user.client?.prefs.nanotrasen_relation in COMPANY_OPPOSING)
+				. += "<del>[rank]</del></td><td><b> \[LOW LOYALTY IS FORBIDDEN]</b></td></tr>"
 				continue
 
 		if(!job.player_old_enough(user.client))
