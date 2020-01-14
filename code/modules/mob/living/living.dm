@@ -1,12 +1,15 @@
-/mob/living/New()
-	..()
+/mob/living/Initialize()
+	. = ..()
 	if(stat == DEAD)
 		add_to_dead_mob_list()
 	else
 		add_to_living_mob_list()
 		verbs -= /mob/living/proc/ghost
-	update_transform() // Some mobs may start bigger or smaller than normal.
 
+	if(controllable)
+		GLOB.available_mobs_for_possess += src
+
+	update_transform() // Some mobs may start bigger or smaller than normal.
 
 //mob verbs are faster than object verbs. See mob/verb/examine.
 /mob/living/verb/pulled(atom/movable/AM as mob|obj in oview(1))

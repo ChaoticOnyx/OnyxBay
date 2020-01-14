@@ -38,10 +38,6 @@ var/global/floorIsLava = 0
 		if(check_rights(rights, 0, M))
 			to_chat(M, message)
 
-/proc/get_admin_jump_link(atom/A, button_name = "JMP")
-	if(istype(A))
-		return "(<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[A.x];Y=[A.y];Z=[A.z]'>[button_name]</a>)"
-
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels
 
 /datum/admins/proc/show_player_panel(var/mob/M in SSmobs.mob_list)

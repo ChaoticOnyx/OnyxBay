@@ -97,10 +97,9 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 				ManualFollow(target)
 
 	if(href_list["possess"])
-		if(!isliving(href_list["possess"]))
-			return
-		var/mob/living/target = locate(href_list["possess"]) in SSmobs.mob_list
-		try_to_occupy(target)
+		var/mob/living/target = locate(href_list["possess"]) in GLOB.available_mobs_for_possess
+		if(isliving(target))
+			try_to_occupy(target)
 
 /mob/observer/ghost/proc/try_to_occupy(mob/living/L)
 	if(jobban_isbanned(src, "Animal"))
@@ -109,24 +108,27 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	if(!L.controllable)
 		to_chat(src, SPAN_WARNING("[L] can't be occupied!"))
 		return
-	if(!MayRespawn(FALSE, ANIMAL_SPAWN_DELAY))
+	if(!MayRespawn(FALSE, isanimal(mind?.current) ? DEAD_ANIMAL_DELAY : ANIMAL_SPAWN_DELAY))
 		return
-	if(L.client)
+	if(L.client || L.ckey && copytext(L.ckey, 1, 2) == "@")
 		to_chat(src, SPAN_WARNING("[L] is already occupied!"))
 		return
 	if(mind?.current?.stat != DEAD && can_reenter_corpse == CORPSE_CAN_REENTER)
-		to_chat(src, SPAN_WARNING("Your non-dead body prevents you from respawning!"))
+		to_chat(src, SPAN_WARNING("Your non-dead body prevents you from possess!"))
 		return
 
+	log_and_message_admins("occupied clientless mob - [L]. [get_admin_jump_link(L, "", "(", ")")]")
+
 	stop_following()
-	L.ckey = key
+	L.ckey = ckey
 	L.teleop = null
 	L.reload_fullscreen()
-	log_and_message_admins("occupied clientless mob - [L]. [get_admin_jump_link(L)]")
+	L.verbs |= /mob/living/proc/ghost
 
-/mob/observer/ghost/proc/ghost_possess(mob/living/M in GLOB.available_mobs_for_possess)
-	set name = "Ghost possess"
+/mob/observer/ghost/verb/ghost_possess(mob/living/M in GLOB.available_mobs_for_possess)
+	set name = "Ghost Possess"
 	set desc = "Occupy the mob"
+	set category = "Ghost"
 
 	if(M)
 		try_to_occupy(M)
@@ -195,6 +197,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(stat == DEAD)
 		announce_ghost_joinleave(ghostize(1))
+	else if(isanimal(src) && controllable)
+		ghostize(can_reenter_corpse = FALSE)
 	else if(istype(loc, /obj/machinery/cryopod))
 		var/response
 		if(config.respawn_delay)
@@ -204,8 +208,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		if(response != "Ghost")
 			return
 		var/turf/location = get_turf(src)
-		message_admins("[key_name_admin(usr)] has ghosted. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>JMP</a>)")
-		log_game("[key_name_admin(usr)] has ghosted.")
+		log_and_message_admins(" has ghosted. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>JMP</a>)")
 		var/mob/observer/ghost/ghost = ghostize(0)	//0 parameter is so we can never re-enter our body, "Charlie, you can never come baaaack~" :3
 		ghost.timeofdeath = world.time // Because the living mob won't have a time of death and we want the respawn timer to work properly.
 		announce_ghost_joinleave(ghost)
