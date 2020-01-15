@@ -115,7 +115,7 @@
 	else
 		setClickCooldown(100)
 		visible_message(SPAN_DANGER("[src] attempts to unbuckle themself!"),
-						SPAN_DANGER("You attempt to unbuckle yourself. (This will take around 2 minutes and you need to stand still)"))
+						SPAN_WARNING("You attempt to unbuckle yourself. (This will take around 2 minutes and you need to stand still)"))
 
 		if(do_after(src, 2 MINUTES, incapacitation_flags = INCAPACITATION_DEFAULT & ~(INCAPACITATION_RESTRAINED | INCAPACITATION_BUCKLED_FULLY)))
 			if(!buckled)
