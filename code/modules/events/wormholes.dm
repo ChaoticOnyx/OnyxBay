@@ -1,0 +1,38 @@
+/datum/event/wormholes
+	announceWhen = 10
+	endWhen = 60
+
+	var/list/pick_turfs = list()
+	var/list/wormholes = list()
+	var/shift_frequency = 3
+	var/number_of_wormholes = 400
+
+/datum/event/wormholes/setup()
+	announceWhen = rand(0, 20)
+	endWhen = rand(40, 80)
+
+/datum/event/wormholes/start()
+	for(var/turf/simulated/floor/T in world)
+		if(!is_station_turf(T))
+			continue
+		if(turf_contains_dense_objects(T))
+			continue
+		pick_turfs += T
+
+	for(var/i = 1, i <= number_of_wormholes, i++)
+		var/turf/T = pick(pick_turfs)
+		wormholes += new /obj/effect/portal/wormhole(T)
+
+/datum/event/wormholes/announce()
+	command_announcement.Announce("Space-time anomalies detected on the station. There is no additional data.", "[location_name()] Sensor Array", zlevels = affecting_z)
+
+/datum/event/wormholes/tick()
+	if(activeFor % shift_frequency == 0)
+		for(var/obj/effect/portal/wormhole/O in wormholes)
+			var/turf/T = pick(pick_turfs)
+			if(T)
+				O.forceMove(T)
+
+/datum/event/wormholes/end()
+	QDEL_NULL_LIST(wormholes)
+	wormholes = null
