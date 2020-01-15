@@ -154,6 +154,12 @@ var/list/_client_preferences_by_type
 	if(new_value == GLOB.PREF_HIDE)
 		QDEL_NULL(preference_mob.typing_indicator)
 
+/datum/client_preference/auto_dots
+	description ="Auto dots"
+	key = "CHAT_AUTODOTS"
+	default_value = GLOB.PREF_NO
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
 /datum/client_preference/show_ooc
 	description ="OOC chat"
 	key = "CHAT_OOC"

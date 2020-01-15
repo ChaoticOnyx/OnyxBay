@@ -213,7 +213,8 @@ proc/get_radio_key_from_channel(var/channel)
 
 	message = trim_left(message)
 	message = handle_autohiss(message, speaking)
-	message = format_say_message(message)
+	if(get_preference_value(/datum/client_preference/auto_dots) == GLOB.PREF_YES)
+		message = format_say_message(message)
 
 	if(!(speaking && (speaking.flags & NO_STUTTER)))
 		var/list/message_data = list(message, verb, 0)
