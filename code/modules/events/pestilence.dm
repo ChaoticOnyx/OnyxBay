@@ -33,10 +33,6 @@
 
 	message_admins("[key_name_admin(src)] released [ictus].", 1)
 
-// ####################################################################
-// ############################RETROVIRUS##############################
-// ####################################################################
-
 /datum/disease2/disease/space_migraine
 	infectionchance = 80
 	spreadtype = "Airborne"
