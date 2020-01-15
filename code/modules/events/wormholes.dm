@@ -19,9 +19,14 @@
 			continue
 		pick_turfs += T
 
-	for(var/i = 1, i <= number_of_wormholes, i++)
-		var/turf/T = pick(pick_turfs)
-		wormholes += new /obj/effect/portal/wormhole(T)
+	for(var/i in 1 to number_of_wormholes)
+		var/turf/enter = pick(pick_turfs)
+		pick_turfs -= enter
+
+		var/turf/exit = pick(pick_turfs)
+		pick_turfs -= exit
+
+		wormholes += create_wormhole(enter, exit)
 
 /datum/event/wormholes/announce()
 	command_announcement.Announce("Space-time anomalies detected on the station. There is no additional data.", "[location_name()] Sensor Array", zlevels = affecting_z)
@@ -35,4 +40,8 @@
 
 /datum/event/wormholes/end()
 	QDEL_NULL_LIST(wormholes)
-	wormholes = null
+
+/proc/create_wormhole(turf/enter, turf/exit)
+	var/obj/effect/portal/wormhole/W = new (enter)
+	W.target = exit
+	return W
