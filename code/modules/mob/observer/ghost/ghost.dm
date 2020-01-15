@@ -114,14 +114,14 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 		return
 	if(!MayRespawn(FALSE, isanimal(mind?.current) ? DEAD_ANIMAL_DELAY : ANIMAL_SPAWN_DELAY))
 		return
-	if(L.client || L.ckey && copytext(L.ckey, 1, 2) == "@")
+	if(L.client || (L.ckey && copytext(L.ckey, 1, 2) == "@"))
 		to_chat(src, SPAN_WARNING("[L] is already occupied!"))
 		return
 	if(mind?.current?.stat != DEAD && can_reenter_corpse == CORPSE_CAN_REENTER)
 		to_chat(src, SPAN_WARNING("Your non-dead body prevents you from possess!"))
 		return
 
-	log_and_message_admins("occupied clientless mob - [L]. [get_admin_jump_link(L, "", "(", ")")]")
+	log_and_message_admins("occupied clientless mob - [L]. ([get_admin_jump_link(L)])")
 
 	stop_following()
 	L.ckey = ckey
