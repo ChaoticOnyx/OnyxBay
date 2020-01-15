@@ -4,10 +4,11 @@
 	icon_state = "holster"
 	slot = ACCESSORY_SLOT_HOLSTER
 	high_visibility = 1
+	w_class = ITEM_SIZE_NORMAL
 	var/obj/item/holstered = null
 	var/list/can_hold
 
-/obj/item/clothing/accessory/holster/proc/holster(var/obj/item/I, var/mob/living/user)
+/obj/item/clothing/accessory/holster/proc/holster(obj/item/I, mob/living/user)
 	if(holstered && istype(user))
 		to_chat(user, "<span class='warning'>There is already \a [holstered] holstered here!</span>")
 		return
@@ -35,7 +36,7 @@
 	holstered = null
 	SetName(initial(name))
 
-/obj/item/clothing/accessory/holster/proc/unholster(mob/user as mob)
+/obj/item/clothing/accessory/holster/proc/unholster(mob/user)
 	if(!holstered)
 		return
 
@@ -57,10 +58,10 @@
 		w_class = initial(w_class)
 		clear_holster()
 
-/obj/item/clothing/accessory/holster/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/clothing/accessory/holster/attackby(obj/item/W, mob/user)
 	holster(W, user)
 
-/obj/item/clothing/accessory/holster/attack_hand(mob/user as mob)
+/obj/item/clothing/accessory/holster/attack_hand(mob/user)
 	if (has_suit)
 		unholster(user)
 	else
@@ -78,11 +79,11 @@
 	else
 		to_chat(user, "It is empty.")
 
-/obj/item/clothing/accessory/holster/on_attached(obj/item/clothing/under/S, mob/user as mob)
+/obj/item/clothing/accessory/holster/on_attached(obj/item/clothing/under/S, mob/user)
 	..()
 	has_suit.verbs += /obj/item/clothing/accessory/holster/verb/holster_verb
 
-/obj/item/clothing/accessory/holster/on_removed(mob/user as mob)
+/obj/item/clothing/accessory/holster/on_removed(mob/user)
 	if(has_suit)
 		has_suit.verbs -= /obj/item/clothing/accessory/holster/verb/holster_verb
 	..()
