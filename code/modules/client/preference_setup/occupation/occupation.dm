@@ -113,6 +113,15 @@
 		else if(bannedReason)
 			. += "<del>[rank]</del></td><td><b> \[BANNED]</b></td></tr>"
 			continue
+
+		if(job.faction_restricted)
+			if(user.client?.prefs.faction != GLOB.using_map.company_name)
+				. += "<del>[rank]</del></td><td><b> \[FOR [uppertext(GLOB.using_map.company_name)] EMPLOYESS ONLY]</b></td></tr>"
+				continue
+			if(user.client?.prefs.nanotrasen_relation in COMPANY_OPPOSING)
+				. += "<del>[rank]</del></td><td><b> \[LOW LOYALTY IS FORBIDDEN]</b></td></tr>"
+				continue
+
 		if(!job.player_old_enough(user.client))
 			var/available_in_days = job.available_in_days(user.client)
 			. += "<del>[rank]</del></td><td> \[IN [(available_in_days)] DAYS]</td></tr>"

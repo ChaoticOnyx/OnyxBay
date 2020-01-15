@@ -442,6 +442,8 @@
 		if(job && IsJobAvailable(job))
 			if(job.minimum_character_age && (client.prefs.age < job.minimum_character_age))
 				continue
+			if(job.faction_restricted && client.prefs.faction != GLOB.using_map.company_name && client.prefs.nanotrasen_relation in COMPANY_OPPOSING)
+				continue
 
 			var/active = 0
 			// Only players with the job assigned and AFK for less than 10 minutes count as active
