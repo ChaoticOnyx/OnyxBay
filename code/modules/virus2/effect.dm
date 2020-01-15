@@ -323,6 +323,20 @@
 		if (prob(30))
 			mob.jitteriness += 10
 
+/datum/disease2/effect/disorientation
+	name = "Disorientation"
+	stage = 2
+	delay = 15 SECONDS
+
+/datum/disease2/effect/disorientation/activate(mob/living/carbon/human/mob, multiplier)
+	to_chat(mob, SPAN_WARNING("You feel disoriented..."))
+	if(mob.client)
+		var/client/C = mob.client
+		if(prob(50))
+			C.dir = turn(C.dir, 90)
+		else
+			C.dir = turn(C.dir, -90)
+
 ////////////////////////STAGE 1/////////////////////////////////
 
 /datum/disease2/effect/sneeze
