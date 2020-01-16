@@ -72,6 +72,27 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	sacrifice_target = sacrifice.target
 	global_objectives |= sacrifice
 
+/datum/antagonist/cultist/can_become_antag(datum/mind/player, ignore_role)
+	. = ..()
+	if(.)
+		if(player.current)
+			if(ishuman(player.current))
+				var/mob/living/carbon/human/H = player.current
+				if(H.isSynthetic())
+					return FALSE
+				if(H.species.species_flags & SPECIES_FLAG_NO_SCAN)
+					return FALSE
+				return TRUE
+			else if(isnewplayer(player.current))
+				if(player.current.client?.prefs)
+					var/datum/species/S = all_species[player.current.client.prefs.species]
+					if(S && (S.species_flags & SPECIES_FLAG_NO_SCAN))
+						return FALSE
+					if(player.current.client.prefs.organ_data[BP_CHEST] == "cyborg")
+						return FALSE
+					return TRUE
+ 	return FALSE
+
 /datum/antagonist/cultist/equip(var/mob/living/carbon/human/player)
 
 	if(!..())

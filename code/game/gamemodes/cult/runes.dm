@@ -183,9 +183,14 @@
 
 	var/mob/living/carbon/target = null
 	for(var/mob/living/carbon/M in get_turf(src))
-		if(!iscultist(M) && M.stat != DEAD)
-			target = M
-			break
+		if(iscultist(M))
+			continue
+		if(M.stat == DEAD)
+			continue
+		if(M.isSynthetic())
+			continue
+		target = M
+		break
 
 	if(!target)
 		return fizzle(user)
@@ -931,7 +936,7 @@
 /obj/effect/rune/imbue/emp
 	cultname = "destroy technology imbue"
 	papertype = /obj/item/weapon/paper/talisman/emp
-	
+
 /obj/effect/rune/imbue/stun
 	cultname = "consciousness freeze imbue"
 	papertype = /obj/item/weapon/paper/talisman/stun
