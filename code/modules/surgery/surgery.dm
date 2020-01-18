@@ -92,7 +92,7 @@
 				. -= 60
 			. -= 40
 		if(length(clothes))
-			to_chat(user, SPAN_DANGER("The clothes on [target]'s [target_zone] interfere with surgical operations! It would be worth taking [length(clothes) > 1 ? "them" : "it"] off."))
+			to_chat(user, SPAN_DANGER("Clothing on [target]'s [target_zone] interfere with surgical operations! It would be worth taking it off."))
 
 	if(delicate)
 		if(user.slurring)
@@ -110,7 +110,7 @@
 			. -= 10
 	. = max(., 0)
 
-/datum/surgery_step/proc/clotches_block(user, target, target_zone, tool)
+/datum/surgery_step/proc/clothes_block(user, target, target_zone, tool)
 	. = tool_quality(tool)
 	var/clothes = get_target_clothes(target, target_zone)
 	for(var/obj/item/I in clothes)
@@ -146,9 +146,9 @@
 		if(S.tool_quality(src))
 			var/step_is_valid = S.can_use(user, M, zone, src)
 			if(step_is_valid && S.is_valid_target(M))
-				if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
+				if(S.clothes_penalty && S.clothes_block(user, M, zone, src) == SURGERY_BLOCKED)
 					return 1
-				if(S.clothes_penalty && S.clotches_block(user, M, zone, src) == SURGERY_BLOCKED)
+				if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
 					return 1
 				M.op_stage.in_progress += zone
 				S.begin_step(user, M, zone, src)		//start on it
