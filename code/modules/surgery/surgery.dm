@@ -110,16 +110,17 @@
 			. -= 10
 	. = max(., 0)
 
-/datum/surgery_step/proc/clotches_block(user, target, target_zone)
+/datum/surgery_step/proc/clotches_block(user, target, target_zone, tool)
+	. = tool_quality(tool)
 	var/clothes = get_target_clothes(target, target_zone)
 	for(var/obj/item/I in clothes)
 		if(I.item_flags & (ITEM_FLAG_THICKMATERIAL|ITEM_FLAG_STOPPRESSUREDAMAGE))
 			. -= 60
 		. -= 40
-	if(length(clothes))
+
+	if(length(clothes) && . <= 0) // We're unable to perform surgery due to too much interfering clothing.
 		to_chat(user, SPAN_DANGER("Clothing on [target]'s [target_zone] blocks surgery!"))
-		if(. <= 0) // We're unable to perform surgery due to too much interfering clothing.
-			return SURGERY_BLOCKED
+		return SURGERY_BLOCKED
 
 /proc/spread_germs_to_organ(var/obj/item/organ/external/E, var/mob/living/carbon/human/user)
 	if(!istype(user) || !istype(E)) return
@@ -147,7 +148,7 @@
 			if(step_is_valid && S.is_valid_target(M))
 				if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
 					return 1
-				if(S.clothes_penalty && S.clotches_block(user, M, zone) == SURGERY_BLOCKED)
+				if(S.clothes_penalty && S.clotches_block(user, M, zone, src) == SURGERY_BLOCKED)
 					return 1
 				M.op_stage.in_progress += zone
 				S.begin_step(user, M, zone, src)		//start on it
