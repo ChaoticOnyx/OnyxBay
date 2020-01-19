@@ -101,7 +101,7 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 				ManualFollow(target)
 
 	if(href_list["possess"])
-		var/mob/living/target = locate(href_list["possess"]) in GLOB.available_mobs_for_possess
+		var/mob/living/target = locate(href_list["possess"]) in GLOB.living_mob_list_
 		if(isliving(target))
 			try_to_occupy(target)
 
@@ -112,13 +112,10 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	if(!L.controllable)
 		to_chat(src, SPAN_WARNING("[L] can't be occupied!"))
 		return
-	if(!MayRespawn(FALSE, isanimal(mind?.current) ? DEAD_ANIMAL_DELAY : ANIMAL_SPAWN_DELAY))
-		return
 	if(L.client || (L.ckey && copytext(L.ckey, 1, 2) == "@"))
 		to_chat(src, SPAN_WARNING("[L] is already occupied!"))
 		return
-	if(mind?.current?.stat != DEAD && can_reenter_corpse == CORPSE_CAN_REENTER)
-		to_chat(src, SPAN_WARNING("Your non-dead body prevents you from possess!"))
+	if(!MayRespawn(TRUE, isanimal(mind?.current) || isbot(mind?.current) ? DEAD_ANIMAL_DELAY : ANIMAL_SPAWN_DELAY))
 		return
 
 	log_and_message_admins("occupied clientless mob - [L]. ([get_admin_jump_link(L)])")
@@ -136,6 +133,7 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 
 	if(M)
 		try_to_occupy(M)
+
 
 /*
 Transfer_mind is there to check if mob is being deleted/not going to have a body.
@@ -201,7 +199,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(stat == DEAD)
 		announce_ghost_joinleave(ghostize(1))
-	else if(isanimal(src) && controllable)
+	else if(controllable)
 		ghostize(can_reenter_corpse = FALSE)
 	else if(istype(loc, /obj/machinery/cryopod))
 		var/response
@@ -528,25 +526,25 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		client.images |= ghost_sightless_images
 	client.images -= ghost_image //remove ourself
 
-/mob/observer/ghost/MayRespawn(var/feedback = 0, var/respawn_time = 0)
+/mob/observer/ghost/MayRespawn(feedback = FALSE, respawn_time = FALSE)
 	if(!client)
-		return 0
+		return FALSE
 	if(mind && mind.current && mind.current.stat != DEAD && can_reenter_corpse == CORPSE_CAN_REENTER)
 		if(feedback)
-			to_chat(src, "<span class='warning'>Your non-dead body prevents you from respawning.</span>")
-		return 0
-	if(config.antag_hud_restricted && has_enabled_antagHUD == 1)
+			to_chat(src, SPAN_WARNING("Your non-dead body prevents you from respawning."))
+		return FALSE
+	if(config.antag_hud_restricted && has_enabled_antagHUD == TRUE)
 		if(feedback)
-			to_chat(src, "<span class='warning'>antagHUD restrictions prevent you from respawning.</span>")
-		return 0
+			to_chat(src, SPAN_WARNING("antagHUD restrictions prevent you from respawning."))
+		return FALSE
 
 	var/timedifference = world.time - timeofdeath
 	if(!client.holder && respawn_time && timeofdeath && timedifference < respawn_time MINUTES)
 		var/timedifference_text = time2text(respawn_time MINUTES - timedifference,"mm:ss")
-		to_chat(src, "<span class='warning'>You must have been dead for [respawn_time] minute\s to respawn. You have [timedifference_text] left.</span>")
-		return 0
+		to_chat(src, SPAN_WARNING("You must have been dead for [respawn_time] minute\s to respawn. You have [timedifference_text] left."))
+		return FALSE
 
-	return 1
+	return TRUE
 
 /proc/isghostmind(var/datum/mind/player)
 	return player && !isnewplayer(player.current) && (!player.current || isghost(player.current) || (isliving(player.current) && player.current.stat == DEAD) || !player.current.client)

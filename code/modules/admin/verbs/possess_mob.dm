@@ -2,6 +2,7 @@ GLOBAL_LIST_EMPTY(available_mobs_for_possess)
 
 /client/proc/toggle_possess_mode(mob/living/M in range(view))
 	set name = "Toggle Possess Mode"
+	set category = "Fun"
 
 	if(!check_rights(R_FUN))
 		return
@@ -31,7 +32,7 @@ GLOBAL_LIST_EMPTY(available_mobs_for_possess)
 		if(G.client)
 			if(jobban_isbanned(G, "Animal"))
 				continue
-			to_chat(G, SPAN_DEADSAY("<b>[create_ghost_link(G, M, "(F)")] [M] is now available to possess! [possess_link(G, M)]</b>"))
+			to_chat(G, SPAN_DEADSAY("<b>[create_ghost_link(G, M, "(F)")] [capitalize(M.name)] is now available to possess! [possess_link(G, M)]</b>"))
 
 /proc/possess_link(mob/observer/ghost/G, mob/living/M)
 	return "<a href='byond://?src=\ref[G];possess=\ref[M]'>(Occupy)</a>"

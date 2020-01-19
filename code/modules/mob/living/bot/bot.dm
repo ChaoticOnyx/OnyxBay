@@ -67,7 +67,7 @@
 	if(on && !client && !busy)
 		spawn(0)
 			handleAI()
-			
+
 	if(!on && client)
 		ghostize()
 
@@ -89,6 +89,7 @@
 		health -= amount
 
 /mob/living/bot/death()
+	stat = DEAD
 	explode()
 
 /mob/living/bot/attackby(var/obj/item/O, var/mob/user)
