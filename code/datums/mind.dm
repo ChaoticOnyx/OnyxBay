@@ -57,8 +57,8 @@
 
 	var/rev_cooldown = 0
 
-	// the world.time since the mob has been brigged, or -1 if not at all
-	var/brigged_since = -1
+	var/brigged_since = 0
+	var/brigged_for_max = 0		// The maximum time spent in brig.
 
 	//put this here for easier tracking ingame
 	var/datum/money_account/initial_account
@@ -441,34 +441,6 @@
 	var/obj/item/device/uplink/H = find_syndicate_uplink()
 	if(H)
 		qdel(H)
-
-
-// check whether this mind's mob has been brigged for the given duration
-// have to call this periodically for the duration to work properly
-/datum/mind/proc/is_brigged(duration)
-	var/turf/T = current.loc
-	if(!istype(T))
-		brigged_since = -1
-		return 0
-	var/is_currently_brigged = 0
-	if(istype(T.loc,/area/security/brig))
-		is_currently_brigged = 1
-		for(var/obj/item/weapon/card/id/card in current)
-			is_currently_brigged = 0
-			break // if they still have ID they're not brigged
-		for(var/obj/item/device/pda/P in current)
-			if(P.id)
-				is_currently_brigged = 0
-				break // if they still have ID they're not brigged
-
-	if(!is_currently_brigged)
-		brigged_since = -1
-		return 0
-
-	if(brigged_since == -1)
-		brigged_since = world.time
-
-	return (duration <= world.time - brigged_since)
 
 /datum/mind/proc/reset()
 	assigned_role =   null

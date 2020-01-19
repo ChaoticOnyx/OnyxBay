@@ -130,12 +130,24 @@ area/space/atmosalert()
 	name = "\improper Security - Brig"
 	icon_state = "brig"
 
-
-
-
 /area/security/prison
 	name = "\improper Security - Prison Wing"
 	icon_state = "sec_prison"
+
+/area/security/prison/Entered(AM, oldloc)
+	if(ishuman(AM))
+		var/mob/living/carbon/human/H = AM
+		if(H.mind)
+			H.mind.brigged_since = world.time
+
+/area/security/prison/Exited(AM, oldloc)
+	if(ishuman(AM))
+		var/mob/living/carbon/human/H = AM
+		if(H.mind)
+			var/spent_time = world.time - H.mind.brigged_since
+			if(H.mind.brigged_for_max <= spent_time)
+				H.mind.brigged_for_max = spent_time
+			H.mind.brigged_since = 0
 
 /area/maintenance
 	area_flags = AREA_FLAG_RAD_SHIELDED
