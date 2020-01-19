@@ -27,7 +27,7 @@
 /obj/item/clothing/under/rank/security
 	name = "security officer's jumpsuit"
 	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for robust protection."
-	icon_state = "officer_red"
+	icon_state = "onyxsec"
 	item_state_slots = list(
 		slot_hand_str = "red"
 		)
