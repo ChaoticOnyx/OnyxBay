@@ -2,6 +2,7 @@ GLOBAL_LIST_EMPTY(available_mobs_for_possess)
 
 /client/proc/toggle_possess_mode(mob/living/M in range(view))
 	set name = "Toggle Possess Mode"
+	set desc = "Allows players to occupy a mob."
 	set category = "Fun"
 
 	if(!check_rights(R_FUN))

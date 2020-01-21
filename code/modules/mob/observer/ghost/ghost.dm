@@ -526,7 +526,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		client.images |= ghost_sightless_images
 	client.images -= ghost_image //remove ourself
 
-/mob/observer/ghost/MayRespawn(feedback = FALSE, respawn_time = FALSE)
+/mob/observer/ghost/MayRespawn(feedback = FALSE, respawn_time = 0)
 	if(!client)
 		return FALSE
 	if(mind && mind.current && mind.current.stat != DEAD && can_reenter_corpse == CORPSE_CAN_REENTER)
