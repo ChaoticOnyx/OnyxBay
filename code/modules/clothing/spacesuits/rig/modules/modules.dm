@@ -129,11 +129,11 @@
 
 		charges = processed_charges
 
-	stat_modules +=	new /stat_rig_module/activate(src)
-	stat_modules +=	new /stat_rig_module/deactivate(src)
-	stat_modules +=	new /stat_rig_module/engage(src)
-	stat_modules +=	new /stat_rig_module/select(src)
-	stat_modules +=	new /stat_rig_module/charge(src)
+	stat_modules += new /stat_rig_module/activate(src)
+	stat_modules += new /stat_rig_module/deactivate(src)
+	stat_modules += new /stat_rig_module/engage(src)
+	stat_modules += new /stat_rig_module/select(src)
+	stat_modules += new /stat_rig_module/charge(src)
 
 /obj/item/rig_module/Destroy()
 	deactivate()
