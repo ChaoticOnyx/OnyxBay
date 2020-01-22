@@ -337,10 +337,16 @@
 	icon_state = "rightsecure"
 	base_state = "rightsecure"
 
+/obj/machinery/door/window/brigdoor/eastright/merchant
+	color = "#818181"
+
 /obj/machinery/door/window/brigdoor/westright
 	dir = WEST
 	icon_state = "rightsecure"
 	base_state = "rightsecure"
+
+/obj/machinery/door/window/brigdoor/westright/merchant
+	color = "#818181"
 
 /obj/machinery/door/window/brigdoor/southright
 	dir = SOUTH
