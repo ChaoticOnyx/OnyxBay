@@ -6,7 +6,7 @@
 	var/uses = 5
 	var/obj/aura/personal_shield/device/shield
 
-/obj/item/device/personal_shield/attack_self(var/mob/living/user)
+/obj/item/device/personal_shield/attack_self(mob/living/user)
 	if(uses)
 		shield = new(user,src)
 	else

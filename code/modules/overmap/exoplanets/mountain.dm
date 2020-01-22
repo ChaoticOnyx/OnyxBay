@@ -33,6 +33,6 @@
 	floor_type = world.turf
 	..()
 
-/datum/random_map/automata/cave_system/mountains/get_additional_spawns(var/value, var/turf/T)
+/datum/random_map/automata/cave_system/mountains/get_additional_spawns(value, turf/T)
 	..()
 	T.color = color_rotation(colorshift)

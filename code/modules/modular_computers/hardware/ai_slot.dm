@@ -17,7 +17,7 @@
 		return
 	power_usage = power_usage_occupied
 
-/obj/item/weapon/computer_hardware/ai_slot/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+/obj/item/weapon/computer_hardware/ai_slot/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(..())
 		return 1
 	if(istype(W, /obj/item/weapon/aicard))

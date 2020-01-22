@@ -18,7 +18,7 @@
 		Kill_plants()
 		return 1
 
-/datum/artifact_effect/plantkiller/proc/Kill_plants(var/range = src.effectrange)
+/datum/artifact_effect/plantkiller/proc/Kill_plants(range = src.effectrange)
 	for(var/obj/machinery/portable_atmospherics/hydroponics/H in range(range, holder))
 		if(H.seed && !H.dead) // Get your xenobotanist/vox trader/hydroponist mad with you in less than 1 minute with this simple trick.
 			switch(rand(1,3))

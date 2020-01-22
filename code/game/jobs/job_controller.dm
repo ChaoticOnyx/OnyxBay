@@ -639,7 +639,7 @@ var/global/datum/controller/occupations/job_master
  *  preference is not set, or the preference is not appropriate for the rank, in
  *  which case a fallback will be selected.
  */
-/datum/controller/occupations/proc/get_spawnpoint_for(var/client/C, var/rank)
+/datum/controller/occupations/proc/get_spawnpoint_for(client/C, rank)
 
 	if(!C)
 		CRASH("Null client passed to get_spawnpoint_for() proc!")
@@ -679,10 +679,10 @@ var/global/datum/controller/occupations/job_master
 
 	return spawnpos
 
-/datum/controller/occupations/proc/GetJobByType(var/job_type)
+/datum/controller/occupations/proc/GetJobByType(job_type)
 	return occupations_by_type[job_type]
 
-/datum/controller/occupations/proc/get_roundstart_spawnpoint(var/rank)
+/datum/controller/occupations/proc/get_roundstart_spawnpoint(rank)
 	var/list/loc_list = list()
 	for(var/obj/effect/landmark/start/sloc in landmarks_list)
 		if(sloc.name != rank)	continue

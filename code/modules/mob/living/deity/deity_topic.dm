@@ -1,4 +1,4 @@
-/mob/living/deity/Topic(var/href, var/list/href_list)
+/mob/living/deity/Topic(href, list/href_list)
 	if(..())
 		return 1
 	if(href_list["form"])

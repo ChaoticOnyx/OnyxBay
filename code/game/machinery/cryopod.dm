@@ -269,7 +269,7 @@
 		if(occupant)
 			occupant.examine(user)
 
-/obj/machinery/cryopod/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/cryopod/emag_act(remaining_charges, mob/user)
 	if(!emagged)
 		to_chat(user, "<span class='notice'The locking mechanism has been disabled.</span>")
 		emagged = 1
@@ -432,7 +432,7 @@
 	set_occupant(null)
 
 
-/obj/machinery/cryopod/attackby(var/obj/item/weapon/G as obj, var/mob/user as mob)
+/obj/machinery/cryopod/attackby(obj/item/weapon/G as obj, mob/user as mob)
 
 	if(istype(G, /obj/item/grab))
 		var/obj/item/grab/grab = G
@@ -529,7 +529,7 @@
 		set_occupant(M)
 		return TRUE
 
-/obj/machinery/cryopod/proc/set_occupant(var/mob/living/carbon/occupant)
+/obj/machinery/cryopod/proc/set_occupant(mob/living/carbon/occupant)
 	src.occupant = occupant
 	if(!occupant)
 		SetName(initial(name))

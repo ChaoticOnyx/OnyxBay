@@ -80,7 +80,7 @@
 	else
 		icon_state = "protolathe"
 
-/obj/machinery/r_n_d/protolathe/attackby(var/obj/item/O as obj, var/mob/user as mob)
+/obj/machinery/r_n_d/protolathe/attackby(obj/item/O as obj, mob/user as mob)
 	if(busy)
 		to_chat(user, "<span class='notice'>\The [src] is busy. Please wait for completion of previous operation.</span>")
 		return 1
@@ -132,15 +132,15 @@
 	updateUsrDialog()
 	return
 
-/obj/machinery/r_n_d/protolathe/proc/addToQueue(var/datum/design/D)
+/obj/machinery/r_n_d/protolathe/proc/addToQueue(datum/design/D)
 	queue += D
 	return
 
-/obj/machinery/r_n_d/protolathe/proc/removeFromQueue(var/index)
+/obj/machinery/r_n_d/protolathe/proc/removeFromQueue(index)
 	queue.Cut(index, index + 1)
 	return
 
-/obj/machinery/r_n_d/protolathe/proc/canBuild(var/datum/design/D, var/amount_build)
+/obj/machinery/r_n_d/protolathe/proc/canBuild(datum/design/D, amount_build)
 	for(var/M in D.materials)
 		if(materials[M] < D.materials[M] * mat_efficiency * amount_build)
 			return 0
@@ -149,7 +149,7 @@
 			return 0
 	return 1
 
-/obj/machinery/r_n_d/protolathe/proc/build(var/datum/design/D)
+/obj/machinery/r_n_d/protolathe/proc/build(datum/design/D)
 	var/power = active_power_usage
 	for(var/M in D.materials)
 		power += round(D.materials[M] / 5)

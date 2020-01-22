@@ -1,4 +1,4 @@
-/obj/structure/diona_gestalt/proc/start_vote(var/mob/voter, var/vote_type)
+/obj/structure/diona_gestalt/proc/start_vote(mob/voter, vote_type)
 
 	if(current_vote)
 		to_chat(voter, "<span class='warning'>There is already a vote in progress.</span>")

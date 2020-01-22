@@ -7,7 +7,7 @@
 	mute_setting = MUTE_OOC
 	show_preference_setting = /datum/client_preference/show_ooc
 
-/decl/communication_channel/ooc/can_communicate(var/client/C, var/message)
+/decl/communication_channel/ooc/can_communicate(client/C, message)
 	. = ..()
 	if(!.)
 		return
@@ -21,7 +21,7 @@
 			log_and_message_admins("has attempted to advertise in [name]: [message]")
 			return FALSE
 
-/decl/communication_channel/ooc/do_communicate(var/client/C, var/message)
+/decl/communication_channel/ooc/do_communicate(client/C, message)
 	var/datum/admins/holder = C.holder
 	var/is_stealthed = C.is_stealthed()
 

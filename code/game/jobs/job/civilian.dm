@@ -115,12 +115,13 @@
 	supervisors = "company officials and Corporate Regulations"
 	selection_color = "#515151"
 	economic_modifier = 7
+	faction_restricted = TRUE
 	access = list(access_lawyer, access_sec_doors, access_maint_tunnels, access_heads)
 	minimal_access = list(access_lawyer, access_sec_doors, access_heads)
 	minimal_player_age = 10
 	outfit_type = /decl/hierarchy/outfit/job/internal_affairs_agent
 
-/datum/job/lawyer/equip(var/mob/living/carbon/human/H)
+/datum/job/lawyer/equip(mob/living/carbon/human/H)
 	. = ..()
 	if(.)
 		H.implant_loyalty(H)
@@ -138,7 +139,7 @@
 	minimal_player_age = 10
 	outfit_type = /decl/hierarchy/outfit/job/clown
 
-/datum/job/clown/equip(var/mob/living/carbon/human/H)
+/datum/job/clown/equip(mob/living/carbon/human/H)
 	. = ..()
 	if(.)
 		H.mutations.Add(MUTATION_CLUMSY)
@@ -164,7 +165,7 @@
 	minimal_player_age = 10
 	outfit_type = /decl/hierarchy/outfit/job/mime
 
-/datum/job/mime/equip(var/mob/living/carbon/human/H)
+/datum/job/mime/equip(mob/living/carbon/human/H)
 	. = ..()
 	if(H.mind.changeling)
 		return

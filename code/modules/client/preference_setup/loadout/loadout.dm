@@ -12,7 +12,7 @@ var/list/gear_datums = list()
 	var/category = ""
 	var/list/gear = list()
 
-/datum/loadout_category/New(var/cat)
+/datum/loadout_category/New(cat)
 	category = cat
 	..()
 
@@ -47,15 +47,15 @@ var/list/gear_datums = list()
 	var/current_tab = "General"
 	var/hide_unavailable_gear = 0
 
-/datum/category_item/player_setup_item/loadout/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/loadout/load_character(savefile/S)
 	from_file(S["gear_list"], pref.gear_list)
 	from_file(S["gear_slot"], pref.gear_slot)
 
-/datum/category_item/player_setup_item/loadout/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/loadout/save_character(savefile/S)
 	to_file(S["gear_list"], pref.gear_list)
 	to_file(S["gear_slot"], pref.gear_slot)
 
-/datum/category_item/player_setup_item/loadout/proc/valid_gear_choices(var/max_cost)
+/datum/category_item/player_setup_item/loadout/proc/valid_gear_choices(max_cost)
 	. = list()
 	var/mob/preference_mob = preference_mob()
 	for(var/gear_name in gear_datums)
@@ -199,7 +199,7 @@ var/list/gear_datums = list()
 	. += "</table>"
 	. = jointext(.,null)
 
-/datum/category_item/player_setup_item/loadout/proc/get_gear_metadata(var/datum/gear/G, var/readonly)
+/datum/category_item/player_setup_item/loadout/proc/get_gear_metadata(datum/gear/G, readonly)
 	var/list/gear = pref.gear_list[pref.gear_slot]
 	. = gear[G.display_name]
 	if(!.)
@@ -207,14 +207,14 @@ var/list/gear_datums = list()
 		if(!readonly)
 			gear[G.display_name] = .
 
-/datum/category_item/player_setup_item/loadout/proc/get_tweak_metadata(var/datum/gear/G, var/datum/gear_tweak/tweak)
+/datum/category_item/player_setup_item/loadout/proc/get_tweak_metadata(datum/gear/G, datum/gear_tweak/tweak)
 	var/list/metadata = get_gear_metadata(G)
 	. = metadata["[tweak]"]
 	if(!.)
 		. = tweak.get_default()
 		metadata["[tweak]"] = .
 
-/datum/category_item/player_setup_item/loadout/proc/set_tweak_metadata(var/datum/gear/G, var/datum/gear_tweak/tweak, var/new_metadata)
+/datum/category_item/player_setup_item/loadout/proc/set_tweak_metadata(datum/gear/G, datum/gear_tweak/tweak, new_metadata)
 	var/list/metadata = get_gear_metadata(G)
 	metadata["[tweak]"] = new_metadata
 
@@ -263,7 +263,7 @@ var/list/gear_datums = list()
 		return TOPIC_REFRESH
 	return ..()
 
-/datum/category_item/player_setup_item/loadout/update_setup(var/savefile/preferences, var/savefile/character)
+/datum/category_item/player_setup_item/loadout/update_setup(savefile/preferences, savefile/character)
 	if(preferences["version"] < 14)
 		var/list/old_gear = character["gear"]
 		if(istype(old_gear)) // During updates data isn't sanitized yet, we have to do manual checks
@@ -312,7 +312,7 @@ var/list/gear_datums = list()
 	if(flags & GEAR_HAS_SUBTYPE_SELECTION)
 		gear_tweaks += new /datum/gear_tweak/path/subtype(path)
 		
-/datum/gear/proc/get_description(var/metadata)
+/datum/gear/proc/get_description(metadata)
 	. = description
 	for(var/datum/gear_tweak/gt in gear_tweaks)
 		. = gt.tweak_description(., metadata["[gt]"])
@@ -321,11 +321,11 @@ var/list/gear_datums = list()
 	var/path
 	var/location
 
-/datum/gear_data/New(var/path, var/location)
+/datum/gear_data/New(path, location)
 	src.path = path
 	src.location = location
 
-/datum/gear/proc/spawn_item(var/location, var/metadata)
+/datum/gear/proc/spawn_item(location, metadata)
 	var/datum/gear_data/gd = new(path, location)
 	for(var/datum/gear_tweak/gt in gear_tweaks)
 		gt.tweak_gear_data(metadata["[gt]"], gd)
@@ -334,7 +334,7 @@ var/list/gear_datums = list()
 		gt.tweak_item(item, metadata["[gt]"])
 	return item
 
-/datum/gear/proc/spawn_on_mob(var/mob/living/carbon/human/H, var/metadata)
+/datum/gear/proc/spawn_on_mob(mob/living/carbon/human/H, metadata)
 	var/obj/item/item = spawn_item(H, metadata)
 
 	if(H.equip_to_slot_if_possible(item, slot, del_on_fail = 1, force = 1))
@@ -343,7 +343,7 @@ var/list/gear_datums = list()
 
 	return FALSE
 
-/datum/gear/proc/spawn_in_storage_or_drop(var/mob/living/carbon/human/H, var/metadata)
+/datum/gear/proc/spawn_in_storage_or_drop(mob/living/carbon/human/H, metadata)
 	var/obj/item/item = spawn_item(H, metadata)
 
 	var/atom/placed_in = H.equip_to_storage(item)

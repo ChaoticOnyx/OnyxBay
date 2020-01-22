@@ -103,7 +103,7 @@
 		else
 			to_chat(usr, "<span class='warning'>Looks like someone applied first. First arrived, first served. Better luck next time.</span>")
 
-/obj/effect/blob/core/attack_ghost(var/mob/user)
+/obj/effect/blob/core/attack_ghost(mob/user)
 	if (!overmind)
 		create_overmind(user.client)
 

@@ -16,7 +16,7 @@
 		to_chat(src, "<span class='danger'>You've lost an altar!</span>")
 	return ..()
 
-/obj/structure/deity/altar/attackby(var/obj/item/I, var/mob/user)
+/obj/structure/deity/altar/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/grab))
 		var/obj/item/grab/G = I
 		if(G.force_danger())
@@ -56,7 +56,7 @@
 
 
 //Used for force conversion.
-/obj/structure/deity/altar/proc/set_target(var/mob/living/L)
+/obj/structure/deity/altar/proc/set_target(mob/living/L)
 	if(target || !linked_god)
 		return
 	cycles_before_converted = initial(cycles_before_converted)
@@ -75,7 +75,7 @@
 	target = null
 	update_icon()
 
-/obj/structure/deity/altar/OnTopic(var/user, var/list/href_list)
+/obj/structure/deity/altar/OnTopic(user, list/href_list)
 	if(href_list["resist"])
 		var/mob/living/M = locate(href_list["resist"])
 		if(!istype(M) || target != M || M.stat || M.last_special > world.time)

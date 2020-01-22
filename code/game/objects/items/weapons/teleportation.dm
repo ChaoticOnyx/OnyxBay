@@ -268,7 +268,7 @@ Frequency:
 	attack_self(H)
 	return
 
-/obj/item/weapon/vortex_manipulator/emp_act(var/severity)
+/obj/item/weapon/vortex_manipulator/emp_act(severity)
 	var/vm_owner = get_owner()
 	if(!ishuman(vm_owner))
 		return
@@ -320,7 +320,7 @@ Frequency:
 	localteleport(user, 1, tempturf.x, tempturf.y)
 
 
-/obj/item/weapon/vortex_manipulator/proc/self_activate(var/mob/living/carbon/human/user)
+/obj/item/weapon/vortex_manipulator/proc/self_activate(mob/living/carbon/human/user)
 	if(!active)
 		to_chat(user, SPAN_NOTE("You attempt to activate Vortex Manipulator"))
 		if(timelord_mode)
@@ -416,7 +416,7 @@ Frequency:
 	sparks.start()
 
 // Lowers cellcharge according to power spent. Protected against negative charge values.
-/obj/item/weapon/vortex_manipulator/proc/deductcharge(var/chrgdeductamt)
+/obj/item/weapon/vortex_manipulator/proc/deductcharge(chrgdeductamt)
 	if(vcell)
 		if(vcell.checked_use(chrgdeductamt))
 			return 1
@@ -437,13 +437,13 @@ Frequency:
 	beacon_locations = sortAssoc(beacon_locations)
 
 // phase_in & phase_out are from ninja's teleport mostly.
-/obj/item/weapon/vortex_manipulator/proc/phase_in(var/mob/M,var/turf/T)
+/obj/item/weapon/vortex_manipulator/proc/phase_in(mob/M,turf/T)
 	if(!M || !T)
 		return
 	playsound(T, 'sound/effects/phasein.ogg', 50, 1)
 	anim(T,M,'icons/mob/mob.dmi',,"phasein",,M.dir)
 
-/obj/item/weapon/vortex_manipulator/proc/phase_out(var/mob/M,var/turf/T)
+/obj/item/weapon/vortex_manipulator/proc/phase_out(mob/M,turf/T)
 	if(!M || !T)
 		return
 	playsound(T, 'sound/effects/phasein.ogg', 50, 1)
@@ -459,7 +459,7 @@ Frequency:
  * Special combat ability allowing VM to teleport all those surrounding its wearer randomly.
  * User returns to his position after everyone's been teleported.
  */
-/obj/item/weapon/vortex_manipulator/proc/localmassiverandom(var/mob/user)
+/obj/item/weapon/vortex_manipulator/proc/localmassiverandom(mob/user)
 	log_game("[user] has used Vortex Manipulator's Local Massive Random ability.")
 	user.visible_message(SPAN_WARN("The Vortex Manipulator announces: Battle function activated. Assembling local space-time anomaly."))
 	var/turf/temp_turf = get_turf(user)
@@ -481,7 +481,7 @@ Frequency:
  * TODO: add CD
  */
 
-/obj/item/weapon/vortex_manipulator/proc/vortexannounce(var/mob/user, var/nonactive_announce = 0)
+/obj/item/weapon/vortex_manipulator/proc/vortexannounce(mob/user, nonactive_announce = 0)
 	var/input = sanitize(input(user, "Enter what you want to announce"))
 	for(var/obj/item/weapon/vortex_manipulator/VM in world)
 		var/H = VM.get_owner()
@@ -503,7 +503,7 @@ Frequency:
  * When malfunctioning, picks random 'a' and 'b' values and has chance of next malfunction doubled.
  * Also teleports everyone aggressively grabbed by user.
  */
-/obj/item/weapon/vortex_manipulator/proc/localteleport(var/mob/user, var/malf_use, var/new_x = 0, var/new_y = 0)
+/obj/item/weapon/vortex_manipulator/proc/localteleport(mob/user, malf_use, new_x = 0, new_y = 0)
 	if(!active)
 		malf_use = 1
 	var/list/possible_x = list(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5)
@@ -539,7 +539,7 @@ Frequency:
  * When malfunctioning, picks random area from list of areas with beacons and has chance of next malfunction doubled.
  * Also teleports everyone aggressively grabbed by user.
  */
-/obj/item/weapon/vortex_manipulator/proc/beaconteleport(var/mob/user, var/malf_use)
+/obj/item/weapon/vortex_manipulator/proc/beaconteleport(mob/user, malf_use)
 	if(!active)
 		malf_use = 1
 	get_beacon_locations()
@@ -576,7 +576,7 @@ Frequency:
  * Which for now means definite malfunction after teleporation, so with the chance of 50% you will be teleported locally after that.
  * Also teleports everyone aggressively grabbed by user.
  */
-/obj/item/weapon/vortex_manipulator/proc/areateleport(var/mob/user, var/malf_use)
+/obj/item/weapon/vortex_manipulator/proc/areateleport(mob/user, malf_use)
 	if(!active)
 		malf_use = 1
 	var/A = pick(teleportlocs)

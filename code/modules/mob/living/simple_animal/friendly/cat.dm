@@ -105,7 +105,7 @@
 		flee_target = A
 		turns_since_scan = 5
 
-/mob/living/simple_animal/cat/attackby(var/obj/item/O, var/mob/user)
+/mob/living/simple_animal/cat/attackby(obj/item/O, mob/user)
 	. = ..()
 	if(O.force)
 		set_flee_target(user? user : src.loc)
@@ -119,7 +119,7 @@
 	. = ..()
 	set_flee_target(src.loc)
 
-/mob/living/simple_animal/cat/bullet_act(var/obj/item/projectile/proj)
+/mob/living/simple_animal/cat/bullet_act(obj/item/projectile/proj)
 	. = ..()
 	set_flee_target(proj.firer? proj.firer : src.loc)
 

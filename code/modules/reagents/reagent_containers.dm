@@ -52,7 +52,7 @@
 	else
 		SetName("[initial(name)] ([label_text])")
 
-/obj/item/weapon/reagent_containers/proc/standard_dispenser_refill(var/mob/user, var/obj/structure/reagent_dispensers/target) // This goes into afterattack
+/obj/item/weapon/reagent_containers/proc/standard_dispenser_refill(mob/user, obj/structure/reagent_dispensers/target) // This goes into afterattack
 	if(!istype(target))
 		return 0
 
@@ -69,7 +69,7 @@
 	to_chat(user, "<span class='notice'>You fill [src] with [trans] units of the contents of [target].</span>")
 	return 1
 
-/obj/item/weapon/reagent_containers/proc/standard_splash_mob(var/mob/user, var/mob/target) // This goes into afterattack
+/obj/item/weapon/reagent_containers/proc/standard_splash_mob(mob/user, mob/target) // This goes into afterattack
 	if(!istype(target))
 		return
 
@@ -92,19 +92,19 @@
 	reagents.splash(target, reagents.total_volume)
 	return 1
 
-/obj/item/weapon/reagent_containers/proc/self_feed_message(var/mob/user)
+/obj/item/weapon/reagent_containers/proc/self_feed_message(mob/user)
 	to_chat(user, "<span class='notice'>You eat \the [src]</span>")
 
-/obj/item/weapon/reagent_containers/proc/other_feed_message_start(var/mob/user, var/mob/target)
+/obj/item/weapon/reagent_containers/proc/other_feed_message_start(mob/user, mob/target)
 	user.visible_message("<span class='warning'>[user] is trying to feed [target] \the [src]!</span>")
 
-/obj/item/weapon/reagent_containers/proc/other_feed_message_finish(var/mob/user, var/mob/target)
+/obj/item/weapon/reagent_containers/proc/other_feed_message_finish(mob/user, mob/target)
 	user.visible_message("<span class='warning'>[user] has fed [target] \the [src]!</span>")
 
-/obj/item/weapon/reagent_containers/proc/feed_sound(var/mob/user)
+/obj/item/weapon/reagent_containers/proc/feed_sound(mob/user)
 	playsound(user, "drink", rand(45, 60), TRUE)
 
-/obj/item/weapon/reagent_containers/proc/standard_feed_mob(var/mob/user, var/mob/target) // This goes into attack
+/obj/item/weapon/reagent_containers/proc/standard_feed_mob(mob/user, mob/target) // This goes into attack
 	if(!istype(target))
 		return 0
 
@@ -159,7 +159,7 @@
 
 	return 0
 
-/obj/item/weapon/reagent_containers/proc/standard_pour_into(var/mob/user, var/atom/target) // This goes into afterattack and yes, it's atom-level
+/obj/item/weapon/reagent_containers/proc/standard_pour_into(mob/user, atom/target) // This goes into afterattack and yes, it's atom-level
 	if(!target.reagents)
 		return 0
 
@@ -188,7 +188,7 @@
 	if(user.zone_sel.selecting != BP_MOUTH) //in case it is ever used as a surgery tool
 		return ..()
 
-/obj/item/weapon/reagent_containers/AltClick(var/mob/user)
+/obj/item/weapon/reagent_containers/AltClick(mob/user)
 	if(possible_transfer_amounts)
 		if(CanPhysicallyInteract(user))
 			set_APTFT()

@@ -49,12 +49,12 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	chem_charges = min(max(0, chem_charges+chem_recharge_rate), chem_storage)
 	geneticdamage = max(0, geneticdamage-1)
 
-/datum/changeling/proc/GetDNA(var/dna_owner)
+/datum/changeling/proc/GetDNA(dna_owner)
 	for(var/datum/absorbed_dna/DNA in absorbed_dna)
 		if(dna_owner == DNA.name)
 			return DNA
 
-/mob/proc/absorbDNA(var/datum/absorbed_dna/newDNA)
+/mob/proc/absorbDNA(datum/absorbed_dna/newDNA)
 	var/datum/changeling/changeling = null
 	if(src.mind && src.mind.changeling)
 		changeling = src.mind.changeling
@@ -154,7 +154,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 
 //Used to dump the languages from the changeling datum into the actual mob.
-/mob/proc/changeling_update_languages(var/updated_languages)
+/mob/proc/changeling_update_languages(updated_languages)
 
 	languages = list()
 	for(var/language in updated_languages)
@@ -325,7 +325,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	feedback_add_details("changeling_powers","TR")
 	return 1
 
-/mob/proc/handle_changeling_transform(var/datum/absorbed_dna/chosen_dna)
+/mob/proc/handle_changeling_transform(datum/absorbed_dna/chosen_dna)
 	src.visible_message("<span class='warning'>[src] transforms!</span>")
 
 	src.dna = chosen_dna.dna
@@ -1211,7 +1211,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		if(src)
 			qdel(src)
 
-/obj/item/weapon/finger_lockpick/afterattack(var/atom/target, var/mob/living/user, proximity)
+/obj/item/weapon/finger_lockpick/afterattack(atom/target, mob/living/user, proximity)
 	if(!target)
 		return
 	if(!proximity)
@@ -1738,7 +1738,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(T)
 		T.move_biostructure()
 
-/mob/proc/changeling_transfer_mind(var/atom/A)
+/mob/proc/changeling_transfer_mind(atom/A)
 	var/obj/item/organ/internal/biostructure/BIO
 	if (istype(src,/mob/living/carbon/brain))
 		BIO = src.loc

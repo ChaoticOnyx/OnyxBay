@@ -42,7 +42,7 @@
 	delay = 20 SECONDS
 	var/first_message_shown = FALSE
 
-/datum/disease2/effect/rage/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/rage/activate(mob/living/carbon/human/mob,multiplier)
 	if (!first_message_shown)
 		first_message_shown = TRUE
 		to_chat(mob, "<span class='warning'>Your muscles start tensing up, and you can feel your pulse rising, throbbing at the back of your head. Your breathing increases, and you feel... angry. An urge wells up inside you. Everything is making you angry, and you want it to <i>pay</i> for it.</span>")

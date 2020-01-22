@@ -22,7 +22,7 @@
 	var/dispense_flavour = ICECREAM_VANILLA
 	var/flavour_name = "vanilla"
 
-/obj/machinery/icecream_vat/proc/get_ingredient_list(var/type)
+/obj/machinery/icecream_vat/proc/get_ingredient_list(type)
 	switch(type)
 		if(ICECREAM_CHOCOLATE)
 			return list(/datum/reagent/drink/milk, /datum/reagent/drink/ice, /datum/reagent/nutriment/coco)
@@ -41,7 +41,7 @@
 		else
 			return list(/datum/reagent/drink/milk, /datum/reagent/drink/ice)
 
-/obj/machinery/icecream_vat/proc/get_flavour_name(var/flavour_type)
+/obj/machinery/icecream_vat/proc/get_flavour_name(flavour_type)
 	switch(flavour_type)
 		if(ICECREAM_CHOCOLATE)
 			return "chocolate"
@@ -98,7 +98,7 @@
 	popup.set_content(dat)
 	popup.open()
 
-/obj/machinery/icecream_vat/attackby(var/obj/item/O as obj, var/mob/user as mob)
+/obj/machinery/icecream_vat/attackby(obj/item/O as obj, mob/user as mob)
 	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/icecream))
 		var/obj/item/weapon/reagent_containers/food/snacks/icecream/I = O
 		if(!I.ice_creamed)
@@ -120,7 +120,7 @@
 	else
 		..()
 
-/obj/machinery/icecream_vat/proc/make(var/mob/user, var/make_type, var/amount)
+/obj/machinery/icecream_vat/proc/make(mob/user, make_type, amount)
 	for(var/R in get_ingredient_list(make_type))
 		if(reagents.has_reagent(R, amount))
 			continue
@@ -192,7 +192,7 @@
 	create_reagents(20)
 	reagents.add_reagent(/datum/reagent/nutriment, 5)
 
-/obj/item/weapon/reagent_containers/food/snacks/icecream/proc/add_ice_cream(var/flavour_name)
+/obj/item/weapon/reagent_containers/food/snacks/icecream/proc/add_ice_cream(flavour_name)
 	name = "[flavour_name] icecream"
 	src.overlays += "icecream_[flavour_name]"
 	desc = "Delicious [cone_type] cone with a dollop of [flavour_name] ice cream."

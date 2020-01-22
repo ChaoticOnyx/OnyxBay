@@ -33,7 +33,7 @@
 	ui_header = "downloader_finished.gif"
 
 
-/datum/computer_file/program/ntnetdownload/proc/begin_file_download(var/filename)
+/datum/computer_file/program/ntnetdownload/proc/begin_file_download(filename)
 	if(downloaded_file)
 		return 0
 
@@ -49,7 +49,7 @@
 	generate_network_log("Began downloading file [file_info] from [server].")
 	downloaded_file = PRG.clone()
 
-/datum/computer_file/program/ntnetdownload/proc/check_file_download(var/filename)
+/datum/computer_file/program/ntnetdownload/proc/check_file_download(filename)
 	//returns 1 if file can be downloaded, returns 0 if download prohibited
 	var/datum/computer_file/program/PRG = ntnet_global.find_ntnet_file_by_name(filename)
 
@@ -140,7 +140,7 @@
 	name = "Network Downloader"
 	var/obj/item/modular_computer/my_computer = null
 
-/datum/nano_module/program/computer_ntnetdownload/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/program/computer_ntnetdownload/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(program)
 		my_computer = program.computer
 

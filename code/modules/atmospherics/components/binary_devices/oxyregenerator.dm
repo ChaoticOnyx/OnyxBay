@@ -42,7 +42,7 @@
 	..()
 	to_chat(user,"Its outlet port is to the [dir2text(dir)]")
 
-/obj/machinery/atmospherics/binary/oxyregenerator/attackby(var/obj/item/O as obj, var/mob/user as mob)
+/obj/machinery/atmospherics/binary/oxyregenerator/attackby(obj/item/O as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, O))
 		return
 	if(default_deconstruction_crowbar(user, O))
@@ -101,7 +101,7 @@
 
 	src.set_dir(turn(src.dir, 90))
 
-/obj/machinery/atmospherics/binary/oxyregenerator/Process(var/delay)
+/obj/machinery/atmospherics/binary/oxyregenerator/Process(delay)
 	if((stat & (NOPOWER|BROKEN)) || !use_power)
 		return
 
@@ -169,7 +169,7 @@
 /obj/machinery/atmospherics/binary/oxyregenerator/attack_hand(mob/user as mob)
 	ui_interact(user)
 
-/obj/machinery/atmospherics/binary/oxyregenerator/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+/obj/machinery/atmospherics/binary/oxyregenerator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	var/data[0]
 	data["on"] = use_power ? 1 : 0
 	data["powerSetting"] = power_setting

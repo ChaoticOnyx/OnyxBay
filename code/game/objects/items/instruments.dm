@@ -10,7 +10,7 @@
 	var/InstrumentId = "instrument"
 	icon = 'icons/obj/musician.dmi'
 
-/obj/item/instrument/proc/playnote(var/note as text)
+/obj/item/instrument/proc/playnote(note as text)
 //	log_debug("Note: [note]")
 
 	var/soundfile

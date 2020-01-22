@@ -10,7 +10,7 @@
 							//1 - require manual login / account number and pin
 							//2 - require card and manual login
 
-/datum/money_account/proc/do_transaction(var/datum/transaction/T)
+/datum/money_account/proc/do_transaction(datum/transaction/T)
 	money = max(0, money + T.amount)
 	transaction_log += T
 
@@ -53,7 +53,7 @@
 		R.Find(text)
 		amount = -text2num(R.match)
 
-/proc/create_account(var/new_owner_name = "Default user", var/starting_funds = 0, var/obj/machinery/computer/account_database/source_db)
+/proc/create_account(new_owner_name = "Default user", starting_funds = 0, obj/machinery/computer/account_database/source_db)
 
 	//create a new account
 	var/datum/money_account/M = new()
@@ -109,7 +109,7 @@
 
 	return M
 
-/proc/charge_to_account(var/attempt_account_number, var/source_name, var/purpose, var/terminal_id, var/amount)
+/proc/charge_to_account(attempt_account_number, source_name, purpose, terminal_id, amount)
 	var/datum/money_account/D = get_account(attempt_account_number)
 	if(!D || D.suspended)
 		return 0
@@ -122,12 +122,12 @@
 	return 1
 
 //this returns the first account datum that matches the supplied accnum/pin combination, it returns null if the combination did not match any account
-/proc/attempt_account_access(var/attempt_account_number, var/attempt_pin_number, var/security_level_passed = 0)
+/proc/attempt_account_access(attempt_account_number, attempt_pin_number, security_level_passed = 0)
 	var/datum/money_account/D = get_account(attempt_account_number)
 	if(D && D.security_level <= security_level_passed && (!D.security_level || D.remote_access_pin == attempt_pin_number) )
 		return D
 
-/proc/get_account(var/account_number)
+/proc/get_account(account_number)
 	for(var/datum/money_account/D in all_money_accounts)
 		if(D.account_number == account_number)
 			return D

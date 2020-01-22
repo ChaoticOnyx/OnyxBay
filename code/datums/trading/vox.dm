@@ -60,7 +60,7 @@
 	mob_transfer_message = "<span class='danger'>You are transported to the ORIGIN. When the transportation dizziness wears off, you find you are surrounded by cackling Vox...</span>"
 
 
-/datum/trader/ship/vox/hail(var/mob/user)
+/datum/trader/ship/vox/hail(mob/user)
 	var/specific
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
@@ -82,10 +82,10 @@
 		return ..()
 	return 0
 
-/datum/trader/ship/vox/get_response(var/text, var/generic)
+/datum/trader/ship/vox/get_response(text, generic)
 	return ..("[text][hailed_vox]", generic)
 
-/datum/trader/ship/vox/get_item_value(var/trading_num)
+/datum/trader/ship/vox/get_item_value(trading_num)
 	. = ..()
 	if(!hailed_vox)
 		. *= 2

@@ -27,13 +27,13 @@
 /obj/structure/cult/pylon/attack_hand(mob/M as mob)
 	attackpylon(M, 5)
 
-/obj/structure/cult/pylon/attack_generic(var/mob/user, var/damage)
+/obj/structure/cult/pylon/attack_generic(mob/user, damage)
 	attackpylon(user, damage)
 
 /obj/structure/cult/pylon/attackby(obj/item/W as obj, mob/user as mob)
 	attackpylon(user, W.force)
 
-/obj/structure/cult/pylon/proc/attackpylon(mob/user as mob, var/damage)
+/obj/structure/cult/pylon/proc/attackpylon(mob/user as mob, damage)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	if(!isbroken)
 		if(prob(1+ damage * 5))
@@ -121,7 +121,7 @@
 	new t(src.loc)
 	qdel(src)
 
-/obj/effect/gateway/active/Crossed(var/atom/A)
+/obj/effect/gateway/active/Crossed(atom/A)
 	if(!istype(A, /mob/living))
 		return
 

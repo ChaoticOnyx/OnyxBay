@@ -25,7 +25,7 @@
 		else
 			to_chat(user, "<span class='danger'>They are too big for the spike, try something smaller!</span>")
 
-/obj/structure/kitchenspike/proc/spike(var/mob/living/victim)
+/obj/structure/kitchenspike/proc/spike(mob/living/victim)
 
 	if(!istype(victim))
 		return

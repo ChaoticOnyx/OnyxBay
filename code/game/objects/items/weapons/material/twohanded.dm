@@ -140,7 +140,7 @@
 	attack_verb = list("attacked", "poked", "jabbed", "torn", "gored")
 	default_material = MATERIAL_GLASS
 
-/obj/item/weapon/material/twohanded/spear/shatter(var/consumed)
+/obj/item/weapon/material/twohanded/spear/shatter(consumed)
 	if(!consumed)
 		new /obj/item/weapon/material/wirerod(get_turf(src)) //give back the wired rod
 	..()
@@ -172,17 +172,17 @@
 	slot_flags = SLOT_BACK
 
 //Predefined materials go here.
-/obj/item/weapon/material/twohanded/baseballbat/metal/New(var/newloc)
+/obj/item/weapon/material/twohanded/baseballbat/metal/New(newloc)
 	..(newloc, MATERIAL_STEEL)
 
-/obj/item/weapon/material/twohanded/baseballbat/uranium/New(var/newloc)
+/obj/item/weapon/material/twohanded/baseballbat/uranium/New(newloc)
 	..(newloc, MATERIAL_URANIUM)
 
-/obj/item/weapon/material/twohanded/baseballbat/gold/New(var/newloc)
+/obj/item/weapon/material/twohanded/baseballbat/gold/New(newloc)
 	..(newloc, MATERIAL_GOLD)
 
-/obj/item/weapon/material/twohanded/baseballbat/platinum/New(var/newloc)
+/obj/item/weapon/material/twohanded/baseballbat/platinum/New(newloc)
 	..(newloc, MATERIAL_PLATINUM)
 
-/obj/item/weapon/material/twohanded/baseballbat/diamond/New(var/newloc)
+/obj/item/weapon/material/twohanded/baseballbat/diamond/New(newloc)
 	..(newloc, MATERIAL_DIAMOND)

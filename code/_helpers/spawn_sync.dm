@@ -39,7 +39,7 @@
 
 //Resets the counter if you want to utilize the same datum multiple times
 // Optional: pass the number of checks you want for the failsafe
-/datum/spawn_sync/proc/reset(var/safety = 100)
+/datum/spawn_sync/proc/reset(safety = 100)
 	count = 1
 	failsafe = safety
 
@@ -57,7 +57,7 @@
 		count = 0
 
 //Set failsafe check count in case you need more time for the workers to return
-/datum/spawn_sync/proc/set_failsafe(var/safety)
+/datum/spawn_sync/proc/set_failsafe(safety)
 	failsafe = safety
 
 /datum/spawn_sync/proc/start_worker()

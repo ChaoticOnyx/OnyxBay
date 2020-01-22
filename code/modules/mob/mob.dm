@@ -79,7 +79,7 @@
 // message is the message output to anyone who can see e.g. "[src] does something!"
 // self_message (optional) is what the src mob sees  e.g. "You do something!"
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
-/mob/visible_message(var/message, var/self_message, var/blind_message, var/range = world.view, var/checkghosts = null, var/narrate = FALSE)
+/mob/visible_message(message, self_message, blind_message, range = world.view, checkghosts = null, narrate = FALSE)
 	var/turf/T = get_turf(src)
 	var/list/mobs = list()
 	var/list/objs = list()
@@ -110,7 +110,7 @@
 // If drain_check is set it will not actually drain power, just return a value.
 // If surge is set, it will destroy/damage the recipient and not return any power.
 // Not sure where to define this, so it can sit here for the rest of time.
-/atom/proc/drain_power(var/drain_check,var/surge, var/amount = 0)
+/atom/proc/drain_power(drain_check,surge, amount = 0)
 	return -1
 
 // Show a message to all mobs and objects in earshot of this one
@@ -119,7 +119,7 @@
 // self_message (optional) is what the src mob hears.
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
-/mob/audible_message(var/message, var/self_message, var/deaf_message, var/hearing_distance = world.view, var/checkghosts = null, var/narrate = FALSE)
+/mob/audible_message(message, self_message, deaf_message, hearing_distance = world.view, checkghosts = null, narrate = FALSE)
 	var/turf/T = get_turf(src)
 	var/list/mobs = list()
 	var/list/objs = list()
@@ -186,7 +186,7 @@
 /mob/proc/cannot_stand()
 	return incapacitated(INCAPACITATION_KNOCKDOWN)
 
-/mob/proc/incapacitated(var/incapacitation_flags = INCAPACITATION_DEFAULT)
+/mob/proc/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
 
 	if ((incapacitation_flags & INCAPACITATION_STUNNED) && stunned)
 		return 1
@@ -532,7 +532,7 @@
 		if(pullin)
 			pullin.icon_state = "pull0"
 
-/mob/proc/start_pulling(var/atom/movable/AM)
+/mob/proc/start_pulling(atom/movable/AM)
 
 	if ( !AM || !usr || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
 		return
@@ -735,7 +735,7 @@
 	else
 		reset_plane_and_layer()
 
-/mob/proc/facedir(var/ndir)
+/mob/proc/facedir(ndir)
 	if(!canface() || client.moving || world.time < client.move_delay)
 		return 0
 	set_dir(ndir)
@@ -849,7 +849,7 @@
 /mob/proc/get_species()
 	return ""
 
-/mob/proc/get_visible_implants(var/class = 0)
+/mob/proc/get_visible_implants(class = 0)
 	var/list/visible_implants = list()
 	for(var/obj/item/O in embedded)
 		if(O.w_class > class)
@@ -976,7 +976,7 @@
 // 	else
 // 		to_chat(usr, "You are now facing [dir2text(facing_dir)].")
 
-/mob/proc/set_face_dir(var/newdir)
+/mob/proc/set_face_dir(newdir)
 	if(!isnull(facing_dir) && newdir == facing_dir)
 		facing_dir = null
 	else if(newdir)
@@ -997,7 +997,7 @@
 	else
 		return ..()
 
-/mob/proc/set_stat(var/new_stat)
+/mob/proc/set_stat(new_stat)
 	. = stat != new_stat
 	stat = new_stat
 
@@ -1057,7 +1057,7 @@
 			to_chat(usr, "The game is not currently looking for antags.")
 	else
 		to_chat(usr, "You must be observing or in the lobby to join the antag pool.")
-/mob/proc/is_invisible_to(var/mob/viewer)
+/mob/proc/is_invisible_to(mob/viewer)
 	return (!alpha || !mouse_opacity || viewer.see_invisible < invisibility)
 
 /client/proc/check_has_body_select()

@@ -28,7 +28,7 @@
 	health += 10
 	return 1
 
-/obj/effect/blob/shield/update_icon(var/spawnend = 0)
+/obj/effect/blob/shield/update_icon(spawnend = 0)
 	spawn(1)
 		overlays.len = 0
 		underlays.len = 0

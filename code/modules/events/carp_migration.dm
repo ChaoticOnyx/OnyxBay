@@ -24,7 +24,7 @@
 	else
 		spawn_fish(rand(1, 3), 1, 2)	//1 to 6 carp, alone or in pairs
 
-/datum/event/carp_migration/proc/spawn_fish(var/num_groups, var/group_size_min=3, var/group_size_max=5)
+/datum/event/carp_migration/proc/spawn_fish(num_groups, group_size_min=3, group_size_max=5)
 	var/list/spawn_locations = list()
 
 	for(var/obj/effect/landmark/C in landmarks_list)

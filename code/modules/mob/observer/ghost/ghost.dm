@@ -158,7 +158,7 @@ Works together with spawning an observer, noted above.
 		process_medHUD(src)
 
 
-/mob/observer/ghost/proc/process_medHUD(var/mob/M)
+/mob/observer/ghost/proc/process_medHUD(mob/M)
 	var/client/C = M.client
 	for(var/mob/living/carbon/human/patient in oview(M, 14))
 		C.images += patient.hud_list[HEALTH_HUD]
@@ -172,7 +172,7 @@ Works together with spawning an observer, noted above.
 		C.images += target.hud_list[SPECIALROLE_HUD]
 	return 1
 
-/mob/proc/ghostize(var/can_reenter_corpse = CORPSE_CAN_REENTER)
+/mob/proc/ghostize(can_reenter_corpse = CORPSE_CAN_REENTER)
 	// Are we the body of an aghosted admin? If so, don't make a ghost.
 	if(teleop && istype(teleop, /mob/observer/ghost))
 		var/mob/observer/ghost/G = teleop
@@ -310,7 +310,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		ghost_to_turf(T)
 	else
 		to_chat(src, "<span class='warning'>Invalid coordinates.</span>")
-/mob/observer/ghost/verb/follow(var/datum/follow_holder/fh in get_follow_targets())
+/mob/observer/ghost/verb/follow(datum/follow_holder/fh in get_follow_targets())
 	set category = "Ghost"
 	set name = "Follow"
 	set desc = "Follow and haunt a mob."
@@ -318,7 +318,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!fh.show_entry()) return
 	ManualFollow(fh.followed_instance)
 
-/mob/observer/ghost/proc/ghost_to_turf(var/turf/target_turf)
+/mob/observer/ghost/proc/ghost_to_turf(turf/target_turf)
 	if(check_is_holy_turf(target_turf))
 		to_chat(src, "<span class='warning'>The target location is holy grounds!</span>")
 		return
@@ -326,7 +326,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	forceMove(target_turf)
 
 // This is the ghost's follow verb with an argument
-/mob/observer/ghost/proc/ManualFollow(var/atom/movable/target)
+/mob/observer/ghost/proc/ManualFollow(atom/movable/target)
 	if(!target || target == following || target == src)
 		return
 
@@ -347,7 +347,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		GLOB.destroyed_event.unregister(following, src)
 		following = null
 
-/mob/observer/ghost/move_to_turf(var/atom/movable/am, var/old_loc, var/new_loc)
+/mob/observer/ghost/move_to_turf(atom/movable/am, old_loc, new_loc)
 	var/turf/T = get_turf(new_loc)
 	if(check_is_holy_turf(T))
 		to_chat(src, "<span class='warning'>You cannot follow something standing on holy grounds!</span>")
@@ -446,7 +446,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	return ..()
 
-/mob/observer/ghost/proc/try_possession(var/mob/living/M)
+/mob/observer/ghost/proc/try_possession(mob/living/M)
 	if(!config.ghosts_can_possess_animals)
 		to_chat(src, "<span class='warning'>Ghosts are not permitted to possess animals.</span>")
 		return 0
@@ -460,7 +460,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	usr.visible_message("<span class='deadsay'><b>[src]</b> points to [A]</span>")
 	return 1
 
-/mob/observer/ghost/proc/show_hud_icon(var/icon_state, var/make_visible)
+/mob/observer/ghost/proc/show_hud_icon(icon_state, make_visible)
 	if(!hud_images)
 		hud_images = list()
 	var/image/hud_image = hud_images[icon_state]
@@ -546,13 +546,13 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	return TRUE
 
-/proc/isghostmind(var/datum/mind/player)
+/proc/isghostmind(datum/mind/player)
 	return player && !isnewplayer(player.current) && (!player.current || isghost(player.current) || (isliving(player.current) && player.current.stat == DEAD) || !player.current.client)
 
-/mob/proc/check_is_holy_turf(var/turf/T)
+/mob/proc/check_is_holy_turf(turf/T)
 	return 0
 
-/mob/observer/ghost/check_is_holy_turf(var/turf/T)
+/mob/observer/ghost/check_is_holy_turf(turf/T)
 	if(shall_check_if_holy() && is_holy_turf(T))
 		return TRUE
 
@@ -563,7 +563,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return FALSE
 	return TRUE
 
-/mob/observer/ghost/proc/set_appearance(var/mob/target)
+/mob/observer/ghost/proc/set_appearance(mob/target)
 	var/pre_alpha = alpha
 	var/pre_plane = plane
 	var/pre_layer = layer

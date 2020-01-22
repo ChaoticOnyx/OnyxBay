@@ -321,7 +321,7 @@
 
 	interact(usr)
 
-/obj/item/device/integrated_circuit_printer/proc/subtract_material_costs(var/list/cost, var/mob/user)
+/obj/item/device/integrated_circuit_printer/proc/subtract_material_costs(list/cost, mob/user)
 	for(var/material in cost)
 		if(materials[material] < cost[material])
 			// TODO[V] change that after port of materials subsystem

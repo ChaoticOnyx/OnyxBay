@@ -38,7 +38,7 @@ GLOBAL_LIST_EMPTY(unsorted_positions) // for nano manifest
 
 GLOBAL_LIST_INIT(whitejobs, list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director", "AI"))
 
-/proc/guest_jobbans(var/job)
+/proc/guest_jobbans(job)
 	return (job in GLOB.whitejobs) //rot beycev ebal
 
 /proc/get_job_datums()
@@ -52,7 +52,7 @@ GLOBAL_LIST_INIT(whitejobs, list("Captain", "Head of Personnel", "Head of Securi
 
 	return occupations
 
-/proc/get_alternate_titles(var/job)
+/proc/get_alternate_titles(job)
 	var/list/jobs = get_job_datums()
 	var/list/titles = list()
 

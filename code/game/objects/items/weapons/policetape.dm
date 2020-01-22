@@ -258,7 +258,7 @@ var/list/tape_roll_applications = list()
 		to_chat(usr, "<span class='notice'>You finish placing \the [src].</span>")
 		return
 
-/obj/item/taperoll/afterattack(var/atom/A, mob/user as mob, proximity)
+/obj/item/taperoll/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity)
 		return
 

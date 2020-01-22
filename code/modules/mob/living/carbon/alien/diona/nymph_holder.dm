@@ -4,7 +4,7 @@
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60, rad = 100)
 
 // Yes, you can wear a nymph on your head instead of a radiation mask.
-/obj/item/weapon/holder/diona/equipped(var/mob/living/user, var/slot)
+/obj/item/weapon/holder/diona/equipped(mob/living/user, slot)
 	if(slot == slot_l_hand || slot == slot_r_hand)
 		body_parts_covered = ARMS
 	else if(slot == slot_head)

@@ -17,7 +17,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	uniqueID = rand(0,10000)
 	..()
 
-/datum/disease2/disease/proc/makerandom(var/severity=2)
+/datum/disease2/disease/proc/makerandom(severity=2)
 	var/list/excludetypes = list()
 	for(var/i=1 ; i <= max_stage ; i++ )
 		var/datum/disease2/effect/E = get_random_virus2_effect(i, severity, excludetypes)
@@ -55,7 +55,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 				res |= picked.primitive_form
 	return res
 
-/datum/disease2/disease/proc/process(var/mob/living/carbon/human/mob)
+/datum/disease2/disease/proc/process(mob/living/carbon/human/mob)
 	if(dead)
 		cure(mob)
 		return
@@ -115,7 +115,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	if(!mob.chem_effects[CE_ANTIVIRAL])
 		mob.bodytemperature = max(mob.bodytemperature, min(310+5*min(stage,max_stage) ,mob.bodytemperature+5*min(stage,max_stage)))
 
-/datum/disease2/disease/proc/cure(var/mob/living/carbon/mob, antigen)
+/datum/disease2/disease/proc/cure(mob/living/carbon/mob, antigen)
 	for(var/datum/disease2/effect/e in effects)
 		e.deactivate(mob)
 	mob.virus2.Remove("[uniqueID]")
@@ -168,7 +168,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		disease.effects += neweffect
 	return disease
 
-/datum/disease2/disease/proc/issame(var/datum/disease2/disease/disease)
+/datum/disease2/disease/proc/issame(datum/disease2/disease/disease)
 	. = 1
 
 	var/list/types = list()
@@ -181,7 +181,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	if (antigen != disease.antigen)
 		return 0
 
-/proc/virus_copylist(var/list/datum/disease2/disease/viruses)
+/proc/virus_copylist(list/datum/disease2/disease/viruses)
 	var/list/res = list()
 	for (var/ID in viruses)
 		var/datum/disease2/disease/V = viruses[ID]
@@ -234,7 +234,7 @@ var/global/list/virusDB = list()
 	return 1
 
 
-proc/virology_letterhead(var/report_name)
+proc/virology_letterhead(report_name)
 	return {"
 		<center><h1><b>[report_name]</b></h1></center>
 		<center><small><i>[station_name()] Virology Lab</i></small></center>

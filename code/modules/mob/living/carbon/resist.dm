@@ -102,26 +102,24 @@
 	return ..()
 
 /mob/living/carbon/escape_buckle()
-	if(src.handcuffed && istype(src.buckled, /obj/effect/energy_net))
-		var/obj/effect/energy_net/N = src.buckled
+	if(handcuffed && istype(buckled, /obj/effect/energy_net))
+		var/obj/effect/energy_net/N = buckled
 		N.escape_net(src) //super snowflake but is literally used NOWHERE ELSE.-Luke
 		return
 
-	setClickCooldown(100)
-	if(!buckled) return
+	if(!buckled)
+		return
 
 	if(!restrained())
 		..()
 	else
-		visible_message(
-			"<span class='danger'>[usr] attempts to unbuckle themself!</span>",
-			"<span class='warning'>You attempt to unbuckle yourself. (This will take around 2 minutes and you need to stand still)</span>"
-			)
+		setClickCooldown(100)
+		visible_message(SPAN_DANGER("[src] attempts to unbuckle themself!"),
+						SPAN_WARNING("You attempt to unbuckle yourself. (This will take around 2 minutes and you need to stand still)"))
 
-
-		if(do_after(usr, 2 MINUTES, incapacitation_flags = INCAPACITATION_DEFAULT & ~(INCAPACITATION_RESTRAINED | INCAPACITATION_BUCKLED_FULLY)))
+		if(do_after(src, 2 MINUTES, incapacitation_flags = INCAPACITATION_DEFAULT & ~(INCAPACITATION_RESTRAINED | INCAPACITATION_BUCKLED_FULLY)))
 			if(!buckled)
 				return
-			visible_message("<span class='danger'>\The [usr] manages to unbuckle themself!</span>",
-							"<span class='notice'>You successfully unbuckle yourself.</span>")
+			visible_message(SPAN_DANGER("\The [src] manages to unbuckle themself!"),
+							SPAN_NOTICE("You successfully unbuckle yourself."))
 			buckled.user_unbuckle_mob(src)

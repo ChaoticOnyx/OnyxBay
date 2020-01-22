@@ -93,7 +93,7 @@
 /obj/item/weapon/implant/explosive/hear_talk(mob/M as mob, msg)
 	hear(msg)
 
-/obj/item/weapon/implant/explosive/hear(var/msg)
+/obj/item/weapon/implant/explosive/hear(msg)
 	if(!phrase)
 		return
 	if(findtext(sanitize_phrase(msg),phrase))
