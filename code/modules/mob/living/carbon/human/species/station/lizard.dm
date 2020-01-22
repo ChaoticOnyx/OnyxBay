@@ -71,11 +71,11 @@
 
 //	prone_overlay_offset = list(-4, -4)
 
-/datum/species/unathi/equip_survival_gear(var/mob/living/carbon/human/H)
+/datum/species/unathi/equip_survival_gear(mob/living/carbon/human/H)
 	..()
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(H),slot_shoes)
 
-/datum/species/unathi/handle_environment_special(var/mob/living/carbon/human/H)
+/datum/species/unathi/handle_environment_special(mob/living/carbon/human/H)
 	if(H.InStasis() || H.stat == DEAD)
 		return
 	if(H.nutrition < 50)

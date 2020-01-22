@@ -175,7 +175,7 @@
 		playsound(src, "sound/items/wineglass.ogg", 65, 1)
 	else return ..()
 
-/obj/item/weapon/reagent_containers/food/drinks/glass2/afterattack(var/obj/target, var/mob/user)
+/obj/item/weapon/reagent_containers/food/drinks/glass2/afterattack(obj/target, mob/user)
 	if(user.a_intent == I_HURT)
 		if(standard_splash_mob(user,target))
 			return 1

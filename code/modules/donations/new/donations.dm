@@ -37,7 +37,7 @@ SUBSYSTEM_DEF(donations)
 		log_debug("Donations system failed to connect with DB!")
 	
 
-/datum/controller/subsystem/donations/proc/Reconnect(var/credentials)
+/datum/controller/subsystem/donations/proc/Reconnect(credentials)
 	var/list/items = splittext(credentials, ";")
 
 	if(items.len != 5)
@@ -69,7 +69,7 @@ SUBSYSTEM_DEF(donations)
 	return TRUE
 
 
-/datum/controller/subsystem/donations/proc/UpdateCredentials(var/credentials)
+/datum/controller/subsystem/donations/proc/UpdateCredentials(credentials)
 	var/result = Reconnect(credentials)
 
 	if(result)
@@ -86,7 +86,7 @@ SUBSYSTEM_DEF(donations)
 	log_debug("Donators info were updated!")
 
 
-/datum/controller/subsystem/donations/proc/LoadData(var/client/player)
+/datum/controller/subsystem/donations/proc/LoadData(client/player)
 	if(!connected)
 		return
 

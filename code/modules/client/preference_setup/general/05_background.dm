@@ -15,7 +15,7 @@
 	name = "Background"
 	sort_order = 5
 
-/datum/category_item/player_setup_item/general/background/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/general/background/load_character(savefile/S)
 	from_file(S["med_record"],pref.med_record)
 	from_file(S["sec_record"],pref.sec_record)
 	from_file(S["gen_record"],pref.gen_record)
@@ -35,7 +35,7 @@
 	if (!factionExist)
 		pref.faction = "NanoTrasen"
 
-/datum/category_item/player_setup_item/general/background/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/general/background/save_character(savefile/S)
 	to_file(S["med_record"],pref.med_record)
 	to_file(S["sec_record"],pref.sec_record)
 	to_file(S["gen_record"],pref.gen_record)
@@ -54,7 +54,7 @@
 
 	pref.nanotrasen_relation = sanitize_inlist(pref.nanotrasen_relation, COMPANY_ALIGNMENTS, initial(pref.nanotrasen_relation))
 
-/datum/category_item/player_setup_item/general/background/content(var/mob/user)
+/datum/category_item/player_setup_item/general/background/content(mob/user)
 	. += "<b>Background Information</b><br>"
 	. += "[GLOB.using_map.company_name] Relation: <a href='?src=\ref[src];nt_relation=1'>[pref.nanotrasen_relation]</a><br/>"
 	. += "Home System: <a href='?src=\ref[src];home_system=1'>[pref.home_system]</a><br/>"
@@ -75,7 +75,7 @@
 		. += "Memory:<br>"
 		. += "<a href='?src=\ref[src];set_memory=1'>[TextPreview(pref.memory,40)]</a><br>"
 
-/datum/category_item/player_setup_item/general/background/OnTopic(var/href,var/list/href_list, var/mob/user)
+/datum/category_item/player_setup_item/general/background/OnTopic(href,list/href_list, mob/user)
 	if(href_list["nt_relation"])
 		var/new_relation = input(user, "Choose your relation to [GLOB.using_map.company_name]. Note that this represents what others can find out about your character by researching your background, not what your character actually thinks.", CHARACTER_PREFERENCE_INPUT_TITLE, pref.nanotrasen_relation)  as null|anything in COMPANY_ALIGNMENTS
 		if(new_relation && CanUseTopic(user))

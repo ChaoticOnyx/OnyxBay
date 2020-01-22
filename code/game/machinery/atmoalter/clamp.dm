@@ -13,7 +13,7 @@
 	var/datum/pipe_network/network_node1
 	var/datum/pipe_network/network_node2
 
-/obj/machinery/clamp/New(loc, var/obj/machinery/atmospherics/pipe/simple/to_attach = null)
+/obj/machinery/clamp/New(loc, obj/machinery/atmospherics/pipe/simple/to_attach = null)
 	..()
 	if(istype(to_attach))
 		target = to_attach
@@ -37,7 +37,7 @@
 			var/datum/pipeline/P2 = node2.parent
 			network_node2 = P2.network
 
-/obj/machinery/clamp/attack_hand(var/mob/user)
+/obj/machinery/clamp/attack_hand(mob/user)
 	if(!target || !user)
 		return
 	if(!open)
@@ -138,7 +138,7 @@
 	icon_state = "pclamp0"
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 4)
 
-/obj/item/clamp/afterattack(var/atom/A, mob/user as mob, proximity)
+/obj/item/clamp/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity)
 		return
 

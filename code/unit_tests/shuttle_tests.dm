@@ -113,7 +113,7 @@
 
 #undef SHUTTLE_NAME_AID
 
-/datum/unit_test/shuttle/shuttles_shall_use_equally_sized_areas/proc/is_bad_area_size(var/shuttle, var/area/main_area, var/area/checked_area)
+/datum/unit_test/shuttle/shuttles_shall_use_equally_sized_areas/proc/is_bad_area_size(shuttle, area/main_area, area/checked_area)
 	var/main_size = 0
 	var/checked_size = 0
 	for(var/turf/T in main_area)

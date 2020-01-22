@@ -1,7 +1,7 @@
 /datum/admin_secret_item/investigation/admin_pms
 	name = "Admin PMs"
 
-/datum/admin_secret_item/investigation/admin_pms/execute(var/mob/user, var/filter)
+/datum/admin_secret_item/investigation/admin_pms/execute(mob/user, filter)
 	. = ..()
 	if(!.)
 		return

@@ -169,7 +169,7 @@
 	if(T)
 		forceMove(T)
 
-/obj/effect/overmap/ship/Bump(var/atom/A)
+/obj/effect/overmap/ship/Bump(atom/A)
 	if(istype(A,/turf/unsimulated/map/edge))
 		handle_wraparound()
 	..()

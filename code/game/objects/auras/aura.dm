@@ -6,7 +6,7 @@ They should also be used for when you want to effect the ENTIRE mob, like having
 /obj/aura
 	var/mob/living/user
 
-/obj/aura/New(var/mob/living/target)
+/obj/aura/New(mob/living/target)
 	..()
 	user = target
 	user.add_aura(src)
@@ -20,23 +20,23 @@ They should also be used for when you want to effect the ENTIRE mob, like having
 /obj/aura/proc/life_tick()
 	return 0
 
-/obj/aura/attackby(var/obj/item/I, var/mob/user)
+/obj/aura/attackby(obj/item/I, mob/user)
 	return 0
 
-/obj/aura/bullet_act(var/obj/item/projectile/P, var/def_zone)
+/obj/aura/bullet_act(obj/item/projectile/P, def_zone)
 	return 0
 
-/obj/aura/hitby(var/atom/movable/M, var/speed)
+/obj/aura/hitby(atom/movable/M, speed)
 	return 0
 
 /obj/aura/debug
 	var/returning = 0
 
-/obj/aura/debug/attackby(var/obj/item/I, var/mob/user)
+/obj/aura/debug/attackby(obj/item/I, mob/user)
 	log_debug("Attackby for \ref[src]: [I], [user]")
 	return returning
 
-/obj/aura/debug/bullet_act(var/obj/item/projectile/P, var/def_zone)
+/obj/aura/debug/bullet_act(obj/item/projectile/P, def_zone)
 	log_debug("Bullet Act for \ref[src]: [P], [def_zone]")
 	return returning
 
@@ -44,6 +44,6 @@ They should also be used for when you want to effect the ENTIRE mob, like having
 	log_debug("Life tick")
 	return returning
 
-/obj/aura/debug/hitby(var/atom/movable/M, var/speed)
+/obj/aura/debug/hitby(atom/movable/M, speed)
 	log_debug("Hit By for \ref[src]: [M], [speed]")
 	return returning

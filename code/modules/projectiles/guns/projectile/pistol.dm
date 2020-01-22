@@ -340,7 +340,7 @@
 		if(2) to_chat(user, "It has a barrel that has been secured to the stock with tape.")
 		if(3) to_chat(user, "It has a trigger and firing pin assembly loosely fitted into place.")
 
-/obj/item/weapon/zipgunframe/attackby(var/obj/item/thing, var/mob/user)
+/obj/item/weapon/zipgunframe/attackby(obj/item/thing, mob/user)
 	if(istype(thing,/obj/item/pipe) && buildstate == 0)
 		user.drop_from_inventory(thing)
 		qdel(thing)

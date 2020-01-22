@@ -18,7 +18,7 @@
 				return
 			holder.showAccounts(target)
 
-/datum/admins/proc/showAccounts(var/targetkey)
+/datum/admins/proc/showAccounts(targetkey)
 	var/size = 0
 	var/output = "<center><table border='1'> <caption>Совпадение по computerID</caption><tr> <th width='100px' >ckey</th><th width='100px'>firstseen</th><th width='100px'>lastseen</th><th width='100px'>ip</th><th width='100px'>computerid </th></tr>"
 

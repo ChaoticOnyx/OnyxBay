@@ -74,7 +74,7 @@
 /obj/structure/closet/body_bag/cryobag/proc/get_saturation()
 	return -155 * (1 - stasis_power/initial(stasis_power))
 
-/obj/structure/closet/body_bag/cryobag/fold(var/user)
+/obj/structure/closet/body_bag/cryobag/fold(user)
 	var/obj/item/bodybag/cryobag/folded = ..()
 	if(istype(folded))
 		folded.stasis_power = stasis_power
@@ -135,7 +135,7 @@
 	stasis_power = 10
 	degradation_time = 300
 	
-/obj/structure/closet/body_bag/cryobag/syndi/fold(var/user)
+/obj/structure/closet/body_bag/cryobag/syndi/fold(user)
 	var/obj/item/bodybag/cryobag/syndi/folded = ..()
 	if(istype(folded))
 		folded.stasis_power = stasis_power

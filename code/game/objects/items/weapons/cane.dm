@@ -23,7 +23,7 @@
 	concealed_blade = temp_blade
 	temp_blade.attack_self()
 
-/obj/item/weapon/cane/concealed/attack_self(var/mob/user)
+/obj/item/weapon/cane/concealed/attack_self(mob/user)
 	if(concealed_blade)
 		user.visible_message("<span class='warning'>[user] has unsheathed \a [concealed_blade] from [src]!</span>", "You unsheathe \the [concealed_blade] from [src].")
 		// Calling drop/put in hands to properly call item drop/pickup procs
@@ -38,7 +38,7 @@
 	else
 		..()
 
-/obj/item/weapon/cane/concealed/attackby(var/obj/item/weapon/material/butterfly/W, var/mob/user)
+/obj/item/weapon/cane/concealed/attackby(obj/item/weapon/material/butterfly/W, mob/user)
 	if(!src.concealed_blade && istype(W))
 		user.visible_message("<span class='warning'>[user] has sheathed \a [W] into [src]!</span>", "You sheathe \the [W] into [src].")
 		user.drop_from_inventory(W)

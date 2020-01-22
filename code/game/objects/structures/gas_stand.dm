@@ -59,11 +59,11 @@
 	breather = null
 	return ..()
 
-/obj/structure/gas_stand/attack_robot(var/mob/user)
+/obj/structure/gas_stand/attack_robot(mob/user)
 	if(Adjacent(user))
 		attack_hand(user)
 
-/obj/structure/gas_stand/MouseDrop(var/mob/living/carbon/human/target, src_location, over_location)
+/obj/structure/gas_stand/MouseDrop(mob/living/carbon/human/target, src_location, over_location)
 	..()
 	if(istype(target) && CanMouseDrop(target))
 		if(!can_apply_to_target(target, usr)) // There is no point in attempting to apply a mask if it's impossible.
@@ -110,7 +110,7 @@
 			update_icon()
 			START_PROCESSING(SSobj,src)
 
-/obj/structure/gas_stand/proc/attach_mask(var/mob/living/carbon/C)
+/obj/structure/gas_stand/proc/attach_mask(mob/living/carbon/C)
 	if(C && istype(C))
 		contained.forceMove(get_turf(C))
 		C.equip_to_slot(contained, slot_wear_mask)
@@ -118,7 +118,7 @@
 			tank.forceMove(C)
 		breather = C
 
-/obj/structure/gas_stand/proc/can_apply_to_target(var/mob/living/carbon/human/target, mob/user as mob)
+/obj/structure/gas_stand/proc/can_apply_to_target(mob/living/carbon/human/target, mob/user as mob)
 	if(!user)
 		user = target
 	// Check target validity
@@ -183,7 +183,7 @@
 			src.add_fingerprint(user)
 			update_icon()
 
-/obj/structure/gas_stand/examine(var/mob/user)
+/obj/structure/gas_stand/examine(mob/user)
 	. = ..()
 	if(tank)
 		if (!is_loosen)

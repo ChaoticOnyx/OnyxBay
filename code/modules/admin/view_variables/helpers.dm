@@ -177,7 +177,7 @@
 /client/VV_ckey_edit()
 	return list("key", "ckey")
 
-/datum/proc/may_edit_var(var/user, var/var_to_edit)
+/datum/proc/may_edit_var(user, var_to_edit)
 	if(!user)
 		return FALSE
 	if(!(var_to_edit in vars))

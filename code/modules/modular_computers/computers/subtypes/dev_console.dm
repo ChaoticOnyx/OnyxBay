@@ -18,7 +18,7 @@
 	broken_damage = 150
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
-/obj/item/modular_computer/console/CouldUseTopic(var/mob/user)
+/obj/item/modular_computer/console/CouldUseTopic(mob/user)
 	..()
 	if(istype(user, /mob/living/carbon))
 		playsound(src, 'sound/effects/using/console/press7.ogg', 50, 1)

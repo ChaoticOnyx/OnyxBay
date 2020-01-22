@@ -11,7 +11,7 @@
 
 	hud_state = "gen_mind"
 
-/spell/camera_connection/god_vision/set_connected_god(var/mob/living/deity/god)
+/spell/camera_connection/god_vision/set_connected_god(mob/living/deity/god)
 	..()
 	vision.visualnet = god.eyeobj.visualnet
 

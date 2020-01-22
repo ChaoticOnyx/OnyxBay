@@ -53,7 +53,7 @@
 			playsound(loc, 'sound/items/polaroid2.ogg', 50, 1)
 		break
 
-/obj/machinery/atm/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/atm/emag_act(remaining_charges, mob/user)
 	if(!emagged)
 		//short out the machine, shoot sparks, spew money!
 		emagged = 1
@@ -225,7 +225,7 @@
 	else
 		return
 
-/obj/machinery/atm/Topic(var/href, var/href_list)
+/obj/machinery/atm/Topic(href, href_list)
 	if(!in_range(src, usr))
 		to_chat(usr, "\icon[src]<span class='warning'>You have to remain closer to the [src]!</span>")
 		return 0
@@ -457,7 +457,7 @@
 	held_card = null
 
 
-/obj/machinery/atm/proc/spawn_ewallet(var/sum, loc, mob/living/carbon/human/human_user as mob)
+/obj/machinery/atm/proc/spawn_ewallet(sum, loc, mob/living/carbon/human/human_user as mob)
 	var/obj/item/weapon/spacecash/ewallet/E = new /obj/item/weapon/spacecash/ewallet(loc)
 	if(ishuman(human_user) && !human_user.get_active_hand())
 		human_user.put_in_hands(E)

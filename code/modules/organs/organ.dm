@@ -38,7 +38,7 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/is_broken()
 	return (damage >= min_broken_damage || (status & ORGAN_CUT_AWAY) || (status & ORGAN_BROKEN))
 
-/obj/item/organ/New(var/mob/living/carbon/holder)
+/obj/item/organ/New(mob/living/carbon/holder)
 	..(holder)
 
 	if(max_damage)
@@ -67,7 +67,7 @@ var/list/organ_cache = list()
 
 	update_icon()
 
-/obj/item/organ/proc/set_dna(var/datum/dna/new_dna)
+/obj/item/organ/proc/set_dna(datum/dna/new_dna)
 	if(new_dna)
 		dna = new_dna.Clone()
 		if(!blood_DNA)
@@ -199,7 +199,7 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/remove_rejuv()
 	qdel(src)
 
-/obj/item/organ/proc/rejuvenate(var/ignore_prosthetic_prefs)
+/obj/item/organ/proc/rejuvenate(ignore_prosthetic_prefs)
 	damage = 0
 	status = 0
 	if(!ignore_prosthetic_prefs && owner && owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
@@ -225,7 +225,7 @@ var/list/organ_cache = list()
 		germ_level -= 3 //at germ_level == 1000, this will cure the infection in 10 minutes
 
 //Note: external organs have their own version of this proc
-/obj/item/organ/proc/take_damage(amount, var/silent=0)
+/obj/item/organ/proc/take_damage(amount, silent=0)
 	damage = between(0, damage + round(amount, 0.1), max_damage)
 
 /obj/item/organ/proc/heal_damage(amount)
@@ -243,7 +243,7 @@ var/list/organ_cache = list()
  *
  *  drop_organ - if true, organ will be dropped at the loc of its former owner
  */
-/obj/item/organ/proc/removed(var/mob/living/user, var/drop_organ=1)
+/obj/item/organ/proc/removed(mob/living/user, drop_organ=1)
 
 	if(!istype(owner))
 		return
@@ -268,14 +268,14 @@ var/list/organ_cache = list()
 
 	owner = null
 
-/obj/item/organ/proc/replaced(var/mob/living/carbon/human/target, var/obj/item/organ/external/affected)
+/obj/item/organ/proc/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)
 	owner = target
 	forceMove(owner) //just in case
 	if(BP_IS_ROBOTIC(src))
 		set_dna(owner.dna)
 	return 1
 
-/obj/item/organ/attack(var/mob/target, var/mob/user)
+/obj/item/organ/attack(mob/target, mob/user)
 
 	if(status & ORGAN_ROBOTIC || !istype(target) || !istype(user) || (user != target && user.a_intent == I_HELP))
 		return ..()

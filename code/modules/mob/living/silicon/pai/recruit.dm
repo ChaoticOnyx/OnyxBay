@@ -95,7 +95,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 
 		recruitWindow(usr, href_list["allow_submit"] != "0")
 
-/datum/paiController/proc/recruitWindow(var/mob/M as mob, allowSubmit = 1)
+/datum/paiController/proc/recruitWindow(mob/M as mob, allowSubmit = 1)
 	var/datum/paiCandidate/candidate
 	for(var/datum/paiCandidate/c in pai_candidates)
 		if(!istype(c) || !istype(M))
@@ -227,7 +227,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 
 	M << browse(dat, "window=paiRecruit;size=580x580;")
 
-/datum/paiController/proc/findPAI(var/obj/item/device/paicard/p, var/mob/user)
+/datum/paiController/proc/findPAI(obj/item/device/paicard/p, mob/user)
 	requestRecruits(user)
 	var/list/available = list()
 	for(var/datum/paiCandidate/c in paiController.pai_candidates)
@@ -344,7 +344,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	user << browse(dat, "window=findPai")
 
 
-/datum/paiController/proc/requestRecruits(var/mob/user)
+/datum/paiController/proc/requestRecruits(mob/user)
 	inquirer = user
 	for(var/mob/observer/ghost/O in GLOB.player_list)
 		if(!O.MayRespawn())
@@ -360,7 +360,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			if(BE_PAI in O.client.prefs.be_special_role)
 				question(O.client)
 
-/datum/paiController/proc/question(var/client/C)
+/datum/paiController/proc/question(client/C)
 	spawn(0)
 		if(!C)	return
 		asked.Add(C.key)

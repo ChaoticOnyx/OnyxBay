@@ -73,7 +73,7 @@
 	return T
 
 
-/mob/living/simple_animal/hostile/proc/Found(var/atom/A)
+/mob/living/simple_animal/hostile/proc/Found(atom/A)
 	Aggro()
 	return
 
@@ -222,7 +222,7 @@
 	if(!target_mob)
 		LoseAggro()
 
-/mob/living/simple_animal/hostile/attackby(var/obj/item/O, var/mob/user)
+/mob/living/simple_animal/hostile/attackby(obj/item/O, mob/user)
 	var/oldhealth = health
 	. = ..()
 	if(health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT))
@@ -235,7 +235,7 @@
 		target_mob = M
 		MoveToTarget()
 
-/mob/living/simple_animal/hostile/bullet_act(var/obj/item/projectile/Proj)
+/mob/living/simple_animal/hostile/bullet_act(obj/item/projectile/Proj)
 	var/oldhealth = health
 	. = ..()
 	if(!target_mob && health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT))
@@ -267,7 +267,7 @@
 	ranged_cooldown = ranged_cooldown_cap
 	return
 
-/mob/living/simple_animal/hostile/proc/Shoot(var/target, var/start, var/user, var/bullet = 0)
+/mob/living/simple_animal/hostile/proc/Shoot(target, start, user, bullet = 0)
 	if(target == start)
 		return
 

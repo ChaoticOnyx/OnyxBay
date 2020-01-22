@@ -22,7 +22,7 @@
 	flags = RESTRICTED | HIVEMIND
 	shorthand = "N/A"
 
-/datum/language/xenos/check_special_condition(var/mob/other)
+/datum/language/xenos/check_special_condition(mob/other)
 
 	var/mob/living/carbon/M = other
 	if(!istype(M))
@@ -41,7 +41,7 @@
 	flags = RESTRICTED | HIVEMIND
 	shorthand = "N/A"
 
-/datum/language/ling/broadcast(var/mob/living/speaker,var/message,var/speaker_mask)
+/datum/language/ling/broadcast(mob/living/speaker,message,speaker_mask)
 
 	if(speaker.mind && speaker.mind.changeling)
 		..(speaker,message,speaker.mind.changeling.changelingID)
@@ -59,7 +59,7 @@
 	flags = RESTRICTED | HIVEMIND
 	shorthand = "N/A"
 
-/datum/language/corticalborer/broadcast(var/mob/living/speaker,var/message,var/speaker_mask)
+/datum/language/corticalborer/broadcast(mob/living/speaker,message,speaker_mask)
 
 	var/mob/living/simple_animal/borer/B
 

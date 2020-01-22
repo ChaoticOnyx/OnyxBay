@@ -7,7 +7,7 @@
 
 	var/construction_stage = 1
 
-/obj/item/weapon/coilgun_assembly/attackby(var/obj/item/thing, var/mob/user)
+/obj/item/weapon/coilgun_assembly/attackby(obj/item/thing, mob/user)
 
 	if(istype(thing, /obj/item/stack/material) && construction_stage == 1)
 		var/obj/item/stack/material/reinforcing = thing
@@ -87,7 +87,7 @@
 		construction_stage++
 	icon_state = "coilgun_construction_[construction_stage]"
 
-/obj/item/weapon/coilgun_assembly/examine(var/mob/user)
+/obj/item/weapon/coilgun_assembly/examine(mob/user)
 	. = ..(user,2)
 	if(.)
 		switch(construction_stage)

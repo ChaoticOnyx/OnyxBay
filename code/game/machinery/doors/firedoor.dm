@@ -256,7 +256,7 @@
 
 	return ..()
 
-/obj/machinery/door/firedoor/deconstruct(mob/user, var/moved = FALSE)
+/obj/machinery/door/firedoor/deconstruct(mob/user, moved = FALSE)
 	if (stat & BROKEN)
 		new /obj/item/weapon/circuitboard/broken(src.loc)
 	else
@@ -333,7 +333,7 @@
 	latetoggle()
 	return ..()
 
-/obj/machinery/door/firedoor/open(var/forced = 0)
+/obj/machinery/door/firedoor/open(forced = 0)
 	if(hatch_open)
 		hatch_open = 0
 		visible_message("The maintenance hatch of \the [src] closes.")

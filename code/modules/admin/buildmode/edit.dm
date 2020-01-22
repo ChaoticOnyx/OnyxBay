@@ -40,7 +40,7 @@
 		var_to_edit = var_name
 		SetValue(new_value)
 
-/datum/build_mode/edit/OnClick(var/atom/A, var/list/parameters)
+/datum/build_mode/edit/OnClick(atom/A, list/parameters)
 	if(!A.may_edit_var(usr, var_to_edit))
 		return
 
@@ -57,14 +57,14 @@
 	to_chat(user, "<span class='notice'>Changed the value of [var_to_edit] from '[old_value]' to '[new_value]'.</span>")
 	Log("[log_info_line(A)] - [var_to_edit] - [old_value] -> [new_value]")
 
-/datum/build_mode/edit/proc/SetValue(var/new_value)
+/datum/build_mode/edit/proc/SetValue(new_value)
 	if(value_to_set == new_value)
 		return
 	ClearValue()
 	value_to_set = new_value
 	GLOB.destroyed_event.register(value_to_set, src, /datum/build_mode/edit/proc/ClearValue)
 
-/datum/build_mode/edit/proc/ClearValue(var/feedback)
+/datum/build_mode/edit/proc/ClearValue(feedback)
 	if(!istype(value_to_set, /datum))
 		return
 

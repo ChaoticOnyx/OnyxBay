@@ -33,7 +33,7 @@
 /proc/testing(msg)
 	to_world_log("## TESTING: [msg][log_end]")
 
-/proc/log_generic(var/type, var/message, var/location, var/log_to_diary = TRUE, var/notify_admin = FALSE, var/req_pref = null)
+/proc/log_generic(type, message, location, log_to_diary = TRUE, notify_admin = FALSE, req_pref = null)
 	var/turf/T = get_turf(location)
 	if(location && T)
 		if(log_to_diary)
@@ -129,7 +129,7 @@
 	log_debug(text)
 
 //pretty print a direction bitflag, can be useful for debugging.
-/proc/dir_text(var/dir)
+/proc/dir_text(dir)
 	var/list/comps = list()
 	if(dir & NORTH) comps += "NORTH"
 	if(dir & SOUTH) comps += "SOUTH"
@@ -141,7 +141,7 @@
 	return english_list(comps, nothing_text="0", and_text="|", comma_text="|")
 
 //more or less a logging utility
-/proc/key_name(var/whom, var/include_link = null, var/include_name = 1, var/highlight_special_characters = 1, var/datum/ticket/ticket = null)
+/proc/key_name(whom, include_link = null, include_name = 1, highlight_special_characters = 1, datum/ticket/ticket = null)
 	var/mob/M
 	var/client/C
 	var/key
@@ -197,7 +197,7 @@
 
 	return .
 
-/proc/key_name_admin(var/whom, var/include_name = 1)
+/proc/key_name_admin(whom, include_name = 1)
 	return key_name(whom, 1, include_name)
 
 // Helper procs for building detailed log lines
@@ -217,7 +217,7 @@
 /mob/get_log_info_line()
 	return ckey ? "[..()] ([ckey])" : ..()
 
-/proc/log_info_line(var/datum/d)
+/proc/log_info_line(datum/d)
 	if(isnull(d))
 		return "*null*"
 	if(islist(d))
@@ -229,6 +229,6 @@
 		return json_encode(d)
 	return d.get_log_info_line()
 
-/proc/report_progress(var/progress_message)
+/proc/report_progress(progress_message)
 	admin_notice("<span class='boldannounce'>[progress_message]</span>", R_DEBUG)
 	to_world_log(progress_message)

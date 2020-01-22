@@ -20,7 +20,7 @@
 				qdel(src)
 	return
 
-/obj/effect/spider/attackby(var/obj/item/weapon/W, var/mob/user)
+/obj/effect/spider/attackby(obj/item/weapon/W, mob/user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 	if(W.attack_verb.len)
@@ -40,7 +40,7 @@
 	health -= damage
 	healthcheck()
 
-/obj/effect/spider/bullet_act(var/obj/item/projectile/Proj)
+/obj/effect/spider/bullet_act(obj/item/projectile/Proj)
 	..()
 	health -= Proj.get_structure_damage()
 	healthcheck()
@@ -84,7 +84,7 @@
 		pixel_y = rand(3,-3)
 		START_PROCESSING(SSobj, src)
 
-/obj/effect/spider/eggcluster/New(var/location, var/atom/parent)
+/obj/effect/spider/eggcluster/New(location, atom/parent)
 	get_light_and_color(parent)
 	..()
 
@@ -126,7 +126,7 @@
 
 	var/shift_range = 6
 
-/obj/effect/spider/spiderling/Initialize(var/mapload, var/atom/parent)
+/obj/effect/spider/spiderling/Initialize(mapload, atom/parent)
 	greater_form = pick(typesof(/mob/living/simple_animal/hostile/giant_spider))
 	icon_state = initial(greater_form.icon_state)
 	pixel_x = rand(-shift_range, shift_range)
@@ -157,12 +157,12 @@
 	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
 	. = ..()
 
-/obj/effect/spider/spiderling/attackby(var/obj/item/weapon/W, var/mob/user)
+/obj/effect/spider/spiderling/attackby(obj/item/weapon/W, mob/user)
 	..()
 	if(health > 0)
 		disturbed()
 
-/obj/effect/spider/spiderling/Crossed(var/mob/living/L)
+/obj/effect/spider/spiderling/Crossed(mob/living/L)
 	if(dormant && istype(L) && L.mob_size > MOB_TINY)
 		disturbed()
 

@@ -33,7 +33,7 @@
 	else
 		return
 
-/spell/construction/cast_check(var/skipcharge, var/mob/user, var/list/targets)
+/spell/construction/cast_check(skipcharge, mob/user, list/targets)
 	if(!..())
 		return 0
 	var/turf/T = get_turf(user)
@@ -46,7 +46,7 @@
 				return 0
 	return 1
 
-/spell/construction/cast(var/target, mob/user)
+/spell/construction/cast(target, mob/user)
 	charge_max = target[CONSTRUCT_SPELL_COST]
 	target = target[CONSTRUCT_SPELL_TYPE]
 	var/turf/T = get_turf(user)

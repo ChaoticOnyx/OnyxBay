@@ -171,7 +171,7 @@
 	else
 		to_chat(src, "<span class='alium'>You are no longer using nutrients to regenerate.</span>")
 
-/mob/living/carbon/human/proc/diona_split_into_nymphs(var/number_of_resulting_nymphs)
+/mob/living/carbon/human/proc/diona_split_into_nymphs(number_of_resulting_nymphs)
 	var/turf/T = get_turf(src)
 
 	var/mob/living/carbon/alien/diona/S = new(T)
@@ -214,7 +214,7 @@
 	visible_message("<span class='warning'>\The [src] quivers slightly, then splits apart with a wet slithering noise.</span>")
 	qdel(src)
 
-/mob/living/carbon/human/proc/can_nab(var/mob/living/target)
+/mob/living/carbon/human/proc/can_nab(mob/living/target)
 	if(QDELETED(src))
 		return FALSE
 

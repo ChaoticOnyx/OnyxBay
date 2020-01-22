@@ -78,7 +78,7 @@ PROCESSING_SUBSYSTEM_DEF(plants)
 	. = ..()
 
 // Proc for creating a random seed type.
-/datum/controller/subsystem/processing/plants/proc/create_random_seed(var/survive_on_station)
+/datum/controller/subsystem/processing/plants/proc/create_random_seed(survive_on_station)
 	var/datum/seed/seed = new()
 	seed.randomize()
 	seed.name = "[seed.uid]"

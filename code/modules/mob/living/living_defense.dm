@@ -10,7 +10,7 @@
 	Returns
 	a blocked amount between 0 - 100, representing the success of the armor check.
 */
-/mob/living/proc/run_armor_check(var/def_zone = null, var/attack_flag = "melee", var/armour_pen = 0, var/absorb_text = null, var/soften_text = null)
+/mob/living/proc/run_armor_check(def_zone = null, attack_flag = "melee", armour_pen = 0, absorb_text = null, soften_text = null)
 	if(armour_pen >= 100)
 		return 0 //might as well just skip the processing
 
@@ -47,7 +47,7 @@
 
 //Adds two armor values together.
 //If armor_a and armor_b are between 0-100 the result will always also be between 0-100.
-/proc/add_armor(var/armor_a, var/armor_b)
+/proc/add_armor(armor_a, armor_b)
 	if(armor_a >= 100 || armor_b >= 100)
 		return 100 //adding to infinite protection doesn't make it any bigger
 
@@ -56,11 +56,11 @@
 	return 100 - 1/(protection_a + protection_b + 1)*100
 
 //if null is passed for def_zone, then this should return something appropriate for all zones (e.g. area effect damage)
-/mob/living/proc/getarmor(var/def_zone, var/type)
+/mob/living/proc/getarmor(def_zone, type)
 	return 0
 
 
-/mob/living/bullet_act(var/obj/item/projectile/P, var/def_zone)
+/mob/living/bullet_act(obj/item/projectile/P, def_zone)
 
 	//Being hit while using a deadman switch
 	var/obj/item/device/assembly/signaler/signaler = get_active_hand()
@@ -98,7 +98,7 @@
 
 	apply_damage(20, BRUTE, BP_CHEST, 0, 0, source)
 
-/mob/living/proc/aura_check(var/type)
+/mob/living/proc/aura_check(type)
 	if(!auras)
 		return TRUE
 	. = TRUE
@@ -122,7 +122,7 @@
 
 
 //Handles the effects of "stun" weapons
-/mob/living/proc/stun_effect_act(var/stun_amount, var/agony_amount, var/def_zone, var/used_weapon=null)
+/mob/living/proc/stun_effect_act(stun_amount, agony_amount, def_zone, used_weapon=null)
 	flash_pain()
 
 	if (stun_amount)
@@ -136,7 +136,7 @@
 		apply_effect(STUTTER, agony_amount/10)
 		apply_effect(EYE_BLUR, agony_amount/10)
 
-/mob/living/proc/electrocute_act(var/shock_damage, var/obj/source, var/siemens_coeff = 1.0)
+/mob/living/proc/electrocute_act(shock_damage, obj/source, siemens_coeff = 1.0)
 	  return 0 //only carbon liveforms have this proc
 
 /mob/living/emp_act(severity)
@@ -145,11 +145,11 @@
 		O.emp_act(severity)
 	..()
 
-/mob/living/proc/resolve_item_attack(obj/item/I, mob/living/user, var/target_zone)
+/mob/living/proc/resolve_item_attack(obj/item/I, mob/living/user, target_zone)
 	return target_zone
 
 //Called when the mob is hit with an item in combat. Returns the blocked result
-/mob/living/proc/hit_with_weapon(obj/item/I, mob/living/user, var/effective_force, var/hit_zone, var/atype = 0)
+/mob/living/proc/hit_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone, atype = 0)
 	visible_message("<span class='danger'>[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] with [I.name] by [user]!</span>")
 
 	var/blocked = run_armor_check(hit_zone, "melee")
@@ -161,14 +161,14 @@
 
 	return blocked
 
-/mob/living/proc/parry_with_weapon(obj/item/I, mob/living/user, var/effective_force, var/hit_zone)
+/mob/living/proc/parry_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
 	return hit_with_weapon(I, user, effective_force, hit_zone)
 
-/mob/living/proc/touch_with_weapon(obj/item/I, mob/living/user, var/effective_force, var/hit_zone)
+/mob/living/proc/touch_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
 	visible_message("<span class='notice'>[user] touches [src] with [I.name].</span>")
 
 //returns 0 if the effects failed to apply for some reason, 1 otherwise.
-/mob/living/proc/standard_weapon_hit_effects(obj/item/I, mob/living/user, var/effective_force, var/blocked, var/hit_zone)
+/mob/living/proc/standard_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
 	if(!effective_force || blocked >= 100)
 		return 0
 
@@ -186,7 +186,7 @@
 	return 1
 
 //this proc handles being hit by a thrown atom
-/mob/living/hitby(atom/movable/AM as mob|obj,var/speed = THROWFORCE_SPEED_DIVISOR)//Standardization and logging -Sieve
+/mob/living/hitby(atom/movable/AM as mob|obj,speed = THROWFORCE_SPEED_DIVISOR)//Standardization and logging -Sieve
 	if(!aura_check(AURA_TYPE_THROWN, AM, speed))
 		return
 	if(istype(AM,/obj/))
@@ -246,18 +246,18 @@
 					src.anchored = 1
 					src.pinned += O
 
-/mob/living/proc/embed(var/obj/O, var/def_zone=null, var/datum/wound/supplied_wound)
+/mob/living/proc/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
 	O.loc = src
 	src.embedded += O
 	src.verbs += /mob/proc/yank_out_object
 
 //This is called when the mob is thrown into a dense turf
-/mob/living/proc/turf_collision(var/turf/T, var/speed)
+/mob/living/proc/turf_collision(turf/T, speed)
 	visible_message("<span class='danger'>[src] slams into \the [T]!</span>")
 	playsound(loc, 'sound/effects/bangtaper.ogg', 50, 1, -1)
 	src.take_organ_damage(speed*2.5)
 
-/mob/living/proc/near_wall(var/direction,var/distance=1)
+/mob/living/proc/near_wall(direction,distance=1)
 	var/turf/T = get_step(get_turf(src),direction)
 	var/turf/last_turf = src.loc
 	var/i = 1
@@ -273,7 +273,7 @@
 
 // End BS12 momentum-transfer code.
 
-/mob/living/attack_generic(var/mob/user, var/damage, var/attack_message)
+/mob/living/attack_generic(mob/user, damage, attack_message)
 
 	if(!damage || !istype(user))
 		return

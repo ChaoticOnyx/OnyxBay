@@ -121,7 +121,7 @@
 	else
 		icon_state = "envelope[contents.len > 0]"
 
-/obj/item/weapon/folder/envelope/examine(var/user)
+/obj/item/weapon/folder/envelope/examine(user)
 	..()
 	to_chat(user, "The seal is [sealed ? "intact" : "broken"].")
 

@@ -6,7 +6,7 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	icon = 'icons/obj/electronic_assemblies.dmi'
 
-/obj/item/integrated_circuit/filter/proc/may_pass(var/input)
+/obj/item/integrated_circuit/filter/proc/may_pass(input)
 	return FALSE
 
 /obj/item/integrated_circuit/filter/do_work()
@@ -19,7 +19,7 @@
 	inputs = list( "input" = IC_PINTYPE_REF )
 	outputs = list("result" = IC_PINTYPE_BOOLEAN)
 
-/obj/item/integrated_circuit/filter/ref/may_pass(var/weakref/data)
+/obj/item/integrated_circuit/filter/ref/may_pass(weakref/data)
 	if(!(filter_type && isweakref(data)))
 		return FALSE
 	var/weakref/wref = data
@@ -79,7 +79,7 @@
 	icon_state = "filter_custom"
 	inputs = list( "input" = IC_PINTYPE_REF, "expected type" = IC_PINTYPE_REF )
 
-/obj/item/integrated_circuit/filter/ref/custom/may_pass(var/weakref/data, var/weakref/typedata)
+/obj/item/integrated_circuit/filter/ref/custom/may_pass(weakref/data, weakref/typedata)
 	if(!isweakref(data) || !isweakref(typedata))
 		return FALSE
 	var/weakref/wref = data

@@ -83,7 +83,7 @@ var/const/tk_maxrange = 15
 	QDEL_IN(src, 1)
 
 //stops TK grabs being equipped anywhere but into hands
-/obj/item/tk_grab/equipped(var/mob/user, var/slot)
+/obj/item/tk_grab/equipped(mob/user, slot)
 	..()
 	if( (slot == slot_l_hand) || (slot== slot_r_hand) )	return
 	qdel(src)
@@ -137,7 +137,7 @@ var/const/tk_maxrange = 15
 	return
 
 
-/obj/item/tk_grab/proc/focus_object(var/obj/target, var/mob/living/user)
+/obj/item/tk_grab/proc/focus_object(obj/target, mob/living/user)
 	if(!istype(target,/obj))	return//Cant throw non objects atm might let it do mobs later
 	if(target.anchored || !isturf(target.loc))
 		qdel(src)

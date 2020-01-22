@@ -59,7 +59,7 @@
 		qdel(src)
 
 // Meet the neighbors
-/obj/structure/railing/proc/NeighborsCheck(var/UpdateNeighbors = 1)
+/obj/structure/railing/proc/NeighborsCheck(UpdateNeighbors = 1)
 	check = 0
 	var/Rturn = turn(src.dir, -90)
 	var/Lturn = turn(src.dir, 90)
@@ -97,7 +97,7 @@
 				R.update_icon(0)
 
 // Greet the neighbors
-/obj/structure/railing/update_icon(var/UpdateNeighgors = 1)
+/obj/structure/railing/update_icon(UpdateNeighgors = 1)
 	NeighborsCheck(UpdateNeighgors)
 	overlays.Cut()
 	if (!check || !anchored)
@@ -260,7 +260,7 @@
 // OLD code from the very first port to Bay below:
 // can_climb() allows climbing from an adjacent turf onto the src turf.
 // However, railings allow the inverse as well.
-///obj/structure/railing/can_climb(var/mob/living/usr, post_climb_check=0)
+///obj/structure/railing/can_climb(mob/living/usr, post_climb_check=0)
 //	if(!..())
 //		return 0
 //
@@ -288,7 +288,7 @@
 //			return 0
 //	return 1
 
-/obj/structure/railing/can_climb(var/mob/living/user, post_climb_check=0)
+/obj/structure/railing/can_climb(mob/living/user, post_climb_check=0)
 	if (!can_touch(user) || (!post_climb_check && (user in climbers)))
 		return 0
 
@@ -306,7 +306,7 @@
 
 
 // Snowflake do_climb code that handles special railing cases.
-/obj/structure/railing/do_climb(var/mob/living/user)
+/obj/structure/railing/do_climb(mob/living/user)
 	if (!can_climb(user))
 		return
 

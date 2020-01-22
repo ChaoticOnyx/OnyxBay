@@ -28,7 +28,7 @@
 		)
 	var/shackle = 0
 
-/obj/item/organ/internal/posibrain/New(var/mob/living/carbon/H)
+/obj/item/organ/internal/posibrain/New(mob/living/carbon/H)
 	..()
 	if(!brainmob && H)
 		init(H)
@@ -36,7 +36,7 @@
 	unshackle()
 	update_icon()
 
-/obj/item/organ/internal/posibrain/proc/init(var/mob/living/carbon/H)
+/obj/item/organ/internal/posibrain/proc/init(mob/living/carbon/H)
 	brainmob = new(src)
 
 	if(istype(H))
@@ -70,7 +70,7 @@
 	for (var/mob/M in viewers(T))
 		M.show_message("<span class='notice'>The positronic brain buzzes quietly, and the golden lights fade away. Perhaps you could try again?</span>")
 
-/obj/item/organ/internal/posibrain/attack_ghost(var/mob/observer/ghost/user)
+/obj/item/organ/internal/posibrain/attack_ghost(mob/observer/ghost/user)
 	if(!searching || (src.brainmob && src.brainmob.key))
 		return
 
@@ -122,7 +122,7 @@
 	src.brainmob.SetName("[pick(list("PBU","HIU","SINA","ARMA","OSI"))]-[random_id(type,100,999)]")
 	src.brainmob.real_name = src.brainmob.name
 
-/obj/item/organ/internal/posibrain/proc/shackle(var/given_lawset)
+/obj/item/organ/internal/posibrain/proc/shackle(given_lawset)
 	if(given_lawset)
 		brainmob.laws = given_lawset
 	shackle = 1
@@ -145,7 +145,7 @@
 	if(shackle)
 		overlays |= image('icons/obj/assemblies.dmi', "posibrain-shackles")
 
-/obj/item/organ/internal/posibrain/proc/transfer_identity(var/mob/living/carbon/H)
+/obj/item/organ/internal/posibrain/proc/transfer_identity(mob/living/carbon/H)
 	if(H && H.mind)
 		brainmob.set_stat(CONSCIOUS)
 		H.mind.transfer_to(brainmob)
@@ -159,7 +159,7 @@
 	to_chat(brainmob, "<span class='notice'>You feel slightly disoriented. That's normal when you're just \a [initial(src.name)].</span>")
 	callHook("debrain", list(brainmob))
 
-/obj/item/organ/internal/posibrain/removed(var/mob/living/user)
+/obj/item/organ/internal/posibrain/removed(mob/living/user)
 	if(!istype(owner))
 		return ..()
 
@@ -170,7 +170,7 @@
 
 	..()
 
-/obj/item/organ/internal/posibrain/replaced(var/mob/living/target)
+/obj/item/organ/internal/posibrain/replaced(mob/living/target)
 
 	if(!..()) return 0
 

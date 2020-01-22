@@ -14,7 +14,7 @@
 	name = "Occupation"
 	sort_order = 1
 
-/datum/category_item/player_setup_item/occupation/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/occupation/load_character(savefile/S)
 	S["alternate_option"]  >> pref.alternate_option
 	S["job_high"]          >> pref.job_high
 	S["job_medium"]        >> pref.job_medium
@@ -23,7 +23,7 @@
 	S["char_branch"]       >> pref.char_branch
 	S["char_rank"]         >> pref.char_rank
 
-/datum/category_item/player_setup_item/occupation/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/occupation/save_character(savefile/S)
 	S["alternate_option"]  << pref.alternate_option
 	S["job_high"]          << pref.job_high
 	S["job_medium"]        << pref.job_medium
@@ -283,7 +283,7 @@
 
 	return 1
 
-/datum/category_item/player_setup_item/occupation/proc/SetJobDepartment(var/datum/job/job, var/level)
+/datum/category_item/player_setup_item/occupation/proc/SetJobDepartment(datum/job/job, level)
 	if(!job || !level)	return 0
 	switch(level)
 		if(1)//Only one of these should ever be active at once so clear them all here
@@ -299,7 +299,7 @@
 			pref.job_low |= job.title
 	return 1
 
-/datum/preferences/proc/CorrectLevel(var/datum/job/job, var/level)
+/datum/preferences/proc/CorrectLevel(datum/job/job, level)
 	if(!job || !level)	return 0
 	switch(level)
 		if(1)

@@ -129,18 +129,18 @@
 
 		charges = processed_charges
 
-	stat_modules +=	new /stat_rig_module/activate(src)
-	stat_modules +=	new /stat_rig_module/deactivate(src)
-	stat_modules +=	new /stat_rig_module/engage(src)
-	stat_modules +=	new /stat_rig_module/select(src)
-	stat_modules +=	new /stat_rig_module/charge(src)
+	stat_modules += new /stat_rig_module/activate(src)
+	stat_modules += new /stat_rig_module/deactivate(src)
+	stat_modules += new /stat_rig_module/engage(src)
+	stat_modules += new /stat_rig_module/select(src)
+	stat_modules += new /stat_rig_module/charge(src)
 
 /obj/item/rig_module/Destroy()
 	deactivate()
 	. = ..()
 
 // Called when the module is installed into a suit.
-/obj/item/rig_module/proc/installed(var/obj/item/weapon/rig/new_holder)
+/obj/item/rig_module/proc/installed(obj/item/weapon/rig/new_holder)
 	holder = new_holder
 	return
 
@@ -228,7 +228,7 @@
 
 // Called by holder rigsuit attackby()
 // Checks if an item is usable with this module and handles it if it is
-/obj/item/rig_module/proc/accepts_item(var/obj/item/input_device)
+/obj/item/rig_module/proc/accepts_item(obj/item/input_device)
 	return 0
 
 /mob/living/carbon/human/Stat()
@@ -238,7 +238,7 @@
 		var/obj/item/weapon/rig/R = back
 		SetupStat(R)
 
-/mob/proc/SetupStat(var/obj/item/weapon/rig/R)
+/mob/proc/SetupStat(obj/item/weapon/rig/R)
 	if(R && !R.canremove && R.installed_modules.len && statpanel("Hardsuit Modules"))
 		var/cell_status = R.cell ? "[R.cell.charge]/[R.cell.maxcharge]" : "ERROR"
 		stat("Suit charge", cell_status)
@@ -254,11 +254,11 @@
 	var/module_mode = ""
 	var/obj/item/rig_module/module
 
-/stat_rig_module/New(var/obj/item/rig_module/module)
+/stat_rig_module/New(obj/item/rig_module/module)
 	..()
 	src.module = module
 
-/stat_rig_module/proc/AddHref(var/list/href_list)
+/stat_rig_module/proc/AddHref(list/href_list)
 	return
 
 /stat_rig_module/proc/CanUse()
@@ -276,7 +276,7 @@
 /stat_rig_module/DblClick()
 	return Click()
 
-/stat_rig_module/activate/New(var/obj/item/rig_module/module)
+/stat_rig_module/activate/New(obj/item/rig_module/module)
 	..()
 	name = module.activate_string
 	if(module.active_power_cost)
@@ -286,7 +286,7 @@
 /stat_rig_module/activate/CanUse()
 	return module.toggleable && !module.active
 
-/stat_rig_module/deactivate/New(var/obj/item/rig_module/module)
+/stat_rig_module/deactivate/New(obj/item/rig_module/module)
 	..()
 	name = module.deactivate_string
 	// Show cost despite being 0, if it means changing from an active cost.
@@ -298,7 +298,7 @@
 /stat_rig_module/deactivate/CanUse()
 	return module.toggleable && module.active
 
-/stat_rig_module/engage/New(var/obj/item/rig_module/module)
+/stat_rig_module/engage/New(obj/item/rig_module/module)
 	..()
 	name = module.engage_string
 	if(module.use_power_cost)
@@ -324,7 +324,7 @@
 	name = "Change Charge"
 	module_mode = "select_charge_type"
 
-/stat_rig_module/charge/AddHref(var/list/href_list)
+/stat_rig_module/charge/AddHref(list/href_list)
 	var/charge_index = module.charges.Find(module.charge_selected)
 	if(!charge_index)
 		charge_index = 0

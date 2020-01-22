@@ -31,10 +31,10 @@ var/list/trait_categories = list() // The categories available for the trait men
 	sort_order = 1
 	var/current_tab = "Physical"
 
-/datum/category_item/player_setup_item/traits/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/traits/load_character(savefile/S)
 	S["traits"] >> pref.traits
 
-/datum/category_item/player_setup_item/traits/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/traits/save_character(savefile/S)
 	S["traits"] << pref.traits
 
 
@@ -148,18 +148,18 @@ var/list/trait_categories = list() // The categories available for the trait men
 	var/category = null						// What section to place this trait inside.
 
 // Applies effects to the newly spawned mob.
-/datum/trait/proc/apply_trait_post_spawn(var/mob/living/L)
+/datum/trait/proc/apply_trait_post_spawn(mob/living/L)
 	return
 
 // Used to forbid a trait based on certain criteria (e.g. if they are an FBP).
 // It receives the player_setup_item datum since some reasons for being invalid depend on the currently loaded preferences.
 // Returns a string explaining why the trait is invalid.  Returns null if valid.
-/datum/trait/proc/test_for_invalidity(var/datum/category_item/player_setup_item/traits/setup)
+/datum/trait/proc/test_for_invalidity(datum/category_item/player_setup_item/traits/setup)
 	return null
 
 // Checks mutually_exclusive.  current_traits needs to be a list of strings.
 // Returns null if everything is well, similar to the above proc.  Otherwise returns an english_list() of conflicting traits.
-/datum/trait/proc/test_for_trait_conflict(var/list/current_traits)
+/datum/trait/proc/test_for_trait_conflict(list/current_traits)
 	var/list/conflicts = list()
 	var/result
 
@@ -176,7 +176,7 @@ var/list/trait_categories = list() // The categories available for the trait men
 
 // Similar to above, but uses the above two procs, in one place.
 // Returns TRUE is everything is well.
-/datum/trait/proc/validate(var/list/current_traits, var/datum/category_item/player_setup_item/traits/setup)
+/datum/trait/proc/validate(list/current_traits, datum/category_item/player_setup_item/traits/setup)
 	if(test_for_invalidity(setup))
 		return FALSE
 	if(test_for_trait_conflict(current_traits))

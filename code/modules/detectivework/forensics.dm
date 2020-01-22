@@ -5,7 +5,7 @@
 //This is the output of the stringpercent(print) proc, and means about 80% of
 //the print must be there for it to be complete.  (Prints are 32 digits)
 var/const/FINGERPRINT_COMPLETE = 6
-proc/is_complete_print(var/print)
+proc/is_complete_print(print)
 	return stringpercent(print) <= FINGERPRINT_COMPLETE
 
 atom/var/list/suit_fibers
@@ -102,7 +102,7 @@ atom/var/var/fingerprintslast = null
 				else
 					fingerprints[full_print] = full_print
 
-/atom/proc/transfer_fingerprints_to(var/atom/A)
+/atom/proc/transfer_fingerprints_to(atom/A)
 	if(fingerprints)
 		if(!A.fingerprints)
 			A.fingerprints = list()

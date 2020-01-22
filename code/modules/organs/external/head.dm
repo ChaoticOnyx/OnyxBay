@@ -31,7 +31,7 @@
 	if(forehead_graffiti && graffiti_style)
 		to_chat(user, "<span class='notice'>It has \"[forehead_graffiti]\" written on it in [graffiti_style]!</span>")
 
-/obj/item/organ/external/head/proc/write_on(var/mob/penman, var/style)
+/obj/item/organ/external/head/proc/write_on(mob/penman, style)
 	var/head_name = name
 	var/atom/target = src
 	if(owner)
@@ -63,7 +63,7 @@
 			forehead_graffiti = graffiti
 			graffiti_style = style
 
-/obj/item/organ/external/head/set_dna(var/datum/dna/new_dna)
+/obj/item/organ/external/head/set_dna(datum/dna/new_dna)
 	..()
 	eye_icon = species.eye_icon
 	eye_icon_location = species.eye_icon_location
@@ -71,7 +71,7 @@
 /obj/item/organ/external/head/get_agony_multiplier()
 	return (owner && owner.headcheck(organ_tag)) ? 1.50 : 1
 
-/obj/item/organ/external/head/robotize(var/company, var/skip_prosthetics, var/keep_organs)
+/obj/item/organ/external/head/robotize(company, skip_prosthetics, keep_organs)
 	if(company)
 		var/datum/robolimb/R = all_robolimbs[company]
 		if(R)
@@ -140,7 +140,7 @@
 			res.overlays |= hair_s
 	return res
 
-/obj/item/organ/external/head/update_icon_drop(var/mob/living/carbon/human/powner)
+/obj/item/organ/external/head/update_icon_drop(mob/living/carbon/human/powner)
 	overlays.Cut()
 	if(powner.f_style)
 		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[powner.f_style]

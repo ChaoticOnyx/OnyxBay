@@ -234,7 +234,7 @@
 		src.updateUsrDialog()
 		return
 
-/obj/machinery/computer/telecomms/traffic/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/computer/telecomms/traffic/emag_act(remaining_charges, mob/user)
 	if(!emagged)
 		playsound(src.loc, get_sfx("spark"), 75, 1)
 		emagged = 1

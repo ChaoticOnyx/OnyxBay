@@ -49,7 +49,7 @@
 /obj/test/crossed_obj
 	var/list/crossers
 
-/obj/test/crossed_obj/Crossed(var/crosser)
+/obj/test/crossed_obj/Crossed(crosser)
 	if(!crossers)
 		crossers = list()
 	crossers += crosser
@@ -57,7 +57,7 @@
 /obj/test/entered_obj
 	var/list/enterers
 
-/obj/test/entered_obj/Entered(var/enterer)
+/obj/test/entered_obj/Entered(enterer)
 	if(!enterers)
 		enterers = list()
 	enterers += enterer

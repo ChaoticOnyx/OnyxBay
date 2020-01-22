@@ -17,7 +17,7 @@
 	if(choice)
 		follow_follower(choice)
 
-/mob/living/deity/proc/follow_follower(var/mob/living/L)
+/mob/living/deity/proc/follow_follower(mob/living/L)
 	if(!L || L.stat == DEAD || !is_follower(L, silent=1))
 		return
 	if(following)
@@ -36,5 +36,5 @@
 	to_chat(src, "<span class='notice'>You stop following \the [following].</span>")
 	following = null
 
-/mob/living/deity/proc/keep_following(var/atom/movable/moving_instance, var/atom/old_loc, var/atom/new_loc)
+/mob/living/deity/proc/keep_following(atom/movable/moving_instance, atom/old_loc, atom/new_loc)
 	eyeobj.setLoc(new_loc)

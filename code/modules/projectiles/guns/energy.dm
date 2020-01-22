@@ -163,7 +163,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 	. = ..()
 
-/obj/item/weapon/gun/energy/secure/proc/authorize(var/mode, var/authorized, var/by)
+/obj/item/weapon/gun/energy/secure/proc/authorize(mode, authorized, by)
 	if(emagged || mode < 1 || mode > authorized_modes.len || authorized_modes[mode] == authorized)
 		return 0
 
@@ -199,7 +199,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 	return new_mode
 
-/obj/item/weapon/gun/energy/secure/examine(var/mob/user)
+/obj/item/weapon/gun/energy/secure/examine(mob/user)
 	..()
 
 	if(registered_owner)
@@ -215,7 +215,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 			return null
 	while(!authorized_modes[.] && !emagged)
 
-/obj/item/weapon/gun/energy/secure/emag_act(var/charges, var/mob/user)
+/obj/item/weapon/gun/energy/secure/emag_act(charges, mob/user)
 	if(emagged || !charges)
 		return NO_EMAG_ACT
 	else

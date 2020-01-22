@@ -37,7 +37,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	var/destroy_objects = 0
 	var/knockdown_people = 0
 
-/mob/living/simple_animal/hostile/mimic/New(newloc, var/obj/o, var/mob/living/creator)
+/mob/living/simple_animal/hostile/mimic/New(newloc, obj/o, mob/living/creator)
 	..()
 	if(o)
 		if(ispath(o))
@@ -55,7 +55,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	if(creator)
 		return . - creator.resolve()
 
-/mob/living/simple_animal/hostile/mimic/proc/CopyObject(var/obj/O, var/mob/living/creator)
+/mob/living/simple_animal/hostile/mimic/proc/CopyObject(obj/O, mob/living/creator)
 
 	if((istype(O, /obj/item) || istype(O, /obj/structure)) && !is_type_in_list(O, protected_objects))
 		O.forceMove(src)
@@ -143,7 +143,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		src.visible_message("<b>\The [src]</b> starts to move!")
 		awake = 1
 
-/mob/living/simple_animal/hostile/mimic/sleeping/adjustBruteLoss(var/damage)
+/mob/living/simple_animal/hostile/mimic/sleeping/adjustBruteLoss(damage)
 	trigger()
 	..(damage)
 

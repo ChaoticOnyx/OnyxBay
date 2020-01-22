@@ -106,7 +106,7 @@
 		if(3) to_chat(user, "It has a spring inside.")
 		if(4) to_chat(user, "It is all covered with duct tape.")
 
-/obj/item/weapon/boomstickframe/attackby(var/obj/item/W, var/mob/user)
+/obj/item/weapon/boomstickframe/attackby(obj/item/W, mob/user)
 	if(isWelder(W) && buildstate == 0)
 		var/obj/item/weapon/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
@@ -196,7 +196,7 @@
 	..(user, allow_dump=1)
 
 //this is largely hacky and bad :(	-Pete
-/obj/item/weapon/gun/projectile/shotgun/doublebarrel/attackby(var/obj/item/A as obj, mob/user as mob)
+/obj/item/weapon/gun/projectile/shotgun/doublebarrel/attackby(obj/item/A as obj, mob/user as mob)
 	if(w_class > 3 && (istype(A, /obj/item/weapon/circular_saw) || istype(A, /obj/item/weapon/melee/energy) || istype(A, /obj/item/weapon/gun/energy/plasmacutter)))
 		to_chat(user, "<span class='notice'>You begin to shorten the barrel of \the [src].</span>")
 		if(loaded.len)

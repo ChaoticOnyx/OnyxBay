@@ -69,7 +69,7 @@
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()
 
-/datum/mind/New(var/key)
+/datum/mind/New(key)
 	src.key = key
 	..()
 

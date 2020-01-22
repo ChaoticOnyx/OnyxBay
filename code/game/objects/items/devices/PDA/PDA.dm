@@ -366,7 +366,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	return
 
 
-/obj/item/device/pda/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+/obj/item/device/pda/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	ui_tick++
 	var/datum/nanoui/old_ui = SSnano.get_open_ui(user, src, "main")
 	var/auto_update = 1
@@ -885,7 +885,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(new_message || new_news)
 		overlays += image('icons/obj/pda.dmi', "pda-r")
 
-/obj/item/device/pda/proc/detonate_act(var/obj/item/device/pda/P)
+/obj/item/device/pda/proc/detonate_act(obj/item/device/pda/P)
 	//TODO: sometimes these attacks show up on the message server
 	var/i = rand(1,100)
 	var/j = rand(0,1) //Possibility of losing the PDA after the detonation
@@ -966,7 +966,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 /obj/item/device/pda/CtrlAltClick()
 	toggle_light()
 
-/obj/item/device/pda/proc/create_message(var/mob/living/U = usr, var/obj/item/device/pda/P, var/tap = 1)
+/obj/item/device/pda/proc/create_message(mob/living/U = usr, obj/item/device/pda/P, tap = 1)
 	if(!istype(P))
 		to_chat(U, "<span class='notice'>ERROR: This user does not accept messages.</span>")
 		return
@@ -1040,7 +1040,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		P.new_message_from_pda(src, message)
 		SSnano.update_user_uis(U, src) // Update the sending user's PDA UI so that they can see the new message
 
-/obj/item/device/pda/proc/new_info(var/beep_silent, var/message_tone, var/reception_message)
+/obj/item/device/pda/proc/new_info(beep_silent, message_tone, reception_message)
 	if (!beep_silent)
 		playsound(loc, 'sound/signals/ping5.ogg', 50, 0)
 		for (var/mob/O in hearers(2, loc))
@@ -1058,20 +1058,20 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			to_chat(L, reception_message)
 		SSnano.update_user_uis(L, src) // Update the receiving user's PDA UI so that they can see the new message
 
-/obj/item/device/pda/proc/new_news(var/message)
+/obj/item/device/pda/proc/new_news(message)
 	new_info(news_silent, newstone, news_silent ? "" : "\icon[src] <b>[message]</b>")
 
 	if(!news_silent)
 		new_news = 1
 		update_icon()
 
-/obj/item/device/pda/ai/new_news(var/message)
+/obj/item/device/pda/ai/new_news(message)
 	// Do nothing
 
-/obj/item/device/pda/proc/new_message_from_pda(var/obj/item/device/pda/sending_device, var/message)
+/obj/item/device/pda/proc/new_message_from_pda(obj/item/device/pda/sending_device, message)
 	new_message(sending_device, sending_device.owner, sending_device.ownjob, message)
 
-/obj/item/device/pda/proc/new_message(var/sending_unit, var/sender, var/sender_job, var/message)
+/obj/item/device/pda/proc/new_message(sending_unit, sender, sender_job, message)
 	var/reception_message = "\icon[src] <b>Message from [sender] ([sender_job]), </b>\"[message]\" (<a href='byond://?src=\ref[src];choice=Message;skiprefresh=1;target=\ref[sending_unit]'>Reply</a>)"
 	new_info(message_silent, ttone, reception_message)
 
@@ -1079,7 +1079,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	new_message = 1
 	update_icon()
 
-/obj/item/device/pda/ai/new_message(var/atom/movable/sending_unit, var/sender, var/sender_job, var/message)
+/obj/item/device/pda/ai/new_message(atom/movable/sending_unit, sender, sender_job, message)
 	if(!istype(sending_unit))
 		to_chat(usr, "<span class='bad'>This destination does not accept messages.</span>")
 		return
@@ -1434,16 +1434,16 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	for(var/atom/A in src)
 		A.emp_act(severity)
 
-/obj/item/device/pda/proc/set_owner(var/owner)
+/obj/item/device/pda/proc/set_owner(owner)
 	src.owner = owner
 	update_label()
 
-/obj/item/device/pda/proc/set_rank_job(var/owner, var/rank, var/job)
+/obj/item/device/pda/proc/set_rank_job(owner, rank, job)
 	ownrank = rank
 	ownjob = job ? job : rank
 	update_label()
 
-/obj/item/device/pda/proc/set_owner_rank_job(var/owner, var/rank, var/job)
+/obj/item/device/pda/proc/set_owner_rank_job(owner, rank, job)
 	set_owner(owner)
 	set_rank_job(rank, job)
 
