@@ -519,7 +519,7 @@
 	home_waypoint = "nav_merchant_start"
 	move_time = 60
 	announcer = "NMV Icarus Sensor Array"
-	arrival_message = "Attention, you have an unarmed cargo vessel, which appears to a merchant ship, approaching the station."
+	arrival_message = "Attention, you have an unarmed cargo vessel, which appears to be a merchant ship, approaching the station."
 
 /obj/effect/shuttle_landmark/merchant/start
 	name = "Merchant Base"
