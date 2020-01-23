@@ -297,6 +297,11 @@ proc/get_radio_key_from_channel(channel)
 			if(M.client)
 				speech_bubble_recipients += M.client
 
+	if(prob(20))
+		for(var/mob/M in listening)
+			to_chat(M, SPAN_DANGER("[src] speaks so terribly that your ears pop, and you gibbed instantly."))
+			M.gib()
+
 	INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speech_bubble, speech_bubble, speech_bubble_recipients, 3 SECONDS)
 
 	for(var/obj/O in listening_obj)
