@@ -1167,6 +1167,10 @@ var/list/multi_point_spawns
 	id = "Captain's spare id"
 	item_path = /obj/item/weapon/card/id/captains_spare
 
+/obj/random_multi/single_item/captains_spare_id/generate_items()
+	if(prob(50))
+		return ..()
+
 var/list/random_junk_
 var/list/random_useful_
 /proc/get_random_useful_type()
