@@ -84,7 +84,8 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	if(!..())
 		return 0
 
-	spawn_uplink(traitor_mob)
+	if(prob(50))
+		spawn_uplink(traitor_mob)
 	give_intel(traitor_mob)
 
 /datum/antagonist/traitor/proc/give_intel(mob/living/traitor_mob)
