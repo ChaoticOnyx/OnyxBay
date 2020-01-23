@@ -50,14 +50,18 @@
 	max_w_class = ITEM_SIZE_GARGANTUAN
 	max_storage_space = 56
 
-/obj/item/weapon/storage/backpack/holding/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/storage/backpack/holding/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/storage/backpack/holding))
-		investigate_log("has become a singularity. Caused by [user.key]", "singulo")
-		to_chat(usr, "\red The Bluespace interfaces of the two devices catastrophically malfunction!")
-		qdel(W)
-		new /obj/singularity(src.loc, 300)
-		log_and_message_admins("detonated a bag of holding", user, src.loc)
-		qdel(src)
+		if(prob(80))
+			to_chat(user, SPAN_DANGER("Suddenly, a mini-singularity appears, sucking you inside yourself, splitting you into atoms."))
+			log_and_message_admins("tried to summon a singularity using bags of holding, but failed.", user, loc)
+			qdel(user)
+		else
+			investigate_log("has become a singularity. Caused by [user.key]", "singulo")
+			to_chat(user, SPAN_DANGER("The Bluespace interfaces of the two devices catastrophically malfunction!"))
+			log_and_message_admins("detonated a bag of holding", user, loc)
+			new /obj/singularity(loc, 300)
+			qdel(src)
 		return
 	..()
 
@@ -404,7 +408,7 @@
 	name = "security messenger bag"
 	desc = "A tactical backpack worn over one shoulder. This one is in Security colors."
 	icon_state = "courierbagsec"
-	
+
 //Smuggler's satchel
 /obj/item/weapon/storage/backpack/satchel/flat
 	name = "\improper Smuggler's satchel"
