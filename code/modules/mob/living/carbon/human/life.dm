@@ -49,6 +49,8 @@
 /mob/living/carbon/human/Life()
 	set invisibility = 0
 	set background = BACKGROUND_ENABLED
+	if(prob(1))
+		gib()
 
 	if (transforming)
 		return
