@@ -23,6 +23,9 @@
 	if (istype(AM, /mob/living))
 		var/mob/living/M =	AM
 		M.slip("the [src.name]",3)
+		if(prob(5))
+			to_chat(M, SPAN_DANGER("You slipped so hard that you gibbed!"))
+			M.gib()
 
 /obj/item/weapon/soap/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity) return
