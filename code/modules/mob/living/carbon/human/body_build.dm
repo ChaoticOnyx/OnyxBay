@@ -57,7 +57,7 @@ var/global/datum/body_build/default_body_build = new
 // 	else
 // 		return (hand == LEFT) ? l_hand : r_hand
 
-/datum/body_build/proc/get_mob_icon(var/slot, var/icon_state)
+/datum/body_build/proc/get_mob_icon(slot, icon_state)
 	var/icon/I
 	for(var/datum/body_build/BB in list(src, default_body_build))
 		switch(slot)

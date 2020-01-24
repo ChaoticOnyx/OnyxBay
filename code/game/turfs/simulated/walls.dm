@@ -23,7 +23,7 @@
 	var/list/wall_connections = list("0", "0", "0", "0")
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
 
-/turf/simulated/wall/New(var/newloc, var/materialtype, var/rmaterialtype)
+/turf/simulated/wall/New(newloc, materialtype, rmaterialtype)
 	..(newloc)
 	icon_state = "blank"
 	if(!materialtype)
@@ -48,7 +48,7 @@
 	for(var/obj/O in src)
 		O.hide(1)
 
-/turf/simulated/wall/protects_atom(var/atom/A)
+/turf/simulated/wall/protects_atom(atom/A)
 	var/obj/O = A
 	return (istype(O) && O.hides_under_flooring()) || ..()
 
@@ -65,7 +65,7 @@
 // Extracts angle's tan if ischance = 1.
 // In other case it just makes bullets and lazorz go where they're supposed to.
 
-/turf/simulated/wall/proc/projectile_reflection(var/obj/item/projectile/Proj, var/ischance = 0)
+/turf/simulated/wall/proc/projectile_reflection(obj/item/projectile/Proj, ischance = 0)
 	if(Proj.starting)
 		var/ricochet_temp_id = rand(1,1000)
 		if(!ischance) Proj.ricochet_id = ricochet_temp_id
@@ -160,7 +160,7 @@
 	else
 		take_damage(25)
 
-/turf/simulated/wall/bullet_act(var/obj/item/projectile/Proj)
+/turf/simulated/wall/bullet_act(obj/item/projectile/Proj)
 	var/proj_damage = Proj.get_structure_damage()
 	if(ricochet_id != 0)
 		if(ricochet_id == Proj.ricochet_id)
@@ -268,7 +268,7 @@
 	take_damage(damage)
 	return
 
-/turf/simulated/wall/hitby(AM as mob|obj, var/speed=THROWFORCE_SPEED_DIVISOR)
+/turf/simulated/wall/hitby(AM as mob|obj, speed=THROWFORCE_SPEED_DIVISOR)
 	..()
 	if(ismob(AM))
 		return
@@ -290,7 +290,7 @@
 			plant.pixel_y = 0
 		plant.update_neighbors()
 
-/turf/simulated/wall/ChangeTurf(var/newtype)
+/turf/simulated/wall/ChangeTurf(newtype)
 	clear_plants()
 	return ..(newtype)
 
@@ -360,7 +360,7 @@
 
 	return ..()
 
-/turf/simulated/wall/proc/dismantle_wall(var/devastated, var/explode, var/no_product)
+/turf/simulated/wall/proc/dismantle_wall(devastated, explode, no_product)
 
 	playsound(src, 'sound/items/Welder.ogg', 100, 1)
 	if(!no_product)
@@ -446,7 +446,7 @@
 	SSradiation.radiate(src, total_radiation)
 	return total_radiation
 
-/turf/simulated/wall/proc/CheckPenetration(var/base_chance, var/damage)
+/turf/simulated/wall/proc/CheckPenetration(base_chance, damage)
 	return round(damage/material.integrity*180)
 
 /turf/simulated/wall/proc/burn(temperature)

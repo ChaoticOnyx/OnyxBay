@@ -9,7 +9,7 @@
 	food_color = "#ffad33"
 	cooked_sound = 'sound/machines/ding.ogg'
 
-/obj/machinery/cooker/fryer/cook_mob(var/mob/living/victim, var/mob/user)
+/obj/machinery/cooker/fryer/cook_mob(mob/living/victim, mob/user)
 
 	if(!istype(victim))
 		return

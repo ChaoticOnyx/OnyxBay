@@ -22,7 +22,7 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 	initial_spawn_target = 2
 	antaghud_indicator = "hudcultist"
 
-/datum/antagonist/godcultist/add_antagonist_mind(var/datum/mind/player, var/ignore_role, var/nonstandard_role_type, var/nonstandard_role_msg, var/mob/living/deity/specific_god)
+/datum/antagonist/godcultist/add_antagonist_mind(datum/mind/player, ignore_role, nonstandard_role_type, nonstandard_role_msg, mob/living/deity/specific_god)
 	if(!..())
 		return 0
 
@@ -47,13 +47,13 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 		deity_count++
 
 
-/datum/antagonist/godcultist/remove_antagonist(var/datum/mind/player, var/show_message, var/implanted)
+/datum/antagonist/godcultist/remove_antagonist(datum/mind/player, show_message, implanted)
 	if(!..())
 		return 0
 	remove_cultist(player)
 	return 1
 
-/datum/antagonist/godcultist/get_extra_panel_options(var/datum/mind/player)
+/datum/antagonist/godcultist/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[src];selectgod=\ref[player]'>\[Select Deity\]</a>"
 
 /datum/antagonist/godcultist/Topic(href, href_list)
@@ -79,24 +79,24 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 			to_chat(usr, "<span class='warning'>There are no deities to be linked to.</span>")
 		return 1
 
-/datum/antagonist/godcultist/proc/add_cultist(var/datum/mind/player, var/mob/living/deity/deity)
+/datum/antagonist/godcultist/proc/add_cultist(datum/mind/player, mob/living/deity/deity)
 	deity.add_follower(player.current)
 	player.current.add_language(LANGUAGE_CULT)
 
-/datum/antagonist/godcultist/proc/remove_cultist(var/datum/mind/player)
+/datum/antagonist/godcultist/proc/remove_cultist(datum/mind/player)
 	var/mob/living/deity/god = get_deity(player)
 	if(god)
 		god.remove_follower(player.current)
 	player.current.remove_language(LANGUAGE_CULT)
 
-/datum/antagonist/godcultist/proc/get_deity(var/datum/mind/player)
+/datum/antagonist/godcultist/proc/get_deity(datum/mind/player)
 	for(var/m in GLOB.deity.current_antagonists)
 		var/datum/mind/mind = m
 		var/mob/living/deity/god = mind.current
 		if(god.is_follower(player.current,1))
 			return god
 
-/mob/living/proc/dpray(var/msg as text)
+/mob/living/proc/dpray(msg as text)
 	set category = "Abilities"
 
 	if(!src.mind || !GLOB.godcult || !GLOB.godcult.is_antagonist(mind))

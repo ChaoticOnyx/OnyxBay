@@ -6,7 +6,7 @@
 	var/announceMessage = ""
 	var/wasTriggered = FALSE
 
-/datum/admin_secret_item/random_event/trigger_CompanyProvocation/execute(var/mob/user)
+/datum/admin_secret_item/random_event/trigger_CompanyProvocation/execute(mob/user)
 	. = ..()
 	if(!.)
 		return

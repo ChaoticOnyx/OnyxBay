@@ -98,7 +98,7 @@
 		return 1
 
 
-/obj/machinery/power/emitter/emp_act(var/severity)
+/obj/machinery/power/emitter/emp_act(severity)
 	return 1
 
 /obj/machinery/power/emitter/Process()
@@ -219,7 +219,7 @@
 	..()
 	return
 
-/obj/machinery/power/emitter/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/power/emitter/emag_act(remaining_charges, mob/user)
 	if(!emagged)
 		locked = 0
 		emagged = 1

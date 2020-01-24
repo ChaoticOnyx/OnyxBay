@@ -21,26 +21,26 @@
 	var/glass_desc = "It's a glass of... what, exactly?"
 	var/list/glass_special = null // null equivalent to list()
 
-/datum/reagent/New(var/datum/reagents/holder)
+/datum/reagent/New(datum/reagents/holder)
 	if(!istype(holder))
 		CRASH("Invalid reagents holder: [log_info_line(holder)]")
 	src.holder = holder
 	..()
 
-/datum/reagent/proc/remove_self(var/amount) // Shortcut
+/datum/reagent/proc/remove_self(amount) // Shortcut
 	if(holder) holder.remove_reagent(type, amount)
 
 // This doesn't apply to skin contact - this is for, e.g. extinguishers and sprays. The difference is that reagent is not directly on the mob's skin - it might just be on their clothing.
-/datum/reagent/proc/touch_mob(var/mob/M, var/amount)
+/datum/reagent/proc/touch_mob(mob/M, amount)
 	return
 
-/datum/reagent/proc/touch_obj(var/obj/O, var/amount) // Acid melting, cleaner cleaning, etc
+/datum/reagent/proc/touch_obj(obj/O, amount) // Acid melting, cleaner cleaning, etc
 	return
 
-/datum/reagent/proc/touch_turf(var/turf/T, var/amount) // Cleaner cleaning, lube lubbing, etc, all go here
+/datum/reagent/proc/touch_turf(turf/T, amount) // Cleaner cleaning, lube lubbing, etc, all go here
 	return
 
-/datum/reagent/proc/on_mob_life(var/mob/living/carbon/M, var/alien, var/location) // Currently, on_mob_life is called on carbons. Any interaction with non-carbon mobs (lube) will need to be done in touch_mob.
+/datum/reagent/proc/on_mob_life(mob/living/carbon/M, alien, location) // Currently, on_mob_life is called on carbons. Any interaction with non-carbon mobs (lube) will need to be done in touch_mob.
 	if(!istype(M))
 		return
 	if(!(flags & AFFECTS_DEAD) && M.stat == DEAD && (world.time - M.timeofdeath > 150))
@@ -81,27 +81,27 @@
 		remove_self(removed)
 	return
 
-/datum/reagent/proc/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/proc/affect_blood(mob/living/carbon/M, alien, removed)
 	return
 
-/datum/reagent/proc/affect_ingest(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/proc/affect_ingest(mob/living/carbon/M, alien, removed)
 	affect_blood(M, alien, removed * 0.5)
 	return
 
-/datum/reagent/proc/affect_touch(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/proc/affect_touch(mob/living/carbon/M, alien, removed)
 	return
 
-/datum/reagent/proc/overdose(var/mob/living/carbon/M, var/alien) // Overdose effect. Doesn't happen instantly.
+/datum/reagent/proc/overdose(mob/living/carbon/M, alien) // Overdose effect. Doesn't happen instantly.
 	M.add_chemical_effect(CE_TOXIN, 1)
 	M.adjustToxLoss(REM)
 	return
 
-/datum/reagent/proc/initialize_data(var/newdata) // Called when the reagent is created.
+/datum/reagent/proc/initialize_data(newdata) // Called when the reagent is created.
 	if(!isnull(newdata))
 		data = newdata
 	return
 
-/datum/reagent/proc/mix_data(var/newdata, var/newamount) // You have a reagent with data, and new reagent with its own data get added, how do you deal with that?
+/datum/reagent/proc/mix_data(newdata, newamount) // You have a reagent with data, and new reagent with its own data get added, how do you deal with that?
 	return
 
 /datum/reagent/proc/get_data() // Just in case you have a reagent that handles data differently.
@@ -117,11 +117,11 @@
 
 /* DEPRECATED - TODO: REMOVE EVERYWHERE */
 
-/datum/reagent/proc/reaction_turf(var/turf/target)
+/datum/reagent/proc/reaction_turf(turf/target)
 	touch_turf(target)
 
-/datum/reagent/proc/reaction_obj(var/obj/target)
+/datum/reagent/proc/reaction_obj(obj/target)
 	touch_obj(target)
 
-/datum/reagent/proc/reaction_mob(var/mob/target)
+/datum/reagent/proc/reaction_mob(mob/target)
 	touch_mob(target)

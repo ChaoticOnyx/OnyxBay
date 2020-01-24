@@ -32,7 +32,7 @@ SUBSYSTEM_DEF(trade)
 /datum/controller/subsystem/trade/stat_entry()
 	..("Traders: [traders.len]")
 
-/datum/controller/subsystem/trade/proc/generate_trader(var/stations = 0)
+/datum/controller/subsystem/trade/proc/generate_trader(stations = 0)
 	var/list/possible = list()
 	if(stations)
 		possible += subtypesof(/datum/trader) - typesof(/datum/trader/ship)

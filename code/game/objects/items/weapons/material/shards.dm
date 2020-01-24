@@ -22,7 +22,7 @@
 	unbreakable = 1 //It's already broken.
 	drops_debris = 0
 
-/obj/item/weapon/material/shard/set_material(var/new_material)
+/obj/item/weapon/material/shard/set_material(new_material)
 	..(new_material)
 	if(!istype(material))
 		return

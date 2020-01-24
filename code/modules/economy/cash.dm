@@ -161,7 +161,7 @@
 	desc = "It's worth 1000 Thalers."
 	worth = 1000
 
-proc/spawn_money(var/sum, spawnloc, mob/living/carbon/human/human_user as mob)
+proc/spawn_money(sum, spawnloc, mob/living/carbon/human/human_user as mob)
 	if(sum in list(1000,500,200,100,50,20,10,1))
 		var/cash_type = text2path("/obj/item/weapon/spacecash/bundle/c[sum]")
 		var/obj/cash = new cash_type (usr.loc)
@@ -250,7 +250,7 @@ proc/spawn_money(var/sum, spawnloc, mob/living/carbon/human/human_user as mob)
 
 		owner_name = user.name
 
-/obj/item/weapon/spacecash/ewallet/lotto/proc/speak(var/message = "Hello!")
+/obj/item/weapon/spacecash/ewallet/lotto/proc/speak(message = "Hello!")
 	for(var/mob/O in hearers(src.loc, null))
 		O.show_message("<span class='game say'><span class='name'>\The [src]</span> pings, \"[message]\"</span>",2)
 	playsound(src.loc, 'sound/machines/ping.ogg', 50, 0, -4)

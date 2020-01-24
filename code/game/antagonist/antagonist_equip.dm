@@ -1,4 +1,4 @@
-/datum/antagonist/proc/equip(var/mob/living/carbon/human/player)
+/datum/antagonist/proc/equip(mob/living/carbon/human/player)
 
 	if(!istype(player))
 		return 0
@@ -13,7 +13,7 @@
 		player.species.equip_survival_gear(player)
 	return 1
 
-/datum/antagonist/proc/unequip(var/mob/living/carbon/human/player)
+/datum/antagonist/proc/unequip(mob/living/carbon/human/player)
 	if(!istype(player))
 		return 0
 	return 1

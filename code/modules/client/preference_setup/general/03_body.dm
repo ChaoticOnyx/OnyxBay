@@ -37,7 +37,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	name = "Body"
 	sort_order = 3
 
-/datum/category_item/player_setup_item/general/body/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/general/body/load_character(savefile/S)
 	from_file(S["species"], pref.species)
 	from_file(S["hair_red"], pref.r_hair)
 	from_file(S["hair_green"], pref.g_hair)
@@ -64,7 +64,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.preview_icon = null
 	from_file(S["bgstate"], pref.bgstate)
 
-/datum/category_item/player_setup_item/general/body/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/general/body/save_character(savefile/S)
 	to_file(S["species"], pref.species)
 	to_file(S["hair_red"], pref.r_hair)
 	to_file(S["hair_green"], pref.g_hair)
@@ -90,7 +90,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	to_file(S["body_markings"], pref.body_markings)
 	to_file(S["bgstate"], pref.bgstate)
 
-/datum/category_item/player_setup_item/general/body/sanitize_character(var/savefile/S)
+/datum/category_item/player_setup_item/general/body/sanitize_character(savefile/S)
 	if(!pref.species || !(pref.species in playable_species))
 		pref.species = SPECIES_HUMAN
 	pref.r_hair			= sanitize_integer(pref.r_hair, 0, 255, initial(pref.r_hair))
@@ -130,7 +130,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	if(!pref.bgstate || !(pref.bgstate in pref.bgstate_options))
 		pref.bgstate = "000"
 
-/datum/category_item/player_setup_item/general/body/content(var/mob/user)
+/datum/category_item/player_setup_item/general/body/content(mob/user)
 	. = list()
 	if(!pref.preview_icon)
 		pref.update_preview_icon()
@@ -285,10 +285,10 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 	. = jointext(.,null)
 
-/datum/category_item/player_setup_item/general/body/proc/has_flag(var/datum/species/mob_species, var/flag)
+/datum/category_item/player_setup_item/general/body/proc/has_flag(datum/species/mob_species, flag)
 	return mob_species && (mob_species.appearance_flags & flag)
 
-/datum/category_item/player_setup_item/general/body/OnTopic(var/href,var/list/href_list, var/mob/user)
+/datum/category_item/player_setup_item/general/body/OnTopic(href,list/href_list, mob/user)
 	var/datum/species/mob_species = all_species[pref.species]
 
 	if(href_list["random"])

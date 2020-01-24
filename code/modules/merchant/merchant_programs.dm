@@ -21,13 +21,13 @@
 /datum/nano_module/program/merchant
 	name = "Merchant's List"
 
-/datum/computer_file/program/merchant/proc/get_merchant(var/num)
+/datum/computer_file/program/merchant/proc/get_merchant(num)
 	if(num > SStrade.traders.len)
 		num = SStrade.traders.len
 	if(num)
 		return SStrade.traders[num]
 
-/datum/nano_module/program/merchant/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/program/merchant/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 	var/show_trade = 0
 	var/hailed = 0
@@ -70,7 +70,7 @@
 		return 1
 	return 0
 
-/datum/computer_file/program/merchant/proc/offer_money(var/datum/trader/T, var/num)
+/datum/computer_file/program/merchant/proc/offer_money(datum/trader/T, num)
 	if(pad)
 		var/response = T.offer_money_for_trade(num, bank)
 		if(istext(response))
@@ -82,7 +82,7 @@
 		return
 	last_comms = "PAD NOT CONNECTED"
 
-/datum/computer_file/program/merchant/proc/bribe(var/datum/trader/T, var/amt)
+/datum/computer_file/program/merchant/proc/bribe(datum/trader/T, amt)
 	if(bank < amt)
 		last_comms = "ERROR: NOT ENOUGH FUNDS."
 		return
@@ -90,7 +90,7 @@
 	bank -= amt
 	last_comms = T.bribe_to_stay_longer(amt)
 
-/datum/computer_file/program/merchant/proc/offer_item(var/datum/trader/T, var/num)
+/datum/computer_file/program/merchant/proc/offer_item(datum/trader/T, num)
 	if(pad)
 		var/list/targets = pad.get_targets()
 		for(var/target in targets)
@@ -106,7 +106,7 @@
 		return
 	last_comms = "PAD NOT CONNECTED"
 
-/datum/computer_file/program/merchant/proc/sell_items(var/datum/trader/T)
+/datum/computer_file/program/merchant/proc/sell_items(datum/trader/T)
 	if(pad)
 		var/list/targets = pad.get_targets()
 		var/response = T.sell_items(targets)

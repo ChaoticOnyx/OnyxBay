@@ -63,7 +63,7 @@
 */
 
 //apart of reskins that have two sprites, touching may result in frustration and breaks
-/obj/item/weapon/gun/projectile/colt/detective/attack_hand(var/mob/living/user)
+/obj/item/weapon/gun/projectile/colt/detective/attack_hand(mob/living/user)
 	..()
 
 /datum/detective_gun_skin

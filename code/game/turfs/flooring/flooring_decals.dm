@@ -11,7 +11,7 @@ var/list/floor_decals = list()
 	appearance_flags = RESET_COLOR
 	var/supplied_dir
 
-/obj/effect/floor_decal/New(var/newloc, var/newdir, var/newcolour)
+/obj/effect/floor_decal/New(newloc, newdir, newcolour)
 	supplied_dir = newdir
 	if(newcolour) color = newcolour
 	..(newloc)
@@ -703,7 +703,7 @@ var/list/floor_decals = list()
 	icon_state = "manydot"
 	appearance_flags = 0
 
-/obj/effect/floor_decal/floordetail/New(var/newloc, var/newdir, var/newcolour)
+/obj/effect/floor_decal/floordetail/New(newloc, newdir, newcolour)
 	color = null //color is here just for map preview, if left it applies both our and tile colors.
 	..()
 

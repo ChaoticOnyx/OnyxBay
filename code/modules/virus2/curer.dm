@@ -10,7 +10,7 @@
 
 	var/obj/item/weapon/reagent_containers/container = null
 
-/obj/machinery/computer/curer/attackby(var/obj/I as obj, var/mob/user as mob)
+/obj/machinery/computer/curer/attackby(obj/I as obj, mob/user as mob)
 	if(istype(I,/obj/item/weapon/reagent_containers))
 		var/mob/living/carbon/C = user
 		if(!container)
@@ -36,10 +36,10 @@
 	..()
 	return
 
-/obj/machinery/computer/curer/attack_ai(var/mob/user as mob)
+/obj/machinery/computer/curer/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
 
-/obj/machinery/computer/curer/attack_hand(var/mob/user as mob)
+/obj/machinery/computer/curer/attack_hand(mob/user as mob)
 	if(..())
 		return
 	user.machine = src
@@ -91,7 +91,7 @@
 	if(. == TOPIC_REFRESH)
 		attack_hand(user)
 
-/obj/machinery/computer/curer/proc/createcure(var/obj/item/weapon/reagent_containers/container)
+/obj/machinery/computer/curer/proc/createcure(obj/item/weapon/reagent_containers/container)
 	var/obj/item/weapon/reagent_containers/glass/beaker/product = new(src.loc)
 
 	var/datum/reagent/blood/B = locate() in container.reagents.reagent_list

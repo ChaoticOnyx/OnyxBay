@@ -73,7 +73,7 @@ var/global/datum/matchmaker/matchmaker = new()
 
 	return TRUE
 
-/datum/relation/proc/can_connect(var/datum/relation/R)
+/datum/relation/proc/can_connect(datum/relation/R)
 	for(var/datum/relation/D in matchmaker.relations) //have to check all connections between us and them
 		if(D.holder == R.holder && D.other && D.other.holder == holder)
 			if(D.name in incompatible)

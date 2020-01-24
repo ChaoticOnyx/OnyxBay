@@ -121,7 +121,7 @@
 
 	beaker = locate(/obj/item/weapon/reagent_containers/glass/beaker) in component_parts
 
-/obj/machinery/sleeper/attack_hand(var/mob/user)
+/obj/machinery/sleeper/attack_hand(mob/user)
 	if(..())
 		return 1
 	if(panel_open)
@@ -130,7 +130,7 @@
 
 	ui_interact(user)
 
-/obj/machinery/sleeper/ui_interact(var/mob/user, var/ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.outside_state)
+/obj/machinery/sleeper/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.outside_state)
 	var/data[0]
 
 	data["power"] = stat & (NOPOWER|BROKEN) ? 0 : 1
@@ -208,10 +208,10 @@
 			stasis = text2num(href_list["stasis"])
 			return TOPIC_REFRESH
 
-/obj/machinery/sleeper/attack_ai(var/mob/user)
+/obj/machinery/sleeper/attack_ai(mob/user)
 	return attack_hand(user)
 
-/obj/machinery/sleeper/attackby(var/obj/item/I, var/mob/user)
+/obj/machinery/sleeper/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/weapon/reagent_containers/glass))
 		add_fingerprint(user)
 		if(!beaker)
@@ -260,7 +260,7 @@
 			return
 	..()
 
-/obj/machinery/sleeper/proc/check_compatibility(var/mob/target, var/mob/user)
+/obj/machinery/sleeper/proc/check_compatibility(mob/target, mob/user)
 	if(!istype(user) || !istype(target))
 		return FALSE
 	if(!CanMouseDrop(target, user))
@@ -280,7 +280,7 @@
 			return FALSE
 	return TRUE
 
-/obj/machinery/sleeper/MouseDrop_T(var/mob/target, var/mob/user)
+/obj/machinery/sleeper/MouseDrop_T(mob/target, mob/user)
 	if(!CanMouseDrop(target, user))
 		return
 	if(!istype(target))
@@ -292,11 +292,11 @@
 		return
 	go_in(target, user)
 
-/obj/machinery/sleeper/relaymove(var/mob/user)
+/obj/machinery/sleeper/relaymove(mob/user)
 	..()
 	go_out()
 
-/obj/machinery/sleeper/emp_act(var/severity)
+/obj/machinery/sleeper/emp_act(severity)
 	if(filtering)
 		toggle_filter()
 
@@ -312,7 +312,7 @@
 
 	..(severity)
 
-/obj/machinery/sleeper/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/sleeper/emag_act(remaining_charges, mob/user)
 
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, src.loc)
@@ -352,7 +352,7 @@
 	to_chat(occupant, "<span class='warning'>You hear a quiet click as the locking bolts [locked ? "go up" : "drop down"].</span>")
 	locked = !locked
 
-/obj/machinery/sleeper/proc/go_in(var/mob/M, var/mob/user)
+/obj/machinery/sleeper/proc/go_in(mob/M, mob/user)
 	if(!M)
 		return
 	if(stat & (BROKEN|NOPOWER))
@@ -409,7 +409,7 @@
 		for(var/obj/item/weapon/reagent_containers/glass/beaker/A in component_parts)
 			component_parts -= A
 
-/obj/machinery/sleeper/proc/inject_chemical(var/mob/living/user, var/chemical_name, var/amount)
+/obj/machinery/sleeper/proc/inject_chemical(mob/living/user, chemical_name, amount)
 	if(stat & (BROKEN|NOPOWER))
 		return
 

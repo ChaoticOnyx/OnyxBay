@@ -233,8 +233,7 @@
 
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/weapon/storage/firstaid,/obj/item/device/healthanalyzer,/obj/item/stack/medical,/obj/item/roller )
 
-	req_access = list()
-	req_one_access = list()
+	req_access = list(access_medical_equip)
 
 /obj/item/clothing/head/helmet/space/rig/medical
 	camera = /obj/machinery/camera/network/medbay
@@ -250,8 +249,6 @@
 	species_restricted = list(SPECIES_HUMAN,SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_UNATHI)
 
 /obj/item/weapon/rig/medical/equipped
-
-	req_access = list(access_medical_equip)
 
 	initial_modules = list(
 		/obj/item/rig_module/chem_dispenser/injector,

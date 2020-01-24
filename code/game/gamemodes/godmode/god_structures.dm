@@ -1,4 +1,4 @@
-/proc/valid_deity_structure_spot(var/type, var/turf/target, var/mob/living/deity/deity, var/mob/living/user)
+/proc/valid_deity_structure_spot(type, turf/target, mob/living/deity/deity, mob/living/user)
 	var/obj/structure/deity/D = type
 	var/flags = initial(D.deity_flags)
 
@@ -26,7 +26,7 @@
 	anchored = 1
 	icon_state = "tomealtar"
 
-/obj/structure/deity/New(var/newloc, var/god)
+/obj/structure/deity/New(newloc, god)
 	..(newloc)
 	if(god)
 		linked_god = god
@@ -50,14 +50,14 @@
 		)
 	take_damage(W.force)
 
-/obj/structure/deity/proc/take_damage(var/amount)
+/obj/structure/deity/proc/take_damage(amount)
 	health -= amount
 	if(health < 0)
 		src.visible_message("\The [src] crumbles!")
 		qdel(src)
 
-/obj/structure/deity/bullet_act(var/obj/item/projectile/P)
+/obj/structure/deity/bullet_act(obj/item/projectile/P)
 	take_damage(P.damage)
 
-/obj/structure/deity/proc/attack_deity(var/mob/living/deity/deity)
+/obj/structure/deity/proc/attack_deity(mob/living/deity/deity)
 	return

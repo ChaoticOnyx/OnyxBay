@@ -4,10 +4,10 @@
 	canremove = 0
 	candrop = 0
 
-/obj/item/weapon/melee/prosthetic/New(var/atom/location, var/obj/item/organ/external/limb)
+/obj/item/weapon/melee/prosthetic/New(atom/location, obj/item/organ/external/limb)
 	attach_prosthetic(src,limb)
 
-/obj/proc/attach_prosthetic(var/prosthetic , var/organ)
+/obj/proc/attach_prosthetic(prosthetic , organ)
 	if (!prosthetic || !organ || !isProsthetic(prosthetic))
 		return 0
 	if (istype(prosthetic,/obj/item/weapon/melee/prosthetic))
@@ -28,7 +28,7 @@
 		P.parent_hand = organ
 	return 1
 
-/obj/proc/remove_prosthetic(var/prosthetic = src)
+/obj/proc/remove_prosthetic(prosthetic = src)
 	if (istype(prosthetic,/obj/item/weapon/melee/prosthetic))
 		var/obj/item/weapon/melee/prosthetic/P = prosthetic
 		P.parent_hand = null
@@ -41,13 +41,13 @@
 			return 1
 	return 0
 
-/obj/item/weapon/melee/prosthetic/attack_self(var/mob/user)
+/obj/item/weapon/melee/prosthetic/attack_self(mob/user)
 	if (parent_hand)
 		..()
 	else
 		to_chat(user, "<span class='notice'>[capitalize(prost_type)] needs to be surgicaly applied first.</span>")
 
-/obj/item/weapon/melee/prosthetic/attackby(var/obj/item/I, var/mob/user)
+/obj/item/weapon/melee/prosthetic/attackby(obj/item/I, mob/user)
 	if (parent_hand)
 		..()
 	else

@@ -27,12 +27,12 @@
 	var/last_failed_breath
 	var/breath_fail_ratio // How badly they failed a breath. Higher is worse.
 
-/obj/item/organ/internal/lungs/proc/remove_oxygen_deprivation(var/amount)
+/obj/item/organ/internal/lungs/proc/remove_oxygen_deprivation(amount)
 	var/last_suffocation = oxygen_deprivation
 	oxygen_deprivation = min(species.total_health,max(0,oxygen_deprivation - amount))
 	return -(oxygen_deprivation - last_suffocation)
 
-/obj/item/organ/internal/lungs/proc/add_oxygen_deprivation(var/amount)
+/obj/item/organ/internal/lungs/proc/add_oxygen_deprivation(amount)
 	var/last_suffocation = oxygen_deprivation
 	oxygen_deprivation = min(species.total_health,max(0,oxygen_deprivation + amount))
 	return (oxygen_deprivation - last_suffocation)
@@ -47,7 +47,7 @@
 	. = ..()
 	icon_state = "lungs-prosthetic"
 
-/obj/item/organ/internal/lungs/set_dna(var/datum/dna/new_dna)
+/obj/item/organ/internal/lungs/set_dna(datum/dna/new_dna)
 	..()
 	sync_breath_types()
 
@@ -106,7 +106,7 @@
 		owner.custom_pain("You feel a stabbing pain in your [parent.name]!", 50, affecting = parent)
 	bruise()
 
-/obj/item/organ/internal/lungs/proc/handle_breath(datum/gas_mixture/breath, var/forced)
+/obj/item/organ/internal/lungs/proc/handle_breath(datum/gas_mixture/breath, forced)
 	if(!owner)
 		return 1
 

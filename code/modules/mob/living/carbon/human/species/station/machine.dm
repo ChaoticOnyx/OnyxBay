@@ -73,22 +73,22 @@
 		)
 	genders = list(NEUTER)
 
-/datum/species/machine/handle_death(var/mob/living/carbon/human/H)
+/datum/species/machine/handle_death(mob/living/carbon/human/H)
 	..()
 	if(istype(H.wear_mask,/obj/item/clothing/mask/monitor))
 		var/obj/item/clothing/mask/monitor/M = H.wear_mask
 		M.monitor_state_index = "blank"
 		M.update_icon()
 
-/datum/species/machine/sanitize_name(var/new_name)
+/datum/species/machine/sanitize_name(new_name)
 	return sanitizeName(new_name, allow_numbers = 1)
 
-/datum/species/machine/handle_post_spawn(var/mob/living/carbon/human/H)
+/datum/species/machine/handle_post_spawn(mob/living/carbon/human/H)
 	if(!H)
 		return
 	handle_limbs_setup(H)
 
-/datum/species/machine/handle_limbs_setup(var/mob/living/carbon/human/H)
+/datum/species/machine/handle_limbs_setup(mob/living/carbon/human/H)
 	for(var/obj/item/organ/external/E in H.organs)
 		if(!BP_IS_ROBOTIC(E))
 			E.robotize("Morpheus")
@@ -97,6 +97,6 @@
 /datum/species/machine/get_blood_name()
 	return "oil"
 
-/datum/species/machine/disfigure_msg(var/mob/living/carbon/human/H)
+/datum/species/machine/disfigure_msg(mob/living/carbon/human/H)
 	var/datum/gender/T = gender_datums[H.get_gender()]
 	return "<span class='danger'>[T.His] monitor is completely busted!</span>\n"

@@ -140,7 +140,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		M.update_inv_l_hand(0)
 		M.update_inv_r_hand(1)
 
-/obj/item/clothing/mask/smokable/proc/light(var/flavor_text = "[usr] lights the [name].")
+/obj/item/clothing/mask/smokable/proc/light(flavor_text = "[usr] lights the [name].")
 	if(!src.lit)
 		src.lit = 1
 
@@ -164,7 +164,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		set_light(2, 0.25, "#e38f46")
 		START_PROCESSING(SSobj, src)
 
-/obj/item/clothing/mask/smokable/proc/die(var/nomessage = 0)
+/obj/item/clothing/mask/smokable/proc/die(nomessage = 0)
 	set_light(0)
 	lit = 0
 	STOP_PROCESSING(SSobj, src)
@@ -189,7 +189,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		text = replacetext(text, "FLAME", "[W.name]")
 		light(text)
 
-/obj/item/clothing/mask/smokable/attack(var/mob/living/M, var/mob/living/user, def_zone)
+/obj/item/clothing/mask/smokable/attack(mob/living/M, mob/living/user, def_zone)
 	if(istype(M) && M.on_fire)
 		user.do_attack_animation(M)
 		light("<span class='notice'>\The [user] coldly lights the \the [src] with the burning body of \the [M].</span>")
@@ -234,7 +234,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(lit)
 		overlays += overlay_image(icon, "cigarello-on", flags=RESET_COLOR)
 
-/obj/item/clothing/mask/smokable/cigarette/die(var/nomessage = 0)
+/obj/item/clothing/mask/smokable/cigarette/die(nomessage = 0)
 	..()
 	if (type_butt)
 		var/obj/item/butt = new type_butt(get_turf(src))
@@ -486,7 +486,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			else // else just remove some of the reagents
 				reagents.remove_any(REM)
 
-/obj/item/clothing/mask/smokable/pipe/light(var/flavor_text = "[usr] lights the [name].")
+/obj/item/clothing/mask/smokable/pipe/light(flavor_text = "[usr] lights the [name].")
 	if(!src.lit && src.smoketime)
 		src.lit = 1
 		damtype = "fire"
@@ -501,7 +501,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			M.update_inv_l_hand(0)
 			M.update_inv_r_hand(1)
 
-/obj/item/clothing/mask/smokable/pipe/die(var/nomessage = 0)
+/obj/item/clothing/mask/smokable/pipe/die(nomessage = 0)
 	..()
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	if(ismob(loc))

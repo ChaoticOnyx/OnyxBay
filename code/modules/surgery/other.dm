@@ -109,6 +109,7 @@
 
 	min_duration = 120
 	max_duration = 180
+	clothes_penalty = FALSE
 
 /datum/surgery_step/hardsuit/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!istype(target))

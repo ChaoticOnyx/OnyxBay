@@ -10,7 +10,7 @@ GLOBAL_DATUM(lobby_music, /lobby_music)
 	var/song
 	var/url // Remember to include http:// or https://
 
-/lobby_music/proc/play_to(var/listener)
+/lobby_music/proc/play_to(listener)
 	if(!song)
 		return
 	if(title)
