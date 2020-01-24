@@ -21,9 +21,13 @@ var/global/list/all_objectives = list()
 /datum/objective/proc/check_completion()
 	return completed
 
-/datum/objective/proc/find_target()
+/datum/objective/proc/find_target(staton_only = TRUE)
 	var/list/possible_targets = list()
 	for(var/datum/mind/possible_target in SSticker.minds)
+		if(!possible_target.current)
+			continue
+		if(station_only && !(possible_target.current.z in GLOB.using_map.station_levels))
+			continue
 		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD))
 			possible_targets += possible_target
 	if(possible_targets.len > 0)
@@ -399,10 +403,8 @@ var/global/list/all_objectives = list()
 		"the captain's pinpointer" = /obj/item/weapon/pinpointer,
 		"an ablative armor vest" = /obj/item/clothing/suit/armor/laserproof,
 		"the colt Python" = /obj/item/weapon/gun/projectile/revolver/coltpython,
-		"a null sceptre" = /obj/item/weapon/nullrod,
 		"advanced engineering hardsuit control module" = /obj/item/weapon/rig/ce,
 		"AMI control module" = /obj/item/weapon/rig/hazmat,
-		"a brig soap" = /obj/item/weapon/soap/brig,
 		"an championship belt" = /obj/item/weapon/storage/belt/champion
 	)
 
