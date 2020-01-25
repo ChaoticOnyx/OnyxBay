@@ -21,7 +21,7 @@ var/global/list/all_objectives = list()
 /datum/objective/proc/check_completion()
 	return completed
 
-/datum/objective/proc/find_target(staton_only = TRUE)
+/datum/objective/proc/find_target(station_only = TRUE)
 	var/list/possible_targets = list()
 	for(var/datum/mind/possible_target in SSticker.minds)
 		if(!possible_target.current)
@@ -380,6 +380,9 @@ var/global/list/all_objectives = list()
 
 /datum/objective/nuclear
 	explanation_text = "Cause mass destruction with a nuclear device."
+
+/datum/objective/nuclear/check_completion()
+	return SSticker.mode.station_was_nuked
 
 /datum/objective/steal
 	var/obj/item/steal_target

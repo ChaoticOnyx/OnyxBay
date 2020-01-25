@@ -34,8 +34,7 @@ var/list/nuke_disks = list()
 /datum/game_mode/nuclear/declare_completion()
 	var/datum/antagonist/merc = GLOB.all_antag_types_[MODE_MERCENARY]
 	if(config.objectives_disabled == CONFIG_OBJECTIVE_NONE || (merc && !merc.global_objectives.len))
-		..()
-		return
+		return ..()
 	var/disk_rescued = 1
 	for(var/obj/item/weapon/disk/nuclear/D in world)
 		var/disk_area = get_area(D)
@@ -69,7 +68,7 @@ var/list/nuke_disks = list()
 		to_world("<FONT size = 3><B>Crew Major Victory!</B></FONT>")
 		to_world("<B>The Research Staff has saved the disc and killed the [syndicate_name()] Operatives</B>")
 
-	else if ( disk_rescued                                        )
+	else if (disk_rescued)
 		feedback_set_details("round_end_result","loss - evacuation - disk secured")
 		to_world("<FONT size = 3><B>Crew Major Victory</B></FONT>")
 		to_world("<B>The Research Staff has saved the disc and stopped the [syndicate_name()] Operatives!</B>")
@@ -89,5 +88,4 @@ var/list/nuke_disks = list()
 		to_world("<FONT size = 3><B>Neutral Victory</B></FONT>")
 		to_world("<B>Round was mysteriously interrupted!</B>")
 
-	..()
-	return
+	return ..()
