@@ -22,6 +22,8 @@ SUBSYSTEM_DEF(ticker)
 	var/delay_notified = 0          //Spam prevention.
 	var/restart_timeout = 1 MINUTE
 
+	var/force_end = FALSE
+
 	var/list/minds = list()         //Minds of everyone in the game.
 	var/list/antag_pool = list()
 	var/looking_for_antags = 0
@@ -114,7 +116,7 @@ SUBSYSTEM_DEF(ticker)
 	mode.process()
 	var/mode_finished = mode_finished()
 
-	if(mode_finished && game_finished())
+	if((mode_finished && game_finished()) || force_end)
 		Master.SetRunLevel(RUNLEVEL_POSTGAME)
 		end_game_state = END_GAME_READY_TO_END
 		INVOKE_ASYNC(src, .proc/declare_completion)
