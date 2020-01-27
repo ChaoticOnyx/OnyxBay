@@ -89,9 +89,9 @@
 	if(!(result[result[1]] > 0)) // No one voted.
 		text += "<b>Vote Result: Inconclusive - No Votes!</b>"
 	else
-		text += "<b>Vote Result: [display_choices[result[1]]][choices[result[1]] >= 1 ? " - \"[choices[result[1]]]\"" : null]</b>"
+		text += "<b>Vote Result: [display_choices[result[1]]][choices[result[1]] >= 1 ? " - \"[choices[result[1]]]\"" : null]</b"
 		if(length(result) >= 2 && result[result[2]])
-			text += "\nSecond place: [display_choices[result[2]]][choices[result[2]] >= 1 ? " - \"[choices[result[2]]]\"" : null]"
+			text += "\nSecond place: [display_choices[result[2]]][choices[result[2]] >= 1 ? " - \"[choices[result[2]]]\"" : null]" 
 		if(length(result) >= 3 && result[result[3]])
 			text += "\nThird place: [display_choices[result[3]]][choices[result[3]] >= 1 ? " - \"[choices[result[3]]]\"" : null]"
 	return JOINTEXT(text)
@@ -151,7 +151,7 @@
 		. += "<h2>Vote: '[question]'</h2>"
 	else
 		. += "<h2>Vote: [capitalize(name)]</h2>"
-	. += "<div class='statusDisplay'>"
+	. += "Time Left: [time_remaining] s<hr>"
 	. += "<table width = '100%'><tr><td align = 'center'><b>Choices</b></td><td colspan='1' align = 'center'><b>Votex</b></td>[check_rights(R_INVESTIGATE, 0, user) ? "<td align = 'center'><b>Votes</b></td>" : null]"
 	. += additional_header
 
@@ -178,7 +178,7 @@
 		if (additional_text[choice])
 			. += "[additional_text[choice]]" //Note lack of cell wrapper, to allow for dynamic formatting.
 		. += "</tr>"
-	. += "</table></div><hr>"
+	. += "</table><hr>"
 
 /datum/vote/Topic(href, href_list, hsrc)
 	var/mob/user = usr
