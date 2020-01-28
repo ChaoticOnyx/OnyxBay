@@ -383,10 +383,11 @@ var/world_topic_spam_protect_time = world.timeofday
 			return "No client with that name on server"
 
 		var/rank = "Discord Admin"
+		var/response = rhtml_encode(russian_to_cp1251(input["response"]))
 
-		var/message =	"<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [russian_to_cp1251(input["response"])]</font>"
-		var/amessage =  "<span class='info'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [russian_to_cp1251(input["response"])]</span>"
-		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", russian_to_cp1251(input["response"]))
+		var/message =	"<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [response]</font>"
+		var/amessage =  "<span class='info'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [response])]</span>"
+		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
 
 		sound_to(C, 'sound/effects/adminhelp.ogg')
 		to_chat(C, message)
