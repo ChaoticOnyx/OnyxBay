@@ -164,7 +164,6 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
-	/client/proc/toggle_log_hrefs,
 	/datum/admins/proc/immreboot,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
@@ -289,7 +288,6 @@ var/list/admin_verbs_hideable = list(
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
-	/client/proc/toggle_log_hrefs,
 	/datum/admins/proc/immreboot,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
@@ -466,7 +464,7 @@ var/list/admin_verbs_mentor = list(
 			mob.set_invisibility(INVISIBILITY_OBSERVER)
 			to_chat(mob, SPAN_NOTICE("Invisimin on. You are now as invisible as a ghost."))
 			mob.alpha = max(mob.alpha - 100, 0)
-		log_admin("[key_name(src)] [mob.invisibility == INVISIBILITY_OBSERVER ? "enabled" : "disabled"] invismin mode .")
+		log_admin("[key_name(src)] [mob.invisibility == INVISIBILITY_OBSERVER ? "enabled" : "disabled"] invisimin mode.")
 
 /client/proc/player_panel()
 	set name = "Player Panel"
@@ -691,18 +689,6 @@ var/list/admin_verbs_mentor = list(
 			to_chat(src, "<span class='interface'>You are now a normal player.</span>")
 			verbs |= /client/proc/readmin_self
 	feedback_add_details("admin_verb","DAS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/client/proc/toggle_log_hrefs()
-	set name = "Toggle href logging"
-	set category = "Server"
-	if(!holder)	return
-	if(config)
-		if(config.log_hrefs)
-			config.log_hrefs = 0
-			to_chat(src, "<b>Stopped logging hrefs</b>")
-		else
-			config.log_hrefs = 1
-			to_chat(src, "<b>Started logging hrefs</b>")
 
 /client/proc/check_ai_laws()
 	set name = "Check AI Laws"
