@@ -74,11 +74,6 @@
 			to_chat(user, "\The [W] reports that \the [src] is empty.")
 		return
 
-/obj/structure/closet/body_bag/Destroy()
-	for(var/atom/movable/AM in contents)
-		AM.dropInto(loc)
-	return ..()
-
 /obj/structure/closet/body_bag/store_mobs(stored_units)
 	contains_body = ..()
 	return contains_body
