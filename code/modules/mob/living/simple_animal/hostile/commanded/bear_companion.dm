@@ -28,16 +28,16 @@
 /mob/living/simple_animal/hostile/commanded/bear/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)
 	. = ..()
 	if(!.)
-		src.emote("roars in rage!")
+		emote("roars in rage!")
 
-/mob/living/simple_animal/hostile/commanded/bear/attack_hand(mob/living/carbon/human/M as mob)
-	..()
+/mob/living/simple_animal/hostile/commanded/bear/attack_hand(mob/living/carbon/human/M)
+	. = ..()
 	if(M.a_intent == I_HURT)
-		src.emote("roars in rage!")
+		emote("roars in rage!")
 
 /mob/living/simple_animal/hostile/commanded/bear/listen()
 	if(stance != COMMANDED_MISC) //cant listen if its booty shakin'
-		..()
+		return ..()
 
 //WE DANCE!
 /mob/living/simple_animal/hostile/commanded/bear/misc_command(mob/speaker,text)

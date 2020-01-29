@@ -847,3 +847,6 @@ default behaviour is:
 		Paralyse(rand(8,16))
 		make_jittery(rand(150,200))
 		adjustHalLoss(rand(50,60))
+
+/mob/living/proc/on_ghost_possess()
+	return

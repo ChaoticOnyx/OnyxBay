@@ -20,7 +20,7 @@ GLOBAL_LIST_EMPTY(available_mobs_for_possess)
 		return
 
 	M.controllable = !M.controllable
-	log_and_message_admins("switched [M] possess mode for ghosts to [M.controllable ? "ON" : "OFF"]! ([get_admin_jump_link(M)])")
+	log_and_message_admins("switched [M] possess mode for ghosts to [M.controllable ? "ON" : "OFF"]!", target = M)
 
 	if(M.controllable)
 		ghost_announce(M)

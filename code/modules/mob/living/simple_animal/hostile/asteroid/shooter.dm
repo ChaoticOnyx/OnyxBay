@@ -41,7 +41,8 @@
 	weaken=5
 	
 /mob/living/simple_animal/hostile/asteroid/shooter/GiveTarget(new_target)
-	target_mob = new_target
+	if(!client)
+		target_mob = new_target
 	if(target_mob != null)
 		Aggro()
 		stance = HOSTILE_STANCE_ATTACK
@@ -107,7 +108,8 @@
 	projectiletype = pick(projectiletypes)
 
 /mob/living/simple_animal/hostile/asteroid/shooter/beholder/GiveTarget(new_target)
-	target_mob = new_target
+	if(!client)
+		target_mob = new_target
 	if(target_mob != null)
 		Aggro()
 		stance = HOSTILE_STANCE_ATTACK

@@ -214,6 +214,8 @@
 		GLOB.moved_event.unregister(moving_instance, src)
 
 /mob/living/bot/secbot/proc/react_to_attack(mob/attacker)
+	if(client)
+		return
 	if(!target)
 		playsound(src.loc, pick(threat_found_sounds), 50)
 		broadcast_security_hud_message("[src] was attacked by a hostile <b>[target_name(attacker)]</b> in <b>[get_area(src)]</b>.", src)
@@ -447,8 +449,8 @@
 	..()
 	if(client)
 		process_sec_hud(src,1)
-	if(prob(10))
-		to_chat(src,"<span class='notice'>...[pick(secbot_dreams)]...</span>")
+	if(!client && prob(10))
+		to_chat(src, SPAN_NOTICE("...[pick(secbot_dreams)]..."))
 		
 /mob/living/bot/secbot/Stat()
 	..()
@@ -486,7 +488,7 @@
 		else
 			stat(null,"Auto patrol: Off")
 			
-		stat(null,"-------------")		
+		stat(null,"-------------")
 
 //**///////////////////////////////////////////////////////////**//	
 //**///////////////////////////BOOPSKY/////////////////////////**//
@@ -601,4 +603,4 @@
 	
 /mob/living/bot/secbot/doomsky/New()
 	..()
-	botcard_access = get_all_station_access()			
+	botcard_access = get_all_station_access()

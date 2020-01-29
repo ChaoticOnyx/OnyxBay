@@ -3,9 +3,9 @@
 	var/datum/mob_lite/last_attacked_ = null
 	var/mob/attack_logs_ = list()
 
-/proc/log_and_message_admins(message as text, mob/user = usr, turf/location)
+/proc/log_and_message_admins(message as text, mob/user = usr, turf/location, target)
 	var/turf/T = location ? location : (user ? get_turf(user) : null)
-	message = append_admin_tools(message, user, T)
+	message = append_admin_tools(message, user, T, target)
 
 	log_admin(user ? "[key_name(user)] [message]" : "EVENT [message]")
 	message_admins(user ? "[key_name_admin(user)] [message]" : "EVENT [message]")
@@ -114,9 +114,11 @@
 	                 "was [violent]injected with \the [weapon] - [reagents] - [amount_transferred]u transferred",
 	                 "used \the [weapon] to [violent]inject [reagents] ([amount_transferred]u transferred) into")
 
-/proc/append_admin_tools(message, mob, turf/location)
+/proc/append_admin_tools(message, mob, turf/location, target)
 	if(location)
-		message = message + " (<a HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>LOC</a>)"
+		message += " (<a HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>LOC</a>)"
 	if(mob)
-		message = message + " (<a HREF='?_src_=holder;adminplayerobservefollow=\ref[mob]'>MOB</a>)"
+		message += " (<a HREF='?_src_=holder;adminplayerobservefollow=\ref[mob]'>MOB</a>)"
+	if(target)
+		message += " (<a HREF='?_src_=holder;adminplayerobservefollow=\ref[target]'>TARGET</a>)"
 	return message
