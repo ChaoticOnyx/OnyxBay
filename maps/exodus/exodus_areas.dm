@@ -618,6 +618,10 @@
 	name = "\improper Underground Port Primary Hallway Maintenance"
 	icon_state = "uportprim"
 
+/area/maintenance/underground/board_games_club
+	name = "\improper Underground Board Games Club"
+	icon_state = "uportprim"
+
 /area/maintenance/underground/gateway
 	name = "\improper Underground Gateway Maintenance"
 	icon_state = "ugateway"

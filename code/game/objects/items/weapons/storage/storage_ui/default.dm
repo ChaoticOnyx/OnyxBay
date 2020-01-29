@@ -92,7 +92,7 @@
 			storage.close(M)
 
 /datum/storage_ui/default/show_to(mob/user)
-	if(user.s_active != storage)
+	if(user.s_active != storage && isliving(user) && user.stat == CONSCIOUS && !user.restrained())
 		for(var/obj/item/I in storage)
 			if(I.on_found(user))
 				return
