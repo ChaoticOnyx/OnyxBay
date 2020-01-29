@@ -152,7 +152,7 @@
 	else
 		. += "<h2>Vote: [capitalize(name)]</h2>"
 	. += "Time Left: [time_remaining] s<hr>"
-	. += "<table width = '100%'><tr><td align = 'center'><b>Choices</b></td><td colspan='1' align = 'center'><b>Votex</b></td>[check_rights(R_INVESTIGATE, 0, user) ? "<td align = 'center'><b>Votes</b></td>" : null]"
+	. += "<table width = '100%'><tr><td align = 'center'><b>Choices</b></td><td colspan='1' align = 'center'><b>Votes</b></td>[check_rights(R_INVESTIGATE, 0, user) ? "<td align = 'center'><b>Votes</b></td>" : null]"
 	. += additional_header
 
 	var/totalvotes = 0
