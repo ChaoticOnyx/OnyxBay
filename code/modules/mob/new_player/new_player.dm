@@ -20,8 +20,10 @@
 	virtual_mob = null // Hear no evil, speak no evil
 
 /mob/new_player/New()
-	..()
+	. = ..()
 	verbs += /mob/proc/toggle_antag_pool
+	verbs += /mob/proc/join_as_actor
+	verbs += /mob/proc/join_response_team
 
 /mob/new_player/verb/new_player_panel()
 	set src = usr
