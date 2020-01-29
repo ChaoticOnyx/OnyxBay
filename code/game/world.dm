@@ -346,8 +346,12 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		var/ckey = input["ckey"]
-		var/message = rhtml_encode(input["ooc"])
+		var/ckey = input["ckey"]	
+		var/message
+		if(!input["isadmin"])  // le costil, remove when discord-bot will be fixed ~HonkyDonky
+			message = rhtml_encode(input["ooc"])
+		else
+			message = "<font color='#39034f'>" + strip_html_properly(input["ooc"]) + "</font>"
 		if(!ckey||!message)
 			return
 		if(!config.vars["ooc_allowed"]&&!input["isadmin"])

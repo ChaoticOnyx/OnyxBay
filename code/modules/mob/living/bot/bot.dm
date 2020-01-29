@@ -222,6 +222,8 @@
 	return 0
 
 /mob/living/bot/proc/handleAI()
+	if(client)
+		return
 	if(ignore_list.len)
 		for(var/atom/A in ignore_list)
 			if(!A || !A.loc || prob(1))
@@ -373,6 +375,9 @@
 
 /mob/living/bot/proc/explode()
 	qdel(src)
+
+/mob/living/bot/on_ghost_possess()
+	resetTarget()
 
 /******************************************************************/
 // Navigation procs

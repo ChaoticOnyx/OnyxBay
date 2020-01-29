@@ -120,13 +120,14 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	if(!MayRespawn(TRUE, isanimal(mind?.current) || isbot(mind?.current) ? DEAD_ANIMAL_DELAY : ANIMAL_SPAWN_DELAY))
 		return
 
-	log_and_message_admins("occupied clientless mob - [L]. ([get_admin_jump_link(L)])")
+	log_and_message_admins("occupied clientless mob - ([L.type]) ([L]).", src, get_turf(L), L)
 
 	stop_following()
 	L.ckey = ckey
 	L.teleop = null
 	L.reload_fullscreen()
 	L.verbs |= /mob/living/proc/ghost
+	L.on_ghost_possess()
 
 /mob/observer/ghost/verb/ghost_possess(mob/living/M in GLOB.available_mobs_for_possess)
 	set name = "Ghost Possess"
@@ -531,7 +532,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/MayRespawn(feedback = FALSE, respawn_time = 0)
 	if(!client)
 		return FALSE
-	if(mind && mind.current && mind.current.stat != DEAD && can_reenter_corpse == CORPSE_CAN_REENTER)
+	if(mind?.current?.stat != DEAD && can_reenter_corpse == CORPSE_CAN_REENTER)
 		if(feedback)
 			to_chat(src, SPAN_WARNING("Your non-dead body prevents you from respawning."))
 		return FALSE

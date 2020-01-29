@@ -444,7 +444,7 @@
 		if(job && IsJobAvailable(job))
 			if(job.minimum_character_age && (client.prefs.age < job.minimum_character_age))
 				continue
-			if(job.faction_restricted && (client.prefs.faction != GLOB.using_map.company_name || client.prefs.nanotrasen_relation in COMPANY_OPPOSING))
+			if(job.faction_restricted && (client.prefs.faction != GLOB.using_map.company_name || (client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				continue
 
 			var/active = 0
