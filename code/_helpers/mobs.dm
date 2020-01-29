@@ -293,10 +293,20 @@ proc/age2agedescription(age)
 
 	. = list()
 	switch(target_zone)
-		if(BP_L_FOOT, BP_R_FOOT)
-			. += target.shoes
-		if(BP_L_HAND, BP_L_HAND)
-			. += target.gloves
+		if(BP_HEAD)
+			if(target.head)
+				. += target.head
+		if(BP_MOUTH)
+			if(istype(target.head, /obj/item/clothing/head/helmet/space))
+				. += target.head
+			else if(target.wear_mask)
+				. += target.wear_mask
+		if(BP_EYES)
+			if(istype(target.head, /obj/item/clothing/head/helmet/space))
+				. += target.head
+			else if(target.glasses)
+				. += target.glasses
+
 		if(BP_CHEST, BP_L_LEG, BP_R_LEG, BP_L_ARM, BP_R_ARM)
 			if(target.wear_suit)
 				. += target.wear_suit
@@ -309,15 +319,11 @@ proc/age2agedescription(age)
 				. += target.w_uniform
 			if(istype(target.belt, /obj/item/weapon/storage))
 				. += target.belt
-		if(BP_HEAD)
-			. += target.head
-		if(BP_MOUTH)
-			if(istype(target.head, /obj/item/clothing/head/helmet/space))
-				. += target.head
-			else
-				. += target.wear_mask
-		if(BP_EYES)
-			if(istype(target.head, /obj/item/clothing/head/helmet/space))
-				. += target.head
-			else
-				. += target.glasses
+
+		if(BP_L_FOOT, BP_R_FOOT)
+			if(target.shoes)
+				. += target.shoes
+		if(BP_L_HAND, BP_L_HAND)
+			if(target.gloves)
+				. += target.gloves
+
