@@ -283,7 +283,7 @@ proc/age2agedescription(age)
 	return selected
 
 // Returns a worn item in target zone, if any.
-/proc/get_target_clothes(mob/living/carbon/human/target, target_zone)
+/proc/get_target_clothes(mob/living/carbon/human/target, target_zone, include_underwear = TRUE)
 	if(!target)
 		return
 	if(!ishuman(target))
@@ -327,3 +327,27 @@ proc/age2agedescription(age)
 			if(target.gloves)
 				. += target.gloves
 
+	if(include_underwear)
+		for(var/obj/item/underwear/U in target.worn_underwear)
+			switch(target_zone)
+				if(BP_CHEST, BP_L_ARM, BP_R_ARM)
+					if(istype(U, /obj/item/underwear/undershirt))
+						. += U
+						break
+				if(BP_GROIN)
+					if(istype(U, /obj/item/underwear/bottom))
+						. += U
+						break
+				if(BP_L_FOOT, BP_R_FOOT)
+					if(istype(U, /obj/item/underwear/socks))
+						. += U
+						break
+
+/proc/organ_name_by_zone(mob/living/carbon/human/target, target_zone)
+	if(!target)
+		return
+	if(!target_zone)
+		return
+
+	var/obj/item/organ/O = target.organs_by_name[target_zone]
+	return O.name

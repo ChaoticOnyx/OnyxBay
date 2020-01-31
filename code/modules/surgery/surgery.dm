@@ -85,15 +85,6 @@
 		if(H.eye_blind)
 			. -= 60
 
-	if(clothes_penalty)
-		var/clothes = get_target_clothes(target, target_zone)
-		for(var/obj/item/I in clothes)
-			if(I.item_flags & (ITEM_FLAG_THICKMATERIAL|ITEM_FLAG_STOPPRESSUREDAMAGE))
-				. -= 60
-			. -= 40
-		if(length(clothes))
-			to_chat(user, SPAN_DANGER("Clothing on [target]'s [target_zone] interfere with surgical operations! It would be worth taking it off."))
-
 	if(delicate)
 		if(user.slurring)
 			. -= 10
@@ -110,16 +101,9 @@
 			. -= 10
 	. = max(., 0)
 
-/datum/surgery_step/proc/clothes_block(user, target, target_zone, tool)
-	. = tool_quality(tool)
-	var/clothes = get_target_clothes(target, target_zone)
-	for(var/obj/item/I in clothes)
-		if(I.item_flags & (ITEM_FLAG_THICKMATERIAL|ITEM_FLAG_STOPPRESSUREDAMAGE))
-			. -= 60
-		. -= 40
-
-	if(length(clothes) && . <= 0) // We're unable to perform surgery due to too much interfering clothing.
-		to_chat(user, SPAN_DANGER("Clothing on [target]'s [target_zone] blocks surgery!"))
+/datum/surgery_step/proc/clotches_check(user, target, target_zone)
+	if(length(get_target_clothes(target, target_zone))) // We're unable to perform surgery due to too much interfering clothing.
+		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
 		return SURGERY_BLOCKED
 
 /proc/spread_germs_to_organ(obj/item/organ/external/E, mob/living/carbon/human/user)
@@ -146,7 +130,7 @@
 		if(S.tool_quality(src))
 			var/step_is_valid = S.can_use(user, M, zone, src)
 			if(step_is_valid && S.is_valid_target(M))
-				if(S.clothes_penalty && S.clothes_block(user, M, zone, src) == SURGERY_BLOCKED)
+				if(S.clothes_penalty && S.clotches_check(user, M, zone) == SURGERY_BLOCKED)
 					return 1
 				if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
 					return 1
