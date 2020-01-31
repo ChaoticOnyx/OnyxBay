@@ -503,16 +503,23 @@
 
 //Merchant
 
-/datum/shuttle/autodock/ferry/merchant
+/datum/shuttle/autodock/multi/antag/merchant
 	name = "Merchant"
 	warmup_time = 10
-	location = 0
+	destination_tags = list(
+		"nav_merchant_start",
+		"nav_merchant_out",
+		"nav_merchant_shop",
+		"nav_merchant_space",
+		)
 	shuttle_area = /area/shuttle/merchant/home
 	landmark_transition = "nav_merchant_transition"
-	waypoint_station = "nav_merchant_start"
-	waypoint_offsite = "nav_merchant_out"
+	current_location = "nav_merchant_start"
 	dock_target = "merchant_ship_dock"
-	move_time = 30
+	home_waypoint = "nav_merchant_start"
+	move_time = 60
+	announcer = "NMV Icarus Sensor Array"
+	arrival_message = "Attention, you have an unarmed cargo vessel, which appears to be a merchant ship, approaching the station."
 
 /obj/effect/shuttle_landmark/merchant/start
 	name = "Merchant Base"
@@ -526,9 +533,20 @@
 	autoset = 1
 
 /obj/effect/shuttle_landmark/merchant/out
-	name = "Docking Bay"
+	name = "Station Ghetto Dock"
 	landmark_tag = "nav_merchant_out"
 	docking_controller = "merchant_shuttle_station_dock"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/merchant/shop
+	name = "Station Docking Bay"
+	landmark_tag = "nav_merchant_shop"
+	docking_controller = "merchant_shuttle_station_shop"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/merchant/space
+	name = "Station North East"
+	landmark_tag = "nav_merchant_space"
 	autoset = 1
 
 

@@ -33,7 +33,13 @@
 	base_turf = /turf/space/transit/south
 
 /area/shuttle/merchant/away
-	name = "\improper Merchant Van - Station Side"
+	name = "\improper Merchant Van - Station North East"
+
+/area/shuttle/merchant/dock
+	name = "\improper Merchant Van - Station Docking Bay"
+
+/area/shuttle/merchant/ghetto
+	name = "\improper Merchant Van - Station Ghetto Dock"
 
 // Command
 /area/crew_quarters/heads/chief

@@ -27,6 +27,10 @@
 	name = "shuttle wall"
 	icon_state = "ewall_straight"
 
+/turf/simulated/shuttle/wall/merchant
+	name = "shuttle wall"
+	icon_state = "merchwall0"
+
 /turf/simulated/shuttle/wall/corner
 	var/corner_overlay_state = "diagonalWall"
 	var/image/corner_overlay
@@ -173,4 +177,16 @@
 /turf/simulated/shuttle/wall/corner/alien/se
 	dir = SOUTH|EAST
 /turf/simulated/shuttle/wall/corner/alien/sw
+	dir = SOUTH|WEST
+
+/turf/simulated/shuttle/wall/corner/merchant
+	icon_state = "corner_merchwall"
+	corner_overlay_state = "corner_merchwall"
+/turf/simulated/shuttle/wall/corner/merchant/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/merchant/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/merchant/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/merchant/sw
 	dir = SOUTH|WEST
