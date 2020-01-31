@@ -740,6 +740,12 @@ meteor_act
 	affecting.status |= ORGAN_SABOTAGED
 	return 1
 
+/mob/living/carbon/human/lava_act(datum/gas_mixture/air, temperature, pressure)
+	var/was_burned = FireBurn(0.4 * vsc.fire_firelevel_multiplier, temperature, pressure)
+	if (was_burned)
+		fire_act(air, temperature)
+	return FALSE
+
 //this proc handles being hit by a thrown atom
 /mob/living/carbon/human/hitby(atom/movable/AM as mob|obj,speed = THROWFORCE_SPEED_DIVISOR)
 	if(istype(AM,/obj/))

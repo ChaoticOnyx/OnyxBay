@@ -14,6 +14,11 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 atom/proc/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	return null
 
+/atom/movable/proc/is_burnable()
+	return FALSE
+
+/mob/is_burnable()
+	return simulated
 
 turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 

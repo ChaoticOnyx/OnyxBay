@@ -394,6 +394,9 @@
 /mob/living/simple_animal/ExtinguishMob()
 	return
 
+/mob/living/simple_animal/is_burnable()
+	return heat_damage_per_tick
+
 /mob/living/simple_animal/proc/handle_panic_target()
 	//see if we should stop panicing
 	if(panic_target)

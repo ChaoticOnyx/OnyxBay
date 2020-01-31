@@ -332,6 +332,11 @@
 		adjust_fire_stacks(2)
 	IgniteMob()
 
+/mob/living/lava_act(datum/gas_mixture/air, temperature, pressure)
+	fire_act(air, temperature)
+	FireBurn(0.4*vsc.fire_firelevel_multiplier, temperature, pressure)
+	. =  (health <= 0) ? ..() : FALSE
+
 /mob/living/proc/get_cold_protection()
 	return 0
 

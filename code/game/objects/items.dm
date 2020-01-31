@@ -143,6 +143,12 @@
 			if (prob(5))
 				qdel(src)
 
+/obj/item/is_burnable()
+	return simulated
+
+/obj/item/lava_act()
+	. = (!throwing) ? ..() : FALSE
+
 /obj/item/verb/move_to_top()
 	set name = "Move To Top"
 	set category = "Object"

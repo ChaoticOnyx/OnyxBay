@@ -545,3 +545,9 @@ its easier to just keep the beam vertical.
 		do_climb(target)
 	else
 		return ..()
+
+/atom/proc/lava_act()
+	visible_message(SPAN_DANGER("\The [src] sizzles and melts away, consumed by the lava!"))
+	playsound(src, 'sound/effects/flare.ogg', 100, 3)
+	qdel(src)
+	. = TRUE
