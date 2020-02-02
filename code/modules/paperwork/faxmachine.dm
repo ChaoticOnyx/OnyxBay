@@ -35,7 +35,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 /obj/machinery/photocopier/faxmachine/attack_hand(mob/user as mob)
 	user.set_machine(src)
 
-	var/dat = "Fax Machine<BR>"
+	var/dat = "<meta charset=\"utf-8\">Fax Machine<BR>"
 
 	var/scan_name
 	if(scan)

@@ -349,7 +349,7 @@
 	if(!is_component_functioning("diagnosis unit"))
 		return null
 
-	var/dat = "<HEAD><TITLE>[src.name] Self-Diagnosis Report</TITLE></HEAD><BODY>\n"
+	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>[src.name] Self-Diagnosis Report</TITLE></HEAD><BODY>\n"
 	if (module)
 		var/visors = ""
 		dat += "<b>Supported upgrades for [module]:</b><br>\n"
@@ -807,7 +807,7 @@
 	if(!module)
 		pick_module()
 		return
-	var/dat = "<HEAD><TITLE>Modules</TITLE></HEAD><BODY>\n"
+	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Modules</TITLE></HEAD><BODY>\n"
 	dat += {"
 	<B>Activated Modules</B>
 	<BR>

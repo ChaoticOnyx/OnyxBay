@@ -54,7 +54,7 @@
 			return
 		if (!ishuman(user))
 			return ..(user)
-		var/t = "<B>Circuitboard Console - Camera Monitoring Computer</B><BR>"
+		var/t = "<meta charset=\"utf-8\"><B>Circuitboard Console - Camera Monitoring Computer</B><BR>"
 		t += "<A href='?src=\ref[src];close=1'>Close</A><BR>"
 		t += "<hr> Please select a camera network:<br>"
 

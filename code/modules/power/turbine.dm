@@ -157,7 +157,7 @@
 
 	user.machine = src
 
-	var/t = "<TT><B>Gas Turbine Generator</B><HR><PRE>"
+	var/t = "<meta charset=\"utf-8\"><TT><B>Gas Turbine Generator</B><HR><PRE>"
 
 	t += "Generated power : [round(lastgen)] W<BR><BR>"
 
@@ -214,7 +214,7 @@
 
 /obj/machinery/computer/turbine_computer/attack_hand(mob/user as mob)
 	user.machine = src
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 	if(src.compressor)
 		dat += {"<BR><B>Gas turbine remote control system</B><HR>
 		\nTurbine status: [ src.compressor.starter ? "<A href='?src=\ref[src];str=1'>Off</A> <B>On</B>" : "<B>Off</B> <A href='?src=\ref[src];str=1'>On</A>"]

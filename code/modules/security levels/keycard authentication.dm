@@ -58,7 +58,7 @@
 
 	user.set_machine(src)
 
-	var/dat = "<h1>Keycard Authentication Device</h1>"
+	var/dat = "<meta charset=\"utf-8\"><h1>Keycard Authentication Device</h1>"
 
 	dat += "This device is used to trigger some high security events. It requires the simultaneous swipe of two high-level ID cards."
 	dat += "<br><hr><br>"

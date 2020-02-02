@@ -6,7 +6,7 @@
 	if(!.)
 		return
 
-	var/dat = "<B>Bombing List</B>"
+	var/dat = "<meta charset=\"utf-8\"><B>Bombing List</B>"
 	for(var/l in GLOB.bombers)
 		dat += text("[l]<BR>")
 	user << browse(dat, "window=bombers")

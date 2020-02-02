@@ -27,7 +27,7 @@
 /obj/machinery/mineral/stacking_unit_console/interact(mob/user)
 	user.set_machine(src)
 
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 
 	dat += text("<h1>Stacking unit console</h1><hr><table>")
 

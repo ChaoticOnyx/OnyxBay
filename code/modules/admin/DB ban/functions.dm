@@ -80,7 +80,7 @@ datum/admins/proc/DB_ban_record(bantype, mob/banned_mob, duration = -1, reason, 
 	if(usr)
 		to_chat(usr, "<span class='notice'>Ban saved to database.</span>")
 		setter = key_name_admin(usr)
-	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[russian_to_cp1251(reason)]\" to the ban database.",1)
+	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
 	return 1
 
 datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
@@ -302,7 +302,7 @@ datum/admins/proc/DB_ban_unban_by_id(id)
 		to_chat(usr, "<span class='warning'>Failed to establish database connection</span>")
 		return
 
-	var/output = "<!doctype html><html lang=\"ru\"><head><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><title>Ban panel</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"><link href=\"css/bootstrap-ie8.css\" rel=\"stylesheet\"><script src=\"https://cdn.jsdelivr.net/g/html5shiv@3.7.3\"></script><style>label{font-size: 16px;}h3{font-size: 20px;}</style></head><div class=\"container\"><h3>Add custom ban<small class=\"text-muted\"> use only when you can't ban through any other method</small></h3>"
+	var/output = "<!doctype html><html lang=\"ru\"><head><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta charset=\"utf-8\"><title>Ban panel</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"><link href=\"css/bootstrap-ie8.css\" rel=\"stylesheet\"><script src=\"https://cdn.jsdelivr.net/g/html5shiv@3.7.3\"></script><style>label{font-size: 16px;}h3{font-size: 20px;}</style></head><div class=\"container\"><h3>Add custom ban<small class=\"text-muted\"> use only when you can't ban through any other method</small></h3>"
 
 	output += "<form method='GET' action='?src=\ref[src]'><input type='hidden' name='src' value='\ref[src]'>"
 
@@ -370,13 +370,13 @@ datum/admins/proc/DB_ban_unban_by_id(id)
 				if(playercid)
 					cidsearch  = "AND computerid = '[playercid]' "
 			else
-				if(adminckey && lentext(adminckey) >= 3)
+				if(adminckey && length(adminckey) >= 3)
 					adminsearch = "AND a_ckey LIKE '[adminckey]%' "
-				if(playerckey && lentext(playerckey) >= 3)
+				if(playerckey && length(playerckey) >= 3)
 					playersearch = "AND ckey LIKE '[playerckey]%' "
-				if(playerip && lentext(playerip) >= 3)
+				if(playerip && length(playerip) >= 3)
 					ipsearch  = "AND ip LIKE '[playerip]%' "
-				if(playercid && lentext(playercid) >= 7)
+				if(playercid && length(playercid) >= 7)
 					cidsearch  = "AND computerid LIKE '[playercid]%' "
 
 			if(dbbantype)

@@ -128,11 +128,11 @@
 // String stuff
 /proc/n_lower(string)
 	if(istext(string))
-		return rlowertext(string)
+		return lowertext(string)
 
 /proc/n_upper(string)
 	if(istext(string))
-		return ruppertext(string)
+		return uppertext(string)
 
 /*
 //Makes a list where all indicies in a string is a seperate index in the list
@@ -141,7 +141,7 @@ proc/string_tolist(string)
 	var/list/L = new /list()
 
 	var/i
-	for(i=1, i<=lentext(string), i++)
+	for(i=1, i<=length(string), i++)
 		L.Add(copytext(string, i, i))
 
 	return L
@@ -154,12 +154,12 @@ proc/string_explode(string, separator)
 		var/lasti = 1
 		var/list/L = new /list()
 
-		for(i=1, i<=lentext(string)+1, i++)
+		for(i=1, i<=length(string)+1, i++)
 			if(copytext(string, i, i+1) == separator) // We found a separator
 				L.Add(copytext(string, lasti, i))
 				lasti = i+1
 
-		L.Add(copytext(string, lasti, lentext(string)+1)) // Adds the last segment
+		L.Add(copytext(string, lasti, length(string)+1)) // Adds the last segment
 
 		return L
 
@@ -186,7 +186,7 @@ proc/n_reverse(string)
 	if(istext(string))
 		var/newstring = ""
 		var/i
-		for(i=lentext(string), i>0, i--)
+		for(i=length(string), i>0, i--)
 			if(i>=1000)
 				break
 			newstring = newstring + copytext(string, i, i+1)
@@ -250,9 +250,9 @@ proc/n_inrange(num, min=-1, max=1)
 /proc/string_replacetext(haystack,a,b)
 	if(istext(haystack)&&istext(a)&&istext(b))
 		var/i = 1
-		var/lenh=lentext(haystack)
-		var/lena=lentext(a)
-		//var/lenb=lentext(b)
+		var/lenh=length(haystack)
+		var/lena=length(a)
+		//var/lenb=length(b)
 		var/count = 0
 		var/list/dat = list()
 		while (i < lenh)

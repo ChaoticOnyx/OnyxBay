@@ -291,7 +291,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(usr.stat == 2)
 		to_chat(usr, "You can't do that because you are dead!")
 		return
-	var/HTML = "<html><head><title>AI PDA Message Log</title></head><body>"
+	var/HTML = "<html><meta charset=\"utf-8\"><head><title>AI PDA Message Log</title></head><body>"
 	for(var/index in tnote)
 		if(index["sent"])
 			HTML += addtext("<i><b>&rarr; To <a href='byond://?src=\ref[src];choice=Message;notap=1;target=",index["src"],"'>", index["owner"],"</a>:</b></i><br>", index["message"], "<br>")
@@ -678,11 +678,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 //MESSENGER/NOTE FUNCTIONS===================================
 
 		if ("Edit")
-			var/n = input_cp1251(U, "Please enter message", html_decode(name), notehtml)
+			var/n = input(U, "Please enter message", html_decode(name), notehtml)
 			if (in_range(src, U) && loc == U)
 				if (mode == 1)
 					n = sanitize(n)
-					note = rustoutf(rhtml_decode(n))
+					note = html_decode(n)
 					note = replacetext(note, "\n", "<br>")
 					notehtml = n
 			else
@@ -1012,7 +1012,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			tempmessage[P] = message
 			return
 
-		var/utf_message = rustoutf(html_decode(message))
+		var/utf_message = html_decode(message)
 		tnote.Add(list(list("sent" = 1, "owner" = "[P.owner]", "job" = "[P.ownjob]", "message" = "[utf_message]", "timestamp" = stationtime2text(), "target" = "\ref[P]")))
 		P.tnote.Add(list(list("sent" = 0, "owner" = "[owner]", "job" = "[ownjob]", "message" = "[utf_message]", "timestamp" = stationtime2text(), "target" = "\ref[src]")))
 

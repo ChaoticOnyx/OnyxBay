@@ -109,7 +109,7 @@
 	if(!(src in user) || !bot)
 		user << browse(null, "window=bot_controller")
 		return
-	var/dat = "<center><TT><b>Remote Control: [bot.name]</b></TT><br>"
+	var/dat = "<meta charset=\"utf-8\"><center><TT><b>Remote Control: [bot.name]</b></TT><br>"
 	dat += "Currently Holding: [bot.holding ? bot.holding.name : "Nothing"]<br><br>"
 	var/is_looking = (user.client.eye == bot)
 	dat += "<a href='byond://?src=\ref[src];look=[is_looking];'>[is_looking ? "Stop" : "Start"] Looking</a><br>"

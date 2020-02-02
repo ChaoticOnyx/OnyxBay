@@ -51,7 +51,7 @@
 	return src.interact(user)
 
 /obj/item/weapon/anodevice/interact(mob/user)
-	var/dat = "<b>Anomalous Materials Energy Utiliser</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Anomalous Materials Energy Utiliser</b><br>"
 	if(inserted_battery)
 		if(activated)
 			dat += "Device active.<br>"

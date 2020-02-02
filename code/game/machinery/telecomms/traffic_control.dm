@@ -74,7 +74,7 @@
 		if(stat & (BROKEN|NOPOWER))
 			return
 		user.set_machine(src)
-		var/dat = "<TITLE>Telecommunication Traffic Control</TITLE><center><b>Telecommunications Traffic Control</b></center>"
+		var/dat = "<meta charset=\"utf-8\"><TITLE>Telecommunication Traffic Control</TITLE><center><b>Telecommunications Traffic Control</b></center>"
 
 		switch(screen)
 

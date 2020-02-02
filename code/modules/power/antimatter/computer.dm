@@ -65,7 +65,7 @@
 	if(..())
 		return
 	user.machine = src
-	var/dat = "<head><title>Engine Computer</title></head><body>"
+	var/dat = "<meta charset=\"utf-8\"><head><title>Engine Computer</title></head><body>"
 	switch(src.state)
 		if(STATE_DEFAULT)
 			if (src.authenticated)
