@@ -134,6 +134,11 @@ var/hadevent    = 0
 	else
 		world.log << "ERROR: Could not initate grey-tide. Unable find prison or brig area."
 
+/proc/borrer_infection()
+	for(var/obj/effect/landmark/C in landmarks_list)
+		if(C.name == "borrerspawn")
+			new /mob/living/simple_animal/borer(C.loc)
+
 /proc/carp_migration() // -- Darem
 	for(var/obj/effect/landmark/C in landmarks_list)
 		if(C.name == "carpspawn")

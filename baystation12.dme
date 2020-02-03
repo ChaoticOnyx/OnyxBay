@@ -1447,6 +1447,7 @@
 #include "code\modules\error_handler\error_viewer.dm"
 #include "code\modules\events\apc_damage.dm"
 #include "code\modules\events\blob_outbreak.dm"
+#include "code\modules\events\borrer_infection.dm"
 #include "code\modules\events\brand_intelligence.dm"
 #include "code\modules\events\camera_damage.dm"
 #include "code\modules\events\carp_migration.dm"
