@@ -14,7 +14,6 @@
 	GLOB.sight_set_event.unregister(host, src, /mob/observer/virtual/mob/proc/sync_sight)
 	GLOB.see_invisible_set_event.unregister(host, src, /mob/observer/virtual/mob/proc/sync_sight)
 	GLOB.see_in_dark_set_event.unregister(host, src, /mob/observer/virtual/mob/proc/sync_sight)
-	QDEL_NULL(src)
 	. = ..()
 
 /mob/observer/virtual/mob/proc/sync_sight(mob/mob_host)
