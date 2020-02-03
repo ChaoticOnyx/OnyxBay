@@ -2195,6 +2195,7 @@
 #include "code\modules\projectiles\guns\energy\stun.dm"
 #include "code\modules\projectiles\guns\energy\temperature.dm"
 #include "code\modules\projectiles\guns\flame\flame.dm"
+#include "code\modules\projectiles\guns\flame\flamers.dm"
 #include "code\modules\projectiles\guns\launcher\alien.dm"
 #include "code\modules\projectiles\guns\launcher\crossbow.dm"
 #include "code\modules\projectiles\guns\launcher\grenade_launcher.dm"
