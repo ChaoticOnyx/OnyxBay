@@ -8,7 +8,7 @@
 	throw_speed = 4
 	throw_range = 20
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	slot_flags = SLOT_BELT|SLOT_MASK
+	slot_flags = SLOT_BELT
 	var/active = 0
 	var/det_time = 50
 	var/fail_det_time = 5 // If you are clumsy and fail, you get this time.

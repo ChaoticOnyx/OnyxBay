@@ -101,14 +101,7 @@
 
 	//mask
 	if(wear_mask && !skipmask)
-		var/descriptor = "on [T.his] face"
-		if(istype(wear_mask, /obj/item/weapon/grenade) && check_has_mouth())
-			descriptor = "in [T.his] mouth"
-
-		if(wear_mask.blood_DNA)
-			msg += "<span class='warning'>[T.He] [T.has] \icon[wear_mask] [wear_mask.gender==PLURAL?"some":"a"] [(wear_mask.blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [wear_mask.name] [descriptor]!</span>\n"
-		else
-			msg += "[T.He] [T.has] \icon[wear_mask] \a [wear_mask] [descriptor].\n"
+		msg += "[T.He] [T.has] [wear_mask.get_examine_line()] on [T.his] face.\n"
 
 	//eyes
 	if(glasses && !skipeyes)

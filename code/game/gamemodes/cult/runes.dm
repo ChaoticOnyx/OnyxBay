@@ -138,7 +138,7 @@
 	if(!iscultist(user))
 		to_chat(user, "You can't mouth the arcane scratchings without fumbling over them.")
 		return
-	if(user.is_muzzled() || user.silent)
+	if(istype(user.wear_mask, /obj/item/clothing/mask/muzzle) || user.silent)
 		to_chat(user, "You are unable to speak the words of the rune.")
 		return
 	if(GLOB.cult.powerless)
@@ -931,7 +931,7 @@
 /obj/effect/rune/imbue/emp
 	cultname = "destroy technology imbue"
 	papertype = /obj/item/weapon/paper/talisman/emp
-
+	
 /obj/effect/rune/imbue/stun
 	cultname = "consciousness freeze imbue"
 	papertype = /obj/item/weapon/paper/talisman/stun
