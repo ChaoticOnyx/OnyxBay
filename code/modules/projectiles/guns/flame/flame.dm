@@ -11,7 +11,7 @@
 	anchored = TRUE
 	mouse_opacity = 0
 	icon = 'icons/effects/fire.dmi'
-	icon_state = "3"
+	icon_state = "real_fire"
 	var/ligth_color = "#ed9200"
 	layer = BELOW_OBJ_LAYER
 	var/firelevel = 12 //Tracks how much "fire" there is. Basically the timer of how long the fire burns

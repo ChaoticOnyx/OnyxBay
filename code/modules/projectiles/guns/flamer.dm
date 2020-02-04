@@ -1,8 +1,9 @@
 //FLAMETHROWER
 
 /obj/item/weapon/gun/flamer
-	name = "\improper flamethrower"
-	desc = "You are a firestarter!"
+	name = "\improper unbranded flamerthrower"
+	desc = "Unbranded agricultural flamethrower. Used to burn weeds and pests or, you know, humans?"
+	icon = 'icons/obj/flamer.dmi'
 	icon_state = "flamer"
 	item_state = "flamer"
 	slot_flags = SLOT_BACK
@@ -59,11 +60,6 @@
 		overlays += "+preassure_tank"
 	if(gauge)
 		overlays += "+gauge"
-	if(lit)
-		overlays += "+lit"
-		item_state = "flamethrower_1"
-	else
-		item_state = "flamethrower_0"
 	return
 
 /obj/item/weapon/gun/flamer/proc/remove_fuel_tank(mob/user)
@@ -165,9 +161,7 @@
 		return
 	lit = !lit
 
-	var/image/I = image('icons/obj/gun.dmi', src, "+lit")
-	I.pixel_x += 3
-
+	var/image/I = image('icons/obj/flamer.dmi', src, "+lit")
 	if (lit)
 		overlays += I
 	else
