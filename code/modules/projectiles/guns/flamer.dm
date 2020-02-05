@@ -6,6 +6,7 @@
 	icon = 'icons/obj/flamer.dmi'
 	icon_state = "flamer"
 	item_state = "flamer"
+	wielded_item_state = "flamer-wielded"
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_HUGE
 	origin_tech = list(TECH_COMBAT = 2)
@@ -36,9 +37,12 @@
 	else
 		to_chat(user, SPAN_WARN("Igniter not installed in [src]!"))
 
+	if(preassure_tank)
+		to_chat(user, "The preassure tank wrenched into the [src].")
+
 	if(gauge)
 		if(fuel_tank)
-			to_chat(user, "The fuel tank contains [get_fuel()]/[fuel_tank.max_fuel] units of fuel.")
+			to_chat(user, "The fuel tank contains [round(get_fuel())]/[fuel_tank.max_fuel] units of fuel.")
 		else
 			to_chat(user, SPAN_WARN("There's no fuel tank in [src]!"))
 
@@ -51,6 +55,7 @@
 		to_chat(user, SPAN_WARN("Gauge not installed, you have no idea how much fuel left in [src]!"))
 
 /obj/item/weapon/gun/flamer/update_icon()
+	. = ..()
 	overlays.Cut()
 	if(igniter)
 		overlays += "+igniter"
@@ -68,12 +73,19 @@
 		return
 	lit = 0
 	to_chat(user, "You twist the valve and pop the fuel tank out of [src].")
+	playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 	user.put_in_hands(fuel_tank)
 	fuel_tank = null
 	update_icon()
 
 /obj/item/weapon/gun/flamer/ui_action_click()
 	remove_fuel_tank(usr)
+
+/obj/item/weapon/gun/flamer/attack_hand(mob/user)
+	if(user.get_inactive_hand() == src)
+		remove_fuel_tank(user)
+		return
+	. = ..()
 
 /obj/item/weapon/gun/flamer/attackby(obj/item/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
@@ -85,7 +97,8 @@
 			return
 		user.drop_from_inventory(W, src)
 		fuel_tank = W
-		user.visible_message("[user] wrench \a [W] into \the [src].", "You wrench \a [W] into \the [src].")
+		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+		user.visible_message("[user] slot \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
 		return
 
@@ -95,6 +108,7 @@
 			return
 		var/turf/T = get_turf(src)
 		to_chat(user, "You twist the valve and pop the preassure tank out of [src].")
+		playsound(src.loc, 'sound/effects/refill.ogg', 25, 1, 3)
 		preassure_tank.loc = T
 		preassure_tank = null
 		update_icon()
@@ -105,6 +119,7 @@
 			return
 		user.drop_from_inventory(W, src)
 		igniter = W
+		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		attached_electronics += new /obj/item/device/assembly/igniter
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
@@ -116,6 +131,7 @@
 			return
 		user.drop_from_inventory(W, src)
 		gauge = W
+		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		attached_electronics += new /obj/item/device/analyzer
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
@@ -127,7 +143,8 @@
 			return
 		user.drop_from_inventory(W, src)
 		preassure_tank = W
-		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
+		playsound(src.loc, 'sound/effects/refill.ogg', 25, 1, 3)
+		user.visible_message("[user] wrench \a [W] into \the [src].", "You wrench \a [W] into \the [src].")
 		update_icon()
 		return
 
@@ -139,12 +156,15 @@
 		if(istype(electonics_to_remove, /obj/item/device/assembly/igniter))
 			igniter.loc = T
 			igniter = null
+			playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 			attached_electronics -= electonics_to_remove
 
 		if(istype(electonics_to_remove, /obj/item/device/analyzer))
 			gauge.loc = T
 			gauge = null
+			playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 			attached_electronics -= electonics_to_remove
+		update_icon()
 		return
 
 
@@ -177,6 +197,9 @@
 	if(!targloc || !curloc)
 		return //Something has gone wrong...
 
+	if(!src.is_held_twohanded(user))
+		to_chat(user, SPAN_WARN("You cant fire on target with just one hand"))
+		return
 	if(is_flamer_can_fire(user))
 		unleash_flame(target, user)
 		log_attack("[user] start spreadding fire with \ref[src].")
@@ -188,19 +211,23 @@
 		return
 	if(!fuel_tank)
 		to_chat(user, SPAN_WARN("[src] isn't has a fuel tank"))
+		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	if(!preassure_tank)
 		to_chat(user, SPAN_WARN("[src] isn't has a preassure tank"))
+		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 
 	if(get_fuel() < fuel_for_shot)
 		to_chat(user, SPAN_WARN("Not enough fuel!"))
+		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 
 	if(preassure_tank.air_contents.return_pressure() > 200)
 		preassure_tank.air_contents.remove_ratio(0.02*(pressure_for_shot/100))
 	else
 		to_chat(user, SPAN_WARN("Not enough pressure!"))
+		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	return TRUE
 
