@@ -264,7 +264,7 @@
 	desc = "A NanoTrasen security hardsuit designed for prolonged EVA in dangerous environments."
 	// TODO[V] Make icon_state resembling new naming
 	icon_state = "hazard_rig"
-	armor = list(melee = 70, bullet = 55, laser = 55, energy = 15, bomb = 80, bio = 100, rad = 30)
+	armor = list(melee = 60, bullet = 50, laser = 45, energy = 15, bomb = 70, bio = 100, rad = 30)
 	online_slowdown = 1
 	offline_slowdown = 3
 	offline_vision_restriction = TINT_BLIND
@@ -298,6 +298,9 @@
 	initial_modules = list(
 		/obj/item/rig_module/vision/sechud,
 		/obj/item/rig_module/maneuvering_jets,
+		/obj/item/rig_module/vision/nvg,
 		/obj/item/rig_module/mounted/taser,
+		/obj/item/rig_module/chem_dispenser/injector,
+		/obj/item/rig_module/grenade_launcher/flashbang,
 		/obj/item/rig_module/cooling_unit
 		)
