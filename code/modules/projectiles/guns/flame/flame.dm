@@ -93,16 +93,21 @@
 
 // override this proc to give different idling-on-fire effects
 /mob/living/flamer_fire_act(burnlevel, firelevel, turf/T)
-	adjust_fire_stacks(burnlevel*0.5) //If i stand in the fire i deserve all of this. Also Napalm stacks quickly.
+
+	adjust_fire_stacks(burnlevel*0.4) //If i stand in the fire i deserve all of this. Also Napalm stacks quickly.
 	if(prob(firelevel))
 		IgniteMob()
 	to_chat(src, SPAN_WARN("You are burned!"))
 	return ..()
 
+/mob/living/simple_animal/flamer_fire_act(burnlevel, firelevel, turf/T)
+	adjustFireLoss(rand(0, burnlevel*2))
+	return
 
-/mob/living/carbon/human/flamer_fire_act(burnlevel, firelevel)
+/mob/living/carbon/human/flamer_fire_act(burnlevel, firelevel, turf/T)
+	. = ..()
 	if((istype(wear_suit, /obj/item/clothing/suit/fire) && istype(head, /obj/item/clothing/head/hardhat)) || (istype(wear_suit, /obj/item/clothing/suit/space/void/atmos) && istype(head, /obj/item/clothing/head/helmet/space/void/atmos))  || (istype(wear_suit, /obj/item/clothing/suit/space/rig) && istype(head, /obj/item/clothing/head/helmet/space/rig/ce))|| (istype(wear_suit, /obj/item/clothing/suit/space/rig/ert) && istype(head, /obj/item/clothing/head/helmet/space/rig/ert)))
 		to_chat(src, SPAN_WARN("Your suit protects you from most of the flames."))
-		adjustFireLoss(rand(0 ,burnlevel*0.45)) //Does small burn damage to a person wearing one of the suits.
+		adjustFireLoss(rand(0 ,burnlevel*0.25)) //Does small burn damage to a person wearing one of the suits.
 		return
 	return ..()
