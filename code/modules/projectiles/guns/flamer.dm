@@ -269,9 +269,9 @@
 		if(blocked)
 			break
 		distance++
-
 		lited(distance/3)
 		prev_T = T
+		sleep(1)
 
 //Returns the amount of fuel in the flamer
 /obj/item/weapon/gun/flamer/proc/get_fuel()
