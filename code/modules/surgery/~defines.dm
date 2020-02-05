@@ -1,2 +1,1 @@
 #undef SURGERY_FAILURE
-#undef SURGERY_BLOCKED
