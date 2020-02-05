@@ -14,8 +14,8 @@
 	icon_state = "real_fire"
 	var/ligth_color = "#ed9200"
 	layer = BELOW_OBJ_LAYER
-	var/firelevel = 12 //Tracks how much "fire" there is. Basically the timer of how long the fire burns
-	var/burnlevel = 10 //Tracks how HOT the fire is. This is basically the heat level of the fire and determines the temperature.
+	var/firelevel = 24 //Tracks how much "fire" there is. Basically the timer of how long the fire burns
+	var/burnlevel = 6 //Tracks how HOT the fire is. This is basically the heat level of the fire and determines the temperature.
 
 /obj/flamer_fire/Initialize(mapload, fire_lvl, burn_lvl, fire_stacks = 0, fire_damage = 0)
 	. = ..()
@@ -93,8 +93,16 @@
 
 // override this proc to give different idling-on-fire effects
 /mob/living/flamer_fire_act(burnlevel, firelevel, turf/T)
-	adjust_fire_stacks(burnlevel) //If i stand in the fire i deserve all of this. Also Napalm stacks quickly.
-	T.hotspot_expose((T20C*2) + 380, 500)
+	adjust_fire_stacks(burnlevel*0.5) //If i stand in the fire i deserve all of this. Also Napalm stacks quickly.
 	if(prob(firelevel))
 		IgniteMob()
-	to_chat(src, "<span class='warning'>You are burned!</span>")
+	to_chat(src, SPAN_WARN("You are burned!"))
+	return ..()
+
+
+/mob/living/carbon/human/flamer_fire_act(burnlevel, firelevel)
+	if((istype(wear_suit, /obj/item/clothing/suit/fire) && istype(head, /obj/item/clothing/head/hardhat)) || (istype(wear_suit, /obj/item/clothing/suit/space/void/atmos) && istype(head, /obj/item/clothing/head/helmet/space/void/atmos))  || (istype(wear_suit, /obj/item/clothing/suit/space/rig) && istype(head, /obj/item/clothing/head/helmet/space/rig/ce))|| (istype(wear_suit, /obj/item/clothing/suit/space/rig/ert) && istype(head, /obj/item/clothing/head/helmet/space/rig/ert)))
+		to_chat(src, SPAN_WARN("Your suit protects you from most of the flames."))
+		adjustFireLoss(rand(0 ,burnlevel*0.45)) //Does small burn damage to a person wearing one of the suits.
+		return
+	return ..()

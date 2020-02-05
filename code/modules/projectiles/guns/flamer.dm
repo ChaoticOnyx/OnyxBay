@@ -66,7 +66,7 @@
 	if(!fuel_tank)
 		to_chat(user, "There's no fuel tank in [src].")
 		return
-
+	lit = 0
 	to_chat(user, "You twist the valve and pop the fuel tank out of [src].")
 	user.put_in_hands(fuel_tank)
 	fuel_tank = null
@@ -85,7 +85,7 @@
 			return
 		user.drop_from_inventory(W, src)
 		fuel_tank = W
-		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
+		user.visible_message("[user] wrench \a [W] into \the [src].", "You wrench \a [W] into \the [src].")
 		update_icon()
 		return
 
@@ -162,7 +162,7 @@
 	lit = !lit
 
 	var/image/I = image('icons/obj/flamer.dmi', src, "+lit")
-	if (lit)
+	if (lit && fuel_tank)
 		overlays += I
 	else
 		overlays -= I
@@ -230,7 +230,7 @@
 	var/burntime
 
 	var/list/turf/turfs = getline(user,target)
-	playsound(user, fire_sound, 75, 1)
+	playsound(user, fire_sound, 50, 1)
 	var/distance = 1
 	var/turf/prev_T
 
@@ -291,23 +291,23 @@
 		if(M.stat == DEAD)
 			continue
 
-		M.adjust_fire_stacks(rand(5,burn*2))
+		M.adjust_fire_stacks(rand(2, burn))
 		M.IgniteMob()
 
-/turf/proc/ignite(fire_lvl, burn_lvl, f_color, fire_stacks = 0, fire_damage = 0)
+/turf/proc/ignite(fire_lvl, burn_lvl, fire_stacks = 0, fire_damage = 0)
 	//extinguish any flame present
 	var/obj/flamer_fire/F = locate(/obj/flamer_fire) in src
 	if(F)
 		qdel(F)
 
-	new /obj/flamer_fire(src, fire_lvl, burn_lvl, f_color, fire_stacks, fire_damage)
+	new /obj/flamer_fire(src, fire_lvl, burn_lvl, fire_stacks, fire_damage)
 
 /obj/item/weapon/gun/flamer/proc/triangular_flame(atom/target, mob/living/user, burntime, burnlevel)
 	set waitfor = 0
 
 	var/unleash_dir = user.dir //don't want the player to turn around mid-unleash to bend the fire.
 	var/list/turf/turfs = getline(user,target)
-	playsound(user, fire_sound, 75, 1)
+	playsound(user, fire_sound, 50, 1)
 	var/distance = 1
 	var/turf/prev_T
 
