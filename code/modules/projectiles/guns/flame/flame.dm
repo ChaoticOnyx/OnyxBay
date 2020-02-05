@@ -43,7 +43,10 @@
 
 // override this proc to give different walking-over-fire effects
 /mob/living/proc/flamer_fire_crossed(burnlevel, firelevel, fire_mod = 1)
-	adjust_fire_stacks(burnlevel) //Make it possible to light them on fire later.
+	var/burn_damage = 0.6*burnlevel
+	if(burn_damage > 4)
+		burn_damage = 4
+	adjust_fire_stacks(rand(1, burn_damage)) //Make it possible to light them on fire later.
 	if (prob(firelevel + 2*fire_stacks)) //the more soaked in fire you are, the likelier to be ignited
 		IgniteMob()
 	to_chat(src, "<span class='danger'>You are burned!</span>")
@@ -93,15 +96,20 @@
 
 // override this proc to give different idling-on-fire effects
 /mob/living/flamer_fire_act(burnlevel, firelevel, turf/T)
-
-	adjust_fire_stacks(burnlevel*0.4) //If i stand in the fire i deserve all of this. Also Napalm stacks quickly.
+	var/burn_damage = 0.2*burnlevel
+	if(burn_damage > 4)
+		burn_damage = 4
+	adjust_fire_stacks(burn_damage) //If i stand in the fire i deserve all of this. Also Napalm stacks quickly.
 	if(prob(firelevel))
 		IgniteMob()
 	to_chat(src, SPAN_WARN("You are burned!"))
 	return ..()
 
 /mob/living/simple_animal/flamer_fire_act(burnlevel, firelevel, turf/T)
-	adjustFireLoss(rand(0, burnlevel*2))
+	var/burn_damage = burnlevel
+	if(burn_damage > 15)
+		burn_damage = 15
+	adjustFireLoss(rand(5, burn_damage*1.5))
 	return
 
 /mob/living/carbon/human/flamer_fire_act(burnlevel, firelevel, turf/T)
