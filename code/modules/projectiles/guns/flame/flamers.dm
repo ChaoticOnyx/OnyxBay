@@ -9,6 +9,7 @@
 	preassure_tank = new /obj/item/weapon/tank/oxygen(src)
 	igniter = new /obj/item/device/assembly/igniter(src)
 	gauge = new /obj/item/device/analyzer(src)
+	attached_electronics = list(igniter, gauge)
 	update_icon()
 	return
 
@@ -26,5 +27,6 @@
 	preassure_tank = new /obj/item/weapon/tank/oxygen(src)
 	igniter = new /obj/item/device/assembly/igniter(src)
 	gauge = new /obj/item/device/analyzer(src)
+	attached_electronics = list(igniter, gauge)
 	update_icon()
 	return
