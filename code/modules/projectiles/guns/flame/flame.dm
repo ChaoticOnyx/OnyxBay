@@ -99,11 +99,15 @@
 	var/burn_damage = 0.2*burnlevel
 	if(burn_damage > 4)
 		burn_damage = 4
+	addtimer(CALLBACK(src, .proc/adjust_fire_stacks, burn_damage, firelevel), 1)
+	return ..()
+
+/mob/living/proc/adjust_flame_damage(burn_damage, firelevel)
 	adjust_fire_stacks(burn_damage) //If i stand in the fire i deserve all of this. Also Napalm stacks quickly.
 	if(prob(firelevel))
 		IgniteMob()
 	to_chat(src, SPAN_WARN("You are burned!"))
-	return ..()
+
 
 /mob/living/simple_animal/flamer_fire_act(burnlevel, firelevel, turf/T)
 	var/burn_damage = burnlevel

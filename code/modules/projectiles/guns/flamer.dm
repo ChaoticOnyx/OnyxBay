@@ -91,6 +91,8 @@
 	if(user.stat || user.restrained() || user.lying)
 		return
 
+	. = ..()
+
 	if(istype(W, /obj/item/weapon/welder_tank))
 		if(fuel_tank)
 			to_chat(user, "Remove the current fuel tank first.")
@@ -352,39 +354,40 @@
 			break
 		flame_turf(T,user, burntime, burnlevel)
 		prev_T = T
-		addtimer(CALLBACK(src, .proc/triagular_list, unleash_dir, prev_T, T, user, distance, burntime, burnlevel), 1)
+		sleep(1)
 
-/obj/item/weapon/gun/flamer/proc/triagular_list(unleash_dir, prev_T, T, user, distance, burntime, burnlevel)
-	var/list/turf/right = list()
-	var/list/turf/left = list()
-	var/turf/right_turf = T
-	var/turf/left_turf = T
-	var/right_dir = turn(unleash_dir, 90)
-	var/left_dir = turn(unleash_dir, -90)
-	for (var/i = 0, i < distance - 1, i++)
-		right_turf = get_step(right_turf, right_dir)
-		right += right_turf
-		left_turf = get_step(left_turf, left_dir)
-		left += left_turf
+		var/list/turf/right = list()
+		var/list/turf/left = list()
+		var/turf/right_turf = T
+		var/turf/left_turf = T
+		var/right_dir = turn(unleash_dir, 90)
+		var/left_dir = turn(unleash_dir, -90)
+		for (var/i = 0, i < distance - 1, i++)
+			right_turf = get_step(right_turf, right_dir)
+			right += right_turf
+			left_turf = get_step(left_turf, left_dir)
+			left += left_turf
 
-	var/turf/prev_R = T
-	for (var/turf/R in right)
-		if (R.density)
-			break
-		if(prev_R && LinkBlocked(prev_R, R))
-			break
+		var/turf/prev_R = T
+		for (var/turf/R in right)
+			if (R.density)
+				break
+			if(prev_R && LinkBlocked(prev_R, R))
+				break
 
-		flame_turf(R, user, burntime, burnlevel)
-		prev_R = R
+			flame_turf(R, user, burntime, burnlevel)
+			prev_R = R
+			sleep(1)
 
-	var/turf/prev_L = T
-	for (var/turf/L in left)
-		if (L.density)
-			break
-		if(prev_L && LinkBlocked(prev_L, L))
-			break
+		var/turf/prev_L = T
+		for (var/turf/L in left)
+			if (L.density)
+				break
+			if(prev_L && LinkBlocked(prev_L, L))
+				break
 
-		flame_turf(L, user, burntime, burnlevel)
-		prev_L = L
+			flame_turf(L, user, burntime, burnlevel)
+			prev_L = L
+			sleep(1)
 
 	distance++
