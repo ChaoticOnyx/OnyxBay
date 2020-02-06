@@ -38,6 +38,12 @@
 /decl/ai_holo/chevrons
 	icon_state = "Chevrons"
 
+/decl/ai_holo/dronum
+	icon_state = "Dronum"
+
+/decl/ai_holo/dronus
+	icon_state = "Dronus"
+
 /decl/ai_holo/question
 	icon_state = "Question"
 
@@ -51,6 +57,11 @@
 /decl/ai_holo/malfcursor
 	requires_malf = TRUE
 	icon_state = "malf-cursor"
+
+/decl/ai_holo/malfdronus
+	requires_malf = TRUE
+	icon_colorize = TRUE
+	icon_state = "malf-Dronus"
 
 /decl/ai_holo/missingno
 	requires_malf = TRUE
