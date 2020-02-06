@@ -15,8 +15,8 @@
 
 //for syndicate event flamer
 /obj/item/weapon/gun/flamer/NT/syndicate
-	name = "\improper syndicate flamethrower. Used to burn NT personal."
-	desc = "Syndicate style flamer"
+	name = "\improper syndicate flamethrower"
+	desc = "Syndicate style flamer. Used to burn NT personal."
 
 
 //non-branded full flamer, can be used for shitspawn
