@@ -181,3 +181,11 @@
 	name = "HAL"
 	alive_icon = "ai-hal"
 	dead_icon = "ai-hal_dead"
+
+/datum/ai_icon/citadel
+	name = "Citadel"
+	alive_icon = "ai-citadel"
+
+/datum/ai_icon/fabulous
+	name = "Fabulous"
+	alive_icon = "ai-fabulous"
