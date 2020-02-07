@@ -135,14 +135,14 @@
 	atom_flags |= ATOM_FLAG_NO_REACT|ATOM_FLAG_OPEN_CONTAINER
 	create_reagents(5 * max_storage_space)//so people can inject cigarettes without opening a packet, now with being able to inject the whole one
 
-/obj/item/weapon/storage/fancy/cigarettes/remove_from_storage(obj/item/W as obj, atom/new_location)
+/obj/item/weapon/storage/fancy/cigarettes/remove_from_storage(obj/item/W, atom/new_location)
 	// Don't try to transfer reagents to lighters
 	if(istype(W, /obj/item/clothing/mask/smokable/cigarette))
 		var/obj/item/clothing/mask/smokable/cigarette/C = W
 		reagents.trans_to_obj(C, (reagents.total_volume/contents.len))
 	..()
 
-/obj/item/weapon/storage/fancy/cigarettes/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/weapon/storage/fancy/cigarettes/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(!istype(M, /mob))
 		return
 
@@ -275,7 +275,7 @@
 	atom_flags |= ATOM_FLAG_NO_REACT
 	create_reagents(10 * storage_slots)
 
-/obj/item/weapon/storage/fancy/cigar/remove_from_storage(obj/item/W as obj, atom/new_location)
+/obj/item/weapon/storage/fancy/cigar/remove_from_storage(obj/item/W, atom/new_location)
 	var/obj/item/clothing/mask/smokable/cigarette/cigar/C = W
 	if(!istype(C)) return
 	reagents.trans_to_obj(C, (reagents.total_volume/contents.len))
@@ -313,9 +313,30 @@
 	req_access = list(access_virology)
 	can_hold = list(/obj/item/weapon/reagent_containers/glass/beaker/vial)
 
-/obj/item/weapon/storage/lockbox/vials/New()
-	..()
+/obj/item/weapon/storage/lockbox/vials/Initialize()
+	. = ..()
 	update_icon()
+
+
+/obj/item/weapon/storage/lockbox/vials/attack_hand(mob/user)
+	if ((src.loc == user) && (src.locked == 1))
+		to_chat(usr, SPAN_WARN("[src] is locked and cannot be opened!"))
+	else if ((src.loc == user) && (!src.locked))
+		src.open(usr)
+	else
+		..()
+		for(var/mob/M in range(1))
+			if (M.s_active == src)
+				src.close(M)
+	src.add_fingerprint(user)
+	return
+
+/obj/item/weapon/storage/lockbox/vials/MouseDrop(over_object, src_location, over_location)
+	if (locked)
+		src.add_fingerprint(usr)
+		to_chat(usr, SPAN_WARN("[src] is locked and cannot be opened!"))
+		return
+	..()
 
 /obj/item/weapon/storage/lockbox/vials/update_icon()
 	var/total_contents = count_by_type(contents, /obj/item/weapon/reagent_containers/glass/beaker/vial)
@@ -329,6 +350,6 @@
 		overlays += image(icon, src, "ledb")
 	return
 
-/obj/item/weapon/storage/lockbox/vials/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/storage/lockbox/vials/attackby(obj/item/weapon/W, mob/user)
 	. = ..()
 	update_icon()
