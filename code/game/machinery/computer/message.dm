@@ -14,13 +14,13 @@
 	//Messages - Saves me time if I want to change something.
 	var/noserver = "<span class='alert'>ALERT: No server detected.</span>"
 	var/incorrectkey = "<span class='warning'>ALERT: Incorrect decryption key!</span>"
-	var/defaultmsg = "<span class='notice'>Welcome. Please select an option.</span>"
+	var/defaultmsg = "Welcome. Please select an option."
 	var/rebootmsg = "<span class='warning'>%$&(£: Critical %$$@ Error // !RestArting! <lOadiNg backUp iNput ouTput> - ?pLeaSe wAit!</span>"
 	//Computer properties
 	var/screen = 0 		// 0 = Main menu, 1 = Message Logs, 2 = Hacked screen, 3 = Custom Message
 	var/hacking = 0		// Is it being hacked into by the AI/Cyborg
 	var/emag = 0		// When it is emagged.
-	var/message = "<span class='notice'>System bootup complete. Please select an option.</span>"	// The message that shows on the main menu.
+	var/message = "System bootup complete. Please select an option."	// The message that shows on the main menu.
 	var/auth = 0 // Are they authenticated?
 	var/optioncount = 8
 	// Custom Message Properties
@@ -54,7 +54,7 @@
 			spark_system.set_up(5, 0, src)
 			src.spark_system.start()
 			var/obj/item/weapon/paper/monitorkey/MK = new /obj/item/weapon/paper/monitorkey
-			MK.dropInto(loc)
+			MK.forceMove(src.loc)
 			// Will help make emagging the console not so easy to get away with.
 			MK.info += "<br><br><font color='red'>£%@%(*$%&(£&?*(%&£/{}</font>"
 			spawn(100*length(src.linkedServer.decryptkey)) UnmagConsole()
@@ -62,7 +62,7 @@
 			update_icon()
 			return 1
 		else
-			to_chat(user, "<span class='notice'>A no server error appears on the screen.</span>")
+			to_chat(user, SPAN_NOTE("A no server error appears on the screen."))
 
 /obj/machinery/computer/message_monitor/update_icon()
 	if(emag || hacking)
@@ -72,13 +72,22 @@
 	..()
 
 /obj/machinery/computer/message_monitor/Initialize()
+	. = ..()
+	if(. != INITIALIZE_HINT_QDEL)
+		return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/computer/message_monitor/LateInitialize()
 	//Is the server isn't linked to a server, and there's a server available, default it to the first one in the list.
 	if(!linkedServer)
 		if(message_servers && message_servers.len > 0)
 			linkedServer = message_servers[1]
+
+/obj/machinery/computer/message_monitor/Destroy()
+	linkedServer = null
+	customrecepient = null
 	return ..()
 
-/obj/machinery/computer/message_monitor/attack_hand(mob/living/user as mob)
+/obj/machinery/computer/message_monitor/attack_hand(mob/living/user)
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(!istype(user))
@@ -88,7 +97,7 @@
 		message = rebootmsg
 	var/dat = "<head><title>Message Monitor Console</title></head><body>"
 	dat += "<center><h2>Message Monitor Console</h2></center><hr>"
-	dat += "<center><h4><span class='info'>[message]</span></h4></center>"
+	dat += "<center><h4>[SPAN_NOTE(message)]</h4></center>"
 
 	if(auth)
 		dat += "<h4><dd><A href='?src=\ref[src];auth=1'>&#09;<font color='green'>\[Authenticated\]</font></a>&#09;/"
@@ -122,18 +131,19 @@
 					dat += "<dd><A href='?src=\ref[src];spam=1'>&#09;[++i]. Modify Spam Filter</a><br></dd>"
 			else
 				for(var/n = ++i; n <= optioncount; n++)
-					dat += "<dd><span class='info'>&#09;[n]. ---------------</span><br></dd>"
-			if((istype(user, /mob/living/silicon/ai) || istype(user, /mob/living/silicon/robot)) && (user.mind.special_role && user.mind.original == user))
+					dat += "<dd><font color='blue'>&#09;[n]. ---------------</font><br></dd>"
+			if((isAI(user) || isrobot(user)) && (user.mind.special_role && user.mind.original == user))
 				//Malf/Traitor AIs can bruteforce into the system to gain the Key.
 				dat += "<dd><A href='?src=\ref[src];hack=1'><i><font color='Red'>*&@#. Bruteforce Key</font></i></font></a><br></dd>"
 			else
 				dat += "<br>"
 
 			//Bottom message
+			dat += "<br><hr><dd>"
 			if(!auth)
-				dat += "<br><hr><dd><span class='notice'>Please authenticate with the server in order to show additional options.</span>"
+				dat += SPAN_NOTE("Please authenticate with the server in order to show additional options.")
 			else
-				dat += "<br><hr><dd><span class='warning'>Reg, #514 forbids sending messages to a Head of Staff containing Erotic Rendering Properties.</span>"
+				dat += "<span class='warning'>Reg, #514 forbids sending messages to a Head of Staff containing Erotic Rendering Properties.</span>"
 
 		//Message Logs
 		if(1)
@@ -153,7 +163,7 @@
 			dat += "</table>"
 		//Hacking screen.
 		if(2)
-			if(istype(user, /mob/living/silicon/ai) || istype(user, /mob/living/silicon/robot))
+			if(isAI(user) || isrobot(user))
 				dat += "Brute-forcing for server key.<br> It will take 20 seconds for every character that the password has."
 				dat += "In the meantime, this console can reveal your true intentions if you let someone access it. Make sure no humans enter the room during that time."
 			else
@@ -210,7 +220,7 @@
 			<td width='20%'>[customjob]</td>
 			<td width='20%'>[customrecepient ? customrecepient.owner : "NONE"]</td>
 			<td width='300px'>[custommessage]</td></tr>"}
-			dat += "</table><br><center><A href='?src=\ref[src];select=Send'>Send</a></center>"
+			dat += "</table><br><center><A href='?src=\ref[src];select=Send'>Send</a>"
 
 		//Request Console Logs
 		if(4)
@@ -253,7 +263,7 @@
 
 
 	dat += "</body>"
-	message = defaultmsg
+	message = SPAN_NOTE(defaultmsg)
 	user << browse(dat, "window=message;size=700x700")
 	onclose(user, "message")
 	return
@@ -282,220 +292,222 @@
 	customjob 		= "Admin"
 
 /obj/machinery/computer/message_monitor/Topic(href, href_list)
-	if((. = ..()))
+	if(..())
+		return 1
+	if(stat & (NOPOWER|BROKEN))
 		return
-
-	//Authenticate
-	if (href_list["auth"])
-		if(auth)
-			auth = 0
-			screen = 0
-		else
-			var/dkey = trim(input(usr, "Please enter the decryption key.") as text|null)
-			if(dkey && dkey != "")
-				if(src.linkedServer.decryptkey == dkey)
-					auth = 1
-				else
-					message = incorrectkey
-
-	//Turn the server on/off.
-	if (href_list["active"])
-		if(auth) linkedServer.active = !linkedServer.active
-	//Find a server
-	if (href_list["find"])
-		if(message_servers && message_servers.len > 1)
-			src.linkedServer = input(usr,"Please select a server.", "Select a server.", null) as null|anything in message_servers
-			message = "<span class='alert'>NOTICE: Server selected.</span>"
-		else if(message_servers && message_servers.len > 0)
-			linkedServer = message_servers[1]
-			message =  "<span class='notice'>NOTICE: Only Single Server Detected - Server selected.</span>"
-		else
-			message = noserver
-
-	//View the logs - KEY REQUIRED
-	if (href_list["view"])
-		if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
-			message = noserver
-		else
+	if(!isliving(usr))
+		return
+	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (issilicon(usr)))
+		//Authenticate
+		if (href_list["auth"])
 			if(auth)
-				src.screen = 1
-
-	//Clears the logs - KEY REQUIRED
-	if (href_list["clear"])
-		if(!linkedServer || (src.linkedServer.stat & (NOPOWER|BROKEN)))
-			message = noserver
-		else
-			if(auth)
-				src.linkedServer.pda_msgs = list()
-				message = "<span class='notice'>NOTICE: Logs cleared.</span>"
-	//Clears the request console logs - KEY REQUIRED
-	if (href_list["clearr"])
-		if(!linkedServer || (src.linkedServer.stat & (NOPOWER|BROKEN)))
-			message = noserver
-		else
-			if(auth)
-				src.linkedServer.rc_msgs = list()
-				message = "<span class='notice'>NOTICE: Logs cleared.</span>"
-	//Change the password - KEY REQUIRED
-	if (href_list["pass"])
-		if(!linkedServer || (src.linkedServer.stat & (NOPOWER|BROKEN)))
-			message = noserver
-		else
-			if(auth)
+				auth = 0
+				screen = 0
+			else
 				var/dkey = trim(input(usr, "Please enter the decryption key.") as text|null)
 				if(dkey && dkey != "")
 					if(src.linkedServer.decryptkey == dkey)
-						var/newkey = trim(input(usr,"Please enter the new key (3 - 16 characters max):"))
-						if(length(newkey) <= 3)
-							message = "<span class='notice'>NOTICE: Decryption key too short!</span>"
-						else if(length(newkey) > 16)
-							message = "<span class='notice'>NOTICE: Decryption key too long!</span>"
-						else if(newkey && newkey != "")
-							src.linkedServer.decryptkey = newkey
-						message = "<span class='notice'>NOTICE: Decryption key set.</span>"
+						auth = 1
 					else
 						message = incorrectkey
 
-	//Hack the Console to get the password
-	if (href_list["hack"])
-		if((istype(usr, /mob/living/silicon/ai) || istype(usr, /mob/living/silicon/robot)) && (usr.mind.special_role && usr.mind.original == usr))
-			src.hacking = 1
-			src.screen = 2
-			update_icon()
-			//Time it takes to bruteforce is dependant on the password length.
-			spawn(100*length(src.linkedServer.decryptkey))
-				if(src && src.linkedServer && usr)
-					BruteForce(usr)
-	//Delete the log.
-	if (href_list["delete"])
-		//Are they on the view logs screen?
-		if(screen == 1)
+		//Turn the server on/off.
+		if (href_list["active"])
+			if(auth) linkedServer.active = !linkedServer.active
+		//Find a server
+		if (href_list["find"])
+			if(message_servers && message_servers.len > 1)
+				src.linkedServer = input(usr,"Please select a server.", "Select a server.", null) as null|anything in message_servers
+				message = "<span class='alert'>NOTICE: Server selected.</span>"
+			else if(message_servers && message_servers.len > 0)
+				linkedServer = message_servers[1]
+					message =  SPAN_NOTE("NOTICE: Only Single Server Detected - Server selected.")
+			else
+				message = noserver
+
+		//View the logs - KEY REQUIRED
+		if (href_list["view"])
+			if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
+				message = noserver
+			else
+				if(auth)
+					src.screen = 1
+
+		//Clears the logs - KEY REQUIRED
+		if (href_list["clear"])
 			if(!linkedServer || (src.linkedServer.stat & (NOPOWER|BROKEN)))
 				message = noserver
-			else //if(istype(href_list["delete"], /datum/data_pda_msg))
-				src.linkedServer.pda_msgs -= locate(href_list["delete"])
-				message = "<span class='notice'>NOTICE: Log Deleted!</span>"
-	//Delete the request console log.
-	if (href_list["deleter"])
-		//Are they on the view logs screen?
-		if(screen == 4)
+			else
+				if(auth)
+					src.linkedServer.pda_msgs = list()
+					message = SPAN_NOTE("NOTICE: Logs cleared.")
+		//Clears the request console logs - KEY REQUIRED
+		if (href_list["clearr"])
 			if(!linkedServer || (src.linkedServer.stat & (NOPOWER|BROKEN)))
 				message = noserver
-			else //if(istype(href_list["delete"], /datum/data_pda_msg))
-				src.linkedServer.rc_msgs -= locate(href_list["deleter"])
-				message = "<span class='notice'>NOTICE: Log Deleted!</span>"
-	//Create a custom message
-	if (href_list["msg"])
-		if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
-			message = noserver
-		else
-			if(auth)
-				src.screen = 3
-	//Fake messaging selection - KEY REQUIRED
-	if (href_list["select"])
-		if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
-			message = noserver
-			screen = 0
-		else
-			switch(href_list["select"])
+			else
+				if(auth)
+					src.linkedServer.rc_msgs = list()
+					message = SPAN_NOTE("NOTICE: Logs cleared.")
+		//Change the password - KEY REQUIRED
+		if (href_list["pass"])
+			if(!linkedServer || (src.linkedServer.stat & (NOPOWER|BROKEN)))
+				message = noserver
+			else
+				if(auth)
+					var/dkey = trim(input(usr, "Please enter the decryption key.") as text|null)
+					if(dkey && dkey != "")
+						if(src.linkedServer.decryptkey == dkey)
+							var/newkey = trim(input(usr,"Please enter the new key (3 - 16 characters max):"))
+							if(length(newkey) <= 3)
+								message = SPAN_NOTE("NOTICE: Decryption key too short!")
+							else if(length(newkey) > 16)
+								message = SPAN_NOTE("NOTICE: Decryption key too long!")
+							else if(newkey && newkey != "")
+								src.linkedServer.decryptkey = newkey
+							message = SPAN_NOTE("NOTICE: Decryption key set.")
+						else
+							message = incorrectkey
 
-				//Reset
-				if("Reset")
-					ResetMessage()
+		//Hack the Console to get the password
+		if (href_list["hack"])
+			if((isAI(usr) || isrobot(usr)) && (usr.mind.special_role && usr.mind.original == usr))
+				src.hacking = 1
+				src.screen = 2
+				update_icon()
+				//Time it takes to bruteforce is dependant on the password length.
+				spawn(100*length(src.linkedServer.decryptkey))
+					if(src && src.linkedServer && usr)
+						BruteForce(usr)
+		//Delete the log.
+		if (href_list["delete"])
+			//Are they on the view logs screen?
+			if(screen == 1)
+				if(!linkedServer || (src.linkedServer.stat & (NOPOWER|BROKEN)))
+					message = noserver
+				else //if(istype(href_list["delete"], /datum/data_pda_msg))
+					src.linkedServer.pda_msgs -= locate(href_list["delete"])
+					message = SPAN_NOTE("NOTICE: Log Deleted!")
+		//Delete the request console log.
+		if (href_list["deleter"])
+			//Are they on the view logs screen?
+			if(screen == 4)
+				if(!linkedServer || (src.linkedServer.stat & (NOPOWER|BROKEN)))
+					message = noserver
+				else //if(istype(href_list["delete"], /datum/data_pda_msg))
+					src.linkedServer.rc_msgs -= locate(href_list["deleter"])
+					message = SPAN_NOTE("NOTICE: Log Deleted!")
+		//Create a custom message
+		if (href_list["msg"])
+			if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
+				message = noserver
+			else
+				if(auth)
+					src.screen = 3
+		//Fake messaging selection - KEY REQUIRED
+		if (href_list["select"])
+			if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
+				message = noserver
+				screen = 0
+			else
+				switch(href_list["select"])
 
-				//Select Your Name
-				if("Sender")
-					customsender 	= sanitize(input(usr, "Please enter the sender's name.") as text|null)
+					//Reset
+					if("Reset")
+						ResetMessage()
 
-				//Select Receiver
-				if("Recepient")
-					//Get out list of viable PDAs
-					var/list/obj/item/device/pda/sendPDAs = list()
-					for(var/obj/item/device/pda/P in PDAs)
-						if(!P.owner || P.toff || P.hidden) continue
-						sendPDAs += P
-					if(PDAs && PDAs.len > 0)
-						customrecepient = input(usr, "Select a PDA from the list.") as null|anything in sortAtom(sendPDAs)
-					else
-						customrecepient = null
+					//Select Your Name
+					if("Sender")
+						customsender 	= sanitize(input(usr, "Please enter the sender's name.") as text|null)
 
-				//Enter custom job
-				if("RecJob")
-					customjob	 	= sanitize(input(usr, "Please enter the sender's job.") as text|null)
+					//Select Receiver
+					if("Recepient")
+						//Get out list of viable PDAs
+						var/list/obj/item/device/pda/sendPDAs = list()
+						for(var/obj/item/device/pda/P in PDAs)
+							if(!P.owner || P.toff || P.hidden) continue
+							sendPDAs += P
+						if(PDAs && PDAs.len > 0)
+							customrecepient = input(usr, "Select a PDA from the list.") as null|anything in sortAtom(sendPDAs)
+						else
+							customrecepient = null
 
-				//Enter message
-				if("Message")
-					custommessage	= input(usr, "Please enter your message.") as text|null
-					custommessage	= sanitize(custommessage)
+					//Enter custom job
+					if("RecJob")
+						customjob	 	= sanitize(input(usr, "Please enter the sender's job.") as text|null)
 
-				//Send message
-				if("Send")
+					//Enter message
+					if("Message")
+						custommessage	= input(usr, "Please enter your message.") as text|null
+						custommessage	= sanitize(custommessage)
 
-					if(isnull(customsender) || customsender == "")
-						customsender = "UNKNOWN"
+					//Send message
+					if("Send")
 
-					if(isnull(customrecepient))
-						message = "<span class='notice'>NOTICE: No recepient selected!</span>"
-						return src.attack_hand(usr)
+						if(isnull(customsender) || customsender == "")
+							customsender = "UNKNOWN"
 
-					if(isnull(custommessage) || custommessage == "")
-						message = "<span class='notice'>NOTICE: No message entered!</span>"
-						return src.attack_hand(usr)
+						if(isnull(customrecepient))
+							message = SPAN_NOTE("NOTICE: No recepient selected!")
+							return src.attack_hand(usr)
 
-					var/obj/item/device/pda/PDARec = null
-					for (var/obj/item/device/pda/P in PDAs)
-						if (!P.owner || P.toff || P.hidden)	continue
-						if(P.owner == customsender)
-							PDARec = P
-					//Sender isn't faking as someone who exists
-					if(isnull(PDARec))
-						src.linkedServer.send_pda_message("[customrecepient.owner]", "[customsender]","[custommessage]")
-						customrecepient.new_message(customsender, customsender, customjob, custommessage)
-					//Sender is faking as someone who exists
-					else
+						if(isnull(custommessage) || custommessage == "")
+							message = SPAN_NOTE("NOTICE: No message entered!")
+							return src.attack_hand(usr)
 
-						src.linkedServer.send_pda_message("[customrecepient.owner]", "[PDARec.owner]","[custommessage]")
-						customrecepient.tnote.Add(list(list("sent" = 0, "owner" = "[PDARec.owner]", "job" = "[customjob]", "message" = "[custommessage]", "target" ="\ref[PDARec]")))
+						var/obj/item/device/pda/PDARec = null
+						for (var/obj/item/device/pda/P in PDAs)
+							if (!P.owner || P.toff || P.hidden)	continue
+							if(P.owner == customsender)
+								PDARec = P
+						//Sender isn't faking as someone who exists
+						if(isnull(PDARec))
+							src.linkedServer.send_pda_message("[customrecepient.owner]", "[customsender]","[custommessage]")
+							customrecepient.new_message(customsender, customsender, customjob, custommessage)
+						//Sender is faking as someone who exists
+						else
 
-						if(!customrecepient.conversations.Find("\ref[PDARec]"))
-							customrecepient.conversations.Add("\ref[PDARec]")
+							src.linkedServer.send_pda_message("[customrecepient.owner]", "[PDARec.owner]","[custommessage]")
+							customrecepient.tnote.Add(list(list("sent" = 0, "owner" = "[PDARec.owner]", "job" = "[customjob]", "message" = "[custommessage]", "target" ="\ref[PDARec]")))
 
-						customrecepient.new_message(PDARec, custommessage)
-					//Finally..
-					ResetMessage()
+							if(!customrecepient.conversations.Find("\ref[PDARec]"))
+								customrecepient.conversations.Add("\ref[PDARec]")
 
-	//Request Console Logs - KEY REQUIRED
-	if(href_list["viewr"])
-		if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
-			message = noserver
-		else
-			if(auth)
-				src.screen = 4
+							customrecepient.new_message(PDARec, custommessage)
+						//Finally..
+						ResetMessage()
 
-//			to_chat(usr, href_list["select"])
+//Request Console Logs - KEY REQUIRED
+		if(href_list["viewr"])
+			if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
+				message = noserver
+			else
+				if(auth)
+					src.screen = 4
 
-	if(href_list["spam"])
-		if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
-			message = noserver
-		else
-			if(auth)
-				src.screen = 5
+		if(href_list["spam"])
+			if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
+				message = noserver
+			else
+				if(auth)
+					src.screen = 5
 
-	if(href_list["addtoken"])
-		if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
-			message = noserver
-		else
-			src.linkedServer.spamfilter += input(usr,"Enter text you want to be filtered out","Token creation") as text|null
+		if(href_list["addtoken"])
+			if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
+				message = noserver
+			else
+				src.linkedServer.spamfilter += input(usr,"Enter text you want to be filtered out","Token creation") as text|null
 
-	if(href_list["deltoken"])
-		if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
-			message = noserver
-		else
-			var/tokennum = text2num(href_list["deltoken"])
-			src.linkedServer.spamfilter.Cut(tokennum,tokennum+1)
+		if(href_list["deltoken"])
+			if(src.linkedServer == null || (src.linkedServer.stat & (NOPOWER|BROKEN)))
+				message = noserver
+			else
+				var/tokennum = text2num(href_list["deltoken"])
+				src.linkedServer.spamfilter.Cut(tokennum,tokennum+1)
 
-	if (href_list["back"])
-		src.screen = 0
+		if (href_list["back"])
+			src.screen = 0
 
 	return src.attack_hand(usr)
 
@@ -503,16 +515,18 @@
 /obj/item/weapon/paper/monitorkey
 	//..()
 	name = "Monitor Decryption Key"
-	var/obj/machinery/message_server/server = null
 
-/obj/item/weapon/paper/monitorkey/New()
-	..()
-	spawn(10)
-		if(message_servers)
-			for(var/obj/machinery/message_server/server in message_servers)
-				if(!isnull(server))
-					if(!isnull(server.decryptkey))
-						info = "<center><h2>Daily Key Reset</h2></center><br>The new message monitor key is '[server.decryptkey]'.<br>This key is only intended for personnel granted access to the messaging server. Keep it safe.<br>If necessary, change the password to a more secure one."
-						info_links = info
-						icon_state = "paper_words"
-						break
+/obj/item/weapon/paper/monitorkey/Initialize()
+	. = ..()
+	if(. != INITIALIZE_HINT_QDEL)
+		return INITIALIZE_HINT_LATELOAD
+
+/obj/item/weapon/paper/monitorkey/LateInitialize()
+	if(message_servers)
+		for(var/obj/machinery/message_server/server in message_servers)
+			if(!isnull(server))
+				if(!isnull(server.decryptkey))
+					info = "<center><h2>Daily Key Reset</h2></center><br>The new message monitor key is '[server.decryptkey]'.<br>This key is only intended for personnel granted access to the messaging server. Keep it safe.<br>If necessary, change the password to a more secure one."
+					info_links = info
+					icon_state = "paper_words"
+					break

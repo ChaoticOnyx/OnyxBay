@@ -8,7 +8,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	var/sender = "Unspecified" //name of the sender
 	var/message = "Blank" //transferred message
 
-/datum/data_pda_msg/New(param_rec = "",param_sender = "",param_message = "")
+/datum/data_pda_msg/New(param_rec = "", param_sender = "", param_message = "")
 
 	if(param_rec)
 		recipient = param_rec
@@ -25,7 +25,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	var/id_auth = "Unauthenticated"
 	var/priority = "Normal"
 
-/datum/data_rc_msg/New(param_rec = "",param_sender = "",param_message = "",param_stamp = "",param_id_auth = "",param_priority)
+/datum/data_rc_msg/New(param_rec = "", param_sender = "", param_message = "", param_stamp = "", param_id_auth = "", param_priority)
 	if(param_rec)
 		rec_dpt = param_rec
 	if(param_sender)
@@ -53,6 +53,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	name = "Messaging Server"
 	density = 1
 	anchored = 1.0
+	use_power = 1
 	idle_power_usage = 10
 	active_power_usage = 100
 
@@ -68,15 +69,15 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 			//Messages having theese tokens will be rejected by server. Case sensitive
 	var/spamfilter_limit = MESSAGE_SERVER_DEFAULT_SPAM_LIMIT	//Maximal amount of tokens
 
-/obj/machinery/message_server/New()
+/obj/machinery/message_server/Initialize()
 	message_servers += src
 	decryptkey = GenerateKey()
 	send_pda_message("System Administrator", "system", "This is an automated message. The messaging system is functioning correctly.")
-	..()
+	. = ..()
 
 /obj/machinery/message_server/Destroy()
 	message_servers -= src
-	return ..()
+	. = ..()
 
 /obj/machinery/message_server/Process()
 	if(active && (stat & (BROKEN|NOPOWER)))
@@ -84,6 +85,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 		power_failure = 10
 		update_icon()
 		return
+
 	else if(stat & (BROKEN|NOPOWER))
 		return
 	else if(power_failure > 0)
@@ -91,7 +93,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 			active = 1
 			update_icon()
 
-/obj/machinery/message_server/proc/send_pda_message(recipient = "",sender = "",message = "")
+/obj/machinery/message_server/proc/send_pda_message(recipient = "", sender = "", message = "")
 	var/result
 	for (var/token in spamfilter)
 		if (findtextEx(message,token))
@@ -127,7 +129,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 		Console.set_light(2)
 
 
-/obj/machinery/message_server/attack_hand(user as mob)
+/obj/machinery/message_server/attack_hand(mob/user)
 	to_chat(user, "You toggle PDA message passing from [active ? "On" : "Off"] to [active ? "Off" : "On"]")
 	active = !active
 	power_failure = 0
@@ -137,9 +139,9 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 
 /obj/machinery/message_server/attackby(obj/item/weapon/O as obj, mob/living/user as mob)
 	if (active && !(stat & (BROKEN|NOPOWER)) && (spamfilter_limit < MESSAGE_SERVER_DEFAULT_SPAM_LIMIT*2) && \
-		istype(O,/obj/item/weapon/circuitboard/message_monitor))
+		istype(O, /obj/item/weapon/circuitboard/message_monitor))
 		spamfilter_limit += round(MESSAGE_SERVER_DEFAULT_SPAM_LIMIT / 2)
-		user.drop_item()
+		user.drop_from_inventory(O)
 		qdel(O)
 		to_chat(user, "You install additional memory and processors into message server. Its filtering capabilities been enhanced.")
 	else
@@ -223,7 +225,6 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 
 /datum/feedback_variable/proc/get_parsed()
 	return list(variable,value,details)
-
 var/obj/machinery/blackbox_recorder/blackbox
 
 /obj/machinery/blackbox_recorder
@@ -232,6 +233,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 	name = "Blackbox Recorder"
 	density = 1
 	anchored = 1.0
+	use_power = 1
 	idle_power_usage = 10
 	active_power_usage = 100
 	var/list/messages = list()		//Stores messages of non-standard frequencies
@@ -257,7 +259,9 @@ var/obj/machinery/blackbox_recorder/blackbox
 	if(blackbox)
 		if(istype(blackbox,/obj/machinery/blackbox_recorder))
 			qdel(src)
+			return
 	blackbox = src
+	..()
 
 /obj/machinery/blackbox_recorder/Destroy()
 	var/turf/T = locate(1,1,2)
@@ -279,8 +283,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 		BR.messages_admin = messages_admin
 		if(blackbox != BR)
 			blackbox = BR
-	..()
-
+	. = ..()
 /obj/machinery/blackbox_recorder/proc/find_feedback_datum(variable)
 	for(var/datum/feedback_variable/FV in feedback)
 		if(FV.get_variable() == variable)
@@ -346,7 +349,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 		var/DBQuery/query_insert = dbcon.NewQuery(sql)
 		query_insert.Execute()
 
-// Sanitize inputs to avoid SQL injection attacks
+	// Sanitize inputs to avoid SQL injection attacks
 proc/sql_sanitize_text(text)
 	text = replacetext(text, "'", "''")
 	text = replacetext(text, ";", "")
