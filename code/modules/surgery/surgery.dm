@@ -86,6 +86,8 @@
 			. -= 60
 
 	if(clothes_penalty)
+		if (issilicon(user))
+			return
 		var/clothes = get_target_clothes(target, target_zone)
 		for(var/obj/item/I in clothes)
 			if(I.item_flags & (ITEM_FLAG_THICKMATERIAL|ITEM_FLAG_STOPPRESSUREDAMAGE))
