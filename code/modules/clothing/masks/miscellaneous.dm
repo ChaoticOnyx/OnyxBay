@@ -196,14 +196,9 @@
 		eye.release(eye.owner)
 		eye.forceMove(src)
 
-/obj/item/clothing/mask/rubber
+/obj/item/clothing/mask/balaclava/rubber
 	name = "rubber mask"
 	desc = "A rubber mask."
-	icon_state = "balaclava"
-	flags_inv = HIDEFACE|BLOCKHAIR
-	siemens_coefficient = 0.9
-	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/mask/rubber/trasen
 	name = "Jack Trasen mask"

@@ -10,6 +10,8 @@
 	down_icon_state = "balaclava_r"
 	pull_mask = 1
 	w_class = ITEM_SIZE_SMALL
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
+	siemens_coefficient = 0.9
 
 /obj/item/clothing/mask/balaclava/tactical
 	name = "green balaclava"
