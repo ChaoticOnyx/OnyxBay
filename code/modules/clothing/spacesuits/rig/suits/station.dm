@@ -42,12 +42,10 @@
 	suit_type = "industrial hardsuit"
 	desc = "A heavy, powerful rig used by construction crews and mining corporations."
 	icon_state = "engineering_rig"
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 100, rad = 50)
-	online_slowdown = 3
-	offline_slowdown = 10
-	vision_restriction = TINT_HEAVY
-	offline_vision_restriction = TINT_BLIND
-	emp_protection = -20
+	armor = list(melee = 75, bullet = 35, laser = 35,energy = 15, bomb = 50, bio = 100, rad = 100)
+	online_slowdown = 2
+	offline_slowdown = 6
+	offline_vision_restriction = TINT_HEAVY
 
 	chest_type = /obj/item/clothing/suit/space/rig/industrial
 	helm_type = /obj/item/clothing/head/helmet/space/rig/industrial
@@ -60,6 +58,7 @@
 	req_one_access = list()
 
 /obj/item/clothing/head/helmet/space/rig/industrial
+	brightness_on = 6
 	camera = /obj/machinery/camera/network/mining
 	species_restricted = list(SPECIES_HUMAN,SPECIES_SKRELL,SPECIES_TAJARA,SPECIES_UNATHI)
 
