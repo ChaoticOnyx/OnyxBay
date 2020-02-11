@@ -505,6 +505,7 @@ var/list/admin_verbs_mentor = list(
 			holder.Jobbans()
 		else
 			holder.DB_ban_panel()
+			set hidden = 1
 	feedback_add_details("admin_verb","VJB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	return
 
@@ -516,6 +517,7 @@ var/list/admin_verbs_mentor = list(
 			holder.unbanpanel()
 		else
 			holder.DB_ban_panel()
+			set hidden = 1
 	feedback_add_details("admin_verb","UBP") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	return
 
