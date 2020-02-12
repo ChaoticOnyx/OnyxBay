@@ -196,6 +196,20 @@
 	info = "statue of Rampo, the best Chaotic Onyx man of 2018.<br> And ever."
 	desc = "A big spider-rabbit. Fuck."
 
+/obj/structure/onyxawards2018/goldass
+	name = "statue of Unknown Greitaider"
+	icon_state = "goldass"
+	info = "statue of some bald assistant. All gold.<br>It's T-posing for unknown reason."
+	desc = "Very shiny."
+	throwforce = 1337 //dont ask why. just because
+
+/obj/structure/onyxawards2018/goldass/attackby(obj/item/W, mob/user)
+	if(isWrench(W))
+		anchored = !anchored
+		to_chat(user, "<span class='notice'>You [anchored ? "wrench" : "unwrench"] \the [src].</span>")
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
+		return
+
 /obj/structure/onyxawards2018/plate
 	density = 0
 	name = "information plate"
