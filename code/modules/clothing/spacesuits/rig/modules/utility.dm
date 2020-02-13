@@ -239,6 +239,15 @@
 	interface_name = "combat chem dispenser"
 	interface_desc = "Dispenses loaded chemicals directly into the bloodstream."
 
+/obj/item/rig_module/chem_dispenser/combat/security
+
+	charges = list(
+		list("tricordrazine", "tricordrazine", /datum/reagent/tricordrazine,     20),
+		list("tramadol",      "tramadol",      /datum/reagent/tramadol,          20),
+		list("antitoxins",    "antitoxins",    /datum/reagent/dylovene,          20),
+		list("glucose",     "glucose",     /datum/reagent/nutriment/glucose, 60),
+		)
+
 
 /obj/item/rig_module/chem_dispenser/injector
 
