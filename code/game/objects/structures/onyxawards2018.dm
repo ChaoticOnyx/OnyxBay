@@ -196,7 +196,7 @@
 	info = "statue of Rampo, the best Chaotic Onyx man of 2018.<br> And ever."
 	desc = "A big spider-rabbit. Fuck."
 
-/obj/structure/onyxawards2018/goldass
+/obj/structure/onyxawards2018/goldass //its not really for awards, but it surely needed
 	name = "statue of Unknown Greitaider"
 	icon_state = "goldass"
 	info = "statue of some bald assistant. All gold.<br>It's T-posing for unknown reason."

@@ -1171,6 +1171,16 @@ var/list/multi_point_spawns
 	if(prob(50))
 		return ..()
 
+/obj/random_multi/single_item/goldass
+	name = "Spawn Point - Golden Assistant"
+	id = "Golden Assistant statue"
+	item_path = /obj/structure/onyxawards2018/goldass
+
+/obj/random_multi/single_item/goldass/generate_items()
+	if(prob(50))
+		if(prob(1))
+			return ..()
+
 var/list/random_junk_
 var/list/random_useful_
 /proc/get_random_useful_type()
