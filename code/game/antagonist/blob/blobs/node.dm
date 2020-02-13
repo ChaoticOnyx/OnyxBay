@@ -2,6 +2,8 @@
 	name = "blob node"
 	icon_state = "node"
 	desc = "A part of a blob."
+	density = FALSE
+	opacity = FALSE
 	health = 100
 	maxhealth = 100
 	fire_resist = 2

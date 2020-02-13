@@ -12,9 +12,9 @@ var/list/blob_overminds = list()
 	icon_state = "center"
 	luminosity = 2
 	desc = "A part of a blob."
-	density = 0
-	opacity = 0
-	anchored = 1
+	density = TRUE
+	opacity = TRUE
+	anchored = TRUE
 
 	var/health = 20
 	var/maxhealth = 20
@@ -185,7 +185,6 @@ var/list/blob_overminds = list()
 	if (!T)
 		return 0
 	var/obj/effect/blob/normal/B = new(src.loc)
-	B.density = TRUE
 
 	if(istype(src,/obj/effect/blob/normal))
 		var/num = rand(1,100)
@@ -193,7 +192,6 @@ var/list/blob_overminds = list()
 		B.layer = layer - num
 
 	if (T.Enter(B,src))//Attempt to move into the tile
-		B.density = (initial(B.density))
 		B.forceMove(T)
 
 		if (istype(T,/turf/simulated/floor))
