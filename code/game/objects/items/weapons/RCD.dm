@@ -7,7 +7,7 @@
 	description_fluff = "Advents in material printing and synthesis technology have produced everyday miracles, such as the RCD, which in certain industries has single-handedly put entire construction crews out of a job."
 	description_antag = "RCDs can be incredibly dangerous in the wrong hands. Use them to swiftly block off corridors, or instantly breach the ship wherever you want."
 	icon = 'icons/obj/items.dmi'
-	icon_state = "rcd"
+	icon_state = "rcd-e"
 	opacity = 0
 	density = 0
 	anchored = 0.0
@@ -66,7 +66,7 @@
 	return ..()
 
 /obj/item/weapon/rcd/attackby(obj/item/weapon/W, mob/user)
-
+	update_icon()
 	if(istype(W, /obj/item/weapon/rcd_ammo))
 		var/obj/item/weapon/rcd_ammo/cartridge = W
 		if((stored_matter + cartridge.remaining) > 30)
@@ -75,7 +75,8 @@
 		stored_matter += cartridge.remaining
 		user.drop_from_inventory(W)
 		qdel(W)
-		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+		update_icon()
+		playsound(src.loc, 'sound/effects/weapons/energy/no_power1.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>The RCD now holds [stored_matter]/[max_stored_matter] matter-units.</span>")
 		return
 	..()
@@ -98,10 +99,18 @@
 	work_mode.do_work(src, A, user)
 
 /obj/item/weapon/rcd/proc/useResource(amount, mob/user)
-	if(stored_matter < amount)
-		return 0
-	stored_matter -= amount
-	return 1
+    if(stored_matter < amount)
+        return 0
+    stored_matter -= amount
+    update_icon()
+    return 1
+
+/obj/item/weapon/rcd/update_icon()
+	..()
+	if(stored_matter > 0)
+		icon_state = "rcd"
+	else
+		icon_state = "rcd-e"
 
 /obj/item/weapon/rcd_ammo
 	name = "compressed matter cartridge"
