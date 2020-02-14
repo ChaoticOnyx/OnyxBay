@@ -24,12 +24,16 @@
 	var/lit = FALSE //Turn the flamer on/off
 	var/attached_electronics = list() //For gauge/igniter or other stuff
 	action_button_name = "Remove fuel tank"
+	var/last_use = 0
+	var/last_fired = 0
+	fire_delay = 35
 
 /obj/item/weapon/gun/flamer/Initialize()
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/weapon/gun/flamer/examine(mob/user)
+
 	. = ..(user)
 
 	if(igniter)
@@ -193,7 +197,6 @@
 	return TRUE
 
 /obj/item/weapon/gun/flamer/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0)
-
 	var/turf/curloc = get_turf(user) //In case the target or we are expired.
 	var/turf/targloc = get_turf(target)
 	if(!targloc || !curloc)
@@ -202,15 +205,22 @@
 	if(!src.is_held_twohanded(user))
 		to_chat(user, SPAN_WARN("You cant fire on target with just one hand"))
 		return
+
 	if(is_flamer_can_fire(user))
-		unleash_flame(target, user)
-		log_attack("[user] start spreadding fire with \ref[src].")
+		if(world.time > last_use + fire_delay)
+			last_fired = world.time
+			last_use = world.time
+			unleash_flame(target, user)
+			log_attack("[user] start spreadding fire with \ref[src].")
+			return
+		else
+			to_chat(user, SPAN_WARNING("[src] is not ready to fire again!"))
+			return
+
 
 /obj/item/weapon/gun/flamer/proc/is_flamer_can_fire(mob/user)
 
-	if(!lit)
-		to_chat(user, SPAN_WARN("[src] isn't lit to fire"))
-		return
+
 	if(!fuel_tank)
 		to_chat(user, SPAN_WARN("[src] isn't has a fuel tank"))
 		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
@@ -219,7 +229,9 @@
 		to_chat(user, SPAN_WARN("[src] isn't has a pressure tank"))
 		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
-
+	if(!lit)
+		to_chat(user, SPAN_WARN("[src] isn't lit to fire"))
+		return
 	if(get_fuel() < fuel_for_shot)
 		to_chat(user, SPAN_WARN("Not enough fuel!"))
 		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
@@ -255,6 +267,7 @@
 
 /obj/item/weapon/gun/flamer/proc/unleash_flame(atom/target, mob/living/user)
 
+	last_fired = world.time
 	var/burnlevel
 	var/burntime
 
@@ -264,6 +277,7 @@
 	var/turf/prev_T
 
 	for(var/F in turfs)
+		var/blocked = FALSE
 		var/turf/T = F
 
 		if(T == user.loc)
@@ -271,10 +285,11 @@
 			continue
 		if(loc != user)
 			break
+		if(istype(T, /turf/simulated/wall))
+			blocked = TRUE
 		if(distance > max_range)
 			break
 
-		var/blocked = FALSE
 		for(var/obj/O in T)
 			if(O.density && !O.throwpass)
 				blocked = TRUE

@@ -49,7 +49,7 @@
 	adjust_fire_stacks(rand(1, burn_damage)) //Make it possible to light them on fire later.
 	if (prob(firelevel + 2*fire_stacks)) //the more soaked in fire you are, the likelier to be ignited
 		IgniteMob()
-	to_chat(src, SPAN_WARNING("You are burned!"))
+		//to_chat(src, SPAN_WARNING("You are burned!"))
 
 /mob/living/carbon/human/flamer_fire_crossed(burnlevel, firelevel, fire_mod = 1)
 	if(istype(wear_suit, /obj/item/clothing/suit))
@@ -70,7 +70,7 @@
 /obj/flamer_fire/Process()
 	var/turf/T = loc
 	firelevel = max(0, firelevel)
-	if(!istype(T)) //Is it a valid turf?
+	if(!istype(T) || istype(T, /turf/space)) //Is it a valid turf?
 		qdel(src)
 		return
 
@@ -100,12 +100,12 @@
 	if(burn_damage > 4)
 		burn_damage = 4
 	addtimer(CALLBACK(src, .proc/adjust_flame_damage, burn_damage, firelevel), 1)
+	if(prob(1.2*firelevel))
+		IgniteMob()
 	return ..()
 
 /mob/living/proc/adjust_flame_damage(burn_damage, firelevel)
 	adjust_fire_stacks(burn_damage) //If i stand in the fire i deserve all of this. Also Napalm stacks quickly.
-	if(prob(firelevel))
-		IgniteMob()
 	to_chat(src, SPAN_WARN("You are burned!"))
 
 /mob/living/simple_animal/flamer_fire_act(burnlevel, firelevel, turf/T)
