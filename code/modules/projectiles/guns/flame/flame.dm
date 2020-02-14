@@ -18,7 +18,7 @@
 	var/burnlevel = 6 //Tracks how HOT the fire is. This is basically the heat level of the fire and determines the temperature.
 
 /obj/flamer_fire/Initialize(mapload, fire_lvl, burn_lvl, fire_stacks = 0, fire_damage = 0)
-	. = ..()
+	. = ..(mapload)
 
 	if(fire_lvl)
 		firelevel = fire_lvl
@@ -49,7 +49,7 @@
 	adjust_fire_stacks(rand(1, burn_damage)) //Make it possible to light them on fire later.
 	if (prob(firelevel + 2*fire_stacks)) //the more soaked in fire you are, the likelier to be ignited
 		IgniteMob()
-	to_chat(src, "<span class='danger'>You are burned!</span>")
+	to_chat(src, SPAN_WARNING("You are burned!"))
 
 /mob/living/carbon/human/flamer_fire_crossed(burnlevel, firelevel, fire_mod = 1)
 	if(istype(wear_suit, /obj/item/clothing/suit))
@@ -99,7 +99,7 @@
 	var/burn_damage = 0.2*burnlevel
 	if(burn_damage > 4)
 		burn_damage = 4
-	addtimer(CALLBACK(src, .proc/adjust_fire_stacks, burn_damage, firelevel), 1)
+	addtimer(CALLBACK(src, .proc/adjust_flame_damage, burn_damage, firelevel), 1)
 	return ..()
 
 /mob/living/proc/adjust_flame_damage(burn_damage, firelevel)
@@ -107,7 +107,6 @@
 	if(prob(firelevel))
 		IgniteMob()
 	to_chat(src, SPAN_WARN("You are burned!"))
-
 
 /mob/living/simple_animal/flamer_fire_act(burnlevel, firelevel, turf/T)
 	var/burn_damage = burnlevel

@@ -15,7 +15,7 @@
 	fire_sound = 'sound/weapons/gunshot/flamethrower/flamer_fire.ogg'
 	var/ignite_sound = list('sound/weapons/gunshot/flamethrower/ignite_flamethrower1.ogg', 'sound/weapons/gunshot/flamethrower/ignite_flamethrower2.ogg', 'sound/weapons/gunshot/flamethrower/ignite_flamethrower3.ogg')
 	var/obj/item/weapon/welder_tank/fuel_tank = null
-	var/obj/item/weapon/tank/oxygen/preassure_tank = null
+	var/obj/item/weapon/tank/oxygen/pressure_tank = null
 	var/obj/item/device/assembly/igniter/igniter = null
 	var/obj/item/device/analyzer/gauge = null
 	var/max_range = 5
@@ -37,8 +37,8 @@
 	else
 		to_chat(user, SPAN_WARN("Igniter not installed in [src]!"))
 
-	if(preassure_tank)
-		to_chat(user, "The preassure tank wrenched into the [src].")
+	if(pressure_tank)
+		to_chat(user, "The pressure tank wrenched into the [src].")
 
 	if(gauge)
 		if(fuel_tank)
@@ -46,10 +46,10 @@
 		else
 			to_chat(user, SPAN_WARN("There's no fuel tank in [src]!"))
 
-		if(preassure_tank)
-			to_chat(user, "The preassure gauge shows the current tank is [preassure_tank.air_contents.return_pressure()].")
+		if(pressure_tank)
+			to_chat(user, "The pressure gauge shows the current tank is [pressure_tank.air_contents.return_pressure()].")
 		else
-			to_chat(user, SPAN_WARN("There's no preassure tank in [src]!"))
+			to_chat(user, SPAN_WARN("There's no pressure tank in [src]!"))
 
 	else
 		to_chat(user, SPAN_WARN("Gauge not installed, you have no idea how much fuel left in [src]!"))
@@ -61,8 +61,8 @@
 		overlays += "+igniter"
 	if(fuel_tank)
 		overlays += "+fuel_tank"
-	if(preassure_tank)
-		overlays += "+preassure_tank"
+	if(pressure_tank)
+		overlays += "+pressure_tank"
 	if(gauge)
 		overlays += "+gauge"
 	return
@@ -105,14 +105,14 @@
 		return
 
 	if(isWrench(W))
-		if(!preassure_tank)
-			to_chat(user, "There's no preassure tank in [src].")
+		if(!pressure_tank)
+			to_chat(user, "There's no pressure tank in [src].")
 			return
 		var/turf/T = get_turf(src)
-		to_chat(user, "You twist the valve and pop the preassure tank out of [src].")
+		to_chat(user, "You twist the valve and pop the pressure tank out of [src].")
 		playsound(src.loc, 'sound/effects/refill.ogg', 25, 1, 3)
-		preassure_tank.loc = T
-		preassure_tank = null
+		pressure_tank.loc = T
+		pressure_tank = null
 		update_icon()
 
 	if(istype(W, /obj/item/device/assembly/igniter))
@@ -140,11 +140,11 @@
 		return
 
 	if(istype(W, /obj/item/weapon/tank/oxygen))
-		if(preassure_tank)
-			to_chat(user, "Remove the current preassure tank first.")
+		if(pressure_tank)
+			to_chat(user, "Remove the current pressure tank first.")
 			return
 		user.drop_from_inventory(W, src)
-		preassure_tank = W
+		pressure_tank = W
 		playsound(src.loc, 'sound/effects/refill.ogg', 25, 1, 3)
 		user.visible_message("[user] wrench \a [W] into \the [src].", "You wrench \a [W] into \the [src].")
 		update_icon()
@@ -215,8 +215,8 @@
 		to_chat(user, SPAN_WARN("[src] isn't has a fuel tank"))
 		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
-	if(!preassure_tank)
-		to_chat(user, SPAN_WARN("[src] isn't has a preassure tank"))
+	if(!pressure_tank)
+		to_chat(user, SPAN_WARN("[src] isn't has a pressure tank"))
 		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 
@@ -225,8 +225,8 @@
 		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 
-	if(preassure_tank.air_contents.return_pressure() > 200)
-		preassure_tank.air_contents.remove_ratio(0.02*(pressure_for_shot/100))
+	if(pressure_tank.air_contents.return_pressure() > 200)
+		pressure_tank.air_contents.remove_ratio(0.02*(pressure_for_shot/100))
 	else
 		to_chat(user, SPAN_WARN("Not enough pressure!"))
 		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
@@ -235,7 +235,7 @@
 
 /obj/item/weapon/gun/flamer/Destroy()
 	QDEL_NULL(fuel_tank)
-	QDEL_NULL(preassure_tank)
+	QDEL_NULL(pressure_tank)
 	QDEL_NULL(igniter)
 	QDEL_NULL(gauge)
 	STOP_PROCESSING(SSobj, src)
@@ -330,64 +330,3 @@
 		qdel(F)
 
 	new /obj/flamer_fire(src, fire_lvl, burn_lvl, fire_stacks, fire_damage)
-
-/obj/item/weapon/gun/flamer/proc/triangular_flame(atom/target, mob/living/user, burntime, burnlevel)
-	set waitfor = 0
-
-	var/unleash_dir = user.dir //don't want the player to turn around mid-unleash to bend the fire.
-	var/list/turf/turfs = getline(user,target)
-	playsound(user, fire_sound, 50, 1)
-	var/distance = 1
-	var/turf/prev_T
-
-	for(var/turf/T in turfs)
-		if(T == user.loc)
-			prev_T = T
-			continue
-		if(T.density)
-			break
-		if(loc != user)
-			break
-		if(distance > max_range)
-			break
-		if(prev_T && LinkBlocked(prev_T, T))
-			break
-		flame_turf(T,user, burntime, burnlevel)
-		prev_T = T
-		sleep(1)
-
-		var/list/turf/right = list()
-		var/list/turf/left = list()
-		var/turf/right_turf = T
-		var/turf/left_turf = T
-		var/right_dir = turn(unleash_dir, 90)
-		var/left_dir = turn(unleash_dir, -90)
-		for (var/i = 0, i < distance - 1, i++)
-			right_turf = get_step(right_turf, right_dir)
-			right += right_turf
-			left_turf = get_step(left_turf, left_dir)
-			left += left_turf
-
-		var/turf/prev_R = T
-		for (var/turf/R in right)
-			if (R.density)
-				break
-			if(prev_R && LinkBlocked(prev_R, R))
-				break
-
-			flame_turf(R, user, burntime, burnlevel)
-			prev_R = R
-			sleep(1)
-
-		var/turf/prev_L = T
-		for (var/turf/L in left)
-			if (L.density)
-				break
-			if(prev_L && LinkBlocked(prev_L, L))
-				break
-
-			flame_turf(L, user, burntime, burnlevel)
-			prev_L = L
-			sleep(1)
-
-	distance++
