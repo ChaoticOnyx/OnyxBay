@@ -984,7 +984,15 @@
 
 /area/crew_quarters/underdorm/theater
 	name = "\improper Theater"
-	icon_state = "Theater"
+	icon_state = "Theatre"
+
+/area/crew_quarters/underdorm/theater/clown
+	name = "\improper Clown's Bedroom"
+	icon_state = "Theatre"
+
+/area/crew_quarters/underdorm/theater/mime
+	name = "\improper Mime's Bedroom"
+	icon_state = "Theatre"
 
 /area/crew_quarters/sleep/cabin1
 	name = "\improper Private Cabin One"
