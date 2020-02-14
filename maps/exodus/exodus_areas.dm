@@ -538,6 +538,26 @@
 	name = "\improper Underground Security Firefighting Equipment"
 	icon_state = "usecurityfirefighting"
 
+/area/maintenance/underground/security_dorms
+	name = "\improper Underground Security Dormitories"
+	icon_state = "usecuritybreak"
+
+/area/maintenance/underground/security_breakroom
+	name = "\improper Underground Security Break Room"
+	icon_state = "usecuritybreak"
+
+/area/maintenance/underground/security_storage
+	name = "\improper Underground Security Storage Room"
+	icon_state = "usecuritystorage"
+
+/area/maintenance/underground/security_mainhall
+	name = "\improper Underground Security Main Hall"
+	icon_state = "usecuritylobby"
+
+/area/maintenance/underground/security_hallway
+	name = "\improper Underground Security Hallway"
+	icon_state = "usecurityhall"
+
 /area/maintenance/underground/security_meeting
 	name = "\improper Underground Security Meeting Maintenance"
 	icon_state = "usecuritymeeting"
@@ -953,6 +973,18 @@
 /area/crew_quarters/sleep3
 	name = "\improper Dormitories Hallway West"
 	icon_state = "Sleep"
+
+/area/crew_quarters/underdorm
+	name = "\improper Underground Dormitories"
+	icon_state = "underdorm"
+
+/area/crew_quarters/underdorm/maint
+	name = "\improper Underground Dormitories Maintenance"
+	icon_state = "underdormmaint"
+
+/area/crew_quarters/underdorm/theater
+	name = "\improper Theater"
+	icon_state = "Theater"
 
 /area/crew_quarters/sleep/cabin1
 	name = "\improper Private Cabin One"
