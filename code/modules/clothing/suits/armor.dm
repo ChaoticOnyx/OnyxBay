@@ -255,7 +255,11 @@
 /obj/item/clothing/suit/storage/vest/nt/warden
 	name = "warden heavy armored vest"
 	desc = "A synthetic armor vest with WARDEN printed in silver lettering on the chest. This one has added webbing and ballistic plates."
-	icon_state = "ntvest"
+	icon_state = "warden_heavy"
+	armor = list(melee = 45, bullet = 55, laser = 55, energy = 10, bomb = 25, bio = 0, rad = 0)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
+	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 
 /obj/item/clothing/suit/storage/vest/nt/hos
 	name = "commander heavy armored vest"

@@ -51,7 +51,7 @@
 		switch(href_list["flavor_text"])
 			if("open")
 			if("general")
-				var/msg = sanitize(input_cp1251(usr,"Give a general description of your character. This will be shown regardless of clothing, and may include OOC notes and preferences.","Flavor Text",rhtml_decode(pref.flavor_texts[href_list["flavor_text"]])), extra = 0)
+				var/msg = sanitize(input_cp1251(usr,"Give a general description of your character. This will be shown regardless of clothing, and may NOT include OOC notes and preferences.","Flavor Text",rhtml_decode(pref.flavor_texts[href_list["flavor_text"]])), extra = 0)
 				if(CanUseTopic(user))
 					pref.flavor_texts[href_list["flavor_text"]] = msg
 			else

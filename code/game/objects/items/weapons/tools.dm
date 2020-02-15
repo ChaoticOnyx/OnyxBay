@@ -542,7 +542,7 @@
 	desc = "A heavy-duty portable welder, made to ensure it won't suddenly go cold on you."
 	origin_tech = list(TECH_ENGINEERING = 2)
 	matter = list(MATERIAL_STEEL = 70, MATERIAL_GLASS = 60)
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.2
 	mod_reach = 0.75
 	mod_handy = 0.75
@@ -551,7 +551,7 @@
 /obj/item/weapon/welder_tank/large
 	name = "large welding fuel tank"
 	icon_state = "fuel_l"
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEM_SIZE_SMALL
 	max_fuel = 40
 
 /obj/item/weapon/weldingtool/hugetank
@@ -559,7 +559,7 @@
 	icon_state = "welder_h"
 	item_state = "welder"
 	desc = "A sizable welding tool with room to accomodate the largest of fuel tanks."
-	w_class = ITEM_SIZE_HUGE
+	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.45
 	mod_reach = 1.0
 	mod_handy = 0.75
@@ -570,7 +570,7 @@
 /obj/item/weapon/welder_tank/huge
 	name = "huge welding fuel tank"
 	icon_state = "fuel_h"
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_SMALL
 	max_fuel = 80
 
 /obj/item/weapon/weldingtool/experimental
@@ -578,7 +578,7 @@
 	icon_state = "welder_l"
 	item_state = "welder"
 	desc = "This welding tool feels heavier in your possession than is normal. There appears to be no external fuel port."
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_NORMAL
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_PHORON = 3)
 	matter = list(MATERIAL_STEEL = 70, MATERIAL_GLASS = 120)
 	tank = /obj/item/weapon/welder_tank/experimental
@@ -586,7 +586,7 @@
 /obj/item/weapon/welder_tank/experimental
 	name = "experimental welding fuel tank"
 	icon_state = "fuel_x"
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEM_SIZE_SMALL
 	max_fuel = 40
 	can_remove = 0
 	var/last_gen = 0
