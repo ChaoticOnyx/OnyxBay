@@ -86,16 +86,16 @@
 	firelevel -= 2 //reduce the intensity by 2 per tick
 	return
 
-/mob/living/simple_animal/flamer_fire_crossed(burnlevel, firelevel, turf/T)
+/mob/living/simple_animal/flamer_fire_crossed(burnlevel)
 	var/burn_damage = burnlevel*2.7 //kil dam spiders!!!!!!!!
 	adjustFireLoss(rand(burn_damage*0.8, burn_damage*1.5))
 	return
 
-/mob/living/simple_animal/flamer_fire_act(burnlevel, firelevel, turf/T)
+/mob/living/simple_animal/flamer_fire_act(burnlevel)
 	var/burn_damage = burnlevel*2.3 //kil spiders that don't walking!11!1
 	adjustFireLoss(rand(burn_damage*0.8, burn_damage*1.5))
 	return
 
-/obj/effect/vine/flamer_fire_act(burnlevel, firelevel, turf/T)
+/obj/effect/vine/flamer_fire_act()
 	die_off() //perfectly working if vines aren't broken
 	return

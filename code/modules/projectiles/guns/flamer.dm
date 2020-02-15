@@ -184,6 +184,11 @@
 		playsound(user, pick(ignite_sound), 100,1)
 	if(!igniter)
 		to_chat(user, SPAN_WARN("Install ingiter first!"))
+		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+		return
+	if(!fuel_tank)
+		to_chat(user, SPAN_WARN("Install fuel tank first!"))
+		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	lit = !lit
 
@@ -215,6 +220,7 @@
 			return
 		else
 			to_chat(user, SPAN_WARNING("[src] is not ready to fire again!"))
+			playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 			return
 
 
@@ -244,6 +250,11 @@
 		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	return TRUE
+
+/obj/item/weapon/gun/flamer/handle_suicide(mob/living/user)
+	if(!is_flamer_can_fire(user))
+		return
+	. = ..()
 
 /obj/item/weapon/gun/flamer/Destroy()
 	QDEL_NULL(fuel_tank)
@@ -328,13 +339,7 @@
 
 	T.ignite(heat, burn)
 
-	for(var/obj/effect/vine/V in T)
-		qdel(V)
-
 	for(var/mob/living/M in T) //Deal bonus damage if someone's caught directly in initial stream
-		if(M.stat == DEAD)
-			continue
-
 		M.adjust_fire_stacks(rand(2, burn))
 		M.IgniteMob()
 
