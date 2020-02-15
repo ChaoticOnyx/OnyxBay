@@ -32,6 +32,8 @@ var/global/list/additional_antag_types = list()
 	var/station_was_nuked = 0                // See nuclearbomb.dm and malfunction.dm.
 	var/explosion_in_progress = 0            // Sit back and relax
 
+	var/blob_domination = 0                  // Blob ate the station, end the game
+
 	var/event_delay_mod_moderate             // Modifies the timing of random events.
 	var/event_delay_mod_major                // As above.
 

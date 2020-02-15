@@ -1,6 +1,7 @@
 sound/music/1.ogg
 sound/music/b12_combined_start.ogg
 sound/music/clouds.ogg
+sound/music/crokett_39_s_theme.ogg
 sound/music/main.ogg
 sound/music/space.ogg
 sound/music/space_asshole.ogg

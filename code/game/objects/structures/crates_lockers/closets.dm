@@ -298,7 +298,7 @@
 	switch(severity)
 		if(1)
 			for(var/atom/movable/A in src)//pulls everything out of the locker and hits it with an explosion
-				A.forceMove(src.loc)
+				A.forceMove(loc)
 				A.ex_act(severity + 1)
 			qdel(src)
 		if(2)
@@ -310,7 +310,7 @@
 		if(3)
 			if(prob(5))
 				for(var/atom/movable/A in src)
-					A.forceMove(src.loc)
+					A.forceMove(loc)
 				qdel(src)
 
 /obj/structure/closet/proc/damage(damage)
@@ -333,7 +333,11 @@
 			if(!(--Proj.penetrating))
 				break
 
-	return
+/obj/structure/closet/blob_act(destroy)
+	if(opened)
+		qdel(src)
+	else
+		break_open()
 
 /obj/structure/closet/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(src.opened)

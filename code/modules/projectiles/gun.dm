@@ -372,7 +372,7 @@
 		var/list/mob/far_mobs = (orange(world.view * 3, user) - mobs)
 
 		for (var/mob/M in far_mobs)
-			M.playsound_local(M, far_fire_sound, rand(20, 50))
+			M.playsound_local(user, far_fire_sound, rand(20, 50))
 	else
 		for (var/mob/M in view(world.view, user))
 			M.playsound_local(user, shot_sound, rand(10, 30), FALSE)

@@ -118,6 +118,14 @@
 		list("smoke bomb",   "smoke bomb",   /obj/item/weapon/grenade/smokebomb,  6),
 		)
 
+/obj/item/rig_module/grenade_launcher/flashbang
+	name = "mounted flashbang grenade launcher"
+	desc = "A shoulder-mounted micro-explosive dispenser designed for security forces."
+
+	charges = list(
+		list("flashbang",   "flashbang",   /obj/item/weapon/grenade/flashbang,  4),
+		)
+
 /obj/item/rig_module/grenade_launcher/mfoam
 	name = "mounted foam grenade launcher"
 	desc = "A shoulder-mounted micro-explosive dispenser designed only to accept standard metal foam grenades."

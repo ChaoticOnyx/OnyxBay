@@ -38,9 +38,7 @@
 		if(3.0)
 			return
 
-obj/structure/blob_act(destroy = 0)
-	..()
-
+/obj/structure/blob_act(destroy = 0)
 	if(destroy || (prob(50)))
 		qdel(src)
 

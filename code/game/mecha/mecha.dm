@@ -693,18 +693,22 @@
 
 /obj/mecha/emp_act(severity)
 	if(use_power((cell.charge/2)/severity))
-		take_damage(50 / severity,"energy")
-	src.log_message("EMP detected",1)
-	check_for_internal_damage(list(MECHA_INT_FIRE,MECHA_INT_TEMP_CONTROL,MECHA_INT_CONTROL_LOST,MECHA_INT_SHORT_CIRCUIT),1)
+		take_damage(50 / severity, "energy")
+	log_message("EMP detected", 1)
+	check_for_internal_damage(list(MECHA_INT_FIRE, MECHA_INT_TEMP_CONTROL, MECHA_INT_CONTROL_LOST,MECHA_INT_SHORT_CIRCUIT), 1)
 	return
 
 /obj/mecha/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature>src.max_temperature)
-		src.log_message("Exposed to dangerous temperature.",1)
-		src.take_damage(5,"fire")
-		src.check_for_internal_damage(list(MECHA_INT_FIRE, MECHA_INT_TEMP_CONTROL))
+		log_message("Exposed to dangerous temperature.", 1)
+		take_damage(5, "fire")
+		check_for_internal_damage(list(MECHA_INT_FIRE, MECHA_INT_TEMP_CONTROL))
 	return
 
+/obj/mecha/blob_act(destroy, obj/effect/blob/source)
+	take_damage(30, "brute")
+	check_for_internal_damage(list(MECHA_INT_FIRE, MECHA_INT_TEMP_CONTROL, MECHA_INT_TANK_BREACH, MECHA_INT_CONTROL_LOST, MECHA_INT_SHORT_CIRCUIT))
+	return
 
 //////////////////////
 ////// AttackBy //////
