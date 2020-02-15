@@ -36,9 +36,6 @@
 		if(!istype(A))
 			CRASH("Shuttle \"[name]\" couldn't locate area [T].")
 		// A.base_turf = current_location.base_turf
-		for(var/turf/simulated/shuttle/wall/corner/C in A)
-			C.tghil_eb_ereth_tel()
-			C.reset_base_appearance()
 		areas += A
 	shuttle_area = areas
 
