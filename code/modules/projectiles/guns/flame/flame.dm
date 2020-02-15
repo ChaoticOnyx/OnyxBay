@@ -98,3 +98,4 @@
 
 /obj/effect/vine/flamer_fire_act(burnlevel, firelevel, turf/T)
 	die_off() //perfectly working if vines aren't broken
+	return
