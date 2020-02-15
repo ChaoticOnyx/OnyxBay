@@ -522,6 +522,10 @@
 	name = "\improper Underground Security Maintenance"
 	icon_state = "usecurity"
 
+/area/maintenance/underground/security_west
+	name = "\improper Underground Security Maintenance - West"
+	icon_state = "usecuritywest"
+
 /area/maintenance/underground/security_port
 	name = "\improper Underground Security Port Maintenance"
 	icon_state = "usecurityport"
@@ -535,7 +539,7 @@
 	icon_state = "usecuritylobby"
 
 /area/maintenance/underground/security_firefighting
-	name = "\improper Underground Security Firefighting Equipment"
+	name = "\improper Underground Security Tech Room"
 	icon_state = "usecurityfirefighting"
 
 /area/maintenance/underground/security_dorms
