@@ -22,6 +22,18 @@
 	name = "\improper Administration Shuttle"
 	icon_state = "shuttlered2"
 
+area/shuttle/supply/elevator
+	name = "Cargo Elevator"
+	icon_state = "shuttle3"
+
+area/shuttle/supply/elevator/upper
+	name = "Cargo Elevator Upper Deck"
+	base_turf = /turf/simulated/open
+
+area/shuttle/supply/elevator/lower
+	name = "Cargo Elevator Lower Deck"
+	base_turf = /turf/simulated/floor
+
 /area/shuttle/merchant
 	icon_state = "shuttlegrn"
 
@@ -1420,10 +1432,22 @@
 	name = "\improper Quartermasters"
 	icon_state = "quart"
 
+/area/quartermaster/breakroom
+	name = "\improper Cargo Break Room"
+	icon_state = "cargobreak"
+
 /area/quartermaster/storage
 	name = "\improper Warehouse"
 	icon_state = "quartstorage"
 	sound_env = LARGE_ENCLOSED
+
+/area/quartermaster/storage/under
+	name = "\improper Underground Cargo Warehouse"
+	icon_state = "cargounder"
+
+/area/quartermaster/storage/under/secure
+	name = "\improper Underground Cargo Storage"
+	icon_state = "cargounderstorage"
 
 /area/quartermaster/qm
 	name = "\improper Cargo - Quartermaster's Office"

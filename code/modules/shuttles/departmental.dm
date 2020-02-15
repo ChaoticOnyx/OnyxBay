@@ -37,6 +37,15 @@
 	req_access = list(access_cent_general)
 	shuttle_tag = "Transport"
 
+/obj/machinery/computer/shuttle_control/elevator
+	name = "cargo elevator control"
+	shuttle_tag = "Cargo Elevator"
+	ui_template = "shuttle_control_console_lift.tmpl"
+	icon_state = "tiny"
+	icon_keyboard = "tiny_keyboard"
+	icon_screen = "lift"
+	density = 0
+
 /*
 /obj/machinery/computer/shuttle_control/multi/turbolift
 	name = "turbolift control console"
