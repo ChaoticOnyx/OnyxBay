@@ -393,7 +393,7 @@ Helpers
 
 /datum/controller/subsystem/ticker/proc/declare_completion()
 	to_world("<br><br><br><H1>A round of [mode.name] has ended!</H1>")
-	for(var/client/C)
+	for(var/client/C in GLOB.clients)
 		if(!C.credits)
 			C.RollCredits()
 	// TODO [V] Make these credits more like represing real state of things
