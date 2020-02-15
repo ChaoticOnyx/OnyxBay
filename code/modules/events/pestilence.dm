@@ -488,7 +488,7 @@
 			to_chat(mob, "<span class='danger'>The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck.</span>")
 			var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 			if(B && B.damage < B.min_broken_damage)
-				B.take_damage(150)
+				B.take_internal_damage(150)
 			mob.apply_effect(30*multiplier, IRRADIATE, blocked = 0)
 
 // ####################################################################

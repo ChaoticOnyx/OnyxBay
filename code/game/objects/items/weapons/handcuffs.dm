@@ -127,7 +127,7 @@ var/last_chew = 0
 	H.visible_message("<span class='warning'>\The [H] chews on \his [O.name]!</span>", "<span class='warning'>You chew on your [O.name]!</span>")
 	admin_attacker_log(H, "chewed on their [O.name]!")
 
-	O.take_damage(3,0, DAM_SHARP|DAM_EDGE ,"teeth marks")
+	O.take_external_damage(3,0, DAM_SHARP|DAM_EDGE ,"teeth marks")
 
 	last_chew = world.time
 
@@ -190,7 +190,7 @@ var/last_chew = 0
 	icon = 'icons/obj/bureaucracy.dmi'
 	breakouttime = 200
 	cuff_type = "duct tape"
-	
+
 //Syndicate Cuffs. Disguised as regular cuffs, they are pretty explosive
 /obj/item/weapon/handcuffs/syndicate
 	var/countdown_time   = 3 SECONDS
@@ -210,7 +210,7 @@ var/last_chew = 0
 /obj/item/weapon/handcuffs/syndicate/on_restraint_apply(mob/user, slot)
 	if(mode == SYNDICUFFS_ON_APPLY && !charge_detonated)
 		detonate(1)
-		
+
 	..()
 
 /obj/item/weapon/handcuffs/syndicate/on_restraint_removal(mob/living/carbon/C)
@@ -258,4 +258,4 @@ var/last_chew = 0
 		sleep(countdown_time)
 
 	explosion(get_turf(src), 0, 1, 3, 0)
-	qdel(src)	
+	qdel(src)
