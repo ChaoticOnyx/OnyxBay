@@ -24,10 +24,13 @@
 
 /obj/item/weapon/storage/fancy/update_icon()
 	if(!opened)
-		src.icon_state = initial(icon_state)
-	else
-		var/key_count = count_by_type(contents, key_type)
-		src.icon_state = "[initial(icon_state)][key_count]"
+		icon_state = initial(icon_state)
+		return
+
+	var/key_count = count_by_type(contents, key_type)
+	icon_state = "[initial(icon_state)][key_count]"
+
+	. = ..()
 
 /obj/item/weapon/storage/fancy/examine(mob/user)
 	if(!..(user, 1))
@@ -112,6 +115,8 @@
 	for(var/obj/item/weapon/pen/crayon/crayon in contents)
 		overlays += image('icons/obj/crayons.dmi',crayon.colourName)
 
+	. = ..()
+
 ////////////
 //CIG PACK//
 ////////////
@@ -143,7 +148,7 @@
 	..()
 
 /obj/item/weapon/storage/fancy/cigarettes/attack(mob/living/carbon/M, mob/living/carbon/user)
-	if(!istype(M, /mob))
+	if(!ismob(M))
 		return
 
 	if(M == user && user.zone_sel.selecting == BP_MOUTH && contents.len > 0 && !user.wear_mask)
@@ -154,7 +159,7 @@
 			break
 
 		if(cig == null)
-			to_chat(user, "<span class='notice'>Looks like the packet is out of cigarettes.</span>")
+			to_chat(user, SPAN_NOTICE("Looks like the packet is out of cigarettes."))
 			return
 
 		// Instead of running equip_to_slot_if_possible() we check here first,
@@ -168,7 +173,7 @@
 		user.equip_to_slot(cig, slot_wear_mask)
 
 		reagents.maximum_volume = 5 * contents.len
-		to_chat(user, "<span class='notice'>You take a cigarette out of the pack.</span>")
+		to_chat(user, SPAN_NOTICE("You take a cigarette out of the pack.</span>"))
 		update_icon()
 	else
 		..()
@@ -298,7 +303,7 @@
 
 /obj/item/weapon/storage/fancy/vials/update_icon()
 	var/key_count = count_by_type(contents, key_type)
-	src.icon_state = "[initial(icon_state)][key_count]"
+	icon_state = "[initial(icon_state)][key_count]"
 
 /obj/item/weapon/storage/lockbox/vials
 	name = "secure vial storage box"
@@ -313,35 +318,10 @@
 	req_access = list(access_virology)
 	can_hold = list(/obj/item/weapon/reagent_containers/glass/beaker/vial)
 
-/obj/item/weapon/storage/lockbox/vials/Initialize()
-	. = ..()
-	update_icon()
-
-
-/obj/item/weapon/storage/lockbox/vials/attack_hand(mob/user)
-	if ((src.loc == user) && (src.locked == 1))
-		to_chat(usr, SPAN_WARN("[src] is locked and cannot be opened!"))
-	else if ((src.loc == user) && (!src.locked))
-		src.open(usr)
-	else
-		..()
-		for(var/mob/M in range(1))
-			if (M.s_active == src)
-				src.close(M)
-	src.add_fingerprint(user)
-	return
-
-/obj/item/weapon/storage/lockbox/vials/MouseDrop(over_object, src_location, over_location)
-	if (locked)
-		src.add_fingerprint(usr)
-		to_chat(usr, SPAN_WARN("[src] is locked and cannot be opened!"))
-		return
-	..()
-
 /obj/item/weapon/storage/lockbox/vials/update_icon()
 	var/total_contents = count_by_type(contents, /obj/item/weapon/reagent_containers/glass/beaker/vial)
-	src.icon_state = "vialbox[Floor(total_contents)]"
-	src.overlays.Cut()
+	overlays.Cut()
+	icon_state = "vialbox[Floor(total_contents)]"
 	if (!broken)
 		overlays += image(icon, src, "led[locked]")
 		if(locked)
@@ -349,7 +329,3 @@
 	else
 		overlays += image(icon, src, "ledb")
 	return
-
-/obj/item/weapon/storage/lockbox/vials/attackby(obj/item/weapon/W, mob/user)
-	. = ..()
-	update_icon()
