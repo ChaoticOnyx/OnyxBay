@@ -102,7 +102,7 @@
 	//mask
 	if(wear_mask && !skipmask)
 		var/descriptor = "on [T.his] face"
-		if(istype(wear_mask, /obj/item/weapon/grenade) && check_has_mouth())
+		if(istype(wear_mask, /obj/item/weapon/grenade))
 			descriptor = "in [T.his] mouth"
 
 		if(wear_mask.blood_DNA)
