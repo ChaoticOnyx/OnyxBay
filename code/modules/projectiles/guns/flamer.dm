@@ -156,18 +156,17 @@
 		return
 
 	if(isScrewdriver(W))//Taking this apart
-		var/turf/T = get_turf(src)
 		var/electonics_to_remove = input(user, "Which part do you want to remove?") as null|anything in attached_electronics
 
 		if(!electonics_to_remove) return
 		if(istype(electonics_to_remove, /obj/item/device/assembly/igniter))
-			igniter.loc = T
+			igniter.loc = user.loc
 			igniter = null
 			playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 			attached_electronics -= electonics_to_remove
 
 		if(istype(electonics_to_remove, /obj/item/device/analyzer))
-			gauge.loc = T
+			gauge.loc = user.loc
 			gauge = null
 			playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 			attached_electronics -= electonics_to_remove
