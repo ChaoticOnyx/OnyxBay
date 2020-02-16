@@ -90,6 +90,7 @@
 		remove_fuel_tank(user)
 		return
 	. = ..()
+	update_icon()
 
 /obj/item/weapon/gun/flamer/attackby(obj/item/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
