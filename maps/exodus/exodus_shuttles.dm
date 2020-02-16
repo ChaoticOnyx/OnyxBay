@@ -158,6 +158,7 @@
 	name = "Top Deck"
 	landmark_tag = "nav_cargo_elevator_top"
 	autoset = 0
+	base_area = /area/quartermaster/storage
 
 /obj/effect/shuttle_landmark/elevator/bottom
 	name = "Lower Deck"

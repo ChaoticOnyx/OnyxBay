@@ -22,15 +22,15 @@
 	name = "\improper Administration Shuttle"
 	icon_state = "shuttlered2"
 
-area/shuttle/supply/elevator
+/area/shuttle/supply/elevator
 	name = "Cargo Elevator"
 	icon_state = "shuttle3"
 
-area/shuttle/supply/elevator/upper
+/area/shuttle/supply/elevator/upper
 	name = "Cargo Elevator Upper Deck"
 	base_turf = /turf/simulated/open
 
-area/shuttle/supply/elevator/lower
+/area/shuttle/supply/elevator/lower
 	name = "Cargo Elevator Lower Deck"
 	base_turf = /turf/simulated/floor
 
