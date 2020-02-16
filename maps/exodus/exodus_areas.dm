@@ -618,6 +618,10 @@
 	name = "\improper Underground Medbay Maintenance"
 	icon_state = "umedbay"
 
+/area/maintenance/underground/medbay/south
+	name = "\improper Underground Medbay Maintenance - South"
+	icon_state = "umedbay"
+
 /area/maintenance/underground/dormitories
 	name = "\improper Underground Dormitories Maintenance"
 	icon_state = "udorm"
@@ -1271,8 +1275,16 @@
 	name = "\improper Medbay Hallway - Fore"
 	icon_state = "medbay3"
 
+/area/medical/medbay3/underground
+	name = "\improper Underground Medbay Hallway - Fore"
+	icon_state = "medbay3"
+
 /area/medical/medbay4
 	name = "\improper Medbay Hallway - Aft"
+	icon_state = "medbay4"
+
+/area/medical/medbay4/underground
+	name = "\improper Underground Medbay Hallway - Aft"
 	icon_state = "medbay4"
 
 /area/medical/reception
@@ -1310,7 +1322,11 @@
 	icon_state = "patients"
 
 /area/medical/patient_wing
-	name = "\improper Patient Wing"
+	name = "\improper Underground Patient Ward"
+	icon_state = "patients"
+
+/area/medical/patient_wing/garden
+	name = "\improper Medbay Garden"
 	icon_state = "patients"
 
 /area/medical/patient_wing/washroom

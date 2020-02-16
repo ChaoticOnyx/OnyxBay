@@ -277,6 +277,10 @@
 	icon_state = "medbay4"
 	ambience = list('sound/ambience/signal.ogg')
 
+/area/medical/biostorage/underground
+	name = "\improper Undergound Medbay Storage"
+	icon_state = "medbay4"
+
 /area/medical/chemistry
 	name = "\improper Chemistry"
 	icon_state = "chem"
@@ -292,6 +296,10 @@
 
 /area/medical/sleeper
 	name = "\improper Emergency Treatment Centre"
+	icon_state = "exam_room"
+
+/area/medical/sleeper/underground
+	name = "\improper Underground Emergency Treatment Room"
 	icon_state = "exam_room"
 
 /area/medical/surgery
