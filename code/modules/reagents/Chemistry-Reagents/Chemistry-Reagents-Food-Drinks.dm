@@ -2398,13 +2398,13 @@
 
 /datum/reagent/ethanol/witcher
 	name = "Witcher"
-	description = "�People,� Geralt turned his head, �like to invent monsters and monstrosities. Then they seem less monstrous themselves�"
+	description = "\"People,\" Geralt turned his head, \"like to invent monsters and monstrosities. Then they seem less monstrous themselves\""
 	color = "#f6f293"
 	strength = 15
 	taste_description = "potion"
 
 	glass_name = "witchers' drink"
-	glass_desc = "�People,� Geralt turned his head, �like to invent monsters and monstrosities. Then they seem less monstrous themselves�"
+	glass_desc = "\"People,\" Geralt turned his head, \"like to invent monsters and monstrosities. Then they seem less monstrous themselves\""
 
 /datum/reagent/ethanol/witcher/wolf
 	name = "School of the Wolf"

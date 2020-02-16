@@ -120,7 +120,7 @@
 /obj/item/organ/internal/proc/is_bruised()
 	return damage >= min_bruised_damage
 
-obj/item/organ/internal/take_general_damage(amount, silent = FALSE)
+/obj/item/organ/internal/take_general_damage(amount, silent = FALSE)
 	take_internal_damage(amount, silent)
 
 /obj/item/organ/internal/proc/take_internal_damage(amount, silent = FALSE)
