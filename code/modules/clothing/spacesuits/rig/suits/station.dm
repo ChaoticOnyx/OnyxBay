@@ -44,7 +44,7 @@
 	icon_state = "engineering_rig"
 	armor = list(melee = 75, bullet = 35, laser = 35,energy = 15, bomb = 50, bio = 100, rad = 100)
 	online_slowdown = 2
-	offline_slowdown = 6
+	offline_slowdown = 10
 	offline_vision_restriction = TINT_HEAVY
 
 	chest_type = /obj/item/clothing/suit/space/rig/industrial
@@ -52,7 +52,7 @@
 	boot_type = /obj/item/clothing/shoes/magboots/rig/industrial
 	glove_type = /obj/item/clothing/gloves/rig/industrial
 
-	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/weapon/storage/ore,/obj/item/device/t_scanner,/obj/item/weapon/pickaxe, /obj/item/weapon/rcd)
+	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/weapon/storage/ore,/obj/item/device/t_scanner,/obj/item/weapon/pickaxe, /obj/item/weapon/rcd, /obj/item/weapon/gun/energy/kinetic_accelerator, /obj/item/weapon/shovel, /obj/item/weapon/ore_radar, /obj/item/weapon/resonator)
 
 	req_access = list()
 	req_one_access = list()
