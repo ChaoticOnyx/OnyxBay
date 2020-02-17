@@ -199,7 +199,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<span class='warning'>[user]'s [tool.name] slips, damaging the internal structure of [target]'s [affected.name].</span>",
 	"<span class='warning'>Your [tool.name] slips, damaging the internal structure of [target]'s [affected.name].</span>")
-	affected.take_damage(0, rand(5,10), 0, used_weapon = tool)
+	affected.take_external_damage(0, rand(5,10), 0, used_weapon = tool)
 	//target.apply_damage(rand(5,10), BURN, affected)
 
 //////////////////////////////////////////////////////////////////
@@ -319,9 +319,9 @@
 	target.adjustToxLoss(5)
 	affected.createwound(CUT, 5)
 
-	for(var/obj/item/organ/I in affected.internal_organs)
+	for(var/obj/item/organ/internal/I in affected.internal_organs)
 		if(I)
-			I.take_damage(rand(3,5),0)
+			I.take_internal_damage(rand(3,5), 0)
 
 //////////////////////////////////////////////////////////////////
 //	robotic organ detachment surgery step

@@ -23,10 +23,10 @@
 				var/can_damage = I.max_damage - I.damage
 				if(can_damage > 0)
 					if(dam > can_damage)
-						I.take_damage(can_damage, silent=TRUE)
+						I.take_internal_damage(can_damage, silent=TRUE)
 						dam -= can_damage
 					else
-						I.take_damage(dam, silent=TRUE)
+						I.take_internal_damage(dam, silent=TRUE)
 						dam = 0
 		if(dam)
 			M.adjustToxLoss(target_organ ? (dam * 0.75) : dam)
@@ -669,7 +669,7 @@
 			H.zombify()
 		else if (prob(10))
 			to_chat(H, "<span class='warning'>You feel terribly ill!</span>")
-			
+
 /datum/reagent/vecuronium_bromide/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
@@ -691,4 +691,4 @@
 		M.eye_blurry = max(M.eye_blurry, 10)
 
 	if(M.chem_doses[type] > 1 * threshold)
-		M.adjustToxLoss(removed)			
+		M.adjustToxLoss(removed)

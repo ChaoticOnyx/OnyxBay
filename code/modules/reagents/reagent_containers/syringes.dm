@@ -347,7 +347,7 @@
 			return
 
 		user.visible_message("<span class='danger'>[user] stabs [target] in \the [hit_area] with [src.name]!</span>")
-		affecting.take_damage(3)
+		affecting.take_external_damage(3)
 
 	else
 		user.visible_message("<span class='danger'>[user] stabs [target] with [src.name]!</span>")

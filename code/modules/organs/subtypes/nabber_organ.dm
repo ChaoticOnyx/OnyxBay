@@ -19,7 +19,7 @@
 
 /obj/item/organ/internal/eyes/nabber/additional_flash_effects(intensity)
 	if(is_usable())
-		take_damage(max(0, 6 * (intensity)))
+		take_internal_damage(max(0, 6 * (intensity)))
 		return 1
 	else
 		return -1
@@ -164,7 +164,7 @@
 				owner.Paralyse(1)
 			for(var/obj/item/organ/internal/I in owner.internal_organs)
 				if(prob(5))
-					I.take_damage(5)
+					I.take_internal_damage(5)
 	..()
 
 /obj/item/organ/external/chest/nabber
