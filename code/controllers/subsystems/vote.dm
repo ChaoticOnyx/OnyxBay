@@ -100,7 +100,7 @@ SUBSYSTEM_DEF(vote)
 			if(vote_datum.can_run(C.mob))
 				. += "[capitalize(vote_datum.name)]"
 			else
-				. += "<font color='grey'>[capitalize(vote_datum.name)] (Disallowed)</font>"
+				. += "<font color='grey'>[capitalize(vote_datum.name)]</font>"
 			. += "</a>"
 			var/toggle = vote_datum.check_toggle()
 			if(admin && toggle)
@@ -117,8 +117,10 @@ SUBSYSTEM_DEF(vote)
 	if(active_vote)
 		win_x = active_vote.win_x
 		win_y = active_vote.win_y
-	show_browser(user, interface(user.client),"window=vote;size=[win_x]x[win_y]")
-	onclose(user, "vote", src)
+	var/datum/browser/popup = new(user, "vote", "Voting Panel", win_x, win_y)
+	popup.set_content(interface(user.client))
+	popup.open(use_onclose = TRUE)
+	onclose(user, "vote", src)	
 
 /datum/controller/subsystem/vote/proc/close_panel(mob/user)
 	show_browser(user, null, "window=vote")
