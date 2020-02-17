@@ -1176,7 +1176,6 @@
 #include "code\modules\admin\verbs\possess_mob.dm"
 #include "code\modules\admin\verbs\pray.dm"
 #include "code\modules\admin\verbs\randomverbs.dm"
-#include "code\modules\admin\verbs\SDQL.dm"
 #include "code\modules\admin\verbs\striketeam.dm"
 #include "code\modules\admin\verbs\ticklag.dm"
 #include "code\modules\admin\verbs\trading_verbs.dm"
