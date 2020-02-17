@@ -134,8 +134,8 @@
 	spawn_positions = 1
 	supervisors = "uncommon sense"
 	selection_color = "#515151"
-	access = list(access_maint_tunnels)
-	minimal_access = list(access_maint_tunnels)
+	access = list(access_maint_tunnels, access_clown)
+	minimal_access = list(access_maint_tunnels, access_clown)
 	minimal_player_age = 10
 	outfit_type = /decl/hierarchy/outfit/job/clown
 
@@ -160,8 +160,8 @@
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#515151"
-	access = list(access_maint_tunnels)
-	minimal_access = list(access_maint_tunnels)
+	access = list(access_maint_tunnels, access_mime)
+	minimal_access = list(access_maint_tunnels, access_mime)
 	minimal_player_age = 10
 	outfit_type = /decl/hierarchy/outfit/job/mime
 
