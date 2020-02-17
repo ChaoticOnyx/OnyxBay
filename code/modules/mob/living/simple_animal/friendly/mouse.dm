@@ -113,10 +113,10 @@
 
 /mob/living/simple_animal/mouse/attack_hand(mob/living/carbon/human/user)
 	if(holding_item && user.a_intent == I_HELP)
-		holding_item.dropInto(src)
-		holding_item = null
+		user.put_in_hands(holding_item)
 		user.visible_message(SPAN_NOTICE("[user] removes \the [holding_item] from \the [name]."),
-								SPAN_NOTICE("You remove \the [holding_item] from \the [name]."))
+							SPAN_NOTICE("You remove \the [holding_item] from \the [name]."))
+		holding_item = null
 		playsound(loc, 'sound/effects/duct_tape_peeling_off.ogg', 50, 1)
 		update_icon()
 	else
@@ -124,7 +124,7 @@
 
 /mob/living/simple_animal/mouse/attackby(obj/item/O, mob/user)
 	if(!holding_item && user.a_intent == I_HELP && istype(user.get_inactive_hand(), /obj/item/weapon/tape_roll) && O.w_class == ITEM_SIZE_TINY)
-		user.visible_message(SPAN_NOTICE("[user] trying to attach \a [O] with duct tape to \the [name]."),
+		user.visible_message(SPAN_NOTICE("[user] is trying to attach \a [O] with duct tape to \the [name]."),
 							SPAN_NOTICE("You are trying to attach \a [O] with duct tape to \the [name]."))
 		if(do_after(user, 3 SECONDS, src))
 			holding_item = O
@@ -140,7 +140,7 @@
 /mob/living/simple_animal/mouse/update_icon()
 	overlays.Cut()
 	if(holding_item)
-		overlays += "holding_item[stat == CONSCIOUS ? "" : "_dead"]"
+		overlays += "holding_item[stat ? stat == DEAD ? "_dead" : "_lay" : ""]"
 
 /*
  * Mouse types
