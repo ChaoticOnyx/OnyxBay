@@ -339,6 +339,14 @@
 	name = "\improper Research and Development"
 	icon_state = "research"
 
+/area/rnd/research_under
+	name = "\improper Underground Research Wing"
+	icon_state = "uresearch"
+
+/area/rnd/research_under/breakroom
+	name = "\improper Underground Research Wing - Break Room"
+	icon_state = "uresearchbreak"
+
 /area/rnd/research_locker
 	name = "\improper Research Locker Room"
 	icon_state = "research"
