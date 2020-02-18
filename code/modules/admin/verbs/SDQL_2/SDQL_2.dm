@@ -34,7 +34,7 @@
 		return
 
 	var/query_log = "[key_name(src)] executed SDQL query: \"[query_text]\"."
-	to_world_log(query_log)
+	log_to_dd(query_log)
 	log_and_message_admins(query_log)
 	sleep(-1) // Incase the server crashes due to a huge query, we allow the server to log the above things (it might just delay it).
 

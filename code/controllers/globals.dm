@@ -28,8 +28,8 @@ GLOBAL_REAL(GLOB, /datum/controller/global_vars)
 		else
 			crash_with("Expected [global_vars] global init procs, were [global_procs].")
 	catch(var/exception/e)
-		to_world_log("Vars to be initialized: [json_encode((vars - gvars_datum_in_built_vars))]")
-		to_world_log("Procs used to initialize: [json_encode(typesof(/datum/controller/global_vars/proc))]")
+		log_to_dd("Vars to be initialized: [json_encode((vars - gvars_datum_in_built_vars))]")
+		log_to_dd("Procs used to initialize: [json_encode(typesof(/datum/controller/global_vars/proc))]")
 		throw e
 
 

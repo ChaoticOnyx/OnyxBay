@@ -27,7 +27,7 @@ GLOBAL_LIST_EMPTY(banned_ruin_ids)
 				ruins -= ruin
 				continue //Too expensive, get rid of it and try again
 		else
-			log_world("Ruin loader had no ruins to pick from with [budget] left to spend.")
+			log_to_dd("Ruin loader had no ruins to pick from with [budget] left to spend.")
 			break
 		// Try to place it
 		var/sanity = 20
@@ -56,7 +56,7 @@ GLOBAL_LIST_EMPTY(banned_ruin_ids)
 
 			if(!valid)
 				continue
-			log_world("Ruin \"[ruin.name]\" placed at ([T.x], [T.y], [T.z])")
+			log_to_dd("Ruin \"[ruin.name]\" placed at ([T.x], [T.y], [T.z])")
 
 			load_ruin(T, ruin)
 			if(ruin.cost >= 0)
