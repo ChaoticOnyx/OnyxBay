@@ -127,6 +127,8 @@
 		user.visible_message(SPAN_NOTICE("[user] is trying to attach \a [O] with duct tape to \the [name]."),
 							SPAN_NOTICE("You are trying to attach \a [O] with duct tape to \the [name]."))
 		if(do_after(user, 3 SECONDS, src))
+			if(holding_item)
+				return
 			holding_item = O
 			user.drop_item()
 			O.loc = src
