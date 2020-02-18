@@ -79,6 +79,9 @@
 	if(!ishuman(victim))
 		to_chat(usr, SPAN_DANGER("[victim] can't be undressed for some biological reasons."))
 		return
+	if(istype(victim.back, /obj/item/weapon/rig))
+		to_chat(usr, SPAN_DANGER("\The [victim.back] must be removed."))
+		return
 	if(!locate(/obj/item/clothing) in victim.contents)
 		to_chat(usr, SPAN_DANGER("[victim] has no clothes to remove."))
 		return
