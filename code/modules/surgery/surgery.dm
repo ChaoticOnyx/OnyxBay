@@ -102,7 +102,7 @@
 	. = max(., 0)
 
 /datum/surgery_step/proc/clotches_check(user, target, target_zone)
-	if(length(get_target_clothes(target, target_zone))) // We're unable to perform surgery due to too much interfering clothing.
+	if(length(get_target_clothes(target, target_zone, FALSE)))
 		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
 		return SURGERY_BLOCKED
 

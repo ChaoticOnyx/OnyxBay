@@ -350,4 +350,4 @@ proc/age2agedescription(age)
 		return
 
 	var/obj/item/organ/O = target.organs_by_name[target_zone]
-	return O.name
+	return O ? O.name : target_zone
