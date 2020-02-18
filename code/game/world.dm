@@ -341,7 +341,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		var/ckey = input["ckey"]	
+		var/ckey = input["ckey"]
 		var/message
 		if(!input["isadmin"])  // le costil, remove when discord-bot will be fixed ~HonkyDonky
 			message = rhtml_encode(input["ooc"])
@@ -351,7 +351,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			return
 		if(!config.vars["ooc_allowed"]&&!input["isadmin"])
 			return "globally muted"
-		var/sent_message = "[create_text_tag("DISCORD OOC:")] <EM>[ckey]:</EM> <span class='message'>[message]</span>"
+		var/sent_message = "[create_text_tag("DISCORD OOC:")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
 				continue //sanity
@@ -500,8 +500,12 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	Master.Shutdown()
 
-	if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
-		for(var/client/C in GLOB.clients)
+	for(var/client/C in GLOB.clients)
+		var/datum/chatOutput/co = C.chatOutput
+		if(co)
+			co.ehjax_send(data = "roundrestart")
+
+		if(config.server) //if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 			C << link("byond://[config.server]")
 
 	if(config.wait_for_sigusr1_reboot && reason != 3)
