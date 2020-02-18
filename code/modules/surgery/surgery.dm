@@ -101,8 +101,8 @@
 			. -= 10
 	. = max(., 0)
 
-/datum/surgery_step/proc/clotches_check(user, target, target_zone)
-	if(length(get_target_clothes(target, target_zone, FALSE)))
+/proc/clothes_check(user, target, target_zone)
+	if(length(get_target_clothes(target, target_zone)))
 		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
 		return SURGERY_BLOCKED
 
@@ -114,7 +114,6 @@
 		germ_level = user.gloves.germ_level
 
 	E.germ_level = max(germ_level,E.germ_level) //as funny as scrubbing microbes out with clean gloves is - no.
-
 
 /obj/item/proc/do_surgery(mob/living/carbon/M, mob/living/user)
 	if(!istype(M))
@@ -130,7 +129,7 @@
 		if(S.tool_quality(src))
 			var/step_is_valid = S.can_use(user, M, zone, src)
 			if(step_is_valid && S.is_valid_target(M))
-				if(S.clothes_penalty && S.clotches_check(user, M, zone) == SURGERY_BLOCKED)
+				if(S.clothes_penalty && clothes_check(user, M, zone) == SURGERY_BLOCKED)
 					return 1
 				if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
 					return 1
