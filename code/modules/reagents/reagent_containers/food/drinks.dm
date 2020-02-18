@@ -14,6 +14,7 @@
 	var/base_icon = null // Base icon name for fill states
 	pickup_sound = "drink_pickup"
 	pull_sound = "pull_glass"
+	can_be_splashed = TRUE
 
 /obj/item/weapon/reagent_containers/food/drinks/on_reagent_change()
 	update_icon()
@@ -45,13 +46,6 @@
 		return
 	if(standard_pour_into(user, target))
 		return
-	if(user.a_intent == I_HURT)
-		if(standard_splash_mob(user, target))
-			return
-		if(reagents?.total_volume)
-			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [target].")) //They are on harm intent, aka wanting to spill it.
-			reagents.splash(target, reagents.total_volume)
-			return
 	return ..()
 
 /obj/item/weapon/reagent_containers/food/drinks/standard_feed_mob(mob/user, mob/target)
