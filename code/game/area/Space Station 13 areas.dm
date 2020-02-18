@@ -150,6 +150,11 @@ area/space/atmosalert()
 	name = "\improper Xenobiology Lab"
 	icon_state = "xeno_lab"
 
+/area/rnd/xenobiology/dorm
+	name = "\improper Xenobiology Lab Dormitories"
+	icon_state = "xeno_lab_dorm"
+
+
 /area/rnd/xenobiology/xenoflora
 	name = "\improper Xenoflora Lab"
 	icon_state = "xeno_f_lab"
