@@ -79,7 +79,7 @@
 	if(!ishuman(victim))
 		to_chat(usr, SPAN_DANGER("[victim] can't be undressed for some biological reasons."))
 		return
-	if(istype(victim.back, /obj/item/weapon/rig))
+	if(istype(victim.back, /obj/item/weapon/rig) && !victim.back.mob_can_unequip(victim, slot_back, TRUE))
 		to_chat(usr, SPAN_DANGER("\The [victim.back] must be removed."))
 		return
 	if(!locate(/obj/item/clothing) in victim.contents)
@@ -99,6 +99,8 @@
 		if(!victim)
 			return
 		for(var/obj/item/clothing/C in victim.contents)
+			if(istype(C, /obj/item/clothing/mask/breath/anesthetic))
+				continue
 			victim.drop_from_inventory(C)
 			use_power_oneoff(100)
 		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [victim]."),
