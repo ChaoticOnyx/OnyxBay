@@ -182,7 +182,7 @@
 		if(isliving(AM))
 			var/mob/living/L = AM
 			var/injection_status = L.can_inject(null, BP_CHEST)
-			log_world("Injection status? [injection_status]")
+			log_to_dd("Injection status? [injection_status]")
 			if(!injection_status)
 				activate_pin(3)
 				return
