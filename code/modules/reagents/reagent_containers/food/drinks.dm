@@ -15,6 +15,11 @@
 	pickup_sound = "drink_pickup"
 	pull_sound = "pull_glass"
 
+/obj/item/weapon/reagent_containers/food/drinks/Initialize()
+	. = ..()
+	if(is_open_container())
+		verbs += .proc/drink_whole
+
 /obj/item/weapon/reagent_containers/food/drinks/on_reagent_change()
 	update_icon()
 	return
@@ -27,6 +32,7 @@
 	playsound(loc,'sound/effects/canopen.ogg', rand(10,50), 1)
 	to_chat(user, "<span class='notice'>You open \the [src] with an audible pop!</span>")
 	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
+	verbs += .proc/drink_whole
 
 /obj/item/weapon/reagent_containers/food/drinks/attack(mob/M as mob, mob/user as mob, def_zone)
 	if(force && !(item_flags & ITEM_FLAG_NO_BLUDGEON) && user.a_intent == I_HURT)
@@ -102,6 +108,51 @@
 		SetName(initial(name))
 		desc = initial(desc)
 
+/obj/item/weapon/reagent_containers/food/drinks/proc/drink_whole()
+	set category = "Object"
+	set name = "Drink Down"
+	set src in usr
+
+	var/mob/living/carbon/C = loc
+	if(!ishuman(C))
+		return
+
+	if(!istype(C.get_active_hand(), src))
+		to_chat(C, SPAN_WARNING("You need to hold \the [src] in hands!"))
+		return
+
+	if(is_open_container())
+		if(!C.check_has_mouth())
+			to_chat(C, "How do you intend to drink \the [src]? You don't have a mouth!")
+			return
+		var/obj/item/blocked = C.check_mouth_coverage()
+		if(blocked)
+			to_chat(C, SPAN_WARNING("\The [blocked] is in the way!"))
+			return
+
+		if(reagents.total_volume > 30) // 30 equates to 3 SECONDS.
+			C.visible_message(\
+				SPAN_NOTICE("[C] prepares to drink down [src]."),\
+				SPAN_NOTICE("You prepare to drink down [src]."))
+			playsound(C, 'sound/items/drinking.ogg', reagents.total_volume, 1)
+
+		if(!do_after(C, reagents.total_volume))
+			if(!Adjacent(C)) return
+			standard_splash_mob(src, src)
+			C.visible_message(\
+				SPAN_DANGER("[C] splashed \the [src]'s contents on self while trying drink it down."),\
+				SPAN_DANGER("You splash \the [src]'s contents on yourself!"))
+			return
+
+		else
+			if(!Adjacent(C)) return
+			C.visible_message(\
+				SPAN_NOTICE("[C] drinked down the whole [src]!"),\
+				SPAN_NOTICE("You drink down the whole [src]!"))
+			playsound(C, 'sound/items/drinking_after.ogg', reagents.total_volume, 1)
+			reagents.trans_to_mob(C, reagents.total_volume, CHEM_INGEST)
+	else
+		to_chat(C, SPAN_NOTICE("You need to open \the [src] first!"))
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Drinks. END
