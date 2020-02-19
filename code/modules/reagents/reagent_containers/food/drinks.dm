@@ -14,6 +14,7 @@
 	var/base_icon = null // Base icon name for fill states
 	pickup_sound = "drink_pickup"
 	pull_sound = "pull_glass"
+	can_be_splashed = TRUE
 
 /obj/item/weapon/reagent_containers/food/drinks/on_reagent_change()
 	update_icon()
@@ -38,7 +39,8 @@
 	return 0
 
 /obj/item/weapon/reagent_containers/food/drinks/afterattack(obj/target, mob/user, proximity)
-	if(!proximity) return
+	if(!is_open_container() || !proximity)
+		return
 
 	if(standard_dispenser_refill(user, target))
 		return
