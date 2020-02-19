@@ -258,6 +258,7 @@
 			winset(src, null, "command=\".configure graphics-hwmode on\"")
 
 	log_client_to_db()
+	SSdonations.LogAndLoadPlayerData(src)
 
 	send_resources()
 
