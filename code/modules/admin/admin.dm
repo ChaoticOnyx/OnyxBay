@@ -701,6 +701,19 @@ var/global/floorIsLava = 0
 		sleep(50)
 		world.Reboot()
 
+/datum/admins/proc/end_round()
+	set category = "Server"
+	set name = "End Round"
+	set desc="Ends the round"
+
+	if (!check_rights(R_SERVER))
+		return
+	if(GAME_STATE !=  RUNLEVEL_GAME)
+		return
+	if(alert("End the round?", "End round", "Yes", "Cancel") == "Cancel")
+		return
+
+	SSticker.force_end = TRUE
 
 /datum/admins/proc/changemap()
 	set category = "Server"
@@ -1542,3 +1555,4 @@ datum/admins/var/obj/item/weapon/paper/admin/faxreply // var to hold fax replies
 		qdel(P)
 		faxreply = null
 	return
+

@@ -80,7 +80,7 @@
 	. = ..(company, skip_prosthetics, 1)
 	has_lips = null
 
-/obj/item/organ/external/head/take_damage(brute, burn, damage_flags, used_weapon = null)
+/obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags, used_weapon = null)
 	. = ..()
 	if ((brute_dam > 40) && prob(50))
 		disfigure("brute")

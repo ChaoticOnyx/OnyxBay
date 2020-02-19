@@ -20,7 +20,6 @@ var/list/gamemode_cache = list()
 	var/log_adminwarn = 0					// Log warnings admins get about bomb construction and such
 	var/log_pda = 0							// Log pda messages
 	var/log_hrefs = 0						// Log all links clicked in-game. Could be used for debugging and tracking down exploits
-	var/log_runtime = 0						// Log world.log to a file
 	var/log_world_output = 0				// Log world.log << messages
 
 	var/sql_enabled = FALSE					// SQL storage. If you want to enable it, use sql_enabled var in config file
@@ -386,13 +385,6 @@ var/list/gamemode_cache = list()
 
 				if ("log_hrefs")
 					config.log_hrefs = 1
-
-				if ("log_runtime")
-					config.log_runtime = 1
-					var/newlog = file("data/logs/runtimes/runtime-[time2text(world.realtime, "YYYY-MM-DD")].log")
-					if(runtime_diary != newlog)
-						to_world_log("Now logging runtimes to data/logs/runtimes/runtime-[time2text(world.realtime, "YYYY-MM-DD")].log")
-						runtime_diary = newlog
 
 				if ("generate_asteroid")
 					config.generate_map = 1

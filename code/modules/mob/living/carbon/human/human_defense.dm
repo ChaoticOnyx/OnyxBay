@@ -37,9 +37,9 @@ meteor_act
 				if(I.damage < I.max_damage && (prob((I.relative_size) * (1 / max(1, victims.len)))))
 					victims += I
 			if(victims.len)
-				for(var/obj/item/organ/victim in victims)
+				for(var/obj/item/organ/internal/victim in victims)
 					damage_amt /= 2
-					victim.take_damage(damage_amt)
+					victim.take_internal_damage(damage_amt)
 
 	//Embed or sever artery
 	if(P.can_embed() && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(22.5 + max(penetrating_damage, -10)) && !(prob(50) && (organ.sever_artery())))

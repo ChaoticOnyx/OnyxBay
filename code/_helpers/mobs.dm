@@ -327,3 +327,11 @@ proc/age2agedescription(age)
 			if(target.gloves)
 				. += target.gloves
 
+/proc/organ_name_by_zone(mob/living/carbon/human/target, target_zone)
+	if(!target)
+		return
+	if(!target_zone)
+		return
+
+	var/obj/item/organ/O = target.organs_by_name[target_zone]
+	return O ? O.name : target_zone
