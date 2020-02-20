@@ -21,6 +21,7 @@
 	var/max_range = 5
 	var/pressure_for_shot = 150
 	var/fuel_for_shot = 3
+	one_hand_penalty = 2
 	var/lit = FALSE //Turn the flamer on/off
 	var/attached_electronics = list() //For gauge/igniter or other stuff
 	action_button_name = "Remove fuel tank"
