@@ -361,6 +361,11 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "igniter"
 	path = /obj/item/device/assembly/igniter
 	category = "Devices and Components"
+	
+/datum/autolathe/recipe/voice
+	name = "voice analyzer"
+	path = /obj/item/device/assembly/voice
+	category = "Devices and Components"
 
 /datum/autolathe/recipe/signaler
 	name = "signaler"
