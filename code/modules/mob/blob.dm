@@ -5,6 +5,7 @@
 	icon_state = "marker"
 
 	see_in_dark = 8
+	sight = SEE_TURFS|SEE_MOBS|SEE_OBJS|SEE_SELF
 	see_invisible = SEE_INVISIBLE_MINIMUM
 	invisibility = INVISIBILITY_OBSERVER
 
@@ -44,25 +45,25 @@
 	if (restrain_blob)
 		to_chat(src, "<b><span class='bad'>You are stealthily restraining your blob from smashing walls! Don't forget to toggle it off when you are ready!</span></b>")
 
-/mob/blob/AltClickOn(var/atom/A) // Create a shield
+/mob/blob/AltClickOn(atom/A) // Create a shield
 	var/turf/T = get_turf(A)
 
 	if (T)
 		create_shield(T)
 
-/mob/blob/CtrlClickOn(var/atom/A) // Expand blob
+/mob/blob/CtrlClickOn(atom/A) // Expand blob
 	var/turf/T = get_turf(A)
 
 	if (T)
 		expand_blob(T)
 
-/mob/blob/MiddleClickOn(var/atom/A) // Rally spores
+/mob/blob/MiddleClickOn(atom/A) // Rally spores
 	var/turf/T = get_turf(A)
 
 	if (T)
 		rally_spores(T)
 
-mob/blob/DblClickOn(var/atom/A) //Teleport view to another blob
+mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 	var/turf/T = get_turf(A)
 
 	var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)
@@ -207,7 +208,7 @@ mob/blob/DblClickOn(var/atom/A) //Teleport view to another blob
 	H.blob_healthbar.screen_loc = "EAST:[14*PIXEL_MULTIPLIER],CENTER-[8-round(total_offset/WORLD_ICON_SIZE)]:[total_offset%WORLD_ICON_SIZE]"
 	H.blob_coverRIGHT.maptext = "[blob_core.health]"
 
-/mob/blob/proc/add_points(var/points)
+/mob/blob/proc/add_points(points)
 	if(points != 0)
 		blob_points = Clamp(blob_points + points, 0, max_blob_points)
 

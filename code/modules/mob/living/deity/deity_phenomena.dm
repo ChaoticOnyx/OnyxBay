@@ -19,7 +19,7 @@
 		remove_phenomena(phenom)
 	return ..()
 
-/mob/living/deity/proc/add_phenomena(var/type)
+/mob/living/deity/proc/add_phenomena(type)
 	if(!phenomenas)
 		phenomenas = list()
 	for(var/P in phenomenas)
@@ -29,7 +29,7 @@
 	phenomenas[P.name] = P
 	return P
 
-/mob/living/deity/proc/remove_phenomena_from_intent(var/datum/phenomena/to_remove)
+/mob/living/deity/proc/remove_phenomena_from_intent(datum/phenomena/to_remove)
 	for(var/intent in intent_phenomenas)
 		var/list/intent_list = intent_phenomenas[intent]
 		for(var/modifier in intent_list)
@@ -37,24 +37,24 @@
 				intent_list[modifier] = null
 				break
 
-/mob/living/deity/proc/remove_phenomena(var/datum/phenomena/to_remove)
+/mob/living/deity/proc/remove_phenomena(datum/phenomena/to_remove)
 	phenomenas[to_remove.name] = null
 	phenomenas -= to_remove.name
 	remove_phenomena_from_intent(to_remove)
 	qdel(to_remove)
 
-/mob/living/deity/proc/populate_intent(var/intent)
+/mob/living/deity/proc/populate_intent(intent)
 	if(!intent_phenomenas[intent])
 		intent_phenomenas[intent] = list()
 	intent_phenomenas[intent] |= control_types
 
-/mob/living/deity/proc/set_phenomena(var/datum/phenomena/phenomena, var/intent, var/modifiers)
+/mob/living/deity/proc/set_phenomena(datum/phenomena/phenomena, intent, modifiers)
 	if(!intent_phenomenas[intent])
 		populate_intent(intent)
 	var/list/intent_list = intent_phenomenas[intent]
 	intent_list[modifiers] = phenomena
 
-/mob/living/deity/proc/get_phenomena(var/shift = 0, var/control = 0)
+/mob/living/deity/proc/get_phenomena(shift = 0, control = 0)
 	var/list/intent_list = intent_phenomenas[a_intent]
 	if(intent_list)
 		var/type = ""

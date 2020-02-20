@@ -11,7 +11,7 @@
 	var/state = 0
 	var/path = 0
 	var/obj/item/device/assembly_holder/detonator = null
-	var/list/beakers = new/list()
+	var/list/beakers = new /list()
 	var/list/allowed_containers = list(/obj/item/weapon/reagent_containers/glass/beaker, /obj/item/weapon/reagent_containers/glass/bottle)
 	var/affected_area = 3
 
@@ -206,7 +206,7 @@
 		B2.reagents.add_reagent(/datum/reagent/foaming_agent, 10)
 		B2.reagents.add_reagent(/datum/reagent/acid/polyacid, 10)
 
-		detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
+		detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 
 		beakers += B1
 		beakers += B2
@@ -229,7 +229,7 @@
 		B2.reagents.add_reagent(/datum/reagent/acid, 15)
 		B1.reagents.add_reagent(/datum/reagent/fuel,20)
 
-		detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
+		detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 
 		beakers += B1
 		beakers += B2
@@ -251,7 +251,7 @@
 		B2.reagents.add_reagent(/datum/reagent/phosphorus, 25)
 		B2.reagents.add_reagent(/datum/reagent/sugar, 25)
 
-		detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
+		detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 
 		beakers += B1
 		beakers += B2
@@ -272,7 +272,7 @@
 		B2.reagents.add_reagent(/datum/reagent/water, 40)
 		B2.reagents.add_reagent(/datum/reagent/space_cleaner, 10)
 
-		detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
+		detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 
 		beakers += B1
 		beakers += B2
@@ -295,7 +295,7 @@
 		B2.reagents.add_reagent(/datum/reagent/sugar, 40)
 		B2.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 80)
 
-		detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
+		detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 
 		beakers += B1
 		beakers += B2

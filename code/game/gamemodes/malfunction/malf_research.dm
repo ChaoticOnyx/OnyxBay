@@ -20,10 +20,10 @@
 	available_abilities = list()
 	unlocked_abilities = list()
 
-	available_abilities += new/datum/malf_research_ability/networking/basic_hack()
-	available_abilities += new/datum/malf_research_ability/interdiction/recall_shuttle()
-	available_abilities += new/datum/malf_research_ability/manipulation/electrical_pulse()
-	available_abilities += new/datum/malf_research_ability/passive/intellicard_interception
+	available_abilities += new /datum/malf_research_ability/networking/basic_hack()
+	available_abilities += new /datum/malf_research_ability/interdiction/recall_shuttle()
+	available_abilities += new /datum/malf_research_ability/manipulation/electrical_pulse()
+	available_abilities += new /datum/malf_research_ability/passive/intellicard_interception
 
 // Proc:		finish_research()
 // Parameters: 	None
@@ -44,7 +44,7 @@
 // Proc:		process()
 // Parameters: 	None
 // Description: Processes CPU gain and research progress based on "realtime" calculation.
-/datum/malf_research/proc/process(var/idle = 0)
+/datum/malf_research/proc/process(idle = 0)
 	if(idle)		// No power or running on APU. Do nothing.
 		last_tick = world.time
 		return

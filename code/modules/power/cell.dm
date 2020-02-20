@@ -31,18 +31,18 @@
 		src.partner = new (src.loc,partner=src)
 	..()
 
-/obj/item/weapon/cell/quantum/add_charge(var/amount)
+/obj/item/weapon/cell/quantum/add_charge(amount)
 	amount -= partner.give(amount, recurse=FALSE)
 	..(amount)
 
-/obj/item/weapon/cell/quantum/use(var/amount, var/recurse=TRUE)
+/obj/item/weapon/cell/quantum/use(amount, recurse=TRUE)
 	if(!recurse)
 		return ..(amount)
 	var/used = partner.use(amount, recurse=FALSE)
 	used += ..(amount-used)
 	return used
 
-/obj/item/weapon/cell/quantum/give(var/amount, var/recurse=TRUE)
+/obj/item/weapon/cell/quantum/give(amount, recurse=TRUE)
 	if(!recurse)
 		return ..(amount)
 	var/amount_used = partner.give(amount, recurse=FALSE)
@@ -63,7 +63,7 @@
 	. = ..()
 	update_icon()
 
-/obj/item/weapon/cell/drain_power(var/drain_check, var/surge, var/power = 0)
+/obj/item/weapon/cell/drain_power(drain_check, surge, power = 0)
 
 	if(drain_check)
 		return 1
@@ -75,7 +75,7 @@
 
 	return use(cell_amt) / CELLRATE
 
-/obj/item/weapon/cell/proc/add_charge(var/amount)
+/obj/item/weapon/cell/proc/add_charge(amount)
 	if (charge + amount > maxcharge)
 		charge = maxcharge
 	else
@@ -102,11 +102,11 @@
 	return (charge == maxcharge)
 
 // checks if the power cell is able to provide the specified amount of charge
-/obj/item/weapon/cell/proc/check_charge(var/amount)
+/obj/item/weapon/cell/proc/check_charge(amount)
 	return (charge >= amount)
 
 // use power from a cell, returns the amount actually used
-/obj/item/weapon/cell/proc/use(var/amount)
+/obj/item/weapon/cell/proc/use(amount)
 	var/used = min(charge, amount)
 	charge -= used
 	update_icon()
@@ -114,13 +114,13 @@
 
 // Checks if the specified amount can be provided. If it can, it removes the amount
 // from the cell and returns 1. Otherwise does nothing and returns 0.
-/obj/item/weapon/cell/proc/checked_use(var/amount)
+/obj/item/weapon/cell/proc/checked_use(amount)
 	if(!check_charge(amount))
 		return 0
 	use(amount)
 	return 1
 
-/obj/item/weapon/cell/proc/give(var/amount)
+/obj/item/weapon/cell/proc/give(amount)
 	if(maxcharge == charge) return 0
 	var/amount_used = min(maxcharge-charge,amount)
 	charge += amount_used
@@ -147,11 +147,15 @@
 
 /obj/item/weapon/cell/proc/get_electrocute_damage()
 	switch (charge)
-		if (1000000 to INFINITY)
+		if (5000000 to INFINITY) //Ave cells
+			return min(rand(300,650),rand(300,650))
+		if (3000000 to 5000000-1)
+			return min(rand(130,320),rand(130,320))
+		if (1000000 to 3000000-1)
 			return min(rand(50,160),rand(50,160))
 		if (200000 to 1000000-1)
 			return min(rand(25,80),rand(25,80))
-		if (100000 to 200000-1)//Ave powernet
+		if (100000 to 200000-1)
 			return min(rand(20,60),rand(20,60))
 		if (50000 to 100000-1)
 			return min(rand(15,40),rand(15,40))

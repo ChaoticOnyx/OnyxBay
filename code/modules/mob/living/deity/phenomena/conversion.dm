@@ -4,7 +4,7 @@
 	flags = PHENOMENA_NONFOLLOWER
 	expected_type = /mob/living
 
-/datum/phenomena/conversion/can_activate(var/atom/target)
+/datum/phenomena/conversion/can_activate(atom/target)
 	if(!..())
 		return 0
 	var/is_good = 0
@@ -17,7 +17,7 @@
 		return 0
 	return 1
 
-/datum/phenomena/conversion/activate(var/mob/living/L)
+/datum/phenomena/conversion/activate(mob/living/L)
 	to_chat(src,"<span class='notice'>You give \the [L] a chance to willingly convert. May they choose wisely.</span>")
 	var/choice = alert(L, "You feel a weak power enter your mind attempting to convert it.", "Conversion", "Allow Conversion", "Deny Conversion")
 	if(choice == "Allow Conversion")
@@ -32,7 +32,7 @@
 	flags = PHENOMENA_NONFOLLOWER
 	expected_type = /mob/living
 
-/datum/phenomena/forced_conversion/can_activate(var/mob/living/L)
+/datum/phenomena/forced_conversion/can_activate(mob/living/L)
 	if(!..())
 		return 0
 	var/obj/structure/deity/altar/A = locate() in get_turf(L)
@@ -42,7 +42,7 @@
 
 	return 1
 
-/datum/phenomena/forced_conversion/activate(var/mob/living/L)
+/datum/phenomena/forced_conversion/activate(mob/living/L)
 	var/obj/structure/deity/altar/A = locate() in get_turf(L)
 	A.set_target(L)
 	to_chat(linked, "<span class='notice'>You imbue \the [A] with your power, setting forth to force \the [L] to your will.</span>")

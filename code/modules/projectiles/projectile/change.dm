@@ -6,10 +6,10 @@
 	nodamage = 1
 	check_armour = "energy"
 
-/obj/item/projectile/change/on_hit(var/atom/change)
+/obj/item/projectile/change/on_hit(atom/change)
 	wabbajack(change)
 
-/obj/item/projectile/change/proc/wabbajack(var/mob/M)
+/obj/item/projectile/change/proc/wabbajack(mob/M)
 	if(istype(M, /mob/living) && M.stat != DEAD)
 		if(M.transforming)
 			return

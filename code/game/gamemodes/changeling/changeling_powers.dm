@@ -27,10 +27,11 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/damaged = FALSE
 	var/heal = 0
 	var/datum/reagents/pick_chemistry
+	var/isdetachingnow = FALSE
 
 /datum/changeling/New()
 	..()
-	pick_chemistry = new/datum/reagents(120, src)
+	pick_chemistry = new /datum/reagents(120, src)
 	if(possible_changeling_IDs.len)
 		changelingID = pick(possible_changeling_IDs)
 		possible_changeling_IDs -= changelingID
@@ -48,12 +49,12 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	chem_charges = min(max(0, chem_charges+chem_recharge_rate), chem_storage)
 	geneticdamage = max(0, geneticdamage-1)
 
-/datum/changeling/proc/GetDNA(var/dna_owner)
+/datum/changeling/proc/GetDNA(dna_owner)
 	for(var/datum/absorbed_dna/DNA in absorbed_dna)
 		if(dna_owner == DNA.name)
 			return DNA
 
-/mob/proc/absorbDNA(var/datum/absorbed_dna/newDNA)
+/mob/proc/absorbDNA(datum/absorbed_dna/newDNA)
 	var/datum/changeling/changeling = null
 	if(src.mind && src.mind.changeling)
 		changeling = src.mind.changeling
@@ -153,7 +154,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 
 //Used to dump the languages from the changeling datum into the actual mob.
-/mob/proc/changeling_update_languages(var/updated_languages)
+/mob/proc/changeling_update_languages(updated_languages)
 
 	languages = list()
 	for(var/language in updated_languages)
@@ -216,7 +217,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 				to_chat(src, "<span class='notice'>We stab [T] with the proboscis.</span>")
 				src.visible_message("<span class='danger'>[src] stabs [T] with the proboscis!</span>")
 				to_chat(T, "<span class='danger'>You feel a sharp stabbing pain!</span>")
-				affecting.take_damage(39, 0, DAM_SHARP, "large organic needle")
+				affecting.take_external_damage(39, 0, DAM_SHARP, "large organic needle")
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, T, 150))
@@ -324,7 +325,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	feedback_add_details("changeling_powers","TR")
 	return 1
 
-/mob/proc/handle_changeling_transform(var/datum/absorbed_dna/chosen_dna)
+/mob/proc/handle_changeling_transform(datum/absorbed_dna/chosen_dna)
 	src.visible_message("<span class='warning'>[src] transforms!</span>")
 
 	src.dna = chosen_dna.dna
@@ -1210,7 +1211,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		if(src)
 			qdel(src)
 
-/obj/item/weapon/finger_lockpick/afterattack(var/atom/target, var/mob/living/user, proximity)
+/obj/item/weapon/finger_lockpick/afterattack(atom/target, mob/living/user, proximity)
 	if(!target)
 		return
 	if(!proximity)
@@ -1476,7 +1477,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 				to_chat(src, "<span class='notice'>We stab [T] with the proboscis.</span>")
 				src.visible_message("<span class='danger'>[src] stabs [T] with the proboscis!</span>")
 				to_chat(T, "<span class='danger'>You feel a sharp stabbing pain!</span>")
-				affecting.take_damage(39, 0, DAM_SHARP, "large organic needle")
+				affecting.take_external_damage(39, 0, DAM_SHARP, "large organic needle")
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, T, 150))
@@ -1509,16 +1510,20 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/datum/changeling/changeling = changeling_power(10, max_stat = DEAD)
 	if(!changeling)	return
+	if(changeling.isdetachingnow)	return
 	var/mob/living/carbon/T = src
 	T.faction = "biomass"
 	var/list/detachable_limbs = T.organs.Copy()
 	for (var/obj/item/organ/external/E in detachable_limbs)
 		if (E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.is_stump())
 			detachable_limbs -= E
+	changeling.isdetachingnow = TRUE
 	var/obj/item/organ/external/organ_to_remove = input(T, "Which organ do you want to detach?") as null|anything in detachable_limbs
 	if(!organ_to_remove)
+		changeling.isdetachingnow = FALSE
 		return 0
 	if(!T.organs.Find(organ_to_remove))
+		changeling.isdetachingnow = FALSE
 		to_chat(T,"<span class='notice'>We don't have this limb!</span>")
 		return 0
 
@@ -1527,6 +1532,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(!do_after(src,10,can_move = 1,needhand = 0,incapacitation_flags = INCAPACITATION_NONE))
 		src.visible_message("<span class='notice'>\the [organ_to_remove] connecting back to [src].</span>", \
 					"<span class='danger'>We were interrupted.</span>")
+		changeling.isdetachingnow = FALSE
 		return 0
 	playsound(loc, 'sound/effects/bonebreak1.ogg', 100, 1)
 	T.mind.changeling.chem_charges -= 10
@@ -1549,6 +1555,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/mob/living/carbon/human/H = T
 	if(istype(H))
 		H.regenerate_icons()
+
+	changeling.isdetachingnow = FALSE
 
 
 /mob/proc/changeling_gib_self()
@@ -1730,7 +1738,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(T)
 		T.move_biostructure()
 
-/mob/proc/changeling_transfer_mind(var/atom/A)
+/mob/proc/changeling_transfer_mind(atom/A)
 	var/obj/item/organ/internal/biostructure/BIO
 	if (istype(src,/mob/living/carbon/brain))
 		BIO = src.loc

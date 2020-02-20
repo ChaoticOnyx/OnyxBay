@@ -28,7 +28,7 @@
 	update_icon()
 
 
-/turf/simulated/wall/proc/set_material(var/material/newmaterial, var/material/newrmaterial)
+/turf/simulated/wall/proc/set_material(material/newmaterial, material/newrmaterial)
 	material = newmaterial
 	reinf_material = newrmaterial
 	update_material()
@@ -108,7 +108,7 @@
 
 	wall_connections = dirs_to_corner_states(dirs)
 
-/turf/simulated/wall/proc/can_join_with(var/turf/simulated/wall/W)
+/turf/simulated/wall/proc/can_join_with(turf/simulated/wall/W)
 	if(material && W.material && material.icon_base == W.material.icon_base)
 		return 1
 	return 0

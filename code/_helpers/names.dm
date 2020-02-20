@@ -25,7 +25,7 @@ var/command_name = null
 	command_name = name
 	return name
 
-/proc/change_command_name(var/name)
+/proc/change_command_name(name)
 
 	command_name = name
 
@@ -115,7 +115,7 @@ var/religion_name = null
 
 	return GLOB.using_map.station_name
 
-/proc/world_name(var/name)
+/proc/world_name(name)
 	GLOB.using_map.station_name = name
 
 	if (config && config.server_name)
@@ -237,8 +237,8 @@ var/syndicate_code_response//Code response for traitors.
 
 	return code_phrase
 
-/proc/get_name(var/atom/A)
+/proc/get_name(atom/A)
 	return A.name
 
-/proc/get_name_and_coordinates(var/atom/A)
+/proc/get_name_and_coordinates(atom/A)
 	return "[A.name] \[[A.x],[A.y],[A.z]\]"

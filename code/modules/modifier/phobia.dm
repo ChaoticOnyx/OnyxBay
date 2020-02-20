@@ -24,7 +24,7 @@
 	else
 		adjust_fear(-fear_decay_rate)
 
-/datum/modifier/trait/phobia/proc/adjust_fear(var/amount)
+/datum/modifier/trait/phobia/proc/adjust_fear(amount)
 	var/last_fear = current_fear
 	current_fear = between(0, current_fear + amount, max_fear)
 

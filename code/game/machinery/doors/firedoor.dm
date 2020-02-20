@@ -256,13 +256,13 @@
 
 	return ..()
 
-/obj/machinery/door/firedoor/deconstruct(mob/user, var/moved = FALSE)
+/obj/machinery/door/firedoor/deconstruct(mob/user, moved = FALSE)
 	if (stat & BROKEN)
 		new /obj/item/weapon/circuitboard/broken(src.loc)
 	else
-		new/obj/item/weapon/airalarm_electronics(src.loc)
+		new /obj/item/weapon/airalarm_electronics(src.loc)
 
-	var/obj/structure/firedoor_assembly/FA = new/obj/structure/firedoor_assembly(src.loc)
+	var/obj/structure/firedoor_assembly/FA = new /obj/structure/firedoor_assembly(src.loc)
 	FA.anchored = !moved
 	FA.set_density(1)
 	FA.wired = 1
@@ -333,7 +333,7 @@
 	latetoggle()
 	return ..()
 
-/obj/machinery/door/firedoor/open(var/forced = 0)
+/obj/machinery/door/firedoor/open(forced = 0)
 	if(hatch_open)
 		hatch_open = 0
 		visible_message("The maintenance hatch of \the [src] closes.")
@@ -345,8 +345,7 @@
 		else
 			use_power_oneoff(360)
 	else
-		log_admin("[usr]([usr.ckey]) has forced open an emergency shutter.")
-		message_admins("[usr]([usr.ckey]) has forced open an emergency shutter.")
+		message_admins("[usr]([usr.ckey]) has forced open an emergency shutter at X:[x], Y:[y], Z:[z] Area: [get_area_name(get_area(src))].")
 	latetoggle()
 	return ..()
 
@@ -398,7 +397,7 @@
 				var/cdir = GLOB.cardinal[d]
 				for(var/i=1;i<=ALERT_STATES.len;i++)
 					if(dir_alerts[d] & (1<<(i-1)))
-						overlays += new/icon(icon,"alert_[ALERT_STATES[i]]", dir=cdir)
+						overlays += new /icon(icon,"alert_[ALERT_STATES[i]]", dir=cdir)
 						do_set_light = TRUE
 	else
 		icon_state = "door_open"

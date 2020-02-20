@@ -75,7 +75,7 @@ be able to influence the host through various commands.
 	A.examine(src)
 
 
-/mob/living/parasite/meme/New(var/mob/living/carbon/human/host)
+/mob/living/parasite/meme/New(mob/living/carbon/human/host)
 	..()
 
 	if(!istype(host)) return
@@ -138,7 +138,7 @@ be able to influence the host through various commands.
 	qdel(src)
 
 // When a meme speaks, it speaks through its host
-/mob/living/parasite/meme/say(var/message as text)
+/mob/living/parasite/meme/say(message as text)
 	message = sanitize(message)
 	if(dormant)
 		to_chat(usr, "\red You're dormant!")
@@ -150,7 +150,7 @@ be able to influence the host through various commands.
 	return host.say(message, 1)
 
 // Same as speak, just with whisper
-/mob/living/parasite/meme/whisper(var/message as text)
+/mob/living/parasite/meme/whisper(message as text)
 	message = sanitize(message)
 	if(dormant)
 		to_chat(usr, "\red You're dormant!")
@@ -194,7 +194,7 @@ be able to influence the host through various commands.
 	return 1
 
 // Let the meme choose one of his indoctrinated mobs as target
-/mob/living/parasite/meme/proc/select_indoctrinated(var/title, var/message)
+/mob/living/parasite/meme/proc/select_indoctrinated(title, message)
 
 	// Can only affect other mobs thant he host if not blinded
 	if(blinded)

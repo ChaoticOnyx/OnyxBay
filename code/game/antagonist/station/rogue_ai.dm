@@ -17,7 +17,7 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 	antaghud_indicator = "hudmalai"
 	min_player_age = 18
 
-/datum/antagonist/rogue_ai/can_become_antag(var/datum/mind/player, var/ignore_role)
+/datum/antagonist/rogue_ai/can_become_antag(datum/mind/player, ignore_role)
 	. = ..(player, ignore_role)
 	if(jobban_isbanned(player.current, "AI"))
 		return 0
@@ -32,7 +32,7 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 
 
 // Ensures proper reset of all malfunction related things.
-/datum/antagonist/rogue_ai/remove_antagonist(var/datum/mind/player, var/show_message, var/implanted)
+/datum/antagonist/rogue_ai/remove_antagonist(datum/mind/player, show_message, implanted)
 	if(..(player,show_message,implanted))
 		var/mob/living/silicon/ai/p = player.current
 		if(istype(p))
@@ -41,7 +41,7 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 	return 0
 
 // Malf setup things have to be here, since game tends to break when it's moved somewhere else. Don't blame me, i didn't design this system.
-/datum/antagonist/rogue_ai/greet(var/datum/mind/player)
+/datum/antagonist/rogue_ai/greet(datum/mind/player)
 
 	// Initializes the AI's malfunction stuff.
 	spawn(0)
@@ -80,7 +80,7 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 		to_chat(malf, "Good luck!")
 
 
-/datum/antagonist/rogue_ai/update_antag_mob(var/datum/mind/player, var/preserve_appearance)
+/datum/antagonist/rogue_ai/update_antag_mob(datum/mind/player, preserve_appearance)
 
 	// Get the mob.
 	if((flags & ANTAG_OVERRIDE_MOB) && (!player.current || (mob_path && !istype(player.current, mob_path))))
@@ -91,7 +91,7 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 	player.original = player.current
 	return player.current
 
-/datum/antagonist/rogue_ai/set_antag_name(var/mob/living/silicon/player)
+/datum/antagonist/rogue_ai/set_antag_name(mob/living/silicon/player)
 	if(!istype(player))
 		testing("rogue_ai set_antag_name called on non-silicon mob [player]!")
 		return

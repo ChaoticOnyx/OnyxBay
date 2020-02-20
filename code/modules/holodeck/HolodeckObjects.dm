@@ -147,7 +147,7 @@
 		..()
 	return
 
-/obj/structure/window/reinforced/holowindow/shatter(var/display_message = 1)
+/obj/structure/window/reinforced/holowindow/shatter(display_message = 1)
 	playsound(src, "window_breaking", 70, 1)
 	if(display_message)
 		visible_message("[src] fades away as it shatters!")
@@ -188,7 +188,7 @@
 
 	return
 
-/obj/machinery/door/window/holowindoor/shatter(var/display_message = 1)
+/obj/machinery/door/window/holowindoor/shatter(display_message = 1)
 	src.set_density(0)
 	playsound(src, "window_breaking", 70, 1)
 	if(display_message)
@@ -375,7 +375,7 @@
 	..()
 	set_light(2) //hologram lighting
 
-/mob/living/simple_animal/hostile/carp/holodeck/proc/set_safety(var/safe)
+/mob/living/simple_animal/hostile/carp/holodeck/proc/set_safety(safe)
 	if (safe)
 		faction = "neutral"
 		melee_damage_lower = 0

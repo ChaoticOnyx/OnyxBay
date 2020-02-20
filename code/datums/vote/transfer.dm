@@ -54,10 +54,3 @@
 /datum/vote/transfer/mob_not_participating(mob/user)
 	if((. = ..()))
 		return
-
-/datum/vote/transfer/check_toggle()
-	return config.allow_vote_restart ? "Allowed" : "Disallowed"
-
-/datum/vote/transfer/toggle(mob/user)
-	if(is_admin(user))
-		config.allow_vote_restart = !config.allow_vote_restart

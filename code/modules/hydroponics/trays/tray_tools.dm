@@ -28,7 +28,7 @@
 	if(href_list["print"])
 		print_report(usr)
 
-/obj/item/device/analyzer/plant_analyzer/proc/print_report(var/mob/living/user)
+/obj/item/device/analyzer/plant_analyzer/proc/print_report(mob/living/user)
 	if(!last_data)
 		to_chat(user, "There is no scan data to print.")
 		return

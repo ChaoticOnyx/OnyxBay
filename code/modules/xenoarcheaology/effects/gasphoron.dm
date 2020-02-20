@@ -6,7 +6,7 @@
 	effect = pick(EFFECT_TOUCH, EFFECT_AURA)
 	effect_type = pick(EFFECT_BLUESPACE, EFFECT_SYNTH)
 
-/datum/artifact_effect/gasphoron/DoEffectTouch(var/mob/user)
+/datum/artifact_effect/gasphoron/DoEffectTouch(mob/user)
 	if(holder)
 		var/turf/holder_loc = holder.loc
 		if(istype(holder_loc))

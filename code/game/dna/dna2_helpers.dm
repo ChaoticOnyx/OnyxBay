@@ -14,14 +14,14 @@
 
 // DNA Gene activation boundaries, see dna2.dm.
 // Returns a list object with 4 numbers.
-/proc/GetDNABounds(var/block)
+/proc/GetDNABounds(block)
 	var/list/BOUNDS=dna_activity_bounds[block]
 	if(!istype(BOUNDS))
 		return DNA_DEFAULT_BOUNDS
 	return BOUNDS
 
 // Give Random Bad Mutation to M
-/proc/randmutb(var/mob/living/M)
+/proc/randmutb(mob/living/M)
 	if(!M) return
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -32,7 +32,7 @@
 	M.dna.SetSEState(block, 1)
 
 // Give Random Good Mutation to M
-/proc/randmutg(var/mob/living/M)
+/proc/randmutg(mob/living/M)
 	if(!M) return
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -43,13 +43,13 @@
 	M.dna.SetSEState(block, 1)
 
 // Random Appearance Mutation
-/proc/randmuti(var/mob/living/M)
+/proc/randmuti(mob/living/M)
 	if(!M) return
 	M.dna.check_integrity()
 	M.dna.SetUIValue(rand(1,DNA_UI_LENGTH),rand(1,4095))
 
 // Scramble UI or SE.
-/proc/scramble(var/UI, var/mob/M, var/prob)
+/proc/scramble(UI, mob/M, prob)
 	if(!M)	return
 	M.dna.check_integrity()
 	if(UI)
@@ -132,7 +132,7 @@
 // Use mob.UpdateAppearance() instead.
 
 // Simpler. Don't specify UI in order for the mob to use its own.
-/mob/proc/UpdateAppearance(var/list/UI=null)
+/mob/proc/UpdateAppearance(list/UI=null)
 	if(istype(src, /mob/living/carbon/human))
 		if(UI!=null)
 			src.dna.UI=UI
@@ -198,5 +198,5 @@
 		return 0
 
 // Used below, simple injection modifier.
-/proc/probinj(var/pr, var/inj)
+/proc/probinj(pr, inj)
 	return prob(pr+inj*pr)

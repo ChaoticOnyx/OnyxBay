@@ -22,7 +22,7 @@
 	unbreakable = 1 //It's already broken.
 	drops_debris = 0
 
-/obj/item/weapon/material/shard/set_material(var/new_material)
+/obj/item/weapon/material/shard/set_material(new_material)
 	..(new_material)
 	if(!istype(material))
 		return
@@ -86,7 +86,7 @@
 				if(affecting)
 					if(BP_IS_ROBOTIC(affecting))
 						return
-					affecting.take_damage(5, 0)
+					affecting.take_external_damage(5, 0)
 					H.updatehealth()
 					if(affecting.can_feel_pain())
 						H.Weaken(3)

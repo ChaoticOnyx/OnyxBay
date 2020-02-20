@@ -9,7 +9,7 @@
 	light_color = "#FF00DC"
 	anchored = 1 // The reason this is here is to stop the curving of emitter shots.
 
-/obj/effect/projectile/proc/set_transform(var/matrix/M)
+/obj/effect/projectile/proc/set_transform(matrix/M)
 	if(istype(M))
 		transform = M
 
@@ -104,22 +104,6 @@
 
 /obj/effect/projectile/laser/pulse/impact
 	icon_state = "impact_u_laser"
-
-//----------------------------
-// Bogani Pulsar beam
-//----------------------------
-/obj/effect/projectile/laser/bogani/
-	light_power = 2
-	light_color = COLOR_VIOLET
-
-/obj/effect/projectile/laser/bogani/tracer
-	icon_state = "bogb"
-
-/obj/effect/projectile/laser/bogani/muzzle
-	icon_state = "muzzle_bogb"
-
-/obj/effect/projectile/laser/bogani/impact
-	icon_state = "impact_bogb"
 
 //----------------------------
 // Pulse muzzle effect only

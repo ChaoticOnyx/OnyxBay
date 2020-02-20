@@ -18,7 +18,7 @@
 	else
 		icon_state = "analyser"
 
-/obj/machinery/disease2/antibodyanalyser/attackby(var/obj/I as obj, var/mob/user as mob)
+/obj/machinery/disease2/antibodyanalyser/attackby(obj/I as obj, mob/user as mob)
 	if(istype(I,/obj/item/weapon/reagent_containers))
 		if(!container && user.unEquip(I))
 			container = I

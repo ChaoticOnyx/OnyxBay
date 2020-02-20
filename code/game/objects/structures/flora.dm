@@ -49,6 +49,7 @@
 	name = "grass"
 	icon = 'icons/obj/flora/snowflora.dmi'
 	anchored = 1
+	layer = BELOW_DOOR_LAYER
 
 /obj/structure/flora/grass/brown
 	icon_state = "snowgrass1bb"
@@ -115,7 +116,7 @@
 		shake_animation(stime = 4)
 	return ..()
 
-/obj/structure/flora/pottedplant/bullet_act(var/obj/item/projectile/Proj)
+/obj/structure/flora/pottedplant/bullet_act(obj/item/projectile/Proj)
 	if (prob(Proj.damage*2))
 		death()
 		return 1
@@ -128,6 +129,7 @@
 	icon = 'icons/obj/flora/ausflora.dmi'
 	icon_state = "firstbush_1"
 	anchored = 1
+	layer = BELOW_DOOR_LAYER
 
 /obj/structure/flora/ausbushes/New()
 	..()

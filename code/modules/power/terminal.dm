@@ -25,7 +25,7 @@
 		master = null
 	return ..()
 
-/obj/machinery/power/terminal/hide(var/do_hide)
+/obj/machinery/power/terminal/hide(do_hide)
 	if(do_hide && level == 1)
 		layer = WIRE_TERMINAL_LAYER
 		plane = FLOOR_PLANE

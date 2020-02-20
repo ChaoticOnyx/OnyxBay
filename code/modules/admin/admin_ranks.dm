@@ -109,7 +109,7 @@ var/list/admin_ranks = list()								//list of all ranks with associated rights
 			load_admins()
 			return
 
-		var/DBQuery/query = dbcon.NewQuery("SELECT ckey, rank, flags FROM erro_admin")
+		var/DBQuery/query = dbcon.NewQuery("SELECT ckey, `rank`, flags FROM erro_admin")
 		query.Execute()
 		while(query.NextRow())
 			var/ckey = query.item[1]
@@ -128,6 +128,10 @@ var/list/admin_ranks = list()								//list of all ranks with associated rights
 			config.admin_legacy_system = 1
 			load_admins()
 			return
+
+	//Clear profile access
+	for(var/A in world.GetConfig("admin"))
+		world.SetConfig("APP/admin", A, null)
 
 	#ifdef TESTING
 	var/msg = "Admins Built:\n"

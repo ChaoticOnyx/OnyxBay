@@ -219,7 +219,7 @@
   *
   * return string UI HTML output.
  **/
-/datum/tgui/proc/get_html(var/inline)
+/datum/tgui/proc/get_html(inline)
 	var/html
 	// Poplate HTML with JSON if we're supposed to inline.
 	if(inline)

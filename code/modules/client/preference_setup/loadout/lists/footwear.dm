@@ -14,7 +14,7 @@
 	var/boots = list()
 	boots += /obj/item/clothing/shoes/jackboots
 	boots += /obj/item/clothing/shoes/workboots
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(boots)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(boots)
 
 /datum/gear/shoes/color
 	display_name = "shoe selection"
@@ -35,7 +35,7 @@
 	shoes += /obj/item/clothing/shoes/red
 	shoes += /obj/item/clothing/shoes/white
 	shoes += /obj/item/clothing/shoes/yellow
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(shoes)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(shoes)
 
 /datum/gear/shoes/sandal
 	display_name = "wooden sandals"

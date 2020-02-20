@@ -36,7 +36,7 @@
 		BP_R_HAND   = list(/obj/item/organ/external/hand/right, 40)
 		)
 
-/obj/machinery/organ_printer/attackby(var/obj/item/O, var/mob/user)
+/obj/machinery/organ_printer/attackby(obj/item/O, mob/user)
 	if(default_deconstruction_screwdriver(user, O))
 		updateUsrDialog()
 		return
@@ -62,7 +62,7 @@
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
 	RefreshParts()
 
-/obj/machinery/organ_printer/examine(var/mob/user)
+/obj/machinery/organ_printer/examine(mob/user)
 	. = ..()
 	to_chat(user, "<span class='notice'>It is loaded with [stored_matter]/[max_stored_matter] matter units.</span>")
 
@@ -106,13 +106,13 @@
 
 	print_organ(choice)
 
-/obj/machinery/organ_printer/proc/can_print(var/choice)
+/obj/machinery/organ_printer/proc/can_print(choice)
 	if(stored_matter < products[choice][2])
 		visible_message("<span class='notice'>\The [src] displays a warning: 'Not enough matter. [stored_matter] stored and [products[choice][2]] needed.'</span>")
 		return 0
 	return 1
 
-/obj/machinery/organ_printer/proc/print_organ(var/choice)
+/obj/machinery/organ_printer/proc/print_organ(choice)
 	var/new_organ = products[choice][1]
 	var/obj/item/organ/O = new new_organ(get_turf(src))
 	O.status |= ORGAN_CUT_AWAY
@@ -141,7 +141,7 @@
 	..()
 	component_parts += new /obj/item/weapon/circuitboard/roboprinter
 
-/obj/machinery/organ_printer/robot/print_organ(var/choice)
+/obj/machinery/organ_printer/robot/print_organ(choice)
 	var/obj/item/organ/O = ..()
 	var/obj/item/organ/external/externalOrgan = O
 	if(istype(externalOrgan))
@@ -154,7 +154,7 @@
 	visible_message("<span class='info'>\The [src] churns for a moment, then spits out \a [O].</span>")
 	return O
 
-/obj/machinery/organ_printer/robot/attackby(var/obj/item/weapon/W, var/mob/user)
+/obj/machinery/organ_printer/robot/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/stack/material) && W.get_material_name() == matter_type)
 		if((max_stored_matter-stored_matter) < matter_amount_per_sheet)
 			to_chat(user, "<span class='warning'>\The [src] is too full.</span>")
@@ -183,7 +183,7 @@
 		)
 	var/loaded_dna //Blood sample for DNA hashing.
 
-/obj/machinery/organ_printer/flesh/can_print(var/choice)
+/obj/machinery/organ_printer/flesh/can_print(choice)
 	. = ..()
 	if(!loaded_dna || !loaded_dna["donor"])
 		visible_message("<span class='info'>\The [src] displays a warning: 'No DNA saved. Insert a blood sample.'</span>")
@@ -206,7 +206,7 @@
 	component_parts += new /obj/item/device/healthanalyzer
 	component_parts += new /obj/item/weapon/circuitboard/bioprinter
 
-/obj/machinery/organ_printer/flesh/print_organ(var/choice)
+/obj/machinery/organ_printer/flesh/print_organ(choice)
 	var/obj/item/organ/O
 	var/weakref/W = loaded_dna["donor"]
 	var/mob/living/carbon/human/H = W.resolve()

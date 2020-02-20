@@ -28,7 +28,7 @@
 		if(prob(40))
 			S.set_trait(TRAIT_STINGS,1)
 
-/obj/effect/overmap/sector/exoplanet/garbage/adapt_animal(var/mob/living/simple_animal/A)
+/obj/effect/overmap/sector/exoplanet/garbage/adapt_animal(mob/living/simple_animal/A)
 	..()
 	A.faction = "Guardian" //stops bots form hitting each other
 
@@ -45,20 +45,20 @@
 	fauna_types = list(/mob/living/simple_animal/hostile/hivebot, /mob/living/simple_animal/hostile/hivebot/range, /mob/living/simple_animal/hostile/viscerator)
 	fauna_prob = 1
 
-/datum/random_map/noise/exoplanet/garbage/get_additional_spawns(var/value, var/turf/T)
+/datum/random_map/noise/exoplanet/garbage/get_additional_spawns(value, turf/T)
 	..()
 	var/v = noise2value(value)
 	if(v > 5)
-		new/obj/structure/rubble/house(T)
+		new /obj/structure/rubble/house(T)
 	else
 		if(prob(2))
-			new/obj/structure/rubble/war(T)
+			new /obj/structure/rubble/war(T)
 		if(prob(0.02))
 			var/datum/artifact_find/A = new()
 			new A.artifact_find_type(T)
 			qdel(A)
 
-/datum/random_map/noise/exoplanet/garbage/get_appropriate_path(var/value)
+/datum/random_map/noise/exoplanet/garbage/get_appropriate_path(value)
 	var/v = noise2value(value)
 	if(v > 6)
 		return /turf/simulated/floor/exoplanet/concrete

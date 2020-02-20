@@ -4,7 +4,7 @@
 	var/rare_val = 0.7              // Threshold for rare metal, set in new as percentage of cell_range.
 	var/chunk_size = 4              // Size each cell represents on map
 
-/datum/random_map/noise/ore/New(var/seed, var/tx, var/ty, var/tz, var/tlx, var/tly, var/do_not_apply, var/do_not_announce, var/never_be_priority = 0)
+/datum/random_map/noise/ore/New(seed, tx, ty, tz, tlx, tly, do_not_apply, do_not_announce, never_be_priority = 0)
 	rare_val = cell_range * rare_val
 	deep_val = cell_range * deep_val
 	..(seed, tx, ty, tz, (tlx / chunk_size), (tly / chunk_size), do_not_apply, do_not_announce, never_be_priority)
@@ -39,7 +39,7 @@
 	else
 		return 1
 
-/datum/random_map/noise/ore/apply_to_turf(var/x,var/y)
+/datum/random_map/noise/ore/apply_to_turf(x,y)
 
 	var/tx = ((origin_x-1)+x)*chunk_size
 	var/ty = ((origin_y-1)+y)*chunk_size
@@ -86,7 +86,7 @@
 				T.resources[MATERIAL_GOLD] =     0
 				T.resources[MATERIAL_SILVER] =   0
 
-/datum/random_map/noise/ore/get_map_char(var/value)
+/datum/random_map/noise/ore/get_map_char(value)
 	if(value < rare_val)
 		return "S"
 	else if(value < deep_val)

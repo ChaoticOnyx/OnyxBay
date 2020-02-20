@@ -6,7 +6,7 @@
 //	var/flavor_text
 	var/list/modifiers
 
-/datum/absorbed_dna/New(var/newName, var/newDNA, var/newSpecies, var/newLanguages, var/newModifiers)
+/datum/absorbed_dna/New(newName, newDNA, newSpecies, newLanguages, newModifiers)
 	..()
 	name = newName
 	dna = newDNA

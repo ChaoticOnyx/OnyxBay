@@ -1,7 +1,7 @@
 // GENERIC MINING AREAS
 /area/mine
 	icon_state = "mining"
-	ambience = list('sound/ambience/ambimine.ogg', 'sound/ambience/song_game.ogg')
+	ambience = list('sound/ambience/mine/ambimine.ogg', 'sound/ambience/song_game.ogg')
 	sound_env = ASTEROID
 
 /area/mine/explored

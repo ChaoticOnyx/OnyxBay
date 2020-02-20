@@ -1,4 +1,4 @@
-/datum/uplink_item/deity/boon/single_charge/buy(var/obj/item/device/uplink/U, var/mob/living/deity/user)
+/datum/uplink_item/deity/boon/single_charge/buy(obj/item/device/uplink/U, mob/living/deity/user)
 	. = ..()
 	if(istype(., /spell))
 		var/spell/S = .

@@ -34,6 +34,8 @@
 		if (contents.len >= max_butts)
 			to_chat(user, "\The [src] is full.")
 			return
+		user.remove_from_mob(W)
+		W.forceMove(src)
 
 		if (istype(W,/obj/item/clothing/mask/smokable/cigarette))
 			var/obj/item/clothing/mask/smokable/cigarette/cig = W
@@ -69,11 +71,11 @@
 		update_icon()
 	return ..()
 
-/obj/item/weapon/material/ashtray/plastic/New(var/newloc)
+/obj/item/weapon/material/ashtray/plastic/New(newloc)
 	..(newloc, MATERIAL_PLASTIC)
 
-/obj/item/weapon/material/ashtray/bronze/New(var/newloc)
+/obj/item/weapon/material/ashtray/bronze/New(newloc)
 	..(newloc, MATERIAL_BRONZE)
 
-/obj/item/weapon/material/ashtray/glass/New(var/newloc)
+/obj/item/weapon/material/ashtray/glass/New(newloc)
 	..(newloc, MATERIAL_GLASS)

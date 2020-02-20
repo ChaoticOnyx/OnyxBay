@@ -19,7 +19,7 @@ var/const/BORG_WIRE_CAMERA = 16
 	. += text("<br>\n[(R.lockcharge ? "The lockdown light is on." : "The lockdown light is off.")]")
 	return .
 
-/datum/wires/robot/UpdateCut(var/index, var/mended)
+/datum/wires/robot/UpdateCut(index, mended)
 
 	var/mob/living/silicon/robot/R = holder
 	switch(index)
@@ -48,7 +48,7 @@ var/const/BORG_WIRE_CAMERA = 16
 			R.SetLockdown(!mended)
 
 
-/datum/wires/robot/UpdatePulsed(var/index)
+/datum/wires/robot/UpdatePulsed(index)
 	var/mob/living/silicon/robot/R = holder
 	switch(index)
 		if (BORG_WIRE_AI_CONTROL) //pulse the AI wire to make the borg reselect an AI
@@ -64,7 +64,7 @@ var/const/BORG_WIRE_CAMERA = 16
 		if(BORG_WIRE_LOCKED_DOWN)
 			R.SetLockdown(!R.lockcharge) // Toggle
 
-/datum/wires/robot/CanUse(var/mob/living/L)
+/datum/wires/robot/CanUse(mob/living/L)
 	var/mob/living/silicon/robot/R = holder
 	if(R.wiresexposed)
 		return 1

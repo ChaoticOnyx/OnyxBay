@@ -26,7 +26,7 @@
 	icon_screen = "atmoslaptop"
 	density = 0
 
-/obj/machinery/computer/atmoscontrol/attack_ai(var/mob/user as mob)
+/obj/machinery/computer/atmoscontrol/attack_ai(mob/user as mob)
 	ui_interact(user)
 
 /obj/machinery/computer/atmoscontrol/attack_hand(mob/user)
@@ -34,7 +34,7 @@
 		return 1
 	ui_interact(user)
 
-/obj/machinery/computer/atmoscontrol/emag_act(var/remaining_carges, var/mob/user)
+/obj/machinery/computer/atmoscontrol/emag_act(remaining_carges, mob/user)
 	if(!emagged)
 		user.visible_message("<span class='warning'>\The [user] does something \the [src], causing the screen to flash!</span>",\
 			"<span class='warning'>You cause the screen to flash as you gain full control.</span>",\
@@ -42,7 +42,7 @@
 		atmos_control.emagged = 1
 		return 1
 
-/obj/machinery/computer/atmoscontrol/ui_interact(var/mob/user)
+/obj/machinery/computer/atmoscontrol/ui_interact(mob/user)
 	if(!atmos_control)
 		atmos_control = new(src, req_access, req_one_access, monitored_alarm_ids)
 	atmos_control.ui_interact(user)

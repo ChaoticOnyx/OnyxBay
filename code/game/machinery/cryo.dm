@@ -92,7 +92,7 @@
   *
   * @return nothing
   */
-/obj/machinery/atmospherics/unary/cryo_cell/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+/obj/machinery/atmospherics/unary/cryo_cell/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 
 	if(user == occupant || user.stat)
 		return
@@ -182,7 +182,7 @@
 		return TOPIC_REFRESH
 
 
-/obj/machinery/atmospherics/unary/cryo_cell/attackby(var/obj/G, var/mob/user as mob)
+/obj/machinery/atmospherics/unary/cryo_cell/attackby(obj/G, mob/user as mob)
 	if(istype(G, /obj/item/weapon/reagent_containers/glass))
 		if(beaker)
 			to_chat(user, "<span class='warning'>A beaker is already loaded into the machine.</span>")
@@ -342,7 +342,7 @@
 	return 1
 
 	//Like grab-putting, but for mouse-dropping.
-/obj/machinery/atmospherics/unary/cryo_cell/MouseDrop_T(var/mob/target, var/mob/user)
+/obj/machinery/atmospherics/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
 	if(!CanMouseDrop(target, user))
 		return
 	if (!istype(target))
@@ -415,7 +415,7 @@
 /datum/data/function/proc/display()
 	return
 
-/obj/machinery/atmospherics/unary/cryo_cell/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/atmospherics/unary/cryo_cell/emag_act(remaining_charges, mob/user)
 	if(emagged)
 		return
 	emagged = 1

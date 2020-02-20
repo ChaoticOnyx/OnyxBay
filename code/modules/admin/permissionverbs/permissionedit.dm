@@ -44,7 +44,7 @@
 
 	usr << browse(output,"window=editrights;size=600x500")
 
-/datum/admins/proc/log_admin_rank_modification(var/adm_ckey, var/new_rank)
+/datum/admins/proc/log_admin_rank_modification(adm_ckey, new_rank)
 	if(config.admin_legacy_system)	return
 
 	if(!usr.client)
@@ -88,13 +88,13 @@
 		to_chat(usr, "<span class='notice'>New admin added.</span>")
 	else
 		if(!isnull(admin_id) && isnum(admin_id))
-			var/DBQuery/insert_query = dbcon.NewQuery("UPDATE `erro_admin` SET rank = '[new_rank]' WHERE id = [admin_id]")
+			var/DBQuery/insert_query = dbcon.NewQuery("UPDATE `erro_admin` SET `rank` = '[new_rank]' WHERE id = [admin_id]")
 			insert_query.Execute()
 			var/DBQuery/log_query = dbcon.NewQuery("INSERT INTO `test`.`erro_admin_log` (`id` ,`datetime` ,`adminckey` ,`adminip` ,`log` ) VALUES (NULL , NOW( ) , '[usr.ckey]', '[usr.client.address]', 'Edited the rank of [adm_ckey] to [new_rank]');")
 			log_query.Execute()
 			to_chat(usr, "<span class='notice'>Admin rank changed.</span>")
 
-/datum/admins/proc/log_admin_permission_modification(var/adm_ckey, var/new_permission)
+/datum/admins/proc/log_admin_permission_modification(adm_ckey, new_permission)
 	if(config.admin_legacy_system)	return
 
 	if(!usr.client)

@@ -31,7 +31,7 @@
 
 	RefreshParts()
 
-/obj/machinery/food_replicator/attackby(var/obj/item/O, var/mob/user)
+/obj/machinery/food_replicator/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks))
 		var/obj/item/weapon/reagent_containers/food/snacks/S = O
 		user.drop_item(O)
@@ -97,7 +97,7 @@
 /obj/machinery/food_replicator/proc/state_menu()
 	src.audible_message("<b>\The [src]</b> states, \"Greetings! I serve the following dishes: [english_list(menu)]\"")
 
-/obj/machinery/food_replicator/proc/dispense_food(var/text)
+/obj/machinery/food_replicator/proc/dispense_food(text)
 	var/type = menu[text]
 	if(!type)
 		src.audible_message("<b>\The [src]</b> states, \"Error! I cannot find the recipe for that item.\"")
@@ -129,7 +129,7 @@
 			deconstruct_eff += 0.5 * P.rating
 	biomass = min(biomass,biomass_max)
 
-/obj/machinery/food_replicator/proc/queue_dish(var/text)
+/obj/machinery/food_replicator/proc/queue_dish(text)
 	if(!(text in menu))
 		return
 

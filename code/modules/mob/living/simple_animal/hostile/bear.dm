@@ -93,19 +93,19 @@
 
 
 
-/mob/living/simple_animal/hostile/bear/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(stance != HOSTILE_STANCE_ATTACK && stance != HOSTILE_STANCE_ATTACKING)
+/mob/living/simple_animal/hostile/bear/attackby(obj/item/O, mob/user)
+	if(stance != HOSTILE_STANCE_ATTACK && stance != HOSTILE_STANCE_ATTACKING && !client)
 		stance = HOSTILE_STANCE_ALERT
 		stance_step = 6
 		target_mob = user
-	..()
+	return ..()
 
-/mob/living/simple_animal/hostile/bear/attack_hand(mob/living/carbon/human/M as mob)
-	if(stance != HOSTILE_STANCE_ATTACK && stance != HOSTILE_STANCE_ATTACKING)
+/mob/living/simple_animal/hostile/bear/attack_hand(mob/living/carbon/human/M)
+	if(stance != HOSTILE_STANCE_ATTACK && stance != HOSTILE_STANCE_ATTACKING && !client)
 		stance = HOSTILE_STANCE_ALERT
 		stance_step = 6
 		target_mob = M
-	..()
+	return ..()
 
 /mob/living/simple_animal/hostile/bear/FindTarget()
 	. = ..()

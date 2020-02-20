@@ -29,7 +29,7 @@
 		var/obj/item/weapon/computer_hardware/hard_drive/HDD = computer.hard_drive
 		if(!HDD)
 			return 1
-		var/datum/computer_file/data/F = new/datum/computer_file/data()
+		var/datum/computer_file/data/F = new /datum/computer_file/data()
 		F.filename = newname
 		HDD.store_file(F)
 	if(href_list["PRG_deletefile"])
@@ -150,7 +150,7 @@
 /datum/nano_module/program/computer_filemanager
 	name = "NTOS File Manager"
 
-/datum/nano_module/program/computer_filemanager/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/program/computer_filemanager/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 	var/datum/computer_file/program/filemanager/PRG
 	PRG = program

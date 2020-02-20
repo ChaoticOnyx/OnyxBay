@@ -5,7 +5,7 @@
 	power_adjustment = 2
 	build_cost = 700
 
-/obj/structure/deity/wizard_recharger/attack_hand(var/mob/living/hitter)
+/obj/structure/deity/wizard_recharger/attack_hand(mob/living/hitter)
 	if(!hitter.mind || !hitter.mind.learned_spells || !hitter.mind.learned_spells.len)
 		to_chat(hitter, "<span class='warning'>You don't feel as if this will do anything for you.</span>")
 		return

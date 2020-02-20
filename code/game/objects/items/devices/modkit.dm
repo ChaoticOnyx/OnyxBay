@@ -10,9 +10,9 @@
 
 /obj/item/device/modkit/New()
 	..()
-	parts = new/list(2)
-	original = new/list(2)
-	finished = new/list(2)
+	parts = new /list(2)
+	original = new /list(2)
+	finished = new /list(2)
 
 	parts[1] =	1
 	original[1] = /obj/item/clothing/head/helmet/space/rig
@@ -70,9 +70,9 @@
 
 /obj/item/device/modkit/aeg_parts/New()
 	..()
-	parts = new/list(1)
-	original = new/list(1)
-	finished = new/list(1)
+	parts = new /list(1)
+	original = new /list(1)
+	finished = new /list(1)
 
 	parts[1] =	1
 	original[1] = /obj/item/weapon/gun/energy/gun

@@ -66,11 +66,11 @@
 	overlays = overlays_to_add
 	..()
 
-/obj/item/weapon/gun/magnetic/proc/show_ammo(var/mob/user)
+/obj/item/weapon/gun/magnetic/proc/show_ammo(mob/user)
 	if(loaded)
 		to_chat(user, "<span class='notice'>It has \a [loaded] loaded.</span>")
 
-/obj/item/weapon/gun/magnetic/examine(var/mob/user)
+/obj/item/weapon/gun/magnetic/examine(mob/user)
 	. = ..(user, 2)
 	if(.)
 		show_ammo(user)
@@ -89,7 +89,7 @@
 				to_chat(user, "<span class='notice'>The capacitor charge indicator is <font color ='[COLOR_GREEN]'>green</font>.</span>")
 		return TRUE
 
-/obj/item/weapon/gun/magnetic/attackby(var/obj/item/thing, var/mob/user)
+/obj/item/weapon/gun/magnetic/attackby(obj/item/thing, mob/user)
 
 	if(removable_components)
 		if(istype(thing, /obj/item/weapon/cell))
@@ -152,7 +152,7 @@
 		return
 	. = ..()
 
-/obj/item/weapon/gun/magnetic/attack_hand(var/mob/user)
+/obj/item/weapon/gun/magnetic/attack_hand(mob/user)
 	if(user.get_inactive_hand() == src)
 		var/obj/item/removing
 

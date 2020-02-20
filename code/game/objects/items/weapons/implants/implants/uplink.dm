@@ -4,7 +4,7 @@
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2, TECH_ILLEGAL = 3)
 	var/activation_emote
 
-/obj/item/weapon/implant/uplink/New(var/loc, var/amount)
+/obj/item/weapon/implant/uplink/New(loc, amount)
 	amount = amount || IMPLANT_TELECRYSTAL_AMOUNT(DEFAULT_TELECRYSTAL_AMOUNT)
 	hidden_uplink = new(src, telecrystals = amount)
 	..()

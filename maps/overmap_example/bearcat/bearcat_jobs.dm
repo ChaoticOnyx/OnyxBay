@@ -8,7 +8,7 @@
 	supervisors = "the Merchant Code and your conscience"
 	outfit_type = /decl/hierarchy/outfit/job/bearcat/captain
 
-/datum/job/captain/equip(var/mob/living/carbon/human/H)
+/datum/job/captain/equip(mob/living/carbon/human/H)
 	. = ..()
 	if(H.client)
 		H.client.verbs += /client/proc/rename_ship
@@ -112,7 +112,7 @@
 	id_type = /obj/item/weapon/card/id/gold
 
 
-/decl/hierarchy/outfit/job/bearcat/captain/post_equip(var/mob/living/carbon/human/H)
+/decl/hierarchy/outfit/job/bearcat/captain/post_equip(mob/living/carbon/human/H)
 	..()
 	var/obj/item/clothing/uniform = H.w_uniform
 	if(uniform)

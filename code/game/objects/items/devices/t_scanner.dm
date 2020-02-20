@@ -39,7 +39,7 @@
 	set_active(!on)
 	user.update_action_buttons()
 
-/obj/item/device/t_scanner/proc/set_active(var/active)
+/obj/item/device/t_scanner/proc/set_active(active)
 	on = active
 	if(on)
 		START_PROCESSING(SSobj, src)
@@ -89,7 +89,7 @@
 	flicker = !flicker
 
 //creates a new overlay for a scanned object
-/obj/item/device/t_scanner/proc/get_overlay(var/atom/movable/scanned)
+/obj/item/device/t_scanner/proc/get_overlay(atom/movable/scanned)
 	//Use a cache so we don't create a whole bunch of new images just because someone's walking back and forth in a room.
 	//Also means that images are reused if multiple people are using t-rays to look at the same objects.
 	if(scanned in overlay_cache)
@@ -125,7 +125,7 @@
 	if(overlay_cache.len > OVERLAY_CACHE_LEN)
 		overlay_cache.Cut(1, overlay_cache.len-OVERLAY_CACHE_LEN-1)
 
-/obj/item/device/t_scanner/proc/get_scanned_objects(var/scan_dist)
+/obj/item/device/t_scanner/proc/get_scanned_objects(scan_dist)
 	. = list()
 
 	var/turf/center = get_turf(src.loc)
@@ -154,7 +154,7 @@
 
 
 
-/obj/item/device/t_scanner/proc/set_user_client(var/client/new_client)
+/obj/item/device/t_scanner/proc/set_user_client(client/new_client)
 	if(new_client == user_client)
 		return
 	if(user_client)
