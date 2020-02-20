@@ -33,7 +33,6 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/weapon/gun/flamer/examine(mob/user)
-
 	. = ..(user)
 
 	if(igniter)
@@ -59,7 +58,6 @@
 		to_chat(user, SPAN_WARN("Gauge not installed, you have no idea how much fuel left in [src]!"))
 
 /obj/item/weapon/gun/flamer/update_icon()
-	. = ..()
 	overlays.Cut()
 	if(igniter)
 		overlays += "+igniter"
@@ -69,7 +67,9 @@
 		overlays += "+pressure_tank"
 	if(gauge)
 		overlays += "+gauge"
-	return
+	if (lit && fuel_tank)
+		overlays += "+lit"
+	. = ..()
 
 /obj/item/weapon/gun/flamer/proc/remove_fuel_tank(mob/user)
 	if(!fuel_tank)
@@ -77,10 +77,11 @@
 		return
 	lit = 0
 	to_chat(user, "You twist the valve and pop the fuel tank out of [src].")
-	playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+	playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 	user.put_in_hands(fuel_tank)
 	fuel_tank = null
 	update_icon()
+	return
 
 /obj/item/weapon/gun/flamer/ui_action_click()
 	remove_fuel_tank(usr)
@@ -96,15 +97,13 @@
 	if(user.stat || user.restrained() || user.lying)
 		return
 
-	. = ..()
-
 	if(istype(W, /obj/item/weapon/welder_tank))
 		if(fuel_tank)
 			to_chat(user, "Remove the current fuel tank first.")
 			return
 		user.drop_from_inventory(W, src)
 		fuel_tank = W
-		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		user.visible_message("[user] slot \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
 		return
@@ -115,10 +114,11 @@
 			return
 		var/turf/T = get_turf(src)
 		to_chat(user, "You twist the valve and pop the pressure tank out of [src].")
-		playsound(src.loc, 'sound/effects/refill.ogg', 25, 1, 3)
+		playsound(loc, 'sound/effects/refill.ogg', 25, 1, 3)
 		pressure_tank.loc = T
 		pressure_tank = null
 		update_icon()
+		return
 
 	if(istype(W, /obj/item/device/assembly/igniter))
 		if(igniter)
@@ -126,7 +126,7 @@
 			return
 		user.drop_from_inventory(W, src)
 		igniter = W
-		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		attached_electronics += new /obj/item/device/assembly/igniter
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
@@ -138,7 +138,7 @@
 			return
 		user.drop_from_inventory(W, src)
 		gauge = W
-		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		attached_electronics += new /obj/item/device/analyzer
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
@@ -150,55 +150,49 @@
 			return
 		user.drop_from_inventory(W, src)
 		pressure_tank = W
-		playsound(src.loc, 'sound/effects/refill.ogg', 25, 1, 3)
+		playsound(loc, 'sound/effects/refill.ogg', 25, 1, 3)
 		user.visible_message("[user] wrench \a [W] into \the [src].", "You wrench \a [W] into \the [src].")
 		update_icon()
 		return
 
 	if(isScrewdriver(W))//Taking this apart
 		var/electonics_to_remove = input(user, "Which part do you want to remove?") as null|anything in attached_electronics
+		if(!electonics_to_remove)
+			return
 
-		if(!electonics_to_remove) return
 		if(istype(electonics_to_remove, /obj/item/device/assembly/igniter))
 			igniter.loc = user.loc
 			igniter = null
-			playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+			playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 			attached_electronics -= electonics_to_remove
 
 		if(istype(electonics_to_remove, /obj/item/device/analyzer))
 			gauge.loc = user.loc
 			gauge = null
-			playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+			playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 			attached_electronics -= electonics_to_remove
 		update_icon()
 		return
-
-
+	update_icon()
+	. = ..()
 
 /obj/item/weapon/gun/flamer/attack_self(mob/user)
 	return toggle_flame(user)
 
 /obj/item/weapon/gun/flamer/proc/toggle_flame(mob/user)
 
-	if(!lit)
-		playsound(user, pick(ignite_sound), 100,1)
 	if(!igniter)
 		to_chat(user, SPAN_WARN("Install ingiter first!"))
-		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	if(!fuel_tank)
 		to_chat(user, SPAN_WARN("Install fuel tank first!"))
-		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
+	if(!lit)
+		playsound(user, pick(ignite_sound), 100,1)
 	lit = !lit
-
-	var/image/I = image('icons/obj/flamer.dmi', src, "+lit")
-	if (lit && fuel_tank)
-		overlays += I
-	else
-		overlays -= I
-		qdel(I)
-
+	update_icon()
 	return TRUE
 
 /obj/item/weapon/gun/flamer/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0)
@@ -207,7 +201,7 @@
 	if(!targloc || !curloc)
 		return //Something has gone wrong...
 
-	if(!src.is_held_twohanded(user))
+	if(!is_held_twohanded(user))
 		to_chat(user, SPAN_WARN("You cant fire on target with just one hand"))
 		return
 
@@ -220,34 +214,33 @@
 			return
 		else
 			to_chat(user, SPAN_WARNING("[src] is not ready to fire again!"))
-			playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+			playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 			return
 
 
 /obj/item/weapon/gun/flamer/proc/is_flamer_can_fire(mob/user)
 
-
 	if(!fuel_tank)
 		to_chat(user, SPAN_WARN("[src] isn't has a fuel tank"))
-		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	if(!pressure_tank)
 		to_chat(user, SPAN_WARN("[src] isn't has a pressure tank"))
-		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	if(!lit)
 		to_chat(user, SPAN_WARN("[src] isn't lit to fire"))
 		return
 	if(get_fuel() < fuel_for_shot)
 		to_chat(user, SPAN_WARN("Not enough fuel!"))
-		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 
 	if(pressure_tank.air_contents.return_pressure() > 200)
 		pressure_tank.air_contents.remove_ratio(0.02*(pressure_for_shot/100))
 	else
 		to_chat(user, SPAN_WARN("Not enough pressure!"))
-		playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	return TRUE
 
@@ -348,5 +341,4 @@
 	var/obj/flamer_fire/F = locate(/obj/flamer_fire) in src
 	if(F)
 		qdel(F)
-
 	new /obj/flamer_fire(src, fire_lvl, burn_lvl, fire_stacks, fire_damage)
