@@ -94,6 +94,7 @@
 	src.bleed_timer += other.bleed_timer
 	src.germ_level = max(src.germ_level, other.germ_level)
 	src.created = max(src.created, other.created)	//take the newer created time
+	qdel(other)
 
 // checks if wound is considered open for external infections
 // untreated cuts (and bleeding bruises) and burns are possibly infectable, chance higher if wound is bigger
