@@ -269,7 +269,7 @@
 			S.amount = multiplier
 			S.update_icon()
 
-	if(. == TOPIC_REFRESH)
+	if(. == TOPIC_REFRESH && get_dist(user, src) < 2)
 		interact(user)
 
 /obj/machinery/autolathe/update_icon()
