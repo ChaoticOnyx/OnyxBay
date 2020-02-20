@@ -19,8 +19,6 @@
 	if(!usr || !over) return
 	if(!Adjacent(usr) || !over.Adjacent(usr)) return // should stop you from dragging through windows
 
-	if(isAI(usr))
-		return FALSE
 	spawn(0)
 		over.MouseDrop_T(src,usr)
 	return
