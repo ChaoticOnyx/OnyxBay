@@ -236,6 +236,12 @@ var/list/_client_preferences_by_type
 	preference_mob.client.update_chat_position(new_value == GLOB.PREF_YES)
 	preference_mob.client.fit_viewport()
 
+/datum/client_preference/cinema_credits
+	description = "Show Cinema-like Credits At Round-end"
+	key = "SHOW_CREDITS"
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+	default_value = GLOB.PREF_NO
+
 /********************
 * General Staff Preferences *
 ********************/

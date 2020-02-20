@@ -394,7 +394,7 @@ Helpers
 /datum/controller/subsystem/ticker/proc/declare_completion()
 	to_world("<br><br><br><H1>A round of [mode.name] has ended!</H1>")
 	for(var/client/C in GLOB.clients)
-		if(!C.credits)
+		if(!C.credits && C.get_preference_value(/datum/client_preference/cinema_credits) == GLOB.PREF_YES)
 			C.RollCredits()
 	// TODO [V] Make these credits more like represing real state of things
 	// This is not a movie afterall
