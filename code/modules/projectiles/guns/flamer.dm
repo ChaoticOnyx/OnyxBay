@@ -10,8 +10,8 @@
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_HUGE
 	origin_tech = list(TECH_COMBAT = 2)
-	matter = list(MATERIAL_STEEL = 1500)
-	force = 15
+	matter = list(MATERIAL_STEEL = 56250)
+	force = 10
 	fire_sound = 'sound/weapons/gunshot/flamethrower/flamer_fire.ogg'
 	var/ignite_sound = list('sound/weapons/gunshot/flamethrower/ignite_flamethrower1.ogg', 'sound/weapons/gunshot/flamethrower/ignite_flamethrower2.ogg', 'sound/weapons/gunshot/flamethrower/ignite_flamethrower3.ogg')
 	var/obj/item/weapon/welder_tank/fuel_tank = null
