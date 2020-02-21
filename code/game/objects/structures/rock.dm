@@ -24,7 +24,7 @@
 			new ore(get_turf(src))
 	..()
 
-/obj/structure/rock/attackby(var/obj/item/I, var/mob/user)
+/obj/structure/rock/attackby(obj/item/I, mob/user)
 	if (isMonkey(user))
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return

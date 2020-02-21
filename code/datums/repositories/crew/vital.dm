@@ -2,7 +2,7 @@
  *Vital *
 *********/
 
-/crew_sensor_modifier/vital/process_crew_data(var/mob/living/carbon/human/H, var/obj/item/clothing/under/C, var/turf/pos, var/list/crew_data)
+/crew_sensor_modifier/vital/process_crew_data(mob/living/carbon/human/H, obj/item/clothing/under/C, turf/pos, list/crew_data)
 	crew_data["oxy"] = round(H.getOxyLoss(), 1)
 	crew_data["tox"] = round(H.getToxLoss(), 1)
 	crew_data["fire"] = round(H.getFireLoss(), 1)
@@ -16,26 +16,26 @@
 /crew_sensor_modifier/vital/jamming
 	priority = 5
 
-/crew_sensor_modifier/vital/jamming/healthy/process_crew_data(var/mob/living/carbon/human/H, var/obj/item/clothing/under/C, var/turf/pos, var/list/crew_data)
+/crew_sensor_modifier/vital/jamming/healthy/process_crew_data(mob/living/carbon/human/H, obj/item/clothing/under/C, turf/pos, list/crew_data)
 	crew_data["oxy"] = 0
 	crew_data["tox"] = 0
 	crew_data["fire"] = 0
 	crew_data["brute"] = 0
 	return MOD_SUIT_SENSORS_HANDLED
 
-/crew_sensor_modifier/vital/jamming/oxy/process_crew_data(var/mob/living/carbon/human/H, var/obj/item/clothing/under/C, var/turf/pos, var/list/crew_data)
+/crew_sensor_modifier/vital/jamming/oxy/process_crew_data(mob/living/carbon/human/H, obj/item/clothing/under/C, turf/pos, list/crew_data)
 	. = ..()
 	crew_data["oxy"] = max(200, crew_data["oxy"])
 
-/crew_sensor_modifier/vital/jamming/tox/process_crew_data(var/mob/living/carbon/human/H, var/obj/item/clothing/under/C, var/turf/pos, var/list/crew_data)
+/crew_sensor_modifier/vital/jamming/tox/process_crew_data(mob/living/carbon/human/H, obj/item/clothing/under/C, turf/pos, list/crew_data)
 	. = ..()
 	crew_data["tox"] = max(200, crew_data["tox"])
 
-/crew_sensor_modifier/vital/jamming/fire/process_crew_data(var/mob/living/carbon/human/H, var/obj/item/clothing/under/C, var/turf/pos, var/list/crew_data)
+/crew_sensor_modifier/vital/jamming/fire/process_crew_data(mob/living/carbon/human/H, obj/item/clothing/under/C, turf/pos, list/crew_data)
 	. = ..()
 	crew_data["fire"] = max(200, crew_data["fire"])
 
-/crew_sensor_modifier/vital/jamming/brute/process_crew_data(var/mob/living/carbon/human/H, var/obj/item/clothing/under/C, var/turf/pos, var/list/crew_data)
+/crew_sensor_modifier/vital/jamming/brute/process_crew_data(mob/living/carbon/human/H, obj/item/clothing/under/C, turf/pos, list/crew_data)
 	. = ..()
 	crew_data["brute"] = max(200, crew_data["brute"])
 
@@ -71,7 +71,7 @@
 	for(var/harm in harms)
 		harm_diffs[harm] = rand(min_diff, max_diff)
 
-/crew_sensor_modifier/vital/jamming/random/process_crew_data(var/mob/living/carbon/human/H, var/obj/item/clothing/under/C, var/turf/pos, var/list/crew_data)
+/crew_sensor_modifier/vital/jamming/random/process_crew_data(mob/living/carbon/human/H, obj/item/clothing/under/C, turf/pos, list/crew_data)
 	..()
 	update_diff_range()
 	for(var/harm in harms)

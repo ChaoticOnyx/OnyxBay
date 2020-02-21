@@ -120,7 +120,7 @@
 	user << browse(dat, "window=autolathe")
 	onclose(user, "autolathe")
 
-/obj/machinery/autolathe/attackby(var/obj/item/O as obj, var/mob/user as mob)
+/obj/machinery/autolathe/attackby(obj/item/O as obj, mob/user as mob)
 
 	if(busy)
 		to_chat(user, "<span class='notice'>\The [src] is busy. Please wait for completion of previous operation.</span>")

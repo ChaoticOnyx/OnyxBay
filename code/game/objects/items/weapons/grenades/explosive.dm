@@ -39,7 +39,7 @@
 	qdel(src)
 
 
-/obj/proc/fragmentate(var/turf/T=get_turf(src), var/fragment_number = 30, var/spreading_range = 5, var/list/fragtypes=list(/obj/item/projectile/bullet/pellet/fragment/))
+/obj/proc/fragmentate(var/turf/T=get_turf(src), fragment_number = 30, spreading_range = 5, list/fragtypes=list(/obj/item/projectile/bullet/pellet/fragment/))
 	set waitfor = 0
 	var/list/target_turfs = getcircle(T, spreading_range)
 	var/fragments_per_projectile = round(fragment_number/target_turfs.len)
@@ -66,7 +66,7 @@
 
 
 
-/obj/item/weapon/grenade/frag/proc/on_explosion(var/turf/O)
+/obj/item/weapon/grenade/frag/proc/on_explosion(turf/O)
 	if(explosion_size)
 		explosion(O, -1, -1, explosion_size, round(explosion_size/2), 0)
 
@@ -90,6 +90,6 @@
 	num_fragments = 200  //total number of fragments produced by the grenade
 	explosion_size = 3
 
-/obj/item/weapon/grenade/frag/high_yield/on_explosion(var/turf/O)
+/obj/item/weapon/grenade/frag/high_yield/on_explosion(turf/O)
 	if(explosion_size)
 		explosion(O, -1, round(explosion_size/2), explosion_size, round(explosion_size/2), 0) //has a chance to blow a hole in the floor

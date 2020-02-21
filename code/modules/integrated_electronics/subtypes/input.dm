@@ -2,7 +2,7 @@
 	category_text = "Input"
 	power_draw_per_use = 5
 
-/obj/item/integrated_circuit/input/external_examine(var/mob/user)
+/obj/item/integrated_circuit/input/external_examine(mob/user)
 	var/initial_name = initial(name)
 	var/message
 	if(initial_name == name)
@@ -177,7 +177,7 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 80
 
-/obj/item/integrated_circuit/input/adv_med_scanner/proc/damage_to_severity(var/value)
+/obj/item/integrated_circuit/input/adv_med_scanner/proc/damage_to_severity(value)
 	if(value < 1)
 		return 0
 	if(value < 25)
@@ -707,14 +707,14 @@
 	code = new_code
 
 
-/obj/item/integrated_circuit/input/signaler/do_work(var/ord) // Sends a signal.
+/obj/item/integrated_circuit/input/signaler/do_work(ord) // Sends a signal.
 	if(!radio_connection || ord != 1)
 		return
 
 	radio_connection.post_signal(src, create_signal())
 	activate_pin(2)
 
-/obj/item/integrated_circuit/input/signaler/proc/signal_good(var/datum/signal/signal)
+/obj/item/integrated_circuit/input/signaler/proc/signal_good(datum/signal/signal)
 	if(!signal || signal.source == src)
 		return FALSE
 	if(code)
@@ -751,7 +751,7 @@
 	return 1
 
 //This only procs when a signal is valid.
-/obj/item/integrated_circuit/input/signaler/proc/treat_signal(var/datum/signal/signal)
+/obj/item/integrated_circuit/input/signaler/proc/treat_signal(datum/signal/signal)
 	activate_pin(3)
 
 /obj/item/integrated_circuit/input/signaler/advanced
@@ -771,7 +771,7 @@
 	..()
 	command = get_pin_data(IC_INPUT,3)
 
-/obj/item/integrated_circuit/input/signaler/advanced/signal_good(var/datum/signal/signal)
+/obj/item/integrated_circuit/input/signaler/advanced/signal_good(datum/signal/signal)
 	if(!..() || signal.data["tag"] != code)
 		return FALSE
 	return TRUE
@@ -784,7 +784,7 @@
 	signal.encryption = 0
 	return signal
 
-/obj/item/integrated_circuit/input/signaler/advanced/treat_signal(var/datum/signal/signal)
+/obj/item/integrated_circuit/input/signaler/advanced/treat_signal(datum/signal/signal)
 	set_pin_data(IC_OUTPUT,1,signal.data["command"])
 	push_data()
 	..()
@@ -876,7 +876,7 @@
 	GLOB.listening_objects -= src
 	. = ..()
 
-/obj/item/integrated_circuit/input/microphone/hear_talk(var/mob/living/M as mob, text, verb, datum/language/speaking)
+/obj/item/integrated_circuit/input/microphone/hear_talk(mob/living/M as mob, text, verb, datum/language/speaking)
 	var/translated = TRUE
 	if(M && text)
 		if(speaking && !speaking.machine_understands)
@@ -961,7 +961,7 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 20
 
-/obj/item/integrated_circuit/input/obj_scanner/attackby_react(var/atom/A,var/mob/user,intent)
+/obj/item/integrated_circuit/input/obj_scanner/attackby_react(atom/A,mob/user,intent)
 	if(intent!=I_HELP)
 		return FALSE
 	if(!check_then_do_work())

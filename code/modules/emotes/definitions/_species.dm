@@ -48,6 +48,6 @@
 		/decl/emote/audible/bug_chitter
 		)
 
-/mob/living/carbon/human/set_species(var/new_species, var/default_colour)
+/mob/living/carbon/human/set_species(new_species, default_colour)
 	. = ..()
 	update_emotes()

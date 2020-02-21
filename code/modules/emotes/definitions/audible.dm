@@ -4,7 +4,7 @@
 	message_type = AUDIBLE_MESSAGE
 	var/emote_sound
 
-/decl/emote/audible/do_extra(var/atom/user)
+/decl/emote/audible/do_extra(atom/user)
 	if(emote_sound)
 		playsound(user.loc, emote_sound, 50, 0)
 

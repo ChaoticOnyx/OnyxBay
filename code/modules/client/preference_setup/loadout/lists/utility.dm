@@ -27,7 +27,7 @@
 	folders["red folder"] = /obj/item/weapon/folder/red
 	folders["white folder"] = /obj/item/weapon/folder/white
 	folders["yellow folder"] = /obj/item/weapon/folder/yellow
-	gear_tweaks += new/datum/gear_tweak/path(folders)
+	gear_tweaks += new /datum/gear_tweak/path(folders)
 
 /datum/gear/utility/paicard
 	display_name = "personal AI device"

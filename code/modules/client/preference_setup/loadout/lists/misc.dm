@@ -36,7 +36,7 @@
 
 /datum/gear/flask/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/reagents(lunchables_ethanol_reagents())
+	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_ethanol_reagents())
 
 /datum/gear/vacflask
 	display_name = "vacuum-flask"
@@ -44,7 +44,7 @@
 
 /datum/gear/vacflask/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/reagents(lunchables_drink_reagents())
+	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_drink_reagents())
 
 /datum/gear/coffeecup
 	display_name = "coffee cup"
@@ -69,8 +69,8 @@
 		var/obj/item/weapon/storage/lunchbox/lunchbox = lunchbox_type
 		if(!initial(lunchbox.filled))
 			lunchboxes[initial(lunchbox.name)] = lunchbox_type
-	gear_tweaks += new/datum/gear_tweak/path(lunchboxes)
-	gear_tweaks += new/datum/gear_tweak/contents(lunchables_lunches(), lunchables_snacks(), lunchables_drinks())
+	gear_tweaks += new /datum/gear_tweak/path(lunchboxes)
+	gear_tweaks += new /datum/gear_tweak/contents(lunchables_lunches(), lunchables_snacks(), lunchables_drinks())
 
 /datum/gear/towel
 	display_name = "towel"
@@ -151,7 +151,7 @@
 	var/cigar_type = list()
 	cigar_type["premium"] = /obj/item/clothing/mask/smokable/cigarette/cigar
 	cigar_type["Cohiba Robusto"] = /obj/item/clothing/mask/smokable/cigarette/cigar/cohiba
-	gear_tweaks += new/datum/gear_tweak/path(cigar_type)
+	gear_tweaks += new /datum/gear_tweak/path(cigar_type)
 
 /datum/gear/ecig
 	display_name = "electronic cigarette"

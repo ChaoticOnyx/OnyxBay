@@ -53,7 +53,7 @@
 		return
 	return ..()
 
-/obj/item/weapon/gun/projectile/revolver/load_ammo(var/obj/item/A, mob/user)
+/obj/item/weapon/gun/projectile/revolver/load_ammo(obj/item/A, mob/user)
 	chamber_offset = 0
 	return ..()
 
@@ -117,7 +117,7 @@
 	else
 		icon_state = "deckard-empty"
 
-/obj/item/weapon/gun/projectile/revolver/deckard/load_ammo(var/obj/item/A, mob/user)
+/obj/item/weapon/gun/projectile/revolver/deckard/load_ammo(obj/item/A, mob/user)
 	if(istype(A, /obj/item/ammo_magazine))
 		flick("deckard-reload",src)
 	..()
@@ -172,7 +172,7 @@
 	update_icon()
 	..()
 
-/*obj/item/weapon/gun/projectile/revolver/m2019/detective/proc/deductcharge(var/chrgdeductamt)
+/*obj/item/weapon/gun/projectile/revolver/m2019/detective/proc/deductcharge(chrgdeductamt)
 	if(bcell)
 		if(bcell.checked_use(chrgdeductamt))
 			return 1
@@ -231,7 +231,7 @@
 		return ..()
 	insert_cell(C, user)
 	return 1
-/obj/item/weapon/gun/projectile/revolver/m2019/detective/proc/usecharge(var/UC)
+/obj/item/weapon/gun/projectile/revolver/m2019/detective/proc/usecharge(UC)
 	if(bcell)
 		if(bcell.checked_use(UC))
 			return 1

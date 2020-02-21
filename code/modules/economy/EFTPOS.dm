@@ -143,7 +143,7 @@
 	else
 		..()
 
-/obj/item/device/eftpos/Topic(var/href, var/href_list)
+/obj/item/device/eftpos/Topic(href, href_list)
 	if(href_list["choice"])
 		switch(href_list["choice"])
 			if("change_code")
@@ -218,7 +218,7 @@
 
 	src.attack_self(usr)
 
-/obj/item/device/eftpos/proc/scan_card(var/obj/item/weapon/card/I, var/obj/item/ID_container)
+/obj/item/device/eftpos/proc/scan_card(obj/item/weapon/card/I, obj/item/ID_container)
 	if (istype(I, /obj/item/weapon/card/id))
 		var/obj/item/weapon/card/id/C = I
 		if(I==ID_container || ID_container == null)

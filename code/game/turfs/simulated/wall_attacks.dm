@@ -1,5 +1,5 @@
 //Interactions
-/turf/simulated/wall/proc/toggle_open(var/mob/user)
+/turf/simulated/wall/proc/toggle_open(mob/user)
 
 	if(can_open == WALL_OPENING)
 		return
@@ -47,7 +47,7 @@
 		SSair.mark_for_update(turf)
 
 
-/turf/simulated/wall/proc/update_thermal(var/turf/simulated/source)
+/turf/simulated/wall/proc/update_thermal(turf/simulated/source)
 	if(istype(source))
 		if(density && opacity)
 			source.thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
@@ -56,17 +56,17 @@
 
 
 
-/turf/simulated/wall/proc/fail_smash(var/mob/user)
+/turf/simulated/wall/proc/fail_smash(mob/user)
 	to_chat(user, "<span class='danger'>You smash against \the [src]!</span>")
 	take_damage(rand(25,75))
 
-/turf/simulated/wall/proc/success_smash(var/mob/user)
+/turf/simulated/wall/proc/success_smash(mob/user)
 	to_chat(user, "<span class='danger'>You smash through \the [src]!</span>")
 	user.do_attack_animation(src)
 	spawn(1)
 		dismantle_wall(1)
 
-/turf/simulated/wall/proc/try_touch(var/mob/user, var/rotting)
+/turf/simulated/wall/proc/try_touch(mob/user, rotting)
 
 	if(rotting)
 		if(reinf_material)
@@ -86,7 +86,7 @@
 	return 0
 
 
-/turf/simulated/wall/attack_hand(var/mob/user)
+/turf/simulated/wall/attack_hand(mob/user)
 
 	radiate()
 	add_fingerprint(user)
@@ -101,7 +101,7 @@
 
 	try_touch(user, rotting)
 
-/turf/simulated/wall/attack_generic(var/mob/user, var/damage, var/attack_message, var/wallbreaker)
+/turf/simulated/wall/attack_generic(mob/user, damage, attack_message, wallbreaker)
 
 	radiate()
 	if(!istype(user))

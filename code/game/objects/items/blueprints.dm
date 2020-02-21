@@ -94,7 +94,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 	var/area/A = T.loc
 	return A
 
-/obj/item/blueprints/proc/get_area_type(var/area/A = get_area())
+/obj/item/blueprints/proc/get_area_type(area/A = get_area())
 	if(istype(A, /area/space))
 		return AREA_SPACE
 
@@ -154,7 +154,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 	return
 
 
-/obj/item/blueprints/proc/move_turfs_to_area(var/list/turf/turfs, var/area/A)
+/obj/item/blueprints/proc/move_turfs_to_area(list/turf/turfs, area/A)
 	A.contents.Add(turfs)
 		//oldarea.contents.Remove(usr.loc) // not needed
 		//T.loc = A //error: cannot change constant value
@@ -190,7 +190,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 
 
 
-/obj/item/blueprints/proc/set_area_machinery_title(var/area/A,var/title,var/oldtitle)
+/obj/item/blueprints/proc/set_area_machinery_title(area/A,title,oldtitle)
 	if (!oldtitle) // or replacetext goes to infinite loop
 		return
 
@@ -206,7 +206,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 		M.SetName(replacetext(M.name,oldtitle,title))
 	//TODO: much much more. Unnamed airlocks, cameras, etc.
 
-/obj/item/blueprints/proc/check_tile_is_border(var/turf/T2,var/dir)
+/obj/item/blueprints/proc/check_tile_is_border(turf/T2,dir)
 	if (istype(T2, /turf/space))
 		return BORDER_SPACE //omg hull breach we all going to die here
 	if (istype(T2, /turf/simulated/shuttle))
@@ -231,7 +231,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 
 	return BORDER_NONE
 
-/obj/item/blueprints/proc/detect_room(var/turf/first)
+/obj/item/blueprints/proc/detect_room(turf/first)
 	var/list/turf/found = new
 	var/list/turf/pending = list(first)
 	while(pending.len)

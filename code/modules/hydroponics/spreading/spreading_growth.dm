@@ -60,7 +60,7 @@
 		if(neighbor.seed == src.seed)
 			neighbor.neighbors -= T
 
-/obj/effect/vine/Process(var/grow = 1)
+/obj/effect/vine/Process(grow = 1)
 	// Something is very wrong, kill ourselves.
 	if(!seed)
 		die_off()

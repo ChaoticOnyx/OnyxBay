@@ -150,6 +150,11 @@ area/space/atmosalert()
 	name = "\improper Xenobiology Lab"
 	icon_state = "xeno_lab"
 
+/area/rnd/xenobiology/dorm
+	name = "\improper Xenobiology Lab Dormitories"
+	icon_state = "xeno_lab_dorm"
+
+
 /area/rnd/xenobiology/xenoflora
 	name = "\improper Xenoflora Lab"
 	icon_state = "xeno_f_lab"
@@ -212,7 +217,7 @@ area/space/atmosalert()
 
 /area/beach/New()
 	..()
-	var/sound/S = new/sound()
+	var/sound/S = new /sound()
 	mysound = S
 	S.file = 'sound/ambience/shore.ogg'
 	S.repeat = 1

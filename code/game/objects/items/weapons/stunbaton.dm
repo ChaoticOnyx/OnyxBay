@@ -36,7 +36,7 @@
 		bcell = null
 	return ..()
 
-/obj/item/weapon/melee/baton/proc/deductcharge(var/chrgdeductamt)
+/obj/item/weapon/melee/baton/proc/deductcharge(chrgdeductamt)
 	if(bcell)
 		if(bcell.checked_use(chrgdeductamt))
 			return 1
@@ -96,7 +96,7 @@
 	set_status(!status, user)
 	add_fingerprint(user)
 
-/obj/item/weapon/melee/baton/proc/set_status(var/newstatus, mob/user)
+/obj/item/weapon/melee/baton/proc/set_status(newstatus, mob/user)
 	if(bcell && bcell.charge > hitcost)
 		if(status != newstatus)
 			change_status(newstatus)
@@ -112,7 +112,7 @@
 // Proc to -actually- change the status, and update the icons as well.
 // Also exists to ease "helpful" admin-abuse in case an bug prevents attack_self
 // to occur would appear. Hopefully it wasn't necessary.
-/obj/item/weapon/melee/baton/proc/change_status(var/s)
+/obj/item/weapon/melee/baton/proc/change_status(s)
 	if (status != s)
 		status = s
 		update_icon()
@@ -125,7 +125,7 @@
 		return
 	return ..()
 
-/obj/item/weapon/melee/baton/apply_hit_effect(mob/living/target, mob/living/user, var/hit_zone)
+/obj/item/weapon/melee/baton/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
 	if(isrobot(target))
 		return ..()
 
@@ -186,6 +186,14 @@
 
 	return 0
 
+/obj/item/weapon/melee/baton/throw_impact(hit_atom, speed)
+	. = ..()
+	if(isliving(hit_atom) && status && prob(50))
+		var/mob/living/L = hit_atom
+		L.stun_effect_act(stun_amount = rand(2,5), agony_amount = rand(10, 90), def_zone = ran_zone(BP_CHEST, 75), used_weapon = src)
+		playsound(L.loc, 'sound/weapons/Egloves.ogg', 50, 1, -1)
+		deductcharge(hitcost)
+
 /obj/item/weapon/melee/baton/emp_act(severity)
 	if(bcell)
 		bcell.emp_act(severity)	//let's not duplicate code everywhere if we don't have to please.
@@ -217,7 +225,7 @@
 /obj/item/weapon/melee/baton/robot/attackby(obj/item/weapon/W, mob/user)
 	return
 
-/obj/item/weapon/melee/baton/robot/apply_hit_effect(mob/living/target, mob/living/user, var/hit_zone)
+/obj/item/weapon/melee/baton/robot/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
 	update_cell(isrobot(user) ? user : null) // update the status before we apply the effects
 	return ..()
 

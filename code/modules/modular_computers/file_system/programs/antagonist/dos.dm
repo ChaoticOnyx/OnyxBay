@@ -31,7 +31,7 @@
 			target = null
 			error = "Connection to destination relay lost."
 
-/datum/computer_file/program/ntnet_dos/kill_program(var/forced)
+/datum/computer_file/program/ntnet_dos/kill_program(forced)
 	if(target)
 		target.dos_sources.Remove(src)
 		target = null
@@ -42,7 +42,7 @@
 /datum/nano_module/program/computer_dos
 	name = "DoS Traffic Generator"
 
-/datum/nano_module/program/computer_dos/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/program/computer_dos/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(!ntnet_global)
 		return
 	var/datum/computer_file/program/ntnet_dos/PRG = program

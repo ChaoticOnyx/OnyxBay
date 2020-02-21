@@ -12,7 +12,7 @@
 	var/target_organ
 	var/strength = 4 // How much damage it deals per unit
 
-/datum/reagent/toxin/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/affect_blood(mob/living/carbon/M, alien, removed)
 	if(strength && alien != IS_DIONA)
 		M.add_chemical_effect(CE_TOXIN, strength)
 		var/dam = (strength * removed)
@@ -23,10 +23,10 @@
 				var/can_damage = I.max_damage - I.damage
 				if(can_damage > 0)
 					if(dam > can_damage)
-						I.take_damage(can_damage, silent=TRUE)
+						I.take_internal_damage(can_damage, silent=TRUE)
 						dam -= can_damage
 					else
-						I.take_damage(dam, silent=TRUE)
+						I.take_internal_damage(dam, silent=TRUE)
 						dam = 0
 		if(dam)
 			M.adjustToxLoss(target_organ ? (dam * 0.75) : dam)
@@ -75,21 +75,21 @@
 	strength = 15
 	metabolism = REM
 
-/datum/reagent/toxin/phoron/touch_mob(var/mob/living/L, var/amount)
+/datum/reagent/toxin/phoron/touch_mob(mob/living/L, amount)
 	if(istype(L))
 		L.adjust_fire_stacks(amount / fire_mult)
 
-/datum/reagent/toxin/phoron/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/phoron/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_NABBER)
 		return
 	..()
 
-/datum/reagent/toxin/phoron/affect_touch(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/phoron/affect_touch(mob/living/carbon/M, alien, removed)
 	M.take_organ_damage(0, removed * 0.1) //being splashed directly with phoron causes minor chemical burns
 	if(prob(10 * fire_mult))
 		M.pl_effects()
 
-/datum/reagent/toxin/phoron/touch_turf(var/turf/simulated/T)
+/datum/reagent/toxin/phoron/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
 	T.assume_gas("phoron", volume, T20C)
@@ -102,7 +102,7 @@
 	strength = 15
 	fire_mult = 15
 
-/datum/reagent/toxin/phoron/oxygen/touch_turf(var/turf/simulated/T)
+/datum/reagent/toxin/phoron/oxygen/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
 	T.assume_gas("oxygen", ceil(volume/2), T20C)
@@ -119,7 +119,7 @@
 	metabolism = REM * 0.5
 	target_organ = BP_HEART
 
-/datum/reagent/toxin/cyanide/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/cyanide/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
 
 /datum/reagent/toxin/potassium_chloride
@@ -131,7 +131,7 @@
 	strength = 0
 	overdose = REAGENTS_OVERDOSE
 
-/datum/reagent/toxin/potassium_chloride/overdose(var/mob/living/carbon/M, var/alien)
+/datum/reagent/toxin/potassium_chloride/overdose(mob/living/carbon/M, alien)
 	..()
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -152,7 +152,7 @@
 	strength = 10
 	overdose = 20
 
-/datum/reagent/toxin/potassium_chlorophoride/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/potassium_chlorophoride/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -173,7 +173,7 @@
 	strength = 3
 	target_organ = BP_BRAIN
 
-/datum/reagent/toxin/zombiepowder/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/zombiepowder/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
 	if(alien == IS_DIONA)
 		return
@@ -217,7 +217,7 @@
 	color = "#49002e"
 	strength = 4
 
-/datum/reagent/toxin/plantbgone/touch_turf(var/turf/T)
+/datum/reagent/toxin/plantbgone/touch_turf(turf/T)
 	if(istype(T, /turf/simulated/wall))
 		var/turf/simulated/wall/W = T
 		if(locate(/obj/effect/overlay/wallrot) in W)
@@ -225,16 +225,16 @@
 				qdel(E)
 			W.visible_message("<span class='notice'>The fungi are completely dissolved by the solution!</span>")
 
-/datum/reagent/toxin/plantbgone/touch_obj(var/obj/O, var/volume)
+/datum/reagent/toxin/plantbgone/touch_obj(obj/O, volume)
 	if(istype(O, /obj/effect/vine))
 		qdel(O)
 
-/datum/reagent/toxin/plantbgone/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/plantbgone/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
 	if(alien == IS_DIONA)
 		M.adjustToxLoss(50 * removed)
 
-/datum/reagent/toxin/plantbgone/affect_touch(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/plantbgone/affect_touch(mob/living/carbon/M, alien, removed)
 	..()
 	if(alien == IS_DIONA)
 		M.adjustToxLoss(50 * removed)
@@ -262,7 +262,7 @@
 	color = "#c8a5dc"
 	overdose = REAGENTS_OVERDOSE
 
-/datum/reagent/lexorin/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/lexorin/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 	if(alien == IS_SKRELL)
@@ -282,15 +282,15 @@
 	reagent_state = LIQUID
 	color = "#13bc5e"
 
-/datum/reagent/mutagen/affect_touch(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/mutagen/affect_touch(mob/living/carbon/M, alien, removed)
 	if(prob(33))
 		affect_blood(M, alien, removed)
 
-/datum/reagent/mutagen/affect_ingest(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/mutagen/affect_ingest(mob/living/carbon/M, alien, removed)
 	if(prob(67))
 		affect_blood(M, alien, removed)
 
-/datum/reagent/mutagen/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/mutagen/affect_blood(mob/living/carbon/M, alien, removed)
 
 	if(M.isSynthetic())
 		return
@@ -318,7 +318,7 @@
 	reagent_state = LIQUID
 	color = "#801e28"
 
-/datum/reagent/slimejelly/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/slimejelly/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 	if(prob(10))
@@ -336,7 +336,7 @@
 	metabolism = REM * 0.5
 	overdose = REAGENTS_OVERDOSE
 
-/datum/reagent/soporific/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/soporific/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 
@@ -367,7 +367,7 @@
 	metabolism = REM * 0.5
 	overdose = REAGENTS_OVERDOSE * 0.5
 
-/datum/reagent/chloralhydrate/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/chloralhydrate/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 
@@ -408,7 +408,7 @@
 	metabolism = REM * 0.5
 	overdose = REAGENTS_OVERDOSE
 
-/datum/reagent/space_drugs/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/space_drugs/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 
@@ -432,7 +432,7 @@
 	metabolism = REM * 0.25
 	overdose = REAGENTS_OVERDOSE
 
-/datum/reagent/serotrotium/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/serotrotium/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 	if(prob(7))
@@ -448,7 +448,7 @@
 	metabolism = REM * 0.5
 	overdose = REAGENTS_OVERDOSE
 
-/datum/reagent/cryptobiolin/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/cryptobiolin/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 	var/drug_strength = 4
@@ -465,7 +465,7 @@
 	color = "#c8a5dc"
 	overdose = REAGENTS_OVERDOSE
 
-/datum/reagent/impedrezene/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/impedrezene/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 	M.jitteriness = max(M.jitteriness - 5, 0)
@@ -485,7 +485,7 @@
 	metabolism = REM * 0.25
 	overdose = REAGENTS_OVERDOSE
 
-/datum/reagent/mindbreaker/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/mindbreaker/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 	M.add_chemical_effect(CE_MIND, -2)
@@ -502,7 +502,7 @@
 	overdose = REAGENTS_OVERDOSE
 	metabolism = REM * 0.5
 
-/datum/reagent/psilocybin/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/psilocybin/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 
@@ -543,7 +543,7 @@
 	color = "#13bc5e"
 	metabolism = REM * 0.4
 
-/datum/reagent/slimetoxin/affect_blood(var/mob/living/carbon/human/H, var/alien, var/removed)
+/datum/reagent/slimetoxin/affect_blood(mob/living/carbon/human/H, alien, removed)
 	if(!istype(H))
 		return
 	if(H.species.name == SPECIES_PROMETHEAN)
@@ -593,7 +593,7 @@
 	reagent_state = LIQUID
 	color = "#13bc5e"
 
-/datum/reagent/aslimetoxin/affect_blood(var/mob/living/carbon/M, var/alien, var/removed) // TODO: check if there's similar code anywhere else
+/datum/reagent/aslimetoxin/affect_blood(mob/living/carbon/M, alien, removed) // TODO: check if there's similar code anywhere else
 	if(M.transforming)
 		return
 	to_chat(M, "<span class='danger'>Your flesh rapidly mutates!</span>")
@@ -639,7 +639,7 @@
 	strength = 1
 	overdose = REAGENTS_OVERDOSE
 
-/datum/reagent/toxin/hair_remover/affect_touch(var/mob/living/carbon/human/M, var/alien, var/removed)
+/datum/reagent/toxin/hair_remover/affect_touch(mob/living/carbon/human/M, alien, removed)
 	if(alien == IS_SKRELL)	//skrell can't have hair unless you hack it in, also to prevent tentacles from falling off
 		return
 	M.species.set_default_hair(M)
@@ -657,10 +657,10 @@
 	overdose = 30
 	var/amount_to_zombify = 5
 
-/datum/reagent/toxin/zombie/affect_touch(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/zombie/affect_touch(mob/living/carbon/M, alien, removed)
 	affect_blood(M, alien, removed * 0.5)
 
-/datum/reagent/toxin/zombie/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/zombie/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -669,8 +669,8 @@
 			H.zombify()
 		else if (prob(10))
 			to_chat(H, "<span class='warning'>You feel terribly ill!</span>")
-			
-/datum/reagent/vecuronium_bromide/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+
+/datum/reagent/vecuronium_bromide/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 
@@ -691,4 +691,4 @@
 		M.eye_blurry = max(M.eye_blurry, 10)
 
 	if(M.chem_doses[type] > 1 * threshold)
-		M.adjustToxLoss(removed)			
+		M.adjustToxLoss(removed)

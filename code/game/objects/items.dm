@@ -157,7 +157,7 @@
 
 	src.loc = T
 
-/obj/item/examine(mob/user, var/distance = -1)
+/obj/item/examine(mob/user, distance = -1)
 	var/size
 	switch(src.w_class)
 		if(ITEM_SIZE_TINY)
@@ -331,7 +331,7 @@
 // slot uses the slot_X defines found in setup.dm
 // for items that can be placed in multiple slots
 // note this isn't called during the initial dressing of a player
-/obj/item/proc/equipped(var/mob/user, var/slot)
+/obj/item/proc/equipped(mob/user, slot)
 	hud_layerise()
 	if(user.client)	user.client.screen |= src
 	if(user.pulling == src) user.stop_pulling()
@@ -518,7 +518,7 @@ var/list/global/slot_flags_enumeration = list(
 //If a negative value is returned, it should be treated as a special return value for bullet_act() and handled appropriately.
 //For non-projectile attacks this usually means the attack is blocked.
 //Otherwise should return 0 to indicate that the attack is not affected in any way.
-/obj/item/proc/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
+/obj/item/proc/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 
 	if(!user.blocking) return 0 // We weren't ready bruh
 	if(istype(damage_source,/obj/item/projectile))
@@ -626,7 +626,7 @@ var/list/global/slot_flags_enumeration = list(
 					to_chat(M, "<span class='warning'>You go blind!</span>")
 
 		var/obj/item/organ/external/affecting = H.get_organ(eyes.parent_organ)
-		affecting.take_damage(7)
+		affecting.take_external_damage(7)
 	else
 		M.take_organ_damage(7)
 	M.eye_blurry += rand(3,4)
@@ -702,7 +702,7 @@ modules/mob/mob_movement.dm if you move you will be zoomed out
 modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 */
 //Looking through a scope or binoculars should /not/ improve your periphereal vision. Still, increase viewsize a tiny bit so that sniping isn't as restricted to NSEW
-/obj/item/proc/zoom(mob/user, var/tileoffset = 14,var/viewsize = 9) //tileoffset is client view offset in the direction the user is facing. viewsize is how far out this thing zooms. 7 is normal view
+/obj/item/proc/zoom(mob/user, tileoffset = 14,viewsize = 9) //tileoffset is client view offset in the direction the user is facing. viewsize is how far out this thing zooms. 7 is normal view
 	if(!user.client)
 		return
 
@@ -788,7 +788,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	return icon_state
 
-/obj/item/proc/dir_shift(var/icon/given_icon, var/dir_given, var/x = 0, var/y = 0)
+/obj/item/proc/dir_shift(icon/given_icon, dir_given, x = 0, y = 0)
 	var/icon/I = new(given_icon, dir = dir_given)
 	I.Shift(EAST, x)
 	I.Shift(NORTH, y)
@@ -851,9 +851,9 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/proc/update_weapon_desc()
 	return
-	
-/obj/item/proc/on_restraint_removal(var/mob/living/carbon/C) //Needed for syndicuffs
+
+/obj/item/proc/on_restraint_removal(mob/living/carbon/C) //Needed for syndicuffs
 	return
 
-/obj/item/proc/on_restraint_apply(var/mob/living/carbon/C)
-	return	
+/obj/item/proc/on_restraint_apply(mob/living/carbon/C)
+	return

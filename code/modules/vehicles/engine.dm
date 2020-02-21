@@ -18,10 +18,10 @@
 /obj/item/weapon/engine/proc/use_power()
 	return 0
 
-/obj/item/weapon/engine/proc/rev_engine(var/atom/movable/M)
+/obj/item/weapon/engine/proc/rev_engine(atom/movable/M)
 	return
 
-/obj/item/weapon/engine/proc/putter(var/atom/movable/M)
+/obj/item/weapon/engine/proc/putter(atom/movable/M)
 	return
 
 /obj/item/weapon/engine/electric
@@ -32,7 +32,7 @@
 	cost_per_move = 200	// W
 	var/obj/item/weapon/cell/cell
 
-/obj/item/weapon/engine/electric/attackby(var/obj/item/I, var/mob/user)
+/obj/item/weapon/engine/electric/attackby(obj/item/I, mob/user)
 	if(istype(I,/obj/item/weapon/cell))
 		if(cell)
 			to_chat(user, "<span class='warning'>There is already a cell in \the [src].</span>")
@@ -57,13 +57,13 @@
 		return 0
 	return cell.use(cost_per_move * CELLRATE)
 
-/obj/item/weapon/engine/electric/rev_engine(var/atom/movable/M)
+/obj/item/weapon/engine/electric/rev_engine(atom/movable/M)
 	M.audible_message("\The [M] beeps, spinning up.")
 
-/obj/item/weapon/engine/electric/putter(var/atom/movable/M)
+/obj/item/weapon/engine/electric/putter(atom/movable/M)
 	M.audible_message("\The [M] makes one depressed beep before winding down.")
 
-/obj/item/weapon/engine/electric/emp_act(var/severity)
+/obj/item/weapon/engine/electric/emp_act(severity)
 	if(cell)
 		cell.emp_act(severity)
 	..()
@@ -88,7 +88,7 @@
 	temp_reagents_holder.create_reagents(15)
 	temp_reagents_holder.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 
-/obj/item/weapon/engine/thermal/attackby(var/obj/item/I, var/mob/user)
+/obj/item/weapon/engine/thermal/attackby(obj/item/I, mob/user)
 	if(istype(I,/obj/item/weapon/reagent_containers) && I.is_open_container())
 		if(istype(I,/obj/item/weapon/reagent_containers/food/snacks) || istype(I,/obj/item/weapon/reagent_containers/pill))
 			return 0
@@ -136,8 +136,8 @@
 	temp_reagents_holder.reagents.clear_reagents()
 	return use_power()
 
-/obj/item/weapon/engine/thermal/rev_engine(var/atom/movable/M)
+/obj/item/weapon/engine/thermal/rev_engine(atom/movable/M)
 	M.audible_message("\The [M] rumbles to life.")
 
-/obj/item/weapon/engine/electric/putter(var/atom/movable/M)
+/obj/item/weapon/engine/electric/putter(atom/movable/M)
 	M.audible_message("\The [M] putters before turning off.")

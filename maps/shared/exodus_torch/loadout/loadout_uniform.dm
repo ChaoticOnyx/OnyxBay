@@ -4,7 +4,7 @@
 
 /datum/gear/uniform/casual_pants/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path(/obj/item/clothing/under/casual_pants)
+	gear_tweaks += new /datum/gear_tweak/path(/obj/item/clothing/under/casual_pants)
 
 /datum/gear/uniform/formal_pants
 	display_name = "formal pants selection"
@@ -12,7 +12,7 @@
 
 /datum/gear/uniform/formal_pants/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path(/obj/item/clothing/under/formal_pants)
+	gear_tweaks += new /datum/gear_tweak/path(/obj/item/clothing/under/formal_pants)
 
 /datum/gear/uniform/shorts
 	display_name = "shorts selection"
@@ -20,4 +20,4 @@
 
 /datum/gear/uniform/shorts/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path(/obj/item/clothing/under/shorts/jeans)
+	gear_tweaks += new /datum/gear_tweak/path(/obj/item/clothing/under/shorts/jeans)

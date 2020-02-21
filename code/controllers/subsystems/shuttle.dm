@@ -50,7 +50,7 @@ SUBSYSTEM_DEF(shuttle)
 			O = map_sectors["[automatic.z]"]
 			O ? O.add_landmark(automatic, automatic.shuttle_restricted) : (landmarks_awaiting_sector += shuttle_landmark)
 
-/datum/controller/subsystem/shuttle/proc/get_landmark(var/shuttle_landmark_tag)
+/datum/controller/subsystem/shuttle/proc/get_landmark(shuttle_landmark_tag)
 	return registered_shuttle_landmarks[shuttle_landmark_tag]
 
 //Checks if the given sector's landmarks have initialized; if so, registers them with the sector, if not, marks them for assignment after they come in.
@@ -93,7 +93,7 @@ SUBSYSTEM_DEF(shuttle)
 			initialise_shuttle(shuttle_type, TRUE)
 	shuttles_to_initialize = null
 
-/datum/controller/subsystem/shuttle/proc/initialise_shuttle(var/shuttle_type, during_init = FALSE)
+/datum/controller/subsystem/shuttle/proc/initialise_shuttle(shuttle_type, during_init = FALSE)
 	if(!initialized && !during_init)
 		LAZYADD(shuttles_to_initialize, shuttle_type)
 		return //We'll get back to it during init.

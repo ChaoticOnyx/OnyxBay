@@ -11,7 +11,7 @@ datum/preferences
 	name = "Basic"
 	sort_order = 1
 
-/datum/category_item/player_setup_item/general/basic/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/general/basic/load_character(savefile/S)
 	S["real_name"]				>> pref.real_name
 	S["name_is_always_random"]	>> pref.be_random_name
 	S["gender"]					>> pref.gender
@@ -22,7 +22,7 @@ datum/preferences
 	S["spawnpoint"]				>> pref.spawnpoint
 	S["OOC_Notes"]				>> pref.metadata
 
-/datum/category_item/player_setup_item/general/basic/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/general/basic/save_character(savefile/S)
 	S["real_name"]				<< pref.real_name
 	S["name_is_always_random"]	<< pref.be_random_name
 	S["gender"]					<< pref.gender
@@ -63,7 +63,7 @@ datum/preferences
 		. += "<b>OOC Notes:</b> <a href='?src=\ref[src];metadata=1'> Edit </a><br>"
 	. = jointext(.,null)
 
-/datum/category_item/player_setup_item/general/basic/OnTopic(var/href,var/list/href_list, var/mob/user)
+/datum/category_item/player_setup_item/general/basic/OnTopic(href,list/href_list, mob/user)
 	var/datum/species/S = all_species[pref.species]
 	if(href_list["rename"])
 		var/raw_name = input(user, "Choose your character's name:", "Character Name")  as text|null

@@ -32,7 +32,7 @@
 	metabolism = REM * 0.5
 	target_organ = BP_BRAIN
 
-/datum/reagent/toxin/cyanide/change_toxin/biotoxin/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/toxin/cyanide/change_toxin/biotoxin/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
 	var/datum/changeling/changeling = M.mind.changeling
 	if(changeling)
@@ -54,14 +54,14 @@
 	flags = IGNORE_MOB_SIZE
 
 
-/datum/reagent/rezadone/change_reviver/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+/datum/reagent/rezadone/change_reviver/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
 	if(prob(1))
 		var/datum/antagonist/changeling/a = new
 		a.add_antagonist(M.mind, ignore_role = 1, do_not_equip = 1)
 
 
-/datum/reagent/rezadone/change_reviver/overdose(var/mob/living/carbon/M, var/alien)
+/datum/reagent/rezadone/change_reviver/overdose(mob/living/carbon/M, alien)
 	..()
 	M.revive()
 
@@ -94,7 +94,6 @@
 	origin_tech = list(TECH_BIO = 10, TECH_ILLEGAL = 5)
 	attack_verb = list("attacked", "slapped", "whacked")
 	relative_size = 10
-	die_time = 15 MINUTES
 	var/mob/living/carbon/brain/brainchan = null 	//notice me, biostructure-kun~ (✿˵•́ ‸ •̀˵)
 	var/const/damage_threshold_count = 10
 	var/last_regen_time = 0
@@ -102,7 +101,7 @@
 	var/healing_threshold = 1
 	var/moving = 0
 
-/obj/item/organ/internal/biostructure/New(var/mob/living/holder)
+/obj/item/organ/internal/biostructure/New(mob/living/holder)
 	..()
 	max_damage = 600
 	min_bruised_damage = max_damage*0.25
@@ -125,13 +124,13 @@
 	QDEL_NULL(brainchan)
 	. = ..()
 
-/obj/item/organ/internal/biostructure/proc/mind_into_biostructure(var/mob/living/M)
+/obj/item/organ/internal/biostructure/proc/mind_into_biostructure(mob/living/M)
 	if(status & ORGAN_DEAD) return
 	if(M && M.mind && brainchan)
 		M.mind.transfer_to(brainchan)
 		to_chat(brainchan, "<span class='notice'>You feel slightly disoriented.</span>")
 
-/obj/item/organ/internal/biostructure/removed(var/mob/living/user)
+/obj/item/organ/internal/biostructure/removed(mob/living/user)
 	if(vital)
 		if (owner)
 			mind_into_biostructure(owner)
@@ -145,7 +144,7 @@
 				brainchan.verbs += /mob/proc/aggressive
 	..()
 
-/obj/item/organ/internal/biostructure/replaced(var/mob/living/target)
+/obj/item/organ/internal/biostructure/replaced(mob/living/target)
 
 	if(!..()) return 0
 
@@ -200,7 +199,7 @@
 		var/obj/item/organ/external/E = H.get_organ(parent_organ)
 		if(E)
 			E.internal_organs -= src
-		H.internal_organs_by_name[BP_CHANG] = null
+		H.internal_organs_by_name.Remove(BP_CHANG)
 		H.internal_organs_by_name -= BP_CHANG
 		H.internal_organs_by_name -= null
 		H.internal_organs -= src
@@ -346,7 +345,6 @@
 	minbodytemp = 0
 	maxbodytemp = 350
 	break_stuff_probability = 15
-	var/divisionCounter = 0
 	faction = "biomass"
 
 /mob/living/simple_animal/hostile/little_changeling/New()
@@ -572,7 +570,7 @@
 		if(!target.has_limb(BP_HEAD))
 			target.restore_limb(BP_HEAD)
 			target.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/brain(target)
-			target.internal_organs_by_name[BP_EYES] = new/obj/item/organ/internal/eyes(target)
+			target.internal_organs_by_name[BP_EYES] = new /obj/item/organ/internal/eyes(target)
 
 	target.sync_organ_dna()
 	target.regenerate_icons()
@@ -587,7 +585,7 @@
 
 	return
 
-/mob/living/simple_animal/hostile/little_changeling/Allow_Spacemove(var/check_drift = 0)
+/mob/living/simple_animal/hostile/little_changeling/Allow_Spacemove(check_drift = 0)
 	return 0
 
 /mob/living/simple_animal/hostile/little_changeling/FindTarget()
@@ -602,12 +600,6 @@
 	var/mob/living/L = .
 	if(src.health <= (src.maxHealth - 5))
 		src.health += 5
-
-	if(divisionCounter < 8)
-		divisionCounter += 1
-	else
-		new/mob/living/simple_animal/hostile/little_changeling/arm_chan(src.loc)
-		divisionCounter = 0
 
 	if(ishuman(L) && prob(3))
 		L.Weaken(3)

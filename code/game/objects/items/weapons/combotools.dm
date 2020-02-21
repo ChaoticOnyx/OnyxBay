@@ -25,7 +25,7 @@
 	update_icon()
 	return
 
-/obj/item/weapon/combotool/resolve_attackby(var/atom/a, var/mob/user, var/click_params)
+/obj/item/weapon/combotool/resolve_attackby(atom/a, mob/user, click_params)
 	if(istype(a, /obj/item/weapon/storage))
 		a.attackby(src, user)
 		return

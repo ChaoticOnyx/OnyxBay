@@ -20,7 +20,7 @@
 	ties["navy tie"] = /obj/item/clothing/accessory/navy
 	ties["horrible tie"] = /obj/item/clothing/accessory/horrible
 	ties["brown tie"] = /obj/item/clothing/accessory/brown
-	gear_tweaks += new/datum/gear_tweak/path(ties)
+	gear_tweaks += new /datum/gear_tweak/path(ties)
 
 /datum/gear/accessory/tie_color
 	display_name = "colored tie"
@@ -32,7 +32,7 @@
 	var/ties = list()
 	ties["tie"] = /obj/item/clothing/accessory
 	ties["striped tie"] = /obj/item/clothing/accessory/long
-	gear_tweaks += new/datum/gear_tweak/path(ties)
+	gear_tweaks += new /datum/gear_tweak/path(ties)
 
 /datum/gear/accessory/corset_color
 	display_name = "colored corset"
@@ -78,7 +78,7 @@
 	ntawards["sciences medal"] = /obj/item/clothing/accessory/medal/bronze/nanotrasen
 	ntawards["nanotrasen service"] = /obj/item/clothing/accessory/medal/silver/nanotrasen
 	ntawards["command medal"] = /obj/item/clothing/accessory/medal/gold/nanotrasen
-	gear_tweaks += new/datum/gear_tweak/path(ntawards)
+	gear_tweaks += new /datum/gear_tweak/path(ntawards)
 
 /datum/gear/accessory/armband_security
 	display_name = "security armband"

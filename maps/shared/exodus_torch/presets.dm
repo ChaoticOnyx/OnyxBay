@@ -2,7 +2,7 @@ var/const/NETWORK_COMMAND = "Command"
 var/const/NETWORK_ENGINE  = "Engine"
 var/const/NETWORK_ENGINEERING_OUTPOST = "Engineering Outpost"
 
-/datum/map/proc/get_shared_network_access(var/network)
+/datum/map/proc/get_shared_network_access(network)
 	switch(network)
 		if(NETWORK_COMMAND)
 			return access_heads

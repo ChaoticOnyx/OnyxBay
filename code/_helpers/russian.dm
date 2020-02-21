@@ -1,10 +1,10 @@
-/proc/rhtml_encode(var/msg)
+/proc/rhtml_encode(msg)
 	msg = replacetext(msg, "<", "&lt;")
 	msg = replacetext(msg, ">", "&gt;")
 	msg = replacetext(msg, "ÿ", "&#255;")
 	return msg
 
-/proc/rhtml_decode(var/msg)
+/proc/rhtml_decode(msg)
 	msg = replacetext(msg, "&gt;", ">")
 	msg = replacetext(msg, "&lt;", "<")
 	msg = replacetext(msg, "&#255;", "ÿ")
@@ -40,12 +40,12 @@
 
 //RUS CONVERTERS
 // prepare_to_browser for writing .html files direct to browser (html files line-endings must be in unix-style (LF instead of CRLF))
-/proc/russian_to_cp1251(var/msg, var/prepare_to_browser = FALSE)//CHATBOX
+/proc/russian_to_cp1251(msg, prepare_to_browser = FALSE)//CHATBOX
 	if(prepare_to_browser)
 		msg = replace_characters(msg, list("\n\n" = "<br>", "\n" = "", "\t" = ""))
 	return replacetext(msg, "ÿ", "&#255;")
 
-/proc/russian_to_utf8(var/msg, var/prepare_to_browser = FALSE)//PDA PAPER POPUPS
+/proc/russian_to_utf8(msg, prepare_to_browser = FALSE)//PDA PAPER POPUPS
 	if(prepare_to_browser)
 		msg = replace_characters(msg, list("\n\n" = "<br>", "\n" = "", "\t" = ""))
 	return replacetext(msg, "ÿ", "&#1103;")
@@ -71,7 +71,7 @@
 
 //input
 
-/proc/input_cp1251(var/mob/user = usr, var/message, var/title, var/default, var/type = "message", var/prepare_to_browser = FALSE)
+/proc/input_cp1251(mob/user = usr, message, title, default, type = "message", prepare_to_browser = FALSE)
 	var/msg = ""
 	switch(type)
 		if("message")
@@ -81,7 +81,7 @@
 	msg = russian_to_cp1251(msg, prepare_to_browser)
 	return post_edit_cp1251(msg)
 
-/proc/input_utf8(var/mob/user = usr, var/message, var/title, var/default, var/type = "message", var/prepare_to_browser = FALSE)
+/proc/input_utf8(mob/user = usr, message, title, default, type = "message", prepare_to_browser = FALSE)
 	var/msg = ""
 	switch(type)
 		if("message")
@@ -109,7 +109,7 @@ var/global/list/rkeys = list(
 	return (t)
 
 //TEXT MODS RUS
-/proc/capitalize_cp1251(var/t as text)
+/proc/capitalize_cp1251(t as text)
 	var/s = 2
 	if (copytext(t,1,2) == ";")
 		s += 1

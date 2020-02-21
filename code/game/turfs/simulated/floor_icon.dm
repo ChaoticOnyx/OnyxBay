@@ -1,6 +1,6 @@
 var/list/flooring_cache = list()
 
-/turf/simulated/floor/update_icon(var/update_neighbors)
+/turf/simulated/floor/update_icon(update_neighbors)
 
 	if(lava)
 		return
@@ -61,14 +61,14 @@ var/list/flooring_cache = list()
 		for(var/turf/simulated/floor/F in orange(src, 1))
 			F.update_icon()
 
-/turf/simulated/floor/proc/get_flooring_overlay(var/cache_key, var/icon_base, var/icon_dir = 0)
+/turf/simulated/floor/proc/get_flooring_overlay(cache_key, icon_base, icon_dir = 0)
 	if(!flooring_cache[cache_key])
 		var/image/I = image(icon = flooring.icon, icon_state = icon_base, dir = icon_dir)
 		I.turf_decal_layerise()
 		flooring_cache[cache_key] = I
 	return flooring_cache[cache_key]
 
-/turf/simulated/floor/proc/get_damage_overlay(var/cache_key, var/blend)
+/turf/simulated/floor/proc/get_damage_overlay(cache_key, blend)
 	if(!flooring_cache[cache_key])
 		var/image/I = image(icon = 'icons/turf/flooring/damage.dmi', icon_state = cache_key)
 		if(blend)

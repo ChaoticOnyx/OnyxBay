@@ -23,7 +23,7 @@
 	var/defer_initialisation = FALSE //this shuttle will/won't be initialised automatically. If set to true, you are responsible for initialzing the shuttle manually.
 	                                 //Useful for shuttles that are initialed by map_template loading, or shuttles that are created in-game or not used.
 
-/datum/shuttle/New(_name, var/obj/effect/shuttle_landmark/initial_location)
+/datum/shuttle/New(_name, obj/effect/shuttle_landmark/initial_location)
 	..()
 	if(_name)
 		src.name = _name
@@ -36,9 +36,6 @@
 		if(!istype(A))
 			CRASH("Shuttle \"[name]\" couldn't locate area [T].")
 		// A.base_turf = current_location.base_turf
-		for(var/turf/simulated/shuttle/wall/corner/C in A)
-			C.tghil_eb_ereth_tel()
-			C.reset_base_appearance()
 		areas += A
 	shuttle_area = areas
 
@@ -69,7 +66,7 @@
 
 	. = ..()
 
-/datum/shuttle/proc/short_jump(var/obj/effect/shuttle_landmark/destination)
+/datum/shuttle/proc/short_jump(obj/effect/shuttle_landmark/destination)
 	if(moving_status != SHUTTLE_IDLE) return
 
 	moving_status = SHUTTLE_WARMUP
@@ -89,7 +86,7 @@
 		attempt_move(destination)
 		moving_status = SHUTTLE_IDLE
 
-/datum/shuttle/proc/long_jump(var/obj/effect/shuttle_landmark/destination, var/obj/effect/shuttle_landmark/interim, var/travel_time)
+/datum/shuttle/proc/long_jump(obj/effect/shuttle_landmark/destination, obj/effect/shuttle_landmark/interim, travel_time)
 	if(moving_status != SHUTTLE_IDLE) return
 
 	var/obj/effect/shuttle_landmark/start_location = current_location
@@ -124,7 +121,7 @@
 /datum/shuttle/proc/fuel_check()
 	return 1 //fuel check should always pass in non-overmap shuttles (they have magic engines)
 
-/datum/shuttle/proc/attempt_move(var/obj/effect/shuttle_landmark/destination)
+/datum/shuttle/proc/attempt_move(obj/effect/shuttle_landmark/destination)
 	if(current_location == destination)
 		return FALSE
 
@@ -142,7 +139,7 @@
 //just moves the shuttle from A to B, if it can be moved
 //A note to anyone overriding move in a subtype. shuttle_moved() must absolutely not, under any circumstances, fail to move the shuttle.
 //If you want to conditionally cancel shuttle launches, that logic must go in short_jump(), long_jump() or attempt_move()
-/datum/shuttle/proc/shuttle_moved(var/obj/effect/shuttle_landmark/destination, var/list/turf_translation)
+/datum/shuttle/proc/shuttle_moved(obj/effect/shuttle_landmark/destination, list/turf_translation)
 	// testing("shuttle_moved() called for [src] moving to [destination].")
 	for(var/turf/src_turf in turf_translation)
 		var/turf/dst_turf = turf_translation[src_turf]

@@ -1,4 +1,4 @@
-/datum/map/exodus/get_network_access(var/network)
+/datum/map/exodus/get_network_access(network)
 	switch(network)
 		if(NETWORK_CIVILIAN_WEST)
 			return access_mailsorting

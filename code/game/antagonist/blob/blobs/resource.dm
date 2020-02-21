@@ -26,7 +26,7 @@
 
 	..()
 
-/obj/effect/blob/resource/Pulse(var/pulse = 0, var/origin_dir = 0)
+/obj/effect/blob/resource/Pulse(pulse = 0, origin_dir = 0)
 	if (!overmind)
 		var/mob/blob/B = (locate() in range(src,1))
 
@@ -49,7 +49,7 @@
 
 	return 1
 
-/obj/effect/blob/resource/update_icon(var/spawnend = 0)
+/obj/effect/blob/resource/update_icon(spawnend = 0)
 	spawn(1)
 		if(overmind)
 			color = null

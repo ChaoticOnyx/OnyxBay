@@ -35,7 +35,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_delete,		//delete an instance/object/mob/etc,
 	/client/proc/cmd_admin_check_contents,	//displays the contents of an instance,
 	/datum/admins/proc/access_news_network,	//allows access of newscasters,
-	/client/proc/giveruntimelog,		//allows us to give access to runtime logs to somebody,
 	/client/proc/getserverlog,			//allows us to fetch server logs (diary) for other days,
 	/client/proc/jumptocoord,			//we ghost and jump to a coordinate,
 	/client/proc/Getmob,				//teleports a mob to our location,
@@ -114,7 +113,11 @@ var/list/admin_verbs_ban = list(
 var/list/admin_verbs_sounds = list(
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
-	/client/proc/play_server_sound
+	/client/proc/play_server_sound,
+	/client/proc/cuban_pete,
+	/client/proc/bananaphone,
+	/client/proc/space_asshole,
+	/client/proc/honk_theme,
 	)
 
 var/list/admin_verbs_fun = list(
@@ -136,7 +139,8 @@ var/list/admin_verbs_fun = list(
 	/datum/admins/proc/call_drop_pod,
 	/client/proc/create_dungeon,
 	/datum/admins/proc/ai_hologram_set,
-	/client/proc/projectile_basketball
+	/client/proc/projectile_basketball,
+	/client/proc/toggle_possess_mode
 	)
 
 var/list/admin_verbs_spawn = list(
@@ -156,10 +160,10 @@ var/list/admin_verbs_server = list(
 	/client/proc/Set_Holiday,
 	/datum/admins/proc/startnow,
 	/datum/admins/proc/restart,
+	/datum/admins/proc/end_round,
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
-	/client/proc/toggle_log_hrefs,
 	/datum/admins/proc/immreboot,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
@@ -173,11 +177,11 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/toggle_space_ninja,
 	/client/proc/toggle_random_events,
 	/client/proc/check_customitem_activity,
-	/client/proc/nanomapgen_DumpImage
+	/client/proc/nanomapgen_DumpImage,
+	/client/proc/update_donations_db_credentials
 	)
 
 var/list/admin_verbs_debug = list(
-	/client/proc/getruntimelog,                     // allows us to access runtime logs to somebody,
 	/client/proc/cmd_admin_list_open_jobs,
 	/client/proc/Debug2,
 	/client/proc/ZASSettings,
@@ -203,7 +207,6 @@ var/list/admin_verbs_debug = list(
 	/client/proc/enable_debug_verbs,
 	/client/proc/callproc,
 	/client/proc/callproc_target,
-	/client/proc/SDQL_query,
 	/client/proc/SDQL2_query,
 	/client/proc/Jump,
 	/client/proc/jumptomob,
@@ -217,7 +220,8 @@ var/list/admin_verbs_debug = list(
 	/client/proc/cmd_analyse_health_context,
 	/client/proc/cmd_analyse_health_panel,
 	/client/proc/visualpower,
-	/client/proc/visualpower_remove
+	/client/proc/visualpower_remove,
+	/client/proc/enable_profiler
 	)
 
 var/list/admin_verbs_paranoid_debug = list(
@@ -281,10 +285,10 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/Set_Holiday,
 	/datum/admins/proc/startnow,
 	/datum/admins/proc/restart,
+	/datum/admins/proc/end_round,
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
-	/client/proc/toggle_log_hrefs,
 	/datum/admins/proc/immreboot,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
@@ -299,7 +303,6 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/reload_admins,
 	/client/proc/cmd_debug_make_powernets,
 	/client/proc/debug_controller,
-	/client/proc/startSinglo,
 	/client/proc/cmd_debug_mob_lists,
 	/client/proc/cmd_debug_del_all,
 	/client/proc/cmd_debug_tog_aliens,
@@ -309,7 +312,9 @@ var/list/admin_verbs_hideable = list(
 	/proc/possess,
 	/proc/release,
 	/datum/admins/proc/ictus,
-	/client/proc/projectile_basketball	
+	/client/proc/projectile_basketball,
+	/client/proc/toggle_possess_mode,
+	/client/proc/enable_profiler
 	)
 
 var/list/admin_verbs_mod = list(
@@ -455,13 +460,13 @@ var/list/admin_verbs_mentor = list(
 	if(holder && mob)
 		if(mob.invisibility == INVISIBILITY_OBSERVER)
 			mob.set_invisibility(initial(mob.invisibility))
-			to_chat(mob, "<span class='danger'>Invisimin off. Invisibility reset.</span>")
+			to_chat(mob, SPAN_DANGER("Invisimin off. Invisibility reset."))
 			mob.alpha = max(mob.alpha + 100, 255)
 		else
 			mob.set_invisibility(INVISIBILITY_OBSERVER)
-			to_chat(mob, "<span class='notice'>Invisimin on. You are now as invisible as a ghost.</span>")
+			to_chat(mob, SPAN_NOTICE("Invisimin on. You are now as invisible as a ghost."))
 			mob.alpha = max(mob.alpha - 100, 0)
-
+		log_admin("[key_name(src)] [mob.invisibility == INVISIBILITY_OBSERVER ? "enabled" : "disabled"] invisimin mode.")
 
 /client/proc/player_panel()
 	set name = "Player Panel"
@@ -652,7 +657,7 @@ var/list/admin_verbs_mentor = list(
 		usr.PushClickHandler(/datum/click_handler/build_mode)
 	feedback_add_details("admin_verb","TBMS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/object_talk(var/msg as text) // -- TLE
+/client/proc/object_talk(msg as text) // -- TLE
 	set category = "Special Verbs"
 	set name = "oSay"
 	set desc = "Display a message to everyone who can hear the target"
@@ -686,18 +691,6 @@ var/list/admin_verbs_mentor = list(
 			to_chat(src, "<span class='interface'>You are now a normal player.</span>")
 			verbs |= /client/proc/readmin_self
 	feedback_add_details("admin_verb","DAS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/client/proc/toggle_log_hrefs()
-	set name = "Toggle href logging"
-	set category = "Server"
-	if(!holder)	return
-	if(config)
-		if(config.log_hrefs)
-			config.log_hrefs = 0
-			to_chat(src, "<b>Stopped logging hrefs</b>")
-		else
-			config.log_hrefs = 1
-			to_chat(src, "<b>Started logging hrefs</b>")
 
 /client/proc/check_ai_laws()
 	set name = "Check AI Laws"
@@ -948,7 +941,7 @@ var/list/admin_verbs_mentor = list(
 	T.add_spell(new S)
 	feedback_add_details("admin_verb","GS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_and_message_admins("gave [key_name(T)] the spell [S].")
-	
+
 /client/proc/projectile_basketball()
 	set category = "Fun"
 	set desc="Globally Toggles the ability to catch bullets with your hands"
@@ -959,4 +952,19 @@ var/list/admin_verbs_mentor = list(
 
 	config.projectile_basketball = !(config.projectile_basketball)
 	log_and_message_admins("toggled projectile basketball mode.")
-	feedback_add_details("admin_verb","PROBAS")	
+	feedback_add_details("admin_verb","PROBAS")
+
+/client/proc/enable_profiler()
+	set category = "Debug"
+	set name = "Enable Profiler"
+	set desc = "Access BYOND's proc performance profiler"
+
+	if(!check_rights(R_DEBUG))
+		return
+
+	log_and_message_admins("has enabled performance profiler. This may cause lag.")
+
+	// Give profiler access
+	world.SetConfig("APP/admin", ckey, "role=admin")
+	winset(src, "browserwindow", "is-visible=true")
+	send_link(src, "?debug=profile")

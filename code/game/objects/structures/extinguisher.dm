@@ -10,7 +10,7 @@
 
 /obj/structure/extinguisher_cabinet/New()
 	..()
-	has_extinguisher = new/obj/item/weapon/extinguisher(src)
+	has_extinguisher = new /obj/item/weapon/extinguisher(src)
 
 /obj/structure/extinguisher_cabinet/attackby(obj/item/O, mob/user)
 	if(isrobot(user))
@@ -72,7 +72,7 @@
 	else
 		icon_state = "extinguisher_empty"
 
-/obj/structure/extinguisher_cabinet/AltClick(var/mob/user)
+/obj/structure/extinguisher_cabinet/AltClick(mob/user)
 	if(CanPhysicallyInteract(user))
 		opened = !opened
 		update_icon()

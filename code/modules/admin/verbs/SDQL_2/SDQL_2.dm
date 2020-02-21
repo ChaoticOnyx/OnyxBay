@@ -18,11 +18,11 @@
 
 // Used by update statements, this is to handle shit like preventing editing the /datum/admins though SDQL but WITHOUT +PERMISSIONS.
 // Assumes the variable actually exists.
-/datum/proc/SDQL_update(var/const/var_name, var/new_value)
+/datum/proc/SDQL_update(const/var_name, new_value)
 	vars[var_name] = new_value
 	return 1
 
-/client/proc/SDQL2_query(var/query_text as message)
+/client/proc/SDQL2_query(query_text as message)
 	set category = "Debug"
 
 	if(!check_rights(R_DEBUG))  // Shouldn't happen... but just to be safe.
@@ -34,7 +34,7 @@
 		return
 
 	var/query_log = "[key_name(src)] executed SDQL query: \"[query_text]\"."
-	to_world_log(query_log)
+	log_to_dd(query_log)
 	log_and_message_admins(query_log)
 	sleep(-1) // Incase the server crashes due to a huge query, we allow the server to log the above things (it might just delay it).
 
@@ -432,7 +432,7 @@
 	return v
 
 
-/proc/SDQL_function(var/datum/object, var/procname, var/list/arguments, source)
+/proc/SDQL_function(datum/object, procname, list/arguments, source)
 	set waitfor = FALSE
 
 	var/list/new_args = list()

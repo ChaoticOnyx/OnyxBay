@@ -22,7 +22,7 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 /datum/antagonist/ninja/attempt_random_spawn()
 	if(config.ninjas_allowed) ..()
 
-/datum/antagonist/ninja/create_objectives(var/datum/mind/ninja)
+/datum/antagonist/ninja/create_objectives(datum/mind/ninja)
 
 	if(!..())
 		return
@@ -73,7 +73,7 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 	ninja_objective.owner = ninja
 	ninja.objectives += ninja_objective
 
-/datum/antagonist/ninja/greet(var/datum/mind/player)
+/datum/antagonist/ninja/greet(datum/mind/player)
 
 	if(!..())
 		return 0
@@ -81,7 +81,7 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 	player.store_memory("<B>Directive:</B> <span class='danger'>[directive]</span><br>")
 	to_chat(player, "<b>Remember your directive:</b> [directive].")
 
-/datum/antagonist/ninja/update_antag_mob(var/datum/mind/player)
+/datum/antagonist/ninja/update_antag_mob(datum/mind/player)
 	..()
 	var/ninja_title = pick(GLOB.ninja_titles)
 	var/ninja_name = pick(GLOB.ninja_names)
@@ -91,7 +91,7 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 		H.SetName(H.real_name)
 	player.name = H.name
 
-/datum/antagonist/ninja/equip(var/mob/living/carbon/human/player)
+/datum/antagonist/ninja/equip(mob/living/carbon/human/player)
 
 	if(!..())
 		return 0

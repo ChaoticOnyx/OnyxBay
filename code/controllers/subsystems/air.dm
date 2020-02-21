@@ -402,7 +402,7 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 		for(var/connection_edge/zone/edge in A.edges)
 			if(edge.contains_zone(B))
 				return edge
-		var/connection_edge/edge = new/connection_edge/zone(A,B)
+		var/connection_edge/edge = new /connection_edge/zone(A,B)
 		edges += edge
 		edge.recheck()
 		return edge
@@ -410,7 +410,7 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 		for(var/connection_edge/unsimulated/edge in A.edges)
 			if(has_same_air(edge.B,B))
 				return edge
-		var/connection_edge/edge = new/connection_edge/unsimulated(A,B)
+		var/connection_edge/edge = new /connection_edge/unsimulated(A,B)
 		edges += edge
 		edge.recheck()
 		return edge

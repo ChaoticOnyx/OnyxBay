@@ -29,7 +29,7 @@
 /obj/structure/closet/secure_closet/personal/cabinet/WillContain()
 	return list(/obj/item/weapon/storage/backpack/satchel/grey/withwallet, /obj/item/device/radio/headset)
 
-/obj/structure/closet/secure_closet/personal/attackby(var/obj/item/weapon/W, var/mob/user)
+/obj/structure/closet/secure_closet/personal/attackby(obj/item/weapon/W, mob/user)
 	if (src.opened)
 		..()
 	else if(W.GetIdCard())
@@ -47,7 +47,7 @@
 	else
 		..()
 
-/obj/structure/closet/secure_closet/personal/CanToggleLock(var/mob/user, var/obj/item/weapon/card/id/id_card)
+/obj/structure/closet/secure_closet/personal/CanToggleLock(mob/user, obj/item/weapon/card/id/id_card)
 	return ..() || (istype(id_card) && id_card.registered_name && (!registered_name || (registered_name == id_card.registered_name)))
 
 /obj/structure/closet/secure_closet/personal/verb/reset()

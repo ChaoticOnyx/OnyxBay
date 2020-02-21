@@ -14,7 +14,7 @@
 	if(istype(D, /weakref))
 		return D
 	if(!D.weakref)
-		D.weakref = new/weakref(D)
+		D.weakref = new /weakref(D)
 	return D.weakref
 
 /weakref

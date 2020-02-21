@@ -12,13 +12,24 @@
 
 	var/code = 2
 
-/obj/item/device/radio/electropack/attack_hand(mob/user as mob)
-	if(src == user.back)
+/obj/item/device/radio/electropack/Initialize()
+	. = ..()
+	wires = new(src)
+	GLOB.listening_objects += src
+	set_frequency(frequency)
+
+/obj/item/device/radio/electropack/Destroy()
+	GLOB.listening_objects -= src
+	return ..()
+
+/obj/item/device/radio/electropack/attack_hand(mob/user)
+	var/mob/living/carbon/C = user
+	if(src == C.back)
 		to_chat(user, "<span class='notice'>You need help taking this off!</span>")
 		return
 	..()
 
-/obj/item/device/radio/electropack/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/electropack/attackby(obj/item/weapon/W, mob/user)
 	..()
 	if(istype(W, /obj/item/clothing/head/helmet))
 		if(!b_stat)
@@ -40,7 +51,7 @@
 		user.put_in_hands(A)
 
 /obj/item/device/radio/electropack/Topic(href, href_list)
-	//..()
+
 	if(usr.stat || usr.restrained())
 		return
 	if(((istype(usr, /mob/living/carbon/human) && (usr.IsAdvancedToolUser() && usr.contents.Find(src))) || (usr.contents.Find(master) || (in_range(src, usr) && istype(loc, /turf)))))
@@ -98,7 +109,7 @@
 
 		M.Weaken(10)
 
-	if(master && wires & 1)
+	if(master)
 		master.receive_signal()
 	return
 

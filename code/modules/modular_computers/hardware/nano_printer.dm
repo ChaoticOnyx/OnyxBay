@@ -9,11 +9,11 @@
 	var/stored_paper = 5
 	var/max_paper = 10
 
-/obj/item/weapon/computer_hardware/nano_printer/diagnostics(var/mob/user)
+/obj/item/weapon/computer_hardware/nano_printer/diagnostics(mob/user)
 	..()
 	to_chat(user, "Paper buffer level: [stored_paper]/[max_paper]")
 
-/obj/item/weapon/computer_hardware/nano_printer/proc/print_text(var/text_to_print, var/paper_title = null)
+/obj/item/weapon/computer_hardware/nano_printer/proc/print_text(text_to_print, paper_title = null)
 	if(!stored_paper)
 		return 0
 	if(!enabled)
@@ -24,7 +24,7 @@
 	// Damaged printer causes the resulting paper to be somewhat harder to read.
 	if(damage > damage_malfunction)
 		text_to_print = stars(text_to_print, 100-malfunction_probability)
-	new/obj/item/weapon/paper(get_turf(holder2),text_to_print, paper_title)
+	new /obj/item/weapon/paper(get_turf(holder2),text_to_print, paper_title)
 
 	stored_paper--
 	return 1

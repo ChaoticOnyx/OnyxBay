@@ -1,4 +1,4 @@
-/proc/get_archeological_find_by_findtype(var/find_type)
+/proc/get_archeological_find_by_findtype(find_type)
 	for(var/T in typesof(/obj/item/weapon/archaeological_find))
 		var/obj/item/weapon/archaeological_find/F = T
 		if(find_type == initial(F.find_type))
@@ -88,6 +88,16 @@
 
 	if(prob(5))
 		I.talking_atom = new(I)
+
+	I.origin_tech = list()
+	if(prob(50))
+		I.origin_tech.Add(TECH_MATERIAL = pick(1, 2, 3, 4, 5, 6))
+	if(prob(25))
+		I.origin_tech.Add(TECH_ENGINEERING = pick(1, 2, 3, 4, 5, 6))
+	if(prob(10))
+		I.origin_tech.Add(TECH_MAGNET = pick(1, 2, 3, 4, 5, 6))
+	if(prob(5))
+		I.origin_tech.Add(TECH_PHORON = pick(1, 2, 3, 4, 5, 6))
 
 	return INITIALIZE_HINT_QDEL
 
@@ -245,7 +255,7 @@
 
 /obj/item/weapon/archaeological_find/tank/spawn_item()
 	item_type = "[pick("cylinder","tank","chamber")]"
-	var/obj/item/weapon/tank/new_item = new/obj/item/weapon/tank(loc)
+	var/obj/item/weapon/tank/new_item = new /obj/item/weapon/tank(loc)
 	new_item.air_contents.gas.Cut()
 	new_item.air_contents.adjust_gas(pick(gas_data.gases),15)
 	additional_desc = "It [pick("gloops","sloshes")] slightly when you shake it."

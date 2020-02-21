@@ -197,10 +197,15 @@
 	GLOB.ckey_directory[ckey] = src
 
 	//Admin Authorisation
-	holder = admin_datums[ckey]
-	if(holder)
-		GLOB.admins += src
-		holder.owner = src
+	var/datum/admins/admin_datum = admin_datums[ckey]
+	if(admin_datum)
+		if(admin_datum in GLOB.deadmined_list)
+			deadmin_holder = admin_datum
+			verbs |= /client/proc/readmin_self
+		else
+			holder = admin_datum
+			GLOB.admins += src
+		admin_datum.owner = src
 
 	else if((config.panic_bunker != 0) && (get_player_age(ckey) < config.panic_bunker))
 		var/player_age = get_player_age(ckey)
@@ -253,6 +258,7 @@
 			winset(src, null, "command=\".configure graphics-hwmode on\"")
 
 	log_client_to_db()
+	SSdonations.LogAndLoadPlayerData(src)
 
 	send_resources()
 
@@ -478,7 +484,7 @@ client/verb/character_setup()
 	if(prefs)
 		prefs.ShowChoices(usr)
 
-/client/proc/apply_fps(var/client_fps)
+/client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
 		vars["fps"] = prefs.clientfps
 

@@ -128,7 +128,7 @@
 	else
 		return ..()
 
-/obj/structure/iv_drip/attack_robot(var/mob/user)
+/obj/structure/iv_drip/attack_robot(mob/user)
 	if(Adjacent(user))
 		attack_hand(user)
 

@@ -24,7 +24,7 @@
 
 /datum/gear/uniform/jumpsuit/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path(/obj/item/clothing/under/color)
+	gear_tweaks += new /datum/gear_tweak/path(/obj/item/clothing/under/color)
 
 /datum/gear/uniform/roboticist_skirt
 	display_name = "skirt, roboticist"
@@ -52,7 +52,7 @@
 	suits["white suit"] = /obj/item/clothing/under/scratch
 	suits["white-blue suit"] = /obj/item/clothing/under/lawyer/bluesuit
 	suits["formal outfit"] = /obj/item/clothing/under/rank/internalaffairs/plain
-	gear_tweaks += new/datum/gear_tweak/path(suits)
+	gear_tweaks += new /datum/gear_tweak/path(suits)
 
 /datum/gear/uniform/dress
 	display_name = "dress selection"
@@ -68,7 +68,7 @@
 	dresses["purple dress"] = /obj/item/clothing/under/dress/dress_purple
 	dresses["sundress"] = /obj/item/clothing/under/sundress
 	dresses["white sundress"] = /obj/item/clothing/under/sundress_white
-	gear_tweaks += new/datum/gear_tweak/path(dresses)
+	gear_tweaks += new /datum/gear_tweak/path(dresses)
 
 /datum/gear/uniform/uniform_captain
 	display_name = "uniform, captain's dress"
@@ -105,7 +105,7 @@
 	for(var/skirt in (typesof(/obj/item/clothing/under/skirt)))
 		var/obj/item/clothing/under/skirt/skirt_type = skirt
 		skirts[initial(skirt_type.name)] = skirt_type
-	gear_tweaks += new/datum/gear_tweak/path(sortAssoc(skirts))
+	gear_tweaks += new /datum/gear_tweak/path(sortAssoc(skirts))
 
 /datum/gear/uniform/tacticool
 	display_name = "tacticool turtleneck"

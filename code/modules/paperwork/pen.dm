@@ -75,7 +75,7 @@
 			if(istype(head))
 				head.write_on(user, src.color_description)
 		else
-			to_chat(user, "<span class='warning'>You stab [M] with the pen.</span>")
+			to_chat(user, SPAN_WARNING("You stab [M] with \the [src]."))
 			admin_attack_log(user, M, "Stabbed using \a [src]", "Was stabbed with \a [src]", "used \a [src] to stab")
 	else if(istype(A, /obj/item/organ/external/head))
 		var/obj/item/organ/external/head/head = A
@@ -94,7 +94,7 @@
 	..()
 	create_reagents(30)
 
-/obj/item/weapon/pen/reagent/attack(mob/living/M, mob/user, var/target_zone)
+/obj/item/weapon/pen/reagent/attack(mob/living/M, mob/user, target_zone)
 
 	if(!istype(M))
 		return
@@ -118,7 +118,7 @@
 /obj/item/weapon/pen/reagent/sleepy/New()
 	..()
 	reagents.add_reagent(/datum/reagent/chloralhydrate, 15)	//Used to be 100 sleep toxin//30 Chloral seems to be fatal, reducing it to 22, reducing it further to 15 because fuck you OD code./N
-	
+
 /obj/item/weapon/pen/reagent/paralytic/
 	desc = "It's a black ink pen with a sharp point and a carefully engraved \"Waffle Co.\"."
 	origin_tech = list(TECH_MATERIAL = 2, TECH_ILLEGAL = 5)
@@ -148,10 +148,10 @@
 	*/
 	signature = sanitize(input("Enter new signature. Leave blank for 'Anonymous'", "New Signature", signature))
 
-/obj/item/weapon/pen/proc/get_signature(var/mob/user)
+/obj/item/weapon/pen/proc/get_signature(mob/user)
 	return (user && user.real_name) ? user.real_name : "Anonymous"
 
-/obj/item/weapon/pen/chameleon/get_signature(var/mob/user)
+/obj/item/weapon/pen/chameleon/get_signature(mob/user)
 	return signature ? signature : "Anonymous"
 
 /obj/item/weapon/pen/chameleon/verb/set_colour()

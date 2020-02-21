@@ -10,6 +10,7 @@
 	selection_color = "#026865"
 	req_admin_notify = 1
 	economic_modifier = 10
+	faction_restricted = TRUE
 	access = list(access_medical, access_medical_equip, access_morgue, access_genetics, access_heads,
 			access_chemistry, access_virology, access_cmo, access_surgery, access_RC_announce,
 			access_keycard_auth, access_sec_doors, access_psychiatrist, access_eva, access_maint_tunnels, access_external_airlocks)
@@ -18,7 +19,7 @@
 			access_keycard_auth, access_sec_doors, access_psychiatrist, access_eva, access_maint_tunnels, access_external_airlocks)
 
 	minimal_player_age = 14
-	minimum_character_age = 25	
+	minimum_character_age = 25
 	ideal_character_age = 50
 	outfit_type = /decl/hierarchy/outfit/job/medical/cmo
 

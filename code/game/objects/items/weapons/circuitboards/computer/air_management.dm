@@ -48,7 +48,7 @@
 /************
 * Construct *
 ************/
-/obj/item/weapon/circuitboard/air_management/construct(var/obj/machinery/computer/general_air_control/C)
+/obj/item/weapon/circuitboard/air_management/construct(obj/machinery/computer/general_air_control/C)
 	if (..(C))
 		if(console_name)
 			C.SetName(console_name)
@@ -57,7 +57,7 @@
 		C.sensor_information = sensor_information.Copy()
 		return 1
 
-/obj/item/weapon/circuitboard/air_management/tank_control/construct(var/obj/machinery/computer/general_air_control/large_tank_control/LTC)
+/obj/item/weapon/circuitboard/air_management/tank_control/construct(obj/machinery/computer/general_air_control/large_tank_control/LTC)
 	if(..(LTC))
 		LTC.input_tag = input_tag
 		LTC.output_tag = output_tag
@@ -69,7 +69,7 @@
 		LTC.pressure_setting = pressure_setting
 		return 1
 
-/obj/item/weapon/circuitboard/air_management/supermatter_core/construct(var/obj/machinery/computer/general_air_control/supermatter_core/SC)
+/obj/item/weapon/circuitboard/air_management/supermatter_core/construct(obj/machinery/computer/general_air_control/supermatter_core/SC)
 	if(..(SC))
 		SC.input_tag = input_tag
 		SC.output_tag = output_tag
@@ -81,7 +81,7 @@
 		SC.pressure_setting = input_flow_setting
 		return 1
 
-/obj/item/weapon/circuitboard/air_management/injector_control/construct(var/obj/machinery/computer/general_air_control/fuel_injection/FI)
+/obj/item/weapon/circuitboard/air_management/injector_control/construct(obj/machinery/computer/general_air_control/fuel_injection/FI)
 	if(..(FI))
 		FI.device_tag = device_tag
 		FI.device_info = device_info.Copy()
@@ -93,7 +93,7 @@
 /**************
 * Deconstruct *
 **************/
-/obj/item/weapon/circuitboard/air_management/deconstruct(var/obj/machinery/computer/general_air_control/C)
+/obj/item/weapon/circuitboard/air_management/deconstruct(obj/machinery/computer/general_air_control/C)
 	if (..(C))
 		console_name = C.name
 		frequency = C.frequency
@@ -101,7 +101,7 @@
 		sensor_information = C.sensor_information.Copy()
 		return 1
 
-/obj/item/weapon/circuitboard/air_management/tank_control/deconstruct(var/obj/machinery/computer/general_air_control/large_tank_control/LTC)
+/obj/item/weapon/circuitboard/air_management/tank_control/deconstruct(obj/machinery/computer/general_air_control/large_tank_control/LTC)
 	if(..(LTC))
 		input_tag = LTC.input_tag
 		output_tag = LTC.output_tag
@@ -113,7 +113,7 @@
 		pressure_setting = LTC.pressure_setting
 		return 1
 
-/obj/item/weapon/circuitboard/air_management/supermatter_core/deconstruct(var/obj/machinery/computer/general_air_control/supermatter_core/SC)
+/obj/item/weapon/circuitboard/air_management/supermatter_core/deconstruct(obj/machinery/computer/general_air_control/supermatter_core/SC)
 	if(..(SC))
 		input_tag = SC.input_tag
 		output_tag = SC.output_tag
@@ -125,7 +125,7 @@
 		pressure_setting = SC.input_flow_setting
 		return 1
 
-/obj/item/weapon/circuitboard/air_management/injector_control/deconstruct(var/obj/machinery/computer/general_air_control/fuel_injection/FI)
+/obj/item/weapon/circuitboard/air_management/injector_control/deconstruct(obj/machinery/computer/general_air_control/fuel_injection/FI)
 	if(..(FI))
 		device_tag = FI.device_tag
 		device_info = FI.device_info.Copy()

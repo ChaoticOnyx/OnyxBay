@@ -19,12 +19,12 @@
 	var/check_restraints               // Can this emote be used while restrained?
 	var/conscious = 1				   // Do we need to be awake to emote this?
 
-/decl/emote/proc/get_emote_message_1p(var/atom/user, var/atom/target, var/extra_params)
+/decl/emote/proc/get_emote_message_1p(atom/user, atom/target, extra_params)
 	if(target)
 		return emote_message_1p_target
 	return emote_message_1p
 
-/decl/emote/proc/get_emote_message_3p(var/atom/user, var/atom/target, var/extra_params)
+/decl/emote/proc/get_emote_message_3p(atom/user, atom/target, extra_params)
 	if(target)
 		return emote_message_3p_target
 	return emote_message_3p
@@ -53,7 +53,7 @@
 		if ("gasp","choke")
 			playsound(user, "[gender_prefix]_breath", rand(25, 40), FALSE)
 
-/decl/emote/proc/do_emote(var/atom/user, var/extra_params)
+/decl/emote/proc/do_emote(atom/user, extra_params)
 
 	if(ismob(user) && check_restraints)
 		var/mob/M = user
@@ -108,10 +108,10 @@
 
 	do_extra(user, target)
 
-/decl/emote/proc/do_extra(var/atom/user, var/atom/target)
+/decl/emote/proc/do_extra(atom/user, atom/target)
 	return
 
-/decl/emote/proc/check_user(var/atom/user)
+/decl/emote/proc/check_user(atom/user)
 	return TRUE
 
 /decl/emote/proc/can_target()

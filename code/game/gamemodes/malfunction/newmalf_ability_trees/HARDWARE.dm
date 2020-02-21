@@ -96,7 +96,7 @@
 	set name = "Destroy Installation"
 	set desc = "Activates or deactivates self destruct sequence of this installation. Sequence takes two minutes, and if you are shut down before timer reaches zero it will be cancelled."
 	var/mob/living/silicon/ai/user = usr
-	var/obj/item/device/radio/radio = new/obj/item/device/radio()
+	var/obj/item/device/radio/radio = new /obj/item/device/radio()
 
 
 	if(!ability_prechecks(user, 0, 0))

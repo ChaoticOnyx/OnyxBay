@@ -118,7 +118,7 @@ var/list/fuel_injectors = list()
 				var/numparticles = round(amount * 1000)
 				if(numparticles < 1)
 					numparticles = 1
-				var/obj/effect/accelerated_particle/A = new/obj/effect/accelerated_particle(get_turf(src), dir)
+				var/obj/effect/accelerated_particle/A = new /obj/effect/accelerated_particle(get_turf(src), dir)
 				A.particle_type = reagent
 				A.additional_particles = numparticles - 1
 				A.move(1)

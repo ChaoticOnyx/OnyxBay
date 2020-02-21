@@ -83,7 +83,7 @@
 			update_locked = 0
 	busy = 0
 
-/obj/machinery/power/breakerbox/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+/obj/machinery/power/breakerbox/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(isMultitool(W))
 		var/newtag = input(user, "Enter new RCON tag. Use \"NO_TAG\" to disable RCON or leave empty to cancel.", "SMES RCON system") as text
 		if(newtag)
@@ -94,7 +94,7 @@
 
 
 
-/obj/machinery/power/breakerbox/proc/set_state(var/state)
+/obj/machinery/power/breakerbox/proc/set_state(state)
 	on = state
 	if(on)
 		icon_state = icon_state_on
@@ -106,7 +106,7 @@
 					break
 
 		for(var/direction in connection_dirs)
-			var/obj/structure/cable/C = new/obj/structure/cable(src.loc)
+			var/obj/structure/cable/C = new /obj/structure/cable(src.loc)
 			C.d1 = 0
 			C.d2 = direction
 			C.icon_state = "[C.d1]-[C.d2]"

@@ -31,7 +31,7 @@
 	anim(target = loc, a_icon = icon, flick_anim = "sporepulse", sleeptime = 150)
 
 	spawn(10)
-		new/mob/living/simple_animal/hostile/blobspore(src.loc, src)
+		new /mob/living/simple_animal/hostile/blobspore(src.loc, src)
 
 	return 1
 
@@ -85,7 +85,7 @@
 	plane = DEFAULT_PLANE
 	layer = BLOB_SPORE_LAYER
 
-/mob/living/simple_animal/hostile/blobspore/New(loc, var/obj/effect/blob/factory/linked_node)
+/mob/living/simple_animal/hostile/blobspore/New(loc, obj/effect/blob/factory/linked_node)
 	if(istype(linked_node))
 		factory = linked_node
 		factory.spores += src
@@ -107,7 +107,7 @@
 
 	return ..()
 
-/mob/living/simple_animal/hostile/blobspore/death(var/gibbed = FALSE)
+/mob/living/simple_animal/hostile/blobspore/death(gibbed = FALSE)
 	..(TRUE) //Gibs regardless
 	playsound(src, "gib", 50, 1)
 	qdel(src)

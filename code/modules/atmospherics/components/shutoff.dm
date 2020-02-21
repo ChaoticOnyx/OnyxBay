@@ -12,7 +12,7 @@
 /obj/machinery/atmospherics/valve/shutoff/update_icon()
 	icon_state = "vclamp[open]"
 
-/obj/machinery/atmospherics/valve/shutoff/examine(var/mob/user)
+/obj/machinery/atmospherics/valve/shutoff/examine(mob/user)
 	..()
 	to_chat(user, "The automatic shutoff circuit is [override_open ? "disabled" : "enabled"].")
 
@@ -21,14 +21,14 @@
 	hide(1)
 	..()
 
-/obj/machinery/atmospherics/valve/shutoff/attack_hand(var/mob/user as mob)
+/obj/machinery/atmospherics/valve/shutoff/attack_hand(mob/user as mob)
 	override_open = !override_open
 	to_chat(user, "You [override_open ? "disable" : "enable"] the automatic shutoff circuit.")
 
-/obj/machinery/atmospherics/valve/shutoff/attack_ai(var/mob/user as mob)
+/obj/machinery/atmospherics/valve/shutoff/attack_ai(mob/user as mob)
 	attack_hand(user)
 
-/obj/machinery/atmospherics/valve/shutoff/hide(var/do_hide)
+/obj/machinery/atmospherics/valve/shutoff/hide(do_hide)
 	if(do_hide)
 		if(level == 1)
 			layer = PIPE_LAYER

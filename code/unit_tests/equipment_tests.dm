@@ -80,7 +80,7 @@ datum/unit_test/storage_capacity_test/start_test()
 
 	return 1
 
-/proc/test_storage_capacity(obj/item/weapon/storage/S, var/bad_msg)
+/proc/test_storage_capacity(obj/item/weapon/storage/S, bad_msg)
 	var/bad_tests = 0
 
 	if(!isnull(S.storage_slots) && S.contents.len > S.storage_slots)

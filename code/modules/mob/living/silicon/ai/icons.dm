@@ -8,14 +8,14 @@
 	var/dead_icon = "ai-crash"
 	var/dead_light = "#000099"
 
-/datum/ai_icon/New(var/name, var/alive_icon, var/dead_icon, var/dead_light, var/icon)
+/datum/ai_icon/New(name, alive_icon, dead_icon, dead_light, icon)
 	src.name          = name       || src.name
 	src.icon          = icon       || src.icon
 	src.alive_icon    = alive_icon || src.alive_icon
 	src.dead_icon     = dead_icon  || src.dead_icon
 	src.dead_light    = dead_light || src.dead_light
 
-/datum/ai_icon/proc/may_used_by_ai(var/mob/user)
+/datum/ai_icon/proc/may_used_by_ai(mob/user)
 	return TRUE
 
 /datum/ai_icon/malf
@@ -27,7 +27,7 @@
 	..()
 	name = "[name] (Malf)"
 
-/datum/ai_icon/malf/may_used_by_ai(var/mob/living/silicon/ai/AI)
+/datum/ai_icon/malf/may_used_by_ai(mob/living/silicon/ai/AI)
 	return istype(AI) && AI.is_malf_or_traitor()
 
 /datum/ai_icon/red
@@ -39,6 +39,7 @@
 	name = "Green"
 	alive_icon = "ai-wierd"
 	alive_light = "#00ff99"
+	dead_icon = "ai-wierd_dead"
 
 /datum/ai_icon/blue
 	name = "Blue"
@@ -81,6 +82,7 @@
 /datum/ai_icon/glitchman
 	name = "Glitchman"
 	alive_icon = "ai-glitchman"
+	dead_icon = "ai-glitchman_dead"
 
 /datum/ai_icon/goon
 	name = "Goon"
@@ -106,6 +108,7 @@
 	name = "Lonestar"
 	alive_icon = "ai-lonestar"
 	alive_light = "#58751c"
+	dead_icon = "ai-lonestar_dead"
 
 /datum/ai_icon/matrix
 	name = "Matrix"
@@ -116,6 +119,7 @@
 	name = "Monochrome"
 	alive_icon = "ai-mono"
 	alive_light = "#585858"
+	dead_icon = "ai-mono_dead"
 
 /datum/ai_icon/nanotrasen
 	name = "Nanotrasen"
@@ -136,11 +140,13 @@
 	name = "Soviet"
 	alive_icon = "ai-redoctober"
 	alive_light = "#ff4307"
+	dead_icon = "ai-redoctober_dead"
 
 /datum/ai_icon/Static
 	name = "Static"
 	alive_icon = "ai-static"
 	alive_light = "#4784c1"
+	dead_icon = "ai-static_dead"
 
 /datum/ai_icon/text
 	name = "Text"
@@ -149,6 +155,7 @@
 /datum/ai_icon/trapped
 	name = "Trapped"
 	alive_icon = "ai-hades"
+	dead_icon = "ai-hades_dead"
 
 /datum/ai_icon/triumvirate_static
 	name = "Triumvirate"
@@ -169,3 +176,16 @@
 	name = "Clown"
 	alive_icon = "ai-clown2"
 	alive_light = "#e50213"
+
+/datum/ai_icon/hal
+	name = "HAL"
+	alive_icon = "ai-hal"
+	dead_icon = "ai-hal_dead"
+
+/datum/ai_icon/citadel
+	name = "Citadel"
+	alive_icon = "ai-citadel"
+
+/datum/ai_icon/fabulous
+	name = "Fabulous"
+	alive_icon = "ai-fabulous"

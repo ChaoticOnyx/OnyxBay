@@ -101,7 +101,7 @@
 	else
 		return
 
-/obj/machinery/bodyscanner/proc/check_compatibility(var/mob/target, var/mob/user)
+/obj/machinery/bodyscanner/proc/check_compatibility(mob/target, mob/user)
 	if(!istype(user) || !istype(target))
 		return FALSE
 
@@ -125,7 +125,7 @@
 			return FALSE
 	return TRUE
 
-/obj/machinery/bodyscanner/MouseDrop_T(var/mob/target, var/mob/user)
+/obj/machinery/bodyscanner/MouseDrop_T(mob/target, mob/user)
 	if(!check_compatibility(target, user))
 		return
 	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")
@@ -268,7 +268,7 @@
 				to_chat(usr, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
 				return TRUE
 
-			new/obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
+			new /obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
 			return TRUE
 		if ("eject")
 			if (connected)

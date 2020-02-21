@@ -13,7 +13,7 @@
 	var/datum/pipe_network/network_node1
 	var/datum/pipe_network/network_node2
 
-/obj/machinery/clamp/New(loc, var/obj/machinery/atmospherics/pipe/simple/to_attach = null)
+/obj/machinery/clamp/New(loc, obj/machinery/atmospherics/pipe/simple/to_attach = null)
 	..()
 	if(istype(to_attach))
 		target = to_attach
@@ -37,7 +37,7 @@
 			var/datum/pipeline/P2 = node2.parent
 			network_node2 = P2.network
 
-/obj/machinery/clamp/attack_hand(var/mob/user)
+/obj/machinery/clamp/attack_hand(mob/user)
 	if(!target || !user)
 		return
 	if(!open)
@@ -122,7 +122,7 @@
 		to_chat(usr, "<span class='notice'>You begin to remove \the [src]...</span>")
 		if (do_after(usr, 30, src))
 			to_chat(usr, "<span class='notice'>You have removed \the [src].</span>")
-			var/obj/item/clamp/C = new/obj/item/clamp(src.loc)
+			var/obj/item/clamp/C = new /obj/item/clamp(src.loc)
 			C.forceMove(usr.loc)
 			if(ishuman(usr))
 				usr.put_in_hands(C)
@@ -138,7 +138,7 @@
 	icon_state = "pclamp0"
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 4)
 
-/obj/item/clamp/afterattack(var/atom/A, mob/user as mob, proximity)
+/obj/item/clamp/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity)
 		return
 
@@ -146,7 +146,7 @@
 		to_chat(user, "<span class='notice'>You begin to attach \the [src] to \the [A]...</span>")
 		if (do_after(user, 30, src))
 			to_chat(user, "<span class='notice'>You have attached \the [src] to \the [A].</span>")
-			new/obj/machinery/clamp(A.loc, A)
+			new /obj/machinery/clamp(A.loc, A)
 			user.drop_from_inventory(src)
 			qdel(src)
 

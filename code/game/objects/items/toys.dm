@@ -30,7 +30,7 @@
 	mod_reach = 0.25
 	mod_handy = 0.25
 
-/obj/item/toy/proc/speak(var/message)
+/obj/item/toy/proc/speak(message)
 	if (!message)
 		return
 
@@ -183,7 +183,7 @@
 			return
 		else if (bullets)
 			var/turf/trg = get_turf(target)
-			var/obj/effect/foam_dart_dummy/D = new/obj/effect/foam_dart_dummy(get_turf(src))
+			var/obj/effect/foam_dart_dummy/D = new /obj/effect/foam_dart_dummy(get_turf(src))
 			bullets--
 			D.icon_state = "foamdart"
 			D.SetName("foam dart")
