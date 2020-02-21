@@ -319,7 +319,6 @@
 #include "code\datums\repositories\crew\tracking.dm"
 #include "code\datums\repositories\crew\vital.dm"
 #include "code\datums\repositories\crew\~defines.dm"
-#include "code\datums\sell_orders\chemistry.dm"
 #include "code\datums\sell_orders\mining.dm"
 #include "code\datums\sell_orders\rnd.dm"
 #include "code\datums\sell_orders\sell_order.dm"
