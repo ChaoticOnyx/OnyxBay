@@ -89,9 +89,9 @@
 	if(!(result[result[1]] > 0)) // No one voted.
 		text += "<b>Vote Result: Inconclusive - No Votes!</b>"
 	else
-		text += "<b>Vote Result: [display_choices[result[1]]][choices[result[1]] >= 1 ? " - \"[choices[result[1]]]\"" : null]</b"
+		text += "<b>Vote Result: [display_choices[result[1]]][choices[result[1]] >= 1 ? " - \"[choices[result[1]]]\"" : null]</b>"
 		if(length(result) >= 2 && result[result[2]])
-			text += "\nSecond place: [display_choices[result[2]]][choices[result[2]] >= 1 ? " - \"[choices[result[2]]]\"" : null]" 
+			text += "\nSecond place: [display_choices[result[2]]][choices[result[2]] >= 1 ? " - \"[choices[result[2]]]\"" : null]"
 		if(length(result) >= 3 && result[result[3]])
 			text += "\nThird place: [display_choices[result[3]]][choices[result[3]] >= 1 ? " - \"[choices[result[3]]]\"" : null]"
 	return JOINTEXT(text)
