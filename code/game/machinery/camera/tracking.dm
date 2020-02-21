@@ -24,8 +24,6 @@
 
 
 /mob/living/silicon/ai/proc/ai_camera_list(camera in get_camera_list())
-	set category = "Silicon Commands"
-	set name = "Show Camera List"
 
 	if(check_unable())
 		return
@@ -39,9 +37,6 @@
 	return
 
 /mob/living/silicon/ai/proc/ai_store_location(loc as text)
-	set category = "Silicon Commands"
-	set name = "Store Camera Location"
-	set desc = "Stores your current camera location by the given name"
 
 	loc = sanitize(loc)
 	if(!loc)
@@ -68,9 +63,6 @@
 	return sortList(stored_locations)
 
 /mob/living/silicon/ai/proc/ai_goto_location(loc in sorted_stored_locations())
-	set category = "Silicon Commands"
-	set name = "Goto Camera Location"
-	set desc = "Returns to the selected camera location"
 
 	if (!(loc in stored_locations))
 		to_chat(src, "<span class='warning'>Location [loc] not found</span>")
@@ -80,9 +72,6 @@
 	src.eyeobj.setLoc(L)
 
 /mob/living/silicon/ai/proc/ai_remove_location(loc in sorted_stored_locations())
-	set category = "Silicon Commands"
-	set name = "Delete Camera Location"
-	set desc = "Deletes the selected camera location"
 
 	if (!(loc in stored_locations))
 		to_chat(src, "<span class='warning'>Location [loc] not found</span>")
@@ -127,9 +116,6 @@
 	return targets
 
 /mob/living/silicon/ai/proc/ai_camera_track(target_name in trackable_mobs())
-	set category = "Silicon Commands"
-	set name = "Follow With Camera"
-	set desc = "Select who you would like to track."
 
 	if(src.stat == 2)
 		to_chat(src, "You can't follow [target_name] with cameras because you are dead!")

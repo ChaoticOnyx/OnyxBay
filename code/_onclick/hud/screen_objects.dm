@@ -388,6 +388,128 @@
 		if("module3")
 			if(istype(usr, /mob/living/silicon/robot))
 				usr:toggle_module(3)
+
+		if("AI core")
+			if(isAI(usr))
+				usr:view_core()
+
+		if("Set AI Core Display")
+			if(isAI(usr))
+				usr:pick_icon()
+
+		if("AI Status")
+			if(isAI(usr))
+				usr:ai_statuschange()
+
+		if("Change Hologram")
+			if(isAI(usr))
+				usr:ai_hologram_change()
+
+		if("Show Camera List")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				var/camera = input(AI, "Choose which camera you want to view", "Cameras") as null|anything in AI.get_camera_list()
+				usr:ai_camera_list(camera)
+
+		if("Track With Camera")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				var/target_name = input(AI, "Choose who you want to track", "Tracking") as null|anything in AI.trackable_mobs()
+				usr:ai_camera_track(target_name)
+
+		if("Toggle Camera Light")
+			if(isAI(usr))
+				usr:toggle_camera_light()
+
+		if("Store Camera Location")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				var/name_l = input(AI, "Enter name camera location", "Name")
+				usr:ai_store_location(name_l)
+
+		if("Goto Camera Location")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				var/cam_loc = input(AI, "Choose which location you want to view", "Locations") as null|anything in AI.sorted_stored_locations()
+				usr:ai_goto_location(cam_loc)
+
+		if("Delete Camera Location")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				var/delete = input(AI, "Choose which location you want to delete", "Locations") as null|anything in AI.sorted_stored_locations()
+				usr:ai_remove_location(delete)
+
+		if("Crew Manifest")
+			if(isAI(usr))
+				usr:ai_roster()
+
+		if("Make Announcement")
+			if(isAI(usr))
+				usr:ai_announcement()
+
+		if("Call Emergency Shuttle")
+			if(isAI(usr))
+				usr:ai_call_shuttle()
+
+		if("State Laws")
+			if(isAI(usr))
+				usr:ai_checklaws()
+
+		if("Sensor Augmentation")
+			if(isAI(usr))
+				usr:toggle_sensor_mode()
+
+		if("Radio Settings")
+			if(isAI(usr))
+				usr:control_integrated_radio()
+
+		if("Take Image")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				AI.silicon_camera.toggle_camera_mode()
+
+		if("View Images")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				AI.silicon_camera.viewpictures()
+
+		if("Delete Image")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				AI.silicon_camera.deletepicture()
+
+		if("Toggle Shutdown")
+			if(isAI(usr))
+				usr:ai_shutdown()
+
+		if("Toggle Power Override")
+			if(isAI(usr))
+				usr:ai_power_override()
+
+		if("Toggle Ringer")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				AI.aiPDA.cmd_toggle_pda_silent()
+
+		if("Send Message")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				AI.aiPDA.cmd_send_pdamesg()
+
+		if("Show Message Log")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				AI.aiPDA.cmd_show_message_log()
+
+		if("Toggle Sender/Receiver")
+			if(isAI(usr))
+				var/mob/living/silicon/ai/AI = usr
+				AI.aiPDA.cmd_toggle_pda_receiver()
+
+		if("Toggle Multitool Mode")
+			if(isAI(usr))
+				usr:multitool_mode()
+
 		else
 			return 0
 	return 1

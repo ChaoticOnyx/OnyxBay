@@ -148,9 +148,6 @@
 
 // This verb allows the AI to disable or enable the power override mode.
 /mob/living/silicon/ai/proc/ai_power_override()
-	set category = "Silicon Commands"
-	set name = "Toggle Power Override"
-	set desc = "Allows you to enable or disable power override, which lets you function without external power, at the cost of quickly expending your internal battery charge."
 
 	power_override_active = !power_override_active
 
@@ -161,9 +158,6 @@
 
 // This verb allows the AI to disable or enable the power override mode.
 /mob/living/silicon/ai/proc/ai_shutdown()
-	set category = "Silicon Commands"
-	set name = "Shutdown"
-	set desc = "Allows you to shut yourself down, sacrificing most functions for considerably reduced power usage."
 
 	if(self_shutdown)
 		to_chat(src, "<span class='notice'>System rebooted. Camera, communication and network systems operational.</span>")

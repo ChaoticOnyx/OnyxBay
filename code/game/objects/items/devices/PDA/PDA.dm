@@ -247,8 +247,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 //AI verb and proc for sending PDA messages.
 /obj/item/device/pda/ai/verb/cmd_send_pdamesg()
-	set category = "AI IM"
-	set name = "Send Message"
 	set src in usr
 	if(usr.stat == 2)
 		to_chat(usr, "You can't send PDA messages because you are dead!")
@@ -263,8 +261,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 
 /obj/item/device/pda/ai/verb/cmd_toggle_pda_receiver()
-	set category = "AI IM"
-	set name = "Toggle Sender/Receiver"
 	set src in usr
 	if(usr.stat == 2)
 		to_chat(usr, "You can't do that because you are dead!")
@@ -274,8 +270,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 
 /obj/item/device/pda/ai/verb/cmd_toggle_pda_silent()
-	set category = "AI IM"
-	set name = "Toggle Ringer"
 	set src in usr
 	if(usr.stat == 2)
 		to_chat(usr, "You can't do that because you are dead!")
@@ -285,8 +279,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 
 /obj/item/device/pda/ai/verb/cmd_show_message_log()
-	set category = "AI IM"
-	set name = "Show Message Log"
 	set src in usr
 	if(usr.stat == 2)
 		to_chat(usr, "You can't do that because you are dead!")
