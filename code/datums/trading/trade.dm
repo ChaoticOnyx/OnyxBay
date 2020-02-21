@@ -64,13 +64,13 @@
 		remove_from_pool(possible_trading_items, 9) //We want the stock to change every so often, so we make it so that they have roughly 10~11 ish items max
 	return 1
 
-/datum/trader/proc/remove_from_pool(var/list/pool, var/chance_per_item)
+/datum/trader/proc/remove_from_pool(list/pool, chance_per_item)
 	if(pool && prob(chance_per_item * pool.len))
 		var/i = rand(1,pool.len)
 		pool[pool[i]] = null
 		pool -= pool[i]
 
-/datum/trader/proc/add_to_pool(var/list/pool, var/list/possible, var/base_chance = 100, var/force = 0)
+/datum/trader/proc/add_to_pool(list/pool, list/possible, base_chance = 100, force = 0)
 	var/divisor = 1
 	if(pool && pool.len)
 		divisor = pool.len
@@ -79,7 +79,7 @@
 		if(new_item)
 			pool |= new_item
 
-/datum/trader/proc/get_possible_item(var/list/trading_pool)
+/datum/trader/proc/get_possible_item(list/trading_pool)
 	if(!trading_pool || !trading_pool.len)
 		return
 	var/list/possible = list()
@@ -101,7 +101,7 @@
 			return
 		return picked
 
-/datum/trader/proc/get_response(var/key, var/default)
+/datum/trader/proc/get_response(key, default)
 	var/text
 	if(speech && speech[key])
 		text = speech[key]
@@ -110,13 +110,13 @@
 	text = replacetext(text, "MERCHANT", name)
 	return replacetext(text, "ORIGIN", origin)
 
-/datum/trader/proc/print_trading_items(var/num)
+/datum/trader/proc/print_trading_items(num)
 	num = Clamp(num,1,trading_items.len)
 	if(trading_items[num])
 		var/atom/movable/M = trading_items[num]
 		return "<b>[initial(M.name)]</b>"
 
-/datum/trader/proc/get_item_value(var/trading_num)
+/datum/trader/proc/get_item_value(trading_num)
 	if(!trading_items[trading_items[trading_num]])
 		var/type = trading_items[trading_num]
 		var/value = get_value(type)
@@ -124,7 +124,7 @@
 		trading_items[type] = margin*value
 	return trading_items[trading_items[trading_num]]
 
-/datum/trader/proc/offer_money_for_trade(var/trade_num, var/money_amount)
+/datum/trader/proc/offer_money_for_trade(trade_num, money_amount)
 	if(!(trade_flags & TRADER_MONEY))
 		return TRADER_NO_MONEY
 	var/value = get_item_value(trade_num)
@@ -133,7 +133,7 @@
 
 	return value
 
-/datum/trader/proc/offer_items_for_trade(var/list/offers, var/num, var/turf/location)
+/datum/trader/proc/offer_items_for_trade(list/offers, num, turf/location)
 	if(!offers || !offers.len)
 		return TRADER_NOT_ENOUGH
 	num = Clamp(num, 1, trading_items.len)
@@ -168,7 +168,7 @@
 		return trade(offers, num, location)
 	return TRADER_NOT_ENOUGH
 
-/datum/trader/proc/hail(var/mob/user)
+/datum/trader/proc/hail(mob/user)
 	var/specific
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
@@ -202,7 +202,7 @@
 		disposition += rand(compliment_increase, compliment_increase * 2)
 	return get_response("compliment_accept", "Thank you!")
 
-/datum/trader/proc/trade(var/list/offers, var/num, var/turf/location)
+/datum/trader/proc/trade(list/offers, num, turf/location)
 	if(offers && offers.len)
 		for(var/offer in offers)
 			if(istype(offer,/mob))
@@ -222,7 +222,7 @@
 
 	return M
 
-/datum/trader/proc/how_much_do_you_want(var/num)
+/datum/trader/proc/how_much_do_you_want(num)
 	var/atom/movable/M = trading_items[num]
 	. = get_response("how_much", "Hmm.... how about VALUE thalers?")
 	. = replacetext(.,"VALUE",get_item_value(num))
@@ -239,7 +239,7 @@
 		want_english += initial(a.name)
 	. += " [english_list(want_english)]"
 
-/datum/trader/proc/sell_items(var/list/offers)
+/datum/trader/proc/sell_items(list/offers)
 	if(!(trade_flags & TRADER_GOODS))
 		return TRADER_NO_GOODS
 	if(!offers || !offers.len)
@@ -260,5 +260,5 @@
 	for(var/offer in offers)
 		qdel(offer)
 
-/datum/trader/proc/bribe_to_stay_longer(var/amt)
+/datum/trader/proc/bribe_to_stay_longer(amt)
 	return get_response("bribe_refusal", "How about... no?")

@@ -48,7 +48,7 @@
 		list("EMP grenade", "EMP grenade", /obj/item/weapon/grenade/empgrenade, 3),
 		)
 
-/obj/item/rig_module/grenade_launcher/accepts_item(var/obj/item/input_device, var/mob/living/user)
+/obj/item/rig_module/grenade_launcher/accepts_item(obj/item/input_device, mob/living/user)
 
 	if(!istype(input_device) || !istype(user))
 		return 0
@@ -116,6 +116,14 @@
 
 	charges = list(
 		list("smoke bomb",   "smoke bomb",   /obj/item/weapon/grenade/smokebomb,  6),
+		)
+
+/obj/item/rig_module/grenade_launcher/flashbang
+	name = "mounted flashbang grenade launcher"
+	desc = "A shoulder-mounted micro-explosive dispenser designed for security forces."
+
+	charges = list(
+		list("flashbang",   "flashbang",   /obj/item/weapon/grenade/flashbang,  4),
 		)
 
 /obj/item/rig_module/grenade_launcher/mfoam

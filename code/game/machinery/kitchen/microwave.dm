@@ -51,7 +51,7 @@
 *   Item Adding
 ********************/
 
-/obj/machinery/microwave/attackby(var/obj/item/O as obj, var/mob/user as mob)
+/obj/machinery/microwave/attackby(obj/item/O as obj, mob/user as mob)
 	if(src.broken > 0)
 		if(src.broken == 2 && isScrewdriver(O)) // If it's broken and they're using a screwdriver
 			user.visible_message( \
@@ -287,7 +287,7 @@
 			cooked.dropInto(loc)
 		return
 
-/obj/machinery/microwave/proc/wzhzhzh(var/seconds as num) // Whoever named this proc is fucking literally Satan. ~ Z
+/obj/machinery/microwave/proc/wzhzhzh(seconds as num) // Whoever named this proc is fucking literally Satan. ~ Z
 	for (var/i=1 to seconds)
 		if (stat & (NOPOWER|BROKEN))
 			return 0

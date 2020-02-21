@@ -129,6 +129,10 @@ var/list/admin_ranks = list()								//list of all ranks with associated rights
 			load_admins()
 			return
 
+	//Clear profile access
+	for(var/A in world.GetConfig("admin"))
+		world.SetConfig("APP/admin", A, null)
+
 	#ifdef TESTING
 	var/msg = "Admins Built:\n"
 	for(var/ckey in admin_datums)

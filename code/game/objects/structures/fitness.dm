@@ -10,7 +10,7 @@
 	density = 1
 	var/list/hit_message = list("hit", "punch", "kick", "robust")
 
-/obj/structure/fitness/punchingbag/attack_hand(var/mob/living/carbon/human/user)
+/obj/structure/fitness/punchingbag/attack_hand(mob/living/carbon/human/user)
 	if(!istype(user))
 		..()
 		return
@@ -38,7 +38,7 @@
 		weight = ((weight) % qualifiers.len) + 1
 		to_chat(user, "You set the machine's weight level to [weight].")
 
-/obj/structure/fitness/weightlifter/attack_hand(var/mob/living/carbon/human/user)
+/obj/structure/fitness/weightlifter/attack_hand(mob/living/carbon/human/user)
 	if(!istype(user))
 		return
 	if(user.loc != src.loc)

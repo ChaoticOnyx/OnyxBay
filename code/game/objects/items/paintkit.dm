@@ -11,7 +11,7 @@
 	. = ..()
 	to_chat(usr, "It has [uses] use\s left.")
 
-/obj/item/device/kit/proc/use(var/amt, var/mob/user)
+/obj/item/device/kit/proc/use(amt, mob/user)
 	uses -= amt
 	playsound(get_turf(user), 'sound/items/Screwdriver.ogg', 50, 1)
 	if(uses<1)
@@ -27,7 +27,7 @@
 	var/new_light_overlay
 	var/new_mob_icon_file
 
-/obj/item/clothing/head/helmet/space/void/attackby(var/obj/item/O, var/mob/user)
+/obj/item/clothing/head/helmet/space/void/attackby(obj/item/O, mob/user)
 	if(istype(O,/obj/item/device/kit/suit))
 		var/obj/item/device/kit/suit/kit = O
 		SetName("[kit.new_name] suit helmet")
@@ -48,7 +48,7 @@
 		return 1
 	return ..()
 
-/obj/item/clothing/suit/space/void/attackby(var/obj/item/O, var/mob/user)
+/obj/item/clothing/suit/space/void/attackby(obj/item/O, mob/user)
 	if(istype(O,/obj/item/device/kit/suit))
 		var/obj/item/device/kit/suit/kit = O
 		SetName("[kit.new_name] voidsuit")
@@ -80,7 +80,7 @@
 	for(var/exotype in allowed_types)
 		to_chat(usr, "- [capitalize(exotype)]")
 
-/obj/mecha/attackby(var/obj/item/weapon/W, var/mob/user)
+/obj/mecha/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/device/kit/paint))
 		if(occupant)
 			to_chat(user, "You can't customize a mech while someone is piloting it - that would be unsafe!")

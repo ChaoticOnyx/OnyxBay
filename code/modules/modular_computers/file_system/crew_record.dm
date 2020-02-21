@@ -27,7 +27,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	. = ..()
 	GLOB.all_crew_records.Remove(src)
 
-/datum/computer_file/crew_record/proc/load_from_mob(var/mob/living/carbon/human/H)
+/datum/computer_file/crew_record/proc/load_from_mob(mob/living/carbon/human/H, automatic = FALSE)
 	if(istype(H))
 		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = 1)
 		photo_side = getFlatIcon(H, WEST, always_use_defdir = 1)
@@ -52,10 +52,10 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	set_medRecord((H && H.med_record && !jobban_isbanned(H, "Records") ? H.med_record : "No record supplied"))
 
 	// Security record
-	set_criminalStatus(GLOB.default_security_status)
+	set_criminalStatus(GLOB.default_security_status, automatic)
 	set_dna(H ? H.dna.unique_enzymes : "")
 	set_fingerprint(H ? md5(H.dna.uni_identity) : "")
-	set_secRecord((H && H.sec_record && !jobban_isbanned(H, "Records") ? H.sec_record : "No record supplied"))
+	set_secRecord((H && H.sec_record && !jobban_isbanned(H, "Records") ? H.sec_record : "No record supplied"), automatic)
 
 	// Employment record
 	set_emplRecord((H && H.gen_record && !jobban_isbanned(H, "Records") ? H.gen_record : "No record supplied"))
@@ -68,30 +68,30 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	set_antagRecord((H && H.exploit_record && !jobban_isbanned(H, "Records") ? H.exploit_record : ""))
 
 // Returns independent copy of this file.
-/datum/computer_file/crew_record/clone(var/rename = 0)
+/datum/computer_file/crew_record/clone(rename = 0)
 	var/datum/computer_file/crew_record/temp = ..()
 	return temp
 
-/datum/computer_file/crew_record/proc/get_field(var/field_type)
+/datum/computer_file/crew_record/proc/get_field(field_type)
 	var/record_field/F = locate(field_type) in fields
 	if(F)
 		return F.get_value()
 
-/datum/computer_file/crew_record/proc/set_field(var/field_type, var/value)
+/datum/computer_file/crew_record/proc/set_field(field_type, value)
 	var/record_field/F = locate(field_type) in fields
 	if(F)
 		return F.set_value(value)
 
 // Global methods
 // Used by character creation to create a record for new arrivals.
-/proc/CreateModularRecord(var/mob/living/carbon/human/H)
+/proc/CreateModularRecord(mob/living/carbon/human/H)
 	var/datum/computer_file/crew_record/CR = new /datum/computer_file/crew_record()
 	GLOB.all_crew_records.Add(CR)
-	CR.load_from_mob(H)
+	CR.load_from_mob(H, TRUE)
 	return CR
 
 // Gets crew records filtered by set of positions
-/proc/department_crew_manifest(var/list/filter_positions, var/blacklist = FALSE)
+/proc/department_crew_manifest(list/filter_positions, blacklist = FALSE)
 	var/list/matches = list()
 	for(var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
 		var/rank = CR.get_job()
@@ -105,7 +105,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 
 // Simple record to HTML (for paper purposes) conversion.
 // Not visually that nice, but it gets the work done, feel free to tweak it visually
-/proc/record_to_html(var/datum/computer_file/crew_record/CR, var/access)
+/proc/record_to_html(datum/computer_file/crew_record/CR, access)
 	var/dat = "<tt><H2>RECORD DATABASE DATA DUMP</H2><i>Generated on: [stationdate2text()] [stationtime2text()]</i><br>******************************<br>"
 	dat += "<table>"
 	for(var/record_field/F in CR.fields)
@@ -117,13 +117,13 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	dat += "</tt>"
 	return dat
 
-/proc/get_crewmember_record(var/name)
+/proc/get_crewmember_record(name)
 	for(var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
 		if(CR.get_name() == name)
 			return CR
 	return null
 
-/proc/GetAssignment(var/mob/living/carbon/human/H)
+/proc/GetAssignment(mob/living/carbon/human/H)
 	if(!H)
 		return "Unassigned"
 	if(!H.mind)
@@ -141,7 +141,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	var/record_id
 	var/hidden = FALSE
 
-/record_field/New(var/datum/computer_file/crew_record/record)
+/record_field/New(datum/computer_file/crew_record/record)
 	if(!acccess_edit)
 		acccess_edit = acccess ? acccess : access_heads
 	if(record)
@@ -157,7 +157,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 		return rustoutf(rhtml_decode(pencode2html(value)))
 	return rustoutf(rhtml_decode(value))
 
-/record_field/proc/set_value(var/newval)
+/record_field/proc/set_value(newval, automatic = FALSE)
 	if(isnull(newval))
 		return
 	switch(valtype)
@@ -170,21 +170,20 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 		if(EDIT_LONGTEXT)
 			newval = sanitize(replacetext(newval, "\n", "\[br\]"), MAX_PAPER_MESSAGE_LEN)
 	value = newval
-	if (usr)
-		announce()
+	announce(automatic)
 	return 1
 
 /record_field/proc/get_options()
 	return list()
 
-/record_field/proc/can_edit(var/used_access)
+/record_field/proc/can_edit(used_access)
 	if(!acccess_edit)
 		return TRUE
 	if(!used_access)
 		return FALSE
 	return islist(used_access) ? (acccess_edit in used_access) : acccess_edit == used_access
 
-/record_field/proc/can_see(var/used_access)
+/record_field/proc/can_see(used_access)
 	if (hidden)
 		return FALSE
 	if(!acccess)
@@ -193,11 +192,11 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 		return FALSE
 	return islist(used_access) ? (acccess_edit in used_access) : acccess_edit == used_access
 
-/record_field/proc/announce()
+/record_field/proc/announce(automatic)
 	return
 
 #define GETTER_SETTER(KEY) /datum/computer_file/crew_record/proc/get_##KEY(){var/record_field/F = locate(/record_field/##KEY) in fields; if(F) return F.get_value()} \
-/datum/computer_file/crew_record/proc/set_##KEY(value){var/record_field/F = locate(/record_field/##KEY) in fields; if(F) return F.set_value(value)}
+/datum/computer_file/crew_record/proc/set_##KEY(value, automatic){var/record_field/F = locate(/record_field/##KEY) in fields; if(F) return F.set_value(value, automatic)}
 
 // Fear not the preprocessor, for it is a friend. To add a field, use one of these, depending on value type and if you need special access to see it.
 // It will also create getter/setter procs for record datum, named like /get_[key here]() /set_[key_here](value) e.g. get_name() set_name(value)
@@ -233,7 +232,9 @@ FIELD_LONG_SECURE("Medical Record", medRecord, FALSE, access_medical)
 
 // SECURITY RECORDS
 FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_statuses, access_security)
-/record_field/criminalStatus/announce()
+/record_field/criminalStatus/announce(automatic)
+	if(automatic)
+		return
 	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
 		if(R.uid == record_id)
 			var/status = "<font color='black'><b>None</b></font>"
@@ -251,7 +252,9 @@ FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_status
 			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security status is changed to [status]!</font>", "<b>Security Records Announcer</b>", "Security")
 
 FIELD_LONG_SECURE("Security Record", secRecord, FALSE, access_security)
-/record_field/secRecord/announce()
+/record_field/secRecord/announce(automatic)
+	if(automatic)
+		return
 	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
 		if(R.uid == record_id)
 			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security record was changed!</font>", "<b>Security Records Announcer</b>", "Security")

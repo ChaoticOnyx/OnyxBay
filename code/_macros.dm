@@ -41,6 +41,8 @@
 
 #define isliving(A) istype(A, /mob/living)
 
+#define isbot(A) istype(A, /mob/living/bot)
+
 #define ismouse(A) istype(A, /mob/living/simple_animal/mouse)
 
 #define ismovable(A) istype(A, /atom/movable)
@@ -111,8 +113,6 @@
 
 #define random_id(key,min_id,max_id) uniqueness_repository.Generate(/datum/uniqueness_generator/id_random, key, min_id, max_id)
 
-#define to_world(message)                                   to_chat(world,message)
-#define to_world_log(message)                               world.log << message
 #define sound_to(target, sound)                             target << sound
 #define to_file(file_entry, source_var)                     file_entry << source_var
 #define from_file(file_entry, target_var)                   file_entry >> target_var
@@ -194,6 +194,8 @@
 #define SPAN_DANGER(X) "<span class='danger'>[X]</span>"
 
 #define SPAN_OCCULT(X) "<span class='cult'>[X]</span>"
+
+#define SPAN_DEADSAY(X) "<span class='deadsay'>[X]</span>"
 
 #define FONT_SMALL(X) "<font size='1'>[X]</font>"
 

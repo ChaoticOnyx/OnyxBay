@@ -87,7 +87,7 @@
 
 		add_underlay(T, node3, dir)
 
-/obj/machinery/atmospherics/trinary/filter/hide(var/i)
+/obj/machinery/atmospherics/trinary/filter/hide(i)
 	update_underlays()
 
 /obj/machinery/atmospherics/trinary/filter/Process()
@@ -125,7 +125,7 @@
 	set_frequency(frequency)
 	. = ..()
 
-/obj/machinery/atmospherics/trinary/filter/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+/obj/machinery/atmospherics/trinary/filter/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	var/datum/gas_mixture/int_air = return_air()

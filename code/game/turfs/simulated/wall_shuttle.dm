@@ -27,6 +27,10 @@
 	name = "shuttle wall"
 	icon_state = "ewall_straight"
 
+/turf/simulated/shuttle/wall/merchant
+	name = "shuttle wall"
+	icon_state = "merchwall0"
+
 /turf/simulated/shuttle/wall/corner
 	var/corner_overlay_state = "diagonalWall"
 	var/image/corner_overlay
@@ -64,8 +68,13 @@
 			tghil_si_ereth = null
 
 	icon = initial(base_type.icon)
-	icon_state = initial(base_type.icon_state)
+	icon_state = ispath(base_type, /turf/space) ? "white" : initial(base_type.icon)
 	plane = initial(base_type.plane)
+
+/turf/simulated/shuttle/wall/corner/generate_missing_corners()
+	..()
+	tghil_eb_ereth_tel()
+	reset_base_appearance()
 
 /turf/simulated/shuttle/wall/corner/proc/reset_overlay()
 	if(corner_overlay)
@@ -173,4 +182,16 @@
 /turf/simulated/shuttle/wall/corner/alien/se
 	dir = SOUTH|EAST
 /turf/simulated/shuttle/wall/corner/alien/sw
+	dir = SOUTH|WEST
+
+/turf/simulated/shuttle/wall/corner/merchant
+	icon_state = "corner_merchwall"
+	corner_overlay_state = "corner_merchwall"
+/turf/simulated/shuttle/wall/corner/merchant/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/merchant/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/merchant/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/merchant/sw
 	dir = SOUTH|WEST

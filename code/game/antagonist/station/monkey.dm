@@ -7,7 +7,7 @@
 	id = MODE_MONKEY
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB
 
-/datum/antagonist/monkey/apply(var/datum/mind/player)
+/datum/antagonist/monkey/apply(datum/mind/player)
 
 	for(var/datum/disease/D in M.viruses)
 		if(istype(D, /datum/disease/jungle_fever))

@@ -25,7 +25,7 @@
 	..()
 	create_reagents(50)
 
-/obj/item/weapon/implant/chem/activate(var/amount)
+/obj/item/weapon/implant/chem/activate(amount)
 	if((!amount) || (!iscarbon(imp_in)))	return 0
 	var/mob/living/carbon/R = imp_in
 	reagents.trans_to_mob(R, amount, CHEM_BLOOD)

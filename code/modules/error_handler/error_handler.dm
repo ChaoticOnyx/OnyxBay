@@ -4,7 +4,7 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 #ifdef DEBUG
 /world/Error(exception/E, datum/e_src)
 	if(!istype(E)) //Something threw an unusual exception
-		log_world("\[[time_stamp()]] Uncaught exception: [E]")
+		log_runtime("\[[time_stamp()]] Uncaught exception: [E]")
 		return ..()
 
 	var/static/list/error_last_seen = list()
@@ -55,7 +55,7 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 			var/skipcount = abs(error_cooldown[erroruid]) - 1
 			error_cooldown[erroruid] = 0
 			if(skipcount > 0)
-				to_world_log("\[[time_stamp()]] Skipped [skipcount] runtimes in [E.file],[E.line].")
+				log_runtime("\[[time_stamp()]] Skipped [skipcount] runtimes in [E.file],[E.line].")
 				GLOB.error_cache.log_error(E, skip_count = skipcount)
 
 	error_last_seen[erroruid] = world.time
@@ -92,9 +92,9 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 	if(GLOB.error_cache)
 		GLOB.error_cache.log_error(E, desclines)
 
-	to_world_log("\[[time_stamp()]] Runtime in [E.file],[E.line]: [E]")
+	log_runtime("\[[time_stamp()]] Runtime in [E.file],[E.line]: [E]")
 	webhook_send_runtime("\[[time_stamp()]] Runtime in [E.file],[E.line]: [E]")
 	for(var/line in desclines)
-		to_world_log(line)
+		log_runtime(line)
 
 #endif

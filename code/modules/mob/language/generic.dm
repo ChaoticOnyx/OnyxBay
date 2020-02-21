@@ -30,7 +30,7 @@
 	shorthand = "GC"
 
 //TODO flag certain languages to use the mob-type specific say_quote and then get rid of these.
-/datum/language/common/get_spoken_verb(var/msg_end)
+/datum/language/common/get_spoken_verb(msg_end)
 	switch(msg_end)
 		if("!")
 			return pick("exclaims","shouts","yells") //TODO: make the basic proc handle lists of verbs.

@@ -75,7 +75,7 @@
 	last_used = world.time + tool_delay
 	spawn_vox_rcd(H)
 
-/obj/item/clothing/suit/space/vox/pressure/proc/spawn_vox_rcd(var/mob/living/carbon/human/H)
+/obj/item/clothing/suit/space/vox/pressure/proc/spawn_vox_rcd(mob/living/carbon/human/H)
 	if(H.l_hand && H.r_hand)
 		to_chat(H, "<span class='danger'>Your hands are full.</span>")
 		return
@@ -107,7 +107,7 @@
 			mode = 1
 			to_chat(user, "<span class='notice'>Changed mode to deconstruct</span>")
 
-/obj/item/weapon/vox_rcd/afterattack(var/atom/A, var/mob/user, var/proximity)
+/obj/item/weapon/vox_rcd/afterattack(atom/A, mob/user, proximity)
 	if(!proximity)
 		return
 	if(charge == 0)
@@ -172,7 +172,7 @@
 	var/ammo = 3
 	var/last_regen = 0
 
-/obj/item/weapon/alien_med_device/afterattack(var/atom/A, var/mob/user, var/proximity)
+/obj/item/weapon/alien_med_device/afterattack(atom/A, mob/user, proximity)
 	if(!ishuman(A))
 		return
 	var/mob/living/carbon/human/V = A
@@ -226,7 +226,7 @@
 		return
 	protection(H)
 
-/obj/item/clothing/suit/space/vox/carapace/proc/protection(var/mob/living/carbon/human/H)
+/obj/item/clothing/suit/space/vox/carapace/proc/protection(mob/living/carbon/human/H)
 	if(protection)
 		to_chat(H, "<span class='notice'>You deactivate the protection mode.</span>")
 		armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 60, bio = 100, rad = 30)
@@ -277,7 +277,7 @@
 		return
 	cloak(H)
 
-/obj/item/clothing/suit/space/vox/stealth/proc/cloak(var/mob/living/carbon/human/H)
+/obj/item/clothing/suit/space/vox/stealth/proc/cloak(mob/living/carbon/human/H)
 	if(cloak)
 		cloak = FALSE
 		return 1
@@ -332,7 +332,7 @@
 		return
 	nanobots(H)
 
-/obj/item/clothing/suit/space/vox/medic/proc/nanobots(var/mob/living/carbon/human/H)
+/obj/item/clothing/suit/space/vox/medic/proc/nanobots(mob/living/carbon/human/H)
 	if(nanobots)
 		nanobots = FALSE
 		to_chat(H, "<span class='notice'>Nanobots deactivated.</span>")

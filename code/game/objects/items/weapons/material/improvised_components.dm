@@ -59,7 +59,7 @@
 	thrown_force_divisor = 0
 	applies_material_colour = 0
 
-/obj/item/weapon/material/wirerod/attackby(var/obj/item/I, mob/user as mob)
+/obj/item/weapon/material/wirerod/attackby(obj/item/I, mob/user as mob)
 	..()
 	var/obj/item/finished
 	if(istype(I, /obj/item/weapon/material/shard) || istype(I, /obj/item/weapon/material/knife/shiv))

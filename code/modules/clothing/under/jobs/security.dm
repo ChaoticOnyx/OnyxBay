@@ -24,6 +24,11 @@
 	icon_state = "policehelm"
 	body_parts_covered = 0
 
+/obj/item/clothing/head/warden/drill
+	name = "warden's drill hat"
+	desc = "You've definitely have seen that hat before."
+	icon_state = "wardendrill"
+
 /obj/item/clothing/under/rank/security
 	name = "security officer's jumpsuit"
 	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for robust protection."

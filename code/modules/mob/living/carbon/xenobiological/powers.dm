@@ -1,4 +1,4 @@
-/mob/living/carbon/slime/proc/Wrap(var/mob/living/M) // This is a proc for the clicks
+/mob/living/carbon/slime/proc/Wrap(mob/living/M) // This is a proc for the clicks
 	if (Victim == M || src == M)
 		Feedstop()
 		return
@@ -14,7 +14,7 @@
 
 	Feedon(M)
 
-/mob/living/carbon/slime/proc/invalidFeedTarget(var/mob/living/M)
+/mob/living/carbon/slime/proc/invalidFeedTarget(mob/living/M)
 	if (!istype(M))
 		return "This subject is incompatible..."
 	if (istype(M, /mob/living/carbon/slime)) // No cannibalism... yet
@@ -37,7 +37,7 @@
 			return "\The [met] is already feeding on this subject..."
 	return 0
 
-/mob/living/carbon/slime/proc/Feedon(var/mob/living/M)
+/mob/living/carbon/slime/proc/Feedon(mob/living/M)
 	set waitfor = 0
 	Victim = M
 	forceMove(M.loc)

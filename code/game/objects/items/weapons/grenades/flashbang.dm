@@ -26,7 +26,7 @@
 	qdel(src)
 	return
 
-/obj/item/weapon/grenade/flashbang/proc/bang(var/turf/T , var/mob/living/carbon/M)					// Added a new proc called 'bang' that takes a location and a person to be banged.
+/obj/item/weapon/grenade/flashbang/proc/bang(turf/T , mob/living/carbon/M)					// Added a new proc called 'bang' that takes a location and a person to be banged.
 	to_chat(M, "<span class='danger'>BANG</span>")// Called during the loop that bangs people in lockers/containers and when banging
 	playsound(src.loc, 'sound/effects/bang.ogg', 50, 1, 30)		// people in normal view.  Could theroetically be called during other explosions.
 																// -- Polymorph

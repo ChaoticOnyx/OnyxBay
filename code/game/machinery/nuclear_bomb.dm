@@ -37,7 +37,7 @@ var/bomb_set
 	auth = null
 	return ..()
 
-/obj/machinery/nuclearbomb/Process(var/wait)
+/obj/machinery/nuclearbomb/Process(wait)
 	if(timing)
 		timeleft = max(timeleft - (wait / 10), 0)
 		if(timeleft <= 0)
@@ -165,7 +165,7 @@ var/bomb_set
 			update_icon()
 	return
 
-/obj/machinery/nuclearbomb/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+/obj/machinery/nuclearbomb/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	var/data[0]
 	data["hacking"] = 0
 	data["auth"] = is_auth(user)
@@ -215,7 +215,7 @@ var/bomb_set
 		deployable = 1
 	return
 
-/obj/machinery/nuclearbomb/proc/is_auth(var/mob/user)
+/obj/machinery/nuclearbomb/proc/is_auth(mob/user)
 	if(auth)
 		return 1
 	if(user.can_admin_interact())
@@ -406,7 +406,7 @@ var/bomb_set
 		/obj/item/modular_computer/laptop/preset/custom_loadout/cheap/
 	)
 
-/obj/item/weapon/storage/secure/briefcase/nukedisk/examine(var/user)
+/obj/item/weapon/storage/secure/briefcase/nukedisk/examine(user)
 	..()
 	to_chat(user,"On closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it.")
 

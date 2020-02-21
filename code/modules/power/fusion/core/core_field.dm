@@ -39,7 +39,7 @@
 	var/last_range
 	var/last_power
 
-/obj/effect/fusion_em_field/New(loc, var/obj/machinery/power/fusion_core/new_owned_core)
+/obj/effect/fusion_em_field/New(loc, obj/machinery/power/fusion_core/new_owned_core)
 	..()
 
 	set_light(light_min_range,light_min_power)
@@ -212,7 +212,7 @@
 	explosion(get_turf(owned_core),-1,-1,8,10) // Blow out all the windows.
 	return
 
-/obj/effect/fusion_em_field/proc/ChangeFieldStrength(var/new_strength)
+/obj/effect/fusion_em_field/proc/ChangeFieldStrength(new_strength)
 	var/calc_size = 1
 	if(new_strength <= 50)
 		calc_size = 1
@@ -231,7 +231,7 @@
 	field_strength = new_strength
 	change_size(calc_size)
 
-/obj/effect/fusion_em_field/proc/AddEnergy(var/a_energy, var/a_plasma_temperature)
+/obj/effect/fusion_em_field/proc/AddEnergy(a_energy, a_plasma_temperature)
 	energy += a_energy
 	plasma_temperature += a_plasma_temperature
 	if(a_energy && percent_unstable > 0)
@@ -242,14 +242,14 @@
 		energy -= 100
 		plasma_temperature += 1
 
-/obj/effect/fusion_em_field/proc/AddParticles(var/name, var/quantity = 1)
+/obj/effect/fusion_em_field/proc/AddParticles(name, quantity = 1)
 	if(name in reactants)
 		reactants[name] += quantity
 	else if(name != "proton" && name != "electron" && name != "neutron")
 		reactants.Add(name)
 		reactants[name] = quantity
 
-/obj/effect/fusion_em_field/proc/RadiateAll(var/ratio_lost = 1)
+/obj/effect/fusion_em_field/proc/RadiateAll(ratio_lost = 1)
 
 	// Create our plasma field and dump it into our environment.
 	var/turf/T = get_turf(src)
@@ -305,7 +305,7 @@
 			environment.add_thermal_energy(plasma_temperature*20000)
 	radiation = 0
 
-/obj/effect/fusion_em_field/proc/change_size(var/newsize = 1)
+/obj/effect/fusion_em_field/proc/change_size(newsize = 1)
 	var/changed = 0
 
 	if( ((newsize-1)%2==0) && (newsize<=13) )
@@ -445,7 +445,7 @@
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/effect/fusion_em_field/bullet_act(var/obj/item/projectile/Proj)
+/obj/effect/fusion_em_field/bullet_act(obj/item/projectile/Proj)
 	AddEnergy(Proj.damage)
 	update_icon()
 	return 0

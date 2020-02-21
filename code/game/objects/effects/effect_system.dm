@@ -70,7 +70,7 @@ steam.start() -- spawns the effect
 	for(var/i = 0, i < src.number, i++)
 		addtimer(CALLBACK(src, /datum/effect/effect/system/proc/spread, i), 0)
 
-/datum/effect/effect/system/steam_spread/spread(var/i)
+/datum/effect/effect/system/steam_spread/spread(i)
 	set waitfor = 0
 	if(holder)
 		src.location = get_turf(holder)
@@ -139,7 +139,7 @@ steam.start() -- spawns the effect
 	for(var/i = 0, i < src.number, i++)
 		addtimer(CALLBACK(src, /datum/effect/effect/system/proc/spread, i), 0)
 
-/datum/effect/effect/system/spark_spread/spread(var/i)
+/datum/effect/effect/system/spark_spread/spread(i)
 	set waitfor = 0
 	if(holder)
 		src.location = get_turf(holder)
@@ -183,7 +183,7 @@ steam.start() -- spawns the effect
 	if(istype(M))
 		affect(M)
 
-/obj/effect/effect/smoke/proc/affect(var/mob/living/carbon/M)
+/obj/effect/effect/smoke/proc/affect(mob/living/carbon/M)
 	if (!istype(M))
 		return 0
 	if (M.internal != null)
@@ -206,7 +206,7 @@ steam.start() -- spawns the effect
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "sparks"
 
-/obj/effect/effect/smoke/illumination/New(var/newloc, var/lifetime=10, var/range=null, var/power=null, var/color=null)
+/obj/effect/effect/smoke/illumination/New(newloc, lifetime=10, range=null, power=null, color=null)
 	time_to_live=lifetime
 	..()
 	set_light(range, power, color)
@@ -223,7 +223,7 @@ steam.start() -- spawns the effect
 	for(var/mob/living/carbon/M in get_turf(src))
 		affect(M)
 
-/obj/effect/effect/smoke/bad/affect(var/mob/living/carbon/M)
+/obj/effect/effect/smoke/bad/affect(mob/living/carbon/M)
 	if (!..())
 		return 0
 	M.drop_item()
@@ -276,7 +276,7 @@ steam.start() -- spawns the effect
 	for(var/mob/living/carbon/human/R in get_turf(src))
 		affect(R)
 
-/obj/effect/effect/smoke/mustard/affect(var/mob/living/carbon/human/R)
+/obj/effect/effect/smoke/mustard/affect(mob/living/carbon/human/R)
 	if (!..())
 		return 0
 	if (R.wear_suit != null)
@@ -318,7 +318,7 @@ steam.start() -- spawns the effect
 			return
 		addtimer(CALLBACK(src, /datum/effect/effect/system/proc/spread, i), 0)
 
-/datum/effect/effect/system/smoke_spread/spread(var/i)
+/datum/effect/effect/system/smoke_spread/spread(i)
 	if(holder)
 		src.location = get_turf(holder)
 	var/obj/effect/effect/smoke/smoke = new smoke_type(location)
@@ -365,7 +365,7 @@ steam.start() -- spawns the effect
 	var/trail_type
 	var/duration_of_effect = 10
 
-/datum/effect/effect/system/trail/set_up(var/atom/atom)
+/datum/effect/effect/system/trail/set_up(atom/atom)
 	attach(atom)
 	oldposition = get_turf(atom)
 
@@ -401,7 +401,7 @@ steam.start() -- spawns the effect
 	src.processing = 0
 	src.on = 0
 
-/datum/effect/effect/system/trail/proc/effect(var/obj/effect/effect/T)
+/datum/effect/effect/system/trail/proc/effect(obj/effect/effect/T)
 	T.set_dir(src.holder.dir)
 	return
 
@@ -415,7 +415,7 @@ steam.start() -- spawns the effect
 	specific_turfs = list(/turf/space)
 	duration_of_effect = 20
 
-/datum/effect/effect/system/trail/ion/effect(var/obj/effect/effect/T)
+/datum/effect/effect/system/trail/ion/effect(obj/effect/effect/T)
 	..()
 	flick("ion_fade", T)
 	T.icon_state = "blank"
@@ -446,7 +446,7 @@ steam.start() -- spawns the effect
 	var/flashing = FALSE		// does explosion creates flash effect?
 	var/flashing_factor			// factor of how powerful the flash effect relatively to the explosion
 
-/datum/effect/effect/system/reagents_explosion/set_up(var/amount, var/loc, var/flashing = FALSE, var/flashing_factor)
+/datum/effect/effect/system/reagents_explosion/set_up(amount, loc, flashing = FALSE, flashing_factor)
 	src.amount = amount
 	if (istype(loc, /turf))
 		location = loc

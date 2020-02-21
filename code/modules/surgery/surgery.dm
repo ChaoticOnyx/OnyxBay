@@ -19,6 +19,7 @@
 	var/blood_level = 0
 	var/shock_level = 0	//what shock level will this step put patient on
 	var/delicate = 0  //if this step NEEDS stable optable or can be done on any valid surface with no penalty
+	var/clothes_penalty = TRUE // If the selected limb is wearing something - add a penalty.
 
 //returns how well tool is suited for this step
 /datum/surgery_step/proc/tool_quality(obj/item/tool)
@@ -72,7 +73,7 @@
 /datum/surgery_step/proc/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	return null
 
-/datum/surgery_step/proc/success_chance(mob/living/user, mob/living/carbon/human/target, obj/item/tool)
+/datum/surgery_step/proc/success_chance(mob/living/user, mob/living/carbon/human/target, obj/item/tool, target_zone)
 	. = tool_quality(tool)
 	if(user == target)
 		. -= 10
@@ -83,6 +84,7 @@
 			. -= 20
 		if(H.eye_blind)
 			. -= 60
+
 	if(delicate)
 		if(user.slurring)
 			. -= 10
@@ -99,7 +101,12 @@
 			. -= 10
 	. = max(., 0)
 
-/proc/spread_germs_to_organ(var/obj/item/organ/external/E, var/mob/living/carbon/human/user)
+/proc/clothes_check(user, target, target_zone)
+	if(length(get_target_clothes(target, target_zone)))
+		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
+		return SURGERY_BLOCKED
+
+/proc/spread_germs_to_organ(obj/item/organ/external/E, mob/living/carbon/human/user)
 	if(!istype(user) || !istype(E)) return
 
 	var/germ_level = user.germ_level
@@ -107,7 +114,6 @@
 		germ_level = user.gloves.germ_level
 
 	E.germ_level = max(germ_level,E.germ_level) //as funny as scrubbing microbes out with clean gloves is - no.
-
 
 /obj/item/proc/do_surgery(mob/living/carbon/M, mob/living/user)
 	if(!istype(M))
@@ -123,12 +129,14 @@
 		if(S.tool_quality(src))
 			var/step_is_valid = S.can_use(user, M, zone, src)
 			if(step_is_valid && S.is_valid_target(M))
+				if(S.clothes_penalty && clothes_check(user, M, zone) == SURGERY_BLOCKED)
+					return 1
 				if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
 					return 1
 				M.op_stage.in_progress += zone
 				S.begin_step(user, M, zone, src)		//start on it
 				//We had proper tools! (or RNG smiled.) and user did not move or change hands.
-				if(prob(S.success_chance(user, M, src)) &&  do_mob(user, M, rand(S.min_duration, S.max_duration) * surgery_speed))
+				if(prob(S.success_chance(user, M, src, zone)) &&  do_mob(user, M, rand(S.min_duration, S.max_duration) * surgery_speed))
 					S.end_step(user, M, zone, src)		//finish successfully
 				else if ((src in user.contents) && user.Adjacent(M))			//or
 					S.fail_step(user, M, zone, src)		//malpractice~

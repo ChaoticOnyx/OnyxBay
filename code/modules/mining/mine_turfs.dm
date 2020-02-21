@@ -55,7 +55,7 @@ var/list/mining_floors = list()
 /turf/simulated/mineral/is_plating()
 	return 1
 
-/turf/simulated/mineral/update_icon(var/update_neighbors)
+/turf/simulated/mineral/update_icon(update_neighbors)
 	if(!mineral)
 		SetName(initial(name))
 		icon_state = "rock"
@@ -102,7 +102,7 @@ var/list/mining_floors = list()
 			mined_ore = 2 //some of the stuff gets blown up
 			GetDrilled()
 
-/turf/simulated/mineral/bullet_act(var/obj/item/projectile/Proj)
+/turf/simulated/mineral/bullet_act(obj/item/projectile/Proj)
 
 	// Emitter blasts
 	if(istype(Proj, /obj/item/projectile/beam/emitter))
@@ -311,7 +311,7 @@ var/list/mining_floors = list()
 		O.geologic_data = geologic_data
 	return O
 
-/turf/simulated/mineral/proc/GetDrilled(var/artifact_fail = 0)
+/turf/simulated/mineral/proc/GetDrilled(artifact_fail = 0)
 	//var/destroyed = 0 //used for breaking strange rocks
 	if (mineral && mineral.result_amount)
 
@@ -349,7 +349,7 @@ var/list/mining_floors = list()
 		if(istype(T))
 			T.update_icon()
 
-/turf/simulated/mineral/proc/excavate_find(var/prob_clean = 0, var/datum/find/F)
+/turf/simulated/mineral/proc/excavate_find(prob_clean = 0, datum/find/F)
 
 	//many finds are ancient and thus very delicate - luckily there is a specialised energy suspension field which protects them when they're being extracted
 	if(prob(F.prob_delicate))
@@ -372,7 +372,7 @@ var/list/mining_floors = list()
 	finds.Remove(F)
 
 
-/turf/simulated/mineral/proc/artifact_debris(var/severity = 0)
+/turf/simulated/mineral/proc/artifact_debris(severity = 0)
 	//cael's patented random limited drop componentized loot system!
 	//sky's patented not-fucking-retarded overhaul!
 
@@ -539,7 +539,7 @@ var/list/mining_floors = list()
 	icon_state = "asteroid_dug"
 	return
 
-/turf/simulated/floor/asteroid/proc/updateMineralOverlays(var/update_neighbors)
+/turf/simulated/floor/asteroid/proc/updateMineralOverlays(update_neighbors)
 
 	overlays.Cut()
 

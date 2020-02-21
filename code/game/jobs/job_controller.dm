@@ -100,17 +100,20 @@ var/global/datum/controller/occupations/job_master
 			return FALSE
 		return TRUE
 
-	proc/CheckLatejoinBlockers(var/mob/new_player/joining, var/datum/job/job)
+	proc/CheckLatejoinBlockers(mob/new_player/joining, datum/job/job)
 		if(!CheckGeneralJoinBlockers(joining, job))
 			return FALSE
 		if(job.minimum_character_age && (joining.client.prefs.age < job.minimum_character_age))
-			to_chat(joining, "<span class='warning'>Your character's in-game age is too low for this job.</span>")
+			to_chat(joining, SPAN_WARNING("Your character's in-game age is too low for this job."))
+			return FALSE
+		if(job.faction_restricted && joining.client.prefs.faction != GLOB.using_map.company_name && (joining.client.prefs.nanotrasen_relation in COMPANY_OPPOSING))
+			to_chat(joining, SPAN_WARNING("Your characte must be loyal to [GLOB.using_map.company_name]."))
 			return FALSE
 		if(!job.player_old_enough(joining.client))
-			to_chat(joining, "<span class='warning'>Your player age (days since first seen on the server) is too low for this job.</span>")
+			to_chat(joining, SPAN_WARNING("Your player age (days since first seen on the server) is too low for this job."))
 			return FALSE
 		if(GAME_STATE != RUNLEVEL_GAME)
-			to_chat(joining, "<span class='warning'>The round is either not ready, or has already finished...</span>")
+			to_chat(joining, SPAN_WARNING("The round is either not ready, or has already finished..."))
 			return FALSE
 		return TRUE
 
@@ -128,20 +131,22 @@ var/global/datum/controller/occupations/job_master
 				log_and_message_admins("User [spawner] spawned at spawn point with dangerous atmosphere.")
 		return TRUE
 
-	proc/AssignRole(var/mob/new_player/player, var/rank, var/latejoin = 0)
+	proc/AssignRole(mob/new_player/player, rank, latejoin = 0)
 		Debug("Running AR, Player: [player], Rank: [rank], LJ: [latejoin]")
 		if(player && player.mind && rank)
 			var/datum/job/job = GetJob(rank)
 			if(!job)
-				return 0
+				return FALSE
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
-				return 0
+				return FALSE
+			if(job.faction_restricted && player.client.prefs.faction != GLOB.using_map.company_name && (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING))
+				return FALSE
 			if(jobban_isbanned(player, rank))
-				return 0
+				return FALSE
 			if(!job.player_old_enough(player.client))
-				return 0
+				return FALSE
 			if(job.is_restricted(player.client.prefs))
-				return 0
+				return FALSE
 
 			var/position_limit = job.total_positions
 			if(!latejoin)
@@ -152,9 +157,9 @@ var/global/datum/controller/occupations/job_master
 				player.mind.role_alt_title = GetPlayerAltTitle(player, rank)
 				unassigned -= player
 				job.current_positions++
-				return 1
+				return TRUE
 		Debug("AR has failed, Player: [player], Rank: [rank]")
-		return 0
+		return FALSE
 
 	proc/FreeRole(var/rank)	//making additional slot on the fly
 		var/datum/job/job = GetJob(rank)
@@ -176,6 +181,9 @@ var/global/datum/controller/occupations/job_master
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				Debug("FOC character not old enough, Player: [player]")
 				continue
+			if(job.faction_restricted && player.client.prefs.faction != GLOB.using_map.company_name && (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING))
+				Debug("FOC character is not loyal to [GLOB.using_map.company_name]")
+				continue
 			if(flag && !(flag in player.client.prefs.be_special_role))
 				Debug("FOC flag failed, Player: [player], Flag: [flag], ")
 				continue
@@ -191,6 +199,9 @@ var/global/datum/controller/occupations/job_master
 				continue
 
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
+				continue
+			
+			if(job.faction_restricted && player.client.prefs.faction != GLOB.using_map.company_name && (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING))
 				continue
 
 			if(istype(job, GetJob("Assistant"))) // We don't want to give him assistant, that's boring!
@@ -639,7 +650,7 @@ var/global/datum/controller/occupations/job_master
  *  preference is not set, or the preference is not appropriate for the rank, in
  *  which case a fallback will be selected.
  */
-/datum/controller/occupations/proc/get_spawnpoint_for(var/client/C, var/rank)
+/datum/controller/occupations/proc/get_spawnpoint_for(client/C, rank)
 
 	if(!C)
 		CRASH("Null client passed to get_spawnpoint_for() proc!")
@@ -679,10 +690,10 @@ var/global/datum/controller/occupations/job_master
 
 	return spawnpos
 
-/datum/controller/occupations/proc/GetJobByType(var/job_type)
+/datum/controller/occupations/proc/GetJobByType(job_type)
 	return occupations_by_type[job_type]
 
-/datum/controller/occupations/proc/get_roundstart_spawnpoint(var/rank)
+/datum/controller/occupations/proc/get_roundstart_spawnpoint(rank)
 	var/list/loc_list = list()
 	for(var/obj/effect/landmark/start/sloc in landmarks_list)
 		if(sloc.name != rank)	continue

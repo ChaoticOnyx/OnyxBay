@@ -10,7 +10,7 @@ var/const/SMARTFRIDGE_WIRE_ELECTRIFY	= 1
 var/const/SMARTFRIDGE_WIRE_THROW		= 2
 var/const/SMARTFRIDGE_WIRE_IDSCAN		= 4
 
-/datum/wires/smartfridge/CanUse(var/mob/living/L)
+/datum/wires/smartfridge/CanUse(mob/living/L)
 	var/obj/machinery/smartfridge/S = holder
 	if(!istype(L, /mob/living/silicon))
 		if(S.seconds_electrified)
@@ -27,7 +27,7 @@ var/const/SMARTFRIDGE_WIRE_IDSCAN		= 4
 	. += "The red light is [S.shoot_inventory ? "off" : "blinking"].<BR>"
 	. += "A [S.scan_id ? "purple" : "yellow"] light is on.<BR>"
 
-/datum/wires/smartfridge/UpdatePulsed(var/index)
+/datum/wires/smartfridge/UpdatePulsed(index)
 	var/obj/machinery/smartfridge/S = holder
 	switch(index)
 		if(SMARTFRIDGE_WIRE_THROW)
@@ -37,7 +37,7 @@ var/const/SMARTFRIDGE_WIRE_IDSCAN		= 4
 		if(SMARTFRIDGE_WIRE_IDSCAN)
 			S.scan_id = !S.scan_id
 
-/datum/wires/smartfridge/UpdateCut(var/index, var/mended)
+/datum/wires/smartfridge/UpdateCut(index, mended)
 	var/obj/machinery/smartfridge/S = holder
 	switch(index)
 		if(SMARTFRIDGE_WIRE_THROW)

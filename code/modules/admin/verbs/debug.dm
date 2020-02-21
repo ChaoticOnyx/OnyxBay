@@ -38,7 +38,7 @@
 	usr.show_message(t, 1)
 	feedback_add_details("admin_verb","ASL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/cmd_admin_robotize(var/mob/M in SSmobs.mob_list)
+/client/proc/cmd_admin_robotize(mob/M in SSmobs.mob_list)
 	set category = "Fun"
 	set name = "Make Robot"
 
@@ -53,7 +53,7 @@
 	else
 		alert("Invalid mob")
 
-/client/proc/cmd_admin_animalize(var/mob/M in SSmobs.mob_list)
+/client/proc/cmd_admin_animalize(mob/M in SSmobs.mob_list)
 	set category = "Fun"
 	set name = "Make Simple Animal"
 
@@ -74,7 +74,7 @@
 		M.Animalize()
 
 
-/client/proc/makepAI(var/turf/T in SSmobs.mob_list)
+/client/proc/makepAI(turf/T in SSmobs.mob_list)
 	set category = "Fun"
 	set name = "Make pAI"
 	set desc = "Specify a location to spawn a pAI device, then specify a key to play that pAI"
@@ -101,7 +101,7 @@
 			paiController.pai_candidates.Remove(candidate)
 	feedback_add_details("admin_verb","MPAI") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/cmd_admin_slimeize(var/mob/M in SSmobs.mob_list)
+/client/proc/cmd_admin_slimeize(mob/M in SSmobs.mob_list)
 	set category = "Fun"
 	set name = "Make slime"
 
@@ -150,7 +150,7 @@
 	message_admins("[key_name_admin(src)] has turned aliens [config.aliens_allowed ? "on" : "off"].", 0)
 	feedback_add_details("admin_verb","TAL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/cmd_admin_grantfullaccess(var/mob/M in SSmobs.mob_list)
+/client/proc/cmd_admin_grantfullaccess(mob/M in SSmobs.mob_list)
 	set category = "Admin"
 	set name = "Grant Full Access"
 
@@ -180,7 +180,7 @@
 	feedback_add_details("admin_verb","GFA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_and_message_admins("has granted [M.key] full access.")
 
-/client/proc/cmd_assume_direct_control(var/mob/M in SSmobs.mob_list)
+/client/proc/cmd_assume_direct_control(mob/M in SSmobs.mob_list)
 	set category = "Admin"
 	set name = "Assume direct control"
 	set desc = "Direct intervention"
@@ -314,63 +314,13 @@
 	feedback_add_details("admin_verb","SEQ")
 	dressup_human(H, outfit, reset_equipment)
 
-/proc/dressup_human(var/mob/living/carbon/human/H, var/decl/hierarchy/outfit/outfit, var/undress = TRUE)
+/proc/dressup_human(mob/living/carbon/human/H, decl/hierarchy/outfit/outfit, undress = TRUE)
 	if(!H || !outfit)
 		return
 	if(undress)
 		H.delete_inventory(TRUE)
 	outfit.equip(H)
 	log_and_message_admins("changed the equipment of [key_name(H)] to [outfit.name].")
-
-/client/proc/startSinglo()
-	set category = "Debug"
-	set name = "Start Singularity"
-	set desc = "Sets up the singularity and all machines to get power flowing"
-
-	if(alert("Are you sure? This will start up the engine. Should only be used during debug!",,"Yes","No") != "Yes")
-		return
-
-	for(var/obj/machinery/power/emitter/E in world)
-		if(E.anchored)
-			E.active = 1
-
-	for(var/obj/machinery/field_generator/F in world)
-		if(F.anchored)
-			F.Varedit_start = 1
-	spawn(30)
-		for(var/obj/machinery/the_singularitygen/G in world)
-			if(G.anchored)
-				var/obj/singularity/S = new /obj/singularity(get_turf(G), 50)
-				spawn(0)
-					qdel(G)
-				S.energy = 1750
-				S.current_size = 7
-				S.icon = 'icons/effects/224x224.dmi'
-				S.icon_state = "singularity_s7"
-				S.pixel_x = -96
-				S.pixel_y = -96
-				S.grav_pull = 0
-				//S.consume_range = 3
-				S.dissipate = 0
-				//S.dissipate_delay = 10
-				//S.dissipate_track = 0
-				//S.dissipate_strength = 10
-
-	for(var/obj/machinery/power/rad_collector/Rad in world)
-		if(Rad.anchored)
-			if(!Rad.P)
-				var/obj/item/weapon/tank/phoron/Phoron = new /obj/item/weapon/tank/phoron(Rad)
-				Phoron.air_contents.gas["phoron"] = 70
-				Rad.drainratio = 0
-				Rad.P = Phoron
-				Phoron.loc = Rad
-
-			if(!Rad.active)
-				Rad.toggle_power()
-
-	for(var/obj/machinery/power/smes/SMES in world)
-		if(SMES.anchored)
-			SMES.input_attempt = 1
 
 /client/proc/cmd_debug_mob_lists()
 	set category = "Debug"
@@ -394,7 +344,7 @@
 			to_chat(usr, jointext(GLOB.clients,","))
 
 // DNA2 - Admin Hax
-/client/proc/cmd_admin_toggle_block(var/mob/M,var/block)
+/client/proc/cmd_admin_toggle_block(mob/M,block)
 	if(GAME_STATE < RUNLEVEL_GAME)
 		alert("Wait until the game starts")
 		return
@@ -429,7 +379,7 @@
 
 	cmd_analyse_health(H)
 
-/client/proc/cmd_analyse_health(var/mob/living/carbon/human/H)
+/client/proc/cmd_analyse_health(mob/living/carbon/human/H)
 
 	if(!check_rights(R_DEBUG))
 		return

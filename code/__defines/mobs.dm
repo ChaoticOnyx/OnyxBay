@@ -126,6 +126,7 @@
 #define COMPANY_SKEPTICAL		"Skeptical"
 #define COMPANY_OPPOSED			"Opposed"
 
+#define COMPANY_OPPOSING		list(COMPANY_SKEPTICAL,COMPANY_OPPOSED)
 #define COMPANY_ALIGNMENTS		list(COMPANY_LOYAL,COMPANY_SUPPORTATIVE,COMPANY_NEUTRAL,COMPANY_SKEPTICAL,COMPANY_OPPOSED)
 
 // Defines mob sizes, used by lockers and to determine what is considered a small sized mob, etc.
@@ -167,8 +168,10 @@
 #define FLASH_PROTECTION_MODERATE 1
 #define FLASH_PROTECTION_MAJOR 2
 
-#define ANIMAL_SPAWN_DELAY round(config.respawn_delay / 6)
-#define DRONE_SPAWN_DELAY  round(config.respawn_delay / 3)
+
+#define ANIMAL_SPAWN_DELAY  round(config.respawn_delay / 6)
+#define DRONE_SPAWN_DELAY   round(config.respawn_delay / 3)
+#define DEAD_ANIMAL_DELAY   round(config.respawn_delay / 3)
 
 // Incapacitation flags, used by the mob/proc/incapacitated() proc
 #define INCAPACITATION_NONE 0
@@ -284,7 +287,6 @@
 #define SPECIES_NABBER      "Giant Armoured Serpentid"
 #define SPECIES_PROMETHEAN  "Promethean"
 #define SPECIES_EGYNO       "Egyno"
-#define SPECIES_XENO        "Xenomorph"
 
 // Ayyy IDs.
 #define SPECIES_XENO			"Xenomorph"

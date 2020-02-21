@@ -42,7 +42,7 @@
 	delay = 20 SECONDS
 	var/first_message_shown = FALSE
 
-/datum/disease2/effect/rage/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/rage/activate(mob/living/carbon/human/mob,multiplier)
 	if (!first_message_shown)
 		first_message_shown = TRUE
 		to_chat(mob, "<span class='warning'>Your muscles start tensing up, and you can feel your pulse rising, throbbing at the back of your head. Your breathing increases, and you feel... angry. An urge wells up inside you. Everything is making you angry, and you want it to <i>pay</i> for it.</span>")
@@ -270,7 +270,7 @@
 	name = "paper note"
 	info = {"<center><b><font color='green'>Zeng-Hu Pharmaceuticals</font></b></center>
 			<center><font color='red'><small>CONFIDENTIAL USE ONLY</small></font></center>
-			<i>Tedd, don't get into the cells with the Type 8 subjects anymore, something's off about them the last couple days. They haven't been moving right, and they seem distracted nearly constantly, and not in a normal way. They also look like they're turning kinda� green? One of the other guys says it's probably just a virus or something reacting with it, but I don't know, something seems off.</i>
+			<i>Tedd, don't get into the cells with the Type 8 subjects anymore, something's off about them the last couple days. They haven't been moving right, and they seem distracted nearly constantly, and not in a normal way. They also look like they're turning kinda green? One of the other guys says it's probably just a virus or something reacting with it, but I don't know, something seems off.</i>
 			"}
 
 /obj/item/weapon/paper/lar_maria/note_5

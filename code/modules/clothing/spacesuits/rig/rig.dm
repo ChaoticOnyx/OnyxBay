@@ -182,7 +182,7 @@
 		ret.icon = mob_icon
 	return ret
 
-/obj/item/weapon/rig/proc/set_slowdown_and_vision(var/active)
+/obj/item/weapon/rig/proc/set_slowdown_and_vision(active)
 	if(chest)
 		chest.slowdown_per_slot[slot_wear_suit] = (active? online_slowdown : offline_slowdown)
 	if(helmet)
@@ -213,7 +213,7 @@
 			piece.item_flags &= ~(ITEM_FLAG_STOPPRESSUREDAMAGE|ITEM_FLAG_AIRTIGHT)
 	update_icon(1)
 
-/obj/item/weapon/rig/proc/toggle_seals(var/mob/initiator, var/instant)
+/obj/item/weapon/rig/proc/toggle_seals(mob/initiator, instant)
 
 	if(sealing) return
 
@@ -343,7 +343,7 @@
 		update_component_sealed()
 	update_icon(1)
 
-/obj/item/weapon/rig/proc/r_booting_done(var/mob/initiator, var/obj/screen/rig_booting/booting_R)
+/obj/item/weapon/rig/proc/r_booting_done(mob/initiator, obj/screen/rig_booting/booting_R)
 	wearer.client.screen -= booting_R
 	qdel(booting_R)
 
@@ -423,7 +423,7 @@
 		return 1
 	return 0
 
-/obj/item/weapon/rig/proc/check_power_cost(var/mob/living/user, var/cost, var/use_unconcious, var/obj/item/rig_module/mod, var/user_is_ai)
+/obj/item/weapon/rig/proc/check_power_cost(mob/living/user, cost, use_unconcious, obj/item/rig_module/mod, user_is_ai)
 
 	if(!istype(user))
 		return 0
@@ -458,7 +458,7 @@
 	cell.use(cost * CELLRATE)
 	return 1
 
-/obj/item/weapon/rig/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/nano_state = GLOB.inventory_state)
+/obj/item/weapon/rig/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, nano_state = GLOB.inventory_state)
 	if(!user)
 		return
 
@@ -533,7 +533,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/item/weapon/rig/update_icon(var/update_mob_icon)
+/obj/item/weapon/rig/update_icon(update_mob_icon)
 
 	//TODO: Maybe consider a cache for this (use mob_icon as blank canvas, use suit icon overlay).
 	overlays.Cut()
@@ -568,7 +568,7 @@
 			ret.overlays += image("icon" = 'icons/mob/onmob/rig_modules.dmi', "icon_state" = "[module.suit_overlay]")
 	return ret
 
-/obj/item/weapon/rig/proc/check_suit_access(var/mob/living/carbon/human/user)
+/obj/item/weapon/rig/proc/check_suit_access(mob/living/carbon/human/user)
 
 	if(!security_check_enabled)
 		return 1
@@ -627,7 +627,7 @@
 		locked = !locked
 		return 1
 
-/obj/item/weapon/rig/proc/notify_ai(var/message)
+/obj/item/weapon/rig/proc/notify_ai(message)
 	for(var/obj/item/rig_module/ai_container/module in installed_modules)
 		if(module.integrated_ai && module.integrated_ai.client && !module.integrated_ai.stat)
 			to_chat(module.integrated_ai, "[message]")
@@ -651,7 +651,7 @@
 		wearer.wearing_rig = src
 		update_icon()
 
-/obj/item/weapon/rig/proc/toggle_piece(var/piece, var/mob/initiator, var/deploy_mode)
+/obj/item/weapon/rig/proc/toggle_piece(piece, mob/initiator, deploy_mode)
 
 	if(sealing || !cell || !cell.charge)
 		return
@@ -716,7 +716,7 @@
 	if(piece == "helmet" && helmet)
 		helmet.update_light(wearer)
 
-/obj/item/weapon/rig/proc/deploy(mob/M,var/sealed)
+/obj/item/weapon/rig/proc/deploy(mob/M,sealed)
 
 	var/mob/living/carbon/human/H = M
 
@@ -753,7 +753,7 @@
 	for(var/piece in list("helmet","gauntlets","chest","boots"))
 		toggle_piece(piece, H, ONLY_DEPLOY)
 
-/obj/item/weapon/rig/dropped(var/mob/user)
+/obj/item/weapon/rig/dropped(mob/user)
 	..()
 	for(var/piece in list("helmet","gauntlets","chest","boots"))
 		toggle_piece(piece, user, ONLY_RETRACT)
@@ -834,7 +834,7 @@
 			to_chat(wearer, "<span class='warning'>The [source] has damaged your [dam_module.interface_name]!</span>")
 	dam_module.deactivate()
 
-/obj/item/weapon/rig/proc/malfunction_check(var/mob/living/carbon/human/user)
+/obj/item/weapon/rig/proc/malfunction_check(mob/living/carbon/human/user)
 	if(malfunction_delay)
 		if(offline)
 			to_chat(user, "<span class='danger'>The suit is completely unresponsive.</span>")
@@ -843,7 +843,7 @@
 		return 1
 	return 0
 
-/obj/item/weapon/rig/proc/ai_can_move_suit(var/mob/user, var/check_user_module = 0, var/check_for_ai = 0)
+/obj/item/weapon/rig/proc/ai_can_move_suit(mob/user, check_user_module = 0, check_for_ai = 0)
 
 	if(check_for_ai)
 		if(!(locate(/obj/item/rig_module/ai_container) in contents))
@@ -880,13 +880,13 @@
 /obj/item/weapon/rig/check_access(obj/item/I)
 	return TRUE
 
-/obj/item/weapon/rig/proc/force_rest(var/mob/user)
+/obj/item/weapon/rig/proc/force_rest(mob/user)
 	if(!ai_can_move_suit(user, check_user_module = 1))
 		return
 	wearer.lay_down()
 	to_chat(user, "<span class='notice'>\The [wearer] is now [wearer.resting ? "resting" : "getting up"].</span>")
 
-/obj/item/weapon/rig/proc/forced_move(var/direction, var/mob/user)
+/obj/item/weapon/rig/proc/forced_move(direction, mob/user)
 
 	// Why is all this shit in client/Move()? Who knows?
 	if(world.time < wearer_move_delay)

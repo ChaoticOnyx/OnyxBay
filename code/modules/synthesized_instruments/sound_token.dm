@@ -6,7 +6,7 @@
 	var/datum/sound_player/player
 
 //Slight duplication, but there's key differences
-/datum/sound_token/instrument/New(var/atom/source, var/sound_id, var/sound/sound, var/range = 4, var/prefer_mute = FALSE, var/use_env, var/datum/sound_player/player)
+/datum/sound_token/instrument/New(atom/source, sound_id, sound/sound, range = 4, prefer_mute = FALSE, use_env, datum/sound_player/player)
 	if(!istype(source))
 		CRASH("Invalid sound source: [log_info_line(source)]")
 	if(!istype(sound))
@@ -39,7 +39,7 @@
 	player.subscribe(src)
 
 
-/datum/sound_token/instrument/PrivGetEnvironment(var/listener)
+/datum/sound_token/instrument/PrivGetEnvironment(listener)
 	//Allow override (in case your instrument has to sound funky or muted)
 	if(use_env)
 		return sound.environment

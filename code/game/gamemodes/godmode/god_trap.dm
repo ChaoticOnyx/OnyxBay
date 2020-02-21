@@ -23,7 +23,7 @@
 /obj/structure/deity/trap/bullet_act()
 	return
 
-/obj/structure/deity/trap/proc/trigger(var/atom/entered, var/atom/movable/enterer)
+/obj/structure/deity/trap/proc/trigger(atom/entered, atom/movable/enterer)
 	if(triggered > world.time || !istype(enterer, /mob/living))
 		return
 

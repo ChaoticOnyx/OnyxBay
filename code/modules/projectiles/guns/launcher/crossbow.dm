@@ -103,7 +103,7 @@
 	else
 		draw(user)
 
-/obj/item/weapon/gun/launcher/crossbow/proc/draw(var/mob/user as mob)
+/obj/item/weapon/gun/launcher/crossbow/proc/draw(mob/user as mob)
 
 	if(!bolt)
 		to_chat(user, "You don't have anything nocked to [src].")
@@ -137,7 +137,7 @@
 
 		user.visible_message("[usr] draws back the string of [src]!","<span class='notice'>You continue drawing back the string of [src]!</span>")
 
-/obj/item/weapon/gun/launcher/crossbow/proc/increase_tension(var/mob/user as mob)
+/obj/item/weapon/gun/launcher/crossbow/proc/increase_tension(mob/user as mob)
 
 	if(!bolt || !tension || current_user != user) //Arrow has been fired, bow has been relaxed or user has changed.
 		return
@@ -184,7 +184,7 @@
 	else
 		..()
 
-/obj/item/weapon/gun/launcher/crossbow/proc/superheat_rod(var/mob/user)
+/obj/item/weapon/gun/launcher/crossbow/proc/superheat_rod(mob/user)
 	if(!user || !cell || !bolt) return
 	if(cell.charge < 500) return
 	if(bolt.throwforce >= 15) return

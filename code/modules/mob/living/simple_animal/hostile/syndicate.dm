@@ -51,7 +51,7 @@
 	attacktext = "slashed"
 	status_flags = 0
 
-/mob/living/simple_animal/hostile/syndicate/melee/attackby(var/obj/item/O as obj, var/mob/user as mob)
+/mob/living/simple_animal/hostile/syndicate/melee/attackby(obj/item/O as obj, mob/user as mob)
 	if(O.force)
 		if(prob(80))
 			var/damage = O.force
@@ -67,7 +67,7 @@
 		visible_message("<span class='warning'>\The [user] gently taps \the [src] with \the [O].</span>")
 
 
-/mob/living/simple_animal/hostile/syndicate/melee/bullet_act(var/obj/item/projectile/Proj)
+/mob/living/simple_animal/hostile/syndicate/melee/bullet_act(obj/item/projectile/Proj)
 	if(!Proj)	return
 	if(prob(65))
 		src.health -= Proj.damage

@@ -115,7 +115,7 @@
 		user_unbuckle_mob(user)
 	return
 
-/obj/structure/bed/chair/wheelchair/CtrlClick(var/mob/user)
+/obj/structure/bed/chair/wheelchair/CtrlClick(mob/user)
 	if(in_range(src, user))
 		if(!ishuman(user) || user.incapacitated(INCAPACITATION_DEFAULT | INCAPACITATION_BUCKLED_PARTIALLY))
 			return

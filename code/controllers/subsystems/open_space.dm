@@ -48,12 +48,12 @@ SUBSYSTEM_DEF(open_space)
 /datum/controller/subsystem/open_space/stat_entry()
 	..("T: [length(turfs_to_process)], U: [times_updated]")
 
-/datum/controller/subsystem/open_space/proc/update_turf(var/turf/T)
+/datum/controller/subsystem/open_space/proc/update_turf(turf/T)
 	for(var/atom/movable/A in T)
 		A.fall()
 	T.update_icon()
 
-/datum/controller/subsystem/open_space/proc/add_turf(var/turf/T, var/recursive = 0)
+/datum/controller/subsystem/open_space/proc/add_turf(turf/T, recursive = 0)
 	ASSERT(isturf(T))
 	//Check for multiple additions
 	if(turfs_to_process[T])

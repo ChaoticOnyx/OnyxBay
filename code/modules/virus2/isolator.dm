@@ -27,7 +27,7 @@
 	else
 		icon_state = "isolator"
 
-/obj/machinery/disease2/isolator/attackby(var/obj/O as obj, var/mob/user)
+/obj/machinery/disease2/isolator/attackby(obj/O as obj, mob/user)
 	if(!istype(O,/obj/item/weapon/reagent_containers/syringe)) return
 	var/obj/item/weapon/reagent_containers/syringe/S = O
 
@@ -49,7 +49,7 @@
 	if(stat & (NOPOWER|BROKEN)) return
 	ui_interact(user)
 
-/obj/machinery/disease2/isolator/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+/obj/machinery/disease2/isolator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	user.set_machine(src)
 
 	var/data[0]
@@ -160,7 +160,7 @@
 		update_icon()
 		return TOPIC_REFRESH
 
-/obj/machinery/disease2/isolator/proc/print(var/mob/user)
+/obj/machinery/disease2/isolator/proc/print(mob/user)
 	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(loc)
 
 	switch (state)

@@ -67,7 +67,7 @@ obj/machinery/embedded_controller/radio/Destroy()
 	else
 		icon_state = "airlock_control_standby"
 
-/obj/machinery/embedded_controller/radio/post_signal(datum/signal/signal, var/radio_filter = null)
+/obj/machinery/embedded_controller/radio/post_signal(datum/signal/signal, radio_filter = null)
 	signal.transmission_method = TRANSMISSION_RADIO
 	if(radio_connection)
 		//use_power(radio_power_use)	//neat idea, but causes way too much lag.

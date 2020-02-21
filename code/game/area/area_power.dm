@@ -4,7 +4,7 @@
 #define ENVIRON 3
 */
 
-/area/proc/powered(var/chan)		// return true if the area has power to given channel
+/area/proc/powered(chan)		// return true if the area has power to given channel
 	if(!requires_power)
 		return 1
 	if(always_unpowered)
@@ -26,7 +26,7 @@
 	if (fire || eject || party)
 		update_icon()
 
-/area/proc/usage(var/chan)
+/area/proc/usage(chan)
 	switch(chan)
 		if(LIGHT)
 			return used_light + oneoff_light
@@ -44,7 +44,7 @@
 	oneoff_environ = 0
 
 // Not a proc you want to use directly unless you know what you are doing; see use_power_oneoff below instead.
-/area/proc/use_power(var/amount, var/chan)
+/area/proc/use_power(amount, chan)
 	switch(chan)
 		if(EQUIP)
 			used_equip += amount
@@ -58,7 +58,7 @@
 	use_power(new_amount - old_amount, chan)
 
 // Use this for a one-time power draw from the area, typically for non-machines.
-/area/proc/use_power_oneoff(var/amount, var/chan)
+/area/proc/use_power_oneoff(amount, chan)
 	switch(chan)
 		if(EQUIP)
 			oneoff_equip += amount

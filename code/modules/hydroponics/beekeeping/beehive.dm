@@ -34,12 +34,12 @@
 			if(81 to 100)
 				overlays += "bees3"
 
-/obj/machinery/beehive/examine(var/mob/user)
+/obj/machinery/beehive/examine(mob/user)
 	. = ..()
 	if(!closed)
 		to_chat(user, "The lid is open.")
 
-/obj/machinery/beehive/attackby(var/obj/item/I, var/mob/user)
+/obj/machinery/beehive/attackby(obj/item/I, mob/user)
 	if(isCrowbar(I))
 		closed = !closed
 		user.visible_message("<span class='notice'>\The [user] [closed ? "closes" : "opens"] \the [src].</span>", "<span class='notice'>You [closed ? "close" : "open"] \the [src].</span>")
@@ -122,7 +122,7 @@
 			qdel(src)
 		return
 
-/obj/machinery/beehive/attack_hand(var/mob/user)
+/obj/machinery/beehive/attack_hand(mob/user)
 	if(!closed)
 		if(honeycombs < 100)
 			to_chat(user, "<span class='notice'>There are no filled honeycombs.</span>")
@@ -160,7 +160,7 @@
 			++trays
 	honeycombs = min(honeycombs + 0.1 * coef * min(trays, 5), frames * 100)
 
-/obj/machinery/beehive/proc/angry_swarm(var/mob/M)
+/obj/machinery/beehive/proc/angry_swarm(mob/M)
 	for(var/mob/living/simple_animal/bee/B in owned_bee_swarms)
 		B.feral = 25
 		B.target_mob = M
@@ -219,7 +219,7 @@
 	icon = 'icons/obj/apiary_bees_etc.dmi'
 	icon_state = "apiary"
 
-/obj/item/beehive_assembly/attack_self(var/mob/user)
+/obj/item/beehive_assembly/attack_self(mob/user)
 	to_chat(user, "<span class='notice'>You start assembling \the [src]...</span>")
 	if(do_after(user, 30, src))
 		user.visible_message("<span class='notice'>\The [user] constructs a beehive.</span>", "<span class='notice'>You construct a beehive.</span>")

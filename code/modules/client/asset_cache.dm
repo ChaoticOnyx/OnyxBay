@@ -141,12 +141,12 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //Generated names do not include file extention.
 //Used mainly for code that deals with assets in a generic way
 //The same asset will always lead to the same asset name
-/proc/generate_asset_name(var/file)
+/proc/generate_asset_name(file)
 	return "asset.[md5(fcopy_rsc(file))]"
 
 // will return filename for cached atom icon or null if not cached
 // can accept atom objects or types
-/proc/getAtomCacheFilename(var/atom/A)
+/proc/getAtomCacheFilename(atom/A)
 	if(!A || (!istype(A) && !ispath(A)))
 		return
 	var/filename = "[ispath(A) ? A : A.type].png"
