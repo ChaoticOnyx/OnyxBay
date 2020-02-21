@@ -82,6 +82,8 @@
 	A.attack_ai(src)
 /mob/living/silicon/ai/RangedAttack(atom/A)
 	A.attack_ai(src)
+/mob/living/silicon/ai/MouseDrop() //AI cant user crawl
+	return
 
 /atom/proc/attack_ai(mob/user as mob)
 	return
