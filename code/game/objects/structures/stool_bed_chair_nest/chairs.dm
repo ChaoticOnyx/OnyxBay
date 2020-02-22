@@ -145,7 +145,11 @@
 /obj/structure/bed/chair/MouseDrop(over_object, src_location, over_location)
 	..()
 	if(foldable && (over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-		if(!ishuman(usr))	return
+		if(!ishuman(usr))
+			return
+		var/mob/living/carbon/human/H = usr
+		if(H.handcuffed)
+			return
 		if(buckled_mob)
 			visible_message(SPAN_WARN("[buckled_mob] falls down as [usr] collapses \the [src.name]!"))
 			var/mob/living/occupant = unbuckle_mob()
