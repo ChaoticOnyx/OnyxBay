@@ -39,7 +39,7 @@
 	if(igniter)
 		to_chat(user, "It's turned [lit? "on" : "off"].")
 	else
-		to_chat(user, SPAN_WARN("Igniter not installed in [src]!"))
+		to_chat(user, SPAN_WARNING("Igniter not installed in [src]!"))
 
 	if(pressure_tank)
 		to_chat(user, "The pressure tank wrenched into the [src].")
@@ -48,15 +48,15 @@
 		if(fuel_tank)
 			to_chat(user, "The fuel tank contains [round(get_fuel())]/[fuel_tank.max_fuel] units of fuel.")
 		else
-			to_chat(user, SPAN_WARN("There's no fuel tank in [src]!"))
+			to_chat(user, SPAN_WARNING("There's no fuel tank in [src]!"))
 
 		if(pressure_tank)
 			to_chat(user, "The pressure gauge shows the current tank is [pressure_tank.air_contents.return_pressure()].")
 		else
-			to_chat(user, SPAN_WARN("There's no pressure tank in [src]!"))
+			to_chat(user, SPAN_WARNING("There's no pressure tank in [src]!"))
 
 	else
-		to_chat(user, SPAN_WARN("Gauge not installed, you have no idea how much fuel left in [src]!"))
+		to_chat(user, SPAN_WARNING("Gauge not installed, you have no idea how much fuel left in [src]!"))
 
 /obj/item/weapon/gun/flamer/update_icon()
 	overlays.Cut()
@@ -183,11 +183,11 @@
 /obj/item/weapon/gun/flamer/proc/toggle_flame(mob/user)
 
 	if(!igniter)
-		to_chat(user, SPAN_WARN("Install ingiter first!"))
+		to_chat(user, SPAN_WARNING("Install ingiter first!"))
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	if(!fuel_tank)
-		to_chat(user, SPAN_WARN("Install fuel tank first!"))
+		to_chat(user, SPAN_WARNING("Install fuel tank first!"))
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	if(!lit)
@@ -203,7 +203,7 @@
 		return //Something has gone wrong...
 
 	if(!is_held_twohanded(user))
-		to_chat(user, SPAN_WARN("You cant fire on target with just one hand"))
+		to_chat(user, SPAN_WARNING("You cant fire on target with just one hand"))
 		return
 
 	if(is_flamer_can_fire(user))
@@ -211,6 +211,7 @@
 			last_fired = world.time
 			last_use = world.time
 			unleash_flame(target, user)
+			targloc.hotspot_expose(700,125)
 			log_attack("[user] start spreadding fire with \ref[src].")
 			return
 		else
@@ -222,25 +223,25 @@
 /obj/item/weapon/gun/flamer/proc/is_flamer_can_fire(mob/user)
 
 	if(!fuel_tank)
-		to_chat(user, SPAN_WARN("[src] isn't has a fuel tank"))
+		to_chat(user, SPAN_WARNING("[src] isn't has a fuel tank"))
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	if(!pressure_tank)
-		to_chat(user, SPAN_WARN("[src] isn't has a pressure tank"))
+		to_chat(user, SPAN_WARNING("[src] isn't has a pressure tank"))
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	if(!lit)
-		to_chat(user, SPAN_WARN("[src] isn't lit to fire"))
+		to_chat(user, SPAN_WARNING("[src] isn't lit to fire"))
 		return
 	if(get_fuel() < fuel_for_shot)
-		to_chat(user, SPAN_WARN("Not enough fuel!"))
+		to_chat(user, SPAN_WARNING("Not enough fuel!"))
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 
 	if(pressure_tank.air_contents.return_pressure() > 200)
 		pressure_tank.air_contents.remove_ratio(0.02*(pressure_for_shot/100))
 	else
-		to_chat(user, SPAN_WARN("Not enough pressure!"))
+		to_chat(user, SPAN_WARNING("Not enough pressure!"))
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 	return TRUE
