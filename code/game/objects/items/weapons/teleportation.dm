@@ -144,7 +144,6 @@ Frequency:
 	var/list/possible_ids = list(1, 2, 3)
 	var/list/beacon_locations = list()
 	var/obj/item/weapon/cell/vcell
-	var/list/vortex_manipulators = list()
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
 	throw_speed = 3
@@ -322,14 +321,18 @@ Frequency:
 
 /obj/item/weapon/vortex_manipulator/Initialize()
 	. = ..()
-	vortex_manipulators += src
+	GLOB.vortex_manipulators += src
+
+/obj/item/weapon/vortex_manipulator/Destroy()
+	. = ..()
+	GLOB.vortex_manipulators = -src
 
 /obj/item/weapon/vortex_manipulator/proc/self_activate(mob/living/carbon/human/user)
 	if(!active)
 		to_chat(user, SPAN_NOTICE("You attempt to activate Vortex Manipulator"))
 		unique_id = rand(0000, 9999)
 		active = 1
-		log_game("[user] has activated Vortex Manipulator [unique_id]!")
+		log_and_message_admins("[key_name(user)] has activated Vortex Manipulator [unique_id]!")
 		to_chat(user, SPAN_NOTICE("You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]"))
 		return
 	else
@@ -472,7 +475,7 @@ Frequency:
 
 /obj/item/weapon/vortex_manipulator/proc/vortexannounce(mob/user, nonactive_announce = 0)
 	var/input = sanitize(input(user, "Enter what you want to announce"))
-	for(var/obj/item/weapon/vortex_manipulator/VM in vortex_manipulators)
+	for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
 		var/H = VM.get_owner()
 		if (ishuman(H) && (VM.active || nonactive_announce))
 			to_chat(H, SPAN_DANGER("Your Vortex Manipulator suddenly announces with voice of [user]: [input]"))
