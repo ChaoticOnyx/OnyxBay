@@ -332,7 +332,7 @@ Frequency:
 		to_chat(user, SPAN_NOTICE("You attempt to activate Vortex Manipulator"))
 		unique_id = rand(0000, 9999)
 		active = 1
-		log_and_message_admins("[key_name(user)] has activated Vortex Manipulator [unique_id]!")
+		log_and_message_admins("has activated Vortex Manipulator [unique_id]!")
 		to_chat(user, SPAN_NOTICE("You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]"))
 		return
 	else
@@ -452,7 +452,7 @@ Frequency:
  * User returns to his position after everyone's been teleported.
  */
 /obj/item/weapon/vortex_manipulator/proc/localmassiverandom(mob/user)
-	log_game("[user] has used Vortex Manipulator's Local Massive Random ability.")
+	log_and_message_admins("has used Vortex Manipulator's Local Massive Random ability.")
 	user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Battle function activated. Assembling local space-time anomaly."))
 	var/turf/temp_turf = get_turf(user)
 	for(var/mob/M in range(5, temp_turf))
