@@ -115,6 +115,10 @@ area/space/atmosalert()
 /area/hallway
 	name = "hallway"
 
+/area/hallway/Initialize()
+	. = ..()
+	GLOB.hallway += src
+
 /area/medical
 	ambience = list("global_ambient", "science_ambient")
 
