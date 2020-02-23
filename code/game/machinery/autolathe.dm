@@ -270,7 +270,6 @@
 			S.update_icon()
 
 	updateUsrDialog()
-		interact(user)
 
 /obj/machinery/autolathe/update_icon()
 	icon_state = (panel_open ? "autolathe_t" : "autolathe")
