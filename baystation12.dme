@@ -717,6 +717,7 @@
 #include "code\game\objects\explosion.dm"
 #include "code\game\objects\explosion_recursive.dm"
 #include "code\game\objects\items.dm"
+#include "code\game\objects\noose.dm"
 #include "code\game\objects\objs.dm"
 #include "code\game\objects\structures.dm"
 #include "code\game\objects\topic.dm"
