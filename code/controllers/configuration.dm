@@ -196,8 +196,6 @@ var/list/gamemode_cache = list()
 	// 15, 45, 70 minutes respectively
 	var/list/event_delay_upper = list(EVENT_LEVEL_MUNDANE = 9000,	EVENT_LEVEL_MODERATE = 27000,	EVENT_LEVEL_MAJOR = 42000)
 
-	var/roundstart_events = FALSE			// Allow roundstart events to appear. See eof.md
-
 	var/aliens_allowed = 0
 	var/alien_eggs_allowed = 0
 	var/ninjas_allowed = 0
@@ -328,9 +326,6 @@ var/list/gamemode_cache = list()
 
 				if ("use_recursive_explosions")
 					use_recursive_explosions = 1
-
-				if ("roundstart_events")
-					roundstart_events = 1
 
 				if ("log_ooc")
 					config.log_ooc = 1
