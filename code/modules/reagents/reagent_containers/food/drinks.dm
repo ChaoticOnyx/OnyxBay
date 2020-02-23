@@ -113,7 +113,7 @@
 	set name = "Drink Down"
 
 	var/mob/living/carbon/C = usr
-	if(!ishuman(C))
+	if(!iscarbon(C))
 		return
 
 	if(!istype(C.get_active_hand(), src))
