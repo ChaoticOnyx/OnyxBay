@@ -148,7 +148,7 @@
 		if(!ishuman(usr))
 			return
 		var/mob/living/carbon/human/H = usr
-		if(H.handcuffed)
+		if(H.restrained())
 			return
 		if(buckled_mob)
 			visible_message(SPAN_WARN("[buckled_mob] falls down as [usr] collapses \the [src.name]!"))
