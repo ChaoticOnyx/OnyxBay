@@ -172,6 +172,10 @@
 		if(locate(/obj/structure/lattice, location_override) || locate(/obj/structure/catwalk, location_override))
 			return FALSE
 
+		// Makes mobs don't fall except items
+		if(ismob(src) && locate(/obj/structure/ladder, location_override))
+			return FALSE
+
 		var/turf/below = GetBelow(location_override)
 		for(var/atom/A in below)
 			if(!A.CanPass(src, location_override))

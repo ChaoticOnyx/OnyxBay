@@ -14,6 +14,7 @@
 	var/allowed_directions = DOWN
 	var/obj/structure/ladder/target_up
 	var/obj/structure/ladder/target_down
+	var/base_icon = "ladder"
 
 	var/const/climb_time = 2 SECONDS
 	var/static/list/climbsounds = list('sound/effects/ladder.ogg','sound/effects/ladder2.ogg','sound/effects/ladder3.ogg','sound/effects/ladder4.ogg')
@@ -26,7 +27,9 @@
 			if(L.allowed_directions & UP)
 				target_down = L
 				L.target_up = src
-				return
+				L.update_icon()
+				break
+
 	update_icon()
 
 /obj/structure/ladder/Destroy()
@@ -137,6 +140,13 @@
 
 /obj/structure/ladder/proc/climbLadder(mob/M, target_ladder)
 	var/turf/T = get_turf(target_ladder)
+	var/turf/LAD = get_turf(src)
+	var/direction = UP
+	if(istype(target_ladder, target_down))
+		direction = DOWN
+	if(!LAD.CanZPass(M, direction))
+		to_chat(M, "<span class='notice'>\The [T] is blocking \the [src].</span>")
+		return FALSE
 	for(var/atom/A in T)
 		if(!A.CanPass(M, M.loc, 1.5, 0))
 			to_chat(M, "<span class='notice'>\The [A] is blocking \the [src].</span>")
@@ -149,7 +159,7 @@
 	return airflow || !density
 
 /obj/structure/ladder/update_icon()
-	icon_state = "ladder[!!(allowed_directions & UP)][!!(allowed_directions & DOWN)]"
+	icon_state = "[base_icon][!!(allowed_directions & UP)][!!(allowed_directions & DOWN)]"
 
 /obj/structure/ladder/up
 	allowed_directions = UP
