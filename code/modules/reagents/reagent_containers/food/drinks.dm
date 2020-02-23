@@ -18,7 +18,7 @@
 /obj/item/weapon/reagent_containers/food/drinks/Initialize()
 	. = ..()
 	if(is_open_container())
-		verbs += .proc/drink_whole
+		verbs += .verb/drink_whole
 
 /obj/item/weapon/reagent_containers/food/drinks/on_reagent_change()
 	update_icon()
@@ -32,7 +32,7 @@
 	playsound(loc,'sound/effects/canopen.ogg', rand(10,50), 1)
 	to_chat(user, "<span class='notice'>You open \the [src] with an audible pop!</span>")
 	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
-	verbs += .proc/drink_whole
+	verbs += .verb/drink_whole
 
 /obj/item/weapon/reagent_containers/food/drinks/attack(mob/M as mob, mob/user as mob, def_zone)
 	if(force && !(item_flags & ITEM_FLAG_NO_BLUDGEON) && user.a_intent == I_HURT)
@@ -108,12 +108,11 @@
 		SetName(initial(name))
 		desc = initial(desc)
 
-/obj/item/weapon/reagent_containers/food/drinks/proc/drink_whole()
+/obj/item/weapon/reagent_containers/food/drinks/verb/drink_whole()
 	set category = "Object"
 	set name = "Drink Down"
-	set src in usr
 
-	var/mob/living/carbon/C = loc
+	var/mob/living/carbon/C = usr
 	if(!ishuman(C))
 		return
 
