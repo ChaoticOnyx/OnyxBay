@@ -60,7 +60,7 @@
 	if(call_state != CALL_RINGING)
 		return
 	var/mob/living/L = loc
-	if(isliving(loc) && L.client)
+	if(isliving(L) && L.client)
 		to_chat(loc, SPAN_WARNING("Something vibrates.."))
 		playsound(loc, 'sound/machines/twobeep.ogg', 75, 1)
 	addtimer(CALLBACK(src, .proc/ring), 50)
