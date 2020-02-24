@@ -81,7 +81,7 @@
 		call_state = CALL_CALLING
 		abonent = target
 		icon_state = "holopad_calling"
-		to_chat(user, "Calling [sanitize(abonent.getName(1))]")
+		to_chat(user, SPAN_NOTICE("Calling [sanitize(abonent.getName(1))]"))
 	else
 		to_chat(user, SPAN_WARNING("Remote device is busy"))
 
