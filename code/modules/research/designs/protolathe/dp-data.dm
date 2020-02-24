@@ -17,7 +17,7 @@
 	build_path = /obj/item/weapon/disk/tech_disk
 	sort_string = "AAAAB"
 
-datum/design/item/holopad
+/datum/design/item/holopad
 	name = "Holopad"
 	desc = "A holografic communication device."
 	id = "holopad_comm"
