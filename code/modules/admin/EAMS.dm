@@ -195,7 +195,7 @@ var/global/EAMS_errorsCounter = 0
 		return TRUE
 
 	if (eams_info.loaded)
-		if (eams_info.ip_countryCode in config.EAMSallowedCountries)
+		if ((eams_info.ip_countryCode in config.EAMSallowedCountries) && eams_info.ip_proxy == false)
 			return TRUE
 
 		// Bad IP and player isn't whitelisted.. so create a warning
