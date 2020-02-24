@@ -70,6 +70,7 @@
 #include "code\_global_vars\mobs.dm"
 #include "code\_global_vars\radio.dm"
 #include "code\_global_vars\sensitive.dm"
+#include "code\_global_vars\lists\areas.dm"
 #include "code\_global_vars\lists\flavor.dm"
 #include "code\_global_vars\lists\locations.dm"
 #include "code\_global_vars\lists\logs.dm"
