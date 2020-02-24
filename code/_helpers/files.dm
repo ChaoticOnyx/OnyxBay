@@ -59,13 +59,11 @@
 	return 0
 #undef FTPDELAY
 
-
-
-
 /*   Returns a list of all files (as file objects) in the directory path provided, as well as all files in any subdirectories, recursively!
     The list returned is flat, so all items can be accessed with a simple loop.
     This is designed to work with browse_rsc(), which doesn't currently support subdirectories in the browser cache.*/
 /proc/getallfiles(path, remove_folders = TRUE, recursion = TRUE)
+	set background = 1
 	. = list()
 	for(var/f in flist(path))
 		if(copytext("[f]", -1) == "/")

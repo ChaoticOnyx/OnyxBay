@@ -40,7 +40,7 @@ var/list/sounds_cache = list()
 	var/list/sounds = getallfiles("sound/music/")
 	sounds += sounds_cache
 
-	var/melody = input("Select a sound from the server to play", "Server sound list", "--CANCEL--") as null|anything in sounds
+	var/melody = input("Select a sound from the server to play", "Server sound list") as null|anything in sounds
 	if(!melody)
 		return
 
