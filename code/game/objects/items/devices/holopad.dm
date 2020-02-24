@@ -31,6 +31,7 @@
 	GLOB.listening_objects -= src
 	. = ..()
 
+
 /obj/item/device/holopad/verb/setID()
 	set name="Set ID"
 	set category = "Object"
@@ -52,7 +53,7 @@
 	abonent = caller
 	call_state = CALL_RINGING
 	icon_state = "holopad_ringing"
-	desc = "[initial(desc)] Incoming call from [caller.getName()]"
+	desc = "[initial(desc)] Incoming call from [caller.getName()]."
 	INVOKE_ASYNC(src, .proc/ring)
 	return TRUE
 
@@ -142,24 +143,25 @@
 			abonent.update_holo_pos()
 
 /obj/item/device/holopad/proc/update_holo_pos()
+	while(call_state == CALL_IN_CALL)
+		updatingPos = 1
+		if(isliving(loc))
+			var/mob/living/L = loc
+			hologram.dir = turn(L.dir,180)
+			hologram.loc = L.loc
+			hologram.pixel_x = ((L.dir&4)?32:((L.dir&8)?-32:0))
+			hologram.pixel_y = ((L.dir&1)?32:((L.dir&2)?-32:0))
+		else if(isturf(loc))
+			hologram.dir = 2
+			hologram.loc = loc
+			hologram.pixel_x = 0
+			hologram.pixel_y = 0
+		else
+			hangUp()
+		sleep(5)
+
 	if(call_state != CALL_IN_CALL)
 		updatingPos = 0
-		return
-	updatingPos = 1
-	if(isliving(loc))
-		var/mob/living/L = loc
-		hologram.dir = turn(L.dir,180)
-		hologram.loc = L.loc
-		hologram.pixel_x = ((L.dir&4)?32:((L.dir&8)?-32:0))
-		hologram.pixel_y = ((L.dir&1)?32:((L.dir&2)?-32:0))
-	else if(isturf(loc))
-		hologram.dir = 2
-		hologram.loc = loc
-		hologram.pixel_x = 0
-		hologram.pixel_y = 0
-	else
-		hangUp()
-	addtimer(CALLBACK(src, .proc/update_holo_pos), 2)
 
 
 /obj/item/device/holopad/attack_self(mob/user)
@@ -179,8 +181,12 @@
 
 /obj/item/device/holopad/proc/receive(speaking, mob/user)
 	var/list/listening = get_mobs_or_objects_in_view(3, src)
+
 	for(var/mob/observer/ghost/G in GLOB.ghost_mob_list)
+		if(get_dist(src, G) > world.view && G.get_preference_value(/datum/client_preference/ghost_ears) != GLOB.PREF_ALL_SPEECH)
+			continue
 		listening |= G
+
 	if(!user)
 		voice = "Holopad Background Voice"
 	for(var/mob/M in listening)
