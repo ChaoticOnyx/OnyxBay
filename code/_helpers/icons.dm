@@ -985,13 +985,13 @@ proc/generate_image(tx as num, ty as num, tz as num, range as num, cap_mode = CA
 	var/icon/composite = icon('icons/effects/effects.dmi', "icon_state"="nothing")
 	for(var/O in A.underlays)
 		var/image/I = O
-		composite.Blend(new/icon(I.icon, I.icon_state), ICON_OVERLAY)
+		composite.Blend(new /icon(I.icon, I.icon_state), ICON_OVERLAY)
 	var/icon/ico_omnidir = new(A.icon)
 	if(A.icon_state in ico_omnidir.IconStates())
-		composite.Blend(new/icon(ico_omnidir, A.icon_state), ICON_OVERLAY)
+		composite.Blend(new /icon(ico_omnidir, A.icon_state), ICON_OVERLAY)
 	else
-		composite.Blend(new/icon(ico_omnidir, null), ICON_OVERLAY)
+		composite.Blend(new /icon(ico_omnidir, null), ICON_OVERLAY)
 	for(var/O in A.overlays)
 		var/image/I = O
-		composite.Blend(new/icon(I.icon, I.icon_state), ICON_OVERLAY)
+		composite.Blend(new /icon(I.icon, I.icon_state), ICON_OVERLAY)
 	return composite
