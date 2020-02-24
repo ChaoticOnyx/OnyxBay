@@ -145,7 +145,13 @@
 /obj/structure/bed/chair/MouseDrop(over_object, src_location, over_location)
 	..()
 	if(foldable && (over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-		if(!ishuman(usr)) return
+		if(!ishuman(usr)) 
+			return
+
+		var/mob/living/carbon/human/H = usr
+		if(H.restrained())
+			return
+
 		fold(usr)
 
 /obj/structure/bed/chair/proc/fold(mob/user)

@@ -76,6 +76,11 @@ var/list/ventcrawl_machinery = list(
 		return carried_item.w_class <= ITEM_SIZE_NORMAL
 	return ..()
 
+/mob/living/simple_animal/mouse/is_allowed_vent_crawl_item(obj/item/carried_item)
+	if(carried_item == holding_item)
+		return TRUE
+	return ..()
+
 /mob/living/simple_animal/spiderbot/is_allowed_vent_crawl_item(obj/item/carried_item)
 	if(carried_item in list(held_item, radio, connected_ai, cell, camera, mmi))
 		return 1

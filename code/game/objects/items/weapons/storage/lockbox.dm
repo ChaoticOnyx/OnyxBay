@@ -65,7 +65,7 @@
 	add_fingerprint(user)
 
 	if(locked && (loc == user)) // lockbox onmob?
-		to_chat(usr, SPAN_WARN("[src] is locked and cannot be opened!"))
+		to_chat(usr, SPAN_WARNING("[src] is locked and cannot be opened!"))
 		return
 	else if(!locked && (loc == user))
 		open(usr)

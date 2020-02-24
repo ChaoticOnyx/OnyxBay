@@ -2,6 +2,7 @@
 	name = "mouse"
 	real_name = "mouse"
 	desc = "It's a small rodent."
+	icon = 'icons/mob/mouse.dmi'
 	icon_state = "mouse_gray"
 	item_state = "mouse_gray"
 	icon_living = "mouse_gray"
@@ -32,6 +33,7 @@
 	can_escape = 1
 	shy_animal = 1
 	controllable = TRUE
+	var/obj/item/holding_item = null
 
 	can_pull_size = ITEM_SIZE_TINY
 	can_pull_mobs = MOB_PULL_SAME
@@ -78,6 +80,22 @@
 	icon_dead = "mouse_[body_color]_dead"
 	desc = "It's a small [body_color] rodent, often seen hiding in maintenance areas and making a nuisance of itself."
 
+/mob/living/simple_animal/mouse/Destroy()
+	if(holding_item)
+		holding_item.dropInto(src)
+		holding_item = null
+	return ..()
+
+/mob/living/simple_animal/mouse/ex_act(severity)
+	if(holding_item && severity < 3)
+		QDEL_NULL(holding_item)
+	return ..()
+
+/mob/living/simple_animal/mouse/examine(mob/user)
+	. = ..()
+	if(holding_item)
+		to_chat(user, SPAN_NOTICE("You may notice that she has \a [holding_item] glued with tape."))
+
 /mob/living/simple_animal/mouse/proc/splat()
 	icon_dead = "mouse_[body_color]_splat"
 	adjustBruteLoss(maxHealth)  // Enough damage to kill
@@ -92,6 +110,39 @@
 		icon_state = "mouse_[body_color]"
 		set_panic_target(M)
 	..()
+
+/mob/living/simple_animal/mouse/attack_hand(mob/living/carbon/human/user)
+	if(holding_item && user.a_intent == I_HELP)
+		user.put_in_hands(holding_item)
+		user.visible_message(SPAN_NOTICE("[user] removes \the [holding_item] from \the [name]."),
+							SPAN_NOTICE("You remove \the [holding_item] from \the [name]."))
+		holding_item = null
+		playsound(loc, 'sound/effects/duct_tape_peeling_off.ogg', 50, 1)
+		update_icon()
+	else
+		return ..()
+
+/mob/living/simple_animal/mouse/attackby(obj/item/O, mob/user)
+	if(!holding_item && user.a_intent == I_HELP && istype(user.get_inactive_hand(), /obj/item/weapon/tape_roll) && O.w_class == ITEM_SIZE_TINY)
+		user.visible_message(SPAN_NOTICE("[user] is trying to attach \a [O] with duct tape to \the [name]."),
+							SPAN_NOTICE("You are trying to attach \a [O] with duct tape to \the [name]."))
+		if(do_after(user, 3 SECONDS, src))
+			if(holding_item)
+				return
+			holding_item = O
+			user.drop_item()
+			O.loc = src
+			user.visible_message(SPAN_NOTICE("[user] attaches \the [O] with duct tape to \the [name]."),
+								SPAN_NOTICE("You attach \the [O] with duct tape to \the [name]."))
+			playsound(loc, 'sound/effects/duct_tape.ogg', 50, 1)
+			update_icon()
+	else
+		return ..()
+
+/mob/living/simple_animal/mouse/update_icon()
+	overlays.Cut()
+	if(holding_item)
+		overlays += "holding_item[stat ? stat == DEAD ? "_dead" : "_lay" : ""]"
 
 /*
  * Mouse types

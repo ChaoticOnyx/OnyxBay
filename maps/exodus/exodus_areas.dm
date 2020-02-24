@@ -908,6 +908,14 @@
 	name = "\improper Port Primary Hallway"
 	icon_state = "hallP"
 
+/area/hallway/primary/seclobby
+	name = "\improper Security Lobby"
+	icon_state = "security"
+
+/area/hallway/primary/englobby
+	name = "\improper Engineering Foyer"
+	icon_state = "engineering_foyer"
+
 /area/hallway/primary/central_one
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC1"
@@ -1540,7 +1548,6 @@ area/rnd/test_area
 // Telecommunications Satellite
 
 /area/tcommsat
-	requires_power = 0
 	ambience = list("ai_ambient", "science_ambient")
 
 /area/tcommsat/entrance
