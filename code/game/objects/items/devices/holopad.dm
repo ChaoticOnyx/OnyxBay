@@ -17,7 +17,7 @@
 	var/call_state = CALL_NONE
 	var/obj/effect/hologram = null
 	var/updatingPos = 0
-	origin_tech = "programming=4;bluespace=2;magnets=4"
+	origin_tech = list(TECH_DATA = 4, TECH_BLUESPACE = 2, TECH_MAGNET = 4)
 
 /obj/item/device/holopad/Initialize()
 	uniq_id = random_id("holopad_device", 00000, 99999)
