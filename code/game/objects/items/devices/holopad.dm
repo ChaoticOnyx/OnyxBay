@@ -83,7 +83,7 @@
 		icon_state = "holopad_calling"
 		to_chat(user, "Calling [sanitize(abonent.getName(1))]")
 	else
-		to_chat(user, "Remote device is busy")
+		to_chat(user, SPAN_WARNING("Remote device is busy"))
 
 /obj/item/device/holopad/proc/acceptCall()
 	if(call_state == CALL_RINGING)
