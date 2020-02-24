@@ -13,14 +13,15 @@
 
 /datum/event/wormholes/start()
 	var/list/areas = area_repository.get_areas_by_z_level()
-	for(var/area/A in areas)
+	for(var/i in areas)
+		var/area/A = areas[i]
 		for(var/turf/simulated/floor/T in A)
 			if(isAdminLevel(T.z))
 				continue
 			if(turf_contains_dense_objects(T))
 				continue
 			pick_turfs += T
-
+			
 	for(var/i in 1 to number_of_wormholes)
 		var/turf/enter = pick(pick_turfs)
 		pick_turfs -= enter
