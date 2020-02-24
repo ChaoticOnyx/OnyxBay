@@ -57,13 +57,10 @@
 	return TRUE
 
 /obj/item/device/holopad/proc/ring()
-	if(call_state != CALL_RINGING)
-		return
-	var/mob/living/L = loc
-	if(isliving(L) && L.client)
-		to_chat(loc, SPAN_WARNING("Something vibrates.."))
+	while(call_state == CALL_RINGING)
+		visible_message(SPAN_WARNING("Something vibrates.."), range = 1)
 		playsound(loc, 'sound/machines/twobeep.ogg', 75, 1)
-	addtimer(CALLBACK(src, .proc/ring), 50)
+		sleep(3 SECONDS)
 
 /obj/item/device/holopad/proc/placeCall(mob/user)
 	var/list/Targets = list()
