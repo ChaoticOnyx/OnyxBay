@@ -324,8 +324,8 @@ Frequency:
 	GLOB.vortex_manipulators += src
 
 /obj/item/weapon/vortex_manipulator/Destroy()
-	. = ..()
-	GLOB.vortex_manipulators = -src
+	GLOB.vortex_manipulators -= src
+	return ..()
 
 /obj/item/weapon/vortex_manipulator/proc/self_activate(mob/living/carbon/human/user)
 	if(!active)
