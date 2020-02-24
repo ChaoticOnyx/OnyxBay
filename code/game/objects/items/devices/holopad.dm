@@ -20,16 +20,16 @@
 	origin_tech = "programming=4;bluespace=2;magnets=4"
 
 /obj/item/device/holopad/Initialize()
-	. = ..()
 	uniq_id = random_id("holopad_device", 00000, 99999)
 	id = rand(1000, 9999)
 	name = "[initial(name)] [id] #[uniq_id]"
 	voice = "Holopad [id]"
 	GLOB.listening_objects += src
+	. = ..()
 
 /obj/item/device/holopad/Destroy()
-	. = ..()
 	GLOB.listening_objects -= src
+	. = ..()
 
 /obj/item/device/holopad/verb/setID()
 	set name="Set ID"
