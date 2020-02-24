@@ -1548,7 +1548,6 @@ area/rnd/test_area
 // Telecommunications Satellite
 
 /area/tcommsat
-	requires_power = 0
 	ambience = list("ai_ambient", "science_ambient")
 
 /area/tcommsat/entrance

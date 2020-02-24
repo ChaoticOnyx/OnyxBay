@@ -514,11 +514,14 @@ var/list/solars_list = list()
 	track = 2 // Auto tracking mode
 
 /obj/machinery/power/solar_control/autostart/Initialize()
+	. = ..()
+	addtimer(CALLBACK(src, .proc/autoconnect), 0)
+
+/obj/machinery/power/solar_control/autostart/proc/autoconnect()
 	search_for_connected()
 	if(connected_tracker && track == 2)
 		connected_tracker.set_angle(GLOB.sun.angle)
 		set_panels(cdir)
-	. = ..()
 
 //
 // MISC
