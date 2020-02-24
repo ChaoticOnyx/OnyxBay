@@ -114,10 +114,6 @@ var/list/admin_verbs_sounds = list(
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
 	/client/proc/play_server_sound,
-	/client/proc/cuban_pete,
-	/client/proc/bananaphone,
-	/client/proc/space_asshole,
-	/client/proc/honk_theme,
 	)
 
 var/list/admin_verbs_fun = list(
@@ -926,9 +922,10 @@ var/list/admin_verbs_mentor = list(
 	set name = "Man Up Global"
 	set desc = "Tells everyone to man up and deal with it."
 
-	for (var/mob/T as mob in SSmobs.mob_list)
-		to_chat(T, "<br><center><span class='notice'><b><font size=4>Man up.<br> Deal with it.</font></b><br>Move on.</span></center><br>")
-		sound_to(T, 'sound/voice/ManUp1.ogg')
+	for(var/client/C in GLOB.clients)
+		to_chat(C, "<br><center><span class='notice'><b><font size=4>Man up.<br> Deal with it.</font></b><br>Move on.</span></center><br>")
+		if(C.get_preference_value(/datum/client_preference/play_admin_midis) == GLOB.PREF_YES)
+			sound_to(C, 'sound/voice/ManUp1.ogg')
 
 	log_and_message_admins("told everyone to man up and deal with it.")
 
@@ -960,6 +957,8 @@ var/list/admin_verbs_mentor = list(
 	set desc = "Access BYOND's proc performance profiler"
 
 	if(!check_rights(R_DEBUG))
+		return
+	if(alert(src, "This will lead to a huge lag, are you sure you want to enable profiler?", "Enable Profiler", "Yes", "No") == "No")
 		return
 
 	log_and_message_admins("has enabled performance profiler. This may cause lag.")
