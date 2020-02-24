@@ -127,7 +127,7 @@
 					G.activate(M)
 					update_inv_wear_mask()
 				else
-					to_chat(M, SPAN_WARN("The [G] is already primed! Run!"))
+					to_chat(M, SPAN_WARNING("The [G] is already primed! Run!"))
 				return
 
 			if(!istype(H))

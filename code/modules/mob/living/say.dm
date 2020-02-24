@@ -97,7 +97,7 @@ proc/get_radio_key_from_channel(channel)
 	var/message = rhtml_decode(message_data[1])
 	var/verb = message_data[2]
 
-		. = FALSE
+	. = FALSE
 
 	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
 		message = "[ruppertext(message)]!!!"

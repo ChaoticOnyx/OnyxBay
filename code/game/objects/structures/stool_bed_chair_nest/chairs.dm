@@ -145,9 +145,13 @@
 /obj/structure/bed/chair/MouseDrop(over_object, src_location, over_location)
 	..()
 	if(foldable && (over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-		if(!ishuman(usr))	return
+		if(!ishuman(usr))
+			return
+		var/mob/living/carbon/human/H = usr
+		if(H.restrained())
+			return
 		if(buckled_mob)
-			visible_message(SPAN_WARN("[buckled_mob] falls down as [usr] collapses \the [src.name]!"))
+			visible_message(SPAN_WARNING("[buckled_mob] falls down as [usr] collapses \the [src.name]!"))
 			var/mob/living/occupant = unbuckle_mob()
 			var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
 

@@ -13,6 +13,7 @@
 #define LIGHTING_POWER_FACTOR 5		//5W per luminosity * range
 
 #define LIGHTMODE_EMERGENCY "emergency_lighting"
+#define LIGHTMODE_EVACUATION "evacuation_lighting"
 #define LIGHTMODE_ALARM "alarm"
 #define LIGHTMODE_READY "ready"
 
@@ -278,6 +279,14 @@
 		if(current_mode == LIGHTMODE_EMERGENCY)
 			set_mode(null)
 			update_power_channel(initial(power_channel))
+		
+/obj/machinery/light/proc/set_evacuation_lighting(state)
+	if(state)
+		if(LIGHTMODE_EVACUATION in lightbulb.lighting_modes)
+			set_mode(LIGHTMODE_EVACUATION)
+	else
+		if(current_mode == LIGHTMODE_EVACUATION)
+			set_mode(null)
 
 /obj/machinery/light/proc/set_alert_lighting(state as num)
 	if(state)
@@ -569,6 +578,7 @@
 	brightness_color = "#fffee0"
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 4, l_power = 1, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_color = "#bf0000"),
 		LIGHTMODE_ALARM = list(l_color = "#ff3333")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
@@ -593,6 +603,7 @@
 	brightness_color = "#a0a080"
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 3, l_power = 1, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_color = "#bf0000"),
 		LIGHTMODE_ALARM = list(l_color = "#ff3333")
 		)
 

@@ -1464,6 +1464,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/obj/item/organ/external/affecting = T.get_organ(src.zone_sel.selecting)
 	if(!affecting)
 		to_chat(src, "<span class='warning'>They are missing that body part!</span>")
+		return
 
 	changeling.isabsorbing = 1
 	for(var/stage = 1, stage<=3, stage++)
@@ -1494,7 +1495,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	changeling.isabsorbing = 0
 	var/datum/antagonist/changeling/a = new
-	a.add_antagonist(T.mind, ignore_role = 1, do_not_equip = 1)
+	a.create_antagonist(T.mind)
 
 	to_chat(T, "<span class='danger'>We have become!</span>") //So pretentious!
 	T.mind.changeling.geneticpoints = 7
