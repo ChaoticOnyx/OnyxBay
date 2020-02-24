@@ -117,7 +117,7 @@
 		return
 
 	if(isliving(loc))
-		to_chat(loc, "Connection closed")
+		to_chat(loc, SPAN_WARNING("Connection closed"))
 
 	call_state = CALL_NONE
 	icon_state = initial(icon_state)
