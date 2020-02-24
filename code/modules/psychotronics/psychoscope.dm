@@ -563,7 +563,7 @@
 		Disable(user)
 
 		if (user)
-			to_chat(user, SPAN_WARN("No power!"))
+			to_chat(user, SPAN_WARNING("No power!"))
 
 		return
 
@@ -678,7 +678,7 @@
 			I.forceMove(src)
 			bcell = I
 		else
-			to_chat(user, SPAN_NOTE("Open the battery panel before."))
+			to_chat(user, SPAN_NOTICE("Open the battery panel before."))
 
 		return
 

@@ -151,7 +151,7 @@
 		if(H.restrained())
 			return
 		if(buckled_mob)
-			visible_message(SPAN_WARN("[buckled_mob] falls down as [usr] collapses \the [src.name]!"))
+			visible_message(SPAN_WARNING("[buckled_mob] falls down as [usr] collapses \the [src.name]!"))
 			var/mob/living/occupant = unbuckle_mob()
 			var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
 
