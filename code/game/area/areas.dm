@@ -209,7 +209,7 @@ var/list/mob/living/forced_ambiance_list = new
 	var/area/newarea = get_area(L.loc)
 	var/area/oldarea = L.lastarea
 	if(oldarea.has_gravity != newarea.has_gravity)
-		if(newarea.has_gravity == 1 && L.m_intent == "run") // Being ready when you change areas allows you to avoid falling.
+		if(newarea.has_gravity == 1)
 			thunk(L)
 		L.update_floating()
 
@@ -269,18 +269,8 @@ var/list/mob/living/forced_ambiance_list = new
 	if(istype(get_turf(mob), /turf/space)) // Can't fall onto nothing.
 		return
 
-	if(istype(mob,/mob/living/carbon/human/))
-		var/mob/living/carbon/human/H = mob
-		if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & ITEM_FLAG_NOSLIP))
-			return
-
-		if(H.m_intent == "run")
-			H.AdjustStunned(6)
-			H.AdjustWeakened(6)
-		else
-			H.AdjustStunned(3)
-			H.AdjustWeakened(3)
-		to_chat(mob, "<span class='notice'>The sudden appearance of gravity makes you fall to the floor!</span>")
+	if(istype(mob,/mob/living/))
+		to_chat(mob, SPAN_NOTICE("You feel the appearance of gravity as you land on the floor."))
 
 /area/proc/prison_break()
 	var/obj/machinery/power/apc/theAPC = get_apc()
