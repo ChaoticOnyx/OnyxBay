@@ -122,7 +122,7 @@
 
 	if(is_open_container())
 		if(!C.check_has_mouth())
-			to_chat(C, "How do you intend to drink \the [src]? You don't have a mouth!")
+			to_chat(C, SPAN_WARNING("How do you intend to drink \the [src]? You don't have a mouth!"))
 			return
 		var/obj/item/blocked = C.check_mouth_coverage()
 		if(blocked)
