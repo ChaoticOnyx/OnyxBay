@@ -71,7 +71,7 @@
 	var/grav_pulling = 0
 	// Time in ticks between delamination ('exploding') and exploding (as in the actual boom)
 	var/pull_time = 300
-	var/explosion_power = 27
+	var/explosion_power_modifier = 9
 
 	var/emergency_issued = 0
 
@@ -177,7 +177,7 @@
 	return SUPERMATTER_INACTIVE
 
 
-/obj/machinery/power/supermatter/proc/explode()
+/obj/machinery/power/supermatter/proc/explode(stored_power)
 	set waitfor = 0
 
 	if(exploded)
@@ -248,7 +248,10 @@
 			S.set_broken(TRUE)
 
 	// Effect 4: Medium scale explosion
-	explosion(TS, explosion_power/2, explosion_power, explosion_power * 2, explosion_power * 4, 1)
+	if(!stored_power)
+		stored_power = round(sqrt(power) * 0.1 * explosion_power_modifier)
+	stored_power = Clamp(stored_power, 1, 50)
+	explosion(TS, stored_power * 0.5, stored_power, stored_power * 2, stored_power * 4, 1)
 	qdel(src)
 
 //Changes color and luminosity of the light to these values if they were not already set
@@ -285,6 +288,8 @@
 		//Public alerts
 		if((damage > emergency_point) && !public_alert)
 			GLOB.global_announcer.autosay("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", "Supermatter Monitor")
+			if(power >= 1400)
+				GLOB.global_announcer.autosay("WARNING: AN EXTREMELY POWERFUL EXPLOSION EXPECTED!", "Supermatter Monitor")
 			public_alert = 1
 			for(var/mob/M in GLOB.player_list)
 				var/turf/T = get_turf(M)
@@ -309,7 +314,7 @@
 		if(!exploded)
 			if(!istype(L, /turf/space))
 				announce_warning()
-			explode()
+			explode(round(sqrt(power) * 0.1 * explosion_power_modifier))
 	else if(damage > warning_point) // while the core is still damaged and it's still worth noting its status
 		shift_light(5, warning_color)
 		if(damage > emergency_point)
@@ -537,7 +542,7 @@
 	gasefficency = 0.125
 
 	pull_time = 150
-	explosion_power = 3
+	explosion_power_modifier = 3
 
 /obj/machinery/power/supermatter/shard/announce_warning() //Shards don't get announcements
 	return
