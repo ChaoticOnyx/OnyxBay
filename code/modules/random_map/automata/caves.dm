@@ -146,4 +146,4 @@
 	game_log("ASGEN", "Spawned [count_goliath] goliaths (asteroid).")
 	game_log("ASGEN", "Spawned [count_shockzard] shockzards (asteroid).")
 	game_log("ASGEN", "Spawned [count_beholder] beholders (asteroid).")
-	log_world("Spawned [mobs_count] monsters (asteroid).")
+	log_to_dd("Spawned [mobs_count] monsters (asteroid).")

@@ -31,13 +31,15 @@ LINEN BINS
 	..()
 
 /obj/item/weapon/bedsheet/AltClick()
-	playsound(get_turf(loc), "searching_clothes", 15, 1, -5)
-	if(!folded)
-		folded = 1
-		icon_state = "sheet-folded"
-	else
-		folded = 0
-		icon_state = initial(icon_state)
+	if(src in oview(1))
+		playsound(get_turf(loc), "searching_clothes", 15, 1, -5)
+		if(!folded)
+			folded = 1
+			icon_state = "sheet-folded"
+		else
+			folded = 0
+			icon_state = initial(icon_state)
+	return
 
 /obj/item/weapon/bedsheet/blue
 	icon_state = "sheetblue"

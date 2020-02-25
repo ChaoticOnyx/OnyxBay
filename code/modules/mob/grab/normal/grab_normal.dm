@@ -410,7 +410,7 @@
 				to_chat(affecting, "<span class='warning'>You go blind!</span>")
 
 		var/obj/item/organ/external/E = affecting.get_organ(eyes.parent_organ)
-		E.take_damage(10)
+		E.take_external_damage(10)
 
 	user.visible_message("<span class='danger'>\The [user] stabs [affecting]'s eyes with \the [W]!</span>")
 	admin_attack_log(user, affecting, "Grab-stabbed the victim's eyes.", "Had their eyes grab-stabbed.", "stabbed the eyes, using a grab action, of")

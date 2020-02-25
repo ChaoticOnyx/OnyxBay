@@ -168,7 +168,7 @@
 
 	// focus most of the blast on one organ
 	var/obj/item/organ/external/take_blast = pick(organs)
-	take_blast.take_damage(b_loss * 0.7, f_loss * 0.7, used_weapon = "Explosive blast")
+	take_blast.take_external_damage(b_loss * 0.7, f_loss * 0.7, used_weapon = "Explosive blast")
 
 	// distribute the remaining 30% on all limbs equally (including the one already dealt damage)
 	b_loss *= 0.3
@@ -183,7 +183,7 @@
 			loss_val = 0.4
 		else
 			loss_val = 0.05
-		temp.take_damage(b_loss * loss_val, f_loss * loss_val, used_weapon = weapon_message)
+		temp.take_external_damage(b_loss * loss_val, f_loss * loss_val, used_weapon = weapon_message)
 
 /mob/living/carbon/human/blob_act(destroy = 0, obj/effect/blob/source = null)
 	if (is_dead())
@@ -977,7 +977,7 @@
 				else if(prob(5))
 					jossle_internal_object(groin,O)
 
-/mob/living/carbon/human/proc/jossle_internal_object(obj/item/organ/organ, obj/item/O)
+/mob/living/carbon/human/proc/jossle_internal_object(obj/item/organ/external/organ, obj/item/O)
 	// All kinds of embedded objects cause bleeding.
 	if(!can_feel_pain())
 		to_chat(src, "<span class='warning'>You feel [O] moving inside your [organ.name].</span>")
@@ -988,7 +988,7 @@
 			"<span class='warning'>Your movement jostles [O] in your [organ.name] painfully.</span>")
 		custom_pain(msg,40,affecting = organ)
 
-	organ.take_damage(rand(1,3), 0, 0)
+	organ.take_external_damage(rand(1,3), 0, 0)
 	if(!BP_IS_ROBOTIC(organ) && (should_have_organ(BP_HEART))) //There is no blood in protheses.
 		organ.status |= ORGAN_BLEEDING
 		src.adjustToxLoss(rand(1,3))

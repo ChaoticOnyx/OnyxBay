@@ -120,7 +120,10 @@
 /obj/item/organ/internal/proc/is_bruised()
 	return damage >= min_bruised_damage
 
-/obj/item/organ/internal/take_damage(amount, silent=0)
+/obj/item/organ/internal/take_general_damage(amount, silent = FALSE)
+	take_internal_damage(amount, silent)
+
+/obj/item/organ/internal/proc/take_internal_damage(amount, silent = FALSE)
 	if(BP_IS_ROBOTIC(src))
 		damage = between(0, src.damage + (amount * 0.8), max_damage)
 	else
@@ -142,8 +145,8 @@
 		return
 	switch (severity)
 		if (1)
-			take_damage(9)
+			take_internal_damage(9)
 		if (2)
-			take_damage(3)
+			take_internal_damage(3)
 		if (3)
-			take_damage(1)
+			take_internal_damage(1)

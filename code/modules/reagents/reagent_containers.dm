@@ -8,6 +8,7 @@
 	var/possible_transfer_amounts = "5;10;15;25;30"
 	var/volume = 30
 	var/label_text
+	var/can_be_splashed = FALSE
 
 /obj/item/weapon/reagent_containers/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
@@ -27,7 +28,13 @@
 	return
 
 /obj/item/weapon/reagent_containers/afterattack(obj/target, mob/user, flag)
-	return
+	if(can_be_splashed && user.a_intent == I_HURT)
+		if(standard_splash_mob(user,target))
+			return
+		if(reagents && reagents.total_volume)
+			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [target].")) //They are on harm intent, aka wanting to spill it.
+			reagents.splash(target, reagents.total_volume)
+			return
 
 /obj/item/weapon/reagent_containers/proc/reagentlist() // For attack logs
 	if(reagents)

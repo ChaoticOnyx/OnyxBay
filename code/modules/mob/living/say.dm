@@ -89,7 +89,7 @@ proc/get_radio_key_from_channel(channel)
 	return default_language
 
 /mob/proc/is_muzzled()
-	return istype(wear_mask, /obj/item/clothing/mask/muzzle)
+	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/weapon/grenade)))
 
 //Takes a list of the form list(message, verb, whispering) and modifies it as needed
 //Returns 1 if a speech problem was applied, 0 otherwise
@@ -97,7 +97,7 @@ proc/get_radio_key_from_channel(channel)
 	var/message = rhtml_decode(message_data[1])
 	var/verb = message_data[2]
 
-		. = FALSE
+	. = FALSE
 
 	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
 		message = "[ruppertext(message)]!!!"
