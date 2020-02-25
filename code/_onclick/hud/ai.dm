@@ -5,8 +5,8 @@ var/obj/screen/ai
 
 /datum/hud/ai/FinalizeInstantiation()
 
-	src.adding = list()
-	src.other = list()
+	adding = list()
+	other = list()
 
 	var/obj/screen/using
 
@@ -18,7 +18,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "ai_core"
 	using.screen_loc = ui_ai_core
-	src.adding += using
+	adding += using
 
 //AI Core Display
 
@@ -28,7 +28,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "set_ai_core_display"
 	using.screen_loc = ui_ai_core_display
-	src.adding += using
+	adding += using
 
 //AI Core Display
 
@@ -38,7 +38,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "set_ai_core_display"
 	using.screen_loc = ui_ai_core_display
-	src.adding += using
+	adding += using
 
 //AI Status
 
@@ -48,7 +48,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "ai_status"
 	using.screen_loc = ui_ai_status
-	src.adding += using
+	adding += using
 
 //Change Hologram
 
@@ -58,7 +58,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "change_hologram"
 	using.screen_loc = ui_ai_change_hologram
-	src.adding += using
+	adding += using
 
 //Camera list
 
@@ -68,7 +68,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "camera"
 	using.screen_loc = ui_ai_camera_list
-	src.adding += using
+	adding += using
 
 //Track
 
@@ -78,7 +78,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "track"
 	using.screen_loc = ui_ai_track_with_camera
-	src.adding += using
+	adding += using
 
 
 //Camera light
@@ -89,7 +89,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "camera_light"
 	using.screen_loc = ui_ai_camera_light
-	src.adding += using
+	adding += using
 
 //Crew Manifest
 
@@ -100,7 +100,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "manifest"
 	using.screen_loc = ui_ai_crew_manifest
-	src.adding += using
+	adding += using
 
 //Announcement
 
@@ -110,7 +110,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "announcement"
 	using.screen_loc = ui_ai_announcement
-	src.adding += using
+	adding += using
 
 //Shuttle
 
@@ -120,7 +120,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "call_shuttle"
 	using.screen_loc = ui_ai_shuttle
-	src.adding += using
+	adding += using
 
 //Laws
 
@@ -130,7 +130,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "state_laws"
 	using.screen_loc = ui_ai_state_laws
-	src.adding += using
+	adding += using
 
 //Medical/Security sensors
 
@@ -140,7 +140,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "ai_sensor"
 	using.screen_loc = ui_ai_sensor
-	src.adding += using
+	adding += using
 
 //Take Image
 
@@ -150,7 +150,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "take_picture"
 	using.screen_loc = ui_ai_take_picture
-	src.adding += using
+	adding += using
 
 //View Images
 
@@ -160,7 +160,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "view_images"
 	using.screen_loc = ui_ai_view_images
-	src.adding += using
+	adding += using
 
 //Delete Image
 
@@ -170,7 +170,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "del_images"
 	using.screen_loc = ui_ai_del_picture
-	src.adding += using
+	adding += using
 
 //Store Camera Location
 
@@ -180,7 +180,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "store_camera_location"
 	using.screen_loc = ui_ai_scl
-	src.adding += using
+	adding += using
 
 //Goto Camera Location
 
@@ -190,7 +190,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "goto_camera_location"
 	using.screen_loc = ui_ai_gcl
-	src.adding += using
+	adding += using
 
 //Delete Camera Location
 
@@ -200,7 +200,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "delete_camera_location"
 	using.screen_loc = ui_ai_dcl
-	src.adding += using
+	adding += using
 
 //PDA Ringer
 
@@ -210,7 +210,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "pda_ringer"
 	using.screen_loc = ui_ai_pda_ringer
-	src.adding += using
+	adding += using
 
 //PDA Send Message
 
@@ -220,7 +220,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "pda_send"
 	using.screen_loc = ui_ai_pda_send
-	src.adding += using
+	adding += using
 
 //PDA Log
 
@@ -230,7 +230,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "pda_log"
 	using.screen_loc = ui_ai_pda_log
-	src.adding += using
+	adding += using
 
 //PDA Toggle Sender/Receiver
 
@@ -240,7 +240,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "pda_receive"
 	using.screen_loc = ui_ai_pda_sr
-	src.adding += using
+	adding += using
 
 //Multitool Mode
 
@@ -250,7 +250,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "toggle_multitool_mode"
 	using.screen_loc = ui_ai_multitool
-	src.adding += using
+	adding += using
 
 //Shutdown
 
@@ -260,7 +260,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "shutdown"
 	using.screen_loc = ui_ai_shutdown
-	src.adding += using
+	adding += using
 
 //Power Override
 
@@ -270,7 +270,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "override"
 	using.screen_loc = ui_ai_override
-	src.adding += using
+	adding += using
 
 //Radio Settings
 
@@ -280,7 +280,7 @@ var/obj/screen/ai
 	using.icon = 'icons/mob/screen1_ai.dmi'
 	using.icon_state = "radio_settings"
 	using.screen_loc = ui_ai_radio
-	src.adding += using
+	adding += using
 
 	mymob.client.screen = list()
-	mymob.client.screen += src.adding + src.other
+	mymob.client.screen += adding + other

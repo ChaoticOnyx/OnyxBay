@@ -246,7 +246,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 
 //AI verb and proc for sending PDA messages.
-/obj/item/device/pda/ai/verb/cmd_send_pdamesg()
+/obj/item/device/pda/ai/proc/cmd_send_pdamesg()
 	set src in usr
 	if(usr.stat == 2)
 		to_chat(usr, "You can't send PDA messages because you are dead!")
@@ -260,7 +260,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		create_message(usr, selected, 0)
 
 
-/obj/item/device/pda/ai/verb/cmd_toggle_pda_receiver()
+/obj/item/device/pda/ai/proc/cmd_toggle_pda_receiver()
 	set src in usr
 	if(usr.stat == 2)
 		to_chat(usr, "You can't do that because you are dead!")
@@ -269,7 +269,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	to_chat(usr, "<span class='notice'>PDA sender/receiver toggled [(toff ? "Off" : "On")]!</span>")
 
 
-/obj/item/device/pda/ai/verb/cmd_toggle_pda_silent()
+/obj/item/device/pda/ai/proc/cmd_toggle_pda_silent()
 	set src in usr
 	if(usr.stat == 2)
 		to_chat(usr, "You can't do that because you are dead!")
@@ -278,7 +278,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	to_chat(usr, "<span class='notice'>PDA ringer toggled [(message_silent ? "Off" : "On")]!</span>")
 
 
-/obj/item/device/pda/ai/verb/cmd_show_message_log()
+/obj/item/device/pda/ai/proc/cmd_show_message_log()
 	set src in usr
 	if(usr.stat == 2)
 		to_chat(usr, "You can't do that because you are dead!")

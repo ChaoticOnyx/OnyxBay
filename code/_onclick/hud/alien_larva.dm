@@ -3,8 +3,8 @@
 
 /datum/hud/larva/FinalizeInstantiation()
 
-	src.adding = list()
-	src.other = list()
+	adding = list()
+	other = list()
 
 	var/obj/screen/using
 
@@ -14,7 +14,7 @@
 	using.icon = 'icons/mob/screen1_alien.dmi'
 	using.icon_state = (mymob.m_intent == "run" ? "running" : "walking")
 	using.screen_loc = ui_acti
-	src.adding += using
+	adding += using
 	move_intent = using
 
 	mymob.healths = new /obj/screen()
@@ -31,4 +31,4 @@
 
 	mymob.client.screen = list()
 	mymob.client.screen += list( mymob.healths, mymob.fire)
-	mymob.client.screen += src.adding + src.other
+	mymob.client.screen += adding + other
