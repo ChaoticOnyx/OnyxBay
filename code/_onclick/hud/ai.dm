@@ -30,16 +30,6 @@ var/obj/screen/ai
 	using.screen_loc = ui_ai_core_display
 	adding += using
 
-//AI Core Display
-
-	using = new /obj/screen()
-	using.SetName("Set AI Core Display")
-	using.set_dir(SOUTHWEST)
-	using.icon = 'icons/mob/screen1_ai.dmi'
-	using.icon_state = "set_ai_core_display"
-	using.screen_loc = ui_ai_core_display
-	adding += using
-
 //AI Status
 
 	using = new /obj/screen()
