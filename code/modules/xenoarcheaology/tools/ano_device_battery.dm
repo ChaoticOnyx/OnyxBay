@@ -7,9 +7,6 @@
 	var/stored_charge = 0
 	var/effect_id = ""
 
-/obj/item/weapon/anobattery/New()
-	battery_effect = new()
-
 /obj/item/weapon/anobattery/proc/UpdateSprite()
 	var/p = (stored_charge/capacity)*100
 	p = min(p, 100)
@@ -36,7 +33,7 @@
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
-/obj/item/weapon/anodevice/attackby(obj/I as obj, mob/user as mob)
+/obj/item/weapon/anodevice/attackby(obj/I, mob/user)
 	if(istype(I, /obj/item/weapon/anobattery))
 		if(!inserted_battery)
 			to_chat(user, "<span class='notice'>You insert the battery.</span>")
@@ -47,8 +44,8 @@
 	else
 		return ..()
 
-/obj/item/weapon/anodevice/attack_self(mob/user as mob)
-	return src.interact(user)
+/obj/item/weapon/anodevice/attack_self(mob/user)
+	return interact(user)
 
 /obj/item/weapon/anodevice/interact(mob/user)
 	var/dat = "<b>Anomalous Materials Energy Utiliser</b><br>"
@@ -56,7 +53,7 @@
 		if(activated)
 			dat += "Device active.<br>"
 
-		dat += "[inserted_battery] inserted, anomaly ID: [inserted_battery.battery_effect.artifact_id ? inserted_battery.battery_effect.artifact_id : "NA"]<BR>"
+		dat += "[inserted_battery] inserted, anomaly ID: [(inserted_battery.battery_effect?.artifact_id) ? inserted_battery.battery_effect.artifact_id : "NA"]<BR>"
 		dat += "<b>Charge:</b> [inserted_battery.stored_charge] / [inserted_battery.capacity]<BR>"
 		dat += "<b>Time left activated:</b> [round(max((time_end - last_process) / 10, 0))]<BR>"
 		if(activated)
@@ -93,8 +90,8 @@
 
 			//if someone is holding the device, do the effect on them
 			var/mob/holder
-			if(ismob(src.loc))
-				holder = src.loc
+			if(ismob(loc))
+				holder = loc
 
 			//handle charge
 			if(world.time - last_activation > interval)
@@ -104,7 +101,7 @@
 						if(holder)
 							to_chat(holder, "The \icon[src] [src] held by [holder] shudders in your grasp.")
 						else
-							src.loc.visible_message("The \icon[src] [src] shudders.")
+							loc.visible_message("The \icon[src] [src] shudders.")
 						inserted_battery.battery_effect.DoEffectTouch(holder)
 
 						//consume power
@@ -130,13 +127,13 @@
 
 			//work out if we need to shutdown
 			if(inserted_battery.stored_charge <= 0)
-				src.loc.visible_message("<span class='notice'>\icon[src] [src] buzzes.</span>", "<span class='notice'>\icon[src] You hear something buzz.</span>")
+				loc.visible_message("<span class='notice'>\icon[src] [src] buzzes.</span>", "<span class='notice'>\icon[src] You hear something buzz.</span>")
 				shutdown_emission()
 			else if(world.time > time_end)
-				src.loc.visible_message("<span class='notice'>\icon[src] [src] chimes.</span>", "<span class='notice'>\icon[src] You hear something chime.</span>")
+				loc.visible_message("<span class='notice'>\icon[src] [src] chimes.</span>", "<span class='notice'>\icon[src] You hear something chime.</span>")
 				shutdown_emission()
 		else
-			src.visible_message("<span class='notice'>\icon[src] [src] buzzes.</span>", "<span class='notice'>\icon[src] You hear something buzz.</span>")
+			visible_message("<span class='notice'>\icon[src] [src] buzzes.</span>", "<span class='notice'>\icon[src] You hear something buzz.</span>")
 			shutdown_emission()
 		last_process = world.time
 
@@ -147,7 +144,7 @@
 			inserted_battery.battery_effect.ToggleActivate(1)
 
 /obj/item/weapon/anodevice/Topic(user, href_list, state = GLOB.inventory_state)
-	..()
+	. = ..(user, href_list, state = GLOB.inventory_state)
 
 /obj/item/weapon/anodevice/OnTopic(user, href_list)
 	if(href_list["changetime"])
@@ -166,7 +163,7 @@
 	else if(href_list["startup"])
 		if(inserted_battery && inserted_battery.battery_effect && (inserted_battery.stored_charge > 0) )
 			activated = 1
-			src.visible_message("<span class='notice'>\icon[src] [src] whirrs.</span>", "<span class='notice'>\icon[src] You hear something whirr.</span>")
+			visible_message("<span class='notice'>\icon[src] [src] whirrs.</span>", "<span class='notice'>\icon[src] You hear something whirr.</span>")
 			if(!inserted_battery.battery_effect.activated)
 				inserted_battery.battery_effect.ToggleActivate(1)
 			time_end = world.time + duration
@@ -180,6 +177,8 @@
 		inserted_battery = null
 		UpdateSprite()
 		. = TOPIC_REFRESH
+	if(href_list["refresh"])
+		interact(user)
 	if(href_list["close"])
 		close_browser(user, "window=anodevice")
 		. = TOPIC_HANDLED
@@ -199,7 +198,7 @@
 	STOP_PROCESSING(SSobj, src)
 	..()
 
-/obj/item/weapon/anodevice/attack(mob/living/M as mob, mob/living/user as mob, def_zone)
+/obj/item/weapon/anodevice/attack(mob/living/M, mob/living/user, def_zone)
 	if (!istype(M))
 		return
 
