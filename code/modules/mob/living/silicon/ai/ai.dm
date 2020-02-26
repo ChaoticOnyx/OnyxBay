@@ -4,7 +4,6 @@
 var/list/ai_list = list()
 var/list/ai_verbs_default = list(
 	/mob/living/silicon/ai/proc/ai_emergency_message,
-	/mob/living/silicon/ai/proc/ai_network_change,
 	/mob/living/silicon/ai/proc/toggle_acceleration,
 	/mob/living/silicon/ai/proc/toggle_hologram_movement
 )
