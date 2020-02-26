@@ -77,6 +77,12 @@ var/list/_client_preferences_by_type
 /datum/client_preference/proc/changed(mob/preference_mob, new_value)
 	return
 
+/datum/client_preference/proc/get_options(client/given_client)
+	return options
+
+/datum/client_preference/proc/get_default_value(client/given_client)
+	return default_value
+
 /*********************
 * Player Preferences *
 *********************/
@@ -245,6 +251,22 @@ var/list/_client_preferences_by_type
 	key = "SHOW_CREDITS"
 	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 	default_value = GLOB.PREF_NO
+
+/datum/client_preference/ooc_name_color
+	description = "OOC Name Color"
+	key = "OOC_NAME_COLOR"
+
+/datum/client_preference/staff/may_set(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info && given_client.donator_info.patron_type != PATREON_NONE
+
+/datum/client_preference/ooc_name_color/get_options(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info.get_available_ooc_patreon_tiers()
+
+/datum/client_preference/ooc_name_color/get_default_value(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info.patron_type
 
 /********************
 * General Staff Preferences *
