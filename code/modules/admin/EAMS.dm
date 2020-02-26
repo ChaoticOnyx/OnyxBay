@@ -135,7 +135,7 @@ var/global/EAMS_next_check_time = 0
 	if (!address || address == "127.0.0.1") // host
 		return
 	
-	if(EAMS_last_check_time > world.time)
+	if(EAMS_next_check_time > world.time)
 		sleep(EAMS_next_check_time - world.time)
 
 	var/list/response
@@ -148,6 +148,10 @@ var/global/EAMS_next_check_time = 0
 			EAMS_errorsCounter += 1
 			sleep(2) // If error occured, let's wait while it will be fixed ;)
 			continue
+
+		if(text2num(http["STATUS"]) != 200)
+			log_and_message_admins("EAMS cold not check [key] due request status error. EAMS will not be disabled! Status: [http["STATUS"]]")
+			return TRUE
 
 		if(text2num(http["X-Rl"]) == 0)
 			EAMS_next_check_time = world.time + text2num(http["X-Ttl"])
