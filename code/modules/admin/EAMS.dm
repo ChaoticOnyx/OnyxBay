@@ -1,9 +1,12 @@
-// Epic Anti-Multiaccount System
+// Epic(us) Anti-Multiaccount System
 
 /datum/configuration/var/EAMSallowedCountries = list("RU", "AM", "AZ", "BY", "KZ", "KG", "MB", "TI", "UZ", "UA", "TM")
 /datum/configuration/var/EAMSacceptableCountOfErrors = 5
 
 var/global/EAMS_errorsCounter = 0
+var/global/EAMS_req_left = 1
+var/global/EAMS_req_time_left = 0
+var/global/EAMS_last_check_time = 0
 
 /datum/eams_info
 	var/loaded 			= FALSE
@@ -134,6 +137,8 @@ var/global/EAMS_errorsCounter = 0
 	if (!address || address == "127.0.0.1") // host
 		return
 	
+	sleep(EAMS_last_check_time + EAMS_req_time_left - world.time)
+
 	var/list/response
 
 	while (config.eams && EAMS_errorsCounter < config.EAMSacceptableCountOfErrors)
@@ -144,6 +149,10 @@ var/global/EAMS_errorsCounter = 0
 			EAMS_errorsCounter += 1
 			sleep(2) // If error occured, let's wait while it will be fixed ;)
 			continue
+
+		EAMS_req_left			= http["X-Rl"]
+		EAMS_req_time_left		= http["X-Ttl"]
+		EAMS_last_check_time 	= world.time
 
 		try
 			response = json_decode(file2text(http["CONTENT"]))
@@ -203,7 +212,7 @@ var/global/EAMS_errorsCounter = 0
 			eams_info.ip_country = "unknown"
 
 		to_chat(usr, "<span class='warning'>You were blocked by EAMS! Please, contact Administrators.</span>")
-		log_and_message_admins("Failed join the game: [key] ([address]) connected from [eams_info.ip_country] ([eams_info.ip_countryCode])", 0)
+		log_and_message_admins("Failed join the game: [key] ([address]) connected from [eams_info.ip_country] ([eams_info.ip_countryCode]) [eams_info.ip_proxy] ? with proxy! : without proxy.", 0)
 
 		return FALSE
 
