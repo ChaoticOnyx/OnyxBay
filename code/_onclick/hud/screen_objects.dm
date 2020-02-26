@@ -421,6 +421,8 @@
 		if("Show Camera List")
 			if(isAI(usr))
 				var/mob/living/silicon/ai/AI = usr
+				var/network = input(AI, "Chooce which network you want to view", "Networks") as null|anything in AI.get_camera_network_list()
+				AI.ai_network_change(network)
 				var/camera = input(AI, "Choose which camera you want to view", "Cameras") as null|anything in AI.get_camera_list()
 				AI.ai_camera_list(camera)
 
