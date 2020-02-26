@@ -101,6 +101,10 @@
 
 #define isovermind(A) istype(A, /mob/blob)
 
+#define ismech(A) istype(A, /obj/mecha)
+
+#define iseffect(A) istype(A, /obj/effect)
+
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 
 #define random_id(key,min_id,max_id) uniqueness_repository.Generate(/datum/uniqueness_generator/id_random, key, min_id, max_id)

@@ -122,9 +122,6 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 	instability = 20
 
 /decl/fusion_reaction/phoron_supermatter/handle_reaction_special(obj/effect/fusion_em_field/holder)
-
-	wormhole_event()
-
 	var/turf/origin = get_turf(holder)
 	holder.Rupture()
 	qdel(holder)

@@ -21,7 +21,7 @@
 
 
 /decl/teleport/proc/can_teleport(atom/movable/target, atom/destination)
-	if(!destination || !target || !target.loc || destination.z > max_default_z_level())
+	if(!destination || !target || !target.loc)
 		return 0
 
 	if(istype(target, /obj/mecha))
