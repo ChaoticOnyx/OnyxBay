@@ -25,8 +25,8 @@
 	var/manufacturer = null
 	var/sync_message = ""
 
-/obj/machinery/mecha_part_fabricator/New()
-	..()
+/obj/machinery/mecha_part_fabricator/Initialize()
+	. = ..()
 
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/mechfab(src)
@@ -37,13 +37,10 @@
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
 	RefreshParts()
 
-	files = new /datum/research(src) //Setup the research data holder.
-	return
-
-/obj/machinery/mecha_part_fabricator/Initialize()
 	manufacturer = basic_robolimb.company
 	update_categories()
-	. = ..()
+
+	files = new /datum/research(src) //Setup the research data holder.
 
 /obj/machinery/mecha_part_fabricator/Process()
 	..()
@@ -286,10 +283,11 @@
 
 /obj/machinery/mecha_part_fabricator/proc/update_categories()
 	categories = list()
-	for(var/datum/design/D in files.known_designs)
-		if(!D.build_path || !(D.build_type & MECHFAB))
-			continue
-		categories |= D.category
+	if(files)
+		for(var/datum/design/D in files.known_designs)
+			if(!D.build_path || !(D.build_type & MECHFAB))
+				continue
+			categories |= D.category
 	if(!category || !(category in categories))
 		category = categories[1]
 
