@@ -297,7 +297,7 @@
 		fit_viewport()
 
 	if(isnewplayer(mob) && byond_version > MAX_CLIENT_VERSION)
-		alert(src,"Hello! You connect with unstable version of BYOND. Please downgrade your byond version to stable v[MAX_CLIENT_VERSION], otherwise other players will not be able to see what you speak.","Your BYOND version is unstable","Ok")
+		alert(src,"Hello! You connect with unstable version of BYOND. Please downgrade your client to stable v[MAX_CLIENT_VERSION], otherwise other players will not be able to see what you speak.","Your BYOND version is unstable","Ok")
 
 /client/MouseEntered(atom/object, location, control, params)
 	if (tooltip)
