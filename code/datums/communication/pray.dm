@@ -6,6 +6,7 @@
 	mute_setting = MUTE_PRAY
 
 /decl/communication_channel/pray/do_communicate(mob/communicator, message, speech_method_type)
+	message = emoji_parse(communicator.get_client(), message)
 	var/image/cross = image('icons/obj/storage.dmi',"bible")
 	for(var/m in GLOB.player_list)
 		var/mob/M = m

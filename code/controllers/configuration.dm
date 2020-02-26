@@ -208,6 +208,8 @@ var/list/gamemode_cache = list()
 	var/dsay_allowed = 1
 	var/aooc_allowed = 1
 
+	var/emojis = 1
+
 	var/starlight = 0	// Whether space turfs have ambient light or not
 
 	var/list/ert_species = list(SPECIES_HUMAN)
@@ -500,6 +502,9 @@ var/list/gamemode_cache = list()
 
 				if ("disable_aooc")
 					config.aooc_allowed = 0
+
+				if ("disable_emojis")
+					config.emojis = 0
 
 				if ("disable_entry")
 					config.enter_allowed = 0
