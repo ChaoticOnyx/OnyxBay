@@ -52,7 +52,7 @@
 		"precise" = 0
 		)
 
-/obj/item/device/floor_painter/resolve_attackby(atom/A, mob/user, proximity, params)
+/obj/item/device/floor_painter/afterattack(atom/A, mob/user, proximity, params)
 	if(!proximity)
 		return
 	add_fingerprint(user)
