@@ -4,6 +4,7 @@
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
 #define MIN_CLIENT_VERSION	512		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
 									//I would just like the code ready should it ever need to be used.
+#define MAX_CLIENT_VERSION	512		//please don't use byond with broken unicode until it fixed ʘ‿ʘ
 
 #define LIMITER_SIZE	5
 #define CURRENT_SECOND	1
@@ -295,6 +296,9 @@
 		update_chat_position(TRUE)
 		fit_viewport()
 
+	if(isnewplayer(mob) && byond_version > MAX_CLIENT_VERSION)
+		alert(src,"Hello! You connect with unstable version of BYOND. Please downgrade your byond version to stable v[MAX_CLIENT_VERSION], otherwise other players will not be able to see what you speak.","Your BYOND version is unstable","Ok")
+
 /client/MouseEntered(atom/object, location, control, params)
 	if (tooltip)
 		screen |= tooltip
@@ -411,6 +415,7 @@
 
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
+#undef MAX_CLIENT_VERSION
 
 //checks if a client is afk
 //3000 frames = 5 minutes
