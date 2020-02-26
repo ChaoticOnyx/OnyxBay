@@ -56,6 +56,10 @@
 	add_fingerprint(user)
 	return
 
+/obj/item/weapon/melee/energy/dropped()
+	if(isturf(loc))
+		deactivate()	
+
 /obj/item/weapon/melee/energy/get_storage_cost()
 	if(active)
 		return ITEM_SIZE_NO_CONTAINER
@@ -90,12 +94,6 @@
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
 	sharp = 1
 	edge = 1
-
-/obj/item/weapon/melee/energy/axe/dropped(mob/user)
-	..()
-	if(!ismob(loc))
-		spawn(20)
-			deactivate(user)
 
 /obj/item/weapon/melee/energy/axe/activate(mob/living/user)
 	..()
@@ -133,12 +131,6 @@
 	sharp = 0
 	edge = 1
 	var/blade_color
-
-/obj/item/weapon/melee/energy/sword/dropped(mob/user)
-	..()
-	if(!ismob(loc))
-		spawn(20)
-			deactivate(user)
 
 /obj/item/weapon/melee/energy/sword/New()
 	blade_color = pick("red", "blue", "green", "purple")
@@ -291,7 +283,6 @@
 	QDEL_IN(src, 0)
 
 /obj/item/weapon/melee/energy/blade/dropped()
-	..()
 	QDEL_IN(src, 0)
 
 /obj/item/weapon/melee/energy/blade/Process()
