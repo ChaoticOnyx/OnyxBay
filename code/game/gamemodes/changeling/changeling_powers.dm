@@ -28,6 +28,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/heal = 0
 	var/datum/reagents/pick_chemistry
 	var/isdetachingnow = FALSE
+	var/FLP_last_time_used = 0
 
 /datum/changeling/New()
 	..()
@@ -237,6 +238,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 			changeling.absorbed_languages += language
 
 	changeling_update_languages(changeling.absorbed_languages)
+
+	if(T.reagents)
+		T.reagents.trans_to(reagents, T.reagents.total_volume)
 
 	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.modifiers)
 	absorbDNA(newDNA)
@@ -453,64 +457,64 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 
 //Fake our own death and fully heal. You will appear to be dead but regenerate fully after a short delay.
-/mob/proc/changeling_fakedeath()
+/mob/living/carbon/human/proc/changeling_fakedeath()
 	set category = "Changeling"
 	set name = "Regenerative Stasis (20)"
 
 	var/datum/changeling/changeling = changeling_power(20,1,100,DEAD)
-	if(!changeling)	return
+	if(!changeling)
+		return
 
-	if(src.mind.changeling.true_dead)
+	if(mind.changeling.true_dead)
 		to_chat(src, "<span class='notice'>We can not do this. We are really dead.</span>")
 		return
 
-	if(!src.stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
+	if(!stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
 		return
-	to_chat(src, "<span class='notice'>We have relocated our core organ into chest and will attempt to regenerate our form.</span>")
 
-	var/mob/living/carbon/C = src
+	if(status_flags & FAKEDEATH)
+		return
 
-	C.status_flags |= FAKEDEATH		//play dead
-	C.update_canmove()
-	C.remove_changeling_powers()
+	status_flags |= FAKEDEATH
+	update_canmove()
+	remove_changeling_powers()
 
-	C.emote("gasp")
+	emote("gasp")
 
-	spawn(rand(800,2000))
-		if(changeling_power(20,1,100,DEAD))
-			// charge the changeling chemical cost for stasis
-			changeling.chem_charges -= 20
+	addtimer(CALLBACK(src, .end_fakedeath), round(80 SECONDS, 200 SECONDS))
 
-			to_chat(C, "<span class='notice'><font size='5'>We are ready to rise.  Use the <b>Revive</b> verb when you are ready.</font></span>")
-			C.verbs += /mob/proc/changeling_revive
-			spawn(10 SECONDS)
-				C.changeling_revive()
+/mob/living/carbon/human/proc/end_fakedeath()
+	if(QDELETED(src))
+		return
+	if(changeling_power(20,1,100,DEAD))
+		// charge the changeling chemical cost for stasis
+		mind.changeling.chem_charges -= 20
+
+		to_chat(src, "<span class='notice'><font size='5'>We are ready to rise.  Use the <b>Revive</b> verb when you are ready.</font></span>")
+		verbs += /mob/living/carbon/human/proc/changeling_revive
+		addtimer(CALLBACK(src, .changeling_revive), 10 SECONDS)
 
 	feedback_add_details("changeling_powers","FD")
-	return 1
 
-/mob/proc/changeling_revive()
+/mob/living/carbon/human/proc/changeling_revive()
 	set category = "Changeling"
 	set name = "Revive"
 
-	var/mob/living/carbon/C = src
-
-	if(C.mind.changeling.true_dead)
-		to_chat(C, "<span class='notice'>We can not do this. We are really dead.</span>")
+	if(mind.changeling.true_dead)
+		to_chat(src, "<span class='notice'>We can not do this. We are really dead.</span>")
 		return
 
 	// restore us to health
-	C.revive()
+	revive(ignore_prosthetic_prefs = TRUE)
 	// remove our fake death flag
-	C.status_flags &= ~(FAKEDEATH)
+	status_flags &= ~(FAKEDEATH)
 	// let us move again
-	C.update_canmove()
+	update_canmove()
 	// re-add out changeling powers
-	C.make_changeling()
+	make_changeling()
 	// sending display messages
-	to_chat(C, "<span class='notice'>We have regenerated.</span>")
-	C.verbs -= /mob/proc/changeling_revive
-
+	to_chat(src, "<span class='notice'>We have regenerated.</span>")
+	verbs -= /mob/living/carbon/human/proc/changeling_revive
 
 //Boosts the range of your next sting attack by 1
 /mob/proc/changeling_boost_range()
@@ -592,27 +596,31 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 
 //Starts healing you every second for 10 seconds. Can be used whilst unconscious.
-/mob/proc/changeling_rapidregen()
+/mob/living/carbon/human/proc/changeling_rapidregen()
 	set category = "Changeling"
 	set name = "Rapid Regeneration (30)"
 	set desc = "Begins rapidly regenerating.  Does not effect stuns or chemicals."
 
 	var/datum/changeling/changeling = changeling_power(30,0,100,UNCONSCIOUS)
-	if(!changeling)	return 0
-	src.mind.changeling.chem_charges -= 30
+	if(!changeling)
+		return 0
+	mind.changeling.chem_charges -= 30
 
-	var/mob/living/carbon/human/C = src
-	spawn(0)
-		for(var/i = 0, i<10,i++)
-			if(C)
-				C.adjustBruteLoss(-10)
-				C.adjustToxLoss(-10)
-				C.adjustOxyLoss(-10)
-				C.adjustFireLoss(-10)
-				sleep(10)
+	verbs -= /mob/living/carbon/human/proc/changeling_rapidregen
 
-	src.verbs -= /mob/proc/changeling_rapidregen
-	spawn(5)	src.verbs += /mob/proc/changeling_rapidregen
+	var/heals = 10
+	while(heals)
+		if(!QDELETED(src))
+			adjustBruteLoss(-5)
+			adjustToxLoss(-5)
+			adjustOxyLoss(-5)
+			adjustFireLoss(-5)
+			--heals
+			sleep(2 SECONDS)
+		else
+			return
+
+	verbs += /mob/living/carbon/human/proc/changeling_rapidregen
 	feedback_add_details("changeling_powers","RR")
 	return 1
 
@@ -1224,6 +1232,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(ling_datum.chem_charges < 10)
 		to_chat(user, "<span class='warning'>We require more chemicals to do that.</span>")
 		return
+
+	if(world.time < ling_datum.FLP_last_time_used + 10 SECONDS)
+		to_chat(user, SPAN_WARNING("The finger lockpick is still recharging, we have to wait!"))
+		return
+	else
+		ling_datum.FLP_last_time_used = world.time
 
 	//Airlocks require an ugly block of code, but we don't want to just call emag_act(), since we don't want to break airlocks forever.
 	if(istype(target,/obj/machinery/door))
