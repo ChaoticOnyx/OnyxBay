@@ -62,7 +62,7 @@
 		to_chat(user, "<span class='warning'>\The [src] can only be used on actual flooring.</span>")
 		return
 
-	if(!F.flooring.can_paint || F.broken || F.burnt)
+	if(!F.flooring || !F.flooring.can_paint || F.broken || F.burnt)
 		to_chat(user, "<span class='warning'>\The [src] cannot paint broken tiles.</span>")
 		return
 
