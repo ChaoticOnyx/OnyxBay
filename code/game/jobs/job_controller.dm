@@ -106,7 +106,7 @@ var/global/datum/controller/occupations/job_master
 		if(job.minimum_character_age && (joining.client.prefs.age < job.minimum_character_age))
 			to_chat(joining, SPAN_WARNING("Your character's in-game age is too low for this job."))
 			return FALSE
-		if(job.faction_restricted && joining.client.prefs.faction != GLOB.using_map.company_name && (joining.client.prefs.nanotrasen_relation in COMPANY_OPPOSING))
+		if(job.faction_restricted && (joining.client.prefs.faction != GLOB.using_map.company_name || (joining.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 			to_chat(joining, SPAN_WARNING("Your characte must be loyal to [GLOB.using_map.company_name]."))
 			return FALSE
 		if(!job.player_old_enough(joining.client))
@@ -139,7 +139,7 @@ var/global/datum/controller/occupations/job_master
 				return FALSE
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				return FALSE
-			if(job.faction_restricted && player.client.prefs.faction != GLOB.using_map.company_name && (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING))
+			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				return FALSE
 			if(jobban_isbanned(player, rank))
 				return FALSE
@@ -181,7 +181,7 @@ var/global/datum/controller/occupations/job_master
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				Debug("FOC character not old enough, Player: [player]")
 				continue
-			if(job.faction_restricted && player.client.prefs.faction != GLOB.using_map.company_name && (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING))
+			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				Debug("FOC character is not loyal to [GLOB.using_map.company_name]")
 				continue
 			if(flag && !(flag in player.client.prefs.be_special_role))
@@ -201,7 +201,7 @@ var/global/datum/controller/occupations/job_master
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				continue
 			
-			if(job.faction_restricted && player.client.prefs.faction != GLOB.using_map.company_name && (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING))
+			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				continue
 
 			if(istype(job, GetJob("Assistant"))) // We don't want to give him assistant, that's boring!
