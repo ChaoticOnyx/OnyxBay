@@ -86,7 +86,6 @@
 	status_flags = NO_ANTAG
 	universal_understand = 1
 	var/fall_override = TRUE
-	var/mob/original_body = null
 
 /mob/living/carbon/human/bst/can_inject(mob/user, target_zone)
 	to_chat(user, SPAN_DANGER("The [src] disarms you before you can inject them."))
