@@ -67,6 +67,9 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	// Antag record
 	set_antagRecord((H && H.exploit_record && !jobban_isbanned(H, "Records") ? H.exploit_record : ""))
 
+	// Mind Reference
+	set_mindref(H?.mind ? H.mind : "null")
+
 // Returns independent copy of this file.
 /datum/computer_file/crew_record/clone(var/rename = 0)
 	var/datum/computer_file/crew_record/temp = ..()
@@ -268,6 +271,9 @@ FIELD_SHORT_SECURE("Religion", religion, FALSE, access_heads)
 
 // ANTAG RECORDS
 FIELD_LONG_SECURE("Exploitable Information", antagRecord, FALSE, access_syndicate)
+
+//MIND REF
+FIELD_SHORT("Mind Ref", mindref, TRUE)
 
 //Options builderes
 /record_field/rank/proc/record_ranks()

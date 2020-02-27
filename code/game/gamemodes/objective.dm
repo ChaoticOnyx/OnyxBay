@@ -2,6 +2,7 @@
 var/global/list/all_objectives = list()
 
 /datum/objective
+	var/name = "generic objective" 		//Name for admin prompts
 	var/datum/mind/owner = null			//Who owns the objective.
 	var/explanation_text = "Nothing"	//What that person is supposed to do.
 	var/datum/mind/target = null		//If they are focused on a particular person.
@@ -12,32 +13,74 @@ var/global/list/all_objectives = list()
 	all_objectives |= src
 	if(text)
 		explanation_text = text
-	return ..()
 
 /datum/objective/Destroy()
+	if(owner)
+		owner.objectives -= src
+	owner = null
+	target = null
 	all_objectives -= src
 	return ..()
+
+/datum/objective/proc/admin_edit(mob/admin)
+	return
 
 /datum/objective/proc/check_completion()
 	return completed
 
-/datum/objective/proc/find_target(station_only = TRUE)
+/datum/objective/proc/is_unique_objective(possible_target)
+	for(var/datum/objective/O in owner.get_all_objectives())
+		if(istype(O, type) && O.get_target() == possible_target)
+			return FALSE
+	return TRUE
+
+/datum/objective/proc/get_target()
+	return target
+
+/datum/objective/proc/get_crewmember_minds()
+	. = list()
+	for(var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
+		var/datum/mind/M = CR.get_mindref()
+		if(M)
+			. += M
+
+/datum/objective/proc/find_target(dupe_search_range, blacklist)
 	var/list/possible_targets = list()
-	for(var/datum/mind/possible_target in SSticker.minds)
-		if(!possible_target.current)
-			continue
-		if(station_only && !(possible_target.current.z in GLOB.using_map.station_levels))
-			continue
-		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD))
-			possible_targets += possible_target
+	var/try_target_late_joiners = FALSE
+	if(owner.late_joiner)
+		try_target_late_joiners = TRUE
+	for(var/datum/mind/possible_target in get_crewmember_minds())
+		if(ishuman(possible_target.current) && (possible_target.current.stat != DEAD) && is_unique_objective(possible_target))
+			if (!(possible_target in blacklist))
+				possible_targets += possible_target
+	if(try_target_late_joiners)
+		var/list/all_possible_targets = possible_targets.Copy()
+		for(var/I in all_possible_targets)
+			var/datum/mind/PT = I
+			if(!PT.late_joiner)
+				possible_targets -= PT
+		if(!possible_targets.len)
+			possible_targets = all_possible_targets
 	if(possible_targets.len > 0)
 		target = pick(possible_targets)
+	update_explanation_text()
+	return target
 
 /datum/objective/proc/find_target_by_role(role, role_type = 0)//Option sets either to check assigned role or special role. Default to assigned.
 	for(var/datum/mind/possible_target in SSticker.minds)
 		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role))
 			target = possible_target
 			break
+
+/datum/objective/proc/update_explanation_text()
+	return
+
+/datum/objective/proc/give_special_equipment(special_equipment)
+	if(ishuman(owner.current))
+		var/mob/living/carbon/human/H = owner.current
+		for(var/eq_path in special_equipment)
+			var/obj/O = new eq_path
+			H.equip_to_slot_if_possible(O, SLOT_BACK)
 
 /datum/objective/assassinate/find_target()
 	. = ..()
@@ -384,107 +427,96 @@ var/global/list/all_objectives = list()
 /datum/objective/nuclear/check_completion()
 	return SSticker.mode.station_was_nuked
 
+GLOBAL_LIST_EMPTY(possible_items)
 /datum/objective/steal
-	var/obj/item/steal_target
-	var/target_name
+	name = "steal"
+	var/datum/objective_item/targetinfo = null //Save the chosen item datum so we can access it later.
+	var/obj/item/steal_target = null //Needed for custom objectives (they're just items, not datums).
 
-	var/global/possible_items[] = list(
-		"a psychoscope's prototype" = /obj/item/clothing/glasses/hud/psychoscope,
-		"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
-		"a bluespace rift generator in hand teleporter" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
-		"a jetpack" = /obj/item/weapon/tank/jetpack,
-		"a functional AI" = /obj/item/weapon/aicard,
-		"the [station_name()] blueprints" = /obj/item/blueprints,
-		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
-		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
-		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
-		"a chief engineer's jumpsuit" = /obj/item/clothing/under/rank/chief_engineer,
-		"a chief medical officer's jumpsuit" = /obj/item/clothing/under/rank/chief_medical_officer,
-		"a head of security's jumpsuit" = /obj/item/clothing/under/rank/head_of_security,
-		"a head of personnel's jumpsuit" = /obj/item/clothing/under/rank/head_of_personnel,
-		"the hypospray" = /obj/item/weapon/reagent_containers/hypospray,
-		"the captain's pinpointer" = /obj/item/weapon/pinpointer,
-		"an ablative armor vest" = /obj/item/clothing/suit/armor/laserproof,
-		"the colt Python" = /obj/item/weapon/gun/projectile/revolver/coltpython,
-		"advanced engineering hardsuit control module" = /obj/item/weapon/rig/ce,
-		"AMI control module" = /obj/item/weapon/rig/hazmat,
-		"an championship belt" = /obj/item/weapon/storage/belt/champion
-	)
+/datum/objective/steal/New()
+	. = ..()
+	if(!GLOB.possible_items.len)
+		for(var/I in subtypesof(/datum/objective_item/steal))
+			new I
 
-	var/global/possible_items_special[] = list(
-		/*"nuclear authentication disk" = /obj/item/weapon/disk/nuclear,*///Broken with the change to nuke disk making it respawn on z level change.
-		"nuclear gun" = /obj/item/weapon/gun/energy/gun/nuclear,
-		"diamond drill" = /obj/item/weapon/pickaxe/diamonddrill,
-		"bag of holding" = /obj/item/weapon/storage/backpack/holding,
-		"hyper-capacity cell" = /obj/item/weapon/cell/hyper,
-		"10 diamonds" = /obj/item/stack/material/diamond,
-		"50 gold bars" = /obj/item/stack/material/gold,
-		"25 refined uranium bars" = /obj/item/stack/material/uranium,
-	)
+/datum/objective/steal/find_target(dupe_search_range)
+	var/approved_targets = list()
+	check_items:
+		for(var/datum/objective_item/possible_item in GLOB.possible_items)
+			if(!is_unique_objective(possible_item.targetitem))
+				continue
+			if(owner.assigned_role in possible_item.excludefromjob)
+				continue check_items
+			approved_targets += possible_item
+	if (length(approved_targets))
+		return set_target(pick(approved_targets))
+	return set_target(null)
 
-/datum/objective/steal/proc/set_target(item_name)
-	target_name = item_name
-	steal_target = possible_items[target_name]
-	if (!steal_target)
-		steal_target = possible_items_special[target_name]
-	explanation_text = "Steal [target_name]."
-	return steal_target
-
-/datum/objective/steal/find_target()
-	return set_target(pick(possible_items))
-
-/datum/objective/steal/proc/select_target()
-	var/list/possible_items_all = possible_items + possible_items_special+"custom"
-	if(!(/mob/living/silicon/ai in SSmobs.mob_list))
-		possible_items_all -= "a functional AI"
-	var/new_target = input("Select target:", "Objective target", steal_target) as null|anything in possible_items_all
-	if(!new_target)
+/datum/objective/steal/proc/set_target(datum/objective_item/item)
+	if(item)
+		targetinfo = item
+		steal_target = targetinfo.targetitem
+		explanation_text = "Steal [targetinfo.name]"
+		give_special_equipment(targetinfo.special_equipment)
+		return steal_target
+	else
+		explanation_text = "Free objective"
 		return
-	if(new_target == "custom")
-		var/obj/item/custom_target = input("Select type:","Type") as null|anything in typesof(/obj/item)
-		if (!custom_target)
+
+/datum/objective/steal/admin_edit(mob/admin)
+	var/list/possible_items_all = GLOB.possible_items
+	var/new_target = input(admin,"Select target:", "Objective target", steal_target) as null|anything in sortNames(possible_items_all)+"custom"
+	if (!new_target)
+		return
+
+	if (new_target == "custom") //Can set custom items.
+		var/custom_path = input(admin, "Search for target item type:","Type") as null|text
+		if (!custom_path)
 			return
-		var/tmp_obj = new custom_target
-		var/custom_name = tmp_obj:name
-		qdel(tmp_obj)
-		custom_name = sanitize(input("Enter target name:", "Objective target", custom_name) as text|null)
-		if(!custom_name)
+		var/obj/item/custom_target = subtypesof(custom_path)
+		var/custom_name = initial(custom_target.name)
+		custom_name = input(admin, "Enter Target name:", "Objective Target") as null|anything in custom_target
+		if (!custom_name)
 			return
-		target_name = custom_name
 		steal_target = custom_target
-		explanation_text = "Steal [target_name]."
+		explanation_text = "Steal [custom_name]."
+
 	else
 		set_target(new_target)
-	return steal_target
 
 /datum/objective/steal/check_completion()
-	if(!steal_target || !owner.current)
-		return FALSE
-	if(!isliving(owner.current))
-		return FALSE
-	var/list/all_items = owner.current.get_contents()
-	switch (target_name)
-		if("28 moles of phoron (full tank)","10 diamonds","50 gold bars","25 refined uranium bars")
-			var/target_amount = text2num(target_name)//Non-numbers are ignored.
-			var/found_amount = 0.0//Always starts as zero.
+	if(!steal_target)
+		return TRUE
+	if(owner)
+		if(!isliving(owner.current))
+			return FALSE
 
-			for(var/obj/item/I in all_items) //Check for phoron tanks
-				if(istype(I, steal_target))
-					found_amount += (target_name=="28 moles of phoron (full tank)" ? (I:air_contents:gas["phoron"]) : (I:amount))
-			return found_amount>=target_amount
+		var/list/all_items = owner.current.get_contents()	//this should get things in cheesewheels, books, etc.
 
-		if("a functional AI")
-			for(var/mob/living/silicon/ai/ai in SSmobs.mob_list)
-				if(ai.stat == DEAD)
-					continue
-				var/turf/T = get_turf(ai)
-				if(owner.current.contains(ai) || (T && is_type_in_list(T.loc, GLOB.using_map.post_round_safe_areas)))
+		for(var/obj/I in all_items) //Check for items
+			if(istype(I, steal_target))
+				if(!targetinfo) //If there's no targetinfo, then that means it was a custom objective. At this point, we know you have the item, so return 1.
 					return TRUE
-		else
-			for(var/obj/I in all_items) //Check for items
-				if(istype(I, steal_target))
+				else if(targetinfo.check_special_completion(I))//Returns 1 by default. Items with special checks will return 1 if the conditions are fulfilled.
+					return TRUE
+
+			if(targetinfo && (I.type in targetinfo.altitems)) //Ok, so you don't have the item. Do you have an alternative, at least?
+				if(targetinfo.check_special_completion(I))//Yeah, we do! Don't return 0 if we don't though - then you could fail if you had 1 item that didn't pass and got checked first!
 					return TRUE
 	return FALSE
+
+GLOBAL_LIST_EMPTY(possible_items_special)
+/datum/objective/steal/special //ninjas are so special they get their own subtype good for them
+	name = "steal special"
+
+/datum/objective/steal/special/New()
+	. = ..()
+	if(!GLOB.possible_items_special.len)
+		for(var/I in subtypesof(/datum/objective_item/special) + subtypesof(/datum/objective_item/stack))
+			new I
+
+/datum/objective/steal/special/find_target(dupe_search_range)
+	return set_target(pick(GLOB.possible_items_special))
 
 /datum/objective/download/proc/gen_amount_goal()
 	target_amount = rand(10,20)

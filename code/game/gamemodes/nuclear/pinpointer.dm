@@ -166,12 +166,11 @@
 			target = weakref(location)
 
 		if("Other Signature")
-			var/datum/objective/steal/itemlist
-			itemlist = itemlist // To supress a 'variable defined but not used' error.
-			var/targetitem = input("Select item to search for.", "Item Mode Select","") as null|anything in itemlist.possible_items
+
+			var/targetitem = input("Select item to search for.", "Item Mode Select","") as null|anything in GLOB.possible_items_special
 			if(!targetitem)
 				return
-			var/obj/item = locate(itemlist.possible_items[targetitem])
+			var/obj/item = locate(GLOB.possible_items_special[targetitem])
 			if(!item)
 				to_chat(usr, "Failed to locate [targetitem]!")
 				return

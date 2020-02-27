@@ -57,6 +57,8 @@
 
 	var/rev_cooldown = 0
 
+	var/late_joiner = FALSE
+
 	var/brigged_since = 0
 	var/brigged_for_max = 0		// The maximum time spent in brig.
 
@@ -293,7 +295,7 @@
 				else
 					new_objective = objective
 				var/datum/objective/steal/steal = new_objective
-				if (!steal.select_target())
+				if (!steal.admin_edit(usr))
 					return
 
 			if("download","capture","absorb")
@@ -441,6 +443,9 @@
 	var/obj/item/device/uplink/H = find_syndicate_uplink()
 	if(H)
 		qdel(H)
+
+/datum/mind/proc/get_all_objectives()
+	return objectives
 
 /datum/mind/proc/reset()
 	assigned_role =   null

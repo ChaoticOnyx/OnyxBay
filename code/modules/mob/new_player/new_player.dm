@@ -371,6 +371,9 @@
 	if(!character)
 		return 0
 
+	if(character.mind)
+		character.mind.late_joiner = TRUE 
+
 	character = job_master.EquipRank(character, job.title, 1)					//equips the human
 	equip_custom_items(character)
 	character.apply_traits()

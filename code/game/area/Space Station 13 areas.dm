@@ -140,7 +140,7 @@ area/space/atmosalert()
 		if(H.mind)
 			H.mind.brigged_since = world.time
 
-/area/security/prison/Exited(AM, oldloc)
+/area/security/prison/Exited(AM, newloc)
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
 		if(H.mind)
