@@ -241,6 +241,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	if(T.reagents)
 		T.reagents.trans_to(reagents, T.reagents.total_volume)
+	if(T.vessel)
+		T.vessel.remove_any(T.vessel.total_volume)
 
 	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.modifiers)
 	absorbDNA(newDNA)
