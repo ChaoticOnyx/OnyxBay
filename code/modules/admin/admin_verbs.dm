@@ -221,7 +221,8 @@ var/list/admin_verbs_debug = list(
 	/client/proc/cmd_analyse_health_panel,
 	/client/proc/visualpower,
 	/client/proc/visualpower_remove,
-	/client/proc/enable_profiler
+	/client/proc/enable_profiler,
+	/client/proc/cmd_dev_bst
 	)
 
 var/list/admin_verbs_paranoid_debug = list(
@@ -314,7 +315,8 @@ var/list/admin_verbs_hideable = list(
 	/datum/admins/proc/ictus,
 	/client/proc/projectile_basketball,
 	/client/proc/toggle_possess_mode,
-	/client/proc/enable_profiler
+	/client/proc/enable_profiler,
+	/client/proc/cmd_dev_bst
 	)
 
 var/list/admin_verbs_mod = list(
