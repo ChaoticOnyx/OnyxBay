@@ -399,7 +399,7 @@
 	src << browse('html/changelog.html', "window=changes;size=675x650")
 	if(prefs.lastchangelog != changelog_hash)
 		prefs.lastchangelog = changelog_hash
-		prefs.save_preferences()
+		SScharacter_setup.queue_preferences_save(prefs)
 
 /mob/new_player/verb/observe()
 	set name = "Observe"
