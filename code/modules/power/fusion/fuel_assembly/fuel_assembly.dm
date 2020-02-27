@@ -13,7 +13,7 @@
 	var/radioactivity = 0
 	var/const/initial_amount = 300
 
-/obj/item/weapon/fuel_assembly/New(var/newloc, var/_material, var/_colour)
+/obj/item/weapon/fuel_assembly/New(newloc, _material, _colour)
 	fuel_type = _material
 	fuel_colour = _colour
 	..(newloc)
@@ -54,17 +54,17 @@
 	return ..()
 
 // Mapper shorthand.
-/obj/item/weapon/fuel_assembly/deuterium/New(var/newloc)
+/obj/item/weapon/fuel_assembly/deuterium/New(newloc)
 	..(newloc, MATERIAL_DEUTERIUM)
 
-/obj/item/weapon/fuel_assembly/tritium/New(var/newloc)
+/obj/item/weapon/fuel_assembly/tritium/New(newloc)
 	..(newloc, MATERIAL_TRITIUM)
 
-/obj/item/weapon/fuel_assembly/phoron/New(var/newloc)
+/obj/item/weapon/fuel_assembly/phoron/New(newloc)
 	..(newloc, MATERIAL_PHORON)
 
-/obj/item/weapon/fuel_assembly/supermatter/New(var/newloc)
+/obj/item/weapon/fuel_assembly/supermatter/New(newloc)
 	..(newloc, MATERIAL_SUPERMATTER)
 
-/obj/item/fuel_assembly/hydrogen/New(var/newloc)
+/obj/item/fuel_assembly/hydrogen/New(newloc)
 	..(newloc, MATERIAL_HYDROGEN)

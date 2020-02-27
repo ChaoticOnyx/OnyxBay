@@ -51,7 +51,7 @@
 	var/max_pressure_diff = HAZARD_HIGH_PRESSURE + 150
 	var/max_temp = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 
-/obj/structure/inflatable/proc/take_damage(var/damage)
+/obj/structure/inflatable/proc/take_damage(damage)
 	return
 
 /obj/structure/inflatable/wall
@@ -108,7 +108,7 @@
 /obj/structure/inflatable/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	return 0
 
-/obj/structure/inflatable/bullet_act(var/obj/item/projectile/Proj)
+/obj/structure/inflatable/bullet_act(obj/item/projectile/Proj)
 	take_damage(Proj.get_structure_damage())
 	if(health <= 0)
 		return PROJECTILE_CONTINUE
@@ -148,7 +148,7 @@
 			visible_message("<span class='danger'>[user] pierces [src] with [W]!</span>")
 	return
 
-/obj/structure/inflatable/proc/hit(var/damage, var/sound_effect = 1)
+/obj/structure/inflatable/proc/hit(damage, sound_effect = 1)
 	take_damage(damage)
 	if(sound_effect)
 		playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 75, 1)
@@ -162,7 +162,7 @@
 /obj/structure/inflatable/CtrlClick()
 	return hand_deflate()
 
-/obj/structure/inflatable/proc/deflate(var/violent=0)
+/obj/structure/inflatable/proc/deflate(violent=0)
 	playsound(loc, 'sound/machines/hiss.ogg', 75, 1)
 	if(violent)
 		visible_message("[src] rapidly deflates!")
@@ -191,7 +191,7 @@
 	deflate()
 	return TRUE
 
-/obj/structure/inflatable/attack_generic(var/mob/user, var/damage, var/attack_verb)
+/obj/structure/inflatable/attack_generic(mob/user, damage, attack_verb)
 	health -= damage
 	attack_animation(user)
 	if(health <= 0)
@@ -275,7 +275,7 @@
 	else
 		icon_state = "door_closed"
 
-/obj/structure/inflatable/door/deflate(var/violent=0)
+/obj/structure/inflatable/door/deflate(violent=0)
 	playsound(loc, 'sound/machines/hiss.ogg', 75, 1)
 	if(violent)
 		visible_message("[src] rapidly deflates!")

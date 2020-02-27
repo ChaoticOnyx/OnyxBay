@@ -40,7 +40,7 @@
 	attack_self(H)
 	return
 
-/obj/item/weapon/teleportation_scroll/proc/teleportscroll(var/mob/user)
+/obj/item/weapon/teleportation_scroll/proc/teleportscroll(mob/user)
 	var/area/thearea = input(user, "Area to jump to", "BOOYEA") as null|anything in teleportlocs
 	thearea = thearea ? teleportlocs[thearea] : thearea
 

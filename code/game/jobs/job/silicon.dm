@@ -14,7 +14,7 @@
 	loadout_allowed = FALSE
 	hud_icon = "hudblank"
 
-/datum/job/ai/equip(var/mob/living/carbon/human/H)
+/datum/job/ai/equip(mob/living/carbon/human/H)
 	if(!H)	return 0
 	return 1
 
@@ -37,6 +37,6 @@
 	outfit_type = /decl/hierarchy/outfit/job/silicon/cyborg
 	hud_icon = "hudblank"
 
-/datum/job/cyborg/equip(var/mob/living/carbon/human/H)
+/datum/job/cyborg/equip(mob/living/carbon/human/H)
 	if(!H)	return 0
 	return 1

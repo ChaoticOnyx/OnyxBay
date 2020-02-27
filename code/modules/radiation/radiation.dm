@@ -15,7 +15,7 @@
 	src.source_turf = null
 	. = ..()
 
-/datum/radiation_source/proc/update_rad_power(var/new_power = null)
+/datum/radiation_source/proc/update_rad_power(new_power = null)
 	if(new_power == null || new_power == rad_power)
 		return // No change
 	else if(new_power <= config.radiation_lower_limit)
@@ -49,10 +49,10 @@
 	var/rad_resistance = 0  // Allow overriding rad resistance
 
 // If people expand the system, this may be useful. Here as a placeholder until then
-/atom/proc/rad_act(var/severity)
+/atom/proc/rad_act(severity)
 	return 1
 
-/mob/living/rad_act(var/severity)
+/mob/living/rad_act(severity)
 	if(severity)
 		src.apply_effect(severity, IRRADIATE, src.getarmor(null, "rad"))
 		for(var/atom/I in src)

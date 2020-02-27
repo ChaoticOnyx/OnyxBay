@@ -27,7 +27,7 @@
 	var/craft_tool //determines what kind of tools should be used for crafting
 	var/splittable = 1 //can we split/combine the stacks?
 
-/obj/item/stack/New(var/loc, var/amount=null)
+/obj/item/stack/New(loc, amount=null)
 	..()
 	if (!stacktype)
 		stacktype = type
@@ -114,7 +114,7 @@
 	onclose(user, "stack")
 	return
 
-/obj/item/stack/proc/produce_recipe(datum/stack_recipe/recipe, var/quantity, mob/user)
+/obj/item/stack/proc/produce_recipe(datum/stack_recipe/recipe, quantity, mob/user)
 	var/required = quantity*recipe.req_amount
 	var/produced = min(quantity*recipe.res_amount, recipe.max_res_amount)
 
@@ -217,12 +217,12 @@
 
 //Return 1 if an immediate subsequent call to use() would succeed.
 //Ensures that code dealing with stacks uses the same logic
-/obj/item/stack/proc/can_use(var/used)
+/obj/item/stack/proc/can_use(used)
 	if (get_amount() < used)
 		return 0
 	return 1
 
-/obj/item/stack/proc/use(var/used)
+/obj/item/stack/proc/use(used)
 	if (!can_use(used))
 		return 0
 	if(!uses_charge)
@@ -241,7 +241,7 @@
 		return 1
 	return 0
 
-/obj/item/stack/proc/add(var/extra)
+/obj/item/stack/proc/add(extra)
 	if(!uses_charge)
 		if(amount + extra > get_max_amount())
 			return 0
@@ -262,7 +262,7 @@
 */
 
 //attempts to transfer amount to S, and returns the amount actually transferred
-/obj/item/stack/proc/transfer_to(obj/item/stack/S, var/tamount=null, var/type_verified)
+/obj/item/stack/proc/transfer_to(obj/item/stack/S, tamount=null, type_verified)
 	if (!get_amount())
 		return 0
 	if ((stacktype != S.stacktype) && !type_verified)
@@ -293,7 +293,7 @@
 	return 0
 
 //creates a new stack with the specified amount
-/obj/item/stack/proc/split(var/tamount, var/force=FALSE)
+/obj/item/stack/proc/split(tamount, force=FALSE)
 	if (!amount)
 		return null
 	if(uses_charge && !force)

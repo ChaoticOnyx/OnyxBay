@@ -13,11 +13,11 @@ GLOBAL_VAR_INIT(admin_sound_channel, GLOB.sound_channels.RequestChannel("ADMIN_F
 	..()
 	available_channels = new()
 
-/repository/sound_channels/proc/RequestChannel(var/key)
+/repository/sound_channels/proc/RequestChannel(key)
 	. = RequestChannels(key, 1)
 	return LAZYLEN(.) && .[1]
 
-/repository/sound_channels/proc/RequestChannels(var/key, var/amount)
+/repository/sound_channels/proc/RequestChannels(key, amount)
 	if(!key)
 		CRASH("Invalid key given.")
 	. = list()
@@ -38,10 +38,10 @@ GLOBAL_VAR_INIT(admin_sound_channel, GLOB.sound_channels.RequestChannel("ADMIN_F
 		LAZYSET(keys_by_channel, "[channel]", key)
 	return .
 
-/repository/sound_channels/proc/ReleaseChannel(var/channel)
+/repository/sound_channels/proc/ReleaseChannel(channel)
 	ReleaseChannels(list(channel))
 
-/repository/sound_channels/proc/ReleaseChannels(var/list/channels)
+/repository/sound_channels/proc/ReleaseChannels(list/channels)
 	for(var/channel in channels)
 		LAZYREMOVE(keys_by_channel, "[channel]")
 		available_channels.Push(channel)

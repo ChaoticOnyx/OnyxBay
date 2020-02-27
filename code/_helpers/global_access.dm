@@ -769,8 +769,6 @@
 			return global.roundstart_hour;
 		if("rune_list")
 			return global.rune_list;
-		if("runtime_diary")
-			return global.runtime_diary;
 		if("rus_unicode_conversion")
 			return global.rus_unicode_conversion;
 		if("same_wires")
@@ -1758,8 +1756,6 @@
 			global.roundstart_hour=newval;
 		if("rune_list")
 			global.rune_list=newval;
-		if("runtime_diary")
-			global.runtime_diary=newval;
 		if("rus_unicode_conversion")
 			global.rus_unicode_conversion=newval;
 		if("same_wires")
@@ -2364,7 +2360,6 @@
 	"round_start_time",
 	"roundstart_hour",
 	"rune_list",
-	"runtime_diary",
 	"rus_unicode_conversion",
 	"same_wires",
 	"secret_force_mode",

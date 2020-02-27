@@ -116,7 +116,7 @@
 		shake_animation(stime = 4)
 	return ..()
 
-/obj/structure/flora/pottedplant/bullet_act(var/obj/item/projectile/Proj)
+/obj/structure/flora/pottedplant/bullet_act(obj/item/projectile/Proj)
 	if (prob(Proj.damage*2))
 		death()
 		return 1

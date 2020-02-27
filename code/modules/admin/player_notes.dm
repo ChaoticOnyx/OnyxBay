@@ -4,11 +4,11 @@
 /*
 #define NOTESFILE "data/player_notes.sav"	//where the player notes are saved
 
-datum/admins/proc/notes_show(var/ckey)
+datum/admins/proc/notes_show(ckey)
 	usr << browse("<head><title>Player Notes</title></head><body>[notes_gethtml(ckey)]</body>","window=player_notes;size=700x400")
 
 
-datum/admins/proc/notes_gethtml(var/ckey)
+datum/admins/proc/notes_gethtml(ckey)
 	var/savefile/notesfile = new(NOTESFILE)
 	if(!notesfile)	return "<font color='red'>Error: Cannot access [NOTESFILE]</font>"
 	if(ckey)
@@ -28,7 +28,7 @@ datum/admins/proc/notes_gethtml(var/ckey)
 	return
 
 //handles removing entries from the buffer, or removing the entire directory if no start_index is given
-/proc/notes_remove(var/ckey, var/start_index, var/end_index)
+/proc/notes_remove(ckey, start_index, end_index)
 	var/savefile/notesfile = new(NOTESFILE)
 	if(!notesfile)	return
 
@@ -65,7 +65,7 @@ datum/admins/proc/notes_gethtml(var/ckey)
 
 //Hijacking this file for BS12 playernotes functions. I like this ^ one systemm alright, but converting sounds too bothersome~ Chinsky.
 
-/proc/notes_add(var/key, var/note, var/mob/user)
+/proc/notes_add(key, note, mob/user)
 	if (!key || !note)
 		return
 
@@ -121,7 +121,7 @@ datum/admins/proc/notes_gethtml(var/ckey)
 	del(note_list) // savefile, so NOT qdel
 
 
-/proc/notes_del(var/key, var/index)
+/proc/notes_del(key, index)
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
 	info >> infos
@@ -136,7 +136,7 @@ datum/admins/proc/notes_gethtml(var/ckey)
 
 	del(info) // savefile, so NOT qdel
 
-/proc/show_player_info_irc(var/key as text)
+/proc/show_player_info_irc(key as text)
 	var/dat = "          Info on [key]\n"
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos

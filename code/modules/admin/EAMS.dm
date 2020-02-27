@@ -48,13 +48,13 @@ var/global/EAMS_errorsCounter = 0
 //	Player Panel Button
 //
 
-/proc/EAMS_GetPlayerPannelButton(var/datum/admins/source, var/client/player)
+/proc/EAMS_GetPlayerPannelButton(datum/admins/source, client/player)
 	var/result = {"<br><br><b>EAMS whitelisted:</b>
 		[player.eams_info.whitelisted ? "<A href='?src=\ref[source];removefromwhitelist=\ref[player]'>Yes</A>" : "<A href='?src=\ref[source];addtowhitelist=\ref[player]'>No</A>"]
 		"}
 	return result
 
-/proc/EAMS_AdminTopicProcess(var/datum/admins/source, var/list/href_list)
+/proc/EAMS_AdminTopicProcess(datum/admins/source, list/href_list)
 	var/client/player = null
 	if (href_list["addtowhitelist"])
 		player = locate(href_list["addtowhitelist"])
@@ -88,7 +88,7 @@ var/global/EAMS_errorsCounter = 0
 	return FALSE
 
 // return true if success
-/client/proc/EAMS_SetWhitelistedToDB(var/value)
+/client/proc/EAMS_SetWhitelistedToDB(value)
 	if (!config.eams)	// EAMS doesn't active
 		return
 
@@ -195,7 +195,7 @@ var/global/EAMS_errorsCounter = 0
 		return TRUE
 
 	if (eams_info.loaded)
-		if (eams_info.ip_countryCode in config.EAMSallowedCountries)
+		if ((eams_info.ip_countryCode in config.EAMSallowedCountries) && !eams_info.ip_proxy)
 			return TRUE
 
 		// Bad IP and player isn't whitelisted.. so create a warning

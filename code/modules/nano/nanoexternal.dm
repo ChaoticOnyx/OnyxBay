@@ -7,7 +7,7 @@
   *
   * @return nothing
   */
-/client/verb/nanoclose(var/uiref as text)
+/client/verb/nanoclose(uiref as text)
 	set hidden = 1	// hide this verb from the user's panel
 	set name = "nanoclose"
 
@@ -37,7 +37,7 @@
   *
   * @return nothing
   */
-/datum/proc/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/nano_ui/master_ui = null, var/datum/topic_state/state = GLOB.default_state)
+/datum/proc/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/nano_ui/master_ui = null, datum/topic_state/state = GLOB.default_state)
 	return
 
 // Used by SSnano (/datum/controller/subsystem/processing/nano) to track UIs opened by this mob

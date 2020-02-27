@@ -11,10 +11,10 @@ var/list/fusion_reactions
 	var/list/products = list()
 	var/minimum_reaction_temperature = 100
 
-/decl/fusion_reaction/proc/handle_reaction_special(var/obj/effect/fusion_em_field/holder)
+/decl/fusion_reaction/proc/handle_reaction_special(obj/effect/fusion_em_field/holder)
 	return 0
 
-proc/get_fusion_reaction(var/p_react, var/s_react, var/m_energy)
+proc/get_fusion_reaction(p_react, s_react, m_energy)
 	if(!fusion_reactions)
 		fusion_reactions = list()
 		for(var/rtype in typesof(/decl/fusion_reaction) - /decl/fusion_reaction)
@@ -121,10 +121,7 @@ proc/get_fusion_reaction(var/p_react, var/s_react, var/m_energy)
 	radiation = 20
 	instability = 20
 
-/decl/fusion_reaction/phoron_supermatter/handle_reaction_special(var/obj/effect/fusion_em_field/holder)
-
-	wormhole_event()
-
+/decl/fusion_reaction/phoron_supermatter/handle_reaction_special(obj/effect/fusion_em_field/holder)
 	var/turf/origin = get_turf(holder)
 	holder.Rupture()
 	qdel(holder)

@@ -23,7 +23,7 @@ var/datum/mil_branches/mil_branches = new()
 /**
  *  Retrieve branch object by branch name
  */
-/datum/mil_branches/proc/get_branch(var/branch_name)
+/datum/mil_branches/proc/get_branch(branch_name)
 	if(branch_name == "None" || !(branch_name in branches))
 		return null
 	else
@@ -32,7 +32,7 @@ var/datum/mil_branches/mil_branches = new()
 /**
  *  Retrieve branch object by branch type
  */
-/datum/mil_branches/proc/get_branch_by_type(var/branch_type)
+/datum/mil_branches/proc/get_branch_by_type(branch_type)
 	for(var/name in branches)
 		if (istype(branches[name], branch_type))
 			return branches[name]
@@ -40,7 +40,7 @@ var/datum/mil_branches/mil_branches = new()
 /**
  *  Retrieve a rank object from given branch by name
  */
-/datum/mil_branches/proc/get_rank(var/branch_name, var/rank_name)
+/datum/mil_branches/proc/get_rank(branch_name, rank_name)
 	if(rank_name == "None")
 		return null
 
@@ -55,7 +55,7 @@ var/datum/mil_branches/mil_branches = new()
 /**
  *  Return all spawn branches for the given input
  */
-/datum/mil_branches/proc/spawn_branches(var/datum/species/S)
+/datum/mil_branches/proc/spawn_branches(datum/species/S)
 	if(!S)
 		return spawn_branches_.Copy()
 	. = spawn_branches_by_species_[S]
@@ -69,21 +69,21 @@ var/datum/mil_branches/mil_branches = new()
 /**
  *  Return all spawn ranks for the given input
  */
-/datum/mil_branches/proc/spawn_ranks(var/branch_name, var/datum/species/S)
+/datum/mil_branches/proc/spawn_ranks(branch_name, datum/species/S)
 	var/datum/mil_branch/branch = get_branch(branch_name)
 	return branch && branch.spawn_ranks(S)
 
 /**
  *  Return a true value if branch_name is a valid spawn branch key
  */
-/datum/mil_branches/proc/is_spawn_branch(var/branch_name, var/datum/species/S)
+/datum/mil_branches/proc/is_spawn_branch(branch_name, datum/species/S)
 	return (branch_name in spawn_branches(S))
 
 
 /**
  *  Return a true value if rank_name is a valid spawn rank in branch under branch_name
  */
-/datum/mil_branches/proc/is_spawn_rank(var/branch_name, var/rank_name, var/datum/species/S)
+/datum/mil_branches/proc/is_spawn_rank(branch_name, rank_name, datum/species/S)
 	var/datum/mil_branch/branch = get_branch(branch_name)
 
 	if(branch && (rank_name in branch.spawn_ranks(S)))
@@ -129,7 +129,7 @@ var/datum/mil_branches/mil_branches = new()
 		if(rank_path in spawn_rank_types)
 			spawn_ranks_[rank.name] = rank
 
-/datum/mil_branch/proc/spawn_ranks(var/datum/species/S)
+/datum/mil_branch/proc/spawn_ranks(datum/species/S)
 	if(!S)
 		return spawn_ranks_.Copy()
 	. = spawn_ranks_by_species_[S]

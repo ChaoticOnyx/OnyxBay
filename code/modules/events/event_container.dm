@@ -71,7 +71,7 @@ var/global/list/severity_to_string = list(EVENT_LEVEL_MUNDANE = "Mundane", EVENT
 	available_events -= picked_event
 	return picked_event
 
-/datum/event_container/proc/get_weight(var/datum/event_meta/EM, var/list/active_with_role)
+/datum/event_container/proc/get_weight(datum/event_meta/EM, list/active_with_role)
 	if(!EM.enabled)
 		return 0
 
@@ -167,7 +167,8 @@ var/global/list/severity_to_string = list(EVENT_LEVEL_MUNDANE = "Mundane", EVENT
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Spider Infestation",		/datum/event/spider_infestation, 		25,		list(ASSIGNMENT_SECURITY = 30), 1),
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Virology Breach",			/datum/event/prison_break/virology,		0,		list(ASSIGNMENT_MEDICAL = 20)),
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Xenobiology Breach",		/datum/event/prison_break/xenobiology,	0,		list(ASSIGNMENT_SCIENCE = 20)),
-		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Viral Infection",/datum/event/virus_minor,		0,	list(ASSIGNMENT_MEDICAL = 40))
+		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Viral Infection",/datum/event/virus_minor,		0,	list(ASSIGNMENT_MEDICAL = 40)),
+		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Wormholes",				 /datum/event/wormholes, 				10)
 	)
 
 /datum/event_container/major

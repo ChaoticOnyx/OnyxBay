@@ -35,31 +35,33 @@ var/can_call_ert
 	log_admin("[key_name(usr)] used Dispatch Response Team.", notify_admin = TRUE)
 	trigger_armed_response_team(1)
 
-client/verb/JoinResponseTeam()
-
+/mob/proc/join_response_team()
 	set name = "Join Response Team"
-	set category = "IC"
+	set category = "OOC"
 
-	if(!MayRespawn(1))
-		to_chat(usr, "<span class='warning'>You cannot join the response team at this time.</span>")
+	if(GAME_STATE < RUNLEVEL_GAME)
 		return
 
-	if(isghost(usr) || isnewplayer(usr))
+	if(!MayRespawn(TRUE))
+		to_chat(src, SPAN_WARNING("You cannot join the response team at this time."))
+		return
+
+	if(isghost(src) || isnewplayer(src))
 		if(!send_emergency_team)
-			to_chat(usr, "No emergency response team is currently being sent.")
+			to_chat(src, SPAN_WARNING("No emergency response team is currently being sent."))
 			return
-		if(jobban_isbanned(usr, MODE_ERT) || jobban_isbanned(usr, "Security Officer"))
-			to_chat(usr, "<span class='danger'>You are jobbanned from the emergency reponse team!</span>")
+		if(jobban_isbanned(src, MODE_ERT) || jobban_isbanned(src, "Security Officer"))
+			to_chat(src, SPAN_WARNING("You are jobbanned from the emergency reponse team!"))
 			return
 		if(GLOB.ert.current_antagonists.len >= GLOB.ert.hard_cap)
-			to_chat(usr, "The emergency response team is already full!")
+			to_chat(src, SPAN_WARNING("The emergency response team is already full!"))
 			return
-		GLOB.ert.create_default(usr)
+		GLOB.ert.create_default(src)
 	else
-		to_chat(usr, "You need to be an observer or new player to use this.")
+		to_chat(src, SPAN_WARNING("You need to be an observer or new player to use this."))
 
 // returns a number of dead players in %
-proc/percentage_dead()
+/proc/percentage_dead()
 	var/total = 0
 	var/deadcount = 0
 	for(var/mob/living/carbon/human/H in SSmobs.mob_list)
@@ -71,7 +73,7 @@ proc/percentage_dead()
 	else return round(100 * deadcount / total)
 
 // counts the number of antagonists in %
-proc/percentage_antagonists()
+/proc/percentage_antagonists()
 	var/total = 0
 	var/antagonists = 0
 	for(var/mob/living/carbon/human/H in SSmobs.mob_list)
@@ -84,7 +86,7 @@ proc/percentage_antagonists()
 
 // Increments the ERT chance automatically, so that the later it is in the round,
 // the more likely an ERT is to be able to be called.
-proc/increment_ert_chance()
+/proc/increment_ert_chance()
 	while(send_emergency_team == 0) // There is no ERT at the time.
 		var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 		var/index = security_state.all_security_levels.Find(security_state.current_security_level)
@@ -92,7 +94,7 @@ proc/increment_ert_chance()
 		sleep(600 * 3) // Minute * Number of Minutes
 
 
-proc/trigger_armed_response_team(var/force = 0)
+/proc/trigger_armed_response_team(force = 0)
 	if(!can_call_ert && !force)
 		return
 	if(send_emergency_team)
@@ -130,7 +132,7 @@ proc/trigger_armed_response_team(var/force = 0)
 /datum/evacuation_predicate/ert/is_valid()
 	return world.time < prevent_until
 
-/datum/evacuation_predicate/ert/can_call(var/user)
+/datum/evacuation_predicate/ert/can_call(user)
 	if(world.time >= prevent_until)
 		return TRUE
 	to_chat(user, "<span class='warning'>An emergency response team has been dispatched. Evacuation requests will be denied until [duration2stationtime(prevent_until - world.time)].</span>")

@@ -1,6 +1,6 @@
 // Temporary ingame species whitelist created for test purposes
 
-/proc/SpeciesIngameWhitelist_GetPlayerPannelButton(var/datum/admins/source, var/client/player)
+/proc/SpeciesIngameWhitelist_GetPlayerPannelButton(datum/admins/source, client/player)
 	if (!config.useingamealienwhitelist)
 		return
 	var/result = {"<br><b>Species whitelisted:</b>  
@@ -8,7 +8,7 @@
 		"}
 	return result
 
-/proc/SpeciesIngameWhitelist_AdminTopicProcess(var/datum/admins/source, var/list/href_list)
+/proc/SpeciesIngameWhitelist_AdminTopicProcess(datum/admins/source, list/href_list)
 	var/client/player = null
 	if (href_list["addtospeciesingamewhitelist"])
 		player = locate(href_list["addtospeciesingamewhitelist"])
@@ -21,7 +21,7 @@
 	
 	source.show_player_panel(player.mob) // update panel
 
-/proc/SpeciesIngameWhitelist_CheckPlayer(var/client/player)
+/proc/SpeciesIngameWhitelist_CheckPlayer(client/player)
 	if (!config.useingamealienwhitelist)
 		return
 	return player.species_ingame_whitelisted

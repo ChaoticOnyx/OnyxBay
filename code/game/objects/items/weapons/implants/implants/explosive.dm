@@ -93,7 +93,7 @@
 /obj/item/weapon/implant/explosive/hear_talk(mob/M as mob, msg)
 	hear(msg)
 
-/obj/item/weapon/implant/explosive/hear(var/msg)
+/obj/item/weapon/implant/explosive/hear(msg)
 	if(!phrase)
 		return
 	if(findtext(sanitize_phrase(msg),phrase))
@@ -133,7 +133,7 @@
 			if (part)
 				if (istype(part,/obj/item/organ/external/chest) ||	\
 					istype(part,/obj/item/organ/external/groin))
-					part.take_damage(60, used_weapon = "Explosion")
+					part.take_external_damage(60, used_weapon = "Explosion")
 				else
 					part.droplimb(0,DROPLIMB_BLUNT)
 			explosion(T, -1, -1, 2, 3)

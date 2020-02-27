@@ -1,6 +1,7 @@
 GLOBAL_LIST_EMPTY(clients)   //all clients
 GLOBAL_LIST_EMPTY(admins)    //all clients whom are admins
 GLOBAL_PROTECT(admins)
+GLOBAL_LIST_EMPTY(deadmined_list)
 GLOBAL_LIST_EMPTY(ckey_directory) //all ckeys with associated client
 
 

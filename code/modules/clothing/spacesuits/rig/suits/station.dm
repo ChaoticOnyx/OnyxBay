@@ -42,24 +42,23 @@
 	suit_type = "industrial hardsuit"
 	desc = "A heavy, powerful rig used by construction crews and mining corporations."
 	icon_state = "engineering_rig"
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 100, rad = 50)
-	online_slowdown = 3
+	armor = list(melee = 75, bullet = 35, laser = 35,energy = 15, bomb = 50, bio = 100, rad = 100)
+	online_slowdown = 2
 	offline_slowdown = 10
-	vision_restriction = TINT_HEAVY
-	offline_vision_restriction = TINT_BLIND
-	emp_protection = -20
+	offline_vision_restriction = TINT_HEAVY
 
 	chest_type = /obj/item/clothing/suit/space/rig/industrial
 	helm_type = /obj/item/clothing/head/helmet/space/rig/industrial
 	boot_type = /obj/item/clothing/shoes/magboots/rig/industrial
 	glove_type = /obj/item/clothing/gloves/rig/industrial
 
-	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/weapon/storage/ore,/obj/item/device/t_scanner,/obj/item/weapon/pickaxe, /obj/item/weapon/rcd)
+	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/weapon/storage/ore,/obj/item/device/t_scanner,/obj/item/weapon/pickaxe, /obj/item/weapon/rcd, /obj/item/weapon/gun/energy/kinetic_accelerator, /obj/item/weapon/shovel, /obj/item/weapon/ore_radar, /obj/item/weapon/resonator)
 
 	req_access = list()
 	req_one_access = list()
 
 /obj/item/clothing/head/helmet/space/rig/industrial
+	brightness_on = 6
 	camera = /obj/machinery/camera/network/mining
 	species_restricted = list(SPECIES_HUMAN,SPECIES_SKRELL,SPECIES_TAJARA,SPECIES_UNATHI)
 
@@ -233,8 +232,7 @@
 
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/weapon/storage/firstaid,/obj/item/device/healthanalyzer,/obj/item/stack/medical,/obj/item/roller )
 
-	req_access = list()
-	req_one_access = list()
+	req_access = list(access_medical_equip)
 
 /obj/item/clothing/head/helmet/space/rig/medical
 	camera = /obj/machinery/camera/network/medbay
@@ -251,8 +249,6 @@
 
 /obj/item/weapon/rig/medical/equipped
 
-	req_access = list(access_medical_equip)
-
 	initial_modules = list(
 		/obj/item/rig_module/chem_dispenser/injector,
 		/obj/item/rig_module/maneuvering_jets,
@@ -267,7 +263,7 @@
 	desc = "A NanoTrasen security hardsuit designed for prolonged EVA in dangerous environments."
 	// TODO[V] Make icon_state resembling new naming
 	icon_state = "hazard_rig"
-	armor = list(melee = 50, bullet = 30, laser = 30, energy = 15, bomb = 65, bio = 100, rad = 30)
+	armor = list(melee = 60, bullet = 50, laser = 45, energy = 15, bomb = 70, bio = 100, rad = 60)
 	online_slowdown = 1
 	offline_slowdown = 3
 	offline_vision_restriction = TINT_BLIND
@@ -299,8 +295,10 @@
 /obj/item/weapon/rig/security/equipped
 
 	initial_modules = list(
-		/obj/item/rig_module/vision/sechud,
 		/obj/item/rig_module/maneuvering_jets,
+		/obj/item/rig_module/vision/nvg,
 		/obj/item/rig_module/mounted/taser,
+		/obj/item/rig_module/chem_dispenser/combat/security,
+		/obj/item/rig_module/grenade_launcher/flashbang,
 		/obj/item/rig_module/cooling_unit
 		)

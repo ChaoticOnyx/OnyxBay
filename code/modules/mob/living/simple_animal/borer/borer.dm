@@ -48,7 +48,7 @@
 	if(mind)
 		GLOB.borers.add_antagonist(mind)
 
-/mob/living/simple_animal/borer/New(atom/newloc, var/gen=1)
+/mob/living/simple_animal/borer/New(atom/newloc, gen=1)
 	..(newloc)
 
 	add_language("Cortical Link")

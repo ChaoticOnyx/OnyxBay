@@ -1261,7 +1261,7 @@ window "browserwindow"
 		anchor2 = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		title = "Browser"
-		is-pane = true
+		is-visible = false
 	elem "browser"
 		type = BROWSER
 		pos = 0,0

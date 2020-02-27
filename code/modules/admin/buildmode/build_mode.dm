@@ -5,7 +5,7 @@
 	var/datum/click_handler/build_mode/host
 	var/mob/user
 
-/datum/build_mode/New(var/host)
+/datum/build_mode/New(host)
 	..()
 	src.host = host
 	user = src.host.user
@@ -14,7 +14,7 @@
 	host = null
 	. = ..()
 
-/datum/build_mode/proc/OnClick(var/atom/A, var/list/parameters)
+/datum/build_mode/proc/OnClick(atom/A, list/parameters)
 	return
 
 /datum/build_mode/proc/Configurate()

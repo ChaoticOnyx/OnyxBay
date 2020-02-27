@@ -67,7 +67,7 @@
 	if(on && !client && !busy)
 		spawn(0)
 			handleAI()
-			
+
 	if(!on && client)
 		ghostize()
 
@@ -80,18 +80,19 @@
 	setOxyLoss(0)
 	setToxLoss(0)
 
-/mob/living/bot/adjustBruteLoss(var/amount)
+/mob/living/bot/adjustBruteLoss(amount)
 	if(amount > 0)
 		health -= amount
 
-/mob/living/bot/adjustFireLoss(var/amount)
+/mob/living/bot/adjustFireLoss(amount)
 	if(amount > 0)
 		health -= amount
 
 /mob/living/bot/death()
+	stat = DEAD
 	explode()
 
-/mob/living/bot/attackby(var/obj/item/O, var/mob/user)
+/mob/living/bot/attackby(obj/item/O, mob/user)
 	if(O.GetIdCard())
 		if(access_scanner.allowed(user) && !open)
 			locked = !locked
@@ -123,13 +124,13 @@
 	else
 		..()
 
-/mob/living/bot/attack_ai(var/mob/user)
+/mob/living/bot/attack_ai(mob/user)
 	Interact(user)
 
-/mob/living/bot/attack_hand(var/mob/user)
+/mob/living/bot/attack_hand(mob/user)
 	Interact(user)
 
-/mob/living/bot/proc/Interact(var/mob/user)
+/mob/living/bot/proc/Interact(mob/user)
 	add_fingerprint(user)
 	var/dat
 
@@ -156,7 +157,7 @@
 	popup.set_content(dat)
 	popup.open()
 
-/mob/living/bot/Topic(var/href, var/href_list)
+/mob/living/bot/Topic(href, href_list)
 	if(..())
 		return 1
 
@@ -185,7 +186,7 @@
 /mob/living/bot/proc/GetInteractMaintenance()
 	return
 
-/mob/living/bot/proc/ProcessCommand(var/mob/user, var/command, var/href_list)
+/mob/living/bot/proc/ProcessCommand(mob/user, command, href_list)
 	if(command == "toggle" && CanToggle(user))
 		if(on)
 			turn_off()
@@ -193,23 +194,23 @@
 			turn_on()
 	return
 
-/mob/living/bot/proc/CanToggle(var/mob/user)
+/mob/living/bot/proc/CanToggle(mob/user)
 	return (!RequiresAccessToToggle || access_scanner.allowed(user) || issilicon(user))
 
-/mob/living/bot/proc/CanAccessPanel(var/mob/user)
+/mob/living/bot/proc/CanAccessPanel(mob/user)
 	return (!locked || issilicon(user))
 
-/mob/living/bot/proc/CanAccessMaintenance(var/mob/user)
+/mob/living/bot/proc/CanAccessMaintenance(mob/user)
 	return (open || issilicon(user))
 
-/mob/living/bot/say(var/message)
+/mob/living/bot/say(message)
 	var/verb = "beeps"
 
 	message = sanitize(message)
 
 	..(message, null, verb)
 
-/mob/living/bot/Bump(var/atom/A)
+/mob/living/bot/Bump(atom/A)
 	if(on && botcard && istype(A, /obj/machinery/door))
 		var/obj/machinery/door/D = A
 		if(!istype(D, /obj/machinery/door/firedoor) && !istype(D, /obj/machinery/door/blast) && D.check_access(botcard))
@@ -217,10 +218,12 @@
 	else
 		..()
 
-/mob/living/bot/emag_act(var/remaining_charges, var/mob/user)
+/mob/living/bot/emag_act(remaining_charges, mob/user)
 	return 0
 
 /mob/living/bot/proc/handleAI()
+	if(client)
+		return
 	if(ignore_list.len)
 		for(var/atom/A in ignore_list)
 			if(!A || !A.loc || prob(1))
@@ -273,7 +276,7 @@
 			++frustration
 	return
 
-/mob/living/bot/proc/handleFrustrated(var/targ)
+/mob/living/bot/proc/handleFrustrated(targ)
 	obstacle = targ ? target_path[1] : patrol_path[1]
 	target_path = list()
 	patrol_path = list()
@@ -282,7 +285,7 @@
 /mob/living/bot/proc/lookForTargets()
 	return
 
-/mob/living/bot/proc/confirmTarget(var/atom/A)
+/mob/living/bot/proc/confirmTarget(atom/A)
 	if(A.invisibility >= INVISIBILITY_LEVEL_ONE)
 		return 0
 	if(A in ignore_list)
@@ -338,7 +341,7 @@
 		obstacle = null
 	return
 
-/mob/living/bot/proc/makeStep(var/list/path)
+/mob/living/bot/proc/makeStep(list/path)
 	if(!path.len)
 		return 0
 	var/turf/T = path[1]
@@ -373,6 +376,9 @@
 /mob/living/bot/proc/explode()
 	qdel(src)
 
+/mob/living/bot/on_ghost_possess()
+	resetTarget()
+
 /******************************************************************/
 // Navigation procs
 // Used for A-star pathfinding
@@ -380,7 +386,7 @@
 
 // Returns the surrounding cardinal turfs with open links
 // Including through doors openable with the ID
-/turf/proc/CardinalTurfsWithAccess(var/obj/item/weapon/card/id/ID)
+/turf/proc/CardinalTurfsWithAccess(obj/item/weapon/card/id/ID)
 	var/L[] = new()
 
 	//	for(var/turf/simulated/t in oview(src,1))
@@ -424,7 +430,7 @@
 
 // Returns true if direction is blocked from loc
 // Checks doors against access with given ID
-/proc/DirBlockedWithAccess(turf/loc,var/dir,var/obj/item/weapon/card/id/ID)
+/proc/DirBlockedWithAccess(turf/loc,dir,obj/item/weapon/card/id/ID)
 	for(var/obj/structure/window/D in loc)
 		if(!D.density)			continue
 		if(D.dir == SOUTHWEST)	return 1

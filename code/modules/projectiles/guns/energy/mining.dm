@@ -91,7 +91,7 @@
 			M.modify_projectile(src)
 	..()
 
-/obj/item/projectile/kinetic/on_impact(var/atom/A)
+/obj/item/projectile/kinetic/on_impact(atom/A)
 	strike_thing(A)
 	. = ..()
 

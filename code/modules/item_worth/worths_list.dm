@@ -226,7 +226,6 @@ var/list/worths = list(
 					/obj/item/weapon/plastique = 200,
 					/obj/item/weapon/extinguisher/mini = 20,
 					/obj/item/weapon/extinguisher = 40,
-					/obj/item/weapon/flamethrower = 60,
 					/obj/item/weapon/handcuffs/cable = 5,
 					/obj/item/weapon/handcuffs = 35,
 					/obj/item/weapon/rcd = 1000,

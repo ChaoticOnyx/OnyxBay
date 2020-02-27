@@ -3,7 +3,7 @@
 	real_name = "host brain"
 	universal_understand = 1
 
-/mob/living/captive_brain/say(var/message)
+/mob/living/captive_brain/say(message)
 
 	if (src.client)
 		if(client.prefs.muted & MUTE_IC)

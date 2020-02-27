@@ -29,7 +29,7 @@
 	if(is_hot(W))
 		light()
 
-/obj/item/weapon/flame/candle/resolve_attackby(var/atom/A, mob/user)
+/obj/item/weapon/flame/candle/resolve_attackby(atom/A, mob/user)
 	. = ..()
 	if(istype(A, /obj/item/weapon/flame/candle/) && is_hot(src))
 		var/obj/item/weapon/flame/candle/other_candle = A

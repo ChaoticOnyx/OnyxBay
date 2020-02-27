@@ -135,7 +135,7 @@
 	if(terminal)
 		terminal.connect_to_network()
 
-/obj/machinery/power/apc/drain_power(var/drain_check, var/surge, var/amount = 0)
+/obj/machinery/power/apc/drain_power(drain_check, surge, amount = 0)
 
 	if(drain_check)
 		return 1
@@ -160,7 +160,7 @@
 
 	return drained_energy
 
-/obj/machinery/power/apc/Initialize(mapload, var/ndir, var/building=0)
+/obj/machinery/power/apc/Initialize(mapload, ndir, building=0)
 
 	wires = new(src)
 
@@ -209,7 +209,7 @@
 
 	return ..()
 
-/obj/machinery/power/apc/proc/energy_fail(var/duration)
+/obj/machinery/power/apc/proc/energy_fail(duration)
 	if(emp_hardened)
 		return
 	failure_timer = max(failure_timer, round(duration))
@@ -670,7 +670,7 @@
 
 // attack with hand - remove cell (if cover open) or interact with the APC
 
-/obj/machinery/power/apc/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/power/apc/emag_act(remaining_charges, mob/user)
 	if (!(emagged || (hacker && !hacker.hacked_apcs_hidden)))		// trying to unlock with an emag card
 		if(opened)
 			to_chat(user, "You must close the cover to swipe an ID card.")
@@ -750,7 +750,7 @@
 	return ui_interact(user)
 
 
-/obj/machinery/power/apc/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+/obj/machinery/power/apc/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	if(!user)
 		return
 
@@ -846,11 +846,11 @@
 		else
 			needs_powerdown_sound = TRUE
 
-/obj/machinery/power/apc/proc/isWireCut(var/wireIndex)
+/obj/machinery/power/apc/proc/isWireCut(wireIndex)
 	return wires.IsIndexCut(wireIndex)
 
 
-/obj/machinery/power/apc/proc/can_use(mob/user as mob, var/loud = 0) //used by attack_hand() and Topic()
+/obj/machinery/power/apc/proc/can_use(mob/user as mob, loud = 0) //used by attack_hand() and Topic()
 	if (user.stat)
 		to_chat(user, "<span class='warning'>You must be conscious to use [src]!</span>")
 		return 0
@@ -974,7 +974,7 @@
 	return (chargemode && charging == 1 && operating)
 
 
-/obj/machinery/power/apc/draw_power(var/amount)
+/obj/machinery/power/apc/draw_power(amount)
 	if(terminal && terminal.powernet)
 		return terminal.powernet.draw_power(amount)
 	return 0
@@ -1142,7 +1142,7 @@
 // val 0=off, 1=off(auto) 2=on 3=on(auto)
 // on 0=off, 1=on, 2=autooff
 // defines a state machine, returns the new state
-obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
+obj/machinery/power/apc/proc/autoset(cur_state, on)
 	//autoset will never turn on a channel set to off
 	switch(cur_state)
 		if(POWERCHAN_OFF_TEMP)
@@ -1201,7 +1201,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 					cell.ex_act(3.0)
 	return
 
-/obj/machinery/power/apc/disconnect_terminal(var/obj/machinery/power/terminal/term)
+/obj/machinery/power/apc/disconnect_terminal(obj/machinery/power/terminal/term)
 	if(terminal)
 		terminal.master = null
 		terminal = null
@@ -1239,7 +1239,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 	update()
 
 // overload the lights in this APC area
-/obj/machinery/power/apc/proc/overload_lighting(var/chance = 100)
+/obj/machinery/power/apc/proc/overload_lighting(chance = 100)
 	if(/* !get_connection() || */ !operating || shorted)
 		return
 	if( cell && cell.charge>=20)
@@ -1266,7 +1266,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 
 
 // Malfunction: Transfers APC under AI's control
-/obj/machinery/power/apc/proc/ai_hack(var/mob/living/silicon/ai/A = null)
+/obj/machinery/power/apc/proc/ai_hack(mob/living/silicon/ai/A = null)
 	if(!A || !A.hacked_apcs || hacker || aidisabled || A.stat == DEAD)
 		return 0
 	src.hacker = A
@@ -1285,7 +1285,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 	w_class = ITEM_SIZE_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
-/obj/machinery/power/apc/malf_upgrade(var/mob/living/silicon/ai/user)
+/obj/machinery/power/apc/malf_upgrade(mob/living/silicon/ai/user)
 	..()
 	malf_upgraded = 1
 	emp_hardened = 1

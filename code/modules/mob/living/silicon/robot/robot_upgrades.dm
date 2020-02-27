@@ -10,7 +10,7 @@
 	var/require_module = 0
 	var/installed = 0
 
-/obj/item/borg/upgrade/proc/can_install(var/type, var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/proc/can_install(type, mob/living/silicon/robot/R)
 	if(R.module)
 		var/t = locate(type) in R.module.supported_upgrades
 		if (!t)
@@ -24,7 +24,7 @@
 			return 0
 	return 1
 
-/obj/item/borg/upgrade/proc/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/proc/action(mob/living/silicon/robot/R)
 	if(R.stat == DEAD)
 		to_chat(usr, "<span class='warning'>The [src] will not function on a deceased robot.</span>")
 		return 1
@@ -36,7 +36,7 @@
 	icon_state = "cyborg_upgrade1"
 	require_module = 1
 
-/obj/item/borg/upgrade/reset/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/reset/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 	R.uneq_all()
 	R.modtype = initial(R.modtype)
@@ -61,7 +61,7 @@
 /obj/item/borg/upgrade/remodel/advanced
 	icon_state = "cyborg_upgrade4"
 
-/obj/item/borg/upgrade/remodel/action(var/mob/living/silicon/robot/R, var/mob/user)
+/obj/item/borg/upgrade/remodel/action(mob/living/silicon/robot/R, mob/user)
 	if(..()) return 0
 	R.active_hud = 0
 	R.sensor_mode = 0
@@ -148,7 +148,7 @@
 /obj/item/borg/upgrade/rename/attack_self(mob/user as mob)
 	heldname = sanitizeSafe(input(user, "Enter new robot name", "Robot Reclassification", heldname), MAX_NAME_LEN)
 
-/obj/item/borg/upgrade/rename/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/rename/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 	spawn(1)
 		if (heldname == "")
@@ -165,7 +165,7 @@
 	desc = "Used to boost cyborg's light intensity."
 	icon_state = "cyborg_upgrade1"
 
-/obj/item/borg/upgrade/floodlight/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/floodlight/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(R.intenselight)
@@ -184,7 +184,7 @@
 	icon_state = "cyborg_upgrade1"
 
 
-/obj/item/borg/upgrade/restart/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/restart/action(mob/living/silicon/robot/R)
 	if(R.health < 0)
 		to_chat(usr, "You have to repair the robot before using this module!")
 		return 0
@@ -208,7 +208,7 @@
 	icon_state = "cyborg_upgrade2"
 	require_module = 1
 
-/obj/item/borg/upgrade/vtec/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/vtec/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(R.speed == -1)
@@ -226,7 +226,7 @@
 	require_module = 1
 
 
-/obj/item/borg/upgrade/tasercooler/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/tasercooler/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src,R))
@@ -258,7 +258,7 @@
 	require_module = 1
 
 
-/obj/item/borg/upgrade/lasercooler/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/lasercooler/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src,R))
@@ -289,7 +289,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/jetpack/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/jetpack/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -311,7 +311,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/visor/thermal/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/visor/thermal/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -327,7 +327,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/visor/nvg/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/visor/nvg/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -343,7 +343,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/visor/flash_screen/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/visor/flash_screen/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -359,7 +359,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/visor/meson/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/visor/meson/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -375,7 +375,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/visor/x_ray/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/visor/x_ray/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -391,7 +391,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/rcd/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/rcd/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -407,7 +407,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/rped/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/rped/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -423,7 +423,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/bb_printer/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/bb_printer/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src,R))
@@ -439,7 +439,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/paramedic/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/paramedic/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -464,7 +464,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/paperwork/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/paperwork/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -486,7 +486,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/cargo_managment/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/cargo_managment/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -506,7 +506,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/detective/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/detective/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -533,7 +533,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/archeologist/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/archeologist/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -565,7 +565,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/storage/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/storage/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -581,7 +581,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/organ_printer/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/organ_printer/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -597,7 +597,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/blood_printer/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/blood_printer/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -613,7 +613,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/pipe_printer/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/pipe_printer/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -629,7 +629,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/engineer_printer/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/engineer_printer/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(!can_install(src, R))
@@ -645,7 +645,7 @@
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
-/obj/item/borg/upgrade/syndicate/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/syndicate/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 
 	if(R.emagged == 1)
@@ -664,7 +664,7 @@
 	var/active = 1
 	var/broken = 0
 
-/obj/item/borg/upgrade/death_alarm/proc/activate(var/cause)
+/obj/item/borg/upgrade/death_alarm/proc/activate(cause)
 	var/area/t = get_area(host)
 	var/location = t.name
 	if (cause == "emp" && prob(50))
@@ -709,7 +709,7 @@
 			desc = "Charred circuit. Wonder what that used to be..."
 			STOP_PROCESSING(SSobj, src)
 
-/obj/item/borg/upgrade/death_alarm/action(var/mob/living/silicon/robot/R)
+/obj/item/borg/upgrade/death_alarm/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 	if(!can_install(src, R))
 		return 0

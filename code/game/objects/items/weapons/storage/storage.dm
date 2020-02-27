@@ -137,10 +137,10 @@
 			if(!stop_messages && !istype(W, /obj/item/weapon/hand_labeler))
 				to_chat(user, "<span class='notice'>\The [src] has no more space specifically for \the [W].</span>")
 			return 0
-			
+
 	//If attempting to lable the storage item, silently fail to allow it
 	if(istype(W, /obj/item/weapon/hand_labeler) && user.a_intent != I_HELP)
-		return FALSE		
+		return FALSE
 
 	// Don't allow insertion of unsafed compressed matter implants
 	// Since they are sucking something up now, their afterattack will delete the storage
@@ -177,7 +177,7 @@
 //This proc handles items being inserted. It does not perform any checks of whether an item can or can't be inserted. That's done by can_be_inserted()
 //The stop_warning parameter will stop the insertion message from being displayed. It is intended for cases where you are inserting multiple items at once,
 //such as when picking up all the items on a tile with one click.
-/obj/item/weapon/storage/proc/handle_item_insertion(var/obj/item/W, var/prevent_warning = 0, var/NoUpdate = 0)
+/obj/item/weapon/storage/proc/handle_item_insertion(obj/item/W, prevent_warning = 0, NoUpdate = 0)
 	if(!istype(W))
 		return 0
 	if(istype(W.loc, /mob))
@@ -217,7 +217,7 @@
 		storage_ui.on_post_remove(usr)
 
 //Call this proc to handle the removal of an item from the storage item. The item will be moved to the atom sent as new_target
-/obj/item/weapon/storage/proc/remove_from_storage(obj/item/W as obj, atom/new_location, var/NoUpdate = 0)
+/obj/item/weapon/storage/proc/remove_from_storage(obj/item/W as obj, atom/new_location, NoUpdate = 0)
 	if(!istype(W)) return 0
 	new_location = new_location || get_turf(src)
 	if(storage_ui)
@@ -283,7 +283,7 @@
 	W.add_fingerprint(user)
 	return handle_item_insertion(W)
 
-/obj/item/weapon/storage/attack_hand(mob/user as mob)
+/obj/item/weapon/storage/attack_hand(mob/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.l_store == src && !H.get_active_hand())	//Prevents opening if it's in a pocket.
@@ -295,15 +295,15 @@
 			H.r_store = null
 			return
 
-	if (src.loc == user)
-		src.open(user)
+	if (loc == user)
+		open(user)
 	else
 		..()
 		storage_ui.on_hand_attack(user)
-	src.add_fingerprint(user)
+	add_fingerprint(user)
 	return
 
-/obj/item/weapon/storage/proc/gather_all(var/turf/T, var/mob/user)
+/obj/item/weapon/storage/proc/gather_all(turf/T, mob/user)
 	var/success = 0
 	var/failure = 0
 

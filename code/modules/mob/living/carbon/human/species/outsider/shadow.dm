@@ -22,10 +22,10 @@
 
 	genders = list(NEUTER)
 
-/datum/species/shadow/handle_death(var/mob/living/carbon/human/H)
+/datum/species/shadow/handle_death(mob/living/carbon/human/H)
 	H.dust()
 
-/datum/species/shadow/handle_environment_special(var/mob/living/carbon/human/H)
+/datum/species/shadow/handle_environment_special(mob/living/carbon/human/H)
 	if(H.InStasis() || H.stat == DEAD || H.isSynthetic())
 		return
 	var/light_amount = 0

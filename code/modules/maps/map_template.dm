@@ -10,7 +10,7 @@
 	var/accessibility_weight = 0
 	var/template_flags = TEMPLATE_FLAG_ALLOW_DUPLICATES
 
-/datum/map_template/New(var/list/paths = null, var/rename = null)
+/datum/map_template/New(list/paths = null, rename = null)
 	if(paths && !islist(paths))
 		crash_with("Non-list paths passed into map template constructor.")
 	if(paths)
@@ -35,7 +35,7 @@
 	tallness = bounds[MAP_MAXZ] - bounds[MAP_MINZ] + 1
 	return TRUE
 
-/datum/map_template/proc/init_atoms(var/list/atoms)
+/datum/map_template/proc/init_atoms(list/atoms)
 	if (SSatoms.init_state == INITIALIZATION_INSSATOMS)
 		return // let proper initialisation handle it later
 
@@ -137,7 +137,7 @@
 
 	return TRUE
 
-/datum/map_template/proc/extend_bounds_if_needed(var/list/existing_bounds, var/list/new_bounds)
+/datum/map_template/proc/extend_bounds_if_needed(list/existing_bounds, list/new_bounds)
 	var/list/bounds_to_combine = existing_bounds.Copy()
 	for (var/min_bound in list(MAP_MINX, MAP_MINY, MAP_MINZ))
 		bounds_to_combine[min_bound] = min(existing_bounds[min_bound], new_bounds[min_bound])
@@ -156,6 +156,6 @@
 
 //for your ever biggening badminnery kevinz000
 //❤ - Cyberboss
-/proc/load_new_z_level(var/file, var/name)
+/proc/load_new_z_level(file, name)
 	var/datum/map_template/template = new(file, name)
 	template.load_new_z()

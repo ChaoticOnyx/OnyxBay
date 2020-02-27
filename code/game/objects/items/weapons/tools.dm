@@ -246,27 +246,6 @@
 		src.add_fingerprint(user)
 		return
 
-	if((!status) && (istype(W,/obj/item/stack/rods)))
-		var/obj/item/stack/rods/R = W
-		R.use(1)
-		var/obj/item/weapon/flamethrower/F = new /obj/item/weapon/flamethrower(user.loc)
-		src.loc = F
-		F.weldtool = src
-		if (user.client)
-			user.client.screen -= src
-		if (user.r_hand == src)
-			user.remove_from_mob(src)
-		else
-			user.remove_from_mob(src)
-		src.master = F
-		src.reset_plane_and_layer()
-		user.remove_from_mob(src)
-		if (user.client)
-			user.client.screen -= src
-		src.loc = F
-		src.add_fingerprint(user)
-		return
-
 	if((!status) && (istype(W,/obj/item/pipe)))
 		if(tank)
 			to_chat(user, "<span class='notice'>You should detach \the [tank] first.</span>")
@@ -354,7 +333,7 @@
 
 
 //Removes fuel from the welding tool. If a mob is passed, it will perform an eyecheck on the mob. This should probably be renamed to use()
-/obj/item/weapon/weldingtool/proc/remove_fuel(var/amount = 1, var/mob/M = null)
+/obj/item/weapon/weldingtool/proc/remove_fuel(amount = 1, mob/M = null)
 	if(!welding)
 		return 0
 	if(get_fuel() >= amount)
@@ -368,7 +347,7 @@
 			to_chat(M, "<span class='notice'>You need more welding fuel to complete this task.</span>")
 		return 0
 
-/obj/item/weapon/weldingtool/proc/burn_fuel(var/amount)
+/obj/item/weapon/weldingtool/proc/burn_fuel(amount)
 	if(!tank)
 		return
 
@@ -420,7 +399,7 @@
 
 //Sets the welding state of the welding tool. If you see W.welding = 1 anywhere, please change it to W.setWelding(1)
 //so that the welding tool updates accordingly
-/obj/item/weapon/weldingtool/proc/setWelding(var/set_welding, var/mob/M)
+/obj/item/weapon/weldingtool/proc/setWelding(set_welding, mob/M)
 	if(!status)	return
 
 	var/turf/T = get_turf(src)
@@ -542,7 +521,7 @@
 	desc = "A heavy-duty portable welder, made to ensure it won't suddenly go cold on you."
 	origin_tech = list(TECH_ENGINEERING = 2)
 	matter = list(MATERIAL_STEEL = 70, MATERIAL_GLASS = 60)
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.2
 	mod_reach = 0.75
 	mod_handy = 0.75
@@ -551,7 +530,7 @@
 /obj/item/weapon/welder_tank/large
 	name = "large welding fuel tank"
 	icon_state = "fuel_l"
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEM_SIZE_SMALL
 	max_fuel = 40
 
 /obj/item/weapon/weldingtool/hugetank
@@ -559,7 +538,7 @@
 	icon_state = "welder_h"
 	item_state = "welder"
 	desc = "A sizable welding tool with room to accomodate the largest of fuel tanks."
-	w_class = ITEM_SIZE_HUGE
+	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.45
 	mod_reach = 1.0
 	mod_handy = 0.75
@@ -570,7 +549,7 @@
 /obj/item/weapon/welder_tank/huge
 	name = "huge welding fuel tank"
 	icon_state = "fuel_h"
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_SMALL
 	max_fuel = 80
 
 /obj/item/weapon/weldingtool/experimental
@@ -578,7 +557,7 @@
 	icon_state = "welder_l"
 	item_state = "welder"
 	desc = "This welding tool feels heavier in your possession than is normal. There appears to be no external fuel port."
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_NORMAL
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_PHORON = 3)
 	matter = list(MATERIAL_STEEL = 70, MATERIAL_GLASS = 120)
 	tank = /obj/item/weapon/welder_tank/experimental
@@ -586,7 +565,7 @@
 /obj/item/weapon/welder_tank/experimental
 	name = "experimental welding fuel tank"
 	icon_state = "fuel_x"
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEM_SIZE_SMALL
 	max_fuel = 40
 	can_remove = 0
 	var/last_gen = 0
@@ -724,7 +703,7 @@
 	if(!tool) return 0
 	return (tool ? tool.attack(M,user) : 0)
 
-/obj/item/weapon/combitool/afterattack(var/atom/target, var/mob/living/user, proximity, params)
+/obj/item/weapon/combitool/afterattack(atom/target, mob/living/user, proximity, params)
 	if(!proximity)
 		return 0
 	var/obj/item/tool = tools[current_tool]

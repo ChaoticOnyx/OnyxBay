@@ -18,7 +18,7 @@
 //helper for inverting armor blocked values into a multiplier
 #define blocked_mult(blocked) max(1 - (blocked/100), 0)
 
-/proc/mobs_in_view(var/range, var/source)
+/proc/mobs_in_view(range, source)
 	var/list/mobs = list()
 	for(var/atom/movable/AM in view(range, source))
 		var/M = AM.get_mob()
@@ -37,7 +37,7 @@ proc/random_hair_style(gender, species = SPECIES_HUMAN)
 
 	return h_style
 
-proc/random_facial_hair_style(gender, var/species = SPECIES_HUMAN)
+proc/random_facial_hair_style(gender, species = SPECIES_HUMAN)
 	var/f_style = "Shaved"
 
 	var/datum/species/mob_species = all_species[species]
@@ -68,7 +68,7 @@ proc/random_name(gender, species = SPECIES_HUMAN)
 	else
 		return current_species.get_random_name(gender)
 
-proc/random_skin_tone(var/datum/species/current_species)
+proc/random_skin_tone(datum/species/current_species)
 	var/species_tone = current_species ? 35 - current_species.max_skin_tone() : -185
 	switch(pick(60;"caucasian", 15;"afroamerican", 10;"african", 10;"latino", 5;"albino"))
 		if("caucasian")		. = -10
@@ -113,16 +113,16 @@ proc/age2agedescription(age)
 	return icon_states[icon_states.len] // If we had no match, return the last element
 
 //checks whether this item is a module of the robot it is located in.
-/proc/is_robot_module(var/obj/item/thing)
+/proc/is_robot_module(obj/item/thing)
 	if (!thing || !istype(thing.loc, /mob/living/silicon/robot))
 		return 0
 	var/mob/living/silicon/robot/R = thing.loc
 	return (thing in R.module.modules)
 
-/proc/get_exposed_defense_zone(var/atom/movable/target)
+/proc/get_exposed_defense_zone(atom/movable/target)
 	return pick(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_FOOT, BP_R_FOOT, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG, BP_CHEST, BP_GROIN)
 
-/proc/do_mob(mob/user , mob/target, time = 30, target_zone = 0, uninterruptible = 0, progress = 1, var/incapacitation_flags = INCAPACITATION_DEFAULT)
+/proc/do_mob(mob/user , mob/target, time = 30, target_zone = 0, uninterruptible = 0, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT)
 	if(!user || !target)
 		return 0
 	var/user_loc = user.loc
@@ -165,7 +165,7 @@ proc/age2agedescription(age)
 	if (progbar)
 		qdel(progbar)
 
-/proc/do_after(mob/user, delay, atom/target = null, needhand = 1, progress = 1, var/incapacitation_flags = INCAPACITATION_DEFAULT, var/same_direction = 0, var/can_move = 0)
+/proc/do_after(mob/user, delay, atom/target = null, needhand = 1, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = 0, can_move = 0)
 	if(!user)
 		return 0
 	var/atom/target_loc = null
@@ -209,7 +209,7 @@ proc/age2agedescription(age)
 	if (progbar)
 		qdel(progbar)
 
-/proc/able_mobs_in_oview(var/origin)
+/proc/able_mobs_in_oview(origin)
 	var/list/mobs = list()
 	for(var/mob/living/M in oview(origin)) // Only living mobs are considered able.
 		if(!M.is_physically_disabled())
@@ -253,7 +253,7 @@ proc/age2agedescription(age)
 	return GLOB.dead_mob_list_.Remove(src)
 
 //Find a dead mob with a brain and client.
-/proc/find_dead_player(var/find_key, var/include_observers = 0)
+/proc/find_dead_player(find_key, include_observers = 0)
 	if(isnull(find_key))
 		return
 
@@ -281,3 +281,57 @@ proc/age2agedescription(age)
 				break
 
 	return selected
+
+// Returns a worn item in target zone, if any.
+/proc/get_target_clothes(mob/living/carbon/human/target, target_zone)
+	if(!target)
+		return
+	if(!ishuman(target))
+		return
+	if(!target_zone)
+		return
+
+	. = list()
+	switch(target_zone)
+		if(BP_HEAD)
+			if(target.head)
+				. += target.head
+		if(BP_MOUTH)
+			if(istype(target.head, /obj/item/clothing/head/helmet/space))
+				. += target.head
+			else if(target.wear_mask)
+				. += target.wear_mask
+		if(BP_EYES)
+			if(istype(target.head, /obj/item/clothing/head/helmet/space))
+				. += target.head
+			else if(target.glasses)
+				. += target.glasses
+
+		if(BP_CHEST, BP_L_LEG, BP_R_LEG, BP_L_ARM, BP_R_ARM)
+			if(target.wear_suit)
+				. += target.wear_suit
+			if(target.w_uniform)
+				. += target.w_uniform
+		if(BP_GROIN)
+			if(target.wear_suit)
+				. += target.wear_suit
+			if(target.w_uniform)
+				. += target.w_uniform
+			if(istype(target.belt, /obj/item/weapon/storage))
+				. += target.belt
+
+		if(BP_L_FOOT, BP_R_FOOT)
+			if(target.shoes)
+				. += target.shoes
+		if(BP_L_HAND, BP_L_HAND)
+			if(target.gloves)
+				. += target.gloves
+
+/proc/organ_name_by_zone(mob/living/carbon/human/target, target_zone)
+	if(!target)
+		return
+	if(!target_zone)
+		return
+
+	var/obj/item/organ/O = target.organs_by_name[target_zone]
+	return O ? O.name : target_zone

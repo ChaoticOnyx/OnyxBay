@@ -5,7 +5,7 @@
 	icon_state = "taperoll"
 	w_class = ITEM_SIZE_SMALL
 
-/obj/item/weapon/tape_roll/attack(var/mob/living/carbon/human/H, var/mob/user)
+/obj/item/weapon/tape_roll/attack(mob/living/carbon/human/H, mob/user)
 	if(istype(H))
 		if(user.zone_sel.selecting == BP_EYES)
 
@@ -75,7 +75,7 @@
 			return ..()
 		return 1
 
-/obj/item/weapon/tape_roll/proc/stick(var/obj/item/weapon/W, mob/user)
+/obj/item/weapon/tape_roll/proc/stick(obj/item/weapon/W, mob/user)
 	if(!istype(W, /obj/item/weapon/paper))
 		return
 	user.drop_from_inventory(W)
@@ -93,7 +93,7 @@
 
 	var/obj/item/weapon/stuck = null
 
-/obj/item/weapon/ducttape/attack_hand(var/mob/user)
+/obj/item/weapon/ducttape/attack_hand(mob/user)
 	anchored = FALSE // Unattach it from whereever it's on, if anything.
 	return ..()
 
@@ -104,7 +104,7 @@
 /obj/item/weapon/ducttape/examine(mob/user)
 	return stuck ? stuck.examine(user) : ..()
 
-/obj/item/weapon/ducttape/proc/attach(var/obj/item/weapon/W)
+/obj/item/weapon/ducttape/proc/attach(obj/item/weapon/W)
 	stuck = W
 	anchored = TRUE
 	W.forceMove(src)
@@ -124,7 +124,7 @@
 	overlays = null
 	qdel(src)
 
-/obj/item/weapon/ducttape/afterattack(var/A, mob/user, flag, params)
+/obj/item/weapon/ducttape/afterattack(A, mob/user, flag, params)
 
 	if(!in_range(user, A) || istype(A, /obj/machinery/door) || !stuck)
 		return

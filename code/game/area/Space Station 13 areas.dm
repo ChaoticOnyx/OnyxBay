@@ -115,6 +115,10 @@ area/space/atmosalert()
 /area/hallway
 	name = "hallway"
 
+/area/hallway/Initialize()
+	. = ..()
+	GLOB.hallway += src
+
 /area/medical
 	ambience = list("global_ambient", "science_ambient")
 
@@ -161,6 +165,11 @@ area/space/atmosalert()
 /area/rnd/xenobiology
 	name = "\improper Xenobiology Lab"
 	icon_state = "xeno_lab"
+
+/area/rnd/xenobiology/dorm
+	name = "\improper Xenobiology Lab Dormitories"
+	icon_state = "xeno_lab_dorm"
+
 
 /area/rnd/xenobiology/xenoflora
 	name = "\improper Xenoflora Lab"

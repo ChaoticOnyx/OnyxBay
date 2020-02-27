@@ -98,7 +98,7 @@
 	dat += "</table>"
 	show_browser(src, dat, "window=godform;can_close=0")
 
-/mob/living/deity/proc/set_form(var/type)
+/mob/living/deity/proc/set_form(type)
 	form = new type(src)
 	to_chat(src, "<span class='notice'>You undergo a transformation into your new form!</span>")
 	spawn(1)
@@ -114,7 +114,7 @@
 		L.faction = form.faction
 
 //Gets the name based on form, or if there is no form name, type.
-/mob/living/deity/proc/get_type_name(var/type)
+/mob/living/deity/proc/get_type_name(type)
 	if(form && form.buildables[type])
 		var/list/vars = form.buildables[type]
 		if(vars["name"])

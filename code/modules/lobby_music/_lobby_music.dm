@@ -10,7 +10,7 @@ GLOBAL_DATUM(lobby_music, /lobby_music)
 	var/song
 	var/url // Remember to include http:// or https://
 
-/lobby_music/proc/play_to(var/listener)
+/lobby_music/proc/play_to(listener)
 	if(!song)
 		return
 	if(title)
@@ -20,5 +20,5 @@ GLOBAL_DATUM(lobby_music, /lobby_music)
 		to_chat(listener, url)
 	if(license)
 		var/license_url = license_to_url[license]
-		to_chat(listener, "<span class='good'>License: [license_url ? "<a href='[license_url]'>[license]</a>" : license]</span>")
+		to_chat(listener, "<span class='good linkify'>License: [license_url ? "<a href='[license_url]'>[license]</a>" : license]</span>")
 	sound_to(listener, sound(song, repeat = 0, wait = 0, volume = 70, channel = 1))

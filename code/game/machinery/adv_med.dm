@@ -101,7 +101,7 @@
 	else
 		return
 
-/obj/machinery/bodyscanner/proc/check_compatibility(var/mob/target, var/mob/user)
+/obj/machinery/bodyscanner/proc/check_compatibility(mob/target, mob/user)
 	if(!istype(user) || !istype(target))
 		return FALSE
 
@@ -125,7 +125,7 @@
 			return FALSE
 	return TRUE
 
-/obj/machinery/bodyscanner/MouseDrop_T(var/mob/target, var/mob/user)
+/obj/machinery/bodyscanner/MouseDrop_T(mob/target, mob/user)
 	if(!check_compatibility(target, user))
 		return
 	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")

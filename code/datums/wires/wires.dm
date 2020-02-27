@@ -26,7 +26,7 @@ var/list/wireColours = list("red", "blue", "green", "darkred", "orange", "brown"
 	var/window_x = 370
 	var/window_y = 470
 
-/datum/wires/New(var/atom/holder)
+/datum/wires/New(atom/holder)
 	..()
 	src.holder = holder
 	if(!istype(holder, holder_type))
@@ -69,7 +69,7 @@ var/list/wireColours = list("red", "blue", "green", "darkred", "orange", "brown"
 		//wires = shuffle(wires)
 
 
-/datum/wires/proc/Interact(var/mob/living/user)
+/datum/wires/proc/Interact(mob/living/user)
 
 	var/html = null
 	if(holder && CanUse(user))
@@ -160,14 +160,14 @@ var/list/wireColours = list("red", "blue", "green", "darkred", "orange", "brown"
 //
 
 // Called when wires cut/mended.
-/datum/wires/proc/UpdateCut(var/index, var/mended)
+/datum/wires/proc/UpdateCut(index, mended)
 	return
 
 // Called when wire pulsed. Add code here.
-/datum/wires/proc/UpdatePulsed(var/index)
+/datum/wires/proc/UpdatePulsed(index)
 	return
 
-/datum/wires/proc/CanUse(var/mob/living/L)
+/datum/wires/proc/CanUse(mob/living/L)
 	return 1
 
 // Example of use:
@@ -178,7 +178,7 @@ var/const/SHOCKED = 2
 var/const/SAFETY = 4
 var/const/POWER = 8
 
-/datum/wires/door/UpdateCut(var/index, var/mended)
+/datum/wires/door/UpdateCut(index, mended)
 	var/obj/machinery/door/airlock/A = holder
 	switch(index)
 		if(BOLTED)
@@ -196,15 +196,15 @@ var/const/POWER = 8
 // Helper Procs
 //
 
-/datum/wires/proc/PulseColour(var/colour)
+/datum/wires/proc/PulseColour(colour)
 	PulseIndex(GetIndex(colour))
 
-/datum/wires/proc/PulseIndex(var/index)
+/datum/wires/proc/PulseIndex(index)
 	if(IsIndexCut(index))
 		return
 	UpdatePulsed(index)
 
-/datum/wires/proc/GetIndex(var/colour)
+/datum/wires/proc/GetIndex(colour)
 	if(wires[colour])
 		var/index = wires[colour]
 		return index
@@ -220,28 +220,28 @@ var/const/POWER = 8
 // Is Index/Colour Cut procs
 //
 
-/datum/wires/proc/IsColourCut(var/colour)
+/datum/wires/proc/IsColourCut(colour)
 	var/index = GetIndex(colour)
 	return IsIndexCut(index)
 
-/datum/wires/proc/IsIndexCut(var/index)
+/datum/wires/proc/IsIndexCut(index)
 	return (index & wires_status)
 
 //
 // Signaller Procs
 //
 
-/datum/wires/proc/IsAttached(var/colour)
+/datum/wires/proc/IsAttached(colour)
 	if(signallers[colour])
 		return 1
 	return 0
 
-/datum/wires/proc/GetAttached(var/colour)
+/datum/wires/proc/GetAttached(colour)
 	if(signallers[colour])
 		return signallers[colour]
 	return null
 
-/datum/wires/proc/Attach(var/colour, var/obj/item/device/assembly/signaler/S)
+/datum/wires/proc/Attach(colour, obj/item/device/assembly/signaler/S)
 	if(colour && S)
 		if(!IsAttached(colour))
 			signallers[colour] = S
@@ -249,7 +249,7 @@ var/const/POWER = 8
 			S.connected = src
 			return S
 
-/datum/wires/proc/Detach(var/colour)
+/datum/wires/proc/Detach(colour)
 	if(colour)
 		var/obj/item/device/assembly/signaler/S = GetAttached(colour)
 		if(S)
@@ -259,7 +259,7 @@ var/const/POWER = 8
 			return S
 
 
-/datum/wires/proc/Pulse(var/obj/item/device/assembly/signaler/S)
+/datum/wires/proc/Pulse(obj/item/device/assembly/signaler/S)
 
 	for(var/colour in signallers)
 		if(S == signallers[colour])
@@ -270,11 +270,11 @@ var/const/POWER = 8
 // Cut Wire Colour/Index procs
 //
 
-/datum/wires/proc/CutWireColour(var/colour)
+/datum/wires/proc/CutWireColour(colour)
 	var/index = GetIndex(colour)
 	CutWireIndex(index)
 
-/datum/wires/proc/CutWireIndex(var/index)
+/datum/wires/proc/CutWireIndex(index)
 	if(IsIndexCut(index))
 		wires_status &= ~index
 		UpdateCut(index, 1)
@@ -286,7 +286,7 @@ var/const/POWER = 8
 	var/r = rand(1, wires.len)
 	CutWireIndex(r)
 
-/datum/wires/proc/RandomCutAll(var/probability = 10)
+/datum/wires/proc/RandomCutAll(probability = 10)
 	for(var/i = 1; i < MAX_FLAG && i < (1 << wire_count); i += i)
 		if(prob(probability))
 			CutWireIndex(i)

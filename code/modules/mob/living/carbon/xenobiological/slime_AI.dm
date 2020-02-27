@@ -89,7 +89,7 @@
 			else if(canmove && isturf(loc) && prob(33))
 				step(src, pick(GLOB.cardinal))
 
-/mob/living/carbon/slime/proc/AssessTarget(var/mob/living/M)
+/mob/living/carbon/slime/proc/AssessTarget(mob/living/M)
 	if(isslime(M)) // Ignore other slimes
 		return 0
 
@@ -347,7 +347,7 @@
 					phrases += "[M]... feed me..."
 			say (pick(phrases))
 
-/mob/living/carbon/slime/proc/will_hunt(var/hunger) // Check for being stopped from feeding and chasing
+/mob/living/carbon/slime/proc/will_hunt(hunger) // Check for being stopped from feeding and chasing
 	if (hunger == 2 || rabid || attacked) return 1
 	if (Leader) return 0
 	if (holding_still) return 0

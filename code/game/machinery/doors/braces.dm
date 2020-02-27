@@ -24,7 +24,7 @@
 	var/obj/item/weapon/airlock_electronics/brace/electronics
 
 
-/obj/item/weapon/airlock_brace/examine(var/mob/user)
+/obj/item/weapon/airlock_brace/examine(mob/user)
 	. = ..()
 	to_chat(user, examine_health())
 
@@ -113,7 +113,7 @@
 				to_chat(user, "You repair some dents on \the [src].")
 
 
-/obj/item/weapon/airlock_brace/proc/take_damage(var/amount)
+/obj/item/weapon/airlock_brace/proc/take_damage(amount)
 	cur_health = between(0, cur_health - amount, max_health)
 	if(!cur_health)
 		if(airlock)
@@ -122,7 +122,7 @@
 		qdel(src)
 
 
-/obj/item/weapon/airlock_brace/proc/unlock_brace(var/mob/user)
+/obj/item/weapon/airlock_brace/proc/unlock_brace(mob/user)
 	if(!airlock)
 		return
 	if(user)

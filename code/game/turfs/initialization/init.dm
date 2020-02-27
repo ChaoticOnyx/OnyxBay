@@ -1,4 +1,4 @@
-/decl/turf_initializer/proc/InitializeTurf(var/turf/T)
+/decl/turf_initializer/proc/InitializeTurf(turf/T)
 	return
 
 /area
