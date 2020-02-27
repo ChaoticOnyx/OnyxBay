@@ -64,4 +64,3 @@
 /mob/new_player/proc/deferred_login()
 	if(client)
 		client.playtitlemusic()
-		log_game("connected as new player")
