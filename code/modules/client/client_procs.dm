@@ -52,7 +52,7 @@
 			completed_asset_jobs += job
 			return
 
-	if (!holder && config.minutetopiclimit)
+	if (config.minutetopiclimit)
 		var/minute = round(world.time, 600)
 		if (!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -70,7 +70,7 @@
 			to_chat(src, "<span class='danger'>[msg]</span>")
 			return
 
-	if (!holder && config.secondtopiclimit)
+	if (config.secondtopiclimit)
 		var/second = round(world.time, 10)
 		if (!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
