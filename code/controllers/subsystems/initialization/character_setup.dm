@@ -29,7 +29,7 @@ SUBSYSTEM_DEF(character_setup)
 		save_queue.len--
 
 		if(!QDELETED(prefs))
-			SScharacter_setup.queue_preferences_save(prefs)
+			prefs.save_preferences()
 
 		if(MC_TICK_CHECK)
 			return

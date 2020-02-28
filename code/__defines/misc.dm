@@ -222,6 +222,3 @@
 #define FOURSPACES "&nbsp;&nbsp;&nbsp;&nbsp;"
 #define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
 #define GRAYSCALE list(0.3,0.3,0.3,0,0.59,0.59,0.59,0,0.11,0.11,0.11,0,0,0,0,1,0,0,0,0)
-
-//Preference save/load cooldown. This is in deciseconds.
-#define PREF_SAVELOAD_COOLDOWN 2 //Should be sufficiently hard to achieve without a broken mouse or autoclicker while still fulfilling its intended goal. 
