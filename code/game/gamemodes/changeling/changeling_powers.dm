@@ -618,7 +618,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 			adjustOxyLoss(-5)
 			adjustFireLoss(-5)
 			--heals
-			sleep(2 SECONDS)
+			sleep(1 SECONDS)
 		else
 			return
 
