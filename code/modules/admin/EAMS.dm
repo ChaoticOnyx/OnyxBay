@@ -154,7 +154,7 @@ var/global/EAMS_next_check_time = 0
 			return TRUE
 
 		if(text2num(http["X-Rl"]) == 0)
-			EAMS_next_check_time = world.time + text2num(http["X-Ttl"])
+			EAMS_next_check_time = world.time + text2num(http["X-Ttl"] SECONDS)
 
 		try
 			response = json_decode(file2text(http["CONTENT"]))
@@ -214,7 +214,7 @@ var/global/EAMS_next_check_time = 0
 			eams_info.ip_country = "unknown"
 
 		to_chat(usr, "<span class='warning'>You were blocked by EAMS! Please, contact Administrators.</span>")
-		log_and_message_admins("Failed join the game: [key] ([address]) connected from [eams_info.ip_country] ([eams_info.ip_countryCode]) [eams_info.ip_proxy] ? with proxy! : without proxy.", 0)
+		log_and_message_admins("Failed join the game: [key] ([address]) connected from [eams_info.ip_country] ([eams_info.ip_countryCode]) [eams_info.ip_proxy ? "with proxy!" : "without proxy."]", 0)
 
 		return FALSE
 
