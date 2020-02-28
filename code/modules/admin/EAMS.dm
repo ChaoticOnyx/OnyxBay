@@ -154,7 +154,7 @@ var/global/EAMS_next_check_time = 0
 			return TRUE
 
 		if(text2num(http["X-Rl"]) == 0)
-			EAMS_next_check_time = world.time + text2num(http["X-Ttl"] SECONDS)
+			EAMS_next_check_time = world.time + text2num(http["X-Ttl"]) SECONDS
 
 		try
 			response = json_decode(file2text(http["CONTENT"]))
