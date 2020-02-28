@@ -78,7 +78,7 @@
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/structure/alien/egg/CanUseTopic(var/mob/user)
+/obj/structure/alien/egg/CanUseTopic(mob/user)
 	return isghost(user) ? STATUS_INTERACTIVE : STATUS_CLOSE
 
 /obj/structure/alien/egg/Topic(href, href_list)
@@ -105,7 +105,7 @@
 	else
 		icon_state = "egg"
 
-/obj/structure/alien/egg/attack_ghost(var/mob/observer/ghost/user)
+/obj/structure/alien/egg/attack_ghost(mob/observer/ghost/user)
 	if(progress == -1) //Egg has been hatched
 		return
 
@@ -236,7 +236,7 @@
 				qdel(src)
 	return
 
-/obj/effect/alien/weeds/attackby(var/obj/item/weapon/W, var/mob/user)
+/obj/effect/alien/weeds/attackby(obj/item/weapon/W, mob/user)
 	if(W.attack_verb.len)
 		visible_message("<span class='danger'>\The [src] have been [pick(W.attack_verb)] with \the [W][(user ? " by [user]." : ".")]</span>")
 	else
@@ -252,7 +252,7 @@
 		if(prob(50))
 			qdel(src)
 
-/obj/effect/alien/weeds/attack_generic(var/mob/user, var/damage, var/attack_verb)
+/obj/effect/alien/weeds/attack_generic(mob/user, damage, attack_verb)
 	visible_message("<span class='danger'>[user] [attack_verb] the [src]!</span>")
 	user.do_attack_animation(src)
 	if(prob(50 + damage))

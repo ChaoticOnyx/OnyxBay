@@ -385,7 +385,6 @@
 	name = "Floorlength Braid"
 	icon_state = "hair_braid"
 	gender = FEMALE
-	flags = HAIR_TRIPPABLE
 
 /datum/sprite_accessory/hair/odango
 	name = "Odango"
@@ -989,6 +988,14 @@ May God have mercy.
 /datum/sprite_accessory/hair/wolfmane
 	name = "Wolven mane"
 	icon_state = "hair_wolfmane"
+	
+/datum/sprite_accessory/hair/sickboy
+    name = "Sick"
+    icon_state = "hair_sickboy"
+
+/datum/sprite_accessory/hair/bowie
+    name = "From Mars"
+    icon_state = "hair_bowie"	
 
 /*
 ///////////////////////////////////

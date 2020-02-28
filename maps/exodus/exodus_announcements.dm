@@ -18,7 +18,7 @@
 	electrical_storm_moderate_sound = null
 	electrical_storm_major_sound = null
 
-/datum/map/exodus/level_x_biohazard_sound(var/bio_level)
+/datum/map/exodus/level_x_biohazard_sound(bio_level)
 	switch(bio_level)
 		if(7)
 			return 'sound/AI/outbreak7.ogg'

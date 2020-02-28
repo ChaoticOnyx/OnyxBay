@@ -11,7 +11,7 @@
 							/obj/item/clothing/suit/cultrobes/alt = 20
 							)
 
-/datum/uplink_item/deity/feat/unlocking/blood_crafting/buy(var/obj/item/device/uplink/U, var/mob/living/deity/user)
+/datum/uplink_item/deity/feat/unlocking/blood_crafting/buy(obj/item/device/uplink/U, mob/living/deity/user)
 	. = ..()
 	if(.)
 		user.form.buildables |= /obj/structure/deity/blood_forge //put structure here

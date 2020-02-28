@@ -41,7 +41,7 @@
 		else
 			trunk.linked = src	// link the pipe trunk to self
 
-		air_contents = new/datum/gas_mixture(PRESSURE_TANK_VOLUME)
+		air_contents = new /datum/gas_mixture(PRESSURE_TANK_VOLUME)
 		update_icon()
 
 /obj/machinery/disposal/Destroy()
@@ -51,7 +51,7 @@
 	return ..()
 
 // attack by item places it in to disposal
-/obj/machinery/disposal/attackby(var/obj/item/I, var/mob/user)
+/obj/machinery/disposal/attackby(obj/item/I, mob/user)
 	if(stat & BROKEN || !I || !user)
 		return
 
@@ -250,7 +250,7 @@
 	return
 
 // user interaction
-/obj/machinery/disposal/interact(mob/user, var/ai=0)
+/obj/machinery/disposal/interact(mob/user, ai=0)
 	src.add_fingerprint(user)
 	if(stat & BROKEN)
 		user.unset_machine()
@@ -449,7 +449,7 @@
 
 // called when holder is expelled from a disposal
 // should usually only occur if the pipe network is modified
-/obj/machinery/disposal/proc/expel(var/obj/structure/disposalholder/H)
+/obj/machinery/disposal/proc/expel(obj/structure/disposalholder/H)
 
 	var/turf/target
 	playsound(src, 'sound/machines/hiss.ogg', 50, 0, 0)
@@ -1214,7 +1214,7 @@
 
 /obj/machinery/disposal_switch/attackby(obj/item/I, mob/user, params)
 	if(isCrowbar(I))
-		var/obj/item/disposal_switch_construct/C = new/obj/item/disposal_switch_construct(src.loc, id_tag)
+		var/obj/item/disposal_switch_construct/C = new /obj/item/disposal_switch_construct(src.loc, id_tag)
 		transfer_fingerprints_to(C)
 		user.visible_message("<span class='notice'>\The [user] deattaches \the [src]</span>")
 		qdel(src)
@@ -1243,7 +1243,7 @@
 	w_class = ITEM_SIZE_LARGE
 	var/id_tag
 
-/obj/item/disposal_switch_construct/New(var/turf/loc, var/id)
+/obj/item/disposal_switch_construct/New(turf/loc, id)
 	..(loc)
 	if(id) id_tag = id
 	else
@@ -1260,7 +1260,7 @@
 	if(!found)
 		to_chat(user, "\icon[src]<span class=notice>\The [src] is not linked to any junctions!</span>")
 		return
-	var/obj/machinery/disposal_switch/NC = new/obj/machinery/disposal_switch(A, id_tag)
+	var/obj/machinery/disposal_switch/NC = new /obj/machinery/disposal_switch(A, id_tag)
 	transfer_fingerprints_to(NC)
 	qdel(src)
 
@@ -1304,7 +1304,7 @@
 	linked = null
 	return ..()
 
-/obj/structure/disposalpipe/diversion_junction/attackby(var/obj/item/I, var/mob/user)
+/obj/structure/disposalpipe/diversion_junction/attackby(obj/item/I, mob/user)
 	if(..())
 		return 1
 
@@ -1316,7 +1316,7 @@
 			user.visible_message("<span class='notice'>\The [user] changes \the [src]'s tag.</span>")
 
 
-/obj/structure/disposalpipe/diversion_junction/nextdir(var/fromdir, var/sortTag)
+/obj/structure/disposalpipe/diversion_junction/nextdir(fromdir, sortTag)
 	if(fromdir != sortdir)
 		if(active)
 			return sortdir
@@ -1325,7 +1325,7 @@
 	else
 		return inactive_dir
 
-/obj/structure/disposalpipe/diversion_junction/transfer(var/obj/structure/disposalholder/H)
+/obj/structure/disposalpipe/diversion_junction/transfer(obj/structure/disposalholder/H)
 	var/nextdir = nextdir(H.dir, H.destinationTag)
 	H.set_dir(nextdir)
 	var/turf/T = H.nextloc()
@@ -1493,7 +1493,7 @@
 	return
 
 	// Override attackby so we disallow trunkremoval when somethings ontop
-/obj/structure/disposalpipe/trunk/attackby(var/obj/item/I, var/mob/user)
+/obj/structure/disposalpipe/trunk/attackby(obj/item/I, mob/user)
 
 	//Disposal bins or chutes
 	/*
@@ -1540,7 +1540,7 @@
 	// if not entering from disposal bin,
 	// transfer to linked object (outlet or bin)
 
-/obj/structure/disposalpipe/trunk/transfer(var/obj/structure/disposalholder/H)
+/obj/structure/disposalpipe/trunk/transfer(obj/structure/disposalholder/H)
 
 	if(H.dir == DOWN)		// we just entered from a disposer
 		return ..()		// so do base transfer proc
@@ -1560,7 +1560,7 @@
 
 	// nextdir
 
-/obj/structure/disposalpipe/trunk/nextdir(var/fromdir)
+/obj/structure/disposalpipe/trunk/nextdir(fromdir)
 	if(fromdir == DOWN)
 		return dir
 	else
@@ -1670,18 +1670,18 @@
 // called when movable is expelled from a disposal pipe or outlet
 // by default does nothing, override for special behaviour
 
-/atom/movable/proc/pipe_eject(var/direction)
+/atom/movable/proc/pipe_eject(direction)
 	return
 
 // check if mob has client, if so restore client view on eject
-/mob/pipe_eject(var/direction)
+/mob/pipe_eject(direction)
 	if (src.client)
 		src.client.perspective = MOB_PERSPECTIVE
 		src.client.eye = src
 
 	return
 
-/obj/effect/decal/cleanable/blood/gibs/pipe_eject(var/direction)
+/obj/effect/decal/cleanable/blood/gibs/pipe_eject(direction)
 	var/list/dirs
 	if(direction)
 		dirs = list( direction, turn(direction, -45), turn(direction, 45))
@@ -1690,7 +1690,7 @@
 
 	src.streak(dirs)
 
-/obj/effect/decal/cleanable/blood/gibs/robot/pipe_eject(var/direction)
+/obj/effect/decal/cleanable/blood/gibs/robot/pipe_eject(direction)
 	var/list/dirs
 	if(direction)
 		dirs = list( direction, turn(direction, -45), turn(direction, 45))

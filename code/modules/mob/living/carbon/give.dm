@@ -1,4 +1,4 @@
-/mob/living/carbon/human/verb/give(var/mob/living/target in view(1)-usr)
+/mob/living/carbon/human/verb/give(mob/living/target in view(1)-usr)
 	set category = "IC"
 	set name = "Give"
 
@@ -43,4 +43,4 @@
 
 	if(usr.unEquip(I))
 		target.put_in_hands(I) // If this fails it will just end up on the floor, but that's fitting for things like dionaea.
-		target.visible_message("<span class='notice'>\The [usr] handed \the [I] to \the [target].</span>")
+		usr.visible_message("<span class='notice'>\The [usr] handed \the [I] to \the [target].</span>")

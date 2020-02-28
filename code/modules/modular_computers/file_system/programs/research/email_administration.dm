@@ -21,7 +21,7 @@
 	var/datum/computer_file/data/email_message/current_message = null
 	var/error = ""
 
-/datum/nano_module/email_administration/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/email_administration/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	if(error)
@@ -138,7 +138,7 @@
 			error = "Error creating account: An account with same address already exists."
 			return 1
 
-		var/datum/computer_file/data/email_account/new_account = new/datum/computer_file/data/email_account()
+		var/datum/computer_file/data/email_account/new_account = new /datum/computer_file/data/email_account()
 		new_account.login = complete_login
 		new_account.password = GenerateKey()
 		error = "Email [new_account.login] has been created, with generated password [new_account.password]"

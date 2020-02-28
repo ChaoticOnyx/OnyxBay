@@ -5,10 +5,6 @@
 
 #define get_turf(A) get_step(A,0)
 
-#define SPAN_NOTE(text) "<span class='notice'>[text]</span>"
-#define SPAN_WARN(text) "<span class='warning'>[text]</span>"
-#define SPAN_DANG(text) "<span class='danger'>[text]</span>"
-
 #define isAI(A) istype(A, /mob/living/silicon/ai)
 
 #define isalien(A) istype(A, /mob/living/carbon/alien)
@@ -40,6 +36,8 @@
 #define islist(A) istype(A, /list)
 
 #define isliving(A) istype(A, /mob/living)
+
+#define isbot(A) istype(A, /mob/living/bot)
 
 #define ismouse(A) istype(A, /mob/living/simple_animal/mouse)
 
@@ -101,13 +99,16 @@
 
 #define ismanipulator(A) istype(A, /obj/item/weapon/stock_parts/manipulator)
 
+#define isovermind(A) istype(A, /mob/blob)
+
+#define ismech(A) istype(A, /obj/mecha)
+
+#define iseffect(A) istype(A, /obj/effect)
+
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 
 #define random_id(key,min_id,max_id) uniqueness_repository.Generate(/datum/uniqueness_generator/id_random, key, min_id, max_id)
 
-#define to_chat(target, message)                            target << message
-#define to_world(message)                                   to_chat(world,message)
-#define to_world_log(message)                               world.log << message
 #define sound_to(target, sound)                             target << sound
 #define to_file(file_entry, source_var)                     file_entry << source_var
 #define from_file(file_entry, target_var)                   file_entry >> target_var
@@ -189,6 +190,8 @@
 #define SPAN_DANGER(X) "<span class='danger'>[X]</span>"
 
 #define SPAN_OCCULT(X) "<span class='cult'>[X]</span>"
+
+#define SPAN_DEADSAY(X) "<span class='deadsay'>[X]</span>"
 
 #define FONT_SMALL(X) "<font size='1'>[X]</font>"
 

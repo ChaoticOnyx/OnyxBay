@@ -67,7 +67,7 @@
 				msg += " Administrators have been informed."
 				log_game("[key_name(src)] Has hit the per-minute topic limit of [config.minutetopiclimit] topic calls in a given game minute")
 				message_admins("[key_name_admin(src)] Has hit the per-minute topic limit of [config.minutetopiclimit] topic calls in a given game minute")
-			src << "<span class='danger'>[msg]</span>"
+			to_chat(src, "<span class='danger'>[msg]</span>")
 			return
 
 	if (!holder && config.secondtopiclimit)
@@ -79,7 +79,7 @@
 			topiclimiter[SECOND_COUNT] = 0
 		topiclimiter[SECOND_COUNT] += 1
 		if (topiclimiter[SECOND_COUNT] > config.secondtopiclimit)
-			src << "<span class='danger'>Your previous action was ignored because you've done too many in a second</span>"
+			to_chat(src, "<span class='danger'>Your previous action was ignored because you've done too many in a second</span>")
 			return
 
 	//search the href for script injection
@@ -127,6 +127,11 @@
 		if("usr")		hsrc = mob
 		if("prefs")		return prefs.process_link(usr,href_list)
 		if("vars")		return view_var_Topic(href,href_list,hsrc)
+		if("chat")		return chatOutput.Topic(href, href_list)
+
+	switch(href_list["action"])
+		if("openLink")
+			src << link(href_list["link"])
 
 	..()	//redirect to hsrc.Topic()
 
@@ -150,6 +155,9 @@
 	///////////
 /client/New(TopicData)
 	TopicData = null							//Prevent calls to client.Topic from connect
+
+	// Load onyxchat
+	chatOutput = new(src)
 
 	if(!(connection in list("seeker", "web")))					//Invalid connection type.
 		return null
@@ -189,10 +197,15 @@
 	GLOB.ckey_directory[ckey] = src
 
 	//Admin Authorisation
-	holder = admin_datums[ckey]
-	if(holder)
-		GLOB.admins += src
-		holder.owner = src
+	var/datum/admins/admin_datum = admin_datums[ckey]
+	if(admin_datum)
+		if(admin_datum in GLOB.deadmined_list)
+			deadmin_holder = admin_datum
+			verbs |= /client/proc/readmin_self
+		else
+			holder = admin_datum
+			GLOB.admins += src
+		admin_datum.owner = src
 
 	else if((config.panic_bunker != 0) && (get_player_age(ckey) < config.panic_bunker))
 		var/player_age = get_player_age(ckey)
@@ -245,12 +258,12 @@
 			winset(src, null, "command=\".configure graphics-hwmode on\"")
 
 	log_client_to_db()
+	SSdonations.LogAndLoadPlayerData(src)
 
 	send_resources()
 
 	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
 		to_chat(src, "<span class='info'>You have unread updates in the changelog.</span>")
-		winset(src, "rpane.changelog", "background-color=#eaeaea;font-style=bold")
 		if(config.aggressive_changelog)
 			src.changes()
 
@@ -260,6 +273,35 @@
 
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
 		to_chat(src, "<span class='warning'>Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you.</span>")
+
+	chatOutput.start()
+
+	// Maptext tooltip
+	tooltip = new()
+	tooltip.icon = 'icons/misc/static.dmi'
+	tooltip.icon_state = "transparent"
+	tooltip.screen_loc = "NORTH,WEST+25%"
+	tooltip.maptext_width = 256
+	tooltip.maptext_x = 0
+	tooltip.plane = FULLSCREEN_PLANE
+
+	if (mob && mob.get_preference_value("TOOLTIP") == GLOB.PREF_NO)
+		tooltip.alpha = 0
+
+	screen += tooltip
+
+	// Change position only if it not default
+	if (mob.get_preference_value("CHAT_ALT") == GLOB.PREF_YES)
+		update_chat_position(TRUE)
+		fit_viewport()
+
+/client/MouseEntered(atom/object, location, control, params)
+	if (tooltip)
+		screen |= tooltip
+		tooltip.maptext = ""
+
+		if (GAME_STATE > RUNLEVEL_SETUP)
+			tooltip.maptext = "<center style=\"text-shadow: 1px 1px 2px black;\">[object.name]</center>"
 
 /*	if(holder)
 		src.control_freak = 0 //Devs need 0 for profiler access
@@ -413,6 +455,9 @@
 		var/list/priority_assets = list()
 		var/list/other_assets = list()
 
+		for(var/type in subtypesof(/datum/asset))
+			get_asset_datum(type)
+
 		for(var/asset_type in asset_datums)
 			var/datum/asset/D = asset_datums[asset_type]
 			if(D.isTrivial)
@@ -439,6 +484,114 @@ client/verb/character_setup()
 	if(prefs)
 		prefs.ShowChoices(usr)
 
-/client/proc/apply_fps(var/client_fps)
+/client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
 		vars["fps"] = prefs.clientfps
+
+/client/verb/toggle_fullscreen()
+	set name = "Toggle Fullscreen"
+	set category = "OOC"
+
+	fullscreen = !fullscreen
+
+	if (fullscreen)
+		winset(usr, "mainwindow", "titlebar=false")
+		winset(usr, "mainwindow", "can-resize=false")
+		winset(usr, "mainwindow", "is-maximized=false")
+		winset(usr, "mainwindow", "is-maximized=true")
+		winset(usr, "mainwindow", "menu=")
+	else
+		winset(usr, "mainwindow", "is-maximized=false")
+		winset(usr, "mainwindow", "titlebar=true")
+		winset(usr, "mainwindow", "can-resize=true")
+		winset(usr, "mainwindow", "menu=menu")
+
+	fit_viewport()
+
+/client/proc/update_chat_position(use_alternative)
+	var/input_height = 0
+	input_height = winget(src, "input", "size")
+	input_height = text2num(splittext(input_height, "x")[2])
+
+	// Hell
+
+	if (use_alternative == TRUE)
+		winset(src, "input_alt", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "saybutton_alt", "is-visible=true;is-disabled=false;is-default=true")
+
+		winset(src, "input", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "hotkey_toggle", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "saybutton", "is-visible=false;is-disabled=true;is-default=false")
+
+		var/current_size = splittext(winget(src, "outputwindow.output", "size"), "x")
+		var/new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
+		winset(src, "outputwindow.output", "size=[new_size]")
+		winset(src, "outputwindow.browseroutput", "size=[new_size]")
+
+		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
+		new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
+		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
+	else
+		winset(src, "input_alt", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "saybutton_alt", "is-visible=false;is-disabled=true;is-default=false")
+
+		winset(src, "input", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "hotkey_toggle", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "saybutton", "is-visible=true;is-disabled=false;is-default=true")
+
+		var/current_size = splittext(winget(src, "outputwindow.output", "size"), "x")
+		var/new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
+		winset(src, "outputwindow.output", "size=[new_size]")
+		winset(src, "outputwindow.browseroutput", "size=[new_size]")
+
+		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
+		new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
+		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
+
+/client/verb/fit_viewport()
+	set name = "Fit Viewport"
+	set category = "OOC"
+	set desc = "Fit the width of the map window to match the viewport"
+
+	// Fetch aspect ratio
+	var/view_size = getviewsize(view)
+	var/aspect_ratio = view_size[1] / view_size[2]
+
+	// Calculate desired pixel width using window size and aspect ratio
+	var/sizes = params2list(winget(src, "mainwindow.mainvsplit;mapwindow", "size"))
+	var/map_size = splittext(sizes["mapwindow.size"], "x")
+	var/height = text2num(map_size[2])
+	var/desired_width = round(height * aspect_ratio)
+	if (text2num(map_size[1]) == desired_width)
+		// Nothing to do
+		return
+
+	var/split_size = splittext(sizes["mainwindow.mainvsplit.size"], "x")
+	var/split_width = text2num(split_size[1])
+
+	// Calculate and apply a best estimate
+	// +4 pixels are for the width of the splitter's handle
+	var/pct = 100 * (desired_width + 4) / split_width
+	winset(src, "mainwindow.mainvsplit", "splitter=[pct]")
+
+	// Apply an ever-lowering offset until we finish or fail
+	var/delta
+	for(var/safety in 1 to 10)
+		var/after_size = winget(src, "mapwindow", "size")
+		map_size = splittext(after_size, "x")
+		var/got_width = text2num(map_size[1])
+
+		if (got_width == desired_width)
+			// success
+			return
+		else if (isnull(delta))
+			// calculate a probable delta value based on the difference
+			delta = 100 * (desired_width - got_width) / split_width
+		else if ((delta > 0 && got_width > desired_width) || (delta < 0 && got_width < desired_width))
+			// if we overshot, halve the delta and reverse direction
+			delta = -delta/2
+
+		pct += delta
+		winset(src, "mainwindow.mainvsplit", "splitter=[pct]")

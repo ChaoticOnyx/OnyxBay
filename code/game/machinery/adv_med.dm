@@ -101,7 +101,7 @@
 	else
 		return
 
-/obj/machinery/bodyscanner/proc/check_compatibility(var/mob/target, var/mob/user)
+/obj/machinery/bodyscanner/proc/check_compatibility(mob/target, mob/user)
 	if(!istype(user) || !istype(target))
 		return FALSE
 
@@ -125,7 +125,7 @@
 			return FALSE
 	return TRUE
 
-/obj/machinery/bodyscanner/MouseDrop_T(var/mob/target, var/mob/user)
+/obj/machinery/bodyscanner/MouseDrop_T(mob/target, mob/user)
 	if(!check_compatibility(target, user))
 		return
 	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")
@@ -209,6 +209,9 @@
 	density = 0
 	anchored = 1
 
+	// UI variables
+	var/hide_status = FALSE
+	var/hide_organs = FALSE
 
 /obj/machinery/body_scanconsole/Initialize()
 	for(var/D in GLOB.cardinal)
@@ -243,7 +246,61 @@
 /obj/machinery/body_scanconsole/attack_ai(user as mob)
 	return src.attack_hand(user)
 
-/obj/machinery/body_scanconsole/attack_hand(user as mob)
+/obj/machinery/body_scanconsole/ui_act(action, params)
+	if(..())
+		return TRUE
+
+	if(!src.allowed(usr))
+		return TRUE
+
+	switch (action)
+		if ("print")
+			if (!src.connected)
+				to_chat(usr, "\icon[src]<span class='warning'>Error: No body scanner connected.</span>")
+				return TRUE
+
+			var/mob/living/carbon/human/occupant = src.connected.occupant
+			if (!src.connected.occupant)
+				to_chat(usr, "\icon[src]<span class='warning'>The body scanner is empty.</span>")
+				return TRUE
+
+			if (!istype(occupant,/mob/living/carbon/human))
+				to_chat(usr, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
+				return TRUE
+
+			new /obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
+			return TRUE
+		if ("eject")
+			if (connected)
+				connected.eject()
+				return TRUE
+		if ("toggle_status")
+			hide_status = !hide_status
+			return TRUE
+		if ("toggle_organs")
+			hide_organs = !hide_organs
+			return TRUE
+
+/obj/machinery/body_scanconsole/ui_data(mob/user)
+	var/list/data = list()
+
+	data["connected"] = connected
+	data["medical_data"] = null
+	data["hide_status"] = hide_status
+	data["hide_organs"] = hide_organs
+
+	if (connected && connected.occupant)
+		data["medical_data"] = connected.occupant.get_medical_data_ui()
+
+	return data
+
+/obj/machinery/body_scanconsole/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+	if(!ui)
+		ui = new(user, src, ui_key, "body_scanner", name , 500, 700, master_ui, state)
+		ui.open()
+
+/obj/machinery/body_scanconsole/attack_hand(mob/user)
 	if(..())
 		return
 	if(stat & (NOPOWER|BROKEN))
@@ -257,37 +314,7 @@
 		to_chat(user, "<span class='warning'>This device can only scan compatible lifeforms.</span>")
 		return
 
-	var/dat
-	if (src.delete && src.temphtml) //Window in buffer but its just simple message, so nothing
-		src.delete = src.delete
-	else if (!src.delete && src.temphtml) //Window in buffer - its a menu, dont add clear message
-		dat = text("[]<BR><BR><A href='?src=\ref[];clear=1'>Main Menu</A>", src.temphtml, src)
-	else
-		if (src.connected) //Is something connected?
-			dat = connected.occupant.get_medical_data()
-			dat += "<br><HR><A href='?src=\ref[src];print=1'>Print</A><BR>"
-		else
-			dat = "<span class='warning'>Error: No Body Scanner connected.</span>"
-
-	dat += text("<BR><A href='?src=\ref[];mach_close=scanconsole'>Close</A>", user)
-	user << browse(dat, "window=scanconsole;size=430x600")
-	return
-
-
-/obj/machinery/body_scanconsole/OnTopic(user, href_list)
-	if (href_list["print"])
-		if (!src.connected)
-			to_chat(user, "\icon[src]<span class='warning'>Error: No body scanner connected.</span>")
-			return TOPIC_REFRESH
-		var/mob/living/carbon/human/occupant = src.connected.occupant
-		if (!src.connected.occupant)
-			to_chat(user, "\icon[src]<span class='warning'>The body scanner is empty.</span>")
-			return TOPIC_REFRESH
-		if (!istype(occupant,/mob/living/carbon/human))
-			to_chat(user, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
-			return TOPIC_REFRESH
-		new/obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
-		return TOPIC_REFRESH
+	tg_ui_interact(user)
 
 /proc/get_severity(amount)
 	if(!amount)
@@ -299,6 +326,156 @@
 		. = "significant"
 	else if(amount > 10)
 		. = "moderate"
+
+/mob/living/carbon/human/proc/get_medical_data_ui()
+	var/list/data = list()
+	var/mob/living/carbon/human/H = src
+
+	data["object"] = H.name
+	data["scan_date"] = stationtime2text()
+	data["brain_activity"] = null
+	data["pulse"] = null
+
+	if(H.should_have_organ(BP_BRAIN))
+		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
+		if (!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
+			data["brain_activity"] = 0
+		else if (H.stat != DEAD)
+			if (!brain.damage)
+				data["brain_activity"] = 1
+			else
+				data["brain_activity"] = 1 - (brain.damage / brain.max_damage)
+	else
+		data["brain_activity"] = null
+
+	if(H.should_have_organ(BP_HEART))
+		if(H.status_flags & FAKEDEATH)
+			data["pulse"] = 0
+		else
+			data["pulse"] = H.get_pulse(1)
+	else
+		data["pulse"] = null
+
+	data["blood_volume"] = H.get_blood_volume()
+	data["blood_volume_abs"] = H.vessel.get_reagent_amount(/datum/reagent/blood)
+	data["blood_volume_max"] = H.species.blood_volume
+
+	data["blood_type"] = null
+
+	if(H.b_type)
+		data["blood_type"] = H.b_type
+
+	data["blood_pressure"] = H.get_blood_pressure()
+	data["blood_oxygenation"] = H.get_blood_oxygenation()
+	data["warnings"] = list()
+
+	if (H.chem_effects[CE_BLOCKAGE])
+		data["warnings"] += list("Warning: Blood clotting detected, blood transfusion recommended.")
+
+	data["body_temperature_c"] = H.bodytemperature - T0C
+	data["body_temperature_f"] = H.bodytemperature*1.8-459.67
+
+	if(H.nutrition < 150)
+		data["warnings"] += list("Warning: Very low nutrition value detected")
+
+	data["brute_severity"] = capitalize(get_severity(H.getBruteLoss()))
+	data["burn_severity"] = capitalize(get_severity(H.getFireLoss()))
+	data["tox_severity"] = capitalize(get_severity(H.getToxLoss()))
+	data["oxy_severity"] = capitalize(get_severity(H.getOxyLoss()))
+	data["rad_severity"] = capitalize(get_severity(H.radiation/5))
+	data["clone_severity"] = capitalize(get_severity(H.getCloneLoss()))
+
+	if (H.paralysis)
+		data["warnings"] += list("Paralysis Summary: approx. [H.paralysis/4] seconds left")
+
+	data["immunity"] = H.virus_immunity()
+
+	if (H.virus2.len)
+		data["warnings"] += list("Viral pathogen detected in blood stream.")
+
+		if(H.antibodies.len)
+			data["warnings"] += list("Antibodies detected: [antigens2string(H.antibodies)]")
+
+	if(H.has_brain_worms())
+		data["warnings"] += list("Large growth detected in frontal lobe, possibly cancerous. Surgical removal is recommended.")
+
+	var/is_overdosed = 0
+	if(H.reagents.total_volume)
+		var/reagentdata[0]
+		for(var/A in H.reagents.reagent_list)
+			var/datum/reagent/R = A
+			if(R.scannable)
+				reagentdata[R.type] = "[round(H.reagents.get_reagent_amount(R.type), 1)]u [R.name]"
+				if (R.volume >= R.overdose)
+					is_overdosed = 1
+		if(reagentdata.len)
+			var/msg = "Beneficial reagents detected in subject's blood:"
+			for(var/d in reagentdata)
+				msg += reagentdata[d]
+
+			data["warnings"] += list(msg)
+
+	if (is_overdosed)
+		data["warnings"] += list("Warning: Medicine overdose detected.")
+
+	if (H.chem_effects[CE_ALCOHOL])
+		data["warnings"] += list("Alcohol byproducts detected in subject's blood.")
+
+	if (H.chem_effects[CE_ALCOHOL_TOXIC])
+		data["warnings"] += list("Warning: Subject suffering from alcohol intoxication.")
+
+	data["external_organs"] = list()
+
+	for (var/obj/item/organ/external/E in H.organs)
+		var/organ_data = list(
+			"name" = capitalize(E.name), "status" = list(), "damage" = list()
+			)
+
+		if (E.is_stump())
+			organ_data["status"] = list("Missing")
+		else
+			if (E.brute_dam)
+				organ_data["damage"] += list("[capitalize(get_wound_severity(E.brute_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL)))] physical trauma")
+
+			if (E.burn_dam)
+				organ_data["damage"] += list("[capitalize(get_wound_severity(E.burn_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL)))] burns")
+
+			if (E.brute_dam + E.burn_dam == 0)
+				organ_data["damage"] += list("None")
+
+			organ_data["status"] += list("[english_list(E.get_scan_results(), nothing_text = "", and_text = ", ")]")
+
+		data["external_organs"] += list(organ_data)
+
+	data["internal_organs"] = list()
+
+	for (var/obj/item/organ/internal/I in H.internal_organs)
+		var/organ_data = list(
+			"name" = capitalize(I.name), "status" = list(), "damage" = list()
+		)
+
+		if (I.is_broken())
+			organ_data["damage"] += list("Severe")
+		else if (I.is_bruised())
+			organ_data["damage"] += list("Moderate")
+		else if (I.is_damaged())
+			organ_data["damage"] += list("Minor")
+		else
+			organ_data["damage"] += list("None")
+
+		organ_data["status"] += list("[english_list(I.get_scan_results(), nothing_text = "", and_text = ", ")]")
+		data["internal_organs"] += list(organ_data)
+
+	for (var/organ_name in H.species.has_organ)
+		if(!locate(H.species.has_organ[organ_name]) in H.internal_organs)
+			data["warnings"] += list("No [organ_name] detected.")
+
+	if (H.sdisabilities & BLIND)
+		data["warnings"] += list("Cataracts detected.")
+	if (H.sdisabilities & NEARSIGHTED)
+		data["warnings"] += list("Retinal misalignment detected.")
+
+	return data
 
 /mob/living/carbon/human/proc/get_medical_data()
 	var/mob/living/carbon/human/H = src

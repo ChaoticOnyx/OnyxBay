@@ -11,7 +11,7 @@ var/list/floor_decals = list()
 	appearance_flags = RESET_COLOR
 	var/supplied_dir
 
-/obj/effect/floor_decal/New(var/newloc, var/newdir, var/newcolour)
+/obj/effect/floor_decal/New(newloc, newdir, newcolour)
 	supplied_dir = newdir
 	if(newcolour) color = newcolour
 	..(newloc)
@@ -353,6 +353,9 @@ var/list/floor_decals = list()
 	name = "spline - fancy"
 	icon_state = "spline_fancy"
 
+/obj/effect/floor_decal/spline/fancy/corner
+	icon_state = "spline_fancy_corner"
+
 /obj/effect/floor_decal/spline/fancy/wood
 	name = "spline - wood"
 	color = "#cb9e04"
@@ -387,6 +390,22 @@ var/list/floor_decals = list()
 	name = "hazard stripes"
 	icon_state = "warningcorner_dust"
 
+/obj/effect/floor_decal/industrial/warning/red
+	name = "hazard stripes"
+	icon_state = "warning_red"
+
+/obj/effect/floor_decal/industrial/warning/red/corner
+	name = "hazard stripes"
+	icon_state = "warningcorner_red"
+
+/obj/effect/floor_decal/industrial/warning/red/full
+	name = "hazard stripes"
+	icon_state = "warningfull_red"
+
+/obj/effect/floor_decal/industrial/warning/red/cee
+	name = "hazard stripes"
+	icon_state = "warningcee_red"
+
 /obj/effect/floor_decal/industrial/hatch
 	name = "hatched marking"
 	icon_state = "delivery"
@@ -402,6 +421,86 @@ var/list/floor_decals = list()
 	color = COLOR_DARK_ORANGE
 
 /obj/effect/floor_decal/industrial/hatch/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/standclear
+	name = "industrial marking"
+	icon_state = "stand_clear"
+
+/obj/effect/floor_decal/industrial/standclear/yellow
+	color = "#cfcf55"
+
+/obj/effect/floor_decal/industrial/standclear/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/industrial/standclear/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/industrial/standclear/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/caution
+	name = "industrial marking"
+	icon_state = "caution"
+
+/obj/effect/floor_decal/industrial/caution/yellow
+	color = "#cfcf55"
+
+/obj/effect/floor_decal/industrial/caution/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/industrial/caution/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/industrial/caution/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/box
+	name = "industrial marking"
+	icon_state = "box"
+
+/obj/effect/floor_decal/industrial/box/yellow
+	color = "#cfcf55"
+
+/obj/effect/floor_decal/industrial/box/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/industrial/box/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/industrial/box/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/boxcorners
+	name = "industrial marking"
+	icon_state = "box_corners"
+
+/obj/effect/floor_decal/industrial/boxcorners/yellow
+	color = "#cfcf55"
+
+/obj/effect/floor_decal/industrial/boxcorners/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/industrial/boxcorners/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/industrial/boxcorners/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/arrows
+	name = "industrial marking"
+	icon_state = "arrows"
+
+/obj/effect/floor_decal/industrial/arrows/yellow
+	color = "#cfcf55"
+
+/obj/effect/floor_decal/industrial/arrows/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/industrial/arrows/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/industrial/arrows/blue
 	color = COLOR_BLUE_GRAY
 
 /obj/effect/floor_decal/industrial/shutoff
@@ -552,6 +651,45 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/sign/p
 	icon_state = "white_p"
 
+/obj/effect/floor_decal/sign/cell1
+	icon_state = "cell_1"
+
+/obj/effect/floor_decal/sign/cell2
+	icon_state = "cell_2"
+
+/obj/effect/floor_decal/sign/cell3
+	icon_state = "cell_3"
+
+/obj/effect/floor_decal/sign/armory
+	icon_state = "rigdecal"
+
+/obj/effect/floor_decal/sign/armory/tactical
+	icon_state = "tacticaldecal"
+
+/obj/effect/floor_decal/sign/armory/riot1
+	icon_state = "riotdecal_1"
+
+/obj/effect/floor_decal/sign/armory/riot2
+	icon_state = "riotdecal_2"
+
+/obj/effect/floor_decal/sign/armory/ballistic1
+	icon_state = "ballisticdecal_1"
+
+/obj/effect/floor_decal/sign/armory/ballistic2
+	icon_state = "ballisticdecal_2"
+
+/obj/effect/floor_decal/sign/armory/ablative1
+	icon_state = "ablativedecal_1"
+
+/obj/effect/floor_decal/sign/armory/ablative2
+	icon_state = "ablativedecal_2"
+
+/obj/effect/floor_decal/sign/armory/energy
+	icon_state = "energydecal"
+
+/obj/effect/floor_decal/sign/armory/taser
+	icon_state = "taserdecal"
+
 /obj/effect/floor_decal/solarpanel
 	icon_state = "solarpanel"
 
@@ -565,7 +703,7 @@ var/list/floor_decals = list()
 	icon_state = "manydot"
 	appearance_flags = 0
 
-/obj/effect/floor_decal/floordetail/New(var/newloc, var/newdir, var/newcolour)
+/obj/effect/floor_decal/floordetail/New(newloc, newdir, newcolour)
 	color = null //color is here just for map preview, if left it applies both our and tile colors.
 	..()
 
@@ -583,3 +721,7 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/ntlogo
 	icon_state = "ntlogo"
+
+/obj/effect/floor_decal/ntlogo/sec
+	icon_state = "ntlogo_sec"
+

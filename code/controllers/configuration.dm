@@ -20,7 +20,6 @@ var/list/gamemode_cache = list()
 	var/log_adminwarn = 0					// Log warnings admins get about bomb construction and such
 	var/log_pda = 0							// Log pda messages
 	var/log_hrefs = 0						// Log all links clicked in-game. Could be used for debugging and tracking down exploits
-	var/log_runtime = 0						// Log world.log to a file
 	var/log_world_output = 0				// Log world.log << messages
 
 	var/sql_enabled = FALSE					// SQL storage. If you want to enable it, use sql_enabled var in config file
@@ -197,6 +196,8 @@ var/list/gamemode_cache = list()
 	// 15, 45, 70 minutes respectively
 	var/list/event_delay_upper = list(EVENT_LEVEL_MUNDANE = 9000,	EVENT_LEVEL_MODERATE = 27000,	EVENT_LEVEL_MAJOR = 42000)
 
+	var/roundstart_events = FALSE			// Allow roundstart events to appear. See eof.md
+
 	var/aliens_allowed = 0
 	var/alien_eggs_allowed = 0
 	var/ninjas_allowed = 0
@@ -241,6 +242,14 @@ var/list/gamemode_cache = list()
 
 	var/server_port
 
+	var/donations = FALSE
+
+	var/projectile_basketball
+
+	// Splash screen options
+	var/list/lobby_images = list('icons/splashes/onyx_old.png', 'icons/splashes/onyx_new.png')
+	var/current_lobbyscreen = null
+
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for (var/T in L)
@@ -257,6 +266,8 @@ var/list/gamemode_cache = list()
 				if (M.votable)
 					src.votable_modes += M.config_tag
 	src.votable_modes += "secret"
+
+	config.current_lobbyscreen = pick(lobby_images)
 
 /datum/configuration/proc/load(filename, type = "config") //the type can also be game_options, in which case it uses a different switch. not making it separate to not copypaste code - Urist
 	var/list/Lines = file2list(filename)
@@ -285,6 +296,12 @@ var/list/gamemode_cache = list()
 
 		if(type == "config")
 			switch (name)
+				if ("override_splash")
+					var/lobbyscreen_file = file(value)
+
+					if (lobbyscreen_file && isfile(lobbyscreen_file))
+						config.current_lobbyscreen = lobbyscreen_file
+
 				if("minute_topic_limit")
 					config.minutetopiclimit = text2num(value)
 
@@ -311,6 +328,9 @@ var/list/gamemode_cache = list()
 
 				if ("use_recursive_explosions")
 					use_recursive_explosions = 1
+
+				if ("roundstart_events")
+					roundstart_events = 1
 
 				if ("log_ooc")
 					config.log_ooc = 1
@@ -365,13 +385,6 @@ var/list/gamemode_cache = list()
 
 				if ("log_hrefs")
 					config.log_hrefs = 1
-
-				if ("log_runtime")
-					config.log_runtime = 1
-					var/newlog = file("data/logs/runtimes/runtime-[time2text(world.realtime, "YYYY-MM-DD")].log")
-					if(runtime_diary != newlog)
-						to_world_log("Now logging runtimes to data/logs/runtimes/runtime-[time2text(world.realtime, "YYYY-MM-DD")].log")
-						runtime_diary = newlog
 
 				if ("generate_asteroid")
 					config.generate_map = 1
@@ -776,6 +789,8 @@ var/list/gamemode_cache = list()
 				if("radiation_lower_limit")
 					radiation_lower_limit = text2num(value)
 
+				if("projectile_basketball")
+					config.projectile_basketball = 1
 
 				if("error_cooldown")
 					error_cooldown = text2num(value)
@@ -803,6 +818,9 @@ var/list/gamemode_cache = list()
 
 				if("server_port")
 					server_port = text2num(value)
+
+				if("donations")
+					donations = TRUE
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")

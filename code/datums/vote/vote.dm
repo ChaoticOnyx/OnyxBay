@@ -7,7 +7,7 @@
 	var/list/display_choices = list() // What's actually shown to the users.
 	var/list/additional_text = list() // Stuff for UI formatting.
 	var/additional_header
-	var/list/priorities = list("First", "Second", "Third") // Should have the same length as weights below.
+	var/list/priorities = list("Vote") // Should have the same length as weights below.
 
 	var/start_time
 	var/time_remaining
@@ -15,7 +15,7 @@
 
 	var/list/result                // The results; format is list(choice = votes).
 	var/results_length = 3         // How many choices to show in the result. Setting to -1 will show all choices.
-	var/list/weights = list(3,2,1) // Controls how many things a person can vote for and how they will be weighed.
+	var/list/weights = list(1) // Controls how many things a person can vote for and how they will be weighed.
 	var/list/voted = list()        // Format is list(ckey = list(a, b, ...)); a, b, ... are ordered by order of preference and are numbers, referring to the index in choices
 
 	var/win_x = 450
@@ -89,16 +89,15 @@
 	if(!(result[result[1]] > 0)) // No one voted.
 		text += "<b>Vote Result: Inconclusive - No Votes!</b>"
 	else
-		text += "<b>Vote Result: [display_choices[result[1]]]</b>"
-		if(length(result) >= 2)
-			text += "\nSecond place: [display_choices[result[2]]]"
-		if(length(result) >= 3)
-			text += ", third place: [display_choices[result[3]]]"
-
+		text += "<b>Vote Result: [display_choices[result[1]]][choices[result[1]] >= 1 ? " - \"[choices[result[1]]]\"" : null]</b>"
+		if(length(result) >= 2 && result[result[2]])
+			text += "\nSecond place: [display_choices[result[2]]][choices[result[2]] >= 1 ? " - \"[choices[result[2]]]\"" : null]"
+		if(length(result) >= 3 && result[result[3]])
+			text += "\nThird place: [display_choices[result[3]]][choices[result[3]] >= 1 ? " - \"[choices[result[3]]]\"" : null]"
 	return JOINTEXT(text)
 
 // False return means vote was not changed for whatever reason.
-/datum/vote/proc/submit_vote(var/mob/voter, var/vote, var/priority)
+/datum/vote/proc/submit_vote(mob/voter, vote, priority)
 	if(mob_not_participating(voter))
 		return
 	if(vote && (vote in 1 to length(choices)) && priority && (priority in 1 to length(weights)))
@@ -153,7 +152,7 @@
 	else
 		. += "<h2>Vote: [capitalize(name)]</h2>"
 	. += "Time Left: [time_remaining] s<hr>"
-	. += "<table width = '100%'><tr><td align = 'center'><b>Choices</b></td><td colspan='3' align = 'center'><b>Votex</b></td><td align = 'center'><b>Votes</b></td>"
+	. += "<table width = '100%'><tr><td align = 'center'><b>Choices</b></td><td colspan='1' align = 'center'><b>Votes</b></td>[check_rights(R_INVESTIGATE, 0, user) ? "<td align = 'center'><b>Votes</b></td>" : null]"
 	. += additional_header
 
 	var/totalvotes = 0
@@ -163,22 +162,19 @@
 	for(var/j = 1, j <= choices.len, j++)
 		var/choice = choices[j]
 		var/number_of_votes = choices[choice] || 0
-		var/votepercent = 0
-		if(totalvotes)
-			votepercent = round((number_of_votes/totalvotes)*100)
-
-		. += "<tr><td>"
+		. += "<tr><td align = 'center'>"
 		. += "[display_choices[choice]]"
 		. += "</td>"
 
 		for(var/i = 1, i <= length(priorities), i++)
-			. += "<td>"
+			. += "<td align = 'center'>"
 			if(voted[user.ckey] && (voted[user.ckey][i] == j)) //We have this jth choice chosen at priority i.
 				. += "<b><a href='?src=\ref[src];choice=[j];priority=[i]'>[priorities[i]]</a></b>"
 			else
 				. += "<a href='?src=\ref[src];choice=[j];priority=[i]'>[priorities[i]]</a>"
 			. += "</td>"
-		. += "</td><td align = 'center'>[votepercent]%</td>"
+		if(check_rights(R_INVESTIGATE, FALSE, user))
+			. += "</td><td align = 'center'>[number_of_votes]</td>"
 		if (additional_text[choice])
 			. += "[additional_text[choice]]" //Note lack of cell wrapper, to allow for dynamic formatting.
 		. += "</tr>"

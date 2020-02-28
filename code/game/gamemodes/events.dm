@@ -36,7 +36,7 @@ var/hadevent    = 0
 			break
 
 
-/proc/alien_infestation(var/spawncount = 1) // -- TLE
+/proc/alien_infestation(spawncount = 1) // -- TLE
 	//command_alert("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert")
 //	sound_to(world, sound('sound/AI/aliens.ogg'))
 

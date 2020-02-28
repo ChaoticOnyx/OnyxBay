@@ -137,30 +137,53 @@
 	desc = "It has a picture of a gun and several warning symbols on the front."
 	startswith = list(/obj/item/ammo_casing/shotgun/blank = 7)
 
-/obj/item/weapon/storage/box/beanbags
-	name = "box of beanbag shells"
-	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
-	startswith = list(/obj/item/ammo_casing/shotgun/beanbag = 7)
-
-/obj/item/weapon/storage/box/shotgunammo
-	name = "box of shotgun slugs"
-	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
-	startswith = list(/obj/item/ammo_casing/shotgun = 7)
-
-/obj/item/weapon/storage/box/shotgunshells
-	name = "box of shotgun shells"
-	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
-	startswith = list(/obj/item/ammo_casing/shotgun/pellet = 7)
-
-/obj/item/weapon/storage/box/flashshells
+/obj/item/weapon/storage/box/flash
 	name = "box of illumination shells"
 	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
 	startswith = list(/obj/item/ammo_casing/shotgun/flash = 7)
 
-/obj/item/weapon/storage/box/stunshells
+/obj/item/weapon/storage/box/shotgun
+	icon = 'icons/obj/shotgunshells.dmi'
+	storage_slots = 20
+	max_storage_space = 20
+
+/obj/item/weapon/storage/box/shotgun/update_icon()
+	. = ..()
+
+	overlays = list()
+
+	for (var/i = 1, i < contents.len, i++)
+		if (i == 1 || i % 3 == 0)
+			var/icon/I = icon(icon, "[contents[i].icon_state]")
+
+			if (i != 1)
+				I.Shift(WEST, i)
+
+			overlays |= I
+
+/obj/item/weapon/storage/box/shotgun/shells
+	icon_state = "shotgunshells"
+	name = "box of shotgun shells"
+	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
+	startswith = list(/obj/item/ammo_casing/shotgun/pellet = 20)
+
+/obj/item/weapon/storage/box/shotgun/slugs
+	icon_state = "shotgunslugs"
+	name = "box of shotgun slugs"
+	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
+	startswith = list(/obj/item/ammo_casing/shotgun = 20)
+
+/obj/item/weapon/storage/box/shotgun/beanbags
+	icon_state = "shotgunbeanbag"
+	name = "box of beanbag shells"
+	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
+	startswith = list(/obj/item/ammo_casing/shotgun/beanbag = 20)
+
+/obj/item/weapon/storage/box/shotgun/stunshells
+	icon_state = "shotgunstuns"
 	name = "box of stun shells"
 	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
-	startswith = list(/obj/item/ammo_casing/shotgun/stunshell = 7)
+	startswith = list(/obj/item/ammo_casing/shotgun/stunshell = 20)
 
 /obj/item/weapon/storage/box/practiceshells
 	name = "box of practice shells"

@@ -8,6 +8,16 @@
 	name = "Box of Sin-Pockets"
 	item_cost = 8
 	path = /obj/item/weapon/storage/box/sinpockets
+	
+/datum/uplink_item/item/medical/stasis
+	name = "Modified Stasis Bag"
+	item_cost = 20
+	path = /obj/item/bodybag/cryobag/syndi
+
+/datum/uplink_item/item/medical/defib
+	name = "Combat Defibrillator"
+	item_cost = 24
+	path = /obj/item/weapon/defibrillator/compact/combat/loaded	
 
 /datum/uplink_item/item/medical/combat
 	name = "Combat medical kit"

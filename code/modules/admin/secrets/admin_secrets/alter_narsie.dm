@@ -1,7 +1,7 @@
 /datum/admin_secret_item/admin_secret/alter_narise
 	name = "Alter Nar-Sie"
 
-/datum/admin_secret_item/admin_secret/alter_narise/execute(var/mob/user)
+/datum/admin_secret_item/admin_secret/alter_narise/execute(mob/user)
 	. = ..()
 	if(!.)
 		return

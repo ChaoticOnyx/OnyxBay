@@ -1,6 +1,6 @@
 import { Fragment } from 'inferno';
 import { act } from '../byond';
-import { Box, Button, LabeledList, Section, Tabs, NoticeBox, Toast, ProgressBar, Icon } from '../components';
+import { Box, Button, LabeledList, Section, Tabs, NoticeBox, ProgressBar, Icon } from '../components';
 import { createLogger } from '../logging';
 import { Lifeform } from './Psychoscope';
 

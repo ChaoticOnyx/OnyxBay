@@ -15,7 +15,7 @@
 	var/serial_number = 0
 
 
-/obj/item/weapon/contraband/poster/New(turf/loc, var/given_serial = 0)
+/obj/item/weapon/contraband/poster/New(turf/loc, given_serial = 0)
 	if(given_serial == 0)
 		serial_number = rand(1, poster_designs.len)
 	else
@@ -24,7 +24,7 @@
 	..(loc)
 
 //Places the poster on a wall
-/obj/item/weapon/contraband/poster/afterattack(var/atom/A, var/mob/user, var/adjacent, var/clickparams)
+/obj/item/weapon/contraband/poster/afterattack(atom/A, mob/user, adjacent, clickparams)
 	if (!adjacent)
 		return
 
@@ -86,7 +86,7 @@
 	var/poster_type		//So mappers can specify a desired poster
 	var/ruined = 0
 
-/obj/structure/sign/poster/New(var/newloc, var/placement_dir=null, var/serial=null)
+/obj/structure/sign/poster/New(newloc, placement_dir=null, serial=null)
 	..(newloc)
 
 	if(!serial)
@@ -117,7 +117,7 @@
 		set_poster(design)
 	. = ..()
 
-/obj/structure/sign/poster/proc/set_poster(var/datum/poster/design)
+/obj/structure/sign/poster/proc/set_poster(datum/poster/design)
 	SetName("[initial(name)] - [design.name]")
 	desc = "[initial(desc)] [design.desc]"
 	icon_state = design.icon_state // poster[serial_number]

@@ -12,7 +12,7 @@ var/list/limb_icon_cache = list()
 				overlays += child.mob_icon
 		overlays += organ.mob_icon
 
-/obj/item/organ/external/proc/sync_colour_to_human(var/mob/living/carbon/human/human)
+/obj/item/organ/external/proc/sync_colour_to_human(mob/living/carbon/human/human)
 	s_tone = null
 	s_col = null
 	s_base = ""
@@ -44,7 +44,7 @@ var/list/limb_icon_cache = list()
 	if(species.appearance_flags & HAS_SKIN_COLOR)
 		s_col = list(dna.GetUIValue(DNA_UI_SKIN_R), dna.GetUIValue(DNA_UI_SKIN_G), dna.GetUIValue(DNA_UI_SKIN_B))
 
-/obj/item/organ/external/head/sync_colour_to_human(var/mob/living/carbon/human/human)
+/obj/item/organ/external/head/sync_colour_to_human(mob/living/carbon/human/human)
 	..()
 	var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[BP_EYES]
 	if(eyes) eyes.update_colour()
@@ -62,7 +62,7 @@ var/list/limb_icon_cache = list()
 	//Head markings, duplicated (sadly) below.
 	for(var/M in markings)
 		var/datum/sprite_accessory/marking/mark_style = markings[M]["datum"]
-		var/icon/mark_s = new/icon("icon" = mark_style.icon, "icon_state" = "[mark_style.icon_state]-[organ_tag]")
+		var/icon/mark_s = new /icon("icon" = mark_style.icon, "icon_state" = "[mark_style.icon_state]-[organ_tag]")
 		mark_s.Blend(markings[M]["color"], mark_style.blend)
 		overlays |= mark_s //So when it's not on your body, it has icons
 		mob_icon.Blend(mark_s, mark_style.layer_blend) //So when it's on your body, it has icons
@@ -70,7 +70,7 @@ var/list/limb_icon_cache = list()
 
 /obj/item/organ/external/var/icon_cache_key
 
-/obj/item/organ/external/update_icon(var/regenerate = 0)
+/obj/item/organ/external/update_icon(regenerate = 0)
 	if (!icon_name)
 		icon = null
 	else
@@ -108,12 +108,12 @@ var/list/limb_icon_cache = list()
 		else
 			icon = species.get_icobase(owner)
 
-		mob_icon = apply_colouration(new/icon(icon, icon_state))
+		mob_icon = apply_colouration(new /icon(icon, icon_state))
 
 		//Body markings, does not include head, duplicated (sadly) above.
 		for(var/M in markings)
 			var/datum/sprite_accessory/marking/mark_style = markings[M]["datum"]
-			var/icon/mark_s = new/icon("icon" = mark_style.icon, "icon_state" = "[mark_style.icon_state]-[organ_tag]")
+			var/icon/mark_s = new /icon("icon" = mark_style.icon, "icon_state" = "[mark_style.icon_state]-[organ_tag]")
 			mark_s.Blend(markings[M]["color"], ICON_ADD)
 			overlays |= mark_s //So when it's not on your body, it has icons
 			mob_icon.Blend(mark_s, ICON_OVERLAY) //So when it's on your body, it has icons
@@ -136,7 +136,7 @@ var/list/limb_icon_cache = list()
 			dir = EAST
 		icon = mob_icon
 
-/obj/item/organ/external/proc/update_icon_drop(var/mob/living/carbon/human/powner)
+/obj/item/organ/external/proc/update_icon_drop(mob/living/carbon/human/powner)
 	return
 
 /obj/item/organ/external/proc/get_icon()
@@ -181,7 +181,7 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 	hud_damage_image.color = hud_colours[max(1,min(ceil(dam_state*hud_colours.len),hud_colours.len))]
 	return hud_damage_image
 
-/obj/item/organ/external/proc/apply_colouration(var/icon/applying)
+/obj/item/organ/external/proc/apply_colouration(icon/applying)
 	if(species && species.limbs_are_nonsolid)
 		applying.MapColors("#4d4d4d","#969696","#1c1c1c", "#000000")
 		if(species.name != SPECIES_HUMAN)

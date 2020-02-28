@@ -1,4 +1,4 @@
-/proc/alien_queen_exists(var/ignore_self,var/mob/living/carbon/human/self)
+/proc/alien_queen_exists(ignore_self,mob/living/carbon/human/self)
 	for(var/mob/living/carbon/human/Q in GLOB.living_mob_list_)
 		if(self && ignore_self && self == Q)
 			continue
@@ -9,7 +9,7 @@
 		return 1
 	return 0
 
-/mob/living/carbon/human/proc/gain_plasma(var/amount)
+/mob/living/carbon/human/proc/gain_plasma(amount)
 
 	var/obj/item/organ/internal/xenos/plasmavessel/I = internal_organs_by_name[BP_PLASMA]
 	if(!istype(I)) return
@@ -18,7 +18,7 @@
 		I.stored_plasma += amount
 	I.stored_plasma = max(0,min(I.stored_plasma,I.max_plasma))
 
-/mob/living/carbon/human/proc/check_alien_ability(var/cost,var/needs_foundation,var/needs_organ)	//Returns 1 if the ability is clear for usage.
+/mob/living/carbon/human/proc/check_alien_ability(cost,needs_foundation,needs_organ)	//Returns 1 if the ability is clear for usage.
 
 	var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
 	if(!istype(P))
@@ -59,12 +59,12 @@
 	set category = "Abilities"
 
 	if (get_dist(src,M) <= 1)
-		src << "<span class='alium'>You need to be closer.</span>"
+		to_chat(src, "<span class='alium'>You need to be closer.</span>")
 		return
 
 	var/obj/item/organ/internal/xenos/plasmavessel/I = M.internal_organs_by_name[BP_PLASMA]
 	if(!istype(I))
-		src << "<span class='alium'>Their plasma vessel is missing.</span>"
+		to_chat(src, "<span class='alium'>Their plasma vessel is missing.</span>")
 		return
 
 	var/amount = input("Amount:", "Transfer Plasma to [M]") as num
@@ -89,7 +89,7 @@
 		return
 
 	if(locate(/obj/structure/alien/egg) in get_turf(src))
-		src << "There's already an egg here."
+		to_chat(src, "There's already an egg here.")
 		return
 
 	if(check_alien_ability(75, 1, BP_EGG))
@@ -263,7 +263,7 @@
 		return
 
 	if(G.type_name < NAB_AGGRESSIVE)
-		src << "<span class='danger'>You must have an aggressive grab to gut your prey!</span>"
+		to_chat(src, "<span class='danger'>You must have an aggressive grab to gut your prey!</span>")
 		return
 
 	last_special = world.time + 50

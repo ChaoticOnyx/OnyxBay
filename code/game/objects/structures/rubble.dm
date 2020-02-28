@@ -62,7 +62,7 @@
 	else
 		to_chat(user, "<span class='warning'>Someone is already rummaging here!</span>")
 		
-/obj/structure/rubble/attackby(var/obj/item/I, var/mob/user)
+/obj/structure/rubble/attackby(obj/item/I, mob/user)
 	if (istype(I, /obj/item/weapon/pickaxe))
 		var/obj/item/weapon/pickaxe/P = I
 		visible_message("[user] starts clearing away \the [src].")

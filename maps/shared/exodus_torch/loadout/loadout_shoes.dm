@@ -8,7 +8,7 @@
 	var/boots = list()
 	boots["jackboots"] = /obj/item/clothing/shoes/jackboots
 	boots["workboots"] = /obj/item/clothing/shoes/workboots
-	gear_tweaks += new/datum/gear_tweak/path(boots)
+	gear_tweaks += new /datum/gear_tweak/path(boots)
 
 /datum/gear/shoes/color
 	display_name = "shoe selection"
@@ -29,7 +29,7 @@
 	shoes["red shoes"] = /obj/item/clothing/shoes/red
 	shoes["white shoes"] = /obj/item/clothing/shoes/white
 	shoes["yellow shoes"] = /obj/item/clothing/shoes/yellow
-	gear_tweaks += new/datum/gear_tweak/path(shoes)
+	gear_tweaks += new /datum/gear_tweak/path(shoes)
 
 /datum/gear/shoes/dress
 	display_name = "dress shoes"

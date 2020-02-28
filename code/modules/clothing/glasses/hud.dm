@@ -6,11 +6,11 @@
 	electric = 1
 	gender = NEUTER
 
-/obj/item/clothing/glasses/proc/process_hud(var/mob/M)
+/obj/item/clothing/glasses/proc/process_hud(mob/M)
 	if(hud)
 		hud.process_hud(M)
 
-/obj/item/clothing/glasses/hud/process_hud(var/mob/M)
+/obj/item/clothing/glasses/hud/process_hud(mob/M)
 	return
 
 /obj/item/clothing/glasses/hud/health
@@ -20,7 +20,7 @@
 	hud_type = HUD_MEDICAL
 	body_parts_covered = 0
 
-/obj/item/clothing/glasses/hud/health/process_hud(var/mob/M)
+/obj/item/clothing/glasses/hud/health/process_hud(mob/M)
 	process_med_hud(M, 1)
 
 /obj/item/clothing/glasses/hud/health/prescription
@@ -60,5 +60,5 @@
 	vision_flags = SEE_MOBS
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
 
-/obj/item/clothing/glasses/hud/security/process_hud(var/mob/M)
+/obj/item/clothing/glasses/hud/security/process_hud(mob/M)
 	process_sec_hud(M, 1)

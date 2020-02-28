@@ -145,7 +145,7 @@
 		need_player_check = 1
 		update_icon()
 
-/obj/machinery/mining/drill/attack_ai(var/mob/user as mob)
+/obj/machinery/mining/drill/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
 
 /obj/machinery/mining/drill/attackby(obj/item/O as obj, mob/user as mob)
@@ -247,7 +247,7 @@
 
 	update_icon()
 
-/obj/machinery/mining/drill/proc/system_error(var/error)
+/obj/machinery/mining/drill/proc/system_error(error)
 
 	if(error)
 		src.visible_message("<span class='notice'>\The [src] flashes a '[error]' warning.</span>")
@@ -260,15 +260,16 @@
 	resource_field = list()
 	need_update_field = 0
 
-	var/turf/T = get_turf(src)
-	if(!istype(T)) return
+	var/turf/simulated/S = get_turf(src)
+	if(!istype(S))
+		return
 
-	var/tx = T.x - 2
-	var/ty = T.y - 2
+	var/sx = S.x - 2
+	var/sy = S.y - 2
 	var/turf/simulated/mine_turf
-	for(var/iy = 0,iy < 5, iy++)
+	for(var/iy = 0, iy < 5, iy++)
 		for(var/ix = 0, ix < 5, ix++)
-			mine_turf = locate(tx + ix, ty + iy, T.z)
+			mine_turf = locate(sx + ix, sy + iy, S.z)
 			if(mine_turf && mine_turf.has_resources)
 				resource_field += mine_turf
 

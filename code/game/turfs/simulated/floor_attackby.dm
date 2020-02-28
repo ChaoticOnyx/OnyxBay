@@ -57,7 +57,7 @@
 			if (istype(C, /obj/item/stack/rods))
 				var/obj/item/stack/rods/R = C
 				if (R.use(2))
-					playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
+					playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 					new /obj/structure/catwalk(src)
 				return
 			var/obj/item/stack/S = C
@@ -178,7 +178,7 @@
 	else
 		return TRUE
 
-/turf/simulated/floor/can_build_cable(var/mob/user)
+/turf/simulated/floor/can_build_cable(mob/user)
 	if(!is_plating() || flooring)
 		to_chat(user, "<span class='warning'>Removing the tiling first.</span>")
 		return 0

@@ -20,7 +20,10 @@
 	icon_state = "reinforce1"
 
 	break_chance_table = list(5, 20, 40, 80, 100)
-/datum/grab/normal/aggressive/process_effect(var/obj/item/grab/G)
+
+/datum/grab/normal/aggressive/process_effect(obj/item/grab/G)
+	if(!G.affecting)
+		return
 	var/mob/living/carbon/human/affecting = G.affecting
 
 	if(G.target_zone in list(BP_L_HAND, BP_R_HAND))
@@ -31,7 +34,7 @@
 	if(affecting.lying)
 		affecting.Weaken(4)
 
-/datum/grab/normal/aggressive/can_upgrade(var/obj/item/grab/G)
+/datum/grab/normal/aggressive/can_upgrade(obj/item/grab/G)
 	if(!(G.target_zone in list(BP_CHEST, BP_HEAD)))
 		to_chat(G.assailant, "<span class='warning'>You need to be grabbing their torso or head for this!</span>")
 		return FALSE

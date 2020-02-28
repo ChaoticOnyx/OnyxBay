@@ -45,13 +45,13 @@ datum/preferences
 			load_preferences()
 			load_and_update_character()
 
-/datum/preferences/proc/load_and_update_character(var/slot)
+/datum/preferences/proc/load_and_update_character(slot)
 	load_character(slot)
 	if(update_setup(loaded_preferences, loaded_character))
 		save_preferences()
 		save_character()
 
-/datum/preferences/proc/ZeroSkills(var/forced = 0)
+/datum/preferences/proc/ZeroSkills(forced = 0)
 	for(var/V in SKILLS) for(var/datum/skill/S in SKILLS[V])
 		if(!skills.Find(S.ID) || forced)
 			skills[S.ID] = SKILL_NONE
@@ -242,11 +242,11 @@ datum/preferences
 		O.status = 0
 		O.model = null
 		if(status == "amputated")
-			character.organs_by_name[O.organ_tag] = null
+			character.organs_by_name.Remove(O.organ_tag)
 			character.organs -= O
 			if(O.children) // This might need to become recursive.
 				for(var/obj/item/organ/external/child in O.children)
-					character.organs_by_name[child.organ_tag] = null
+					character.organs_by_name.Remove(child.organ_tag)
 					character.organs -= child
 		else if(status == "cyborg")
 			if(rlimb_data[name])
@@ -260,7 +260,7 @@ datum/preferences
 	//For species that don't care about your silly prefs
 	character.species.handle_limbs_setup(character)
 	if(!is_preview_copy)
-		for(var/name in list(BP_HEART,BP_EYES,BP_BRAIN,BP_LUNGS,BP_LIVER,BP_KIDNEYS))
+		for(var/name in list(BP_HEART,BP_EYES,BP_BRAIN,BP_LUNGS,BP_LIVER,BP_KIDNEYS,BP_STOMACH))
 			var/status = organ_data[name]
 			if(!status)
 				continue

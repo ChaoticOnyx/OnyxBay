@@ -1,4 +1,14 @@
 // BYOND lower-cases color values, and thus we do so as well to ensure atom.color == COLOR_X will work correctly
+#define COLOR_DARKMODE_BACKGROUND "#202020"
+#define COLOR_DARKMODE_DARKBACKGROUND "#171717"
+#define COLOR_DARKMODE_TEXT "#a4bad6"
+
+#define COLOR_MARINEMODE_DARKBACKGROUND "#1e1e1e"
+#define COLOR_MARINEMODE_BACKGROUND "#2e332b"
+#define COLOR_MARINEMODE_TEXT "#a4bad6"
+#define COLOR_MARINEMODE_GRAYBUTTON "#626f5b"
+#define COLOR_MARINEMODE_DARKGRAYBUTTON "#3a3a3a"
+
 #define COLOR_BLACK            "#000000"
 #define COLOR_NAVY_BLUE        "#000080"
 #define COLOR_GREEN            "#008000"
@@ -19,6 +29,7 @@
 #define COLOR_TEAL             "#33cccc"
 #define COLOR_RED              "#ff0000"
 #define COLOR_PINK             "#ff00ff"
+#define COLOR_LIGHT_PINK       "#7D22BF"
 #define COLOR_ORANGE           "#ff9900"
 #define COLOR_YELLOW           "#ffff00"
 #define COLOR_GRAY             "#808080"

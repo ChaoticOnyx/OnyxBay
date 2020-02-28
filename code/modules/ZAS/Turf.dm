@@ -211,7 +211,7 @@
 			postponed.Add(unsim)
 
 	if(!TURF_HAS_VALID_ZONE(src)) //Still no zone, make a new one.
-		var/zone/newzone = new/zone()
+		var/zone/newzone = new /zone()
 		newzone.add(src)
 
 	#ifdef ZASDBG
@@ -279,13 +279,13 @@
 		return air
 
 /turf/proc/make_air()
-	air = new/datum/gas_mixture
+	air = new /datum/gas_mixture
 	air.temperature = temperature
 	if(initial_gas)
 		air.gas = initial_gas.Copy()
 	air.update_values()
 
 /turf/simulated/proc/c_copy_air()
-	if(!air) air = new/datum/gas_mixture
+	if(!air) air = new /datum/gas_mixture
 	air.copy_from(zone.air)
 	air.group_multiplier = 1

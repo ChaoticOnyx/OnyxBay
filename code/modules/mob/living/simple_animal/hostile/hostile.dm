@@ -30,9 +30,8 @@
 	var/shuttletarget = null
 	var/enroute = 0
 
-
 /mob/living/simple_animal/hostile/proc/FindTarget()
-	if(!faction) //No faction, no reason to attack anybody.
+	if(!faction || client) //No faction, no reason to attack anybody.
 		return null
 	var/atom/T = null
 	stop_automated_movement = 0
@@ -73,7 +72,7 @@
 	return T
 
 
-/mob/living/simple_animal/hostile/proc/Found(var/atom/A)
+/mob/living/simple_animal/hostile/proc/Found(atom/A)
 	Aggro()
 	return
 
@@ -82,19 +81,17 @@
 	if(target_mob != null)
 		Aggro()
 		stance = HOSTILE_STANCE_ATTACK
-	return
 
 /mob/living/simple_animal/hostile/adjustBruteLoss(damage)
-	..(damage)
+	. = ..(damage)
 	if(!stat)
 		if(stance == HOSTILE_STANCE_IDLE)//If we took damage while idle, immediately attempt to find the source of it so we find a living target
 			Aggro()
-			var/new_target = FindTarget()
-			GiveTarget(new_target)
+			if(!client)
+				GiveTarget(FindTarget())
 		if(stance == HOSTILE_STANCE_ATTACK)//No more pulling a mob forever and having a second player attack it, it can switch targets now if it finds a more suitable one
-			if(target_mob != null && prob(25))
-				var/new_target = FindTarget()
-				GiveTarget(new_target)
+			if(target_mob != null && prob(25) && !client)
+				GiveTarget(FindTarget())
 
 /mob/living/simple_animal/hostile/proc/MoveToTarget()
 	stop_automated_movement = 1
@@ -117,7 +114,7 @@
 		Goto(target_mob, move_to_delay, minimum_distance)
 
 /mob/living/simple_animal/hostile/proc/Goto(target_mob, delay, minimum_distance)
-		walk_to(src, target_mob, minimum_distance, delay)
+	walk_to(src, target_mob, minimum_distance, delay)
 
 /mob/living/simple_animal/hostile/proc/AttackTarget()
 	stop_automated_movement = 1
@@ -188,14 +185,13 @@
 	walk(src, 0)
 
 /mob/living/simple_animal/hostile/Life()
-
 	. = ..()
 	if(!.)
 		walk(src, 0)
 		return 0
 	if(client)
 		return 0
-	if(isturf(src.loc) && !src.buckled)
+	if(isturf(loc) && !buckled)
 		if(!stat)
 			switch(stance)
 				if(HOSTILE_STANCE_IDLE)
@@ -217,28 +213,28 @@
 	else
 		if(stance != HOSTILE_STANCE_INSIDE)
 			stance = HOSTILE_STANCE_INSIDE
-			walk(src,0)
+			walk(src, 0)
 			target_mob = null
 	if(!target_mob)
 		LoseAggro()
 
-/mob/living/simple_animal/hostile/attackby(var/obj/item/O, var/mob/user)
-	var/oldhealth = health
+/mob/living/simple_animal/hostile/attackby(obj/item/O, mob/user)
 	. = ..()
-	if(health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT))
+	var/oldhealth = health
+	if(health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT) && !client)
 		target_mob = user
 		MoveToTarget()
 
 /mob/living/simple_animal/hostile/attack_hand(mob/living/carbon/human/M)
 	. = ..()
-	if(M.a_intent == I_HURT && !incapacitated(INCAPACITATION_KNOCKOUT))
+	if(M.a_intent == I_HURT && !incapacitated(INCAPACITATION_KNOCKOUT) && !client)
 		target_mob = M
 		MoveToTarget()
 
-/mob/living/simple_animal/hostile/bullet_act(var/obj/item/projectile/Proj)
-	var/oldhealth = health
+/mob/living/simple_animal/hostile/bullet_act(obj/item/projectile/Proj)
 	. = ..()
-	if(!target_mob && health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT))
+	var/oldhealth = health
+	if(!target_mob && health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT) && !client)
 		target_mob = Proj.firer
 		MoveToTarget()
 
@@ -267,7 +263,7 @@
 	ranged_cooldown = ranged_cooldown_cap
 	return
 
-/mob/living/simple_animal/hostile/proc/Shoot(var/target, var/start, var/user, var/bullet = 0)
+/mob/living/simple_animal/hostile/proc/Shoot(target, start, user, bullet = 0)
 	if(target == start)
 		return
 
@@ -291,3 +287,6 @@
 			var/obj/structure/obstacle = locate(/obj/structure, get_step(src, dir))
 			if(istype(obstacle, /obj/structure/window) || istype(obstacle, /obj/structure/closet) || istype(obstacle, /obj/structure/table) || istype(obstacle, /obj/structure/grille))
 				obstacle.attack_generic(src, rand(melee_damage_lower, melee_damage_upper), attacktext)
+
+/mob/living/simple_animal/hostile/on_ghost_possess()
+	LoseTarget()

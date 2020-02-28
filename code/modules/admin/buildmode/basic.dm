@@ -14,7 +14,7 @@
 	to_chat(user, "<span class='notice'>change the direction of built objects.</span>")
 	to_chat(user, "<span class='notice'>***********************************************************</span>")
 
-/datum/build_mode/basic/OnClick(var/atom/object, var/list/pa)
+/datum/build_mode/basic/OnClick(atom/object, list/pa)
 	if(istype(object,/turf) && pa["left"] && !pa["alt"] && !pa["ctrl"] )
 		if(istype(object,/turf/space))
 			var/turf/T = object
@@ -52,10 +52,10 @@
 			qdel(object)
 			return
 	else if(istype(object,/turf) && pa["alt"] && pa["left"])
-		var/airlock = new/obj/machinery/door/airlock(get_turf(object))
+		var/airlock = new /obj/machinery/door/airlock(get_turf(object))
 		Log("Created - [log_info_line(airlock)]")
 	else if(istype(object,/turf) && pa["ctrl"] && pa["left"])
-		var/obj/structure/window/reinforced/WIN = new/obj/structure/window/reinforced(get_turf(object))
+		var/obj/structure/window/reinforced/WIN = new /obj/structure/window/reinforced(get_turf(object))
 		Log("Created - [log_info_line(object)]")
 		switch(host.dir)
 			if(NORTH)

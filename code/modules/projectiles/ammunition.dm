@@ -46,6 +46,9 @@
 		else
 			H.gunshot_residue = caliber
 
+	pixel_x = rand(-randpixel, randpixel)
+	pixel_y = rand(-randpixel, randpixel)
+
 /obj/item/ammo_casing/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(isScrewdriver(W))
 		if(!BB)
@@ -186,7 +189,7 @@
 /var/global/list/magazine_icondata_keys = list()
 /var/global/list/magazine_icondata_states = list()
 
-/proc/initialize_magazine_icondata(var/obj/item/ammo_magazine/M)
+/proc/initialize_magazine_icondata(obj/item/ammo_magazine/M)
 	var/typestr = "[M.type]"
 	if(!(typestr in magazine_icondata_keys) || !(typestr in magazine_icondata_states))
 		magazine_icondata_cache_add(M)
@@ -194,7 +197,7 @@
 	M.icon_keys = magazine_icondata_keys[typestr]
 	M.ammo_states = magazine_icondata_states[typestr]
 
-/proc/magazine_icondata_cache_add(var/obj/item/ammo_magazine/M)
+/proc/magazine_icondata_cache_add(obj/item/ammo_magazine/M)
 	var/list/icon_keys = list()
 	var/list/ammo_states = list()
 	var/list/states = icon_states(M.icon)

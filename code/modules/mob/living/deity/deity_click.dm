@@ -1,4 +1,4 @@
-/mob/living/deity/ClickOn(var/atom/A, var/params)
+/mob/living/deity/ClickOn(atom/A, params)
 	if(A == src)
 		if(form)
 			open_menu()

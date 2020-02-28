@@ -82,7 +82,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	var/bone = affected.encased ? "[target]'s [affected.encased]" : "bones in [target]'s [affected.name]"
 	if (affected.status & ORGAN_BROKEN)
-		user.visible_message("<span class='notice'>[user] sets the [bone] n place with \the [tool].</span>", \
+		user.visible_message("<span class='notice'>[user] sets the [bone] in place with \the [tool].</span>", \
 			"<span class='notice'>You set the [bone] in place with \the [tool].</span>")
 		affected.stage = 2
 	else
@@ -95,7 +95,7 @@
 	user.visible_message("<span class='warning'>[user]'s hand slips, damaging the [affected.encased ? affected.encased : "bones"] in [target]'s [affected.name] with \the [tool]!</span>" , \
 		"<span class='warning'>Your hand slips, damaging the [affected.encased ? affected.encased : "bones"] in [target]'s [affected.name] with \the [tool]!</span>")
 	affected.fracture()
-	affected.take_damage(5, used_weapon = tool)
+	affected.take_external_damage(5, used_weapon = tool)
 
 
 //////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@
 	user.visible_message("<span class='warning'>[user]'s hand slips, damaging [target]'s face with \the [tool]!</span>"  , \
 		"<span class='warning'>Your hand slips, damaging [target]'s face with \the [tool]!</span>")
 	var/obj/item/organ/external/head/h = affected
-	affected.take_damage(10, used_weapon = tool)
+	affected.take_external_damage(10, used_weapon = tool)
 	h.status |= ORGAN_DISFIGURED
 
 //////////////////////////////////////////////////////////////////
@@ -214,4 +214,4 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<span class='warning'>\The [tool] in [user]'s hand skips, jabbing the bone edges into the sides of [target]'s [affected.name]!</span>" , \
 	"<span class='warning'>Your hand jolts and \the [tool] skips, jabbing the bone edges into [target]'s [affected.name] with \the [tool]!</span>")
-	affected.take_damage(10, used_weapon = tool)
+	affected.take_external_damage(10, used_weapon = tool)

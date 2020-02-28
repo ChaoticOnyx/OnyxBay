@@ -26,4 +26,11 @@
 	siemens_coefficient = 1
 	has_sensor = SUIT_HAS_SENSORS
 
+/obj/item/clothing/under/syndicate/tacticool/bundeswehr
+	desc = "A durable black suit worn by various private security members."
+	name = "tactical uniform"
+	icon_state = "black"
+	item_state = "BW_uniform_r"
+	worn_state = "BW_uniform_r"
+
 

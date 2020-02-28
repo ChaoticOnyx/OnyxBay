@@ -36,14 +36,14 @@ var/list/_client_preferences_by_type
 				_client_preferences += new client_type()
 	return _client_preferences
 
-/proc/get_client_preference(var/datum/client_preference/preference)
+/proc/get_client_preference(datum/client_preference/preference)
 	if(istype(preference))
 		return preference
 	if(ispath(preference))
 		return get_client_preference_by_type(preference)
 	return get_client_preference_by_key(preference)
 
-/proc/get_client_preference_by_key(var/preference)
+/proc/get_client_preference_by_key(preference)
 	if(!_client_preferences_by_key)
 		_client_preferences_by_key = list()
 		for(var/ct in get_client_preferences())
@@ -51,7 +51,7 @@ var/list/_client_preferences_by_type
 			_client_preferences_by_key[client_pref.key] = client_pref
 	return _client_preferences_by_key[preference]
 
-/proc/get_client_preference_by_type(var/preference)
+/proc/get_client_preference_by_type(preference)
 	if(!_client_preferences_by_type)
 		_client_preferences_by_type = list()
 		for(var/ct in get_client_preferences())
@@ -71,11 +71,17 @@ var/list/_client_preferences_by_type
 	if(!default_value)
 		default_value = options[1]
 
-/datum/client_preference/proc/may_set(var/mob/preference_mob)
+/datum/client_preference/proc/may_set(client/given_client)
 	return TRUE
 
-/datum/client_preference/proc/changed(var/mob/preference_mob, var/new_value)
+/datum/client_preference/proc/changed(mob/preference_mob, new_value)
 	return
+
+/datum/client_preference/proc/get_options(client/given_client)
+	return options
+
+/datum/client_preference/proc/get_default_value(client/given_client)
+	return default_value
 
 /*********************
 * Player Preferences *
@@ -88,7 +94,7 @@ var/list/_client_preferences_by_type
 	description ="Play lobby music"
 	key = "SOUND_LOBBY"
 
-/datum/client_preference/play_lobby_music/changed(var/mob/preference_mob, var/new_value)
+/datum/client_preference/play_lobby_music/changed(mob/preference_mob, new_value)
 	if(new_value == GLOB.PREF_YES)
 		GLOB.using_map.lobby_music.play_to(preference_mob)
 	else
@@ -98,7 +104,7 @@ var/list/_client_preferences_by_type
 	description ="Play ambience"
 	key = "SOUND_AMBIENCE"
 
-/datum/client_preference/play_ambiance/changed(var/mob/preference_mob, var/new_value)
+/datum/client_preference/play_ambiance/changed(mob/preference_mob, new_value)
 	if(new_value == GLOB.PREF_NO)
 		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = 1))
 		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = 2))
@@ -106,6 +112,10 @@ var/list/_client_preferences_by_type
 /datum/client_preference/play_jukeboxes
 	description ="Play jukeboxes"
 	key = "SOUND_JUKEBOXES"
+
+/datum/client_preference/play_instruments
+	description ="Play instruments"
+	key = "SOUND_INSTRUMENTS"
 
 /datum/client_preference/play_hitmarker
 	description ="Hitmarker Sound"
@@ -146,7 +156,7 @@ var/list/_client_preferences_by_type
 	key = "SHOW_TYPING"
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
-/datum/client_preference/show_typing_indicator/changed(var/mob/preference_mob, var/new_value)
+/datum/client_preference/show_typing_indicator/changed(mob/preference_mob, new_value)
 	if(new_value == GLOB.PREF_HIDE)
 		QDEL_NULL(preference_mob.typing_indicator)
 
@@ -210,6 +220,54 @@ var/list/_client_preferences_by_type
 	if (preference_mob.client)
 		preference_mob.UpdatePlanes()
 
+/datum/client_preference/tooltip
+	description = "Toggle Tooltip"
+	key = "TOOLTIP"
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+
+/datum/client_preference/tooltip/changed(mob/preference_mob, new_value)
+	if (!preference_mob.client)
+		return
+
+	if (new_value == GLOB.PREF_YES)
+		preference_mob.client.tooltip.alpha = 255
+	else
+		preference_mob.client.tooltip.alpha = 0
+
+/datum/client_preference/chat_position
+	description = "Use Alternative Chat Position"
+	key = "CHAT_ALT"
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+
+/datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
+	if (!preference_mob.client)
+		return
+
+	preference_mob.client.update_chat_position(new_value == GLOB.PREF_YES)
+	preference_mob.client.fit_viewport()
+
+/datum/client_preference/cinema_credits
+	description = "Show Cinema-like Credits At Round-end"
+	key = "SHOW_CREDITS"
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+	default_value = GLOB.PREF_NO
+
+/datum/client_preference/ooc_name_color
+	description = "OOC Name Color"
+	key = "OOC_NAME_COLOR"
+
+/datum/client_preference/staff/may_set(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info && given_client.donator_info.patron_type != PATREON_NONE
+
+/datum/client_preference/ooc_name_color/get_options(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info.get_available_ooc_patreon_tiers()
+
+/datum/client_preference/ooc_name_color/get_default_value(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info.patron_type
+
 /********************
 * General Staff Preferences *
 ********************/
@@ -217,11 +275,16 @@ var/list/_client_preferences_by_type
 /datum/client_preference/staff
 	var/flags
 
-/datum/client_preference/staff/may_set(var/mob/preference_mob)
+/datum/client_preference/staff/may_set(client/given_client)
+	if(ismob(given_client))
+		var/mob/M = given_client
+		given_client = M.client
+	if(!given_client)
+		return FALSE
 	if(flags)
-		return check_rights(flags, 0, preference_mob)
+		return check_rights(flags, 0, given_client)
 	else
-		return preference_mob && preference_mob.client && preference_mob.client.holder
+		return given_client && given_client.holder
 
 /datum/client_preference/staff/show_chat_prayers
 	description = "Chat Prayers"

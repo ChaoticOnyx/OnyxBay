@@ -22,6 +22,18 @@
 	name = "\improper Administration Shuttle"
 	icon_state = "shuttlered2"
 
+/area/shuttle/supply/elevator
+	name = "Cargo Elevator"
+	icon_state = "shuttle3"
+
+/area/shuttle/supply/elevator/upper
+	name = "Cargo Elevator Upper Deck"
+	base_turf = /turf/simulated/open
+
+/area/shuttle/supply/elevator/lower
+	name = "Cargo Elevator Lower Deck"
+	base_turf = /turf/simulated/floor
+
 /area/shuttle/merchant
 	icon_state = "shuttlegrn"
 
@@ -33,7 +45,13 @@
 	base_turf = /turf/space/transit/south
 
 /area/shuttle/merchant/away
-	name = "\improper Merchant Van - Station Side"
+	name = "\improper Merchant Van - Station North East"
+
+/area/shuttle/merchant/dock
+	name = "\improper Merchant Van - Station Docking Bay"
+
+/area/shuttle/merchant/ghetto
+	name = "\improper Merchant Van - Station Ghetto Dock"
 
 // Command
 /area/crew_quarters/heads/chief
@@ -516,6 +534,10 @@
 	name = "\improper Underground Security Maintenance"
 	icon_state = "usecurity"
 
+/area/maintenance/underground/security_west
+	name = "\improper Underground Security Maintenance - West"
+	icon_state = "usecuritywest"
+
 /area/maintenance/underground/security_port
 	name = "\improper Underground Security Port Maintenance"
 	icon_state = "usecurityport"
@@ -529,8 +551,28 @@
 	icon_state = "usecuritylobby"
 
 /area/maintenance/underground/security_firefighting
-	name = "\improper Underground Security Firefighting Equipment"
+	name = "\improper Underground Security Tech Room"
 	icon_state = "usecurityfirefighting"
+
+/area/maintenance/underground/security_dorms
+	name = "\improper Underground Security Dormitories"
+	icon_state = "usecuritybreak"
+
+/area/maintenance/underground/security_breakroom
+	name = "\improper Underground Security Break Room"
+	icon_state = "usecuritybreak"
+
+/area/maintenance/underground/security_storage
+	name = "\improper Underground Security Storage Room"
+	icon_state = "usecuritystorage"
+
+/area/maintenance/underground/security_mainhall
+	name = "\improper Underground Security Main Hall"
+	icon_state = "usecuritylobby"
+
+/area/maintenance/underground/security_hallway
+	name = "\improper Underground Security Hallway"
+	icon_state = "usecurityhall"
 
 /area/maintenance/underground/security_meeting
 	name = "\improper Underground Security Meeting Maintenance"
@@ -576,6 +618,10 @@
 	name = "\improper Underground Medbay Maintenance"
 	icon_state = "umedbay"
 
+/area/maintenance/underground/medbay/south
+	name = "\improper Underground Medbay Maintenance - South"
+	icon_state = "umedbay"
+
 /area/maintenance/underground/dormitories
 	name = "\improper Underground Dormitories Maintenance"
 	icon_state = "udorm"
@@ -610,6 +656,10 @@
 
 /area/maintenance/underground/port_primary_hallway
 	name = "\improper Underground Port Primary Hallway Maintenance"
+	icon_state = "uportprim"
+
+/area/maintenance/underground/board_games_club
+	name = "\improper Underground Board Games Club"
 	icon_state = "uportprim"
 
 /area/maintenance/underground/gateway
@@ -858,6 +908,14 @@
 	name = "\improper Port Primary Hallway"
 	icon_state = "hallP"
 
+/area/hallway/primary/seclobby
+	name = "\improper Security Lobby"
+	icon_state = "security"
+
+/area/hallway/primary/englobby
+	name = "\improper Engineering Foyer"
+	icon_state = "engineering_foyer"
+
 /area/hallway/primary/central_one
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC1"
@@ -936,6 +994,34 @@
 	name = "\improper Dormitories"
 	icon_state = "Sleep"
 
+/area/crew_quarters/sleep2
+	name = "\improper Dormitories Hallway North"
+	icon_state = "Sleep"
+
+/area/crew_quarters/sleep3
+	name = "\improper Dormitories Hallway West"
+	icon_state = "Sleep"
+
+/area/crew_quarters/underdorm
+	name = "\improper Underground Dormitories"
+	icon_state = "underdorm"
+
+/area/crew_quarters/underdorm/maint
+	name = "\improper Underground Dormitories Maintenance"
+	icon_state = "underdormmaint"
+
+/area/crew_quarters/underdorm/theater
+	name = "\improper Theater"
+	icon_state = "Theatre"
+
+/area/crew_quarters/underdorm/theater/clown
+	name = "\improper Clown's Bedroom"
+	icon_state = "Theatre"
+
+/area/crew_quarters/underdorm/theater/mime
+	name = "\improper Mime's Bedroom"
+	icon_state = "Theatre"
+
 /area/crew_quarters/sleep/cabin1
 	name = "\improper Private Cabin One"
 	icon_state = "PrivDormOne"
@@ -949,6 +1035,36 @@
 /area/crew_quarters/sleep/cabin3
 	name = "\improper Private Cabin Three"
 	icon_state = "PrivDormThree"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin4
+	name = "\improper Private Cabin Four"
+	icon_state = "PrivDormFour"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin5
+	name = "\improper Private Cabin Five"
+	icon_state = "PrivDormFive"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin6
+	name = "\improper Private Cabin Six"
+	icon_state = "PrivDormSix"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin7
+	name = "\improper Private Cabin Seven"
+	icon_state = "PrivDormSeven"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin8
+	name = "\improper Private Cabin Eight"
+	icon_state = "PrivDormEight"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/cabin9
+	name = "\improper Private Cabin Nine"
+	icon_state = "PrivDormNine"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/engi_wash
@@ -992,7 +1108,7 @@
 
 /area/crew_quarters/fitness/pool
 	name = "\improper Pool"
-	icon_state = "fitness"
+	icon_state = "pool"
 
 /area/crew_quarters/kitchen
 	name = "\improper Kitchen"
@@ -1167,8 +1283,16 @@
 	name = "\improper Medbay Hallway - Fore"
 	icon_state = "medbay3"
 
+/area/medical/medbay3/underground
+	name = "\improper Underground Medbay Hallway - Fore"
+	icon_state = "medbay3"
+
 /area/medical/medbay4
 	name = "\improper Medbay Hallway - Aft"
+	icon_state = "medbay4"
+
+/area/medical/medbay4/underground
+	name = "\improper Underground Medbay Hallway - Aft"
 	icon_state = "medbay4"
 
 /area/medical/reception
@@ -1206,7 +1330,11 @@
 	icon_state = "patients"
 
 /area/medical/patient_wing
-	name = "\improper Patient Wing"
+	name = "\improper Underground Patient Ward"
+	icon_state = "patients"
+
+/area/medical/patient_wing/garden
+	name = "\improper Medbay Garden"
 	icon_state = "patients"
 
 /area/medical/patient_wing/washroom
@@ -1269,12 +1397,16 @@
 	icon_state = "security"
 
 /area/security/brig/processing
-	name = "\improper Security - Processing"
-	icon_state = "brig"
+	name = "\improper Security - Processing Room 1"
+	icon_state = "proc1"
+
+/area/security/brig/processing2
+	name = "\improper Security - Processing Room 2"
+	icon_state = "proc2"
 
 /area/security/brig/interrogation
 	name = "\improper Security - Interrogation"
-	icon_state = "brig"
+	icon_state = "interrogation"
 
 /area/security/brig/solitaryA
 	name = "\improper Security - Solitary 1"
@@ -1324,10 +1456,22 @@
 	name = "\improper Quartermasters"
 	icon_state = "quart"
 
+/area/quartermaster/breakroom
+	name = "\improper Cargo Break Room"
+	icon_state = "cargobreak"
+
 /area/quartermaster/storage
 	name = "\improper Warehouse"
 	icon_state = "quartstorage"
 	sound_env = LARGE_ENCLOSED
+
+/area/quartermaster/storage/under
+	name = "\improper Underground Cargo Warehouse"
+	icon_state = "cargounder"
+
+/area/quartermaster/storage/under/secure
+	name = "\improper Underground Cargo Storage"
+	icon_state = "cargounderstorage"
 
 /area/quartermaster/qm
 	name = "\improper Cargo - Quartermaster's Office"
@@ -1385,27 +1529,26 @@ area/rnd/test_area
 
 //AI
 
+/area/turret_protected
+	ambience = list("ai_ambient", "science_ambient")
+
 /area/turret_protected/ai_server_room
 	name = "Messaging Server Room"
 	icon_state = "ai_server"
 	sound_env = SMALL_ENCLOSED
-	ambience = list("ai_ambient")
 
 /area/turret_protected/tcomsat/port
 	name = "\improper Telecoms Satellite - Port"
-	ambience = list("ai_ambient")
 
 /area/turret_protected/tcomsat/starboard
 	name = "\improper Telecoms Satellite - Starboard"
-	ambience = list("ai_ambient")
 
 //Misc
 
 // Telecommunications Satellite
 
 /area/tcommsat
-	requires_power = 0
-	ambience = "ai_ambient"
+	ambience = list("ai_ambient", "science_ambient")
 
 /area/tcommsat/entrance
 	name = "\improper Telecoms Teleporter"
@@ -1822,9 +1965,9 @@ area/rnd/test_area
 	icon_state = "shuttle3"
 	requires_power = 0
 
-/area/security/armoury
+/area/security/armory
 	name = "\improper Security - Armory"
-	icon_state = "Warden"
+	icon_state = "armory"
 
 /area/security/detectives_office
 	name = "\improper Security - Forensic Office"

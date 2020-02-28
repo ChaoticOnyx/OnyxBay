@@ -58,7 +58,7 @@
 		else
 			return !density
 
-/obj/structure/grille/bullet_act(var/obj/item/projectile/Proj)
+/obj/structure/grille/bullet_act(obj/item/projectile/Proj)
 	if(!Proj)	return
 
 	//Flimsy grilles aren't so great at stopping projectiles. However they can absorb some of the impact
@@ -211,7 +211,11 @@
 			healthcheck()
 	..()
 
-/obj/structure/grille/attack_generic(var/mob/user, var/damage, var/attack_verb)
+/obj/structure/grille/blob_act(destroy, obj/effect/blob/source = null)
+	health -= health
+	spawn (0) healthcheck()
+
+/obj/structure/grille/attack_generic(mob/user, damage, attack_verb)
 	visible_message("<span class='danger'>[user] [attack_verb] the [src]!</span>")
 	attack_animation(user)
 	health -= damage
@@ -235,17 +239,6 @@
 	health = 40 //Make it strong enough to avoid people breaking in too easily
 
 /obj/structure/grille/cult/CanPass(atom/movable/mover, turf/target, height = 1.5, air_group = 0)
-	if(air_group)
-		return 0 //Make sure air doesn't drain
-	..()
-
-/obj/structure/grille/bogani
-	name = "alien grate"
-	desc = "This matrice is fashioned out of some exotic, strange material. Its strength allows it to function as a prison-like walling."
-	icon_state = "alien_grate"
-	health = 150 //hella strong
-
-/obj/structure/grille/bogani/CanPass(atom/movable/mover, turf/target, height = 1.5, air_group = 0)
 	if(air_group)
 		return 0 //Make sure air doesn't drain
 	..()

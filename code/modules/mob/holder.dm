@@ -57,7 +57,7 @@ var/list/holder_mob_icon_cache = list()
 
 	last_holder = loc
 
-/obj/item/weapon/holder/onDropInto(var/atom/movable/AM)
+/obj/item/weapon/holder/onDropInto(atom/movable/AM)
 	if(ismob(loc))   // Bypass our holding mob and drop directly to its loc
 		return loc.loc
 	return ..()
@@ -89,7 +89,7 @@ var/list/holder_mob_icon_cache = list()
 
 	..()
 
-/obj/item/weapon/holder/proc/sync(var/mob/living/M)
+/obj/item/weapon/holder/proc/sync(mob/living/M)
 	dir = 2
 	overlays.Cut()
 	icon = M.icon
@@ -106,9 +106,6 @@ var/list/holder_mob_icon_cache = list()
 	update_held_icon()
 
 //Mob specific holders.
-/obj/item/weapon/holder/diona
-	origin_tech = list(TECH_MAGNET = 3, TECH_BIO = 5)
-	slot_flags = SLOT_HEAD | SLOT_OCLOTHING | SLOT_HOLSTER
 
 /obj/item/weapon/holder/drone
 	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 5)
@@ -134,7 +131,7 @@ var/list/holder_mob_icon_cache = list()
 //Mob procs and vars for scooping up
 /mob/living/var/holder_type
 
-/mob/living/proc/get_scooped(var/mob/living/carbon/human/grabber, var/self_grab)
+/mob/living/proc/get_scooped(mob/living/carbon/human/grabber, self_grab)
 
 	if(!holder_type || buckled || pinned.len)
 		return
@@ -172,17 +169,17 @@ var/list/holder_mob_icon_cache = list()
 	H.sync(src)
 	return H
 
-/mob/living/MouseDrop(var/mob/living/carbon/human/over_object)
+/mob/living/MouseDrop(mob/living/carbon/human/over_object)
 	if(istype(over_object) && Adjacent(over_object) && (usr == src || usr == over_object) && over_object.a_intent == I_GRAB)
 		if(scoop_check(over_object))
 			get_scooped(over_object, (usr == src))
 			return
 	return ..()
 
-/mob/living/proc/scoop_check(var/mob/living/scooper)
+/mob/living/proc/scoop_check(mob/living/scooper)
 	return 1
 
-/mob/living/carbon/human/scoop_check(var/mob/living/scooper)
+/mob/living/carbon/human/scoop_check(mob/living/scooper)
 	return (scooper.mob_size > src.mob_size && a_intent == I_HELP)
 
 /obj/item/weapon/holder/human
@@ -191,7 +188,7 @@ var/list/holder_mob_icon_cache = list()
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 
-/obj/item/weapon/holder/human/sync(var/mob/living/M)
+/obj/item/weapon/holder/human/sync(mob/living/M)
 	// Generate appropriate on-mob icons.
 	var/mob/living/carbon/human/owner = M
 	if(istype(owner) && owner.species)

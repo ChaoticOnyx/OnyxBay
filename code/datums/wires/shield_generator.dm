@@ -22,8 +22,6 @@ var/const/SHIELDGEN_WIRE_NOTHING = 16		// A blank wire that doesn't have any spe
 		if(SHIELDGEN_WIRE_HACK)
 			if(!mended)
 				S.hacked = 0
-				if(S.check_flag(MODEFLAG_BYPASS))
-					S.toggle_flag(MODEFLAG_BYPASS)
 				if(S.check_flag(MODEFLAG_OVERCHARGE))
 					S.toggle_flag(MODEFLAG_OVERCHARGE)
 		if(SHIELDGEN_WIRE_CONTROL)
@@ -31,7 +29,7 @@ var/const/SHIELDGEN_WIRE_NOTHING = 16		// A blank wire that doesn't have any spe
 		if(SHIELDGEN_WIRE_AICONTROL)
 			S.ai_control_disabled = !mended
 
-/datum/wires/shield_generator/UpdatePulsed(var/index)
+/datum/wires/shield_generator/UpdatePulsed(index)
 	var/obj/machinery/power/shield_generator/S = holder
 	switch(index)
 		if(SHIELDGEN_WIRE_HACK)

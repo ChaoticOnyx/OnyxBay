@@ -19,7 +19,7 @@
 /obj/structure/bigDelivery/attack_hand(mob/user as mob)
 	unwrap(user)
 
-/obj/structure/bigDelivery/proc/unwrap(var/mob/user)
+/obj/structure/bigDelivery/proc/unwrap(mob/user)
 	if(Adjacent(user))
 		playsound(src, 'sound/effects/using/wrapper/unwrap1.ogg', rand(50, 75), TRUE)
 		// Destroy will drop our wrapped object on the turf, so let it.
@@ -76,7 +76,7 @@
 /obj/structure/bigDelivery/update_icon()
 	overlays = new()
 	if(nameset || examtext)
-		var/image/I = new/image('icons/obj/storage.dmi',"delivery_label")
+		var/image/I = new /image('icons/obj/storage.dmi',"delivery_label")
 		if(icon_state == "deliverycloset")
 			I.pixel_x = 2
 			if(label_y == null)
@@ -89,7 +89,7 @@
 			I.pixel_y = -3
 		overlays += I
 	if(src.sortTag)
-		var/image/I = new/image('icons/obj/storage.dmi',"delivery_tag")
+		var/image/I = new /image('icons/obj/storage.dmi',"delivery_tag")
 		if(icon_state == "deliverycloset")
 			if(tag_x == null)
 				tag_x = rand(-2, 3)
@@ -133,7 +133,7 @@
 	var/nameset = 0
 	var/tag_x
 
-/obj/item/smallDelivery/proc/unwrap(var/mob/user)
+/obj/item/smallDelivery/proc/unwrap(mob/user)
 	if (!wrapped)
 		qdel(src)
 
@@ -207,12 +207,12 @@
 /obj/item/smallDelivery/update_icon()
 	overlays = new()
 	if((nameset || examtext) && icon_state != "deliverycrate1")
-		var/image/I = new/image('icons/obj/storage.dmi',"delivery_label")
+		var/image/I = new /image('icons/obj/storage.dmi',"delivery_label")
 		if(icon_state == "deliverycrate5")
 			I.pixel_y = -1
 		overlays += I
 	if(src.sortTag)
-		var/image/I = new/image('icons/obj/storage.dmi',"delivery_tag")
+		var/image/I = new /image('icons/obj/storage.dmi',"delivery_tag")
 		switch(icon_state)
 			if("deliverycrate1")
 				I.pixel_y = -5
@@ -254,7 +254,7 @@
 	throw_speed = 4
 	throw_range = 5
 
-/obj/item/weapon/packageWrap/afterattack(var/obj/target as obj, mob/user as mob, proximity)
+/obj/item/weapon/packageWrap/afterattack(obj/target as obj, mob/user as mob, proximity)
 	if(!proximity) return
 	if(!istype(target))	//this really shouldn't be necessary (but it is).	-Pete
 		return
@@ -406,7 +406,7 @@
 /obj/machinery/disposal/deliveryChute/update_icon()
 	return
 
-/obj/machinery/disposal/deliveryChute/Bumped(var/atom/movable/AM) //Go straight into the chute
+/obj/machinery/disposal/deliveryChute/Bumped(atom/movable/AM) //Go straight into the chute
 	if(istype(AM, /obj/item/projectile) || istype(AM, /obj/effect))	return
 	switch(dir)
 		if(NORTH)
@@ -445,7 +445,7 @@
 
 			var/obj/item/organ/external/E = pick(crush)
 
-			E.take_damage(45, used_weapon = "Blunt Trauma")
+			E.take_external_damage(45, used_weapon = "Blunt Trauma")
 			to_chat(L, "\The [src]'s mechanisms crush your [E.name]!")
 
 	H.init(src)	// copy the contents of disposer to holder
@@ -459,7 +459,7 @@
 	update_icon()
 	return
 
-/obj/machinery/disposal/deliveryChute/attackby(var/obj/item/I, var/mob/user)
+/obj/machinery/disposal/deliveryChute/attackby(obj/item/I, mob/user)
 	if(!I || !user)
 		return
 

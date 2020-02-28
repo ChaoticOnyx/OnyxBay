@@ -769,9 +769,9 @@ proc // Creates a single icon from a given /atom or /image.  Only the first argu
 			else // 'I' is an appearance object.
 				if(istype(A,/obj/machinery/atmospherics) && I in A.underlays)
 					var/image/Im = I
-					add = getFlatIcon(new/image(I), Im.dir, curicon, curstate, curblend, 1)
+					add = getFlatIcon(new /image(I), Im.dir, curicon, curstate, curblend, 1)
 				else
-					add = getFlatIcon(new/image(I), curdir, curicon, curstate, curblend, always_use_defdir)
+					add = getFlatIcon(new /image(I), curdir, curicon, curstate, curblend, always_use_defdir)
 
 			// Find the new dimensions of the flat icon to fit the added overlay
 			addX1 = min(flatX1, I:pixel_x+1)
@@ -829,7 +829,7 @@ proc // Creates a single icon from a given /atom or /image.  Only the first argu
 #define HOLOPAD_SHORT_RANGE 1 //For determining the color of holopads based on whether they're short or long range.
 #define HOLOPAD_LONG_RANGE 2
 
-/proc/getHologramIcon(icon/A, safety=1, noDecolor=FALSE, var/hologram_color=HOLOPAD_SHORT_RANGE)//If safety is on, a new icon is not created.
+/proc/getHologramIcon(icon/A, safety=1, noDecolor=FALSE, hologram_color=HOLOPAD_SHORT_RANGE)//If safety is on, a new icon is not created.
 	var/icon/flat_icon = safety ? A : new(A)//Has to be a new icon to not constantly change the same icon.
 	if (noDecolor == FALSE)
 		if(hologram_color == HOLOPAD_LONG_RANGE)
@@ -849,7 +849,7 @@ proc // Creates a single icon from a given /atom or /image.  Only the first argu
 		composite.Blend(icon(I.icon, I.icon_state, I.dir, 1), ICON_OVERLAY)
 	return composite
 
-proc/adjust_brightness(var/color, var/value)
+proc/adjust_brightness(color, value)
 	if (!color) return "#ffffff"
 	if (!value) return color
 
@@ -859,7 +859,7 @@ proc/adjust_brightness(var/color, var/value)
 	RGB[3] = Clamp(RGB[3]+value,0,255)
 	return rgb(RGB[1],RGB[2],RGB[3])
 
-proc/sort_atoms_by_layer(var/list/atoms)
+proc/sort_atoms_by_layer(list/atoms)
 	// Comb sort icons based on levels
 	var/list/result = atoms.Copy()
 	var/gap = result.len
@@ -883,7 +883,7 @@ arguments tx, ty, tz are target coordinates (requred), range defines render dist
 cap_mode is capturing mode (optional), user is capturing mob (requred only wehen cap_mode = CAPTURE_MODE_REGULAR),
 lighting determines lighting capturing (optional), suppress_errors suppreses errors and continues to capture (optional).
 */
-proc/generate_image(var/tx as num, var/ty as num, var/tz as num, var/range as num, var/cap_mode = CAPTURE_MODE_PARTIAL, var/mob/living/user, var/lighting = 1, var/suppress_errors = 1)
+proc/generate_image(tx as num, ty as num, tz as num, range as num, cap_mode = CAPTURE_MODE_PARTIAL, mob/living/user, lighting = 1, suppress_errors = 1)
 	var/list/turfstocapture = list()
 	//Lines below determine what tiles will be rendered
 	for(var/xoff = 0 to range)
@@ -926,3 +926,57 @@ proc/generate_image(var/tx as num, var/ty as num, var/tz as num, var/range as nu
 				cap.Blend(img, blendMode2iconMode(A.blend_mode),  A.pixel_x + xoff, A.pixel_y + yoff)
 
 	return cap
+
+/proc/icon2html(thing, target, icon_state, dir, frame = 1, moving = FALSE, realsize = FALSE, class=null)
+	if (!thing)
+		return
+
+	var/key
+	var/icon/I = thing
+	if (!target)
+		return
+	if (target == world)
+		target = GLOB.clients
+
+	var/list/targets
+	if (!islist(target))
+		targets = list(target)
+	else
+		targets = target
+		if (!targets.len)
+			return
+	if (!isicon(I))
+		if (isfile(thing)) //special snowflake
+			var/name = "[generate_asset_name(thing)].png"
+			register_asset(name, thing)
+			for (var/thing2 in targets)
+				send_asset(thing2, key, FALSE)
+			return "<img class='icon icon-misc [class]' src=\"[url_encode(name)]\">"
+		var/atom/A = thing
+		if (isnull(dir))
+			dir = A.dir
+		if (isnull(icon_state))
+			icon_state = A.icon_state
+		I = A.icon
+		if (ishuman(thing)) // Shitty workaround for a BYOND issue.
+			var/icon/temp = I
+			I = icon()
+			I.Insert(temp, dir = SOUTH)
+			dir = SOUTH
+	else
+		if (isnull(dir))
+			dir = SOUTH
+		if (isnull(icon_state))
+			icon_state = ""
+
+	I = icon(I, icon_state, dir, frame, moving)
+
+	key = "[generate_asset_name(I)].png"
+	register_asset(key, I)
+	for (var/thing2 in targets)
+		send_asset(thing2, key, FALSE)
+
+	if(realsize)
+		return "<img class='icon icon-[icon_state] [class]' style='width:[I.Width()]px;height:[I.Height()]px;min-height:[I.Height()]px' src=\"[url_encode(key)]\">"
+
+	return "<img class='icon icon-[icon_state] [class]' src=\"[url_encode(key)]\">"

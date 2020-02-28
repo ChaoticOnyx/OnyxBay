@@ -25,7 +25,7 @@
 /datum/computer_file/data/email_account/proc/all_emails()
 	return (inbox | spam | deleted)
 
-/datum/computer_file/data/email_account/proc/send_mail(var/recipient_address, var/datum/computer_file/data/email_message/message, var/relayed = 0)
+/datum/computer_file/data/email_account/proc/send_mail(recipient_address, datum/computer_file/data/email_message/message, relayed = 0)
 	var/datum/computer_file/data/email_account/recipient
 	for(var/datum/computer_file/data/email_account/account in ntnet_global.email_accounts)
 		if(account.login == recipient_address)
@@ -41,7 +41,7 @@
 	ntnet_global.add_log_with_ids_check("EMAIL LOG: [login] -> [recipient.login] title: [message.title].")
 	return 1
 
-/datum/computer_file/data/email_account/proc/receive_mail(var/datum/computer_file/data/email_message/received_message, var/relayed)
+/datum/computer_file/data/email_account/proc/receive_mail(datum/computer_file/data/email_message/received_message, relayed)
 	received_message.set_timestamp()
 	if(!ntnet_global.intrusion_detection_enabled)
 		inbox.Add(received_message)
@@ -66,7 +66,7 @@
 /datum/computer_file/data/email_account/service/broadcaster/
 	login = "broadcast@internal-services.nt"
 
-/datum/computer_file/data/email_account/service/broadcaster/receive_mail(var/datum/computer_file/data/email_message/received_message, var/relayed)
+/datum/computer_file/data/email_account/service/broadcaster/receive_mail(datum/computer_file/data/email_message/received_message, relayed)
 	if(!istype(received_message) || relayed)
 		return 0
 	// Possibly exploitable for user spamming so keep admins informed.

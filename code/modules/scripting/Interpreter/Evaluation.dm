@@ -28,11 +28,11 @@
 					if(!isobject(D))
 						return null
 					if(!D.vars.Find(v.id.id_name))
-						RaiseError(new/runtimeError/UndefinedVariable("[v.object.ToString()].[v.id.id_name]"))
+						RaiseError(new /runtimeError/UndefinedVariable("[v.object.ToString()].[v.id.id_name]"))
 						return null
 					return Eval(D.vars[v.id.id_name])
 			else if(istype(exp, /node/expression))
-				RaiseError(new/runtimeError/UnknownInstruction())
+				RaiseError(new /runtimeError/UnknownInstruction())
 			else
 				return exp
 
@@ -77,7 +77,7 @@
 					if(/node/expression/operator/binary/Modulo)
 						return Modulo(Eval(bin.exp), Eval(bin.exp2))
 					else
-						RaiseError(new/runtimeError/UnknownInstruction())
+						RaiseError(new /runtimeError/UnknownInstruction())
 			else
 				switch(exp.type)
 					if(/node/expression/operator/unary/Minus)
@@ -89,7 +89,7 @@
 					if(/node/expression/operator/unary/group)
 						return Eval(exp.exp)
 					else
-						RaiseError(new/runtimeError/UnknownInstruction())
+						RaiseError(new /runtimeError/UnknownInstruction())
 
 
 	//Binary//
@@ -113,53 +113,53 @@
 			if(istext(a)&&!istext(b)) 		 b="[b]"
 			else if(istext(b)&&!istext(a)) a="[a]"
 			if(isobject(a) && !isobject(b))
-				RaiseError(new/runtimeError/TypeMismatch("+", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("+", a, b))
 				return null
 			else if(isobject(b) && !isobject(a))
-				RaiseError(new/runtimeError/TypeMismatch("+", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("+", a, b))
 				return null
 			return a+b
 		Subtract(a, b)
 			if(isobject(a) && !isobject(b))
-				RaiseError(new/runtimeError/TypeMismatch("-", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("-", a, b))
 				return null
 			else if(isobject(b) && !isobject(a))
-				RaiseError(new/runtimeError/TypeMismatch("-", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("-", a, b))
 				return null
 			return a-b
 		Divide(a, b)
 			if(isobject(a) && !isobject(b))
-				RaiseError(new/runtimeError/TypeMismatch("/", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("/", a, b))
 				return null
 			else if(isobject(b) && !isobject(a))
-				RaiseError(new/runtimeError/TypeMismatch("/", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("/", a, b))
 				return null
 			if(b==0)
-				RaiseError(new/runtimeError/DivisionByZero())
+				RaiseError(new /runtimeError/DivisionByZero())
 				return null
 			return a/b
 		Multiply(a, b)
 			if(isobject(a) && !isobject(b))
-				RaiseError(new/runtimeError/TypeMismatch("*", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("*", a, b))
 				return null
 			else if(isobject(b) && !isobject(a))
-				RaiseError(new/runtimeError/TypeMismatch("*", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("*", a, b))
 				return null
 			return a*b
 		Modulo(a, b)
 			if(isobject(a) && !isobject(b))
-				RaiseError(new/runtimeError/TypeMismatch("%", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("%", a, b))
 				return null
 			else if(isobject(b) && !isobject(a))
-				RaiseError(new/runtimeError/TypeMismatch("%", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("%", a, b))
 				return null
 			return a%b
 		Power(a, b)
 			if(isobject(a) && !isobject(b))
-				RaiseError(new/runtimeError/TypeMismatch("**", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("**", a, b))
 				return null
 			else if(isobject(b) && !isobject(a))
-				RaiseError(new/runtimeError/TypeMismatch("**", a, b))
+				RaiseError(new /runtimeError/TypeMismatch("**", a, b))
 				return null
 			return a**b
 

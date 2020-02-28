@@ -29,7 +29,7 @@
 			if(input)
 				light_color = input
 
-/datum/build_mode/light_maker/OnClick(var/atom/A, var/list/parameters)
+/datum/build_mode/light_maker/OnClick(atom/A, list/parameters)
 	if(parameters["left"])
 		if(A)
 			A.set_light(light_range, light_power, light_color)

@@ -15,7 +15,7 @@
 	wreckage = /obj/effect/decal/mecha_wreckage/durand
 
 /*
-/obj/mecha/combat/durand/New()
+/obj/mecha/combat/durand/Initialize()
 	..()
 	weapons += new /datum/mecha_weapon/ballistic/lmg(src)
 	weapons += new /datum/mecha_weapon/ballistic/scattershot(src)
@@ -43,10 +43,10 @@
 	defence = !defence
 	if(defence)
 		deflect_chance += def_boost
-		src.occupant_message("<font color='blue'>You enable [src] defence mode.</font>")
+		src.occupant_message("<span class='info'>You enable [src] defence mode.</span>")
 	else
 		deflect_chance -= def_boost
-		src.occupant_message("<font color='red'>You disable [src] defence mode.</font>")
+		src.occupant_message("<span class='info'>You disable [src] defence mode.</span>")
 	src.log_message("Toggled defence mode.")
 	return
 

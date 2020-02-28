@@ -24,6 +24,11 @@
 	icon_state = "policehelm"
 	body_parts_covered = 0
 
+/obj/item/clothing/head/warden/drill
+	name = "warden's drill hat"
+	desc = "You've definitely have seen that hat before."
+	icon_state = "wardendrill"
+
 /obj/item/clothing/under/rank/security
 	name = "security officer's jumpsuit"
 	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for robust protection."
@@ -130,6 +135,14 @@
 	body_parts_covered = 0
 	siemens_coefficient = 0.8
 
+/obj/item/clothing/head/HoS/german
+	name = "ancient cap"
+	desc = "An ancient cap, how did it survived to these days?"
+	icon_state = "capger"
+	body_parts_covered = HEAD
+	armor = list(melee = 25, bullet = 10, laser = 10,energy = 10, bomb = 10, bio = 0, rad = 0)
+	siemens_coefficient = 0.6
+
 /obj/item/clothing/head/HoS/dermal
 	name = "Dermal Armour Patch"
 	desc = "You're not quite sure how you manage to take it on and off, but it implants nicely in your head."
@@ -148,6 +161,19 @@
 	flags_inv = HIDEJUMPSUIT
 	siemens_coefficient = 0.6
 
+/obj/item/clothing/suit/armor/hos/german
+	name = "ancient trenchcoat"
+	desc = "An ancient trenchcoat, how did it survived to these days? There's a label on the neck that reads 'Hergestellt von Hugo Boss'"
+	icon_state = "trenchcoatger"
+	item_state = "trenchcoatger"
+	armor = list(melee = 35, bullet = 15, laser = 15, energy = 10, bomb = 10, bio = 0, rad = 0)
+
+/obj/item/clothing/suit/armor/hos/german/mob_can_equip(mob/user)
+	.=..()
+	if(user.gender == FEMALE)
+		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this men's cloth..</span>")
+		return 0
+
 //Jensen cosplay gear
 /obj/item/clothing/under/rank/head_of_security/jensen
 	desc = "You never asked for anything that stylish."
@@ -162,6 +188,26 @@
 	item_state = "hostrench"
 	flags_inv = 0
 	siemens_coefficient = 0.6
+
+/obj/item/clothing/suit/armor/hos/jensen/custom
+	name = "stylish trenchcoat"
+	desc = "A loose, unbelted trenchcoat of military style. Has a \"MILITA\" writen on chest."
+	icon_state = "hostrench"
+	item_state = "hostrench"
+	armor = list(melee = 15, bullet = 10, laser = 10, energy = 10, bomb = 10, bio = 0, rad = 0)
+
+/obj/item/clothing/suit/armor/hos/jensen/fieldcoat
+	name = "military trenchcoat"
+	desc = "A military trenchcoat with a leather belt and long, custom collar. Looks kinda old, but is kept in a good shape."
+	icon_state = "dalek_coat"
+	item_state = "dalek_coat"
+	armor = list(melee = 45, bullet = 35, laser = 35, energy = 10, bomb = 10, bio = 0, rad = 0)
+
+/obj/item/clothing/suit/armor/hos/jensen/fieldcoat/mob_can_equip(mob/user)
+	.=..()
+	if(user.gender == FEMALE)
+		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this fascist cloth..</span>")
+		return 0
 
 /*
  * Navy uniforms

@@ -3,19 +3,34 @@
 	category = /datum/gear/storage/
 	slot = slot_tie
 
-/datum/gear/storage/brown_vest
-	display_name = "brown webbing"
-	path = /obj/item/clothing/accessory/storage/brown_vest
-	cost = 3
-
 /datum/gear/storage/black_vest
-	display_name = "black webbing"
+	display_name = "black webbing vest"
 	path = /obj/item/clothing/accessory/storage/black_vest
 	cost = 3
 
+/datum/gear/storage/brown_vest
+	display_name = "brown webbing vest"
+	path = /obj/item/clothing/accessory/storage/brown_vest
+	cost = 3
+
 /datum/gear/storage/white_vest
-	display_name = "white webbing"
+	display_name = "white webbing vest"
 	path = /obj/item/clothing/accessory/storage/white_vest
+	cost = 3
+
+/datum/gear/storage/black_vest_alt
+	display_name = "black webbing"
+	path = /obj/item/clothing/accessory/storage/black_vest/alt
+	cost = 3
+
+/datum/gear/storage/brown_vest_alt
+	display_name = "brown webbing"
+	path = /obj/item/clothing/accessory/storage/brown_vest/alt
+	cost = 3
+
+/datum/gear/storage/white_vest_alt
+	display_name = "white webbing"
+	path = /obj/item/clothing/accessory/storage/white_vest/alt
 	cost = 3
 
 /datum/gear/storage/brown_drop_pouches
@@ -51,7 +66,6 @@
 /datum/gear/storage/waistpack
 	display_name = "waist pack"
 	path = /obj/item/weapon/storage/belt/waistpack
-	slot = slot_belt
 	cost = 2
 	flags = GEAR_HAS_COLOR_SELECTION
 

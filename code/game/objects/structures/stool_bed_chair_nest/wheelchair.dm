@@ -115,7 +115,7 @@
 		user_unbuckle_mob(user)
 	return
 
-/obj/structure/bed/chair/wheelchair/CtrlClick(var/mob/user)
+/obj/structure/bed/chair/wheelchair/CtrlClick(mob/user)
 	if(in_range(src, user))
 		if(!ishuman(user) || user.incapacitated(INCAPACITATION_DEFAULT | INCAPACITATION_BUCKLED_PARTIALLY))
 			return
@@ -154,7 +154,7 @@
 		occupant.apply_effect(6, WEAKEN, blocked)
 		occupant.apply_effect(6, STUTTER, blocked)
 		occupant.apply_damage(10, BRUTE, def_zone, blocked)
-		playsound(src.loc, "punch", rand(80, 100), 1, -1)
+		playsound(src.loc, 'sound/effects/fighting/punch1.ogg', 50, 1, -1)
 		if(istype(A, /mob/living))
 			var/mob/living/victim = A
 			def_zone = ran_zone()

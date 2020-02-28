@@ -38,7 +38,7 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/is_broken()
 	return (damage >= min_broken_damage || (status & ORGAN_CUT_AWAY) || (status & ORGAN_BROKEN))
 
-/obj/item/organ/New(var/mob/living/carbon/holder)
+/obj/item/organ/New(mob/living/carbon/holder)
 	..(holder)
 
 	if(max_damage)
@@ -67,7 +67,7 @@ var/list/organ_cache = list()
 
 	update_icon()
 
-/obj/item/organ/proc/set_dna(var/datum/dna/new_dna)
+/obj/item/organ/proc/set_dna(datum/dna/new_dna)
 	if(new_dna)
 		dna = new_dna.Clone()
 		if(!blood_DNA)
@@ -85,7 +85,6 @@ var/list/organ_cache = list()
 		owner.death()
 
 /obj/item/organ/Process()
-
 	if(loc != owner)
 		owner = null
 
@@ -106,7 +105,7 @@ var/list/organ_cache = list()
 			reagents.remove_reagent(/datum/reagent/blood,0.1)
 			blood_splatter(src,B,1)
 		if(config.organs_decay)
-			take_damage(rand(1,3))
+			take_general_damage(rand(1,3))
 		germ_level += rand(2,6)
 		if(germ_level >= INFECTION_LEVEL_TWO)
 			germ_level += rand(2,6)
@@ -141,15 +140,20 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/handle_germ_effects()
 	//** Handle the effects of infections
 
+	var/virus_immunity = owner.virus_immunity()
+
 	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
 
-	if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(owner.virus_immunity()*0.3))
+	if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(virus_immunity*0.3))
 		germ_level--
 
 	if (germ_level >= INFECTION_LEVEL_ONE/2)
 		//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes
 		if(antibiotics < 5 && prob(round(germ_level/6 * owner.immunity_weakness() * 0.01)))
-			germ_level++
+			if(virus_immunity > 0)
+				germ_level += round(1/virus_immunity, 1) // Immunity starts at 100. This doubles infection rate at 50% immunity. Rounded to nearest whole.
+			else // Will only trigger if immunity has hit zero. Once it does, 10x infection rate.
+				germ_level += 10
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
 		var/fever_temperature = (owner.species.heat_level_1 - owner.species.body_temperature - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.species.body_temperature
@@ -162,7 +166,7 @@ var/list/organ_cache = list()
 			parent.germ_level++
 
 		if (prob(3))	//about once every 30 seconds
-			take_damage(1,silent=prob(30))
+			take_general_damage(1,silent=prob(30))
 
 /obj/item/organ/proc/handle_rejection()
 	// Process unsuitable transplants. TODO: consider some kind of
@@ -195,7 +199,7 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/remove_rejuv()
 	qdel(src)
 
-/obj/item/organ/proc/rejuvenate(var/ignore_prosthetic_prefs)
+/obj/item/organ/proc/rejuvenate(ignore_prosthetic_prefs)
 	damage = 0
 	status = 0
 	if(!ignore_prosthetic_prefs && owner && owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
@@ -220,9 +224,8 @@ var/list/organ_cache = list()
 	else
 		germ_level -= 3 //at germ_level == 1000, this will cure the infection in 10 minutes
 
-//Note: external organs have their own version of this proc
-/obj/item/organ/proc/take_damage(amount, var/silent=0)
-	damage = between(0, damage + round(amount, 0.1), max_damage)
+/obj/item/organ/proc/take_general_damage(amount, silent = FALSE)
+	CRASH("Not Implemented")
 
 /obj/item/organ/proc/heal_damage(amount)
 	damage = between(0, damage - round(amount, 0.1), max_damage)
@@ -239,7 +242,7 @@ var/list/organ_cache = list()
  *
  *  drop_organ - if true, organ will be dropped at the loc of its former owner
  */
-/obj/item/organ/proc/removed(var/mob/living/user, var/drop_organ=1)
+/obj/item/organ/proc/removed(mob/living/user, drop_organ=1)
 
 	if(!istype(owner))
 		return
@@ -248,6 +251,8 @@ var/list/organ_cache = list()
 		dropInto(owner.loc)
 
 	playsound(src, "crunch", rand(65, 80), FALSE)
+
+	// Start processing the organ on his own
 	START_PROCESSING(SSobj, src)
 	rejecting = null
 	if(!BP_IS_ROBOTIC(src))
@@ -262,14 +267,14 @@ var/list/organ_cache = list()
 
 	owner = null
 
-/obj/item/organ/proc/replaced(var/mob/living/carbon/human/target, var/obj/item/organ/external/affected)
+/obj/item/organ/proc/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)
 	owner = target
 	forceMove(owner) //just in case
 	if(BP_IS_ROBOTIC(src))
 		set_dna(owner.dna)
 	return 1
 
-/obj/item/organ/attack(var/mob/target, var/mob/user)
+/obj/item/organ/attack(mob/target, mob/user)
 
 	if(status & ORGAN_ROBOTIC || !istype(target) || !istype(user) || (user != target && user.a_intent == I_HELP))
 		return ..()

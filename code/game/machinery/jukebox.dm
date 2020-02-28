@@ -4,7 +4,7 @@ datum/track
 	var/title
 	var/sound
 
-datum/track/New(var/title_name, var/audio)
+datum/track/New(title_name, audio)
 	title = title_name
 	sound = audio
 
@@ -28,24 +28,29 @@ datum/track/New(var/title_name, var/audio)
 
 	var/datum/track/current_track
 	var/list/datum/track/tracks = list(
-		new/datum/track("Prey", 'sound/music/prey.ogg'),
-		new/datum/track("Clouds of Fire", 'sound/music/clouds.s3m'),
-		new/datum/track("D`Bert", 'sound/music/title2.ogg'),
-		new/datum/track("D`Fort", 'sound/ambience/song_game.ogg'),
-		new/datum/track("Floating", 'sound/music/main.ogg'),
-		new/datum/track("Endless Space", 'sound/music/space.ogg'),
-		new/datum/track("Part A", 'sound/misc/TestLoop1.ogg'),
-		new/datum/track("Scratch", 'sound/music/title1.ogg'),
-		new/datum/track("Trai`Tor", 'sound/music/traitor.ogg'),
-		new/datum/track("Lone Digger", 'sound/music/lonedigger.ogg'),
-		new/datum/track("Undead Man Walkin`", 'sound/music/undeadwalking.ogg'),
-		new/datum/track("Space Asshole", 'sound/music/spaceasshole.ogg'),
-		new/datum/track("Reaper&Blues", 'sound/music/reapernblues.ogg'),
-		new/datum/track("Rum", 'sound/music/rum.ogg'),
-		new/datum/track("Don`t Remember", 'sound/music/dontremember.ogg'),
-		new/datum/track("Winter", 'sound/music/winter.ogg'),
-		new/datum/track("Winter`s Starfall", 'sound/music/starfall.ogg'),
-		new/datum/track("Avariya", 'sound/music/avariya.ogg'),
+		new /datum/track("Prey", 'sound/music/prey.ogg'),
+		new /datum/track("Clouds of Fire", 'sound/music/clouds.s3m'),
+		new /datum/track("D`Bert", 'sound/music/title2.ogg'),
+		new /datum/track("D`Fort", 'sound/ambience/song_game.ogg'),
+		new /datum/track("Floating", 'sound/music/main.ogg'),
+		new /datum/track("Endless Space", 'sound/music/space.ogg'),
+		new /datum/track("Part A", 'sound/misc/TestLoop1.ogg'),
+		new /datum/track("Scratch", 'sound/music/title1.ogg'),
+		new /datum/track("Trai`Tor", 'sound/music/traitor.ogg'),
+		new /datum/track("All That I Can See", 'sound/music/all_that_i_can_see.ogg'),
+		new /datum/track("Delirium", 'sound/music/delirium.ogg'),
+		new /datum/track("End", 'sound/music/end.ogg'),
+		new /datum/track("Magicfly", 'sound/music/magicfly.ogg'),
+		new /datum/track("Self Justified Sacrifices", 'sound/music/self_justified_sacrifices.ogg'),
+		new /datum/track("Final Countdown", 'sound/music/newyear/christmasamb1.ogg'),
+		new /datum/track("Last Christmas", 'sound/music/newyear/christmasamb2.ogg'),
+		new /datum/track("We With You a Merry Christmas", 'sound/music/newyear/christmasamb3.ogg'),
+		new /datum/track("Jingle Bells", 'sound/music/newyear/christmasamb4.ogg'),
+		new /datum/track("Happy New Year", 'sound/music/newyear/happynewyear.ogg'),
+		new /datum/track("Mr. Sandman", 'sound/music/newyear/sandman.ogg'),
+		new /datum/track("Lone Digger", 'sound/music/lonedigger.ogg'),
+		new /datum/track("Reaper & Blues", 'sound/music/reapernblues.ogg'),
+		new /datum/track("Undead Man Walkin`", 'sound/music/undeadwalking.ogg'),
 	)
 
 
@@ -165,7 +170,7 @@ datum/track/New(var/title_name, var/audio)
 /obj/machinery/media/jukebox/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
 
-/obj/machinery/media/jukebox/attack_hand(var/mob/user as mob)
+/obj/machinery/media/jukebox/attack_hand(mob/user as mob)
 	interact(user)
 
 /obj/machinery/media/jukebox/proc/explode()
@@ -182,57 +187,14 @@ datum/track/New(var/title_name, var/audio)
 	qdel(src)
 
 /obj/machinery/media/jukebox/attackby(obj/item/W as obj, mob/user as mob)
-	var/paid = 0
-	var/handled = 0
-	if (istype(W, /obj/item/weapon/spacecash/bundle))
-		var/obj/item/weapon/spacecash/bundle/cashmoney = W
-		if(300> cashmoney.worth)
-			// This is not a status display message, since it's something the character themselves is meant to see BEFORE putting the money in
-			to_chat(usr, "\icon[cashmoney] <span class='warning'>That is not enough money. You need T300.</span>")
-			paid = 0
-			handled = 1
-			return
-
-		if(jobban_isbanned(user, "JUKEBOX"))
-			to_chat(user, "<span class='notice'>Oopsie! Seems like you are blacklisted from NT Music Premium for bad taste. You can't download new tracks from NTNet.</span>")
-			return
-
-		visible_message("<span class='info'>\The [usr] inserts some cash into \the [src].</span>")
-		cashmoney.worth -= 300
-
-		if(cashmoney.worth <= 0)
-			usr.drop_from_inventory(cashmoney)
-			qdel(cashmoney)
-		else
-			cashmoney.update_icon()
-		paid = 1
-		handled = 1
-
-		if(paid)
-			to_chat(user, "<span class='notice'>You pay with \the [W] and \the [src] is now able to play your song.</span>")
-			var/newtitle = input("Type a title of the new track", "Track title", "Track") as text
-			var/sound/S = input("Select a sound", "Sound", 'sound/effects/ghost.ogg') as sound
-			tracks += new/datum/track(newtitle, S)
-			SSnano.update_uis(src)
-			return
-		else if(handled)
-			SSnano.update_uis(src)
-			return // don't smack that machine with your 2 thalers
-
-	if (istype(W, /obj/item/weapon/spacecash))
-		attack_hand(user)
-		return
-	else if(isWrench(W))
+	if(isWrench(W))
 		add_fingerprint(user)
 		wrench_floor_bolts(user, 0)
 		power_change()
 		return
-	else if(istype(W, /obj/item/weapon/coin))
-		to_chat(user, "<span class='notice'>You need some modern cash to use \the [src]. No coins, tallers only.</span>")
-		return
 	return ..()
 
-/obj/machinery/media/jukebox/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/media/jukebox/emag_act(remaining_charges, mob/user)
 	if(!emagged)
 		emagged = 1
 		StopPlaying()
@@ -259,7 +221,7 @@ datum/track/New(var/title_name, var/audio)
 	update_use_power(POWER_USE_ACTIVE)
 	update_icon()
 
-/obj/machinery/media/jukebox/proc/AdjustVolume(var/new_volume)
+/obj/machinery/media/jukebox/proc/AdjustVolume(new_volume)
 	volume = Clamp(new_volume, 0, 50)
 	if(sound_token)
 		sound_token.SetVolume(volume)

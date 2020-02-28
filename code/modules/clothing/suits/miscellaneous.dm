@@ -180,7 +180,7 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 
-/obj/item/clothing/suit/straight_jacket/equipped(var/mob/user, var/slot)
+/obj/item/clothing/suit/straight_jacket/equipped(mob/user, slot)
 	if(slot == slot_wear_suit)
 		if(iscarbon(user))
 			var/mob/living/carbon/C = user
@@ -387,6 +387,13 @@
 	desc = "A black leather coat."
 	icon_state = "leather_jacket"
 	item_state = "leather_jacket"
+	body_parts_covered = UPPER_TORSO|ARMS
+
+/obj/item/clothing/suit/storage/black_jacket_long
+	name = "long black jacket"
+	desc = "A long black leather jacket."
+	icon_state = "black_jacket_long"
+	item_state = "black_jacket_long"
 	body_parts_covered = UPPER_TORSO|ARMS
 
 /obj/item/clothing/suit/storage/black_jacket_NT

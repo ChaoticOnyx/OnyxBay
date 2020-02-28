@@ -25,7 +25,7 @@
 	for(var/direction in GLOB.cardinal)
 		var/turf/simulated/shielded_tile = get_step(get_turf(src), direction)
 		for(var/obj/effect/shield/S in shielded_tile)
-			S.diffuse(5)
+			qdel(S)
 
 /obj/machinery/shield_diffuser/attackby(obj/item/O as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, O))
@@ -55,13 +55,13 @@
 	update_icon()
 	to_chat(usr, "You turn \the [src] [enabled ? "on" : "off"].")
 
-/obj/machinery/shield_diffuser/proc/meteor_alarm(var/duration)
+/obj/machinery/shield_diffuser/proc/meteor_alarm(duration)
 	if(!duration)
 		return
 	alarm = round(max(alarm, duration))
 	update_icon()
 
-/obj/machinery/shield_diffuser/examine(var/mob/user)
+/obj/machinery/shield_diffuser/examine(mob/user)
 	. = ..()
 	to_chat(user, "It is [enabled ? "enabled" : "disabled"].")
 	if(alarm)

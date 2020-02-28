@@ -274,8 +274,8 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 
 	rare_loot = list(
 		/obj/item/weapon/storage/box/flashbangs,
-		/obj/item/weapon/storage/box/flashshells,
-		/obj/item/weapon/storage/box/stunshells,
+		/obj/item/weapon/storage/box/flash,
+		/obj/item/weapon/storage/box/shotgun/stunshells,
 		/obj/item/weapon/storage/box/teargas
 	)
 

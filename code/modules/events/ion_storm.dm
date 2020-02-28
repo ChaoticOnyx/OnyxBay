@@ -106,7 +106,7 @@
 			ion_storm_announcement()
 
 
-/datum/event/ionstorm/proc/get_random_humanoid_player_name(var/default_if_none)
+/datum/event/ionstorm/proc/get_random_humanoid_player_name(default_if_none)
 	for (var/mob/living/carbon/human/player in GLOB.player_list)
 		if(!player.mind || player_is_antag(player.mind, only_offstation_roles = 1) || !player.is_client_active(5))
 			continue
@@ -116,7 +116,7 @@
 		return pick(players)
 	return default_if_none
 
-/datum/event/ionstorm/proc/get_random_species_name(var/default_if_none = "Humans")
+/datum/event/ionstorm/proc/get_random_species_name(default_if_none = "Humans")
 	var/list/species = list()
 	for(var/S in typesof(/datum/species))
 		var/datum/species/specimen = S
@@ -127,7 +127,7 @@
 		return pick(species.len)
 	return default_if_none
 
-/datum/event/ionstorm/proc/get_random_language(var/mob/living/silicon/S)
+/datum/event/ionstorm/proc/get_random_language(mob/living/silicon/S)
 	var/list/languages = S.speech_synthesizer_langs.Copy()
 	for(var/datum/language/L in languages)
 		// Removing GalCom from the random selection. If you want to be more generic you may instead want to use S.default_language

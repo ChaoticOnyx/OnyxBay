@@ -9,16 +9,10 @@
 
 	..()
 
-	if (stat != DEAD && can_progress())
-		update_progression()
-
 	blinded = null
 
 	//Status updates, death etc.
 	update_icons()
-
-/mob/living/carbon/alien/proc/can_progress()
-	return 1
 
 
 /mob/living/carbon/alien/handle_mutations_and_radiation()
@@ -128,7 +122,7 @@
 
 	return 1
 
-/mob/living/carbon/alien/handle_environment(var/datum/gas_mixture/environment)
+/mob/living/carbon/alien/handle_environment(datum/gas_mixture/environment)
 	// Both alien subtypes survive in vaccum and suffer in high temperatures,
 	// so I'll just define this once, for both (see radiation comment above)
 	if(!environment) return

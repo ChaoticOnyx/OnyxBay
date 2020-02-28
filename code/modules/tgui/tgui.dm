@@ -75,7 +75,7 @@
 	src.state = state
 
 	if (user.client)
-		var/datum/asset/assets = get_asset_datum(/datum/asset/simple/tgui)
+		var/datum/asset/assets = get_asset_datum(/datum/asset/group/tgui)
 
 		if (!assets.check_sent(user.client))
 			to_chat(user, "Resources are still loading. Please wait.")
@@ -219,7 +219,7 @@
   *
   * return string UI HTML output.
  **/
-/datum/tgui/proc/get_html(var/inline)
+/datum/tgui/proc/get_html(inline)
 	var/html
 	// Poplate HTML with JSON if we're supposed to inline.
 	if(inline)

@@ -303,10 +303,10 @@
 	icon_state = "45-10"
 
 /obj/random/ammo/spawn_choices()
-	return list(/obj/item/weapon/storage/box/beanbags = 6,
-				/obj/item/weapon/storage/box/shotgunammo = 2,
-				/obj/item/weapon/storage/box/shotgunshells = 4,
-				/obj/item/weapon/storage/box/stunshells = 1,
+	return list(/obj/item/weapon/storage/box/shotgun/beanbags = 6,
+				/obj/item/weapon/storage/box/shotgun/slugs = 2,
+				/obj/item/weapon/storage/box/shotgun/shells = 4,
+				/obj/item/weapon/storage/box/shotgun/stunshells = 1,
 				/obj/item/ammo_magazine/c45m = 2,
 				/obj/item/ammo_magazine/c45m/rubber = 4,
 				/obj/item/ammo_magazine/c45m/flash = 4,
@@ -726,6 +726,7 @@ obj/random/obstruction/spawn_choices()
 				/obj/item/weapon/storage/briefcase/inflatable = 3,
 				/obj/item/weapon/storage/backpack = 5,
 				/obj/item/weapon/storage/backpack/satchel = 5,
+				/obj/item/weapon/storage/backpack/satchel/flat = 1,
 				/obj/item/weapon/storage/backpack/dufflebag = 2,
 				/obj/item/weapon/storage/box = 5,
 				/obj/item/weapon/storage/box/donkpockets = 3,
@@ -981,6 +982,7 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/clothing/suit/straight_jacket = 6,
 				/obj/item/clothing/head/helmet/merc = 3,
 				/obj/item/stack/material/diamond/ten = 7,
+				/obj/item/clothing/under/contortionist = 1,
 				/obj/item/stack/material/glass/phoronrglass/ten = 7,
 				/obj/item/stack/material/marble/ten = 8,
 				/obj/item/stack/material/phoron/ten = 7,

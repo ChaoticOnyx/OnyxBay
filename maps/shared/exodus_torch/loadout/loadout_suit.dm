@@ -4,7 +4,7 @@
 
 /datum/gear/suit/hazard/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path(/obj/item/clothing/suit/storage/hazardvest)
+	gear_tweaks += new /datum/gear_tweak/path(/obj/item/clothing/suit/storage/hazardvest)
 
 /datum/gear/suit/hoodie
 	display_name = "hoodie"
@@ -22,7 +22,7 @@
 	hoodies["Mariner University hoodie"] = /obj/item/clothing/suit/storage/toggle/hoodie/mu
 	hoodies["NanoTrasen hoodie"] = /obj/item/clothing/suit/storage/toggle/hoodie/nt
 	hoodies["Space Mountain Wind hoodie"] = /obj/item/clothing/suit/storage/toggle/hoodie/smw
-	gear_tweaks += new/datum/gear_tweak/path(hoodies)
+	gear_tweaks += new /datum/gear_tweak/path(hoodies)
 
 /datum/gear/suit/labcoat
 	display_name = "labcoat, colored"
@@ -42,7 +42,8 @@
 	jackets["black jacket"] = /obj/item/clothing/suit/storage/leather_jacket
 	jackets["brown jacket"] = /obj/item/clothing/suit/storage/toggle/brown_jacket
 	jackets["major bill's shipping jacket"] = /obj/item/clothing/suit/storage/mbill
-	gear_tweaks += new/datum/gear_tweak/path(jackets)
+	jackets["long black jacket"] = /obj/item/clothing/suit/storage/black_jacket_long
+	gear_tweaks += new /datum/gear_tweak/path(jackets)
 
 /datum/gear/suit/poncho
 	display_name = "poncho selection"
@@ -51,7 +52,7 @@
 
 /datum/gear/suit/poncho/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path(/obj/item/clothing/suit/poncho/colored)
+	gear_tweaks += new /datum/gear_tweak/path(/obj/item/clothing/suit/poncho/colored)
 
 /datum/gear/suit/suit_jacket
 	display_name = "suit jackets"
@@ -83,7 +84,7 @@
 	suitjackets["black suit jacket"] = /obj/item/clothing/suit/storage/toggle/internalaffairs/plain
 	suitjackets["blue suit jacket"] = /obj/item/clothing/suit/storage/toggle/lawyer/bluejacket
 	suitjackets["purple suit jacket"] = /obj/item/clothing/suit/storage/lawyer/purpjacket
-	gear_tweaks += new/datum/gear_tweak/path(suitjackets)
+	gear_tweaks += new /datum/gear_tweak/path(suitjackets)
 
 /datum/gear/suit/wintercoat
 	display_name = "winter coat"
@@ -95,4 +96,4 @@
 
 /datum/gear/suit/track/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path(/obj/item/clothing/suit/storage/toggle/track)
+	gear_tweaks += new /datum/gear_tweak/path(/obj/item/clothing/suit/storage/toggle/track)

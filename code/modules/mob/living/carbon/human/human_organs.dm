@@ -4,7 +4,7 @@
 		eyes.update_colour()
 		regenerate_icons()
 
-/mob/living/carbon/human/proc/get_bodypart_name(var/zone)
+/mob/living/carbon/human/proc/get_bodypart_name(zone)
 	var/obj/item/organ/external/E = get_organ(zone)
 	if(E) . = E.name
 
@@ -17,7 +17,7 @@
 		. = TRUE
 	last_dam = damage_this_tick
 
-/mob/living/carbon/human/proc/restore_limb(var/limb_type, var/show_message = FALSE)	//only for changling for now
+/mob/living/carbon/human/proc/restore_limb(limb_type, show_message = FALSE)	//only for changling for now
 	var/obj/item/organ/external/E = organs_by_name[limb_type]
 	if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
 		E.removed()//...because no one wants their head to explode to make way for a new one.
@@ -293,7 +293,7 @@
 		if(((E.is_broken() || E.is_dislocated()) && !E.splinted) || E.is_malfunctioning())
 			grasp_damage_disarm(E)
 
-/mob/living/carbon/human/proc/stance_damage_prone(var/obj/item/organ/external/affected)
+/mob/living/carbon/human/proc/stance_damage_prone(obj/item/organ/external/affected)
 
 	if(affected)
 		switch(affected.body_part)
@@ -305,7 +305,7 @@
 				return
 	Weaken(5)
 
-/mob/living/carbon/human/proc/grasp_damage_disarm(var/obj/item/organ/external/affected)
+/mob/living/carbon/human/proc/grasp_damage_disarm(obj/item/organ/external/affected)
 	var/disarm_slot
 	switch(affected.body_part)
 		if(HAND_LEFT, ARM_LEFT)

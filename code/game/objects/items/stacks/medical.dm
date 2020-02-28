@@ -21,7 +21,10 @@
 	if(stack_full)
 		icon_state = "[icon_state_default]_full"
 
-/obj/item/stack/medical/use(var/used)
+/obj/item/stack/medical/use(used)
+	if(uses_charge)
+		return ..()
+
 	if(stack_empty == 2)
 		return 0
 
@@ -45,7 +48,7 @@
 	return 1
 
 /obj/item/stack/medical/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if (stack_empty == 2)
+	if (stack_empty == 2 || !get_amount())
 		to_chat(user, "<span class='warning'>\The [src] is empty!</span>")
 		return 1
 
@@ -121,7 +124,7 @@
 			for (var/datum/wound/W in affecting.wounds)
 				if(W.bandaged)
 					continue
-				if(used == amount)
+				if(used == get_amount())
 					break
 				if(!do_mob(user, M, W.damage/5))
 					to_chat(user, "<span class='notice'>You must stand still to bandage wounds.</span>")
@@ -141,7 +144,7 @@
 				W.heal_damage(heal_brute)
 				used++
 			affecting.update_damages()
-			if(used == amount)
+			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, "<span class='warning'>\The [src] is used up.</span>")
 				else
@@ -211,7 +214,7 @@
 			for (var/datum/wound/W in affecting.wounds)
 				if (W.bandaged && W.disinfected)
 					continue
-				if(used == amount)
+				if(used == get_amount())
 					break
 				if(!do_mob(user, M, W.damage/5))
 					to_chat(user, "<span class='notice'>You must stand still to apply \the [src].</span>")
@@ -227,7 +230,7 @@
 				W.heal_damage(heal_brute)
 				used++
 			affecting.update_damages()
-			if(used == amount)
+			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, "<span class='warning'>\The [src] is used up.</span>")
 				else
@@ -360,7 +363,7 @@
 			for (var/datum/wound/W in affecting.wounds)
 				if(W.bandaged)
 					continue
-				if(used == amount)
+				if(used == get_amount())
 					break
 				if(!do_mob(user, M, W.damage/5))
 					to_chat(user, "<span class='notice'>You must stand still to place a bandaid.</span>")
@@ -371,7 +374,7 @@
 				W.bandage()
 				used++
 			affecting.update_damages()
-			if(used == amount)
+			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, "<span class='warning'>\The [src] is used up.</span>")
 				else

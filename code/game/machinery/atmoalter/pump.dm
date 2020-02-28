@@ -23,7 +23,7 @@
 
 /obj/machinery/portable_atmospherics/powered/pump/New()
 	..()
-	cell = new/obj/item/weapon/cell/apc(src)
+	cell = new /obj/item/weapon/cell/apc(src)
 
 	var/list/air_mix = StandardAirMix()
 	src.air_contents.adjust_multi("oxygen", air_mix["oxygen"], "nitrogen", air_mix["nitrogen"])
@@ -111,14 +111,14 @@
 
 	src.updateDialog()
 
-/obj/machinery/portable_atmospherics/powered/pump/attack_ai(var/mob/user)
+/obj/machinery/portable_atmospherics/powered/pump/attack_ai(mob/user)
 	src.add_hiddenprint(user)
 	return src.attack_hand(user)
 
-/obj/machinery/portable_atmospherics/powered/pump/attack_ghost(var/mob/user)
+/obj/machinery/portable_atmospherics/powered/pump/attack_ghost(mob/user)
 	return src.attack_hand(user)
 
-/obj/machinery/portable_atmospherics/powered/pump/attack_hand(var/mob/user)
+/obj/machinery/portable_atmospherics/powered/pump/attack_hand(mob/user)
 	ui_interact(user)
 
 /obj/machinery/portable_atmospherics/powered/pump/ui_interact(mob/user, ui_key = "rcon", datum/nanoui/ui=null, force_open=1)

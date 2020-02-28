@@ -88,7 +88,7 @@
 	update()
 	return
 
-/obj/structure/morgue/attack_robot(var/mob/user)
+/obj/structure/morgue/attack_robot(mob/user)
 	if(Adjacent(user))
 		return attack_hand(user)
 	else return ..()
@@ -334,9 +334,9 @@
 					var/desperation = rand(1,5)
 					switch(desperation) //This is messy. A better solution would probably be to make more sounds, but...
 						if(1)
-							playsound(src.loc, 'sound/weapons/genhit.ogg', 45, 1)
+							playsound(src.loc, 'sound/effects/fighting/genhit.ogg', 45, 1)
 							shake_animation(2)
-							playsound(src.loc, 'sound/weapons/genhit.ogg', 45, 1)
+							playsound(src.loc, 'sound/effects/fighting/genhit.ogg', 45, 1)
 						if(2)
 							playsound(src.loc, 'sound/effects/grillehit.ogg', 45, 1)
 							shake_animation(3)
@@ -352,9 +352,9 @@
 							playsound(src, 'sound/effects/clang.ogg', 45, 1)
 							shake_animation(5)
 						if(5)
-							playsound(src, 'sound/weapons/smash.ogg', 50, 1)
+							playsound(src, 'sound/effects/fighting/smash.ogg', 50, 1)
 							if(prob(50))
-								playsound(src, 'sound/weapons/smash.ogg', 50, 1)
+								playsound(src, 'sound/effects/fighting/smash.ogg', 50, 1)
 								shake_animation(9)
 							else
 								shake_animation()

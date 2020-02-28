@@ -181,13 +181,13 @@
 
 // Initializes cyborg's components. Technically, adds default set of components to new borgs
 /mob/living/silicon/robot/proc/initialize_components()
-	components["actuator"] = new/datum/robot_component/actuator(src)
-	components["radio"] = new/datum/robot_component/radio(src)
-	components["power cell"] = new/datum/robot_component/cell(src)
-	components["diagnosis unit"] = new/datum/robot_component/diagnosis_unit(src)
-	components["camera"] = new/datum/robot_component/camera(src)
-	components["comms"] = new/datum/robot_component/binary_communication(src)
-	components["armour"] = new/datum/robot_component/armour(src)
+	components["actuator"] = new /datum/robot_component/actuator(src)
+	components["radio"] = new /datum/robot_component/radio(src)
+	components["power cell"] = new /datum/robot_component/cell(src)
+	components["diagnosis unit"] = new /datum/robot_component/diagnosis_unit(src)
+	components["camera"] = new /datum/robot_component/camera(src)
+	components["comms"] = new /datum/robot_component/binary_communication(src)
+	components["armour"] = new /datum/robot_component/armour(src)
 
 // Checks if component is functioning
 /mob/living/silicon/robot/proc/is_component_functioning(module_name)
@@ -195,7 +195,7 @@
 	return C && C.installed == 1 && C.toggled && C.is_powered()
 
 // Returns component by it's string name
-/mob/living/silicon/robot/proc/get_component(var/component_name)
+/mob/living/silicon/robot/proc/get_component(component_name)
 	var/datum/robot_component/C = components[component_name]
 	return C
 

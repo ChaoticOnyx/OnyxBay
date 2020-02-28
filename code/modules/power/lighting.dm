@@ -13,6 +13,7 @@
 #define LIGHTING_POWER_FACTOR 5		//5W per luminosity * range
 
 #define LIGHTMODE_EMERGENCY "emergency_lighting"
+#define LIGHTMODE_EVACUATION "evacuation_lighting"
 #define LIGHTMODE_ALARM "alarm"
 #define LIGHTMODE_READY "ready"
 
@@ -29,7 +30,7 @@
 	var/fixture_type = /obj/machinery/light
 	var/sheets_refunded = 2
 
-/obj/machinery/light_construct/New(atom/newloc, var/newdir, atom/fixture = null)
+/obj/machinery/light_construct/New(atom/newloc, newdir, atom/fixture = null)
 	..(newloc)
 
 	if(newdir)
@@ -207,7 +208,7 @@
 	QDEL_NULL(s)
 	. = ..()
 
-/obj/machinery/light/update_icon(var/trigger = 1)
+/obj/machinery/light/update_icon(trigger = 1)
 
 	switch(get_status())		// set icon_states
 		if(LIGHT_OK)
@@ -250,7 +251,7 @@
 	if(get_status() != LIGHT_OK)
 		set_light(0)
 
-/obj/machinery/light/attack_generic(var/mob/user, var/damage)
+/obj/machinery/light/attack_generic(mob/user, damage)
 	if(!damage)
 		return
 	var/status = get_status()
@@ -264,7 +265,7 @@
 	broken()
 	return 1
 
-/obj/machinery/light/proc/set_mode(var/new_mode)
+/obj/machinery/light/proc/set_mode(new_mode)
 	if(current_mode != new_mode)
 		current_mode = new_mode
 		update_icon(0)
@@ -278,6 +279,14 @@
 		if(current_mode == LIGHTMODE_EMERGENCY)
 			set_mode(null)
 			update_power_channel(initial(power_channel))
+		
+/obj/machinery/light/proc/set_evacuation_lighting(state)
+	if(state)
+		if(LIGHTMODE_EVACUATION in lightbulb.lighting_modes)
+			set_mode(LIGHTMODE_EVACUATION)
+	else
+		if(current_mode == LIGHTMODE_EVACUATION)
+			set_mode(null)
 
 /obj/machinery/light/proc/set_alert_lighting(state as num)
 	if(state)
@@ -289,7 +298,7 @@
 
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
-/obj/machinery/light/proc/seton(var/state)
+/obj/machinery/light/proc/seton(state)
 	on = (state && get_status() == LIGHT_OK)
 	queue_icon_update()
 
@@ -393,7 +402,7 @@
 	var/area/A = get_area(src)
 	return A && A.lightswitch && ..(power_channel)
 
-/obj/machinery/light/proc/flicker(var/amount = rand(10, 20))
+/obj/machinery/light/proc/flicker(amount = rand(10, 20))
 	if(flickering) return
 	flickering = 1
 	spawn(0)
@@ -474,7 +483,7 @@
 	else return ..()
 
 // break the light and make sparks if was on
-/obj/machinery/light/proc/broken(var/skip_sound_and_sparks = 0)
+/obj/machinery/light/proc/broken(skip_sound_and_sparks = 0)
 	if(!lightbulb)
 		return
 
@@ -527,7 +536,7 @@
 	light_type = /obj/item/weapon/light/bulb/red/readylight
 	var/state = 0
 
-/obj/machinery/light/small/readylight/proc/set_state(var/new_state)
+/obj/machinery/light/small/readylight/proc/set_state(new_state)
 	state = new_state
 	if(state)
 		set_mode(LIGHTMODE_READY)
@@ -569,6 +578,7 @@
 	brightness_color = "#fffee0"
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 4, l_power = 1, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_color = "#bf0000"),
 		LIGHTMODE_ALARM = list(l_color = "#ff3333")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
@@ -593,6 +603,7 @@
 	brightness_color = "#a0a080"
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 3, l_power = 1, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_color = "#bf0000"),
 		LIGHTMODE_ALARM = list(l_color = "#ff3333")
 		)
 
@@ -640,7 +651,7 @@
 
 // attack bulb/tube with object
 // if a syringe, can inject phoron to make it explode
-/obj/item/weapon/light/attackby(var/obj/item/I, var/mob/user)
+/obj/item/weapon/light/attackby(obj/item/I, mob/user)
 	..()
 	if(istype(I, /obj/item/weapon/reagent_containers/syringe))
 		var/obj/item/weapon/reagent_containers/syringe/S = I

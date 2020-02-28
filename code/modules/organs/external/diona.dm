@@ -115,13 +115,13 @@
 		qdel(src)
 
 // Copypaste due to eye code, RIP.
-/obj/item/organ/external/head/no_eyes/diona
+/obj/item/organ/external/head/diona
 	can_intake_reagents = 0
 	max_damage = 50
 	min_broken_damage = 25
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
 
-/obj/item/organ/external/head/no_eyes/diona/removed()
+/obj/item/organ/external/head/diona/removed()
 	if(BP_IS_ROBOTIC(src))
 		return ..()
 	var/mob/living/carbon/human/H = owner
@@ -137,7 +137,7 @@
 	icon_state = "nymph"
 	organ_tag = "special" // Turns into a nymph instantly, no transplanting possible.
 
-/obj/item/organ/internal/diona/removed(var/mob/living/user, var/skip_nymph)
+/obj/item/organ/internal/diona/removed(mob/living/user, skip_nymph)
 	if(BP_IS_ROBOTIC(src))
 		return ..()
 	var/mob/living/carbon/human/H = owner
@@ -188,7 +188,7 @@
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "claw"
 
-/obj/item/organ/internal/diona/nutrients/removed(var/mob/user)
+/obj/item/organ/internal/diona/nutrients/removed(mob/user)
 	return ..(user, 1)
 
 /obj/item/organ/internal/diona/node
@@ -210,5 +210,5 @@
 	owner.shock_stage -= light_amount
 	owner.nutrition    = Clamp(owner.nutrition, 0, 550)
 
-/obj/item/organ/internal/diona/node/removed(var/mob/user)
+/obj/item/organ/internal/diona/node/removed(mob/user)
 	return ..(user, 1)

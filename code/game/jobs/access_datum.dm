@@ -262,8 +262,17 @@
 	desc = "Primary Network"
 	region = ACCESS_REGION_RESEARCH
 
-// /var/const/free_access_id = 43
-// /var/const/free_access_id = 44
+/var/const/access_clown = 43
+/datum/access/clown
+	id = access_clown
+	desc = "Clown"
+	region = ACCESS_REGION_GENERAL
+
+/var/const/access_mime = 44
+/datum/access/mime
+	id = access_mime
+	desc = "Mime"
+	region = ACCESS_REGION_GENERAL
 
 /var/const/access_surgery = 45
 /datum/access/surgery

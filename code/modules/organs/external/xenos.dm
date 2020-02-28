@@ -5,12 +5,12 @@
 	desc = "It smells like an accident in a chemical factory."
 	var/associated_power = /mob/living/carbon/human/proc/resin
 
-/obj/item/organ/internal/xenos/replaced(var/mob/living/carbon/human/target,var/obj/item/organ/external/affected)
+/obj/item/organ/internal/xenos/replaced(mob/living/carbon/human/target,obj/item/organ/external/affected)
 	. = ..()
 	if(ishuman(owner) && associated_power)
 		owner.verbs |= associated_power
 
-/obj/item/organ/internal/xenos/removed(var/mob/living/user)
+/obj/item/organ/internal/xenos/removed(mob/living/user)
 	. = ..()
 	if(ishuman(owner) && associated_power && !(associated_power in owner.species.inherent_verbs))
 		owner.verbs -= associated_power
@@ -73,7 +73,7 @@
 	owner.b_eyes = 153
 	..()
 
-/obj/item/organ/internal/xenos/hivenode/removed(var/mob/living/user)
+/obj/item/organ/internal/xenos/hivenode/removed(mob/living/user)
 	if(owner && ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		to_chat(H, "<span class='alium'>You feel your connection to the hivemind fray and fade away...</span>")
@@ -82,7 +82,7 @@
 			GLOB.xenomorphs.remove_antagonist(H.mind)
 	..(user)
 
-/obj/item/organ/internal/xenos/hivenode/replaced(var/mob/living/carbon/human/target,var/obj/item/organ/external/affected)
+/obj/item/organ/internal/xenos/hivenode/replaced(mob/living/carbon/human/target,obj/item/organ/external/affected)
 	if(!..()) return 0
 
 	if(owner && ishuman(owner))

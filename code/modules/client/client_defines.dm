@@ -24,6 +24,8 @@
 	var/datum/eams_info/eams_info = new
 	var/species_ingame_whitelisted = FALSE
 
+	var/datum/donator_info/donator_info = new
+
 		///////////////
 		//SOUND STUFF//
 		///////////////
@@ -53,3 +55,11 @@
 	var/static/obj/screen/click_catcher/void
 
 	var/datum/click_handler/click_handler
+
+	// Transparent image for maptext tooltip
+	var/obj/screen/tooltip = null
+
+	///onyxchat chatoutput of the client
+	var/datum/chatOutput/chatOutput
+
+	var/fullscreen = FALSE

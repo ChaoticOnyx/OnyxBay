@@ -94,11 +94,6 @@
 		// dumb and hardcoded but I don't care~
 		config.server_name += " #[(world.port % 1000) / 100]"
 
-	if(config && config.log_runtime)
-		var/runtime_log = file("data/logs/runtime/[date_string]_[time2text(world.timeofday, "hh:mm")]_[game_id].log")
-		runtime_log << "Game [game_id] starting up at [time2text(world.timeofday, "hh:mm.ss")]"
-		log = runtime_log
-
 	watchlist = new /datum/watchlist
 
 	var/list/lobby_music_tracks = subtypesof(/lobby_music)
@@ -127,7 +122,7 @@
 var/world_topic_spam_protect_time = world.timeofday
 
 /world/Topic(T, addr, master, key)
-	diary << "TOPIC: \"[T]\", from:[addr], master:[master], key:[key][log_end]"
+	diary << "TOPIC: \"[T]\", from:[addr], master:[master][log_end]"
 
 	var/input[] = params2list(T)
 	var/key_valid = config.comms_password && input["key"] == config.comms_password
@@ -347,12 +342,16 @@ var/world_topic_spam_protect_time = world.timeofday
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
 		var/ckey = input["ckey"]
-		var/message = input["ooc"]
+		var/message
+		if(!input["isadmin"])  // le costil, remove when discord-bot will be fixed ~HonkyDonky
+			message = rhtml_encode(input["ooc"])
+		else
+			message = "<font color='#39034f'>" + strip_html_properly(input["ooc"]) + "</font>"
 		if(!ckey||!message)
 			return
 		if(!config.vars["ooc_allowed"]&&!input["isadmin"])
 			return "globally muted"
-		var/sent_message = "[create_text_tag("DISCORD OOC:")] <EM>[ckey]:</EM> <span class='message'>[message]</span>"
+		var/sent_message = "[create_text_tag("DISCORD OOC:")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
 				continue //sanity
@@ -383,10 +382,11 @@ var/world_topic_spam_protect_time = world.timeofday
 			return "No client with that name on server"
 
 		var/rank = "Discord Admin"
+		var/response = rhtml_encode(russian_to_cp1251(input["response"]))
 
-		var/message =	"<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [russian_to_cp1251(input["response"])]</font>"
-		var/amessage =  "<font color='blue'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [russian_to_cp1251(input["response"])]</font>"
-		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", russian_to_cp1251(input["response"]))
+		var/message =	"<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [response]</font>"
+		var/amessage =  "<span class='info'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [response])]</span>"
+		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
 
 		sound_to(C, 'sound/effects/adminhelp.ogg')
 		to_chat(C, message)
@@ -495,13 +495,17 @@ var/world_topic_spam_protect_time = world.timeofday
 		return GLOB.prometheus_metrics.collect()
 
 
-/world/Reboot(var/reason)
+/world/Reboot(reason)
 	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
 
 	Master.Shutdown()
 
-	if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
-		for(var/client/C in GLOB.clients)
+	for(var/client/C in GLOB.clients)
+		var/datum/chatOutput/co = C.chatOutput
+		if(co)
+			co.ehjax_send(data = "roundrestart")
+
+		if(config.server) //if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 			C << link("byond://[config.server]")
 
 	if(config.wait_for_sigusr1_reboot && reason != 3)
@@ -515,7 +519,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	callHook("shutdown")
 	return ..()
 
-/world/proc/save_mode(var/the_mode)
+/world/proc/save_mode(the_mode)
 	var/F = file("data/mode.txt")
 	fdel(F)
 	F << the_mode

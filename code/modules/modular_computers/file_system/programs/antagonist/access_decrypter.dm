@@ -15,7 +15,7 @@
 	var/progress = 0
 	var/target_progress = 300
 
-/datum/computer_file/program/access_decrypter/kill_program(var/forced)
+/datum/computer_file/program/access_decrypter/kill_program(forced)
 	reset()
 	..(forced)
 
@@ -73,7 +73,7 @@
 /datum/nano_module/program/access_decrypter
 	name = "NTNet Access Decrypter"
 
-/datum/nano_module/program/access_decrypter/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/program/access_decrypter/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(!ntnet_global)
 		return
 	var/datum/computer_file/program/access_decrypter/PRG = program

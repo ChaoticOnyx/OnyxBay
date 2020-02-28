@@ -97,8 +97,7 @@
 		device.attack_self(holder.wearer)
 		return 1
 
-	var/turf/T = get_turf(target)
-	if(istype(T) && !T.Adjacent(get_turf(src)))
+	if(!target.Adjacent(holder.wearer))
 		return 0
 
 	var/resolved = target.attackby(device,holder.wearer)
@@ -150,7 +149,7 @@
 		list("radium",        "radium",        /datum/reagent/radium,            20)
 		)
 
-/obj/item/rig_module/chem_dispenser/accepts_item(var/obj/item/input_item, var/mob/living/user)
+/obj/item/rig_module/chem_dispenser/accepts_item(obj/item/input_item, mob/living/user)
 
 	if(!input_item.is_open_container())
 		return 0
@@ -178,7 +177,7 @@
 				break
 
 	if(total_transferred)
-		to_chat(user, "<font color='blue'>You transfer [total_transferred] units into the suit reservoir.</font>")
+		to_chat(user, "<span class='info'>You transfer [total_transferred] units into the suit reservoir.</span>")
 	else
 		to_chat(user, "<span class='danger'>None of the reagents seem suitable.</span>")
 	return 1
@@ -240,6 +239,15 @@
 	interface_name = "combat chem dispenser"
 	interface_desc = "Dispenses loaded chemicals directly into the bloodstream."
 
+/obj/item/rig_module/chem_dispenser/combat/security
+
+	charges = list(
+		list("tricordrazine", "tricordrazine", /datum/reagent/tricordrazine,     20),
+		list("tramadol",      "tramadol",      /datum/reagent/tramadol,          20),
+		list("antitoxins",    "antitoxins",    /datum/reagent/dylovene,          20),
+		list("glucose",     "glucose",     /datum/reagent/nutriment/glucose, 60),
+		)
+
 
 /obj/item/rig_module/chem_dispenser/injector
 
@@ -293,17 +301,17 @@
 		if("Enable")
 			active = 1
 			voice_holder.active = 1
-			to_chat(usr, "<font color='blue'>You enable the speech synthesiser.</font>")
+			to_chat(usr, "<span class='info'>You enable the speech synthesiser.</span>")
 		if("Disable")
 			active = 0
 			voice_holder.active = 0
-			to_chat(usr, "<font color='blue'>You disable the speech synthesiser.</font>")
+			to_chat(usr, "<span class='info'>You disable the speech synthesiser.</span>")
 		if("Set Name")
 			var/raw_choice = sanitize(input(usr, "Please enter a new name.")  as text|null, MAX_NAME_LEN)
 			if(!raw_choice)
 				return 0
 			voice_holder.voice = raw_choice
-			to_chat(usr, "<font color='blue'>You are now mimicking <B>[voice_holder.voice]</B>.</font>")
+			to_chat(usr, "<span class='info'>You are now mimicking <B>[voice_holder.voice]</B>.</span>")
 	return 1
 
 /obj/item/rig_module/maneuvering_jets

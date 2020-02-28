@@ -22,13 +22,13 @@ SUBSYSTEM_DEF(wireless)
 	var/list/retry_connections   = list()
 	var/list/failed_connections  = list()
 
-/datum/controller/subsystem/wireless/proc/add_device(var/datum/wifi/receiver/R)
+/datum/controller/subsystem/wireless/proc/add_device(datum/wifi/receiver/R)
 	receiver_list |= R
 
-/datum/controller/subsystem/wireless/proc/remove_device(var/datum/wifi/receiver/R)
+/datum/controller/subsystem/wireless/proc/remove_device(datum/wifi/receiver/R)
 	receiver_list -= R
 
-/datum/controller/subsystem/wireless/proc/add_request(var/datum/connection_request/C)
+/datum/controller/subsystem/wireless/proc/add_request(datum/connection_request/C)
 	pending_connections += C
 
 /datum/controller/subsystem/wireless/stat_entry()
@@ -52,7 +52,7 @@ SUBSYSTEM_DEF(wireless)
 	if(process_queue(pending_connections, retry_connections))
 		return
 
-/datum/controller/subsystem/wireless/proc/process_queue(var/list/process_connections, var/list/unsuccesful_connections)
+/datum/controller/subsystem/wireless/proc/process_queue(list/process_connections, list/unsuccesful_connections)
 	while(process_connections.len)
 		var/datum/connection_request/C = process_connections[process_connections.len]
 		process_connections--

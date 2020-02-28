@@ -20,10 +20,13 @@
 	response_harm   = "kicks"
 	see_in_dark = 5
 	mob_size = 8
+	health = 30
+	maxHealth = 30
 	possession_candidate = 1
 	holder_type = /obj/item/weapon/holder/corgi
 	var/obj/item/inventory_head
 	var/obj/item/inventory_back
+	var/obj/movement_target
 
 //IAN! SQUEEEEEEEEE~
 /mob/living/simple_animal/corgi/Ian
@@ -32,14 +35,15 @@
 	gender = MALE
 	desc = "It's a corgi."
 	turns_since_scan = 0
-	var/obj/movement_target
 	response_help  = "pets"
 	response_disarm = "bops"
 	response_harm   = "kicks"
 
-/mob/living/simple_animal/corgi/Ian/Life()
+/mob/living/simple_animal/corgi/Life()
 	..()
 
+	regular_hud_updates()
+		
 	//Feeding, chasing food, FOOOOODDDD
 	if(!stat && !resting && !buckled)
 		turns_since_scan++
@@ -86,12 +90,54 @@
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
 					set_dir(i)
 					sleep(1)
+					
+/mob/living/simple_animal/corgi/proc/regular_hud_updates()
+	if(pullin)
+		if(pulling)								
+			pullin.icon_state = "pull1"
+		else									
+			pullin.icon_state = "pull0"
+	if(fire)
+		if(fire_alert)
+			fire.icon_state = "fire[fire_alert]" //fire_alert is either 0 if no alert, 1 for heat and 2 for cold.
+		else
+			fire.icon_state = "fire0"
+	if(oxygen)
+		if(oxygen_alert)
+			oxygen.icon_state = "oxy1"
+		else
+			oxygen.icon_state = "oxy0"
+			
+	if(toxin)
+		if(toxins_alert)
+			toxin.icon_state = "tox1"
+		else
+			toxin.icon_state = "tox0"
+			
+	if (healths)
+		switch(health)
+			if(30 to INFINITY)
+				healths.icon_state = "health0"
+			if(26 to 29)
+				healths.icon_state = "health1"
+			if(21 to 25)
+				healths.icon_state = "health2"
+			if(16 to 20)
+				healths.icon_state = "health3"
+			if(11 to 15)
+				healths.icon_state = "health4"
+			if(6 to 10)
+				healths.icon_state = "health5"
+			if(1 to 5)
+				healths.icon_state = "health6"
+			else
+				healths.icon_state = "health7"					
 
 /obj/item/weapon/reagent_containers/food/snacks/meat/corgi
 	name = "Corgi meat"
 	desc = "Tastes like... well you know..."
 
-/mob/living/simple_animal/corgi/attackby(var/obj/item/O as obj, var/mob/user as mob)  //Marker -Agouri
+/mob/living/simple_animal/corgi/attackby(obj/item/O as obj, mob/user as mob)  //Marker -Agouri
 	if(istype(O, /obj/item/weapon/newspaper))
 		if(!stat)
 			for(var/mob/M in viewers(user, null))

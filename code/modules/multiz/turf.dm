@@ -60,12 +60,12 @@
 /turf/simulated/open/update_dirt()
 	return 0
 
-/turf/simulated/open/Entered(var/atom/movable/mover)
+/turf/simulated/open/Entered(atom/movable/mover)
 	..()
 	mover.fall()
 
 // Called when thrown object lands on this turf.
-/turf/simulated/open/hitby(var/atom/movable/AM, var/speed)
+/turf/simulated/open/hitby(atom/movable/AM, speed)
 	. = ..()
 	AM.fall()
 
@@ -149,7 +149,7 @@
 		var/obj/item/stack/rods/R = C
 		if (R.use(1))
 			to_chat(user, "<span class='notice'>You lay down the support lattice.</span>")
-			playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
+			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 			new /obj/structure/lattice(locate(src.x, src.y, src.z))
 			//Update turfs
 			SSopen_space.add_turf(src, 1)
@@ -162,7 +162,7 @@
 			if (S.get_amount() < 1)
 				return
 			qdel(L)
-			playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
+			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 			S.use(1)
 			ChangeTurf(/turf/simulated/floor/plating/airless)
 			return
@@ -180,7 +180,7 @@
 /turf/simulated/open/is_plating()
 	return 1
 
-/turf/simulated/open/proc/handle_move(var/atom/current_loc, var/atom/movable/am, var/atom/changed_loc)
+/turf/simulated/open/proc/handle_move(atom/current_loc, atom/movable/am, atom/changed_loc)
 	//First handle objs and such
 	if(!am.invisibility && isobj(am))
 	//Update icons
@@ -200,14 +200,14 @@
 		qdel(M)
 
 //When turf changes, a bunch of things can take place
-/turf/simulated/open/proc/turf_change(var/turf/affected)
+/turf/simulated/open/proc/turf_change(turf/affected)
 	if(!isopenspace(affected))//If affected is openspace it will add itself
 		SSopen_space.add_turf(src, 1)
 
 
 //The two situations which require unregistering
 
-/turf/simulated/open/ChangeTurf(var/turf/N, var/tell_universe=1, var/force_lighting_update = 0)
+/turf/simulated/open/ChangeTurf(turf/N, tell_universe=1, force_lighting_update = 0)
 	//We do not want to change any of the behaviour, just make sure this goes away
 	src.clean_up()
 	. = ..()

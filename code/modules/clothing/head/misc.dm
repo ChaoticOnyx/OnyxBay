@@ -40,6 +40,11 @@
 	item_state = "pwig"
 	armor = list(melee = 5, bullet = 5, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 
+/obj/item/clothing/head/warfarecap
+    name = "red peaked cap"
+    desc = "Makes you want to step on a landmine."
+    icon_state = "redoffcap"
+
 /obj/item/clothing/head/that
 	name = "top-hat"
 	desc = "It's an amish looking hat."

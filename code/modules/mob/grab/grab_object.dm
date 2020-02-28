@@ -35,7 +35,7 @@
 	if(start_grab_name)
 		current_grab = all_grabstates[start_grab_name]
 
-/obj/item/grab/examine(var/user)
+/obj/item/grab/examine(user)
 	..()
 	var/obj/item/O = get_targeted_organ()
 	to_chat(user,"A grab on \the [affecting]'s [O.name].")
@@ -44,6 +44,8 @@
 	current_grab.process(src)
 
 /obj/item/grab/attack_self(mob/user)
+	if(!assailant)
+		return
 	switch(assailant.a_intent)
 		if(I_HELP)
 			downgrade()
@@ -73,6 +75,8 @@
 	This section is for newly defined useful procs.
 */
 /obj/item/grab/proc/target_change()
+	if(!assailant)
+		return
 	var/hit_zone = assailant.zone_sel.selecting
 	if(src != assailant.get_active_hand())
 		return 0
@@ -138,9 +142,11 @@
 
 // Returns the organ of the grabbed person that the grabber is targeting
 /obj/item/grab/proc/get_targeted_organ()
+	if(!affecting)
+		return
 	return (affecting.get_organ(target_zone))
 
-/obj/item/grab/proc/resolve_item_attack(var/mob/living/M, var/obj/item/I, var/target_zone)
+/obj/item/grab/proc/resolve_item_attack(mob/living/M, obj/item/I, target_zone)
 	if((M && ishuman(M)) && I)
 		return current_grab.resolve_item_attack(src, M, I, target_zone)
 	else
@@ -155,7 +161,7 @@
 /obj/item/grab/proc/check_upgrade_cooldown()
 	return (world.time >= last_upgrade + current_grab.upgrade_cooldown)
 
-/obj/item/grab/proc/upgrade(var/bypass_cooldown = FALSE)
+/obj/item/grab/proc/upgrade(bypass_cooldown = FALSE)
 	if(!check_upgrade_cooldown() && !bypass_cooldown)
 		to_chat(assailant, "<span class='danger'>It's too soon to upgrade.</span>")
 		return
@@ -175,6 +181,8 @@
 		update_icons()
 
 /obj/item/grab/proc/update_icons()
+	if(!current_grab)
+		return
 	if(current_grab.icon)
 		icon = current_grab.icon
 	if(current_grab.icon_state)
@@ -195,7 +203,7 @@
 /obj/item/grab/proc/handle_resist()
 	current_grab.handle_resist(src)
 
-/obj/item/grab/proc/adjust_position(var/force = 0)
+/obj/item/grab/proc/adjust_position(force = 0)
 	if(force)	affecting.forceMove(assailant.loc)
 
 	if(!assailant || !affecting || !assailant.Adjacent(affecting))

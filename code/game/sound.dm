@@ -36,6 +36,8 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
+GLOBAL_LIST_INIT(far_shot_sound,list('sound/effects/weapons/gun/far_fire1.ogg','sound/effects/weapons/gun/far_fire2.ogg','sound/effects/weapons/gun/far_fire3.ogg'))
+
 GLOBAL_LIST_INIT(f_cheavyb_sound,list('sound/effects/emotes/f_cheavyb1.ogg'))
 
 GLOBAL_LIST_INIT(f_cough_sound,list('sound/effects/emotes/f_cough1.ogg','sound/effects/emotes/f_cough2.ogg'))
@@ -69,13 +71,19 @@ GLOBAL_LIST_INIT(m_pain_sound,list('sound/effects/emotes/m_pain1.ogg','sound/eff
 									'sound/effects/emotes/m_pain16.ogg','sound/effects/emotes/m_pain17.ogg','sound/effects/emotes/m_pain18.ogg',
 									'sound/effects/emotes/m_pain19.ogg','sound/effects/emotes/m_pain20.ogg','sound/effects/emotes/m_pain21.ogg'))
 
+GLOBAL_LIST_INIT(global_ambient_sound,list('sound/ambience/global/amb1.ogg','sound/ambience/global/amb2.ogg','sound/ambience/global/amb3.ogg',
+										'sound/ambience/global/amb4.ogg','sound/ambience/global/amb5.ogg','sound/ambience/global/amb6.ogg',
+										'sound/ambience/global/amb7.ogg','sound/ambience/global/amb8.ogg','sound/ambience/global/amb9.ogg',
+										'sound/ambience/global/amb10.ogg'))
+
+GLOBAL_LIST_INIT(science_ambient_sound,list('sound/ambience/science/amb1.ogg','sound/ambience/science/amb2.ogg','sound/ambience/science/amb3.ogg',
+										'sound/ambience/science/amb4.ogg','sound/ambience/science/amb5.ogg','sound/ambience/science/amb6.ogg',
+										'sound/ambience/science/amb7.ogg','sound/ambience/science/amb8.ogg'))
+
 GLOBAL_LIST_INIT(ai_ambient_sound,list('sound/ambience/ai/amb1.ogg','sound/ambience/ai/amb2.ogg','sound/ambience/ai/amb3.ogg',
 										'sound/ambience/ai/amb4.ogg','sound/ambience/ai/amb5.ogg','sound/ambience/ai/amb6.ogg',
 										'sound/ambience/ai/amb7.ogg','sound/ambience/ai/amb8.ogg','sound/ambience/ai/amb9.ogg',
-										'sound/ambience/ai/amb10.ogg','sound/ambience/ai/amb12.ogg','sound/ambience/ai/amb13.ogg',
-										'sound/ambience/ai/amb14.ogg','sound/ambience/ai/amb15.ogg','sound/ambience/ai/amb16.ogg',
-										'sound/ambience/ai/amb17.ogg','sound/ambience/ai/amb18.ogg','sound/ambience/ai/amb19.ogg',
-										'sound/ambience/ai/amb20.ogg','sound/ambience/ai/amb21.ogg','sound/ambience/ai/amb22.ogg'))
+										'sound/ambience/ai/amb10.ogg','sound/ambience/ai/amb12.ogg'))
 
 GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1.ogg','sound/ambience/maintenance/amb2.ogg','sound/ambience/maintenance/amb3.ogg',
 												'sound/ambience/maintenance/amb4.ogg','sound/ambience/maintenance/amb5.ogg','sound/ambience/maintenance/amb6.ogg',
@@ -86,9 +94,7 @@ GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1
 												'sound/ambience/maintenance/amb20.ogg','sound/ambience/maintenance/amb21.ogg','sound/ambience/maintenance/amb22.ogg',
 												'sound/ambience/maintenance/amb23.ogg','sound/ambience/maintenance/amb24.ogg','sound/ambience/maintenance/amb25.ogg',
 												'sound/ambience/maintenance/amb26.ogg','sound/ambience/maintenance/amb27.ogg','sound/ambience/maintenance/amb28.ogg',
-												'sound/ambience/maintenance/amb29.ogg','sound/ambience/maintenance/amb30.ogg','sound/ambience/maintenance/amb31.ogg',
-												'sound/ambience/maintenance/amb32.ogg','sound/ambience/maintenance/amb33.ogg','sound/ambience/maintenance/amb34.ogg',
-												'sound/ambience/maintenance/amb35.ogg','sound/ambience/maintenance/amb36.ogg','sound/ambience/maintenance/amb37.ogg'))
+												'sound/ambience/maintenance/amb29.ogg'))
 
 GLOBAL_LIST_INIT(engineering_ambient_sound,list('sound/ambience/engineering/amb1.ogg','sound/ambience/engineering/amb2.ogg','sound/ambience/engineering/amb3.ogg',
 												'sound/ambience/engineering/amb4.ogg','sound/ambience/engineering/amb5.ogg','sound/ambience/engineering/amb6.ogg',
@@ -99,7 +105,7 @@ GLOBAL_LIST_INIT(engineering_ambient_sound,list('sound/ambience/engineering/amb1
 												'sound/ambience/engineering/amb20.ogg','sound/ambience/engineering/amb21.ogg','sound/ambience/engineering/amb22.ogg',
 												'sound/ambience/engineering/amb23.ogg','sound/ambience/engineering/amb24.ogg','sound/ambience/engineering/amb25.ogg',
 												'sound/ambience/engineering/amb26.ogg','sound/ambience/engineering/amb27.ogg','sound/ambience/engineering/amb28.ogg',
-												'sound/ambience/engineering/amb29.ogg','sound/ambience/engineering/amb30.ogg','sound/ambience/engineering/amb31.ogg'))
+												'sound/ambience/engineering/amb29.ogg','sound/ambience/engineering/amb30.ogg'))
 
 GLOBAL_LIST_INIT(space_ambient_sound,list('sound/ambience/space/exterior1.ogg','sound/ambience/space/exterior2.ogg','sound/ambience/space/exterior3.ogg',
 										'sound/ambience/space/exterior4.ogg','sound/ambience/space/exterior5.ogg','sound/ambience/space/exterior6.ogg',
@@ -237,6 +243,7 @@ GLOBAL_LIST_INIT(window_breaking_sound,list('sound/effects/breaking/window/break
 GLOBAL_LIST_INIT(glass_hit_sound,list('sound/effects/materials/glass/knock1.ogg', 'sound/effects/materials/glass/knock2.ogg', 'sound/effects/materials/glass/knock3.ogg',
 										'sound/effects/materials/glass/knock4.ogg', 'sound/effects/materials/glass/knock5.ogg', 'sound/effects/materials/glass/knock6.ogg'))
 
+GLOBAL_LIST_INIT(glass_knock_sound,list('sound/effects/materials/glass/glassknock.ogg'))
 GLOBAL_LIST_INIT(electric_explosion_sound,list('sound/effects/explosions/electric1.ogg','sound/effects/explosions/electric2.ogg','sound/effects/explosions/electric3.ogg',
 												'sound/effects/explosions/electric4.ogg','sound/effects/explosions/electric5.ogg','sound/effects/explosions/electric6.ogg',
 												'sound/effects/explosions/electric7.ogg','sound/effects/explosions/electric8.ogg','sound/effects/explosions/electric9.ogg',
@@ -288,12 +295,8 @@ GLOBAL_LIST_INIT(gib_sound,list('sound/effects/fighting/gib1.ogg','sound/effects
 								'sound/effects/fighting/gib10.ogg'))
 
 GLOBAL_LIST_INIT(punch_sound,list('sound/effects/fighting/punch1.ogg','sound/effects/fighting/punch2.ogg','sound/effects/fighting/punch3.ogg','sound/effects/fighting/punch4.ogg'))
-
 GLOBAL_LIST_INIT(clown_sound,list('sound/effects/clownstep1.ogg','sound/effects/clownstep2.ogg'))
-
-GLOBAL_LIST_INIT(swing_sound,list('sound/effects/fighting/swing1.ogg','sound/effects/fighting/swing2.ogg','sound/effects/fighting/swing3.ogg',
-									'sound/effects/fighting/swing4.ogg','sound/effects/fighting/swing5.ogg','sound/effects/fighting/swing6.ogg',
-									'sound/effects/fighting/swing7.ogg'))
+GLOBAL_LIST_INIT(swing_hit_sound,list('sound/effects/fighting/genhit1.ogg', 'sound/effects/fighting/genhit2.ogg', 'sound/effects/fighting/genhit3.ogg'))
 
 GLOBAL_LIST_INIT(hiss_sound,list('sound/voice/hiss1.ogg','sound/voice/hiss2.ogg','sound/voice/hiss3.ogg','sound/voice/hiss4.ogg'))
 GLOBAL_LIST_INIT(page_sound,list('sound/effects/pageturn1.ogg', 'sound/effects/pageturn2.ogg','sound/effects/pageturn3.ogg'))
@@ -306,7 +309,7 @@ GLOBAL_LIST_INIT(switch_large_sound,list('sound/effects/using/switch/large1.ogg'
 									'sound/effects/using/switch/large4.ogg'))
 
 GLOBAL_LIST_INIT(button_sound,list('sound/machines/button1.ogg','sound/machines/button2.ogg','sound/machines/button3.ogg','sound/machines/button4.ogg'))
-GLOBAL_LIST_INIT(chop_sound,list('sound/weapons/chop1.ogg','sound/weapons/chop2.ogg','sound/weapons/chop3.ogg'))
+GLOBAL_LIST_INIT(chop_sound,list('sound/effects/fighting/chop1.ogg','sound/effects/fighting/chop2.ogg','sound/effects/fighting/chop3.ogg'))
 
 GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosion1.ogg', 'sound/effects/explosions/far_explosion2.ogg', 'sound/effects/explosions/far_explosion3.ogg',
 										'sound/effects/explosions/far_explosion4.ogg', 'sound/effects/explosions/far_explosion5.ogg', 'sound/effects/explosions/far_explosion6.ogg',
@@ -326,7 +329,7 @@ GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosio
 										'sound/effects/explosions/far_explosion46.ogg', 'sound/effects/explosions/far_explosion47.ogg', 'sound/effects/explosions/far_explosion48.ogg',
 										'sound/effects/explosions/far_explosion49.ogg', 'sound/effects/explosions/far_explosion50.ogg'))
 
-/proc/playsound(var/atom/source, soundin, vol as num, vary, extrarange as num, falloff, var/is_global, var/frequency, var/is_ambiance = 0)
+/proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0)
 
 	soundin = get_sfx(soundin) // same sound for everyone
 
@@ -348,8 +351,9 @@ GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosio
 
 var/const/FALLOFF_SOUNDS = 0.5
 
-/mob/proc/playsound_local(var/turf/turf_source, soundin, vol as num, vary, frequency, falloff, is_global, extrarange)
-	if(!src.client || ear_deaf > 0)	return
+/mob/proc/playsound_local(turf/turf_source, soundin, vol as num, vary, frequency, falloff, is_global, extrarange)
+	if(!src.client || ear_deaf > 0)
+		return
 	var/sound/S = soundin
 	if(!istype(S))
 		soundin = get_sfx(soundin)
@@ -424,7 +428,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 
 		else if (pressure_factor < 0.5)
 			S.environment = SPACE
-		else
+		else if(!get_area(src) == null)
 			var/area/A = get_area(src)
 			S.environment = A.sound_env
 
@@ -440,6 +444,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
+			if ("far_fire")				soundin = pick(GLOB.far_fire_sound)
 			if ("female_closed_breath")	soundin = pick(GLOB.f_cheavyb_sound)
 			if ("female_cough")			soundin = pick(GLOB.f_cough_sound)
 			if ("female_breath")		soundin = pick(GLOB.f_heavyb_sound)
@@ -449,8 +454,10 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("male_breath")			soundin = pick(GLOB.m_heavyb_sound)
 			if ("male_pain")			soundin = pick(GLOB.m_pain_sound)
 			if ("ai_ambient")			soundin = pick(GLOB.ai_ambient_sound)
+			if ("science_ambient")		soundin = pick(GLOB.science_ambient_sound)
 			if ("maintenance_ambient")	soundin = pick(GLOB.maintenance_ambient_sound)
 			if ("engineering_ambient")	soundin = pick(GLOB.engineering_ambient_sound)
+			if ("global_ambient")		soundin = pick(GLOB.global_ambient_sound)
 			if ("space_ambient")		soundin = pick(GLOB.space_ambient_sound)
 			if ("handcuffs")			soundin = pick(GLOB.handcuffs_sound)
 			if ("cable_handcuffs")		soundin = pick(GLOB.cable_hcuffs_sound)
@@ -480,6 +487,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("console_breaking")		soundin = pick(GLOB.console_breaking_sound)
 			if ("window_breaking") 		soundin = pick(GLOB.window_breaking_sound)
 			if ("glass_hit") 			soundin = pick(GLOB.glass_hit_sound)
+			if ("glass_knock")			soundin = pick(GLOB.glass_knock_sound)
 			if ("electric_explosion")	soundin = pick(GLOB.electric_explosion_sound)
 			if ("explosion") 			soundin = pick(GLOB.explosion_sound)
 			if ("spark") 				soundin = pick(GLOB.spark_sound)
@@ -492,7 +500,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("gib")					soundin = pick(GLOB.gib_sound)
 			if ("punch") 				soundin = pick(GLOB.punch_sound)
 			if ("clownstep") 			soundin = pick(GLOB.clown_sound)
-			if ("swing") 				soundin = pick(GLOB.swing_sound)
+			if ("swing_hit") 			soundin = pick(GLOB.swing_hit_sound)
 			if ("hiss") 				soundin = pick(GLOB.hiss_sound)
 			if ("pageturn") 			soundin = pick(GLOB.page_sound)
 			if ("fracture") 			soundin = pick(GLOB.fracture_sound)

@@ -5,14 +5,14 @@
 	var/mob/living/silicon/ai/user = src
 	// Setup Variables
 	malfunctioning = 1
-	research = new/datum/malf_research()
+	research = new /datum/malf_research()
 	research.owner = src
 	hacked_apcs = list()
 	recalc_cpu()
 
-	verbs += new/datum/game_mode/malfunction/verb/ai_select_hardware()
-	verbs += new/datum/game_mode/malfunction/verb/ai_select_research()
-	verbs += new/datum/game_mode/malfunction/verb/ai_help()
+	verbs += /datum/game_mode/malfunction/verb/ai_select_hardware
+	verbs += /datum/game_mode/malfunction/verb/ai_select_research
+	verbs += /datum/game_mode/malfunction/verb/ai_help
 
 	log_ability_use(src, "became malfunctioning AI")
 	// And greet user with some OOC info.
@@ -20,7 +20,7 @@
 	to_chat(user, "Use ai-help command to view relevant information about your abilities")
 
 // Safely remove malfunction status, fixing hacked APCs and resetting variables.
-/mob/living/silicon/ai/proc/stop_malf(var/loud = 1)
+/mob/living/silicon/ai/proc/stop_malf(loud = 1)
 	if(!malfunctioning)
 		return
 	var/mob/living/silicon/ai/user = src
@@ -88,7 +88,7 @@
 		research.cpu_increase_per_tick = research.cpu_increase_per_tick * 2
 
 // Starts AI's APU generator
-/mob/living/silicon/ai/proc/start_apu(var/shutup = 0)
+/mob/living/silicon/ai/proc/start_apu(shutup = 0)
 	if(!hardware || !istype(hardware, /datum/malf_hardware/apu_gen))
 		if(!shutup)
 			to_chat(src, "You do not have an APU generator and you shouldn't have this verb. Report this.")
@@ -103,7 +103,7 @@
 	APU_power = 1
 
 // Stops AI's APU generator
-/mob/living/silicon/ai/proc/stop_apu(var/shutup = 0)
+/mob/living/silicon/ai/proc/stop_apu(shutup = 0)
 	if(!hardware || !istype(hardware, /datum/malf_hardware/apu_gen))
 		return
 

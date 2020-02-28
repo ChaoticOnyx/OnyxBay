@@ -57,7 +57,7 @@
 	var/digspeed = 40 //moving the delay to an item var so R&D can make improved picks. --NEO
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
 	attack_verb = list("hit", "pierced", "sliced", "attacked")
-	var/drill_sound = 'sound/weapons/Genhit.ogg'
+	var/drill_sound = 'sound/effects/fighting/Genhit.ogg'
 	var/drill_verb = "drilling"
 	sharp = 1
 
@@ -212,20 +212,20 @@
 	desc = "A portable flag with the Sol Government symbol on it. I claim this land for Sol!"
 	light_color = COLOR_BLUE
 
-/obj/item/stack/flag/attackby(var/obj/item/W, var/mob/user)
+/obj/item/stack/flag/attackby(obj/item/W, mob/user)
 	if(upright)
 		attack_hand(user)
 		return
 	return ..()
 
-/obj/item/stack/flag/attack_hand(var/mob/user)
+/obj/item/stack/flag/attack_hand(mob/user)
 	if(upright)
 		knock_down()
 		user.visible_message("\The [user] knocks down \the [singular_name].")
 		return
 	return ..()
 
-/obj/item/stack/flag/attack_self(var/mob/user)
+/obj/item/stack/flag/attack_self(mob/user)
 	var/turf/T = get_turf(src)
 
 	if(istype(T, /turf/space) || istype(T, /turf/simulated/open))
@@ -576,7 +576,7 @@
 	for(var/obj/item/weapon/ore/O in orange(7,user))
 		if(limit <= 0)
 			break
-		new/obj/effect/sparks(O.loc)
+		new /obj/effect/sparks(O.loc)
 		do_teleport(O, user, 0)
 		limit -= 1
 		CHECK_TICK

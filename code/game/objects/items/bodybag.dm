@@ -74,7 +74,7 @@
 			to_chat(user, "\The [W] reports that \the [src] is empty.")
 		return
 
-/obj/structure/closet/body_bag/store_mobs(var/stored_units)
+/obj/structure/closet/body_bag/store_mobs(stored_units)
 	contains_body = ..()
 	return contains_body
 
@@ -84,7 +84,7 @@
 		return 1
 	return 0
 
-/obj/structure/closet/body_bag/proc/fold(var/user)
+/obj/structure/closet/body_bag/proc/fold(user)
 	if(!ishuman(user))	return 0
 	if(opened)	return 0
 	if(contents.len)	return 0

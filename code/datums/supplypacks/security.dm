@@ -283,8 +283,8 @@
 
 /decl/hierarchy/supply_pack/security/shotgunammo
 	name = "Ammunition - Lethal shells"
-	contains = list(/obj/item/weapon/storage/box/shotgunammo = 2,
-					/obj/item/weapon/storage/box/shotgunshells = 2)
+	contains = list(/obj/item/weapon/storage/box/shotgun/slugs = 2,
+					/obj/item/weapon/storage/box/shotgun/shells = 2)
 	cost = 60
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Lethal shotgun shells crate"
@@ -293,7 +293,7 @@
 
 /decl/hierarchy/supply_pack/security/shotgunbeanbag
 	name = "Ammunition - Beanbag shells"
-	contains = list(/obj/item/weapon/storage/box/beanbags = 3)
+	contains = list(/obj/item/weapon/storage/box/shotgun/beanbags = 3)
 	cost = 30
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Beanbag shotgun shells crate"

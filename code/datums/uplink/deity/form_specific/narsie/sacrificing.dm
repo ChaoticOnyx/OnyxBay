@@ -27,7 +27,7 @@
 	category = /datum/uplink_category/deity_narsie_sacrifice
 	required_feats = list(DEITY_TREE_SACRIFICE)
 
-/datum/uplink_item/deity/feat/blood_stone/buy(var/obj/item/device/uplink/U, var/mob/living/deity/user)
+/datum/uplink_item/deity/feat/blood_stone/buy(obj/item/device/uplink/U, mob/living/deity/user)
 	. = ..()
 	if(.)
 		user.form.buildables |= /obj/structure/deity/blood_stone

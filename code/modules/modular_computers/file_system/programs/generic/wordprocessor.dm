@@ -15,14 +15,14 @@
 	var/error
 	var/is_edited
 
-/datum/computer_file/program/wordprocessor/proc/open_file(var/filename)
+/datum/computer_file/program/wordprocessor/proc/open_file(filename)
 	var/datum/computer_file/data/F = get_file(filename)
 	if(F)
 		open_file = F.filename
 		loaded_data = F.stored_data
 		return 1
 
-/datum/computer_file/program/wordprocessor/proc/save_file(var/filename)
+/datum/computer_file/program/wordprocessor/proc/save_file(filename)
 	var/datum/computer_file/data/F = get_file(filename)
 	if(!F) //try to make one if it doesn't exist
 		F = create_file(filename, loaded_data)
@@ -162,7 +162,7 @@
 /datum/nano_module/program/computer_wordprocessor
 	name = "Word Processor"
 
-/datum/nano_module/program/computer_wordprocessor/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/datum/nano_module/program/computer_wordprocessor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 	var/datum/computer_file/program/wordprocessor/PRG
 	PRG = program

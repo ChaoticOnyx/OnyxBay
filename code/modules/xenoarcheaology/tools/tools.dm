@@ -8,11 +8,11 @@
 	matter = list(MATERIAL_STEEL = 500)
 	w_class = ITEM_SIZE_SMALL
 
-/obj/item/device/gps/attack_self(var/mob/user as mob)
+/obj/item/device/gps/attack_self(mob/user as mob)
 	var/turf/T = get_turf(src)
 	to_chat(user, "<span class='notice'>\icon[src] \The [src] flashes <i>[T.x]:[T.y]:[T.z]</i>.</span>")
 
-/obj/item/device/gps/examine(var/mob/user)
+/obj/item/device/gps/examine(mob/user)
 	..()
 	var/turf/T = get_turf(src)
 	to_chat(user, "<span class='notice'>\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.</span>")
@@ -63,10 +63,10 @@
 	var/last_scan_time = 0
 	var/scan_delay = 25
 
-/obj/item/device/ano_scanner/attack_self(var/mob/living/user)
+/obj/item/device/ano_scanner/attack_self(mob/living/user)
 	interact(user)
 
-/obj/item/device/ano_scanner/interact(var/mob/living/user)
+/obj/item/device/ano_scanner/interact(mob/living/user)
 	if(world.time - last_scan_time >= scan_delay)
 		last_scan_time = world.time
 
@@ -128,7 +128,7 @@
 	var/dissonance_spread = 1
 	var/material = "unknown"
 
-/obj/item/device/depth_scanner/proc/scan_atom(var/mob/user, var/atom/A)
+/obj/item/device/depth_scanner/proc/scan_atom(mob/user, atom/A)
 	user.visible_message("<span class='notice'>\The [user] scans \the [A], the air around them humming gently.</span>")
 
 	if(istype(A, /turf/simulated/mineral))
@@ -171,10 +171,10 @@
 
 			to_chat(user, "<span class='notice'>\icon[src] [src] pings [pick("madly","wildly","excitedly","crazily")]!</span>")
 
-/obj/item/device/depth_scanner/attack_self(var/mob/living/user)
+/obj/item/device/depth_scanner/attack_self(mob/living/user)
 	interact(user)
 
-/obj/item/device/depth_scanner/interact(var/mob/user as mob)
+/obj/item/device/depth_scanner/interact(mob/user as mob)
 	var/dat = "<b>Coordinates with positive matches</b><br>"
 
 	dat += "<A href='?src=\ref[src];clear=0'>== Clear all ==</a><br>"
@@ -247,10 +247,10 @@
 				cur_dist = check_dist
 				. = weakref(R)
 
-/obj/item/weapon/pinpointer/radio/attack_self(var/mob/user as mob)
+/obj/item/weapon/pinpointer/radio/attack_self(mob/user as mob)
 	interact(user)
 
-/obj/item/weapon/pinpointer/radio/interact(var/mob/user)
+/obj/item/weapon/pinpointer/radio/interact(mob/user)
 	var/dat = "<b>Radio frequency tracker</b><br>"
 	dat += {"
 				Tracking: <A href='byond://?src=\ref[src];toggle=1'>[active ? "Enabled" : "Disabled"]</A><BR>

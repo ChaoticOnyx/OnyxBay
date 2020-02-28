@@ -1,4 +1,7 @@
-import 'core-js/stable';
+import 'core-js/es';
+import 'core-js/web/immediate';
+import 'core-js/web/queue-microtask';
+import 'core-js/web/timers';
 import 'regenerator-runtime/runtime';
 import './polyfills';
 
@@ -6,9 +9,9 @@ import { loadCSS } from 'fg-loadcss';
 import { render } from 'inferno';
 import { setupHotReloading } from 'tgui-dev-server/link/client';
 import { backendUpdate } from './backend';
-import { act, tridentVersion } from './byond';
+import { tridentVersion } from './byond';
 import { setupDrag } from './drag';
-import { createLogger, setLoggerRef } from './logging';
+import { createLogger } from './logging';
 import { getRoute } from './routes';
 import { createStore } from './store';
 
@@ -33,6 +36,8 @@ const renderLayout = () => {
     const state = store.getState();
     // Initial render setup
     if (initialRender) {
+      logger.log('initial render', state);
+
       // ----- Old TGUI chain-loader: begin -----
       const route = getRoute(state);
       // Route was not found, load old TGUI
@@ -42,10 +47,10 @@ const renderLayout = () => {
         handedOverToOldTgui = true;
         // Unsubscribe from updates
         window.update = window.initialize = () => {};
-        // Load old TGUI using redirection method for IE8
+        // IE8: Use a redirection method
         if (tridentVersion <= 4) {
           setTimeout(() => {
-            location.href = 'tgui-fallback.html?ref=' + ref;
+            location.href = 'tgui-fallback.html?ref=' + window.__ref__;
           }, 10);
           return;
         }
@@ -64,8 +69,6 @@ const renderLayout = () => {
         return;
       }
       // ----- Old TGUI chain-loader: end -----
-
-      logger.log('initial render', state);
 
       // Setup dragging
       setupDrag(state);
@@ -97,8 +100,21 @@ const renderLayout = () => {
 
 // Parse JSON and report all abnormal JSON strings coming from BYOND
 const parseStateJson = json => {
+  let reviver = (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (value.__number__) {
+        return parseFloat(value.__number__);
+      }
+    }
+    return value;
+  };
+  // IE8: No reviver for you!
+  // See: https://stackoverflow.com/questions/1288962
+  if (tridentVersion <= 4) {
+    reviver = undefined;
+  }
   try {
-    return JSON.parse(json);
+    return JSON.parse(json, reviver);
   }
   catch (err) {
     logger.error('JSON parsing error: ' + err.message + '\n' + json);
@@ -107,14 +123,7 @@ const parseStateJson = json => {
 };
 
 const setupApp = () => {
-  // Find data in the page, load inlined state.
-  const holder = document.getElementById('data');
-  const ref = holder.getAttribute('data-ref');
-
-  // Initialize logger
-  setLoggerRef(ref);
-
-  // Subscribe for state updates
+  // Subscribe for redux state updates
   store.subscribe(() => {
     renderLayout();
   });
@@ -134,23 +143,23 @@ const setupApp = () => {
     });
   }
 
-  // Initialize
-  act(ref, 'tgui:initialize');
+  // Process the early update queue
+  while (true) {
+    let stateJson = window.__updateQueue__.shift();
+    if (!stateJson) {
+      break;
+    }
+    window.update(stateJson);
+  }
 
   // Dynamically load font-awesome from browser's cache
   loadCSS('font-awesome.css');
 };
 
-// Wait for DOM to properly load on IE8
-if (tridentVersion <= 4) {
-  if (document.readyState !== 'loading') {
-    setupApp();
-  }
-  else {
-    document.addEventListener('DOMContentLoaded', setupApp);
-  }
+// IE8: Wait for DOM to properly load
+if (tridentVersion <= 4 && document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupApp);
 }
-// Load right away on all other browsers
 else {
   setupApp();
 }

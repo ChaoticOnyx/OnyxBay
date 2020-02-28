@@ -10,29 +10,65 @@
 	return
 
 /datum/event/virus_minor/start()
-	var/next_outbreak = pick(/datum/ictus/retrovirus, /datum/ictus/cold9, /datum/ictus/flu, /datum/ictus/vulnerability, /datum/ictus/xeno, /datum/ictus/hisstarvation, /datum/ictus/musclerace)
+	var/next_outbreak = pick(/datum/ictus/retrovirus, /datum/ictus/cold9,
+							 /datum/ictus/flu, /datum/ictus/vulnerability,
+							 /datum/ictus/xeno, /datum/ictus/hisstarvation,
+							 /datum/ictus/musclerace, /datum/ictus/space_migraine)
 	new next_outbreak
-	
+
 /datum/event/virus_major/start()
 	var/next_outbreak = pick(/datum/ictus/gbs, /datum/ictus/fake_gbs, /datum/ictus/nuclear, /datum/ictus/fluspanish, /datum/ictus/emp)
 	new next_outbreak
-	
+
 /datum/admins/proc/ictus()
 	set category = "Admin"
 	set name = "Spawn Epidemic"
 	if(!check_rights(R_ADMIN))
-		return	
-	
+		return
+
 	var/ictus = input("Select virus:", "Infection") as null|anything in subtypesof(/datum/ictus)
 	if(!ictus)
 		return
 	new	ictus
-	
-	message_admins("[key_name_admin(src)] released [ictus].", 1)	
 
-// ####################################################################
-// ############################RETROVIRUS##############################
-// ####################################################################
+	message_admins("[key_name_admin(src)] released [ictus].", 1)
+
+/datum/disease2/disease/space_migraine
+	infectionchance = 80
+	spreadtype = "Airborne"
+	stage = 2
+	max_stage = 3
+
+/datum/disease2/disease/space_migraine/New()
+	. = ..()
+	antigen = list(pick(ALL_ANTIGENS))
+	var/datum/disease2/effect/headache/E1 = new()
+	E1.stage = 1
+	E1.chance = 90
+	effects += E1
+	var/datum/disease2/effect/disorientation/E2 = new()
+	E2.stage = 2
+	E2.chance = 75
+	effects += E2
+	var/datum/disease2/effect/confusion/E3 = new()
+	E3.stage = 3
+	E3.chance = 35
+	effects += E3
+
+/datum/ictus/space_migraine/start()
+	var/list/candidates = list()	//list of candidate keys
+	for(var/mob/living/carbon/human/G in GLOB.player_list)
+		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+			candidates += G
+
+	if(!candidates.len)
+		return
+
+	var/datum/disease2/disease/space_migraine/D = new
+	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
+
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate, D, 1)
 
 /datum/disease2/disease/retrovirus
 	infectionchance = 90
@@ -43,7 +79,7 @@
 
 /datum/disease2/disease/retrovirus/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/sneeze/E1 = new()
 	E1.stage = 1
 	E1.chance = 75
@@ -137,11 +173,11 @@
 	speed = 4
 	spreadtype = "Contact"
 	max_stage = 4
-	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)	
+	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)
 
 /datum/disease2/disease/gbs/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/cough/E1 = new()
 	E1.stage = 1
 	E1.chance = 35
@@ -171,7 +207,7 @@
 	var/datum/disease2/disease/gbs/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
-	if(candidate.species.name in D.affected_species)	
+	if(candidate.species.name in D.affected_species)
 		infect_virus2(candidate,D,1)
 
 /datum/disease2/effect/gbs
@@ -181,7 +217,7 @@
 
 	activate(var/mob/living/carbon/human/mob)
 		to_chat(mob, "<span class='danger'>Your body feels as if it's trying to rip itself open...</span>")
-		mob.weakened += 5		
+		mob.weakened += 5
 		if(prob(50))
 			if(mob.reagents.get_reagent_amount(/datum/reagent/chloralhydrate) < 2)
 				mob.gib()
@@ -195,11 +231,11 @@
 	speed = 4
 	spreadtype = "Contact"
 	max_stage = 4
-	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)	
+	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)
 
 /datum/disease2/disease/fake_gbs/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/cough/E1 = new()
 	E1.stage = 1
 	E1.chance = 35
@@ -228,7 +264,7 @@
 
 	var/datum/disease2/disease/fake_gbs/D = new
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
-	
+
 	if(candidate.species.name in D.affected_species)
 		infect_virus2(candidate,D,1)
 
@@ -250,11 +286,11 @@
 	speed = 2
 	spreadtype = "Contact"
 	max_stage = 3
-	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA)	
+	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA)
 
 /datum/disease2/disease/cold9/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/sneeze/E1 = new()
 	E1.stage = 1
 	E1.chance = 75
@@ -289,7 +325,7 @@
 	badness = VIRUS_ENGINEERED
 
 	activate(var/mob/living/carbon/human/mob)
-		if(mob.reagents.get_reagent_amount(/datum/reagent/leporazine) < 2)	
+		if(mob.reagents.get_reagent_amount(/datum/reagent/leporazine) < 2)
 			mob.bodytemperature -= rand(35,75)
 			if(prob(35))
 				mob.bodytemperature -= rand(45,55)
@@ -314,7 +350,7 @@
 
 /datum/disease2/disease/nuclear/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/nuclear/E1 = new()
 	E1.stage = 1
 	E1.chance = 50
@@ -394,14 +430,14 @@
 		if(mob.reagents.get_reagent_amount(/datum/reagent/tramadol/oxycodone) < 10)
 			mob.reagents.add_reagent(/datum/reagent/tramadol/oxycodone, 5)
 		mob.add_modifier(/datum/modifier/nuclear)
-		
+
 	deactivate(var/mob/living/carbon/human/mob)
 		mob.remove_a_modifier_of_type(/datum/modifier/nuclear)
-			
+
 /datum/modifier/nuclear
 	name = "Nuclear fury"
 	desc = "You use all your willpower to achieve your highest goal in this life."
-	
+
 	on_created_text = "<span class='warning'>I need to do everything possible to merge with the Atom!</span>"
 	on_expired_text = "<span class='notice'>You feel rather weak.</span>"
 
@@ -452,9 +488,9 @@
 			to_chat(mob, "<span class='danger'>The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck.</span>")
 			var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 			if(B && B.damage < B.min_broken_damage)
-				B.take_damage(150)
+				B.take_internal_damage(150)
 			mob.apply_effect(30*multiplier, IRRADIATE, blocked = 0)
-			
+
 // ####################################################################
 // ################################FLU#################################
 // ####################################################################
@@ -468,7 +504,7 @@
 
 /datum/disease2/disease/flu/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/sneeze/E1 = new()
 	E1.stage = 1
 	E1.chance = 50
@@ -485,7 +521,7 @@
 	E4.stage = 4
 	E4.chance = 75
 	effects += E4
-	
+
 /datum/ictus/flu/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
@@ -505,21 +541,21 @@
 /datum/disease2/effect/flu
 	name = "Flu Virion"
 	stage = 2
-	delay = 25 SECONDS	
+	delay = 25 SECONDS
 	badness = VIRUS_MILD
 
 	activate(var/mob/living/carbon/human/mob)
-		mob.bodytemperature += 5	
+		mob.bodytemperature += 5
 		if(prob(3))
-			to_chat(mob, "<span class='warning'>Your stomach feels heavy.</span>")		
-			mob.take_organ_damage((2*multiplier))		
+			to_chat(mob, "<span class='warning'>Your stomach feels heavy.</span>")
+			mob.take_organ_damage((2*multiplier))
 		if(prob(10))
 			mob.bodytemperature += 10
 			to_chat(mob, "<span class='warning'>Your muscles ache.</span>")
 
 // ####################################################################
 // #############################SPANISH FLU############################
-// ####################################################################	
+// ####################################################################
 
 /datum/disease2/disease/fluspanish
 	infectionchance = 70
@@ -530,7 +566,7 @@
 
 /datum/disease2/disease/fluspanish/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/sneeze/E1 = new()
 	E1.stage = 1
 	E1.chance = 50
@@ -547,7 +583,7 @@
 	E4.stage = 4
 	E4.chance = 50
 	effects += E4
-	
+
 /datum/ictus/fluspanish/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
@@ -566,16 +602,16 @@
 /datum/disease2/effect/fluspanish
 	name = "Spanish Flu Virion"
 	stage = 4
-	delay = 25 SECONDS	
+	delay = 25 SECONDS
 	badness = VIRUS_EXOTIC
 
 	activate(var/mob/living/carbon/human/mob, var/multiplier)
-		if(mob.reagents.get_reagent_amount(/datum/reagent/leporazine) < 5)		
-			mob.bodytemperature += 25	
+		if(mob.reagents.get_reagent_amount(/datum/reagent/leporazine) < 5)
+			mob.bodytemperature += 25
 			if(prob(15))
-				mob.bodytemperature += 35		
-				to_chat(mob, "<span class='warning'>Your insides burn out.</span>")		
-				mob.take_organ_damage((4*multiplier))		
+				mob.bodytemperature += 35
+				to_chat(mob, "<span class='warning'>Your insides burn out.</span>")
+				mob.take_organ_damage((4*multiplier))
 			if(prob(10))
 				mob.bodytemperature += 40
 				to_chat(mob, "<span class='warning'>You're burning in your own skin!</span>")
@@ -591,16 +627,16 @@
 
 	activate(var/mob/living/carbon/human/mob, var/multiplier)
 		if(mob.reagents.get_reagent_amount(/datum/reagent/alkysine) > 5)
-			to_chat(mob, "<span class='notice'>You feel better.</span>")			
+			to_chat(mob, "<span class='notice'>You feel better.</span>")
 		else
 			if(mob.getBrainLoss() < 90)
 				mob.emote("drool")
-				mob.adjustBrainLoss(9)	
+				mob.adjustBrainLoss(9)
 				if(prob(2))
 					to_chat(mob, "<span class='warning'>Your try to remember something important...but can't.</span>")
 			if(prob(5))
 				mob.confused += 5
-				
+
 // ####################################################################
 // ############################ARTERIVIRUS#############################
 // ####################################################################
@@ -610,11 +646,11 @@
 	speed = 2
 	spreadtype = "Contact"
 	max_stage = 3
-	affected_species = list(SPECIES_HUMAN, SPECIES_SKRELL)	
+	affected_species = list(SPECIES_HUMAN, SPECIES_SKRELL)
 
 /datum/disease2/disease/vulnerability/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/vulnerability/E1 = new()
 	E1.stage = 1
 	E1.chance = 75
@@ -650,14 +686,14 @@
 
 	activate(var/mob/living/carbon/human/mob)
 		mob.add_modifier(/datum/modifier/vulnerability)
-		
+
 	deactivate(var/mob/living/carbon/human/mob)
-		mob.remove_a_modifier_of_type(/datum/modifier/vulnerability)	
+		mob.remove_a_modifier_of_type(/datum/modifier/vulnerability)
 
 /datum/modifier/vulnerability
 	name = "Vulnerability"
 	desc = "Something devours your inner strength."
-	
+
 	on_created_text = "<span class='warning'>You are now weak, something affects your well-being!</span>"
 	on_expired_text = "<span class='notice'>You feel better.</span>"
 
@@ -667,7 +703,7 @@
 	incoming_fire_damage_percent = 1.5
 	bleeding_rate_percent = 4
 	incoming_healing_percent = 0.2
-	
+
 // ####################################################################
 // ################################EMP#################################
 // ####################################################################
@@ -678,10 +714,10 @@
 	spreadtype = "Contact"
 	max_stage = 4
 	affected_species = list(SPECIES_HUMAN)
-	
+
 /datum/disease2/disease/emp/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/headache/E1 = new()
 	E1.stage = 1
 	E1.chance = 50
@@ -697,7 +733,7 @@
 	var/datum/disease2/effect/blind/E4 = new()
 	E4.stage = 4
 	E4.chance = 50
-	effects += E4	
+	effects += E4
 
 /datum/ictus/emp/start()
 	var/list/candidates = list()	//list of candidate keys
@@ -721,17 +757,17 @@
 
 	activate(var/mob/living/carbon/human/mob)
 		if(prob(35))
-			to_chat(mob, "<span class='danger'>Your inner energy breaks out!</span>")		
+			to_chat(mob, "<span class='danger'>Your inner energy breaks out!</span>")
 			empulse(mob.loc, 3, 2)
 		if(prob(50))
-			to_chat(mob, "<span class='warning'>You are overwhelmed with electricity from the inside!</span>")		
+			to_chat(mob, "<span class='warning'>You are overwhelmed with electricity from the inside!</span>")
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(5, 1, mob)
 			s.start()
-			
+
 // ####################################################################
 // ###############################XENO#################################
-// ####################################################################	
+// ####################################################################
 
 /datum/disease2/disease/xeno
 	infectionchance = 65
@@ -739,10 +775,10 @@
 	spreadtype = "Airborne"
 	max_stage = 4
 	affected_species = list(SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)
-	
+
 /datum/disease2/disease/xeno/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/cough/E1 = new()
 	E1.stage = 1
 	E1.chance = 50
@@ -758,7 +794,7 @@
 	var/datum/disease2/effect/deaf/E4 = new()
 	E4.stage = 4
 	E4.chance = 100
-	effects += E4	
+	effects += E4
 
 /datum/ictus/xeno/start()
 	var/list/candidates = list()	//list of candidate keys
@@ -777,7 +813,7 @@
 
 // ####################################################################
 // #############################HISSVIRUS##############################
-// ####################################################################	
+// ####################################################################
 
 /datum/disease2/disease/hisstarvation
 	infectionchance = 50
@@ -785,10 +821,10 @@
 	spreadtype = "Airborne"
 	max_stage = 3
 	affected_species = list(SPECIES_UNATHI)
-	
+
 /datum/disease2/disease/hisstarvation/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/cough/E1 = new()
 	E1.stage = 1
 	E1.chance = 50
@@ -800,7 +836,7 @@
 	var/datum/disease2/effect/invisible/E3 = new()
 	E3.stage = 3
 	E3.chance = 50
-	effects += E3	
+	effects += E3
 
 /datum/ictus/hisstarvation/start()
 	var/list/candidates = list()	//list of candidate keys
@@ -816,12 +852,12 @@
 
 	if(candidate.species.name in D.affected_species)
 		infect_virus2(candidate,D,1)
-	
+
 /datum/disease2/effect/hisstarvation
 	name = "Hisstarvation Effect"
 	stage = 2
 	badness = VIRUS_EXOTIC
-	
+
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
 		mob.nutrition = max(0, mob.nutrition - 1000)
 		mob.custom_emote("hisses")
@@ -830,7 +866,7 @@
 
 // ####################################################################
 // ###########################PLUSH RACER##############################
-// ####################################################################	
+// ####################################################################
 
 /datum/disease2/disease/musclerace
 	infectionchance = 35
@@ -838,10 +874,10 @@
 	spreadtype = "Airborne"
 	max_stage = 3
 	affected_species = list(SPECIES_TAJARA)
-	
+
 /datum/disease2/disease/musclerace/New()
 	..()
-	antigen = list(pick(ALL_ANTIGENS))	
+	antigen = list(pick(ALL_ANTIGENS))
 	var/datum/disease2/effect/twitch/E1 = new()
 	E1.stage = 1
 	E1.chance = 50
@@ -854,7 +890,7 @@
 	E3.stage = 3
 	E3.chance = 50
 	effects += E3
-	
+
 /datum/ictus/musclerace/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
@@ -868,13 +904,13 @@
 	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
 
 	if(candidate.species.name in D.affected_species)
-		infect_virus2(candidate,D,1)	
+		infect_virus2(candidate,D,1)
 
 /datum/disease2/effect/musclerace
 	name = "Reverse Muscle Overstrain Effect"
 	stage = 1
-	badness = VIRUS_EXOTIC	
-	
+	badness = VIRUS_EXOTIC
+
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
 		mob.nutrition = max(0, mob.nutrition - 25)
 		mob.add_modifier(/datum/modifier/musclerace)
@@ -882,17 +918,17 @@
 			mob.custom_emote(pick("growls", "roars", "snarls", "squeals", "yelps", "barks", "screeches"))
 			mob.jitteriness += 10
 		if(prob(45) && mob.reagents.get_reagent_amount(/datum/reagent/mutagen) < 5)
-			mob.custom_pain(pick("Your muscle tissue hurts unbearably!", "Your muscle tissue is burning!", "Your muscle tissue is torn!", "Your muscles are torn!", "Your muscles hurt unbearably!", "Your muscles are burning!", "Your muscles are shrinking!"), 45)			
+			mob.custom_pain(pick("Your muscle tissue hurts unbearably!", "Your muscle tissue is burning!", "Your muscle tissue is torn!", "Your muscles are torn!", "Your muscles hurt unbearably!", "Your muscles are burning!", "Your muscles are shrinking!"), 45)
 			mob.bodytemperature += 45
-			mob.take_organ_damage((3*multiplier))	
-		
+			mob.take_organ_damage((3*multiplier))
+
 	deactivate(var/mob/living/carbon/human/mob)
-		mob.remove_a_modifier_of_type(/datum/modifier/musclerace)	
+		mob.remove_a_modifier_of_type(/datum/modifier/musclerace)
 
 /datum/modifier/musclerace
 	name = "Unintentional Muscle Burning"
 	desc = "Some kind of force makes your body work to the limit of its capabilities."
-	
+
 	on_created_text = "<span class='warning'>You are incredibly strong right now, this is not for long!</span>"
 	on_expired_text = "<span class='notice'>You feel better.</span>"
 

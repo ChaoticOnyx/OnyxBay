@@ -59,7 +59,7 @@ datum/book_manager/proc/freeid()
 	log_admin("[usr.key] has deleted the book [isbn]")
 
 // delete a book
-datum/book_manager/proc/remove(var/id)
+datum/book_manager/proc/remove(id)
 	fdel(path(id))
 
 datum/archived_book
@@ -74,7 +74,7 @@ datum/archived_book
 	var/list/icon/photos	 // in-game photos used
 
 // loads the book corresponding by the specified id
-datum/archived_book/New(var/path)
+datum/archived_book/New(path)
 	if(isnull(path))
 		return
 

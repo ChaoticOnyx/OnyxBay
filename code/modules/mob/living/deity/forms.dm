@@ -14,7 +14,7 @@ Each plays slightly different and has different challenges/benefits
 	var/list/icon_states = list()
 	var/list/starting_feats //This is used to give different forms different starting trees
 
-/datum/god_form/New(var/mob/living/deity/D)
+/datum/god_form/New(mob/living/deity/D)
 	..()
 	D.feats += name
 	D.icon_state = god_icon_state
@@ -24,14 +24,14 @@ Each plays slightly different and has different challenges/benefits
 		for(var/feat in starting_feats)
 			D.feats |= feat
 
-/datum/god_form/proc/sync_structure(var/obj/O)
+/datum/god_form/proc/sync_structure(obj/O)
 	var/list/svars = buildables[O.type]
 	if(!svars)
 		return
 	for(var/V in svars)
 		O.vars[V] = svars[V]
 
-/datum/god_form/proc/take_charge(var/mob/living/user, var/charge)
+/datum/god_form/proc/take_charge(mob/living/user, charge)
 	return 1
 
 /datum/god_form/Destroy()
@@ -44,8 +44,8 @@ Each plays slightly different and has different challenges/benefits
 	name = "Nar-Sie"
 	info = {"The Geometer of Blood, you crave blood and destruction.<br>
 	<b>Benefits:</b><br>
-		<font color='blue'>+Can gain power from blood sacrifices.<br>
-		+Ability to forge weapons and armor.</font>
+		<span class='info'>+Can gain power from blood sacrifices.<br>
+		+Ability to forge weapons and armor.</span>
 	<b>Drawbacks:</b><br>
 		<font color='red'>-Servant abilities require copious amounts of their blood.</font>
 	"}
@@ -62,7 +62,7 @@ Each plays slightly different and has different challenges/benefits
 
 	starting_feats = list(DEITY_FORM_DARK_ART, DEITY_FORM_BLOOD_SAC, DEITY_FORM_DARK_MINION, DEITY_FORM_BLOOD_FORGE)
 
-/datum/god_form/narsie/take_charge(var/mob/living/user, var/charge)
+/datum/god_form/narsie/take_charge(mob/living/user, charge)
 	charge = min(100, charge * 0.25)
 	if(prob(charge))
 		to_chat(user, "<span class='warning'>You feel drained...</span>")
@@ -77,8 +77,8 @@ Each plays slightly different and has different challenges/benefits
 	name = "The Tower"
 	info = {"Only from destruction does the Tower grow. Its bricks smelted from crumbled ignorance and the fires of ambition.<br>
 	<b>Benefits:</b><br>
-		<font color='blue'>+Learn spells from two different schools.<br>
-		+Deity gains power through each spell use.</font><br>
+		<span class='info'>+Learn spells from two different schools.<br>
+		+Deity gains power through each spell use.</span><br>
 	<b>Drawbacks:</b><br>
 		<font color='red'>-Abilities hold a single charge and must be charged at a fountain of power.</font>
 	"}
@@ -92,6 +92,6 @@ Each plays slightly different and has different challenges/benefits
 					)
 	starting_feats = list(DEITY_TREE_TRANSMUTATION, DEITY_TREE_CONJURATION)
 
-/datum/god_form/wizard/take_charge(var/mob/living/user, var/charge)
+/datum/god_form/wizard/take_charge(mob/living/user, charge)
 	linked_god.adjust_power(max(round(charge/100), 1),silent = 1)
 	return 1

@@ -69,7 +69,7 @@
 		to_chat(user, "You can <a href='?src=\ref[src];ghostscan=1'>scan</a> this circuit.");
 
 
-/obj/item/device/electronic_assembly/proc/take_damage(var/amnt)
+/obj/item/device/electronic_assembly/proc/take_damage(amnt)
 	health = health - amnt
 	if(health <= 0)
 		visible_message("<span class='danger'>\The [src] falls to pieces!</span>")
@@ -492,7 +492,7 @@
 /obj/item/device/electronic_assembly/attack_self(mob/user)
 	interact(user)
 
-/obj/item/device/electronic_assembly/bullet_act(var/obj/item/projectile/P)
+/obj/item/device/electronic_assembly/bullet_act(obj/item/projectile/P)
 	take_damage(P.damage)
 
 /obj/item/device/electronic_assembly/emp_act(severity)
@@ -692,7 +692,7 @@
 	max_complexity = IC_COMPLEXITY_BASE * 2
 	health = 10
 
-/obj/item/device/electronic_assembly/wallmount/afterattack(var/atom/a, var/mob/user, var/proximity)
+/obj/item/device/electronic_assembly/wallmount/afterattack(atom/a, mob/user, proximity)
 	if(proximity && istype(a ,/turf) && a.density)
 		mount_assembly(a,user)
 

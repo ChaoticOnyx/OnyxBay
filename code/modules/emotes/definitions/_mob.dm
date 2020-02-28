@@ -2,7 +2,7 @@
 	var/list/default_emotes = list()
 	var/list/usable_emotes = list()
 
-/mob/proc/update_emotes(var/skip_sort)
+/mob/proc/update_emotes(skip_sort)
 	usable_emotes.Cut()
 	for(var/emote in default_emotes)
 		var/decl/emote/emote_datum = decls_repository.get_decl(emote)
@@ -162,4 +162,30 @@
 		/decl/emote/slime/angry,
 		/decl/emote/slime/frown,
 		/decl/emote/slime/smile
+		)
+
+/mob/living/carbon/alien/diona
+
+	default_emotes = list(
+		/decl/emote/visible,
+		/decl/emote/visible/scratch,
+		/decl/emote/visible/drool,
+		/decl/emote/visible/nod,
+		/decl/emote/visible/sway,
+		/decl/emote/visible/sulk,
+		/decl/emote/visible/twitch,
+		/decl/emote/visible/dance,
+		/decl/emote/visible/roll,
+		/decl/emote/visible/shake,
+		/decl/emote/visible/jump,
+		/decl/emote/visible/hiss,
+		/decl/emote/visible/shiver,
+		/decl/emote/visible/collapse,
+		/decl/emote/audible,
+		/decl/emote/audible/scretch,
+		/decl/emote/audible/choke,
+		/decl/emote/audible/gnarl,
+		/decl/emote/audible/bug_hiss,
+		/decl/emote/audible/bug_chitter,
+		/decl/emote/audible/chirp
 		)

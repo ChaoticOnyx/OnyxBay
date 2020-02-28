@@ -10,11 +10,11 @@
 
 // Miscellaneous bits
 body {
-  color: $text-color-normal;
-  background-color: $background-color-start;
+  color: $base-color-text;
+  background-color: $base-color-background;
   background-image: linear-gradient(to bottom,
-    $background-color-start 0%,
-    $background-color-end 100%);
+    $base-color-background-start 0%,
+    $base-color-background-end 100%);
 }
 
 .Layout__content {
@@ -27,14 +27,6 @@ body {
 // Syndicate theme
 .theme-syndicate {
   @import './themes/syndicate.scss';
-  @import './color-map.scss';
-  @import './atomic.scss';
-  @import './components.scss';
-}
-
-// Clockwork theme
-.theme-clockwork {
-  @import './themes/clockwork.scss';
   @import './color-map.scss';
   @import './atomic.scss';
   @import './components.scss';

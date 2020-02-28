@@ -7,7 +7,7 @@
 	if((life_tick % MOB_BREATH_DELAY) == 0 || failed_last_breath || is_asystole()) //First, resolve location and get a breath
 		breathe()
 
-/mob/living/carbon/proc/breathe(var/active_breathe = 1)
+/mob/living/carbon/proc/breathe(active_breathe = 1)
 	//if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
 	if(!need_breathe()) return
 
@@ -24,13 +24,11 @@
 	else
 		//Okay, we can breathe, now check if we can get air
 		breath = get_breath_from_internal() //First, check for air from internals
-		if (breath && src.type == /mob/living/carbon/human)
-			var/datum/gender/user_gender = gender_datums[src.get_visible_gender()]
-
-			if (istype(user_gender, /datum/gender/male))
-				sound_to(src, sound(get_sfx("male_closed_breath"), volume=50))
+		if (breath && src.type == /mob/living/carbon/human && prob(5))
+			if (gender == "male")
+				sound_to(src, sound(get_sfx("male_closed_breath"), volume=5))
 			else
-				sound_to(src, sound(get_sfx("female_closed_breath"), volume=50))
+				sound_to(src, sound(get_sfx("female_closed_breath"), volume=5))
 		if(!breath)
 			breath = get_breath_from_environment() //No breath from internals so let's try to get air from our location
 		if(!breath)
@@ -42,7 +40,7 @@
 	handle_breath(breath)
 	handle_post_breath(breath)
 
-/mob/living/carbon/proc/get_breath_from_internal(var/volume_needed=BREATH_VOLUME) //hopefully this will allow overrides to specify a different default volume without breaking any cases where volume is passed in.
+/mob/living/carbon/proc/get_breath_from_internal(volume_needed=BREATH_VOLUME) //hopefully this will allow overrides to specify a different default volume without breaking any cases where volume is passed in.
 	if(internal)
 		if (!contents.Find(internal))
 			internal = null
@@ -57,7 +55,7 @@
 				internals.icon_state = "internal0"
 	return null
 
-/mob/living/carbon/proc/get_breath_from_environment(var/volume_needed=BREATH_VOLUME)
+/mob/living/carbon/proc/get_breath_from_environment(volume_needed=BREATH_VOLUME)
 	var/datum/gas_mixture/breath = null
 
 	var/datum/gas_mixture/environment
@@ -78,7 +76,7 @@
 	return null
 
 //Handle possble chem smoke effect
-/mob/living/carbon/proc/handle_chemical_smoke(var/datum/gas_mixture/environment)
+/mob/living/carbon/proc/handle_chemical_smoke(datum/gas_mixture/environment)
 	if(species && environment.return_pressure() < species.breath_pressure/5)
 		return //pressure is too low to even breathe in.
 	if(wear_mask && (wear_mask.item_flags & ITEM_FLAG_BLOCK_GAS_SMOKE_EFFECT))

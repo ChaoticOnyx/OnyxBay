@@ -73,7 +73,9 @@
 	var/trigger_oxy = 0
 	var/trigger_co2 = 0
 	var/trigger_nitro = 0
-	if( (my_effect.trigger >= TRIGGER_HEAT && my_effect.trigger <= TRIGGER_NITRO) || (my_effect.trigger >= TRIGGER_HEAT && my_effect.trigger <= TRIGGER_NITRO) )
+	var/trigger_light = 0
+	var/trigger_dark = 0
+	if( (my_effect.trigger >= TRIGGER_HEAT && my_effect.trigger <= TRIGGER_LIGHT) || (my_effect.trigger >= TRIGGER_HEAT && my_effect.trigger <= TRIGGER_LIGHT) )
 		var/turf/T = get_turf(src)
 		var/datum/gas_mixture/env = T.return_air()
 		if(env)
@@ -90,6 +92,34 @@
 				trigger_co2 = 1
 			if(env.gas["nitrogen"] >= 10)
 				trigger_nitro = 1
+		if(min(1, T.get_lumcount()) > 0.33)
+			trigger_light = 1
+		else
+			trigger_dark = 1
+
+	//LIGHT ACTIVATION
+	if(trigger_light)
+		if(my_effect.trigger == TRIGGER_LIGHT && !my_effect.activated)
+			my_effect.ToggleActivate()
+		if(secondary_effect && secondary_effect.trigger == TRIGGER_LIGHT && !secondary_effect.activated)
+			secondary_effect.ToggleActivate(0)
+	else
+		if(my_effect.trigger == TRIGGER_LIGHT && my_effect.activated)
+			my_effect.ToggleActivate()
+		if(secondary_effect && secondary_effect.trigger == TRIGGER_LIGHT && !secondary_effect.activated)
+			secondary_effect.ToggleActivate(0)
+
+	//DARK ACTIVATION
+	if(trigger_dark)
+		if(my_effect.trigger == TRIGGER_DARK && !my_effect.activated)
+			my_effect.ToggleActivate()
+		if(secondary_effect && secondary_effect.trigger == TRIGGER_DARK && !secondary_effect.activated)
+			secondary_effect.ToggleActivate(0)
+	else
+		if(my_effect.trigger == TRIGGER_DARK && my_effect.activated)
+			my_effect.ToggleActivate()
+		if(secondary_effect && secondary_effect.trigger == TRIGGER_DARK && !secondary_effect.activated)
+			secondary_effect.ToggleActivate(0)
 
 	//COLD ACTIVATION
 	if(trigger_cold)
@@ -163,7 +193,7 @@
 		if(secondary_effect && secondary_effect.trigger == TRIGGER_NITRO && !secondary_effect.activated)
 			secondary_effect.ToggleActivate(0)
 
-/obj/machinery/artifact/attack_hand(var/mob/user as mob)
+/obj/machinery/artifact/attack_hand(mob/user as mob)
 	if (get_dist(user, src) > 1)
 		to_chat(user, "<span class='warning'>You can't reach \the [src] from here.</span>")
 		return
@@ -266,7 +296,7 @@
 				to_chat(M, "<b>You accidentally touch [src].</b>")
 	..()
 
-/obj/machinery/artifact/bullet_act(var/obj/item/projectile/P)
+/obj/machinery/artifact/bullet_act(obj/item/projectile/P)
 	if(istype(P,/obj/item/projectile/bullet) ||\
 		istype(P,/obj/item/projectile/hivebotbullet))
 		if(my_effect.trigger == TRIGGER_FORCE)

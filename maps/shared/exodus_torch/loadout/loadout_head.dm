@@ -8,7 +8,7 @@
 	bandanas["green bandana"] = /obj/item/clothing/head/greenbandana
 	bandanas["orange bandana"] = /obj/item/clothing/head/orangebandana
 	bandanas["pirate bandana"] = /obj/item/clothing/head/bandana
-	gear_tweaks += new/datum/gear_tweak/path(bandanas)
+	gear_tweaks += new /datum/gear_tweak/path(bandanas)
 
 /datum/gear/head/bow
 	display_name = "hair bow"
@@ -35,7 +35,7 @@
 	caps["white cap"] = /obj/item/clothing/head/soft/mime
 	caps["yellow cap"] = /obj/item/clothing/head/soft/yellow
 	caps["major bill's shipping cap"] = /obj/item/clothing/head/soft/mbill
-	gear_tweaks += new/datum/gear_tweak/path(caps)
+	gear_tweaks += new /datum/gear_tweak/path(caps)
 
 /datum/gear/head/hairflower
 	display_name = "hair flower pin"
@@ -53,7 +53,7 @@
 	hardhats["orange hardhat"] = /obj/item/clothing/head/hardhat/orange
 	hardhats["red hardhat"] = /obj/item/clothing/head/hardhat/red
 	hardhats["yellow hardhat"] = /obj/item/clothing/head/hardhat
-	gear_tweaks += new/datum/gear_tweak/path(hardhats)
+	gear_tweaks += new /datum/gear_tweak/path(hardhats)
 
 /datum/gear/head/formalhat
 	display_name = "formal hat selection"
@@ -70,7 +70,7 @@
 	formalhats["top hat"] = /obj/item/clothing/head/that
 	formalhats["fedora, brown"] = /obj/item/clothing/head/det
 	formalhats["fedora, grey"] = /obj/item/clothing/head/det/grey
-	gear_tweaks += new/datum/gear_tweak/path(formalhats)
+	gear_tweaks += new /datum/gear_tweak/path(formalhats)
 
 /datum/gear/head/informalhat
 	display_name = "informal hat selection"
@@ -81,7 +81,7 @@
 	var/informalhats = list()
 	informalhats["cowboy hat"] = /obj/item/clothing/head/cowboy_hat
 	informalhats["ushanka"] = /obj/item/clothing/head/ushanka
-	gear_tweaks += new/datum/gear_tweak/path(informalhats)
+	gear_tweaks += new /datum/gear_tweak/path(informalhats)
 
 /datum/gear/head/hairflower/New()
 	..()
@@ -90,7 +90,7 @@
 	pins["pink pin"] = /obj/item/clothing/head/hairflower/pink
 	pins["red pin"] = /obj/item/clothing/head/hairflower
 	pins["yellow pin"] = /obj/item/clothing/head/hairflower/yellow
-	gear_tweaks += new/datum/gear_tweak/path(pins)
+	gear_tweaks += new /datum/gear_tweak/path(pins)
 
 /datum/gear/head/hijab
 	display_name = "hijab"
@@ -124,4 +124,4 @@
 	welding_masks += /obj/item/clothing/head/welding/fancy
 	welding_masks += /obj/item/clothing/head/welding/knight
 	welding_masks += /obj/item/clothing/head/welding/carp
-	gear_tweaks += new/datum/gear_tweak/path(assoc_by_proc(welding_masks, /proc/get_initial_name))
+	gear_tweaks += new /datum/gear_tweak/path(assoc_by_proc(welding_masks, /proc/get_initial_name))

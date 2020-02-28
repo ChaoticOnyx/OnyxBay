@@ -27,7 +27,7 @@
 			wall_type = select_subpath(wall_type) || wall_type
 			to_chat(user, "<span class='notice'>Wall type set to [wall_type].</span>")
 
-/datum/build_mode/room_builder/OnClick(var/atom/A, var/list/parameters)
+/datum/build_mode/room_builder/OnClick(atom/A, list/parameters)
 	if(parameters["left"])
 		coordinate_A = get_turf(A)
 		to_chat(user, "<span class='notice'>Defined [coordinate_A] ([coordinate_A.type]) as point A.</span>")
@@ -42,7 +42,7 @@
 		coordinate_A = null
 		coordinate_B = null
 
-/datum/build_mode/room_builder/proc/make_rectangle(var/turf/A, var/turf/B, var/turf/wall_type, var/turf/floor_type)
+/datum/build_mode/room_builder/proc/make_rectangle(turf/A, turf/B, turf/wall_type, turf/floor_type)
 	if(!A || !B) // No coords
 		return
 	if(A.z != B.z) // Not same z-level

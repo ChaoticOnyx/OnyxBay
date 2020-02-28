@@ -25,6 +25,8 @@
 
 	storage_types = CLOSET_STORAGE_MOBS
 	var/datum/gas_mixture/airtank
+	
+	var/syndi
 
 	var/stasis_power = 20
 	var/degradation_time = 150 //ticks until stasis power degrades, ~5 minutes
@@ -32,7 +34,10 @@
 /obj/structure/closet/body_bag/cryobag/Initialize()
 	. = ..()
 	airtank = new()
-	airtank.temperature = T0C
+	if(syndi)
+		airtank.temperature = T0C - 25
+	else
+		airtank.temperature = T0C
 	airtank.adjust_gas("oxygen", MOLES_O2STANDARD, 0)
 	airtank.adjust_gas("nitrogen", MOLES_N2STANDARD)
 	update_icon()
@@ -69,7 +74,7 @@
 /obj/structure/closet/body_bag/cryobag/proc/get_saturation()
 	return -155 * (1 - stasis_power/initial(stasis_power))
 
-/obj/structure/closet/body_bag/cryobag/fold(var/user)
+/obj/structure/closet/body_bag/cryobag/fold(user)
 	var/obj/item/bodybag/cryobag/folded = ..()
 	if(istype(folded))
 		folded.stasis_power = stasis_power
@@ -109,3 +114,42 @@
 	desc = "Pretty useless now.."
 	icon_state = "bodybag_used"
 	icon = 'icons/obj/cryobag.dmi'
+	
+/obj/item/bodybag/cryobag/syndi
+	name = "modified stasis bag"
+	icon = 'icons/obj/syndi_cryobag.dmi'
+
+/obj/item/bodybag/cryobag/syndi/attack_self(mob/user)
+	var/obj/structure/closet/body_bag/cryobag/syndi/R = new /obj/structure/closet/body_bag/cryobag/syndi(user.loc)
+	if(stasis_power)
+		R.stasis_power = stasis_power
+	R.update_icon()
+	R.add_fingerprint(user)
+	qdel(src)
+
+/obj/structure/closet/body_bag/cryobag/syndi
+	name = "modified stasis bag"
+	icon = 'icons/obj/syndi_cryobag.dmi'
+	syndi = 1
+	item_path = /obj/item/bodybag/cryobag/syndi
+	stasis_power = 10
+	degradation_time = 300
+	
+/obj/structure/closet/body_bag/cryobag/syndi/fold(user)
+	var/obj/item/bodybag/cryobag/syndi/folded = ..()
+	if(istype(folded))
+		folded.stasis_power = stasis_power
+		folded.color = color_saturation(get_saturation())	
+		
+/obj/structure/closet/body_bag/cryobag/syndi/Process()
+	..()
+	
+	var/mob/living/carbon/human/H = locate() in src
+	if(!H)
+		return PROCESS_KILL
+	
+	H.add_chemical_effect(CE_CRYO, 2)
+	H.add_chemical_effect(CE_STABLE)
+	H.add_chemical_effect(CE_OXYGENATED, 1)
+	H.add_chemical_effect(CE_ANTITOX , 1)
+	H.add_chemical_effect(CE_PULSE, -1)

@@ -9,7 +9,7 @@
 
 	Note that AI have no need for the adjacency proc, and so this proc is a lot cleaner.
 */
-/mob/living/silicon/ai/DblClickOn(var/atom/A, params)
+/mob/living/silicon/ai/DblClickOn(atom/A, params)
 	if(control_disabled || stat) return
 
 	if(ismob(A))
@@ -18,7 +18,7 @@
 		A.move_camera_by_click()
 
 
-/mob/living/silicon/ai/ClickOn(var/atom/A, params)
+/mob/living/silicon/ai/ClickOn(atom/A, params)
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
@@ -82,6 +82,8 @@
 	A.attack_ai(src)
 /mob/living/silicon/ai/RangedAttack(atom/A)
 	A.attack_ai(src)
+/mob/living/silicon/ai/MouseDrop() //AI cant user crawl
+	return
 
 /atom/proc/attack_ai(mob/user as mob)
 	return
@@ -92,27 +94,27 @@
 	for AI shift, ctrl, and alt clicking.
 */
 
-/mob/living/silicon/ai/CtrlAltClickOn(var/atom/A)
+/mob/living/silicon/ai/CtrlAltClickOn(atom/A)
 	if(!control_disabled && A.AICtrlAltClick(src))
 		return
 	..()
 
-/mob/living/silicon/ai/ShiftClickOn(var/atom/A)
+/mob/living/silicon/ai/ShiftClickOn(atom/A)
 	if(!control_disabled && A.AIShiftClick(src))
 		return
 	..()
 
-/mob/living/silicon/ai/CtrlClickOn(var/atom/A)
+/mob/living/silicon/ai/CtrlClickOn(atom/A)
 	if(!control_disabled && A.AICtrlClick(src))
 		return
 	..()
 
-/mob/living/silicon/ai/AltClickOn(var/atom/A)
+/mob/living/silicon/ai/AltClickOn(atom/A)
 	if(!control_disabled && A.AIAltClick(src))
 		return
 	..()
 
-/mob/living/silicon/ai/MiddleClickOn(var/atom/A)
+/mob/living/silicon/ai/MiddleClickOn(atom/A)
 	if(!control_disabled && A.AIMiddleClick(src))
 		return
 	..()
@@ -174,7 +176,7 @@
 	Topic(src, list("command"="enable", "value"="[!enabled]"))
 	return 1
 
-/atom/proc/AIAltClick(var/atom/A)
+/atom/proc/AIAltClick(atom/A)
 	return AltClick(A)
 
 /obj/machinery/turretid/AIAltClick() //toggles lethal on turrets
@@ -186,7 +188,7 @@
 /obj/machinery/atmospherics/binary/pump/AIAltClick()
 	return AltClick()
 
-/atom/proc/AIMiddleClick(var/mob/living/silicon/user)
+/atom/proc/AIMiddleClick(mob/living/silicon/user)
 	return 0
 
 /obj/machinery/door/airlock/AIMiddleClick() // Toggles door bolt lights.
@@ -205,9 +207,9 @@
 // Override AdjacentQuick for AltClicking
 //
 
-/mob/living/silicon/ai/TurfAdjacent(var/turf/T)
+/mob/living/silicon/ai/TurfAdjacent(turf/T)
 	return (cameranet && cameranet.is_turf_visible(T))
 
-/mob/living/silicon/ai/face_atom(var/atom/A)
+/mob/living/silicon/ai/face_atom(atom/A)
 	if(eyeobj)
 		eyeobj.face_atom(A)

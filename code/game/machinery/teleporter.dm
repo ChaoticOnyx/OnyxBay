@@ -49,8 +49,10 @@
 		var/obj/L = null
 
 		for(var/obj/effect/landmark/sloc in landmarks_list)
-			if(sloc.name != C.data) continue
-			if(locate(/mob/living) in sloc.loc) continue
+			if(sloc.name != C.data)
+				continue
+			if(locate(/mob/living) in sloc.loc)
+				continue
 			L = sloc
 			break
 
@@ -306,7 +308,7 @@
 	overlays.Cut()
 	overlays += image('icons/obj/stationobjs.dmi', icon_state = "controller-wires")
 
-/obj/machinery/teleport/station/attackby(var/obj/item/weapon/W)
+/obj/machinery/teleport/station/attackby(obj/item/weapon/W)
 	src.attack_hand()
 
 /obj/machinery/teleport/station/attack_ai()

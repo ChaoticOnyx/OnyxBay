@@ -277,6 +277,10 @@
 	icon_state = "medbay4"
 	ambience = list('sound/ambience/signal.ogg')
 
+/area/medical/biostorage/underground
+	name = "\improper Undergound Medbay Storage"
+	icon_state = "medbay4"
+
 /area/medical/chemistry
 	name = "\improper Chemistry"
 	icon_state = "chem"
@@ -292,6 +296,10 @@
 
 /area/medical/sleeper
 	name = "\improper Emergency Treatment Centre"
+	icon_state = "exam_room"
+
+/area/medical/sleeper/underground
+	name = "\improper Underground Emergency Treatment Room"
 	icon_state = "exam_room"
 
 /area/medical/surgery
@@ -330,6 +338,14 @@
 /area/rnd/research4
 	name = "\improper Research and Development"
 	icon_state = "research"
+
+/area/rnd/research_under
+	name = "\improper Underground Research Wing"
+	icon_state = "uresearch"
+
+/area/rnd/research_under/breakroom
+	name = "\improper Underground Research Wing - Break Room"
+	icon_state = "uresearchbreak"
 
 /area/rnd/research_locker
 	name = "\improper Research Locker Room"
@@ -426,13 +442,33 @@
 	name = "\improper Security Hallway"
 	icon_state = "brig"
 
+/area/security/briefingroom
+	name = "\improper Security - Briefing Room"
+	icon_state = "briefroom"
+
+/area/security/brigmorgue
+	name = "\improper Security - Morgue"
+	icon_state = "brigmorgue"
+
+/area/security/evidence
+	name = "\improper Security - Evidence Storage"
+	icon_state = "evidence"
+
+/area/security/execution
+	name = "\improper Security - Execution Room"
+	icon_state = "execution"
+
+/area/security/brigoffice
+	name = "\improper Security - Brig Office"
+	icon_state = "brigoffice"
+
 /area/security/sec_toilet
 	name = "\improper Security Toilets"
 	icon_state = "brig"
 
 /area/security/storage
 	name = "\improper Security Storage"
-	icon_state = "brig"
+	icon_state = "brigstorage"
 
 /area/security/armory_lobby
 	name = "\improper Security Lobby"
@@ -456,7 +492,7 @@
 
 /area/crew_quarters/sleep/cryo
 	name = "\improper Cryogenic Storage"
-	icon_state = "Sleep"
+	icon_state = "Cryopods"
 
 /area/hydroponics
 	name = "\improper Hydroponics"

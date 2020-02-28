@@ -23,7 +23,7 @@
 	..()
 	overlays += image('icons/mob/screen_phenomena.dmi', icon_state = "hud", pixel_x = -138, pixel_y = -1)
 
-/obj/screen/intent/deity/proc/sync_to_mob(var/mob)
+/obj/screen/intent/deity/proc/sync_to_mob(mob)
 	var/mob/living/deity/D = mob
 	for(var/i in 1 to D.control_types.len)
 		var/obj/screen/S = new()
@@ -52,6 +52,6 @@
 		else
 			S.maptext = null
 
-/obj/screen/intent/deity/Click(var/location, var/control, var/params)
+/obj/screen/intent/deity/Click(location, control, params)
 	..()
 	update_text()

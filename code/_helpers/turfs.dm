@@ -1,6 +1,6 @@
 // Returns the atom sitting on the turf.
 // For example, using this on a disk, which is in a bag, on a mob, will return the mob because it's on the turf.
-/proc/get_atom_on_turf(var/atom/movable/M)
+/proc/get_atom_on_turf(atom/movable/M)
 	var/atom/mloc = M
 	while(mloc && mloc.loc && !istype(mloc.loc, /turf/))
 		mloc = mloc.loc
@@ -20,7 +20,7 @@
 
 // Picks a turf without a mob from the given list of turfs, if one exists.
 // If no such turf exists, picks any random turf from the given list of turfs.
-/proc/pick_mobless_turf_if_exists(var/list/start_turfs)
+/proc/pick_mobless_turf_if_exists(list/start_turfs)
 	if(!start_turfs.len)
 		return null
 
@@ -33,7 +33,7 @@
 		available_turfs = start_turfs
 	return pick(available_turfs)
 
-/proc/get_random_turf_in_range(var/atom/origin, var/outer_range, var/inner_range)
+/proc/get_random_turf_in_range(atom/origin, outer_range, inner_range)
 	origin = get_turf(origin)
 	if(!origin)
 		return
@@ -64,25 +64,25 @@
 	Predicate helpers
 */
 
-/proc/is_holy_turf(var/turf/T)
+/proc/is_holy_turf(turf/T)
 	return T && T.holy
 
-/proc/is_not_holy_turf(var/turf/T)
+/proc/is_not_holy_turf(turf/T)
 	return !is_holy_turf(T)
 
-/proc/turf_contains_dense_objects(var/turf/T)
+/proc/turf_contains_dense_objects(turf/T)
 	return T.contains_dense_objects()
 
-/proc/not_turf_contains_dense_objects(var/turf/T)
+/proc/not_turf_contains_dense_objects(turf/T)
 	return !turf_contains_dense_objects(T)
 
-/proc/is_station_turf(var/turf/T)
+/proc/is_station_turf(turf/T)
 	return T && isStationLevel(T.z)
 
-/proc/has_air(var/turf/T)
+/proc/has_air(turf/T)
 	return !!T.return_air()
 
-/proc/IsTurfAtmosUnsafe(var/turf/T)
+/proc/IsTurfAtmosUnsafe(turf/T)
 	if(istype(T, /turf/space)) // Space tiles
 		return "Spawn location is open to space."
 	var/datum/gas_mixture/air = T.return_air()
@@ -90,10 +90,10 @@
 		return "Spawn location lacks atmosphere."
 	return get_atmosphere_issues(air, 1)
 
-/proc/IsTurfAtmosSafe(var/turf/T)
+/proc/IsTurfAtmosSafe(turf/T)
 	return !IsTurfAtmosUnsafe(T)
 
-/proc/is_below_sound_pressure(var/turf/T)
+/proc/is_below_sound_pressure(turf/T)
 	var/datum/gas_mixture/environment = T ? T.return_air() : null
 	var/pressure =  environment ? environment.return_pressure() : 0
 	if(pressure < SOUND_MINIMUM_PRESSURE)
@@ -121,7 +121,7 @@
 	return turf_map
 
 
-/proc/translate_turfs(var/list/translation, var/area/base_area = null, var/turf/base_turf)
+/proc/translate_turfs(list/translation, area/base_area = null, turf/base_turf)
 	for(var/turf/source in translation)
 
 		var/turf/target = translation[source]

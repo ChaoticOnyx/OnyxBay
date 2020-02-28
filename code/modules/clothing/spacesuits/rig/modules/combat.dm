@@ -48,7 +48,7 @@
 		list("EMP grenade", "EMP grenade", /obj/item/weapon/grenade/empgrenade, 3),
 		)
 
-/obj/item/rig_module/grenade_launcher/accepts_item(var/obj/item/input_device, var/mob/living/user)
+/obj/item/rig_module/grenade_launcher/accepts_item(obj/item/input_device, mob/living/user)
 
 	if(!istype(input_device) || !istype(user))
 		return 0
@@ -67,7 +67,7 @@
 		to_chat(user, "<span class='danger'>Another grenade of that type will not fit into the module.</span>")
 		return 0
 
-	to_chat(user, "<font color='blue'><b>You slot \the [input_device] into the suit module.</b></font>")
+	to_chat(user, "<span class='info'><b>You slot \the [input_device] into the suit module.</b></span>")
 	user.drop_from_inventory(input_device)
 	qdel(input_device)
 	accepted_item.charges++
@@ -116,6 +116,14 @@
 
 	charges = list(
 		list("smoke bomb",   "smoke bomb",   /obj/item/weapon/grenade/smokebomb,  6),
+		)
+
+/obj/item/rig_module/grenade_launcher/flashbang
+	name = "mounted flashbang grenade launcher"
+	desc = "A shoulder-mounted micro-explosive dispenser designed for security forces."
+
+	charges = list(
+		list("flashbang",   "flashbang",   /obj/item/weapon/grenade/flashbang,  4),
 		)
 
 /obj/item/rig_module/grenade_launcher/mfoam
@@ -293,7 +301,7 @@
 		else
 			var/obj/item/new_weapon = new fabrication_type()
 			new_weapon.forceMove(H)
-			to_chat(H, "<font color='blue'><b>You quickly fabricate \a [new_weapon].</b></font>")
+			to_chat(H, "<span class='info'><b>You quickly fabricate \a [new_weapon].</b></span>")
 			H.put_in_hands(new_weapon)
 
 	return 1

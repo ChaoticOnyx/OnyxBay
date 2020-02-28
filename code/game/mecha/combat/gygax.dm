@@ -30,8 +30,8 @@
 	max_equip = 4
 	step_energy_drain = 5
 
-/obj/mecha/combat/gygax/dark/New()
-	..()
+/obj/mecha/combat/gygax/dark/Initialize()
+	. = .. ()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/scattershot
 	ME.attach(src)
 	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang/clusterbang
@@ -56,7 +56,7 @@
 		overload = 0
 		step_in = initial(step_in)
 		step_energy_drain = initial(step_energy_drain)
-		src.occupant_message("<font color='blue'>You disable leg actuators overload.</font>")
+		src.occupant_message("<span class='info'>You disable leg actuators overload.</span>")
 	else
 		overload = 1
 		step_in = min(1, round(step_in/2))

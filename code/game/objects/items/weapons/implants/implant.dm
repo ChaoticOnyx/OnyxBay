@@ -26,17 +26,17 @@
 // What does the implant do upon injection?
 // return 0 if the implant fails (ex. Revhead and loyalty implant.)
 // return TRUE if the implant succeeds (ex. Nonrevhead and loyalty implant.)
-/obj/item/weapon/implant/proc/implanted(var/mob/source)
+/obj/item/weapon/implant/proc/implanted(mob/source)
 	return TRUE
 
-/obj/item/weapon/implant/proc/can_implant(mob/M, mob/user, var/target_zone)
+/obj/item/weapon/implant/proc/can_implant(mob/M, mob/user, target_zone)
 	var/mob/living/carbon/human/H = M
 	if(istype(H) && !H.get_organ(target_zone))
 		to_chat(user, "<span class='warning'>\The [M] is missing that body part.</span>")
 		return FALSE
 	return TRUE
 
-/obj/item/weapon/implant/proc/implant_in_mob(mob/M, var/target_zone)
+/obj/item/weapon/implant/proc/implant_in_mob(mob/M, target_zone)
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/organ/external/affected = H.get_organ(target_zone)
@@ -82,7 +82,7 @@
 /obj/item/weapon/implant/proc/meltdown()	//breaks it down, making implant unrecongizible
 	to_chat(imp_in, "<span class='warning'>You feel something melting inside [part ? "your [part.name]" : "you"]!</span>")
 	if (part)
-		part.take_damage(burn = 15, used_weapon = "Electronics meltdown")
+		part.take_external_damage(burn = 15, used_weapon = "Electronics meltdown")
 	else
 		var/mob/living/M = imp_in
 		M.apply_damage(15,BURN)

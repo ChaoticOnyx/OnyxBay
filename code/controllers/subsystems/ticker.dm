@@ -22,12 +22,16 @@ SUBSYSTEM_DEF(ticker)
 	var/delay_notified = 0          //Spam prevention.
 	var/restart_timeout = 1 MINUTE
 
+	var/force_end = FALSE
+
 	var/list/minds = list()         //Minds of everyone in the game.
 	var/list/antag_pool = list()
 	var/looking_for_antags = 0
 
+	var/datum/round_event/eof
+
 /datum/controller/subsystem/ticker/Initialize()
-	to_world("<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>")
+	to_world("<span class='info'><B>Welcome to the pre-game lobby!</B></span>")
 	to_world("Please, setup your character and select ready. Game will start in [round(pregame_timeleft/10)] seconds")
 	return ..()
 
@@ -80,6 +84,8 @@ SUBSYSTEM_DEF(ticker)
 
 	create_characters() //Create player characters and transfer them
 	collect_minds()
+	if (config.roundstart_events)
+		eof = pick_round_event()
 	equip_characters()
 	for(var/mob/living/carbon/human/H in GLOB.player_list)
 		if(!H.mind || player_is_antag(H.mind, only_offstation_roles = 1) || !job_master.ShouldCreateRecords(H.mind.assigned_role))
@@ -90,7 +96,12 @@ SUBSYSTEM_DEF(ticker)
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup()
-		to_world("<FONT color='blue'><B>Enjoy the game!</B></FONT>")
+
+		if (eof)
+			eof.apply_event()
+			eof.announce_event()
+
+		to_world("<span class='info'><B>Enjoy the game!</B></span>")
 
 		for (var/mob/M in GLOB.player_list)
 			M.playsound_local(M.loc, GLOB.using_map.welcome_sound, 75)
@@ -105,7 +116,7 @@ SUBSYSTEM_DEF(ticker)
 	mode.process()
 	var/mode_finished = mode_finished()
 
-	if(mode_finished && game_finished())
+	if((mode_finished && game_finished()) || force_end)
 		Master.SetRunLevel(RUNLEVEL_POSTGAME)
 		end_game_state = END_GAME_READY_TO_END
 		INVOKE_ASYNC(src, .proc/declare_completion)
@@ -296,20 +307,20 @@ Helpers
 			minds += player.mind
 
 /datum/controller/subsystem/ticker/proc/equip_characters()
-	var/captainless = TRUE
+	var/captainless = 1 // what kind of motherfucker doesn't put blanks in?
 	for(var/mob/living/carbon/human/player in GLOB.player_list)
 		if(player && player.mind && player.mind.assigned_role)
 			if(player.mind.assigned_role == "Captain")
-				captainless = FALSE
+				captainless = 0 // and here
 			if(!player_is_antag(player.mind, only_offstation_roles = 1))
 				job_master.EquipRank(player, player.mind.assigned_role, 0)
 				equip_custom_items(player)
 	if(captainless)
 		for(var/mob/M in GLOB.player_list)
-			if(!istype(M, /mob/new_player))
+			if(!istype(M, /mob/new_player)) // cyka blyat
 				to_chat(M, "Captainship not forced on anyone.")
 
-/datum/controller/subsystem/ticker/proc/attempt_late_antag_spawn(var/list/antag_choices)
+/datum/controller/subsystem/ticker/proc/attempt_late_antag_spawn(list/antag_choices)
 	var/datum/antagonist/antag = antag_choices[1]
 	while(antag_choices.len && antag)
 		var/needs_ghost = antag.flags & (ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB)
@@ -356,7 +367,7 @@ Helpers
 	if(mode.explosion_in_progress)
 		return 0
 	if(config.continous_rounds)
-		return evacuation_controller.round_over() || mode.station_was_nuked
+		return evacuation_controller.round_over() || mode.station_was_nuked || mode.blob_domination
 	else
 		return mode.check_finished() || (evacuation_controller.round_over() && evacuation_controller.emergency_evacuation) || universe_has_ended
 
@@ -384,9 +395,9 @@ Helpers
 
 /datum/controller/subsystem/ticker/proc/declare_completion()
 	to_world("<br><br><br><H1>A round of [mode.name] has ended!</H1>")
-	// for(var/client/C)
-		// if(!C.credits)
-			// C.RollCredits()
+	for(var/client/C in GLOB.clients)
+		if(!C.credits && C.get_preference_value(/datum/client_preference/cinema_credits) == GLOB.PREF_YES)
+			C.RollCredits()
 	// TODO [V] Make these credits more like represing real state of things
 	// This is not a movie afterall
 	for(var/mob/Player in GLOB.player_list)
@@ -395,7 +406,7 @@ Helpers
 				var/turf/playerTurf = get_turf(Player)
 				if(evacuation_controller.round_over() && evacuation_controller.emergency_evacuation)
 					if(isNotAdminLevel(playerTurf.z))
-						to_chat(Player, "<font color='blue'><b>You managed to survive, but were marooned on [station_name()] as [Player.real_name]...</b></font>")
+						to_chat(Player, "<span class='info'><b>You managed to survive, but were marooned on [station_name()] as [Player.real_name]...</b></span>")
 					else
 						to_chat(Player, "<font color='green'><b>You managed to survive the events on [station_name()] as [Player.real_name].</b></font>")
 				else if(isAdminLevel(playerTurf.z))
@@ -403,7 +414,7 @@ Helpers
 				else if(issilicon(Player))
 					to_chat(Player, "<font color='green'><b>You remain operational after the events on [station_name()] as [Player.real_name].</b></font>")
 				else
-					to_chat(Player, "<font color='blue'><b>You got through just another workday on [station_name()] as [Player.real_name].</b></font>")
+					to_chat(Player, "<span class='info'><b>You got through just another workday on [station_name()] as [Player.real_name].</b></span>")
 			else
 				if(isghost(Player))
 					var/mob/observer/ghost/O = Player

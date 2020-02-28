@@ -71,7 +71,7 @@
 	var/grav_pulling = 0
 	// Time in ticks between delamination ('exploding') and exploding (as in the actual boom)
 	var/pull_time = 300
-	var/explosion_power = 9
+	var/explosion_power_modifier = 9
 
 	var/emergency_issued = 0
 
@@ -104,8 +104,8 @@
 	var/aw_delam = FALSE
 	var/aw_EPR = FALSE
 
-/obj/machinery/power/supermatter/New()
-	..()
+/obj/machinery/power/supermatter/Initialize()
+	. = ..()
 	uid = gl_uid++
 
 /obj/machinery/power/supermatter/proc/handle_admin_warnings()
@@ -129,7 +129,7 @@
 	else
 		aw_EPR = FALSE
 
-/obj/machinery/power/supermatter/proc/status_adminwarn_check(var/min_status, var/current_state, var/message, var/send_to_irc = FALSE)
+/obj/machinery/power/supermatter/proc/status_adminwarn_check(min_status, current_state, message, send_to_irc = FALSE)
 	var/status = get_status()
 	if(status >= min_status)
 		if(!current_state)
@@ -177,7 +177,7 @@
 	return SUPERMATTER_INACTIVE
 
 
-/obj/machinery/power/supermatter/proc/explode()
+/obj/machinery/power/supermatter/proc/explode(stored_power)
 	set waitfor = 0
 
 	if(exploded)
@@ -207,6 +207,14 @@
 
 		mob.Weaken(DETONATION_MOB_CONCUSSION)
 		to_chat(mob, "<span class='danger'>An invisible force slams you against the ground!</span>")
+		
+		if(iscarbon(mob))
+			var/mob/living/carbon/C = mob
+			var/area/A = get_area(TM)
+			if(A && !(A.area_flags & AREA_FLAG_RAD_SHIELDED))
+				var/dist = 200 - get_dist(src, C)
+				if(dist >= 1)
+					C.hallucination(round(dist * 1.5), dist)
 
 	// Effect 2: Z-level wide electrical pulse
 	for(var/obj/machinery/power/apc/A in SSmachines.machinery)
@@ -229,7 +237,8 @@
 		// Causes SMESes to shut down for a bit
 		var/random_change = rand(100 - DETONATION_SHUTDOWN_RNG_FACTOR, 100 + DETONATION_SHUTDOWN_RNG_FACTOR) / 100
 		S.energy_fail(round(DETONATION_SHUTDOWN_SMES * random_change))
-
+		if(prob(100 - get_dist(src, S) * 0.5))
+			S.grounding = 0
 	// Effect 3: Break solar arrays
 
 	for(var/obj/machinery/power/solar/S in SSmachines.machinery)
@@ -238,15 +247,15 @@
 		if(prob(DETONATION_SOLAR_BREAK_CHANCE))
 			S.set_broken(TRUE)
 
-
-
 	// Effect 4: Medium scale explosion
-	spawn(0)
-		explosion(TS, explosion_power/2, explosion_power, explosion_power * 2, explosion_power * 4, 1)
-		qdel(src)
+	if(!stored_power)
+		stored_power = round(sqrt(power) * 0.1 * explosion_power_modifier)
+	stored_power = Clamp(stored_power, 1, 50)
+	explosion(TS, stored_power * 0.5, stored_power, stored_power * 2, stored_power * 4, 1)
+	qdel(src)
 
 //Changes color and luminosity of the light to these values if they were not already set
-/obj/machinery/power/supermatter/proc/shift_light(var/lum, var/clr)
+/obj/machinery/power/supermatter/proc/shift_light(lum, clr)
 	if(lum != light_range || clr != light_color)
 		set_light(lum, l_color = clr)
 
@@ -279,6 +288,8 @@
 		//Public alerts
 		if((damage > emergency_point) && !public_alert)
 			GLOB.global_announcer.autosay("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", "Supermatter Monitor")
+			if(power >= 1400)
+				GLOB.global_announcer.autosay("WARNING: AN EXTREMELY POWERFUL EXPLOSION EXPECTED!", "Supermatter Monitor")
 			public_alert = 1
 			for(var/mob/M in GLOB.player_list)
 				var/turf/T = get_turf(M)
@@ -303,7 +314,7 @@
 		if(!exploded)
 			if(!istype(L, /turf/space))
 				announce_warning()
-			explode()
+			explode(round(sqrt(power) * 0.1 * explosion_power_modifier))
 	else if(damage > warning_point) // while the core is still damaged and it's still worth noting its status
 		shift_light(5, warning_color)
 		if(damage > emergency_point)
@@ -388,7 +399,7 @@
 	return 1
 
 
-/obj/machinery/power/supermatter/bullet_act(var/obj/item/projectile/Proj)
+/obj/machinery/power/supermatter/bullet_act(obj/item/projectile/Proj)
 	var/turf/L = loc
 	if(!istype(L))		// We don't run process() when we are in space
 		return 0	// This stops people from being able to really power up the supermatter
@@ -402,17 +413,17 @@
 		damage += proj_damage * config_bullet_energy
 	return 0
 
-/obj/machinery/power/supermatter/attack_robot(mob/user as mob)
+/obj/machinery/power/supermatter/attack_robot(mob/user)
 	if(Adjacent(user))
 		return attack_hand(user)
 	else
 		ui_interact(user)
 	return
 
-/obj/machinery/power/supermatter/attack_ai(mob/user as mob)
+/obj/machinery/power/supermatter/attack_ai(mob/user)
 	ui_interact(user)
 
-/obj/machinery/power/supermatter/attack_hand(mob/user as mob)
+/obj/machinery/power/supermatter/attack_hand(mob/user)
 	user.visible_message("<span class=\"warning\">\The [user] reaches out and touches \the [src], inducing a resonance... \his body starts to glow and bursts into flames before flashing into ash.</span>",\
 		"<span class=\"danger\">You reach out and touch \the [src]. Everything starts burning and all you can hear is ringing. Your last thought is \"That was not a wise decision.\"</span>",\
 		"<span class=\"warning\">You hear an uneartly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat.</span>")
@@ -420,7 +431,7 @@
 	Consume(user)
 
 // This is purely informational UI that may be accessed by AIs or robots
-/obj/machinery/power/supermatter/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+/obj/machinery/power/supermatter/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	var/data[0]
 
 	data["integrity_percentage"] = round(get_integrity())
@@ -447,7 +458,7 @@
 		ui.set_auto_update(1)
 
 
-/obj/machinery/power/supermatter/attackby(obj/item/weapon/W as obj, mob/living/user as mob)
+/obj/machinery/power/supermatter/attackby(obj/item/weapon/W, mob/living/user)
 	if(istype(W, /obj/item/weapon/tape_roll))
 		to_chat(user, "You repair some of the damage to \the [src] with \the [W].")
 		damage = max(damage -10, 0)
@@ -461,11 +472,10 @@
 
 	user.apply_effect(150, IRRADIATE, blocked = user.getarmor(null, "rad"))
 
-
-/obj/machinery/power/supermatter/Bumped(atom/AM as mob|obj)
+/obj/machinery/power/supermatter/Bumped(atom/AM)
 	if(istype(AM, /obj/effect))
 		return
-	if(istype(AM, /mob/living))
+	if(isliving(AM))
 		AM.visible_message("<span class=\"warning\">\The [AM] slams into \the [src] inducing a resonance... \his body starts to glow and catch flame before flashing into ash.</span>",\
 		"<span class=\"danger\">You slam into \the [src] as your ears are filled with unearthly ringing. Your last thought is \"Oh, fuck.\"</span>",\
 		"<span class=\"warning\">You hear an uneartly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat.</span>")
@@ -475,8 +485,7 @@
 
 	Consume(AM)
 
-
-/obj/machinery/power/supermatter/proc/Consume(var/mob/living/user)
+/obj/machinery/power/supermatter/proc/Consume(mob/living/user)
 	if(istype(user))
 		user.dust()
 		power += 200
@@ -496,9 +505,23 @@
 	SSradiation.radiate(src, rads)
 
 
-/proc/supermatter_pull(var/atom/target, var/pull_range = 255, var/pull_power = STAGE_FIVE)
-	for(var/atom/A in range(pull_range, target))
-		A.singularity_pull(target, pull_power)
+/proc/supermatter_pull(atom/target, pull_range = 255, pull_power = STAGE_FIVE)
+	var/list/movable_atoms = list()
+	for(var/atom/movable/AM in range(pull_range, target))
+		movable_atoms += AM
+
+	var/turf/below = GetBelow(target)
+	if(below)
+		for(var/atom/movable/AM in range(round(pull_range * 0.75), below))
+			movable_atoms += AM
+
+	var/turf/above = GetAbove(target)
+	if(above)
+		for(var/atom/movable/AM in range(round(pull_range * 0.75), above))
+			movable_atoms += AM
+
+	for(var/atom/movable/AM in movable_atoms)
+		AM.singularity_pull(target, pull_power)
 
 /obj/machinery/power/supermatter/GotoAirflowDest(n) //Supermatter not pushed around by airflow
 	return
@@ -519,7 +542,7 @@
 	gasefficency = 0.125
 
 	pull_time = 150
-	explosion_power = 3
+	explosion_power_modifier = 3
 
 /obj/machinery/power/supermatter/shard/announce_warning() //Shards don't get announcements
 	return

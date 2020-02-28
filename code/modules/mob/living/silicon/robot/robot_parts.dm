@@ -14,7 +14,7 @@
 /obj/item/robot_parts/set_dir()
 	return
 
-/obj/item/robot_parts/New(var/newloc, var/model)
+/obj/item/robot_parts/New(newloc, model)
 	..(newloc)
 	if(model_info && model)
 		model_info = model
@@ -282,13 +282,13 @@
 			for (var/O in list(BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG))
 				var/obj/item/organ/external/organ = H.organs_by_name[O]
 				H.organs -= organ
-				H.organs_by_name[organ.organ_tag] = null
+				H.organs_by_name.Remove(organ.organ_tag)
 				qdel(organ)
 
 			// Remove brain (we want to put one in).
 			var/obj/item/organ/internal/brain = H.internal_organs_by_name[BP_BRAIN]
 			H.organs -= brain
-			H.organs_by_name[brain.organ_tag] = null
+			H.organs_by_name.Remove(brain.organ_tag)
 			qdel(brain)
 
 			// Robotize remaining organs: Eyes, head, and chest.
@@ -354,7 +354,7 @@
 		to_chat(user, "<span class='notice'>You insert the flash into the eye socket!</span>")
 
 
-/obj/item/robot_parts/emag_act(var/remaining_charges, var/mob/user)
+/obj/item/robot_parts/emag_act(remaining_charges, mob/user)
 	if(sabotaged)
 		to_chat(user, "<span class='warning'>[src] is already sabotaged!</span>")
 	else

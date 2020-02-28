@@ -5,8 +5,9 @@
 	use_power = POWER_USE_OFF
 	mechanical = 0
 	tray_light = 0
+	layer = BELOW_DOOR_LAYER
 
-/obj/machinery/portable_atmospherics/hydroponics/soil/attackby(var/obj/item/O as obj, var/mob/user as mob)
+/obj/machinery/portable_atmospherics/hydroponics/soil/attackby(obj/item/O as obj, mob/user as mob)
 	if(istype(O,/obj/item/weapon/tank))
 		return
 	else
@@ -26,7 +27,7 @@
 	icon_state = "blank"
 	var/list/connected_zlevels //cached for checking if we someone is obseving us so we should process
 
-/obj/machinery/portable_atmospherics/hydroponics/soil/invisible/New(var/newloc,var/datum/seed/newseed, var/start_mature)
+/obj/machinery/portable_atmospherics/hydroponics/soil/invisible/New(newloc,datum/seed/newseed, start_mature)
 	..()
 	seed = newseed
 	dead = 0

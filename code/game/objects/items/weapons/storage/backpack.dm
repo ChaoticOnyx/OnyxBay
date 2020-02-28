@@ -33,7 +33,7 @@
 		playsound(src.loc, src.use_sound, 50, 1, -5)
 	return ..()
 
-/obj/item/weapon/storage/backpack/equipped(var/mob/user, var/slot)
+/obj/item/weapon/storage/backpack/equipped(mob/user, slot)
 	if (slot == slot_back && src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
 	..(user, slot)
@@ -404,3 +404,25 @@
 	name = "security messenger bag"
 	desc = "A tactical backpack worn over one shoulder. This one is in Security colors."
 	icon_state = "courierbagsec"
+	
+//Smuggler's satchel
+/obj/item/weapon/storage/backpack/satchel/flat
+	name = "\improper Smuggler's satchel"
+	desc = "A very slim satchel that can easily fit into tight spaces."
+	icon_state = "satchel-flat"
+	item_state = "satchel-norm"
+	level = 1
+	w_class = ITEM_SIZE_NORMAL //Can fit in backpacks itself.
+	storage_slots = 5
+	max_w_class = ITEM_SIZE_NORMAL
+	max_storage_space = 15
+	cant_hold = list(/obj/item/weapon/storage/backpack/satchel/flat) //muh recursive backpacks
+	startswith = list(
+		/obj/item/stack/tile/floor,
+		/obj/item/weapon/crowbar
+		)
+
+/obj/item/weapon/storage/backpack/satchel/flat/hide(i)
+	set_invisibility(i ? 101 : 0)
+	anchored = i ? TRUE : FALSE
+	alpha = i ? 128 : initial(alpha)

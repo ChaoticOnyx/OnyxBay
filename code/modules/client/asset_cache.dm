@@ -141,12 +141,12 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //Generated names do not include file extention.
 //Used mainly for code that deals with assets in a generic way
 //The same asset will always lead to the same asset name
-/proc/generate_asset_name(var/file)
+/proc/generate_asset_name(file)
 	return "asset.[md5(fcopy_rsc(file))]"
 
 // will return filename for cached atom icon or null if not cached
 // can accept atom objects or types
-/proc/getAtomCacheFilename(var/atom/A)
+/proc/getAtomCacheFilename(atom/A)
 	if(!A || (!istype(A) && !ispath(A)))
 		return
 	var/filename = "[ispath(A) ? A : A.type].png"
@@ -225,29 +225,16 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 // For registering or sending multiple others at once
 /datum/asset/group
-	var/list/children = list()
+	var/list/children
 
 /datum/asset/group/register()
 	for(var/type in children)
-		var/datum/asset/A = get_asset_datum(type)
-		if(!A.registred)
-			A.register()
+		get_asset_datum(type)
 
-/datum/asset/group/send(client)
+/datum/asset/group/send(client/C)
 	for(var/type in children)
 		var/datum/asset/A = get_asset_datum(type)
-		A.send(client)
-
-/datum/asset/group/send_slow(client)
-	for(var/type in children)
-		var/datum/asset/A = get_asset_datum(type)
-		A.send_slow(client)
-
-/datum/asset/group/check_sent(client)
-	for(var/type in children)
-		var/datum/asset/A = get_asset_datum(type)
-		A.check_sent(client)
-
+		A.send(C)
 
 //DEFINITIONS FOR ASSET DATUMS START HERE.
 /datum/asset/directories/pda
@@ -256,26 +243,58 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"icons/pda_icons/",
 	)
 
-/datum/asset/simple/tgui
-	assets = list(
-		// tgui-next
-		"tgui-main.html" = 'tgui-next/packages/tgui/public/tgui-main.html',
-		"tgui-fallback.html" = 'tgui-next/packages/tgui/public/tgui-fallback.html',
-		"tgui.bundle.js" = 'tgui-next/packages/tgui/public/tgui.bundle.js',
-		"tgui.bundle.css" = 'tgui-next/packages/tgui/public/tgui.bundle.css',
-		"shim-console.js" = 'tgui-next/packages/tgui/public/shim-console.js',
-		"shim-html5shiv.js" = 'tgui-next/packages/tgui/public/shim-html5shiv.js',
-		"shim-ie8.js" = 'tgui-next/packages/tgui/public/shim-ie8.js',
-		"shim-dom4.js" = 'tgui-next/packages/tgui/public/shim-dom4.js',
-		"shim-css-om.js" = 'tgui-next/packages/tgui/public/shim-css-om.js',
+/datum/asset/group/onyxchat
+	children = list(
+		/datum/asset/simple/jquery,
+		/datum/asset/simple/onyxchat,
+		/datum/asset/simple/fontawesome
+	)
 
-		// font awesome
+/datum/asset/simple/jquery
+	verify = FALSE
+	assets = list(
+		"jquery.min.js"            = 'code/modules/onyxchat/browserassets/js/jquery.min.js',
+	)
+
+/datum/asset/simple/onyxchat
+	verify = TRUE
+	assets = list(
+		"json2.min.js"             = 'code/modules/onyxchat/browserassets/js/json2.min.js',
+		"browserOutput.js"         = 'code/modules/onyxchat/browserassets/js/browserOutput.js',
+		"browserOutput.css"	       = 'code/modules/onyxchat/browserassets/css/browserOutput.css',
+		"browserOutput_white.css"  = 'code/modules/onyxchat/browserassets/css/browserOutput_white.css',
+		"browserOutput_marines.css"  = 'code/modules/onyxchat/browserassets/css/browserOutput_marines.css'
+	)
+
+/datum/asset/simple/fontawesome
+	verify = FALSE
+	assets = list(
 		"fa-regular-400.eot"  = 'html/font-awesome/webfonts/fa-regular-400.eot',
 		"fa-regular-400.woff" = 'html/font-awesome/webfonts/fa-regular-400.woff',
 		"fa-solid-900.eot"    = 'html/font-awesome/webfonts/fa-solid-900.eot',
 		"fa-solid-900.woff"   = 'html/font-awesome/webfonts/fa-solid-900.woff',
 		"font-awesome.css"    = 'html/font-awesome/css/all.min.css',
 		"v4shim.css"          = 'html/font-awesome/css/v4-shims.min.css'
+	)
+
+/datum/asset/simple/tgui
+	verify = TRUE
+	assets = list(
+		// tgui-next
+		"tgui-main.html" = 'tgui-next/packages/tgui/public/tgui-main.html',
+		"tgui-fallback.html" = 'tgui-next/packages/tgui/public/tgui-fallback.html',
+		"tgui.bundle.js" = 'tgui-next/packages/tgui/public/tgui.bundle.js',
+		"tgui.bundle.css" = 'tgui-next/packages/tgui/public/tgui.bundle.css',
+		"shim-html5shiv.js" = 'tgui-next/packages/tgui/public/shim-html5shiv.js',
+		"shim-ie8.js" = 'tgui-next/packages/tgui/public/shim-ie8.js',
+		"shim-dom4.js" = 'tgui-next/packages/tgui/public/shim-dom4.js',
+		"shim-css-om.js" = 'tgui-next/packages/tgui/public/shim-css-om.js'
+	)
+
+/datum/asset/group/tgui
+	children = list(
+		/datum/asset/simple/fontawesome,
+		/datum/asset/simple/tgui
 	)
 
 /datum/asset/directories/nanoui

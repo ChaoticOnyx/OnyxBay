@@ -39,7 +39,7 @@ var/datum/evacuation_controller/evacuation_controller
 	var/datum/announcement/priority/evac_called =   new(0)
 	var/datum/announcement/priority/evac_recalled = new(0)
 
-/datum/evacuation_controller/proc/auto_recall(var/_recall)
+/datum/evacuation_controller/proc/auto_recall(_recall)
 	recall = _recall
 
 /datum/evacuation_controller/proc/set_up()
@@ -50,12 +50,12 @@ var/datum/evacuation_controller/evacuation_controller
 /datum/evacuation_controller/proc/get_cooldown_message()
 	return "An evacuation cannot be called at this time. Please wait another [round((evac_cooldown_time-world.time)/600)] minute\s before trying again."
 
-/datum/evacuation_controller/proc/add_can_call_predicate(var/datum/evacuation_predicate/esp)
+/datum/evacuation_controller/proc/add_can_call_predicate(datum/evacuation_predicate/esp)
 	if(esp in evacuation_predicates)
 		CRASH("[esp] has already been added as an evacuation predicate")
 	evacuation_predicates += esp
 
-/datum/evacuation_controller/proc/call_evacuation(var/mob/user, var/_emergency_evac, var/forced, var/skip_announce, var/autotransfer)
+/datum/evacuation_controller/proc/call_evacuation(mob/user, _emergency_evac, forced, skip_announce, autotransfer)
 
 	if(state != EVAC_IDLE)
 		return 0
@@ -89,9 +89,7 @@ var/datum/evacuation_controller/evacuation_controller
 	state = EVAC_PREPPING
 
 	if(emergency_evacuation)
-		for(var/area/A in world)
-			if(istype(A, /area/hallway))
-				A.readyalert()
+		toggle_emergency_light()
 		if(!skip_announce)
 			GLOB.using_map.emergency_shuttle_called_announcement()
 	else
@@ -117,10 +115,8 @@ var/datum/evacuation_controller/evacuation_controller
 
 	if(emergency_evacuation)
 		evac_recalled.Announce(GLOB.using_map.emergency_shuttle_recall_message)
-		for(var/area/A in world)
-			if(istype(A, /area/hallway))
-				A.readyreset()
 		emergency_evacuation = 0
+		toggle_emergency_light()
 	else
 		priority_announcement.Announce(GLOB.using_map.shuttle_recall_message)
 
@@ -176,13 +172,17 @@ var/datum/evacuation_controller/evacuation_controller
 /datum/evacuation_controller/proc/available_evac_options()
 	return list()
 
-/datum/evacuation_controller/proc/handle_evac_option(var/option_target, var/mob/user)
+/datum/evacuation_controller/proc/handle_evac_option(option_target, mob/user)
 	var/datum/evacuation_option/selected = evacuation_options[option_target]
 	if (!isnull(selected) && istype(selected))
 		selected.execute(user)
 
-/datum/evacuation_controller/proc/get_evac_option(var/option_target)
+/datum/evacuation_controller/proc/get_evac_option(option_target)
 	return null
 
 /datum/evacuation_controller/proc/should_call_autotransfer_vote()
 	return (state == EVAC_IDLE)
+
+/datum/evacuation_controller/proc/toggle_emergency_light()
+	for(var/area/A in GLOB.hallway)
+		A.set_evacuation_lighting(emergency_evacuation)

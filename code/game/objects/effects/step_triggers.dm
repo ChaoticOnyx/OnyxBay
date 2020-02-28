@@ -6,7 +6,7 @@
 	invisibility = 101 // nope cant see this shit
 	anchored = 1
 
-/obj/effect/step_trigger/proc/Trigger(var/atom/movable/A)
+/obj/effect/step_trigger/proc/Trigger(atom/movable/A)
 	return 0
 
 /obj/effect/step_trigger/Crossed(H as mob|obj)
@@ -30,7 +30,7 @@
 	var/nostop = 0 // if 1: will only be stopped by teleporters
 	var/list/affecting = list()
 
-/obj/effect/step_trigger/thrower/Trigger(var/atom/movable/AM)
+/obj/effect/step_trigger/thrower/Trigger(atom/movable/AM)
 	if(!AM || !istype(AM) || !AM.simulated)
 		return
 	var/curtiles = 0
@@ -107,7 +107,7 @@
 	var/teleport_y_offset = 0
 	var/teleport_z_offset = 0
 
-/obj/effect/step_trigger/teleporter/random/Trigger(var/atom/movable/A)
+/obj/effect/step_trigger/teleporter/random/Trigger(atom/movable/A)
 	var/turf/T = locate(rand(teleport_x, teleport_x_offset), rand(teleport_y, teleport_y_offset), rand(teleport_z, teleport_z_offset))
 	if(T)
 		A.forceMove(T)

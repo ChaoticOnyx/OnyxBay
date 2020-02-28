@@ -12,7 +12,7 @@
 	siemens_coefficient = 0.9
 	var/gas_filter_strength = 1			//For gas mask filters
 	var/list/filtered_gases = list("phoron", "sleeping_agent")
-	var/istinted = 1
+	var/istinted = 0
 	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 75, rad = 0)
 
 /obj/item/clothing/mask/gas/Initialize()
@@ -65,6 +65,31 @@
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
 	icon_state = "fullgas"
 	item_state = "fullgas"
+
+/obj/item/clothing/mask/gas/clear
+	name = "gas mask"
+	desc = "A close-fitting, panoramic gas mask that can be connected to an air supply."
+	icon_state = "gasmask-clear"
+	item_state = "gasmask-clear"
+	istinted = 0
+
+/obj/item/clothing/mask/gas/police
+	name = "police gas mask"
+	desc = "A close-fitting tactical mask that can be connected to an air supply."
+	icon_state = "policegas"
+	item_state = "policegas"
+	istinted = 0
+
+/obj/item/clothing/mask/gas/german
+	name = "tactical gas mask"
+	desc = "A close-fitting tactical mask that can be connected to an air supply."
+	icon_state = "wehrgas"
+	item_state = "wehrgas"
+	istinted = 0
+
+/obj/item/clothing/mask/gas/german/Initialize()
+	. = ..()
+	overlay = GLOB.global_hud.thermal
 
 /obj/item/clothing/mask/gas/swat/vox
 	name = "alien mask"

@@ -52,3 +52,11 @@
 	var/obj/item/weapon/computer_hardware/hard_drive/portable/portable_drive		// Portable data storage
 	var/obj/item/weapon/computer_hardware/ai_slot/ai_slot							// AI slot, an intellicard housing that allows modifications of AIs.
 	var/obj/item/weapon/computer_hardware/tesla_link/tesla_link						// Tesla Link, Allows remote charging from nearest APC.
+
+/obj/item/modular_computer/blob_act(destroy, obj/effect/blob/source)
+	if (destroy)
+		playsound(src, "console_breaking", 75, FALSE)
+		qdel(src)
+	else if (prob(25))
+		playsound(src, "console_breaking", 75, FALSE)
+		qdel(src)

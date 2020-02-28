@@ -369,8 +369,6 @@
 			return global.dna_activity_bounds;
 		if("dna_genes")
 			return global.dna_genes;
-		if("donators")
-			return global.donators;
 		if("doppler_arrays")
 			return global.doppler_arrays;
 		if("dreams")
@@ -539,8 +537,6 @@
 			return global.limb_icon_cache;
 		if("loadout_categories")
 			return global.loadout_categories;
-		if("lobby_image")
-			return global.lobby_image;
 		if("log_end")
 			return global.log_end;
 		if("lunchables_drink_reagents_")
@@ -723,8 +719,6 @@
 			return global.priv_station_access;
 		if("priv_syndicate_access")
 			return global.priv_syndicate_access;
-		if("prizes")
-			return global.prizes;
 		if("prometheans")
 			return global.prometheans;
 		if("protected_objects")
@@ -775,8 +769,6 @@
 			return global.roundstart_hour;
 		if("rune_list")
 			return global.rune_list;
-		if("runtime_diary")
-			return global.runtime_diary;
 		if("rus_unicode_conversion")
 			return global.rus_unicode_conversion;
 		if("same_wires")
@@ -1364,8 +1356,6 @@
 			global.dna_activity_bounds=newval;
 		if("dna_genes")
 			global.dna_genes=newval;
-		if("donators")
-			global.donators=newval;
 		if("doppler_arrays")
 			global.doppler_arrays=newval;
 		if("dreams")
@@ -1534,8 +1524,6 @@
 			global.limb_icon_cache=newval;
 		if("loadout_categories")
 			global.loadout_categories=newval;
-		if("lobby_image")
-			global.lobby_image=newval;
 		if("log_end")
 			global.log_end=newval;
 		if("lunchables_drink_reagents_")
@@ -1718,8 +1706,6 @@
 			global.priv_station_access=newval;
 		if("priv_syndicate_access")
 			global.priv_syndicate_access=newval;
-		if("prizes")
-			global.prizes=newval;
 		if("prometheans")
 			global.prometheans=newval;
 		if("protected_objects")
@@ -1770,8 +1756,6 @@
 			global.roundstart_hour=newval;
 		if("rune_list")
 			global.rune_list=newval;
-		if("runtime_diary")
-			global.runtime_diary=newval;
 		if("rus_unicode_conversion")
 			global.rus_unicode_conversion=newval;
 		if("same_wires")
@@ -2174,7 +2158,6 @@
 	"diary",
 	"dna_activity_bounds",
 	"dna_genes",
-	"donators",
 	"doppler_arrays",
 	"dreams",
 	"dummy_lighting_corner",
@@ -2377,7 +2360,6 @@
 	"round_start_time",
 	"roundstart_hour",
 	"rune_list",
-	"runtime_diary",
 	"rus_unicode_conversion",
 	"same_wires",
 	"secret_force_mode",

@@ -15,7 +15,7 @@
 	icon_state = pick(iconlist)
 
 /obj/structure/rock/Destroy()
-	var/mineralSpawnChanceList = list(MATERIAL_URANIUM = 10, MATERIAL_PLATINUM = 10, MATERIAL_IRON = 20, MATERIAL_CARBON = 20, MATERIAL_DIAMOND = 2, MATERIAL_GOLD = 10, MATERIAL_SILVER = 10, MATERIAL_PHORON = 20)
+	var/mineralSpawnChanceList = list(uranium = 10, osmium = 10, iron = 20, coal = 20, diamond = 2, gold = 10, silver = 10, phoron = 20)
 	if(prob(20))
 		var/mineral_name = pickweight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
@@ -24,7 +24,7 @@
 			new ore(get_turf(src))
 	..()
 
-/obj/structure/rock/attackby(var/obj/item/I, var/mob/user)
+/obj/structure/rock/attackby(obj/item/I, mob/user)
 	if (isMonkey(user))
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return

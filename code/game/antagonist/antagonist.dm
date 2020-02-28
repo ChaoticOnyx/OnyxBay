@@ -118,6 +118,8 @@
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are blacklisted for this role!")
 		else if(player_is_antag(player))
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
+		else if(player.current.stat == UNCONSCIOUS)
+			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
 		else
 			candidates |= player
 
@@ -141,6 +143,8 @@
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are blacklisted for this role!")
 		else if(player_is_antag(player))
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
+		else if(player.current.stat == UNCONSCIOUS)
+			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
 		else
 			potential_candidates |= player
 
@@ -188,7 +192,7 @@
 //Attempting to spawn an antag role with ANTAG_OVERRIDE_JOB should be done before jobs are assigned,
 //so that they do not occupy regular job slots. All other antag roles should be spawned after jobs are
 //assigned, so that job restrictions can be respected.
-/datum/antagonist/proc/attempt_spawn(var/spawn_target = null)
+/datum/antagonist/proc/attempt_spawn(spawn_target = null)
 	if(spawn_target == null)
 		spawn_target = initial_spawn_target
 
@@ -204,7 +208,7 @@
 
 	return 1
 
-/datum/antagonist/proc/draft_antagonist(var/datum/mind/player)
+/datum/antagonist/proc/draft_antagonist(datum/mind/player)
 	//Check if the player can join in this antag role, or if the player has already been given an antag role.
 	if(!can_become_antag(player))
 		log_debug("[player.key] was selected for [role_text] by lottery, but is not allowed to be that role.")
@@ -256,3 +260,8 @@
 		player.special_role = null
 	pending_antagonists.Cut()
 	candidates.Cut()
+
+/datum/antagonist/Topic(href, href_list)
+	if (!check_rights(R_ADMIN))
+		href_exploit(usr.ckey, href)
+		return TRUE

@@ -6,10 +6,10 @@
 	flags = ANTAG_RANDSPAWN | ANTAG_VOTABLE | ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB
 	antaghud_indicator = "hudmeme"
 
-/datum/antagonist/meme/get_special_objective_text(var/datum/mind/player)
+/datum/antagonist/meme/get_special_objective_text(datum/mind/player)
 	return "<br><b>Human indoctrinated:</b> [player.current:indoctrinated.len]"
 
-/datum/antagonist/meme/get_extra_panel_options(var/datum/mind/player)
+/datum/antagonist/meme/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[src];move=\ref[player.current]'>\[Move to selected human\].</a>"
 
 /datum/antagonist/meme/Topic(href, href_list)
@@ -34,7 +34,7 @@
 				player.switch_host(new_host)
 				log_and_message_admins("[key_name(usr)] moved [key_name(player)] (meme) into [key_name(player.host)]", player.host)
 
-/datum/antagonist/meme/create_objectives(var/datum/mind/meme)
+/datum/antagonist/meme/create_objectives(datum/mind/meme)
 	if(!..())
 		return
 
@@ -55,7 +55,7 @@
 				new /datum/objective/survive (meme)
 	return
 
-/datum/antagonist/meme/update_antag_mob(var/datum/mind/player)
+/datum/antagonist/meme/update_antag_mob(datum/mind/player)
 	..()
 	if(!istype(player.current, /mob/living/parasite/meme))
 		var/list/allowed_mob = list()
