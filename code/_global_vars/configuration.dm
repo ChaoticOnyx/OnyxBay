@@ -12,8 +12,6 @@ var/secret_force_mode = "secret"   // if this is anything but "secret", the secr
 
 var/Debug2 = 0
 
-var/gravity_is_on = 1
-
 // Database connections. A connection is established on world creation.
 // Ideally, the connection dies when the server restarts (After feedback logging.).
 var/DBConnection/dbcon     = new() // Feedback    database (New database)
