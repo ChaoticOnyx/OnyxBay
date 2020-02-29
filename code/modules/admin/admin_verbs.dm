@@ -222,7 +222,7 @@ var/list/admin_verbs_debug = list(
 	/client/proc/visualpower,
 	/client/proc/visualpower_remove,
 	/client/proc/enable_profiler,
-	/client/proc/cmd_dev_bst
+	/client/proc/bluespace_tech
 	)
 
 var/list/admin_verbs_paranoid_debug = list(
@@ -316,7 +316,7 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/projectile_basketball,
 	/client/proc/toggle_possess_mode,
 	/client/proc/enable_profiler,
-	/client/proc/cmd_dev_bst
+	/client/proc/bluespace_tech
 	)
 
 var/list/admin_verbs_mod = list(
