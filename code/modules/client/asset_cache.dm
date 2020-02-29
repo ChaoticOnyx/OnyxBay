@@ -257,7 +257,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/onyxchat
-	verify = TRUE
+	verify = FALSE
 	assets = list(
 		"json2.min.js"             = 'code/modules/onyxchat/browserassets/js/json2.min.js',
 		"browserOutput.js"         = 'code/modules/onyxchat/browserassets/js/browserOutput.js',
@@ -278,7 +278,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/tgui
-	verify = TRUE
+	verify = FALSE
 	assets = list(
 		// tgui-next
 		"tgui-main.html" = 'tgui-next/packages/tgui/public/tgui-main.html',
