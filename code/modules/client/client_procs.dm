@@ -44,13 +44,17 @@
 
 	// asset_cache
 	if(href_list["asset_cache_confirm_arrival"])
-//		to_chat(src, "ASSET JOB [href_list["asset_cache_confirm_arrival"]] ARRIVED.")
 		var/job = text2num(href_list["asset_cache_confirm_arrival"])
-				//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
+		log_debug_verbose("\[ASSETS\] Confirmation for asset arrival was received from [ckey]. Job number is [job].")
+
+		//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
 		//	into letting append to a list without limit.
 		if (job && job <= last_asset_job && !(job in completed_asset_jobs))
 			completed_asset_jobs += job
+			log_debug_verbose("\[ASSETS\] Job #[job] is completed (client: [ckey]).")
 			return
+		else
+			log_debug_verbose("\[ASSETS\] ERROR: Job #[job] can't be completed! (client: [ckey]).")
 
 	if (!holder && config.minutetopiclimit)
 		var/minute = round(world.time, 600)
@@ -451,7 +455,8 @@
 		)
 
 	spawn (10) //removing this spawn causes all clients to not get verbs.
-		//Precache the client with all other assets slowly, so as to not block other browse() calls
+		log_debug_verbose("\[ASSETS\] Start sending resources for [ckey].")
+
 		var/list/priority_assets = list()
 		var/list/other_assets = list()
 
@@ -466,7 +471,9 @@
 				priority_assets += D
 
 		for(var/datum/asset/D in (priority_assets + other_assets))
-			D.send_slow(src)
+			D.send_slow(src) //Precache the client with all other assets slowly, so as to not block other browse() calls
+
+		log_debug_verbose("\[ASSETS\] Resources for [ckey] were sended!")
 
 mob/proc/MayRespawn()
 	return 0
