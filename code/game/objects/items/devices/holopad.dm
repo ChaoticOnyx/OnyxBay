@@ -36,7 +36,7 @@
 	set name="Set ID"
 	set category = "Object"
 	set src in usr
-	var/newid = input(usr, "What would be new ID?") as null|text
+	var/newid = sanitize(input(usr, "What would be new ID?") as null|text, MAX_NAME_LEN)
 	if(newid)
 		id = newid
 		name = "[initial(name)] [id] #[uniq_id]"
