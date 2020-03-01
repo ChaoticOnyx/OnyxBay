@@ -407,20 +407,22 @@ I said no!
 		/obj/item/weapon/paper,
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/fortunecookie
-	make_food(var/obj/container as obj)
+
+/datum/recipe/fortunecookie/make_food(var/obj/container)
+	var/obj/item/weapon/paper/paper = locate() in container
+	paper.loc = null //prevent deletion
+	var/obj/item/weapon/reagent_containers/food/snacks/fortunecookie/being_cooked = ..(container)
+	paper.loc = being_cooked
+	being_cooked.trash = paper //so the paper is left behind as trash without special-snowflake(TM Nodrak) code ~carn
+	return being_cooked
+
+/datum/recipe/fortunecookie/check_items(var/obj/container)
+	. = ..()
+	if(.)
 		var/obj/item/weapon/paper/paper = locate() in container
-		paper.loc = null //prevent deletion
-		var/obj/item/weapon/reagent_containers/food/snacks/fortunecookie/being_cooked = ..(container)
-		paper.loc = being_cooked
-		being_cooked.trash = paper //so the paper is left behind as trash without special-snowflake(TM Nodrak) code ~carn
-		return being_cooked
-	check_items(var/obj/container as obj)
-		. = ..()
-		if (.)
-			var/obj/item/weapon/paper/paper = locate() in container
-			if (!paper.info)
-				return 0
-		return .
+		if(!paper || !paper.info)
+			return 0
+	return .
 
 /datum/recipe/meatsteak
 	reagents = list(/datum/reagent/sodiumchloride = 1, /datum/reagent/blackpepper = 1)
