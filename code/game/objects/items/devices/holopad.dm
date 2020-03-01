@@ -103,8 +103,7 @@
 		icon_state = "holopad_in_call"
 		addtimer(CALLBACK(src, .proc/update_holo), 1)
 
-		if(isliving(loc))
-			to_chat(loc, "<span class='name'>[voice]</span> transmits, \"Connection established\"")
+		audible_message("<span class='name'>[voice]</span> transmits, \"Connection established\"", hearing_distance = 1)
 
 /obj/item/device/holopad/proc/hangUp(remote = 0)
 	if(!remote && abonent)
