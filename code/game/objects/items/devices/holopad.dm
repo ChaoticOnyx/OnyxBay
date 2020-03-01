@@ -141,7 +141,7 @@
 			abonent.update_holo_pos()
 
 /obj/item/device/holopad/proc/update_holo_pos()
-	while(call_state == CALL_IN_CALL)
+	while(src && call_state == CALL_IN_CALL)
 		updatingPos = 1
 		if(isliving(loc))
 			var/mob/living/L = loc
