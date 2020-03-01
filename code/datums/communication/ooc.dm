@@ -38,6 +38,7 @@
 	var/can_badmin = !is_stealthed && can_select_ooc_color(C) && (C.prefs.ooccolor != initial(C.prefs.ooccolor))
 	var/ooc_color = C.prefs.ooccolor
 	var/decorated_ckey = C.donator_info.get_decorated_ooc_name(C)
+	message = emoji_parse(C, message)
 
 	webhook_send_ooc(C.key, message)
 	for(var/client/target in GLOB.clients)

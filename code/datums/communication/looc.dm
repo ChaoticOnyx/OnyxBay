@@ -22,6 +22,7 @@
 	var/list/listening_clients = list()
 
 	var/key = C.key
+	message = emoji_parse(C, message)
 
 	for(var/listener in listening_hosts)
 		var/mob/listening_mob = listener
