@@ -16,9 +16,11 @@
 
 	if(check_rights(R_INVESTIGATE, FALSE))
 		for(var/client/C in GLOB.clients)
-			var/entry = "\t[C.key]"
-			if(!C.mob)
-				entry += " - <font color='red'><i>HAS NO MOB</i></font>"
+			var/entry
+			if(C.mob)
+				entry = "\t\[<A HREF='?_src_=holder;adminmoreinfo=\ref[C.mob]'>?</A>] [C.key]"
+			else
+				entry = "\t\[<A HREF='?_src_=holder;adminmoreinfo=\ref[C]'>?</A>] [C.key] - <font color='red'><i>HAS NO MOB</i></font>"
 				Lines += entry
 				continue
 
@@ -58,8 +60,8 @@
 
 				entry += " - [age]"
 
-			if(is_special_character(C.mob))
-				entry += " - <b><font color='red'>Antagonist</font></b>"
+			if(C.mob.mind?.special_role)
+				entry += " - <b><font color='red'>[C.mob.mind.special_role]</font></b>"
 				if(!C.mob.mind.current || C.mob.mind.current?.stat == DEAD)
 					dead_antags++
 				else
@@ -67,7 +69,7 @@
 
 			if(C.is_afk())
 				entry += " - <b>AFK: [C.inactivity2text()]</b>"
-			entry += " (<A HREF='?_src_=holder;adminmoreinfo=\ref[C.mob]'>?</A>)"
+
 			Lines += entry
 	else
 		for(var/client/C in GLOB.clients)
