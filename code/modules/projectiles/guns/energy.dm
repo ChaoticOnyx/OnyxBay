@@ -94,16 +94,15 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	to_chat(user, "Has [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining.")
 
 /obj/item/weapon/gun/energy/update_icon()
-	..()
+	. = ..()
 	if(charge_meter)
 		var/ratio
 
 		if(power_supply)
-			//make sure that rounding down will not give us the empty state even if we have charge for a shot left.
 			if(power_supply.charge < charge_cost)
 				ratio = 0
 			else
-				ratio = max(round(ratio, icon_rounder), icon_rounder)
+				ratio = max(round(power_supply.percent(), icon_rounder), icon_rounder)
 		else 
 			ratio = 0
 
