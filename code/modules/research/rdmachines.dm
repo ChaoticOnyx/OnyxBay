@@ -53,5 +53,6 @@ var/list/default_material_composition = list(MATERIAL_STEEL = 0, MATERIAL_GLASS 
 			ret += "[D.materials[M] - materials[M]] [M]"
 	for(var/C in D.chemicals)
 		if(!reagents.has_reagent(C, D.chemicals[C]))
-			ret += C
+			var/datum/reagent/R = C
+			ret += lowertext(initial(R.name))
 	return english_list(ret)
