@@ -39,6 +39,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	if(client.cache.Find(asset_name) || client.sending.Find(asset_name))
 		return 0
 
+	var/decl/asset_cache/asset_cache = decls_repository.get_decl(/decl/asset_cache)
 	client << browse_rsc(asset_cache.cache[asset_name], asset_name)
 	if(!verify || !winexists(client, "asset_cache_browser")) // Can't access the asset cache browser, rip.
 		if (client)
@@ -88,6 +89,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		return 0
 	if (unreceived.len >= ASSET_CACHE_TELL_CLIENT_AMOUNT)
 		to_chat(client, "Sending Resources...")
+	var/decl/asset_cache/asset_cache = decls_repository.get_decl(/decl/asset_cache)
 	for(var/asset in unreceived)
 		if (asset in asset_cache.cache)
 			client << browse_rsc(asset_cache.cache[asset], asset)
@@ -136,6 +138,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //This proc "registers" an asset, it adds it to the cache for further use, you cannot touch it from this point on or you'll fuck things up.
 //if it's an icon or something be careful, you'll have to copy it before further use.
 /proc/register_asset(asset_name, asset)
+	var/decl/asset_cache/asset_cache = decls_repository.get_decl(/decl/asset_cache)
 	asset_cache.cache[asset_name] = asset
 
 //Generated names do not include file extention.
@@ -147,6 +150,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 // will return filename for cached atom icon or null if not cached
 // can accept atom objects or types
 /proc/getAtomCacheFilename(atom/A)
+	var/decl/asset_cache/asset_cache = decls_repository.get_decl(/decl/asset_cache)
 	if(!A || (!istype(A) && !ispath(A)))
 		return
 	var/filename = "[ispath(A) ? A : A.type].png"
@@ -315,21 +319,16 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 /*
 	Asset cache
 */
-var/decl/asset_cache/asset_cache = new()
 
 /decl/asset_cache
-	var/list/cache
+	var/list/cache = list()
 
-/decl/asset_cache/New()
-	..()
-	cache = new
+/decl/asset_cache/proc/load()
+	for(var/type in typesof(/datum/asset) - list(/datum/asset, /datum/asset/simple))
+		var/datum/asset/A = new type()
+		A.register()
 
-/proc/send_assets()
-	// Creates and registers every asset datum
-	for(var/type in subtypesof(/datum/asset))
-		get_asset_datum(type)
-
-	for(var/client/C in GLOB.clients)
-		C.send_resources()
-
-	return TRUE
+	for(var/client/C in GLOB.clients) // This is also called in client/New, but as we haven't initialized the cache until now, and it's possible the client is already connected, we risk doing it twice.
+		// Doing this to a client too soon after they've connected can cause issues, also the proc we call sleeps.
+		spawn(10)
+			getFilesSlow(C, cache, FALSE)
