@@ -50,7 +50,9 @@
 	return amount_used
 
 /obj/item/weapon/cell/quantum/Destroy()
-	qdel(partner)
+	if(!QDELETED(partner))
+		qdel(partner)
+	partner = null
 	return ..()
 
 /obj/item/weapon/cell/New()
