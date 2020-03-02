@@ -157,6 +157,10 @@
 		T.assume_air(lowertemp)
 		qdel(hotspot)
 
+	var/flamer = (locate(/obj/flamer_fire) in T)
+	if(flamer && !istype(T, /turf/space))
+		qdel(flamer)
+
 	if (environment && environment.temperature > min_temperature) // Abstracted as steam or something
 		var/removed_heat = between(0, volume * WATER_LATENT_HEAT, -environment.get_thermal_energy_change(min_temperature))
 		environment.add_thermal_energy(-removed_heat)

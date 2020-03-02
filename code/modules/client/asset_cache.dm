@@ -24,32 +24,25 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //This proc sends the asset to the client, but only if it needs it.
 //This proc blocks(sleeps) unless verify is set to false
 /proc/send_asset(client/client, asset_name, verify = TRUE)
-	if(!istype(client))
-		if(ismob(client))
-			var/mob/M = client
-			if(M.client)
-				client = M.client
-
-			else
-				return 0
-
-		else
-			return 0
+	ASSERT(client)
 
 	if(client.cache.Find(asset_name) || client.sending.Find(asset_name))
 		return 0
 
 	var/decl/asset_cache/asset_cache = decls_repository.get_decl(/decl/asset_cache)
 	client << browse_rsc(asset_cache.cache[asset_name], asset_name)
-	if(!verify || !winexists(client, "asset_cache_browser")) // Can't access the asset cache browser, rip.
-		if (client)
-			client.cache += asset_name
+	log_debug_verbose("\[ASSETS\] Asset \"[asset_name]\" was sended to [client.ckey]! Verify is [verify ? "" : "not "]needed.")
+
+	if(!verify)
+		client.cache += asset_name
 		return 1
-	if (!client)
-		return 0
+
+	ASSERT(winexists(client, "asset_cache_browser"))
 
 	client.sending |= asset_name
 	var/job = ++client.last_asset_job
+
+	log_debug_verbose("\[ASSETS\] Send verification for asset \"[asset_name]\" to client [client.ckey]. Job number is [job].")
 
 	client << browse({"
 	<script>
@@ -72,17 +65,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 //This proc blocks(sleeps) unless verify is set to false
 /proc/send_asset_list(client/client, list/asset_list, verify = TRUE)
-	if(!istype(client))
-		if(ismob(client))
-			var/mob/M = client
-			if(M.client)
-				client = M.client
-
-			else
-				return 0
-
-		else
-			return 0
+	ASSERT(client)
 
 	var/list/unreceived = asset_list - (client.cache + client.sending)
 	if(!unreceived || !unreceived.len)
@@ -90,18 +73,20 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	if (unreceived.len >= ASSET_CACHE_TELL_CLIENT_AMOUNT)
 		to_chat(client, "Sending Resources...")
 	var/decl/asset_cache/asset_cache = decls_repository.get_decl(/decl/asset_cache)
+	log_debug_verbose("\[ASSETS\] Sending asset list to [client.ckey]... Verify is [verify ? "" : "not "]needed.")
 	for(var/asset in unreceived)
 		if (asset in asset_cache.cache)
 			client << browse_rsc(asset_cache.cache[asset], asset)
+			log_debug_verbose("\[ASSETS\] Asset \"[asset]\" was sended to [client.ckey] with list!")
 
 	if(!verify || !winexists(client, "asset_cache_browser")) // Can't access the asset cache browser, rip.
-		if (client)
-			client.cache += unreceived
+		client.cache += unreceived
 		return 1
-	if (!client)
-		return 0
+	ASSERT(client)
 	client.sending |= unreceived
 	var/job = ++client.last_asset_job
+
+	log_debug_verbose("\[ASSETS\] Send verification for assets list to client [client.ckey]. Job number is [job].")
 
 	client << browse({"
 	<script>
@@ -124,14 +109,9 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 //This proc will download the files without clogging up the browse() queue, used for passively sending files on connection start.
 //The proc calls procs that sleep for long times.
-/proc/getFilesSlow(client/client, list/files, register_assets = TRUE)
+/proc/getFilesSlow(client/client, list/files)
+	ASSERT(client)
 	for(var/file in files)
-		if (!client)
-			break
-		if (register_assets)
-			debug_print("file: [file]")
-			debug_print("files file: [files[file]]")
-			register_asset(file, files[file])
 		send_asset(client, file)
 		sleep(0) //queuing calls like this too quickly can cause issues in some client versions
 
@@ -191,7 +171,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	send_asset_list(client, assets, verify)
 
 /datum/asset/proc/send_slow(client)
-	getFilesSlow(client, assets, register_assets = FALSE)
+	getFilesSlow(client, assets)
 
 // Check if all the assets were already sent
 /datum/asset/proc/check_sent(client/C)
@@ -332,3 +312,4 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		// Doing this to a client too soon after they've connected can cause issues, also the proc we call sleeps.
 		spawn(10)
 			getFilesSlow(C, cache, FALSE)
+

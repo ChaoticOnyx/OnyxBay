@@ -361,6 +361,11 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "igniter"
 	path = /obj/item/device/assembly/igniter
 	category = "Devices and Components"
+	
+/datum/autolathe/recipe/voice
+	name = "voice analyzer"
+	path = /obj/item/device/assembly/voice
+	category = "Devices and Components"
 
 /datum/autolathe/recipe/signaler
 	name = "signaler"
@@ -448,11 +453,12 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	path = /obj/item/weapon/hand_labeler
 	category = "General"
 
-/datum/autolathe/recipe/flamethrower
-	name = "flamethrower"
-	path = /obj/item/weapon/flamethrower/full
+/datum/autolathe/recipe/flamer
+	name = "flamer"
+	path = /obj/item/weapon/gun/flamer
 	hidden = 1
 	category = "Arms and Ammunition"
+	resources = list(MATERIAL_STEEL = 74000)
 
 /datum/autolathe/recipe/magazine_revolver_1
 	name = "ammunition (.357)"

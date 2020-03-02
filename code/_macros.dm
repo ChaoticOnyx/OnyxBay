@@ -5,10 +5,6 @@
 
 #define get_turf(A) get_step(A,0)
 
-#define SPAN_NOTE(text) "<span class='notice'>[text]</span>"
-#define SPAN_WARN(text) "<span class='warning'>[text]</span>"
-#define SPAN_DANG(text) "<span class='danger'>[text]</span>"
-
 #define isAI(A) istype(A, /mob/living/silicon/ai)
 
 #define isalien(A) istype(A, /mob/living/carbon/alien)
@@ -104,6 +100,10 @@
 #define ismanipulator(A) istype(A, /obj/item/weapon/stock_parts/manipulator)
 
 #define isovermind(A) istype(A, /mob/blob)
+
+#define ismech(A) istype(A, /obj/mecha)
+
+#define iseffect(A) istype(A, /obj/effect)
 
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 

@@ -1472,7 +1472,7 @@ obj/item/organ/external/proc/remove_clamps()
 	return sounds
 
 /obj/item/organ/external/proc/jointlock(mob/attacker)
-	if(!can_feel_pain())
+	if(!can_feel_pain() || !owner)
 		return
 
 	var/armor = owner.run_armor_check(owner, "melee")

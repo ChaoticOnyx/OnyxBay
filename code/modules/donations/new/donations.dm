@@ -106,6 +106,8 @@ SUBSYSTEM_DEF(donations)
 		player.donator_info.donator = TRUE
 		player.donator_info.points = query.item[1]
 		player.donator_info.patron_type = query.item[2]
+
+	player.donator_info.on_loaded(player)
 	
 	return TRUE
 

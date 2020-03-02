@@ -11,6 +11,7 @@ GLOBAL_LIST_EMPTY(reg_dna)
 
 GLOBAL_LIST_EMPTY(global_map)
 
+GLOBAL_LIST_EMPTY(vortex_manipulators)
 // Announcer intercom, because too much stuff creates an intercom for one message then hard del()s it. Also headset, for things that should be affected by comms outages.
 GLOBAL_DATUM_INIT(global_announcer, /obj/item/device/radio/announcer, new)
 GLOBAL_DATUM_INIT(global_headset, /obj/item/device/radio/announcer/subspace, new)

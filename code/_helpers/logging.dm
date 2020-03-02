@@ -58,6 +58,14 @@
 
 /proc/log_debug(text, location)
 	log_generic("DEBUG", text, location, config.log_debug, TRUE, /datum/client_preference/staff/show_debug_logs)
+	if(!config.log_debug || !GLOB.world_debug_log)
+		return
+	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
+
+/proc/log_debug_verbose(text)
+	if(!config.log_debug || !GLOB.world_debug_log)
+		return
+	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
 
 /proc/log_game(text, location, notify_admin)
 	log_generic("GAME", text, location, config.log_game, notify_admin)

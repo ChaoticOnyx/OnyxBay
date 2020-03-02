@@ -27,23 +27,48 @@
 	ingested.my_atom = owner
 	ingested.parent = owner
 
-/obj/item/organ/internal/stomach/Process()
+// This call needs to be split out to make sure that all the ingested things are metabolised
+// before the process call is made on any of the other organs
+/obj/item/organ/internal/stomach/proc/metabolize()
+	if(is_usable())
+		ingested.metabolize()
 
+#define STOMACH_VOLUME 65
+
+/obj/item/organ/internal/stomach/Process()
 	..()
 
 	if(owner)
-		if(damage >= min_broken_damage || (damage >= min_bruised_damage && prob(damage)))
-			if(world.time >= next_cramp)
-				next_cramp = world.time + rand(200,800)
-				owner.custom_pain("Your stomach cramps agonizingly!",1)
-		else
-			if(ingested) ingested.metabolize()
+		var/functioning = is_usable()
+		if(damage >= min_bruised_damage && prob((damage / max_damage) * 100))
+			functioning = FALSE
 
-		var/alcohol_threshold_met
-		if(ingested)
-			alcohol_threshold_met = (ingested.get_reagent_amount(/datum/reagent/ethanol) > 60)
-		//if(alcohol_threshold_met && (owner.disabilities & EPILEPSY) && prob(20))
-		//	owner.seizure()
+		if(functioning)
+			for(var/mob/living/M in contents)
+				if(M.stat == DEAD)
+					qdel(M)
+					continue
 
-		if(ingested.total_volume > 90 || ((alcohol_threshold_met || ingested.total_volume > 35) && prob(15)))
+				M.adjustBruteLoss(3)
+				M.adjustFireLoss(3)
+				M.adjustToxLoss(3)
+
+		else if(world.time >= next_cramp)
+			next_cramp = world.time + rand(200,800)
+			owner.custom_pain("Your stomach cramps agonizingly!",1)
+
+		var/alcohol_volume = ingested.get_reagent_amount(/datum/reagent/ethanol)
+
+		var/alcohol_threshold_met = alcohol_volume > STOMACH_VOLUME / 2
+		if(alcohol_threshold_met && (owner.disabilities & EPILEPSY) && prob(20))
+			owner.seizure()
+
+		// Alcohol counts as double volume for the purposes of vomit probability
+		var/effective_volume = ingested.total_volume + alcohol_volume
+
+		// Just over the limit, the probability will be low. It rises a lot such that at double ingested it's 64% chance.
+		var/vomit_probability = (effective_volume / STOMACH_VOLUME) ** 6
+		if(prob(vomit_probability))
 			owner.vomit()
+
+#undef STOMACH_VOLUME

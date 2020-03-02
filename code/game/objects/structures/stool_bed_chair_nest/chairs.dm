@@ -145,24 +145,41 @@
 /obj/structure/bed/chair/MouseDrop(over_object, src_location, over_location)
 	..()
 	if(foldable && (over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-		if(!ishuman(usr))	return
-		if(buckled_mob)
-			visible_message(SPAN_WARN("[buckled_mob] falls down as [usr] collapses \the [src.name]!"))
-			var/mob/living/occupant = unbuckle_mob()
-			var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
+		if(!ishuman(usr)) 
+			return
 
-			occupant.apply_effect(4, STUN, blocked)
-			occupant.apply_effect(4, WEAKEN, blocked)
-			occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
-			playsound(src.loc, 'sound/effects/fighting/punch1.ogg', 50, 1, -1)
-		else
-			visible_message("[usr] collapses \the [src.name].")
-		var/obj/item/weapon/foldchair/O = new /obj/item/weapon/foldchair(get_turf(src))
-		O.add_fingerprint(usr)
-		O.material = material
-		O.padding_material = padding_material
-		QDEL_IN(src, 0)
-		return
+		var/mob/living/carbon/human/H = usr
+		if(H.restrained())
+			return
+
+		fold(usr)
+
+/obj/structure/bed/chair/proc/fold(mob/user)
+	if(!foldable) return
+
+	var/list/collapse_message = list(SPAN_WARNING("\The [src.name] has collapsed!"), null)
+
+	if(buckled_mob)
+		collapse_message = list(\
+			SPAN_WARNING("[buckled_mob] falls down [user ? "as [user] collapses" : "from collapsing"] \the [src.name]!"),\
+			user ? SPAN_NOTICE("You collapse \the [src.name] and made [buckled_mob] fall down!") : null)
+
+		var/mob/living/occupant = unbuckle_mob()
+		var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
+
+		occupant.apply_effect(4, STUN, blocked)
+		occupant.apply_effect(4, WEAKEN, blocked)
+		occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
+		playsound(src, 'sound/effects/fighting/punch1.ogg', 50, 1, -1)
+	else if(user)
+		collapse_message = list("[user] collapses \the [src.name].", "You collapse \the [src.name].")
+
+	visible_message(collapse_message[1], collapse_message[2])
+	var/obj/item/weapon/foldchair/O = new /obj/item/weapon/foldchair(get_turf(src))
+	if(user) O.add_fingerprint(user)
+	O.material = material
+	O.padding_material = padding_material
+	QDEL_IN(src, 0)
 
 /* ====================================================== */
 /* -------------------- Comfy Chairs -------------------- */

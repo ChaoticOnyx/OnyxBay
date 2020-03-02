@@ -44,15 +44,19 @@
 
 	// asset_cache
 	if(href_list["asset_cache_confirm_arrival"])
-//		to_chat(src, "ASSET JOB [href_list["asset_cache_confirm_arrival"]] ARRIVED.")
 		var/job = text2num(href_list["asset_cache_confirm_arrival"])
-				//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
+		log_debug_verbose("\[ASSETS\] Confirmation for asset arrival was received from [ckey]. Job number is [job].")
+
+		//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
 		//	into letting append to a list without limit.
 		if (job && job <= last_asset_job && !(job in completed_asset_jobs))
 			completed_asset_jobs += job
+			log_debug_verbose("\[ASSETS\] Job #[job] is completed (client: [ckey]).")
 			return
+		else
+			log_debug_verbose("\[ASSETS\] ERROR: Job #[job] can't be completed! (client: [ckey]).")
 
-	if (!holder && config.minutetopiclimit)
+	if (config.minutetopiclimit)
 		var/minute = round(world.time, 600)
 		if (!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -70,7 +74,7 @@
 			to_chat(src, "<span class='danger'>[msg]</span>")
 			return
 
-	if (!holder && config.secondtopiclimit)
+	if (config.secondtopiclimit)
 		var/second = round(world.time, 10)
 		if (!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -225,16 +229,14 @@
 	EAMS_CollectData()
 
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
-	prefs = preferences_datums[ckey]
+	prefs = SScharacter_setup.preferences_datums[ckey]
 	if(!prefs)
 		prefs = new /datum/preferences(src)
-		preferences_datums[ckey] = prefs
 	prefs.last_ip = address				//these are gonna be used for banning
 	prefs.last_id = computer_id			//these are gonna be used for banning
 	apply_fps(prefs.clientfps)
 
 	. = ..()	//calls mob.Login()
-	prefs.sanitize_preferences()
 
 	GLOB.using_map.map_info(src)
 
@@ -451,7 +453,8 @@
 		)
 
 	spawn (10) //removing this spawn causes all clients to not get verbs.
-		//Precache the client with all other assets slowly, so as to not block other browse() calls
+		log_debug_verbose("\[ASSETS\] Start sending resources for [ckey].")
+
 		var/list/priority_assets = list()
 		var/list/other_assets = list()
 
@@ -466,7 +469,9 @@
 				priority_assets += D
 
 		for(var/datum/asset/D in (priority_assets + other_assets))
-			D.send_slow(src)
+			D.send_slow(src) //Precache the client with all other assets slowly, so as to not block other browse() calls
+
+		log_debug_verbose("\[ASSETS\] Resources for [ckey] were sended!")
 
 mob/proc/MayRespawn()
 	return 0
