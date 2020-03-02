@@ -737,7 +737,7 @@
 				user.visible_message("<span class='notice'>\The [user] starts recycling [A]...</span>")
 				if(do_after(user,recycling_time,src))
 					to_chat(user, "<span class='notice'>\The [src] consumes [A] and you get some energy back.</span>")
-					A.Destroy()
+					qdel(A)
 					if(istype(user,/mob/living/silicon/robot))
 						var/mob/living/silicon/robot/R = user
 						if (R.cell)
