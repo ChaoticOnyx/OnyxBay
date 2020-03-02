@@ -51,8 +51,6 @@ var/list/client_preference_stats_
 /stat_client_preference/Click()
 	if(!usr.client)
 		return
-	if(!SScharacter_setup.initialized)
-		return
 	if(!usr.cycle_preference(client_preference))
 		return
 
