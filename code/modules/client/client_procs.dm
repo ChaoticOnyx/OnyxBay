@@ -240,7 +240,7 @@
 	. = ..()	//calls mob.Login()
 
 	if(byond_version > MAX_CLIENT_VERSION)
-		to_chat(src, SPAN_WARNING("<span style='font-size: 200%;'>Your BYOND version is currently unstable. Please downgrade to the last stable version v[MAX_CLIENT_VERSION].</span>"))
+		to_chat(src, SPAN_WARNING(FONT_GIANT("Your BYOND version is currently unstable. Please downgrade to the last stable version v[MAX_CLIENT_VERSION].")))
 		qdel(src)
 		return null
 
