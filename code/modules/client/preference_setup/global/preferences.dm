@@ -324,10 +324,16 @@ var/list/_client_preferences_by_type
 	flags = R_ADMIN|R_DEBUG
 
 /********************
-* SUKA ZAEBALO Preferences *
+* Misc Preferences *
 ********************/
 
 /datum/client_preference/staff/govnozvuki
 	description = "Admin Misc Sounds"
 	key = "SOUND_PARASHA"
 	flags = R_PERMISSIONS
+
+/datum/client_preference/staff/advanced_who
+	description = "Advanced Who"
+	key = "ADVANCED_WHO"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+	flags = R_INVESTIGATE
