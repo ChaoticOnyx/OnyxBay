@@ -4,6 +4,7 @@
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
 #define MIN_CLIENT_VERSION	512		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
 									//I would just like the code ready should it ever need to be used.
+#define MAX_CLIENT_VERSION	512
 
 #define LIMITER_SIZE	5
 #define CURRENT_SECOND	1
@@ -238,6 +239,11 @@
 
 	. = ..()	//calls mob.Login()
 
+	if(byond_version > MAX_CLIENT_VERSION)
+		to_chat(src, SPAN_WARNING(FONT_GIANT("Your BYOND version is currently unstable. Please downgrade to the last stable version v[MAX_CLIENT_VERSION].")))
+		qdel(src)
+		return null
+
 	GLOB.using_map.map_info(src)
 
 	if(custom_event_msg && custom_event_msg != "")
@@ -413,6 +419,7 @@
 
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
+#undef MAX_CLIENT_VERSION
 
 //checks if a client is afk
 //3000 frames = 5 minutes
