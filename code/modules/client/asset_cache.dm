@@ -25,6 +25,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //This proc blocks(sleeps) unless verify is set to false
 /proc/send_asset(client/client, asset_name, verify = TRUE)
 	ASSERT(client)
+	ASSERT(istype(client))
 
 	if(client.cache.Find(asset_name) || client.sending.Find(asset_name))
 		return 0
@@ -65,6 +66,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //This proc blocks(sleeps) unless verify is set to false
 /proc/send_asset_list(client/client, list/asset_list, verify = TRUE)
 	ASSERT(client)
+	ASSERT(istype(client))
 
 	var/list/unreceived = asset_list - (client.cache + client.sending)
 	if(!unreceived || !unreceived.len)
@@ -165,10 +167,14 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		register_asset(asset_name, assets[asset_name])
 	registred = TRUE
 
-/datum/asset/proc/send(client)
+/datum/asset/proc/send(client/client)
+	ASSERT(client)
+	ASSERT(istype(client))
 	send_asset_list(client, assets, verify)
 
-/datum/asset/proc/send_slow(client)
+/datum/asset/proc/send_slow(client/client)
+	ASSERT(client)
+	ASSERT(istype(client))
 	getFilesSlow(client, assets)
 
 // Check if all the assets were already sent
@@ -202,7 +208,9 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	for(var/asset_name in assets)
 		register_asset(asset_name, assets[asset_name])
 
-/datum/asset/simple/send(client)
+/datum/asset/simple/send(client/client)
+	ASSERT(client)
+	ASSERT(istype(client))
 	send_asset_list(client,assets,verify)
 
 // For registering or sending multiple others at once
