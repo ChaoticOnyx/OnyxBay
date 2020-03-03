@@ -33,24 +33,20 @@ datum/preferences
 	if(istype(C))
 		client = C
 		client_ckey = C.ckey
-		SScharacter_setup.preferences_datums += src
-		if(SScharacter_setup.initialized)
-			setup()
-		else
-			SScharacter_setup.prefs_awaiting_setup += src
-	..()
+		SScharacter_setup.preferences_datums[C.ckey] = src
 
-/datum/preferences/proc/setup()
 	player_setup = new(src)
 	gender = pick(MALE, FEMALE)
 	real_name = random_name(gender,species)
 	b_type = RANDOM_BLOOD_TYPE
 
-	if(client && !IsGuestKey(client.key))
-		load_path(client.ckey)
+	if(!IsGuestKey(C.key))
+		load_path(C.ckey)
 		load_preferences()
 		load_and_update_character()
 	sanitize_preferences()
+
+	..()
 
 /datum/preferences/proc/load_and_update_character(slot)
 	load_character(slot)
@@ -111,8 +107,6 @@ datum/preferences
 			return "God"
 
 /datum/preferences/proc/ShowChoices(mob/user)
-	if(!SScharacter_setup.initialized)
-		return
 	if(!user || !user.client)
 		return
 

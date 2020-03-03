@@ -25,7 +25,7 @@
 	S.cd = "/"
 
 	S["version"] << SAVEFILE_VERSION_MAX
-	player_setup.save_character(S)
+	player_setup.save_preferences(S)
 	loaded_preferences = S
 	return 1
 
