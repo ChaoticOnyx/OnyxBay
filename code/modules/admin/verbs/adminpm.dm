@@ -58,6 +58,7 @@
 		return
 
 	msg = sanitize(msg)
+	msg = emoji_parse(C, msg)
 
 	//get message text, limit it's length.and clean/escape html
 	if(!msg)

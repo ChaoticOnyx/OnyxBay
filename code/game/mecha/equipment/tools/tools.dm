@@ -111,7 +111,7 @@
 					else if(istype(target, /obj/structure/rock))
 						for(var/obj/structure/rock/R in range(chassis,1))
 							if(get_dir(chassis,R)&chassis.dir)
-								R.Destroy()
+								qdel(R)
 					log_message("Drilled through \the [target]")
 					if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
 						var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo
@@ -162,7 +162,7 @@
 						else if(istype(target, /obj/structure/rock))
 							for(var/obj/structure/rock/R in range(chassis,1))
 								if(get_dir(chassis,R)&chassis.dir)
-									R.Destroy()
+									qdel(R)
 						log_message("Drilled through \the [target]")
 						if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
 							var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo

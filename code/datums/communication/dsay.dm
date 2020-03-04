@@ -25,6 +25,7 @@
 	var/decl/dsay_communication/speech_method = decls_repository.get_decl(speech_method_type)
 
 	speech_method.adjust_channel(src)
+	message = emoji_parse(communicator, message)
 
 	for(var/mob/M in GLOB.player_list)
 		if(!speech_method.can_receive(communicator, M))

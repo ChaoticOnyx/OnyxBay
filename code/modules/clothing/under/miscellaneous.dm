@@ -34,6 +34,13 @@
 	desc = "Traditional French maid uniform."
 	icon_state = "maid"
 
+/obj/item/clothing/under/dress/gothic_d
+	name = "Gothic dress"
+	desc = "It's a gothic dress. Somehow it reminds you of Queen Victoria."
+	icon_state = "gothic_d"
+	item_state = "gothic_d"
+	worn_state = "gothic_d"
+
 // /obj/item/clothing/under/dress/bar_f
 // 	name = "black bartender dress"
 // 	desc = "A black bartender dress with a white blouse."
@@ -721,7 +728,7 @@
 		return 0
 
 	return 1
-	
+
 /obj/item/clothing/under/contortionist/verb/crawl_through_vent()
 	set name = "Crawl Through Vent"
 	set category = "Object"
@@ -731,4 +738,4 @@
 	if(istype(user) && user.w_uniform == src && check_clothing(user))
 		var/pipe = user.start_ventcrawl()
 		if(pipe)
-			user.handle_ventcrawl(pipe)	
+			user.handle_ventcrawl(pipe)

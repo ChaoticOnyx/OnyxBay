@@ -476,7 +476,7 @@
 		SSnano.close_uis(H)
 		H.client.cache.Cut()
 		var/datum/asset/assets = get_asset_datum(/datum/asset/directories/nanoui)
-		assets.send(H)
+		assets.send(H.client)
 
 		to_chat(usr, "Resource files sent")
 		to_chat(H, "Your NanoUI Resource files have been refreshed")

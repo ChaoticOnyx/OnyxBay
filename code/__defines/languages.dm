@@ -15,6 +15,7 @@
 #define LANGUAGE_INDEPENDENT "Independent"
 #define LANGUAGE_NABBER "Serpentid"
 #define LANGUAGE_SPACER "Spacer"
+#define LANGUAGE_ROBOT "Robot Talk"
 
 // Language flags.
 #define WHITELISTED  1   // Language is available if the speaker is whitelisted.

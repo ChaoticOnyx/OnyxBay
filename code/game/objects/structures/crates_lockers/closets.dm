@@ -263,6 +263,8 @@
 	for(var/obj/machinery/M in loc)
 		if(M.anchored)
 			continue
+		if(istype(M, /obj/machinery/power/supermatter))
+			continue
 		var/structure_size = content_size(M)
 		if(CLOSET_CHECK_TOO_BIG(structure_size))
 			break

@@ -390,7 +390,7 @@
 		M.visible_message("<span class='notice'>[user] decided life was worth living</span>")
 		mouthshoot = 0
 		return
-	if(/obj/item/weapon/gun/flamer)
+	if(istype(src, /obj/item/weapon/gun/flamer))
 		user.adjust_fire_stacks(15)
 		user.IgniteMob()
 		user.death()
