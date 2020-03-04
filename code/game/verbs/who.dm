@@ -5,7 +5,8 @@
 
 	var/msg = "<b>Current Players:</b>\n"
 
-	var/list/Lines = list()
+	var/list/lines = list()
+
 //for admins
 	var/living = 0 //Currently alive and in the round (possibly unconscious, but not officially dead)
 	var/dead = 0 //Have been in the round but are now deceased
@@ -13,13 +14,17 @@
 	var/lobby = 0 //Are currently in the lobby
 	var/living_antags = 0 //Are antagonists, and currently alive
 	var/dead_antags = 0 //Are antagonists, and have finally met their match
+	var/rights = check_rights(R_INVESTIGATE, FALSE)
+	var/preference = get_preference_value("ADVANCED_WHO") == GLOB.PREF_YES
 
-	if(check_rights(R_INVESTIGATE, FALSE))
+	if(rights && preference)
 		for(var/client/C in GLOB.clients)
-			var/entry = "\t[C.key]"
-			if(!C.mob)
-				entry += " - <font color='red'><i>HAS NO MOB</i></font>"
-				Lines += entry
+			var/entry
+			if(C.mob)
+				entry = "\t[C.key]"
+			else
+				entry = "\t[C.key] - <font color='red'><i>HAS NO MOB</i></font> (<A HREF='?_src_=holder;adminmoreinfo=\ref[C]'>?</A>)"
+				lines += entry
 				continue
 
 			if(isghost(C.mob))
@@ -47,6 +52,9 @@
 						dead++
 				else
 					living++
+			
+			if(C.mob.mind.assigned_role)
+				entry += " - [C.mob.mind.assigned_role]"
 
 			if(isnum(C.player_age))
 				var/age = C.player_age
@@ -58,8 +66,8 @@
 
 				entry += " - [age]"
 
-			if(is_special_character(C.mob))
-				entry += " - <b><font color='red'>Antagonist</font></b>"
+			if(C.mob.mind?.special_role)
+				entry += " - <b><font color='red'>[C.mob.mind.special_role]</font></b>"
 				if(!C.mob.mind.current || C.mob.mind.current?.stat == DEAD)
 					dead_antags++
 				else
@@ -67,20 +75,29 @@
 
 			if(C.is_afk())
 				entry += " - <b>AFK: [C.inactivity2text()]</b>"
+
 			entry += " (<A HREF='?_src_=holder;adminmoreinfo=\ref[C.mob]'>?</A>)"
-			Lines += entry
+
+			lines += entry
+	else if(rights)
+		for(var/client/C in GLOB.clients)
+			if(C.mob)
+				lines += "\t[C.key] (<A HREF='?_src_=holder;adminmoreinfo=\ref[C.mob]'>?</A>) "
+			else
+				lines += "\t[C.key] - <font color='red'><i>HAS NO MOB</i></font> (<A HREF='?_src_=holder;adminmoreinfo=\ref[C]'>?</A>)"
 	else
 		for(var/client/C in GLOB.clients)
 			if(!C.is_stealthed())
-				Lines += C.key
+				lines += C.key
 
-	for(var/line in sortList(Lines))
+	for(var/line in sortList(lines))
 		msg += "[line]\n"
-	if(check_rights(R_INVESTIGATE, FALSE))
+
+	if(rights && preference)
 		msg += "<b><span class='notice'>Total Living: [living]</span> | Total Dead: [dead] | <span style='color:gray'>Observing: [observers]</span> | <font color = '#006400'>In Lobby: [lobby]</font> | <font color = 'purple'>Living Antags: [living_antags]</font> | <font color = 'red'>Dead Antags: [dead_antags]</font></b>\n"
-		msg += "<b>Total Players: [length(Lines)]</b>\n"
+		msg += "<b>Total Players: [length(lines)]</b>\n"
 	else
-		msg += "<b>Total Players: [length(Lines)]</b>"
+		msg += "<b>Total Players: [length(lines)]</b>"
 	to_chat(src, msg)
 
 /client/verb/staffwho()

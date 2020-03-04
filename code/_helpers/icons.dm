@@ -950,6 +950,12 @@ proc/generate_image(tx as num, ty as num, tz as num, range as num, cap_mode = CA
 			var/name = "[generate_asset_name(thing)].png"
 			register_asset(name, thing)
 			for (var/thing2 in targets)
+				ASSERT(isclient(thing2) || ismob(thing2))
+				if(ismob(thing2))
+					var/mob/M = thing2
+					if(!M.client)
+						continue
+					thing2 = M.client
 				send_asset(thing2, key, FALSE)
 			return "<img class='icon icon-misc [class]' src=\"[url_encode(name)]\">"
 		var/atom/A = thing
@@ -974,6 +980,12 @@ proc/generate_image(tx as num, ty as num, tz as num, range as num, cap_mode = CA
 	key = "[generate_asset_name(I)].png"
 	register_asset(key, I)
 	for (var/thing2 in targets)
+		ASSERT(isclient(thing2) || ismob(thing2))
+		if(ismob(thing2))
+			var/mob/M = thing2
+			if(!M.client)
+				continue
+			thing2 = M.client
 		send_asset(thing2, key, FALSE)
 
 	if(realsize)

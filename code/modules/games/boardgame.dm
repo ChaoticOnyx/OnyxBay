@@ -275,7 +275,8 @@ THAT STUPID GAME KIT
 
 /obj/item/weapon/game_kit/proc/update()
 	var/datum/asset/assets = get_asset_datum(/datum/asset/simple/chess)
-	assets.send(usr)
+	ASSERT(usr.client)
+	assets.send(usr.client)
 
 	var/dat = text("<CENTER><B>Game Board</B></CENTER><BR><a href='?src=\ref[];mode=hia'>[]</a> <a href='?src=\ref[];mode=remove'> Chess Removal</a><HR><table width=256  border= 0  height=256  cellspacing= 0  cellpadding= 0 >", src, (src.selected ? text("Selected: []", src.selected) : "Nothing Selected"), src)
 	for (var/y = 1 to 8)

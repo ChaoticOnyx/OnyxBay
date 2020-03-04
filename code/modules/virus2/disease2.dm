@@ -55,34 +55,34 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 				res |= picked.primitive_form
 	return res
 
-/datum/disease2/disease/proc/process(mob/living/carbon/human/mob)
+/datum/disease2/disease/proc/process(mob/living/carbon/human/H)
 	if(dead)
-		cure(mob)
+		cure(H)
 		return
 
-	if(mob.stat == DEAD)
+	if(H.stat == DEAD)
 		return
 
 	if(stage <= 1 && clicks == 0) 	// with a certain chance, the mob may become immune to the disease before it starts properly
-		if(prob(mob.virus_immunity() * 0.05))
-			cure(mob, 1)
+		if(prob(H.virus_immunity() * 0.05))
+			cure(H, 1)
 			return
 
 	// Some species are flat out immune to organic viruses.
-	if(mob.species.get_virus_immune(mob))
-		cure(mob)
+	if(H.species.get_virus_immune(H))
+		cure(H)
 		return
 
-	if(mob.radiation > 50)
+	if(H.radiation > 50)
 		if(prob(1))
 			majormutate()
 
-	if(prob(mob.virus_immunity()) && prob(stage)) // Increasing chance of curing as the virus progresses
-		cure(mob,1)
+	if(prob(H.virus_immunity()) && prob(stage)) // Increasing chance of curing as the virus progresses
+		cure(H, 1)
 	//Waiting out the disease the old way
 	if(stage == max_stage && clicks > max(stage*100, 300))
-		if(prob(mob.virus_immunity() * 0.05 + 100-infectionchance))
-			cure(mob, 1)
+		if(prob(H.virus_immunity() * 0.05 + 100-infectionchance))
+			cure(H, 1)
 
 	var/top_badness = 1
 	for(var/datum/disease2/effect/e in effects)
@@ -90,15 +90,15 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 			top_badness = max(top_badness, e.badness)
 
 	//Space antibiotics might stop disease completely
-	if(mob.chem_effects[CE_ANTIVIRAL] > top_badness)
+	if(H.chem_effects[CE_ANTIVIRAL] > top_badness)
 		if(stage == 1 && prob(20))
-			cure(mob)
+			cure(H)
 		return
 
 	clicks += speed
 	//Virus food speeds up disease progress
-	if(mob.reagents.has_reagent(/datum/reagent/nutriment/virus_food))
-		mob.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, REM)
+	if(H.reagents.has_reagent(/datum/reagent/nutriment/virus_food))
+		H.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, REM)
 		clicks += 10
 
 	//Moving to the next stage
@@ -109,20 +109,22 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 
 	//Do nasty effects
 	for(var/datum/disease2/effect/e in effects)
-		e.fire(mob,stage)
+		e.fire(H,stage)
 
 	//fever
-	if(!mob.chem_effects[CE_ANTIVIRAL])
-		mob.bodytemperature = max(mob.bodytemperature, min(310+5*min(stage,max_stage) ,mob.bodytemperature+5*min(stage,max_stage)))
+	if(!H.chem_effects[CE_ANTIVIRAL])
+		H.bodytemperature = max(H.bodytemperature, min(310+5*min(stage,max_stage), H.bodytemperature+5*min(stage,max_stage)))
 
-/datum/disease2/disease/proc/cure(mob/living/carbon/mob, antigen)
+/datum/disease2/disease/proc/cure(mob/living/carbon/H, antigen)
+	if(!H)
+		return
 	for(var/datum/disease2/effect/e in effects)
-		e.deactivate(mob)
-	mob.virus2.Remove("[uniqueID]")
+		e.deactivate(H)
+	H.virus2.Remove("[uniqueID]")
 	if(antigen)
-		mob.antibodies |= antigen
+		H.antibodies |= antigen
 
-	BITSET(mob.hud_updateflag, STATUS_HUD)
+	BITSET(H.hud_updateflag, STATUS_HUD)
 
 /datum/disease2/disease/proc/minormutate()
 	var/datum/disease2/effect/E = pick(effects)
