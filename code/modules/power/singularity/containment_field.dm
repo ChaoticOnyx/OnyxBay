@@ -33,18 +33,18 @@
 /obj/machinery/containment_field/ex_act(severity)
 	return 0
 
-/obj/machinery/containment_field/HasProximity(atom/movable/AM as mob|obj)
-	if(istype(AM,/mob/living/silicon) && prob(40))
+/obj/machinery/containment_field/HasProximity(atom/movable/AM)
+	set waitfor = FALSE
+ 
+	if(issilicon(AM) && prob(40))
 		shock(AM)
-		return 1
-	if(istype(AM,/mob/living/carbon) && prob(50))
+		return TRUE
+	if(iscarbon(AM) && prob(50))
 		shock(AM)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
-
-
-/obj/machinery/containment_field/shock(mob/living/user as mob)
+/obj/machinery/containment_field/shock(mob/living/user)
 	if(hasShocked)
 		return 0
 	if(!FG1 || !FG2)
@@ -61,7 +61,8 @@
 		sleep(20)
 
 		hasShocked = 0
-	return
+
+
 
 /obj/machinery/containment_field/proc/set_master(master1,master2)
 	if(!master1 || !master2)
