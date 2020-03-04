@@ -144,10 +144,13 @@ var/bomb_set
 				return
 	..()
 
-/obj/machinery/nuclearbomb/attack_ghost(mob/user as mob)
+/obj/machinery/nuclearbomb/attack_ai(mob/user)
+	return
+
+/obj/machinery/nuclearbomb/attack_ghost(mob/user)
 	attack_hand(user)
 
-/obj/machinery/nuclearbomb/attack_hand(mob/user as mob)
+/obj/machinery/nuclearbomb/attack_hand(mob/user)
 	if(extended)
 		if(panel_open)
 			wires.Interact(user)
@@ -164,6 +167,11 @@ var/bomb_set
 			flick("lock", src)
 			update_icon()
 	return
+
+/obj/machinery/nuclearbomb/CanUseTopic(mob/user)
+	if(isrobot(user) && !user.Adjacent(src))
+		return STATUS_CLOSE
+	return ..()
 
 /obj/machinery/nuclearbomb/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	var/data[0]
