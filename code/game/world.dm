@@ -651,6 +651,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	WORLD_SETUP_LOG(runtime)
 	WORLD_SETUP_LOG(qdel)
+	WORLD_SETUP_LOG(debug)
 
 #undef WORLD_SETUP_LOG
 #undef WORLD_LOG_START

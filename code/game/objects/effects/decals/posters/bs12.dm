@@ -298,8 +298,3 @@
 	icon_state="bsposter60"
 	name = "RblRware Ltd. logo"
 	desc = "This particular one is of a logo of one of the most famous arcade game studios that made Syndietoads & Zhirozavr."
-
-/datum/poster/bay_61
-	icon_state="bsposter61"
-	name = "S.W.I.N.E. PMC logo"
-	desc = "This poster depicts a logo of an infamous 'S.W.I.N.E.' private miliraty corporation."

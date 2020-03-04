@@ -342,7 +342,8 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 							dat+="-[MESSAGE.body] <BR>"
 							if(MESSAGE.img)
 								var/resourc_name = "newscaster_photo_[viewing_channel.channel_id]_[i].png"
-								send_asset(usr.client, resourc_name)
+								ASSERT(user.client)
+								send_asset(user.client, resourc_name)
 								dat+="<img src='[resourc_name]' width = '180'><BR>"
 								if(MESSAGE.caption)
 									dat+="<FONT SIZE=1><B>[MESSAGE.caption]</B></FONT><BR>"
@@ -845,6 +846,7 @@ obj/item/weapon/newspaper/attack_self(mob/user as mob)
 							dat+="-[MESSAGE.body] <BR>"
 							if(MESSAGE.img)
 								var/resourc_name = "newscaster_photo_[C.channel_id]_[i].png"
+								ASSERT(user.client)
 								send_asset(user.client, resourc_name)
 								dat+="<img src='[resourc_name]' width = '180'><BR>"
 							dat+="<FONT SIZE=1>\[[MESSAGE.message_type] by <FONT COLOR='maroon'>[MESSAGE.author]</FONT>\]</FONT><BR><BR>"

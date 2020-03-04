@@ -22,6 +22,7 @@
 
 /decl/communication_channel/aooc/do_communicate(client/C, message)
 	var/datum/admins/holder = C.holder
+	message = emoji_parse(C, message)
 
 	for(var/client/target in GLOB.clients)
 		if(target.holder)

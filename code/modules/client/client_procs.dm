@@ -4,6 +4,7 @@
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
 #define MIN_CLIENT_VERSION	512		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
 									//I would just like the code ready should it ever need to be used.
+#define MAX_CLIENT_VERSION	512
 
 #define LIMITER_SIZE	5
 #define CURRENT_SECOND	1
@@ -44,15 +45,19 @@
 
 	// asset_cache
 	if(href_list["asset_cache_confirm_arrival"])
-//		to_chat(src, "ASSET JOB [href_list["asset_cache_confirm_arrival"]] ARRIVED.")
 		var/job = text2num(href_list["asset_cache_confirm_arrival"])
-				//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
+		log_debug_verbose("\[ASSETS\] Confirmation for asset arrival was received from [ckey]. Job number is [job].")
+
+		//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
 		//	into letting append to a list without limit.
 		if (job && job <= last_asset_job && !(job in completed_asset_jobs))
 			completed_asset_jobs += job
+			log_debug_verbose("\[ASSETS\] Job #[job] is completed (client: [ckey]).")
 			return
+		else
+			log_debug_verbose("\[ASSETS\] ERROR: Job #[job] can't be completed! (client: [ckey]).")
 
-	if (!holder && config.minutetopiclimit)
+	if (config.minutetopiclimit)
 		var/minute = round(world.time, 600)
 		if (!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -70,7 +75,7 @@
 			to_chat(src, "<span class='danger'>[msg]</span>")
 			return
 
-	if (!holder && config.secondtopiclimit)
+	if (config.secondtopiclimit)
 		var/second = round(world.time, 10)
 		if (!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -171,18 +176,17 @@
 		qdel(src)
 		return
 
-	if(config.player_limit != 0)
-		if((GLOB.clients.len >= config.player_limit) && !(ckey in admin_datums))
-			if(config.panic_address && TopicData != "redirect")
-				alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
-				winset(src, null, "command=.options")
-				src << link("[config.panic_address]?redirect")
-			else
-				alert(src,"This server is currently full and not accepting new connections.","Server Full","OK")
+	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
+		if(config.panic_address && TopicData != "redirect")
+			alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
+			winset(src, null, "command=.options")
+			src << link("[config.panic_address]?redirect")
+		else
+			alert(src, "This server is currently full and not accepting new connections.","Server Full","OK")
 
-			log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
-			qdel(src)
-			return
+		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
+		qdel(src)
+		return
 
 	// Change the way they should download resources.
 	if(config.resource_urls && config.resource_urls.len)
@@ -225,16 +229,19 @@
 	EAMS_CollectData()
 
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
-	prefs = preferences_datums[ckey]
+	prefs = SScharacter_setup.preferences_datums[ckey]
 	if(!prefs)
 		prefs = new /datum/preferences(src)
-		preferences_datums[ckey] = prefs
 	prefs.last_ip = address				//these are gonna be used for banning
 	prefs.last_id = computer_id			//these are gonna be used for banning
 	apply_fps(prefs.clientfps)
 
 	. = ..()	//calls mob.Login()
-	prefs.sanitize_preferences()
+
+	if(byond_version > MAX_CLIENT_VERSION)
+		to_chat(src, SPAN_WARNING(FONT_GIANT("Your BYOND version is currently unstable. Please downgrade to the last stable version v[MAX_CLIENT_VERSION].")))
+		qdel(src)
+		return null
 
 	GLOB.using_map.map_info(src)
 
@@ -341,6 +348,14 @@
 	else
 		return -1
 
+/proc/is_player_rejected_by_player_limit(mob/user, ckey)
+	if(ckey in admin_datums)
+		return FALSE
+	if(GLOB.clients.len >= config.player_limit)
+		if(config.hard_player_limit && GLOB.clients.len <= config.hard_player_limit && user && (user in GLOB.living_mob_list_))
+			return FALSE
+		return TRUE
+	return FALSE
 
 /client/proc/log_client_to_db()
 
@@ -411,6 +426,7 @@
 
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
+#undef MAX_CLIENT_VERSION
 
 //checks if a client is afk
 //3000 frames = 5 minutes
@@ -451,7 +467,8 @@
 		)
 
 	spawn (10) //removing this spawn causes all clients to not get verbs.
-		//Precache the client with all other assets slowly, so as to not block other browse() calls
+		log_debug_verbose("\[ASSETS\] Start sending resources for [ckey].")
+
 		var/list/priority_assets = list()
 		var/list/other_assets = list()
 
@@ -466,7 +483,9 @@
 				priority_assets += D
 
 		for(var/datum/asset/D in (priority_assets + other_assets))
-			D.send_slow(src)
+			D.send_slow(src) //Precache the client with all other assets slowly, so as to not block other browse() calls
+
+		log_debug_verbose("\[ASSETS\] Resources for [ckey] were sended!")
 
 mob/proc/MayRespawn()
 	return 0
