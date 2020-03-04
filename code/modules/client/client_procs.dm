@@ -176,18 +176,17 @@
 		qdel(src)
 		return
 
-	if(config.player_limit != 0)
-		if((GLOB.clients.len >= config.player_limit) && !(ckey in admin_datums))
-			if(config.panic_address && TopicData != "redirect")
-				alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
-				winset(src, null, "command=.options")
-				src << link("[config.panic_address]?redirect")
-			else
-				alert(src,"This server is currently full and not accepting new connections.","Server Full","OK")
+	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
+		if(config.panic_address && TopicData != "redirect")
+			alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
+			winset(src, null, "command=.options")
+			src << link("[config.panic_address]?redirect")
+		else
+			alert(src, "This server is currently full and not accepting new connections.","Server Full","OK")
 
-			log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
-			qdel(src)
-			return
+		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
+		qdel(src)
+		return
 
 	// Change the way they should download resources.
 	if(config.resource_urls && config.resource_urls.len)
@@ -349,6 +348,14 @@
 	else
 		return -1
 
+/proc/is_player_rejected_by_player_limit(mob/user, ckey)
+	if(ckey in admin_datums)
+		return FALSE
+	if(GLOB.clients.len >= config.player_limit)
+		if(config.hard_player_limit && GLOB.clients.len <= config.hard_player_limit && user && (user in GLOB.living_mob_list_))
+			return FALSE
+		return TRUE
+	return FALSE
 
 /client/proc/log_client_to_db()
 

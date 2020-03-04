@@ -177,6 +177,7 @@ var/list/gamemode_cache = list()
 
 	var/enter_allowed = 1
 	var/player_limit = 0
+	var/hard_player_limit = 0
 
 	var/use_irc_bot = 0
 	var/irc_bot_host = ""
@@ -820,6 +821,8 @@ var/list/gamemode_cache = list()
 					radiation_lower_limit = text2num(value)
 				if("player_limit")
 					player_limit = text2num(value)
+				if("hard_player_limit")
+					hard_player_limit = text2num(value)
 
 				if("server_port")
 					server_port = text2num(value)
