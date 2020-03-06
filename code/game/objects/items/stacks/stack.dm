@@ -54,10 +54,8 @@
 		if(length(T.stored_decals))
 			to_chat(user, "It's has painted decals on it.")
 
-/obj/item/stack/attack_self(mob/user as mob)
-	if(uses_charge)
-		list_recipes(user)
-	return
+/obj/item/stack/attack_self(mob/user)
+	list_recipes(user)
 
 /obj/item/stack/proc/list_recipes(mob/user as mob, recipes_sublist)
 	if (!recipes)
@@ -118,73 +116,42 @@
 	var/required = quantity*recipe.req_amount
 	var/produced = min(quantity*recipe.res_amount, recipe.max_res_amount)
 
-	if(!uses_charge)
-		switch(craft_tool)
-			if(1)
-				if(!user.get_active_hand() || ((!user:get_active_hand().sharp) && (!user:get_active_hand().edge)))
-					to_chat(user, "<span class='warning'>You need something sharp to construct \the [recipe.title]!</span>")
-					return
-			if(2)
-				if(!isWelder(user.get_active_hand()))
-					to_chat(user, "<span class='warning'>You need a welding tool to construct \the [recipe.title]!</span>")
-					return
-
-	var/obj/item/weapon/weldingtool/WT
-	if(!uses_charge && craft_tool == 2)
-		WT = user.get_active_hand()
-
 	if (!can_use(required))
-		if (produced>1)
+		if (produced > 1)
 			to_chat(user, "<span class='warning'>You haven't got enough [src] to build \the [produced] [recipe.title]\s!</span>")
 		else
 			to_chat(user, "<span class='warning'>You haven't got enough [src] to build \the [recipe.title]!</span>")
 		return
 
-	if (recipe.one_per_turf)
-		if (istype(src.loc,/turf) && locate(recipe.result_type) in src.loc)
-			to_chat(user, "<span class='warning'>There is another [recipe.title] here!</span>")
-			return
-		else if (locate(recipe.result_type) in user.loc)
-			to_chat(user, "<span class='warning'>There is another [recipe.title] here!</span>")
-			return
+	if (recipe.one_per_turf && (locate(recipe.result_type) in user.loc))
+		to_chat(user, "<span class='warning'>There is another [recipe.title] here!</span>")
+		return
 
 	if (recipe.on_floor && !isfloor(user.loc))
-		if (istype(src.loc,/turf) && !isfloor(src.loc))
-			to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
+		to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
+		return
+
+	if (recipe.time)
+		to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
+		if (!do_after(user, recipe.time))
 			return
-		else if (!isfloor(user.loc))
-			to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
-			return
 
-	if((WT && WT.remove_fuel(0, user)) || uses_charge || craft_tool == 1)
+	if (use(required))
+		var/atom/O
+		if(recipe.use_material)
+			O = new recipe.result_type(user.loc, recipe.use_material)
+		else
+			O = new recipe.result_type(user.loc)
+		O.set_dir(user.dir)
+		O.add_fingerprint(user)
 
-		if (recipe.time)
-			to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
-			if (!do_after(user, recipe.time))
-				return
+		if (recipe.goes_in_hands)
+			user.put_in_hands(O)
 
-		if (use(required))
-			var/atom/O
-			if(recipe.use_material)
-				if(istype(src.loc,/turf))
-					O = new recipe.result_type(src.loc, recipe.use_material)
-				else
-					O = new recipe.result_type(user.loc, recipe.use_material)
-			else
-				if(istype(src.loc,/turf))
-					O = new recipe.result_type(src.loc)
-				else
-					O = new recipe.result_type(user.loc)
-			O.set_dir(user.dir)
-			O.add_fingerprint(user)
-
-			if (recipe.goes_in_hands && !recipe.on_floor)
-				user.put_in_hands(O)
-
-			if (istype(O, /obj/item/stack))
-				var/obj/item/stack/S = O
-				S.amount = produced
-				S.add_to_stacks(user, recipe.goes_in_hands)
+		if (isstack(O))
+			var/obj/item/stack/S = O
+			S.amount = produced
+			S.add_to_stacks(user, recipe.goes_in_hands)
 
 /obj/item/stack/Topic(href, href_list)
 	..()
@@ -377,25 +344,15 @@
 		..()
 	return
 
-/obj/item/stack/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/stack) && splittable)
+/obj/item/stack/attackby(obj/item/W, mob/user)
+	if (isstack(W))
 		var/obj/item/stack/S = W
-		src.transfer_to(S)
-
-		spawn(0) //give the stacks a chance to delete themselves if necessary
-			if (S && usr.machine==S)
-				S.interact(usr)
-			if (src && usr.machine==src)
-				src.interact(usr)
-	//else if(!uses_charge)
-	//	if(isWelder(W))
-	//	list_recipes(user)
-	else if(!uses_charge)
-		switch(craft_tool)
-			if(1)
-				if(W.sharp || W.edge) list_recipes(user)
-			if(2)
-				if(isWelder(W)) list_recipes(user)
+		transfer_to(S)
+	
+		if(S && user.machine == S)
+			S.interact(user)
+		if(!QDELETED(src) && user.machine == src)
+			interact(user)
 	else
 		return ..()
 
