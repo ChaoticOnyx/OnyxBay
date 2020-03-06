@@ -115,6 +115,7 @@ var/list/gamemode_cache = list()
 
 	//game_options.txt configs
 
+	var/health_threshold_crit = 0
 	var/health_threshold_dead = -100
 
 	var/organ_health_multiplier = 0.9
