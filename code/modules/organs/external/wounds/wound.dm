@@ -46,10 +46,6 @@
 
 	bleed_timer += damage
 
-/datum/wound/Destroy()
-	parent_organ = null
-	. = ..()
-
 // returns 1 if there's a next stage, 0 otherwise
 /datum/wound/proc/init_stage(initial_damage)
 	current_stage = stages.len
