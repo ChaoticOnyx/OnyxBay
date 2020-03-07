@@ -110,7 +110,8 @@
 
 	if(wounds)
 		for(var/datum/wound/wound in wounds)
-			qdel(wound)
+			wound.embedded_objects.Cut()
+		wounds.Cut()
 
 	if(parent && parent.children)
 		parent.children -= src
@@ -347,6 +348,7 @@
 			parent.children.Add(src)
 			//Remove all stump wounds since limb is not missing anymore
 			for(var/datum/wound/lost_limb/W in parent.wounds)
+				parent.wounds -= W
 				qdel(W)
 				break
 			parent.update_damages()
@@ -412,7 +414,8 @@ This function completely restores a damaged organ to perfect condition.
 	pain = 0
 	genetic_degradation = 0
 	for(var/datum/wound/wound in wounds)
-		qdel(wound)
+		wound.embedded_objects.Cut()
+	wounds.Cut()
 	number_wounds = 0
 
 	// handle internal organs
@@ -665,13 +668,13 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(BP_IS_ROBOTIC(src)) //Robotic limbs don't heal or get worse.
 		for(var/datum/wound/W in wounds) //Repaired wounds disappear though
 			if(W.damage <= 0)  //and they disappear right away
-				qdel(W)    //TODO: robot wounds for robot limbs
+				wounds -= W    //TODO: robot wounds for robot limbs
 		return
 
 	for(var/datum/wound/W in wounds)
 		// wounds can disappear after 10 minutes at the earliest
 		if(W.damage <= 0 && W.created + (10 MINUTES) <= world.time)
-			qdel(W)
+			wounds -= W
 			continue
 			// let the GC handle the deletion of the wound
 
