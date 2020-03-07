@@ -1,3 +1,5 @@
+
+////////////////No Brain Gen//////////////////////////////////////////////
 /obj/item/organ/internal/biostructure/proc/check_damage()
 	if(owner)
 		if (owner.has_damaged_organ())
@@ -7,10 +9,36 @@
 	else
 		if(brainchan)
 			brainchan.mind.changeling.damaged = FALSE
-////////////////No Brain Gen//////////////////////////////////////////////
 
+// Using in: /mob/living/carbon/human/proc/changeling_rapidregen()
+/datum/rapidregen
+	var/heals = 10
+	var/mob/living/carbon/human/H = null
+	var/datum/changeling/C = null
 
+/datum/rapidregen/New(mob/_M)
+	H = _M
+	C = _M.mind.changeling
+	START_PROCESSING(SSprocessing, src)
 
+/datum/rapidregen/Destroy()
+	H = null
+	C = null
+	return ..()
+
+/datum/rapidregen/Process()
+	if(QDELETED(H))
+		qdel(src)
+		return
+	if(heals)
+		H.adjustBruteLoss(-5)
+		H.adjustToxLoss(-5)
+		H.adjustOxyLoss(-5)
+		H.adjustFireLoss(-5)
+		--heals
+	else
+		C?.rapidregen_active = FALSE
+		qdel(src)
 
 /datum/reagent/toxin/cyanide/change_toxin //Fast and Lethal
 	name = "Changeling reagent"
