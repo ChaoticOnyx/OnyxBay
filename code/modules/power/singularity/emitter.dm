@@ -42,10 +42,10 @@
 	if(usr.incapacitated())
 		return
 
-	if (src.anchored)
+	if(anchored)
 		to_chat(usr, "It is fastened to the floor!")
 		return 0
-	src.set_dir(turn(src.dir, 90))
+	set_dir(turn(dir, 90))
 	return 1
 
 /obj/machinery/power/emitter/Initialize()
@@ -63,40 +63,42 @@
 	return ..()
 
 /obj/machinery/power/emitter/update_icon()
-	if (active && powernet && avail(active_power_usage))
+	if(active && powernet && avail(active_power_usage))
 		icon_state = "emitter_+a"
 	else
 		icon_state = "emitter"
 
-/obj/machinery/power/emitter/attack_hand(mob/user as mob)
-	src.add_fingerprint(user)
+/obj/machinery/power/emitter/attack_hand(mob/user)
+	add_fingerprint(user)
 	activate(user)
 
-/obj/machinery/power/emitter/proc/activate(mob/user as mob)
+/obj/machinery/power/emitter/proc/activate(mob/user)
 	if(state == 2)
 		if(!powernet)
 			to_chat(user, "\The [src] isn't connected to a wire.")
 			return 1
-		if(!src.locked)
-			if(src.active==1)
-				src.active = 0
-				to_chat(user, "You turn off \the [src].")
-				log_and_message_admins("turned off \the [src]")
+		if(!locked)
+			var/area/A = get_area(src)
+			if(active)
+				active = 0
+				to_chat(user, SPAN_NOTICE("You turn off \the [src]."))
+				log_admin("[key_name(user)] turned off \the [src] at X:[x], Y:[y], Z:[z] Area: [A.name].")
+				message_admins("[key_name_admin(user)] turned off \the [src].")
 				investigate_log("turned <font color='red'>off</font> by [user.key]","singulo")
 			else
-				src.active = 1
-				to_chat(user, "You turn on \the [src].")
-				src.shot_number = 0
-				src.fire_delay = get_initial_fire_delay()
-				log_and_message_admins("turned on \the [src]")
+				active = 1
+				to_chat(user, SPAN_WARNING("You turn on \the [src]."))
+				shot_number = 0
+				fire_delay = get_initial_fire_delay()
+				log_admin("[key_name(user)] turned on \the [src] at X:[x], Y:[y], Z:[z] Area: [A.name].")
+				message_admins("[key_name_admin(user)] turned on \the [src].")
 				investigate_log("turned <font color='green'>on</font> by [user.key]","singulo")
 			update_icon()
 		else
-			to_chat(user, "<span class='warning'>The controls are locked!</span>")
+			to_chat(user, SPAN_WARNING("The controls are locked!"))
 	else
-		to_chat(user, "<span class='warning'>\The [src] needs to be firmly secured to the floor first.</span>")
+		to_chat(user, SPAN_WARNING("\The [src] needs to be firmly secured to the floor first."))
 		return 1
-
 
 /obj/machinery/power/emitter/emp_act(severity)
 	return 1
@@ -104,11 +106,11 @@
 /obj/machinery/power/emitter/Process()
 	if(stat & (BROKEN))
 		return
-	if(src.state != 2 || (!powernet && active_power_usage))
-		src.active = 0
+	if(state != 2 || (!powernet && active_power_usage))
+		active = 0
 		update_icon()
 		return
-	if(((src.last_shot + src.fire_delay) <= world.time) && (src.active == 1))
+	if(((last_shot + fire_delay) <= world.time) && (active == 1))
 
 		var/actual_load = draw_power(active_power_usage)
 		if(actual_load >= active_power_usage) //does the laser have enough power to shoot?
@@ -123,13 +125,13 @@
 				investigate_log("lost power and turned <font color='red'>off</font>","singulo")
 			return
 
-		src.last_shot = world.time
-		if(src.shot_number < burst_shots)
-			src.fire_delay = get_burst_delay()
-			src.shot_number ++
+		last_shot = world.time
+		if(shot_number < burst_shots)
+			fire_delay = get_burst_delay()
+			shot_number ++
 		else
-			src.fire_delay = get_rand_burst_delay()
-			src.shot_number = 0
+			fire_delay = get_rand_burst_delay()
+			shot_number = 0
 
 		//need to calculate the power per shot as the emitter doesn't fire continuously.
 		var/burst_time = (min_burst_delay + max_burst_delay)/2 + 2*(burst_shots-1)
@@ -141,9 +143,9 @@
 			s.start()
 
 		var/obj/item/projectile/beam/emitter/A = get_emitter_beam()
-		playsound(src.loc, A.fire_sound, 25, 1)
+		playsound(loc, A.fire_sound, 25, 1)
 		A.damage = round(power_per_shot/EMITTER_DAMAGE_POWER_TRANSFER)
-		A.launch( get_step(src.loc, src.dir) )
+		A.launch(get_step(loc, dir))
 
 /obj/machinery/power/emitter/attackby(obj/item/W, mob/user)
 
@@ -154,18 +156,18 @@
 		switch(state)
 			if(0)
 				state = 1
-				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+				playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
 				user.visible_message("[user.name] secures [src] to the floor.", \
 					"You secure the external reinforcing bolts to the floor.", \
 					"You hear a ratchet")
-				src.anchored = 1
+				anchored = 1
 			if(1)
 				state = 0
-				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+				playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
 				user.visible_message("[user.name] unsecures [src] reinforcing bolts from the floor.", \
 					"You undo the external reinforcing bolts.", \
 					"You hear a ratchet")
-				src.anchored = 0
+				anchored = 0
 			if(2)
 				to_chat(user, "<span class='warning'>\The [src] needs to be unwelded from the floor.</span>")
 		return
@@ -179,12 +181,12 @@
 			if(0)
 				to_chat(user, "<span class='warning'>\The [src] needs to be wrenched to the floor.</span>")
 			if(1)
-				if (WT.remove_fuel(0,user))
-					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+				if(WT.remove_fuel(0,user))
+					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 					user.visible_message("[user.name] starts to weld [src] to the floor.", \
 						"You start to weld [src] to the floor.", \
 						"You hear welding")
-					if (do_after(user,20,src))
+					if(do_after(user,20,src))
 						if(!src || !WT.isOn()) return
 						state = 2
 						to_chat(user, "You weld [src] to the floor.")
@@ -192,12 +194,12 @@
 				else
 					to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
 			if(2)
-				if (WT.remove_fuel(0,user))
-					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+				if(WT.remove_fuel(0,user))
+					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 					user.visible_message("[user.name] starts to cut [src] free from the floor.", \
 						"You start to cut [src] free from the floor.", \
 						"You hear welding")
-					if (do_after(user,20,src))
+					if(do_after(user,20,src))
 						if(!src || !WT.isOn()) return
 						state = 1
 						to_chat(user, "You cut [src] free from the floor.")
@@ -210,9 +212,9 @@
 		if(emagged)
 			to_chat(user, "<span class='warning'>The lock seems to be broken.</span>")
 			return
-		if(src.allowed(user))
-			src.locked = !src.locked
-			to_chat(user, "The controls are now [src.locked ? "locked." : "unlocked."]")
+		if(allowed(user))
+			locked = !locked
+			to_chat(user, "The controls are now [locked ? "locked." : "unlocked."]")
 		else
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 		return

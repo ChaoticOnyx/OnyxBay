@@ -141,6 +141,9 @@
 	return res
 
 /obj/item/organ/external/head/update_icon_drop(mob/living/carbon/human/powner)
+	if(!powner)
+		return
+
 	overlays.Cut()
 	if(powner.f_style)
 		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[powner.f_style]
@@ -158,7 +161,6 @@
 			if(hair_style.do_colouration && islist(h_col) && h_col.len >= 3)
 				hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), hair_style.blend)
 			src.overlays += hair_s
-	return
 
 /obj/item/weapon/skull
 	name = "skull"

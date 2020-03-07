@@ -390,6 +390,14 @@
 		M.visible_message("<span class='notice'>[user] decided life was worth living</span>")
 		mouthshoot = 0
 		return
+	if(istype(src, /obj/item/weapon/gun/flamer))
+		user.adjust_fire_stacks(15)
+		user.IgniteMob()
+		user.death()
+		log_and_message_admins("[key_name(user)] commited suicide using \a [src]")
+		playsound(user, 'sound/weapons/gunshot/flamethrower/flamer_fire.ogg', 50, 1)
+		mouthshoot = 0
+		return
 	var/obj/item/projectile/in_chamber = consume_next_projectile()
 	if (istype(in_chamber))
 		user.visible_message("<span class = 'warning'>[user] pulls the trigger.</span>")

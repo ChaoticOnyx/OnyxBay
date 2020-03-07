@@ -64,17 +64,20 @@ This is /obj/machinery level code to properly manage power usage from the area.
 // Do not do power stuff in New/Initialize until after ..()
 /obj/machinery/Initialize()
 	REPORT_POWER_CONSUMPTION_CHANGE(0, get_power_usage())
-	GLOB.moved_event.register(src, src, .proc/update_power_on_move)
 	power_init_complete = TRUE
 	. = ..()
 
 // Or in Destroy at all, but especially after the ..().
 /obj/machinery/Destroy()
-	GLOB.moved_event.unregister(src, src, .proc/update_power_on_move)
 	REPORT_POWER_CONSUMPTION_CHANGE(get_power_usage(), 0)
 	. = ..()
 
-/obj/machinery/proc/update_power_on_move(atom/movable/mover, atom/old_loc, atom/new_loc)
+/obj/machinery/Move(NewLoc)
+	var/atom/OldLoc = loc
+	. = ..()
+	update_power_on_move(OldLoc, loc)
+
+/obj/machinery/proc/update_power_on_move(atom/old_loc, atom/new_loc)
 	var/power = get_power_usage()
 	if(!power)
 		return // This is the most likely case anyway.

@@ -64,6 +64,8 @@
 	return FALSE
 
 /mob/living/carbon/human/can_overcome_gravity()
+	if(incorporeal_move)
+		return TRUE
 	//First do species check
 	if(species && species.can_overcome_gravity(src))
 		return 1

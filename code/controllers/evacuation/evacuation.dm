@@ -89,9 +89,7 @@ var/datum/evacuation_controller/evacuation_controller
 	state = EVAC_PREPPING
 
 	if(emergency_evacuation)
-		for(var/area/A in world)
-			if(istype(A, /area/hallway))
-				A.readyalert()
+		toggle_emergency_light()
 		if(!skip_announce)
 			GLOB.using_map.emergency_shuttle_called_announcement()
 	else
@@ -117,10 +115,8 @@ var/datum/evacuation_controller/evacuation_controller
 
 	if(emergency_evacuation)
 		evac_recalled.Announce(GLOB.using_map.emergency_shuttle_recall_message)
-		for(var/area/A in world)
-			if(istype(A, /area/hallway))
-				A.readyreset()
 		emergency_evacuation = 0
+		toggle_emergency_light()
 	else
 		priority_announcement.Announce(GLOB.using_map.shuttle_recall_message)
 
@@ -186,3 +182,7 @@ var/datum/evacuation_controller/evacuation_controller
 
 /datum/evacuation_controller/proc/should_call_autotransfer_vote()
 	return (state == EVAC_IDLE)
+
+/datum/evacuation_controller/proc/toggle_emergency_light()
+	for(var/area/A in GLOB.hallway)
+		A.set_evacuation_lighting(emergency_evacuation)

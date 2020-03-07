@@ -27,6 +27,16 @@ em						{font-style: normal;font-weight: bold;}
 .ooc .admin				{color: #b82e00;}
 .ooc .aooc				{color: #960018;}
 
+/* OOC Patreon Tiers */
+.ooc .pt_cargo			{color: #5c72bc;}
+.ooc .pt_engineer		{color: #009cb7;}
+.ooc .pt_scientist		{color: #b54a9d;}
+.ooc .pt_hos			{color: #e51919;}
+.ooc .pt_captain		{color: #e5b232;}
+.ooc .pt_wizard			{color: #ed0776;}
+.ooc .pt_cultist		{color: #ea4f07;}
+.ooc .pt_assistant		{color: #74767a;}
+
 /* Admin: Private Messages */
 .pm  .howto				{color: #ff0000;	font-weight: bold;		font-size: 200%;}
 .pm  .in				{color: #ff0000;}

@@ -188,6 +188,10 @@
 	for(var/obj/machinery/light/M in src)
 		M.set_emergency_lighting(state)
 
+/area/proc/set_evacuation_lighting(state)
+	for(var/obj/machinery/light/L in src)
+		L.set_evacuation_lighting(state)
+
 /area/proc/set_alert_lighting(state as num)
 	for(var/obj/machinery/light/M in src)
 		M.set_alert_lighting(state)

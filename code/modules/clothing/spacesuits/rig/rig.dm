@@ -238,8 +238,9 @@
 		booting_R.icon_state = "boot_load"
 		animate(booting_L, alpha=230, time=30, easing=SINE_EASING)
 		animate(booting_R, alpha=200, time=20, easing=SINE_EASING)
-		wearer.client.screen += booting_L
-		wearer.client.screen += booting_R
+		if(wearer.client)
+			wearer.client.screen += booting_L
+			wearer.client.screen += booting_R
 
 	canremove = FALSE // No removing the suit while unsealing.
 	sealing = TRUE
@@ -311,8 +312,9 @@
 	sealing = null
 
 	if(failed_to_seal)
-		wearer.client.screen -= booting_L
-		wearer.client.screen -= booting_R
+		if(wearer.client)
+			wearer.client.screen -= booting_L
+			wearer.client.screen -= booting_R
 		qdel(booting_L)
 		qdel(booting_R)
 
@@ -328,10 +330,11 @@
 	// Success!
 	canremove = seal_target
 	to_chat(wearer, "<span class='info'><b>Your entire suit [canremove ? "loosens as the components relax" : "tightens around you as the components lock into place"].</b></span>")
-	wearer.client.screen -= booting_L
+	if(wearer.client)
+		wearer.client.screen -= booting_L
+		addtimer(CALLBACK(src, .proc/r_booting_done, wearer.client, booting_R), 80)
 	qdel(booting_L)
 	booting_R.icon_state = "boot_done"
-	addtimer(CALLBACK(src, .proc/r_booting_done, wearer.client, booting_R), 80)
 
 	if(wearer != initiator)
 		to_chat(initiator, "<span class='info'>Suit adjustment complete. Suit is now [canremove ? "unsealed" : "sealed"].</span>")

@@ -52,7 +52,7 @@
 		"precise" = 0
 		)
 
-/obj/item/device/floor_painter/resolve_attackby(atom/A, mob/user, proximity, params)
+/obj/item/device/floor_painter/afterattack(atom/A, mob/user, proximity, params)
 	if(!proximity)
 		return
 	add_fingerprint(user)
@@ -62,7 +62,7 @@
 		to_chat(user, "<span class='warning'>\The [src] can only be used on actual flooring.</span>")
 		return
 
-	if(!F.flooring.can_paint || F.broken || F.burnt)
+	if(!F.flooring || !F.flooring.can_paint || F.broken || F.burnt)
 		to_chat(user, "<span class='warning'>\The [src] cannot paint broken tiles.</span>")
 		return
 

@@ -109,7 +109,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	if(status & ORGAN_BROKEN && brute)
 		jostle_bone(brute)
-		if(can_feel_pain() && prob(40))
+		if(owner && can_feel_pain() && prob(40))
 			owner.emote("scream")	//getting hit on broken hand hurts
 
 	if(brute_dam > min_broken_damage && prob(brute_dam + brute * (1+blunt)) ) //blunt damage is gud at fracturing
@@ -143,11 +143,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		owner.shock_stage += spillover * config.organ_damage_spillover_multiplier
 
 	// sync the organ's damage with its wounds
-	src.update_damages()
-	owner.updatehealth()
-
-	if(owner && update_damstate())
-		owner.UpdateDamageIcon()
+	update_damages()
+	if(owner)
+		owner.updatehealth()
+		if(update_damstate())
+			owner.UpdateDamageIcon()
 
 	return created_wound
 

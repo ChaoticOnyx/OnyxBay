@@ -275,12 +275,14 @@ var/list/organ_cache = list()
 	return 1
 
 /obj/item/organ/attack(mob/target, mob/user)
-
 	if(status & ORGAN_ROBOTIC || !istype(target) || !istype(user) || (user != target && user.a_intent == I_HELP))
 		return ..()
 
 	if(alert("Do you really want to use this organ as food? It will be useless for anything else afterwards.",,"Ew, no.","Bon appetit!") == "Ew, no.")
-		to_chat(user, "<span class='notice'>You successfully repress your cannibalistic tendencies.</span>")
+		to_chat(user, SPAN_NOTICE("You successfully repress your cannibalistic tendencies."))
+		return
+
+	if(QDELETED(src))
 		return
 
 	user.drop_from_inventory(src)
