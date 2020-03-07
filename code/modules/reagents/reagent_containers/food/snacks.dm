@@ -760,7 +760,7 @@
 	var/list/heated_reagents = list(/datum/reagent/tricordrazine = 5)
 
 /obj/item/weapon/reagent_containers/food/snacks/donkpocket/proc/heat()
-	if(warm) // already warm?
+	if(warm)
 		return
 	warm = 1
 	for(var/reagent in heated_reagents)

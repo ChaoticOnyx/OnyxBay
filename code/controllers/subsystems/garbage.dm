@@ -24,7 +24,7 @@ SUBSYSTEM_DEF(garbage)
 
 	//Queue
 	var/list/queues
-	var/harddel = FALSE //Avoid hard del
+	var/avoid_harddel = FALSE //Avoid hard del
 
 	#ifdef TESTING
 	var/list/reference_find_on_fail = list()
@@ -183,7 +183,7 @@ SUBSYSTEM_DEF(garbage)
 				I.failures++
 				fail_counts[level]++
 			if (GC_QUEUE_HARDDELETE)
-				if(harddel) // Need harddel?
+				if(avoid_harddel)
 					continue
 				fail_counts[level]++
 				HardDelete(D)
@@ -265,9 +265,9 @@ SUBSYSTEM_DEF(garbage)
 			queues[i] |= SSgarbage.queues[i]
 
 /datum/controller/subsystem/garbage/proc/toggle_harddel(state = FALSE)
-	if(state == harddel)
+	if(state == avoid_harddel)
 		return
-	harddel = state
+	avoid_harddel = state
 	return
 
 /datum/qdel_item

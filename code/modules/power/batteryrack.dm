@@ -112,7 +112,7 @@
 		// Now try to get least charged cell and use the power from it.
 		var/obj/item/weapon/cell/CL = get_least_charged_cell()
 		if(!CL)
-			return //no cells
+			return
 		amount -= CL.give(amount)
 		if(!amount)
 			return
