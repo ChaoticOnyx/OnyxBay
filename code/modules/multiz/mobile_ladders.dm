@@ -55,7 +55,7 @@
 
 /obj/item/ladder_mobile/proc/handle_action(atom/A, mob/user)
 	if (!do_after(user, 30, user))
-		to_chat(user, "Can't place ladder! You were interrupted!")
+		to_chat(user, SPAN_WARNING("Can't place ladder! You were interrupted!"))
 		return FALSE
 	if (!A || QDELETED(src) || QDELETED(user))
 		// Shit was deleted during delay, call is no longer valid.
