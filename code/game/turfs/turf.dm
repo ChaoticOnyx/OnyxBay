@@ -94,6 +94,25 @@
 			S.gather_all(src, user)
 	return ..()
 
+/turf/MouseDrop_T(atom/movable/O as mob|obj, mob/user)
+	var/turf/T = get_turf(user)
+	var/area/A = T.loc
+	if((istype(A) && !(A.has_gravity)) || (istype(T,/turf/space)))
+		return
+	if(istype(O, /obj/screen))
+		return
+	if((!(istype(O, /atom/movable)) || O.anchored || !Adjacent(user) || !Adjacent(O) || !user.Adjacent(O)))
+		return
+	if(!isturf(O.loc) || !isturf(user.loc))
+		return
+	if(isanimal(user) && O != user)
+		return
+	for (var/obj/item/grab/G in user.grabbed_by)
+		if(G.stop_move())
+			return
+	if (do_after(user, 25 + (5 * user.weakened), incapacitation_flags = ~INCAPACITATION_FORCELYING))
+		step_towards(O, src)
+
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
 
 	..()
