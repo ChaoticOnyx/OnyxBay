@@ -145,7 +145,7 @@
 	if(istype(target_ladder, target_down))
 		direction = DOWN
 	if(!LAD.CanZPass(M, direction))
-		to_chat(M, "<span class='notice'>\The [T] is blocking \the [src].</span>")
+		to_chat(M, SPAN_NOTICE("\The [T] is blocking \the [src]."))
 		return FALSE
 	for(var/atom/A in T)
 		if(!A.CanPass(M, M.loc, 1.5, 0))
