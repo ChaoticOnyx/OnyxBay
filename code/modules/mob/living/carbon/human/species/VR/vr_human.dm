@@ -66,7 +66,7 @@
 	if(died)
 		return
 	died = TRUE
-	var/obj/item/coin/C = new /obj/item/coin/(loc)
+	var/obj/item/VR_reward/coin/C = new /obj/item/VR_reward/coin/(loc)
 	if(!vr_mind)
 		hide_body()
 		return ..()
@@ -131,8 +131,8 @@
 		to_chat(src, SPAN_DANGER("Please wait!"))
 		return
 	last_cleanup_time = world.time
-//	for(var/turf/unsimulated/floor/self_cleaning/sc in GLOB.self_cleaning_list)
-//		sc.cleaner()
+	for(var/turf/unsimulated/floor/self_cleaning/sc in GLOB.self_cleaning_list)
+		sc.cleaner()
 
 #undef SPAWN_PROTECTION_TIME
 #undef DEAD_DELETE_COUNTDOWN

@@ -12,7 +12,7 @@ GLOBAL_LIST_EMPTY(thunderfield_spawns_list)
 	GLOB.thunderfield_spawns_list -= src
 	. = ..()
 
-/obj/item/coin
+/obj/item/VR_reward/coin
 	name = "Coin"
 	desc = "Collect it to get points"
 	icon_state = "coin"
@@ -20,7 +20,7 @@ GLOBAL_LIST_EMPTY(thunderfield_spawns_list)
 	var/points = 1
 
 
-/obj/item/coin/equipped(mob/user)
+/obj/item/VR_reward/coin/equipped(mob/user)
 	..()
 	if(!isvrhuman(user))
 		return
