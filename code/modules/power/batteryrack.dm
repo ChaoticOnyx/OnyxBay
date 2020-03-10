@@ -111,6 +111,8 @@
 	if(equalise)
 		// Now try to get least charged cell and use the power from it.
 		var/obj/item/weapon/cell/CL = get_least_charged_cell()
+		if(!CL)
+			return
 		amount -= CL.give(amount)
 		if(!amount)
 			return
@@ -161,10 +163,9 @@
 
 	if(internal_cells.len >= max_cells)
 		return 0
-
+	if(user && !user.unEquip(C))
+		return 0
 	internal_cells.Add(C)
-	if(user)
-		user.drop_from_inventory(C)
 	C.forceMove(src)
 	RefreshParts()
 	update_maxcharge()
@@ -190,7 +191,7 @@
 		var/obj/item/weapon/cell/least = get_least_charged_cell()
 		var/obj/item/weapon/cell/most = get_most_charged_cell()
 		// Don't bother equalising charge between two same cells. Also ensure we don't get NULLs or wrong types. Don't bother equalising when difference between charges is tiny.
-		if(least == most || !istype(least) || !istype(most) || least.percent() == most.percent())
+		if(!least || !most || least.percent() == most.percent())
 			return
 		var/percentdiff = (most.percent() - least.percent()) / 2 // Transfer only 50% of power. The reason is that it could lead to situations where least and most charged cells would "swap places" (45->50% and 50%->45%)
 		var/celldiff
@@ -246,7 +247,7 @@
 		internal_cells -= C
 	return ..()
 
-/obj/machinery/power/smes/batteryrack/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/power/smes/batteryrack/attackby(obj/item/weapon/W, mob/user)
 	if(!..())
 		return 0
 	if(default_deconstruction_crowbar(user, W))
