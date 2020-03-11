@@ -284,7 +284,7 @@
 	else
 		a_intent = I_HELP
 
-	stun_baton.attack(M, src, pick(list(BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG))) //robots and turrets aim for center of mass
+	stun_baton.attack(M, src, pick(list(BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG)))
 	flick(attack_state, src)
 
 /mob/living/bot/secbot/explode()
