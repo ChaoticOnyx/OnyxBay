@@ -17,3 +17,4 @@
 	desc = "This cone is trying to warn you of something!"
 	name = "warning cone"
 	icon_state = "cone"
+	slot_flags = SLOT_HEAD
