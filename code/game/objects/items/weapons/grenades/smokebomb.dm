@@ -5,7 +5,6 @@
 	icon_state = "flashbang"
 	det_time = 20
 	item_state = "flashbang"
-	slot_flags = SLOT_BELT
 	var/datum/effect/effect/system/smoke_spread/bad/smoke
 	var/smoke_times = 4
 
