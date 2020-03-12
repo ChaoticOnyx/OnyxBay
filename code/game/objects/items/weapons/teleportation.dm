@@ -341,7 +341,7 @@ Frequency:
 			to_chat(user, SPAN_WARNING("You fail to activate your Vortex Manipulator - local space-time can't hold any more active VMs."))
 			return
 		active = 1
-		unique_id = rand(0000, 9999)
+		unique_id = random_id(/obj/item/weapon/vortex_manipulator, 1111, 9999)
 		log_and_message_admins("has activated Vortex Manipulator [unique_id]!")
 		to_chat(user, SPAN_NOTICE("You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]"))
 		return
