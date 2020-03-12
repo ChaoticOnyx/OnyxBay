@@ -334,15 +334,14 @@ Frequency:
 /obj/item/weapon/vortex_manipulator/proc/self_activate(mob/living/carbon/human/user)
 	if(!active)
 		to_chat(user, SPAN_NOTICE("You attempt to activate Vortex Manipulator"))
-		var/counter = 0
-		for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
-			if(!VM.timelord_mode)
-				counter++
-				if(timelord_mode || counter > 3)
-					break
-		if (counter > 3)
-			to_chat(user, SPAN_WARNING("You fail to activate your Vortex Manipulator - local space-time can't hold any more active VMs."))
-			return
+		if(!timelord_mode)
+			var/counter = 0
+			for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
+				if(VM.active && !VM.timelord_mode)
+					counter++
+			if (counter > 3)
+				to_chat(user, SPAN_WARNING("You fail to activate your Vortex Manipulator - local space-time can't hold any more active VMs."))
+				return
 		active = 1
 		unique_id = random_id(/obj/item/weapon/vortex_manipulator, 1111, 9999)
 		log_and_message_admins("has activated Vortex Manipulator [unique_id]!")
