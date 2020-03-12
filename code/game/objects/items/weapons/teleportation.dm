@@ -133,9 +133,9 @@ Frequency:
 	icon = 'icons/obj/device.dmi'
 	icon_state = "vm_closed"
 	item_state = "electronic"
-	var/chargecost_area = 500
-	var/chargecost_beacon = 50
-	var/chargecost_local = 50
+	var/chargecost_area = 1000
+	var/chargecost_beacon = 100
+	var/chargecost_local = 100
 	var/cover_open = 0
 	var/timelord_mode = 0
 	var/unique_id = 0
@@ -144,6 +144,7 @@ Frequency:
 	var/list/possible_ids = list(1, 2, 3)
 	var/list/beacon_locations = list()
 	var/obj/item/weapon/cell/vcell
+	var/last_emp_timestamp = 0
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
 	throw_speed = 3
@@ -248,7 +249,7 @@ Frequency:
 			if (active && (timelord_mode || (vcell.charge >= chargecost_area)))
 				localmassiverandom(H)
 		else if (href_list["ebt_ability"])
-			if (active && (timelord_mode || (vcell.charge >= chargecost_area)))
+			if (active && (timelord_mode || (vcell.charge >= chargecost_beacon * 5)))
 				beaconteleport(H, 1)
 		else if (href_list["vma_ability"])
 			if (active && (timelord_mode || (vcell.charge >= chargecost_beacon)))
@@ -275,6 +276,9 @@ Frequency:
 	var/mob/living/carbon/human/H = vm_owner
 	if(!vcell || !cover_open)
 		return
+	if(last_emp_timestamp + 13 SECONDS > world.time)
+		return
+	last_emp_timestamp = world.time
 	if(timelord_mode || (severity == 2))
 		if(prob(25))
 			if(prob(50))
@@ -313,7 +317,7 @@ Frequency:
 
 /obj/item/weapon/vortex_manipulator/afterattack(atom/A, mob/user, proximity)
 	if(proximity || !teleport_on_click) return
-	if(!vcell || (vcell.charge <= chargecost_local * 10))
+	if((!vcell || (vcell.charge <= chargecost_local * 10)) && !timelord_mode)
 		to_chat(user, SPAN_NOTICE("No power source or not enough charge to teleport locally"))
 		return
 	var/turf/tempturf = get_turf(A)
@@ -330,8 +334,14 @@ Frequency:
 /obj/item/weapon/vortex_manipulator/proc/self_activate(mob/living/carbon/human/user)
 	if(!active)
 		to_chat(user, SPAN_NOTICE("You attempt to activate Vortex Manipulator"))
-		unique_id = rand(0000, 9999)
+		counter = 0
+		for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
+			counter = counter + !(VM.timelord_mode)
+		if counter > 3 && !timelord_mode:
+			to_chat(user, SPAN_WARNING("You fail to activate your Vortex Manipulator - local space-time can't hold any more active VMs."))
+			return
 		active = 1
+		unique_id = rand(0000, 9999)
 		log_and_message_admins("has activated Vortex Manipulator [unique_id]!")
 		to_chat(user, SPAN_NOTICE("You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]"))
 		return
@@ -361,7 +371,7 @@ Frequency:
 	var/mob/living/carbon/human/H = vm_owner
 	H.visible_message(SPAN_NOTICE("The Vortex Manipulator malfunctions!"))
 	var/turf/temp_turf = get_turf(H)
-	if(prob(1))
+	if(prob(3))
 		H.visible_message(SPAN_DANGER("The Vortex Manipulator releases its energy in a large explosion!"))
 		explosion(temp_turf, 0, 0, 3, 4)
 		areateleport(H, 1)
@@ -369,7 +379,7 @@ Frequency:
 		for(var/mob/M in range(rand(3, 7), temp_turf))
 			areateleport(M, 1)
 		return
-	else if(prob(5))
+	else if(prob(10))
 		H.visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts Space Carps from local space-time anomaly!"))
 		playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
 		var/amount = rand(1,3)
@@ -378,23 +388,23 @@ Frequency:
 		for(var/mob/M in range(rand(3, 7), temp_turf))
 			localteleport(M, 1)
 		return
-	else if(prob(5))
+	else if(prob(10))
 		H.visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and releases some of its hidden energy!"))
 		explosion(get_turf(src), 0, 0, 3, 4)
 		return
-	else if(prob(10))
+	else if(prob(15))
 		H.visible_message(SPAN_NOTICE("The Vortex Manipulator automatically initiates emergency area teleportation procedure."))
 		areateleport(H, 1)
 		for(var/mob/M in range(rand(3, 7), temp_turf))
 			beaconteleport(M, 1)
 		return
-	else if(prob(25))
+	else if(prob(30))
 		H.visible_message(SPAN_NOTICE("The Vortex Manipulator suddenly teleports user to specific beacon for its own reasons."))
 		beaconteleport(H, 1)
 		for(var/mob/M in range(rand(3, 7), temp_turf))
 			localteleport(M, 1)
 		return
-	else if(prob(35))
+	else if(prob(40))
 		H.visible_message(SPAN_NOTICE("The Vortex Manipulator is automatically trying to avoid local space-time anomaly."))
 		if(prob(50))
 			H.visible_message(SPAN_WARNING("The Vortex Manipulator fails to avoid local space-time anomaly!"))
@@ -521,7 +531,7 @@ Frequency:
 			phase_out(G.affecting,get_turf(G.affecting))
 			G.affecting.forceMove(get_turf(user))
 			phase_in(G.affecting,get_turf(G.affecting))
-	if(prob(10 + (10 * malf_use)))
+	if(prob(10 - (10 * malf_use)))
 		malfunction()
 
 /*
@@ -604,5 +614,5 @@ Frequency:
 			phase_out(G.affecting,get_turf(G.affecting))
 			G.affecting.forceMove(locate(user.x+rand(-1,1),user.y+rand(-1,1),T.z))
 			phase_in(G.affecting,get_turf(G.affecting))
-	if(prob(12 + (malf_use * 13)))
+	if(prob(13 - (malf_use * 13)))
 		malfunction()
