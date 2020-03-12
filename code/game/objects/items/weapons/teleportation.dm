@@ -276,7 +276,7 @@ Frequency:
 	var/mob/living/carbon/human/H = vm_owner
 	if(!vcell || !cover_open)
 		return
-	if(world.time > emp_prevent_until)
+	if(world.time < emp_prevent_until)
 		return
 	emp_prevent_until = world.time + 13 SECONDS
 	if(timelord_mode || (severity == 2))
