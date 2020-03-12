@@ -334,7 +334,7 @@ Frequency:
 /obj/item/weapon/vortex_manipulator/proc/self_activate(mob/living/carbon/human/user)
 	if(!active)
 		to_chat(user, SPAN_NOTICE("You attempt to activate Vortex Manipulator"))
-		counter = 0
+		var/counter = 0
 		for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
 			counter = counter + !(VM.timelord_mode)
 		if (!timelord_mode && (counter > 3))
