@@ -144,7 +144,7 @@ Frequency:
 	var/list/possible_ids = list(1, 2, 3)
 	var/list/beacon_locations = list()
 	var/obj/item/weapon/cell/vcell
-	var/last_emp_timestamp = 0
+	var/emp_prevent_until = 0
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
 	throw_speed = 3
@@ -276,9 +276,9 @@ Frequency:
 	var/mob/living/carbon/human/H = vm_owner
 	if(!vcell || !cover_open)
 		return
-	if(last_emp_timestamp + 13 SECONDS > world.time)
+	if(world.time > emp_prevent_until)
 		return
-	last_emp_timestamp = world.time
+	emp_prevent_until = world.time + 13 SECONDS
 	if(timelord_mode || (severity == 2))
 		if(prob(25))
 			if(prob(50))
