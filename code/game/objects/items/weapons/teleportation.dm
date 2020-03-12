@@ -336,8 +336,11 @@ Frequency:
 		to_chat(user, SPAN_NOTICE("You attempt to activate Vortex Manipulator"))
 		var/counter = 0
 		for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
-			counter = counter + !(VM.timelord_mode)
-		if (!timelord_mode && (counter > 3))
+			if(!VM.timelord_mode)
+				counter++
+				if(timelord_mode || counter > 3)
+					break
+		if (counter > 3)
 			to_chat(user, SPAN_WARNING("You fail to activate your Vortex Manipulator - local space-time can't hold any more active VMs."))
 			return
 		active = 1
