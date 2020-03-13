@@ -876,3 +876,12 @@ datum/objective/heist/salvage
 		return 0
 	return rval
 
+/datum/objective/ert/station_safety
+	explanation_text = "Make sure that the station is safe and not in danger."
+
+/datum/objective/ert/station_safety/check_completion()
+	if(SSticker.mode.station_was_nuked)
+		return FALSE
+	if(SSticker.mode.blob_domination)
+		return FALSE	
+	return TRUE

@@ -7,7 +7,7 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/mercenary, new)
 	role_text_plural = "Commandos"
 	welcome_text = "You are in the employ of a criminal syndicate hostile to corporate interests."
 	id_type = /obj/item/weapon/card/id/syndicate
-	flags = ANTAG_RANDOM_EXCEPTED | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE
+	flags = ANTAG_RANDOM_EXCEPTED | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE | ANTAG_TEAM
 	antaghud_indicator = "hudoperative"
 
 	hard_cap = 4

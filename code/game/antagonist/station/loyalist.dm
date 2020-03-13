@@ -11,7 +11,7 @@ GLOBAL_DATUM_INIT(loyalists, /datum/antagonist/loyalists, new)
 	victory_feedback_tag = "win - rev heads killed"
 	loss_feedback_tag = "loss - heads killed"
 	antaghud_indicator = "hudloyalist"
-	flags = 0
+	flags = ANTAG_TEAM
 
 	hard_cap = 2
 	hard_cap_round = 4

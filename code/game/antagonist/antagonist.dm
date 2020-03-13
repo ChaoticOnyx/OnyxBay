@@ -262,6 +262,173 @@
 	candidates.Cut()
 
 /datum/antagonist/Topic(href, href_list)
-	if (!check_rights(R_ADMIN))
+	if(!check_rights(R_ADMIN))
 		href_exploit(usr.ckey, href)
 		return TRUE
+	
+	if(href_list["obj_add"])
+		var/datum/objective/objective
+		var/objective_pos
+		var/def_value
+
+		var/new_obj_type = input("Select objective type:", "Objective type", def_value) as null|anything in list("assassinate", "debrain", "protect", "prevent", "harm", "brig", "hijack", "escape", "survive", "steal", "download", "mercenary", "capture", "custom")
+		if(!new_obj_type)
+			return
+
+		var/datum/objective/new_objective = null
+		switch(new_obj_type)
+			if ("assassinate","protect","debrain", "harm", "brig")
+				var/objective_type_capital = uppertext(copytext(new_obj_type, 1,2))
+				var/objective_type_text = copytext(new_obj_type, 2)
+				var/objective_type = "[objective_type_capital][objective_type_text]"
+
+				var/list/possible_targets = list("Free objective")
+				for(var/datum/mind/possible_target in SSticker.minds)
+					if ((possible_target != src) && istype(possible_target.current, /mob/living/carbon/human))
+						possible_targets += possible_target.current
+
+				var/mob/def_target = null
+				var/objective_list = list(/datum/objective/assassinate, /datum/objective/protect, /datum/objective/debrain)
+				if (objective && (objective.type in objective_list) && objective.target)
+					def_target = objective.target.current
+
+				var/new_target = input("Select target:", "Objective target", def_target) as null|anything in possible_targets
+				if (!new_target)
+					return
+
+				var/objective_path = text2path("/datum/objective/[new_obj_type]")
+				var/mob/living/M = new_target
+				if (!istype(M) || !M.mind || new_target == "Free objective")
+					new_objective = new objective_path
+					new_objective.target = null
+					new_objective.explanation_text = "Free objective"
+				else
+					new_objective = new objective_path
+					new_objective.target = M.mind
+					new_objective.explanation_text = "[objective_type] [M.real_name], the [M.mind.special_role ? M.mind.special_role : M.mind.assigned_role]."
+					global_objectives |= new_objective
+
+			if ("prevent")
+				new_objective = new /datum/objective/block
+				global_objectives |= new_objective
+
+			if ("hijack")
+				new_objective = new /datum/objective/hijack
+				global_objectives |= new_objective
+
+			if ("escape")
+				new_objective = new /datum/objective/escape
+				global_objectives |= new_objective
+
+			if ("survive")
+				new_objective = new /datum/objective/survive
+				global_objectives |= new_objective
+
+			if ("mercenary")
+				new_objective = new /datum/objective/nuclear
+				global_objectives |= new_objective
+
+			if ("steal")
+				if (!istype(objective, /datum/objective/steal))
+					new_objective = new /datum/objective/steal
+					global_objectives |= new_objective
+				else
+					new_objective = objective
+				var/datum/objective/steal/steal = new_objective
+				if (!steal.select_target())
+					return
+
+			if("download", "capture", "absorb")
+				var/def_num
+				if(objective&&objective.type==text2path("/datum/objective/[new_obj_type]"))
+					def_num = objective.target_amount
+
+				var/target_number = input("Input target number:", "Objective", def_num) as num|null
+				if (isnull(target_number))//Ordinarily, you wouldn't need isnull. In this case, the value may already exist.
+					return
+
+				switch(new_obj_type)
+					if("download")
+						new_objective = new /datum/objective/download
+						new_objective.explanation_text = "Download [target_number] research levels."
+					if("capture")
+						new_objective = new /datum/objective/capture
+						new_objective.explanation_text = "Accumulate [target_number] capture points."
+				new_objective.target_amount = target_number
+
+			if ("custom")
+				var/expl = sanitize(input("Custom objective:", "Objective", objective ? objective.explanation_text : "") as text|null)
+				if (!expl)
+					return
+				new_objective = new /datum/objective
+				new_objective.explanation_text = expl
+				global_objectives |= new_objective
+
+		if(!new_objective)
+			return
+
+		if(objective)
+			global_objectives -= objective
+			global_objectives.Insert(objective_pos, new_objective)
+		else
+			global_objectives |= new_objective
+
+	if(href_list["obj_delete"])
+		var/datum/objective/objective = locate(href_list["obj_delete"]) in global_objectives
+		if(!istype(objective))
+			return
+		global_objectives -= objective
+		qdel(objective)
+
+	if(href_list["obj_completed"])
+		var/datum/objective/objective = locate(href_list["obj_completed"]) in global_objectives
+		if(!istype(objective))
+			return
+		objective.completed = !objective.completed
+	
+	if(href_list["obj_announce"])
+		for(var/datum/mind/M in current_antagonists)
+			if(!M.current)
+				continue
+
+			to_chat(M.current, SPAN_NOTICE("Your current objectives:"))
+			var/num = 1
+			for(var/datum/objective/objective in global_objectives)
+				to_chat(M.current, "<B>Objective #[num]</B>: [objective.explanation_text]")
+				num++
+
+	interact(usr)
+
+/datum/antagonist/proc/interact(client/C)
+	if(!C)
+		return
+
+	var/info = GetInteractWindow()
+
+	var/datum/browser/popup = new(usr, "team_objectives", "Team Objectives Panel")
+	popup.set_content(info)
+	popup.open()
+
+/datum/antagonist/proc/GetInteractWindow()
+	var/num = 1
+	var/dat = "<h1><b>[role_text_plural]:</b></h1><br>"
+	for(var/datum/mind/M in current_antagonists)
+		if(M.current)
+			dat += "[num]. <a href='?_src_=holder;adminplayeropts=\ref[M.current]'>[M.name]</a>"
+			dat += " - <b>[M.current.stat ? M.current.stat == DEAD ? "dead" : "unconscious" : "alive"]</b><br>"
+		num++
+
+	dat += "<br><hr><h1><b>[role_text_plural] objectives:</b></h1>"
+	num = 1
+	for(var/datum/objective/O in global_objectives)
+		dat += "<br>[num]. [O.explanation_text] "
+		if(O.completed)
+			dat += "<font color = 'green'>complete</font>"
+		else
+			dat += "<font color = 'red'>incomplete</font>"
+		dat += " <a href ='?src=\ref[src];obj_completed=\ref[O]'>toggle</a>"
+		dat += " <a href ='?src=\ref[src];obj_delete=\ref[O]'>remove</a><br>"
+		num++
+
+	dat += "<br><a href='?src=\ref[src];obj_add=1'>Add Objective</a> <a href='?src=\ref[src];obj_announce=1'>Announce Objectives</a>"
+	return dat

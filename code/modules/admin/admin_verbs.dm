@@ -101,7 +101,8 @@ var/list/admin_verbs_admin = list(
 	/client/proc/add_trader,
 	/client/proc/remove_trader,
 	/datum/admins/proc/sendFax,
-	/client/proc/change_regular_announcement
+	/client/proc/change_regular_announcement,
+	/client/proc/show_team_objectives
 	)
 
 var/list/admin_verbs_ban = list(
@@ -313,7 +314,8 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/projectile_basketball,
 	/client/proc/toggle_possess_mode,
 	/client/proc/enable_profiler,
-	/client/proc/bluespace_tech
+	/client/proc/bluespace_tech,
+	/client/proc/show_team_objectives
 	)
 
 var/list/admin_verbs_mod = list(
@@ -970,3 +972,33 @@ var/list/admin_verbs_mentor = list(
 	world.SetConfig("APP/admin", ckey, "role=admin")
 	winset(src, "browserwindow", "is-visible=true")
 	send_link(src, "?debug=profile")
+
+/client/proc/show_team_objectives()
+	set name = "Customize Team Objectives"
+	set category = "Admin"
+
+	if(!check_rights(R_ADMIN, TRUE))
+		return
+	if(!SSticker || !SSticker.mode)
+		return
+	
+	var/list/team_roles = list()
+	var/all_antag_types = GLOB.all_antag_types_
+	for(var/antag_type in all_antag_types)
+		var/datum/antagonist/antag = all_antag_types[antag_type]
+		if(!(antag.flags & ANTAG_TEAM))
+			continue
+		if(!antag.current_antagonists.len)
+			continue
+		team_roles |= antag_type
+	
+	if(!team_roles.len)
+		to_chat(src, SPAN_WARNING("There's no available team roles in world."))
+		return
+
+	var/antag_type = input(src, "Select available team to customize", "Team Objectives") as null|anything in team_roles
+	if(!antag_type)
+		return
+
+	var/datum/antagonist/antag_datum = GLOB.all_antag_types_[antag_type]
+	antag_datum.interact(src)

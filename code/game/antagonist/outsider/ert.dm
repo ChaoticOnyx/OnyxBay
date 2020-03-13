@@ -15,18 +15,22 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 	landmark_id = "Response Team"
 	id_type = /obj/item/weapon/card/id/centcom/ERT
 
-	flags = ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE | ANTAG_HAS_LEADER | ANTAG_CHOOSE_NAME | ANTAG_RANDOM_EXCEPTED
+	flags = ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE | ANTAG_HAS_LEADER | ANTAG_CHOOSE_NAME | ANTAG_RANDOM_EXCEPTED | ANTAG_TEAM
 	antaghud_indicator = "hudloyalist"
 
 	hard_cap = 4
 	hard_cap_round = 6
 	initial_spawn_req = 3
 	initial_spawn_target = 4
-	show_objectives_on_creation = 0 //we are not antagonists, we do not need the antagonist shpiel/objectives
 
 /datum/antagonist/ert/create_default(mob/source)
 	var/mob/living/carbon/human/M = ..()
 	if(istype(M)) M.age = rand(25,45)
+
+/datum/antagonist/ert/create_global_objectives()
+	if(!..())
+		return 0
+	global_objectives |= new /datum/objective/ert/station_safety
 
 /datum/antagonist/ert/Initialize()
 	..()

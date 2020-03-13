@@ -31,6 +31,7 @@
 #define ANTAG_VOTABLE           0x200 // Can be voted as an additional antagonist before roundstart.
 #define ANTAG_SET_APPEARANCE    0x400 // Causes antagonists to use an appearance modifier on spawn.
 #define ANTAG_RANDOM_EXCEPTED   0x800 // If a game mode randomly selects antag types, antag types with this flag should be excluded.
+#define ANTAG_TEAM              01000
 
 // Mode/antag template macros.
 #define MODE_BORER "borer"

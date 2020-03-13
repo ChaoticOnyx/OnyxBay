@@ -8,7 +8,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	landmark_id = "voxstart"
 	welcome_text = "Use :H to talk on your encrypted channel."
 	mob_path = /mob/living/carbon/human/vox
-	flags = ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_VOTABLE | ANTAG_HAS_LEADER
+	flags = ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_VOTABLE | ANTAG_HAS_LEADER | ANTAG_TEAM
 	antaghud_indicator = "hudmutineer"
 
 	hard_cap = 5
