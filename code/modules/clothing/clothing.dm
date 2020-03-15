@@ -365,6 +365,7 @@ BLIND     // can't see anything
 	var/light_applied
 	var/brightness_on
 	var/on = 0
+	var/hat_fell_on_slip = TRUE
 
 	blood_overlay_type = "helmetblood"
 
@@ -399,6 +400,11 @@ BLIND     // can't see anything
 		light_applied = 0
 	update_icon(user)
 	user.update_action_buttons()
+
+/obj/item/clothing/head/proc/can_hat_fell(mob/user)
+	if(hat_fell_on_slip && prob(80))
+		to_chat(user, SPAN_WARNING("The hat fly away!"))
+		user.drop_from_inventory(src)
 
 /obj/item/clothing/head/attack_ai(mob/user)
 	if(!mob_wear_hat(user))

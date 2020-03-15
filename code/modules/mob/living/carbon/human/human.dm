@@ -1308,7 +1308,11 @@
 /mob/living/carbon/human/slip(slipped_on, stun_duration=8)
 	if((species.species_flags & SPECIES_FLAG_NO_SLIP) || (shoes && (shoes.item_flags & ITEM_FLAG_NOSLIP)))
 		return 0
+
 	poise -= stun_duration*5
+	if(head)
+		var/obj/item/clothing/head/H = head
+		H.can_hat_fell(src)
 	return !!(..(slipped_on,stun_duration))
 
 /mob/living/carbon/human/proc/undislocate()
