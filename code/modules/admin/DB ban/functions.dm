@@ -64,6 +64,7 @@ datum/admins/proc/DB_ban_record(bantype, mob/banned_mob, duration = -1, reason, 
 			adminwho += ", [C]"
 
 	reason = sql_sanitize_text(reason)
+	reason = encode_for_db(reason)
 
 	var/sql
 	if(isnull(config.server_id))
@@ -177,7 +178,7 @@ datum/admins/proc/DB_ban_edit(banid = null, param = null)
 	if(query.NextRow())
 		pckey = query.item[1]
 		duration = query.item[2]
-		reason = query.item[3]
+		reason = decode_from_db(query.item[3])
 		if(!isnull(config.server_id))
 			serverid = query.item[4]
 	else
@@ -192,6 +193,7 @@ datum/admins/proc/DB_ban_edit(banid = null, param = null)
 			if(!value)
 				value = sanitize(input("Insert the new reason for [pckey]'s ban", "New Reason", "[reason]", null) as null|text)
 				value = sql_sanitize_text(value)
+				value = encode_for_db(value)
 				if(!value)
 					to_chat(usr, "Cancelled")
 					return
@@ -406,7 +408,7 @@ datum/admins/proc/DB_ban_unban_by_id(id)
 				var/banid = select_query.item[1]
 				var/bantime = select_query.item[2]
 				var/bantype  = select_query.item[3]
-				var/reason = select_query.item[4]
+				var/reason = decode_from_db(select_query.item[4])
 				var/job = select_query.item[5]
 				var/duration = select_query.item[6]
 				var/expiration = select_query.item[7]

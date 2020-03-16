@@ -28,6 +28,7 @@
 
 	var/reason = sanitize(input(usr, "Please State Reason", "Reason"))
 	reason = sanitizeSQL(reason)
+	reason = encode_for_db(reason)
 	if (!reason)
 		return
 
@@ -64,7 +65,7 @@
 		return
 
 	if (query_watch.NextRow())
-		return html_decode(query_watch.item[1])
+		return decode_from_db(html_decode(query_watch.item[1]))
 	else
 		return null
 
@@ -99,7 +100,7 @@
 		return
 
 	if (query_watchreason.NextRow())
-		var/watch_reason = query_watchreason.item[1]
+		var/watch_reason = decode_from_db(query_watchreason.item[1])
 
 		var/new_reason = sanitize(input(usr, "Input new reason", "New Reason", html_decode(watch_reason)))
 		new_reason = sanitizeSQL(new_reason)
@@ -109,7 +110,9 @@
 		var/admin_ckey = sanitizeSQL(usr.ckey)
 		var/edit_text = "Edited by [admin_ckey] on [time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")] from<br>[watch_reason]<br>to<br>[new_reason]<hr>"
 		edit_text = sanitizeSQL(edit_text)
+		edit_text = encode_for_db(edit_text)
 
+		new_reason = encode_for_db(new_reason)
 		var/DBQuery/query_watchupdate = dbcon.NewQuery("UPDATE erro_watch SET reason = '[new_reason]', last_editor = '[admin_ckey]', edits = CONCAT(IFNULL(edits,''),'[edit_text]') WHERE ckey = '[target_ckey]'")
 		if (!query_watchupdate.Execute())
 			var/err = query_watchupdate.ErrorMsg()
@@ -152,7 +155,7 @@
 
 	while(query_watchlist.NextRow())
 		var/ckey = query_watchlist.item[1]
-		var/reason = query_watchlist.item[2]
+		var/reason = decode_from_db(query_watchlist.item[2])
 		var/adminckey = query_watchlist.item[3]
 		var/timestamp = query_watchlist.item[4]
 		var/last_editor = query_watchlist.item[5]
@@ -220,5 +223,5 @@
 			return
 
 		if(query_watchedits.NextRow())
-			var/edit_log = query_watchedits.item[1]
+			var/edit_log = decode_from_db(query_watchedits.item[1])
 			usr << browse(edit_log,"window=watchedits")
