@@ -5,10 +5,6 @@
 
 #define get_turf(A) get_step(A,0)
 
-#define SPAN_NOTE(text) "<span class='notice'>[text]</span>"
-#define SPAN_WARN(text) "<span class='warning'>[text]</span>"
-#define SPAN_DANG(text) "<span class='danger'>[text]</span>"
-
 #define isAI(A) istype(A, /mob/living/silicon/ai)
 
 #define isalien(A) istype(A, /mob/living/carbon/alien)
@@ -105,12 +101,14 @@
 
 #define isovermind(A) istype(A, /mob/blob)
 
+#define ismech(A) istype(A, /obj/mecha)
+
+#define iseffect(A) istype(A, /obj/effect)
+
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 
 #define random_id(key,min_id,max_id) uniqueness_repository.Generate(/datum/uniqueness_generator/id_random, key, min_id, max_id)
 
-#define to_world(message)                                   to_chat(world,message)
-#define to_world_log(message)                               world.log << message
 #define sound_to(target, sound)                             target << sound
 #define to_file(file_entry, source_var)                     file_entry << source_var
 #define from_file(file_entry, target_var)                   file_entry >> target_var

@@ -71,11 +71,17 @@ var/list/_client_preferences_by_type
 	if(!default_value)
 		default_value = options[1]
 
-/datum/client_preference/proc/may_set(mob/preference_mob)
+/datum/client_preference/proc/may_set(client/given_client)
 	return TRUE
 
 /datum/client_preference/proc/changed(mob/preference_mob, new_value)
 	return
+
+/datum/client_preference/proc/get_options(client/given_client)
+	return options
+
+/datum/client_preference/proc/get_default_value(client/given_client)
+	return default_value
 
 /*********************
 * Player Preferences *
@@ -240,6 +246,28 @@ var/list/_client_preferences_by_type
 	preference_mob.client.update_chat_position(new_value == GLOB.PREF_YES)
 	preference_mob.client.fit_viewport()
 
+/datum/client_preference/cinema_credits
+	description = "Show Cinema-like Credits At Round-end"
+	key = "SHOW_CREDITS"
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+	default_value = GLOB.PREF_NO
+
+/datum/client_preference/ooc_name_color
+	description = "OOC Name Color"
+	key = "OOC_NAME_COLOR"
+
+/datum/client_preference/staff/may_set(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info && given_client.donator_info.patron_type != PATREON_NONE
+
+/datum/client_preference/ooc_name_color/get_options(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info.get_available_ooc_patreon_tiers()
+
+/datum/client_preference/ooc_name_color/get_default_value(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info.patron_type
+
 /********************
 * General Staff Preferences *
 ********************/
@@ -247,11 +275,16 @@ var/list/_client_preferences_by_type
 /datum/client_preference/staff
 	var/flags
 
-/datum/client_preference/staff/may_set(mob/preference_mob)
+/datum/client_preference/staff/may_set(client/given_client)
+	if(ismob(given_client))
+		var/mob/M = given_client
+		given_client = M.client
+	if(!given_client)
+		return FALSE
 	if(flags)
-		return check_rights(flags, 0, preference_mob)
+		return check_rights(flags, 0, given_client)
 	else
-		return preference_mob && preference_mob.client && preference_mob.client.holder
+		return given_client && given_client.holder
 
 /datum/client_preference/staff/show_chat_prayers
 	description = "Chat Prayers"
@@ -291,10 +324,16 @@ var/list/_client_preferences_by_type
 	flags = R_ADMIN|R_DEBUG
 
 /********************
-* SUKA ZAEBALO Preferences *
+* Misc Preferences *
 ********************/
 
 /datum/client_preference/staff/govnozvuki
 	description = "Admin Misc Sounds"
 	key = "SOUND_PARASHA"
 	flags = R_PERMISSIONS
+
+/datum/client_preference/staff/advanced_who
+	description = "Advanced Who"
+	key = "ADVANCED_WHO"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+	flags = R_INVESTIGATE

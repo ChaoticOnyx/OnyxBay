@@ -338,7 +338,7 @@
 "gz" = (/turf/simulated/wall/r_wall,/area/lar_maria/vir_access)
 "gA" = (/obj/structure/bed/roller,/obj/effect/floor_decal/industrial/outline/yellow,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/dark,/area/lar_maria/vir_ward)
 "gB" = (/obj/structure/bed/chair{dir = 1},/obj/effect/floor_decal/corner/red{dir = 9},/turf/simulated/floor/tiled,/area/lar_maria/sec_wing)
-"gC" = (/obj/structure/table/rack,/obj/item/weapon/flamethrower/full,/obj/machinery/atmospherics/unary/vent_scrubber/on,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/tiled,/area/lar_maria/sec_wing)
+"gC" = (/obj/structure/table/rack,/obj/item/weapon/reagent_containers/food/drinks/coffeecup/NT,/obj/machinery/atmospherics/unary/vent_scrubber/on,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/tiled,/area/lar_maria/sec_wing)
 "gD" = (/obj/structure/table/rack,/obj/item/weapon/storage/box/glowsticks,/obj/machinery/atmospherics/unary/vent_pump/on,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/tiled,/area/lar_maria/sec_wing)
 "gE" = (/obj/structure/closet,/obj/item/clothing/under/color/red,/obj/effect/floor_decal/corner/red{dir = 6},/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/tiled,/area/lar_maria/sec_wing)
 "gF" = (/turf/simulated/floor/tiled,/area/lar_maria/vir_access)

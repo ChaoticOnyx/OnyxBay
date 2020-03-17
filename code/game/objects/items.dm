@@ -626,7 +626,7 @@ var/list/global/slot_flags_enumeration = list(
 					to_chat(M, "<span class='warning'>You go blind!</span>")
 
 		var/obj/item/organ/external/affecting = H.get_organ(eyes.parent_organ)
-		affecting.take_damage(7)
+		affecting.take_external_damage(7)
 	else
 		M.take_organ_damage(7)
 	M.eye_blurry += rand(3,4)
@@ -851,9 +851,9 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/proc/update_weapon_desc()
 	return
-	
+
 /obj/item/proc/on_restraint_removal(mob/living/carbon/C) //Needed for syndicuffs
 	return
 
 /obj/item/proc/on_restraint_apply(mob/living/carbon/C)
-	return	
+	return

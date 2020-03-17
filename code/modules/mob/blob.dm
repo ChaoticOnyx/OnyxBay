@@ -5,6 +5,7 @@
 	icon_state = "marker"
 
 	see_in_dark = 8
+	sight = SEE_TURFS|SEE_MOBS|SEE_OBJS|SEE_SELF
 	see_invisible = SEE_INVISIBLE_MINIMUM
 	invisibility = INVISIBILITY_OBSERVER
 

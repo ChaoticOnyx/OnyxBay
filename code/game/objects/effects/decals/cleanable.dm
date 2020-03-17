@@ -1,4 +1,5 @@
 /obj/effect/decal/cleanable
+	anchored = TRUE
 	var/list/random_icon_states
 
 /obj/effect/decal/cleanable/clean_blood(ignore = 0)

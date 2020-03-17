@@ -9,18 +9,17 @@
 	active_power_usage = 5
 	var/mob/living/carbon/human/victim = null
 	var/strapped = 0.0
+	var/busy = FALSE
 
 	var/obj/machinery/computer/operating/computer = null
 
-/obj/machinery/optable/New()
-	..()
+/obj/machinery/optable/Initialize()
+	. = ..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
 		if (computer)
 			computer.table = src
 			break
-//	spawn(100) //Wont the MC just call this process() before and at the 10 second mark anyway?
-//		process()
 
 /obj/machinery/optable/ex_act(severity)
 
@@ -64,6 +63,49 @@
 	if (O.loc != src.loc)
 		step(O, get_dir(O, src))
 	return
+
+/obj/machinery/optable/verb/remove_clothes()
+	set name = "Remove Clothes"
+	set category = "IC"
+	set src in oview(1)
+
+	if(!ishuman(usr) && !issilicon(usr))
+		return
+	if(usr.incapacitated())
+		return
+	if(!victim)
+		to_chat(usr, SPAN_DANGER("There is no patient on the table."))
+		return
+	if(!ishuman(victim))
+		to_chat(usr, SPAN_DANGER("[victim] can't be undressed for some biological reasons."))
+		return
+	if(istype(victim.back, /obj/item/weapon/rig) && !victim.back.mob_can_unequip(victim, slot_back, TRUE))
+		to_chat(usr, SPAN_DANGER("\The [victim.back] must be removed."))
+		return
+	if(!locate(/obj/item/clothing) in victim.contents)
+		to_chat(usr, SPAN_DANGER("[victim] has no clothes to remove."))
+		return
+	if(stat & (BROKEN|NOPOWER))
+		to_chat(usr, SPAN_DANGER("\The [src] is unpowered."))
+		return
+	if(busy)
+		to_chat(usr, SPAN_DANGER("[victim] is already undressing."))
+		return
+	
+	busy = TRUE
+	usr.visible_message(SPAN_DANGER("[usr] begins to undress [victim] on the table with the built-in tool."),
+						SPAN_NOTICE("You begin to undress [victim] on the table with the built-in tool."))
+	if(do_after(usr, 5 SECONDS, victim))
+		if(!victim)
+			return
+		for(var/obj/item/clothing/C in victim.contents)
+			if(istype(C, /obj/item/clothing/mask/breath/anesthetic))
+				continue
+			victim.drop_from_inventory(C)
+			use_power_oneoff(100)
+		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [victim]."),
+							SPAN_NOTICE("You successfully remove all clothing from [victim]."))
+	busy = FALSE
 
 /obj/machinery/optable/proc/check_victim()
 	if(locate(/mob/living/carbon/human, src.loc))

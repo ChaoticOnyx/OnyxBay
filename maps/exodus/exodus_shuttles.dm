@@ -140,6 +140,31 @@
 	docking_controller = "cargo_bay"
 	autoset = 1
 
+//Cargo Elevator
+
+/datum/shuttle/autodock/ferry/elevator
+	name = "Cargo Elevator"
+	//category = /datum/shuttle/autodock/ferry/supply
+	shuttle_area = /area/shuttle/supply/elevator/upper
+	warmup_time = 4
+	waypoint_station = "nav_cargo_elevator_top"
+	waypoint_offsite = "nav_cargo_elevator_bottom"
+	sound_takeoff = 'sound/effects/lift_heavy_start.ogg'
+	sound_landing = 'sound/effects/lift_heavy_stop.ogg'
+	knockdown = 0
+	ceiling_type = null
+
+/obj/effect/shuttle_landmark/elevator/top
+	name = "Top Deck"
+	landmark_tag = "nav_cargo_elevator_top"
+	autoset = 0
+	base_area = /area/quartermaster/storage
+
+/obj/effect/shuttle_landmark/elevator/bottom
+	name = "Lower Deck"
+	landmark_tag = "nav_cargo_elevator_bottom"
+	autoset = 1
+
 //Research Shuttle
 
 /datum/shuttle/autodock/ferry/research

@@ -25,13 +25,256 @@
 		<td valign='top'>
 		<div align='center'><font size='3'><b>Список изменений сервера Chaotic Onyx</b></font></div>
 
-		<p><div align='center'><font size='3'><a href="https://wiki.ss13.ru/index.php?title=Main_Page">Вики</a> | <a href="https://github.com/ChaoticOnyx/OnyxBay">Репозиторий</a></font></div></p>
+		<p><div align='center'><font size='3'><a href="https://www.patreon.com/chaoticonyx">Патреон</a> | <a href="https://wiki.ss13.ru/index.php?title=Main_Page">Вики</a> | <a href="https://github.com/ChaoticOnyx/OnyxBay">Репозиторий</a></font></div></p>
+		<p><font size='2'>Разработка ведется при помощи игроков, которые поддерживают сервер своими пожертвованиями! Если вы хотите поддержать нас и принять участие в голосовании за то, какие фичи будут реализованы следующими, то подробную информацию можно найти в новостях на <a href="https://discord.gg/5BRMMFg">нашем сервере Discord!</a></font></p>
 		</td>
 	</tr>
 </table>
 		
 
 		<div class="commit sansserif">
+			<h2 class="date">4 March 2020</h2>
+			
+			<p><font size='2'><b>Stability Update.</b> В это обновление попало множество мелких технических исправлений, направленных на стабильность сервера, а также фиксы критических багов, вылезших после недавнего обновления. Если в последние пару дней вы испытывали какие-то новые проблемы, то они должны были решиться.</font></p>
+
+			<h3 class="author">TapKo4eB updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Согласно решению совета ограничил подключение к серверу с бета-версией BYOND. Теперь на наши сервера можно зайти только со стабильной версией v512.1488.</li>
+			</ul>
+
+			<h3 class="author">Hekko4 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Добавил возможность обойти лимит онлайна сервера для игроков, которые уже играют в раунде живыми персонажами. Однако количество таких игроков тоже ограничено. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1445">issue #1445</a>)</li>
+				<li class="tweak">Генокрад теперь высасывает реагенты вместе с кровью из своей жертвы. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1585">issue #1585</a>)</li>
+				<li class="tweak">Способность "Rapid Regeneration" теперь не может стаковаться, также она занерфана в два раза в целях баланса. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1065">issue #1065</a>)</li>
+				<li class="tweak">Способность "Finger Lockpick" приобретает задержку в десять секунд после каждого использования. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1064">issue #1064</a>)</li>
+				<li class="bugfix">Ревайв генокрада больше не будет возвращать протезированные конечности.</li>
+				<li class="bugfix">Убрал ограничение возраст аккаунта при конверте в революционеров/лоялистов. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1515">issue #1515</a>, <a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1360">issue #1360</a>)</li>
+				<li class="bugfix">Добавил проверку, которая больше не даст проводить операции над мертвыми органами. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/583">issue #583</a>)</li>
+			</ul>
+
+			<h3 class="author">MemoryDreams updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил ингейм-руководство по химии.</li>
+			</ul>
+
+			<h2 class="date">1 March 2020</h2>
+			<h3 class="author">Epicus updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил уникальные цвета никнеймов в OOC для <a href="https://www.patreon.com/chaoticonyx">игроков, которые поддерживают сервер через Патреон</a>. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1007">issue #1007</a>)</li>
+			</ul>
+
+			<h3 class="author">quardbreak updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил в игру возможность связать петлю из кабеля, на которой можно повеситься (или повесить кого-то).</li>
+				<li class="rscadd">Добавил напиткам новую опцию "выпить залпом". Аккуратнее с выбором напитка!</li>
+				<li class="tweak">Немного изменил метаболизм, чтобы выпивание залпом не приводило к смешным последствиям.</li>
+				<li class="tweak">Изменил механику ползания. Теперь ползать можно просто кликая левой кнопкой мыши.</li>
+				<li class="tweak">Оптимизировал педальное окно спавна - теперь оно не должно лагать.</li>
+				<li class="bugfix">Починил сообщение при атаке мелком. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1524">issue #1524</a>)</li>
+				<li class="bugfix">Исправил сервисным киборгам возможность класть предметы в микроволновку (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1584">issue #1584</a>)</li>
+			</ul>
+
+			<h3 class="author">TheUnknownOne updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил анализаторы голоса в автолат и вендоматы. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1189">issue #1189</a>)</li>
+				<li class="bugfix">Починил баг, что меню автолата переоткрывалось, когда пользователь отходил от него. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1550">issue #1550</a>)</li>
+				<li class="bugfix">Добавил проверку, которая не позволит людям в наручниках складывать стулья под собой.</li>
+			</ul>
+
+			<h3 class="author">TermService updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Полностью переписал механику огнемета. Теперь он стреляет "жидким" огнем, который пристает к людям или остается лежать на полу, но не поджигает всю атмосферу. Крафтится он на основе базового каркаса из автолата путем последовательного присоединения поджигателя, баллона с кислородом, канистры с топливом и, опционально, анализатора атмосферы, который будет показывать оставшееся давление в огнемете. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1053">issue #1053</a>)</li>
+				<li class="tweak">Поменял механику огня, сделал его более опасным. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1052">issue #1052</a>)</li>
+				<li class="bugfix">Починил отображение гранат на лице.</li>
+				<li class="bugfix">Выпилил для ИИ возможность убежать из аплоада ползком.</li>
+				<li class="bugfix">Исправил проверку расстояния при взаимодействии с одеялом. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/909">issue #909</a>)</li>
+			</ul>
+
+			<h3 class="author">vekotov updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил в настройки преференс на показ титров в конце раунда.</li>
+			</ul>
+
+			<h3 class="author">Hekko4 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил <a href="https://www.patreon.com/chaoticonyx">игрокам, поддержавшим сервер через Патреон</a> (с уровнем "Ученый" и выше), возможность использовать в OOC смайлики. Чтобы использовать смайлик, нужно написать его ключевое слово в следующем формате: :keyword:. Несколько примеров: :joy:, :capid:, :ian:. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1008">issue #1008</a>)</li>
+				<li class="rscadd">Добавил возможность привязывать к мышам небольшие предметы с помощью скотча. Для этого нужно взять в одну руку предмет, в другую скотч и кликнуть предметом по мыши с хелп-интентом. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1127">issue #1127</a>)</li>
+				<li class="rscadd">Вернул старый мини-ивент с дырами в пространственно-временном континууме, в которые определенно не стоит попадать.</li>
+				<li class="tweak">Сделал взрыв суперматерии значительно опаснее, чем было раньше! Чем сильнее разогнали двигатель - тем печальнее будут последствия взрыва..</li>
+				<li class="tweak">Сделал так, что коллекторы теперь разрушаются при слишком большой температуре или уровне радиации. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1616">issue #1616</a>)</li>
+				<li class="tweak">Исправил реакцию некоторых объектов на взрывы. Больше никаких невредимых модульных консолей на месте бывшего инженерного отсека.</li>
+				<li class="tweak">Убрал бесконечную энергию со спутника связи.</li>
+				<li class="tweak">Изменил механику освещения при эвакуации. Теперь вместо страшных оверлеев будет только меняться цвет освещения. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1318">issue #1318</a>)</li>
+				<li class="tweak">Портировал возможность с Бэя доставать таблетки из бутылки с таблетками при помощи активации её в руке.</li>
+				<li class="tweak">Переписал систему настройки персонажа. Решились некоторые проблемы оптимизации, но могут вылезти проблемы с сохранениями. Если что - репортьте.</li>
+				<li class="tweak">Изменил покраску четвертинок тайлов так, чтобы красилась та четверть, которая находится под курсором. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1604">issue #1604</a>)</li>
+				<li class="bugfix">Исправил Anomaly Power Utiliser. Теперь должны работать. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/480">issue #480</a>)</li>
+				<li class="bugfix">Суперматерию больше нельзя запихать в шкаф.</li>
+				<li class="bugfix">Починил возможность выливать/обливать напитками. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1510">issue #1510</a>)</li>
+				<li class="bugfix">Исправил способность Division генокрада. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1531">issue #1531</a>, <a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1054">issue #1054</a>, <a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1009">issue #1009</a>)</li>
+				<li class="bugfix">Починил отключение энергомечей при выбрасывании и не только. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1581">issue #1581</a>, <a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1285">issue #1285</a>) </li>
+				<li class="bugfix">Исправил отображение генокрада в стазисе для оверлея медицинских очков. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1541">issue #1541</a>)</li>
+				<li class="bugfix">Исправил дюп органов при попытке их съесть. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1576">issue #1576</a>)</li>
+				<li class="bugfix">Убрал из программы атмосферных тревог отображение зон вне станции. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1376">issue #1376</a>, <a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1203">issue #1203</a>)</li>
+				<li class="bugfix">Починил возможность опускать/поднимать маску на голове, когда сидишь на стуле. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1561">issue #1561</a>)</li>
+				<li class="bugfix">Починил руну Defile, которая превращала стены астероида в космос. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/850">issue #850</a>)</li>
+				<li class="bugfix">Исправил проблемы с респавном и заходом за ЕРТ после того как вы умерли вследствие чего-то УЖАСНОГО. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1487">issue #1487</a>)</li>
+				<li class="bugfix">Революционеры больше не могут конвертировать мышей и прочих мелких животных. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1505">issue #1505</a>)</li>
+				<li class="bugfix">Исправил "мигание" стеклянной двери в конце анимации.</li>
+				<li class="bugfix">Починил баг с возможностью тащить лужи топлива. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1255">issue #1255</a>)</li>
+				<li class="bugfix">Keycard Authentication Device теперь привязывается к карте, а не к персонажу и его ДНК. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/910">issue #910</a>)</li>
+				<li class="bugfix">Исправил автовыдачу ролей в течение раунда так, чтобы она не выдавала их мертвым мобам или мобам в критическом состоянии. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/277">issue #277</a>)</li>
+			</ul>
+
+			<h3 class="author">TatarTheBuilder updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="maptweak">Подобавлял аварийные створки там, где их не было, но где они часто нужны.</li>
+				<li class="maptweak">В некоторых местах немного изменил освещение.</li>
+				<li class="maptweak">Удалил платы генераторов щитов из хранилища, напрягайте ученых.</li>
+				<li class="maptweak">Убрал полоски тайлов со створками в доках, кроме доков со спасательными подами.</li>
+				<li class="maptweak">Добавил кнопку управления болтами реактора.</li>
+				<li class="maptweak">Добавил кнопку управления болтами СМЕСной с другой стороны двери.</li>
+				<li class="maptweak">Добавил факс вардену.</li>
+				<li class="maptweak">Добавил консоль и телепад торговца на Биркет.</li>
+				<li class="maptweak">Пофиксил кривые доступа на стеклодверях в ксенобиологии, слизни больше не смогут выбегать наружу.</li>
+				<li class="maptweak">Заменил ремни, которых не должно быть на карте, обычными тулбелтами.</li>
+				<li class="maptweak">Заменил зоны в лобби брига, инженерки и карго, дабы те поддерживали новую систему аварийного освещения.</li>
+			</ul>
+
+			<h2 class="date">19 February 2020</h2>
+			<h3 class="author">TatarTheBuilder updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Баффнул индустриальный риг. Уменьшил ограничения видимости, увеличил скорость и резисты к разным типам урона.</li>
+				<li class="maptweak">Перенес отделы ксеноисследований на нижний уровень станции.</li>
+				<li class="maptweak">Различные мелкие фиксы после недавних обновлений.</li>
+			</ul>
+
+			<h3 class="author">Hekko4 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил операционному столу специальный верб, который позволяет быстро раздевать людей на нем. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1446">issue #1446</a>)</li>
+				<li class="tweak">Вместо ПРОВАЛОВ при операции над закрытыми одеждой частями тела операция теперь просто блокируется.</li>
+				<li class="bugfix">Исправил показываемое название органа на котором находится мешающая проведению операции одежда. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1357">issue #1357</a>)</li>
+			</ul>
+
+			<h3 class="author">quardbreak updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил уведомление о рестарте в чат.</li>
+				<li class="bugfix">Починил отображение ссылок в чате. Теперь они должны нормально подчеркиваться и кликаться.</li>
+			</ul>
+
+			<h3 class="author">Epicus updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Пофиксил падение сервера из-за диалоговых облачков.</li>
+			</ul>
+
+			<h2 class="date">18 February 2020</h2>
+			<h3 class="author">TatarTheBuilder updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="maptweak">Фикс проебанной трубы скрабберов в техах медблока</li>
+				<li class="maptweak">Фикс проебанной транспортной трубы в медблоке</li>
+				<li class="maptweak">Фикс не того типа стен в гетто</li>
+				<li class="maptweak">Фикс застревающего шлюза синдишаттла</li>
+				<li class="maptweak">Фикс странных проводов АПЦ рядом с синдишаттлом</li>
+				<li class="maptweak">Фикс болтов на изоляторах в медбее</li>
+				<li class="maptweak">Фикс дырки в полу</li>
+				<li class="maptweak">Фикс проебанной зоны в техах научного</li>
+				<li class="maptweak">Добавил створки на входную дверь геттомедбея</li>
+				<li class="maptweak">Добавил створки на окна изоляторов и геттомедбея</li>
+				<li class="maptweak">Добавил двери в теха инженерного</li>
+			</ul>
+
+			<h3 class="author">Epicus updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Починил логи рантаймов в хабе.</li>
+			</ul>
+
+			<h2 class="date">17 February 2020</h2>
+			<h3 class="author">Hekko4 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил педалям профайлер.</li>
+				<li class="rscadd">Добавил педалям кнопку форсированного завершения раунда.</li>
+				<li class="tweak">Обновил меню голосований.</li>
+				<li class="tweak">У мобов с клиентом внутри теперь отключается ИИ.</li>
+				<li class="tweak">Убрал возможность заходить за главу будучи нелояльным при помощи великого рандома.</li>
+				<li class="tweak">Сделал верб 'who' для педалей информативнее и удобнее для просмотра.</li>
+				<li class="tweak">Де-админ теперь сохраняется при реконнекте.</li>
+				<li class="tweak">Убрал педалям некоторые лишние проки. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1083">issue #1083</a>)</li>
+				<li class="bugfix">Пофиксил значительную часть багов с блобом, в том числе и некорректное завершение раунда. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1201">issue #1201</a>)</li>
+				<li class="bugfix">Пофиксил генерацию подземной руды на астероиде.</li>
+				<li class="bugfix">Пофиксил появлявшееся во время операций сообщение.</li>
+				<li class="bugfix">Исправил Discord-OOC сообщения от администраторов.</li>
+			</ul>
+
+			<h3 class="author">TermService updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Теперь гранаты можно засовывать в рот и активировать! Чтобы засунуть гранату в рот - используйте меню раздевания/одевания, а для активации тыкайте в рот пустой рукой с харм-интентом. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1035">issue #1035</a>)</li>
+				<li class="bugfix">Починил вирусологическую коробку, из которой можно было доставать пробирки даже когда она закрыта. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/535">issue #535</a>)</li>
+			</ul>
+
+			<h3 class="author">TatarTheBuilder updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил возможность выбирать пункт назначения шаттлу торговцев. На выбор есть док в гетто, док в прибытии и открытый космос у станции.</li>
+				<li class="rscadd">Добавил оповещение о прибытии торговцев на станцию.</li>
+				<li class="rscadd">Добавил новую разгрузку в трех цветовых вариациях в лодаут.</li>
+				<li class="rscadd">Добавил новую-старую шляпу в ящик смотрителя.</li>
+				<li class="tweak">Значительно улучшил офицерский РИГ в оружейной.</li>
+				<li class="tweak">Улучшил характеристики тяжелого РИГа ЕРТ.</li>
+				<li class="tweak">Изменил размер индустриального и экспериментального велдеров, оба теперь влезают в пояс.</li>
+				<li class="imageadd">Добавил новые спрайты для шаттла торговцев.</li>
+				<li class="imageadd">Добавил трапоспрайты для обоих униформ смотрителя.</li>
+				<li class="imageadd">Добавил новые спрайты для тяжелого бронежилета смотрителя.</li>
+				<li class="imageadd">Добавил две новых голограммы для ИИ.</li>
+				<li class="imageadd">Добавил три новых иконки ядра для ИИ.</li>
+				<li class="imageadd">Обновил спрайт РЦД.</li>
+				<li class="maptweak">Добавил новый док в прибытие.</li>
+				<li class="maptweak">Немного изменил базу торговцев, в основном в плане спавна лута.</li>
+				<li class="maptweak">Пофиксил многие мелкие моменты на аванпосту и шахтерке в целом.</li>
+				<li class="maptweak">Изменил стыковочные порты спасательных капсул.</li>
+				<li class="maptweak">Пофиксил некоторые проблемы коробки, подробнее <a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1368">тут</a>.</li>
+				<li class="maptweak">Пофиксил все камеры на коробке, теперь каждая из них имеет уникальный тэг, соответствующий местоположению.</li>
+				<li class="maptweak">Пофиксил некоторые мелкие проблемы в бриге.</li>
+				<li class="maptweak">Добавил створки на окна в офис смотрителя.</li>
+				<li class="maptweak">В западных техах брига добавил лестницу в гетто.</li>
+				<li class="maptweak">На этот раз точно пофиксил криокапсулы в карцерах.</li>
+				<li class="maptweak">Расширил используемую часть подвала брига, добавил в подвал отдельные криокапсулы для офицеров.</li>
+				<li class="maptweak">В офисе агента внутренних дел теперь есть выход в теха.</li>
+				<li class="maptweak">Убрал новогоднюю чепуху из бара.</li>
+				<li class="maptweak">Вернул невесть как пропавший психоскоп в офис директора исследований.</li>
+				<li class="maptweak">Изменил теха вокруг научного и медицинского отсеков.</li>
+				<li class="maptweak">Слегка изменил сад в медблоке.</li>
+				<li class="maptweak">Наконец-то починил систему доставки, теперь доставка в офис детектива, бриг и в офис главе охраны работает корректно.</li>
+				<li class="maptweak">Докинул в ящики глав телескопические дубинки.</li>
+				<li class="maptweak">[Обновление гетто] Выбросил в окно громадный заброшенный медбей в гетто, целиком.</li>
+				<li class="maptweak">[Обновление гетто] Добавил на место бывшего геттомедбея расширение дормиториев, с тремя новыми кабинками и театром с отдельными комнатами для клоуна и мима.</li>
+				<li class="maptweak">[Обновление гетто] Добавил отдельные доступы для клоуна и мима. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1103">issue #1103</a>)</li>
+				<li class="maptweak">[Обновление гетто] Сделал геттобриг полностью юзабельным, добавил камеры, разделил на зоны, добавил тех-зону, два "запасных" карцера, которые могут использоваться как камеры в случае переполнения основных. Да, на такое жаловались.</li>
+				<li class="maptweak">[Обновление гетто] Переделал грузовую часть карго, значительно ужал её, добавил грузовой лифт, перенес склад в гетто, на месте склада сделал комнату отдыха.</li>
+				<li class="maptweak">[Обновление гетто] Переделал южную часть медблока, убрал палаты, офис психолога и туалеты на нижний уровень.</li>
+			</ul>
+				
+			<h3 class="author">TapKo4eB updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Добавил Crockett's Theme в ротацию лобби-музыки.</li>
+				<li class="tweak">Добавил направленность для звука выстрела вне экрана.</li>
+				<li class="tweak">Убрал параноидальную фичу, что с некоторым шансом карта капитана не спавнилась. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1391">issue #1391</a>, <a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1387">issue #1387</a>)</li>
+				<li class="maptweak">Расширил площадь уровней с дереликтами.</li>
+				<li class="maptweak">Добавил астероидный пояс вокруг дереликта со снежным астероидом.</li>
+				<li class="bugfix">Починил уголки шаттлов.</li>
+				<li class="bugfix">Вернул вывод в экзамайн характеристик предметов (размеры, вес). (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1089">issue #1089</a>)</li>
+				<li class="bugfix">Убрал звук дальнего взрыва для небольших взрывов. (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1400">issue #1400</a>)</li>
+			</ul>
+				
+			<h3 class="author">JamsMor updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Изменил описание флавора, запретив писать ООЦ информацию в них.</li>
+			</ul>
+
+			<h3 class="author">Animesku updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="imageadd">Перерисовал халаты врачей и ученых. Теперь они застегиваются полностью! (<a href="https://github.com/ChaoticOnyx/OnyxBay/issues/1344">issue #1344</a>)</li>
+			</ul>
+			
 			<h2 class="date">29 January 2020</h2>
 			<h3 class="author">Hekko4 updated:</h3>
 			<ul class="changes bgimages16">

@@ -322,56 +322,6 @@
 	outfit.equip(H)
 	log_and_message_admins("changed the equipment of [key_name(H)] to [outfit.name].")
 
-/client/proc/startSinglo()
-	set category = "Debug"
-	set name = "Start Singularity"
-	set desc = "Sets up the singularity and all machines to get power flowing"
-
-	if(alert("Are you sure? This will start up the engine. Should only be used during debug!",,"Yes","No") != "Yes")
-		return
-
-	for(var/obj/machinery/power/emitter/E in world)
-		if(E.anchored)
-			E.active = 1
-
-	for(var/obj/machinery/field_generator/F in world)
-		if(F.anchored)
-			F.Varedit_start = 1
-	spawn(30)
-		for(var/obj/machinery/the_singularitygen/G in world)
-			if(G.anchored)
-				var/obj/singularity/S = new /obj/singularity(get_turf(G), 50)
-				spawn(0)
-					qdel(G)
-				S.energy = 1750
-				S.current_size = 7
-				S.icon = 'icons/effects/224x224.dmi'
-				S.icon_state = "singularity_s7"
-				S.pixel_x = -96
-				S.pixel_y = -96
-				S.grav_pull = 0
-				//S.consume_range = 3
-				S.dissipate = 0
-				//S.dissipate_delay = 10
-				//S.dissipate_track = 0
-				//S.dissipate_strength = 10
-
-	for(var/obj/machinery/power/rad_collector/Rad in world)
-		if(Rad.anchored)
-			if(!Rad.P)
-				var/obj/item/weapon/tank/phoron/Phoron = new /obj/item/weapon/tank/phoron(Rad)
-				Phoron.air_contents.gas["phoron"] = 70
-				Rad.drainratio = 0
-				Rad.P = Phoron
-				Phoron.loc = Rad
-
-			if(!Rad.active)
-				Rad.toggle_power()
-
-	for(var/obj/machinery/power/smes/SMES in world)
-		if(SMES.anchored)
-			SMES.input_attempt = 1
-
 /client/proc/cmd_debug_mob_lists()
 	set category = "Debug"
 	set name = "Debug Mob Lists"
@@ -483,3 +433,26 @@
 
 	images -= powernet_markers
 	QDEL_NULL_LIST(powernet_markers)
+
+/client/proc/hard_del(mob/user)
+	set category = "Debug"
+	set name = "Toggle Hard deleting"
+	set desc = "No idea what is that? Dont touch it or ask other admins."
+
+	if(!check_rights(R_DEBUG))
+		return
+
+	if (GAME_STATE < RUNLEVEL_GAME)
+		alert("Wait until the game starts")
+		return
+
+	var/mob/ask = alert(user, "Hard delete queue is now in [SSgarbage.avoid_harddel ? "inactive" : "active"] stage.","Toggle Hard delete queue?", SSgarbage.avoid_harddel ? "Enable" : "Disable", "Cancel")
+
+	if(ask == "Enable")
+		SSgarbage.toggle_harddel(FALSE)
+		log_and_message_admins("start hard deleting garbage queue.", user)
+
+	if(ask == "Disable")
+		SSgarbage.toggle_harddel(TRUE)
+		log_and_message_admins("stop hard deleting garbage queue.", user)
+	return

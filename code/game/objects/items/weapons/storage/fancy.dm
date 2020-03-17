@@ -24,10 +24,13 @@
 
 /obj/item/weapon/storage/fancy/update_icon()
 	if(!opened)
-		src.icon_state = initial(icon_state)
-	else
-		var/key_count = count_by_type(contents, key_type)
-		src.icon_state = "[initial(icon_state)][key_count]"
+		icon_state = initial(icon_state)
+		return
+
+	var/key_count = count_by_type(contents, key_type)
+	icon_state = "[initial(icon_state)][key_count]"
+
+	. = ..()
 
 /obj/item/weapon/storage/fancy/examine(mob/user)
 	if(!..(user, 1))
@@ -112,6 +115,8 @@
 	for(var/obj/item/weapon/pen/crayon/crayon in contents)
 		overlays += image('icons/obj/crayons.dmi',crayon.colourName)
 
+	. = ..()
+
 ////////////
 //CIG PACK//
 ////////////
@@ -135,15 +140,15 @@
 	atom_flags |= ATOM_FLAG_NO_REACT|ATOM_FLAG_OPEN_CONTAINER
 	create_reagents(5 * max_storage_space)//so people can inject cigarettes without opening a packet, now with being able to inject the whole one
 
-/obj/item/weapon/storage/fancy/cigarettes/remove_from_storage(obj/item/W as obj, atom/new_location)
+/obj/item/weapon/storage/fancy/cigarettes/remove_from_storage(obj/item/W, atom/new_location)
 	// Don't try to transfer reagents to lighters
 	if(istype(W, /obj/item/clothing/mask/smokable/cigarette))
 		var/obj/item/clothing/mask/smokable/cigarette/C = W
 		reagents.trans_to_obj(C, (reagents.total_volume/contents.len))
 	..()
 
-/obj/item/weapon/storage/fancy/cigarettes/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M, /mob))
+/obj/item/weapon/storage/fancy/cigarettes/attack(mob/living/carbon/M, mob/living/carbon/user)
+	if(!ismob(M))
 		return
 
 	if(M == user && user.zone_sel.selecting == BP_MOUTH && contents.len > 0 && !user.wear_mask)
@@ -154,7 +159,7 @@
 			break
 
 		if(cig == null)
-			to_chat(user, "<span class='notice'>Looks like the packet is out of cigarettes.</span>")
+			to_chat(user, SPAN_NOTICE("Looks like the packet is out of cigarettes."))
 			return
 
 		// Instead of running equip_to_slot_if_possible() we check here first,
@@ -168,7 +173,7 @@
 		user.equip_to_slot(cig, slot_wear_mask)
 
 		reagents.maximum_volume = 5 * contents.len
-		to_chat(user, "<span class='notice'>You take a cigarette out of the pack.</span>")
+		to_chat(user, SPAN_NOTICE("You take a cigarette out of the pack.</span>"))
 		update_icon()
 	else
 		..()
@@ -275,7 +280,7 @@
 	atom_flags |= ATOM_FLAG_NO_REACT
 	create_reagents(10 * storage_slots)
 
-/obj/item/weapon/storage/fancy/cigar/remove_from_storage(obj/item/W as obj, atom/new_location)
+/obj/item/weapon/storage/fancy/cigar/remove_from_storage(obj/item/W, atom/new_location)
 	var/obj/item/clothing/mask/smokable/cigarette/cigar/C = W
 	if(!istype(C)) return
 	reagents.trans_to_obj(C, (reagents.total_volume/contents.len))
@@ -298,7 +303,7 @@
 
 /obj/item/weapon/storage/fancy/vials/update_icon()
 	var/key_count = count_by_type(contents, key_type)
-	src.icon_state = "[initial(icon_state)][key_count]"
+	icon_state = "[initial(icon_state)][key_count]"
 
 /obj/item/weapon/storage/lockbox/vials
 	name = "secure vial storage box"
@@ -313,14 +318,10 @@
 	req_access = list(access_virology)
 	can_hold = list(/obj/item/weapon/reagent_containers/glass/beaker/vial)
 
-/obj/item/weapon/storage/lockbox/vials/New()
-	..()
-	update_icon()
-
 /obj/item/weapon/storage/lockbox/vials/update_icon()
 	var/total_contents = count_by_type(contents, /obj/item/weapon/reagent_containers/glass/beaker/vial)
-	src.icon_state = "vialbox[Floor(total_contents)]"
-	src.overlays.Cut()
+	overlays.Cut()
+	icon_state = "vialbox[Floor(total_contents)]"
 	if (!broken)
 		overlays += image(icon, src, "led[locked]")
 		if(locked)
@@ -328,7 +329,3 @@
 	else
 		overlays += image(icon, src, "ledb")
 	return
-
-/obj/item/weapon/storage/lockbox/vials/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	. = ..()
-	update_icon()

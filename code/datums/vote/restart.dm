@@ -1,9 +1,6 @@
 /datum/vote/restart
 	name = "restart"
 	choices = list("Restart Round","Continue Playing")
-	priorities = list("First")
-	weights = list(1)
-	results_length = 1
 
 /datum/vote/restart/can_run(mob/creator, automatic)
 	if(!automatic && (!config.allow_vote_restart || !is_admin(creator)))

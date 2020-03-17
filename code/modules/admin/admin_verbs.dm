@@ -35,7 +35,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_delete,		//delete an instance/object/mob/etc,
 	/client/proc/cmd_admin_check_contents,	//displays the contents of an instance,
 	/datum/admins/proc/access_news_network,	//allows access of newscasters,
-	/client/proc/giveruntimelog,		//allows us to give access to runtime logs to somebody,
 	/client/proc/getserverlog,			//allows us to fetch server logs (diary) for other days,
 	/client/proc/jumptocoord,			//we ghost and jump to a coordinate,
 	/client/proc/Getmob,				//teleports a mob to our location,
@@ -115,10 +114,6 @@ var/list/admin_verbs_sounds = list(
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
 	/client/proc/play_server_sound,
-	/client/proc/cuban_pete,
-	/client/proc/bananaphone,
-	/client/proc/space_asshole,
-	/client/proc/honk_theme,
 	)
 
 var/list/admin_verbs_fun = list(
@@ -161,10 +156,10 @@ var/list/admin_verbs_server = list(
 	/client/proc/Set_Holiday,
 	/datum/admins/proc/startnow,
 	/datum/admins/proc/restart,
+	/datum/admins/proc/end_round,
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
-	/client/proc/toggle_log_hrefs,
 	/datum/admins/proc/immreboot,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
@@ -183,7 +178,6 @@ var/list/admin_verbs_server = list(
 	)
 
 var/list/admin_verbs_debug = list(
-	/client/proc/getruntimelog,                     // allows us to access runtime logs to somebody,
 	/client/proc/cmd_admin_list_open_jobs,
 	/client/proc/Debug2,
 	/client/proc/ZASSettings,
@@ -209,7 +203,6 @@ var/list/admin_verbs_debug = list(
 	/client/proc/enable_debug_verbs,
 	/client/proc/callproc,
 	/client/proc/callproc_target,
-	/client/proc/SDQL_query,
 	/client/proc/SDQL2_query,
 	/client/proc/Jump,
 	/client/proc/jumptomob,
@@ -224,7 +217,9 @@ var/list/admin_verbs_debug = list(
 	/client/proc/cmd_analyse_health_panel,
 	/client/proc/visualpower,
 	/client/proc/visualpower_remove,
-	/client/proc/enable_profiler
+	/client/proc/hard_del,
+	/client/proc/enable_profiler,
+	/client/proc/bluespace_tech
 	)
 
 var/list/admin_verbs_paranoid_debug = list(
@@ -288,10 +283,10 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/Set_Holiday,
 	/datum/admins/proc/startnow,
 	/datum/admins/proc/restart,
+	/datum/admins/proc/end_round,
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
-	/client/proc/toggle_log_hrefs,
 	/datum/admins/proc/immreboot,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
@@ -306,7 +301,6 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/reload_admins,
 	/client/proc/cmd_debug_make_powernets,
 	/client/proc/debug_controller,
-	/client/proc/startSinglo,
 	/client/proc/cmd_debug_mob_lists,
 	/client/proc/cmd_debug_del_all,
 	/client/proc/cmd_debug_tog_aliens,
@@ -318,7 +312,8 @@ var/list/admin_verbs_hideable = list(
 	/datum/admins/proc/ictus,
 	/client/proc/projectile_basketball,
 	/client/proc/toggle_possess_mode,
-	/client/proc/enable_profiler
+	/client/proc/enable_profiler,
+	/client/proc/bluespace_tech
 	)
 
 var/list/admin_verbs_mod = list(
@@ -464,13 +459,13 @@ var/list/admin_verbs_mentor = list(
 	if(holder && mob)
 		if(mob.invisibility == INVISIBILITY_OBSERVER)
 			mob.set_invisibility(initial(mob.invisibility))
-			to_chat(mob, "<span class='danger'>Invisimin off. Invisibility reset.</span>")
+			to_chat(mob, SPAN_DANGER("Invisimin off. Invisibility reset."))
 			mob.alpha = max(mob.alpha + 100, 255)
 		else
 			mob.set_invisibility(INVISIBILITY_OBSERVER)
-			to_chat(mob, "<span class='notice'>Invisimin on. You are now as invisible as a ghost.</span>")
+			to_chat(mob, SPAN_NOTICE("Invisimin on. You are now as invisible as a ghost."))
 			mob.alpha = max(mob.alpha - 100, 0)
-
+		log_admin("[key_name(src)] [mob.invisibility == INVISIBILITY_OBSERVER ? "enabled" : "disabled"] invisimin mode.")
 
 /client/proc/player_panel()
 	set name = "Player Panel"
@@ -544,7 +539,7 @@ var/list/admin_verbs_mentor = list(
 		prefs.ooccolor = input(src, "Please select your OOC colour.", "OOC colour") as color
 	else if(response == "Reset to default")
 		prefs.ooccolor = initial(prefs.ooccolor)
-	prefs.save_preferences()
+	SScharacter_setup.queue_preferences_save(prefs)
 
 	feedback_add_details("admin_verb","OC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	return
@@ -563,7 +558,7 @@ var/list/admin_verbs_mentor = list(
 	var/datum/preferences/D
 	var/client/C = GLOB.ckey_directory[warned_ckey]
 	if(C)	D = C.prefs
-	else	D = preferences_datums[warned_ckey]
+	else	D = SScharacter_setup.preferences_datums[warned_ckey]
 
 	if(!D)
 		to_chat(src, "<font color='red'>Error: warn(): No such ckey found.</font>")
@@ -695,18 +690,6 @@ var/list/admin_verbs_mentor = list(
 			to_chat(src, "<span class='interface'>You are now a normal player.</span>")
 			verbs |= /client/proc/readmin_self
 	feedback_add_details("admin_verb","DAS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/client/proc/toggle_log_hrefs()
-	set name = "Toggle href logging"
-	set category = "Server"
-	if(!holder)	return
-	if(config)
-		if(config.log_hrefs)
-			config.log_hrefs = 0
-			to_chat(src, "<b>Stopped logging hrefs</b>")
-		else
-			config.log_hrefs = 1
-			to_chat(src, "<b>Started logging hrefs</b>")
 
 /client/proc/check_ai_laws()
 	set name = "Check AI Laws"
@@ -942,9 +925,10 @@ var/list/admin_verbs_mentor = list(
 	set name = "Man Up Global"
 	set desc = "Tells everyone to man up and deal with it."
 
-	for (var/mob/T as mob in SSmobs.mob_list)
-		to_chat(T, "<br><center><span class='notice'><b><font size=4>Man up.<br> Deal with it.</font></b><br>Move on.</span></center><br>")
-		sound_to(T, 'sound/voice/ManUp1.ogg')
+	for(var/client/C in GLOB.clients)
+		to_chat(C, "<br><center><span class='notice'><b><font size=4>Man up.<br> Deal with it.</font></b><br>Move on.</span></center><br>")
+		if(C.get_preference_value(/datum/client_preference/play_admin_midis) == GLOB.PREF_YES)
+			sound_to(C, 'sound/voice/ManUp1.ogg')
 
 	log_and_message_admins("told everyone to man up and deal with it.")
 
@@ -976,6 +960,8 @@ var/list/admin_verbs_mentor = list(
 	set desc = "Access BYOND's proc performance profiler"
 
 	if(!check_rights(R_DEBUG))
+		return
+	if(alert(src, "This will lead to a huge lag, are you sure you want to enable profiler?", "Enable Profiler", "Yes", "No") == "No")
 		return
 
 	log_and_message_admins("has enabled performance profiler. This may cause lag.")

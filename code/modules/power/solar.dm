@@ -317,14 +317,14 @@ var/list/solars_list = list()
 			if(istype(M, /obj/machinery/power/solar))
 				var/obj/machinery/power/solar/S = M
 				if(!S.control) //i.e unconnected
-					S.set_control(src)
-					connected_panels |= S
+					if(S.set_control(src))
+						connected_panels |= S
 			else if(istype(M, /obj/machinery/power/tracker))
 				if(!connected_tracker) //if there's already a tracker connected to the computer don't add another
 					var/obj/machinery/power/tracker/T = M
 					if(!T.control) //i.e unconnected
-						connected_tracker = T
-						T.set_control(src)
+						if(T.set_control(src))
+							connected_tracker = T
 
 //called by the sun controller, update the facing angle (either manually or via tracking) and rotates the panels accordingly
 /obj/machinery/power/solar_control/proc/update()
@@ -514,11 +514,14 @@ var/list/solars_list = list()
 	track = 2 // Auto tracking mode
 
 /obj/machinery/power/solar_control/autostart/Initialize()
+	. = ..()
+	addtimer(CALLBACK(src, .proc/autoconnect), 0)
+
+/obj/machinery/power/solar_control/autostart/proc/autoconnect()
 	search_for_connected()
 	if(connected_tracker && track == 2)
 		connected_tracker.set_angle(GLOB.sun.angle)
 		set_panels(cdir)
-	. = ..()
 
 //
 // MISC

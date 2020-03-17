@@ -1943,9 +1943,9 @@
 		var/obj/item/organ/internal/heart/L = H.internal_organs_by_name[BP_HEART]
 		if (L && istype(L))
 			if(M.chem_doses[type] < 120)
-				L.take_damage(10 * removed, 0)
+				L.take_internal_damage(10 * removed, 0)
 			else
-				L.take_damage(100, 0)
+				L.take_internal_damage(100, 0)
 
 /datum/reagent/ethanol/red_mead
 	name = "Red Mead"
@@ -2398,13 +2398,13 @@
 
 /datum/reagent/ethanol/witcher
 	name = "Witcher"
-	description = "“People,” Geralt turned his head, “like to invent monsters and monstrosities. Then they seem less monstrous themselves”"
+	description = "\"People,\" Geralt turned his head, \"like to invent monsters and monstrosities. Then they seem less monstrous themselves\""
 	color = "#f6f293"
 	strength = 15
 	taste_description = "potion"
 
 	glass_name = "witchers' drink"
-	glass_desc = "“People,” Geralt turned his head, “like to invent monsters and monstrosities. Then they seem less monstrous themselves”"
+	glass_desc = "\"People,\" Geralt turned his head, \"like to invent monsters and monstrosities. Then they seem less monstrous themselves\""
 
 /datum/reagent/ethanol/witcher/wolf
 	name = "School of the Wolf"

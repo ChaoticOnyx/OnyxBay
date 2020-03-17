@@ -345,8 +345,8 @@
 		else
 			use_power_oneoff(360)
 	else
-		log_admin("[usr]([usr.ckey]) has forced open an emergency shutter.")
-		message_admins("[usr]([usr.ckey]) has forced open an emergency shutter.")
+		var/area/A = get_area(src)
+		log_admin("[usr]([usr.ckey]) has forced open an emergency shutter at X:[x], Y:[y], Z:[z] Area: [A.name].")
 	latetoggle()
 	return ..()
 

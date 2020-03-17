@@ -1,4 +1,4 @@
-#define SECBOT_WAIT_TIME	5		//number of in-game seconds to wait for someone to surrender
+#define SECBOT_WAIT_TIME	1		//number of in-game seconds to wait for someone to surrender
 #define SECBOT_THREAT_ARREST 4		//threat level at which we decide to arrest someone
 #define SECBOT_THREAT_ATTACK 8		//threat level at which was assume immediate danger and attack right away
 
@@ -17,7 +17,7 @@
 	light_strength = 0 //stunbaton makes it's own light
 
 	RequiresAccessToToggle = 1 // Haha no
-	
+
 	var/with_nade = 0
 
 	var/idcheck = 0 // If true, arrests for having weapons without authorization.
@@ -33,17 +33,17 @@
 
 	var/list/threat_found_sounds = list('sound/voice/bcriminal.ogg', 'sound/voice/bjustice.ogg', 'sound/voice/bfreeze.ogg')
 	var/list/preparing_arrest_sounds = list('sound/voice/bfreeze.ogg')
-	
+
 	var/list/secbot_verbs_default = list(
 		/mob/living/bot/secbot/proc/downonthefloor,
 		/mob/living/bot/secbot/proc/threatdetected,
 	)
-	
+
 	var/list/hud_list[10]
-		
+
 	var/list/secbot_dreams = list(
 		"beep-boop",
-		"beep",	
+		"beep",
 		"11100001000100100",
 		"00000101111000111",
 		"11110000100011000",
@@ -54,9 +54,9 @@
 		"00101001010100100",
 		"10111111101101001",
 		"01100001000110011",
-		"11111100011111100",		
-	)		
-	
+		"11111100011111100",
+	)
+
 	var/arrest_message = list(
 		"Remember, crime doesn't pay!",
 		"Use your words, not your fists!",
@@ -73,16 +73,16 @@
 		"You're lucky that I only have a stunbaton.",
 		"You can’t even offer a bribe, scum.",
 		"I'm too lazy to list your violations.",
-	)	
+	)
 
 /mob/living/bot/secbot/beepsky
 	name = "Officer Beepsky"
 	desc = "It's Officer Beep O'sky! Powered by a potato and a shot of whiskey. There is text engraved on its case &quot;I'm back, scumbags&quot;."
 	will_patrol = 1
-	
+
 	secbot_dreams = list(
 		"beep-boop",
-		"beep",	
+		"beep",
 		"meat scumbags",
 		"eau-de-vie",
 		"whiskey",
@@ -90,7 +90,7 @@
 		"im the law",
 		"whiskey sour",
 		"cuba libre",
-		"cyborgs are bigger than me",	
+		"cyborgs are bigger than me",
 		"crewmens are bigger than me",
 		"binge",
 		"booze",
@@ -98,8 +98,8 @@
 		"bouse",
 		"souse",
 		"medbot",
-		"well, at least not a lemon"		
-	)	
+		"well, at least not a lemon"
+	)
 
 /mob/living/bot/secbot/New()
 	..()
@@ -108,14 +108,14 @@
 	stun_baton.set_status(1, null)
 
 	handcuffs = new(src)
-	
+
 	src.verbs |= secbot_verbs_default
-	
+
 	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")	
+	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 
 /mob/living/bot/secbot/Destroy()
 	qdel(stun_baton)
@@ -263,14 +263,14 @@
 /mob/living/bot/secbot/proc/cuff_target(mob/living/carbon/C)
 	if(istype(C) && !C.handcuffed)
 		say(pick(arrest_message))
-		playsound(src.loc, pick(preparing_arrest_sounds), 50)	
+		playsound(src.loc, pick(preparing_arrest_sounds), 50)
 		handcuffs.place_handcuffs(C, src)
 	resetTarget() //we're done, failed or not. Don't want to get stuck if C is not
 
 /mob/living/bot/secbot/UnarmedAttack(mob/M, proximity)
 	if(!..())
 		return
-		
+
 	if(!istype(M))
 		return
 
@@ -282,9 +282,9 @@
 	if(istype(M, /mob/living/simple_animal))
 		a_intent = I_HURT
 	else
-		a_intent = I_GRAB
+		a_intent = I_HELP
 
-	stun_baton.attack(M, src, BP_CHEST) //robots and turrets aim for center of mass
+	stun_baton.attack(M, src, pick(list(BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG)))
 	flick(attack_state, src)
 
 /mob/living/bot/secbot/explode()
@@ -395,12 +395,12 @@
 		if(!in_range(src, usr) && loc != usr)
 			return
 		created_name = t
-		
+
 /mob/living/bot/secbot/say_verb(message as text)
 	set name = "Say"
 	set category = "IC"
 	set hidden = 1
-	
+
 	to_chat(usr,"<span class='danger'>An arbitrary speech module is not installed in the [src]!</span>")
 
 /mob/living/bot/secbot/say_wrapper()
@@ -408,14 +408,14 @@
 	set hidden = 1
 
 	to_chat(usr,"<span class='danger'>An arbitrary speech module is not installed in the [src]!</span>")
-	
+
 /mob/living/bot/secbot/proc/downonthefloor()
 	set category = "Communication"
 	set name = "Arrest"
-	
+
 	var/list/mobs_in_secbot_range = mobs_in_view(src)
 	mobs_in_secbot_range -= src
-	
+
 	if(length(mobs_in_secbot_range) > 0)
 		var/mob/custom_target = input("Who is subject to arrest?", "Nearby subjects:") as null|anything in mobs_in_secbot_range
 		if(custom_target)
@@ -426,14 +426,14 @@
 				to_chat(usr,"<span class='notice'>Security service notified.</span>")
 	else
 		to_chat(usr,"<span class='danger'>There are no suitable targets for arrest!</span>")
-		
+
 /mob/living/bot/secbot/proc/threatdetected()
 	set category = "Communication"
 	set name = "Threat Detected"
-	
+
 	var/list/mobs_in_secbot_range = mobs_in_view(src)
 	mobs_in_secbot_range -= src
-	
+
 	if(length(mobs_in_secbot_range) > 0)
 		var/mob/custom_target = input("Which subject is dangerous?", "Nearby subjects:") as null|anything in mobs_in_secbot_range
 		if(check_threat(custom_target) > 0)
@@ -441,17 +441,17 @@
 			custom_emote(1, "points at [custom_target.name]!")
 			playsound(src.loc, pick(threat_found_sounds), 50)
 		else
-			to_chat(usr,"<span class='warning'>This target is safe.</span>")		
+			to_chat(usr,"<span class='warning'>This target is safe.</span>")
 	else
-		to_chat(usr,"<span class='danger'>There are no suitable targets for arrest!</span>")		
-	
+		to_chat(usr,"<span class='danger'>There are no suitable targets for arrest!</span>")
+
 /mob/living/bot/secbot/Life()
 	..()
 	if(client)
 		process_sec_hud(src,1)
 	if(!client && prob(10))
 		to_chat(src, SPAN_NOTICE("...[pick(secbot_dreams)]..."))
-		
+
 /mob/living/bot/secbot/Stat()
 	..()
 	if(statpanel("Status"))
@@ -462,35 +462,35 @@
 			if(1)
 				stat(null,"Threat identifier status: Scrambled (DANGER)")
 			if(2)
-				stat(null,"Threat identifier status: ERROROROROROR-----")				
+				stat(null,"Threat identifier status: ERROROROROROR-----")
 		if(idcheck)
 			stat(null,"Check for weapon authorization: Yes")
 		else
 			stat(null,"Check for weapon authorization: No")
-			
+
 		if(check_records)
-			stat(null,"Check security records:: Yes")		
+			stat(null,"Check security records:: Yes")
 		else
 			stat(null,"Check security records:: No")
-			
+
 		if(check_arrest)
-			stat(null,"Check arrest status: Yes")		
+			stat(null,"Check arrest status: Yes")
 		else
 			stat(null,"Check arrest status: No")
-			
+
 		if(declare_arrests)
-			stat(null,"Report arrests: Yes")		
+			stat(null,"Report arrests: Yes")
 		else
 			stat(null,"Report arrests: No")
-			
+
 		if(will_patrol)
-			stat(null,"Auto patrol: On")		
+			stat(null,"Auto patrol: On")
 		else
 			stat(null,"Auto patrol: Off")
-			
+
 		stat(null,"-------------")
 
-//**///////////////////////////////////////////////////////////**//	
+//**///////////////////////////////////////////////////////////**//
 //**///////////////////////////BOOPSKY/////////////////////////**//
 //**///////////////////////////////////////////////////////////**//
 
@@ -498,10 +498,10 @@
 	name = "Officer Boopsky"
 	desc = "It's Officer Boop O'sky! Powered by a potato and a shot of liquor. There is text engraved on its case &quot;I'm back, scumbags&quot;."
 	will_patrol = 1
-	
+
 	secbot_dreams = list(
 		"beep-boop",
-		"beep",	
+		"beep",
 		"meat scumbags",
 		"brave bull",
 		"liquor",
@@ -509,7 +509,7 @@
 		"im the law",
 		"ibn batutta",
 		"sui dream",
-		"cyborgs are bigger than me",	
+		"cyborgs are bigger than me",
 		"crewmens are bigger than me",
 		"binge",
 		"booze",
@@ -517,32 +517,32 @@
 		"bouse",
 		"souse",
 		"beepsky",
-		"medbot",	
-		"well, at least not a lemon"			
+		"medbot",
+		"well, at least not a lemon"
 	)
-	
-//**///////////////////////////////////////////////////////////**//	
+
+//**///////////////////////////////////////////////////////////**//
 //**///////////////////////////DOOMSKY/////////////////////////**//
-//**///////////////////////////////////////////////////////////**//	
+//**///////////////////////////////////////////////////////////**//
 
 /mob/living/bot/secbot/doomsky
 	name = "Agent Doomsky"
 	desc = "It's Agent Doom O'sky! Powered by a propaganda and a shot of vodka. There is text engraved on its case &quot;Сorporation must die&quot;."
 	will_patrol = 1
 	emagged = 2
-	declare_arrests = 0	
+	declare_arrests = 0
 	maxHealth = 125
 	health = 125
 	with_nade = 1
-	
+
 	threat_found_sounds = list('sound/voice/doomsky1.ogg', 'sound/voice/doomsky2.ogg', 'sound/voice/doomsky3.ogg')
 	preparing_arrest_sounds = list('sound/voice/doomsky1.ogg', 'sound/voice/doomsky2.ogg', 'sound/voice/doomsky3.ogg')
-		
+
 	botcard_access = list()
-	
+
 	secbot_dreams = list(
 		"beep-boop",
-		"beep",	
+		"beep",
 		"meat scumbags must die",
 		"bloody mary",
 		"vodka",
@@ -550,7 +550,7 @@
 		"im not interested in law",
 		"screwdriver",
 		"vodka martini",
-		"cyborgs are bigger than me, they must die",	
+		"cyborgs are bigger than me, they must die",
 		"crewmens are bigger than me, they must die",
 		"binge",
 		"booze",
@@ -558,17 +558,17 @@
 		"bouse",
 		"souse",
 		"beepsky must die",
-		"metal girls",	
-		"opiates",	
+		"metal girls",
+		"opiates",
 		"hammer smashed face",
-		"angel of death",		
+		"angel of death",
 		"hallowed be thy name",
-		"reign of darkness",		
+		"reign of darkness",
 		"no pity for a coward",
-		"unanswered",		
+		"unanswered",
 		"steel sluts",
 		"medbot is so hot",
-		"uranium generator"		
+		"uranium generator"
 	)
 
 	arrest_message = list(
@@ -588,19 +588,19 @@
 		"You can bribe me, that’s not a problem.",
 		"Death to world capitalism and globalism!",
 	)
-	
+
 	secbot_verbs_default = list(
 		/mob/living/bot/secbot/proc/downonthefloor,
 		/mob/living/bot/secbot/proc/threatdetected,
 		/mob/living/bot/secbot/doomsky/proc/selfnade,
-	)	
-	
+	)
+
 /mob/living/bot/secbot/doomsky/proc/selfnade()
 	set category = "Communication"
 	set name = "Ascend(Self-blasting)"
-	
+
 	explode()
-	
+
 /mob/living/bot/secbot/doomsky/New()
 	..()
 	botcard_access = get_all_station_access()

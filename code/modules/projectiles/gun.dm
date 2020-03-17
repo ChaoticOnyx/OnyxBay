@@ -372,7 +372,7 @@
 		var/list/mob/far_mobs = (orange(world.view * 3, user) - mobs)
 
 		for (var/mob/M in far_mobs)
-			M.playsound_local(M, far_fire_sound, rand(20, 50))
+			M.playsound_local(user, far_fire_sound, rand(20, 50))
 	else
 		for (var/mob/M in view(world.view, user))
 			M.playsound_local(user, shot_sound, rand(10, 30), FALSE)
@@ -388,6 +388,14 @@
 	M.visible_message("<span class='danger'>[user] sticks their gun in their mouth, ready to pull the trigger...</span>")
 	if(!do_after(user, 40, progress=0))
 		M.visible_message("<span class='notice'>[user] decided life was worth living</span>")
+		mouthshoot = 0
+		return
+	if(istype(src, /obj/item/weapon/gun/flamer))
+		user.adjust_fire_stacks(15)
+		user.IgniteMob()
+		user.death()
+		log_and_message_admins("[key_name(user)] commited suicide using \a [src]")
+		playsound(user, 'sound/weapons/gunshot/flamethrower/flamer_fire.ogg', 50, 1)
 		mouthshoot = 0
 		return
 	var/obj/item/projectile/in_chamber = consume_next_projectile()

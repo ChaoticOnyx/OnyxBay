@@ -30,11 +30,11 @@
 		pref.preference_values = list()
 		for(var/datum/client_preference/cp in get_client_preferences())
 			if(cp.key in preferences_enabled)
-				pref.preference_values[cp.key] = cp.options[1] // for the converted preferences, the truthy value is going to be the first one...
+				pref.preference_values[cp.key] = cp.get_options(preference_mob().client)[1] // for the converted preferences, the truthy value is going to be the first one...
 			else if(cp.key in preferences_disabled)
-				pref.preference_values[cp.key] = cp.options[2] // ...and the falsy value the second
+				pref.preference_values[cp.key] = cp.get_options(preference_mob().client)[2] // ...and the falsy value the second
 			else
-				pref.preference_values[cp.key] = cp.default_value
+				pref.preference_values[cp.key] = cp.get_default_value(preference_mob().client)
 		return 1
 
 /datum/category_item/player_setup_item/player_global/settings/sanitize_preferences()
@@ -49,8 +49,9 @@
 		client_preference_keys |= client_pref.key
 
 		// if the preference has never been set, or if the player is no longer allowed to set the it, set it to default
-		if(!client_pref.may_set(preference_mob()) || !(client_pref.key in pref.preference_values))
-			pref.preference_values[client_pref.key] = client_pref.default_value
+		preference_mob() // we don't care about the mob it returns, but it finds the correct client.
+		if(!client_pref.may_set(pref.client) || !(client_pref.key in pref.preference_values))
+			pref.preference_values[client_pref.key] = client_pref.get_default_value(pref.client)
 
 
 	// Clean out preferences that no longer exist.
@@ -76,7 +77,7 @@
 		. += "<tr><td>[client_pref.description]: </td>"
 
 		var/selected_option = pref_mob.get_preference_value(client_pref.key)
-		for(var/option in client_pref.options)
+		for(var/option in client_pref.get_options(pref_mob.client))
 			var/is_selected = selected_option == option
 			. += "<td><a class='[is_selected ? "linkOn" : ""]' href='?src=\ref[src];pref=[client_pref.key];value=[option]'><b>[option]</b></a>"
 
@@ -113,7 +114,7 @@
 	if(!cp)
 		return FALSE
 
-	if((prefs.preference_values[cp.key] != set_preference) && (set_preference in cp.options))
+	if((prefs.preference_values[cp.key] != set_preference) && (set_preference in cp.get_options(src)))
 		prefs.preference_values[cp.key] = set_preference
 		cp.changed(mob, set_preference)
 		return TRUE
@@ -126,14 +127,14 @@
 	if(!cp)
 		return FALSE
 
-	var/next_option = next_in_list(prefs.preference_values[cp.key], cp.options)
+	var/next_option = next_in_list(prefs.preference_values[cp.key], cp.get_options(src))
 	return set_preference(preference, next_option)
 
 /mob/proc/get_preference_value(preference)
 	if(!client)
 		var/datum/client_preference/cp = get_client_preference(preference)
 		if(cp)
-			return cp.default_value
+			return cp.get_default_value(client)
 		else
 			return null
 

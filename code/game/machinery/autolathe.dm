@@ -269,8 +269,7 @@
 			S.amount = multiplier
 			S.update_icon()
 
-	if(. == TOPIC_REFRESH)
-		interact(user)
+	updateUsrDialog()
 
 /obj/machinery/autolathe/update_icon()
 	icon_state = (panel_open ? "autolathe_t" : "autolathe")

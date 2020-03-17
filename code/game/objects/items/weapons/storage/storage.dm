@@ -137,10 +137,10 @@
 			if(!stop_messages && !istype(W, /obj/item/weapon/hand_labeler))
 				to_chat(user, "<span class='notice'>\The [src] has no more space specifically for \the [W].</span>")
 			return 0
-			
+
 	//If attempting to lable the storage item, silently fail to allow it
 	if(istype(W, /obj/item/weapon/hand_labeler) && user.a_intent != I_HELP)
-		return FALSE		
+		return FALSE
 
 	// Don't allow insertion of unsafed compressed matter implants
 	// Since they are sucking something up now, their afterattack will delete the storage
@@ -283,7 +283,7 @@
 	W.add_fingerprint(user)
 	return handle_item_insertion(W)
 
-/obj/item/weapon/storage/attack_hand(mob/user as mob)
+/obj/item/weapon/storage/attack_hand(mob/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.l_store == src && !H.get_active_hand())	//Prevents opening if it's in a pocket.
@@ -295,12 +295,12 @@
 			H.r_store = null
 			return
 
-	if (src.loc == user)
-		src.open(user)
+	if (loc == user)
+		open(user)
 	else
 		..()
 		storage_ui.on_hand_attack(user)
-	src.add_fingerprint(user)
+	add_fingerprint(user)
 	return
 
 /obj/item/weapon/storage/proc/gather_all(turf/T, mob/user)

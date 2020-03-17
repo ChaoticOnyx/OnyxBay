@@ -3,7 +3,6 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "fuel"
 	layer = BLOOD_LAYER
-	anchored = 1
 	var/amount = 1
 
 /obj/effect/decal/cleanable/liquid_fuel/proc/Spread(exclude=list())
@@ -28,7 +27,6 @@
 
 /obj/effect/decal/cleanable/liquid_fuel/flamethrower_fuel
 	icon_state = "mustard"
-	anchored = 0
 
 /obj/effect/decal/cleanable/liquid_fuel/flamethrower_fuel/Initialize(mapload, amt=1, d=0)
 	set_dir(d) //Setting this direction means you won't get torched by your own flamethrower.

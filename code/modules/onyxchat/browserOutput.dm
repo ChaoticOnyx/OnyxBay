@@ -163,7 +163,7 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 
 //Called by js client on js error
 /datum/chatOutput/proc/debug(error)
-	log_world("\[[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]\] Client: [(src.owner.key ? src.owner.key : src.owner)] triggered JS error: [error]")
+	log_to_dd("\[[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]\] Client: [(src.owner.key ? src.owner.key : src.owner)] triggered JS error: [error]")
 
 //Global chat procs
 /proc/to_chat(target, message, handle_whitespace=TRUE)
@@ -231,6 +231,9 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 
 		// url_encode it TWICE, this way any UTF-8 characters are able to be decoded by the Javascript.
 		C << output(url_encode(url_encode(message)), "browseroutput:output")
+
+/proc/to_world(message)
+	to_chat(world, message)
 
 /datum/chatOutput/proc/swaptolightmode() //Dark mode light mode stuff. Yell at KMC if this breaks! (See darkmode.dm for documentation)
 	owner.force_white_theme()

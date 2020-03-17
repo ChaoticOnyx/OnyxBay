@@ -59,7 +59,7 @@
 					message = pick("Luxury watches for Blowout sale prices!",\
 					"Watches, Jewelry & Accessories, Bags & Wallets !",\
 					"Deposit T100 and get T300 totally free!",\
-					" 100K NT.|WOWGOLD �nly T89            <HOT>",\
+					" 100K NT.|WOWGOLD only T89            <HOT>",\
 					"We have been filed with a complaint from one of your customers in respect of their business relations with you.",\
 					"We kindly ask you to open the COMPLAINT REPORT (attached) to reply on this complaint..")
 				if(4)

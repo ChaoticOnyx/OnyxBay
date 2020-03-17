@@ -133,6 +133,7 @@
 		/obj/item/clothing/under/rank/warden/corp,
 		/obj/item/clothing/suit/armor/vest/warden,
 		/obj/item/clothing/head/warden,
+		/obj/item/clothing/head/warden/drill,
 		/obj/item/weapon/cartridge/security,
 		/obj/item/device/radio/headset/headset_sec,
 		/obj/item/clothing/glasses/sunglasses/sechud,
