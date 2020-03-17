@@ -31,12 +31,14 @@
 	if(!is_open_container())
 		to_chat(user, "The cap is sealed.")
 
-/obj/item/weapon/reagent_containers/chem_disp_cartridge/verb/verb_set_label(L as text)
+/obj/item/weapon/reagent_containers/chem_disp_cartridge/verb/verb_set_label()
 	set name = "Set Cartridge Label"
 	set category = "Object"
-	set src in view(usr, 1)
+	set src in usr
 
-	setLabel(L, usr)
+	var/L = sanitizeSafe(input(usr, "Set Cartridge Label", "Cartridge Label", label) as null|text)
+	if(CanPhysicallyInteract(usr))
+		setLabel(L, usr)
 
 /obj/item/weapon/reagent_containers/chem_disp_cartridge/proc/setLabel(L, mob/user = null)
 	if(L)
