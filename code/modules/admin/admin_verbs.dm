@@ -101,7 +101,8 @@ var/list/admin_verbs_admin = list(
 	/client/proc/add_trader,
 	/client/proc/remove_trader,
 	/datum/admins/proc/sendFax,
-	/client/proc/change_regular_announcement
+	/client/proc/change_regular_announcement,
+	/client/proc/delbook
 	)
 
 var/list/admin_verbs_ban = list(
@@ -313,7 +314,8 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/projectile_basketball,
 	/client/proc/toggle_possess_mode,
 	/client/proc/enable_profiler,
-	/client/proc/bluespace_tech
+	/client/proc/bluespace_tech,
+	/client/proc/delbook
 	)
 
 var/list/admin_verbs_mod = list(
@@ -332,7 +334,8 @@ var/list/admin_verbs_mod = list(
 	/client/proc/check_antagonists,
 	/client/proc/cmd_admin_subtle_message, // send an message to somebody as a 'voice in their head',
 	/client/proc/aooc,
-	/datum/admins/proc/sendFax
+	/datum/admins/proc/sendFax,
+	/client/proc/delbook
 	)
 
 var/list/admin_verbs_mentor = list(
@@ -970,3 +973,15 @@ var/list/admin_verbs_mentor = list(
 	world.SetConfig("APP/admin", ckey, "role=admin")
 	winset(src, "browserwindow", "is-visible=true")
 	send_link(src, "?debug=profile")
+
+/client/proc/delbook()
+	set name = "Delete Book"
+	set desc = "Permamently deletes a book from the database."
+	set category = "Admin"
+
+	if(!check_rights(R_INVESTIGATE, TRUE, src))
+		return
+
+	var/isbn = input("ISBN number?", "Delete Book") as null|num
+	if(isbn && alert(src, "Are you sure that you want to delete that book?", "Delete Book", "Yes", "No") == "Yes")
+		del_book_from_db(num2text(isbn), src)

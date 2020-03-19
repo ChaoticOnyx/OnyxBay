@@ -23,6 +23,7 @@
 		<div class="itemContent">
 			{{:helper.link("Close", null, {'closebook' : 1})}}
 			{{:helper.link("Print", null, {'printbook' : 1})}}
+			{{if data.admin}}{{:helper.link("Delete", null, {'delbook' : data.current_book.id})}}{{/if}}
 		</div>
 	</div>
 	<div style="background-color: #FFFFFF; padding: 6px;">
@@ -63,11 +64,13 @@
 	<table style="width:100%">
 		<tr><th style="width:20%">Commands<th style="width:40%">Title<th style="width:15%">Author<th style="width:15%">Category<th style="width:10%">USBN
 		{{for data.book_list}}
-		<tr><td>{{:helper.link("View", null, {'viewbook' : value.id})}}
+			<tr>
+			<td>{{:helper.link("View", null, {'viewbook' : value.id})}} {{if data.admin}}{{:helper.link("Delete", null, {'delbook' : value.id})}} {{/if}}
 			<td>{{:value.title}}
 			<td>{{:value.author}}
 			<td>{{:value.category}}
 			<td>{{:value.id}}
+			</tr>
 		</div>
 		{{/for}}
 	</table>
