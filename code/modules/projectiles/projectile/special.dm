@@ -44,16 +44,16 @@
 	fire_sound = 'sound/weapons/pulse3.ogg'
 	damage = 0
 	damage_type = BURN
-	nodamage = 1
 	check_armour = "energy"
 	var/temperature = 300
 
 
-	on_hit(var/atom/target, var/blocked = 0)//These two could likely check temp protection on the mob
-		if(istype(target, /mob/living))
-			var/mob/M = target
-			M.bodytemperature = temperature
-		return 1
+/obj/item/projectile/temp/on_hit(atom/target, blocked = 0)//These two could likely check temp protection on the mob
+	if(istype(target, /mob/living))
+		damage = sqrt(abs(temperature))
+		var/mob/M = target
+		M.bodytemperature = M.bodytemperature + temperature/4
+	return 1
 
 /obj/item/projectile/meteor
 	name = "meteor"
