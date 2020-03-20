@@ -33,57 +33,16 @@ var/list/sounds_cache = list()
 /client/proc/play_server_sound()
 	set category = "Fun"
 	set name = "Play Server Sound"
-	if(!check_rights(R_SOUNDS))	return
 
-	var/list/sounds = file2list("sound/serversound_list.txt");
-	sounds += "--CANCEL--"
+	if(!check_rights(R_SOUNDS))
+		return
+
+	var/list/sounds = getallfiles("sound/music/")
 	sounds += sounds_cache
 
-	var/melody = input("Select a sound from the server to play", "Server sound list", "--CANCEL--") in sounds
-
-	if(melody == "--CANCEL--")	return
+	var/melody = input("Select a sound from the server to play", "Server sound list") as null|anything in sounds
+	if(!melody)
+		return
 
 	play_sound(melody)
 	feedback_add_details("admin_verb","PSS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-
-/client/proc/cuban_pete()
-	set category = "Fun"
-	set name = "Cuban Pete Time"
-	if(!check_rights(R_SOUNDS)) return
-
-	message_admins("[key_name_admin(usr)] has declared Cuban Pete Time!", 1)
-
-	for(var/mob/M in GLOB.player_list)
-		if(M.get_preference_value(/datum/client_preference/play_admin_midis) == GLOB.PREF_YES)
-			sound_to(M, 'sound/music/cubanpetetime.ogg')
-
-/client/proc/bananaphone()
-	set category = "Fun"
-	set name = "Banana Phone"
-
-	message_admins("[key_name_admin(usr)] has activated Banana Phone!", 1)
-
-	for(var/mob/M in GLOB.player_list)
-		if(M.get_preference_value(/datum/client_preference/play_admin_midis) == GLOB.PREF_YES)
-			sound_to(M, 'sound/music/bananaphone.ogg')
-
-/client/proc/space_asshole()
-	set category = "Fun"
-	set name = "Space Asshole"
-
-	message_admins("[key_name_admin(usr)] has played the Space Asshole Hymn.", 1)
-
-	for(var/mob/M in GLOB.player_list)
-		if(M.get_preference_value(/datum/client_preference/play_admin_midis) == GLOB.PREF_YES)
-			sound_to(M, 'sound/music/space_asshole.ogg')
-
-/client/proc/honk_theme()
-	set category = "Fun"
-	set name = "Honk"
-
-	message_admins("[key_name_admin(usr)] has creeped everyone out with Blackest Honks.", 1)
-
-	for(var/mob/M in GLOB.player_list)
-		if(M.get_preference_value(/datum/client_preference/play_admin_midis) == GLOB.PREF_YES)
-			sound_to(M, 'sound/music/honk_theme.ogg')

@@ -45,6 +45,8 @@
 	if(BP_IS_ROBOTIC(affected))
 		return FALSE
 	for(var/obj/item/organ/internal/I in affected.internal_organs)
+		if(!I.can_recover())
+			return FALSE
 		if(I.damage > 0)
 			if(I.surface_accessible)
 				return TRUE

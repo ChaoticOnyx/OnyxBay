@@ -32,7 +32,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We become weakened to a death-like state, where we will rise again from death."
 	helptext = "Can be used before or after death. Duration varies greatly."
 	genomecost = 0
-	verbpath = /mob/proc/changeling_fakedeath
+	verbpath = /mob/living/carbon/human/proc/changeling_fakedeath
 
 // Hivemind
 
@@ -198,7 +198,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We evolve the ability to rapidly regenerate, negating the need for stasis."
 	helptext = "Heals a moderate amount of damage every tick."
 	genomecost = 8
-	verbpath = /mob/proc/changeling_rapidregen
+	verbpath = /mob/living/carbon/human/proc/changeling_rapidregen
 
 /datum/power/changeling/visible_camouflage
 	name = "Camouflage"

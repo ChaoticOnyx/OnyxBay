@@ -433,3 +433,26 @@
 
 	images -= powernet_markers
 	QDEL_NULL_LIST(powernet_markers)
+
+/client/proc/hard_del(mob/user)
+	set category = "Debug"
+	set name = "Toggle Hard deleting"
+	set desc = "No idea what is that? Dont touch it or ask other admins."
+
+	if(!check_rights(R_DEBUG))
+		return
+
+	if (GAME_STATE < RUNLEVEL_GAME)
+		alert("Wait until the game starts")
+		return
+
+	var/mob/ask = alert(user, "Hard delete queue is now in [SSgarbage.avoid_harddel ? "inactive" : "active"] stage.","Toggle Hard delete queue?", SSgarbage.avoid_harddel ? "Enable" : "Disable", "Cancel")
+
+	if(ask == "Enable")
+		SSgarbage.toggle_harddel(FALSE)
+		log_and_message_admins("start hard deleting garbage queue.", user)
+
+	if(ask == "Disable")
+		SSgarbage.toggle_harddel(TRUE)
+		log_and_message_admins("stop hard deleting garbage queue.", user)
+	return

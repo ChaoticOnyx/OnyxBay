@@ -114,10 +114,6 @@ var/list/admin_verbs_sounds = list(
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
 	/client/proc/play_server_sound,
-	/client/proc/cuban_pete,
-	/client/proc/bananaphone,
-	/client/proc/space_asshole,
-	/client/proc/honk_theme,
 	)
 
 var/list/admin_verbs_fun = list(
@@ -221,7 +217,9 @@ var/list/admin_verbs_debug = list(
 	/client/proc/cmd_analyse_health_panel,
 	/client/proc/visualpower,
 	/client/proc/visualpower_remove,
-	/client/proc/enable_profiler
+	/client/proc/hard_del,
+	/client/proc/enable_profiler,
+	/client/proc/bluespace_tech
 	)
 
 var/list/admin_verbs_paranoid_debug = list(
@@ -314,7 +312,8 @@ var/list/admin_verbs_hideable = list(
 	/datum/admins/proc/ictus,
 	/client/proc/projectile_basketball,
 	/client/proc/toggle_possess_mode,
-	/client/proc/enable_profiler
+	/client/proc/enable_profiler,
+	/client/proc/bluespace_tech
 	)
 
 var/list/admin_verbs_mod = list(
@@ -540,7 +539,7 @@ var/list/admin_verbs_mentor = list(
 		prefs.ooccolor = input(src, "Please select your OOC colour.", "OOC colour") as color
 	else if(response == "Reset to default")
 		prefs.ooccolor = initial(prefs.ooccolor)
-	prefs.save_preferences()
+	SScharacter_setup.queue_preferences_save(prefs)
 
 	feedback_add_details("admin_verb","OC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	return
@@ -559,7 +558,7 @@ var/list/admin_verbs_mentor = list(
 	var/datum/preferences/D
 	var/client/C = GLOB.ckey_directory[warned_ckey]
 	if(C)	D = C.prefs
-	else	D = preferences_datums[warned_ckey]
+	else	D = SScharacter_setup.preferences_datums[warned_ckey]
 
 	if(!D)
 		to_chat(src, "<font color='red'>Error: warn(): No such ckey found.</font>")
@@ -926,9 +925,10 @@ var/list/admin_verbs_mentor = list(
 	set name = "Man Up Global"
 	set desc = "Tells everyone to man up and deal with it."
 
-	for (var/mob/T as mob in SSmobs.mob_list)
-		to_chat(T, "<br><center><span class='notice'><b><font size=4>Man up.<br> Deal with it.</font></b><br>Move on.</span></center><br>")
-		sound_to(T, 'sound/voice/ManUp1.ogg')
+	for(var/client/C in GLOB.clients)
+		to_chat(C, "<br><center><span class='notice'><b><font size=4>Man up.<br> Deal with it.</font></b><br>Move on.</span></center><br>")
+		if(C.get_preference_value(/datum/client_preference/play_admin_midis) == GLOB.PREF_YES)
+			sound_to(C, 'sound/voice/ManUp1.ogg')
 
 	log_and_message_admins("told everyone to man up and deal with it.")
 
@@ -960,6 +960,8 @@ var/list/admin_verbs_mentor = list(
 	set desc = "Access BYOND's proc performance profiler"
 
 	if(!check_rights(R_DEBUG))
+		return
+	if(alert(src, "This will lead to a huge lag, are you sure you want to enable profiler?", "Enable Profiler", "Yes", "No") == "No")
 		return
 
 	log_and_message_admins("has enabled performance profiler. This may cause lag.")

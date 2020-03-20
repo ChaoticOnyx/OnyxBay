@@ -295,3 +295,8 @@ var/list/slot_equipment_priority = list( \
 		var/obj/item/I = entry
 		if(I.body_parts_covered & body_parts)
 			. += I
+
+// Returns true if the selected item is in the hands
+/mob/proc/is_item_in_hands(atom/A)
+	if(A && (l_hand == A || r_hand == A))
+		return TRUE

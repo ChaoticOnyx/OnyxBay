@@ -142,10 +142,13 @@
 			I.color = src.filling_color
 			U.overlays += I
 
-			reagents.trans_to_obj(U, min(reagents.total_volume,5))
+			if(!reagents)
+				crash_with("[type] doesnt has a reagent holder [W.type]! Well, it will be [QDELETED(src) ? "" : "not"] deleted.")
+			else
+				reagents.trans_to_obj(U, min(reagents.total_volume,5))
+				if (reagents.total_volume <= 0)
+					qdel(src)
 
-			if (reagents.total_volume <= 0)
-				qdel(src)
 			return
 
 	if (is_sliceable())
@@ -501,6 +504,8 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/throw_impact(atom/hit_atom)
 	..()
+	if(QDELETED(src))
+		return // Could be happened hitby()
 	new /obj/effect/decal/cleanable/egg_smudge(src.loc)
 	src.reagents.splash(hit_atom, src.reagents.total_volume)
 	src.visible_message("<span class='warning'>\The [src] has been squashed!</span>","<span class='warning'>You hear a smack.</span>")
@@ -732,9 +737,12 @@
 		return
 	has_been_heated = 1
 	user.visible_message("<span class='notice'>[user] crushes \the [src] package.</span>", "You crush \the [src] package and feel a comfortable heat build up.")
-	spawn(200)
+	addtimer(CALLBACK(src, .proc/heat, user), 200)
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/heat(user)
+	if(user)
 		to_chat(user, "You think \the [src] is ready to eat about now.")
-		heat()
+	. = ..()
 
 /obj/item/weapon/reagent_containers/food/snacks/donkpocket
 	name = "Donk-pocket"
@@ -750,22 +758,29 @@
 
 	var/warm = 0
 	var/list/heated_reagents = list(/datum/reagent/tricordrazine = 5)
-	proc/heat()
-		warm = 1
-		for(var/reagent in heated_reagents)
-			reagents.add_reagent(reagent, heated_reagents[reagent])
-		bitesize = 6
-		SetName("Warm " + name)
-		cooltime()
 
-	proc/cooltime()
-		if (src.warm)
-			spawn(4200)
-				src.warm = 0
-				for(var/reagent in heated_reagents)
-					src.reagents.del_reagent(reagent)
-				src.SetName(initial(name))
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/proc/heat()
+	if(warm)
 		return
+	warm = 1
+	for(var/reagent in heated_reagents)
+		reagents.add_reagent(reagent, heated_reagents[reagent])
+	bitesize = 6
+	SetName("Warm " + name)
+	cooltime()
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/proc/cooltime()
+	if (warm)
+		addtimer(CALLBACK(src, .proc/cooling, warm), 4200)
+	return
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/proc/cooling(warm)
+	if(!warm)
+		return
+	warm = 0
+	for(var/reagent in heated_reagents)
+		reagents.del_reagent(reagent)
+	SetName(initial(name))
 
 /obj/item/weapon/reagent_containers/food/snacks/brainburger
 	name = "brainburger"
