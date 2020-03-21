@@ -144,20 +144,24 @@ DM позволяет определять переменные и другим�
 ````DM
 /datum/datum1/proc/proc1()
 	if (thing1)
+		do stuff
 		if (!thing2)
+			do more stuff
 			if (thing3 == 30)
-				do stuff
+				do extra stuff
 ````
 А так уже лучше:
 ````DM
 /datum/datum1/proc/proc1()
 	if (!thing1)
 		return
+	do stuff
 	if (thing2)
 		return
+	do more stuff
 	if (thing3 != 30)
 		return
-	do stuff
+	do extra stuff
 ````
 
 ### Разработка безопасного кода
