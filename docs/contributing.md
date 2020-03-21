@@ -67,6 +67,23 @@ datum
 ### Не избавляйтесь от проверки типов
 Запрещено использовать оператор `:`. Всегда явно преобразуйте переменную к конкретному типу.
 
+Плохой пример:
+```DM
+var/something_general_object = ...
+something_general_object:specific_type_func()
+```
+
+Мы узнаем, что у something_general_object нет такой функции только когда запустим сервер. Более того, когда мы это узнаем - будет непонятным что это за тип, почему у него было этой функции и какой тип на самом деле ожидался. С другой стороны, в коде:
+
+```DM
+var/something_general_object
+var/more/specified/type/O = object
+ASSERT(istype(O)) // bad argument
+O.specific_type_funс()
+```
+
+Мы явно указываем какой тип мы ожидаем и статически проверяем, что у этого типа есть такая функция.
+
 ### Пути типов всегда должны начинаться с /
 Например: `/datum/thing`, вместо `datum/thing`
 
@@ -86,31 +103,32 @@ DM позволяет определять переменные и другим�
 
 Чтобы избежать подобных проблем используйте наследование объектов друг от друга или же просто вынесите необходимую логику в отдельную функцию.
 
-### Предпочитайте `Initialize()` вместо `New()` для atom.
+### Предпочитайте `Initialize()` вместо `New()` для atom (объектов, размещаемых на карте).
 Контроллеры, используемые в нашей сборке, должны справляться с длительными операциями и лагами, но они не могут контролировать то, что происходит во время загрузки карты, когда для всех объектов вызывается New. Для любых новых объектов, без явной необходимости, используйте `Initialize`, чтобы сделать все, что вы хотели сделать в `New`. Это уменьшает количество функций вызываемых на этапе загрузки карты. Чтобы узнать больше про то, как работает `Initialize`, смотрите https://github.com/ChaoticOnyx/OnyxBay/blob/dev/code/game/atoms.dm
 
 ### Не используйте магические значения
-Это касается различных переменных "mode", которые могут быть 1 или 2, но при этом неясно, что конкретно они означают. Используйте #define, чтобы явно указать, что означает то или иное значение. Например:
+Это касается различных переменных "mode", которые могут быть 1 или 2, но при этом неясно, что конкретно они означают. Используйте #define или локальные переменные, чтобы явно указать, что означает то или иное значение. Например:
 
-````DM
+```DM
 /datum/proc/do_the_thing(thing_to_do)
 	switch(thing_to_do)
 		if(1)
 			(...)
 		if(2)
 			(...)
-````
+```
 Здесь неясно, что означают "1" и "2"! Вместо этого можно было бы написать:
-````DM
-#define DO_THE_THING_REALLY_HARD 1
-#define DO_THE_THING_EFFICIENTLY 2
+```DM
 /datum/proc/do_the_thing(thing_to_do)
+	var/DO_THE_THING_REALLY_HARD = 1
+	var/DO_THE_THING_EFFICIENTLY = 2
+	
 	switch(thing_to_do)
 		if(DO_THE_THING_REALLY_HARD)
 			(...)
 		if(DO_THE_THING_EFFICIENTLY)
 			(...)
-````
+```
 Так получается гораздо понятнее, что увеличивает читаемость вашего кода.
 
 ### Операторы контроля выполнения
@@ -192,61 +210,13 @@ https://file.house/zy7H.png
 Code used for the test in a readable format:
 https://pastebin.com/w50uERkG
 
+## Global против static
 
-#### Istypeless for loops
-A name for a differing syntax for writing for-each style loops in DM. It's NOT DM's standard syntax, hence why this is considered a quirk. Take a look at this:
-```DM
-var/list/bag_of_items = list(sword, apple, coinpouch, sword, sword)
-var/obj/item/sword/best_sword
-for(var/obj/item/sword/S in bag_of_items)
-	if(!best_sword || S.damage > best_sword.damage)
-		best_sword = S
-```
-The above is a simple proc for checking all swords in a container and returning the one with the highest damage, and it uses DM's standard syntax for a for-loop by specifying a type in the variable of the for's header that DM interprets as a type to filter by. It performs this filter using ```istype()``` (or some internal-magic similar to ```istype()``` - this is BYOND, after all). This is fine in its current state for ```bag_of_items```, but if ```bag_of_items``` contained ONLY swords, or only SUBTYPES of swords, then the above is inefficient. For example:
-```DM
-var/list/bag_of_swords = list(sword, sword, sword, sword)
-var/obj/item/sword/best_sword
-for(var/obj/item/sword/S in bag_of_swords)
-	if(!best_sword || S.damage > best_sword.damage)
-		best_sword = S
-```
-specifies a type for DM to filter by.
+В DM есть ключевое слово global, которое используется в трех случаях:
 
-With the previous example that's perfectly fine, we only want swords, but here the bag only contains swords? Is DM still going to try to filter because we gave it a type to filter by? YES, and here comes the inefficiency. Wherever a list (or other container, such as an atom (in which case you're technically accessing their special contents list, but that's irrelevant)) contains datums of the same datatype or subtypes of the datatype you require for your loop's body,
-you can circumvent DM's filtering and automatic ```istype()``` checks by writing the loop as such:
-```DM
-var/list/bag_of_swords = list(sword, sword, sword, sword)
-var/obj/item/sword/best_sword
-for(var/s in bag_of_swords)
-	var/obj/item/sword/S = s
-	if(!best_sword || S.damage > best_sword.damage)
-		best_sword = S
-```
-Of course, if the list contains data of a mixed type then the above optimisation is DANGEROUS, as it will blindly typecast all data in the list as the specified type, even if it isn't really that type, causing runtime errors.
+1. Внутри типа (или внутри функции) мы хотим определить переменную общую для всех объектов этого типа (для всех вызовов этой функции). (http://www.byond.com/docs/ref/#/var/global).
+2. Внутри функции мы хотим использовать переменную из глобального скоупа, когда у нас в локальном скоупе уже есть переменная с таким же названием. (http://www.byond.com/docs/ref/#/proc/var/global)
 
-#### Dot variable
-Like other languages in the C family, DM has a ```.``` or "Dot" operator, used for accessing variables/members/functions of an object instance.
-eg:
-```DM
-var/mob/living/carbon/human/H = YOU_THE_READER
-H.gib()
-```
-However, DM also has a dot variable, accessed just as ```.``` on its own, defaulting to a value of null. Now, what's special about the dot operator is that it is automatically returned (as in the ```return``` statement) at the end of a proc, provided the proc does not already manually return (```return count``` for example.) Why is this special?
+Так как в первом случае речь идет не о видимости переменной, а том, что она общая для разных экземпляров типа (вызовов функции), то название ключевого слова global может кого-то запутать. Поэтому вместо него в первом случае мы стараемся использовать ключевое слово static, которое отсутствует в документации, но полностью заменяет global в этом случае и лучше описывает суть происходящего.
 
-With ```.``` being everpresent in every proc, can we use it as a temporary variable? Of course we can! However, the ```.``` operator cannot replace a typecasted variable - it can hold data any other var in DM can, it just can't be accessed as one, although the ```.``` operator is compatible with a few operators that look weird but work perfectly fine, such as: ```.++``` for incrementing ```.'s``` value, or ```.[1]``` for accessing the first element of ```.```, provided that it's a list.
-
-## Globals versus static
-
-DM has a var keyword, called global. This var keyword is for vars inside of types. For instance:
-
-```DM
-mob
-	var
-		global
-			thing = TRUE
-```
-This does NOT mean that you can access it everywhere like a global var. Instead, it means that that var will only exist once for all instances of its type, in this case that var will only exist once for all mobs - it's shared across everything in its type. (Much more like the keyword `static` in other languages like PHP/C++/C#/Java)
-
-Isn't that confusing?
-
-There is also an undocumented keyword called `static` that has the same behaviour as global but more correctly describes BYOND's behaviour. Therefore, we always use static instead of global where we need it, as it reduces suprise when reading BYOND code.
+Отдельно обратите внимание, что все переменные в BYOND имеют глобальную видимость с точки зрения доступа, поэтому global (и static) в глобальном скоупе не имеет смысла и запрещено.
