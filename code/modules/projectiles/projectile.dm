@@ -361,7 +361,8 @@
 			first_step = 0
 		else if(!bumped && kill_count > 0)
 			tracer_effect(effect_transform)
-		sleep(hitscan ? -1 : step_delay)    //add delay between movement iterations if it's not a hitscan weapon
+		if(!hitscan)
+			sleep(step_delay)    //add delay between movement iterations if it's not a hitscan weapon
 
 /obj/item/projectile/proc/before_move()
 	return 0
