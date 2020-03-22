@@ -59,8 +59,10 @@
 			return
 	return ..()
 
-/obj/item/weapon/material/shard/Crossed(AM as mob|obj)
-	..()
+/obj/item/weapon/material/shard/Crossed(AM)
+	if((locate(/obj/item/weapon/material/shard) in loc) != src)
+		return
+
 	if(isliving(AM))
 		var/mob/M = AM
 
@@ -79,6 +81,10 @@
 
 			to_chat(M, "<span class='danger'>You step on \the [src]!</span>")
 
+			var/amount = 0
+			for(var/obj/item/weapon/material/shard/S in loc)
+				amount++
+
 			var/list/check = list(BP_L_FOOT, BP_R_FOOT)
 			while(check.len)
 				var/picked = pick(check)
@@ -86,10 +92,10 @@
 				if(affecting)
 					if(BP_IS_ROBOTIC(affecting))
 						return
-					affecting.take_external_damage(5, 0)
+					affecting.take_external_damage(min(5 * amount, 15), 0)
 					H.updatehealth()
 					if(affecting.can_feel_pain())
-						H.Weaken(3)
+						H.Weaken(min(3 * amount, 9))
 					return
 				check -= picked
 			return
