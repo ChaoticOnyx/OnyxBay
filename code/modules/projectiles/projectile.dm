@@ -323,8 +323,9 @@
 
 /obj/item/projectile/Process()
 	var/first_step = 1
-
+	var/i = 0
 	spawn while(src && src.loc)
+		ASSERT(++i < 512)
 		if(kill_count-- < 1)
 			on_impact(src.loc) //for any final impact behaviours
 			qdel(src)
