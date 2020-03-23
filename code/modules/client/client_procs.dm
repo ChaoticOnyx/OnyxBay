@@ -44,18 +44,19 @@
 	#endif
 
 	// asset_cache
+	var/asset_cache_job = null
 	if(href_list["asset_cache_confirm_arrival"])
-		var/job = text2num(href_list["asset_cache_confirm_arrival"])
-		log_debug_verbose("\[ASSETS\] Confirmation for asset arrival was received from [ckey]. Job number is [job].")
+		asset_cache_job = text2num(href_list["asset_cache_confirm_arrival"])
 
 		//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
 		//	into letting append to a list without limit.
-		if (job && job <= last_asset_job && !(job in completed_asset_jobs))
-			completed_asset_jobs += job
-			log_debug_verbose("\[ASSETS\] Job #[job] is completed (client: [ckey]).")
+		if (!asset_cache_job || asset_cache_job > last_asset_job)
 			return
-		else
-			log_debug_verbose("\[ASSETS\] ERROR: Job #[job] can't be completed! (client: [ckey]).")
+
+		if (!(asset_cache_job in completed_asset_jobs))
+			completed_asset_jobs += asset_cache_job
+			log_debug_verbose("\[ASSETS\] Job #[asset_cache_job] is completed (client: [ckey]).")
+			return
 
 	if (config.minutetopiclimit)
 		var/minute = round(world.time, 600)
@@ -86,6 +87,15 @@
 		if (topiclimiter[SECOND_COUNT] > config.secondtopiclimit)
 			to_chat(src, "<span class='danger'>Your previous action was ignored because you've done too many in a second</span>")
 			return
+
+	//Logs all hrefs
+	if(config && config.log_hrefs && href_logfile)
+		to_chat(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
+
+	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
+	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
+		to_chat(src, SPAN_DANGER("An error has been detected in how your client is receiving resources. Attempting to correct.... (If you keep seeing these messages you might want to close byond and reconnect)"))
+		src << browse("...", "window=asset_cache_browser")
 
 	//search the href for script injection
 	if( findtext(href,"<script",1,0) )
@@ -122,10 +132,6 @@
 			return
 
 		ticket.close(client_repository.get_lite_client(usr.client))
-
-	//Logs all hrefs
-	if(config && config.log_hrefs && href_logfile)
-		to_chat(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
 
 	switch(href_list["_src_"])
 		if("holder")	hsrc = holder
