@@ -15,9 +15,7 @@ GLOBAL_DATUM(lobby_music, /lobby_music)
 		return
 	if(title)
 		to_chat(listener, "<span class='good'>Now Playing:</span>")
-		to_chat(listener, "<span class='good'>[title][artist ? " by [artist]" : ""][album ? " ([album])" : ""]</span>")
-	if(url)
-		to_chat(listener, url)
+		to_chat(listener, "<span class='good'>[url ? "<a href='[url]'>[title]</a>" : "[title]"][artist ? " by [artist]" : ""][album ? " ([album])" : ""]</span>")
 	if(license)
 		var/license_url = license_to_url[license]
 		to_chat(listener, "<span class='good linkify'>License: [license_url ? "<a href='[license_url]'>[license]</a>" : license]</span>")
