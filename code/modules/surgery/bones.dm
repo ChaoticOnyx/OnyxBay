@@ -86,8 +86,8 @@
 			SPAN_NOTICE("You set the [bone] in place with \the [tool]."))
 		affected.stage = 2
 	else
-		user.visible_message(SPAN_WARNING("[user] sets the [bone] in the WRONG place with \the [tool]."), \
-			SPAN_WARNING("You set the [bone] in the WRONG place with \the [tool]."))
+		user.visible_message(SPAN_NOTICE("[user] sets the [bone]") + SPAN_WARNING(" in the WRONG place with \the [tool]."), \
+			SPAN_NOTICE("You set the [bone]") + SPAN_WARNING(" in the WRONG place with \the [tool]."))
 		affected.fracture()
 
 /datum/surgery_step/set_bone/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
