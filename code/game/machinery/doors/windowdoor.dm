@@ -72,7 +72,6 @@
 /obj/machinery/door/window/Destroy()
 	if(timer)
 		deltimer(timer)
-		timer = null
 	set_density(0)
 	update_nearby_tiles()
 	return ..()
@@ -85,7 +84,7 @@
 		var/mob/living/bot/bot = AM
 		if(check_access(bot.botcard))
 			if(density)
-				open()
+				open(autoclose = TRUE)
 			else
 				close()
 
@@ -93,7 +92,7 @@
 		var/obj/mecha/mech = AM
 		if(mech.occupant && allowed(mech.occupant))
 			if(density)
-				open()
+				open(autoclose = TRUE)
 			else
 				close()
 
@@ -101,7 +100,7 @@
 		var/mob/M = AM
 		if(allowed(M))
 			if(density)
-				open()
+				open(autoclose = TRUE)
 			else
 				close()
 		else if(density)
@@ -125,7 +124,7 @@
 	else
 		return 1
 
-/obj/machinery/door/window/open(autoclose = TRUE)
+/obj/machinery/door/window/open(autoclose = FALSE)
 	if(operating)
 		return
 	else
@@ -191,7 +190,7 @@
 
 /obj/machinery/door/emp_act(severity)
 	if(prob(60 / severity))
-		open(autoclose = FALSE)
+		open()
 
 /obj/machinery/door/window/attackby(obj/item/weapon/I, mob/user)
 	if(operating)
@@ -262,7 +261,7 @@
 
 	if(allowed(user))
 		if(density)
-			open(autoclose = FALSE)
+			open()
 		else
 			close()
 
