@@ -96,7 +96,6 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 	if(loaded)
 		return
 
-	testing("Chat loaded for [owner.ckey]")
 	loaded = TRUE
 	showChat()
 

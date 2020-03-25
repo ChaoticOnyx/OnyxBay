@@ -190,6 +190,11 @@ var/list/_client_preferences_by_type
 	key = "SHOW_PROGRESS"
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
+/datum/client_preference/hardsuit_activation
+	description = "Hardsuit Module Activation Key"
+	key = "HARDSUIT_ACTIVATION"
+	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
+
 /datum/client_preference/tgui_style
 	description ="tgui Style"
 	key = "TGUI_FANCY"
@@ -205,12 +210,6 @@ var/list/_client_preferences_by_type
 	key = "BROWSER_STYLED"
 	options = list(GLOB.PREF_FANCY, GLOB.PREF_PLAIN)
 
-
-/datum/client_preference/hardsuit_activation
-	description = "Hardsuit Module Activation Key"
-	key = "HARDSUIT_ACTIVATION"
-	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
-
 /datum/client_preference/ambient_occlusion
 	description = "Toggle Ambient Occlusion"
 	key = "AMBIENT_OCCLUSION"
@@ -220,36 +219,28 @@ var/list/_client_preferences_by_type
 	if (preference_mob.client)
 		preference_mob.UpdatePlanes()
 
-/datum/client_preference/tooltip
-	description = "Toggle Tooltip"
-	key = "TOOLTIP"
-	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+/datum/client_preference/fullscreen_mode
+	description = "Fullscreen Mode"
+	key = "FULLSCREEN"
+	options = list(GLOB.PREF_BASIC, GLOB.PREF_FULL, GLOB.PREF_NO)
+	default_value = GLOB.PREF_NO
 
-/datum/client_preference/tooltip/changed(mob/preference_mob, new_value)
-	if (!preference_mob.client)
-		return
-
-	if (new_value == GLOB.PREF_YES)
-		preference_mob.client.tooltip.alpha = 255
-	else
-		preference_mob.client.tooltip.alpha = 0
+/datum/client_preference/fullscreen_mode/changed(mob/preference_mob, new_value)
+	if(preference_mob.client)
+		preference_mob.client.toggle_fullscreen(new_value)
 
 /datum/client_preference/chat_position
 	description = "Use Alternative Chat Position"
 	key = "CHAT_ALT"
-	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+	default_value = GLOB.PREF_NO
 
 /datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
-	if (!preference_mob.client)
-		return
-
-	preference_mob.client.update_chat_position(new_value == GLOB.PREF_YES)
-	preference_mob.client.fit_viewport()
+	if(preference_mob.client)
+		preference_mob.client.update_chat_position(new_value == GLOB.PREF_YES)
 
 /datum/client_preference/cinema_credits
 	description = "Show Cinema-like Credits At Round-end"
 	key = "SHOW_CREDITS"
-	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 	default_value = GLOB.PREF_NO
 
 /datum/client_preference/ooc_name_color
