@@ -156,18 +156,6 @@ var/const/enterloopsanity = 100
 			M.inertia_dir = 0
 			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
 
-	var/objects = 0
-	if(A && (A.movable_flags & MOVABLE_FLAG_PROXMOVE))
-		for(var/atom/movable/thing in range(1))
-			if(objects > enterloopsanity) break
-			objects++
-			spawn(0)
-				if(A)
-					A.HasProximity(thing, 1)
-					if ((thing && A) && (thing.movable_flags & MOVABLE_FLAG_PROXMOVE))
-						thing.HasProximity(A, 1)
-	return
-
 /turf/proc/adjacent_fire_act(turf/simulated/floor/source, temperature, volume)
 	return
 

@@ -11,7 +11,6 @@
 	var/mob/attacher = null
 	var/valve_open = 0
 	var/toggle = 1
-	movable_flags = MOVABLE_FLAG_PROXMOVE
 
 /obj/item/device/transfer_valve/proc/process_activation(obj/item/device/D)
 
@@ -61,6 +60,8 @@
 		if(attached_device)
 			to_chat(user, "<span class='warning'>There is already an device attached to the valve, remove it first.</span>")
 			return
+		if(A.proximity_monitor)
+			A.proximity_monitor.SetHost(src, A)
 		user.remove_from_mob(item)
 		attached_device = A
 		A.forceMove(src)
@@ -74,13 +75,6 @@
 		attacher = user
 		SSnano.update_uis(src) // update all UIs attached to src
 	return
-
-
-/obj/item/device/transfer_valve/HasProximity(atom/movable/AM as mob|obj)
-	if(!attached_device)	return
-	attached_device.HasProximity(AM)
-	return
-
 
 /obj/item/device/transfer_valve/attack_self(mob/user as mob)
 	ui_interact(user)
@@ -121,8 +115,12 @@
 		toggle_valve()
 	else if(attached_device)
 		if(href_list["rem_device"])
+			if(attached_device.proximity_monitor)
+				attached_device.proximity_monitor.SetHost(attached_device, attached_device)
+			if(istype(attached_device, /obj/item/device/assembly))
+				var/obj/item/device/assembly/A = attached_device
+				A.holder = null
 			attached_device.loc = get_turf(src)
-			attached_device:holder = null
 			attached_device = null
 			update_icon()
 		if(href_list["device"])

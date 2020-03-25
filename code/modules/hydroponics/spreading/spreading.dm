@@ -110,6 +110,7 @@
 	spread_chance = seed.get_trait(TRAIT_POTENCY)
 	spread_distance = (growth_type ? round(spread_chance * 0.6) : round(spread_chance * 0.3))
 	possible_children = seed.get_trait(TRAIT_POTENCY)
+	proximity_monitor = new(src, 1)
 	update_icon()
 	addtimer(CALLBACK(src, .proc/post_initialize), 1)
 

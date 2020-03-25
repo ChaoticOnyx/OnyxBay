@@ -11,6 +11,9 @@
 	var/simulated = 1 //filter for actions - used by lighting overlays
 	var/fluorescent // Shows up under a UV light.
 
+	///Proximity monitor associated with this atom
+	var/datum/proximity_monitor/proximity_monitor
+
 	///Chemistry.
 	var/datum/reagents/reagents = null
 
@@ -65,6 +68,7 @@
 
 /atom/Destroy()
 	QDEL_NULL(reagents)
+	QDEL_NULL(proximity_monitor)
 	. = ..()
 
 /atom/proc/reveal_blood()
