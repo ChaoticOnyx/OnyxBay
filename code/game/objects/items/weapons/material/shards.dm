@@ -59,14 +59,14 @@
 			return
 	return ..()
 
-/obj/item/weapon/material/shard/Crossed(AM)
+/obj/item/weapon/material/shard/Crossed(mob/M)
 	if((locate(/obj/item/weapon/material/shard) in loc) != src)
 		return
 
-	if(isliving(AM))
-		var/mob/M = AM
+	if(isliving(M))
+		var/mob/living/L = M
 
-		if(M.buckled) //wheelchairs, office chairs, rollerbeds
+		if(L.buckled) //wheelchairs, office chairs, rollerbeds
 			return
 
 		playsound(src.loc, 'sound/effects/glass_step.ogg', 50, 1) // not sure how to handle metal shards with sounds
