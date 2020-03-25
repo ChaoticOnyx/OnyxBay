@@ -908,7 +908,11 @@ proc/generate_image(tx as num, ty as num, tz as num, range as num, cap_mode = CA
 			if(istype(A, /atom/movable/lighting_overlay) && lighting) //Special case for lighting
 				atoms.Add(A)
 				continue
-			if(A.invisibility) continue
+			if(isghost(A) && prob(1 + GLOB.cult.cult_rating * 0.1))
+				atoms.Add(A)
+				continue
+			if(A.invisibility)
+				continue
 			atoms.Add(A)
 	//Lines below actually render all colected data
 	atoms = sort_atoms_by_layer(atoms)

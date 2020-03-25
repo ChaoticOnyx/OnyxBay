@@ -12,7 +12,7 @@
 	mod_weight = 0.8
 	mod_reach = 1.0
 	mod_handy = 0.8
-	matter = list(MATERIAL_STEEL = 1875)
+	matter = list(MATERIAL_STEEL = 1000)
 	max_amount = 100
 	center_of_mass = null
 	attack_verb = list("hit", "bludgeoned", "whacked")

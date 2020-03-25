@@ -98,6 +98,7 @@ GLOBAL_LIST_INIT(is_contact_but_not_space_or_shuttle_area, list(/proc/is_contact
 
 GLOBAL_LIST_INIT(is_player_but_not_space_or_shuttle_area, list(/proc/is_player_area, /proc/is_not_space_area, /proc/is_not_shuttle_area))
 
+GLOBAL_LIST_INIT(is_player_but_not_space_area, list(/proc/is_player_area, /proc/is_not_space_area))
 
 /*
 	Misc Helpers

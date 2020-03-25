@@ -29,6 +29,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/datum/reagents/pick_chemistry
 	var/isdetachingnow = FALSE
 	var/FLP_last_time_used = 0
+	var/rapidregen_active = FALSE
 
 /datum/changeling/New()
 	..()
@@ -483,7 +484,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	emote("gasp")
 
-	addtimer(CALLBACK(src, .end_fakedeath), round(80 SECONDS, 200 SECONDS))
+	addtimer(CALLBACK(src, .end_fakedeath), rand(80 SECONDS, 200 SECONDS))
 
 /mob/living/carbon/human/proc/end_fakedeath()
 	if(QDELETED(src))
@@ -605,24 +606,15 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	var/datum/changeling/changeling = changeling_power(30,0,100,UNCONSCIOUS)
 	if(!changeling)
-		return 0
+		return
+	if(changeling.rapidregen_active)
+		to_chat(src, SPAN_WARNING("We are already actively regenerating!"))
+		return
+
+	changeling.rapidregen_active = TRUE
 	mind.changeling.chem_charges -= 30
-
-	verbs -= /mob/living/carbon/human/proc/changeling_rapidregen
-
-	var/heals = 10
-	while(heals)
-		if(!QDELETED(src))
-			adjustBruteLoss(-5)
-			adjustToxLoss(-5)
-			adjustOxyLoss(-5)
-			adjustFireLoss(-5)
-			--heals
-			sleep(1 SECONDS)
-		else
-			return
-
-	verbs += /mob/living/carbon/human/proc/changeling_rapidregen
+	new /datum/rapidregen(src)
+	
 	feedback_add_details("changeling_powers","RR")
 	return 1
 
