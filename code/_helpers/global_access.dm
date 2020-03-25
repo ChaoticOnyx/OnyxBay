@@ -469,8 +469,6 @@
 			return global.global_message_listener;
 		if("global_vars_")
 			return global.global_vars_;
-		if("gravity_is_on")
-			return global.gravity_is_on;
 		if("gyrotrons")
 			return global.gyrotrons;
 		if("gzn_check")
@@ -1456,8 +1454,6 @@
 			global.global_message_listener=newval;
 		if("global_vars_")
 			global.global_vars_=newval;
-		if("gravity_is_on")
-			global.gravity_is_on=newval;
 		if("gyrotrons")
 			global.gyrotrons=newval;
 		if("gzn_check")
@@ -2208,7 +2204,6 @@
 	"ghost_traps",
 	"global_message_listener",
 	"global_vars_",
-	"gravity_is_on",
 	"gyrotrons",
 	"gzn_check",
 	"hadevent",
