@@ -304,13 +304,15 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			if(being_built)
 				var/n
 				if (href_list["customamt"])
-					n = Clamp(round(input("Queue how many?", "Protolathe Queue") as num|null), 0, 100)
+					n = round(input("Queue how many?", "Protolathe Queue") as num|null)
 					if (!linked_lathe)
 						return //in case the 'lathe gets unlinked or destroyed or someshit while the popup is open
 				else
 					n = text2num(href_list["n"])
-				for(var/i=1;i<=n;i++)
-					linked_lathe.addToQueue(being_built)
+				n = min(n, (100 - linked_lathe.queue.len))
+				if(n)
+					for(var/i=1;i<=n;i++)
+						linked_lathe.addToQueue(being_built)
 
 		screen = 3.1
 		. = TOPIC_REFRESH
