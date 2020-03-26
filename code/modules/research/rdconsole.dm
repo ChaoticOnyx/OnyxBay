@@ -310,9 +310,8 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 				else
 					n = text2num(href_list["n"])
 				n = min(n, (100 - linked_lathe.queue.len))
-				if(n)
-					for(var/i=1;i<=n;i++)
-						linked_lathe.addToQueue(being_built)
+				for(var/i in 1 to n)
+					linked_lathe.addToQueue(being_built)
 
 		screen = 3.1
 		. = TOPIC_REFRESH
