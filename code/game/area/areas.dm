@@ -32,6 +32,12 @@
 		power_environ = 0
 	power_change()		// all machines set to current power level, also updates lighting icon
 
+	switch(gravity_state)
+		if(AREA_GRAVITY_NEVER)
+			has_gravity = 0
+		if(AREA_GRAVITY_ALWAYS)	
+			has_gravity = 1
+
 /area/proc/get_contents()
 	return contents
 
@@ -257,9 +263,11 @@ var/list/mob/living/forced_ambiance_list = new
 		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 60, channel = 1))
 		L.client.played = world.time
 
-/area/proc/gravitychange(gravitystate = 0)
-	has_gravity = gravitystate
+/area/proc/gravitychange(new_state = 0)
+	if(gravity_state in list(AREA_GRAVITY_NEVER, AREA_GRAVITY_ALWAYS))
+		return
 
+	has_gravity = new_state
 	for(var/mob/M in src)
 		if(has_gravity)
 			thunk(M)
@@ -298,13 +306,11 @@ var/list/mob/living/forced_ambiance_list = new
 /area/space/has_gravity()
 	return 0
 
-/proc/has_gravity(atom/AT, turf/T)
-	if(!T)
-		T = get_turf(AT)
-	var/area/A = get_area(T)
-	if(A && A.has_gravity())
-		return 1
-	return 0
+/proc/has_gravity(atom/AT)
+	var/area/A = get_area(AT)
+	if(A?.has_gravity())
+		return TRUE
+	return FALSE
 
 /area/proc/get_dimensions()
 	var/list/res = list("x"=1,"y"=1)

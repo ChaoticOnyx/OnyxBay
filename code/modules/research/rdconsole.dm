@@ -304,7 +304,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			if(being_built)
 				var/n
 				if (href_list["customamt"])
-					n = round(input("Queue how many?", "Protolathe Queue") as num|null)
+					n = Clamp(round(input("Queue how many?", "Protolathe Queue") as num|null), 0, 100)
 					if (!linked_lathe)
 						return //in case the 'lathe gets unlinked or destroyed or someshit while the popup is open
 				else

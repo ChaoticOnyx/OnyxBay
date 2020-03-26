@@ -44,18 +44,19 @@
 	#endif
 
 	// asset_cache
+	var/asset_cache_job = null
 	if(href_list["asset_cache_confirm_arrival"])
-		var/job = text2num(href_list["asset_cache_confirm_arrival"])
-		log_debug_verbose("\[ASSETS\] Confirmation for asset arrival was received from [ckey]. Job number is [job].")
+		asset_cache_job = text2num(href_list["asset_cache_confirm_arrival"])
 
 		//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
 		//	into letting append to a list without limit.
-		if (job && job <= last_asset_job && !(job in completed_asset_jobs))
-			completed_asset_jobs += job
-			log_debug_verbose("\[ASSETS\] Job #[job] is completed (client: [ckey]).")
+		if (!asset_cache_job || asset_cache_job > last_asset_job)
 			return
-		else
-			log_debug_verbose("\[ASSETS\] ERROR: Job #[job] can't be completed! (client: [ckey]).")
+
+		if (!(asset_cache_job in completed_asset_jobs))
+			completed_asset_jobs += asset_cache_job
+			log_debug_verbose("\[ASSETS\] Job #[asset_cache_job] is completed (client: [ckey]).")
+			return
 
 	if (config.minutetopiclimit)
 		var/minute = round(world.time, 600)
@@ -86,6 +87,15 @@
 		if (topiclimiter[SECOND_COUNT] > config.secondtopiclimit)
 			to_chat(src, "<span class='danger'>Your previous action was ignored because you've done too many in a second</span>")
 			return
+
+	//Logs all hrefs
+	if(config && config.log_hrefs && href_logfile)
+		to_chat(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
+
+	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
+	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
+		to_chat(src, SPAN_DANGER("An error has been detected in how your client is receiving resources. Attempting to correct.... (If you keep seeing these messages you might want to close byond and reconnect)"))
+		src << browse("...", "window=asset_cache_browser")
 
 	//search the href for script injection
 	if( findtext(href,"<script",1,0) )
@@ -122,10 +132,6 @@
 			return
 
 		ticket.close(client_repository.get_lite_client(usr.client))
-
-	//Logs all hrefs
-	if(config && config.log_hrefs && href_logfile)
-		to_chat(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
 
 	switch(href_list["_src_"])
 		if("holder")	hsrc = holder
@@ -283,32 +289,12 @@
 
 	chatOutput.start()
 
-	// Maptext tooltip
-	tooltip = new()
-	tooltip.icon = 'icons/misc/static.dmi'
-	tooltip.icon_state = "transparent"
-	tooltip.screen_loc = "NORTH,WEST+25%"
-	tooltip.maptext_width = 256
-	tooltip.maptext_x = 0
-	tooltip.plane = FULLSCREEN_PLANE
-
-	if (mob && mob.get_preference_value("TOOLTIP") == GLOB.PREF_NO)
-		tooltip.alpha = 0
-
-	screen += tooltip
-
 	// Change position only if it not default
-	if (mob.get_preference_value("CHAT_ALT") == GLOB.PREF_YES)
+	if (get_preference_value(/datum/client_preference/chat_position) == GLOB.PREF_YES)
 		update_chat_position(TRUE)
-		fit_viewport()
 
-/client/MouseEntered(atom/object, location, control, params)
-	if (tooltip)
-		screen |= tooltip
-		tooltip.maptext = ""
-
-		if (GAME_STATE > RUNLEVEL_SETUP)
-			tooltip.maptext = "<center style=\"text-shadow: 1px 1px 2px black;\">[object.name]</center>"
+	if(get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
+		toggle_fullscreen(get_preference_value(/datum/client_preference/fullscreen_mode))
 
 /*	if(holder)
 		src.control_freak = 0 //Devs need 0 for profiler access
@@ -507,26 +493,6 @@ client/verb/character_setup()
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
 		vars["fps"] = prefs.clientfps
 
-/client/verb/toggle_fullscreen()
-	set name = "Toggle Fullscreen"
-	set category = "OOC"
-
-	fullscreen = !fullscreen
-
-	if (fullscreen)
-		winset(usr, "mainwindow", "titlebar=false")
-		winset(usr, "mainwindow", "can-resize=false")
-		winset(usr, "mainwindow", "is-maximized=false")
-		winset(usr, "mainwindow", "is-maximized=true")
-		winset(usr, "mainwindow", "menu=")
-	else
-		winset(usr, "mainwindow", "is-maximized=false")
-		winset(usr, "mainwindow", "titlebar=true")
-		winset(usr, "mainwindow", "can-resize=true")
-		winset(usr, "mainwindow", "menu=menu")
-
-	fit_viewport()
-
 /client/proc/update_chat_position(use_alternative)
 	var/input_height = 0
 	input_height = winget(src, "input", "size")
@@ -568,6 +534,20 @@ client/verb/character_setup()
 		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
 		new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
 		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
+	fit_viewport()
+
+/client/proc/toggle_fullscreen(new_value)
+	if((new_value == GLOB.PREF_BASIC) || (new_value == GLOB.PREF_FULL))
+		winset(src, "mainwindow", "is-maximized=false;can-resize=false;titlebar=false")
+		if(new_value == GLOB.PREF_FULL)
+			winset(src, "mainwindow", "menu=null;statusbar=false")
+		winset(src, "mainwindow.mainvsplit", "pos=0x0")
+	else
+		winset(src, "mainwindow", "is-maximized=false;can-resize=true;titlebar=true")
+		winset(src, "mainwindow", "menu=menu;statusbar=true")
+		winset(src, "mainwindow.mainvsplit", "pos=3x0")
+	winset(src, "mainwindow", "is-maximized=true")
+	fit_viewport()
 
 /client/verb/fit_viewport()
 	set name = "Fit Viewport"

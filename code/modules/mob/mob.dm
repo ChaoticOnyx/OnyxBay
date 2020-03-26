@@ -17,8 +17,7 @@
 	if(mind && mind.current == src)
 		spellremove(src)
 	ghostize()
-	..()
-	return QDEL_HINT_HARDDEL
+	return ..()
 
 /mob/proc/flash_weak_pain()
 	flick("weak_pain",pain)
