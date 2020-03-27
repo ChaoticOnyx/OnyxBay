@@ -52,11 +52,12 @@
 
 /obj/item/weapon/storage/backpack/holding/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/storage/backpack/holding))
-		to_chat(user, SPAN_DANGER("<b>The mini-singularity sucks you in!<b>"))
-		if(!isturf(loc))
-			user.drop_from_inventory(src)
-		user.drop_from_inventory(W)
-		qdel(user)
+		investigate_log("has become a singularity. Caused by [user.key]", "singulo")
+		to_chat(usr, "\red The Bluespace interfaces of the two devices catastrophically malfunction!")
+		qdel(W)
+		new /obj/singularity(src.loc, 300)
+		log_and_message_admins("detonated a bag of holding", user, src.loc)
+		qdel(src)
 		return
 	..()
 
