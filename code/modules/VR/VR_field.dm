@@ -1,7 +1,7 @@
 GLOBAL_LIST_EMPTY(thunderfield_spawns_list)
 
 /obj/effect/landmark/thunderfield_spawn/Initialize()
-	. = ..()
+	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/landmark/thunderfield_spawn/LateInitialize()

@@ -15,20 +15,17 @@
 	alpha = 127
 
 /mob/living/carbon/human/vrhuman/Initialize()
-	. = ..()
+	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /mob/living/carbon/human/vrhuman/LateInitialize()
 	. = ..()
 	generate_random_body()
+	equip_mob()
 	give_spawn_protection()
 	vr_shop = new(src)
 
 /mob/living/carbon/human/vrhuman/proc/generate_random_body()
-
-	equip_to_slot_or_del(new /obj/item/clothing/under/color/grey, slot_w_uniform)
-	equip_to_slot_or_del(new /obj/item/clothing/shoes/black, slot_shoes)
-	equip_to_slot_or_del(new /obj/item/weapon/extinguisher, slot_l_hand)
 
 	gender = pick(MALE, FEMALE)
 	if(gender == MALE)
@@ -38,12 +35,13 @@
 	name += " [pick(GLOB.last_names)]"
 	real_name = name
 
-	var/datum/preferences/A = new()
-	A.randomize_appearance_and_body_for(/mob/living/carbon/human/vrhuman)
+	randomize_skin_color()
 
-	update_inv_shoes()
-	update_inv_w_uniform()
-	update_inv_l_hand()
+/mob/living/carbon/human/vrhuman/proc/equip_mob()
+	equip_to_slot_or_del(new /obj/item/clothing/under/color/grey, slot_w_uniform)
+	equip_to_slot_or_del(new /obj/item/clothing/shoes/black, slot_shoes)
+	equip_to_slot_or_del(new /obj/item/weapon/extinguisher, slot_l_hand)
+	equip_to_slot_or_del(new /obj/item/stack/medical/bruise_pack, slot_r_store)
 
 /mob/living/carbon/human/vrhuman/proc/give_spawn_protection()
 	status_flags ^= GODMODE
@@ -59,7 +57,7 @@
 
 /mob/living/carbon/human/vrhuman/updatehealth()
 	..()
-	if(health < config.health_threshold_crit)
+	if((getBruteLoss() + getFireLoss() + getOxyLoss()) >= 200)
 		death()
 
 /mob/living/carbon/human/vrhuman/death()
