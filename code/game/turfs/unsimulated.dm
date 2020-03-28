@@ -9,7 +9,7 @@ GLOBAL_LIST_EMPTY(self_cleaning_list)
 var/global/list/self_cleaning_list = list()
 
 /turf/unsimulated/floor/self_cleaning/Initialize()
-	. = ..()
+	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /turf/unsimulated/floor/self_cleaning/LateInitialize()
@@ -24,4 +24,4 @@ var/global/list/self_cleaning_list = list()
 
 /turf/unsimulated/floor/self_cleaning/Destroy()
 	GLOB.self_cleaning_list -= src
-	return ..()
+	. = ..()

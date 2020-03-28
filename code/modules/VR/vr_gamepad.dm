@@ -85,8 +85,6 @@
 	if(occupant)
 		create_body()
 
-//Block for handling player coming in and out
-
 /obj/machinery/gamepod/verb/get_inside()
 	set name = "Enter Pod"
 	set category = "Object"
