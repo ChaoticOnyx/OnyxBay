@@ -112,10 +112,12 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //This proc will download the files without clogging up the browse() queue, used for passively sending files on connection start.
 //The proc calls procs that sleep for long times.
 /proc/getFilesSlow(client/client, list/files)
-	ASSERT(client)
 	for(var/file in files)
+		if(!client)
+			return FALSE
 		send_asset(client, file)
 		sleep(0) //queuing calls like this too quickly can cause issues in some client versions
+	return TRUE
 
 //This proc "registers" an asset, it adds it to the cache for further use, you cannot touch it from this point on or you'll fuck things up.
 //if it's an icon or something be careful, you'll have to copy it before further use.
@@ -175,7 +177,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 /datum/asset/proc/send_slow(client/client)
 	ASSERT(client)
 	ASSERT(istype(client))
-	getFilesSlow(client, assets)
+	return getFilesSlow(client, assets)
 
 // Check if all the assets were already sent
 /datum/asset/proc/check_sent(client/C)
