@@ -453,6 +453,8 @@
 		)
 
 	spawn (10) //removing this spawn causes all clients to not get verbs.
+		if(!src) // client disconnected
+			return
 		log_debug_verbose("\[ASSETS\] Start sending resources for [ckey].")
 
 		var/list/priority_assets = list()
@@ -469,7 +471,9 @@
 				priority_assets += D
 
 		for(var/datum/asset/D in (priority_assets + other_assets))
-			D.send_slow(src) //Precache the client with all other assets slowly, so as to not block other browse() calls
+			if (!D.send_slow(src)) //Precache the client with all other assets slowly, so as to not block other browse() calls
+				log_debug_verbose("\[ASSETS\] Failed to sent resources to [ckey]![src ? " Reason is client was disconnected!" : ""]")
+				return
 
 		log_debug_verbose("\[ASSETS\] Resources for [ckey] were sended!")
 
