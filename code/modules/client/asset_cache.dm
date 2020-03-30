@@ -23,7 +23,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 //This proc sends the asset to the client, but only if it needs it.
 //This proc blocks(sleeps) unless verify is set to false
-/proc/send_asset(client/client, asset_name, verify = TRUE)
+/proc/send_asset(client/client, asset_name, verify = FALSE)
 	ASSERT(client)
 	ASSERT(istype(client))
 
@@ -64,7 +64,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	return 1
 
 //This proc blocks(sleeps) unless verify is set to false
-/proc/send_asset_list(client/client, list/asset_list, verify = TRUE)
+/proc/send_asset_list(client/client, list/asset_list, verify = FALSE)
 	ASSERT(client)
 	ASSERT(istype(client))
 
@@ -247,7 +247,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/onyxchat
-	verify = TRUE
+	verify = FALSE
 	assets = list(
 		"json2.min.js"             = 'code/modules/onyxchat/browserassets/js/json2.min.js',
 		"browserOutput.js"         = 'code/modules/onyxchat/browserassets/js/browserOutput.js',
@@ -268,7 +268,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/tgui
-	verify = TRUE
+	verify = FALSE
 	assets = list(
 		// tgui-next
 		"tgui-main.html" = 'tgui-next/packages/tgui/public/tgui-main.html',
