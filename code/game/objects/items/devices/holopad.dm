@@ -58,10 +58,12 @@
 	return TRUE
 
 /obj/item/device/holopad/proc/ring()
-	while(src && call_state == CALL_RINGING)
-		visible_message(SPAN_WARNING("Something vibrates.."), range = 1)
-		playsound(loc, 'sound/machines/twobeep.ogg', 75, 1)
-		sleep(3 SECONDS)
+	if(call_state != CALL_RINGING)
+		return
+	var/mob/living/L = loc
+	if(isliving(L) && L.client)
+		to_chat(loc, SPAN_WARNING("Something vibrates.."))
+	addtimer(CALLBACK(src, .proc/ring), 50)
 
 /obj/item/device/holopad/proc/placeCall(mob/user)
 	var/list/Targets = list()
@@ -141,25 +143,24 @@
 			abonent.update_holo_pos()
 
 /obj/item/device/holopad/proc/update_holo_pos()
-	while(src && call_state == CALL_IN_CALL)
-		updatingPos = 1
-		if(isliving(loc))
-			var/mob/living/L = loc
-			hologram.dir = turn(L.dir,180)
-			hologram.loc = L.loc
-			hologram.pixel_x = ((L.dir&4)?32:((L.dir&8)?-32:0))
-			hologram.pixel_y = ((L.dir&1)?32:((L.dir&2)?-32:0))
-		else if(isturf(loc))
-			hologram.dir = 2
-			hologram.loc = loc
-			hologram.pixel_x = 0
-			hologram.pixel_y = 0
-		else
-			hangUp()
-		sleep(5)
-
 	if(call_state != CALL_IN_CALL)
 		updatingPos = 0
+		return
+	updatingPos = 1
+	if(isliving(loc))
+		var/mob/living/L = loc
+		hologram.dir = turn(L.dir,180)
+		hologram.loc = L.loc
+		hologram.pixel_x = ((L.dir&4)?32:((L.dir&8)?-32:0))
+		hologram.pixel_y = ((L.dir&1)?32:((L.dir&2)?-32:0))
+	else if(isturf(loc))
+		hologram.dir = 2
+		hologram.loc = loc
+		hologram.pixel_x = 0
+		hologram.pixel_y = 0
+	else
+		hangUp()
+	addtimer(CALLBACK(src, .proc/update_holo_pos), 2)
 
 
 /obj/item/device/holopad/attack_self(mob/user)
