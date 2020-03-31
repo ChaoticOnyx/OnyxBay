@@ -24,7 +24,7 @@ SUBSYSTEM_DEF(garbage)
 
 	//Queue
 	var/list/queues
-	var/avoid_harddel = FALSE //Avoid hard del
+	var/avoid_harddel = TRUE //Avoid hard del
 
 	#ifdef TESTING
 	var/list/reference_find_on_fail = list()
@@ -264,7 +264,7 @@ SUBSYSTEM_DEF(garbage)
 		for (var/i in 1 to SSgarbage.queues.len)
 			queues[i] |= SSgarbage.queues[i]
 
-/datum/controller/subsystem/garbage/proc/toggle_harddel(state = FALSE)
+/datum/controller/subsystem/garbage/proc/toggle_harddel(state = TRUE)
 	if(state == avoid_harddel)
 		return
 	avoid_harddel = state
