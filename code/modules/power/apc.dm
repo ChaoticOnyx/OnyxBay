@@ -992,10 +992,10 @@
 	if(!area.requires_power)
 		return
 	if(failure_timer)
-		update()
-		queue_icon_update()
-		failure_timer--
-		force_update = 1
+		if (!--failure_timer)
+			update()
+			queue_icon_update()
+			force_update = 1
 		return
 
 	lastused_light = area.usage(LIGHT)
