@@ -57,16 +57,16 @@
 /mob/living/carbon/human/getHalLoss()
 	var/amount = 0
 	for(var/obj/item/organ/external/E in organs)
-		amount += E.get_pain()
+		amount += E.get_full_pain()
 	return amount
 
 /mob/living/carbon/human/setHalLoss(amount)
 	adjustHalLoss(getHalLoss()-amount)
 
 /mob/living/carbon/human/adjustHalLoss(amount)
-	var/heal = (amount < 0)
 	amount = abs(amount)
 	var/list/pick_organs = organs.Copy()
+
 	if(amount > 0)
 		for(var/datum/modifier/M in modifiers)
 			if(!isnull(M.incoming_damage_percent))
@@ -75,20 +75,14 @@
 				amount *= M.incoming_hal_damage_percent
 			if(!isnull(M.disable_duration_percent))
 				amount *= M.incoming_hal_damage_percent
-	else if(amount < 0)
-		for(var/datum/modifier/M in modifiers)
-			if(!isnull(M.incoming_healing_percent))
-				amount *= M.incoming_healing_percent
+
 	while(amount > 0 && pick_organs.len)
 		var/obj/item/organ/external/E = pick(pick_organs)
 		pick_organs -= E
 		if(!istype(E))
 			continue
+		amount -= E.adjust_pain(amount)
 
-		if(heal)
-			amount -= E.remove_pain(amount)
-		else
-			amount -= E.add_pain(amount)
 	BITSET(hud_updateflag, HEALTH_HUD)
 
 //These procs fetch a cumulative total damage from all organs
@@ -476,7 +470,7 @@ This function restores all organs.
 					damage *= M.incoming_fire_damage_percent
 			created_wound = organ.take_external_damage(0, damage, damage_flags, used_weapon)
 		if(PAIN)
-			organ.add_pain(damage)
+			organ.adjust_pain(damage)
 		if(CLONE)
 			for(var/datum/modifier/M in modifiers)
 				if(!isnull(M.incoming_damage_percent))
