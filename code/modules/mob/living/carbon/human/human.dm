@@ -1551,7 +1551,7 @@
 		for(var/obj/item/organ/external/org in organs)
 			var/list/status = list()
 
-			var/feels = 1 + round(org.pain/100, 0.1)
+			var/feels = 1 + round(org.get_pain()/100, 0.1)
 			var/brutedamage = org.brute_dam * feels
 			var/burndamage = org.burn_dam * feels
 

@@ -18,7 +18,7 @@ mob/living/carbon/proc/custom_pain(message, power, force, obj/item/organ/externa
 	// Excessive halloss is horrible, just give them enough to make it visible.
 	if(!nohalloss && power)
 		if(affecting)
-			affecting.add_pain(ceil(power/2))
+			affecting.adjust_pain(ceil(power/2))
 		else
 			adjustHalLoss(ceil(power/2))
 

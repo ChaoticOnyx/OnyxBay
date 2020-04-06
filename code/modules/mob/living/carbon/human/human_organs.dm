@@ -149,7 +149,7 @@
 				spawn(10)
 					qdel(spark_system)
 
-		else if(E.is_broken() || (E.pain >= E.pain_disability_threshold))
+		else if(E.is_broken() || (E.get_pain() >= E.pain_disability_threshold))
 			stance_d_l += 2
 
 		else if(E.is_dislocated())
@@ -177,7 +177,7 @@
 				spawn(10)
 					qdel(spark_system)
 
-		else if(E.is_broken() || (E.pain >= E.pain_disability_threshold))
+		else if(E.is_broken() || (E.get_pain() >= E.pain_disability_threshold))
 			stance_d_r += 2
 
 		else if(E.is_dislocated())
