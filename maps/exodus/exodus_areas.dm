@@ -598,6 +598,10 @@
 	name = "\improper Underground Research Shuttle Dock Maintenance"
 	icon_state = "uresearchshuttle"
 
+/area/maintenance/underground/research_utility_room
+	name = "\improper Underground Utility Room"
+	icon_state = "uresearchutilityroom"
+
 /area/maintenance/underground/research_starboard
 	name = "\improper Underground Research Maintenance - Starboard"
 	icon_state = "uresearchstarboard"
