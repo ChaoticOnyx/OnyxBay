@@ -10,8 +10,7 @@
 	dat += "<B>Request item:</B><BR>"
 	dat += "<I>Each item costs a number of thunder-points as indicated by the number following their name.</I><br><BR>"
 
-	if(!GLOB.thunderfield_items.len)
-		get_thunderfield_items()
+	get_thunderfield_items()
 	//Loop through items
 	var/i = 0
 	for(var/datum/thunderfield_item/item in GLOB.thunderfield_items)

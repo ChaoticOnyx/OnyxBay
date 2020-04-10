@@ -26,7 +26,6 @@
 	vr_shop = new(src)
 
 /mob/living/carbon/human/vrhuman/proc/generate_random_body()
-
 	gender = pick(MALE, FEMALE)
 	if(gender == MALE)
 		name = pick(GLOB.first_names_male)
@@ -136,3 +135,4 @@
 #undef DEAD_DELETE_COUNTDOWN
 #undef BRAINLOSS_PER_DEATH
 #undef POINTS_FOR_CHEATER
+#undef CLEANUP_COOLDOWN

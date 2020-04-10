@@ -1,11 +1,12 @@
 GLOBAL_LIST_EMPTY(thunderfield_items)
 
 /proc/get_thunderfield_items()
-	for(var/item in typesof(/datum/thunderfield_item))
-		var/datum/thunderfield_item/I = new item()
-		if(!I.item)
-			continue
-		GLOB.thunderfield_items += I
+	if(!GLOB.thunderfield_items.len)
+		for(var/item in typesof(/datum/thunderfield_item))
+			var/datum/thunderfield_item/I = new item()
+			if(!I.item)
+				continue
+			GLOB.thunderfield_items += I
 	return GLOB.thunderfield_items
 
 /datum/thunderfield_item
