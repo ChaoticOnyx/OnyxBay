@@ -107,6 +107,7 @@
 	if(istype(cooking_obj, /obj/item/weapon/holder))
 		for(var/mob/living/M in cooking_obj.contents)
 			M.death()
+			qdel(M)
 
 	// Cook the food.
 	var/cook_path
@@ -134,8 +135,6 @@
 	result.cooked |= cook_type
 
 	// Reset relevant variables.
-	if(istype(cooking_obj, /obj/item/weapon/holder) && cooking_obj.contents[1])
-		qdel(cooking_obj.contents[1])
 	qdel(cooking_obj)
 	src.visible_message("<span class='notice'>\The [src] pings!</span>")
 	if(cooked_sound)
