@@ -66,6 +66,22 @@
 	icon_state = "fork"
 	sharp = 1
 
+/obj/item/weapon/material/kitchen/utensil/fork/afterattack(atom/A, mob/user, proximity)
+	if(!proximity)
+		return
+	if(istype(A, /turf) || istype(A, /obj/effect/decal/cleanable) || istype(A, /obj/effect/overlay) || istype(A, /obj/effect/rune))
+		var/turf/T = get_turf(A)
+		if(!T)
+			return
+
+		user.visible_message("<span class='warning'>[user] begins to clean \the [T] with a fork.</span>")
+
+		if(do_after(user, 160, T))
+			if(T)
+				T.remove_cleanables()
+				T.clean_blood()
+			to_chat(user, "<span class='notice'>You have finished cleaning \the [T] with a fork!</span>")
+
 /obj/item/weapon/material/kitchen/utensil/fork/plastic
 	default_material = MATERIAL_PLASTIC
 
