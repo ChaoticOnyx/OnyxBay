@@ -178,8 +178,7 @@
 		icon_state = off_icon
 		cooking = 0
 		return FALSE
-	else
-		return TRUE
+	return TRUE
 
 /obj/machinery/cooker/attack_hand(mob/user)
 
@@ -239,4 +238,3 @@
 		if(!I.color)
 			I.color = food_color
 		product.overlays += I
-
