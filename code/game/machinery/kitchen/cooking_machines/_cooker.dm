@@ -134,6 +134,9 @@
 	result.cooked |= cook_type
 
 	// Reset relevant variables.
+	if(istype(cooking_obj, /obj/item/weapon/holder))
+		for(var/mob/living/M in cooking_obj.contents)
+			qdel(M)
 	qdel(cooking_obj)
 	src.visible_message("<span class='notice'>\The [src] pings!</span>")
 	if(cooked_sound)
@@ -175,6 +178,7 @@
 		icon_state = off_icon
 		cooking = 0
 		return FALSE
+	return TRUE
 
 /obj/machinery/cooker/attack_hand(mob/user)
 
@@ -234,4 +238,3 @@
 		if(!I.color)
 			I.color = food_color
 		product.overlays += I
-
