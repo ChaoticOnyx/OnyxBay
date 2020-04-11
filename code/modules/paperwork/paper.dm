@@ -102,6 +102,8 @@
 		info = stars(info,85)
 		user.visible_message("\The [user] crumples \the [src] into a ball!")
 		icon_state = "scrap"
+		throw_range = 7
+		throw_speed = 2
 		return
 	user.examinate(src)
 	if(rigged && (Holiday == "April Fool's Day"))
