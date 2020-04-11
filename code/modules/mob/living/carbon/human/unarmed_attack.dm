@@ -43,7 +43,8 @@ var/global/list/sparring_attack_cache = list()
 	return damage
 
 /datum/unarmed_attack/proc/apply_effects(mob/living/carbon/human/user,mob/living/carbon/human/target,armor,attack_damage,zone,specmod = 1)
-	if(target.status_flags & GODMODE)	return 0
+	if(target.status_flags & GODMODE)
+		return 0
 	if(target.stat == DEAD)
 		return
 

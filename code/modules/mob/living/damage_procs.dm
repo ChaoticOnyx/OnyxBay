@@ -9,7 +9,8 @@
 	standard 0 if fail
 */
 /mob/living/proc/apply_damage(damage = 0,damagetype = BRUTE, def_zone = null, blocked = 0, damage_flags = 0, used_weapon = null)
-	if(status_flags & GODMODE)	return 0
+	if(status_flags & GODMODE)
+		return 0
 	if(!damage || (blocked >= 100))	return 0
 	switch(damagetype)
 		if(BRUTE)
@@ -33,7 +34,8 @@
 
 
 /mob/living/proc/apply_damages(brute = 0, burn = 0, tox = 0, oxy = 0, clone = 0, halloss = 0, def_zone = null, blocked = 0, damage_flags = 0)
-	if(status_flags & GODMODE)	return 0
+	if(status_flags & GODMODE)
+		return 0
 	if(blocked >= 100)	return 0
 	if(brute)	apply_damage(brute, BRUTE, def_zone, blocked)
 	if(burn)	apply_damage(burn, BURN, def_zone, blocked)
@@ -45,7 +47,8 @@
 
 
 /mob/living/proc/apply_effect(effect = 0,effecttype = STUN, blocked = 0)
-	if(status_flags & GODMODE)	return 0
+	if(status_flags & GODMODE)
+		return 0
 	if(!effect || (blocked >= 100))	return 0
 
 	switch(effecttype)
@@ -71,7 +74,8 @@
 
 
 /mob/living/proc/apply_effects(stun = 0, weaken = 0, paralyze = 0, irradiate = 0, stutter = 0, eyeblur = 0, drowsy = 0, agony = 0, blocked = 0)
-	if(status_flags & GODMODE)	return 0
+	if(status_flags & GODMODE)
+		return 0
 	if(blocked >= 2)	return 0
 	if(stun)		apply_effect(stun,      STUN, blocked)
 	if(weaken)		apply_effect(weaken,    WEAKEN, blocked)

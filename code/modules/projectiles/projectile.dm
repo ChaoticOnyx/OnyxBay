@@ -93,7 +93,6 @@
 	if(isanimal(target))	return 0
 
 	var/mob/living/L = target
-
 	L.apply_effects(0, weaken, paralyze, 0, stutter, eyeblur, drowsy, 0, blocked)
 	L.stun_effect_act(stun, agony, def_zone, src)
 	//radiation protection is handled separately from other armour types.
