@@ -74,16 +74,20 @@
 		if(!T)
 			return
 
-		user.visible_message("<span class='warning'>[user] begins to clean \the [T] with a fork.</span>")
+		user.visible_message(SPAN_WARNING("[user] begins to clean \the [T] with a [src]."))
 
 		if(do_after(user, 160, T))
 			if(T)
 				T.remove_cleanables()
 				T.clean_blood()
-			to_chat(user, "<span class='notice'>You have finished cleaning \the [T] with a fork!</span>")
+
+				to_chat(user, SPAN_NOTICE("You have finished cleaning \the [T] with a [src]!"))
 
 /obj/item/weapon/material/kitchen/utensil/fork/plastic
 	default_material = MATERIAL_PLASTIC
+
+/obj/item/weapon/material/kitchen/utensil/fork/plastic/afterattack(atom/A, mob/user, proximity)
+	return // Plastic fork shoudun't clear turf.
 
 /obj/item/weapon/material/kitchen/utensil/spoon
 	name = "spoon"
