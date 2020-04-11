@@ -10,6 +10,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	take_external_damage(amount)
 
 /obj/item/organ/external/proc/take_external_damage(brute, burn, damage_flags, used_weapon = null)
+	if(owner.status_flags & GODMODE)	return 0
 	brute = round(brute * brute_mod, 0.1)
 	burn = round(burn * burn_mod, 0.1)
 	if((brute <= 0) && (burn <= 0))
@@ -177,9 +178,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 // Brute/burn
 /obj/item/organ/external/proc/get_brute_damage()
+	if(owner.status_flags & GODMODE)	return 0
 	return brute_dam
 
 /obj/item/organ/external/proc/get_burn_damage()
+	if(owner.status_flags & GODMODE)	return 0
 	return burn_dam
 
 // Geneloss/cloneloss.
@@ -200,6 +203,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	return -(genetic_degradation - last_gene_dam)
 
 /obj/item/organ/external/proc/add_genetic_damage(amount)
+	if(owner.status_flags & GODMODE)	return 0
 	if((species.species_flags & SPECIES_FLAG_NO_SCAN) || BP_IS_ROBOTIC(src))
 		genetic_degradation = 0
 		status &= ~ORGAN_MUTATED
@@ -252,6 +256,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	return full_pain
 
 /obj/item/organ/external/proc/adjust_pain(change)
+	if(owner.status_flags & GODMODE)	return 0
 	if(!can_feel_pain())
 		return 0
 	var/last_pain = pain
@@ -268,6 +273,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	full_pain = 0
 
 /obj/item/organ/external/proc/stun_act(stun_amount, agony_amount)
+	if(owner.status_flags & GODMODE)	return 0
 	if(agony_amount > 5 && owner)
 
 		if((limb_flags & ORGAN_FLAG_CAN_GRASP) && prob(25))

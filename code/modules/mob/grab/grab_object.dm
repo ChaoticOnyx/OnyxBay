@@ -119,6 +119,10 @@
 	if(!assailant || !affecting)
 		return 0
 
+	if(affecting.status_flags & GODMODE)	
+		to_chat(assailant, SPAN_WARNING("You can't grab your target for some reason!"))
+		return 0
+
 	if(assailant == affecting)
 		to_chat(assailant, "<span class='notice'>You can't grab yourself.</span>")
 		return 0

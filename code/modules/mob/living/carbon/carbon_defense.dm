@@ -1,5 +1,6 @@
 
 /mob/living/carbon/standard_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
+	if(status_flags & GODMODE)	return 0
 	if(!effective_force || blocked >= 100)
 		return 0
 

@@ -253,6 +253,7 @@ default behaviour is:
 	return 0
 
 /mob/living/proc/adjustOxyLoss(amount)
+	if(status_flags & GODMODE)	return 0
 	return
 
 /mob/living/proc/setOxyLoss(amount)
@@ -262,6 +263,7 @@ default behaviour is:
 	return 0
 
 /mob/living/proc/adjustToxLoss(amount)
+	if(status_flags & GODMODE)	return 0
 	adjustBruteLoss(amount * 0.5)
 
 /mob/living/proc/setToxLoss(amount)
@@ -271,6 +273,7 @@ default behaviour is:
 	return
 
 /mob/living/proc/adjustFireLoss(amount)
+	if(status_flags & GODMODE)	return 0
 	adjustBruteLoss(amount * 0.5)
 
 /mob/living/proc/setFireLoss(amount)
@@ -280,6 +283,7 @@ default behaviour is:
 	return 0
 
 /mob/living/proc/adjustHalLoss(amount)
+	if(status_flags & GODMODE)	return 0
 	adjustBruteLoss(amount * 0.5)
 
 /mob/living/proc/setHalLoss(amount)
@@ -289,6 +293,7 @@ default behaviour is:
 	return 0
 
 /mob/living/proc/adjustBrainLoss(amount)
+	if(status_flags & GODMODE)	return 0
 	return
 
 /mob/living/proc/setBrainLoss(amount)
@@ -301,6 +306,7 @@ default behaviour is:
 	return
 
 /mob/living/proc/adjustCloneLoss(amount)
+	if(status_flags & GODMODE)	return 0
 	return
 
 /mob/living/proc/getMaxHealth()
